@@ -60,8 +60,10 @@ public class ImageInfo {
 	public boolean checkin( Image i ){
 		if( i != img )
 			return false;
-		checkinTime = new Date();	
-		return (checkedIn = true);
+		checkinTime = new Date();
+		checkedIn = true;
+		source = null;
+		return true;
 	}
 	
 	public Image checkout( Dimension d, Object holder ){
