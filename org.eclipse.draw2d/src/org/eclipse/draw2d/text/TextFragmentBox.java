@@ -41,12 +41,13 @@ public int getAscent() {
 
 /**
  * Returns <code>true</code> if the bidi level is odd.  Right to left fragments should be
- * rendered and queried by insert RLO control characters in front of them.
+ * queried and rendered with the RLO control character inserted in front.
  * @return <code>true</code> if right-to-left
  * @since 3.1
  */
 public boolean isRightToLeft() {
-	return bidiLevel > -1 && (bidiLevel % 2) == 1;
+	// -1 % 2 == -1
+	return bidiLevel % 2 == 1;
 }
 
 /**
