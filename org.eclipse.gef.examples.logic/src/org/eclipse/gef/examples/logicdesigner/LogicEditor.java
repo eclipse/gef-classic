@@ -75,7 +75,6 @@ class OutlinePage
 	private IAction showOutlineAction, showOverviewAction;
 	static final int ID_OUTLINE  = 0;
 	static final int ID_OVERVIEW = 1;
-	private boolean overviewInitialized;
 	private Thumbnail thumbnail;
 	
 	public OutlinePage(EditPartViewer viewer){
@@ -141,6 +140,8 @@ class OutlinePage
 	
 	public void dispose(){
 		unhookOutlineViewer();
+		if (thumbnail != null)
+			thumbnail.deactivate();
 		super.dispose();
 	}
 	
@@ -182,7 +183,7 @@ class OutlinePage
 			if (thumbnail != null)
 				thumbnail.setVisible(false);
 		} else if (id == ID_OVERVIEW) {
-			if (!overviewInitialized)
+			if (thumbnail == null)
 				initializeOverview();
 			showOutlineAction.setChecked(false);
 			showOverviewAction.setChecked(true);
