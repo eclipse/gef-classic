@@ -208,7 +208,7 @@ public static final String SETTINGS_DEFAULT_FONT;
  */
 public static final String SETTINGS_WORKBENCH_FONT_LABEL;
 /**
- * The String " - "
+ * The String "-"
  */
 public static final String NAME_DESCRIPTION_SEPARATOR;
 
