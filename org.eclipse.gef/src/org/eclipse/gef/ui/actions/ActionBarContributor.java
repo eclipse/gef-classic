@@ -89,16 +89,16 @@ protected void createActions() {
 	action = new PrintRetargetAction();
 	getPage().addPartListener(action);
 	retargetActions.put(action.getId(), action);
-
-	// Create copy action
-	action = new CopyRetargetAction();
-	getPage().addPartListener(action);
-	retargetActions.put(action.getId(), action);
-
-	// Create paste action
-	action = new PasteRetargetAction();
-	getPage().addPartListener(action);
-	retargetActions.put(action.getId(), action);
+//
+//	// Create copy action
+//	action = new CopyRetargetAction();
+//	getPage().addPartListener(action);
+//	retargetActions.put(action.getId(), action);
+//
+//	// Create paste action
+//	action = new PasteRetargetAction();
+//	getPage().addPartListener(action);
+//	retargetActions.put(action.getId(), action);
 }
 
 /**
@@ -113,16 +113,16 @@ protected void declareActions() {
 	globalActions.add(IWorkbenchActionConstants.REDO);
 	globalActions.add(IWorkbenchActionConstants.DELETE);
 	globalActions.add(IWorkbenchActionConstants.PRINT);
-	globalActions.add(IWorkbenchActionConstants.COPY);
-	globalActions.add(IWorkbenchActionConstants.PASTE);
+//	globalActions.add(IWorkbenchActionConstants.COPY);
+//	globalActions.add(IWorkbenchActionConstants.PASTE);
 	
 	toolbarActions.add(IWorkbenchActionConstants.UNDO);
 	toolbarActions.add(IWorkbenchActionConstants.REDO);
 	toolbarActions.add(IWorkbenchActionConstants.DELETE);
 	toolbarActions.add(SEPARATOR);
-	toolbarActions.add(IWorkbenchActionConstants.COPY);
-	toolbarActions.add(IWorkbenchActionConstants.PASTE);
-	toolbarActions.add(SEPARATOR);
+//	toolbarActions.add(IWorkbenchActionConstants.COPY);
+//	toolbarActions.add(IWorkbenchActionConstants.PASTE);
+//	toolbarActions.add(SEPARATOR);
 }
 
 /**
