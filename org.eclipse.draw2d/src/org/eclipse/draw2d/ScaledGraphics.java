@@ -137,6 +137,10 @@ public void fillArc(int x, int y, int w, int h, int offset, int sweep) {
 	graphics.fillArc(z, offset, sweep);
 }
 
+public void fillGradient(int x, int y, int w, int h, boolean vertical) {
+	graphics.fillGradient(zoomFillRect(x, y, w, h), vertical);
+}
+
 public void drawFocus(int x, int y, int w, int h) {
 	graphics.drawFocus(zoomRect(x,y,w,h));
 }
