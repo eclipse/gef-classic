@@ -39,7 +39,7 @@ public IFigure createFigure() {
 /**
  * This method overrides super's functionality to do nothing.
  * 
- * @see org.eclipse.gef.ui.palette.PaletteEditPart#refreshVisuals()
+ * @see PaletteEditPart#refreshVisuals()
  */
 protected void refreshVisuals() {
 }
