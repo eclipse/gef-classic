@@ -69,7 +69,7 @@ protected FixedConnectionAnchor getOutputConnectionAnchor(int i) {
 }
 
 public Dimension getPreferredSize(int w, int h) {
-	Dimension prefSize = super.getPreferredSize();
+	Dimension prefSize = super.getPreferredSize(w, h);
 	Dimension defaultSize = new Dimension(100,100);
 	prefSize.union(defaultSize);
 	return prefSize;
