@@ -18,97 +18,97 @@ public interface ColorConstants {
 /**
  * @see SWT#COLOR_WIDGET_HIGHLIGHT_SHADOW
  */
-public static final Color buttonLightest          
-				= Display.getDefault().getSystemColor(SWT.COLOR_WIDGET_HIGHLIGHT_SHADOW);
+public static final Color buttonLightest
+				= Display.getCurrent().getSystemColor(SWT.COLOR_WIDGET_HIGHLIGHT_SHADOW);
 /**
  * @see SWT#COLOR_WIDGET_BACKGROUND
  */
-public static final Color button	                
-				= Display.getDefault().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND);
+public static final Color button
+				= Display.getCurrent().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND);
 /**
  * @see SWT#COLOR_WIDGET_NORMAL_SHADOW
  */
-public static final Color buttonDarker            
-				= Display.getDefault().getSystemColor(SWT.COLOR_WIDGET_NORMAL_SHADOW);
+public static final Color buttonDarker
+				= Display.getCurrent().getSystemColor(SWT.COLOR_WIDGET_NORMAL_SHADOW);
 /**
  * @see SWT#COLOR_WIDGET_DARK_SHADOW
  */
 public static final Color buttonDarkest           
-				= Display.getDefault().getSystemColor(SWT.COLOR_WIDGET_DARK_SHADOW);
+				= Display.getCurrent().getSystemColor(SWT.COLOR_WIDGET_DARK_SHADOW);
 
 /**
  * @see SWT#COLOR_LIST_BACKGROUND
  */
 public static final Color listBackground          
-				= Display.getDefault().getSystemColor(SWT.COLOR_LIST_BACKGROUND);
+				= Display.getCurrent().getSystemColor(SWT.COLOR_LIST_BACKGROUND);
 /**
  * @see SWT#COLOR_LIST_FOREGROUND
  */
 public static final Color listForeground          
-				= Display.getDefault().getSystemColor(SWT.COLOR_LIST_FOREGROUND);
+				= Display.getCurrent().getSystemColor(SWT.COLOR_LIST_FOREGROUND);
 
 /**
  * @see SWT#COLOR_WIDGET_BACKGROUND
  */
 public static final Color menuBackground          
-				= Display.getDefault().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND);
+				= Display.getCurrent().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND);
 /**
  * @see SWT#COLOR_WIDGET_FOREGROUND
  */
 public static final Color menuForeground          
-				= Display.getDefault().getSystemColor(SWT.COLOR_WIDGET_FOREGROUND);
+				= Display.getCurrent().getSystemColor(SWT.COLOR_WIDGET_FOREGROUND);
 /**
  * @see SWT#COLOR_LIST_SELECTION
  */
 public static final Color menuBackgroundSelected  
-				= Display.getDefault().getSystemColor(SWT.COLOR_LIST_SELECTION);
+				= Display.getCurrent().getSystemColor(SWT.COLOR_LIST_SELECTION);
 /**
  * @see SWT#COLOR_LIST_SELECTION_TEXT
  */
 public static final Color menuForegroundSelected  
-				= Display.getDefault().getSystemColor(SWT.COLOR_LIST_SELECTION_TEXT);
+				= Display.getCurrent().getSystemColor(SWT.COLOR_LIST_SELECTION_TEXT);
 
 /**
  * @see SWT#COLOR_TITLE_BACKGROUND
  */
 public static final Color titleBackground         
-				= Display.getDefault().getSystemColor(SWT.COLOR_TITLE_BACKGROUND);
+				= Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_BACKGROUND);
 /**
  * @see SWT#COLOR_TITLE_BACKGROUND_GRADIENT
  */
 public static final Color titleGradient           
-				= Display.getDefault().getSystemColor(SWT.COLOR_TITLE_BACKGROUND_GRADIENT);
+				= Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_BACKGROUND_GRADIENT);
 /**
  * @see SWT#COLOR_TITLE_FOREGROUND
  */
 public static final Color titleForeground         
-				= Display.getDefault().getSystemColor(SWT.COLOR_TITLE_FOREGROUND);
+				= Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_FOREGROUND);
 /**
  * @see SWT#COLOR_TITLE_INACTIVE_FOREGROUND
  */
 public static final Color titleInactiveForeground 
-				= Display.getDefault().getSystemColor(SWT.COLOR_TITLE_INACTIVE_FOREGROUND);
+				= Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_FOREGROUND);
 /**
  * @see SWT#COLOR_TITLE_INACTIVE_FOREGROUND
  */
 public static final Color titleInactiveBackground 
-				= Display.getDefault().getSystemColor(SWT.COLOR_TITLE_INACTIVE_FOREGROUND);
+				= Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_FOREGROUND);
 /**
  * @see SWT#COLOR_TITLE_INACTIVE_FOREGROUND
  */
 public static final Color titleInactiveGradient   
-				= Display.getDefault().getSystemColor(SWT.COLOR_TITLE_INACTIVE_FOREGROUND);
+				= Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_FOREGROUND);
 
 /**
  * @see SWT#COLOR_INFO_FOREGROUND
  */
 public static final Color tooltipForeground       
-				= Display.getDefault().getSystemColor(SWT.COLOR_INFO_FOREGROUND);
+				= Display.getCurrent().getSystemColor(SWT.COLOR_INFO_FOREGROUND);
 /**
  * @see SWT#COLOR_INFO_BACKGROUND
  */
 public static final Color tooltipBackground       
-				= Display.getDefault().getSystemColor(SWT.COLOR_INFO_BACKGROUND);
+				= Display.getCurrent().getSystemColor(SWT.COLOR_INFO_BACKGROUND);
 
 /**
  * Misc. colors

@@ -97,7 +97,7 @@ synchronized public void performUpdate(){
 
 protected void queueWork(){
 	if (!updateQueued){
-		Display.getDefault().asyncExec(new UpdateRequest());
+		Display.getCurrent().asyncExec(new UpdateRequest());
 		updateQueued = true;
 	}
 }
@@ -145,10 +145,7 @@ public void setGraphicsSource(GraphicsSource gs){
 }
 
 public void setRoot(IFigure figure){
-	if (root != null)
-		root.setUpdateManager(null);
 	root = figure;
-	root.setUpdateManager(this);
 }
 
 protected void validateFigures(){
