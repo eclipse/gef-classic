@@ -11,7 +11,6 @@ import java.util.EventObject;
 
 import org.eclipse.core.resources.*;
 import org.eclipse.core.runtime.*;
-import org.eclipse.draw2d.FigureCanvas;
 import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.gef.*;
 import org.eclipse.gef.commands.CommandStackListener;

@@ -10,7 +10,6 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.*;
 import org.eclipse.gef.requests.CreateRequest;
-import org.eclipse.swt.widgets.Display;
 
 public class CreationTool
 	extends TargetingTool
