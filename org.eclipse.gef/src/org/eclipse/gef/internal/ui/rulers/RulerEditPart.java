@@ -109,7 +109,7 @@ public DragTracker getDragTracker(Request request) {
 			} else {
 				setState(STATE_INVALID);
 			}
-			if (button != MOUSE_BUTTON1) {
+			if (button != 1) {
 				setState(STATE_INVALID);
 			}
 			return true;
