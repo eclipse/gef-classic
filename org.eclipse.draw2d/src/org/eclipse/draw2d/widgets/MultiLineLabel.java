@@ -135,11 +135,18 @@ private void addAccessibility() {
 	});
 }
 
+/**
+ * @see org.eclipse.swt.widgets.Control#setEnabled(boolean)
+ */
 public void setEnabled(boolean enabled) {
 	super.setEnabled(enabled);
 	textFlow.setEnabled(getEnabled());
 }
 
+/**
+ * @return the Image for this label, or <code>null</code> if there is none
+ * @see #setImage(Image)
+ */
 public Image getImage() {
 	return image;
 }
@@ -163,9 +170,7 @@ public void setFont(Font font) {
 /**
  * @param	image	The <code>Image</code> to be used for this label.  It can be 
  * 					<code>null</code>.
- * @param	position	The position of the Image: PositionConstants.NORTH, SOUTH, EAST
- * 						or WEST
- * @see	ImageBorder#setImage(Image, int)
+ * @see	ImageBorder#setImage(Image)
  */
 public void setImage(Image image) {
 	this.image = image;
