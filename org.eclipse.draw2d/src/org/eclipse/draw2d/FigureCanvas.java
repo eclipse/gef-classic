@@ -125,9 +125,8 @@ public IFigure getContents() {
  */
 public Font getFont() {
 	if (font == null)
-		return super.getFont();
-	else
-		return font;
+		font = super.getFont();
+	return font;
 }
 
 /**
