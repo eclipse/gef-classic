@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.gef.internal.ui.rulers;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.draw2d.Figure;
@@ -18,6 +19,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.*;
 import org.eclipse.gef.commands.Command;
+import org.eclipse.gef.commands.UnexecutableCommand;
 import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.editpolicies.GraphicalEditPolicy;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
@@ -66,13 +68,17 @@ public Command getCommand(Request request) {
 		} else {
 			pDelta = req.getMoveDelta().x;
 		}
-		ZoomManager zoomManager = getGuideEditPart().getZoomManager();
-		if (zoomManager != null) {
-			pDelta *= (zoomManager.getUIMultiplier() 
-					/ zoomManager.getZoom());				
+		if (isMoveValid(getGuideEditPart().getZoomedPosition() + pDelta)) {
+			ZoomManager zoomManager = getGuideEditPart().getZoomManager();
+			if (zoomManager != null) {
+				pDelta *= (zoomManager.getUIMultiplier() 
+						/ zoomManager.getZoom());				
+			}
+			cmd = getGuideEditPart().getRulerProvider()
+					.getMoveGuideCommand(getHost().getModel(), pDelta);			
+		} else {
+			cmd = UnexecutableCommand.INSTANCE;
 		}
-		cmd = getGuideEditPart().getRulerProvider()
-				.getMoveGuideCommand(getHost().getModel(), pDelta);
 	}
 	return cmd;
 }
@@ -111,6 +117,27 @@ protected boolean isDeleteRequest(ChangeBoundsRequest req) {
 	return pos < min || pos > max;	
 }
 
+protected boolean isMoveValid(int zoomedPosition) {
+	boolean result = true;
+	ZoomManager zoomManager = getGuideEditPart().getZoomManager();
+	int position = zoomedPosition;
+	if (zoomManager != null) {
+		position *= (zoomManager.getUIMultiplier() / zoomManager.getZoom());
+	}
+	Iterator guides = getGuideEditPart().getRulerProvider().getGuides().iterator();
+	while (guides.hasNext()) {
+		Object guide = guides.next();
+		if (guide != getGuideEditPart().getModel()) {
+			int guidePos = getGuideEditPart().getRulerProvider().getGuidePosition(guide);
+			if (Math.abs(guidePos - position) < GuideEditPart.MIN_DISTANCE_BW_GUIDES) {
+				result = false;
+				break;
+			}			
+		}
+	}
+	return result;
+}
+
 public void showSourceFeedback(Request request) {
 	if (!dragInProgress) {
 		dragInProgress = true;
@@ -120,9 +147,9 @@ public void showSourceFeedback(Request request) {
 				getHost(), getDummyGuideFigure(), 
 				new Integer(getGuideEditPart().getZoomedPosition()));
 		getDummyGuideFigure().setBounds(getHostFigure().getBounds());
-		// add the placeholder feedback figure to the primary viewer
+		// add the placeholder line figure to the primary viewer
 		getGuideEditPart().getGuideLayer().add(getDummyLineFigure(), 0);
-		getGuideEditPart().getGuideLayer().setConstraint(getDummyGuideFigure(), 
+		getGuideEditPart().getGuideLayer().setConstraint(getDummyLineFigure(), 
 				new Boolean(getGuideEditPart().isHorizontal()));
 		getDummyLineFigure().setBounds(getGuideEditPart().getGuideLineFigure()
 				.getBounds());
@@ -138,17 +165,22 @@ public void showSourceFeedback(Request request) {
 		getGuideEditPart().getGuideLineFigure().setVisible(false);
 		getGuideEditPart().setCurrentCursor(SharedCursors.ARROW);
 	} else {
-		int positionDelta;
+		int newPosition;
 		if (getGuideEditPart().isHorizontal()) {
-			positionDelta = req.getMoveDelta().y;
+			newPosition = getGuideEditPart().getZoomedPosition() + req.getMoveDelta().y;
 		} else {
-			positionDelta = req.getMoveDelta().x;
+			newPosition = getGuideEditPart().getZoomedPosition() + req.getMoveDelta().x;
 		}
-		getGuideEditPart().updateLocationOfFigures(
-				getGuideEditPart().getZoomedPosition() + positionDelta);
 		getHostFigure().setVisible(true);
 		getGuideEditPart().getGuideLineFigure().setVisible(true);
-		getGuideEditPart().setCurrentCursor(null);
+		if (isMoveValid(newPosition)) {
+			getGuideEditPart().setCurrentCursor(null);			
+			getGuideEditPart().updateLocationOfFigures(newPosition);
+		} else {
+			getGuideEditPart().setCurrentCursor(SharedCursors.NO);
+			getGuideEditPart().updateLocationOfFigures(
+					getGuideEditPart().getZoomedPosition());
+		}
 	}
 }
 
