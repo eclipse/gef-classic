@@ -140,8 +140,7 @@ public void setConstraint(IFigure child, Object constraint) {
 
 /**
  * Sets isObservingVisibility to the given value.
- * @param newValue the newValue for whether or not to this layout pays attention to
- * visiblity when calculating its bounds.
+ * @param newValue <code>true</code> if visibility should be observed
  */
 public void setObserveVisibility(boolean newValue) {
 	if (isObservingVisibility == newValue)
