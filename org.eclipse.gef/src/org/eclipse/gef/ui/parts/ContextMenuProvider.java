@@ -6,45 +6,44 @@ package org.eclipse.gef.ui.parts;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
+import org.eclipse.gef.EditPartViewer;
+import org.eclipse.gef.ui.actions.ActionRegistry;
+import org.eclipse.gef.ui.actions.GEFActionConstants;
 import org.eclipse.jface.action.*;
 import org.eclipse.swt.widgets.Menu;
-import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IWorkbenchActionConstants;
-
-import org.eclipse.gef.EditPartViewer;
 
 public abstract class ContextMenuProvider 
 	implements IMenuListener 
 {
 
-public static final String GROUP_DOMAIN_CONTRIBUTIONS = "$domain menu group"; //$NON-NLS-1$
-public static final String GROUP_EDITOR_CONTRIBUTIONS = "$editor menu group"; //$NON-NLS-1$
-public static final String GROUP_VIEWER_CONTRIBUTIONS = "$viewer menu group"; //$NON-NLS-1$
-
-private IEditorPart editor;
+private ActionRegistry registry;
 private EditPartViewer viewer;
+private MenuManager menuManager;
 
-public ContextMenuProvider(IEditorPart editor, EditPartViewer viewer) {
+public ContextMenuProvider(EditPartViewer viewer, ActionRegistry registry) {
 	setViewer(viewer);
-	setEditor(editor);
+	setActionRegistry(registry);
 	createContextMenu();
 }
 
 public abstract void buildContextMenu(IMenuManager menu);
 
 public Menu createContextMenu() {
-	MenuManager manager = new MenuManager(); 
-	manager.addMenuListener(this);
-	manager.setRemoveAllWhenShown(true);
+	menuManager = new MenuManager(); 
+	menuManager.addMenuListener(this);
+	menuManager.setRemoveAllWhenShown(true);
 
-	Menu menu = manager.createContextMenu(getViewer().getControl());
+	Menu menu = menuManager.createContextMenu(getViewer().getControl());
 	getViewer().getControl().setMenu(menu);
-	registerContextMenu(manager);
 	return menu;
 }
 
-protected IEditorPart getEditor() {
-	return editor;
+protected ActionRegistry getActionRegistry() {
+	return registry;
+}
+
+public MenuManager getMenuManager() {
+	return menuManager;
 }
 
 protected EditPartViewer getViewer() {
@@ -55,17 +54,20 @@ public void menuAboutToShow(IMenuManager menu) {
 	//Any async paints won't be dispatched while the menu is visible.
 	getViewer().flush();
 	// As long as setRemoveAllWhenShown is set to true, we must re-add these.
-	menu.add(new Separator(GROUP_DOMAIN_CONTRIBUTIONS));
-	menu.add(new Separator(GROUP_VIEWER_CONTRIBUTIONS));
-	menu.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
-	menu.add(new Separator(GROUP_EDITOR_CONTRIBUTIONS));
+	menu.add(new Separator(GEFActionConstants.GROUP_UNDO));
+	menu.add(new Separator(GEFActionConstants.GROUP_COPY));
+	menu.add(new Separator(GEFActionConstants.GROUP_PRINT));
+	menu.add(new Separator(GEFActionConstants.GROUP_EDIT));
+	menu.add(new Separator(GEFActionConstants.GROUP_FIND));
+	menu.add(new Separator(GEFActionConstants.GROUP_ADD));
+	menu.add(new Separator(GEFActionConstants.GROUP_REST));
+	menu.add(new Separator(GEFActionConstants.MB_ADDITIONS));
+	menu.add(new Separator(GEFActionConstants.GROUP_SAVE));
 	buildContextMenu(menu);
 }
 
-protected abstract void registerContextMenu(MenuManager manager);
-
-protected void setEditor(IEditorPart editor) {
-	this.editor = editor;
+protected void setActionRegistry(ActionRegistry registry) {
+	this.registry = registry;
 }
 
 protected void setViewer(EditPartViewer viewer) {
