@@ -41,14 +41,14 @@ public static GEFPlugin getDefault() {
 }
 
 /**
- * Create a property sheet entry which will execute commands on a command stack.  Calls to
- * setting property values will be wrapped inside a single command which is executed on
- * the given stack.
+ * This method will be deleted to remove the hard dependency on the
+ * org.eclipse.ui.views plug-in.
+ * @deprecated use org.eclipse.gef.ui.properties.UndoablePropertySheetEntry
  * @param stack a command stack
  * @return the implementation for the entry
  */
 public static IPropertySheetEntry createUndoablePropertySheetEntry(CommandStack stack) {
-	return new org.eclipse.gef.internal.ui.properties.UndoablePropertySheetEntry(stack);
+	return new org.eclipse.gef.ui.properties.UndoablePropertySheetEntry(stack);
 }
 
 }
