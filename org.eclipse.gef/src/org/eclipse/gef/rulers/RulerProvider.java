@@ -149,8 +149,11 @@ public List getAttachedEditParts(Object guide, GraphicalViewer viewer) {
 	List attachedEditParts = new ArrayList(attachedModelObjects.size());
 	Iterator i = attachedModelObjects.iterator();
 	
-	while (i.hasNext())
-		attachedEditParts.add(viewer.getEditPartRegistry().get(i.next()));
+	while (i.hasNext()) {
+		Object editPart = viewer.getEditPartRegistry().get(i.next());
+		if (editPart != null)
+			attachedEditParts.add(editPart);
+	}
 	
 	return attachedEditParts;
 }
