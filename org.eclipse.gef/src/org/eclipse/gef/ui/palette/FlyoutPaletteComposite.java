@@ -58,6 +58,7 @@ import org.eclipse.draw2d.ToggleButton;
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.SharedCursors;
 import org.eclipse.gef.dnd.TemplateTransfer;
+import org.eclipse.gef.internal.GEFMessages;
 import org.eclipse.gef.internal.ui.palette.editparts.DrawerFigure;
 import org.eclipse.gef.ui.views.palette.PaletteView;
 
@@ -76,10 +77,10 @@ public static final String PROPERTY_DEFAULT_STATE
 
 protected static final int MIN_PALETTE_SIZE = 20;
 protected static final int MAX_PALETTE_SIZE = 500;
+protected static final int IN_VIEW = 8;
 protected static final int FLYOVER_EXPANDED = 1;
 public static final int FLYOVER_COLLAPSED = 2;
 public static final int FLYOVER_PINNED_OPEN = 4;
-protected static final int IN_VIEW = 8;
 
 protected Sash sash;
 protected PaletteViewer pViewer, externalViewer;
@@ -133,9 +134,6 @@ public FlyoutPaletteComposite(Composite parent, int style, IWorkbenchPage page,
 			// when the editor is closed or maximized.  We have to ignore such resizes.
 			if (area.width < minWidth)
 				return;
-			if (fixedSize > area.width / 2) {
-				setFixedSize(area.width / 2);
-			}
 			layout();
 		}
 	});
@@ -200,7 +198,7 @@ protected void handlePerspectiveActivated(IWorkbenchPage page,
 protected void handlePerspectiveChanged(IWorkbenchPage page, 
 		IPerspectiveDescriptor perspective, String changeId) {
 	if (changeId.equals(IWorkbenchPage.CHANGE_VIEW_SHOW) 
-			|| changeId.equals(IWorkbenchPage.CHANGE_VIEW_HIDE));
+			|| changeId.equals(IWorkbenchPage.CHANGE_VIEW_HIDE))
 		handlePerspectiveActivated(page, perspective);
 }
 
@@ -224,15 +222,21 @@ public void layout(boolean changed) {
 	Rectangle area = getClientArea();
 	if (area.width == 0 || area.height == 0) return;
 	
+	int sashWidth = 15; //sash.getBounds().width; @TODO:Pratik
+	int paletteWidth = fixedSize;
+	int maxWidth = Math.min(area.width / 2, MAX_PALETTE_SIZE);
+	maxWidth = Math.max(maxWidth, minWidth);
+	paletteWidth = Math.max(paletteWidth, minWidth);
+	paletteWidth = Math.min(paletteWidth, maxWidth);
+	
 	setRedraw(false);
-	int sashWidth = 15; //sash.getBounds().width;
 	if (isInState(IN_VIEW)) {
 		sash.setVisible(false);
 		graphicalControl.setBounds(area);
 	} else if (dock == PositionConstants.EAST)
-		layoutComponentsEast(area, sashWidth);
+		layoutComponentsEast(area, sashWidth, paletteWidth);
 	else
-		layoutComponentsWest(area, sashWidth);
+		layoutComponentsWest(area, sashWidth, paletteWidth);
 	setRedraw(true);
 	update();
 }
@@ -241,7 +245,8 @@ public void layout(boolean changed) {
  * @TODO:Pratik  Perhaps also separate this class out.  not have this as a composite?
  */
 
-protected final void layoutComponentsEast(Rectangle area, int sashWidth) {
+protected final void layoutComponentsEast(Rectangle area, int sashWidth, 
+		int paletteWidth) {
 	if (isInState(FLYOVER_COLLAPSED)) {
 		sash.setVisible(true);
 		pViewer.getControl().setVisible(false);
@@ -252,24 +257,25 @@ protected final void layoutComponentsEast(Rectangle area, int sashWidth) {
 		pViewer.getControl().setVisible(true);
 		pViewer.getControl().moveAbove(graphicalControl);
 		sash.moveAbove(pViewer.getControl());
-		pViewer.getControl().setBounds(area.x + area.width - fixedSize, area.y, fixedSize, 
-				area.height);
-		sash.setBounds(area.x + area.width - fixedSize - sashWidth, area.y, sashWidth, 
+		pViewer.getControl().setBounds(area.x + area.width - paletteWidth, area.y, 
+				paletteWidth, area.height);
+		sash.setBounds(area.x + area.width - paletteWidth - sashWidth, area.y, sashWidth, 
 				area.height);
 		graphicalControl.setBounds(area.x, area.y, area.width - sashWidth, area.height);
 	} else if (isInState(FLYOVER_PINNED_OPEN)) {
 		sash.setVisible(true);
 		pViewer.getControl().setVisible(true);
-		pViewer.getControl().setBounds(area.x + area.width - fixedSize, area.y, fixedSize, 
+		pViewer.getControl().setBounds(area.x + area.width - paletteWidth, area.y, 
+				paletteWidth, area.height);
+		sash.setBounds(area.x + area.width - paletteWidth - sashWidth, area.y, sashWidth, 
 				area.height);
-		sash.setBounds(area.x + area.width - fixedSize - sashWidth, area.y, sashWidth, 
-				area.height);
-		graphicalControl.setBounds(area.x, area.y, area.width - sashWidth - fixedSize, 
+		graphicalControl.setBounds(area.x, area.y, area.width - sashWidth - paletteWidth, 
 				area.height);		
 	}
 }
 
-protected final void layoutComponentsWest(Rectangle area, int sashWidth) {
+protected final void layoutComponentsWest(Rectangle area, int sashWidth, 
+		int paletteWidth) {
 	if (isInState(FLYOVER_COLLAPSED)) {
 		sash.setVisible(true);
 		pViewer.getControl().setVisible(false);
@@ -281,17 +287,17 @@ protected final void layoutComponentsWest(Rectangle area, int sashWidth) {
 		pViewer.getControl().setVisible(true);
 		pViewer.getControl().moveAbove(graphicalControl);
 		sash.moveAbove(pViewer.getControl());
-		pViewer.getControl().setBounds(area.x, area.y, fixedSize, area.height);
-		sash.setBounds(area.x + fixedSize, area.y, sashWidth, area.height);
+		pViewer.getControl().setBounds(area.x, area.y, paletteWidth, area.height);
+		sash.setBounds(area.x + paletteWidth, area.y, sashWidth, area.height);
 		graphicalControl.setBounds(area.x + sashWidth, area.y, 
 				area.width - sashWidth, area.height);
 	} else if (isInState(FLYOVER_PINNED_OPEN)) {
 		sash.setVisible(true);
 		pViewer.getControl().setVisible(true);
-		pViewer.getControl().setBounds(area.x, area.y, fixedSize, area.height);
-		sash.setBounds(area.x + fixedSize, area.y, sashWidth, area.height);
-		graphicalControl.setBounds(area.x + fixedSize + sashWidth, area.y,
-				area.width - sashWidth - fixedSize, area.height);		
+		pViewer.getControl().setBounds(area.x, area.y, paletteWidth, area.height);
+		sash.setBounds(area.x + paletteWidth, area.y, sashWidth, area.height);
+		graphicalControl.setBounds(area.x + paletteWidth + sashWidth, area.y,
+				area.width - sashWidth - paletteWidth, area.height);		
 	}	
 }
 
@@ -338,13 +344,6 @@ public void setDockLocation(int position) {
 }
 
 public final void setFixedSize(int newSize) {
-	int width = getClientArea().width / 2;
-	if (width > minWidth && newSize > width)
-		newSize = width;
-	if (newSize < minWidth)
-		newSize = minWidth;
-	if (newSize > MAX_PALETTE_SIZE)
-		newSize = MAX_PALETTE_SIZE;
 	if (fixedSize != newSize) {
 		int oldValue = fixedSize;
 		fixedSize = newSize;
@@ -422,7 +421,6 @@ protected void setState(int newState) {
 				}
 				minWidth = Math.max(pViewer.getControl().computeSize(0, 0).x, 
 						MIN_PALETTE_SIZE);
-				setFixedSize(getFixedSize());
 			}
 			break;
 		case IN_VIEW:
@@ -453,6 +451,9 @@ protected class Sash extends Composite {
 	protected ToggleButton b;
 	public Sash(Composite parent) {
 		super(parent, SWT.NONE);
+		/*
+		 * @TODO:Pratik   should update when the banner font changes
+		 */
 		setFont(JFaceResources.getBannerFont());
 
 		createButton();
@@ -494,7 +495,7 @@ protected class Sash extends Composite {
 		figCanvas.setBounds(1, 1, 13, 13);
 	}
 	protected void handleSashDragged(int shiftAmount) {
-		int newSize = fixedSize + 
+		int newSize = pViewer.getControl().getBounds().width + 
 				(dock == PositionConstants.EAST ? -shiftAmount : shiftAmount);
 		setFixedSize(newSize);
 	}
@@ -503,7 +504,7 @@ protected class Sash extends Composite {
 		Rectangle bounds = getBounds();
 		if (img == null) {
 			img = ImageUtilities.createRotatedImageOfString(
-					"Palette", graphics.getFont(),
+					GEFMessages.Palette_Label, graphics.getFont(),
 					graphics.getForegroundColor(), graphics.getBackgroundColor());
 		}
 		graphics.setForegroundColor(ColorConstants.buttonLightest);
