@@ -16,6 +16,7 @@ public static final String
 
 public PaletteGroup(String label){
 	super(label, null, null, PALETTE_TYPE_GROUP);
+	setUserModificationPermission(PERMISSION_NO_MODIFICATION);
 }
 
 public PaletteGroup(String label, List children){

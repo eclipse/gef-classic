@@ -27,6 +27,7 @@ public ConnectionCreationToolEntry(
 	ImageDescriptor iconSmall,
 	ImageDescriptor iconLarge) {
 	super(label, shortDesc, factory, iconSmall, iconLarge);
+	setUserModificationPermission(PERMISSION_NO_MODIFICATION);
 }
 
 /**

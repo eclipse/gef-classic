@@ -34,6 +34,7 @@ public SelectionToolEntry(String label, String shortDesc) {
 		shortDesc,
 		SharedImages.DESC_SELECTION_TOOL_16,
 		SharedImages.DESC_SELECTION_TOOL_24);
+	setUserModificationPermission(PERMISSION_NO_MODIFICATION);
 }
 
 /**

@@ -33,6 +33,7 @@ public MarqueeToolEntry(String label, String shortDesc) {
 	super(label, shortDesc,
 		SharedImages.DESC_MARQUEE_TOOL_16,
 		SharedImages.DESC_MARQUEE_TOOL_24);
+	setUserModificationPermission(PERMISSION_NO_MODIFICATION);
 }
 
 /**

@@ -27,6 +27,7 @@ public PaletteDrawer(String label) {
 
 public PaletteDrawer(String label, ImageDescriptor icon) {
 	super(label, null, icon, PALETTE_TYPE_DRAWER);
+	setUserModificationPermission(PERMISSION_LIMITED_MODIFICATION);
 }
 
 public Object getDrawerType() {
