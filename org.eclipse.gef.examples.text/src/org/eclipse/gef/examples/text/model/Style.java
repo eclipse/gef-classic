@@ -51,7 +51,8 @@ public void setBold(boolean value) {
 	if (bold == value)
 		return;
 	bold = value;
-	listeners.firePropertyChange("bold", !value, value);
+	if (listeners != null)
+		listeners.firePropertyChange("bold", !value, value);
 }
 
 public void setFontFamily(String fontFamily) {
@@ -62,14 +63,16 @@ public void setFontFamily(String fontFamily) {
 
 public void setFontHeight(int fontHeight) {
 	this.fontHeight = fontHeight;
-	listeners.firePropertyChange("fontHeight", fontHeight, fontHeight);
+	if (listeners != null)
+		listeners.firePropertyChange("fontHeight", fontHeight, fontHeight);
 }
 
 public void setItalic(boolean value) {
 	if (italic == value)
 		return;
 	italic = value;
-	listeners.firePropertyChange("italic", !value, value);
+	if (listeners != null)
+		listeners.firePropertyChange("italic", !value, value);
 }
 
 public void setParentStyle(Style style) {
@@ -80,7 +83,8 @@ public void setUnderline(boolean value) {
 	if (underline == value)
 		return;
 	underline = value;
-	listeners.firePropertyChange("underline", !value, value);
+	if (listeners != null)
+		listeners.firePropertyChange("underline", !value, value);
 }
 
 }
