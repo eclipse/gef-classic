@@ -138,16 +138,16 @@ protected void paintClientArea(Graphics g){
 }
 
 public void propertyChange(PropertyChangeEvent event){
-	if (ignoreScroll)
-		return;
 	if(event.getSource() instanceof RangeModel){
 		if(RangeModel.PROPERTY_VALUE.equals(event.getPropertyName())){
-			localRevalidate();
-			if(useGraphicsTranslate()){
-				repaint();
-				fireMoved(); //Must fire moved because the contents have been virtually scrolled.
+			if (!ignoreScroll) {
+				localRevalidate();
+				if(useGraphicsTranslate()){
+					repaint();
+					fireMoved(); //Must fire moved because the contents have been virtually scrolled.
+				}
 			}
-			firePropertyChange( PROPERTY_VIEW_LOCATION, event.getOldValue(), event.getNewValue() );
+			firePropertyChange(PROPERTY_VIEW_LOCATION, event.getOldValue(), event.getNewValue());
 		}
 	}
 }

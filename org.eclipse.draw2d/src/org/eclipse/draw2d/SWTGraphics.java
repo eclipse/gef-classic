@@ -301,7 +301,7 @@ public void pushState(){
 		}
 		stackPointer++;
 	} catch (CloneNotSupportedException e){
-		throw new RuntimeException(e);
+		throw new RuntimeException(e.getMessage());
 	}
 }
 
