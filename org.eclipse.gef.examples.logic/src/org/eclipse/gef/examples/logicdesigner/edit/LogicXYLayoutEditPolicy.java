@@ -64,7 +64,7 @@ protected Command createChangeConstraintCommand(ChangeBoundsRequest request,
 	LogicSubpart part = (LogicSubpart)child.getModel();
 	cmd.setPart(part);
 	cmd.setLocation((Rectangle)constraint);
-	Command result = cmd; 
+	Command result = cmd;
 
 	if ((request.getResizeDirection() & PositionConstants.NORTH_SOUTH) != 0) {
 		Integer guidePos = (Integer)request.getExtendedData()
@@ -116,7 +116,8 @@ protected Command createChangeConstraintCommand(ChangeBoundsRequest request,
 		}
 	}
 	
-	if (request.getType().equals(REQ_MOVE_CHILDREN)) {
+	if (request.getType().equals(REQ_MOVE_CHILDREN)
+			|| request.getType().equals(REQ_ALIGN_CHILDREN)) {
 		Integer guidePos = (Integer)request.getExtendedData()
 				.get(SnapToGuides.PROPERTY_HORIZONTAL_GUIDE);
 		ChangeGuideCommand cgm = new ChangeGuideCommand(part, true);
