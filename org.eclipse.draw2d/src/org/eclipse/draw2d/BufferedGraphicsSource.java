@@ -109,8 +109,7 @@ public Graphics getGraphics(Rectangle region) {
 		graphics = new SWTGraphics(controlGC);
 	}
 
-	graphics.setClip(region);
-	graphics.clipRect(new Rectangle(0, 0, ptSWT.x, ptSWT.y));
+	graphics.setClip(inUse);
 	return graphics;
 }
 
