@@ -38,7 +38,7 @@ protected abstract void cleanup();
 protected abstract void createNewLine();
 
 /**
- * Called after {@link #layoutChildren()} when all children have been layed out. This
+ * Called after {@link #layoutChildren()} when all children have been laid out. This
  * method exists to flush the last line.
  */
 protected abstract void flush();

@@ -5,8 +5,8 @@ import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
  * The base implementation for text flow figures. A flow figure is used to render a
- * document in which elements are layed out horizontally within a "line" until that line
- * is filled. Layout continues on the next line.
+ * document in which elements are laid out horizontally within a "line" until that line is
+ * filled. Layout continues on the next line.
  * @author hudsonr
  * @since 2.1 */
 public abstract class FlowFigure

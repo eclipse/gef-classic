@@ -9,7 +9,7 @@ import org.eclipse.draw2d.PositionConstants;
  * one or more lines. A BlockFlow is a creator of LineBoxes, which its children require
  * during layout. A BlockFlow can be thought of as a paragraph.
  * <P>
- * BlockFlows should be nested inside other BlockFlows, but it is also valid to place then
+ * BlockFlows should be nested inside other BlockFlows, but it is also valid to place them
  * in InlineFlows. {@link FlowPage} can be used as a "root" block and can be added to
  * normal draw2d Figures.
  * <P>
@@ -40,7 +40,7 @@ protected FlowFigureLayout createDefaultFlowLayout() {
 	return new BlockFlowLayout(this);
 }
 
-BlockBox getBlockBox() {
+protected BlockBox getBlockBox() {
 	return blockBox;
 }
 
