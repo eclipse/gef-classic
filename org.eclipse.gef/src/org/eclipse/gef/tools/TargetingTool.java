@@ -105,7 +105,16 @@ protected Request getTargetRequest(){
 	return targetRequest;
 }
 
-protected void handleAutoexpose() { }
+
+/**
+ * This method is called whenever an autoexpose occurs. When an autoexpose occurs, it is
+ * possible that everything in the viewer has moved a little. Therefore, by default,
+ * {@link AbstractTool#handleMove() handleMove()} is called to simulate the mouse moving
+ * even though it didn't.
+ */
+protected void handleAutoexpose() {
+	handleMove();
+}
 
 protected boolean handleEnteredEditPart() {
 	updateTargetRequest();

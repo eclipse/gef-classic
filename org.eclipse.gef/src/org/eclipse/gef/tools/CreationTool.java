@@ -54,13 +54,6 @@ protected CreationFactory getFactory(){
 	return factory;
 }
 
-/**
- * Calls handleMove() to ensure feedback and target is updated.
- */
-protected void handleAutoexpose() {
-	handleMove();
-}
-
 protected boolean handleButtonDown(int button) {
 	if (button != 1){
 		setState(STATE_INVALID);
