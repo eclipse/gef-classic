@@ -13,6 +13,7 @@ package org.eclipse.gef.ui.parts;
 import java.util.*;
 
 import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.DropTargetEvent;
 
 import org.eclipse.gef.*;
 import org.eclipse.gef.commands.Command;
@@ -72,12 +73,6 @@ protected Collection getExclusionSet() {
 	return exclude;
 }
 
-protected void handleDragOperationChanged() {
-	if (getCurrentEvent().detail != DND.DROP_MOVE)
-		getCurrentEvent().detail = DND.DROP_NONE;
-	super.handleDragOperationChanged();
-}
-
 protected void handleDragOver() {
 	if (TreeViewerTransfer.getInstance().getViewer() != getViewer()) {
 		getCurrentEvent().detail = DND.DROP_NONE;
@@ -102,6 +97,12 @@ protected List includeChildren(List list) {
 		result.addAll(includeChildren(children));
 	}
 	return result;
+}
+
+public boolean isEnabled(DropTargetEvent event) {
+	if (event.detail != DND.DROP_MOVE)
+		return false;
+	return super.isEnabled(event);
 }
 
 protected boolean isMove() {
