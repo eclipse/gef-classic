@@ -32,9 +32,9 @@ import org.eclipse.gef.commands.Command;
  * feedback, and most importantly, {@link #getCommand(Request) obtaining} commands. Only 
  * {@link Command Commands} should change the model.
  * <p>
- * This interface is not intended to be implemented by clients.  Clients should inherit
- * from {@link org.eclipse.gef.editparts.AbstractEditPart}.  New methods may be added in
- * the future.
+ * IMPORTANT: This interface is not intended to be implemented by clients.  Clients should
+ * inherit from {@link org.eclipse.gef.editparts.AbstractEditPart}.  New methods may be
+ * added in the future.
  */
 public interface EditPart 
 	extends IAdaptable
@@ -314,11 +314,13 @@ void showSourceFeedback(Request request);
 void showTargetFeedback(Request request);
 
 /**
- * Returns <code>true</code> if the EditPart understands the given Request. EditParts
- * should ignore requests that they don't understand, but this can be used to filter out
- * non-participating EditParts from operations that act on a set.
+ * Used to filter EditParts out of the current <i>selection</i>. If an operation is going
+ * to be performed on the current selection, the selection can first be culled to remove
+ * EditParts that do not participate in the operation.  For example, when aligning the
+ * left edges of GraphicalEditParts, it makes sense to ignore any selected
+ * ConnectionEditParts, as they cannot be aligned.
  * @param request a <code>Request</code> describing an operation of some type
- * @return <code>true</code> if request is understood
+ * @return <code>true</code> if Request is understood
  */
 boolean understandsRequest(Request request);
 

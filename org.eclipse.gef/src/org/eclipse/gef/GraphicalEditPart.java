@@ -13,6 +13,10 @@ import org.eclipse.draw2d.*;
  * A Specialization of {@link EditPart} for use with {@link GraphicalViewer
  * GraphicalViewers}.  The <i>visual part</i> of a GraphicalEditPart is a {@link
  * org.eclipse.draw2d.IFigure Figure}.
+ * <p>
+ * IMPORTANT: This interface is not intended to be implemented by clients.  Clients should
+ * inherit from {@link org.eclipse.gef.editparts.AbstractGraphicalEditPart}.  New methods
+ * may be added in the future.
  */
 public interface GraphicalEditPart
 	extends EditPart
