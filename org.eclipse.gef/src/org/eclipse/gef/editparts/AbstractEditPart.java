@@ -419,8 +419,10 @@ protected void fireSelectionChanged() {
 }
 
 /**
- * Returns the <code>AccessibleEditPart</code> adapter
- * for this EditPart. Returns <code>null</code> if this EditPart is not accessible.
+ * Returns the <code>AccessibleEditPart</code> adapter for this EditPart. The <B>same</B>
+ * adapter instance must be used throughout the editpart's existance.  Each adapter has
+ * a unique ID which is registered during {@link #register()}.  Accessibility clients
+ * can only refer to this editpart via that ID.
  * @return <code>null</code> or an AccessibleEditPart adapter
  */
 protected AccessibleEditPart getAccessibleEditPart() {
