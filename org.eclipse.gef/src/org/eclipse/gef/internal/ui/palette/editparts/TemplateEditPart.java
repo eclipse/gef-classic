@@ -22,12 +22,17 @@ public class TemplateEditPart
 	extends PaletteEditPart
 {
 
-private static Border BORDER = new MarginBorder(3,0,3,0);
+private static final Border BORDER = new MarginBorder(1, 1, 2, 2);
 
+/**
+ * Constructor
+ * 
+ * @param	entry	The model entry */
 public TemplateEditPart(PaletteTemplateEntry entry) {
 	super(entry);
 }
 
+/** * @see org.eclipse.gef.internal.ui.palette.editparts.PaletteEditPart#createAccessible() */
 protected AccessibleEditPart createAccessible() {
 	return new AccessibleGraphicalEditPart (){
 		public void getDescription(AccessibleEvent e) {
@@ -44,9 +49,11 @@ protected AccessibleEditPart createAccessible() {
 	};
 }
 
+/** * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure() */
 public IFigure createFigure() {
 	IFigure fig = new DetailedLabelFigure();
 	fig.setRequestFocusEnabled(true);
+	fig.setBorder(BORDER);
 	return fig;
 }
 
@@ -66,6 +73,7 @@ private PaletteTemplateEntry getTemplateEntry() {
 	return (PaletteTemplateEntry)getModel();
 }
 
+/** * @see org.eclipse.gef.editparts.AbstractEditPart#refreshVisuals() */
 protected void refreshVisuals() {
 	DetailedLabelFigure fig = (DetailedLabelFigure)getFigure();
 	PaletteEntry entry = getPaletteEntry();
@@ -87,6 +95,7 @@ protected void setImageInFigure(Image image) {
 	fig.setImage(image);
 }
 
+/** * @see org.eclipse.gef.EditPart#setSelected(int) */
 public void setSelected(int value) {
 	super.setSelected(value);
 	DetailedLabelFigure label = (DetailedLabelFigure)getFigure();
