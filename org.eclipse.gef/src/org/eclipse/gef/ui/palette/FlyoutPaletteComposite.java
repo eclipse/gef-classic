@@ -13,6 +13,9 @@ package org.eclipse.gef.ui.palette;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.accessibility.ACC;
@@ -31,6 +34,7 @@ import org.eclipse.swt.events.MouseTrackAdapter;
 import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
@@ -104,6 +108,8 @@ public class FlyoutPaletteComposite
 	extends Composite
 {
 	
+private static final FontManager fontManager = new FontManager();
+	
 private static final String PROPERTY_PALETTE_WIDTH
 		= "org.eclipse.gef.ui.palette.fpa.paletteWidth"; //$NON-NLS-1$
 private static final String PROPERTY_STATE
@@ -136,12 +142,13 @@ private IMemento capturedPaletteState;
 private Control graphicalControl, sash;
 private PaletteViewerProvider provider;
 private FlyoutPreferences prefs;
+private Font titleFont;
+private Point cachedBounds = new Point(0, 0); 
 private int dock = PositionConstants.EAST;
 private int paletteState = -1;
 private int paletteWidth = DEFAULT_PALETTE_SIZE;
 private int minWidth = MIN_PALETTE_SIZE;
 private int cachedSize = -1, cachedState = -1, cachedLocation = -1;
-private Point cachedBounds = new Point(0, 0); 
 
 private IPerspectiveListener perspectiveListener = new IPerspectiveListener() {
 	public void perspectiveActivated(IWorkbenchPage page, 
@@ -275,17 +282,16 @@ private void handlePerspectiveChanged(IWorkbenchPage page,
 		handlePerspectiveActivated(page, perspective);
 }
 
-/*
- * @TODO:Pratik   Need to redo this method.  It should return false if ancestor is
- * null.
- */
-// Will return false if descendant is null
+// Will return false if the ancestor or descendant is null
 private boolean isDescendantOf(Control ancestor, Control descendant) {
-	if (descendant == null)
+	if (ancestor == null || descendant == null)
 		return false;
-	if (ancestor == descendant)
-		return true;
-	return isDescendantOf(ancestor, descendant.getParent());
+	while (descendant != null) {
+		if (ancestor == descendant)
+			return true;
+		descendant = descendant.getParent();
+	}
+	return false;
 }
 
 private boolean isInState(int state) {
@@ -525,12 +531,9 @@ private void setState(int newState) {
 				pViewer = provider.createPaletteViewer(paletteContainer);
 				if (externalViewer != null)
 					transferState(externalViewer, pViewer);
-				else if (capturedPaletteState != null) {
+				else if (capturedPaletteState != null)
 					pViewer.restoreState(capturedPaletteState);
-					// @TODO:Pratik  this should be moved out of this else - if statement,
-					// just in case
-					capturedPaletteState = null;
-				}
+				capturedPaletteState = null;
 				minWidth = Math.max(pViewer.getControl().computeSize(0, 0).x, 
 						MIN_PALETTE_SIZE);
 			}
@@ -971,7 +974,7 @@ private class RotatedTitleLabel
 	public RotatedTitleLabel() {
 		FlyoutPaletteComposite.this.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
-				if (getImage() != null)
+				if (getImage() != null && !getImage().isDisposed())
 					getImage().dispose();
 			}
 		});
@@ -1205,7 +1208,6 @@ private class TitleCanvas extends Canvas {
 		else
 			fig = new RotatedTitleLabel();
 		final IFigure contents = fig;
-		contents.setFont(JFaceResources.getBannerFont());
 		contents.setRequestFocusEnabled(true);
 		contents.setFocusTraversable(true);
 		contents.addFocusListener(new FocusListener() {
@@ -1216,30 +1218,12 @@ private class TitleCanvas extends Canvas {
 				fe.loser.repaint();
 			}
 		});
-		final IPropertyChangeListener fontListener = new IPropertyChangeListener() {
-			public void propertyChange(org.eclipse.jface.util.PropertyChangeEvent event) {
-				if (JFaceResources.BANNER_FONT.equals(event.getProperty()))
-					contents.setFont(JFaceResources.getBannerFont());
-				if (isVisible()) {
-					redraw();
-					/*
-					 * If this canvas is in the sash, we want the FlyoutPaletteComposite
-					 * to layout (which will cause the sash to be resized and laid out).  
-					 * However, if this canvas is in the paletteContainer, the 
-					 * paletteContainer's bounds won't change, and hence it won't layout.
-					 * Thus, we also invoke getParent().layout().
-					 */
-					FlyoutPaletteComposite.this.layout(true);
-					getParent().layout(true);
-				}
-			}
-		};
-		JFaceResources.getFontRegistry().addListener(fontListener);
 		
 		lws = new LightweightSystem();
 		lws.setControl(this);
 		lws.setContents(contents);
 		setCursor(SharedCursors.SIZEALL);
+		fontManager.register(this);
 		new TitleDragManager(this);
 		final MenuManager manager = new MenuManager();
 		MenuManager mgr = new MenuManager(PaletteMessages.DOCK_LABEL);
@@ -1259,7 +1243,7 @@ private class TitleCanvas extends Canvas {
 		
 		addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
-				JFaceResources.getFontRegistry().removeListener(fontListener);
+				fontManager.unregister(TitleCanvas.this);
 				manager.dispose();
 			}
 		});		
@@ -1281,6 +1265,20 @@ private class TitleCanvas extends Canvas {
 				e.detail = ACC.ROLE_SLIDER;
 			}
 		});
+	}
+	public void setFont(Font font) {
+		((IFigure)lws.getRootFigure().getChildren().get(0)).setFont(font);
+		if (isVisible()) {
+			/*
+			 * If this canvas is in the sash, we want the FlyoutPaletteComposite
+			 * to layout (which will cause the sash to be resized and laid out).  
+			 * However, if this canvas is in the paletteContainer, the 
+			 * paletteContainer's bounds won't change, and hence it won't layout.
+			 * Thus, we also invoke getParent().layout().
+			 */
+			FlyoutPaletteComposite.this.layout(true);
+			getParent().layout(true);
+		}
 	}
 }
 
@@ -1310,6 +1308,61 @@ private class ChangeDockAction extends Action {
 	 */
 	public void run() {
 		setDockLocation(position);
+	}
+}
+
+private static class FontManager {
+	private final String fontName = getFontType();
+	private List registrants = new ArrayList();
+	private Font titleFont;
+	private final IPropertyChangeListener fontListener = new IPropertyChangeListener() {
+		public void propertyChange(org.eclipse.jface.util.PropertyChangeEvent event) {
+			if (fontName.equals(event.getProperty()))
+				handleFontChanged();
+		}
+	};
+	private FontManager() {
+	}
+	protected final Font createTitleFont() {
+		// @TODO:Pratik Perhaps you could optimize this: if the font is already bold, 
+		// there's no need to embolden (or dispose) it.
+		FontData[] data = JFaceResources.getFont(fontName).getFontData();
+		for (int i = 0; i < data.length; i++)
+			data[i].setStyle(SWT.BOLD);
+		return new Font(Display.getCurrent(), data);
+	}
+	protected void dispose() {
+		if (titleFont != null && !titleFont.isDisposed())
+			titleFont.dispose();
+		titleFont = null;
+		JFaceResources.getFontRegistry().removeListener(fontListener);
+	}
+	protected String getFontType() {
+		return JFaceResources.DIALOG_FONT;
+	}
+	protected void handleFontChanged() {
+		if (titleFont == null)
+			return;
+		Font oldFont = titleFont;
+		titleFont = createTitleFont();
+		for (Iterator iter = registrants.iterator(); iter.hasNext();)
+			((Control)iter.next()).setFont(titleFont);
+		oldFont.dispose();
+	}
+	protected void init() {
+		titleFont = createTitleFont();
+		JFaceResources.getFontRegistry().addListener(fontListener);		
+	}
+	public void register(Control ctrl) {
+		if (titleFont == null)
+			init();
+		ctrl.setFont(titleFont);
+		registrants.add(ctrl);
+	}
+	public void unregister(Control ctrl) {
+		registrants.remove(ctrl);
+		if (registrants.isEmpty())
+			dispose();
 	}
 }
 
