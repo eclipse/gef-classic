@@ -56,11 +56,6 @@ public void addSelectionChangedListener(ISelectionChangedListener listener){
 	selectionListeners.add(listener);
 }
 
-/**
- * At the moment, there can only be one drag listener on the 
- * DelegatingDragAdapter.  So, adding a listener will remove
- * the existing listener.
- */
 public void addDragSourceListener(TransferDragSourceListener listener) {
 	getDelegatingDragAdapter().addDragSourceListener(listener);
 	refreshDragSourceAdapter();
@@ -299,6 +294,10 @@ public void removeSelectionChangedListener(ISelectionChangedListener l){
 }
 
 public void select(EditPart editpart){
+	// If selection isn't changing, do nothing.
+	if ((getSelectedEditParts().size() == 1) && 
+		(getSelectedEditParts().get(0) == editpart))
+			return;
 	primDeselectAll();
 	appendSelection(editpart);  // fireSelectionChanged() is called here
 }
@@ -325,7 +324,7 @@ public void setCursor(Cursor cursor){
 	getControl().setCursor(cursor);
 }
 
-private void setDragSource(DragSource source){
+protected void setDragSource(DragSource source){
 	if (dragSource != null)
 		dragSource.dispose();
 	dragSource = source;
@@ -337,7 +336,7 @@ private void setDragSource(DragSource source){
  * Sets the dropTarget.
  * @param dropTarget The dropTarget to set
  */
-public void setDropTarget(DropTarget target) {
+protected void setDropTarget(DropTarget target) {
 	if (dropTarget != null)
 		dropTarget.dispose();
 	dropTarget = target;
