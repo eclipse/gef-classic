@@ -7,7 +7,6 @@ package org.eclipse.draw2d;
  */
 
 import org.eclipse.draw2d.geometry.*;
-import java.util.Hashtable;
 
 /**
  * The ScrollPaneLayout is responsible for laying out the
@@ -132,6 +131,8 @@ public void layout(IFigure parent) {
 	vBar.setVisible(showV);
 	hBar.setVisible(showH);
 	viewport.setBounds(viewportArea);
+	hBar.setPageIncrement(hBar.getRangeModel().getExtent());
+	vBar.setPageIncrement(vBar.getRangeModel().getExtent());
 }
 
 }
