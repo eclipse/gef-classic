@@ -545,8 +545,6 @@ public void scale(double factor) { }
  * @see Graphics#setBackgroundColor(Color)
  */
 public void setBackgroundColor(Color color) {
-	if (currentState.bgColor.equals(color))
-		return;
 	currentState.bgColor = color;
 }
 
@@ -589,8 +587,6 @@ protected void setClipAbsolute(int x, int y, int w, int h) {
  * @see Graphics#setFont(Font)
  */
 public void setFont(Font f) {
-	if (currentState.font == f) 
-		return;
 	currentState.font = f;
 }
 
@@ -598,8 +594,6 @@ public void setFont(Font f) {
  * @see Graphics#setForegroundColor(Color)
  */
 public void setForegroundColor(Color color) {
-	if (currentState.fgColor.equals(color))
-		return;
 	currentState.fgColor = color;
 }
 
@@ -607,8 +601,6 @@ public void setForegroundColor(Color color) {
  * @see Graphics#setLineStyle(int)
  */
 public void setLineStyle(int style) {
-	if (currentState.lineStyle == style) 
-		return;
 	currentState.lineStyle = style;
 }
 
@@ -616,8 +608,6 @@ public void setLineStyle(int style) {
  * @see Graphics#setLineWidth(int)
  */
 public void setLineWidth(int width) {
-	if (currentState.lineWidth == width) 
-		return;
 	currentState.lineWidth = width;
 }
 
@@ -635,8 +625,6 @@ protected void setTranslation(int x, int y) {
  * @see Graphics#setXORMode(boolean)
  */
 public void setXORMode(boolean b) {
-	if (currentState.xor == b) 
-		return;
 	currentState.xor = b;
 }
 
