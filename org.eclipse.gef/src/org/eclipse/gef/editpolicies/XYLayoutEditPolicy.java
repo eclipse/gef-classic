@@ -30,26 +30,7 @@ public abstract class XYLayoutEditPolicy
 {
 
 private static final Dimension DEFAULT_SIZE = new Dimension(-1, -1);
-
-/**
- * Returns a new Rectangle equivalent to the passed Rectangle.
- * @param r the input Rectangle
- * @return a copy of the input Rectangle
- */
-public Object getConstraintFor(Rectangle r) {
-	return new Rectangle(r);
-}
-
-/**
- * Returns a Rectangle at the given Point with width and height of -1.
- * <code>XYLayout</code> uses width or height equal to '-1' to mean use the figure's
- * preferred size.
- * @param p the input Point
- * @return a Rectangle
- */
-public Object getConstraintFor(Point p) {
-	return new Rectangle(p, DEFAULT_SIZE);
-}
+private XYLayout xyLayout;
 
 /**
  * Overridden to prevent sizes from becoming too small, and to prevent preferred sizes
@@ -87,6 +68,26 @@ protected Object getConstraintFor(ChangeBoundsRequest request, GraphicalEditPart
 }
 
 /**
+ * Returns a Rectangle at the given Point with width and height of -1.
+ * <code>XYLayout</code> uses width or height equal to '-1' to mean use the figure's
+ * preferred size.
+ * @param p the input Point
+ * @return a Rectangle
+ */
+public Object getConstraintFor(Point p) {
+	return new Rectangle(p, DEFAULT_SIZE);
+}
+
+/**
+ * Returns a new Rectangle equivalent to the passed Rectangle.
+ * @param r the input Rectangle
+ * @return a copy of the input Rectangle
+ */
+public Object getConstraintFor(Rectangle r) {
+	return new Rectangle(r);
+}
+
+/**
  * Retrieves the child's current constraint from the <code>LayoutManager</code>.
  * @param child the child
  * @return the current constraint */
@@ -99,9 +100,7 @@ protected Rectangle getCurrentConstraintFor(GraphicalEditPart child) {
  * Returns {@link XYLayout#getOrigin(IFigure)}.
  * @see ConstrainedLayoutEditPolicy#getLayoutOrigin() */
 protected Point getLayoutOrigin() {
-	IFigure container = getLayoutContainer();
-	XYLayout layout = (XYLayout)container.getLayoutManager();
-	return layout.getOrigin(container);
+	return getXYLayout().getOrigin(getLayoutContainer());
 }
 
 /**
@@ -112,6 +111,21 @@ protected Point getLayoutOrigin() {
  * @return the minumum size */
 protected Dimension getMinimumSizeFor(GraphicalEditPart child) {
 	return new Dimension(8, 8);
+}
+
+protected XYLayout getXYLayout() {
+	if (xyLayout == null) {
+		IFigure container = getLayoutContainer();
+		xyLayout = (XYLayout)container.getLayoutManager();
+	}
+	return xyLayout;
+}
+
+/**
+ * @param xyLayout The xyLayout to set.
+ */
+public void setXyLayout(XYLayout xyLayout) {
+	this.xyLayout = xyLayout;
 }
 
 /**
