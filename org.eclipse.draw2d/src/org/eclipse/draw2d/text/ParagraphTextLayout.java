@@ -129,7 +129,7 @@ protected void layout() {
 				prevAvgCharWidth,
 				wrappingStyle);
 			
-			if (fragment.width < currentLine.getAvailableWidth()
+			if (fragment.width <= currentLine.getAvailableWidth()
 			  || !context.isCurrentLineOccupied())
 				break;
 			context.endLine();
