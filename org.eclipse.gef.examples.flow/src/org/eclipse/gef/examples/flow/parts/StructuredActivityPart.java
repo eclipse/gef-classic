@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.draw2d.*;
+import org.eclipse.gef.*;
 import org.eclipse.gef.EditPolicy;
+import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
 import org.eclipse.gef.examples.flow.model.StructuredActivity;
 import org.eclipse.gef.examples.flow.policies.*;
@@ -15,7 +17,8 @@ import org.eclipse.graph.Subgraph;
  * @author hudsonr
  * Created on Jun 30, 2003
  */
-public class StructuredActivityPart extends ActivityPart {
+public class StructuredActivityPart extends ActivityPart 
+	implements NodeEditPart {
 
 protected void applyChildrenResults(CompoundDirectedGraph graph, Map map) {
 	for (int i = 0; i < getChildren().size(); i++) {
@@ -67,8 +70,36 @@ protected List getModelChildren() {
 	return getStructuredActivity().getChildren();
 }
 
+/**
+ * @see NodeEditPart#getSourceConnectionAnchor(org.eclipse.gef.ConnectionEditPart)
+ */
+public ConnectionAnchor getSourceConnectionAnchor(ConnectionEditPart connection) {
+	return new ChopboxAnchor(getFigure());
+}
+
+/**
+ * @see org.eclipse.gef.NodeEditPart#getSourceConnectionAnchor(org.eclipse.gef.Request)
+ */
+public ConnectionAnchor getSourceConnectionAnchor(Request request) {
+	return new ChopboxAnchor(getFigure());
+}
+
 StructuredActivity getStructuredActivity() {
 	return (StructuredActivity)getModel();
+}
+
+/**
+ * @see NodeEditPart#getTargetConnectionAnchor(org.eclipse.gef.ConnectionEditPart)
+ */
+public ConnectionAnchor getTargetConnectionAnchor(ConnectionEditPart connection) {
+	return new ChopboxAnchor(getFigure());
+}
+
+/**
+ * @see org.eclipse.gef.NodeEditPart#getTargetConnectionAnchor(org.eclipse.gef.Request)
+ */
+public ConnectionAnchor getTargetConnectionAnchor(Request request) {
+	return new ChopboxAnchor(getFigure());
 }
 
 protected void refreshVisuals() {}

@@ -21,7 +21,6 @@ import org.eclipse.graph.*;
  */
 public class SequentialActivityPart
 	extends StructuredActivityPart
-	implements NodeEditPart 
 {
 
 /**
@@ -55,34 +54,6 @@ public void contributeEdgesToGraph(CompoundDirectedGraph graph, Map map) {
 		}
 		prev = node;
 	}
-}
-
-/**
- * @see NodeEditPart#getSourceConnectionAnchor(org.eclipse.gef.ConnectionEditPart)
- */
-public ConnectionAnchor getSourceConnectionAnchor(ConnectionEditPart connection) {
-	return new ChopboxAnchor(getFigure());
-}
-
-/**
- * @see org.eclipse.gef.NodeEditPart#getSourceConnectionAnchor(org.eclipse.gef.Request)
- */
-public ConnectionAnchor getSourceConnectionAnchor(Request request) {
-	return new ChopboxAnchor(getFigure());
-}
-
-/**
- * @see NodeEditPart#getTargetConnectionAnchor(org.eclipse.gef.ConnectionEditPart)
- */
-public ConnectionAnchor getTargetConnectionAnchor(ConnectionEditPart connection) {
-	return new ChopboxAnchor(getFigure());
-}
-
-/**
- * @see org.eclipse.gef.NodeEditPart#getTargetConnectionAnchor(org.eclipse.gef.Request)
- */
-public ConnectionAnchor getTargetConnectionAnchor(Request request) {
-	return new ChopboxAnchor(getFigure());
 }
 
 }
