@@ -11,7 +11,8 @@
 package org.eclipse.gef.examples.logicdesigner;
 
 import java.io.*;
-import java.util.EventObject;
+import java.util.*;
+import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.TextTransfer;
@@ -310,6 +311,12 @@ protected void configureGraphicalViewer() {
 	ScrollingGraphicalViewer viewer = (ScrollingGraphicalViewer)getGraphicalViewer();
 
 	ScalableFreeformRootEditPart root = new ScalableFreeformRootEditPart();
+
+	List zoomLevels = new ArrayList(3);
+	zoomLevels.add(ZoomManager.FIT_WHOLE_DOCUMENT);
+	zoomLevels.add(ZoomManager.FIT_DOCUMENT_WIDTH);
+	zoomLevels.add(ZoomManager.FIT_DOCUMENT_HEIGHT);
+	root.getZoomManager().setZoomLevelContributions(zoomLevels);
 
 	IAction zoomIn = new ZoomInAction(root.getZoomManager());
 	IAction zoomOut = new ZoomOutAction(root.getZoomManager());
