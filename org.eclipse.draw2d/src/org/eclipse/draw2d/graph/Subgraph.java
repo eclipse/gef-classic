@@ -99,14 +99,13 @@ public void addMember(Node n) {
 
 /**
  * For internal use only. Returns <code>true</code> if the given node is contained inside
- * this subgraph or one of its children.
+ * the branch represented by this subgraph.
  * @param n the node in question
- * @return <code>true</code> if contained
+ * @return <code>true</code> if nested
  */
 public boolean isNested(Node n) {
-	boolean value = n.nestingIndex >= nestingTreeMin
+	return n.nestingIndex >= nestingTreeMin
 		&& n.nestingIndex <= nestingIndex;
-	return value;
 }
 
 }

@@ -237,7 +237,9 @@ private void invertEdges(DirectedGraph g) {
 	// Invert edges that are causing a cycle
 	for (int i = 0; i < g.edges.size(); i++) {
 		Edge e = g.edges.getEdge(i);
-		if (getOrderIndex(e.source) > getOrderIndex(e.target)) {
+		if (getOrderIndex(e.source) > getOrderIndex(e.target)
+		  && !e.source.isNested(e.target)
+		  && !e.target.isNested(e.source)) {
 			e.invert();
 			e.isFeedback = true;
 		}
@@ -435,8 +437,20 @@ public void visit(DirectedGraph g) {
 			roots.add(graphNodes.getNode(i));
 	}
 	buildNestingTreeIndices(roots, 0);
+	removeParentChildEdges(g);
 	cycleRemove(roots);
 	invertEdges(g);
+}
+
+/**
+ * Removes all edges between a parent and any of its children or descendants.
+ */
+private void removeParentChildEdges(DirectedGraph g) {
+	for (int i = 0; i < g.edges.size(); i++) {
+		Edge e = g.edges.getEdge(i);
+		if (e.source.isNested(e.target) || e.target.isNested(e.source))
+			removeEdge(e);
+	}
 }
 
 }

@@ -198,6 +198,16 @@ public Subgraph getParent() {
 }
 
 /**
+ * For internal use only. Returns <code>true</code> if the given node is equal to this
+ * node.  This method is implemented for consitency with Subgraph.
+ * @param node the node in question
+ * @return <code>true</code> if nested
+ */
+public boolean isNested(Node node) {
+	return node == this;
+}
+
+/**
  * Sets the padding.
  * @param padding the padding
  */
