@@ -79,8 +79,10 @@ private boolean lineContainsPoint(
 	int numerator, denominator;
 	int result = 0;
 
+	/**
+	 * calculates the length squared of the cross product of two vectors, v1 & v2.
+	 */
 	if (x1 != x2 && y1 != y2) {
-		
 		v1x = x2 - x1;
 		v1y = y2 - y1;
 		v2x = px - x1;
@@ -90,7 +92,7 @@ private boolean lineContainsPoint(
 		
 		denominator = v1x * v1x + v1y * v1y;
 
-		result = ((numerator << 10) / denominator * numerator) >> 10;
+		result = (int) ((long)numerator) * numerator / denominator;
 	}
 	
 	// if it is the same point, and it passes the bounding box test,
@@ -218,16 +220,24 @@ public void setEndpoints(Point start, Point end) {
 	setEnd(end);
 }
 
+/**
+ * @see org.eclipse.draw2d.Shape#setLineWidth(int)
+ */
 public void setLineWidth(int w) {
+	if (lineWidth == w)
+		return;
+	if (w < lineWidth) //The bounds will become smaller, so erase must occur first.
+		erase();
 	bounds = null;
 	super.setLineWidth(w);
 }
 
 /**
- * Sets the point at <code>index</code> to the Point
- * <code>pt</code>.  Calling this method results in a 
- * repaint.  If you're going to set multiple Points, 
- * use {@link #setPoints(PointList)}.
+ * Sets the point at <code>index</code> to the Point <code>pt</code>.  Calling this method
+ * results in a recalculation of the polyline's bounding box.  If you're going to set
+ * multiple Points, use {@link #setPoints(PointList)}.
+ * @param pt the point
+ * @param index the index
  */
 public void setPoint(Point pt, int index) {
 	erase();
