@@ -23,6 +23,15 @@ public FixedConnectionAnchor(IFigure owner) {
 	super(owner);
 }
 
+/**
+ * @see org.eclipse.draw2d.AbstractConnectionAnchor#ancestorMoved(IFigure)
+ */
+public void ancestorMoved(IFigure figure) {
+	if (figure instanceof ScalableFreeformLayeredPane)
+		return;
+	super.ancestorMoved(figure);
+}
+
 public Point getLocation(Point reference) {
 	Rectangle r = getOwner().getBounds();
 	int x,y;
