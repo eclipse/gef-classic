@@ -375,7 +375,7 @@ public void setDragTracker(DragTracker newDragTracker) {
 		dragTracker.deactivate();
 	dragTracker = newDragTracker;
 	refreshCursor();
-	setMouseCapture(dragTracker != null);
+	setMouseCapture((dragTracker != null) && (!getCurrentInput().isMouseButtonDown(3)));
 	if (newDragTracker != null){
 		newDragTracker.setEditDomain(getDomain());
 		newDragTracker.activate();
