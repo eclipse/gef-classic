@@ -79,22 +79,6 @@ public void endLine() {
 }
 
 /**
- * @see org.eclipse.draw2d.text.FlowContainerLayout#layoutChildren()
- */
-protected void layoutChildren() {
-//	boolean invalidate = invalid
-//		|| blockBox.getRecommendedWidth() != previousRecommendedWidth;
-//	previousRecommendedWidth = blockBox.getRecommendedWidth();
-	List children = getFlowFigure().getChildren();
-	for (int i = 0; i < children.size(); i++) {
-		Figure f = (Figure)children.get(i);
-//		if (invalidate)
-			f.invalidate();
-		f.validate();
-	}
-}
-
-/**
  * @see org.eclipse.draw2d.text.FlowContext#getCurrentY()
  */
 public int getCurrentY() {
