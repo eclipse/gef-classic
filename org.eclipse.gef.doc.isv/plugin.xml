@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin
    id="org.eclipse.gef.doc.isv"
-   name="GEF Documentation"
+   name="Graphical Editor Framework Documentation"
    version="2.0.1"
    provider-name="Eclipse.org">
 
