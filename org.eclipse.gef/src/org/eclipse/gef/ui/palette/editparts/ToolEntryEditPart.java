@@ -12,7 +12,6 @@ import org.eclipse.swt.graphics.Image;
 
 import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.Insets;
-import org.eclipse.draw2d.geometry.Point;
 
 import org.eclipse.gef.*;
 import org.eclipse.gef.AccessibleEditPart;
@@ -43,12 +42,7 @@ class ToggleButtonTracker extends SingleSelectionTracker {
 		return super.handleButtonUp(button);
 	}
 	protected boolean handleDrag() {
-		Point where = getLocation();
-		getFigure().translateToRelative(where);
-		boolean over = getFigure().containsPoint(where);
-		getButtonModel().setMouseOver(over);
-		getButtonModel().setArmed(over);
-		return super.handleDrag();
+		return true;
 	}
 	protected boolean handleNativeDragStarted(DragSourceEvent event) {
 		getButtonModel().setPressed(false);
@@ -164,12 +158,12 @@ protected void refreshVisuals() {
  * @see org.eclipse.gef.EditPart#removeNotify()
  */
 public void removeNotify() {
-	if (isActive())
+	if (getButtonModel().isSelected())
 		getPaletteViewer().setMode(null);
 	super.removeNotify();
 }
 
-public void setActive(boolean value) {
+public void setToolSelected(boolean value) {
 	getButtonModel().setSelected(value);
 	getFigure().setOpaque(value);
 }
