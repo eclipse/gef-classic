@@ -28,7 +28,6 @@ import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
@@ -280,13 +279,9 @@ public void reveal(EditPart part) {
 		return;
 	EditPart current = part.getParent();
 	while (current != null) {
-		// @TODO:Pratik  remove unnecessary cast
-		if (current instanceof IAdaptable) {
-			IAdaptable adaptable = (IAdaptable) current;
-			ExposeHelper helper = (ExposeHelper)adaptable.getAdapter(ExposeHelper.class);
+		ExposeHelper helper = (ExposeHelper)current.getAdapter(ExposeHelper.class);
 		if (helper != null)
 			helper.exposeDescendant(part);
-		}
 		current = current.getParent();
 	}
 	AccessibleEditPart acc = (AccessibleEditPart)part.getAdapter(AccessibleEditPart.class);
