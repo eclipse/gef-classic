@@ -10,15 +10,35 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner.model.commands;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Vector;
 
 import org.eclipse.draw2d.geometry.Rectangle;
 
+import org.eclipse.gef.commands.Command;
+
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
-import org.eclipse.gef.examples.logicdesigner.model.*;
+import org.eclipse.gef.examples.logicdesigner.model.AndGate;
+import org.eclipse.gef.examples.logicdesigner.model.Circuit;
+import org.eclipse.gef.examples.logicdesigner.model.GroundOutput;
+import org.eclipse.gef.examples.logicdesigner.model.LED;
+import org.eclipse.gef.examples.logicdesigner.model.LiveOutput;
+import org.eclipse.gef.examples.logicdesigner.model.LogicDiagram;
+import org.eclipse.gef.examples.logicdesigner.model.LogicFlowContainer;
+import org.eclipse.gef.examples.logicdesigner.model.LogicGuide;
+import org.eclipse.gef.examples.logicdesigner.model.LogicLabel;
+import org.eclipse.gef.examples.logicdesigner.model.LogicSubpart;
+import org.eclipse.gef.examples.logicdesigner.model.OrGate;
+import org.eclipse.gef.examples.logicdesigner.model.Wire;
+import org.eclipse.gef.examples.logicdesigner.model.WireBendpoint;
+import org.eclipse.gef.examples.logicdesigner.model.XORGate;
 
 public class CloneCommand
-	extends org.eclipse.gef.commands.Command
+	extends Command
 {
 
 private List parts;
@@ -26,6 +46,9 @@ private LogicDiagram parent;
 private List newParts;
 private Map bounds;
 private Map indexs;
+private ChangeGuideCommand vGuideCommand, hGuideCommand;
+private LogicGuide hGuide, vGuide;
+private int hAlignment, vAlignment;
 
 public CloneCommand() {
 	super(LogicMessages.CloneCommand_Label);
@@ -164,7 +187,28 @@ public void execute() {
 			conn.attachSource();
 			conn.attachTarget();
 		}
-	}	
+	}
+	
+	// Parts should never be emtpy.  However, there is no such prerequisite and hence
+	// this precaution to prevent a runtime exception.
+	if (parts.isEmpty())
+		return;
+	
+	if (hGuide != null && hGuideCommand == null) {
+		hGuideCommand = new ChangeGuideCommand(
+				(LogicSubpart)connectionPartMap.get(parts.get(0)), true);
+		hGuideCommand.setNewGuide(hGuide, hAlignment);
+	}
+	if (hGuideCommand != null)
+		hGuideCommand.execute();
+		
+	if (vGuide != null && vGuideCommand == null) {
+		vGuideCommand = new ChangeGuideCommand(
+				(LogicSubpart)connectionPartMap.get(parts.get(0)), false);
+		vGuideCommand.setNewGuide(vGuide, vAlignment);
+	}
+	if (vGuideCommand != null)
+		vGuideCommand.execute();
 }
 
 
@@ -181,18 +225,32 @@ protected void removePart(LogicSubpart part, LogicDiagram parent) {
 	if (part instanceof LogicDiagram) {
 		Iterator i = ((LogicDiagram)part).getChildren().iterator();
 		while (i.hasNext()) {
-			removePart((LogicSubpart)i.next(), (LogicDiagram)parent);
+			removePart((LogicSubpart)i.next(), parent);
 		}
 	}
 	parent.removeChild(part);
 }
 
+public void setGuide(LogicGuide guide, int alignment, boolean isHorizontal) {
+	if (isHorizontal) {
+		hGuide = guide;
+		hAlignment = alignment;
+	} else {
+		vGuide = guide;
+		vAlignment = alignment;
+	}
+}
+
 public void undo() {
+	if (hGuideCommand != null)
+		hGuideCommand.undo();
+	if (vGuideCommand != null)
+		vGuideCommand.undo();
+	
 	Iterator i = newParts.iterator();
 	while (i.hasNext()) {
 		removePart((LogicSubpart)i.next(), parent);
 	}
-	
 }
 
 }
