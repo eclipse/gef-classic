@@ -122,6 +122,12 @@ public void remove(PaletteEntry entry) {
 	}
 }
 
+public void setChildren(List list) {
+	List oldChildren = children;
+	children = list;
+	listeners.firePropertyChange(PROPERTY_CHILDREN,	oldChildren, getChildren());
+}
+
 /**
  * @see java.lang.Object#toString()
  */
