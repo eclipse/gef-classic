@@ -27,31 +27,10 @@ public interface TransferDropTargetListener
 {
 
 /**
- * Called when this listener becomes the <i>active</i> listener on the
- * DelegatingDropAdapter.
- * @see DelegatingDropAdapter
- */
-void activate();
-
-/**
- * Called when this listener is not longer the <i>active</i> listener on the
- * DelegatingDropAdapter.
- * 
- * 
- * @see DelegatingDropAdapter
- */
-void deactivate();
-
-/**
  * Returns the <code>Transfer</code> that this listener can handle.
  * @return the Transfer for this listener
  */
 Transfer getTransfer();
-
-/**
- * Called when the mouse hovers during drag and drop.
- * @param event The current DropTargetEvent */
-void dragHover(DropTargetEvent event);
 
 /**
  * Returns <code>true</code> if this listener can handle the drop
