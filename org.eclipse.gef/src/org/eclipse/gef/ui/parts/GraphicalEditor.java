@@ -287,7 +287,9 @@ protected abstract void initializeGraphicalViewer();
  * @see org.eclipse.ui.ISelectionListener#selectionChanged(IWorkbenchPart, ISelection)
  */
 public void selectionChanged(IWorkbenchPart part, ISelection selection) {
-	updateActions(selectionActions);
+	// If not the active editor, ignore selection changed.
+	if (this.equals(getSite().getWorkbenchWindow().getActivePage().getActiveEditor()))
+		updateActions(selectionActions);
 }
 
 /**
