@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003 IBM Corporation and others.
+ * Copyright (c) 2004 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -22,7 +22,10 @@ import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.editparts.ViewportAutoexposeHelper;
 
 /**
+ * RootEditPart for a ruler.
+ * 
  * @author Pratik Shah
+ * @since 3.0
  */
 public class RulerRootEditPart
 	extends AbstractGraphicalEditPart
@@ -36,23 +39,31 @@ private boolean horizontal;
 private EditPart contents;
 private EditPartViewer viewer;
 
+/**
+ * Constructor
+ * 
+ * @param	isHorzontal		whether or not the corresponding model ruler is horizontal
+ */
 public RulerRootEditPart(boolean isHorzontal) {
 	super();
 	horizontal = isHorzontal;
 }
 
+/**
+ * @see org.eclipse.gef.editparts.AbstractEditPart#addChildVisual(org.eclipse.gef.EditPart, int)
+ */
 protected void addChildVisual(EditPart childEditPart, int index) {
 	IFigure child = ((GraphicalEditPart)childEditPart).getFigure();
 	getViewport().setContents(child);
 }
 
-/* (non-Javadoc)
+/**
  * @see org.eclipse.gef.editparts.AbstractEditPart#createEditPolicies()
  */
 protected void createEditPolicies() {
 }
 
-/* (non-Javadoc)
+/**
  * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
  */
 protected IFigure createFigure() {
@@ -71,39 +82,48 @@ public Object getAdapter(Class adapter) {
 	return super.getAdapter(adapter);
 }
 
-/* (non-Javadoc)
+/**
  * @see org.eclipse.gef.RootEditPart#getContents()
  */
 public EditPart getContents() {
 	return contents;
 }
 
-/* (non-Javadoc)
+/**
  * @see org.eclipse.gef.EditPart#getRoot()
  */
 public RootEditPart getRoot() {
 	return this;
 }
 
+/**
+ * @see org.eclipse.gef.EditPart#getViewer()
+ */
 public EditPartViewer getViewer() {
 	return viewer;
 }
 
+/**
+ * Convenience method to get to the viewport
+ * @return	the figure cast as a viewport
+ */
 protected Viewport getViewport() {
 	return (Viewport)getFigure();
 }
 
+/**
+ * @see org.eclipse.gef.editparts.AbstractEditPart#removeChildVisual(org.eclipse.gef.EditPart)
+ */
 protected void removeChildVisual(EditPart childEditPart) {
 	getViewport().setContents(null);
 }
 
-/* (non-Javadoc)
+/**
  * @see org.eclipse.gef.RootEditPart#setContents(org.eclipse.gef.EditPart)
  */
 public void setContents(EditPart editpart) {
-	if (contents == editpart) {
+	if (contents == editpart)
 		return;
-	}
 	if (contents != null)
 		removeChild(contents);
 	contents = editpart;
@@ -111,7 +131,7 @@ public void setContents(EditPart editpart) {
 		addChild(contents, 0);
 }
 
-/* (non-Javadoc)
+/**
  * @see org.eclipse.gef.RootEditPart#setViewer(org.eclipse.gef.EditPartViewer)
  */
 public void setViewer(EditPartViewer newViewer) {
@@ -124,7 +144,18 @@ public void setViewer(EditPartViewer newViewer) {
 		register();
 }
 
+/**
+ * A RulerViewport shares a RangeModel with that of the primary GraphicalViewer.  The
+ * shared RangeModel is set on this viewport externally by a client (in this case,
+ * RulerComposite).
+ * 
+ * @author Pratik Shah
+ * @since 3.0
+ */
 public class RulerViewport extends Viewport {
+	/**
+	 * Constructor
+	 */
 	public RulerViewport() {
 		super(true);
 		setLayoutManager(null);
@@ -140,15 +171,25 @@ public class RulerViewport extends Viewport {
 		bogusRangeModel.setValue(0);
 		bogusRangeModel.setExtent(100);
 	}
+	/**
+	 * This is the method that does the actual layout.  We don't want a layout to occur
+	 * when layout() is invoked, rather when something changes in the shared RangeModel. 
+	 * @param	force	if <code>true</code>, the contents will be resized and 
+	 * 					revalidated; otherwise, just a repaint will occur.
+	 */
 	protected void doLayout(boolean force) {
 		repaint();
+		/*
+		 * @TODO:Pratik  It seems you don't really need this force argument.  Those that
+		 * invoke doLayout(false) can invoke repaint() themselves.  doLayout() should
+		 * just layout.
+		 */
 		if (force) {
 			RangeModel rModel;
-			if (horizontal) {
+			if (horizontal)
 				rModel = getHorizontalRangeModel();
-			} else {
+			else
 				rModel = getVerticalRangeModel();
-			}
 			Rectangle contentBounds = Rectangle.SINGLETON;
 			if (horizontal) {
 				contentBounds.y = 0;
@@ -167,6 +208,9 @@ public class RulerViewport extends Viewport {
 			}						
 		}
 	}
+	/**
+	 * @see org.eclipse.draw2d.IFigure#getPreferredSize(int, int)
+	 */
 	public Dimension getPreferredSize(int wHint, int hHint) {
 		if (this.getContents() == null)
 			return new Dimension();
@@ -180,13 +224,20 @@ public class RulerViewport extends Viewport {
 		}
 		return pSize.expand(getInsets().getWidth(), getInsets().getHeight());
 	}
-	protected void readjustScrollBars() {
-		// since the range model is shared with the editor, the ruler viewports should
-		// not touch it
-	}
+	/**
+	 * Since the RangeModel is shared with that of the editor's, a RulerViewport should
+	 * not adjust it.
+	 * 
+	 * @see org.eclipse.draw2d.Viewport#readjustScrollBars()
+	 */
+	protected void readjustScrollBars() {}
+	/**
+	 * @see org.eclipse.draw2d.Figure#paintBorder(org.eclipse.draw2d.Graphics)
+	 */
 	protected void paintBorder(Graphics graphics) {
 		super.paintBorder(graphics);
-		if (this.getContents() != null && ((RulerFigure)this.getContents()).getDrawFocus()) {
+		if (this.getContents() != null 
+				&& ((RulerFigure)this.getContents()).getDrawFocus()) {
 			Rectangle focusBounds = getBounds().getCopy();
 			if (((RulerFigure)this.getContents()).isHorizontal()) {
 				focusBounds.resize(-2, -4);
@@ -200,6 +251,9 @@ public class RulerViewport extends Viewport {
 			graphics.drawFocus(focusBounds);
 		}
 	}
+	/**
+	 * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+	 */
 	public void propertyChange(PropertyChangeEvent event) {
 		if (this.getContents() != null && event.getSource() instanceof RangeModel) {
 			String property = event.getPropertyName();
@@ -208,13 +262,19 @@ public class RulerViewport extends Viewport {
 					|| RangeModel.PROPERTY_VALUE.equals(property));
 		}
 	}
+	/**
+	 * @see org.eclipse.draw2d.Viewport#setContents(org.eclipse.draw2d.IFigure)
+	 */
 	public void setContents(IFigure figure) {
 		super.setContents(figure);
 		// Need to layout when contents change
-		if (this.getContents() != null) {
+		if (this.getContents() != null)
 			doLayout(true);
-		}
 	}
+	/**
+	 * RulerViewport uses local coordinates.
+	 * @see org.eclipse.draw2d.Figure#useLocalCoordinates()
+	 */
 	protected boolean useLocalCoordinates() {
 		return true;
 	}
