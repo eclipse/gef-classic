@@ -10,8 +10,10 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner.model.commands;
 
+import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
+import org.eclipse.gef.examples.logicdesigner.model.*;
 import org.eclipse.gef.examples.logicdesigner.model.LogicDiagram;
 import org.eclipse.gef.examples.logicdesigner.model.LogicSubpart;
 
@@ -30,6 +32,13 @@ public CreateCommand() {
 
 public void execute() {
 	if (rect != null) {
+		Insets expansion = getInsets();
+		if (!rect.isEmpty())
+			rect.expand(expansion);
+		else {
+			rect.x -= expansion.left;
+			rect.y -= expansion.top;
+		}
 		child.setLocation(rect.getLocation());
 		if (!rect.isEmpty())
 			child.setSize(rect.getSize());
@@ -38,6 +47,12 @@ public void execute() {
 		parent.addChild(child);
 	else
 		parent.addChild(child,index);
+}
+
+private Insets getInsets() {
+	if (child instanceof LED || child instanceof Circuit)
+		return new Insets(2, 0, 2, 0);
+	return Insets.NO_INSETS;
 }
 
 public LogicDiagram getParent() {
