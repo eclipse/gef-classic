@@ -72,6 +72,12 @@ protected Collection getExclusionSet() {
 	return exclude;
 }
 
+protected void handleDragOperationChanged() {
+	if (getCurrentEvent().detail != DND.DROP_MOVE)
+		getCurrentEvent().detail = DND.DROP_NONE;
+	super.handleDragOperationChanged();
+}
+
 protected void handleDragOver() {
 	if (TreeViewerTransfer.getInstance().getViewer() != getViewer()) {
 		getCurrentEvent().detail = DND.DROP_NONE;
