@@ -59,7 +59,7 @@ public GraphicalViewerKeyHandler(GraphicalViewer viewer) {
 /**
  * @return	<code>true</code> if key pressed indicates a connection traversal/selection
  */
-protected boolean acceptConnection(KeyEvent event) {
+boolean acceptConnection(KeyEvent event) {
 	return event.character == '/'
 		|| event.character == '?'
 		|| event.character == '\\'
@@ -70,7 +70,7 @@ protected boolean acceptConnection(KeyEvent event) {
 /**
  * @return	<code>true</code> if the keys pressed indicate to traverse inside a container
  */
-protected boolean acceptIntoContainer(KeyEvent event) {
+boolean acceptIntoContainer(KeyEvent event) {
 	return ((event.stateMask & SWT.ALT) != 0) && (event.keyCode == SWT.ARROW_DOWN);
 }
 
@@ -78,7 +78,7 @@ protected boolean acceptIntoContainer(KeyEvent event) {
  * @return	<code>true</code> if the keys pressed indicate to stop traversing/selecting
  * 			connection
  */
-protected boolean acceptLeaveConnection(KeyEvent event) {
+boolean acceptLeaveConnection(KeyEvent event) {
 	int key = event.keyCode;
 	if (getFocusEditPart() instanceof ConnectionEditPart)
 		if ((key == SWT.ARROW_UP)
@@ -93,7 +93,7 @@ protected boolean acceptLeaveConnection(KeyEvent event) {
  * @return	<code>true</code> if the viewer's contents has focus and one of the arrow
  * 			keys is pressed
  */
-protected boolean acceptLeaveContents(KeyEvent event) {
+boolean acceptLeaveContents(KeyEvent event) {
 	int key = event.keyCode;
 	return getFocusEditPart() == getViewer().getContents()
 		&& ((key == SWT.ARROW_UP)
@@ -106,7 +106,7 @@ protected boolean acceptLeaveContents(KeyEvent event) {
  * @return	<code>true</code> if the keys pressed indicate to traverse to the parent of
  * 			the currently focused EditPart
  */
-protected boolean acceptOutOf(KeyEvent event) {
+boolean acceptOutOf(KeyEvent event) {
 	return ((event.stateMask & SWT.ALT) != 0) && (event.keyCode == SWT.ARROW_UP);
 }
 
@@ -118,7 +118,7 @@ protected boolean acceptOutOf(KeyEvent event) {
  * @param	current	The connection relative to which the next connection has to be found
  * @param	forward	<code>true</code> if the next connection has to be found; false otherwise
  */
-protected ConnectionEditPart findConnection(GraphicalEditPart node, 
+ConnectionEditPart findConnection(GraphicalEditPart node, 
                                             ConnectionEditPart current, boolean forward) {
 	List connections = new ArrayList(node.getSourceConnections());
 	connections.addAll(node.getTargetConnections());
@@ -145,7 +145,7 @@ protected ConnectionEditPart findConnection(GraphicalEditPart node,
  * @param	exclude		The EditPart to be excluded from the search
  * 
  */
-protected GraphicalEditPart findSibling(List siblings, Point pStart, int direction,
+GraphicalEditPart findSibling(List siblings, Point pStart, int direction,
                                         EditPart exclude) {
 	GraphicalEditPart epCurrent;
 	GraphicalEditPart epFinal = null;
@@ -179,7 +179,7 @@ protected GraphicalEditPart findSibling(List siblings, Point pStart, int directi
  *  
  * @return	the center of the given figure
  */
-protected Point getNavigationPoint(IFigure figure) {
+Point getNavigationPoint(IFigure figure) {
 	return figure.getBounds().getCenter();
 }
 
@@ -203,9 +203,11 @@ protected GraphicalEditPart getFocusEditPart() {
 }
 
 /**
- * @return	the siblings of the EditPart that has focus
+ * Returns the list of editparts which are conceptually at the same level of navigation as
+ * the currently focused editpart.  By default, this is the siblings of the focused part.
+ * @return a list of navigation editparts
  */
-protected List getNavigationSiblings() {
+List getNavigationSiblings() {
 	return getFocusEditPart().getParent().getChildren();
 }
 
@@ -282,7 +284,7 @@ public boolean keyPressed(KeyEvent event) {
 /**
  * This method navigates through connections based on the keys pressed.
  */
-protected void navigateConnections(KeyEvent event) {
+void navigateConnections(KeyEvent event) {
 	GraphicalEditPart focus = getFocusEditPart();
 	ConnectionEditPart current = null;
 	GraphicalEditPart node = getCachedNode();
@@ -308,7 +310,7 @@ protected void navigateConnections(KeyEvent event) {
  * This method traverses to the closest child of the currently focused EditPart, if it has
  * one.
  */
-protected void navigateIntoContainer(KeyEvent event) {
+void navigateIntoContainer(KeyEvent event) {
 	GraphicalEditPart focus = getFocusEditPart();
 	List childList = focus.getChildren();
 	Point tl = focus.getContentPane().getBounds().getTopLeft();
@@ -336,7 +338,7 @@ protected void navigateIntoContainer(KeyEvent event) {
 /**
  * Not yet implemented.
  */
-protected boolean navigateJumpSibling(KeyEvent event, int direction) {
+boolean navigateJumpSibling(KeyEvent event, int direction) {
 	// TODO: Implement navigateJumpSibling() (for PGUP, PGDN, HOME and END key events)
 	return false;
 }
@@ -347,7 +349,7 @@ protected boolean navigateJumpSibling(KeyEvent event, int direction) {
  * @param	event		the KeyEvent for the keys that were pressed to trigger this traversal
  * @param	direction	PositionConstants.* indicating the direction in which to traverse
  */
-protected boolean navigateNextSibling(KeyEvent event, int direction) {
+boolean navigateNextSibling(KeyEvent event, int direction) {
 	return navigateNextSibling(event, direction, getNavigationSiblings());
 }
 
@@ -357,7 +359,7 @@ protected boolean navigateNextSibling(KeyEvent event, int direction) {
  * @param	event		the KeyEvent for the keys that were pressed to trigger this traversal
  * @param	direction	PositionConstants.* indicating the direction in which to traverse
  */
-protected boolean navigateNextSibling(KeyEvent event, int direction, List list) {
+boolean navigateNextSibling(KeyEvent event, int direction, List list) {
 	GraphicalEditPart epStart = getFocusEditPart();
 	IFigure figure = epStart.getFigure();
 	Point pStart = getNavigationPoint(figure);
@@ -372,7 +374,7 @@ protected boolean navigateNextSibling(KeyEvent event, int direction, List list) 
 /**
  * Navigates to the parent of the currently focused EditPart.
  */
-protected void navigateOut(KeyEvent event) {
+void navigateOut(KeyEvent event) {
 	if (getFocusEditPart() == null
 		|| getFocusEditPart() == getViewer().getContents()
 		|| getFocusEditPart().getParent() == getViewer().getContents())
@@ -383,7 +385,7 @@ protected void navigateOut(KeyEvent event) {
 /**
  * Navigates to the source or target of the currently focused ConnectionEditPart.
  */
-protected void navigateOutOfConnection(KeyEvent event) {
+void navigateOutOfConnection(KeyEvent event) {
 	GraphicalEditPart cached = getCachedNode();
 	ConnectionEditPart conn = (ConnectionEditPart)getFocusEditPart();
 	if (cached != null

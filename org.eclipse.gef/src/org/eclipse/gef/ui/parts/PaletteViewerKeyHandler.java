@@ -94,7 +94,7 @@ private void expandDrawer() {
 	drawer.setExpanded(true);
 }
 
-protected Point getNavigationPoint(IFigure figure) {
+Point getNavigationPoint(IFigure figure) {
 	return figure.getBounds().getTopLeft();
 }
 
@@ -102,7 +102,7 @@ protected Point getNavigationPoint(IFigure figure) {
  * Returns a list of {@link org.eclipse.gef.EditPart EditParts}
  * eligible for selection.
  */
-protected List getNavigationSiblings() {
+List getNavigationSiblings() {
 	ArrayList siblingsList = new ArrayList();
 	if (getFocusEditPart().getParent() instanceof GroupEditPart)
 		buildNavigationList(
