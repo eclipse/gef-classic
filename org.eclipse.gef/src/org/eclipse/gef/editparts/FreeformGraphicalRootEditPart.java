@@ -18,13 +18,52 @@ import org.eclipse.gef.commands.UnexecutableCommand;
 import org.eclipse.gef.tools.MarqueeDragTracker;
 
 /**
- * Provides support for representation of any other graphical
- * EditPart. It contains Layers which are used to represent
- * specific type of visual information. The Layers are
- * (1) Primary - Used to hold the main EditPart's Figures.
- * (2) Connection - Used to hold the connections between EditParts.
- * (3) Handle - Takes care of holding handles for EditParts.
- * (4) Feedback - Shows feedback information for the EditParts.
+ * A graphical root that uses {@link org.eclipse.draw2d.FreeformFigure FreeformFigures} as
+ * the layers in the diagram.  The {@link EditPartViewer#setContents(EditPart) contents}
+ * editpart must provide a FreeformFigure as its figure. Freeform figures are special
+ * because they can expand in any direction. This allows the user to drag objects or
+ * bendpoints into the negative X and Y coordinates of a diagram.  If this feature is not
+ * being used, clients should use the {@link FreeformGraphicalRootEditPart} as their
+ * viewer's root editpart.
+ * <P>
+ * <EM>IMPORTANT:</EM> The contents editpart that is added to a freeform root should
+ * have a <code>FreeformFigure</code> (such as FreeformLayer) as its Figure.  The primary
+ * layer is <EM>not</EM> using a draw2d LayoutManager, and will not size the contents'
+ * figure properly unless it is a freeform figure.
+ * <P>
+ * <EM>IMPORTANT:</EM>The freeform root uses a <code>FreeformViewport</code> as its
+ * primary figure. This class must be used with the {@link
+ * org.eclipse.gef.ui.parts.ScrollingGraphicalViewer}. The viewport gets installed into
+ * that viewer's {@link org.eclipse.draw2d.FigureCanvas}, which provides native scrollbars
+ * for scrolling the viewport.
+ * <P>
+ * This root serves as the diagram's {@link org.eclipse.gef.editparts.LayerManager},
+ * providing the following layer structure, in top-to-bottom order:
+ * <table cellspacing="0" cellpadding="0">
+ *   <tr>
+ *     <td colspan="2">Root Freeform Layered Pane</td>
+ *   </tr>
+ *   <tr>
+ *     <td>&#9500;</td>
+ *     <td>&nbsp;Feedback Layer</td>
+ *   </tr>
+ *   <tr>
+ *     <td>&#9500;</td>
+ *     <td>&nbsp;Handle Layer</td>
+ *   </tr>
+ *   <tr>
+ *     <td>&#9492;</td>
+ *     <td>&nbsp;Printable Layers</td>
+ *   </tr>
+ *   <tr>
+ *     <td>&nbsp;</td>
+ *     <td>&#9500; Connection Layer</td>
+ *   </tr>
+ *   <tr>
+ *     <td>&nbsp;</td>
+ *     <td>&#9492; Primary Layer</td>
+ *   </tr>
+ * </table>
  * 
  */
 public class FreeformGraphicalRootEditPart
@@ -71,8 +110,9 @@ protected void createLayers(LayeredPane layeredPane) {
 }
 
 /**
- * Returns the set of layers that should be printed.
- * @return a LayeredPane containing the layers which are printable.
+ * Creates a layered pane and the layers that should be printed.
+ * @see org.eclipse.gef.print.PrintGraphicalViewerOperation
+ * @return a new LayeredPane containing the printable layers
  */
 protected LayeredPane createPrintableLayers() {
 	FreeformLayeredPane layeredPane = new FreeformLayeredPane();
@@ -90,39 +130,47 @@ public Object getAdapter(Class adapter) {
 	return super.getAdapter(adapter);
 }
 
-/** 
- * Doesnt provide any command support, returns an
- * un-executable command
+/**
+ * The RootEditPart should never be asked for a command. The implementation returns an
+ * unexecutable command.
+ * @see org.eclipse.gef.EditPart#getCommand(org.eclipse.gef.Request)
  */
-public Command getCommand(Request req){
+public Command getCommand(Request req) {
 	return UnexecutableCommand.INSTANCE;
 }
 
 /**
- * Returns the figure to which childrens' figures will be added.
- * An example would be a ScrollPane.  Figures of child editpart are not
- * added to the ScrollPane, but to its ViewPort's View.
+ * The contents' Figure will be added to the PRIMARY_LAYER.
+ * @see org.eclipse.gef.GraphicalEditPart#getContentPane()
  */
-public IFigure getContentPane(){
+public IFigure getContentPane() {
 	return getLayer(PRIMARY_LAYER);
 }
 
-public EditPart getContents(){
+/**
+ * @see org.eclipse.gef.RootEditPart#getContents()
+ */
+public EditPart getContents() {
 	return contents;
 }
 
 /**
- * Return a drag tracker suitable for dragging this.
+ * Should not be called, but returns a MarqeeDragTracker for good measure.
+ * @see org.eclipse.gef.EditPart#getDragTracker(org.eclipse.gef.Request)
  */
 public DragTracker getDragTracker(Request req) {
-	// The drawing cannot be dragged.
+	/* 
+	 * The root will only be asked for a drag tracker if for some reason the contents
+	 * editpart says it is neither selector nor opaque.
+	 */
 	return new MarqueeDragTracker();
 }
 
 /**
- * Returns the layer for the given key
+ * Returns the layer indicated by the key. Searches all layered panes.
+ * @see LayerManager#getLayer(Object)
  */
-public IFigure getLayer(Object key){
+public IFigure getLayer(Object key) {
 	if (innerLayers == null)
 		return null;
 	IFigure layer = innerLayers.getLayer(key);
@@ -134,44 +182,61 @@ public IFigure getLayer(Object key){
 }
 
 /**
- * Returns the model of this EditPart. 
+ * The root editpart does not have a real model.  The LayerManager ID is returned so that
+ * this editpart gets registered using that key.
+ * @see org.eclipse.gef.EditPart#getModel()
  */
-public Object getModel(){
+public Object getModel() {
 	return LayerManager.ID;
 }
 
+/**
+ * Returns the LayeredPane that should be used during printing. This layer will be
+ * identified using {@link LayerConstants#PRINTABLE_LAYERS}.
+ * @return the layered pane containing all printable content
+ */
 protected LayeredPane getPrintableLayers() {
 	if (printableLayers == null)
 		printableLayers = createPrintableLayers();
 	return printableLayers;
 }
 
-/*
- * defined on interface
+/**
+ * Returns <code>this</code>.
+ * @see org.eclipse.gef.EditPart#getRoot()
  */
-public RootEditPart getRoot() {return this;}
-
-/*
- * from RootEditPart
- */
-public EditPartViewer getViewer() {return viewer;}
-
-protected void refreshChildren(){}
+public RootEditPart getRoot() {
+	return this;
+}
 
 /**
- * Sets the contents.  The root contains a single child, it's contents.
+ * Returns the viewer that was set.
+ * @see org.eclipse.gef.EditPart#getViewer()
  */
-public void setContents(EditPart editpart){
+public EditPartViewer getViewer() {
+	return viewer;
+}
+
+/**
+ * Overridden to do nothing, child is set using setContents(EditPart)
+ * @see org.eclipse.gef.editparts.AbstractEditPart#refreshChildren()
+ */
+protected void refreshChildren() { }
+
+/**
+ * @see org.eclipse.gef.RootEditPart#setContents(org.eclipse.gef.EditPart)
+ */
+public void setContents(EditPart editpart) {
 	if (contents != null)
 		removeChild(contents);
 	contents = editpart;
 	if (contents != null)
-		addChild(contents,0);
+		addChild(contents, 0);
 }
 
 /**
- * Sets the viewer.
- * @param viewer EditPartViewer.
+ * Sets the EditPartViewer.
+ * @param newViewer EditPartViewer.
  */
 public void setViewer(EditPartViewer newViewer) {
 	if (viewer == newViewer)
