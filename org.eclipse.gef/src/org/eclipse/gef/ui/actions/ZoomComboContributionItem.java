@@ -30,7 +30,7 @@ import org.eclipse.gef.editparts.ZoomManager;
  * 
  * @author Eric Bordeau
  */
-public final class ZoomComboContributionItem 
+public class ZoomComboContributionItem 
 	extends ContributionItem
 	implements ZoomListener
 {
@@ -86,17 +86,17 @@ void refresh() {
 	if (combo == null || combo.isDisposed())
 		return;
 	if (zoomManager == null) {
-		getCombo().setEnabled(false);
-		getCombo().removeAll();
+		combo.setEnabled(false);
+		combo.removeAll();
 	} else {
-		getCombo().setItems(getZoomManager().getZoomLevelsAsText());
+		combo.setItems(getZoomManager().getZoomLevelsAsText());
 		String zoom = getZoomManager().getZoomAsText();
-		int index = getCombo().indexOf(zoom);
+		int index = combo.indexOf(zoom);
 		if (index != -1)
-			getCombo().select(index);
+			combo.select(index);
 		else
-			getCombo().setText(zoom);
-		getCombo().setEnabled(true);
+			combo.setText(zoom);
+		combo.setEnabled(true);
 	}
 }
 
@@ -176,13 +176,6 @@ public void fill(ToolBar parent, int index) {
 	toolitem = new ToolItem(parent, SWT.SEPARATOR, index);
 	Control control = createControl(parent);
 	toolitem.setControl(control);	
-}
-
-/**
- * Returns the Combo
- * @return Combo The Combo */
-public Combo getCombo() {
-	return combo;
 }
 
 /**
