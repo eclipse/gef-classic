@@ -10,14 +10,12 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner.model;
 
-import org.eclipse.jface.viewers.ICellEditorValidator;
-import org.eclipse.ui.views.properties.*;
-import org.eclipse.ui.views.properties.IPropertyDescriptor;
-import org.eclipse.ui.views.properties.IPropertySource;
-import org.eclipse.ui.views.properties.TextPropertyDescriptor;
-
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
+import org.eclipse.ui.views.properties.IPropertyDescriptor;
+import org.eclipse.ui.views.properties.IPropertySource;
+import org.eclipse.ui.views.properties.PropertyDescriptor;
+import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 
 public class DimensionPropertySource 
 	implements IPropertySource {
@@ -30,29 +28,11 @@ static{
 	PropertyDescriptor widthProp =
 		new TextPropertyDescriptor(ID_WIDTH,
 			LogicMessages.DimensionPropertySource_Property_Width_Label);
-	widthProp.setValidator(new ICellEditorValidator() {
-		public String isValid(Object value) {
-			try {
-				new Integer((String)value);
-				return null;
-			} catch (NumberFormatException exc) {
-				return LogicMessages.CellEditorValidator_NotANumberMessage;
-			}
-		}
-	});
+	widthProp.setValidator(LogicNumberCellEditorValidator.instance());
 	PropertyDescriptor heightProp = 
 		new TextPropertyDescriptor(ID_HEIGHT,
 			LogicMessages.DimensionPropertySource_Property_Height_Label);
-	heightProp.setValidator(new ICellEditorValidator() {
-		public String isValid(Object value) {
-			try {
-				new Integer((String)value);
-				return null;
-			} catch (NumberFormatException exc) {
-				return LogicMessages.CellEditorValidator_NotANumberMessage;
-			}
-		}
-	});
+	heightProp.setValidator(LogicNumberCellEditorValidator.instance());
 	descriptors = new IPropertyDescriptor[] {widthProp,heightProp};
 }
 

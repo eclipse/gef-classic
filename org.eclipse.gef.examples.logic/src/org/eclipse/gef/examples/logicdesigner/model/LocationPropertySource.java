@@ -12,7 +12,6 @@ package org.eclipse.gef.examples.logicdesigner.model;
 
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
-import org.eclipse.jface.viewers.ICellEditorValidator;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertySource;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
@@ -29,29 +28,11 @@ static{
 	PropertyDescriptor xProp =
 		new TextPropertyDescriptor(ID_XPOS,
 			LogicMessages.LocationPropertySource_Property_X_Label);
-	xProp.setValidator(new ICellEditorValidator() {
-		public String isValid(Object value) {
-			try {
-				new Integer((String)value);
-				return null;
-			} catch (NumberFormatException exc) {
-				return LogicMessages.CellEditorValidator_NotANumberMessage;
-			}
-		}
-	});
+	xProp.setValidator(LogicNumberCellEditorValidator.instance());
 	PropertyDescriptor yProp = 
 		new TextPropertyDescriptor(ID_YPOS,
 			LogicMessages.LocationPropertySource_Property_Y_Label);
-	yProp.setValidator(new ICellEditorValidator() {
-		public String isValid(Object value) {
-			try {
-				new Integer((String)value);
-				return null;
-			} catch (NumberFormatException exc) {
-				return LogicMessages.CellEditorValidator_NotANumberMessage;
-			}
-		}
-	});	
+	yProp.setValidator(LogicNumberCellEditorValidator.instance());
 	descriptors = new IPropertyDescriptor[] {xProp, yProp};
 }
 

@@ -12,7 +12,6 @@ package org.eclipse.gef.examples.logicdesigner.model;
 
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
-import org.eclipse.jface.viewers.ICellEditorValidator;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
@@ -49,16 +48,7 @@ protected boolean bits[] = new boolean[4];
 static{
 	PropertyDescriptor pValueProp = new TextPropertyDescriptor(P_VALUE, 
 			LogicMessages.PropertyDescriptor_LED_Value);
-	pValueProp.setValidator(new ICellEditorValidator() {
-		public String isValid(Object value) {
-			try {
-				new Integer((String)value);
-				return null;
-			} catch (NumberFormatException exc) {
-				return LogicMessages.CellEditorValidator_NotANumberMessage;
-			}
-		}
-	});
+	pValueProp.setValidator(LogicNumberCellEditorValidator.instance());
 	if(descriptors!=null){
 		newDescriptors = new IPropertyDescriptor[descriptors.length+1];
 		for(int i=0;i<descriptors.length;i++)
