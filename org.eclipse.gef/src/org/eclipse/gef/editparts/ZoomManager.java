@@ -9,6 +9,7 @@ import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.draw2d.ScalableFreeformLayeredPane;
 import org.eclipse.draw2d.Viewport;
+import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 
@@ -232,9 +233,22 @@ public void setZoom(double zoom) {
 	zoom = Math.max(getMinZoom(), zoom);
 	if (this.zoom == zoom)
 		return;
+	
+	Point p1 = getViewport().getClientArea().getCenter();
+	double prevZoom = this.zoom;
 	this.zoom = zoom;
 	pane.setScale(zoom);
 	fireZoomChanged();
+	getViewport().validate();
+	
+	Point p2 = getViewport().getClientArea().getCenter();
+	p2.scale(zoom / prevZoom);
+	Dimension dif = p2.getDifference(p1);
+	System.out.println(dif);
+	Point p = getViewport().getViewLocation();
+	p.x += dif.width;
+	p.y += dif.height;
+	setViewLocation(p);
 }
 
 /**
