@@ -20,6 +20,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.IMenuListener;
+import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.ui.*;
@@ -40,12 +42,14 @@ import org.eclipse.gef.ui.palette.PaletteViewerImpl;
 import org.eclipse.gef.ui.parts.*;
 import org.eclipse.gef.ui.stackview.CommandStackInspectorPage;
 
-import org.eclipse.gef.examples.logicdesigner.actions.*;
-import org.eclipse.gef.examples.logicdesigner.dnd.*;
+import org.eclipse.gef.examples.logicdesigner.actions.IncrementDecrementAction;
+import org.eclipse.gef.examples.logicdesigner.actions.LogicPasteTemplateAction;
+import org.eclipse.gef.examples.logicdesigner.dnd.LogicTemplateTransferDropTargetListener;
+import org.eclipse.gef.examples.logicdesigner.dnd.TextTransferDropTargetListener;
 import org.eclipse.gef.examples.logicdesigner.edit.GraphicalPartFactory;
 import org.eclipse.gef.examples.logicdesigner.edit.TreePartFactory;
 import org.eclipse.gef.examples.logicdesigner.model.LogicDiagram;
-import org.eclipse.gef.examples.logicdesigner.palette.*;
+import org.eclipse.gef.examples.logicdesigner.palette.LogicPaletteCustomizer;
 
 public class LogicEditor 
 	extends GraphicalEditorWithPalette 
@@ -217,7 +221,7 @@ public void commandStackChanged(EventObject event) {
 protected void configurePaletteViewer() {
 	super.configurePaletteViewer();
 	PaletteViewerImpl viewer = (PaletteViewerImpl)getPaletteViewer();
-	ContextMenuProvider provider = new PaletteContextMenuProvider(viewer, getActionRegistry());
+	ContextMenuProvider provider = new PaletteContextMenuProvider(viewer);
 	getPaletteViewer().setContextMenuProvider(provider);
 	viewer.setCustomizer(new LogicPaletteCustomizer());
 }
@@ -311,8 +315,14 @@ public void gotoMarker(IMarker marker) {}
 
 protected void hookPaletteViewer() {
 	super.hookPaletteViewer();
-	CopyTemplateAction copy = (CopyTemplateAction)getActionRegistry().getAction(GEFActionConstants.COPY);
+	final CopyTemplateAction copy = 
+			(CopyTemplateAction)getActionRegistry().getAction(GEFActionConstants.COPY);
 	getPaletteViewer().addSelectionChangedListener(copy);
+	getPaletteViewer().getContextMenuProvider().getMenuManager().addMenuListener(new IMenuListener() {
+		public void menuAboutToShow(IMenuManager manager) {
+			manager.appendToGroup(GEFActionConstants.GROUP_COPY, copy);
+		}
+	});
 }
 
 protected void initializeGraphicalViewer() {
