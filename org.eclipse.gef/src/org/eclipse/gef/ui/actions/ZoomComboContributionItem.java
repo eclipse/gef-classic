@@ -19,8 +19,6 @@ import org.eclipse.jface.action.ContributionItem;
 import org.eclipse.jface.util.Assert;
 import org.eclipse.ui.*;
 
-import org.eclipse.draw2d.FigureUtilities;
-
 import org.eclipse.gef.editparts.ZoomListener;
 import org.eclipse.gef.editparts.ZoomManager;
 
