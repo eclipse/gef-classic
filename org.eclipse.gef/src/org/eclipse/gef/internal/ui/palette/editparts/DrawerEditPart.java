@@ -58,7 +58,11 @@ public DrawerEditPart(PaletteDrawer drawer) {
  * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
  */
 public IFigure createFigure() {
-	DrawerFigure fig = new DrawerFigure(getViewer().getControl());
+	DrawerFigure fig = new DrawerFigure(getViewer().getControl()) {
+		IFigure buildTooltip() {
+			return createToolTip();
+		}
+	};
 	fig.setExpanded(getDrawer().isInitiallyOpen());
 	fig.setPinned(getDrawer().isInitiallyPinned());
 	fig.getCollapseToggle().addChangeListener(new ToggleListener());	
@@ -111,22 +115,6 @@ public IFigure getContentPane() {
 	return getDrawerFigure().getContentPane();
 }
 
-/** * @see org.eclipse.gef.internal.ui.palette.editparts.PaletteEditPart#getToolTipFigure() */
-protected IFigure getToolTipFigure() {
-	return getDrawerFigure().getCollapseToggle();
-}
-
-/**
- * @see org.eclipse.gef.internal.ui.palette.editparts.PaletteEditPart#getToolTipText()
- */
-protected String getToolTipText() {
-	String text = super.getToolTipText();
-	if (text != null && text.equals(getDrawer().getLabel())) {
-		text = null;
-	}
-	return text;
-}
-
 private DrawerAnimationController getAnimationController() {
 	return (DrawerAnimationController)getViewer()
 			.getEditPartRegistry()
@@ -147,6 +135,13 @@ public boolean isExpanded() {
  */
 public boolean isPinnedOpen() {
 	return getDrawerFigure().isPinnedOpen();
+}
+
+/**
+ * @see org.eclipse.gef.internal.ui.palette.editparts.PaletteEditPart#nameNeededInToolTip()
+ */
+protected boolean nameNeededInToolTip() {
+	return false;
 }
 
 /** * @return <code>true</code> if the DrawerFigure can be pinned open.  This is only true
@@ -184,10 +179,8 @@ protected AccessibleEditPart createAccessible() {
 /**
  * @see org.eclipse.gef.editparts.AbstractEditPart#refreshVisuals()
  */
-protected void refreshVisuals() {
-	super.refreshVisuals();
-	
-	getDrawerFigure().setToolTipText(getToolTipText());
+protected void refreshVisuals() {	
+	getDrawerFigure().setToolTip(createToolTip());
 
 	ImageDescriptor img = getPaletteEntry().getSmallIcon();
 	if (img == null) {

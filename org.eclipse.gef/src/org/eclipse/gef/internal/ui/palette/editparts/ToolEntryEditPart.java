@@ -138,7 +138,7 @@ protected AccessibleEditPart createAccessible() {
 }
 
 static final Border BORDER_TOGGLE = new ButtonBorder(ButtonBorder.SCHEMES.TOOLBAR);
-
+static final Border COLUMNS_BORDER = new MarginBorder(2,0,1,0);
 public IFigure createFigure() {
 	class InactiveToggleButton extends ToggleButton {
 		InactiveToggleButton(IFigure contents) {
@@ -149,6 +149,9 @@ public IFigure createFigure() {
 		}
 		public IFigure findMouseEventTargetAt(int x, int y) {
 			return null;
+		}
+		public IFigure getToolTip() {
+			return createToolTip();
 		}
 	}
 	
@@ -224,7 +227,13 @@ protected void refreshVisuals() {
 		setImageDescriptor(entry.getLargeIcon());
 	else
 		setImageDescriptor(entry.getSmallIcon());
-	customLabel.setLayoutMode(getPreferenceSource().getLayoutSetting());	
+	int layoutMode = getPreferenceSource().getLayoutSetting();
+	customLabel.setLayoutMode(layoutMode);
+	if (layoutMode == PaletteViewerPreferences.LAYOUT_COLUMNS
+	  || layoutMode == PaletteViewerPreferences.LAYOUT_DETAILS)
+		customLabel.setBorder(COLUMNS_BORDER);
+	else
+		customLabel.setBorder(null);
 	super.refreshVisuals();	
 }
 

@@ -34,6 +34,7 @@ public class TemplateEditPart
 {
 
 private static final Border BORDER = new MarginBorder(1, 1, 1, 2);
+private static final Border COLUMNS_BORDER = new MarginBorder(2, 1, 3, 2);
 
 /**
  * Constructor
@@ -62,9 +63,12 @@ protected AccessibleEditPart createAccessible() {
 
 /** * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure() */
 public IFigure createFigure() {
-	IFigure fig = new DetailedLabelFigure();
+	IFigure fig = new DetailedLabelFigure() {
+		public IFigure getToolTip() {
+			return createToolTip();
+		}
+	};
 	fig.setRequestFocusEnabled(true);
-	fig.setBorder(BORDER);
 	return fig;
 }
 
@@ -116,7 +120,13 @@ protected void refreshVisuals() {
 		setImageDescriptor(entry.getLargeIcon());
 	else
 		setImageDescriptor(entry.getSmallIcon());
-	fig.setLayoutMode(getPreferenceSource().getLayoutSetting());
+	int layoutMode = getPreferenceSource().getLayoutSetting();
+	fig.setLayoutMode(layoutMode);
+	if (layoutMode == PaletteViewerPreferences.LAYOUT_COLUMNS
+	  || layoutMode == PaletteViewerPreferences.LAYOUT_DETAILS)
+		fig.setBorder(COLUMNS_BORDER);
+	else
+		fig.setBorder(BORDER);
 	super.refreshVisuals();
 }
 

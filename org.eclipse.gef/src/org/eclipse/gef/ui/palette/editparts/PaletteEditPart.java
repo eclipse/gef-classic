@@ -20,10 +20,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.jface.resource.ImageDescriptor;
 
 import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.text.*;
 
 import org.eclipse.gef.*;
@@ -38,6 +35,7 @@ abstract class PaletteEditPart
 	implements PropertyChangeListener
 {
 
+private static final Border TOOLTIP_BORDER = new MarginBorder(0, 2, 1, 0);
 private static ImageCache globalImageCache;
 private AccessibleEditPart acc;
 private PropertyChangeListener childListener = new PropertyChangeListener() {
@@ -74,7 +72,11 @@ protected AccessibleEditPart createAccessible() {
 
 public void createEditPolicies() { }
 
-private IFigure createToolTip() {
+protected IFigure createToolTip() {
+	String message = getToolTipText();
+	if (message == null || message.length() == 0)
+		return null;
+
 	FlowPage fp = new FlowPage() {
 		public Dimension getPreferredSize(int w, int h) {
 			Dimension d = super.getPreferredSize(-1, -1);
@@ -84,17 +86,12 @@ private IFigure createToolTip() {
 		}
 	};
 	fp.setOpaque(true);
-	fp.setBorder(new MarginBorder(new Insets(0, 2, 0, 0)));
+	fp.setBorder(TOOLTIP_BORDER);
 	BlockFlow bf = new BlockFlow();
-	bf.add(new TextFlow());
+	TextFlow tf = new TextFlow();
+	tf.setText(message);
+	bf.add(tf);
 	fp.add(bf);
-	
-	getFigure().addFigureListener(new FigureListener() {
-		public void figureMoved(IFigure source) {
-			refreshVisuals();
-		}
-	});
-	
 	return fp;
 }
 
@@ -208,21 +205,21 @@ protected String getToolTipText() {
 	PaletteEntry entry = (PaletteEntry)getModel();
 	String desc = entry.getDescription();
 	boolean needName = nameNeededInToolTip();
-	if (desc == null || desc.trim().equals(entry.getLabel()) || desc.trim().equals("")) { //$NON-NLS-1$
-		if (needName) {
+	if (desc == null
+	  || desc.trim().equals(entry.getLabel())
+	  || desc.trim().equals("")) { //$NON-NLS-1$
+		if (needName)
 			text = entry.getLabel();
-		}
 	} else {
-		if (needName) {
-			text = entry.getLabel() + " " + PaletteMessages.NAME_DESCRIPTION_SEPARATOR //$NON-NLS-1$
-					+ " " + desc; //$NON-NLS-1$
-		} else {
+		if (needName)
+			text = entry.getLabel()
+				+ " " + PaletteMessages.NAME_DESCRIPTION_SEPARATOR //$NON-NLS-1$
+				+ " " + desc; //$NON-NLS-1$
+		else
 			text = desc;
-		}
 	}
-	if (text != null && text.trim().equals("")) { //$NON-NLS-1$
-		text = null;
-	}
+	if (text != null && text.trim().equals(""))//$NON-NLS-1$
+		return null;
 	return text;
 }
 
@@ -246,36 +243,6 @@ public void propertyChange(PropertyChangeEvent evt) {
 			|| property.equals(PaletteEntry.PROPERTY_DESCRIPTION)) {
 		refreshVisuals();
 	}
-}
-
-protected void refreshToolTip() {
-	String tooltipText = getToolTipText();
-	if (tooltipText == null) {
-		getToolTipFigure().setToolTip(null);
-		return;
-	}
-	IFigure tooltip = getToolTipFigure().getToolTip();
-	if (tooltip == null)
-		getToolTipFigure().setToolTip(createToolTip());
-	IFigure fig = (IFigure)getToolTipFigure().getToolTip().getChildren().get(0);
-	TextFlow tf = (TextFlow)fig.getChildren().get(0);
-	tf.setText(getToolTipText());
-}
-
-/**
- * @see org.eclipse.gef.editparts.AbstractEditPart#refreshVisuals()
- */
-protected void refreshVisuals() {
-	refreshToolTip();
-}
-
-protected void setFigure(IFigure figure) {
-	super.setFigure(figure);
-	figure.addFigureListener(new FigureListener() {
-		public void figureMoved(IFigure source) {
-			refreshToolTip();
-		}
-	});
 }
 
 protected void setImageDescriptor(ImageDescriptor desc) {

@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.gef.internal.ui.palette.editparts;
 
-
 import java.util.List;
 
 import org.eclipse.swt.graphics.Color;
@@ -24,7 +23,8 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.internal.Internal;
-import org.eclipse.gef.ui.palette.*;
+import org.eclipse.gef.ui.palette.PaletteMessages;
+import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
 
 /**
  * @author Pratik Shah
@@ -32,13 +32,11 @@ import org.eclipse.gef.ui.palette.*;
 public class DrawerFigure
 	extends Figure
 {
-
-protected static final Border TOGGLE_BUTTON_BORDER = new RaisedBorder();
-protected static final Border TITLE_MARGIN_BORDER = new MarginBorder(1, 1, 1, 0);
-protected static final Border SCROLL_PANE_BORDER = new MarginBorder(2);
-protected static final Border TOOLTIP_BORDER = new DrawerToolTipBorder();
 protected static final Border BUTTON_BORDER = new ButtonBorder(
 					ButtonBorder.SCHEMES.TOOLBAR);
+
+protected static final Color FG_COLOR = FigureUtilities.mixColors(
+		ColorConstants.buttonDarker, ColorConstants.button);
 
 /*
  * @TODO:Pratik
@@ -46,17 +44,19 @@ protected static final Border BUTTON_BORDER = new ButtonBorder(
  */ 
 protected static final Image PIN = new Image(null, ImageDescriptor.createFromFile(
 		Internal.class, "icons/pin_view.gif").getImageData()); //$NON-NLS-1$
+protected static final Border SCROLL_PANE_BORDER = new MarginBorder(2);
+protected static final Border TITLE_MARGIN_BORDER = new MarginBorder(1, 1, 1, 0);
 
-protected static final Color FG_COLOR = FigureUtilities.mixColors(
-		ColorConstants.buttonDarker, ColorConstants.button);
+protected static final Border TOGGLE_BUTTON_BORDER = new RaisedBorder();
+protected static final Border TOOLTIP_BORDER = new DrawerToolTipBorder();
+private Toggle collapseToggle;
+private DrawerAnimationController controller;
+private Label drawerLabel, tipLabel;
 
 private int layoutMode = -1;
-private Label drawerLabel, tipLabel;
-private ScrollPane scrollpane;
 private ToggleButton pinFigure;
-private Toggle collapseToggle;
+private ScrollPane scrollpane;
 private boolean showPin = true, skipNextEvent;
-private DrawerAnimationController controller;
 private EditPartTipHelper tipHelper;
 
 /**
@@ -105,6 +105,12 @@ public DrawerFigure(final Control control) {
 	title.add(drawerLabel, BorderLayout.CENTER);
 	
 	collapseToggle = new Toggle(title) {
+		/**
+		 * @see org.eclipse.draw2d.Figure#getToolTip()
+		 */
+		public IFigure getToolTip() {
+			return buildTooltip();
+		}
 		protected void paintFigure(Graphics g) {
 			super.paintFigure(g);
 			Rectangle r = Rectangle.SINGLETON;
@@ -160,6 +166,12 @@ private void createHoverHelp(final Control control) {
 	// If a control was provided, create the tipLabel -- if the text in the header is
 	// truncated, it will display it as a tooltip.
 	tipLabel =	new Label() {
+		/**
+		 * @see org.eclipse.draw2d.Figure#getToolTip()
+		 */
+		public IFigure getToolTip() {
+			return buildTooltip();
+		}
 		protected void paintFigure(Graphics graphics) {
 			Rectangle r = Rectangle.SINGLETON;
 			r.setBounds(getBounds());
@@ -227,16 +239,8 @@ private void createScrollpane() {
 	scrollpane.getContents().setBorder(SCROLL_PANE_BORDER);
 }
 
-/**
- * @return	The content pane for this figure, i.e. the Figure to which children can be
- * added.
- */
-public IFigure getContentPane() {
-	return scrollpane.getContents();
-}
-
-public ScrollPane getScrollpane() {
-	return scrollpane;
+IFigure buildTooltip() {
+	return null;
 }
 
 /**
@@ -244,6 +248,14 @@ public ScrollPane getScrollpane() {
  */
 public Clickable getCollapseToggle() {
 	return collapseToggle;
+}
+
+/**
+ * @return	The content pane for this figure, i.e. the Figure to which children can be
+ * added.
+ */
+public IFigure getContentPane() {
+	return scrollpane.getContents();
 }
 
 public Dimension getMinimumSize(int wHint, int hHint) {
@@ -275,6 +287,10 @@ public Dimension getPreferredSize(int w, int h) {
 		return super.getPreferredSize(w, h);
 	else
 		return getMinimumSize();
+}
+
+public ScrollPane getScrollpane() {
+	return scrollpane;
 }
 
 /**
@@ -363,30 +379,6 @@ public void setTitle(String s) {
  */
 public void setTitleIcon(Image icon) {
 	drawerLabel.setIcon(icon);
-}
-
-/**
- * Updates the tooltips.  The tooltip is displayed in two places: on the collapse toggle,
- * and the pop-up for the collapse toggle (which is shown when the text on the collapse
- * toggle is truncated).  The PaletteEditPart takes care of displaying the tooltip
- * on the collapseToggle.  So, here, only the tooltip for the pop-up is updated.
- *  * @param text	The text to be displayed on the tooltip. */
-public void setToolTipText(String text) {
-	// Display the tooltip on the pop-up for the collapse toggle, if there is one
-	if (tipLabel == null) {
-		return;
-	}
-
-	// If the text is null, don't show the tooltip
-	if (text == null) {
-		tipLabel.setToolTip(null);
-		return;
-	}
-	
-	if (tipLabel.getToolTip() == null) {
-		tipLabel.setToolTip(new Label());
-	}
-	((Label)tipLabel.getToolTip()).setText(text);
 }
 
 public void showPin(boolean show) {
