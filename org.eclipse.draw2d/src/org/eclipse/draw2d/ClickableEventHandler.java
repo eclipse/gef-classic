@@ -100,7 +100,7 @@ public void mouseReleased(MouseEvent me) {
 
 public void keyPressed(KeyEvent ke) {	
 	ButtonModel model = ((Clickable)ke.getSource()).getModel();
-	if (ke.character == ' ') {
+	if (ke.character == ' ' || ke.character == '\r') {
 		model.setPressed(true);
 		model.setArmed(true);
 	}
@@ -108,7 +108,7 @@ public void keyPressed(KeyEvent ke) {
 
 public void keyReleased(KeyEvent ke) {
 	ButtonModel model = ((Clickable)ke.getSource()).getModel();
-	if (ke.character == ' ') {
+	if (ke.character == ' ' || ke.character == '\r') {
 		model.setPressed(false);
 		model.setArmed(false);
 	}
