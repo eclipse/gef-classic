@@ -19,7 +19,7 @@ import org.eclipse.gef.editparts.ZoomManager;
 public class RulerFigure
 	extends Figure
 {
-
+	
 /**
  * These fields allow the client to customize the look of the ruler.
  */
@@ -31,27 +31,29 @@ public int textTopMargin = 2;
 public int textBottomMargin = 4;
 public int minPixelsBetweenMarks = 3;
 
+protected Transposer transposer = new Transposer();
+protected FigureCanvas editor;
+protected ZoomManager zoom;
+
+private static final Dimension BLANK_HSPACE = new Dimension(0, 2);
+private static final Dimension BLANK_VSPACE = new Dimension(2, 0);
+
 private boolean horizontal;
 private int unit, interval, divisions, cachedHeight, cachedY, cachedLength = 0;
 private double dpu = -1.0;
 private Dimension textSize, cachedPrefSize, cachedTextSize;
 
-protected Transposer transposer = new Transposer();
-protected FigureCanvas editor;
-protected ZoomManager zoom;
-
 private ZoomListener zoomListener = new ZoomListener() {
-	public void zoomChanged(double zoom) {
+	public void zoomChanged(double newZoomValue) {
 		layout();
 	}
 };
 
-public RulerFigure(FigureCanvas editor, boolean isHorizontal, int unit) {
-	this.editor = editor;
+public RulerFigure(FigureCanvas editorCanvas, boolean isHorizontal, int measurementUnit) {
+	editor = editorCanvas;
 	setHorizontal(isHorizontal);
-	setUnit(unit);
+	setUnit(measurementUnit);
 	setBackgroundColor(ColorConstants.white);
-	setBorder(new MarginBorder(transposer.t(new Insets(0, 3, 0, 4))));
 	setOpaque(true);
 	setLayoutManager(new RulerLayout());
 }
@@ -70,7 +72,7 @@ private void calculateTextSize(Rectangle transposedBounds) {
 /*
  * @TODO:Pratik
  * 
- * this is really a hack.  is this acceptable?  the overview ruler should not really
+ * this is really a hack.  is this acceptable?  the ruler should not really
  * know about the rulercomposite.  maybe it can be passed in as a parameter to the 
  * constructor of this class.  or maybe you can get rid of this method completely.  it 
  * then becomes the client's responsibility to force a layout when necessary (say, when 
@@ -106,7 +108,7 @@ protected double getDPU() {
 // based on the range model, and not the size of the editor.  this way, the editor
 // won't have to be passed around.
 public Dimension getPreferredSize(int wHint, int hHint) {
-	Rectangle viewBounds = transposer.t(editor.getContents().getBounds().getCopy());
+	Rectangle viewBounds = transposer.t(editor.getContents().getClientArea());
 	if (cachedHeight != viewBounds.height || cachedY != viewBounds.y 
 			|| cachedPrefSize == null) {
 		cachedHeight = viewBounds.height;
@@ -115,6 +117,7 @@ public Dimension getPreferredSize(int wHint, int hHint) {
 		cachedPrefSize = transposer.t(new Dimension(transposer.t(textSize).width 
 				+ textLeftMargin + textRightMargin + mediumMarkWidth, 
 				viewBounds.height));
+		cachedPrefSize.expand(isHorizontal() ? BLANK_HSPACE : BLANK_VSPACE);
 		if (getBorder() != null) {
 			cachedPrefSize.expand(getBorder().getInsets(this).getWidth(), 
 					getBorder().getInsets(this).getHeight());
@@ -164,19 +167,22 @@ public boolean isHorizontal() {
  * @see org.eclipse.draw2d.Figure#paintFigure(org.eclipse.draw2d.Graphics)
  */
 protected void paintFigure(Graphics graphics) {
-	if (isOpaque()) {
-		graphics.fillRectangle(getClientArea());
-	}
 	double dotsPerUnit = getDPU();
 	Rectangle clip = transposer.t(graphics.getClip(Rectangle.SINGLETON));
-	Rectangle figClientArea = transposer.t(getClientArea()).translate(-1, -1);
+	Rectangle figClientArea = transposer.t(getClientArea());
 	// Use the x and width of the client area, but the y and height of the clip as the 
 	// bounds of the area which is to be repainted.  This will increase performance as the
 	// entire ruler will not be repainted everytime.
 	Rectangle clippedBounds = clip;
 	clippedBounds.x = figClientArea.x;
-	clippedBounds.width = figClientArea.width;
-
+	clippedBounds.width = figClientArea.width - 2;// leave two pixels for the two lines
+												// drawn at the end of this method
+	
+	// Paint the background
+	if (isOpaque()) {
+		graphics.fillRectangle(transposer.t(clippedBounds));
+	}
+	
 	/* 
 	 * A major mark is one that goes all the way from the left edge to the right edge of
 	 * a ruler and for which a number is displayed.  Determine the minimum number of
@@ -312,17 +318,17 @@ protected void paintFigure(Graphics graphics) {
 		}
 		graphics.drawLine(transposer.t(start), transposer.t(end));
 	}
-	// draw the line on the right of the ruler 
-//	graphics.drawLine(transposer.t(clippedBounds.getTopRight()), 
-//			transposer.t(clippedBounds.getBottomRight()));
-}
 
-/* (non-Javadoc)
- * @see org.eclipse.draw2d.Figure#setBounds(org.eclipse.draw2d.geometry.Rectangle)
- */
-public void setBounds(Rectangle rect) {
-	// TODO Auto-generated method stub
-	super.setBounds(rect);
+	// draw the lines on the right of the ruler
+	clippedBounds.width += 2;
+	graphics.setForegroundColor(ColorConstants.button);
+	Point reduction = transposer.t(new Point(-1, 0));
+	Point topRight = transposer.t(clippedBounds.getTopRight()).translate(reduction);
+	Point bottomRight = transposer.t(clippedBounds.getBottomRight()).translate(reduction);
+	graphics.drawLine(topRight, bottomRight);
+	topRight.translate(reduction);
+	bottomRight.translate(reduction);
+	graphics.drawLine(topRight, bottomRight);
 }
 
 public void setHorizontal(boolean isHorizontal) {
@@ -350,9 +356,9 @@ public void setInterval(int unitsPerMajorMark, int divisionsPerMajorMark) {
 	repaint();
 }
 
-public void setUnit(int unit) {
-	if (this.unit != unit) {
-		this.unit = unit;
+public void setUnit(int newUnit) {
+	if (unit != newUnit) {
+		unit = newUnit;
 		invalidate();
 		forceSWTLayoutIfNecessary();
 	}
@@ -367,9 +373,6 @@ public void setZoomManager(ZoomManager manager) {
 		if (zoom != null) {
 			zoom.addZoomListener(zoomListener);
 		}
-	}
-	if (getLayoutManager() instanceof RulerLayout) {
-		((RulerLayout)getLayoutManager()).setZoomManager(zoom);		
 	}
 }
 
