@@ -19,6 +19,10 @@ static class Helper {
 	}
 }
 
+public String CopyAction_ActionToolTipText=Helper.getString("%CopyAction.ActionToolTipText_UI_");	//$NON-NLS-1$
+public String CopyAction_ActionLabelText=Helper.getString("%CopyAction.ActionLabelText_UI_");		//$NON-NLS-1$
+public String CopyAction_ActionDeleteCommandName=Helper.getString("%CopyAction.ActionDeleteCommandName_UI_");//$NON-NLS-1$
+
 public String ZoomAction_ZoomIn_ActionToolTipText = Helper.getString("%ZoomAction.ZoomIn.ActionToolTipText_UI_");//$NON-NLS-1$
 public String ZoomAction_ZoomIn_ActionLabelText=Helper.getString("%ZoomAction.ZoomIn.ActionLabelText_UI_");			//$NON-NLS-1$
 
