@@ -1,12 +1,11 @@
 package org.eclipse.gef.ui.palette;
 
-import org.eclipse.gef.ContextMenuProvider;
-import org.eclipse.gef.ui.actions.ActionRegistry;
-import org.eclipse.gef.ui.palette.editparts.*;
-
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.ui.IWorkbenchActionConstants;
+
+import org.eclipse.gef.ContextMenuProvider;
+import org.eclipse.gef.ui.actions.GEFActionConstants;
+import org.eclipse.gef.ui.palette.editparts.CategoryEditPart;
 
 /**
  * Provides the context menu for a palette
@@ -31,8 +30,8 @@ public class PaletteContextMenuProvider
  * @param palette the palette viewer for which the context menu has to be created
  * @param registry the action registry
  */
-public PaletteContextMenuProvider(PaletteViewerImpl palette, ActionRegistry registry) {
-	super(palette, registry);
+public PaletteContextMenuProvider(PaletteViewerImpl palette) {
+	super(palette);
 }
 
 /**
@@ -51,30 +50,33 @@ protected PaletteViewerImpl getPaletteViewer() {
  * @see org.eclipse.gef.ui.parts.ContextMenuProvider#buildContextMenu(org.eclipse.jface.action.IMenuManager)
  */
 public void buildContextMenu(IMenuManager menu) {
+	menu.add(new Separator(GEFActionConstants.GROUP_COPY));
+	menu.add(new Separator(GEFActionConstants.MB_ADDITIONS));
+	menu.add(new Separator(GEFActionConstants.GROUP_VIEW));
+	menu.add(new Separator(GEFActionConstants.GROUP_REST));
+
 	Object selectedPart = getPaletteViewer().getSelectedEditParts().get(0);
-	if (selectedPart instanceof TemplateEditPart) {
-		menu.add(getActionRegistry().getAction(IWorkbenchActionConstants.COPY));
-		menu.add(new Separator());
-	} else if (selectedPart instanceof CategoryEditPart) {
-		menu.add(new PinCategoryAction((CategoryEditPart)selectedPart));
-		menu.add(new Separator());
+	if (selectedPart instanceof CategoryEditPart) {
+		menu.appendToGroup(GEFActionConstants.MB_ADDITIONS, 
+							new PinCategoryAction((CategoryEditPart)selectedPart));
 	}
-	menu.add(new FolderLayoutAction(
+	menu.appendToGroup(GEFActionConstants.GROUP_VIEW, new FolderLayoutAction(
 			getPaletteViewer().getPaletteViewerPreferencesSource()));
-	menu.add(new ListLayoutAction(
+	menu.appendToGroup(GEFActionConstants.GROUP_VIEW, new ListLayoutAction(
 			getPaletteViewer().getPaletteViewerPreferencesSource()));
-	menu.add(new IconsLayoutAction(
+	menu.appendToGroup(GEFActionConstants.GROUP_VIEW, new IconsLayoutAction(
 			getPaletteViewer().getPaletteViewerPreferencesSource()));
-	menu.add(new DetailsLayoutAction(
+	menu.appendToGroup(GEFActionConstants.GROUP_VIEW, new DetailsLayoutAction(
 			getPaletteViewer().getPaletteViewerPreferencesSource()));
-	menu.add(new Separator());
-	menu.add(new ChangeIconSizeAction(
+	menu.appendToGroup(GEFActionConstants.GROUP_VIEW, new Separator());
+	menu.appendToGroup(GEFActionConstants.GROUP_VIEW, new ChangeIconSizeAction(
 			getPaletteViewer().getPaletteViewerPreferencesSource()));
-	menu.add(new Separator());
 	if (getPaletteViewer().getCustomizer() != null) {
-		menu.add(new CustomizeAction(getPaletteViewer()));
+		menu.appendToGroup(GEFActionConstants.GROUP_REST, 
+							new CustomizeAction(getPaletteViewer()));
 	}
-	menu.add(new SettingsAction(getPaletteViewer()));
+	menu.appendToGroup(GEFActionConstants.GROUP_REST, 
+						new SettingsAction(getPaletteViewer()));
 }
 
 }
