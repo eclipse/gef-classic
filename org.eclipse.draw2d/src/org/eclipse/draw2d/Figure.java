@@ -1087,6 +1087,13 @@ public void removeFocusListener(FocusListener listener) {
 }
 
 /**
+ * @see org.eclipse.draw2d.IFigure#removeKeyListener(org.eclipse.draw2d.KeyListener)
+ */
+public void removeKeyListener(KeyListener listener) {
+	eventListeners.removeListener(KeyListener.class, listener);
+}
+
+/**
  * Removes <i>listener</i> of type <i>clazz</i> from this Figure's list of listeners.
  * @param clazz The type of listener
  * @param listener The listener to remove

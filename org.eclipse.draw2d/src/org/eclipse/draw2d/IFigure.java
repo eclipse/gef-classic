@@ -561,6 +561,13 @@ void removeFigureListener(FigureListener listener);
 void removeFocusListener(FocusListener listener);
 
 /**
+ * Removes the first occurence of the given listener.
+ * @param listener The listener to remove
+ */
+void removeKeyListener(KeyListener listener);
+
+
+/**
  * Unregisters the given listener, so that it will no longer receive notification of mouse
  * events.
  * @param listener The listener to remove
