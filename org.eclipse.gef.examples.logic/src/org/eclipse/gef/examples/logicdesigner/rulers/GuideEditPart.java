@@ -6,10 +6,10 @@ package org.eclipse.gef.examples.logicdesigner.rulers;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import org.eclipse.swt.graphics.Cursor;
+
 import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.*;
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.*;
 import org.eclipse.gef.commands.Command;
@@ -30,13 +30,18 @@ public class GuideEditPart
 protected GraphicalViewer diagramViewer;
 protected ZoomManager zoomManager;
 private GuideFeedbackFigure guideFeedbackFig;
-private boolean dragInProgress = false;
+private boolean dragInProgress = false, isDelete = false;
 private IFigure dummyGuideFigure, dummyFeedbackFigure; 
 private ZoomListener zoomListener = new ZoomListener() {
 	public void zoomChanged(double zoom) {
 		handleZoomChanged();
 	}
 };
+
+/*
+ * @TODO:Pratik   you should change this class so that it does everything properly through
+ * editpolicies, and there is minimum sharing of state between the several components.
+ */
 	
 public GuideEditPart(Guide model, GraphicalViewer primaryViewer) {
 	setModel(model);
@@ -150,13 +155,14 @@ public void deactivate() {
  */
 public void eraseSourceFeedback(Request request) {
 	if (request.getType().equals(REQ_MOVE)) {
-		dragInProgress = false;
+		updateLocationOfFigures(getZoomedPosition());
 		if (getDummyGuideFigure().getParent() != null) {
 			getDummyGuideFigure().getParent().remove(dummyGuideFigure);			
 		}
 		if (getDummyFeedbackFigure().getParent() != null) {
 			getDummyFeedbackFigure().getParent().remove(getDummyFeedbackFigure());
 		}
+		dragInProgress = false;
 	} else {
 		super.eraseSourceFeedback(request);
 	}
@@ -168,34 +174,61 @@ public void eraseSourceFeedback(Request request) {
 public Command getCommand(final Request request) {
 	Command cmd = null;
 	if (request.getType().equals(REQ_MOVE)) {
+		final ChangeBoundsRequest req = (ChangeBoundsRequest)request;
 		/*
-		 * @TODO:Pratik    Externalize this String after you have moved it to its correct
+		 * @TODO:Pratik    Externalize the Strings after you have moved it to its correct
 		 * package.
 		 */
-		cmd = new Command("Move Guide") {
-			private int oldPosition;
-			public void execute() {
-				ChangeBoundsRequest req = (ChangeBoundsRequest)request;
-				int positionDelta;
-				if (getGuide().isHorizontal()) {
-					positionDelta = req.getMoveDelta().y;
-				} else {
-					positionDelta = req.getMoveDelta().x;
+		if (isDeleteRequest(req)) {
+			/*
+			 * @TODO:Pratik    how exactly is this going to work?  this command will
+			 * hold on to the guide and this editpart.  hence, it should probably be
+			 * outside this class.  when the guide is re-added in undo, will a new edit
+			 * part be created for it?  what'll happen to this one?  when is it
+			 * deactivated?  this command is holding on to a lot of unnecessary objects.
+			 */
+			cmd = new Command("Delete Guide") {
+				Ruler parent = (Ruler)getParent().getModel();
+				public void execute() {
+					parent.removeGuide(getGuide());
 				}
-				if (zoomManager != null) {
-					positionDelta *= (zoomManager.getUIMultiplier() / zoomManager.getZoom());					
+				public void undo() {
+					parent.addGuide(getGuide());
 				}
-				oldPosition = getGuide().getPosition();
-				getGuide().setPosition(getGuide().getPosition() + positionDelta);
-			}
-			public void undo() {
-				getGuide().setPosition(oldPosition);
-			}
-		};
+			};
+		} else {
+			cmd = new Command("Move Guide") {
+				private int oldPosition;
+				public void execute() {
+					int positionDelta;
+					if (getGuide().isHorizontal()) {
+						positionDelta = req.getMoveDelta().y;
+					} else {
+						positionDelta = req.getMoveDelta().x;
+					}
+					if (zoomManager != null) {
+						positionDelta *= (zoomManager.getUIMultiplier() / zoomManager.getZoom());					
+					}
+					oldPosition = getGuide().getPosition();
+					getGuide().setPosition(getGuide().getPosition() + positionDelta);
+				}
+				public void undo() {
+					getGuide().setPosition(oldPosition);
+				}
+			};
+		}
 	} else {
 		cmd = super.getCommand(request);
 	}
 	return cmd;
+}
+
+protected Cursor getCurrentCursor() {
+	if (dragInProgress && isDelete) {
+		return SharedCursors.ARROW;
+	} else {
+		return getGuideFigure().getCursor();
+	}
 }
 
 /* (non-Javadoc)
@@ -203,8 +236,16 @@ public Command getCommand(final Request request) {
  */
 public DragTracker getDragTracker(Request request) {
 	return new DragEditPartsTracker(this) {
+		protected void eraseSourceFeedback() {
+			super.eraseSourceFeedback();
+			setDefaultCursor(getCurrentCursor());
+		}
 		protected boolean isMove() {
 			return true;
+		}
+		protected void showSourceFeedback() {
+			super.showSourceFeedback();
+			setDefaultCursor(getCurrentCursor());
 		}
 	};
 }
@@ -252,6 +293,16 @@ protected void handleZoomChanged() {
 	refreshVisuals();
 }
 
+protected boolean isDeleteRequest(ChangeBoundsRequest req) {
+	int delta;
+	if (getGuide().isHorizontal()) {
+		delta = req.getMoveDelta().x;
+	} else {
+		delta = req.getMoveDelta().y;
+	}
+	return delta < -20 || delta > 20;
+}
+
 /* (non-Javadoc)
  * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
  */
@@ -283,13 +334,22 @@ public void showSourceFeedback(Request request) {
 			getDummyFeedbackFigure().setBounds(getGuideFeedbackFigure().getBounds());
 		}
 		ChangeBoundsRequest req = (ChangeBoundsRequest)request;
-		int positionDelta;
-		if (getGuide().isHorizontal()) {
-			positionDelta = req.getMoveDelta().y;
+		if (isDeleteRequest(req)) {
+			isDelete = true;
+			getFigure().setVisible(false);
+			getGuideFeedbackFigure().setVisible(false);
 		} else {
-			positionDelta = req.getMoveDelta().x;
+			int positionDelta;
+			if (getGuide().isHorizontal()) {
+				positionDelta = req.getMoveDelta().y;
+			} else {
+				positionDelta = req.getMoveDelta().x;
+			}
+			updateLocationOfFigures(getZoomedPosition() + positionDelta);
+			getFigure().setVisible(true);
+			getGuideFeedbackFigure().setVisible(true);
+			isDelete = false;
 		}
-		updateLocationOfFigures(getZoomedPosition() + positionDelta);		
 	} else {
 		super.showSourceFeedback(request);		
 	}
