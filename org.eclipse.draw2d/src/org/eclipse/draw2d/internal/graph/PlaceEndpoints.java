@@ -1,6 +1,7 @@
 package org.eclipse.draw2d.internal.graph;
 
 import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.graph.*;
 import org.eclipse.draw2d.graph.DirectedGraph;
 import org.eclipse.draw2d.graph.Edge;
 
@@ -18,6 +19,11 @@ public void visit(DirectedGraph g) {
 		edge.start = new Point(
 			edge.getSourceOffset() + edge.source.x,
 			edge.source.y + edge.source.height);
+		if (edge.source instanceof SubgraphBoundary) {
+			SubgraphBoundary boundary = (SubgraphBoundary)edge.source;
+			if (boundary.getParent().head == boundary)
+				edge.start.y = boundary.getParent().y + boundary.getParent().insets.top;
+		}
 		edge.end = new Point(
 			edge.getTargetOffset() + edge.target.x,
 			edge.target.y);
