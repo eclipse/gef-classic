@@ -16,8 +16,10 @@ import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.LineBorder;
+import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.ToolbarLayout;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2d.text.CaretInfo;
 import org.eclipse.draw2d.text.FlowPage;
 import org.eclipse.draw2d.text.InlineFlow;
 
@@ -56,15 +58,12 @@ protected IFigure createFigure() {
 		default:
 			figure = new Figure();
 			figure.setLayoutManager(new ToolbarLayout(ToolbarLayout.VERTICAL));
-			figure.setBorder(new LineBorder(ColorConstants.lightGray, 4));
+			figure.setBorder(new MarginBorder(4));
 	}
 	return figure;
 }
 
-/**
- * @see TextualEditPart#getCaretPlacement(int)
- */
-public Rectangle getCaretPlacement(int offset, boolean trailing) {
+public CaretInfo getCaretPlacement(int offset, boolean trailing) {
 	throw new RuntimeException("This part cannot place the caret");
 }
 
@@ -215,16 +214,16 @@ protected TextLocation searchLineBelow(CaretSearch search) {
 		part = (TextualEditPart)getChildren().get(childIndex);
 		location = part.getNextLocation(search);
 		if (location != null) {
-			//$TODO need to set advancing on getNextLocation
-			Rectangle newPlacement = location.part.getCaretPlacement(location.offset, false);
+			//$TODO need to set trailing on getNextLocation
+			CaretInfo caretInfo = location.part.getCaretPlacement(location.offset, false);
 			if (lineBounds == null)
-				lineBounds = new Rectangle(newPlacement);
-			else if (lineBounds.y > newPlacement.bottom())
+				lineBounds = new Rectangle(caretInfo.getX(), caretInfo.top(), 0, caretInfo.getHeight());
+			else if (lineBounds.y > caretInfo.getBaseline())
 				break;
 			else
-				lineBounds.union(newPlacement);
+				lineBounds.union(caretInfo.getX(), caretInfo.top(), 0, caretInfo.getHeight());
 			
-			int distance = Math.abs(newPlacement.x - search.x);
+			int distance = Math.abs(caretInfo.getX() - search.x);
 			if (distance < dx) {
 				result = location;
 				dx = distance;
@@ -258,15 +257,15 @@ protected TextLocation searchLineAbove(CaretSearch search) {
 		part = (TextualEditPart)getChildren().get(childIndex);
 		location = part.getNextLocation(search.recurseSearch());
 		if (location != null) {
-			Rectangle newPlacement = location.part.getCaretPlacement(location.offset, false);
+			CaretInfo caretInfo = location.part.getCaretPlacement(location.offset, false);
 			if (lineBounds == null)
-				lineBounds = new Rectangle(newPlacement);
-			else if (lineBounds.y > newPlacement.bottom())
+				lineBounds = new Rectangle(caretInfo.getX(), caretInfo.top(), 0, caretInfo.getHeight());
+			else if (lineBounds.y > caretInfo.getBaseline())
 				break;
 			else
-				lineBounds.union(newPlacement);
+				lineBounds.union(caretInfo.getX(), caretInfo.top(), 0, caretInfo.getHeight());
 			
-			int distance = Math.abs(newPlacement.x - search.x);
+			int distance = Math.abs(caretInfo.getX() - search.x);
 			if (distance < dx) {
 				result = location;
 				dx = distance;
