@@ -8,6 +8,12 @@ package org.eclipse.draw2d;
 public interface ScalableFigure extends IFigure {
 
 /**
+ * Returns the current scale.
+ * @return the current scale
+ */
+double getScale();
+
+/**
  * Sets the new scale factor.
  * @param scale the scale
  */

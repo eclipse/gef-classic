@@ -35,6 +35,10 @@ public Rectangle getClientArea(Rectangle rect) {
 	return rect;
 }
 
+public double getScale() {
+	return scale;
+}
+
 /**
  *  * @see org.eclipse.draw2d.Figure#paintClientArea(Graphics) */
 protected void paintClientArea(Graphics graphics) {
@@ -62,6 +66,7 @@ public void setScale(double newZoom) {
 	scale = newZoom;
 	superFireMoved();
 	getFreeformHelper().invalidate();
+	repaint();
 }
 
 /**

@@ -45,6 +45,10 @@ public Dimension getPreferredSize(int wHint, int hHint) {
 		.expand(w,h);
 }
 
+public double getScale() {
+	return scale;
+}
+
 /**
  * 
  * @see org.eclipse.draw2d.Figure#paintClientArea(Graphics)
@@ -75,6 +79,7 @@ public void setScale(double newZoom) {
 	scale = newZoom;
 	fireMoved();
 	revalidate();
+	repaint();
 }
 
 /**
