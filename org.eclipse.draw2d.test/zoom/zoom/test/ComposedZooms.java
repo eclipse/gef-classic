@@ -2,10 +2,10 @@ package zoom.test;
 
 import org.eclipse.draw2d.*;
 
-public class ZoomFigure extends Figure {
+public class ComposedZooms extends Figure {
 
 protected void paintFigure(Graphics graphics) {
-	ZoomGraphics g = new ZoomGraphics(graphics);
+	ScaledGraphics g = new ScaledGraphics(graphics);
 	g.setBackgroundColor(ColorConstants.white);
 	g.fillRectangle(getBounds());
 	g.translate(10,5);
