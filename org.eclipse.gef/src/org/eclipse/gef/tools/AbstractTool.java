@@ -1249,7 +1249,7 @@ protected final boolean unloadWhenFinished() {
  */
 public void viewerEntered(MouseEvent me, EditPartViewer viewer) {
 	getCurrentInput().setInput(me);
-	if (getCurrentViewer() != null) {
+	if (getCurrentViewer() != null && getCurrentViewer() != viewer) {
 		debug("Mouse exited viewer:\t" + getCurrentViewer().toString()); //$NON-NLS-1$
 		handleViewerExited();
 	}
