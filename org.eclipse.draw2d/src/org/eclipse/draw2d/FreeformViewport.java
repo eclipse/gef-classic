@@ -6,19 +6,35 @@ package org.eclipse.draw2d;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
+import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 public class FreeformViewport
 	extends Viewport
 {
 
+class FreeformViewportLayout
+	extends ViewportLayout
+{
+	protected Dimension calculatePreferredSize(IFigure parent, int wHint, int hHint) {
+		getContents().validate();
+		wHint = Math.max(0,wHint);
+		hHint = Math.max(0,hHint);
+		return ((FreeformFigure)getContents())
+			.getFreeformExtent()
+			.getExpanded(getInsets())
+			.union(wHint, hHint)
+			.getSize();
+	}
+
+	public void layout(IFigure figure) {
+		//Do nothing, contents updates itself.
+	}
+}
+
 public FreeformViewport(){
-	super(true);
-	setLayoutManager(new ViewportLayout(){
-		public void layout(IFigure figure){
-			//Do nothing, contents updates itself.
-		}
-	});
+	super(true); //Must use graphics translate to scroll freeforms.
+	setLayoutManager(new FreeformViewportLayout());
 }
 
 protected void readjustScrollBars(){
@@ -28,16 +44,16 @@ protected void readjustScrollBars(){
 		return;
 	FreeformFigure ff = (FreeformFigure)getContents();
 	Rectangle clientArea = getClientArea();
-	ff.updateFreeformBounds(new Rectangle(0,0,clientArea.width, clientArea.height));
-
-	Rectangle viewBounds = getContents().getBounds();
+	Rectangle bounds = ff.getFreeformExtent();
+	bounds.union(0, 0, clientArea.width, clientArea.height);
+	ff.setFreeformBounds(bounds);
 
 	getVerticalRangeModel().setExtent(clientArea.height);
-	getVerticalRangeModel().setMinimum(viewBounds.y);
-	getVerticalRangeModel().setMaximum(viewBounds.bottom());		
+	getVerticalRangeModel().setMinimum(bounds.y);
+	getVerticalRangeModel().setMaximum(bounds.bottom());		
 	getHorizontalRangeModel().setExtent(clientArea.width);
-	getHorizontalRangeModel().setMinimum(viewBounds.x);
-	getHorizontalRangeModel().setMaximum(viewBounds.right());
+	getHorizontalRangeModel().setMinimum(bounds.x);
+	getHorizontalRangeModel().setMaximum(bounds.right());
 }
 
 protected boolean useLocalCoordinates(){

@@ -8,8 +8,18 @@ package org.eclipse.draw2d;
 
 import org.eclipse.draw2d.geometry.Rectangle;
 
-public interface FreeformFigure extends IFigure{
+public interface FreeformFigure
+	extends IFigure
+{
 
-void updateFreeformBounds(Rectangle union);
+void addFreeformListener(FreeformListener listener);
+
+void fireExtentChanged();
+
+Rectangle getFreeformExtent();
+
+void removeFreeformListener(FreeformListener listener);
+
+void setFreeformBounds(Rectangle bounds);
 
 }

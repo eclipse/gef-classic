@@ -10,36 +10,85 @@ import java.util.List;
 
 import org.eclipse.draw2d.geometry.*;
 
-public class FreeformHelper {
+class FreeformHelper
+	implements FreeformListener
+{
+
+class ChildTracker implements FigureListener {
+	public void figureMoved(IFigure source) {
+		invalidate();
+		host.fireExtentChanged();
+		host.revalidate();
+	}
+};
 
 private FreeformFigure host;
+private Rectangle freeformExtent;
+private FigureListener figureListener = new ChildTracker();
 
 FreeformHelper(FreeformFigure host){
 	this.host = host;
 }
 
-public Rectangle updateFreeformBounds(Rectangle union){
-	Rectangle newBounds = null;
+public Rectangle getFreeformExtent(){
+	if (freeformExtent != null)
+		return freeformExtent;
+	Rectangle r;
 	List children = host.getChildren();
 	for (int i=0; i<children.size(); i++){
 		IFigure child = (IFigure)children.get(i);
 		if (child instanceof FreeformFigure)
-			 ((FreeformFigure) child).updateFreeformBounds(union);
-		Rectangle r = child.getBounds();
-		if (newBounds == null)
-			newBounds = r.getCopy();
+			r = ((FreeformFigure) child).getFreeformExtent();
 		else
-			newBounds.union(r);
+			r = child.getBounds();
+		if (freeformExtent == null)
+			freeformExtent = r.getCopy();
+		else
+			freeformExtent.union(r);
 	}
 	Insets insets = host.getInsets();
-	if (newBounds == null)
-		newBounds = new Rectangle(0,0,insets.getWidth(),insets.getHeight());
-	else {
-		newBounds.expand(insets);
-		newBounds.union(0, 0);
+	if (freeformExtent == null)
+		freeformExtent = new Rectangle(0,0,insets.getWidth(),insets.getHeight());
+	else
+		freeformExtent.expand(insets);
+	return freeformExtent;
+}
+
+public void hookChild(IFigure child){
+	invalidate();
+	if (child instanceof FreeformFigure)
+		((FreeformFigure)child).addFreeformListener(this);
+	else
+		child.addFigureListener(figureListener);
+}
+
+void invalidate(){
+	freeformExtent = null;
+	host.fireExtentChanged();
+}
+
+public void notifyFreeformExtentChanged() {
+	//A childs freeform extent has changed, therefore this extent must be recalculated
+	invalidate();
+	host.fireExtentChanged();
+}
+
+public void setFreeformBounds(Rectangle bounds){
+	host.setBounds(bounds);
+	List children = host.getChildren();
+	for (int i=0; i<children.size(); i++){
+		IFigure child = (IFigure)children.get(i);
+		if (child instanceof FreeformFigure)
+			((FreeformFigure) child).setFreeformBounds(bounds);
 	}
-	newBounds.union(union);
-	return newBounds;
+}
+
+public void unhookChild(IFigure child){
+	invalidate();
+	if (child instanceof FreeformFigure)
+		((FreeformFigure)child).removeFreeformListener(this);
+	else
+		child.removeFigureListener(figureListener);
 }
 
 }
