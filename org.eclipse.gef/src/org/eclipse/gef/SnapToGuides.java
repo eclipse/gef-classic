@@ -211,6 +211,7 @@ public int snapResizeRequest(ChangeBoundsRequest request, PrecisionRectangle bas
 	if (request.getEditParts().size() != 1)
 		return snapOrientation;
 	
+	int dir = request.getResizeDirection();
 	PrecisionDimension resize = new PrecisionDimension(request.getSizeDelta());
 	PrecisionPoint move = new PrecisionPoint(request.getMoveDelta());
 
@@ -249,7 +250,7 @@ public int snapResizeRequest(ChangeBoundsRequest request, PrecisionRectangle bas
 				resize.preciseWidth += (rightCorrection * 2);
 				move.preciseX -= rightCorrection;
 			}
-		} else if ((request.getResizeDirection() & EAST) != 0) {
+		} else if ((dir & EAST) != 0 && (snapOrientation & EAST) != 0) {
 			// east
 			double rightCorrection = getCorrectionFor(getVerticalGuides(), 
 					baseRect.preciseRight(), request.getExtendedData(), true, 1);
@@ -258,7 +259,7 @@ public int snapResizeRequest(ChangeBoundsRequest request, PrecisionRectangle bas
 				snapOrientation &= ~EAST;
 				resize.preciseWidth += rightCorrection;
 			}
-		} else if ((request.getResizeDirection() & WEST) != 0) {
+		} else if ((dir & WEST) != 0 && (snapOrientation & WEST) != 0) {
 			// west
 			double leftCorrection = getCorrectionFor(getVerticalGuides(), 
 					baseRect.preciseX, request.getExtendedData(), true, -1);
@@ -293,7 +294,7 @@ public int snapResizeRequest(ChangeBoundsRequest request, PrecisionRectangle bas
 				resize.preciseHeight += (2 * bottom);
 				move.preciseY -= bottom;
 			}
-		} else if ((request.getResizeDirection() & SOUTH) != 0) {
+		} else if ((dir & SOUTH) != 0 && (snapOrientation & SOUTH) != 0) {
 			// south
 			double bottom = getCorrectionFor(getHorizontalGuides(), 
 					baseRect.preciseBottom(), request.getExtendedData(), false, 1);
@@ -302,7 +303,7 @@ public int snapResizeRequest(ChangeBoundsRequest request, PrecisionRectangle bas
 				snapOrientation &= ~SOUTH;
 				resize.preciseHeight += bottom;
 			}
-		} else if ((request.getResizeDirection() & NORTH) != 0) {	
+		} else if ((dir & NORTH) != 0 && (snapOrientation & NORTH) != 0) {	
 			// north
 			double topCorrection = getCorrectionFor(getHorizontalGuides(), 
 					baseRect.preciseY, request.getExtendedData(), false, -1);

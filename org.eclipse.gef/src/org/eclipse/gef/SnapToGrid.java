@@ -139,11 +139,11 @@ public int snapResizeRequest(ChangeBoundsRequest request, PrecisionRectangle bas
 				resize.preciseWidth -= (2 * rightCorrection);
 				move.preciseX += rightCorrection;
 			}
-		} else if ((dir & EAST) != 0) {
+		} else if ((dir & EAST) != 0 && (snapOrientation & EAST) != 0) {
 			double rightCorrection = Math.IEEEremainder(
 					baseRect.preciseRight() - origin.x, gridX);
 			resize.preciseWidth -= rightCorrection;
-		} else if ((dir & WEST) != 0) {
+		} else if ((dir & WEST) != 0 && (snapOrientation & WEST) != 0) {
 			double leftCorrection = Math.IEEEremainder(
 					baseRect.preciseX - origin.x, gridX);
 			resize.preciseWidth += leftCorrection;
@@ -161,10 +161,10 @@ public int snapResizeRequest(ChangeBoundsRequest request, PrecisionRectangle bas
 				resize.preciseHeight -= (bottom * 2);
 				move.preciseY += bottom;
 			}
-		} else if ((dir & SOUTH) != 0) {
+		} else if ((dir & SOUTH) != 0 && (snapOrientation & SOUTH) != 0) {
 			double bottom = Math.IEEEremainder(baseRect.preciseBottom() - origin.y, gridY);
 			resize.preciseHeight -= bottom;
-		} else if ((dir & NORTH) != 0) {
+		} else if ((dir & NORTH) != 0 && (snapOrientation & NORTH) != 0) {
 			double topCorrection = Math.IEEEremainder(baseRect.preciseY - origin.y, gridY);
 			resize.preciseHeight += topCorrection;
 			move.preciseY -= topCorrection;
