@@ -3,5 +3,6 @@
     <classpathentry kind="src" path="src"/>
     <classpathentry kind="var" path="JRE_LIB" rootpath="JRE_SRCROOT" sourcepath="JRE_SRC"/>
     <classpathentry kind="src" path="/org.eclipse.draw2d"/>
+    <classpathentry kind="src" path="sandbox"/>
     <classpathentry kind="output" path="bin"/>
 </classpath>

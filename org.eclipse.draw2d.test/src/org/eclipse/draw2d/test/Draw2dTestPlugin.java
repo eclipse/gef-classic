@@ -8,27 +8,15 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.gef.test;
+package org.eclipse.draw2d.test;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import org.eclipse.core.runtime.IPluginDescriptor;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 
-/**
- * The main test suite for GEF.
- * @author Eric Bordeau
- */
-public class GEFTestSuite extends TestSuite {
+public class Draw2dTestPlugin extends AbstractUIPlugin {
 
-public static Test suite() {
-	return new GEFTestSuite();
-}
-
-/**
- * Constructs a new GEFTestSuite. Add any JUnit tests to the suite here.
- */
-public GEFTestSuite() {
-	addTest(new TestSuite(BogusTest.class));
+public Draw2dTestPlugin(IPluginDescriptor descriptor) {
+	super(descriptor);
 }
 
 }
-

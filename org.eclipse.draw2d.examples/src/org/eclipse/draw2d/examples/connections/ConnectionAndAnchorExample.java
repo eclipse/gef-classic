@@ -133,6 +133,6 @@ protected IFigure getContents() {
 				Figure f = ((Figure)e.getSource());
 				f.setBounds(f.getBounds().getTranslated(delta.width, delta.height));
 		  }
-	};
+	}
 
 }

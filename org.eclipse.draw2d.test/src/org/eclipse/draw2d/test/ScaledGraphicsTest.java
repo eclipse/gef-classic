@@ -1,21 +1,22 @@
-package zoom;
+package org.eclipse.draw2d.test;
 
-import org.eclipse.draw2d.*;
-import org.eclipse.swt.graphics.*;
-
-import junit.framework.Assert;
 import junit.framework.TestCase;
 
-public class ZoomGraphicsTest
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
+
+import org.eclipse.draw2d.*;
+
+public class ScaledGraphicsTest
 	extends TestCase
 {
 
 Image image = new Image(null, 600,600);
 GC gc= new GC(image);
 Graphics dest = new SWTGraphics(gc);
-ZoomGraphics zoom = new ZoomGraphics(dest);
+ScaledGraphics zoom = new ScaledGraphics(dest);
 
-public ZoomGraphicsTest(String name) {
+public ScaledGraphicsTest(String name) {
 	super(name);
 }
 
@@ -204,7 +205,7 @@ public void testSetXORMode() {
 public void testTranslate() {
 }
 
-public void testZoomGraphics() {
+public void testScaledGraphics() {
 }
 
 public void testGetCachedFont() {

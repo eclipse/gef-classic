@@ -89,7 +89,6 @@ public void layout(IFigure f) {
 	else
 		contentsLocation.x -= leftInset;
 	
-	;
 	int adjust =
 		branchBounds.width
 			- Rectangle.SINGLETON.setBounds(contentsLocation).union(nodeLocation).width;

@@ -8,7 +8,6 @@ import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Point;
 
 public class AllFigureZoomTest {
 

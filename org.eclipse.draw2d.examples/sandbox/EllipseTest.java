@@ -1,9 +1,9 @@
 
-import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+
+import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.geometry.Dimension;
 
 public class EllipseTest {
 

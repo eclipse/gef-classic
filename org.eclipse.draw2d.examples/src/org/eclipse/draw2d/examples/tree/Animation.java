@@ -93,7 +93,7 @@ static boolean playbackState(IFigure container) {
 			(int)Math.round(progress * rect2.height + (1-progress) * rect1.height)
 		));
 //		child.invalidate();
-	};
+	}
 	return true;
 }
 
