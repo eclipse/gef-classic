@@ -293,7 +293,7 @@ public int snapRectangle(Request request, int snapOrientation,
 	PrecisionRectangle correction = new PrecisionRectangle();
 	makeRelative(container.getContentPane(), correction);
 
-	//Recaculate snapping locations if needed
+	//Recalculate snapping locations if needed
 	boolean isClone = request.getType().equals(RequestConstants.REQ_CLONE);
 	if (rows == null || cols == null || isClone != cachedCloneBool) {
 		cachedCloneBool = isClone;
