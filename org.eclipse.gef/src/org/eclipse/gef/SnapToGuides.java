@@ -113,6 +113,14 @@ public boolean snapMoveRequest(ChangeBoundsRequest request,	PrecisionRectangle b
 	double ycorrect = getCorrectionFor(getHorizontalGuides(), baseRect.preciseY,
 			baseRect.preciseBottom(), request.getExtendedData(), false);
 
+	// If there are more than one edit parts being moved, detach them from all guides.
+	if (request.getEditParts().size() > 1) {
+		request.getExtendedData().remove(HORIZONTAL_GUIDE);
+		request.getExtendedData().remove(HORIZONTAL_ANCHOR);
+		request.getExtendedData().remove(VERTICAL_GUIDE);
+		request.getExtendedData().remove(VERTICAL_ANCHOR);
+	}
+	
 	//If neither value is being corrected, return false
 	if (xcorrect == THRESHOLD && ycorrect == THRESHOLD)
 		return false;
@@ -127,9 +135,6 @@ public boolean snapMoveRequest(ChangeBoundsRequest request,	PrecisionRectangle b
 	move.updateInts();
 	fig.translateToAbsolute(move);
 	request.setMoveDelta(move);
-	// If there are more than one edit parts being moved, detach them from all guides.
-	if (request.getEditParts().size() > 1)
-		request.getExtendedData().clear();
 	return true;
 
 }
@@ -151,7 +156,7 @@ public boolean snapResizeRequest(ChangeBoundsRequest request, PrecisionRectangle
 
 	boolean change = false;
 	/*
-	 * In order to preserve connections to guides, there can be no optimizations.
+	 * In order to preserve attachments to guides, there can be no optimizations.
 	 * getCorrectionFor(...) must be invoked for all directions, not just along the ones
 	 * that are being resized.
 	 */
@@ -186,18 +191,22 @@ public boolean snapResizeRequest(ChangeBoundsRequest request, PrecisionRectangle
 		move.preciseY += topCorrection;
 	}
 
+	// If there are more than one edit parts being resized, detach them from all guides.
+	if (request.getEditParts().size() > 1) {
+		request.getExtendedData().remove(HORIZONTAL_GUIDE);
+		request.getExtendedData().remove(HORIZONTAL_ANCHOR);
+		request.getExtendedData().remove(VERTICAL_GUIDE);
+		request.getExtendedData().remove(VERTICAL_ANCHOR);
+	}
+
 	if (!change)
 		return false;
 	fig.translateToAbsolute(resize);
 	fig.translateToAbsolute(move);
 	resize.updateInts();	
 	move.updateInts();
-
 	request.setSizeDelta(resize);
 	request.setMoveDelta(move);
-	// If there are more than one edit parts being resized, detach them from all guides.
-	if (request.getEditParts().size() > 1)
-		request.getExtendedData().clear();
 	return true;
 }
 
