@@ -5,13 +5,15 @@ package org.eclipse.gef.examples.logicdesigner.edit;
  * US Government Users Restricted Rights - Use, duplication or disclosure
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
-
+ 
+import org.eclipse.draw2d.Connection;
 import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.gef.commands.Command;
-import org.eclipse.gef.examples.logicdesigner.model.*;
-import org.eclipse.gef.examples.logicdesigner.model.commands.*;
 
+import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.requests.BendpointRequest;
+
+import org.eclipse.gef.examples.logicdesigner.model.Wire;
+import org.eclipse.gef.examples.logicdesigner.model.commands.*;
 
 public class WireBendpointEditPolicy 
 	extends org.eclipse.gef.editpolicies.BendpointEditPolicy
@@ -20,9 +22,18 @@ public class WireBendpointEditPolicy
 protected Command getCreateBendpointCommand(BendpointRequest request) {
 	CreateBendpointCommand com = new CreateBendpointCommand();
 	Point p = request.getLocation();
+	Connection conn = getConnection();
+	
+	conn.translateToRelative(p);
+	
 	com.setLocation(p);
 	Point ref1 = getConnection().getSourceAnchor().getReferencePoint();
 	Point ref2 = getConnection().getTargetAnchor().getReferencePoint();
+	
+	conn.translateToRelative(ref1);
+	conn.translateToRelative(ref2);
+	
+	
 	com.setRelativeDimensions(p.getDifference(ref1),
 					p.getDifference(ref2));
 	com.setWire((Wire)request.getSource().getModel());
@@ -33,9 +44,18 @@ protected Command getCreateBendpointCommand(BendpointRequest request) {
 protected Command getMoveBendpointCommand(BendpointRequest request) {
 	MoveBendpointCommand com = new MoveBendpointCommand();
 	Point p = request.getLocation();
+	Connection conn = getConnection();
+	
+	conn.translateToRelative(p);
+	
 	com.setLocation(p);
+	
 	Point ref1 = getConnection().getSourceAnchor().getReferencePoint();
 	Point ref2 = getConnection().getTargetAnchor().getReferencePoint();
+	
+	conn.translateToRelative(ref1);
+	conn.translateToRelative(ref2);
+	
 	com.setRelativeDimensions(p.getDifference(ref1),
 					p.getDifference(ref2));
 	com.setWire((Wire)request.getSource().getModel());
