@@ -34,7 +34,13 @@ import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 
 /**
  * A RulerComposite is used to show rulers to the north and west of the control of a
- * given {@link #setGraphicalViewer(ScrollingGraphicalViewer) graphical viewer}.
+ * given {@link #setGraphicalViewer(ScrollingGraphicalViewer) graphical viewer}.  The
+ * rulers will be shown based on whether or not 
+ * {@link org.eclipse.gef.rulers.RulerProvider#PROPERTY_HORIZONTAL_RULER horizontal ruler} 
+ * and {@link org.eclipse.gef.rulers.RulerProvider#PROPERTY_VERTICAL_RULER vertical ruler}
+ * properties are set on the given viewer, and the value of the 
+ * {@link org.eclipse.gef.rulers.RulerProvider#PROPERTY_RULER_VISIBILITY visibility} 
+ * property.
  * 
  * @author Pratik Shah
  * @since 3.0
@@ -223,7 +229,8 @@ public void layout(boolean change) {
  * <p>
  * To create ruler(s), simply add the RulerProvider(s) (with the right key: 
  * RulerProvider.PROPERTY_HORIZONTAL_RULER or RulerProvider.PROPERTY_VERTICAL_RULER) 
- * as a property on the given viewer (it can be done after this method is invoked).
+ * as a property on the given viewer.  It can be done after this method is invoked.
+ * RulerProvider.PROPERTY_RULER_VISIBILITY can be used to show/hide the rulers.
  * 
  * @param	primaryViewer	The graphical viewer for which the rulers have to be created
  */
