@@ -15,11 +15,6 @@ public static final int STYLE_NORMAL = 2;
 
 int aligment = PositionConstants.CENTER;
 
-/*
- * A layer is being used simply because it is the only "transparent" figure in draw2d. See
- * the implementation of Layer.containsPoint(...) for what is meant by "transparent". If a
- * layer is not used, then overlapping branches will cause hit-test problems.
- */
 IFigure contents = new Layer();
 
 IFigure node;
