@@ -77,11 +77,9 @@ protected void paintFigure(Graphics graphics) {
 }
 
 /**
- * Helper method that can fill a rectangle of given dimensions with a checkered pattern
- * using the foreground and background colors of the given Graphics object.
- *  * @param graphics	The Graphics object used to paint * @param x		The x location starting from where the pattern has to be drawn * @param y		The y location starting from where the pattern has to be drawn * @param width	The width of the pattern * @param height	The height of the pattern */
+ * Draws a checkered pattern to emulate a toggle button that is in the selected state.
+ *  * @param graphics	The Graphics object used to paint */
 protected void fillCheckeredRectangle(Graphics graphics) {
-
 	graphics.setBackgroundColor(ColorConstants.button);
 	graphics.setForegroundColor(ColorConstants.buttonLightest);
 	Rectangle rect = getClientArea(Rectangle.SINGLETON).crop(new Insets(1, 1, 0, 0));

@@ -13,14 +13,25 @@ import org.eclipse.draw2d.text.TextFlow;
 import org.eclipse.draw2d.util.ImageDataHelper;
 
 /**
+ * A customized figure used to represent entries in the GEF Palette.
+ * 
  * @author Pratik Shah
  */
 public class DetailedLabelFigure 
 	extends Figure 
 {
 
+/**
+ * Constant that indicates that this figure is not selected
+ */
 public static final int NOT_SELECTED = 0;
+/**
+ * Constant that indicates that this figure is selected and has focus
+ */
 public static final int SELECTED_WITH_FOCUS = 1;
+/**
+ * Constant that indicates that this figure is selected but does not have focus
+ */
 public static final int SELECTED_WITHOUT_FOCUS = 2;
 
 private Image shadedIcon;
@@ -30,6 +41,9 @@ private TextFlow text;
 private boolean useLargeIcons;
 private int selectionState, layoutMode = -1;
 
+/**
+ * Constructor
+ */
 public DetailedLabelFigure() {
 	image = new SelectableImageFigure();
 	image.setAlignment(PositionConstants.NORTH);
@@ -45,11 +59,16 @@ public DetailedLabelFigure() {
 	setLayoutManager(layout);
 }
 
+/** * @return whether this figure is selected or not */
 public boolean isSelected() {
 	return selectionState == SELECTED_WITH_FOCUS 
 	     || selectionState == SELECTED_WITHOUT_FOCUS;
 }
 
+/**
+ * Sets the icon for this figure
+ * 
+ * @param icon The new image */
 public void setImage(Image icon) {
 	image.setImage(icon);
 }

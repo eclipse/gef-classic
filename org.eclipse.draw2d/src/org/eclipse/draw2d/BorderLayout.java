@@ -11,10 +11,25 @@ public class BorderLayout
 	extends AbstractHintLayout 
 {
 
+/**
+ * Constant to be used as a constraint for child figures
+ */
 public static final Integer CENTER = new Integer(PositionConstants.CENTER);
+/**
+ * Constant to be used as a constraint for child figures
+ */
 public static final Integer TOP = new Integer(PositionConstants.TOP);
+/**
+ * Constant to be used as a constraint for child figures
+ */
 public static final Integer BOTTOM = new Integer(PositionConstants.BOTTOM);
+/**
+ * Constant to be used as a constraint for child figures
+ */
 public static final Integer LEFT = new Integer(PositionConstants.LEFT);
+/**
+ * Constant to be used as a constraint for child figures
+ */
 public static final Integer RIGHT = new Integer(PositionConstants.RIGHT);
 
 private IFigure center, left, top, bottom, right;
@@ -28,7 +43,7 @@ protected Dimension calculateMinimumSize(IFigure container, int wHint, int hHint
 	if (wHint < 0) {
 		minWHint = -1;
 	}
-	if (hHint < 0){
+	if (hHint < 0) {
 		minHHint = -1;
 	}
 	Insets border = container.getInsets();
@@ -89,7 +104,7 @@ protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHi
 	if (wHint < 0) {
 		minWHint = -1;
 	}
-	if (hHint < 0){
+	if (hHint < 0) {
 		minHHint = -1;
 	}
 	Insets border = container.getInsets();
@@ -252,7 +267,7 @@ public void remove(IFigure child) {
 public void setConstraint(IFigure child, Object constraint) {
 	remove(child);
 	super.setConstraint(child, constraint);
-	if( constraint == null ){
+	if (constraint == null) {
 		return;
 	}
 	
