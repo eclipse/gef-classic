@@ -16,7 +16,9 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IEditorPart;
 
 import org.eclipse.draw2d.PositionConstants;
+import org.eclipse.draw2d.geometry.PrecisionRectangle;
 import org.eclipse.draw2d.geometry.Rectangle;
+
 import org.eclipse.gef.*;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CompoundCommand;
@@ -62,7 +64,7 @@ protected Rectangle calculateAlignmentRectangle(Request request) {
 	if (editparts == null || editparts.isEmpty())
 		return null;
 	GraphicalEditPart part = (GraphicalEditPart)editparts.get(editparts.size()-1);
-	Rectangle rect = part.getFigure().getBounds().getCopy();
+	Rectangle rect = new PrecisionRectangle(part.getFigure().getBounds());
 	part.getFigure().translateToAbsolute(rect);
 	return rect;
 }

@@ -11,17 +11,88 @@
 package org.eclipse.gef.requests;
 
 import org.eclipse.draw2d.PositionConstants;
+import org.eclipse.draw2d.geometry.PrecisionRectangle;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 public class AlignmentRequest extends ChangeBoundsRequest {
 
-private Rectangle alignmentRect;
 private int alignment;
+private Rectangle alignmentRect;
 
 public AlignmentRequest() {}
 
 public AlignmentRequest(Object type) {
 	super(type);
+}
+
+private void doNormalAlignment(Rectangle result, Rectangle reference) {
+	switch (alignment) {
+		case PositionConstants.LEFT: {
+			result.x = reference.x;
+			break;
+		}
+		case PositionConstants.RIGHT: {
+			result.x = reference.x + reference.width - result.width;
+			break;
+		}
+		case PositionConstants.TOP: {
+			result.y = reference.y;
+			break;
+		}
+		case PositionConstants.BOTTOM: {
+			result.y = reference.y + reference.height - result.height;
+			break;
+		}
+		case PositionConstants.CENTER: {
+			result.x = reference.x + (reference.width / 2) - (result.width / 2);
+			break;
+		}
+		case PositionConstants.MIDDLE: {
+			result.y = reference.y + (reference.height / 2) - (result.height / 2);
+			break;
+		}
+	}
+}
+
+private void doPrecisionAlignment(
+	PrecisionRectangle result,
+	PrecisionRectangle reference) {
+	switch (alignment) {
+		case PositionConstants.LEFT: {
+			result.setX(reference.preciseX);
+			break;
+		}
+		case PositionConstants.RIGHT: {
+			result.setX(
+				reference.preciseX + reference.preciseWidth - result.preciseWidth);
+			break;
+		}
+		case PositionConstants.TOP: {
+			result.setY(reference.preciseY);
+			break;
+		}
+		case PositionConstants.BOTTOM: {
+			result.setY(
+				reference.preciseY + reference.preciseHeight - result.preciseHeight);
+			break;
+		}
+		case PositionConstants.CENTER: {
+			result.setX(
+				reference.preciseX
+					+ (reference.preciseWidth / 2)
+					- (result.preciseWidth / 2));
+			break;
+		}
+		case PositionConstants.MIDDLE: {
+			result.setY(
+				reference.preciseY
+					+ (reference.preciseHeight / 2)
+					- (result.preciseHeight / 2));
+			break;
+		}
+	}
+
+	
 }
 
 public int getAlignment() {
@@ -33,36 +104,21 @@ public Rectangle getAlignmentRectangle() {
 }
 
 public Rectangle getTransformedRectangle(Rectangle rect) {
-	if (getAlignmentRectangle() == null)
-		return rect;
-	Rectangle changed = new Rectangle(rect);
-	switch (alignment) {
-		case PositionConstants.LEFT: {
-			changed.x = getAlignmentRectangle().x;
-			break;
-		}
-		case PositionConstants.RIGHT: {
-			changed.x = getAlignmentRectangle().x + getAlignmentRectangle().width - changed.width;
-			break;
-		}
-		case PositionConstants.TOP: {
-			changed.y = getAlignmentRectangle().y;
-			break;
-		}
-		case PositionConstants.BOTTOM: {
-			changed.y = getAlignmentRectangle().y + getAlignmentRectangle().height - changed.height;
-			break;
-		}
-		case PositionConstants.CENTER: {
-			changed.x = getAlignmentRectangle().x + (getAlignmentRectangle().width / 2) - (changed.width / 2);
-			break;
-		}
-		case PositionConstants.MIDDLE: {
-			changed.y = getAlignmentRectangle().y + (getAlignmentRectangle().height / 2) - (changed.height / 2);
-			break;
-		}
-	}
-	return changed;
+	Rectangle result = rect.getCopy();
+	Rectangle reference = getAlignmentRectangle();
+
+	if (result instanceof PrecisionRectangle) {
+		if (reference instanceof PrecisionRectangle)
+			doPrecisionAlignment(
+				(PrecisionRectangle)result,
+				(PrecisionRectangle)reference);
+		else
+			doPrecisionAlignment(
+				(PrecisionRectangle)result,
+				new PrecisionRectangle(reference));
+	} else
+		doNormalAlignment(result, reference);
+	return result;
 }
 
 public void setAlignment(int align) {
