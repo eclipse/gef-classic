@@ -42,6 +42,15 @@ public PointList(int size) {
 	points = new int[size * 2];
 }
 
+/**
+ * Appends all of the given points to this PointList.
+ * @param source the source pointlist
+ */
+public void addAll(PointList source) {
+	ensureCapacity(size + source.size);
+	System.arraycopy(source.points, 0, points, size * 2, source.size * 2);
+	size += source.size;
+}
 	
 /** 
  * Adds Point <i>p</i> to this PointList.
@@ -60,16 +69,20 @@ public void addPoint(Point p) {
  */
 public void addPoint(int x, int y) {
 	bounds = null;
-	int arrayLength = points.length;
-	int usedLength = size * 2;
-	if (arrayLength == usedLength) {
-		int old[] = points;
-		points = new int[arrayLength + 2];
-		System.arraycopy(old, 0, points, 0, arrayLength);
-	}
-	points[usedLength]   = x;
-	points[usedLength + 1] = y;
+	int index = size * 2;
+	ensureCapacity(size + 1);
+	points[index]   = x;
+	points[index + 1] = y;
 	size++;
+}
+
+private void ensureCapacity(int newSize) {
+	if (size < newSize) {
+		int old[] = points;
+		newSize = Math.max(newSize, size * 3 / 2);
+		points = new int[newSize * 2];
+		System.arraycopy(old, 0, points, 0, size * 2);
+	}
 }
 
 /** 
@@ -290,9 +303,10 @@ public int size() {
 }
 
 /** 
- * Returns the contents of this PointList as an integer array.
+ * Returns the contents of this PointList as an integer array.  The returned array is by
+ * reference.  Any changes made to the array will also be changing the original PointList.
  * 
- * @return  The points in the list as an array of integers.
+ * @return the integer array of points by reference
  * @since 2.0
  */
 public int[] toIntArray() {

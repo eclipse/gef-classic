@@ -76,9 +76,6 @@ protected abstract Command createMoveChildCommand(EditPart child, EditPart after
 protected Command getAddCommand(Request req) {
 	ChangeBoundsRequest request = (ChangeBoundsRequest)req;
 	List editParts = request.getEditParts();
-	Point where = request.getLocation();
-	IFigure f = ((GraphicalEditPart)getHost()).getFigure();
-	where = where.getTranslated(f.getBounds().getTopLeft());
 	CompoundCommand command = new CompoundCommand();
 	for (int i = 0; i < editParts.size(); i++) {
 		EditPart child = (EditPart) editParts.get(i);
