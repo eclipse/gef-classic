@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.eclipse.gef.*;
 import org.eclipse.gef.requests.DirectEditRequest;
+import org.eclipse.gef.requests.SelectionRequest;
 
 import org.eclipse.swt.graphics.Cursor;
 
@@ -47,10 +48,10 @@ protected EditPart getSourceEditPart() {
 }
 
 protected boolean handleButtonDown(int button) {
-	if (button == 3 || button == 1) {
-		if (isInState(STATE_INITIAL))
-			performConditionalSelection();
-	}
+	if ((button == 3 || button == 1)
+	  && isInState(STATE_INITIAL))
+		performConditionalSelection();
+
 	if (button != 1) {
 		setState(STATE_INVALID);
 		if (button == 3)
@@ -64,14 +65,8 @@ protected boolean handleButtonDown(int button) {
 protected boolean handleButtonUp(int button) {
 	if (isInState(STATE_DRAG)) {
 		performSelection();
-		if (getFlag(FLAG_ENABLE_DIRECT_EDIT)) {
-			DirectEditRequest req = new DirectEditRequest();
-			req.setLocation(getCurrentInput().getMouseLocation());
-			new DelayedDirectEditHelper(
-				getSourceEditPart().getViewer(),
-				req,
-				getSourceEditPart());
-		}
+		if (getFlag(FLAG_ENABLE_DIRECT_EDIT))
+			performDirectEdit();
 		if (button == 1 && getSourceEditPart().getSelected() != EditPart.SELECTED_NONE)
 			getCurrentViewer().reveal(getSourceEditPart());
 		setState(STATE_TERMINAL);
@@ -81,7 +76,8 @@ protected boolean handleButtonUp(int button) {
 }
 
 protected boolean handleDoubleClick(int button) {
-	performDirectEdit();
+	if (button == 1)
+		performOpen();
 	return true;
 }
 
@@ -105,8 +101,18 @@ protected void performConditionalSelection() {
 }
 
 protected void performDirectEdit() {
-	DirectEditRequest request = new DirectEditRequest();
+	DirectEditRequest req = new DirectEditRequest();
+	req.setLocation(getCurrentInput().getMouseLocation());
+	new DelayedDirectEditHelper(
+		getSourceEditPart().getViewer(),
+		req,
+		getSourceEditPart());
+}
+
+protected void performOpen() {
+	SelectionRequest request = new SelectionRequest();
 	request.setLocation(getLocation());
+	request.setType(RequestConstants.REQ_OPEN);
 	getSourceEditPart().performRequest(request);
 }
 
