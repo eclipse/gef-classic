@@ -110,4 +110,12 @@ public void setTruncated(boolean value) {
 	this.truncated = value;
 }
 
+/**
+ * @see java.lang.Object#toString()
+ */
+public String toString() {
+	return "[" + offset + ", " + (offset + length) //$NON-NLS-1$ $NON-NLS- 2$
+		+ ") = \"" + textflow.getText().substring(offset, offset + length) + '\"'; //$NON-NLS-1$ 
+}
+
 }

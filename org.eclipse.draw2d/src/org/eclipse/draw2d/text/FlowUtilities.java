@@ -185,7 +185,7 @@ public static int wrapFragmentInContext(TextFragmentBox frag, String string,
 		frag.setWidth(-1);
 		frag.length = 0;
 		setupFragment(frag, font, string);
-//		context.addToCurrentLine(frag);
+		context.addToCurrentLine(frag);
 		return 0;
 	}
 	
@@ -260,7 +260,7 @@ public static int wrapFragmentInContext(TextFragmentBox frag, String string,
 	}
 	
 	int result = min;
- 
+	boolean continueOnLine = false;
 	if (min == strLen) {
 		//Everything fits
 		if (string.charAt(strLen - 1) == ' ') {
@@ -273,8 +273,10 @@ public static int wrapFragmentInContext(TextFragmentBox frag, String string,
 				frag.setWidth(-1);
 			} else
 				frag.length = result;
-		} else
+		} else {
+			continueOnLine = !canBreakAfter(string.charAt(strLen - 1));
 			frag.length = result;
+		}
 	} else if (min == firstDelimiter) {
 		//move result past the delimiter
 		frag.length = result;
@@ -331,6 +333,8 @@ public static int wrapFragmentInContext(TextFragmentBox frag, String string,
 	}
 	
 	setupFragment(frag, font, string);
+	context.addToCurrentLine(frag);
+	context.setContinueOnSameLine(continueOnLine);
 	return result;
 }
 
