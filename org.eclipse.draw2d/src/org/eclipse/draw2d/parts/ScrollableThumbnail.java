@@ -183,7 +183,10 @@ private class ClickScrollerAndDragTransferrer
 		Point scrollPoint = me.getLocation()
 							.getTranslated(getLocation().getNegated())
 							.translate(selectorCenter.negate())
-							.scale(1.0f / getViewportScaleX(), 1.0f / getViewportScaleY());
+							.scale(1.0f / getViewportScaleX(), 1.0f / getViewportScaleY())
+							.translate(
+									viewport.getHorizontalRangeModel().getMinimum(), 
+									viewport.getVerticalRangeModel().getMinimum());
 		viewport.setViewLocation(scrollPoint);
 		syncher.mousePressed(me);
 		dragTransfer = true;
