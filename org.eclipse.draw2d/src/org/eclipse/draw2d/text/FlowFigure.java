@@ -47,7 +47,8 @@ public FlowFigure() {
 public void add(IFigure child, Object constraint, int index) {
 	super.add(child, constraint, index);
 	FlowFigure ff = (FlowFigure) child;
-	ff.setFlowContext((FlowContext)getLayoutManager());
+	if (getLayoutManager() instanceof FlowContext)
+		ff.setFlowContext((FlowContext)getLayoutManager());
 	revalidateBidi(this);
 }
 
