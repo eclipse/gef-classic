@@ -431,8 +431,8 @@ public Object getAdapter(Class type){
 		outlinePage = new OutlinePage(new TreeViewer());
 		return outlinePage;
 	}
-//	if (type == PaletteViewPage.class) {
-//		return new PaletteViewPage() {
+//	if (type == DefaultPalettePage.class) {
+//		return new DefaultPalettePage() {
 //			public void createControl(Composite parent) {
 //				createPaletteViewer(parent);
 //			}
@@ -577,9 +577,9 @@ protected void createActions() {
 	getSelectionActions().add(action.getId());
 }
 
-public void createPartControl(Composite parent) {
-	createGraphicalViewer(parent);
-}
+//public void createPartControl(Composite parent) {
+//	createGraphicalViewer(parent);
+//}
 
 /* (non-Javadoc)
  * @see org.eclipse.gef.ui.parts.GraphicalEditor#createGraphicalViewer(org.eclipse.swt.widgets.Composite)
