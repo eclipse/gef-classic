@@ -159,7 +159,7 @@ public static interface SCHEMES {
 		),
 		TOOLBAR = new ButtonScheme(
 			new Color[]{buttonLightest},
-			new Color[]{buttonDarkest}
+			new Color[]{buttonDarker}
 		),
 		BUTTON_SCROLLBAR = new ButtonScheme(
 			new Color[]{button, buttonLightest},
