@@ -1,7 +1,6 @@
 package org.eclipse.gef;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.PositionConstants;
@@ -9,6 +8,7 @@ import org.eclipse.draw2d.geometry.*;
 
 import org.eclipse.gef.handles.HandleBounds;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
+import org.eclipse.gef.requests.CreateRequest;
 
 /**
  * @author Randy Hudson
@@ -38,22 +38,6 @@ private Entry cols[];
 
 public SnapToGeometry(GraphicalEditPart container) {
 	this.container = container;
-	List children = container.getChildren();
-	rows = new Entry[children.size() * 3];
-	cols = new Entry[children.size() * 3];
-	for (int i = 0; i < children.size(); i++) {
-		GraphicalEditPart child = (GraphicalEditPart)children.get(i);
-		IFigure figure = child.getFigure();
-		Rectangle bounds = figure.getBounds();
-		if (figure instanceof HandleBounds)
-			bounds = ((HandleBounds)figure).getHandleBounds();
-		cols[i * 3] = new Entry(-1, bounds.x);
-		rows[i * 3] = new Entry(-1, bounds.y);
-		cols[i * 3 + 1] = new Entry(0, bounds.x + bounds.width / 2);
-		rows[i * 3 + 1] = new Entry(0, bounds.y + bounds.height / 2);
-		cols[i * 3 + 2] = new Entry(1, bounds.right());
-		rows[i * 3 + 2] = new Entry(1, bounds.bottom());
-	}
 }
 
 /**
@@ -66,9 +50,9 @@ public SnapToGeometry(GraphicalEditPart container) {
  */
 private double getCorrectionFor(Entry entries[], Map extendedData, boolean vert, 
                                 double near, double far) {
-	double result = getCorrectionFor(entries, extendedData, vert, near, -1);
+	double result = getCorrectionFor(entries, extendedData, vert, (near + far) / 2, 0);
 	if (result == THRESHOLD)
-		result = getCorrectionFor(entries, extendedData, vert, (near + far) / 2, 0);
+		result = getCorrectionFor(entries, extendedData, vert, near, -1);
 	if (result == THRESHOLD)
 		result = getCorrectionFor(entries, extendedData, vert, far, 1);
 	return result;
@@ -120,92 +104,147 @@ private double getCorrectionFor(Entry entries[], Map extendedData, boolean vert,
 	return result;
 }
 
+private void populateRowsAndCols(List exclude, Rectangle srcRect) {
+	List children = new ArrayList(container.getChildren());
+	children.removeAll(exclude);
+	rows = new Entry[(children.size() + 1) * 3];
+	cols = new Entry[(children.size() + 1) * 3];
+	for (int i = 0; i < children.size(); i++) {
+		GraphicalEditPart child = (GraphicalEditPart)children.get(i);
+		IFigure figure = child.getFigure();
+		Rectangle bounds = figure.getBounds();
+		if (figure instanceof HandleBounds)
+			bounds = ((HandleBounds)figure).getHandleBounds();
+		cols[i * 3] = new Entry(-1, bounds.x);
+		rows[i * 3] = new Entry(-1, bounds.y);
+		cols[i * 3 + 1] = new Entry(0, bounds.x + bounds.width / 2);
+		rows[i * 3 + 1] = new Entry(0, bounds.y + bounds.height / 2);
+		cols[i * 3 + 2] = new Entry(1, bounds.right());
+		rows[i * 3 + 2] = new Entry(1, bounds.bottom());
+	}
+	int refIndex = cols.length;
+	cols[refIndex - 1] = new Entry(-1, srcRect.x);
+	rows[refIndex - 1] = new Entry(-1, srcRect.y);
+	cols[refIndex - 2] = new Entry(0, srcRect.x + srcRect.width / 2);
+	rows[refIndex - 2] = new Entry(0, srcRect.y + srcRect.height / 2);
+	cols[refIndex - 3] = new Entry(1, srcRect.right());
+	rows[refIndex - 3] = new Entry(1, srcRect.bottom());
+}
+
+public int snapCreateRequest(CreateRequest request, PrecisionRectangle baseRect,
+                             int snapOrientation) {
+	return snapOrientation;
+}
+
 /**
  * @see SnapToStrategy#snapMoveRequest(ChangeBoundsRequest, PrecisionRectangle)
  */
-public boolean snapMoveRequest(ChangeBoundsRequest request,	PrecisionRectangle baseRect) {
+public int snapMoveRequest(ChangeBoundsRequest request,	PrecisionRectangle baseRect,
+                           PrecisionRectangle selectionRect, int snapOrientation) {
+	populateRowsAndCols(request.getEditParts(), selectionRect);
 	PrecisionPoint move = new PrecisionPoint(request.getMoveDelta());
 	IFigure fig = container.getContentPane();
-	baseRect.translate(move);
-	fig.translateToRelative(baseRect);
+	selectionRect.translate(move);
+	fig.translateToRelative(selectionRect);
 	fig.translateToRelative(move);
 
-	double xcorrect = getCorrectionFor(cols, request.getExtendedData(), true, 
-			baseRect.preciseX, baseRect.preciseRight());
-	double ycorrect = getCorrectionFor(rows, request.getExtendedData(), false, 
-			baseRect.preciseY, baseRect.preciseBottom());
+	double xcorrect = THRESHOLD, ycorrect = THRESHOLD;
+	if ((snapOrientation & SNAP_VERTICAL) != 0)
+		xcorrect = getCorrectionFor(cols, request.getExtendedData(), true, 
+				selectionRect.preciseX, selectionRect.preciseRight());
+	if ((snapOrientation & SNAP_HORIZONTAL) != 0)
+		ycorrect = getCorrectionFor(rows, request.getExtendedData(), false, 
+				selectionRect.preciseY, selectionRect.preciseBottom());
 
 	//If neither value is being corrected, return false
 	if (xcorrect == THRESHOLD && ycorrect == THRESHOLD)
-		return false;
+		return snapOrientation;
 
-	if (ycorrect == THRESHOLD)
-		ycorrect = 0.0;
-	else if (xcorrect == THRESHOLD)
-		xcorrect = 0.0;
+	if (xcorrect != THRESHOLD)
+		// Clear the SNAP_VERTICAL flag
+		snapOrientation = snapOrientation & SNAP_HORIZONTAL;
+	if (ycorrect != THRESHOLD)
+		// Clear the SNAP_HORIZONTAL flag
+		snapOrientation = snapOrientation & SNAP_VERTICAL;
 	
+	if (ycorrect == THRESHOLD)  {
+		ycorrect = 0.0;
+	} else if (xcorrect == THRESHOLD) {
+		xcorrect = 0.0;
+	}
+		
 	move.preciseX += xcorrect;
 	move.preciseY += ycorrect;
 	move.updateInts();
 	fig.translateToAbsolute(move);
 	request.setMoveDelta(move);
 	
-	return true;
+	return snapOrientation;
 }
 
 /**
  * @see SnapToStrategy#snapResizeRequest(ChangeBoundsRequest, PrecisionRectangle)
  */
-public boolean snapResizeRequest(ChangeBoundsRequest request, PrecisionRectangle baseRec) {
+public int snapResizeRequest(ChangeBoundsRequest request, PrecisionRectangle baseRect,
+                             PrecisionRectangle selectionRect, int snapOrientation) {
 	int dir = request.getResizeDirection();
-
 	PrecisionDimension resize = new PrecisionDimension(request.getSizeDelta());
 	PrecisionPoint move = new PrecisionPoint(request.getMoveDelta());
-
 	IFigure fig = container.getContentPane();
-	baseRec.resize(resize);
-	baseRec.translate(move);
+
+	populateRowsAndCols(request.getEditParts(), baseRect);	
 	
-	fig.translateToRelative(baseRec);
+	baseRect.resize(resize);
+	baseRect.translate(move);
+	
+	fig.translateToRelative(baseRect);
 	fig.translateToRelative(resize);
 	fig.translateToRelative(move);
 
-	boolean change = false;
-	if ((dir & PositionConstants.EAST) != 0) {
-		double rightCorrection = getCorrectionFor(cols, request.getExtendedData(), true,
-				baseRec.preciseRight(), 1);
-		if (rightCorrection != THRESHOLD) {
-			change = true;
-			resize.preciseWidth += rightCorrection;
-		}
-	} else if ((dir & PositionConstants.WEST) != 0) {
-		double leftCorrection = getCorrectionFor(cols, request.getExtendedData(), true,
-				baseRec.preciseX, -1);
-		if (leftCorrection != THRESHOLD) {
-			change = true;
-			resize.preciseWidth -= leftCorrection;
-			move.preciseX += leftCorrection;
-		}
-	}
 	
-	if ((dir & PositionConstants.SOUTH) != 0) {
-		double bottom = getCorrectionFor(rows, request.getExtendedData(), false,
-				baseRec.preciseBottom(), 1);
-		if (bottom != THRESHOLD) {
-			change = true;
-			resize.preciseHeight += bottom;
+	boolean change = false;
+	if ((snapOrientation & SNAP_VERTICAL) != 0)
+		if ((dir & PositionConstants.EAST) != 0) {
+			double rightCorrection = getCorrectionFor(cols, request.getExtendedData(), true,
+					baseRect.preciseRight(), 1);
+			if (rightCorrection != THRESHOLD) {
+				change = true;
+				snapOrientation = snapOrientation & SNAP_HORIZONTAL;
+				resize.preciseWidth += rightCorrection;
+			}
+		} else if ((dir & PositionConstants.WEST) != 0) {
+			double leftCorrection = getCorrectionFor(cols, request.getExtendedData(), true,
+					baseRect.preciseX, -1);
+			if (leftCorrection != THRESHOLD) {
+				change = true;
+				snapOrientation = snapOrientation & SNAP_HORIZONTAL;
+				resize.preciseWidth -= leftCorrection;
+				move.preciseX += leftCorrection;
+			}
 		}
-	} else if ((dir & PositionConstants.NORTH) != 0) {
-		double topCorrection = getCorrectionFor(rows, request.getExtendedData(), false,
-				baseRec.preciseY, -1);
-		if (topCorrection != THRESHOLD) {
-			change = true;
-			resize.preciseHeight -= topCorrection;
-			move.preciseY += topCorrection;
+	
+	if ((snapOrientation & SNAP_HORIZONTAL) != 0)
+		if ((dir & PositionConstants.SOUTH) != 0) {
+			double bottom = getCorrectionFor(rows, request.getExtendedData(), false,
+					baseRect.preciseBottom(), 1);
+			if (bottom != THRESHOLD) {
+				change = true;
+				snapOrientation = snapOrientation & SNAP_VERTICAL;
+				resize.preciseHeight += bottom;
+			}
+		} else if ((dir & PositionConstants.NORTH) != 0) {
+			double topCorrection = getCorrectionFor(rows, request.getExtendedData(), false,
+					baseRect.preciseY, -1);
+			if (topCorrection != THRESHOLD) {
+				change = true;
+				snapOrientation = snapOrientation & SNAP_VERTICAL;
+				resize.preciseHeight -= topCorrection;
+				move.preciseY += topCorrection;
+			}
 		}
-	}
+	
 	if (!change)
-		return false;
+		return snapOrientation;
 	
 	fig.translateToAbsolute(resize);
 	fig.translateToAbsolute(move);
@@ -215,7 +254,7 @@ public boolean snapResizeRequest(ChangeBoundsRequest request, PrecisionRectangle
 	request.setSizeDelta(resize);
 	request.setMoveDelta(move);
 	
-	return true;
+	return snapOrientation;
 }
 
 }

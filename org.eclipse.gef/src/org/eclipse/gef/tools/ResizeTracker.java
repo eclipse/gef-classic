@@ -37,7 +37,7 @@ public class ResizeTracker
 
 private int direction;
 private GraphicalEditPart owner;
-private PrecisionRectangle sourceRect;
+private PrecisionRectangle sourceRect, compoundSrcRect;
 
 /**
  * Constructs a resize tracker that resizes in the specified direction.  The direction is
@@ -52,19 +52,6 @@ public ResizeTracker(GraphicalEditPart owner, int direction) {
 	setDisabledCursor(SharedCursors.NO);
 }
 
-/**
- * @see org.eclipse.gef.Tool#activate()
- */
-public void activate() {
-	super.activate();
-	IFigure figure = owner.getFigure();
-	if (figure instanceof HandleBounds)
-		sourceRect = new PrecisionRectangle(((HandleBounds)figure).getHandleBounds());
-	else
-		sourceRect = new PrecisionRectangle(figure.getBounds());
-	figure.translateToAbsolute(sourceRect);	
-}	
-	
 /**
  * @see org.eclipse.gef.tools.AbstractTool#commitDrag()
  */
@@ -98,6 +85,7 @@ protected Request createSourceRequest() {
  */
 public void deactivate() {
 	sourceRect = null;
+	compoundSrcRect = null;
 	super.deactivate();
 }
 
@@ -287,8 +275,32 @@ protected void updateSourceRequest() {
 	SnapToStrategy strategy = (SnapToStrategy)getTargetEditPart()
 			.getAdapter(SnapToStrategy.class);
 	
-	if (!getCurrentInput().isAltKeyDown() && strategy != null)
-		strategy.snapResizeRequest(request, sourceRect.getPreciseCopy());
+	if (!getCurrentInput().isAltKeyDown() && strategy != null) {
+		// Lazily determine the values of sourceRect and compoundSrcRect, and cache them
+		if (sourceRect == null || compoundSrcRect == null) {
+			List editparts = getOperationSet();
+			for (int i = 0; i < editparts.size(); i++) {
+				GraphicalEditPart child = (GraphicalEditPart)editparts.get(i);
+				IFigure figure = child.getFigure();
+				PrecisionRectangle bounds = null;
+				if (figure instanceof HandleBounds)
+					bounds = new PrecisionRectangle(((HandleBounds)figure).getHandleBounds());
+				else
+					bounds = new PrecisionRectangle(figure.getBounds());
+				figure.translateToAbsolute(bounds);
+	
+				if (compoundSrcRect == null)
+					compoundSrcRect = bounds;
+				else
+					compoundSrcRect = new PrecisionRectangle(compoundSrcRect.union(bounds));
+				if (child == owner)
+					sourceRect = bounds;
+			}
+		}
+		strategy.snapResizeRequest(request, sourceRect.getPreciseCopy(),
+				compoundSrcRect.getPreciseCopy(),
+				SnapToStrategy.SNAP_HORIZONTAL | SnapToStrategy.SNAP_VERTICAL);
+	}
 
 }
 

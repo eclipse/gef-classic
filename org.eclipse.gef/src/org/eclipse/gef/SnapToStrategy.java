@@ -3,11 +3,18 @@ package org.eclipse.gef;
 import org.eclipse.draw2d.geometry.PrecisionRectangle;
 
 import org.eclipse.gef.requests.ChangeBoundsRequest;
+import org.eclipse.gef.requests.CreateRequest;
 
 /**
  * @author Randy Hudson
  */
 public interface SnapToStrategy {
+
+public static final int SNAP_HORIZONTAL = 1;
+public static final int SNAP_VERTICAL = 2;
+
+int snapCreateRequest(CreateRequest request, PrecisionRectangle baseRect, 
+                      int snapOrientation);
 
 /**
  * Returns <code>true</code> if the request was modified or "snapped".  The receiver may
@@ -16,8 +23,10 @@ public interface SnapToStrategy {
  * @param request request
  * @return <code>true</code> if the request was snapped
  */
-boolean snapMoveRequest(ChangeBoundsRequest request, PrecisionRectangle baseRect);
+int snapMoveRequest(ChangeBoundsRequest request, PrecisionRectangle baseRect,
+                    PrecisionRectangle compoundRect, int snapOrientation);
 
-boolean snapResizeRequest(ChangeBoundsRequest req, PrecisionRectangle baseRec);
+int snapResizeRequest(ChangeBoundsRequest req, PrecisionRectangle baseRec,
+                      PrecisionRectangle compoundRect, int snapOrientation);
 
 }

@@ -39,9 +39,7 @@ protected static final int MAX_FLAG = FLAG_SOURCE_FEEDBACK;
 private List exclusionSet;
 private PrecisionPoint sourceRelativeStartPoint;
 private SnapToStrategy helper;
-
-private PrecisionRectangle sourceRectangle;
-
+private PrecisionRectangle sourceRectangle, compoundSrcRect;
 private boolean cloneActive;
 
 /**
@@ -77,20 +75,6 @@ private boolean acceptSHIFT(KeyEvent e) {
 	return isInState(STATE_INITIAL | STATE_DRAG | STATE_DRAG_IN_PROGRESS
 		| STATE_ACCESSIBLE_DRAG | STATE_ACCESSIBLE_DRAG_IN_PROGRESS)
 		&& e.keyCode == SWT.SHIFT;
-}
-
-/**
- * @see org.eclipse.gef.tools.AbstractTool#activate()
- */
-public void activate() {
-	super.activate();
-	IFigure figure = ((GraphicalEditPart)getSourceEditPart()).getFigure();
-	if (figure instanceof HandleBounds)
-		sourceRectangle = new PrecisionRectangle(((HandleBounds)figure).getHandleBounds());
-	else
-		sourceRectangle = new PrecisionRectangle(figure.getBounds());
-
-	figure.translateToAbsolute(sourceRectangle);
 }
 
 /**
@@ -156,6 +140,7 @@ public void deactivate() {
 	exclusionSet = null;
 	sourceRelativeStartPoint = null;
 	sourceRectangle = null;
+	compoundSrcRect = null;
 }
 
 /**
@@ -525,12 +510,37 @@ protected void updateTargetRequest() {
 	
 	request.setMoveDelta(new Point(delta.width, delta.height));
 	request.getExtendedData().clear();
+		
+	if (helper != null && !getCurrentInput().isAltKeyDown()) {
+		// Lazily determine the values of sourceRectangle and compoundSrcRect, and
+		// cache them
+		if (sourceRectangle == null || compoundSrcRect == null) {
+			List editparts = getOperationSet();
+			for (int i = 0; i < editparts.size(); i++) {
+				GraphicalEditPart child = (GraphicalEditPart)editparts.get(i);
+				IFigure figure = child.getFigure();
+				PrecisionRectangle bounds = null;
+				if (figure instanceof HandleBounds)
+					bounds = new PrecisionRectangle(((HandleBounds)figure).getHandleBounds());
+				else
+					bounds = new PrecisionRectangle(figure.getBounds());
+				figure.translateToAbsolute(bounds);
+				
+				if (compoundSrcRect == null)
+					compoundSrcRect = bounds;
+				else
+					compoundSrcRect = new PrecisionRectangle(compoundSrcRect.union(bounds));
+				if (child == getSourceEditPart())
+					sourceRectangle = bounds;
+			}
+		}
+		helper.snapMoveRequest(request, sourceRectangle.getPreciseCopy(), 
+				compoundSrcRect.getPreciseCopy(), 
+				SnapToStrategy.SNAP_HORIZONTAL | SnapToStrategy.SNAP_VERTICAL);
+	}
 
-	if (helper != null && !getCurrentInput().isAltKeyDown())
-		helper.snapMoveRequest(request, sourceRectangle.getPreciseCopy());
-
-	request.setLocation(getLocation()); 
-	request.setType(getCommandName());	
+	request.setLocation(getLocation());
+	request.setType(getCommandName());
 }
 
 }
