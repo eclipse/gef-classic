@@ -74,8 +74,6 @@ protected void buildActions() {
 
 	addRetargetAction(new RetargetAction(GEFActionConstants.TOGGLE_GRID_VISIBILITY, 
 			GEFMessages.ToggleGrid_Label, IAction.AS_CHECK_BOX));
-
-//	addRetargetAction(new DirectEditRetargetAction());
 }
 
 /**
