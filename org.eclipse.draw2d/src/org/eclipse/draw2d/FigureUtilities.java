@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
+import java.util.ArrayList;
+
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontMetrics;
@@ -369,5 +371,34 @@ protected static void setFont(Font f) {
 	metrics = null;
 }
 
+/**
+ * Returns the figure which contains both of the given figures or null
+ * if no such figure exists.
+ * @since 3.1
+ * @param l one figure
+ * @param r the other figure
+ * @return the common ancestor
+ */
+public static IFigure findCommonAncestor(IFigure l, IFigure r) {
+	ArrayList left = new ArrayList();
+	ArrayList right = new ArrayList();
+	while (l != null) {
+		left.add(l);
+		l = l.getParent();
+	}
+	while (r != null) {
+		right.add(r);
+		r = r.getParent();
+	}
+	if (left.isEmpty() || right.isEmpty())
+		return null;
+	int il = left.size() - 1;
+	int ir = right.size() - 1;
+	while (left.get(il) == right.get(ir)) {
+		il--;
+		ir--;
+	}
+	return (IFigure)left.get(il);
 }
 
+}
