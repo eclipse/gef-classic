@@ -51,9 +51,12 @@ public AbstractTransferDropTargetListener(EditPartViewer viewer, Transfer xfer) 
 public void activate() {}
 
 /**
- * Subclasses should return <code>true</code> if they can handle this drop event.
+ * Subclasses can look at the event and return <code>false</code>
+ * if they can't handle the drop.
  */
-abstract protected boolean canHandleDrop(DropTargetEvent event);
+protected boolean canHandleDrop(DropTargetEvent event) {
+	return true;
+}
 
 /**
  * Creates and returns a new Request.  Subclasses can override this method to
@@ -239,6 +242,7 @@ protected boolean handleDragOperationChanged() {
 protected boolean handleDragOver() {
 	updateTargetRequest();
 	updateTargetEditPart();
+	showTargetFeedback();
 	return true;
 }
 
