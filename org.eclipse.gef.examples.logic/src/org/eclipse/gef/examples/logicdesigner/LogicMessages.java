@@ -19,6 +19,10 @@ static class Helper {
 	}
 }
 
+public String PasteAction_ActionToolTipText=Helper.getString("%PasteAction.ActionToolTipText_UI_");	//$NON-NLS-1$
+public String PasteAction_ActionLabelText=Helper.getString("%PasteAction.ActionLabelText_UI_");		//$NON-NLS-1$
+public String PasteAction_ActionDeleteCommandName=Helper.getString("%PasteAction.ActionDeleteCommandName_UI_");//$NON-NLS-1$
+
 public String CopyAction_ActionToolTipText=Helper.getString("%CopyAction.ActionToolTipText_UI_");	//$NON-NLS-1$
 public String CopyAction_ActionLabelText=Helper.getString("%CopyAction.ActionLabelText_UI_");		//$NON-NLS-1$
 public String CopyAction_ActionDeleteCommandName=Helper.getString("%CopyAction.ActionDeleteCommandName_UI_");//$NON-NLS-1$
@@ -85,6 +89,11 @@ public String AndGate_LabelText = Helper.getString("%AndGate.LabelText");  //$NO
 public String Circuit_LabelText = Helper.getString("%Circuit.LabelText");  //$NON-NLS-1$
 public String ConnectionCommand_Label = Helper.getString("%ConnectionCommand.Label");  //$NON-NLS-1$
 public String ConnectionCommand_Description = Helper.getString("%ConnectionCommand.Description");  //$NON-NLS-1$
+
+public String GraphicalEditor_FILE_DELETED_TITLE_UI=Helper.getString("%GraphicalEditor.FILE_DELETED_TITLE_UI_"); //$NON-NLS-1$
+public String GraphicalEditor_FILE_DELETED_WITHOUT_SAVE_INFO=Helper.getString("%GraphicalEditor.FILE_DELETED_WITHOUT_SAVE_INFO_");//$NON-NLS-1$
+public String GraphicalEditor_SAVE_BUTTON_UI=Helper.getString("%GraphicalEditor.SAVE_BUTTON_UI_");	//$NON-NLS-1$
+public String GraphicalEditor_CLOSE_BUTTON_UI=Helper.getString("%GraphicalEditor.CLOSE_BUTTON_UI_");	//$NON-NLS-1$
 
 public String CreateCommand_Label = Helper.getString("%CreateCommand.Label");  //$NON-NLS-1$
 public String CreateCommand_Description = Helper.getString("%CreateCommand.Description");  //$NON-NLS-1$
