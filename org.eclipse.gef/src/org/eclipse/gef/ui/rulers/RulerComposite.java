@@ -109,36 +109,31 @@ public RulerComposite(Composite parent, int style) {
 /*
  * Calculates the proper trim.  Includes scrollbars' sizes only if they're visible.
  */
-private static Rectangle calculateTrim(Canvas canvas) {
+private static Rectangle calculateEditorTrim(Canvas canvas) {
 	/*
 	 * Workaround for Bug# 87712
-	 * Calculating the trim using the clientArea.  This workaround can be removed if 
-	 * that bug is fixed.
+	 * Calculating the trim using the clientArea.
 	 */
-	Rectangle trim = null;
 	Rectangle bounds = canvas.getBounds();
 	Rectangle clientArea = canvas.getClientArea();
-	// The client area may not be accurate if this is the first layout for rulers.
-	if (clientArea.height <= 1 || clientArea.width <= 1) { 
-		if ("carbon".equals(SWT.getPlatform())) { //$NON-NLS-1$
-			trim = canvas.computeTrim(0, 0, 0, 0);
-			clientArea.width = 0 - trim.x * 2;
-			clientArea.height = 0 - trim.y * 2;
-		} else {
-			// On all platforms other than MacOS, rulers have no trim
-			clientArea.width = bounds.width;
-			clientArea.height = bounds.height;
-		}
-	}
 	Rectangle result = new Rectangle(
 			0, 0, bounds.width - clientArea.width, bounds.height - clientArea.height);
 	if (result.width != 0 || result.height != 0) {
-		if (trim == null)
-			trim = canvas.computeTrim(0, 0, 0, 0);
+		Rectangle trim = canvas.computeTrim(0, 0, 0, 0);
 		result.x = result.height == 0 ? 0 : trim.x;
 		result.y = result.width == 0 ? 0 : trim.y;
 	}
 	return result;
+}
+
+private static Rectangle calculateRulerTrim(Canvas canvas) {
+	if ("carbon".equals(SWT.getPlatform())) { //$NON-NLS-1$
+		Rectangle trim = canvas.computeTrim(0, 0, 0, 0);
+		trim.width = 0 - trim.x * 2;
+		trim.height = 0 - trim.y * 2;
+		return trim;
+	}
+	return new Rectangle(0, 0, 0, 0);
 }
 
 private GraphicalViewer createRulerContainer(int orientation) {
@@ -219,13 +214,13 @@ private void doLayout() {
 	int leftWidth = 0, topHeight = 0;
 	Rectangle leftTrim = null, topTrim = null;
 	if (left != null) {
-		leftTrim = calculateTrim((Canvas)left.getControl());
+		leftTrim = calculateRulerTrim((Canvas)left.getControl());
 		// Adding the trim width here because FigureCanvas#computeSize() does not
 		leftWidth = left.getControl().computeSize(SWT.DEFAULT, SWT.DEFAULT).x 
 				+ leftTrim.width;
 	}
 	if (top != null) {
-		topTrim = calculateTrim((Canvas)top.getControl());
+		topTrim = calculateRulerTrim((Canvas)top.getControl());
 		topHeight = top.getControl().computeSize(SWT.DEFAULT, SWT.DEFAULT).y
 				+ topTrim.height;
 	}
@@ -241,10 +236,9 @@ private void doLayout() {
 	/*
 	 * Fix for Bug# 67554
 	 * Take trim into account.  Some platforms (such as MacOS and Motif) leave some 
-	 * trimming around the canvas.  The trimming could be around the ruler controls 
-	 * and/or the editor control.
+	 * trimming around some canvasses.
 	 */
-	Rectangle trim = calculateTrim(editor);
+	Rectangle trim = calculateEditorTrim(editor);
 	if (left != null) {
 		// The - 1 and + 1 are to compensate for the RulerBorder
 		Rectangle leftBounds = new Rectangle(0, topHeight - trim.x + leftTrim.x - 1, 
