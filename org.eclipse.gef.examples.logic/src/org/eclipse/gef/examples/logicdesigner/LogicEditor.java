@@ -15,13 +15,13 @@ import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.gef.*;
 import org.eclipse.gef.commands.CommandStackListener;
 import org.eclipse.gef.dnd.TemplateTransferDragSourceListener;
-
 import org.eclipse.gef.examples.logicdesigner.edit.GraphicalPartFactory;
 import org.eclipse.gef.examples.logicdesigner.edit.TreePartFactory;
 import org.eclipse.gef.examples.logicdesigner.model.LogicDiagram;
 import org.eclipse.gef.internal.GEFMessages;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.ui.actions.*;
+import org.eclipse.gef.ui.palette.PaletteViewerImpl;
 import org.eclipse.gef.ui.parts.*;
 import org.eclipse.gef.ui.stackview.CommandStackInspectorPage;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -83,6 +83,7 @@ class OutlinePage
 
 private ContextMenuProvider contextMenuProvider;
 private KeyHandler sharedKeyHandler;
+private PaletteRoot root;
 
 // This class listens to changes to the file system in the workspace, and 
 // makes changes accordingly.
@@ -184,6 +185,16 @@ public void commandStackChanged(EventObject e) {
 	}
 }
 
+/**
+ * @see org.eclipse.gef.ui.parts.GraphicalEditorWithPalette#configurePaletteViewer()
+ */
+protected void configurePaletteViewer() {
+	super.configurePaletteViewer();
+	((PaletteViewerImpl)getPaletteViewer()).setCustomizer( 
+				new LogicPaletteCustomizer() );
+}
+
+
 protected void configureGraphicalViewer() {
 	super.configureGraphicalViewer();
 	ScrollingGraphicalViewer viewer = (ScrollingGraphicalViewer)getGraphicalViewer();
@@ -263,7 +274,10 @@ protected LogicDiagram getLogicDiagram() {
 }
 
 protected PaletteRoot getPaletteRoot() {
-	return LogicPlugin.createPalette();
+	if( root == null ){
+		root = LogicPlugin.createPalette();
+	}
+	return root;
 }
 
 public void gotoMarker(IMarker marker) {}

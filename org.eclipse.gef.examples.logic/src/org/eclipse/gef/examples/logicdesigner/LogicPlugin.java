@@ -6,18 +6,28 @@ package org.eclipse.gef.examples.logicdesigner;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.core.runtime.IPluginDescriptor;
-
+import org.eclipse.gef.GEFPlugin;
+import org.eclipse.gef.SharedImageConstants;
+import org.eclipse.gef.examples.logicdesigner.model.Circuit;
+import org.eclipse.gef.examples.logicdesigner.model.LogicLabel;
+import org.eclipse.gef.palette.DefaultPaletteCategory;
+import org.eclipse.gef.palette.DefaultPaletteEntry;
+import org.eclipse.gef.palette.DefaultPaletteGroup;
+import org.eclipse.gef.palette.DefaultPaletteRoot;
+import org.eclipse.gef.palette.DefaultPaletteToolEntry;
+import org.eclipse.gef.palette.DefaultTemplateEntry;
+import org.eclipse.gef.palette.PaletteContainer;
+import org.eclipse.gef.palette.PaletteRoot;
+import org.eclipse.gef.palette.PaletteToolEntry;
+import org.eclipse.gef.palette.TemplateEntry;
+import org.eclipse.gef.tools.ConnectionCreationTool;
+import org.eclipse.gef.tools.MarqueeSelectionTool;
+import org.eclipse.gef.tools.SelectionTool;
 import org.eclipse.swt.graphics.Image;
-
-import org.eclipse.gef.*;
-import org.eclipse.gef.palette.*;
-import org.eclipse.gef.requests.CreateRequest;
-import org.eclipse.gef.tools.*;
-
-import org.eclipse.gef.examples.logicdesigner.model.*;
 
 public class LogicPlugin
 	extends org.eclipse.ui.plugin.AbstractUIPlugin
@@ -53,11 +63,6 @@ static private PaletteContainer createComplexPartsCategory(){
 	DefaultPaletteCategory category = new DefaultPaletteCategory(
 		LogicMessages.LogicPlugin_Category_ComplexParts_Label,
 		new Image(null,Circuit.class.getResourceAsStream("icons/can.gif")));//$NON-NLS-1$
-	List groups = new ArrayList();
-	DefaultPaletteGroup group = new DefaultPaletteGroup(
-		LogicMessages.LogicPlugin_Category_ComplexParts_Label);
-	groups.add(group);
-	category.setChildren(groups);
 
 	List entries = new ArrayList();
 	
@@ -97,7 +102,7 @@ static private PaletteContainer createComplexPartsCategory(){
 			new Image(null,Circuit.class.getResourceAsStream("icons/fulladder.gif")))//$NON-NLS-1$
 		);
 */
-	group.setChildren(entries);
+	category.addAll(entries);
 
 	return category;
 }
@@ -107,10 +112,6 @@ static private PaletteContainer createComponentsCategory(){
 	DefaultPaletteCategory category = new DefaultPaletteCategory(
 		LogicMessages.LogicPlugin_Category_Components_Label,
 		new Image(null,Circuit.class.getResourceAsStream("icons/comp.gif")));//$NON-NLS-1$
-	List groups = new ArrayList();
-	DefaultPaletteGroup group = new DefaultPaletteGroup("Components Group");//$NON-NLS-1$
-	groups.add(group);
-	category.setChildren(groups);
 
 	List entries = new ArrayList();
 	
@@ -132,6 +133,8 @@ static private PaletteContainer createComponentsCategory(){
 		);
 	entries.add(template);
 
+//	entries.add( new PaletteSeparator(PaletteSeparator.NOT_A_MARKER) );
+	
 	template = new DefaultTemplateEntry(
 			TEMPLATE_LED,
 			LogicMessages.LogicPlugin_Tool_CreationTool_LED_Label,
@@ -277,7 +280,7 @@ static private PaletteContainer createComponentsCategory(){
 		);
 	entries.add(tool);
 */
-	group.setChildren(entries);
+	category.addAll(entries);
 	return category;
 }
 
@@ -308,6 +311,8 @@ static private PaletteContainer createControlGroup(){
 		);
 	entries.add(tool);
 	
+//	entries.add( new PaletteSeparator("org.eclipse.gef.examples.logicdesigner.logicplugin.sep2") ); //$NON-NLS-1$
+
 	tool = new DefaultPaletteToolEntry(
 			new ConnectionCreationTool(),
 			LogicMessages.LogicPlugin_Tool_ConnectionCreationTool_ConnectionCreationTool_Label,
@@ -318,16 +323,7 @@ static private PaletteContainer createControlGroup(){
 		);
 	entries.add(tool);
 
-	tool = new DefaultPaletteToolEntry(
-			new CreationTool(new CreateRequest.SimpleFactory(AndGate.class)),
-			LogicMessages.LogicPlugin_Tool_CreationTool_ANDGate_Label,
-			LogicMessages.LogicPlugin_Tool_CreationTool_ANDGate_Description,
-			new Image(null,Circuit.class.getResourceAsStream("icons/and16.gif")),//$NON-NLS-1$
-			new Image(null,Circuit.class.getResourceAsStream("icons/and.gif"))//$NON-NLS-1$
-		);
-	entries.add(tool);
-
-	controlGroup.setChildren(entries);
+	controlGroup.addAll(entries);
 	return controlGroup;
 }
 
