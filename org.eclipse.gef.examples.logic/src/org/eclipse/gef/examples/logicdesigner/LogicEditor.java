@@ -44,6 +44,7 @@ import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.rulers.RulerProvider;
 import org.eclipse.gef.ui.actions.*;
+import org.eclipse.gef.ui.palette.*;
 import org.eclipse.gef.ui.parts.*;
 import org.eclipse.gef.ui.rulers.RulerComposite;
 import org.eclipse.gef.ui.stackview.CommandStackInspectorPage;
@@ -311,7 +312,6 @@ private LogicDiagram logicDiagram = new LogicDiagram();
 private boolean savePreviouslyNeeded = false;
 private ResourceTracker resourceListener = new ResourceTracker();
 private RulerComposite rulerComp;
-private IMenuListener menuListener;
 
 protected static final String PALETTE_SIZE = "Palette Size"; //$NON-NLS-1$
 protected static final int DEFAULT_PALETTE_SIZE = 130;
@@ -385,65 +385,48 @@ protected void configureGraphicalViewer() {
 	getActionRegistry().registerAction(showGrid);
 }
 
-protected void configurePaletteViewer() {
-	super.configurePaletteViewer();
-	getPaletteViewer().setCustomizer(new LogicPaletteCustomizer());
-}
-
 protected void createOutputStream(OutputStream os)throws IOException {
 	ObjectOutputStream out = new ObjectOutputStream(os);
 	out.writeObject(getLogicDiagram());
 	out.close();	
 }
 
-protected void loadProperties() {
-	// Ruler properties
-	LogicRuler ruler = getLogicDiagram().getRuler(PositionConstants.WEST);
-	RulerProvider provider = null;
-	if (ruler != null) {
-		provider = new LogicRulerProvider(ruler);
-	}
-	getGraphicalViewer().setProperty(RulerProvider.PROPERTY_VERTICAL_RULER, provider);
-	ruler = getLogicDiagram().getRuler(PositionConstants.NORTH);
-	provider = null;
-	if (ruler != null) {
-		provider = new LogicRulerProvider(ruler);
-	}
-	getGraphicalViewer().setProperty(RulerProvider.PROPERTY_HORIZONTAL_RULER, provider);
-	getGraphicalViewer().setProperty(RulerProvider.PROPERTY_RULER_VISIBILITY, 
-			new Boolean(getLogicDiagram().getRulerVisibility()));
-	
-	// Snap to Geometry property
-	getGraphicalViewer().setProperty(SnapToGeometry.PROPERTY_SNAP_ENABLED, 
-			new Boolean(getLogicDiagram().isSnapToGeometryEnabled()));
-	
-	// Grid properties
-	getGraphicalViewer().setProperty(SnapToGrid.PROPERTY_GRID_ENABLED, 
-			new Boolean(getLogicDiagram().isGridEnabled()));
-	Dimension spacing = getLogicDiagram().getGridSpacing();
-	if (spacing == null)
-		spacing = new Dimension(SnapToGrid.DEFAULT_GAP, SnapToGrid.DEFAULT_GAP);
-	if (spacing.width == 0)
-		spacing.width = SnapToGrid.DEFAULT_GAP;
-	if (spacing.height == 0)
-		spacing.height = SnapToGrid.DEFAULT_GAP;
-	getGraphicalViewer().setProperty(SnapToGrid.PROPERTY_GRID_SPACING, spacing);
-	Point origin = getLogicDiagram().getGridOrigin();
-	if (origin == null)
-		origin = new Point();
-	getGraphicalViewer().setProperty(SnapToGrid.PROPERTY_GRID_ORIGIN, origin);
-	
-	// Zoom
-	ZoomManager manager = (ZoomManager)getGraphicalViewer()
-			.getProperty(ZoomManager.class.toString());
-	if (manager != null)
-		manager.setZoom(getLogicDiagram().getZoom());
+protected PaletteViewerProvider createPaletteViewerProvider() {
+	return new PaletteViewerProvider(getGraphicalViewer().getEditDomain()) {
+		private IMenuListener menuListener;
+		protected void configurePaletteViewer() {
+			super.configurePaletteViewer();
+			getPaletteViewer().setCustomizer(new LogicPaletteCustomizer());
+		}
+		protected void hookPaletteViewer() {
+			super.hookPaletteViewer();
+			final CopyTemplateAction copy = (CopyTemplateAction)getActionRegistry()
+					.getAction(GEFActionConstants.COPY);
+			getPaletteViewer().addSelectionChangedListener(copy);
+			if (menuListener == null)
+				menuListener = new IMenuListener() {
+					public void menuAboutToShow(IMenuManager manager) {
+						manager.appendToGroup(GEFActionConstants.GROUP_COPY, copy);
+					}
+				};
+			getPaletteViewer().getContextMenu().addMenuListener(menuListener);
+			/*
+			 * @TODO:Pratik  check to see if this works properly.  add it to the right place.
+			 */
+			((IEditorSite)getSite()).getActionBars()
+					.setGlobalActionHandler(GEFActionConstants.COPY, copy);			
+		}
+		protected void unhookPaletteViewer() {
+			CopyTemplateAction copy = (CopyTemplateAction)getActionRegistry()
+					.getAction(GEFActionConstants.COPY);
+			getPaletteViewer().removeSelectionChangedListener(copy);
+			getPaletteViewer().getContextMenu().removeMenuListener(menuListener);
+			super.unhookPaletteViewer();
+		}
+	};
 }
 
 public void dispose() {
-	/*
-	 * @TODO:Pratik  remove this part listener.  you can do this in the parent's part listener, i.e. somehow combine them 
-	 */
 	getSite().getWorkbenchWindow().getPartService().removePartListener(partListener);
 	partListener = null;
 	((FileEditorInput)getEditorInput()).getFile().getWorkspace().removeResourceChangeListener(resourceListener);
@@ -484,6 +467,10 @@ public Object getAdapter(Class type){
 		return getGraphicalViewer().getProperty(ZoomManager.class.toString());
 
 	return super.getAdapter(type);
+}
+
+protected Control getGraphicalControl() {
+	return rulerComp;
 }
 
 /**
@@ -530,32 +517,6 @@ protected PaletteRoot getPaletteRoot() {
 
 public void gotoMarker(IMarker marker) {}
 
-protected void hookPaletteViewer() {
-	super.hookPaletteViewer();
-	final CopyTemplateAction copy = (CopyTemplateAction)getActionRegistry()
-			.getAction(GEFActionConstants.COPY);
-	getPaletteViewer().addSelectionChangedListener(copy);
-	if (menuListener == null)
-		menuListener = new IMenuListener() {
-			public void menuAboutToShow(IMenuManager manager) {
-				manager.appendToGroup(GEFActionConstants.GROUP_COPY, copy);
-			}
-		};
-	getPaletteViewer().getContextMenu().addMenuListener(menuListener);
-	/*
-	 * @TODO:Pratik  check to see if this works properly.  add it to the right place.
-	 */
-	((IEditorSite)getSite()).getActionBars().setGlobalActionHandler(GEFActionConstants.COPY, copy);			
-}
-
-protected void unhookPaletteViewer() {
-	CopyTemplateAction copy = (CopyTemplateAction)getActionRegistry()
-			.getAction(GEFActionConstants.COPY);
-	getPaletteViewer().removeSelectionChangedListener(copy);
-	getPaletteViewer().getContextMenu().removeMenuListener(menuListener);
-	super.unhookPaletteViewer();
-}
-
 protected void initializeGraphicalViewer() {
 	getGraphicalViewer().setContents(getLogicDiagram());
 	
@@ -573,6 +534,18 @@ protected void createActions() {
 	action = new CopyTemplateAction(this);
 	registry.registerAction(action);
 
+	action = new MatchWidthAction(this);
+	registry.registerAction(action);
+	getSelectionActions().add(action.getId());
+	
+	action = new MatchSizeAction(this);
+	registry.registerAction(action);
+	getSelectionActions().add(action.getId());
+	
+	action = new MatchHeightAction(this);
+	registry.registerAction(action);
+	getSelectionActions().add(action.getId());
+	
 	action = new LogicPasteTemplateAction(this);
 	registry.registerAction(action);
 	getSelectionActions().add(action.getId());
@@ -637,6 +610,50 @@ public boolean isSaveAsAllowed() {
 
 public boolean isSaveOnCloseNeeded() {
 	return getCommandStack().isDirty();
+}
+
+protected void loadProperties() {
+	// Ruler properties
+	LogicRuler ruler = getLogicDiagram().getRuler(PositionConstants.WEST);
+	RulerProvider provider = null;
+	if (ruler != null) {
+		provider = new LogicRulerProvider(ruler);
+	}
+	getGraphicalViewer().setProperty(RulerProvider.PROPERTY_VERTICAL_RULER, provider);
+	ruler = getLogicDiagram().getRuler(PositionConstants.NORTH);
+	provider = null;
+	if (ruler != null) {
+		provider = new LogicRulerProvider(ruler);
+	}
+	getGraphicalViewer().setProperty(RulerProvider.PROPERTY_HORIZONTAL_RULER, provider);
+	getGraphicalViewer().setProperty(RulerProvider.PROPERTY_RULER_VISIBILITY, 
+			new Boolean(getLogicDiagram().getRulerVisibility()));
+	
+	// Snap to Geometry property
+	getGraphicalViewer().setProperty(SnapToGeometry.PROPERTY_SNAP_ENABLED, 
+			new Boolean(getLogicDiagram().isSnapToGeometryEnabled()));
+	
+	// Grid properties
+	getGraphicalViewer().setProperty(SnapToGrid.PROPERTY_GRID_ENABLED, 
+			new Boolean(getLogicDiagram().isGridEnabled()));
+	Dimension spacing = getLogicDiagram().getGridSpacing();
+	if (spacing == null)
+		spacing = new Dimension(SnapToGrid.DEFAULT_GAP, SnapToGrid.DEFAULT_GAP);
+	if (spacing.width == 0)
+		spacing.width = SnapToGrid.DEFAULT_GAP;
+	if (spacing.height == 0)
+		spacing.height = SnapToGrid.DEFAULT_GAP;
+	getGraphicalViewer().setProperty(SnapToGrid.PROPERTY_GRID_SPACING, spacing);
+	Point origin = getLogicDiagram().getGridOrigin();
+	if (origin == null)
+		origin = new Point();
+	getGraphicalViewer().setProperty(SnapToGrid.PROPERTY_GRID_ORIGIN, origin);
+	
+	// Zoom
+	ZoomManager manager = (ZoomManager)getGraphicalViewer()
+			.getProperty(ZoomManager.class.toString());
+	if (manager != null)
+		manager.setZoom(getLogicDiagram().getZoom());
 }
 
 protected boolean performSaveAs() {
