@@ -38,7 +38,7 @@ public class ResizeTracker
 private int direction;
 private GraphicalEditPart owner;
 private PrecisionRectangle sourceRect;
-private SnapToStrategy snapStrategies;
+private SnapToStrategy snapToStrategy;
 
 /**
  * Constructs a resize tracker that resizes in the specified direction.  The direction is
@@ -51,12 +51,15 @@ public ResizeTracker(GraphicalEditPart owner, int direction) {
 	this.owner = owner;
 	this.direction = direction;
 	setDisabledCursor(SharedCursors.NO);
-	snapStrategies = (SnapToStrategy)getTargetEditPart().getAdapter(SnapToStrategy.class);
 }
 
+/**
+ * @see org.eclipse.gef.Tool#activate()
+ */
 public void activate() {
 	super.activate();
-
+	snapToStrategy = (SnapToStrategy)getTargetEditPart().getAdapter(SnapToStrategy.class);
+	
 	IFigure figure = owner.getFigure();
 	if (figure instanceof HandleBounds)
 		sourceRect = new PrecisionRectangle(((HandleBounds)figure).getHandleBounds());
@@ -98,6 +101,7 @@ protected Request createSourceRequest() {
  */
 public void deactivate() {
 	sourceRect = null;
+	snapToStrategy = null;
 	super.deactivate();
 }
 
@@ -284,8 +288,8 @@ protected void updateSourceRequest() {
 
 	request.getExtendedData().clear();
 	
-	if (!getCurrentInput().isAltKeyDown() && snapStrategies != null)
-		snapStrategies.snapResizeRequest(request, sourceRect.getPreciseCopy(),
+	if (!getCurrentInput().isAltKeyDown() && snapToStrategy != null)
+		snapToStrategy.snapResizeRequest(request, sourceRect.getPreciseCopy(),
 				SnapToStrategy.SNAP_HORIZONTAL | SnapToStrategy.SNAP_VERTICAL);
 }
 
