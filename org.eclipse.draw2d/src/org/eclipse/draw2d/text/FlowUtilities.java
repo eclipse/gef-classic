@@ -68,7 +68,7 @@ public static int getTextForSpace(TextFragmentBox frag, String string, Font font
 		//Measure the current guess
 		guessSize = getTextExtents(string.substring(0, guess), font).width;
 
-		if (guessSize < availableWidth)
+		if (guessSize <= availableWidth)
 			//We did not use the available width
 			min = guess;
 		else
@@ -128,12 +128,13 @@ public static int getTextForSpace(TextFragmentBox frag, String string, Font font
 }
 
 static void setupFragment(TextFragmentBox frag, Font f, String s) {
-	while (frag.length > 0 && s.charAt(frag.length - 1) == ' ')
-		frag.length--;
+	if (frag.length != s.length())
+		while (frag.length > 0 && s.charAt(frag.length - 1) == ' ')
+			frag.length--;
 	Dimension d = getStringExtents(s.substring(0, frag.length), f);
 	FontMetrics fm = getFontMetrics(f);
-	frag.setHeight(fm.getHeight() + fm.getLeading());
-	frag.setAscent(fm.getAscent() + fm.getLeading());
+	frag.setHeight(fm.getHeight());
+	frag.setAscent(fm.getAscent());
 	if (frag.truncated)
 		d.width += ELLIPSIS_SIZE.width;
 	frag.setWidth (d.width);
