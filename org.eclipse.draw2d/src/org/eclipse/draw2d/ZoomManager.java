@@ -1,6 +1,7 @@
 package org.eclipse.draw2d;
 
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -26,8 +27,7 @@ private double multiplier = 1.0;
 private ScalableFreeformLayeredPane pane;
 private Viewport viewport;
 private double zoom = 1.0;
-private double[] zoomLevels = { .16, .25, .33, .5, .66, 1.0, 2.0, 3.0, 4.0, 5.0,
-								  	6.0, 7.0, 8.0, 12.0, 16.0 };
+private double[] zoomLevels = { .5, .75, 1.0, 1.5, 2.0, 2.5, 3, 4 };
 
 DecimalFormat format = new DecimalFormat("####%"); //$NON-NLS-1$
 
