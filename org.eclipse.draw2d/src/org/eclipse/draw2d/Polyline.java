@@ -92,7 +92,7 @@ private boolean lineContainsPoint(
 		
 		denominator = v1x * v1x + v1y * v1y;
 
-		result = (int) ((long)numerator) * numerator / denominator;
+		result = (int)((long)numerator * numerator / denominator);
 	}
 	
 	// if it is the same point, and it passes the bounding box test,
