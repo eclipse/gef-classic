@@ -40,12 +40,14 @@ import org.eclipse.draw2d.parts.ScrollableThumbnail;
 import org.eclipse.draw2d.parts.Thumbnail;
 
 import org.eclipse.gef.*;
+import org.eclipse.gef.dnd.TemplateTransferDragSourceListener;
 import org.eclipse.gef.editparts.ScalableFreeformRootEditPart;
 import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.rulers.RulerProvider;
 import org.eclipse.gef.ui.actions.*;
-import org.eclipse.gef.ui.palette.*;
+import org.eclipse.gef.ui.palette.PaletteViewer;
+import org.eclipse.gef.ui.palette.PaletteViewerProvider;
 import org.eclipse.gef.ui.palette.FlyoutPaletteComposite.FlyoutPreferences;
 import org.eclipse.gef.ui.parts.*;
 import org.eclipse.gef.ui.rulers.RulerComposite;
@@ -420,6 +422,7 @@ protected PaletteViewerProvider createPaletteViewerProvider() {
 		protected void configurePaletteViewer(PaletteViewer viewer) {
 			super.configurePaletteViewer(viewer);
 			viewer.setCustomizer(new LogicPaletteCustomizer());
+			viewer.addDragSourceListener(new TemplateTransferDragSourceListener(viewer));
 		}
 		protected void hookPaletteViewer(PaletteViewer viewer) {
 			super.hookPaletteViewer(viewer);
