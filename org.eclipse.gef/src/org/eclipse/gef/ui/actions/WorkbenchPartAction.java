@@ -32,10 +32,20 @@ private IWorkbenchPart workbenchPart;
 private boolean lazyEnablement = true;
 
 /**
- * Constructs a WorkbenchPartAction on the given part.
+ * Constructs a WorkbenchPartAction for the given part.
  * @param part the workbench part
  */
 public WorkbenchPartAction(IWorkbenchPart part) {
+	setWorkbenchPart(part);
+	init();
+}
+
+/**
+ * Constructs a WorkbenchPartAction for the given part and style.
+ * @param part the workbench part
+ */
+public WorkbenchPartAction(IWorkbenchPart part, int style) {
+	super(null, style);
 	setWorkbenchPart(part);
 	init();
 }

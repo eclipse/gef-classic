@@ -24,6 +24,16 @@ public abstract class EditorPartAction
 {
 
 /**
+ * Constructs a new EditorPartAction with the given editor and style.
+ * @param editor The editor to be associated with this action.
+ * @param style the Action's style as defined in Action
+ */
+public EditorPartAction(IEditorPart editor, int style) {
+	super(editor, style);
+}
+
+/**
+ * Constructs a new EditorPartAction with the given editor.
  * @param editor The editor to be associated with this action.
  */
 public EditorPartAction(IEditorPart editor) {
