@@ -8,6 +8,8 @@ import org.eclipse.draw2d.geometry.Insets;
  */
 public class Node {
 
+public Object workingData[] = new Object[3];
+public int workingInts[] = new int[4];
 static boolean flipflop;
 
 /**
@@ -58,32 +60,9 @@ public int rank;
 public double sortValue;
 
 /**
- * The subset of Union(incoming,outgoing) which make up the spanning tree.
- */
-public EdgeList spanTreeChildren = new EdgeList();
-
-/**
- * Nodes and subgraphs which are left of this node
- */
-public NodeList toLeft;
-/**
- * Nodes and subgraphs which are right of this node
- */
-public NodeList toRight;
-
-public int spanTreeMax;
-
-public int spanTreeMin;
-
-/**
- * The edge which points to the parent node in the spanning tree.
- */
-public Edge spanTreeParent;
-
-/**
  * The node's width.
  */
-public int width = 100;
+public int width = 50;
 
 /**
  * The node's final coordinates location
@@ -122,23 +101,11 @@ public Subgraph getParent() {
 	return parent;
 }
 
-public Node getSpanTreeParent() {
-	if (spanTreeParent != null)
-		return spanTreeParent.opposite(this);
-	return null;
-}
-
 private int incomingIndex(int i) {
 	Edge e = incoming.getEdge(i);
 	if (e.vNodes != null)
 		return e.vNodes.getNode(e.vNodes.size() - 1).index;
 	return e.source.index;
-}
-
-public void leftOf(Node right) {
-	if (toRight == null)
-		toRight = new NodeList();
-	toRight.add(right);
 }
 
 public double medianIncoming() {
@@ -161,11 +128,11 @@ public double medianIncoming() {
 	if (n % 2 == 1)
 		return incomingIndex(n / 2);
 	if (n == 2) {
-		flipflop = !flipflop;
-		if (!flipflop)
-			return (incomingIndex(0) * 3 + 2* incomingIndex(1))/5.0;
-		return (incomingIndex(0) * 2 + 3 * incomingIndex(1))/5.0;
-//		return (incomingIndex(0) + incomingIndex(1)) / 2.0;
+//		flipflop = !flipflop;
+//		if (!flipflop)
+//			return (incomingIndex(0) * 3 + 2* incomingIndex(1))/5.0;
+//		return (incomingIndex(0) * 2 + 3 * incomingIndex(1))/5.0;
+		return (incomingIndex(0) + incomingIndex(1)) / 2.0;
 	}
 	int l = incomingIndex(n / 2 - 1);
 	int r = incomingIndex(n / 2);
@@ -208,11 +175,11 @@ public double medianOutgoing() {
 	if (n % 2 == 1)
 		return outgoingIndex(n / 2);
 	if (n == 2) {
-		flipflop = !flipflop;
-		if (flipflop)
-			return (outgoingIndex(0) * 3 + 2 * outgoingIndex(1)) / 5.0;
-		return (outgoingIndex(0) * 2 + 3 * outgoingIndex(1)) / 5.0;
-//		return (outgoingIndex(0) + outgoingIndex(1)) / 2.0;
+//		flipflop = !flipflop;
+//		if (flipflop)
+//			return (outgoingIndex(0) * 3 + 2 * outgoingIndex(1)) / 5.0;
+//		return (outgoingIndex(0) * 2 + 3 * outgoingIndex(1)) / 5.0;
+		return (outgoingIndex(0) + outgoingIndex(1)) / 2.0;
 	}
 	int l = outgoingIndex(n / 2 - 1);
 	int r = outgoingIndex(n / 2);
@@ -236,15 +203,6 @@ public void setPadding(Insets padding) {
 
 public void setParent(Subgraph parent) {
 	this.parent = parent;
-}
-
-/**
- * Returns true if this spanning subtree rooted at this node contains the given node.
- * @param n the node
- * @return <code>true</code> if contained
- */
-public boolean spanTreeContains(Node n) {
-	return spanTreeMin <= n.spanTreeMax && n.spanTreeMax <= spanTreeMax;
 }
 
 /**
