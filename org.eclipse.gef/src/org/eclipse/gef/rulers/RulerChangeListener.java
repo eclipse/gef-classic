@@ -28,34 +28,53 @@ public interface RulerChangeListener {
  * @param	newUnit		The new unit of measurement (RulerProvider.UNIT_INCES, 
  * 						UNIT_CENTIMETERS, or UNIT_PIXELS)
  */
-public void notifyUnitsChanged(int newUnit);
+void notifyUnitsChanged(int newUnit);
 
 /**
  * Invoked when a guide is added to or removed from a ruler.
  * @param	guide	The guide that was added or removed
  */
-public void notifyGuideReparented(Object guide);
+void notifyGuideReparented(Object guide);
 
 /**
  * Invoked when a guide is moved.
  * @param	guide	The guide that was moved
  */
-public void notifyGuideMoved(Object guide);
+void notifyGuideMoved(Object guide);
 
 /**
  * Invoked when a graphical component is attached to a guide.
  * @param	part	The model representation of the graphical compoment that was attached
  * @param	guide	The guide that the part was attached to
  */
-public void notifyPartAttachmentChanged(Object part, Object guide);
+void notifyPartAttachmentChanged(Object part, Object guide);
 
+/**
+ * Stub for the RulerChangeListener interface.  Clients not intending to implement
+ * all the methods in that interface can extend this class.
+ * 
+ * @author Pratik Shah
+ * @since 3.0
+ */
 public class Stub implements RulerChangeListener {
+	/**
+	 * @see org.eclipse.gef.rulers.RulerChangeListener#notifyUnitsChanged(int)
+	 */
 	public void notifyUnitsChanged(int newUnit) {
 	}
+	/**
+	 * @see org.eclipse.gef.rulers.RulerChangeListener#notifyGuideReparented(java.lang.Object)
+	 */
 	public void notifyGuideReparented(Object guide) {
 	}
+	/**
+	 * @see org.eclipse.gef.rulers.RulerChangeListener#notifyGuideMoved(java.lang.Object)
+	 */
 	public void notifyGuideMoved(Object guide) {
 	}
+	/**
+	 * @see org.eclipse.gef.rulers.RulerChangeListener#notifyPartAttachmentChanged(java.lang.Object, java.lang.Object)
+	 */
 	public void notifyPartAttachmentChanged(Object part, Object guide) {
 	}
 }
