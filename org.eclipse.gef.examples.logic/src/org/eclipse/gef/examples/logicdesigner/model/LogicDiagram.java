@@ -23,8 +23,6 @@ import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 
-import org.eclipse.gef.SnapToGrid;
-
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
 
 public class LogicDiagram
@@ -46,7 +44,7 @@ protected Integer connectionRouter = null;
 private boolean rulersVisibility = false;
 private boolean snapToGeometry = false;
 private boolean gridEnabled = false;
-private Dimension gridSpacing = new Dimension(SnapToGrid.DEFAULT_GAP, SnapToGrid.DEFAULT_GAP);
+private Dimension gridSpacing = new Dimension(25, 25);
 private Point gridOrigin = new Point();
 private double zoom = 1.0;
 
