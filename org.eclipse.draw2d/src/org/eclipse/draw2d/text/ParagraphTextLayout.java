@@ -138,7 +138,7 @@ protected void layout() {
 		context.addToCurrentLine(fragment);
 		string = string.substring(length);
 		offset += length;
-		if (string.length() > 0)
+		if (string.length() > 0 || fragment.truncated)
 			context.endLine();
 		i++;
 	} while (string.length() > 0);
