@@ -26,8 +26,7 @@ private static List createCategories(PaletteRoot root) {
 private static PaletteContainer createComponentsDrawer() {
 
 	PaletteDrawer drawer = new PaletteDrawer(
-		"Components",
-		ImageDescriptor.createFromFile(FlowPlugin.class, "images/comp.gif"));
+		"Components", null);
 
 	List entries = new ArrayList();
 
@@ -36,8 +35,8 @@ private static PaletteContainer createComponentsDrawer() {
 		"Create a new Activity Node",
 		Activity.class,
 		new SimpleFactory(Activity.class),
-		ImageDescriptor.createFromFile(FlowPlugin.class, "images/comp.gif"), 
-		ImageDescriptor.createFromFile(Activity.class, "images/comp.gif")
+		ImageDescriptor.createFromFile(FlowPlugin.class, "images/gear16.gif"), 
+		ImageDescriptor.createFromFile(Activity.class, "images/gear16.gif")
 	);
 	entries.add(combined);
 
@@ -46,8 +45,8 @@ private static PaletteContainer createComponentsDrawer() {
 		"Create a Sequential Activity",
 		SequentialActivity.class,
 		new SimpleFactory(SequentialActivity.class),
-		ImageDescriptor.createFromFile(FlowPlugin.class, "images/comp.gif"), 
-		ImageDescriptor.createFromFile(FlowPlugin.class, "images/comp.gif")
+		ImageDescriptor.createFromFile(FlowPlugin.class, "images/sequence16.gif"), 
+		ImageDescriptor.createFromFile(FlowPlugin.class, "images/sequence16.gif")
 	);
 	entries.add(combined);
 
@@ -56,8 +55,8 @@ private static PaletteContainer createComponentsDrawer() {
 		"Create a  Parallel Activity",
 		ParallelActivity.class,
 		new SimpleFactory(ParallelActivity.class),
-		ImageDescriptor.createFromFile(FlowPlugin.class, "images/comp.gif"), 
-		ImageDescriptor.createFromFile(FlowPlugin.class, "images/comp.gif")
+		ImageDescriptor.createFromFile(FlowPlugin.class, "images/parallel16.gif"), 
+		ImageDescriptor.createFromFile(FlowPlugin.class, "images/parallel16.gif")
 	);
 	entries.add(combined);
 
@@ -87,7 +86,7 @@ private static PaletteContainer createControlGroup(PaletteRoot root) {
 		"Creating connections",
 		null,
 		ImageDescriptor.createFromFile(FlowPlugin.class, "images/connection16.gif"),
-		ImageDescriptor.createFromFile(Activity.class, "images/connection24.gif")
+		ImageDescriptor.createFromFile(Activity.class, "images/connection16.gif")
 	);
 	entries.add(tool);
 	controlGroup.addAll(entries);
