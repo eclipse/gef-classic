@@ -79,20 +79,31 @@ public void reveal(EditPart part) {
 	super.reveal(part);
 	Viewport port = getFigureCanvas().getViewport();
 	IFigure target = ((GraphicalEditPart)part).getFigure();
-	Rectangle exposeRegion = target.getBounds().getExpanded(5, 5);
+	Rectangle exposeRegion = target.getBounds().getCopy();
 	target = target.getParent();
 	while (target != null && target != port) {
 		target.translateToParent(exposeRegion);
 		target = target.getParent();
 	}
+	exposeRegion.getExpanded(5, 5);
+	
 	Dimension viewportSize = port.getClientArea().getSize();
+
 	Point topLeft = exposeRegion.getTopLeft();
-	Point bottomRight = exposeRegion.
-		getBottomRight().
-		translate(viewportSize.negate());
-	Point finalLocation = Point.min(topLeft,
-		Point.max(bottomRight, port.getViewLocation()));
-	getFigureCanvas().scrollSmoothTo(finalLocation.x, finalLocation.y);
+	Point bottomRight = exposeRegion.getBottomRight().translate(viewportSize.getNegated());
+	Point finalLocation = new Point();
+	if (viewportSize.width < exposeRegion.width)
+		finalLocation.x = Math.min(bottomRight.x, Math.max(topLeft.x, port.getViewLocation().x));
+	else
+		finalLocation.x = Math.min(topLeft.x, Math.max(bottomRight.x, port.getViewLocation().x));
+
+	if (viewportSize.height < exposeRegion.height)
+		finalLocation.y = Math.min(bottomRight.y, Math.max(topLeft.y, port.getViewLocation().y));
+	else
+		finalLocation.y = Math.min(topLeft.y, Math.max(bottomRight.y, port.getViewLocation().y));
+
+	
+	getFigureCanvas().scrollSmoothTo(finalLocation.x, finalLocation.y);	
 }
 
 /**

@@ -72,8 +72,18 @@ public void exposeDescendant(EditPart part) {
 		getBottomRight().
 		translate(viewportSize.getNegated());
 
-	Point finalLocation = Point.min(topLeft,
-		Point.max(bottomRight, port.getViewLocation()));
+	Point finalLocation = new Point();
+	if (viewportSize.width < exposeRegion.width)
+		finalLocation.x = Math.min(bottomRight.x, Math.max(topLeft.x, port.getViewLocation().x));
+	else
+		finalLocation.x = Math.min(topLeft.x, Math.max(bottomRight.x, port.getViewLocation().x));
+
+	if (viewportSize.height < exposeRegion.height)
+		finalLocation.y = Math.min(bottomRight.y, Math.max(topLeft.y, port.getViewLocation().y));
+	else
+		finalLocation.y = Math.min(topLeft.y, Math.max(bottomRight.y, port.getViewLocation().y));
+
+	
 	Point startLocation = port.getViewLocation();
 
 	int dx = finalLocation.x - startLocation.x;
