@@ -261,12 +261,12 @@ protected Point getIconLocation(){
  */
 public int getIconTextGap(){return iconTextGap;}
 
-public Dimension getMinimumSize(){
+public Dimension getMinimumSize(int w, int h){
 	if (minSize != null)
 		return minSize;
 	Dimension size = new Dimension();
 	if (getLayoutManager() != null)
-		size.copyFrom(getLayoutManager().getMinimumSize(this));
+		size.copyFrom(getLayoutManager().getMinimumSize(this, w, h));
 	
 	Dimension labelSize = calculateLabelSize(FigureUtilities.getTextExtents(ELLIPSIS,getFont()));
 	Insets insets = getInsets();

@@ -15,63 +15,52 @@ public interface LayoutManager {
 
 /**
  * Returns the constraint for the given figure.
- * @param figure The figure
+ * @param child The figure
  * @return The constraint
  */
-Object getConstraint(IFigure figure);
+Object getConstraint(IFigure child);
 
 /**
  * Returns the minimum size of the given figure.
- * @param figure The Figure
+ * @param container The Figure
+ * @param wHint the width hint
+ * @param hHint the height hint
  * @return The minimum size
  */
-Dimension getMinimumSize(IFigure figure);
-
-/**
- * Returns the preferred size of the given figure.
- * @param figure The figure
- * @return The preferred size
- */
-Dimension getPreferredSize(IFigure figure);
+Dimension getMinimumSize(IFigure container, int wHint, int hHint);
 
 /**
  * Returns the preferred size of the given figure, using width and height hints.
- * @param figure The figure
+ * @param container The figure
  * @param wHint The width hint
  * @param hHint The height hint
  * @return The preferred size
  */
-Dimension getPreferredSize(IFigure figure, int wHint, int hHint);
+Dimension getPreferredSize(IFigure container, int wHint, int hHint);
 
 /**
  * Tells the LayoutManager to throw away all cached information about the figures it is
- * resposible for.
+ * resposible for. This method is called whenever the owning figure is invalidated.
  */
 void invalidate();
 
 /**
- * Tells the LayoutManager to throw away any cached information about the given figure.
- * @param figure The figure
- */
-void invalidate(IFigure figure);
-
-/**
  * Lays out the given figure.
- * @param figure The figure
+ * @param container The figure
  */
-void layout(IFigure figure);
+void layout(IFigure container);
 
 /**
- * Removes the given figure from this LayoutManager.
- * @param figure The figure
+ * Removes the given child from this layout.
+ * @param child the child being remoced
  */
-void remove(IFigure figure);
+void remove(IFigure child);
 
 /**
- * Sets the constraint for the given figure.
- * @param figure The figure
+ * Sets the constraint for the given child.
+ * @param child The figure
  * @param constraint The constraint
  */
-void setConstraint(IFigure figure, Object constraint);
+void setConstraint(IFigure child, Object constraint);
 
 }

@@ -279,6 +279,15 @@ Dimension getMaximumSize();
 Dimension getMinimumSize();
 
 /**
+ * Returns a hint indicating the smallest desireable size for the IFigure. Returned
+ * Dimension is by value.
+ * @param wHint the width hint
+ * @param hHint the height hint
+ * @return The minimum size
+ */
+Dimension getMinimumSize(int wHint, int hHint);
+
+/**
  * Returns the IFigure that is the current parent of this IFigure or <code>null</code> if
  * there is no parent.
  * @return The current parent of this IFigure
@@ -711,12 +720,6 @@ void setSize(int w, int h);
  * @param figure The tooltip IFigure
  */
 void setToolTip(IFigure figure);
-
-/**
- * Sets the UpdateManager.
- * @param updateManager The new update manager
- */
-void setUpdateManager(UpdateManager updateManager);
 
 /**
  * Sets this IFigure's visibility.

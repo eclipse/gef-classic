@@ -30,7 +30,7 @@ private Map constraints = new HashMap();
  * 
  * @since 2.0
  */
-protected Dimension calculatePreferredSize(IFigure parent) {
+protected Dimension calculatePreferredSize(IFigure parent, int wHint, int hHint) {
 	List children = parent.getChildren();
 	Dimension d = new Dimension();
 	for (int i=0; i<children.size(); i++) {

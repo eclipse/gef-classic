@@ -15,14 +15,16 @@ public abstract class AbstractLayout
 	implements LayoutManager
 {
 
-private Dimension preferredSize;
+/**
+ * The cached preferred size.
+ */
+protected Dimension preferredSize;
 
 /**
- * Calculates the preferred size of the given figure.
- * @param container The figure
- * @return The preferred size
+ * This method is now {@link #calculatePreferredSize(IFigure, int, int)}.
+ * @param container the figure
  */
-protected abstract Dimension calculatePreferredSize(IFigure container);
+protected final void calculatePreferredSize(IFigure container) { }
 
 /**
  * Calculates the preferred size of the given figure, using width and height hints.
@@ -31,9 +33,8 @@ protected abstract Dimension calculatePreferredSize(IFigure container);
  * @param hHint The height hint
  * @return The preferred size
  */
-protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHint) {
-	return calculatePreferredSize(container);
-}
+protected abstract Dimension calculatePreferredSize(IFigure container,
+	int wHint, int hHint);
 
 /**
  * Returns the preferred size of the figure's border.
@@ -56,12 +57,14 @@ public Object getConstraint(IFigure child) {
 }
 
 /**
- * Returns the minimum size of the given figure.
- * @param container The figure
- * @return The minimum size
+ * This method is now {@link #getMinimumSize(IFigure, int, int)}.
+ * @param container the figure
  */
-public Dimension getMinimumSize(IFigure container) {
-	return getPreferredSize(container);
+public final void getMinimumSize(IFigure container) { }
+
+/** * @see org.eclipse.draw2d.LayoutManager#getMinimumSize(IFigure, int, int) */
+public Dimension getMinimumSize(IFigure container, int wHint, int hHint) {
+	return getPreferredSize(container, wHint, hHint);
 }
 
 /**
@@ -80,26 +83,21 @@ public Dimension getPreferredSize(IFigure container, int wHint, int hHint) {
 }
 
 /**
- * Returns the preferred size of the given figure.
- * @param container The figure
- * @return The preferred size
+ * This method is now {@link #getPreferredSize(IFigure, int, int)}.
+ * @param container the figure
  */
-public Dimension getPreferredSize(IFigure container) {
-	return getPreferredSize(container, -1, -1);
-}
+public final void getPreferredSize(IFigure container) { }
 
-/**
- * Removes all cached information for all figures this LayoutManager is responsible for.
- */
+/** * @see org.eclipse.draw2d.LayoutManager#invalidate() */
 public void invalidate() {
 	preferredSize = null;
 }
 
 /**
  * Removes any cached information about the given figure.
- * @param figure The figure to invalidate
+ * @param child the child that is invalidated
  */
-public void invalidate(IFigure figure) {
+protected void invalidate(IFigure child) {
 	invalidate();
 }
 
@@ -113,11 +111,11 @@ public void remove(IFigure child) {
 
 /**
  * Sets the constraint for the given figure.
- * @param figure The figure
- * @param constraint The contstraint
+ * @param child the child
+ * @param constraint the child's new constraint
  */
-public void setConstraint(IFigure figure, Object constraint) {
-	invalidate(figure);
+public void setConstraint(IFigure child, Object constraint) {
+	invalidate(child);
 }
 
 }
