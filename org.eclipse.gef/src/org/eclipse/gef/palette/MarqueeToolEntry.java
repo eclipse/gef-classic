@@ -64,13 +64,11 @@ public String getDescription() {
 		if (properties != null) {
 			Object value = properties.get(MarqueeSelectionTool.PROPERTY_MARQUEE_BEHAVIOR);
 			if (value instanceof Integer) {
-				int selectionType = ((Integer)value).intValue() 
-						& (MarqueeSelectionTool.BEHAVIOR_CONNECTIONS_TOUCHED 
-						| MarqueeSelectionTool.BEHAVIOR_NODES_CONTAINED);
+				int selectionType = ((Integer)value).intValue();
+				if (selectionType == MarqueeSelectionTool.BEHAVIOR_NODES_AND_CONNECTIONS)
+					desc = GEFMessages.MarqueeTool_Desc;
 				if (selectionType == MarqueeSelectionTool.BEHAVIOR_CONNECTIONS_TOUCHED)
 					desc = GEFMessages.MarqueeTool_Connections_Desc;
-				else if (selectionType != MarqueeSelectionTool.BEHAVIOR_NODES_CONTAINED)
-					desc = GEFMessages.MarqueeTool_Desc;
 			}
 		}
 	}
