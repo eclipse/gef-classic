@@ -13,6 +13,11 @@ public class SelectionRequest
 {
 
 private int statemask;
+private int lastButtonPressed;
+
+public int getLastButtonPressed() {
+	return lastButtonPressed;
+}
 
 public boolean isAltKeyPressed() {
 	return ((statemask & MouseEvent.ALT) != 0);
@@ -40,6 +45,10 @@ public boolean isShiftKeyPressed() {
 
 public void setModifiers(int mask) {
 	statemask = mask;
+}
+
+public void setLastButtonPressed(int button) {
+	lastButtonPressed = button;
 }
 
 }
