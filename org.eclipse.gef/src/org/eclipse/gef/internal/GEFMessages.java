@@ -86,9 +86,6 @@ public static String SetPropertyValueCommand_Label = Helper.getString("%SetPrope
 public static String SelectAllAction_Label = Helper.getString("%SelectAllAction.Label");//$NON-NLS-1$
 public static String SelectAllAction_Tooltip = Helper.getString("%SelectAllAction.Tooltip");//$NON-NLS-1$
 
-public static String MatchSizeAction_Label = Helper.getString("%MatchSizeAction.Label");//$NON-NLS-1$
-public static String MatchSizeAction_Tooltip = Helper.getString("%MatchSizeAction.Tooltip");//$NON-NLS-1$
-
 public static String MatchWidthAction_Label = Helper.getString("%MatchWidthAction.Label");//$NON-NLS-1$
 public static String MatchWidthAction_Tooltip = Helper.getString("%MatchWidthAction.Tooltip");//$NON-NLS-1$
 

@@ -20,14 +20,13 @@ import org.eclipse.draw2d.geometry.PrecisionRectangle;
 import org.eclipse.gef.*;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CompoundCommand;
-import org.eclipse.gef.internal.GEFMessages;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
 
 /** 
  * An action that matches the size of all selected EditPart's Figures to the size
  * of the Primary Selection EditPart's Figure.
  */
-public class MatchSizeAction
+class MatchSizeAction
 	extends SelectionAction
 {
 
@@ -36,11 +35,8 @@ public class MatchSizeAction
  * part.
  * @param part The workbench part associated with this MatchSizeAction
  */
-public MatchSizeAction(IWorkbenchPart part) {
+MatchSizeAction(IWorkbenchPart part) {
 	super(part);
-	setText(GEFMessages.MatchSizeAction_Label);
-	setToolTipText(GEFMessages.MatchSizeAction_Tooltip);
-	setId(GEFActionConstants.MATCH_SIZE);
 }
 
 /**
