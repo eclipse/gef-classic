@@ -5,6 +5,7 @@
 	<projects>
 		<project>org.eclipse.draw2d</project>
 		<project>org.eclipse.swt</project>
+		<project>org.junit</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

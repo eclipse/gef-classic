@@ -39,8 +39,7 @@ protected void paintFigure(Graphics g){
 		}
 		g.drawString(
 			text.substring(frag.offset, frag.offset+frag.length),
-			new Point(frag.x, frag.y),
-			g.TRANSPARENT);
+			new Point(frag.x, frag.y));
 		//FigureUtilities.paintEtchedBorder(g,r);
 	}
 }

@@ -9,7 +9,6 @@ public class PageFlowLayout
 
 protected void endBlock(){
 	//Update the page to be the size of the blockbox
-
 	Vector v = flowFigure.getFragments();
 	v.clear();
 	v.addElement(blockBox);

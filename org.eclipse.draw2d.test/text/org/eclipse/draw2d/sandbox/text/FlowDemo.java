@@ -67,7 +67,7 @@ static public void populatePage(){
 	target = new TextFigure("Normal text.");
 	page.add(target);
 
-	for (int i=0; i<1; i++){
+	for (int i=0; i<30; i++){
 		FlowFigure ff = FlowDemoFactory.newInline();
 		ff.add(new TextFigure("A light blue flow"));
 		ff.add(new FakeFlow());

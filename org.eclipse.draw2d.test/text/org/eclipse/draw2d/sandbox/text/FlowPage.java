@@ -15,7 +15,7 @@ public FlowPage(){
 	setLayoutManager(new PageFlowLayout());
 }
 
-public Dimension getPreferredSize(){
+public Dimension getPreferredSize(int w, int h){
 	return new Dimension(1,bounds.height);
 }
 
