@@ -129,6 +129,7 @@ protected void eraseSizeOnDropFeedback(Request request) {
 public void eraseTargetFeedback(Request request) {
 	if (REQ_ADD.equals(request.getType())
 		|| REQ_MOVE.equals(request.getType())
+		|| REQ_RESIZE_CHILDREN.equals(request.getType())
 		|| REQ_CREATE.equals(request.getType())
 		|| REQ_CLONE.equals(request.getType()))
 		eraseLayoutTargetFeedback(request);
