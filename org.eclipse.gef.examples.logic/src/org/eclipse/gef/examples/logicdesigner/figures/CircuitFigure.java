@@ -6,6 +6,7 @@ package org.eclipse.gef.examples.logicdesigner.figures;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
+import org.eclipse.gef.examples.logicdesigner.LogicColorConstants;
 import org.eclipse.gef.examples.logicdesigner.model.*;
 import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.*;
@@ -19,7 +20,10 @@ public class CircuitFigure
 private IFigure pane;
 
 public CircuitFigure() {
-	setBorder(new CircuitBorder());
+	CircuitBorder border = new CircuitBorder();
+	border.setBorderColor(LogicColorConstants.logicGreen);
+	setBorder(border);
+	
 	ScrollPane scrollpane = new ScrollPane();
 	pane = new FreeformLayer();
 	pane.setLayoutManager(new FreeformLayout());
@@ -85,6 +89,16 @@ protected void layoutConnectionAnchors() {
 		getOutputConnectionAnchor(i).offsetH = x;
 	}
 }
+
+/**
+ * @see org.eclipse.draw2d.Figure#paintFigure(Graphics)
+ */
+protected void paintFigure(Graphics graphics) {
+	Rectangle rect = getBounds().getCopy();
+	rect.crop(new Insets(2,0,2,0));
+	graphics.fillRectangle(rect);
+}
+
 
 public void setBorderColor(Color c){
 	((CircuitBorder)getBorder()).setBorderColor(c);
