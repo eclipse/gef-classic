@@ -60,6 +60,7 @@ protected static final Border TOOLTIP_BORDER = new DrawerToolTipBorder();
 private Toggle collapseToggle;
 private Label drawerLabel, tipLabel;
 
+private boolean addedScrollpane = false;
 private int layoutMode = -1;
 private ToggleButton pinFigure;
 private ScrollPane scrollpane;
@@ -135,7 +136,7 @@ public DrawerFigure(final Control control) {
 	collapseToggle.addChangeListener(new ChangeListener() {
 		public void handleStateChanged(ChangeEvent e) {
 			if (e.getPropertyName().equals(ButtonModel.SELECTED_PROPERTY)) {
-				updatePin();
+				handleExpandStateChanged();
 			}
 		}
 	});
@@ -163,7 +164,6 @@ public DrawerFigure(final Control control) {
 
 	add(collapseToggle);
 	createScrollpane();
-	add(scrollpane);
 	createHoverHelp(control);
 }
 
@@ -297,7 +297,7 @@ public Dimension getPreferredSize(int w, int h) {
 	if (isExpanded())
 		return super.getPreferredSize(w, h);
 	else
-		return getMinimumSize();
+		return getMinimumSize(w, h);
 }
 
 /**
@@ -306,6 +306,24 @@ public Dimension getPreferredSize(int w, int h) {
  */
 public ScrollPane getScrollpane() {
 	return scrollpane;
+}
+
+protected void handleExpandStateChanged() {
+	if (isExpanded()) {
+		if (!getChildren().contains(scrollpane))
+			add(scrollpane);	
+	} else {
+		if (getChildren().contains(scrollpane))
+			remove(scrollpane);
+	}
+	
+	if (pinFigure == null)
+		return;
+	
+	if (isExpanded() && showPin)
+		pinFigure.setVisible(true);
+	else
+		pinFigure.setVisible(false);
 }
 
 /**
@@ -332,14 +350,23 @@ public boolean isPinShowing() {
 
 public void setAnimating(boolean isAnimating) {
 	if (isAnimating) {
+		if (!getChildren().contains(scrollpane)) {
+			addedScrollpane = true;
+			add(scrollpane);
+		}
 		scrollpane.setVerticalScrollBarVisibility(ScrollPane.NEVER);
 	} else {
 		scrollpane.setVerticalScrollBarVisibility(ScrollPane.AUTOMATIC);
+		if (addedScrollpane) {
+			remove(scrollpane);
+			addedScrollpane = false;
+		}
 	}
 }
 
 public void setExpanded(boolean value) {
 	collapseToggle.setSelected(value);
+	handleExpandStateChanged();
 }
 
 public void setLayoutMode(int layoutMode) {
@@ -397,18 +424,7 @@ public void setTitleIcon(Image icon) {
 
 public void showPin(boolean show) {
 	showPin = show;
-	updatePin();
-}
-
-protected void updatePin() {
-	if (pinFigure == null) {
-		return;
-	}
-	if (isExpanded() && showPin) {
-		pinFigure.setVisible(true);
-	} else {
-		pinFigure.setVisible(false);
-	}
+	handleExpandStateChanged();
 }
 
 }
