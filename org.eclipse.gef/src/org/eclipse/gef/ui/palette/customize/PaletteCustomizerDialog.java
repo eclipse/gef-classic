@@ -410,7 +410,14 @@ protected Menu createOutlineContextMenu() {
 	// Add all the actions to the context menu
 	for (Iterator iter = actions.iterator(); iter.hasNext();) {
 		IAction action = (IAction) iter.next();
-		outlineMenu.add(action);
+		if (action instanceof IMenuCreator)
+			outlineMenu.add(new ActionContributionItem(action) {
+				public boolean isDynamic() {
+					return true;
+				}
+			});
+		else
+			outlineMenu.add(action);
 		// Add separators after new and delete
 		if (action instanceof NewAction || action instanceof DeleteAction) {
 			outlineMenu.add(new Separator());
@@ -1148,6 +1155,12 @@ private class NewAction
 
 	public Menu getMenu(Menu parent) {
 		Menu menu = new Menu(parent);
+		menu.addDisposeListener(new DisposeListener() {
+			public void widgetDisposed(DisposeEvent e) {
+				System.out.println("menu disposed");
+
+			}
+		});
 		for (Iterator iter = factories.iterator(); iter.hasNext();) {
 			FactoryWrapperAction action = (FactoryWrapperAction) iter.next();
 			if (action.isEnabled()) {

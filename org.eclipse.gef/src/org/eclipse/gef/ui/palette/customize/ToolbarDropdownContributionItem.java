@@ -446,8 +446,6 @@ public boolean isEnabled() {
  */
 public boolean isDynamic() {
 	if (widget instanceof MenuItem) {
-		if (((MenuItem)widget).getMenu() != null)
-			return true;
 		//Optimization. Only recreate the item is the check style has changed. 
 		boolean itemIsCheck = (widget.getStyle() & SWT.CHECK) != 0;
 		boolean actionIsCheck = getAction() != null && getAction().getStyle() 
