@@ -103,7 +103,7 @@ protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHi
 		maxWidth = hHint;
 		wHint = -1;
 	}
-	if (maxWidth <= 0) {
+	if (maxWidth < 0) {
 		maxWidth = Integer.MAX_VALUE;
 	}
 
