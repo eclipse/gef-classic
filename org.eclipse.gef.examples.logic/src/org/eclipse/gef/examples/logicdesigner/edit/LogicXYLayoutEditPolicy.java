@@ -13,24 +13,27 @@ package org.eclipse.gef.examples.logicdesigner.edit;
 
 import java.util.Iterator;
 
-import org.eclipse.draw2d.PositionConstants;
+import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.*;
 import org.eclipse.gef.commands.Command;
-import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
 import org.eclipse.gef.editpolicies.ResizableEditPolicy;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
 import org.eclipse.gef.requests.CreateRequest;
 import org.eclipse.gef.rulers.RulerProvider;
 
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
+import org.eclipse.gef.examples.logicdesigner.figures.*;
 import org.eclipse.gef.examples.logicdesigner.model.*;
 import org.eclipse.gef.examples.logicdesigner.model.commands.*;
 
 public class LogicXYLayoutEditPolicy
 	extends org.eclipse.gef.editpolicies.XYLayoutEditPolicy
 {
+	
+private IFigure feedback;
 
 protected Command createAddCommand(EditPart childEditPart, Object constraint) {
 	LogicSubpart part = (LogicSubpart)childEditPart.getModel();
@@ -145,16 +148,26 @@ protected Command createChangeConstraintCommand(ChangeBoundsRequest request,
 protected EditPolicy createChildEditPolicy(EditPart child) {
 	if (child instanceof LEDEditPart ||
 	    child instanceof OutputEditPart ) {
-		//|| child instanceof LogicLabelEditPart) {
-		return new NonResizableEditPolicy();
+		ResizableEditPolicy policy = new LogicResizableEditPolicy();
+		policy.setResizeDirections(0);
+		return policy;
 	} else if (child instanceof LogicLabelEditPart) {
-		ResizableEditPolicy policy = new ResizableEditPolicy();
+		ResizableEditPolicy policy = new LogicResizableEditPolicy();
 		policy.setResizeDirections(PositionConstants.EAST | PositionConstants.WEST);
 		return policy;
 	}
 	
-	//return new LogicResizableEditPolicy();
-	return super.createChildEditPolicy(child);
+	return new LogicResizableEditPolicy();
+}
+
+/**
+ * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#eraseSizeOnDropFeedback(org.eclipse.gef.Request)
+ */
+protected void eraseSizeOnDropFeedback(Request request) {
+	if (feedback != null) {
+		removeFeedback(feedback);
+		feedback = null;
+	}
 }
 
 protected LogicGuide findGuideAt(int pos, boolean horizontal) {
@@ -186,7 +199,6 @@ protected Command getCloneCommand(ChangeBoundsRequest request) {
 	
 	return clone;
 }
-
 
 protected Command getCreateCommand(CreateRequest request) {
 	CreateCommand create = new CreateCommand();
@@ -223,12 +235,54 @@ protected Command getCreateCommand(CreateRequest request) {
 	return result;
 }
 
+private IFigure getCustomFeedbackFigure(Object modelPart) {
+	IFigure figure; 
+	
+	if (modelPart instanceof Circuit)
+		figure = new CircuitFeedbackFigure();
+	else if (modelPart instanceof LogicFlowContainer)
+		figure = new LogicFlowFeedbackFigure();		
+	else if (modelPart instanceof LogicLabel)
+		figure = new LabelFeedbackFigure();
+	else {
+		figure = new RectangleFigure();
+		((RectangleFigure)figure).setXOR(true);
+		((RectangleFigure)figure).setFill(true);
+		figure.setBackgroundColor(LogicColorConstants.ghostFillColor);
+		figure.setForegroundColor(ColorConstants.white);
+	}
+	
+	return figure;
+}
+
 protected Command getDeleteDependantCommand(Request request) {
 	return null;
 }
 
+/**
+ * Returns the layer used for displaying feedback.
+ *  
+ * @return the feedback layer
+ */
+protected IFigure getFeedbackLayer() {
+	return getLayer(LayerConstants.SCALED_FEEDBACK_LAYER);
+}
+
 protected Command getOrphanChildrenCommand(Request request) {
 	return null;
+}
+
+/**
+ * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#showSizeOnDropFeedback(org.eclipse.gef.requests.CreateRequest)
+ */
+protected void showSizeOnDropFeedback(CreateRequest request) {
+	Point p = new Point(request.getLocation());
+	if (feedback == null) {
+		feedback = getCustomFeedbackFigure(request.getNewObject());
+		addFeedback(feedback);
+	}
+	feedback.translateToRelative(p);
+	feedback.setBounds(new Rectangle(p, request.getSize()));
 }
 
 }

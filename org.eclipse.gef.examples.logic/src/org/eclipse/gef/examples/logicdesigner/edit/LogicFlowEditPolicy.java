@@ -13,10 +13,6 @@ package org.eclipse.gef.examples.logicdesigner.edit;
 
 import java.util.Iterator;
 
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.geometry.PrecisionRectangle;
-import org.eclipse.draw2d.geometry.Rectangle;
-
 import org.eclipse.gef.*;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
@@ -48,7 +44,6 @@ protected Command getCloneCommand(ChangeBoundsRequest request) {
 	
 	while (i.hasNext()) {
 		currPart = (GraphicalEditPart)i.next();
-		IFigure figure = currPart.getFigure();
 		clone.addPart((LogicSubpart)currPart.getModel(), index++);
 	}
 	
@@ -62,6 +57,15 @@ protected Command createAddCommand(EditPart child, EditPart after) {
 	int index = getHost().getChildren().indexOf(after);
 	command.setIndex(index);
 	return command;
+}
+
+/**
+ * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#createChildEditPolicy(org.eclipse.gef.EditPart)
+ */
+protected EditPolicy createChildEditPolicy(EditPart child) {
+	LogicResizableEditPolicy policy = new LogicResizableEditPolicy();
+	policy.setResizeDirections(0);
+	return policy;
 }
 
 protected Command createMoveChildCommand(EditPart child, EditPart after) {

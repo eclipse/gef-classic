@@ -22,5 +22,6 @@ public final static Color logicGreen = new Color(null, 123,174,148);
 public final static Color logicHighlight = new Color(null,66,166,115);
 public final static Color connectorGreen = new Color(null,0,69,40);
 public final static Color logicBackgroundBlue = new Color(null, 200, 200, 240);
+public final static Color ghostFillColor = new Color(null, 31, 31, 31);
 
 }

@@ -27,7 +27,7 @@ public class LEDFigure
 	extends NodeFigure
 	implements HandleBounds
 {
-private static final Dimension SIZE = new Dimension(61, 47); 
+protected static final Dimension SIZE = new Dimension(61, 47); 
 
 /**
  * Color of the shadow around the LEDFigure's display
@@ -39,13 +39,13 @@ public static final Color DISPLAY_SHADOW = new Color(null, 57, 117, 90);
  */
 public static final Color DISPLAY_TEXT = new Color(null, 255, 199, 16);
 
-private static final Font DISPLAY_FONT = new Font(null, "", 19, 0); //$NON-NLS-1$
-private static PointList connector = new PointList();
-private static PointList bottomConnector = new PointList();
-private static Rectangle displayRectangle = new Rectangle(15, 11, 31, 25);
-private static Rectangle displayShadow = new Rectangle(14, 10, 32, 26);
-private static Rectangle displayHighlight = new Rectangle(15, 11, 32, 26);
-private static Point valuePoint = new Point(16, 10);
+protected static final Font DISPLAY_FONT = new Font(null, "", 19, 0); //$NON-NLS-1$
+protected static PointList connector = new PointList();
+protected static PointList bottomConnector = new PointList();
+protected static Rectangle displayRectangle = new Rectangle(15, 11, 31, 25);
+protected static Rectangle displayShadow = new Rectangle(14, 10, 32, 26);
+protected static Rectangle displayHighlight = new Rectangle(15, 11, 32, 26);
+protected static Point valuePoint = new Point(16, 10);
 
 static {
 	connector.addPoint(-2, 0);
@@ -63,11 +63,11 @@ static {
 	bottomConnector.addPoint(-1, -1);
 }
 
-private static final int[] GAP_CENTERS_X = {8, 23, 38, 53};
-private static final int Y1 = 2;
-private static final int Y2 = 44;
+protected static final int[] GAP_CENTERS_X = {8, 23, 38, 53};
+protected static final int Y1 = 2;
+protected static final int Y2 = 44;
 
-String value;
+protected String value;
 
 /**
  * @see org.eclipse.draw2d.Figure#setBounds(Rectangle)

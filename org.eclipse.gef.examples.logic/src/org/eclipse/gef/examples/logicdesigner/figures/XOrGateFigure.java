@@ -22,9 +22,9 @@ import org.eclipse.draw2d.geometry.Rectangle;
  */
 public class XOrGateFigure extends GateFigure {
 
-private static final Dimension SIZE = new Dimension(15, 17);
-private static final PointList GATE_OUTLINE = new PointList();
-private static final PointList GATE_TOP = new PointList();
+protected static final Dimension SIZE = new Dimension(15, 17);
+protected static final PointList GATE_OUTLINE = new PointList();
+protected static final PointList GATE_TOP = new PointList();
 
 static {
 	//setup gate outline
