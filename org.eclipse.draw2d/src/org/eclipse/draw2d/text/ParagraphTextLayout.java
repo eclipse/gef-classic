@@ -30,7 +30,7 @@ protected void layout() {
 	TextFlow flowFigure = (TextFlow)getFlowFigure();
 	
 	   List fragments = flowFigure.getFragments();//Reuse the previous List of fragments
-	 String s         = ((TextFlow)flowFigure).getText();
+	 String s         = flowFigure.getText();
 	   Font f         = flowFigure.getFont();
 	    int i         = 0; //The index of the current fragment;
 	    int offset    = 0; //The current offset in the ORIGINAL text, not s
