@@ -14,9 +14,8 @@ import org.eclipse.jface.util.Assert;
 import org.eclipse.gef.Disposable;
 
 /**
- * A container for editor actions.  You must register
- * the actions before they will be available to the
- * editor.
+ * A container for editor actions.  You must register the actions before they will be
+ * available to the editor.
  */
 public class ActionRegistry {
 
@@ -26,9 +25,8 @@ public class ActionRegistry {
 private Map map = new HashMap(15);
 
 /**
- * Calls dispose on all actions which implement the
- * {@link Disposable} interface so they can perform 
- * their own clean-up.
+ * Calls dispose on all actions which implement the {@link Disposable} interface so they
+ * can perform their own clean-up.
  */
 public void dispose() {
 	Iterator actions = getActions();
@@ -54,8 +52,7 @@ public Iterator getActions() {
 }
 
 /**
- * Register an action with this registry.  The action 
- * must have an id associated with it.
+ * Register an action with this registry.  The action must have an id associated with it.
  */
 public void registerAction(IAction action) {
 	Assert.isNotNull(action.getId(),
