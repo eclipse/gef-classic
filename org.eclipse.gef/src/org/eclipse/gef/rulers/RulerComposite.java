@@ -32,7 +32,7 @@ public RulerComposite(Composite parent, int style) {
 	super(parent, style);
 }
 
-public void addRuler(Ruler ruler, int orientation) {
+public void addRuler(RulerFigure ruler, int orientation) {
 	getRulerContainer(orientation).getContents().add(ruler);
 }
 
@@ -292,6 +292,8 @@ public class RulerViewport extends Viewport {
 		return getContents().getPreferredSize(wHint - w, hHint - h).getExpanded(w, h);
 	}
 	protected void readjustScrollBars() {
+		// since the range model is shared with the editor, the ruler viewports should
+		// not touch it
 	}
 	public void propertyChange(PropertyChangeEvent event) {
 		if (event.getSource() instanceof RangeModel) {

@@ -15,7 +15,7 @@ import org.eclipse.gef.editparts.ZoomManager;
 /**
  * @author Pratik Shah
  */
-public class Ruler
+public class RulerFigure
 	extends Figure
 {
 
@@ -28,7 +28,7 @@ public static final int UNIT_PIXELS = 2;
  */
 public int smallMarkWidth = 5;
 public int mediumMarkWidth = 10;
-public int textLeftMargin = 0;
+public int textLeftMargin = 2;
 public int textRightMargin = 2;
 public int textTopMargin = 2;
 public int textBottomMargin = 4;
@@ -43,10 +43,13 @@ protected Transposer transposer = new Transposer();
 protected FigureCanvas editor;
 protected ZoomManager zoom;
 
-public Ruler(FigureCanvas editor, boolean isHorizontal, int unit) {
+public RulerFigure(FigureCanvas editor, boolean isHorizontal, int unit) {
 	this.editor = editor;
 	setHorizontal(isHorizontal);
 	setUnit(unit);
+	setBackgroundColor(ColorConstants.white);
+	setBorder(new MarginBorder(transposer.t(new Insets(0, 3, 0, 4))));
+	setOpaque(true);
 }
 
 private void calculateTextSize(Rectangle transposedBounds) {
@@ -152,9 +155,12 @@ public boolean isHorizontal() {
  * @see org.eclipse.draw2d.Figure#paintFigure(org.eclipse.draw2d.Graphics)
  */
 protected void paintFigure(Graphics graphics) {
+	if( isOpaque() ) {
+		graphics.fillRectangle(getClientArea());
+	}
 	double dotsPerUnit = getDPU();
 	Rectangle clip = transposer.t(graphics.getClip(Rectangle.SINGLETON));
-	Rectangle figClientArea = transposer.t(getClientArea());
+	Rectangle figClientArea = transposer.t(getClientArea()).translate(-1, -1);
 	// Use the x and width of the client area, but the y and height of the clip as the 
 	// bounds of the area which is to be repainted.  This will increase performance as the
 	// entire ruler will not be repainted everytime.
@@ -298,8 +304,8 @@ protected void paintFigure(Graphics graphics) {
 		graphics.drawLine(transposer.t(start), transposer.t(end));
 	}
 	// draw the line on the right of the ruler 
-	graphics.drawLine(transposer.t(clippedBounds.getTopRight().getTranslated(-1, -1)), 
-			transposer.t(clippedBounds.getBottomRight().getTranslated(-1, -1)));
+//	graphics.drawLine(transposer.t(clippedBounds.getTopRight()), 
+//			transposer.t(clippedBounds.getBottomRight()));
 }
 
 public void setHorizontal(boolean isHorizontal) {

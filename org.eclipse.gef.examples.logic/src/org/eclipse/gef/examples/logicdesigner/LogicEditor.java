@@ -41,7 +41,7 @@ import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.rulers.*;
 import org.eclipse.gef.rulers.RulerComposite;
-import org.eclipse.gef.rulers.Ruler;
+import org.eclipse.gef.rulers.RulerFigure;
 import org.eclipse.gef.ui.actions.*;
 import org.eclipse.gef.ui.palette.PaletteContextMenuProvider;
 import org.eclipse.gef.ui.palette.PaletteViewer;
@@ -350,10 +350,10 @@ protected void createOutputStream(OutputStream os)throws IOException {
 
 protected void createRulers(ZoomManager zoomManager){
 	rulerComp.setEditor(getEditor());
-	Ruler vRuler = new Ruler(getEditor(), false, Ruler.UNIT_INCHES);
+	RulerFigure vRuler = new RulerFigure(getEditor(), false, RulerFigure.UNIT_INCHES);
 	vRuler.setZoomManager(zoomManager);
 	rulerComp.addRuler(vRuler, PositionConstants.WEST);
-	Ruler hRuler = new Ruler(getEditor(), true, Ruler.UNIT_INCHES);
+	RulerFigure hRuler = new RulerFigure(getEditor(), true, RulerFigure.UNIT_INCHES);
 	hRuler.setZoomManager(zoomManager);
 	rulerComp.addRuler(hRuler, PositionConstants.NORTH);
 }
