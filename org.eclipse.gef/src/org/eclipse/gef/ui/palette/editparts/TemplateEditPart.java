@@ -1,7 +1,8 @@
-package org.eclipse.gef.ui.palette;
+package org.eclipse.gef.ui.palette.editparts;
 
 import org.eclipse.draw2d.*;
 import org.eclipse.gef.AccessibleEditPart;
+import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.eclipse.gef.palette.PaletteEntry;
 import org.eclipse.gef.palette.PaletteTemplateEntry;
 import org.eclipse.swt.accessibility.*;

@@ -1,4 +1,4 @@
-package org.eclipse.gef.ui.palette;
+package org.eclipse.gef.ui.palette.editparts;
 /*
  * Licensed Material - Property of IBM
  * (C) Copyright IBM Corp. 2001, 2002 - All Rights Reserved.
@@ -10,6 +10,8 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import org.eclipse.draw2d.*;
+
+
 import org.eclipse.swt.graphics.Image;
 
 final public class PaletteScrollBar 

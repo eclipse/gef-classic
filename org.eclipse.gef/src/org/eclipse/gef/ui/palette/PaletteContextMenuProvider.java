@@ -2,6 +2,7 @@ package org.eclipse.gef.ui.palette;
 
 import org.eclipse.gef.ContextMenuProvider;
 import org.eclipse.gef.ui.actions.ActionRegistry;
+import org.eclipse.gef.ui.palette.editparts.*;
 
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.Separator;
@@ -9,7 +10,6 @@ import org.eclipse.ui.IWorkbenchActionConstants;
 
 /**
  * Provides the context menu for a palette
- * 
  * @author Pratik Shah
  */
 public class PaletteContextMenuProvider
@@ -56,8 +56,7 @@ public void buildContextMenu(IMenuManager menu) {
 		menu.add(getActionRegistry().getAction(IWorkbenchActionConstants.COPY));
 		menu.add(new Separator());
 	} else if (selectedPart instanceof CategoryEditPart) {
-		menu.add(new PinCategoryAction(
-				((CategoryEditPart)selectedPart).getCategoryFigure()));
+		menu.add(new PinCategoryAction((CategoryEditPart)selectedPart));
 		menu.add(new Separator());
 	}
 	menu.add(new FolderLayoutAction(

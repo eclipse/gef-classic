@@ -1,8 +1,10 @@
-package org.eclipse.gef.ui.palette;
+package org.eclipse.gef.ui.palette.editparts;
 
 import java.util.*;
 
 import org.eclipse.draw2d.IFigure;
+
+import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
 
 /**
  * @author Randy Hudson, Pratik Shah
@@ -12,7 +14,7 @@ class CategoryAnimationController {
 
 private long startTime = System.currentTimeMillis();
 private long endTime = 0;
-private static int numberOfMilliSeconds = 150;
+private static int numberOfMilliSeconds = 1500;
 private boolean inProgress;
 private List categories = new ArrayList();
 private CategoryFigure[] animate;

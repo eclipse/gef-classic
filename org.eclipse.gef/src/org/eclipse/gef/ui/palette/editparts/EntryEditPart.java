@@ -1,4 +1,4 @@
-package org.eclipse.gef.ui.palette;
+package org.eclipse.gef.ui.palette.editparts;
 /*
  * Licensed Material - Property of IBM
  * (C) Copyright IBM Corp. 2001, 2002 - All Rights Reserved.
@@ -13,6 +13,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.gef.AccessibleEditPart;
+import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.eclipse.gef.palette.PaletteEntry;
 
 public class EntryEditPart

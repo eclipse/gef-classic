@@ -1,4 +1,4 @@
-package org.eclipse.gef.ui.palette;
+package org.eclipse.gef.ui.palette.editparts;
 /*
  * Licensed Material - Property of IBM
  * (C) Copyright IBM Corp. 2001, 2002 - All Rights Reserved.
@@ -8,6 +8,7 @@ package org.eclipse.gef.ui.palette;
 
 import org.eclipse.draw2d.*;
 import org.eclipse.gef.palette.PaletteContainer;
+import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
 
 public class GroupEditPart 
 	extends PaletteEditPart 

@@ -1,4 +1,4 @@
-package org.eclipse.gef.ui.palette;
+package org.eclipse.gef.ui.palette.editparts;
 
 import org.eclipse.gef.internal.Internal;
 import org.eclipse.swt.custom.ViewForm;
@@ -7,8 +7,13 @@ import org.eclipse.swt.widgets.Display;
 
 public class ImageConstants {
 
-public static final Image up, upPressed, upGrayed, down, downPressed, downGrayed;
-static ImageData imageData, sourceImageData;
+public static final Image up;
+public static final Image upPressed;
+public static final Image upGrayed;
+public static final Image down;
+public static final Image downPressed;
+public static final Image downGrayed;
+
 static private RGB[] palette2 = new RGB[]{ViewForm.borderOutsideRGB, new RGB(0,0,0), new RGB(0,0,0), new RGB(0,0,0)};
 static private RGB[] palette1 = new RGB[]{ViewForm.borderOutsideRGB, new RGB(0,0,0)};
 

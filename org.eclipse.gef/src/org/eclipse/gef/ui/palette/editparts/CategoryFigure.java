@@ -1,4 +1,4 @@
-package org.eclipse.gef.ui.palette;
+package org.eclipse.gef.ui.palette.editparts;
 
 
 import org.eclipse.swt.SWT;
@@ -14,6 +14,8 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.internal.Internal;
+import org.eclipse.gef.ui.palette.*;
+import org.eclipse.gef.ui.palette.editparts.*;
 
 /**
  * @author Pratik Shah

@@ -5,7 +5,7 @@ import org.eclipse.ui.IEditorPart;
 
 import org.eclipse.gef.internal.GEFMessages;
 import org.eclipse.gef.palette.PaletteTemplateEntry;
-import org.eclipse.gef.ui.palette.TemplateEditPart;
+import org.eclipse.gef.ui.palette.editparts.TemplateEditPart;
 
 /**
  * Copies the currently selected template in the palatte to the default GEF 

@@ -1,4 +1,4 @@
-package org.eclipse.gef.ui.palette;
+package org.eclipse.gef.ui.palette.editparts;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -16,6 +16,8 @@ import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.draw2d.text.FlowPage;
 import org.eclipse.draw2d.text.TextFlow;
+
+import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
 
 /**
  * A customized figure used to represent entries in the GEF Palette.

@@ -22,6 +22,7 @@ import org.eclipse.gef.*;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.palette.*;
 import org.eclipse.gef.ui.palette.customize.PaletteCustomizerDialog;
+import org.eclipse.gef.ui.palette.editparts.*;
 import org.eclipse.gef.ui.parts.PaletteViewerKeyHandler;
 
 public class PaletteViewerImpl

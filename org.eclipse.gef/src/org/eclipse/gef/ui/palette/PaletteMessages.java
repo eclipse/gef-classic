@@ -200,10 +200,6 @@ public static final String SETTINGS_LAYOUT_FOLDER_WIDTH;
  */
 public static final String CATEGORY_PIN;
 /**
- * The String "Un&pin"
- */
-public static final String CATEGORY_UNPIN;
-/**
  * The String "&Restore Default"
  */
 public static final String SETTINGS_DEFAULT_FONT;
@@ -264,7 +260,6 @@ static {
 	SETTINGS_LAYOUT_FOLDER_OVERRIDE_WIDTH = bundle.getString("SETTINGS_LAYOUT_FOLDER_OVERRIDE_WIDTH"); //$NON-NLS-1$	
 	SETTINGS_LAYOUT_FOLDER_WIDTH = bundle.getString("SETTINGS_LAYOUT_FOLDER_WIDTH"); //$NON-NLS-1$	
 	CATEGORY_PIN = bundle.getString("CATEGORY_PIN"); //$NON-NLS-1$	
-	CATEGORY_UNPIN = bundle.getString("CATEGORY_UNPIN"); //$NON-NLS-1$	
 	SETTINGS_DEFAULT_FONT = bundle.getString("SETTINGS_DEFAULT_FONT"); //$NON-NLS-1$	
 	SETTINGS_WORKBENCH_FONT_LABEL = bundle.getString("SETTINGS_WORKBENCH_FONT_LABEL"); //$NON-NLS-1$	
 }

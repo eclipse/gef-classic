@@ -1,4 +1,4 @@
-package org.eclipse.gef.ui.palette;
+package org.eclipse.gef.ui.palette.editparts;
 /*
  * Licensed Material - Property of IBM
  * (C) Copyright IBM Corp. 2001, 2002 - All Rights Reserved.
@@ -23,7 +23,7 @@ private static final Color
 	highlight   = ColorConstants.menuBackgroundSelected,
 	dropshadow1 = new Color(null, ViewForm.borderInsideRGB),
 	dropshadow2 = new Color(null, ViewForm.borderMiddleRGB),
-      dropshadow3 = new Color(null, ViewForm.borderOutsideRGB);
+	dropshadow3 = new Color(null, ViewForm.borderOutsideRGB);
 
 /**
  * Returns the space used by the border for the 

@@ -1,4 +1,4 @@
-package org.eclipse.gef.ui.palette;
+package org.eclipse.gef.ui.palette.editparts;
 /*
  * Licensed Material - Property of IBM
  * (C) Copyright IBM Corp. 2001, 2002 - All Rights Reserved.
@@ -108,6 +108,13 @@ public boolean isExpanded() {
 }
 
 /**
+ * Returns <code>true</code> if the category is pinned open.
+ * @return boolean */
+public boolean isPinnedOpen() {
+	return getCategoryFigure().isPinnedOpen();
+}
+
+/**
  * @see org.eclipse.gef.ui.palette.PaletteEditPart#createAccessible()
  */
 protected AccessibleEditPart createAccessible() {
@@ -176,6 +183,13 @@ protected void register() {
  */
 public void setExpanded(boolean expanded) {
 	getCategoryFigure().setExpanded(expanded);
+}
+
+/**
+ * Sets the category's pinned state to the specified value.
+ * @param pinned <code>true</code> if the category should be pinned when opened */
+public void setPinnedOpen(boolean pinned) {
+	getCategoryFigure().setPinned(pinned);
 }
 
 /**

@@ -7,6 +7,7 @@ package org.eclipse.gef.ui.palette;
  */
 
 import org.eclipse.gef.*;
+import org.eclipse.gef.ui.palette.editparts.*;
 import org.eclipse.gef.palette.*;
 
 public class PaletteEditPartFactory

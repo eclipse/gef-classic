@@ -16,6 +16,7 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.ui.palette.*;
+import org.eclipse.gef.ui.palette.editparts.*;
 
 /**
  * KeyHandler for the {@link org.eclipse.gef.ui.palette.PaletteViewerImpl Palette}.

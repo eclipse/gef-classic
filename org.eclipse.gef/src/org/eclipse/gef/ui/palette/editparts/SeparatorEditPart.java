@@ -1,4 +1,4 @@
-package org.eclipse.gef.ui.palette;
+package org.eclipse.gef.ui.palette.editparts;
 
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.IFigure;
