@@ -50,6 +50,16 @@ protected final CreateRequest getCreateRequest() {
 protected abstract CreateRequest.Factory getFactory(Object template);
 
 /**
+ * The purpose of a template is to be copied. Therefore, the drop operation can't be
+ * anything but <code>DND.DROP_COPY</code>.
+ * @see AbstractTransferDropTargetListener#handleDragOperationChanged()
+ */
+protected void handleDragOperationChanged() {
+	getCurrentEvent().detail = DND.DROP_COPY;
+	super.handleDragOperationChanged();
+}
+
+/**
  * The purpose of a template is to be copied. Therefore, the Drop operation is set to
  * <code>DND.DROP_COPY</code> by default.
  * @see org.eclipse.gef.dnd.AbstractTransferDropTargetListener#handleDragOver()
