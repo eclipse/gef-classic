@@ -10,7 +10,7 @@ import org.eclipse.draw2d.geometry.Insets;
 public class DirectedGraph {
 public EdgeList cutEdges;
 
-private Insets defaultPadding = new Insets(25);
+private Insets defaultPadding = new Insets(16);
 public EdgeList edges = new EdgeList();
 
 public DirectedGraph gPrime;

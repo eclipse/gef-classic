@@ -42,11 +42,13 @@ public SubgraphBoundary(Subgraph s, Insets p, int side) {
 			break;
 		case TOP :
 			height = s.insets.top;
+			width = 20;
 			padding.bottom = s.innerPadding.top;
 			data = "top(" + s + ")";
 			break;
 		case BOTTOM :
 			height = s.insets.bottom;
+			width = 20;
 			padding.top = s.innerPadding.bottom;
 			data = "bottom(" + s + ")";
 			break;

@@ -1,5 +1,7 @@
 package org.eclipse.graph;
 
+import org.eclipse.draw2d.geometry.Insets;
+
 /**
  * @author hudsonr
  * @since 2.1
@@ -16,6 +18,7 @@ VirtualNode(Edge e, int i) {
 	width = e.width;
 	height = 0;
 	rank = i;
+	padding = new Insets();
 }
 
 public Edge getEdge() {

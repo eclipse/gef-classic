@@ -111,7 +111,7 @@ Node getLeft(Subgraph s) {
 		s.left = new SubgraphBoundary(s, graph.getPadding(s), 1);
 		s.left.rank = (s.head.rank + s.tail.rank)/2;
 		//$TODO this weight value is arbitrary
-//		prime.edges.add(new Edge(getPrime(s.left), getPrime(getRight(s)),0,100));
+		prime.edges.add(new Edge(getPrime(s.left), getPrime(getRight(s)),0,1));
 	}
 	return s.left;
 }
@@ -135,14 +135,6 @@ Node getPrime(Node n) {
 }
 
 public void visit(DirectedGraph g) {
-	/*
-	 * First, remove all containment edges and their virtual nodes.
-	 */
-	EdgeList containment = ((CompoundDirectedGraph)g).containment;
-	for (int i = 0; i < containment.size(); i++) {
-		Edge e = containment.getEdge(i);
-		g.removeEdge(e);
-	}
 	super.visit(g);
 }
 

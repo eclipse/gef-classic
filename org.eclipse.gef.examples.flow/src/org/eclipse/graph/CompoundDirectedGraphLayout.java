@@ -23,8 +23,20 @@ public void visit(DirectedGraph graph) {
 		.visit(graph);
 	new MinCross()
 		.visit(graph);
+
+	EdgeList containment = ((CompoundDirectedGraph)graph).containment;
+	for (int i = 0; i < containment.size(); i++) {
+		Edge e = containment.getEdge(i);
+		graph.removeEdge(e);
+	}
+	for (int i = 0; i < graph.ranks.size(); i++) {
+		Rank rank = graph.ranks.getRank(i);
+		rank.assignIndices();
+	}
+
 	new SortSubgraphs()
 		.visit(graph);
+
 	new CompoundHorizontalPlacement()
 		.visit(graph);
 }
