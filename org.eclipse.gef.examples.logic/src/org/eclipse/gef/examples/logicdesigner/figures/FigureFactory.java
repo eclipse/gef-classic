@@ -15,8 +15,8 @@ public class FigureFactory {
 
 public static PolylineConnection createNewBendableWire(Wire wire){
 	PolylineConnection conn = new PolylineConnection();
-	conn.setSourceDecoration(new PolygonDecoration());
-	conn.setTargetDecoration(new PolylineDecoration());
+//	conn.setSourceDecoration(new PolygonDecoration());
+//	conn.setTargetDecoration(new PolylineDecoration());
 	return conn;
 }
 
