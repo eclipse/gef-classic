@@ -158,7 +158,7 @@ private class SelectorFigure
 	private Image image;
 	private Rectangle iBounds = new Rectangle(0, 0, 1, 1);
 	{
-		Display display = Display.getDefault();
+		Display display = Display.getCurrent();
 		PaletteData pData = new PaletteData(0xFF, 0xFF00, 0xFF0000);
 		RGB rgb = new RGB(255, 157, 20);
 		int fillColor = pData.getPixel(rgb);
