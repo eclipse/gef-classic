@@ -33,13 +33,8 @@ private Object template;
  * @param iconSmall the small icon
  * @param iconLarge the large icon
  */
-public CombinedTemplateCreationEntry(
-  String label,
-  String shortDesc,
-  Object template,
-  CreationFactory factory,
-  ImageDescriptor iconSmall,
-  ImageDescriptor iconLarge) {
+public CombinedTemplateCreationEntry(String label, String shortDesc, Object template,
+		CreationFactory factory, ImageDescriptor iconSmall, ImageDescriptor iconLarge) {
 	super(label, shortDesc, factory, iconSmall, iconLarge);
 	setTemplate(template);
 }
