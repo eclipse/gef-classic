@@ -78,7 +78,7 @@ public void addAll(List list) {
 
 /**
  * Checks to make sure the active entry is up-to-date and sets it to the first
- * child if it is <code>null</code>.
+ * child if its null
  */
 private void checkActiveEntry() {
 	PaletteEntry currEntry = activeEntry;

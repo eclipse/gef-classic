@@ -689,7 +689,6 @@ private class Sash extends Composite {
 			implements MouseMoveListener {
 		protected boolean dragging = false;
 		protected boolean correctState = false;
-		protected boolean mouseDown = false;
 		protected int origX;
 		protected Listener keyListener = new Listener() {
 			public void handleEvent(Event event) {
@@ -708,14 +707,12 @@ private class Sash extends Composite {
 		public void mouseDown(MouseEvent me) {
 			if (me.button != 1)
 				return;
-			mouseDown = true;
+			dragging = true;
 			correctState = isInState(STATE_EXPANDED | STATE_PINNED_OPEN);
 			origX = me.x;
 			Display.getCurrent().addFilter(SWT.KeyDown, keyListener);
 		}
 		public void mouseMove(MouseEvent me) {
-			if (mouseDown)
-				dragging = true;
 			if (dragging && correctState)
 				handleSashDragged(me.x - origX);
 		}
@@ -729,7 +726,6 @@ private class Sash extends Composite {
 			}
 			dragging = false;
 			correctState = false;
-			mouseDown = false;
 		}
 	}
 }
