@@ -115,4 +115,6 @@ public static String Ruler_Vertical_Label = Helper.getString("%Ruler.Vertical");
 public static String Ruler_Desc = Helper.getString("%Ruler.Desc"); //$NON-NLS-1$
 public static String Guide_Label = Helper.getString("%Guide.Label"); //$NON-NLS-1$
 public static String Guide_Desc = Helper.getString("%Guide.Desc"); //$NON-NLS-1$
+public static String Create_Guide_Label = Helper.getString("%Guide.CreateAction.Label"); //$NON-NLS-1$
+public static String Create_Guide_Tooltip = Helper.getString("%Guide.CreateAction.Tooltip"); //$NON-NLS-1$
 }
