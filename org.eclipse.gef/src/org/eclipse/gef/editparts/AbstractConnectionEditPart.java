@@ -15,6 +15,7 @@ import java.util.List;
 
 import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.Point;
+
 import org.eclipse.gef.*;
 import org.eclipse.gef.tools.SelectEditPartTracker;
 

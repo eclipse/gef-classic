@@ -121,46 +121,64 @@ public void deselectAll(){
 	fireSelectionChanged();
 }
 
-public void handleDispose(DisposeEvent e){
+/**
+ * Called if and when the <code>Control</code> is disposed. Subclasses may extend this
+ * method to perform additional cleanup.
+ * @param e the disposeevent
+ */
+protected void handleDispose(DisposeEvent e){
 	if (contextMenu != null)
 		contextMenu.dispose();
 	setControl(null);
 }
 
 /**
- * Returns the <code>Data</code> of the TreeItem at the given point.
- * Returns null if the Point is not on the Control (Tree).  Returns
- * the data of the Tree if there is no TreeItem at the given point.
- *
- * @param	pt	The location at which to look for a TreeItem
- */ 
+ * @see org.eclipse.gef.EditPartViewer#findObjectAt(Point)
+ */
 public final EditPart findObjectAt(Point pt) {
 	return findObjectAtExcluding(pt, Collections.EMPTY_SET);
 }
 
+/**
+ * @see org.eclipse.gef.EditPartViewer#findObjectAtExcluding(Point, Collection)
+ */
 public final EditPart findObjectAtExcluding(Point pt, Collection exclude) {
 	return findObjectAtExcluding(pt, exclude, null);
 }
 
+/**
+ * Fires selection changed to the registered listeners at the time called.
+ */
 protected void fireSelectionChanged() {
-	Iterator iter = selectionListeners.iterator();
+	Object listeners[] = selectionListeners.toArray();
 	SelectionChangedEvent event = new SelectionChangedEvent(this, getSelection());
-	while(iter.hasNext()) {
-		ISelectionChangedListener l = (ISelectionChangedListener)iter.next();
-		l.selectionChanged(event);
-	}
+	for (int i = 0; i < selectionListeners.size(); i++)
+		((ISelectionChangedListener)listeners[i])
+			.selectionChanged(event);
 }
 
+/**
+ * @see org.eclipse.gef.EditPartViewer#flush()
+ */
 public void flush(){}
 
+/**
+ * @see org.eclipse.gef.EditPartViewer#getContextMenu()
+ */
 public MenuManager getContextMenu() {
 	return contextMenu;
 }
 
+/**
+ * @see org.eclipse.gef.EditPartViewer#getContents()
+ */
 public EditPart getContents(){
 	return getRootEditPart().getContents();
 }
 
+/**
+ * @see org.eclipse.gef.EditPartViewer#getControl()
+ */
 public Control getControl(){
 	return control;
 }

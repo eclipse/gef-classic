@@ -11,9 +11,9 @@
 package org.eclipse.gef.editparts;
 
 
-import org.eclipse.gef.EditPart;
+import org.eclipse.draw2d.IFigure;
 
-import org.eclipse.draw2d.*;
+import org.eclipse.gef.EditPart;
 
 /**
  * Responsible for locating <i>layers</i> in a <code>GraphicalViewer</code>.  Layers are

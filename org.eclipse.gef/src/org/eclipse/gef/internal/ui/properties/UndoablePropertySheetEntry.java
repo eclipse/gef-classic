@@ -10,15 +10,18 @@
  *******************************************************************************/
 package org.eclipse.gef.internal.ui.properties;
 
-import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.jface.viewers.*;
-import org.eclipse.jface.util.ListenerList;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Composite;
 import java.text.Collator;
 import java.util.*;
-import org.eclipse.gef.commands.*;
+
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Composite;
+
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.jface.util.ListenerList;
+import org.eclipse.jface.viewers.*;
 import org.eclipse.ui.views.properties.*;
+
+import org.eclipse.gef.commands.*;
 /**
  * <code>PropertySheetEntry</code> is an implementation of
  * <code>IPropertySheetEntry</code> which uses <code>IPropertySource</code>

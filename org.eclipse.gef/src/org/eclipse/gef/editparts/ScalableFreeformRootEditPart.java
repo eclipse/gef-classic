@@ -12,8 +12,6 @@ package org.eclipse.gef.editparts;
 
 import org.eclipse.draw2d.*;
 
-import org.eclipse.gef.editparts.*;
-
 /**
  * @author hudsonr
  * @since 2.1

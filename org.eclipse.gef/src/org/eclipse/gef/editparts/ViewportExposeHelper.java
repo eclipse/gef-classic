@@ -10,11 +10,11 @@
  *******************************************************************************/
 package org.eclipse.gef.editparts;
 
-import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.Viewport;
 import org.eclipse.draw2d.geometry.*;
 
 import org.eclipse.gef.*;
-import org.eclipse.gef.EditPart;
 
 /**
  * An implementation of <code>ExposeHelper</code> for use with {@link

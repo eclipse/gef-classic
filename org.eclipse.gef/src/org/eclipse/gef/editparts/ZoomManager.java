@@ -11,17 +11,13 @@
 package org.eclipse.gef.editparts;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.draw2d.ScalableFreeformLayeredPane;
 import org.eclipse.draw2d.Viewport;
-import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2d.geometry.*;
 
 /**
  * This class will manage the zoom for a GraphicalEditor.  Objects interested in zoom

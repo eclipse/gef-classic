@@ -13,8 +13,8 @@ package org.eclipse.gef.editparts;
 import java.util.*;
 
 import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.ui.views.properties.IPropertySource;
 import org.eclipse.jface.util.Assert;
+import org.eclipse.ui.views.properties.IPropertySource;
 
 import org.eclipse.draw2d.EventListenerList;
 

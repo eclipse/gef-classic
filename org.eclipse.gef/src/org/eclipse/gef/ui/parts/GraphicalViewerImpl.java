@@ -59,7 +59,7 @@ protected LightweightSystem createLightweightSystem(){
 	return new LightweightSystem();
 }
 
-public void handleDispose(DisposeEvent e) {
+protected void handleDispose(DisposeEvent e) {
 	super.handleDispose(e);
 	getLightweightSystem().getUpdateManager().dispose();
 }

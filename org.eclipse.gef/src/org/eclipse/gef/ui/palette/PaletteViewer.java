@@ -157,7 +157,7 @@ private ToolEntryEditPart getToolEntryEditPart(ToolEntry entry) {
 /**
  * @see org.eclipse.gef.EditPartViewer#dispose()
  */
-public void handleDispose(DisposeEvent e) {
+protected void handleDispose(DisposeEvent e) {
 	super.handleDispose(e);
 	prefListener.disposeFont();
 }
