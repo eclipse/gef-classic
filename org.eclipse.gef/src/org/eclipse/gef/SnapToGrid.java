@@ -56,17 +56,17 @@ public int snapCreateRequest(CreateRequest request, PrecisionRectangle baseRect,
 		double xCorrection = Math.IEEEremainder(baseRect.preciseX - origin.x, gridX);
 		baseRect.preciseX -= xCorrection;
 		baseRect.preciseWidth += xCorrection;
-		System.out.println("leftCorrection: " + (0 - xCorrection));
-		baseRect.updateInts();
-		System.out.println(baseRect);
+//		System.out.println("leftCorrection: " + (0 - xCorrection));
+//		baseRect.updateInts();
+//		System.out.println(baseRect);
 	}
 	if ((snapOrientation & EAST) != 0 && gridX > 0) {
 		double rightCorrection = Math.IEEEremainder(
 				baseRect.preciseRight() - origin.x, gridX);
 		baseRect.preciseWidth -= rightCorrection;
-		System.out.println("rightCorrection: " + (0 - rightCorrection));
-		baseRect.updateInts();
-		System.out.println(baseRect);
+//		System.out.println("rightCorrection: " + (0 - rightCorrection));
+//		baseRect.updateInts();
+//		System.out.println(baseRect);
 	}
 
 	if ((snapOrientation & NORTH) != 0 && gridY > 0) {
@@ -79,8 +79,8 @@ public int snapCreateRequest(CreateRequest request, PrecisionRectangle baseRect,
 		baseRect.preciseHeight -= bottom;
 	}
 	baseRect.updateInts();
-	System.out.println(baseRect);
-	System.out.println("=================="); 
+//	System.out.println(baseRect);
+//	System.out.println("=================="); 
 	fig.translateToAbsolute(baseRect);
 	baseRect.updateInts();
 	request.setLocation(baseRect.getLocation());
