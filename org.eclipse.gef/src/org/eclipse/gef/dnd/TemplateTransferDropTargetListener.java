@@ -83,6 +83,7 @@ private void selectAddedObject() {
 	if (model == null)
 		return;
 	EditPartViewer viewer = getViewer();
+	viewer.getControl().forceFocus();
 	Object editpart = viewer.getEditPartRegistry().get(model);
 	if (editpart instanceof EditPart) {
 		//Force a layout first.
