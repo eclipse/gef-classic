@@ -96,7 +96,8 @@ public boolean canCreate(PaletteEntry selected) {
 	if (selected instanceof PaletteContainer) {
 		parent = (PaletteContainer)selected;
 	}
-	return parent.acceptsType(determineTypeForNewEntry(selected));
+	return parent.getUserModificationPermission() == PaletteEntry.PERMISSION_FULL_MODIFICATION
+		&& parent.acceptsType(determineTypeForNewEntry(selected));
 }
 
 /**

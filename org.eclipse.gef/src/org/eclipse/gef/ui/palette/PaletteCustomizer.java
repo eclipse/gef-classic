@@ -26,6 +26,19 @@ import org.eclipse.gef.ui.palette.customize.*;
 public abstract class PaletteCustomizer {
 
 /**
+ * Return true if this container can accept this entry as a new child. By default, this
+ * method checks to see first if the container has full permissions, then checks
+ * to see if this container can accept the type of the entry.
+ * @param container the container that will be the parent of this entry
+ * @param entry the entry to add to the container
+ * @return true if this container can hold this entry
+ */
+protected boolean canAdd(PaletteContainer container, PaletteEntry entry) {
+	return container.getUserModificationPermission() ==	PaletteEntry.PERMISSION_FULL_MODIFICATION 
+		&& container.acceptsType(entry.getType());
+}
+
+/**
  * Indicates whether the given entry can be deleted from the model or not.  Whether or not
  * an entry can be deleted depends on its permsission 
  * ({@link PaletteEntry#getUserModificationPermission()}).
@@ -74,7 +87,7 @@ public boolean canMoveDown(PaletteEntry entry) {
 			return false;
 	
 		// try to place in grand parent
-		if (parent.getParent().acceptsType(entry.getType()))
+		if (canAdd(parent.getParent(), entry))
 			return true;
 		
 		// walk parent siblings till we find one it can go into.
@@ -85,7 +98,7 @@ public boolean canMoveDown(PaletteEntry entry) {
 		for (int i = parentIndex + 1; i < children.size(); i++) {
 			parentSibling = (PaletteEntry)children.get(i);
 			if (parentSibling instanceof PaletteContainer) {
-				if (((PaletteContainer)parentSibling).acceptsType(entry.getType()))
+				if (canAdd((PaletteContainer)parentSibling, entry))
 					return true;
 			}
 		}
@@ -125,7 +138,7 @@ public boolean canMoveUp(PaletteEntry entry) {
 			return false;
 		
 		// try to place in grand parent
-		if (parent.getParent().acceptsType(entry.getType()))
+		if (canAdd(parent.getParent(), entry))
 			return true;
 		
 		// walk parent siblings till we find one it can go into.
@@ -136,7 +149,7 @@ public boolean canMoveUp(PaletteEntry entry) {
 		for (int i = parentIndex - 1; i >= 0; i--) {
 			parentSibling = (PaletteEntry)children.get(i);
 			if (parentSibling instanceof PaletteContainer) {
-				if (((PaletteContainer)parentSibling).acceptsType(entry.getType()))
+				if (canAdd((PaletteContainer)parentSibling, entry))
 					return true;
 			}
 		}
@@ -208,7 +221,7 @@ public void performMoveDown(PaletteEntry entry) {
 		PaletteContainer newParent = parent.getParent();
 		int insertionIndex = 0;
 		
-		if (newParent.acceptsType(entry.getType()))
+		if (canAdd(newParent, entry))
 			insertionIndex = newParent.getChildren().indexOf(parent) + 1;
 		else {		
 			List parents = newParent.getChildren();
@@ -217,9 +230,8 @@ public void performMoveDown(PaletteEntry entry) {
 				parentSibling = (PaletteEntry)parents.get(i);
 				if (parentSibling instanceof PaletteContainer) {
 					newParent = (PaletteContainer)parentSibling;
-					if (newParent.acceptsType(entry.getType())) {
+					if (canAdd(newParent, entry))
 						break;
-					}
 				}
 			}
 		}
@@ -248,7 +260,7 @@ public void performMoveUp(PaletteEntry entry) {
 		PaletteContainer newParent = parent.getParent();
 		int insertionIndex = 0;
 		
-		if (newParent.acceptsType(entry.getType()))
+		if (canAdd(newParent, entry))
 			insertionIndex = newParent.getChildren().indexOf(parent);
 		else {		
 			List parents = newParent.getChildren();
@@ -257,7 +269,7 @@ public void performMoveUp(PaletteEntry entry) {
 				parentSibling = (PaletteEntry)parents.get(i);
 				if (parentSibling instanceof PaletteContainer) {
 					newParent = (PaletteContainer)parentSibling;
-					if (newParent.acceptsType(entry.getType())) {
+					if (canAdd(newParent, entry)) {
 						insertionIndex = newParent.getChildren().size();
 						break;
 					}

@@ -50,8 +50,7 @@ public PaletteStack(String name, String desc, ImageDescriptor icon) {
  * @return true if this can be a child of this container
  */
 public boolean acceptsType(Object type) {
-	if (!type.equals(ToolEntry.PALETTE_TYPE_TOOL) || (getParent() != null
-					&& getParent().getUserModificationPermission() != PaletteEntry.PERMISSION_FULL_MODIFICATION))
+	if (!type.equals(ToolEntry.PALETTE_TYPE_TOOL))
 		return false;
 	return super.acceptsType(type);
 }
