@@ -82,6 +82,9 @@ private void addAccessibility() {
 		public void getRole(AccessibleControlEvent e) {
 			e.detail = ACC.ROLE_LABEL;
 		}
+		public void getState(AccessibleControlEvent e) {
+			e.detail = ACC.STATE_READONLY;
+		}
 	});
 	getAccessible().addAccessibleListener(new AccessibleAdapter() {
 		public void getName(AccessibleEvent e) {
