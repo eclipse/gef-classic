@@ -74,7 +74,8 @@ private void setViewerSelection(EditPartViewer viewer, ISelection selection) {
 			result.add(part);
 	}
 	viewer.setSelection(new StructuredSelection(result));
-	viewer.reveal((EditPart)result.get(result.size()-1));
+	if (result.size() > 0)
+		viewer.reveal((EditPart)result.get(result.size()-1));
 }
 
 }
