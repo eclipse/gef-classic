@@ -13,9 +13,9 @@ package org.eclipse.draw2d;
 import org.eclipse.draw2d.geometry.*;
 
 /**
- * Repositions a {@link Figure Figure} attached to a {@link Connection} when the
- * Connection is moved.  The ArrowLocator is used to reposition and place 
- * {@link RotatableDecoration RotatableDecorations} at the start or end of a connection.
+ * Repositions a {@link RotatableDecoration} attached to a {@link Connection} when the
+ * Connection is moved.  The decoration can be placed at the source or target end of the
+ * connection figure.
  */
 public class ArrowLocator extends ConnectionLocator {
 
@@ -24,11 +24,11 @@ public class ArrowLocator extends ConnectionLocator {
  * {@link ConnectionLocator#START} or {@link ConnectionLocator#END}).
  * 
  * @param connection The connection associated with the locator
- * @param tip Orientation of the tip
+ * @param location Location of the arrow decoration
  * @since 2.0
  */
-public ArrowLocator(Connection connection, int tip) {
-	super(connection, tip);
+public ArrowLocator(Connection connection, int location) {
+	super(connection, location);
 }
 
 /**
