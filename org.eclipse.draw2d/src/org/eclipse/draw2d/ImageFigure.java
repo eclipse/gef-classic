@@ -61,12 +61,6 @@ public Image getImage() {
  * @see org.eclipse.draw2d.Figure#getPreferredSize(int, int)
  */
 public Dimension getPreferredSize(int wHint, int hHint) {
-	Dimension size = new Dimension();
-	if (getImage() != null) {
-		org.eclipse.swt.graphics.Rectangle imgSize = getImage().getBounds();
-		size.width = imgSize.width;
-		size.height = imgSize.height;
-	}
 	return size;
 }
 
