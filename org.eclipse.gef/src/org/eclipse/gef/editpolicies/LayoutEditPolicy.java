@@ -107,14 +107,6 @@ protected void decorateChildren() {
 }
 
 /**
- * Made <code>final</code> for compatibility. Override eraseLayoutTargetFeedback(). The
- * term "drag" is actually confusing, since when the User actually releases the mouse is
- * considered a "drop" by most conventions.
- * @throws Exception exception
- * @param request the Request */
-protected final void eraseDragTargetFeedback(Request request) throws Exception { }
-
-/**
  * Erases target layout feedback. This method is the inverse of {@link
  * #showLayoutTargetFeedback(Request)}.
  * @param request the Request */
@@ -297,12 +289,6 @@ protected void setListener(EditPartListener listener) {
 	if (this.listener != null)
 		getHost().addEditPartListener(this.listener);
 }
-
-/**
- * Made final for compatibility.
- * @throws Exception bogus
- * @param request the Request */
-protected final void showDragTargetFeedback(Request request) throws Exception { }
 
 /**
  * Shows target layout feedback. During <i>moves</i>, <i>reparents</i>, and
