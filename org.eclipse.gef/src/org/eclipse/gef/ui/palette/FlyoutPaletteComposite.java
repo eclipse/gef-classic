@@ -117,6 +117,10 @@ private static final int MAX_PALETTE_SIZE = 500;
 
 private static final int STATE_HIDDEN = 8;
 private static final int STATE_EXPANDED = 1;
+/*
+ * This is the default state, i.e., when the palette view is not visible, if no initial
+ * state is provided, the flyout palette will show up as collapsed.
+ */
 private static final int STATE_COLLAPSED = 2;
 private static final int STATE_PINNED_OPEN = 4;
 
@@ -136,6 +140,8 @@ private int dock = PositionConstants.EAST;
 private int paletteState = -1;
 private int paletteWidth = DEFAULT_PALETTE_SIZE;
 private int minWidth = MIN_PALETTE_SIZE;
+private int cachedSize = -1, cachedState = -1, cachedLocation = -1;
+private Point cachedBounds = new Point(0, 0); 
 
 private IPerspectiveListener perspectiveListener = new IPerspectiveListener() {
 	public void perspectiveActivated(IWorkbenchPage page, 
@@ -159,7 +165,7 @@ private IPerspectiveListener perspectiveListener = new IPerspectiveListener() {
  */
 public FlyoutPaletteComposite(Composite parent, int style, IWorkbenchPage page,
 		PaletteViewerProvider pvProvider, FlyoutPreferences preferences) {
-	super(parent, style & SWT.BORDER);
+	super(parent, style);
 	provider = pvProvider;
 	prefs = preferences;
 	sash = createSash();
@@ -167,16 +173,14 @@ public FlyoutPaletteComposite(Composite parent, int style, IWorkbenchPage page,
 	hookIntoWorkbench(page.getWorkbenchWindow());
 
 	// Initialize the state properly
-	int defaultState = prefs.getPaletteState();
+	if (prefs.getPaletteWidth() <= 0)
+		prefs.setPaletteWidth(DEFAULT_PALETTE_SIZE);
 	setPaletteWidth(prefs.getPaletteWidth());
 	setDockLocation(prefs.getDockLocation());
 	IViewPart part = page.findView(PaletteView.ID);
-	if (part == null) {
-		if (defaultState == STATE_COLLAPSED || defaultState == STATE_PINNED_OPEN)
-			setState(defaultState);
-		else
-			setState(STATE_COLLAPSED);
-	} else
+	if (part == null)
+		setState(prefs.getPaletteState());
+	else
 		setState(STATE_HIDDEN);
 
 	addListener(SWT.Resize, new Listener() {
@@ -188,9 +192,8 @@ public FlyoutPaletteComposite(Composite parent, int style, IWorkbenchPage page,
 			 * when the editor is closed or maximized.  We have to ignore such resizes.
 			 * See Bug# 62748
 			 */
-			if (area.width < minWidth)
-				return;
-			layout(true);
+			if (area.width > minWidth)
+				layout(true);
 		}
 	});
 
@@ -234,7 +237,7 @@ private Composite createPaletteContainer() {
 }
 
 private Control createSash() {
-	return new Sash(this);
+	return new Sash(this, SWT.NONE);
 }
 
 private Control createTitle(Composite parent, boolean isHorizontal) {
@@ -272,7 +275,6 @@ private void handlePerspectiveChanged(IWorkbenchPage page,
 		handlePerspectiveActivated(page, perspective);
 }
 
-
 /*
  * @TODO:Pratik   Need to redo this method.  It should return false if ancestor is
  * null.
@@ -306,6 +308,19 @@ public void layout(boolean changed) {
 	maxWidth = Math.max(maxWidth, minWidth);
 	pWidth = Math.max(pWidth, minWidth);
 	pWidth = Math.min(pWidth, maxWidth);
+	
+	/*
+	 * Fix for Bug# 65892
+	 * Laying out only when necessary helps reduce flicker on GTK in the case where the 
+	 * flyout palette is being resized past its maximum size.
+	 */
+	if (paletteState == cachedState && pWidth == cachedSize && cachedLocation == dock 
+			&& cachedBounds == getSize())
+		return;
+	cachedState = paletteState;
+	cachedSize = pWidth;
+	cachedLocation = dock;
+	cachedBounds = getSize();
 	
 	setRedraw(false);
 	if (isInState(STATE_HIDDEN)) {
@@ -484,7 +499,20 @@ public void hookDropTargetListener(GraphicalViewer viewer) {
 	});
 }
 
+/*
+ * If the state is invalid (as could be the case when the 
+ * FlyoutPreferences.getPaletteState() is invoked), it will be defaulted to 
+ * STATE_COLLAPSED
+ */
 private void setState(int newState) {
+	/*
+	 * Fix for Bug# 69617
+	 * FlyoutPreferences.getPaletteState() could return an invalid state if none is
+	 * stored.  In that case, we use the default state: STATE_COLLAPSED.
+	 */
+	if ((newState & 
+			(STATE_COLLAPSED | STATE_EXPANDED | STATE_HIDDEN | STATE_PINNED_OPEN)) == 0)
+		newState = STATE_COLLAPSED;
 	if (paletteState == newState)
 		return;
 	int oldState = paletteState;
@@ -553,8 +581,9 @@ public interface FlyoutPreferences {
 	 */
 	int getDockLocation();
 	/**
-	 * When there is no saved state, this method can return any int (preferrably a
-	 * non-positive int).
+	 * When there is no saved state, this method can return any non-positive int.  
+	 * Undesired behaviour is possible if a positve int that coincides with one of the
+	 * state constants is returned.
 	 * @return	the saved state of the palette (collapsed or pinned open)
 	 */
 	int getPaletteState();
@@ -587,8 +616,8 @@ public interface FlyoutPreferences {
 
 private class Sash extends Composite {
 	private Control button, title;
-	public Sash(Composite parent) {
-		super(parent, SWT.NONE);
+	public Sash(Composite parent, int style) {
+		super(parent, style);
 		button = createFlyoutControlButton(this);
 		title = createTitle(this, false);
 		new SashDragManager();
@@ -1018,15 +1047,18 @@ private static class TitleLabel extends Label {
 	}
 	protected void paintFigure(Graphics graphics) {
 		super.paintFigure(graphics);
-		if (hasFocus())
-			graphics.drawFocus(0, 0, bounds.width - 1, bounds.height - 1);
 		org.eclipse.draw2d.geometry.Rectangle area = 
 				getBounds().getCropped(super.getInsets());
 		org.eclipse.draw2d.geometry.Rectangle textBounds = getTextBounds();
 		// We reduce the width by 1 because FigureUtilities grows it by 1 unnecessarily
 		textBounds.width--;
+
+		if (hasFocus())
+			graphics.drawFocus(bounds.getResized(-1, -1)
+					.intersect(textBounds.getExpanded(getInsets())));
+		
 		int lineWidth = Math.min((area.width - textBounds.width - H_GAP * 2) / 2, 
-				LINE_LENGTH); 
+				LINE_LENGTH);
 		if (lineWidth >= MIN_LINE_LENGTH) {
 			int centerY = area.height / 2;
 			graphics.setForegroundColor(ColorConstants.buttonLightest);
