@@ -38,6 +38,8 @@ public abstract class AbstractEditPartViewer
 	implements EditPartViewer
 {
 
+private DisposeListener lDispose;
+	
 /**
  * The raw list of selected editparts.
  */
@@ -58,7 +60,13 @@ private Map mapVisualToEditPart = new HashMap();
 private Control control;
 private EditDomain domain;
 private RootEditPart rootEditPart;
-private EditPart focusPart;
+ /**
+  * The editpart specifically set to have focus.  Note that if this value is
+  * <code>null</code>, the focus editpart is still implied to be the part with primary
+  * selection.  Subclasses should call the accessor: {@link #getFocusEditPart()} whenever
+  * possible.
+  */
+protected EditPart focusPart;
 private MenuManager contextMenu;
 private DelegatingDragAdapter dragAdapter = new DelegatingDragAdapter();
 private DragSource dragSource;
@@ -156,8 +164,6 @@ public void deselectAll() {
  * @param e the disposeevent
  */
 protected void handleDispose(DisposeEvent e) {
-	if (contextMenu != null)
-		contextMenu.dispose();
 	setControl(null);
 }
 
@@ -328,9 +334,8 @@ public Map getVisualPartMap() {
  * @see #unhookControl()
  */
 protected void hookControl() {
-	if (getControl() == null)
-		return;
-	getControl().addDisposeListener(new DisposeListener() {
+	Assert.isTrue(getControl() != null);
+	getControl().addDisposeListener(lDispose = new DisposeListener() {
 		public void widgetDisposed(DisposeEvent e) {
 			handleDispose(e);
 		}
@@ -621,9 +626,14 @@ public void setSelection(ISelection newSelection) {
  * Called when the control is being set to <code>null</code>, but before it is null.
  */
 protected void unhookControl() {
-	if (getControl() == null)
-		return;
-		
+	Assert.isTrue(getControl() != null);
+	
+	if (lDispose != null) {
+		getControl().removeDisposeListener(lDispose);
+		lDispose = null;
+	}
+	if (getContextMenu() != null)
+		getContextMenu().dispose();
 	if (getRootEditPart() != null)
 		getRootEditPart().deactivate();
 }

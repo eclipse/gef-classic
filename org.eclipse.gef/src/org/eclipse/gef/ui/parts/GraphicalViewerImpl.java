@@ -15,23 +15,22 @@ import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.*;
-import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.*;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.widgets.*;
 
 import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.jface.action.IMenuListener;
-import org.eclipse.jface.action.IMenuManager;
-import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.*;
 import org.eclipse.jface.util.Assert;
 
-import org.eclipse.draw2d.ExclusionSearch;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.LightweightSystem;
+import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.Point;
+
 import org.eclipse.gef.*;
-import org.eclipse.gef.editparts.*;
 import org.eclipse.gef.editparts.LayerManager;
+import org.eclipse.gef.editparts.ScalableRootEditPart;
 
 /**
  * An EditPartViewer implementation based on {@link org.eclipse.draw2d.IFigure Figures}.
@@ -45,6 +44,7 @@ public class GraphicalViewerImpl
 private final LightweightSystem lws = createLightweightSystem();
 IFigure rootFigure;
 private DomainEventDispatcher eventDispatcher;
+private FocusListener lFocus;
 
 /**
  * Constructs a GraphicalViewerImpl.
@@ -65,7 +65,7 @@ public Control createControl(Composite composite) {
  * Creates the default root editpart. Called during construction.
  */
 protected void createDefaultRoot() {
-	setRootEditPart(new GraphicalRootEditPart());
+	setRootEditPart(new ScalableRootEditPart());
 }
 
 /**
@@ -210,6 +210,17 @@ protected void hookDropTarget() {
 protected void hookControl() {
 	super.hookControl();
 	getLightweightSystem().setControl((Canvas)getControl());
+	getControl().addFocusListener(lFocus = new FocusListener() {
+		public void focusGained(FocusEvent e) {
+			if (focusPart != null)
+				focusPart.setFocus(true);
+		}
+
+		public void focusLost(FocusEvent e) {
+			if (focusPart != null)
+				focusPart.setFocus(false);
+		}
+	});
 }
 
 /**
@@ -338,6 +349,17 @@ protected void setRootFigure(IFigure figure) {
  */
 public void setRouteEventsToEditDomain(boolean value) {
 	getEventDispatcher().setRouteEventsToEditor(value);
+}
+
+/**
+ * @see org.eclipse.gef.ui.parts.AbstractEditPartViewer#unhookControl()
+ */
+protected void unhookControl() {
+	super.unhookControl();
+	if (lFocus != null) {
+		getControl().removeFocusListener(lFocus);
+		lFocus = null;
+	}
 }
 
 /**
