@@ -41,13 +41,18 @@ import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
+import org.eclipse.draw2d.ConnectionLayer;
+import org.eclipse.draw2d.ShortestPathConnectionRouter;
+
 import org.eclipse.gef.ContextMenuProvider;
 import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.gef.EditPartViewer;
+import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.GraphicalViewer;
+import org.eclipse.gef.LayerConstants;
 import org.eclipse.gef.dnd.TemplateTransferDragSourceListener;
 import org.eclipse.gef.dnd.TemplateTransferDropTargetListener;
-import org.eclipse.gef.editparts.ScalableRootEditPart;
+import org.eclipse.gef.editparts.ScalableFreeformRootEditPart;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.requests.CreationFactory;
 import org.eclipse.gef.requests.SimpleFactory;
@@ -92,9 +97,9 @@ protected void configureGraphicalViewer() {
 	super.configureGraphicalViewer();
 	
 	GraphicalViewer viewer = getGraphicalViewer();
-	viewer.setRootEditPart(new ScalableRootEditPart());
 	viewer.setEditPartFactory(new ShapesEditPartFactory());
-	
+	viewer.setRootEditPart(new ScalableFreeformRootEditPart());
+
 	// configure the context menu provider
 	ContextMenuProvider cmProvider =
 		new ShapesEditorContextMenuProvider(viewer, getActionRegistry());
@@ -253,10 +258,22 @@ private void handleLoadException(Exception e) {
  */
 protected void initializeGraphicalViewer() {
 	super.initializeGraphicalViewer();
-	GraphicalViewer graphicalViewer = getGraphicalViewer();
-	graphicalViewer.setContents(getModel()); // set the contents of this editor
+	GraphicalViewer viewer = getGraphicalViewer();
+	viewer.setContents(getModel()); // set the contents of this editor
+	
+	// add the ShortestPathConnectionRouter
+	ScalableFreeformRootEditPart root = 
+			(ScalableFreeformRootEditPart)viewer.getRootEditPart();
+	ConnectionLayer connLayer =
+			(ConnectionLayer)root.getLayer(LayerConstants.CONNECTION_LAYER);
+	GraphicalEditPart contentEditPart = (GraphicalEditPart)root.getContents();
+	ShortestPathConnectionRouter router = 
+			new ShortestPathConnectionRouter(contentEditPart.getFigure());
+	connLayer.setConnectionRouter(router);
+	contentEditPart.getContentPane().addLayoutListener(router.getLayoutListener());
+
 	// listen for dropped parts
-	graphicalViewer.addDropTargetListener(createTransferDropTargetListener());
+	viewer.addDropTargetListener(createTransferDropTargetListener());
 }
 
 /* (non-Javadoc)
