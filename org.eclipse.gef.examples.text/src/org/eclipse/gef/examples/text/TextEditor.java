@@ -16,28 +16,30 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.actions.ActionFactory;
+import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 import org.eclipse.draw2d.FigureCanvas;
 
 import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartFactory;
+import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.gef.commands.CommandStackEvent;
 import org.eclipse.gef.commands.CommandStackEventListener;
 import org.eclipse.gef.editparts.ScalableRootEditPart;
+import org.eclipse.gef.ui.parts.ContentOutlinePage;
 import org.eclipse.gef.ui.parts.GraphicalEditor;
+import org.eclipse.gef.ui.parts.TreeViewer;
 
 import org.eclipse.gef.examples.text.edit.CompoundTextualEditPart;
+import org.eclipse.gef.examples.text.edit.ContainerTreePart;
 import org.eclipse.gef.examples.text.edit.DocumentPart;
-import org.eclipse.gef.examples.text.edit.ImportStatementPart;
 import org.eclipse.gef.examples.text.edit.ImportsPart;
 import org.eclipse.gef.examples.text.edit.TextFlowPart;
+import org.eclipse.gef.examples.text.edit.TextRunTreePart;
 import org.eclipse.gef.examples.text.model.Container;
-import org.eclipse.gef.examples.text.model.Document;
-import org.eclipse.gef.examples.text.model.ImportStatement;
-import org.eclipse.gef.examples.text.model.Imports;
 import org.eclipse.gef.examples.text.model.TextRun;
 import org.eclipse.gef.examples.text.tools.TextTool;
 
@@ -45,6 +47,28 @@ import org.eclipse.gef.examples.text.tools.TextTool;
  * @since 3.1
  */
 public class TextEditor extends GraphicalEditor {
+
+private Container doc;
+
+class TextOutlinePage extends ContentOutlinePage {
+
+	public TextOutlinePage(EditPartViewer viewer) {
+		super(new TreeViewer());
+		getEditDomain().addViewer(getViewer());
+		getViewer().setEditPartFactory(new EditPartFactory() {
+			public EditPart createEditPart(EditPart context, Object model) {
+				if (model instanceof Container)
+					return new ContainerTreePart(model);
+				return new TextRunTreePart(model);
+			}
+		});
+	}
+	
+	public void createControl(Composite parent) {
+		super.createControl(parent);
+		getViewer().setContents(doc);
+	}
+}
 
 /**
  * @see org.eclipse.gef.ui.parts.GraphicalEditor#configureGraphicalViewer()
@@ -68,28 +92,44 @@ protected void createGraphicalViewer(Composite parent) {
 	initializeGraphicalViewer();
 }
 
+public Object getAdapter(Class type) {
+	if (type == IContentOutlinePage.class)
+		return createOutlinePage();
+	return super.getAdapter(type);
+}
+
+/**
+ * @since 3.1
+ * @return
+ */
+private IContentOutlinePage createOutlinePage() {
+	return new TextOutlinePage(null);
+}
+
 /**
  * @see GraphicalEditor#initializeGraphicalViewer()
  */
 protected void initializeGraphicalViewer() {
 	getGraphicalViewer().setEditPartFactory(new EditPartFactory() {
 		public EditPart createEditPart(EditPart context, Object model) {
-			if (model instanceof Document)
-				return new DocumentPart(model);
-			else if (model instanceof Imports)
-				return new ImportsPart(model);
-			else if (model instanceof ImportStatement)
-				return new ImportStatementPart(model);
-			else if (model instanceof TextRun)
+			if (model instanceof Container) {
+				switch (((Container)model).getType()) {
+					case Container.TYPE_ROOT:
+						return new DocumentPart(model);
+					case Container.TYPE_IMPORT_DECLARATIONS:
+						return new ImportsPart(model);
+					default:
+						return new CompoundTextualEditPart(model);
+				}
+			} else if (model instanceof TextRun) {
 				return new TextFlowPart(model);
-			else if (model instanceof Container)
-					return new CompoundTextualEditPart(model);
+			}
 			throw new RuntimeException("unexpected model object");
 		}
 	});
 
-	Document doc = new Document();
-	doc.add(new TextRun("document"));
+	doc = new Container(Container.TYPE_ROOT);
+	doc.add(new TextRun("Paragraph 1"));
 
 	getGraphicalViewer().setContents(doc);
 }

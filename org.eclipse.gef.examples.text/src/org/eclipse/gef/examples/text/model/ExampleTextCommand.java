@@ -18,13 +18,20 @@ import org.eclipse.gef.examples.text.edit.TextualEditPart;
 /**
  * @since 3.1
  */
-public abstract class ExampleTextCommand extends Command implements TextCommand {
+public abstract class ExampleTextCommand
+	extends Command
+	implements TextCommand
+{
 
 public ExampleTextCommand(String label) {
 	super(label);
 }
 
-public void executeMore() {}
+public boolean canExecutePending() {
+	return false;
+}
+
+public void executePending() {}
 
 protected static TextualEditPart lookupModel(GraphicalTextViewer viewer,
 		ModelElement model) {

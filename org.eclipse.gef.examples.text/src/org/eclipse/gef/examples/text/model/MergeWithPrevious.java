@@ -27,26 +27,34 @@ public MergeWithPrevious(TextualEditPart part) {
 	run = (TextRun)part.getModel();
 	container = run.getContainer();
 	index = container.getChildren().indexOf(run);
-	if (index == 0)
-		return;
+}
+
+private TextRun getPreviousTextRun() {
+	ModelElement candidate = (ModelElement)container.getChildren().get(index - 1);
+	while (candidate instanceof Container) {
+		candidate = (ModelElement)((Container)candidate).getChildren().get(
+				((Container)candidate).size() - 1);
+	}
+	return (TextRun)candidate;
 }
 
 public void apply() {
 	container.remove(run);
-	TextRun previous = (TextRun)container.getChildren().get(index - 1);
+	TextRun previous = getPreviousTextRun();
 	previous.insertText(run.getText(), previous.size());
 }
 
+public boolean canApply() {
+	return index > 0;
+}
+
 public ModelLocation getResultingLocation() {
-	TextRun previous = (TextRun)container.getChildren().get(index - 1);
+	TextRun previous = getPreviousTextRun();
 	return new ModelLocation(previous, previous.size() - run.size());
 }
 
 public void rollback() {
-}
-
-public boolean isAllowed() {
-	return index > 0;
+	throw new RuntimeException("not implemented");
 }
 
 }

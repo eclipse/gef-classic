@@ -16,6 +16,10 @@ import org.eclipse.jface.util.Assert;
  */
 public class TextRun extends ModelElement {
 
+public static final int TYPE_IMPORT = 1;
+public static final int TYPE_PACKAGE = 2;
+public static final int TYPE_BULLET = 2;
+
 private String text;
 
 /**
@@ -26,6 +30,14 @@ public TextRun(String text) {
 }
 
 /**
+ * @since 3.1
+ */
+public TextRun(String text, int type) {
+	this.text = text;
+	this.type = type;
+}
+
+/**
  * Divide this Run into two runs at the given offset.  The second run is return.
  * @since 3.1
  * @param offset where to divide
@@ -33,9 +45,7 @@ public TextRun(String text) {
  */
 public TextRun subdivideRun(int offset) {
 	String remainder = removeRange(offset, size() - offset);
-	if (this instanceof ImportStatement)
-		return new ImportStatement(remainder);
-	return new TextRun(remainder);
+	return new TextRun(remainder, getType());
 }
 
 public String getText() {

@@ -21,7 +21,6 @@ import org.eclipse.draw2d.LineBorder;
 import org.eclipse.draw2d.ToolbarLayout;
 import org.eclipse.draw2d.geometry.Rectangle;
 
-import org.eclipse.gef.editparts.AbstractEditPart;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 
 import org.eclipse.gef.examples.text.TextLocation;
@@ -55,10 +54,6 @@ public Rectangle getCaretPlacement(int offset) {
 	throw new RuntimeException("not supported");
 }
 
-/**
- * @since 3.1
- * @return
- */
 private Container getContainer() {
 	return (Container)getModel();
 }
@@ -70,9 +65,6 @@ public int getLength() {
 	return getChildren().size();
 }
 
-/**
- * @see AbstractEditPart#getModelChildren()
- */
 protected List getModelChildren() {
 	return getContainer().getChildren();
 }
@@ -107,7 +99,8 @@ public TextLocation getNextLocation(int identifier, TextLocation current) {
 }
 
 public void propertyChange(PropertyChangeEvent evt) {
-	if (evt.getPropertyName().equals("children")) refreshChildren();
+	if (evt.getPropertyName().equals("children"))
+		refreshChildren();
 }
 
 /**

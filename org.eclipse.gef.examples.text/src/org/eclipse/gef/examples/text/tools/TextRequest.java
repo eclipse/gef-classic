@@ -11,25 +11,43 @@ package org.eclipse.gef.examples.text.tools;
 
 import org.eclipse.gef.Request;
 
+import org.eclipse.gef.examples.text.AppendableCommand;
 import org.eclipse.gef.examples.text.SelectionRange;
-import org.eclipse.gef.examples.text.TextCommand;
 
 /**
  * @since 3.1
  */
 public class TextRequest extends Request {
 
-public static final String REQ_INSERT = "$typing input";
+public static final String REQ_BACKSPACE = "TextRequest.backspace";
 
-public static final String REQ_BACKSPACE = "$typing backspace";
+/**
+ * The Request type for a break in the current line.  A line break is a newline within the
+ * current paragraph or block, such as a bulleted or numbered list.  This requst indicates
+ * that SHIFT+ENTER was received
+ */
+public static final String REQ_BREAK = "TextRequest.breakLine";
 
-public static final String REQ_DELETE = "$typing delete";
+public static final String REQ_DELETE = "TextRequest.delete";
 
-public static final String REQ_NEWLINE= "$typing newline";
+public static final String REQ_INDENT = "TextRequest.indentText";
 
-public static final String REQ_REMOVE_RANGE = "$typing remove range";
+public static final String REQ_INSERT = "TextRequest.input";
 
-private TextCommand previous;
+/**
+ * The Request type for a new page.  A "Page" may be interpreted to mean anything based
+ * on the context of the current selection range.  This request indicates that CTRL+ENTER
+ * was received.
+ */
+public static final String REQ_NEW_PAGE = "TextRequest.newPage";
+
+public static final String REQ_NEWLINE= "TextRequest.newline";
+
+public static final String REQ_REMOVE_RANGE = "TextRequest.removeRange";
+
+public static final String REQ_UNINDENT = "TextRequest.unindentText";
+
+private AppendableCommand previous;
 
 private SelectionRange range;
 
@@ -39,38 +57,37 @@ private String text;
  * @param type
  * @since 3.1
  */
-public TextRequest(SelectionRange range, String text, TextCommand prevoius) {
+public TextRequest(SelectionRange range, String text, AppendableCommand prevoius) {
 	super(REQ_INSERT);
 	this.text = text;
 	this.range = range;
 	this.previous = prevoius;
 }
 
-public TextRequest(String type, SelectionRange range, TextCommand previous) {
+public TextRequest(String type, SelectionRange range) {
+	this(type, range, null);
+}
+
+public TextRequest(String type, SelectionRange range, AppendableCommand previous) {
 	super(type);
 	this.range = range;
 	this.previous = previous;
-}
-
-public TextRequest(SelectionRange range) {
-	super(REQ_REMOVE_RANGE);
-	this.range = range;
-}
-
-public String getText() {
-	return text;
-}
-
-public TextCommand getPreviousCommand() {
-	return previous;
 }
 
 public int getInsertionOffset() {
 	return range.begin.offset;
 }
 
+public AppendableCommand getPreviousCommand() {
+	return previous;
+}
+
 public SelectionRange getSelectionRange() {
 	return range;
+}
+
+public String getText() {
+	return text;
 }
 
 }

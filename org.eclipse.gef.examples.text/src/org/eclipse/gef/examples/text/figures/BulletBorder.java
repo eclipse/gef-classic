@@ -11,9 +11,6 @@
 
 package org.eclipse.gef.examples.text.figures;
 
-import org.eclipse.swt.graphics.Image;
-
-import org.eclipse.draw2d.AbstractBorder;
 import org.eclipse.draw2d.FigureUtilities;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
@@ -24,36 +21,18 @@ import org.eclipse.draw2d.geometry.Rectangle;
 /**
  * @since 3.1
  */
-public class TreeBorder extends AbstractBorder {
+public class BulletBorder extends ListItemBorder {
 
-private final Image image;
-private final String text;
-private Insets insets;
-
-public TreeBorder(Image image, String text) {
-	this.image = image;
-	this.text = text;
-}
+private static final String BULLET = " \u25cf ";
 
 public Insets getInsets(IFigure figure) {
-	if (insets == null) {
-		FigureUtilities.getTextExtents(text, figure.getFont(), Dimension.SINGLETON);
-		insets = new Insets(Math.max(16, Dimension.SINGLETON.height), 9, 0, 0);
-	}
-	return insets;
+	FigureUtilities.getTextExtents(BULLET, figure.getFont(), Dimension.SINGLETON);
+	return new Insets(0, Dimension.SINGLETON.width, 0, 0);
 }
 
-public void paint(IFigure figure, Graphics g, Insets insets) {
-	Rectangle where = getPaintRectangle(figure, insets);
-	
-	g.translate(where.x, where.y);
-
-	for (int i = 16; i < where.height - 6; i += 2)
-		g.drawPoint(9, i);
-	
-	g.drawImage(image, 0, 0);
-	int h = FigureUtilities.getFontMetrics(g.getFont()).getHeight();
-	g.drawText(text, 19, 16 - h);
+public void paintBorder(IFigure figure, Graphics graphics, Insets insets) {
+	Rectangle r = getPaintRectangle(figure, insets);
+	graphics.drawString(BULLET, r.x, r.y);
 }
 
 }

@@ -16,6 +16,8 @@ public abstract class MiniEdit {
 
 public abstract void apply();
 
+public abstract boolean canApply();
+
 public abstract ModelLocation getResultingLocation();
 
 public void reapply() {

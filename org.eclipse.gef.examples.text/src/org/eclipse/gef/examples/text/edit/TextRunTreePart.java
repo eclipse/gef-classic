@@ -9,28 +9,29 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/ 
 
-package org.eclipse.gef.examples.text.model;
+package org.eclipse.gef.examples.text.edit;
+
+import java.beans.PropertyChangeEvent;
+
+import org.eclipse.gef.examples.text.model.TextRun;
 
 /**
  * @since 3.1
  */
-public class PromoteElement extends MiniEdit {
+public class TextRunTreePart extends ExampleTreePart {
 
-/**
- * @see org.eclipse.gef.examples.text.model.MiniEdit#apply()
- */
-public void apply() {}
-
-/**
- * @see org.eclipse.gef.examples.text.model.MiniEdit#getResultingLocation()
- */
-public ModelLocation getResultingLocation() {
-	return null;
+public TextRunTreePart(Object model) {
+	setModel(model);
 }
 
-/**
- * @see org.eclipse.gef.examples.text.model.MiniEdit#rollback()
- */
-public void rollback() {}
+public void propertyChange(PropertyChangeEvent evt) {
+	if (evt.getPropertyName().equals("text"))
+		refreshVisuals();
+}
+
+protected void refreshVisuals() {
+	TextRun run = (TextRun)getModel();
+	setWidgetText(run.getText());
+}
 
 }

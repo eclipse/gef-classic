@@ -14,7 +14,7 @@ import java.util.List;
 
 import org.eclipse.jface.util.Assert;
 
-
+import org.eclipse.gef.examples.text.AppendableCommand;
 import org.eclipse.gef.examples.text.GraphicalTextViewer;
 import org.eclipse.gef.examples.text.SelectionRange;
 import org.eclipse.gef.examples.text.edit.TextualEditPart;
@@ -22,7 +22,10 @@ import org.eclipse.gef.examples.text.edit.TextualEditPart;
 /**
  * @since 3.1
  */
-public class CompoundEditCommand extends ExampleTextCommand {
+public class CompoundEditCommand
+	extends ExampleTextCommand
+	implements AppendableCommand
+{
 
 private ModelLocation beginLocation;
 
@@ -44,16 +47,35 @@ public CompoundEditCommand(String label) {
  * @see org.eclipse.gef.commands.Command#execute()
  */
 public void execute() {
-	executeMore();
+	executePending();
 }
 
-public void executeMore() {
+public boolean canExecute() {
+	return canExecutePending();
+}
+
+public boolean canExecutePending() {
+	if (pending == null || pending.size() == 0)
+		return false;
+	for (int i = 0; i < pending.size(); i++) {
+		MiniEdit edit = (MiniEdit)pending.get(i);
+		if (edit == null || !edit.canApply())
+			return false;
+	}
+	return true;
+}
+
+public void executePending() {
 	Assert.isNotNull(pending);
 	for (int i = 0; i < pending.size(); i++) {
 		MiniEdit edit = (MiniEdit)pending.get(i);
 		edit.apply();
 	}
 	edits.addAll(pending);
+	pending = null;
+}
+
+public void flushPending() {
 	pending = null;
 }
 

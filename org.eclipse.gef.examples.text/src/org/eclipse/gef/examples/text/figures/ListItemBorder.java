@@ -9,32 +9,30 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/ 
 
-package org.eclipse.gef.examples.text.edit;
+package org.eclipse.gef.examples.text.figures;
 
+import org.eclipse.draw2d.AbstractBorder;
+import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
-
-import org.eclipse.gef.EditPart;
-
-import org.eclipse.gef.examples.text.figures.Images;
-import org.eclipse.gef.examples.text.figures.TreeItemBorder;
+import org.eclipse.draw2d.geometry.Insets;
 
 /**
  * @since 3.1
  */
-public class ImportStatementPart extends TextFlowPart implements EditPart {
+public abstract class ListItemBorder extends AbstractBorder {
 
-/**
- * @since 3.1
- * @param model
- */
-public ImportStatementPart(Object model) {
-	super(model);
+private boolean enabled;
+
+public void setEnabled(boolean enabled) {
+	this.enabled = enabled;
+	
 }
 
-protected IFigure createFigure() {
-	IFigure f = super.createFigure();
-	f.setBorder(new TreeItemBorder(Images.IMPORT));
-	return f;
+public final void paint(IFigure figure, Graphics graphics, Insets insets) {
+	if (enabled)
+		paintBorder(figure, graphics, insets);
 }
+
+protected abstract void paintBorder(IFigure figure, Graphics graphics, Insets insets);
 
 }

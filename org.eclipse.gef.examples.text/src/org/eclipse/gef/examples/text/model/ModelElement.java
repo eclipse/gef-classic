@@ -21,6 +21,8 @@ private Container container;
 
 transient protected PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 
+protected int type;
+
 public void addPropertyChangeListener(PropertyChangeListener l) {
 	listeners.addPropertyChangeListener(l);
 }
@@ -36,6 +38,10 @@ public Container getContainer() {
 	return container;
 }
 
+public int getType() {
+	return type;
+}
+
 public void removePropertyChangeListener(PropertyChangeListener l) {
 	listeners.removePropertyChangeListener(l);
 }
@@ -46,6 +52,10 @@ public void removePropertyChangeListener(PropertyChangeListener l) {
  */
 public void setParent(Container container) {
 	this.container = container;
+}
+
+public void setType(int type) {
+	this.type = type;
 }
 
 abstract int size();

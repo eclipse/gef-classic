@@ -14,8 +14,6 @@ package org.eclipse.gef.examples.text;
  */
 public interface TextCommand {
 
-void executeMore();
-
 /**
  * Returns the viewer's selection range for the state after execution or redo.
  * @since 3.1

@@ -28,6 +28,10 @@ public void apply() {
 	run.removeRange(offset, chars.length);
 }
 
+public boolean canApply() {
+	return chars != null && chars.length != 0;
+}
+
 public ModelLocation getResultingLocation() {
 	return new ModelLocation(run, offset);
 }

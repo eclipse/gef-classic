@@ -25,6 +25,7 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.tools.SelectionTool;
 import org.eclipse.gef.tools.ToolUtilities;
 
+import org.eclipse.gef.examples.text.AppendableCommand;
 import org.eclipse.gef.examples.text.GraphicalTextViewer;
 import org.eclipse.gef.examples.text.SelectionRange;
 import org.eclipse.gef.examples.text.TextCommand;
@@ -46,7 +47,7 @@ private static final int MODE_TYPING = 1;
 
 private int textInputMode;
 
-private TextCommand unfinished;
+private AppendableCommand pending;
 
 /**
  * @since 3.1
@@ -101,10 +102,12 @@ private void doAction(int action, KeyEvent event) {
 			doUnindent();
 			break;
 		case SWT.TAB:
-			doIndent();
+			if (!doIndent())
+				doTyping(event);
 			break;
 		case SWT.CR:
-			doNewline();
+			if (!doNewline())
+				doTyping(event);
 			break;
 		default:
 			break;
@@ -118,31 +121,51 @@ private void doAction(int action, KeyEvent event) {
 private boolean doBackspace() {
 	setTextInputMode(MODE_BS);
 	SelectionRange range = getTextualViewer().getSelectionRange();
-	TextRequest edit;
-	if (range.isEmpty())
-		edit = new TextRequest(TextRequest.REQ_BACKSPACE, range, unfinished);
-	else
-		edit = new TextRequest(range);
-	return handleTextEdit(edit);
+	if (range.isEmpty()) {
+		if (handleTextEdit(new TextRequest(TextRequest.REQ_BACKSPACE, range, pending)))
+			return true;
+		doSelectLeft(false);
+		return false;
+	} else
+		return handleTextEdit(new TextRequest(TextRequest.REQ_REMOVE_RANGE, range));
 }
 
 private boolean doDelete() {
 	setTextInputMode(MODE_DEL);
 	SelectionRange range = getTextualViewer().getSelectionRange();
+
+	if (range.isEmpty()) {
+		if (handleTextEdit(new TextRequest(TextRequest.REQ_DELETE, range, pending)))
+			return true;
+		doSelectRight(false);
+		return false;
+	} else
+		return handleTextEdit(new TextRequest(TextRequest.REQ_REMOVE_RANGE, range));
+}
+
+/**
+ * @since 3.1
+ */
+private boolean doIndent() {
+	setTextInputMode(0);
+	SelectionRange range = getTextualViewer().getSelectionRange();
 	TextRequest edit;
 	if (range.isEmpty())
-		edit = new TextRequest(TextRequest.REQ_DELETE, range, unfinished);
+		edit = new TextRequest(TextRequest.REQ_INDENT, range);
 	else
-		edit = new TextRequest(range);
+		return false;
 	return handleTextEdit(edit);
 }
 
 /**
  * @since 3.1
- *  
+ * @param e
  */
-private void doIndent() {
-	setTextInputMode(0);
+private boolean doInsertContent(char c) {
+	setTextInputMode(MODE_TYPING);
+	TextRequest edit = new TextRequest(getTextualViewer().getSelectionRange(), Character
+			.toString(c), pending);
+	return handleTextEdit(edit);
 }
 
 /**
@@ -167,36 +190,10 @@ private void doKeyDown(KeyEvent event) {
 		}
 	}
 
-	if (action == 0) {
-		boolean ignore = false;
-
-		if (IS_CARBON) {
-			// Ignore accelerator key combinations (we do not want to
-			// insert a character in the text in this instance). Do not
-			// ignore COMMAND+ALT combinations since that key sequence
-			// produces characters on the mac.
-			ignore = (event.stateMask ^ SWT.COMMAND) == 0
-					|| (event.stateMask ^ (SWT.COMMAND | SWT.SHIFT)) == 0;
-		} else {
-			// Ignore accelerator key combinations (we do not want to
-			// insert a character in the text in this instance). Don't
-			// ignore CTRL+ALT combinations since that is the Alt Gr
-			// key on some keyboards.
-			ignore = (event.stateMask ^ SWT.ALT) == 0
-					|| (event.stateMask ^ SWT.CTRL) == 0
-					|| (event.stateMask ^ (SWT.ALT | SWT.SHIFT)) == 0
-					|| (event.stateMask ^ (SWT.CTRL | SWT.SHIFT)) == 0;
-		}
-		// -ignore anything below SPACE except for line delimiter keys and tab.
-		// -ignore DEL
-		if (!ignore && event.character > 31 && event.character != SWT.DEL
-				|| event.character == SWT.CR || event.character == SWT.LF
-				|| event.character == '\t') {
-			insertContent(event.character);
-		}
-	} else {
+	if (action == 0)
+		doTyping(event);
+	else
 		doAction(action, event);
-	}
 }
 
 /**
@@ -207,7 +204,7 @@ private boolean doNewline() {
 	SelectionRange range = getTextualViewer().getSelectionRange();
 	TextRequest edit;
 	Assert.isTrue(range.isEmpty());
-	edit = new TextRequest(TextRequest.REQ_NEWLINE, range, unfinished);
+	edit = new TextRequest(TextRequest.REQ_NEWLINE, range, pending);
 	return handleTextEdit(edit);
 }
 
@@ -251,7 +248,49 @@ private void doSelectRight(boolean appendSelection) {
 	}
 }
 
-private void doUnindent() {}
+/**
+ * @since 3.1
+ * @param event
+ */
+private void doTyping(KeyEvent event) {
+	boolean ignore = false;
+
+	if (IS_CARBON) {
+		// Ignore accelerator key combinations (we do not want to
+		// insert a character in the text in this instance). Do not
+		// ignore COMMAND+ALT combinations since that key sequence
+		// produces characters on the mac.
+		ignore = (event.stateMask ^ SWT.COMMAND) == 0
+				|| (event.stateMask ^ (SWT.COMMAND | SWT.SHIFT)) == 0;
+	} else {
+		// Ignore accelerator key combinations (we do not want to
+		// insert a character in the text in this instance). Don't
+		// ignore CTRL+ALT combinations since that is the Alt Gr
+		// key on some keyboards.
+		ignore = (event.stateMask ^ SWT.ALT) == 0
+				|| (event.stateMask ^ SWT.CTRL) == 0
+				|| (event.stateMask ^ (SWT.ALT | SWT.SHIFT)) == 0
+				|| (event.stateMask ^ (SWT.CTRL | SWT.SHIFT)) == 0;
+	}
+	// -ignore anything below SPACE except for line delimiter keys and tab.
+	// -ignore DEL
+	if (!ignore && event.character > 31 && event.character != SWT.DEL
+			|| event.character == SWT.CR || event.character == SWT.LF
+			|| event.character == '\t') {
+		doInsertContent(event.character);
+	}
+}
+
+private boolean doUnindent() {
+	setTextInputMode(0);
+	SelectionRange range = getTextualViewer().getSelectionRange();
+	TextRequest edit;
+	if (range.isEmpty())
+		edit = new TextRequest(TextRequest.REQ_UNINDENT, range);
+	else
+		return false;
+	return handleTextEdit(edit);
+}
 
 protected String getDebugName() {
 	return "TextTool";
@@ -301,29 +340,26 @@ private boolean handleTextEdit(TextRequest edit) {
 	if (target != null)
 		insert = target.getCommand(edit);
 
-	if (insert == null || !insert.canExecute())
+	if (insert == null)
 		return false;
 
-	if (unfinished == null || insert != unfinished) {
+	if (pending == null || insert != pending) {
+		if (!insert.canExecute())
+			return false;
 		executeCommand(insert);
-		unfinished = (TextCommand)insert;
-	} else
-		unfinished.executeMore();
+		if (insert instanceof AppendableCommand)
+			pending = (AppendableCommand)insert;
+		else
+			pending = null;
+	} else {
+		if (!pending.canExecutePending())
+			return false;
+		pending.executePending();
+	}
 
-	viewer.setSelectionRange(new SelectionRange(unfinished
-			.getExecuteSelectionRange(viewer).end));
+	TextCommand textCommand = (TextCommand)insert;
+	viewer.setSelectionRange(new SelectionRange(textCommand.getExecuteSelectionRange(viewer).end));
 	return true;
-}
-
-/**
- * @since 3.1
- * @param e
- */
-private boolean insertContent(char c) {
-	setTextInputMode(MODE_TYPING);
-	TextRequest edit = new TextRequest(getTextualViewer().getSelectionRange(), Character
-			.toString(c), unfinished);
-	return handleTextEdit(edit);
 }
 
 /**
@@ -371,7 +407,7 @@ public void setDragTracker(DragTracker newDragTracker) {
  */
 private void setTextInputMode(int mode) {
 	if (textInputMode != mode)
-		unfinished = null;
+		pending = null;
 	textInputMode = mode;
 }
 

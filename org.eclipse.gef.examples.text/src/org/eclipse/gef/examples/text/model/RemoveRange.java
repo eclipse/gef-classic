@@ -64,6 +64,10 @@ public void apply() {
 	if (clipEnding != null) clipEnding.apply();
 }
 
+public boolean canApply() {
+	return true;
+}
+
 public ModelLocation getResultingLocation() {
 	return null;
 }

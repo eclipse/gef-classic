@@ -15,6 +15,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.TextLayout;
 import org.eclipse.swt.widgets.Display;
 
+import org.eclipse.draw2d.Border;
+import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.LineBorder;
@@ -26,7 +28,11 @@ import org.eclipse.gef.Request;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 
 import org.eclipse.gef.examples.text.TextLocation;
+import org.eclipse.gef.examples.text.figures.BulletBorder;
+import org.eclipse.gef.examples.text.figures.Images;
+import org.eclipse.gef.examples.text.figures.ListItemBorder;
 import org.eclipse.gef.examples.text.figures.TextLayoutFigure;
+import org.eclipse.gef.examples.text.figures.TreeItemBorder;
 import org.eclipse.gef.examples.text.model.TextRun;
 import org.eclipse.gef.examples.text.tools.SelectionRangeDragTracker;
 
@@ -54,17 +60,21 @@ protected void createEditPolicies() {}
  * @see AbstractGraphicalEditPart#createFigure()
  */
 protected IFigure createFigure() {
-	textLayout.setText(((TextRun)getModel()).getText());
+	TextRun run = (TextRun)getModel();
+	textLayout.setText(run.getText());
 	Figure f = new TextLayoutFigure(textLayout);
-	f.setBorder(new LineBorder(3));
-	return f;
-}
 
-/**
- * @see org.eclipse.gef.EditPart#getDragTracker(org.eclipse.gef.Request)
- */
-public DragTracker getDragTracker(Request request) {
-	return new SelectionRangeDragTracker(this);
+	switch (run.getType()) {
+		case TextRun.TYPE_BULLET:
+			f.setBorder(new BulletBorder());
+			break;
+		case TextRun.TYPE_IMPORT:
+			f.setBorder(new TreeItemBorder(Images.IMPORT));
+			break;
+		default:
+			f.setBorder(new LineBorder(ColorConstants.lightGray));
+	}
+	return f;
 }
 
 /**
@@ -79,10 +89,26 @@ public Rectangle getCaretPlacement(int offset) {
 }
 
 /**
+ * @see org.eclipse.gef.EditPart#getDragTracker(org.eclipse.gef.Request)
+ */
+public DragTracker getDragTracker(Request request) {
+	return new SelectionRangeDragTracker(this);
+}
+
+/**
  * @see TextualEditPart#getLength()
  */
 public int getLength() {
 	return textLayout.getText().length();
+}
+
+public TextLocation getLocation(Point absolute) {
+	Point pt = Point.SINGLETON.setLocation(absolute);
+	IFigure f = getFigure();
+	f.translateToRelative(pt);
+	pt.translate(f.getClientArea().getLocation().negate());
+	int offset = textLayout.getOffset(pt.x, pt.y, new int[1]);
+	return new TextLocation(this, offset);
 }
 
 /**
@@ -93,26 +119,18 @@ public TextLocation getNextLocation(int identifier, TextLocation current) {
 	switch (identifier) {
 		case SWT.ARROW_RIGHT:
 			if (current.offset < getLength())
-					return new TextLocation(current.part, current.offset + 1);
+				return new TextLocation(current.part, current.offset + 1);
 			break;
 		case SWT.ARROW_LEFT:
 			if (current.offset > 0)
-					return new TextLocation(current.part, current.offset - 1);
+				return new TextLocation(current.part, current.offset - 1);
 	}
 	return ((TextualEditPart)getParent()).getNextLocation(identifier, current);
 }
 
 public void propertyChange(PropertyChangeEvent evt) {
-	if (evt.getPropertyName().equals("text")) refreshVisuals();
-}
-
-public TextLocation getLocation(Point absolute) {
-	Point pt = Point.SINGLETON.setLocation(absolute);
-	IFigure f = getFigure();
-	f.translateToRelative(pt);
-	pt.translate(f.getClientArea().getLocation().negate());
-	int offset = textLayout.getOffset(pt.x, pt.y, new int[1]);
-	return new TextLocation(this, offset);
+	if (evt.getPropertyName().equals("text"))
+		refreshVisuals();
 }
 
 /**
@@ -129,6 +147,11 @@ protected void refreshVisuals() {
  */
 public void setSelection(int start, int end) {
 	((TextLayoutFigure)getFigure()).setSelectionRange(start, end - 1);
+	Border border = getFigure().getBorder();
+	if (border instanceof ListItemBorder) {
+		ListItemBorder itemBorder = (ListItemBorder)border;
+		itemBorder.setEnabled(getLength() > 0 || start >= 0);
+	}
 }
 
 }

@@ -15,6 +15,7 @@ import org.eclipse.jface.util.Assert;
  * @since 3.1
  */
 public class InsertString extends MiniEdit {
+
 private String pending;
 
 private char insertedChars[];
@@ -45,6 +46,10 @@ public void apply() {
 	run.insertText(pending, offset);
 	insertedChars = pending.toCharArray();
 	pending = null;
+}
+
+public boolean canApply() {
+	return pending != null;
 }
 
 /**

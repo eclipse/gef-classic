@@ -33,6 +33,10 @@ public void apply() {
 	run.getContainer().add(inserted, index + 1);
 }
 
+public boolean canApply() {
+	return true;
+}
+
 public void reapply() {
 	throw new RuntimeException("Need to implement");
 }

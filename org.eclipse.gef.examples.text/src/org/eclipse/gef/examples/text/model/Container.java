@@ -10,6 +10,7 @@
 package org.eclipse.gef.examples.text.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -17,13 +18,15 @@ import java.util.List;
  */
 public class Container extends ModelElement {
 
+public static final int TYPE_COMMENT = 1;
+public static final int TYPE_IMPORT_DECLARATIONS = 2;
+public static final int TYPE_ROOT = 3;
+public static final int TYPE_BULLETED_LIST = 4;
+
 private List children = new ArrayList();
 
-/**
- * @since 3.1
- */
-public Container() {
-	super();
+public Container(int type) {
+	this.type = type;
 }
 
 public void add(ModelElement child) {
@@ -51,6 +54,17 @@ public boolean contains(ModelElement child) {
 	return false;
 }
 
+public int getChildType() {
+	switch (getType()) {
+		case TYPE_IMPORT_DECLARATIONS:
+			return TextRun.TYPE_IMPORT;
+		case TYPE_BULLETED_LIST:
+			return TextRun.TYPE_BULLET;
+		default:
+			return 0;
+	}
+}
+
 public List getChildren() {
 	return children;
 }
@@ -62,11 +76,24 @@ public int remove(ModelElement child) {
 	return index;
 }
 
+public void removeAll(Collection children) {
+	if (children.removeAll(children))
+		firePropertyChange("children", children, null);
+}
+
 /**
  * @see org.eclipse.gef.examples.text.model.ModelElement#size()
  */
 int size() {
 	return getChildren().size();
+}
+
+public Container subdivideContainer(int offset) {
+	Container result = new Container(getType());
+	List reparent = getChildren().subList(offset, getChildren().size());
+	removeAll(reparent);
+	result.getChildren().addAll(reparent);
+	return result;
 }
 
 }

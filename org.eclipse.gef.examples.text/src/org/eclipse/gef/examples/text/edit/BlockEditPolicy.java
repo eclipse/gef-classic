@@ -19,13 +19,14 @@ import org.eclipse.gef.editpolicies.GraphicalEditPolicy;
 import org.eclipse.gef.examples.text.SelectionRange;
 import org.eclipse.gef.examples.text.TextLocation;
 import org.eclipse.gef.examples.text.model.CompoundEditCommand;
+import org.eclipse.gef.examples.text.model.Container;
 import org.eclipse.gef.examples.text.model.ConvertElementCommand;
-import org.eclipse.gef.examples.text.model.ImportStatement;
-import org.eclipse.gef.examples.text.model.Imports;
 import org.eclipse.gef.examples.text.model.InsertString;
 import org.eclipse.gef.examples.text.model.MergeWithPrevious;
 import org.eclipse.gef.examples.text.model.MiniEdit;
 import org.eclipse.gef.examples.text.model.ModelLocation;
+import org.eclipse.gef.examples.text.model.NestElementCommand;
+import org.eclipse.gef.examples.text.model.PromoteElementCommand;
 import org.eclipse.gef.examples.text.model.RemoveRange;
 import org.eclipse.gef.examples.text.model.RemoveText;
 import org.eclipse.gef.examples.text.model.SubdivideElement;
@@ -45,10 +46,18 @@ public class BlockEditPolicy extends GraphicalEditPolicy {
 private Command checkForConversion(TextLocation location) {
 	TextRun run = (TextRun)location.part.getModel();
 	String prefix = run.getText().substring(0, location.offset);
+	if (prefix.equals("()")) {
+		ConvertElementCommand command;
+		Container list = new Container(Container.TYPE_BULLETED_LIST);
+		TextRun bullet = new TextRun("", TextRun.TYPE_BULLET);
+		list.add(bullet);
+		command = new ConvertElementCommand(run, 0, list, new ModelLocation(bullet, 0));
+		return command;
+	}
 	if (prefix.equals("import")) {
 		ConvertElementCommand command;
-		Imports imports = new Imports();
-		ImportStatement statement = new ImportStatement("");
+		Container imports = new Container(Container.TYPE_IMPORT_DECLARATIONS);
+		TextRun statement = new TextRun("", TextRun.TYPE_IMPORT);
 		imports.add(statement);
 		command = new ConvertElementCommand(run, 0, imports, new ModelLocation(statement,
 				0));
@@ -97,7 +106,31 @@ public Command getCommand(Request request) {
 		return getRangeRemovalCommand((TextRequest)request);
 	if (TextRequest.REQ_NEWLINE == request.getType())
 		return getNewlineCommand((TextRequest)request);
+	if (TextRequest.REQ_UNINDENT == request.getType())
+		return getUnindentCommand((TextRequest)request);
+	if (TextRequest.REQ_INDENT == request.getType())
+		return getIndentCommand((TextRequest)request);
 	return null;
+}
+
+/**
+ * @since 3.1
+ * @param request
+ * @return
+ */
+private Command getIndentCommand(TextRequest request) {
+	SelectionRange range = request.getSelectionRange();
+	return new NestElementCommand(range.begin.part, range.begin.offset);
+}
+
+/**
+ * @since 3.1
+ * @param request
+ * @return
+ */
+private Command getUnindentCommand(TextRequest request) {
+	SelectionRange range = request.getSelectionRange();
+	return new PromoteElementCommand(range.begin.part, range.begin.offset);
 }
 
 /**
@@ -129,7 +162,7 @@ private Command getDeleteCommand(TextRequest request) {
 private MiniEdit getMergeBackspaceEdit(TextRequest request) {
 	TextualEditPart part = request.getSelectionRange().begin.part;
 	MergeWithPrevious edit = new MergeWithPrevious(part);
-	if (edit.isAllowed())
+	if (edit.canApply())
 		return edit;
 	return null;
 }
@@ -159,15 +192,11 @@ private Command getNewlineCommand(TextRequest request) {
  * @return
  */
 private Command getRangeRemovalCommand(TextRequest request) {
-	return null;
+	return getTextInsertionCommand(request);
 }
 
 public EditPart getTargetEditPart(Request request) {
-	if (TextRequest.REQ_INSERT == request.getType()
-			|| TextRequest.REQ_NEWLINE == request.getType()
-			|| TextRequest.REQ_BACKSPACE == request.getType()
-			|| TextRequest.REQ_DELETE == request.getType()
-			|| TextRequest.REQ_REMOVE_RANGE == request.getType())
+	if (request instanceof TextRequest)
 		return getHost();
 	return null;
 }

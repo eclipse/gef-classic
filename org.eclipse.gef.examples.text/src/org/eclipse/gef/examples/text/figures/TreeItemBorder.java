@@ -13,7 +13,6 @@ package org.eclipse.gef.examples.text.figures;
 
 import org.eclipse.swt.graphics.Image;
 
-import org.eclipse.draw2d.AbstractBorder;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Dimension;
@@ -25,7 +24,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * @author Pratik Shah
  */
 public class TreeItemBorder
-	extends AbstractBorder 
+	extends ListItemBorder 
 {
 
 private static final int LEFT_SPACE = 5;
@@ -51,7 +50,7 @@ public Dimension getPreferredSize(IFigure f) {
 	return imageSize;
 }
 
-public void paint(IFigure figure, Graphics graphics, Insets insets) {
+public void paintBorder(IFigure figure, Graphics graphics, Insets insets) {
 	if (image == null)
 		return;
 	Rectangle rect = getPaintRectangle(figure, insets);
