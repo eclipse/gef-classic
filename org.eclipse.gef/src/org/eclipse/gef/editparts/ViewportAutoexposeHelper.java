@@ -7,7 +7,6 @@
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
- *     Intershop, Gunnar Wagenknecht - fix for 44288
  *******************************************************************************/
 package org.eclipse.gef.editparts;
 
