@@ -18,21 +18,22 @@ import org.eclipse.gef.requests.GroupRequest;
 import org.eclipse.gef.rulers.RulerProvider;
 
 /**
- * A temporary helper used to perform snapping to guides. Snapping is based on the
- * existing children of a <I>container</I>.  When snapping a rectangle, the edges of the
- * rectangle will snap to edges of other rectangles generated from the children of the
- * given container.  Similarly, the centers and middles of rectangles will snap to each
- * other.
+ * A helper used to perform snapping to guides. The guides are obtained from the viewer's
+ * horizontal and vertical {@link RulerProvider RulerProviders}.  If snapping is
+ * performed, the request's extended data will contain keyed values indicating which
+ * guides were snapped to, and which side of the part should be attached.  Generally
+ * snapping to a guide should attach the part to that guide, but application behavior may
+ * differ.
  * <P>
- * If the snap request is being made during a Move, Reparent or Resize, then the figures
- * of the participants of that request will not be used for snapping.  If the request is a
- * Clone, then the figures for the parts being cloned will be used as possible snap
- * locations.
+ * Snapping (and attaching) to a guide is only possible if a single part is being dragged.
+ * The current implementation will not snap if a request contains multiple parts. This may
+ * be relaxed in the future to allow snapping, but without setting the attachment extended
+ * data.
  * <P>
- * This helper does not keep up with changes made to the container editpart.  Clients
- * should instantiate a new helper each time one is requested and not hold onto instances
- * of the helper.
+ * This helper does not keep up with changes in guides.  Clients should instantiate a new
+ * helper each time one is requested and not hold onto instances of the helper.
  * 
+ * @since 3.0
  * @author Randy Hudson
  * @author Pratik Shah
  */
@@ -41,24 +42,81 @@ public class SnapToGuides
 {
 
 /**
- * The property key used to identify the Vertical Guide. 
+ * The key used to identify the Vertical Guide. This key is used with the request's
+ * extended data map to store an Integer.  The integer value is the location of the guide
+ * that is being snapped to.
  */
 public static final String KEY_VERTICAL_GUIDE = "SnapToGuides.VerticalGuide"; //$NON-NLS-1$
 
+/**
+ * The key used to identify the Horizontal Guide. This key is used with the request's
+ * extended data map to store an Integer.  The integer value is the location of the guide
+ * that is being snapped to.
+ */
 public static final String KEY_HORIZONTAL_GUIDE = "SnapToGuides.HorizontalGuide"; //$NON-NLS-1$
 
+/**
+ * The key used to identify the vertical anchor point.  This key is used with the
+ * request's extended data map to store an Integer.  If the VERTICAL_GUIDE has been set,
+ * then this integer is a number identifying which side of the dragged object is being
+ * snapped to that guide.
+ * <UL>
+ *   <LI><code>-1</code> indicates the left side should be attached.
+ *   <LI><code> 0</code> indicates the center should be attached.
+ *   <LI><code> 1</code> indicates the right side should be attached.
+ * </UL>
+ */
 public static final String KEY_VERTICAL_ANCHOR = "SnapToGuides.VerticalAttachment"; //$NON-NLS-1$
 
-public static final String KEY_HORIZONTAL_ANCHOR = "SnapToGuides.HorizontalAttachment"; //$NON-NLS-1$
+/**
+ * The key used to identify the horizontal anchor point.  This key is used with the
+ * request's extended data map to store an Integer.  If the HORIZONTAL_GUIDE has been set,
+ * then this integer is a number identifying which side of the dragged object is being
+ * snapped to that guide.
+ * <UL>
+ *   <LI><code>-1</code> indicates the top side should be attached.
+ *   <LI><code> 0</code> indicates the middle should be attached.
+ *   <LI><code> 1</code> indicates the bottom side should be attached.
+ * </UL>
+ */
+public static final String KEY_HORIZONTAL_ANCHOR = "SnapToGuides.HorizontalAttachment";//$NON-NLS-1$
 
-protected static final double THRESHOLD = 7.01;
+/**
+ * The threshold for snapping to guides.  The rectangle being snapped must be within +/-
+ * the THRESHOLD.  The default value is 5.001;
+ */
+protected static final double THRESHOLD = 5.001;
+
+/**
+ * The graphical editpart to which guides are relative.  This should also the parent of
+ * the parts being snapped to guides.
+ */
 protected GraphicalEditPart container;
-protected int[] verticalGuides, horizontalGuides;
 
+/**
+ * The locations of the vertical guides in the container's coordinates.  Use {@link
+ * #getVerticalGuides()}.
+ */
+protected int[] verticalGuides;
+
+/**
+ * The locations of the horizontal guides in the container's coordinates. Use {@link
+ * #getHorizontalGuides()}.
+ */
+protected int[] horizontalGuides;
+
+/**
+ * Constructs a new snap-to-guides helper using the given container as the basis. 
+ * @param container the container editpart
+ */
 public SnapToGuides(GraphicalEditPart container) {
 	this.container = container;
 }
 
+/**
+ * Returns the horizontal guides in the coordinates of the container's contents pane.
+ * @return the horizontal guides 
+ */
 protected int[] getHorizontalGuides() {	
 	if (horizontalGuides == null) {
 		RulerProvider rProvider = ((RulerProvider)container.getViewer()
@@ -71,6 +129,10 @@ protected int[] getHorizontalGuides() {
 	return horizontalGuides;
 }
 
+/**
+ * Returns the vertical guides in the coordinates of the container's contents pane.
+ * @return the vertical guides 
+ */
 protected int[] getVerticalGuides() {
 	if (verticalGuides == null) {
 		RulerProvider rProvider = ((RulerProvider)container.getViewer()
@@ -83,7 +145,20 @@ protected int[] getVerticalGuides() {
 	return verticalGuides;
 }
 
-
+/**
+ * Returns the correction for the given near and far sides of a rectangle or {@link
+ * #THRESHOLD} if no correction was found.  The near side represents the top or left side
+ * of a rectangle being snapped.  Similar for far.  If snapping occurs, the extendedData
+ * will have the guide and attachment point set.
+ * 
+ * @param guides the location of the guides
+ * @param near the top or left location
+ * @param far the bottom or right location
+ * @param extendedData the map for storing snap details
+ * @param isVertical <code>true</code> if for vertical guides, <code>false</code>
+ * for horizontal.
+ * @return the correction amount or THRESHOLD if no correction was made
+ */
 protected double getCorrectionFor(int[] guides, double near, double far, Map extendedData, 
                                   boolean isVertical) {
 	if ((int)(near - far) % 2 == 0)
@@ -96,6 +171,20 @@ protected double getCorrectionFor(int[] guides, double near, double far, Map ext
 	return result;
 }
 
+/**
+ * Returns the correction for the given location or {@link #THRESHOLD} if no correction
+ * was found. If correction occurs, the extendedData will have the guide and attachment
+ * point set. The attachment point is identified by the <code>side</code> parameter.
+ * <P>
+ * The correction's magnitude will be less than THRESHOLD.
+ * 
+ * @param guides the location of the guides
+ * @param value the location being tested
+ * @param extendedData the map for storing snap details
+ * @param vert <code>true</code> if for vertical guides, <code>false</code>
+ * @param side the integer indicating which side is being snapped
+ * @return a correction amount or THRESHOLD if no correction was made
+ */
 protected double getCorrectionFor(int[] guides, double value, Map extendedData, 
                                   boolean vert, int side) {
 	double resultMag = THRESHOLD;
