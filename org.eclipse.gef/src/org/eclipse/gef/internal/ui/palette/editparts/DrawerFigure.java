@@ -21,13 +21,13 @@ public class DrawerFigure
 	extends Figure 
 {
 
-static final Border MARGIN_BORDER = new MarginBorder(1);
-static final Border TOGGLE_BUTTON_BORDER = new RaisedBorder();
-static final Border TITLE_MARGIN_BORDER = new MarginBorder(1,0,1,0);
+protected static final Border TOGGLE_BUTTON_BORDER = new RaisedBorder();
+protected static final Border TITLE_MARGIN_BORDER = new MarginBorder(1, 0, 1, 0);
+protected static final Border SCROLL_PANE_BORDER = new MarginBorder(3);
 
 //@TODO:Pratik
 // This image needs to go in GEFSharedImages
-protected static final Image pin = new Image(null, ImageDescriptor.createFromFile(
+protected static final Image PIN = new Image(null, ImageDescriptor.createFromFile(
 		Internal.class, "icons/pin_view.gif").getImageData()); //$NON-NLS-1$
 
 private int layoutMode = -1;
@@ -37,6 +37,7 @@ private ToggleButton pinFigure;
 private Toggle collapseToggle;
 private boolean isAnimating, showPin;
 private DrawerAnimationController controller;
+private EditPartTipHelper tipHelper;
 
 /**
  * Constructor
@@ -56,7 +57,8 @@ public DrawerFigure(final Control control) {
 			r.setBounds(getBounds());
 			r.width = Math.min(50, r.width);
 			g.setForegroundColor(
-				FigureUtilities.mixColors(ColorConstants.buttonDarker,ColorConstants.button));
+				FigureUtilities.mixColors(ColorConstants.buttonDarker, 
+				                          ColorConstants.button));
 //			g.setBackgroundColor(
 //				FigureUtilities.mixColors(ColorConstants.buttonDarker,ColorConstants.button));
 //				g.fillGradient(Rectangle.SINGLETON, false);
@@ -71,7 +73,7 @@ public DrawerFigure(final Control control) {
 	drawerLabel = new Label();
 	drawerLabel.setLabelAlignment(Label.LEFT);
 
-	pinFigure = new ToggleButton(new ImageFigure(pin));
+	pinFigure = new ToggleButton(new ImageFigure(PIN));
 	pinFigure.setBorder(new ButtonBorder(ButtonBorder.SCHEMES.TOOLBAR));
 	pinFigure.setRolloverEnabled(true);
 	pinFigure.setRequestFocusEnabled(false);
@@ -86,7 +88,8 @@ public DrawerFigure(final Control control) {
 			r.setBounds(getBounds());
 			r.width = Math.min(50, r.width);
 			g.setForegroundColor(
-				FigureUtilities.mixColors(ColorConstants.buttonDarker,ColorConstants.button));
+				FigureUtilities.mixColors(ColorConstants.buttonDarker, 
+				                          ColorConstants.button));
 //			g.setBackgroundColor(
 //				FigureUtilities.mixColors(ColorConstants.buttonDarker,ColorConstants.button));
 			g.fillGradient(Rectangle.SINGLETON, false);
@@ -94,7 +97,6 @@ public DrawerFigure(final Control control) {
 
 	};
 	collapseToggle.setSelected(true);
-	collapseToggle.setRequestFocusEnabled(true);
 	collapseToggle.setBorder(TOGGLE_BUTTON_BORDER);
 
 	collapseToggle.addChangeListener(new ChangeListener() {
@@ -127,8 +129,8 @@ private void createHoverHelp(final Control control) {
 				tipLabel.setText(drawerLabel.getText());
 				tipLabel.setIcon(drawerLabel.getIcon());
 				tipLabel.setFont(drawerLabel.getFont());
-				EditPartTipHelper tipHelper = new EditPartTipHelper(control);
-				Point labelLoc = drawerLabel.getLocation();
+				tipHelper = new EditPartTipHelper(control);
+ 				Point labelLoc = drawerLabel.getLocation();
 				org.eclipse.swt.graphics.Point absolute = control.toDisplay(
 						new org.eclipse.swt.graphics.Point(labelLoc.x, labelLoc.y));
 				tipHelper.displayToolTipAt(tipLabel, absolute.x - 4, absolute.y - 4);
@@ -137,7 +139,12 @@ private void createHoverHelp(final Control control) {
 	});
 	tipLabel.addMouseListener(new MouseListener.Stub() {
 		public void mousePressed(MouseEvent e) {
+			Rectangle original = getCollapseToggle().getBounds().getCopy();
 			setExpanded(!isExpanded());
+			// Hide the tip if expanding the drawer causes the collapse toggle to move
+			if (!original.equals(getCollapseToggle().getBounds())) {
+				tipHelper.hide();
+			}
 		}
 	}); 			
 }
@@ -145,15 +152,14 @@ private void createHoverHelp(final Control control) {
 private void createScrollpane() {
 	scrollpane = new ScrollPane();
 	scrollpane.getViewport().setContentsTracksWidth(true);
-	scrollpane.getViewport().setBorder(new MarginBorder(3));
 	scrollpane.setMinimumSize(new Dimension(0, 0));
 	scrollpane.setHorizontalScrollBarVisibility(ScrollPane.NEVER);
 	scrollpane.setVerticalScrollBar(new PaletteScrollBar());
 	scrollpane.getVerticalScrollBar().setStepIncrement(33);
 	scrollpane.setLayoutManager(new OverlayScrollPaneLayout());
-	scrollpane.setBackgroundColor(ColorConstants.button);
 	scrollpane.setView(new Figure());
-	scrollpane.getView().setBorder(MARGIN_BORDER);
+	scrollpane.getView().setOpaque(true);
+	scrollpane.getView().setBorder(SCROLL_PANE_BORDER);
 }
 
 /**
@@ -192,7 +198,7 @@ public Dimension getPreferredSize(int w, int h) {
 			return getMinimumSize();
 	}
 	Dimension pref = super.getPreferredSize(w, h);
-	Dimension min  = super.getMinimumSize(w,h);
+	Dimension min = super.getMinimumSize(w, h);
 	float scale = controller.getAnimationProgress();
 	if (!isExpanded()) {
 		scale = 1.0f - scale;
@@ -212,7 +218,7 @@ public boolean isExpanded() {
  * automatically collapsed)
  */
 public boolean isPinnedOpen() {
-	return isExpanded() && pinFigure.isSelected();
+	return isExpanded() && pinFigure.isVisible() && pinFigure.isSelected();
 }
 
 public boolean isPinShowing() {
@@ -303,7 +309,6 @@ protected void updatePin() {
 		pinFigure.setVisible(true);
 	} else {
 		pinFigure.setVisible(false);
-		pinFigure.setSelected(false);
 	}
 }
 
