@@ -148,10 +148,10 @@ private void normalLayout(IFigure parent) {
 		// spaceToConsume is the space height available on the palette that is to be
 		// shared by the growing children.
 		int spaceToConsume = availableHeight - heightOfNonGrowingChildren;
-		// heightPerChild is the height of each growing child
+		// heightPerChild is the height that each growing child is to be grown by
 		heightPerChild = spaceToConsume / childrenGrabbingVertical.size();
 		// excessHeight is the space leftover at the bottom of the palette after each
-		// growing child has 
+		// growing child has been grown by heightPerChild.
 		excessHeight = spaceToConsume - (heightPerChild * childrenGrabbingVertical.size());
 		do {
 			childrenDiscarded = false;
