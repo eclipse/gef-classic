@@ -29,14 +29,16 @@ import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.part.PageBook;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
-import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.LightweightSystem;
+import org.eclipse.draw2d.PositionConstants;
+import org.eclipse.draw2d.Viewport;
 import org.eclipse.draw2d.parts.ScrollableThumbnail;
 import org.eclipse.draw2d.parts.Thumbnail;
 
 import org.eclipse.gef.*;
 import org.eclipse.gef.dnd.TemplateTransferDragSourceListener;
-import org.eclipse.gef.editparts.*;
 import org.eclipse.gef.editparts.ScalableFreeformRootEditPart;
+import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.ui.actions.*;
 import org.eclipse.gef.ui.palette.PaletteContextMenuProvider;
@@ -300,8 +302,7 @@ protected void configureGraphicalViewer() {
 	ContextMenuProvider provider = new LogicContextMenuProvider(viewer, getActionRegistry());
 	viewer.setContextMenuProvider(provider);
 	getSite().registerContextMenu("org.eclipse.gef.examples.logic.editor.contextmenu", //$NON-NLS-1$
-									provider.getMenuManager(), 
-									getSite().getSelectionProvider());
+		provider.getMenuManager(), viewer);
 	viewer.setKeyHandler(new GraphicalViewerKeyHandler(viewer)
 		.setParent(getCommonKeyHandler()));
 }
@@ -457,15 +458,6 @@ protected void createActions() {
 	action = new AlignmentAction(this, PositionConstants.MIDDLE);
 	registry.registerAction(action);
 	getSelectionActions().add(action.getId());
-
-	action = new ZoomInAction(this);
-	registry.registerAction(action);
-	getEditorSite().getKeyBindingService().registerAction(action);
-
-	action = new ZoomOutAction(this);
-	registry.registerAction(action);
-	getEditorSite().getKeyBindingService().registerAction(action);
-
 }
 
 public boolean isDirty() {

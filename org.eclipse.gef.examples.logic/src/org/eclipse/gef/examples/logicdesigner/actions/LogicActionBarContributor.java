@@ -18,7 +18,6 @@ import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.ui.actions.*;
 import org.eclipse.gef.editparts.ScalableFreeformRootEditPart;
 
-
 public class LogicActionBarContributor
 	extends org.eclipse.gef.ui.actions.ActionBarContributor
 {
@@ -83,7 +82,7 @@ public void contributeToToolBar(IToolBarManager tbm) {
  */
 public void contributeToMenu(IMenuManager menubar) {
 	super.contributeToMenu(menubar);
-	MenuManager viewMenu = new MenuManager("$View");
+	MenuManager viewMenu = new MenuManager("&View");
 	viewMenu.add(getAction(GEFActionConstants.ZOOM_IN));
 	viewMenu.add(getAction(GEFActionConstants.ZOOM_OUT));
 	menubar.insertAfter(IWorkbenchActionConstants.M_EDIT, viewMenu);
