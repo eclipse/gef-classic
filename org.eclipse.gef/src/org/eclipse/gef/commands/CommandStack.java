@@ -16,16 +16,16 @@ import java.util.List;
 import java.util.Stack;
 
 /**
- * An implementation of a command stack.  A command stack manages the executing, undoing,
- * and redoing of {@link Command Commands}.  Executed commands are pushed onto an undo
- * stack. Commands that are undone are pushed onto a Redo stack. Whenever a new command is
- * executed, the Redo stack is flushed.
+ * An implementation of a command stack.  A stack manages the executing, undoing, and
+ * redoing of {@link Command Commands}.  Executed commands are pushed onto a a stack for
+ * undoing later. Commands which are undone are pushed onto a redo stack. Whenever a new
+ * command is executed, the Redo stack is flushed.
  * <P>
  * A CommandStack contains a dirty property. This property can be used to determine
- * when persisting the Commands' changes is required. The stack is dirty whenever the last
- * executed or redone command is different than the command that was at the top of the
- * undo stack when {@link #markSaveLocation()} was last called. Upon construction, the
- * undo stack is empty, and is not dirty.
+ * when persisting changes is required. The stack is dirty whenever the last executed or
+ * redone command is different than the command that was at the top of the undo stack when
+ * {@link #markSaveLocation()} was last called. Initially, the undo stack is
+ * empty, and not dirty.
  * 
  * @author hudsonr
  */
@@ -33,21 +33,51 @@ public class CommandStack {
 
 private int undoLimit = 0;
 private int saveLocation = 0;
-private Stack undo = new Stack();
-private Stack redo = new Stack();
+private Stack undoable = new Stack();
+private Stack redoable = new Stack();
 
 /**
- * the list of {@link CommandStackListener}s
+ * The list of {@link CommandStackListener}s.
+ * @deprecated This field should not be referenced, use {@link #notifyListeners()}
  */
 protected List listeners = new ArrayList();
+private List eventListeners = new ArrayList();
 
 /**
- * Constructs a command stack. By default, there is no undo limit.
+ * Constant indicating notification prior to executing a command (value is 1).
+ */
+public static final int PRE_EXECUTE = 1;
+/**
+ * Constant indicating notification prior to redoing a command (value is 2).
+ */
+public static final int PRE_REDO = 2;
+/**
+ * Constant indicating notification prior to undoing a command (value is 4).
+ */
+public static final int PRE_UNDO = 4;
+
+/**
+ * Constant indicating notification after a command has been executed (value is 8).
+ */
+public static final int POST_EXECUTE = 8;
+/**
+ * Constant indicating notification after a command has been redone (value is 16).
+ */
+public static final int POST_REDO = 16;
+/**
+ * Constant indicating notification after a command has been undone (value is 32).
+ */
+public static final int POST_UNDO = 32;
+
+/**
+ * Constructs a new command stack. By default, there is no undo limit, and isDirty() will
+ * return <code>false</code>.
  */
 public CommandStack() { }
 
 /**
- * Adds the specified listener. Multiple adds will result in multiple notifications.
+ * Appends the listener to the list of command stack listeners. Multiple adds will result
+ * in multiple notifications.
  * @param listener the listener
  */
 public void addCommandStackListener(CommandStackListener listener) {
@@ -55,41 +85,74 @@ public void addCommandStackListener(CommandStackListener listener) {
 }
 
 /**
+ * Appends the listener to the list of command stack listeners.  Multiple adds result in
+ * multiple notifications.
+ * @since 3.1
+ * @param listener the event listener
+ */
+public void addCommandStackEventListener(CommandStackEventListener listener) {
+	eventListeners.add(listener);
+}
+
+/**
  * @return <code>true</code> if it is appropriate to call {@link #redo()}.
  */
 public boolean canRedo() {
-	return !redo.isEmpty();
+	return !redoable.isEmpty();
 }
 
 /**
  * @return <code>true</code> if {@link #undo()} can be called
  */
 public boolean canUndo() {
-	if (undo.size() == 0)
+	if (undoable.size() == 0)
 		return false;
-	return ((Command)undo.lastElement()).canUndo();
+	return ((Command)undoable.lastElement()).canUndo();
 }
 
 /**
- * Executes the specified Command if it is executable. Flushes the redo stack.
+ * Executes the specified Command if possible.  Prior to executing the command, a
+ * CommandStackEvent for {@link #PRE_EXECUTE} will be fired to event listeners. 
+ * Similarly, after attempting to execute the command, an event for {@link
+ * #POST_EXECUTE} will be fired.  If the execution of the command completely
+ * normally,  stack listeners will receive {@link
+ * CommandStackListener#commandStackChanged(EventObject) stackChanged} notification.
+ * <P> If the command is <code>null</code> or cannot be executed, nothing happens.
  * @param command the Command to execute
+ * @see CommandStackEventListener
  */
 public void execute(Command command) {
 	if (command == null || !command.canExecute())
 		return;
 	flushRedo();
-	command.execute();
-	if (getUndoLimit() > 0) {
-		while (undo.size() >= getUndoLimit()) {
-			((Command)undo.remove(0)).dispose();
-			if (saveLocation > -1)
-				saveLocation--;
+	notifyListeners(command, PRE_EXECUTE);
+	try {
+		command.execute();
+		if (getUndoLimit() > 0) {
+			while (undoable.size() >= getUndoLimit()) {
+				((Command)undoable.remove(0)).dispose();
+				if (saveLocation > -1)
+					saveLocation--;
+			}
 		}
+		if (saveLocation > undoable.size())
+			saveLocation = -1; //The save point was somewhere in the redo stack
+		undoable.push(command);
+		notifyListeners();
+	} finally {
+		notifyListeners(command, POST_EXECUTE);
 	}
-	if (saveLocation > undo.size())
-		saveLocation = -1; //The save point was somewhere in the redo stack
-	undo.push(command);
-	notifyListeners();
+}
+
+/**
+ * @since 3.1
+ * @param command
+ * @param post_execute2
+ */
+private void notifyListeners(Command command, int state) {
+	CommandStackEvent event = new CommandStackEvent(this, command, state);
+	for (int i = 0; i < eventListeners.size(); i++)
+		((CommandStackEventListener)eventListeners.get(i)).stackChanged(event);
 }
 
 /**
@@ -113,22 +176,22 @@ public void flush() {
 }
 
 private void flushRedo() {
-	while (!redo.isEmpty())
-		((Command)redo.pop()).dispose();
+	while (!redoable.isEmpty())
+		((Command)redoable.pop()).dispose();
 }
 
 private void flushUndo() {
-	while (!undo.isEmpty())
-		((Command)undo.pop()).dispose();
+	while (!undoable.isEmpty())
+		((Command)undoable.pop()).dispose();
 }
 
 /**
  * @return an array containing all commands in the order they were executed
  */
-public Object[] getCommands() { 
-	List commands = new ArrayList(undo);
-	for (int i = redo.size() - 1; i >= 0; i--) {
-		commands.add(redo.get(i));
+public Object[] getCommands() {
+	List commands = new ArrayList(undoable);
+	for (int i = redoable.size() - 1; i >= 0; i--) {
+		commands.add(redoable.get(i));
 	}
 	return commands.toArray();
 }
@@ -139,7 +202,7 @@ public Object[] getCommands() {
  * @return the top of the <i>redo</i> stack, which may be <code>null</code>
  */
 public Command getRedoCommand() {
-	return redo.isEmpty() ? null : (Command)redo.peek();
+	return redoable.isEmpty() ? null : (Command)redoable.peek();
 }
 
 /**
@@ -148,7 +211,7 @@ public Command getRedoCommand() {
  * @return the top of the <i>undo</i> stack, which may be <code>null</code>
  */
 public Command getUndoCommand() {
-	return undo.isEmpty() ? null : (Command)undo.peek();
+	return undoable.isEmpty() ? null : (Command)undoable.peek();
 }
 
 /**
@@ -167,7 +230,7 @@ public int getUndoLimit() {
  * @return <code>true</code> if the stack is dirty
  */
 public boolean isDirty() {
-	return undo.size() != saveLocation;
+	return undoable.size() != saveLocation;
 }
 
 /**
@@ -175,12 +238,13 @@ public boolean isDirty() {
  * Calculation of {@link #isDirty()} will be based on this checkpoint.
  */
 public void markSaveLocation() {
-	saveLocation = undo.size();
+	saveLocation = undoable.size();
 	notifyListeners();
 }
 
 /**
  * Sends notification to all {@link CommandStackListener}s.
+ * @deprecated
  */
 protected void notifyListeners() {
 	EventObject event = new EventObject(this);
@@ -198,18 +262,31 @@ public void redo() {
 	//Assert.isTrue(canRedo())
 	if (!canRedo())
 		return;
-	Command command = (Command)redo.pop();
-	command.redo();
-	undo.push(command);
-	notifyListeners();
+	Command command = (Command)redoable.pop();
+	notifyListeners(command, PRE_REDO);
+	try {
+		command.redo();
+		undoable.push(command);
+		notifyListeners();
+	} finally {
+		notifyListeners(command, POST_REDO);
+	}
 }
 
 /**
- * Removes the first occurance of the specified listener.
+ * Removes the first occurrence of the specified listener.
  * @param listener the listener
  */
 public void removeCommandStackListener(CommandStackListener listener) {
 	listeners.remove(listener);
+}
+
+/**
+ * Removes the first occurrence of the specified listener.
+ * @param listener the listener
+ */
+public void removeCommandStackEventListener(CommandStackEventListener listener) {
+	eventListeners.remove(listener);
 }
 
 /**
@@ -228,10 +305,15 @@ public void setUndoLimit(int undoLimit) {
  */
 public void undo() {
 	//Assert.isTrue(canUndo());
-	Command command = (Command)undo.pop();
-	command.undo();
-	redo.push(command);
-	notifyListeners();
+	Command command = (Command)undoable.pop();
+	notifyListeners(command, PRE_UNDO);
+	try {
+		command.undo();
+		redoable.push(command);
+		notifyListeners();
+	} finally {
+		notifyListeners(command, POST_UNDO);
+	}
 }
 
 }
