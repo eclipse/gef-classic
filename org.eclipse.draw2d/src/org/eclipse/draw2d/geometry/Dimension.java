@@ -100,7 +100,7 @@ public boolean containsProper(Dimension d) {
  * @param d  Dimension supplying the values.
  * @since 2.0
  */
-public void copyFrom(Dimension d) {
+public void setSize(Dimension d) {
 	width = d.width;
 	height = d.height;
 }

@@ -56,7 +56,7 @@ protected Dimension calculateMinimumSize(IFigure container, int wHint, int hHint
 	if (top != null) {
 		Dimension childSize = top.getMinimumSize(wHint, hHint);
 		hHint = Math.max(minHHint, hHint - (childSize.height + vGap));
-		minSize.copyFrom(childSize);
+		minSize.setSize(childSize);
 		rows += 1;
 	}
 	if (bottom != null) {
@@ -117,7 +117,7 @@ protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHi
 	if (top != null) {
 		Dimension childSize = top.getPreferredSize(wHint, hHint);
 		hHint = Math.max(minHHint, hHint - (childSize.height + vGap));
-		prefSize.copyFrom(childSize);
+		prefSize.setSize(childSize);
 		rows += 1;
 	}
 	if (bottom != null) {
