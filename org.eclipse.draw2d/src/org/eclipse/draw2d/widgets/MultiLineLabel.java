@@ -131,6 +131,15 @@ private void addAccessibility() {
 	});
 }
 
+public org.eclipse.swt.graphics.Point computeSize(int wHint, int hHint, boolean changed) {
+	org.eclipse.swt.graphics.Point size = super.computeSize(wHint, hHint, changed);
+	if (getImage() != null) {
+		size.y = Math.max(size.y, 
+				getImage().getBounds().height + imgBorder.getInsets(null).getHeight());
+	}
+	return size;
+}
+
 public Image getImage() {
 	return imgBorder.getImage();
 }
