@@ -2,16 +2,18 @@ package org.eclipse.gef.dnd;
 
 import java.util.List;
 
-import org.eclipse.gef.EditPart;
-import org.eclipse.gef.EditPartViewer;
-import org.eclipse.gef.palette.PaletteTemplateEntry;
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.Transfer;
 
+import org.eclipse.gef.EditPart;
+import org.eclipse.gef.EditPartViewer;
+import org.eclipse.gef.palette.CombinedTemplateCreationEntry;
+import org.eclipse.gef.palette.PaletteTemplateEntry;
+
 /**
  * Allows a single {@link PaletteTemplateEntry PaletteTemplateEntry} to be dragged from an
- * EditPartViewer. The PaletteTemplateEntry's <i>template</i> object is the data that is being
- * transfered to the <code>DropTarget</code>.
+ * EditPartViewer. The PaletteTemplateEntry's <i>template</i> object is the data that is
+ * being transfered to the <code>DropTarget</code>.
  * @since 2.1
  * @author Eric Bordeau
  */
@@ -40,15 +42,15 @@ public TemplateTransferDragSourceListener(EditPartViewer viewer) {
 }
 
 /**
- * @see org.eclipse.gef.dnd.AbstractTransferDragSourceListener#dragFinished(DragSourceEvent)
+ * @see AbstractTransferDragSourceListener#dragFinished(DragSourceEvent)
  */
 public void dragFinished(DragSourceEvent event) {
 	TemplateTransfer.getInstance().setTemplate(null);
 }
 
 /**
- * Get the <i>template</i> from the selected {@link PaletteTemplateEntry} and sets it as the
- * event data to be dropped.
+ * Get the <i>template</i> from the selected {@link PaletteTemplateEntry} and sets it as
+ * the event data to be dropped.
  * @param event the DragSourceEvent
  */
 public void dragSetData(DragSourceEvent event) {
@@ -74,8 +76,11 @@ protected Object getTemplate() {
 	List selection = getViewer().getSelectedEditParts();
 	if (selection.size() == 1) {
 		EditPart editpart = (EditPart)getViewer().getSelectedEditParts().get(0);
-		if (editpart.getModel() instanceof PaletteTemplateEntry)
-			return ((PaletteTemplateEntry)editpart.getModel()).getTemplate();
+		Object model = editpart.getModel(); 
+		if (model instanceof PaletteTemplateEntry)
+			return ((PaletteTemplateEntry)model).getTemplate();
+		if (model instanceof CombinedTemplateCreationEntry)
+			return ((CombinedTemplateCreationEntry)model).getTemplate();
 	}
 	return null;
 }
