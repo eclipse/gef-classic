@@ -132,7 +132,7 @@ private int findNextLineOffset(Point p) {
 	int i;
 	for (i = 0; i < fragments.size(); i++) {
 		box = (TextFragmentBox)fragments.get(i);
-		if (box.getBaseline() > p.y)
+		if (box.getTextTop() > p.y)
 			break;
 		box = null;
 	}
@@ -222,9 +222,8 @@ int getDescent() {
 }
 
 /**
- * Returns the rectangular bounds for placing a {@link org.eclipse.swt.widgets.Caret
- * Caret} at the given offset.  The offset must be between 0 and the length of the String
- * being displayed.
+ * Returns the CaretInfo in absolute coordinates. The offset must be between 0 and the
+ * length of the String being displayed.
  * @since 3.1
  * @param offset the location in this figures text
  * @param trailing true if the caret is being placed after the offset
@@ -232,7 +231,7 @@ int getDescent() {
  * length of the string inclusively
  * @return the caret bounds relative to this figure
  */
-public Rectangle getCaretPlacement(int offset, boolean trailing) {
+public CaretInfo getCaretPlacement(int offset, boolean trailing) {
 	if (offset < 0 || offset > text.length())
 		throw new IllegalArgumentException("Offset: " + offset //$NON-NLS-1$
 				+ " is invalid"); //$NON-NLS-1$
@@ -261,9 +260,12 @@ public Rectangle getCaretPlacement(int offset, boolean trailing) {
 	layout.setText(fragString);
 	Point where = new Point(layout.getLocation(offset, trailing));
 	layout.setText(""); //$NON-NLS-1$
-
+	FontMetrics metrics = FigureUtilities.getFontMetrics(getFont());
 	where.translate(box.getX(), box.getTextTop());
-	return new Rectangle(where.x, where.y, 1, getAscent());
+	CaretInfo info = new CaretInfo(where.x, where.y,
+			metrics.getAscent(), metrics.getHeight() - metrics.getAscent());
+	translateToAbsolute(info);
+	return info;
 }
 
 /**
@@ -290,17 +292,17 @@ public int getFirstOffsetForLine(int y) {
  * The y location is relative to this figure.  If no fragment occupies that y coordinate,
  * <code>-1</code> is returned.
  * @since 3.1
- * @param y the baseline's y coordinate
+ * @param baseline the baseline's y coordinate
  * @return -1 of the last  offset at the given baseline
  */
-public int getLastOffsetForLine(int y) {
+public int getLastOffsetForLine(int baseline) {
 	TextFragmentBox box;
 	//LineRoot root;
 	for (int i = fragments.size() - 1; i >= 0; i--) {
 		box = (TextFragmentBox)fragments.get(i);
 		//root = box.getLineRoot();
-		if (y >= box.getBaseline() - box.getAscentWithBorder()
-				&& y < box.getBaseline() + box.getDescentWithBorder())
+		if (baseline >= box.getBaseline() - box.getAscentWithBorder()
+				&& baseline < box.getBaseline() + box.getDescentWithBorder())
 			return box.offset + box.length;
 	}
 	return -1;
