@@ -44,8 +44,10 @@ public PasteTemplateAction(IWorkbenchPart editor) {
  * execute.
  */
 protected boolean calculateEnabled() {
-	Command command = createPasteCommand();
-	return getClipboardContents() != null && command != null && command.canExecute();
+	Command command = null;
+	if (getClipboardContents() != null)
+		command = createPasteCommand();
+	return command != null && command.canExecute();
 }
 
 /**
