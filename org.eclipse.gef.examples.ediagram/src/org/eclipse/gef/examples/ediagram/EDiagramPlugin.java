@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004 IBM Corporation and others.
+ * Copyright (c) 2004, 2005 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,7 +9,7 @@
  *     IBM Corporation - initial API and implementation
  * </copyright>
  *
- * $Id: EDiagramPlugin.java,v 1.3 2005/03/29 23:58:13 pshah Exp $
+ * $Id: EDiagramPlugin.java,v 1.4 2005/03/30 21:27:11 pshah Exp $
  * /
  *******************************************************************************/
 package org.eclipse.gef.examples.ediagram;
