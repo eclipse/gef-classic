@@ -12,11 +12,14 @@ package org.eclipse.gef.internal.ui.rulers;
 
 import java.util.List;
 
+import org.eclipse.swt.accessibility.AccessibleEvent;
+
 import org.eclipse.draw2d.IFigure;
 
 import org.eclipse.gef.*;
 import org.eclipse.gef.editparts.*;
 import org.eclipse.gef.editpolicies.SelectionEditPolicy;
+import org.eclipse.gef.internal.GEFMessages;
 import org.eclipse.gef.requests.SelectionRequest;
 import org.eclipse.gef.rulers.*;
 
@@ -27,9 +30,10 @@ public class RulerEditPart
 	extends AbstractGraphicalEditPart
 {
 
-private RulerProvider rulerProvider;
-private boolean horizontal = false;
 protected GraphicalViewer diagramViewer;
+private RulerProvider rulerProvider;
+private boolean horizontal;
+private AccessibleEditPart accPart;
 private RulerChangeListener listener = new RulerChangeListener.Stub() {
 	public void notifyGuideReparented(Object guide) {
 		handleGuideReparented(guide);
@@ -50,6 +54,21 @@ public void activate() {
 	getRulerProvider().addRulerChangeListener(listener);
 	getRulerFigure().setZoomManager(getZoomManager());
 	super.activate();
+}
+
+/*
+ * @TODO:Pratik		Need to check this with JAWS
+ */
+protected AccessibleEditPart createAccessibleEditPart() {
+	return new AccessibleGraphicalEditPart() {
+		public void getName(AccessibleEvent e) {
+			e.result = isHorizontal() ? GEFMessages.Ruler_Horizontal_Label
+			                          : GEFMessages.Ruler_Vertical_Label;
+		}
+		public void getDescription(AccessibleEvent e) {
+			e.result = GEFMessages.Ruler_Desc;
+		}
+	};
 }
 
 /* (non-Javadoc)
@@ -81,6 +100,12 @@ public void deactivate() {
 	getRulerProvider().removeRulerChangeListener(listener);
 	rulerProvider = null;
 	getRulerFigure().setZoomManager(null);
+}
+
+protected AccessibleEditPart getAccessibleEditPart() {
+	if (accPart == null)
+		accPart = createAccessibleEditPart();
+	return accPart;
 }
 
 /* (non-Javadoc)
@@ -156,7 +181,8 @@ public void setParent(EditPart parent) {
 			rulerProvider = hProvider;
 			horizontal = true;
 		} else {
-			rulerProvider = (RulerProvider)diagramViewer.getProperty(RulerProvider.PROPERTY_VERTICAL_RULER);
+			rulerProvider = (RulerProvider)diagramViewer
+					.getProperty(RulerProvider.PROPERTY_VERTICAL_RULER);
 		}
 	}
 }
