@@ -43,10 +43,10 @@ protected void paintFigure(Graphics graphics) {
 	// draw the inner outline
 	PointList innerLine = new PointList();
 
-	innerLine.addPoint(rect.width - getCornerSize(), 0);
-	innerLine.addPoint(rect.width - getCornerSize(), getCornerSize());
+	innerLine.addPoint(rect.width - getCornerSize() - 1, 0);
+	innerLine.addPoint(rect.width - getCornerSize() - 1, getCornerSize());
 	innerLine.addPoint(rect.width - 1, getCornerSize());
-	innerLine.addPoint(rect.width - getCornerSize(), 0);
+	innerLine.addPoint(rect.width - getCornerSize() - 1, 0);
 	innerLine.addPoint(0, 0);
 	innerLine.addPoint(0, rect.height - 1);
 	innerLine.addPoint(rect.width - 1, rect.height - 1);
@@ -54,9 +54,8 @@ protected void paintFigure(Graphics graphics) {
 
 	graphics.drawPolygon(innerLine);
 	
-	graphics.drawLine(rect.width - getCornerSize(), 0, rect.width - 1, getCornerSize());
+	graphics.drawLine(rect.width - getCornerSize() - 1, 0, rect.width - 1, getCornerSize());
 	
-
 	graphics.translate(getLocation().getNegated());
 }
 }

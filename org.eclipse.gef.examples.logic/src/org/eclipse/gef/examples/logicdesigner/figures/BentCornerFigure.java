@@ -69,10 +69,10 @@ protected void paintFigure(Graphics graphics) {
 	// draw the inner outline
 	PointList innerLine = new PointList();
 	
-	innerLine.addPoint(rect.width - cornerSize, 0);
-	innerLine.addPoint(rect.width - cornerSize, cornerSize);
+	innerLine.addPoint(rect.width - cornerSize - 1, 0);
+	innerLine.addPoint(rect.width - cornerSize - 1, cornerSize);
 	innerLine.addPoint(rect.width - 1, cornerSize);
-	innerLine.addPoint(rect.width - cornerSize, 0);
+	innerLine.addPoint(rect.width - cornerSize - 1, 0);
 	innerLine.addPoint(0, 0);
 	innerLine.addPoint(0, rect.height - 1);
 	innerLine.addPoint(rect.width - 1, rect.height - 1);
