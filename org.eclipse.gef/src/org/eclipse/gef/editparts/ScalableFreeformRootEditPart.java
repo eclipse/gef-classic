@@ -120,4 +120,20 @@ public ZoomManager getZoomManager() {
 	return zoomManager;
 }
 
+/* (non-Javadoc)
+ * @see org.eclipse.gef.editparts.AbstractEditPart#register()
+ */
+protected void register() {
+	super.register();
+	getViewer().setProperty(ZoomManager.class.toString(), getZoomManager());
+}
+
+/* (non-Javadoc)
+ * @see org.eclipse.gef.editparts.AbstractEditPart#unregister()
+ */
+protected void unregister() {
+	super.unregister();
+	getViewer().setProperty(ZoomManager.class.toString(), null);
+}
+
 }

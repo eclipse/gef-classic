@@ -301,6 +301,14 @@ public ZoomManager getZoomManager() {
  */
 protected void refreshChildren() { }
 
+/* (non-Javadoc)
+ * @see org.eclipse.gef.editparts.AbstractEditPart#register()
+ */
+protected void register() {
+	super.register();
+	viewer.setProperty(ZoomManager.class.toString(), getZoomManager());
+}
+
 /**
  * @see org.eclipse.gef.RootEditPart#setContents(org.eclipse.gef.EditPart)
  */
@@ -324,6 +332,14 @@ public void setViewer(EditPartViewer newViewer) {
 	viewer = newViewer;
 	if (viewer != null)
 		register();
+}
+
+/* (non-Javadoc)
+ * @see org.eclipse.gef.editparts.AbstractEditPart#unregister()
+ */
+protected void unregister() {
+	super.unregister();
+	getViewer().setProperty(ZoomManager.class.toString(), null);
 }
 
 }
