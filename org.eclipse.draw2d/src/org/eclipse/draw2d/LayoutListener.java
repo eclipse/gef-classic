@@ -10,60 +10,25 @@
 package org.eclipse.draw2d;
 
 /**
- * since 3.1
+ * Experimental API.
+ * @since 3.1
  */
 public interface LayoutListener {
 
 /**
- * @since 3.1
- * @param child
- * @param constraint
- */
-void setConstraint(IFigure child, Object constraint);
-
-/**
- * @since 3.1
- * @param child
- */
-void remove(IFigure child);
-
-/**
+ * A stub implementation which implements all of the declared methods. 
  * @since 3.1
  */
-void invalidate();
-
-/**
- * @since 3.1
- * @param container
- * @return
- */
-boolean layout(IFigure container);
-
-/**
- * Called after layout has occured.
- * @since 3.1
- * @param container
- */
-void postLayout(IFigure container);
-
 class Stub implements LayoutListener {
 
 	/**
-	 * @see LayoutListener#setConstraint(IFigure, java.lang.Object)
-	 */
-	public void setConstraint(IFigure child, Object constraint) { }
-
-	/**
-	 * @see LayoutListener#remove(IFigure)
-	 */
-	public void remove(IFigure child) { }
-
-	/**
+	 * Stub which does nothing.
 	 * @see LayoutListener#invalidate()
 	 */
-	public void invalidate() { }
-
+	public void invalidate(IFigure container) { }
+	
 	/**
+	 * Stub which does nothing.
 	 * @see LayoutListener#layout(IFigure)
 	 */
 	public boolean layout(IFigure container) {
@@ -71,10 +36,62 @@ class Stub implements LayoutListener {
 	}
 
 	/**
+	 * Stub which does nothing.
 	 * @see LayoutListener#postLayout(IFigure)
 	 */
 	public void postLayout(IFigure container) { }
+
+	/**
+	 * Stub which does nothing.
+	 * @see LayoutListener#remove(IFigure)
+	 */
+	public void remove(IFigure child) { }
+
+	/**
+	 * Stub which does nothing.
+	 * @see LayoutListener#setConstraint(IFigure, java.lang.Object)
+	 */
+	public void setConstraint(IFigure child, Object constraint) { }
 	
 }
+
+/**
+ * Called when a container has been invalidated.
+ * @param container the invalidated Figure
+ * @since 3.1
+ */
+void invalidate(IFigure container);
+
+/**
+ * Called prior to layout occurring.  A listener may intercept a layout by
+ * returning <code>true</code>.  If the layout is intercepted, the container
+ * <code>LayoutManager</code> will not receive a layout call.
+ * @param container the figure incurring a layout
+ * @return <code>true</code> if the layout has been intercepted by the listener
+ * @since 3.1
+ */
+boolean layout(IFigure container);
+
+/**
+ * Called after layout has occurred.
+ * @since 3.1
+ * @param container the figure incurring a layout 
+ */
+void postLayout(IFigure container);
+
+/**
+ * Called when a child is about to be removed from its parent.
+ * @since 3.1
+ * @param child the child being removed
+ */
+void remove(IFigure child);
+
+/**
+ * Called when a child's constraint has been changed
+ * @param child the child being updated
+ * @param constraint the child's new constraint
+ * @since 3.1
+ */
+void setConstraint(IFigure child, Object constraint);
 
 }
