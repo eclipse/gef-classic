@@ -176,6 +176,7 @@ public void propertyChange(PropertyChangeEvent event) {
 					repaint();
 					fireMoved(); //Must fire moved because the contents have been 
 								 //virtually scrolled.
+					fireCoordinateChanges();
 				}
 			}
 			firePropertyChange(PROPERTY_VIEW_LOCATION, event.getOldValue(), 
@@ -264,7 +265,7 @@ public void setHorizontalRangeModel(RangeModel rangeModel) {
 /**
  * If <i>value</i> is <code>true</code>, this viewport will ignore any scrolling that 
  * occurs until this method is called again with <code>false</code>.
- * 
+ *  
  * @param value whether this viewport should ignore future scrolls
  */
 public void setIgnoreScroll(boolean value) {

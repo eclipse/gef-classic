@@ -84,8 +84,11 @@ protected void paintClientArea(Graphics graphics) {
  * @param newZoom The new zoom level
  */
 public void setScale(double newZoom) {
+	if (scale == newZoom)
+		return;
 	scale = newZoom;
-	fireMoved();
+	fireMoved(); //for AncestorListener compatibility
+	fireCoordinateChanges();
 	revalidate();
 	repaint();
 }
