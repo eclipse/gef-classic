@@ -3,12 +3,14 @@ package org.eclipse.gef.examples.pde;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.swt.widgets.Composite;
+
 import org.eclipse.core.runtime.*;
+import org.eclipse.ui.part.ViewPart;
+
 import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.graph.*;
 import org.eclipse.draw2d.internal.graph.*;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.part.ViewPart;
 
 /**
  * @author hudsonr

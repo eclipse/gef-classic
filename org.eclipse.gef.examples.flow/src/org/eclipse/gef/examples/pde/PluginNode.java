@@ -1,6 +1,8 @@
 package org.eclipse.gef.examples.pde;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+
 import org.eclipse.draw2d.graph.*;
 
 

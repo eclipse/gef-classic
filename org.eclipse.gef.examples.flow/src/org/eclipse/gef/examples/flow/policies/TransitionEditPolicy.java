@@ -12,9 +12,10 @@ package org.eclipse.gef.examples.flow.policies;
 
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.ConnectionEditPolicy;
+import org.eclipse.gef.requests.GroupRequest;
+
 import org.eclipse.gef.examples.flow.model.Transition;
 import org.eclipse.gef.examples.flow.model.commands.DeleteConnectionCommand;
-import org.eclipse.gef.requests.GroupRequest;
 
 /**
  * @author Daniel Lee

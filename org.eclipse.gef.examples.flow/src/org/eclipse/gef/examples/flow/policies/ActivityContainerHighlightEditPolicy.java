@@ -10,10 +10,12 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.flow.policies;
 
+import org.eclipse.swt.graphics.Color;
+
 import org.eclipse.draw2d.IFigure;
+
 import org.eclipse.gef.*;
 import org.eclipse.gef.editpolicies.GraphicalEditPolicy;
-import org.eclipse.swt.graphics.Color;
 
 /**
  * @author Daniel Lee

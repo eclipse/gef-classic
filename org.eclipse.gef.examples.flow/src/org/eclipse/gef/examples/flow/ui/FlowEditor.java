@@ -3,28 +3,31 @@ package org.eclipse.gef.examples.flow.ui;
 import java.io.*;
 import java.util.EventObject;
 
+import org.eclipse.swt.SWT;
+
 import org.eclipse.core.resources.*;
 import org.eclipse.core.runtime.*;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
+import org.eclipse.ui.*;
+import org.eclipse.ui.actions.WorkspaceModifyOperation;
+import org.eclipse.ui.dialogs.SaveAsDialog;
+import org.eclipse.ui.part.FileEditorInput;
+
 import org.eclipse.gef.*;
 import org.eclipse.gef.dnd.TemplateTransferDragSourceListener;
 import org.eclipse.gef.editparts.ScalableRootEditPart;
-import org.eclipse.gef.examples.flow.FlowContextMenuProvider;
-import org.eclipse.gef.examples.flow.FlowEditorPaletteFactory;
-import org.eclipse.gef.examples.flow.dnd.FlowTemplateTransferDropTargetListener;
-import org.eclipse.gef.examples.flow.model.ActivityDiagram;
-import org.eclipse.gef.examples.flow.parts.ActivityPartFactory;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.tools.ConnectionCreationTool;
 import org.eclipse.gef.ui.actions.*;
 import org.eclipse.gef.ui.parts.GraphicalEditorWithPalette;
 import org.eclipse.gef.ui.parts.GraphicalViewerKeyHandler;
-import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.dialogs.ProgressMonitorDialog;
-import org.eclipse.swt.SWT;
-import org.eclipse.ui.*;
-import org.eclipse.ui.actions.WorkspaceModifyOperation;
-import org.eclipse.ui.dialogs.SaveAsDialog;
-import org.eclipse.ui.part.FileEditorInput;
+
+import org.eclipse.gef.examples.flow.FlowEditorPaletteFactory;
+import org.eclipse.gef.examples.flow.actions.FlowContextMenuProvider;
+import org.eclipse.gef.examples.flow.dnd.FlowTemplateTransferDropTargetListener;
+import org.eclipse.gef.examples.flow.model.ActivityDiagram;
+import org.eclipse.gef.examples.flow.parts.ActivityPartFactory;
 
 /**
  * 

@@ -15,12 +15,13 @@ import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CompoundCommand;
 import org.eclipse.gef.editpolicies.ContainerEditPolicy;
+import org.eclipse.gef.requests.CreateRequest;
+import org.eclipse.gef.requests.GroupRequest;
+
 import org.eclipse.gef.examples.flow.model.Activity;
 import org.eclipse.gef.examples.flow.model.StructuredActivity;
 import org.eclipse.gef.examples.flow.model.commands.AddAndAssignSourceCommand;
 import org.eclipse.gef.examples.flow.model.commands.CreateAndAssignSourceCommand;
-import org.eclipse.gef.requests.CreateRequest;
-import org.eclipse.gef.requests.GroupRequest;
 
 /**
  * @author Daniel Lee

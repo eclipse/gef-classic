@@ -1,6 +1,7 @@
 package org.eclipse.gef.examples.pde;
 
-import org.eclipse.draw2d.graph.*;
+import org.eclipse.draw2d.graph.Edge;
+import org.eclipse.draw2d.graph.Node;
 
 /**
  * @author hudsonr
