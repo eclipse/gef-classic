@@ -211,24 +211,12 @@ public void execute() {
 		vGuideCommand.execute();
 }
 
-
-
 public void setParent(LogicDiagram parent) {
 	this.parent = parent;
 }
 
 public void redo() {
 	execute();
-}
-
-protected void removePart(LogicSubpart part, LogicDiagram parent) {
-	if (part instanceof LogicDiagram) {
-		Iterator i = ((LogicDiagram)part).getChildren().iterator();
-		while (i.hasNext()) {
-			removePart((LogicSubpart)i.next(), parent);
-		}
-	}
-	parent.removeChild(part);
 }
 
 public void setGuide(LogicGuide guide, int alignment, boolean isHorizontal) {
@@ -248,9 +236,9 @@ public void undo() {
 		vGuideCommand.undo();
 	
 	Iterator i = newParts.iterator();
-	while (i.hasNext()) {
-		removePart((LogicSubpart)i.next(), parent);
-	}
+	LogicSubpart part;
+	while (i.hasNext()) 
+		parent.removeChild((LogicSubpart)i.next());
 }
 
 }
