@@ -63,7 +63,7 @@ private static int findFirstDelimeter(String string) {
  * @since 3.1
  */
 private static float getAverageCharWidth(TextFragmentBox fragment, Font font) {
-	if (fragment.width != 0 && fragment.length != 0)
+	if (fragment.width > 0 && fragment.length != 0)
 		return fragment.width / (float)fragment.length;
 	return getFontMetrics(font).getAverageCharWidth();
 }
@@ -235,7 +235,12 @@ public static int wrapFragmentInContext(TextFragmentBox frag, String string,
  
 	if (min == strLen) {
 		//Everything fits
-		frag.length = result;
+		if (string.charAt(strLen - 1) == ' ' 
+				&& lookahead.getWidth() > availableWidth - frag.width) {
+			frag.length = result - 1;
+			frag.width = -1;
+		} else
+			frag.length = result;
 	} else if (min == firstDelimiter) {
 		//move result past the delimiter
 		frag.length = result;
@@ -256,7 +261,7 @@ public static int wrapFragmentInContext(TextFragmentBox frag, String string,
 			frag.width = -1;
 		}
 	} else {
-		// In the middle of an unbreakable offset.
+		// In the middle of an unbreakable offset
 		result = INTERNAL_LINE_BREAK.preceding(min);
 		if (result == 0) {
 			switch (wrapping) {
@@ -287,11 +292,8 @@ public static int wrapFragmentInContext(TextFragmentBox frag, String string,
 			frag.length--;
 		frag.width = -1;
 	}
-	
+
 	setupFragment(frag, font, string);
-//	set the text to an empty string so that the current string is not held in memory
-//	if (textLayout != null)
-//		textLayout.setText(""); //$NON-NLS-1$
 	context.addToCurrentLine(frag);
 	if (frag.length == absoluteMin && frag.length == strLen
 			&& lookahead != null && lookahead.getWidth() > 0)
