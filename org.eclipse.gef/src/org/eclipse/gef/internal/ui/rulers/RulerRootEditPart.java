@@ -166,9 +166,9 @@ public class RulerViewport extends Viewport {
 	}
 	protected void paintBorder(Graphics graphics) {
 		super.paintBorder(graphics);
-		if (((RulerFigure)getContents()).getDrawFocus()) {
+		if (((RulerFigure)this.getContents()).getDrawFocus()) {
 			Rectangle focusBounds = getBounds().getCopy();
-			if (((RulerFigure)getContents()).isHorizontal()) {
+			if (((RulerFigure)this.getContents()).isHorizontal()) {
 				focusBounds.resize(-2, -4);
 				focusBounds.x++;
 			} else {
