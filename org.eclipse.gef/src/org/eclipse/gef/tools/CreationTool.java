@@ -76,6 +76,9 @@ protected Request createTargetRequest() {
 	return request;
 }
 
+/**
+ * @see org.eclipse.gef.Tool#deactivate()
+ */
 public void deactivate() {
 	super.deactivate();
 	helper = null;
