@@ -37,7 +37,7 @@ import org.eclipse.gef.editparts.LayerManager;
  * the input was received.  The interesting transitions have corresponding actions
  * assigned to them, such as {@link #handleDragStarted()}.
  * <P>
- * The base implementation performs <EM>no</em? state transitions by default, but does
+ * The base implementation performs <EM>no</em> state transitions by default, but does
  * route events to different method handlers based on state.  It is up to subclasses to
  * set the appropriate states.
  * <P>
