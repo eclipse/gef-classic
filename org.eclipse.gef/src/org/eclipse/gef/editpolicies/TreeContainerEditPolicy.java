@@ -71,7 +71,7 @@ public void eraseTargetFeedback(Request req) {
 }
 
 /**
- * Calculates the index of the TreeItem ata  agiven point.
+ * Calculates the index of the TreeItem at given point.
  * @param pt the Point in the Viewer
  * @return the index of the TreeItem */
 protected final int findIndexOfTreeItemAt(org.eclipse.draw2d.geometry.Point pt) {
