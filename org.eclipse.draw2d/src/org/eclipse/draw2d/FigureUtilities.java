@@ -291,30 +291,38 @@ public static void paintEtchedBorder(Graphics g, Rectangle r,
  * @param	g			The Graphics object to be used for painting
  * @param	f			The figure in which the grid is to be painted
  * @param	origin		Any point where the grid lines are expected to intersect
- * @param	distanceX	Distance between vertical grid lines
- * @param	distanceY	Distance between horizontal grid lines
+ * @param	distanceX	Distance between vertical grid lines; if 0 or less, vertical grid
+ * 						lines will not be drawn
+ * @param	distanceY	Distance between horizontal grid lines; if 0 or less, horizontal
+ * 						grid lines will not be drawn
  * 
  * @since 3.0
  */
 public static void paintGrid(Graphics g, IFigure f, 
 		org.eclipse.draw2d.geometry.Point origin, int distanceX, int distanceY) {
 	Rectangle clip = g.getClip(Rectangle.SINGLETON);
-	if (origin.x >= clip.x)
-		while (origin.x - distanceX >= clip.x)
-			origin.x -= distanceX;
-	else
-		while (origin.x < clip.x)
-			origin.x += distanceX;
-	if (origin.y >= clip.y)
-		while (origin.y - distanceY >= clip.y)
-			origin.y -= distanceY;
-	else
-		while (origin.y < clip.y)
-			origin.y += distanceY;
-	for (int i = origin.x; i < clip.x + clip.width; i += distanceX)
-		g.drawLine(i, clip.y, i, clip.y + clip.height);
-	for (int i = origin.y; i < clip.y + clip.height; i += distanceY)
-		g.drawLine(clip.x, i, clip.x + clip.width, i);
+	
+	if (distanceX > 0) {
+		if (origin.x >= clip.x)
+			while (origin.x - distanceX >= clip.x)
+				origin.x -= distanceX;
+		else
+			while (origin.x < clip.x)
+				origin.x += distanceX;
+		for (int i = origin.x; i < clip.x + clip.width; i += distanceX)
+			g.drawLine(i, clip.y, i, clip.y + clip.height);
+	}
+	
+	if (distanceY > 0) {
+		if (origin.y >= clip.y)
+			while (origin.y - distanceY >= clip.y)
+				origin.y -= distanceY;
+		else
+			while (origin.y < clip.y)
+				origin.y += distanceY;
+		for (int i = origin.y; i < clip.y + clip.height; i += distanceY)
+			g.drawLine(clip.x, i, clip.x + clip.width, i);
+	}
 }
 
 /**
