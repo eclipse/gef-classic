@@ -17,6 +17,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.draw2d.text.FlowPage;
 import org.eclipse.draw2d.text.TextFlow;
 
+import org.eclipse.gef.ui.palette.PaletteMessages;
 import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
 
 /**
@@ -48,6 +49,7 @@ private ImageFigure image;
 private FlowPage page;
 private TextFlow nameText, descText;
 private Font boldFont;
+private FontData currentData;
 private boolean useLargeIcons;
 private int selectionState, layoutMode = -1;
 private List listeners = new ArrayList();
@@ -105,11 +107,11 @@ public void removeChangeListener(ChangeListener listener) {
 }
 
 public void setDescription(String s) {
-	/*
-	 * @TODO:Pratik
-	 * Does this string need to be externalized?
-	 */
-	descText.setText(" - " + s); //$NON-NLS-1$
+	String str = " " + PaletteMessages.NAME_DESCRIPTION_SEPARATOR + " " + s; //$NON-NLS-1$ //$NON-NLS-2$
+	if (descText.getText().equals(str)) {
+		return;
+	}
+	descText.setText(str);
 }
 
 /**
@@ -119,6 +121,7 @@ public void setDescription(String s) {
 public void setImage(Image icon) {
 	image.setImage(icon);
 }
+
 
 public void setLayoutMode(int layoutMode) {
 	updateFont(layoutMode);
@@ -155,6 +158,9 @@ public void setLayoutMode(int layoutMode) {
 }
 
 public void setName(String str) {
+	if (nameText.getText().equals(str)) {
+		return;
+	}
 	nameText.setText(str);
 }
 
@@ -183,8 +189,6 @@ public void setSelected(int state) {
  * @return A new ImageData that can be used to create an Image.
  */	
 public static ImageData createShadedImage(Image fromImage, Color shade) {
-	Image colorImage = new Image(null, fromImage, SWT.IMAGE_COPY);
-	fromImage = colorImage;
 	org.eclipse.swt.graphics.Rectangle r = fromImage.getBounds();
 	ImageData data = fromImage.getImageData();
 	PaletteData palette = data.palette;
@@ -223,33 +227,40 @@ public static ImageData createShadedImage(Image fromImage, Color shade) {
 				blue = determineShading(blue, shade.getBlue());
 				green = determineShading(green, shade.getGreen());
 				red = (redShift < 0) ? red << -redShift : red >> redShift;
+				red &= redMask;
 				green = (greenShift < 0) ? green << -greenShift : green >> greenShift;
-				blue = (blueShift < 0) ? blue << -blueShift : blue >> blueShift;				
+				green &= greenMask;
+				blue = (blueShift < 0) ? blue << -blueShift : blue >> blueShift;
+				blue &= blueMask;
 				scanline[x] = red | blue | green;
 			}
 			data.setPixels(0, y, r.width, scanline, 0);
 		}
 	}
-	fromImage.dispose();
 	return data;
 }
 
 private void updateFont(int layout){
-	if (boldFont != null) {
-		nameText.setFont(null);
-		boldFont.dispose();
-		boldFont = null;
-	}
-	if (layout == PaletteViewerPreferences.LAYOUT_DETAILS) {
-		/*
-		 * @TODO:Pratik
-		 * Find out if getting the first FontData in the array is valid.
-		 * You also need to figure out a way of disposing this Font.  Right now you are
-		 * doing it through the finalize method.
-		 */
-		FontData data = getFont().getFontData()[0];
-		data.setStyle(SWT.BOLD);
-		boldFont = new Font(Display.getCurrent(), data);
+	boolean layoutChanged = (layoutMode != layout);
+	/*
+	 * @TODO:Pratik
+	 * Find out if getting the first FontData in the array is valid.
+	 * You also need to figure out a way of disposing this Font.  Right now you are
+	 * doing it through the finalize method.
+	 */
+	FontData data = getFont().getFontData()[0];
+	data.setStyle(SWT.BOLD);
+	boolean fontChanged = !data.equals(currentData);
+
+	currentData = data;
+	if (layoutChanged || fontChanged) {
+		if (boldFont != null) {
+			boldFont.dispose();
+			boldFont = null;
+		}
+		if (layout == PaletteViewerPreferences.LAYOUT_DETAILS) {
+			boldFont = new Font(Display.getCurrent(), data);
+		}
 		nameText.setFont(boldFont);
 	}
 }
@@ -301,7 +312,7 @@ private class SelectableImageFigure extends ImageFigure {
 			if (shadedImage == null) {
 				ImageData data = createShadedImage(super.getImage(), 
 						ColorConstants.menuBackgroundSelected);
-				shadedImage = new Image(null, data);
+				shadedImage = new Image(null, data, data.getTransparencyMask());
 			}
 			return shadedImage;
 		}
