@@ -8,7 +8,7 @@
    <runtime>
    </runtime>
    <requires>
-      <import plugin="org.eclipse.gef" version="2.0.0"/>
+      <import plugin="org.eclipse.gef"/>
    </requires>
 
 
