@@ -235,19 +235,19 @@ public void setZoom(double zoom) {
 		return;
 	
 	Point p1 = getViewport().getClientArea().getCenter();
+	Point p2 = p1.getCopy();
+	Point p = getViewport().getViewLocation();
 	double prevZoom = this.zoom;
 	this.zoom = zoom;
 	pane.setScale(zoom);
 	fireZoomChanged();
 	getViewport().validate();
 	
-	Point p2 = getViewport().getClientArea().getCenter();
 	p2.scale(zoom / prevZoom);
 	Dimension dif = p2.getDifference(p1);
-	Point p = getViewport().getViewLocation();
 	p.x += dif.width;
 	p.y += dif.height;
-	setViewLocation(p);
+	setViewLocation(p);	
 }
 
 /**
