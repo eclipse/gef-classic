@@ -264,35 +264,33 @@ public int getIconTextGap(){return iconTextGap;}
 public Dimension getMinimumSize(int w, int h){
 	if (minSize != null)
 		return minSize;
-	Dimension size = new Dimension();
+	minSize = new Dimension();
 	if (getLayoutManager() != null)
-		size.setSize(getLayoutManager().getMinimumSize(this, w, h));
+		minSize.setSize(getLayoutManager().getMinimumSize(this, w, h));
 	
 	Dimension labelSize = calculateLabelSize(FigureUtilities.getTextExtents(ELLIPSIS,getFont()));
 	Insets insets = getInsets();
 	labelSize.expand(insets.getWidth(),insets.getHeight());
-	minSize = size.getUnioned(labelSize);
+	minSize.union(labelSize);
 	return minSize;	
 }
 
 public Dimension getPreferredSize(int wHint, int hHint){
-	Dimension size = new Dimension();
-	if (getLayoutManager() != null)
-		size.setSize(getLayoutManager().getPreferredSize(this, wHint, hHint));
-
-	Dimension labelSize = calculateLabelSize(getTextSize());
-	if (wHint >= 0) {
-		Dimension minLabelSize = getMinimumSize();
-		// The label will try and fit in the given wHint using the ellipsis, if it can.
-		if (wHint >= minLabelSize.width && wHint <= labelSize.width) {
-			labelSize.width = wHint;
-		} else if (wHint < minSize.width) {
-			labelSize.width = minSize.width;
-		} 
+	if (prefSize == null) {
+		prefSize = calculateLabelSize(getTextSize());
+		Insets insets = getInsets();
+		prefSize.expand(insets.getWidth(), insets.getHeight());
+		if (getLayoutManager() != null)
+			prefSize.union(getLayoutManager().getPreferredSize(this, wHint, hHint));
 	}
-	Insets insets = getInsets();
-	labelSize.expand(insets.getWidth(), insets.getHeight());
-	return size.union(labelSize);
+	if (wHint >= 0 && wHint < prefSize.width) {
+		Dimension minSize = getMinimumSize(wHint, hHint);
+		Dimension result = prefSize.getCopy();
+		result.width = Math.min(result.width, wHint);
+		result.width = Math.max(minSize.width, result.width);
+		return result;
+	}
+	return prefSize;
 }
 
 /**
@@ -407,6 +405,7 @@ protected Dimension getTextSize(){
 
 public void invalidate(){
 	prefSize = null;
+	minSize = null;
 	clearLocations();
 	textSize = null;
 	subStringTextSize = null;
