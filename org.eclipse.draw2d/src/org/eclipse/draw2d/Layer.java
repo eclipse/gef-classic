@@ -1,5 +1,9 @@
 package org.eclipse.draw2d;
 
+import java.util.Collection;
+
+import org.eclipse.draw2d.geometry.Point;
+
 /*
  * Licensed Material - Property of IBM
  * (C) Copyright IBM Corp. 2001, 2002 - All Rights Reserved.
@@ -24,12 +28,14 @@ public class Layer
  * @since 2.0
  * 
  */
-public boolean containsPoint(int x, int y) {
+public boolean containsPoint(int x, int y){
 	if (isOpaque())
 		return super.containsPoint(x, y);
-	for (int i = 0; i < getChildren().size(); i++) {
+	Point pt = new Point(x,y);
+	translateFromParent(pt);
+	for(int i=0;i<getChildren().size();i++){
 		IFigure child = (IFigure)getChildren().get(i);
-		if (child.containsPoint(x, y))
+		if(child.containsPoint(pt.x,pt.y))
 			return true;
 	}
 	return false;
