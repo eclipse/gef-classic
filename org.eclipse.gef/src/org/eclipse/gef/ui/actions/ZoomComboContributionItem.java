@@ -35,7 +35,6 @@ public class ZoomComboContributionItem
 	implements ZoomListener
 {
 
-private boolean needToRefreshItems = true;
 private Combo combo;
 private String[] initStrings;
 private ToolItem toolitem;
@@ -73,7 +72,6 @@ public ZoomComboContributionItem(IPartService partService, String[] initStrings)
 	partService.addPartListener(partListener = new IPartListener() {
 		public void partActivated(IWorkbenchPart part) {
 			setZoomManager((ZoomManager) part.getAdapter(ZoomManager.class));
-			needToRefreshItems = true;
 		}
 		public void partBroughtToTop(IWorkbenchPart p) { }
 		public void partClosed(IWorkbenchPart p) { }
@@ -82,18 +80,17 @@ public ZoomComboContributionItem(IPartService partService, String[] initStrings)
 	});
 }
 
-void refresh() {
+void refresh(boolean repopulateCombo) {
 	if (combo == null || combo.isDisposed())
 		return;
 	//$TODO GTK workaround
 	try {
 		if (zoomManager == null) {
 			combo.setEnabled(false);
-			combo.deselectAll();
+			combo.setText(""); //$NON-NLS-1$
 		} else {
-			if (needToRefreshItems) {
+			if (repopulateCombo) {
 				combo.setItems(getZoomManager().getZoomLevelsAsText());
-				needToRefreshItems = false;
 			}
 			String zoom = getZoomManager().getZoomAsText();
 			int index = combo.indexOf(zoom);
@@ -140,7 +137,7 @@ protected Control createControl(Composite parent) {
 			// do nothing
 		}
 		public void focusLost(FocusEvent e) {
-			refresh();
+			refresh(false);
 		}
 	});
 	combo.addDisposeListener(new DisposeListener() {
@@ -152,7 +149,7 @@ protected Control createControl(Composite parent) {
 	// Initialize width of combo
 	combo.setItems(initStrings);
 	toolitem.setWidth(computeWidth(combo));
-	refresh();
+	refresh(true);
 	return combo;
 }
 
@@ -230,7 +227,7 @@ public void setZoomManager(ZoomManager zm) {
 		zoomManager.removeZoomListener(this);
 
 	zoomManager = zm;
-	refresh();
+	refresh(true);
 
 	if (zoomManager != null)
 		zoomManager.addZoomListener(this);
@@ -253,14 +250,23 @@ private void handleWidgetSelected(SelectionEvent event) {
 			zoomManager.setZoomAsText(combo.getItem(combo.getSelectionIndex()));
 		else
 			zoomManager.setZoomAsText(combo.getText());
-	refresh();
+	/*
+	 * There are several cases where invoking setZoomAsText (above) will not result in
+	 * zoomChanged being fired (the method below), such as when the user types "asdf" as
+	 * the zoom level and hits enter, or when they type in 1%, which is below the minimum
+	 * limit, and the current zoom is already at the minimum level.  Hence, there is no 
+	 * guarantee that refresh() will always be invoked.  But we need to invoke it to clear
+	 * out the invalid text and show the current zoom level.  Hence, an (often redundant)
+	 * invocation to refresh() is made below.
+	 */
+	refresh(false);
 }
 
 /**
  * @see ZoomListener#zoomChanged(double)
  */
 public void zoomChanged(double zoom) {
-	refresh();
+	refresh(false);
 }
 
 }
