@@ -161,9 +161,6 @@ public boolean canBePinned() {
 	return getDrawerFigure().isPinShowing();
 }
 
-/**
- * @see org.eclipse.gef.ui.palette.PaletteEditPart#createAccessible()
- */
 protected AccessibleEditPart createAccessible() {
 	return new AccessibleGraphicalEditPart(){
 		public void getDescription(AccessibleEvent e) {

@@ -192,10 +192,6 @@ protected List getDrawersToCollapse(DrawerEditPart drawer) {
 	return drawersToCollapse;
 }
 
-/**
- * @since 3.0
- * @return
- */
 public boolean isRecording() {
 	return recording;
 }

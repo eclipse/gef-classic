@@ -81,11 +81,6 @@ public boolean hasChildren(Object o) {
 	return o instanceof CompoundCommand;
 }
 
-/**
- * 
- * @param o
- * @return
- */
 public boolean isDeleted(Object o) { return false; }
 
 /**

@@ -354,7 +354,6 @@ public void showTargetFeedback(Request request) {
  * Removes the decoration added in {@link #decorateChild(EditPart)}.
  * @param child the child whose decoration is being removed.
  * @since 3.1
- * @param child
  */
 protected void undecorateChild(EditPart child){
 	child.removeEditPolicy(EditPolicy.PRIMARY_DRAG_ROLE);
