@@ -28,8 +28,7 @@ public class SnapToGuides
 /**
  * The property key used to identify the Vertical Guide. 
  */
-public static final String KEY_VERTICAL_GUIDE =
-	"SnapToGuides.VerticalGuide"; //$NON-NLS-1$
+public static final String KEY_VERTICAL_GUIDE = "SnapToGuides.VerticalGuide"; //$NON-NLS-1$
 
 public static final String KEY_HORIZONTAL_GUIDE = "SnapToGuides.HorizontalGuide"; //$NON-NLS-1$
 
@@ -100,57 +99,6 @@ protected double getCorrectionFor(int[] guides, double value, Map extendedData,
 		}
 	}
 	return result;
-}
-
-protected int performCenteredResize(Request request, PrecisionRectangle baseRect, 
-		PrecisionRectangle result, int snapOrientation) {
-	if ((snapOrientation & EAST_WEST) != 0) {
-		double rightCorrection = getCorrectionFor(getVerticalGuides(), 
-				baseRect.preciseRight(), request.getExtendedData(), true, 1);
-		// Store the guide and anchor information, in case leftCorrection over-writes it
-		Object vGuide = request.getExtendedData().get(KEY_VERTICAL_GUIDE);
-		Object vAnchor = request.getExtendedData().get(KEY_VERTICAL_ANCHOR);
-		double leftCorrection = getCorrectionFor(getVerticalGuides(), 
-				baseRect.preciseX, request.getExtendedData(), true, -1);
-		if(Math.abs(leftCorrection) <= Math.abs(rightCorrection)
-				&& leftCorrection != THRESHOLD) {
-			snapOrientation &= ~EAST_WEST;
-			result.preciseWidth -= (leftCorrection * 2);
-			result.preciseX += leftCorrection;
-			
-		} else if (rightCorrection != THRESHOLD) {
-			// Restore the guide and anchor information, in case it was over-written
-			// by leftCorrection
-			request.getExtendedData().put(KEY_VERTICAL_GUIDE, vGuide);
-			request.getExtendedData().put(KEY_VERTICAL_ANCHOR, vAnchor);
-			snapOrientation &= ~EAST_WEST;
-			result.preciseWidth += (rightCorrection * 2);
-			result.preciseX -= rightCorrection;
-		}
-	}
-	
-	if ((snapOrientation & NORTH_SOUTH) != 0) {
-		double topCorrection = getCorrectionFor(getHorizontalGuides(), 
-				baseRect.preciseY, request.getExtendedData(), false, -1);
-		Object hGuide = request.getExtendedData().get(KEY_VERTICAL_GUIDE);
-		Object hAnchor = request.getExtendedData().get(KEY_VERTICAL_ANCHOR);
-		double bottom = getCorrectionFor(getHorizontalGuides(), 
-				baseRect.preciseBottom(), request.getExtendedData(), false, 1);
-		if(Math.abs(topCorrection) <= Math.abs(bottom)
-				&& topCorrection != THRESHOLD) {
-			request.getExtendedData().put(KEY_VERTICAL_GUIDE, hGuide);
-			request.getExtendedData().put(KEY_VERTICAL_ANCHOR, hAnchor);
-			snapOrientation &= ~NORTH_SOUTH;
-			result.preciseHeight -= (topCorrection * 2);
-			result.preciseY += topCorrection;
-		} else if (bottom != THRESHOLD) {
-			snapOrientation &= ~NORTH_SOUTH;
-			result.preciseHeight += (2 * bottom);
-			result.preciseY -= bottom;
-		}
-	}
-
-	return snapOrientation;
 }
 
 /**
