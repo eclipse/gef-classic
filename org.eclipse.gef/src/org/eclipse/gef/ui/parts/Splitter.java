@@ -246,11 +246,19 @@ public void layout(boolean changed) {
 
 void paint(Sash sash, GC gc) {
 	Point size = sash.getSize();
-	gc.setForeground(ColorConstants.buttonDarkest);
-	gc.drawLine(0, 0, 0, size.y);
-	gc.drawLine(SASH_WIDTH - 1, 0, SASH_WIDTH - 1, size.y);
-	gc.setForeground(ColorConstants.buttonLightest);
-	gc.drawLine(1, 0, 1, size.y);
+	if (getOrientation() == SWT.HORIZONTAL) {
+		gc.setForeground(ColorConstants.buttonDarkest);
+		gc.drawLine(0, 0, 0, size.y);
+		gc.drawLine(SASH_WIDTH - 1, 0, SASH_WIDTH - 1, size.y);
+		gc.setForeground(ColorConstants.buttonLightest);
+		gc.drawLine(1, 0, 1, size.y);
+	} else {
+		gc.setForeground(ColorConstants.buttonDarkest);
+		gc.drawLine(0, 0, size.x, 0);
+		gc.drawLine(0, SASH_WIDTH - 1, size.x, SASH_WIDTH - 1);
+		gc.setForeground(ColorConstants.buttonLightest);
+		gc.drawLine(0, 1, size.x, 1);
+	}
 }
 
 private void onDragSash(Event event) {
