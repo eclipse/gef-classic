@@ -1,15 +1,14 @@
 package org.eclipse.gef.ui.actions;
 
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IWorkbenchActionConstants;
+
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.commands.Command;
-import org.eclipse.gef.dnd.NativeTemplateTransfer;
+import org.eclipse.gef.dnd.TemplateTransfer;
 import org.eclipse.gef.internal.GEFMessages;
 import org.eclipse.gef.requests.CreateRequest;
-import org.eclipse.swt.dnd.Clipboard;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IWorkbenchActionConstants;
 
 /**
  * If the current object on the system clipboard is a template and the current viewer is
@@ -17,6 +16,8 @@ import org.eclipse.ui.IWorkbenchActionConstants;
  * @author Eric Bordeau
  */
 public abstract class PasteTemplateAction extends SelectionAction {
+
+public static final String defID = "org.eclipse.ui.edit.paste";
 
 private CreateRequest request;
 
@@ -44,8 +45,7 @@ protected Command createPasteCommand() {
 }
 
 protected Object getClipboardContents() {
-	Clipboard clipboard = new Clipboard(Display.getCurrent());
-	return clipboard.getContents(NativeTemplateTransfer.getInstance());
+	return TemplateTransfer.getInstance().getTemplate();
 }
 
 /**
@@ -62,6 +62,7 @@ protected abstract CreateRequest.Factory getFactory(Object template);
 protected void init() {
 	setId(IWorkbenchActionConstants.PASTE);
 	setText(GEFMessages.PasteAction_ActionLabelText);
+	setActionDefinitionId(defID);	
 }
 
 /**

@@ -1,25 +1,25 @@
 package org.eclipse.gef.ui.actions;
 
-import org.eclipse.gef.dnd.NativeTemplateTransfer;
-import org.eclipse.gef.internal.GEFMessages;
-import org.eclipse.gef.palette.PaletteEvent;
-import org.eclipse.gef.palette.PaletteListener;
-import org.eclipse.gef.palette.PaletteTemplateEntry;
-import org.eclipse.gef.ui.palette.PaletteViewer;
-import org.eclipse.swt.dnd.Clipboard;
-import org.eclipse.swt.dnd.Transfer;
-import org.eclipse.swt.widgets.Display;
+import java.util.List;
+
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchActionConstants;
+
+import org.eclipse.gef.dnd.TemplateTransfer;
+import org.eclipse.gef.internal.GEFMessages;
+import org.eclipse.gef.palette.PaletteTemplateEntry;
+import org.eclipse.gef.ui.palette.PaletteViewer;
+import org.eclipse.gef.ui.palette.TemplateEditPart;
 
 /**
  * Copies the currently selected template in the palatte to the system clipboard.
  * @author Eric Bordeau
  */
 public class CopyTemplateAction 
-	extends EditorPartAction
-	implements PaletteListener
+	extends SelectionAction
 {
+
+public static final String defID = "org.eclipse.ui.edit.copy";
 
 private PaletteTemplateEntry selectedEntry;
 
@@ -31,7 +31,6 @@ private PaletteTemplateEntry selectedEntry;
  */
 public CopyTemplateAction(IEditorPart editor, PaletteViewer viewer) {
 	super(editor);
-	viewer.addPaletteListener(this);
 }
 
 /**
@@ -60,14 +59,19 @@ public void dispose() {
 }
 
 /**
- * @see org.eclipse.gef.palette.PaletteListener#entrySelected(org.eclipse.gef.palette.PaletteEvent)
+ * @see org.eclipse.gef.ui.actions.SelectionAction#handleSelectionChanged()
  */
-public void entrySelected(PaletteEvent event) {
-	if (event.getEntry() instanceof PaletteTemplateEntry)
-		selectedEntry = (PaletteTemplateEntry)event.getEntry();
-	else 
-		selectedEntry = null;
-	refresh();
+protected void handleSelectionChanged() {
+	selectedEntry = null;
+	List sel = getSelectedObjects();
+	if (sel != null && sel.size() == 1) {
+		Object obj = sel.get(0);
+		if (obj instanceof TemplateEditPart) {
+			TemplateEditPart ep = (TemplateEditPart)obj;
+			selectedEntry = (PaletteTemplateEntry)ep.getModel();
+		}
+	}
+	super.handleSelectionChanged();
 }
 
 /**
@@ -76,16 +80,14 @@ public void entrySelected(PaletteEvent event) {
 protected void init() {
 	setId(IWorkbenchActionConstants.COPY);
 	setText(GEFMessages.CopyAction_ActionLabelText);
+	setActionDefinitionId(defID);
 }
 
 /**
  * @see org.eclipse.jface.action.Action#run()
  */
 public void run() {
-	Clipboard clipboard = new Clipboard(Display.getCurrent());
-	clipboard.setContents(new Object[] {selectedEntry.getTemplate()}, 
-							new Transfer[] {NativeTemplateTransfer.getInstance()});
-	clipboard.dispose();
+	TemplateTransfer.getInstance().setTemplate(selectedEntry.getTemplate());
 }
 
 }
