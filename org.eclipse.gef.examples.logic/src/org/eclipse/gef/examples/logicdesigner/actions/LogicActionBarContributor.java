@@ -6,19 +6,26 @@ package org.eclipse.gef.examples.logicdesigner.actions;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
+import org.eclipse.ui.*;
+import org.eclipse.ui.IPartListener;
 import org.eclipse.ui.IWorkbenchActionConstants;
-import org.eclipse.jface.action.IToolBarManager;
-import org.eclipse.jface.action.Separator;
+import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.jface.action.*;
 
 import org.eclipse.draw2d.PositionConstants;
 
+import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.ui.actions.*;
+import org.eclipse.gef.ui.parts.ScalableFreeformRootEditPart;
+import org.eclipse.gef.ui.parts.ZoomComboContributionItem;
 
 
 public class LogicActionBarContributor
 	extends org.eclipse.gef.ui.actions.ActionBarContributor
 {
-	
+
+private ZoomComboContributionItem zoomCombo;
+
 /**
  * @see org.eclipse.gef.ui.actions.ActionBarContributor#createActions()
  */
@@ -36,6 +43,11 @@ protected void buildActions() {
 	addRetargetAction(new AlignmentRetargetAction(PositionConstants.TOP));
 	addRetargetAction(new AlignmentRetargetAction(PositionConstants.MIDDLE));
 	addRetargetAction(new AlignmentRetargetAction(PositionConstants.BOTTOM));
+	
+	addRetargetAction(new ZoomInRetargetAction());
+	addRetargetAction(new ZoomOutRetargetAction());
+	
+	addRetargetAction(new DirectEditRetargetAction());
 }
 
 /**
@@ -64,7 +76,36 @@ public void contributeToToolBar(IToolBarManager tbm) {
 	tbm.add(getAction(GEFActionConstants.ALIGN_TOP));
 	tbm.add(getAction(GEFActionConstants.ALIGN_MIDDLE));
 	tbm.add(getAction(GEFActionConstants.ALIGN_BOTTOM));
+	
+	tbm.add(new Separator());
+	tbm.add(zoomCombo);
 }
 
+/**
+ * @see org.eclipse.ui.part.EditorActionBarContributor#contributeToMenu(IMenuManager)
+ */
+public void contributeToMenu(IMenuManager menubar) {
+	super.contributeToMenu(menubar);
+	MenuManager viewMenu = new MenuManager("View");
+	viewMenu.add(getAction(GEFActionConstants.ZOOM_IN));
+	viewMenu.add(getAction(GEFActionConstants.ZOOM_OUT));
+	menubar.insertAfter(IWorkbenchActionConstants.M_EDIT, viewMenu);
+}
+
+/**
+ * @see org.eclipse.gef.ui.actions.ActionBarContributor#dispose()
+ */
+public void dispose() {
+	super.dispose();
+	zoomCombo = null;
+}
+
+/**
+ * @see org.eclipse.gef.ui.actions.ActionBarContributor#init(IActionBars)
+ */
+public void init(IActionBars bars) {
+	zoomCombo = new ZoomComboContributionItem(getPage());
+	super.init(bars);
+}
 
 }
