@@ -43,7 +43,6 @@ import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.ui.actions.*;
 import org.eclipse.gef.ui.palette.PaletteContextMenuProvider;
 import org.eclipse.gef.ui.palette.PaletteViewer;
-import org.eclipse.gef.ui.paletteview.PaletteViewPage;
 import org.eclipse.gef.ui.parts.*;
 import org.eclipse.gef.ui.stackview.CommandStackInspectorPage;
 
@@ -432,24 +431,24 @@ public Object getAdapter(Class type){
 		outlinePage = new OutlinePage(new TreeViewer());
 		return outlinePage;
 	}
-	if (type == PaletteViewPage.class) {
-		return new PaletteViewPage() {
-			public void createControl(Composite parent) {
-				createPaletteViewer(parent);
-			}
-			public Object getAdapter(Class type) {
-				if (type == ZoomManager.class)
-					return getGraphicalViewer().getProperty(ZoomManager.class.toString());
-				return null;
-			}
-			public Control getControl() {
-				return getPaletteViewer().getControl();
-			}
-			public void setFocus() {
-				getControl().setFocus();
-			}
-		};
-	}
+//	if (type == PaletteViewPage.class) {
+//		return new PaletteViewPage() {
+//			public void createControl(Composite parent) {
+//				createPaletteViewer(parent);
+//			}
+//			public Object getAdapter(Class type) {
+//				if (type == ZoomManager.class)
+//					return getGraphicalViewer().getProperty(ZoomManager.class.toString());
+//				return null;
+//			}
+//			public Control getControl() {
+//				return getPaletteViewer().getControl();
+//			}
+//			public void setFocus() {
+//				getControl().setFocus();
+//			}
+//		};
+//	}
 	if (type == ZoomManager.class)
 		return getGraphicalViewer().getProperty(ZoomManager.class.toString());
 
