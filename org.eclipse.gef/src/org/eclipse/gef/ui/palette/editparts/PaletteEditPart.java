@@ -103,11 +103,9 @@ protected IFigure createToolTip() {
 	};
 	fp.setOpaque(true);
 	fp.setBorder(TOOLTIP_BORDER);
-	BlockFlow bf = new BlockFlow();
 	TextFlow tf = new TextFlow();
 	tf.setText(message);
-	bf.add(tf);
-	fp.add(bf);
+	fp.add(tf);
 	return fp;
 }
 
@@ -206,7 +204,6 @@ public List getModelChildren() {
 	if (prevVisibleEntry instanceof PaletteSeparator) 
 		modelChildren.remove(prevVisibleEntry);
 	
-	
 	return modelChildren;
 }
 
@@ -238,9 +235,8 @@ protected String getToolTipText() {
 			text = entry.getLabel();
 	} else {
 		if (needName)
-			text = entry.getLabel()
-				+ " " + PaletteMessages.NAME_DESCRIPTION_SEPARATOR //$NON-NLS-1$
-				+ " " + desc; //$NON-NLS-1$
+			text = entry.getLabel() + " " //$NON-NLS-1$
+					+ PaletteMessages.NAME_DESCRIPTION_SEPARATOR + " " + desc; //$NON-NLS-1$
 		else
 			text = desc;
 	}
@@ -251,7 +247,7 @@ protected String getToolTipText() {
 
 protected boolean nameNeededInToolTip() {
 	return getPreferenceSource().getLayoutSetting() 
-				== PaletteViewerPreferences.LAYOUT_ICONS;
+			== PaletteViewerPreferences.LAYOUT_ICONS;
 }
 
 /**
@@ -263,35 +259,30 @@ public void propertyChange(PropertyChangeEvent evt) {
 		traverseChildren((List)evt.getOldValue(), false);
 		refreshChildren();
 		traverseChildren((List)evt.getNewValue(), true);
-		
 	} else if (property.equals(PaletteEntry.PROPERTY_LABEL)
 			|| property.equals(PaletteEntry.PROPERTY_SMALL_ICON)
 			|| property.equals(PaletteEntry.PROPERTY_LARGE_ICON)
-			|| property.equals(PaletteEntry.PROPERTY_DESCRIPTION)) {
+			|| property.equals(PaletteEntry.PROPERTY_DESCRIPTION))
 		refreshVisuals();
-	}
 }
 
 public void restoreState(IMemento memento) {
 	Iterator iter = getChildren().iterator();
 	IMemento[] childMementos = memento.getChildren(XML_NAME);
 	int index = 0;
-	while (iter.hasNext()) {
+	while (iter.hasNext())
 		((PaletteEditPart)iter.next()).restoreState(childMementos[index++]);
-	}
 }
 
 public void saveState(IMemento memento) {
 	Iterator iter = getChildren().iterator();
-	while (iter.hasNext()) {
+	while (iter.hasNext())
 		((PaletteEditPart)iter.next()).saveState(memento.createChild(XML_NAME));
-	}
 }
 
 protected void setImageDescriptor(ImageDescriptor desc) {
-	if (desc == imgDescriptor) {
+	if (desc == imgDescriptor)
 		return;
-	}
 	imgDescriptor = desc;
 	setImageInFigure(getImageCache().getImage(imgDescriptor));
 }
@@ -299,9 +290,8 @@ protected void setImageDescriptor(ImageDescriptor desc) {
 protected void setImageInFigure(Image image) { }
 
 private void traverseChildren(PaletteEntry parent, boolean add) {
-	if (!(parent instanceof PaletteContainer)) {
+	if (!(parent instanceof PaletteContainer))
 		return;
-	}
 	PaletteContainer container = (PaletteContainer)parent;
 	traverseChildren(container.getChildren(), add);
 }
