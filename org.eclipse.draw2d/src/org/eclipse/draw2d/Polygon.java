@@ -9,7 +9,7 @@ package org.eclipse.draw2d;
 import java.util.List;
 
 /**
- * Draws a polygon which encloses all of its {@link Point Points}.
+ * Draws a polygon which encloses all of its {@link org.eclipse.draw2d.geometry.Point}s.
  */
 public class Polygon
 	extends Polyline

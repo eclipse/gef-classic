@@ -8,8 +8,9 @@ package org.eclipse.gef;
 
 /**
  * The listener interface for receiving basic events from an EditPart.
- * Listener interested in only one type of Event can extend the {@Stub Stub}
- * implementation rather than implementing the entire interface.
+ * Listeners interested in only one type of Event can extend the 
+ * {@link EditPartListener.Stub} implementation rather than implementing 
+ * the entire interface.
  */
 
 public interface EditPartListener {

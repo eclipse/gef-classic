@@ -766,7 +766,7 @@ protected void refreshVisuals(){
  * If your EditPart has a 1-to-1 relationship with a visual object and a
  * 1-to-1 relationship with a model object, the default implementation should
  * be sufficent.
- * @see #createConnection(Object)
+ *
  * @see #unregister()
  * @see EditPartViewer#getVisualPartMap()
  * @see EditPartViewer#getEditPartRegistry()

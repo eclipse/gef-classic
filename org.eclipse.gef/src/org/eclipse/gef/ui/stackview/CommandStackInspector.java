@@ -65,7 +65,7 @@ protected PageRec doCreatePage(IWorkbenchPart part) {
  * by the subclass to destroy a page for the given part.
  * </p>
  * @param part the input part
- * @rec a page record for the part
+ * @param rec a page record for the part
  */
 protected void doDestroyPage(IWorkbenchPart part, PageRec rec) {
 	IPage page= (IPage) rec.page;

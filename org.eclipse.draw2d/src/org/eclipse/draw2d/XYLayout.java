@@ -10,8 +10,8 @@ import java.util.*;
 import org.eclipse.draw2d.geometry.*;
 
 /**
- * This class implements the <pre>ILayoutManager</pre> interface 
- * using the XY Layout algorithm. This lays out the components 
+ * This class implements the {@link org.eclipse.draw2d.LayoutManager} 
+ * interface using the XY Layout algorithm. This lays out the components 
  * using the layout constraints as defined by each component.
  */
 public class XYLayout

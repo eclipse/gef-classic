@@ -79,8 +79,7 @@ public void dragEnter(DropTargetEvent event) {
 
 /**
  * Updates the DropData, handles the event, and then unloads the drag 
- * event.  Subclasses should override {@link #handleDragLeave()} to 
- * perform actions for this event.
+ * event.
  */
 public void dragLeave(DropTargetEvent event) {
 	if (GEF.DebugDND)
@@ -124,8 +123,7 @@ public void drop(DropTargetEvent event) {
 }
 
 /**
- * Updates the DropData and then handles the event.  Subclasses should 
- * override {@link #handleDropAccept()} to perform actions for this event.
+ * Updates the DropData and then handles the event.
  */
 public void dropAccept(DropTargetEvent event) {
 	if (GEF.DebugDND)

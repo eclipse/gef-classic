@@ -12,8 +12,8 @@ import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.tools.ConnectionEndpointTracker;
 
 /**
- * A handle used at the start of the {@link Connection}.  This is
- * treated differently than the end of the Connection.
+ * A handle used at the start of the {@link org.eclipse.draw2d.Connection}.  
+ * This is treated differently than the end of the Connection.
  */
 final public class ConnectionStartHandle
 	extends ConnectionHandle

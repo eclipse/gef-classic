@@ -38,7 +38,8 @@ public ConnectionHandle(boolean fixed) {
 }
 
 /**
- * Adds this as a {@link FigureListener} to the owner's {@link Figure}.
+ * Adds this as a {@link org.eclipse.draw2d.FigureListener} to the 
+ * owner's {@link org.eclipse.draw2d.Figure}.
  */
 public void addNotify() {
 	super.addNotify();

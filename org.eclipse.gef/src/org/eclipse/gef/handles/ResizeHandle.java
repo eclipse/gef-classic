@@ -27,7 +27,7 @@ private int cursorDirection = 0;
  * center of the owner figure.  For example, <code>SOUTH_EAST</code>
  * would place the handle in the lower-right corner of its
  * owner figure.  These direction constants can be found in
- * {@link PositionConstants}.
+ * {@link org.eclipse.draw2d.PositionConstants}.
  */
 public ResizeHandle(GraphicalEditPart owner, int direction){
 	setOwner(owner);

@@ -43,7 +43,7 @@ public NonResizableHandle(GraphicalEditPart owner, Locator loc) {
 }
 
 /**
- * Initializes the handle.  Sets the {@link DragTracker} and
+ * Initializes the handle.  Sets the {@link org.eclipse.gef.DragTracker} and
  * DragCursor.
  */
 protected void initialize() {
