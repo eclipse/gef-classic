@@ -15,6 +15,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.draw2d.geometry.PrecisionRectangle;
 
 import org.eclipse.gef.internal.GEFMessages;
+import org.eclipse.gef.internal.InternalImages;
 
 /** 
  * An action that matches the width of all selected EditPart's Figures to the width
@@ -32,6 +33,7 @@ public class MatchWidthAction
 public MatchWidthAction(IWorkbenchPart part) {
 	super(part);
 	setText(GEFMessages.MatchWidthAction_Label);
+	setHoverImageDescriptor(InternalImages.DESC_MATCH_WIDTH);
 	setToolTipText(GEFMessages.MatchWidthAction_Tooltip);
 	setId(GEFActionConstants.MATCH_WIDTH);
 }
