@@ -31,11 +31,13 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * path's start and end points. Once all paths have been found, they will be offset based
  * on how many paths bend around the same corner of each obstacle.
  * <P>
- * The worst-case performance of this algorithm is p * n^2, where p is the number of
- * paths, and n is the number of obstacles.
+ * The worst-case performance of this algorithm is p * s * n^2, where p is the number of
+ * paths, n is the number of obstacles, and s is the average number of segments in each 
+ * path's final solution.
  * <P>
  * This class is not intended to be subclassed.
  * @author Whitney Sorenson
+ * @author Randy Hudson
  * @since 3.0
  */
 public class ShortestPathRouter {
@@ -52,7 +54,6 @@ static class PathStack extends ArrayList {
 	void push(Path path) {
 		add(path);
 	}
-
 }
 
 /**
@@ -77,6 +78,8 @@ private List workingPaths;
  */
 public ShortestPathRouter() {
 	userPaths = new ArrayList();
+	workingPaths = new ArrayList();
+	pathsToChildPaths = new HashMap();
 	userObstacles = new ArrayList();
 }
 
@@ -96,6 +99,7 @@ public boolean addObstacle(Rectangle rect) {
  */
 public void addPath(Path path) {
 	userPaths.add(path);
+	workingPaths.add(path);
 }
 
 /**
@@ -129,7 +133,7 @@ private void bendPaths() {
  * @param vertex the vertex to check
  */
 private void checkVertexForIntersections(Vertex vertex) {
-	if (vertex.shortestDistance != 0 || vertex.shortestDistanceChecked)
+	if (vertex.nearestObstacle != 0 || vertex.nearestObstacleChecked)
 		return;
 	int sideLength, x, y;
 	
@@ -168,16 +172,16 @@ private void checkVertexForIntersections(Vertex vertex) {
 				//	 use left 
 				xDist = obs.x - vertex.x;
 		
-			if (Math.max(xDist, yDist) < vertex.shortestDistance 
-					|| vertex.shortestDistance == 0) {
-				vertex.shortestDistance = Math.max(xDist, yDist);
+			if (Math.max(xDist, yDist) < vertex.nearestObstacle 
+					|| vertex.nearestObstacle == 0) {
+				vertex.nearestObstacle = Math.max(xDist, yDist);
 				vertex.updateOffset();
 			}
 			
 		}
 	}
 	
-	vertex.shortestDistanceChecked = true;
+	vertex.nearestObstacleChecked = true;
 }
 
 /**
@@ -198,8 +202,8 @@ private void checkVertexIntersections() {
  * Frees up fields which aren't needed between invocations. 
  */
 private void cleanup() {
-	for (int i = 0; i < userPaths.size(); i++) {
-		Path path = (Path)userPaths.get(i);
+	for (int i = 0; i < workingPaths.size(); i++) {
+		Path path = (Path)workingPaths.get(i);
 		path.cleanup();
 	}
 }
@@ -232,7 +236,7 @@ private boolean dirtyPathsOn(Vertex vertex) {
 /**
  * Resyncs the parent paths with any new child paths that are necessary because bendpoints
  * have been added to the parent path.
- */
+ *
 private void generateChildPaths() {
 	for (int i = 0; i < userPaths.size(); i++) {
 		Path path = (Path)userPaths.get(i);
@@ -259,7 +263,7 @@ private void generateChildPaths() {
 		} else
 			workingPaths.add(path);
 	} //End FOR
-}
+}*/
 
 /**
  * Returns the closest vertex to the given segment.
@@ -318,12 +322,12 @@ private void growObstaclesPass() {
 	
 		if (path.grownSegments.size() == 0) {
 			for (int s = 0; s < path.segments.size(); s++)
-				testBentSegment((Segment)path.segments.get(s), -1, path);
+				testOffsetSegmentForIntersections((Segment)path.segments.get(s), -1, path);
 		} else {
 			int counter = 0;
 			List currentSegments = new ArrayList(path.grownSegments);
 			for (int s = 0; s < currentSegments.size(); s++)
-				counter += testBentSegment((Segment)currentSegments.get(s), s + counter, path);
+				counter += testOffsetSegmentForIntersections((Segment)currentSegments.get(s), s + counter, path);
 		}
 		
 		for (int e = 0; e < path.excludedObstacles.size(); e++)
@@ -342,7 +346,7 @@ private void growObstaclesPass() {
  */
 private boolean internalAddObstacle(Obstacle obs) {
 	userObstacles.add(obs);
-	return testPaths(obs);
+	return testAndDirtyPaths(obs);
 }
 
 /**
@@ -369,8 +373,8 @@ private boolean internalRemoveObstacle(Rectangle rect) {
 	result |= dirtyPathsOn(obs.bottomRight);
 	result |= dirtyPathsOn(obs.topRight);
 
-	for (int p = 0; p < userPaths.size(); p++) {
-		Path path = (Path)userPaths.get(p);
+	for (int p = 0; p < workingPaths.size(); p++) {
+		Path path = (Path)workingPaths.get(p);
 		if (path.isDirty)
 			continue;
 		if (path.isObstacleVisible(obs))
@@ -391,10 +395,7 @@ private void labelPath(Path path) {
 	Vertex vertex = null;
 	boolean agree = false;
 	for (int v = 0; v < path.grownSegments.size() - 1; v++) {
-		if (nextSegment != null)
-			segment = nextSegment;
-		else
-			segment = (Segment) path.grownSegments.get(v);
+		segment = (Segment) path.grownSegments.get(v);
 		nextSegment = (Segment) path.grownSegments.get(v + 1);
 		vertex = segment.end;
 		long crossProduct = segment.crossProduct(new Segment(vertex, vertex.obs.center));
@@ -410,7 +411,7 @@ private void labelPath(Path path) {
 				return;
 			} else {
 				path.isInverted = true;
-				path.resetVertices(segment);
+				path.invertPriorVertices(segment);
 			}
 		} else if (path.isInverted
 				&& ((crossProduct < 0 && vertex.type == Vertex.OUTIE)
@@ -497,14 +498,14 @@ private void orderPath(Path path) {
 	for (int v = 0; v < path.grownSegments.size() - 1; v++) {
 		segment = (Segment) path.grownSegments.get(v);
 		vertex = segment.end;
-		double thisAngle = ((Double)vertex.pathsToSegmentsMap.get(path)).doubleValue();
+		double thisAngle = ((Double)vertex.cachedCosines.get(path)).doubleValue();
 		if (path.isInverted)
 			thisAngle = -thisAngle;
 			
 		for (int i = 0; i < vertex.paths.size(); i++) {
 			Path vPath = (Path)vertex.paths.get(i);
 			if (!vPath.isMarked) {
-				double otherAngle = ((Double)vertex.pathsToSegmentsMap.get(vPath)).doubleValue();
+				double otherAngle = ((Double)vertex.cachedCosines.get(vPath)).doubleValue();
 				
 				if (vPath.isInverted)
 					otherAngle = -otherAngle;
@@ -590,6 +591,11 @@ public boolean removeObstacle(Rectangle rect) {
  */
 public boolean removePath(Path path) {
 	userPaths.remove(path);
+	List children = (List)pathsToChildPaths.get(path);
+	if (children == null)
+		workingPaths.remove(path);
+	else
+		workingPaths.removeAll(children);
 	return true;
 }
 
@@ -624,10 +630,6 @@ private void resetVertices() {
  */
 public List solve() {
 	
-	workingPaths = new ArrayList(userPaths.size());
-	pathsToChildPaths = new HashMap();
-	generateChildPaths();
-
 	solveDirtyPaths();
 	
 	countVertices();
@@ -648,9 +650,6 @@ public List solve() {
 	subPaths = null;
 	
 	recombineChildrenPaths();
-	pathsToChildPaths = null;
-	workingPaths = null;
-	
 	cleanup();
 	
 	return Collections.unmodifiableList(userPaths);
@@ -662,20 +661,38 @@ public List solve() {
  */
 private int solveDirtyPaths() {
 	int numSolved = 0;
-	boolean pathFoundCheck = false;
+	
+	for (int i = 0; i < userPaths.size(); i++) {
+		Path path = (Path)userPaths.get(i);
+		if (!path.isDirty)
+			continue;
+		List children = (List)pathsToChildPaths.get(path);
+		int prevCount = 1, newCount = 1;
+		if (children == null)
+			children = Collections.EMPTY_LIST;
+		else
+			prevCount = children.size();
+		
+		if (path.getBendPoints() != null)
+			newCount = path.getBendPoints().size() + 1;
+		
+		if (prevCount != newCount)
+			children = regenerateChildPaths(path, children, prevCount, newCount);
+		refreshChildrenEndpoints(path, children);
+	}
 	
 	for (int i = 0; i < workingPaths.size(); i++) {
 		Path path = (Path)workingPaths.get(i);
 		path.refreshExcludedObstacles(userObstacles);
 		if (!path.isDirty) {
-			path.reset();
+			path.resetPartial();
 			continue;
 		}
 		
 		numSolved++;		
 		path.fullReset();
 		
-		pathFoundCheck = path.generateShortestPath(userObstacles);
+		boolean pathFoundCheck = path.generateShortestPath(userObstacles);
 		if (!pathFoundCheck || path.end.cost > path.threshold) {
 			// path not found, or path found was too long
 			resetVertices();
@@ -691,8 +708,69 @@ private int solveDirtyPaths() {
 	
 	if (numSolved == 0)
 		resetVertices();
-	
+
 	return numSolved;
+}
+
+/**
+ * @since 3.0
+ * @param path
+ * @param children
+ */
+private void refreshChildrenEndpoints(Path path, List children) {
+	Point previous = path.getStartPoint();
+	Point next;
+	PointList bendpoints = path.getBendPoints();
+	Path child;
+	
+	for (int i = 0; i < children.size(); i++) {
+		if (i < bendpoints.size())
+			next = bendpoints.getPoint(i);
+		else
+			next = path.getEndPoint();
+		child = (Path)children.get(i);
+		child.setStartPoint(previous);
+		child.setEndPoint(next);
+		previous = next;
+	}
+}
+
+/**
+ * @since 3.0
+ * @param path
+ * @param children
+ */
+private List regenerateChildPaths(Path path, List children, int currentSize, int newSize) {
+	//Path used to be simple but now is compound, children is EMPTY.
+	if (currentSize == 1) {
+		workingPaths.remove(path);
+		currentSize = 0;
+		children = new ArrayList(newSize);
+		pathsToChildPaths.put(path, children);
+	} else
+	//Path is becoming simple but was compound.  children becomes empty.
+	if (newSize == 1) {
+		workingPaths.removeAll(children);
+		workingPaths.add(path);
+		pathsToChildPaths.remove(path);
+		return Collections.EMPTY_LIST;
+	}
+
+	//Add new working paths until the sizes are the same
+	while (currentSize < newSize) {
+		Path child = new Path();
+		workingPaths.add(child);
+		children.add(child);
+		currentSize++;
+	}
+	
+	while (currentSize > newSize) {
+		Path child = (Path)children.remove(children.size() - 1);
+		workingPaths.remove(child);
+		currentSize--;
+	}
+	
+	return children;
 }
 
 /**
@@ -702,7 +780,7 @@ private int solveDirtyPaths() {
  * @param path the path
  * @return 1 if new segments have been inserted
  */
-private int testBentSegment(Segment segment, int index, Path path) {
+private int testOffsetSegmentForIntersections(Segment segment, int index, Path path) {
 	for (int i = 0; i < userObstacles.size(); i++) {
 		Obstacle obs = (Obstacle) userObstacles.get(i);
 		
@@ -751,13 +829,13 @@ private int testBentSegment(Segment segment, int index, Path path) {
 			Segment newSegmentEnd = new Segment(vertex, segment.end);
 			
 			vertex.totalCount++;
-			vertex.shortestDistanceChecked = false;
+			vertex.nearestObstacleChecked = false;
 			
 			vertex.shrink();
 			checkVertexForIntersections(vertex);
 			vertex.grow();
 			
-			if (vertex.shortestDistance != 0)
+			if (vertex.nearestObstacle != 0)
 				vertex.updateOffset();
 		
 			growPassChangedObstacles = true;
@@ -782,11 +860,11 @@ private int testBentSegment(Segment segment, int index, Path path) {
  * Tests all paths against the given obstacle
  * @param obs the obstacle
  */
-private boolean testPaths(Obstacle obs) {
+private boolean testAndDirtyPaths(Obstacle obs) {
 	boolean result = false;
-	for (int i = 0; i < userPaths.size(); i++) {
-		Path path = (Path)userPaths.get(i);
-		result |= path.testObstacle(obs);
+	for (int i = 0; i < workingPaths.size(); i++) {
+		Path path = (Path)workingPaths.get(i);
+		result |= path.testAndSet(obs);
 	}
 	return result;
 }

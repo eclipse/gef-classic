@@ -48,15 +48,15 @@ Vertex label;
 double cost = 0;
 
 // for routing
-double shortestDistance = 0;
+double nearestObstacle = 0;
 double offset = 0;
 int type = NOT_SET;
 int count = 0;
 int totalCount = 0;
 Obstacle obs;
 List paths;
-boolean shortestDistanceChecked = false;
-Map pathsToSegmentsMap;
+boolean nearestObstacleChecked = false;
+Map cachedCosines;
 int positionOnObstacle = -1;
 
 private int origX, origY;
@@ -95,11 +95,11 @@ Vertex(Point p, Obstacle obs) {
 void addPath(Path path, Segment start, Segment end) {
 	if (paths == null) {
 		paths = new ArrayList();
-		pathsToSegmentsMap = new HashMap();
+		cachedCosines = new HashMap();
 	}
 	if (!paths.contains(path))
 		paths.add(path);
-	pathsToSegmentsMap.put(path, new Double(start.cosine(end)));
+	cachedCosines.put(path, new Double(start.cosine(end)));
 }
 
 /**
@@ -131,14 +131,14 @@ void fullReset() {
 	count = 0;
 	cost = 0;
 	offset = BEND_OFFSET;
-	shortestDistance = 0;
+	nearestObstacle = 0;
 	label = null;
-	shortestDistanceChecked = false;
+	nearestObstacleChecked = false;
 	isPermanent = false;		
 	if (neighbors != null)
 		neighbors.clear();
-	if (pathsToSegmentsMap != null)
-		pathsToSegmentsMap.clear();
+	if (cachedCosines != null)
+		cachedCosines.clear();
 	if (paths != null) 
 		paths.clear();
 }
@@ -177,10 +177,10 @@ Rectangle getDeformedRectangle(int extraOffset) {
 void grow() {
 	int modifier;
 	
-	if (shortestDistance == 0)
+	if (nearestObstacle == 0)
 		modifier = totalCount * BEND_OFFSET;
 	else
-		modifier = (int)(shortestDistance / 2) - 1;
+		modifier = (int)(nearestObstacle / 2) - 1;
 	
 	if ((positionOnObstacle & PositionConstants.NORTH) > 0)
 		y -= modifier;
@@ -204,8 +204,8 @@ void shrink() {
  * Updates the offset of this vertex based on its shortest distance.
  */
 void updateOffset() {
-	if (shortestDistance != 0)
-		offset = ((shortestDistance / 2) - 1) / totalCount;
+	if (nearestObstacle != 0)
+		offset = ((nearestObstacle / 2) - 1) / totalCount;
 }
 
 }

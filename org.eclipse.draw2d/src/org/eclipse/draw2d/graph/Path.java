@@ -49,7 +49,10 @@ void push(Object obj) {
 }
 
 }
+
+private static final Point CURRENT = new Point();
 private static final double EPSILON = 1.04;
+private static final Point NEXT = new Point();
 
 private static final double OVAL_CONSTANT = 1.13;
 
@@ -58,28 +61,35 @@ private static final double OVAL_CONSTANT = 1.13;
  */
 public Object data;
 
-private static final Point CURRENT = new Point();
-private static final Point NEXT = new Point();
+List grownSegments;
+List segments;
+List excludedObstacles;
 
-private double distance;
-List grownSegments, segments, excludedObstacles;
 /**
  * this field is for internal use only.  It is true whenever a property has been changed
- * which requires the solver to reroute this path.
+ * which requires the solver to resolve this path.
  */
 public boolean isDirty = true;
 boolean isInverted = false;
 boolean isMarked = false;
 
-PointList points, bendpoints;
-private double prevCost;
+PointList points;
+/**
+ * The bendpoint constraints.  The path must go through these bendpoints.
+ */
+PointList bendpoints;
+
+/**
+ * The previous cost ratio of the path.  The cost ratio is the actual path length divided
+ * by the length from the start to the end. 
+ */
+private double prevCostRatio;
 private SegmentStack stack;
 Vertex start, end;
 private Path subPath;
 double threshold;
 Set visibleObstacles;
 Set visibleVertices;
-
 
 /**
  * Constructs a new path.
@@ -257,13 +267,13 @@ private void addSegmentsFor(Obstacle source, Obstacle target) {
 	if (source.intersects(target))
 		addAllSegmentsBetween(source, target);
 	else if (target.bottom() - 1 < source.y)
-		targetAboveSource(source, target);
+		addSegmentsTargetAboveSource(source, target);
 	else if (source.bottom() - 1 < target.y)
-		targetAboveSource(target, source);
+		addSegmentsTargetAboveSource(target, source);
 	else if (target.right() - 1 < source.x)
-		targetBesideSource(source, target);
+		addSegmentsTargetBesideSource(source, target);
 	else
-		targetBesideSource(target, source);
+		addSegmentsTargetBesideSource(target, source);
 }
 
 /**
@@ -312,6 +322,103 @@ private void addSegmentsFor(Vertex vertex, Obstacle obs) {
 	stack.push(seg2);
 }
 
+private void addSegmentsTargetAboveSource(Obstacle source, Obstacle target) {
+	//target located above source
+	Segment seg = null;
+	Segment seg2 = null;
+	if (target.x > source.x) {
+		seg = new Segment(source.topLeft, target.topLeft);
+		if (target.x < source.right() - 1)
+			seg2 = new Segment(source.topRight, target.bottomLeft);
+		else
+			seg2 = new Segment(source.bottomRight, target.topLeft);		
+	} else if (source.x == target.x) {
+		seg = new Segment(source.topLeft, target.bottomLeft);
+		seg2 = new Segment(source.topRight, target.bottomLeft);
+	} else {
+		seg = new Segment(source.bottomLeft, target.bottomLeft);
+		seg2 = new Segment(source.topRight, target.bottomLeft);
+	}
+	
+	stack.push(source);
+	stack.push(target);
+	stack.push(seg);
+	stack.push(source);
+	stack.push(target);
+	stack.push(seg2);
+	seg = null;
+	seg2 = null;
+	
+	if (target.right() < source.right()) {
+		seg = new Segment(source.topRight, target.topRight);
+		if (target.right() - 1 > source.x)
+			seg2 = new Segment(source.topLeft, target.bottomRight);
+		else
+			seg2 = new Segment(source.bottomLeft, target.topRight);
+	} else if (source.right() == target.right()) {
+		seg = new Segment(source.topRight, target.bottomRight);
+		seg2 = new Segment(source.topLeft, target.bottomRight);
+	} else {
+		seg = new Segment(source.bottomRight, target.bottomRight);
+		seg2 = new Segment(source.topLeft, target.bottomRight);
+	}	
+
+	stack.push(source);
+	stack.push(target);
+	stack.push(seg);
+	stack.push(source);
+	stack.push(target);
+	stack.push(seg2);
+}
+
+private void addSegmentsTargetBesideSource(Obstacle source, Obstacle target) {
+	//target located above source
+	Segment seg = null;
+	Segment seg2 = null;
+	if (target.y > source.y) {
+		seg = new Segment(source.topLeft, target.topLeft);
+		if (target.y < source.bottom() - 1)
+			seg2 = new Segment(source.bottomLeft, target.topRight);
+		else
+			seg2 = new Segment(source.bottomRight, target.topLeft);
+	} else if (source.y == target.y) {
+		//degenerate case
+		seg = new Segment(source.topLeft, target.topRight);
+		seg2 = new Segment(source.bottomLeft, target.topRight);
+	} else {
+		seg = new Segment(source.topRight, target.topRight);
+		seg2 = new Segment(source.bottomLeft, target.topRight);	
+	}
+	stack.push(source);
+	stack.push(target);
+	stack.push(seg);
+	stack.push(source);
+	stack.push(target);
+	stack.push(seg2);
+	seg = null;
+	seg2 = null;
+	
+	if (target.bottom() < source.bottom()) {
+		seg = new Segment(source.bottomLeft, target.bottomLeft);
+		if (target.bottom() - 1 > source.y)
+			seg2 = new Segment(source.topLeft, target.bottomRight);
+		else
+			seg2 = new Segment(source.topRight, target.bottomLeft);
+	} else if (source.bottom() == target.bottom()) {
+		seg = new Segment(source.bottomLeft, target.bottomRight);
+		seg2 = new Segment(source.topLeft, target.bottomRight);
+	} else {
+		seg = new Segment(source.bottomRight, target.bottomRight);
+		seg2 = new Segment(source.topLeft, target.bottomRight);
+	}
+	stack.push(source);
+	stack.push(target);
+	stack.push(seg);
+	stack.push(source);
+	stack.push(target);
+	stack.push(seg2);
+}
+
 /**
  * 
  */
@@ -343,7 +450,7 @@ private boolean determineShortestPath() {
 	if (!labelGraph())
 		return false;
 	Vertex vertex = end;
-	prevCost = end.cost;
+	prevCostRatio = end.cost / start.getDistance(end);
 	
 	Vertex nextVertex;
 	while (!vertex.equals(start)) {
@@ -365,13 +472,13 @@ private boolean determineShortestPath() {
 void fullReset() {
 	visibleVertices.clear();
 	segments.clear();
-	if (prevCost == 0) {
-		distance = start.getDistance(end);
+	if (prevCostRatio == 0) {
+		double distance = start.getDistance(end);
 		threshold = distance * OVAL_CONSTANT;
 	} else
-		threshold = prevCost * EPSILON;
+		threshold = prevCostRatio * EPSILON * start.getDistance(end);
 	visibleObstacles.clear();
-	reset();
+	resetPartial();
 }
 
 /**
@@ -391,9 +498,10 @@ boolean generateShortestPath(List allObstacles) {
 }
 
 /**
- * Returns the list of constrained points through which this path must pass.  See also
- * {@link #setBendPoints(PointList)}.
- * @return list of bend points.
+ * Returns the list of constrained points through which this path must pass or
+ * <code>null</code>.  
+ * @see #setBendPoints(PointList)
+ * @return list of bend points
  */
 public PointList getBendPoints() {
 	return bendpoints;
@@ -563,7 +671,7 @@ void refreshExcludedObstacles(List allObstacles) {
 /**
  * Resets the fields for everything in the solve after the visibility graph steps.
  */
-void reset() {
+void resetPartial() {
 	isMarked = false;
 	isInverted = false;
 	subPath = null;
@@ -579,7 +687,7 @@ void reset() {
  * before it knew it was inverted.
  * @param currentSegment the segment at which the path found it was inverted
  */
-void resetVertices(Segment currentSegment) {
+void invertPriorVertices(Segment currentSegment) {
 	int stop = grownSegments.indexOf(currentSegment);
 	for (int i = 0; i < stop; i++) {
 		Vertex vertex = ((Segment)grownSegments.get(i)).end;
@@ -621,111 +729,16 @@ public void setStartPoint(Point start) {
 	isDirty = true;
 }
 
-private void targetAboveSource(Obstacle source, Obstacle target) {
-	//target located above source
-	Segment seg = null;
-	Segment seg2 = null;
-	if (target.x > source.x) {
-		seg = new Segment(source.topLeft, target.topLeft);
-		if (target.x < source.right() - 1)
-			seg2 = new Segment(source.topRight, target.bottomLeft);
-		else
-			seg2 = new Segment(source.bottomRight, target.topLeft);		
-	} else if (source.x == target.x) {
-		seg = new Segment(source.topLeft, target.bottomLeft);
-		seg2 = new Segment(source.topRight, target.bottomLeft);
-	} else {
-		seg = new Segment(source.bottomLeft, target.bottomLeft);
-		seg2 = new Segment(source.topRight, target.bottomLeft);
-	}
-	
-	stack.push(source);
-	stack.push(target);
-	stack.push(seg);
-	stack.push(source);
-	stack.push(target);
-	stack.push(seg2);
-	seg = null;
-	seg2 = null;
-	
-	if (target.right() < source.right()) {
-		seg = new Segment(source.topRight, target.topRight);
-		if (target.right() - 1 > source.x)
-			seg2 = new Segment(source.topLeft, target.bottomRight);
-		else
-			seg2 = new Segment(source.bottomLeft, target.topRight);
-	} else if (source.right() == target.right()) {
-		seg = new Segment(source.topRight, target.bottomRight);
-		seg2 = new Segment(source.topLeft, target.bottomRight);
-	} else {
-		seg = new Segment(source.bottomRight, target.bottomRight);
-		seg2 = new Segment(source.topLeft, target.bottomRight);
-	}	
-
-	stack.push(source);
-	stack.push(target);
-	stack.push(seg);
-	stack.push(source);
-	stack.push(target);
-	stack.push(seg2);
-}
-
-private void targetBesideSource(Obstacle source, Obstacle target) {
-	//target located above source
-	Segment seg = null;
-	Segment seg2 = null;
-	if (target.y > source.y) {
-		seg = new Segment(source.topLeft, target.topLeft);
-		if (target.y < source.bottom() - 1)
-			seg2 = new Segment(source.bottomLeft, target.topRight);
-		else
-			seg2 = new Segment(source.bottomRight, target.topLeft);
-	} else if (source.y == target.y) {
-		//degenerate case
-		seg = new Segment(source.topLeft, target.topRight);
-		seg2 = new Segment(source.bottomLeft, target.topRight);
-	} else {
-		seg = new Segment(source.topRight, target.topRight);
-		seg2 = new Segment(source.bottomLeft, target.topRight);	
-	}
-	stack.push(source);
-	stack.push(target);
-	stack.push(seg);
-	stack.push(source);
-	stack.push(target);
-	stack.push(seg2);
-	seg = null;
-	seg2 = null;
-	
-	if (target.bottom() < source.bottom()) {
-		seg = new Segment(source.bottomLeft, target.bottomLeft);
-		if (target.bottom() - 1 > source.y)
-			seg2 = new Segment(source.topLeft, target.bottomRight);
-		else
-			seg2 = new Segment(source.topRight, target.bottomLeft);
-	} else if (source.bottom() == target.bottom()) {
-		seg = new Segment(source.bottomLeft, target.bottomRight);
-		seg2 = new Segment(source.topLeft, target.bottomRight);
-	} else {
-		seg = new Segment(source.bottomRight, target.bottomRight);
-		seg2 = new Segment(source.topLeft, target.bottomRight);
-	}
-	stack.push(source);
-	stack.push(target);
-	stack.push(seg);
-	stack.push(source);
-	stack.push(target);
-	stack.push(seg2);
-}
-
 /**
- * Returns <code>true</code> if the path intersects the given obstacle.  Also dirties
- * the path.
+ * Returns <code>true</code> if the path is clean and intersects the given obstacle. Also
+ * dirties the path in the process.
  * @since 3.0
  * @param obs the obstacle
- * @return <code>true</code> if the path touches the obstacle
+ * @return <code>true</code> if a clean path touches the obstacle
  */
- boolean testObstacle(Obstacle obs) {
+ boolean testAndSet(Obstacle obs) {
+ 	if (isDirty)
+ 		return false;
  	//This will never actually happen because obstacles are not stored by identity
 	if (excludedObstacles.contains(obs))
 		return false;
