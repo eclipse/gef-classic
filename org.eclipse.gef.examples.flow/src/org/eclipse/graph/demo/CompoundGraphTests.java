@@ -89,6 +89,126 @@ public static CompoundDirectedGraph chains() {
 	return graph;
 }
 
+public static CompoundDirectedGraph flowChart() {
+	NodeList nodes = new NodeList();
+	EdgeList edges = new EdgeList();
+	
+	Subgraph diagram, s1, s2, s3, s4, s5, s6, s7, s8;	
+	
+	nodes.add(diagram = new Subgraph("diagram"));
+	
+	nodes.add(s1 = new Subgraph("s1", diagram));
+	nodes.add(s2 = new Subgraph("s2", s1));
+	nodes.add(s3 = new Subgraph("s3", s1));
+	nodes.add(s4 = new Subgraph("s4", s1));
+	nodes.add(s5 = new Subgraph("s5", s1));
+	nodes.add(s6 = new Subgraph("s6", s1));
+	nodes.add(s7 = new Subgraph("s7", s1));
+	nodes.add(s8 = new Subgraph("s8", s1));
+	
+	Node outer1, outer2, outer3;
+	nodes.add(outer1 = new Node("asdf", diagram));
+	nodes.add(outer2 = new Node("asfasdf", diagram));
+	nodes.add(outer3 = new Node("a3", diagram));
+
+	edges.add(new Edge(s3, s6));
+	edges.add(new Edge(s4, s7));
+	edges.add(new Edge(s6, s8));
+	
+	edges.add(new Edge(outer1, outer3));	
+	edges.add(new Edge(outer3, s1));
+	edges.add(new Edge(outer2, s1));
+	
+	Node s2a, s2b, s2c;
+	nodes.add(s2a = new Node("BMW", s2));
+	nodes.add(s2b = new Node("Hawking", s2));
+	nodes.add(s2c = new Node("Smurfy", s2));
+	edges.add(new Edge(s2a, s2b));
+	edges.add(new Edge(s2a, s2c));	
+	
+	Node s3a, s3b;
+	nodes.add(s3a = new Node("Jammin", s3));
+	nodes.add(s3b = new Node("This is it", s3));
+	edges.add(new Edge(s3a, s3b));
+	
+	nodes.add(new Node("catDog", s4));
+	Node s5a, s5b;
+	nodes.add(s5a = new Node("a1", s5));
+	nodes.add(s5b = new Node("a2", s5));
+	edges.add(new Edge(s5a, s5b));
+	
+	Node s6a, s6b, s6c;
+	nodes.add(s6a = new Node("Hoop it up", s6));
+	nodes.add(s6b = new Node("Streeball", s6));
+	nodes.add(s6c = new Node("Downtown", s6));
+	edges.add(new Edge(s6b, s6c));
+	edges.add(new Edge(s6a, s6b));
+	
+	Node s7a, s7b;
+	nodes.add(s7a = new Node("Thing 1", s7));
+	nodes.add(s7b = new Node("Thing 2", s7));
+	edges.add(new Edge(s7a, s7b));
+	
+	Node s8a, s8b, s8c, s8d, s8e;
+	nodes.add(s8a = new Node("a1", s8));
+	nodes.add(s8b = new Node("a2", s8));
+	nodes.add(s8c = new Node("a3", s8));
+	nodes.add(s8d = new Node("a4", s8));
+	nodes.add(s8e = new Node("a5", s8));
+	edges.add(new Edge(s8a, s8c));
+	edges.add(new Edge(s8a, s8d));
+	edges.add(new Edge(s8b, s8c));
+	edges.add(new Edge(s8b, s8e));
+	edges.add(new Edge(s8c, s8e));
+	
+	Node inner1, inner2, inner3, inner4, inner5, inner6, inner7, inner8, inner9, 
+		 inner10, inner11, inner12, inner13, inner14, inner15, inner16; 
+
+	nodes.add(inner1 = new Node("buckyball", s1));
+	nodes.add(inner2 = new Node("d", s1));
+	nodes.add(inner3 = new Node("cheese", s1));
+	nodes.add(inner4 = new Node("dingleberry", s1));
+	nodes.add(inner5 = new Node("dinosaur", s1));
+	nodes.add(inner6 = new Node("foobar", s1));
+	nodes.add(inner7 = new Node("t30", s1));
+	nodes.add(inner8 = new Node("a21", s1));
+	nodes.add(inner9 = new Node("katarina", s1));
+	nodes.add(inner10 = new Node("zig zag", s1));
+	nodes.add(inner11 = new Node("a16", s1));
+	nodes.add(inner12 = new Node("a23", s1));
+	nodes.add(inner13 = new Node("a17", s1));
+	nodes.add(inner14 = new Node("a20", s1));
+	nodes.add(inner15 = new Node("a19", s1));
+	nodes.add(inner16 = new Node("a24", s1));
+	edges.add(new Edge(inner1, inner3));
+	edges.add(new Edge(inner2, inner4));
+	edges.add(new Edge(inner2, inner3));
+	edges.add(new Edge(inner3, inner5));
+	edges.add(new Edge(inner4, inner5));
+	edges.add(new Edge(inner4, inner6));
+	edges.add(new Edge(inner6, s6));
+	edges.add(new Edge(inner5, inner7));
+	edges.add(new Edge(inner7, inner8));
+	edges.add(new Edge(inner8, s5));
+	edges.add(new Edge(s3, inner9));	
+	edges.add(new Edge(s4, inner9));
+	edges.add(new Edge(inner9, inner10));
+	edges.add(new Edge(s7, inner11));	
+	edges.add(new Edge(s7, inner12));	
+	edges.add(new Edge(inner11, inner13));
+	edges.add(new Edge(inner11, inner14));
+	edges.add(new Edge(inner11, inner15));
+	edges.add(new Edge(inner12, inner15));	
+	edges.add(new Edge(inner12, inner16));
+
+	CompoundDirectedGraph graph = new CompoundDirectedGraph();
+	graph.nodes = nodes;
+	graph.edges = edges;
+	
+	new CompoundDirectedGraphLayout()
+		.visit(graph);
+	return graph;
+}
 
 public static CompoundDirectedGraph flowEditor1() {
 	Subgraph diagram, flow;
