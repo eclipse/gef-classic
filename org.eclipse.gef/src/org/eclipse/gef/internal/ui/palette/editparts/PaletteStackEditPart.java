@@ -62,23 +62,6 @@ public class PaletteStackEditPart
 	
 private static final Dimension EMPTY_DIMENSION = new Dimension(0, 0);
 
-// listen to changes in palette layout.
-private PropertyChangeListener paletteLayoutListener = new PropertyChangeListener() {
-	public void propertyChange(PropertyChangeEvent event) {
-		if (event.getPropertyName().equals(PaletteViewerPreferences.PREFERENCE_LAYOUT)) {
-			int newLayoutMode = ((Integer)event.getNewValue()).intValue();
-			if (newLayoutMode == PaletteViewerPreferences.LAYOUT_LIST
-					|| newLayoutMode == PaletteViewerPreferences.LAYOUT_DETAILS) {
-				if (!getFigure().getChildren().contains(arrowFigure))
-					getFigure().add(arrowFigure, BorderLayout.RIGHT);
-			} else {
-				if (getFigure().getChildren().contains(arrowFigure))
-					getFigure().remove(arrowFigure);
-			}
-		}
-	}
-};
-
 // listen to changes in stack
 private PropertyChangeListener stackListener = new PropertyChangeListener() {
 	public void propertyChange(PropertyChangeEvent event) {
@@ -149,7 +132,6 @@ public void activate() {
 	// in case the model is out of sync
 	checkActiveEntrySync();
 	getPaletteViewer().addPaletteListener(paletteListener);
-	getPaletteViewer().getPaletteViewerPreferences().addPropertyChangeListener(paletteLayoutListener);
 	super.activate();
 }
 
@@ -259,8 +241,6 @@ public void deactivate() {
 	arrowFigure.removeChangeListener(clickableArrowListener);
 	getStack().removePropertyChangeListener(stackListener);
 	getPaletteViewer().removePaletteListener(paletteListener);
-	getPaletteViewer().getPaletteViewerPreferences().removePropertyChangeListener(paletteLayoutListener);
-	
 	super.deactivate();
 }
 
@@ -320,9 +300,7 @@ public void openMenu() {
 	eraseTargetFeedback(new Request(RequestConstants.REQ_SELECTION));
 	
 	menu.setLocation(menuLocation);
-
 	menu.addMenuListener(new StackMenuListener(menu, getViewer().getControl().getDisplay()));
-	
 	menu.setVisible(true);
 }
 
@@ -331,16 +309,27 @@ public void openMenu() {
  */
 protected void refreshChildren() {
 	super.refreshChildren();
-
 	Iterator children = getChildren().iterator();
-	
 	while (children.hasNext()) {
 		PaletteEditPart editPart = (PaletteEditPart)children.next();
-		
 		if (!editPart.getFigure().equals(activeFigure))
 			editPart.getFigure().setVisible(false);
 	}
+}
 
+/**
+ * @see org.eclipse.gef.editparts.AbstractEditPart#refreshVisuals()
+ */
+protected void refreshVisuals() {
+	int layoutMode = getPreferenceSource().getLayoutSetting();
+	if (layoutMode == PaletteViewerPreferences.LAYOUT_LIST
+			|| layoutMode == PaletteViewerPreferences.LAYOUT_DETAILS) {
+		if (!getFigure().getChildren().contains(arrowFigure))
+			getFigure().add(arrowFigure, BorderLayout.RIGHT);
+	} else {
+		if (getFigure().getChildren().contains(arrowFigure))
+			getFigure().remove(arrowFigure);
+	}
 }
 
 /**
