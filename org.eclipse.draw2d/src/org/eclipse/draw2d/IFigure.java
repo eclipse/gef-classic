@@ -640,7 +640,9 @@ void repaint(Rectangle rect);
 void requestFocus();
 
 /**
- * Revalidates this IFigure.
+ * Invalidates this figure and revalidates() its parent.  If a figure does not have a
+ * parent, it will request a validation from it UpdateManager. Calling this method does
+ * not guarantee that a repaint will occur.
  */
 void revalidate();
 
