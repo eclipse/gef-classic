@@ -62,7 +62,6 @@ private Point computeWindowLocation(IFigure tip, int eventX, int eventY){
 	Point preferredLocation = new Point(eventX,eventY + 26);
 	
 	Dimension tipSize = getLightweightSystem().getRootFigure().getPreferredSize();
-	tip.setSize(tipSize.width,tipSize.height);
 	
 	// Adjust location if tip is going to fall outside display
 	if( preferredLocation.y + tipSize.height > clientArea.height )  
@@ -95,7 +94,7 @@ public void displayToolTipNear(IFigure hoverSource, IFigure tip, int eventX, int
 	if(tip != null && hoverSource != currentTipSource){
 		getLightweightSystem().setContents(tip);
 		Point displayPoint = computeWindowLocation(tip, eventX, eventY);
-		Dimension tipSize = tip.getSize();
+		Dimension tipSize = getLightweightSystem().getRootFigure().getPreferredSize();
 		setShellBounds(displayPoint.x, displayPoint.y, tipSize.width, tipSize.height);
 		show();
 		currentTipSource = hoverSource;
