@@ -60,9 +60,8 @@ public Dimension getMinimumSize(IFigure container){
  * is called.
  */
 public Dimension getPreferredSize(IFigure container, int wHint, int hHint) {
-	if (preferredSize == null){
+	if (preferredSize == null)
 		preferredSize = calculatePreferredSize(container, wHint, hHint);
-	}
 	return preferredSize;
 }
 

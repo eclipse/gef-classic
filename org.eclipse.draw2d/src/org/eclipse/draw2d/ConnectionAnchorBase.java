@@ -14,17 +14,20 @@ import java.util.*;
  * It holds listeners and notifies them if the anchor
  * is moved.
  */
-abstract public class ConnectionAnchorBase
+public abstract class ConnectionAnchorBase
 	implements ConnectionAnchor
 {
 
+/**
+ * The list of listeners
+ */
 protected List listeners = new ArrayList(1);
 
-public void addAnchorListener(AnchorListener listener){
+public void addAnchorListener(AnchorListener listener) {
 	listeners.add(listener);
 }
 
-public void removeAnchorListener(AnchorListener listener){
+public void removeAnchorListener(AnchorListener listener) {
 	listeners.remove(listener);
 }
 

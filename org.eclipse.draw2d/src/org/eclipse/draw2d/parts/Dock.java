@@ -69,7 +69,7 @@ public Dock(){
 	addMouseListener(new MouseListener.Stub(){
 		public void mousePressed(MouseEvent me){
 			requestFocus();
-			if(contents.getParent() == Dock.this)
+			if (contents.getParent() == Dock.this)
 				minimizeDockIfMaximized();
 			else
 				maximizeDockIfMinimized();
@@ -109,7 +109,7 @@ void animate(){
 					animation = null;
 			} while (loop);
 			oldSize = null;		
-			if(isCollapsing){
+			if (isCollapsing){
 				Display.getDefault().syncExec(new Runnable(){
 					public void run(){	
 						remove(contents);
@@ -123,13 +123,13 @@ void animate(){
 	}).start();
 }
 
-Dimension calculatePreferredSize(){
+Dimension calculatePreferredSize(int wHint, int hHint){
 	Dimension result = new Dimension();
 	List children = getChildren();
 	if (! isCollapsing)
 		for(int i = 0; i < children.size(); i++){
 			IFigure child = (IFigure)children.get(i);
-			result.union(child.getPreferredSize());
+			result.union(child.getPreferredSize(wHint, hHint));
 		}
 	Dimension borderSize = ((AbstractLabeledBorder)getBorder()).getPreferredSize(this);
 	result.width = Math.max(result.width, borderSize.width);
@@ -143,7 +143,7 @@ public boolean containsPoint(int x, int y){
 }
 
 public IFigure findMouseEventTargetAt(int x, int y){
-	if(((TabBorder)getBorder()).containsPoint(x, y))
+	if (((TabBorder)getBorder()).containsPoint(x, y))
 		return this;
 	else
 		return super.findMouseEventTargetAt(x, y);
@@ -153,11 +153,11 @@ public IFigure getHost(){
 	return host;
 }
 
-public Dimension getPreferredSize(){
+public Dimension getPreferredSize(int wHint, int hHint){
 	if (animation == null)
-		return calculatePreferredSize();
+		return calculatePreferredSize(wHint, hHint);
 	float value = animation.getValue();
-	Dimension size = new Dimension(calculatePreferredSize());
+	Dimension size = new Dimension(calculatePreferredSize(wHint, hHint));
 	size.width = Math.max(size.width, oldSize.width);
 	size.height *= value;
 	size.height += oldSize.height * (1.0f-value);
@@ -165,7 +165,7 @@ public Dimension getPreferredSize(){
 }
 
 void maximizeDockIfMinimized(){
-	if(contents.getParent() != Dock.this){
+	if (contents.getParent() != Dock.this){
 		oldSize = getPreferredSize();
 		setCursor(Cursors.APPSTARTING);
 		add(contents);
@@ -185,7 +185,7 @@ void maximizeDockIfMinimized(){
 }
 
 void minimizeDockIfMaximized(){
-	if(contents.getParent() == Dock.this){
+	if (contents.getParent() == Dock.this){
 		oldSize = getPreferredSize();
 		isCollapsing = true;
 		animate();
@@ -196,7 +196,7 @@ public void setContents(IFigure fig){
 	contents = fig;
 	contents.setBorder(contentBorder);
 	contents.setPreferredSize(new Dimension(150,150));
-	if(getHost() != null)
+	if (getHost() != null)
 		contents.setMaximumSize(getHost().getSize().getScaled(0.5f));
 }
 
@@ -206,7 +206,7 @@ public void setTitle(String title){
 
 public void setHost(IFigure port){
 	host = port;
-	if(contents != null)
+	if (contents != null)
 		contents.setMaximumSize(host.getSize().getScaled(0.5f));
 	port.addFigureListener(new FigureListener(){
 		public void figureMoved(IFigure ignored){
@@ -238,14 +238,14 @@ private class ResizeFigure
 	}
 
 	public boolean containsPoint(int x, int y){
-		if(!super.containsPoint(x, y))
+		if (!super.containsPoint(x, y))
 			return false;
 		Point p = getLocation();
 		p.negate().translate(x,y);
 		return p.x + p.y <= squareSize;
 	}
 	
-	public Dimension getPreferredSize(){
+	public Dimension getPreferredSize(int wHint, int hHint){
 		return new Dimension();
 	}
 	

@@ -223,7 +223,7 @@ public void deactivate() {
 	updater.deactivate();
 }
 
-public Dimension getPreferredSize() {
+public Dimension getPreferredSize(int wHint, int hHint) {
 	if (prefSize == null)
 		return adjustToAspectRatio(getBounds().getSize(), false);
 		
