@@ -19,6 +19,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.*;
 import org.eclipse.gef.commands.Command;
+import org.eclipse.gef.handles.*;
 import org.eclipse.gef.handles.AbstractHandle;
 import org.eclipse.gef.handles.NonResizableHandleKit;
 import org.eclipse.gef.requests.AlignmentRequest;
@@ -161,10 +162,15 @@ protected void showFocus() {
 		(GraphicalEditPart)getHost(),
 		new Locator() {
 			public void relocate(IFigure target) {
-				Rectangle r = getHostFigure().getBounds().getCopy();
+				IFigure figure = getHostFigure();
+				Rectangle r;
+				if (figure instanceof HandleBounds)
+					r = ((HandleBounds)figure).getHandleBounds().getCopy();
+				else
+					r = getHostFigure().getBounds().getResized(-1, -1);
 				getHostFigure().translateToAbsolute(r);
 				target.translateToRelative(r);
-				target.setBounds(r.expand(5, 5));
+				target.setBounds(r.expand(5, 5).resize(1, 1));
 			}
 		})
 		{
