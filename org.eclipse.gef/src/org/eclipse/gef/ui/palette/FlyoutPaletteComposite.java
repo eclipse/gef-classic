@@ -65,9 +65,9 @@ import org.eclipse.ui.IPerspectiveListener;
 import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.XMLMemento;
 import org.eclipse.ui.internal.DragCursors;
-import org.eclipse.ui.internal.Workbench;
 
 import org.eclipse.draw2d.ActionEvent;
 import org.eclipse.draw2d.ActionListener;
@@ -281,7 +281,7 @@ private void handleEditorMaximized() {
 }
 
 private void handleEditorMinimized() {
-	updateState(Workbench.getInstance().getActiveWorkbenchWindow().getActivePage());
+	updateState(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage());
 }
 
 private void handlePerspectiveActivated(IWorkbenchPage page, 

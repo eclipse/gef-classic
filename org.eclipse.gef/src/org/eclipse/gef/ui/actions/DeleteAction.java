@@ -15,8 +15,8 @@ import java.util.List;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionFactory;
-import org.eclipse.ui.internal.WorkbenchImages;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.RequestConstants;
@@ -111,11 +111,9 @@ protected void init() {
 	setText(GEFMessages.DeleteAction_Label);
 	setToolTipText(GEFMessages.DeleteAction_Tooltip);
 	setId(ActionFactory.DELETE.getId());
-	setImageDescriptor(
-		WorkbenchImages.getImageDescriptor(
-			ISharedImages.IMG_TOOL_DELETE));
-	setDisabledImageDescriptor(
-		WorkbenchImages.getImageDescriptor(
+	ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
+	setImageDescriptor(sharedImages.getImageDescriptor(ISharedImages.IMG_TOOL_DELETE));
+	setDisabledImageDescriptor(sharedImages.getImageDescriptor(
 			ISharedImages.IMG_TOOL_DELETE_DISABLED));
 	setEnabled(false);
 }

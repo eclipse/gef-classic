@@ -69,7 +69,7 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.internal.WorkbenchImages;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.PageBook;
 
 import org.eclipse.draw2d.ColorConstants;
@@ -1068,10 +1068,11 @@ private class DeleteAction extends PaletteCustomizationAction {
 	public DeleteAction() {
 		setEnabled(false);
 		setText(PaletteMessages.DELETE_LABEL);
-		setImageDescriptor(WorkbenchImages
-			.getImageDescriptor(ISharedImages.IMG_TOOL_DELETE_HOVER));
-		setDisabledImageDescriptor(WorkbenchImages
-			.getImageDescriptor(ISharedImages.IMG_TOOL_DELETE_DISABLED));
+		ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
+		setImageDescriptor(sharedImages
+				.getImageDescriptor(ISharedImages.IMG_TOOL_DELETE_HOVER));
+		setDisabledImageDescriptor(sharedImages
+				.getImageDescriptor(ISharedImages.IMG_TOOL_DELETE_DISABLED));
 	}
 	
 	public void run() {

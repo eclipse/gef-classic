@@ -12,7 +12,7 @@ package org.eclipse.gef.internal;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.internal.WorkbenchImages;
+import org.eclipse.ui.PlatformUI;
 
 public class InternalImages {
 
@@ -60,16 +60,16 @@ public static final ImageDescriptor DESC_BLOCK_ALIGN_CENTER;
 public static final ImageDescriptor DESC_BLOCK_ALIGN_RIGHT;
 
 static {
-	DESC_BOLD = createDescriptor("icons/style_bold.gif");
-	DESC_ITALIC= createDescriptor("icons/style_italic.gif");
-	DESC_UNDERLINE = createDescriptor("icons/style_underline.gif");
+	DESC_BOLD = createDescriptor("icons/style_bold.gif"); //$NON-NLS-1$
+	DESC_ITALIC= createDescriptor("icons/style_italic.gif"); //$NON-NLS-1$
+	DESC_UNDERLINE = createDescriptor("icons/style_underline.gif"); //$NON-NLS-1$
 	
-	DESC_BLOCK_LTR= createDescriptor("icons/style_paragraph_ltr.gif");
-	DESC_BLOCK_RTL= createDescriptor("icons/style_paragraph_rtl.gif");
+	DESC_BLOCK_LTR= createDescriptor("icons/style_paragraph_ltr.gif"); //$NON-NLS-1$
+	DESC_BLOCK_RTL= createDescriptor("icons/style_paragraph_rtl.gif"); //$NON-NLS-1$
 	
-	DESC_BLOCK_ALIGN_LEFT = createDescriptor("icons/style_paragraph_left.gif");
-	DESC_BLOCK_ALIGN_CENTER = createDescriptor("icons/style_paragraph_center.gif");
-	DESC_BLOCK_ALIGN_RIGHT = createDescriptor("icons/style_paragraph_right.gif");
+	DESC_BLOCK_ALIGN_LEFT = createDescriptor("icons/style_paragraph_left.gif"); //$NON-NLS-1$
+	DESC_BLOCK_ALIGN_CENTER = createDescriptor("icons/style_paragraph_center.gif"); //$NON-NLS-1$
+	DESC_BLOCK_ALIGN_RIGHT = createDescriptor("icons/style_paragraph_right.gif"); //$NON-NLS-1$
 	
 	DESC_ZOOM_IN = createDescriptor("icons/zoomplus.gif"); //$NON-NLS-1$
 	DESC_ZOOM_OUT = createDescriptor("icons/zoomminus.gif"); //$NON-NLS-1$
@@ -95,7 +95,8 @@ static {
 	DESC_VERT_ALIGN_TOP_DIS = createDescriptor("icons/aligntop_d.gif"); //$NON-NLS-1$
 
 	DESC_SEPARATOR = createDescriptor("icons/separator.gif"); //$NON-NLS-1$
-	DESC_FOLDER_OPEN = WorkbenchImages.getImageDescriptor(ISharedImages.IMG_OBJ_FOLDER);
+	DESC_FOLDER_OPEN = PlatformUI.getWorkbench().getSharedImages()
+			.getImageDescriptor(ISharedImages.IMG_OBJ_FOLDER);
 	DESC_FOLDER_CLOSED = createDescriptor("icons/folder_closed.gif"); //$NON-NLS-1$
 
 	ICON_MATCH_WIDTH = createDescriptor("icons/sizehz.gif"); //$NON-NLS-1$

@@ -11,9 +11,9 @@
 package org.eclipse.gef.ui.actions;
 
 import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.actions.RetargetAction;
-import org.eclipse.ui.internal.WorkbenchImages;
 
 import org.eclipse.gef.internal.GEFMessages;
 
@@ -28,11 +28,10 @@ public class DeleteRetargetAction extends RetargetAction {
 public DeleteRetargetAction() {
 	super(ActionFactory.DELETE.getId(), GEFMessages.DeleteAction_Label);
 	setToolTipText(GEFMessages.DeleteAction_Tooltip);
-	
-	setImageDescriptor(WorkbenchImages.getImageDescriptor(ISharedImages.IMG_TOOL_DELETE));
-	
-	setDisabledImageDescriptor(WorkbenchImages.getImageDescriptor(
-			ISharedImages.IMG_TOOL_DELETE_DISABLED));
+	ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
+	setImageDescriptor(sharedImages.getImageDescriptor(ISharedImages.IMG_TOOL_DELETE));
+	setDisabledImageDescriptor(sharedImages
+			.getImageDescriptor(ISharedImages.IMG_TOOL_DELETE_DISABLED));
 }
 
 }
