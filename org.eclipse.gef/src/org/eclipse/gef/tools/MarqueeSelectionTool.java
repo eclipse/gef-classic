@@ -236,8 +236,18 @@ private void performMarqueeSelect() {
 	if (getSelectionMode() == APPEND_MODE) {
 		for (int i=0; i<newSelections.size(); i++) {
 			EditPart editPart = (EditPart)newSelections.get(i);	
-			viewer.appendSelection(editPart);
+			viewer.appendSelection(editPart); 
+		} 
+	} else if (getSelectionMode() == TOGGLE_MODE) {
+		List selected = new ArrayList(viewer.getSelectedEditParts());
+		for (int i = 0; i < newSelections.size(); i++) {
+			EditPart editPart = (EditPart)newSelections.get(i);	
+			if (editPart.getSelected() != EditPart.SELECTED_NONE)
+				selected.remove(editPart);
+			else
+				selected.add(editPart);
 		}
+		viewer.setSelection(new StructuredSelection(selected));
 	} else {
 		viewer.setSelection(new StructuredSelection(newSelections));
 	}
