@@ -93,7 +93,7 @@ EventListenerList eventListeners = new EventListenerList();
  * Iterates over a <code>List</code> of EditPolcies, skipping any <code>null</code> values
  * encountered.
  */
-static class EditPolicyIterator {
+protected static class EditPolicyIterator {
 	private Iterator iter;
 	private Object next;
 
