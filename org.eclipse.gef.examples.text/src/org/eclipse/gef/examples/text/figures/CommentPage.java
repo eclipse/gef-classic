@@ -22,13 +22,14 @@ public class CommentPage
 {
 	
 private static final Color COLOR = new Color(null, 255, 255, 170);
+private static final Insets INSETS = new Insets(7, 11, 7, 11);
 
 public CommentPage() {
 	setBackgroundColor(COLOR);
 }
 	
 public Insets getInsets() {
-	return new Insets(7, 11, 7, 11);
+	return INSETS;
 }
 
 protected void paintFigure(Graphics g) {

@@ -20,12 +20,12 @@ import org.eclipse.draw2d.geometry.Rectangle;
 /**
  * @since 3.1
  */
-public class TextLayoutFigure extends Figure {
+public class TextLayoutFigure 
+	extends Figure 
+{
 
 TextLayout tl;
-
 private int beginOffset = -1;
-
 private int endOffset = -1;
 
 /**
@@ -51,10 +51,10 @@ protected void paintFigure(Graphics graphics) {
 public Dimension getPreferredSize(int wHint, int hHint) {
 	wHint = Math.max(1, wHint - getInsets().getWidth());
 	tl.setWidth(wHint);
-	Dimension d = new Dimension(tl.getBounds().width, tl.getBounds().height);
+	org.eclipse.swt.graphics.Rectangle rect = tl.getBounds();
+	Dimension d = new Dimension(rect.width, rect.height);
 	Insets insets = getInsets();
-	d.expand(insets.getWidth(), insets.getHeight());
-	return d;
+	return d.expand(insets.getWidth(), insets.getHeight());
 }
 
 public void setSelection(int beginOffset, int endOffset) {
