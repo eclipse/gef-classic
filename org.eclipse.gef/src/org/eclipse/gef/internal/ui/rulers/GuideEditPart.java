@@ -37,7 +37,6 @@ public class GuideEditPart
 public static final int MIN_DISTANCE_BW_GUIDES = 5;
 public static final int DELETE_THRESHOLD = 20;
 
-private AccessibleEditPart accPart;
 private GuideLineFigure guideLineFig;
 private Cursor cursor = null;
 private ZoomListener zoomListener = new ZoomListener() {
@@ -70,23 +69,6 @@ public void activate() {
 	getRulerProvider().addRulerChangeListener(listener);
 	if (getZoomManager() != null)
 		getZoomManager().addZoomListener(zoomListener);
-}
-
-protected AccessibleEditPart createAccessibleEditPart() {
-	return new AccessibleGraphicalEditPart(){
-		public void getDescription(AccessibleEvent e) {
-			if (getRulerProvider() != null)
-				getRulerProvider().getAccGuideDescription(e, GuideEditPart.this);
-		}
-		public void getName(AccessibleEvent e) {
-			if (getRulerProvider() != null)
-				getRulerProvider().getAccGuideName(e, GuideEditPart.this);
-		}
-		public void getValue(AccessibleControlEvent e) {
-			if (getRulerProvider() != null)
-				getRulerProvider().getAccGuideValue(e, GuideEditPart.this);
-		}
-	};
 }
 
 /* (non-Javadoc)
@@ -125,9 +107,20 @@ public void deactivate() {
 }
 
 protected AccessibleEditPart getAccessibleEditPart() {
-	if (accPart == null)
-		accPart = createAccessibleEditPart();
-	return accPart;
+	return new AccessibleGraphicalEditPart(){
+		public void getDescription(AccessibleEvent e) {
+			if (getRulerProvider() != null)
+				getRulerProvider().getAccGuideDescription(e, GuideEditPart.this);
+		}
+		public void getName(AccessibleEvent e) {
+			if (getRulerProvider() != null)
+				getRulerProvider().getAccGuideName(e, GuideEditPart.this);
+		}
+		public void getValue(AccessibleControlEvent e) {
+			if (getRulerProvider() != null)
+				getRulerProvider().getAccGuideValue(e, GuideEditPart.this);
+		}
+	};
 }
 
 public Object getAdapter(Class key) {

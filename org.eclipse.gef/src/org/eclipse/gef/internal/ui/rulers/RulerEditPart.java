@@ -33,7 +33,6 @@ public class RulerEditPart
 protected GraphicalViewer diagramViewer;
 private RulerProvider rulerProvider;
 private boolean horizontal;
-private AccessibleEditPart accPart;
 private RulerChangeListener listener = new RulerChangeListener.Stub() {
 	public void notifyGuideReparented(Object guide) {
 		handleGuideReparented(guide);
@@ -54,21 +53,6 @@ public void activate() {
 	getRulerProvider().addRulerChangeListener(listener);
 	getRulerFigure().setZoomManager(getZoomManager());
 	super.activate();
-}
-
-/*
- * @TODO:Pratik		Need to check this with JAWS
- */
-protected AccessibleEditPart createAccessibleEditPart() {
-	return new AccessibleGraphicalEditPart() {
-		public void getName(AccessibleEvent e) {
-			e.result = isHorizontal() ? GEFMessages.Ruler_Horizontal_Label
-			                          : GEFMessages.Ruler_Vertical_Label;
-		}
-		public void getDescription(AccessibleEvent e) {
-			e.result = GEFMessages.Ruler_Desc;
-		}
-	};
 }
 
 /* (non-Javadoc)
@@ -102,10 +86,19 @@ public void deactivate() {
 	getRulerFigure().setZoomManager(null);
 }
 
+/*
+ * @TODO:Pratik    Need to test this with JAWS 
+ */
 protected AccessibleEditPart getAccessibleEditPart() {
-	if (accPart == null)
-		accPart = createAccessibleEditPart();
-	return accPart;
+	return new AccessibleGraphicalEditPart() {
+		public void getName(AccessibleEvent e) {
+			e.result = isHorizontal() ? GEFMessages.Ruler_Horizontal_Label
+									  : GEFMessages.Ruler_Vertical_Label;
+		}
+		public void getDescription(AccessibleEvent e) {
+			e.result = GEFMessages.Ruler_Desc;
+		}
+	};
 }
 
 /* (non-Javadoc)
