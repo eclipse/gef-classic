@@ -51,9 +51,9 @@ protected void initCellEditor() {
 	IFigure figure = ((GraphicalEditPart)getEditPart()).getFigure();
 	scaledFont = figure.getFont();
 	FontData data = scaledFont.getFontData()[0];
-	Dimension fontSize = new Dimension(0, data.height);
+	Dimension fontSize = new Dimension(0, data.getHeight());
 	label.translateToAbsolute(fontSize);
-	data.height = fontSize.height;
+	data.setHeight(fontSize.height);
 	scaledFont = new Font(null, data);
 	
 	text.setFont(scaledFont);
