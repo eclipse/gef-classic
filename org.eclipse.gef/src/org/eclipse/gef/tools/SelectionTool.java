@@ -419,7 +419,8 @@ protected boolean handleViewerExited() {
 
 /**
  * Forwards the key down event to the drag tracker, if one exists.
- * @see org.eclipse.gef.Tool#keyDown(org.eclipse.swt.events.KeyEvent, org.eclipse.gef.EditPartViewer)
+ * @see org.eclipse.gef.Tool#keyDown(org.eclipse.swt.events.KeyEvent, 
+ * 										org.eclipse.gef.EditPartViewer)
  */
 public void keyDown(KeyEvent evt, EditPartViewer viewer) {
 	if (getDragTracker() != null)
@@ -429,7 +430,8 @@ public void keyDown(KeyEvent evt, EditPartViewer viewer) {
 
 /**
  * Forwards the key up event to the drag tracker, if one exists.
- * @see org.eclipse.gef.Tool#keyUp(org.eclipse.swt.events.KeyEvent, org.eclipse.gef.EditPartViewer)
+ * @see org.eclipse.gef.Tool#keyUp(org.eclipse.swt.events.KeyEvent, 
+ * 										org.eclipse.gef.EditPartViewer)
  */
 public void keyUp(KeyEvent evt, EditPartViewer viewer) {
 	if (getDragTracker() != null)
@@ -439,7 +441,8 @@ public void keyUp(KeyEvent evt, EditPartViewer viewer) {
 
 /**
  * Forwards the mouse down event to the drag tracker, if one exists.
- * @see org.eclipse.gef.Tool#mouseDown(org.eclipse.swt.events.MouseEvent, org.eclipse.gef.EditPartViewer)
+ * @see org.eclipse.gef.Tool#mouseDown(org.eclipse.swt.events.MouseEvent, 
+ * 										org.eclipse.gef.EditPartViewer)
  */
 public void mouseDown(MouseEvent e, EditPartViewer viewer) {
 	super.mouseDown(e, viewer);
@@ -449,7 +452,8 @@ public void mouseDown(MouseEvent e, EditPartViewer viewer) {
 
 /**
  * Forwards the mouse double clicked event to the drag tracker, if one exists.
- * @see org.eclipse.gef.Tool#mouseDoubleClick(org.eclipse.swt.events.MouseEvent, org.eclipse.gef.EditPartViewer)
+ * @see org.eclipse.gef.Tool#mouseDoubleClick(org.eclipse.swt.events.MouseEvent, 
+ * 												org.eclipse.gef.EditPartViewer)
  */
 public void mouseDoubleClick(MouseEvent e, EditPartViewer viewer) {
 	super.mouseDoubleClick(e, viewer);
@@ -459,7 +463,8 @@ public void mouseDoubleClick(MouseEvent e, EditPartViewer viewer) {
 
 /**
  * Forwards the mouse drag event to the drag tracker, if one exists.
- * @see org.eclipse.gef.Tool#mouseDrag(org.eclipse.swt.events.MouseEvent, org.eclipse.gef.EditPartViewer)
+ * @see org.eclipse.gef.Tool#mouseDrag(org.eclipse.swt.events.MouseEvent, 
+ * 												org.eclipse.gef.EditPartViewer)
  */
 public void mouseDrag(MouseEvent e, EditPartViewer viewer) {
 	if (getDragTracker() != null)
@@ -469,7 +474,8 @@ public void mouseDrag(MouseEvent e, EditPartViewer viewer) {
 
 /**
  * Forwards the mouse hover event to the drag tracker, if one exists.
- * @see org.eclipse.gef.Tool#mouseHover(org.eclipse.swt.events.MouseEvent, org.eclipse.gef.EditPartViewer)
+ * @see org.eclipse.gef.Tool#mouseHover(org.eclipse.swt.events.MouseEvent, 
+ * 												org.eclipse.gef.EditPartViewer)
  */
 public void mouseHover(MouseEvent me, EditPartViewer viewer) {
 	if (getDragTracker() != null)
@@ -479,7 +485,8 @@ public void mouseHover(MouseEvent me, EditPartViewer viewer) {
 
 /**
  * Forwards the mouse move event to the drag tracker, if one exists.
- * @see org.eclipse.gef.Tool#mouseMove(org.eclipse.swt.events.MouseEvent, org.eclipse.gef.EditPartViewer)
+ * @see org.eclipse.gef.Tool#mouseMove(org.eclipse.swt.events.MouseEvent, 	
+ * 												org.eclipse.gef.EditPartViewer)
  */
 public void mouseMove(MouseEvent me, EditPartViewer viewer) {
 	if (getDragTracker() != null)
@@ -489,7 +496,8 @@ public void mouseMove(MouseEvent me, EditPartViewer viewer) {
 
 /**
  * Forwards the mouse up event to the drag tracker, if one exists.
- * @see org.eclipse.gef.Tool#mouseUp(org.eclipse.swt.events.MouseEvent, org.eclipse.gef.EditPartViewer)
+ * @see org.eclipse.gef.Tool#mouseUp(org.eclipse.swt.events.MouseEvent, 
+ * 										org.eclipse.gef.EditPartViewer)
  */
 public void mouseUp(MouseEvent e, EditPartViewer viewer) {
 	if (getDragTracker() != null)
