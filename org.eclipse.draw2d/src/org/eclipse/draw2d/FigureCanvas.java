@@ -229,19 +229,21 @@ public void scrollToX(int hOffset) {
 	getHorizontalBar().setSelection(hOffset);
 	Rectangle clientArea = getViewport().getBounds().getCropped(getViewport().getInsets());
 	Rectangle blit = clientArea.getResized(-Math.abs(dx), 0);
+	Rectangle expose = clientArea.getCopy();
 	Point dest = clientArea.getTopLeft();
+	expose.width = Math.abs(dx);
 	if (dx < 0){ //Moving left?
 		blit.translate(-dx, 0); //Move blit area to the right
+		expose.x = dest.x + blit.width;
 	} else //Moving right
 		dest.x += dx; //Move expose area to the right
-
+	getViewport().setIgnoreScroll(true);
+	getViewport().setHorizontalLocation(hOffset);
 	scroll(dest.x, dest.y,
 			blit.x, blit.y, blit.width, blit.height,
 			true);
-
-	getViewport().setIgnoreScroll(true);
-	getViewport().setHorizontalLocation(hOffset);
 	getViewport().setIgnoreScroll(false);
+	redraw(expose.x, expose.y, expose.width, expose.height, true);
 }
 
 /**
@@ -257,18 +259,22 @@ public void scrollToY(int vOffset) {
 	getVerticalBar().setSelection(vOffset);
 	Rectangle clientArea = getViewport().getBounds().getCropped(getViewport().getInsets());
 	Rectangle blit = clientArea.getResized(0, -Math.abs(dy));
+	Rectangle expose = clientArea.getCopy();
 	Point dest = clientArea.getTopLeft();
+	expose.height = Math.abs(dy);
 	if (dy < 0){ //Moving up?
 		blit.translate(0, -dy); //Move blit area down
+		expose.y = dest.y + blit.height; //Move expose area down
 	} else //Moving down
 		dest.y += dy;
 
+	getViewport().setIgnoreScroll(true);
+	getViewport().setVerticalLocation(vOffset);
 	scroll(dest.x, dest.y,
 			blit.x, blit.y, blit.width, blit.height,
 			true);
-	getViewport().setIgnoreScroll(true);
-	getViewport().setVerticalLocation(vOffset);
 	getViewport().setIgnoreScroll(false);
+	redraw(expose.x, expose.y, expose.width, expose.height, true);
 }
 
 /**
