@@ -28,19 +28,18 @@ class FlowUtilities
 	extends FigureUtilities
 {
 
-private static final BreakIterator LINE_BREAK = BreakIterator.getLineInstance();
+static final BreakIterator LINE_BREAK = BreakIterator.getLineInstance();
+private static final BreakIterator INTERNAL_LINE_BREAK = BreakIterator.getLineInstance();
 private static int ELLIPSIS_SIZE;
 private static TextLayout layout;
 
 static boolean canBreakAfter(char c) {
 	boolean result = Character.isWhitespace(c) || c == '-';
-	if (!result) {
-		if (c <= 'z' && c >= 'a')
-			return false;
+	if (!result && (c < 'a' || c > 'z')) {
 		// chinese characters and such would be caught in here
-		BreakIterator breakItr = BreakIterator.getLineInstance();
-		breakItr.setText(c + "a"); //$NON-NLS-1$
-		result = breakItr.isBoundary(1);
+		// LINE_BREAK is used here because INTERNAL_LINE_BREAK might be in use
+		LINE_BREAK.setText(c + "a"); //$NON-NLS-1$
+		result = LINE_BREAK.isBoundary(1);
 	}
 	return result;
 }
@@ -162,7 +161,7 @@ public static int wrapFragmentInContext(TextFragmentBox frag, String string,
 		return 0;
 	}
 	
-	LINE_BREAK.setText(string);
+	INTERNAL_LINE_BREAK.setText(string);
 
 	initBidi(frag, string, font);
 	float avgCharWidth = getAverageCharWidth(frag, font);
@@ -174,7 +173,7 @@ public static int wrapFragmentInContext(TextFragmentBox frag, String string,
 	int absoluteMin = 0;
 	int max, min = 1;
 	if (wrapping == ParagraphTextLayout.WORD_WRAP_HARD) {
-		absoluteMin = LINE_BREAK.next();
+		absoluteMin = INTERNAL_LINE_BREAK.next();
 		while (absoluteMin > 0 && Character.isWhitespace(string.charAt(absoluteMin - 1)))
 			absoluteMin--;
 		min = Math.max(absoluteMin, 1);
@@ -248,7 +247,7 @@ public static int wrapFragmentInContext(TextFragmentBox frag, String string,
 			result++;
 	} else if (string.charAt(min) == ' '
 			|| canBreakAfter(string.charAt(min - 1))
-			|| LINE_BREAK.isBoundary(min)) {
+			|| INTERNAL_LINE_BREAK.isBoundary(min)) {
 		frag.length = min;
 		if (string.charAt(min) == ' ')
 			result++;
@@ -258,7 +257,7 @@ public static int wrapFragmentInContext(TextFragmentBox frag, String string,
 		}
 	} else {
 		// In the middle of an unbreakable offset.
-		result = LINE_BREAK.preceding(min);
+		result = INTERNAL_LINE_BREAK.preceding(min);
 		if (result == 0) {
 			switch (wrapping) {
 				case ParagraphTextLayout.WORD_WRAP_SOFT :
@@ -277,7 +276,7 @@ public static int wrapFragmentInContext(TextFragmentBox frag, String string,
 					} else
 						frag.length = 0;
 					frag.truncated = true;
-					result = LINE_BREAK.following(max - 1);
+					result = INTERNAL_LINE_BREAK.following(max - 1);
 					break;
 				default:
 					result = min;
