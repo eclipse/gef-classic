@@ -20,7 +20,7 @@ import org.eclipse.gef.editparts.ZoomManager;
  * 
  * @author Eric Bordeau
  */
-public class ZoomComboContributionItem 
+public final class ZoomComboContributionItem 
 	extends ContributionItem
 	implements ZoomListener
 {
@@ -38,6 +38,27 @@ private final IPartListener partListener;
  */
 public ZoomComboContributionItem(IPartService partService) {
 	super(GEFActionConstants.ZOOM_TOOLBAR_WIDGET);
+	service = partService;
+	Assert.isNotNull(partService);
+	partService.addPartListener(partListener = new IPartListener() {
+		public void partActivated(IWorkbenchPart part) {
+			setZoomManager((ZoomManager) part.getAdapter(ZoomManager.class));
+		}
+		public void partBroughtToTop(IWorkbenchPart p) { }
+		public void partClosed(IWorkbenchPart p) { }
+		public void partDeactivated(IWorkbenchPart p) { }
+		public void partOpened(IWorkbenchPart p) { }
+	});
+}
+
+/**
+ * Constructor for ComboToolItem.
+ * @param id
+ * @param initString
+ */
+public ZoomComboContributionItem(IPartService partService, String initString) {
+	super(GEFActionConstants.ZOOM_TOOLBAR_WIDGET);
+	this.initString = initString;
 	service = partService;
 	Assert.isNotNull(partService);
 	partService.addPartListener(partListener = new IPartListener() {
@@ -160,23 +181,6 @@ public Combo getCombo() {
  */
 public ZoomManager getZoomManager() {
 	return zoomManager;
-}
-
-/**
- * Sets the initString. This is the string used to initialize the size of the combo. The
- * combo's width is set to the width of this String. 
- * @param initString The initString to set
- */
-public void setInitString(String initString) {
-	this.initString = initString;
-	
-	//If the combo exists, update its width
-	if (combo != null) {
-		combo.setText(initString);
-		toolitem.setWidth(computeWidth(combo));
-		combo.removeAll();
-	}	
-
 }
 
 /**
