@@ -216,23 +216,27 @@ protected void refreshVisuals() {
 
 public void removeNotify() {
 	GraphicalEditPart nextSelection = null;
-	int thisPos = getRulerProvider().getGuidePosition(getModel());
-	if (getSelected() != SELECTED_NONE || hasFocus()) {
-		List siblings = getParent().getChildren();
-		int minDistance = -1;
-		for (int i = 0; i < siblings.size(); i++) {
-			GuideEditPart guide = (GuideEditPart)siblings.get(i);
-			if (guide == this)
-				continue;
-			int posDiff = Math.abs(
-					thisPos - getRulerProvider().getGuidePosition(guide.getModel()));
-			if (minDistance == -1 || posDiff < minDistance) {
-				minDistance = posDiff;
-				nextSelection = guide;
+	if (getParent().isActive()) {
+		// This guide is being deleted (but the ruler is still active).  If this guide
+		// is selected, determine which part is to be selected next.
+		int thisPos = getRulerProvider().getGuidePosition(getModel());
+		if (getSelected() != SELECTED_NONE || hasFocus()) {
+			List siblings = getParent().getChildren();
+			int minDistance = -1;
+			for (int i = 0; i < siblings.size(); i++) {
+				GuideEditPart guide = (GuideEditPart)siblings.get(i);
+				if (guide == this)
+					continue;
+				int posDiff = Math.abs(
+						thisPos - getRulerProvider().getGuidePosition(guide.getModel()));
+				if (minDistance == -1 || posDiff < minDistance) {
+					minDistance = posDiff;
+					nextSelection = guide;
+				}
 			}
+			if (nextSelection == null)
+				nextSelection = (GraphicalEditPart)getParent();
 		}
-		if (nextSelection == null)
-			nextSelection = (GraphicalEditPart)getParent();
 	}
 	super.removeNotify();
 	if (nextSelection != null)
