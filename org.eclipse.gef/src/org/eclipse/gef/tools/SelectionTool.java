@@ -83,7 +83,7 @@ protected void createHoverRequest() {
 
 /**
  * Creates a {@link SelectionRequest} for the target request.
- * @see org.eclipse.gef.tools.TargetingTool#createTargetRequest()
+ * @see TargetingTool#createTargetRequest()
  */
 protected Request createTargetRequest() {
 	SelectionRequest request = new SelectionRequest();
@@ -113,14 +113,14 @@ protected void eraseHoverFeedback() {
 }
 
 /**
- * @see org.eclipse.gef.tools.AbstractTool#getCommandName()
+ * @see AbstractTool#getCommandName()
  */
 protected String getCommandName() {
 	return REQ_SELECTION;
 }
 
 /**
- * @see org.eclipse.gef.tools.AbstractTool#getDebugName()
+ * @see AbstractTool#getDebugName()
  */
 protected String getDebugName() {
 	return "Selection Tool";//$NON-NLS-1$
@@ -146,7 +146,7 @@ private EditPart getLastHandleProvider() {
 /**
  * Returns a new Conditional that evaluates to <code>true</code> if the queried edit
  * part's {@link EditPart#isSelectable()} method returns <code>true</code>.
- * @see org.eclipse.gef.tools.TargetingTool#getTargetingConditional()
+ * @see TargetingTool#getTargetingConditional()
  */
 protected EditPartViewer.Conditional getTargetingConditional() {
 	return new EditPartViewer.Conditional() {
@@ -171,7 +171,7 @@ protected Request getTargetHoverRequest() {
  * If there is a {@link Handle} under the mouse, this method sets the drag tracker 
  * returned from the handle.  If there's an {@link EditPart} under the mouse, this method 
  * sets the drag tracker returned from the edit part.
- * @see org.eclipse.gef.tools.AbstractTool#handleButtonDown(int)
+ * @see AbstractTool#handleButtonDown(int)
  */
 protected boolean handleButtonDown(int button) {
 	if (!stateTransition(STATE_INITIAL, STATE_DRAG)) {
@@ -206,7 +206,7 @@ protected boolean handleButtonDown(int button) {
 
 /**
  * Resets this tool when the last button is released.
- * @see org.eclipse.gef.tools.AbstractTool#handleButtonUp(int)
+ * @see AbstractTool#handleButtonUp(int)
  */
 protected boolean handleButtonUp(int button) {
 	if (getCurrentInput().isAnyButtonDown())
@@ -219,7 +219,7 @@ protected boolean handleButtonUp(int button) {
 }
 
 /**
- * @see org.eclipse.gef.tools.AbstractTool#handleCommandStackChanged()
+ * @see AbstractTool#handleCommandStackChanged()
  */
 protected boolean handleCommandStackChanged() {
 	if (getDragTracker() == null)
@@ -230,7 +230,7 @@ protected boolean handleCommandStackChanged() {
 /**
  * Sets the drag tracker to <code>null</code> and goes into the initial state when focus
  * is lost.
- * @see org.eclipse.gef.tools.AbstractTool#handleFocusLost()
+ * @see AbstractTool#handleFocusLost()
  */
 protected boolean handleFocusLost() {
 	if (isInState(STATE_ACCESSIBLE_DRAG | STATE_ACCESSIBLE_DRAG_IN_PROGRESS
@@ -246,7 +246,7 @@ protected boolean handleFocusLost() {
 
 /**
  * Called when the mouse hovers.  Calls {@link #showHoverFeedback()}.
- * @see org.eclipse.gef.tools.AbstractTool#handleHover()
+ * @see AbstractTool#handleHover()
  */
 protected boolean handleHover() {
 	setHoverActive(true);
@@ -257,7 +257,7 @@ protected boolean handleHover() {
 /**
  * Called when the mouse hover stops (i.e. the mouse moves or a button is clicked).
  * Calls {@link #eraseHoverFeedback()}.
- * @see org.eclipse.gef.tools.TargetingTool#handleHoverStop()
+ * @see TargetingTool#handleHoverStop()
  */
 protected boolean handleHoverStop() {
 	eraseHoverFeedback();
@@ -269,7 +269,7 @@ protected boolean handleHoverStop() {
  * for aborting a drag, the period '.' key for traversing handles, and the ENTER key for
  * committing a drag.  If none of these keys were pressed and the current viewer has a
  * {@link KeyHandler}, it calls {@link KeyHandler#keyPressed(KeyEvent)}.
- * @see org.eclipse.gef.tools.AbstractTool#handleKeyDown(org.eclipse.swt.events.KeyEvent)
+ * @see AbstractTool#handleKeyDown(KeyEvent)
  */
 protected boolean handleKeyDown(KeyEvent e) {
 	resetHover();
@@ -325,7 +325,7 @@ protected boolean handleKeyDown(KeyEvent e) {
 /**
  * If in the initial state and the viewer has a {@link KeyHandler}, calls 
  * {@link KeyHandler#keyReleased(KeyEvent)} sending it the given key event.
- * @see org.eclipse.gef.tools.AbstractTool#handleKeyUp(org.eclipse.swt.events.KeyEvent)
+ * @see AbstractTool#handleKeyUp(KeyEvent)
  */
 protected boolean handleKeyUp(KeyEvent e) {
 	if (isInState(STATE_INITIAL)
@@ -340,7 +340,7 @@ protected boolean handleKeyUp(KeyEvent e) {
  * If in the initial state, updates the request and the mouse target and asks to show
  * target feedback.  If in the traverse handle state, finds the next handle, moves the
  * mouse cursor to that handle, and gets a drag tracker from the handle.
- * @see org.eclipse.gef.tools.AbstractTool#handleMove()
+ * @see AbstractTool#handleMove()
  */
 protected boolean handleMove() {
 	if (stateTransition(STATE_ACCESSIBLE_DRAG, STATE_INITIAL))
@@ -443,7 +443,7 @@ private boolean handleTraverseHandle(KeyEvent e) {
 /**
  * If there's a drag tracker, sets it to <code>null</code> and then sets this tool's
  * state to the initial state.
- * @see org.eclipse.gef.tools.AbstractTool#handleViewerExited()
+ * @see AbstractTool#handleViewerExited()
  */
 protected boolean handleViewerExited() {
 	if (isInState(STATE_ACCESSIBLE_DRAG 
@@ -459,7 +459,7 @@ protected boolean handleViewerExited() {
 
 /**
  * Forwards the key down event to the drag tracker, if one exists.
- * @see org.eclipse.gef.Tool#keyDown(org.eclipse.swt.events.KeyEvent, 
+ * @see org.eclipse.gef.Tool#keyDown(KeyEvent, 
  * 										org.eclipse.gef.EditPartViewer)
  */
 public void keyDown(KeyEvent evt, EditPartViewer viewer) {
@@ -470,7 +470,7 @@ public void keyDown(KeyEvent evt, EditPartViewer viewer) {
 
 /**
  * Forwards the key up event to the drag tracker, if one exists.
- * @see org.eclipse.gef.Tool#keyUp(org.eclipse.swt.events.KeyEvent, 
+ * @see org.eclipse.gef.Tool#keyUp(KeyEvent, 
  * 										org.eclipse.gef.EditPartViewer)
  */
 public void keyUp(KeyEvent evt, EditPartViewer viewer) {
@@ -481,7 +481,7 @@ public void keyUp(KeyEvent evt, EditPartViewer viewer) {
 
 /**
  * Forwards the mouse down event to the drag tracker, if one exists.
- * @see org.eclipse.gef.Tool#mouseDown(org.eclipse.swt.events.MouseEvent, 
+ * @see org.eclipse.gef.Tool#mouseDown(MouseEvent, 
  * 										org.eclipse.gef.EditPartViewer)
  */
 public void mouseDown(MouseEvent e, EditPartViewer viewer) {
@@ -492,7 +492,7 @@ public void mouseDown(MouseEvent e, EditPartViewer viewer) {
 
 /**
  * Forwards the mouse double clicked event to the drag tracker, if one exists.
- * @see org.eclipse.gef.Tool#mouseDoubleClick(org.eclipse.swt.events.MouseEvent, 
+ * @see org.eclipse.gef.Tool#mouseDoubleClick(MouseEvent, 
  * 												org.eclipse.gef.EditPartViewer)
  */
 public void mouseDoubleClick(MouseEvent e, EditPartViewer viewer) {
@@ -503,7 +503,7 @@ public void mouseDoubleClick(MouseEvent e, EditPartViewer viewer) {
 
 /**
  * Forwards the mouse drag event to the drag tracker, if one exists.
- * @see org.eclipse.gef.Tool#mouseDrag(org.eclipse.swt.events.MouseEvent, 
+ * @see org.eclipse.gef.Tool#mouseDrag(MouseEvent, 
  * 												org.eclipse.gef.EditPartViewer)
  */
 public void mouseDrag(MouseEvent e, EditPartViewer viewer) {
@@ -514,7 +514,7 @@ public void mouseDrag(MouseEvent e, EditPartViewer viewer) {
 
 /**
  * Forwards the mouse hover event to the drag tracker, if one exists.
- * @see org.eclipse.gef.Tool#mouseHover(org.eclipse.swt.events.MouseEvent, 
+ * @see org.eclipse.gef.Tool#mouseHover(MouseEvent, 
  * 												org.eclipse.gef.EditPartViewer)
  */
 public void mouseHover(MouseEvent me, EditPartViewer viewer) {
@@ -525,7 +525,7 @@ public void mouseHover(MouseEvent me, EditPartViewer viewer) {
 
 /**
  * Forwards the mouse move event to the drag tracker, if one exists.
- * @see org.eclipse.gef.Tool#mouseMove(org.eclipse.swt.events.MouseEvent, 	
+ * @see org.eclipse.gef.Tool#mouseMove(MouseEvent, 	
  * 												org.eclipse.gef.EditPartViewer)
  */
 public void mouseMove(MouseEvent me, EditPartViewer viewer) {
@@ -536,7 +536,7 @@ public void mouseMove(MouseEvent me, EditPartViewer viewer) {
 
 /**
  * Forwards the mouse up event to the drag tracker, if one exists.
- * @see org.eclipse.gef.Tool#mouseUp(org.eclipse.swt.events.MouseEvent, 
+ * @see org.eclipse.gef.Tool#mouseUp(MouseEvent, 
  * 										org.eclipse.gef.EditPartViewer)
  */
 public void mouseUp(MouseEvent e, EditPartViewer viewer) {
@@ -548,7 +548,7 @@ public void mouseUp(MouseEvent e, EditPartViewer viewer) {
 /**
  * If there is a drag tracker, this method does nothing so that the drag tracker can
  * take care of the cursor.  Otherwise, calls <code>super</code>.
- * @see org.eclipse.gef.tools.AbstractTool#refreshCursor()
+ * @see AbstractTool#refreshCursor()
  */
 protected void refreshCursor() {
 	//If we have a DragTracker, let it control the Cursor
@@ -609,7 +609,7 @@ protected void updateHoverRequest() {
 /**
  * Sets the modifiers , type and location of the target request (which is a 
  * {@link SelectionRequest}) and then calls {@link #updateHoverRequest()}.
- * @see org.eclipse.gef.tools.TargetingTool#updateTargetRequest()
+ * @see TargetingTool#updateTargetRequest()
  */
 protected void updateTargetRequest() {
 	SelectionRequest request = (SelectionRequest)getTargetRequest();
@@ -620,7 +620,7 @@ protected void updateTargetRequest() {
 }
 
 /**
- * @see org.eclipse.gef.tools.AbstractTool#getDebugNameForState(int)
+ * @see AbstractTool#getDebugNameForState(int)
  */
 protected String getDebugNameForState(int state) {
 	if (state == STATE_TRAVERSE_HANDLE)
