@@ -11,21 +11,24 @@ import java.util.List;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.gef.commands.Command;
 
-
-
 /**
- EditParts are the conceptual objects that populate an EditPartViewer.
- An EditPart ties together the application's model, a visual representation
- of some type, and all editing behavior.  It can be composed of or have
- references to other EditParts.
- <P>The creator of an EditPart should call only setModel(Object).  The
- remaining API is used mostly by Tools, EditPolicies, and other EditParts.
- CHANGES are made to the  model, not the EditPart.
-
- Most interaction with EditParts is acheived using {@link Request Requests}.
- A Request specifies the type of interaction, and is used in targeting,
- filtering, graphical feedback, and most importantly, obtaining commands.
- Only {@link Command Commands} should change the model.
+ * EditParts are the conceptual objects that populate an EditPartViewer.
+ * An EditPart ties together the application's model, a visual representation
+ * of some type, and all editing behavior.  It can be composed of or have
+ * references to other EditParts.
+ * 
+ * <P>The creator of an EditPart should call only setModel(Object).  The
+ * remaining API is used mostly by Tools, EditPolicies, and other EditParts.
+ * CHANGES are made to the  model, not the EditPart.
+ *
+ * <P>Most interaction with EditParts is acheived using {@link Request Requests}.
+ * A Request specifies the type of interaction, and is used in targeting,
+ * filtering, graphical feedback, and most importantly, obtaining commands.
+ * Only {@link Command Commands} should change the model.
+ * 
+ * <p>
+ * This interface is not intended to be implemented by clients.  Clients should inherit
+ * from {@link org.eclipse.gef.editparts.AbstractEditPart}
  */
 public interface EditPart 
 	extends IAdaptable
