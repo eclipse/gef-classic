@@ -45,8 +45,10 @@ private KeyHandler parent;
  * @param event the KeyEvent
  * @return <code>true</code> if KeyEvent was handled in some way */
 public boolean keyPressed(KeyEvent event) {
-	if (performStroke(new KeyStroke(event, true)))
+	if (performStroke(new KeyStroke(event, true))) {
+		event.doit = false;
 		return true;
+	}
 	return parent != null && parent.keyPressed(event);
 }
 
