@@ -10,7 +10,6 @@ import java.util.List;
 
 import org.eclipse.gef.*;
 import org.eclipse.gef.requests.DirectEditRequest;
-import org.eclipse.gef.requests.SelectionRequest;
 
 import org.eclipse.swt.graphics.Cursor;
 

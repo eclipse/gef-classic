@@ -6,13 +6,10 @@ package org.eclipse.gef.editpolicies;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import java.util.List;
-
-import org.eclipse.gef.EditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
-import org.eclipse.gef.commands.CompoundCommand;
-import org.eclipse.gef.requests.*;
+import org.eclipse.gef.requests.CreateRequest;
+import org.eclipse.gef.requests.GroupRequest;
 
 public abstract class ContainerEditPolicy
 	extends AbstractEditPolicy

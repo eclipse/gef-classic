@@ -8,8 +8,7 @@ package org.eclipse.gef.editpolicies;
 
 import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
-import org.eclipse.gef.commands.CompoundCommand;
-import org.eclipse.gef.requests.*;
+import org.eclipse.gef.requests.GroupRequest;
 
 /**
  * A model-based EditPolicy for <i>components within a </i>container</i>. A model-based
