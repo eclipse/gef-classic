@@ -48,7 +48,7 @@ public void contributeNodesToGraph(CompoundDirectedGraph graph, Subgraph s, Map 
 protected IFigure createFigure() {
 	Label l = new SimpleActivityLabel();
 	l.setLabelAlignment(PositionConstants.LEFT);
-	l.setIcon(FlowImages.gear);
+	l.setIcon(FlowImages.GEAR);
 	return l;
 }
 

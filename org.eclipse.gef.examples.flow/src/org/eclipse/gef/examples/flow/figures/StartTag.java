@@ -33,7 +33,7 @@ static final Border BORDER = new MarginBorder(2,0,2,9);
 public StartTag(String name) {
 	setIconTextGap(4);
 	setText(name);
-	setIcon(FlowImages.gear);
+	setIcon(FlowImages.GEAR);
 	setBorder(new MarginBorder(2,0,2,9));
 }
 
