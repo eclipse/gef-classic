@@ -330,7 +330,7 @@ protected void setTargetEditPart(EditPart ep) {
 		}
 		target = ep;
 		handleEnteredEditPart();
-		if (true){
+		if (GEF.DebugDND){
 			GEF.debug("Entered EditPart: " + target); //$NON-NLS-1$
 		}
 	}
