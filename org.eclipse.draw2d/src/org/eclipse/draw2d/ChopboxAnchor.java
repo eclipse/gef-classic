@@ -99,4 +99,23 @@ public Point getReferencePoint() {
 	}
 }
 
+
+/**
+ * @see java.lang.Object#equals(java.lang.Object)
+ */
+public boolean equals(Object obj) {
+	if (obj instanceof ChopboxAnchor) {
+		ChopboxAnchor other = (ChopboxAnchor)obj;
+		return other.getOwner() == getOwner() && other.getBox().equals(getBox());
+	}
+	return false;
+}
+
+public int hashCode() {
+	if (getOwner() != null)
+		return getOwner().hashCode();
+	else
+		return super.hashCode();
+}
+
 }
