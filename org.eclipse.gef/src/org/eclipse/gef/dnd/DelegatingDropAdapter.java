@@ -55,11 +55,7 @@ public void dragEnter(final DropTargetEvent event) {
 	if (GEF.DebugDND)
 		GEF.debug("Drag Enter: " + toString()); //$NON-NLS-1$
 	setOriginalDropType(event.detail);
-	Platform.run(new SafeRunnable(){
-		public void run() throws Exception {
-			updateCurrentListener(event);
-		}
-	});
+	updateCurrentListener(event);
 }
 
 /**
@@ -106,13 +102,13 @@ public void dragOperationChanged(final DropTargetEvent event) {
  */
 public void dragOver(final DropTargetEvent event) {
 	updateCurrentListener(event);
-	if (getCurrentListener() != null)
+	if (getCurrentListener() != null) {
 		Platform.run(new SafeRunnable() {
 			public void run() throws Exception {
 				getCurrentListener().dragOver(event);
 			}
 		});
-	else
+	} else
 		event.detail = DND.DROP_NONE;
 }
 
@@ -125,14 +121,14 @@ public void dragOver(final DropTargetEvent event) {
 public void drop(final DropTargetEvent event) {
 	if (GEF.DebugDND)
 		GEF.debug("Drop: " + toString()); //$NON-NLS-1$
+	updateCurrentListener(event);
 	Platform.run(new SafeRunnable() {
 		public void run() throws Exception {
-			updateCurrentListener(event);
 			if (getCurrentListener() != null) 
 				getCurrentListener().drop(event);
-			setCurrentListener(null, event);
 		}
 	});
+	setCurrentListener(null, event);
 }
 
 /**
