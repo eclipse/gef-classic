@@ -1,13 +1,10 @@
 package org.eclipse.gef.ui.palette.customize;
 
-import org.eclipse.gef.palette.PaletteGroup;
-import org.eclipse.gef.palette.PaletteEntry;
-import org.eclipse.gef.ui.palette.PaletteMessages;
-
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.internal.IWorkbenchGraphicConstants;
-import org.eclipse.ui.internal.WorkbenchImages;
+
+import org.eclipse.gef.palette.PaletteEntry;
+import org.eclipse.gef.palette.PaletteGroup;
+import org.eclipse.gef.ui.palette.PaletteMessages;
 
 /**
  * Factory to create {@link org.eclipse.gef.palette.PaletteGroup groups}
