@@ -10,13 +10,10 @@
  *******************************************************************************/
 package org.eclipse.draw2d.test;
 
-import org.eclipse.core.runtime.IPluginDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 public class Draw2dTestPlugin extends AbstractUIPlugin {
 
-public Draw2dTestPlugin(IPluginDescriptor descriptor) {
-	super(descriptor);
-}
+public Draw2dTestPlugin() { }
 
 }

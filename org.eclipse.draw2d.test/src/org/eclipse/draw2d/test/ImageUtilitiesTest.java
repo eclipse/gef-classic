@@ -11,11 +11,11 @@
 package org.eclipse.draw2d.test;
 
 import junit.framework.TestCase;
-import org.eclipse.swt.graphics.GC;
+
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
+
 import org.eclipse.jface.resource.ImageDescriptor;
+
 import org.eclipse.draw2d.ImageUtilities;
 
 /**

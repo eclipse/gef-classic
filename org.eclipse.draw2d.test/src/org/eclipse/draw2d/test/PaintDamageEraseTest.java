@@ -26,7 +26,6 @@ public class PaintDamageEraseTest extends TestCase implements UpdateListener {
 
 private FigureCanvas fc;
 protected IFigure contents;
-private boolean useRelativeCoordinates;
 protected Shell shell;
 protected IFigure insideBox;
 protected Rectangle lastDamaged;
@@ -214,7 +213,6 @@ protected void doIndividualTearDown() {
 	container.getUpdateManager().removeUpdateListener(this);
 	fc.setContents(new Figure());
 
-	useRelativeCoordinates = false;
  	insideBox = null;
  	lastDamaged = null;
 	container = null;		
