@@ -1,7 +1,5 @@
 package org.eclipse.draw2d;
 
-import java.util.Collection;
-
 import org.eclipse.draw2d.geometry.Point;
 
 /*

@@ -12,19 +12,17 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.widgets.Display;
+
 import org.eclipse.draw2d.ButtonGroup;
 import org.eclipse.draw2d.IFigure;
 
 import org.eclipse.gef.*;
-import org.eclipse.gef.palette.*;
-import org.eclipse.gef.ui.palette.customize.*;
-import org.eclipse.gef.ui.parts.PaletteViewerKeyHandler;
-
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
-
-import org.eclipse.jface.viewers.*;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.widgets.Display;
+import org.eclipse.gef.palette.*;
+import org.eclipse.gef.ui.palette.customize.PaletteCustomizerDialog;
+import org.eclipse.gef.ui.parts.PaletteViewerKeyHandler;
 
 public class PaletteViewerImpl
 	extends org.eclipse.gef.ui.parts.GraphicalViewerImpl

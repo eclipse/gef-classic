@@ -1,9 +1,6 @@
 package org.eclipse.gef.ui.palette;
 
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.resource.ImageDescriptor;
-
-import org.eclipse.gef.internal.Internal;
 
 /**
  * @author Pratik Shah

@@ -1,19 +1,18 @@
 package org.eclipse.gef.ui.palette;
 
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
+
+import org.eclipse.jface.resource.ImageDescriptor;
 
 import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.gef.internal.Internal;
 
 /**
@@ -207,9 +206,9 @@ public void setAnimating(boolean value) {
 		return;
 	isAnimating = value;
 	if (isAnimating)
-		scrollpane.setVerticalScrollBarVisibility(scrollpane.NEVER);
+		scrollpane.setVerticalScrollBarVisibility(ScrollPane.NEVER);
 	else
-		scrollpane.setVerticalScrollBarVisibility(scrollpane.AUTOMATIC);
+		scrollpane.setVerticalScrollBarVisibility(ScrollPane.AUTOMATIC);
 }
 
 public void setController(CategoryAnimationController controller) {
