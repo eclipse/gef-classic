@@ -244,12 +244,16 @@ private boolean navigateJumpSibling(KeyEvent event, int direction){
 	return false;
 }
 
-private boolean navigateNextSibling(KeyEvent event, int direction){
+private boolean navigateNextSibling(KeyEvent event, int direction) {
+	return navigateNextSibling(event, direction, getNavigationSiblings());
+}
+
+boolean navigateNextSibling(KeyEvent event, int direction, List list) {
 	GraphicalEditPart epStart = getFocus();
 	IFigure figure = epStart.getFigure();
 	Point pStart = getInterestingPoint(figure);
 	figure.translateToAbsolute(pStart);
-	EditPart next = findSibling(getNavigationSiblings(), pStart, direction, epStart);
+	EditPart next = findSibling(list, pStart, direction, epStart);
 	if (next == null)
 		return false;
 	navigateTo(next, event);
