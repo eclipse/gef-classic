@@ -163,10 +163,7 @@ public Command unwrap() {
 		case 0 :
 			return UnexecutableCommand.INSTANCE;
 		case 1 :
-			Command result = (Command) commandList.get(0);
-			if (result.getLabel() == null)
-				result.setLabel(getLabel());
-			return result;
+			return (Command) commandList.get(0);
 		default :
 			return this;
 	}
