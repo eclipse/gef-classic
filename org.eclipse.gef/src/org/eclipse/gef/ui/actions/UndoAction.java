@@ -14,6 +14,8 @@ import java.text.MessageFormat;
 
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.internal.WorkbenchImages;
 
 import org.eclipse.gef.commands.Command;
@@ -27,13 +29,19 @@ public class UndoAction
 {
 
 /**
- * Creates an <code>UndoAction</code> and associates it with the 
- * given editor.
- * 
+ * Creates an <code>UndoAction</code> and associates it with the given editor.
  * @param editor The editor this action is associated with.
  */
 public UndoAction(IEditorPart editor) {
 	super(editor);
+}
+
+/**
+ * Creates an <code>UndoAction</code> and associates it with the given editor.
+ * @param part The workbench part this action is associated with.
+ */
+public UndoAction(IWorkbenchPart part) {
+	super(part);
 }
 
 /**
@@ -55,10 +63,8 @@ protected void init() {
 			GEFMessages.UndoAction_Label, 
 			new Object[] {""}).trim()  //$NON-NLS-1$
 			);
-	setId(GEFActionConstants.UNDO);
-	setHoverImageDescriptor(
-		WorkbenchImages.getImageDescriptor(
-			ISharedImages.IMG_TOOL_UNDO_HOVER));
+	setId(ActionFactory.UNDO.getId());
+
 	setImageDescriptor(
 		WorkbenchImages.getImageDescriptor(
 			ISharedImages.IMG_TOOL_UNDO));
