@@ -93,7 +93,7 @@ private PropertyChangeListener gridListener = new PropertyChangeListener() {
 		if (property.equals(SnapToGrid.PROPERTY_GRID_ORIGIN)
 				|| property.equals(SnapToGrid.PROPERTY_GRID_SPACING)
 				|| property.equals(SnapToGrid.PROPERTY_GRID_ENABLED))
-			updateGridProperties();
+			refreshGridLayer();
 	}
 };
 
@@ -249,11 +249,22 @@ public EditPartViewer getViewer() {
  */
 protected void refreshChildren() { }
 
+protected void refreshGridLayer() {
+	GridLayer grid = (GridLayer)getLayer(GRID_LAYER);
+	boolean visible = false;
+	Boolean val = (Boolean)getViewer().getProperty(SnapToGrid.PROPERTY_GRID_ENABLED);
+	if (val != null)
+		visible = val.booleanValue();
+	grid.setVisible(visible);
+	grid.setOrigin((Point)getViewer().getProperty(SnapToGrid.PROPERTY_GRID_ORIGIN));
+	grid.setSpacing((Dimension)getViewer().getProperty(SnapToGrid.PROPERTY_GRID_SPACING));
+}
+
 protected void register() {
 	super.register();
 	if (getLayer(GRID_LAYER) != null) {
 		getViewer().addPropertyChangeListener(gridListener);
-		updateGridProperties();
+		refreshGridLayer();
 	}
 }
 
@@ -288,17 +299,6 @@ public void setViewer(EditPartViewer newViewer) {
 protected void unregister() {
 	getViewer().removePropertyChangeListener(gridListener);
 	super.unregister();
-}
-
-protected void updateGridProperties() {
-	GridLayer grid = (GridLayer)getLayer(GRID_LAYER);
-	boolean visible = false;
-	Boolean val = (Boolean)getViewer().getProperty(SnapToGrid.PROPERTY_GRID_ENABLED);
-	if (val != null)
-		visible = val.booleanValue();
-	grid.setVisible(visible);
-	grid.setOrigin((Point)getViewer().getProperty(SnapToGrid.PROPERTY_GRID_ORIGIN));
-	grid.setSpacing((Dimension)getViewer().getProperty(SnapToGrid.PROPERTY_GRID_SPACING));
 }
 
 class FeedbackLayer

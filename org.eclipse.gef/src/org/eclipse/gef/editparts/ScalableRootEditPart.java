@@ -110,7 +110,7 @@ private PropertyChangeListener gridListener = new PropertyChangeListener() {
 		if (property.equals(SnapToGrid.PROPERTY_GRID_ORIGIN)
 				|| property.equals(SnapToGrid.PROPERTY_GRID_SPACING)
 				|| property.equals(SnapToGrid.PROPERTY_GRID_ENABLED))
-			updateGridProperties();
+			refreshGridLayer();
 	}
 };
 
@@ -315,7 +315,18 @@ public ZoomManager getZoomManager() {
  */
 protected void refreshChildren() { }
 
-/* (non-Javadoc)
+protected void refreshGridLayer() {
+	GridLayer grid = (GridLayer)getLayer(GRID_LAYER);
+	boolean visible = false;
+	Boolean val = (Boolean)getViewer().getProperty(SnapToGrid.PROPERTY_GRID_ENABLED);
+	if (val != null)
+		visible = val.booleanValue();
+	grid.setVisible(visible);
+	grid.setOrigin((Point)getViewer().getProperty(SnapToGrid.PROPERTY_GRID_ORIGIN));
+	grid.setSpacing((Dimension)getViewer().getProperty(SnapToGrid.PROPERTY_GRID_SPACING));
+}
+
+/**
  * @see org.eclipse.gef.editparts.AbstractEditPart#register()
  */
 protected void register() {
@@ -323,7 +334,7 @@ protected void register() {
 	viewer.setProperty(ZoomManager.class.toString(), getZoomManager());
 	if (getLayer(GRID_LAYER) != null) {
 		getViewer().addPropertyChangeListener(gridListener);
-		updateGridProperties();
+		refreshGridLayer();
 	}
 }
 
@@ -359,17 +370,6 @@ protected void unregister() {
 	getViewer().removePropertyChangeListener(gridListener);
 	super.unregister();
 	getViewer().setProperty(ZoomManager.class.toString(), null);
-}
-
-protected void updateGridProperties() {
-	GridLayer grid = (GridLayer)getLayer(GRID_LAYER);
-	boolean visible = false;
-	Boolean val = (Boolean)getViewer().getProperty(SnapToGrid.PROPERTY_GRID_ENABLED);
-	if (val != null)
-		visible = val.booleanValue();
-	grid.setVisible(visible);
-	grid.setOrigin((Point)getViewer().getProperty(SnapToGrid.PROPERTY_GRID_ORIGIN));
-	grid.setSpacing((Dimension)getViewer().getProperty(SnapToGrid.PROPERTY_GRID_SPACING));
 }
 
 }
