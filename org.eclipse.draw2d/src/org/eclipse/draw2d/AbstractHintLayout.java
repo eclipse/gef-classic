@@ -16,7 +16,7 @@ private Dimension minimumSize = null;
 private Dimension cachedHint = new Dimension(-1, -1);
 
 final protected Dimension calculatePreferredSize(IFigure container) {
-	throw new RuntimeException("Unreachable code");
+	throw new RuntimeException("Unreachable code"); //$NON-NLS-1$
 }
 
 protected abstract Dimension calculateMinimumSize(IFigure container);
