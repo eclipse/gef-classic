@@ -74,6 +74,7 @@ public void deactivate() {
 	targetEditPart = null;
 	targetRequest = null;
 	super.deactivate();
+	setAutoexposeHelper(null);
 }
 
 /**
