@@ -51,9 +51,6 @@ public static Image createRotatedImageOfString(String string, Font font,
  * Returns a new Image that is the given Image rotated left by 90 degrees.  The client is
  * responsible for disposing the returned Image.  This method MUST be invoked from the
  * user-interface (Display) thread.
- * <p> 
- * <b>IMPORTANT:</b> Rotating images that have padded scanlines may have undesired
- * effects.
  * 
  * @param	srcImage	the Image that is to be rotated left
  * @return	the rotated Image (the client is responsible for disposing it)
@@ -64,21 +61,10 @@ public static Image createRotatedImage(Image srcImage) {
 		SWT.error(SWT.ERROR_THREAD_INVALID_ACCESS);
 
 	ImageData srcData = srcImage.getImageData();
-	int bytesPerPixel = srcData.bytesPerLine / srcData.width;
-	int destBytesPerLine = srcData.height * bytesPerPixel;
-	byte[] newData = new byte[srcData.data.length];
-	for (int srcY = 0; srcY < srcData.height; srcY++) {
-		for (int srcX = 0; srcX < srcData.width; srcX++) {
-			int destX = srcY;
-			int destY = srcData.width - srcX - 1;
-			int destIndex = (destY * destBytesPerLine) + (destX * bytesPerPixel);
-			int srcIndex = (srcY * srcData.bytesPerLine) + (srcX * bytesPerPixel);
-			System.arraycopy(srcData.data, srcIndex, newData, destIndex, bytesPerPixel);
-		}
-	}
-	// destBytesPerLine is used as scanlinePad to ensure that no padding is required
-	return new Image(display, new ImageData(srcData.height, srcData.width, 
-					srcData.depth, srcData.palette, destBytesPerLine, newData));
+	if (srcData.depth < 8)
+		return rotatePixelByPixel(srcData);
+	else
+		return rotateOptimized(srcData);
 }
 
 /**
@@ -143,6 +129,35 @@ public static ImageData createShadedImage(Image fromImage, Color shade) {
 
 private static int determineShading(int origColor, int shadeColor) {
 	return (origColor + shadeColor) / 2;
+}
+
+private static Image rotateOptimized(ImageData srcData) {
+	int bytesPerPixel = Math.max(1, srcData.depth / 8);
+	int destBytesPerLine = ((srcData.height * bytesPerPixel - 1) / srcData.scanlinePad + 1) 
+			* srcData.scanlinePad;
+	byte[] newData = new byte[destBytesPerLine * srcData.width];
+	for (int srcY = 0; srcY < srcData.height; srcY++) {
+		for (int srcX = 0; srcX < srcData.width; srcX++) {
+			int destX = srcY;
+			int destY = srcData.width - srcX - 1;
+			int destIndex = (destY * destBytesPerLine) + (destX * bytesPerPixel);
+			int srcIndex = (srcY * srcData.bytesPerLine) + (srcX * bytesPerPixel);
+			System.arraycopy(srcData.data, srcIndex, newData, destIndex, bytesPerPixel);
+		}
+	}
+	return new Image(Display.getCurrent(), new ImageData(srcData.height, srcData.width, 
+					srcData.depth, srcData.palette, srcData.scanlinePad, newData));
+}
+
+private static Image rotatePixelByPixel(ImageData srcData) {
+	ImageData destData = new ImageData(srcData.height, srcData.width, srcData.depth, 
+			srcData.palette); 
+	for (int y = 0; y < srcData.height; y++) {
+		for (int x = 0; x < srcData.width; x++) {
+			destData.setPixel(y, srcData.width - x - 1,	srcData.getPixel(x, y));
+		}
+	}
+	return new Image(Display.getCurrent(), destData);
 }
 
 }
