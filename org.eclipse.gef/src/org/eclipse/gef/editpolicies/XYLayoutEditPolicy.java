@@ -121,8 +121,9 @@ protected void showSizeOnDropFeedback(CreateRequest request) {
 	Point p = new Point(request.getLocation());
 	IFigure feedback = getSizeOnDropFeedback(request);
 	feedback.translateToRelative(p);
-	feedback.setBounds(new Rectangle(p, request.getSize()));
-	feedback.getBounds().expand(getCreationFeedbackOffset(request));
+	Dimension size = request.getSize().getCopy();
+	feedback.translateToRelative(size);
+	feedback.setBounds(new Rectangle(p, size).expand(getCreationFeedbackOffset(request)));
 }
 
 }
