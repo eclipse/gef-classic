@@ -109,11 +109,15 @@ public void setSourceTerminal(String s){
 }
 
 public void setTarget(LogicSubpart e){
+	Object old = target;
 	target = e;
+	firePropertyChange("target", old, source);//$NON-NLS-1$
 }
 
 public void setTargetTerminal(String s){
+	Object old = targetTerminal;
 	targetTerminal = s;
+	firePropertyChange("targetTerminal", old, sourceTerminal);//$NON-NLS-1$
 }
 
 public void setValue(boolean value){
