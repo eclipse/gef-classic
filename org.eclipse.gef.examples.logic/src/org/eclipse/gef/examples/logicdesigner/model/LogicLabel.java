@@ -26,8 +26,7 @@ static final long serialVersionUID = 1;
 private String text = 
 	LogicMessages.LogicPlugin_Tool_CreationTool_LogicLabel; 
 
-private static Image LOGIC_LABEL_ICON = new Image(null,
-	LED.class.getResourceAsStream("icons/label16.gif"));  //$NON-NLS-1$
+private static Image LOGIC_LABEL_ICON = createImage(LED.class, "icons/label16.gif");  //$NON-NLS-1$
 
 private static int count;
 

@@ -18,7 +18,7 @@ public class OrGate
 	extends Gate 
 {
 
-static private Image OR_ICON = new Image(null, OrGate.class.getResourceAsStream("icons/or16.gif"));  //$NON-NLS-1$
+static private Image OR_ICON = createImage(OrGate.class, "icons/or16.gif");  //$NON-NLS-1$
 static final long serialVersionUID = 1;
 
 public Image getIconImage() {

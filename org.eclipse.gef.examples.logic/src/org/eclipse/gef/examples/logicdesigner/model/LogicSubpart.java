@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner.model;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
@@ -45,6 +47,16 @@ static{
 		new PropertyDescriptor(ID_SIZE, LogicMessages.PropertyDescriptor_LogicSubPart_Size),
 		new PropertyDescriptor(ID_LOCATION,LogicMessages.PropertyDescriptor_LogicSubPart_Location)
 	};
+}
+
+protected static Image createImage(Class rsrcClass, String name) {
+	InputStream stream = rsrcClass.getResourceAsStream(name);
+	Image image = new Image(null, stream);
+	try {
+		stream.close();
+	} catch (IOException ioe) {
+	}
+	return image;
 }
 
 public LogicSubpart() {
@@ -145,10 +157,10 @@ public Vector getSourceConnections() {
 }
 
 public Vector getTargetConnections() {
-	Enumeration enum = inputs.elements();
+	Enumeration elements = inputs.elements();
 	Vector v = new Vector(inputs.size());
-	while (enum.hasMoreElements())
-		v.addElement(enum.nextElement());
+	while (elements.hasMoreElements())
+		v.addElement(elements.nextElement());
 	return v;
 }
 
@@ -194,10 +206,10 @@ public void setLocation(Point p) {
 }
 
 protected void setOutput(String terminal, boolean val) {
-	Enumeration enum = outputs.elements();
+	Enumeration elements = outputs.elements();
 	Wire w;
-	while (enum.hasMoreElements()) {
-		w = (Wire) enum.nextElement();
+	while (elements.hasMoreElements()) {
+		w = (Wire) elements.nextElement();
 		if (w.getSourceTerminal().equals(terminal) && this.equals(w.getSource()))
 			w.setValue(val);
 	}

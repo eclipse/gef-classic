@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.flow;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 import org.eclipse.swt.graphics.Image;
 
 /**
@@ -17,6 +20,15 @@ import org.eclipse.swt.graphics.Image;
  */
 public class FlowImages {
 
-public static final Image gear = new Image(null, FlowPlugin.class.getResourceAsStream("images/gear.gif"));
+public static final Image GEAR;
+
+static {
+	InputStream stream = FlowPlugin.class.getResourceAsStream("images/gear.gif");
+	GEAR = new Image(null, stream);
+	try {
+		stream.close();
+	} catch (IOException ioe) {
+	}
+}
 
 }

@@ -26,8 +26,7 @@ public class LED
 
 static final long serialVersionUID = 1;
 
-private static Image LED_ICON = new Image(null,
-	LED.class.getResourceAsStream("icons/ledicon16.gif"));  //$NON-NLS-1$
+private static Image LED_ICON = createImage(LED.class, "icons/ledicon16.gif");  //$NON-NLS-1$
 private static int count;
 public static String P_VALUE = "value";  //$NON-NLS-1$
 protected static IPropertyDescriptor[] newDescriptors = null;

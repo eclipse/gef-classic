@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.gef;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.ImageData;
 
@@ -25,46 +28,44 @@ public class SharedCursors
 {
 
 /**
- *  */
+ * Cursor for valid connection */
 public static final Cursor CURSOR_PLUG;
 /**
- * 
+ * Cursor for invalid connection
  */
 public static final Cursor CURSOR_PLUG_NOT;
 /**
- *  */
+ * Cursor for adding to a tree */
 public static final Cursor CURSOR_TREE_ADD;
 /**
- *  */
+ * Cursor for dragging in a tree */
 public static final Cursor CURSOR_TREE_MOVE;
 
 static {
-	CURSOR_PLUG = new Cursor(null,
-		new ImageData(
-			Internal.class.getResourceAsStream("icons/plugmask.gif")), //$NON-NLS-1$
-		new ImageData(
-			Internal.class.getResourceAsStream("icons/plug.bmp")), //$NON-NLS-1$
-		0, 0);
-	CURSOR_PLUG_NOT = new Cursor(null,
-		new ImageData(
-			Internal.class.getResourceAsStream("icons/plugmasknot.gif")), //$NON-NLS-1$
-		new ImageData(
-			Internal.class.getResourceAsStream("icons/plugnot.bmp")), //$NON-NLS-1$
-		0, 0);
+	CURSOR_PLUG = createCursor("icons/plugmask.gif", //$NON-NLS-1$
+			"icons/plug.bmp"); //$NON-NLS-1$
+	CURSOR_PLUG_NOT = createCursor("icons/plugmasknot.gif", //$NON-NLS-1$
+			"icons/plugnot.bmp"); //$NON-NLS-1$
+	CURSOR_TREE_ADD = createCursor("icons/Tree_Add_Mask.gif", //$NON-NLS-1$
+			"icons/Tree_Add.gif"); //$NON-NLS-1$
+	CURSOR_TREE_MOVE = createCursor("icons/Tree_Move_Mask.gif", //$NON-NLS-1$
+			"icons/Tree_Move.gif"); //$NON-NLS-1$
+}
 
-	CURSOR_TREE_ADD = new Cursor(null,
-		new ImageData(Internal.class
-			.getResourceAsStream("icons/Tree_Add_Mask.gif")), //$NON-NLS-1$
-		new ImageData(Internal.class
-			.getResourceAsStream("icons/Tree_Add.gif")), //$NON-NLS-1$
-		0, 0);
-
-	CURSOR_TREE_MOVE = new Cursor(null,
-		new ImageData(Internal.class
-			.getResourceAsStream("icons/Tree_Move_Mask.gif")), //$NON-NLS-1$
-		new ImageData(Internal.class
-			.getResourceAsStream("icons/Tree_Move.gif")), //$NON-NLS-1$
-		0, 0);
+private static Cursor createCursor(String sourceName, String maskName) {
+	InputStream srcStream = Internal.class.getResourceAsStream(sourceName);
+	InputStream maskStream = Internal.class.getResourceAsStream(maskName);
+	Cursor cursor = new Cursor(null, new ImageData(srcStream), 
+			new ImageData(maskStream), 0, 0);
+	try {
+		srcStream.close();
+	} catch (IOException ioe) {
+	}
+	try {
+		maskStream.close();
+	} catch (IOException ioe) {
+	}
+	return cursor;
 }
 
 }

@@ -33,8 +33,7 @@ public static Integer ROUTER_MANUAL = new Integer(0);
 public static Integer ROUTER_MANHATTAN = new Integer(1);
 public static Integer ROUTER_SHORTEST_PATH = new Integer(2);
 private static int count;
-private static Image LOGIC_ICON = new Image (null,
-	LogicDiagram.class.getResourceAsStream("icons/circuit16.gif")); //$NON-NLS-1$
+private static Image LOGIC_ICON = createImage(LogicDiagram.class, "icons/circuit16.gif"); //$NON-NLS-1$
 
 
 protected List children = new ArrayList();

@@ -19,7 +19,7 @@ public class XORGate
 {
 
 static final long serialVersionUID = 1;
-private static Image XOR_ICON = new Image(null,	XORGate.class.getResourceAsStream("icons/xor16.gif"));  //$NON-NLS-1$
+private static Image XOR_ICON = createImage(XORGate.class, "icons/xor16.gif");  //$NON-NLS-1$
 
 public Image getIconImage() {
 	return XOR_ICON;

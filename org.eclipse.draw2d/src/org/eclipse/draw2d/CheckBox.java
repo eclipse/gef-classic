@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 import org.eclipse.swt.graphics.Image;
 
 /**
@@ -23,10 +26,18 @@ public final class CheckBox
 private Label label = null;
 
 static final Image
-	UNCHECKED = new Image(null,
-		CheckBox.class.getResourceAsStream("images/checkboxenabledoff.gif")), //$NON-NLS-1$
-	CHECKED = new Image(null,
-		CheckBox.class.getResourceAsStream("images/checkboxenabledon.gif")); //$NON-NLS-1$
+	UNCHECKED = createImage("images/checkboxenabledoff.gif"), //$NON-NLS-1$
+	CHECKED = createImage("images/checkboxenabledon.gif"); //$NON-NLS-1$
+
+private static Image createImage(String name) {
+	InputStream stream = CheckBox.class.getResourceAsStream(name);
+	Image image = new Image(null, stream);
+	try {
+		stream.close();
+	} catch (IOException ioe) {
+	}
+	return image;
+}
 
 /**
  * Constructs a CheckBox with no text.

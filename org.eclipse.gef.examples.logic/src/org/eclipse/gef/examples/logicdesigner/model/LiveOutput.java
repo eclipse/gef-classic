@@ -18,7 +18,7 @@ public class LiveOutput
 	extends SimpleOutput
 {
 
-private static Image LIVE_ICON = new Image (null, LiveOutput.class.getResourceAsStream("icons/live16.gif"));  //$NON-NLS-1$
+private static Image LIVE_ICON = createImage(LiveOutput.class, "icons/live16.gif");  //$NON-NLS-1$
 static final long serialVersionUID = 1;
 
 public Image getIconImage() {
