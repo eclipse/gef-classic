@@ -13,10 +13,18 @@ public class PaletteRoot
 {
 
 public static String PALETTE_TYPE_ROOT = "Palette_Root";//$NON-NLS-1$
+private ToolEntry defaultEntry;
 
-public PaletteRoot(List children) {
-	setType (PALETTE_TYPE_ROOT);
-	addAll(children);
+public PaletteRoot() {
+	super(null, null, null, PALETTE_TYPE_ROOT);
+}
+
+public ToolEntry getDefaultEntry() {
+	return defaultEntry;
+}
+
+public void setDefaultEntry(ToolEntry entry) {
+	this.defaultEntry = entry;
 }
 
 public String toString() {

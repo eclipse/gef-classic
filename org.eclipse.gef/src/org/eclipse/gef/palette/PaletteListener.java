@@ -16,24 +16,6 @@ public interface PaletteListener
  * A palette entry was selected.
  * @param event org.eclipse.gef.palette.PaletteEvent
  */
-void entrySelected(PaletteEvent event);
-
-/**
- * There is a new default entry. This is necessary
- * so that the editor knows what the default tool is.
- * Whenever a palette is loaded all listeners are sent
- * this message with the new default entry. The editor
- * can then get its tool out of it. If there is no
- * default entry, then null is sent.
- *
- * This will also be sent whenever an add listener
- * is performed, but only for the listener that was
- * added. This way when they first attach they will
- * get notification of the default entry.
- *
- * The entry will be contained in the event.
- *
- */
-//void newDefaultEntry(PaletteEvent event);
+void modeChanged();
 
 }

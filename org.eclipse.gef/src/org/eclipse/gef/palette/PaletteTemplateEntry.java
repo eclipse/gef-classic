@@ -12,19 +12,15 @@ public class PaletteTemplateEntry
 {
 
 private Object template;
+public static final String PALETTE_TYPE_TEMPLATE = "$Palette Template";
 
-public PaletteTemplateEntry(Object template, String label) {
-	super(label);
-	setTemplate(template);
-}
-
-public PaletteTemplateEntry(Object template, String label, String shortDesc) {
-	super(label, shortDesc);
-	setTemplate(template);
-}
-
-public PaletteTemplateEntry(Object template, String label, String shortDesc, ImageDescriptor iconSmall, ImageDescriptor iconLarge) {
-	super(label, shortDesc, iconSmall, iconLarge);
+public PaletteTemplateEntry(
+  String label,
+  String shortDesc,
+  Object template,
+  ImageDescriptor iconSmall,
+  ImageDescriptor iconLarge) {
+	super(label, shortDesc, iconSmall, iconLarge, PALETTE_TYPE_TEMPLATE);
 	setTemplate(template);
 }
 

@@ -1,8 +1,5 @@
 package org.eclipse.gef.palette;
 
-import org.eclipse.jface.resource.ImageDescriptor;
-
-import org.eclipse.gef.internal.Internal;
 import org.eclipse.gef.ui.palette.PaletteMessages;
 
 /**
@@ -18,15 +15,13 @@ import org.eclipse.gef.ui.palette.PaletteMessages;
  */
 public class PaletteSeparator extends PaletteEntry {
 
-/**
- * This String can be used as an ID for separators that are not markers
- */
-public static final String NOT_A_MARKER = ""; //$NON-NLS-1$
-
-private static final ImageDescriptor icon = ImageDescriptor.createFromFile(
-				Internal.class, "icons/separator.gif"); //$NON-NLS-1$
-
 private String id;
+
+public static final Object PALETTE_TYPE_SEPARATOR = "$Palette Separator";//$NON-NLS-1$
+
+public PaletteSeparator() {
+	this ("");
+}
 
 /**
  * Constructor
@@ -36,7 +31,6 @@ private String id;
 public PaletteSeparator(String id) {
 	super(PaletteMessages.NEW_SEPARATOR_LABEL, PaletteMessages.NEW_SEPARATOR_DESC);
 	setId(id);
-	setSmallIcon(icon);
 }
 
 /**

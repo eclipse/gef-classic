@@ -24,7 +24,6 @@ private String label;
 private String shortDescription;
 private ImageDescriptor iconSmall;
 private ImageDescriptor iconLarge;
-private boolean isDefault = false;
 private boolean visible = true;
 private Object type = PaletteEntry.PALETTE_TYPE_UNKNOWN;
 
@@ -88,25 +87,6 @@ protected PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 
 /**
  * Constructor
- */
-public PaletteEntry() {
-	this(""); //$NON-NLS-1$
-}
-
-/**
- * Constructor
- * <p>
- * Any parameter can be <code>null</code>
- * </p>
- * 
- * @param	label	The entry's name
- */
-public PaletteEntry(String label) {
-	this(label, "", null, null, null); //$NON-NLS-1$
-}
-
-/**
- * Constructor
  * <p>
  * Any parameter can be <code>null</code>
  * </p>
@@ -157,46 +137,23 @@ public PaletteEntry(String label,
  * <p>
  * Any parameter can be <code>null</code>
  * </p>
- * 
- * @param label				Tbe entry's name
- * @param shortDescription		The entry's description
- * @param iconSmall			The small icon to represent this entry
- * @param iconLarge			The large icon to represent this entry
- * @param type					The entry's type
+ * @param label The entry's name
+ * @param shortDescription The entry's description
+ * @param iconSmall The small icon to represent this entry
+ * @param iconLarge The large icon to represent this entry
+ * @param type The entry's type
  */
-public PaletteEntry(String label,
-							String shortDescription,
-							ImageDescriptor iconSmall,
-							ImageDescriptor iconLarge,
-							Object type) {
-	this(label, shortDescription, iconSmall, iconLarge, type, null);
-}
-
-/**
- * Constructor
- * <p>
- * Any parameter can be <code>null</code>
- * </p>
- * 
- * @param label				The entry's name
- * @param shortDescription		The entry's description
- * @param iconSmall			The small icon to represent this entry
- * @param iconLarge			The large icon to represent this entry
- * @param type					The entry's type
- * @param parent				The entry's parent
- */
-public PaletteEntry(String label,
-					String shortDescription,
-					ImageDescriptor iconSmall,
-					ImageDescriptor iconLarge,
-					Object type,
-					PaletteContainer parent) {
+public PaletteEntry(
+	String label,
+	String shortDescription,
+	ImageDescriptor iconSmall,
+	ImageDescriptor iconLarge,
+	Object type) {
 	setLabel(label);
 	setDescription(shortDescription);
 	setSmallIcon(iconSmall);
 	setLargeIcon(iconLarge);
 	setType(type);
-	setParent(parent);
 }
 
 /**
@@ -253,13 +210,6 @@ public Object getType() {
 }
 
 /**
- * @return the default nature of the entry.
- */
-public boolean isDefault() {
-	return isDefault;
-}
-
-/**
  * @return whether or not this entry is visible.  An entry that is not visible is not
  * shown on the palette.
  */
@@ -275,20 +225,7 @@ public void removePropertyChangeListener(PropertyChangeListener listener) {
 }
 
 /**
- * Mutator method for default
- * 
- * @param newDefault	The new default value
- */
-public void setDefault(boolean newDefault) {
-	if (newDefault != isDefault) {
-		isDefault = newDefault;
-		listeners.firePropertyChange(PROPERTY_DEFAULT, !isDefault, isDefault);
-	}
-}
-
-/**
  * Mutator method for description
- * 
  * @param s	The new description
  */
 public void setDescription(String s) {
@@ -305,7 +242,6 @@ public void setDescription(String s) {
 
 /**
  * Mutator method for label
- * 
  * @param s	The new name
  */
 public void setLabel(String s) {
@@ -322,8 +258,7 @@ public void setLabel(String s) {
 
 /**
  * Mutator method for large icon
- * 
- * @param 	icon	The large icon to represent this entry
+ * @param icon The large icon to represent this entry
  */
 public void setLargeIcon(ImageDescriptor icon) {
 	if (icon != iconLarge) {
@@ -361,7 +296,6 @@ public void setSmallIcon(ImageDescriptor icon) {
 
 /**
  * Mutator method for type
- * 
  * @param newType	The new type
  */
 public void setType(Object newType) {

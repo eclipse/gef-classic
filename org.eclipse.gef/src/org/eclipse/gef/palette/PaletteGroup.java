@@ -12,8 +12,7 @@ public class PaletteGroup
 	extends PaletteContainer {
 
 public PaletteGroup(String label){
-	super(label);
-	setType(PALETTE_TYPE_GROUP);
+	super(label, null, null, PALETTE_TYPE_GROUP);
 }
 
 public PaletteGroup(String label, List children){

@@ -25,10 +25,7 @@ public class PaletteContainer
  * Property name indicating that this PaletteContainer's children have changed
  */
 public static final String
-	PROPERTY_CHILDREN_CHANGED = "Children Changed"; //$NON-NLS-1$
-
-public static final String 
-	PALETTE_TYPE_CATEGORY = "Palette_Category"; //$NON-NLS-1$
+	PROPERTY_CHILDREN = "Children Changed"; //$NON-NLS-1$
 
 public static final String
 	PALETTE_TYPE_GROUP = "Palette_Group";//$NON-NLS-1$
@@ -39,26 +36,12 @@ public static final String
 protected List children = new ArrayList();
 
 /**
- * Constructor
- */
-public PaletteContainer() {
-}
-
-/**
- * @see org.eclipse.gef.palette.PaletteEntry#PaletteEntry(String)
- */
-public PaletteContainer(String label) {
-	this(label, null);
-}
-
-/**
  * Constructor that sets the container's label and small icon
  * 
  * @see org.eclipse.gef.palette.PaletteEntry#PaletteEntry(String)
  */
-public PaletteContainer(String label, ImageDescriptor icon) {
-	super(label);
-	setSmallIcon(icon);
+protected PaletteContainer(String label, String desc, ImageDescriptor icon, Object type) {
+	super(label, desc, icon, null, type);
 }
 
 public void add(PaletteEntry entry) {
@@ -67,26 +50,21 @@ public void add(PaletteEntry entry) {
 
 public void add(int index, PaletteEntry entry) {
 	List oldChildren = new ArrayList(children);
-	if (children.contains(entry)) {
-		return;
-	}
 
 	int actualIndex = index < 0 ? children.size() : index;
 	children.add(actualIndex, entry);
 	entry.setParent(this);
-	listeners.firePropertyChange(PROPERTY_CHILDREN_CHANGED,	oldChildren, getChildren());
+	listeners.firePropertyChange(PROPERTY_CHILDREN,	oldChildren, getChildren());
 }
 
-public void addAll(List newChildren) {
+public void addAll(List list) {
 	ArrayList oldChildren = new ArrayList(children);
-	for (Iterator iter = newChildren.iterator(); iter.hasNext();) {
-		PaletteEntry child = (PaletteEntry) iter.next();
-		if (!oldChildren.contains(child)) {
-			children.add(child);
-			child.setParent(this);
-		}
+	for (int i = 0; i < list.size(); i++) {
+		PaletteEntry child = (PaletteEntry) list.get(i);
+		children.add(child);
+		child.setParent(this);
 	}
-	listeners.firePropertyChange(PROPERTY_CHILDREN_CHANGED,	oldChildren, getChildren());
+	listeners.firePropertyChange(PROPERTY_CHILDREN,	oldChildren, getChildren());
 }
 
 /**
@@ -110,7 +88,7 @@ private boolean move(PaletteEntry entry, boolean up) {
 	List oldChildren = new ArrayList(children);
 	children.remove(entry);
 	children.add(index, entry);
-	listeners.firePropertyChange(PROPERTY_CHILDREN_CHANGED,	oldChildren, getChildren());
+	listeners.firePropertyChange(PROPERTY_CHILDREN,	oldChildren, getChildren());
 	return true;
 }
 
@@ -140,7 +118,7 @@ public void remove(PaletteEntry entry) {
 	List oldChildren = new ArrayList(children);
 	if (children.remove(entry)) {
 		entry.setParent(null);
-		listeners.firePropertyChange(PROPERTY_CHILDREN_CHANGED,	oldChildren, getChildren());
+		listeners.firePropertyChange(PROPERTY_CHILDREN,	oldChildren, getChildren());
 	}
 }
 
