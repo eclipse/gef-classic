@@ -15,6 +15,8 @@ import java.util.List;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 
+import org.eclipse.gef.internal.GEFMessages;
+
 /**
  * Default implementation of PaletteContainer
  * 
@@ -46,13 +48,13 @@ protected PaletteContainer(String label, String desc, ImageDescriptor icon, Obje
 }
 
 /**
- * Returns true if this type can be a child of this container, also checks permissions.
+ * Returns true if this type can be a child of this container.
  * 
  * @param type the type being requested
  * @return true if this can be a child of this container
  */
 public boolean acceptsType(Object type) {
-	return getUserModificationPermission() == PERMISSION_FULL_MODIFICATION;
+	return true;
 }
 
 /**
@@ -69,6 +71,9 @@ public void add(PaletteEntry entry) {
  * @param entry the PaletteEntry to add
  */
 public void add(int index, PaletteEntry entry) {
+	if (!acceptsType(entry.getType()))
+		throw new IllegalArgumentException(GEFMessages.Palette_Illegal_Type_Exception);
+			
 	List oldChildren = new ArrayList(getChildren());
 
 	int actualIndex = index < 0 ? getChildren().size() : index;
@@ -85,10 +90,36 @@ public void addAll(List list) {
 	ArrayList oldChildren = new ArrayList(getChildren());
 	for (int i = 0; i < list.size(); i++) {
 		PaletteEntry child = (PaletteEntry) list.get(i);
+			if (!acceptsType(child.getType()))
+				throw new IllegalArgumentException(GEFMessages.Palette_Illegal_Type_Exception);
 			getChildren().add(child);
 			child.setParent(this);
 	}
 	listeners.firePropertyChange(PROPERTY_CHILDREN,	oldChildren, getChildren());
+}
+
+/**
+ * Appends the given entry after the entry with the given id, but before the next 
+ * separator.
+ * @param id the id of the entry to append after
+ * @param entry the entry to add
+ */
+public void appendToSection(String id, PaletteEntry entry) {
+	// find the entry with the given id
+	boolean found = false;
+	for (int i = 0; i < getChildren().size(); i++) {
+		PaletteEntry currEntry = (PaletteEntry)getChildren().get(i);
+		if (currEntry.getId().equals(id)) 
+			found = true;
+		else if (found && currEntry instanceof PaletteSeparator) {
+			add(i, entry);
+			return;
+		}
+	}
+	if (found)
+		add(entry);
+	else
+		throw new IllegalArgumentException(GEFMessages.Palette_Section_Not_Found_Exception + ": " + id);
 }
 
 /**
@@ -113,7 +144,8 @@ private boolean move(PaletteEntry entry, boolean up) {
 			&& getUserModificationPermission() == PaletteEntry.PERMISSION_FULL_MODIFICATION) {
 		// move it into a container if we have full permission
 		PaletteContainer container = (PaletteContainer)getChildren().get(index);
-		if (container.acceptsType(entry.getType())) {
+		if (container.acceptsType(entry.getType()) && container.getUserModificationPermission()
+				== PaletteEntry.PERMISSION_FULL_MODIFICATION) {
 			remove(entry);
 			if (up)
 				container.add(entry);

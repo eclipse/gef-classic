@@ -37,6 +37,7 @@ import org.eclipse.gef.AccessibleEditPart;
 import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
+import org.eclipse.gef.palette.*;
 import org.eclipse.gef.palette.PaletteContainer;
 import org.eclipse.gef.palette.PaletteEntry;
 import org.eclipse.gef.tools.SelectEditPartTracker;
@@ -181,20 +182,28 @@ protected static ImageCache getImageCache() {
  */
 public List getModelChildren() {
 	List modelChildren;
-	if (getModel() instanceof PaletteContainer) {
+	if (getModel() instanceof PaletteContainer)
 		modelChildren = new ArrayList(((PaletteContainer)getModel()).getChildren());
-	} else {
+	else
 		modelChildren = Collections.EMPTY_LIST;
-	}
 	
-	List childrenToBeRemoved = new ArrayList();
+	PaletteEntry prevEntry = null;
 	for (Iterator iter = modelChildren.iterator(); iter.hasNext();) {
 		PaletteEntry entry = (PaletteEntry) iter.next();
-		if (!entry.isVisible()) {
-			childrenToBeRemoved.add(entry);
-		}
+		if (entry instanceof PaletteSeparator) {
+			if (prevEntry == null) 
+				// first item in a group is a separator, don't need it
+				iter.remove();
+			else if (prevEntry instanceof PaletteSeparator)
+				// previous entry was a separator, don't need it
+				iter.remove();
+			else if (!iter.hasNext())
+				// last item in a group is a separator, don't need it
+				iter.remove();
+		} else if (!entry.isVisible())
+			iter.remove();
+		prevEntry = entry;
 	}
-	modelChildren.removeAll(childrenToBeRemoved);
 	
 	return modelChildren;
 }
