@@ -101,30 +101,20 @@ public FigureCanvas(Composite parent, LightweightSystem lws) {
  * @see org.eclipse.swt.widgets.Composite#computeSize(int, int, boolean)
  */
 public org.eclipse.swt.graphics.Point computeSize(int wHint, int hHint, boolean changed) {
-	/* TODO: Need to add the size of the scrollbars.  
-	 * Scrollbars could be auto, always on, or never. Based on these settings, the 
-	 * available space, and the required space, determine whether scrollbars are shown or 
-	 * not, and add their size to the result. You can determine the sizes of scrollbars as
-	 * follows:
-	 * 
-	 * computeTrim(0,0,0,0).width + x*2 (will return width of vertical scrollbar)
-	 */
-	/*
-	 * Fix for Bug# 67554
-	 * Motif leaves a few pixels of border around the canvas
-	 */
-	if ("motif".equals(SWT.getPlatform())) { //$NON-NLS-1$
-		org.eclipse.swt.graphics.Rectangle trim = computeTrim(0,0,0,0);
-		wHint += trim.x * 2;
-		hHint += trim.y * 2;
-		Dimension size = getLightweightSystem().getRootFigure().getPreferredSize(wHint, hHint);
-		size.union(new Dimension(wHint, hHint));
-		size.expand(trim.x * -2, trim.y * -2);
-		return new org.eclipse.swt.graphics.Point(size.width, size.height);
-	}
 	Dimension size = getLightweightSystem().getRootFigure().getPreferredSize(wHint, hHint);
 	size.union(new Dimension(wHint, hHint));
-	return new org.eclipse.swt.graphics.Point(size.width, size.height);
+	org.eclipse.swt.graphics.Rectangle trim = computeTrim(0, 0, size.width, size.height);
+	// Assume scrollbars are not needed if it gets the preferred size
+	// @TODO:Pratik  This is a temporary workaround.  The bars may not have been assigned a 
+	// size yet, which causes the computedSize to be much bigger than required.  This workaround
+	// will not work if the trimming is not the same on all sides.  One way around this is to
+	// allow FigureCanvasses to be created w/o the SWT.H_SCROLL and SWT.V_SCROLL style bits.  
+	// Or you can ask SWT or respect the ScrollBars' visibility in the computeTrim() method.
+	int scrollBarSize = getVerticalBar().getSize().x;
+	if (scrollBarSize <= 0)
+		scrollBarSize = trim.width - size.width + trim.x * 2;
+	return new org.eclipse.swt.graphics.Point(
+			trim.width - scrollBarSize, trim.height - scrollBarSize);
 }
 
 /**
