@@ -96,7 +96,7 @@ protected Map getToolProperties() {
  */
 public void setToolClass(Class toolClass) {
 	if (toolClass != null)
-		Assert.isTrue(toolClass.isInstance(Tool.class));
+		Assert.isTrue(Tool.class.isAssignableFrom(toolClass));
 	this.toolClass = toolClass;
 }
 
