@@ -173,7 +173,7 @@ private void createHoverHelp(final Control control) {
 	};
 	tipLabel.setOpaque(false);
 	tipLabel.setBorder(TOOLTIP_BORDER);
-	collapseToggle.addMouseMotionListener(new MouseMotionListener.Stub() {
+	drawerLabel.addMouseMotionListener(new MouseMotionListener.Stub() {
 		public void mouseEntered(MouseEvent e) {
 			if (skipNextEvent) {
 				skipNextEvent = false;
