@@ -35,7 +35,7 @@ public ScalableFreeformRootEditPart() {
  * @see org.eclipse.gef.ui.parts.FreeformGraphicalRootEditPart#createLayers(LayeredPane)
  */
 protected void createLayers(LayeredPane layeredPane) {
-	layeredPane.add(getScaledLayers(), "$Scaled Layers");//$NON-NLS-1$
+	layeredPane.add(getScaledLayers(), SCALABLE_LAYERS);
 	layeredPane.add(new FreeformLayer(), HANDLE_LAYER);
 	layeredPane.add(new FeedbackLayer(), FEEDBACK_LAYER);
 }
