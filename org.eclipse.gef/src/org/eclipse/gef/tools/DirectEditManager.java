@@ -56,31 +56,6 @@ public abstract class DirectEditManager {
 private static final Color BLUE = ColorConstants.menuBackgroundSelected;
 private static final Border BORDER_FRAME = new DirectEditBorder();
 
-private static class DirectEditBorder
-	extends AbstractBorder
-{
-	private static final Insets insets = new Insets(1, 2, 2, 2);
-	public Insets getInsets(IFigure figure) {
-		return insets;
-	}
-
-	public void paint(IFigure figure, Graphics graphics, Insets insets) {
-		Rectangle rect = getPaintRectangle(figure, insets);
-		graphics.setForegroundColor(ColorConstants.white);
-		graphics.drawLine(rect.x, rect.y, rect.x, rect.bottom());
-		rect.x++;
-		rect.width--;
-		rect.resize(-1, -1);
-		graphics.setForegroundColor(ColorConstants.black);
-		graphics.drawLine(rect.x + 2, rect.bottom(), rect.right(), rect.bottom());
-		graphics.drawLine(rect.right(), rect.bottom(), rect.right(), rect.y + 2);
-
-		rect.resize(-1, -1);
-		graphics.setForegroundColor(BLUE);
-		graphics.drawRectangle(rect);
-	}
-}
-
 private AncestorListener ancestorListener;
 private EditPartListener editPartListener;
 private ControlListener controlListener;
@@ -97,7 +72,7 @@ private Class editorType;
 private boolean committing = false;
 
 /**
- * Constructs a new DirectEdtiManager for the given source edit part. The cell editor 
+ * Constructs a new DirectEditManager for the given source edit part. The cell editor 
  * will be created by instantiating the type <i>editorType</i>. The cell editor will be 
  * placed using the given CellEditorLocator.
  * 
@@ -105,11 +80,8 @@ private boolean committing = false;
  * @param editorType the cell editor type
  * @param locator the locator
  */
-public DirectEditManager(GraphicalEditPart source, 
-							Class editorType, 
-							CellEditorLocator locator) {
-//	if (!CellEditor.class.isAssignableFrom(editorType))
-//		throw new RuntimeException("Class is not a cell editor");
+public DirectEditManager(GraphicalEditPart source, Class editorType, 
+		CellEditorLocator locator) {
 	this.source = source;
 	this.locator = locator;
 	this.editorType = editorType;
@@ -145,10 +117,8 @@ protected void commit() {
 		eraseFeedback();
 		if (isDirty()) {
 			CommandStack stack = 
-				getEditPart().getViewer().getEditDomain().getCommandStack();
-			Command command = getEditPart().getCommand(getDirectEditRequest());
-			if (command != null && command.canExecute())
-				stack.execute(command);
+					getEditPart().getViewer().getEditDomain().getCommandStack();
+			stack.execute(getEditPart().getCommand(getDirectEditRequest()));
 		}
 	} finally {
 		bringDown();
@@ -255,11 +225,7 @@ private void hookListeners() {
 	
 	focusListener = new FocusAdapter() {
 		public void focusLost(FocusEvent e) {
-//			Display.getCurrent().asyncExec(new Runnable() {
-//				public void run() {
-					commit();
-//				}
-//			});
+			commit();
 		}
 	};
 	control.addFocusListener(focusListener);
@@ -282,11 +248,11 @@ private void hookListeners() {
 	control.addControlListener(controlListener);
 
 	cellEditorListener = new ICellEditorListener() {
-		public void cancelEditor() {
-			bringDown();
-		}
 		public void applyEditorValue() {
 			commit();
+		}
+		public void cancelEditor() {
+			bringDown();
 		}
 		public void editorValueChanged(boolean old, boolean newState) {
 			handleValueChanged();
@@ -303,7 +269,7 @@ private void hookListeners() {
 }
 
 /**
- * Initialized the cell editor.  Subclass should implement this to set the initial text 
+ * Initializes the cell editor.  Subclasses should implement this to set the initial text 
  * and add things such as {@link VerifyListener VerifyListeners}, if needed.
  */
 protected abstract void initCellEditor();
@@ -425,6 +391,31 @@ protected void unhookListeners() {
 	control.removeControlListener(controlListener);
 	focusListener = null;
 	controlListener = null;
+}
+
+private static class DirectEditBorder
+	extends AbstractBorder
+{
+	private static final Insets insets = new Insets(1, 2, 2, 2);
+	public Insets getInsets(IFigure figure) {
+		return insets;
+	}
+
+	public void paint(IFigure figure, Graphics graphics, Insets insets) {
+		Rectangle rect = getPaintRectangle(figure, insets);
+		graphics.setForegroundColor(ColorConstants.white);
+		graphics.drawLine(rect.x, rect.y, rect.x, rect.bottom());
+		rect.x++;
+		rect.width--;
+		rect.resize(-1, -1);
+		graphics.setForegroundColor(ColorConstants.black);
+		graphics.drawLine(rect.x + 2, rect.bottom(), rect.right(), rect.bottom());
+		graphics.drawLine(rect.right(), rect.bottom(), rect.right(), rect.y + 2);
+
+		rect.resize(-1, -1);
+		graphics.setForegroundColor(BLUE);
+		graphics.drawRectangle(rect);
+	}
 }
 
 }
