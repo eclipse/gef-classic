@@ -9,6 +9,9 @@ package org.eclipse.gef.tools;
 import java.util.List;
 
 import org.eclipse.gef.*;
+import org.eclipse.gef.requests.DirectEditRequest;
+import org.eclipse.gef.requests.SelectionRequest;
+
 import org.eclipse.swt.graphics.Cursor;
 
 public class SelectEditPartTracker
@@ -21,34 +24,34 @@ protected static final int MAX_FLAG = FLAG_SELECTION_PERFORMED;
 
 private EditPart editpart;
 
-public SelectEditPartTracker(EditPart owner){
+public SelectEditPartTracker(EditPart owner) {
 	setSourceEditPart(owner);
 }
 
-protected Cursor calculateCursor(){
+protected Cursor calculateCursor() {
 	if (isInState(STATE_INITIAL | STATE_DRAG | STATE_ACCESSIBLE_DRAG))
 		return getDefaultCursor();
 	return super.calculateCursor();
 }
 
-protected String getCommandName(){
+protected String getCommandName() {
 	return "Select Tracker";//$NON-NLS-1$
 }
 
-protected String getDebugName(){
+protected String getDebugName() {
 	return "Select Tracker";//$NON-NLS-1$
 }
 
-protected EditPart getSourceEditPart(){
+protected EditPart getSourceEditPart() {
 	return editpart;
 }
 
 protected boolean handleButtonDown(int button) {
-	if (button == 3 || button == 1){
+	if (button == 3 || button == 1) {
 		if (isInState(STATE_INITIAL))
 			performConditionalSelection();
 	}
-	if (button != 1){
+	if (button != 1) {
 		setState(STATE_INVALID);
 		if (button == 3)
 			setState(STATE_TERMINAL);
@@ -58,8 +61,8 @@ protected boolean handleButtonDown(int button) {
 	return true;
 }
 
-protected boolean handleButtonUp(int button){
-	if (isInState(STATE_DRAG)){
+protected boolean handleButtonUp(int button) {
+	if (isInState(STATE_DRAG)) {
 		performSelection();
 		setState(STATE_TERMINAL);
 		return true;
@@ -67,16 +70,16 @@ protected boolean handleButtonUp(int button){
 	return false;
 }
 
-protected boolean handleDoubleClick(int button){
-	getSourceEditPart().performRequest(new Request(REQ_DIRECT_EDIT));
+protected boolean handleDoubleClick(int button) {
+	performDirectEdit();
 	return true;
 }
 
-protected boolean handleDragStarted(){
+protected boolean handleDragStarted() {
 	return stateTransition(STATE_DRAG, STATE_DRAG_IN_PROGRESS);
 }
 
-protected boolean hasSelectionOccurred(){
+protected boolean hasSelectionOccurred() {
 	return getFlag(FLAG_SELECTION_PERFORMED);
 }
 
@@ -84,19 +87,25 @@ protected boolean hasSelectionOccurred(){
  * Calls performSelection if the source is not selected.  If the source is selected, it may be
  * part of a larger selection which the user is trying to drag or operate on, so do nothing.
  */
-protected void performConditionalSelection(){
+protected void performConditionalSelection() {
 	if (getSourceEditPart().getSelected() == EditPart.SELECTED_NONE)
 		performSelection();
 }
 
-protected void performSelection(){
+protected void performDirectEdit() {
+	DirectEditRequest request = new DirectEditRequest();
+	request.setLocation(getLocation());
+	getSourceEditPart().performRequest(request);
+}
+
+protected void performSelection() {
 	if (hasSelectionOccurred())
 		return;
 	setFlag(FLAG_SELECTION_PERFORMED, true);
 	EditPartViewer viewer = getCurrentViewer();
 	List selectedObjects = viewer.getSelectedEditParts();
 
-	if (getCurrentInput().isControlKeyDown()){
+	if (getCurrentInput().isControlKeyDown()) {
 		if (selectedObjects.contains(getSourceEditPart()))
 			viewer.deselect(getSourceEditPart());
 		else
@@ -107,12 +116,12 @@ protected void performSelection(){
 		viewer.select(getSourceEditPart());
 }
 
-protected void resetFlags(){
+protected void resetFlags() {
 	super.resetFlags();
 	setFlag(FLAG_SELECTION_PERFORMED, false);
 }
 
-protected void setSourceEditPart(EditPart part){
+protected void setSourceEditPart(EditPart part) {
 	this.editpart = part;
 }
 
