@@ -7,13 +7,14 @@
  * Contributors: IBM Corporation - initial API and implementation
  ****************************************************************************************/
 
-package org.eclipse.gef.examples.text.model;
+package org.eclipse.gef.examples.text.model.commands;
 
 import org.eclipse.gef.commands.Command;
 
 import org.eclipse.gef.examples.text.GraphicalTextViewer;
 import org.eclipse.gef.examples.text.TextCommand;
 import org.eclipse.gef.examples.text.edit.TextualEditPart;
+import org.eclipse.gef.examples.text.model.ModelElement;
 
 /**
  * @since 3.1

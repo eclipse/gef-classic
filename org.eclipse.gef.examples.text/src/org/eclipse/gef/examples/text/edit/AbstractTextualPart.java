@@ -18,12 +18,15 @@ import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.examples.text.TextLocation;
 import org.eclipse.gef.examples.text.model.ModelElement;
 
-
 /**
  * @since 3.1
  */
-public abstract class AbstractTextualEditPart extends AbstractGraphicalEditPart
+public abstract class AbstractTextualPart extends AbstractGraphicalEditPart
 		implements TextualEditPart, PropertyChangeListener {
+
+public boolean acceptsCaret() {
+	return false;
+}
 
 /**
  * @see org.eclipse.gef.EditPart#activate()
@@ -32,10 +35,6 @@ public void activate() {
 	super.activate();
 	ModelElement model = (ModelElement)getModel();
 	model.addPropertyChangeListener(this);
-}
-
-public boolean acceptsCaret() {
-	return false;
 }
 
 /**
@@ -49,6 +48,10 @@ public void deactivate() {
 
 public TextLocation getLocation(Point absolute) {
 	return null;
+}
+
+protected TextualEditPart getTextParent() {
+	return (TextualEditPart)getParent();
 }
 
 }

@@ -9,9 +9,13 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/ 
 
-package org.eclipse.gef.examples.text.model;
+package org.eclipse.gef.examples.text.model.commands;
 
 import org.eclipse.gef.examples.text.edit.TextualEditPart;
+import org.eclipse.gef.examples.text.model.Container;
+import org.eclipse.gef.examples.text.model.ModelElement;
+import org.eclipse.gef.examples.text.model.ModelLocation;
+import org.eclipse.gef.examples.text.model.TextRun;
 
 /**
  * Attempts to merge an element with the previous element which will accept it.

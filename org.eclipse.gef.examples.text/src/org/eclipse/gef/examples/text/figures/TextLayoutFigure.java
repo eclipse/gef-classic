@@ -57,7 +57,7 @@ public Dimension getPreferredSize(int wHint, int hHint) {
 	return d;
 }
 
-public void setSelectionRange(int beginOffset, int endOffset) {
+public void setSelection(int beginOffset, int endOffset) {
 	this.beginOffset = beginOffset;
 	this.endOffset = endOffset;
 	repaint();

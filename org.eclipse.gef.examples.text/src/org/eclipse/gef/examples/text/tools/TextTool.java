@@ -30,6 +30,7 @@ import org.eclipse.gef.examples.text.GraphicalTextViewer;
 import org.eclipse.gef.examples.text.SelectionRange;
 import org.eclipse.gef.examples.text.TextCommand;
 import org.eclipse.gef.examples.text.TextLocation;
+import org.eclipse.gef.examples.text.TextUtilities;
 import org.eclipse.gef.examples.text.edit.TextualEditPart;
 
 /**
@@ -45,9 +46,9 @@ private static final int MODE_DEL = 3;
 
 private static final int MODE_TYPING = 1;
 
-private int textInputMode;
-
 private AppendableCommand pending;
+
+private int textInputMode;
 
 /**
  * @since 3.1
@@ -79,6 +80,7 @@ public void deactivate() {
  * @param event
  */
 private void doAction(int action, KeyEvent event) {
+	boolean append = false;
 	switch (action) {
 		case ST.DELETE_PREVIOUS:
 			doBackspace();
@@ -86,18 +88,43 @@ private void doAction(int action, KeyEvent event) {
 		case ST.DELETE_NEXT:
 			doDelete();
 			break;
+//HOME
+		case ST.SELECT_LINE_START:
+			append = true;
+		case ST.LINE_START:
+			doSelect(TextualEditPart.LINE_START, append);
+			break;
+//END
+		case ST.SELECT_LINE_END:
+			append = true;
+		case ST.LINE_END:
+			doSelect(TextualEditPart.LINE_END, append);
+			break;
+//LEFT
 		case ST.SELECT_COLUMN_PREVIOUS:
-			doSelectLeft(true);
-			break;
+			append = true;
 		case ST.COLUMN_PREVIOUS:
-			doSelectLeft(false);
+			doSelect(TextualEditPart.COLUMN_PREVIOUS, append);
 			break;
+//RIGHT
 		case ST.SELECT_COLUMN_NEXT:
-			doSelectRight(true);
-			break;
+			append = true;
 		case ST.COLUMN_NEXT:
-			doSelectRight(false);
+			doSelect(TextualEditPart.COLUMN_NEXT, append);
 			break;
+//UP
+		case ST.SELECT_LINE_UP:
+			append = true;
+		case ST.LINE_UP:
+			doSelect(TextualEditPart.LINE_UP, append);
+			break;
+//DOWN
+		case ST.SELECT_LINE_DOWN:
+			append = true;
+		case ST.LINE_DOWN:
+			doSelect(TextualEditPart.LINE_DOWN, append);
+			break;
+//TAB
 		case SWT.TAB | SWT.SHIFT:
 			doUnindent();
 			break;
@@ -105,6 +132,7 @@ private void doAction(int action, KeyEvent event) {
 			if (!doIndent())
 				doTyping(event);
 			break;
+//ENTER
 		case SWT.CR:
 			if (!doNewline())
 				doTyping(event);
@@ -124,7 +152,7 @@ private boolean doBackspace() {
 	if (range.isEmpty()) {
 		if (handleTextEdit(new TextRequest(TextRequest.REQ_BACKSPACE, range, pending)))
 			return true;
-		doSelectLeft(false);
+		doSelect(TextualEditPart.COLUMN_PREVIOUS, false);
 		return false;
 	} else
 		return handleTextEdit(new TextRequest(TextRequest.REQ_REMOVE_RANGE, range));
@@ -137,7 +165,7 @@ private boolean doDelete() {
 	if (range.isEmpty()) {
 		if (handleTextEdit(new TextRequest(TextRequest.REQ_DELETE, range, pending)))
 			return true;
-		doSelectRight(false);
+		doSelect(TextualEditPart.COLUMN_NEXT, false);
 		return false;
 	} else
 		return handleTextEdit(new TextRequest(TextRequest.REQ_REMOVE_RANGE, range));
@@ -208,43 +236,29 @@ private boolean doNewline() {
 	return handleTextEdit(edit);
 }
 
-private void doSelectLeft(boolean appendSelection) {
+private void doSelect(int direction, boolean appendSelection) {
 	TextLocation caretLocation = getTextualViewer().getCaretLocation();
+	SelectionRange range = getTextualViewer().getSelectionRange();
 
-	TextLocation newLoc = caretLocation.part.getNextLocation(SWT.ARROW_LEFT,
-			caretLocation);
+	TextLocation otherEnd;
+	if (range.isForward)
+		otherEnd = range.begin;
+	else
+		otherEnd = range.end;
 
+	TextLocation newCaretLocation = caretLocation.part.getNextLocation(direction,
+			caretLocation, getTextualViewer().getCaretBounds());
+
+	if (newCaretLocation == null)
+		return;
 	if (appendSelection) {
-		SelectionRange range = getTextualViewer().getSelectionRange();
-		if (range.begin.equals(caretLocation))
-			range = new SelectionRange(newLoc, range.end, false);
+		if (TextUtilities.isForward(otherEnd, newCaretLocation))
+			range = new SelectionRange(otherEnd, newCaretLocation, true);
 		else
-			range = new SelectionRange(range.begin, newLoc);
+			range = new SelectionRange(newCaretLocation, otherEnd, false);
 		getTextualViewer().setSelectionRange(range);
 	} else {
-		getTextualViewer().setSelectionRange(new SelectionRange(newLoc));
-	}
-}
-
-/**
- * @since 3.1
- * @param b
- */
-private void doSelectRight(boolean appendSelection) {
-	TextLocation caretLocation = getTextualViewer().getCaretLocation();
-
-	TextLocation newLoc = caretLocation.part.getNextLocation(SWT.ARROW_RIGHT,
-			caretLocation);
-
-	if (appendSelection) {
-		SelectionRange range = getTextualViewer().getSelectionRange();
-		if (caretLocation.equals(range.end))
-			range = new SelectionRange(range.begin, newLoc);
-		else
-			range = new SelectionRange(newLoc, range.end, false);
-		getTextualViewer().setSelectionRange(range);
-	} else {
-		getTextualViewer().setSelectionRange(new SelectionRange(newLoc));
+		getTextualViewer().setSelectionRange(new SelectionRange(newCaretLocation));
 	}
 }
 
@@ -267,8 +281,7 @@ private void doTyping(KeyEvent event) {
 		// insert a character in the text in this instance). Don't
 		// ignore CTRL+ALT combinations since that is the Alt Gr
 		// key on some keyboards.
-		ignore = (event.stateMask ^ SWT.ALT) == 0
-				|| (event.stateMask ^ SWT.CTRL) == 0
+		ignore = (event.stateMask ^ SWT.ALT) == 0 || (event.stateMask ^ SWT.CTRL) == 0
 				|| (event.stateMask ^ (SWT.ALT | SWT.SHIFT)) == 0
 				|| (event.stateMask ^ (SWT.CTRL | SWT.SHIFT)) == 0;
 	}
@@ -358,7 +371,8 @@ private boolean handleTextEdit(TextRequest edit) {
 	}
 
 	TextCommand textCommand = (TextCommand)insert;
-	viewer.setSelectionRange(new SelectionRange(textCommand.getExecuteSelectionRange(viewer).end));
+	viewer.setSelectionRange(new SelectionRange(textCommand
+			.getExecuteSelectionRange(viewer).end));
 	return true;
 }
 
@@ -369,6 +383,7 @@ private boolean handleTextEdit(TextRequest edit) {
  */
 private int lookupAction(int i) {
 	switch (i) {
+		//Left and Right
 		case SWT.ARROW_LEFT:
 			return ST.COLUMN_PREVIOUS;
 		case SWT.ARROW_RIGHT:
@@ -377,16 +392,40 @@ private int lookupAction(int i) {
 			return ST.SELECT_COLUMN_NEXT;
 		case SWT.ARROW_LEFT | SWT.SHIFT:
 			return ST.SELECT_COLUMN_PREVIOUS;
+		case ST.SELECT_WORD_NEXT:
+			return ST.SELECT_WORD_NEXT;
+		
+		case ST.LINE_END:
+			return ST.LINE_END;
+		case ST.SELECT_LINE_END:
+			return ST.SELECT_LINE_END;
+		case ST.LINE_START:
+			return ST.LINE_START;
+		case ST.SELECT_LINE_START:
+			return ST.SELECT_LINE_START;
+
+		//Up and Down keys
 		case SWT.ARROW_UP:
 			return ST.LINE_UP;
+		case SWT.ARROW_DOWN:
+			return ST.LINE_DOWN;
+		case ST.PAGE_UP:
+			return ST.PAGE_UP;
+		case ST.SELECT_LINE_UP:
+			return ST.SELECT_LINE_UP;
+		case ST.SELECT_LINE_DOWN:
+			return ST.SELECT_LINE_DOWN;
+
 		case SWT.DEL:
 			return ST.DELETE_NEXT;
 		case SWT.BS:
 			return ST.DELETE_PREVIOUS;
+
 		case SWT.TAB | SWT.SHIFT:
 			return SWT.TAB | SWT.SHIFT;
 		case SWT.TAB:
 			return SWT.TAB;
+
 		case SWT.LF:
 		case SWT.CR:
 			return SWT.CR;

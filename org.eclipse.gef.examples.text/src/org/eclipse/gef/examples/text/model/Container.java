@@ -18,12 +18,15 @@ import java.util.List;
  */
 public class Container extends ModelElement {
 
-public static final int TYPE_COMMENT = 1;
-public static final int TYPE_IMPORT_DECLARATIONS = 2;
-public static final int TYPE_ROOT = 3;
-public static final int TYPE_BULLETED_LIST = 4;
+public static final int TYPE_BULLETED_LIST = 1;
+public static final int TYPE_COMMENT = 2;
+public static final int TYPE_IMPORT_DECLARATIONS = 3;
+public static final int TYPE_PARAGRAPH = 4;
+public static final int TYPE_ROOT = 5;
+public static final int TYPE_INLINE = 6;
 
 private List children = new ArrayList();
+private Style style = new Style();
 
 public Container(int type) {
 	this.type = type;
@@ -54,6 +57,10 @@ public boolean contains(ModelElement child) {
 	return false;
 }
 
+public List getChildren() {
+	return children;
+}
+
 public int getChildType() {
 	switch (getType()) {
 		case TYPE_IMPORT_DECLARATIONS:
@@ -65,13 +72,14 @@ public int getChildType() {
 	}
 }
 
-public List getChildren() {
-	return children;
+public Style getStyle() {
+	return style;
 }
 
 public int remove(ModelElement child) {
 	int index = children.indexOf(child);
 	children.remove(child);
+	child.setParent(null);
 	firePropertyChange("children", child, null);
 	return index;
 }
@@ -81,10 +89,18 @@ public void removeAll(Collection children) {
 		firePropertyChange("children", children, null);
 }
 
+public void setParent(Container container) {
+	super.setParent(container);
+	if (container == null)
+		getStyle().setParentStyle(null);
+	else
+		getStyle().setParentStyle(container.getStyle());
+}
+
 /**
  * @see org.eclipse.gef.examples.text.model.ModelElement#size()
  */
-int size() {
+public int size() {
 	return getChildren().size();
 }
 

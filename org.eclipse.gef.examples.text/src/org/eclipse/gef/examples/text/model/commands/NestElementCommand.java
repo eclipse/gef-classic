@@ -9,11 +9,13 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/ 
 
-package org.eclipse.gef.examples.text.model;
+package org.eclipse.gef.examples.text.model.commands;
 
 import org.eclipse.gef.examples.text.GraphicalTextViewer;
 import org.eclipse.gef.examples.text.SelectionRange;
 import org.eclipse.gef.examples.text.edit.TextualEditPart;
+import org.eclipse.gef.examples.text.model.Container;
+import org.eclipse.gef.examples.text.model.TextRun;
 
 /**
  * @since 3.1

@@ -7,9 +7,15 @@
  * Contributors: IBM Corporation - initial API and implementation
  ****************************************************************************************/
 
-package org.eclipse.gef.examples.text.model;
+package org.eclipse.gef.examples.text.model.commands;
 
 import java.util.List;
+
+import org.eclipse.gef.examples.text.model.Container;
+import org.eclipse.gef.examples.text.model.ModelElement;
+import org.eclipse.gef.examples.text.model.ModelLocation;
+import org.eclipse.gef.examples.text.model.ModelUtil;
+import org.eclipse.gef.examples.text.model.TextRun;
 
 /**
  * @since 3.1
@@ -69,11 +75,11 @@ public boolean canApply() {
 }
 
 public ModelLocation getResultingLocation() {
-	return null;
+	return clipBeginning.getResultingLocation();
 }
 
 /**
- * @see org.eclipse.gef.examples.text.model.MiniEdit#reapply()
+ * @see org.eclipse.gef.examples.text.model.commands.MiniEdit#reapply()
  */
 public void reapply() {
 	apply();

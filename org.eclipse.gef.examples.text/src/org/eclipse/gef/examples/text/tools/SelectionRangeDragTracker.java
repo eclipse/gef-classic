@@ -15,6 +15,7 @@ import org.eclipse.draw2d.Cursors;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.tools.SimpleDragTracker;
+import org.eclipse.gef.tools.ToolUtilities;
 
 import org.eclipse.gef.examples.text.GraphicalTextViewer;
 import org.eclipse.gef.examples.text.SelectionRange;
@@ -77,9 +78,26 @@ private TextLocation getCurrentTextLocation() {
 protected boolean handleDragInProgress() {
 	if (isInState(STATE_SWIPE)) {
 		endDrag = getCurrentTextLocation();
-		if (endDrag != null && beginDrag != null)
-				((GraphicalTextViewer)getCurrentViewer())
-						.setSelectionRange(new SelectionRange(beginDrag, endDrag));
+		if (endDrag != null) {
+			EditPart end = endDrag.part;
+			EditPart begin = beginDrag.part;
+			boolean inverted = false;
+			if (end == begin)
+				inverted = endDrag.offset < beginDrag.offset;
+			else {
+				EditPart ancestor = ToolUtilities.findCommonAncestor(end, begin);
+				while (end.getParent() != ancestor)
+					end = end.getParent();
+				while (begin.getParent() != ancestor)
+					begin = begin.getParent();
+				inverted = ancestor.getChildren().indexOf(end) < ancestor.getChildren().indexOf(begin);
+			}
+			GraphicalTextViewer viewer = (GraphicalTextViewer)getCurrentViewer();
+			if (!inverted)
+				viewer.setSelectionRange(new SelectionRange(beginDrag, endDrag));
+			else
+				viewer.setSelectionRange(new SelectionRange(endDrag, beginDrag, false));
+		}
 	}
 	return super.handleDragInProgress();
 }

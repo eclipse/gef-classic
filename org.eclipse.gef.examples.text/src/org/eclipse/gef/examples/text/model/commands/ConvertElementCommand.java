@@ -9,10 +9,14 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/ 
 
-package org.eclipse.gef.examples.text.model;
+package org.eclipse.gef.examples.text.model.commands;
 
 import org.eclipse.gef.examples.text.GraphicalTextViewer;
 import org.eclipse.gef.examples.text.SelectionRange;
+import org.eclipse.gef.examples.text.model.Container;
+import org.eclipse.gef.examples.text.model.ModelElement;
+import org.eclipse.gef.examples.text.model.ModelLocation;
+import org.eclipse.gef.examples.text.model.TextRun;
 
 /**
  * @since 3.1
@@ -26,16 +30,15 @@ private final ModelElement converted;
 private final ModelLocation caret;
 
 /**
- * 
  * @since 3.1
  */
-public ConvertElementCommand(TextRun text, int offset, ModelElement converted, ModelLocation caret) {
+public ConvertElementCommand(TextRun text, int begin, int end, ModelElement converted, ModelLocation caret) {
 	super("bogus");
 	this.text = text;
-	this.offset = offset;
+	this.offset = begin;
 	this.converted = converted;
 	this.caret = caret;
-	removed = text.getText().substring(offset).toCharArray();	
+	removed = text.getText().substring(begin, end).toCharArray();	
 }
 
 public void execute() {

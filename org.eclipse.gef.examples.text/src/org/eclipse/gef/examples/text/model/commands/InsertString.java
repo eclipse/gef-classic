@@ -7,9 +7,12 @@
  * Contributors: IBM Corporation - initial API and implementation
  ****************************************************************************************/
 
-package org.eclipse.gef.examples.text.model;
+package org.eclipse.gef.examples.text.model.commands;
 
 import org.eclipse.jface.util.Assert;
+
+import org.eclipse.gef.examples.text.model.ModelLocation;
+import org.eclipse.gef.examples.text.model.TextRun;
 
 /**
  * @since 3.1

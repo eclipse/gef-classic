@@ -21,6 +21,19 @@ import org.eclipse.gef.examples.text.TextLocation;
  */
 public interface TextualEditPart extends GraphicalEditPart {
 
+int COLUMN_PREVIOUS = 1;
+int COLUMN_NEXT = 2;
+int COLUMN_PREVIOUS_INTO = 3;
+int COLUMN_NEXT_INTO = 4;
+int LINE_UP = 5;
+int LINE_DOWN = 6;
+int LINE_UP_INTO = 7;
+int LINE_DOWN_INTO = 8;
+int LINE_END = 9;
+int LINE_START = 10;
+int LINE_END_QUERY = 11;
+int LINE_START_QUERY = 12;
+
 /**
  * Returns the length in characters of this part
  * @since 3.1
@@ -36,11 +49,20 @@ int getLength();
  */
 Rectangle getCaretPlacement(int offset);
 
-TextLocation getNextLocation(int identifier, TextLocation current);
+TextLocation getNextLocation(int movement, TextLocation current, Rectangle caret);
 
 TextLocation getLocation(Point absolute);
 
-void setSelection(int start, int end);
+/**
+ * Sets the begin and ending selection indices.  Indices are zero-based, and are specified
+ * in terms of caret offsets. In a part's length is N, there are N+1 caret positions
+ * ranging from 0..N. The begin index should always be less than the end index. No
+ * selection is indicated by setting both values to <code>-1</code>.
+ * @since 3.1
+ * @param begin the beginning offset or -1
+ * @param end the end offset or -1
+ */
+void setSelection(int begin, int end);
 
 /**
  * @since 3.1

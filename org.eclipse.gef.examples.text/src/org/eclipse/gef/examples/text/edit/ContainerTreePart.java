@@ -12,6 +12,9 @@ package org.eclipse.gef.examples.text.edit;
 import java.beans.PropertyChangeEvent;
 import java.util.List;
 
+import org.eclipse.swt.widgets.TreeItem;
+import org.eclipse.swt.widgets.Widget;
+
 import org.eclipse.gef.examples.text.model.Container;
 
 /**
@@ -37,6 +40,11 @@ private Container getContainer() {
 }
 
 protected void refreshVisuals() {
+	Widget widget = getWidget();
+	if (widget instanceof TreeItem) {
+		TreeItem item = (TreeItem)widget;
+		item.setExpanded(true);
+	}
 	String label;
 	switch (getContainer().getType()) {
 		case Container.TYPE_BULLETED_LIST:
@@ -49,6 +57,17 @@ protected void refreshVisuals() {
 			label = "import declarations";
 			break;
 
+		case Container.TYPE_INLINE:
+			if (getContainer().getStyle().isBold())
+				label ="BOLD";
+			else if (getContainer().getStyle().isItalic())
+				label = "ITALIC";
+			else if (getContainer().getStyle().isUnderline())
+				label ="UNDERLINE";
+			else {
+				label = "nested";
+			}
+			break;
 		default:
 			label = "unknown container";
 			break;

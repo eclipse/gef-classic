@@ -18,7 +18,8 @@ public class TextRun extends ModelElement {
 
 public static final int TYPE_IMPORT = 1;
 public static final int TYPE_PACKAGE = 2;
-public static final int TYPE_BULLET = 2;
+public static final int TYPE_BULLET = 3;
+public static final int TYPE_UNDERLINE = 4;
 
 private String text;
 
@@ -75,7 +76,7 @@ public void setText(String text) {
 /**
  * @see org.eclipse.gef.examples.text.model.ModelElement#size()
  */
-int size() {
+public int size() {
 	return getText().length();
 }
 

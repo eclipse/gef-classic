@@ -18,19 +18,20 @@ import org.eclipse.gef.editpolicies.GraphicalEditPolicy;
 
 import org.eclipse.gef.examples.text.SelectionRange;
 import org.eclipse.gef.examples.text.TextLocation;
-import org.eclipse.gef.examples.text.model.CompoundEditCommand;
 import org.eclipse.gef.examples.text.model.Container;
-import org.eclipse.gef.examples.text.model.ConvertElementCommand;
-import org.eclipse.gef.examples.text.model.InsertString;
-import org.eclipse.gef.examples.text.model.MergeWithPrevious;
-import org.eclipse.gef.examples.text.model.MiniEdit;
 import org.eclipse.gef.examples.text.model.ModelLocation;
-import org.eclipse.gef.examples.text.model.NestElementCommand;
-import org.eclipse.gef.examples.text.model.PromoteElementCommand;
-import org.eclipse.gef.examples.text.model.RemoveRange;
-import org.eclipse.gef.examples.text.model.RemoveText;
-import org.eclipse.gef.examples.text.model.SubdivideElement;
 import org.eclipse.gef.examples.text.model.TextRun;
+import org.eclipse.gef.examples.text.model.commands.CompoundEditCommand;
+import org.eclipse.gef.examples.text.model.commands.ConvertElementCommand;
+import org.eclipse.gef.examples.text.model.commands.InsertString;
+import org.eclipse.gef.examples.text.model.commands.MergeWithPrevious;
+import org.eclipse.gef.examples.text.model.commands.MiniEdit;
+import org.eclipse.gef.examples.text.model.commands.NestElementCommand;
+import org.eclipse.gef.examples.text.model.commands.ProcessMacroCommand;
+import org.eclipse.gef.examples.text.model.commands.PromoteElementCommand;
+import org.eclipse.gef.examples.text.model.commands.RemoveRange;
+import org.eclipse.gef.examples.text.model.commands.RemoveText;
+import org.eclipse.gef.examples.text.model.commands.SubdivideElement;
 import org.eclipse.gef.examples.text.tools.TextRequest;
 
 /**
@@ -46,20 +47,28 @@ public class BlockEditPolicy extends GraphicalEditPolicy {
 private Command checkForConversion(TextLocation location) {
 	TextRun run = (TextRun)location.part.getModel();
 	String prefix = run.getText().substring(0, location.offset);
-	if (prefix.equals("()")) {
+	if (prefix.endsWith("<b>")) {
+		Container converted = new Container(Container.TYPE_INLINE);
+		converted.getStyle().setBold(true);
+		TextRun boldText = new TextRun("BOLD");
+		converted.add(boldText);
+		ProcessMacroCommand command = new ProcessMacroCommand(run, location.offset - 3,
+				location.offset, converted, new ModelLocation(boldText, 0));
+		command.setEndLocation(new ModelLocation(boldText, 1));
+		return command;
+	} else if (prefix.equals("()")) {
 		ConvertElementCommand command;
 		Container list = new Container(Container.TYPE_BULLETED_LIST);
 		TextRun bullet = new TextRun("", TextRun.TYPE_BULLET);
 		list.add(bullet);
-		command = new ConvertElementCommand(run, 0, list, new ModelLocation(bullet, 0));
+		command = new ConvertElementCommand(run, 0, 2, list, new ModelLocation(bullet, 0));
 		return command;
-	}
-	if (prefix.equals("import")) {
+	} else if (prefix.equals("import")) {
 		ConvertElementCommand command;
 		Container imports = new Container(Container.TYPE_IMPORT_DECLARATIONS);
 		TextRun statement = new TextRun("", TextRun.TYPE_IMPORT);
 		imports.add(statement);
-		command = new ConvertElementCommand(run, 0, imports, new ModelLocation(statement,
+		command = new ConvertElementCommand(run, 0, 6, imports, new ModelLocation(statement,
 				0));
 		return command;
 	}
@@ -235,9 +244,11 @@ private Command getTextInsertionCommand(TextRequest request) {
 		//The range should be empty any time there is a previous command
 		Assert.isTrue(range.isEmpty());
 	}
-
-	InsertString insert = new InsertString(rangeBegin, request.getText(), range.begin.offset);
-	command.pendEdit(insert);
+	
+	if (request.getText() != null) {
+		InsertString insert = new InsertString(rangeBegin, request.getText(), range.begin.offset);
+		command.pendEdit(insert);
+	}
 	return command;
 }
 

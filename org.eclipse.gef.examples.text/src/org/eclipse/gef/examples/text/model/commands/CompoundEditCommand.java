@@ -7,7 +7,7 @@
  * Contributors: IBM Corporation - initial API and implementation
  ****************************************************************************************/
 
-package org.eclipse.gef.examples.text.model;
+package org.eclipse.gef.examples.text.model.commands;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +18,7 @@ import org.eclipse.gef.examples.text.AppendableCommand;
 import org.eclipse.gef.examples.text.GraphicalTextViewer;
 import org.eclipse.gef.examples.text.SelectionRange;
 import org.eclipse.gef.examples.text.edit.TextualEditPart;
+import org.eclipse.gef.examples.text.model.ModelLocation;
 
 /**
  * @since 3.1
@@ -91,13 +92,15 @@ public SelectionRange getRedoSelectionRange(GraphicalTextViewer viewer) {
 
 public SelectionRange getUndoSelectionRange(GraphicalTextViewer viewer) {
 	TextualEditPart begin = lookupModel(viewer, beginLocation.model);
-	if (endLocation == null) return new SelectionRange(begin, beginLocation.offset);
+	if (endLocation == null)
+		return new SelectionRange(begin, beginLocation.offset);
 	TextualEditPart end = lookupModel(viewer, endLocation.model);
 	return new SelectionRange(begin, beginLocation.offset, end, endLocation.offset);
 }
 
 public void pendEdit(MiniEdit edit) {
-	if (pending == null) pending = new ArrayList(2);
+	if (pending == null)
+		pending = new ArrayList(2);
 	pending.add(edit);
 }
 

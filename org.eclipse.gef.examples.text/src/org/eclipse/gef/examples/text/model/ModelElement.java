@@ -9,27 +9,14 @@
 
 package org.eclipse.gef.examples.text.model;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
-
 /**
  * @since 3.1
  */
-public abstract class ModelElement {
+public abstract class ModelElement extends Notifier {
 
 private Container container;
 
-transient protected PropertyChangeSupport listeners = new PropertyChangeSupport(this);
-
 protected int type;
-
-public void addPropertyChangeListener(PropertyChangeListener l) {
-	listeners.addPropertyChangeListener(l);
-}
-
-protected void firePropertyChange(String prop, Object old, Object newValue) {
-	listeners.firePropertyChange(prop, old, newValue);
-}
 
 /**
  * @return Returns the container.
@@ -40,10 +27,6 @@ public Container getContainer() {
 
 public int getType() {
 	return type;
-}
-
-public void removePropertyChangeListener(PropertyChangeListener l) {
-	listeners.removePropertyChangeListener(l);
 }
 
 /**

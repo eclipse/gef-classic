@@ -14,7 +14,7 @@ import org.eclipse.gef.editparts.AbstractEditPart;
 /**
  * @since 3.1
  */
-public class DocumentPart extends CompoundTextualEditPart {
+public class DocumentPart extends BlockTextualPart {
 
 /**
  * @since 3.1

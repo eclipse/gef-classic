@@ -9,11 +9,13 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/ 
 
-package org.eclipse.gef.examples.text.model;
+package org.eclipse.gef.examples.text.model.commands;
 
 import org.eclipse.gef.examples.text.GraphicalTextViewer;
 import org.eclipse.gef.examples.text.SelectionRange;
 import org.eclipse.gef.examples.text.edit.TextualEditPart;
+import org.eclipse.gef.examples.text.model.Container;
+import org.eclipse.gef.examples.text.model.TextRun;
 
 /**
  * Re-parents an element to its grandparent.  Removes the parent if it becomes empty
@@ -40,6 +42,8 @@ public void execute() {
 	oldParent.remove(run);
 	run.setType(newParent.getChildType());
 	newParent.add(run, where);
+	if (oldParent.getChildren().isEmpty())
+		oldParent.getContainer().remove(oldParent);
 }
 
 public boolean canExecute() {
