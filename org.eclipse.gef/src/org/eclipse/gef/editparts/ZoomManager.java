@@ -54,9 +54,10 @@ private Viewport viewport;
 private double zoom = 1.0;
 private int zoomAnimationStyle = ANIMATE_NEVER;
 private double[] zoomLevels = { .5, .75, 1.0, 1.5, 2.0, 2.5, 3, 4 };
-private String FIT_PAGE = GEFMessages.FitPageAction_Label;
-private String FIT_WIDTH = GEFMessages.FitWidthAction_Label;
-private String FIT_HEIGHT = GEFMessages.FitHeightAction_Label;
+public static final String FIT_DOCUMENT_HEIGHT = GEFMessages.FitHeightAction_Label;
+public static final String FIT_DOCUMENT_WIDTH = GEFMessages.FitWidthAction_Label;
+public static final String FIT_WHOLE_DOCUMENT = GEFMessages.FitPageAction_Label;
+private List zoomLevelContributions;
 
 DecimalFormat format = new DecimalFormat("####%"); //$NON-NLS-1$
 
@@ -234,7 +235,17 @@ public double getZoom() {
 public String getZoomAsText() {
 	String newItem = format.format(zoom * multiplier);
 	return newItem;
-}	
+}
+
+/**
+ * Returns the list of strings that should be appended to the list of numerical zoom 
+ * levels. These could be things such as Fit Width, Fit Page, etc. 
+ * May return <code>null</code>.
+ * @return the list of contributed zoom levels
+ */
+public List getZoomLevelContributions() {
+	return zoomLevelContributions;
+}
 
 /**
  * Returns the zoomLevels.
@@ -245,16 +256,22 @@ public double[] getZoomLevels() {
 }
 
 /**
- * Returns the list of zoom levels as Strings in percent notation
+ * Returns the list of zoom levels as Strings in percent notation, plus any additional
+ * zoom levels that were contributed using {@link #setZoomLevelContributions(List)}.
  * @return List The list of zoom levels */
 public String[] getZoomLevelsAsText() {
-	String[] zoomLevelStrings = new String[zoomLevels.length + 3];
+	int size = zoomLevels.length;
+	if (zoomLevelContributions != null)
+		size += zoomLevelContributions.size();
+	String[] zoomLevelStrings = new String[size];
 	for (int i = 0; i < zoomLevels.length; i++) {
 		zoomLevelStrings[i] = format.format(zoomLevels[i]);
 	}
-	zoomLevelStrings[zoomLevels.length] = FIT_PAGE;
-	zoomLevelStrings[zoomLevels.length + 1] = FIT_WIDTH;
-	zoomLevelStrings[zoomLevels.length + 2] = FIT_HEIGHT;
+	if (zoomLevelContributions != null) {
+		for (int i = 0; i < zoomLevelContributions.size(); i++) {
+			zoomLevelStrings[i + zoomLevels.length] = (String)zoomLevelContributions.get(i);
+		}
+	}
 	return zoomLevelStrings;
 }
 
@@ -326,26 +343,28 @@ public void setZoomAnimationStyle(int style) {
 
 /**
  * Sets zoom to the passed string. The string must be composed of numeric characters only
- * with the exception of a decimal point and a '%' as the last character.
+ * with the exception of a decimal point and a '%' as the last character. If the zoom level
+ * contribution list has been set, this method should be overridden to provide the
+ * appropriate zoom implementation for the new zoom levels.
  * @param zoomString The new zoom level */
 public void setZoomAsText(String zoomString) {
 	/* If the viewport's contents' bounds are smaller than the viewport's bounds, the
 	 * contents figure will stretch to fit the viewport, which throws the new zoom
 	 * calculations off.  To correct this, I'm setting the zoom to 1.0. 
 	 */
-	if (zoomString.equals(FIT_HEIGHT)) {
+	if (zoomString.equals(FIT_DOCUMENT_HEIGHT)) {
 		setZoom(1.0 / multiplier);
 		setZoom(getFitHeightZoomLevel() / multiplier);
 		getViewport().getUpdateManager().performUpdate();
 		setZoom(1.0 / multiplier);
 		setZoom(getFitHeightZoomLevel() / multiplier);
-	} else if (zoomString.equals(FIT_PAGE)) {
+	} else if (zoomString.equals(FIT_WHOLE_DOCUMENT)) {
 		setZoom(1.0 / multiplier);
 		setZoom(getFitPageZoomLevel() / multiplier);
 		getViewport().getUpdateManager().performUpdate();
 		setZoom(1.0 / multiplier);
 		setZoom(getFitPageZoomLevel() / multiplier);
-	} else if (zoomString.equals(FIT_WIDTH)) {
+	} else if (zoomString.equals(FIT_DOCUMENT_WIDTH)) {
 		setZoom(1.0 / multiplier);
 		setZoom(getFitWidthZoomLevel() / multiplier);
 		getViewport().getUpdateManager().performUpdate();
@@ -362,6 +381,17 @@ public void setZoomAsText(String zoomString) {
 			Display.getCurrent().beep();
 		}
 	}
+}
+
+/**
+ * Sets the list of zoom level contributions (as strings). If you contribute something
+ * <b>other than</b> {@link #FIT_DOCUMENT_HEIGHT}, {@link #FIT_DOCUMENT_WIDTH} and
+ * {@link #FIT_WHOLE_DOCUMENT} you must subclass this class and override this method to
+ * implement your contributed zoom function.
+ * @param contributions the list of contributed zoom levels
+ */
+public void setZoomLevelContributions(List contributions) {
+	zoomLevelContributions = contributions;
 }
 
 /**
