@@ -371,8 +371,8 @@ private static class FontCache {
 	
 	public Font checkOut(Font font) {
 		FontInfo info = null;
-		List datas = Arrays.asList(font.getFontData());
-		Object obj = table.get(datas);
+		FontData key = font.getFontData()[0];
+		Object obj = table.get(key);
 		if (obj != null) {
 			info = (FontInfo)obj;
 		} else {
@@ -382,7 +382,7 @@ private static class FontCache {
 				boldDatas[i].setStyle(SWT.BOLD);
 			}
 			info.boldFont = new Font(Display.getCurrent(), boldDatas);
-			table.put(datas, info);
+			table.put(key, info);
 		}
 		info.refCount++;
 		return info.boldFont;
