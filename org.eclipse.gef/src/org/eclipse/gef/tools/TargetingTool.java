@@ -8,6 +8,7 @@ package org.eclipse.gef.tools;
 
 import java.util.*;
 
+import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.gef.*;
 import org.eclipse.gef.commands.Command;
@@ -24,6 +25,7 @@ protected static final int MAX_FLAG = FLAG_TARGET_FEEDBACK;
 
 private Request targetRequest;
 private EditPart targetEditPart;
+private AutoexposeHelper exposeHelper;
 
 protected Request createTargetRequest(){
 	Request request = new Request();
@@ -40,6 +42,16 @@ public void deactivate() {
 	targetEditPart = null;
 	targetRequest = null;
 	super.deactivate();
+}
+
+protected void doAutoexpose() {
+	if (exposeHelper == null)
+		return;
+	if (exposeHelper.step(getCurrentInput().getMouseLocation())) {
+		handleAutoexpose();
+		Display.getCurrent().asyncExec(new QueuedAutoexpose());
+	} else
+		setAutoexposeHelper(null);
 }
 
 /**
@@ -88,6 +100,8 @@ protected Request getTargetRequest(){
 		setTargetRequest(createTargetRequest());
 	return targetRequest;
 }
+
+protected void handleAutoexpose() { }
 
 protected boolean handleEnteredEditPart() {
 	updateTargetRequest();
@@ -139,6 +153,20 @@ void resetHover(){
 	setHoverActive(false);
 }
 
+class QueuedAutoexpose implements Runnable {
+	public void run() {
+		if (exposeHelper != null)
+			doAutoexpose();
+	}
+}
+
+protected void setAutoexposeHelper(AutoexposeHelper helper) {
+	exposeHelper = helper;
+	if (exposeHelper == null)
+		return;
+	Display.getCurrent().asyncExec(new QueuedAutoexpose());
+}
+
 protected void setTargetEditPart(EditPart editpart){
 	if (editpart != targetEditPart){
 		if (targetEditPart != null){
@@ -168,6 +196,18 @@ protected void unlockTargetEditPart() {
 	updateTargetUnderMouse();
 }
 
+protected void updateAutoexposeHelper() {
+	EditPart provider = getTargetEditPart();
+	AutoexposeHelper helper = null;
+	while (provider != null) {
+		helper = (AutoexposeHelper)provider.getAdapter(AutoexposeHelper.class);
+		if (helper != null && helper.detect(getCurrentInput().getMouseLocation()))
+			break;
+		provider = provider.getParent();
+	}
+	setAutoexposeHelper(helper);
+}
+
 protected void updateTargetRequest(){}
 
 /**
@@ -179,7 +219,7 @@ protected boolean updateTargetUnderMouse(){
 		EditPart editPart = getCurrentViewer().findObjectAtExcluding(
 			getLocation(),
 			exclude,
-			getTargetConditional());
+			getTargetingConditional());
 		if (editPart != null)
 			editPart = editPart.getTargetEditPart(getTargetRequest());
 		boolean changed = getTargetEditPart() != editPart;

@@ -11,6 +11,7 @@ import java.util.*;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 
+import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.*;
 
 import org.eclipse.gef.*;
@@ -27,9 +28,10 @@ public class DragEditPartsTracker
 
 private static final int FLAG_SOURCE_FEEDBACK = SelectEditPartTracker.MAX_FLAG << 1;
 protected static final int MAX_FLAG = FLAG_SOURCE_FEEDBACK;
+private List operationSet, exclusionSet;
+private PrecisionPoint sourceFigureOffset;
 
 private Request sourceRequest;
-private List operationSet, exclusionSet;
 
 public DragEditPartsTracker(EditPart sourceEditPart) {
 	super(sourceEditPart);
@@ -58,8 +60,10 @@ protected Request createTargetRequest(){
 public void deactivate() {
 	eraseSourceFeedback();
 	super.deactivate();
+	setAutoexposeHelper(null);
 	operationSet = null;
 	exclusionSet = null;
+	sourceFigureOffset = null;
 }
 
 protected void eraseSourceFeedback(){
@@ -123,6 +127,30 @@ protected Collection getExclusionSet() {
 	return exclusionSet;
 }
 
+/**
+ * @see org.eclipse.gef.tools.TargetingTool#handleAutoexpose()
+ */
+protected void handleAutoexpose() {
+	if (isInDragInProgress()){
+
+		if (sourceFigureOffset == null) {
+			Point offset;
+			IFigure figure = ((GraphicalEditPart)getSourceEditPart()).getFigure();
+			sourceFigureOffset = new PrecisionPoint(getStartLocation());
+			figure.translateToRelative(sourceFigureOffset);
+			offset = figure.getBounds().getLocation();
+			sourceFigureOffset.preciseX -= offset.x;
+			sourceFigureOffset.preciseY -= offset.y;
+		}
+
+		updateTargetRequest();
+		updateTargetUnderMouse();
+		showTargetFeedback();
+		showSourceFeedback();
+		setCurrentCommand(getCommand());
+	}
+}
+
 protected boolean handleButtonUp(int button){
 	if (stateTransition(STATE_DRAG_IN_PROGRESS, STATE_TERMINAL)){
 		eraseSourceFeedback();
@@ -141,6 +169,21 @@ protected boolean handleDragInProgress(){
 		showSourceFeedback();
 		setCurrentCommand(getCommand());
 	}
+	return true;
+}
+
+/**
+ * @see org.eclipse.gef.tools.TargetingTool#handleHover()
+ */
+protected boolean handleHover() {
+	if (isInDragInProgress())
+		updateAutoexposeHelper();
+	return true;
+}
+
+protected boolean handleInvalidInput(){
+	super.handleInvalidInput();
+	eraseSourceFeedback();
 	return true;
 }
 
@@ -176,18 +219,24 @@ protected boolean handleKeyUp(KeyEvent e){
 	return false;
 }
 
-protected boolean handleInvalidInput(){
-	super.handleInvalidInput();
-	eraseSourceFeedback();
-	return true;
-}
-
 protected boolean isMove(){
 	return getSourceEditPart().getParent() == getTargetEditPart();
 }
 
 protected void performDrag(){
 	executeCurrentCommand();
+}
+
+protected void repairStartLocation() {
+	if (sourceFigureOffset == null)
+		return;
+	IFigure figure = ((GraphicalEditPart)getSourceEditPart()).getFigure();
+	PrecisionPoint newStart = (PrecisionPoint)sourceFigureOffset.getCopy();
+	Point offset = figure.getBounds().getLocation();
+	newStart.preciseX += offset.x;
+	newStart.preciseY += offset.y;
+	figure.translateToAbsolute(newStart);
+	setStartLocation(newStart);
 }
 
 protected void showSourceFeedback(){
@@ -200,6 +249,7 @@ protected void showSourceFeedback(){
 }
 
 protected void updateTargetRequest(){
+	repairStartLocation();
 	ChangeBoundsRequest request = (ChangeBoundsRequest)getTargetRequest();
 	request.setEditParts(getOperationSet());
 	Dimension d = getDragMoveDelta();
