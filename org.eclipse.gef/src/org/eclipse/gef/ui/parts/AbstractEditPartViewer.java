@@ -295,6 +295,11 @@ public void removeSelectionChangedListener(ISelectionChangedListener l){
 	selectionListeners.remove(l);
 }
 
+/**
+ * @see org.eclipse.gef.EditPartViewer#reveal(EditPart)
+ */
+public void reveal(EditPart part) { }
+
 public void select(EditPart editpart){
 	// If selection isn't changing, do nothing.
 	if ((getSelectedEditParts().size() == 1) && 
@@ -412,7 +417,6 @@ public void setSelection(ISelection newSelection){
 		selection.add(part);
 		if (i==editparts.size()-1){
 			part.setSelected(EditPart.SELECTED_PRIMARY);
-			expose(part);
 		}
 		else
 			part.setSelected(EditPart.SELECTED);

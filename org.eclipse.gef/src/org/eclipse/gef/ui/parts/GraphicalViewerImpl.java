@@ -50,24 +50,6 @@ protected LightweightSystem createLightweightSystem(){
 	return new LightweightSystem();
 }
 
-protected void expose(EditPart part){
-	if (part == null)
-		return;
-	EditPart current = part.getParent();
-	while (current != null){
-		if (current instanceof IAdaptable) {
-			IAdaptable adaptable = (IAdaptable) current;
-			ExposeHelper helper = (ExposeHelper)adaptable.getAdapter(ExposeHelper.class);
-			if (helper != null)
-				helper.exposeDescendant(part);
-		}
-		current = current.getParent();
-	}
-	AccessibleEditPart acc = (AccessibleEditPart)part.getAdapter(AccessibleEditPart.class);
-	if (acc != null)
-		getControl().getAccessible().setFocus(acc.getAccessibleID());
-}
-
 public Handle findHandleAt(Point p){
 	LayerManager layermanager = (LayerManager)getEditPartRegistry().get(LayerManager.ID);
 	if (layermanager == null)
@@ -150,6 +132,27 @@ protected void hookControl(){
 public void registerAccessibleEditPart(AccessibleEditPart acc) {
 	Assert.isNotNull(acc);
 	getEventDispatcher().putAccessible(acc);
+}
+
+/**
+ * @see org.eclipse.gef.EditPartViewer#reveal(EditPart)
+ */
+public void reveal(EditPart part) {
+	if (part == null)
+		return;
+	EditPart current = part.getParent();
+	while (current != null) {
+		if (current instanceof IAdaptable) {
+			IAdaptable adaptable = (IAdaptable) current;
+			ExposeHelper helper = (ExposeHelper)adaptable.getAdapter(ExposeHelper.class);
+			if (helper != null)
+				helper.exposeDescendant(part);
+		}
+		current = current.getParent();
+	}
+	AccessibleEditPart acc = (AccessibleEditPart)part.getAdapter(AccessibleEditPart.class);
+	if (acc != null)
+		getControl().getAccessible().setFocus(acc.getAccessibleID());
 }
 
 public void setCursor(Cursor newCursor){

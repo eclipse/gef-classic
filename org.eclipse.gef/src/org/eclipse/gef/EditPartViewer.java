@@ -246,6 +246,12 @@ Map getVisualPartMap();
 void registerAccessibleEditPart(AccessibleEditPart acc);
 
 /**
+ * Shows the given EditPart if it is not visible.  
+ * @param editpart the EditPart to reveal
+ */
+void reveal(EditPart editpart);
+
+/**
  * Replaces the current selection with the specified <code>EditPart</code>. That part
  * becomes the primary selection.
  * <P>Fires selection changed to

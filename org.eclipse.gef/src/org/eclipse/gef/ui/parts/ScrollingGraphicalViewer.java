@@ -12,6 +12,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.*;
 
+import org.eclipse.gef.EditPart;
 import org.eclipse.gef.GraphicalEditPart;
 
 public class ScrollingGraphicalViewer
@@ -27,26 +28,6 @@ public final Control createControl(Composite parent){
 	return canvas;
 }
 
-protected void expose(org.eclipse.gef.EditPart part){
-	super.expose(part);
-	Viewport port = getFigureCanvas().getViewport();
-	IFigure target = ((GraphicalEditPart)part).getFigure();
-	Rectangle exposeRegion = target.getBounds().getExpanded(5,5);
-	target = target.getParent();
-	while (target != null && target != port){
-		target.translateToParent(exposeRegion);
-		target = target.getParent();
-	}
-	Dimension viewportSize = port.getClientArea().getSize();
-	Point topLeft = exposeRegion.getTopLeft();
-	Point bottomRight = exposeRegion.
-		getBottomRight().
-		translate(viewportSize.negate());
-	Point finalLocation = Point.min(topLeft,
-		Point.max(bottomRight, port.getViewLocation()));
-	getFigureCanvas().scrollSmoothTo(finalLocation.x, finalLocation.y);
-}
-
 private FigureCanvas getFigureCanvas(){
 	return (FigureCanvas)getControl();
 }
@@ -58,6 +39,26 @@ private void installRootFigure(){
 		getFigureCanvas().setViewport((Viewport)rootFigure);
 	else
 		getFigureCanvas().setContents(rootFigure);
+}
+
+public void reveal(EditPart part) {
+	super.reveal(part);
+	Viewport port = getFigureCanvas().getViewport();
+	IFigure target = ((GraphicalEditPart)part).getFigure();
+	Rectangle exposeRegion = target.getBounds().getExpanded(5, 5);
+	target = target.getParent();
+	while (target != null && target != port) {
+		target.translateToParent(exposeRegion);
+		target = target.getParent();
+	}
+	Dimension viewportSize = port.getClientArea().getSize();
+	Point topLeft = exposeRegion.getTopLeft();
+	Point bottomRight = exposeRegion.
+		getBottomRight().
+		translate(viewportSize.negate());
+	Point finalLocation = Point.min(topLeft,
+		Point.max(bottomRight, port.getViewLocation()));
+	getFigureCanvas().scrollSmoothTo(finalLocation.x, finalLocation.y);
 }
 
 protected void setRootFigure(IFigure figure){

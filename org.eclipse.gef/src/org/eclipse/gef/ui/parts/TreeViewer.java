@@ -175,6 +175,19 @@ protected void hookControl() {
 	super.hookControl();
 }
 
+/**
+ * @see org.eclipse.gef.ui.parts.AbstractEditPartViewer#reveal(org.eclipse.gef.EditPart)
+ */
+public void reveal(EditPart part) {
+	if (!(part instanceof TreeEditPart))
+		return;
+	TreeEditPart treePart = (TreeEditPart)part;
+	Tree tree = (Tree)getControl();
+	Widget widget = treePart.getWidget();
+	if (widget instanceof TreeItem)
+		tree.showItem((TreeItem)widget);
+}
+
 private void showSelectionInTree() {
 	if (ignore || getControl()==null || getControl().isDisposed())
 		return;
