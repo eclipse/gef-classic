@@ -1,7 +1,6 @@
 package org.eclipse.gef.dnd;
 
-import org.eclipse.gef.EditPartViewer;
-import org.eclipse.gef.Request;
+import org.eclipse.gef.*;
 import org.eclipse.gef.requests.CreateRequest;
 import org.eclipse.swt.dnd.DND;
 
