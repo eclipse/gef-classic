@@ -12,7 +12,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
 
 public class SetConstraintCommand
-	extends org.eclipse.gef.commands.AbstractCommand
+	extends org.eclipse.gef.commands.Command
 {
 
 private Point newPos;

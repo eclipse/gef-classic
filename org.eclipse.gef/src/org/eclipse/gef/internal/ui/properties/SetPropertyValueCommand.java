@@ -8,12 +8,12 @@ package org.eclipse.gef.internal.ui.properties;
 
 import java.text.MessageFormat;
 
-import org.eclipse.gef.commands.AbstractCommand;
+import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.internal.GEFMessages;
 import org.eclipse.ui.views.properties.IPropertySource;
 
 class SetPropertyValueCommand
-	extends AbstractCommand {
+	extends Command {
 
 protected Object propertyValue;
 protected Object propertyName;

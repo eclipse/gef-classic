@@ -9,7 +9,7 @@ package org.eclipse.gef.examples.logicdesigner.model;
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
 
 public class AddCommand extends
-	org.eclipse.gef.commands.AbstractCommand
+	org.eclipse.gef.commands.Command
 {
 
 private LogicSubpart child;

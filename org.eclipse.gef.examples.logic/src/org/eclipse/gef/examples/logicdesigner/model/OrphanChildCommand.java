@@ -8,11 +8,11 @@ package org.eclipse.gef.examples.logicdesigner.model;
 
 import java.util.List;
 
-import org.eclipse.gef.commands.AbstractCommand;
+import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
 
 public class OrphanChildCommand
-	extends AbstractCommand
+	extends Command
 {
 
 private LogicDiagram diagram;

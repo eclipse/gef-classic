@@ -6,11 +6,11 @@ package org.eclipse.gef.examples.logicdesigner.model;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.gef.commands.AbstractCommand;
+import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
 
 public class ConnectionCommand
-	extends AbstractCommand
+	extends Command
 {
 
 protected LogicSubpart oldSource;

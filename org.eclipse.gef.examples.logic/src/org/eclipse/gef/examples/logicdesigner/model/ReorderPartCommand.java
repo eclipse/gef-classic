@@ -6,10 +6,10 @@ package org.eclipse.gef.examples.logicdesigner.model;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.gef.commands.AbstractCommand;
+import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
 
-public class ReorderPartCommand extends AbstractCommand {
+public class ReorderPartCommand extends Command {
 	
 private boolean valuesInitialized;
 private int oldIndex, newIndex;

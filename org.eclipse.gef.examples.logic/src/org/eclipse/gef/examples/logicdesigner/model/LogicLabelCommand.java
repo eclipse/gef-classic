@@ -6,10 +6,10 @@ package org.eclipse.gef.examples.logicdesigner.model;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.gef.commands.AbstractCommand;
+import org.eclipse.gef.commands.Command;
 
 public class LogicLabelCommand
-	extends AbstractCommand
+	extends Command
 {
 
 private String newName, oldName;

@@ -9,11 +9,11 @@ package org.eclipse.gef.examples.logicdesigner.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.gef.commands.AbstractCommand;
+import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
 
 public class DeleteCommand
-	extends AbstractCommand
+	extends Command
 {
 
 private LogicSubpart child;

@@ -6,10 +6,10 @@ package org.eclipse.gef.internal.ui.properties;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.gef.commands.AbstractCommand;
+import org.eclipse.gef.commands.Command;
 import org.eclipse.ui.views.properties.IPropertySource;
 
-public class RestoreDefaultPropertyValueCommand extends AbstractCommand {
+public class RestoreDefaultPropertyValueCommand extends Command {
 
 protected Object propertyValue;
 protected Object propertyName;
