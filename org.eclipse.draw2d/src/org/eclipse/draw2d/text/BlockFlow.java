@@ -10,11 +10,12 @@
  *******************************************************************************/
 package org.eclipse.draw2d.text;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
 
+import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.PositionConstants;
 
@@ -39,7 +40,7 @@ private int aligment = PositionConstants.LEFT;
 
 final BlockBox blockBox;
 private int orientation = SWT.NONE;
-private boolean validateBidi;
+private boolean bidiValid;
 
 /**
  * Constructs a new BlockFlow. */
@@ -56,7 +57,7 @@ public BlockFlow() {
  */
 protected void contributeBidi(BidiProcessor proc) {
 	// the paragraph separator
-	proc.add(this, "\u2029"); //$NON-NLS-1$
+	proc.addControlText("\u2029"); //$NON-NLS-1$
 }
 
 BlockBox createBlockBox() {
@@ -76,17 +77,17 @@ protected FlowFigureLayout createDefaultFlowLayout() {
  * will return the default orientation (SWT.LEFT_TO_RIGHT).
  * 
  * @return SWT.RIGHT_TO_LEFT or SWT.LEFT_TO_RIGHT
- * @see #setBidiOrientation(int)
+ * @see #setOrientation(int)
  * @since 3.1
  */
-public int getBidiOrientation() {
+public int getOrientation() {
 	if (orientation != SWT.NONE)
 		return orientation;
 	IFigure parent = getParent();
 	while (parent != null && !(parent instanceof BlockFlow))
 		parent = parent.getParent();
 	if (parent != null)
-		return ((BlockFlow)parent).getBidiOrientation();
+		return ((BlockFlow)parent).getOrientation();
 	return SWT.LEFT_TO_RIGHT;
 }
 
@@ -116,6 +117,19 @@ protected void invalidateBidi() {
 }
 
 /**
+ * @see org.eclipse.draw2d.Figure#paint(org.eclipse.draw2d.Graphics)
+ */
+public void paintBorder(Graphics graphics) {
+	super.paintBorder(graphics);
+	if (selectionStart != -1) {
+		graphics.restoreState();
+		graphics.setXORMode(true);
+		graphics.setBackgroundColor(ColorConstants.white);
+		graphics.fillRectangle(getBounds());
+	}
+}
+
+/**
  * @see org.eclipse.draw2d.text.FlowFigure#postValidate()
  */
 public void postValidate() {
@@ -131,27 +145,33 @@ public void postValidate() {
  * @see org.eclipse.draw2d.text.FlowFigure#revalidateBidi(org.eclipse.draw2d.IFigure)
  */
 protected void revalidateBidi(IFigure origin) {
-	if (!validateBidi) {
-		validateBidi = true;
-		for (Iterator iter = getChildren().iterator(); iter.hasNext();) {
-			FlowFigure flowFig = (FlowFigure) iter.next();
-			flowFig.invalidateBidi();
-		}
+	if (bidiValid) {
+		bidiValid = false;
+		revalidate();
 	}
 }
 
 /**
- * Sets the Bidi orientation for this block.  To make a block inherit its containing
- * block's orientation, set it to SWT.NONE.
+ * Sets the orientation for this block.  Orientation can be one of:
+ * <UL>
+ *   <LI>{@link SWT#LEFT_TO_RIGHT}
+ *   <LI>{@link SWT#RIGHT_TO_LEFT}
+ *   <LI>{@link SWT#NONE}
+ * </UL>
+ * <code>NONE</code> is used to indicate that orientation should be inherited from the
+ * encompassing block, or LEFT_TO_RIGHT if no parent block exists.
  * 
- * @param newOrientation SWT.LEFT_TO_RIGHT or SWT.RIGHT_TO_LEFT or SWT.NONE (inherit from
- * containing block)
+ * @param orientation LTR, RTL or NONE
  * @since 3.1
  */
-public void setBidiOrientation(int newOrientation) {
-	if (newOrientation == SWT.LEFT_TO_RIGHT || newOrientation == SWT.RIGHT_TO_LEFT
-			|| newOrientation == SWT.NONE)
-		orientation = newOrientation;
+public void setOrientation(int orientation) {
+	if (this.orientation == orientation)
+		return;
+	if (orientation == SWT.RIGHT_TO_LEFT || orientation == SWT.LEFT_TO_RIGHT)
+		this.orientation = orientation;
+	else 
+		this.orientation = SWT.NONE;
+	revalidate();
 }
 
 /**
@@ -189,11 +209,11 @@ protected boolean useLocalCoordinates() {
  * @see org.eclipse.draw2d.IFigure#validate()
  */
 public void validate() {
-	if (validateBidi) {
-		BidiProcessor.INSTANCE.setOrientation(getBidiOrientation());
+	if (!bidiValid) {
+		BidiProcessor.INSTANCE.setOrientation(getOrientation());
 		super.contributeBidi(BidiProcessor.INSTANCE);
 		BidiProcessor.INSTANCE.process();
-		validateBidi = false;
+		bidiValid = true;
 	}
 	super.validate();
 }

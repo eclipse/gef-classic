@@ -46,7 +46,7 @@ protected void createNewLine() {
 }
 
 /**
- * @see FlowContext#endLine()
+ * @see org.eclipse.draw2d.text.FlowContext#endLine()
  */
 public void endLine() {
 	if (currentLine == null)
@@ -65,7 +65,6 @@ protected void flush() {
 	if (currentLine != null)
 		context.addToCurrentLine(currentLine);
 }
-
 /**
  * InlineFlowLayout gets this information from its context.
  * @see org.eclipse.draw2d.text.FlowContext#getConsumeSpaceOnNewLine()
@@ -94,9 +93,8 @@ public int getCurrentY() {
 }
 
 /**
- * An InlineFlow will pass the query onto its parent if it can't find a break among
- * its children.
- * @see org.eclipse.draw2d.text.FlowContext#getWordWidthFollowing(org.eclipse.draw2d.text.FlowFigure, int[])
+ * tried to find word termination first among children
+ * @see FlowContext#getWordWidthFollowing(FlowFigure, int[])
  */
 public boolean getWordWidthFollowing(FlowFigure child, int[] width) {
 	boolean result = super.getWordWidthFollowing(child, width); 

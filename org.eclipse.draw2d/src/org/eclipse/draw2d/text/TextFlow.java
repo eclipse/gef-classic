@@ -12,7 +12,6 @@ package org.eclipse.draw2d.text;
 
 import java.text.BreakIterator;
 
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.TextLayout;
@@ -33,17 +32,19 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * WARNING: This class is not intended to be subclassed by clients.
  * @author hudsonr
  * @since 2.1 */
-public class TextFlow
-	extends InlineFlow
-{
+public class TextFlow extends InlineFlow {
 
 static final String ELLIPSIS = "..."; //$NON-NLS-1$
 
+static final char LRO = '\u202d';
+static final char RLO = '\u202e';
+
 static final int SELECT_ALL = 1;
 static final int SELECT_PARTIAL = 2;
-private boolean prependJoiner, appendJoiner;
-private int selectBegin = -1;
-private int selectEnd = -1;
+static final String ZWJ = "\u200d";
+private BidiInfo bidiInfo;
+
+private int selectionEnd = -1;
 private String text;
 
 /**
@@ -58,18 +59,6 @@ public TextFlow() {
  * @param s the string */
 public TextFlow(String s) {
 	text = s;
-}
-
-/**
- * Same as invoking {@link #prependJoiner(String)} and {@link #appendJoiner(String)} with
- * the given text.
- * @param text the text to be formatted for shaping
- * @return the given text with shaping characters appended as needed
- * @since 3.1
- */
-public String addJoiners(String text) {
-	text = prependJoiner(text);
-	return appendJoiner(text);
 }
 
 /**
@@ -90,24 +79,27 @@ public boolean addLeadingWordRequirements(int[] width) {
  * @since 3.1
  */
 boolean addLeadingWordWidth(String text, int[] width) {
+
 	// Changes to this algorithm should be verified with LookAheadTest
-	BreakIterator spaceFinder = BreakIterator.getLineInstance();
-	text = "a" + text + "a"; //$NON-NLS-1$ //$NON-NLS-2$
-	spaceFinder.setText(text);
-	int index = FlowUtilities.findPreviousNonWS(text, spaceFinder.next());
+	BreakIterator lineBreaker = BreakIterator.getLineInstance();
+	lineBreaker.setText(text);
+	if (Character.isWhitespace(text.charAt(0)))
+		return true;
+	int index = FlowUtilities.findPreviousNonWS(text, lineBreaker.next());
 	boolean result = index < text.length() - 1;
-	if (index == text.length() - 1)
-		index--;
+
 	// An optimization to prevent unnecessary invocation of String.substring and 
 	// getStringExtents()
-	if (index + 1 == 1)
+	if (index == 0)
 		return result;
-	text = text.substring(1, index + 1);
 	
-	if (getBidiValues() == null)
+	text = text.substring(0, index);
+	
+	if (bidiInfo == null)
 		width[0] += FlowUtilities.getStringExtents(text, getFont()).width - 1;
 	else {
 		org.eclipse.swt.graphics.TextLayout textLayout = FlowUtilities.getTextLayout();
+		textLayout.setFont(getFont());
 		textLayout.setText(text);
 		width[0] += textLayout.getBounds().width;
 	}
@@ -115,24 +107,11 @@ boolean addLeadingWordWidth(String text, int[] width) {
 }
 
 /**
- * Appends the Zero-Width Joiner character at the end of the given String if required.
- * 
- * @param text the String to be formatted for shaping
- * @return the given text with the shaping character appended if needed
- * @see #setAppendJoiner(boolean)
- * @since 3.1
- */
-public String appendJoiner(String text) {
-	if (appendJoiner)
-		text += "\u200d"; //$NON-NLS-1$
-	return text;
-}
-
-/**
  * A TextFlow contributes its text.
  * @see org.eclipse.draw2d.text.FlowFigure#contributeBidi(org.eclipse.draw2d.text.BidiProcessor)
  */
 protected void contributeBidi(BidiProcessor proc) {
+	bidiInfo = null;
 	proc.add(this, getText());
 }
 
@@ -148,7 +127,9 @@ private int findNextLineOffset(Point p) {
 		return -1;
 
 	TextFragmentBox box = null;
-	for (int i = 0; i < fragments.size(); i++) {
+
+	int i;
+	for (i = 0; i < fragments.size(); i++) {
 		box = (TextFragmentBox)fragments.get(i);
 		if (box.getBaseline() > p.y)
 			break;
@@ -157,9 +138,10 @@ private int findNextLineOffset(Point p) {
 	if (box == null)
 		return -1;
 	TextLayout layout = FlowUtilities.getTextLayout();
-	layout.setOrientation(SWT.LEFT_TO_RIGHT);
 	layout.setFont(getFont());
-	layout.setText(addJoiners(text).substring(box.offset, box.offset + box.length));
+	
+	String fragString = getBidiSubstring(box, i);
+	layout.setText(fragString);
 	int trailing[] = new int[1];
 	int layoutOffset = layout.getOffset(p.x - box.x, p.y - box.y, trailing) + trailing[0];
 	layout.setText(""); //$NON-NLS-1$
@@ -171,21 +153,56 @@ private int findPreviousLineOffset(Point p) {
 		return -1;
 
 	TextFragmentBox box = null;
-	for (int i = fragments.size() - 1; i >= 0; i--) {
+	
+	int i;
+	for (i = fragments.size() - 1; i >= 0; i--) {
 		box = (TextFragmentBox)fragments.get(i);
 		if (box.getBaseline() < p.y)
 			break;
+		box = null;
 	}
 	if (box == null)
 		return -1;
 	TextLayout layout = FlowUtilities.getTextLayout();
-	layout.setOrientation(SWT.LEFT_TO_RIGHT);
 	layout.setFont(getFont());
-	layout.setText(addJoiners(text).substring(box.offset, box.offset + box.length));
+	
+	String fragString;
+	if (bidiInfo == null)
+		fragString = text.substring(box.offset, box.offset + box.length);
+	else {
+		fragString = getBidiSubstring(box, i);
+	}
+
+	layout.setText(fragString);
 	int trailing[] = new int[1];
 	int layoutOffset = layout.getOffset(p.x - box.x, p.y - box.y, trailing) + trailing[0];
 	layout.setText(""); //$NON-NLS-1$
-	return box.offset + layoutOffset; 
+	return box.offset + layoutOffset;
+}
+
+/**
+ * Returns the BidiInfo for this figure or <code>null</code>.
+ * @return <code>null</code> or the info
+ * @since 3.1
+ */
+public BidiInfo getBidiInfo() {
+	return bidiInfo;
+}
+
+/**
+ * @param box which fragment
+ * @param index the fragment index
+ * @return the bidi string for that fragment
+ * @since 3.1
+ */
+private String getBidiSubstring(TextFragmentBox box, int index) {
+	if (bidiInfo == null)
+		return text.substring(box.offset, box.offset + box.length);
+	
+	return (box.isRightToLeft() ? RLO : LRO) 
+			+ ((index == 0 && bidiInfo.leadingJoiner) ? ZWJ : "")
+			+ text.substring(box.offset, box.offset + box.length)
+			+ ((index == fragments.size() - 1 && bidiInfo.trailingJoiner) ? ZWJ : "");
 }
 
 /**
@@ -209,21 +226,32 @@ public Rectangle getCaretPlacement(int offset, boolean trailing) {
 	do
 		box = (TextFragmentBox)fragments.get(--i);
 	while (offset < box.offset && i > 0);
+	if (trailing && box.offset + box.length <= offset) {
+		box = (TextFragmentBox)fragments.get(++i);
+		offset = box.offset;
+		trailing = false;
+	}
+	
 	
 	offset -= box.offset;
 	offset = Math.min(box.length, offset);
 	
 	TextLayout layout = FlowUtilities.getTextLayout();
-	layout.setOrientation(SWT.LEFT_TO_RIGHT);
 	layout.setFont(getFont());
-	String substring = addJoiners(text).substring(box.offset, box.offset + box.length);
-	layout.setText(substring);
+
+	String fragString;
+	if (bidiInfo == null)
+		fragString = text.substring(box.offset, box.offset + box.length);
+	else
+		fragString = getBidiSubstring(box, i);
+
+	layout.setText(fragString);
 	Point where = new Point(layout.getLocation(offset, trailing));
 	layout.setText(""); //$NON-NLS-1$
 	
 	FontMetrics fm = FigureUtilities.getFontMetrics(getFont());
 	return new Rectangle(
-			where.x + box.x,
+			where.x + box.x - 1,
 			where.y + box.y,
 			1,
 			fm.getAscent() + fm.getLeading() + fm.getDescent());
@@ -277,13 +305,27 @@ public int getNextOffset(Point p, boolean down) {
 	return findPreviousLineOffset(p);
 }
 
+public int getNextVisibleOffset(int offset) {
+	TextFragmentBox box;
+	for (int i = 0; i < fragments.size(); i++) {
+		box = (TextFragmentBox)fragments.get(i);
+		if (box.offset + box.length <= offset)
+			continue;
+		return Math.max(box.offset, offset + 1);
+	}
+	return -1;
+}
+
 /**
- * Returns the textual offset nearest the specified point. The must be relative to this
- * figure. If the point is not inside any fragment, <code>-1</code> is returned. 
+ * Returns the textual offset nearest the specified point. The point must be relative to
+ * this figure. If the point is not inside any fragment, <code>-1</code> is returned. 
  * Otherwise the offset will be between 0 and <code>getText().length()</code> inclusively.
+ * <p>
+ * Trailing information for bidi applications is provided by SWT's {@link TextLayout}.
  * 
  * @since 3.1
  * @param p a point relative to this figure
+ * @param trailing trailing information
  * @return the offset in the string or <code>-1</code>
  */
 public int getOffset(Point p, int trailing[]) {
@@ -293,14 +335,39 @@ public int getOffset(Point p, int trailing[]) {
 		TextFragmentBox box = (TextFragmentBox)fragments.get(i);
 		if (!box.containsPoint(p.x, p.y))
 			continue;
-		String substring = addJoiners(text).substring(box.offset, box.offset + box.length);
+		
+		String substring = text.substring(box.offset, box.offset + box.length);
+		int bidiCorrection = 0;
+		if (bidiInfo != null) {
+			if (i == 0 && bidiInfo.leadingJoiner)
+				bidiCorrection = -2;
+			else
+				bidiCorrection = -1;
+			substring = (box.isRightToLeft() ? RLO : LRO)
+				+ (bidiCorrection == -2 ? ZWJ : "")
+				+ substring
+				+ ((i == fragments.size() - 1 && bidiInfo.trailingJoiner) ? ZWJ : "");
+		}
+		
 		TextLayout layout = FlowUtilities.getTextLayout();
-		layout.setOrientation(SWT.LEFT_TO_RIGHT);
 		layout.setFont(getFont());
 		layout.setText(substring);
 		int result = layout.getOffset(p.x - box.x, p.y - box.y, trailing);
 		layout.setText(""); //$NON-NLS-1$
-		return result + trailing[0] + box.offset;
+		return result + trailing[0] + box.offset + bidiCorrection;
+	}
+	return -1;
+}
+
+public int getPreviousVisibleOffset(int offset) {
+	TextFragmentBox box;
+	if (offset == - 1)
+		offset = Integer.MAX_VALUE;
+	for (int i = fragments.size() - 1; i >= 0; i--) {
+		box = (TextFragmentBox)fragments.get(i);
+		if (box.offset >= offset)
+			continue;
+		return Math.min(box.offset + box.length, offset - 1);
 	}
 	return -1;
 }
@@ -309,15 +376,6 @@ public int getOffset(Point p, int trailing[]) {
  * @return the String being displayed */
 public String getText() {
 	return text;
-}
-
-/**
- * @see org.eclipse.draw2d.text.FlowFigure#invalidateBidi()
- */
-protected void invalidateBidi() {
-	super.invalidateBidi();
-	prependJoiner = false;
-	appendJoiner = false;
 }
 
 /**
@@ -338,134 +396,125 @@ protected void paintFigure(Graphics g) {
 	g.getClip(Rectangle.SINGLETON);
 	int yStart = Rectangle.SINGLETON.y;
 	int yEnd = Rectangle.SINGLETON.bottom();
-	String text = addJoiners(getText());
 	
-	int selectType;
 	for (int i = 0; i < fragments.size(); i++) {
 		frag = (TextFragmentBox)fragments.get(i);
+		//Loop until first visible fragment
 		if (yStart > frag.y + frag.getHeight() + 1)//The + 1 is for disabled text
 			continue;
+		//Break loop at first non-visible fragment
 		if (yEnd < frag.y)
 			break;
-		String draw;
-		
-		if (selectBegin == -1)
-			selectType = 0;
-		else if (selectEnd < frag.offset)
-			selectType = 0;
-		else if (selectBegin > frag.offset + frag.length)
-			selectType = 0;
-		else {
-			if (selectBegin <= frag.offset && selectEnd >= frag.offset + frag.length)
-				selectType = SELECT_ALL;
-			else
-				selectType = SELECT_PARTIAL;
-		}
 
+		String draw = getBidiSubstring(frag, i);
+			
 		if (frag.truncated)
-			draw = text.substring(frag.offset, frag.offset + frag.length) + ELLIPSIS;
-		else
-			draw = text.substring(frag.offset, frag.offset + frag.length);
-
-		// Insert RLO if this fragment has RTL text.
-		if (frag.isBidi())
-			draw = "\u202e" + draw; //$NON-NLS-1$
+			draw += ELLIPSIS;
 
 		if (!isEnabled()) {
 			Color fgColor = g.getForegroundColor();
 			g.setForegroundColor(ColorConstants.buttonLightest);
-			paintText(g, draw, frag.x + 1, frag.y + 1, -1, -1, 0, frag.isBidi());
+			paintText(g, draw, frag.x + 1, frag.y + 1, frag.getBidiLevel());
 			g.setForegroundColor(ColorConstants.buttonDarker);
-			paintText(g, draw, frag.x, frag.y, -1, -1, 0, frag.isBidi());
+			paintText(g, draw, frag.x, frag.y, frag.getBidiLevel());
 			g.setForegroundColor(fgColor);
 		} else {
-			int start = -1, end = -1;
-			if (selectType == SELECT_ALL) {
-				start = 0;
-				end = frag.length - 1;
-			} else if (selectType == SELECT_PARTIAL) {
-				start = selectBegin - frag.offset;
-				end = selectEnd - frag.offset;
-			}
-			paintText(g, draw, frag.x, frag.y, start, end, selectType, frag.isBidi());
+			paintText(g, draw, frag.x, frag.y, frag.getBidiLevel());
 		}
 	}
 }
 
-// Paints the text based on selection and Bidi level.  Uses TextLayout as needed.
-private void paintText(Graphics g, String text, int x, int y, int selectionStart, 
-		int selectionEnd, int selectionType, boolean isBidi) {
-	if (isBidi || selectionType == SELECT_PARTIAL) {
-		// Case of RTL text and/or partial selection
-		TextLayout layout = FlowUtilities.getTextLayout();
-		layout.setOrientation(SWT.LEFT_TO_RIGHT);
-		layout.setFont(g.getFont());
-		layout.setText(text);
-		g.drawTextLayout(layout, x, y, selectionStart, selectionEnd, null, null);
-		// set the text to an empty string so that the current string is not held in memory
-		layout.setText(""); //$NON-NLS-1$
-	} else if (selectionType == SELECT_ALL) {
-		// Case of complete selection (and no RTL text)
-		Color fg = g.getForegroundColor();
-		Color bg = g.getBackgroundColor();
-		g.setForegroundColor(ColorConstants.menuForegroundSelected);
-		g.setBackgroundColor(ColorConstants.menuBackgroundSelected);
-		g.fillString(text, x, y);
-		g.setForegroundColor(fg);
-		g.setBackgroundColor(bg);
-	} else
-		// Case of no selection
-		g.drawString(text, x, y);
+/**
+ * @see org.eclipse.draw2d.text.InlineFlow#paintSelection(org.eclipse.draw2d.Graphics)
+ */
+protected void paintSelection(Graphics graphics) {
+	if (selectionStart == -1)
+		return;
+	graphics.setXORMode(true);
+	graphics.setBackgroundColor(ColorConstants.white);
+	
+	TextFragmentBox frag;
+	for (int i = 0; i < fragments.size(); i++) {
+		frag = (TextFragmentBox)fragments.get(i);
+		//Loop until first visible fragment
+		if (frag.offset + frag.length <= selectionStart)//The + 1 is for disabled text
+			continue;
+		if (frag.offset > selectionEnd)
+			return;
+		if (selectionStart <= frag.offset && selectionEnd >= frag.offset + frag.length)
+			graphics.fillRectangle(frag.x, frag.y, frag.getWidth(), frag.getHeight());
+		else if (selectionEnd > frag.offset && selectionStart < frag.offset + frag.length) {
+			int prefixCorrection = 0;
+			String text = getText().substring(frag.offset, frag.offset + frag.length);
+			if (frag.bidiLevel != -1) {
+				if (i == 0 && bidiInfo.leadingJoiner)
+					prefixCorrection = -2;
+				else
+					prefixCorrection = -1;
+				text = (frag.bidiLevel % 2 == 0 ? LRO : RLO)
+						+ (prefixCorrection == -1 ? "" : ZWJ)
+						+ text
+						+ (i == fragments.size() - 1 && bidiInfo.trailingJoiner ? ZWJ : "");
+			}
+
+			TextLayout layout = FlowUtilities.getTextLayout();
+			layout.setFont(graphics.getFont());
+			layout.setText(text);
+			Rectangle rect = new Rectangle();
+			rect.setLocation(layout.getLocation(Math.max(selectionStart - frag.offset, 0)
+					+ prefixCorrection, false).x, 0);
+			rect.union(layout.getLocation(Math.min(selectionEnd - frag.offset,
+					frag.offset + frag.length) - 1, true).x, 0);
+			rect.width--;
+			rect.height = frag.getHeight();
+			rect.translate(frag.x, frag.y);
+			graphics.fillRectangle(rect);
+		}
+	}
+}
+
+private void paintText(Graphics g, String draw, int x, int y, int bidiLevel) {
+	if (bidiLevel == -1) {
+		g.drawString(draw, x, y);
+	} else {
+		if ((bidiLevel % 2) == 1)
+			draw = LRO + draw;
+		else
+			draw = RLO + draw;
+		TextLayout tl = FlowUtilities.getTextLayout();
+		tl.setFont(null);
+		tl.setText(draw);
+		g.drawTextLayout(tl, x, y);
+		// tl.setText("");
+	}
 }
 
 /**
- * Prepends the Zero-Width Joiner character to the beginning of the given text if 
- * required.
- * 
- * @param text the String that needs to be formatted for shaping
- * @return the given text with shaping character prepended if needed
- * @see #setPrependJoiner(boolean)
- * @since 3.1
+ * @see org.eclipse.draw2d.text.FlowFigure#setBidiValues(int[])
  */
-public String prependJoiner(String text) {
-	if (prependJoiner)
-		text = "\u200d" + text; //$NON-NLS-1$
-	return text;
-}
-
-/**
- * @see org.eclipse.draw2d.text.FlowFigure#setAppendJoiner(boolean)
- */
-public void setAppendJoiner(boolean append) {
-	appendJoiner = append;
-}
-
-/**
- * @see org.eclipse.draw2d.text.FlowFigure#setPrependJoiner(boolean)
- */
-public void setPrependJoiner(boolean prepend) {
-	prependJoiner = prepend;
+public void setBidiInfo(BidiInfo info) {
+	this.bidiInfo = info;
 }
 
 /**
  * Sets the extent of selection.  The selection range is inclusive.  For example, the
  * range [0, 0] indicates that the first character is selected.
- * @param begin the begin offset
+ * @param start the start offset
  * @param end the end offset
  * @since 3.1
  */
-public void setSelection(int begin, int end) {
+public void setSelection(int start, int end) {
 	boolean repaint = false;
-	end--;
-	if (selectBegin == begin) {
-		if (selectEnd == end)
+
+	if (selectionStart == start) {
+		if (selectionEnd == end)
 			return;
 		repaint = true;
 	} else
-		repaint = selectBegin != selectEnd || begin != end;
+		repaint = selectionStart != selectionEnd || start != end;
 
-	selectBegin = begin;
-	selectEnd = end;
+	selectionStart = start;
+	selectionEnd = end;
 	if (repaint)
 		repaint();
 }

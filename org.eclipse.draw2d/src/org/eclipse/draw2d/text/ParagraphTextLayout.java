@@ -70,23 +70,27 @@ public ParagraphTextLayout(TextFlow flow, int style) {
  * Given the Bidi levels of the given text, this method breaks the given text up by
  * its level runs.
  * @param text the String that needs to be broken up into its level runs
- * @param levels the Bidi levels
- * @return	an array of Strings where each String is in the same level run and the
- * concatenation of all Strings would equal the given text
+ * @param levelInfo the Bidi levels
+ * @return the requested segment
  */
-protected String[] breakText(String text, int[] levels) {
-	if (levels == null || levels.length == 2)
+private String[] getSegments(String text, int levelInfo[]) {
+	if (levelInfo.length == 1)
 		return new String[] {text};
-	String[] results = new String[levels.length / 2];
-	for (int i = 0; i < results.length; i++) {
-		int start = i * 2 + 1;
-		int end = start + 2;
-		if (end < levels.length)
-			results[i] = text.substring(levels[start], levels[end]);
-		else
-			results[i] = text.substring(levels[start]);
+ 	
+	String result[] = new String[levelInfo.length / 2 + 1];
+	
+	int i;
+	int endOffset;
+	int beginOffset = 0;
+
+	for (i = 0; i < result.length - 1; i++) {
+		endOffset = levelInfo[i * 2 + 1];
+		result[i] = text.substring(beginOffset, endOffset);
+		beginOffset = endOffset;
 	}
-	return results;
+	endOffset = text.length();
+	result[i] = text.substring(beginOffset, endOffset);
+	return result;
 }
 
 /**
@@ -103,74 +107,77 @@ protected float getAverageCharWidth(TextFragmentBox fragment) {
 /** * @see org.eclipse.draw2d.text.FlowFigureLayout#layout() */
 protected void layout() {
 	/*
-	 * Changes to this algorithm should be tested with TextFlowWrapTest.
+	 * Changes to this algorithm should be tested using TextFlowWrapTest.
 	 */
 	TextFlow textFlow = (TextFlow)getFlowFigure();
-	List fragments = textFlow.getFragments();//Reuse the previous List of fragments
+	int offset = 0;
+	
+	List fragments = textFlow.getFragments();
 	Font font = textFlow.getFont();
-	int i = 0; //The index of the current fragment;
-	int offset = 0; //The current offset in the ORIGINAL text, not s
-	int length = 0; //The length of the current fragment
+	int fragIndex = 0;
+	int fragLength = 0;
 	float prevAvgCharWidth;
 	LineBox currentLine;
 	TextFragmentBox fragment;
-	int[] bidiValues = textFlow.getBidiValues();
-	String[] strings = breakText(textFlow.getText(), bidiValues);
-	strings[0] = textFlow.prependJoiner(strings[0]);
-	strings[strings.length - 1] = textFlow.appendJoiner(strings[strings.length - 1]);
+	BidiInfo bidi = textFlow.getBidiInfo();
+	int levelInfo[] = (bidi == null) ? new int[] {-1} : bidi.levelInfo;
 	
-	for (int j = 0; j < strings.length; j++) {
-		String string = strings[j];
-		while (string.length() > 0) {
-			fragment = getFragment(i, fragments);
+	String segment, segments[] = getSegments(textFlow.getText(), levelInfo);
+
+	for (int seg = 0; seg < segments.length; seg++) {
+		segment = segments[seg];
+		while (segment.length() > 0) {
+			fragment = getFragment(fragIndex, fragments);
 			prevAvgCharWidth = getAverageCharWidth(fragment);
 			fragment.width = 0;
 			fragment.length = 0;
 			fragment.offset = offset;
 			fragment.truncated = false;
-			fragment.setBidiLevel(bidiValues == null ? -1 : bidiValues[j * 2]);
+			fragment.setBidiLevel(levelInfo[seg * 2]);
 			
 			//This loop is done at most twice.
 			//The second time through, a context.endLine()
 			//was requested, and the loop will break.
 			while (true) {
 				currentLine = context.getCurrentLine();
-				if (!currentLine.isOccupied() && context.getConsumeSpaceOnNewLine() 
-						&& Character.isWhitespace(string.charAt(0))) {
-					string = string.substring(1);
+				if (!currentLine.isOccupied()
+						&& context.getConsumeSpaceOnNewLine() 
+						&& Character.isWhitespace(segment.charAt(0))) {
+					segment = segment.substring(1);
 					offset++;
 					fragment.offset++;
 				}
-				length = FlowUtilities.getTextForSpace(
-						fragment,
-						string,
-						font,
+				fragLength = FlowUtilities.getTextForSpace(
+						fragment, segment, font,
 						currentLine.getAvailableWidth(),
-						prevAvgCharWidth,
-						wrappingStyle);
+						prevAvgCharWidth, wrappingStyle);
 				
 				if (fragment.width <= currentLine.getAvailableWidth()
-						|| !currentLine.isOccupied() 
+						|| !currentLine.isOccupied()
 						|| context.getContinueOnSameLine())
 					break;
 				context.endLine();
 			}
-			if (length != string.length()) {
+			if (fragLength != segment.length()) {
 				// all the given text did not fit on this line and we might have to wrap
-				if (string.substring(length).startsWith("\r\n")) //$NON-NLS-1$
+				/*
+				 * $TODO:Pratik change to String.regionMatches, or 2 charAt calls.  Note
+				 * that this case is a sub-case of the next test which is for whitespace.
+				 */
+				if (segment.substring(fragLength).startsWith("\r\n")) //$NON-NLS-1$
 					// special-case the WinNL character
-					length += 2;
-				else if (Character.isWhitespace(string.charAt(length)))
+					fragLength += 2;
+				else if (Character.isWhitespace(segment.charAt(fragLength)))
 					// if the first character that doesn't fit is a whitespace,
 					// we consume it
-					length++;
-				else if (Character.isWhitespace(string.charAt(length - 1))) {
+					fragLength++;
+				else if (Character.isWhitespace(segment.charAt(fragLength - 1))) {
 					// otherwise, if the last character that fit is a whitespace, we
 					// simply don't paint it
 					// if the fragment is truncated, this will never be true
 					fragment.length--;
 					// update the width of the fragment
-					FlowUtilities.setupFragment(fragment, font, string);
+					FlowUtilities.setupFragment(fragment, font, segment);
 				}
 				context.addToCurrentLine(fragment);
 			} else {
@@ -179,51 +186,54 @@ protected void layout() {
 				int availableWidth = 
 					context.getCurrentLine().getAvailableWidth() - fragment.width;
 				
-				if (!FlowUtilities.isLineBreakingMark(string.charAt(length - 1))
+				if (!FlowUtilities.isLineBreakingMark(segment.charAt(fragLength - 1))
 						&& !context.getContinueOnSameLine()) {
-					lookAheadWidth = lookAhead(strings, j + 1);
+					lookAheadWidth = lookAhead(segments, seg + 1);
 					if (lookAheadWidth > availableWidth) {
 						BreakIterator breakFinder = BreakIterator.getLineInstance();
-						breakFinder.setText(string); //$NON-NLS-1$
-						int index = breakFinder.preceding(length - 1);
+						breakFinder.setText(segment); //$NON-NLS-1$
+						int index = breakFinder.preceding(fragLength - 1);
 						if (index > 0) {
 							// case: "foo barABC", where "foo bar" is in one figure and "ABC"
 							// is in another and there is only enough room to display 
 							// "foo barAB" on the current line
-							length = index;
+							fragLength = index;
 							fragment.length = index;
 							int oldWidth = fragment.width;
-							FlowUtilities.setupFragment(fragment, font, string);
+							FlowUtilities.setupFragment(fragment, font, segment);
 							lookAheadWidth += oldWidth - fragment.width;
 						}
 					}
 				}
 				
-				// If the next fragment is not going to fit in the available width left
-				// on this line and it does not start with a whitespace character and 
-				// if this fragment ends in a whitespace character, we need
-				// to not paint that last character.
-				// Note that it is important to use string.charAt(length - 1) and
-				// not string.charAt(string.length() - 1) because we might not be putting
-				// the entire string on this line (as in the case "foo barABC", as 
-				// explained in the if statement above).
-				if (Character.isWhitespace(string.charAt(length - 1))) {
+				/*
+				 *  If the fragment is not going to fit in the available width left on
+				 *  this line and it does not start with a whitespace character and if
+				 *  this fragment ends in a whitespace character, we need to not paint
+				 *  that last character. Note that it is important to use
+				 *  string.charAt(length - 1) and not string.charAt(string.length() - 1)
+				 *  because we might not be putting the entire string on this line (as in
+				 *  the case "foo barABC", as explained in the if statement above).
+				 */
+				if (Character.isWhitespace(segment.charAt(fragLength - 1))) {
 					if (lookAheadWidth == -1)
-						lookAheadWidth = lookAhead(strings, j + 1);
+						lookAheadWidth = lookAhead(segments, seg + 1);
 					if (lookAheadWidth > availableWidth) {
 						fragment.length--;
-						FlowUtilities.setupFragment(fragment, font, string);
+						FlowUtilities.setupFragment(fragment, font, segment);
 					}
 				}
 
 				context.addToCurrentLine(fragment);
-				// set continueOnSameLine to true if hard-wrapping is being employed,
-				// the last character is not a line-break, and the first character of
-				// the next fragment is not a line-break either.
+				/*
+				 * set continueOnSameLine to true if hard-wrapping is being employed, the
+				 * last character is not a line-break, and the first character of  the
+				 * next fragment is not a line-break either.
+				 */
 				if (wrappingStyle == WORD_WRAP_HARD 
-						&& !FlowUtilities.isLineBreakingMark(string.charAt(length - 1))) {
+						&& !FlowUtilities.isLineBreakingMark(segment.charAt(fragLength - 1))) {
 					if (lookAheadWidth == -1)
-						lookAheadWidth = lookAhead(strings, j + 1);
+						lookAheadWidth = lookAhead(segments, seg + 1);
 					context.setContinueOnSameLine(lookAheadWidth != 0);
 				}
 				// Since all of the given string fit on this line, we consume any initial
@@ -232,29 +242,32 @@ protected void layout() {
 				context.setConsumeSpaceOnNewLine(true);
 			}
 			
-			string = string.substring(length);
-			offset += length;
-			if (string.length() > 0 || fragment.truncated
+			segment = segment.substring(fragLength);
+			offset += fragLength;
+			if (segment.length() > 0 || fragment.truncated
 					|| (currentLine.getAvailableWidth() <= 0
 					&& !context.getContinueOnSameLine()))
 				context.endLine();
-			i++;
+			fragIndex++;
 		}
 	}
-
 	//Remove the remaining unused fragments.
-	while (i < fragments.size())
+	while (fragIndex < fragments.size())
 		fragments.remove(fragments.size() - 1);
 }
 
 private int lookAhead(String[] strings, int startingIndex) {
-	String rest = ""; //$NON-NLS-1$
-	for (int k = startingIndex; k < strings.length; k++)
-		rest += strings[k];
 	int[] width = new int[1];
 	TextFlow textFlow = (TextFlow)getFlowFigure();
-	if (!textFlow.addLeadingWordWidth(rest, width))
+	if (startingIndex == strings.length)
 		context.getWordWidthFollowing(textFlow, width);
+	else {
+		String rest = strings[startingIndex];
+		for (int k = startingIndex + 1; k < strings.length; k++)
+			rest += strings[k];
+		if (!textFlow.addLeadingWordWidth(rest, width))
+			context.getWordWidthFollowing(textFlow, width);
+	}
 	return width[0];
 }
 

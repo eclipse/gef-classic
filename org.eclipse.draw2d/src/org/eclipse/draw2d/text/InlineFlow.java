@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
@@ -31,8 +33,7 @@ public class InlineFlow extends FlowFigure {
 
 List fragments = new ArrayList(1);
 
-/**
- * Iterates over the children to find the width before a line-break is encountered.
+/** * Iterates over the children to find the width before a line-break is encountered.
  * @see org.eclipse.draw2d.text.FlowFigure#addLeadingWordRequirements(int[])
  */
 public boolean addLeadingWordRequirements(int[] width) {
@@ -46,13 +47,13 @@ public boolean addLeadingWordRequirements(int[] width) {
 
 /** * @see org.eclipse.draw2d.IFigure#containsPoint(int, int) */
 public boolean containsPoint(int x, int y) {
-	if (!super.containsPoint(x, y))
-		return false;
-	List frags = getFragments();
-	for (int i = 0; i < frags.size(); i++)
-		if (((FlowBox)frags.get(i)).containsPoint(x, y))
-			return true;
-
+	if (super.containsPoint(x, y)) {
+		List frags = getFragments();
+		for (int i = 0; i < frags.size(); i++)
+			if (((FlowBox)frags.get(i)).containsPoint(x, y))
+				return true;
+	}
+	
 	return false;
 }
 
@@ -69,6 +70,33 @@ protected FlowFigureLayout createDefaultFlowLayout() {
  */
 public List getFragments() {
 	return fragments;
+}
+
+/**
+ * @see org.eclipse.draw2d.Figure#paintBorder(org.eclipse.draw2d.Graphics)
+ */
+protected void paintBorder(Graphics graphics) {
+	super.paintBorder(graphics);
+	if (selectionStart != -1) {
+		paintSelection(graphics);
+	}
+}
+
+/**
+ * Renders the XOR selection rectangles to the graphics.
+ * @param graphics the graphics to paint on
+ * @since 3.1
+ */
+protected void paintSelection(Graphics graphics) {
+	graphics.restoreState();
+	graphics.setXORMode(true);
+	graphics.setBackgroundColor(ColorConstants.white);
+	List list = getFragments();
+	FlowBox box;
+	for (int i = 0; i < list.size(); i++) {
+		box = (FlowBox)list.get(i);
+		graphics.fillRectangle(box.x, box.y, box.getWidth(), box.getHeight());
+	}
 }
 
 /**

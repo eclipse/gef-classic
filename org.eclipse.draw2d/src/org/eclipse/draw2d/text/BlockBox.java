@@ -30,9 +30,9 @@ public void add(FlowBox box) {
 /**
  * A BlockBox will always return false for isBidi() since a block's contents are 
  * unaffected by their surroundings and vice versa.
- * @see org.eclipse.draw2d.text.FlowBox#isBidi()
+ * @see org.eclipse.draw2d.text.FlowBox#requiresBidi()
  */
-public boolean isBidi() {
+public boolean requiresBidi() {
 	return false;
 }
 

@@ -58,7 +58,7 @@ private void buildBidiTree(FlowBox box, BidiLevelNode node, List branches) {
 public void commit() {
 	int baseline = getBaseline();
 	int xLocation = x;
-	if (isBidi()) {
+	if (requiresBidi()) {
 		BidiLevelNode root = new BidiLevelNode();
 		List branches = new ArrayList();
 		// branches does not include this LineBox

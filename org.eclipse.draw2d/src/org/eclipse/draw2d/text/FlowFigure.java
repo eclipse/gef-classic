@@ -30,7 +30,10 @@ public abstract class FlowFigure
 	extends Figure
 {
 
-private int[] bidiLevels;
+/**
+ * integer indicating whether selection should be displayed.
+ */
+protected int selectionStart = -1;
 
 /**
  * Constructs a new FlowFigure. */
@@ -39,8 +42,7 @@ public FlowFigure() {
 }
 
 /**
- * Only <code>FlowFigure</code>s should be added to a FlowFigure.  The child figure's
- * context is set to the layout manager of this figure.
+ * If the child is a <code>FlowFigure</code>, its FlowContext is passed to it.
  * @see org.eclipse.draw2d.IFigure#add(IFigure, Object, int) */
 public void add(IFigure child, Object constraint, int index) {
 	super.add(child, constraint, index);
@@ -85,31 +87,6 @@ protected void contributeBidi(BidiProcessor proc) {
 protected abstract FlowFigureLayout createDefaultFlowLayout();
 
 /**
- * For the format of the bidi levels, see {@link BidiProcessor#process()}.
- * 
- * @return the bidi levels assigned by the BidiProcessor; can be <code>null</code> if
- * there is no Bidi text
- * @see #setBidiValues(int[])
- * @since 3.1
- */
-public int[] getBidiValues() {
-	return bidiLevels;
-}
-
-/**
- * Throws away the cached Bidi state for this figure and all its children.  This method
- * is invoked by {@link BlockFlow#revalidateBidi(IFigure)}.
- * @since 3.1
- */
-protected void invalidateBidi() {
-	bidiLevels = null;
-	for (Iterator iter = getChildren().iterator(); iter.hasNext();) {
-		FlowFigure flowFig = (FlowFigure) iter.next();
-		flowFig.invalidateBidi();
-	}
-}
-
-/**
  * Called after validate has occurred. This is used to update the bounds of the FlowFigure
  * to encompass its new flow boxed created during validate.
  */
@@ -143,30 +120,15 @@ protected void revalidateBidi(IFigure origin) {
 }
 
 /**
- * This method is invoked by the BidiProcessor if it determines that a shaping character 
- * needs to be appended to the text contributed by this Figure for it to appear properly 
- * on the screen.
- * <p>
- * This method does nothing by default.  Sub-classes should override as needed.
+ * Sets the bidi information for this figure.  A flow figure contributes bidi text in
+ * {@link #contributeBidi(BidiProcessor)}.  If the figure contributes text associated with
+ * it, this method is called back to indicate the bidi properties for that text within its
+ * block.
  * 
- * @param append the ZWJ will be appended if <code>true</code>
+ * @param info the BidiInfo for this figure
  * @since 3.1
  */
-public void setAppendJoiner(boolean append) {
-}
-
-/**
- * This method is invoked by the BidiProcessor to set the Bidi levels for the text
- * contributed by this figure.  For the format of the Bidi levels, set 
- * {@link BidiProcessor#process()}.
- * 
- * @param levels the bidi levels
- * @see #getBidiValues()
- * @since 3.1
- */
-protected void setBidiValues(int[] levels) {
-	bidiLevels = levels;
-}
+public void setBidiInfo(BidiInfo info) { }
 
 /**
  * FlowFigures override setBounds() to prevent translation of children. "bounds" is a
@@ -182,7 +144,9 @@ public void setBounds(Rectangle r) {
 	bounds.y = r.y;
 	bounds.width = r.width;
 	bounds.height = r.height;
-	fireMoved();
+	fireFigureMoved();
+	if (isCoordinateSystem())
+		fireCoordinateSystemChanged();
 	repaint();
 }
 
@@ -194,16 +158,18 @@ public void setFlowContext(FlowContext flowContext) {
 }
 
 /**
- * This method is invoked by the BidiProcessor if it determines that a shaping character
- * needs to be prepended to the text contributed by this Figure for it to appear properly
- * on the screen.
- * <p>
- * This method does nothing by default.  Sub-classes should override as needed.
- * 
- * @param prepend the ZWJ will be prepended if <code>true</code>
+ * Sets the selection or a range of selection.  A start value of -1 is used to indicate no
+ * selection.  A start value >=0 indicates show selection.  A start and end value can be
+ * used to represent a range of offsets which should render selection.
+ * @param start the start offset
+ * @param end the end offset
  * @since 3.1
  */
-public void setPrependJoiner(boolean prepend) {
+public void setSelection(int start, int end) {
+	if (selectionStart == start)
+		return;
+	selectionStart = start;
+	repaint();
 }
 
 }

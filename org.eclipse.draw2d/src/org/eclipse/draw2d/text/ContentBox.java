@@ -18,8 +18,8 @@ package org.eclipse.draw2d.text;
  */
 public class ContentBox extends FlowBox
 {
-	
-private int bidiLevel = -1;
+
+int bidiLevel = -1;
 
 /**
  * @return the Bidi level of this box, if one has been set; -1 otherwise
@@ -31,10 +31,10 @@ public int getBidiLevel() {
 
 /**
  * Returns <code>true</code> if the bidi level for this box is right-to-left.
- * @see org.eclipse.draw2d.text.FlowBox#isBidi()
+ * @see org.eclipse.draw2d.text.FlowBox#requiresBidi()
  */
-public boolean isBidi() {
-	return bidiLevel % 2 == 1;
+public boolean requiresBidi() {
+	return bidiLevel != -1;
 }
 
 /**

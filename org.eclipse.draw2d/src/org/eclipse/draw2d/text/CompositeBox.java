@@ -59,12 +59,12 @@ public int getRecommendedWidth() {
 }
 
 /**
- * @see org.eclipse.draw2d.text.FlowBox#isBidi()
+ * @see org.eclipse.draw2d.text.FlowBox#requiresBidi()
  */
-public boolean isBidi() {
+public boolean requiresBidi() {
 	for (Iterator iter = getFragments().iterator(); iter.hasNext();) {
 		FlowBox box = (FlowBox)iter.next();
-		if (box.isBidi())
+		if (box.requiresBidi())
 			return true;
 	}
 	return false;

@@ -94,7 +94,7 @@ public int getWidth() {
  * @return <code>true</code> if the box is bi-directional
  * @since 3.1
  */
-public boolean isBidi() {
+public boolean requiresBidi() {
 	return false;
 }
 

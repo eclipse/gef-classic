@@ -18,61 +18,49 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.TextLayout;
 
 /**
- * A helper class for a BlockFlow that does Bidi evaluation of all the text in
- * that block.
- * 
+ * A helper class for a BlockFlow that does Bidi evaluation of all the text in that block.
  * <p>
- * WARNING: This class is not intended to be subclassed by clients.
- * </p>
- * 
+ * WARNING: This class is not intended to be subclassed by clients. This class is for
+ * INTERNAL use only.
  * @author Pratik Shah
  * @since 3.1
  */
-public class BidiProcessor
-{
+public final class BidiProcessor {
 
 /**
- * The Singleton
+ * A singleton instance.
  */
 public static final BidiProcessor INSTANCE = new BidiProcessor();
-private StringBuffer bidiText = new StringBuffer();
 
+private StringBuffer bidiText;
 private List list = new ArrayList();
 private int orientation = SWT.LEFT_TO_RIGHT;
 
-private BidiProcessor() {}
+private BidiProcessor() { }
 
 /**
  * FlowFigures can make textual contributions for its block.  All contributions
  * are concatenated (in the order that they were contributed) to make the final
- * String which will be evaluated to determine the Bidi levels (in the 
- * {@link #process() process} method).  This method should only be called at most 
- * once per figure per Bidi validation, i.e, a FlowFigure is not allowed to make
- * multiple text contributions at different offsets.
- * 
+ * String which will determine the Bidi levels.
  * @param fig the figure that is contributing the given text
  * @param str the text contributed by the given figure
  * @see #addControlText(String)
  */
 public void add(FlowFigure fig, String str) {
-	if (fig == null || str == null || str.length() == 0)
+	if (str.length() == 0)
 		return;
-	if (bidiText == null)
-		bidiText = new StringBuffer();
-	list.add(new StringInfoHolder(fig, bidiText.length(), str.length()));
+	list.add(new BidiEntry(fig, bidiText.length(), str.length()));
 	bidiText.append(str);
 }
 
 /**
- * This methods allows FlowFigures to contribute text that may effect the Bidi
- * evaluation, but is not text that is visible on the screen.  The bidi level of
- * such text is not saved or assigned back to the contributing figure.
+ * This methods allows FlowFigures to contribute text that may effect the bidi evaluation,
+ * but is not text that is visible on the screen.  The bidi level of such text is
+ * reported back to the contributing figure.
  * 
  * @param str the contributed text
  */
 public void addControlText(String str) {
-	if (bidiText == null)
-		bidiText = new StringBuffer();
 	bidiText.append(str);
 }
 
@@ -85,45 +73,44 @@ public void addControlText(String str) {
  * @param levels the calculated levels of all the text in the block
  */
 private void assignResults(int[] levels) {
-	int offsetIndex = 1;
-	StringInfoHolder prevInfo = null, info = null;
+	BidiEntry prevEntry = null, entry = null;
+	BidiInfo prevInfo = null, info = null;
+	int end = 2, start = 0;
 	for (int i = 0; i < list.size(); i++) {
-		info = (StringInfoHolder)list.get(i);
-		while (levels[offsetIndex] <= info.offset) {
-			offsetIndex += 2;
-			if (offsetIndex >= levels.length)
-				break;
-		}
-		offsetIndex -= 2;
-		int startingIndex = offsetIndex - 1;
-		while (levels[offsetIndex] <= info.offset + info.length) {
-			offsetIndex += 2;
-			if (offsetIndex >= levels.length)
-				break;
-		}
-		offsetIndex -= 2;
-		int endingIndex = offsetIndex;
-		int results[] = new int[endingIndex - startingIndex + 1];
-		System.arraycopy(levels, startingIndex, results, 0, results.length);
-		for (int j = 1; j < results.length; j += 2)
-			results[j] = Math.max(0, results[j] - info.offset);
-		info.fig.setBidiValues(results);
+		entry = (BidiEntry)list.get(i);
+		info = new BidiInfo();
+		
+		while (levels[end] < entry.end)
+			end += 2;
+		
+		int levelInfo[] = new int[end - start - 1];
+		System.arraycopy(levels, start + 1, levelInfo, 0, levelInfo.length);
+		for (int j = 1; j < levelInfo.length; j += 2)
+			levelInfo[j] -= entry.begin;
+		info.levelInfo = levelInfo;
 
-		// Determine whether or not joiner characters need to be added
-		if (prevInfo != null
-				// if we started in the middle of a level run
-				&& levels[startingIndex + 1] != info.offset
-				// and the level run is odd
-				&& levels[offsetIndex - 1] % 2 == 1
-				// and the first character of this figure is arabic
-				&& isArabic(bidiText.charAt(info.offset)) 
-				// and the last character of the previous figure was arabic
-				&& isArabic(bidiText.charAt(prevInfo.offset + prevInfo.length - 1))) {
-			info.fig.setPrependJoiner(true);
-			prevInfo.fig.setAppendJoiner(true);
+		// Compare current and previous for joiners, and commit previous BidiInfo.
+		if (prevEntry != null) {
+			if (// if we started in the middle of a level run
+					levels[start] < entry.begin
+					// and the level run is odd
+					&& levels[start + 1] % 2 == 1
+					// and the first character of this figure is Arabic
+					&& isArabic(bidiText.charAt(entry.begin))
+					// and the last character of the previous figure was Arabic
+					&& isArabic(bidiText.charAt(prevEntry.end - 1)))
+				prevInfo.trailingJoiner = info.leadingJoiner = true;
+			prevEntry.fig.setBidiInfo(prevInfo);
 		}
+		prevEntry = entry;
 		prevInfo = info;
+		if (entry.end == levels[end])
+			start = end;
+		else
+			start = end - 2;
 	}
+	if (entry != null)
+		entry.fig.setBidiInfo(info);
 }
 
 /**
@@ -144,43 +131,44 @@ private boolean isArabic(char c) {
  * <p>
  * The assigned Bidi levels are in the form on an int array that contains sets of
  * the Bidi level and the offset of the first character that that level applies to. For 
- * instance, [1, 0, 2, 5, 1, 9] would mean that characters at index 0-4 are of level 1, 
+ * instance, {1, 0, 2, 5, 1, 9} would mean that characters at index 0-4 are of level 1, 
  * 5-8 of level 2 and the remaining characters (starting at offset 9) are of level 1.
  */
 public void process() {
-	if (bidiText != null && bidiText.length() != 0) {
-		char[] chars = new char[bidiText.length()];
-		bidiText.getChars(0, bidiText.length(), chars, 0);
-		if (Bidi.requiresBidi(chars, 0, chars.length - 1)) {
-			int[] levels = new int[16];
-			TextLayout layout = FlowUtilities.getTextLayout();
-			layout.setOrientation(orientation);
-			layout.setText(bidiText.toString());
-			int j = 0, offset = 0, prevLevel = -1;
-			for (int i = 0; i < chars.length; i++) {
-				int newLevel = layout.getLevel(i);
-				if (newLevel != prevLevel) {
-					if (j + 2 > levels.length) {
-						int temp[] = levels;
-						levels = new int[levels.length * 2];
-						System.arraycopy(temp, 0, levels, 0, temp.length);
-					}
-					levels[j++] = newLevel;
-					levels[j++] = offset;
-					prevLevel = newLevel;
-				}
-				offset++;
-			}
-			// levels was initialized to be twice as long as bidiText.  we now truncate it.
-			if (j != levels.length) {
-				int[] newLevels = new int[j];
-				System.arraycopy(levels, 0, newLevels, 0, j);
-				levels = newLevels;
-			}
+	char[] chars = new char[bidiText.length()];
+	bidiText.getChars(0, bidiText.length(), chars, 0);
 
-			assignResults(levels);
+	if (!Bidi.requiresBidi(chars, 0, chars.length - 1))
+		return;
+
+	int[] levels = new int[15];
+	TextLayout layout = FlowUtilities.getTextLayout();
+	
+	layout.setOrientation(orientation);
+	layout.setText(bidiText.toString());
+	int j = 0, offset = 0, prevLevel = -1;
+	for (offset = 0; offset < chars.length; offset++) {
+		int newLevel = layout.getLevel(offset);
+		if (newLevel != prevLevel) {
+			if (j + 3 > levels.length) {
+				int temp[] = levels;
+				levels = new int[levels.length * 2 + 1];
+				System.arraycopy(temp, 0, levels, 0, temp.length);
+			}
+			levels[j++] = offset;
+			levels[j++] = newLevel;
+			prevLevel = newLevel;
 		}
 	}
+	levels[j++] = offset;
+
+	if (j != levels.length) {
+		int[] newLevels = new int[j];
+		System.arraycopy(levels, 0, newLevels, 0, j);
+		levels = newLevels;
+	}
+	assignResults(levels);
+
 	// will cause the fields to be reset for the next string to be processed
 	bidiText = null;
 	list.clear();
@@ -193,6 +181,8 @@ public void process() {
  * @param newOrientation SWT.LEFT_TO_RIGHT or SWT.RIGHT_TO_LEFT 
  */
 public void setOrientation(int newOrientation) {
+	bidiText = new StringBuffer();
+	list.clear();
 	orientation = newOrientation;
 }
 
@@ -202,13 +192,13 @@ public void setOrientation(int newOrientation) {
  * @author Pratik Shah
  * @since 3.1
  */
-private static class StringInfoHolder {
-	private FlowFigure fig;
-	private int offset, length;
-	private StringInfoHolder(FlowFigure fig, int offset, int length) {
+private static class BidiEntry {
+	FlowFigure fig;
+	int begin, end;
+	BidiEntry(FlowFigure fig, int begin, int end) {
 		this.fig = fig;
-		this.offset = offset;
-		this.length = length;
+		this.begin = begin;
+		this.end = end;
 	}
 }
 

@@ -28,9 +28,10 @@ import org.eclipse.draw2d.geometry.Rectangle;
 public class ImageFlow 
 	extends FlowFigure
 {
+
+private Image img;
 private ContentBox box;
 private FlowContext context;
-private Image img;
 
 /**
  * Default Constructor
@@ -70,11 +71,6 @@ protected FlowFigureLayout createDefaultFlowLayout() {
  * @see org.eclipse.draw2d.Figure#layout()
  */
 protected void layout() {
-	int[] bidiValues = getBidiValues();
-	if (bidiValues != null)
-		box.setBidiLevel(bidiValues[0]);
-	else
-		box.setBidiLevel(-1);
 	if (img != null) {
 		org.eclipse.swt.graphics.Rectangle bounds = img.getBounds();
 		box.width = bounds.width;
@@ -82,6 +78,13 @@ protected void layout() {
 	} else
 		box.width = box.height = 0;
 	context.addToCurrentLine(box);
+}
+
+/**
+ * @see FlowFigure#setBidiValues(int[])
+ */
+public void setBidiValues(int[] levels) {
+	box.setBidiLevel(levels[0]);
 }
 
 /**

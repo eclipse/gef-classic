@@ -38,9 +38,8 @@ private static TextLayout layout;
  * preceding the given index.  Note that the returned index may be -1.
  */
 static int findPreviousNonWS(String str, int index) {
-	if (index == BreakIterator.DONE)
+	if (index == BreakIterator.DONE || index == str.length())
 		return index;
-	index--;
 	while (index > 0 && Character.isWhitespace(str.charAt(index)))
 		index--;
 	return index;
@@ -61,10 +60,10 @@ static int findPreviousNonWS(String str, int index) {
  * @return the number of characters that will fit in the given space; can be 0 (eg., when
  * the first character of the given string is a newline)
  */
-public static int getTextForSpace(TextFragmentBox frag, String string, Font font, 
-										int availableWidth, float avg, int wrapping) {
+public static int getTextForSpace(TextFragmentBox frag, String string, Font font,
+		int availableWidth, float avg, int wrapping) {
 	/*
-	 * Changes to this algorithm should be tested with 
+	 * Changes to this algorithm should be tested with
 	 * org.eclipse.draw2d.test.TextFlowWrapTest
 	 */
 	frag.truncated = false;
@@ -82,7 +81,7 @@ public static int getTextForSpace(TextFragmentBox frag, String string, Font font
 	// smallest possible number of characters that will not fit in the available space.
 	int min, max;
 	if (wrapping == ParagraphTextLayout.WORD_WRAP_HARD)
-		min = Math.max(1, findPreviousNonWS(string, breakItr.next()) + 1);
+		min = Math.max(1, breakItr.next());
 	else
 		min = 1;
 	max = string.length() + 1;
@@ -116,7 +115,7 @@ public static int getTextForSpace(TextFragmentBox frag, String string, Font font
 	int guess = 0, guessSize = 0;
 	// Set up the TextLayout if needed
 	TextLayout textLayout = null;
-	if (frag.isBidi()) {
+	if (frag.requiresBidi()) {
 		// Note that at this point the TextLayout's orientation could be RTL.  However,
 		// since we're only using it to calculate space, the orientation doesn't matter.
 		textLayout = getTextLayout();
@@ -133,7 +132,7 @@ public static int getTextForSpace(TextFragmentBox frag, String string, Font font
 		if (guess <= min) guess = min + 1;
 
 		//Measure the current guess
-		if (frag.isBidi())
+		if (frag.requiresBidi())
 			guessSize = textLayout.getBounds(0, guess - 1).width;
 		else
 			guessSize = getTextExtents(string.substring(0, guess), font).width - 1;
@@ -240,7 +239,7 @@ static void setupFragment(TextFragmentBox frag, Font f, String s) {
 	int width;
 	if (s.length() == 0 || frag.length == 0)
 		width = 0;
-	else if (frag.isBidi()) {
+	else if (frag.requiresBidi()) {
 		TextLayout textLayout = getTextLayout();
 		textLayout.setFont(f);
 		textLayout.setText(s);

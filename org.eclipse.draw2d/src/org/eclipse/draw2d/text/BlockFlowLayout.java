@@ -42,7 +42,7 @@ public BlockFlowLayout(BlockFlow blockFlow) {
  */
 protected void cleanup() {
 	super.cleanup();
-	previousLine = null;
+	currentLine = previousLine = null;
 }
 
 /**
@@ -95,12 +95,10 @@ public void endLine() {
 }
 
 /**
- * @see FlowContainerLayout#flush()
+ * @see org.eclipse.draw2d.text.FlowContext#getCurrentY()
  */
-protected void flush() {
-	if (currentLine != null)
-		layoutLine();
-	endBlock();
+public int getCurrentY() {
+	return getCurrentLine().y;
 }
 
 /**
@@ -112,20 +110,13 @@ protected final BlockFlow getBlockFlow() {
 }
 
 /**
- * @see org.eclipse.draw2d.text.FlowContext#getCurrentY()
- */
-public int getCurrentY() {
-	return getCurrentLine().y;
-}
-
-/**
  * Align the line horizontally and then commit it.
  */
 protected void layoutLine() {
 	// align the current line
 	currentLine.x = 0;
 	int alignment = getBlockFlow().getHorizontalAligment();
-	if (getBlockFlow().getBidiOrientation() == SWT.RIGHT_TO_LEFT) {
+	if (getBlockFlow().getOrientation() == SWT.RIGHT_TO_LEFT) {
 		if (alignment == PositionConstants.LEFT)
 			alignment = PositionConstants.RIGHT;
 		else if (alignment == PositionConstants.RIGHT)
@@ -142,6 +133,15 @@ protected void layoutLine() {
 	
 	currentLine.commit();
 	blockBox.add(currentLine);
+}
+
+/**
+ * @see FlowContainerLayout#flush()
+ */
+protected void flush() {
+	if (currentLine != null)
+		layoutLine();
+	endBlock();
 }
 
 /**

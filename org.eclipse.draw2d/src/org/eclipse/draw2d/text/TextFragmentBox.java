@@ -40,6 +40,16 @@ public int getAscent() {
 }
 
 /**
+ * Returns <code>true</code> if the bidi level is odd.  Right to left fragments should be
+ * rendered and queried by insert RLO control characters in front of them.
+ * @return <code>true</code> if right-to-left
+ * @since 3.1
+ */
+public boolean isRightToLeft() {
+	return bidiLevel > -1 && (bidiLevel % 2) == 1;
+}
+
+/**
  * Sets the ascent of this TextFragmentBox to the given value
  * @param a the ascent
  */

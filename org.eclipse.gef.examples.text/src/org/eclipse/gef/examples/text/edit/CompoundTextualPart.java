@@ -289,9 +289,4 @@ protected TextLocation searchLineAbove(CaretSearch search) {
 	return result;
 }
 
-/**
- * Selection is not rendered
- */
-public void setSelection(int start, int end) {}
-
 }

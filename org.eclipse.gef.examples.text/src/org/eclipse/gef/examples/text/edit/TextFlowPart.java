@@ -86,34 +86,37 @@ public TextLocation getNextLocation(CaretSearch search) {
 				offset = getTextFlow().getLastOffsetForLine(where.y);
 			else
 				offset = getTextFlow().getFirstOffsetForLine(where.y);
-			if (offset == - 1)
+			if (offset == -1)
 				return null;
 			return new TextLocation(this, offset);
-			
+
 		case CaretSearch.COLUMN:
+			TextFlow flow = getTextFlow();
 			if (search.isRecursive) {
 				if (search.isInto) {
 					if (search.isForward)
-						return new TextLocation(this, 0);
+						return new TextLocation(this, flow.getNextVisibleOffset(-1));
 					else
-						return new TextLocation(this, getLength());
+						return new TextLocation(this, flow.getPreviousVisibleOffset(-1));
 				} else {
 					if (getLength() > 0)
 						if (search.isForward)
-							return new TextLocation(this, 1);
+							return new TextLocation(this, flow.getNextVisibleOffset(0));
 						else
-							return new TextLocation(this, getLength() - 1);
+							return new TextLocation(this, flow
+									.getPreviousVisibleOffset(flow
+											.getPreviousVisibleOffset(-1)));
 					//In the rare case that this is an empty element, skip it.
 					return null;
 				}
 			}
-				
+
 			if (search.isForward && search.where.offset < getLength())
-				return new TextLocation(this, search.where.offset + 1);
+				return new TextLocation(this, flow.getNextVisibleOffset(search.where.offset));
 			if (!search.isForward && search.where.offset > 0)
-				return new TextLocation(this, search.where.offset - 1);
+				return new TextLocation(this, flow.getPreviousVisibleOffset(search.where.offset));
 			break;
-		
+
 		case CaretSearch.ROW:
 			if (!search.isRecursive)
 				break;
@@ -127,18 +130,19 @@ public TextLocation getNextLocation(CaretSearch search) {
 			return new TextLocation(this, offset);
 		case CaretSearch.WORD_BOUNDARY:
 			String text = getTextFlow().getText();
-			BreakIterator iter = BreakIterator.getWordInstance();
-			iter.setText(text);
-			if (search.isForward)
-				offset = iter.following(search.where.offset);
-			else
-				offset = iter.preceding(search.where.offset);
-			if (offset == BreakIterator.DONE)
-				return getTextParent().getNextLocation(search);
-			return new TextLocation(this, offset);
+			if (search.where.offset < getLength()) {
+				BreakIterator iter = BreakIterator.getWordInstance();
+				iter.setText(text);
+				if (search.isForward)
+					offset = iter.following(search.where.offset);
+				else
+					offset = iter.preceding(search.where.offset);
+				if (offset != BreakIterator.DONE)
+					return new TextLocation(this, offset);
+			}
+			return getTextParent().getNextLocation(search);
 	}
-	return ((TextualEditPart)getParent())
-		.getNextLocation(search);
+	return ((TextualEditPart)getParent()).getNextLocation(search);
 }
 
 TextFlow getTextFlow() {
