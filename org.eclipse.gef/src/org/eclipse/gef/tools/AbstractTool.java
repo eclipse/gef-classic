@@ -13,18 +13,20 @@ package org.eclipse.gef.tools;
 
 import java.util.*;
 
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.gef.*;
-import org.eclipse.gef.commands.Command;
-import org.eclipse.gef.editparts.LayerManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.events.*;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
+
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2d.geometry.Point;
+
+import org.eclipse.gef.*;
+import org.eclipse.gef.commands.Command;
+import org.eclipse.gef.editparts.LayerManager;
 
 /**
  * Default implementation support for {@link Tool}s.
@@ -765,6 +767,7 @@ void placeMouseInViewer(Point p){
 	org.eclipse.swt.graphics.Point swt = new org.eclipse.swt.graphics.Point(p.x, p.y);
 	swt = c.toDisplay(swt);
 	c.getDisplay().setCursorLocation(swt);
+	getCurrentInput().setMouseLocation(p.x, p.y);
 }
 
 /**
