@@ -10,28 +10,28 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
-import org.eclipse.draw2d.internal.Draw2dMessages;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.accessibility.AccessibleControlEvent;
-import org.eclipse.swt.accessibility.AccessibleEvent;
+import org.eclipse.swt.accessibility.*;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.TraverseEvent;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.widgets.Control;
 
+import org.eclipse.draw2d.internal.Draw2dMessages;
+
 /**
- * The SWTEventDispatcher provides draw2d with the ability to 
- * dispatch SWT Events. The {@link org.eclipse.draw2d.LightweightSystem}
- * adds SWT event listeners on its Canvas. When the Canvas receives
- * an SWT event, it calls the appropriate dispatcher method in 
+ * The SWTEventDispatcher provides draw2d with the ability to dispatch SWT Events. The 
+ * {@link org.eclipse.draw2d.LightweightSystem} adds SWT event listeners on its Canvas. 
+ * When the Canvas receives an SWT event, it calls the appropriate dispatcher method in 
  * SWTEventDispatcher. 
  */
 public class SWTEventDispatcher
 	extends EventDispatcher
 {
 
-private final static boolean DEBUG = false;
+private static final boolean DEBUG = false;
 
+/** Used to tell if any button is pressed without regard to the specific button. */
 protected static final int ANY_BUTTON = SWT.BUTTON1 | SWT.BUTTON2 | SWT.BUTTON3;
 
 private boolean figureTraverse = true;
@@ -45,6 +45,7 @@ private IFigure hoverSource;
 
 private MouseEvent currentEvent;
 private Cursor cursor;
+/** The control this dispatcher is listening to. */
 protected org.eclipse.swt.widgets.Control control;
 
 private ToolTipHelper toolTipHelper;
@@ -53,80 +54,112 @@ private FocusTraverseManager focusManager = new FocusTraverseManager();
 protected class FigureAccessibilityDispatcher
 	extends AccessibilityDispatcher
 {
-	public void getChildAtPoint(AccessibleControlEvent e) {}
-	public void getChildCount(AccessibleControlEvent e) {}
-	public void getChildren(AccessibleControlEvent e) {}
-	public void getDefaultAction(AccessibleControlEvent e) {}
-	public void getDescription(AccessibleEvent e) {}
-	public void getFocus(AccessibleControlEvent e) {}
-	public void getHelp(AccessibleEvent e) {}
-	public void getKeyboardShortcut(AccessibleEvent e) {}
-	public void getLocation(AccessibleControlEvent e) {}
-	public void getName(AccessibleEvent e) {}
-	public void getRole(AccessibleControlEvent e) {}
-	public void getSelection(AccessibleControlEvent e) {}
-	public void getState(AccessibleControlEvent e) {}
-	public void getValue(AccessibleControlEvent e) {}
+	/** @see AccessibleControlListener#getChildAtPoint(AccessibleControlEvent) */
+	public void getChildAtPoint(AccessibleControlEvent e) { }
+	/** @see AccessibleControlListener#getChildCount(AccessibleControlEvent) */
+	public void getChildCount(AccessibleControlEvent e) { }
+	/** @see AccessibleControlListener#getChildren(AccessibleControlEvent) */
+	public void getChildren(AccessibleControlEvent e) { }
+	/** @see AccessibleControlListener#getDefaultAction(AccessibleControlEvent) */
+	public void getDefaultAction(AccessibleControlEvent e) { }
+	/** @see AccessibleListener#getDescription(AccessibleEvent) */
+	public void getDescription(AccessibleEvent e) { }
+	/** @see AccessibleControlListener#getFocus(AccessibleControlEvent) */
+	public void getFocus(AccessibleControlEvent e) { }
+	/** @see AccessibleListener#getHelp(AccessibleEvent) */
+	public void getHelp(AccessibleEvent e) { }
+	/** @see AccessibleListener#getKeyboardShortcut(AccessibleEvent) */
+	public void getKeyboardShortcut(AccessibleEvent e) { }
+	/** @see AccessibleControlListener#getLocation(AccessibleControlEvent) */
+	public void getLocation(AccessibleControlEvent e) { }
+	/** @see AccessibleListener#getName(AccessibleEvent) */
+	public void getName(AccessibleEvent e) { }
+	/** @see AccessibleControlListener#getRole(AccessibleControlEvent) */
+	public void getRole(AccessibleControlEvent e) { }
+	/** @see AccessibleControlListener#getSelection(AccessibleControlEvent) */
+	public void getSelection(AccessibleControlEvent e) { }
+	/** @see AccessibleControlListener#getState(AccessibleControlEvent) */
+	public void getState(AccessibleControlEvent e) { }
+	/** @see AccessibleControlListener#getValue(AccessibleControlEvent) */
+	public void getValue(AccessibleControlEvent e) { }
 }
 
-public void dispatchFocusGained(org.eclipse.swt.events.FocusEvent e){
+/**
+ * @see EventDispatcher#dispatchFocusGained(FocusEvent)
+ */
+public void dispatchFocusGained(org.eclipse.swt.events.FocusEvent e) {
 	IFigure currentFocusOwner = getFocusTraverseManager().getCurrentFocusOwner();
 
 	/*
 	 * Upon focus gained, if there is no current focus owner,
 	 * set focus on first focusable child. 
 	 */
-	if(currentFocusOwner == null)
-		currentFocusOwner = getFocusTraverseManager().getNextFocusableFigure(root,focusOwner);
+	if (currentFocusOwner == null)
+		currentFocusOwner = getFocusTraverseManager().getNextFocusableFigure(root, focusOwner);
 	setFocus(currentFocusOwner);
 }
 
-public void dispatchFocusLost(org.eclipse.swt.events.FocusEvent e){
+/**
+ * @see EventDispatcher#dispatchFocusLost(FocusEvent)
+ */
+public void dispatchFocusLost(org.eclipse.swt.events.FocusEvent e) {
 	setFocus(null);
 }
 
-public void dispatchKeyPressed(org.eclipse.swt.events.KeyEvent e){
-	if (focusOwner != null){
+/**
+ * @see EventDispatcher#dispatchKeyPressed(KeyEvent)
+ */
+public void dispatchKeyPressed(org.eclipse.swt.events.KeyEvent e) {
+	if (focusOwner != null) {
 		KeyEvent event = new KeyEvent(this, focusOwner, e);
 		focusOwner.handleKeyPressed(event);
 	}
 }
 
-public void dispatchKeyReleased(org.eclipse.swt.events.KeyEvent e){
-	if (focusOwner != null){
+/**
+ * @see EventDispatcher#dispatchKeyReleased(KeyEvent)
+ */
+public void dispatchKeyReleased(org.eclipse.swt.events.KeyEvent e) {
+	if (focusOwner != null) {
 		KeyEvent event = new KeyEvent(this, focusOwner, e);
 		focusOwner.handleKeyReleased(event);
 	}
 }
 
-public void dispatchKeyTraversed(TraverseEvent e){
+/**
+ * @see EventDispatcher#dispatchKeyTraversed(TraverseEvent)
+ */
+public void dispatchKeyTraversed(TraverseEvent e) {
 	if (!figureTraverse)
 		return;
 	IFigure nextFigure = null;
 	
-	if(e.detail == SWT.TRAVERSE_TAB_NEXT)
-		nextFigure = getFocusTraverseManager().getNextFocusableFigure(root,focusOwner);
-	else if(e.detail == SWT.TRAVERSE_TAB_PREVIOUS)
-		nextFigure = getFocusTraverseManager().getPreviousFocusableFigure(root,focusOwner);
+	if (e.detail == SWT.TRAVERSE_TAB_NEXT)
+		nextFigure = getFocusTraverseManager().getNextFocusableFigure(root, focusOwner);
+	else if (e.detail == SWT.TRAVERSE_TAB_PREVIOUS)
+		nextFigure = getFocusTraverseManager().getPreviousFocusableFigure(root, focusOwner);
 
-	if(nextFigure == null)
+	if (nextFigure == null)
 		e.doit = true;	
-	else{
+	else {
 		e.doit = false;	
 		setFocus(nextFigure);
 	}
 }
 
-public void dispatchMouseHover(org.eclipse.swt.events.MouseEvent me){
+/**
+ * @see EventDispatcher#dispatchMouseHover(MouseEvent)
+ */
+public void dispatchMouseHover(org.eclipse.swt.events.MouseEvent me) {
 	receive(me);
-	if(mouseTarget != null)
+	if (mouseTarget != null)
 		mouseTarget.handleMouseHover(currentEvent);		
 	/*
 	 * Check Tooltip source.
 	 * Get Tooltip source's Figure.
 	 * Set that tooltip as the lws contents on the helper.
 	 */
-	if(hoverSource != null){
+	if (hoverSource != null) {
 		toolTipHelper = getToolTipHelper();
 		IFigure tip = hoverSource.getToolTip();
 		Control control = (Control)me.getSource();
@@ -136,28 +169,40 @@ public void dispatchMouseHover(org.eclipse.swt.events.MouseEvent me){
 	}
 }
 
-public void dispatchMouseDoubleClicked(org.eclipse.swt.events.MouseEvent me){
+/**
+ * @see EventDispatcher#dispatchMouseDoubleClicked(MouseEvent)
+ */
+public void dispatchMouseDoubleClicked(org.eclipse.swt.events.MouseEvent me) {
 	receive(me);
 	if (mouseTarget != null)
 		mouseTarget.handleMouseDoubleClicked(currentEvent);
 }
 
+/**
+ * @see EventDispatcher#dispatchMouseEntered(MouseEvent)
+ */
 public void dispatchMouseEntered(org.eclipse.swt.events.MouseEvent me) {
 	receive(me);
 }
 
+/**
+ * @see EventDispatcher#dispatchMouseExited(MouseEvent)
+ */
 public void dispatchMouseExited(org.eclipse.swt.events.MouseEvent me) {
 	setHoverSource(null, me);
-	if (mouseTarget != null){
+	if (mouseTarget != null) {
 		currentEvent = new MouseEvent(me.x, me.y, this, mouseTarget, me.button, me.stateMask);
 		mouseTarget.handleMouseExited(currentEvent);
 	}
 	mouseTarget = null;
 }
 
-public void dispatchMousePressed(org.eclipse.swt.events.MouseEvent me){
+/**
+ * @see EventDispatcher#dispatchMousePressed(MouseEvent)
+ */
+public void dispatchMousePressed(org.eclipse.swt.events.MouseEvent me) {
 	receive(me);
-	if (mouseTarget != null){
+	if (mouseTarget != null) {
 		if (DEBUG)
 			System.out.println("Pressed:\n\t" + currentEvent);//$NON-NLS-1$
 		mouseTarget.handleMousePressed(currentEvent);
@@ -166,24 +211,29 @@ public void dispatchMousePressed(org.eclipse.swt.events.MouseEvent me){
 	}
 }
 
-public void dispatchMouseMoved(org.eclipse.swt.events.MouseEvent me){
+/**
+ * @see EventDispatcher#dispatchMouseMoved(MouseEvent)
+ */
+public void dispatchMouseMoved(org.eclipse.swt.events.MouseEvent me) {
 	receive(me);
 	if (mouseTarget != null)
-		if ((me.stateMask & ANY_BUTTON)!= 0){
+		if ((me.stateMask & ANY_BUTTON) != 0) {
 			if (DEBUG)
 				System.out.println("Drag:\n\t" + currentEvent);//$NON-NLS-1$
 			mouseTarget.handleMouseDragged(currentEvent);
-		}
-		else {
+		} else {
 			if (DEBUG)
 				System.out.println("Move:\n\t" + currentEvent);//$NON-NLS-1$
 			mouseTarget.handleMouseMoved(currentEvent);
 		}
 }
 
-public void dispatchMouseReleased(org.eclipse.swt.events.MouseEvent me){
+/**
+ * @see EventDispatcher#dispatchMouseReleased(MouseEvent)
+ */
+public void dispatchMouseReleased(org.eclipse.swt.events.MouseEvent me) {
 	receive(me);
-	if (mouseTarget != null){
+	if (mouseTarget != null) {
 		if (DEBUG)
 			System.out.println("Released:\n\t" + currentEvent);//$NON-NLS-1$
 		mouseTarget.handleMouseReleased(currentEvent);
@@ -192,61 +242,111 @@ public void dispatchMouseReleased(org.eclipse.swt.events.MouseEvent me){
 	receive(me);
 }
 
+/**
+ * @see EventDispatcher#getAccessibilityDispatcher()
+ */
 protected AccessibilityDispatcher getAccessibilityDispatcher() {
 	return null;
 }
 
-protected MouseEvent getCurrentEvent(){return currentEvent;}
+/**
+ * Returns the current mouse event.
+ * @return the current mouse event
+ */
+protected MouseEvent getCurrentEvent() {
+	return currentEvent;
+}
 
-private IFigure getCurrentToolTip(){
-	if(hoverSource != null)
+private IFigure getCurrentToolTip() {
+	if (hoverSource != null)
 		return hoverSource.getToolTip();
 	else
 		return null;	
 }
 
-protected IFigure getCursorTarget(){return cursorTarget;}
+/**
+ * Returns the figure that the cursor is over.
+ * @return the cursor target
+ */
+protected IFigure getCursorTarget() { 
+	return cursorTarget;
+}
 
-protected ToolTipHelper getToolTipHelper(){
-	if(toolTipHelper == null)
+/**
+ * Returns the ToolTipHelper used to display tooltips on hover events.
+ * @return the ToolTipHelper
+ */
+protected ToolTipHelper getToolTipHelper() {
+	if (toolTipHelper == null)
 		toolTipHelper = new ToolTipHelper(control);
 	return toolTipHelper;
 }
 
-final protected FocusTraverseManager getFocusTraverseManager(){
-	if(focusManager == null){
+/**
+ * Returns the FocusTraverseManager which is used to determine which figure will get focus 
+ * when a TAB or ALT+TAB key sequence occurs.
+ * @return the FocusTraverseManager
+ */
+protected final FocusTraverseManager getFocusTraverseManager() {
+	if (focusManager == null) {
 		focusManager = new FocusTraverseManager();
 	}	
 	return focusManager;
 }				
 
-/*package*/ IFigure getFocusOwner(){return focusOwner;}
-protected IFigure getMouseTarget(){return mouseTarget;}
-protected IFigure getRoot(){return root;}
+/**
+ * @see EventDispatcher#getFocusOwner()
+ */
+/*package*/ IFigure getFocusOwner() {
+	return focusOwner;
+}
 
-public boolean isCaptured(){return captured;}
+/**
+ * Returns the figure that is the target of mouse events.  This may not be the figure 
+ * beneath the cursor because another figure may have captured the mouse and will continue 
+ * to get mouse events until capture is released.
+ * @return the mouse target
+ */
+protected IFigure getMouseTarget() {
+	return mouseTarget;
+}
 
-private void receive(org.eclipse.swt.events.MouseEvent me){
+/**
+ * Returns the root figure for this dispatcher.
+ * @return the root figure
+ */
+protected IFigure getRoot() {
+	return root;
+}
+
+/**
+ * @see EventDispatcher#isCaptured()
+ */
+public boolean isCaptured() {
+	return captured;
+}
+
+private void receive(org.eclipse.swt.events.MouseEvent me) {
 	updateFigureUnderCursor(me);
 	int state = me.stateMask;
-	if (captured){
+	if (captured) {
 		if (mouseTarget != null)
 			currentEvent = new MouseEvent(me.x, me.y, this, mouseTarget, me.button, state);
 	} else {
 		IFigure f = root.findMouseEventTargetAt(me.x, me.y);
-		if (f == mouseTarget){
+		if (f == mouseTarget) {
 			if (mouseTarget != null)
 				currentEvent = new MouseEvent(me.x, me.y, this, mouseTarget, me.button, state);
 			return;
 		}
-		if (mouseTarget != null){
+		if (mouseTarget != null) {
 			currentEvent = new MouseEvent(me.x, me.y, this, mouseTarget, me.button, state);
 			if (DEBUG)
 				System.out.println("Exit:\n\t" + currentEvent);//$NON-NLS-1$
 			mouseTarget.handleMouseExited(currentEvent);
 		}
 		setMouseTarget(f);
-		if (mouseTarget != null){
+		if (mouseTarget != null) {
 			currentEvent = new MouseEvent(me.x, me.y, this, mouseTarget, me.button, state);
 			if (DEBUG)
 				System.out.println("Enter:\n\t" + currentEvent);//$NON-NLS-1$
@@ -255,18 +355,26 @@ private void receive(org.eclipse.swt.events.MouseEvent me){
 	}
 }
 
-protected void releaseCapture(){
+/**
+ * @see EventDispatcher#releaseCapture()
+ */
+protected void releaseCapture() {
 	captured = false;
 }
 
-public void requestFocus(IFigure fig){
+/**
+ * @see EventDispatcher#requestFocus(IFigure)
+ */
+public void requestFocus(IFigure fig) {
 	setFocus(fig);
 }
 
-public void requestRemoveFocus(IFigure fig){
-	if (getFocusOwner() == fig){
+/**
+ * @see EventDispatcher#requestRemoveFocus(IFigure)
+ */
+public void requestRemoveFocus(IFigure fig) {
+	if (getFocusOwner() == fig)
 		setFocus(null);
-	}
 	if (mouseTarget == fig)
 		mouseTarget = null;
 	if (cursorTarget == fig)
@@ -276,17 +384,24 @@ public void requestRemoveFocus(IFigure fig){
 	getFocusTraverseManager().setCurrentFocusOwner(null);
 }
 
-protected void setCapture(IFigure figure){
+/**
+ * @see EventDispatcher#setCapture(IFigure)
+ */
+protected void setCapture(IFigure figure) {
 	captured = true;
 	mouseTarget = figure;
 }
 
-public void setControl(Control c){
+/**
+ * @see EventDispatcher#setControl(Control)
+ */
+public void setControl(Control c) {
 	if (control != null)
-		throw new RuntimeException(Draw2dMessages.ERR_SWTEventDispatcher_SetControl_Exception_Runtime);
+		throw new RuntimeException(
+			Draw2dMessages.ERR_SWTEventDispatcher_SetControl_Exception_Runtime);
 	if (c != null)
-		c.addDisposeListener(new org.eclipse.swt.events.DisposeListener(){
-			public void widgetDisposed(DisposeEvent e){
+		c.addDisposeListener(new org.eclipse.swt.events.DisposeListener() {
+			public void widgetDisposed(DisposeEvent e) {
 				if (toolTipHelper != null)
 					toolTipHelper.dispose();
 			}
@@ -294,42 +409,67 @@ public void setControl(Control c){
 	control = c;
 }
 
-protected void setCursor(Cursor c){
-	if(c == null && cursor == null){
+/**
+ * Sets the mouse cursor.
+ * @param c the new cursor
+ */
+protected void setCursor(Cursor c) {
+	if (c == null && cursor == null) {
 		return;
-	} else if((c != cursor) || (!c.equals(cursor))){
+	} else if ((c != cursor) || (!c.equals(cursor))) {
 		cursor = c;
 		if (control != null && !control.isDisposed())
 			control.setCursor(c);
 	}
 }
 
-public void setEnableKeyTraversal(boolean traverse){
+/**
+ * Enables key traversal via TAB and ALT+TAB if <i>traverse</i> is <code>true</code>.
+ * Disables it otherwise.
+ * @param traverse whether key traversal should be enabled
+ */
+public void setEnableKeyTraversal(boolean traverse) {
 	figureTraverse = traverse;
 }
 
-protected void setFigureUnderCursor(IFigure f){
+/**
+ * Sets the figure under the mouse cursor.
+ * @param f the new figure under the cursor
+ */
+protected void setFigureUnderCursor(IFigure f) {
 	if (cursorTarget == f)
 		return;
 	cursorTarget = f;
 	updateCursor();
 }
 
-protected void setFocus(IFigure fig){
+/**
+ * Sets the focus figure.  If the figure currently with focus is not <code>null</code>, 
+ * {@link IFigure#handleFocusLost(FocusEvent)} is called on the current focused figure. If 
+ * the new focus figure is not <code>null</code>, this will call 
+ * {@link IFigure#handleFocusGained(FocusEvent)} on the new focused figure.
+ * @param fig the new focus figure
+ */
+protected void setFocus(IFigure fig) {
 	FocusEvent fe = new FocusEvent(focusOwner, fig);
 	IFigure oldOwner = focusOwner;
 	focusOwner = fig;
-	if(oldOwner != null)
+	if (oldOwner != null)
 		oldOwner.handleFocusLost(fe);
-	if(fig != null)
+	if (fig != null)
 		getFocusTraverseManager().setCurrentFocusOwner(fig);
-	if(focusOwner != null)
+	if (focusOwner != null)
 		focusOwner.handleFocusGained(fe);
 }
 
-protected void setHoverSource(Figure figure,org.eclipse.swt.events.MouseEvent me){
+/**
+ * Sets the figure that the mouse cursor is hovering over.
+ * @param figure the new hover source
+ * @param me the mouse event
+ */
+protected void setHoverSource(Figure figure, org.eclipse.swt.events.MouseEvent me) {
 	hoverSource = figure;
-	if(figure != null){
+	if (figure != null) {
 		Control control = (Control)me.getSource();
 		org.eclipse.swt.graphics.Point absolute;
 		absolute = control.toDisplay(new org.eclipse.swt.graphics.Point(me.x, me.y));
@@ -341,49 +481,71 @@ protected void setHoverSource(Figure figure,org.eclipse.swt.events.MouseEvent me
 	}
 }	
 
-protected void setMouseTarget(IFigure figure){
+/**
+ * Sets the given figure to be the target of future mouse events.
+ * @param figure the new mouse target
+ */
+protected void setMouseTarget(IFigure figure) {
 	mouseTarget = figure;
 }
 
-public void setRoot(IFigure figure){
+/**
+ * @see EventDispatcher#setRoot(IFigure)
+ */
+public void setRoot(IFigure figure) {
 	root = figure;
 }
 
-protected void updateCursor(){
+/**
+ * @see EventDispatcher#updateCursor()
+ */
+protected void updateCursor() {
 	Cursor newCursor = null;
-	if(cursorTarget != null)
+	if (cursorTarget != null)
 		newCursor = cursorTarget.getCursor();
 	setCursor(newCursor);
 }
 
-protected void updateFigureUnderCursor(org.eclipse.swt.events.MouseEvent me){
-	if(!captured){
+/**
+ * Updates the figure under the cursor, unless the mouse is captured, in which case all 
+ * mouse events will be routed to the figure that captured the mouse.
+ * @param me the mouse event
+ */
+protected void updateFigureUnderCursor(org.eclipse.swt.events.MouseEvent me) {
+	if (!captured) {
 		IFigure f = root.findFigureAt(me.x, me.y);
 		setFigureUnderCursor(f);
-		if((Figure)cursorTarget != hoverSource)
+		if ((Figure)cursorTarget != hoverSource)
 			updateHoverSource(me);
 	}
 }
 
-protected void updateHoverSource(org.eclipse.swt.events.MouseEvent me){
+/**
+ * Updates the figure that will receive hover events.  The hover source must have a 
+ * tooltip.  If the figure under the mouse doesn't have a tooltip set, this method will 
+ * walk up the ancestor hierarchy until either a figure with a tooltip is found or it
+ * gets to the root figure.
+ * @param me the mouse event
+ */
+protected void updateHoverSource(org.eclipse.swt.events.MouseEvent me) {
 	/* 
 	 * Derive source from figure under cursor.
 	 * Set the source in setHoverSource();
 	 * If figure.getToolTip() is null, get parents toolTip
 	 * Continue parent traversal until a toolTip is found or root is reached.
 	 */
-	if(cursorTarget != null){
+	if (cursorTarget != null) {
 		boolean sourceFound = false;
 		Figure source = (Figure)cursorTarget;
-		while( sourceFound == false && source.getParent() != null ){
-			if(source.getToolTip() != null)
+		while (sourceFound == false && source.getParent() != null) {
+			if (source.getToolTip() != null)
 				sourceFound = true;
 			else
 				source = (Figure)source.getParent();		
 		}
-		setHoverSource(source,me);							
+		setHoverSource(source, me);							
 	} else {
-		setHoverSource(null,me);
+		setHoverSource(null, me);
 	}	
 }
 

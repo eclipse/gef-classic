@@ -21,12 +21,13 @@ import org.eclipse.swt.widgets.Control;
  * Listens to various SWT events and dispatches these events to interested Draw2d objects. 
  */
 public abstract class EventDispatcher {
-
+	
 	public abstract static class AccessibilityDispatcher
-	implements AccessibleControlListener, AccessibleListener
-{
-	public void getChild(AccessibleControlEvent e) { }
-}
+		implements AccessibleControlListener, AccessibleListener
+	{
+		/** @see AccessibleControlListener#getChild(AccessibleControlEvent) */
+		public void getChild(AccessibleControlEvent e) { }
+	}
 
 /**
  * Dispatches a focus gained event.
@@ -100,6 +101,10 @@ public abstract void dispatchMousePressed(MouseEvent me);
  */
 public abstract void dispatchMouseReleased(MouseEvent me);
 
+/**
+ * Returns the AccessibilityDispatcher.
+ * @return the AccessibilityDispatcher
+ */
 protected abstract AccessibilityDispatcher getAccessibilityDispatcher();
 
 /**
