@@ -324,6 +324,7 @@ private void updateFont() {
 	getControl().setFont(font);
 	getFigureCanvas().getViewport().invalidateTree();
 	getFigureCanvas().getViewport().revalidate();
+	getFigureCanvas().redraw();
 }
 
 }
