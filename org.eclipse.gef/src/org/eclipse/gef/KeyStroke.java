@@ -36,6 +36,18 @@ public static KeyStroke getPressed(int keyCode, int stateMask) {
 }
 
 /**
+ * Constructs a KeyStroke that will match the given {@link KeyEvent#character}, {@link
+ * KeyEvent#keyCode}, and {@link KeyEvent#stateMask} during a press event.
+ * @param character the character to match
+ * @param keyCode the keyCode to match
+ * @param stateMask the stateMask to match
+ * @return a new KeyStroke
+ */
+public static KeyStroke getPressed(char character, int keyCode, int stateMask) {
+	return new KeyStroke(character, keyCode, stateMask, true);
+}
+
+/**
  * Constructs a KeyStroke that will match the given {@link KeyEvent#character} and
  * {@link KeyEvent#stateMask} during a release event.
  * @param character the character to match
@@ -55,6 +67,18 @@ public static KeyStroke getReleased(char character, int stateMask) {
  */
 public static KeyStroke getReleased(int keyCode, int stateMask) {
 	return new KeyStroke(keyCode, stateMask, false);
+}
+
+/**
+ * Constructs a KeyStroke that will match the given {@link KeyEvent#character}, {@link
+ * KeyEvent#keyCode}, and {@link KeyEvent#stateMask} during a release event.
+ * @param character the character to match
+ * @param keyCode the keyCode to match
+ * @param stateMask the stateMask to match
+ * @return a new KeyStroke
+ */
+public static KeyStroke getReleased(char character, int keyCode, int stateMask) {
+	return new KeyStroke(character, keyCode, stateMask, false);
 }
 
 private int stateMask;
@@ -82,6 +106,13 @@ KeyStroke(int keyCode, int stateMask, boolean onPressed) {
 
 KeyStroke(char character, int stateMask, boolean onPressed) {
 	this.character = character;
+	this.stateMask = stateMask;
+	this.onPressed = onPressed;
+}
+
+KeyStroke(char character, int keyCode, int stateMask, boolean onPressed) {
+	this.character = character;
+	this.keyCode = keyCode;
 	this.stateMask = stateMask;
 	this.onPressed = onPressed;
 }
