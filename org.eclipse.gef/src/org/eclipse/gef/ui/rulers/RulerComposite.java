@@ -15,6 +15,8 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.*;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.widgets.*;
@@ -49,6 +51,11 @@ private boolean isRulerVisible = true;
 
 public RulerComposite(Composite parent, int style) {
 	super(parent, style);
+	addDisposeListener(new DisposeListener() {
+		public void widgetDisposed(DisposeEvent e) {
+			disposeResources();
+		}
+	});
 }
 
 private GraphicalViewer createRulerContainer(int orientation) {
@@ -146,18 +153,15 @@ private GraphicalViewer createRulerContainer(int orientation) {
 	return viewer;
 }
 
-public void dispose() {
+private void disposeResources() {
 	if (diagramViewer != null) {
 		diagramViewer.removePropertyChangeListener(propertyListener);
-		editor.getHorizontalBar().removeListener(SWT.Show, layoutListener);
-		editor.getHorizontalBar().removeListener(SWT.Hide, layoutListener);
-		editor.getVerticalBar().removeListener(SWT.Show, layoutListener);
-		editor.getVerticalBar().removeListener(SWT.Hide, layoutListener);
 	}
-	super.dispose();
 	if (font != null) {
 		font.dispose();
 	}
+	// layoutListener is not being removed from the scroll bars because they are already
+	// disposed at this point.
 }
 
 private void doLayout() {
