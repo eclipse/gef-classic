@@ -41,7 +41,7 @@ static final char RLO = '\u202e';
 
 static final int SELECT_ALL = 1;
 static final int SELECT_PARTIAL = 2;
-static final String ZWJ = "\u200d";
+static final String ZWJ = "\u200d"; //$NON-NLS-1$
 private BidiInfo bidiInfo;
 
 private int selectionEnd = -1;
@@ -85,12 +85,16 @@ boolean addLeadingWordWidth(String text, int[] width) {
 	spaceFinder.setText(text);
 	int index = FlowUtilities.findPreviousNonWS(text, spaceFinder.next());
 	boolean result = index < text.length() - 1;
+	// index should point to the end of the actual text (not incluing the 'a' that was 
+	// appended), if there were no breaks
 	if (index == text.length() - 1)
 		index--;
 	// An optimization to prevent unnecessary invocation of String.substring and 
 	// getStringExtents()
-	if (index + 1 == 1)
+	if (index == 0)
+		// this means that the first character in the actual text is a whitespace
 		return result;
+	
 	text = text.substring(1, index + 1);
 	
 	if (bidiInfo == null)
@@ -491,7 +495,7 @@ private void paintText(Graphics g, String draw, int x, int y, int bidiLevel) {
 }
 
 /**
- * @see org.eclipse.draw2d.text.FlowFigure#setBidiValues(int[])
+ * @see org.eclipse.draw2d.text.FlowFigure#setBidiInfo(BidiInfo)
  */
 public void setBidiInfo(BidiInfo info) {
 	this.bidiInfo = info;
