@@ -130,39 +130,93 @@ protected int getResizeDirection() {
  * @see org.eclipse.gef.tools.SimpleDragTracker#updateSourceRequest()
  */
 protected void updateSourceRequest() {
-	ChangeBoundsRequest request = (ChangeBoundsRequest)getSourceRequest();
-
+	ChangeBoundsRequest request = (ChangeBoundsRequest) getSourceRequest();
 	Dimension d = getDragMoveDelta();
 
 	Point location = new Point(getLocation());
 	Point corner = new Point(0, 0);
-	Dimension resize = new Dimension(0, 0);
+	Dimension resize = new Dimension(0, 0);	
 
+	if (getCurrentInput().isShiftKeyDown() && owner != null) {
+		int origHeight = owner.getFigure().getBounds().height;
+		int origWidth = owner.getFigure().getBounds().width;
+		float ratio = 1;
+		
+		if (origWidth != 0 && origHeight != 0) {
+			ratio = ((float)origHeight / (float)origWidth);
+		}
+		
+		if (getResizeDirection() == PositionConstants.SOUTH_EAST) {
+			if (d.height > (d.width * ratio)) {
+				d.width = (int)((float)d.height / ratio);
+			} else {
+				d.height = (int)((float)d.width * ratio);
+			}
+		} else if (getResizeDirection() == PositionConstants.NORTH_WEST) {
+			if (d.height < (d.width * ratio)) {
+				d.width = (int)((float)d.height / ratio);
+			} else {
+				d.height = (int)((float)d.width * ratio);
+			}
+		} else if (getResizeDirection() == PositionConstants.NORTH_EAST) {
+			if (-(d.height) > (d.width * ratio)) {
+				d.width = -(int)((float)d.height / ratio);
+			} else {
+				d.height = -(int)((float)d.width * ratio);
+			}
+		} else if (getResizeDirection() == PositionConstants.SOUTH_WEST) {
+			if (-(d.height) < (d.width * ratio)) {
+				d.width = -(int)((float)d.height / ratio);
+			} else {
+				d.height = -(int)((float)d.width * ratio);
+			}
+		}
+	}
+	
+	
 	if ((getResizeDirection() & PositionConstants.NORTH) != 0) {
+		if (getCurrentInput().isControlKeyDown()) {
+			resize.height -= d.height;
+		}
 		corner.y += d.height;
 		resize.height -= d.height;
 	}
 	if ((getResizeDirection() & PositionConstants.SOUTH) != 0) {
+		if (getCurrentInput().isControlKeyDown()) {
+			corner.y -= d.height;
+			resize.height += d.height;
+		}
 		resize.height += d.height;
 	}
 	if ((getResizeDirection() & PositionConstants.WEST) != 0) {
+		if (getCurrentInput().isControlKeyDown()) {
+			resize.width -= d.width;
+		}
 		corner.x += d.width;
 		resize.width -= d.width;
 	}
 	if ((getResizeDirection() & PositionConstants.EAST) != 0) {
+		if (getCurrentInput().isControlKeyDown()) {
+			corner.x -= d.width;
+			resize.width += d.width;
+		}
 		resize.width += d.width;
 	}
+
 	request.setMoveDelta(corner);
 	request.setSizeDelta(resize);
 	request.setLocation(location);
 	request.setEditParts(getOperationSet());
+
 	request.getExtendedData().clear();
 	
-	SnapToStrategy strategy = (SnapToStrategy)owner.getViewer().getContents()
-		.getAdapter(SnapToStrategy.class);
-
-	if (!getCurrentInput().isShiftKeyDown() && strategy != null)
+	SnapToStrategy strategy =
+		(SnapToStrategy) owner.getViewer().getContents().getAdapter(
+			SnapToStrategy.class);
+	
+	if (!getCurrentInput().isAltKeyDown() && strategy != null)
 		strategy.snapResizeRequest(request, sourceRect.getPreciseCopy());
+
 }
 
 }

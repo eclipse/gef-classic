@@ -14,6 +14,7 @@ import java.util.*;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.graphics.Cursor;
 
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.*;
@@ -41,13 +42,35 @@ private SnapToStrategy helper;
 
 private PrecisionRectangle sourceRectangle;
 
+private boolean cloneActive;
+
 /**
  * Constructs a new DragEditPartsTracker with the given source edit part.
  * @param sourceEditPart the source edit part
  */
 public DragEditPartsTracker(EditPart sourceEditPart) {
 	super(sourceEditPart);
+
+	cloneActive = false;
 	setDisabledCursor(SharedCursors.NO);
+}
+
+/**
+ *  Returns true if the control key was the key in the key event and the 
+ *  tool is in an acceptable state for this event.
+ *  
+ *  @param e the key event
+ *  @return true if the key was control and can be accepted.
+ */
+private boolean acceptCTRL(KeyEvent e) {
+	int key = e.keyCode;
+	if (!(isInState(STATE_INITIAL
+	  | STATE_DRAG
+	  | STATE_DRAG_IN_PROGRESS
+	  | STATE_ACCESSIBLE_DRAG 
+	  | STATE_ACCESSIBLE_DRAG_IN_PROGRESS)))
+		return false;
+	return (key == SWT.CTRL);
 }
 
 /**
@@ -62,6 +85,17 @@ public void activate() {
 		sourceRectangle = new PrecisionRectangle(figure.getBounds());
 
 	figure.translateToAbsolute(sourceRectangle);
+}
+
+/**
+ * Returns the cursor used under normal conditions.
+ * @see #setDefaultCursor(Cursor)
+ * @return the default cursor
+ */
+protected Cursor getDefaultCursor() {
+	if (isCloneActive())
+		return SharedCursors.CURSOR_TREE_ADD;
+	return super.getDefaultCursor();
 }
 
 /**
@@ -100,8 +134,10 @@ protected List createOperationSet() {
  * @see org.eclipse.gef.tools.TargetingTool#createTargetRequest()
  */
 protected Request createTargetRequest() {
-	ChangeBoundsRequest request = new ChangeBoundsRequest(REQ_MOVE);
-	return request;
+	if (isCloneActive())
+		return new ChangeBoundsRequest(REQ_CLONE);
+	else
+		return new ChangeBoundsRequest(REQ_MOVE);
 }
 
 /**
@@ -114,6 +150,21 @@ public void deactivate() {
 	exclusionSet = null;
 	sourceFigureOffset = null;
 	sourceRectangle = null;
+}
+
+/**
+ * Does the work for handleDragInProgress. 
+ * @see org.eclipse.gef.tools.AbstractTool#handleDragInProgress()
+ */
+protected boolean doDragInProgress() {
+	if (isInDragInProgress()) {
+		updateTargetRequest();
+		updateTargetUnderMouse();
+		showTargetFeedback();
+		showSourceFeedback();
+		setCurrentCommand(getCommand());
+	}
+	return true;	
 }
 
 /**
@@ -145,22 +196,32 @@ protected Command getCommand() {
 
 	Iterator iter = getOperationSet().iterator();
 
-	Request  request = getTargetRequest();
-	request.setType(isMove() ? REQ_MOVE : REQ_ORPHAN);
-
-	while (iter.hasNext()) {
-		EditPart editPart = (EditPart)iter.next();
-		command.add(editPart.getCommand(request));
+	Request request = getTargetRequest();
+	
+	if (isCloneActive())
+		request.setType(REQ_CLONE);
+	else if (isMove())
+		request.setType(REQ_MOVE);
+	else
+		request.setType(REQ_ORPHAN);
+		
+	if (!isCloneActive()) {
+		while (iter.hasNext()) {
+			EditPart editPart = (EditPart)iter.next();
+			command.add(editPart.getCommand(request));
+		}
 	}
-
-	//If reparenting, add all editparts to target editpart.
-	if (!isMove()) {
-		request.setType(REQ_ADD);
+	
+	if (!isMove() || isCloneActive()) {
+		if (!isCloneActive())
+			request.setType(REQ_ADD);
+		
 		if (getTargetEditPart() == null)
 			command.add(UnexecutableCommand.INSTANCE);
-		else
+		else 
 			command.add(getTargetEditPart().getCommand(getTargetRequest()));
 	}
+	
 	return command;
 }
 
@@ -168,9 +229,12 @@ protected Command getCommand() {
  * @see org.eclipse.gef.tools.AbstractTool#getCommandName()
  */
 protected String getCommandName() {
-	if (isMove())
+	if (isCloneActive())
+		return REQ_CLONE;
+	else if (isMove())
 		return REQ_MOVE;
-	return REQ_ADD;
+	else
+		return REQ_ADD;
 }
 
 /**
@@ -225,6 +289,21 @@ protected void handleAutoexpose() {
 }
 
 /**
+ * Called when the mouse button has been pressed. By default, nothing happens
+ * and <code>false</code> is returned. Subclasses may override this method to interpret
+ * the meaning of a mouse down. Returning <code>true</code> indicates that the button down
+ * was handled in some way.
+ * @param button which button went down
+ * @return <code>true</code> if the buttonDown was handled
+ */
+protected boolean handleButtonDown(int button) {
+	if (getCurrentInput().isControlKeyDown())
+		setCloneActive(true);
+	
+	return super.handleButtonDown(button);
+}
+
+/**
  * Erases feedback and calls {@link #performDrag()}.
  * @see org.eclipse.gef.tools.AbstractTool#handleButtonUp(int)
  */
@@ -244,14 +323,7 @@ protected boolean handleButtonUp(int button) {
  * @see org.eclipse.gef.tools.AbstractTool#handleDragInProgress()
  */
 protected boolean handleDragInProgress() {
-	if (isInDragInProgress()) {
-		updateTargetRequest();
-		updateTargetUnderMouse();
-		showTargetFeedback();
-		showSourceFeedback();
-		setCurrentCommand(getCommand());
-	}
-	return true;
+	return doDragInProgress();
 }
 
 /**
@@ -298,7 +370,11 @@ protected boolean handleKeyDown(KeyEvent e) {
 				break;
 		}
 		return true;
+	} else if (acceptCTRL(e)) {
+		setCloneActive(true);
+		return true;
 	}
+	
 	return false;	
 }
 
@@ -309,8 +385,20 @@ protected boolean handleKeyUp(KeyEvent e) {
 	if (acceptArrowKey(e)) {
 		accStepReset();
 		return true;
+	} else if (acceptCTRL(e)) {
+		setCloneActive(false);
+		return true;
 	}
 	return false;
+}
+
+/**
+ * Returns true if the current drag is a clone operation.
+ * 
+ * @return true if cloning is enabled and is currently active.
+ */
+protected boolean isCloneActive() {
+	return cloneActive;
 }
 
 /**
@@ -343,6 +431,19 @@ protected void repairStartLocation() {
 	newStart.preciseY += offset.y;
 	figure.translateToAbsolute(newStart);
 	setStartLocation(newStart);
+}
+
+/**
+ * Enables cloning if the value is true.  Calls {@link #doDragInProgress()} if
+ * the value has been changed.
+ * 
+ * @param cloneActive <code>true</code> if cloning should be active
+ */
+protected void setCloneActive(boolean cloneActive) {
+	if (this.cloneActive == cloneActive)
+		return;
+	this.cloneActive = cloneActive;
+	doDragInProgress();
 }
 
 /**
@@ -382,13 +483,43 @@ protected void updateTargetRequest() {
 	ChangeBoundsRequest request = (ChangeBoundsRequest)getTargetRequest();
 	request.setEditParts(getOperationSet());
 	Dimension delta = getDragMoveDelta();
+	
+	// constrains the move to dx=0, dy=0, or dx=dy if shift is depressed
+	if (getCurrentInput().isShiftKeyDown()) {
+		float ratio = 0;
+		
+		if (delta.width != 0)
+			ratio = (float)delta.height / (float)delta.width;
+		
+		ratio = Math.abs(ratio);
+		if (ratio > 0.5 && ratio < 1.5) {
+			if (Math.abs(delta.height) > Math.abs(delta.width)) {
+				if (delta.height > 0)
+					delta.height = Math.abs(delta.width);
+				else
+					delta.height = -Math.abs(delta.width);
+			} else {
+				if (delta.width > 0)
+					delta.width = Math.abs(delta.height); 
+				else
+					delta.width = -Math.abs(delta.height);
+			}
+		} else {
+			if (Math.abs(delta.width) > Math.abs(delta.height))
+				delta.height = 0;
+			else
+				delta.width = 0;
+		}
+	}
+	
 	request.setMoveDelta(new Point(delta.width, delta.height));
 	request.getExtendedData().clear();
-	if (helper != null && !getCurrentInput().isShiftKeyDown())
+
+	if (helper != null && !getCurrentInput().isAltKeyDown())
 		helper.snapMoveRequest(request, sourceRectangle.getPreciseCopy());
 
-	request.setLocation(getLocation());
-	request.setType(getCommandName());
+	request.setLocation(getLocation()); 
+	request.setType(getCommandName());	
 }
 
 }
