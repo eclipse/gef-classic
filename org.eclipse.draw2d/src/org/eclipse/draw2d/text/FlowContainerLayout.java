@@ -24,7 +24,7 @@ public abstract class FlowContainerLayout
 	extends FlowFigureLayout
 	implements FlowContext
 {
-
+	
 /**
  * the current line
  */
@@ -35,15 +35,24 @@ protected FlowContainerLayout(FlowFigure flowFigure) {
 	super(flowFigure);
 }
 
-/** * @see org.eclipse.draw2d.text.FlowContext#addToCurrentLine(FlowBox) */
+/**
+ * Clears the layout state everytime a new box is added to the current line: 
+ * {@link FlowContext#setConsumeSpaceOnNewLine(boolean)} and 
+ * {@link FlowContext#setContinueOnSameLine(boolean)}. * @see org.eclipse.draw2d.text.FlowContext#addToCurrentLine(FlowBox) */
 public void addToCurrentLine(FlowBox block) {
 	getCurrentLine().add(block);
+	setConsumeSpaceOnNewLine(false);
+	setContinueOnSameLine(false);
 }
 
 /**
  * Flush anything pending and free all temporary data used during layout.
  */
-protected abstract void cleanup();
+protected void cleanup() {
+	currentLine = null;
+	setConsumeSpaceOnNewLine(false);
+	setContinueOnSameLine(false);
+}
 
 /**
  * Used by getCurrentLine().
@@ -56,7 +65,9 @@ protected abstract void createNewLine();
  */
 protected abstract void flush();
 
-/** * @see org.eclipse.draw2d.text.FlowContext#getCurrentLine() */
+/**
+ * FlowBoxes shouldn't be added directly to the current line.  Use 
+ * {@link #addToCurrentLine(FlowBox)} for that. * @see org.eclipse.draw2d.text.FlowContext#getCurrentLine() */
 public LineBox getCurrentLine() {
 	if (currentLine == null)
 		createNewLine();
@@ -64,7 +75,23 @@ public LineBox getCurrentLine() {
 }
 
 /**
- * @see org.eclipse.draw2d.text.FlowContext#isCurrentLineOccupied
+ * @see org.eclipse.draw2d.text.FlowContext#getWordWidthFollowing(FlowFigure, int[])
+ */
+public boolean getWordWidthFollowing(FlowFigure child, int[] width) {
+	List children = getFlowFigure().getChildren();
+	int index = -1;
+	if (child != null)
+		index = children.indexOf(child);
+	
+	for (int i = index + 1; i < children.size(); i++) {
+		if (((FlowFigure)children.get(i)).addLeadingWordRequirements(width))
+			return true;
+	}
+	return false;
+}
+
+/**
+ * @see org.eclipse.draw2d.text.FlowContext#isCurrentLineOccupied()
  */
 public boolean isCurrentLineOccupied() {
 	return currentLine != null && currentLine.isOccupied();
