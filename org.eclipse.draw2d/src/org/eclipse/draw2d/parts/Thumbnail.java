@@ -360,23 +360,14 @@ protected boolean isDirty() {
  */
 public void notifyPainting(Rectangle damage, Map dirtyRegions) {
 	Iterator dirtyFigures = dirtyRegions.keySet().iterator();
-	// Keep a list of affected figures.  If we come across it again, we can stop walking
-	// up its hierarchy and move on to the next figure in dirtyFigures.
-	List affectedFigures = new ArrayList();
 	while (dirtyFigures.hasNext()) {
 		IFigure current = (IFigure)dirtyFigures.next();
 		while (current != null) {
-			// If we've already seen this figure, we don't need to check its ancestors.
-			if (affectedFigures.contains(current)) {
-				current = null;
-				continue;
-			}
 			if (current == getSource()) {
 				setDirty(true);
 				repaint();
 				return;
 			}
-			affectedFigures.add(current);
 			current = current.getParent();
 		}
 	}
