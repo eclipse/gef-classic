@@ -684,14 +684,14 @@ public void refresh() {
 /**
  * Updates the set of children EditParts so that it is in sync with the model children.
  * This method is called from {@link #refresh()}, and may also be called in response to
- * notification from the model.  This method requires linear time complete.  Clients
+ * notification from the model.  This method requires linear time to complete.  Clients
  * should call this method as few times as possible.  Consider also calling {@link
  * #removeChild(EditPart)} and {@link #addChild(EditPart, int)} which run in constant
  * time.
  * <P>
  * The update is performed by comparing the exising EditParts with the set of model
- * children returned from {@link #getModelChildren()}. EditParts whose model no longer
- * exists are {@link #removeChild(EditPart) removed}. New models have their EditParts
+ * children returned from {@link #getModelChildren()}. EditParts whose models no longer
+ * exist are {@link #removeChild(EditPart) removed}. New models have their EditParts
  * {@link #createChild(Object) created}.
  * <P>
  * This method should <em>not</em> be overridden.
