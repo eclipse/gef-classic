@@ -29,8 +29,7 @@ public VirtualNode(Edge e, int i) {
 	width = e.width;
 	height = 0;
 	rank = i;
-	//$TODO obtain default left and right padding values
-	padding = new Insets(0, 10, 0, 10);
+	padding = new Insets(0, e.padding, 0, e.padding);
 }
 
 /**

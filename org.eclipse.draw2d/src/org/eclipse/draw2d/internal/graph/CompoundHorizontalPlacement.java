@@ -47,10 +47,6 @@ void applyGPrime() {
  * @see org.eclipse.graph.HorizontalPlacement#buildRankSeparators(org.eclipse.graph.RankList)
  */
 void buildRankSeparators(RankList ranks) {
-	/*
-	 * $TODO Width of a subgraph should be ensured by connecting left to right separated
-	 * by delta equal to subgraph's width
-	 */
 	CompoundDirectedGraph g = (CompoundDirectedGraph)graph;
 	
 	Rank rank;
@@ -62,7 +58,6 @@ void buildRankSeparators(RankList ranks) {
 			if (prev == null) {
 				addSeparatorsLeft(n, null);
 			} else {
-				//$TODO support nested virtual nodes.
 				Subgraph s = GraphUtilities.getCommonAncestor((Node)prev,(Node) n);
 				Node left = addSeparatorsRight(prev, s);
 				Node right = addSeparatorsLeft(n, s);
@@ -112,8 +107,16 @@ Node getLeft(Subgraph s) {
 	if (s.left == null) {
 		s.left = new SubgraphBoundary(s, graph.getPadding(s), 1);
 		s.left.rank = (s.head.rank + s.tail.rank)/2;
-		//$TODO this weight value is arbitrary
-		prime.edges.add(new Edge(getPrime(s.left), getPrime(getRight(s)),0,1));
+
+		Node head = getPrime(s.head);
+		Node tail = getPrime(s.tail);
+		Node left = getPrime(s.left);
+		Node right = getPrime(getRight(s));
+		prime.edges.add(new Edge(left, right,s.width,1));
+		prime.edges.add(new Edge(left, head,0,1));
+		prime.edges.add(new Edge(head, right,0,1));
+		prime.edges.add(new Edge(left, tail,0,1));
+		prime.edges.add(new Edge(tail, right,0,1));
 	}
 	return s.left;
 }

@@ -13,6 +13,7 @@ import org.eclipse.draw2d.geometry.Point;
  *   <LI>{@link #delta} - the minimum number of rows the edge should span
  *   <LI>{@link #weight} - a hint indicating this edge's importance
  *   <LI>{@link #width} - the edge's width
+ *   <LI>{@link #padding} - the amount of space to leave on either side of the edge
  *   <LI>[{@link #offsetSource}] - the edge's attachment point at the source node
  *   <LI>[{@link #offsetTarget}] - the edge's attachment point at the target node
  * </UL>
@@ -59,6 +60,7 @@ public boolean isFeedback = false;
  * outgoing} attachment point.
  */
 public int offsetSource = -1;
+
 /**
  * The edge's attachment point at the <em>target</em> node. The default value is -1, which
  * indicates that the edge should use the node's default {@link Node#getOffsetIncoming()
@@ -75,6 +77,11 @@ public Node source;
  * The target Node.
  */
 public Node target;
+
+/**
+ * The minimum amount of space to leave on both the left and right sides of the edge.
+ */
+public int padding = 10;
 
 public Point start;
 public Point end;
