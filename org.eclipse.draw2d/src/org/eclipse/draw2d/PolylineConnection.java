@@ -163,6 +163,14 @@ public void removeNotify() {
 }
 
 /**
+ * @see org.eclipse.draw2d.IFigure#revalidate()
+ */
+public void revalidate() {
+	super.revalidate();
+	getConnectionRouter().invalidate(this);
+}
+
+/**
  * Sets the connection router which handles the layout of this polyline. Generally set by 
  * the parent handling the polyline connection.
  * @param cr the connection router
@@ -195,7 +203,8 @@ public void setRoutingConstraint(Object cons) {
  */
 public void setSourceAnchor(ConnectionAnchor anchor) {
 	unhookSourceAnchor();
-	getConnectionRouter().invalidate(this);
+	//No longer needed, revalidate does this.
+	//getConnectionRouter().invalidate(this);
 	startAnchor = anchor;
 	if (getParent() != null)
 		hookSourceAnchor();
@@ -222,7 +231,8 @@ public void setSourceDecoration(RotatableDecoration dec) {
  */
 public void setTargetAnchor(ConnectionAnchor anchor) {
 	unhookTargetAnchor();
-	getConnectionRouter().invalidate(this);
+	//No longer needed, revalidate does this.
+	//getConnectionRouter().invalidate(this);
 	endAnchor = anchor;
 	if (getParent() != null)
 		hookTargetAnchor();
@@ -250,5 +260,6 @@ private void unhookTargetAnchor() {
 	if (getTargetAnchor() != null)
 		getTargetAnchor().removeAnchorListener(this);
 }
+
 
 }
