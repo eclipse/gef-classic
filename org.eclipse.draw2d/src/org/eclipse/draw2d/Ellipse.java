@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
+ *     Alex Selkov - Fix for Bug# 22701
  *******************************************************************************/
 package org.eclipse.draw2d;
 
