@@ -58,6 +58,7 @@ public void createControl(Composite parent, PaletteEntry entry) {
 	panel.setFont(parent.getFont());
 	GridLayout gridLayout = new GridLayout(1, false);
 	gridLayout.marginWidth = 0;
+	gridLayout.marginHeight = 0;
 	panel.setLayout(gridLayout);
 	Control[] tablist = new Control[3];
 	
