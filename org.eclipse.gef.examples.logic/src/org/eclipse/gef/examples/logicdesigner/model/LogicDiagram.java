@@ -63,28 +63,28 @@ protected void createRulers() {
 	leftRuler = new Ruler(false);
 	topRuler = new Ruler(true);
 	
-	Guide g = new Guide(true);
-	g.setPosition(25);
-	leftRuler.addGuide(g);
-	g = new Guide(true);
-	g.setPosition(400);
-	leftRuler.addGuide(g);
-
-	g = new Guide(false);
-	g.setPosition(125);
-	topRuler.addGuide(g);
-	g = new Guide(false);
-	g.setPosition(325);
-	topRuler.addGuide(g);
-	g = new Guide(false);
-	g.setPosition(0);
-	topRuler.addGuide(g);
-	g = new Guide(false);
-	g.setPosition(-500);
-	topRuler.addGuide(g);
-	g = new Guide(false);
-	g.setPosition(1200);
-	topRuler.addGuide(g);
+//	Guide g = new Guide(true);
+//	g.setPosition(25);
+//	leftRuler.addGuide(g);
+//	g = new Guide(true);
+//	g.setPosition(400);
+//	leftRuler.addGuide(g);
+//
+//	g = new Guide(false);
+//	g.setPosition(125);
+//	topRuler.addGuide(g);
+//	g = new Guide(false);
+//	g.setPosition(325);
+//	topRuler.addGuide(g);
+//	g = new Guide(false);
+//	g.setPosition(0);
+//	topRuler.addGuide(g);
+//	g = new Guide(false);
+//	g.setPosition(-500);
+//	topRuler.addGuide(g);
+//	g = new Guide(false);
+//	g.setPosition(1200);
+//	topRuler.addGuide(g);
 }
 
 public List getChildren(){
