@@ -29,26 +29,6 @@ import org.eclipse.gef.commands.Command;
  * documentation on proper usage of the public API, see the documentation for the
  * interface itself: {@link EditPart}.
  * <P>
- * <Table>
- * 	 <tr>
- * 	   <TD><img src="../doc-files/green.gif"/>
- * 	   <TD>Indicates methods that are commonly overridden or even abstract
- *   </tr>
- *   <tr>
- *     <TD><img src="../doc-files/blue.gif"/>
- *     <TD>These methods might be overridden.  Especially if you were extending this class
- *     directly.
- * 	 </tr>
- * 	 <tr>
- * 	   <TD><img src="../doc-files/black.gif"/>
- * 	   <TD>Should rarely be overridden.
- * 	 </tr>
- *   <tr>
- * 	   <TD><img src="../doc-files/dblack.gif"/>
- * 	   <TD>Essentially "internal" and should never be overridden.
- *   </tr>
- * </table>
- * <P>
  * This class assumes no visual representation. Subclasses {@link
  * AbstractGraphicalEditPart} and {@link AbstractTreeEditPart} add support for {@link
  * org.eclipse.draw2d.IFigure Figures} and {@link org.eclipse.swt.widgets.TreeItem
@@ -136,7 +116,7 @@ protected static class EditPolicyIterator {
 }
 
 /**
- * <img src="../doc-files/green.gif"/> Activates this EditPart, which in turn activates
+ * Activates this EditPart, which in turn activates
  * its children and EditPolicies. Subclasses should <em>extend</em> this method to add
  * listeners to the model. Activation indicates that the EditPart is realized in an
  * EditPartViewer. <code>deactivate()</code> is the inverse, and is eventually called on
@@ -159,7 +139,7 @@ public void activate() {
 }
 
 /**
- * <img src="../doc-files/dblack.gif"/> Activates all EditPolicies installed on this part.
+ * Activates all EditPolicies installed on this part.
  * There is no reason to override this method.
  * @see #activate()
  */
@@ -170,7 +150,7 @@ protected void activateEditPolicies() {
 }
 
 /**
- * <img src="../doc-files/black.gif"/> Adds a child <code>EditPart</code> to this
+ * Adds a child <code>EditPart</code> to this
  * EditPart. This method is called from {@link #refreshChildren()}. The following events
  * occur in the order listed:
  * <OL>
@@ -207,7 +187,7 @@ protected void addChild(EditPart child, int index) {
 }
 
 /**
- * <img src="../doc-files/blue.gif"/> Performs the addition of the child's <i>visual</i>
+ * Performs the addition of the child's <i>visual</i>
  * to this EditPart's Visual. The provided subclasses {@link AbstractGraphicalEditPart}
  * and {@link AbstractTreeEditPart} already implement this method correctly, so it is
  * unlikely that this method should be overridden.
@@ -219,7 +199,7 @@ protected void addChild(EditPart child, int index) {
 protected abstract void addChildVisual(EditPart child, int index);
 
 /**
- * <img src="../doc-files/dblack.gif"/> Adds an EditPartListener.
+ * Adds an EditPartListener.
  * @param listener the listener
  */
 public void addEditPartListener(EditPartListener listener) {
@@ -236,7 +216,7 @@ public void addNotify() {
 }
 
 /**
- * <img src="../doc-files/black.gif"/> Create the child <code>EditPart</code>
+ * Create the child <code>EditPart</code>
  * for the given model object. This method is called from {@link #refreshChildren()}.
  * <P>
  * By default, the implementation will delegate to the <code>EditPartViewer</code>'s
@@ -250,17 +230,17 @@ protected EditPart createChild(Object model) {
 }
 
 /**
- * <img src="../doc-files/green.gif"/>Creates the initial EditPolicies and/or reserves
- * slots for dynamic ones. Should be implemented to install the inital EditPolicies based
- * on the model's initial state. <code>null</code> can be used to reserve a "slot", should
- * there be some desire to guarantee the ordering of EditPolcies.
+ * Creates the initial EditPolicies and/or reserves slots for dynamic ones. Should be
+ * implemented to install the inital EditPolicies based on the model's initial state.
+ * <code>null</code> can be used to reserve a "slot", should there be some desire to
+ * guarantee the ordering of EditPolcies.
  * @see #doInitialize()
  * @see EditPart#installEditPolicy(Object, EditPolicy)
  */
 protected abstract void createEditPolicies();
 
 /**
- * <img src="../doc-files/green.gif"/> Deactivates this EditPart, and in turn deactivates
+ * Deactivates this EditPart, and in turn deactivates
  * its children and EditPolicies. Subclasses should <em>extend</em> this method to remove
  * any listeners established in {@link #activate()}
  * @see  EditPart#deactivate()
@@ -280,7 +260,7 @@ public void deactivate() {
 }
 
 /**
- * <img src="../doc-files/dblack.gif"/> Deactivates all installed EditPolicies.
+ * Deactivates all installed EditPolicies.
  */
 protected void deactivateEditPolicies() {
 	debug("Deactivating EditPolicies");//$NON-NLS-1$
@@ -323,7 +303,7 @@ protected final void debugFeedback(String message) {
 }
 
 /**
- * <img src="../doc-files/black.gif"/> Erases source feedback for the given
+ * Erases source feedback for the given
  * <code>Request</code>. By default, this responsibility is delegated to this part's
  * <code>EditPolicies</code>. Subclasses should rarely extend this method.
  * <P>
@@ -349,7 +329,7 @@ public void eraseSourceFeedback(Request request) {
 }
 
 /**
- * <img src="../doc-files/black.gif"/> Erases target feedback for the given
+ * Erases target feedback for the given
  * <code>Request</code>. By default, this responsibility is delegated to this part's
  * EditPolicies.  Subclasses should rarely extend this method.
  * <P>
@@ -375,7 +355,7 @@ public void eraseTargetFeedback(Request request) {
 }
 
 /**
- * <img src="../doc-files/dblack.gif"/> Notifies <code>EditPartListeners</code> that this
+ * Notifies <code>EditPartListeners</code> that this
  * EditPart has been activated.
  */
 protected void fireActivated() {
@@ -386,7 +366,7 @@ protected void fireActivated() {
 }
 
 /**
- * <img src="../doc-files/dblack.gif"/> Notifies <code>EditPartListeners</code> that a
+ * Notifies <code>EditPartListeners</code> that a
  * child has been added.
  * @param child  <code>EditPart</code> being added as child.
  * @param index  Position child is being added into.
@@ -399,7 +379,7 @@ protected void fireChildAdded(EditPart child, int index) {
 }
 
 /**
- * <img src="../doc-files/dblack.gif"/> Notifies <code>EditPartListeners </code> that this
+ * Notifies <code>EditPartListeners </code> that this
  * EditPart has been deactivated.
  */
 protected void fireDeactivated() {
@@ -410,7 +390,7 @@ protected void fireDeactivated() {
 }
 
 /**
- * <img src="../doc-files/dblack.gif"/> Notifies <code>EditPartListeners</code> that a
+ * Notifies <code>EditPartListeners</code> that a
  * child is being removed.
  * @param child  <code>EditPart</code> being removed.
  * @param index  Position of the child in children list.
@@ -423,7 +403,7 @@ protected void fireRemovingChild(EditPart child, int index) {
 }
 
 /**
- * <img src="../doc-files/dblack.gif"/> Notifies <code>EditPartListeners</code> that the
+ * Notifies <code>EditPartListeners</code> that the
  * selection has changed.
  */
 protected void fireSelectionChanged() {
@@ -434,7 +414,7 @@ protected void fireSelectionChanged() {
 }
 
 /**
- * <img src="../doc-files/green.gif"/> Returns the <code>AccessibleEditPart</code> adapter
+ * Returns the <code>AccessibleEditPart</code> adapter
  * for this EditPart. Returns <code>null</code> if this EditPart is not accessible.
  * @return <code>null</code> or an AccessibleEditPart adapter
  */
@@ -443,7 +423,7 @@ protected AccessibleEditPart getAccessibleEditPart() {
 }
 
 /**
- * <img src="../doc-files/blue.gif"/> Returns the specified adapter if recognized, for
+ * Returns the specified adapter if recognized, for
  * example: {@link IPropertySource}. Otherwise returns <code>null</code>.
  * <P>
  * By default, the following adapter types are handled:
@@ -479,7 +459,7 @@ public List getChildren() {
 }
 
 /**
- * <img src="../doc-files/black.gif"/> Subclasses should rarely extend this method.
+ * Subclasses should rarely extend this method.
  * The default implementation combines the contributions from each installed
  * <code>EditPolicy</code>. This method is implemented indirectly using EditPolicies.
  * <P>
@@ -561,7 +541,7 @@ public Object getModel() {
 }
 
 /**
- * <img src="../doc-files/green.gif"/> Returns a <code>List</code> containing the children
+ * Returns a <code>List</code> containing the children
  * model objects. If this EditPart's model is a container, this method should be
  * overridden to returns its children. This is what causes children EditParts to be
  * created.
@@ -589,7 +569,7 @@ public int getSelected() {
 }
 
 /**
- * <img src="../doc-files/black.gif"/> Returns the <code>EditPart</code> which is the
+ * Returns the <code>EditPart</code> which is the
  * target of the <code>Request</code>.  The default implementation delegates this method
  * to the installed EditPolicies. The first non-<code>null</code> result returned by an
  * EditPolicy is returned. Subclasses should rarely extend this method.
@@ -679,7 +659,7 @@ public void performRequest(Request req) {
 }
 
 /**
- * <img src="../doc-files/blue.gif"/> Refreshes all properties visually displayed by this
+ * Refreshes all properties visually displayed by this
  * EditPart.  The default implementation will call {@link #refreshChildren()} to update
  * its structural features. It also calls {@link #refreshVisuals()} to update its own
  * displayed properties. Subclasses should extend this method to handle additional types
@@ -692,7 +672,7 @@ public void refresh() {
 }
 
 /**
- * <img src="../doc-files/black.gif"/> Updates the set of children EditParts so that it
+ * Updates the set of children EditParts so that it
  * is in sync with the model children. This method is called from {@link #refresh()}, and
  * may also be called in response to notification from the model.
  * <P>
@@ -749,7 +729,6 @@ protected void refreshChildren() {
 }
 
 /**
- * <img src="../doc-files/green.gif"/>
  * Refreshes this EditPart's <i>visuals</i>. This method is called by {@link #refresh()},
  * and may also be called in response to notifications from the model.
  */
@@ -757,7 +736,6 @@ protected void refreshVisuals() {
 }
 
 /**
- * <img src="../doc-files/blue.gif"/>
  * Registers itself in the viewer's various registries. If your EditPart has a 1-to-1
  * relationship with a visual object and a 1-to-1 relationship with a model object, the
  * default implementation should be sufficent.
@@ -782,7 +760,6 @@ protected final void registerAccessibility() {
 }
 
 /**
- * <img src="../doc-files/black.gif"/>
  * Registers the <i>model</i> in the {@link EditPartViewer#getEditPartRegistry()}.
  * Subclasses should only extend this method if they need to register this EditPart in
  * additional ways.
@@ -792,7 +769,6 @@ protected void registerModel() {
 }
 
 /**
- * <img src="../doc-files/black.gif"/>
  * Registers the <i>visuals</i> in the {@link EditPartViewer#getVisualPartMap()}.
  * Subclasses should override this method for the visual part they support. {@link
  * AbstractGraphicalEditPart} and {@link AbstractTreeEditPart} already do this.
@@ -800,7 +776,6 @@ protected void registerModel() {
 protected void registerVisuals() { }
 
 /**
- * <img src="../doc-files/black.gif"/>
  * Removes a child <code>EditPart</code>. This method is called from {@link
  * #refreshChildren()}. The following events occur in the order listed:
  * <OL>
@@ -837,14 +812,14 @@ protected void removeChild(EditPart child) {
  */
 protected abstract void removeChildVisual(EditPart child);
 
-/** * <img src="../doc-files/dblack.gif"/> No reason to override
+/** * No reason to override
  * @see org.eclipse.gef.EditPart#removeEditPartListener(EditPartListener) */
 public void removeEditPartListener(EditPartListener listener) {
 	eventListeners.removeListener(EditPartListener.class, listener);
 }
 
 /**
- * <img src="../doc-files/dblack.gif"/> No reason to override
+ * No reason to override
  * @see EditPart#removeEditPolicy(Object)
  */
 public void removeEditPolicy(Object key) {
@@ -858,7 +833,7 @@ public void removeEditPolicy(Object key) {
 }
 
 /**
- * <img src="../doc-files/black.gif"/> Removes all references from the
+ * Removes all references from the
  * <code>EditPartViewer</code> to this EditPart. This includes:
  * <UL>
  *   <LI>deselecting this EditPart if selected
@@ -887,7 +862,6 @@ public void removeNotify() {
 }
 
 /**
- * <img src="../doc-files/dblack.gif"/>
  * Moves a child <code>EditPart</code> into a lower index than it currently occupies. This
  * method is called from {@link #refreshChildren()}.
  * @param editpart the child being reordered
@@ -922,7 +896,7 @@ public void setFocus(boolean value) {
 }
 
 /**
- * <img src="../doc-files/black.gif"/> Set the primary model object that this EditPart
+ * Set the primary model object that this EditPart
  * represents. This method is used by an <code>EditPartFactory</code> when creating an
  * EditPart.
  * @see EditPart#setModel(Object)
@@ -934,7 +908,7 @@ public void setModel(Object model) {
 }
 
 /**
- * <img src="../doc-files/dblack.gif"/> Sets the parent EditPart. There is no reason to
+ * Sets the parent EditPart. There is no reason to
  * override this method.
  * @see EditPart#setParent(EditPart)
  */
@@ -945,7 +919,7 @@ public void setParent(EditPart parent) {
 }
 
 /**
- * <img src="../doc-files/blue.gif"/> sets the selected state for this EditPart. This
+ * sets the selected state for this EditPart. This
  * method should rarely be overridden. Instead, EditPolicies that are selection-aware will
  * listen for notification of this property changing.
  * @see org.eclipse.gef.editpolicies.SelectionEditPolicy
@@ -961,7 +935,7 @@ public void setSelected(int value) {
 }
 
 /**
- * <img src="../doc-files/black.gif"/> Shows or updates source feedback for the given
+ * Shows or updates source feedback for the given
  * <code>Request</code>. By default, this responsibility is delegated to this part's
  * EditPolicies.  Subclasses should rarely extend this method.
  * <P>
@@ -988,7 +962,7 @@ public void showSourceFeedback(Request request) {
 }
 
 /**
- * <img src="../doc-files/black.gif"/> Shows or updates target feedback for the given
+ * Shows or updates target feedback for the given
  * <code>Request</code>. By default, this responsibility is delegated to this part's
  * EditPolicies.  Subclasses should rarely extend this method.
  * <P>
@@ -1015,7 +989,7 @@ public void showTargetFeedback(Request request) {
 }
 
 /**
- * <img src="../doc-files/blue.gif"/> Describes this EditPart for developmental debugging
+ * Describes this EditPart for developmental debugging
  * purposes.
  * @return a description
  */
@@ -1026,7 +1000,7 @@ public String toString() {
 }
 
 /**
- * <img src="../doc-files/black.gif"/> Returns <code>true</code> if this
+ * Returns <code>true</code> if this
  * <code>EditPart</code> understand the given <code>Request</code>. By default, this
  * responsibility is delegated to this part's installed EditPolicies.
  * <P>
@@ -1048,9 +1022,8 @@ public boolean understandsRequest(Request req) {
 }
 
 /**
- * <img src="../doc-files/blue.gif"/>
- * Undoes any registration performed by {@link #register()}.
- * The provided base classes will correctly unregister their visuals.
+ * Undoes any registration performed by {@link #register()}. The provided base classes
+ * will correctly unregister their visuals.
  */
 protected void unregister() {
 	unregisterAccessibility();
@@ -1068,7 +1041,6 @@ protected final void unregisterAccessibility() {
 }
 
 /**
- * <img src="../doc-files/black.gif"/>
  * Unregisters the <i>model</i> in the {@link EditPartViewer#getEditPartRegistry()}.
  * Subclasses should only extend this method if they need to unregister this EditPart in
  * additional ways.
@@ -1080,7 +1052,6 @@ protected void unregisterModel() {
 }
 
 /**
- * <img src="../doc-files/black.gif"/>
  * Unregisters the <i>visuals</i> in the {@link EditPartViewer#getVisualPartMap()}.
  * Subclasses should override this method for the visual part they support. {@link
  * AbstractGraphicalEditPart} and {@link AbstractTreeEditPart} already do this.

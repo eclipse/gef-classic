@@ -29,24 +29,6 @@ import org.eclipse.gef.*;
  * <P>
  * This is an implementation class, and the documentation here is targeted at subclassing
  * this class. Callers of public API should refer to the interface's documentation.
- * <Table>
- * 	 <tr>
- * 	   <TD><img src="../doc-files/green.gif"/>
- * 	   <TD>Indicates methods that subclasses <em>should</em> override.
- *   </tr>
- *   <tr>
- *     <TD><img src="../doc-files/blue.gif"/>
- *     <TD>These methods might be overridden.
- * 	 </tr>
- * 	 <tr>
- * 	   <TD><img src="../doc-files/black.gif"/>
- * 	   <TD>Should rarely be overridden.
- * 	 </tr>
- *   <tr>
- * 	   <TD><img src="../doc-files/dblack.gif"/>
- * 	   <TD>Essentially "internal" and should never be overridden.
- *   </tr>
- * </table>
  */
 public abstract class AbstractGraphicalEditPart
 	extends AbstractEditPart
@@ -191,7 +173,6 @@ public void addNodeListener(NodeListener listener) {
 }
 
 /**
- * <img src="../doc-files/black.gif"/>
  * Adds a <i>source</i> ConnectionEditPart at the specified index. This method is called
  * from {@link #refreshSourceConnections()}. There should be no reason to call or override
  * this method. Source connection are created as a result of overriding {@link
@@ -216,7 +197,6 @@ protected void addSourceConnection(ConnectionEditPart connection, int index) {
 }
 
 /**
- * <img src="../doc-files/black.gif"/>
  * Adds a <i>target</i> ConnectionEditPart at the specified index. This method is called
  * from {@link #refreshTargetConnections()}. There should be no reason to call or override
  * this method. Target connection are created as a result of overriding {@link
@@ -236,7 +216,7 @@ protected void addTargetConnection(ConnectionEditPart connection, int index) {
 }
 
 /**
- * <img src="../doc-files/black.gif"/> Creates a {@link ConnectionEditPart} for the given
+ * Creates a {@link ConnectionEditPart} for the given
  * model. Similar to {@link AbstractEditPart#createChild(Object)}. This method is called
  * indirectly during {@link #refreshSourceConnections()}, and {@link
  * #refreshTargetConnections()}.
@@ -261,7 +241,7 @@ protected ConnectionEditPart createConnection(Object model) {
 protected abstract IFigure createFigure();
 
 /**
- * <img src="../doc-files/black.gif"/> Searches for an existing
+ * Searches for an existing
  * <code>ConnectionEditPart</code> in the Viewer's {@link
  * EditPartViewer#getEditPartRegistry() EditPart registry} and returns it if one is found.
  * Otherwise, {@link #createConnection(Object)} is called to create a new
@@ -279,7 +259,7 @@ protected ConnectionEditPart createOrFindConnection(Object model) {
 }
 
 /**
- * <img src="../doc-files/green.gif"/> Extends {@link AbstractEditPart#deactivate()} to
+ * Extends {@link AbstractEditPart#deactivate()} to
  * also deactivate the source ConnectionEditParts. Subclasses should <em>extend</em> this
  * method to remove any listeners added in {@link #activate}.
  * @see org.eclipse.gef.EditPart#deactivate() */
@@ -292,7 +272,7 @@ public void deactivate() {
 }
 
 /**
- * <img src="../doc-files/dblack.gif"/> Notifies listeners that a source connection has
+ * Notifies listeners that a source connection has
  * been removed. Called from {@link #removeSourceConnection(ConnectionEditPart)}. There is
  * no reason for subclasses to call or override this method.
  * @param connection  <code>ConnectionEditPart</code> being added as child.
@@ -310,7 +290,7 @@ protected void fireRemovingSourceConnection(ConnectionEditPart connection, int i
 }
 
 /**
- * <img src="../doc-files/dblack.gif"/> Notifies listeners that a target connection has
+ * Notifies listeners that a target connection has
  * been removed. Called from {@link #removeTargetConnection(ConnectionEditPart)}. There is
  * no reason for subclasses to call or override this method.
  * @param connection  <code>ConnectionEditPart</code> being added as child.
@@ -328,7 +308,7 @@ protected void fireRemovingTargetConnection(ConnectionEditPart connection, int i
 }
 
 /**
- * <img src="../doc-files/dblack.gif"/> Notifies listeners that a source connection has
+ * Notifies listeners that a source connection has
  * been added. Called from {@link #addSourceConnection(ConnectionEditPart, int)}. There is
  * no reason for subclasses to call or override this method.
  * 
@@ -347,7 +327,7 @@ protected void fireSourceConnectionAdded(ConnectionEditPart connection, int inde
 }
 
 /**
- * <img src="../doc-files/dblack.gif"/> Notifies listeners that a target connection has
+ * Notifies listeners that a target connection has
  * been added. Called from {@link #addTargetConnection(ConnectionEditPart, int)}. There is
  * no reason for subclasses to call or override this method.
  * @param connection  <code>ConnectionEditPart</code> being added as child.
@@ -381,14 +361,13 @@ public Object getAdapter(Class key) {
 }
 
 /**
- * <img src="../doc-files/green.gif"/> If the children's Figures should be  * @see GraphicalEditPart#getContentPane() */
+ * If the children's Figures should be  * @see GraphicalEditPart#getContentPane() */
 public IFigure getContentPane() {
 	return getFigure();
 }
 
 /**
- * <img src="../doc-files/blue.gif"/> Overridden to return a default
- * <code>DragTracker</code> for GraphicalEditParts.
+ * Overridden to return a default <code>DragTracker</code> for GraphicalEditParts.
  * @see org.eclipse.gef.EditPart#getDragTracker(Request) */
 public DragTracker getDragTracker(Request request) {
 	return new org.eclipse.gef.tools.DragEditPartsTracker(this);
@@ -417,7 +396,7 @@ protected IFigure getLayer(Object layer) {
 }
 
 /**
- * <img src="../doc-files/green.gif"/> Returns the <code>List</code> of the connection
+ * Returns the <code>List</code> of the connection
  * model objects for which this EditPart's model is the <b>source</b>. {@link
  * #refreshSourceConnections()} calls this method.  For each connection model object,
  * {@link #createConnection(Object)} will be called automatically to obtain a
@@ -429,7 +408,7 @@ protected List getModelSourceConnections() {
 }
 
 /**
- * <img src="../doc-files/green.gif"/> Returns the <code>List</code> of the connection
+ * Returns the <code>List</code> of the connection
  * model objects for which this EditPart's model is the <b>target</b>. {@link
  * #refreshTargetConnections()} calls this method.  For each connection model object,
  * {@link #createConnection(Object)} will be called automatically to obtain a
@@ -455,7 +434,6 @@ public List getTargetConnections() {
 }
 
 /**
- * <img src="../doc-files/black.gif"/>
  * Adds the specified source <code>ConnectionEditPart</code> at an index. This method is
  * used to update the {@link #sourceConnections} List. This method is called from {@link
  * #addSourceConnection(ConnectionEditPart, int)}. Subclasses should not call or override
@@ -470,7 +448,6 @@ protected void primAddSourceConnection(ConnectionEditPart connection, int index)
 }
 
 /**
- * <img src="../doc-files/black.gif"/>
  * Adds the specified target <code>ConnectionEditPart</code> at an index. This method is
  * used to update the {@link #targetConnections} List. This method is called from {@link
  * #addTargetConnection(ConnectionEditPart, int)}. Subclasses should not call or override
@@ -485,7 +462,6 @@ protected void primAddTargetConnection(ConnectionEditPart connection, int index)
 }
 
 /**
- * <img src="../doc-files/black.gif"/>
  * Removes the specified source <code>ConnectionEditPart</code> from the {@link
  * #sourceConnections} List. This method is called from {@link
  * #removeSourceConnection(ConnectionEditPart)}. Subclasses should not call or override
@@ -497,7 +473,6 @@ protected void primRemoveSourceConnection(ConnectionEditPart connection) {
 }
 
 /**
- * <img src="../doc-files/black.gif"/>
  * Removes the specified target <code>ConnectionEditPart</code> from the {@link
  * #targetConnections} List. This method is called from {@link
  * #removeTargetConnection(ConnectionEditPart)}. Subclasses should not call or override
@@ -509,7 +484,6 @@ protected void primRemoveTargetConnection(ConnectionEditPart connection) {
 }
 
 /**
- * <img src="../doc-files/blue.gif"/>
  * Extends {@link AbstractEditPart#refresh()} to refresh two additional structural
  * features: <i>source</i> and <i>target</i> connections. Subclasses should probably
  * override {@link AbstractEditPart#refreshVisuals()} instead of this method.
@@ -521,7 +495,7 @@ public void refresh() {
 }
 
 /**
- * <img src="../doc-files/black.gif"/> Updates the set of <i>source</i>
+ * Updates the set of <i>source</i>
  * ConnectionEditParts so that it is in sync with the model source connections. This
  * method is called from {@link #refresh()}, and may also be called in response to
  * notification from the model.
@@ -576,7 +550,7 @@ protected void refreshSourceConnections() {
 }
 
 /**
- * <img src="../doc-files/black.gif"/> Updates the set of <i>target</i>
+ * Updates the set of <i>target</i>
  * ConnectionEditParts so that it is in sync with the model target connections. This
  * method is called from {@link #refresh()}, and may also be called in response to
  * notification from the model.
@@ -668,7 +642,6 @@ public void removeNotify() {
 }
 
 /**
- * <img src="../doc-files/black.gif"/>
  * Removes the given connection for which this EditPart is the <B>source</b>.
  * <BR>Fires notification.
  * <BR>Inverse of {@link #addSourceConnection(ConnectionEditPart, int)}
@@ -682,7 +655,6 @@ protected void removeSourceConnection(ConnectionEditPart connection) {
 }
 
 /**
- * <img src="../doc-files/black.gif"/>
  * Removes the given connection for which this EditPart is the <B>target</b>.
  * <BR>Fires notification.
  * <BR>Inverse of {@link #addTargetConnection(ConnectionEditPart, int)}
@@ -711,7 +683,6 @@ protected void reorderChild(EditPart child, int index) {
 }
 
 /**
- * <img src="../doc-files/black.gif"/>
  * Moves a source <code>ConnectionEditPart</code> into a lower index than it currently
  * occupies. This method is called from {@link #refreshSourceConnections()}.
  * @param connection the ConnectionEditPart
@@ -723,7 +694,6 @@ protected void reorderSourceConnection(ConnectionEditPart connection, int index)
 }
 
 /**
- * <img src="../doc-files/black.gif"/>
  * Moves a target <code>ConnectionEditPart</code> into a lower index than it currently
  * occupies. This method is called from {@link #refreshTargetConnections()}.
  * @param connection the ConnectionEditPart

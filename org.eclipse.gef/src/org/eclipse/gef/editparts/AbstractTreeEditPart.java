@@ -27,24 +27,6 @@ import org.eclipse.gef.*;
  * This is an implementation class, and the documentation here is targeted at
  * <em>subclassing</em> this class. Callers of public API should refer to the interface's
  * documentation.
- * <Table>
- * 	 <tr>
- * 	   <TD><img src="../doc-files/green.gif"/>
- * 	   <TD>Indicates methods that subclasses <em>should</em> override.
- *   </tr>
- *   <tr>
- *     <TD><img src="../doc-files/blue.gif"/>
- *     <TD>These methods might be overridden.
- * 	 </tr>
- * 	 <tr>
- * 	   <TD><img src="../doc-files/black.gif"/>
- * 	   <TD>Should rarely be overridden.
- * 	 </tr>
- *   <tr>
- * 	   <TD><img src="../doc-files/dblack.gif"/>
- * 	   <TD>Essentially "internal" and should never be overridden.
- *   </tr>
- * </table>
  */
 public abstract class AbstractTreeEditPart
 	extends AbstractEditPart
@@ -70,9 +52,8 @@ public AbstractTreeEditPart(Object model) {
 public AbstractTreeEditPart() { }
 
 /**
- * <img src="../doc-files/black.gif"/> Implemented to assign the child its {@link
- * TreeEditPart#setWidget(Widget) widget}. Subclasses should not call or override this
- * method.
+ * Implemented to assign the child its {@link TreeEditPart#setWidget(Widget) widget}.
+ * Subclasses should not call or override this method.
  * @see org.eclipse.gef.editparts.AbstractEditPart#addChildVisual(EditPart, int) */
 protected void addChildVisual(EditPart childEditPart, int index) {
 	Widget widget = getWidget();
@@ -93,7 +74,7 @@ protected final boolean checkTreeItem() {
 }
 
 /**
- * <img src="../doc-files/green.gif"/> Override this method to install the EditPolicies
+ * Override this method to install the EditPolicies
  * for your EditPart.
  * @see org.eclipse.gef.editparts.AbstractEditPart#createEditPolicies() */
 protected void createEditPolicies() { }
@@ -104,7 +85,7 @@ public DragTracker getDragTracker(Request req) {
 }
 
 /**
- * <img src="../doc-files/green.gif"/> Override this method to return the
+ * Override this method to return the
  * <code>Image</code> for this EditPart's {@link #widget}. This method is called from
  * {@link #refreshVisuals()}.
  * @return the Image to be displayed in the TreeItem */
@@ -113,7 +94,7 @@ protected Image getImage() {
 }
 
 /**
- * <img src="../doc-files/green.gif"/> Override this method to return the String to be
+ * Override this method to return the String to be
  * used in this EditPart's {@link #widget}. This method is called from {@link
  * #refreshVisuals()}.
  * @return the String to be displayed by the TreeItem
@@ -128,7 +109,7 @@ public Widget getWidget() {
 }
 
 /**
- * <img src="../doc-files/black.gif"/> By default, this method will apply an
+ * By default, this method will apply an
  * <code>Image</code> and <code>String</code> to the widget if it is a
  * <code>TreeItem</code>. Subclasses should override {@link #getImage()} and {@link
  * #getText()} to provide the <code>Image</code> and <code>String</code> used.
