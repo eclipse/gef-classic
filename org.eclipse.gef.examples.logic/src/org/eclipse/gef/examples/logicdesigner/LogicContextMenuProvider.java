@@ -30,11 +30,7 @@ public LogicContextMenuProvider(EditPartViewer viewer, ActionRegistry registry) 
  * @see org.eclipse.gef.ContextMenuProvider#menuAboutToShow(org.eclipse.jface.action.IMenuManager)
  */
 public void buildContextMenu(IMenuManager manager) {
-	manager.add(new Separator(GEFActionConstants.GROUP_UNDO));
-	manager.add(new Separator(GEFActionConstants.GROUP_EDIT));
-	manager.add(new Separator(GEFActionConstants.GROUP_REST));
-	manager.add(new Separator(GEFActionConstants.MB_ADDITIONS));
-	manager.add(new Separator(GEFActionConstants.GROUP_SAVE));
+	GEFActionConstants.addStandardActionGroups(manager);
 
 	IAction action;
 

@@ -41,10 +41,7 @@ protected PaletteViewerImpl getPaletteViewer() {
  * @see org.eclipse.gef.ui.parts.ContextMenuProvider#buildContextMenu(org.eclipse.jface.action.IMenuManager)
  */
 public void buildContextMenu(IMenuManager menu) {
-	menu.add(new Separator(GEFActionConstants.GROUP_COPY));
-	menu.add(new Separator(GEFActionConstants.MB_ADDITIONS));
-	menu.add(new Separator(GEFActionConstants.GROUP_VIEW));
-	menu.add(new Separator(GEFActionConstants.GROUP_REST));
+	GEFActionConstants.addStandardActionGroups(menu);
 
 	Object selectedPart = getPaletteViewer().getSelectedEditParts().get(0);
 	if (selectedPart instanceof DrawerEditPart && ((DrawerEditPart)selectedPart).canBePinned()) {
