@@ -43,8 +43,8 @@ public class UndoablePropertySheetEntry implements IPropertySheetEntry {
 
 private CommandStackListener commandStackListener;
 
-public UndoablePropertySheetEntry(){}
-public UndoablePropertySheetEntry(CommandStack stack){
+public UndoablePropertySheetEntry() { }
+public UndoablePropertySheetEntry(CommandStack stack) {
 	setCommandStack(stack);
 }
 
@@ -154,11 +154,12 @@ protected List computeMergedPropertyDescriptors() {
 	for (int i = 1; i < propertyDescriptorMaps.length; i++) {
 		// get the current ids
 		Object[] ids = intersection.keySet().toArray();
-		for (int j = 0; j < ids.length; j++){
+		for (int j = 0; j < ids.length; j++) {
 			Object object = propertyDescriptorMaps[i].get(ids[j]);
-			if (object == null ||
+			if (object == null
 				// see if the descriptors (which have the same id) are compatible
-				!((IPropertyDescriptor)intersection.get(ids[j])).isCompatibleWith((IPropertyDescriptor)object))
+				 || !((IPropertyDescriptor)intersection.get(ids[j]))
+					.isCompatibleWith((IPropertyDescriptor)object))
 			 	intersection.remove(ids[j]);
 		}
 	}
@@ -189,8 +190,8 @@ protected List computeMergedPropertyDescriptors() {
  */
 private Map computePropertyDescriptorsFor(IPropertySource source) {
 	IPropertyDescriptor[] descriptors = source.getPropertyDescriptors();
-	Map result = new HashMap(descriptors.length*2+1);
-	for (int i = 0; i < descriptors.length; i++){
+	Map result = new HashMap(descriptors.length * 2 + 1);
+	for (int i = 0; i < descriptors.length; i++) {
 		result.put(descriptors[i].getId(), descriptors[i]);
 	}
 	return result;
@@ -215,9 +216,11 @@ private void createChildEntries() {
 		childEntries[i] = entry;
 	}
 }
-protected UndoablePropertySheetEntry createChildEntry(){
+
+protected UndoablePropertySheetEntry createChildEntry() {
 	return new UndoablePropertySheetEntry();	
 }
+
 /* (non-Javadoc)
  * Method declared on IPropertySheetEntry.
  */
@@ -421,14 +424,14 @@ public String getValueAsString() {
 	ILabelProvider provider = descriptor.getLabelProvider();
 	if (provider == null) {
 		String editToString = editValue.toString();
-		if ( editToString == null ) {
+		if (editToString == null) {
 			return "EDIT VALUE TO STRING NULL";//$NON-NLS-1$
 		} else {
 			return editToString;
 		}
 	}
 	String providerText = provider.getText(editValue);
-	if ( providerText == null ) {
+	if (providerText == null) {
 		return provider.toString();
 	} else {
 		return providerText;
@@ -465,8 +468,8 @@ private void refreshChildEntries() {
 	List descriptors = computeMergedPropertyDescriptors();
 
 	// cache old entries by their descriptor id
-	Map entryCache = new HashMap (childEntries.length*2+1);
-	for (int i = 0; i < childEntries.length; i++){
+	Map entryCache = new HashMap(childEntries.length * 2 + 1);
+	for (int i = 0; i < childEntries.length; i++) {
 		entryCache.put(childEntries[i].getDescriptor().getId(), childEntries[i]);
 	}
 
@@ -507,7 +510,7 @@ private void refreshChildEntries() {
 /**
  * Return an array of property sheet entries
  */
-protected UndoablePropertySheetEntry[] createChildEntries(int size){
+protected UndoablePropertySheetEntry[] createChildEntries(int size) {
 	return new UndoablePropertySheetEntry[size];
 }
 /**
@@ -544,6 +547,7 @@ protected void refreshValues() {
 public void removePropertySheetEntryListener(IPropertySheetEntryListener listener) {
 	listeners.remove(listener);
 }
+
 /* (non-Javadoc)
  * Method declared on IUndoablePropertySheetEntry.
  */
@@ -558,7 +562,7 @@ public void resetPropertyValue() {
 	//	Use our parent's values to reset our values.
 	boolean change = false;
 	Object[] objects = parent.getValues();
-	for (int i = 0; i < objects.length; i++){
+	for (int i = 0; i < objects.length; i++) {
 		IPropertySource source = getPropertySource(objects[i]);
 		if (source.isPropertySet(descriptor.getId())) {
 			//source.resetPropertyValue(descriptor.getId());
@@ -575,10 +579,11 @@ public void resetPropertyValue() {
 		refreshValues();	
 	}
 }
-public void setCommandStack(CommandStack stack){
+
+public void setCommandStack(CommandStack stack) {
 	this.stack = stack;
-	commandStackListener = new CommandStackListener(){
-		public void commandStackChanged(EventObject e){
+	commandStackListener = new CommandStackListener() {
+		public void commandStackChanged(EventObject e) {
 			refreshFromRoot();
 		}
 	};
@@ -610,9 +615,10 @@ private void setErrorText(String newErrorText) {
 /**
  * Sets the parent of the entry. 
  */
-protected void setParent(UndoablePropertySheetEntry p){
+protected void setParent(UndoablePropertySheetEntry p) {
 	parent = p;
 }
+
 /*
  * Sets a property source provider for this entry. 
  * This provider is used to obtain an <code>IPropertySource</code>
@@ -690,7 +696,7 @@ public void setValues(Object[] objects) {
  * custom way.
  * </p>
  *
- * @param the child entry that changed its value
+ * @param child the child entry that changed its value
  */
 protected void valueChanged(UndoablePropertySheetEntry child, CompoundCommand command) {
 

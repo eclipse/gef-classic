@@ -53,13 +53,18 @@ public void execute() {
 	getTarget().setPropertyValue(propertyName, propertyValue);
 }
 
-public IPropertySource getTarget() { return target;}
+public IPropertySource getTarget() {
+	return target;
+}
 
-public void setTarget(IPropertySource aTarget) {target = aTarget;}
+public void setTarget(IPropertySource aTarget) {
+	target = aTarget;
+}
 
 public void redo() {
 	execute();
 }
+
 public void setPropertyId(Object pName) {
 	propertyName = pName;
 }
@@ -72,7 +77,7 @@ public void undo() {
 	if (resetOnUndo)
 		getTarget().resetPropertyValue(propertyName);
 	else
-		getTarget().setPropertyValue(propertyName,undoValue);
+		getTarget().setPropertyValue(propertyName, undoValue);
 }
 
 }

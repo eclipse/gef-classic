@@ -53,7 +53,7 @@ private ScalableFigure pane;
 private Viewport viewport;
 private double zoom = 1.0;
 private int zoomAnimationStyle = ANIMATE_NEVER;
-private double[] zoomLevels = { .5, .75, 1.0, 1.5, 2.0, 2.5, 3, 4 };
+private double[] zoomLevels = {.5, .75, 1.0, 1.5, 2.0, 2.5, 3, 4};
 public static final String FIT_HEIGHT = SharedMessages.FitHeightAction_Label;
 public static final String FIT_WIDTH = SharedMessages.FitWidthAction_Label;
 public static final String FIT_ALL = SharedMessages.FitAllAction_Label;
@@ -125,7 +125,9 @@ protected void fireZoomChanged() {
 protected double getFitHeightZoomLevel() {
 	Dimension viewportSize = getViewport().getSize();
 	Rectangle figureBounds = getScalableFigure().getBounds();
-	return Math.min((double)viewportSize.height / (double)figureBounds.height * zoom, getUIMultiplier());
+	return Math.min(
+		(double)viewportSize.height / (double)figureBounds.height * zoom,
+		getUIMultiplier());
 }
 
 protected double getFitPageZoomLevel() {
@@ -139,7 +141,9 @@ protected double getFitPageZoomLevel() {
 protected double getFitWidthZoomLevel() {
 	Dimension viewportSize = getViewport().getSize();
 	Rectangle figureBounds = getScalableFigure().getBounds();
-	return Math.min((double)viewportSize.width / (double)figureBounds.width * zoom, getUIMultiplier());
+	return Math.min(
+		(double)viewportSize.width / (double)figureBounds.width * zoom,
+		getUIMultiplier());
 }
 
 /**
