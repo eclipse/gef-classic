@@ -55,7 +55,7 @@ protected void assignIncomingSortValues() {
 }
 
 /**
- * @see org.eclipse.graph.RankSorter#assignOutgoingSortValues()
+ * @see org.eclipse.draw2d.internal.graph.RankSorter#assignOutgoingSortValues()
  */
 protected void assignOutgoingSortValues() {
 	super.assignOutgoingSortValues();

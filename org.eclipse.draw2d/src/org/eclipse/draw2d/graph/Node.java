@@ -15,10 +15,10 @@ import org.eclipse.draw2d.geometry.Insets;
  *   <LI>{@link #height} - the node's height.
  *   <LI>{@link #outgoing} - the node's outgoing edges.
  *   <LI>{@link #incoming} - the node's incoming edges.
- *   <LI>{@link #padding} - the amount of space to be left around the outside of the node.
+ *   <LI>padding - the amount of space to be left around the outside of the node.
  *   <LI>{@link #incomingOffset} - the default attachment point for incoming edges.
  *   <LI>{@link #outgoingOffset} - the default attachment point for outgoing edges.
- *   <LI>{@link #parent} - the parent subgraph containing this node.
+ *   <LI>parent - the parent subgraph containing this node.
  * </UL>
  * <P>
  * The following fields are calculated by a graph layout and comprise the <EM>output</EM>:

@@ -6,7 +6,7 @@ import org.eclipse.draw2d.geometry.Insets;
 /**
  * A Node which may contain other nodes.  A Subgraph is a compound or container node.  It
  * may have incoming and outgoing edges just like a node.  Subgraphs are used in {@link
- * #CompoundDirectedGraphs}s.  A proper layout of a compound graph ensures that all of a
+ * CompoundDirectedGraph}s.  A proper layout of a compound graph ensures that all of a
  * subgraph's children are placed inside its rectangular region.  Nodes which do not
  * belong to the subgraph must be placed outside that region.
  * <P>
@@ -15,7 +15,7 @@ import org.eclipse.draw2d.geometry.Insets;
  * A Subgraph has additional geometric properties which describe the containing box.  They
  * are:
  * <UL>
- *   <LI>{@lnk #insets} - the size of the subgraph's border.  A subgraph is typically
+ *   <LI>{@link #insets} - the size of the subgraph's border.  A subgraph is typically
  *   rendered as a thin rectangular box.  Sometimes this box is labeled or decorated.  The
  *   insets can be used to reserve space for this purpose.
  *   <LI>{@link #innerPadding} - the amount of empty space that must be preserved just

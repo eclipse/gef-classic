@@ -35,7 +35,7 @@ void solve() {
 }
 
 /**
- * @see org.eclipse.graph.GraphVisitor#visit(DirectedGraph)
+ *  @see GraphVisitor#visit(org.eclipse.draw2d.graph.DirectedGraph)
  */
 public void visit(DirectedGraph g) {
 	sorter.init(g);

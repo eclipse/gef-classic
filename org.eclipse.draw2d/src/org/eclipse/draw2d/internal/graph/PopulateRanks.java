@@ -17,7 +17,7 @@ public class PopulateRanks extends GraphVisitor {
 private DirectedGraph g;
 
 /**
- * @see org.eclipse.graph.GraphVisitor#visit(DirectedGraph)
+ * @see GraphVisitor#visit(org.eclipse.draw2d.graph.DirectedGraph)
  */
 public void visit(DirectedGraph g) {
 	this.g = g;

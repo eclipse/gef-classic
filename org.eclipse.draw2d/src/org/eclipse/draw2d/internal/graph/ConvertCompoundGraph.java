@@ -109,7 +109,7 @@ private void replaceSubgraphsWithBoundaries(CompoundDirectedGraph graph) {
 }
 
 /**
- * @see org.eclipse.graph.GraphVisitor#visit(org.eclipse.graph.DirectedGraph)
+ * @see GraphVisitor#visit(org.eclipse.draw2d.graph.DirectedGraph)
  */
 public void visit(DirectedGraph dg) {
 	CompoundDirectedGraph graph = (CompoundDirectedGraph)dg;

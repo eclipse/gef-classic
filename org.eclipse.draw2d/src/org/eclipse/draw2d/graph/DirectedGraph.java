@@ -46,7 +46,7 @@ public RankList ranks;
 
 /**
  * Returns the effective padding for the given node.  If the node has a specified padding,
- * it will be used, otherwise, the graph's {@link #defaultPadding} is returned.  The
+ * it will be used, otherwise, the graph's defaultPadding is returned.  The
  * returned value must not be modified.
  * @param node the node
  * @return the effective padding for that node

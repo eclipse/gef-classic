@@ -56,7 +56,7 @@ private void swapNodes(Node current, Node next, Rank rank) {
 }
 
 /**
- * @see org.eclipse.graph.GraphVisitor#visit(org.eclipse.graph.DirectedGraph)
+ * @see GraphVisitor#visit(org.eclipse.draw2d.graph.DirectedGraph)
  */
 public void visit(DirectedGraph g) {
 	boolean flag;

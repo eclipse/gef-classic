@@ -33,14 +33,14 @@ public VirtualNode(Edge e, int i) {
 }
 
 /**
- * @see org.eclipse.graph.Node#medianDown()
+ * Returns the index of {@link #next}.
  */
 public double medianOutgoing() {
 	return next.index;
 }
 
 /**
- * @see org.eclipse.graph.Node#medianUp()
+ * Returns the index of {@link #prev}.
  */
 public double medianIncoming() {
 	return prev.index;
@@ -59,7 +59,7 @@ public int omega() {
 }
 
 /**
- * @see org.eclipse.graph.Node#toString()
+ * @see java.lang.Object#toString()
  */
 public String toString() {
 	Edge e = (Edge)data;

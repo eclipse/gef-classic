@@ -12,7 +12,8 @@ import org.eclipse.draw2d.graph.Edge;
 public class InvertEdges extends GraphVisitor {
 
 /**
- * @see org.eclipse.graph.GraphVisitor#visit(org.eclipse.graph.DirectedGraph)
+ * 
+ * @see GraphVisitor#visit(org.eclipse.draw2d.graph.DirectedGraph)
  */
 public void visit(DirectedGraph g) {
 	for (int i = 0; i < g.edges.size(); i++) {
