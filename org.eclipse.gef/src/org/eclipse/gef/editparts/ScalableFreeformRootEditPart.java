@@ -27,7 +27,7 @@ private ZoomManager zoomManager;
  * Constructor for ScalableFreeformRootEditPart
  */
 public ScalableFreeformRootEditPart() {
-	zoomManager = new ZoomManager((ScalableFreeformLayeredPane)getScaledLayers(),
+	zoomManager = new ZoomManager((ScalableFigure)getScaledLayers(),
 									((Viewport)getFigure()));
 }
 

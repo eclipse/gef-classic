@@ -64,7 +64,7 @@ protected void createActions() {
 	registry.registerAction(action);
 	getStackActions().add(action.getId());
 	
-	action = new DeleteAction(this);
+	action = new DeleteAction((IWorkbenchPart)this);
 	registry.registerAction(action);
 	getSelectionActions().add(action.getId());
 	
