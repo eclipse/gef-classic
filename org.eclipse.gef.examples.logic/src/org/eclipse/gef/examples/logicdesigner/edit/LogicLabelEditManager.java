@@ -11,8 +11,6 @@
 package org.eclipse.gef.examples.logicdesigner.edit;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.Composite;
@@ -35,7 +33,6 @@ public class LogicLabelEditManager
 {
 
 Font scaledFont;
-private VerifyListener verifyListener;
 
 public LogicLabelEditManager(
 		GraphicalEditPart source,
@@ -58,14 +55,14 @@ protected void bringDown() {
 }
 
 protected void initCellEditor() {
+	getEditPart().getViewer().getEditDomain().disablePaletteActionsOnEditor();
 	
 	Text text = (Text)getCellEditor().getControl();
 
-	
-	StickyNoteFigure stickyNote = (StickyNoteFigure)((GraphicalEditPart)getEditPart()).getFigure();
+	StickyNoteFigure stickyNote = (StickyNoteFigure)getEditPart().getFigure();
 	String initialLabelText = stickyNote.getText();
 	getCellEditor().setValue(initialLabelText);
-	IFigure figure = ((GraphicalEditPart)getEditPart()).getFigure();
+	IFigure figure = getEditPart().getFigure();
 	scaledFont = figure.getFont();
 	FontData data = scaledFont.getFontData()[0];
 	Dimension fontSize = new Dimension(0, data.getHeight());
@@ -87,32 +84,4 @@ protected CellEditor createCellEditorOn(Composite composite) {
 	return new TextCellEditor(composite, SWT.MULTI | SWT.WRAP);
 }
 
-class MultiTextCellEditor extends TextCellEditor {
-	
-	public MultiTextCellEditor(Composite parent, int style) {
-		super(parent, style);
-	}
-	
-	protected void keyReleaseOccured(KeyEvent keyEvent) {
-		if (keyEvent.character == '\r') {
-			if ((keyEvent.stateMask & SWT.CTRL) != 0) {
-				keyEvent.doit = false;
-				int index = text.getText().lastIndexOf("\r\n");
-				if (index == -1)
-					index = text.getText().lastIndexOf('\r');
-				if (index == -1)
-					index = text.getText().lastIndexOf('\n');
-				if (index != -1)
-					text.setText(text.getText().substring(0, index));
-				
-				fireApplyEditorValue();
-				deactivate();
-			}
-		} else
-			super.keyReleaseOccured(keyEvent);
-	}
-}
-
-
-}
- 
+} 
