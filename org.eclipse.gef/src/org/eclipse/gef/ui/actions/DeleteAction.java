@@ -32,8 +32,8 @@ public class DeleteAction
 	extends SelectionAction
 {
 
-/** @deprecated use GEFActionConstants.DELETE */
-public static final String ID = GEFActionConstants.DELETE;
+/** @deprecated Use ActionFactory.DELETE.getId() instead. */
+public static final String ID = ActionFactory.DELETE.getId();
 
 /**
  * @deprecated use DeleteAction(IWorkbenchPart part)
@@ -41,6 +41,17 @@ public static final String ID = GEFActionConstants.DELETE;
  */
 public DeleteAction(IEditorPart editor) {
 	this((IWorkbenchPart)editor);
+}
+
+/**
+ * Creates a <code>DeleteAction</code> with the given label.
+ * @deprecated use DeleteAction(IWorkbenchPart)
+ * @param editor The editor this action will be associated with.
+ * @param label  The label to be displayed for this action.
+ */
+public DeleteAction(IEditorPart editor, String label) {
+	this((IWorkbenchPart)editor);
+	setText(label);
 }
 
 /**
@@ -53,31 +64,17 @@ public DeleteAction(IWorkbenchPart part) {
 }
 
 /**
- * Initializes this action's text and images.
+ * Returns <code>true</code> if the selected objects can
+ * be deleted.  Returns <code>false</code> if there are
+ * no objects selected or the selected objects are not
+ * {@link EditPart}s.
+ * @return <code>true</code> if the command should be enabled
  */
-protected void init() {
-	super.init();
-	setText(GEFMessages.DeleteAction_Label);
-	setToolTipText(GEFMessages.DeleteAction_Tooltip);
-	setId(ActionFactory.DELETE.getId());
-	setImageDescriptor(
-		WorkbenchImages.getImageDescriptor(
-			ISharedImages.IMG_TOOL_DELETE));
-	setDisabledImageDescriptor(
-		WorkbenchImages.getImageDescriptor(
-			ISharedImages.IMG_TOOL_DELETE_DISABLED));
-	setEnabled(false);
-}
-
-/**
- * Creates a <code>DeleteAction</code> with the given label.
- * @deprecated use DeleteAction(IWorkbenchPart)
- * @param editor The editor this action will be associated with.
- * @param label  The label to be displayed for this action.
- */
-public DeleteAction(IEditorPart editor, String label) {
-	super(editor);
-	setText(label);
+protected boolean calculateEnabled() {
+	Command cmd = createDeleteCommand(getSelectedObjects());
+	if (cmd == null)
+		return false;
+	return cmd.canExecute();
 }
 
 /**
@@ -106,17 +103,20 @@ public Command createDeleteCommand(List objects) {
 }
 
 /**
- * Returns <code>true</code> if the selected objects can
- * be deleted.  Returns <code>false</code> if there are
- * no objects selected or the selected objects are not
- * {@link EditPart}s.
- * @return <code>true</code> if the command should be enabled
+ * Initializes this action's text and images.
  */
-protected boolean calculateEnabled() {
-	Command cmd = createDeleteCommand(getSelectedObjects());
-	if (cmd == null)
-		return false;
-	return cmd.canExecute();
+protected void init() {
+	super.init();
+	setText(GEFMessages.DeleteAction_Label);
+	setToolTipText(GEFMessages.DeleteAction_Tooltip);
+	setId(ActionFactory.DELETE.getId());
+	setImageDescriptor(
+		WorkbenchImages.getImageDescriptor(
+			ISharedImages.IMG_TOOL_DELETE));
+	setDisabledImageDescriptor(
+		WorkbenchImages.getImageDescriptor(
+			ISharedImages.IMG_TOOL_DELETE_DISABLED));
+	setEnabled(false);
 }
 
 /**
@@ -127,5 +127,3 @@ public void run() {
 }
 
 }
-
-
