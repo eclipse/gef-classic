@@ -12,7 +12,7 @@ package org.eclipse.draw2d.geometry;
  * SWT uses integer arrays when painting polylines and polygons.
  */
 public class PointList
-	implements java.io.Serializable, Translatable, Cloneable
+	implements java.io.Serializable, Translatable
 {
 
 private int[] points = new int[0];
@@ -89,11 +89,11 @@ public Rectangle getBounds() {
  * Creates a copy
  * @return PointList A copy of this PointList */
 public PointList getCopy() {
-	try {
-		return (PointList)clone();
-	} catch (CloneNotSupportedException e) {
-		throw new RuntimeException(e.getMessage());
-	}
+	PointList result = new PointList(size);
+	System.arraycopy(points, 0, result.points, 0, points.length);
+	result.size = size;
+	result.bounds = null;
+	return result;
 }
 
 /** 
@@ -199,6 +199,7 @@ public void insertPoint(Point p, int index) {
 public void performScale(double factor) {
 	for (int i = 0; i < points.length; i++)
 		points[i] = (int)Math.floor(points[i] * factor);
+	bounds = null;
 }
 
 /**
@@ -209,6 +210,8 @@ public void performTranslate(int dx, int dy) {
 		points[i] += dx;
 		points[i + 1] += dy;
 	}
+	if (bounds != null)
+		bounds.translate(dx, dy);
 }
 
 /** 
