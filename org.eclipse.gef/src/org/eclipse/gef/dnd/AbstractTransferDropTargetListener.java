@@ -47,7 +47,9 @@ private Transfer transfer;
 private EditPartViewer viewer;
 
 /**
- * Constructs a new AbstractTransferDropTargetListener and sets the EditPartViewer.
+ * Constructs a new AbstractTransferDropTargetListener and sets the EditPartViewer. If 
+ * you use this constructor, you must set the Transfer yourself using 
+ * {@link #setTransfer(Transfer)}.
  * @param viewer the EditPartViewer
  */
 public AbstractTransferDropTargetListener(EditPartViewer viewer) {
