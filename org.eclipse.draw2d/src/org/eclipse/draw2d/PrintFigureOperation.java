@@ -2,14 +2,12 @@ package org.eclipse.draw2d;
 
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.printing.Printer;
+import org.eclipse.swt.widgets.Display;
 
 /**
+ * Class responsible for printing Figures.
+ * 
  * @author danlee
- *
- * To change this generated comment edit the template variable "typecomment":
- * Window>Preferences>Java>Templates.
- * To enable and disable the creation of type comments go to
- * Window>Preferences>Java>Code Generation.
  */
 public class PrintFigureOperation extends PrintOperation {
 
@@ -23,8 +21,9 @@ public PrintFigureOperation() { }
 
 /**
  * Constructor for PrintFigureOperation.
- * @param p
- * @param srcFigure
+ * 
+ * @param p Printer to print on
+ * @param srcFigure Figure to print
  */
 public PrintFigureOperation(Printer p, IFigure srcFigure) {
 	super(p);
@@ -47,6 +46,8 @@ protected void restorePrintSource() {
 	oldBGColor = null;
 }
 
+/**
+ *  * @see org.eclipse.draw2d.PrintOperation#printPages() */
 protected void printPages() {
 	getPrinter().startPage();
 
@@ -59,19 +60,24 @@ protected void printPages() {
 	getPrinter().endPage();
 }
 
+/**
+ * Sets up Graphics object g for IFigure f.
+ * 
+ * @param g The Graphics to setup * @param f The IFigure used to setup g */
 protected void setupPrinterGraphicsFor(Graphics g, IFigure f) {
 	g.setForegroundColor(f.getForegroundColor());
 	g.setBackgroundColor(f.getBackgroundColor());
 	g.setFont(f.getFont());
 
-	g.scale((double)getPrinter().getDPI().x / 72);
+	g.scale((double)getPrinter().getDPI().x / Display.getDefault().getDPI().x);
 	g.translate(f.getBounds().getCopy().getLocation().negate());
 	g.clipRect(f.getBounds());
 }
 
 /**
  * Returns the printSource.
- * @return IFigure
+ * 
+ * @return IFigure The source IFigure
  */
 protected IFigure getPrintSource() {
 	return printSource;
