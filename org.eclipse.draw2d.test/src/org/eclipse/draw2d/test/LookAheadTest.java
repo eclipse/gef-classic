@@ -34,7 +34,7 @@ public class LookAheadTest
 protected static final Font TAHOMA = new Font(null, "Tahoma", 8, 0);//$NON-NLS-1$
 
 private int getWidth(String s) {
-	return FigureUtilities.getStringExtents(s, TAHOMA).width - 1;
+	return FigureUtilities.getStringExtents(s, TAHOMA).width;
 }
 
 /*
@@ -92,6 +92,16 @@ public void testAddLeadingWordRequirements() {
 	width[0] = 0;
 	assertTrue("test36 failed", flow.addLeadingWordRequirements(width));
 	assertTrue("test37 failed", width[0] == getWidth("ab"));
+	
+	flow.setText("hey, man.");
+	width[0] = 0;
+	assertTrue("test38 failed", flow.addLeadingWordRequirements(width));
+	assertTrue("test39 failed", width[0] == getWidth("hey,"));
+	
+	flow.setText("more\ttricks");
+	width[0] = 0;
+	assertTrue("test40 failed", flow.addLeadingWordRequirements(width));
+	assertTrue("test41 failed", width[0] == getWidth("more"));
 }
 
 public void testLookAhead() {
