@@ -146,8 +146,11 @@ private boolean isInUpperHalf(Rectangle rect,
 
 private void restoreSelection() {
 	if (oldSelection != null) {
-		getTree().setSelection(oldSelection);
-		oldSelection = null;
+		try {
+			getTree().setSelection(oldSelection);
+		} finally {
+			oldSelection = null;
+		}
 	}
 }
 
