@@ -1054,8 +1054,8 @@ private class MoveDownAction extends PaletteCustomizationAction {
 	public MoveDownAction() {
 		setEnabled(false);
 		setText(PaletteMessages.MOVE_DOWN_LABEL);
-		setImageDescriptor(WorkbenchImages
-			.getImageDescriptor(IDEInternalWorkbenchImages.IMG_CTOOL_NEXT_NAV));
+		setImageDescriptor(ImageDescriptor.createFromFile(
+				Internal.class, "icons/next_nav.gif"));//$NON-NLS-1$
 		setDisabledImageDescriptor(ImageDescriptor.createFromFile(
 			Internal.class, "icons/move_down_disabled.gif"));//$NON-NLS-1$
 	}
@@ -1082,8 +1082,8 @@ private class MoveUpAction extends PaletteCustomizationAction {
 	public MoveUpAction() {
 		setEnabled(false);
 		setText(PaletteMessages.MOVE_UP_LABEL);
-		setImageDescriptor(WorkbenchImages
-			.getImageDescriptor(IDEInternalWorkbenchImages.IMG_CTOOL_PREVIOUS_NAV));
+		setImageDescriptor(ImageDescriptor.createFromFile(
+				Internal.class, "icons/prev_nav.gif"));//$NON-NLS-1$
 		setDisabledImageDescriptor(ImageDescriptor.createFromFile(
 			Internal.class, "icons/move_up_disabled.gif")); //$NON-NLS-1$
 	}
