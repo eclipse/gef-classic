@@ -185,7 +185,8 @@ public void setID(String s) {
 }
 
 public void setLocation(Point p) {
-	if (location.equals(p)) return;
+	if (location.equals(p))
+		return;
 	location = p;
 	firePropertyChange("location", null, p);  //$NON-NLS-1$
 }
@@ -208,18 +209,15 @@ protected void setOutput(String terminal, boolean val) {
  * @param value  Value to be set to the given parameter.
  */
 public void setPropertyValue(Object id, Object value){
-	if (ID_SIZE.equals(id)){
-		DimensionPropertySource dimPS = (DimensionPropertySource)value;
-		setSize(new Dimension(dimPS.getValue()));
-	}
-	else if (ID_LOCATION.equals(id)){
-		LocationPropertySource locPS = (LocationPropertySource)value;
-		setLocation(new Point(locPS.getValue()));
-	}
+	if (ID_SIZE.equals(id))
+		setSize((Dimension)value);
+	else if (ID_LOCATION.equals(id))
+		setLocation((Point)value);
 }
 
 public void setSize(Dimension d) {
-	if (size.equals(d)) return;
+	if (size.equals(d))
+		return;
 	size = d;
 	firePropertyChange("size", null, size);  //$NON-NLS-1$
 }

@@ -39,11 +39,11 @@ static{
 protected Point point = null;
 
 public LocationPropertySource(Point point){
-	this.point = new Point(point);
+	this.point = point.getCopy();
 }
 
 public Object getEditableValue(){
-	return this;
+	return point.getCopy();
 }
 
 public IPropertyDescriptor[] getPropertyDescriptors(){
@@ -58,10 +58,6 @@ public Object getPropertyValue(Object propName){
 		return new String(new Integer(point.y).toString());
 	}
 	return null;
-}
-
-public Point getValue(){
-	return new Point(point);
 }
 
 public boolean isPropertySet(Object propName){

@@ -39,11 +39,11 @@ static{
 protected Dimension dimension = null;
 
 public DimensionPropertySource(Dimension dimension){
-	this.dimension = new Dimension(dimension);
+	this.dimension = dimension.getCopy();
 }
 
 public Object getEditableValue(){
-	return this;
+	return dimension.getCopy();
 }
 
 public Object getPropertyValue(Object propName){
@@ -58,10 +58,6 @@ public Object getPropertyValue(String propName){
 		return new String(new Integer(dimension.width).toString());
 	}
 	return null;
-}
-
-public Dimension getValue(){
-	return new Dimension(dimension);
 }
 
 public void setPropertyValue(Object propName, Object value){
