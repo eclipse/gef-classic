@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="org.eclipse.platform.doc.isv" default="build.jars" basedir=".">
+<project name="org.eclipse.draw2d.doc.isv" default="build.jars" basedir=".">
 
 	<target name="init">
-		<property name="plugin" value="org.eclipse.gef.doc.isv"/>
+		<property name="plugin" value="org.eclipse.draw2d.doc.isv"/>
 		<property name="version.suffix" value="_2.0.1"/>
 		<property name="full.name" value="${plugin}${version.suffix}"/>
 		<property name="temp.folder" value="${basedir}/temp.folder"/>
