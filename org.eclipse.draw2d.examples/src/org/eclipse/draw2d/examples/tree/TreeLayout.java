@@ -91,6 +91,8 @@ public void layout(IFigure container) {
 
 		leftContour = subtree.getContourLeft();
 		int overlap = calculateOverlap(rightContour, leftContour);
+		if (!subtree.getRoot().isCompressed())
+			overlap = 0;
 		contactDepth = pointOfContact;
 		subtree.setLocation(transposer.t(currentXY.getTranslated(-overlap, 0)));
 
