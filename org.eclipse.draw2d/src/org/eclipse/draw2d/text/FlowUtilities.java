@@ -66,7 +66,7 @@ public static int getTextForSpace(String s, Font f, int availableWidth, float av
 }
 
 static void setupFragment(TextFragmentBox frag, Font f, String s) {
-	Dimension d = getTextExtents(s.substring(0, frag.length), f);
+	Dimension d = getStringExtents(s.substring(0, frag.length), f);
 	FontMetrics fm = getFontMetrics(f);
 	frag.setHeight(fm.getHeight() + fm.getLeading());
 	frag.setAscent(fm.getAscent() + fm.getLeading());

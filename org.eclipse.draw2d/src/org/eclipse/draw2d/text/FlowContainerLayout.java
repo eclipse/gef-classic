@@ -54,7 +54,7 @@ public LineBox getCurrentLine() {
  * @see org.eclipse.draw2d.sandbox.text.FlowContext#isCurrentLineOccupied()
  */
 public boolean isCurrentLineOccupied() {
-	return false;
+	return currentLine != null && currentLine.isOccupied();
 }
 
 /** * @see org.eclipse.draw2d.text.FlowFigureLayout#layout() */

@@ -41,6 +41,7 @@ public void add(IFigure child, Object constraint, int index) {
 protected abstract FlowFigureLayout createDefaultFlowLayout();
 
 protected void paintFigure(Graphics g){
+	super.paintFigure(g);
 //	FlowBox block;
 //	Rectangle r;
 	Color bgColor = g.getBackgroundColor();

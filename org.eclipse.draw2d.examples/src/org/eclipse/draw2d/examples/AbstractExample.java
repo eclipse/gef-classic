@@ -1,6 +1,9 @@
 package org.eclipse.draw2d.examples;
 
 import org.eclipse.draw2d.*;
+
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -11,10 +14,14 @@ import org.eclipse.swt.widgets.Shell;
  */
 public abstract class AbstractExample {
 
+protected static final Font COURIER = new Font(null, "Courier", 9, 0);//$NON-NLS-1$
+protected static final Font BOLD = new Font(null, "Helvetica", 10, SWT.BOLD);//$NON-NLS-1$
+protected static final Font ITALICS = new Font(null, "Helvetica", 10, SWT.ITALIC);//$NON-NLS-1$
+protected static final Font HEADING_1 = new Font(null, "Helvetica", 15, SWT.BOLD);//$NON-NLS-1$
 private FigureCanvas fc;
 
 protected void run(){
-	Display d = new Display();
+	Display d = Display.getDefault();
 	Shell shell = new Shell(d);
 	String appName = getClass().getName();
 	appName = appName.substring(appName.lastIndexOf('.')+1);

@@ -31,7 +31,7 @@ public TextFlow(String s) {
  * @see org.eclipse.draw2d.text.InlineFlow#createDefaultFlowLayout()
  */
 protected FlowFigureLayout createDefaultFlowLayout() {
-	return new TextLayout(this);
+	return new ParagraphTextLayout(this);
 }
 
 /**
