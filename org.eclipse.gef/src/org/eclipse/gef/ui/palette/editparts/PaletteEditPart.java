@@ -21,12 +21,10 @@ import org.eclipse.jface.resource.ImageDescriptor;
 
 import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.Label;
+import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.text.*;
-import org.eclipse.draw2d.text.BlockFlow;
-import org.eclipse.draw2d.text.TextFlow;
 
 import org.eclipse.gef.*;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
@@ -75,6 +73,30 @@ protected AccessibleEditPart createAccessible() {
 }
 
 public void createEditPolicies() { }
+
+private IFigure createToolTip() {
+	FlowPage fp = new FlowPage() {
+		public Dimension getPreferredSize(int w, int h) {
+			Dimension d = super.getPreferredSize(-1, -1);
+			if (d.width > 150)
+				d = super.getPreferredSize(150, -1);
+			return d;
+		}
+	};
+	fp.setOpaque(true);
+	fp.setBorder(new MarginBorder(new Insets(0, 2, 0, 0)));
+	BlockFlow bf = new BlockFlow();
+	bf.add(new TextFlow());
+	fp.add(bf);
+	
+	getFigure().addFigureListener(new FigureListener() {
+		public void figureMoved(IFigure source) {
+			refreshVisuals();
+		}
+	});
+	
+	return fp;
+}
 
 /**
  * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#deactivate()
@@ -183,8 +205,12 @@ protected IFigure getToolTipFigure() {
 
 protected String getToolTipText() {
 	String text = null;
-	boolean needName = getPreferenceSource().getLayoutSetting() 
-				== PaletteViewerPreferences.LAYOUT_ICONS;
+	boolean needName = getPreferenceSource().getLayoutSetting() == PaletteViewerPreferences.LAYOUT_ICONS;
+	if (!getFigure().getChildren().isEmpty()) {
+		IFigure fig = (IFigure)getFigure().getChildren().get(0);
+		if (fig instanceof DetailedLabelFigure)
+			needName = needName || ((DetailedLabelFigure)fig).isNameTruncated();
+	}
 	PaletteEntry entry = (PaletteEntry)getModel();
 	String desc = entry.getDescription();
 	if (desc == null || desc.trim().equals(entry.getLabel()) || desc.trim().equals("")) { //$NON-NLS-1$
@@ -239,29 +265,6 @@ protected void refreshVisuals() {
 	updateToolTipText();
 }
 
-private void updateToolTipText() {
-	IFigure fig = (IFigure)getToolTipFigure().getToolTip().getChildren().get(0);
-	TextFlow tf = (TextFlow)fig.getChildren().get(0);
-	tf.setText(getToolTipText());
-}
-
-private IFigure createToolTip() {
-	FlowPage fp = new FlowPage() {
-		public Dimension getPreferredSize(int w, int h) {
-			Dimension d = super.getPreferredSize(-1, -1);
-			if (d.width > 150)
-				d = super.getPreferredSize(150, -1);
-			return d;
-		}
-	};
-	fp.setOpaque(true);
-	fp.setBorder(new MarginBorder(new Insets(0, 2, 0, 0)));
-	BlockFlow bf = new BlockFlow();
-	bf.add(new TextFlow(getToolTipText()));
-	fp.add(bf);
-	return fp;
-}
-
 protected void setImageDescriptor(ImageDescriptor desc) {
 	if (desc == imgDescriptor) {
 		return;
@@ -289,6 +292,12 @@ private void traverseChildren(List children, boolean add) {
 			entry.removePropertyChangeListener(childListener);
 		}		
 	}
+}
+
+private void updateToolTipText() {
+	IFigure fig = (IFigure)getToolTipFigure().getToolTip().getChildren().get(0);
+	TextFlow tf = (TextFlow)fig.getChildren().get(0);
+	tf.setText(getToolTipText());
 }
 
 protected static class ImageCache {
