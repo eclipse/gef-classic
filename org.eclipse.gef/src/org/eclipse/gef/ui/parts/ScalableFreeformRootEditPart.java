@@ -10,12 +10,7 @@ public class ScalableFreeformRootEditPart
 	extends FreeformGraphicalRootEditPart
 {
 
-private ScalableFreeformLayeredPane scaledLayers;
-
-public ScalableFreeformRootEditPart(ZoomManager manager) {
-	scaledLayers = new ScalableFreeformLayeredPane();
-	manager.addZoomListener(scaledLayers);
-}
+private ScalableFreeformLayeredPane scaledLayers = new ScalableFreeformLayeredPane();
 
 /**
  * @see org.eclipse.gef.ui.parts.FreeformGraphicalRootEditPart#createLayers(LayeredPane)
