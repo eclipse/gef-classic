@@ -62,8 +62,8 @@ private boolean acceptOpenContextMenu(KeyEvent event) {
 
 private boolean acceptSetFocusOnDrawer(KeyEvent event) {
 	return (event.keyCode == SWT.ARROW_LEFT || event.keyCode == SWT.ARROW_UP)
-				&& ((getFocusEditPart().getParent() instanceof PaletteStackEditPart && 
-				getFocusEditPart().getParent().getParent() instanceof DrawerEditPart)
+				&& ((getFocusEditPart().getParent() instanceof PaletteStackEditPart 
+				&& getFocusEditPart().getParent().getParent() instanceof DrawerEditPart)
 				|| getFocusEditPart().getParent() instanceof DrawerEditPart);
 }		
 
@@ -108,12 +108,16 @@ private void expandDrawer() {
 	drawer.setExpanded(true);
 }
 
+/**
+ * @see org.eclipse.gef.ui.parts.GraphicalViewerKeyHandler#getNavigationPoint(org.eclipse.draw2d.IFigure)
+ */
 protected Point getNavigationPoint(IFigure figure) {
 	return figure.getBounds().getTopLeft();
 }
 
 /**
- * @return a list of {@link org.eclipse.gef.EditPart EditParts} eligible for selection.
+ * @return a list of {@link org.eclipse.gef.EditPart EditParts} that can be traversed
+ * to from the current {@link GraphicalViewerKeyHandler#getFocusEditPart() focus part}
  */
 protected List getNavigationSiblings() {
 	ArrayList siblingsList = new ArrayList();
@@ -201,6 +205,9 @@ private boolean navigateIntoExpandedDrawer(KeyEvent event) {
 	return false;
 }
 
+/**
+ * @see org.eclipse.gef.ui.parts.GraphicalViewerKeyHandler#navigateTo(org.eclipse.gef.EditPart, org.eclipse.swt.events.KeyEvent)
+ */
 protected void navigateTo(EditPart part, KeyEvent event) {
 	if (part == null)
 		return;
@@ -230,7 +237,7 @@ private boolean navigateToNextContainer(KeyEvent event) {
 			int index = siblings.indexOf(current);
 			if (index != -1 && siblings.size() > index + 1) {
 				EditPart part = (EditPart)siblings.get(index + 1);
-				if (part instanceof GroupEditPart && part.getChildren().size() > 0) {					
+				if (part instanceof GroupEditPart && part.getChildren().size() > 0) {
 					EditPart child = (EditPart)part.getChildren().get(0);
 					navigateTo(child, event);
 				} else
