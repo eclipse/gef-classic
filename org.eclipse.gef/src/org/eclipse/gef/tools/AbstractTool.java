@@ -949,12 +949,12 @@ final protected boolean unloadWhenFinished(){
 
 /**
  * Handles the mouse entering a viewer.  Subclasses wanting to handle this event should 
- * override {@link #handleViewerEntered()}.  
- * <p>NOTE: If the current viewer is not <code>null</code>, it means 
- * {@link #viewerExited(MouseEvent, EditPartViewer)} on the previous viewer will come 
- * after this viewer entered event.  As a workaround for this "feature" in SWT, 
- * {@link #handleViewerExited()} is called and the subsequent viewer exited event will be
- * ignored.
+ * override {@link #handleViewerEntered()}.
+ * <p>
+ * FEATURE in SWT: mouseExit comes after mouseEntered. Therefore, if the current viewer is
+ * not <code>null</code>, it means the exit has not been sent yet by SWT. To maintain
+ * proper ordering, GEF fakes the exit and calls {@link #handleViewerExited()}. The real
+ * exit will then be ignored.
  */
 public void viewerEntered(MouseEvent me, EditPartViewer viewer) {
 	getCurrentInput().setInput(me);
@@ -972,6 +972,10 @@ public void viewerEntered(MouseEvent me, EditPartViewer viewer) {
  * handle this event should override {@link #handleViewerExited()}.
  */
 public void viewerExited(MouseEvent me, EditPartViewer viewer) {
+	/*
+	 * FEATURE in SWT. mouseExited comes after mouseEntered. So only call handle exit if
+	 * we didn't previously fake it on viewer entered.
+	 */
 	if (viewer == getCurrentViewer()) {
 		getCurrentInput().setInput(me);
 		debug("Mouse exited viewer:\t" + viewer.toString());//$NON-NLS-1$
