@@ -764,8 +764,7 @@ void translate(int x, int y);
 void translateFromParent(Translatable t);
 
 /**
- * Translates a Translatable from this IFigure's coordinates to the top-most parent's
- * coordinates.
+ * Translates a Translatable that is relative to this figure's bounds to absolute.
  * @param t The object to translate
  */
 void translateToAbsolute(Translatable t);
@@ -777,7 +776,8 @@ void translateToAbsolute(Translatable t);
 void translateToParent(Translatable t);
 
 /**
- * Translates a Translatable from the top-most parent's coordinates to local coordinates.
+ * Translates a Translatable in absolute coordinates to be relative to this figure's
+ * bounds.
  * @param t The object to translate
  */
 void translateToRelative(Translatable t);
