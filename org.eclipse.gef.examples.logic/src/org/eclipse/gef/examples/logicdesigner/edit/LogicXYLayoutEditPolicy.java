@@ -10,18 +10,16 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner.edit;
 
-import java.util.*;
+import java.util.List;
 
-import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.*;
 import org.eclipse.gef.commands.Command;
-import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
 import org.eclipse.gef.requests.CreateRequest;
+import org.eclipse.gef.ui.parts.RulerProvider;
 
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
 import org.eclipse.gef.examples.logicdesigner.model.*;
@@ -30,8 +28,6 @@ import org.eclipse.gef.examples.logicdesigner.model.commands.*;
 public class LogicXYLayoutEditPolicy
 	extends org.eclipse.gef.editpolicies.XYLayoutEditPolicy
 {
-	
-private List figures = new ArrayList();
 
 protected Command createAddCommand(EditPart childEditPart, Object constraint) {
 
@@ -64,17 +60,19 @@ protected Command createChangeConstraintCommand(ChangeBoundsRequest request,
 		EditPart child, Object constraint) {
 	SetConstraintCommand cmd = (SetConstraintCommand)createChangeConstraintCommand(
 			child, constraint);
-	Guide hGuide = (Guide)request.getExtendedData().get(SnapToGuides.HORIZONTAL_GUIDE);
-	if (hGuide != null) {
+	Integer guidePos = (Integer)request.getExtendedData()
+			.get(SnapToGuides.HORIZONTAL_GUIDE);
+	if (guidePos != null) {
 		int hAlignment = ((Integer)request.getExtendedData()
 				.get(SnapToGuides.HORIZONTAL_ANCHOR)).intValue();
-		cmd.setHorizontalGuide(hGuide, hAlignment);
+		cmd.setHorizontalGuide(findGuideAt(guidePos.intValue(), true), hAlignment);
 	}
-	Guide vGuide = (Guide)request.getExtendedData().get(SnapToGuides.VERTICAL_GUIDE);
-	if (vGuide != null) {
+	guidePos = (Integer)request.getExtendedData()
+			.get(SnapToGuides.VERTICAL_GUIDE);
+	if (guidePos != null) {
 		int vAlignment = ((Integer)request.getExtendedData()
 				.get(SnapToGuides.VERTICAL_ANCHOR)).intValue();
-		cmd.setVerticalGuide(vGuide, vAlignment);
+		cmd.setVerticalGuide(findGuideAt(guidePos.intValue(), false), vAlignment);
 	}
 	return cmd;
 }
@@ -88,14 +86,16 @@ protected EditPolicy createChildEditPolicy(EditPart child) {
 	return super.createChildEditPolicy(child);
 }
 
-protected void eraseLayoutTargetFeedback(Request request) {
-	for (Iterator iter = figures.iterator(); iter.hasNext();) {
-		IFigure fig = (IFigure)iter.next();
-		if (getLayer(LayerConstants.FEEDBACK_LAYER).getChildren().contains(fig)) {
-			fig.getParent().remove(fig);
+protected LogicGuide findGuideAt(int pos, boolean horizontal) {
+	List guides = ((RulerProvider)getHost().getViewer().getProperty(
+			horizontal ? RulerProvider.VERTICAL : RulerProvider.HORIZONTAL)).getGuides();
+	for (int i = 0; i < guides.size(); i++) {
+		LogicGuide guide = (LogicGuide)guides.get(i);
+		if (pos == guide.getPosition()) {
+			return guide;
 		}
 	}
-	figures.clear();
+	throw new RuntimeException("LogicXYLayoutEditPolicy: Guide not found at position " + pos); //$NON-NLS-1$
 }
 
 protected Command getCreateCommand(CreateRequest request) {
@@ -114,76 +114,6 @@ protected Command getDeleteDependantCommand(Request request) {
 
 protected Command getOrphanChildrenCommand(Request request) {
 	return null;
-}
-
-protected void showLayoutTargetFeedback(Request request) {
-	eraseLayoutTargetFeedback(request);
-	if (request.getType().equals(REQ_MOVE) || request.getType().equals(REQ_RESIZE)) {
-		ChangeBoundsRequest req = (ChangeBoundsRequest)request;
-		ZoomManager zoomManager = (ZoomManager)getHost().getViewer()
-				.getProperty(ZoomManager.class.toString());
-		double zoom = zoomManager.getZoom() / zoomManager.getUIMultiplier();
-		Guide vGuide = (Guide)req.getExtendedData()
-				.get(SnapToGuides.VERTICAL_GUIDE);
-		if (vGuide != null) {
-			int alignment = ((Integer)req.getExtendedData()
-					.get(SnapToGuides.VERTICAL_ANCHOR)).intValue();
-			IFigure part = ((GraphicalEditPart)req.getEditParts().get(0)).getFigure();
-			Point start = null, end = null;
-			Rectangle figBounds = part.getBounds();
-			switch (alignment) {
-				case -1:
-					start = figBounds.getTopLeft();
-					end = figBounds.getBottomLeft();
-					break;
-				case 0:
-					start = figBounds.getTop();
-					end = figBounds.getBottom();
-					break;
-				case 1:
-					start = figBounds.getTopRight();
-					end = figBounds.getBottomRight();
-			}
-			start.scale(zoom).translate(req.getMoveDelta());
-			end.scale(zoom).translate(req.getMoveDelta());
-			Figure fig = new Figure();
-			fig.setOpaque(true);
-			fig.setBackgroundColor(ColorConstants.red);
-			getLayer(LayerConstants.FEEDBACK_LAYER).add(fig);
-			fig.setBounds(new Rectangle(start.x - 1, start.y, 3, end.y - start.y));
-			figures.add(fig);
-		}
-		Guide hGuide = (Guide)req.getExtendedData()
-				.get(SnapToGuides.HORIZONTAL_GUIDE);
-		if (hGuide != null) {
-			int alignment = ((Integer)req.getExtendedData()
-					.get(SnapToGuides.HORIZONTAL_ANCHOR)).intValue();
-			IFigure part = ((GraphicalEditPart)req.getEditParts().get(0)).getFigure();
-			Point start = null, end = null;
-			Rectangle figBounds = part.getBounds();
-			switch (alignment) {
-				case -1:
-					start = figBounds.getTopLeft();
-					end = figBounds.getTopRight();
-					break;
-				case 0:
-					start = figBounds.getLeft();
-					end = figBounds.getRight();
-					break;
-				case 1:
-					start = figBounds.getBottomLeft();
-					end = figBounds.getBottomRight();
-			}
-			start.scale(zoom).translate(req.getMoveDelta());
-			end.scale(zoom).translate(req.getMoveDelta());
-			Figure fig = new Figure();
-			fig.setOpaque(true);
-			fig.setBackgroundColor(ColorConstants.red);
-			getLayer(LayerConstants.FEEDBACK_LAYER).add(fig);
-			fig.setBounds(new Rectangle(start.x, start.y - 1, end.x - start.x, 3));
-			figures.add(fig);
-		}
-	}
 }
 
 }

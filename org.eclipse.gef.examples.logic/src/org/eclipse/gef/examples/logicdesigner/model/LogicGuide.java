@@ -15,30 +15,28 @@ import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import java.util.*;
 
-
 /**
  * @author Pratik Shah
  */
-public class Guide 
+public class LogicGuide 
 	implements Serializable
 {
+	
+public static final String PROPERTY_CHILDREN = "subparts changed"; //$NON-NLS-1$
+public static final String PROPERTY_POSITION = "position changed"; //$NON-NLS-1$
 
 static final long serialVersionUID = 1;
 	
-public static final String PROPERTY_POSITION = "position"; //$NON-NLS-1$
-// could mean that a part was added, removed, or its alignment was changed
-public static final String PROPERTY_CHILDREN = "children"; //$NON-NLS-1$
-
 protected PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 private Map map;
 private int position;
 private boolean horizontal;
 
-public Guide() {
+public LogicGuide() {
 	// empty constructor
 }
 
-public Guide(boolean isHorizontal) {
+public LogicGuide(boolean isHorizontal) {
 	setHorizontal(isHorizontal);
 }
 
@@ -46,7 +44,7 @@ public Guide(boolean isHorizontal) {
  * @TODO:Pratik   use PositionConstants here
  */
 // -1 is left; 0, center; 1, right (same thing for top, middle, bottom, respectively)
-public void addPart(LogicSubpart part, int alignment) {
+public void attachPart(LogicSubpart part, int alignment) {
 	if (getMap().containsKey(part)) {
 		int key = ((Integer)getMap().get(part)).intValue();
 		if (key == alignment) {
@@ -54,9 +52,9 @@ public void addPart(LogicSubpart part, int alignment) {
 		}
 	}
 	getMap().put(part, new Integer(alignment));
-	Guide parent = isHorizontal() ? part.getHorizontalGuide() : part.getVerticalGuide();
+	LogicGuide parent = isHorizontal() ? part.getHorizontalGuide() : part.getVerticalGuide();
 	if (parent != null && parent != this) {
-		parent.removePart(part);
+		parent.detachPart(part);
 	}
 	if (isHorizontal()) {
 		part.setHorizontalGuide(this);
@@ -89,7 +87,7 @@ public boolean isHorizontal() {
 	return horizontal;
 }
 
-public void removePart(LogicSubpart part) {
+public void detachPart(LogicSubpart part) {
 	if (getMap().containsKey(part)) {
 		getMap().remove(part);
 		if (isHorizontal()) {

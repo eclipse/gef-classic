@@ -27,7 +27,7 @@ abstract public class LogicSubpart
 {
 
 private String id;
-private Guide verticalGuide, horizontalGuide;
+private LogicGuide verticalGuide, horizontalGuide;
 protected Hashtable inputs = new Hashtable (7);
 protected Point location = new Point(0,0);
 protected Vector  outputs  = new Vector (4,4);
@@ -81,7 +81,7 @@ public Vector getConnections() {
 	return v;
 }
 
-public Guide getHorizontalGuide() {
+public LogicGuide getHorizontalGuide() {
 	return horizontalGuide;
 }
 
@@ -150,7 +150,7 @@ public Vector getTargetConnections() {
 	return v;
 }
 
-public Guide getVerticalGuide() {
+public LogicGuide getVerticalGuide() {
 	return verticalGuide;
 }
 
@@ -161,7 +161,7 @@ public boolean isPropertySet(){
 	return true;	
 }
 
-public void setHorizontalGuide(Guide hGuide) {
+public void setHorizontalGuide(LogicGuide hGuide) {
 	horizontalGuide = hGuide;
 	/*
 	 * @TODO:Pratik   firePropertyChanged?
@@ -224,7 +224,7 @@ public void setSize(Dimension d) {
 	firePropertyChange("size", null, size);  //$NON-NLS-1$
 }
 
-public void setVerticalGuide(Guide vGuide) {
+public void setVerticalGuide(LogicGuide vGuide) {
 	verticalGuide = vGuide;
 }
 

@@ -13,7 +13,7 @@ package org.eclipse.gef.examples.logicdesigner.model.commands;
 import org.eclipse.draw2d.geometry.*;
 
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
-import org.eclipse.gef.examples.logicdesigner.model.Guide;
+import org.eclipse.gef.examples.logicdesigner.model.LogicGuide;
 import org.eclipse.gef.examples.logicdesigner.model.LogicSubpart;
 
 public class SetConstraintCommand
@@ -26,15 +26,15 @@ private Point oldPos;
 private Dimension oldSize;
 private int oldVAlignment = -2, oldHAlignment = -2, 
             newHAlignment = -2, newVAlignment = -2;
-private Guide oldVGuide, oldHGuide, newVGuide, newHGuide;
+private LogicGuide oldVGuide, oldHGuide, newVGuide, newHGuide;
 private LogicSubpart part;
 
-protected void changeGuide(Guide oldGuide, Guide newGuide, int newAlignment) {
+protected void changeGuide(LogicGuide oldGuide, LogicGuide newGuide, int newAlignment) {
 	if (oldGuide != null && oldGuide != newGuide) {
-		oldGuide.removePart(part);
+		oldGuide.detachPart(part);
 	}
 	if (newGuide != null) {
-		newGuide.addPart(part, newAlignment);
+		newGuide.attachPart(part, newAlignment);
 	}
 }
 
@@ -67,7 +67,7 @@ public void redo() {
 	part.setLocation(newPos);
 }
 
-public void setHorizontalGuide(Guide guide, int alignment) {
+public void setHorizontalGuide(LogicGuide guide, int alignment) {
 	newHGuide = guide;
 	newHAlignment = alignment;
 }
@@ -89,7 +89,7 @@ public void setSize(Dimension p) {
 	newSize = p;
 }
 
-public void setVerticalGuide(Guide guide, int alignment) {
+public void setVerticalGuide(LogicGuide guide, int alignment) {
 	newVGuide = guide;
 	newVAlignment = alignment;
 }
