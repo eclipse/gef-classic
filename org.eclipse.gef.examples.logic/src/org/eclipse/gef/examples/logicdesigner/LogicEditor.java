@@ -352,6 +352,13 @@ protected void configureGraphicalViewer() {
 	loadProperties();
 
 	// Actions
+	IAction matchWidthAction = new MatchWidthAction(this);
+	getActionRegistry().registerAction(matchWidthAction);
+	IAction matchSizeAction = new MatchSizeAction(this);
+	getActionRegistry().registerAction(matchSizeAction);
+	IAction matchHeightAction = new MatchHeightAction(this);
+	getActionRegistry().registerAction(matchHeightAction);
+	
 	IAction showRulers = new ToggleRulerVisibilityAction(getGraphicalViewer());
 	getActionRegistry().registerAction(showRulers);
 	getSite().getKeyBindingService().registerAction(showRulers);

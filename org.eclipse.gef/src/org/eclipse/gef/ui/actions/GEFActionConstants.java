@@ -114,6 +114,24 @@ public static final String GROUP_UNDO = "org.eclipse.gef.group.undo"; //$NON-NLS
  */
 public static final String GROUP_VIEW = "org.eclipse.gef.group.view"; //$NON-NLS-1$
 
+/**
+ * 
+ * Value: <code>"org.eclipse.gef.match.size"</code>
+ */
+public static final String MATCH_SIZE = "org.eclipse.gef.match.size"; //$NON-NLS-1$
+
+/**
+ * 
+ *  Value: <code>"org.eclipse.gef.match.width"</code>
+ */
+public static final String MATCH_WIDTH = "org.eclipse.gef.match.width"; //$NON-NLS-1$
+
+/**
+ * 
+ *  Value: <code>"org.eclipse.gef.match.height"</code>
+ */
+public static final String MATCH_HEIGHT = "org.eclipse.gef.match.height"; //$NON-NLS-1$
+
 /** 
  * Zoom contribution id. 
  * Value: <code>"org.eclipse.gef.zoom"</code>
