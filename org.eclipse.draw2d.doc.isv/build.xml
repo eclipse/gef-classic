@@ -1,11 +1,12 @@
 <project name="BuildPlugin" default="build" basedir=".">
 
 <property name="pluginName" value="org.eclipse.draw2d.doc.isv"/>
+<property name="version" value="2.0.1"/>
 
 <target name="init">    
     <echo message="Building ${pluginName}..." />
 	<property name="tempDir" value="\builds\antbuilds"/>
-	<property name="pluginName.temp.path"	value="${tempDir}/plugins/${pluginName}"/>
+	<property name="pluginName.temp.path"	value="${tempDir}/plugins/${pluginName}_${version}"/>
 	<tstamp>
 	    <format property="creation.time" pattern="MMdd_HHmm"/>
 	</tstamp>
