@@ -118,10 +118,13 @@ protected boolean handleKeyDown(KeyEvent e){
 	if (acceptArrowKey(e)) {
 		if (stateTransition(STATE_INITIAL, STATE_ACCESSIBLE_DRAG_IN_PROGRESS)){
 			//When the drag first starts, set the focus Part to be one end of the connection
-			if (isTarget())
+			if (isTarget()) {
 				getCurrentViewer().setFocus(getConnectionEditPart().getTarget());
-			else
+				getCurrentViewer().reveal(getConnectionEditPart().getTarget());
+			} else {
 				getCurrentViewer().setFocus(getConnectionEditPart().getSource());
+				getCurrentViewer().reveal(getConnectionEditPart().getSource());
+			}
 		}
 		int direction = 0;
 		switch (e.keyCode) {
