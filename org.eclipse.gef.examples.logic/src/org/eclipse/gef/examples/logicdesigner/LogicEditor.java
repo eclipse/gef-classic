@@ -11,29 +11,28 @@ import java.util.EventObject;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.TextTransfer;
-import org.eclipse.swt.widgets.*;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.core.resources.*;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jface.action.*;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.IMenuListener;
+import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.*;
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
 import org.eclipse.ui.dialogs.SaveAsDialog;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.IPageSite;
-import org.eclipse.ui.part.PageBook;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
-import org.eclipse.draw2d.LightweightSystem;
 import org.eclipse.draw2d.PositionConstants;
-import org.eclipse.draw2d.Viewport;
-import org.eclipse.draw2d.parts.ScrollableThumbnail;
-import org.eclipse.draw2d.parts.Thumbnail;
+import org.eclipse.draw2d.ZoomManager;
 
 import org.eclipse.gef.*;
 import org.eclipse.gef.dnd.TemplateTransferDragSourceListener;
@@ -345,6 +344,12 @@ public Object getAdapter(Class type){
 		return new CommandStackInspectorPage(getCommandStack());
 	if (type == IContentOutlinePage.class)
 		return new OutlinePage(new TreeViewer());
+	if (type == ZoomManager.class)
+		return (
+			(ScalableFreeformRootEditPart) getGraphicalViewer()
+				.getRootEditPart())
+			.getZoomManager();
+
 	return super.getAdapter(type);
 }
 
@@ -451,6 +456,15 @@ protected void createActions() {
 	action = new AlignmentAction(this, PositionConstants.MIDDLE);
 	registry.registerAction(action);
 	getSelectionActions().add(action.getId());
+
+	action = new ZoomInAction(this);
+	registry.registerAction(action);
+	getEditorSite().getKeyBindingService().registerAction(action);
+
+	action = new ZoomOutAction(this);
+	registry.registerAction(action);
+	getEditorSite().getKeyBindingService().registerAction(action);
+
 }
 
 public boolean isDirty() {
