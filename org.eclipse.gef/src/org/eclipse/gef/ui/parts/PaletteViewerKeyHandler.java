@@ -23,7 +23,7 @@ import org.eclipse.gef.internal.ui.palette.editparts.ToolEntryEditPart;
 import org.eclipse.gef.ui.palette.PaletteViewer;
 
 /**
- * KeyHandler for the {@link org.eclipse.gef.ui.palette.PaletteViewerImpl Palette}.
+ * KeyHandler for the {@link org.eclipse.gef.ui.palette.PaletteViewer Palette}.
  * Handles traversal of Palette entries and collapse/expand of
  * {@link org.eclipse.gef.ui.palette.DrawerEditPart categories}.
  */

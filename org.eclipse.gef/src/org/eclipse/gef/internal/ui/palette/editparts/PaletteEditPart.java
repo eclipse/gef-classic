@@ -27,7 +27,7 @@ import org.eclipse.gef.palette.PaletteEntry;
 import org.eclipse.gef.tools.SelectEditPartTracker;
 import org.eclipse.gef.ui.palette.PaletteMessages;
 import org.eclipse.gef.ui.palette.PaletteViewer;
-import org.eclipse.gef.ui.palette.PaletteViewerImpl;
+import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
 
 abstract class PaletteEditPart 
@@ -169,7 +169,7 @@ PaletteViewer getPaletteViewer() {
 }
 
 protected PaletteViewerPreferences getPreferenceSource() {
-	return ((PaletteViewerImpl)getViewer()).getPaletteViewerPreferences();
+	return ((PaletteViewer)getViewer()).getPaletteViewerPreferences();
 }
 
 protected IFigure getToolTipFigure() {

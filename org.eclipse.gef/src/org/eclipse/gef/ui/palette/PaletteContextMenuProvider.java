@@ -20,7 +20,7 @@ public class PaletteContextMenuProvider
  * 
  * @param palette the palette viewer for which the context menu has to be created
  */
-public PaletteContextMenuProvider(PaletteViewerImpl palette) {
+public PaletteContextMenuProvider(PaletteViewer palette) {
 	super(palette);
 }
 
@@ -28,8 +28,8 @@ public PaletteContextMenuProvider(PaletteViewerImpl palette) {
  * Returns the palette viewer.
  * @return the palette viewer
  */
-protected PaletteViewerImpl getPaletteViewer() {
-	return (PaletteViewerImpl)getViewer();
+protected PaletteViewer getPaletteViewer() {
+	return (PaletteViewer)getViewer();
 }
 
 /**

@@ -10,13 +10,13 @@ import org.eclipse.jface.action.Action;
 
 /**
  * Action to launch the PaletteCustomizerDialog, which allows to customize the
- * given PaletteViewerImpl.
+ * given PaletteViewer.
  * 
  * @author Pratik Shah
  */
 public class CustomizeAction extends Action {
 
-private PaletteViewerImpl paletteViewer;
+private PaletteViewer paletteViewer;
 
 /**
  * Constructor
@@ -24,7 +24,7 @@ private PaletteViewerImpl paletteViewer;
  * @param palette	The Palette which has to be customized when this action is
  * run
  */
-public CustomizeAction(PaletteViewerImpl palette) {
+public CustomizeAction(PaletteViewer palette) {
 	super();
 	setText(PaletteMessages.MENU_OPEN_CUSTOMIZE_DIALOG);
 	this.paletteViewer = palette;

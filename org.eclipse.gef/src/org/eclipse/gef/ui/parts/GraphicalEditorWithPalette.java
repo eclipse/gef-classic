@@ -14,7 +14,7 @@ import org.eclipse.swt.widgets.Composite;
 
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.ui.palette.PaletteViewer;
-import org.eclipse.gef.ui.palette.PaletteViewerImpl;
+import org.eclipse.gef.ui.palette.PaletteViewer;
 
 public abstract class GraphicalEditorWithPalette 
 	extends GraphicalEditor 
@@ -27,7 +27,7 @@ private PaletteViewer paletteViewer;
 protected void configurePaletteViewer() { }
 
 private void createPaletteViewer(Composite parent) {
-	PaletteViewer viewer = new PaletteViewerImpl();
+	PaletteViewer viewer = new PaletteViewer();
 	viewer.createControl(parent);
 	setPaletteViewer(viewer);
 	configurePaletteViewer();
