@@ -62,7 +62,7 @@ protected void paintFigure(Graphics g) {
 	g.fillArc(r, 180, 180);
 	r.width--;
 	r.height--;
-	g.drawArc(r, 180, 180);
+	g.drawArc(r, 180, 190);
 	g.drawLine(r.x + r.width / 2, r.bottom(), r.x + r.width / 2, r.bottom() + 2);
 }
 
