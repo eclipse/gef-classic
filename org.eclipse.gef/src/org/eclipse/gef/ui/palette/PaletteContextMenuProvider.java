@@ -19,7 +19,6 @@ public class PaletteContextMenuProvider
  * Constructor
  * 
  * @param palette the palette viewer for which the context menu has to be created
- * @param registry the action registry
  */
 public PaletteContextMenuProvider(PaletteViewerImpl palette) {
 	super(palette);
@@ -48,15 +47,8 @@ public void buildContextMenu(IMenuManager menu) {
 		menu.appendToGroup(GEFActionConstants.MB_ADDITIONS, 
 							new PinDrawerAction((DrawerEditPart)selectedPart));
 	}
-	menu.appendToGroup(GEFActionConstants.GROUP_VIEW, new FolderLayoutAction(
+	menu.appendToGroup(GEFActionConstants.GROUP_VIEW, new LayoutAction(
 			getPaletteViewer().getPaletteViewerPreferences()));
-	menu.appendToGroup(GEFActionConstants.GROUP_VIEW, new ListLayoutAction(
-			getPaletteViewer().getPaletteViewerPreferences()));
-	menu.appendToGroup(GEFActionConstants.GROUP_VIEW, new IconsLayoutAction(
-			getPaletteViewer().getPaletteViewerPreferences()));
-	menu.appendToGroup(GEFActionConstants.GROUP_VIEW, new DetailsLayoutAction(
-			getPaletteViewer().getPaletteViewerPreferences()));
-	menu.appendToGroup(GEFActionConstants.GROUP_VIEW, new Separator());
 	menu.appendToGroup(GEFActionConstants.GROUP_VIEW, new ChangeIconSizeAction(
 			getPaletteViewer().getPaletteViewerPreferences()));
 	if (getPaletteViewer().getCustomizer() != null) {
