@@ -16,12 +16,11 @@ import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
  */
 public class RulerRootEditPart
 	extends AbstractGraphicalEditPart
-	implements RootEditPart 
+	implements RootEditPart
 {
 	
-/*
- * @TODO:Pratik    maybe this class can inherit GraphicalRootEditPart
- */
+private static final Insets H_INSETS = new Insets(0, 1, 0, 0);
+private static final Insets V_INSETS = new Insets(1, 0, 0, 0);
 
 private boolean horizontal;	
 private EditPart contents;
@@ -36,7 +35,26 @@ public RulerRootEditPart(boolean isHorzontal) {
  * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
  */
 protected IFigure createFigure() {
-	return new RulerViewport(horizontal);
+	IFigure fig = new RulerViewport(horizontal);
+	fig.setBorder(new AbstractBorder() {
+		public Insets getInsets(IFigure figure) {
+			return horizontal ? H_INSETS : V_INSETS;
+		}
+		public void paint(IFigure figure, Graphics graphics, Insets insets) {
+			graphics.setForegroundColor(ColorConstants.buttonDarker);
+			Point reduction = null;
+			if (horizontal) {
+				reduction = new Point(0, -3);
+				graphics.drawLine(figure.getBounds().getTopLeft(), 
+						figure.getBounds().getBottomLeft().translate(reduction));
+			} else {
+				reduction = new Point(-3, 0);
+				graphics.drawLine(figure.getBounds().getTopLeft(), 
+						figure.getBounds().getTopRight().translate(reduction));
+			}
+		}
+	});
+	return fig;
 }
 
 /* (non-Javadoc)
@@ -77,8 +95,8 @@ public void setContents(EditPart editpart) {
 /* (non-Javadoc)
  * @see org.eclipse.gef.RootEditPart#setViewer(org.eclipse.gef.EditPartViewer)
  */
-public void setViewer(EditPartViewer viewer) {
-	this.viewer = viewer;
+public void setViewer(EditPartViewer editPartViewer) {
+	viewer = editPartViewer;
 }
 
 protected Viewport getViewport() {
@@ -86,11 +104,10 @@ protected Viewport getViewport() {
 }
 
 public class RulerViewport extends Viewport {
-	private Transposer transposer;
+	private boolean horizontal;
 	public RulerViewport(boolean isHorizontal) {
 		super(true);
-		transposer = new Transposer();
-		transposer.setEnabled(isHorizontal);
+		horizontal = isHorizontal;
 		setLayoutManager(null);
 	}
 	public void add(IFigure figure, Object constraint, int index) {
@@ -105,7 +122,8 @@ public class RulerViewport extends Viewport {
 			// this should never happen
 			return super.getPreferredSize(wHint, hHint);
 		}
-		return this.getContents().getPreferredSize(wHint, hHint);
+		return this.getContents().getPreferredSize(wHint, hHint)
+				.getExpanded(getInsets().getWidth(), getInsets().getHeight());
 	}
 	protected void readjustScrollBars() {
 		// since the range model is shared with the editor, the ruler viewports should
@@ -119,14 +137,20 @@ public class RulerViewport extends Viewport {
 					|| property.equals(RangeModel.PROPERTY_MINIMUM)
 					|| property.equals(RangeModel.PROPERTY_VALUE)) {
 				RangeModel rModel = (RangeModel)event.getSource();
+				Rectangle clientArea = getClientArea();
 				Rectangle contentBounds = Rectangle.SINGLETON;
-				contentBounds.y = rModel.getMinimum();
-				contentBounds.x = 0;
-				contentBounds.height = rModel.getMaximum() - rModel.getMinimum();
-				contentBounds.width = transposer.t(this.getContents().getPreferredSize())
-						.width;
-				contentBounds = transposer.t(contentBounds)
-						.translate(getClientArea().x, getClientArea().y);
+				if (horizontal) {
+					contentBounds.y = 0;
+					contentBounds.x = rModel.getMinimum();
+					contentBounds.height = this.getContents().getPreferredSize().height;
+					contentBounds.width = rModel.getMaximum() - rModel.getMinimum();
+				} else {
+					contentBounds.y = rModel.getMinimum();
+					contentBounds.x = 0;
+					contentBounds.height = rModel.getMaximum() - rModel.getMinimum();
+					contentBounds.width = this.getContents().getPreferredSize().width;
+				}
+				contentBounds.translate(clientArea.x, clientArea.y);
 				if (!this.getContents().getBounds().equals(contentBounds)) {
 					this.getContents().setBounds(contentBounds);
 					this.getContents().revalidate();
@@ -134,6 +158,9 @@ public class RulerViewport extends Viewport {
 			}
 			getUpdateManager().performUpdate();
 		}
+	}
+	protected boolean useLocalCoordinates() {
+		return true;
 	}
 }
 
