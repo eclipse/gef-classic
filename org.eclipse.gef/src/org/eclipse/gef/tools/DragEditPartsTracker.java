@@ -381,7 +381,7 @@ protected void updateTargetRequest() {
 	request.setEditParts(getOperationSet());
 	Dimension delta = getDragMoveDelta();
 	request.setMoveDelta(new Point(delta.width, delta.height));
-
+	request.getExtendedData().clear();
 	if (helper != null && !getCurrentInput().isShiftKeyDown())
 		helper.snapMoveRequest(request, sourceRectangle.getPreciseCopy());
 

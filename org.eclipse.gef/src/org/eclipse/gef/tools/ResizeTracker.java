@@ -165,6 +165,7 @@ protected void updateSourceRequest() {
 	request.setSizeDelta(resize);
 	request.setLocation(location);
 	request.setEditParts(getOperationSet());
+	request.getExtendedData().clear();
 	
 	SnapToStrategy strategy = (SnapToStrategy)owner.getViewer().getContents()
 		.getAdapter(SnapToStrategy.class);
