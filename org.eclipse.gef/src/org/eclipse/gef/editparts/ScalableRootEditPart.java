@@ -109,7 +109,7 @@ private PropertyChangeListener gridListener = new PropertyChangeListener() {
 		String property = evt.getPropertyName();
 		if (property.equals(SnapToGrid.PROPERTY_GRID_ORIGIN)
 				|| property.equals(SnapToGrid.PROPERTY_GRID_SPACING)
-				|| property.equals(SnapToGrid.PROPERTY_GRID_ENABLED))
+				|| property.equals(SnapToGrid.PROPERTY_GRID_VISIBLE))
 			refreshGridLayer();
 	}
 };
@@ -316,14 +316,14 @@ public ZoomManager getZoomManager() {
 protected void refreshChildren() { }
 
 protected void refreshGridLayer() {
-	GridLayer grid = (GridLayer)getLayer(GRID_LAYER);
 	boolean visible = false;
-	Boolean val = (Boolean)getViewer().getProperty(SnapToGrid.PROPERTY_GRID_ENABLED);
+	GridLayer grid = (GridLayer)getLayer(GRID_LAYER);
+	Boolean val = (Boolean)getViewer().getProperty(SnapToGrid.PROPERTY_GRID_VISIBLE);
 	if (val != null)
 		visible = val.booleanValue();
-	grid.setVisible(visible);
 	grid.setOrigin((Point)getViewer().getProperty(SnapToGrid.PROPERTY_GRID_ORIGIN));
 	grid.setSpacing((Dimension)getViewer().getProperty(SnapToGrid.PROPERTY_GRID_SPACING));
+	grid.setVisible(visible);
 }
 
 /**
