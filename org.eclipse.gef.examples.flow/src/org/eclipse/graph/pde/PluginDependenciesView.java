@@ -3,21 +3,12 @@ package org.eclipse.graph.pde;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.widgets.Composite;
-
-import org.eclipse.ui.part.ViewPart;
-import org.eclipse.core.runtime.IPluginDescriptor;
-import org.eclipse.core.runtime.IPluginPrerequisite;
-import org.eclipse.core.runtime.Platform;
-
+import org.eclipse.core.runtime.*;
 import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.FigureCanvas;
-import org.eclipse.draw2d.Label;
-import org.eclipse.draw2d.ToggleButton;
-
 import org.eclipse.graph.*;
-import org.eclipse.graph.demo.GraphDemo;
+import org.eclipse.graph.demo.DirectedGraphDemo;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.part.ViewPart;
 
 /**
  * @author hudsonr
@@ -130,7 +121,7 @@ public void createPartControl(Composite comp) {
 		System.out.println(e.source + " -> " + e.target + ";");
 	}
 
-	canvas.setContents(GraphDemo.buildGraph(g));
+	canvas.setContents(DirectedGraphDemo.buildGraph(g));
 }
 
 void put(IPluginDescriptor desc, Node n){
