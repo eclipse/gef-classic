@@ -126,6 +126,18 @@ public void enableVerticalScrollbar(boolean value) {
 }
 
 /**
+ * @return	the DrawerEditPart that has the given part; part, if part is a drawer; null, if
+ * 			part is not in a drawer
+ */
+protected DrawerEditPart findContainingDrawer(EditPart part) {
+	if (part == null)
+		return null;
+	if (part instanceof DrawerEditPart)
+		return (DrawerEditPart)part;
+	return findContainingDrawer(part.getParent());
+}
+
+/**
  * Notifies registered listeners of change in the active tool on the palette
  */
 protected void fireModeChanged() {
@@ -240,6 +252,18 @@ public boolean isPinned(PaletteDrawer drawer) {
  */
 public void removePaletteListener(PaletteListener paletteListener) {
 	paletteListeners.remove(paletteListener);
+}
+
+/**
+ * @see	ScrollingGraphicalViewer#reveal(EditPart)
+ */
+public void reveal(EditPart part) {
+	// If the given part is a drawer, we don't need to expand it.  Hence, when invoking
+	// findContainingDrawer(), we use part.getParent()
+	DrawerEditPart drawer = findContainingDrawer(part.getParent());
+	if (drawer != null && !drawer.isExpanded())
+		drawer.setExpanded(true);
+	super.reveal(part);
 }
 
 /**
