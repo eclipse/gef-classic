@@ -4,7 +4,7 @@ import java.util.*;
 
 /**
  * This visitor eliminates cycles in the graph via an implementation of the 
- * Greedy-Cylce-Removal algorithm. This algorithm determines which edges cause
+ * Greedy-Cycle-Removal algorithm. This algorithm determines which edges cause
  * the cycles and then inverts these edges. 
  * 
  * @author Daniel Lee
