@@ -38,7 +38,8 @@ public PrintAction(IEditorPart editor) {
  * @see org.eclipse.gef.ui.actions.EditorPartAction#calculateEnabled()
  */
 protected boolean calculateEnabled() {
-	return true;
+	PrinterData[] printers = Printer.getPrinterList();
+	return printers != null && printers.length > 0;
 }
 
 /**
