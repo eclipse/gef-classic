@@ -371,8 +371,8 @@ public void nativeDragStarted(DragSourceEvent event, EditPartViewer viewer) {
 		getDragTracker().nativeDragStarted(event, viewer);
 	debug("Native drag started on " + viewer);
 	setDragTracker(null);
-	setState(STATE_INITIAL);
 	unlockTargetEditPart();
+	setState(STATE_INITIAL);
 }
 
 protected void refreshCursor(){

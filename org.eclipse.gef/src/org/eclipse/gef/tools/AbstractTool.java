@@ -12,7 +12,6 @@ import java.util.*;
 import org.eclipse.jface.resource.ImageDescriptor;
 
 import org.eclipse.swt.*;
-import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.events.*;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.widgets.Control;
@@ -643,7 +642,6 @@ protected boolean movedPastThreshold() {
  */
 public void nativeDragStarted(DragSourceEvent event, EditPartViewer viewer) {
 	debug("Native drag started on " + viewer);
-	deactivate();
 }
 
 /**
