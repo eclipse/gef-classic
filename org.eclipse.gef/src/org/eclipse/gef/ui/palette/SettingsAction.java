@@ -29,10 +29,6 @@ public SettingsAction(PaletteViewer palette) {
  * @see org.eclipse.jface.action.Action#run()
  */
 public void run() {
-	/*
-	 * @TODO:Pratik
-	 * You shouldn't be casting the paletteViewer here.
-	 */
 	Dialog settings = new PaletteSettingsDialog(paletteViewer.getControl().getShell(), 
 			((PaletteViewerImpl)paletteViewer).getPaletteViewerPreferencesSource());
 	settings.open();
