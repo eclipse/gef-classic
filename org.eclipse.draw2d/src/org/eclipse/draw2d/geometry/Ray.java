@@ -6,7 +6,7 @@ package org.eclipse.draw2d.geometry;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.draw2d.geometry.Point;
+
 
 /**
  * Represents a 2-dimensional directionl Vector, or Ray.  {@link java.util.Vector} is commonly
@@ -89,6 +89,19 @@ public int assimilarity(Ray r) {
  */
 public int dotProduct(Ray r) {
 	return x * r.x + y * r.y;
+}
+
+/**
+ * @see java.lang.Object#equals(Object)
+ */
+public boolean equals(Object obj) {
+	if (obj == this)
+		return true;
+	if (obj instanceof Ray) {
+		Ray r = (Ray)obj;
+		return x == r.x && y == r.y;
+	}
+	return false;
 }
 
 /**
