@@ -101,7 +101,7 @@ private int calculateConnectionLocation(Point loc, Point topLeft, Point center) 
  * @param endPoint The end point of the connection.
  */
 private int calculateConnectionLocation(Point startPoint, Point endPoint) {
-	if (Math.abs(endPoint.x - startPoint.x) > Math.abs(endPoint.x - startPoint.x)) {
+	if (Math.abs(endPoint.x - startPoint.x) > Math.abs(endPoint.y - startPoint.y)) {
 		if (endPoint.x > startPoint.x)
 			return 2;
 		else
