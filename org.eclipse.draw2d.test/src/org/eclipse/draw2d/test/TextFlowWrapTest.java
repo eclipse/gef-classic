@@ -20,6 +20,7 @@ import org.eclipse.swt.graphics.Font;
 
 import org.eclipse.draw2d.FigureUtilities;
 import org.eclipse.draw2d.text.FlowPage;
+import org.eclipse.draw2d.text.InlineFlow;
 import org.eclipse.draw2d.text.ParagraphTextLayout;
 import org.eclipse.draw2d.text.TextFlow;
 import org.eclipse.draw2d.text.TextFragmentBox;
@@ -87,7 +88,7 @@ protected void doTest2(String string1, String string2, String widthString, Strin
 			} catch (Exception e) {
 			}
 			if (!truncated) {
-				failMsg += "Failed on: " + string1 + string2 + "Fragment not truncated";
+				failMsg += "Failed on: " + string1 + string2 + "Fragment is not truncated\n";
 				failed = true;
 			}
 			continue;
@@ -100,7 +101,7 @@ protected void doTest2(String string1, String string2, String widthString, Strin
 			} catch (Exception e) {
 			}
 			if (truncated) {
-				failMsg += "Failed on: " + string1 + string2 + "Fragment is truncated";
+				failMsg += "Failed on: " + string1 + string2 + "Fragment is truncated\n";
 				failed = true;
 			}
 			continue;
@@ -113,7 +114,7 @@ protected void doTest2(String string1, String string2, String widthString, Strin
 		
 		if (answer == SAMELINE) {
 			if (previousFrag.y != frag.y) {
-				failMsg += "Failed on: " + string1 + string2 + " Fragments are not on the same line";
+				failMsg += "Failed on: " + string1 + string2 + " Fragments are not on the same line\n";
 				failed = true;
 				return;
 			}
@@ -123,7 +124,7 @@ protected void doTest2(String string1, String string2, String widthString, Strin
 			answer = answers[index];
 		} else if (answer == NEWLINE) {
 			if (previousFrag.y == frag.y) {
-				failMsg += "Failed on: " + string1 + string2 + " Fragments are on the same line";
+				failMsg += "Failed on: " + string1 + string2 + " Fragments are on the same line\n";
 				failed = true;
 				return;
 			}
@@ -154,7 +155,7 @@ protected void doTest2(String string1, String string2, String widthString, Strin
 	}
 }
 
-public void runGenericTests() {
+protected void runGenericTests() {
 	doTest( "tester abc", "tester", new String[] {"tester", "abc", TERMINATE});
 	doTest( "tester abc", "tester a", new String[] {"tester", "abc", TERMINATE});
 	doTest( "tester abc", "tester ab", new String[] {"tester", "abc", TERMINATE});
@@ -227,6 +228,44 @@ public void runGenericTests() {
 	doTest2("alpha\n", "bravo", null, new String[] {"alpha", NEWLINE, "bravo", TERMINATE});
 }
 
+protected void runHardWrappingTests() {
+	doTest("ahahahah", "aha", new String[] {"ahahahah", TERMINATE});
+	doTest("Flow    Container  ", " ", new String[] {"Flow", " ", "", "Container", " ", TERMINATE});
+	doTest("aha \nb \r c ", "", new String[] {"aha", "", "b", "", "", "c", TERMINATE});
+	doTest2("one", "two", "onet", new String[] {"one", SAMELINE, "two", TERMINATE});
+	doTest2("one", "t ", "one", new String[] {"one", SAMELINE, "t", TERMINATE});
+	doTest("Flowing", "flow", new String[] {"Flowing", TERMINATE});
+	doTest2("foobar", "foobar", "foo", new String[] {"foobar", SAMELINE, "foobar"});
+	doTest2("home ", "alone", "home al", new String[] {"home", NEWLINE, "alone", TERMINATE});
+	doTest2("more willing in t", "hemorning", "more willing in themorni", 
+			new String[] {"more willing in", NEWLINE, "t", SAMELINE, "hemorning", TERMINATE});
+}
+
+protected void runSoftWrappingTests() {
+	doTest( "tester ab", "teste", new String[] {"teste", NEWLINE, "r ab", TERMINATE} );
+	doTest("aha \nb \r c ", "", new String[] {"a", "h", "a", "", "b", "", "", "c", TERMINATE});
+	doTest("\u0634abcd", "\u0634abc", new String[] {"\u0634", SAMELINE, "abc", NEWLINE, "d", TERMINATE});
+	doTest2("foofoo", "foo", "foo", new String[] {"foo", NEWLINE, "foo", NEWLINE, "foo", TERMINATE});
+	doTest2("foofo", "ofoo", "foo", new String[] {"foo", NEWLINE, "fo", SAMELINE, "o", NEWLINE, "foo", TERMINATE});
+}
+
+protected void runTruncatedWrappingTests() {
+	doTest("Flowing  Container", "Flo...", new String[] {"Flo", "", "Co", TERMINATE});
+	doTest("Flowing C", "Flo...", new String[] {"Flo", "C", TERMINATE});
+	doTest("Fooooooo", "...", new String[] {"", TRUNCATED, TERMINATE});
+	doTest("WWW", "|...", new String[] {"", TRUNCATED, TERMINATE});
+	doTest(" Foo", "Foo", new String[] {"", "Foo", TERMINATE});
+//	doTest("aha \nb \r c ", "", new String[] {"", TRUNCATED, "", "", TRUNCATED, "", "", "", TRUNCATED, TERMINATE});
+	doTest("aha \nb \r c ", "", new String[] {"", TRUNCATED, "", NON_TRUNCATED, "b", "", NON_TRUNCATED, "", "c", TERMINATE});
+	doTest("aha \nb \r c", "", new String[] {"", TRUNCATED, "", NON_TRUNCATED, "b", "", NON_TRUNCATED, "", "c", TERMINATE});
+	doTest("aha \nb \r w ", "..", new String[] {"", TRUNCATED, "", NON_TRUNCATED, "b", "", NON_TRUNCATED, "", "w", TERMINATE});
+	// truncation is not supported with BiDi and across figures (with look-ahead), so we're
+	// not testing it here
+//	doTest2("foobar", "foobar", "foobar...", new String[] {"foobar", SAMELINE, "", TERMINATE});
+//	doTest2("foobar", "foobar", "fooba...", new String[] {"fooba", TERMINATE});
+//	doTest2("foobar", "foobar", "f...", new String[] {"f", TERMINATE});
+}
+
 public void testHardWrapping() {
 	figure = new FlowPage();
 	textFlow = new TextFlow();
@@ -241,16 +280,7 @@ public void testHardWrapping() {
 	figure.add(textFlow2);
 	
 	runGenericTests();
-	doTest("ahahahah", "aha", new String[] {"ahahahah", TERMINATE});
-	doTest("Flow    Container  ", " ", new String[] {"Flow", " ", "", "Container", " ", TERMINATE});
-	doTest("aha \nb \r c ", "", new String[] {"aha", "", "b", "", "", "c", TERMINATE});
-	doTest2("one", "two", "onet", new String[] {"one", SAMELINE, "two", TERMINATE});
-	doTest2("one", "t ", "one", new String[] {"one", SAMELINE, "t", TERMINATE});
-	doTest("Flowing", "flow", new String[] {"Flowing", TERMINATE});
-	doTest2("foobar", "foobar", "foo", new String[] {"foobar", SAMELINE, "foobar"});
-	doTest2("home ", "alone", "home al", new String[] {"home", NEWLINE, "alone", TERMINATE});
-	doTest2("more willing in t", "hemorning", "more willing in themorni", 
-			new String[] {"more willing in", NEWLINE, "t", SAMELINE, "hemorning", TERMINATE});
+	runHardWrappingTests();
 	
 	assertFalse(failMsg, failed);
 }
@@ -269,11 +299,7 @@ public void testSoftWrapping() {
 	figure.add(textFlow2);
 	
 	runGenericTests();
-	doTest( "tester ab", "teste", new String[] {"teste", NEWLINE, "r ab", TERMINATE} );
-	doTest("aha \nb \r c ", "", new String[] {"a", "h", "a", "", "b", "", "", "c", TERMINATE});
-	doTest("\u0634abcd", "\u0634abc", new String[] {"\u0634", SAMELINE, "abc", NEWLINE, "d", TERMINATE});
-	doTest2("foofoo", "foo", "foo", new String[] {"foo", NEWLINE, "foo", NEWLINE, "foo", TERMINATE});
-	doTest2("foofo", "ofoo", "foo", new String[] {"foo", NEWLINE, "fo", SAMELINE, "o", NEWLINE, "foo", TERMINATE});
+	runSoftWrappingTests();
 
 	assertFalse(failMsg, failed);
 }
@@ -292,21 +318,44 @@ public void testTruncatedWrapping() {
 	figure.add(textFlow2);
 	
 	runGenericTests();
-	doTest("Flowing  Container", "Flo...", new String[] {"Flo", "", "Co", TERMINATE});
-	doTest("Flowing C", "Flo...", new String[] {"Flo", "C", TERMINATE});
-	doTest("Fooooooo", "...", new String[] {"", TRUNCATED, TERMINATE});
-	doTest("WWW", "|...", new String[] {"", TRUNCATED, TERMINATE});
-	doTest(" Foo", "Foo", new String[] {"", "Foo", TERMINATE});
-//	doTest("aha \nb \r c ", "", new String[] {"", TRUNCATED, "", "", TRUNCATED, "", "", "", TRUNCATED, TERMINATE});
-	doTest("aha \nb \r c ", "", new String[] {"", TRUNCATED, "", NON_TRUNCATED, "b", "", NON_TRUNCATED, "", "c", TERMINATE});
-	doTest("aha \nb \r c", "", new String[] {"", TRUNCATED, "", NON_TRUNCATED, "b", "", NON_TRUNCATED, "", "c", TERMINATE});
-	doTest("aha \nb \r w ", "..", new String[] {"", TRUNCATED, "", NON_TRUNCATED, "b", "", NON_TRUNCATED, "", "w", TERMINATE});
-	// truncation is not supported with BiDi and across figures (with look-ahead), so we're
-	// not testing it here
-//	doTest2("foobar", "foobar", "foobar...", new String[] {"foobar", SAMELINE, "", TERMINATE});
-//	doTest2("foobar", "foobar", "fooba...", new String[] {"fooba", TERMINATE});
-//	doTest2("foobar", "foobar", "f...", new String[] {"f", TERMINATE});
+	runTruncatedWrappingTests();	
 	
+	assertFalse(failMsg, failed);
+}
+
+public void testInlineFlows() {
+	figure = new FlowPage();
+	InlineFlow inline = new InlineFlow();
+	textFlow = new TextFlow();
+	textFlow.setLayoutManager(
+			new ParagraphTextLayout(textFlow, ParagraphTextLayout.WORD_WRAP_SOFT));
+	textFlow.setFont(TAHOMA);
+	inline.add(textFlow);
+	figure.add(inline);
+	textFlow2 = new TextFlow();
+	textFlow2.setLayoutManager(
+			new ParagraphTextLayout(textFlow2, ParagraphTextLayout.WORD_WRAP_SOFT));
+	textFlow2.setFont(TAHOMA);
+	figure.add(textFlow2);
+	runGenericTests();
+	runSoftWrappingTests();
+	
+	figure = new FlowPage();
+	inline = new InlineFlow();
+	textFlow = new TextFlow();
+	textFlow.setLayoutManager(
+			new ParagraphTextLayout(textFlow, ParagraphTextLayout.WORD_WRAP_HARD));
+	textFlow.setFont(TAHOMA);
+	inline.add(textFlow);
+	figure.add(inline);
+	textFlow2 = new TextFlow();
+	textFlow2.setLayoutManager(
+			new ParagraphTextLayout(textFlow2, ParagraphTextLayout.WORD_WRAP_HARD));
+	textFlow2.setFont(TAHOMA);
+	figure.add(textFlow2);
+	runGenericTests();
+	runHardWrappingTests();
+	doTest2("def", "def", "defde", new String[] {"def", SAMELINE, "def", TERMINATE});
 	
 	assertFalse(failMsg, failed);
 }
