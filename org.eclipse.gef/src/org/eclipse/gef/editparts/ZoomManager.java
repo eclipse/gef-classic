@@ -159,8 +159,6 @@ public double getMaxZoom() {
  * @return double
  */
 public double getMinZoom() {
-	if (getZoomLevelContributions().contains(FIT_ALL))
-		return Math.min(getZoomLevels()[0], getFitPageZoomLevel());
 	return getZoomLevels()[0];
 }
 
@@ -268,7 +266,7 @@ public double[] getZoomLevels() {
 public String[] getZoomLevelsAsText() {
 	String[] zoomLevelStrings = new String[zoomLevels.length + zoomLevelContributions.size()];
 	for (int i = 0; i < zoomLevels.length; i++) {
-		zoomLevelStrings[i] = format.format(zoomLevels[i]);
+		zoomLevelStrings[i] = format.format(zoomLevels[i] * multiplier);
 	}
 	if (zoomLevelContributions != null) {
 		for (int i = 0; i < zoomLevelContributions.size(); i++) {
@@ -276,6 +274,27 @@ public String[] getZoomLevelsAsText() {
 		}
 	}
 	return zoomLevelStrings;
+}
+
+/**
+ * Sets the zoom level to the given value.  Min-max range check is not done.
+ * @param zoom the new zoom level
+ */
+protected void primSetZoom(double zoom) {
+	Point p1 = getViewport().getClientArea().getCenter();
+	Point p2 = p1.getCopy();
+	Point p = getViewport().getViewLocation();
+	double prevZoom = this.zoom;
+	this.zoom = zoom;
+	pane.setScale(zoom);
+	fireZoomChanged();
+	getViewport().validate();
+	
+	p2.scale(zoom / prevZoom);
+	Dimension dif = p2.getDifference(p1);
+	p.x += dif.width;
+	p.y += dif.height;
+	setViewLocation(p);	
 }
 
 /**
@@ -311,29 +330,15 @@ public void setViewLocation(Point p) {
 }
 
 /**
- * Sets the zoom level to the given value.
+ * Sets the zoom level to the given value.  If the zoom is out of the min-max range, it
+ * will be ignored.
  * @param zoom the new zoom level
  */
 public void setZoom(double zoom) {
 	zoom = Math.min(getMaxZoom(), zoom);
 	zoom = Math.max(getMinZoom(), zoom);
-	if (this.zoom == zoom)
-		return;
-	
-	Point p1 = getViewport().getClientArea().getCenter();
-	Point p2 = p1.getCopy();
-	Point p = getViewport().getViewLocation();
-	double prevZoom = this.zoom;
-	this.zoom = zoom;
-	pane.setScale(zoom);
-	fireZoomChanged();
-	getViewport().validate();
-	
-	p2.scale(zoom / prevZoom);
-	Dimension dif = p2.getDifference(p1);
-	p.x += dif.width;
-	p.y += dif.height;
-	setViewLocation(p);	
+	if (this.zoom != zoom)
+		primSetZoom(zoom);
 }
 
 /**
@@ -356,27 +361,27 @@ public void setZoomAsText(String zoomString) {
 	 * calculations off.  To correct this, I'm setting the zoom to 1.0. 
 	 */
 	if (zoomString.equals(FIT_HEIGHT)) {
-		setZoom(1.0 / multiplier);
-		setZoom(getFitHeightZoomLevel() / multiplier);
+		primSetZoom(1.0 / multiplier);
+		primSetZoom(getFitHeightZoomLevel() / multiplier);
 		getViewport().getUpdateManager().performUpdate();
-		setZoom(1.0 / multiplier);
-		setZoom(getFitHeightZoomLevel() / multiplier);
+		primSetZoom(1.0 / multiplier);
+		primSetZoom(getFitHeightZoomLevel() / multiplier);
 		fireZoomChanged();
 	} else if (zoomString.equals(FIT_ALL)) {
-		setZoom(1.0 / multiplier);
-		setZoom(getFitPageZoomLevel() / multiplier);
+		primSetZoom(1.0 / multiplier);
+		primSetZoom(getFitPageZoomLevel() / multiplier);
 		getViewport().getUpdateManager().performUpdate();
-		setZoom(1.0 / multiplier);
-		setZoom(getFitPageZoomLevel() / multiplier);
+		primSetZoom(1.0 / multiplier);
+		primSetZoom(getFitPageZoomLevel() / multiplier);
 		fireZoomChanged();
 	} else if (zoomString.equals(FIT_WIDTH)) {
-		setZoom(1.0 / multiplier);
-		setZoom(getFitWidthZoomLevel() / multiplier);
+		primSetZoom(1.0 / multiplier);
+		primSetZoom(getFitWidthZoomLevel() / multiplier);
 		getViewport().getUpdateManager().performUpdate();
-		setZoom(1.0 / multiplier);
-		setZoom(getFitWidthZoomLevel() / multiplier);
+		primSetZoom(1.0 / multiplier);
+		primSetZoom(getFitWidthZoomLevel() / multiplier);
 		fireZoomChanged();
-	} else {	
+	} else {
 		try {
 			//Trim off the '%'
 			if (zoomString.charAt(zoomString.length() - 1) == '%')
@@ -445,10 +450,8 @@ private void performAnimatedZoom(Rectangle rect, boolean zoomIn, int iterationCo
 	double originalZoom = zoom;
 	Point currentViewLocation = new Point();
 	for (int i = 1; i < iterationCount; i++) {
-		currentViewLocation.x = (int)((double)originalViewLocation.x 
-										+ (double)(xIncrement * i));
-		currentViewLocation.y = (int)((double)originalViewLocation.y 
-										+ (double)(yIncrement * i));
+		currentViewLocation.x = (int)(originalViewLocation.x + (xIncrement * i));
+		currentViewLocation.y = (int)(originalViewLocation.y + (yIncrement * i));
 		setZoom(originalZoom + zoomIncrement * i);
 		getViewport().validate();
 		setViewLocation(currentViewLocation);
