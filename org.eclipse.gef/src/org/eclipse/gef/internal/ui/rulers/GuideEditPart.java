@@ -30,7 +30,8 @@ public class GuideEditPart
 	extends AbstractGraphicalEditPart 
 {
 
-public static final int MIN_DISTANCE_BW_GUIDES = 5;	
+public static final int MIN_DISTANCE_BW_GUIDES = 5;
+public static final int DELETE_THRESHOLD = 15;
 	
 protected GraphicalViewer diagramViewer;
 protected RulerProvider rulerProvider;
@@ -211,7 +212,6 @@ public static class GuideLineFigure extends Figure {
 		setPreferredSize(1, 1);
 	}
 	protected void paintFigure(Graphics g) {
-		Rectangle bounds = getBounds();
 		g.setLineStyle(Graphics.LINE_DOT);
 		g.setXORMode(true);
 		g.setForegroundColor(ColorConstants.darkGray);

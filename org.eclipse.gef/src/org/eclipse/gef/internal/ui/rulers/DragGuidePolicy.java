@@ -105,12 +105,14 @@ protected boolean isDeleteRequest(ChangeBoundsRequest req) {
 	int pos, max, min;
 	if (getGuideEditPart().isHorizontal()) {
 		pos = req.getLocation().x;
-		Rectangle zone = getHostFigure().getBounds().getExpanded(15, 0);
+		Rectangle zone = getHostFigure().getBounds()
+				.getExpanded(GuideEditPart.DELETE_THRESHOLD, 0);
 		min = zone.x;
 		max = min + zone.width;
 	} else {
 		pos = req.getLocation().y;
-		Rectangle zone = getHostFigure().getBounds().getExpanded(0, 15);
+		Rectangle zone = getHostFigure().getBounds()
+				.getExpanded(0, GuideEditPart.DELETE_THRESHOLD);
 		min = zone.y;
 		max = min + zone.height;
 	}
