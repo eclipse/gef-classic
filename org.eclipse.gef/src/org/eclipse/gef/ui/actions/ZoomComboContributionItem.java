@@ -35,6 +35,7 @@ public class ZoomComboContributionItem
 	implements ZoomListener
 {
 
+private boolean needToRefreshItems = true;
 private Combo combo;
 private String[] initStrings;
 private ToolItem toolitem;
@@ -72,6 +73,7 @@ public ZoomComboContributionItem(IPartService partService, String[] initStrings)
 	partService.addPartListener(partListener = new IPartListener() {
 		public void partActivated(IWorkbenchPart part) {
 			setZoomManager((ZoomManager) part.getAdapter(ZoomManager.class));
+			needToRefreshItems = true;
 		}
 		public void partBroughtToTop(IWorkbenchPart p) { }
 		public void partClosed(IWorkbenchPart p) { }
@@ -87,9 +89,12 @@ void refresh() {
 	try {
 		if (zoomManager == null) {
 			combo.setEnabled(false);
-			combo.removeAll();
+			combo.deselectAll();
 		} else {
-			combo.setItems(getZoomManager().getZoomLevelsAsText());
+			if (needToRefreshItems) {
+				combo.setItems(getZoomManager().getZoomLevelsAsText());
+				needToRefreshItems = false;
+			}
 			String zoom = getZoomManager().getZoomAsText();
 			int index = combo.indexOf(zoom);
 			if (index != -1)
@@ -235,7 +240,6 @@ public void setZoomManager(ZoomManager zm) {
  * @see org.eclipse.swt.events.SelectionListener#widgetDefaultSelected(SelectionEvent)
  */
 private void handleWidgetDefaultSelected(SelectionEvent event) {
-	handleWidgetSelected(event);
 }
 
 /**
