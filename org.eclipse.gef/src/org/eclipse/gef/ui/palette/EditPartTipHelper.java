@@ -48,6 +48,14 @@ public void displayToolTipAt(IFigure tip, int tipPosX, int tipPosY){
 	}
 }
 
+/**
+ * @see org.eclipse.draw2d.PopUpHelper#hide()
+ */
+protected void hide() {
+	super.hide();
+	currentHelper = null;
+}
+
 protected void hookShellListeners(){
 
 	/* If the cursor leaves the tip window, hide the tooltip and
