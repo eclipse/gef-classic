@@ -47,6 +47,11 @@ public boolean isChecked() {
 	return false;
 }
 
+public boolean isEnabled() {
+	return diagramViewer.getProperty(RulerProvider.PROPERTY_HORIZONTAL_RULER) != null ||
+			diagramViewer.getProperty(RulerProvider.PROPERTY_VERTICAL_RULER) != null;
+}
+
 public void run() {
 	diagramViewer.setProperty(RulerProvider.PROPERTY_RULER_VISIBILITY, new Boolean(!isChecked()));
 }
