@@ -24,7 +24,6 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
@@ -108,14 +107,21 @@ public RulerComposite(Composite parent, int style) {
 }
 
 private static Rectangle calculateTrim(Canvas canvas) {
-	Rectangle trim = canvas.computeTrim(0, 0, 0, 0);
-	// computeTrim() doesn't take the scrollbars' visibility into
-	// account, so we have to shrink it if the scrollbars are not visible.
-	if (!canvas.getVerticalBar().getVisible())
-		trim.width -= canvas.getVerticalBar().getSize().x;
-	if (!canvas.getHorizontalBar().getVisible())
-		trim.height -= canvas.getHorizontalBar().getSize().y;
-	return trim;
+	/*
+	 * Fix for Bug# 67554
+	 * Calculating the trimming using clientArea because of Bug# 87712.  This fix
+	 * can be removed if that bug is fixed.
+	 */
+	Rectangle bounds = canvas.getBounds();
+	Rectangle clientArea = canvas.getClientArea();
+	Rectangle result = new Rectangle(
+			0, 0, bounds.width - clientArea.width, bounds.height - clientArea.height);
+	if (result.width != 0 || result.height != 0) {
+		Rectangle trim = canvas.computeTrim(0, 0, 0, 0);
+		result.x = trim.x;
+		result.y = trim.y;
+	}
+	return result;
 }
 
 private GraphicalViewer createRulerContainer(int orientation) {
@@ -209,9 +215,9 @@ private void doLayout() {
 
 	/*
 	 * Fix for Bug# 67554
-	 * Take trim into account.  Some platforms (such as MacOS and Motif) leave some trimming
-	 * around the canvas.  The trimming could be around the ruler controls and/or the editor
-	 * control.
+	 * Take trim into account.  Some platforms (such as MacOS and Motif) leave some 
+	 * trimming around the canvas.  The trimming could be around the ruler controls 
+	 * and/or the editor control.
 	 */
 	Rectangle trim = calculateTrim(editor);
 	if (left != null) {
