@@ -20,7 +20,7 @@ import org.eclipse.draw2d.ColorConstants;
 
 class Splitter extends Composite {
 
-private static final int SASH_WIDTH = 6;
+private static final int SASH_WIDTH = 5;
 private static final int DRAG_MINIMUM = 50;
 private static final String MAINTAIN_SIZE = "maintain size";  //$NON-NLS-1$
 
@@ -252,10 +252,9 @@ void paint(Sash sash, GC gc) {
 	Point size = sash.getSize();
 	if (getOrientation() == SWT.HORIZONTAL) {
 		gc.setForeground(ColorConstants.buttonDarker);
-		gc.drawLine(0, 0, 0, size.y);
 		gc.drawLine(SASH_WIDTH - 1, 0, SASH_WIDTH - 1, size.y);
 		gc.setForeground(ColorConstants.buttonLightest);
-		gc.drawLine(1, 0, 1, size.y);
+		gc.drawLine(0, 0, 0, size.y);
 	} else {
 		gc.setForeground(ColorConstants.buttonDarker);
 		gc.drawLine(0, 0, size.x, 0);
