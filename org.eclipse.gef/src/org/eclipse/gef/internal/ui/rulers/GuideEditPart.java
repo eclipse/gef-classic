@@ -29,6 +29,8 @@ import org.eclipse.gef.ui.parts.RulerProvider;
 public class GuideEditPart
 	extends AbstractGraphicalEditPart 
 {
+
+public static final int MIN_DISTANCE_BW_GUIDES = 5;	
 	
 protected GraphicalViewer diagramViewer;
 protected RulerProvider rulerProvider;
@@ -119,17 +121,16 @@ public Cursor getCurrentCursor() {
  * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#getDragTracker(org.eclipse.gef.Request)
  */
 public DragTracker getDragTracker(Request request) {
+	/*
+	 * @TODO:Pratik   maybe you shouldn't use a drag edit parts tracker here.  try a
+	 * simpler drag tracker.
+	 */
 	return new DragEditPartsTracker(this) {
-		protected void eraseSourceFeedback() {
-			super.eraseSourceFeedback();
-			setDefaultCursor(getCurrentCursor());
+		protected Cursor calculateCursor() {
+			return getCurrentCursor();
 		}
 		protected boolean isMove() {
 			return true;
-		}
-		protected void showSourceFeedback() {
-			super.showSourceFeedback();
-			setDefaultCursor(getCurrentCursor());
 		}
 	};
 }
@@ -155,8 +156,8 @@ public RulerProvider getRulerProvider() {
 public int getZoomedPosition() {
 	double position = getRulerProvider().getGuidePosition(getModel());
 	if (zoomManager != null) {
-		position *= zoomManager.getZoom() / zoomManager.getUIMultiplier();
-	}
+		position *= (zoomManager.getZoom() / zoomManager.getUIMultiplier());
+	}	
 	return (int)Math.round(position);
 }
 
