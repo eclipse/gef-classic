@@ -16,7 +16,7 @@ public class CircuitBorder
 {
 
 private Color borderColor = ColorConstants.button;
-private static Insets insets = new Insets(6,6,6,6);
+private static Insets insets = new Insets(8,6,8,6);
 private static PointList connector = new PointList();
 private static PointList bottomConnector = new PointList();
 
@@ -73,7 +73,7 @@ Color getBorderColor(){
 }
 
 public boolean isOpaque() {
-	return true;
+	return false;
 }
  
 public void paint(IFigure figure, Graphics g, Insets in) {
