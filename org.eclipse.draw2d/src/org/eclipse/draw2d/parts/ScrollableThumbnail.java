@@ -49,15 +49,13 @@ private KeyListener keyListener = new KeyListener.Stub() {
 	public void keyPressed(KeyEvent ke) {
 		int moveX = (int)(viewport.getClientArea().width * .25); 
 		int moveY = (int)(viewport.getClientArea().height * .25);
-		if (ke.keycode == SWT.ARROW_LEFT)
+		if (ke.keycode == SWT.ARROW_LEFT || ke.keycode == SWT.HOME)
 			viewport.setViewLocation(viewport.getViewLocation().translate(-moveX, 0));
-		else if (ke.keycode == SWT.ARROW_RIGHT)
+		else if (ke.keycode == SWT.ARROW_RIGHT || ke.keycode == SWT.END)
 			viewport.setViewLocation(viewport.getViewLocation().translate(moveX, 0));
-		else if (ke.keycode == SWT.ARROW_UP || ke.keycode == SWT.PAGE_UP 
-				 || ke.keycode == SWT.HOME)
+		else if (ke.keycode == SWT.ARROW_UP || ke.keycode == SWT.PAGE_UP)
 			viewport.setViewLocation(viewport.getViewLocation().translate(0, -moveY));
-		else if (ke.keycode == SWT.ARROW_DOWN  || ke.keycode == SWT.PAGE_DOWN
-				 || ke.keycode == SWT.END)
+		else if (ke.keycode == SWT.ARROW_DOWN  || ke.keycode == SWT.PAGE_DOWN)
 			viewport.setViewLocation(viewport.getViewLocation().translate(0, moveY));
 		}
 	};
