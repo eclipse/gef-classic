@@ -13,14 +13,11 @@ package org.eclipse.gef.ui.actions;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPart;
 
-import org.eclipse.gef.Disposable;
-
 /**
  * @author hudsonr
  */
 public abstract class EditorPartAction
 	extends WorkbenchPartAction
-	implements Disposable, UpdateAction
 {
 
 /**
