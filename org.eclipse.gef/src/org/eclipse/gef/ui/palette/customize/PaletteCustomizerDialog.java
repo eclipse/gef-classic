@@ -33,6 +33,7 @@ import org.eclipse.ui.internal.WorkbenchImages;
 import org.eclipse.ui.part.PageBook;
 
 import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.widgets.MultiLineLabel;
 
 import org.eclipse.gef.internal.Internal;
 import org.eclipse.gef.internal.ui.palette.ToolbarDropdownContributionItem;
@@ -86,7 +87,8 @@ private PageBook propertiesPanelContainer;
 private PageBook titleSwitcher;
 private PaletteCustomizer customizer;
 private EntryPage activePage, noSelectionPage;
-private CLabel title, errorTitle;
+private CLabel title;
+private MultiLineLabel errorTitle;
 private Image titleImage;
 private TreeViewer treeviewer;
 private ILabelProvider treeViewerLabelProvider;
@@ -616,13 +618,21 @@ protected PageBook createPropertiesPanelTitle(Composite parent) {
 	layout.marginHeight = 0;
 	layout.verticalSpacing = 0;
 	errorPage.setLayout(layout);
-	errorTitle = new CLabel(errorPage, SWT.LEFT);
+	errorTitle = new MultiLineLabel(errorPage);
+	errorTitle.setImage(JFaceResources.getImage(DLG_IMG_MESSAGE_ERROR));
 	errorTitle.setFont(errorPage.getFont());
 	errorTitle.setLayoutData(new GridData(GridData.FILL_HORIZONTAL 
 	                            | GridData.VERTICAL_ALIGN_FILL));
+	errorTitle.addKeyListener(new KeyListener() {
+		public void keyPressed(KeyEvent e) {
+			if (e.keyCode == SWT.ESC)
+				cancelPressed();
+		}
+		public void keyReleased(KeyEvent e) {
+		}
+	});
 	Label separator = new Label(errorPage, SWT.SEPARATOR | SWT.HORIZONTAL);
 	separator.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-	errorTitle.setImage(JFaceResources.getImage(DLG_IMG_MESSAGE_ERROR));
 	
 	book.showPage(titlePage);
 	return book;
