@@ -33,28 +33,28 @@ public PaletteViewerKeyHandler(PaletteViewer viewer){
 	super(viewer);
 }
 
-private boolean acceptCollapseCategory(KeyEvent event){
+private boolean acceptCollapseDrawer(KeyEvent event){
 	return event.keyCode == SWT.ARROW_LEFT
-		&& isExpandedCategory(getFocus());
+		&& isExpandedDrawer(getFocus());
 }
 
-private boolean acceptExpandCategory(KeyEvent event){
+private boolean acceptExpandDrawer(KeyEvent event){
 	return event.keyCode == SWT.ARROW_RIGHT
-		&& isCollapsedCategory(getFocus());
+		&& isCollapsedDrawer(getFocus());
 }
 
-private boolean acceptIntoExpandedCategory(KeyEvent event){
+private boolean acceptIntoExpandedDrawer(KeyEvent event){
 	return (event.keyCode == SWT.ARROW_DOWN || event.keyCode == SWT.ARROW_RIGHT)
-		&& isExpandedCategory(getFocus());
+		&& isExpandedDrawer(getFocus());
 }
 
-private boolean acceptSetFocusOnCategory(KeyEvent event){
+private boolean acceptSetFocusOnDrawer(KeyEvent event){
 	return event.keyCode == SWT.ARROW_LEFT;
 }		
 
 private void buildNavigationList(EditPart palettePart, EditPart exclusion, ArrayList navList) {
 	if (palettePart != exclusion) {
-		if (isCollapsedCategory(palettePart)) {
+		if (isCollapsedDrawer(palettePart)) {
 			navList.add(palettePart);
 			return;
 		} 
@@ -70,14 +70,14 @@ private void buildNavigationList(EditPart palettePart, EditPart exclusion, Array
 	}
 }
 
-private void collapseCategory(){
-	DrawerEditPart category = (DrawerEditPart)getFocus();
-	category.setExpanded(false);
+private void collapseDrawer(){
+	DrawerEditPart drawer = (DrawerEditPart)getFocus();
+	drawer.setExpanded(false);
 }
 
-private void expandCategory(){
-	DrawerEditPart category = (DrawerEditPart)getFocus();
-	category.setExpanded(true);
+private void expandDrawer(){
+	DrawerEditPart drawer = (DrawerEditPart)getFocus();
+	drawer.setExpanded(true);
 }
 
 Point getInterestingPoint(IFigure figure) {
@@ -97,10 +97,9 @@ List getNavigationSiblings(){
 /**
  * Returns <code>true</code> if the passed
  * Editpart is a collapsed 
- * {@link org.eclipse.gef.ui.palette.DrawerEditPart Category},
- * false otherwise.
+ * {@link org.eclipse.gef.ui.palette.DrawerEditPart Drawer}, false otherwise.
  */
-boolean isCollapsedCategory(EditPart part){
+boolean isCollapsedDrawer(EditPart part){
 	return part instanceof DrawerEditPart
 		&& !((DrawerEditPart)part).isExpanded();
 }
@@ -108,36 +107,36 @@ boolean isCollapsedCategory(EditPart part){
 /**
  * Returns <code>true</code> if the passed
  * Editpart is an expanded 
- * {@link org.eclipse.gef.ui.palette.DrawerEditPart Category},
+ * {@link org.eclipse.gef.ui.palette.DrawerEditPart Drawer},
  * false otherwise.
  */
-boolean isExpandedCategory(EditPart part){
+boolean isExpandedDrawer(EditPart part){
 	return part instanceof DrawerEditPart
 		&& ((DrawerEditPart)part).isExpanded();
 }
 
 public boolean keyPressed(KeyEvent event) {
-	if (acceptIntoExpandedCategory(event)){
+	if (acceptIntoExpandedDrawer(event)){
 		
-		if (navigateIntoExpandedCategory(event))
+		if (navigateIntoExpandedDrawer(event))
 			return true;
 	}
-	if (acceptCollapseCategory(event)){
-		collapseCategory();
+	if (acceptCollapseDrawer(event)){
+		collapseDrawer();
 		return true;
 	}
-	if (acceptExpandCategory(event)){
-		expandCategory();
+	if (acceptExpandDrawer(event)){
+		expandDrawer();
 		return true;
 	}	
-	if (acceptSetFocusOnCategory(event)){
-		if (navigateToCategory(event))
+	if (acceptSetFocusOnDrawer(event)){
+		if (navigateToDrawer(event))
 			return true;
 	}	
 	return super.keyPressed(event);
 }
 
-private boolean navigateIntoExpandedCategory(KeyEvent event){
+private boolean navigateIntoExpandedDrawer(KeyEvent event){
 	ArrayList potentials = new ArrayList();
 	buildNavigationList(getFocus(), getFocus(), potentials);
 	if (!potentials.isEmpty()){
@@ -153,7 +152,7 @@ void navigateTo(EditPart part, KeyEvent event) {
 	getViewer().select(part);
 }
 
-private boolean navigateToCategory(KeyEvent event){
+private boolean navigateToDrawer(KeyEvent event){
 	boolean found = false;
 	EditPart parent = getFocus().getParent();
 	while(parent != null && !found){

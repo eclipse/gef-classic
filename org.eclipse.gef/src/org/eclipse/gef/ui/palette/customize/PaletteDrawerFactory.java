@@ -11,20 +11,20 @@ import org.eclipse.gef.ui.palette.PaletteMessages;
  * 
  * @author Pratik Shah
  */
-public class PaletteCategoryFactory extends PaletteContainerFactory {
+public class PaletteDrawerFactory extends PaletteContainerFactory {
 
 /**
  * Constructor
  */
-public PaletteCategoryFactory() {
-	setLabel(PaletteMessages.MODEL_TYPE_CATEGORY);
+public PaletteDrawerFactory() {
+	setLabel(PaletteMessages.MODEL_TYPE_DRAWER);
 }
 
 /**
  * @see org.eclipse.gef.ui.palette.customize.PaletteEntryFactory#createNewEntry(Shell)
  */
 protected PaletteEntry createNewEntry(Shell shell) {
-	return new PaletteDrawer(PaletteMessages.NEW_CATEGORY_LABEL);
+	return new PaletteDrawer(PaletteMessages.NEW_DRAWER_LABEL);
 }
 
 }

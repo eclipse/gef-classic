@@ -32,10 +32,10 @@ public class DrawerEditPart
 /**
  * Constructor
  * 
- * @param category	The PaletteDrawer that this EditPart is representing
+ * @param drawer	The PaletteDrawer that this EditPart is representing
  */
-public DrawerEditPart(PaletteDrawer category) {
-	super(category);
+public DrawerEditPart(PaletteDrawer drawer) {
+	super(drawer);
 }
 
 /**
@@ -43,8 +43,8 @@ public DrawerEditPart(PaletteDrawer category) {
  */
 public IFigure createFigure() {
 	DrawerFigure fig = new DrawerFigure(getViewer().getControl());
-	fig.setExpanded(getCategory().isInitiallyOpen());
-	fig.setPinned(getCategory().isInitiallyPinned());
+	fig.setExpanded(getDrawer().isInitiallyOpen());
+	fig.setPinned(getDrawer().isInitiallyPinned());
 	fig.getCollapseToggle().addChangeListener(new ToggleListener());
 	return fig;
 }
@@ -65,16 +65,16 @@ public Object getAdapter(Class key) {
  * Convenience method that provides access to the PaletteDrawer that is the model.
  * @return The model PaletteDrawer
  */
-public PaletteDrawer getCategory() {
+public PaletteDrawer getDrawer() {
 	return (PaletteDrawer)getPaletteEntry();
 }
 
 /**
- * Convenience method to get the DrawerFigure for the model category.
+ * Convenience method to get the DrawerFigure for the model drawer.
  * 
  * @return The DrawerFigure created in {@link #createFigure()}
  */
-protected DrawerFigure getCategoryFigure() {
+protected DrawerFigure getDrawerFigure() {
 	return (DrawerFigure)getFigure();
 }
 
@@ -82,7 +82,7 @@ protected DrawerFigure getCategoryFigure() {
  * @see org.eclipse.gef.GraphicalEditPart#getContentPane()
  */
 public IFigure getContentPane() {
-	return getCategoryFigure().getContentPane();
+	return getDrawerFigure().getContentPane();
 }
 
 private DrawerAnimationController getAnimationController() {
@@ -100,18 +100,18 @@ private DrawerAnimationController getAnimationController() {
 }
 
 /**
- * Returns the expansion state of the category
- * @return <code>true</code> if the category is expanded; false otherwise
+ * Returns the expansion state of the drawer
+ * @return <code>true</code> if the drawer is expanded; false otherwise
  */
 public boolean isExpanded() {
-	return getCategoryFigure().isExpanded();
+	return getDrawerFigure().isExpanded();
 }
 
 /**
- * Returns <code>true</code> if the category is pinned open.
+ * Returns <code>true</code> if the drawer is pinned open.
  * @return boolean */
 public boolean isPinnedOpen() {
-	return getCategoryFigure().isPinnedOpen();
+	return getDrawerFigure().isPinnedOpen();
 }
 
 /**
@@ -162,9 +162,9 @@ protected void refreshVisuals() {
 	// Do not call super.refreshVisuals()
 	// That will update the Tooltip for the DrawerFigure.  But DrawerFigure has its
 	// own tooltip that is displayed when the text in the header is truncated.
-	getCategoryFigure().setTitle(getPaletteEntry().getLabel());
+	getDrawerFigure().setTitle(getPaletteEntry().getLabel());
 	setImageDescriptor(getPaletteEntry().getSmallIcon());
-	getCategoryFigure().setLayoutMode(getPreferenceSource().getLayoutSetting());
+	getDrawerFigure().setLayoutMode(getPreferenceSource().getLayoutSetting());
 }
 
 /**
@@ -172,37 +172,37 @@ protected void refreshVisuals() {
  */
 protected void register() {
 	super.register();
-	getAnimationController().addCategory(this);
+	getAnimationController().addDrawer(this);
 }
 
 /**
  * Sets the expansion state of the DrawerFigure
  * 
- * @param expanded	<code>true</code> if the category is expanded; false otherwise.
+ * @param expanded	<code>true</code> if the drawer is expanded; false otherwise.
  */
 public void setExpanded(boolean expanded) {
-	getCategoryFigure().setExpanded(expanded);
+	getDrawerFigure().setExpanded(expanded);
 }
 
 /**
  * @see org.eclipse.gef.ui.palette.editparts.PaletteEditPart#setImageInFigure(Image)
  */
 protected void setImageInFigure(Image image) {
-	getCategoryFigure().setTitleIcon(image);
+	getDrawerFigure().setTitleIcon(image);
 }
 
 /**
- * Sets the category's pinned state to the specified value.
- * @param pinned <code>true</code> if the category should be pinned when opened */
+ * Sets the drawer's pinned state to the specified value.
+ * @param pinned <code>true</code> if the drawer should be pinned when opened */
 public void setPinnedOpen(boolean pinned) {
-	getCategoryFigure().setPinned(pinned);
+	getDrawerFigure().setPinned(pinned);
 }
 
 /**
  * @see org.eclipse.gef.editparts.AbstractEditPart#unregister()
  */
 protected void unregister() {
-	getAnimationController().removeCategory(this);
+	getAnimationController().removeDrawer(this);
 	super.unregister();
 }
 

@@ -12,11 +12,11 @@ public class PaletteMessages {
  */
 public static final String CUSTOMIZE_DIALOG_TITLE;
 /**
- * The String "Auto-collapse categories: "
+ * The String "Drawer options:  "
  */
 public static final String COLLAPSE_OPTIONS_TITLE;
 /**
- * The String "Layout Options"
+ * The String "Layout options"
  */
 public static final String SETTINGS_LAYOUT_OPTIONS_TITLE;
 /**
@@ -56,15 +56,15 @@ public static final String USE_LARGE_ICONS_LABEL;
  */
 public static final String SETTINGS_ICONS_VIEW_LABEL;
 /**
- * The String "&Never"
+ * The String "&Never close"
  */
 public static final String COLLAPSE_NEVER_LABEL;
 /**
- * The String "&Always"
+ * The String "&Always close when opening another drawer"
  */
 public static final String COLLAPSE_ALWAYS_LABEL;
 /**
- * The String "&When needed"
+ * The String "Close automatically &when there is not enough room"
  */
 public static final String COLLAPSE_AS_NEEDED_LABEL;
 /**
@@ -72,11 +72,11 @@ public static final String COLLAPSE_AS_NEEDED_LABEL;
  */
 public static final String NO_SELECTION_TITLE;
 /**
- * The String "Na&me: "
+ * The String "Na&me:  "
  */
 public static final String NAME_LABEL ;
 /**
- * The String "Des&cription: "
+ * The String "Des&cription:  "
  */
 public static final String DESCRIPTION_LABEL;
 /**
@@ -96,9 +96,9 @@ public static final String NO_SELECTION_MADE;
  */
 public static final String MENU_OPEN_CUSTOMIZE_DIALOG;
 /**
- * The String "Category"
+ * The String "Drawer"
  */
-public static final String MODEL_TYPE_CATEGORY;
+public static final String MODEL_TYPE_DRAWER;
 /**
  * The String "Separator"
  */
@@ -108,9 +108,9 @@ public static final String MODEL_TYPE_SEPARATOR;
  */
 public static final String NEW_SEPARATOR_DESC;
 /**
- * The String "New Category"
+ * The String "New Drawer"
  */
-public static final String NEW_CATEGORY_LABEL;
+public static final String NEW_DRAWER_LABEL;
 /**
  * The String "[Separator]"
  */
@@ -156,35 +156,35 @@ public static final String SETTINGS_FONT_TITLE;
  */
 public static final String SETTINGS_FONT_CHANGE;
 /**
- * The String "Current font: "
+ * The String "Font:  "
  */
 public static final String SETTINGS_FONT_CURRENT;
 /**
- * The String "Layout: "
+ * The String "Layout:  "
  */
 public static final String SETTINGS_LAYOUT_TITLE;
 /**
- * The String "Category Options"
+ * The String "Drawer Options"
  */
-public static final String SETTINGS_CATEGORY_OPTIONS_TITLE;
+public static final String SETTINGS_DRAWER_OPTIONS_TITLE;
 /**
  * The String "&Set expanded when editor opens"
  */
 public static final String EXPAND_LABEL;
 /**
- * The String "Folder Layout Options"
+ * The String "Folder layout options"
  */
 public static final String SETTINGS_OPTIONS_FOLDER;
 /**
- * The String "List Layout Options"
+ * The String "List layout options"
  */
 public static final String SETTINGS_OPTIONS_LIST;
 /**
- * The String "Icons Only Layout Options"
+ * The String "Icons Only layout options"
  */
 public static final String SETTINGS_OPTIONS_ICONS_ONLY;
 /**
- * The String "Details Layout Options"
+ * The String "Details layout options"
  */
 public static final String SETTINGS_OPTIONS_DETAILS;
 /**
@@ -192,13 +192,13 @@ public static final String SETTINGS_OPTIONS_DETAILS;
  */
 public static final String SETTINGS_LAYOUT_FOLDER_OVERRIDE_WIDTH;
 /**
- * The String "Colu&mn width (in pixels): "
+ * The String "Colu&mn width (in pixels):  "
  */
 public static final String SETTINGS_LAYOUT_FOLDER_WIDTH;
 /**
  * The String "&Pin open"
  */
-public static final String CATEGORY_PIN;
+public static final String DRAWER_PIN;
 /**
  * The String "&Restore Default"
  */
@@ -207,6 +207,10 @@ public static final String SETTINGS_DEFAULT_FONT;
  * The String "<Using Workbench Dialog Font>"
  */
 public static final String SETTINGS_WORKBENCH_FONT_LABEL;
+/**
+ * The String " - "
+ */
+public static final String NAME_DESCRIPTION_SEPARATOR;
 
 static {
 	ResourceBundle bundle =
@@ -233,10 +237,10 @@ static {
 	NO_DESCRIPTION_AVAILABLE = bundle.getString("NO_DESCRIPTION_AVAILABLE"); //$NON-NLS-1$
 	NO_SELECTION_MADE = bundle.getString("NO_SELECTION_MADE"); //$NON-NLS-1$
 	MENU_OPEN_CUSTOMIZE_DIALOG = bundle.getString("MENU_OPEN_CUSTOMIZE_DIALOG"); //$NON-NLS-1$
-	MODEL_TYPE_CATEGORY = bundle.getString("MODEL_TYPE_CATEGORY"); //$NON-NLS-1$
+	MODEL_TYPE_DRAWER = bundle.getString("MODEL_TYPE_DRAWER"); //$NON-NLS-1$
 	MODEL_TYPE_SEPARATOR = bundle.getString("MODEL_TYPE_SEPARATOR"); //$NON-NLS-1$
 	NEW_SEPARATOR_DESC = bundle.getString("NEW_SEPARATOR_DESC"); //$NON-NLS-1$
-	NEW_CATEGORY_LABEL = bundle.getString("NEW_CATEGORY_LABEL"); //$NON-NLS-1$
+	NEW_DRAWER_LABEL = bundle.getString("NEW_DRAWER_LABEL"); //$NON-NLS-1$
 	NEW_SEPARATOR_LABEL = bundle.getString("NEW_SEPARATOR_LABEL"); //$NON-NLS-1$
 	APPLY_LABEL = bundle.getString("APPLY_LABEL"); //$NON-NLS-1$
 	MODEL_TYPE_GROUP = bundle.getString("MODEL_TYPE_GROUP"); //$NON-NLS-1$
@@ -251,7 +255,7 @@ static {
 	SETTINGS_FONT_CHANGE = bundle.getString("SETTINGS_FONT_CHANGE"); //$NON-NLS-1$	
 	SETTINGS_FONT_CURRENT = bundle.getString("SETTINGS_FONT_CURRENT"); //$NON-NLS-1$	
 	SETTINGS_LAYOUT_TITLE = bundle.getString("SETTINGS_LAYOUT_TITLE"); //$NON-NLS-1$	
-	SETTINGS_CATEGORY_OPTIONS_TITLE = bundle.getString("SETTINGS_CATEGORY_OPTIONS_TITLE"); //$NON-NLS-1$	
+	SETTINGS_DRAWER_OPTIONS_TITLE = bundle.getString("SETTINGS_DRAWER_OPTIONS_TITLE"); //$NON-NLS-1$	
 	EXPAND_LABEL = bundle.getString("EXPAND_LABEL"); //$NON-NLS-1$	
 	SETTINGS_OPTIONS_FOLDER = bundle.getString("SETTINGS_OPTIONS_FOLDER"); //$NON-NLS-1$	
 	SETTINGS_OPTIONS_LIST = bundle.getString("SETTINGS_OPTIONS_LIST"); //$NON-NLS-1$	
@@ -259,9 +263,10 @@ static {
 	SETTINGS_OPTIONS_DETAILS = bundle.getString("SETTINGS_OPTIONS_DETAILS"); //$NON-NLS-1$	
 	SETTINGS_LAYOUT_FOLDER_OVERRIDE_WIDTH = bundle.getString("SETTINGS_LAYOUT_FOLDER_OVERRIDE_WIDTH"); //$NON-NLS-1$	
 	SETTINGS_LAYOUT_FOLDER_WIDTH = bundle.getString("SETTINGS_LAYOUT_FOLDER_WIDTH"); //$NON-NLS-1$	
-	CATEGORY_PIN = bundle.getString("CATEGORY_PIN"); //$NON-NLS-1$	
+	DRAWER_PIN = bundle.getString("DRAWER_PIN"); //$NON-NLS-1$	
 	SETTINGS_DEFAULT_FONT = bundle.getString("SETTINGS_DEFAULT_FONT"); //$NON-NLS-1$	
 	SETTINGS_WORKBENCH_FONT_LABEL = bundle.getString("SETTINGS_WORKBENCH_FONT_LABEL"); //$NON-NLS-1$	
+	NAME_DESCRIPTION_SEPARATOR = bundle.getString("NAME_DESCRIPTION_SEPARATOR"); //$NON-NLS-1$	
 }
 
 }

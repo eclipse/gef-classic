@@ -28,7 +28,7 @@ public PaletteDrawer(String label, ImageDescriptor icon) {
 	super(label, null, icon, PALETTE_TYPE_DRAWER);
 }
 
-public Object getCategoryType() {
+public Object getDrawerType() {
 	for (int i = 0; i < children.size(); i++) {
 		PaletteEntry child = (PaletteEntry)children.get(i);
 		Object type = child.getType();

@@ -16,15 +16,6 @@ public class PaletteContextMenuProvider
 	extends ContextMenuProvider
 {
 
-/*
- * @TODO:Pratik
- * Figure out how the actions for the menu should be created.  The way it works for
- * editors is that the editor holds on to all the actions, and the menu provider for the
- * editor gets them from the editor and adds them to the menu.  Here, maybe the
- * paletteviewer can hold on to all the actions.  Right now, new actions are created every
- * time the menu pops up.
- */	
-
 /**
  * Constructor
  * 
@@ -59,7 +50,7 @@ public void buildContextMenu(IMenuManager menu) {
 	Object selectedPart = getPaletteViewer().getSelectedEditParts().get(0);
 	if (selectedPart instanceof DrawerEditPart) {
 		menu.appendToGroup(GEFActionConstants.MB_ADDITIONS, 
-							new PinCategoryAction((DrawerEditPart)selectedPart));
+							new PinDrawerAction((DrawerEditPart)selectedPart));
 	}
 	menu.appendToGroup(GEFActionConstants.GROUP_VIEW, new FolderLayoutAction(
 			getPaletteViewer().getPaletteViewerPreferencesSource()));

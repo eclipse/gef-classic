@@ -87,7 +87,7 @@ public EntryPage getPropertiesPage(PaletteEntry entry) {
 	    entry instanceof PaletteGroup ){
 		return new ReadOnlyEntryPage();
 	} else if (entry instanceof PaletteDrawer) {
-		return new CategoryEntryPage();
+		return new DrawerEntryPage();
 	} else {
 		return new LogicEntryPage();
 	}
@@ -106,7 +106,7 @@ public void revertToSaved() {
 public void save() {
 }
 
-private class CategoryEntryPage extends LogicEntryPage {
+private class DrawerEntryPage extends LogicEntryPage {
 	private Button b, pinOption;
 	
 	public void createControl(Composite parent, PaletteEntry entry) {
@@ -115,7 +115,7 @@ private class CategoryEntryPage extends LogicEntryPage {
 		b = new Button(panel, SWT.CHECK);
 		b.setFont(panel.getFont());
 		b.setText(PaletteMessages.EXPAND_LABEL);
-		b.setSelection(getCategory().isInitiallyOpen());
+		b.setSelection(getDrawer().isInitiallyOpen());
 		b.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				handleExpandSelected(((Button)e.getSource()).getSelection());
@@ -124,12 +124,12 @@ private class CategoryEntryPage extends LogicEntryPage {
 		
 		pinOption = new Button(panel, SWT.CHECK);
 		pinOption.setFont(panel.getFont());
-		pinOption.setText(PaletteMessages.CATEGORY_PIN);
+		pinOption.setText(PaletteMessages.DRAWER_PIN);
 		GridData data = new GridData();
 		data.horizontalIndent = 15;
 		pinOption.setLayoutData(data);
 		pinOption.setEnabled(b.getSelection());
-		pinOption.setSelection(getCategory().isInitiallyPinned());
+		pinOption.setSelection(getDrawer().isInitiallyPinned());
 		pinOption.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				handlePinSelected(((Button)e.getSource()).getSelection());
@@ -137,14 +137,14 @@ private class CategoryEntryPage extends LogicEntryPage {
 		});
 	}
 	
-	private PaletteDrawer getCategory(){
+	private PaletteDrawer getDrawer(){
 		return (PaletteDrawer)entry;
 	}
 	
 	private void handleExpandSelected(boolean selection) {
 		int status = selection ? PaletteDrawer.INITIAL_STATE_OPEN
 		                       : PaletteDrawer.INITIAL_STATE_CLOSED;
-		getCategory().setInitialState(status);
+		getDrawer().setInitialState(status);
 		pinOption.setEnabled(selection);
 		if (!selection) {
 			pinOption.setSelection(false);
@@ -154,7 +154,7 @@ private class CategoryEntryPage extends LogicEntryPage {
 	private void handlePinSelected(boolean selection) {
 		int status = selection ? PaletteDrawer.INITIAL_STATUS_PINNED_OPEN
 		                       : PaletteDrawer.INITIAL_STATE_OPEN;
-		getCategory().setInitialState(status);
+		getDrawer().setInitialState(status);
 	}
 }
 

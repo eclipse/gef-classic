@@ -16,7 +16,7 @@ private long startTime = System.currentTimeMillis();
 private long endTime = 0;
 private static int numberOfMilliSeconds = 150;
 private boolean inProgress;
-private List categories = new ArrayList();
+private List drawers = new ArrayList();
 private DrawerFigure[] animate;
 
 private int autoCollapseMode;
@@ -30,25 +30,25 @@ public DrawerAnimationController(PaletteViewerPreferences prefs) {
 	this.prefs = prefs;
 }
 
-public void addCategory(DrawerEditPart category) {
-	categories.add(category);
-	category.getCategoryFigure().setController(this);
+public void addDrawer(DrawerEditPart drawer) {
+	drawers.add(drawer);
+	drawer.getDrawerFigure().setController(this);
 }
 
-public void animate(DrawerEditPart cat) {
+public void animate(DrawerEditPart drawer) {
 	inProgress = true;
-	if (cat.getCategoryFigure().isExpanded()) {
-		List categoriesToCollapse = getCategoriesToCollapse(cat);
+	if (drawer.getDrawerFigure().isExpanded()) {
+		List categoriesToCollapse = getDrawersToCollapse(drawer);
 		animate = new DrawerFigure[categoriesToCollapse.size() + 1];
 		int count = 1;
 		for (Iterator iter = categoriesToCollapse.iterator(); iter.hasNext();) {
-			DrawerEditPart category = (DrawerEditPart) iter.next();
-			category.setExpanded(false);
-			animate[count++] = category.getCategoryFigure();
+			DrawerEditPart drwr = (DrawerEditPart) iter.next();
+			drwr.setExpanded(false);
+			animate[count++] = drwr.getDrawerFigure();
 		}
-		animate[0] = cat.getCategoryFigure();
+		animate[0] = drawer.getDrawerFigure();
 	} else {
-		animate = new DrawerFigure[] {cat.getCategoryFigure()};
+		animate = new DrawerFigure[] {drawer.getDrawerFigure()};
 	}
 
 	for (int i = 0; i < animate.length; i++)
@@ -91,9 +91,9 @@ public boolean isAnimationInProgress() {
 	return inProgress;
 }
 
-public void removeCategory(DrawerEditPart category) {
-	category.getCategoryFigure().setController(null);
-	categories.remove(category);
+public void removeDrawer(DrawerEditPart drawer) {
+	drawer.getDrawerFigure().setController(null);
+	drawers.remove(drawer);
 }
 
 public void start() {
@@ -102,7 +102,7 @@ public void start() {
 	endTime = startTime + numberOfMilliSeconds;
 }
 
-protected List getCategoriesToCollapse(DrawerEditPart category) {
+protected List getDrawersToCollapse(DrawerEditPart drawer) {
 	int autoCollapseMode = prefs.getAutoCollapseSetting();
 	
 	// Collapse never
@@ -111,24 +111,24 @@ protected List getCategoriesToCollapse(DrawerEditPart category) {
 	} 
 	
 	// Collapse always
-	List categoriesToCollapse = new ArrayList();
+	List drawersToCollapse = new ArrayList();
 	if (autoCollapseMode == PaletteViewerPreferences.COLLAPSE_ALWAYS) {
-		for (Iterator iter = categories.iterator(); iter.hasNext();) {
+		for (Iterator iter = drawers.iterator(); iter.hasNext();) {
 			DrawerEditPart cat = (DrawerEditPart) iter.next();
-			if (cat.isExpanded() && !cat.getCategoryFigure().isPinnedOpen() && cat != category) {
-				categoriesToCollapse.add(cat);
+			if (cat.isExpanded() && !cat.getDrawerFigure().isPinnedOpen() && cat != drawer) {
+				drawersToCollapse.add(cat);
 			}
 		}
-		return categoriesToCollapse;
+		return drawersToCollapse;
 	}
 	
 	// Collapse as needed
-	List potentialCategoriesToCollapse = new ArrayList();
-	DrawerFigure catFigure = category.getCategoryFigure();
+	List potentialDrawersToCollapse = new ArrayList();
+	DrawerFigure catFigure = drawer.getDrawerFigure();
 	int availableWidth = catFigure.getParent().getClientArea().width;
 	int availableHeight = catFigure.getParent().getSize().height;
 	int requiredHeight = 0;
-	for (Iterator iter = category.getParent().getChildren().iterator(); iter.hasNext();) {
+	for (Iterator iter = drawer.getParent().getChildren().iterator(); iter.hasNext();) {
 		PaletteEditPart part = (PaletteEditPart) iter.next();
 		IFigure fig = part.getFigure();
 		int height = fig.getPreferredSize(availableWidth, -1).height;
@@ -138,22 +138,22 @@ protected List getCategoriesToCollapse(DrawerEditPart category) {
 		}
 		DrawerFigure figure = (DrawerFigure)fig;
 		if (figure.isExpanded() && !figure.isPinnedOpen()) {
-			potentialCategoriesToCollapse.add(part);
+			potentialDrawersToCollapse.add(part);
 		}
 	}
-	for (int i = potentialCategoriesToCollapse.size() - 1; i >= 0
+	for (int i = potentialDrawersToCollapse.size() - 1; i >= 0
 				&& requiredHeight > availableHeight; i--) {
-		DrawerEditPart part = (DrawerEditPart)potentialCategoriesToCollapse.get(i);
-		if (part == category) {
+		DrawerEditPart part = (DrawerEditPart)potentialDrawersToCollapse.get(i);
+		if (part == drawer) {
 			continue;
 		}
 		int expandedHeight = part.getFigure().getPreferredSize(availableWidth, -1).height;
 		part.setExpanded(false);
 		int collapsedHeight = part.getFigure().getPreferredSize(availableWidth, -1).height;
 		requiredHeight -= (expandedHeight - collapsedHeight);
-		categoriesToCollapse.add(part);
+		drawersToCollapse.add(part);
 	}
-	return categoriesToCollapse;
+	return drawersToCollapse;
 	
 }
 

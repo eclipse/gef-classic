@@ -12,7 +12,7 @@ import org.eclipse.swt.graphics.FontData;
 public interface PaletteViewerPreferences {
 
 /**
- * Auto-Collapse Option Flag
+ * Constant for an Auto-Collapse Option
  * <p>
  * Indicates that containers should always auto-collapse
  * </p>
@@ -20,7 +20,7 @@ public interface PaletteViewerPreferences {
 public static final int
 	COLLAPSE_ALWAYS = 2;
 /**
- * Auto-Collapse Option Flag
+ * Constant for an Auto-Collapse Option
  * <p>
  * Indicates that containers should never auto-collapse
  * </p>
@@ -28,7 +28,7 @@ public static final int
 public static final int
 	COLLAPSE_NEVER  = 1;
 /**
- * Auto-Collapse Option Flag
+ * Constant for an Auto-Collapse Option
  * <p>
  * Indicates that containers should auto-collapse as needed
  * This is the default auto-collapse setting.
@@ -37,7 +37,7 @@ public static final int
 public static final int
 	COLLAPSE_AS_NEEDED = 0;
 /**
- * Layout Option Flag
+ * Constant for a Layout Option
  * <p>
  * Indicates that the palette should be displayed in the folder mode.
  * </p>
@@ -45,7 +45,7 @@ public static final int
 public static final int
 	LAYOUT_FOLDER   = 1;
 /**
- * Layout Option Flag
+ * Constant for a Layout Option
  * <p>
  * Indicates that the palette should be displayed in the list mode.
  * This is the default layout setting.
@@ -54,7 +54,7 @@ public static final int
 public static final int
 	LAYOUT_LIST     = 0;
 /**
- * Layout Option Flag
+ * Constant for a Layout Option
  * <p>
  * Indicates that the palette should be displayed in the icons only mode.
  * </p>
@@ -62,7 +62,7 @@ public static final int
 public static final int
 	LAYOUT_ICONS    = 2;
 /**
- * Layout Option Flag
+ * Constant for a Layout Option
  * <p>
  * Indicates that the palette should be displayed in the details mode.
  * </p>
@@ -128,10 +128,6 @@ public static final String
  */
 public void addPropertyChangeListener(PropertyChangeListener listener);
 
-//@TODO:Pratik
-// Need to change the javadoc comments so that you are not using paragraphs everywhere,
-// but are using <UL> and <LI> tags.
-
 /**
  * Called when the preferences are being disposed.
  */
@@ -140,17 +136,12 @@ void dispose();
 /**
  * Returns the current Auto-collapse settings flag.
  * <p> 
- * Possible flags:
- * </p>
- * <p>
- * 		COLLAPSE_ALWAYS (Always collapse)
- * </p>
- * <p>
- * 		COLLAPSE_AS_NEEDED (Collapse when needed)
- * </p>
- * <p>
- * 		COLLAPSE_NEVER (Never collapse)
- * </p>
+ * Possible values returned:
+ * <ul>
+ * 		<li>COLLAPSE_ALWAYS (Always collapse)</li>
+ * 		<li>COLLAPSE_AS_NEEDED (Collapse when needed)</li> 
+ * 		<li>COLLAPSE_NEVER (Never collapse)</li>
+ * </ul>
  * 
  * @return int	Flag indicating what the setting is
  */
@@ -162,20 +153,13 @@ public FontData getFontData();
 /**
  * Returns the current Layout settings flag.
  * <p> 
- * Possible flags:
- * </p>
- * <p>
- * 		LAYOUT_FOLDER (Folder View)
- * </p>
- * <p>
- * 		LAYOUT_LIST (List View)
- * </p>
- * <p>
- * 		LAYOUT_ICONS (Icons Only View)
- * </p>
- * <p>
- * 		LAYOUT_DETAILS (Details View)
- * </p>
+ * Possible values returned:
+ * <ul>
+ * 		<li>LAYOUT_FOLDER (Folder View)</li>
+ * 		<li>LAYOUT_LIST (List View)</li> 
+ * 		<li>LAYOUT_ICONS (Icons Only View)</li>
+ * 		<li>LAYOUT_DETAILS (Details View)</li>
+ * </ul>
  * 
  * @return int	Flag indicating what the setting is
  */
@@ -192,17 +176,12 @@ public void removePropertyChangeListener(PropertyChangeListener listener);
 /**
  * Sets the auto-collapse setting.
  * <p>
- * Possible flags:
- * </p>
- * <p>
- * 		COLLAPSE_ALWAYS (Always collapse)
- * </p>
- * <p>
- * 		COLLAPSE_AS_NEEDED (Collapse when needed)
- * </p>
- * <p>
- * 		COLLAPSE_NEVER (Never collapse)
- * </p>
+ * Possible values:
+ * <ul>
+ * 		<li>COLLAPSE_ALWAYS (Always collapse)</li>
+ * 		<li>COLLAPSE_AS_NEEDED (Collapse when needed)</li> 
+ * 		<li>COLLAPSE_NEVER (Never collapse)</li>
+ * </ul>
  * 
  * @param newVal	One of the above-mentioned flags
  */
@@ -214,22 +193,15 @@ public void setAutoCollapseSetting(int newVal);
 public void setFontData(FontData data);
 
 /**
- * Sets the layout setting.
+ * Sets the given setting as the current layout.
  * <p> 
- * Possible flags:
- * </p>
- * <p>
- * 		LAYOUT_FOLDER (Folder View)
- * </p>
- * <p>
- * 		LAYOUT_LIST (List View)
- * </p>
- * <p>
- * 		LAYOUT_ICONS (Icons Only View)
- * </p>
- * <p>
- * 		LAYOUT_DETAILS (Details View)
- * </p>
+ * Possible values:
+ * <ul>
+ * 		<li>LAYOUT_FOLDER (Folder View)</li>
+ * 		<li>LAYOUT_LIST (List View)</li> 
+ * 		<li>LAYOUT_ICONS (Icons Only View)</li>
+ * 		<li>LAYOUT_DETAILS (Details View)</li>
+ * </ul>
  * 
  * @param newVal	One of the above-mentioned flags
  */
@@ -254,20 +226,23 @@ public void setCurrentUseLargeIcons(boolean newVal);
  * </p>
  * 
  * @param	layout	Indicates to change the icon setting associated with the given layout,
- * 					which could be any of LAYOUT_FOLDER, LAYOUT_LIST, LAYOUT_ICONS,
+ * 					which could be any of LAYOUT_FOLDER, LAYOUT_LIST, LAYOUT_ICONS, and
  * 					LAYOUT_DETAILS.
- * @param newVal	<code>true</code> if large icons are to be used with the given layout;
- * 					<code>false</code> otherwise
+ * @param newVal	<code>true</code> if large icons are to be used with the given layout
  */
 public void setUseLargeIcons(int layout, boolean newVal);
 
 /**
- * <p>
- * The default is false for all layouts.
- * </p>
+ * The defaults are as follows:
+ * <ul>
+ * 	<li>LAYOUT_FOLDER  - <code>true</code><li>
+ * 	<li>LAYOUT_LIST    - <code>false</code><li>
+ * 	<li>LAYOUT_ICONS   - <code>true</code><li>
+ * 	<li>LAYOUT_DETAILS - <code>false</code><li>
+ * </ul>
  * 
- * @param	layout	Indicates to get the icon setting associated with the given layout, which
- * 					could be any of LAYOUT_FOLDER, LAYOUT_LIST, LAYOUT_ICONS,
+ * @param	layout	Indicates to get the icon setting associated with the given layout, 
+ * 					which could be any of LAYOUT_FOLDER, LAYOUT_LIST, LAYOUT_ICONS, and
  * 					LAYOUT_DETAILS.
  * @return <code>true</code> if large icons are to be used with the given layout
  */

@@ -1,10 +1,8 @@
 package org.eclipse.gef.ui.palette.editparts;
 
 
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 
@@ -29,18 +27,28 @@ static final Border TOGGLE_BUTTON_BORDER = new RaisedBorder();
 static final Border TITLE_MARGIN_BORDER = new MarginBorder(1,0,1,0);
 
 //@TODO:Pratik
-// Is this the best way to do this?  How would I dispose this image?
+// These images need to go in GEFSharedImages
 protected static final Image pin = new Image(null, ImageDescriptor.createFromFile(
 		Internal.class, "icons/pin_view.gif").getImageData()); //$NON-NLS-1$
-protected static final Image disabledPin = new Image(null, pin, SWT.IMAGE_DISABLE);
+protected static final Image disabledPin = new Image(null, ImageDescriptor
+		.createFromFile(Internal.class, "icons/pin_disabled.gif").getImageData()); //$NON-NLS-1$
 
-private Label categoryLabel;
+private int layoutMode = -1;
+private Label drawerLabel;
 private ScrollPane scrollpane;
 private ToggleButton pinFigure;
 private Toggle collapseToggle;
 private boolean isAnimating;
 private DrawerAnimationController controller;
 
+/**
+ * Constructor
+ * 
+ * @param	control		The Control of the LWS to which this Figure belongs (it is used to
+ * 						display the drawer header with an EditPartTipHelper, if the
+ * 						header is not completely visible).  It can be <code>null</code>
+ * 						(the tip won't be displayed).
+ */
 public DrawerFigure(final Control control) {
 	setLayoutManager(new ToolbarLayout());
 
@@ -63,8 +71,8 @@ public DrawerFigure(final Control control) {
 	borderLayout.setHorizontalSpacing(2);
 	title.setLayoutManager(borderLayout);
 	
-	categoryLabel = new Label();
-	categoryLabel.setLabelAlignment(Label.LEFT);
+	drawerLabel = new Label();
+	drawerLabel.setLabelAlignment(Label.LEFT);
 
 	pinFigure = new ImageButton(pin, disabledPin);
 	pinFigure.setBorder(new ButtonBorder(ButtonBorder.SCHEMES.TOOLBAR));
@@ -72,7 +80,7 @@ public DrawerFigure(final Control control) {
 	pinFigure.setRequestFocusEnabled(false);
 
 	title.add(pinFigure, BorderLayout.RIGHT);
-	title.add(categoryLabel, BorderLayout.CENTER);
+	title.add(drawerLabel, BorderLayout.CENTER);
 	
 	collapseToggle = new Toggle(title) {
 		protected void paintFigure(Graphics g) {
@@ -93,11 +101,12 @@ public DrawerFigure(final Control control) {
 
 	collapseToggle.addChangeListener(new ChangeListener() {
 		public void handleStateChanged(ChangeEvent event) {
-			if (pinFigure == null)
+			if (pinFigure == null) {
 				return;
-			if (isExpanded())
+			}
+			if (isExpanded()) {
 				pinFigure.setEnabled(true);
-			else {
+			} else {
 				pinFigure.setSelected(false);
 				pinFigure.setEnabled(false);
 			}
@@ -111,47 +120,32 @@ public DrawerFigure(final Control control) {
 }
 
 private void createHoverHelp(final Control control) {
+	if (control == null) {
+		return;
+	}
+	// If a control was provided, create the tipLabel -- if the text in the header is
+	// truncated, it will display it as a tooltip.
 	final Label tipLabel =	new Label();
 	tipLabel.setOpaque(true);
 	tipLabel.setBackgroundColor(ColorConstants.tooltipBackground);
 	tipLabel.setForegroundColor(ColorConstants.tooltipForeground);	
-	tipLabel.setBorder(new CategoryToolTipBorder());
-	collapseToggle.addMouseMotionListener(new MouseMotionListener.Stub(){
+	tipLabel.setBorder(new DrawerToolTipBorder());
+	collapseToggle.addMouseMotionListener(new MouseMotionListener.Stub() {
 		public void mouseMoved(MouseEvent e) {
-			Rectangle labelBounds = categoryLabel.getBounds();
-			if (categoryLabel.isTextTruncated() && labelBounds.contains(e.x, e.y)) {
-				tipLabel.setText(categoryLabel.getText());
-				tipLabel.setIcon(categoryLabel.getIcon());
-				tipLabel.setFont(categoryLabel.getFont());
+			Rectangle labelBounds = drawerLabel.getBounds();
+			if (drawerLabel.isTextTruncated() && labelBounds.contains(e.x, e.y)) {
+				tipLabel.setText(drawerLabel.getText());
+				tipLabel.setIcon(drawerLabel.getIcon());
+				tipLabel.setFont(drawerLabel.getFont());
 				EditPartTipHelper tipHelper = new EditPartTipHelper(control);
-				Point labelLoc = categoryLabel.getLocation();
+				Point labelLoc = drawerLabel.getLocation();
 				org.eclipse.swt.graphics.Point absolute = control.toDisplay(
 						new org.eclipse.swt.graphics.Point(labelLoc.x, labelLoc.y));
-				/*
-				 * @TODO:Pratik
-				 * Move the stuff about re-positioning the tooltip so that it is
-				 * completely visible on the screen to the tipHelper.
-				 */
-				int shiftX = 0;
-				int shiftY = 0;
-				Display display = Display.getCurrent();
-				org.eclipse.swt.graphics.Rectangle area = display.getClientArea();
-				org.eclipse.swt.graphics.Point end = 
-						new org.eclipse.swt.graphics.Point(
-										absolute.x + tipLabel.getPreferredSize().width,
-										absolute.y + tipLabel.getPreferredSize().height);
-				if (!area.contains(end)) {
-					shiftX = end.x - (area.x + area.width);
-					shiftY = end.y - (area.y + area.height);
-					shiftX = shiftX < 0 ? 0 : shiftX;
-					shiftY = shiftY < 0 ? 0 : shiftY;
-				}
-				tipHelper.displayToolTipAt(tipLabel, absolute.x - shiftX - 4, 
-				                                     absolute.y - shiftY - 4);
+				tipHelper.displayToolTipAt(tipLabel, absolute.x - 4, absolute.y - 4);
 			}
 		}
 	});
-	tipLabel.addMouseListener(new MouseListener.Stub(){
+	tipLabel.addMouseListener(new MouseListener.Stub() {
 		public void mousePressed(MouseEvent e) {
 			setExpanded(!isExpanded());
 		}
@@ -173,10 +167,17 @@ private void createScrollpane() {
 	scrollpane.getView().setBorder(MARGIN_BORDER);
 }
 
+/**
+ * @return	The content pane for this figure, i.e. the Figure to which children can be
+ * added.
+ */
 public IFigure getContentPane() {
 	return scrollpane.getView();
 }
 
+/**
+ * @return The Toggle that is used to expand/collapse the drawer.
+ */
 public Toggle getCollapseToggle() {
 	return collapseToggle;
 }
@@ -200,10 +201,17 @@ public Dimension getPreferredSize(int w, int h) {
 	return pref.getScaled(scale).expand(min.getScaled(1.0f - scale));
 }
 
+/**
+ * @return <code>true</code> if the drawer is expanded
+ */
 public boolean isExpanded() {
 	return collapseToggle.isSelected();
 }
 
+/**
+ * @return <code>true</code> if the drawer is expanded and is pinned (i.e., it can't be
+ * automatically collapsed)
+ */
 public boolean isPinnedOpen() {
 	return isExpanded() && pinFigure.isSelected();
 }
@@ -227,19 +235,32 @@ public void setExpanded(boolean value) {
 }
 
 public void setLayoutMode(int layoutMode) {
+	if (this.layoutMode == layoutMode) {
+		return;
+	}
+	
+	this.layoutMode = layoutMode;
+	
 	LayoutManager manager;
-	if (layoutMode == PaletteViewerPreferences.LAYOUT_FOLDER)
+	if (layoutMode == PaletteViewerPreferences.LAYOUT_FOLDER) {
 		manager = new FolderLayout();
-	else if (layoutMode == PaletteViewerPreferences.LAYOUT_ICONS) {
+	} else if (layoutMode == PaletteViewerPreferences.LAYOUT_ICONS) {
 		FlowLayout fl = new FlowLayout();
 		fl.setMinorSpacing(0);
 		fl.setMajorSpacing(0);
 		manager = fl;
-	} else
+	} else {
 		manager = new ToolbarLayout();
+	}
 	getContentPane().setLayoutManager(manager);
 }
 
+/**
+ * Pins or unpins the drawer.  The drawer can be pinned open only when it is expanded.
+ * Attempts to pin it when it is collapsed will do nothing.
+ * 
+ * @param	pinned	<code>true</code> if the drawer is to be pinned
+ */
 public void setPinned(boolean pinned) {
 	if (!isExpanded()) {
 		return;
@@ -248,12 +269,22 @@ public void setPinned(boolean pinned) {
 	pinFigure.setSelected(pinned);
 }
 
+/**
+ * Displays the given text in the drawer's header as its title.
+ * 
+ * @param s The title of the drawer
+ */
 public void setTitle(String s) {
-	categoryLabel.setText(s);
+	drawerLabel.setText(s);
 }
 
+/**
+ * Displays the given image in the header as the drawer's icon.
+ * 
+ * @param icon		The icon for this drawer.
+ */
 public void setTitleIcon(Image icon) {
-	categoryLabel.setIcon(icon);
+	drawerLabel.setIcon(icon);
 }
 
 private class ImageButton extends ToggleButton {
