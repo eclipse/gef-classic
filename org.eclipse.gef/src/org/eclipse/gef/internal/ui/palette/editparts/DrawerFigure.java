@@ -11,6 +11,8 @@
 package org.eclipse.gef.internal.ui.palette.editparts;
 
 
+import java.util.List;
+
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Control;
@@ -19,7 +21,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
 
 import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.internal.Internal;
@@ -175,7 +176,8 @@ private void createHoverHelp(final Control control) {
 				tipLabel.setIcon(drawerLabel.getIcon());
 				tipLabel.setFont(drawerLabel.getFont());
 				tipHelper = new EditPartTipHelper(control);
- 				Point labelLoc = drawerLabel.getLocation();
+				Rectangle labelLoc = drawerLabel.getBounds().getCopy();
+				drawerLabel.translateToAbsolute(labelLoc);
 				org.eclipse.swt.graphics.Point absolute = control.toDisplay(
 						new org.eclipse.swt.graphics.Point(labelLoc.x, labelLoc.y));
 				tipHelper.displayToolTipAt(tipLabel, absolute.x - 4, absolute.y - 4);
@@ -210,9 +212,9 @@ private void createScrollpane() {
 	scrollpane.setVerticalScrollBar(new PaletteScrollBar());
 	scrollpane.getVerticalScrollBar().setStepIncrement(33);
 	scrollpane.setLayoutManager(new OverlayScrollPaneLayout());
-	scrollpane.setView(new Figure());
-	scrollpane.getView().setOpaque(true);
-	scrollpane.getView().setBorder(SCROLL_PANE_BORDER);
+	scrollpane.setContents(new Figure());
+	scrollpane.getContents().setOpaque(true);
+	scrollpane.getContents().setBorder(SCROLL_PANE_BORDER);
 }
 
 /**
@@ -220,7 +222,7 @@ private void createScrollpane() {
  * added.
  */
 public IFigure getContentPane() {
-	return scrollpane.getView();
+	return scrollpane.getContents();
 }
 
 public ScrollPane getScrollpane() {
@@ -238,8 +240,34 @@ public Clickable getCollapseToggle() {
  * @see org.eclipse.draw2d.Figure#getMinimumSize(int, int)
  */
 public Dimension getMinimumSize(int wHint, int hHint) {
-	if (animatingAlone)
+	if (animatingAlone) {
 		return getPreferredSize(wHint, hHint);
+	}
+	
+	/*
+	 * @TODO:Pratik
+	 * Temporary fix for Bug #35176
+	 * The figure returns a minimum size that is of at least a certain height, so as to
+	 * prevent each drawer from getting too small (in which case, the scrollbars cover up
+	 * the entire available space).  Once the PaletteToolbarLayout is fixed so that it
+	 * makes all the children the same size, this fix won't be needed anymore and can be
+	 * removed.
+	 */
+	if (isExpanded() && !isAnimating) {
+		List children = getContentPane().getChildren();
+		if (!children.isEmpty()) {
+			Dimension headerSize = collapseToggle.getMinimumSize(wHint, hHint).getCopy();
+			Figure child = (Figure)children.get(0);
+//			hHint -= headerSize.height;
+			int childHeight = child.getMinimumSize(wHint, -1).height;
+			int multiplier = Math.min(3, children.size());
+			headerSize.height += (multiplier * childHeight);
+			headerSize.height = Math.max(headerSize.height, 40);
+			headerSize.height = Math.min(headerSize.height, 90);
+			return headerSize;
+		}
+	}
+	
 	return super.getMinimumSize(wHint, hHint);
 }
 
