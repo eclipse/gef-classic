@@ -23,16 +23,14 @@ private MenuManager menuManager;
 
 public ContextMenuProvider(EditPartViewer viewer) {
 	setViewer(viewer);
-	createContextMenu();
+	menuManager = new MenuManager();
+	menuManager.addMenuListener(this);
+	menuManager.setRemoveAllWhenShown(true);
 }
 
 public abstract void buildContextMenu(IMenuManager menu);
 
-public Menu createContextMenu() {
-	menuManager = new MenuManager();
-	menuManager.addMenuListener(this);
-	menuManager.setRemoveAllWhenShown(true);
-
+public Menu createMenu() {
 	Menu menu = menuManager.createContextMenu(getViewer().getControl());
 	getViewer().getControl().setMenu(menu);
 	menu.addDisposeListener(this);
