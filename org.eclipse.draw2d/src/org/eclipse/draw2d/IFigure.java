@@ -478,6 +478,11 @@ boolean intersects(Rectangle rect);
 void invalidate();
 
 /**
+ * Invalidates this figure as well as all contained within.
+ */
+void invalidateTree();
+
+/**
  * Returns <code>true</code> if this IFigure is enabled.
  * @return <code>true</code> if this IFigure is enabled
  */
