@@ -24,6 +24,7 @@ public static final int TYPE_IMPORT_DECLARATIONS = 3;
 public static final int TYPE_PARAGRAPH = 4;
 public static final int TYPE_ROOT = 5;
 public static final int TYPE_INLINE = 6;
+public static final int TYPE_CODE = 7;
 
 private List children = new ArrayList();
 private Style style = new Style();

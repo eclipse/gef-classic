@@ -26,16 +26,18 @@ public class ApplyStyle extends MiniEdit {
 
 private TextRun begin;
 private int beginOffset;
-private int endOffset;
 private Container container;
-private TextRun right;
-private TextRun middle;
+private int endOffset;
 String[] keys;
+private TextRun middle;
+private Container parent;
+private TextRun right;
 Object[] values;
 
 public ApplyStyle(ModelLocation start, ModelLocation end,
 		String keys[], Object values[]) {
 	begin = (TextRun)start.model;
+	parent = begin.getContainer();
 	beginOffset = start.offset;
 	endOffset = end.offset;
 	this.keys = keys;
@@ -44,7 +46,10 @@ public ApplyStyle(ModelLocation start, ModelLocation end,
 
 public void apply() {
 	right = begin.subdivideRun(endOffset);
-	middle = begin.subdivideRun(beginOffset); 
+	if (right.getText().length() == 0)
+		right = null;
+	middle = begin.subdivideRun(beginOffset);
+	
 	container = new InlineContainer(Container.TYPE_INLINE);
 	for (int i = 0; i < keys.length; i++) {
 		String key = keys[i];
@@ -61,8 +66,12 @@ public void apply() {
 	}
 	container.add(middle);
 	int index = begin.getContainer().getChildren().indexOf(begin) + 1;
-	begin.getContainer().add(right, index);
-	begin.getContainer().add(container, index);
+	
+	if (right != null)
+		parent.add(right, index);
+	parent.add(container, index);
+	if (begin.getText().length() == 0)
+		parent.remove(begin);
 }
 
 public boolean canApply() {
@@ -74,8 +83,12 @@ public ModelLocation getResultingLocation() {
 }
 
 public void rollback() {
-	container.getContainer().remove(container);
-	right.getContainer().remove(right);
+	int index = parent.getChildren().indexOf(container);
+	parent.remove(container);
+	if (right != null)
+		parent.remove(right);
+	if (begin.getContainer() == null)
+		parent.add(begin, index);
 	begin.insertText(middle.getText(), begin.size());
 	begin.insertText(right.getText(), begin.size());
 }

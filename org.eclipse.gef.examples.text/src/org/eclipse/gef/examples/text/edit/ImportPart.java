@@ -11,32 +11,35 @@
 
 package org.eclipse.gef.examples.text.edit;
 
-import org.eclipse.draw2d.CompoundBorder;
-import org.eclipse.draw2d.Figure;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Display;
+
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.text.BlockFlow;
+import org.eclipse.draw2d.text.TextFlow;
 
 import org.eclipse.gef.examples.text.figures.Images;
-import org.eclipse.gef.examples.text.figures.TreeBorder;
+import org.eclipse.gef.examples.text.figures.TreeItemBorder;
 
 /**
  * @since 3.1
  */
-public class ImportsPart extends BlockTextualPart {
+public class ImportPart extends TextFlowPart {
 
-IFigure pane;
-
-public ImportsPart(Object model) {
+public ImportPart(Object model) {
 	super(model);
 }
 
 protected IFigure createFigure() {
-	Figure figure = new BlockFlow();
-	figure.setBorder(new CompoundBorder(
-			new MarginBorder(5, 2, 8, 0),
-			new TreeBorder(Images.IMPORTS, "import declarations")));
-	return figure;
+	TextFlow flow = new TextFlow();
+	BlockFlow block = new BlockFlow();
+	block.setBorder(new TreeItemBorder(Images.IMPORT));
+	block.add(flow);
+	return block;
+}
+
+TextFlow getTextFlow() {
+	return (TextFlow)getFigure().getChildren().get(0);
 }
 
 }

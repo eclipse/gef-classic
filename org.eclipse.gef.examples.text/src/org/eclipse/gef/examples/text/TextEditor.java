@@ -17,7 +17,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.EventObject;
 
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -54,6 +56,7 @@ import org.eclipse.gef.examples.text.actions.StyleService;
 import org.eclipse.gef.examples.text.edit.BlockTextualPart;
 import org.eclipse.gef.examples.text.edit.ContainerTreePart;
 import org.eclipse.gef.examples.text.edit.DocumentPart;
+import org.eclipse.gef.examples.text.edit.ImportPart;
 import org.eclipse.gef.examples.text.edit.ImportsPart;
 import org.eclipse.gef.examples.text.edit.InlineTextualPart;
 import org.eclipse.gef.examples.text.edit.TextFlowPart;
@@ -61,7 +64,6 @@ import org.eclipse.gef.examples.text.edit.TextLayoutPart;
 import org.eclipse.gef.examples.text.edit.TextRunTreePart;
 import org.eclipse.gef.examples.text.model.Block;
 import org.eclipse.gef.examples.text.model.Container;
-import org.eclipse.gef.examples.text.model.InlineContainer;
 import org.eclipse.gef.examples.text.model.TextRun;
 import org.eclipse.gef.examples.text.tools.TextTool;
 
@@ -103,6 +105,7 @@ public void commandStackChanged(EventObject event) {
  */
 protected void configureGraphicalViewer() {
 	super.configureGraphicalViewer();
+	//getGraphicalViewer().getControl().setFont(new Font(Display.getCurrent(), "Tahoma", 11, 0));
 	getEditDomain().setDefaultTool(
 			new TextTool((GraphicalTextViewer)getGraphicalViewer(), styleService));
 	getEditDomain().loadDefaultTool();
@@ -193,9 +196,12 @@ protected void initializeGraphicalViewer() {
 						throw new RuntimeException("unknown model type");
 				}
 			} else if (model instanceof TextRun) {
-				if (((GraphicalEditPart)context).getFigure() instanceof FlowFigure)
-					return new TextFlowPart(model);
-				return new TextLayoutPart(model);
+				switch (((TextRun)model).getType()) {
+					case TextRun.TYPE_IMPORT:
+						return new ImportPart(model);
+					default:
+						return new TextFlowPart(model);
+				}
 			}
 			throw new RuntimeException("unexpected model object");
 		}
@@ -212,7 +218,7 @@ public void doSave(IProgressMonitor monitor) {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		ObjectOutputStream objStream = new ObjectOutputStream(outputStream);
 		objStream.writeObject(doc);
-		objStream.close();	
+		objStream.close();
 		IFile file = ((IFileEditorInput)getEditorInput()).getFile();
 		file.setContents(new ByteArrayInputStream(outputStream.toByteArray()), 
 						true, false, monitor);
@@ -285,18 +291,30 @@ protected void setInput(IEditorInput input) {
 	
 	if (doc == null) {
 		doc = new Block(Container.TYPE_ROOT);
-		Container block = new Block(Container.TYPE_COMMENT);
-		block.add(new TextRun("Copyright (c) 2004 IBM Corporation and others. All rights reserved. This program and " +
-				"the accompanying materials are made available under the terms of the Common Public " +
-				"License v1.0 which accompanies this distribution, and is available at " +
-				"http://www.eclipse.org/legal/cpl-v10.html\r\n" + 
-				"Contributors: IBM Corporation - initial API and implementation"));
-		Container inline = new InlineContainer(Container.TYPE_INLINE);
-		inline.getStyle().setBold(true);
-		inline.add(new TextRun("ABC def GHI jkl MNO pqr STU vwxyz"));
-		block.add(inline);
-		doc.add(block);
-		doc.add(new TextRun("Paragraph 1"));
+		Container preface = new Block(Container.TYPE_PARAGRAPH);
+		preface.add(new TextRun("package foo.bar;"));
+		doc.add(preface);
+		Container imports = new Block(Container.TYPE_IMPORT_DECLARATIONS);
+		doc.add(imports);
+		imports.add(new TextRun("org.eclipse.gef", TextRun.TYPE_IMPORT));
+		imports.add(new TextRun("org.eclipse.draw2d", TextRun.TYPE_IMPORT));
+		//for (int i = 0; i < 400; i++) {
+			Container block = new Block(Container.TYPE_COMMENT);
+			block.add(new TextRun("Copyright (c) 2004 IBM Corporation and others. All rights reserved. This program and " +
+					"the accompanying materials are made available under the terms of the Common Public " +
+					"License v1.0 which accompanies this distribution, and is available at " +
+					"http://www.eclipse.org/legal/cpl-v10.html\r\n" + 
+					"Contributors: IBM Corporation - initial API and implementation"));
+			doc.add(block);
+			
+			Container code = new Block(Container.TYPE_PARAGRAPH);
+			code.getStyle().setFontFamily("Courier New");
+			doc.add(code);
+			code.add(new TextRun("public void countToANumber(int limit) {\n" +
+					"    for (int i = 0; i < limit; i++)\n" +
+					"        System.out.println(\"Counting:\" + limit); //$NON-NLS-1$\n\n" +
+					"}", TextRun.TYPE_CODE));
+		//}
 	}
 	
 	setPartName(file.getName());

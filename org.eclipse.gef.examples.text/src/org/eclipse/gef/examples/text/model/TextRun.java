@@ -20,6 +20,7 @@ public static final int TYPE_IMPORT = 1;
 public static final int TYPE_PACKAGE = 2;
 public static final int TYPE_BULLET = 3;
 public static final int TYPE_UNDERLINE = 4;
+public static final int TYPE_CODE  = 5;;
 
 private String text;
 

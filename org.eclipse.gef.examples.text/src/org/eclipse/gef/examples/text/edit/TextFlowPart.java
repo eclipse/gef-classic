@@ -20,8 +20,8 @@ import org.eclipse.jface.util.Assert;
 
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.draw2d.text.CaretInfo;
+import org.eclipse.draw2d.text.SimpleTextLayout;
 import org.eclipse.draw2d.text.TextFlow;
 
 import org.eclipse.gef.DragTracker;
@@ -53,6 +53,8 @@ public boolean acceptsCaret() {
 
 protected IFigure createFigure() {
 	TextFlow flow = new TextFlow();
+	if (((TextRun)getModel()).getType() == TextRun.TYPE_CODE)
+		flow.setLayoutManager(new SimpleTextLayout(flow));
 	return flow;
 }
 
@@ -78,10 +80,10 @@ public int getLength() {
 
 public TextLocation getLocation(Point absolute, int trailing[]) {
 	Point pt = absolute.getCopy();
-	getFigure().translateToRelative(pt);
+	getTextFlow().translateToRelative(pt);
 	int offset = getTextFlow().getOffset(pt, trailing);
 	if (offset == - 1)
-		return null;
+		offset = getTextFlow().getText().length();
 	return new TextLocation(this, offset);
 }
 
@@ -93,7 +95,7 @@ public TextLocation getNextLocation(CaretSearch search) {
 			if (!search.isRecursive)
 				break;
 			where.y = search.baseline;
-			getFigure().translateToRelative(where);
+			getTextFlow().translateToRelative(where);
 			if (search.isForward)
 				offset = getTextFlow().getLastOffsetForLine(where.y);
 			else
@@ -134,9 +136,9 @@ public TextLocation getNextLocation(CaretSearch search) {
 				break;
 			where.x = search.x;
 			where.y = search.baseline;
-			getFigure().translateToRelative(where);
+			getTextFlow().translateToRelative(where);
 
-			offset = getTextFlow().getNextOffset(where, search.isForward);
+			offset = getTextFlow().getNextOffset(where, search.isForward, new int[1]);
 			if (offset == -1)
 				return null;
 			return new TextLocation(this, offset);

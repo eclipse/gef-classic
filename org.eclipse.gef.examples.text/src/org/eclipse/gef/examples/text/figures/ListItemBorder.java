@@ -15,21 +15,21 @@ import org.eclipse.draw2d.AbstractBorder;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Insets;
+import org.eclipse.draw2d.text.TextFlow;
 
 /**
  * @since 3.1
  */
 public abstract class ListItemBorder extends AbstractBorder {
 
-private boolean enabled;
+private boolean enabled = true;
 
 public void setEnabled(boolean enabled) {
 	this.enabled = enabled;
-	
 }
 
 public final void paint(IFigure figure, Graphics graphics, Insets insets) {
-	if (enabled)
+	if (((TextFlow)figure.getChildren().get(0)).getText().length() > 0)
 		paintBorder(figure, graphics, insets);
 }
 

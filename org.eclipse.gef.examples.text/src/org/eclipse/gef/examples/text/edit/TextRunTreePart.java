@@ -31,7 +31,10 @@ public void propertyChange(PropertyChangeEvent evt) {
 
 protected void refreshVisuals() {
 	TextRun run = (TextRun)getModel();
-	setWidgetText(run.getText());
+	String s = run.getText();
+	if (s.length() > 50)
+		s = s.substring(0, 50) + "...";
+	setWidgetText(s);
 }
 
 }

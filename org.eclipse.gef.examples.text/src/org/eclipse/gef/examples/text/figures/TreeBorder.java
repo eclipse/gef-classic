@@ -48,7 +48,7 @@ public void paint(IFigure figure, Graphics g, Insets insets) {
 	
 	g.translate(where.x, where.y);
 
-	for (int i = 16; i < where.height - 6; i += 2)
+	for (int i = 16; i < where.height - 10; i += 2)
 		g.drawPoint(9, i);
 	
 	g.drawImage(image, 0, 0);

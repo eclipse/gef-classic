@@ -41,12 +41,15 @@ private Container getContainer() {
 	return (Container)getModel();
 }
 
-protected void refreshVisuals() {
-	Widget widget = getWidget();
-	if (widget instanceof TreeItem) {
-		TreeItem item = (TreeItem)widget;
+protected void refreshChildren() {
+	super.refreshChildren();
+	if (getWidget() instanceof TreeItem) {
+		TreeItem item = (TreeItem)getWidget();
 		item.setExpanded(true);
 	}
+}
+
+protected void refreshVisuals() {
 	String label;
 	switch (getContainer().getType()) {
 		case Container.TYPE_BULLETED_LIST:
@@ -72,6 +75,9 @@ protected void refreshVisuals() {
 				label ="FONT";
 			else
 				label = "nested";
+			break;
+		case Container.TYPE_PARAGRAPH:
+			label = "Paragraph";
 			break;
 		default:
 			label = "unknown container";

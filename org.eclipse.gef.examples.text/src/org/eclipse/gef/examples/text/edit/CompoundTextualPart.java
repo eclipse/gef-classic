@@ -19,6 +19,7 @@ import org.eclipse.draw2d.LineBorder;
 import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.ToolbarLayout;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2d.text.BlockFlow;
 import org.eclipse.draw2d.text.CaretInfo;
 import org.eclipse.draw2d.text.FlowPage;
 import org.eclipse.draw2d.text.InlineFlow;
@@ -44,7 +45,7 @@ protected void createEditPolicies() {}
  * @see AbstractGraphicalEditPart#createFigure()
  */
 protected IFigure createFigure() {
-	Figure figure;
+	Figure figure = null;
 	switch (getContainer().getType()) {
 		case Container.TYPE_INLINE:
 			figure = new InlineFlow();
@@ -53,12 +54,15 @@ protected IFigure createFigure() {
 			figure = new CommentPage();
 			break;
 		case Container.TYPE_PARAGRAPH:
+			figure = new BlockFlow();
+			figure.setBorder(new MarginBorder(4, 2, 4, 0));
+			break;
+		case Container.TYPE_ROOT:
 			figure = new FlowPage();
+			figure.setBorder(new MarginBorder(4));
 			break;
 		default:
-			figure = new Figure();
-			figure.setLayoutManager(new ToolbarLayout(ToolbarLayout.VERTICAL));
-			figure.setBorder(new MarginBorder(4));
+			System.out.println("unexpected");
 	}
 	return figure;
 }
