@@ -88,7 +88,7 @@ public static int getTextForSpace(TextFragmentBox frag, String string, Font font
 		// Pick a new guess size
 		// New guess is the last guess plus the missing width in pixels
 		// divided by the average character size in pixels
-		guess = guess + (int)((availableWidth - guessSize) / avg);
+		guess = guess + Math.round((availableWidth - guessSize) / avg);
 
 		if (guess >= max) guess = max - 1;
 		if (guess <= min) guess = min + 1;
@@ -118,7 +118,7 @@ public static int getTextForSpace(TextFragmentBox frag, String string, Font font
 	 * BreakIterator.isBoundary() has a bug where it doesn't take the offset into account.
 	 * This workaround should be removed once BreakIterator is fixed.
 	 */
-	string = new String(string.toString());
+	string = new String(string);
 	
 	int result;
 	boolean needToSetLength = true;
