@@ -200,7 +200,15 @@ public void remove(PaletteEntry entry) {
  */
 public void setChildren(List list) {
 	List oldChildren = children;
+	for (int i = 0; i < oldChildren.size(); i++) {
+		PaletteEntry entry = (PaletteEntry) oldChildren.get(i);
+		entry.setParent(null);
+	}
 	children = list;
+	for (int i = 0; i < children.size(); i++) {
+		PaletteEntry entry = (PaletteEntry) children.get(i);
+		entry.setParent(this);
+	}
 	listeners.firePropertyChange(PROPERTY_CHILDREN,	oldChildren, getChildren());
 }
 
