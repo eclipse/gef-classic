@@ -29,6 +29,7 @@ public LogicFlowBorder(int width) {
 public LogicFlowBorder(int width, Color color) {
 	this(width);
 	setGrabBarColor(color);
+	setOutlineColor(ColorConstants.listForeground);
 }
 
 public Insets getInsets(IFigure figure){
