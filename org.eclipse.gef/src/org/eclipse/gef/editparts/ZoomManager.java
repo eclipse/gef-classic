@@ -67,7 +67,7 @@ private double multiplier = 1.0;
 private ScalableFigure pane;
 private Viewport viewport;
 private double zoom = 1.0;
-private int zoomAnimationStyle = ANIMATE_NEVER;
+//private int zoomAnimationStyle = ANIMATE_NEVER;
 private double[] zoomLevels = {.5, .75, 1.0, 1.5, 2.0, 2.5, 3, 4};
 /**
  * String constant for the "Height" zoom level.  At this zoom level, the zoom manager will
@@ -117,13 +117,6 @@ public ZoomManager(ScalableFreeformLayeredPane pane, Viewport viewport) {
  */
 public void addZoomListener(ZoomListener listener) {
 	listeners.add(listener);
-}
-
-private Point calculateViewLocation(Rectangle zoomRect, double ratio) {
-	Point viewLocation = new Point();
-	viewLocation.x = (int)(zoomRect.x / ratio);
-	viewLocation.y = (int)(zoomRect.y / ratio);
-	return viewLocation;
 }
 
 /**
@@ -414,7 +407,7 @@ public void setZoom(double zoom) {
  * @param style the style bits determining the zoom methods to be animated.
  */
 public void setZoomAnimationStyle(int style) {
-	zoomAnimationStyle = style;
+	//zoomAnimationStyle = style;
 }
 
 /**
@@ -485,46 +478,54 @@ public void zoomIn() {
  */
 public void zoomTo(Rectangle rect) { }
 
-private void performAnimatedZoom(Rectangle rect, boolean zoomIn, int iterationCount) {
-	double finalRatio;
-	double zoomIncrement;
-	
-	if (zoomIn) {
-		finalRatio = zoom / getNextZoomLevel();
-		zoomIncrement = (getNextZoomLevel() - zoom) / iterationCount;
-	} else {
-		finalRatio = zoom / getPreviousZoomLevel();
-		zoomIncrement = (getPreviousZoomLevel() - zoom) / iterationCount;
-	}
-	
-	getScalableFigure().translateToRelative(rect);
-	Point originalViewLocation = getViewport().getViewLocation();
-	Point finalViewLocation = calculateViewLocation(rect, finalRatio);
-	
-	double xIncrement =
-		(double) (finalViewLocation.x - originalViewLocation.x) / iterationCount;
-	double yIncrement =
-		(double) (finalViewLocation.y - originalViewLocation.y) / iterationCount;
-	
-	double originalZoom = zoom;
-	Point currentViewLocation = new Point();
-	for (int i = 1; i < iterationCount; i++) {
-		currentViewLocation.x = (int)(originalViewLocation.x + (xIncrement * i));
-		currentViewLocation.y = (int)(originalViewLocation.y + (yIncrement * i));
-		setZoom(originalZoom + zoomIncrement * i);
-		getViewport().validate();
-		setViewLocation(currentViewLocation);
-		getViewport().getUpdateManager().performUpdate();
-	}
-	
-	if (zoomIn)
-		setZoom(getNextZoomLevel());
-	else
-		setZoom(getPreviousZoomLevel());
-	
-	getViewport().validate();
-	setViewLocation(finalViewLocation);	
-}
+//private void performAnimatedZoom(Rectangle rect, boolean zoomIn, int iterationCount) {
+//	double finalRatio;
+//	double zoomIncrement;
+//	
+//	if (zoomIn) {
+//		finalRatio = zoom / getNextZoomLevel();
+//		zoomIncrement = (getNextZoomLevel() - zoom) / iterationCount;
+//	} else {
+//		finalRatio = zoom / getPreviousZoomLevel();
+//		zoomIncrement = (getPreviousZoomLevel() - zoom) / iterationCount;
+//	}
+//	
+//	getScalableFigure().translateToRelative(rect);
+//	Point originalViewLocation = getViewport().getViewLocation();
+//	Point finalViewLocation = calculateViewLocation(rect, finalRatio);
+//	
+//	double xIncrement =
+//		(double) (finalViewLocation.x - originalViewLocation.x) / iterationCount;
+//	double yIncrement =
+//		(double) (finalViewLocation.y - originalViewLocation.y) / iterationCount;
+//	
+//	double originalZoom = zoom;
+//	Point currentViewLocation = new Point();
+//	for (int i = 1; i < iterationCount; i++) {
+//		currentViewLocation.x = (int)(originalViewLocation.x + (xIncrement * i));
+//		currentViewLocation.y = (int)(originalViewLocation.y + (yIncrement * i));
+//		setZoom(originalZoom + zoomIncrement * i);
+//		getViewport().validate();
+//		setViewLocation(currentViewLocation);
+//		getViewport().getUpdateManager().performUpdate();
+//	}
+//	
+//	if (zoomIn)
+//		setZoom(getNextZoomLevel());
+//	else
+//		setZoom(getPreviousZoomLevel());
+//	
+//	getViewport().validate();
+//	setViewLocation(finalViewLocation);	
+//}
+//
+//private Point calculateViewLocation(Rectangle zoomRect, double ratio) {
+//	Point viewLocation = new Point();
+//	viewLocation.x = (int)(zoomRect.x / ratio);
+//	viewLocation.y = (int)(zoomRect.y / ratio);
+//	return viewLocation;
+//}
+
 
 /**
  * Sets the zoom level to be one level lower
