@@ -7,7 +7,7 @@ package org.eclipse.gef.editpolicies;
  */
 
 import org.eclipse.gef.commands.*;
-import org.eclipse.gef.requests.DeleteRequest;
+import org.eclipse.gef.requests.GroupRequest;
 
 /**
  * The <i>root</i> component cannot be removed from its parent. This EditPolicy is
@@ -21,7 +21,7 @@ public class RootComponentEditPolicy
 /**
  * Overridden to prevent the host from being deleted.
  * @see org.eclipse.gef.editpolicies.ComponentEditPolicy#createDeleteCommand(DeleteRequest) */
-protected Command createDeleteCommand(DeleteRequest request) {
+protected Command createDeleteCommand(GroupRequest request) {
 	return UnexecutableCommand.INSTANCE;
 }
 

@@ -13,7 +13,7 @@ import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CompoundCommand;
 import org.eclipse.gef.internal.GEFMessages;
-import org.eclipse.gef.requests.DeleteRequest;
+import org.eclipse.gef.requests.GroupRequest;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.internal.IWorkbenchGraphicConstants;
 import org.eclipse.ui.internal.WorkbenchImages;
@@ -104,8 +104,8 @@ public static Command createDeleteCommand(List objects) {
 	if (!(objects.get(0) instanceof EditPart))
 		return null;
 
-	DeleteRequest deleteReq =
-		new DeleteRequest(RequestConstants.REQ_DELETE);
+	GroupRequest deleteReq =
+		new GroupRequest(RequestConstants.REQ_DELETE);
 
 	CompoundCommand compoundCmd = new CompoundCommand(
 		GEFMessages.DeleteAction_ActionDeleteCommandName);
