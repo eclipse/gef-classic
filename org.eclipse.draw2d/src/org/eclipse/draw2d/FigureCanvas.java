@@ -90,7 +90,7 @@ public org.eclipse.swt.graphics.Point computeSize(int wHint, int hHint, boolean 
 	// determine whether scrollbars are shown or not, and add their size to the result.
 	// You can determine the sizes of scrollbars as follows:
 	//		computeTrim(0,0,0,0).width (will return width of vertical scrollbar)
-	Dimension size = getContents().getPreferredSize(wHint, hHint);
+	Dimension size = getLightweightSystem().getRootFigure().getPreferredSize(wHint, hHint);
 	return new org.eclipse.swt.graphics.Point(size.width, size.height);
 }
 
