@@ -19,10 +19,8 @@ public abstract class GraphicalEditorWithPalette
 
 private PaletteViewer paletteViewer;
 
-protected void configurePaletteViewer(){
-	getPaletteViewer().
-		getControl().
-		setBackground(ColorConstants.buttonLightest);
+protected void configurePaletteViewer() {
+	getPaletteViewer().getControl().setBackground(ColorConstants.buttonLightest);
 }
 
 private void createPaletteViewer(Composite parent) {
@@ -38,11 +36,11 @@ public void createPartControl(Composite parent) {
 	Splitter splitter = new Splitter(parent, SWT.HORIZONTAL);
 	createGraphicalViewer(splitter);
 	createPaletteViewer(splitter);
-	splitter.setWeights(new int [] {6, 1});
+	splitter.setWeights(new int[] {6, 1});
 	initializeActions();
 }
 
-public void dispose(){
+public void dispose() {
 	getPaletteViewer().dispose();
 	super.dispose();
 }
@@ -55,19 +53,19 @@ abstract protected PaletteRoot getPaletteRoot();
 /**
  * Returns the PaletteViewer.
  */
-protected PaletteViewer getPaletteViewer(){
+protected PaletteViewer getPaletteViewer() {
 	return paletteViewer;
 }
 
-protected void hookPaletteViewer(){
+protected void hookPaletteViewer() {
 	getEditDomain().setPaletteViewer(paletteViewer);
 }
 
-protected void initializePaletteViewer(){
+protected void initializePaletteViewer() {
 	getEditDomain().setPaletteRoot(getPaletteRoot());
 }
 
-protected void setPaletteViewer(PaletteViewer paletteViewer){
+protected void setPaletteViewer(PaletteViewer paletteViewer) {
 	this.paletteViewer = paletteViewer;
 }
 
