@@ -26,7 +26,7 @@ import org.eclipse.gef.ui.parts.RulerProvider;
 /**
  * @author Pratik Shah
  */
-public class GuideEditPart 
+public class GuideEditPart
 	extends AbstractGraphicalEditPart 
 {
 	
@@ -65,7 +65,9 @@ public GuideEditPart(Object model, GraphicalViewer primaryViewer) {
 public void activate() {
 	super.activate();
 	getRulerProvider().addRulerChangeListener(listener);
-	zoomManager.addZoomListener(zoomListener);
+	if (zoomManager != null) {
+		zoomManager.addZoomListener(zoomListener);		
+	}
 }
 
 /* (non-Javadoc)
@@ -95,7 +97,9 @@ protected GuideLineFigure createGuideLineFigure() {
  * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#deactivate()
  */
 public void deactivate() {
-	zoomManager.removeZoomListener(zoomListener);
+	if (zoomManager != null) {
+		zoomManager.removeZoomListener(zoomListener);		
+	}
 	getRulerProvider().removeRulerChangeListener(listener);
 	rulerProvider = null;
 	if (getGuideLayer().getChildren().contains(getGuideLineFigure())) {
