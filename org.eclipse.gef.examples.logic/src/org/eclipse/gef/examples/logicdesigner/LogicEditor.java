@@ -188,7 +188,7 @@ protected void configureGraphicalViewer() {
 	ScrollingGraphicalViewer viewer = (ScrollingGraphicalViewer)getGraphicalViewer();
 	viewer.setRootEditPart(new FreeformGraphicalRootEditPart());
 	viewer.setEditPartFactory(new GraphicalPartFactory());
-	((FigureCanvas)viewer.getControl()).setScrollBarVisibility(FigureCanvas.ALWAYS);
+//	((FigureCanvas)viewer.getControl()).setScrollBarVisibility(FigureCanvas.ALWAYS);
 	viewer.setContextMenuProvider(getContextMenuProvider());
 	viewer.setKeyHandler(new GraphicalViewerKeyHandler(viewer)
 		.setParent(getCommonKeyHandler()));
