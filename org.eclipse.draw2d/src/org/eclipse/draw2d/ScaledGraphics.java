@@ -101,6 +101,7 @@ private List stack = new ArrayList();
 private int stackPointer = 0;
 private FontKey fontKey = new FontKey();
 private static PointList[] pointListCache = new PointList[8];
+private boolean allowText = true;
 
 static {
 	for (int i = 0; i < pointListCache.length; i++)
@@ -222,19 +223,23 @@ public void fillRoundRectangle(Rectangle r, int arcWidth, int arcHeight) {
 }
 
 public void drawString(String s, int x, int y) {
-	graphics.drawString(s, zoomTextPoint(x, y));
+	if (allowText)
+		graphics.drawString(s, zoomTextPoint(x, y));
 }
 
 public void fillString(String s, int x, int y) {
-	graphics.fillString(s, zoomTextPoint(x, y));
+	if (allowText)
+		graphics.fillString(s, zoomTextPoint(x, y));
 }
 
 public void drawText(String s, int x, int y) {
-	graphics.drawText(s, zoomTextPoint(x, y));
+	if (allowText)
+		graphics.drawText(s, zoomTextPoint(x, y));
 }
 
 public void fillText(String s, int x, int y) {
-	graphics.fillText(s, zoomTextPoint(x, y));
+	if (allowText)
+		graphics.fillText(s, zoomTextPoint(x, y));
 }
 
 public Color getBackgroundColor() {
@@ -467,12 +472,14 @@ private Rectangle zoomFillRect(int x, int y, int w, int h) {
 
 Font zoomFont(Font f) {
 	FontData data = getCachedFontData(f);
-	fontKey.setValues(f, zoomFontHeight(data.getHeight()));
+	int zoomedFontHeight = zoomFontHeight(data.getHeight());
+	allowText = zoomedFontHeight > 0;
+	fontKey.setValues(f, zoomedFontHeight);
 	return getCachedFont(fontKey);
 }
 
 int zoomFontHeight(int height) {
-	return ((int)(zoom * height));
+	return (int)(zoom * height);
 }	
 
 private Rectangle zoomClipRect(Rectangle r) {
