@@ -74,11 +74,10 @@ public void createPartControl(Composite comp) {
 		}
 	}
 
-
 	new InitialRankSolver().visit(g);
 	int r = 1;
-	System.out.println("Graph contains " + g.edges.size() + " edges.");
-	System.out.println("Graph contains " + g.nodes.size() + " nodes.");
+//	System.out.println("Graph contains " + g.edges.size() + " edges.");
+//	System.out.println("Graph contains " + g.nodes.size() + " nodes.");
 
 	while (true) {
 		boolean work = false;
