@@ -3,11 +3,10 @@ package org.eclipse.gef.examples.flow.parts;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.draw2d.graph.CompoundDirectedGraph;
+import org.eclipse.draw2d.graph.Edge;
+import org.eclipse.draw2d.graph.Node;
 import org.eclipse.gef.EditPart;
-import org.eclipse.gef.EditPolicy;
-import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
-import org.eclipse.gef.examples.flow.policies.*;
-import org.eclipse.draw2d.graph.*;
 
 /**
  * @author hudsonr
@@ -16,20 +15,6 @@ import org.eclipse.draw2d.graph.*;
 public class SequentialActivityPart
 	extends StructuredActivityPart
 {
-
-/**
- * @see org.eclipse.gef.examples.flow.parts.StructuredActivityPart#createEditPolicies()
- */
-protected void createEditPolicies() {
-	installEditPolicy(EditPolicy.PRIMARY_DRAG_ROLE, new NonResizableEditPolicy());
-	installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE, new ActivityNodeEditPolicy());
-	installEditPolicy(EditPolicy.COMPONENT_ROLE, new ActivityEditPolicy());
-	installEditPolicy(
-		EditPolicy.SELECTION_FEEDBACK_ROLE,
-		new ActivityContainerHighlightEditPolicy());
-	installEditPolicy(EditPolicy.LAYOUT_ROLE, new SequentialActivityLayoutEditPolicy());
-	installEditPolicy(EditPolicy.DIRECT_EDIT_ROLE, new StructuredActivityDirectEditPolicy());
-}
 
 /**
  * @see ActivityPart#contributeEdgesToGraph(org.eclipse.graph.CompoundDirectedGraph, 

@@ -1,16 +1,17 @@
 package org.eclipse.gef.examples.flow.parts;
 
-import java.util.*;
+import java.util.EventObject;
+import java.util.Map;
 
+import org.eclipse.draw2d.Figure;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2d.graph.CompoundDirectedGraph;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.commands.CommandStackListener;
 import org.eclipse.gef.editpolicies.RootComponentEditPolicy;
 import org.eclipse.gef.examples.flow.policies.ActivityContainerEditPolicy;
-import org.eclipse.draw2d.graph.*;
-
-import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.gef.examples.flow.policies.StructuredActivityLayoutEditPolicy;
 
 /**
  * @author hudsonr
@@ -46,6 +47,7 @@ protected void createEditPolicies() {
 	installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE, null);
 	installEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE, null);
 	installEditPolicy(EditPolicy.COMPONENT_ROLE, new RootComponentEditPolicy());
+	installEditPolicy(EditPolicy.LAYOUT_ROLE, new StructuredActivityLayoutEditPolicy());
 	installEditPolicy(EditPolicy.CONTAINER_ROLE, new ActivityContainerEditPolicy());
 }
 

@@ -67,7 +67,8 @@ protected void showHighlight() {
  * @see org.eclipse.gef.EditPolicy#showTargetFeedback(org.eclipse.gef.Request)
  */
 public void showTargetFeedback(Request request) {
-	if (request.getType().equals(RequestConstants.REQ_CREATE))
+	if (request.getType().equals(RequestConstants.REQ_CREATE)
+		|| request.getType().equals(RequestConstants.REQ_ADD))
 		showHighlight();
 }
 

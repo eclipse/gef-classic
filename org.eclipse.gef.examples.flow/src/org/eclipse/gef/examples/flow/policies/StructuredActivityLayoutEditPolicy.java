@@ -16,20 +16,27 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.FlowLayoutEditPolicy;
 import org.eclipse.gef.examples.flow.model.Activity;
 import org.eclipse.gef.examples.flow.model.StructuredActivity;
+import org.eclipse.gef.examples.flow.model.commands.AddCommand;
 import org.eclipse.gef.examples.flow.model.commands.CreateCommand;
 import org.eclipse.gef.requests.CreateRequest;
 
 /**
  * @author Daniel Lee
  */
-public class SequentialActivityLayoutEditPolicy extends FlowLayoutEditPolicy {
+public class StructuredActivityLayoutEditPolicy extends FlowLayoutEditPolicy {
 
 /**
  * @see OrderedLayoutEditPolicy#createAddCommand(org.eclipse.gef.EditPart, 
  * 													org.eclipse.gef.EditPart)
  */
 protected Command createAddCommand(EditPart child, EditPart after) {
-	return null;
+	Activity activity = (Activity)child.getModel();
+	AddCommand add = new AddCommand();
+	add.setParent((StructuredActivity)getHost().getModel());
+	add.setChild(activity);
+	int index = getHost().getChildren().indexOf(after);
+	add.setIndex(index);
+	return add;
 }
 
 /**
@@ -39,7 +46,6 @@ protected Command createAddCommand(EditPart child, EditPart after) {
 protected Command createMoveChildCommand(EditPart child, EditPart after) {
 	return null;
 }
-
 
 /**
  * @see LayoutEditPolicy#getCreateCommand(org.eclipse.gef.requests.CreateRequest)

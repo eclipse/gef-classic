@@ -7,17 +7,21 @@ import java.util.Map;
 
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2d.graph.CompoundDirectedGraph;
+import org.eclipse.draw2d.graph.Node;
+import org.eclipse.draw2d.graph.Subgraph;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
-import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
 import org.eclipse.gef.examples.flow.model.Activity;
 import org.eclipse.gef.examples.flow.model.FlowElement;
-import org.eclipse.gef.examples.flow.policies.*;
+import org.eclipse.gef.examples.flow.policies.ActivityDirectEditPolicy;
+import org.eclipse.gef.examples.flow.policies.ActivityEditPolicy;
+import org.eclipse.gef.examples.flow.policies.ActivityNodeEditPolicy;
+import org.eclipse.gef.examples.flow.policies.ActivitySourceEditPolicy;
 import org.eclipse.gef.tools.DirectEditManager;
-import org.eclipse.draw2d.graph.*;
 
 /**
  * @author hudsonr
@@ -66,7 +70,6 @@ public void contributeEdgesToGraph(CompoundDirectedGraph graph, Map map) {
  * @see org.eclipse.gef.editparts.AbstractEditPart#createEditPolicies()
  */
 protected void createEditPolicies() {
-	installEditPolicy(EditPolicy.PRIMARY_DRAG_ROLE, new NonResizableEditPolicy());
 	installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE, new ActivityNodeEditPolicy());
 	installEditPolicy(EditPolicy.CONTAINER_ROLE, new ActivitySourceEditPolicy());
 	installEditPolicy(EditPolicy.COMPONENT_ROLE, new ActivityEditPolicy());

@@ -10,16 +10,20 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.flow.policies;
 
+import java.util.List;
+
 import org.eclipse.gef.EditPart;
-import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
+import org.eclipse.gef.commands.CompoundCommand;
 import org.eclipse.gef.editpolicies.ContainerEditPolicy;
 import org.eclipse.gef.examples.flow.model.Activity;
 import org.eclipse.gef.examples.flow.model.StructuredActivity;
-import org.eclipse.gef.examples.flow.model.commands.CreateCommand;
+import org.eclipse.gef.examples.flow.model.commands.OrphanChildCommand;
 import org.eclipse.gef.requests.CreateRequest;
+import org.eclipse.gef.requests.GroupRequest;
 
 /**
+ * ActivityContainerEditPolicy
  * @author Daniel Lee
  */
 public class ActivityContainerEditPolicy extends ContainerEditPolicy {
@@ -28,19 +32,22 @@ public class ActivityContainerEditPolicy extends ContainerEditPolicy {
  * @see ContainerEditPolicy#getCreateCommand(org.eclipse.gef.requests.CreateRequest)
  */
 protected Command getCreateCommand(CreateRequest request) {
-	CreateCommand cmd = new CreateCommand();
-	cmd.setParent((StructuredActivity)getHost().getModel());
-	cmd.setChild((Activity)request.getNewObject());
-	return cmd;
+	return null;
 }
 
 /**
- * @see AbstractEditPolicy#getTargetEditPart(org.eclipse.gef.Request)
+ * @see org.eclipse.gef.editpolicies.ContainerEditPolicy#getOrphanChildrenCommand(org.eclipse.gef.requests.GroupRequest)
  */
-public EditPart getTargetEditPart(Request request) {
-	if (REQ_CREATE.equals(request.getType()))
-		return getHost();
-	return super.getTargetEditPart(request);
+protected Command getOrphanChildrenCommand(GroupRequest request) {
+	List parts = request.getEditParts();
+	CompoundCommand result = new CompoundCommand();
+	for (int i = 0; i < parts.size(); i++) {
+		OrphanChildCommand orphan = new OrphanChildCommand();
+		orphan.setChild((Activity)((EditPart)parts.get(i)).getModel());
+		orphan.setParent((StructuredActivity)getHost().getModel());
+		result.add(orphan);
+	}
+	return result.unwrap();
 }
 
 }
