@@ -50,15 +50,22 @@ public void dragStart(DragSourceEvent event) {
 public void dragFinished(DragSourceEvent event) {
 	TreeViewerTransfer.getInstance().setObject(null);
 	TreeViewerTransfer.getInstance().setViewer(null);
-	revertModelSelection();
+	if (event.doit == true)
+		revertModelSelection();
+	else
+		modelSelection = null;
 }
 
 protected void revertModelSelection() {
 	List list = new ArrayList();
+	Object editpart;
 	for (int i = 0; i < modelSelection.size(); i++) {
-		list.add(getViewer().getEditPartRegistry().get(modelSelection.get(i)));
+		editpart = getViewer().getEditPartRegistry().get(modelSelection.get(i));
+		if (editpart != null)
+			list.add(editpart);
 	}
 	getViewer().setSelection(new StructuredSelection(list));
+	modelSelection = null;
 }
 
 protected void saveModelSelection(List editPartSelection) {
