@@ -39,19 +39,23 @@ public SubgraphBoundary(Subgraph s, Insets p, int side) {
 	super(null, s);
 	this.width = s.width;
 	this.height = s.height;
-	this.padding = new Insets(p);
+	this.padding = new Insets();
 	switch (side) {
 		case LEFT :
 			width = s.insets.left;
 			y = s.y;
+			padding.left = p.left;
 			padding.right = s.innerPadding.left;
+			padding.top = padding.bottom = 0;
 			setParent(s.getParent());
 			data = "left(" + s + ")"; //$NON-NLS-1$ //$NON-NLS-2$
 			break;
 		case RIGHT :
 			width = s.insets.right;
 			y = s.y;
+			padding.right = p.right;
 			padding.left = s.innerPadding.right;
+			padding.top = padding.bottom = 0;
 			setParent(s.getParent());
 			data = "right(" + s + ")"; //$NON-NLS-1$ //$NON-NLS-2$
 			break;
@@ -59,6 +63,7 @@ public SubgraphBoundary(Subgraph s, Insets p, int side) {
 			height = s.insets.top;
 			//$TODO width of head/tail should be 0
 			width = 5;
+			padding.top = p.top;
 			padding.bottom = s.innerPadding.top;
 			padding.left = padding.right = 0;
 			data = "top(" + s + ")"; //$NON-NLS-1$ //$NON-NLS-2$
@@ -68,6 +73,7 @@ public SubgraphBoundary(Subgraph s, Insets p, int side) {
 			//$TODO width of head/tail should be 0
 			width = 5;
 			padding.top = s.innerPadding.bottom;
+			padding.bottom = p.bottom;
 			padding.left = padding.right = 0;
 			data = "bottom(" + s + ")"; //$NON-NLS-1$ //$NON-NLS-2$
 			break;
