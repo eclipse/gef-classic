@@ -73,6 +73,11 @@ public Rectangle getFreeformExtent() {
 	return r;
 }
 
+public void remove(IFigure child) {
+	getConstraints().remove(child);
+	super.remove(child);
+}
+
 public void setConstraint(IFigure child, Object constraint) {
 	getConstraints().put(child, constraint);
 }
