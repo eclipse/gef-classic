@@ -45,7 +45,7 @@ protected SimpleDragTracker() { }
  * @see org.eclipse.gef.tools.AbstractTool#calculateCursor()
  */
 protected Cursor calculateCursor() {
-	if (isInState(STATE_DRAG | STATE_ACCESSIBLE_DRAG))
+	if (isInState(STATE_INITIAL | STATE_DRAG | STATE_ACCESSIBLE_DRAG))
 		return getDefaultCursor();
 	return super.calculateCursor();
 }
