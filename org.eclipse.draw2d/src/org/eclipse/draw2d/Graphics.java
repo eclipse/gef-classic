@@ -464,7 +464,7 @@ public abstract int getLineWidth();
  */
 private PointList getPointList(int[] points) {
 	PointList pointList = new PointList(points.length / 2);
-	for (int i = 0; i < points.length; i += 2)
+	for (int i = 0; (i + 1) < points.length; i += 2)
 		pointList.addPoint(points[i], points[i + 1]);
 	return pointList;
 }

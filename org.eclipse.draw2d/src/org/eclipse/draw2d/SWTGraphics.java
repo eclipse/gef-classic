@@ -628,10 +628,9 @@ public void setXORMode(boolean b) {
 private void translatePointArray(int[] points, int translateX, int translateY) {
 	if (translateX == 0 && translateY == 0)
 		return;
-	for (int i = 0; i < points.length; i += 2) {
+	for (int i = 0; (i + 1) < points.length; i += 2) {
 		points[i] += translateX;
-		if ((i + 1) < points.length)
-			points[i + 1] += translateY;
+		points[i + 1] += translateY;
 	}
 }
 
