@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 /**
  * @author hudsonr
- * @since 2.1
+ * @since 2.1.2
  */
 public class NodeList extends ArrayList {
 

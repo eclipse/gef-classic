@@ -34,7 +34,7 @@ import org.eclipse.draw2d.geometry.Insets;
  * </UL>
  * 
  * @author hudsonr
- * Created on Jul 2, 2003
+ * @since 2.1.2
  */
 public class Subgraph extends Node {
 

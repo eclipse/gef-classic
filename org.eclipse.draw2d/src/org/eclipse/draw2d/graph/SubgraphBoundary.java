@@ -15,7 +15,7 @@ import org.eclipse.draw2d.geometry.Insets;
 /**
  * 
  * @author hudsonr
- * Created on Jul 18, 2003
+ * @since 2.1.2
  */
 public class SubgraphBoundary extends Node {
 

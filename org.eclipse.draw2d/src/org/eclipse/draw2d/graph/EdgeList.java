@@ -15,7 +15,7 @@ import java.util.ArrayList;
 /**
  * A list of <code>Edge</code>s.
  * @author hudsonr
- * @since 2.1
+ * @since 2.1.2
  */
 public class EdgeList extends ArrayList {
 

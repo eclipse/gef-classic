@@ -18,7 +18,7 @@ import org.eclipse.draw2d.geometry.Insets;
  * according to certain goals, such as short, non-crossing edges, and readability.
  * 
  * @author hudsonr
- * @since 2.1
+ * @since 2.1.2
  */
 public class DirectedGraph {
 

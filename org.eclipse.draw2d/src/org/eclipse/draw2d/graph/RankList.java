@@ -15,7 +15,7 @@ import java.util.ArrayList;
 /**
  * For internal use only.  A list of lists.
  * @author hudsonr
- * @since 2.1
+ * @since 2.1.2
  */
 public class RankList {
 

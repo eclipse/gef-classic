@@ -61,15 +61,15 @@ import org.eclipse.draw2d.internal.graph.VerticalPlacement;
  * </UL>
  * <P>For each EDGE:
  * <UL>
- *   <LI>Iff an edge spans more than 1 row, it will have a list of
- *   {@link org.eclipse.draw2d.graph.Edge#vNodes virtual} nodes.  The virtual nodes will
- *   be assigned an x coordinate indicating the routing path for that edge.
- *   <LI>Iff an edge is a feedback edge, it's <code>isFeedback</code> flag will be set,
- *   and if it has virtual nodes, they will be in reverse order (bottom-up).
+ *   <LI>If an edge spans more than 1 row, it will have a list of   {@link
+ * org.eclipse.draw2d.graph.Edge#vNodes virtual} nodes.  The virtual nodes will   be
+ * assigned an x coordinate indicating the routing path for that edge.
+ *   <LI>If an edge is a feedback edge, it's <code>isFeedback</code> flag will be set,  
+ * and if it has virtual nodes, they will be in reverse order (bottom-up).
  * </UL>
  * <P>This class is not guaranteed to produce the same results for each invocation.
  * @author hudsonr
- * Created on Jul 20, 2003
+ * @since 2.1.2
  */
 public class DirectedGraphLayout extends GraphVisitor {
 
