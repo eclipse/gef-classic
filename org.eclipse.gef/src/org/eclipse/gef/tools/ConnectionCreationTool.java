@@ -28,10 +28,13 @@ public class ConnectionCreationTool
 	extends AbstractConnectionCreationTool
 {
 
-public ConnectionCreationTool() { }
+public ConnectionCreationTool() {
+	setUnloadWhenFinished(false);
+}
 
 public ConnectionCreationTool(CreationFactory factory) {
 	setFactory(factory);
+	setUnloadWhenFinished(false);
 }
 
 boolean acceptConnectionFinish(KeyEvent event) {

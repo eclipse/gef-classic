@@ -42,6 +42,7 @@ private static final Request MARQUEE_REQUEST =
  */
 public MarqueeSelectionTool() {
 	setDefaultCursor(SharedCursors.CROSS); 
+	setUnloadWhenFinished(false);
 }
 
 private List calculateNewSelection() {
