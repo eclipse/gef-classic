@@ -24,6 +24,11 @@ public int delta = 1;
  */
 public boolean flag;
 
+/**
+ * Internal field, used to determine if edge source and target should be swapped.
+ */
+public boolean inverted = false;
+
 public int offsetSource = -1;
 public int offsetTarget = -1;
 
@@ -107,6 +112,31 @@ public Node opposite(Node end){
 		return target;
 	return source;
 }
+
+/**
+ * Inverts this edge. (Source becomes target, target becomes source).
+ */
+public void invert() {	
+	Node oldTarget = target;
+	
+	source.outgoing.remove(this);
+	target.incoming.remove(this);
+	
+	target = source;
+	source = oldTarget;
+	
+	target.incoming.add(this);
+	source.outgoing.add(this);
+	
+	if (vNodes != null) {
+		NodeList newVNodes = new NodeList();
+		for (int j = vNodes.size() - 1; j >= 0; j--) {
+			newVNodes.add(vNodes.getNode(j));
+		}
+		vNodes = newVNodes;
+	}
+}
+
 
 int span() {
 	return target.rank - source.rank;

@@ -8,6 +8,8 @@ package org.eclipse.graph;
 public class DirectedGraphLayout extends GraphVisitor {
 
 public void visit(DirectedGraph graph) {
+	new BreakCycles()
+		.visit(graph);
 	new InitialRankSolver()
 		.visit(graph);
 	new TightSpanningTreeSolver()
@@ -23,7 +25,9 @@ public void visit(DirectedGraph graph) {
 	new LocalOptimizer()
 		.visit(graph);
 	new HorizontalPlacement()
-		.visit(graph);	
+		.visit(graph);
+	new InvertEdges()
+		.visit(graph);
 }
 
 }

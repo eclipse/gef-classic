@@ -9,7 +9,11 @@ package org.eclipse.graph;
 public class CompoundDirectedGraphLayout extends GraphVisitor {
 
 public void visit(DirectedGraph graph) {
+	new BreakCycles()
+		.visit(graph);
 	new ConvertCompoundGraph()
+		.visit(graph);
+	new BreakCycles()
 		.visit(graph);
 	new InitialRankSolver()
 		.visit(graph);
@@ -33,11 +37,17 @@ public void visit(DirectedGraph graph) {
 		Rank rank = graph.ranks.getRank(i);
 		rank.assignIndices();
 	}
+	
+	new LocalOptimizer()
+		.visit(graph);
 
 	new SortSubgraphs()
 		.visit(graph);
 
 	new CompoundHorizontalPlacement()
+		.visit(graph);
+		
+	new InvertEdges()
 		.visit(graph);
 }
 

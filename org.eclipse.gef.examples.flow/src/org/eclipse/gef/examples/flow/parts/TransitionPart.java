@@ -26,6 +26,8 @@ protected void applyGraphResults(CompoundDirectedGraph graph, Map map) {
 	Edge e = (Edge)map.get(this);
 	NodeList nodes = e.vNodes;
 	PolylineConnection conn = (PolylineConnection)getConnectionFigure();
+	conn.setTargetDecoration(new PolygonDecoration());
+	conn.setConnectionRouter(null);
 	if (nodes != null) {
 		List bends = new ArrayList();
 		conn.setConnectionRouter(new BendpointConnectionRouter());
@@ -33,14 +35,18 @@ protected void applyGraphResults(CompoundDirectedGraph graph, Map map) {
 			Node vn = nodes.getNode(i);
 			int x = vn.x;
 			int y = vn.y;
-			bends.add(new AbsoluteBendpoint(x, y));
-			bends.add(new AbsoluteBendpoint(x, y + vn.height));
+			if (e.inverted) {
+				bends.add(new AbsoluteBendpoint(x, y + vn.height));
+				bends.add(new AbsoluteBendpoint(x, y));
+
+			} else {
+				bends.add(new AbsoluteBendpoint(x, y));
+				bends.add(new AbsoluteBendpoint(x, y + vn.height));
+			}
 		}
 		conn.setRoutingConstraint(bends);
-	} else
-		conn.setConnectionRouter(null);
+	}
 }
-
 /**
  * @see org.eclipse.gef.editparts.AbstractEditPart#createEditPolicies()
  */
