@@ -55,7 +55,8 @@ protected void doTest2(String string1, String string2, String widthString, Strin
 	textFlow2.setText(string2);
 	figure.validate();
 	ArrayList list = new ArrayList(textFlow.getFragments());
-	list.addAll(textFlow2.getFragments());
+	if (string2.length() != 0)
+		list.addAll(textFlow2.getFragments());
 	Iterator frags = list.iterator();
 	
 	int index = 0;
@@ -230,7 +231,6 @@ protected void runTruncatedWrappingTests() {
 	doTest("Fooooooo", "...", new String[] {"", TRUNCATED, TERMINATE});
 	doTest("WWW", "|...", new String[] {"", TRUNCATED, TERMINATE});
 	doTest(" Foo", "Foo", new String[] {"", "Foo", TERMINATE});
-//	doTest("aha \nb \r c ", "", new String[] {"", TRUNCATED, "", "", TRUNCATED, "", "", "", TRUNCATED, TERMINATE});
 	doTest("aha \nb \r c ", "", new String[] {"", TRUNCATED, "", NON_TRUNCATED, "b", "", NON_TRUNCATED, "", "c", TERMINATE});
 	doTest("aha \nb \r c", "", new String[] {"", TRUNCATED, "", NON_TRUNCATED, "b", "", NON_TRUNCATED, "", "c", TERMINATE});
 	doTest("aha \nb \r w ", "..", new String[] {"", TRUNCATED, "", NON_TRUNCATED, "b", "", NON_TRUNCATED, "", "w", TERMINATE});
