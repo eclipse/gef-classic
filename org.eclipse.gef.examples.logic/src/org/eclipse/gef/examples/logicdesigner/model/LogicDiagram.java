@@ -14,13 +14,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.swt.graphics.Image;
+
 import org.eclipse.ui.views.properties.ComboBoxPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 
 import org.eclipse.draw2d.PositionConstants;
 
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
-import org.eclipse.gef.examples.logicdesigner.rulers.Guide;
 import org.eclipse.gef.examples.logicdesigner.rulers.Ruler;
 
 public class LogicDiagram
@@ -62,29 +62,6 @@ public void addChild(LogicElement child, int index){
 protected void createRulers() {
 	leftRuler = new Ruler(false);
 	topRuler = new Ruler(true);
-	
-//	Guide g = new Guide(true);
-//	g.setPosition(25);
-//	leftRuler.addGuide(g);
-//	g = new Guide(true);
-//	g.setPosition(400);
-//	leftRuler.addGuide(g);
-//
-//	g = new Guide(false);
-//	g.setPosition(125);
-//	topRuler.addGuide(g);
-//	g = new Guide(false);
-//	g.setPosition(325);
-//	topRuler.addGuide(g);
-//	g = new Guide(false);
-//	g.setPosition(0);
-//	topRuler.addGuide(g);
-//	g = new Guide(false);
-//	g.setPosition(-500);
-//	topRuler.addGuide(g);
-//	g = new Guide(false);
-//	g.setPosition(1200);
-//	topRuler.addGuide(g);
 }
 
 public List getChildren(){
