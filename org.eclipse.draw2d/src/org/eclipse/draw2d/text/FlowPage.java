@@ -56,7 +56,7 @@ public void invalidate() {
 }
 
 /**
- * @see Figure#getPreferredSize(int, int)
+ * @see org.eclipse.draw2d.Figure#getPreferredSize(int, int)
  */
 public Dimension getPreferredSize(int width, int h) {
 	if (width >= 0)
@@ -129,7 +129,7 @@ private void setRecommendedWidth(int width) {
 }
 
 /**
- * @see Figure#validate()
+ * @see org.eclipse.draw2d.Figure#validate()
  */
 public void validate() {
 	if (isValid())
