@@ -8,16 +8,24 @@ package org.eclipse.gef.ui.parts;
 
 import java.util.*;
 
-import org.eclipse.gef.*;
-import org.eclipse.gef.dnd.*;
-import org.eclipse.jface.util.Assert;
-import org.eclipse.jface.viewers.*;
+import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DragSource;
 import org.eclipse.swt.dnd.DropTarget;
-import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Menu;
+
+import org.eclipse.jface.util.Assert;
+import org.eclipse.jface.action.IMenuListener;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.viewers.*;
+
+import org.eclipse.gef.*;
+import org.eclipse.gef.dnd.*;
+
+import org.eclipse.draw2d.geometry.Point;
 
 abstract public class AbstractEditPartViewer
 	implements EditPartViewer
@@ -119,6 +127,22 @@ public void dispose(){
 }
 
 protected void expose(EditPart part){
+}
+
+
+/**
+ * Returns the <code>Data</code> of the TreeItem at the given point.
+ * Returns null if the Point is not on the Control (Tree).  Returns
+ * the data of the Tree if there is no TreeItem at the given point.
+ *
+ * @param	pt	The location at which to look for a TreeItem
+ */ 
+public final EditPart findObjectAt(Point pt) {
+	return findObjectAtExcluding(pt, Collections.EMPTY_SET);
+}
+
+public final EditPart findObjectAtExcluding(Point pt, Collection exclude) {
+	return findObjectAtExcluding(pt, exclude, null);
 }
 
 protected void fireSelectionChanged() {

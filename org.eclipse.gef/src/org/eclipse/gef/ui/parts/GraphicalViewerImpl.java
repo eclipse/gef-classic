@@ -17,6 +17,7 @@ import org.eclipse.swt.widgets.*;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.util.Assert;
 
+import org.eclipse.draw2d.ExclusionSearch;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.LightweightSystem;
 import org.eclipse.draw2d.geometry.Point;
@@ -81,21 +82,21 @@ public Handle findHandleAt(Point p){
 	return null;
 }
 
-public EditPart findObjectAt(Point pt) {
-	return findObjectAtExcluding(pt, Collections.EMPTY_SET);
-}
-
-/** @deprecated should be passing EditParts, not Figures */
-public EditPart findObjectAtExcluding(Point pt, Collection exclude){
-	Collection c = new ArrayList(getInactiveLayers());
-	c.addAll(exclude);
-
-	IFigure figure = getLightweightSystem().getRootFigure().findFigureAtExcluding(pt.x, pt.y, c);
+public EditPart findObjectAtExcluding(Point pt, Collection exclude, final Conditional condition) {
+	class ConditionalTreeSearch extends ExclusionSearch {
+		ConditionalTreeSearch (Collection coll) {
+			super(coll);
+		}
+		public boolean accept(IFigure figure) {
+			EditPart editpart = (EditPart)getVisualPartMap().get(figure);
+			return editpart != null
+				&& (condition == null || condition.evaluate(editpart));
+		}
+	};
+	IFigure figure = getLightweightSystem()
+		.getRootFigure()
+		.findFigureAt(pt.x, pt.y, new ConditionalTreeSearch(exclude));
 	EditPart part = (EditPart)getVisualPartMap().get(figure);
-	while(figure != null && part == null) {
-		figure = figure.getParent();
-		part = (EditPart)getVisualPartMap().get(figure);
-	}
 	if (part == null)
 		return getContents();
 	return part;
@@ -108,15 +109,6 @@ public void flush(){
 /**@deprecated*/
 protected DomainEventDispatcher getEventDispatcher(){
 	return eventDispatcher;
-}
-
-/**@deprecated */
-protected Collection getInactiveLayers(){
-	List list = new ArrayList();
-	LayerManager layers = getLayerManager();
-	list.add(layers.getLayer(LayerConstants.HANDLE_LAYER));
-	list.add(layers.getLayer(LayerConstants.FEEDBACK_LAYER));
-	return list;
 }
 
 protected LayerManager getLayerManager(){

@@ -160,8 +160,8 @@ public void setViewer(EditPartViewer newViewer) {
 class FeedbackLayer
 	extends Layer
 {
-	public IFigure findFigureAtExcluding( int x, int y, Collection c ){
-		return null;
+	FeedbackLayer() {
+		setEnabled(false);
 	}
 }
 

@@ -156,8 +156,8 @@ public void setViewer(EditPartViewer newViewer) {
 class FeedbackLayer
 	extends FreeformLayer
 {
-	public IFigure findFigureAtExcluding( int x, int y, Collection c ){
-		return null;
+	FeedbackLayer() {
+		setEnabled(false);
 	}
 }
 

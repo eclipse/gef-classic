@@ -102,6 +102,17 @@ private EditPart getLastHandleProvider(){
 	return part;
 }
 
+/**
+ * @see org.eclipse.gef.tools.TargetingTool#getTargetConditional()
+ */
+protected EditPartViewer.Conditional getTargetingConditional() {
+	return new EditPartViewer.Conditional() {
+		public boolean evaluate(EditPart editpart) {
+			return editpart.isSelectable();
+		}
+	};
+}
+
 protected Request getTargetHoverRequest() {
 	if (hoverRequest == null)
 		createHoverRequest();

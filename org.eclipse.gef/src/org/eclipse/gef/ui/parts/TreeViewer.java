@@ -104,17 +104,6 @@ public Control createControl(Composite parent) {
 }
 
 /**
- * Returns the <code>Data</code> of the TreeItem at the given point.
- * Returns null if the Point is not on the Control (Tree).  Returns
- * the data of the Tree if there is no TreeItem at the given point.
- *
- * @param	pt	The location at which to look for a TreeItem
- */ 
-public EditPart findObjectAt(Point pt) {
-	return findObjectAtExcluding(pt, Collections.EMPTY_SET);
-}
-
-/**
  * Returns the <code>Data</code> of the TreeItem at the given point. Returns null if the
  * Point is not on the Control (Tree).  Returns the data of the Tree if there is no
  * TreeItem at the given point. Sub-classes can override this method to respect the
@@ -122,8 +111,8 @@ public EditPart findObjectAt(Point pt) {
  *
  * @param	pt		The location at which to look for a TreeItem
  * @param	exclude	The collection of EditParts to be excluded.
- */ 
-public EditPart findObjectAtExcluding(Point pt, Collection exclude) {
+ */
+public EditPart findObjectAtExcluding(Point pt, Collection exclude, Conditional condition) {
 	if (getControl() == null)
 		return null;
 

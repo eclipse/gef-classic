@@ -71,6 +71,14 @@ protected Collection getExclusionSet(){
 	return Collections.EMPTY_LIST;
 }
 
+protected EditPartViewer.Conditional getTargetingConditional() {
+	return new EditPartViewer.Conditional() {
+		public boolean evaluate(EditPart editpart) {
+			return editpart.getTargetEditPart(getTargetRequest()) != null;
+		}
+	};
+}
+
 protected EditPart getTargetEditPart(){
 	return targetEditPart;
 }
@@ -163,12 +171,15 @@ protected void unlockTargetEditPart() {
 protected void updateTargetRequest(){}
 
 /**
- * Returns true if the target has changed.
+ * Returns <code>true</code> if the target has changed.
  */
 protected boolean updateTargetUnderMouse(){
 	if (!isTargetLocked()) {
-		Collection set = getExclusionSet();
-		EditPart editPart = getCurrentViewer().findObjectAtExcluding(getLocation(),set);
+		Collection exclude = getExclusionSet();
+		EditPart editPart = getCurrentViewer().findObjectAtExcluding(
+			getLocation(),
+			exclude,
+			getTargetingConditional());
 		if (editPart != null)
 			editPart = editPart.getTargetEditPart(getTargetRequest());
 		boolean changed = getTargetEditPart() != editPart;

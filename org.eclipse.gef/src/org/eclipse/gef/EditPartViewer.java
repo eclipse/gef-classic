@@ -48,6 +48,10 @@ public interface EditPartViewer
 	extends org.eclipse.jface.viewers.ISelectionProvider
 {
 
+interface Conditional {
+	boolean evaluate(EditPart editpart);
+}
+
 /**
  * Adds a <code>TransferDragSourceListener</code> to this viewer. This has the side-effect
  * of ensuring that a {@link org.eclipse.swt.dnd.DragSource} exists for the viewer's
@@ -124,12 +128,24 @@ EditPart findObjectAt(Point location);
 /**
  * Returns <code>null</code> or the <code>EditPart</code> at the specified location,
  * excluding the specified set.  This method behaves similarly to {@link
- * #findObjectAt(Point)}
+ * #findObjectAt(Point)}.
  * @param location The mouse location
  * @param exclusionSet The set of EditParts to be excluded
  * @return <code>null</code> or an EditPart
  */
 EditPart findObjectAtExcluding(Point location, Collection exclusionSet);
+
+
+/**
+ * Returns <code>null</code> or the <code>EditPart</code> at the specified location,
+ * using the given exclusion set and conditional. This method behaves similarly to {@link
+ * #findObjectAt(Point)}.
+ * @param location The mouse location
+ * @param exclusionSet The set of EditParts to be excluded
+ * @param conditional the Conditional used to evaluate a potential hit
+ * @return <code>null</code> or an EditPart
+ */
+EditPart findObjectAtExcluding(Point location, Collection exclusionSet, Conditional conditional);
 
 /**
  * Flushes all pending updates to the Viewer.
