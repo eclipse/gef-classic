@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.draw2d.text;
 
+
 /**
  * The context that a {@link FlowFigureLayout} uses to perform its layout.
  * 
@@ -30,6 +31,24 @@ void addToCurrentLine(FlowBox box);
 void endLine();
 
 /**
+ * This method is used to convey layout state to different FlowFigures.  This state is
+ * cleared when a fragments is added to the current line and once the layout is complete.
+ * @return <code>true</code> if leading whitespace should be consumed on the newline
+ * @since 3.1
+ * @see #setConsumeSpaceOnNewLine(boolean)
+ */
+boolean getConsumeSpaceOnNewLine();
+
+/**
+ * This method is used to convey layout state to different FlowFigures.  This state is
+ * cleared when a fragment is added to the current line and once the layout is complete.
+ * @return <code>true</code> if the next fragment should be placed on the current line
+ * @since 3.1
+ * @see #setContinueOnSameLine(boolean)
+ */
+boolean getContinueOnSameLine();
+
+/**
  * Obtains the current line, creating a new line if there is no current line.
  * @return the current line */
 LineBox getCurrentLine();
@@ -41,7 +60,42 @@ LineBox getCurrentLine();
 int getCurrentY();
 
 /**
+ * This method looks ahead for line-breaks.  When laying out, this method can be used
+ * to determine the next line-break across multiple figures.
+ * 
+ * @param child the search will occur starting from the figure after the given child
+ * @param width the width before the next line-break (if one's found; all the width,
+ * otherwise) will be added on to the first int in the given array
+ * @return boolean indicating whether a line-break was found
+ * @since 3.1
+ */
+boolean getWordWidthFollowing(FlowFigure child, int[] width);
+
+/**
  * @return <code>true</code> if the current line contains any fragments */
 boolean isCurrentLineOccupied();
+
+/**
+ * This method is used to convey layout state to different FlowFigures.  This state is
+ * cleared when a fragment is added and once the layout is complete.
+ * 
+ * @param consume <code>true</code> indicates that the next TextFlow to be laid out should 
+ * not display its first whitespace character (if it has one), if it is being placed on
+ * a new line
+ * @since 3.1
+ * @see #getConsumeSpaceOnNewLine()
+ */
+void setConsumeSpaceOnNewLine(boolean consume);
+
+/**
+ * This method is used to convey layout state to different FlowFigures.  This state is
+ * cleared when a fragment is added and once the layout is complete.
+ * 
+ * @param value <code>true</code> indicates that the first fragment of the next TextFlow
+ * should be laid out on the current line, and not a new one
+ * @since 3.1
+ * @see #getContinueOnSameLine()
+ */
+void setContinueOnSameLine(boolean value);
 
 }
