@@ -34,7 +34,7 @@ import org.eclipse.gef.commands.Command;
  * to communicate with EditParts in a consistent way, DropTargetEvents are processed into
  * {@link Request Requests}.
  * <P>
- * Dropping is inherantly a targeting interaction. This class handles calculating the
+ * Dropping is inherently a targeting interaction. This class handles calculating the
  * <i>target</i> EditPart. It also handles common targeting behavior, such as interacting
  * with the target EditPart or its ancestors to achieve things like
  * auto-scroll/auto-expose.
