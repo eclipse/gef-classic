@@ -183,7 +183,7 @@ public void scrollSmoothTo(int x, int y) {
 	int MIN_FRAMES = 3;
 	int MAX_FRAMES = 6;
 	if (dx == 0 || dy == 0){
-		MIN_FRAMES = 5;
+		MIN_FRAMES = 6;
 		MAX_FRAMES = 13;
 	}
 	int FRAMES = (Math.abs(dx)+Math.abs(dy))/15;
@@ -237,11 +237,13 @@ public void scrollToX(int hOffset) {
 		expose.x = dest.x + blit.width;
 	} else //Moving right
 		dest.x += dx; //Move expose area to the right
-	getViewport().setIgnoreScroll(true);
-	getViewport().setHorizontalLocation(hOffset);
+
 	scroll(dest.x, dest.y,
 			blit.x, blit.y, blit.width, blit.height,
 			true);
+
+	getViewport().setIgnoreScroll(true);
+	getViewport().setHorizontalLocation(hOffset);
 	getViewport().setIgnoreScroll(false);
 	redraw(expose.x, expose.y, expose.width, expose.height, true);
 }
@@ -268,11 +270,12 @@ public void scrollToY(int vOffset) {
 	} else //Moving down
 		dest.y += dy;
 
-	getViewport().setIgnoreScroll(true);
-	getViewport().setVerticalLocation(vOffset);
 	scroll(dest.x, dest.y,
 			blit.x, blit.y, blit.width, blit.height,
 			true);
+
+	getViewport().setIgnoreScroll(true);
+	getViewport().setVerticalLocation(vOffset);
 	getViewport().setIgnoreScroll(false);
 	redraw(expose.x, expose.y, expose.width, expose.height, true);
 }
