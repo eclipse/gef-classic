@@ -341,7 +341,7 @@ void removeDropTargetListener(TransferDropTargetListener listener);
  * removes the first instance of the specified property listener.
  * @param listener the listener to remove
  */
-void removePropertyListener(PropertyChangeListener listener);
+void removePropertyChangeListener(PropertyChangeListener listener);
 
 /**
  * Reveals the given EditPart if it is not visible.  

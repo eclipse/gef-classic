@@ -470,9 +470,9 @@ public void removeDropTargetListener(TransferDropTargetListener listener) {
 }
 
 /**
- * @see org.eclipse.gef.EditPartViewer#removePropertyListener(java.beans.PropertyChangeListener)
+ * @see org.eclipse.gef.EditPartViewer#removePropertyChangeListener(java.beans.PropertyChangeListener)
  */
-public void removePropertyListener(PropertyChangeListener listener) {
+public void removePropertyChangeListener(PropertyChangeListener listener) {
 	if (changeSupport != null) {
 		changeSupport.removePropertyChangeListener(listener);
 		if (changeSupport.getPropertyChangeListeners().length == 0)
