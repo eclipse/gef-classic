@@ -45,14 +45,7 @@ public LogicDiagram getParent() {
 }
 
 public void redo() {
-	if (rect != null) {
-		child.setLocation(rect.getLocation());
-		child.setSize    (rect.getSize());
-	}
-	if( index < 0 )
-		parent.addChild(child);
-	else
-		parent.addChild(child,index);
+	execute();
 }
 
 public void setChild(LogicSubpart subpart) {
