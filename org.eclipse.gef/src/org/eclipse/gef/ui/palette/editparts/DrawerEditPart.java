@@ -115,6 +115,10 @@ public boolean isPinnedOpen() {
 	return getDrawerFigure().isPinnedOpen();
 }
 
+public boolean canBePinned() {
+	return getDrawerFigure().isPinShowing();
+}
+
 /**
  * @see org.eclipse.gef.ui.palette.PaletteEditPart#createAccessible()
  */

@@ -205,6 +205,10 @@ public boolean isPinnedOpen() {
 	return isExpanded() && pinFigure.isSelected();
 }
 
+public boolean isPinShowing() {
+	return isExpanded() && showPin;
+}
+
 public void setAnimating(boolean value) {
 	if (isAnimating == value)
 		return;
