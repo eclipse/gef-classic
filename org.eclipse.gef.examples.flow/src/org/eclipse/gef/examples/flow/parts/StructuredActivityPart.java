@@ -6,15 +6,14 @@ import java.util.Map;
 import org.eclipse.jface.viewers.TextCellEditor;
 
 import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.geometry.Insets;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2d.geometry.*;
 import org.eclipse.draw2d.graph.CompoundDirectedGraph;
 import org.eclipse.draw2d.graph.Subgraph;
 
 import org.eclipse.gef.*;
-import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
+import org.eclipse.gef.requests.DirectEditRequest;
 
-import org.eclipse.gef.examples.flow.figures.*;
+import org.eclipse.gef.examples.flow.figures.SubgraphFigure;
 import org.eclipse.gef.examples.flow.model.StructuredActivity;
 import org.eclipse.gef.examples.flow.policies.*;
 
@@ -106,6 +105,15 @@ protected IFigure createFigure() {
 	return f;
 }
 
+
+private boolean directEditHitTest(Point requestLoc) {
+	IFigure header = ((SubgraphFigure)getFigure()).getHeader();
+	header.translateToRelative(requestLoc);
+	if (header.containsPoint(requestLoc))
+		return true;
+	return false;
+}
+
 /**
  * @see org.eclipse.gef.GraphicalEditPart#getContentPane()
  */
@@ -164,6 +172,20 @@ protected void performDirectEdit() {
 				new ActivityCellEditorLocator(l),l);
 	}
 	manager.show();
+}
+
+/**
+ * @see org.eclipse.gef.EditPart#performRequest(org.eclipse.gef.Request)
+ */
+public void performRequest(Request request) {
+	if (request.getType() == RequestConstants.REQ_DIRECT_EDIT) {
+		if (request instanceof DirectEditRequest
+			&& !directEditHitTest(((DirectEditRequest) request)
+				.getLocation()
+				.getCopy()))
+			return;
+		performDirectEdit();
+	}
 }
 
 /**

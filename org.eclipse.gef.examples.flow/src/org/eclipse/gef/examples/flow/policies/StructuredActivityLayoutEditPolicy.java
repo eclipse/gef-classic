@@ -11,6 +11,7 @@
 package org.eclipse.gef.examples.flow.policies;
 
 import org.eclipse.gef.EditPart;
+import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.FlowLayoutEditPolicy;
@@ -18,6 +19,7 @@ import org.eclipse.gef.examples.flow.model.Activity;
 import org.eclipse.gef.examples.flow.model.StructuredActivity;
 import org.eclipse.gef.examples.flow.model.commands.AddCommand;
 import org.eclipse.gef.examples.flow.model.commands.CreateCommand;
+import org.eclipse.gef.examples.flow.parts.SimpleActivityPart;
 import org.eclipse.gef.requests.CreateRequest;
 
 /**
@@ -37,6 +39,15 @@ protected Command createAddCommand(EditPart child, EditPart after) {
 	int index = getHost().getChildren().indexOf(after);
 	add.setIndex(index);
 	return add;
+}
+
+/**
+ * @see org.eclipse.gef.editpolicies.OrderedLayoutEditPolicy#createChildEditPolicy(org.eclipse.gef.EditPart)
+ */
+protected EditPolicy createChildEditPolicy(EditPart child) {
+	if (child instanceof SimpleActivityPart)
+		return new SimpleActivitySelectionEditPolicy();
+	return super.createChildEditPolicy(child);
 }
 
 /**

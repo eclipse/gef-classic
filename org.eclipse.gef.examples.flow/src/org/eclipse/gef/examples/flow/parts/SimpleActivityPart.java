@@ -17,6 +17,8 @@ import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.examples.flow.FlowImages;
+import org.eclipse.gef.examples.flow.figures.SimpleActivityLabel;
+
 import org.eclipse.jface.viewers.TextCellEditor;
 
 /**
@@ -40,7 +42,7 @@ public void contributeNodesToGraph(CompoundDirectedGraph graph, Subgraph s, Map 
  * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
  */
 protected IFigure createFigure() {
-	Label l = new Label();
+	Label l = new SimpleActivityLabel();
 	l.setLabelAlignment(PositionConstants.LEFT);
 	l.setIcon(FlowImages.gear);
 	return l;
