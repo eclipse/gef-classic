@@ -17,17 +17,16 @@ import org.eclipse.draw2d.geometry.Rectangle;
 /**
  * This class handles the calculation of solving for the area of a 
  * {@link org.eclipse.draw2d.ScrollPane}'s viewport and insets. Also determines if
- * the horizonal and vertical scrollbars should be visible.
- * TODO: Make scrollbar visibility constants final.
+ * the horizontal and vertical scrollbars should be visible.
  */
 public class ScrollPaneSolver {
 
-/** Scrollbar visiblity constants -- never show scrollbars **/
-public static int NEVER = 0;
-/** Scrollbar visiblity constants -- show scrollbars automatically **/
-public static int AUTOMATIC = 1;
-/** Scrollbar visiblity constants -- always show scrollbars **/
-public static int ALWAYS = 2;
+/** Scrollbar visibility constants -- never show scrollbars **/
+public static final int NEVER = 0;
+/** Scrollbar visibility constants -- show scrollbars automatically **/
+public static final int AUTOMATIC = 1;
+/** Scrollbar visibility constants -- always show scrollbars **/
+public static final int ALWAYS = 2;
 
 /**
  * Container class for the results of ScrollPaneSolver's solve method
@@ -47,7 +46,7 @@ public static class Result {
 }
 
 /**
- * Solves for the viewport area, insets, and visiblity of horizontal and vertical
+ * Solves for the viewport area, insets, and visibility of horizontal and vertical
  * scrollbars of a ScrollPane
  * @param clientArea The ScrollPane's client area
  * @param viewport The ScrollPane's Viewport
@@ -69,6 +68,8 @@ public static Result solve(Rectangle clientArea, Viewport viewport, int hVis, in
 	Dimension guaranteed = new Dimension(available).shrink(
 		    	(vVis == NEVER ? 0 : result.insets.right),
 		    	(hVis == NEVER ? 0 : result.insets.bottom));
+	guaranteed.width = Math.max(guaranteed.width, 0);
+	guaranteed.height = Math.max(guaranteed.height, 0);
 	int wHint = guaranteed.width;
 	int hHint = guaranteed.height;
 
