@@ -178,6 +178,32 @@ protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHi
 }
 
 /**
+ * returns the minor aligment of the layout.  Minor minor axis is the axis perpindicular
+ * to the overall orientation set in the contructor.
+ * @return the minor aligment
+ */
+public int getMinorAlignment() {
+	return minorAlignment;
+}
+
+/**
+ * returns the spacing between children
+ * @return the spacing
+ */
+public int getSpacing() {
+	return spacing;
+}
+
+/**
+ * returns <code>true</code> if stretch minor axis has been enabled. The default value is
+ * false.
+ * @return <code>true</code> if stretch minor axis is enabled
+ */
+public boolean getStretchMinorAxis() {
+	return matchWidth;
+}
+
+/**
  * Returns whether the orientation of the layout is horizontal.
  * @return <code>true</code> if the orientation is horizontal
  * @since 2.0
