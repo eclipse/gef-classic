@@ -217,7 +217,7 @@ protected void setupBlock() {
 	if (recommended >= 0)
 		recommended = Math.max(0, recommended - borderCorrection);
 	
-	if (recommended != blockBox.recommendedWidth) {
+	if (recommended != Integer.MAX_VALUE && recommended != blockBox.recommendedWidth) {
 		blockInvalid = true;
 		blockBox.setWidth(Math.max(0, recommended));
 		blockBox.setRecommendedWidth(recommended);
