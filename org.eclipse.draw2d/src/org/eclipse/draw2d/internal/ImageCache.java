@@ -95,17 +95,16 @@ public static Image checkout(Dimension dim, Object o) {
 	if (result != null)
 		return result;
 	
-	// Create a new image
-	ImageInfo newInfo;
 	try {
-		newInfo = new ImageInfo(d);
+		ImageInfo newInfo = new ImageInfo(d);
+		checkedOut.add(newInfo);
+		totalNumberOfImagesCreated++;
+		return newInfo.checkout(d, o);	
 	} catch (IllegalArgumentException e) {
-		newInfo = new ImageInfo(dim);
 	} catch (SWTError swte) {
-		newInfo = new ImageInfo(dim);
 	}
+	ImageInfo newInfo = new ImageInfo(dim);
 	checkedOut.add(newInfo);
-	totalNumberOfImagesCreated++;
 	return newInfo.checkout(dim, o);
 }
 
