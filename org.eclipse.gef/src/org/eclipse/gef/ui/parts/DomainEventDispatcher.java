@@ -21,11 +21,24 @@ import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.graphics.Cursor;
 
+/**
+ * A special event dispatcher that will route events to the {@link EditDomain} when
+ * appropriate.
+ * <p>
+ * IMPORTANT: This class is <EM>not</EM> intended to be used or subclassed by clients.
+ * @author hudsonr
+ */
 public class DomainEventDispatcher
 	extends SWTEventDispatcher
 {
 
+/**
+ * The edit domain
+ */
 protected EditDomain domain;
+/**
+ * The viewer on which this dispatcher is created.
+ */
 protected EditPartViewer viewer;
 private IFigure translationFigure;
 private Point currentEventPoint; 
@@ -34,16 +47,23 @@ private Cursor overrideCursor;
 private Map accessibles = new HashMap();
 private EditPartAccessibilityDispatcher accessibilityDispatcher;
 
+/**
+ * Extended accessibility support for editpart.
+ * @author hudsonr
+ */
 protected class EditPartAccessibilityDispatcher
 	extends AccessibilityDispatcher
 {
-	private AccessibleEditPart get(int childID){
-		if (childID == ACC.CHILDID_SELF
-			|| childID == ACC.CHILDID_NONE)
-			return (AccessibleEditPart)getViewer().getContents().getAdapter(AccessibleEditPart.class);
+	private AccessibleEditPart get(int childID) {
+		if (childID == ACC.CHILDID_SELF || childID == ACC.CHILDID_NONE)
+			return (AccessibleEditPart)getViewer().getContents()
+				.getAdapter(AccessibleEditPart.class);
 		return (AccessibleEditPart)accessibles.get(new Integer(childID));
 	}
 	
+	/**
+	 * @see AccessibleControlListener#getChildAtPoint(AccessibleControlEvent)
+	 */
 	public void getChildAtPoint(AccessibleControlEvent e) {
 		org.eclipse.swt.graphics.Point p = new org.eclipse.swt.graphics.Point(e.x, e.y);
 		p = getViewer().getControl().toControl(p);
@@ -55,31 +75,45 @@ protected class EditPartAccessibilityDispatcher
 		if (acc != null)
 			e.childID = acc.getAccessibleID();
 	}
-
+	/**
+	 * @see AccessibleControlListener#getChildCount(AccessibleControlEvent)
+	 */
 	public void getChildCount(AccessibleControlEvent e) {
 		AccessibleEditPart acc = get(e.childID);
 		if (acc != null)
 			acc.getChildCount(e);
 	}
 	
+	/**
+	 * @see AccessibleControlListener#getChildren(AccessibleControlEvent)
+	 */
 	public void getChildren(AccessibleControlEvent e) {
 		AccessibleEditPart acc = get(e.childID);
 		if (acc != null)
 			acc.getChildren(e);
 	}
 	
+	/**
+	 * @see AccessibleControlListener#getDefaultAction(AccessibleControlEvent)
+	 */
 	public void getDefaultAction(AccessibleControlEvent e) {
 		AccessibleEditPart acc = get(e.childID);
 		if (acc != null)
 			acc.getDefaultAction(e);
 	}
 	
+	/**
+	 * @see AccessibleListener#getDescription(AccessibleEvent)
+	 */
 	public void getDescription(AccessibleEvent e) {
 		AccessibleEditPart acc = get(e.childID);
 		if (acc != null)
 			acc.getDescription(e);
 	}
 	
+	/**
+	 * @see AccessibleControlListener#getFocus(AccessibleControlEvent)
+	 */
 	public void getFocus(AccessibleControlEvent e) {
 		AccessibleEditPart acc = (AccessibleEditPart)
 			getViewer().getFocusEditPart().getAdapter(AccessibleEditPart.class);
@@ -87,44 +121,68 @@ protected class EditPartAccessibilityDispatcher
 			e.childID = acc.getAccessibleID();
 	}
 	
+	/**
+	 * @see AccessibleListener#getHelp(AccessibleEvent)
+	 */
 	public void getHelp(AccessibleEvent e) {
 		AccessibleEditPart acc = get(e.childID);
 		if (acc != null)
 			acc.getHelp(e);
 	}
 	
+	/**
+	 * @see AccessibleListener#getKeyboardShortcut(AccessibleEvent)
+	 */
 	public void getKeyboardShortcut(AccessibleEvent e) {
 		AccessibleEditPart acc = get(e.childID);
 		if (acc != null)
 			acc.getKeyboardShortcut(e);
 	}
 	
+	/**
+	 * @see AccessibleControlListener#getLocation(AccessibleControlEvent)
+	 */
 	public void getLocation(AccessibleControlEvent e) {
 		AccessibleEditPart acc = get(e.childID);
 		if (acc != null)
 			acc.getLocation(e);
 	}
 	
+	/**
+	 * @see AccessibleListener#getName(AccessibleEvent)
+	 */
 	public void getName(AccessibleEvent e) {
 		AccessibleEditPart acc = get(e.childID);
 		if (acc != null)
 			acc.getName(e);
 	}
 	
+	/**
+	 * @see AccessibleControlListener#getRole(AccessibleControlEvent)
+	 */
 	public void getRole(AccessibleControlEvent e) {
 		AccessibleEditPart acc = get(e.childID);
 		if (acc != null)
 			acc.getRole(e);
 	}
 	
-	public void getSelection(AccessibleControlEvent e) {}
+	/**
+	 * @see AccessibleControlListener#getSelection(AccessibleControlEvent)
+	 */
+	public void getSelection(AccessibleControlEvent e) { }
 	
+	/**
+	 * @see AccessibleControlListener#getState(AccessibleControlEvent)
+	 */
 	public void getState(AccessibleControlEvent e) {
 		AccessibleEditPart acc = get(e.childID);
 		if (acc != null)
 			acc.getState(e);
 	}
 	
+	/**
+	 * @see AccessibleControlListener#getValue(AccessibleControlEvent)
+	 */
 	public void getValue(AccessibleControlEvent e) {
 		AccessibleEditPart acc = get(e.childID);
 		if (acc != null)
@@ -132,25 +190,39 @@ protected class EditPartAccessibilityDispatcher
 	}
 }
 
+/**
+ * Constructs the dispatcher for the given domain and viewer.
+ * @param d the domain
+ * @param v the viewer
+ */
 public DomainEventDispatcher(EditDomain d, EditPartViewer v) {
 	domain = d;
 	viewer = v;
 	setEnableKeyTraversal(false);
 }
 
+/**
+ * @see EventDispatcher#dispatchFocusGained(org.eclipse.swt.events.FocusEvent)
+ */
 public void dispatchFocusGained(FocusEvent event) {
 	super.dispatchFocusGained(event);
 	domain.focusGained(event, viewer);
 }
 
+/**
+ * @see EventDispatcher#dispatchFocusLost(org.eclipse.swt.events.FocusEvent)
+ */
 public void dispatchFocusLost(FocusEvent event) {
 	super.dispatchFocusLost(event);
 	domain.focusLost(event, viewer);
 	setRouteEventsToEditor(false);
 }
 
+/**
+ * @see EventDispatcher#dispatchKeyPressed(org.eclipse.swt.events.KeyEvent)
+ */
 public void dispatchKeyPressed(org.eclipse.swt.events.KeyEvent e) { 
-	if (!editorCaptured){
+	if (!editorCaptured) {
 		super.dispatchKeyPressed(e);
 		if (draw2dBusy())
 			return;
@@ -159,8 +231,11 @@ public void dispatchKeyPressed(org.eclipse.swt.events.KeyEvent e) {
 		domain.keyDown(e, viewer);
 }
 
+/**
+ * @see EventDispatcher#dispatchKeyReleased(org.eclipse.swt.events.KeyEvent)
+ */
 public void dispatchKeyReleased(org.eclipse.swt.events.KeyEvent e) { 
-	if (!editorCaptured){
+	if (!editorCaptured) {
 		super.dispatchKeyReleased(e);
 		if (draw2dBusy())
 			return;
@@ -169,8 +244,11 @@ public void dispatchKeyReleased(org.eclipse.swt.events.KeyEvent e) {
 		domain.keyUp(e, viewer);
 }
 
-public void dispatchMouseDoubleClicked(org.eclipse.swt.events.MouseEvent me){
-	if (!editorCaptured){
+/**
+ * @see EventDispatcher#dispatchMouseDoubleClicked(org.eclipse.swt.events.MouseEvent)
+ */
+public void dispatchMouseDoubleClicked(org.eclipse.swt.events.MouseEvent me) {
+	if (!editorCaptured) {
 		super.dispatchMouseDoubleClicked(me);
 		if (draw2dBusy())
 			return;
@@ -179,8 +257,11 @@ public void dispatchMouseDoubleClicked(org.eclipse.swt.events.MouseEvent me){
 		domain.mouseDoubleClick(me, viewer);
 }
 
-public void dispatchMouseEntered(org.eclipse.swt.events.MouseEvent me){
-	if (!editorCaptured){
+/**
+ * @see EventDispatcher#dispatchMouseEntered(org.eclipse.swt.events.MouseEvent)
+ */
+public void dispatchMouseEntered(org.eclipse.swt.events.MouseEvent me) {
+	if (!editorCaptured) {
 		super.dispatchMouseEntered(me);
 		if (draw2dBusy())
 			return;
@@ -190,8 +271,11 @@ public void dispatchMouseEntered(org.eclipse.swt.events.MouseEvent me){
 	}
 }
 
-public void dispatchMouseExited(org.eclipse.swt.events.MouseEvent me){
-	if (!editorCaptured){
+/**
+ * @see EventDispatcher#dispatchMouseExited(org.eclipse.swt.events.MouseEvent)
+ */
+public void dispatchMouseExited(org.eclipse.swt.events.MouseEvent me) {
+	if (!editorCaptured) {
 		super.dispatchMouseExited(me);
 		if (draw2dBusy())
 			return;
@@ -201,8 +285,11 @@ public void dispatchMouseExited(org.eclipse.swt.events.MouseEvent me){
 	}
 }
 
-public void dispatchMouseHover(org.eclipse.swt.events.MouseEvent me){
-	if (!editorCaptured){
+/**
+ * @see EventDispatcher#dispatchMouseHover(org.eclipse.swt.events.MouseEvent)
+ */
+public void dispatchMouseHover(org.eclipse.swt.events.MouseEvent me) {
+	if (!editorCaptured) {
 		super.dispatchMouseHover(me);
 		if (draw2dBusy())
 			return;
@@ -211,8 +298,11 @@ public void dispatchMouseHover(org.eclipse.swt.events.MouseEvent me){
 		domain.mouseHover(me, viewer);
 }
 
-public void dispatchMousePressed(org.eclipse.swt.events.MouseEvent me){
-	if (!editorCaptured){
+/**
+ * @see EventDispatcher#dispatchMousePressed(org.eclipse.swt.events.MouseEvent)
+ */
+public void dispatchMousePressed(org.eclipse.swt.events.MouseEvent me) {
+	if (!editorCaptured) {
 		super.dispatchMousePressed(me);
 		if (draw2dBusy())
 			return;
@@ -225,8 +315,11 @@ public void dispatchMousePressed(org.eclipse.swt.events.MouseEvent me){
 	}
 }
 
-public void dispatchMouseMoved(org.eclipse.swt.events.MouseEvent me){
-	if (!editorCaptured){
+/**
+ * @see EventDispatcher#dispatchMouseMoved(org.eclipse.swt.events.MouseEvent)
+ */
+public void dispatchMouseMoved(org.eclipse.swt.events.MouseEvent me) {
+	if (!editorCaptured) {
 		super.dispatchMouseMoved(me);
 		if (draw2dBusy())
 			return;
@@ -239,8 +332,11 @@ public void dispatchMouseMoved(org.eclipse.swt.events.MouseEvent me){
 	}
 }
 
-public void dispatchMouseReleased(org.eclipse.swt.events.MouseEvent me){
-	if (!editorCaptured){
+/**
+ * @see EventDispatcher#dispatchMouseReleased(org.eclipse.swt.events.MouseEvent)
+ */
+public void dispatchMouseReleased(org.eclipse.swt.events.MouseEvent me) {
+	if (!editorCaptured) {
 		super.dispatchMouseReleased(me);
 		if (draw2dBusy())
 			return;
@@ -251,16 +347,32 @@ public void dispatchMouseReleased(org.eclipse.swt.events.MouseEvent me){
 	}
 }
 
-public void dispatchNativeDragFinished(DragSourceEvent event, AbstractEditPartViewer viewer) {
+/**
+ * Dispatches a drag finished event.
+ * @param event the event
+ * @param viewer the viewer on which the event occured.
+ */
+public void dispatchNativeDragFinished(
+	DragSourceEvent event,
+	AbstractEditPartViewer viewer) {
+	//$TODO delete the viewer parameter from the method
 	domain.nativeDragFinished(event, viewer);
 }
 
-public void dispatchNativeDragStarted(DragSourceEvent event, AbstractEditPartViewer viewer) {
+/**
+ * Dispatches a drag started event.
+ * @param event the event
+ * @param viewer the viewer
+ */
+public void dispatchNativeDragStarted(
+	DragSourceEvent event,
+	AbstractEditPartViewer viewer) {
+	//$TODO delete the viewer parameter from the method
 	setRouteEventsToEditor(false);
 	domain.nativeDragStarted(event, viewer);
 }
 
-private boolean draw2dBusy(){
+private boolean draw2dBusy() {
 	if (getCurrentEvent() != null)
 		if (getCurrentEvent().isConsumed())
 			return true;
@@ -269,13 +381,21 @@ private boolean draw2dBusy(){
 	return false;
 }
 
+/**
+ * Lazily creates and returns the accessibility dispatcher.
+ * @see org.eclipse.draw2d.EventDispatcher#getAccessibilityDispatcher()
+ */
 protected AccessibilityDispatcher getAccessibilityDispatcher() {
 	if (accessibilityDispatcher == null)
 		accessibilityDispatcher = new EditPartAccessibilityDispatcher();
 	return accessibilityDispatcher;
 }
 
-protected final EditPartViewer getViewer(){
+/**
+ * Returns the viewer on which this dispatcher was created
+ * @return the viewer for this dispatcher
+ */
+protected final EditPartViewer getViewer() {
 	return viewer;
 }
 
@@ -283,41 +403,55 @@ private boolean okToDispatch() {
 	return domain != null;
 }
 
-void putAccessible(AccessibleEditPart acc){
+void putAccessible(AccessibleEditPart acc) {
 	accessibles.put(new Integer(acc.getAccessibleID()), acc);
 }
 
-void removeAccessible(AccessibleEditPart acc){
+void removeAccessible(AccessibleEditPart acc) {
 	accessibles.remove(new Integer(acc.getAccessibleID()));
 }
 
-protected void setCapture(IFigure figure){
+/**
+ * @see EventDispatcher#setCapture(IFigure)
+ */
+protected void setCapture(IFigure figure) {
 	super.setCapture(figure);
-	if (figure == null){
+	if (figure == null) {
 		releaseCapture();
 		setRouteEventsToEditor(true);
 	}
 }
 
-protected void setCursor( Cursor newCursor ){
-	if( overrideCursor == null )
-		super.setCursor( newCursor );
+/**
+ * @see SWTEventDispatcher#setCursor(Cursor)
+ */
+protected void setCursor(Cursor newCursor) {
+	if (overrideCursor == null)
+		super.setCursor(newCursor);
 	else
-		super.setCursor( overrideCursor );
+		super.setCursor(overrideCursor);
 }
 
+/**
+ * Sets whether events should go directly to the edit domain.
+ * @param value <code>true</code> if all events should go directly to the edit domain
+ */
 public void setRouteEventsToEditor(boolean value) {
 	editorCaptured = value;
 }
 
-public void setOverrideCursor( Cursor newCursor ){
+/**
+ * Sets the override cursor.
+ * @param newCursor the cursor
+ */
+public void setOverrideCursor(Cursor newCursor) {
 	if (overrideCursor == newCursor)
 		return;
 	overrideCursor = newCursor;
-	if( overrideCursor == null )
+	if (overrideCursor == null)
 		updateCursor();
 	else
-		setCursor( overrideCursor );
+		setCursor(overrideCursor);
 }
 
 }

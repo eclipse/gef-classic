@@ -33,38 +33,62 @@ import org.eclipse.gef.*;
 import org.eclipse.gef.editparts.*;
 import org.eclipse.gef.editparts.LayerManager;
 
+/**
+ * An EditPartViewer implementation based on {@link org.eclipse.draw2d.IFigure Figures}.
+ * @author hudsonr
+ */
 public class GraphicalViewerImpl
 	extends AbstractEditPartViewer
 	implements GraphicalViewer
 {
 
-final private LightweightSystem lws = createLightweightSystem();
+private final LightweightSystem lws = createLightweightSystem();
 IFigure rootFigure;
 private DomainEventDispatcher eventDispatcher;
 
+/**
+ * Constructs a GraphicalViewerImpl.
+ */
 public GraphicalViewerImpl() {
 	createDefaultRoot();
 }
 
-public Control createControl(Composite composite){
+/**
+ * @see org.eclipse.gef.EditPartViewer#createControl(org.eclipse.swt.widgets.Composite)
+ */
+public Control createControl(Composite composite) {
 	setControl(new Canvas(composite, SWT.NO_BACKGROUND));
 	return getControl();
 }
 
-protected void createDefaultRoot(){
+/**
+ * Creates the default root editpart. Called during construction.
+ */
+protected void createDefaultRoot() {
 	setRootEditPart(new GraphicalRootEditPart());
 }
 
-protected LightweightSystem createLightweightSystem(){
+/**
+ * Creates the lightweight system used to host figures. Subclasses should not need to
+ * override this method.
+ * @return the lightweight system
+ */
+protected LightweightSystem createLightweightSystem() {
 	return new LightweightSystem();
 }
 
+/**
+ * @see AbstractEditPartViewer#handleDispose(org.eclipse.swt.events.DisposeEvent)
+ */
 protected void handleDispose(DisposeEvent e) {
 	super.handleDispose(e);
 	getLightweightSystem().getUpdateManager().dispose();
 }
 
-public Handle findHandleAt(Point p){
+/**
+ * @see GraphicalViewer#findHandleAt(org.eclipse.draw2d.geometry.Point)
+ */
+public Handle findHandleAt(Point p) {
 	LayerManager layermanager = (LayerManager)getEditPartRegistry().get(LayerManager.ID);
 	if (layermanager == null)
 		return null;
@@ -72,13 +96,20 @@ public Handle findHandleAt(Point p){
 	list.add(layermanager.getLayer(LayerConstants.PRIMARY_LAYER));
 	list.add(layermanager.getLayer(LayerConstants.CONNECTION_LAYER));
 	list.add(layermanager.getLayer(LayerConstants.FEEDBACK_LAYER));
-	IFigure handle = getLightweightSystem().getRootFigure().findFigureAtExcluding(p.x, p.y, list);
+	IFigure handle = getLightweightSystem().getRootFigure()
+		.findFigureAtExcluding(p.x, p.y, list);
 	if (handle instanceof Handle)
 		return (Handle)handle;
 	return null;
 }
 
-public EditPart findObjectAtExcluding(Point pt, Collection exclude, final Conditional condition) {
+/**
+ * @see EditPartViewer#findObjectAtExcluding(Point, Collection, EditPartViewer.Conditional)
+ */
+public EditPart findObjectAtExcluding(
+	Point pt,
+	Collection exclude,
+	final Conditional condition) {
 	class ConditionalTreeSearch extends ExclusionSearch {
 		ConditionalTreeSearch (Collection coll) {
 			super(coll);
@@ -106,57 +137,94 @@ public EditPart findObjectAtExcluding(Point pt, Collection exclude, final Condit
 	return part;
 }
 
-public void flush(){
+/**
+ * Flushes and pending layouts and paints in the lightweight system.
+ * @see org.eclipse.gef.EditPartViewer#flush()
+ */
+public void flush() {
 	getLightweightSystem().getUpdateManager().performUpdate();
 }
 
-/**@deprecated*/
-protected DomainEventDispatcher getEventDispatcher(){
+/**
+ * Returns the event dispatcher
+ * @deprecated This method should not be called by subclasses
+ * @return the event dispatcher
+ */
+protected DomainEventDispatcher getEventDispatcher() {
 	return eventDispatcher;
 }
 
-protected LayerManager getLayerManager(){
+/**
+ * Convenience method for finding the layer manager.
+ * @return the LayerManager
+ */
+protected LayerManager getLayerManager() {
 	return (LayerManager)getEditPartRegistry().get(LayerManager.ID);
 }
 
-protected LightweightSystem getLightweightSystem(){
+/**
+ * Returns the lightweight system.
+ * @return the system
+ */
+protected LightweightSystem getLightweightSystem() {
 	return lws;
 }
 
-/**@deprecated There is no reason to call this method*/
-protected IFigure getRootFigure(){
+/**
+ * Returns the root figure
+ * @deprecated There is no reason to call this method
+ * $TODO delete this method
+ * @return the root figure
+ */
+protected IFigure getRootFigure() {
 	return rootFigure;
 }
 
+/**
+ * Extended to flush paints during drop callbacks.
+ * @see org.eclipse.gef.ui.parts.AbstractEditPartViewer#hookDropTarget()
+ */
 protected void hookDropTarget() {
 	//Allow the real drop targets to make their changes first.
 	super.hookDropTarget();
 	
 	//Then force and update since async paints won't occurs during a Drag operation
 	getDropTarget().addDropListener(new DropTargetAdapter() {
-		public void dragEnter(DropTargetEvent event){
+		public void dragEnter(DropTargetEvent event) {
 			flush();
 		}
-		public void dragLeave(DropTargetEvent event){
+		public void dragLeave(DropTargetEvent event) {
 			flush();
 		}
-		public void dragOver(DropTargetEvent event){
+		public void dragOver(DropTargetEvent event) {
 			flush();
 		}
 	});
 }
 
-protected void hookControl(){
+/**
+ * 
+ * Extended to tell the lightweight system what its control is.
+ * @see org.eclipse.gef.ui.parts.AbstractEditPartViewer#hookControl()
+ */
+protected void hookControl() {
 	super.hookControl();
 	getLightweightSystem().setControl((Canvas)getControl());
 }
 
+/**
+ * Registers the accessible editpart with the event dispatcher.
+ * @param acc the accessible
+ */
 public void registerAccessibleEditPart(AccessibleEditPart acc) {
 	Assert.isNotNull(acc);
 	getEventDispatcher().putAccessible(acc);
 }
 
 /**
+ * Reveals the specified editpart by using {@link ExposeHelper}s. A bottom-up scan through
+ * the parent-chain is performed, looking for expose helpers along the way, and asking
+ * them to expose the given editpart.
  * @see org.eclipse.gef.EditPartViewer#reveal(EditPart)
  */
 public void reveal(EditPart part) {
@@ -178,8 +246,8 @@ public void reveal(EditPart part) {
 }
 
 /**
- * Extended implementation to flush asynchronous paints in draw2d.
- * @see org.eclipse.gef.EditPartViewer#setContextMenu(org.eclipse.jface.action.MenuManager)
+ * Extended implementation to flush the viewer as the context menu is shown.
+ * @see EditPartViewer#setContextMenu(org.eclipse.jface.action.MenuManager)
  */
 public void setContextMenu(MenuManager contextMenu) {
 	super.setContextMenu(contextMenu);
@@ -191,11 +259,19 @@ public void setContextMenu(MenuManager contextMenu) {
 		});
 }
 
-public void setCursor(Cursor newCursor){
-	if(getEventDispatcher() != null)
+/**
+ * @see org.eclipse.gef.EditPartViewer#setCursor(org.eclipse.swt.graphics.Cursor)
+ */
+public void setCursor(Cursor newCursor) {
+	if (getEventDispatcher() != null)
 		getEventDispatcher().setOverrideCursor(newCursor);
 }
 
+/**
+ * Extends the drag source to handle figures which handle MouseDown events, thereby
+ * aborting any DragDetect callbacks.
+ * @see AbstractEditPartViewer#setDragSource(org.eclipse.swt.dnd.DragSource)
+ */
 protected void setDragSource(DragSource source) {
 	super.setDragSource(source);
 
@@ -206,40 +282,67 @@ protected void setDragSource(DragSource source) {
 				event.doit = false;
 			if (event.doit) {
 				//A drag is going to occur, tell the EditDomain
-				getEventDispatcher().dispatchNativeDragStarted(event, GraphicalViewerImpl.this);
-				flush(); //deferred events are not processed during native Drag-and-Drop.
+				getEventDispatcher().dispatchNativeDragStarted(event,
+					GraphicalViewerImpl.this);
+				/* 
+				 * The mouse down that came before the dragstart, or the dragstart event
+				 * itself, may have caused selection or something that needs to be
+				 * painted. paints will not get processed during DND, so flush.
+				 */
+				flush();
 			}
 		}
 		public void dragFinished(DragSourceEvent event) {
-			getEventDispatcher().dispatchNativeDragFinished(event, GraphicalViewerImpl.this);
+			getEventDispatcher()
+				.dispatchNativeDragFinished(event, GraphicalViewerImpl.this);
+		}
 	}
-	}
-	// The DragSource may be set to null if there are no listeners.  If there are listeners,
-	// this should be *the* last listener because all other listeners are hooked in super().
+	
+	/*
+	 * The DragSource may be set to null if there are no listeners.  If there are
+	 * listeners, this should be *the* last listener because all other listeners are
+	 * hooked in super().
+	 */
 	if (source != null)
 		getDragSource().addDragListener(new TheLastListener());
 }
 
-public void setEditDomain(EditDomain domain){
+/**
+ * @see org.eclipse.gef.EditPartViewer#setEditDomain(org.eclipse.gef.EditDomain)
+ */
+public void setEditDomain(EditDomain domain) {
 	super.setEditDomain(domain);
 	getLightweightSystem()
 		.setEventDispatcher(eventDispatcher = new DomainEventDispatcher(domain, this));
 }
 
-public void setRootEditPart(RootEditPart editpart){
+/**
+ * @see org.eclipse.gef.EditPartViewer#setRootEditPart(org.eclipse.gef.RootEditPart)
+ */
+public void setRootEditPart(RootEditPart editpart) {
 	super.setRootEditPart(editpart);
 	setRootFigure(((GraphicalEditPart)editpart).getFigure());
 }
 
-protected void setRootFigure(IFigure figure){
+/**
+ * Sets the lightweight system's root figure.
+ * @param figure the root figure
+ */
+protected void setRootFigure(IFigure figure) {
 	rootFigure = figure;
 	getLightweightSystem().setContents(rootFigure);
 }
 
-public void setRouteEventsToEditDomain(boolean value){
+/**
+ * @see org.eclipse.gef.EditPartViewer#setRouteEventsToEditDomain(boolean)
+ */
+public void setRouteEventsToEditDomain(boolean value) {
 	getEventDispatcher().setRouteEventsToEditor(value);
 }
 
+/**
+ * @see EditPartViewer#unregisterAccessibleEditPart(org.eclipse.gef.AccessibleEditPart)
+ */
 public void unregisterAccessibleEditPart(AccessibleEditPart acc) {
 	Assert.isNotNull(acc);
 	getEventDispatcher().removeAccessible(acc);

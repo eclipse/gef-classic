@@ -19,6 +19,16 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.ui.palette.PaletteViewer;
 
+/**
+ * This class serves as a quick starting point for clients who are new to GEF. It will
+ * create an Editor containing a Split composite, with one side contianing a
+ * PaletteViewer, and the other a GraphicalViewer.
+ * <P>
+ * <EM>IMPORTANT</EM>This class should only be used as a reference for creating your own
+ * EditorPart implementation. This class will not suit everyone's needs, and may change in
+ * the future. Clients may copy the implementation.
+ * @author hudsonr
+ */
 public abstract class GraphicalEditorWithPalette 
 	extends GraphicalEditor 
 {
@@ -27,8 +37,15 @@ private static final int PALETTE_SIZE = 125;
 
 private PaletteViewer paletteViewer;
 
+/**
+ * Called to configure the viewer before it receives its contents.
+ */
 protected void configurePaletteViewer() { }
 
+/**
+ * Creates the palette on the given composite.
+ * @param parent the composite
+ */
 protected void createPaletteViewer(Composite parent) {
 	PaletteViewer viewer = new PaletteViewer();
 	setPaletteViewer(viewer);
@@ -38,6 +55,9 @@ protected void createPaletteViewer(Composite parent) {
 	initializePaletteViewer();
 }
 
+/**
+ * @see org.eclipse.ui.IWorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
+ */
 public void createPartControl(Composite parent) {
 	Splitter splitter = new Splitter(parent, SWT.HORIZONTAL);
 	createPaletteViewer(splitter);
@@ -52,32 +72,55 @@ public void createPartControl(Composite parent) {
 }
 
 /**
- * Returns the model that is used in the PaletteViewer.
+ * Returns the PaletteRoot for the palette viewer.
+ * @return the palette root
  */
 protected abstract PaletteRoot getPaletteRoot();
 
+/**
+ * Returns the initial palette size in pixels. Subclasses may override this method to
+ * return a persisted value.
+ * @see #handlePaletteResized(int)
+ * @return the initial size of the palette in pixels.
+ */
 protected int getInitialPaletteSize() {
 	return PALETTE_SIZE;
 }
 
 /**
  * Returns the PaletteViewer.
+ * @return the palette viewer
  */
 protected PaletteViewer getPaletteViewer() {
 	return paletteViewer;
 }
 
+/**
+ * Called whenever the user resizes the palette.
+ * @param newSize the new size in pixels
+ */
 protected void handlePaletteResized(int newSize) {
 }
 
+/**
+ * Called when the palette viewer is set. By default, the EditDomain is given the palette
+ * viewer.
+ */
 protected void hookPaletteViewer() {
 	getEditDomain().setPaletteViewer(paletteViewer);
 }
 
+/**
+ * Called to populate the palette viewer.
+ */
 protected void initializePaletteViewer() {
 	getEditDomain().setPaletteRoot(getPaletteRoot());
 }
 
+/**
+ * Sets the palette viewer
+ * @param paletteViewer the palette viewer
+ */
 protected void setPaletteViewer(PaletteViewer paletteViewer) {
 	this.paletteViewer = paletteViewer;
 }

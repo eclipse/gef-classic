@@ -31,6 +31,10 @@ public abstract class WorkbenchPartAction
 private IWorkbenchPart workbenchPart;
 private boolean lazyEnablement = true;
 
+/**
+ * Constructs a WorkbenchPartAction on the given part.
+ * @param part the workbench part
+ */
 public WorkbenchPartAction(IWorkbenchPart part) {
 	setWorkbenchPart(part);
 	init();
@@ -38,16 +42,20 @@ public WorkbenchPartAction(IWorkbenchPart part) {
 
 /**
  * Calculates and returns the enabled state of this action.  
+ * @return <code>true</code> if the action is enabled
  */
 protected abstract boolean calculateEnabled();
 
 /**
- * Called when the action is about to be disposed.
+ * Disposes the action when it is no longer needed.
  */
-public void dispose() {}
+public void dispose() { }
 
 /**
- * Executes the given {@link Command}.
+ * Executes the given {@link Command} using the command stack.  The stack is obtained by
+ * calling {@link #getCommandStack()}, which uses <code>IAdapatable</code> to retrieve the
+ * stack from the workbench part.
+ * @param command the command to execute
  */
 protected void execute(Command command) {
 	if (command == null || !command.canExecute())
@@ -56,14 +64,17 @@ protected void execute(Command command) {
 }
 
 /**
- * Returns the editor's command stack.
+ * Returns the editor's command stack. This is done by asking the workbench part for its
+ * CommandStack via {@link IAdaptable#getAdapter(java.lang.Class)}.
+ * @return the command stack
  */
 protected CommandStack getCommandStack() {
 	return (CommandStack)getWorkbenchPart().getAdapter(CommandStack.class);
 }
 
 /**
- * @return
+ * Returns the workbench part given in the constructor
+ * @return the workbench part
  */
 protected IWorkbenchPart getWorkbenchPart() {
 	return workbenchPart;
@@ -72,10 +83,14 @@ protected IWorkbenchPart getWorkbenchPart() {
 /**
  * Initializes this action.
  */
-protected void init(){}
+protected void init() { }
 
 /**
- * Calls {@link #calculateEnabled()} to determine the enabled state of this action.
+ * Returns <code>true</code> if the action is enabled. If the action determines enablemenu
+ * lazily, then {@link #calculateEnabled()} is always called. Otherwise, the enablement
+ * state set using {@link Action#setEnabled(boolean)} is returned.
+ * @see #setLazyEnablementCalculation(boolean)
+ * @return <code>true</code> if the action is enabled
  */
 public boolean isEnabled() {
 	if (lazyEnablement)
@@ -113,9 +128,10 @@ public void setLazyEnablementCalculation(boolean value) {
 }
 
 /**
- * @param part
+ * Sets the workbench part.
+ * @param part the workbench part
  */
-public void setWorkbenchPart(IWorkbenchPart part) {
+protected void setWorkbenchPart(IWorkbenchPart part) {
 	workbenchPart = part;
 }
 

@@ -26,6 +26,10 @@ import org.eclipse.gef.EditPart;
 import org.eclipse.gef.TreeEditPart;
 import org.eclipse.gef.editparts.*;
 
+/**
+ * An EditPartViewer implementation based on a {@link org.eclipse.swt.widgets.Tree}.
+ * @author hudsonr
+ */
 public class TreeViewer
 	extends AbstractEditPartViewer
 {
@@ -33,21 +37,22 @@ public class TreeViewer
 private boolean ignore = false;
 
 class EventDispatcher
-	implements MouseListener, MouseMoveListener, KeyListener, MouseTrackListener, FocusListener
+	implements MouseListener, MouseMoveListener, KeyListener,
+		MouseTrackListener, FocusListener
 {
 	protected static final int ANY_BUTTON = SWT.BUTTON1 | SWT.BUTTON2 | SWT.BUTTON3;
 
 	private boolean dragInProgress = false;
-	public void keyPressed(KeyEvent kee){
+	public void keyPressed(KeyEvent kee) {
 		getEditDomain().keyDown(kee, TreeViewer.this);
 	}
-	public void keyReleased(KeyEvent kee){
+	public void keyReleased(KeyEvent kee) {
 		getEditDomain().keyUp(kee, TreeViewer.this);
 	}
-	public void mouseDoubleClick(MouseEvent me){
+	public void mouseDoubleClick(MouseEvent me) {
 		getEditDomain().mouseDoubleClick(me, TreeViewer.this);
 	}
-	public void mouseDown(MouseEvent me){
+	public void mouseDown(MouseEvent me) {
 		dragInProgress = true;				 
 		getEditDomain().mouseDown(me, TreeViewer.this);
 	}
@@ -60,13 +65,13 @@ class EventDispatcher
 	public void mouseHover(MouseEvent me) {
 		getEditDomain().mouseHover(me, TreeViewer.this);
 	}
-	public void mouseMove(MouseEvent me){
+	public void mouseMove(MouseEvent me) {
 		if ((me.stateMask & ANY_BUTTON) != 0)
 			getEditDomain().mouseDrag(me, TreeViewer.this);
 		else
 			getEditDomain().mouseMove(me, TreeViewer.this);
 	}
-	public void mouseUp(MouseEvent me){
+	public void mouseUp(MouseEvent me) {
 		dragInProgress = false;
 		getEditDomain().mouseUp(me, TreeViewer.this);
 	}
@@ -94,9 +99,10 @@ public TreeViewer() {
 }
 
 /**
- * Creates the default tree and sets it as the control.
- *
- * @param	parent	The parent Composite for the Control (tree).
+ * Creates the default tree and sets it as the control. The default styles will show
+ * scrollbars as needed, and allows for multiple selection.
+ * @param parent The parent for the Tree
+ * @return the control
  */
 public Control createControl(Composite parent) {
 	Tree tree = new Tree(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
@@ -105,15 +111,12 @@ public Control createControl(Composite parent) {
 }
 
 /**
- * Returns the <code>Data</code> of the TreeItem at the given point. Returns null if the
- * Point is not on the Control (Tree).  Returns the data of the Tree if there is no
- * TreeItem at the given point. Sub-classes can override this method to respect the
- * request to exclude the Objects in the  given Collection. 
- *
- * @param	pt		The location at which to look for a TreeItem
- * @param	exclude	The collection of EditParts to be excluded.
- */ 
-public EditPart findObjectAtExcluding(Point pt, Collection exclude, Conditional condition) {
+ * @see EditPartViewer#findObjectAtExcluding(Point, Collection, EditPartViewer.Conditional)
+ */
+public EditPart findObjectAtExcluding(
+	Point pt,
+	Collection exclude,
+	Conditional condition) {
 	if (getControl() == null)
 		return null;
 
@@ -140,6 +143,9 @@ public EditPart findObjectAtExcluding(Point pt, Collection exclude, Conditional 
 	return null;
 }
 
+/**
+ * @see org.eclipse.gef.ui.parts.AbstractEditPartViewer#fireSelectionChanged()
+ */
 protected void fireSelectionChanged() {
 	super.fireSelectionChanged();
 	showSelectionInTree();
@@ -192,7 +198,7 @@ public void reveal(EditPart part) {
 }
 
 private void showSelectionInTree() {
-	if (ignore || getControl()==null || getControl().isDisposed())
+	if (ignore || getControl() == null || getControl().isDisposed())
 		return;
 	List selection = getSelectedEditParts();
 	Tree tree = (Tree)getControl();

@@ -118,7 +118,8 @@ public static final String GROUP_VIEW = "org.eclipse.gef.group.view"; //$NON-NLS
  * Zoom contribution id. 
  * Value: <code>"org.eclipse.gef.zoom"</code>
  */
-public static final String ZOOM_TOOLBAR_WIDGET = "org.eclipse.gef.zoom_widget"; //$NON-NLS-1$
+public static final String ZOOM_TOOLBAR_WIDGET
+	= "org.eclipse.gef.zoom_widget"; //$NON-NLS-1$
 
 /** 
  * Zoom in contribution id. 

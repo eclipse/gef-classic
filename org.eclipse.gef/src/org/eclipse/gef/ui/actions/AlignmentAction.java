@@ -12,7 +12,6 @@ package org.eclipse.gef.ui.actions;
 
 import java.util.*;
 
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPart;
 
@@ -28,17 +27,44 @@ import org.eclipse.gef.internal.InternalImages;
 import org.eclipse.gef.requests.AlignmentRequest;
 import org.eclipse.gef.tools.ToolUtilities;
 
-final public class AlignmentAction extends SelectionAction {
+/**
+ * An action to align the selected parts.
+ * @author hudsonr
+ */
+public final class AlignmentAction extends SelectionAction {
 
-public static final String ID_ALIGN_LEFT   = GEFActionConstants.ALIGN_LEFT;
-public static final String ID_ALIGN_RIGHT  = GEFActionConstants.ALIGN_RIGHT;
-public static final String ID_ALIGN_TOP    = GEFActionConstants.ALIGN_TOP;
+/**
+ * Indicates that the bottom edges should be aligned.
+ */
 public static final String ID_ALIGN_BOTTOM = GEFActionConstants.ALIGN_BOTTOM;
+
+/**
+ * Indicates that the horizontal centers should be aligned.
+ */
 public static final String ID_ALIGN_CENTER = GEFActionConstants.ALIGN_CENTER;
+
+/**
+ * Indicates that the left edges should be aligned.
+ */
+public static final String ID_ALIGN_LEFT   = GEFActionConstants.ALIGN_LEFT;
+
+/**
+ * Indicates that the vertical midpoints should be aligned.
+ */
 public static final String ID_ALIGN_MIDDLE = GEFActionConstants.ALIGN_MIDDLE;
 
-private List operationSet;
+/**
+ * Indicates that the right edges should be aligned.
+ */
+public static final String ID_ALIGN_RIGHT  = GEFActionConstants.ALIGN_RIGHT;
+
+/**
+ * Indicates that the top edges should be aligned.
+ */
+public static final String ID_ALIGN_TOP    = GEFActionConstants.ALIGN_TOP;
 private int alignment;
+
+private List operationSet;
 
 /**
  * @deprecated use AlignmentAction(IWorkbenchPart, int align)
@@ -69,22 +95,30 @@ public AlignmentAction(IWorkbenchPart part, int align) {
 	initUI();
 }
 
+/**
+ * Returns the alignment rectangle to which all selected parts should be aligned.
+ * @param request the alignment Request
+ * @return the alignment rectangle
+ */
+protected Rectangle calculateAlignmentRectangle(Request request) {
+	List editparts = getOperationSet(request);
+	if (editparts == null || editparts.isEmpty())
+		return null;
+	GraphicalEditPart part = (GraphicalEditPart)editparts.get(editparts.size() - 1);
+	Rectangle rect = new PrecisionRectangle(part.getFigure().getBounds());
+	part.getFigure().translateToAbsolute(rect);
+	return rect;
+}
+
+/**
+ * @see org.eclipse.gef.ui.actions.WorkbenchPartAction#calculateEnabled()
+ */
 protected boolean calculateEnabled() {
 	operationSet = null;
 	Command cmd = createAlignmentCommand();
 	if (cmd == null)
 		return false;
 	return cmd.canExecute();
-}
-
-protected Rectangle calculateAlignmentRectangle(Request request) {
-	List editparts = getOperationSet(request);
-	if (editparts == null || editparts.isEmpty())
-		return null;
-	GraphicalEditPart part = (GraphicalEditPart)editparts.get(editparts.size()-1);
-	Rectangle rect = new PrecisionRectangle(part.getFigure().getBounds());
-	part.getFigure().translateToAbsolute(rect);
-	return rect;
 }
 
 private Command createAlignmentCommand() {
@@ -97,22 +131,26 @@ private Command createAlignmentCommand() {
 
 	CompoundCommand command = new CompoundCommand();
 	command.setDebugLabel(getText());
-	for (int i=0; i<editparts.size(); i++) {
+	for (int i = 0; i < editparts.size(); i++) {
 		EditPart editpart = (EditPart)editparts.get(i);
 		command.add(editpart.getCommand(request));
 	}
 	return command;
 }
 
+/**
+ * @see org.eclipse.gef.Disposable#dispose()
+ */
 public void dispose() {
 	operationSet = Collections.EMPTY_LIST;
 	super.dispose();
 }
 
-public ImageDescriptor getHoverImageDescriptor() {
-	return super.getHoverImageDescriptor();
-}
-
+/**
+ * Returns the list of editparts which will participate in alignment.
+ * @param request the alignment request
+ * @return the list of parts which will be aligned
+ */
 protected List getOperationSet(Request request) {
 	if (operationSet != null)
 		return operationSet;
@@ -125,7 +163,7 @@ protected List getOperationSet(Request request) {
 	if (editparts.size() < 2 || !editparts.contains(primary))
 		return Collections.EMPTY_LIST;
 	EditPart parent = ((EditPart)editparts.get(0)).getParent();
-	for (int i=1; i<editparts.size(); i++) {
+	for (int i = 1; i < editparts.size(); i++) {
 		EditPart part = (EditPart)editparts.get(i);
 		if (part.getParent() != parent)
 			return Collections.EMPTY_LIST;
@@ -133,6 +171,9 @@ protected List getOperationSet(Request request) {
 	return editparts;
 }
 
+/**
+ * Initializes the actions UI presentation.
+ */
 protected void initUI() {
 	switch (alignment) {
 		case PositionConstants.LEFT: {
@@ -192,6 +233,9 @@ protected void initUI() {
 	}
 }
 
+/**
+ * @see org.eclipse.jface.action.IAction#run()
+ */
 public void run() {
 	operationSet = null;
 	execute(createAlignmentCommand());

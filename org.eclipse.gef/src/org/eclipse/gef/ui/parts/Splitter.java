@@ -36,23 +36,14 @@ private Listener sashListener;
  */
 protected PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 
-/**
- * @see java.beans.PropertyChangeSupport#addPropertyChangeListener(java.beans.PropertyChangeListener)
- */
 public void addFixedSizeChangeListener(PropertyChangeListener listener) {
 	listeners.addPropertyChangeListener(listener);
 }
 
-/**
- * @see java.beans.PropertyChangeSupport#firePropertyChange(java.lang.String, int, int)
- */
 protected void firePropertyChange(int oldValue, int newValue) {
 	listeners.firePropertyChange(MAINTAIN_SIZE, oldValue, newValue);
 }
 
-/**
- * @see java.beans.PropertyChangeSupport#removePropertyChangeListener(java.beans.PropertyChangeListener)
- */
 public void removeFixedSizeChangeListener(PropertyChangeListener listener) {
 	listeners.removePropertyChangeListener(listener);
 }
@@ -186,7 +177,8 @@ public void layout(boolean changed) {
 	if (sashes.length < controls.length - 1) {
 		Sash[] newSashes = new Sash[controls.length - 1];
 		System.arraycopy(sashes, 0, newSashes, 0, sashes.length);
-		int sashOrientation = (orientation == SWT.HORIZONTAL) ? SWT.VERTICAL : SWT.HORIZONTAL;
+		int sashOrientation =
+			(orientation == SWT.HORIZONTAL) ? SWT.VERTICAL : SWT.HORIZONTAL;
 		for (int i = sashes.length; i < newSashes.length; i++) {
 			newSashes[i] = new Sash(this, sashOrientation);
 			newSashes[i].setBackground(ColorConstants.button);

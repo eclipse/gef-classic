@@ -21,7 +21,7 @@ public class ZoomOutAction extends ZoomAction {
 
 /**
  * Constructor for ZoomOutAction.
- * @param editor
+ * @param zoomManager the zoom manager
  */
 public ZoomOutAction(ZoomManager zoomManager) {
 	super(GEFMessages.ZoomOut_Label, InternalImages.DESC_ZOOM_OUT, zoomManager);

@@ -84,14 +84,16 @@ protected void handleDragOver() {
 
 protected EditPart getSourceEditPart() {
 	List selection = (List)TreeViewerTransfer.getInstance().getObject();
-	if (selection == null || selection.isEmpty() || !(selection.get(0) instanceof EditPart))
+	if (selection == null
+	  || selection.isEmpty()
+	  || !(selection.get(0) instanceof EditPart))
 		return null;
 	return (EditPart)selection.get(0);
 }
 
 protected List includeChildren(List list) {
 	List result = new ArrayList();
-	for(int i = 0; i < list.size(); i++){
+	for (int i = 0; i < list.size(); i++) {
 		List children = ((EditPart)list.get(i)).getChildren();
 		result.addAll(children);
 		result.addAll(includeChildren(children));

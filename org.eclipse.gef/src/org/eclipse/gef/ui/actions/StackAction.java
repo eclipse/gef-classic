@@ -31,14 +31,16 @@ public StackAction(IEditorPart editor) {
 }
 
 /**
- * Returns a label for the given command.  Ensures
- * <code>null</code> is never returned.
+ * Returns the label for the given command.  Guarantees that <code>null</code> is never
+ * returned.
+ * @param command the command
+ * @return a non-<code>null</code> String
  */
-protected String getLabelForCommand(Command command){
-	if(command==null)
-		return "";                  //$NON-NLS-1$
-	if(command.getLabel()==null)
-		return "";                  //$NON-NLS-1$
+protected String getLabelForCommand(Command command) {
+	if (command == null)
+		return "";//$NON-NLS-1$
+	if (command.getLabel() == null)
+		return "";//$NON-NLS-1$
 	else
 		return command.getLabel();
 }

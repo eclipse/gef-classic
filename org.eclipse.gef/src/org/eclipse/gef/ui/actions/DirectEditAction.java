@@ -20,6 +20,22 @@ import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.internal.GEFMessages;
 
+/**
+ * An action to perform direct editing on a selected part. The DirectEditAction provides
+ * the function of sending a <code>Request</code> of the type {@link
+ * RequestConstants#REQ_DIRECT_EDIT} to a single EditPart. The request will be sent to the
+ * editpart using {@link org.eclipse.gef.EditPart#performRequest(Request)}.
+ * <P>
+ * This action will be enabled whenever the current selection is one EditPart, and that
+ * editpart returns <code>true</code> for {@link EditPart#understandsRequest(Request)},
+ * using the {@link #getDirectEditRequest()}.
+ * <P>
+ * Clients can control the request that is sent by calling {@link
+ * #setDirectEditRequest(Request)}. The {@link org.eclipse.gef.requests.DirectEditRequest}
+ * class allows the client to specify the <i>feature</i> that should be edited when
+ * invoked.
+ * @author hudsonr
+ */
 public class DirectEditAction
 	extends SelectionAction
 {
@@ -31,23 +47,28 @@ private Request directEditRequest = new Request(RequestConstants.REQ_DIRECT_EDIT
 
 /**
  * @deprecated use DirectEditAction(IWorkbenchPart part)
- * @param editor
+ * @param editor the editor
  */
-public DirectEditAction(IEditorPart editor){
+public DirectEditAction(IEditorPart editor) {
 	this((IWorkbenchPart)editor);
 }
 
+/**
+ * Constructs a DirectEditAction using the specified part.
+ * @param part the workbench part
+ */
 public DirectEditAction(IWorkbenchPart part) {
 	super(part);
 }
 
 /**
- * returns <code>true</code> if there is exactly 1 EditPart selected that understand DirectEdit.
+ * returns <code>true</code> if there is exactly 1 EditPart selected that understand
+ * a request of type: {@link RequestConstants#REQ_DIRECT_EDIT}.
+ * @return <code>true</code> if enabled
  */
 protected boolean calculateEnabled() {
 	if (getSelectedObjects().size() == 1
-		&& (getSelectedObjects().get(0) instanceof EditPart))
-	{
+	  && (getSelectedObjects().get(0) instanceof EditPart)) {
 		EditPart part = (EditPart)getSelectedObjects().get(0);
 		return part.understandsRequest(getDirectEditRequest());
 	}
@@ -55,31 +76,38 @@ protected boolean calculateEnabled() {
 }
 
 /**
- * returns the <code>Request</code> objects that is used to calculate enabled state and
- * 
+ * Returns the <code>Request</code> being used.
+ * @return the request
  */
-protected Request getDirectEditRequest(){
+protected Request getDirectEditRequest() {
 	return directEditRequest;
 }
 
+/**
+ * @see org.eclipse.jface.action.IAction#run()
+ */
 public void run() {
 	try {
 		EditPart part = (EditPart)getSelectedObjects().get(0);
 		part.performRequest(getDirectEditRequest());
 	} catch (ClassCastException e) {
 		Display.getCurrent().beep();
-	} catch (IndexOutOfBoundsException e){
+	} catch (IndexOutOfBoundsException e) {
 		Display.getCurrent().beep();
 	}
 }
 
 /**
- * 
+ * Clients may override the request that is used to perform the direct edit.
+ * @param req the new request to be used
  */
-public void setDirectEditRequest(Request req){
+public void setDirectEditRequest(Request req) {
 	directEditRequest = req;
 }
 
+/**
+ * @see org.eclipse.gef.ui.actions.WorkbenchPartAction#init()
+ */
 protected void init() {
 	super.init();
 	setText(GEFMessages.RenameAction_Label);

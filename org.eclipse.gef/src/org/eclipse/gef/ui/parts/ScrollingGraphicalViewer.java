@@ -19,24 +19,49 @@ import org.eclipse.draw2d.geometry.*;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.GraphicalEditPart;
 
+/**
+ * A Graphical Viewer implementation which uses a {@link org.eclipse.draw2d.FigureCanvas}
+ * for native scrolling.  Because the scrolling is handled natively, the root editpart
+ * should not contain a {@link org.eclipse.draw2d.ScrollPane} figure.  Do not use root
+ * editparts which provide scrollpane figures, such as <code>GraphicalRootEditPart</code>.
+ * <P>
+ * The RootEditPart for a ScrollingGraphicalViewer may contain a Viewport.  If it does,
+ * that viewport will be set as the FigureCanvas' viewport.  FigureCanvas has certain
+ * requirements on the viewport figure, see {@link FigureCanvas#setViewport(Viewport)}.
+ * @author hudsonr
+ */
 public class ScrollingGraphicalViewer
 	extends GraphicalViewerImpl
 {
 
+/**
+ * Constructs a ScrollingGraphicalViewer;
+ */
 public ScrollingGraphicalViewer() { }
 
-public final Control createControl(Composite parent){
+/**
+ * @see EditPartViewer#createControl(org.eclipse.swt.widgets.Composite)
+ */
+public final Control createControl(Composite parent) {
 	FigureCanvas canvas = new FigureCanvas(parent, getLightweightSystem());
 	super.setControl(canvas);
 	installRootFigure();
 	return canvas;
 }
 
-protected FigureCanvas getFigureCanvas(){
+/**
+ * Convenience method which types the control as a <code>FigureCanvas</code>. This method
+ * returns <code>null</code> whenever the control is null.
+ * @return <code>null</code> or the Control as a FigureCanvas
+ */
+protected FigureCanvas getFigureCanvas() {
 	return (FigureCanvas)getControl();
 }
 
-private void installRootFigure(){
+/**
+ * If the figure is a viewport, set the canvas' viewport, otherwise, set its contents.
+ */
+private void installRootFigure() {
 	if (getFigureCanvas() == null)
 		return;
 	if (rootFigure instanceof Viewport)
@@ -45,6 +70,11 @@ private void installRootFigure(){
 		getFigureCanvas().setContents(rootFigure);
 }
 
+/**
+ * Extends the superclass implementation to scroll the native Canvas control after the
+ * super's implementation has completed.
+ * @see org.eclipse.gef.EditPartViewer#reveal(org.eclipse.gef.EditPart)
+ */
 public void reveal(EditPart part) {
 	super.reveal(part);
 	Viewport port = getFigureCanvas().getViewport();
@@ -65,7 +95,10 @@ public void reveal(EditPart part) {
 	getFigureCanvas().scrollSmoothTo(finalLocation.x, finalLocation.y);
 }
 
-protected void setRootFigure(IFigure figure){
+/**
+ * @see GraphicalViewerImpl#setRootFigure(IFigure)
+ */
+protected void setRootFigure(IFigure figure) {
 	rootFigure = figure;
 	installRootFigure();
 }

@@ -11,7 +11,6 @@
 package org.eclipse.gef.ui.actions;
 
 import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IWorkbenchPart;
 
 import org.eclipse.gef.internal.GEFMessages;
 
@@ -23,8 +22,8 @@ public class SaveAction
 {
 
 /**
- * Creates a <code>SaveAction</code> and associates it with the 
- * given editor.
+ * Constructs a <code>SaveAction</code> and associates it with the given editor.
+ * @param editor the IEditorPart
  */
 public SaveAction(IEditorPart editor) {
 	super(editor);
@@ -32,7 +31,7 @@ public SaveAction(IEditorPart editor) {
 }
 
 /**
- * Returns <code>true<code> if the editor is dirty.
+ * @see org.eclipse.gef.ui.actions.WorkbenchPartAction#calculateEnabled()
  */
 protected boolean calculateEnabled() {
 	return getEditorPart().isDirty();
@@ -41,7 +40,7 @@ protected boolean calculateEnabled() {
 /**
  * Initializes this action's text.
  */
-protected void init(){
+protected void init() {
 	setText(GEFMessages.SaveAction_Label);
 	setToolTipText(GEFMessages.SaveAction_Tooltip);
 	setId(GEFActionConstants.SAVE);

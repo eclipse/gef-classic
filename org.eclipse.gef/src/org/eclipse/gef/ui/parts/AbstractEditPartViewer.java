@@ -30,14 +30,26 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.gef.*;
 import org.eclipse.gef.dnd.*;
 
-abstract public class AbstractEditPartViewer
+/**
+ * The base implementation for EditPartViewer.
+ * @author hudsonr
+ */
+public abstract class AbstractEditPartViewer
 	implements EditPartViewer
 {
 
-protected final List
-	selection = new ArrayList(),
-	constantSelection = Collections.unmodifiableList(selection);
+/**
+ * The raw list of selected editparts.
+ */
+protected final List selection = new ArrayList();
+/**
+ * The unmodifiable list of selected editparts.
+ */
+protected final List constantSelection = Collections.unmodifiableList(selection);
 
+/**
+ * The list of selection listeners.
+ */
 protected List selectionListeners = new ArrayList(1);
 
 private EditPartFactory factory;
@@ -54,30 +66,45 @@ private DelegatingDropAdapter dropAdapter = new DelegatingDropAdapter();
 private DropTarget dropTarget;
 private KeyHandler keyHandler;
 
-public AbstractEditPartViewer(){
+/**
+ * Constructs the viewer and calls {@link #init()}.
+ */
+public AbstractEditPartViewer() {
 	init();
 }
 
-public void addSelectionChangedListener(ISelectionChangedListener listener){
+/**
+ * @see ISelectionProvider#addSelectionChangedListener(ISelectionChangedListener)
+ */
+public void addSelectionChangedListener(ISelectionChangedListener listener) {
 	selectionListeners.add(listener);
 }
 
+/**
+ * @see EditPartViewer#addDragSourceListener(TransferDragSourceListener)
+ */
 public void addDragSourceListener(TransferDragSourceListener listener) {
 	getDelegatingDragAdapter().addDragSourceListener(listener);
 	refreshDragSourceAdapter();
 }
 
+/**
+ * @see EditPartViewer#addDropTargetListener(TransferDropTargetListener)
+ */
 public void addDropTargetListener(TransferDropTargetListener listener) {
 	getDelegatingDropAdapter().addDropTargetListener(listener);
 	refreshDropTargetAdapter();
 }
 
-public void appendSelection(EditPart editpart){
+/**
+ * @see EditPartViewer#appendSelection(org.eclipse.gef.EditPart)
+ */
+public void appendSelection(EditPart editpart) {
 	if (editpart != focusPart)
 		setFocus(null);
 	List list = primGetSelectedEditParts();
-	if (!list.isEmpty()){
-		EditPart primary = (EditPart)list.get(list.size()-1);
+	if (!list.isEmpty()) {
+		EditPart primary = (EditPart)list.get(list.size() - 1);
 		primary.setSelected(EditPart.SELECTED);
 	}
 	if (list.contains(editpart))
@@ -85,35 +112,37 @@ public void appendSelection(EditPart editpart){
 	list.add(editpart);
 	editpart.setSelected(EditPart.SELECTED_PRIMARY);
 	
-	//This order was intentionally changed so that synchronizing with the Outline would not affect Accessibility clients.
 	fireSelectionChanged();
 }
 
 /**
- * This assumes that the subclass has created the control and
- * simply returns the current control.  When overriding this
- * method, call <code>setControl(Control)</code> with the newly
- * created control and then call <code>super.createControl(Composite)</code>.
+ * @see EditPartViewer#createControl(org.eclipse.swt.widgets.Composite)
  */
 public abstract Control createControl(Composite parent);
 
-public void deselect(EditPart editpart){
+/**
+ * @see EditPartViewer#deselect(org.eclipse.gef.EditPart)
+ */
+public void deselect(EditPart editpart) {
 	editpart.setSelected(EditPart.SELECTED_NONE);
 
 	List selection = primGetSelectedEditParts();
 	selection.remove(editpart);
-	if (!selection.isEmpty()){
-		EditPart primary = (EditPart)selection.get(selection.size()-1);
+	if (!selection.isEmpty()) {
+		EditPart primary = (EditPart)selection.get(selection.size() - 1);
 		primary.setSelected(EditPart.SELECTED_PRIMARY);
 	}
 	fireSelectionChanged();
 }
 
-public void deselectAll(){
+/**
+ * @see EditPartViewer#deselectAll()
+ */
+public void deselectAll() {
 	EditPart part;
 	List list = primGetSelectedEditParts();
 	setFocus(null);
-	for (int i=0; i<list.size(); i++){
+	for (int i = 0; i < list.size(); i++) {
 		part = (EditPart)list.get(i);
 		part.setSelected(EditPart.SELECTED_NONE);
 	}
@@ -126,21 +155,21 @@ public void deselectAll(){
  * method to perform additional cleanup.
  * @param e the disposeevent
  */
-protected void handleDispose(DisposeEvent e){
+protected void handleDispose(DisposeEvent e) {
 	if (contextMenu != null)
 		contextMenu.dispose();
 	setControl(null);
 }
 
 /**
- * @see org.eclipse.gef.EditPartViewer#findObjectAt(Point)
+ * @see EditPartViewer#findObjectAt(Point)
  */
 public final EditPart findObjectAt(Point pt) {
 	return findObjectAtExcluding(pt, Collections.EMPTY_SET);
 }
 
 /**
- * @see org.eclipse.gef.EditPartViewer#findObjectAtExcluding(Point, Collection)
+ * @see EditPartViewer#findObjectAtExcluding(Point, Collection)
  */
 public final EditPart findObjectAtExcluding(Point pt, Collection exclude) {
 	return findObjectAtExcluding(pt, exclude, null);
@@ -158,60 +187,94 @@ protected void fireSelectionChanged() {
 }
 
 /**
- * @see org.eclipse.gef.EditPartViewer#flush()
+ * @see EditPartViewer#flush()
  */
-public void flush(){}
+public void flush() { }
 
 /**
- * @see org.eclipse.gef.EditPartViewer#getContextMenu()
+ * @see EditPartViewer#getContextMenu()
  */
 public MenuManager getContextMenu() {
 	return contextMenu;
 }
 
 /**
- * @see org.eclipse.gef.EditPartViewer#getContents()
+ * @see EditPartViewer#getContents()
  */
-public EditPart getContents(){
+public EditPart getContents() {
 	return getRootEditPart().getContents();
 }
 
 /**
- * @see org.eclipse.gef.EditPartViewer#getControl()
+ * @see EditPartViewer#getControl()
  */
-public Control getControl(){
+public Control getControl() {
 	return control;
 }
 
+/**
+ * Returns <code>null</code> or the DelegatingDragAdapater. The adapter is created
+ * automatically when {@link #addDragSourceListener(TransferDragSourceListener)} is
+ * called.
+ * @return <code>null</code> or the adapter
+ */
 protected DelegatingDragAdapter getDelegatingDragAdapter() {
 	return dragAdapter;
 }
 
+/**
+ * Returns <code>null</code> or the DelegatingDropAdapater. The adapter is created
+ * automatically when {@link #addDropTargetListener(TransferDropTargetListener)} is
+ * called.
+ * @return <code>null</code> or the adapter
+ */
 protected DelegatingDropAdapter getDelegatingDropAdapter() {
 	return dropAdapter;
 }
 
+/**
+ * Returns <code>null</code> or the DragSource. The drag source is created automatically
+ * when {@link #addDragSourceListener(TransferDragSourceListener)} is called.
+ * @return <code>null</code> or the drag source
+ */
 protected DragSource getDragSource() {
 	return dragSource;
 }
 
+/**
+ * Returns <code>null</code> or the DropTarget. The drop target is created automatically
+ * when {@link #addDropTargetListener(TransferDropTargetListener)} is called.
+ * @return <code>null</code> or the drop target
+ */
 protected DropTarget getDropTarget() {
 	return dropTarget;
 }
 
-public EditDomain getEditDomain(){
+/**
+ * @see EditPartViewer#getEditDomain()
+ */
+public EditDomain getEditDomain() {
 	return domain;
 }
 
-public EditPartFactory getEditPartFactory(){
+/**
+ * @see EditPartViewer#getEditPartFactory()
+ */
+public EditPartFactory getEditPartFactory() {
 	return factory;
 }
 
-public Map getEditPartRegistry(){
+/**
+ * @see EditPartViewer#getEditPartRegistry()
+ */
+public Map getEditPartRegistry() {
 	return mapIDToEditPart;
 }
 
-public EditPart getFocusEditPart(){
+/**
+ * @see EditPartViewer#getFocusEditPart()
+ */
+public EditPart getFocusEditPart() {
 	if (focusPart != null)
 		return focusPart;
 	if (getSelectedEditParts().isEmpty() && getContents() != null)
@@ -220,29 +283,51 @@ public EditPart getFocusEditPart(){
 	return (EditPart)selection.get(selection.size() - 1);
 }
 
-public KeyHandler getKeyHandler(){
+/**
+ * @see EditPartViewer#getKeyHandler()
+ */
+public KeyHandler getKeyHandler() {
 	return keyHandler;
 }
 
-public RootEditPart getRootEditPart(){
+/**
+ * @see EditPartViewer#getRootEditPart()
+ */
+public RootEditPart getRootEditPart() {
 	return rootEditPart;
 }
 
-public List getSelectedEditParts(){
+/**
+ * @see EditPartViewer#getSelectedEditParts()
+ */
+public List getSelectedEditParts() {
 	return constantSelection;
 }
 
-public ISelection getSelection(){
+/**
+ * Returns an ISelection containing a list of one or more EditPart. Whenever {@link
+ * #getSelectedEditParts()} returns an empty list, the <i>contents</i> editpart ({@link
+ * #getContents()}) is returned as the current selection.
+ * @see org.eclipse.jface.viewers.ISelectionProvider#getSelection()
+ */
+public ISelection getSelection() {
 	if (getSelectedEditParts().isEmpty() && getContents() != null)
 		return new StructuredSelection(getContents());
 	return new StructuredSelection(getSelectedEditParts());
 }
 
-public Map getVisualPartMap(){
+/**
+ * @see EditPartViewer#getVisualPartMap()
+ */
+public Map getVisualPartMap() {
 	return mapVisualToEditPart;
 }
 
-protected void hookControl(){
+/**
+ * Called once the control has been set.
+ * @see #unhookControl()
+ */
+protected void hookControl() {
 	if (getControl() == null)
 		return;
 	getControl().addDisposeListener(new DisposeListener() {
@@ -258,30 +343,47 @@ protected void hookControl(){
 		getControl().setMenu(contextMenu.createContextMenu(getControl()));
 }
 
-protected void hookDragSource(){
+/**
+ * Called whenever the {@link #getDragSource() drag source} is automatically created.
+ */
+protected void hookDragSource() {
 	dragSource.addDragListener(getDelegatingDragAdapter());
 }
 
-protected void hookDropTarget(){
+/**
+ * Called whenever the {@link #getDropTarget() drop target} is automatically created.
+ */
+protected void hookDropTarget() {
 	getDropTarget().addDropListener(getDelegatingDropAdapter());
 }
 
-protected void init(){}
+/**
+ * Called from the constructor.  Subclasses may extend this method.
+ */
+protected void init() { }
 
-private void primDeselectAll(){
+private void primDeselectAll() {
 	EditPart part;
 	List list = primGetSelectedEditParts();
-	for (int i=0; i<list.size(); i++){
+	for (int i = 0; i < list.size(); i++) {
 		part = (EditPart)list.get(i);
 		part.setSelected(EditPart.SELECTED_NONE);
 	}
 	list.clear();
 }
 
-protected List primGetSelectedEditParts(){
+/**
+ * Returns the modifiable List of selected EditParts.
+ * @return the internal list of selected editparts
+ */
+protected List primGetSelectedEditParts() {
 	return selection;
 }
 
+/**
+ * Called whenever it may be appropriate to automatically create or dispose the drag
+ * source.
+ */
 protected void refreshDragSourceAdapter() {
 	if (getControl() == null)
 		return;
@@ -289,11 +391,19 @@ protected void refreshDragSourceAdapter() {
 		setDragSource(null);
 	else {
 		if (getDragSource() == null)
-			setDragSource(new DragSource(getControl(), DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_LINK));
+			setDragSource(
+				new DragSource(
+					getControl(),
+					DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_LINK));
 		getDragSource().setTransfer(getDelegatingDragAdapter().getTransferTypes());
 	}
 }
 
+/**
+ * Called whenever it may be appropriate to automatically create or dispose the drop
+ * target.
+ *
+ */
 protected void refreshDropTargetAdapter() {
 	if (getControl() == null)
 		return;
@@ -301,43 +411,64 @@ protected void refreshDropTargetAdapter() {
 		setDropTarget(null);
 	else {
 		if (getDropTarget() == null)
-			setDropTarget(new DropTarget(getControl(), DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_LINK));
+			setDropTarget(
+				new DropTarget(
+					getControl(),
+					DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_LINK));
 		getDropTarget().setTransfer(getDelegatingDropAdapter().getTransferTypes());
 	}
 }
 
-public void registerAccessibleEditPart(AccessibleEditPart acc) {}
+/**
+ * @see EditPartViewer#registerAccessibleEditPart(AccessibleEditPart)
+ */
+public void registerAccessibleEditPart(AccessibleEditPart acc) { }
 
+/**
+ * @see EditPartViewer#removeDragSourceListener(TransferDragSourceListener)
+ */
 public void removeDragSourceListener(TransferDragSourceListener listener) {
 	getDelegatingDragAdapter().removeDragSourceListener(listener);
 	if (getDelegatingDragAdapter().isEmpty())
 		refreshDragSourceAdapter();
 }
 
+/**
+ * @see EditPartViewer#removeDropTargetListener(TransferDropTargetListener)
+ */
 public void removeDropTargetListener(TransferDropTargetListener listener) {
 	getDelegatingDropAdapter().removeDropTargetListener(listener);
 	if (getDelegatingDropAdapter().isEmpty())
 		refreshDropTargetAdapter();
 }
 
-public void removeSelectionChangedListener(ISelectionChangedListener l){
+/**
+ * @see ISelectionProvider#removeSelectionChangedListener(ISelectionChangedListener)
+ */
+public void removeSelectionChangedListener(ISelectionChangedListener l) {
 	selectionListeners.remove(l);
 }
 
 /**
- * @see org.eclipse.gef.EditPartViewer#reveal(EditPart)
+ * @see EditPartViewer#reveal(EditPart)
  */
 public void reveal(EditPart part) { }
 
-public void select(EditPart editpart){
+/**
+ * @see EditPartViewer#select(org.eclipse.gef.EditPart)
+ */
+public void select(EditPart editpart) {
 	// If selection isn't changing, do nothing.
-	if ((getSelectedEditParts().size() == 1) && 
-		(getSelectedEditParts().get(0) == editpart))
-			return;
+	if ((getSelectedEditParts().size() == 1)
+	  && (getSelectedEditParts().get(0) == editpart))
+		return;
 	primDeselectAll();
 	appendSelection(editpart);  // fireSelectionChanged() is called here
 }
 
+/**
+ * @see EditPartViewer#setContextMenu(org.eclipse.jface.action.MenuManager)
+ */
 public void setContextMenu(MenuManager manager) {
 	if (contextMenu != null)
 		contextMenu.dispose();
@@ -347,18 +478,27 @@ public void setContextMenu(MenuManager manager) {
 			contextMenu.createContextMenu(getControl()));
 }
 
-public void setContents(EditPart editpart){
+/**
+ * @see EditPartViewer#setContents(org.eclipse.gef.EditPart)
+ */
+public void setContents(EditPart editpart) {
 	getRootEditPart().setContents(editpart);
 }
 
-public void setContents(Object contents){
+/**
+ * @see EditPartViewer#setContents(java.lang.Object)
+ */
+public void setContents(Object contents) {
 	Assert.isTrue(getEditPartFactory() != null,
 		"An EditPartFactory is required to call setContents(Object)");//$NON-NLS-1$
 	setContents(getEditPartFactory().
 			createEditPart(null, contents));
 }
 
-public void setControl(Control control){
+/**
+ * @see EditPartViewer#setControl(org.eclipse.swt.widgets.Control)
+ */
+public void setControl(Control control) {
 	if (this.control != null)
 		unhookControl();
 	this.control = control;
@@ -366,13 +506,20 @@ public void setControl(Control control){
 		hookControl();
 }
 
-public void setCursor(Cursor cursor){
+/**
+ * @see EditPartViewer#setCursor(org.eclipse.swt.graphics.Cursor)
+ */
+public void setCursor(Cursor cursor) {
 	if (getControl() == null || getControl().isDisposed())
 		return;
 	getControl().setCursor(cursor);
 }
 
-protected void setDragSource(DragSource source){
+/**
+ * Sets the drag source. Called from {@link #refreshDragSourceAdapter()}.
+ * @param source <code>null</code> or a drag source
+ */
+protected void setDragSource(DragSource source) {
 	if (dragSource != null)
 		dragSource.dispose();
 	dragSource = source;
@@ -381,8 +528,8 @@ protected void setDragSource(DragSource source){
 }
 
 /**
- * Sets the dropTarget.
- * @param dropTarget The dropTarget to set
+ * Sets the drop target. Called from {@link #refreshDropTargetAdapter()}.
+ * @param target dropTarget <code>null</code> or a drop target
  */
 protected void setDropTarget(DropTarget target) {
 	if (dropTarget != null)
@@ -392,78 +539,100 @@ protected void setDropTarget(DropTarget target) {
 		hookDropTarget();
 }
 
-public void setEditDomain(EditDomain editdomain){
+/**
+ * @see EditPartViewer#setEditDomain(org.eclipse.gef.EditDomain)
+ */
+public void setEditDomain(EditDomain editdomain) {
 	this.domain = editdomain;
 }
 
-public void setEditPartFactory(EditPartFactory factory){
+/**
+ * @see EditPartViewer#setEditPartFactory(org.eclipse.gef.EditPartFactory)
+ */
+public void setEditPartFactory(EditPartFactory factory) {
 	this.factory = factory;
 }
 
-public void setFocus(EditPart part){
+/**
+ * @see EditPartViewer#setFocus(org.eclipse.gef.EditPart)
+ */
+public void setFocus(EditPart part) {
 	if (focusPart == part)
 		return;
 	if (focusPart != null)
 		focusPart.setFocus(false);
 	focusPart = part;
-	if (focusPart != null){
+	if (focusPart != null) {
 		focusPart.setFocus(true);
 	}
 }
 
-public void setKeyHandler(KeyHandler handler){
+/**
+ * @see EditPartViewer#setKeyHandler(org.eclipse.gef.KeyHandler)
+ */
+public void setKeyHandler(KeyHandler handler) {
 	keyHandler = handler;
 }
 
-public void setRootEditPart(RootEditPart editpart){
+/**
+ * @see EditPartViewer#setRootEditPart(org.eclipse.gef.RootEditPart)
+ */
+public void setRootEditPart(RootEditPart editpart) {
 	rootEditPart = editpart;
 	rootEditPart.setViewer(this);
 	if (getControl() != null)
 		rootEditPart.activate();
 }
 
-public void setRouteEventsToEditDomain(boolean value){}
+/**
+ * @see EditPartViewer#setRouteEventsToEditDomain(boolean)
+ */
+public void setRouteEventsToEditDomain(boolean value) { }
 
 /**
- * This method will clear the current selection, and set
- * the given ISelection as the current selection.  It will
- * do so without firing a selection-change event.
- * NOTE: If the given argument is not an IStructuredSelection,
- * this method will do nothing.
+ * Sets the selection to the given selection and fires selection changed. The ISelection
+ * should be an {@link IStructuredSelection} or it will be ignored.
+ * @see ISelectionProvider#setSelection(ISelection)
  */
-public void setSelection(ISelection newSelection){
-	if( !(newSelection instanceof IStructuredSelection) ){
+public void setSelection(ISelection newSelection) {
+	if (!(newSelection instanceof IStructuredSelection))
 		return;
-	}
+	
 	List editparts = ((IStructuredSelection)newSelection).toList();
 	List selection = primGetSelectedEditParts();
 
 	setFocus(null);
-	for (int i=0; i<selection.size(); i++)
+	for (int i = 0; i < selection.size(); i++)
 		((EditPart)selection.get(i)).setSelected(EditPart.SELECTED_NONE);
 	selection.clear();
 
-	for (int i=0; i<editparts.size(); i++){
+	for (int i = 0; i < editparts.size(); i++) {
 		EditPart part = (EditPart)editparts.get(i);
 		selection.add(part);
-		if (i==editparts.size()-1){
+		if (i == editparts.size() - 1)
 			part.setSelected(EditPart.SELECTED_PRIMARY);
-		}
 		else
 			part.setSelected(EditPart.SELECTED);
 	}
 	fireSelectionChanged();
 }
 
-protected void unhookControl(){
-	if( getControl() == null ){
+/**
+ * Called when the control is being set to <code>null</code>, but before it is null.
+ */
+protected void unhookControl() {
+	if (getControl() == null)
 		return;
-	}
-	if( getRootEditPart() != null ){
+		
+	if (getRootEditPart() != null)
 		getRootEditPart().deactivate();
-	}
 }
 
-public void unregisterAccessibleEditPart(AccessibleEditPart acc) {}
+/**
+ * Does nothing by default. Subclasses needing to add accessibility support should
+ * override this method.
+ * @see EditPartViewer#unregisterAccessibleEditPart(org.eclipse.gef.AccessibleEditPart)
+ */
+public void unregisterAccessibleEditPart(AccessibleEditPart acc) { }
 
 }

@@ -37,17 +37,16 @@ public RedoAction(IEditorPart editor) {
 }
 
 /**
- * Returns <code>true</code> if the {@link CommandStack} can redo
- * the last command.
+ * @see org.eclipse.gef.ui.actions.WorkbenchPartAction#calculateEnabled()
  */
-protected boolean calculateEnabled(){
+protected boolean calculateEnabled() {
 	return getCommandStack().canRedo();
 }
 
 /**
  * Initializes this actions text and images.
  */
-protected void init(){
+protected void init() {
 	super.init();
 	setToolTipText(MessageFormat.format(
 			GEFMessages.RedoAction_Tooltip,	

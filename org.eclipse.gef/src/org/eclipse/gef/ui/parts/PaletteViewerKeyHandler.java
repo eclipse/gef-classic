@@ -25,27 +25,32 @@ import org.eclipse.gef.ui.palette.PaletteViewer;
 
 /**
  * KeyHandler for the {@link org.eclipse.gef.ui.palette.PaletteViewer Palette}.
- * Handles traversal of Palette entries and collapse/expand of
- * {@link org.eclipse.gef.ui.palette.DrawerEditPart categories}.
+ * Handles se;ection traversal of Palette entries and collapse/expand of {@link
+ * org.eclipse.gef.ui.palette.DrawerEditPart categories}.
  */
 public class PaletteViewerKeyHandler
-	extends GraphicalViewerKeyHandler {
+	extends GraphicalViewerKeyHandler
+{
 
-public PaletteViewerKeyHandler(PaletteViewer viewer){
+/**
+ * Constructs a key handler for the specified palette viewer.
+ * @param viewer the palette viewer
+ */
+public PaletteViewerKeyHandler(PaletteViewer viewer) {
 	super(viewer);
 }
 
-private boolean acceptCollapseDrawer(KeyEvent event){
+private boolean acceptCollapseDrawer(KeyEvent event) {
 	return event.keyCode == SWT.ARROW_LEFT
 		&& isExpandedDrawer(getFocus());
 }
 
-private boolean acceptExpandDrawer(KeyEvent event){
+private boolean acceptExpandDrawer(KeyEvent event) {
 	return event.keyCode == SWT.ARROW_RIGHT
 		&& isCollapsedDrawer(getFocus());
 }
 
-private boolean acceptIntoExpandedDrawer(KeyEvent event){
+private boolean acceptIntoExpandedDrawer(KeyEvent event) {
 	return (event.keyCode == SWT.ARROW_DOWN || event.keyCode == SWT.ARROW_RIGHT)
 		&& isExpandedDrawer(getFocus());
 }
@@ -59,31 +64,33 @@ private boolean acceptNextContainer(KeyEvent event) {
 	return event.keyCode == SWT.ARROW_DOWN;
 }		
 
-private void buildNavigationList(EditPart palettePart, EditPart exclusion, ArrayList navList) {
+private void buildNavigationList(
+	EditPart palettePart,
+	EditPart exclusion,
+	ArrayList navList) {
 	if (palettePart != exclusion) {
 		if (isCollapsedDrawer(palettePart)) {
 			navList.add(palettePart);
 			return;
-		}
-		else if (palettePart instanceof ToolEntryEditPart 
-				|| palettePart instanceof DrawerEditPart
-				|| palettePart instanceof TemplateEditPart) {
+		} else if (palettePart instanceof ToolEntryEditPart 
+		  || palettePart instanceof DrawerEditPart
+		  || palettePart instanceof TemplateEditPart) {
 			navList.add(palettePart);
 		}
 	}
 
-	for (int k=0; k<palettePart.getChildren().size(); k++) {
+	for (int k = 0; k < palettePart.getChildren().size(); k++) {
 		EditPart ep = (EditPart)(palettePart.getChildren().get(k));
 		buildNavigationList(ep, exclusion, navList);
 	}
 }
 
-private void collapseDrawer(){
+private void collapseDrawer() {
 	DrawerEditPart drawer = (DrawerEditPart)getFocus();
 	drawer.setExpanded(false);
 }
 
-private void expandDrawer(){
+private void expandDrawer() {
 	DrawerEditPart drawer = (DrawerEditPart)getFocus();
 	drawer.setExpanded(true);
 }
@@ -96,10 +103,13 @@ Point getInterestingPoint(IFigure figure) {
  * Returns a list of {@link org.eclipse.gef.EditPart EditParts}
  * eligible for selection.
  */
-List getNavigationSiblings(){
+List getNavigationSiblings() {
 	ArrayList siblingsList = new ArrayList();
 	if (getFocus().getParent() instanceof GroupEditPart)
-		buildNavigationList(getFocus().getParent().getParent(), getFocus().getParent().getParent(), siblingsList);
+		buildNavigationList(
+			getFocus().getParent().getParent(),
+			getFocus().getParent().getParent(),
+			siblingsList);
 	else
 		buildNavigationList(getFocus().getParent(), getFocus().getParent(), siblingsList);
 	return siblingsList;
@@ -110,7 +120,7 @@ List getNavigationSiblings(){
  * Editpart is a collapsed 
  * {@link org.eclipse.gef.ui.palette.DrawerEditPart Drawer}, false otherwise.
  */
-boolean isCollapsedDrawer(EditPart part){
+boolean isCollapsedDrawer(EditPart part) {
 	return part instanceof DrawerEditPart
 		&& !((DrawerEditPart)part).isExpanded();
 }
@@ -121,11 +131,15 @@ boolean isCollapsedDrawer(EditPart part){
  * {@link org.eclipse.gef.ui.palette.DrawerEditPart Drawer},
  * false otherwise.
  */
-boolean isExpandedDrawer(EditPart part){
+boolean isExpandedDrawer(EditPart part) {
 	return part instanceof DrawerEditPart
 		&& ((DrawerEditPart)part).isExpanded();
 }
 
+/**
+ * Extends keyPressed to look for palette navigation keys.
+ * @see org.eclipse.gef.KeyHandler#keyPressed(org.eclipse.swt.events.KeyEvent)
+ */
 public boolean keyPressed(KeyEvent event) {
 	if (acceptExpandDrawer(event)) {
 		expandDrawer();
@@ -152,10 +166,10 @@ public boolean keyPressed(KeyEvent event) {
 	return false;
 }
 
-private boolean navigateIntoExpandedDrawer(KeyEvent event){
+private boolean navigateIntoExpandedDrawer(KeyEvent event) {
 	ArrayList potentials = new ArrayList();
 	buildNavigationList(getFocus(), getFocus(), potentials);
-	if (!potentials.isEmpty()){
+	if (!potentials.isEmpty()) {
 		navigateTo((EditPart)potentials.get(0), event);
 		return true;
 	}	
@@ -169,12 +183,12 @@ void navigateTo(EditPart part, KeyEvent event) {
 	getViewer().reveal(part);
 }
 
-private boolean navigateToDrawer(KeyEvent event){
+private boolean navigateToDrawer(KeyEvent event) {
 	boolean found = false;
 	EditPart parent = getFocus().getParent();
-	while(parent != null && !found){
-		if (parent instanceof DrawerEditPart){
-			navigateTo(parent,event);
+	while (parent != null && !found) {
+		if (parent instanceof DrawerEditPart) {
+			navigateTo(parent, event);
 			found = true;
 		}
 		parent = parent.getParent();

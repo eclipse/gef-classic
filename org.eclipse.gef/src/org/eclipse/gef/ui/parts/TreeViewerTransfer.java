@@ -18,10 +18,10 @@ import org.eclipse.gef.dnd.SimpleObjectTransfer;
  */
 class TreeViewerTransfer extends SimpleObjectTransfer {
 
-private static final TreeViewerTransfer instance = new TreeViewerTransfer();
+private static final TreeViewerTransfer INSTANCE = new TreeViewerTransfer();
 private static final String TYPE_NAME = "Local Transfer"//$NON-NLS-1$
 	+ System.currentTimeMillis()
-	+ ":" + instance.hashCode();//$NON-NLS-1$
+	+ ":" + INSTANCE.hashCode();//$NON-NLS-1$
 private static final int TYPEID = registerType(TYPE_NAME);
 
 private static EditPartViewer viewer;
@@ -30,7 +30,7 @@ private static EditPartViewer viewer;
  * Returns the singleton instance.
  * @return The singleton instance */
 public static TreeViewerTransfer getInstance() {
-	return instance;
+	return INSTANCE;
 }
 
 private TreeViewerTransfer() { }

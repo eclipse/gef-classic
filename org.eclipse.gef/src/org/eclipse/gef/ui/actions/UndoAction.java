@@ -37,17 +37,16 @@ public UndoAction(IEditorPart editor) {
 }
 
 /**
- * Returns <code>true</code> if the {@link CommandStack} can undo
- * the last command.
+ * @see org.eclipse.gef.ui.actions.WorkbenchPartAction#calculateEnabled()
  */
-protected boolean calculateEnabled(){
+protected boolean calculateEnabled() {
 	return getCommandStack().canUndo();
 }
 
 /**
  * Initializes this action's text and images.
  */
-protected void init(){
+protected void init() {
 	super.init();
 	setToolTipText(MessageFormat.format(
 			GEFMessages.UndoAction_Tooltip,	
@@ -71,7 +70,7 @@ protected void init(){
 /**
  * Refreshes this action's text to use the last executed command's label.
  */
-protected void refresh(){
+protected void refresh() {
 	Command undoCmd = getCommandStack().getUndoCommand();
 	setToolTipText(MessageFormat.format(
 			GEFMessages.UndoAction_Tooltip,

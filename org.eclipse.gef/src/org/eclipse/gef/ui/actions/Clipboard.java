@@ -34,7 +34,7 @@ public static Clipboard getDefault() {
 /**
  * Constructs a new Clipboard object.
  */
-public Clipboard() {}
+public Clipboard() { }
 
 /**
  * Returns the current contents of the clipboard.
