@@ -17,8 +17,10 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.events.*;
 import org.eclipse.swt.graphics.Cursor;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Scrollable;
 
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Dimension;
@@ -764,6 +766,19 @@ void placeMouseInViewer(Point p){
 	if (getCurrentViewer() == null)
 		return;
 	Control c = getCurrentViewer().getControl();
+	Rectangle rect;
+	if (c instanceof Scrollable)
+		rect = ((Scrollable)c).getClientArea();
+	else
+		rect = c.getBounds();
+	if (p.x > rect.x + rect.width - 2)
+		p.x = rect.x + rect.width - 2;
+	else if (p.x < rect.x + 2)
+		p.x = rect.x + 2;
+	if (p.y > rect.y + rect.height - 2)
+		p.y = rect.y + rect.height - 2;
+	else if (p.y < rect.y + 2)
+		p.y = rect.y + 2;
 	org.eclipse.swt.graphics.Point swt = new org.eclipse.swt.graphics.Point(p.x, p.y);
 	swt = c.toDisplay(swt);
 	c.getDisplay().setCursorLocation(swt);
