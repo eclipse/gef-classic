@@ -40,8 +40,6 @@ public class TextFlowPart
 	
 private Font localFont;
 
-private Font localFont;
-
 public TextFlowPart(Object model) {
 	setModel(model);
 }
