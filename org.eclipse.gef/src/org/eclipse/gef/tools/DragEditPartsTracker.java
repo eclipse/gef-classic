@@ -99,6 +99,45 @@ public void commitDrag() {
 }
 
 /**
+ * Captures the bounds of the source being dragged, and the unioned bounds of all figures
+ * being dragged.  These bounds are used for snapping by the snap strategies in 
+ * <code>updateTargetRequest()</code>.
+ */
+protected void captureSourceDimensions() {
+	List editparts = getOperationSet();
+	for (int i = 0; i < editparts.size(); i++) {
+		GraphicalEditPart child = (GraphicalEditPart)editparts.get(i);
+		IFigure figure = child.getFigure();
+		PrecisionRectangle bounds = null;
+		if (figure instanceof HandleBounds)
+			bounds = new PrecisionRectangle(((HandleBounds)figure).getHandleBounds());
+		else
+			bounds = new PrecisionRectangle(figure.getBounds());
+		figure.translateToAbsolute(bounds);
+		
+		if (compoundSrcRect == null)
+			compoundSrcRect = bounds;
+		else
+			compoundSrcRect = new PrecisionRectangle(compoundSrcRect.union(bounds));
+		if (child == getSourceEditPart())
+			sourceRectangle = bounds;
+	}
+	if (sourceRectangle == null) {
+		/*
+		 * @TODO:Pratik    Check to see if this ever happens.  I.e., if the operation
+		 * set does not include the source edit part.
+		 */
+		IFigure figure = ((GraphicalEditPart)getSourceEditPart()).getFigure();
+		if (figure instanceof HandleBounds)
+			sourceRectangle = new PrecisionRectangle(
+					((HandleBounds)figure).getHandleBounds());
+		else
+			sourceRectangle = new PrecisionRectangle(figure.getBounds());
+		figure.translateToAbsolute(sourceRectangle);
+	}	
+}
+
+/**
  * Returns a List of top-level edit parts excluding dependants (by calling
  * {@link ToolUtilities#getSelectionWithoutDependants(EditPartViewer)} that understand the
  * current target request (by calling 
@@ -394,6 +433,13 @@ protected void repairStartLocation() {
 	PrecisionPoint newStart = (PrecisionPoint)sourceRelativeStartPoint.getCopy();
 	figure.translateToAbsolute(newStart);
 	setStartLocation(newStart);
+	if (sourceRectangle != null) {
+		// sourceRectangle and compoundSrcRect could have changed (when auto-scrolling, 
+		// for instance), and hence they need to be updated as well
+		compoundSrcRect = null;
+		sourceRectangle = null;
+		captureSourceDimensions();
+	}
 }
 
 protected void setAutoexposeHelper(AutoexposeHelper helper) {
@@ -458,39 +504,8 @@ protected void setState(int state) {
 	}
 	
 	if (check && isInState(STATE_DRAG | STATE_ACCESSIBLE_DRAG 
-			| STATE_ACCESSIBLE_DRAG_IN_PROGRESS)) {
-		List editparts = getOperationSet();
-		for (int i = 0; i < editparts.size(); i++) {
-			GraphicalEditPart child = (GraphicalEditPart)editparts.get(i);
-			IFigure figure = child.getFigure();
-			PrecisionRectangle bounds = null;
-			if (figure instanceof HandleBounds)
-				bounds = new PrecisionRectangle(((HandleBounds)figure).getHandleBounds());
-			else
-				bounds = new PrecisionRectangle(figure.getBounds());
-			figure.translateToAbsolute(bounds);
-			
-			if (compoundSrcRect == null)
-				compoundSrcRect = bounds;
-			else
-				compoundSrcRect = new PrecisionRectangle(compoundSrcRect.union(bounds));
-			if (child == getSourceEditPart())
-				sourceRectangle = bounds;
-		}
-		if (sourceRectangle == null) {
-			/*
-			 * @TODO:Pratik    Check to see if this ever happens.  I.e., if the operation
-			 * set does not include the source edit part.
-			 */
-			IFigure figure = ((GraphicalEditPart)getSourceEditPart()).getFigure();
-			if (figure instanceof HandleBounds)
-				sourceRectangle = new PrecisionRectangle(
-						((HandleBounds)figure).getHandleBounds());
-			else
-				sourceRectangle = new PrecisionRectangle(figure.getBounds());
-			figure.translateToAbsolute(sourceRectangle);
-		}
-	}
+			| STATE_ACCESSIBLE_DRAG_IN_PROGRESS))
+		captureSourceDimensions();
 }
 
 /**
