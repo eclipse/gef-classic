@@ -11,6 +11,7 @@
 package org.eclipse.draw2d.text;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -29,6 +30,19 @@ import org.eclipse.draw2d.geometry.Rectangle;
 public class InlineFlow extends FlowFigure {
 
 List fragments = new ArrayList(1);
+
+/**
+ * Iterates over the children to find the width before a line-break is encountered.
+ * @see org.eclipse.draw2d.text.FlowFigure#addLeadingWordRequirements(int[])
+ */
+public boolean addLeadingWordRequirements(int[] width) {
+	Iterator iter = getChildren().iterator();
+	while (iter.hasNext()) {
+		if (((FlowFigure)iter.next()).addLeadingWordRequirements(width))
+			return true;
+	}
+	return false;
+}
 
 /** * @see org.eclipse.draw2d.IFigure#containsPoint(int, int) */
 public boolean containsPoint(int x, int y) {
