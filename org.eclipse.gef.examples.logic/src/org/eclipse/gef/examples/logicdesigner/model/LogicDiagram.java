@@ -84,14 +84,6 @@ public Integer getConnectionRouter(){
 	return connectionRouter;
 }
 
-public Point getGridOrigin() {
-	return gridOrigin;
-}
-
-public Dimension getGridSpacing() {
-	return gridSpacing;
-}
-
 public Image getIconImage() {
 	return LOGIC_ICON;
 }
@@ -183,14 +175,6 @@ public void setRulerVisibility(boolean newValue) {
 
 public void setGridEnabled(boolean isEnabled) {
 	gridEnabled = isEnabled;
-}
-
-public void setGridOrigin(Point origin) {
-	gridOrigin = origin;
-}
-
-public void setGridSpacing(Dimension spacing) {
-	gridSpacing = spacing;
 }
 
 public void setSnapToGeometry(boolean isEnabled) {

@@ -675,18 +675,6 @@ protected void loadProperties() {
 	// We keep grid visibility and enablement in sync
 	getGraphicalViewer().setProperty(SnapToGrid.PROPERTY_GRID_VISIBLE, 
 			new Boolean(getLogicDiagram().isGridEnabled()));
-	Dimension spacing = getLogicDiagram().getGridSpacing();
-	if (spacing == null)
-		spacing = new Dimension(SnapToGrid.DEFAULT_GAP, SnapToGrid.DEFAULT_GAP);
-	if (spacing.width == 0)
-		spacing.width = SnapToGrid.DEFAULT_GAP;
-	if (spacing.height == 0)
-		spacing.height = SnapToGrid.DEFAULT_GAP;
-	getGraphicalViewer().setProperty(SnapToGrid.PROPERTY_GRID_SPACING, spacing);
-	Point origin = getLogicDiagram().getGridOrigin();
-	if (origin == null)
-		origin = new Point();
-	getGraphicalViewer().setProperty(SnapToGrid.PROPERTY_GRID_ORIGIN, origin);
 	
 	// Zoom
 	ZoomManager manager = (ZoomManager)getGraphicalViewer()
@@ -751,10 +739,6 @@ protected void saveProperties() {
 			.getProperty(SnapToGrid.PROPERTY_GRID_ENABLED)).booleanValue());
 	getLogicDiagram().setSnapToGeometry(((Boolean)getGraphicalViewer()
 			.getProperty(SnapToGeometry.PROPERTY_SNAP_ENABLED)).booleanValue());
-	getLogicDiagram().setGridOrigin((Point)getGraphicalViewer()
-			.getProperty(SnapToGrid.PROPERTY_GRID_ORIGIN));
-	getLogicDiagram().setGridSpacing((Dimension)getGraphicalViewer()
-			.getProperty(SnapToGrid.PROPERTY_GRID_SPACING));
 	ZoomManager manager = (ZoomManager)getGraphicalViewer()
 			.getProperty(ZoomManager.class.toString());
 	if (manager != null)
