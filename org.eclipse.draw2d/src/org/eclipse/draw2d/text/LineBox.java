@@ -41,7 +41,7 @@ public int getAscent() {
  * @return the width in pixels
  */
 public int getAvailableWidth() {
-	if (recommendedWidth == -1)
+	if (recommendedWidth < 0)
 		return Integer.MAX_VALUE;
 	return recommendedWidth - width;
 }

@@ -21,7 +21,7 @@ protected void setupBlock() {
 
 	//Setup the one fragment for this Block with the correct X and available width
 	blockBox.setRecommendedWidth(((FlowPage)getFlowFigure()).getRecommendedWidth());
-	blockBox.x = getFlowFigure().getBounds().x;
+	blockBox.x = 0;
 }
 
 }

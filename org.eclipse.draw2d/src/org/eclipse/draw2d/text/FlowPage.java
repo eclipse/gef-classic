@@ -2,6 +2,7 @@ package org.eclipse.draw2d.text;
 
 import java.util.List;
 
+import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.geometry.*;
 
 public class FlowPage
@@ -26,11 +27,9 @@ public Dimension getMinimumSize(int w, int h) {
 }
 
 public Dimension getPreferredSize(int w, int h) {
-	if (w == -1)
-		w = Integer.MAX_VALUE;
-	setRecommendedWidth(w);
+	setRecommendedWidth(w - getInsets().getWidth());
 	validate();
-	return pageSize;
+	return pageSize.getExpanded(getInsets().getWidth(), getInsets().getHeight());
 }
 
 int getRecommendedWidth() {
@@ -51,6 +50,7 @@ public void postValidate(){
  */
 public void setBounds(Rectangle r) {
 	super.setBounds(r);
+	setRecommendedWidth(r.width - getInsets().getWidth());
 }
 
 private void setRecommendedWidth(int width) {

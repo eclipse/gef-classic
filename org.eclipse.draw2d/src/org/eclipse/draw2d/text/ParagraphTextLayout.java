@@ -73,7 +73,7 @@ protected void layout() {
 
 	//Remove the remaining unused fragments.
 	while (i < fragments.size())
-		fragments.remove(i++);
+		fragments.remove(fragments.size()-1);
 }
 
 }
