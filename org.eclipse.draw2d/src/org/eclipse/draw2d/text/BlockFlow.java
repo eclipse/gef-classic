@@ -151,15 +151,6 @@ public int getHorizontalAligment() {
 }
 
 /**
- * Overridden to do nothing since a BlockFlow is unaffected by changes in its containing
- * block.
- * @see org.eclipse.draw2d.text.FlowFigure#invalidateBidi()
- */
-protected void invalidateBidi() {
-	// override super to do nothing
-}
-
-/**
  * @see org.eclipse.draw2d.Figure#paintBorder(org.eclipse.draw2d.Graphics)
  */
 public void paintBorder(Graphics graphics) {
