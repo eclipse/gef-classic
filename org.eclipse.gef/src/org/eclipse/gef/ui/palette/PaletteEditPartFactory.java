@@ -51,7 +51,7 @@ private EditPart createSeparatorEditPart(
 
 
 protected EditPart createEntryEditPart(EditPart parentEditPart, Object model){
-	return new EntryEditPart((PaletteEntry)model);
+	return new ToolEntryEditPart((PaletteEntry)model);
 }
 
 protected EditPart createGroupEditPart(EditPart parentEditPart, Object model){

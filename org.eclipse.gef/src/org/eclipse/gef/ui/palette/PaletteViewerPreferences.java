@@ -277,6 +277,6 @@ public boolean useLargeIcons(int layout);
  * @return <code>true</code> if large icons are to be used with the currently active
  * layout
  */
-public boolean useLargeIconsCurrently();
+public boolean useLargeIcons();
 
 }

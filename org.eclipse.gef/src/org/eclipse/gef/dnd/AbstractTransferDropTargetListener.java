@@ -297,9 +297,7 @@ protected void handleDrop() {
  * Called when a new target EditPart has been entered. By default, the new target is asked
  * to show feedback.
  */
-protected void handleEnteredEditPart() {
-	showTargetFeedback();
-}
+protected void handleEnteredEditPart() { }
 
 /**
  * Called as the current target EditPart is being exited. By default, the target is asked
@@ -340,10 +338,8 @@ public boolean isEnabled(DropTargetEvent event) {
 			setCurrentEvent(event);
 			event.currentDataType = event.dataTypes[i];
 			updateTargetRequest();
-			updateTargetEditPart();
-			boolean result = getTargetEditPart() != null;
+			boolean result = calculateTargetEditPart() != null;
 			request = null;
-			target = null;
 			return result;
 		}
 	}
@@ -448,6 +444,10 @@ protected void unload() {
  * Updates the target EditPart.
  */
 protected void updateTargetEditPart() {
+	setTargetEditPart(calculateTargetEditPart());
+}
+
+private EditPart calculateTargetEditPart() {
 	EditPart ep = getViewer()
 		.findObjectAtExcluding(
 			getDropLocation(),
@@ -459,7 +459,7 @@ protected void updateTargetEditPart() {
 			});
 	if (ep != null)
 		ep = ep.getTargetEditPart(getTargetRequest());
-	setTargetEditPart(ep);
+	return ep;
 }
 
 /**

@@ -3,12 +3,14 @@ package org.eclipse.gef.ui.palette;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
+import org.eclipse.swt.graphics.FontData;
+
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 
-import org.eclipse.swt.graphics.FontData;
+import org.eclipse.gef.GEFPlugin;
 
 /**
  * This is the default implementation for PaletteViewerPreferences.  It uses

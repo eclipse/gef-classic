@@ -215,7 +215,7 @@ public void setSelection(PaletteEntry entry) {
 		}
 	} else {
 		selectedEntry = entry;
-		EntryEditPart ep = (EntryEditPart)getEditPartRegistry().get(entry);
+		ToolEntryEditPart ep = (ToolEntryEditPart)getEditPartRegistry().get(entry);
 		ep.select();
 		firePaletteSelectionChanged();
 	}
