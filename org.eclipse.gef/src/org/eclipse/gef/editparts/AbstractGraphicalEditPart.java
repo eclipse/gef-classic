@@ -670,8 +670,10 @@ public void removeNotify() {
  */
 protected void removeSourceConnection(ConnectionEditPart connection) {
 	fireRemovingSourceConnection(connection, getSourceConnections().indexOf(connection));
-	connection.deactivate();
-	connection.setSource(null);
+	if (connection.getSource() == this) {
+		connection.deactivate();
+		connection.setSource(null);
+	}
 	primRemoveSourceConnection(connection);
 }
 
@@ -683,7 +685,8 @@ protected void removeSourceConnection(ConnectionEditPart connection) {
  */
 protected void removeTargetConnection(ConnectionEditPart connection) {
 	fireRemovingTargetConnection(connection, getTargetConnections().indexOf(connection));
-	connection.setTarget(null);
+	if (connection.getTarget() == this)
+		connection.setTarget(null);
 	primRemoveTargetConnection(connection);
 }
 
