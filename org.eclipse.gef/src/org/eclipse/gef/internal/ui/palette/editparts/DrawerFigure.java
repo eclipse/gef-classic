@@ -24,6 +24,9 @@ public class DrawerFigure
 protected static final Border TOGGLE_BUTTON_BORDER = new RaisedBorder();
 protected static final Border TITLE_MARGIN_BORDER = new MarginBorder(1, 0, 1, 0);
 protected static final Border SCROLL_PANE_BORDER = new MarginBorder(3);
+protected static final Border TOOLTIP_BORDER = new DrawerToolTipBorder();
+protected static final Border BUTTON_BORDER = new ButtonBorder(
+					ButtonBorder.SCHEMES.TOOLBAR);
 
 //@TODO:Pratik
 // This image needs to go in GEFSharedImages
@@ -35,7 +38,7 @@ private Label drawerLabel;
 private ScrollPane scrollpane;
 private ToggleButton pinFigure;
 private Toggle collapseToggle;
-private boolean isAnimating, showPin;
+private boolean isAnimating, showPin, animatingAlone;
 private DrawerAnimationController controller;
 private EditPartTipHelper tipHelper;
 
@@ -48,7 +51,7 @@ private EditPartTipHelper tipHelper;
  * 						(the tip won't be displayed).
  */
 public DrawerFigure(final Control control) {
-	setLayoutManager(new ToolbarLayout());
+	setLayoutManager(new PaletteToolbarLayout());
 
 	Figure title = new Figure() {
 		protected void paintFigure(Graphics g) {
@@ -74,7 +77,7 @@ public DrawerFigure(final Control control) {
 	drawerLabel.setLabelAlignment(Label.LEFT);
 
 	pinFigure = new ToggleButton(new ImageFigure(PIN));
-	pinFigure.setBorder(new ButtonBorder(ButtonBorder.SCHEMES.TOOLBAR));
+	pinFigure.setBorder(BUTTON_BORDER);
 	pinFigure.setRolloverEnabled(true);
 	pinFigure.setRequestFocusEnabled(false);
 
@@ -121,7 +124,7 @@ private void createHoverHelp(final Control control) {
 	tipLabel.setOpaque(true);
 	tipLabel.setBackgroundColor(ColorConstants.tooltipBackground);
 	tipLabel.setForegroundColor(ColorConstants.tooltipForeground);	
-	tipLabel.setBorder(new DrawerToolTipBorder());
+	tipLabel.setBorder(TOOLTIP_BORDER);
 	collapseToggle.addMouseMotionListener(new MouseMotionListener.Stub() {
 		public void mouseMoved(MouseEvent e) {
 			Rectangle labelBounds = drawerLabel.getBounds();
@@ -182,7 +185,7 @@ public Clickable getCollapseToggle() {
  * @see org.eclipse.draw2d.Figure#getMinimumSize(int, int)
  */
 public Dimension getMinimumSize(int wHint, int hHint) {
-	if (isAnimating)
+	if (animatingAlone)
 		return getPreferredSize(wHint, hHint);
 	return super.getMinimumSize(wHint, hHint);
 }
@@ -277,6 +280,10 @@ public void setPinned(boolean pinned) {
 	}
 	
 	pinFigure.setSelected(pinned);
+}
+
+void setAnimatingAlone(boolean newValue) {
+	animatingAlone = newValue;
 }
 
 /**
