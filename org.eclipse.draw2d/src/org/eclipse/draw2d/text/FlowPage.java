@@ -60,9 +60,6 @@ public void invalidate() {
  * @see org.eclipse.draw2d.Figure#getPreferredSize(int, int)
  */
 public Dimension getPreferredSize(int width, int h) {
-	if (width >= 0)
-		width = Math.max(0, width - getInsets().getWidth());
-	
 	for (int i = 0; i < 3; i++) {
 		if (pageSizeCacheKeys[i] == width && pageSizeCacheValues[i] != null)
 			return pageSizeCacheValues[i];
@@ -76,22 +73,19 @@ public Dimension getPreferredSize(int width, int h) {
 	pageSizeCacheValues[1] = pageSizeCacheValues[0];	
 
 	//Flowpage must temporarily layout to determine its preferred size
-	int oldWidth = getRecommendedWidth();
-	setRecommendedWidth(width);
+	int oldWidth = getPageWidth();
+	setPageWidth(width);
 	validate();
-	pageSizeCacheValues[0] = 
-		pageSize.getExpanded(
-			getInsets().getWidth(),
-			getInsets().getHeight());
+	pageSizeCacheValues[0] = pageSize;
 	
 	if (width != oldWidth) {
-		setRecommendedWidth(oldWidth);
+		setPageWidth(oldWidth);
 		getUpdateManager().addInvalidFigure(this);
 	}
 	return pageSizeCacheValues[0];
 }
 
-int getRecommendedWidth() {
+int getPageWidth() {
 	return recommendedWidth;
 }
 
@@ -115,14 +109,14 @@ public void setBounds(Rectangle r) {
 		return;
 	boolean invalidate = getBounds().width != r.width || getBounds().height != r.height;
 	super.setBounds(r);
-	int newWidth = r.width - getInsets().getWidth();
-	if (invalidate || getRecommendedWidth() != newWidth) {
-		setRecommendedWidth(newWidth);
+	int newWidth = r.width;
+	if (invalidate || getPageWidth() != newWidth) {
+		setPageWidth(newWidth);
 		getUpdateManager().addInvalidFigure(this);
 	}
 }
 
-private void setRecommendedWidth(int width) {
+private void setPageWidth(int width) {
 	if (recommendedWidth == width)
 		return;
 	recommendedWidth = width;

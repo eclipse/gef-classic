@@ -32,7 +32,7 @@ public PageFlowLayout(FlowPage page) {
  * @see org.eclipse.draw2d.text.BlockFlowLayout#getContextWidth()
  */
 int getContextWidth() {
-	return ((FlowPage)getFlowFigure()).getRecommendedWidth();
+	return ((FlowPage)getFlowFigure()).getPageWidth();
 }
 
 }
