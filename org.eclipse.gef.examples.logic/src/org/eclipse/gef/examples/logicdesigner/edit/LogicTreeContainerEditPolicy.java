@@ -12,13 +12,13 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.commands.*;
-import org.eclipse.gef.editpolicies.AbstractTreeContainerEditPolicy;
+import org.eclipse.gef.editpolicies.TreeContainerEditPolicy;
 import org.eclipse.gef.examples.logicdesigner.model.*;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
 import org.eclipse.gef.requests.CreateRequest;
 
 public class LogicTreeContainerEditPolicy 
-	extends AbstractTreeContainerEditPolicy 
+	extends TreeContainerEditPolicy 
 {
 	
 protected Command createCreateCommand(LogicSubpart child, Rectangle r, 
