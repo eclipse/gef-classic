@@ -154,7 +154,7 @@ public int snapMoveRequest(ChangeBoundsRequest request,	PrecisionRectangle baseR
  * @see SnapToStrategy#snapResizeRequest(ChangeBoundsRequest, PrecisionRectangle)
  */
 public int snapResizeRequest(ChangeBoundsRequest request, PrecisionRectangle baseRect,
-                             PrecisionRectangle selectionRect, int snapOrientation) {
+                             int snapOrientation) {
 	if (request.getEditParts().size() != 1)
 		return snapOrientation;
 	

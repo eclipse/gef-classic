@@ -37,7 +37,7 @@ public class ResizeTracker
 
 private int direction;
 private GraphicalEditPart owner;
-private PrecisionRectangle sourceRect, compoundSrcRect;
+private PrecisionRectangle sourceRect;
 
 /**
  * Constructs a resize tracker that resizes in the specified direction.  The direction is
@@ -85,7 +85,6 @@ protected Request createSourceRequest() {
  */
 public void deactivate() {
 	sourceRect = null;
-	compoundSrcRect = null;
 	super.deactivate();
 }
 
@@ -276,29 +275,17 @@ protected void updateSourceRequest() {
 			.getAdapter(SnapToStrategy.class);
 	
 	if (!getCurrentInput().isAltKeyDown() && strategy != null) {
-		// Lazily determine the values of sourceRect and compoundSrcRect, and cache them
-		if (sourceRect == null || compoundSrcRect == null) {
-			List editparts = getOperationSet();
-			for (int i = 0; i < editparts.size(); i++) {
-				GraphicalEditPart child = (GraphicalEditPart)editparts.get(i);
-				IFigure figure = child.getFigure();
-				PrecisionRectangle bounds = null;
-				if (figure instanceof HandleBounds)
-					bounds = new PrecisionRectangle(((HandleBounds)figure).getHandleBounds());
-				else
-					bounds = new PrecisionRectangle(figure.getBounds());
-				figure.translateToAbsolute(bounds);
-	
-				if (compoundSrcRect == null)
-					compoundSrcRect = bounds;
-				else
-					compoundSrcRect = new PrecisionRectangle(compoundSrcRect.union(bounds));
-				if (child == owner)
-					sourceRect = bounds;
-			}
+		// Lazily determine the value of sourceRect and cache it
+		if (sourceRect == null) {
+			IFigure figure = owner.getFigure();
+			if (figure instanceof HandleBounds)
+				sourceRect = new PrecisionRectangle(
+						((HandleBounds)figure).getHandleBounds());
+			else
+				sourceRect = new PrecisionRectangle(figure.getBounds());
+			figure.translateToAbsolute(sourceRect);
 		}
 		strategy.snapResizeRequest(request, sourceRect.getPreciseCopy(),
-				compoundSrcRect.getPreciseCopy(),
 				SnapToStrategy.SNAP_HORIZONTAL | SnapToStrategy.SNAP_VERTICAL);
 	}
 

@@ -54,13 +54,12 @@ public int snapMoveRequest(ChangeBoundsRequest request,	PrecisionRectangle baseR
  * org.eclipse.draw2d.geometry.PrecisionRectangle)
  */
 public int snapResizeRequest(ChangeBoundsRequest req, PrecisionRectangle baseRect,
-                             PrecisionRectangle selectionRect, int snapOrientation) {
+                             int snapOrientation) {
 	int i = 0;
 	while (snapOrientation != 0 && i < delegates.length) {
 		if (delegates[i] != null)
 			snapOrientation = delegates[i].snapResizeRequest(req, 
-					baseRect.getPreciseCopy(), selectionRect.getPreciseCopy(), 
-					snapOrientation);
+					baseRect.getPreciseCopy(), snapOrientation);
 		i++;
 	}
 		

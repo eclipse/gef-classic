@@ -27,6 +27,6 @@ int snapMoveRequest(ChangeBoundsRequest request, PrecisionRectangle baseRect,
                     PrecisionRectangle compoundRect, int snapOrientation);
 
 int snapResizeRequest(ChangeBoundsRequest req, PrecisionRectangle baseRec,
-                      PrecisionRectangle compoundRect, int snapOrientation);
+                      int snapOrientation);
 
 }

@@ -186,7 +186,7 @@ public int snapMoveRequest(ChangeBoundsRequest request,	PrecisionRectangle baseR
  * @see SnapToStrategy#snapResizeRequest(ChangeBoundsRequest, PrecisionRectangle)
  */
 public int snapResizeRequest(ChangeBoundsRequest request, PrecisionRectangle baseRect,
-                             PrecisionRectangle selectionRect, int snapOrientation) {
+                             int snapOrientation) {
 	int dir = request.getResizeDirection();
 	PrecisionDimension resize = new PrecisionDimension(request.getSizeDelta());
 	PrecisionPoint move = new PrecisionPoint(request.getMoveDelta());
