@@ -42,11 +42,10 @@ protected ZoomManager zoomManager;
 
 /*
  * This is an artificial border.  When asked for the preferred size, the figure adds 
- * this width to its preferred width.  However, when painting, it doesn't touch
- * these pixels (which will be to the right in a vertical ruler).  Hence, those pixels
- * will have the parent's background color filled.  That is the intended "border."
+ * this width to its preferred width.  The border is painted in the paintFigure(Graphics)
+ * method.
  */
-private static final int BORDER_WIDTH = 2;
+private static final int BORDER_WIDTH = 3;
 
 private boolean horizontal;
 private int unit, interval, divisions;
@@ -77,7 +76,7 @@ protected double getDPU() {
 			}
 		}
 		if (zoomManager != null) {
-			dpu = dpu * zoomManager.getZoom() / zoomManager.getUIMultiplier();
+			dpu = dpu * zoomManager.getZoom();
 		}
 	}
 	return dpu;
@@ -86,7 +85,6 @@ protected double getDPU() {
 public Dimension getPreferredSize(int wHint, int hHint) {
 	Dimension prefSize = new Dimension();
 	if (isHorizontal()) {
-		// the plus 2 is to draw the two lines of border at the right
 		prefSize.height = (textMargin * 2) + BORDER_WIDTH
 				+ FigureUtilities.getFontMetrics(getFont()).getAscent();
 	} else {
@@ -286,6 +284,8 @@ protected void paintFigure(Graphics graphics) {
 				forbiddenZone.setSize(numSize);
 				forbiddenZone.expand(1, 1);
 				graphics.fillRectangle(forbiddenZone);
+				// Uncomment the following line of code if you want to see a line at
+				// the exact position of the guide
 //				graphics.drawLine(y, clippedBounds.x, y, clippedBounds.x + clippedBounds.width);
 				graphics.drawText(num, textLocation);
 			} else {
@@ -321,6 +321,14 @@ protected void paintFigure(Graphics graphics) {
 			}
 		}
 	}
+	// paint the border
+	/*
+	 * @TODO:Pratik    should i be drawing the two button pixels here?
+	 */
+	clippedBounds.expand(BORDER_WIDTH, 0);
+	graphics.setForegroundColor(ColorConstants.buttonDarker);
+	graphics.drawLine(transposer.t(clippedBounds.getTopRight().translate(-1, -1)), 
+			transposer.t(clippedBounds.getBottomRight().translate(-1, -1)));
 }
 
 public void setHorizontal(boolean isHorizontal) {

@@ -132,10 +132,10 @@ private void doLayout() {
 	}
 	
 	if (left != null) {
-		left.getControl().setBounds(0, topHeight, leftWidth, editorSize.y - hBarHeight);
+		left.getControl().setBounds(0, topHeight - 1, leftWidth, editorSize.y - hBarHeight);
 	}
 	if (top != null) {
-		top.getControl().setBounds(leftWidth, 0, editorSize.x - vBarWidth, topHeight);
+		top.getControl().setBounds(leftWidth - 1, 0, editorSize.x - vBarWidth, topHeight);
 	}
 }
 
@@ -192,7 +192,6 @@ public void setGraphicalViewer(GraphicalViewer primaryViewer) {
 	
 	diagramViewer = primaryViewer;
 	editor = (FigureCanvas)diagramViewer.getControl();
-	editor.setBorder(new EditorBorder());
 
 	// layout whenever the scrollbars are shown or hidden, and whenever the RulerComposite
 	// is resized
@@ -253,21 +252,6 @@ private void setRulerVisibility(boolean isVisible) {
 			setRuler((RulerProvider)diagramViewer.getProperty(
 					RulerProvider.VERTICAL), PositionConstants.WEST);
 		}
-	}
-}
-
-public static class EditorBorder
-	extends AbstractBorder
-{
-	public Insets getInsets(IFigure figure) {
-		return new Insets(1, 1, 0, 0);
-	}
-	public void paint(IFigure figure, Graphics graphics, Insets insets) {
-		graphics.setForegroundColor(ColorConstants.buttonDarker);
-		graphics.drawLine(
-				figure.getBounds().getTopLeft(), figure.getBounds().getTopRight());
-		graphics.drawLine(
-				figure.getBounds().getTopLeft(), figure.getBounds().getBottomLeft());
 	}
 }
 
