@@ -10,43 +10,138 @@ import org.eclipse.gef.handles.HandleBounds;
 import org.eclipse.gef.requests.GroupRequest;
 
 /**
+ * A temporary helper used to perform snapping to existing elements. This helper can be
+ * used in conjunction with the {@link DragEditPartsTracker} when dragging editparts
+ * within a graphical viewer. Snapping is based on the existing children of a
+ * <I>container</I>.  When snapping a rectangle, the edges of the rectangle will snap to
+ * edges of other rectangles generated from the children of the given container. 
+ * Similarly, the centers and middles of rectangles will snap to each other.
+ * <P>
+ * If the snap request is being made during a Move, Reparent or Resize, then the figures
+ * of the participants of that request will not be used for snapping.  If the request is a
+ * Clone, then the figures for the parts being cloned will be used as possible snap
+ * locations.
+ * <P>
+ * This helper does not keep up with changes made to the container editpart.  Clients
+ * should instantiate a new helper each time one is requested and not hold onto instances
+ * of the helper.
+ * 
+ * @since 3.0
  * @author Randy Hudson
  * @author Pratik Shah
  */
 public class SnapToGeometry 
-	extends SnapToHelper 
+	extends SnapToHelper
 {
-	
-public static final String PROPERTY_SNAP_ENABLED = "SnapToGeometry.isEnabled"; //$NON-NLS-1$	
+
+/**
+ * A property indicating whether this helper should be used.  The value should be an
+ * instance of Boolean.  Currently, this class does not check to see if the viewer
+ * property is set to <code>true</code>.
+ * @see EditPartViewer#setProperty(String, Object)
+ */
+public static final String PROPERTY_SNAP_ENABLED = "SnapToGeometry.isEnabled"; //$NON-NLS-1$
+
+/**
+ * The key used to identify the North anchor point in the extended data of a request.  The
+ * north anchor may be set to an {@link Integer} value indicating where the snapping is
+ * occurring.  This is used for feedback purposes.
+ */
 public static final String KEY_NORTH_ANCHOR = "SnapToGeometry.NorthAnchor"; //$NON-NLS-1$
+
+/**
+ * The key used to identify the South anchor point in the extended data of a request.  The
+ * south anchor may be set to an {@link Integer} value indicating where the snapping is
+ * occurring.  This is used for feedback purposes.
+ */
 public static final String KEY_SOUTH_ANCHOR = "SnapToGeometry.SouthAnchor"; //$NON-NLS-1$
+
+/**
+ * The key used to identify the West anchor point in the extended data of a request.  The
+ * west anchor may be set to an {@link Integer} value indicating where the snapping is
+ * occurring.  This is used for feedback purposes.
+ */
 public static final String KEY_WEST_ANCHOR = "SnapToGeometry.WestAnchor"; //$NON-NLS-1$
+
+/**
+ * The key used to identify the East anchor point in the extended data of a request.  The
+ * east anchor may be set to an {@link Integer} value indicating where the snapping is
+ * occurring.  This is used for feedback purposes.
+ */
 public static final String KEY_EAST_ANCHOR = "SnapToGeometry.EastAnchor"; //$NON-NLS-1$
 
+/**
+ * A vertical or horizontal snapping point.
+ * since 3.0
+ */
 protected static class Entry {
+	/**
+	 * The side from which this entry was created.  -1 is used to indicate left or top, 0
+	 * indicates the middle or center, and 1 indicates right or bottom.
+	 */
 	int side;
+	/**
+	 * The location of the entry, in the container's coordinates.
+	 */
 	int offset;
 	
+	/**
+	 * Constructs a new entry with the given side and offset.
+	 * @param side an integer indicating T/L, B/R, or C/M
+	 * @param offset the location
+	 */
 	Entry(int side, int offset) {
 		this.side = side;
 		this.offset = offset;
 	}
 }
 
+/**
+ * The sensitivity of the snapping.  Corrections greater than this value will not occur.
+ */
 protected static final double THRESHOLD = 5.0001;
-protected boolean cachedCloneBool;
+
+boolean cachedCloneBool;
+
+/**
+ * The horizontal rows being snapped to.
+ */
 protected Entry rows[];
+
+/**
+ * The vertical columnd being snapped to.
+ */
 protected Entry cols[];
+
+/**
+ * The container editpart providing the coordinates and the children to which snapping
+ * occurs.
+ */
 protected GraphicalEditPart container;
 
+/**
+ * Constructs a helper that will use the given part as its basis for snapping.  The
+ * part's contents pane will provide the coordinate system and its children determine the
+ * existing elements.
+ * 
+ * @since 3.0
+ * @param container the container editpart
+ */
 public SnapToGeometry(GraphicalEditPart container) {
 	this.container = container;
 }
 
-protected List generateSnapPartsList(List operationSet) {
+/**
+ * Generates a list of parts which should be snapped to.  The list is the original
+ * children, minus the given exclusions, minus and children whose figures are not visible.
+ * @since 3.0
+ * @param exclusions the children to exclude
+ * @return a list of parts which should be snapped to 
+ */
+protected List generateSnapPartsList(List exclusions) {
 	// Don't snap to any figure that is being dragged
 	List children = new ArrayList(container.getChildren());
-	children.removeAll(operationSet);
+	children.removeAll(exclusions);
 	
 	// Don't snap to hidden figures
 	List hiddenChildren = new ArrayList();
@@ -64,9 +159,11 @@ protected List generateSnapPartsList(List operationSet) {
  * Returns the correction value for the given entries and sides.  During a move, the left,
  * right, or center is free to snap to a location.
  * @param entries the entries
- * @param near the left/top side inclusively
- * @param far the right/bottom side exclusively
- * @return the correction amount or THRESHOLD if no correction is required
+ * @param extendedData the requests extended data
+ * @param vert <code>true</code> if the correction is vertical
+ * @param near the left/top side of the rectangle 
+ * @param far the right/bottom side of the rectangle
+ * @return the correction amount or THRESHOLD if no correction was made
  */
 protected double getCorrectionFor(Entry entries[], Map extendedData, boolean vert, 
                                 double near, double far) {
@@ -82,9 +179,11 @@ protected double getCorrectionFor(Entry entries[], Map extendedData, boolean ver
  * Returns the correction value between ± {@link #THRESHOLD}, or the THRESHOLD if no
  * corrections were found.
  * @param entries the entries
- * @param value
- * @param side
- * @return
+ * @param extendedData the map for setting values
+ * @param vert <code>true</code> if vertical
+ * @param value the value being corrected
+ * @param side which sides should be considered
+ * @return the correction or THRESHOLD if no correction was made
  */
 protected double getCorrectionFor(Entry entries[], Map extendedData, boolean vert, 
                                 double value, int side) {
@@ -127,6 +226,13 @@ protected double getCorrectionFor(Entry entries[], Map extendedData, boolean ver
 	return result;
 }
 
+/**
+ * Returns the rectangular contribution for the given editpart.  This is the rectangle
+ * with which snapping is performed.
+ * @since 3.0
+ * @param part the child
+ * @return the rectangular guide for that part
+ */
 protected Rectangle getFigureBounds(GraphicalEditPart part) {
 	IFigure fig = part.getFigure();
 	if (fig instanceof HandleBounds)
@@ -134,6 +240,11 @@ protected Rectangle getFigureBounds(GraphicalEditPart part) {
 	return fig.getBounds();
 }
 
+/**
+ * Updates the cached row and column Entries using the provided parts.
+ * @since 3.0
+ * @param parts a List of EditParts
+ */
 protected void populateRowsAndCols(List parts) {
 	rows = new Entry[parts.size() * 3];
 	cols = new Entry[parts.size() * 3];
@@ -149,6 +260,9 @@ protected void populateRowsAndCols(List parts) {
 	}
 }
 
+/**
+ * @see SnapToHelper#snapRectangle(Request, int, PrecisionRectangle, PrecisionRectangle)
+ */
 public int snapRectangle(Request request, int snapOrientation,
 		PrecisionRectangle baseRect, PrecisionRectangle result) {
 	
