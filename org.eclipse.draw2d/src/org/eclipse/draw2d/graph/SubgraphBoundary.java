@@ -9,14 +9,31 @@ import org.eclipse.draw2d.geometry.Insets;
  */
 public class SubgraphBoundary extends Node {
 
+/**
+ * constant indicating TOP.
+ */
 public static final int TOP = 0;
+
+/**
+ * constant indicating LEFT.
+ */
 public static final int LEFT = 1;
+
+/**
+ * constant indicating BOTTOM.
+ */
 public static final int BOTTOM = 2;
+
+/**
+ * constant indicating RIGHT.
+ */
 public static final int RIGHT = 3;
 
 /**
- * @param data
- * @param parent
+ * Constructs a new boundary.
+ * @param s the subgraph
+ * @param p the padding
+ * @param side which side
  */
 public SubgraphBoundary(Subgraph s, Insets p, int side) {
 	super(null, s);
@@ -31,26 +48,26 @@ public SubgraphBoundary(Subgraph s, Insets p, int side) {
 			y = s.y;
 			padding.right = s.innerPadding.left;
 			setParent(s.getParent());
-			data = "left(" + s + ")";
+			data = "left(" + s + ")"; //$NON-NLS-1$ //$NON-NLS-2$
 			break;
 		case RIGHT :
 			width = s.insets.right;
 			y = s.y;
 			padding.left = s.innerPadding.right;
 			setParent(s.getParent());
-			data = "right(" + s + ")";
+			data = "right(" + s + ")"; //$NON-NLS-1$ //$NON-NLS-2$
 			break;
 		case TOP :
 			height = s.insets.top;
 			width = 20;
 			padding.bottom = s.innerPadding.top;
-			data = "top(" + s + ")";
+			data = "top(" + s + ")"; //$NON-NLS-1$ //$NON-NLS-2$
 			break;
 		case BOTTOM :
 			height = s.insets.bottom;
 			width = 20;
 			padding.top = s.innerPadding.bottom;
-			data = "bottom(" + s + ")";
+			data = "bottom(" + s + ")"; //$NON-NLS-1$ //$NON-NLS-2$
 			break;
 	}
 }

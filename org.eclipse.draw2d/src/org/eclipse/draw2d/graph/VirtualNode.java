@@ -8,9 +8,20 @@ import org.eclipse.draw2d.geometry.Insets;
  */
 public class VirtualNode extends Node {
 
+/**
+ * The previous node.
+ */
 public Node prev;
+/**
+ * The next node.
+ */
 public Node next;
 
+/**
+ * Constructs a virtual node.
+ * @param e the edge
+ * @param i the row
+ */
 public VirtualNode(Edge e, int i) {
 	super(e);
 	incoming.add(e);
@@ -18,11 +29,8 @@ public VirtualNode(Edge e, int i) {
 	width = e.width;
 	height = 0;
 	rank = i;
-	padding = new Insets(0,10,0,10); //$TODO obtain default left and right padding values
-}
-
-public Edge getEdge() {
-	return (Edge)data;
+	//$TODO obtain default left and right padding values
+	padding = new Insets(0, 10, 0, 10);
 }
 
 /**
@@ -40,9 +48,9 @@ public double medianIncoming() {
 }
 
 /**
- * Returns the original edge weight multiplied by the omega value for the this node and
- * the node on the previous rank.
- * @return
+ * For internal use only.  Returns the original edge weight multiplied by the omega value
+ * for the this node and the node on the previous rank.
+ * @return the weighted weight, or omega
  */
 public int omega() {
 	Edge e = (Edge)data;
@@ -56,7 +64,8 @@ public int omega() {
  */
 public String toString() {
 	Edge e = (Edge)data;
-	return "VN[" + (e.vNodes.indexOf(this) + 1) + "]("+ data +")";
+	return "VN[" + (e.vNodes.indexOf(this) + 1) //$NON-NLS-1$
+		+ "](" + data + ")"; //$NON-NLS-1$ //$NON-NLS-2$
 }
 
 }

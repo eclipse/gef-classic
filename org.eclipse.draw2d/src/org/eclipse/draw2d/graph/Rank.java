@@ -11,6 +11,10 @@ public class Rank extends NodeList {
 
 private Comparator comparator = new MedianComparator();
 final int hash = new Object().hashCode();
+/**
+ * For internal use only.  The total "size" of this rank, where size may be weighted per
+ * node.
+ */
 public int total;
 
 static class MedianComparator implements Comparator {
@@ -24,15 +28,25 @@ static class MedianComparator implements Comparator {
 	}
 }
 
-public boolean add(Node n) {
-	n.index = size();
-	return super.add(n);
+/**
+ * Adds a node to this rank.
+ * @param n the node
+ */
+public void add(Node n) {
+	super.add(n);
 }
 
+/**
+ * Returns the number of nodes in this rank.
+ * @return the number of nodes
+ */
 public int count() {
 	return super.size();
 }
 
+/**
+ * @see java.lang.Object#equals(java.lang.Object)
+ */
 public boolean equals(Object o) {
 	return o == this;
 }
@@ -45,17 +59,10 @@ public int hashCode() {
 }
 
 /**
- * @deprecated
- */
-public int size() {
-	return super.size();
-}
-
-/**
  * $TODO move this to RankSorter
  */
 public void sort() {
-	Collections.sort(this,comparator);
+	Collections.sort(this, comparator);
 }
 
 /**
@@ -71,7 +78,7 @@ public void assignIndices() {
 //	total = size() - 1;
 
 	int mag;
-	for (int i=0; i<size(); i++) {
+	for (int i = 0; i < size(); i++) {
 		node = getNode(i);
 		mag = node.incoming.size() + node.outgoing.size();
 //		if (node instanceof SubgraphBoundary)
