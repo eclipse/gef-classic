@@ -38,7 +38,7 @@ public GraphicalViewerImpl() {
 }
 
 public Control createControl(Composite composite){
-	setControl(new Canvas(composite, SWT.NONE));
+	setControl(new Canvas(composite, SWT.NO_BACKGROUND));
 	return getControl();
 }
 
@@ -176,7 +176,7 @@ protected void setDragSource(DragSource source) {
 		}
 		public void dragFinished(DragSourceEvent event) {
 			getEventDispatcher().dispatchNativeDragFinished(event, GraphicalViewerImpl.this);
-		}
+	}
 	}
 	// The DragSource may be set to null if there are no listeners.  If there are listeners,
 	// this should be *the* last listener because all other listeners are hooked in super().
