@@ -12,8 +12,7 @@ package org.eclipse.gef.ui.actions;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.events.*;
 import org.eclipse.swt.widgets.*;
 
 import org.eclipse.jface.action.ContributionItem;
@@ -39,11 +38,11 @@ private String initString = "8888%"; //$NON-NLS-1$
 private ToolItem toolitem;
 private ZoomManager zoomManager;
 private IPartService service;
-private final IPartListener partListener;
+private IPartListener partListener;
 
 /**
  * Constructor for ComboToolItem.
- * @param id
+ * @param partService used to add a PartListener
  */
 public ZoomComboContributionItem(IPartService partService) {
 	super(GEFActionConstants.ZOOM_TOOLBAR_WIDGET);
@@ -62,8 +61,8 @@ public ZoomComboContributionItem(IPartService partService) {
 
 /**
  * Constructor for ComboToolItem.
- * @param id
- * @param initString
+ * @param partService used to add a PartListener
+ * @param initString the initial string displayed in the combo
  */
 public ZoomComboContributionItem(IPartService partService, String initString) {
 	super(GEFActionConstants.ZOOM_TOOLBAR_WIDGET);
@@ -125,6 +124,11 @@ protected Control createControl(Composite parent) {
 			handleWidgetDefaultSelected(e);
 		}
 	});
+	combo.addDisposeListener(new DisposeListener() {
+		public void widgetDisposed(DisposeEvent e) {
+			dispose();
+		}
+	});
 	
 	// Initialize width of combo
 	combo.setText(initString);
@@ -137,12 +141,15 @@ protected Control createControl(Composite parent) {
  * @see org.eclipse.jface.action.ContributionItem#dispose()
  */
 public void dispose() {
+	if (partListener == null)
+		return;
 	service.removePartListener(partListener);
 	if (zoomManager != null) {
 		zoomManager.removeZoomListener(this);
 		zoomManager = null;
 	}
 	combo = null;
+	partListener = null;
 }
 
 /**
