@@ -372,17 +372,17 @@ public void setZoomAnimationStyle(int style) {
  * appropriate zoom implementation for the new zoom levels.
  * @param zoomString The new zoom level */
 public void setZoomAsText(String zoomString) {
-	if (zoomString.equals(FIT_HEIGHT)) {
+	if (zoomString.equalsIgnoreCase(FIT_HEIGHT)) {
 		primSetZoom(getFitHeightZoomLevel() / multiplier);
 		viewport.getUpdateManager().performUpdate();
 		viewport.setViewLocation(viewport.getHorizontalRangeModel().getValue(), 
 				viewport.getVerticalRangeModel().getMinimum());
-	} else if (zoomString.equals(FIT_ALL)) {
+	} else if (zoomString.equalsIgnoreCase(FIT_ALL)) {
 		primSetZoom(getFitPageZoomLevel() / multiplier);
 		viewport.getUpdateManager().performUpdate();
 		viewport.setViewLocation(viewport.getHorizontalRangeModel().getMinimum(), 
 				viewport.getVerticalRangeModel().getMinimum());
-	} else if (zoomString.equals(FIT_WIDTH)) {
+	} else if (zoomString.equalsIgnoreCase(FIT_WIDTH)) {
 		primSetZoom(getFitWidthZoomLevel() / multiplier);
 		viewport.getUpdateManager().performUpdate();
 		viewport.setViewLocation(viewport.getHorizontalRangeModel().getMinimum(),
