@@ -73,17 +73,20 @@ protected void paintFigure(Graphics g) {
 		frag = (TextFragmentBox)fragments.get(i);
 //		if (!g.getClip(Rectangle.SINGLETON).intersects(frag))
 //			continue;
+		String draw;
 		if (!frag.truncated)
-			g.drawString(
-				text.substring(frag.offset, frag.offset + frag.length),
-				frag.x, frag.y);
+			draw = text.substring(frag.offset, frag.offset + frag.length);
 		else
-			g.drawString(
-				text.substring(frag.offset, frag.offset + frag.length) + ELLIPSIS,
-				frag.x, frag.y);
-//		g.drawRectangle(frag);
+			draw = text.substring(frag.offset, frag.offset + frag.length) + ELLIPSIS;
+		if (!isEnabled()) {
+			g.setForegroundColor(ColorConstants.buttonLightest);
+			g.drawString(draw, frag.x + 1, frag.y + 1);
+			g.setForegroundColor(ColorConstants.buttonDarker);
+			g.drawString(draw, frag.x, frag.y);
+			g.restoreState();
+		} else
+			g.drawString(draw, frag.x, frag.y);
 	}
-//	g.drawRectangle(getBounds().getResized(-1, -1));
 }
 
 /**
