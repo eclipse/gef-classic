@@ -12,6 +12,8 @@ package org.eclipse.gef.examples.logicdesigner.model.commands;
 
 import java.util.List;
 
+import org.eclipse.draw2d.geometry.Point;
+
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
 import org.eclipse.gef.examples.logicdesigner.model.LogicDiagram;
@@ -21,6 +23,7 @@ public class OrphanChildCommand
 	extends Command
 {
 
+private Point oldLocation;
 private LogicDiagram diagram;
 private LogicSubpart child;
 private int index;
@@ -32,6 +35,7 @@ public OrphanChildCommand () {
 public void execute() {
 	List children = diagram.getChildren();
 	index = children.indexOf(child);
+	oldLocation = child.getLocation();
 	diagram.removeChild(child);
 }
 
@@ -48,7 +52,8 @@ public void setParent(LogicDiagram parent) {
 }
 
 public void undo() {
-	diagram.addChild(child,index);
+	child.setLocation(oldLocation);
+	diagram.addChild(child, index);
 }
 
 }
