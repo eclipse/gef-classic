@@ -205,7 +205,7 @@ public static void paintEtchedBorder(
 		w = r.width,
 		h = r.height;
 
-	g.setLineStyle(g.LINE_SOLID);
+	g.setLineStyle(Graphics.LINE_SOLID);
 	g.setLineWidth(1);
 	g.setXORMode(false);
 
