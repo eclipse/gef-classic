@@ -91,6 +91,7 @@ protected void addListeners() {
 	canvas.addKeyListener(handler);
 	canvas.addTraverseListener(handler);
 	canvas.addFocusListener(handler);
+	canvas.addListener(SWT.MouseWheel, handler);
 	
 	if (SWT.getPlatform().equals("gtk")) { //$NON-NLS-1$
 		canvas.addControlListener(new ControlAdapter() {
@@ -342,7 +343,8 @@ protected class RootFigure
  */
 protected class EventHandler 
 	implements MouseMoveListener, MouseListener, AccessibleControlListener, KeyListener,
-				TraverseListener, FocusListener, AccessibleListener, MouseTrackListener
+				TraverseListener, FocusListener, AccessibleListener, MouseTrackListener,
+				Listener
 {
 	/** @see FocusListener#focusGained(FocusEvent) */
 	public void focusGained(FocusEvent e) {
@@ -472,6 +474,15 @@ protected class EventHandler
 		ad = getEventDispatcher().getAccessibilityDispatcher();
 		if (ad != null)
 			ad.getValue(e);
+	}
+	
+	/**
+	 * @see Listener#handleEvent(org.eclipse.swt.widgets.Event)
+	 * @since 3.1
+	 */
+	public void handleEvent(Event event) {
+		// Mouse wheel events
+		getEventDispatcher().dispatchMouseWheelScrolled(event);
 	}
 	
 	/** @see KeyListener#keyPressed(KeyEvent) */
