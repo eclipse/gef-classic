@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>gef.doc.isv</name>
+	<name>org.eclipse.gef.doc.isv</name>
 	<comment></comment>
 	<projects>
 		<project>gef</project>

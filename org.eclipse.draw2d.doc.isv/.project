@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>draw2d.doc.isv</name>
+	<name>org.eclipse.draw2d.doc.isv</name>
 	<comment></comment>
 	<projects>
 		<project>org.eclipse.core.boot</project>
