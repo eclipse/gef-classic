@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?eclipse version="3.0"?>
 <plugin
    id="org.eclipse.gef"
    name="Graphical Editing Framework"
-   version="3.0.0"
+   version="2.1.3"
    provider-name="Eclipse.org"
    class="org.eclipse.gef.GEFPlugin">
 
@@ -14,16 +13,11 @@
       </library>
    </runtime>
    <requires>
-      <import plugin="org.eclipse.draw2d" export="true" version="3.0.0"/>
-      <import plugin="org.eclipse.core.runtime"/>
-      <import plugin="org.eclipse.core.resources"/>
-      <import plugin="org.eclipse.ui.views"/>
-      <import plugin="org.eclipse.ui.workbench"/>
-      <import plugin="org.eclipse.jface"/>
-      <import plugin="org.eclipse.ui.ide"/>
-      <import plugin="org.eclipse.osgi"/>
+      <import plugin="org.eclipse.draw2d" export="true" version="2.1.2"/>
+      <import plugin="org.eclipse.core.runtime" export="true"/>
+      <import plugin="org.eclipse.core.resources" export="true"/>
+      <import plugin="org.eclipse.ui" export="true"/>
    </requires>
-
 
    <extension
          point="org.eclipse.ui.commands">
@@ -34,8 +28,8 @@
       </category>
       <command
             name="%ZoomIn.Tooltip"
-            category="org.eclipse.gef.category.view"
             description="%ZoomIn.Tooltip"
+            category="org.eclipse.gef.category.view"
             id="org.eclipse.gef.zoom_in">
       </command>
       <keyBinding
@@ -46,8 +40,8 @@
       </keyBinding>
       <command
             name="%ZoomOut.Tooltip"
-            category="org.eclipse.gef.category.view"
             description="%ZoomOut.Tooltip"
+            category="org.eclipse.gef.category.view"
             id="org.eclipse.gef.zoom_out">
       </command>
       <keyBinding
@@ -56,16 +50,6 @@
             command="org.eclipse.gef.zoom_out"
             configuration="org.eclipse.ui.defaultAcceleratorConfiguration">
       </keyBinding>
-   </extension>
-   <extension
-         point="org.eclipse.ui.views">
-      <view
-            name="%Palette.Label"
-            icon="icons\debugGEF.gif"
-            category="org.eclipse.ui"
-            class="org.eclipse.gef.ui.views.palette.PaletteView"
-            id="org.eclipse.gef.ui.palette_view">
-      </view>
    </extension>
 
 </plugin>
