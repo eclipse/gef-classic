@@ -58,7 +58,6 @@ protected static final Border TOGGLE_BUTTON_BORDER = new RaisedBorder();
 /** Tooltip border constant **/
 protected static final Border TOOLTIP_BORDER = new DrawerToolTipBorder();
 private Toggle collapseToggle;
-private DrawerAnimationController controller;
 private Label drawerLabel, tipLabel;
 
 private int layoutMode = -1;
@@ -337,10 +336,6 @@ public void setAnimating(boolean isAnimating) {
 	} else {
 		scrollpane.setVerticalScrollBarVisibility(ScrollPane.AUTOMATIC);
 	}
-}
-
-public void setController(DrawerAnimationController controller) {
-	this.controller = controller;
 }
 
 public void setExpanded(boolean value) {

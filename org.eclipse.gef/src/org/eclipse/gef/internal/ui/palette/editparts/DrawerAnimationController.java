@@ -41,7 +41,6 @@ public DrawerAnimationController(PaletteViewerPreferences prefs) {
 
 public void addDrawer(DrawerEditPart drawer) {
 	drawers.add(drawer);
-	drawer.getDrawerFigure().setController(this);
 }
 
 public void animate(DrawerEditPart drawer) {
@@ -113,7 +112,6 @@ public boolean isAnimationInProgress() {
 }
 
 public void removeDrawer(DrawerEditPart drawer) {
-	drawer.getDrawerFigure().setController(null);
 	drawers.remove(drawer);
 }
 
