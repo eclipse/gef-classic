@@ -57,22 +57,19 @@ public MarqueeToolEntry(String label, String description) {
  * @see org.eclipse.gef.palette.PaletteEntry#getDescription()
  */
 public String getDescription() {
-	String desc = super.getDescription();
-	if (desc == null) {
-		desc = GEFMessages.MarqueeTool_Nodes_Desc;
-		Map properties = getToolProperties();
-		if (properties != null) {
-			Object value = properties.get(MarqueeSelectionTool.PROPERTY_MARQUEE_BEHAVIOR);
-			if (value instanceof Integer) {
-				int selectionType = ((Integer)value).intValue();
-				if (selectionType == MarqueeSelectionTool.BEHAVIOR_NODES_AND_CONNECTIONS)
-					desc = GEFMessages.MarqueeTool_Desc;
-				if (selectionType == MarqueeSelectionTool.BEHAVIOR_CONNECTIONS_TOUCHED)
-					desc = GEFMessages.MarqueeTool_Connections_Desc;
-			}
-		}
+	String description = super.getDescription();
+	if (description != null)
+		return description;
+	
+	Object value = getToolProperty(MarqueeSelectionTool.PROPERTY_MARQUEE_BEHAVIOR);
+	if (value instanceof Integer) {
+		int selectionType = ((Integer)value).intValue();
+		if (selectionType == MarqueeSelectionTool.BEHAVIOR_NODES_AND_CONNECTIONS)
+			return GEFMessages.MarqueeTool_Desc;
+		if (selectionType == MarqueeSelectionTool.BEHAVIOR_CONNECTIONS_TOUCHED)
+			return GEFMessages.MarqueeTool_Connections_Desc;
 	}
-	return desc;
+	return GEFMessages.MarqueeTool_Nodes_Desc;
 }
 
 }

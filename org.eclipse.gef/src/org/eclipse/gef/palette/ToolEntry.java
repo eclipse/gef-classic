@@ -88,6 +88,18 @@ protected Map getToolProperties() {
 }
 
 /**
+ * Returns the property value for the specified property key.
+ * @param key the property key
+ * @return the value for the requested property
+ * @since 3.1
+ */
+public Object getToolProperty(Object key) {
+	if (map != null)
+		return map.get(key);
+	return null;
+}
+
+/**
  * Sets the type of tool to be created.  This provides clients with a method of specifying
  * a different type of tool to be created without having to sub-class.  The provided class
  * should have a default constructor for this to work successfully.
