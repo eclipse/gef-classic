@@ -226,7 +226,7 @@ public void doSave(IProgressMonitor progressMonitor) {
 		file.setContents(new ByteArrayInputStream(out.toByteArray()), 
 						true, false, progressMonitor);
 		out.close();
-		getCommandStack().flush();
+		getCommandStack().markSaveLocation();
 	} 
 	catch (Exception e) {
 		e.printStackTrace();
@@ -253,7 +253,7 @@ protected KeyHandler getCommonKeyHandler(){
 	if (sharedKeyHandler == null){
 		sharedKeyHandler = new KeyHandler();
 		sharedKeyHandler.put(
-			KeyStroke.getPressed(SWT.DEL, 0),
+			KeyStroke.getPressed(SWT.DEL, 127, 0),
 			getActionRegistry().getAction(DeleteAction.ID));
 		sharedKeyHandler.put(
 			KeyStroke.getPressed(SWT.F2, 0),
@@ -325,7 +325,7 @@ public boolean isSaveAsAllowed() {
 }
 
 public boolean isSaveOnCloseNeeded() {
-	return getCommandStack().getUndoCommand() != null;
+	return getCommandStack().isDirty();
 }
 
 protected boolean performSaveAs() {
@@ -357,7 +357,7 @@ protected boolean performSaveAs() {
 	try {
 		new ProgressMonitorDialog(getSite().getWorkbenchWindow().getShell()).run(false, true, op);
 		setInput(new FileEditorInput((IFile)file));
-		getCommandStack().flush();
+		getCommandStack().markSaveLocation();
 	} 
 	catch (Exception e) {
 		e.printStackTrace();
