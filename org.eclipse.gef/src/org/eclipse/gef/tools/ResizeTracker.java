@@ -216,7 +216,8 @@ protected boolean handleDragInProgress() {
  * {@link #getTargetEditPart() target} to show target feedback.
  */
 protected void showTargetFeedback() {
-	getTargetEditPart().showTargetFeedback(getSourceRequest());
+	if (getTargetEditPart() != null)
+		getTargetEditPart().showTargetFeedback(getSourceRequest());
 }
 
 /**
