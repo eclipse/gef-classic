@@ -14,7 +14,7 @@ class CategoryAnimationController {
 
 private long startTime = System.currentTimeMillis();
 private long endTime = 0;
-private static int numberOfMilliSeconds = 1500;
+private static int numberOfMilliSeconds = 150;
 private boolean inProgress;
 private List categories = new ArrayList();
 private CategoryFigure[] animate;
