@@ -12,6 +12,7 @@ import java.util.List;
 import org.eclipse.draw2d.ButtonGroup;
 import org.eclipse.gef.*;
 import org.eclipse.gef.palette.*;
+import org.eclipse.gef.ui.palette.customize.*;
 import org.eclipse.gef.ui.parts.PaletteViewerKeyHandler;
 import org.eclipse.jface.viewers.*;
 
@@ -20,14 +21,21 @@ public class PaletteViewerImpl
 	implements PaletteViewer
 {
 
+PaletteCustomizer customizer = null;
+PaletteCustomizerDialog customizerDialog = null;
 List paletteListeners = new ArrayList();
 ButtonGroup buttonGroup = null;
 PaletteEntry selectedEntry = null;
 PaletteRoot paletteRoot = null;
+PaletteViewerPreferences prefs = null;
 
-public PaletteViewerImpl() {
+public PaletteViewerImpl(){
 	setEditDomain(new DefaultEditDomain(null));
 	setKeyHandler(new PaletteViewerKeyHandler(this));
+	setContextMenuProvider(new PaletteContextMenuProvider(this));
+	setPaletteViewerPreferencesSource( new DefaultPaletteViewerPreferences(
+						GEFPlugin.getDefault().getPreferenceStore()) );
+
 }
 
 public void addPaletteListener(PaletteListener paletteListener){
@@ -54,6 +62,23 @@ public ButtonGroup getButtonGroup(){
 	return buttonGroup;
 }
 
+/**
+ * Returns the customizer.
+ * @return PaletteCustomizer
+ */
+public PaletteCustomizer getCustomizer() {
+	return customizer;
+}
+
+public PaletteCustomizerDialog getCustomizerDialog(){
+	if (customizerDialog == null){
+		customizerDialog = new PaletteCustomizerDialog( getControl().getShell(),
+		                                    getCustomizer(), prefs, paletteRoot);
+		
+	}
+	return customizerDialog;
+}
+
 public EditPartFactory getEditPartFactory(){
 	if (super.getEditPartFactory() == null)
 		setEditPartFactory(new PaletteEditPartFactory());
@@ -72,12 +97,28 @@ public void removePaletteListener(PaletteListener paletteListener){
 
 public void removeSelectionChangedListener(ISelectionChangedListener listener){;}
 
+/**
+ * Sets the customizer.
+ * @param customizer The customizer to set
+ */
+public void setCustomizer(PaletteCustomizer customizer) {
+	this.customizer = customizer;
+}
+
 public void setPaletteRoot(PaletteRoot root){
 	paletteRoot = root;
 	if( paletteRoot != null){
 		EditPart palette = getEditPartFactory().createEditPart(getRootEditPart(), root);
 		getRootEditPart().setContents(palette);
 	}
+}
+
+public void setPaletteViewerPreferencesSource(PaletteViewerPreferences prefs) {
+	if( prefs == null ){
+		return;
+	}
+	
+	this.prefs = prefs;
 }
 
 /*

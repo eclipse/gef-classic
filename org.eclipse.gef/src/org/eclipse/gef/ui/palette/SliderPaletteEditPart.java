@@ -6,9 +6,11 @@ package org.eclipse.gef.ui.palette;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import java.util.List;
-
-import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.Figure;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.MarginBorder;
+import org.eclipse.draw2d.ToolbarLayout;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.palette.PaletteRoot;
@@ -18,7 +20,7 @@ public class SliderPaletteEditPart
 {
 
 public SliderPaletteEditPart(PaletteRoot paletteRoot){
-	setModel(paletteRoot);
+	super(paletteRoot);
 }
 
 public IFigure createFigure(){
@@ -30,10 +32,6 @@ public IFigure createFigure(){
 	layout.setSpacing(3);
 	figure.setLayoutManager(layout);
 	return figure;
-}
-
-public List getModelChildren(){
-	return ((PaletteRoot)getModel()).getChildren();
 }
 
 protected void addChildVisual(EditPart childEditPart, int index){

@@ -14,15 +14,21 @@ public class DefaultPaletteCategory
 	extends DefaultPaletteContainer {
 
 public DefaultPaletteCategory(String label){
-	super(label, PaletteContainer.PALETTE_TYPE_CATEGORY);
+	this(label, (Image)null);
+}
+
+public DefaultPaletteCategory(String label, Image icon, List children){
+	this(label, icon);
+	addAll(children);
 }
 
 public DefaultPaletteCategory(String label, List children){
-	super(label, children, PaletteContainer.PALETTE_TYPE_CATEGORY);
+	this(label, null, children);
 }
 
 public DefaultPaletteCategory(String label,Image icon){
-	super(label,PaletteContainer.PALETTE_TYPE_CATEGORY, icon, icon);
+	super(label, icon);
+	setType(PALETTE_TYPE_CATEGORY);
 }
 	
 }

@@ -6,24 +6,35 @@ package org.eclipse.gef.ui.palette;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.AbstractBorder;
+import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.Graphics;
+import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 final class SeparatorBorder 
 	extends AbstractBorder {
 
-protected static final Insets insets = new Insets(1,0,0,0);
+protected static final Insets insets = new Insets(1, 0, 0, 0);
 
-public SeparatorBorder(){}
-public Insets getInsets(IFigure figure){return insets;}
-public boolean isOpaque(){return true;}
+public SeparatorBorder() {
+}
 
-public void paint(IFigure figure, Graphics graphics, Insets insets){
-	Rectangle r = getPaintRectangle(figure, insets);	
+public Insets getInsets(IFigure figure) {
+	return insets;
+}
+
+public boolean isOpaque() {
+	return true;
+}
+
+public void paint(IFigure figure, Graphics graphics, Insets insets) {
+	Rectangle r = getPaintRectangle(figure, insets);
 	graphics.setLineWidth(1);
-	graphics.setForegroundColor(ColorConstants.button);
-	graphics.drawLine(r.x+3, r.y, r.right()-4, r.y);
+	graphics.setForegroundColor(ColorConstants.buttonDarker);
+	int y = (r.y + r.y + r.height) / 2;
+	graphics.drawLine(r.x + 3, y, r.right() - 4, y);
 }
 
 }

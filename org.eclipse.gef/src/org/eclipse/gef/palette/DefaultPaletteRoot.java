@@ -13,10 +13,9 @@ public class DefaultPaletteRoot
 	implements PaletteRoot
 {
 
-private List children = new ArrayList();
-
 public DefaultPaletteRoot(List children) {
-	super(null, children, PaletteRoot.PALETTE_TYPE_ROOT);
+	setType (PALETTE_TYPE_ROOT);
+	addAll(children);
 }
 
 public String toString() {

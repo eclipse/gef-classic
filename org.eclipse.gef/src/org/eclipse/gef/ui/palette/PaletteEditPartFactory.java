@@ -29,10 +29,25 @@ public EditPart createEditPart(EditPart parentEditPart, Object model){
 			return createGroupEditPart(parentEditPart, model);
 	if( model instanceof TemplateEntry)
 		return createTemplateEditPart(parentEditPart, model);
+	if( model instanceof PaletteSeparator )
+		return createSeparatorEditPart(parentEditPart, model);
 	if( model instanceof PaletteEntry )
 		return createEntryEditPart(parentEditPart, model);
 	return null;
 }
+
+/**
+ * Method createSeparatorEditPart.
+ * @param parentEditPart
+ * @param model
+ * @return EditPart
+ */
+private EditPart createSeparatorEditPart(
+	EditPart parentEditPart,
+	Object model) {
+	return new SeparatorEditPart((PaletteSeparator)model);
+}
+
 
 protected EditPart createEntryEditPart(EditPart parentEditPart, Object model){
 	return new EntryEditPart((PaletteEntry)model);

@@ -12,12 +12,13 @@ public class DefaultPaletteGroup
 	extends DefaultPaletteContainer {
 
 public DefaultPaletteGroup(String label){
-	super(label, PaletteContainer.PALETTE_TYPE_GROUP);
+	super(label);
+	setType(PALETTE_TYPE_GROUP);
 }
 
 public DefaultPaletteGroup(String label, List children){
-	super(label, children, PaletteContainer.PALETTE_TYPE_GROUP);
+	this(label);
+	addAll(children);
 }
-
 
 }

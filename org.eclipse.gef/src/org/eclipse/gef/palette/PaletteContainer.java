@@ -12,20 +12,34 @@ import java.util.*;
  * Interface for a Palette Category
  */
 public interface PaletteContainer 
-	extends PaletteEntry{
+	extends PaletteEntry
+{
+
+/**
+ * Property name indicating that this PaletteContainer's children have changed
+ */
+public static final String
+	PROPERTY_CHILDREN_CHANGED = "Children Changed"; //$NON-NLS-1$
+
+		
 
 static String     PALETTE_TYPE_CATEGORY = "Palette_Category", //$NON-NLS-1$
                   PALETTE_TYPE_GROUP = "Palette_Group";//$NON-NLS-1$
 
+void add(PaletteEntry entry);
+void add(int index, PaletteEntry entry);
+void addAll(List newChildren);
+
 /**
- * Return the groups for this palette category
+ * @return the children of this container
  */
 List getChildren();
 
 /**
- * Returns the label for the category.
- * @return java.lang.String
+ * @return the label for this container
  */
 String getLabel();
+
+void remove(PaletteEntry entry);
 
 }

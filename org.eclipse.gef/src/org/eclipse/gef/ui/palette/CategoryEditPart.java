@@ -29,7 +29,7 @@ private final static Color COLOR_TITLE_BACKGROUND =
 	FigureUtilities.mixColors(ColorConstants.button, ColorConstants.white);
 
 public CategoryEditPart(PaletteContainer category){
-	setModel(category);
+	super(category);
 }
 
 public void activate(){
@@ -210,7 +210,7 @@ protected void refreshVisuals(){
 }
 
 /**
- * Refreshes the FIgure for this part.  If the animate flag is true, then the category's
+ * Refreshes the Figure for this part.  If the animate flag is true, then the category's
  * Figure will slide open or closed.
  */
 protected void refreshVisuals(boolean animate){

@@ -19,7 +19,7 @@ public class TemplateEditPart
 private static Border BORDER = new MarginBorder(3,0,3,0);
 
 public TemplateEditPart(TemplateEntry entry) {
-	setModel(entry);
+	super(entry);
 }
 
 protected AccessibleEditPart createAccessible() {

@@ -25,7 +25,7 @@ private static final Border BORDER_LABEL_MARGIN = new MarginBorder(new Insets(1,
 private ToggleButton toolTipButton;
 
 public EntryEditPart(PaletteEntry paletteEntry){
-	setModel(paletteEntry);
+	super(paletteEntry);
 }
 
 public void activate(){
