@@ -380,6 +380,12 @@ protected boolean handleKeyDown(KeyEvent e) {
 	return false;	
 }
 
+/**
+ * Interprets and processes clone deactivation, constrained move deactivation, and
+ * accessibility navigation reset.
+ * 
+ * @see org.eclipse.gef.tools.AbstractTool#handleKeyUp(org.eclipse.swt.events.KeyEvent)
+ */
 protected boolean handleKeyUp(KeyEvent e) {
 	if (acceptArrowKey(e)) {
 		accStepReset();
@@ -414,7 +420,7 @@ protected boolean isMove() {
 	while (part != getTargetEditPart() && part != null) {
 		if (part.getParent() == getTargetEditPart() 
 				&& part.getSelected() != EditPart.SELECTED_NONE)
-				return true;
+			return true;
 		part = part.getParent();
 	}
 	return false;
@@ -447,6 +453,9 @@ protected void repairStartLocation() {
 		compoundSrcRect.translate(delta);
 }
 
+/**
+ * @see org.eclipse.gef.tools.TargetingTool#setAutoexposeHelper(org.eclipse.gef.AutoexposeHelper)
+ */
 protected void setAutoexposeHelper(AutoexposeHelper helper) {
 	super.setAutoexposeHelper(helper);
 	if (helper != null && sourceRelativeStartPoint == null && isInDragInProgress()) {
@@ -457,8 +466,7 @@ protected void setAutoexposeHelper(AutoexposeHelper helper) {
 }
 
 /**
- * Enables cloning if the value is true.  Calls {@link #doDragInProgress()} if
- * the value has been changed.
+ * Enables cloning if the value is true.
  * 
  * @param cloneActive <code>true</code> if cloning should be active
  */
@@ -496,6 +504,11 @@ protected void showSourceFeedback() {
 	setFlag(FLAG_SOURCE_FEEDBACK, true);
 }
 
+/**
+ * Extended to activate cloning and to update the captured source dimensions when 
+ * applicable.
+ * @see org.eclipse.gef.tools.AbstractTool#setState(int)
+ */
 protected void setState(int state) {
 	boolean check = isInState(STATE_INITIAL);
 	super.setState(state);
