@@ -53,21 +53,21 @@ public class MarqueeSelectionTool
 
 /**
  * The property to be used in {@link AbstractTool#setProperties(java.util.Map)} for 
- * {@link #setSelectionType(int)}.
+ * {@link #setMarqueeBehavior(int)}.
  */
-public static final Object PROPERTY_SELECTION_TYPE = "selectionType"; //$NON-NLS-1$
+public static final Object PROPERTY_MARQUEE_BEHAVIOR = "marqueeBehavior"; //$NON-NLS-1$
 
 /**
  * For marquee tools that should select nodes.  This is the default type for this
  * tool.
  * @since 3.1
  */
-public static final int SELECT_NODES = 1;
+public static final int BEHAVIOR_NODES_CONTAINED = new Integer(1).intValue();
 /**
  * For marquee tools that should select connections
  * @since 3.1
  */
-public static final int SELECT_CONNECTIONS = 2;
+public static final int BEHAVIOR_CONNECTIONS_TOUCHED = new Integer(2).intValue();
 
 
 static final int TOGGLE_MODE = 1;
@@ -79,13 +79,13 @@ private Figure marqueeRectangleFigure;
 private Set allChildren = new HashSet();
 private List selectedEditParts;
 private Request targetRequest;
-private int selectionType = SELECT_NODES;
+private int marqueeBehavior = BEHAVIOR_NODES_CONTAINED;
 
 private static final Request MARQUEE_REQUEST =
 		new Request(RequestConstants.REQ_SELECTION); 
 
 /**
- * Creates a new MarqueeSelectionTool of default type {@link #SELECT_NODES}.
+ * Creates a new MarqueeSelectionTool of default type {@link #BEHAVIOR_NODES_CONTAINED}.
  */
 public MarqueeSelectionTool() {
 	setDefaultCursor(SharedCursors.CROSS); 
@@ -96,9 +96,9 @@ public MarqueeSelectionTool() {
  * @see org.eclipse.gef.tools.AbstractTool#applyProperty(java.lang.Object, java.lang.Object)
  */
 protected void applyProperty(Object key, Object value) {
-	if (PROPERTY_SELECTION_TYPE.equals(key)) {
+	if (PROPERTY_MARQUEE_BEHAVIOR.equals(key)) {
 		if (value instanceof Integer)
-			setSelectionType(((Integer)value).intValue());
+			setMarqueeBehavior(((Integer)value).intValue());
 		return;
 	}
 	super.applyProperty(key, value);
@@ -168,9 +168,9 @@ private void getAllChildren(EditPart editPart, Set allChildren) {
 	List children = editPart.getChildren();
 	for (int i = 0; i < children.size(); i++) {
 		GraphicalEditPart child = (GraphicalEditPart) children.get(i);
-		if ((selectionType & SELECT_NODES) != 0)
+		if ((marqueeBehavior & BEHAVIOR_NODES_CONTAINED) != 0)
 			allChildren.add(child);
-		if ((selectionType & SELECT_CONNECTIONS) != 0) {
+		if ((marqueeBehavior & BEHAVIOR_CONNECTIONS_TOUCHED) != 0) {
 			allChildren.addAll(child.getSourceConnections());
 			allChildren.addAll(child.getTargetConnections());
 		}
@@ -198,7 +198,7 @@ protected String getCommandName() {
  * @see org.eclipse.gef.tools.AbstractTool#getDebugName()
  */
 protected String getDebugName() {
-	return "Marquee Tool: " + selectionType;//$NON-NLS-1$
+	return "Marquee Tool: " + marqueeBehavior;//$NON-NLS-1$
 }
 
 private IFigure getMarqueeFeedbackFigure() {
@@ -371,9 +371,9 @@ private void setSelectionMode(int mode) {
 	this.mode = mode;
 }
 
-public void setSelectionType(int type) {
-	selectionType = type & 3;
-	Assert.isTrue(selectionType != 0);
+public void setMarqueeBehavior(int type) {
+	marqueeBehavior = type & 3;
+	Assert.isTrue(marqueeBehavior != 0);
 }
 
 private void showMarqueeFeedback() {

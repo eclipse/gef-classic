@@ -62,14 +62,14 @@ public String getDescription() {
 		desc = GEFMessages.MarqueeTool_Nodes_Desc;
 		Map properties = getToolProperties();
 		if (properties != null) {
-			Object value = properties.get(MarqueeSelectionTool.PROPERTY_SELECTION_TYPE);
+			Object value = properties.get(MarqueeSelectionTool.PROPERTY_MARQUEE_BEHAVIOR);
 			if (value instanceof Integer) {
 				int selectionType = ((Integer)value).intValue() 
-						& (MarqueeSelectionTool.SELECT_CONNECTIONS 
-						| MarqueeSelectionTool.SELECT_NODES);
-				if (selectionType == MarqueeSelectionTool.SELECT_CONNECTIONS)
+						& (MarqueeSelectionTool.BEHAVIOR_CONNECTIONS_TOUCHED 
+						| MarqueeSelectionTool.BEHAVIOR_NODES_CONTAINED);
+				if (selectionType == MarqueeSelectionTool.BEHAVIOR_CONNECTIONS_TOUCHED)
 					desc = GEFMessages.MarqueeTool_Connections_Desc;
-				else if (selectionType != MarqueeSelectionTool.SELECT_NODES)
+				else if (selectionType != MarqueeSelectionTool.BEHAVIOR_NODES_CONTAINED)
 					desc = GEFMessages.MarqueeTool_Desc;
 			}
 		}
