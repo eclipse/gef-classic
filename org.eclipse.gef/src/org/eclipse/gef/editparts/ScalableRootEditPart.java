@@ -158,17 +158,17 @@ protected void createLayers(LayeredPane layeredPane) {
  * @return a new LayeredPane containing the printable layers
  */
 protected LayeredPane createPrintableLayers() {
-	printableLayers = new LayeredPane();
+	LayeredPane pane = new LayeredPane();
 	
 	Layer layer = new Layer();
 	layer.setLayoutManager(new StackLayout());
-	printableLayers.add(layer, PRIMARY_LAYER);
+	pane.add(layer, PRIMARY_LAYER);
 
 	layer = new ConnectionLayer();
 	layer.setPreferredSize(new Dimension(5, 5));
-	printableLayers.add(layer, CONNECTION_LAYER);
+	pane.add(layer, CONNECTION_LAYER);
 	
-	return printableLayers;
+	return pane;
 }
 
 /**
