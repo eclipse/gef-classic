@@ -416,15 +416,15 @@ is the controller's job to construct and manage them.</dd>
       <td colspan="4" bgcolor="#FFFF99" style="border-left-width: 1; border-right-width: 1; border-top-style: solid; border-top-width: 1; border-bottom-width: 1"><b>--- Manipulating Connection Semantics</b></td>
     </tr>
     <tr>
-      <td>REQ_CONNECTION_SOURCE</td>
+      <td>REQ_CONNECTION_START</td>
       <td>Node</td>
       <td>To create the source half 
       of a connection.&nbsp; This Request works in conjunction with 
-      REQ_CONNECTION_TARGET</td>
+      REQ_CONNECTION_END</td>
       <td>GraphicalNodeEditPolicy</td>
     </tr>
     <tr>
-      <td bgcolor="#EAEAFA">REQ_CONNECTION_TARGET</td>
+      <td bgcolor="#EAEAFA">REQ_CONNECTION_END</td>
       <td bgcolor="#EAEAFA">Node</td>
       <td bgcolor="#EAEAFA">To complete the creation of 
       a connection.</td>
@@ -459,20 +459,12 @@ is the controller's job to construct and manage them.</dd>
       <td>BendpointEditPolicy</td>
     </tr>
     <tr>
-      <td bgcolor="#EAEAFA">REQ_DELETE_BENDPOINT</td>
-      <td bgcolor="#EAEAFA">
+      <td bgcolor="#EAEAFA">REQ_CREATE_BENDPOINT</td>
+       <td bgcolor="#EAEAFA">
       Conn.</td>
-      <td bgcolor="#EAEAFA">To delete 
-      an existing bendpoint</td>
-      <td bgcolor="#EAEAFA">BendpointEditPolicy</td>
-    </tr>
-    <tr>
-      <td>REQ_CREATE_BENDPOINT</td>
-      <td>
-      Conn.</td>
-      <td>To create 
+       <td bgcolor="#EAEAFA">To create 
       a new bendpoint</td>
-      <td>BendpointEditPolicy</td>
+       <td bgcolor="#EAEAFA">BendpointEditPolicy</td>
     </tr>
     <tr>
       <td colspan="4" bgcolor="#FFFF99" style="border-left-width: 1; border-right-width: 1; border-top-style: solid; border-top-width: 1; border-bottom-width: 1">
@@ -487,10 +479,10 @@ is the controller's job to construct and manage them.</dd>
       <td>ResizableEditPolicy</td>
     </tr>
     <tr>
-      <td bgcolor="#EAEAFA">REQ_RESIZE_CHILD</td>
+      <td bgcolor="#EAEAFA">REQ_RESIZE_CHILDREN</td>
       <td bgcolor="#EAEAFA">Parent</td>
       <td bgcolor="#EAEAFA">To change the size and/or 
-      location of an object's child</td>
+      location of an object's children</td>
       <td bgcolor="#EAEAFA">LayoutEditPolicy</td>
     </tr>
     <tr>
@@ -548,33 +540,12 @@ is the controller's job to construct and manage them.</dd>
       <td>All, potentially</td>
     </tr>
     <tr>
-      <td bgcolor="#EAEAFA">REQ_SOURCE_DELETED</td>
-      <td bgcolor="#EAEAFA">Conn.</td>
-      <td bgcolor="#EAEAFA">Indicates that the 
-      connection's source will be deleted</td>
-      <td bgcolor="#EAEAFA">ConnectionEditPolicy</td>
-    </tr>
-    <tr>
-      <td>REQ_TARGET_DELETED</td>
-      <td>Conn.</td>
-      <td>Indicates that the 
-      connection's target will be deleted</td>
-      <td>ConnectionEditPolicy</td>
-    </tr>
-    <tr>
       <td bgcolor="#EAEAFA">REQ_DELETE_DEPENDANT</td>
       <td bgcolor="#EAEAFA">Parent</td>
       <td bgcolor="#EAEAFA">Indicates that the parent's 
       child will be deleted</td>
       <td bgcolor="#EAEAFA">ContainerEditPolicy<br>
       LayoutEditPolicy</td>
-    </tr>
-    <tr>
-      <td>REQ_ANCESTOR_DELETED</td>
-      <td>Descendant</td>
-      <td>Indicates that an object's 
-      ancestor will be deleted</td>
-      <td>All, potentially</td>
     </tr>
     <tr>
       <td colspan="4" bgcolor="#FFFF99" style="border-left-width: 1; border-right-width: 1; border-top-style: solid; border-top-width: 1; border-bottom-width: 1"><b>--- Miscellaneous</b></td>
@@ -595,22 +566,45 @@ is the controller's job to construct and manage them.</dd>
       <td bgcolor="#EAEAFA">SelectionEditPolicy<br>
       and others</td>
     </tr>
+      <tr>
+      <td>REQ_CLONE</td>
+      <td>Any</td>
+      <td>To clone this object</td>
+      <td>ContainerEditPolicy<br>
+      and others</td>
+    </tr>
+     </tr>
+      <tr>
+      <td bgcolor="#EAEAFA">REQ_DIRECT_EDIT</td>
+      <td bgcolor="#EAEAFA">Any</td>
+      <td bgcolor="#EAEAFA">Indicates that a direct edit should be performed</td>
+      <td bgcolor="#EAEAFA">DirectEditPolicy<br>
+      and others</td>
+    </tr>
+      </tr>
+      <tr>
+      <td>REQ_OPEN</td>
+     <td>Any</td>
+      <td>Indicates that the user has double-clicked on the receiver</td>
+     <td>SelectEditPartTracker</td>
+    </tr>
     <tr>
-      <td colspan="4" bgcolor="#FFFF99" style="border-left-width: 1; border-right-width: 1; border-top-style: solid; border-top-width: 1; border-bottom-width: 1"><b>--- Not yet implemented</b></td>
+      <td colspan="4" bgcolor="#FFFF99" style="border-left-width: 1; border-right-width: 1; border-top-style: solid; border-top-width: 1; border-bottom-width: 1"><b>--- Alignment</b></td>
     </tr>
     <tr>
       <td>REQ_ALIGN</td>
       <td>Child</td>
       <td>To align an object to a 
       constraint</td>
-      <td>&nbsp;</td>
+      <td>NonResizableEditPolicy</td>
     </tr>
     <tr>
-      <td bgcolor="#EAEAFA">REQ_ALIGN_CHILD</td>
+      <td bgcolor="#EAEAFA">REQ_ALIGN_CHILDREN</td>
       <td bgcolor="#EAEAFA">Parent</td>
-      <td bgcolor="#EAEAFA">To align a child to a 
+      <td bgcolor="#EAEAFA">To align children to a 
       constraint</td>
-      <td bgcolor="#EAEAFA">&nbsp;</td>
+      <td bgcolor="#EAEAFA">ConstrainedLayoutEditPolicy<br>
+      and others</td>
     </tr>
     </table>
 </blockquote>
@@ -763,20 +757,8 @@ is the controller's job to construct and manage them.</dd>
       </tr>
     <tr>
       <td>REQ_DELETE</td>
-      <td>The ConnectionEditPolicy should delete the connection from its source 
+      <td width="100%">The ConnectionEditPolicy should delete the connection from its source 
       and target</td>
-    </tr>
-    <tr>
-      <td>REQ_SOURCE_DELETED</td>
-      <td>When the source is deleted from the model, ConnectionEditPolicy should 
-      either delete the connection also, or at least detach the connection from 
-      the source.</td>
-    </tr>
-    <tr>
-      <td>REQ_TARGET_DELETED</td>
-      <td>When the target is deleted from the model, ConnectionEditPolicy should 
-      either delete the connection also, or at least detach the connection from 
-      the target.</td>
     </tr>
     </table>
   <BR/>
@@ -792,18 +774,12 @@ is the controller's job to construct and manage them.</dd>
       <td>REQ_DELETE</td>
       <td>When a container is deleted, it should indicate to its children that 
       it is being deleted, so that they can detach themselves from anything in 
-      the model that is not encompassed by the container's sub-tree.&nbsp; It 
-      does this by sending a REQ_ANCESTOR_DELETED to its children.</td>
-    </tr>
-    <tr>
-      <td><font SIZE="2">REQ_ANCESTOR_DELETED</font></td>
-      <td>When the container's parent or ancestor is deleted, it will receive a 
-      forwarded REQ_ANCESTOR_DELETED (see REQ_DELETE above).&nbsp; A container 
-      should continue to forward the REQ_ANCESTOR_DELETED to its descendants.</td>
+      the model that is not encompassed by the container's sub-tree.</td>
     </tr>
     <tr>
       <td><font SIZE="2">REQ_CREATE<br>
       REQ_ADD<br>
+      REQ_CLONE<br>
       REQ_DELETE_DEPENDANT<br>
       REQ_ORPHAN_CHILDREN</font></td>
       <td>A ContainerEditPolicy may be involved in adding/removing and 
@@ -823,15 +799,14 @@ is the controller's job to construct and manage them.</dd>
       <td bgcolor="#000080" valign="bottom"><b><font color="#FFFFFF">Action</font></b></td>
       </tr>
     <tr>
-      <td>REQ_DELETE<br>
-      REQ_ANCESTOR_DELETED</td>
-      <td>Whether a Node itself or its ancestor is deleted, the Node will 
+      <td>REQ_DELETE</td>
+      <td>When a node is deleted, the Node will 
       forward a REQ_SOURCE_DELETED to all of its source connections, and 
       similarly for its targets.&nbsp; This will allow the connections to detach 
       themselves from the source/target or to remove themselves entirely.</td>
     </tr>
     <tr>
-      <td>[REQ_CONNECTION_SOURCE]<br>
+      <td>[REQ_CONNECTION_START]<br>
       [REQ_RECONNECT_TARGET]</td>
       <td>Currently, NodeEditPolicy does not handle requests that allow you to 
       create and manipulate connections.&nbsp; But, if connections could be 
@@ -877,8 +852,8 @@ is the controller's job to construct and manage them.</dd>
       <td bgcolor="#000080" valign="bottom"><b><font color="#FFFFFF">Action</font></b></td>
       </tr>
     <tr>
-      <td><font SIZE="2">REQ_CONNECTION_SOURCE<br>
-      REQ_CONNECTION_TARGET</font></td>
+      <td><font SIZE="2">REQ_CONNECTION_START<br>
+      REQ_CONNECTION_END</font></td>
       <td>Starting a connection and ending it (the two steps to create a new 
       connection) are handle by this edit policy.&nbsp; Most likely, the policy 
       would show feedback as the user creates the connection.&nbsp; Also, if the 
@@ -963,7 +938,7 @@ is the controller's job to construct and manage them.</dd>
     </tr>
     <tr>
       <td><font SIZE="2">REQ_MOVE_CHILDREN<br>
-      REQ_RESIZE_CHILD</font></td>
+      REQ_RESIZE_CHILDREN</font></td>
       <td>New constraints must be calculated for the object(s) being moved or 
       resized. Constraints of other objects may be modified in some cases.</td>
     </tr>
