@@ -59,6 +59,8 @@ public static Color darker(Color color){
  */
 public static FontMetrics getFontMetrics(Font f){
 	setFont(f);
+	if (metrics == null)
+		metrics = getGC().getFontMetrics();
 	return metrics;
 }
 
@@ -130,6 +132,12 @@ public static Dimension getTextExtents(String s, Font f){
 	return new Dimension(getTextDimension(s,f));
 }
 
+public static void getTextExtents(String s, Font f, Dimension result){
+	org.eclipse.swt.graphics.Point pt = getTextDimension(s, f);
+	result.width = pt.x;
+	result.height = pt.y;
+}
+
 /**
  * Returns the width of <i>s</i> in Font <i>f</i>.
  * 
@@ -197,7 +205,7 @@ public static void paintEtchedBorder(
 		w = r.width,
 		h = r.height;
 
-	g.setLineStyle(Graphics.LINE_SOLID);
+	g.setLineStyle(g.LINE_SOLID);
 	g.setLineWidth(1);
 	g.setXORMode(false);
 
@@ -236,7 +244,7 @@ protected static void setFont(Font f){
 		return;
 	getGC().setFont(f);
 	appliedFont = f;
-	metrics = gc.getFontMetrics();
+	metrics = null;
 }
 
 }

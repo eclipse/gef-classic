@@ -439,7 +439,7 @@ public Border getBorder() {
  * @return The bounds of this Figure
  */
 public Rectangle getBounds() {
-	return new Rectangle(bounds);
+	return bounds;
 }
 
 /**

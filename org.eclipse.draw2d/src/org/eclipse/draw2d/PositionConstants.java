@@ -17,13 +17,16 @@ public static final int LEFT   =  1;
 public static final int CENTER =  2;
 /** Right */
 public static final int RIGHT  =  4;
+/** Bit-wise OR of LEFT, CENTER, and RIGHT */
+public static final int LEFT_CENTER_RIGHT = LEFT | CENTER | RIGHT;
 /** Top */
 public static final int TOP    =  8;
 /** Middle (Vertical) */
 public static final int MIDDLE = 16;
 /** Bottom */
 public static final int BOTTOM = 32;
-
+/** Bit-wise OR of TOP, MIDDLE, and BOTTOM */
+public static final int TOP_MIDDLE_BOTTOM = TOP | MIDDLE | BOTTOM;
 /** None */
 public static final int NONE  =  0;
 /** North */
