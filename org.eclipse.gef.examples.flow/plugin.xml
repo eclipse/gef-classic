@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin
+   id="org.eclipse.gef.examples.flow"
+   name="GEF Flow Editor Example"
+   version="2.2.0"
+   provider-name="Eclipse.org"
+   class="org.eclipse.gef.examples.flow.FlowPlugin">
+
+   <runtime>
+      <library name="flow.jar"/>
+   </runtime>
+   <requires>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.draw2d"/>
+      <import plugin="org.eclipse.gef"/>
+   </requires>
+
+
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            name="GEF Flow Example"
+            default="true"
+            icon="view.gif"
+            extensions="flow"
+            contributorClass="org.eclipse.gef.examples.flow.actions.FlowActionBarContributor"
+            class="org.eclipse.gef.examples.flow.ui.FlowEditor"
+            id="GEF Flow Editor">
+      </editor>
+	</extension>
+	<extension
+	      point="org.eclipse.ui.views">
+	   <view
+	         name="Plugin Dependencies"
+	         icon="view.gif"
+	         category="org.eclipse.ui"
+	         class="org.eclipse.graph.pde.PluginDependenciesView"
+	         id="plugindependencies">
+	   </view>
+	</extension>
+
+</plugin>
