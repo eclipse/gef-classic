@@ -22,42 +22,16 @@ import org.eclipse.swt.printing.Printer;
  * @author Eric Bordeau */
 public abstract class PrintOperation {
 
-/**
- * The default print mode. Prints at 100% scale and tiles horizontally and/or vertically, 
- * if necessary.
- */
-public static final int TILE = 1;
-/**
- * A print mode that scales the printer graphics so that the entire printed image fits on 
- * one page.
- */
-public static final int FIT_PAGE = 2;
-/**
- * A print mode that scales the printer graphics so that the width of the printed image 
- * fits on one page and tiles vertically, if necessary.
- */
-public static final int FIT_WIDTH = 3;
-/**
- * A print mode that scales the printer graphics so that the height of the printed image 
- * fits on one page and tiles horizontally, if necessary.
- */
-public static final int FIT_HEIGHT = 4;
-
 private GC printerGC;  // Note: Only one GC instance should be created per print job
 private Insets printMargin = new Insets(0, 0, 0, 0);
 private Printer printer;
 private PrinterGraphics printerGraphics;
 private SWTGraphics g;
-private int printMode = TILE;
 
 /**
  * Creates a new PrintOperation
  */
 public PrintOperation() { }
-
-public PrintOperation(int mode) {
-	printMode = mode;
-}
 
 /**
  * Creates a new PrintOperation on Printer p
@@ -180,24 +154,11 @@ public void setPrintMargin(Insets margin) {
 }
 
 /**
- * Sets the print mode.  Possible values are {@link #TILE}, {@link #FIT_HEIGHT}, 
- * {@link #FIT_WIDTH} and {@link #FIT_PAGE}.
- * @param mode the print mode
- */
-public void setPrintMode(int mode) {
-	printMode = mode;
-}
-
-/**
  * Returns the printer.
  * @return Printer
  */
 public Printer getPrinter() {
 	return printer;
-}
-
-protected int getPrintMode() {
-	return printMode;
 }
 
 /**

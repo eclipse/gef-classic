@@ -14,7 +14,6 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.printing.Printer;
 import org.eclipse.swt.widgets.Display;
 
-import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
@@ -26,8 +25,30 @@ import org.eclipse.draw2d.geometry.Rectangle;
  */
 public class PrintFigureOperation extends PrintOperation {
 
+/**
+ * The default print mode. Prints at 100% scale and tiles horizontally and/or vertically, 
+ * if necessary.
+ */
+public static final int TILE = 1;
+/**
+ * A print mode that scales the printer graphics so that the entire printed image fits on 
+ * one page.
+ */
+public static final int FIT_PAGE = 2;
+/**
+ * A print mode that scales the printer graphics so that the width of the printed image 
+ * fits on one page and tiles vertically, if necessary.
+ */
+public static final int FIT_WIDTH = 3;
+/**
+ * A print mode that scales the printer graphics so that the height of the printed image 
+ * fits on one page and tiles horizontally, if necessary.
+ */
+public static final int FIT_HEIGHT = 4;
+
 private IFigure printSource;
 private Color oldBGColor;
+private int printMode = TILE;
 
 /**
  * Constructor for PrintFigureOperation.
@@ -51,6 +72,10 @@ public PrintFigureOperation(Printer p, IFigure srcFigure) {
 }
 
 
+protected int getPrintMode() {
+	return printMode;
+}
+
 /**
  * Returns the printSource.
  * 
@@ -71,56 +96,59 @@ protected void preparePrintSource() {
 /**
  * Prints the pages based on the current print mode. * @see org.eclipse.draw2d.PrintOperation#printPages() */
 protected void printPages() {
+	Graphics graphics = getFreshPrinterGraphics();
+	IFigure figure = getPrintSource();
+	setupPrinterGraphicsFor(graphics, figure);
+	Rectangle bounds = figure.getBounds();
+	int x = bounds.x, y = bounds.y;
+	Rectangle clipRect = new Rectangle();
+	while (y < bounds.y + bounds.height) {
+		while (x < bounds.x + bounds.width) {
+			graphics.pushState();
+			getPrinter().startPage();
+			graphics.translate(-x, -y);
+			graphics.getClip(clipRect);
+			clipRect.setLocation(x, y);
+			graphics.clipRect(clipRect);
+			figure.paint(graphics);
+			getPrinter().endPage();
+			graphics.popState();
+			x += clipRect.width;
+		}
+		x = bounds.x;
+		y += clipRect.height;
+	}
+}
+
+/**
+ * Sets up Graphics object for the given IFigure.
+ * @param graphics The Graphics to setup
+ * @param figure The IFigure used to setup graphics */
+protected void setupPrinterGraphicsFor(Graphics graphics, IFigure figure) {
 	double dpiScale = getPrinter().getDPI().x / Display.getCurrent().getDPI().x;
 	
 	Rectangle printRegion = getPrintRegion();
+	// put the print region in display coordinates
 	printRegion.width /= dpiScale;
 	printRegion.height /= dpiScale;
 	
-	Rectangle bounds = printSource.getBounds();
+	Rectangle bounds = figure.getBounds();
 	double xScale = (double)printRegion.width / bounds.width;
 	double yScale = (double)printRegion.height / bounds.height;
-	double scale = 1.0;
-	if (getPrintMode() == PrintOperation.FIT_PAGE)
-		scale = Math.min(xScale, yScale);
-	else if (getPrintMode() == PrintOperation.FIT_WIDTH)
-		scale = xScale;
-	else if (getPrintMode() == PrintOperation.FIT_HEIGHT)
-		scale = yScale;
-	
-	double x =	getPrintSource().getBounds().width  * scale / printRegion.width;
-	double y =	getPrintSource().getBounds().height * scale / printRegion.height;
-
-	int horizontalPages = (x > (int)x) ? (int)x + 1 : (int)x;
-	int verticalPages = (y > (int)y) ? (int)y + 1 : (int)y;
-	
-	IFigure figure = getPrintSource();
-	Point offset = figure.getBounds().getLocation();
-	PrinterGraphics g = getFreshPrinterGraphics();
-	g.scale(scale);
-	g.setForegroundColor(figure.getForegroundColor());
-	g.setBackgroundColor(figure.getBackgroundColor());
-	g.setFont(figure.getFont());
-	
-	Rectangle clipRect = new Rectangle();
-	for (int v = 0; v < verticalPages; v++) {
-		for (int h = 0; h < horizontalPages; h++) {
-			g.pushState();
-			getPrinter().startPage();
-			g.scale(dpiScale);
-			g.translate(-offset.x, -offset.y);
-			clipRect.setLocation(offset);
-			clipRect.setSize((int)(printRegion.width / scale), 
-							(int)(printRegion.height / scale));
-			g.clipRect(clipRect);
-			figure.paint(g);
-			getPrinter().endPage();
-			g.restoreState();
-			offset.x += (int)(printRegion.width / scale);
-		}
-		offset.y += (int)(printRegion.height / scale);
-		offset.x = figure.getBounds().getLocation().x;
+	switch (getPrintMode()) {
+		case FIT_PAGE:
+			graphics.scale(Math.min(xScale, yScale));
+			break;
+		case FIT_WIDTH:
+			graphics.scale(xScale);
+			break;
+		case FIT_HEIGHT:
+			graphics.scale(yScale);
 	}
+	graphics.scale(dpiScale);
+	graphics.setForegroundColor(figure.getForegroundColor());
+	graphics.setBackgroundColor(figure.getBackgroundColor());
+	graphics.setFont(figure.getFont());
 }
 
 /**
@@ -129,6 +157,15 @@ protected void printPages() {
 protected void restorePrintSource() {
 	getPrintSource().setBackgroundColor(oldBGColor);
 	oldBGColor = null;
+}
+
+/**
+ * Sets the print mode.  Possible values are {@link #TILE}, {@link #FIT_HEIGHT}, 
+ * {@link #FIT_WIDTH} and {@link #FIT_PAGE}.
+ * @param mode the print mode
+ */
+public void setPrintMode(int mode) {
+	printMode = mode;
 }
 
 /**

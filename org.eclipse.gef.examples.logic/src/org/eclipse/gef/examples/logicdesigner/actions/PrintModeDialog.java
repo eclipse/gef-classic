@@ -5,7 +5,7 @@ import org.eclipse.swt.widgets.*;
 
 import org.eclipse.jface.dialogs.Dialog;
 
-import org.eclipse.draw2d.PrintOperation;
+import org.eclipse.draw2d.PrintFigureOperation;
 
 /**
  * @author Eric Bordeau
@@ -50,13 +50,13 @@ protected Control createDialogArea(Composite parent) {
 protected void okPressed() {
 	int returnCode = -1;
 	if (tile.getSelection())
-		returnCode = PrintOperation.TILE;
+		returnCode = PrintFigureOperation.TILE;
 	else if (fitPage.getSelection())
-		returnCode = PrintOperation.FIT_PAGE;
+		returnCode = PrintFigureOperation.FIT_PAGE;
 	else if (fitHeight.getSelection())
-		returnCode = PrintOperation.FIT_HEIGHT;
+		returnCode = PrintFigureOperation.FIT_HEIGHT;
 	else if (fitWidth.getSelection())
-		returnCode = PrintOperation.FIT_WIDTH;
+		returnCode = PrintFigureOperation.FIT_WIDTH;
 	setReturnCode(returnCode);
 	close();
 }
