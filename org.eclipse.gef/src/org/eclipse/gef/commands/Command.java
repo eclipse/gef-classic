@@ -28,7 +28,7 @@ import java.util.Collection;
  */
 public interface Command 
 {
-  public static final String copyright = "(c) Copyright IBM Corporation 2002.";
+  public static final String copyright = "(c) Copyright IBM Corporation 2002.";  //$NON-NLS-1$
 
   /**
    * This indicates whether the comamad is valid to execute.

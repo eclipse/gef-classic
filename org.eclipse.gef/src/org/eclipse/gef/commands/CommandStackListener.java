@@ -16,7 +16,7 @@ import java.util.EventObject;
  */ 
 public interface CommandStackListener
 {
-  public static final String copyright = "(c) Copyright IBM Corporation 2002.";
+  public static final String copyright = "(c) Copyright IBM Corporation 2002.";  //$NON-NLS-1$
 
   /**
    * This is called with the {@link CommandStack}'s state has changed.

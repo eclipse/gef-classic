@@ -16,7 +16,7 @@ package org.eclipse.gef.commands;
  */
 public interface CommandStack 
 {
-  public static final String copyright = "(c) Copyright IBM Corporation 2002.";
+  public static final String copyright = "(c) Copyright IBM Corporation 2002.";  //$NON-NLS-1$
 
   /**
    * This will clear any redoable commands not yet redone, add the command, and then execute the command.
