@@ -58,7 +58,9 @@ protected Rectangle calculateAlignmentRectangle(Request request) {
 	if (editparts == null || editparts.isEmpty())
 		return null;
 	GraphicalEditPart part = (GraphicalEditPart)editparts.get(editparts.size()-1);
-	return part.getFigure().getBounds();
+	Rectangle rect = part.getFigure().getBounds().getCopy();
+	part.getFigure().translateToAbsolute(rect);
+	return rect;
 }
 
 private Command createAlignmentCommand() {
