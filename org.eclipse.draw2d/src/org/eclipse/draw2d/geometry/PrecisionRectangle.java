@@ -30,10 +30,19 @@ public PrecisionRectangle() { }
  */
 public PrecisionRectangle(Rectangle rect) {
 	super(rect);
-	preciseX = rect.x;
-	preciseY = rect.y;
-	preciseWidth = rect.width;
-	preciseHeight = rect.height;
+	if (rect instanceof PrecisionRectangle) {
+		PrecisionRectangle rectangle = (PrecisionRectangle)rect;
+		preciseX = rectangle.preciseX;
+		preciseY = rectangle.preciseY;
+		preciseWidth = rectangle.preciseWidth;
+		preciseHeight = rectangle.preciseHeight;
+	} else {
+		preciseX = rect.x;
+		preciseY = rect.y;
+		preciseWidth = rect.width;
+		preciseHeight = rect.height;
+	}
+	updateInts();
 }
 
 /**
