@@ -7,9 +7,11 @@ package org.eclipse.gef.examples.logicdesigner;
  */
 
 import org.eclipse.gef.ui.actions.AlignmentAction;
-//import org.eclipse.gef.ui.actions.ZoomAction;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.actions.RetargetAction;
+import org.eclipse.ui.internal.IWorkbenchGraphicConstants;
+import org.eclipse.ui.internal.WorkbenchImages;
 
 public class LogicActionBarContributor
 	extends org.eclipse.gef.ui.actions.ActionBarContributor
@@ -81,6 +83,18 @@ protected void createActions() {
 	getPage().addPartListener(action);
 	retargetActions.put(AlignmentAction.ID_ALIGN_BOTTOM, action);
 
+	// Create copy action
+	action = new RetargetAction(IWorkbenchActionConstants.COPY, 
+								LogicMessages.CopyAction_ActionLabelText);
+	action.setImageDescriptor(WorkbenchImages.getImageDescriptor(
+								IWorkbenchGraphicConstants.IMG_CTOOL_COPY_EDIT));
+	action.setHoverImageDescriptor(WorkbenchImages.getImageDescriptor(
+								IWorkbenchGraphicConstants.IMG_CTOOL_COPY_EDIT_HOVER));
+	action.setDisabledImageDescriptor(WorkbenchImages.getImageDescriptor(
+								IWorkbenchGraphicConstants.IMG_CTOOL_COPY_EDIT_DISABLED));
+	getPage().addPartListener(action);
+	retargetActions.put(IWorkbenchActionConstants.COPY, action);
+
 	// Create zoom in action
 //	action = new RetargetAction(ZoomAction.ZOOM_OUT, 
 //								LogicMessages.ZoomAction_ZoomOut_ActionLabelText);
@@ -102,6 +116,7 @@ protected void createActions() {
 protected void declareActions() {
 	super.declareActions();
 
+	globalActions.add(IWorkbenchActionConstants.COPY);
 //	globalActions.add(ZoomAction.ZOOM_IN);
 //	globalActions.add(ZoomAction.ZOOM_OUT);
 	globalActions.add(IncrementDecrementAction.INCREMENT);
@@ -113,6 +128,7 @@ protected void declareActions() {
 	globalActions.add(AlignmentAction.ID_ALIGN_MIDDLE);
 	globalActions.add(AlignmentAction.ID_ALIGN_BOTTOM);
 
+	toolbarActions.add(IWorkbenchActionConstants.COPY);
 //	toolbarActions.add(ZoomAction.ZOOM_OUT);
 //	toolbarActions.add(ZoomAction.ZOOM_IN);
 	toolbarActions.add(SEPARATOR);

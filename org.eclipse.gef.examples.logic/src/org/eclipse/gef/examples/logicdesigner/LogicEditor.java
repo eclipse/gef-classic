@@ -190,7 +190,7 @@ public void commandStackChanged(EventObject event) {
 protected void configurePaletteViewer() {
 	super.configurePaletteViewer();
 	PaletteViewerImpl viewer = (PaletteViewerImpl)getPaletteViewer();
-	getPaletteViewer().setContextMenuProvider(new PaletteContextMenuProvider(viewer));
+	getPaletteViewer().setContextMenuProvider(new PaletteContextMenuProvider(this, viewer));
 	viewer.setCustomizer(new LogicPaletteCustomizer());
 }
 
@@ -291,6 +291,9 @@ protected void initializePaletteViewer() {
 
 protected void createActions() {
 	super.createActions();
+	
+	setAction(IWorkbenchActionConstants.PASTE, new LogicPasteTemplateAction(this));
+	markAsSelectionDependentAction(IWorkbenchActionConstants.PASTE, true);
 	
 //	setAction(ZoomAction.ZOOM_IN, new ZoomAction(this, true));
 //	setAction(ZoomAction.ZOOM_OUT, new ZoomAction(this, false));

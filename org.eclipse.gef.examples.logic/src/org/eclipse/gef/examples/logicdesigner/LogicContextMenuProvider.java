@@ -37,6 +37,9 @@ protected void addEditDomainContributions(IMenuManager menu) {
 
 protected void addEditPartViewerContributions(IMenuManager menu) {
 	IAction action;
+	action = getGraphicalEditor().getAction(IWorkbenchActionConstants.PASTE);
+	if (action.isEnabled())
+		menu.appendToGroup(GROUP_VIEWER_CONTRIBUTIONS, action);
 	action = getGraphicalEditor().getAction(IWorkbenchActionConstants.DELETE);
 	if (action.isEnabled())
 		menu.appendToGroup(GROUP_VIEWER_CONTRIBUTIONS, action);
