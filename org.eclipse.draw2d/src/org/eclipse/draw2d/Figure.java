@@ -1480,6 +1480,7 @@ public void setVisible(boolean visible) {
 	setFlag(FLAG_VISIBLE, visible);
 	if (visible) 
 		repaint();
+	revalidate();
 }
 
 /**
