@@ -14,7 +14,8 @@ import java.util.List;
 import org.eclipse.jface.resource.ImageDescriptor;
 
 /**
- * The model object for a PaletteStack - A stack of tools.
+ * The model object for a PaletteStack - A stack of tools. A stack should contain only 
+ * tools and should have permissions that are less than or equal to its parent.
  * 
  * @author Whitney Sorenson
  * @since 3.0
@@ -39,7 +40,7 @@ private PaletteEntry activeEntry;
  */
 public PaletteStack(String name, String desc, ImageDescriptor icon) {
 	super(name, desc, icon, PALETTE_TYPE_STACK);
-	//setUserModificationPermission(PaletteEntry.PERMISSION_LIMITED_MODIFICATION);
+	setUserModificationPermission(PERMISSION_LIMITED_MODIFICATION);
 }
 
 /**
