@@ -48,15 +48,9 @@ protected void buildActions() {
 	
 	addRetargetAction(new ZoomInRetargetAction());
 	addRetargetAction(new ZoomOutRetargetAction());
-	LabelRetargetAction matchWidth = new LabelRetargetAction(GEFActionConstants.MATCH_WIDTH, 
-			GEFMessages.MatchWidthAction_Label);
-	matchWidth.setImageDescriptor(InternalImages.DESC_MATCH_WIDTH);
-	addRetargetAction(matchWidth);
 	
-	LabelRetargetAction matchHeight = new LabelRetargetAction(GEFActionConstants.MATCH_HEIGHT,
-			GEFMessages.MatchHeightAction_Label);
-	matchHeight.setImageDescriptor(InternalImages.DESC_MATCH_HEIGHT);
-	addRetargetAction(matchHeight);
+	addRetargetAction(new MatchWidthRetargetAction());
+	addRetargetAction(new MatchHeightRetargetAction());
 	
 	addRetargetAction(new RetargetAction(
 			GEFActionConstants.TOGGLE_RULER_VISIBILITY, 
