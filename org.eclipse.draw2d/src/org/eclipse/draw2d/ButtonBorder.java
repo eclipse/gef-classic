@@ -228,7 +228,7 @@ public void paint(IFigure figure, Graphics graphics, Insets insets) {
 	ButtonScheme colorScheme = (ButtonScheme)getScheme();
 
 	if (clickable.isRolloverEnabled() && !model.isMouseOver()
-		&& !model.isPressed() && !model.isSelected())
+		&& !model.isSelected())
 		return;
 
 	Color tl[], br[];

@@ -86,8 +86,10 @@ abstract class ToggleButtonTracker extends SingleSelectionTracker {
 			getButtonModel().setArmed(false);
 			getButtonModel().setMouseOver(false);
 			disableTimer();
-		} else
+		} else {
 			getButtonModel().setArmed(true);
+			getButtonModel().setMouseOver(true);
+		}
 		return true;
 	}
 }
