@@ -36,8 +36,7 @@ public int y;
 public Point() { }
 
 /**
- * Constructs a Point which is at the same location
- * as the specified Point.
+ * Constructs a Point at the same location as the given Point.
  * @param copy  Point from which the initial values are taken.
  * @since 2.0
  */
@@ -45,6 +44,17 @@ public Point(Point copy) {
 	x = copy.x;
 	y = copy.y;
 }
+
+/**
+ * Constructs a Point at the same location as the given SWT Point.
+ * @param copy  Point from which the initial values are taken.
+ * @since 2.0
+ */
+public Point(org.eclipse.swt.graphics.Point copy) {
+	x = copy.x;
+	y = copy.y;
+}
+
 
 /**
  * Constructs a Point at the specified x and y locations.
