@@ -16,10 +16,17 @@ package org.eclipse.draw2d.text;
  * @author Pratik Shah
  * @since 3.1
  */
-public class ContentBox extends FlowBox
-{
+public abstract class ContentBox extends FlowBox {
 
-int bidiLevel = -1;
+private int bidiLevel = -1;
+private LineRoot lineRoot;
+
+/**
+ * @see FlowBox#getBaseline()
+ */
+public int getBaseline() {
+	return lineRoot.getBaseline();
+}
 
 /**
  * @return the Bidi level of this box, if one has been set; -1 otherwise
@@ -27,6 +34,13 @@ int bidiLevel = -1;
  */
 public int getBidiLevel() {
 	return bidiLevel;
+}
+
+/**
+ * @see org.eclipse.draw2d.text.FlowBox#getLineRoot()
+ */
+LineRoot getLineRoot() {
+	return lineRoot;
 }
 
 /**
@@ -47,6 +61,10 @@ public boolean requiresBidi() {
  */
 public void setBidiLevel(int newLevel) {
 	bidiLevel = newLevel;
+}
+
+void setLineRoot(LineRoot root) {
+	this.lineRoot = root;
 }
 
 }

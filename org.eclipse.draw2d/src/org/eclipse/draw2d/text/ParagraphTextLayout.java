@@ -43,7 +43,7 @@ public static final int WORD_WRAP_TRUNCATE = 2;
 private int wrappingStyle = WORD_WRAP_HARD;
 
 /**
- * Consturcts a new ParagraphTextLayout on the specified TextFlow.
+ * Constructs a new ParagraphTextLayout on the specified TextFlow.
  * @param flow the TextFlow */
 public ParagraphTextLayout(TextFlow flow) {
 	super(flow);
@@ -92,11 +92,49 @@ private String[] getSegments(String text, int levelInfo[]) {
 	return result;
 }
 
+class SegmentLookahead implements FlowUtilities.LookAhead {
+	private int seg = -1;
+	private String segs[];
+	private int[] width;
+	private final int trailingBorderSize;
+	SegmentLookahead(String segs[], int trailingBorderSize) {
+		this.segs = segs;
+		this.trailingBorderSize = trailingBorderSize;
+	}
+	public int getWidth() {
+		if (width == null) {
+			width = new int[1];
+			int startingIndex = seg + 1;
+			TextFlow textFlow = (TextFlow)getFlowFigure();
+		
+			if (startingIndex == segs.length) {
+				width[0] += trailingBorderSize;
+				getContext().getWidthLookahead(textFlow, width);
+			} else {
+				String rest = segs[startingIndex];
+				for (int k = startingIndex + 1; k < segs.length; k++)
+					rest += segs[k];
+				if (!textFlow.addLeadingWordWidth(rest, width)) {
+					width[0] += trailingBorderSize;
+					getContext().getWidthLookahead(textFlow, width);
+				}
+			}
+			return width[0];
+		}
+		return width[0];
+	}
+	public void setIndex(int value) {
+		this.seg = value;
+		width = null;
+	}
+}
+
 /** * @see org.eclipse.draw2d.text.FlowFigureLayout#layout() */
 protected void layout() {
 	TextFlow textFlow = (TextFlow)getFlowFigure();
 	int offset = 0;
 	
+	FlowContext context = getContext();
 	List fragments = textFlow.getFragments();
 	Font font = textFlow.getFont();
 	int fragIndex = 0;
@@ -108,63 +146,59 @@ protected void layout() {
 		: textFlow.getBidiInfo().levelInfo;
 	
 	String segment, segments[] = getSegments(textFlow.getText(), levelInfo);
-	SegmentLookahead lookahead = new SegmentLookahead(segments);
-	int seg;
+	FlowBorder border = null;
+	if (textFlow.getBorder() instanceof FlowBorder)
+		border = (FlowBorder)textFlow.getBorder();
 
+	SegmentLookahead lookahead = new SegmentLookahead(segments, border == null ? 0 : 5);
+	int seg;	
+	
+	if (border != null) {
+		fragment = getFragment(fragIndex++, fragments);
+		fragment.setBidiLevel(levelInfo[0]);
+		fragment.setTruncated(false);
+		fragment.offset = fragment.length = -1;
+		fragment.setWidth(border.getLeftMargin() + border.getInsets(textFlow).left);
+		if (context.getRemainingLineWidth()
+				< fragment.getWidth() + lookahead.getWidth())
+			context.endLine();
+		context.addToCurrentLine(fragment);
+	}
+	
 	for (seg = 0; seg < segments.length; seg++) {
 		segment = segments[seg];
 		lookahead.setIndex(seg);
+		
 		do {
-			fragment = getFragment(fragIndex, fragments);
-			fragment.truncated = false;
+			fragment = getFragment(fragIndex++, fragments);
+			
 			fragment.offset = offset;
 			fragment.setBidiLevel(levelInfo[seg * 2]);
 			
 			advance = FlowUtilities.wrapFragmentInContext(fragment, segment,
-					getContext(), lookahead, font, wrappingStyle);
-			
+					context, lookahead, font, wrappingStyle);
+			context.addToCurrentLine(fragment);
 			segment = segment.substring(advance);
 			offset += advance;
-			if ((segment.length() > 0 && !getContext().getContinueOnSameLine()
+			if ((segment.length() > 0
 					|| fragment.length < advance)
-					|| fragment.truncated)
-				getContext().endLine();
-			fragIndex++;
+					|| fragment.isTruncated())
+				context.endLine();
 		} while (segment.length() > 0 || fragment.length < advance);
 	}
+	
+	if (border != null) {
+		fragment = getFragment(fragIndex++, fragments);
+		fragment.setBidiLevel(levelInfo[0]);
+		fragment.setTruncated(false);
+		fragment.offset = fragment.length = -1;
+		fragment.setWidth(border.getRightMargin() + border.getInsets(textFlow).right);
+		context.addToCurrentLine(fragment);
+	}
+	
 	//Remove the remaining unused fragments.
 	while (fragIndex < fragments.size())
 		fragments.remove(fragments.size() - 1);
-}
-
-class SegmentLookahead implements FlowUtilities.LookAhead {
-	private int seg;
-	private String segs[];
-	private int[] width;
-	SegmentLookahead(String segs[]) {
-		this.segs = segs;
-	}
-	public int getWidth() {
-		if (width == null) {
-			width = new int[1];
-			int startingIndex = seg + 1;
-			TextFlow textFlow = (TextFlow)getFlowFigure();
-			if (startingIndex == segs.length)
-				getContext().getWordWidthFollowing(textFlow, width);
-			else {
-				String rest = segs[startingIndex];
-				for (int k = startingIndex + 1; k < segs.length; k++)
-					rest += segs[k];
-				if (!textFlow.addLeadingWordWidth(rest, width))
-					getContext().getWordWidthFollowing(textFlow, width);
-			}
-		}
-		return width[0];
-	}
-	public void setIndex(int value) {
-		this.seg = value;
-		width = null;
-	}
 }
 
 }

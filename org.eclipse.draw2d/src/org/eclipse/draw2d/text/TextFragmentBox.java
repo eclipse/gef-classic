@@ -17,26 +17,73 @@ public class TextFragmentBox
 	extends ContentBox
 {
 
-/** The offset in characters **/
-public int offset;
-
-/** The length in characters **/
+/**
+ * The fragment's length in characters.
+ */
 public int length;
 
-private int ascent;
-boolean truncated;
-
 /**
- * Creates a new TextFragmentBox
+ * The character offset at which this fragment begins.
  */
-public TextFragmentBox() { }
+public int offset;
+
+private TextFlow textflow;
+private boolean truncated;
 
 /**
- * Returns the ascent of this TextFragmentBox
+ * Creates a new TextFragmentBox for the given text flow.
+ * @param textflow the text flow
+ */
+public TextFragmentBox(TextFlow textflow) {
+	this.textflow = textflow;
+}
+
+/**
+ * @see org.eclipse.draw2d.text.FlowBox#containsPoint(int, int)
+ */
+public boolean containsPoint(int x, int y) {
+	return x >= getX()
+		&& x < getX() + getWidth()
+		&& y >= getBaseline() - getAscentWithBorder()
+		&& y <= getBaseline() + getDescentWithBorder();
+}
+
+/**
+ * Returns the textflow's font's ascent. The ascent is the same for all fragments in a
+ * given TextFlow.
  * @return the ascent
  */
 public int getAscent() {
-	return ascent;
+	return textflow.getAscent();
+}
+
+int getAscentWithBorder() {
+	return textflow.getAscent() + FlowUtilities.getBorderAscent(textflow);
+}
+
+/**
+ * Returns the textflow's font's descent. The descent is the same for all fragments in a
+ * given TextFlow.
+ * @return the descent
+ */
+public int getDescent() {
+	return textflow.getDescent();
+}
+
+int getDescentWithBorder() {
+	return textflow.getDescent() + FlowUtilities.getBorderDescent(textflow);
+}
+
+int getOuterAscent() {
+	return textflow.getAscent() + FlowUtilities.getBorderAscentWithMargin(textflow);
+}
+
+int getOuterDescent() {
+	return textflow.getDescent() + FlowUtilities.getBorderDescentWithMargin(textflow);
+}
+
+final int getTextTop() {
+	return getBaseline() - getAscent();
 }
 
 /**
@@ -47,31 +94,20 @@ public int getAscent() {
  */
 public boolean isRightToLeft() {
 	// -1 % 2 == -1
-	return bidiLevel % 2 == 1;
+	return getBidiLevel() % 2 == 1;
 }
 
 /**
- * Sets the ascent of this TextFragmentBox to the given value
- * @param a the ascent
+ * Returns <code>true</code> if the fragment should be rendered as truncated.
+ * @return <code>true</code> if the fragment is truncated
+ * @since 3.1
  */
-public void setAscent(int a) {
-	ascent = a;
+public boolean isTruncated() {
+	return truncated;
 }
 
-/**
- * Sets the height of this TextFragmentBox to the given value
- * @param h the height
- */
-public void setHeight(int h) {
-	height = h;
-}
-
-/**
- * Sets the width of this TextFragmentBox to the given value
- * @param w the width
- */
-public void setWidth (int w) {
-	width = w;
+public void setTruncated(boolean value) {
+	this.truncated = value;
 }
 
 }

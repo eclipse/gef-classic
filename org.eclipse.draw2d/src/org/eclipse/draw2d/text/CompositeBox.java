@@ -10,10 +10,6 @@
  *******************************************************************************/
 package org.eclipse.draw2d.text;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 /**
  * A FlowBox that can contain other FlowBoxes. The contained FlowBoxes are called
  * <i>fragments</i>.
@@ -23,32 +19,16 @@ public abstract class CompositeBox
 	extends FlowBox
 {
 
-/**
- * The contained fragments.
- */
-protected List fragments = new ArrayList();
 int recommendedWidth = -1;
 
 /**
- * Adds the specified FlowBox. Updates the width, height, and ascent properties.
- * @param block the FlowBox being added */
-public void add(FlowBox block) {
-	fragments.add(block);
-	unionInfo(block);
-}
-
-/**
- * Removes all owned fragments and invalidates this CompositeBox.
+ * Adds the given box and updates properties of this composite box.
+ * @param box the child being added
  */
-public void clear() {
-	fragments.clear();
-	resetInfo();
-}
+public abstract void add(FlowBox box);
 
-/** * @return the List of fragments */
-public List getFragments() {
-	return fragments;
-}
+
+abstract int getBottomMargin();
 
 /**
  * Returns the recommended width for this CompositeBox.
@@ -58,29 +38,7 @@ public int getRecommendedWidth() {
 	return recommendedWidth;
 }
 
-/**
- * @see org.eclipse.draw2d.text.FlowBox#requiresBidi()
- */
-public boolean requiresBidi() {
-	for (Iterator iter = getFragments().iterator(); iter.hasNext();) {
-		FlowBox box = (FlowBox)iter.next();
-		if (box.requiresBidi())
-			return true;
-	}
-	return false;
-}
-
-/** * @return <code>true</code> if this box contains any fragments */
-public boolean isOccupied() {
-	return !fragments.isEmpty();
-}
-
-/**
- * resets fields before unioning the data from the fragments.
- */
-protected void resetInfo() {
-	width = height = 0;
-}
+abstract int getTopMargin();
 
 /**
  * Sets the recommended width for this CompositeBox.
@@ -90,15 +48,11 @@ public void setRecommendedWidth(int w) {
 }
 
 /**
- * unions the fragment's width, height, and ascent into this composite.
- * @param box the fragment */
-protected void unionInfo(FlowBox box) {
-	int right = Math.max(x + width, box.x + box.width);
-	int bottom = Math.max(y + height, box.y + box.height);
-	x = Math.min(x, box.x);
-	y = Math.min(y, box.y);
-	width = right - x;
-	height = bottom - y;
-}
+ * Positions the box vertically by setting the y coordinate for the top of the content of
+ * the line.
+ * @param top the y coordinate
+ * @since 3.1
+ */
+public abstract void setLineTop(int top);
 
 }

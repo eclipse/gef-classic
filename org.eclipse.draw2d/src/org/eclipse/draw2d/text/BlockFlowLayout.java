@@ -16,6 +16,7 @@ import org.eclipse.swt.SWT;
 
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.PositionConstants;
+import org.eclipse.draw2d.geometry.Insets;
 
 /**
  * The layout for {@link BlockFlow} figures.
@@ -28,9 +29,9 @@ public class BlockFlowLayout
 {
 
 BlockBox blockBox;
-private boolean continueOnSameLine = false;
-private LineBox previousLine = null;
 boolean blockInvalid = false;
+private boolean continueOnSameLine = false;
+private CompositeBox previousLine = null;
 
 /**
  * Creates a new BlockFlowLayout with the given BlockFlow.
@@ -38,6 +39,48 @@ boolean blockInvalid = false;
  */
 public BlockFlowLayout(BlockFlow blockFlow) {
 	super(blockFlow);
+}
+
+private void addBelowPreviousLine(CompositeBox line) {
+	if (previousLine == null)
+		line.setLineTop(line.getTopMargin());
+	else
+		line.setLineTop(previousLine.getBaseline() + previousLine.getDescent()
+				+ Math.max(previousLine.getBottomMargin(), line.getTopMargin()));
+
+	int alignment = getBlockFlow().getHorizontalAligment();
+	if (getBlockFlow().getOrientation() == SWT.RIGHT_TO_LEFT) {
+		if (alignment == PositionConstants.LEFT)
+			alignment = PositionConstants.RIGHT;
+		else if (alignment == PositionConstants.RIGHT)
+			alignment = PositionConstants.LEFT;
+	}
+
+	switch (alignment) {
+		case PositionConstants.RIGHT :
+			line.setX(blockBox.getRecommendedWidth() - line.getWidth());
+			break;
+		case PositionConstants.CENTER :
+			line.setX((blockBox.getRecommendedWidth() - line.getWidth()) / 2);
+			break;
+		case PositionConstants.LEFT:
+			line.setX(0);
+	}
+	blockBox.add(line);
+	previousLine = line;
+}
+
+/**
+ * Align the line horizontally and then commit it.
+ */
+protected void addCurrentLine() {
+	addBelowPreviousLine(currentLine);	
+	((LineRoot)currentLine).commit();
+}
+
+public void addLine(CompositeBox box) {
+	endLine();
+	addBelowPreviousLine(box);
 }
 
 /**
@@ -54,22 +97,16 @@ public void blockContentsChanged() {
  */
 protected void cleanup() {
 	super.cleanup();
-	currentLine = previousLine = null;
-}
-
-/**
- * @see org.eclipse.draw2d.text.FlowContext#getContinueOnSameLine()
- */
-public boolean getContinueOnSameLine() {
-	return continueOnSameLine;
+	currentLine = null;
+	previousLine = null;
 }
 
 /**
  * @see FlowContainerLayout#createNewLine()
  */
 protected void createNewLine() {
-	currentLine = new LineBox();
-	setupLine(currentLine);
+	currentLine = new LineRoot();
+	currentLine.setRecommendedWidth(blockBox.getRecommendedWidth());
 }
 
 /**
@@ -77,10 +114,15 @@ protected void createNewLine() {
  * to the current line and then ends the line.
  */
 protected void endBlock() {
-	if (getContext() != null) {
-		getContext().addToCurrentLine(blockBox);
-		getContext().endLine();
+	if (blockInvalid) {
+		Insets insets = getBlockFlow().getInsets();
+		blockBox.height += insets.getHeight();
+		blockBox.width += insets.getWidth();
 	}
+
+	if (getContext() != null)
+		getContext().addLine(blockBox);
+
 	if (blockInvalid) {
 		blockInvalid = false;
 		List v = getFlowFigure().getChildren();
@@ -93,25 +135,22 @@ protected void endBlock() {
  * @see FlowContext#endLine()
  */
 public void endLine() {
-	//If there is no current line, state is equivalent to new line
-	if (currentLine == null)
+	if (currentLine == null || !currentLine.isOccupied())
 		return;
-	if (currentLine.isOccupied())
-		layoutLine();
-	else
-		return;
-	LineBox box = currentLine;
-	currentLine = previousLine;
-	previousLine = box;
-
-	setupLine(getCurrentLine());
+	addCurrentLine();
+	currentLine = null;
 }
 
 /**
- * @see org.eclipse.draw2d.text.FlowContext#getCurrentY()
+ * @see FlowContainerLayout#flush()
  */
-public int getCurrentY() {
-	return getCurrentLine().y;
+protected void flush() {
+	endLine();
+	endBlock();
+}
+
+boolean forceChildInvalidation(Figure f) {
+	return blockInvalid;
 }
 
 /**
@@ -123,42 +162,32 @@ protected final BlockFlow getBlockFlow() {
 }
 
 /**
- * Align the line horizontally and then commit it.
+ * @return
+ * @since 3.1
  */
-protected void layoutLine() {
-	// align the current line
-	currentLine.x = 0;
-	int alignment = getBlockFlow().getHorizontalAligment();
-	if (getBlockFlow().getOrientation() == SWT.RIGHT_TO_LEFT) {
-		if (alignment == PositionConstants.LEFT)
-			alignment = PositionConstants.RIGHT;
-		else if (alignment == PositionConstants.RIGHT)
-			alignment = PositionConstants.LEFT;
-	}
-	switch (alignment) {
-		case PositionConstants.RIGHT :
-			currentLine.x  = blockBox.getRecommendedWidth() - currentLine.getWidth();
-			break;
-		case PositionConstants.CENTER :
-			currentLine.x  = (blockBox.getRecommendedWidth() - currentLine.getWidth()) / 2;
-			break;
-	}
-	
-	currentLine.commit();
-	blockBox.add(currentLine);
-}
-
-boolean forceChildInvalidation(Figure f) {
-	return blockInvalid;
+int getContextWidth() {
+	return getContext().getRemainingLineWidth();
 }
 
 /**
- * @see FlowContainerLayout#flush()
+ * @see FlowContext#getContinueOnSameLine()
  */
-protected void flush() {
-	if (currentLine != null)
-		layoutLine();
-	endBlock();
+public boolean getContinueOnSameLine() {
+	return continueOnSameLine;
+}
+
+/**
+ * @see FlowContext#getWidthLookahead(FlowFigure, int[])
+ */
+public void getWidthLookahead(FlowFigure child, int result[]) {
+	List children = getFlowFigure().getChildren();
+	int index = -1;
+	if (child != null)
+		index = children.indexOf(child);
+	
+	for (int i = index + 1; i < children.size(); i++)
+		if (((FlowFigure)children.get(i)).addLeadingWordRequirements(result))
+			return;
 }
 
 /**
@@ -182,33 +211,20 @@ public void setContinueOnSameLine(boolean value) {
  * sets up the single block that contains all of the lines.
  */
 protected void setupBlock() {
-	//Ask for a new line, in case we are in the middle of a line
-	getContext().endLine();
-	LineBox line = getContext().getCurrentLine();
-	int recommended = line.getAvailableWidth();
+	int recommended = getContextWidth();
+	BlockFlow bf = getBlockFlow();
+	int borderCorrection = bf.getInsets().getWidth() + bf.getLeftMargin() + bf.getRightMargin();
+	if (recommended >= 0)
+		recommended = Math.max(0, recommended - borderCorrection);
+	
 	if (recommended != blockBox.recommendedWidth) {
 		blockInvalid = true;
-		blockBox.clear();
+		blockBox.setWidth(Math.max(0, recommended));
 		blockBox.setRecommendedWidth(recommended);
 	}
-	//Setup the one fragment for this Block with the correct X and available width
-	blockBox.y = getContext().getCurrentY();
-	blockBox.x = 0;
-}
-
-/**
- * Override to setup the line's x, remaining, and available width.
- * @param line the LineBox to set up
- */
-protected void setupLine(LineBox line) {
-	line.clear();
-	line.setRecommendedWidth(blockBox.getRecommendedWidth());
-	if (previousLine == null) {
-		line.y = 0;
-	} else {
-		line.y = previousLine.y + previousLine.getHeight();
-	}
-//	line.validate();
+	
+	if (blockInvalid)
+		blockBox.height = 0;
 }
 
 }

@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.draw2d.text;
 
-
 /**
  * The context that a {@link FlowFigureLayout} uses to perform its layout.
  * 
@@ -25,10 +24,19 @@ public interface FlowContext {
 void addToCurrentLine(FlowBox box);
 
 /**
+ * Adds an entire line into the context. If there is a previous line, it is ended.
+ * @param box the line being added
+ * @since 3.1
+ */
+void addLine(CompositeBox box);
+
+/**
  * The current line should be committed if it is occupied, and then set to
  * <code>null</code>. Otherwise, do nothing.
  */
 void endLine();
+
+int getRemainingLineWidth();
 
 /**
  * This method is used to convey layout state to different FlowFigures.  This state is
@@ -40,17 +48,6 @@ void endLine();
 boolean getContinueOnSameLine();
 
 /**
- * Obtains the current line, creating a new line if there is no current line.
- * @return the current line */
-LineBox getCurrentLine();
-
-/**
- * Returns the current Y value.
- * @return the current Y value
- */
-int getCurrentY();
-
-/**
  * This method looks ahead for line-breaks.  When laying out, this method can be used
  * to determine the next line-break across multiple figures.
  * 
@@ -60,7 +57,7 @@ int getCurrentY();
  * @return boolean indicating whether a line-break was found
  * @since 3.1
  */
-boolean getWordWidthFollowing(FlowFigure child, int[] width);
+void getWidthLookahead(FlowFigure child, int width[]);
 
 /**
  * @return <code>true</code> if the current line contains any fragments */

@@ -18,6 +18,8 @@ import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.PositionConstants;
+import org.eclipse.draw2d.geometry.Insets;
+import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
  * A <code>FlowFigure</code> represented by a single {@link BlockBox} fragment containing
@@ -61,7 +63,7 @@ protected void contributeBidi(BidiProcessor proc) {
 }
 
 BlockBox createBlockBox() {
-	return new BlockBox();
+	return new BlockBox(this);
 }
 
 /**
@@ -99,9 +101,50 @@ protected BlockBox getBlockBox() {
 	return blockBox;
 }
 
+int getBottomMargin() {
+	int margin = 0;
+	if (getBorder() instanceof FlowBorder) {
+		FlowBorder border = (FlowBorder)getBorder();
+		return border.getBottomMargin();
+	}
+	List children = getChildren();
+	int childIndex = children.size() - 1;
+	if (childIndex >= 0 && children.get(childIndex) instanceof BlockFlow) {
+		margin = Math.max(margin,
+				((BlockFlow)children.get(childIndex)).getBottomMargin());
+	}
+	return margin;
+}
+
+int getLeftMargin() {
+	if (getBorder() instanceof FlowBorder)
+		return ((FlowBorder)getBorder()).getLeftMargin();
+	return 0;
+}
+
+int getRightMargin() {
+	if (getBorder() instanceof FlowBorder)
+		return ((FlowBorder)getBorder()).getRightMargin();
+	return 0;
+}
+
+int getTopMargin() {
+	int margin = 0;
+	if (getBorder() instanceof FlowBorder) {
+		FlowBorder border = (FlowBorder)getBorder();
+		return border.getTopMargin();
+	}
+	List children = getChildren();
+	if (children.size() > 0 && children.get(0) instanceof BlockFlow) {
+		margin = Math.max(margin,
+				((BlockFlow)children.get(0)).getTopMargin());
+	}
+	return margin;
+}
+
 /**
- * Returns the horizontal aligment.
- * @return the hotizontal aligment
+ * Returns the horizontal alignment.
+ * @return the horizontal alignment
  */
 public int getHorizontalAligment() {
 	return aligment & PositionConstants.LEFT_CENTER_RIGHT;
@@ -120,7 +163,13 @@ protected void invalidateBidi() {
  * @see org.eclipse.draw2d.Figure#paint(org.eclipse.draw2d.Graphics)
  */
 public void paintBorder(Graphics graphics) {
-	super.paintBorder(graphics);
+	if (getBorder() instanceof FlowBorder) {
+		Rectangle where = getBlockBox().toRectangle();
+		where.crop(new Insets(getTopMargin(), getLeftMargin(),
+				getBottomMargin(), getRightMargin()));
+		((FlowBorder)getBorder()).paint(this, graphics, where, true, true);
+	} else
+		super.paintBorder(graphics);
 	if (selectionStart != -1) {
 		graphics.restoreState();
 		graphics.setXORMode(true);
@@ -133,7 +182,10 @@ public void paintBorder(Graphics graphics) {
  * @see org.eclipse.draw2d.text.FlowFigure#postValidate()
  */
 public void postValidate() {
-	setBounds(getBlockBox().toRectangle().expand(getInsets()));
+	Rectangle newBounds = getBlockBox().toRectangle();
+	newBounds.crop(new Insets(getTopMargin(), getLeftMargin(),
+			getBottomMargin(), getRightMargin()));
+	setBounds(newBounds);
 }
 
 /**

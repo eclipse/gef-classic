@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.draw2d.Border;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -26,7 +27,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * <P>An InlineFlow may contain other InlineFlow figures.
  * 
  * <P>WARNING: This class is not intended to be subclassed by clients.
- * @author hudsonr
+ * @author Randy Hudson
  * @since 2.0
  */
 public class InlineFlow extends FlowFigure {
@@ -45,7 +46,11 @@ public boolean addLeadingWordRequirements(int[] width) {
 	return false;
 }
 
-/** * @see org.eclipse.draw2d.IFigure#containsPoint(int, int) */
+/** * Extended to return false if the point is not also contained by at least one fragment.
+ * @return <code>true</code> if a fragment contains the given point
+ * @param x the relative x coordinate
+ * @param y the relative y coordinate
+ */
 public boolean containsPoint(int x, int y) {
 	if (super.containsPoint(x, y)) {
 		List frags = getFragments();
@@ -73,13 +78,34 @@ public List getFragments() {
 }
 
 /**
- * @see org.eclipse.draw2d.Figure#paintBorder(org.eclipse.draw2d.Graphics)
+ * Overridden to paint a {@link FlowBorder} if present, and draw selection. The border is
+ * painted first, followed by selection which is generally done in XOR, which still allows
+ * the border to be seen.
+ * @param graphics the graphics
  */
 protected void paintBorder(Graphics graphics) {
-	super.paintBorder(graphics);
-	if (selectionStart != -1) {
-		paintSelection(graphics);
+	if (getBorder() != null) {
+		FlowBorder fb = (FlowBorder)getBorder();
+		List frags = getFragments();
+		Rectangle where = new Rectangle();
+		for (int i = 0; i < frags.size(); i++) {
+			FlowBox box = (FlowBox)frags.get(i);
+			where.x = box.getX();
+			where.width = box.getWidth();
+			where.y = -box.getAscentWithBorder();
+			where.height = box.getDescentWithBorder() - where.y;
+			where.y += box.getBaseline();
+			if (i == 0) {
+				where.x += fb.getLeftMargin();
+				where.width -= fb.getLeftMargin();
+			}
+			if (i == frags.size() - 1)
+				where.width -= fb.getRightMargin();
+			fb.paint(this, graphics, where, i == 0, i == frags.size() - 1);
+		}
 	}
+	if (selectionStart != -1)
+		paintSelection(graphics);
 }
 
 /**
@@ -95,7 +121,9 @@ protected void paintSelection(Graphics graphics) {
 	FlowBox box;
 	for (int i = 0; i < list.size(); i++) {
 		box = (FlowBox)list.get(i);
-		graphics.fillRectangle(box.x, box.y, box.getWidth(), box.getHeight());
+		int top = box.getLineRoot().getVisibleTop();
+		int bottom = box.getLineRoot().getVisibleBottom();
+		graphics.fillRectangle(box.getX(), top, box.getWidth(), bottom - top);
 	}
 }
 
@@ -107,18 +135,32 @@ public void postValidate() {
 	FlowBox box;
 	int left = Integer.MAX_VALUE, top = left;
 	int right = Integer.MIN_VALUE, bottom = right;
+	
 	for (int i = 0; i < list.size(); i++) {
 		box = (FlowBox)list.get(i);
-		left = Math.min(left, box.x);
-		right = Math.max(right, box.x + box.width);
-		top = Math.min(top, box.y);
-		bottom = Math.max(bottom, box.y + box.height);
+		left = Math.min(left, box.getX());
+		right = Math.max(right, box.getX() + box.getWidth());
+		top = Math.min(top, box.getLineRoot().getVisibleTop());
+		bottom = Math.max(bottom, box.getLineRoot().getVisibleBottom());
 	}
+	
 	setBounds(new Rectangle(left, top, right - left, bottom - top));
 	repaint();
 	list = getChildren();
 	for (int i = 0; i < list.size(); i++)
 		((FlowFigure)list.get(i)).postValidate();
+}
+
+/**
+ * Overridden to assert that only {@link FlowBorder} is used. <code>null</code> is still a
+ * valid value as well.
+ * @param  border <code>null</code> or a FlowBorder
+ */
+public void setBorder(Border border) {
+	if (border instanceof FlowBorder)
+		super.setBorder(border);
+	else
+		throw new RuntimeException("Border must be an instance of FlowBorder");
 }
 
 }

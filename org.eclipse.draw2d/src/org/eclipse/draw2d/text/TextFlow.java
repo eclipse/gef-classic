@@ -85,6 +85,8 @@ boolean addLeadingWordWidth(String text, int[] width) {
 	text = 'a' + text + 'a';
 	lineBreaker.setText(text);
 	int index = lineBreaker.next() - 1;
+	if (index == 0)
+		return true;
 	while (Character.isWhitespace(text.charAt(index)))
 		index--;
 	boolean result = index < text.length() - 1;
@@ -130,7 +132,7 @@ private int findNextLineOffset(Point p) {
 	int i;
 	for (i = 0; i < fragments.size(); i++) {
 		box = (TextFragmentBox)fragments.get(i);
-		if (box.y > p.y)
+		if (box.getBaseline() > p.y)
 			break;
 		box = null;
 	}
@@ -142,7 +144,8 @@ private int findNextLineOffset(Point p) {
 	String fragString = getBidiSubstring(box, i);
 	layout.setText(fragString);
 	int trailing[] = new int[1];
-	int layoutOffset = layout.getOffset(p.x - box.x, p.y - box.y, trailing) + trailing[0];
+	int layoutOffset = layout.getOffset(p.x - box.getX(), p.y - box.getTextTop(), trailing)
+			+ trailing[0];
 	layout.setText(""); //$NON-NLS-1$
 	return box.offset + layoutOffset;
 }
@@ -168,13 +171,13 @@ private int findPreviousLineOffset(Point p) {
 	String fragString;
 	if (bidiInfo == null)
 		fragString = text.substring(box.offset, box.offset + box.length);
-	else {
+	else
 		fragString = getBidiSubstring(box, i);
-	}
 
 	layout.setText(fragString);
 	int trailing[] = new int[1];
-	int layoutOffset = layout.getOffset(p.x - box.x, p.y - box.y, trailing) + trailing[0];
+	p.translate(-box.getX(), -box.getTextTop());
+	int layoutOffset = layout.getOffset(p.x, p.y, trailing) + trailing[0];
 	layoutOffset -= getBidiPrefixLength(box, i);
 	layout.setText(""); //$NON-NLS-1$
 	return box.offset + layoutOffset;
@@ -196,7 +199,7 @@ public BidiInfo getBidiInfo() {
  * @since 3.1
  */
 private String getBidiSubstring(TextFragmentBox box, int index) {
-	if (bidiInfo == null || box.bidiLevel < 1)
+	if (bidiInfo == null || box.getBidiLevel() < 1)
 		return text.substring(box.offset, box.offset + box.length);
 	
 	StringBuffer buffer = new StringBuffer(box.length + 3);
@@ -207,6 +210,15 @@ private String getBidiSubstring(TextFragmentBox box, int index) {
 	if (index == fragments.size() - 1 && bidiInfo.trailingJoiner)
 		buffer.append(BidiChars.ZWJ);
 	return buffer.toString();
+}
+
+int getAscent() {
+	FontMetrics fm = FigureUtilities.getFontMetrics(getFont());
+	return fm.getHeight() - fm.getDescent();
+}
+
+int getDescent() {
+	return FigureUtilities.getFontMetrics(getFont()).getDescent();
 }
 
 /**
@@ -249,13 +261,9 @@ public Rectangle getCaretPlacement(int offset, boolean trailing) {
 	layout.setText(fragString);
 	Point where = new Point(layout.getLocation(offset, trailing));
 	layout.setText(""); //$NON-NLS-1$
-	
-	FontMetrics fm = FigureUtilities.getFontMetrics(getFont());
-	return new Rectangle(
-			where.x + box.x,
-			where.y + box.y,
-			1,
-			fm.getHeight());
+
+	where.translate(box.getX(), box.getTextTop());
+	return new Rectangle(where.x, where.y, 1, getAscent());
 }
 
 /**
@@ -267,9 +275,11 @@ public Rectangle getCaretPlacement(int offset, boolean trailing) {
  * @return -1 of the first offset at the given baseline
  */
 public int getFirstOffsetForLine(int y) {
+	TextFragmentBox box;
 	for (int i = 0; i < fragments.size(); i++) {
-		TextFragmentBox box = (TextFragmentBox)fragments.get(i);
-		if (y >= box.y && y < box.y + box.getHeight())
+		box = (TextFragmentBox)fragments.get(i);
+		if (y >= box.getBaseline() - box.getAscentWithBorder()
+				&& y < box.getBaseline() + box.getDescentWithBorder())
 			return box.offset;
 	}
 	return -1;
@@ -284,9 +294,13 @@ public int getFirstOffsetForLine(int y) {
  * @return -1 of the last  offset at the given baseline
  */
 public int getLastOffsetForLine(int y) {
+	TextFragmentBox box;
+	//LineRoot root;
 	for (int i = fragments.size() - 1; i >= 0; i--) {
-		TextFragmentBox box = (TextFragmentBox)fragments.get(i);
-		if (y >= box.y && y < box.y + box.getHeight())
+		box = (TextFragmentBox)fragments.get(i);
+		//root = box.getLineRoot();
+		if (y >= box.getBaseline() - box.getAscentWithBorder()
+				&& y < box.getBaseline() + box.getDescentWithBorder())
 			return box.offset + box.length;
 	}
 	return -1;
@@ -352,11 +366,10 @@ public int getOffset(Point p, int trailing[]) {
 		if (bidiInfo != null)
 			bidiCorrection = -getBidiPrefixLength(box, i);
 		
-		
 		TextLayout layout = FlowUtilities.getTextLayout();
 		layout.setFont(getFont());
 		layout.setText(substring);
-		int result = layout.getOffset(p.x - box.x, p.y - box.y, trailing);
+		int result = layout.getOffset(p.x - box.getX(), p.y - box.getTextTop(), trailing);
 		layout.setText(""); //$NON-NLS-1$
 		return result + trailing[0] + box.offset + bidiCorrection;
 	}
@@ -369,7 +382,7 @@ public int getOffset(Point p, int trailing[]) {
  * @since 3.1
  */
 private int getBidiPrefixLength(TextFragmentBox box, int index) {
-	if (box.bidiLevel < 1)
+	if (box.getBidiLevel() < 1)
 		return 0;
 	if (index > 0 || !bidiInfo.leadingJoiner)
 		return 1;
@@ -410,7 +423,7 @@ public String getText() {
  */
 public boolean isTextTruncated() {
 	for (int i = 0; i < fragments.size(); i++) {
-		if (((TextFragmentBox)fragments.get(i)).truncated)
+		if (((TextFragmentBox)fragments.get(i)).isTruncated())
 			return true;
 	}
 	return false;
@@ -422,36 +435,51 @@ protected void paintFigure(Graphics g) {
 	g.getClip(Rectangle.SINGLETON);
 	int yStart = Rectangle.SINGLETON.y;
 	int yEnd = Rectangle.SINGLETON.bottom();
-	
+		
 	for (int i = 0; i < fragments.size(); i++) {
 		frag = (TextFragmentBox)fragments.get(i);
+		g.setBackgroundColor(ColorConstants.red);
+//		g.drawLine(frag.getX(), frag.getLineRoot().getVisibleTop(),
+//				frag.getWidth() + frag.getX(), frag.getLineRoot().getVisibleTop());
+//		g.drawLine(frag.getX(), frag.getBaseline(), frag.getWidth() + frag.getX(), frag.getBaseline());
+		if (frag.offset == -1)
+			continue;
 		//Loop until first visible fragment
-		if (yStart > frag.y + frag.getHeight() + 1)//The + 1 is for disabled text
+		if (yStart > frag.getLineRoot().getVisibleBottom() + 1)//The + 1 is for disabled text
 			continue;
 		//Break loop at first non-visible fragment
-		if (yEnd < frag.y)
+		if (yEnd < frag.getLineRoot().getVisibleTop())
 			break;
 
 		String draw = getBidiSubstring(frag, i);
-			
-		if (frag.truncated)
+		
+		if (frag.isTruncated())
 			draw += ELLIPSIS;
 
 		if (!isEnabled()) {
 			Color fgColor = g.getForegroundColor();
 			g.setForegroundColor(ColorConstants.buttonLightest);
-			paintText(g, draw, frag.x + 1, frag.y + 1, frag.getBidiLevel());
+			paintText(g, draw,
+					frag.getX() + 1,
+					frag.getBaseline() - getAscent() + 1,
+					frag.getBidiLevel());
 			g.setForegroundColor(ColorConstants.buttonDarker);
-			paintText(g, draw, frag.x, frag.y, frag.getBidiLevel());
+			paintText(g, draw,
+					frag.getX(),
+					frag.getBaseline() - getAscent(),
+					frag.getBidiLevel());
 			g.setForegroundColor(fgColor);
 		} else {
-			paintText(g, draw, frag.x, frag.y, frag.getBidiLevel());
+			paintText(g, draw,
+					frag.getX(),
+					frag.getBaseline() - getAscent(),
+					frag.getBidiLevel());
 		}
 	}
 }
 
 /**
- * @see org.eclipse.draw2d.text.InlineFlow#paintSelection(org.eclipse.draw2d.Graphics)
+ * @see InlineFlow#paintSelection(org.eclipse.draw2d.Graphics)
  */
 protected void paintSelection(Graphics graphics) {
 	if (selectionStart == -1)
@@ -467,9 +495,11 @@ protected void paintSelection(Graphics graphics) {
 			continue;
 		if (frag.offset > selectionEnd)
 			return;
-		if (selectionStart <= frag.offset && selectionEnd >= frag.offset + frag.length)
-			graphics.fillRectangle(frag.x, frag.y, frag.getWidth(), frag.getHeight());
-		else if (selectionEnd > frag.offset && selectionStart < frag.offset + frag.length) {
+		if (selectionStart <= frag.offset && selectionEnd >= frag.offset + frag.length) {
+			int y = frag.getLineRoot().getVisibleTop();
+			int height = frag.getLineRoot().getVisibleBottom() - y;
+			graphics.fillRectangle(frag.getX(), y, frag.getWidth(), height);
+		} else if (selectionEnd > frag.offset && selectionStart < frag.offset + frag.length) {
 			int prefixCorrection = getBidiPrefixLength(frag, i);
 			String text = getBidiSubstring(frag, i);
 
@@ -477,13 +507,14 @@ protected void paintSelection(Graphics graphics) {
 			layout.setFont(graphics.getFont());
 			layout.setText(text);
 			Rectangle rect = new Rectangle();
-			rect.setLocation(layout.getLocation(
-					Math.max(selectionStart - frag.offset, 0) + prefixCorrection, false).x, 0);
+			rect.x = layout.getLocation(
+					Math.max(selectionStart - frag.offset, 0) + prefixCorrection,
+					false).x;
 			rect.union(layout.getLocation(Math.min(selectionEnd - frag.offset,
 					frag.length) - 1 + prefixCorrection, true).x, 0);
 			rect.width--;
-			rect.height = frag.getHeight();
-			rect.translate(frag.x, frag.y);
+			rect.translate(frag.getX(), frag.getLineRoot().getVisibleTop());
+			rect.height = frag.getLineRoot().getVisibleBottom() - rect.y;
 			graphics.fillRectangle(rect);
 		}
 	}
@@ -541,6 +572,22 @@ public void setText(String s) {
 		revalidate();
 		repaint();
 	}
+}
+
+int getVisibleAscent() {
+	if (getBorder() instanceof FlowBorder) {
+		FlowBorder border = (FlowBorder)getBorder();
+		return border.getInsets(this).top + getAscent();
+	}
+	return getAscent();
+}
+
+int getVisibleDescent() {
+	if (getBorder() instanceof FlowBorder) {
+		FlowBorder border = (FlowBorder)getBorder();
+		return border.getInsets(this).bottom + getDescent();
+	}
+	return getDescent();
 }
 
 }

@@ -29,16 +29,10 @@ public PageFlowLayout(FlowPage page) {
 }
 
 /**
- * Setup blockBox to the initial bounds of the Page
+ * @see org.eclipse.draw2d.text.BlockFlowLayout#getContextWidth()
  */
-protected void setupBlock() {
-	int newWidth = ((FlowPage)getFlowFigure()).getRecommendedWidth();
-	if (blockBox.recommendedWidth == newWidth)
-		return;
-	blockInvalid = true;
-	blockBox.clear();
-	blockBox.x = blockBox.y = 0;
-	blockBox.setRecommendedWidth(newWidth);
+int getContextWidth() {
+	return ((FlowPage)getFlowFigure()).getRecommendedWidth();
 }
 
 }

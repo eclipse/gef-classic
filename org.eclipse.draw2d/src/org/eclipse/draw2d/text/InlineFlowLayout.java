@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.draw2d.text;
 
+import java.util.List;
+
 /**
  * The layout manager for {@link InlineFlow} figures.
  * 
@@ -29,6 +31,14 @@ public InlineFlowLayout(FlowFigure flow) {
 }
 
 /**
+ * Ends any current line, and adds
+ */
+public void addLine(CompositeBox box) {
+	endLine();
+	getContext().addLine(box);
+}
+
+/**
  * Adds the given FlowBox to the current line of this InlineFlowLayout.
  * @param block the FlowBox to add to the current line
  */
@@ -41,12 +51,12 @@ public void addToCurrentLine(FlowBox block) {
  * @see FlowContainerLayout#createNewLine()
  */
 protected void createNewLine() {
-	currentLine = new LineBox();
+	currentLine = new NestedLine((InlineFlow)getFlowFigure());
 	setupLine(currentLine);
 }
 
 /**
- * @see org.eclipse.draw2d.text.FlowContext#endLine()
+ * @see FlowContext#endLine()
  */
 public void endLine() {
 	if (currentLine == null)
@@ -72,32 +82,30 @@ protected void flush() {
 
 /**
  * InlineFlowLayout gets this information from its context.
- * @see org.eclipse.draw2d.text.FlowContext#getContinueOnSameLine()
+ * @see FlowContext#getContinueOnSameLine()
  */
 public boolean getContinueOnSameLine() {
 	return getContext().getContinueOnSameLine();
 }
 
 /**
- * @see org.eclipse.draw2d.text.FlowContext#getCurrentY()
+ * @see FlowContext#getWidthLookahead(FlowFigure, int[])
  */
-public int getCurrentY() {
-	return getCurrentLine().y;
+public void getWidthLookahead(FlowFigure child, int result[]) {
+	List children = getFlowFigure().getChildren();
+	int index = -1;
+	if (child != null)
+		index = children.indexOf(child);
+	
+	for (int i = index + 1; i < children.size(); i++)
+		if (((FlowFigure)children.get(i)).addLeadingWordRequirements(result))
+			return;
+	
+	getContext().getWidthLookahead(getFlowFigure(), result);
 }
 
 /**
- * tried to find word termination first among children
- * @see FlowContext#getWordWidthFollowing(FlowFigure, int[])
- */
-public boolean getWordWidthFollowing(FlowFigure child, int[] width) {
-	boolean result = super.getWordWidthFollowing(child, width); 
-	if (!result && getContext() != null)
-		return getContext().getWordWidthFollowing(getFlowFigure(), width);
-	return result;
-}
-
-/**
- * @see org.eclipse.draw2d.text.FlowContainerLayout#isCurrentLineOccupied()
+ * @see FlowContainerLayout#isCurrentLineOccupied()
  */
 public boolean isCurrentLineOccupied() {
 	return (currentLine != null && !currentLine.getFragments().isEmpty())
@@ -113,7 +121,7 @@ public void preLayout() {
 
 /**
  * InlineFlow passes this information to its context.
- * @see org.eclipse.draw2d.text.FlowContext#setContinueOnSameLine(boolean)
+ * @see FlowContext#setContinueOnSameLine(boolean)
  */
 public void setContinueOnSameLine(boolean value) {
 	getContext().setContinueOnSameLine(value);
@@ -124,10 +132,8 @@ public void setContinueOnSameLine(boolean value) {
  * @param line The LineBox to initialize.
  */
 protected void setupLine(LineBox line) {
-	LineBox parent = getContext().getCurrentLine();
-	line.x = 0;
-	line.y = getContext().getCurrentY();
-	line.setRecommendedWidth(parent.getAvailableWidth());
+	line.setX(0);
+	line.setRecommendedWidth(getContext().getRemainingLineWidth());
 }
 
 }

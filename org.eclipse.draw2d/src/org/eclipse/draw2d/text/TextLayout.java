@@ -34,7 +34,7 @@ public TextLayout(TextFlow flow) {
 protected TextFragmentBox getFragment(int i, List fragments) {
 	if (fragments.size() > i)
 		return (TextFragmentBox)fragments.get(i);
-	TextFragmentBox box = new TextFragmentBox();
+	TextFragmentBox box = new TextFragmentBox((TextFlow)getFlowFigure());
 	fragments.add(box);
 	return box;
 }

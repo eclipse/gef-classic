@@ -13,7 +13,6 @@ package org.eclipse.draw2d.text;
 import java.text.BreakIterator;
 
 import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.TextLayout;
 import org.eclipse.swt.widgets.Display;
 
@@ -28,10 +27,14 @@ class FlowUtilities
 	extends FigureUtilities
 {
 
-static final BreakIterator LINE_BREAK = BreakIterator.getLineInstance();
-private static final BreakIterator INTERNAL_LINE_BREAK = BreakIterator.getLineInstance();
+interface LookAhead {
+	int getWidth();
+}
 private static int ELLIPSIS_SIZE;
+private static final BreakIterator INTERNAL_LINE_BREAK = BreakIterator.getLineInstance();
 private static TextLayout layout;
+
+static final BreakIterator LINE_BREAK = BreakIterator.getLineInstance();
 
 static boolean canBreakAfter(char c) {
 	boolean result = Character.isWhitespace(c) || c == '-';
@@ -63,9 +66,41 @@ private static int findFirstDelimeter(String string) {
  * @since 3.1
  */
 private static float getAverageCharWidth(TextFragmentBox fragment, Font font) {
-	if (fragment.width > 0 && fragment.length != 0)
-		return fragment.width / (float)fragment.length;
+	if (fragment.getWidth() > 0 && fragment.length != 0)
+		return fragment.getWidth()/ (float)fragment.length;
 	return getFontMetrics(font).getAverageCharWidth();
+}
+
+static int getBorderAscent(InlineFlow owner) {
+	if (owner.getBorder() instanceof FlowBorder) {
+		FlowBorder border = (FlowBorder)owner.getBorder();
+		return border.getInsets(owner).top;
+	}
+	return 0;
+}
+
+static int getBorderAscentWithMargin(InlineFlow owner) {
+	if (owner.getBorder() instanceof FlowBorder) {
+		FlowBorder border = (FlowBorder)owner.getBorder();
+		return border.getTopMargin() + border.getInsets(owner).top;
+	}
+	return 0;
+}
+
+static int getBorderDescent(InlineFlow owner) {
+	if (owner.getBorder() instanceof FlowBorder) {
+		FlowBorder border = (FlowBorder)owner.getBorder();
+		return border.getInsets(owner).bottom;
+	}
+	return 0;
+}
+
+static int getBorderDescentWithMargin(InlineFlow owner) {
+	if (owner.getBorder() instanceof FlowBorder) {
+		FlowBorder border = (FlowBorder)owner.getBorder();
+		return border.getBottomMargin() + border.getInsets(owner).bottom;
+	}
+	return 0;
 }
 
 /**
@@ -115,7 +150,7 @@ private static int measureString(TextFragmentBox frag, String string, int guess,
 }
 
 static void setupFragment(TextFragmentBox frag, Font f, String s) {
-	if (frag.width == -1 || frag.truncated) {
+	if (frag.getWidth() == -1 || frag.isTruncated()) {
 		int width;
 		if (s.length() == 0 || frag.length == 0)
 			width = 0;
@@ -126,20 +161,19 @@ static void setupFragment(TextFragmentBox frag, Font f, String s) {
 			width = textLayout.getBounds(0, frag.length - 1).width;
 		} else
 			width = getStringDimension(s.substring(0, frag.length), f).x;
-		if (frag.truncated)
+		if (frag.isTruncated())
 			width += ELLIPSIS_SIZE;
 		frag.setWidth(width);
 	}
-	FontMetrics fm = getFontMetrics(f);
-	frag.setHeight(fm.getHeight());
-	frag.setAscent(frag.getHeight() - fm.getDescent());
+//	FontMetrics fm = getFontMetrics(f);
+//	frag.setHeight(fm.getHeight());
+//	frag.setAscent(frag.getHeight() - fm.getDescent());
 }
 
 /**
- * Returns the number of characters from the specified String that will fit in the
- * available amount of space. An average character width can be provided as a hint for
- * faster calculation.  If Bidi is required, a TextLayout will be used to calculate the
- * width.
+ * Sets up a fragment and returns the number of characters consumed from the given
+ * String. An average character width can be provided as a hint for faster calculation. 
+ * If a fragment's bidi level is set, a TextLayout will be used to calculate the width.
  * 
  * @param frag the TextFragmentBox
  * @param string the String
@@ -151,13 +185,13 @@ static void setupFragment(TextFragmentBox frag, Font f, String s) {
  */
 public static int wrapFragmentInContext(TextFragmentBox frag, String string,
 		FlowContext context, LookAhead lookahead, Font font, int wrapping) {
-	frag.truncated = false;
+	frag.setTruncated(false);
 	int strLen = string.length();
 	if (strLen == 0) {
-		frag.width = -1;
+		frag.setWidth(-1);
 		frag.length = 0;
 		setupFragment(frag, font, string);
-		context.addToCurrentLine(frag);
+//		context.addToCurrentLine(frag);
 		return 0;
 	}
 	
@@ -165,7 +199,7 @@ public static int wrapFragmentInContext(TextFragmentBox frag, String string,
 
 	initBidi(frag, string, font);
 	float avgCharWidth = getAverageCharWidth(frag, font);
-	frag.width = -1;
+	frag.setWidth(-1);
 	
 	/*
 	 * Setup initial boundaries within the string.
@@ -185,7 +219,7 @@ public static int wrapFragmentInContext(TextFragmentBox frag, String string,
 		max = Math.min(strLen, firstDelimiter) + 1;
 
 	
-	int availableWidth = context.getCurrentLine().getAvailableWidth();
+	int availableWidth = context.getRemainingLineWidth();
 	int guess = 0, guessSize = 0;
 	
 	while (true) {
@@ -197,7 +231,7 @@ public static int wrapFragmentInContext(TextFragmentBox frag, String string,
 						+ ((min == strLen && lookahead != null) ? lookahead.getWidth() : 0)
 			) {
 				context.endLine();
-				availableWidth = context.getCurrentLine().getAvailableWidth();
+				availableWidth = context.getRemainingLineWidth();
 				max = Math.min(strLen, firstDelimiter) + 1;
 				if ((max - min) <= 1)
 					break;
@@ -224,7 +258,7 @@ public static int wrapFragmentInContext(TextFragmentBox frag, String string,
 
 		if (guessSize <= availableWidth) {
 			min = guess;
-			frag.width = guessSize;
+			frag.setWidth(guessSize);
 			if (guessSize == availableWidth)
 				max = guess + 1;
 		} else
@@ -236,9 +270,9 @@ public static int wrapFragmentInContext(TextFragmentBox frag, String string,
 	if (min == strLen) {
 		//Everything fits
 		if (string.charAt(strLen - 1) == ' ' 
-				&& lookahead.getWidth() > availableWidth - frag.width) {
+				&& lookahead.getWidth() > availableWidth - frag.getWidth()) {
 			frag.length = result - 1;
-			frag.width = -1;
+			frag.setWidth(-1);
 		} else
 			frag.length = result;
 	} else if (min == firstDelimiter) {
@@ -250,7 +284,7 @@ public static int wrapFragmentInContext(TextFragmentBox frag, String string,
 				result++;
 		} else if (string.charAt(min) == '\n')
 			result++;
-	} else if (string.charAt(min) == ' '
+	} else out: if (string.charAt(min) == ' '
 			|| canBreakAfter(string.charAt(min - 1))
 			|| INTERNAL_LINE_BREAK.isBoundary(min)) {
 		frag.length = min;
@@ -258,51 +292,51 @@ public static int wrapFragmentInContext(TextFragmentBox frag, String string,
 			result++;
 		else if (string.charAt(min - 1) == ' ') {
 			frag.length--;
-			frag.width = -1;
+			frag.setWidth(-1);
 		}
 	} else {
 		// In the middle of an unbreakable offset
 		result = INTERNAL_LINE_BREAK.preceding(min);
 		if (result == 0) {
 			switch (wrapping) {
-				case ParagraphTextLayout.WORD_WRAP_SOFT :
-					result = min;
-					break;
 				case ParagraphTextLayout.WORD_WRAP_TRUNCATE :
 					ELLIPSIS_SIZE = FigureUtilities
 							.getStringExtents(TextFlow.ELLIPSIS, font).width;
 					int truncatedWidth = availableWidth - ELLIPSIS_SIZE;
 					if (truncatedWidth > 0) {
 						//$TODO this is very slow.  It should be using avgCharWidth to go faster
-						do {
-							guessSize = measureString(frag, string, min--, font);
-						} while (guessSize > truncatedWidth && min > 0);
+						while (min > 0) {
+							guessSize = measureString(frag, string, min, font);
+							if (guessSize <= truncatedWidth)
+								break;
+							min--;
+						}
 						frag.length = min;
 					} else
 						frag.length = 0;
-					frag.truncated = true;
+					frag.setTruncated(true);
 					result = INTERNAL_LINE_BREAK.following(max - 1);
-					break;
+					break out;
+
 				default:
+				case ParagraphTextLayout.WORD_WRAP_SOFT :
 					result = min;
+					break;
 			}
 		}
 		frag.length = result;
 		if (string.charAt(result - 1) == ' ')
 			frag.length--;
-		frag.width = -1;
+		frag.setWidth(-1);
 	}
 
+	
 	setupFragment(frag, font, string);
-	context.addToCurrentLine(frag);
-	if (frag.length == absoluteMin && frag.length == strLen
-			&& lookahead != null && lookahead.getWidth() > 0)
-		context.setContinueOnSameLine(true);
+//	context.addToCurrentLine(frag);
+//	if (frag.length == absoluteMin && frag.length == strLen
+//			&& lookahead != null && lookahead.getWidth() > 0)
+//		context.setContinueOnSameLine(true);
 	return result;
-}
-
-interface LookAhead {
-	int getWidth();
 }
 
 }

@@ -14,188 +14,88 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.draw2d.geometry.Rectangle;
-
 /**
- * A composite box representing a single line. LineBox calculates its ascent and descent
- * from the child boxes it contains. Clients can call {@link #getAscent()} or {@link
- * #getHeight()} at any time and expect valid values. The child boxes that are added to a
- * line have unspecified locations until {@link #commit()} is called, at which time the
- * child boxes are laid out, and their baselines are all aligned vertically.
  * @author hudsonr
  * @since 2.1 */
-public class LineBox
+public abstract class LineBox
 	extends CompositeBox
 {
 
-private int ascent = 0;
-
-/*
- * @since 3.1
+/**
+ * The maximum ascent of all contained fragments.
  */
-private void buildBidiTree(FlowBox box, BidiLevelNode node, List branches) {
-	if (box instanceof CompositeBox) {
-		List children = ((CompositeBox)box).getFragments();
-		for (int i = 0; i < children.size(); i++)
-			buildBidiTree((FlowBox)children.get(i), node, branches);
-		if (box != this)
-			branches.add(box);
-	} else {
-		ContentBox leafBox = (ContentBox)box;
-		while (leafBox.getBidiLevel() < node.level)
-			node = node.pop();
-		while (leafBox.getBidiLevel() > node.level)
-			node = node.push();
-		node.add(leafBox);
-	}
-}
+int contentAscent;
 
 /**
- * Committing a LineBox will position its children correctly. All children boxes are made
- * to have the same baseline, and are laid out according to the Unicode BiDi Algorithm,
- * or left-to-right if Bidi is not required.
+ * The maximum descent of all contained fragments.
  */
-public void commit() {
-	int baseline = getBaseline();
-	int xLocation = x;
-	if (requiresBidi()) {
-		BidiLevelNode root = new BidiLevelNode();
-		List branches = new ArrayList();
-		// branches does not include this LineBox
-		buildBidiTree(this, root, branches);
-		List result = new ArrayList();
-		root.emit(result);
-		for (Iterator iter = result.iterator(); iter.hasNext();) {
-			FlowBox box = (FlowBox)iter.next();
-			box.x = xLocation;
-			xLocation += box.width;
-			box.makeBaseline(baseline);
-		}
-		// change each composite box's bounds to encompass all its children.  the
-		// following algorithm works because all the children (including non-leaves)
-		// of a parent will be listed before the parent is.
-		for (int i = 0; i < branches.size(); i++) {
-			CompositeBox parent = (CompositeBox)branches.get(i);
-			Rectangle bounds = new Rectangle(0, 1, 0, 1);
-			for (Iterator iter = parent.getFragments().iterator(); iter.hasNext();) {
-				FlowBox child = (FlowBox) iter.next();
-				bounds.union(child.x, 1, child.width, 1);
-			}
-			parent.x = bounds.x;
-			parent.width = bounds.width;
-			parent.makeBaseline(baseline);
-		}
-	} else
-		contiguousCommit(this, x, baseline);
+int contentDescent;
+
+List fragments = new ArrayList();
+
+public void add(FlowBox child) {
+	fragments.add(child);
+	width += child.getWidth();
+	contentAscent = Math.max(contentAscent, child.getOuterAscent());
+	contentDescent = Math.max(contentDescent, child.getOuterDescent());
 }
 
-/*
- * Simply lays out all fragments from left-to-right in the order in which they're 
- * contained. 
- */
-private void contiguousCommit(FlowBox box, int x, int baseline) {
-	box.x = x;
-	box.makeBaseline(baseline);
-	// Don't lay out the children of any blocks.  If there is a BlockBox, it will be the 
-	// first and only child (i.e., on a line by itself).
-	if (box instanceof BlockBox)
-		return;
-	if (box instanceof CompositeBox) {
-		List fragments = ((CompositeBox)box).getFragments();
-		for (int i = 0; i < fragments.size(); i++) {
-			FlowBox child = (FlowBox)fragments.get(i);
-			contiguousCommit(child, x, baseline);
-			x += child.width;
-		}
-	}
-}
-
-/** * @see org.eclipse.draw2d.text.FlowBox#getAscent() */
 public int getAscent() {
+	int ascent = 0;
+	for (int i = 0; i < fragments.size(); i++)
+		ascent = Math.max(ascent, ((FlowBox)fragments.get(i)).getAscent());
 	return ascent;
 }
 
 /**
- * Returns the width available to child fragments.
- * @return the width in pixels
+ * Returns the remaining width available for line content.
+ * @return the available width in pixels
  */
-public int getAvailableWidth() {
+int getAvailableWidth() {
 	if (recommendedWidth < 0)
 		return Integer.MAX_VALUE;
-	return recommendedWidth - width;
+	return recommendedWidth - getWidth();
+}
+
+int getBottomMargin() {
+	return 0;
+}
+
+public int getDescent() {
+	int descent = 0;
+	for (int i = 0; i < fragments.size(); i++)
+		descent = Math.max(descent, ((FlowBox)fragments.get(i)).getDescent());
+	return descent;
 }
 
 /**
- * @see CompositeBox#resetInfo()
+ * @return Returns the fragments.
  */
-protected void resetInfo() {
-	super.resetInfo();
-	ascent = 0;
+List getFragments() {
+	return fragments;
+}
+
+int getTopMargin() {
+	return 0;
 }
 
 /**
- * @see CompositeBox#unionInfo(FlowBox)
+ * @return <code>true</code> if this box contains any fragments
  */
-protected void unionInfo(FlowBox blockInfo) {
-	int descent = height - ascent;
-	ascent = Math.max(ascent, blockInfo.getAscent());
-	height = ascent + Math.max(descent, blockInfo.getDescent());
-	width += blockInfo.width;
+public boolean isOccupied() {
+	return !fragments.isEmpty();
 }
 
-/*
- * @since 3.1
+/**
+ * @see org.eclipse.draw2d.text.FlowBox#requiresBidi()
  */
-private static class BidiLevelNode extends ArrayList
-{
-	int level;
-	final BidiLevelNode parent;
-
-	BidiLevelNode() {
-		this(null, 0);
+public boolean requiresBidi() {
+	for (Iterator iter = getFragments().iterator(); iter.hasNext();) {
+		FlowBox box = (FlowBox)iter.next();
+		if (box.requiresBidi())
+			return true;
 	}
-
-	BidiLevelNode(BidiLevelNode parent, int level) {
-		this.parent = parent;
-		this.level = level;
-	}
-
-	void emit(List list) {
-		if (level % 2 == 1) {
-			for (int i = size() - 1; i >= 0; i--) {
-				Object child = get(i);
-				if (child instanceof BidiLevelNode) {
-					BidiLevelNode node = (BidiLevelNode) child;
-					node.emit(list);
-				} else
-					list.add(child);
-			}
-		} else {
-			for (int i = 0; i < size(); i++) {
-				Object child = get(i);
-				if (child instanceof BidiLevelNode) {
-					BidiLevelNode node = (BidiLevelNode) child;
-					node.emit(list);
-				} else
-					list.add(child);
-			}
-		}
-	}
-
-	BidiLevelNode pop() {
-		return parent;
-	}
-
-	BidiLevelNode push() {
-		if (!isEmpty()) {
-			Object last = get(size() - 1);
-			if (last instanceof BidiLevelNode && ((BidiLevelNode)last).level == level + 1)
-				return (BidiLevelNode)last;
-		}
-		BidiLevelNode child = new BidiLevelNode(this, level + 1);
-		add(child);
-		return child;
-	}
+	return false;
 }
 
 }

@@ -24,11 +24,11 @@ public abstract class FlowContainerLayout
 	extends FlowFigureLayout
 	implements FlowContext
 {
-	
+
 /**
  * the current line
  */
-protected LineBox currentLine;
+LineBox currentLine;
 
 /** * @see org.eclipse.draw2d.text.FlowFigureLayout#FlowFigureLayout(FlowFigure) */
 protected FlowContainerLayout(FlowFigure flowFigure) {
@@ -65,36 +65,27 @@ protected abstract void flush();
 /**
  * FlowBoxes shouldn't be added directly to the current line.  Use 
  * {@link #addToCurrentLine(FlowBox)} for that. * @see org.eclipse.draw2d.text.FlowContext#getCurrentLine() */
-public LineBox getCurrentLine() {
+LineBox getCurrentLine() {
 	if (currentLine == null)
 		createNewLine();
 	return currentLine;
 }
 
 /**
- * @see org.eclipse.draw2d.text.FlowContext#getWordWidthFollowing(FlowFigure, int[])
+ * @see FlowContext#getRemainingLineWidth()
  */
-public boolean getWordWidthFollowing(FlowFigure child, int[] width) {
-	List children = getFlowFigure().getChildren();
-	int index = -1;
-	if (child != null)
-		index = children.indexOf(child);
-	
-	for (int i = index + 1; i < children.size(); i++) {
-		if (((FlowFigure)children.get(i)).addLeadingWordRequirements(width))
-			return true;
-	}
-	return false;
+public int getRemainingLineWidth() {
+	return getCurrentLine().getAvailableWidth();
 }
 
 /**
- * @see org.eclipse.draw2d.text.FlowContext#isCurrentLineOccupied()
+ * @see FlowContext#isCurrentLineOccupied()
  */
 public boolean isCurrentLineOccupied() {
 	return currentLine != null && currentLine.isOccupied();
 }
 
-/** * @see org.eclipse.draw2d.text.FlowFigureLayout#layout() */
+/** * @see FlowFigureLayout#layout() */
 protected void layout() {
 	preLayout();
 	layoutChildren();

@@ -20,24 +20,55 @@ public class BlockBox
 	extends CompositeBox
 {
 
-/**
- * @see org.eclipse.draw2d.text.CompositeBox#add(FlowBox)
- */
+int height;
+private int y;
+BlockFlow owner;
+
+BlockBox(BlockFlow owner) {
+	this.owner = owner;
+}
+
 public void add(FlowBox box) {
-	unionInfo(box);
+	width = Math.max(width, box.getWidth());
+	height = Math.max(height, box.getBaseline() + box.getDescent());
+}
+
+public boolean containsPoint(int x, int y) {
+	return true;
+}
+
+public int getAscent() {
+	return 0;
 }
 
 /**
- * A BlockBox will always return false for isBidi() since a block's contents are 
- * unaffected by their surroundings and vice versa.
- * @see org.eclipse.draw2d.text.FlowBox#requiresBidi()
+ * @see FlowBox#getBaseline()
  */
-public boolean requiresBidi() {
-	return false;
+public int getBaseline() {
+	return y;
 }
 
-Rectangle toRectangle() {
-	return new Rectangle(x, y, Math.max(width, recommendedWidth), height);
+int getBottomMargin() {
+	return owner.getBottomMargin();
+}
+
+public int getDescent() {
+	return height;
+}
+
+/**
+ * @return Returns the height.
+ */
+public int getHeight() {
+	return height;
+}
+
+LineRoot getLineRoot() {
+	return null;
+}
+
+int getTopMargin() {
+	return owner.getTopMargin();
 }
 
 /**
@@ -48,13 +79,12 @@ public void setHeight(int h) {
 	height = h;
 }
 
-/**
- * Unions the dimensions of this with the dimensions of the passed FlowBox.
- * @param box The FlowBox to union this with
- */
-protected void unionInfo(FlowBox box) {
-	width = Math.max(width, box.width);
-	height = Math.max(height, box.y + box.height);
+public void setLineTop(int y) {
+	this.y = y;
+}
+
+Rectangle toRectangle() {
+	return new Rectangle(getX(), y, Math.max(getWidth(), recommendedWidth), height);
 }
 
 }

@@ -108,7 +108,7 @@ public void postValidate() {
 }
 
 /**
- * @see org.eclipse.draw2d.text.FlowFigure#setBounds(Rectangle)
+ * @see FlowFigure#setBounds(Rectangle)
  */
 public void setBounds(Rectangle r) {
 	if (getBounds().equals(r))
