@@ -310,6 +310,13 @@ public void setContents(EditPart editpart){
 	getRootEditPart().setContents(editpart);
 }
 
+public void setContents(Object contents){
+	Assert.isTrue(getEditPartFactory() != null,
+		"An EditPartFactory is required to call setContents(Object)");//$NON-NLS-1$
+	setContents(getEditPartFactory().
+			createEditPart(null, contents));
+}
+
 public void setControl(Control control){
 	if (this.control != null)
 		unhookControl();
@@ -362,13 +369,6 @@ public void setFocus(EditPart part){
 		focusPart.setFocus(true);
 		expose(focusPart);
 	}
-}
-
-public void setContents(Object contents){
-	Assert.isTrue(getEditPartFactory() != null,
-		"An EditPartFactory is required to call setContents(Object)");//$NON-NLS-1$
-	setContents(getEditPartFactory().
-			createEditPart(null, contents));
 }
 
 public void setKeyHandler(KeyHandler handler){
