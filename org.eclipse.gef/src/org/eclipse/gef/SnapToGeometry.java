@@ -1,6 +1,7 @@
 package org.eclipse.gef;
 
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.PositionConstants;
@@ -13,6 +14,9 @@ import org.eclipse.gef.requests.ChangeBoundsRequest;
  * @author Randy Hudson
  */
 public class SnapToGeometry implements SnapToStrategy {
+	
+public static final String HORIZONTAL_ANCHOR = "SnapToGeometry - $H Anchor"; //$NON-NLS-1$
+public static final String VERTICAL_ANCHOR = "SnapToGeometry - $V Anchor"; //$NON-NLS-1$
 
 private GraphicalEditPart container;
 private static final double THRESHOLD = 5.0001;
@@ -58,12 +62,13 @@ public SnapToGeometry(GraphicalEditPart container) {
  * @param far the right/bottom side
  * @return the correction amount or THRESHOLD if no correction is required
  */
-private double getCorrectionFor(Entry entries[], double near, double far) {
-	double result = getCorrectionFor(entries, near, -1);
+private double getCorrectionFor(Entry entries[], Map extendedData, boolean vert, 
+                                double near, double far) {
+	double result = getCorrectionFor(entries, extendedData, vert, near, -1);
 	if (result == THRESHOLD)
-		result = getCorrectionFor(entries, (near + far) / 2, 0);
+		result = getCorrectionFor(entries, extendedData, vert, (near + far) / 2, 0);
 	if (result == THRESHOLD)
-		result = getCorrectionFor(entries, far, 1);
+		result = getCorrectionFor(entries, extendedData, vert, far, 1);
 	return result;
 }
 
@@ -75,7 +80,8 @@ private double getCorrectionFor(Entry entries[], double near, double far) {
  * @param side
  * @return
  */
-private double getCorrectionFor(Entry entries[], double value, int side) {
+private double getCorrectionFor(Entry entries[], Map extendedData, boolean vert, 
+                                double value, int side) {
 	double resultMag = THRESHOLD;
 	double result = THRESHOLD;
 	
@@ -88,18 +94,24 @@ private double getCorrectionFor(Entry entries[], double value, int side) {
 			if (magnitude < resultMag) {
 				resultMag = magnitude;
 				result = entry.offset - value;
+				extendedData.put(vert ? VERTICAL_ANCHOR : HORIZONTAL_ANCHOR, 
+						new Integer(entry.offset));
 			}
 		} else if (entry.side == 0 && side == 0) {
 			magnitude = Math.abs(value - entry.offset);
 			if (magnitude < resultMag) {
 				resultMag = magnitude;
 				result = entry.offset - value;
+				extendedData.put(vert ? VERTICAL_ANCHOR : HORIZONTAL_ANCHOR, 
+									  new Integer(entry.offset));
 			}
 		} else if (entry.side == 1 && side != 0) {
 			magnitude = Math.abs(value - entry.offset);
 			if (magnitude < resultMag) {
 				resultMag = magnitude;
 				result = entry.offset - value;
+				extendedData.put(vert ? VERTICAL_ANCHOR : HORIZONTAL_ANCHOR, 
+									  new Integer(entry.offset));
 			}
 		}
 	}
@@ -116,8 +128,14 @@ public boolean snapMoveRequest(ChangeBoundsRequest request,	PrecisionRectangle b
 	fig.translateToRelative(baseRect);
 	fig.translateToRelative(move);
 
-	double xcorrect = getCorrectionFor(cols, baseRect.preciseX, baseRect.preciseRight());
-	double ycorrect = getCorrectionFor(rows, baseRect.preciseY, baseRect.preciseBottom());
+	double xcorrect = getCorrectionFor(cols, request.getExtendedData(), true, 
+			baseRect.preciseX, baseRect.preciseRight());
+	double ycorrect = getCorrectionFor(rows, request.getExtendedData(), false, 
+			baseRect.preciseY, baseRect.preciseBottom());
+
+	// No snapping feedback is to be shown if multiple editparts are being moved. 
+	if (request.getEditParts().size() > 1)
+		request.getExtendedData().clear();
 
 	//If neither value is being corrected, return false
 	if (xcorrect == THRESHOLD && ycorrect == THRESHOLD)
@@ -133,6 +151,20 @@ public boolean snapMoveRequest(ChangeBoundsRequest request,	PrecisionRectangle b
 	move.updateInts();
 	fig.translateToAbsolute(move);
 	request.setMoveDelta(move);
+	
+	Integer value = (Integer)request.getExtendedData().get(HORIZONTAL_ANCHOR);
+	if (value != null) {
+		Point loc = new Point(0, value.intValue());
+		fig.translateToAbsolute(loc);
+		request.getExtendedData().put(HORIZONTAL_ANCHOR, new Integer(loc.y));
+	}
+	value = (Integer)request.getExtendedData().get(VERTICAL_ANCHOR);
+	if (value != null) {
+		Point loc = new Point(value.intValue(), 0);
+		fig.translateToAbsolute(loc);
+		request.getExtendedData().put(VERTICAL_ANCHOR, new Integer(loc.x));
+	}
+		
 	
 	return true;
 }
@@ -156,13 +188,15 @@ public boolean snapResizeRequest(ChangeBoundsRequest request, PrecisionRectangle
 
 	boolean change = false;
 	if ((dir & PositionConstants.EAST) != 0) {
-		double rightCorrection = getCorrectionFor(cols, baseRec.preciseRight(), 1);
+		double rightCorrection = getCorrectionFor(cols, request.getExtendedData(), true,
+				baseRec.preciseRight(), 1);
 		if (rightCorrection != THRESHOLD) {
 			change = true;
 			resize.preciseWidth += rightCorrection;
 		}
 	} else if ((dir & PositionConstants.WEST) != 0) {
-		double leftCorrection = getCorrectionFor(cols, baseRec.preciseX, -1);
+		double leftCorrection = getCorrectionFor(cols, request.getExtendedData(), true,
+				baseRec.preciseX, -1);
 		if (leftCorrection != THRESHOLD) {
 			change = true;
 			resize.preciseWidth -= leftCorrection;
@@ -171,13 +205,15 @@ public boolean snapResizeRequest(ChangeBoundsRequest request, PrecisionRectangle
 	}
 	
 	if ((dir & PositionConstants.SOUTH) != 0) {
-		double bottom = getCorrectionFor(rows, baseRec.preciseBottom(), 1);
+		double bottom = getCorrectionFor(rows, request.getExtendedData(), false,
+				baseRec.preciseBottom(), 1);
 		if (bottom != THRESHOLD) {
 			change = true;
 			resize.preciseHeight += bottom;
 		}
 	} else if ((dir & PositionConstants.NORTH) != 0) {
-		double topCorrection = getCorrectionFor(rows, baseRec.preciseY, -1);
+		double topCorrection = getCorrectionFor(rows, request.getExtendedData(), false,
+				baseRec.preciseY, -1);
 		if (topCorrection != THRESHOLD) {
 			change = true;
 			resize.preciseHeight -= topCorrection;
@@ -187,9 +223,28 @@ public boolean snapResizeRequest(ChangeBoundsRequest request, PrecisionRectangle
 	if (!change)
 		return false;
 	
+	// No snapping feedback is to be shown if multiple editparts are being resized.
+	if (request.getEditParts().size() > 1) {
+		request.getExtendedData().remove(HORIZONTAL_ANCHOR);
+		request.getExtendedData().remove(VERTICAL_ANCHOR);
+	}
+	
+	Integer value = (Integer)request.getExtendedData().get(HORIZONTAL_ANCHOR);
+	if (value != null) {
+		Point loc = new Point(0, value.intValue());
+		fig.translateToAbsolute(loc);
+		request.getExtendedData().put(HORIZONTAL_ANCHOR, new Integer(loc.y));
+	}
+	value = (Integer)request.getExtendedData().get(VERTICAL_ANCHOR);
+	if (value != null) {
+		Point loc = new Point(value.intValue(), 0);
+		fig.translateToAbsolute(loc);
+		request.getExtendedData().put(VERTICAL_ANCHOR, new Integer(loc.x));
+	}
+	
 	fig.translateToAbsolute(resize);
 	fig.translateToAbsolute(move);
-	resize.updateInts();	
+	resize.updateInts();
 	move.updateInts();
 
 	request.setSizeDelta(resize);
