@@ -65,11 +65,10 @@ protected Object getConstraintFor(ChangeBoundsRequest request, GraphicalEditPart
 	child.getFigure().translateToRelative(rect);
 	rect.translate(getLayoutOrigin().getNegated());
 
-	if (RequestConstants.REQ_MOVE_CHILDREN.equals(request.getType())) {
+	if (request.getSizeDelta().width == 0 && request.getSizeDelta().height == 0) {
 		Rectangle cons = (Rectangle)getCurrentConstraintFor(child);
 		rect.setSize(cons.width, cons.height);
-	}
-	if (RequestConstants.REQ_RESIZE_CHILDREN.equals(request.getType())) {
+	} else {
 		Dimension minSize = getMinimumSizeFor(child);
 		if (rect.width < minSize.width)
 			rect.width = minSize.width;
