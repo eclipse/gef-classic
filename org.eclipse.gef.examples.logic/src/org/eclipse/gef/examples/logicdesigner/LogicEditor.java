@@ -14,7 +14,6 @@ import org.eclipse.core.runtime.*;
 import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.gef.*;
 import org.eclipse.gef.commands.CommandStackListener;
-import org.eclipse.gef.dnd.TemplateTransfer;
 import org.eclipse.gef.dnd.TemplateTransferDragSourceListener;
 import org.eclipse.gef.examples.logicdesigner.edit.GraphicalPartFactory;
 import org.eclipse.gef.examples.logicdesigner.edit.TreePartFactory;
@@ -277,7 +276,7 @@ protected void initializeGraphicalViewer() {
 protected void initializePaletteViewer() {
 	super.initializePaletteViewer();
 	getPaletteViewer().addDragSourceListener(
-		new TemplateTransferDragSourceListener(getPaletteViewer(), TemplateTransfer.getInstance()));
+		new TemplateTransferDragSourceListener(getPaletteViewer()));
 }
 
 public void init(IEditorSite site, IEditorInput input) throws PartInitException {
