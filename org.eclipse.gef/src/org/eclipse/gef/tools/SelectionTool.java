@@ -311,6 +311,7 @@ private boolean handleTraverseHandle(KeyEvent e){
 protected boolean handleViewerExited() {
 	if (isInState(STATE_ACCESSIBLE_DRAG | 
 					STATE_ACCESSIBLE_DRAG_IN_PROGRESS | 
+					STATE_TRAVERSE_HANDLE |
 					STATE_DRAG | STATE_DRAG_IN_PROGRESS)) {
 		if (getDragTracker() != null)
 			setDragTracker(null);
@@ -442,3 +443,4 @@ protected String getDebugNameForState(int state) {
 }
 
 }
+
