@@ -310,43 +310,43 @@ protected void createActions() {
 	
 	action = new LogicPasteTemplateAction(this);
 	registry.registerAction(action);
-	markAsSelectionDependentAction(action.getId(), true);
+	getSelectionActions().add(action.getId());
 
 	action = new IncrementDecrementAction(this, true);
 	registry.registerAction(action);
-	markAsSelectionDependentAction(action.getId(), true);
+	getSelectionActions().add(action.getId());
 
 	action = new IncrementDecrementAction(this, false);
 	registry.registerAction(action);
-	markAsSelectionDependentAction(action.getId(), true);
+	getSelectionActions().add(action.getId());
 
 	action = new DirectEditAction(this);
 	registry.registerAction(action);
-	markAsSelectionDependentAction(action.getId(), true);
+	getSelectionActions().add(action.getId());
 
 	action = new AlignmentAction(this, PositionConstants.LEFT);
 	registry.registerAction(action);
-	markAsSelectionDependentAction(action.getId(), true);
+	getSelectionActions().add(action.getId());
 
 	action = new AlignmentAction(this, PositionConstants.RIGHT);
 	registry.registerAction(action);
-	markAsSelectionDependentAction(action.getId(), true);
+	getSelectionActions().add(action.getId());
 
 	action = new AlignmentAction(this, PositionConstants.TOP);
 	registry.registerAction(action);
-	markAsSelectionDependentAction(action.getId(), true);
+	getSelectionActions().add(action.getId());
 
 	action = new AlignmentAction(this, PositionConstants.BOTTOM);
 	registry.registerAction(action);
-	markAsSelectionDependentAction(action.getId(), true);
+	getSelectionActions().add(action.getId());
 
 	action = new AlignmentAction(this, PositionConstants.CENTER);
 	registry.registerAction(action);
-	markAsSelectionDependentAction(action.getId(), true);
+	getSelectionActions().add(action.getId());
 
 	action = new AlignmentAction(this, PositionConstants.MIDDLE);
 	registry.registerAction(action);
-	markAsSelectionDependentAction(action.getId(), true);
+	getSelectionActions().add(action.getId());
 }
 
 public boolean isDirty() {
