@@ -115,7 +115,7 @@ private Dimension calculateChildrenSize(List children, int wHint, int hHint,
  * @see #getMinimumSize(IFigure, int, int)
  * @since 2.1
  */
-public Dimension calculateMinimumSize(IFigure container, int wHint, int hHint) {
+protected Dimension calculateMinimumSize(IFigure container, int wHint, int hHint) {
 	Insets insets = container.getInsets();
 	if (isHorizontal()) {
 		wHint = -1;
