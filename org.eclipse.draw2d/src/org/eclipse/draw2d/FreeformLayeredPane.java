@@ -14,7 +14,6 @@ public class FreeformLayeredPane
 	extends LayeredPane
 	implements FreeformFigure
 {
-
 private FreeformHelper helper = new FreeformHelper(this);
 
 public FreeformLayeredPane(){
