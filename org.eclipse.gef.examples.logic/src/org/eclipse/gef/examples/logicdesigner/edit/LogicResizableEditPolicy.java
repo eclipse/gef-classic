@@ -48,7 +48,16 @@ protected IFigure createFigure(GraphicalEditPart part, IFigure parent) {
 	if (parent != null)
 		parent.add(child);
 
-	child.setBounds(part.getFigure().getBounds().getCopy());
+	Rectangle childBounds = part.getFigure().getBounds().getCopy();
+	
+	IFigure walker = part.getFigure().getParent();
+	
+	while (walker != ((GraphicalEditPart)part.getParent()).getFigure()) {
+		walker.translateToParent(childBounds);
+		walker = walker.getParent();
+	}
+	
+	child.setBounds(childBounds);
 	
 	Iterator i = part.getChildren().iterator();
 	
