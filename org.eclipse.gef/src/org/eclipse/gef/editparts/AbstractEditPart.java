@@ -845,7 +845,7 @@ public void removeEditPolicy(Object key) {
  *   <LI>{@link #unregister()} this EditPart
  * </UL>
  * <P>
- * In addition, <code>removeNotify()</code> is called recusively on all children
+ * In addition, <code>removeNotify()</code> is called recursively on all children
  * EditParts. Subclasses should <em>extend</em> this method to perform any additional
  * cleanup.
  * @see org.eclipse.gef.EditPart#removeNotify()
