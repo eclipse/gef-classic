@@ -181,7 +181,7 @@ private void createHoverHelp(final Control control) {
 				skipNextEvent = false;
 				return;
 			}
-			if (drawerLabel.isTextTruncated()) {
+			if (drawerLabel.isTextTruncated() && !EditPartTipHelper.isCurrent(tipHelper)) {
 				tipLabel.setText(drawerLabel.getText());
 				tipLabel.setIcon(drawerLabel.getIcon());
 				tipLabel.setFont(drawerLabel.getFont());

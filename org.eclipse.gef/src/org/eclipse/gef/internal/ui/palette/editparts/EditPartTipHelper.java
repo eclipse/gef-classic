@@ -123,6 +123,7 @@ protected void hookShellListeners() {
 				Display.getCurrent().asyncExec(new Runnable() {
 					public void run() {
 						Shell active = Display.getCurrent().getActiveShell();
+						System.out.println(active);
 						if (getShell() == active || control.getShell() == active)
 							return;
 						if (isShowing())
@@ -157,6 +158,10 @@ protected void hookShellListeners() {
 			}
 		});
 	}
+}
+
+public static boolean isCurrent(EditPartTipHelper helper) {
+	return currentHelper != null && helper == currentHelper;
 }
 
 }
