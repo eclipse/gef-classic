@@ -323,7 +323,7 @@ extends Figure {
 
 private int offset = 0;
 private boolean schedulePaint = true;
-
+private static final int DELAY = 110; //animation delay in millisecond
 /**
  * @see org.eclipse.draw2d.Figure#paintFigure(org.eclipse.draw2d.Graphics)
  */
@@ -361,7 +361,7 @@ protected void paintFigure(Graphics graphics) {
 	
 	if (schedulePaint) {
 		Display display = Display.getCurrent();
-		Display.getCurrent().timerExec(150, new Runnable() {
+		Display.getCurrent().timerExec(DELAY, new Runnable() {
 			public void run() {
 				offset++;
 				if (offset > 5)
