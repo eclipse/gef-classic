@@ -10,7 +10,7 @@
 package org.eclipse.gef.examples.text.edit;
 
 import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2d.text.CaretInfo;
 
 import org.eclipse.gef.GraphicalEditPart;
 
@@ -33,7 +33,7 @@ boolean acceptsCaret();
  * @param offset the location of the caret within the receiver
  * @return the absolute caret location
  */
-Rectangle getCaretPlacement(int offset, boolean isAfter);
+CaretInfo getCaretPlacement(int offset, boolean isAfter);
 
 /**
  * Returns the length in characters of this part

@@ -20,17 +20,17 @@ import org.eclipse.swt.graphics.Image;
 public class Images {
 
 public static final Image IMPORTS = createImage("imports.gif");
-
 public static final Image IMPORT = createImage("importstatement.gif");
+public static final Image PUBLIC = createImage("public.gif");
+public static final Image PRIVATE = createImage("private.gif");
+public static final Image PROTECTED = createImage("protected.gif");
 
 private static Image createImage(String name) {
 	InputStream stream = Images.class.getResourceAsStream(name);
 	Image image = new Image(null, stream);
 	try {
 		stream.close();
-	} catch (IOException exc) {
-		
-	}
+	} catch (IOException exc) { }
 	return image;
 }
 

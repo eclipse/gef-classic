@@ -12,28 +12,38 @@
 package org.eclipse.gef.examples.text.figures;
 
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Image;
 
+import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.text.FlowPage;
 
-public class CommentPage 
-	extends FlowPage 
+public class CommentPage
+	extends FlowPage
 {
-	
-private static final Color COLOR = new Color(null, 255, 255, 170);
-private static final Insets INSETS = new Insets(7, 11, 7, 11);
+
+private static final Image BEGIN = new Image(null, CommentPage.class.getResourceAsStream("javadoc_begin.gif"));
+private static final Image END = new Image(null, CommentPage.class.getResourceAsStream("javadoc_end.gif"));
+private static final Insets INSETS = new Insets(9, 15, 12, 10);
+private static final Color COMMENT_FG = ColorConstants.darkBlue;
 
 public CommentPage() {
-	setBackgroundColor(COLOR);
+	setForegroundColor(COMMENT_FG);
 }
-	
+
 public Insets getInsets() {
 	return INSETS;
 }
 
 protected void paintFigure(Graphics g) {
-	g.fillRoundRectangle(getBounds().getCropped(new Insets(5)), 12, 12);
+	g.drawImage(BEGIN, bounds.x, bounds.y);
+	g.drawImage(END, bounds.x + 6, bounds.bottom() - 10);
+	g.setForegroundColor(ColorConstants.darkBlue);
+	g.drawLine(bounds.x + 9, bounds.y + 11, bounds.x + 9, bounds.bottom() - 11);
+	g.drawLine(bounds.x + 25, bounds.y + 5, bounds.right() - 5, bounds.y + 5);
+	g.drawLine(bounds.x + 30, bounds.bottom() - 5, bounds.right() - 5, bounds.bottom() - 5);
+	g.drawLine(bounds.right() - 5, bounds.y + 5, bounds.right() - 5, bounds.bottom() - 5);
 }
 
 }

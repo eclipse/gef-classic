@@ -46,7 +46,7 @@ public TextLocation where;
  * The absolute x location of the caret.
  */
 public int x;
-public int y;
+public int baseline;
 
 public static final int COLUMN = 1;
 public static final int ROW = 2;
