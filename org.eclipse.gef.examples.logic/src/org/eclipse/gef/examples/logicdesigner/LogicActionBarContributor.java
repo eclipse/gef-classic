@@ -6,7 +6,6 @@ package org.eclipse.gef.examples.logicdesigner;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.gef.internal.SharedImages;
 import org.eclipse.gef.ui.actions.AlignmentAction;
 import org.eclipse.gef.ui.actions.ZoomAction;
 import org.eclipse.jface.resource.ImageDescriptor;
