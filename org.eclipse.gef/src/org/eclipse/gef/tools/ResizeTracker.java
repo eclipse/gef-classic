@@ -236,9 +236,10 @@ protected boolean handleDragInProgress() {
  * {@link #getTargetEditPart() target} to show target feedback.
  */
 protected void showTargetFeedback() {
-	if (getTargetEditPart() != null)
+	if (getTargetEditPart() != null) {
 		setFlag(FLAG_TARGET_FEEDBACK, true);
-	getTargetEditPart().showTargetFeedback(getSourceRequest());
+		getTargetEditPart().showTargetFeedback(getSourceRequest());
+	}
 }
 
 /**
