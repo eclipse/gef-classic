@@ -161,7 +161,8 @@ protected boolean handleButtonUp(int button) {
 }
 
 protected boolean handleFocusLost() {
-	if (isInState(STATE_ACCESSIBLE_DRAG | STATE_ACCESSIBLE_DRAG_IN_PROGRESS)) {
+	if (isInState(STATE_ACCESSIBLE_DRAG | STATE_ACCESSIBLE_DRAG_IN_PROGRESS
+					| STATE_DRAG | STATE_DRAG_IN_PROGRESS)) {
 		if (getDragTracker() != null)
 			setDragTracker(null);
 		setState(STATE_INITIAL);
