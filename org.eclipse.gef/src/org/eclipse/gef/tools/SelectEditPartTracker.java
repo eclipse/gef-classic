@@ -101,7 +101,8 @@ protected void performConditionalSelection() {
 	if (getSourceEditPart().getSelected() == EditPart.SELECTED_NONE)
 		performSelection();
 	else
-		setFlag(FLAG_ENABLE_DIRECT_EDIT, true);
+		if (getCurrentInput().getModifiers() == 0)
+			setFlag(FLAG_ENABLE_DIRECT_EDIT, true);
 }
 
 protected void performDirectEdit() {
