@@ -124,8 +124,6 @@ protected boolean isCreationValid() {
 }
 
 protected boolean isDelete() {
-	if (getState() != STATE_DRAG_IN_PROGRESS)
-		return false;
  	int pos, max, min;
 	if (!source.isHorizontal()) {
 		pos = getLocation().x;
