@@ -205,9 +205,6 @@ private class SelectorFigure
 		bounds.width--;
 		g.drawImage(image, iBounds, bounds);
 		
-		g.setForegroundColor(getSource().getBackgroundColor());
-		g.drawRectangle(bounds);
-		bounds.crop(new Insets(1));
 		g.setForegroundColor(ColorConstants.menuBackgroundSelected);
 		g.drawRectangle(bounds);
 	}

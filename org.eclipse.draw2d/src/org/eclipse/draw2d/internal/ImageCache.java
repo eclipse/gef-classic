@@ -75,20 +75,36 @@ public static Image checkinCheckout(Image i, Dimension d, Object o) {
  * @return An image at least as big as the desired size
  */
 public static Image checkout(Dimension d, Object o) {
+	d = d.getCopy();
+	int powerOf2 = 128;
+	while (powerOf2 < d.height)
+		powerOf2 *= 2;
+	d.height = powerOf2;
+	powerOf2 = 128;
+	while (powerOf2 < d.width)
+		powerOf2 *= 2;
+	d.width = powerOf2;
 	Image result = null;
 	for (int i = 0; i < checkedIn.size(); i++) {
 		ImageInfo info = (ImageInfo)checkedIn.get(i);
-		if ((result = info.checkout(d, o)) != null) {
-			checkedIn.remove(info);
-			checkedOut.add(info);
-			return result;
-		} else if (info.getStatistic() == ImageInfo.BAD_STATISTIC) {
+		if (result == null) {
+			if ((result = info.checkout(d, o)) != null) {
+				checkedIn.remove(info);
+				checkedOut.add(info);
+				i--;
+				continue;
+			}
+		}
+		if (info.getStatistic() == ImageInfo.BAD_STATISTIC) {
 			checkedIn.remove(info);
 			info.dispose();
 			numberOfImagesDisposed++;
 			i--;
 		}
 	}
+	
+	if (result != null)
+		return result;
 	
 	// Create a new image that is 15% larger than requested in each dimension 
 	Dimension newD = d.getExpanded((int)(d.width * 0.15), (int)(d.height * 0.15));
