@@ -22,25 +22,17 @@ public class NonResizableEditPolicy
 {
 
 private IFigure focusRect;
-
 private IFigure feedback;
-private boolean useRealtimeFeedback = false;
-private Rectangle originalLocation;
 
 protected IFigure createDragSourceFeedbackFigure() {
-	if (useRealtimeFeedback) {
-		// Use the actual figure for feedback
-		return ((GraphicalEditPart) getHost()).getFigure();
-	} else {
-		// Use a ghost rectangle for feedback
-		RectangleFigure r = new RectangleFigure();
-		FigureUtilities.makeGhostShape(r);
-		r.setLineStyle(Graphics.LINE_DASHDOT);
-		r.setForegroundColor(ColorConstants.white);
-		r.setBounds(getBounds());
-		addFeedback(r);
-		return r;
-	}
+	// Use a ghost rectangle for feedback
+	RectangleFigure r = new RectangleFigure();
+	FigureUtilities.makeGhostShape(r);
+	r.setLineStyle(Graphics.LINE_DASHDOT);
+	r.setForegroundColor(ColorConstants.white);
+	r.setBounds(getBounds());
+	addFeedback(r);
+	return r;
 }
 
 protected List createSelectionHandles() {
@@ -66,13 +58,9 @@ public void deactivate() {
  */
 protected void eraseChangeBoundsFeedback(ChangeBoundsRequest request) {
 	if (feedback != null) {
-		if (useRealtimeFeedback) {
-			feedback.setBounds(originalLocation);
-			feedback.revalidate();
-		} else removeFeedback(feedback);
+		removeFeedback(feedback);
 	}
 	feedback = null;
-	originalLocation = null;
 }
 
 /**
@@ -111,8 +99,8 @@ public Command getCommand(Request request) {
 protected IFigure getDragSourceFeedbackFigure() {
 	if (feedback == null) {
 		IFigure fig = ((GraphicalEditPart) getHost()).getFigure();
-		originalLocation = new Rectangle(fig.getBounds());
-		fig.translateToAbsolute(originalLocation);
+//		originalLocation = new Rectangle(fig.getBounds());
+//		fig.translateToAbsolute(originalLocation);
 		feedback = createDragSourceFeedbackFigure();
 	}
 	return feedback;
@@ -153,15 +141,16 @@ protected void hideFocus() {
  */
 protected void showChangeBoundsFeedback(ChangeBoundsRequest request) {
 	IFigure p = getDragSourceFeedbackFigure();
-	Rectangle r = originalLocation.getTranslated(request.getMoveDelta());
+	
+	Rectangle r = getHostFigure().getBounds().getCopy();
+	getHostFigure().translateToAbsolute(r);
+	r.translate(request.getMoveDelta());
 	Dimension resize = request.getSizeDelta();
 	r.width += resize.width;
 	r.height += resize.height;
 
 	p.translateToRelative(r);
 	p.setBounds(r);
-	if (useRealtimeFeedback) 
-		p.validate();
 }
 
 protected void showFocus() {
