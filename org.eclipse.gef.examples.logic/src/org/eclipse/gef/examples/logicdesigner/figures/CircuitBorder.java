@@ -67,10 +67,6 @@ public Insets getInsets(IFigure figure) {
 	return insets;
 }
 
-public boolean isOpaque() {
-	return false;
-}
- 
 public void paint(IFigure figure, Graphics g, Insets in) {
 	Rectangle r = figure.getBounds().getCropped(in);
 	

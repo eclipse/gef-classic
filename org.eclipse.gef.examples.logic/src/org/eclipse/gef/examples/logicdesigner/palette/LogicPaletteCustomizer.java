@@ -1,12 +1,12 @@
 package org.eclipse.gef.examples.logicdesigner.palette;
 
-import org.eclipse.gef.palette.PaletteCategory;
+import org.eclipse.gef.palette.PaletteDrawer;
 import org.eclipse.gef.palette.PaletteContainer;
 import org.eclipse.gef.palette.PaletteGroup;
 import org.eclipse.gef.palette.PaletteContainer;
 import org.eclipse.gef.palette.PaletteEntry;
 import org.eclipse.gef.palette.PaletteSeparator;
-import org.eclipse.gef.palette.PaletteToolEntry;
+import org.eclipse.gef.palette.ToolEntry;
 import org.eclipse.gef.ui.palette.PaletteCustomizer;
 import org.eclipse.gef.ui.palette.PaletteMessages;
 import org.eclipse.gef.ui.palette.customize.EntryPage;
@@ -32,7 +32,7 @@ public class LogicPaletteCustomizer
  * @see org.eclipse.gef.ui.palette.PaletteCustomizer#canDelete(PaletteEntry)
  */
 public boolean canDelete(PaletteEntry entry) {
-	if( entry instanceof PaletteToolEntry ){
+	if( entry instanceof ToolEntry ){
 		return false;
 	}
 	
@@ -45,7 +45,7 @@ public boolean canDelete(PaletteEntry entry) {
  * @see org.eclipse.gef.ui.palette.PaletteCustomizer#canMoveDown(PaletteEntry)
  */
 public boolean canMoveDown(PaletteEntry entry) {
-	if( entry instanceof PaletteToolEntry ){
+	if( entry instanceof ToolEntry ){
 		return false;
 	} else if( entry instanceof PaletteGroup ){
 		if( entry.getLabel().equals("Control Group") ){
@@ -62,7 +62,7 @@ public boolean canMoveDown(PaletteEntry entry) {
  * @see org.eclipse.gef.ui.palette.PaletteCustomizer#canMoveUp(PaletteEntry)
  */
 public boolean canMoveUp(PaletteEntry entry) {
-	if( entry instanceof PaletteToolEntry ){
+	if( entry instanceof ToolEntry ){
 		return false;
 	} else if( entry instanceof PaletteGroup ){
 		if( entry.getLabel().equals("Control Group") ){
@@ -83,10 +83,10 @@ public boolean canMoveUp(PaletteEntry entry) {
  * @see org.eclipse.gef.ui.palette.PaletteCustomizer#getPropertiesPage(PaletteEntry)
  */
 public EntryPage getPropertiesPage(PaletteEntry entry) {
-	if( entry instanceof PaletteSeparator || entry instanceof PaletteToolEntry || 
+	if( entry instanceof PaletteSeparator || entry instanceof ToolEntry || 
 	    entry instanceof PaletteGroup ){
 		return new ReadOnlyEntryPage();
-	} else if (entry instanceof PaletteCategory) {
+	} else if (entry instanceof PaletteDrawer) {
 		return new CategoryEntryPage();
 	} else {
 		return new LogicEntryPage();
@@ -137,14 +137,14 @@ private class CategoryEntryPage extends LogicEntryPage {
 		});
 	}
 	
-	private PaletteCategory getCategory(){
-		return (PaletteCategory)entry;
+	private PaletteDrawer getCategory(){
+		return (PaletteDrawer)entry;
 	}
 	
 	private void handleExpandSelected(boolean selection) {
-		int status = selection ? PaletteCategory.INITIAL_STATUS_EXPANDED
-		                       : PaletteCategory.INITIAL_STATUS_COLLAPSED;
-		getCategory().setInitialStatus(status);
+		int status = selection ? PaletteDrawer.INITIAL_STATE_OPEN
+		                       : PaletteDrawer.INITIAL_STATE_CLOSED;
+		getCategory().setInitialState(status);
 		pinOption.setEnabled(selection);
 		if (!selection) {
 			pinOption.setSelection(false);
@@ -152,9 +152,9 @@ private class CategoryEntryPage extends LogicEntryPage {
 	}
 	
 	private void handlePinSelected(boolean selection) {
-		int status = selection ? PaletteCategory.INITIAL_STATUS_PINNED_OPEN
-		                       : PaletteCategory.INITIAL_STATUS_EXPANDED;
-		getCategory().setInitialStatus(status);
+		int status = selection ? PaletteDrawer.INITIAL_STATUS_PINNED_OPEN
+		                       : PaletteDrawer.INITIAL_STATE_OPEN;
+		getCategory().setInitialState(status);
 	}
 }
 

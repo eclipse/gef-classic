@@ -8,8 +8,8 @@ package org.eclipse.gef.examples.logicdesigner.model;
 
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.gef.examples.logicdesigner.model.*;
-import org.eclipse.gef.requests.CreateRequest;
+
+import org.eclipse.gef.requests.CreationFactory;
 
 public class LogicDiagramFactory {
 
@@ -135,8 +135,8 @@ public static Object createLargeModel() {
 	return root;
 }
 
-public static CreateRequest.Factory getFullAdderFactory() {
-	return new CreateRequest.Factory(){
+public static CreationFactory getFullAdderFactory() {
+	return new CreationFactory(){
 		public Object getNewObject(){
 			return createFullAdder();
 		}
@@ -146,8 +146,8 @@ public static CreateRequest.Factory getFullAdderFactory() {
 	};
 }
 
-public static CreateRequest.Factory getHalfAdderFactory() {
-	return new CreateRequest.Factory(){
+public static CreationFactory getHalfAdderFactory() {
+	return new CreationFactory(){
 		public Object getNewObject(){
 			return createHalfAdder();
 		}

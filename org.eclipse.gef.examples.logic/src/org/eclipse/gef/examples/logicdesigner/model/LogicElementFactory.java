@@ -3,11 +3,11 @@ package org.eclipse.gef.examples.logicdesigner.model;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 
+import org.eclipse.gef.requests.CreationFactory;
+
 import org.eclipse.gef.examples.logicdesigner.TemplateConstants;
 
-import org.eclipse.gef.requests.CreateRequest;
-
-public class LogicElementFactory implements CreateRequest.Factory {
+public class LogicElementFactory implements CreationFactory {
 	
 	private String template;
 	

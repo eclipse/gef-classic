@@ -57,7 +57,7 @@ public void buildContextMenu(IMenuManager menu) {
 	menu.add(new Separator(GEFActionConstants.GROUP_REST));
 
 	Object selectedPart = getPaletteViewer().getSelectedEditParts().get(0);
-	if (selectedPart instanceof CategoryEditPart) {
+	if (selectedPart instanceof DrawerEditPart) {
 		menu.appendToGroup(GEFActionConstants.MB_ADDITIONS, 
 							new PinCategoryAction((DrawerEditPart)selectedPart));
 	}

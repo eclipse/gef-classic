@@ -1,6 +1,6 @@
 package org.eclipse.gef.examples.logicdesigner.actions;
 
-import org.eclipse.gef.requests.CreateRequest.Factory;
+import org.eclipse.gef.requests.CreationFactory;
 
 import org.eclipse.gef.examples.logicdesigner.model.LogicElementFactory;
 
@@ -22,7 +22,7 @@ public LogicPasteTemplateAction(IEditorPart editor) {
 /**
  * @see org.eclipse.gef.ui.actions.PasteTemplateAction#getFactory(java.lang.Object)
  */
-protected Factory getFactory(Object template) {
+protected CreationFactory getFactory(Object template) {
 	return new LogicElementFactory((String)template);
 }
 

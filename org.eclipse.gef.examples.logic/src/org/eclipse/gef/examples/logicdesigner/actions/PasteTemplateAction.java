@@ -7,6 +7,7 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.requests.CreateRequest;
+import org.eclipse.gef.requests.CreationFactory;
 import org.eclipse.gef.ui.actions.Clipboard;
 import org.eclipse.gef.ui.actions.GEFActionConstants;
 import org.eclipse.gef.ui.actions.SelectionAction;
@@ -70,7 +71,7 @@ protected Object getClipboardContents() {
  * @param template the template Object
  * @return a Factory
  */
-protected abstract CreateRequest.Factory getFactory(Object template);
+protected abstract CreationFactory getFactory(Object template);
 
 /**
  * @see org.eclipse.gef.ui.actions.EditorPartAction#init()
