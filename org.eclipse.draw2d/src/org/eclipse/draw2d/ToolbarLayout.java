@@ -79,17 +79,19 @@ public ToolbarLayout(boolean isHorizontal){
 
 
 /**
- * Calculates and returns the minimum size of the container 
- * given as input. In the case of the vertically oriented
- * ToolbarLayout, this is the width of the largest minimum 
- * width of figure's children and the height of the sum of 
- * the minimum heights of figure's children. Values are 
- * transposed to calculate minimum size of a horizontally
- * oriented ToolbarLayout.
+ * Calculates the minimum size of the container based on the given hints. If this is a
+ * vertically-oriented Toolbar Layout, then only the widthHint is respected (which means
+ * that the children can be as tall as they desire).   In this case, the minimum width
+ * is that of the widest child, and the minimum height is the sum of the minimum
+ * heights of all children, plus the spacing between them. The border and insets of the
+ * container figure are also accounted for.
  * 
- * @param figure  Figure whose preferred size is required.
- * @return  The minimum size of the figure input.
- * @since 2.0
+ * @param container The IFigure whose minimum size has to be calculated
+ * @param wHint The width hint (the desired width of the container)
+ * @param hHint The height hint (the desired height of the container)
+ * @return The minimum size of the container
+ * @see #getMinimumSize(IFigure, int, int)
+ * @since 2.1
  */
 public Dimension calculateMinimumSize(IFigure container, int wHint, int hHint) {
 	Insets insets = container.getInsets();
@@ -121,20 +123,19 @@ public Dimension calculateMinimumSize(IFigure container, int wHint, int hHint) {
 }
 
 /** 
- * Calculates the preferred size of the container based on the given hints.
- * If this is a vertically-oriented Toolbar Layout, then only the widthHint is
- * respected (which means that the children can be as tall as they desire).  
- * In this case, the preferred width is that of the widest child, and the
- * preferred height is the sum of the preferred heights of all children, plus
- * the spacing between them.  The border and insets of the container figure
- * are also accounted for.
+ * Calculates the preferred size of the container based on the given hints. If this is a
+ * vertically-oriented Toolbar Layout, then only the widthHint is respected (which means
+ * that the children can be as tall as they desire).   In this case, the preferred width
+ * is that of the widest child, and the preferred height is the sum of the preferred
+ * heights of all children, plus the spacing between them.  The border and insets of the
+ * container figure are also accounted for.
  * 
- * @param	container	The IFigure whose preferred size has to be calculated
- * @param	wHint		The width hint (the desired width of the container)
- * @param	hHint		The height hint (the desired height of the container)
- * @return		The preferred size of the container
- * @see	#getPreferredSize(IFigure, int, int)
- * @since	2.0
+ * @param container The IFigure whose preferred size has to be calculated
+ * @param wHint The width hint (the desired width of the container)
+ * @param hHint The height hint (the desired height of the container)
+ * @return The preferred size of the container
+ * @see #getPreferredSize(IFigure, int, int)
+ * @since 2.0
  */
 protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHint) {
 	Insets insets = container.getInsets();
