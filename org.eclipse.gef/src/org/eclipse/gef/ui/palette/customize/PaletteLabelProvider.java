@@ -38,7 +38,6 @@ class PaletteLabelProvider
 	implements ILabelProvider, IColorProvider 
 {
 
-private TreeViewer treeviewer;
 private Map imageCache = new HashMap();
 
 /**
@@ -47,7 +46,6 @@ private Map imageCache = new HashMap();
  * @param viewer	The TreeViewer for which this instance is a LabelProvider
  */
 public PaletteLabelProvider(TreeViewer viewer) {
-	treeviewer = viewer;
 }
 
 /**
