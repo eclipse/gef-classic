@@ -25,7 +25,11 @@ public class MoveHandle
 	extends AbstractHandle
 {
 
-protected static int INNER_PAD = 2;
+/**
+ * The hit-threshold for {@link #containsPoint(int, int)}.
+ * @deprecated subclasses should not reference this field.
+ */
+protected static final int INNER_PAD = 2;
 
 /**
  * Creates a MoveHandle for the given <code>GraphicalEditPart</code>
@@ -49,6 +53,10 @@ public MoveHandle(GraphicalEditPart owner, Locator loc) {
 	initialize();
 }
 
+/**
+ * Overridden to create a {@link DragEditPartsTracker}.
+ * @see org.eclipse.gef.handles.AbstractHandle#createDragTracker()
+ */
 protected DragTracker createDragTracker() {
 	DragEditPartsTracker tracker = new DragEditPartsTracker(getOwner());
 	tracker.setDefaultCursor(getCursor());
@@ -56,26 +64,28 @@ protected DragTracker createDragTracker() {
 }
 
 /**
- * Returns true if the point (x,y) is contained within this handle.
- *
+ * Returns <code>true</code> if the point (x,y) is contained within this handle.
  * @param x The x coordinate.
  * @param y The y coordinate.
- *
- * @return True if the point (x,y) is contained within this handle.
+ * @return <code>true</code> if the point (x,y) is contained within this handle.
  */
 public boolean containsPoint(int x, int y) {
-	if (!super.containsPoint(x,y))
+	if (!super.containsPoint(x, y))
 		return false;
 	return !Rectangle.SINGLETON.
 		setBounds(getBounds()).
 		shrink(INNER_PAD, INNER_PAD).
-		contains(x,y);
+		contains(x, y);
 }
 
-public Point getAccessibleLocation(){
+/**
+ * Returns a point along the right edge of the handle.
+ * @see org.eclipse.gef.Handle#getAccessibleLocation()
+ */
+public Point getAccessibleLocation() {
 	Point p = getBounds().
 		getTopRight().
-		translate(-1, getBounds().height/4);
+		translate(-1, getBounds().height / 4);
 	translateToAbsolute(p);
 	return p;
 }

@@ -19,8 +19,9 @@ import org.eclipse.gef.GraphicalEditPart;
 
 /**
  * A {@link Border} with a triangle in each corner.
+ * @deprecated this class is no longer used
  */
-final public class CornerTriangleBorder
+public final class CornerTriangleBorder
 	extends AbstractBorder
 {
 
@@ -37,18 +38,25 @@ public CornerTriangleBorder(boolean isPrimary) {
 	this.isPrimary = isPrimary;
 }
 
+/**
+ * Returns <code>true</code>.
+ * @see org.eclipse.draw2d.Border#isOpaque()
+ */
 public boolean isOpaque() {
 	return true;
 }
 
+/**
+ * @see org.eclipse.draw2d.Border#getInsets(org.eclipse.draw2d.IFigure)
+ */
 public Insets getInsets(IFigure figure) {
 	return new Insets(1);
 }
 
 /**
- * Paints the border.  If this is a border for the primary 
- * selection, it's painted black.  Otherwise, it's painted white.
- *
+ * Paints the border.  If this is a border for the primary selection, it's painted black. 
+ * Otherwise, it's painted white.
+ * 
  * @param figure   The <code>IFigure</code> this border will be painted on
  * @param graphics The <code>Graphics</code>.
  * @param insets   The <code>Insets</code>.
@@ -60,7 +68,7 @@ public void paint(IFigure figure, Graphics graphics, Insets insets) {
 	tempRect.setBounds(getPaintRectangle(figure, insets));
 	rect.width--;
 	rect.height--;
-	rect.shrink(width/2,width/2);
+	rect.shrink(width / 2, width / 2);
 	graphics.setLineWidth(width);
 	
 	//Draw the primary handles one pixel larger than the secondary
@@ -71,8 +79,8 @@ public void paint(IFigure figure, Graphics graphics, Insets insets) {
 	//Top left corner
 	PointList pList = new PointList();
 	pList.addPoint(rect.getTopLeft());
-	pList.addPoint(new Point(rect.x, rect.y+edgeSize));
-	pList.addPoint(new Point(rect.x+edgeSize, rect.y));
+	pList.addPoint(new Point(rect.x, rect.y + edgeSize));
+	pList.addPoint(new Point(rect.x + edgeSize, rect.y));
 	
 	graphics.setBackgroundColor(getFillColor());
 	graphics.fillPolygon(pList);
@@ -82,8 +90,8 @@ public void paint(IFigure figure, Graphics graphics, Insets insets) {
 	//Bottom left corner
 	pList = new PointList();
 	pList.addPoint(rect.getBottomLeft());
-	pList.addPoint(new Point((rect.x+edgeSize),(rect.y+rect.height)));
-	pList.addPoint(new Point(rect.x,(rect.y+rect.height-edgeSize)));
+	pList.addPoint(new Point((rect.x + edgeSize), (rect.y + rect.height)));
+	pList.addPoint(new Point(rect.x, (rect.y + rect.height - edgeSize)));
 	
 	graphics.setBackgroundColor(getFillColor());
 	graphics.fillPolygon(pList);
@@ -93,8 +101,8 @@ public void paint(IFigure figure, Graphics graphics, Insets insets) {
 	//Top right corner
 	pList = new PointList();
 	pList.addPoint(rect.getTopRight());
-	pList.addPoint(new Point(((rect.x+rect.width)-edgeSize),rect.y));
-	pList.addPoint(new Point((rect.x+rect.width),(rect.y+edgeSize)));
+	pList.addPoint(new Point(((rect.x + rect.width) - edgeSize), rect.y));
+	pList.addPoint(new Point((rect.x + rect.width), (rect.y + edgeSize)));
 	
 	graphics.setBackgroundColor(getFillColor());
 	graphics.fillPolygon(pList);
@@ -104,8 +112,8 @@ public void paint(IFigure figure, Graphics graphics, Insets insets) {
 	//Bottom right corner
 	pList = new PointList();
 	pList.addPoint(rect.getBottomRight());
-	pList.addPoint(new Point(((rect.x+rect.width)-edgeSize),(rect.y+rect.height)));
-	pList.addPoint(new Point((rect.x+rect.width),(rect.y+rect.height-edgeSize)));
+	pList.addPoint(new Point(((rect.x + rect.width) - edgeSize), (rect.y + rect.height)));
+	pList.addPoint(new Point((rect.x + rect.width), (rect.y + rect.height - edgeSize)));
 	
 	graphics.setBackgroundColor(getFillColor());
 	graphics.fillPolygon(pList);
@@ -120,9 +128,9 @@ public void paint(IFigure figure, Graphics graphics, Insets insets) {
  * @return The outline color.
  */
 protected Color getBorderColor() {
-	return (isPrimary()) ? 
-		ColorConstants.white : 
-		ColorConstants.black;
+	return (isPrimary())
+		? ColorConstants.white
+		: ColorConstants.black;
 }
 
 /**
@@ -132,9 +140,9 @@ protected Color getBorderColor() {
  * @return The fill color.
  */
 protected Color getFillColor() {
-	return (isPrimary()) ? 
-		ColorConstants.black : 
-		ColorConstants.white;
+	return (isPrimary())
+		? ColorConstants.black
+		: ColorConstants.white;
 }
 
 /**

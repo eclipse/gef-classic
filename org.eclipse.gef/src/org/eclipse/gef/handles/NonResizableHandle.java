@@ -19,11 +19,15 @@ import org.eclipse.gef.tools.DragEditPartsTracker;
 
 /**
  * A MoveHandle for a non-resizable EditPart.
+ *@deprecated this handle type is no longer used
  */
 public class NonResizableHandle
 	extends MoveHandle
 {
-	
+
+/**
+ * The border
+ */
 protected CornerTriangleBorder border;
 
 /**

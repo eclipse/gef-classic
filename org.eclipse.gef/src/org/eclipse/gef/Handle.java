@@ -31,9 +31,9 @@ public interface Handle {
 DragTracker getDragTracker();
 
 /**
- * Returns an optional accessibility Point.  This Point is relative to the Control's
- * client area
- * @return <code>null</code> or  */
+ * Returns an optional accessibility Point.  This returned point is in absolute
+ * coordinates.
+ * @return <code>null</code> or the absolute location */
 Point getAccessibleLocation();
 
 }

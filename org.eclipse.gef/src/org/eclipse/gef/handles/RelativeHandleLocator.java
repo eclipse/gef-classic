@@ -13,15 +13,33 @@ package org.eclipse.gef.handles;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Rectangle;
 
+/**
+ * Similar to {@link org.eclipse.draw2d.RelativeLocator}, but adds support for the
+ * {@link org.eclipse.gef.handles.HandleBounds} interface.  If the reference figure
+ * implements <code>HandleBounds</code>, then {@link HandleBounds#getHandleBounds()} will
+ * be used as the reference box.  If not, the behavior is the same as that of the
+ * superclass.
+ * @author hudsonr
+ */
 public class RelativeHandleLocator
 	extends org.eclipse.draw2d.RelativeLocator
 {
 
-public RelativeHandleLocator(IFigure reference, int location){
+/**
+ * Constructs a new locator using the given reference figure and location.
+ * @param reference the reference figure
+ * @param location one of NORTH, NORTH_EAST, etc.
+ */
+public RelativeHandleLocator(IFigure reference, int location) {
 	super(reference, location);
 }
 
-protected Rectangle getReferenceBox(){
+/**
+ * Overridden to check for reference figures implementing the <code>HandleBounds</code>
+ * interface.
+ * @see org.eclipse.draw2d.RelativeLocator#getReferenceBox()
+ */
+protected Rectangle getReferenceBox() {
 	IFigure f = getReferenceFigure();
 	if (f instanceof HandleBounds)
 		return ((HandleBounds)f).getHandleBounds();

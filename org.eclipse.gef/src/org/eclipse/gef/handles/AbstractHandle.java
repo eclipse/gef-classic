@@ -18,26 +18,31 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.gef.*;
 
 /**
- * Base class for handles.
+ * Base implementation for handles.  This class keeps track of the typical data needed by
+ * a handle, such as a drag tracker, a locator to place the handle, a cursor, and the
+ * editpart to which the handle belongs. AbstractHandle will add an {@link
+ * AncestorListener} to the owner's figure, and will automatically revalidate this handle
+ * whenever the owner's figure moves.
  */
-abstract public class AbstractHandle
+public abstract class AbstractHandle
 	extends Figure
 	implements Handle, AncestorListener
 {
 
 private GraphicalEditPart editpart;
 private DragTracker dragTracker;
-private Cursor cursor;
 private Locator locator;
 
-public AbstractHandle(){}
+/**
+ * Null constructor
+ */
+public AbstractHandle() { }
 
 /**
- * Creates a handle for the given <code>GraphicalEditPart</code> using
- * the given <code>Locator</code>.
- *
- * @param owner The <code>GraphicalEditPart</code> this handle is attached to.
- * @param loc   The <code>Locator</code> that places the handle.
+ * Creates a handle for the given <code>GraphicalEditPart</code> using the given
+ * <code>Locator</code>.
+ * @param owner The editpart which provided this handle
+ * @param loc The locator to position the handle
  */
 public AbstractHandle(GraphicalEditPart owner, Locator loc) {
 	setOwner(owner);
@@ -45,12 +50,12 @@ public AbstractHandle(GraphicalEditPart owner, Locator loc) {
 }
 
 /**
- * Creates a handle for the given <code>GraphicalEditPart</code> using
- * the given <code>Locator</code> and <code>Cursor</code>.
- *
- * @param owner The <code>GraphicalEditPart</code> this handle is attached to.
- * @param loc   The <code>Locator</code> that places the handle.
- * @param c     The <code>Cursor</code> that will appear over the handle.
+ * Creates a handle for the given <code>GraphicalEditPart</code> using the given
+ * <code>Locator</code> and <code>Cursor</code>.
+ * 
+ * @param owner The editpart which provided this handle
+ * @param loc The locator to position the handle
+ * @param c The cursor to display when the mouse is over the handle
  */
 public AbstractHandle(GraphicalEditPart owner, Locator loc, Cursor c) {
 	this(owner, loc);
@@ -67,31 +72,53 @@ public void addNotify() {
 	getOwnerFigure().addAncestorListener(this);
 }
 
+/**
+ * @see org.eclipse.draw2d.AncestorListener#ancestorMoved(org.eclipse.draw2d.IFigure)
+ */
 public void ancestorMoved(IFigure ancestor) {
 	revalidate();
 }
 
-public void ancestorAdded(IFigure ancestor) {}
+/**
+ * @see org.eclipse.draw2d.AncestorListener#ancestorAdded(org.eclipse.draw2d.IFigure)
+ */
+public void ancestorAdded(IFigure ancestor) { }
 
-public void ancestorRemoved(IFigure ancestor) {}
+/**
+ * @see org.eclipse.draw2d.AncestorListener#ancestorRemoved(org.eclipse.draw2d.IFigure)
+ */
+public void ancestorRemoved(IFigure ancestor) { }
 
-abstract protected DragTracker createDragTracker();
+/**
+ * Creates a new drag tracker to be returned by getDragTracker().
+ * @return a new drag tracker
+ */
+protected abstract DragTracker createDragTracker();
 
-public Point getAccessibleLocation(){
+/**
+ * By default, the center of the handle is returned.
+ * @see org.eclipse.gef.Handle#getAccessibleLocation()
+ */
+public Point getAccessibleLocation() {
 	Point p = getBounds().getCenter();
 	translateToAbsolute(p);
 	return p;
 }
 
 /**
- * Returns the Cursor that appears over the handle.
+ * Returns the cursor.  The cursor is displayed whenever the mouse is over the handle.
+ * @deprecated use getCursor()
+ * @return the cursor
  */
 public Cursor getDragCursor() {
-	return cursor;
+	return getCursor();
 }
 
 /**
- * Returns the handle tracker to use when dragging this handle.
+ * Returns the drag tracker to use when the user clicks on this handle.  If the drag
+ * tracker has not been set, it will be lazily created by calling {@link
+ * #createDragTracker()}.
+ * @return the drag tracker
  */
 public DragTracker getDragTracker() {
 	if (dragTracker == null) 
@@ -100,27 +127,32 @@ public DragTracker getDragTracker() {
 }
 
 /**
- * Returns the <code>Locator</code> associated with this handle.
+ * Returns the <code>Locator</code> used to position this handle.
+ * @return the locator
  */
 public Locator getLocator() {
 	return locator;
 }
 
 /**
- * Returns the <code>GraphicalEditPart</code> associated with
- * this handle.
+ * Returns the <code>GraphicalEditPart</code> associated with this handle.
+ * @return the owner editpart
  */
 protected GraphicalEditPart getOwner() {
 	return editpart;
 }
 
 /**
- *
+ * Convenience method to return the owner's figure.
+ * @return the owner editpart's figure
  */
 protected IFigure getOwnerFigure() {
 	return getOwner().getFigure();
 }
 
+/**
+ * @see org.eclipse.draw2d.IFigure#removeNotify()
+ */
 public void removeNotify() {
 	getOwnerFigure().removeAncestorListener(this);
 	super.removeNotify();
@@ -128,26 +160,42 @@ public void removeNotify() {
 
 /**
  * Sets the Cursor for the handle.
+ * @param c the cursor
+ * @throws Exception a bogus excpetion declaration
+ * @deprecated use setCursor()
  */
 public void setDragCursor(Cursor c) throws Exception {
 	setCursor(c);
 }
 
 /**
- * 
+ * Sets the drag tracker for this handle.
+ * @param t the drag tracker
  */
 public void setDragTracker(DragTracker t) {
 	dragTracker = t;
 }
 
-protected void setLocator(Locator locator){
+/**
+ * Sets the locator which position this handle.
+ * @param locator the new locator
+ */
+protected void setLocator(Locator locator) {
 	this.locator = locator;
 }
 
-protected void setOwner(GraphicalEditPart editpart){
+/**
+ * Sets the owner editpart associated with this handle.
+ * @param editpart the owner
+ */
+protected void setOwner(GraphicalEditPart editpart) {
 	this.editpart = editpart;
 }
 
+/**
+ * Extends validate() to place the handle using its locator.
+ * @see org.eclipse.draw2d.IFigure#validate()
+ */
 public void validate() {
 	if (isValid())
 		return;

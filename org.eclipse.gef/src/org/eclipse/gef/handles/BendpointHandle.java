@@ -18,7 +18,7 @@ import org.eclipse.draw2d.Connection;
 import org.eclipse.gef.DragTracker;
 
 /**
- * A handle used for bendpoints.
+ * A handle for bendpoints on a connection.
  */
 public class BendpointHandle
 	extends ConnectionHandle

@@ -21,69 +21,79 @@ import org.eclipse.gef.EditPart;
 import org.eclipse.gef.GraphicalEditPart;
 
 /**
- * A square handle.
+ * A small square handle approximately 7x7 pixels in size, that is either black or white.
  */
-abstract public class SquareHandle
+public abstract class SquareHandle
 	extends AbstractHandle
 {
-	
-protected final static int DEFAULT_HANDLE_SIZE = 7;
+
+/**
+ * The default size for square handles.
+ */
+protected static final int DEFAULT_HANDLE_SIZE = 7;
 
 {
 	init();
 }
 
-public SquareHandle(){}
+/**
+ * Null constructor
+ */
+public SquareHandle() { }
 
 /**
- * Creates a SquareHandle for the given <code>GraphicalEditPart</code>
- * using the given <code>Locator</code>.
+ * Creates a SquareHandle for the given <code>GraphicalEditPart</code> with the given
+ * <code>Locator</code>.
+ * @param owner the owner
+ * @param loc the locator
  */
 public SquareHandle(GraphicalEditPart owner, Locator loc) {
 	super(owner, loc);
 }
 
 /**
- * Creates a SquareHandle for the given <code>GraphicalEditPart</code>
- * with the given <code>Cursor</code> using the given <code>Locator</code>.
+ * Creates a SquareHandle for the given <code>GraphicalEditPart</code> with the given
+ * <code>Cursor</code> using the given <code>Locator</code>.
+ * @param owner The editpart which provided this handle
+ * @param loc The locator to position the handle
+ * @param c The cursor to display when the mouse is over the handle
  */
 public SquareHandle(GraphicalEditPart owner, Locator loc, Cursor c) {
 	super(owner, loc, c);
 }
 
 /**
- * Returns the color of the handle's border.
- *
- * @return The color of the handle's border.
+ * Returns the color for the outside of the handle.
+ * @return the color for the border
  */
 protected Color getBorderColor() {
-	return (isPrimary()) ? 
-		ColorConstants.white : 
-		ColorConstants.black;
+	return (isPrimary())
+		? ColorConstants.white
+		: ColorConstants.black;
 }
 
 /**
- * Returns the color of the handle.
- *
- * @return The color of the handle.
+ * Returns the color for the inside of the handle.
+ * @return the color of the handle
  */
 protected Color getFillColor() {
-	return (isPrimary()) ? 
-		ColorConstants.black : 
-		ColorConstants.white;
+	return (isPrimary())
+		? ColorConstants.black
+		: ColorConstants.white;
 }
 
-protected void init(){
+/**
+ * Initializes the handle.
+ */
+protected void init() {
 	setPreferredSize(new Dimension(DEFAULT_HANDLE_SIZE, DEFAULT_HANDLE_SIZE));
 }
 
 /**
- * Returns <code>true</code> if the handle's owner is the
- * primary object in the selection.
- *
- * @return Whether or not the handle's owner is the primary object.
+ * Returns <code>true</code> if the handle's owner is the primary selection.
+ * @return <code>true</code> if the handles owner has primary selection.
  */
-protected boolean isPrimary(){
+protected boolean isPrimary() {
 	return getOwner().getSelected() == EditPart.SELECTED_PRIMARY;
 }
 
@@ -95,7 +105,7 @@ protected boolean isPrimary(){
  */
 public void paintFigure(Graphics g) {
 	Rectangle r = getBounds();
-	r.shrink(1,1);
+	r.shrink(1, 1);
 	try {
 		g.setBackgroundColor(getFillColor());
 		g.fillRectangle(r.x, r.y, r.width, r.height);
@@ -103,7 +113,7 @@ public void paintFigure(Graphics g) {
 		g.drawRectangle(r.x, r.y, r.width, r.height);
 	} finally {
 		//We don't really own rect 'r', so fix it.
-		r.expand(1,1);
+		r.expand(1, 1);
 	}
 }
 

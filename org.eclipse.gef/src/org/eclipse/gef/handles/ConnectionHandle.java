@@ -17,9 +17,13 @@ import org.eclipse.draw2d.Connection;
 import org.eclipse.draw2d.Cursors;
 
 /**
- * A handle used on a {@link Connection}.
+ * The base implementation for handles used with editparts whose figure is a {@link
+ * org.eclipse.draw2d.Connection}.  This class adds an additional listener to the owner's
+ * connection figure to receive notification whenever the owner's connection's points are
+ * changed.  Changing the points of a connection does not fire "figure moved", it only
+ * fires "points" property as changing.
  */
-abstract public class ConnectionHandle
+public abstract class ConnectionHandle
 	extends SquareHandle
 	implements PropertyChangeListener
 {
@@ -33,6 +37,11 @@ public ConnectionHandle() {
 	setCursor(Cursors.CROSS);
 }
 
+/**
+ * Creates a new handle with the given fixed setting.  It the handle is fixed, it cannot
+ * be dragged.
+ * @param fixed <code>true</code> if the handle cannot be dragged.
+ */
 public ConnectionHandle(boolean fixed) {
 	setFixed(fixed);
 	if (fixed)
@@ -51,26 +60,42 @@ public void addNotify() {
 }
 
 /**
- * Returns the Connection this handle is on.
+ * Convenience method to return the owner's figure typed as <code>Connection</code>.
+ * @return the owner's connection
  */
 public Connection getConnection() {
 	return (Connection)getOwnerFigure();
 }
 
+/**
+ * Returns true if the handle cannot be dragged.
+ * @return <code>true</code> if the handle cannot be dragged
+ */
 protected boolean isFixed() {
 	return fixed;
 }
 
+/**
+ * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+ */
 public void propertyChange(PropertyChangeEvent evt) {
 	if (evt.getPropertyName().equals(Connection.PROPERTY_POINTS))
 		revalidate();
 }
 
-public void removeNotify(){
+/**
+ * Extended to remove a listener.
+ * @see org.eclipse.draw2d.IFigure#removeNotify()
+ */
+public void removeNotify() {
 	getConnection().removePropertyChangeListener(Connection.PROPERTY_POINTS, this);
 	super.removeNotify();
 }
 
+/**
+ * Sets whether the handle is fixed and cannot be moved
+ * @param fixed <code>true</code> if the handle should be unmovable
+ */
 public void setFixed(boolean fixed) {
 	this.fixed = fixed;
 	if (fixed)
