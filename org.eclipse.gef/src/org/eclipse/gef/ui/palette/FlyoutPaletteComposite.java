@@ -93,8 +93,9 @@ import org.eclipse.gef.internal.Internal;
 import org.eclipse.gef.ui.views.palette.PaletteView;
 
 /**
- * The FlyoutPaletteComposite is used to show a flyout palette alongside another control.
- * The flyout palette will only be visible when the PaletteView is not.
+ * The FlyoutPaletteComposite is used to show a flyout palette alongside another control. 
+ * The flyout palette auto-hides (thus maximizing space) when not in use, but can also be
+ * pinned open if so desired.  It will only be visible when the PaletteView is not.
  * 
  * @author Pratik Shah
  * @since 3.0
@@ -384,10 +385,10 @@ private void hookIntoWorkbench(final IWorkbenchWindow window) {
 }
 
 /**
- * If an external palette viewer is provided, palette settings (the ones that are
- * captured in {@link PaletteViewer#saveState(IMemento)}) will be maintained when
- * switching between the two viewers.  Providing an external viewer, although
- * recommended, is optional.
+ * If an external palette viewer is provided, palette state (that is captured in {@link
+ * PaletteViewer#saveState(IMemento)} -- active tool, drawer expansion state, drawer pin
+ * state, etc.) will be maintained when switching between the two viewers.  Providing an
+ * external viewer, although recommended, is optional.
  * 
  * @param	viewer	The palette viewer used in the PaletteView
  */
@@ -422,17 +423,16 @@ private void setPaletteWidth(int newSize) {
 }
 
 /**
- * Sets the graphical control along the side of which the palette is to be displayed.  The
- * given Control should be a child of this Composite.  This method should only be invoked
- * once.
+ * Sets the control along the side of which the palette is to be displayed.  The given
+ * Control should be a child of this Composite.  This method should only be invoked once.
  * 
  * @param	graphicalViewer		the control of the graphical viewer; cannot be
  * 								<code>null</code>
  */
 public void setGraphicalControl(Control graphicalViewer) {
+	Assert.isTrue(graphicalViewer != null);
 	Assert.isTrue(graphicalViewer.getParent() == this);
 	Assert.isTrue(graphicalControl == null);
-	Assert.isTrue(graphicalViewer != null);
 	graphicalControl = graphicalViewer;
 	addListenerToCtrlHierarchy(graphicalControl, SWT.MouseEnter, new Listener() {
 		public void handleEvent(Event event) {
