@@ -19,6 +19,7 @@ import org.eclipse.gef.internal.GEFMessages;
 
 /**
  * @author Eric Bordeau
+ * @deprecated	Use org.eclipse.ui.actions.ActionFactory instead
  */
 public class CopyRetargetAction extends RetargetAction {
 
