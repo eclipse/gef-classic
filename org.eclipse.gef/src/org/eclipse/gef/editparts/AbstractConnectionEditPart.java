@@ -57,7 +57,7 @@ private EditPart
  * 
  * @see #deactivate()
  */
-public void activateFigure(){
+protected void activateFigure(){
 	refreshTargetAnchor();
 	refreshSourceAnchor();
 	getLayer(CONNECTION_LAYER).add(getFigure());
@@ -84,7 +84,7 @@ protected IFigure createFigure(){
  * it from the connection layer, and resetting the 
  * source and target connections to <code>null</code>.
  */
-public void deactivateFigure() {
+protected void deactivateFigure() {
 	getLayer(CONNECTION_LAYER).remove(getFigure());
 	getConnectionFigure().setSourceAnchor(null);
 	getConnectionFigure().setTargetAnchor(null);
