@@ -14,9 +14,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.*;
 
-import org.eclipse.swt.dnd.DND;
-import org.eclipse.swt.dnd.DragSource;
-import org.eclipse.swt.dnd.DropTarget;
+import org.eclipse.swt.dnd.*;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Cursor;
@@ -24,13 +22,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import org.eclipse.jface.action.MenuManager;
-import org.eclipse.jface.util.Assert;
+import org.eclipse.jface.util.*;
 import org.eclipse.jface.viewers.*;
 
 import org.eclipse.draw2d.geometry.Point;
 
 import org.eclipse.gef.*;
-import org.eclipse.gef.dnd.*;
 
 /**
  * The base implementation for EditPartViewer.
@@ -71,9 +68,11 @@ private RootEditPart rootEditPart;
   */
 protected EditPart focusPart;
 private MenuManager contextMenu;
-private DelegatingDragAdapter dragAdapter = new DelegatingDragAdapter();
+private org.eclipse.gef.dnd.DelegatingDragAdapter dragAdapter = 
+	new org.eclipse.gef.dnd.DelegatingDragAdapter();
 private DragSource dragSource;
-private DelegatingDropAdapter dropAdapter = new DelegatingDropAdapter();
+private org.eclipse.gef.dnd.DelegatingDropAdapter dropAdapter = 
+	new org.eclipse.gef.dnd.DelegatingDropAdapter();
 private DropTarget dropTarget;
 private KeyHandler keyHandler;
 private PropertyChangeSupport changeSupport;
@@ -86,11 +85,29 @@ public AbstractEditPartViewer() {
 }
 
 /**
+ * @see
+ * EditPartViewer#addDragSourceListener(org.eclipse.gef.dnd.TransferDragSourceListener)
+ * @deprecated
+ */
+public void addDragSourceListener(org.eclipse.gef.dnd.TransferDragSourceListener listener) {
+	addDragSourceListener((TransferDragSourceListener)listener);
+}
+
+/**
  * @see EditPartViewer#addDragSourceListener(TransferDragSourceListener)
  */
 public void addDragSourceListener(TransferDragSourceListener listener) {
 	getDelegatingDragAdapter().addDragSourceListener(listener);
 	refreshDragSourceAdapter();
+}
+
+/**
+ * @see
+ * EditPartViewer#addDropTargetListener(org.eclipse.gef.dnd.TransferDropTargetListener)
+ * @deprecated
+ */
+public void addDropTargetListener(org.eclipse.gef.dnd.TransferDropTargetListener listener) {
+	addDropTargetListener((TransferDropTargetListener)listener);
 }
 
 /**
@@ -235,9 +252,10 @@ public Control getControl() {
  * Returns <code>null</code> or the DelegatingDragAdapater. The adapter is created
  * automatically when {@link #addDragSourceListener(TransferDragSourceListener)} is
  * called.
+ * 
  * @return <code>null</code> or the adapter
  */
-protected DelegatingDragAdapter getDelegatingDragAdapter() {
+protected org.eclipse.gef.dnd.DelegatingDragAdapter getDelegatingDragAdapter() {
 	return dragAdapter;
 }
 
@@ -247,7 +265,7 @@ protected DelegatingDragAdapter getDelegatingDragAdapter() {
  * called.
  * @return <code>null</code> or the adapter
  */
-protected DelegatingDropAdapter getDelegatingDropAdapter() {
+protected org.eclipse.gef.dnd.DelegatingDropAdapter getDelegatingDropAdapter() {
 	return dropAdapter;
 }
 
@@ -422,7 +440,7 @@ protected void refreshDragSourceAdapter() {
 				new DragSource(
 					getControl(),
 					DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_LINK));
-		getDragSource().setTransfer(getDelegatingDragAdapter().getTransferTypes());
+		getDragSource().setTransfer(getDelegatingDragAdapter().getTransfers());
 	}
 }
 
@@ -442,7 +460,7 @@ protected void refreshDropTargetAdapter() {
 				new DropTarget(
 					getControl(),
 					DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_LINK));
-		getDropTarget().setTransfer(getDelegatingDropAdapter().getTransferTypes());
+		getDropTarget().setTransfer(getDelegatingDropAdapter().getTransfers());
 	}
 }
 
@@ -452,12 +470,30 @@ protected void refreshDropTargetAdapter() {
 public void registerAccessibleEditPart(AccessibleEditPart acc) { }
 
 /**
+ * @see
+ * EditPartViewer#removeDragSourceListener(org.eclipse.gef.dnd.TransferDragSourceListener)
+ * @deprecated
+ */
+public void removeDragSourceListener(org.eclipse.gef.dnd.TransferDragSourceListener listener) {
+	removeDragSourceListener((TransferDragSourceListener)listener);
+}
+
+/**
  * @see EditPartViewer#removeDragSourceListener(TransferDragSourceListener)
  */
 public void removeDragSourceListener(TransferDragSourceListener listener) {
 	getDelegatingDragAdapter().removeDragSourceListener(listener);
 	if (getDelegatingDragAdapter().isEmpty())
 		refreshDragSourceAdapter();
+}
+
+/**
+ * @see
+ * EditPartViewer#removeDropTargetListener(org.eclipse.gef.dnd.TransferDropTargetListener)
+ * @deprecated
+ */
+public void removeDropTargetListener(org.eclipse.gef.dnd.TransferDropTargetListener listener) {
+	removeDropTargetListener((TransferDropTargetListener)listener);
 }
 
 /**
