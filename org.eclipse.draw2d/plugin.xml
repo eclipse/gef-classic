@@ -8,12 +8,15 @@
 
    <runtime>
       <library name="draw2d.jar">
-        <export name = "*"/>
-        <packages prefixes="org.eclipse.draw2d"/>
+         <export name="*"/>
+         <packages prefixes="org.eclipse.draw2d"/>
       </library>
    </runtime>
    <requires>
       <import plugin="org.eclipse.swt" export="true"/>
+      <import plugin="org.eclipse.core.runtime" export="true"/>
+      <import plugin="org.eclipse.osgi" export="true"/>
    </requires>
+
 
 </plugin>
