@@ -4,13 +4,9 @@
 	<comment></comment>
 	<projects>
 		<project>org.eclipse.draw2d</project>
+		<project>org.eclipse.swt</project>
 	</projects>
 	<buildSpec>
-		<buildCommand>
-			<name>com.telesynthesis.tools.eclipse.checkstyle.CheckStyleBuilder</name>
-			<arguments>
-			</arguments>
-		</buildCommand>
 		<buildCommand>
 			<name>org.eclipse.jdt.core.javabuilder</name>
 			<arguments>
@@ -19,6 +15,5 @@
 	</buildSpec>
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
-		<nature>com.telesynthesis.tools.eclipse.checkstyle.CheckStyleNature</nature>
 	</natures>
 </projectDescription>
