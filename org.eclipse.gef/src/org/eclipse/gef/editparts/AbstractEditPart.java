@@ -663,7 +663,7 @@ protected boolean isActive() {
 /**
  * Reserved for future use
  * @return boolean */
-public final boolean isSelectable() {
+public boolean isSelectable() {
 	return true;
 }
 
