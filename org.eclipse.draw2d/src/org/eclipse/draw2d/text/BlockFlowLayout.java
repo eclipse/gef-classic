@@ -54,13 +54,13 @@ public void endLine() {
  * @see org.eclipse.draw2d.text.FlowContainerLayout#layoutChildren()
  */
 protected void layoutChildren() {
-	boolean invalidate = invalid
-		|| blockBox.getRecommendedWidth() != previousRecommendedWidth;
+//	boolean invalidate = invalid
+//		|| blockBox.getRecommendedWidth() != previousRecommendedWidth;
 	previousRecommendedWidth = blockBox.getRecommendedWidth();
 	List children = getFlowFigure().getChildren();
 	for (int i = 0; i < children.size(); i++) {
 		Figure f = (Figure)children.get(i);
-		if (invalidate)
+//		if (invalidate)
 			f.invalidate();
 		f.validate();
 	}
@@ -114,8 +114,8 @@ protected void setupBlock() {
 	//Ask for a new line, in case we are in the middle of a line
 	context.endLine();
 	LineBox line = context.getCurrentLine();
-	int recommended = line.getAvailableWidth();
-	if (recommended != previousRecommendedWidth)
+//	int recommended = line.getAvailableWidth();
+//	if (recommended != previousRecommendedWidth)
 		//Remove all current Fragments
 		blockBox.clear();
 

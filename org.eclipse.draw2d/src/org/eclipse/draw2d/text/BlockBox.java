@@ -18,11 +18,15 @@ public void add(FlowBox box) {
 }
 
 Rectangle toRectangle() {
-	return new Rectangle(x, y, Math.max(width,recommendedWidth), height);
+	return new Rectangle(x, y, Math.max(width, recommendedWidth), height);
+}
+
+public void setHeight(int h) {
+	height = h;
 }
 
 protected void unionInfo(FlowBox box) {
-	width = Math.max(width, box.x + box.width);
+	width = Math.max(width, box.width);
 	height = Math.max(height, box.y + box.height);
 }
 
