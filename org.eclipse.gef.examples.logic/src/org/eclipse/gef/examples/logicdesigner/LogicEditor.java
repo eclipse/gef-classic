@@ -270,7 +270,7 @@ public void gotoMarker(IMarker marker) {}
 protected void initializeGraphicalViewer() {
 	getGraphicalViewer().setContents(getLogicDiagram());
 	getGraphicalViewer().addDropTargetListener(
-		new LogicTemplateTransferDropTargetListener(getGraphicalViewer(), TemplateTransfer.getInstance()));
+		new LogicTemplateTransferDropTargetListener(getGraphicalViewer()));
 	getGraphicalViewer().addDropTargetListener(
 		new TextTransferDropTargetListener(getGraphicalViewer(), TextTransfer.getInstance()));
 }

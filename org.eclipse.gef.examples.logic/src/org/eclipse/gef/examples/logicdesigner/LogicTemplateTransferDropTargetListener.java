@@ -6,7 +6,6 @@ import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.dnd.TemplateTransferDropTargetListener;
 import org.eclipse.gef.examples.logicdesigner.model.*;
 import org.eclipse.gef.requests.CreateRequest;
-import org.eclipse.swt.dnd.Transfer;
 
 /**
  * This listener handles logic templates that are dropped onto
@@ -27,6 +26,8 @@ protected CreateRequest.Factory getFactory(Object template) {
 		return new LogicTemplateFactory((String)template);
 	return null;
 }
+
+
 
 class LogicTemplateFactory implements CreateRequest.Factory {
 	
