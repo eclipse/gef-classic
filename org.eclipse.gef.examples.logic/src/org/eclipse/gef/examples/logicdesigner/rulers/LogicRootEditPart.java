@@ -30,7 +30,7 @@ protected void createLayers(LayeredPane layeredPane) {
 	 */
 	Layer guideFeedbackLayer = new FreeformLayer() {
 		public Rectangle getFreeformExtent() {
-			int maxX = 0, minX = 0, maxY = 0, minY = 0;
+			int maxX = 5, minX = 5, maxY = 5, minY = 5;
 			ListIterator children = getChildren().listIterator();
 			while (children.hasNext()) {
 				GuideEditPart.GuideFeedbackFigure child = 
@@ -45,7 +45,15 @@ protected void createLayers(LayeredPane layeredPane) {
 					maxX = Math.max(maxX, position);
 				}
 			}
-			return new Rectangle(minX, minY, maxX - minX + 1, maxY - minY + 1);
+			Rectangle r = new Rectangle(
+					minX, minY, maxX - minX + 1, maxY - minY + 1);
+			if (r.width > 1) {
+				r.expand(5, 0);
+			}
+			if (r.height > 1) {
+				r.expand(0, 5);
+			}
+			return r;
 		}
 		public void setFreeformBounds(Rectangle bounds) {
 			super.setFreeformBounds(bounds);
