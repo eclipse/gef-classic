@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.gef.internal;
 
-import org.eclipse.swt.graphics.Image;
-
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.internal.WorkbenchImages;
@@ -50,7 +48,29 @@ public static final ImageDescriptor DESC_SEPARATOR;
 public static final ImageDescriptor DESC_FOLDER_OPEN;
 public static final ImageDescriptor DESC_FOLDER_CLOSED;
 
+public static final ImageDescriptor DESC_BOLD;
+public static final ImageDescriptor DESC_ITALIC;
+public static final ImageDescriptor DESC_UNDERLINE;
+
+public static final ImageDescriptor DESC_BLOCK_LTR;
+public static final ImageDescriptor DESC_BLOCK_RTL;
+
+public static final ImageDescriptor DESC_BLOCK_ALIGN_LEFT;
+public static final ImageDescriptor DESC_BLOCK_ALIGN_CENTER;
+public static final ImageDescriptor DESC_BLOCK_ALIGN_RIGHT;
+
 static {
+	DESC_BOLD = createDescriptor("icons/style_bold.gif");
+	DESC_ITALIC= createDescriptor("icons/style_italic.gif");
+	DESC_UNDERLINE = createDescriptor("icons/style_underline.gif");
+	
+	DESC_BLOCK_LTR= createDescriptor("icons/style_paragraph_ltr.gif");
+	DESC_BLOCK_RTL= createDescriptor("icons/style_paragraph_rtl.gif");
+	
+	DESC_BLOCK_ALIGN_LEFT = createDescriptor("icons/style_paragraph_left.gif");
+	DESC_BLOCK_ALIGN_CENTER = createDescriptor("icons/style_paragraph_center.gif");
+	DESC_BLOCK_ALIGN_RIGHT = createDescriptor("icons/style_paragraph_right.gif");
+	
 	DESC_ZOOM_IN = createDescriptor("icons/zoomplus.gif"); //$NON-NLS-1$
 	DESC_ZOOM_OUT = createDescriptor("icons/zoomminus.gif"); //$NON-NLS-1$
 
@@ -80,12 +100,6 @@ static {
 
 	ICON_MATCH_WIDTH = createDescriptor("icons/sizehz.gif"); //$NON-NLS-1$
 	ICON_MATCH_HEIGHT = createDescriptor("icons/sizevt.gif"); //$NON-NLS-1$
-}
-
-private static Image create(String filename) {
-	return ImageDescriptor.createFromFile(
-		InternalImages.class,
-		filename).createImage();
 }
 
 private static ImageDescriptor createDescriptor(String filename) {
