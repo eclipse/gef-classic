@@ -24,9 +24,18 @@ class FreeformViewportLayout
 			.getFreeformExtent()
 			.getExpanded(getInsets())
 			.union(0,0)
-			.union(wHint, hHint)
+			.union(wHint-1, hHint-1)
 			.getSize();
 	}
+
+	protected boolean isSensitiveHorizontally(IFigure parent) {
+		return true;
+	}
+
+	protected boolean isSensitiveVertically(IFigure parent) {
+		return true;
+	}
+
 
 	public void layout(IFigure figure) {
 		//Do nothing, contents updates itself.
