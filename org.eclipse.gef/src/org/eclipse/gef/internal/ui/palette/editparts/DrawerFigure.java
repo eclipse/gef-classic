@@ -76,10 +76,19 @@ private EditPartTipHelper tipHelper;
  * 						(the tip won't be displayed).
  */
 public DrawerFigure(final Control control) {
-	ToolbarLayout layout = new ToolbarLayout(false);
-	layout.setStretchMinorAxis(true);
-	setLayoutManager(layout);
-
+	/*
+	 * A PaletteToolbarLayout is being used here instead of a ToolbarLayout so that the
+	 * ScrollPane can be stretched to take up vertical space.  This affects selection
+	 * and appearance (background color).  
+	 */
+	setLayoutManager(new PaletteToolbarLayout(null) {
+		protected boolean isChildGrowing(IFigure child) {
+			int wHint = child.getBounds().width;
+			return child.getPreferredSize(wHint, -1).height 
+					!= child.getMinimumSize(wHint, -1).height;
+		}
+	});
+	
 	Figure title = new Figure();	
 	title.setBorder(TITLE_MARGIN_BORDER);
 	BorderLayout borderLayout = new BorderLayout();
