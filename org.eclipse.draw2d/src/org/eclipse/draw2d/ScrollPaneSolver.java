@@ -17,6 +17,8 @@ public static int ALWAYS = 2;
 static public class Result{
 	public boolean showH;
 	public boolean showV;
+	public Rectangle viewportArea;
+	public Insets insets;
 }
 
 public static Result solve(
@@ -28,25 +30,33 @@ public static Result solve(
 
 	Result result = new Result();
 
-	Insets insets = new Insets();
-	insets.bottom = hBarHeight;
-	insets.right  = vBarWidth;
+	result.insets = new Insets();
+	result.insets.bottom = hBarHeight;
+	result.insets.right  = vBarWidth;
 	
-	Dimension preferred  = viewport.getPreferredSize().getCopy();
 	Dimension available  = $REFclientArea.getSize();
 	Dimension guaranteed = new Dimension(available).shrink(
-		    	(vVis == NEVER ? 0 : insets.right),
-		    	(hVis == NEVER ? 0 : insets.bottom));
+		    	(vVis == NEVER ? 0 : result.insets.right),
+		    	(hVis == NEVER ? 0 : result.insets.bottom));
+	int wHint = guaranteed.width;
+	int hHint = guaranteed.height;
+	//@TODO only pass hints if tracksDimension is true
+	Dimension preferred  = viewport.getPreferredSize(wHint, hHint).getCopy();
 	
-	//Adjust preferred size if tracking flags set
-	Dimension viewportMinSize = viewport.getMinimumSize();
+	//This was calling viewport.getMinimumSize(), but viewports minimum size was really small,
+	//and wasn't a function of its contents.
+	Dimension viewportMinSize = new Dimension(
+		viewport.getInsets().getWidth(),
+		viewport.getInsets().getHeight());
+	if (viewport.getContents() != null)
+		viewportMinSize.expand(viewport.getContents().getMinimumSize());
 
-	if(viewport.getContentsTracksHeight()){
+	//Adjust preferred size if tracking flags set.  Basically, tracking == "compress view untill
+	// its minimum size is reached".
+	if (viewport.getContentsTracksHeight())
 		preferred.height = viewportMinSize.height;
-	}
-	if(viewport.getContentsTracksWidth()){
+	if (viewport.getContentsTracksWidth())
 		preferred.width = viewportMinSize.width;
-	}
 
 	boolean none = available.contains(preferred),
 	        both = !none && preferred.containsProper(guaranteed),
@@ -57,11 +67,12 @@ public static Result solve(
 	result.showV = !(vVis == NEVER) && (showV  || vVis == ALWAYS);
 	result.showH = !(hVis == NEVER) && (showH  || hVis == ALWAYS);
 	
-	if (!result.showV) insets.right = 0;
-	if (!result.showH) insets.bottom = 0;
-	Rectangle viewportArea = $REFclientArea.getCropped(insets);
-
-	viewport.setBounds(viewportArea);
+	if (!result.showV)
+		result.insets.right = 0;
+	if (!result.showH)
+		result.insets.bottom = 0;
+	result.viewportArea = $REFclientArea.getCropped(result.insets);
+	viewport.setBounds(result.viewportArea);
 	return result;
 }
 

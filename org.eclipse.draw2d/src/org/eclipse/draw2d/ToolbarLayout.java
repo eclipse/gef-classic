@@ -10,30 +10,21 @@ import java.util.*;
 import org.eclipse.draw2d.geometry.*;
 
 /**
- * Layout manager that provides toolbar-like behavior.
- * When horizontally oriented, children will be placed
- * horizontally adjacent to each other. 
- * When vertically oriented, children will be placed
- * vertically adjacent to each other. In each case, children
- * will be separated by the number of pixels specified with
- * the setSpacing(int) method. 
+ * Arranges figures in a single row or column.  Orientation can be set to produce either
+ * a row or column layout.
  * 
- * If the field matchWidth is set to true, horizontally oriented
- * children will stretch themselves vertically to fit available
- * height. Vertically oriented children will stretch themselves
- * horizontally to fit available width.
+ * This layout try to fit all children within the parent's client area.  To do this,
+ * it compresses the children by some amount, but will not compress them smaller than
+ * their minimum size.
  * 
- * Children will be stretched (or shrunk) in both horizontal and
- * vertical directions upon  resize until maximum
- * or minimum sizes are reached.
- * 
+ * If a child's preferred size is smaller than the row's or column's minor dimension,
+ * the layout can be configured to stretch the child.
  */
 public class ToolbarLayout
-	extends AbstractLayout
+	extends AbstractHintLayout
 {
 
 private int spacing;
-private Dimension minimumSize;
 private boolean matchWidth;
 protected boolean horizontal=false;
 protected int minorAlignment;	
@@ -80,7 +71,7 @@ public ToolbarLayout(){
  */
 public ToolbarLayout(boolean isHorizontal){
 		horizontal = isHorizontal; 
-		transposer.setEnabled( horizontal );
+		transposer.setEnabled(horizontal);
 		spacing = 0;
 		matchWidth = false;
 		minorAlignment = ALIGN_TOPLEFT;
@@ -120,54 +111,43 @@ public Dimension calculateMinimumSize(IFigure parent){
 	return transposer.t(d);
 }
 
-public Dimension getMinimumSize(IFigure container){
-	if (minimumSize == null)
-		minimumSize = calculateMinimumSize(container);
-	return minimumSize;
-}
-
-public void invalidate(){
-	minimumSize = null;
-	super.invalidate();
-}
-	
-/**
- * Calculates and returns the preferred size of the container 
- * given as input. In the case of the vertically oriented
- * ToolbarLayout, this is the width of the largest preferred 
- * width of figure's children and the height of the sum of 
- * the preferred heights of figure's children. Values are 
- * transposed to calculate preferred size of a horizontally
- * oriented ToolbarLayout.
+/** 
+ * Calculates the preferred size of the container based on the given hints.
+ * If this is a vertically-oriented Toolbar Layout, then only the widthHint is
+ * respected (which means that the children can be as tall as they desire).  
+ * In this case, the preferred width is that of the widest child, and the
+ * preferred height is the sum of the preferred heights of all children, plus
+ * the spacing between them.  The border and insets of the container figure
+ * are also accounted for.
  * 
- * @param figure  Figure whose preferred size is required.
- * @return  The minimum size of the figure input.
- * @since 2.0
+ * @param	container	The IFigure whose preferred size has to be calculated
+ * @param	wHint		The width hint (the desired width of the container)
+ * @param	hHint		The height hint (the desired height of the container)
+ * @return		The preferred size of the container
+ * @see	#getPreferredSize(IFigure, int, int)
+ * @since	2.0
  */
-protected Dimension calculatePreferredSize(IFigure parent){
-	Dimension preferred;
-	{
-		int height=0;
-		int width=0;
-
-		List children = parent.getChildren();
-		Dimension childSize;
-		IFigure child;
-		for (int i=0; i < children.size(); i++){
-			child = (IFigure)children.get(i);
-			childSize = transposer.t(child.getPreferredSize());
-			height += childSize.height;
-			width = Math.max(width, childSize.width);	
-		}
-		height += (children.size()-1) * spacing;
-		preferred = transposer.t(new Dimension(width, height));
-		//Transpose has been applied, height and width no longer valid
+protected Dimension calculatePreferredSize(IFigure container, 
+                                             int wHint, int hHint){
+	Insets insets = container.getInsets();
+	int max_row_width = isHorizontal() ? hHint - insets.getHeight() :
+	                                     wHint - insets.getWidth();
+	
+	List children = container.getChildren();
+	Dimension childSize, preferred;
+	IFigure child;
+	int height = 0, width = 0;
+	for (int i = 0; i < children.size(); i++){
+		child = (IFigure)children.get(i);
+		childSize = transposer.t(child.getPreferredSize(max_row_width, -1));
+		height += childSize.height;
+		width = Math.max(width, childSize.width);
 	}
-
-	Insets insets = parent.getInsets();
-	preferred.height += insets.getHeight();
-	preferred.width += insets.getWidth();
-	preferred.union(getBorderPreferredSize(parent));
+	height += (children.size()-1) * spacing;
+	preferred = transposer.t(new Dimension(width, height)).
+					expand(insets.getWidth(), insets.getHeight()).
+					union(getBorderPreferredSize(container));
+	
 	return preferred;
 }
 
@@ -191,6 +171,18 @@ public void layout(IFigure parent) {
 	Dimension prefSizes [] = new Dimension[numChildren];
 	Dimension minSizes [] = new Dimension[numChildren];
 	
+	// Calculate the width and height hints.  If it's a vertical ToolBarLayout,
+	// then ignore the height hint (set it to -1); otherwise, ignore the 
+	// width hint.  These hints will be passed to the children of the parent
+	// figure when getting their preferred size. 
+	int wHint = -1;
+	int hHint = -1;    
+	if (isHorizontal()){
+		hHint = parent.getClientArea().height;
+	} else {
+		wHint = parent.getClientArea().width;
+	}
+
 	/*		
 	 * Calculate sum of preferred heights of all children(totalHeight). 
 	 * Calculate sum of minimum heights of all children(minHeight).
@@ -210,7 +202,7 @@ public void layout(IFigure parent) {
 	for(int i=0; i < numChildren; i++){
 		child = (IFigure)children.get(i);
 		
-		prefSizes[i]=transposer.t(child.getPreferredSize());
+		prefSizes[i]=transposer.t(child.getPreferredSize(wHint,hHint));
 		minSizes[i]=transposer.t(child.getMinimumSize());		
 		
 		totalHeight += prefSizes[i].height;
@@ -229,7 +221,7 @@ public void layout(IFigure parent) {
 	 */	
 	int amntShrinkHeight = totalHeight - Math.max(availableHeight,totalMinHeight);
 	
-	if(amntShrinkHeight < 0){
+	if (amntShrinkHeight < 0){
 		amntShrinkHeight = 0;
 	}
 
@@ -242,11 +234,11 @@ public void layout(IFigure parent) {
 		Rectangle newBounds = new Rectangle(x, y, prefWidth, prefHeight);
 
 		child = (IFigure)children.get(i);
-	    if( prefMinSumHeight != 0)
+	    if (prefMinSumHeight != 0)
 			amntShrinkCurrentHeight = (prefHeight - minHeight) * amntShrinkHeight / (prefMinSumHeight);
 
 		int width = Math.min(prefWidth,child.getMaximumSize().width);
-	      if (matchWidth)
+		if (matchWidth)
 			width = transposer.t(child.getMaximumSize()).width;
 		width = Math.max(minWidth, Math.min(clientArea.width, width));
 		newBounds.width = width;
@@ -297,12 +289,23 @@ public void setSpacing(int space){
  * Sets children's width (if vertically oriented) or height
  * (if horizontally oriented) to stretch with their container
  * 
+ * @deprecated use setStretchMinorAxis
  * @param   match <code>true</code> will stretch the children, 
  *           <code>false</code> will not
  * @since 2.0
  */
 public void setMatchWidth(boolean match){
 	matchWidth = match;
+}
+
+/**
+ * Causes children that are smaller in the dimension of the minor axis to be stretched to
+ * fill the minor axis.  The minor axis is the opposite of the orientation.
+ * @param  stretch whether to stretch children
+ * @since 2.0
+ */
+public void setStretchMinorAxis(boolean stretch){
+	matchWidth = stretch;
 }
 
 /**

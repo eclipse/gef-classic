@@ -270,19 +270,19 @@ public Dimension getMinimumSize(){
 	if (getLayoutManager() != null)
 		size.copyFrom(getLayoutManager().getMinimumSize(this));
 	
-	Dimension labelSize = calculateLabelSize( FigureUtilities.getTextExtents(ELLIPSIS,getFont()));
+	Dimension labelSize = calculateLabelSize(FigureUtilities.getTextExtents(ELLIPSIS,getFont()));
 	Insets insets = getInsets();
 	labelSize.expand(insets.getWidth(),insets.getHeight());
 	minSize = size.getUnioned(labelSize);
 	return minSize;	
 }
 
-public Dimension getPreferredSize(){
+public Dimension getPreferredSize(int wHint, int hHint){
 	if (prefSize != null)
 		return prefSize;
 	Dimension size = new Dimension();
 	if (getLayoutManager() != null)
-		size.copyFrom(getLayoutManager().getPreferredSize(this));
+		size.copyFrom(getLayoutManager().getPreferredSize(this, wHint, hHint));
 
 	Dimension labelSize = calculateLabelSize(getTextSize());
 	Insets insets = getInsets();
@@ -304,14 +304,14 @@ public String getSubStringText(){
 	
 	subStringText = text;
 	int widthShrink = getPreferredSize().width - getSize().width;
-	if(widthShrink <= 0)
+	if (widthShrink <= 0)
 		return subStringText;
 	
 	Dimension effectiveSize = getTextSize().getExpanded(-widthShrink,0);
 	Font currentFont = getFont();
 	int dotsWidth = FigureUtilities.getTextWidth(ELLIPSIS, currentFont);
 	
-	if(effectiveSize.width < dotsWidth )
+	if (effectiveSize.width < dotsWidth)
 		effectiveSize.width = dotsWidth;
 	
 	int subStringLength = FigureUtilities.getLargestSubstringConfinedTo(text,
@@ -507,7 +507,8 @@ public void setIconTextGap(int gap){
  * {@link PositionConstants}
  */
 public void setLabelAlignment(int align){
-	if( labelAlignment == align) return;
+	if (labelAlignment == align)
+		return;
 	labelAlignment = align;
 	clearLocations();
 	repaint();

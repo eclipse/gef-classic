@@ -16,41 +16,17 @@ import org.eclipse.draw2d.geometry.*;
  * were added, first child added placed on the bottom.
  */
 public class StackLayout
-	extends AbstractLayout
+	extends AbstractHintLayout
 {
 
 public StackLayout(){}
-
-/**
- * Calculates and returns the preferred size of the input container.
- * This is the size of the largest child of the container, as all
- * other children fit into this size.
- *
- * @param figure  Container figure for which preferred size is required.
- * @return  The preferred size of the input figure.
- * @since 2.0
- */
-protected Dimension calculatePreferredSize(IFigure figure){
-	Dimension d = new Dimension();
-	List children = figure.getChildren();
-	IFigure child;
-	for (int i=0; i < children.size(); i++){
-		child = (IFigure)children.get(i);
-		d.union(child.getPreferredSize());
-	}
-	
-	d.expand(figure.getInsets().getWidth(),
-	         figure.getInsets().getHeight());
-	d.union(getBorderPreferredSize(figure));
-	return d;
-}
 
 /*
  * Returns the minimum size required by the input container.
  * This is the size of the largest child of the container, as all
  * other children fit into this size.
  */
-public Dimension getMinimumSize(IFigure figure){
+protected Dimension calculateMinimumSize(IFigure figure){
 	Dimension d = new Dimension();
 	List children = figure.getChildren();
 	IFigure child;
@@ -60,6 +36,33 @@ public Dimension getMinimumSize(IFigure figure){
 	}
 	d.expand(figure.getInsets().getWidth(),
 	         figure.getInsets().getHeight());
+	return d;
+}
+
+/**
+ * Calculates and returns the preferred size of the given figure.  This is the
+ * union of the preferred sizes of the widest and the tallest of all its 
+ * children. 
+ * 
+ * @param	figure  The IFigure whose preferred size has to be calculated
+ * @param	wHint	The width hint (<=0 means it is to be ignored)
+ * @param	hHint	The height hint (<=0 means it is to be ignored)
+ * @return  The preferred size of the input figure.
+ * @see	#getPreferredSize(IFigure, int, int)
+ * @since 2.0
+ */
+protected Dimension calculatePreferredSize(IFigure figure, int wHint, int hHint){
+	Dimension d = new Dimension();
+	List children = figure.getChildren();
+	IFigure child;
+	for (int i=0; i < children.size(); i++){
+		child = (IFigure)children.get(i);
+		d.union(child.getPreferredSize(wHint, hHint));
+	}
+	
+	d.expand(figure.getInsets().getWidth(),
+	         figure.getInsets().getHeight());
+	d.union(getBorderPreferredSize(figure));
 	return d;
 }
 

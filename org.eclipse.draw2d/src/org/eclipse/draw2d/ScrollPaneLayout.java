@@ -8,16 +8,16 @@ package org.eclipse.draw2d;
 
 import org.eclipse.draw2d.geometry.*;
 
+
 /**
  * The ScrollPaneLayout is responsible for laying out the
  * {@link Viewport Viewport} and {@link ScrollBar ScrollBars}
  * of a {@link ScrollPane ScrollPane}.
  */
 public class ScrollPaneLayout
-	extends AbstractLayout
+	extends AbstractHintLayout
 {
 
-private Dimension minimumSize;
 protected static final int
 	NEVER = ScrollPane.NEVER,
 	AUTO  = ScrollPane.AUTOMATIC,
@@ -41,96 +41,76 @@ public Dimension calculateMinimumSize(IFigure figure){
 }
 
 /**
- * Calculates and returns the preferred size of the container 
- * given as input. In the case of the ScrollPaneLayout
- * this is the preferred size of the passed Figure's 
- * {@link Viewport Viewport} plus its  {@link Insets Insets}.
+ * Calculates and returns the preferred size of the container based on the 
+ * given hints.  If the given ScrollPane's (container's) horizontal and 
+ * vertical scroll bar visibility is not <code>ScrollPane.NEVER</code>, then 
+ * space for those bars is always deducted from the hints (whether or not we
+ * actually need the scroll bars).
  * 
- * @param container  Figure whose preferred size is required.
- * @return  The preferred size of the figure input.
- * @since 2.0
+ * @param	container	The ScrollPane whose preferred size needs to be 
+ * 						calculated
+ * @param	wHint		The width hint
+ * @param	hHint		The height hint
+ * @return	The preferred size of the given container
+ * @since	2.0
  */
-protected Dimension calculatePreferredSize(IFigure container){
+protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHint){
 	ScrollPane scrollpane = (ScrollPane)container;
-	Dimension pref = new Dimension();
-	pref.width += container.getInsets().getWidth();
-	pref.height += container.getInsets().getHeight();
-	pref.expand(scrollpane.getViewport().getPreferredSize());
-	return pref;
-}
+	ScrollBar hBar = scrollpane.getHorizontalScrollBar();
+	ScrollBar vBar = scrollpane.getVerticalScrollBar();
+	Insets insets = scrollpane.getInsets();
 
-public Dimension getMinimumSize(IFigure container){
-	if (minimumSize == null)
-		minimumSize = calculateMinimumSize(container);
-	return minimumSize;
-}
+	int reservedWidth = insets.getWidth();
+	int reservedHeight = insets.getHeight();
 
-public void invalidate(){
-	minimumSize = null;
-	super.invalidate();
+	if (scrollpane.getVerticalScrollBarVisibility() != ScrollPane.NEVER)
+		reservedWidth += vBar.getPreferredSize().width;
+	if (scrollpane.getHorizontalScrollBarVisibility() != ScrollPane.NEVER)
+		reservedHeight += hBar.getPreferredSize().height;
+
+	if (wHint > -1)
+		wHint = Math.max(0, wHint - reservedWidth);
+	if (hHint > -1)
+		hHint = Math.max(0, hHint - reservedHeight);
+
+	return scrollpane
+		.getViewport()
+		.getPreferredSize(wHint, hHint)
+		.getExpanded(reservedWidth, reservedHeight);
 }
 
 public void layout(IFigure parent) {
 	ScrollPane scrollpane = (ScrollPane)parent;
-
-	/****** CLIENT AREA MAY BE BY REFERENCE, DO NOT MODIFY ******/
-	Rectangle $REFclientArea = parent.getClientArea();
-
-	ScrollBar hBar = scrollpane.getHorizontalScrollBar(),
-		    vBar = scrollpane.getVerticalScrollBar();
 	Viewport viewport = scrollpane.getViewport();
-
-	Insets insets = new Insets();
-	insets.bottom = hBar.getPreferredSize().height;
-	insets.right  = vBar.getPreferredSize().width;
-
-	int hVis = scrollpane.getHorizontalScrollBarVisibility(),
-	    vVis = scrollpane.getVerticalScrollBarVisibility();
+	ScrollBar hBar = scrollpane.getHorizontalScrollBar(),
+		      vBar = scrollpane.getVerticalScrollBar();
 	
-	Dimension preferred  = viewport.getPreferredSize().getCopy();
-	Dimension available  = $REFclientArea.getSize();
-	Dimension guaranteed = new Dimension(available).shrink(
-		    	(vVis == NEVER ? 0 : insets.right),
-		    	(hVis == NEVER ? 0 : insets.bottom));
+	ScrollPaneSolver.Result result = ScrollPaneSolver.solve(
+					parent.getClientArea(), 
+					viewport, 
+					scrollpane.getHorizontalScrollBarVisibility(),
+					scrollpane.getVerticalScrollBarVisibility(), 
+					vBar.getPreferredSize().width, 
+					hBar.getPreferredSize().height);
 	
-	//Adjust preferred size if tracking flags set
-	Dimension viewportMinSize = viewport.getMinimumSize();
-
-	if(viewport.getContentsTracksHeight()){
-		preferred.height = viewportMinSize.height;
-	}
-	if(viewport.getContentsTracksWidth()){
-		preferred.width = viewportMinSize.width;
-	}
-
-	boolean none = available.contains(preferred),
-	        both = !none && preferred.containsProper(guaranteed),
-		  showV= both || preferred.height > available.height,
-		  showH= both || preferred.width  > available.width;
-	
-	//Adjust for visibility override flags
-	showV = !(vVis == NEVER) && (showV  || vVis == ALWAYS);
-	showH = !(hVis == NEVER) && (showH  || hVis == ALWAYS);
-	
-	if (!showV) insets.right = 0;
-	if (!showH) insets.bottom = 0;
-	Rectangle bounds, viewportArea = $REFclientArea.getCropped(insets);
-
-	if (showV){
-		bounds = new Rectangle(viewportArea.right(), viewportArea.y,
-			insets.right, viewportArea.height);
+	if (result.showV){
+		Rectangle bounds = new Rectangle(result.viewportArea.right(), 
+		                                  result.viewportArea.y,
+		                                  result.insets.right, 
+		                                  result.viewportArea.height);
 		vBar.setBounds(bounds);
 		//vBar.setMaximum(preferred.height);
 	}
-	if (showH){
-		bounds = new Rectangle(viewportArea.x, viewportArea.bottom(),
-			viewportArea.width, insets.bottom);
+	if (result.showH){
+		Rectangle bounds = new Rectangle(result.viewportArea.x, 
+		                                  result.viewportArea.bottom(),
+		                                  result.viewportArea.width, 
+		                                  result.insets.bottom);
 		hBar.setBounds(bounds);
 		//hBar.setMaximum(preferred.width);
 	}
-	vBar.setVisible(showV);
-	hBar.setVisible(showH);
-	viewport.setBounds(viewportArea);
+	vBar.setVisible(result.showV);
+	hBar.setVisible(result.showH);
 	hBar.setPageIncrement(hBar.getRangeModel().getExtent());
 	vBar.setPageIncrement(vBar.getRangeModel().getExtent());
 }

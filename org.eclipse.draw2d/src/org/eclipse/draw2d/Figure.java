@@ -24,6 +24,7 @@ public class Figure
 {
 
 private static Rectangle PRIVATE_RECT = new Rectangle();
+private static Point PRIVATE_POINT = new Point();
 private static final int
 	FLAG_VALID = 1,
 	FLAG_OPAQUE = 1 << 1,
@@ -207,11 +208,9 @@ public void erase(){
  * Returns null if none found.
  */
 protected IFigure findDescendantAtExcluding(int x, int y, Collection c){
-	if(useLocalCoordinates()){
-		x -= (getBounds().x + getInsets().left);
-		y -= (getBounds().y + getInsets().top);
-	}
-	if(!getClientArea(Rectangle.SINGLETON).contains(x,y))
+	PRIVATE_POINT.setLocation(x, y);
+	translateFromParent(PRIVATE_POINT);
+	if(!getClientArea(Rectangle.SINGLETON).contains(PRIVATE_POINT))
 		return null;
 
 	FigureIterator iter = new FigureIterator(this);
@@ -219,8 +218,9 @@ protected IFigure findDescendantAtExcluding(int x, int y, Collection c){
 	while (iter.hasNext()){
 		fig = iter.nextFigure();
 		if (fig.isVisible()){
-			fig = fig.findFigureAtExcluding(x, y, c);
-			if (fig != null) return fig;
+			fig = fig.findFigureAtExcluding(PRIVATE_POINT.x, PRIVATE_POINT.y, c);
+			if (fig != null)
+				return fig;
 		}
 	}
 	//No descendants were found
@@ -267,18 +267,20 @@ public IFigure findMouseEventTargetAt(int x, int y){
 	return null;
 }
 
-IFigure findMouseEventTargetInDescendantsAt(int x, int y){
-	if(useLocalCoordinates()){
-		x -= (getBounds().x + getInsets().left);
-		y -= (getBounds().y + getInsets().top);
-	}
+protected IFigure findMouseEventTargetInDescendantsAt(int x, int y){
+	PRIVATE_POINT.setLocation(x, y);
+	translateFromParent(PRIVATE_POINT);
+
+	if(!getClientArea(Rectangle.SINGLETON).contains(PRIVATE_POINT))
+		return null;
+
 	FigureIterator iter = new FigureIterator(this);
 	IFigure fig;
 	while (iter.hasNext()){
 		fig = iter.nextFigure();
 		if (fig.isVisible() && fig.isEnabled()){
-			if (fig.containsPoint(x, y)){
-				fig = fig.findMouseEventTargetAt(x, y);
+			if (fig.containsPoint(PRIVATE_POINT.x, PRIVATE_POINT.y)){
+				fig = fig.findMouseEventTargetAt(PRIVATE_POINT.x, PRIVATE_POINT.y);
 				return fig;
 			}
 		}
@@ -375,7 +377,7 @@ public Rectangle getClientArea(Rectangle rect){
 	return rect;
 }
 
-public Rectangle getClientArea(){
+final public Rectangle getClientArea(){
 	return getClientArea(new Rectangle());
 }
 
@@ -467,24 +469,26 @@ public IFigure getParent(){
 	return parent;
 }
 
-public Dimension getPreferredSize(){
-	if (prefSize != null)
-		return prefSize;
-	if (getLayoutManager() != null){
-		Dimension d = getLayoutManager().getPreferredSize(this);
-		if (d != null) return d;
-	}
-	return getSize();
+public final Dimension getPreferredSize(){
+	return getPreferredSize(-1, -1);
 }
 
 /**
  * Returns the preferred size this Figure should be, using
- * width and height hints.
+ * width and height hints.  If a hint is less than or equal to 0 (usually, it's
+ * set to -1), it means that hint should be ignored.
  * 
  * @since 2.0
  */
 public Dimension getPreferredSize(int wHint, int hHint){
-	return getPreferredSize();
+	if (prefSize != null)
+		return prefSize;
+	if (getLayoutManager() != null){
+		Dimension d = getLayoutManager().getPreferredSize(this,wHint,hHint);
+		if (d != null)
+			return d;
+	}
+	return getSize();
 }
 
 /**
