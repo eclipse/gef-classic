@@ -33,6 +33,7 @@ public class RulerComposite
 	extends Composite
 {
 	
+private EditDomain rulerEditDomain;
 private GraphicalViewer left, top;
 private FigureCanvas editor;
 private GraphicalViewer diagramViewer;
@@ -85,7 +86,10 @@ private GraphicalViewer createRulerContainer(int orientation) {
 		canvas.getViewport().setVerticalRangeModel(
 				editor.getViewport().getVerticalRangeModel());
 	}
-	diagramViewer.getEditDomain().addViewer(viewer);
+	
+	if (rulerEditDomain == null)
+		rulerEditDomain = new EditDomain();
+	rulerEditDomain.addViewer(viewer);
 	return viewer;
 }
 
