@@ -27,8 +27,8 @@ public class ToolEntryEditPart
 class ToggleButtonTracker extends SingleSelectionTracker {
 	protected boolean handleButtonDown(int button) {
 		super.handleButtonDown(button);
-		getFigure().internalGetEventDispatcher().requestRemoveFocus(getFigure());
 		if (button == 1) {
+			getFigure().internalGetEventDispatcher().requestRemoveFocus(getFigure());
 			getButtonModel().setArmed(true);
 			getButtonModel().setPressed(true);
 		}
@@ -103,7 +103,6 @@ public IFigure createFigure() {
 	}
 	
 	customLabel = new DetailedLabelFigure();
-	customLabel.setBorder(new MarginBorder(1,1,0,0));
 	Clickable button = new InactiveToggleButton(customLabel);
 	button.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent event) {
