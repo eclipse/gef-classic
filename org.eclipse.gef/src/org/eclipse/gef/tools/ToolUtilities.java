@@ -16,7 +16,7 @@ import org.eclipse.gef.*;
 
 public class ToolUtilities {
 
-public static List getSelectionWithoutDependants(EditPartViewer viewer){
+public static List getSelectionWithoutDependants(EditPartViewer viewer) {
 	List selectedParts = viewer.getSelectedEditParts();
 	List result = new ArrayList();
 	for (int i=0; i<selectedParts.size(); i++) {
@@ -27,7 +27,7 @@ public static List getSelectionWithoutDependants(EditPartViewer viewer){
 	return result;
 }
 
-public static List getSelectionWithoutDependants(List selectedParts){
+public static List getSelectionWithoutDependants(List selectedParts) {
 	List result = new ArrayList();
 	for (int i=0; i<selectedParts.size(); i++) {
 		GraphicalEditPart editpart = (GraphicalEditPart)selectedParts.get(i);;
@@ -37,18 +37,18 @@ public static List getSelectionWithoutDependants(List selectedParts){
 	return result;
 }
 
-public static void filterEditPartsUnderstanding(List list, Request request){
+public static void filterEditPartsUnderstanding(List list, Request request) {
 	Iterator iter = list.iterator();
-	while (iter.hasNext()){
+	while (iter.hasNext()) {
 		EditPart ep = (EditPart)iter.next();
 		if (!ep.understandsRequest(request))
 			iter.remove();
 	}
 }
 
-private static boolean isAncestorContainedIn(Collection c, EditPart ep){
+private static boolean isAncestorContainedIn(Collection c, EditPart ep) {
 	ep = ep.getParent();
-	while (ep != null){
+	while (ep != null) {
 		if (c.contains(ep))
 			return true;
 		ep = ep.getParent();

@@ -292,6 +292,12 @@ protected void setAutoexposeHelper(AutoexposeHelper helper) {
 	Display.getCurrent().asyncExec(new QueuedAutoexpose());
 }
 
+/**
+ * Sets the target editpart.  If the target editpart is changing, this method will call
+ * {@link #handleExitingEditPart()} for the previous target if not <code>null</code>, and
+ * {@link #handleEnteredEditPart()} for the new target, if not <code>null</code>.
+ * @param editpart the new target
+ */
 protected void setTargetEditPart(EditPart editpart) {
 	if (editpart != targetEditPart) {
 		if (targetEditPart != null) {
