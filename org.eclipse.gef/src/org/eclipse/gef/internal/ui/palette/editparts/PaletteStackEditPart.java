@@ -12,6 +12,9 @@ package org.eclipse.gef.internal.ui.palette.editparts;
 
 import java.util.Iterator;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.jface.action.MenuManager;
@@ -20,6 +23,7 @@ import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Rectangle;
 
+import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.palette.*;
@@ -37,13 +41,77 @@ public class PaletteStackEditPart
 	extends PaletteEditPart
 {
 	
-private ActionListener actionListener = new ActionListener() {
+private PropertyChangeListener paletteLayoutListener = new PropertyChangeListener() {
+	public void propertyChange(PropertyChangeEvent event) {
+		if (event.getPropertyName().equals(PaletteViewerPreferences.PREFERENCE_LAYOUT)) {
+			int newLayoutMode = ((Integer)event.getNewValue()).intValue();
+			int oldLayoutMode = -1;
+			if (event.getOldValue() != null) 
+				oldLayoutMode = ((Integer)event.getOldValue()).intValue();
+			if (newLayoutMode == PaletteViewerPreferences.LAYOUT_LIST
+					|| newLayoutMode == PaletteViewerPreferences.LAYOUT_DETAILS) {
+				if (oldLayoutMode == -1 
+						|| oldLayoutMode == PaletteViewerPreferences.LAYOUT_COLUMNS
+						|| oldLayoutMode == PaletteViewerPreferences.LAYOUT_ICONS)
+					getFigure().add(arrowFigure, BorderLayout.RIGHT);
+			} else {
+				if (oldLayoutMode == -1
+						|| oldLayoutMode == PaletteViewerPreferences.LAYOUT_LIST
+						|| oldLayoutMode == PaletteViewerPreferences.LAYOUT_DETAILS)
+					getFigure().remove(arrowFigure);
+			}
+		}
+	}
+};
+
+private PropertyChangeListener stackListener = new PropertyChangeListener() {
 	
+	public void propertyChange(PropertyChangeEvent event) {
+		if (event.getPropertyName().equals(PaletteStack.PROPERTY_ACTIVE_ENTRY)) {
+			GraphicalEditPart part = null;
+			Clickable clickable = null;
+			
+			part = (GraphicalEditPart)getViewer().getEditPartRegistry().get(event.getNewValue());
+			clickable = (Clickable)part.getFigure();
+			clickable.setVisible(true);
+			clickable.addChangeListener(clickableListener);
+			activeFigure = clickable;
+			
+			if (event.getOldValue() != null) {
+				part = (GraphicalEditPart)getViewer().getEditPartRegistry().get(event.getOldValue());
+				clickable = (Clickable)part.getFigure();
+				clickable.setVisible(false);
+				clickable.removeChangeListener(clickableListener);
+			} else {
+				Iterator children = getChildren().iterator();
+				while (children.hasNext()) {
+					PaletteEditPart editPart = (PaletteEditPart)children.next();
+					
+					if (!editPart.equals(part))
+						editPart.getFigure().setVisible(false);
+				}
+			}
+			
+		}
+	}
+};
+
+private ChangeListener clickableListener = new ChangeListener() {
+	public void handleStateChanged(ChangeEvent event) {
+		if (event.getPropertyName().equals("mouseover"))
+			arrowFigure.getModel().setMouseOver(activeFigure.getModel().isMouseOver());
+		else if (event.getPropertyName().equals("armed"))
+			arrowFigure.getModel().setArmed(activeFigure.getModel().isArmed());
+	}
+};
+
+private ActionListener actionListener = new ActionListener() {
 	public void actionPerformed(ActionEvent event) {
 		openMenu();		
 	}
 };
 
+private Clickable activeFigure;
 private RolloverArrow arrowFigure;
 private Figure contentsFigure;
 private Menu menu;
@@ -54,10 +122,8 @@ private PaletteListener paletteListener = new PaletteListener() {
 		if (getStack().getChildren().contains(tool)) {
 			if (!arrowFigure.getModel().isSelected())
 				arrowFigure.getModel().setSelected(true);
-			if (!getStack().getActiveEntry().equals(tool)) {
+			if (!getStack().getActiveEntry().equals(tool))
 				getStack().setActiveEntry(tool);
-				refreshVisuals();
-			}
 		} else
 			arrowFigure.getModel().setSelected(false);
 	}	
@@ -70,13 +136,16 @@ private PaletteListener paletteListener = new PaletteListener() {
  */
 public PaletteStackEditPart(PaletteStack model) {
 	super(model);
+	model.addPropertyChangeListener(stackListener);
 }
 
 /**
  * @see org.eclipse.gef.EditPart#activate()
  */
 public void activate() {
+	getStack().getActiveEntry();
 	getPaletteViewer().addPaletteListener(paletteListener);
+	getPaletteViewer().getPaletteViewerPreferences().addPropertyChangeListener(paletteLayoutListener);
 	super.activate();
 }
 
@@ -113,17 +182,6 @@ public IFigure createFigure() {
 	};
 	figure.setLayoutManager(new BorderLayout());
 	
-	figure.addMouseMotionListener(new MouseMotionListener.Stub() {
-		
-		public void mouseEntered(MouseEvent me) {
-			arrowFigure.getModel().setMouseOver(true);
-		}
-		
-		public void mouseExited(MouseEvent me) {
-			arrowFigure.getModel().setMouseOver(false);
-		}
-	});
-	
 	contentsFigure = new Figure();
 	
 	StackLayout stackLayout = new StackLayout();
@@ -136,10 +194,12 @@ public IFigure createFigure() {
 	
 	arrowFigure = new RolloverArrow();
 	
-	contentsFigure.add(arrowFigure);
 	arrowFigure.addActionListener(actionListener);
 
-	figure.add(arrowFigure, BorderLayout.RIGHT);
+	int layoutMode = getPreferenceSource().getLayoutSetting();
+	if (layoutMode == PaletteViewerPreferences.LAYOUT_LIST
+	  || layoutMode == PaletteViewerPreferences.LAYOUT_DETAILS)
+		figure.add(arrowFigure, BorderLayout.RIGHT);
 	return figure;
 }
 
@@ -147,7 +207,11 @@ public IFigure createFigure() {
  * @see org.eclipse.gef.EditPart#deactivate()
  */
 public void deactivate() {
+	// remove active figure listner?
+	arrowFigure.removeActionListener(actionListener);
+	getStack().removePropertyChangeListener(stackListener);
 	getPaletteViewer().removePaletteListener(paletteListener);
+	getPaletteViewer().getPaletteViewerPreferences().removePropertyChangeListener(paletteLayoutListener);
 	super.deactivate();
 }
 
@@ -217,42 +281,6 @@ public void openMenu() {
 protected void refreshChildren() {
 	super.refreshChildren();
 	refreshVisuals();
-}
-
-/**
- * @see org.eclipse.gef.editparts.AbstractEditPart#refreshVisuals()
- */
-protected void refreshVisuals() {
-	
-	// remove / add arrow figure as necessary.
-	int layoutMode = getPreferenceSource().getLayoutSetting();
-	if (layoutMode == PaletteViewerPreferences.LAYOUT_LIST
-	  || layoutMode == PaletteViewerPreferences.LAYOUT_DETAILS) {
-		if (!getFigure().getChildren().contains(arrowFigure))
-			getFigure().add(arrowFigure, BorderLayout.RIGHT);
-	} else {
-		if (getFigure().getChildren().contains(arrowFigure))
-			getFigure().remove(arrowFigure);		
-	}	
-	
-	// make other figures invisible
-	if (getChildren().size() > 0) {
-		getFigure().setVisible(true);
-		Iterator children = getChildren().iterator();
-		while (children.hasNext()) {
-			PaletteEditPart part = (PaletteEditPart)children.next();
-			PaletteEntry entry = (PaletteEntry)part.getModel();
-			
-			if (getStack().getActiveEntry().equals(entry))
-				part.getFigure().setVisible(true);
-			else
-				part.getFigure().setVisible(false);
-			
-		}
-	} else
-		getFigure().setVisible(false);
-	
-	super.refreshVisuals();
 }
 
 /**
