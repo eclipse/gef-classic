@@ -61,7 +61,8 @@ private ZoomListener zoomListener = new ZoomListener() {
 public RulerFigure(boolean isHorizontal, int measurementUnit) {
 	setHorizontal(isHorizontal);
 	setUnit(measurementUnit);
-	setBackgroundColor(ColorConstants.white);
+	setBackgroundColor(ColorConstants.listBackground);
+	setForegroundColor(ColorConstants.listForeground);
 	setOpaque(true);
 	setLayoutManager(new RulerLayout());
 }
