@@ -24,8 +24,8 @@ public SliderPaletteEditPart(PaletteRoot paletteRoot){
 public IFigure createFigure(){
 	Figure figure = new Figure();
 	figure.setBorder(new MarginBorder(2,0,2,0));
-	figure.setForegroundColor(ColorConstants.buttonDarker);
-	figure.setBackgroundColor(ColorConstants.white);
+	figure.setForegroundColor(ColorConstants.listForeground);
+	figure.setBackgroundColor(ColorConstants.listBackground);
 	ToolbarLayout layout = new ToolbarLayout();
 	layout.setSpacing(3);
 	figure.setLayoutManager(layout);

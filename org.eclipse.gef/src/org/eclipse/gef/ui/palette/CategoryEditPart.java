@@ -117,7 +117,8 @@ private Toggle createCollapseToggle(){
 
 public IFigure createFigure(){
 	AnimatableFigure mainFigure = new AnimatableFigure();
-	mainFigure.setBackgroundColor(ColorConstants.white);
+	mainFigure.setBackgroundColor(ColorConstants.listBackground);
+	mainFigure.setForegroundColor(ColorConstants.listForeground);
 	mainFigure.setLayoutManager(new ToolbarLayout());
 
 	collapseToggle = createCollapseToggle();
