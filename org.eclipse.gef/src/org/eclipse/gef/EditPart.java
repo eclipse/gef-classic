@@ -30,7 +30,7 @@ import org.eclipse.gef.commands.Command;
  * used mostly by Tools, EditPolicies, and other EditParts. CHANGES are made to the  
  * model, not the EditPart.
  * <P>
- * Most interaction with EditParts is acheived using {@link Request Requests}. A Request
+ * Most interaction with EditParts is achieved using {@link Request Requests}. A Request
  * specifies the type of interaction.  Requests are used in {@link
  * #getTargetEditPart(Request) targeting}, filtering the selection (using {@link
  * #understandsRequest(Request)}), graphical {@link #showSourceFeedback(Request)} 
