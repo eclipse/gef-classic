@@ -17,6 +17,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
+import org.eclipse.draw2d.PositionConstants;
+
 import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.ui.palette.*;
@@ -58,12 +60,20 @@ public void createPartControl(Composite parent) {
 		page = null;
 	}
 	splitter.setFixedSize(getInitialPaletteSize());
+	splitter.setDockLocation(getInitialDockLocation());
 	splitter.addPropertyChangeListener(new PropertyChangeListener() {
 		public void propertyChange(PropertyChangeEvent evt) {
-			if (evt.getPropertyName().equals(FlyoutPaletteComposite.PROPERTY_DEFAULT_STATE))
-				handlePaletteDefaultStateChanged(((Integer)evt.getNewValue()).intValue());
-			else
+			String property = evt.getPropertyName();
+			if (property.equals(FlyoutPaletteComposite.PROPERTY_STATE)) {
+				if (!splitter.isInState(FlyoutPaletteComposite.FLYOUT_EXPANDED 
+						| FlyoutPaletteComposite.IN_VIEW)) {
+					handlePaletteDefaultStateChanged(
+							((Integer)evt.getNewValue()).intValue());
+				}
+			} else if (property.equals(FlyoutPaletteComposite.PROPERTY_FIXEDSIZE))
 				handlePaletteResized(((Integer)evt.getNewValue()).intValue());
+			else if (property.equals(FlyoutPaletteComposite.PROPERTY_DOCK_LOCATION))
+				handleDockLocationChanged(((Integer)evt.getNewValue()).intValue());
 		}
 	});
 }
@@ -95,6 +105,10 @@ protected final PaletteViewerProvider getPaletteViewerProvider() {
 	return provider;
 }
 
+protected int getInitialDockLocation() {
+	return PositionConstants.EAST;
+}
+
 /**
  * Returns the initial palette size in pixels. Subclasses may override this method to
  * return a persisted value.
@@ -106,8 +120,10 @@ protected int getInitialPaletteSize() {
 }
 
 protected int getInitialPaletteState() {
-	return FlyoutPaletteComposite.FLYOVER_COLLAPSED;
+	return FlyoutPaletteComposite.FLYOUT_COLLAPSED;
 }
+
+protected abstract void handleDockLocationChanged(int newDockLocation);
 
 protected abstract void handlePaletteDefaultStateChanged(int newState);
 

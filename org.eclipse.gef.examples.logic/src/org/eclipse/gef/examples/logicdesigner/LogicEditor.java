@@ -313,6 +313,7 @@ private boolean savePreviouslyNeeded = false;
 private ResourceTracker resourceListener = new ResourceTracker();
 private RulerComposite rulerComp;
 
+protected static final String PALETTE_DOCK_LOCATION = "Dock location"; //$NON-NLS-1$
 protected static final String PALETTE_SIZE = "Palette Size"; //$NON-NLS-1$
 protected static final String PALETTE_STATE = "Palette state"; //$NON-NLS-1$
 protected static final int DEFAULT_PALETTE_SIZE = 130;
@@ -467,6 +468,10 @@ protected Control getGraphicalControl() {
 	return rulerComp;
 }
 
+protected int getInitialDockLocation() {
+	return LogicPlugin.getDefault().getPreferenceStore().getInt(PALETTE_DOCK_LOCATION);
+}
+
 /**
  * @see org.eclipse.gef.ui.parts.GraphicalEditorWithPalette#getInitialPaletteSize()
  */
@@ -476,6 +481,11 @@ protected int getInitialPaletteSize() {
 
 protected int getInitialPaletteState() {
 	return LogicPlugin.getDefault().getPreferenceStore().getInt(PALETTE_STATE);
+}
+
+protected void handleDockLocationChanged(int newDockLocation) {
+	LogicPlugin.getDefault().getPreferenceStore()
+			.setValue(PALETTE_DOCK_LOCATION, newDockLocation);
 }
 
 protected void handlePaletteDefaultStateChanged(int newState) {
