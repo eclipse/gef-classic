@@ -60,6 +60,9 @@ protected PaletteViewerProvider createPaletteViewerProvider() {
 	return new PaletteViewerProvider(getGraphicalViewer().getEditDomain());
 }
 
+/**
+ * @return a newly-created {@link CustomPalettePage}
+ */
 protected CustomPalettePage createPalettePage() {
 	return new CustomPalettePage(getPaletteViewerProvider());
 }
@@ -114,6 +117,8 @@ protected abstract PaletteRoot getPaletteRoot();
  * Returns the palette viewer provider that is used to create palettes for the view and
  * the flyout.  Creates one if it doesn't already exist.
  * 
+ * @return	the PaletteViewerProvider that can be used to create PaletteViewers for
+ * 			this editor
  * @see	#createPaletteViewerProvider()
  */
 protected final PaletteViewerProvider getPaletteViewerProvider() {
@@ -132,20 +137,42 @@ protected void setEditDomain(DefaultEditDomain ed) {
 	getEditDomain().setPaletteRoot(getPaletteRoot());
 }
 
+/**
+ * A custom PalettePage that helps GraphicalEditorWithFlyoutPalette keep the two
+ * PaletteViewers (one displayed in the editor and the other displayed in the PaletteView)
+ * in sync when switching from one to the other (i.e., it helps maintain state across the
+ * two viewers).
+ * 
+ * @author Pratik Shah
+ * @since 3.0
+ */
 protected class CustomPalettePage extends PaletteViewerPage {
+	/**
+	 * Constructor
+	 * @param provider	the provider used to create a PaletteViewer
+	 */
 	public CustomPalettePage(PaletteViewerProvider provider) {
 		super(provider);
 	}
+	/**
+	 * @see org.eclipse.ui.part.IPage#createControl(org.eclipse.swt.widgets.Composite)
+	 */
 	public void createControl(Composite parent) {
 		super.createControl(parent);
 		if (splitter != null)
 			splitter.setExternalViewer(viewer);
 	}
+	/**
+	 * @see org.eclipse.ui.part.IPage#dispose()
+	 */
 	public void dispose() {
 		if (splitter != null)
 			splitter.setExternalViewer(null);
 		super.dispose();
 	}
+	/**
+	 * @return	the PaletteViewer created and displayed by this page
+	 */
 	public PaletteViewer getPaletteViewer() {
 		return viewer;
 	}
