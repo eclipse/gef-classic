@@ -231,7 +231,7 @@ private Control createFlyoutControlButton(Composite parent) {
 }
 
 private Composite createPaletteContainer() {
-	return new PaletteContainer(this, SWT.NONE);
+	return new PaletteComposite(this, SWT.NONE);
 }
 
 private Control createSash() {
@@ -618,7 +618,7 @@ private class Sash extends Composite {
 	
 	private class SashDragManager 
 			extends MouseAdapter 
-			implements MouseMoveListener, Listener {
+			implements MouseMoveListener {
 		protected boolean dragging = false;
 		protected boolean correctState = false;
 		protected int origX;
@@ -633,27 +633,29 @@ private class Sash extends Composite {
 			}
 		};
 		public SashDragManager() {
-			Sash.this.addListener(SWT.DragDetect, this);
 			Sash.this.addMouseMoveListener(this);
 			Sash.this.addMouseListener(this);
 		}
-		public void handleEvent(Event event) {
+		public void mouseDown(MouseEvent me) {
+			if (me.button != 1)
+				return;
 			dragging = true;
 			correctState = isInState(STATE_EXPANDED | STATE_PINNED_OPEN);
-			origX = event.x;
+			origX = me.x;
 			Display.getCurrent().addFilter(SWT.KeyDown, keyListener);
 		}
-		public void mouseMove(MouseEvent e) {
+		public void mouseMove(MouseEvent me) {
 			if (dragging && correctState)
-				handleSashDragged(e.x - origX);
+				handleSashDragged(me.x - origX);
 		}
 		public void mouseUp(MouseEvent me) {
 			Display.getCurrent().removeFilter(SWT.KeyDown, keyListener);
-			if (!dragging && me.button == 1)
+			if (!dragging && me.button == 1) {
 				if (isInState(STATE_COLLAPSED))
 					setState(STATE_EXPANDED);
 				else if (isInState(STATE_EXPANDED))
 					setState(STATE_COLLAPSED);
+			}
 			dragging = false;
 			correctState = false;
 		}
@@ -796,9 +798,9 @@ private class TitleDragManager
 	}
 }
 
-private class PaletteContainer extends Composite {
+private class PaletteComposite extends Composite {
 	protected Control button, title;
-	public PaletteContainer(Composite parent, int style) {
+	public PaletteComposite(Composite parent, int style) {
 		super(parent, style);
 		createComponents();
 
@@ -865,9 +867,9 @@ private class PaletteContainer extends Composite {
 	}
 }
 
-private class DragFigure 
+private class RotatedTitleLabel 
 		extends ImageFigure {
-	public DragFigure() {
+	public RotatedTitleLabel() {
 		FlyoutPaletteComposite.this.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
 				if (getImage() != null)
@@ -891,22 +893,17 @@ private class DragFigure
 	protected void updateImage() {
 		if (getImage() != null)
 			getImage().dispose();
-		/*
-		 * @TODO:Pratik  Add this as a utility method to ImageUtilities or 
-		 * FigureUtilities?
-		 */
-		Image img = null;
 		IFigure fig = new TitleLabel(false);
 		fig.setFont(getFont());
-		fig.setOpaque(true);
 		fig.setBackgroundColor(ColorConstants.button);
+		fig.setOpaque(true);
 		// This is a hack.  TitleLabel does not return a proper preferred size, since
 		// its getInsets() method depends on its current size.  To make it work properly,
 		// we first make the size really big.
 		fig.setSize(Integer.MAX_VALUE, Integer.MAX_VALUE);
 		Dimension imageSize = fig.getPreferredSize(-1, -1);
 		fig.setSize(imageSize);
-		img = new Image(null, imageSize.width, imageSize.height);
+		Image img = new Image(null, imageSize.width, imageSize.height);
 		GC gc = new GC(img);
 		Graphics graphics = new SWTGraphics(gc);
 		fig.paint(graphics);
@@ -932,6 +929,7 @@ private static class TitleLabel extends Label {
 		Label tooltip = new Label(getText());
 		tooltip.setBorder(TOOL_TIP_BORDER);
 		setToolTip(tooltip);
+		setForegroundColor(ColorConstants.listForeground);
 	}
 	public Insets getInsets() {
 		Insets insets = super.getInsets();
@@ -1101,7 +1099,7 @@ private class TitleCanvas extends Canvas {
 		if (isHorizontal)
 			fig = new TitleLabel(true);
 		else
-			fig = new DragFigure();
+			fig = new RotatedTitleLabel();
 		final IFigure contents = fig;
 		contents.setFont(JFaceResources.getBannerFont());
 		contents.setRequestFocusEnabled(true);
