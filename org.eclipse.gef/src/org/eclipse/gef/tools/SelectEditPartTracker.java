@@ -154,7 +154,7 @@ protected void performConditionalSelection() {
 }
 
 /**
- * Creates a {@link DirectEditRequest} and sends it to a {@link DelayedDirectEditHelper}
+ * Creates a {@link DirectEditRequest} and sends it to a DelayedDirectEditHelper
  * to allow the user to directly edit the edit part.
  */
 protected void performDirectEdit() {
