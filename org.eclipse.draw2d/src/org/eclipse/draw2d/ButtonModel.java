@@ -429,7 +429,7 @@ public void setMouseOver(boolean value) {
  * @param value The value the pressed property will be set to
  * @since 2.0
  */
-protected void setPressed(boolean value) {
+public void setPressed(boolean value) {
 	if (isPressed() == value)
 		return;
 	setFlag(PRESSED_FLAG, value);
