@@ -20,7 +20,7 @@ public class RedoRetargetAction extends LabelRetargetAction {
 public RedoRetargetAction() {
 	super(IWorkbenchActionConstants.REDO,
 			MessageFormat.format(GEFMessages.RedoAction_ActionLabelText, 
-									new Object[] {""}).trim());
+									new Object[] {""}).trim()); //$NON-NLS-1$
 	setImageDescriptor(WorkbenchImages.getImageDescriptor(
 								IWorkbenchGraphicConstants.IMG_CTOOL_REDO_EDIT));
 	setHoverImageDescriptor(WorkbenchImages.getImageDescriptor(
