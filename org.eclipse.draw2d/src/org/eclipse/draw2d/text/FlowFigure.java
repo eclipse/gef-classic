@@ -46,9 +46,9 @@ public FlowFigure() {
  * @see org.eclipse.draw2d.IFigure#add(IFigure, Object, int) */
 public void add(IFigure child, Object constraint, int index) {
 	super.add(child, constraint, index);
-	FlowFigure ff = (FlowFigure) child;
+	//If this layout manager is a FlowContext, then the child *must* be a FlowFigure
 	if (getLayoutManager() instanceof FlowContext)
-		ff.setFlowContext((FlowContext)getLayoutManager());
+		((FlowFigure)child).setFlowContext((FlowContext)getLayoutManager());
 	revalidateBidi(this);
 }
 
