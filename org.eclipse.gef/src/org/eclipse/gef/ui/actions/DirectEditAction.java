@@ -19,10 +19,6 @@ public DirectEditAction(IEditorPart editor){
 	super(editor);
 }
 
-public DirectEditAction(IEditorPart editor, int style){
-	super(editor, style);
-}
-
 /**
  * returns <code>true</code> if there is exactly 1 EditPart selected that understand DirectEdit.
  */

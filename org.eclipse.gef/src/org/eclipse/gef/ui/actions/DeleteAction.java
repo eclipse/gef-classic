@@ -30,33 +30,10 @@ public static final String ID = org.eclipse.ui.IWorkbenchActionConstants.DELETE;
 /**
  * Creates a <code>DeleteAction</code> with a default label.
  *
- * @param editor  The editor this action will be associated with.
- * @param style  The style bitmask.
- */
-public DeleteAction(IEditorPart editor, int style) {
-	super(editor, style);
-}
-
-/**
- * Creates a <code>DeleteAction</code> with a default label.
- *
  * @param editor The editor this action will be associated with.
  */
 public DeleteAction(IEditorPart editor) {
 	super(editor);
-}
-
-/**
- * Creates a <code>DeleteAction</code> with the given label.
- *
- * @param editor  The editor this action will be associated with.
- * @param style  The style bitmask.
- * @param label   The label to be displayed for this action.
- */
-public DeleteAction(IEditorPart editor, int style, String label) {
-	super(editor, style);
-	setText(label);
-	setToolTipText(label);
 }
 
 /**

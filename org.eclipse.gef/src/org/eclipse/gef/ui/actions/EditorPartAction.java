@@ -28,42 +28,19 @@ public abstract class EditorPartAction
 private IEditorPart editorPart;
 
 /**
- * A style bitmask.
- */
-protected final int style;
-
-{
-	init();
-}
-
-/**
- * Creates a new EditorPartAction and sets the editor and style.
- */
-public EditorPartAction(IEditorPart editor, int style){
-	this.style = checkStyle(style);
-	setEditorPart(editor);
-}
-
-/**
  * Creates a new EditorPartAction and sets the editor.
  *
  * @param editor The editor to be associated with this action.
  */
 public EditorPartAction(IEditorPart editor) {
-	this(editor, 0);
+	setEditorPart(editor);
+	init();
 }
 
 /**
  * Calculates and returns the enabled state of this action.  
  */
 protected abstract boolean calculateEnabled();
-
-/**
- * Checks the given style to ensure it is not invalid.
- */
-protected int checkStyle(int style){
-	return style;
-}
 
 /**
  * Called when the action is about to be disposed.  Subclasses

@@ -31,17 +31,6 @@ private ISelection selection;
  * given editor.
  *
  * @param editor The editor that this action is associated with.
- * @param style  The style bitmask.
- */
-public SelectionAction(IEditorPart editor, int style) {
-	super(editor, style);
-}
-
-/**
- * Creates a <code>SelectionAction</code> and associates it with the 
- * given editor.
- *
- * @param editor The editor that this action is associated with.
  */
 public SelectionAction(IEditorPart editor) {
 	super(editor);

@@ -23,21 +23,15 @@ import org.eclipse.gef.tools.ToolUtilities;
 
 final public class AlignmentAction extends SelectionAction {
 
-public static String	ID_ALIGN_LEFT   = "$align left",	//$NON-NLS-1$
-						ID_ALIGN_RIGHT  = "$align right",	//$NON-NLS-1$
-						ID_ALIGN_TOP    = "$align top",		//$NON-NLS-1$
-						ID_ALIGN_BOTTOM = "$align bottom", 	//$NON-NLS-1$
-						ID_ALIGN_CENTER = "$align center", 	//$NON-NLS-1$
-						ID_ALIGN_MIDDLE = "$align middle"; 	//$NON-NLS-1$
+public static final String ID_ALIGN_LEFT   = "eclipse.gef.align_left";//$NON-NLS-1$
+public static final String ID_ALIGN_RIGHT  = "eclipse.gef.align_right";//$NON-NLS-1$
+public static final String ID_ALIGN_TOP    = "eclipse.gef.align_top";//$NON-NLS-1$
+public static final String ID_ALIGN_BOTTOM = "eclipse.gef.align_bottom";//$NON-NLS-1$
+public static final String ID_ALIGN_CENTER = "eclipse.gef.align_center";//$NON-NLS-1$
+public static final String ID_ALIGN_MIDDLE = "eclipse.gef.align_middle";//$NON-NLS-1$
 
 private List operationSet;
 private int alignment;
-
-public AlignmentAction(IEditorPart editor, int style, int align) {
-	super(editor, style);
-	alignment = align;
-	init();
-}
 
 public AlignmentAction(IEditorPart editor, int align) {
 	super(editor);
