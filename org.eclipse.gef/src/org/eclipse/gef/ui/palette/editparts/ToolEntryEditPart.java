@@ -7,59 +7,67 @@ package org.eclipse.gef.ui.palette.editparts;
  */
 
 import org.eclipse.swt.accessibility.*;
-import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.graphics.Image;
 
 import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.Insets;
+import org.eclipse.draw2d.geometry.Point;
+
+import org.eclipse.gef.*;
 import org.eclipse.gef.AccessibleEditPart;
-import org.eclipse.gef.ui.palette.PaletteViewer;
+import org.eclipse.gef.Request;
+import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.palette.PaletteEntry;
+import org.eclipse.gef.palette.ToolEntry;
 
 public class ToolEntryEditPart
 	extends PaletteEditPart
 {
 
-private static final Color COLOR_ENTRY_SELECTED = ColorConstants.button;
+class ToggleButtonTracker extends SingleSelectionTracker {
+	protected boolean handleButtonDown(int button) {
+		super.handleButtonDown(button);
+		getFigure().internalGetEventDispatcher().requestRemoveFocus(getFigure());
+		if (button == 1) {
+			getButtonModel().setArmed(true);
+			getButtonModel().setPressed(true);
+		}
+		return true;
+	}
+	protected boolean handleButtonUp(int button) {
+		if (button == 1) {
+			getButtonModel().setPressed(false);
+			getButtonModel().setArmed(false);
+		}
+		return super.handleButtonUp(button);
+	}
+	protected boolean handleDrag() {
+		Point where = getLocation();
+		getFigure().translateToRelative(where);
+		boolean over = getFigure().containsPoint(where);
+		getButtonModel().setMouseOver(over);
+		getButtonModel().setArmed(over);
+		return super.handleDrag();
+	}
+	protected boolean handleNativeDragStarted(DragSourceEvent event) {
+		getButtonModel().setPressed(false);
+		getButtonModel().setArmed(false);
+		return true;
+	}
 
-private static final Border BORDER_LABEL_MARGIN = new MarginBorder(new Insets(1,1,1,2));
+	protected boolean handleNativeDragFinished(DragSourceEvent event) {
+		getPaletteViewer().setMode(null);
+		return true;
+	}
+}
 
-private ToggleButton toolTipButton;
+private static final Border BORDER_LABEL_MARGIN = new MarginBorder(new Insets(2,2,2,3));
+
+private DetailedLabelFigure customLabel;
 
 public ToolEntryEditPart(PaletteEntry paletteEntry) {
 	super(paletteEntry);
-}
-
-public void activate() {
-	super.activate();
-	
-	final Clickable button = (Clickable)getFigure();
-//  	final DetailedLabelFigure buttonLabel = (DetailedLabelFigure)button.getChildren().get(0);	
-//	final Control ctrl = getViewer().getControl();
-	
-//	button.addMouseMotionListener(new MouseMotionListener.Stub(){
-//		private EditPartTipHelper tipHelper;
-//		
-//		public void mouseEntered(MouseEvent e){
-//			/* Only show tooltip if the buttton's text is truncated */
-//			if(buttonLabel.isTextTruncated()){
-//				tipHelper = new EditPartTipHelper(ctrl);
-//				tipHelper.setBackgroundColor(button.getParent().getBackgroundColor());
-//				Point buttonLoc = ((Figure)(button)).getLocation();
-//				org.eclipse.swt.graphics.Point absolute;
-//				absolute = ctrl.toDisplay(new org.eclipse.swt.graphics.Point(buttonLoc.x, 
-//														    buttonLoc.y));
-//				toolTipButton.getModel().setMouseOver(true);
-//				toolTipButton.getModel().setSelected(button.isSelected());
-//				tipHelper.displayToolTipAt(toolTipButton, absolute.x, absolute.y);
-//			}
-//		}
-//	});
-	button.addFocusListener(new FocusListener.Stub() {
-		public void focusGained(FocusEvent fe) {
-			getRoot().getViewer().select(ToolEntryEditPart.this);
-		}
-	});
 }
 
 protected AccessibleEditPart createAccessible() {
@@ -73,6 +81,7 @@ protected AccessibleEditPart createAccessible() {
 		}
 
 		public void getRole(AccessibleControlEvent e) {
+			//Is this correct?
 			e.detail = ACC.ROLE_PUSHBUTTON;
 		}
 
@@ -84,48 +93,39 @@ protected AccessibleEditPart createAccessible() {
 	};
 }
 
-public IFigure createFigure() {
-	final Clickable button = new ToggleButton(createLabel());
-	button.setBorder(new ButtonBorder(ButtonBorder.SCHEMES.TOOLBAR));
-	button.setRolloverEnabled(true);
-	button.setBackgroundColor(COLOR_ENTRY_SELECTED);
-	button.setOpaque(false);
+static final Border BORDER_TOGGLE = new ButtonBorder(ButtonBorder.SCHEMES.TOOLBAR);
 
-	button.addChangeListener(new ChangeListener(){
-		public void handleStateChanged(ChangeEvent e) {
-			if (e.getPropertyName().equals("selected")) { //$NON-NLS-1$
-				button.setOpaque(button.isSelected());
-				button.setForegroundColor(
-					button.isSelected() ? ColorConstants.black : null);
-				if (button.isSelected())
-					getPaletteViewer().setSelection(getPaletteEntry());
-			}
+public IFigure createFigure() {
+	class InactiveToggleButton extends ToggleButton {
+		InactiveToggleButton(IFigure contents) {
+			super(contents);
+			setRolloverEnabled(true);
+			setBorder(BORDER_TOGGLE);
+			setOpaque(false);
+		}
+		public IFigure findMouseEventTargetAt(int x, int y) {
+			return null;
+		}
+	}
+	
+	customLabel = new DetailedLabelFigure();
+	customLabel.setBorder(new MarginBorder(1,1,0,0));
+	Clickable button = new InactiveToggleButton(customLabel);
+	button.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent event) {
+			getPaletteViewer().setMode(getToolEntry());
 		}
 	});
 	return button;
 }
 
-protected Figure createLabel() {
-	return new DetailedLabelFigure();
-}
-
-private void createToolTipButton() {
-	final ToggleButton tipButton = ((ToggleButton)createFigure());
-	setToolTipButton(tipButton);
-		
-	/* When toolTipButton is clicked, click on the underlying button as well */
-	tipButton.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-			((Clickable)getFigure()).doClick();
-			((Clickable)getFigure()).requestFocus();
-			tipButton.setSelected(((Clickable)getFigure()).isSelected());
-		}
-	});
-}
-
-private ButtonGroup getButtonGroup() {
-	PaletteViewer pv = (PaletteViewer)getViewer();
-	return pv.getButtonGroup();
+/**
+ * @see org.eclipse.gef.EditPart#eraseTargetFeedback(Request)
+ */
+public void eraseTargetFeedback(Request request) {
+	if (RequestConstants.REQ_SELECTION.equals(request.getType()))
+		getButtonModel().setMouseOver(false);
+	super.eraseTargetFeedback(request);
 }
 
 private ButtonModel getButtonModel() {
@@ -133,40 +133,45 @@ private ButtonModel getButtonModel() {
 	return c.getModel();
 }
 
-private PaletteViewer getPaletteViewer() {
-	return (PaletteViewer)getViewer();
+/**
+ * @see org.eclipse.gef.ui.palette.editparts.PaletteEditPart#getDragTracker(Request)
+ */
+public DragTracker getDragTracker(Request request) {
+	return new ToggleButtonTracker();
 }
 
-private ToggleButton getToolTipButton() {
-	if (toolTipButton == null)
-		createToolTipButton();	
-	return toolTipButton;
-}	
+private ToolEntry getToolEntry() {
+	return (ToolEntry)getPaletteEntry();
+}
 
+/**
+ * @see org.eclipse.gef.editparts.AbstractEditPart#refreshVisuals()
+ */
 protected void refreshVisuals() {
-	Clickable button = (Clickable)getFigure();
 	PaletteEntry entry = getPaletteEntry();
 
-	DetailedLabelFigure fig = (DetailedLabelFigure)(button.getChildren().get(0));
-	fig.setName(entry.getLabel());
-	fig.setDescription(entry.getDescription());
+	customLabel.setName(entry.getLabel());
+	customLabel.setDescription(entry.getDescription());
 	if (getPreferenceSource().useLargeIcons())
 		setImageDescriptor(entry.getLargeIcon());
 	else
 		setImageDescriptor(entry.getSmallIcon());
-	fig.setLayoutMode(getPreferenceSource().getLayoutSetting());	
+	customLabel.setLayoutMode(getPreferenceSource().getLayoutSetting());	
 	super.refreshVisuals();	
 }
 
-protected void register() {
-	super.register();
-	getButtonGroup().add(getButtonModel());
-	if (getPaletteEntry().isDefault())
-		getButtonGroup().setDefault(getButtonModel());
+/**
+ * @see org.eclipse.gef.EditPart#removeNotify()
+ */
+public void removeNotify() {
+	if (isActive())
+		getPaletteViewer().setMode(null);
+	super.removeNotify();
 }
 
-public void select() {
-	getButtonModel().setSelected(true);
+public void setActive(boolean value) {
+	getButtonModel().setSelected(value);
+	getFigure().setOpaque(value);
 }
 
 /**
@@ -180,17 +185,20 @@ protected void setImageInFigure(Image image) {
 /** * @see org.eclipse.gef.EditPart#setSelected(int) */
 public void setSelected(int value) {
 	super.setSelected(value);
-	if (value == SELECTED_PRIMARY)
+	if (value == SELECTED_PRIMARY
+	  && getPaletteViewer().getControl() != null
+	  && !getPaletteViewer().getControl().isDisposed()
+	  && getPaletteViewer().getControl().isFocusControl())
 		getFigure().requestFocus();
 }
 
-private void setToolTipButton(ToggleButton button) {
-	toolTipButton = button;
-}
-
-protected void unregister() {
-	getButtonGroup().remove(getButtonModel());
-	super.unregister();
+/**
+ * @see org.eclipse.gef.EditPart#showTargetFeedback(Request)
+ */
+public void showTargetFeedback(Request request) {
+	if (RequestConstants.REQ_SELECTION.equals(request.getType()))
+		getButtonModel().setMouseOver(true);
+	super.showTargetFeedback(request);
 }
 
 }

@@ -6,7 +6,6 @@ package org.eclipse.gef.ui.palette.editparts;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-
 import org.eclipse.swt.accessibility.ACC;
 import org.eclipse.swt.accessibility.AccessibleControlEvent;
 import org.eclipse.swt.accessibility.AccessibleEvent;
@@ -19,23 +18,23 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.AccessibleEditPart;
 import org.eclipse.gef.ExposeHelper;
 import org.eclipse.gef.editparts.ViewportExposeHelper;
-import org.eclipse.gef.palette.PaletteCategory;
+import org.eclipse.gef.palette.PaletteDrawer;
 
 /**
- * EditPart for a PaletteCategory
+ * EditPart for a PaletteDrawer
  * 
  * @author Pratik Shah
  */
-public class CategoryEditPart 
+public class DrawerEditPart 
 	extends PaletteEditPart
 {
 
 /**
  * Constructor
  * 
- * @param category	The PaletteCategory that this EditPart is representing
+ * @param category	The PaletteDrawer that this EditPart is representing
  */
-public CategoryEditPart(PaletteCategory category) {
+public DrawerEditPart(PaletteDrawer category) {
 	super(category);
 }
 
@@ -43,7 +42,7 @@ public CategoryEditPart(PaletteCategory category) {
  * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
  */
 public IFigure createFigure() {
-	CategoryFigure fig = new CategoryFigure(getViewer().getControl());
+	DrawerFigure fig = new DrawerFigure(getViewer().getControl());
 	fig.setExpanded(getCategory().isInitiallyOpen());
 	fig.setPinned(getCategory().isInitiallyPinned());
 	fig.getCollapseToggle().addChangeListener(new ToggleListener());
@@ -63,20 +62,20 @@ public Object getAdapter(Class key) {
 }
 
 /**
- * Convenience method that provides access to the PaletteCategory that is the model.
- * @return The model PaletteCategory
+ * Convenience method that provides access to the PaletteDrawer that is the model.
+ * @return The model PaletteDrawer
  */
-public PaletteCategory getCategory() {
-	return (PaletteCategory)getPaletteEntry();
+public PaletteDrawer getCategory() {
+	return (PaletteDrawer)getPaletteEntry();
 }
 
 /**
- * Convenience method to get the CategoryFigure for the model category.
+ * Convenience method to get the DrawerFigure for the model category.
  * 
- * @return The CategoryFigure created in {@link #createFigure()}
+ * @return The DrawerFigure created in {@link #createFigure()}
  */
-protected CategoryFigure getCategoryFigure() {
-	return (CategoryFigure)getFigure();
+protected DrawerFigure getCategoryFigure() {
+	return (DrawerFigure)getFigure();
 }
 
 /**
@@ -86,15 +85,15 @@ public IFigure getContentPane() {
 	return getCategoryFigure().getContentPane();
 }
 
-private CategoryAnimationController getAnimationController() {
-	CategoryAnimationController controller;
-	controller = (CategoryAnimationController)getViewer()
+private DrawerAnimationController getAnimationController() {
+	DrawerAnimationController controller;
+	controller = (DrawerAnimationController)getViewer()
 		.getEditPartRegistry()
-		.get(CategoryAnimationController.class);
+		.get(DrawerAnimationController.class);
 	if (controller == null) {
-		controller = new CategoryAnimationController(getPreferenceSource());
+		controller = new DrawerAnimationController(getPreferenceSource());
 		getViewer().getEditPartRegistry().put(
-			CategoryAnimationController.class, 
+			DrawerAnimationController.class, 
 			controller);
 	}
 	return controller;
@@ -161,7 +160,7 @@ public void refreshChildren() {
  */
 protected void refreshVisuals() {
 	// Do not call super.refreshVisuals()
-	// That will update the Tooltip for the CategoryFigure.  But CategoryFigure has its
+	// That will update the Tooltip for the DrawerFigure.  But DrawerFigure has its
 	// own tooltip that is displayed when the text in the header is truncated.
 	getCategoryFigure().setTitle(getPaletteEntry().getLabel());
 	setImageDescriptor(getPaletteEntry().getSmallIcon());
@@ -176,9 +175,8 @@ protected void register() {
 	getAnimationController().addCategory(this);
 }
 
-
 /**
- * Sets the expansion state of the CategoryFigure
+ * Sets the expansion state of the DrawerFigure
  * 
  * @param expanded	<code>true</code> if the category is expanded; false otherwise.
  */
@@ -213,7 +211,7 @@ private class ToggleListener implements ChangeListener {
 	public void handleStateChanged(ChangeEvent event) {
 		if (event.getPropertyName().equals(ButtonModel.SELECTED_PROPERTY) 
 			&& !getAnimationController().isAnimationInProgress()) {
-				getAnimationController().animate(CategoryEditPart.this);
+				getAnimationController().animate(DrawerEditPart.this);
 		}
 	}
 }

@@ -6,9 +6,9 @@ package org.eclipse.gef.ui.palette;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.jface.viewers.*;
-
-import org.eclipse.gef.palette.*;
+import org.eclipse.gef.palette.PaletteListener;
+import org.eclipse.gef.palette.PaletteRoot;
+import org.eclipse.gef.palette.ToolEntry;
 
 public interface PaletteViewer 
 	extends org.eclipse.gef.GraphicalViewer
@@ -16,16 +16,12 @@ public interface PaletteViewer
 
 void addPaletteListener(PaletteListener listener);
 
-org.eclipse.draw2d.ButtonGroup getButtonGroup();
+ToolEntry getMode();
 
-PaletteToolEntry getSelectedEntry();
-
-ISelection getSelection();
+void setMode(ToolEntry entry);
 
 void setPaletteRoot(PaletteRoot root);
 
 void setPaletteViewerPreferencesSource(PaletteViewerPreferences prefs);
-
-void setSelection(PaletteEntry entry);
 
 }

@@ -49,10 +49,6 @@ private PaletteTemplateEntry getTemplateEntry() {
 	return (PaletteTemplateEntry)getModel();
 }
 
-private PaletteViewer getPaletteViewer() {
-	return (PaletteViewer)getViewer();
-}
-
 protected void refreshVisuals() {
 	DetailedLabelFigure fig = (DetailedLabelFigure)getFigure();
 	PaletteEntry entry = getPaletteEntry();

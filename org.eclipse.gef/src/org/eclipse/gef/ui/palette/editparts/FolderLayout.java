@@ -7,8 +7,6 @@ import org.eclipse.draw2d.FlowLayout;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Dimension;
 
-import org.eclipse.gef.ui.palette.editparts.*;
-
 
 /**
  * Special FlowLayout to display the palette in the folder view.
@@ -40,6 +38,9 @@ public FolderLayout() {
  */
 public FolderLayout(boolean isHorizontal) {
 	super(isHorizontal);
+	setMinorSpacing(0);
+	setMajorSpacing(0);
+	setStretchMinorAxis(true);
 	setDefaultConstraint(new Dimension(50, 50));
 }
 

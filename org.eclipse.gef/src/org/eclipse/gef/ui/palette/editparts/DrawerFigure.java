@@ -15,100 +15,102 @@ import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.internal.Internal;
 import org.eclipse.gef.ui.palette.*;
-import org.eclipse.gef.ui.palette.editparts.*;
 
 /**
  * @author Pratik Shah
  */
-public class CategoryFigure 
+public class DrawerFigure
 	extends Figure 
 {
 
-protected static SeparatorBorder SCROLL_PANE_BORDER = new SeparatorBorder();
-protected static final Border MARGIN_BORDER = new MarginBorder(2, 2, 2, 2);
-protected static final Border BORDER_TITLE_MARGIN = new CompoundBorder(
-                                                           new PaletteContainerBorder(),
-                                                      	   MARGIN_BORDER);
+static final Border MARGIN_BORDER = new MarginBorder(1,1,1,1);
+static final Border SCROLL_PANE_BORDER = new SeparatorBorder(0,0,1,0);
+static final Border TOGGLE_BUTTON_BORDER = new RaisedBorder();
+static final Border TITLE_MARGIN_BORDER = new MarginBorder(1,0,1,0);
+
 //@TODO:Pratik
 // Is this the best way to do this?  How would I dispose this image?
 protected static final Image pin = new Image(null, ImageDescriptor.createFromFile(
 		Internal.class, "icons/pin_view.gif").getImageData()); //$NON-NLS-1$
 protected static final Image disabledPin = new Image(null, pin, SWT.IMAGE_DISABLE);
 
-static {
-	SCROLL_PANE_BORDER.setLocation(SeparatorBorder.BOTTOM);
-}
-
-private int layoutMode = -1;
-private final Label categoryLabel;
-private final ScrollPane scrollpane;
-private final ToggleButton pinFigure;
-private final Toggle collapseToggle;
+private Label categoryLabel;
+private ScrollPane scrollpane;
+private ToggleButton pinFigure;
+private Toggle collapseToggle;
 private boolean isAnimating;
-private CategoryAnimationController controller;
+private DrawerAnimationController controller;
 
-public CategoryFigure(final Control control) {
-	super();
+public DrawerFigure(final Control control) {
 	setLayoutManager(new ToolbarLayout());
 
-	// The label that is the heading for the category is in a toggle that can be used to 
-	// expand/collapse the category.	
+	Figure title = new Figure() {
+			protected void paintFigure(Graphics g) {
+				super.paintFigure(g);
+				Rectangle r = Rectangle.SINGLETON;
+				r.setBounds(getBounds());
+				r.width = Math.min(50, r.width);
+				g.setForegroundColor(
+					FigureUtilities.mixColors(ColorConstants.buttonDarker,ColorConstants.button));
+	//			g.setBackgroundColor(
+	//				FigureUtilities.mixColors(ColorConstants.buttonDarker,ColorConstants.button));
+//				g.fillGradient(Rectangle.SINGLETON, false);
+			}
+	};
+	
+	title.setBorder(TITLE_MARGIN_BORDER);
+	BorderLayout borderLayout = new BorderLayout();
+	borderLayout.setHorizontalSpacing(2);
+	title.setLayoutManager(borderLayout);
+	
 	categoryLabel = new Label();
 	categoryLabel.setLabelAlignment(Label.LEFT);
-	collapseToggle = new Toggle(categoryLabel);
-	collapseToggle.setOpaque(true);
-	collapseToggle.setSelected(true);	
+
+	pinFigure = new ImageButton(pin, disabledPin);
+	pinFigure.setBorder(new ButtonBorder(ButtonBorder.SCHEMES.TOOLBAR));
+	pinFigure.setRolloverEnabled(true);
+	pinFigure.setRequestFocusEnabled(false);
+
+	title.add(pinFigure, BorderLayout.RIGHT);
+	title.add(categoryLabel, BorderLayout.CENTER);
+	
+	collapseToggle = new Toggle(title) {
+		protected void paintFigure(Graphics g) {
+			super.paintFigure(g);
+			Rectangle r = Rectangle.SINGLETON;
+			r.setBounds(getBounds());
+			r.width = Math.min(50, r.width);
+			g.setForegroundColor(
+				FigureUtilities.mixColors(ColorConstants.buttonDarker,ColorConstants.button));
+//			g.setBackgroundColor(
+//				FigureUtilities.mixColors(ColorConstants.buttonDarker,ColorConstants.button));
+			g.fillGradient(Rectangle.SINGLETON, false);
+		}
+
+	};
+	collapseToggle.setSelected(true);
+	collapseToggle.setBorder(TOGGLE_BUTTON_BORDER);
+
 	collapseToggle.addChangeListener(new ChangeListener() {
 		public void handleStateChanged(ChangeEvent event) {
-			if (pinFigure == null) {
+			if (pinFigure == null)
 				return;
-			}
-			if (isExpanded()) {
+			if (isExpanded())
 				pinFigure.setEnabled(true);
-			} else {
+			else {
 				pinFigure.setSelected(false);
 				pinFigure.setEnabled(false);
 			}
 		}
 	});
 
-	// Title is the header + the pin
-	Figure title = new Figure();
-	title.add(collapseToggle);
-	pinFigure = new ImageButton(pin, disabledPin);
-	pinFigure.setBorder(new ButtonBorder(ButtonBorder.SCHEMES.TOOLBAR));
-	pinFigure.setRolloverEnabled(true);
-	pinFigure.setRequestFocusEnabled(false);
-	title.add(pinFigure);
-	BorderLayout borderLayout = new BorderLayout();
-	borderLayout.setHorizontalSpacing(3);
-	borderLayout.setConstraint(pinFigure, BorderLayout.RIGHT);
-	borderLayout.setConstraint(collapseToggle, BorderLayout.CENTER);
-	title.setLayoutManager(borderLayout);
-	title.setBorder(BORDER_TITLE_MARGIN);
-
-	// Create the scrollpane that is going to contain all the children
-	scrollpane = new ScrollPane();
-	scrollpane.getViewport().setContentsTracksWidth(true);
-	scrollpane.setMinimumSize(new Dimension(0, 0));
-	scrollpane.setHorizontalScrollBarVisibility(ScrollPane.NEVER);
-	scrollpane.setVerticalScrollBar(new PaletteScrollBar());
-	scrollpane.getVerticalScrollBar().setStepIncrement(22);
-	scrollpane.setLayoutManager(new OverlayScrollPaneLayout());
-	scrollpane.setBorder(SCROLL_PANE_BORDER);
-	scrollpane.setBackgroundColor(ColorConstants.listBackground);
-	scrollpane.setView(new Figure());
-	scrollpane.getView().setBorder(MARGIN_BORDER);
-
-	add(title);
+	add(collapseToggle);
+	createScrollpane();
 	add(scrollpane);
+	createHoverHelp(control);
+}
 
-	if (control == null) {
-		return;
-	}
-	
-	// If a control was provided, create the tipLabel -- if the text in the header is
-	// truncated, it will display it as a tooltip.
+private void createHoverHelp(final Control control) {
 	final Label tipLabel =	new Label();
 	tipLabel.setOpaque(true);
 	tipLabel.setBackgroundColor(ColorConstants.tooltipBackground);
@@ -125,7 +127,6 @@ public CategoryFigure(final Control control) {
 				Point labelLoc = categoryLabel.getLocation();
 				org.eclipse.swt.graphics.Point absolute = control.toDisplay(
 						new org.eclipse.swt.graphics.Point(labelLoc.x, labelLoc.y));
-				
 				/*
 				 * @TODO:Pratik
 				 * Move the stuff about re-positioning the tooltip so that it is
@@ -157,6 +158,21 @@ public CategoryFigure(final Control control) {
 	}); 			
 }
 
+private void createScrollpane() {
+	scrollpane = new ScrollPane();
+	scrollpane.getViewport().setContentsTracksWidth(true);
+	scrollpane.setMinimumSize(new Dimension(0, 0));
+	scrollpane.setHorizontalScrollBarVisibility(ScrollPane.NEVER);
+	scrollpane.setVerticalScrollBar(new PaletteScrollBar());
+	scrollpane.getVerticalScrollBar().setStepIncrement(22);
+	scrollpane.setLayoutManager(new OverlayScrollPaneLayout());
+//	scrollpane.setBorder(SCROLL_PANE_BORDER);
+	scrollpane.setBorder(new MarginBorder(3));
+	scrollpane.setBackgroundColor(ColorConstants.button);
+	scrollpane.setView(new Figure());
+	scrollpane.getView().setBorder(MARGIN_BORDER);
+}
+
 public IFigure getContentPane() {
 	return scrollpane.getView();
 }
@@ -182,7 +198,6 @@ public Dimension getPreferredSize(int w, int h) {
 		scale = 1.0f - scale;
 	}
 	return pref.getScaled(scale).expand(min.getScaled(1.0f - scale));
-
 }
 
 public boolean isExpanded() {
@@ -203,7 +218,7 @@ public void setAnimating(boolean value) {
 		scrollpane.setVerticalScrollBarVisibility(ScrollPane.AUTOMATIC);
 }
 
-public void setController(CategoryAnimationController controller) {
+public void setController(DrawerAnimationController controller) {
 	this.controller = controller;
 }
 
@@ -212,22 +227,16 @@ public void setExpanded(boolean value) {
 }
 
 public void setLayoutMode(int layoutMode) {
-	if (this.layoutMode == layoutMode) {
-		return;
-	}
-	
-	this.layoutMode = layoutMode;
-	
 	LayoutManager manager;
-	if (layoutMode == PaletteViewerPreferences.LAYOUT_FOLDER) {
+	if (layoutMode == PaletteViewerPreferences.LAYOUT_FOLDER)
 		manager = new FolderLayout();
-	} else if (layoutMode == PaletteViewerPreferences.LAYOUT_ICONS) {
-		manager = new FlowLayout();
-	} else {
-		ToolbarLayout toolbarLayout = new ToolbarLayout();
-		toolbarLayout.setSpacing(3);
-		manager = toolbarLayout;
-	}
+	else if (layoutMode == PaletteViewerPreferences.LAYOUT_ICONS) {
+		FlowLayout fl = new FlowLayout();
+		fl.setMinorSpacing(0);
+		fl.setMajorSpacing(0);
+		manager = fl;
+	} else
+		manager = new ToolbarLayout();
 	getContentPane().setLayoutManager(manager);
 }
 

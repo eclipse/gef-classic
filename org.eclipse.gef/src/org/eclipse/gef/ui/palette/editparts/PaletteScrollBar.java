@@ -9,10 +9,9 @@ package org.eclipse.gef.ui.palette.editparts;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import org.eclipse.draw2d.*;
-
-
 import org.eclipse.swt.graphics.Image;
+
+import org.eclipse.draw2d.*;
 
 final public class PaletteScrollBar 
 	extends ScrollBar {

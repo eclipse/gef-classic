@@ -15,7 +15,6 @@ import java.util.List;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.widgets.Display;
 
-import org.eclipse.draw2d.ButtonGroup;
 import org.eclipse.draw2d.IFigure;
 
 import org.eclipse.gef.*;
@@ -33,8 +32,7 @@ public class PaletteViewerImpl
 private PaletteCustomizer customizer = null;
 private PaletteCustomizerDialog customizerDialog = null;
 private List paletteListeners = new ArrayList();
-private ButtonGroup buttonGroup = null;
-private PaletteEntry selectedEntry = null;
+private ToolEntry activeEntry = null;
 private PaletteRoot paletteRoot = null;
 private PaletteViewerPreferences prefs = null;
 
@@ -84,19 +82,11 @@ public void dispose() {
 	prefs.dispose();
 }
 
-protected void firePaletteSelectionChanged() {
+protected void fireModeChanged() {
 	if (paletteListeners == null)
 		return;
-	PaletteEvent event = new PaletteEvent(this, selectedEntry);
 	for (int listener = 0; listener < paletteListeners.size(); listener++)
-		((PaletteListener) paletteListeners.get(listener)).entrySelected(
-			event);
-}
-
-public ButtonGroup getButtonGroup() {
-	if (buttonGroup == null)
-		buttonGroup = new ButtonGroup();
-	return buttonGroup;
+		((PaletteListener) paletteListeners.get(listener)).modeChanged();
 }
 
 /**
@@ -132,6 +122,10 @@ public PaletteViewerPreferences getPaletteViewerPreferencesSource() {
 	return prefs;
 }
 
+private ToolEntryEditPart getToolEntryEditPart(ToolEntry entry) {
+	return (ToolEntryEditPart)getEditPartRegistry().get(entry);
+}
+
 /**
  * @see org.eclipse.gef.ui.parts.GraphicalViewerImpl#hookControl()
  */
@@ -143,8 +137,8 @@ protected void hookControl() {
 	controlHooked = true;
 }
 
-public PaletteToolEntry getSelectedEntry() {
-	return (PaletteToolEntry) selectedEntry;
+public ToolEntry getMode() {
+	return activeEntry;
 }
 
 public void removePaletteListener(PaletteListener paletteListener) {
@@ -189,36 +183,19 @@ public void setPaletteViewerPreferencesSource(PaletteViewerPreferences prefs) {
 	}
 }
 
-/*
-public void setSelection(ISelection newSelection){
-	IStructuredSelection selected = (IStructuredSelection)newSelection;
-	if(selected==null){
-		if(getButtonGroup().getSelected()!=null)
-			getButtonGroup().getSelected().setSelected(false);
-	}else{
-		Object entry = selected.getFirstElement();
-		if(entry instanceof PaletteToolEntry)
-			setSelection((PaletteEntry)entry);
+public void setMode(ToolEntry newMode) {
+	if (newMode == null)
+		newMode = paletteRoot.getDefaultEntry();
+	if (activeEntry != null) {
+		getToolEntryEditPart(activeEntry).setActive(false);
 	}
-}*/
-
-public void setSelection(PaletteEntry entry) {
-	if (selectedEntry == entry)
-		return;
-	if (entry == null) {
-		getButtonGroup().setSelected(null);
-		selectedEntry = null;
-		getButtonGroup().setSelected(getButtonGroup().getDefault());
-		if (getButtonGroup().getSelected() == null) {
-			selectedEntry = null;
-			firePaletteSelectionChanged();
-		}
-	} else {
-		selectedEntry = entry;
-		ToolEntryEditPart ep = (ToolEntryEditPart)getEditPartRegistry().get(entry);
-		ep.select();
-		firePaletteSelectionChanged();
+	activeEntry = newMode;
+	if (activeEntry != null) {
+		ToolEntryEditPart editpart = getToolEntryEditPart(activeEntry);
+		editpart.setActive(true);
+		select(editpart);
 	}
+	fireModeChanged();
 }
 
 /**

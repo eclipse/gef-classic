@@ -6,8 +6,10 @@ package org.eclipse.gef.ui.palette.editparts;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.draw2d.geometry.*;
 import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2d.geometry.Insets;
+import org.eclipse.draw2d.geometry.Rectangle;
 
 class OverlayScrollPaneLayout
 	extends ScrollPaneLayout
