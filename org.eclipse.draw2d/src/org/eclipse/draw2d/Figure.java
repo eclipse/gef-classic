@@ -296,12 +296,14 @@ protected IFigure findDescendantAtExcluding(int x, int y, TreeSearch search) {
 	if (!getClientArea(Rectangle.SINGLETON).contains(PRIVATE_POINT))
 		return null;
 
+	x = PRIVATE_POINT.x;
+	y = PRIVATE_POINT.y;
 	IFigure fig;
 	for (int i = children.size(); i > 0;) {
 		i--;
 		fig = (IFigure)children.get(i);
 		if (fig.isVisible()) {
-			fig = fig.findFigureAt(PRIVATE_POINT.x, PRIVATE_POINT.y, search);
+			fig = fig.findFigureAt(x, y, search);
 			if (fig != null)
 				return fig;
 		}
