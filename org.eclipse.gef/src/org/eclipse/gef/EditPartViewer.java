@@ -91,7 +91,6 @@ interface Conditional {
  * can only have a single DragSource. Clients must not create their own DragSource when
  * using this method.
  * @param listener the listener
- * @deprecated
  */
 void addDragSourceListener(org.eclipse.gef.dnd.TransferDragSourceListener listener);
 
@@ -110,7 +109,6 @@ void addDragSourceListener(TransferDragSourceListener listener);
  * can only have a single DropTarget. Clients must not create their own DropTarget when
  * using this method.
  * @param listener the listener
- * @deprecated
  */
 void addDropTargetListener(org.eclipse.gef.dnd.TransferDropTargetListener listener);
 

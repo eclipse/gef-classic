@@ -87,7 +87,6 @@ public AbstractEditPartViewer() {
 /**
  * @see
  * EditPartViewer#addDragSourceListener(org.eclipse.gef.dnd.TransferDragSourceListener)
- * @deprecated
  */
 public void addDragSourceListener(org.eclipse.gef.dnd.TransferDragSourceListener listener) {
 	addDragSourceListener((TransferDragSourceListener)listener);
@@ -104,7 +103,6 @@ public void addDragSourceListener(TransferDragSourceListener listener) {
 /**
  * @see
  * EditPartViewer#addDropTargetListener(org.eclipse.gef.dnd.TransferDropTargetListener)
- * @deprecated
  */
 public void addDropTargetListener(org.eclipse.gef.dnd.TransferDropTargetListener listener) {
 	addDropTargetListener((TransferDropTargetListener)listener);
