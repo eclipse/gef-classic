@@ -14,7 +14,7 @@ package org.eclipse.gef.examples.logicdesigner.edit;
 import java.util.Iterator;
 
 import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.*;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.*;
@@ -32,8 +32,6 @@ import org.eclipse.gef.examples.logicdesigner.model.commands.*;
 public class LogicXYLayoutEditPolicy
 	extends org.eclipse.gef.editpolicies.XYLayoutEditPolicy
 {
-	
-private IFigure feedback;
 
 protected Command createAddCommand(EditPart childEditPart, Object constraint) {
 	LogicSubpart part = (LogicSubpart)childEditPart.getModel();
@@ -160,14 +158,30 @@ protected EditPolicy createChildEditPolicy(EditPart child) {
 	return new LogicResizableEditPolicy();
 }
 
-/**
- * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#eraseSizeOnDropFeedback(org.eclipse.gef.Request)
+
+/* (non-Javadoc)
+ * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#createSizeOnDropFeedback(org.eclipse.gef.requests.CreateRequest)
  */
-protected void eraseSizeOnDropFeedback(Request request) {
-	if (feedback != null) {
-		removeFeedback(feedback);
-		feedback = null;
+protected IFigure createSizeOnDropFeedback(CreateRequest createRequest) {
+	IFigure figure;
+	
+	if (createRequest.getNewObject() instanceof Circuit)
+		figure = new CircuitFeedbackFigure();
+	else if (createRequest.getNewObject() instanceof LogicFlowContainer)
+		figure = new LogicFlowFeedbackFigure();		
+	else if (createRequest.getNewObject() instanceof LogicLabel)
+		figure = new LabelFeedbackFigure();
+	else {
+		figure = new RectangleFigure();
+		((RectangleFigure)figure).setXOR(true);
+		((RectangleFigure)figure).setFill(true);
+		figure.setBackgroundColor(LogicColorConstants.ghostFillColor);
+		figure.setForegroundColor(ColorConstants.white);
 	}
+	
+	addFeedback(figure);
+	
+	return figure;
 }
 
 protected LogicGuide findGuideAt(int pos, boolean horizontal) {
@@ -235,24 +249,13 @@ protected Command getCreateCommand(CreateRequest request) {
 	return result;
 }
 
-private IFigure getCustomFeedbackFigure(Object modelPart) {
-	IFigure figure; 
-	
-	if (modelPart instanceof Circuit)
-		figure = new CircuitFeedbackFigure();
-	else if (modelPart instanceof LogicFlowContainer)
-		figure = new LogicFlowFeedbackFigure();		
-	else if (modelPart instanceof LogicLabel)
-		figure = new LabelFeedbackFigure();
-	else {
-		figure = new RectangleFigure();
-		((RectangleFigure)figure).setXOR(true);
-		((RectangleFigure)figure).setFill(true);
-		figure.setBackgroundColor(LogicColorConstants.ghostFillColor);
-		figure.setForegroundColor(ColorConstants.white);
-	}
-	
-	return figure;
+/* (non-Javadoc)
+ * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#getCreationFeedbackOffset(org.eclipse.gef.requests.CreateRequest)
+ */
+protected Insets getCreationFeedbackOffset(CreateRequest request) {
+	if (request.getNewObject() instanceof LED || request.getNewObject() instanceof Circuit)
+		return new Insets(2, 0, 2, 0);
+	return new Insets();
 }
 
 protected Command getDeleteDependantCommand(Request request) {
@@ -271,18 +274,6 @@ protected IFigure getFeedbackLayer() {
 protected Command getOrphanChildrenCommand(Request request) {
 	return null;
 }
-
-/**
- * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#showSizeOnDropFeedback(org.eclipse.gef.requests.CreateRequest)
- */
-protected void showSizeOnDropFeedback(CreateRequest request) {
-	Point p = new Point(request.getLocation());
-	if (feedback == null) {
-		feedback = getCustomFeedbackFigure(request.getNewObject());
-		addFeedback(feedback);
-	}
-	feedback.translateToRelative(p);
-	feedback.setBounds(new Rectangle(p, request.getSize()));
-}
-
+	
+	
 }
