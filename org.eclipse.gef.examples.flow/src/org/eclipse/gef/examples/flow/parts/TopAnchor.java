@@ -21,7 +21,7 @@ public Point getLocation(Point reference) {
 	int off = offset;
 	if (off == -1)
 		off = r.width / 2;
-	if (r.contains(reference))
+	if (r.contains(reference) || r.y < reference.y)
 		return r.getBottomLeft().translate(off,-1);
 	else
 		return r.getTopLeft().translate(off,0);
