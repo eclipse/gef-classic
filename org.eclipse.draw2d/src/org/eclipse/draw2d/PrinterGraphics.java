@@ -10,15 +10,15 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.FontData;
-import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.printing.Printer;
 import org.eclipse.swt.widgets.Display;
 
 /**
+ * A scalable graphics object used to print to a printer.
  * @author danlee
  */
 public class PrinterGraphics extends ScaledGraphics {
@@ -53,9 +53,12 @@ public void drawImage(Image srcImage, int x, int y) {
 	super.drawImage(printerImage(srcImage), x, y);
 }
 
+/**
+ * @see Graphics#drawImage(Image, int, int, int, int, int, int, int, int)
+ */
 public void drawImage(Image srcImage,
-	int sx, int sy, int sw,int sh,
-	int tx, int ty, int tw,int th) {
+	int sx, int sy, int sw, int sh,
+	int tx, int ty, int tw, int th) {
 	super.drawImage(printerImage(srcImage), sx, sy, sw, sh, tx, ty, tw, th);
 }
 

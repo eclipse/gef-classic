@@ -267,10 +267,15 @@ public void setUpdateManager(UpdateManager um) {
 	manager.setRoot(root);
 }
 
+/**
+ * The figure at the root of the LightweightSystem.  If certain properties (i.e. font,
+ * background/foreground color) are not set, the RootFigure will obtain these properties 
+ * from LightweightSystem's Canvas.
+ */
 protected class RootFigure
 	extends Figure
 {
-
+	/** @see IFigure#getBackgroundColor() */
 	public Color getBackgroundColor() {
 		if (bgColor != null)
 			return bgColor;
@@ -278,7 +283,8 @@ protected class RootFigure
 			return canvas.getBackground();
 		return null;
 	}
-
+	
+	/** @see IFigure#getFont() */
 	public Font getFont() {
 		if (font != null)
 			return font;
@@ -286,7 +292,8 @@ protected class RootFigure
 			return canvas.getFont();
 		return null;
 	}
-
+	
+	/** @see IFigure#getForegroundColor() */
 	public Color getForegroundColor() {
 		if (fgColor != null)
 			return fgColor;
@@ -295,37 +302,41 @@ protected class RootFigure
 		return null;
 	}
 	
-	/**
-	 * @see org.eclipse.draw2d.Figure#getUpdateManager()
-	 */
+	/** @see IFigure#getUpdateManager() */
 	public UpdateManager getUpdateManager() {
 		return LightweightSystem.this.getUpdateManager();
 	}
-
+	
+	/** @see IFigure#internalGetEventDispatcher() */
 	public EventDispatcher internalGetEventDispatcher() {
 		return dispatcher;
 	}
 	
-	/**
-	 * @see org.eclipse.draw2d.Figure#isVisible()
-	 */
+	/** @see org.eclipse.draw2d.Figure#isVisible() */
 	public boolean isShowing() {
 		return true;
 	}
 }
 
+/**
+ * Listener used to get all necessary events from the Canvas and pass them on to the 
+ * {@link EventDispatcher}.
+ */
 protected class EventHandler 
 	implements MouseMoveListener, MouseListener, AccessibleControlListener, KeyListener,
 				TraverseListener, FocusListener, AccessibleListener, MouseTrackListener
 {
+	/** @see FocusListener#focusGained(FocusEvent) */
 	public void focusGained(FocusEvent e) {
 		getEventDispatcher().dispatchFocusGained(e);
 	}
 	
+	/** @see FocusListener#focusLost(FocusEvent) */
 	public void focusLost(FocusEvent e) {
 		getEventDispatcher().dispatchFocusLost(e);
 	}
-
+	
+	/** @see AccessibleControlListener#getChild(AccessibleControlEvent) */
 	public void getChild(AccessibleControlEvent e) {
 		EventDispatcher.AccessibilityDispatcher ad;
 		ad = getEventDispatcher().getAccessibilityDispatcher();
@@ -333,6 +344,7 @@ protected class EventHandler
 			ad.getChild(e);
 	}
 
+	/** @see AccessibleControlListener#getChildAtPoint(AccessibleControlEvent) */
 	public void getChildAtPoint(AccessibleControlEvent e) {
 		EventDispatcher.AccessibilityDispatcher ad;
 		ad = getEventDispatcher().getAccessibilityDispatcher();
@@ -340,6 +352,7 @@ protected class EventHandler
 			ad.getChildAtPoint(e);
 	}
 
+	/** @see AccessibleControlListener#getChildCount(AccessibleControlEvent) */
 	public void getChildCount(AccessibleControlEvent e) {
 		EventDispatcher.AccessibilityDispatcher ad;
 		ad = getEventDispatcher().getAccessibilityDispatcher();
@@ -347,6 +360,7 @@ protected class EventHandler
 			ad.getChildCount(e);
 	}
 
+	/** @see AccessibleControlListener#getChildren(AccessibleControlEvent) */
 	public void getChildren(AccessibleControlEvent e) {
 		EventDispatcher.AccessibilityDispatcher ad;
 		ad = getEventDispatcher().getAccessibilityDispatcher();
@@ -354,13 +368,15 @@ protected class EventHandler
 			ad.getChildren(e);
 	}
 
+	/** @see AccessibleControlListener#getDefaultAction(AccessibleControlEvent) */
 	public void getDefaultAction(AccessibleControlEvent e) {
 		EventDispatcher.AccessibilityDispatcher ad;
 		ad = getEventDispatcher().getAccessibilityDispatcher();
 		if (ad != null)
 			ad.getDefaultAction(e);
 	}
-
+	
+	/** @see AccessibleListener#getDescription(AccessibleEvent) */
 	public void getDescription(AccessibleEvent e) {
 		EventDispatcher.AccessibilityDispatcher ad;
 		ad = getEventDispatcher().getAccessibilityDispatcher();
@@ -368,6 +384,7 @@ protected class EventHandler
 			ad.getDescription(e);
 	}
 
+	/** @see AccessibleControlListener#getFocus(AccessibleControlEvent) */
 	public void getFocus(AccessibleControlEvent e) {
 		EventDispatcher.AccessibilityDispatcher ad;
 		ad = getEventDispatcher().getAccessibilityDispatcher();
@@ -375,6 +392,7 @@ protected class EventHandler
 			ad.getFocus(e);
 	}
 
+	/** @see AccessibleListener#getHelp(AccessibleEvent) */
 	public void getHelp(AccessibleEvent e) {
 		EventDispatcher.AccessibilityDispatcher ad;
 		ad = getEventDispatcher().getAccessibilityDispatcher();
@@ -382,6 +400,7 @@ protected class EventHandler
 			ad.getHelp(e);
 	}
 
+	/** @see AccessibleListener#getKeyboardShortcut(AccessibleEvent) */
 	public void getKeyboardShortcut(AccessibleEvent e) {
 		EventDispatcher.AccessibilityDispatcher ad;
 		ad = getEventDispatcher().getAccessibilityDispatcher();
@@ -389,6 +408,7 @@ protected class EventHandler
 			ad.getKeyboardShortcut(e);
 	}
 
+	/** @see AccessibleControlListener#getLocation(AccessibleControlEvent) */
 	public void getLocation(AccessibleControlEvent e) {
 		EventDispatcher.AccessibilityDispatcher ad;
 		ad = getEventDispatcher().getAccessibilityDispatcher();
@@ -396,6 +416,7 @@ protected class EventHandler
 			ad.getLocation(e);
 	}
 
+	/** @see AccessibleListener#getName(AccessibleEvent) */
 	public void getName(AccessibleEvent e) {
 		EventDispatcher.AccessibilityDispatcher ad;
 		ad = getEventDispatcher().getAccessibilityDispatcher();
@@ -403,6 +424,7 @@ protected class EventHandler
 			ad.getName(e);
 	}
 
+	/** @see AccessibleControlListener#getRole(AccessibleControlEvent) */
 	public void getRole(AccessibleControlEvent e) {
 		EventDispatcher.AccessibilityDispatcher ad;
 		ad = getEventDispatcher().getAccessibilityDispatcher();
@@ -410,6 +432,7 @@ protected class EventHandler
 			ad.getRole(e);
 	}
 
+	/** @see AccessibleControlListener#getSelection(AccessibleControlEvent) */
 	public void getSelection(AccessibleControlEvent e) {
 		EventDispatcher.AccessibilityDispatcher ad;
 		ad = getEventDispatcher().getAccessibilityDispatcher();
@@ -417,6 +440,7 @@ protected class EventHandler
 			ad.getSelection(e);
 	}
 
+	/** @see AccessibleControlListener#getState(AccessibleControlEvent) */
 	public void getState(AccessibleControlEvent e) {
 		EventDispatcher.AccessibilityDispatcher ad;
 		ad = getEventDispatcher().getAccessibilityDispatcher();
@@ -424,53 +448,65 @@ protected class EventHandler
 			ad.getState(e);
 	}
 
+	/** @see AccessibleControlListener#getValue(AccessibleControlEvent) */
 	public void getValue(AccessibleControlEvent e) {
 		EventDispatcher.AccessibilityDispatcher ad;
 		ad = getEventDispatcher().getAccessibilityDispatcher();
 		if (ad != null)
 			ad.getValue(e);
 	}
-
+	
+	/** @see KeyListener#keyPressed(KeyEvent) */
 	public void keyPressed(KeyEvent e) {
 		getEventDispatcher().dispatchKeyPressed(e);
 	}
 	
+	/** @see KeyListener#keyReleased(KeyEvent) */
 	public void keyReleased(KeyEvent e) {
 		getEventDispatcher().dispatchKeyReleased(e);
 	}
-
+	
+	/** @see TraverseListener#keyTraversed(TraverseEvent) */
 	public void keyTraversed(TraverseEvent e) {
 		// Only dispatch the tab next and previous events for now
 		if (e.detail == SWT.TRAVERSE_TAB_NEXT || e.detail == SWT.TRAVERSE_TAB_PREVIOUS) {
-		   	e.doit = true; //SWT : For some reason, this is false by default on a Canvas for TAB_NEXT.
+			// SWT : For some reason, this is false by default on a Canvas for TAB_NEXT
+		   	e.doit = true; 
 			getEventDispatcher().dispatchKeyTraversed(e);
 		}
 	}
 	
+	/** @see MouseListener#mouseDoubleClick(MouseEvent) */
 	public void mouseDoubleClick(MouseEvent e) {
 		getEventDispatcher().dispatchMouseDoubleClicked(e);
 	}
 		
+	/** @see MouseListener#mouseDown(MouseEvent) */
 	public void mouseDown(MouseEvent e) {
 		getEventDispatcher().dispatchMousePressed(e);
 	}
 	
+	/** @see MouseTrackListener#mouseEnter(MouseEvent) */
 	public void mouseEnter(MouseEvent e) {
 		getEventDispatcher().dispatchMouseEntered(e);
 	}
 
+	/** @see MouseTrackListener#mouseExit(MouseEvent) */
 	public void mouseExit(MouseEvent e) {
 		getEventDispatcher().dispatchMouseExited(e);
 	}
 
+	/** @see MouseTrackListener#mouseHover(MouseEvent) */
 	public void mouseHover(MouseEvent e) {
 		getEventDispatcher().dispatchMouseHover(e);
 	}
 
+	/** @see MouseMoveListener#mouseMove(MouseEvent) */
 	public void mouseMove(MouseEvent e) {
 		getEventDispatcher().dispatchMouseMoved(e);
 	}
 	
+	/** @see MouseListener#mouseUp(MouseEvent) */
 	public void mouseUp(MouseEvent e) {
 		getEventDispatcher().dispatchMouseReleased(e);
 	}
