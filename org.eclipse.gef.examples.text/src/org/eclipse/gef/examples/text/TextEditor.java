@@ -262,13 +262,6 @@ public void init(IEditorSite site, IEditorInput input) throws PartInitException 
 }
 
 /**
- * @see org.eclipse.ui.ISaveablePart#isDirty()
- */
-public boolean isDirty() {
-	return getCommandStack().isDirty();
-}
-
-/**
  * @see org.eclipse.ui.ISaveablePart#isSaveAsAllowed()
  */
 public boolean isSaveAsAllowed() {

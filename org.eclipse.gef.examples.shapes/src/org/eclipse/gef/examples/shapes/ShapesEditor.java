@@ -102,7 +102,7 @@ protected void configureGraphicalViewer() {
 
 	// configure the context menu provider
 	ContextMenuProvider cmProvider =
-		new ShapesEditorContextMenuProvider(viewer, getActionRegistry());
+			new ShapesEditorContextMenuProvider(viewer, getActionRegistry());
 	viewer.setContextMenu(cmProvider);
 	getSite().registerContextMenu(cmProvider, viewer);
 }
@@ -171,7 +171,7 @@ public void doSave(IProgressMonitor monitor) {
 	}
 	catch (IOException ioe) {
 		ioe.printStackTrace();
-	}	
+	}
 }
 
 /* (non-Javadoc)
@@ -274,13 +274,6 @@ protected void initializeGraphicalViewer() {
 
 	// listen for dropped parts
 	viewer.addDropTargetListener(createTransferDropTargetListener());
-}
-
-/* (non-Javadoc)
- * @see org.eclipse.ui.ISaveablePart#isDirty()
- */
-public boolean isDirty() {
-	return getCommandStack().isDirty();
 }
 
 /* (non-Javadoc)

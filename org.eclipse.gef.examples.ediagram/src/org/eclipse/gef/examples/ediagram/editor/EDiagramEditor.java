@@ -244,10 +244,6 @@ protected void initializeGraphicalViewer() {
 	contentEditPart.getContentPane().addLayoutListener(spRouter.getLayoutListener());
 }
 
-public boolean isDirty() {
-	return getCommandStack().isDirty();
-}
-
 public boolean isSaveAsAllowed() {
 	return false;
 }

@@ -237,24 +237,10 @@ protected PaletteRoot getPaletteRoot() {
 public void gotoMarker(IMarker marker) { }
 
 /**
- * @see org.eclipse.ui.ISaveablePart#isDirty()
- */
-public boolean isDirty() {
-	return isSaveOnCloseNeeded();
-}
-
-/**
  * @see org.eclipse.ui.ISaveablePart#isSaveAsAllowed()
  */
 public boolean isSaveAsAllowed() {
 	return true;
-}
-
-/**
- * @see org.eclipse.ui.ISaveablePart#isSaveOnCloseNeeded()
- */
-public boolean isSaveOnCloseNeeded() {
-	return getCommandStack().isDirty();
 }
 
 private boolean savePreviouslyNeeded() {

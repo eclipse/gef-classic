@@ -213,6 +213,7 @@ class OutlinePage
 		}
 		super.dispose();
 		LogicEditor.this.outlinePage = null;
+		outlinePage = null;
 	}
 	
 	public Object getAdapter(Class type) {
@@ -403,8 +404,7 @@ public void commandStackChanged(EventObject event) {
 			setSavePreviouslyNeeded(true);
 			firePropertyChange(IEditorPart.PROP_DIRTY);
 		}
-	}
-	else {
+	} else {
 		setSavePreviouslyNeeded(false);
 		firePropertyChange(IEditorPart.PROP_DIRTY);
 	}
@@ -695,16 +695,8 @@ protected FigureCanvas getEditor(){
 	return (FigureCanvas)getGraphicalViewer().getControl();
 }
 
-public boolean isDirty() {
-	return isSaveOnCloseNeeded();
-}
-
 public boolean isSaveAsAllowed() {
 	return true;
-}
-
-public boolean isSaveOnCloseNeeded() {
-	return getCommandStack().isDirty();
 }
 
 protected void loadProperties() {
