@@ -11,6 +11,8 @@ import java.util.*;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DragSource;
 import org.eclipse.swt.dnd.DropTarget;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -114,8 +116,8 @@ public void deselectAll(){
 	fireSelectionChanged();
 }
 
-public void dispose(){
-	primDeselectAll();
+public void handleDispose(DisposeEvent e){
+//	primDeselectAll();
 	if (getControl() != null && !getControl().isDisposed())
 		getControl().dispose();
 	setControl(null);
@@ -217,9 +219,14 @@ public Map getVisualPartMap(){
 	return mapVisualToEditPart;
 }
 
-protected void hookControl() {
+protected void hookControl(){
 	if (getControl() == null)
 		return;
+	getControl().addDisposeListener(new DisposeListener() {
+		public void widgetDisposed(DisposeEvent e) {
+			handleDispose(e);
+		}
+	});
 	if (getRootEditPart() != null)
 		getRootEditPart().activate();
 	refreshDragSourceAdapter();
