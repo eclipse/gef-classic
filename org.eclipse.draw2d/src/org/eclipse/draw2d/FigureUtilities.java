@@ -10,10 +10,11 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
-import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.widgets.Shell;
+
+import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
  * Provides miscellaneous Figure operations.
@@ -278,7 +279,7 @@ public static void paintEtchedBorder(Graphics g, Rectangle r,
  * 
  * @since 3.0
  */
-public static void paintGrid(Graphics g, Figure f, 
+public static void paintGrid(Graphics g, IFigure f, 
 		org.eclipse.draw2d.geometry.Point origin, int distanceX, int distanceY) {
 	Rectangle clip = g.getClip(Rectangle.SINGLETON);
 	if (origin.x >= clip.x)
