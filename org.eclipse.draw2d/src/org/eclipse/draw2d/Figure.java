@@ -536,6 +536,24 @@ protected Iterator getListeners(Class clazz) {
 }
 
 /**
+ * Returns the local background Color of this Figure. Does not inherit this Color from the
+ * parent, may return null.
+ * @return bgColor The local background Color
+ */
+public Color getLocalBackgroundColor() {
+	return bgColor;
+}	
+
+/**
+ * Returns the local foreground Color of this Figure. Does not inherit this Color from the
+ * parent, may return null.
+ * @return fgColor The local foreground Color
+ */
+public Color getLocalForegroundColor() {
+	return fgColor;
+}	
+
+/**
  * Returns the top-left corner of this Figure's bounds.
  * @return The top-left corner of this Figure's bounds
  * @since 2.0

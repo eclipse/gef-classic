@@ -265,6 +265,20 @@ Insets getInsets();
 LayoutManager getLayoutManager();
 
 /**
+ * Returns the background Color of this Figure. Does not inherit this Color from the
+ * parent, may return null.
+ * @return The local background Color
+ */
+Color getLocalBackgroundColor();
+
+/**
+ * Returns the local foreground Color of this Figure. Does not inherit this Color from the
+ * parent, may return null.
+ * @return The local foreground Color
+ */
+Color getLocalForegroundColor();
+
+/**
  * Returns a hint indicating the largest desireable size for the IFigure. Returned
  * Dimension is by value.
  * @return The maximum size
