@@ -12,6 +12,7 @@ package org.eclipse.gef.handles;
 
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Locator;
+import org.eclipse.draw2d.geometry.*;
 import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Rectangle;
 
@@ -53,7 +54,7 @@ public void relocate(IFigure target) {
 		bounds = ((HandleBounds)getReference()).getHandleBounds();
 	else
 		bounds = getReference().getBounds();
-	bounds = bounds.getResized(-1, -1);
+	bounds = new PrecisionRectangle(bounds.getResized(-1, -1));
 	getReference().translateToAbsolute(bounds);
 	target.translateToRelative(bounds);
 	bounds.translate(-insets.left, -insets.top);
