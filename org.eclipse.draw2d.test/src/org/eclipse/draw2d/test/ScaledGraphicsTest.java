@@ -61,7 +61,6 @@ public void testFillEmptyArc() {
 	zoom.fillArc(200, 200, 100, 100, 101, 0);
 	zoom.fillArc(200, 200, 100, 0, 90, 180);
 	zoom.fillArc(200, 200, -10, 90, 90, -540);
-//	zoom.fillArc(200, 200, 1, 1, 90, 180);
 	
 	Image expected = new Image(null, 600, 600);
 	try {
