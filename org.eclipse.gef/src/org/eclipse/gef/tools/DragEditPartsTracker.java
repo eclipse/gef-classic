@@ -78,15 +78,6 @@ private boolean acceptSHIFT(KeyEvent e) {
 }
 
 /**
- * @see org.eclipse.gef.Tool#activate()
- */
-public void activate() {
-	super.activate();
-	if (getTargetEditPart() != null)
-		snapToStrategy = (SnapToStrategy)getTargetEditPart().getAdapter(SnapToStrategy.class);
-}
-
-/**
  * Returns the cursor used under normal conditions.
  * @see #setDefaultCursor(Cursor)
  * @return the default cursor
