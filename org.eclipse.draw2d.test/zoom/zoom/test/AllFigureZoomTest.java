@@ -31,7 +31,7 @@ public static void main(String args[]){
 	bar.setMinimum(0);
 	bar.setExtent(25);
 
-	final ZoomingPanel panel = new ZoomingPanel();
+	final ZoomWrapper panel = new ZoomWrapper();
 	panel.setBorder(new GroupBoxBorder("Zooming figure"));
 	panel.setMinimumSize(new Dimension(5,5));
 	panel.setPreferredSize(999, 999);
@@ -47,7 +47,7 @@ public static void main(String args[]){
 
 	addAllFigure(panel);
 
-	bar.setValue(50);
+	bar.setValue(40);
 
 	lws.setContents(fig);
 	shell.open();
@@ -63,6 +63,7 @@ static void addAllFigure(IFigure parent){
 	b.setOpaque(true);
 	b.setRolloverEnabled(true);
 	parent.add(b);
+	parent.add(new AndGate());
 	parent.add(new Button("foo"));
 	parent.add(new Button("foo"));
 	parent.add(new Button("foo"));

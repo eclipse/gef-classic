@@ -38,7 +38,7 @@ protected FlowFigureLayout(FlowFigure flowfigure) {
  * {@link FlowPage} will actually layout itself in order to calculate preferredSize.
  * @see AbstractLayout#calculatePreferredSize(IFigure)
  */
-public Dimension calculatePreferredSize(IFigure f) {
+public Dimension calculatePreferredSize(IFigure f, int w, int h) {
 	return null;
 }
 

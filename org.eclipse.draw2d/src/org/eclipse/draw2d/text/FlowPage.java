@@ -21,8 +21,8 @@ protected FlowFigureLayout createDefaultFlowLayout() {
 /**
  * @see org.eclipse.draw2d.Figure#getMinimumSize()
  */
-public Dimension getMinimumSize() {
-	return pageSize;
+public Dimension getMinimumSize(int w, int h) {
+	return getPreferredSize(w, h);
 }
 
 public Dimension getPreferredSize(int w, int h) {
