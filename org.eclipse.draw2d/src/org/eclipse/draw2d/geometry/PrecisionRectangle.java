@@ -37,6 +37,14 @@ public PrecisionRectangle(Rectangle rect) {
  * @see org.eclipse.draw2d.geometry.Rectangle#getCopy()
  */
 public Rectangle getCopy() {
+	return getPreciseCopy();
+}
+
+/**
+ * Returns a precise copy of this.
+ * @return a precise copy
+ */
+public PrecisionRectangle getPreciseCopy() {
 	PrecisionRectangle result = new PrecisionRectangle();
 	result.preciseX = preciseX;
 	result.preciseY = preciseY;
