@@ -18,10 +18,8 @@ public class Polyline
 {
 
 PointList points = new PointList();
-private int TOLERANCE = 3;
-private int calculatedTolerance;
-
-private static Rectangle LINEBOUNDS = Rectangle.SINGLETON;
+private static final int TOLERANCE = 3;
+private static final Rectangle LINEBOUNDS = Rectangle.SINGLETON;
 
 {
 	bounds  = null;
@@ -33,33 +31,30 @@ private static Rectangle LINEBOUNDS = Rectangle.SINGLETON;
  * @param pt The Point to be added to the Polyline.
  * @since 2.0
  */
-public void addPoint(Point pt){
+public void addPoint(Point pt) {
 	points.addPoint(pt);
 	bounds = null;
 	repaint();
 }
 
-private void calculateTolerance() {
-	calculatedTolerance = TOLERANCE + lineWidth / 2;
-}
-
+/** * @see org.eclipse.draw2d.IFigure#containsPoint(int, int) */
 public boolean containsPoint(int x, int y) {
 
-	calculateTolerance();
-
+	int tolerance = TOLERANCE + lineWidth / 2;
+	
 	LINEBOUNDS.setBounds(getBounds());
-	LINEBOUNDS.expand(calculatedTolerance,calculatedTolerance);
+	LINEBOUNDS.expand(tolerance, tolerance);
 	if (!LINEBOUNDS.contains(x, y))
 		return false;
 
 	int ints[] = points.toIntArray();
-	for (int index = 0; index < ints.length-3; index += 2) {
-		if (lineContainsPoint(ints[index], ints[index+1],
-			ints[index+2],ints[index+3], x, y))
+	for (int index = 0; index < ints.length - 3; index  += 2) {
+		if (lineContainsPoint(ints[index], ints[index + 1],
+			ints[index + 2], ints[index + 3], x, y, tolerance))
 			return true;
 	}
 	List children = getChildren();
-	for (int i=0; i<children.size(); i++){
+	for (int i = 0; i < children.size(); i++) {
 		if (((IFigure)children.get(i)).containsPoint(x, y))
 			return true;
 	}
@@ -69,20 +64,20 @@ public boolean containsPoint(int x, int y) {
 private boolean lineContainsPoint(
 	int x1, int y1,
 	int x2, int y2,
-	int px, int py)
-{
-	LINEBOUNDS.setSize(0,0);
-	LINEBOUNDS.setLocation(x1,y1);
-	LINEBOUNDS.union(x2,y2);
-	LINEBOUNDS.expand(calculatedTolerance,calculatedTolerance);
-	if (!LINEBOUNDS.contains(px,py))
+	int px, int py,
+	int tolerance) {
+	LINEBOUNDS.setSize(0, 0);
+	LINEBOUNDS.setLocation(x1, y1);
+	LINEBOUNDS.union(x2, y2);
+	LINEBOUNDS.expand(tolerance, tolerance);
+	if (!LINEBOUNDS.contains(px, py))
 		return false;
 
 	int v1x, v1y, v2x, v2y;
 	int numerator, denominator;
 	int result = 0;
 
-	if( x1 != x2 && y1 != y2 ) {
+	if (x1 != x2 && y1 != y2) {
 		
 		v1x = x2 - x1;
 		v1y = y2 - y1;
@@ -98,25 +93,29 @@ private boolean lineContainsPoint(
 	
 	// if it is the same point, and it passes the bounding box test,
 	// the result is always true.
-	return result <= calculatedTolerance * calculatedTolerance;
+	return result <= tolerance * tolerance;
 							
 }
 
-protected void fillShape(Graphics g){}
+/**
+ * Null implementation for a line
+ * @see org.eclipse.draw2d.Shape#fillShape(Graphics) */
+protected void fillShape(Graphics g) { }
 
-public Rectangle getBounds(){
-	if (bounds == null){
+/** * @see org.eclipse.draw2d.IFigure#getBounds() */
+public Rectangle getBounds() {
+	if (bounds == null) {
 		bounds = getPoints()
 			.getBounds()
-			.getExpanded(lineWidth/2, lineWidth/2);
+			.getExpanded(lineWidth / 2, lineWidth / 2);
 	}
 	return bounds;
 }
 
 /**
  * Returns the last point in the Polyline.
- * 
  * @since 2.0
+ * @return the last point
  */
 public Point getEnd() {
 	return points.getLastPoint();
@@ -130,7 +129,7 @@ public Point getEnd() {
  * 
  * @since 2.0
  */
-protected PointList getPoints(){
+protected PointList getPoints() {
 	return points;
 }
 
@@ -152,16 +151,20 @@ public Point getStart() {
  * 
  * @since 2.0
  */
-public void insertPoint(Point pt, int index){
+public void insertPoint(Point pt, int index) {
 	bounds = null;
 	points.insertPoint(pt, index);
 	repaint();
 }
-public boolean isOpaque(){return false;}
+public boolean isOpaque() {
+	return false;
+}
 
-protected void outlineShape(Graphics g){g.drawPolyline(points);}
+protected void outlineShape(Graphics g) {
+	g.drawPolyline(points);
+}
 
-public void primTranslate(int x, int y){}
+public void primTranslate(int x, int y) { }
 
 /** 
  * Erases the Polyline and removes all of its
@@ -169,7 +172,7 @@ public void primTranslate(int x, int y){}
  * 
  * @since 2.0
  */
-public void removeAllPoints(){
+public void removeAllPoints() {
 	erase();
 	bounds = null;
 	points.removeAllPoints();
@@ -181,7 +184,7 @@ public void removeAllPoints(){
  * @param index The position of the point to be removed.
  * @since 2.0
  */
-public void removePoint(int index){
+public void removePoint(int index) {
 	erase();
 	bounds = null;
 	points.removePoint(index);
@@ -194,11 +197,11 @@ public void removePoint(int index){
  *             in the Polyline. 
  * @since 2.0
  */
-public void setEnd(Point end){
+public void setEnd(Point end) {
 	if (points.size() < 2)
 		addPoint(end);
 	else
-		setPoint(end, points.size()-1);
+		setPoint(end, points.size() - 1);
 }
 
 /**
@@ -208,12 +211,12 @@ public void setEnd(Point end){
  * @param end The point to become the last point in the Polyline.
  * @since 2.0
  */
-public void setEndpoints(Point start, Point end){
+public void setEndpoints(Point start, Point end) {
 	setStart(start);
 	setEnd(end);
 }
 
-public void setLineWidth(int w){
+public void setLineWidth(int w) {
 	bounds = null;
 	super.setLineWidth(w);
 }
@@ -224,7 +227,7 @@ public void setLineWidth(int w){
  * repaint.  If you're going to set multiple Points, 
  * use {@link #setPoints(PointList)}.
  */
-public void setPoint(Point pt, int index){
+public void setPoint(Point pt, int index) {
 	erase();
 	points.setPoint(pt, index);
 	bounds = null;
@@ -253,14 +256,14 @@ public void setPoints(PointList points) {
  *               in the Polyline.
  * @since 2.0
  */
-public void setStart(Point start){
+public void setStart(Point start) {
 	if (points.size() == 0)
 		addPoint(start);
 	else
 		setPoint(start, 0);
 }
 
-protected boolean useLocalCoordinates(){
+protected boolean useLocalCoordinates() {
 	return false;
 }
 
