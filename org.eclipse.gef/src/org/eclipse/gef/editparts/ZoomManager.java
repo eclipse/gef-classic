@@ -128,38 +128,47 @@ protected void fireZoomChanged() {
 		((ZoomListener)iter.next()).zoomChanged(zoom);
 }
 
-protected double getFitHeightZoomLevel() {
+private double getFitXZoomLevel(int which) {
 	IFigure fig = getScalableFigure();
-	Insets insets = fig.getInsets();
-	double viewportHeight = getViewport().getSize().height - insets.getHeight();
-	Rectangle figureBounds;
-	if (fig instanceof FreeformFigure) {
-		figureBounds = ((FreeformFigure)fig).getFreeformExtent().getCopy();
-	} else {
-		figureBounds = fig.getBounds().getCopy();
-		figureBounds.setSize(fig.getPreferredSize());
+	
+	Dimension available = getViewport().getClientArea().getSize();
+	Dimension desired;
+	if (fig instanceof FreeformFigure)
+		desired = ((FreeformFigure)fig)
+			.getFreeformExtent()
+			.getCopy().union(0, 0)
+			.getSize();
+	else
+		desired = fig.getPreferredSize().getCopy();
+	
+	desired.width -= fig.getInsets().getWidth();
+	desired.height -= fig.getInsets().getHeight();
+	
+	while (fig != getViewport()) {
+		available.width -= fig.getInsets().getWidth();
+		available.height -= fig.getInsets().getHeight();
+		fig = fig.getParent();
 	}
-	figureBounds.crop(insets).scale(1 / zoom).union(0, 0);
-	return Math.min(viewportHeight / figureBounds.height * multiplier, multiplier);
+
+	double scaleX = available.width * zoom / desired.width;
+	double scaleY = available.height * zoom / desired.height;
+	if (which == 0)
+		return scaleX;
+	if (which == 1)
+		return scaleY;
+	return Math.min(scaleX, scaleY);
+}
+
+protected double getFitHeightZoomLevel() {
+	return getFitXZoomLevel(1);
 }
 
 protected double getFitPageZoomLevel() {
-	return Math.min(getFitWidthZoomLevel(), getFitHeightZoomLevel());
+	return getFitXZoomLevel(2);
 }
 
 protected double getFitWidthZoomLevel() {
-	IFigure fig = getScalableFigure();
-	Insets insets = fig.getInsets();
-	double viewportWidth = getViewport().getSize().width - insets.getWidth();
-	Rectangle figureBounds;
-	if (fig instanceof FreeformFigure) {
-		figureBounds = ((FreeformFigure)fig).getFreeformExtent().getCopy();
-	} else {
-		figureBounds = fig.getBounds().getCopy();
-		figureBounds.setSize(fig.getPreferredSize());
-	}
-	figureBounds.crop(insets).scale(1 / zoom).union(0, 0);
-	return Math.min(viewportWidth / figureBounds.width * multiplier, multiplier);
+	return getFitXZoomLevel(0);
 }
 
 /**
