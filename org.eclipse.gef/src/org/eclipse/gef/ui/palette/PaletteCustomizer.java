@@ -46,7 +46,8 @@ public abstract class PaletteCustomizer {
  * @see #performDelete(PaletteEntry)
  */
 public boolean canDelete(PaletteEntry entry) {
-	return entry.getUserModificationPermission() == PaletteEntry.PERMISSION_FULL_MODIFICATION;
+	return entry.getUserModificationPermission() 
+											== PaletteEntry.PERMISSION_FULL_MODIFICATION;
 }
 
 /**

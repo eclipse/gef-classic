@@ -97,7 +97,8 @@ public DefaultPaletteViewerPreferences(final IPreferenceStore store) {
  * NOTE: The <code>oldValue</code> field of the <code>PropertyChangeEvent</code> used to
  * notify listeners will always be <code>null</code>.
  * 
- * @see org.eclipse.gef.ui.palette.PaletteViewerPreferences#addPropertyChangeListener(PropertyChangeListener)
+ * @see org.eclipse.gef.ui.palette.PaletteViewerPreferences#addPropertyChangeListener(
+ * 																   PropertyChangeListener)
  */
 public void addPropertyChangeListener(PropertyChangeListener listener) {
 	listeners.addPropertyChangeListener(listener);
@@ -169,7 +170,9 @@ public static int convertPreferenceNameToLayout(String preference) {
 /**
  * The oldValue of the PropertyChangeEvent that is fired will always be <code>null</code>.
  * 
- * @see java.beans.PropertyChangeSupport#firePropertyChange(java.lang.String, java.lang.Object, java.lang.Object)
+ * @see java.beans.PropertyChangeSupport#firePropertyChange(java.lang.String, 
+ * 															java.lang.Object, 
+ * 															java.lang.Object)
  */
 protected void firePropertyChanged(String property, Object newVal) {
 	listeners.firePropertyChange(property, null, newVal);
@@ -250,7 +253,8 @@ public boolean isSupportedLayoutMode(int layout) {
 }
 
 /**
- * @see org.eclipse.gef.ui.palette.PaletteViewerPreferences#removePropertyChangeListener(PropertyChangeListener)
+ * @see org.eclipse.gef.ui.palette.PaletteViewerPreferences#removePropertyChangeListener(
+ * 																   PropertyChangeListener)
  */
 public void removePropertyChangeListener(PropertyChangeListener listener) {
 	listeners.removePropertyChangeListener(listener);
@@ -283,7 +287,8 @@ public void setLayoutSetting(int newVal) {
 }
 
 /**
- * @see org.eclipse.gef.ui.palette.PaletteViewerPreferences#setCurrentUseLargeIcons(boolean)
+ * @see org.eclipse.gef.ui.palette.PaletteViewerPreferences#setCurrentUseLargeIcons(
+ * 																				  boolean)
  */
 public void setCurrentUseLargeIcons(boolean newVal) {
 	setUseLargeIcons(getLayoutSetting(), newVal);

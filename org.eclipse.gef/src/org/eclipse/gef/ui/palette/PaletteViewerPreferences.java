@@ -136,9 +136,10 @@ public static final String
 	PREFERENCE_FONT               = "Palette Font"; //$NON-NLS-1$ 
 
 /**
- * @see java.beans.PropertyChangeSupport#addPropertyChangeListener(java.beans.PropertyChangeListener)
+ * @see java.beans.PropertyChangeSupport#addPropertyChangeListener(
+ * 														java.beans.PropertyChangeListener)
  */
-public void addPropertyChangeListener(PropertyChangeListener listener);
+void addPropertyChangeListener(PropertyChangeListener listener);
 
 /**
  * Returns the current auto-collapse setting.
@@ -152,10 +153,10 @@ public void addPropertyChangeListener(PropertyChangeListener listener);
  * 
  * @return One of the above-mentioned constants
  */
-public int getAutoCollapseSetting();
+int getAutoCollapseSetting();
 
 /** * @return The FontData for the font to be used in the palette. */
-public FontData getFontData();
+FontData getFontData();
 
 /**
  * Returns the current layout setting.
@@ -170,7 +171,7 @@ public FontData getFontData();
  * 
  * @return One of the above-mentioned constants
  */
-public int getLayoutSetting();
+int getLayoutSetting();
 
 /**
  * Returns the layout modes that are supported.  All four layout modes --
@@ -179,7 +180,7 @@ public int getLayoutSetting();
  * @return The layout modes that are supported
  * @see #setSupportedLayoutModes(int[])
  */
-public int[] getSupportedLayoutModes();
+int[] getSupportedLayoutModes();
 
 /**
  * This is a convenience method.  Instead of getting the supported layout modes and
@@ -187,12 +188,13 @@ public int[] getSupportedLayoutModes();
  * 
  * @param layout	LAYOUT_COLUMNS, LAYOUT_LIST, LAYOUT_ICONS, or LAYOUT_DETAILS
  * @return <code>true</code> if the given layout is a supported mode */
-public boolean isSupportedLayoutMode(int layout);
+boolean isSupportedLayoutMode(int layout);
 
 /**
- * @see java.beans.PropertyChangeSupport#removePropertyChangeListener(java.beans.PropertyChangeListener)
+ * @see java.beans.PropertyChangeSupport#removePropertyChangeListener(
+ * 														java.beans.PropertyChangeListener)
  */
-public void removePropertyChangeListener(PropertyChangeListener listener);
+void removePropertyChangeListener(PropertyChangeListener listener);
 
 /**
  * Sets the auto-collapse setting.
@@ -206,13 +208,13 @@ public void removePropertyChangeListener(PropertyChangeListener listener);
  * 
  * @param newVal	One of the above-mentioned constants
  */
-public void setAutoCollapseSetting(int newVal);
+void setAutoCollapseSetting(int newVal);
 
 /**
  * Sets the FontData for the palette.
  * 
  * @param	data	The FontData for the font to be used in the palette */
-public void setFontData(FontData data);
+void setFontData(FontData data);
 
 /**
  * Sets the given setting as the current layout.
@@ -227,7 +229,7 @@ public void setFontData(FontData data);
  * 
  * @param	newVal	One of the above-mentioned constants
  */
-public void setLayoutSetting(int newVal);
+void setLayoutSetting(int newVal);
 
 /**
  * Sets the "Use Large Icons" option for the currently active layout.
@@ -235,7 +237,7 @@ public void setLayoutSetting(int newVal);
  * @param	newVal	<code>true</code> if large icons are to be used with the current layout
  * 					setting
  */
-public void setCurrentUseLargeIcons(boolean newVal);
+void setCurrentUseLargeIcons(boolean newVal);
 
 /**
  * The client can restrict the modes that the palette supports using this method.  By
@@ -253,7 +255,7 @@ public void setCurrentUseLargeIcons(boolean newVal);
  * 
  * @param	modes	an array of layout modes desired
  */
-public void setSupportedLayoutModes(int[] modes);
+void setSupportedLayoutModes(int[] modes);
 
 /**
  * Sets the "Use Large Icons" option for the given layout.
@@ -269,7 +271,7 @@ public void setSupportedLayoutModes(int[] modes);
  * @param	layout	any of the above-mentioned constants
  * @param	newVal	<code>true</code> if large icons are to be used with the given layout
  */
-public void setUseLargeIcons(int layout, boolean newVal);
+void setUseLargeIcons(int layout, boolean newVal);
 
 /**
  * Indicated whether large icons should be used with the given layout mode.
@@ -285,12 +287,12 @@ public void setUseLargeIcons(int layout, boolean newVal);
  * @param	layout	any of the above-mentioned constants
  * @return <code>true</code> if large icons are to be used with the given layout
  */
-public boolean useLargeIcons(int layout);
+boolean useLargeIcons(int layout);
 
 /**
  * @return <code>true</code> if large icons are to be used with the currently active
  * layout
  */
-public boolean useLargeIcons();
+boolean useLargeIcons();
 
 }

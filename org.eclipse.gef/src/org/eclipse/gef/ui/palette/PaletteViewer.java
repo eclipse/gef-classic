@@ -88,8 +88,8 @@ public PaletteViewer() {
  * Adds the given PaletteListener as the one to be notified when the active tool on the
  * palette changes.
  * 
- * @param	paletteListener		The listener that needs to be notified of active tool changes
- * 								on the palette
+ * @param	paletteListener		The listener that needs to be notified of active tool 
+ * 								changes on the palette
  */
 public void addPaletteListener(PaletteListener paletteListener) {
 	if (paletteListeners != null)
@@ -200,6 +200,11 @@ protected void hookControl() {
 	updateFont();
 }
 
+/**
+ * Returns true if the given PaletteDrawer is expanded
+ * @param drawer the PaletteDrawer
+ * @return true if expanded
+ */
 public boolean isExpanded(PaletteDrawer drawer) {
 	EditPart ep = (EditPart)getEditPartRegistry().get(drawer);
 	if (ep instanceof DrawerEditPart)
@@ -207,6 +212,11 @@ public boolean isExpanded(PaletteDrawer drawer) {
 	return false;
 }
 
+/**
+ * Returns true if the given PaletteDrawer is pinned
+ * @param drawer the PaletteDrawer
+ * @return true if pinned
+ */
 public boolean isPinned(PaletteDrawer drawer) {
 	EditPart ep = (EditPart)getEditPartRegistry().get(drawer);
 	if (ep instanceof DrawerEditPart)
@@ -217,8 +227,8 @@ public boolean isPinned(PaletteDrawer drawer) {
 /**
  * The given PaletteListener will not be notified of active tool changes in the palette.
  * 
- * @param	paletteListener		the PaletteListener which doesn't want to be notified of active
- * 								tool changes in the palette anymore
+ * @param	paletteListener		the PaletteListener which doesn't want to be notified of 
+ * 								active tool changes in the palette anymore
  */
 public void removePaletteListener(PaletteListener paletteListener) {
 	paletteListeners.remove(paletteListener);
@@ -237,8 +247,8 @@ public void setCustomizer(PaletteCustomizer customizer) {
  * Sets the active entry for this palette.  The Editpart for the given entry will be
  * activated (selected).
  * 
- * @param	newMode		the ToolEntry whose EditPart has to be set as the active tool in this
- * 						palette
+ * @param	newMode		the ToolEntry whose EditPart has to be set as the active tool 
+ * 						in this palette
  */
 public void setActiveTool(ToolEntry newMode) {
 	if (newMode == null)
