@@ -133,10 +133,6 @@ public boolean snapMoveRequest(ChangeBoundsRequest request,	PrecisionRectangle b
 	double ycorrect = getCorrectionFor(rows, request.getExtendedData(), false, 
 			baseRect.preciseY, baseRect.preciseBottom());
 
-	// No snapping feedback is to be shown if multiple editparts are being moved. 
-	if (request.getEditParts().size() > 1)
-		request.getExtendedData().clear();
-
 	//If neither value is being corrected, return false
 	if (xcorrect == THRESHOLD && ycorrect == THRESHOLD)
 		return false;
@@ -209,12 +205,6 @@ public boolean snapResizeRequest(ChangeBoundsRequest request, PrecisionRectangle
 	if (!change)
 		return false;
 	
-	// No snapping feedback is to be shown if multiple editparts are being resized.
-	if (request.getEditParts().size() > 1) {
-		request.getExtendedData().remove(HORIZONTAL_ANCHOR);
-		request.getExtendedData().remove(VERTICAL_ANCHOR);
-	}
-		
 	fig.translateToAbsolute(resize);
 	fig.translateToAbsolute(move);
 	resize.updateInts();
