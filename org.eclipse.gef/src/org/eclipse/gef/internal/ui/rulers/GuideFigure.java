@@ -18,14 +18,15 @@ import org.eclipse.gef.SharedCursors;
 /**
  * @author Pratik Shah
  */
-public class GuideFigure 
+public class GuideFigure
 	extends Figure
 {
 	
-private static final Dimension H_PREFSIZE = new Dimension(8, 9);
-private static final Dimension V_PREFSIZE = new Dimension(9, 8);
+private static final Dimension H_PREFSIZE = new Dimension(9, 11);
+private static final Dimension V_PREFSIZE = new Dimension(11, 9);
 	
 private boolean horizontal;
+private boolean drawFocus;
 	
 public GuideFigure(boolean isHorizontal) {
 	horizontal = isHorizontal;
@@ -53,6 +54,18 @@ public Dimension getPreferredSize(int wHint, int hHint) {
 	return prefSize;
 }
 
+public void handleFocusGained(FocusEvent event) {
+	super.handleFocusGained(event);
+	repaint();
+	getUpdateManager().performUpdate();
+}
+
+public void handleFocusLost(FocusEvent event) {
+	super.handleFocusLost(event);
+	repaint();
+	getUpdateManager().performUpdate();
+}
+
 protected boolean isHorizontal() {
 	return horizontal;
 }
@@ -65,6 +78,7 @@ protected void paintFigure(Graphics graphics) {
 	// Hence, this method does not use it.
 	if (isHorizontal()) {
 		Rectangle clientArea = getClientArea();
+		clientArea.shrink(0, 1);
 		clientArea.x = clientArea.x + clientArea.width - 8;
 		clientArea.width = 8;
 		
@@ -107,8 +121,17 @@ protected void paintFigure(Graphics graphics) {
 				clientArea.y + 5);
 		graphics.drawLine(clientArea.x + 7, clientArea.y + 4, clientArea.x + 7, 
 				clientArea.y + 4);
+		
+		if (drawFocus) {
+			clientArea.expand(1, 1);
+			clientArea.height -= 1;
+			graphics.setForegroundColor(ColorConstants.black);
+			graphics.setBackgroundColor(ColorConstants.white);
+			graphics.drawFocus(clientArea);
+		}
 	} else {
 		Rectangle clientArea = getClientArea();
+		clientArea.shrink(1, 0);
 		clientArea.y = clientArea.y + clientArea.height - 8;
 		clientArea.height = 8;
 		
@@ -151,6 +174,21 @@ protected void paintFigure(Graphics graphics) {
 				clientArea.y + 6);
 		graphics.drawLine(clientArea.x + 4, clientArea.y + 7, clientArea.x + 4, 
 				clientArea.y + 7);
+
+		if (drawFocus) {
+			clientArea.expand(1, 1);
+			clientArea.width -= 1;
+			graphics.setForegroundColor(ColorConstants.black);
+			graphics.setBackgroundColor(ColorConstants.white);
+			graphics.drawFocus(clientArea);
+		}
+	}
+}
+
+public void setDrawFocus(boolean drawFocus) {
+	if (this.drawFocus != drawFocus) {
+		this.drawFocus = drawFocus;
+		repaint();
 	}
 }
 

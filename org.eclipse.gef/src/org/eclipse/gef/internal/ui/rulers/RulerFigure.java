@@ -39,6 +39,7 @@ public int minPixelsBetweenMajorMarks = 47;
 
 protected Transposer transposer = new Transposer();
 protected ZoomManager zoomManager;
+private boolean drawFocus = false;
 
 /*
  * This is an artificial border.  When asked for the preferred size, the figure adds 
@@ -80,6 +81,10 @@ protected double getDPU() {
 		}
 	}
 	return dpu;
+}
+
+public boolean getDrawFocus() {
+	return drawFocus;
 }
 
 public Dimension getPreferredSize(int wHint, int hHint) {
@@ -125,6 +130,11 @@ public boolean isHorizontal() {
  * @see org.eclipse.draw2d.Figure#paintFigure(org.eclipse.draw2d.Graphics)
  */
 protected void paintFigure(Graphics graphics) {
+	/*
+	 * @TODO:Pratik   maybe you can break this method into a few methods.  that might
+	 * make it a little easier to read and understand.  plus, sub-classes could customize
+	 * certain parts.
+	 */
 	double dotsPerUnit = getDPU();
 	Rectangle clip = transposer.t(graphics.getClip(Rectangle.SINGLETON));
 	Rectangle figClientArea = transposer.t(getClientArea());
@@ -323,12 +333,21 @@ protected void paintFigure(Graphics graphics) {
 	}
 	// paint the border
 	/*
-	 * @TODO:Pratik    should i be drawing the two button pixels here?
+	 * @TODO:Pratik    should i be drawing the two button pixels here?  the parent's
+	 * background is of button, and hence those two pixel lines are already of the desired
+	 * color.
 	 */
 	clippedBounds.expand(BORDER_WIDTH, 0);
 	graphics.setForegroundColor(ColorConstants.buttonDarker);
-	graphics.drawLine(transposer.t(clippedBounds.getTopRight().translate(-1, -1)), 
+	graphics.drawLine(transposer.t(clippedBounds.getTopRight().translate(-1, -1)),
 			transposer.t(clippedBounds.getBottomRight().translate(-1, -1)));
+}
+
+public void setDrawFocus(boolean drawFocus) {
+	if (this.drawFocus != drawFocus) {
+		this.drawFocus = drawFocus;
+		repaint();
+	}
 }
 
 public void setHorizontal(boolean isHorizontal) {
