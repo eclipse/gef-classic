@@ -165,7 +165,8 @@ protected List createOperationSet() {
 protected Request createTargetRequest() {
 	if (isCloneActive())
 		return new ChangeBoundsRequest(REQ_CLONE);
-	return new ChangeBoundsRequest(REQ_MOVE);
+	else
+		return new ChangeBoundsRequest(REQ_MOVE);
 }
 
 /**
@@ -413,7 +414,7 @@ protected boolean isMove() {
 	while (part != getTargetEditPart() && part != null) {
 		if (part.getParent() == getTargetEditPart() 
 				&& part.getSelected() != EditPart.SELECTED_NONE)
-			return true;
+				return true;
 		part = part.getParent();
 	}
 	return false;
