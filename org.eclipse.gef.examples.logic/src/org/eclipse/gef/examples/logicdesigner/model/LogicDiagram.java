@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner.model;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -121,6 +122,14 @@ public Ruler getRuler(int orientation) {
 	return result;
 }
 
+private void readObject(java.io.ObjectInputStream s)
+	throws IOException, ClassNotFoundException {
+	s.defaultReadObject();
+	if (this.leftRuler == null)
+		leftRuler = new Ruler(false);
+	if (this.topRuler == null)
+		topRuler = new Ruler(true);
+}
 public void removeChild(LogicElement child){
 	children.remove(child);
 	fireStructureChange(CHILDREN, child);
