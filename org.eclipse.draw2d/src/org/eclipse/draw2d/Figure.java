@@ -965,6 +965,15 @@ protected boolean isMouseEventTarget() {
 }
 
 /**
+ * @see org.eclipse.draw2d.IFigure#isMirrored()
+ */
+public boolean isMirrored() {
+	if (getParent() != null)
+		return getParent().isMirrored();
+	return false;
+}
+
+/**
  * @see IFigure#isOpaque()
  */
 public boolean isOpaque() {

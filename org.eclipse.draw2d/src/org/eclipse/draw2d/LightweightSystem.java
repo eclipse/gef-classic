@@ -331,6 +331,13 @@ protected class RootFigure
 		return dispatcher;
 	}
 	
+	/**
+	 * @see org.eclipse.draw2d.IFigure#isMirrored()
+	 */
+	public boolean isMirrored() {
+		return (LightweightSystem.this.canvas.getStyle() & SWT.RIGHT_TO_LEFT) != 0;
+	}
+	
 	/** @see org.eclipse.draw2d.Figure#isShowing() */
 	public boolean isShowing() {
 		return true;

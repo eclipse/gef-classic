@@ -548,6 +548,12 @@ boolean isEnabled();
 boolean isFocusTraversable();
 
 /**
+ * @return <code>true</code> if this figure is hosted in a Control that is mirrored
+ * @since 3.1
+ */
+boolean isMirrored();
+
+/**
  * Returns <code>true</code> if this IFigure is opaque.
  * @return <code>true</code> if this IFigure is opaque
  */
