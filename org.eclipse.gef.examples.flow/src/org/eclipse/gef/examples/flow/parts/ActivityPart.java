@@ -35,6 +35,11 @@ public void activate() {
 protected void applyGraphResults(CompoundDirectedGraph graph, Map map) {
 	Node n = (Node)map.get(this);
 	getFigure().setBounds(new Rectangle(n.x, n.y, n.width, n.height));
+	
+	for (int i = 0; i < getSourceConnections().size(); i++) {
+		TransitionPart trans = (TransitionPart) getSourceConnections().get(i);
+		trans.applyGraphResults(graph, map);
+	}
 }
 
 public abstract void contributeNodesToGraph(CompoundDirectedGraph graph, Subgraph s, Map map);

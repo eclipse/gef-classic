@@ -162,7 +162,7 @@ static PolylineConnection connection(Edge e) {
 			int x = n.x;
 			int y = n.y;
 			bends.add(new AbsoluteBendpoint(x, y));
-			bends.add(new AbsoluteBendpoint(x, y + 40));
+			bends.add(new AbsoluteBendpoint(x, y + n.height));
 		}
 	}
 	conn.setRoutingConstraint(bends);
