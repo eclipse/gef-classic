@@ -37,6 +37,7 @@ public static void main(String[] args) {
 			gc.setClipping(e.gc.getClipping());
 			Image image = new Image(null, 1024,1024);
 			GC offscreen = new GC(image);
+			System.out.println(offscreen.getLineWidth());
 			offscreen.setLineWidth(1);
 			offscreen.setBackground(gc.getBackground());
 			offscreen.setForeground(gc.getForeground());
