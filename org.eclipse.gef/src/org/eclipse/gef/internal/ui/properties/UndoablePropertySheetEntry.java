@@ -54,6 +54,12 @@ protected PropertySheetEntry createChildEntry() {
 	return new UndoablePropertySheetEntry();
 }
 
+public void dispose() {
+	if (stack != null)
+		stack.removeCommandStackListener(commandStackListener);
+	super.dispose();
+}
+
 /**
  * returns the Command stack from the root entry
  * @return
