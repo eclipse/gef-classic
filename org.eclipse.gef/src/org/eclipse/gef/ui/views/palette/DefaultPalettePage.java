@@ -29,8 +29,8 @@ public class DefaultPalettePage
 	extends Page
 	implements PalettePage {
 	
-private PaletteViewerProvider provider;
-private PaletteViewer viewer;
+protected PaletteViewerProvider provider;
+protected PaletteViewer viewer;
 	
 public DefaultPalettePage(PaletteViewerProvider pvProvider) {
 	Assert.isNotNull(pvProvider);
@@ -42,8 +42,9 @@ public void createControl(Composite parent) {
 }
 
 public void dispose() {
-	if (viewer != null)
-		provider.destroyPaletteViewer(viewer);
+	if (provider.getEditDomain().getPaletteViewer() == viewer)
+		provider.getEditDomain().setPaletteViewer(null);
+	super.dispose();
 	viewer = null;
 }
 
