@@ -11,7 +11,11 @@
 package org.eclipse.gef.internal.ui.palette.editparts;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.*;
@@ -39,6 +43,7 @@ public class DetailedLabelFigure
 {
 
 public static final String SELECTED_PROPERTY = "selected"; //$NON-NLS-1$
+protected static final FontCache FONTCACHE = new FontCache();
 private static final Border PAGE_BORDER = new MarginBorder(0, 1, 0, 1);
 
 private Image shadedIcon;
@@ -50,6 +55,7 @@ private FontData currentData;
 private boolean selectionState, useLargeIcons;
 private int layoutMode = -1;
 private List listeners = new ArrayList();
+private Font cachedFont;
 
 /**
  * Constructor
@@ -76,8 +82,7 @@ public DetailedLabelFigure() {
 protected void finalize() throws Throwable {
 	if (boldFont != null) {
 		nameText.setFont(null);
-		boldFont.dispose();
-		boldFont = null;
+		FONTCACHE.checkIn(boldFont);
 	}
 }
 
@@ -249,24 +254,16 @@ public static ImageData createShadedImage(Image fromImage, Color shade) {
 
 private void updateFont(int layout) {
 	boolean layoutChanged = (layoutMode != layout);
-	/*
-	 * @TODO:Pratik
-	 * Find out if getting the first FontData in the array is valid.
-	 * You also need to figure out a way of disposing this Font.  Right now you are
-	 * doing it through the finalize method.
-	 */
-	FontData data = getFont().getFontData()[0];
-	data.setStyle(SWT.BOLD);
-	boolean fontChanged = !data.equals(currentData);
+	boolean fontChanged = (cachedFont == null || cachedFont != getFont());
 
-	currentData = data;
+	cachedFont = getFont();
 	if (layoutChanged || fontChanged) {
 		if (boldFont != null) {
-			boldFont.dispose();
+			FONTCACHE.checkIn(boldFont);
 			boldFont = null;
 		}
 		if (layout == PaletteViewerPreferences.LAYOUT_DETAILS) {
-			boldFont = new Font(Display.getCurrent(), data);
+			boldFont = FONTCACHE.checkOut(cachedFont);
 		}
 		nameText.setFont(boldFont);
 	}
@@ -283,12 +280,13 @@ private class FocusableFlowPage extends FlowPage {
 			List children = getChildren();
 			for (int i = 0; i < children.size(); i++) {
 				Figure child = (Figure) children.get(i);
-				if (i == 0)
+				if (i == 0) {
 					childBounds = child.getBounds().getCopy();
-				else
+				} else {
 					childBounds.union(child.getBounds());
+				}
 			}
-			childBounds.expand(new Insets(2,2,0,0));
+			childBounds.expand(new Insets(2, 2, 0, 0));
 			translateToParent(childBounds);
 			childBounds.intersect(getBounds());
 			g.fillRectangle(childBounds);
@@ -332,6 +330,57 @@ private class SelectableImageFigure extends ImageFigure {
 			disposeShadedImage();
 		}
 		super.setImage(image);
+	}
+}
+
+private static class FontCache {
+	private Hashtable table = new Hashtable();
+	private class FontInfo {
+		Font boldFont;
+		int refCount;
+	}
+	
+	/*
+	 * Client can only check in fonts that they checked out from this cache, and should
+	 * do only one check-in per checkout. If the given font is not found, a null pointer
+	 * exception will be encountered.
+	 */
+	public void checkIn(Font boldFont) {
+		FontInfo info = null;
+		Map.Entry entry = null;
+		Collection values = table.entrySet();
+		for (Iterator iter = values.iterator(); iter.hasNext();) {
+			Map.Entry tempEntry = (Map.Entry) iter.next();
+			FontInfo tempInfo = (FontInfo)tempEntry.getValue();
+			if (tempInfo.boldFont == boldFont) {
+				info = tempInfo;
+				entry = tempEntry;
+				break;
+			}
+		}
+		info.refCount--;
+		if (info.refCount == 0) {
+			boldFont.dispose();
+			table.remove(entry.getKey());
+		}
+	}
+	
+	public Font checkOut(Font font) {
+		FontInfo info = null;
+		Object obj = table.get(font);
+		if (obj != null) {
+			info = (FontInfo)obj;
+		} else {
+			info = new FontInfo();
+			FontData[] datas = font.getFontData();
+			for (int i = 0; i < datas.length; i++) {
+				datas[i].setStyle(SWT.BOLD);
+			}
+			info.boldFont = new Font(Display.getCurrent(), datas);
+			table.put(font, info);
+		}
+		info.refCount++;
+		return info.boldFont;
 	}
 }
 
