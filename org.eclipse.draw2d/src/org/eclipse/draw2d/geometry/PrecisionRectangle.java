@@ -50,7 +50,6 @@ public Rectangle getCopy() {
  * @see org.eclipse.draw2d.geometry.Rectangle#performScale(double)
  */
 public void performScale(double factor) {
-	sanityCheck();
 	preciseX *= factor;
 	preciseY *= factor;
 	preciseWidth *= factor;
@@ -62,7 +61,6 @@ public void performScale(double factor) {
  * @see org.eclipse.draw2d.geometry.Rectangle#performTranslate(int, int)
  */
 public void performTranslate(int dx, int dy) {
-	sanityCheck();
 	preciseX += dx;
 	preciseY += dy;
 	updateInts();
@@ -72,19 +70,10 @@ public void performTranslate(int dx, int dy) {
  * @see org.eclipse.draw2d.geometry.Rectangle#resize(org.eclipse.draw2d.geometry.Dimension)
  */
 public Rectangle resize(Dimension sizeDelta) {
-	sanityCheck();
 	preciseWidth += sizeDelta.width;
 	preciseHeight += sizeDelta.height;
 	updateInts();
 	return this;
-}
-
-private void sanityCheck() {
-	if (Math.abs(preciseX - x) > 1.0
-	  || Math.abs(preciseY - y) > 1.0
-	  || Math.abs(preciseHeight - height) > 1.0
-	  || Math.abs(preciseWidth - width) > 1.0)
-	  	System.out.println("PrecisionRectangle modified");
 }
 
 /**
@@ -127,7 +116,6 @@ public void setY(double value) {
  * @see org.eclipse.draw2d.geometry.Rectangle#translate(org.eclipse.draw2d.geometry.Point)
  */
 public Rectangle translate(Point p) {
-	sanityCheck();
 	preciseX += p.x;
 	preciseY += p.y;
 	updateInts();
