@@ -337,16 +337,25 @@ protected void paintFigure(Graphics graphics) {
 	
 	graphics.setLineStyle(Graphics.LINE_DOT);
 	
-	if (offset == 0 || offset == 4 || offset == 5)
-		graphics.drawPoint(bounds.width - 1, 0);
-	if (offset == 0 || offset == 1)
-		graphics.drawPoint(0, bounds.height - 1);
-		
-	graphics.drawLine((bounds.width % 6 - 7) + offset, 0, bounds.width + 6, 0);
-	graphics.drawLine(bounds.width - 1, offset - 6, bounds.width - 1, bounds.height + 6);
-	graphics.drawLine(bounds.width + 7 - (bounds.width % 6) - offset, bounds.height - 1, 
-			0 - 6, bounds.height - 1);
-	graphics.drawLine(0, bounds.height - offset, 0, -6);
+	int[] points = new int[6];
+	
+	points[0] = 0 + offset;
+	points[1] = 0;
+	points[2] = bounds.width - 1;
+	points[3] = 0;
+	points[4] = bounds.width - 1;
+	points[5] = bounds.height - 1;
+	
+	graphics.drawPolyline(points);
+	
+	points[0] = 0;
+	points[1] = 0 + offset;
+	points[2] = 0;
+	points[3] = bounds.height - 1;
+	points[4] = bounds.width - 1;
+	points[5] = bounds.height - 1;
+	
+	graphics.drawPolyline(points);
 	
 	graphics.translate(getLocation().getNegated());
 	
