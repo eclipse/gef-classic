@@ -32,7 +32,7 @@ public final class CompoundDirectedGraphLayout extends GraphVisitor {
  * @see org.eclipse.draw2d.internal.graph.GraphVisitor#visit(org.eclipse.draw2d.graph.DirectedGraph)
  */
 public void visit(DirectedGraph graph) {
-	new BreakCycles()
+	new CompoundBreakCycles()
 		.visit(graph);
 	new ConvertCompoundGraph()
 		.visit(graph);
