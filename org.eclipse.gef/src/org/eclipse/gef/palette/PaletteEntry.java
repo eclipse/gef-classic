@@ -16,8 +16,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
  * 
  * @author Pratik Shah
  */
-public class PaletteEntry
-{
+public class PaletteEntry {
 
 /**
  * Property name for the entry's small icon 
@@ -72,10 +71,29 @@ public static final String
  */
 public static final String PALETTE_TYPE_UNKNOWN = "Palette_type_Unknown";//$NON-NLS-1$
 
-public static final int PERMISSION_NO_MODIFICATION = 0;
-public static final int PERMISSION_HIDE_ONLY = 1;
-public static final int PERMISSION_NO_DELETION = 3;
-public static final int PERMISSION_FULL_MODIFICATION = 7;
+/**
+ * No changes can be made to a PaletteEntry with this permission level.
+ */
+public static final int PERMISSION_NO_MODIFICATION = 1;
+
+/**
+ * Entries with this permission level can only be hidden/shown.
+ */
+public static final int PERMISSION_HIDE_ONLY = 3;
+
+/**
+ * Any property of entries with this level of permission can be changed; however, they
+ * cannot be deleted from the palette.  The children PaletteContainers with this
+ * permission level can be reordered within that container (however, cross-container
+ * moving is not allowed).
+ * 
+ */
+public static final int PERMISSION_LIMITED_MODIFICATION = 7;
+
+/**
+ * All modifications allowed.
+ */
+public static final int PERMISSION_FULL_MODIFICATION = 15;
 
 /**
  * PropertyChangeSupport
@@ -214,7 +232,17 @@ public Object getType() {
 	return type;
 }
 
-/** * @return */
+/**
+ * Returned values are from amongst the following:
+ * <UL>
+ * 		<LI>PERMISSION_NO_MODIFICATION</LI>
+ * 		<LI>PERMISSION_HIDE_ONLY</LI>
+ * 		<LI>PERMISSION_LIMITED_MODIFICATION</LI>
+ * 		<LI>PERMISSION_FULL_MODIFICATION</LI>
+ * </UL>
+ *  * @return the permission level for this entry.  
+ * @see	#setUserModificationPermission(int)
+ */
 public int getUserModificationPermission() {
 	return permission;
 }
@@ -298,11 +326,11 @@ public void setParent(PaletteContainer newParent) {
  * <UL>
  * 		<LI>PERMISSION_NO_MODIFICATION</LI>
  * 		<LI>PERMISSION_HIDE_ONLY</LI>
- * 		<LI>PERMISSION_NO_DELETION</LI>
+ * 		<LI>PERMISSION_LIMITED_MODIFICATION</LI>
  * 		<LI>PERMISSION_FULL_MODIFICATION</LI>
  * </UL>
  * Default is <code>PERMISSION_FULL_MODIFICATION</code>
- *  * @param permission */
+ *  * @param permission	One of the above-specified permission levels */
 public void setUserModificationPermission(int permission) {
 	this.permission = permission;
 }
