@@ -85,7 +85,7 @@ public Dimension calculateMinimumSize(IFigure parent){
 	Dimension minSize = new Dimension(0, 0);
 	List children = parent.getChildren();
 	for (int i = 0; i < children.size(); i++) {
-		minSize.union(((IFigure)children.get(i)).getPreferredSize());		
+		minSize.union(((IFigure)children.get(i)).getMinimumSize());		
 	}
 	minSize.width += parent.getInsets().getWidth();
 	minSize.height += parent.getInsets().getHeight();
