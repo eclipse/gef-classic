@@ -20,12 +20,12 @@ public class FreeformLayeredPane
 {
 private FreeformHelper helper = new FreeformHelper(this);
 
-public FreeformLayeredPane(){
+public FreeformLayeredPane() {
 	setLayoutManager(null);
 }
 
-public void add(IFigure child,Object constraint, int index){
-	super.add(child, constraint,index);
+public void add(IFigure child, Object constraint, int index) {
+	super.add(child, constraint, index);
 	helper.hookChild(child);
 }
 
@@ -40,17 +40,17 @@ public void fireExtentChanged() {
 			.notifyFreeformExtentChanged();
 }
 
-protected void fireMoved() {}
+protected void fireMoved() { }
 
 protected FreeformHelper getFreeformHelper() {
 	return helper;
 }	
 
-public Rectangle getFreeformExtent(){
+public Rectangle getFreeformExtent() {
 	return helper.getFreeformExtent();
 }
 
-protected void primTranslate(int dx, int dy){
+protected void primTranslate(int dx, int dy) {
 	bounds.x += dx;
 	bounds.y += dy;
 }
@@ -64,7 +64,7 @@ public void removeFreeformListener(FreeformListener listener) {
 	removeListener(FreeformListener.class, listener);
 }
 
-public void setFreeformBounds(Rectangle bounds){
+public void setFreeformBounds(Rectangle bounds) {
 	helper.setFreeformBounds(bounds);
 }
 
@@ -72,7 +72,7 @@ protected void superFireMoved() {
 	super.fireMoved();
 }
 
-public void validate(){
+public void validate() {
 	if (isValid())
 		return;
 	super.validate();

@@ -13,38 +13,32 @@ package org.eclipse.draw2d;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
- * Draws a rectangle whose size is determined
- * by the bounds set to it.
+ * Draws a rectangle whose size is determined by the bounds set to it.
  */
 public class RectangleFigure extends Shape {
 
 /**
  * Creates a RectangleFigure.
  */
-public RectangleFigure(){}
+public RectangleFigure() { }
 
 /**
- * Fill the Polygon with the background color
- * set by <i>graphics</i>.
- * 
- * @since 2.0
+ * @see Shape#fillShape(Graphics)
  */
-protected void fillShape(Graphics graphics){
+protected void fillShape(Graphics graphics) {
 	graphics.fillRectangle(getBounds());
 }
 
 /**
- * Draw the outline of the RectangleFigure.
- * 
- * @since 2.0
+ * @see Shape#outlineShape(Graphics)
  */
-protected void outlineShape(Graphics graphics){
+protected void outlineShape(Graphics graphics) {
 	Rectangle r = getBounds();
-	int x = r.x + lineWidth/2;
-	int y = r.y + lineWidth/2;
+	int x = r.x + lineWidth / 2;
+	int y = r.y + lineWidth / 2;
 	int w = r.width - lineWidth;
 	int h = r.height - lineWidth;
-	graphics.drawRectangle(x,y,w,h);
+	graphics.drawRectangle(x, y, w, h);
 }
 
 }

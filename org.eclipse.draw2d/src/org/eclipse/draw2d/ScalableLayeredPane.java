@@ -42,7 +42,7 @@ public Dimension getPreferredSize(int wHint, int hHint) {
 	int h = getInsets().getHeight();
 	return d.getExpanded(-w, -h)
 		.scale(scale)
-		.expand(w,h);
+		.expand(w, h);
 }
 
 public double getScale() {

@@ -14,9 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * LayeredPane - Figure capable of holding any number of layers.
- * Only layers can be added to this figure. Layers are added
- * to this figure with thier respective keys, which are used to
+ * A figure capable of holding any number of layers. Only layers can be added to this 
+ * figure. Layers are added to this figure with thier respective keys, which are used to
  * identify them.
  */
 public class LayeredPane
@@ -33,29 +32,28 @@ public LayeredPane() {
 }
 
 /**
- * Adds the given layer figure, identifiable with the given key,
- * at the specified index. While adding the layer, it informs the
- * surrounding layers of the addition.
+ * Adds the given layer figure, identifiable with the given key, at the specified index. 
+ * While adding the layer, it informs the surrounding layers of the addition.
  *
- * @param figure  Figure of the layer to be added.
- * @param layerKey  Key for identifying the layer.
- * @param index  Index where the layer should be added.
+ * @param figure the layer
+ * @param layerKey the layer's key
+ * @param index the index where the layer should be added
  * @since 2.0
  */
 public void add(IFigure figure, Object layerKey, int index) {
-	if (index == -1) index = layerKeys.size();
+	if (index == -1) 
+		index = layerKeys.size();
 	super.add(figure, null, index);
 	layerKeys.add(index, layerKey);
 }
 
 /**
- * Adds the given layer, identifiable with the given key, under the 
- * <it>after</it> layer provided in the input.
+ * Adds the given layer, identifiable with the given key, under the <i>after</i> layer 
+ * provided in the input.
  *
- * @param layer  Layer to be added.
- * @param key  Key to identify the input layer.
- * @param after  Layer under which the input layer should be added.
- * @see  #addLayerBefore(Layer, Object, Object)
+ * @param layer the layer
+ * @param key the layer's key
+ * @param after the layer under which the input layer should be added
  * @since 2.0
  */
 public void addLayerAfter(Layer layer, Object key, Object after) {
@@ -64,13 +62,12 @@ public void addLayerAfter(Layer layer, Object key, Object after) {
 }
 
 /**
- * Adds the given layer, identifiable with the given key, above the
- * <it>before</it> layer provided in the input.
+ * Adds the given layer, identifiable with the given key, above the <i>before</i> layer 
+ * provided in the input.
  *
- * @param layer  Layer to be added.
- * @param key  Key to identify the input layer.
- * @param after  Layer above which the input layer should be added.
- * @see  #addLayerAfter(Layer, Object, Object)
+ * @param layer the layer
+ * @param key the layer's key
+ * @param before the layer above which the input layer should be added
  * @since 2.0
  */
 public void addLayerBefore(Layer layer, Object key, Object before) {
@@ -81,12 +78,8 @@ public void addLayerBefore(Layer layer, Object key, Object before) {
 /**
  * Returns the layer identified by the key given in the input.
  *
- * @param key  Key to identify the desired layer.
- * @return  The desired layer.
- * @see  #addLayerBefore(Layer, Object, Object)
- * @see  #addLayerAfter(Layer, Object, Object)
- * @see  #removeLayer(IFigure)
- * @see  #removeLayer(Object)
+ * @param key the key to identify the desired layer
+ * @return the desired layer
  * @since 2.0
  */
 public Layer getLayer(Object key) {
@@ -99,8 +92,8 @@ public Layer getLayer(Object key) {
 /**
  * Returns the layer at the specified index in this pane.
  *
- * @param index  Location of the desired layer.
- * @return  The layer desired.
+ * @param index the index of the desired layer
+ * @return the desired layer
  * @since 2.0
  */
 protected Layer getLayer(int index) {
@@ -108,10 +101,9 @@ protected Layer getLayer(int index) {
 }
 
 /**
- * Removes the layer identified by the given key from this 
- * layerepane.
+ * Removes the layer identified by the given key from this layered pane.
  *
- * @param key  Key identifying the layer.
+ * @param key the key of the layer to be removed
  * @since 2.0
  */
 public void removeLayer(Object key) {
@@ -119,11 +111,10 @@ public void removeLayer(Object key) {
 }
 
 /**
- * Removes the given layer from the layers in this figure.
+ * Removes the given layer from this layered pane.
  *
- * @deprecated call remove(IFigure)
- * @param layer  Layer to be removed.
- * @see  #removeLayer(Object)
+ * @deprecated call {@link IFigure#remove(IFigure)} instead
+ * @param layer the layer to be removed
  * @since 2.0
  */
 public void removeLayer(IFigure layer) {
@@ -131,12 +122,10 @@ public void removeLayer(IFigure layer) {
 }
 
 /**
- * Removes the layer at the specified index from the list of 
- * layers in this layered pane. It collapses the layers, occupying
- * the space vacated by the removed layer.
+ * Removes the layer at the specified index from the list of layers in this layered pane. 
+ * It collapses the layers, occupying the space vacated by the removed layer.
  *
- * @param index  Index of the layer to be removed.
- * @see  #removeLayer(IFigure)
+ * @param index the index of the layer to be removed
  * @since 2.0
  */
 protected void removeLayer(int index) {

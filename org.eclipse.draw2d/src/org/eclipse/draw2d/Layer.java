@@ -14,9 +14,8 @@ import org.eclipse.draw2d.geometry.Point;
 
 
 /**
- * Transparent Figure intended to be added exclusively to 
- * a {@link LayeredPane}, who has the responsibilty of managing 
- * its Layers. 
+ * A transparent figure intended to be added exclusively to a {@link LayeredPane}, who has
+ * the responsibilty of managing its layers. 
  */
 public class Layer
 	extends Figure
@@ -24,20 +23,17 @@ public class Layer
 
 /**
  * Overridden to implement transparent behavior.
- * 
- * @param x X coordiante of point to search children for.
- * @param y Y coordinate of point to search children for.
- * @since 2.0
+ * @see IFigure#containsPoint(int, int)
  * 
  */
-public boolean containsPoint(int x, int y){
+public boolean containsPoint(int x, int y) {
 	if (isOpaque())
 		return super.containsPoint(x, y);
-	Point pt = new Point(x,y);
+	Point pt = new Point(x, y);
 	translateFromParent(pt);
-	for(int i=0;i<getChildren().size();i++){
+	for (int i = 0; i < getChildren().size(); i++) {
 		IFigure child = (IFigure)getChildren().get(i);
-		if(child.containsPoint(pt.x,pt.y))
+		if (child.containsPoint(pt.x, pt.y))
 			return true;
 	}
 	return false;
@@ -45,9 +41,9 @@ public boolean containsPoint(int x, int y){
 
 /**
  * Overridden to implement transparency.
- * @see org.eclipse.draw2d.IFigure#findFigureAt(int, int, TreeSearch)
+ * @see IFigure#findFigureAt(int, int, TreeSearch)
  */
-public IFigure findFigureAt(int x, int y, TreeSearch search){
+public IFigure findFigureAt(int x, int y, TreeSearch search) {
 	if (!isEnabled())
 		return null;
 	if (isOpaque())

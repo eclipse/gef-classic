@@ -16,7 +16,7 @@ public class FreeformLayout
 	extends XYLayout
 {
 
-public Point getOrigin(IFigure figure){
+public Point getOrigin(IFigure figure) {
 	return new Point();
 }
 

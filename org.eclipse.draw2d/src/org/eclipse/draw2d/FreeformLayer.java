@@ -21,8 +21,8 @@ public class FreeformLayer
 
 private FreeformHelper helper = new FreeformHelper(this);
 
-public void add(IFigure child,Object constraint, int index){
-	super.add(child, constraint,index);
+public void add(IFigure child, Object constraint, int index) {
+	super.add(child, constraint, index);
 	helper.hookChild(child);
 }
 
@@ -37,18 +37,18 @@ public void fireExtentChanged() {
 			.notifyFreeformExtentChanged();
 }
 
-protected void fireMoved() {}
+protected void fireMoved() { }
 
 public Rectangle getFreeformExtent() {
 	return helper.getFreeformExtent();
 }
 
-public void primTranslate(int dx, int dy){
+public void primTranslate(int dx, int dy) {
 	bounds.x += dx;
 	bounds.y += dy;
 }
 
-public void remove(IFigure child){
+public void remove(IFigure child) {
 	helper.unhookChild(child);
 	super.remove(child);
 }
@@ -57,7 +57,7 @@ public void removeFreeformListener(FreeformListener listener) {
 	removeListener(FreeformListener.class, listener);
 }
 
-public void setFreeformBounds(Rectangle bounds){
+public void setFreeformBounds(Rectangle bounds) {
 	helper.setFreeformBounds(bounds);
 }
 

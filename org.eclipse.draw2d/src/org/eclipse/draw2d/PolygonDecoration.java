@@ -14,6 +14,10 @@ import org.eclipse.swt.graphics.Color;
 
 import org.eclipse.draw2d.geometry.*;
 
+/**
+ * A rotatable, polygon shaped decoration most commonly used for decorating the ends of
+ * {@link org.eclipse.draw2d.Polyline polylines}.
+ */
 public class PolygonDecoration
 	extends Polygon
 	implements RotatableDecoration

@@ -13,22 +13,21 @@ package org.eclipse.draw2d;
 import org.eclipse.draw2d.geometry.*;
 
 /**
- * A decorative Figure intended to be placed on a 
- * {@link Polyline}.
- * It has the default shape of right-pointing triangle.
+ * A decorative Figure intended to be placed on a {@link Polyline}. It has the default 
+ * shape of right-pointing triangle.
  */
 public class PolylineDecoration
 	extends Polyline
 	implements RotatableDecoration
 {
 
-public static final PointList
-	TRIANGLE_TIP = new PointList();
+/** A triangle template */
+public static final PointList TRIANGLE_TIP = new PointList();
 
 static {
-	TRIANGLE_TIP.addPoint(-1,1);
-	TRIANGLE_TIP.addPoint(0,0);
-	TRIANGLE_TIP.addPoint(-1,-1);
+	TRIANGLE_TIP.addPoint(-1, 1);
+	TRIANGLE_TIP.addPoint(0, 0);
+	TRIANGLE_TIP.addPoint(-1, -1);
 }
 
 private Point location = new Point();
@@ -36,49 +35,47 @@ private PointList template = TRIANGLE_TIP;
 private Transform transform = new Transform();
 
 /**
- * Constructs a PolylineDecoration. 
- * Defaults the PolylineDecoration to fill its region with black.
+ * Constructs a PolylineDecoration. Defaults the PolylineDecoration to fill its region 
+ * with black.
  * 
  * @since 2.0 
  */
-public PolylineDecoration(){
+public PolylineDecoration() {
 	setBackgroundColor(ColorConstants.black);
-	setScale(7,3);
+	setScale(7, 3);
 }
 
 /**
- * Returns the points in the PolylineDecoration as a PointList.
- * 
- * @since 2.0
+ * @see Polyline#getPoints()
  */
-public PointList getPoints(){
-	if (points == null){
+public PointList getPoints() {
+	if (points == null) {
 		points = new PointList();
-		for (int i=0; i < template.size(); i++)
+		for (int i = 0; i < template.size(); i++)
 			points.addPoint(transform.getTransformed(template.getPoint(i)));
 	}
 	return points;
 }
 
-public void setLocation(Point p){
+/**
+ * @see IFigure#setLocation(Point)
+ */
+public void setLocation(Point p) {
 	points = null;
 	bounds = null;
 	location.setLocation(p);
-	transform.setTranslation(p.x,p.y);
+	transform.setTranslation(p.x, p.y);
 }
 
 /**
- * Sets the PolylineDecorations point template to
- * the passed PointList. This template is an outline
- * of the PolylineDecoration's region. (The default value
- * is TRIANGLE_TIP which is a triangle whose tip is pointing 
- * to the right).
+ * Sets the PolylineDecoration's point template. This template is an outline of the 
+ * PolylineDecoration's region. (The default value is TRIANGLE_TIP which is a triangle 
+ * whose tip is pointing to the right).
  * 
- * @param pl The PointList outline to use as the PolylineDecoration's
- *            region.
+ * @param pl the template
  * @since 2.0
  */
-public void setTemplate(PointList pl){
+public void setTemplate(PointList pl) {
 	erase();
 	template = pl;
 	points = null;
@@ -87,20 +84,23 @@ public void setTemplate(PointList pl){
 }
 
 /**
- * Sets the amount of scaling to be done along X and Y
- * axes on the PolylineDecoration's template.
+ * Sets the amount of scaling to be done along X and Y axes on the PolylineDecoration's 
+ * template.
  *
- * @param x X scaling
- * @param y Y scaling
+ * @param x the x scale
+ * @param y the y scale
  * @since 2.0
  */
-public void setScale(double x, double y){
+public void setScale(double x, double y) {
 	points = null;
 	bounds = null;
-	transform.setScale(x,y);
+	transform.setScale(x, y);
 }
 
-public void setReferencePoint(Point ref){
+/**
+ * @see RotatableDecoration#setReferencePoint(Point)
+ */
+public void setReferencePoint(Point ref) {
 	Point pt = Point.SINGLETON;
 	pt.setLocation(ref);
 	pt.negate().translate(location);
@@ -108,13 +108,12 @@ public void setReferencePoint(Point ref){
 }
 
 /**
- * Sets the angle by which rotation is to be done on the 
- * PolylineDecoration.
+ * Sets the angle by which rotation is to be done on the PolylineDecoration.
  * 
- * @param angle Angle of rotation.
+ * @param angle the angle of rotation
  * @since 2.0
  */
-public void setRotation(double angle){
+public void setRotation(double angle) {
 	points = null;
 	bounds = null;
 	transform.setRotation(angle);

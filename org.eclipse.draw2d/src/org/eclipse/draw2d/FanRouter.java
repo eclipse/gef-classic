@@ -13,8 +13,8 @@ package org.eclipse.draw2d;
 import org.eclipse.draw2d.geometry.*;
 
 /**
- * Automatic router that spreads its {@link Connection Connections}
- * in a fan-like fashion upon collision.
+ * Automatic router that spreads its {@link Connection Connections} in a fan-like fashion 
+ * upon collision.
  */
 public class FanRouter
 	extends AutomaticRouter
@@ -23,7 +23,9 @@ public class FanRouter
 private int separation = 10;
 
 /**
- * @return the separation in pixels between fanned connections.
+ * Returns the separation in pixels between fanned connections.
+ * 
+ * @return the separation
  * @since 2.0
  */
 public int getSeparation() {
@@ -31,9 +33,12 @@ public int getSeparation() {
 }
 
 /**
- * Modifies a given PointList that collides with some other PointList.
- * @param points the colliding points to be modified
- * @param index indicates that this it the i<sup>th</sup> PointList in a group of colliding points.
+ * Modifies a given PointList that collides with some other PointList.  The given 
+ * <i>index</i> indicates that this it the i<sup>th</sup> PointList in a group of 
+ * colliding points.
+ * 
+ * @param points the colliding points
+ * @param index the index
  */
 protected void handleCollision(PointList points, int index) {
 	Point start = points.getFirstPoint();
@@ -65,9 +70,9 @@ protected void handleCollision(PointList points, int index) {
 }
 
 /**
- * Sets the colliding {@link Connection Connection's} 
- * separation in pixels.
- * @param value the separation in pixels
+ * Sets the colliding {@link Connection Connection's} separation in pixels.
+ * 
+ * @param value the separation
  * @since 2.0 
  */
 public void setSeparation(int value) {

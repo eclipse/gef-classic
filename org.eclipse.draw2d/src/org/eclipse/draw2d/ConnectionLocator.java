@@ -123,7 +123,8 @@ protected Point getLocation(PointList points) {
 				Point p1 = points.getPoint(j);
 				Point p2 = points.getPoint(i);
 				Dimension d = p2.getDifference(p1);
-				return Point.SINGLETON.setLocation(p1.x + d.width / 2, p1.y + d.height / 2);
+				return Point.SINGLETON.setLocation(p1.x + d.width / 2, 
+													p1.y + d.height / 2);
 			}
 			int i = (points.size() - 1) / 2;
 			return points.getPoint(Point.SINGLETON, i);

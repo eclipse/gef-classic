@@ -16,7 +16,7 @@ import java.util.List;
  * This class is a helper to the {@link SWTEventDispatcher}. It handles the task of 
  * determining which Figure will gain focus upon a tab/shift-tab. It also keeps track of 
  * the Figure with current focus.
- * 
+ * <p>
  * Note: When a Canvas with a {@link LightweightSystem} gains focus, it gives focus to the 
  * child Figure who had focus when this Canvas lost focus. If the canvas is gaining focus 
  * for the first time, focus is given to its first child Figure.
@@ -93,7 +93,9 @@ public IFigure getNextFocusableFigure(IFigure root, IFigure focusOwner) {
 					int parentSiblingCount = gp.getChildren().size();
 					int parentIndex = gp.getChildren().indexOf(p);
 					if (parentIndex < parentSiblingCount - 1) {
-						nextFocusOwner = ((IFigure)p.getParent().getChildren().get(parentIndex + 1));
+						nextFocusOwner = ((IFigure)p.getParent()
+													.getChildren()
+													.get(parentIndex + 1));
 						untraversedSiblingFound = true;
 						if (isFocusEligible(nextFocusOwner))		
 							found = true;
@@ -146,7 +148,8 @@ public IFigure getPreviousFocusableFigure(IFigure root, IFigure focusOwner) {
 		 * If there is no sibling, traverse its parent.
 		 */
 		if (siblingPos != 0) {
-			IFigure child = findDeepestRightmostChildOf((IFigure)siblings.get(siblingPos - 1));
+			IFigure child = 
+					findDeepestRightmostChildOf((IFigure)siblings.get(siblingPos - 1));
 			if (isFocusEligible(child)) {
 				found = true;
 				nextFocusOwner = child;

@@ -61,6 +61,7 @@ public static Color darker(Color color) {
  * 
  * @param f the font
  * @return the FontMetrics for the given font
+ * @see GC#getFontMetrics()
  * @since 2.0
  */
 public static FontMetrics getFontMetrics(Font f) {
@@ -82,11 +83,27 @@ protected static GC getGC() {
 	return gc;
 }
 
+/**
+ * Returns the dimensions of the String <i>s</i> using the font <i>f</i>.  Tab expansion 
+ * and carriage return processing are performed.
+ * @param s the string
+ * @param f the font
+ * @return the text's dimensions
+ * @see GC#textExtent(String)
+ */
 protected static org.eclipse.swt.graphics.Point getTextDimension(String s, Font f) {
 	setFont(f);
 	return getGC().textExtent(s);
 }
 
+/**
+ * Returns the dimensions of the String <i>s</i> using the font <i>f</i>. No tab
+ * expansion or carriage return processing will be performed.
+ * @param s the string
+ * @param f the font
+ * @return the string's dimensions
+ * @see GC#stringExtent(java.lang.String)
+ */
 protected static org.eclipse.swt.graphics.Point getStringDimension(String s, Font f) {
 	setFont(f);
 	return getGC().stringExtent(s);
@@ -158,6 +175,14 @@ public static Dimension getStringExtents(String s, Font f) {
 	return new Dimension(getStringDimension(s, f)).expand(1, 0);
 }
 
+/**
+ * Returns the Dimensions of the given text, converting newlines and tabs appropriately.
+ * 
+ * @param s the string
+ * @param f the font
+ * @param result the Dimension that will contain the result of this calculation
+ * @since 2.0
+ */
 public static void getTextExtents(String s, Font f, Dimension result) {
 	org.eclipse.swt.graphics.Point pt = getTextDimension(s, f);
 	result.width = pt.x;
@@ -167,14 +192,20 @@ public static void getTextExtents(String s, Font f, Dimension result) {
 /**
  * Returns the width of <i>s</i> in Font <i>f</i>.
  * 
+ * @param s the string
+ * @param f the font
+ * @return the width
  * @since 2.0
  */
 public static int getTextWidth(String s, Font f) {
-	return getTextDimension(s,f).x;
+	return getTextDimension(s, f).x;
 }
 
 /**
  * Returns a Color the same as the passed color in a lighter hue.
+ * 
+ * @param rgb the color
+ * @return the lighter color
  * @since 2.0
  */
 public static Color lighter(Color rgb) {
@@ -183,15 +214,17 @@ public static Color lighter(Color rgb) {
 	    b = rgb.getBlue();
 
 	return new Color(null,
-		Math.max(2,Math.min((int)(r/RGB_VALUE_MULTIPLIER), 255)),
-		Math.max(2,Math.min((int)(g/RGB_VALUE_MULTIPLIER), 255)),
-		Math.max(2,Math.min((int)(b/RGB_VALUE_MULTIPLIER), 255))
+		Math.max(2, Math.min((int)(r / RGB_VALUE_MULTIPLIER), 255)),
+		Math.max(2, Math.min((int)(g / RGB_VALUE_MULTIPLIER), 255)),
+		Math.max(2, Math.min((int)(b / RGB_VALUE_MULTIPLIER), 255))
 	);
 }
 
 /**
- * Produces a ghosting effect on <i>s</i>/
+ * Produces a ghosting effect on the shape <i>s</i>.
  * 
+ * @param s the shape
+ * @return the ghosted shape
  * @since 2.0
  */
 public static Shape makeGhostShape(Shape s) {
@@ -202,23 +235,28 @@ public static Shape makeGhostShape(Shape s) {
 }
 
 /**
- * Mixes the passed Colors and returns the resulting 
- * Color.
+ * Mixes the passed Colors and returns the resulting Color.
  * 
+ * @param c1 the first color
+ * @param c2 the second color
+ * @return the new color
  * @since 2.0
  */
-public static Color mixColors(Color c1, Color c2){
+public static Color mixColors(Color c1, Color c2) {
 	return new Color(null,
-		(c1.getRed()+c2.getRed())/2,
-		(c1.getGreen()+c2.getGreen())/2,
-		(c1.getBlue()+c2.getBlue())/2);
+		(c1.getRed() + c2.getRed()) / 2,
+		(c1.getGreen() + c2.getGreen()) / 2,
+		(c1.getBlue() + c2.getBlue()) / 2);
 }
 
 /**
- * Paints a border with an etching effect,
- * having a shadow of Color <i>shadow</i> and
+ * Paints a border with an etching effect, having a shadow of Color <i>shadow</i> and
  * highlight of Color <i>highlight</i>.
  * 
+ * @param g the graphics object
+ * @param r the bounds of the border
+ * @param shadow the shadow color
+ * @param highlight the highlight color
  * @since 2.0
  */
 public static void paintEtchedBorder(
@@ -227,7 +265,7 @@ public static void paintEtchedBorder(
 	Color shadow,
 	Color highlight)
 {
-	int   x = r.x,
+	int x = r.x,
 		y = r.y,
 		w = r.width,
 		h = r.height;
@@ -240,33 +278,36 @@ public static void paintEtchedBorder(
 	h -= 2;
 
 	g.setForegroundColor(shadow);
-	g.drawRectangle(x,y,w,h);
+	g.drawRectangle(x, y, w, h);
 
-	x++;y++;
+	x++;
+	y++;
 	g.setForegroundColor(highlight);
-	g.drawRectangle(x,y,w,h);
+	g.drawRectangle(x, y, w, h);
 }
 
 /**
- * Paints a border with an etching effect,
- * having a shadow of a darker version of g's background color,
- * and a highlight a lighter version of g's background color.
+ * Paints a border with an etching effect, having a shadow of a darker version of g's 
+ * background color, and a highlight a lighter version of g's background color.
  * 
+ * @param g the graphics object
+ * @param r the bounds of the border
  * @since 2.0
  */
-public static void paintEtchedBorder(Graphics g, Rectangle r){
+public static void paintEtchedBorder(Graphics g, Rectangle r) {
 	Color rgb = g.getBackgroundColor(),
 	    shadow = darker(rgb),
 	    highlight = lighter(rgb);
-	paintEtchedBorder(g,r,shadow, highlight);
+	paintEtchedBorder(g, r, shadow, highlight);
 }
 
 /**
  * Sets Font to passed value.
  * 
+ * @param f the new font
  * @since 2.0
  */
-protected static void setFont(Font f){
+protected static void setFont(Font f) {
 	if (appliedFont == f || f.equals(appliedFont))
 		return;
 	getGC().setFont(f);

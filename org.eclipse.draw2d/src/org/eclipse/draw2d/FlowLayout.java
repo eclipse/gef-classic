@@ -34,20 +34,28 @@ public static final boolean HORIZONTAL = true;
 /** Constant to specify components should be layed out vertically */
 public static final boolean VERTICAL = false;
 
+/** The horizontal property. */
 protected boolean horizontal = true;
+/** 
+ * The property that determines whether leftover space at the end of a row/column should
+ * be filled by the last item in that row/column. 
+ */
 protected boolean fill = false;
 
+/** The transposer used in converting horizontal layout to vertical. */
 protected Transposer transposer; {
 	transposer = new Transposer();
 	transposer.setEnabled(!horizontal);
 }
 
-/*
- * Internal state
- */
+/** The alignment along the major axis. */
 protected int majorAlignment = ALIGN_LEFTTOP;
+/** The alignment along the minor axis. */
 protected int minorAlignment = ALIGN_LEFTTOP;
-protected int minorSpacing = 5, majorSpacing = 5;
+/** The spacing along the minor axis. */
+protected int minorSpacing = 5;
+/** The spacing along the major axis. */
+protected int majorSpacing = 5;
 private WorkingData data = null;
 
 /**
@@ -61,18 +69,16 @@ class WorkingData {
 
 /**
  * Constructs a FlowLayout with horizontal orientation.
- * @see #FlowLayout(boolean)
  * @since 2.0
  */
-public FlowLayout(){}
+public FlowLayout() { }
 
 /**
- * Constructs a FlowLayout whose orientation is
- * given in the input.
- * @param isHorizontal  Whether the layout should be horizontal.
+ * Constructs a FlowLayout whose orientation is given in the input.
+ * @param isHorizontal <code>true</code> if the layout should be horizontal
  * @since 2.0
  */
-public FlowLayout(boolean isHorizontal){
+public FlowLayout(boolean isHorizontal) {
 	setHorizontal(isHorizontal);
 }
 
@@ -90,7 +96,7 @@ protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHi
 	// Ignore the other hint (by setting it to -1).  NOTE: The children of the
 	// parent figure will then be asked to ignore that hint as well.  
 	int maxWidth;
-	if (isHorizontal()){
+	if (isHorizontal()) {
 		maxWidth = wHint;
 		hHint = -1;
 	} else {
@@ -111,10 +117,10 @@ protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHi
 	Dimension childSize;
 	
 	//Build the sizes for each row, and update prefSize accordingly
-	for(int i = 0; i < children.size(); i++){
+	for (int i = 0; i < children.size(); i++) {
 		child = (IFigure)children.get(i);
 		childSize = transposer.t(getChildSize(child, wHint, hHint));
-		if (i == 0){
+		if (i == 0) {
 			width = childSize.width;
 			height = childSize.height;
 		} else if (width + childSize.width + getMinorSpacing() > maxWidth) {
@@ -144,11 +150,11 @@ protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHi
 }
 
 /**
- * Provides the given child's preferred size
+ * Provides the given child's preferred size.
  * 
- * @param child	The Figure whose preferred size needs to be calculated
- * @param wHint	The width hint to be used when calculating the child's preferred size
- * @param hHint	The height hint to be used when calculating the child's preferred size
+ * @param child the Figure whose preferred size needs to be calculated
+ * @param wHint the width hint
+ * @param hHint the height hint
  * @return the child's preferred size
  */
 protected Dimension getChildSize(IFigure child, int wHint, int hHint) {
@@ -166,8 +172,7 @@ protected Dimension getChildSize(IFigure child, int wHint, int hHint) {
  * 	 <li>{@link #ALIGN_RIGHTBOTTOM}
  * </ul>
  *
- * @return the Major alignment of the children.
- * @see  #setMajorAlignment(int)
+ * @return the major alignment
  * @since 2.0
  */
 public int getMajorAlignment() {
@@ -177,7 +182,7 @@ public int getMajorAlignment() {
 /**
  * Returns the spacing in pixels to be used between children in the direction parallel to
  * the layout's orientation.
- * @return major spacing */
+ * @return the major spacing */
 public int getMajorSpacing() {
 	return majorSpacing;
 }
@@ -192,8 +197,7 @@ public int getMajorSpacing() {
  * 	 <li>{@link #ALIGN_RIGHTBOTTOM}
  * </ul>
  *
- * @return  Minor alignment of the children.
- * @see  #setMinorAlignment(int)
+ * @return the minor alignment
  * @since 2.0
  */
 public int getMinorAlignment() {
@@ -201,16 +205,15 @@ public int getMinorAlignment() {
 }
 
 /**
- * Returns the spacing to be used between children within a row/column. * @return minor spacing */
+ * Returns the spacing to be used between children within a row/column. * @return the minor spacing */
 public int getMinorSpacing() {
 	return minorSpacing;
 }
 
 /**
- * Initializes the state of row data, which is internal
- * to the layout process. 
+ * Initializes the state of row data, which is internal to the layout process. 
  */
-private void initRow(){
+private void initRow() {
 	data.rowX = 0;
 	data.rowHeight = 0;
 	data.rowWidth = 0;
@@ -218,31 +221,28 @@ private void initRow(){
 }
 
 /**
- * Initializes state data for laying out children, based
- * on the Figure given as input.
+ * Initializes state data for laying out children, based on the Figure given as input.
  *
- * @param parent  Figure for which the children are to 
- *                 be arranged.
+ * @param parent the parent figure
  * @since 2.0 
  */
-private void initVariables(IFigure parent){
+private void initVariables(IFigure parent) {
 	data.row = new IFigure[parent.getChildren().size()] ;
-	data.bounds=new Rectangle[data.row.length];
+	data.bounds = new Rectangle[data.row.length];
 	data.maxWidth = data.area.width;
 }
 
 /**
- * Returns whether the orientation of the layout is
- * horizontal or not.
+ * Returns <code>true</code> if the orientation of the layout is horizontal.
  *
- * @return  Orientation of the layout.
+ * @return <code>true</code> if the orientation of the layout is horizontal
  * @since 2.0
  */
 public boolean isHorizontal() {
 	return horizontal;
 }
 
-/*
+/**
  * @see org.eclipse.draw2d.AbstractHintLayout#isSensitiveHorizontally()
  */
 protected boolean isSensitiveHorizontally(IFigure parent) {
@@ -262,7 +262,7 @@ public void layout(IFigure parent) {
 	Rectangle relativeArea = parent.getClientArea();
 	data.area = transposer.t(relativeArea);
 
-	Iterator iterator= parent.getChildren().iterator();
+	Iterator iterator = parent.getChildren().iterator();
 	int dx;
 
 	//Calculate the hints to be passed to children
@@ -279,9 +279,9 @@ public void layout(IFigure parent) {
 	while (iterator.hasNext()) {
 		IFigure f = (IFigure)iterator.next();
 		Dimension pref = transposer.t(getChildSize(f, wHint, hHint));
-		Rectangle r = new Rectangle(0,0,pref.width,pref.height);
+		Rectangle r = new Rectangle(0, 0, pref.width, pref.height);
 
-		if (data.rowCount > 0){
+		if (data.rowCount > 0) {
 			if (data.rowWidth + pref.width > data.maxWidth)
 				layoutRow(parent);
 		}
@@ -302,10 +302,10 @@ public void layout(IFigure parent) {
 }
 
 /**
- * Layouts one row of components. This is done based on
- * the layout's orientation, minor alignment and major alignment.
+ * Layouts one row of components. This is done based on the layout's orientation, minor 
+ * alignment and major alignment.
  *
- * @param parent  Figure whose children are to be placed.
+ * @param parent the parent figure
  * @since 2.0
  */
 protected void layoutRow(IFigure parent) {
@@ -327,9 +327,9 @@ protected void layoutRow(IFigure parent) {
 			break;
 	}
 
-	for (int j = 0; j < data.rowCount; j++){
+	for (int j = 0; j < data.rowCount; j++) {
 		if (fill) {
-			data.bounds[ j ].height = data.rowHeight;	
+			data.bounds[j].height = data.rowHeight;	
 		} else {
 			minorAdjustment = data.rowHeight - data.bounds[j].height;
 			switch (correctMinorAlignment) {
@@ -355,9 +355,9 @@ protected void layoutRow(IFigure parent) {
 /**
  * Sets the given bounds for the child figure input.
  *
- * @param parent  Parent Figure which holds the child.
- * @param child   Child Figure whose bounds are to be set.
- * @param bounds  The size of the child to be set.
+ * @param parent the parent figure
+ * @param child the child figure
+ * @param bounds the size of the child to be set
  * @since 2.0
  */
 protected void setBoundsOfChild(IFigure parent, IFigure child, Rectangle bounds) {
@@ -367,11 +367,10 @@ protected void setBoundsOfChild(IFigure parent, IFigure child, Rectangle bounds)
 }
 
 /**
- * Sets flag based on layout orientation.
- * If in Horizontal orientation, all Figures will have the same height.
- * If in vertical orientation, all Figures will have the same width.
+ * Sets flag based on layout orientation. If in horizontal orientation, all figures will 
+ * have the same height. If in vertical orientation, all figures will have the same width.
  *
- * @param value  Fill state desired.
+ * @param value fill state desired
  * @since 2.0
  */
 public void setStretchMinorAxis(boolean value) {
@@ -379,12 +378,12 @@ public void setStretchMinorAxis(boolean value) {
 }
 
 /**
- * Sets the orientation of the layout.
+ * Sets the orientation of the layout. 
  *
- * @param flag  Orientation of the layout.
+ * @param flag <code>true</code> if this layout should be horizontal
  * @since 2.0
  */
-public void setHorizontal(boolean flag){
+public void setHorizontal(boolean flag) {
 	if (horizontal == flag) return;
 	invalidate();
 	horizontal = flag;
@@ -401,23 +400,21 @@ public void setHorizontal(boolean flag){
  * 	 <li>{@link #ALIGN_RIGHTBOTTOM}
  * </ul>
  *
- * @param align  Major alignment required.
- * @see  #getMajorAlignment()
+ * @param align the major alignment
  * @since 2.0
  */
-public void setMajorAlignment(int align){
+public void setMajorAlignment(int align) {
 	majorAlignment = align;
 }
 
 /**
- * Sets the spacing in pixels to be used between children in 
- * the direction parallel to the layout's orientation.
+ * Sets the spacing in pixels to be used between children in the direction parallel to the
+ * layout's orientation.
  *
- * @param n  Amount of major space.
- * @see  #setMinorSpacing(int)
+ * @param n the major spacing
  * @since 2.0
  */
-public void setMajorSpacing(int n){
+public void setMajorSpacing(int n) {
 	majorSpacing = n;
 }
 
@@ -431,22 +428,20 @@ public void setMajorSpacing(int n){
  * 	 <li>{@link #ALIGN_RIGHTBOTTOM}
  * </ul>
  *
- * @param align  Minor alignment required.
- * @see  #getMinorAlignment()
+ * @param align the minor alignment
  * @since 2.0
  */
-public void setMinorAlignment(int align){
+public void setMinorAlignment(int align) {
 	minorAlignment = align;
 }
 
 /**
  * Sets the spacing to be used between children within a row/column.
  *
- * @param n  Amount of minor space.
- * @see  #setMajorSpacing(int)
+ * @param n the minor spacing
  * @since 2.0
  */
-public void setMinorSpacing(int n){
+public void setMinorSpacing(int n) {
 	minorSpacing = n;
 }
 

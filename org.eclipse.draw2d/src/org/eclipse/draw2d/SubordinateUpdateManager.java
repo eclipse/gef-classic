@@ -19,39 +19,64 @@ public abstract class SubordinateUpdateManager
 protected IFigure root;
 protected GraphicsSource graphicsSource;
 
-public void addDirtyRegion(IFigure f, int x, int y, int w, int h){
+/**
+ * @see UpdateManager#addDirtyRegion(IFigure, int, int, int, int)
+ */
+public void addDirtyRegion(IFigure f, int x, int y, int w, int h) {
 	if (getSuperior() == null)
 		return;
-	getSuperior().addDirtyRegion(f,x,y,w,h);
+	getSuperior().addDirtyRegion(f, x, y, w, h);
 }
 
-public void addInvalidFigure(IFigure f){
+/**
+ * @see UpdateManager#addInvalidFigure(IFigure)
+ */
+public void addInvalidFigure(IFigure f) {
 	UpdateManager um = getSuperior();
-	if (um==null) return;
+	if (um == null) 
+		return;
 	um.addInvalidFigure(f);
 }
 
-abstract protected IFigure getHost();
+protected abstract IFigure getHost();
 
-protected UpdateManager getSuperior(){
-	if (getHost().getParent() == null) return null;
+protected UpdateManager getSuperior() {
+	if (getHost().getParent() == null) 
+		return null;
 	return getHost().getParent().getUpdateManager();
 }
 
-public void performUpdate(){
+/**
+ * @see UpdateManager#performUpdate()
+ */
+public void performUpdate() {
 	UpdateManager um = getSuperior();
-	if (um==null) return;
+	if (um == null) 
+		return;
 	um.performUpdate();
 }
 
-public void performUpdate(Rectangle rect){
+/**
+ * @see UpdateManager#performUpdate(Rectangle)
+ */
+public void performUpdate(Rectangle rect) {
 	UpdateManager um = getSuperior();
-	if (um==null) return;
+	if (um == null) 
+		return;
 	um.performUpdate(rect);
 }
 
-public void setRoot(IFigure f){root=f;}
-public void setGraphicsSource(GraphicsSource gs){
+/**
+ * @see UpdateManager#setRoot(IFigure)
+ */
+public void setRoot(IFigure f) {
+	root = f;
+}
+
+/**
+ * @see UpdateManager#setGraphicsSource(GraphicsSource)
+ */
+public void setGraphicsSource(GraphicsSource gs) {
 	graphicsSource = gs;
 }
 }

@@ -22,13 +22,13 @@ class FreeformViewportLayout
 {
 	protected Dimension calculatePreferredSize(IFigure parent, int wHint, int hHint) {
 		getContents().validate();
-		wHint = Math.max(0,wHint);
-		hHint = Math.max(0,hHint);
+		wHint = Math.max(0, wHint);
+		hHint = Math.max(0, hHint);
 		return ((FreeformFigure)getContents())
 			.getFreeformExtent()
 			.getExpanded(getInsets())
-			.union(0,0)
-			.union(wHint-1, hHint-1)
+			.union(0, 0)
+			.union(wHint - 1, hHint - 1)
 			.getSize();
 	}
 
@@ -46,12 +46,12 @@ class FreeformViewportLayout
 	}
 }
 
-public FreeformViewport(){
+public FreeformViewport() {
 	super(true); //Must use graphics translate to scroll freeforms.
 	setLayoutManager(new FreeformViewportLayout());
 }
 
-protected void readjustScrollBars(){
+protected void readjustScrollBars() {
 	if (getContents() == null)
 		return;
 	if (!(getContents() instanceof FreeformFigure))
@@ -66,7 +66,7 @@ protected void readjustScrollBars(){
 	getHorizontalRangeModel().setAll(bounds.x, clientArea.width, bounds.right());
 }
 
-protected boolean useLocalCoordinates(){
+protected boolean useLocalCoordinates() {
 	return true;
 }
 

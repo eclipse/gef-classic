@@ -116,10 +116,12 @@ public abstract void drawImage(Image srcImage, int x, int y);
  * @see #drawImage(Image, int, int, int, int, int, int, int, int)
  */
 public final void drawImage(Image srcImage, Rectangle src, Rectangle dest) {
-	drawImage(srcImage, src.x, src.y, src.width, src.height, dest.x, dest.y, dest.width, dest.height);
+	drawImage(srcImage, src.x, src.y, src.width, src.height, 
+						dest.x, dest.y, dest.width, dest.height);
 }
 
-public abstract void drawImage(Image srcImage, int x1, int y1, int w1, int h1, int x2, int y2, int w2, int h2);
+public abstract void drawImage(Image srcImage, int x1, int y1, int w1, int h1, 
+													int x2, int y2, int w2, int h2);
 
 /**
  * @see #drawLine(int, int, int, int)

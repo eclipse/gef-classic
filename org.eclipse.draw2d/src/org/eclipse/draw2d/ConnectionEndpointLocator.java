@@ -67,17 +67,20 @@ private int calculateConnectionLocation(Point loc, Point topLeft, Point center) 
 	if (loc.x - center.x != 0)	
 		m2 = (double)(loc.y - center.y) / (double)(loc.x - center.x);
 	
-	if (loc.x == center.x) { // Case where m2 is vertical
+	if (loc.x == center.x) { 
+		// Case where m2 is vertical
 		if (loc.y < center.y)
 			return 3;		
 		else
 			return 1;
-	} else if (Math.abs(m2) <= Math.abs(m1)) { // Connection start point along left or right side
+	} else if (Math.abs(m2) <= Math.abs(m1)) { 
+		// Connection start point along left or right side
 		if (loc.x < center.x) 
 			return 4;
 		else
 			return 2;
-	} else { // Connection start point along top or bottom
+	} else { 
+		// Connection start point along top or bottom
 		if (loc.y < center.y)
 			return 3;
 		else
@@ -125,7 +128,8 @@ private double calculateTan(Point startPoint, Point endPoint) {
 	if (endPoint.x == startPoint.x)
 		tan = 1.0;
 	else
-		tan = (double)(endPoint.y - startPoint.y) / (double)(endPoint.x - startPoint.x);	      		      
+		tan = (double)(endPoint.y - startPoint.y) 
+				/ (double)(endPoint.x - startPoint.x);	      		      
 	if (tan > 1)
 		tan = 1.0;
 	else if (tan < -1)

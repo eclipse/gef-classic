@@ -25,19 +25,18 @@ import org.eclipse.swt.widgets.*;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
- * The LightweightSystem is the link between SWT and draw2d.
- * It is the component that provides the ability for {@link Figure Figures} to
- * be hosted on an SWT Canvas.
- * 
+ * The LightweightSystem is the link between SWT and Draw2d. It is the component that 
+ * provides the ability for {@link Figure Figures} to be hosted on an SWT Canvas.
+ * <p>
  * Normal procedure for using a LightweightSystem:
- * 1) Create an SWT Canvas.
- * 2) Create a LightweightSystem passing it that Canvas. 
- * 3) Create a draw2d Figure and call setContents(IFigure).
- *    This Figure will be the top-level Figure of the draw2d
- *    application.
+ * <ol>
+ * 		<li>Create an SWT Canvas.
+ * 		<li>Create a LightweightSystem passing it that Canvas. 
+ * 		<li>Create a Draw2d Figure and call setContents(IFigure). This Figure will be the 
+ * 			top-level Figure of the Draw2d application.
+ * </ol>
  */
-public class LightweightSystem
-{
+public class LightweightSystem {
 
 private Canvas canvas;
 IFigure contents;
@@ -49,25 +48,28 @@ private Rectangle oldControlSize = new Rectangle();
 /**
  * Constructs a LightweightSystem on Canvas <i>c</i>.
  * 
+ * @param c the canvas
  * @since 2.0
  */
-public LightweightSystem (Canvas c){
+public LightweightSystem(Canvas c) {
 	this();
 	setControl(c);
 }
 
-public LightweightSystem(){
+/**
+ * Constructs a LightweightSystem <b>without</b> a Canvas.
+ */
+public LightweightSystem() {
 	init();
 }
 
 /**
- * Adds SWT listeners to the LightWeightSystem's Canvas.
- * This allows for SWT events to be dispatched and handled
- * by its {@link EventDispatcher}. 
+ * Adds SWT listeners to the LightWeightSystem's Canvas. This allows for SWT events to be 
+ * dispatched and handled by its {@link EventDispatcher}. 
  * 
  * @since 2.0
  */
-protected void addListeners(){
+protected void addListeners() {
 	EventHandler handler = createEventHandler();
 	canvas.getAccessible().addAccessibleListener(handler);
 	canvas.getAccessible().addAccessibleControlListener(handler);
@@ -115,9 +117,12 @@ protected void addListeners(){
 	setEventDispatcher(getEventDispatcher());
 }
 
-protected void controlResized(){
+/**
+ * Resizes and revalidates the root figure when the control is resized.
+ */
+protected void controlResized() {
 	Rectangle r = new Rectangle(canvas.getClientArea());
-	r.setLocation(0,0);
+	r.setLocation(0, 0);
 	root.setBounds(r);
 //	manager.addDirtyRegion(root,r);
 	root.revalidate();
@@ -128,34 +133,41 @@ protected void controlResized(){
 /**
  * Returns this LightwightSystem's EventDispatcher.
  * 
+ * @return the event dispatcher
  * @since 2.0
  */
-protected EventDispatcher getEventDispatcher(){
+protected EventDispatcher getEventDispatcher() {
 	if (dispatcher == null)
 		dispatcher = new SWTEventDispatcher();
 	return dispatcher;
 }
 
 /**
- * Returns this LightweightSystem's root Figure.
+ * Returns this LightweightSystem's root figure.
  * 
+ * @return the root figure
  * @since 2.0
  */
-public IFigure getRootFigure(){
+public IFigure getRootFigure() {
 	return root;
 }
 
 /**
- * Returns a new instance of this LightweightSystem's.
- * EventHandler.
+ * Returns a new instance of this LightweightSystem's EventHandler.
  * 
+ * @return the newly created event handler
  * @since 2.0
  */
-final protected EventHandler createEventHandler(){
+protected final EventHandler createEventHandler() {
 	return internalCreateEventHandler();
 }
 
-protected RootFigure createRootFigure(){
+/**
+ * Creates and returns the root figure.
+ * 
+ * @return the newly created root figure
+ */
+protected RootFigure createRootFigure() {
 	RootFigure f = new RootFigure();
 	f.setOpaque(true);
 	f.setLayoutManager(new StackLayout());
@@ -165,36 +177,43 @@ protected RootFigure createRootFigure(){
 /**
  * Returns this LightweightSystem's UpdateManager.
  * 
+ * @return the update manager
  * @since 2.0
  */
-public UpdateManager getUpdateManager(){return manager;}
+public UpdateManager getUpdateManager() {
+	return manager;
+}
 
-protected void init(){
+/**
+ * Initializes this LightweightSystem by setting the root figure.
+ */
+protected void init() {
 	setRootPaneFigure(createRootFigure());
 }
 
-EventHandler internalCreateEventHandler(){
+EventHandler internalCreateEventHandler() {
 	return new EventHandler();
 }
 
 /**
- * Invokes this LightweightSystem's {@link UpdateManager}
- * to paint this LightweightSystem's Canvas and contents.
+ * Invokes this LightweightSystem's {@link UpdateManager} to paint this 
+ * LightweightSystem's Canvas and contents.
  * 
+ * @param gc the GC used for painting
  * @since 2.0
  */
-public void paint(GC gc){
+public void paint(GC gc) {
 	manager.performUpdate(new Rectangle(gc.getClipping()));
 }
 
 /**
- * Sets the contents of the LightweightSystem to the passed
- * Figure. This Figure should be the top-level Figure in 
- * a draw2d application.
+ * Sets the contents of the LightweightSystem to the passed figure. This figure should be 
+ * the top-level Figure in a Draw2d application.
  * 
+ * @param figure the new root figure
  * @since 2.0
  */
-public void setContents(IFigure figure){
+public void setContents(IFigure figure) {
 	if (contents != null)
 		root.remove(contents);
 	contents = figure;
@@ -202,12 +221,12 @@ public void setContents(IFigure figure){
 }
 
 /**
- * Sets the LightweightSystem's control to the
- * passed Canvas.
+ * Sets the LightweightSystem's control to the passed Canvas.
  * 
+ * @param c the canvas
  * @since 2.0
  */
-public void setControl(Canvas c){
+public void setControl(Canvas c) {
 	if (canvas == c)
 		return;
 	canvas = c;
@@ -217,27 +236,33 @@ public void setControl(Canvas c){
 }
 
 /**
- * Sets this LightweightSystem's EventDispatcher to <i>dispatcher</i>.
+ * Sets this LightweightSystem's EventDispatcher.
  * 
+ * @param dispatcher the new event dispatcher
  * @since 2.0
  */
-public void setEventDispatcher(EventDispatcher dispatcher){
+public void setEventDispatcher(EventDispatcher dispatcher) {
 	this.dispatcher = dispatcher;
 	dispatcher.setRoot(root);
 	dispatcher.setControl(canvas);
 }
 
-protected void setRootPaneFigure(RootFigure root){
+/**
+ * Sets this LightweightSystem's root figure.
+ * @param root the new root figure
+ */
+protected void setRootPaneFigure(RootFigure root) {
 	getUpdateManager().setRoot(root);
 	this.root = root;
 }
 
 /**
- * Sets this LightweightSystem's UpdateManager to <i>um</i>.
+ * Sets this LightweightSystem's UpdateManager.
  * 
+ * @param um the new update manager
  * @since 2.0
  */
-public void setUpdateManager(UpdateManager um){
+public void setUpdateManager(UpdateManager um) {
 	manager = um;
 	manager.setRoot(root);
 }
@@ -246,7 +271,7 @@ protected class RootFigure
 	extends Figure
 {
 
-	public Color getBackgroundColor(){
+	public Color getBackgroundColor() {
 		if (bgColor != null)
 			return bgColor;
 		if (canvas != null)
@@ -254,7 +279,7 @@ protected class RootFigure
 		return null;
 	}
 
-	public Font getFont(){
+	public Font getFont() {
 		if (font != null)
 			return font;
 		if (canvas != null)
@@ -262,7 +287,7 @@ protected class RootFigure
 		return null;
 	}
 
-	public Color getForegroundColor(){
+	public Color getForegroundColor() {
 		if (fgColor != null)
 			return fgColor;
 		if (canvas != null)
@@ -277,7 +302,7 @@ protected class RootFigure
 		return LightweightSystem.this.getUpdateManager();
 	}
 
-	public EventDispatcher internalGetEventDispatcher(){
+	public EventDispatcher internalGetEventDispatcher() {
 		return dispatcher;
 	}
 	
@@ -290,14 +315,14 @@ protected class RootFigure
 }
 
 protected class EventHandler 
-	implements MouseMoveListener, MouseListener, KeyListener, MouseTrackListener,
-				TraverseListener, FocusListener, AccessibleListener, AccessibleControlListener
+	implements MouseMoveListener, MouseListener, AccessibleControlListener, KeyListener,
+				TraverseListener, FocusListener, AccessibleListener, MouseTrackListener
 {
-	public void focusGained(FocusEvent e){
+	public void focusGained(FocusEvent e) {
 		getEventDispatcher().dispatchFocusGained(e);
 	}
 	
-	public void focusLost(FocusEvent e){
+	public void focusLost(FocusEvent e) {
 		getEventDispatcher().dispatchFocusLost(e);
 	}
 
@@ -406,48 +431,47 @@ protected class EventHandler
 			ad.getValue(e);
 	}
 
-	public void keyPressed(KeyEvent e){
+	public void keyPressed(KeyEvent e) {
 		getEventDispatcher().dispatchKeyPressed(e);
 	}
 	
-	public void keyReleased(KeyEvent e){
+	public void keyReleased(KeyEvent e) {
 		getEventDispatcher().dispatchKeyReleased(e);
 	}
 
-	public void keyTraversed(TraverseEvent e){
+	public void keyTraversed(TraverseEvent e) {
 		// Only dispatch the tab next and previous events for now
-		if(e.detail == SWT.TRAVERSE_TAB_NEXT || 
-		   e.detail == SWT.TRAVERSE_TAB_PREVIOUS){
+		if (e.detail == SWT.TRAVERSE_TAB_NEXT || e.detail == SWT.TRAVERSE_TAB_PREVIOUS) {
 		   	e.doit = true; //SWT : For some reason, this is false by default on a Canvas for TAB_NEXT.
 			getEventDispatcher().dispatchKeyTraversed(e);
 		}
 	}
 	
-	public void mouseDoubleClick(MouseEvent e){
+	public void mouseDoubleClick(MouseEvent e) {
 		getEventDispatcher().dispatchMouseDoubleClicked(e);
 	}
 		
-	public void mouseDown(MouseEvent e){
+	public void mouseDown(MouseEvent e) {
 		getEventDispatcher().dispatchMousePressed(e);
 	}
 	
-	public void mouseEnter(MouseEvent e){
+	public void mouseEnter(MouseEvent e) {
 		getEventDispatcher().dispatchMouseEntered(e);
 	}
 
-	public void mouseExit(MouseEvent e){
+	public void mouseExit(MouseEvent e) {
 		getEventDispatcher().dispatchMouseExited(e);
 	}
 
-	public void mouseHover(MouseEvent e){
+	public void mouseHover(MouseEvent e) {
 		getEventDispatcher().dispatchMouseHover(e);
 	}
 
-	public void mouseMove(MouseEvent e){
+	public void mouseMove(MouseEvent e) {
 		getEventDispatcher().dispatchMouseMoved(e);
 	}
 	
-	public void mouseUp(MouseEvent e){
+	public void mouseUp(MouseEvent e) {
 		getEventDispatcher().dispatchMouseReleased(e);
 	}
 }
