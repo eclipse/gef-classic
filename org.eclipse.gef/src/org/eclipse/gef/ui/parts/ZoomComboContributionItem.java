@@ -12,7 +12,7 @@ import org.eclipse.swt.widgets.*;
  * A ControlContribution that uses a {@link org.eclipse.swt.widgets.Combo} as its control.  
  * @author Eric Bordeau
  */
-public abstract class ComboContributionItem 
+public class ZoomComboContributionItem 
 	extends ControlContribution 
 	implements SelectionListener
 {
@@ -24,7 +24,7 @@ private String[] items;
  * Constructor for ComboToolItem.
  * @param id
  */
-public ComboContributionItem(String id) {
+public ZoomComboContributionItem(String id) {
 	super(id);
 }
 
@@ -32,7 +32,7 @@ public ComboContributionItem(String id) {
  * Constructor for ComboToolItem.
  * @param id
  */
-public ComboContributionItem(String id, String[] items) {
+public ZoomComboContributionItem(String id, String[] items) {
 	super(id);
 	setItems(items);
 }
@@ -41,7 +41,7 @@ public ComboContributionItem(String id, String[] items) {
  * Constructor for ComboToolItem.
  * @param id
  */
-public ComboContributionItem(String id, List items) {
+public ZoomComboContributionItem(String id, List items) {
 	super(id);
 	setItems(items);
 }
@@ -68,8 +68,6 @@ public Combo getCombo() {
 	return combo;
 }
 
-public abstract void handleSelectionChanged(SelectionEvent event);
-
 public void setItems(String[] items) {
 	this.items = items;
 }
@@ -83,15 +81,13 @@ public void setItems(List list) {
 /**
  * @see org.eclipse.swt.events.SelectionListener#widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent)
  */
-public void widgetDefaultSelected(SelectionEvent event) {
-	handleSelectionChanged(event);
-}
+public void widgetDefaultSelected(SelectionEvent event) {}
 
 /**
  * @see org.eclipse.swt.events.SelectionListener#widgetSelected(org.eclipse.swt.events.SelectionEvent)
  */
 public void widgetSelected(SelectionEvent event) {
-	handleSelectionChanged(event);
+	
 }
 
 }
