@@ -263,6 +263,8 @@ protected class RootFigure
 	}
 
 	public Color getForegroundColor(){
+		if (fgColor != null)
+			return fgColor;
 		if (canvas != null)
 			return canvas.getForeground();
 		return null;
@@ -279,6 +281,12 @@ protected class RootFigure
 		return dispatcher;
 	}
 	
+	/**
+	 * @see org.eclipse.draw2d.Figure#isVisible()
+	 */
+	public boolean isShowing() {
+		return true;
+	}
 }
 
 protected class EventHandler 
