@@ -22,7 +22,9 @@ import org.eclipse.draw2d.text.ParagraphTextLayout;
 import org.eclipse.draw2d.text.TextFlow;
 import org.eclipse.draw2d.text.TextFragmentBox;
 
-public class TextFlowWrapTest extends TestCase {
+public class TextFlowWrapTest 
+	extends TestCase 
+{
 
 protected static final Font TAHOMA = new Font(null, "Tahoma", 8, 0);//$NON-NLS-1$
 
@@ -41,19 +43,19 @@ protected void setUp() throws Exception {
 	failed = false;
 }
 
-public void testSoftWrapping() {
+public void testWrapping() {
 	figure = new FlowPage();
 	textFlow = new TextFlow();
-	textFlow.setLayoutManager(new ParagraphTextLayout(textFlow, ParagraphTextLayout.WORD_WRAP_SOFT));
+	textFlow.setLayoutManager(
+			new ParagraphTextLayout(textFlow, ParagraphTextLayout.WORD_WRAP_SOFT));
 	textFlow.setFont(TAHOMA);
 	figure.add(textFlow);
-
+	
 	doTest( "tester abc", "tester", new String[] {"tester", "abc"});
 	doTest( "tester abc", "tester a", new String[] {"tester", "abc"});
 	doTest( "tester abc", "tester ab", new String[] {"tester", "abc"});
 	doTest( "tester ab", "tester", new String[] {"tester", "ab"} );
 	doTest( "tester ab c", "tester", new String[] {"tester", "ab c"} );			
-	doTest( "tester ab", "teste", new String[] {"teste", "r ab"} );
 	doTest( "test\r ab c", "test ab c", new String[] {"test"," ab c"} );
 	doTest( "test\n ab c", "test ab c", new String[] {"test"," ab c"} );
 	doTest( "test\r\n abc def", "test abc def", new String[] {"test", " abc def" });
@@ -78,27 +80,58 @@ public void testSoftWrapping() {
 	doTest("testers\r ab c", "testers", new String[] {"testers", " ab c"});
 	doTest("ab\tcd", "ab", new String[] {"ab", "cd"});
 	doTest("trailingSpace  \n  ", "trailingSpace", new String[] {"trailingSpace", ""});
+	doTest("test \r b", "test", new String[] {"test", " b"});
+	doTest("   \n   \n   \n   ", "wwwwww", new String[] {"", "", "", ""});
+	doTest("\r\r\n", "wwwwwww", new String[] {"", ""});
+	doTest("", "www", new String[] {""});
+	doTest("", "", new String[] {""});
+	doTest("a cow\naha", "a cow", new String[] {"a cow", "aha"});
+
+	assertFalse(failMsg, failed);
+}
+
+public void testSoftWrapping() {
+	figure = new FlowPage();
+	textFlow = new TextFlow();
+	textFlow.setLayoutManager(
+			new ParagraphTextLayout(textFlow, ParagraphTextLayout.WORD_WRAP_SOFT));
+	textFlow.setFont(TAHOMA);
+	figure.add(textFlow);
 	
-	//do test with two \n 
+	doTest( "tester ab", "teste", new String[] {"teste", "r ab"} );
+	doTest("aha \nb \r c", "", new String[] {"a", "h", "a", "b", "", "c"});
+
 	assertFalse(failMsg, failed);
 }
 
 public void testHardWrapping() {
 	figure = new FlowPage();
 	textFlow = new TextFlow();
-	textFlow.setLayoutManager(new ParagraphTextLayout(textFlow, ParagraphTextLayout.WORD_WRAP_HARD));
+	textFlow.setLayoutManager(
+			new ParagraphTextLayout(textFlow, ParagraphTextLayout.WORD_WRAP_HARD));
 	textFlow.setFont(TAHOMA);
 	figure.add(textFlow);
-	doTest("Flow          Container", "Flow...", new String[] {"Flow...", "Container"});
-	doTest("Flow Container", "F", new String[] {"Flow", "Container"});
+	
+	doTest("Flow    Container  ", "F", new String[] {"Flow", "Container"});
+	doTest("aha \nb \r c", "", new String[] {"aha", "b", "", "c"});
+	
+	assertFalse(failMsg, failed);
 }
 
 public void testTruncatedWrapping() {
 	figure = new FlowPage();
 	textFlow = new TextFlow();
-	textFlow.setLayoutManager(new ParagraphTextLayout(textFlow, ParagraphTextLayout.WORD_WRAP_TRUNCATE));
+	textFlow.setLayoutManager(
+			new ParagraphTextLayout(textFlow, ParagraphTextLayout.WORD_WRAP_TRUNCATE));
 	textFlow.setFont(TAHOMA);
 	figure.add(textFlow);
+	
+	doTest("Flowing          Container", "Container", new String[] {"Flowing", "Container"});
+	doTest("Flowing          C", "Flo...", new String[] {"Flo", "C"});
+	doTest("         Foo", "Foo", new String[] {"", "Foo"});
+//	doTest("cricket \nb \r c", "", new String[] {"c", "b", "", "c"});
+
+	assertFalse(failMsg, failed);
 }
 
 protected void doTest(String stringToTest, String widthString, String[] answers) {
@@ -120,8 +153,10 @@ protected void doTest(String stringToTest, String widthString, String[] answers)
 			return;
 		}
 	}
-	if (index < answers.length)
-		failMsg += "Failed on: " + stringToTest + " Frag expected: -" + answers[index] + "No matching fragment\r\n";
+	if (index < answers.length) {
+		failMsg += "Failed on: " + stringToTest + " Frag expected: -" + answers[index] + "No corresponding fragment\r\n";
+		failed = true;
+	}
 }
 
 }
