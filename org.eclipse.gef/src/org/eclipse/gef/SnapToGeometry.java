@@ -152,20 +152,6 @@ public boolean snapMoveRequest(ChangeBoundsRequest request,	PrecisionRectangle b
 	fig.translateToAbsolute(move);
 	request.setMoveDelta(move);
 	
-	Integer value = (Integer)request.getExtendedData().get(HORIZONTAL_ANCHOR);
-	if (value != null) {
-		Point loc = new Point(0, value.intValue());
-		fig.translateToAbsolute(loc);
-		request.getExtendedData().put(HORIZONTAL_ANCHOR, new Integer(loc.y));
-	}
-	value = (Integer)request.getExtendedData().get(VERTICAL_ANCHOR);
-	if (value != null) {
-		Point loc = new Point(value.intValue(), 0);
-		fig.translateToAbsolute(loc);
-		request.getExtendedData().put(VERTICAL_ANCHOR, new Integer(loc.x));
-	}
-		
-	
 	return true;
 }
 
@@ -228,20 +214,7 @@ public boolean snapResizeRequest(ChangeBoundsRequest request, PrecisionRectangle
 		request.getExtendedData().remove(HORIZONTAL_ANCHOR);
 		request.getExtendedData().remove(VERTICAL_ANCHOR);
 	}
-	
-	Integer value = (Integer)request.getExtendedData().get(HORIZONTAL_ANCHOR);
-	if (value != null) {
-		Point loc = new Point(0, value.intValue());
-		fig.translateToAbsolute(loc);
-		request.getExtendedData().put(HORIZONTAL_ANCHOR, new Integer(loc.y));
-	}
-	value = (Integer)request.getExtendedData().get(VERTICAL_ANCHOR);
-	if (value != null) {
-		Point loc = new Point(value.intValue(), 0);
-		fig.translateToAbsolute(loc);
-		request.getExtendedData().put(VERTICAL_ANCHOR, new Integer(loc.x));
-	}
-	
+		
 	fig.translateToAbsolute(resize);
 	fig.translateToAbsolute(move);
 	resize.updateInts();
@@ -249,6 +222,7 @@ public boolean snapResizeRequest(ChangeBoundsRequest request, PrecisionRectangle
 
 	request.setSizeDelta(resize);
 	request.setMoveDelta(move);
+	
 	return true;
 }
 
