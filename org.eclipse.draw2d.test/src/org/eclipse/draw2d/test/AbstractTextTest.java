@@ -24,7 +24,6 @@ public class AbstractTextTest extends BaseTestCase {
 
 static class TestBorder extends FlowBorder.Stub {
 	private Insets insets;
-	private Insets margin;
 	
 	TestBorder(Insets insets) {
 		this.insets = insets;
