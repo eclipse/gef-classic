@@ -39,8 +39,8 @@ public Object[] getChildren(Object o){
 }
 
 public Object[] getElements(Object o){
-	if (o instanceof DefaultCommandStack){
-		return ((DefaultCommandStack)o).getCommands();
+	if (o instanceof CommandStack){
+		return ((CommandStack)o).getCommands();
 	}
 	if (o instanceof CompoundCommand){
 	}

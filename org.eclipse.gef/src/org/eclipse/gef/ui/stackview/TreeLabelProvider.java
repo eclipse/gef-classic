@@ -10,7 +10,6 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.jface.viewers.*;
 import org.eclipse.jface.resource.*;
 
-import org.eclipse.gef.commands.AbstractCommand;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CommandStack;
 
@@ -36,6 +35,10 @@ public void dispose(){}
 public Image getImage(Object o){
 	if(o instanceof Command){
 		Command command = (Command)o;
+//		if(((DefaultCommandStack)stack).canUndoCommand(command)) 
+//			return yesIcon;
+//		if(((DefaultCommandStack)stack).canRedoCommand(command)) 
+//			return noIcon;
 		if(command.canUndo())
 			return yesIcon;
 		else
@@ -51,17 +54,17 @@ public byte getLabelStyle(){
 public String getText(Object o){
 	if (o instanceof CommandStack)
 		return "Command Stack";//$NON-NLS-1$
-	if (o instanceof AbstractCommand){
+	if (o instanceof Command){
 		if(getLabelStyle()==NORMAL_LABEL_STYLE)
-			if(((AbstractCommand)o).getLabel()==null)
+			if(((Command)o).getLabel()==null)
 				return "";//$NON-NLS-1$
 			else
-				return ((AbstractCommand)o).getLabel();
+				return ((Command)o).getLabel();
 		if(getLabelStyle()==DEBUG_LABEL_STYLE)
-			if(((AbstractCommand)o).getDebugLabel()==null)
+			if(((Command)o).getDebugLabel()==null)
 				return "";//$NON-NLS-1$
 			else
-				return ((AbstractCommand)o).getDebugLabel();
+				return ((Command)o).getDebugLabel();
 	}
 	if (o instanceof Command)
 			return ((Command)o).getLabel();
