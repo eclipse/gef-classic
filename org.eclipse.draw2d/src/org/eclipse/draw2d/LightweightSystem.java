@@ -45,12 +45,12 @@ import org.eclipse.draw2d.geometry.*;
 public class LightweightSystem
 {
 
-private Canvas            canvas;
-IFigure           contents;
-private IFigure           root;
-private EventDispatcher   dispatcher;
-private UpdateManager     manager;
-private Rectangle         oldControlSize = new Rectangle();
+private Canvas canvas;
+IFigure contents;
+private IFigure root;
+private EventDispatcher dispatcher;
+private UpdateManager manager = new DeferredUpdateManager();
+private Rectangle oldControlSize = new Rectangle();
 
 /**
  * Constructs a LightweightSystem on Canvas <i>c</i>.
@@ -195,7 +195,6 @@ public void setControl(Canvas c){
 	if (canvas == c)
 		return;
 	canvas = c;
-	setUpdateManager(new DeferredUpdateManager());
 	getUpdateManager().setGraphicsSource(new BufferedGraphicsSource(canvas));
 	controlResized();
 	addListeners();
@@ -212,7 +211,8 @@ public void setEventDispatcher(EventDispatcher dispatcher){
 	dispatcher.setControl(canvas);
 }
 
-public void setRootPaneFigure(RootFigure root){
+protected void setRootPaneFigure(RootFigure root){
+	getUpdateManager().setRoot(root);
 	this.root = root;
 }
 
@@ -224,10 +224,6 @@ public void setRootPaneFigure(RootFigure root){
 public void setUpdateManager(UpdateManager um){
 	manager = um;
 	manager.setRoot(root);
-	if (root != null)
-		root.setUpdateManager(um);
-//	if (manager != null)
-//		manager.performUpdate();
 }
 
 protected class RootFigure
@@ -254,6 +250,13 @@ protected class RootFigure
 		if (canvas != null)
 			return canvas.getForeground();
 		return null;
+	}
+	
+	/**
+	 * @see org.eclipse.draw2d.Figure#getUpdateManager()
+	 */
+	public UpdateManager getUpdateManager() {
+		return LightweightSystem.this.getUpdateManager();
 	}
 
 	public EventDispatcher internalGetEventDispatcher(){
