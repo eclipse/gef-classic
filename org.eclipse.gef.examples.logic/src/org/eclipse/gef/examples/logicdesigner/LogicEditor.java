@@ -460,16 +460,17 @@ public Object getAdapter(Class type){
 				getPaletteViewer().removeSelectionChangedListener(copy);
 				super.dispose();
 			}
-			protected void hookPaletteViewer() {
-				super.hookPaletteViewer();
+			public void init(IPageSite pageSite) {
+				super.init(pageSite);
 				final CopyTemplateAction copy = (CopyTemplateAction)getActionRegistry()
-						.getAction(GEFActionConstants.COPY);
+				.getAction(GEFActionConstants.COPY);
 				getPaletteViewer().addSelectionChangedListener(copy);
 				getPaletteViewer().getContextMenu().addMenuListener(new IMenuListener() {
 					public void menuAboutToShow(IMenuManager manager) {
 						manager.appendToGroup(GEFActionConstants.GROUP_COPY, copy);
 					}
 				});
+				getSite().getActionBars().setGlobalActionHandler(GEFActionConstants.COPY, copy);			
 			}
 		};
 	}
