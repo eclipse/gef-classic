@@ -38,6 +38,8 @@ public class SelectionSynchronizer
 
 private List viewers = new ArrayList();
 private boolean isDispatching = false;
+private int disabled = 0;
+private EditPartViewer pendingSelection;
 
 /**
  * Adds a viewer to the set of synchronized viewers
@@ -66,12 +68,14 @@ protected EditPart convert(EditPartViewer viewer, EditPart part) {
 }
 
 /**
- * Removes the viewer from the set of synchronzied viewers
+ * Removes the viewer from the set of synchronized viewers
  * @param viewer the viewer to remove
  */
 public void removeViewer(EditPartViewer viewer) {
 	viewer.removeSelectionChangedListener(this);
 	viewers.remove(viewer);
+	if (pendingSelection == viewer)
+		pendingSelection = null;
 }
 
 /**
@@ -81,9 +85,17 @@ public void removeViewer(EditPartViewer viewer) {
 public void selectionChanged(SelectionChangedEvent event) {
 	if (isDispatching)
 		return;
-	isDispatching = true;
 	EditPartViewer source = (EditPartViewer)event.getSelectionProvider();
-	ISelection selection = event.getSelection();
+	if (disabled > 0) {
+		pendingSelection = source;
+	} else {
+		ISelection selection = event.getSelection();
+		syncSelection(source, selection);
+	}
+}
+
+private void syncSelection(EditPartViewer source, ISelection selection) {
+	isDispatching = true;
 	for (int i = 0; i < viewers.size(); i++) {
 		if (viewers.get(i) != source) {
 			EditPartViewer viewer = (EditPartViewer)viewers.get(i);
@@ -91,6 +103,20 @@ public void selectionChanged(SelectionChangedEvent event) {
 		}
 	}
 	isDispatching = false;
+}
+
+/**
+ * Enables or disabled synchronization between viewers.
+ * @since 3.1
+ * @param value <code>true</code> if synchronization should occur
+ */
+public void setEnabled(boolean value) {
+	if (!value)
+		disabled++;
+	else if (--disabled == 0 && pendingSelection != null) {
+		syncSelection(pendingSelection, pendingSelection.getSelection());
+		pendingSelection = null;
+	}
 }
 
 private void setViewerSelection(EditPartViewer viewer, ISelection selection) {
