@@ -13,13 +13,17 @@ package org.eclipse.draw2d;
 import org.eclipse.swt.graphics.Image;
 
 import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
  * A Figure that simply contains an Image.  Use this Figure, instead of a Label, when
- * displaying Images without any accompanying text.  Note that it is the client's responsibility to dispose
- * the given image.  There is no "free" resource management in GEF.
- * 
+ * displaying Images without any accompanying text.  This figure is not intended to have a
+ * layout mananger or children.
+ * <P>
+ * Note that it is the client's responsibility to dispose the given image.  There is no
+ * "free" resource management in draw2d.
+ *  
  * @author Pratik Shah
  */
 public class ImageFigure 
@@ -70,15 +74,15 @@ public Image getImage() {
 }
 
 /**
- * Returns the size of the Image that this Figure displays; or (0,0) if no Image has been
- * set.
- * 			
+ * Calculates the necessary size to display the Image within the figure's client area.
+ * 
  * @see org.eclipse.draw2d.Figure#getPreferredSize(int, int)
  */
 public Dimension getPreferredSize(int wHint, int hHint) {
 	if (getInsets() == NO_INSETS)
 		return size;
-	return size.getExpanded(getBorder().getPreferredSize(this));
+	Insets i = getInsets();
+	return size.getExpanded(i.getWidth(), i.getHeight());
 }
 
 /**
