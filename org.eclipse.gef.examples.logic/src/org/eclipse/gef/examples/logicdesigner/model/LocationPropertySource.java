@@ -63,8 +63,7 @@ public Object getPropertyValue(Object propName){
 }
 
 public boolean isPropertySet(Object propName){
-	if(ID_XPOS.equals(propName) || ID_YPOS.equals(propName))return true;
-	return false;
+	return ID_XPOS.equals(propName) || ID_YPOS.equals(propName);
 }
 
 public void resetPropertyValue(Object propName){}
