@@ -13,6 +13,7 @@ package org.eclipse.gef.examples.flow.model.commands;
 import java.util.List;
 
 import org.eclipse.gef.commands.Command;
+
 import org.eclipse.gef.examples.flow.model.Activity;
 import org.eclipse.gef.examples.flow.model.Transition;
 
