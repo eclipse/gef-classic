@@ -11,6 +11,7 @@ import java.util.*;
 
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.events.*;
 
 import org.eclipse.draw2d.geometry.*;
@@ -360,6 +361,18 @@ public void mouseUp(MouseEvent e, EditPartViewer viewer) {
 	if (getDragTracker() != null)
 		getDragTracker().mouseUp(e, viewer);
 	super.mouseUp(e, viewer);
+}
+
+/**
+ * @see org.eclipse.gef.Tool#nativeDragStarted(DragSourceEvent, EditPartViewer)
+ */
+public void nativeDragStarted(DragSourceEvent event, EditPartViewer viewer) {
+	if (getDragTracker() != null)
+		getDragTracker().nativeDragStarted(event, viewer);
+	debug("Native drag started on " + viewer);
+	setDragTracker(null);
+	setState(STATE_INITIAL);
+	unlockTargetEditPart();
 }
 
 protected void refreshCursor(){

@@ -6,6 +6,7 @@ package org.eclipse.gef;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
+import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.events.*;
 
 /**
@@ -109,6 +110,8 @@ void mouseMove(MouseEvent mouseEvent, EditPartViewer view);
  * @param viewer org.eclipse.gef.IViewer The viewer that the mouse event is over.
  */
 void mouseUp(MouseEvent mouseEvent, EditPartViewer view);
+
+void nativeDragStarted(DragSourceEvent event, EditPartViewer viewer);
 
 void setEditDomain(EditDomain domain);
 

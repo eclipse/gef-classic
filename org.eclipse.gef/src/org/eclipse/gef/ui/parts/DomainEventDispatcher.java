@@ -10,6 +10,7 @@ import java.util.*;
 
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.accessibility.*;
+import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.MouseEvent;
 
@@ -264,6 +265,11 @@ protected AccessibilityDispatcher getAccessibilityDispatcher() {
 
 protected final EditPartViewer getViewer(){
 	return viewer;
+}
+
+public void nativeDragStarted(DragSourceEvent event, AbstractEditPartViewer viewer) {
+	releaseCapture();
+	setRouteEventsToEditor(false);
 }
 
 private boolean okToDispatch() {
