@@ -1,8 +1,5 @@
 package org.eclipse.gef.requests;
 
-import org.eclipse.gef.requests.*;
-import org.eclipse.gef.requests.*;
-
 /**
  * @author hudsonr
  * @since 2.1

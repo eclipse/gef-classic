@@ -2,14 +2,12 @@ package org.eclipse.gef.ui.actions;
 
 import org.eclipse.ui.IEditorPart;
 
-import org.eclipse.gef.internal.GEFMessages;
-import org.eclipse.gef.internal.InternalImages;
-import org.eclipse.gef.ui.parts.GraphicalEditor;
-import org.eclipse.gef.ui.parts.ScalableFreeformRootEditPart;
+import org.eclipse.draw2d.ZoomManager;
 
 import org.eclipse.gef.GraphicalViewer;
-
-import org.eclipse.draw2d.ZoomManager;
+import org.eclipse.gef.internal.GEFMessages;
+import org.eclipse.gef.internal.InternalImages;
+import org.eclipse.gef.ui.parts.ScalableFreeformRootEditPart;
 
 /**
  * @author danlee

@@ -3,15 +3,14 @@ package org.eclipse.gef.ui.parts;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.jface.viewers.StructuredSelection;
-
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.Transfer;
+
+import org.eclipse.jface.viewers.StructuredSelection;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.dnd.AbstractTransferDragSourceListener;
-import org.eclipse.gef.ui.parts.*;
 
 class TreeViewerTransferDragListener extends AbstractTransferDragSourceListener {
 

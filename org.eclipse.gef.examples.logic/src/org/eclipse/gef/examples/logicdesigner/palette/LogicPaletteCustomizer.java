@@ -1,23 +1,17 @@
 package org.eclipse.gef.examples.logicdesigner.palette;
 
-import org.eclipse.gef.palette.PaletteDrawer;
-import org.eclipse.gef.palette.PaletteContainer;
-import org.eclipse.gef.palette.PaletteGroup;
-import org.eclipse.gef.palette.PaletteContainer;
-import org.eclipse.gef.palette.PaletteEntry;
-import org.eclipse.gef.palette.PaletteSeparator;
-import org.eclipse.gef.palette.ToolEntry;
-import org.eclipse.gef.ui.palette.PaletteCustomizer;
-import org.eclipse.gef.ui.palette.PaletteMessages;
-import org.eclipse.gef.ui.palette.customize.EntryPage;
-import org.eclipse.gef.ui.palette.customize.ReadOnlyEntryPage;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+
+import org.eclipse.gef.palette.*;
+import org.eclipse.gef.ui.palette.PaletteCustomizer;
+import org.eclipse.gef.ui.palette.PaletteMessages;
+import org.eclipse.gef.ui.palette.customize.EntryPage;
+import org.eclipse.gef.ui.palette.customize.ReadOnlyEntryPage;
 
 /**
  * @author Pratik Shah

@@ -1,16 +1,15 @@
 package org.eclipse.gef.ui.parts;
 
 import java.util.*;
-import java.util.Iterator;
-import java.util.List;
-
-import org.eclipse.gef.*;
-import org.eclipse.gef.commands.*;
-import org.eclipse.gef.dnd.AbstractTransferDropTargetListener;
-import org.eclipse.gef.requests.ChangeBoundsRequest;
-import org.eclipse.gef.ui.parts.*;
 
 import org.eclipse.swt.dnd.DND;
+
+import org.eclipse.gef.*;
+import org.eclipse.gef.commands.Command;
+import org.eclipse.gef.commands.CompoundCommand;
+import org.eclipse.gef.commands.UnexecutableCommand;
+import org.eclipse.gef.dnd.AbstractTransferDropTargetListener;
+import org.eclipse.gef.requests.ChangeBoundsRequest;
 
 class TreeViewerTransferDropListener
 	extends AbstractTransferDropTargetListener

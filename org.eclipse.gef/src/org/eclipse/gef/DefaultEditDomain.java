@@ -6,17 +6,22 @@ package org.eclipse.gef;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.swt.dnd.DragSourceEvent;
-import org.eclipse.swt.events.*;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.MouseEvent;
+
 import org.eclipse.ui.IEditorPart;
 
-import org.eclipse.gef.tools.*;
+import org.eclipse.gef.commands.CommandStack;
+import org.eclipse.gef.palette.PaletteListener;
+import org.eclipse.gef.palette.PaletteRoot;
+import org.eclipse.gef.palette.ToolEntry;
+import org.eclipse.gef.tools.SelectionTool;
 import org.eclipse.gef.ui.palette.PaletteViewer;
-import org.eclipse.gef.commands.CommandStack;
-import org.eclipse.gef.commands.CommandStack;
-import org.eclipse.gef.palette.*;
 
 /**
  * A default implementation of {@link EditDomain}. A {@link

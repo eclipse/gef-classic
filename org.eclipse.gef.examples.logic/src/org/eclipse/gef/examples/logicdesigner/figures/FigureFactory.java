@@ -6,10 +6,12 @@ package org.eclipse.gef.examples.logicdesigner.figures;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.PolygonDecoration;
+import org.eclipse.draw2d.PolylineConnection;
 
-import org.eclipse.gef.examples.logicdesigner.figures.*;
-import org.eclipse.gef.examples.logicdesigner.model.*;
+import org.eclipse.gef.examples.logicdesigner.model.SimpleOutput;
+import org.eclipse.gef.examples.logicdesigner.model.Wire;
 
 public class FigureFactory {
 

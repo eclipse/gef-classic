@@ -6,7 +6,6 @@ package org.eclipse.draw2d.util;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.draw2d.util.*;
 import org.eclipse.swt.widgets.Display;
 
 public class UITimer 

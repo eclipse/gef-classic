@@ -7,8 +7,10 @@ package org.eclipse.draw2d;
  */
 
 import java.util.*;
-import org.eclipse.draw2d.geometry.*;
-import org.eclipse.draw2d.*;
+
+import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.PointList;
+import org.eclipse.draw2d.geometry.PrecisionPoint;
 
 /**
  * A Router that routes a {@link Connection} that has manual 

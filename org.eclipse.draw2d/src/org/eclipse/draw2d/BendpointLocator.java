@@ -7,7 +7,6 @@ package org.eclipse.draw2d;
  */
 
 import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.*;
 
 /**
  * Repositions a {@link Bendpoint} attached to a {@link Connection} when the Connection is

@@ -6,8 +6,7 @@ package org.eclipse.gef;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.swt.widgets.*;
-import org.eclipse.gef.*;
+import org.eclipse.swt.widgets.Widget;
 
 /**
  * A Specialization of {@link EditPart} for use with {@link TreeViewer}.  The <i>visual
