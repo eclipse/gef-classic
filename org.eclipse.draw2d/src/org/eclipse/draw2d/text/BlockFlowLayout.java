@@ -24,9 +24,10 @@ public class BlockFlowLayout
 	extends FlowContainerLayout
 {
 
-private LineBox previousLine = null;
-
 BlockBox blockBox;
+private boolean consumeSpace = false;
+private boolean continueOnSameLine = false;
+private LineBox previousLine = null;
 
 /**
  * Creates a new BlockFlowLayout with the given BlockFlow.
@@ -40,7 +41,22 @@ public BlockFlowLayout(BlockFlow blockFlow) {
  * @see FlowContainerLayout#cleanup()
  */
 protected void cleanup() {
-	currentLine = previousLine = null;
+	super.cleanup();
+	previousLine = null;
+}
+
+/**
+ * @see org.eclipse.draw2d.text.FlowContext#getConsumeSpaceOnNewLine()
+ */
+public boolean getConsumeSpaceOnNewLine() {
+	return consumeSpace;
+}
+
+/**
+ * @see org.eclipse.draw2d.text.FlowContext#getContinueOnSameLine()
+ */
+public boolean getContinueOnSameLine() {
+	return continueOnSameLine;
 }
 
 /**
@@ -79,10 +95,12 @@ public void endLine() {
 }
 
 /**
- * @see org.eclipse.draw2d.text.FlowContext#getCurrentY()
+ * @see FlowContainerLayout#flush()
  */
-public int getCurrentY() {
-	return getCurrentLine().y;
+protected void flush() {
+	if (currentLine != null)
+		layoutLine();
+	endBlock();
 }
 
 /**
@@ -91,6 +109,13 @@ public int getCurrentY() {
  */
 protected final BlockFlow getBlockFlow() {
 	return (BlockFlow)getFlowFigure();
+}
+
+/**
+ * @see org.eclipse.draw2d.text.FlowContext#getCurrentY()
+ */
+public int getCurrentY() {
+	return getCurrentLine().y;
 }
 
 /**
@@ -120,21 +145,26 @@ protected void layoutLine() {
 }
 
 /**
- * @see FlowContainerLayout#flush()
- */
-protected void flush() {
-	if (currentLine != null)
-		layoutLine();
-	endBlock();
-}
-
-/**
  * @see FlowContainerLayout#preLayout()
  */
 protected void preLayout() {
 	blockBox = getBlockFlow().getBlockBox();
 	setupBlock();
 	//Probably could setup current and previous line here, or just previous
+}
+
+/**
+ * @see org.eclipse.draw2d.text.FlowContext#setConsumeSpaceOnNewLine(boolean)
+ */
+public void setConsumeSpaceOnNewLine(boolean eat) {
+	consumeSpace = eat;
+}
+
+/**
+ * @see org.eclipse.draw2d.text.FlowContext#setContinueOnSameLine(boolean)
+ */
+public void setContinueOnSameLine(boolean value) {
+	continueOnSameLine = value;
 }
 
 /**
