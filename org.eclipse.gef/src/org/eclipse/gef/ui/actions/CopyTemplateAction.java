@@ -15,7 +15,9 @@ import org.eclipse.ui.IEditorPart;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.internal.GEFMessages;
+import org.eclipse.gef.palette.*;
 import org.eclipse.gef.palette.CombinedTemplateCreationEntry;
+import org.eclipse.gef.palette.PaletteTemplateEntry;
 
 /**
  * Copies the currently selected template in the palatte to the default GEF 
@@ -27,7 +29,7 @@ public class CopyTemplateAction
 	implements ISelectionChangedListener
 {
 
-private CombinedTemplateCreationEntry selectedEntry;
+private Object template;
 
 /**
  * Constructs a new CopyTemplateAction.  You must manually add this action to the palette
@@ -45,14 +47,14 @@ public CopyTemplateAction(IEditorPart editor) {
  * @return whether the selected EditPart is a TemplateEditPart
  */
 protected boolean calculateEnabled() {
-	return selectedEntry != null;
+	return template != null;
 }
 
 /**
  * @see org.eclipse.gef.ui.actions.EditorPartAction#dispose()
  */
 public void dispose() {
-	selectedEntry = null;
+	template = null;
 }
 
 /**
@@ -68,7 +70,7 @@ protected void init() {
  * template.
  */
 public void run() {
-	Clipboard.getDefault().setContents(selectedEntry.getTemplate());
+	Clipboard.getDefault().setContents(template);
 }
 
 /**
@@ -81,13 +83,15 @@ public void selectionChanged(SelectionChangedEvent event) {
 	if (!(s instanceof IStructuredSelection))
 		return;
 	IStructuredSelection selection = (IStructuredSelection)s;
-	selectedEntry = null;
+	template = null;
 	if (selection != null && selection.size() == 1) {
 		Object obj = selection.getFirstElement();
 		if (obj instanceof EditPart) {
 			Object model = ((EditPart)obj).getModel();
 			if (model instanceof CombinedTemplateCreationEntry)
-				selectedEntry = (CombinedTemplateCreationEntry)model;
+				template = ((CombinedTemplateCreationEntry)model).getTemplate();
+			else if (model instanceof PaletteTemplateEntry)
+				template = ((PaletteTemplateEntry)model).getTemplate();
 		}
 	}
 	refresh();
