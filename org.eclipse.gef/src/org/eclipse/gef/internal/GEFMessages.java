@@ -78,4 +78,7 @@ public String GraphicalEditor_CLOSE_BUTTON_UI=Helper.getString("%GraphicalEditor
 
 public String GraphicalRootEditPart_Overview_Title=Helper.getString("%GraphicalRootEditPart.Overview.Title_UI_"); //$NON-NLS-1$
 
+public String SetPropertyValueCommand_Label=Helper.getString("%SetPropertyValueCommand.Label_UI_");		//$NON-NLS-1$
+
+
 }

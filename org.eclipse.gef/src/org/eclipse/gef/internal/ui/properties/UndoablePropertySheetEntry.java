@@ -680,7 +680,7 @@ protected void valueChanged(UndoablePropertySheetEntry child, CompoundCommand co
 
 	SetPropertyValueCommand setCommand;
 	for (int i = 0; i < values.length; i++) {
-		setCommand = new SetPropertyValueCommand();
+		setCommand = new SetPropertyValueCommand(child.getDisplayName());
 		setCommand.setTarget(getPropertySource(values[i]));
 		setCommand.setPropertyId(child.getDescriptor().getId());
 		setCommand.setPropertyValue(child.getEditValue(i));
