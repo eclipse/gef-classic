@@ -9,6 +9,58 @@ import org.eclipse.graph.*;
  * @since 2.1
  */
 public class GraphTests {
+public static DirectedGraph offsetTest() {
+	Node head, a1, a2, a3, a4, b1, b2, b3, b4;
+	NodeList nodes = new NodeList();
+	EdgeList edges = new EdgeList();
+
+
+	nodes.add(head = new Node("Head"));
+	head.width = 100;
+	nodes.add(a1 = new Node("node a1"));
+	nodes.add(a2 = new Node("node a2"));
+	nodes.add(a3 = new Node("node a3"));
+	nodes.add(a4 = new Node("node a4"));
+	
+	nodes.add(b1 = new Node("node b1"));
+	nodes.add(b2 = new Node("node b2"));
+	nodes.add(b3 = new Node("node b3"));
+	nodes.add(b4 = new Node("node b4"));
+
+	Edge e = new Edge(head, a1);
+	e.offsetSource = 10;
+	edges.add(e);
+	
+	e = new Edge(head, b1);
+	e.offsetSource = 90;
+	edges.add(e);
+	
+	a1.incomingOffset = 40;
+	b1.incomingOffset = 10;
+	a1.outgoingOffset = 10;
+	a2.incomingOffset = 40;
+	
+	a3.outgoingOffset = 10;
+	a4.incomingOffset = 40;
+	
+	edges.add(new Edge(b1, b2));
+	edges.add(new Edge(b2, b3));
+	edges.add(new Edge(b3, b4));
+
+	edges.add(new Edge(a1, a2));
+	edges.add(e = new Edge(a2, a3));
+	e.offsetSource = 10;
+	e.offsetTarget = 40;
+	edges.add(new Edge(a3, a4));
+	
+	DirectedGraph graph = new DirectedGraph();
+	graph.nodes = nodes;
+	graph.edges = edges;
+	
+	new DirectedGraphLayout()
+		.visit(graph);
+	return graph;
+}
 
 static Random rand = new Random(90);
 
@@ -87,17 +139,17 @@ public static DirectedGraph balanceThis1() {
 	NodeList nodes = new NodeList();
 	EdgeList edges = new EdgeList();
 
-	nodes.add(b1 = new Node("node b1"));//$NON-NLS-1$
-	nodes.add(b2 = new Node("node b2"));//$NON-NLS-1$
-	nodes.add(b3 = new Node("node b3"));//$NON-NLS-1$
-	nodes.add(b4 = new Node("node b4"));//$NON-NLS-1$
-	nodes.add(b5 = new Node("node b5"));//$NON-NLS-1$
-	nodes.add(c = new Node("node c"));//$NON-NLS-1$
-	nodes.add(d = new Node("node d"));//$NON-NLS-1$
-	nodes.add(e = new Node("node e"));//$NON-NLS-1$
-	nodes.add(f = new Node("node f"));//$NON-NLS-1$
-	nodes.add(g = new Node("node g"));//$NON-NLS-1$
-	nodes.add(a = new Node("node a"));//$NON-NLS-1$
+	nodes.add(b1 = new Node("node b1"));
+	nodes.add(b2 = new Node("node b2"));
+	nodes.add(b3 = new Node("node b3"));
+	nodes.add(b4 = new Node("node b4"));
+	nodes.add(b5 = new Node("node b5"));
+	nodes.add(c = new Node("node c"));
+	nodes.add(d = new Node("node d"));
+	nodes.add(e = new Node("node e"));
+	nodes.add(f = new Node("node f"));
+	nodes.add(g = new Node("node g"));
+	nodes.add(a = new Node("node a"));
 
 	b3.width = b2.width = 90;
 
@@ -131,15 +183,15 @@ public static DirectedGraph balanceThis2() {
 	NodeList nodes = new NodeList();
 	EdgeList edges = new EdgeList();
 
-	nodes.add(b2 = new Node("node b2"));//$NON-NLS-1$
-	nodes.add(b3 = new Node("node b3"));//$NON-NLS-1$
-	nodes.add(b4 = new Node("node b4"));//$NON-NLS-1$
-	nodes.add(c = new Node("node c"));//$NON-NLS-1$
-	nodes.add(d = new Node("node d"));//$NON-NLS-1$
-	nodes.add(e = new Node("node e"));//$NON-NLS-1$
-	nodes.add(f = new Node("node f"));//$NON-NLS-1$
-	nodes.add(g = new Node("node g"));//$NON-NLS-1$
-	nodes.add(a = new Node("node a"));//$NON-NLS-1$
+	nodes.add(b2 = new Node("node b2"));
+	nodes.add(b3 = new Node("node b3"));
+	nodes.add(b4 = new Node("node b4"));
+	nodes.add(c = new Node("node c"));
+	nodes.add(d = new Node("node d"));
+	nodes.add(e = new Node("node e"));
+	nodes.add(f = new Node("node f"));
+	nodes.add(g = new Node("node g"));
+	nodes.add(a = new Node("node a"));
 
 	edges.add(new Edge(d, c));
 	edges.add(new Edge(e, c));
@@ -174,28 +226,28 @@ public static DirectedGraph balanceThis3() {
 	NodeList nodes = new NodeList();
 	EdgeList edges = new EdgeList();
 
-	nodes.add(top1 = new Node("Top 1"));//$NON-NLS-1$
+	nodes.add(top1 = new Node("Top 1"));
 	top1.width = 400;
 
 	nodes.add(top2 = new Node("Top 2"));
 	top2.width = 400;
 	
-	nodes.add(a1 = new Node("a1"));//$NON-NLS-1$
-	nodes.add(a2 = new Node("a2"));//$NON-NLS-1$
-	nodes.add(a3 = new Node("a3"));//$NON-NLS-1$
-	nodes.add(a4 = new Node("a4"));//$NON-NLS-1$
-	nodes.add(b1 = new Node("b1"));//$NON-NLS-1$
-	nodes.add(b2 = new Node("b2"));//$NON-NLS-1$
-	nodes.add(b3 = new Node("b3"));//$NON-NLS-1$
-	nodes.add(b4 = new Node("b4"));//$NON-NLS-1$
-	nodes.add(b5 = new Node("b5"));//$NON-NLS-1$
-	nodes.add(b6 = new Node("b6"));//$NON-NLS-1$
-	nodes.add(c1 = new Node("c1"));//$NON-NLS-1$
-	nodes.add(c2 = new Node("c2"));//$NON-NLS-1$
-	nodes.add(c3 = new Node("c3"));//$NON-NLS-1$
-	nodes.add(c4 = new Node("c4"));//$NON-NLS-1$
+	nodes.add(a1 = new Node("a1"));
+	nodes.add(a2 = new Node("a2"));
+	nodes.add(a3 = new Node("a3"));
+	nodes.add(a4 = new Node("a4"));
+	nodes.add(b1 = new Node("b1"));
+	nodes.add(b2 = new Node("b2"));
+	nodes.add(b3 = new Node("b3"));
+	nodes.add(b4 = new Node("b4"));
+	nodes.add(b5 = new Node("b5"));
+	nodes.add(b6 = new Node("b6"));
+	nodes.add(c1 = new Node("c1"));
+	nodes.add(c2 = new Node("c2"));
+	nodes.add(c3 = new Node("c3"));
+	nodes.add(c4 = new Node("c4"));
 	
-	nodes.add(bottom1 = new Node("Bottom 1"));//$NON-NLS-1$
+	nodes.add(bottom1 = new Node("Bottom 1"));
 	bottom1.width = 400;
 
 	nodes.add(bottom2 = new Node("Bottom 2"));
@@ -500,17 +552,17 @@ public static DirectedGraph simpleGraph() {
 	NodeList nodes = new NodeList();
 	EdgeList edges = new EdgeList();
 
-	nodes.add(a = new Node("node a"));//$NON-NLS-1$
-	nodes.add(e = new Node("node e"));//$NON-NLS-1$
-	nodes.add(b = new Node("node b"));//$NON-NLS-1$
-	nodes.add(c = new Node("node c"));//$NON-NLS-1$
-	nodes.add(d = new Node("node d"));//$NON-NLS-1$
-	nodes.add(x = new Node("node X"));//$NON-NLS-1$
-	nodes.add(f = new Node("node f"));//$NON-NLS-1$
-	nodes.add(g = new Node("node g"));//$NON-NLS-1$
-	nodes.add(h = new Node("node h"));//$NON-NLS-1$
-	nodes.add(i = new Node("node i"));//$NON-NLS-1$
-//	nodes.add(j = new Node("node j"));//$NON-NLS-1$
+	nodes.add(a = new Node("node a"));
+	nodes.add(e = new Node("node e"));
+	nodes.add(b = new Node("node b"));
+	nodes.add(c = new Node("node c"));
+	nodes.add(d = new Node("node d"));
+	nodes.add(x = new Node("node X"));
+	nodes.add(f = new Node("node f"));
+	nodes.add(g = new Node("node g"));
+	nodes.add(h = new Node("node h"));
+	nodes.add(i = new Node("node i"));
+//	nodes.add(j = new Node("node j"));
 
 	edges.add(new Edge(a, i));
 	edges.add(new Edge(i, g));
@@ -555,13 +607,13 @@ public static DirectedGraph test1() {
 	NodeList nodes = new NodeList();
 	EdgeList edges = new EdgeList();
 
-	nodes.add(a = new Node("node a"));//$NON-NLS-1$
-	nodes.add(b = new Node("node b"));//$NON-NLS-1$
-	nodes.add(c = new Node("node c"));//$NON-NLS-1$
-	nodes.add(d = new Node("node d"));//$NON-NLS-1$
-	nodes.add(e = new Node("node e"));//$NON-NLS-1$
-	nodes.add(f = new Node("node f"));//$NON-NLS-1$
-	nodes.add(g = new Node("node g"));//$NON-NLS-1$
+	nodes.add(a = new Node("node a"));
+	nodes.add(b = new Node("node b"));
+	nodes.add(c = new Node("node c"));
+	nodes.add(d = new Node("node d"));
+	nodes.add(e = new Node("node e"));
+	nodes.add(f = new Node("node f"));
+	nodes.add(g = new Node("node g"));
 
 	edges.add(new Edge(a, d));
 	edges.add(new Edge(b, d));
@@ -585,18 +637,18 @@ public static DirectedGraph test2() {
 	NodeList nodes = new NodeList();
 	EdgeList edges = new EdgeList();
 
-	nodes.add(a = new Node("node a"));//$NON-NLS-1$
-	nodes.add(b = new Node("node b"));//$NON-NLS-1$
-	nodes.add(c = new Node("node c"));//$NON-NLS-1$
-	nodes.add(d = new Node("node d"));//$NON-NLS-1$
-	nodes.add(e = new Node("node e"));//$NON-NLS-1$
-	nodes.add(f = new Node("node f"));//$NON-NLS-1$
-//	nodes.add(g = new Node("node g"));//$NON-NLS-1$
-//	nodes.add(h = new Node("node h"));//$NON-NLS-1$
-//	nodes.add(i = new Node("node i"));//$NON-NLS-1$
-//	nodes.add(j = new Node("node j"));//$NON-NLS-1$
-//	nodes.add(k = new Node("node k"));//$NON-NLS-1$
-//	nodes.add(l = new Node("node l"));//$NON-NLS-1$
+	nodes.add(a = new Node("node a"));
+	nodes.add(b = new Node("node b"));
+	nodes.add(c = new Node("node c"));
+	nodes.add(d = new Node("node d"));
+	nodes.add(e = new Node("node e"));
+	nodes.add(f = new Node("node f"));
+//	nodes.add(g = new Node("node g"));
+//	nodes.add(h = new Node("node h"));
+//	nodes.add(i = new Node("node i"));
+//	nodes.add(j = new Node("node j"));
+//	nodes.add(k = new Node("node k"));
+//	nodes.add(l = new Node("node l"));
 
 	edges.add(new Edge(a, b));
 	edges.add(new Edge(a, c));
@@ -620,10 +672,10 @@ public static DirectedGraph test3() {
 	NodeList nodes = new NodeList();
 	EdgeList edges = new EdgeList();
 
-	nodes.add(a = new Node("node a"));//$NON-NLS-1$
-	nodes.add(b = new Node("node b"));//$NON-NLS-1$
-	nodes.add(c = new Node("node c"));//$NON-NLS-1$
-	nodes.add(d = new Node("node d"));//$NON-NLS-1$
+	nodes.add(a = new Node("node a"));
+	nodes.add(b = new Node("node b"));
+	nodes.add(c = new Node("node c"));
+	nodes.add(d = new Node("node d"));
 
 	a.width = 80;
 	d.width = 75;
@@ -650,17 +702,17 @@ public static DirectedGraph test4() {
 	NodeList nodes = new NodeList();
 	EdgeList edges = new EdgeList();
 
-	nodes.add(a = new Node("node a"));//$NON-NLS-1$
-	nodes.add(b = new Node("node b"));//$NON-NLS-1$
-	nodes.add(c = new Node("node c"));//$NON-NLS-1$
-	nodes.add(d = new Node("node d"));//$NON-NLS-1$
-	nodes.add(e = new Node("node e"));//$NON-NLS-1$
-	nodes.add(f = new Node("node f"));//$NON-NLS-1$
-	nodes.add(g = new Node("node g"));//$NON-NLS-1$
-	nodes.add(h = new Node("node h"));//$NON-NLS-1$
-	nodes.add(i = new Node("node i"));//$NON-NLS-1$
-	nodes.add(j = new Node("node j"));//$NON-NLS-1$
-	nodes.add(k = new Node("node k"));//$NON-NLS-1$
+	nodes.add(a = new Node("node a"));
+	nodes.add(b = new Node("node b"));
+	nodes.add(c = new Node("node c"));
+	nodes.add(d = new Node("node d"));
+	nodes.add(e = new Node("node e"));
+	nodes.add(f = new Node("node f"));
+	nodes.add(g = new Node("node g"));
+	nodes.add(h = new Node("node h"));
+	nodes.add(i = new Node("node i"));
+	nodes.add(j = new Node("node j"));
+	nodes.add(k = new Node("node k"));
 
 	edges.add(new Edge(a, b));
 	edges.add(new Edge(a, c));
@@ -695,13 +747,13 @@ public static DirectedGraph tinyGraph() {
 	NodeList nodes = new NodeList();
 	EdgeList edges = new EdgeList();
 
-	nodes.add(a = new Node("node a"));//$NON-NLS-1$
-	nodes.add(b = new Node("node b"));//$NON-NLS-1$
-	nodes.add(c = new Node("node c"));//$NON-NLS-1$
-	nodes.add(d = new Node("node d"));//$NON-NLS-1$
-	nodes.add(e = new Node("node e"));//$NON-NLS-1$
-//	nodes.add(f = new Node("node f"));//$NON-NLS-1$
-	nodes.add(g = new Node("node g"));//$NON-NLS-1$
+	nodes.add(a = new Node("node a"));
+	nodes.add(b = new Node("node b"));
+	nodes.add(c = new Node("node c"));
+	nodes.add(d = new Node("node d"));
+	nodes.add(e = new Node("node e"));
+//	nodes.add(f = new Node("node f"));
+	nodes.add(g = new Node("node g"));
 
 	edges.add(new Edge(a, d));
 	edges.add(new Edge(c, b));
@@ -728,15 +780,15 @@ public static DirectedGraph unstableGraph() {
 	EdgeList edges = new EdgeList();
 
 
-	nodes.add(a0 = new Node("node a0"));//$NON-NLS-1$
-	nodes.add(b0 = new Node("node b0"));//$NON-NLS-1$
-	nodes.add(c0 = new Node("node c0"));//$NON-NLS-1$
-	nodes.add(a1 = new Node("node a1"));//$NON-NLS-1$
-	nodes.add(b1 = new Node("node b1"));//$NON-NLS-1$
-	nodes.add(c1 = new Node("node c1"));//$NON-NLS-1$
-	nodes.add(a2 = new Node("node a2"));//$NON-NLS-1$
-	nodes.add(b2 = new Node("node b2"));//$NON-NLS-1$
-	nodes.add(c2 = new Node("node c2"));//$NON-NLS-1$
+	nodes.add(a0 = new Node("node a0"));
+	nodes.add(b0 = new Node("node b0"));
+	nodes.add(c0 = new Node("node c0"));
+	nodes.add(a1 = new Node("node a1"));
+	nodes.add(b1 = new Node("node b1"));
+	nodes.add(c1 = new Node("node c1"));
+	nodes.add(a2 = new Node("node a2"));
+	nodes.add(b2 = new Node("node b2"));
+	nodes.add(c2 = new Node("node c2"));
 
 //	edges.add(new Edge(ab, a0));
 //	edges.add(new Edge(ab, b0));

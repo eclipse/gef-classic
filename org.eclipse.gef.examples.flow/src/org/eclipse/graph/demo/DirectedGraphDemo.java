@@ -122,6 +122,7 @@ protected IFigure getContents() {
 				.invoke(null, null));
 	} catch (Exception e) {
 		System.out.println("Could not build graph");
+		e.printStackTrace();
 	}
 	Figure contents = buildGraph(graph);
 	return contents;

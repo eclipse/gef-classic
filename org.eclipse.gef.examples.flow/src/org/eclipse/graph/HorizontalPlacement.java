@@ -79,7 +79,10 @@ class NodeCluster extends NodeList {
 		if (pullCount != 0)
 			pull /= pullCount;
 		else {
-			pull = unweighted / (outgoing.size() + incoming.size());
+			if (outgoing.size() + incoming.size() == 0)
+				pull = 0;
+			else
+				pull = unweighted / (outgoing.size() + incoming.size());
 		}
 	}
 }
@@ -107,7 +110,7 @@ void addEdges(Node n, Node nPrime) {
 			prime.nodes.add(ne);
 			Edge eu = new Edge(ne, nPrimeSource);
 			Edge ev = new Edge(ne, nPrime);
-			eu.delta = n.width / 2;
+			eu.delta = e.getTargetOffset();
 			ev.delta = 0;
 			eu.weight = ev.weight = e.weight * 2;
 			prime.edges.add(eu);
@@ -119,7 +122,7 @@ void addEdges(Node n, Node nPrime) {
 			ne.y = (n.y + n.height + nSource.y)/2;
 			prime.nodes.add(ne);
 			Edge eu = new Edge(ne, nPrimeSource);
-			int dw = (nSource.width - n.width)/2;
+			int dw = e.getSourceOffset() - e.getTargetOffset();
 			eu.delta = 0;
 			eu.weight = e.weight;
 			Edge ev = new Edge(ne, nPrime);
@@ -147,7 +150,7 @@ void addEdges(VirtualNode vn, Node nPrime) {
 	eu.weight = vn.omega();
 	Edge ev = new Edge(ne, nPrime, 0, eu.weight);
 	if (!(vn.prev instanceof VirtualNode))
-		ev.delta = ((Edge)vn.data).source.width/2;
+		ev.delta = ((Edge)vn.data).getSourceOffset();
 	prime.edges.add(eu);
 	prime.edges.add(ev);
 }
