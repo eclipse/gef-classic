@@ -15,13 +15,17 @@ import org.eclipse.draw2d.graph.DirectedGraph;
 import org.eclipse.draw2d.graph.Subgraph;
 
 /**
- * 
- * @author hudsonr
- * Created on Jul 20, 2003
+ * calculates the height and y-coordinates for nodes and subgraphs in a compound directed
+ * graph.
+ * @author Randy Hudson
+ * @since 2.1.2
  */
 public class CompoundVerticalPlacement extends VerticalPlacement {
 
-/**  */
+/**
+ * @see GraphVisitor#visit(DirectedGraph)
+ * Extended to set subgraph values.
+ */
 public void visit(DirectedGraph dg) {
 	CompoundDirectedGraph g = (CompoundDirectedGraph)dg;
 	super.visit(g);

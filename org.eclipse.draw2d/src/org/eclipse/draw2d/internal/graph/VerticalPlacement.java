@@ -16,9 +16,10 @@ import org.eclipse.draw2d.graph.Node;
 import org.eclipse.draw2d.graph.Rank;
 
 /**
- * 
- * @author hudsonr
- * Created on Jul 17, 2003
+ * Assigns the Y and Height values to the nodes in the graph. All nodes in the same row
+ * are given the same height.
+ * @author Randy Hudson
+ * @since 2.1.2
  */
 public class VerticalPlacement extends GraphVisitor {
 

@@ -13,10 +13,16 @@ package org.eclipse.draw2d.internal.graph;
 import org.eclipse.draw2d.graph.DirectedGraph;
 
 /**
- * @author hudsonr
- * @since 2.1
+ * Performs some action on a Graph.
+ * @author Randy Hudson
+ * @since 2.1.2
  */
 public abstract class GraphVisitor {
-//Random rand = new Random(8333);
+
+/**
+ * Act on the given directed graph.
+ * @param g the graph
+ */
 public abstract void visit(DirectedGraph g);
+
 }

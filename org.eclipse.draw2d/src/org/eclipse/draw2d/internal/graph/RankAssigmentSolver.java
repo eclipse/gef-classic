@@ -17,10 +17,10 @@ import org.eclipse.draw2d.graph.Node;
 
 
 /**
- * solves the rank assigment problem on a DirectedGraph containing an initial feasible
+ * Assigns the final rank assignment for a DirectedGraph with an initial feasible
  * spanning tree.
- * @author hudsonr
- * @since 2.1
+ * @author Randy Hudson
+ * @since 2.1.2
  */
 public class RankAssigmentSolver extends SpanningTreeVisitor {
 protected DirectedGraph graph;

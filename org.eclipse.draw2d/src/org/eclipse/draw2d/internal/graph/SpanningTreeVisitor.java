@@ -15,7 +15,10 @@ import org.eclipse.draw2d.graph.EdgeList;
 import org.eclipse.draw2d.graph.Node;
 
 /**
- * @author hudsonr
+ * A base class for visitors which operate on the graphs spanning tree used to induce rank
+ * assignments.
+ * @author Randy Hudson
+ * @since 2.1.2
  */
 abstract class SpanningTreeVisitor extends GraphVisitor {
 

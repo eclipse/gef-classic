@@ -20,8 +20,10 @@ import org.eclipse.draw2d.graph.Node;
 import org.eclipse.draw2d.graph.NodeList;
 
 /**
- * @author hudsonr
- * @since 2.1
+ * Finds a tight spanning tree from the graphs edges which induce a valid rank assignment.
+ * This process requires that the nodes be initially given a feasible ranking.
+ * @author Randy Hudson
+ * @since 2.1.2
  */
 public class TightSpanningTreeSolver extends SpanningTreeVisitor {
 
