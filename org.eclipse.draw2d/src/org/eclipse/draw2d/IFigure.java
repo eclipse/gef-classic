@@ -181,6 +181,13 @@ Rectangle getBounds();
 Rectangle getClientArea();
 
 /**
+ * Copies the client area into the specificied Recangle, and returns that rectangle for convenience
+ * @param rect the destination rectangle for the client area
+ * @return The same instance that was passed is returned for convenience
+ */
+Rectangle getClientArea(Rectangle rect);
+
+/**
  * Returns an unmodifiable collection of children by reference.
  */
 List getChildren();
