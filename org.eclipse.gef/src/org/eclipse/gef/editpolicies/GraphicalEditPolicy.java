@@ -34,8 +34,16 @@ public abstract class GraphicalEditPolicy
  * Adds the specified <code>Figure</code> to the {@link LayerConstants#FEEDBACK_LAYER}.
  * @param figure the feedback to add */
 protected void addFeedback(IFigure figure) {
-	getLayer(LayerConstants.FEEDBACK_LAYER).
-		add(figure);
+	getFeedbackLayer().add(figure);
+}
+
+/**
+ * Returns the layer used for displaying feedback.
+ *  
+ * @return the feedback layer
+ */
+protected IFigure getFeedbackLayer() {
+	return getLayer(LayerConstants.FEEDBACK_LAYER);
 }
 
 /**
@@ -57,7 +65,7 @@ protected IFigure getLayer(Object layer) {
  * LayerConstants#FEEDBACK_LAYER}.
  * @param figure the feedback to remove */
 protected void removeFeedback(IFigure figure) {
-	getLayer(LayerConstants.FEEDBACK_LAYER).remove(figure);
+	getFeedbackLayer().remove(figure);
 }
 
 }
