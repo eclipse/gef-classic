@@ -34,7 +34,6 @@ import org.eclipse.jface.util.TransferDropTargetListener;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
-import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
 import org.eclipse.ui.dialogs.SaveAsDialog;
 import org.eclipse.ui.part.FileEditorInput;
@@ -45,8 +44,6 @@ import org.eclipse.gef.ContextMenuProvider;
 import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.GraphicalViewer;
-import org.eclipse.gef.KeyHandler;
-import org.eclipse.gef.KeyStroke;
 import org.eclipse.gef.dnd.TemplateTransferDragSourceListener;
 import org.eclipse.gef.dnd.TemplateTransferDropTargetListener;
 import org.eclipse.gef.editparts.ScalableRootEditPart;
@@ -58,7 +55,6 @@ import org.eclipse.gef.ui.palette.PaletteViewerProvider;
 import org.eclipse.gef.ui.palette.FlyoutPaletteComposite.FlyoutPreferences;
 import org.eclipse.gef.ui.parts.ContentOutlinePage;
 import org.eclipse.gef.ui.parts.GraphicalEditorWithFlyoutPalette;
-import org.eclipse.gef.ui.parts.GraphicalViewerKeyHandler;
 import org.eclipse.gef.ui.parts.TreeViewer;
 
 import org.eclipse.gef.examples.shapes.model.ShapesDiagram;
@@ -78,10 +74,6 @@ private ShapesDiagram diagram = new ShapesDiagram();
 private IContentOutlinePage outlinePage;
 /** Palette component, holding the tools and shapes. */
 private PaletteRoot palette;
-/** Cache save-request status. */
-private boolean saveAlreadyRequested;
-/** KeyHandler with common bindings for both the Outline View and the Editor. */
-private KeyHandler sharedKeyHandler;
 
 /** Create a new ShapesEditor instance. This is called by the Workspace. */
 public ShapesEditor() {
@@ -102,8 +94,6 @@ protected void configureGraphicalViewer() {
 	GraphicalViewer viewer = getGraphicalViewer();
 	viewer.setRootEditPart(new ScalableRootEditPart());
 	viewer.setEditPartFactory(new ShapesEditPartFactory());
-	viewer.setKeyHandler(
-			new GraphicalViewerKeyHandler(viewer).setParent(getCommonKeyHandler()));
 	
 	// configure the context menu provider
 	ContextMenuProvider cmProvider =
@@ -116,19 +106,10 @@ protected void configureGraphicalViewer() {
  * @see org.eclipse.gef.ui.parts.GraphicalEditor#commandStackChanged(java.util.EventObject)
  */
 public void commandStackChanged(EventObject event) {
-	super.commandStackChanged(event);
-	if (isDirty() && !saveAlreadyRequested) {
-		saveAlreadyRequested = true;
-		firePropertyChange(IEditorPart.PROP_DIRTY);
-	}
-	else {
-		saveAlreadyRequested = false;
-		firePropertyChange(IEditorPart.PROP_DIRTY);
-	}
+	firePropertyChange(IEditorPart.PROP_DIRTY);
 }
 
-private void createOutputStream(OutputStream os) 
-throws IOException {
+private void createOutputStream(OutputStream os) throws IOException {
 	ObjectOutputStream oos = new ObjectOutputStream(os);
 	oos.writeObject(getModel());
 	oos.close();
@@ -178,7 +159,6 @@ private void disposeOutlinePage() {
  * @see org.eclipse.ui.ISaveablePart#doSave(org.eclipse.core.runtime.IProgressMonitor)
  */
 public void doSave(IProgressMonitor monitor) {
-	
 	ByteArrayOutputStream out = new ByteArrayOutputStream();
 	try {
 		createOutputStream(out);
@@ -250,28 +230,10 @@ public void doSaveAs() {
 public Object getAdapter(Class type) {
 	// returns the content outline page for this editor
 	if (type == IContentOutlinePage.class) {
-		if (outlinePage == null) {
-			outlinePage = new ShapesEditorOutlinePage(this, new TreeViewer()); 
-		}
+		outlinePage = new ShapesEditorOutlinePage(this, new TreeViewer()); 
 		return outlinePage;
 	}
 	return super.getAdapter(type);
-}
-
-/**
- * Returns the KeyHandler with common bindings for both the Outline and Graphical Views.
- * For example, delete is a common action.
- */
-KeyHandler getCommonKeyHandler() {
-	if (sharedKeyHandler == null) {
-		sharedKeyHandler = new KeyHandler();
-
-		// Add key and action pairs to sharedKeyHandler
-		sharedKeyHandler.put(
-				KeyStroke.getPressed(SWT.DEL, 127, 0),
-				getActionRegistry().getAction(ActionFactory.DELETE.getId()));
-	}
-	return sharedKeyHandler;
 }
 
 private ShapesDiagram getModel() {
@@ -388,7 +350,6 @@ public class ShapesEditorOutlinePage extends ContentOutlinePage {
 		// configure outline viewer
 		getViewer().setEditDomain(editor.getEditDomain());
 		getViewer().setEditPartFactory(new ShapesTreeEditPartFactory());
-		getViewer().setKeyHandler(editor.getCommonKeyHandler());
 		// configure & add context menu to viewer
 		ContextMenuProvider cmProvider = new ShapesEditorContextMenuProvider(
 				getViewer(), 
