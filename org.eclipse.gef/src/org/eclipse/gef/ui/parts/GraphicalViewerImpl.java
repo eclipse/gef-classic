@@ -133,6 +133,25 @@ protected IFigure getRootFigure(){
 	return rootFigure;
 }
 
+protected void hookDragSource() {
+	//Allow the real drop targets to make their changes first.
+	super.hookDragSource();
+
+	//Then force and update since async paints won't occurs during a Drag operation
+	getDragSource().addDragListener(new DragSourceAdapter() {
+		public void dragStart(DragSourceEvent event) {
+			// If Draw2d has consumed the mouse down event, set event.doit to false.
+			if (getEventDispatcher().isConsumed())
+				event.doit = false;
+			if (event.doit) {
+				getEditDomain().nativeDragStarted(event, GraphicalViewerImpl.this);
+				getEventDispatcher().nativeDragStarted(event, GraphicalViewerImpl.this);
+				flush();
+			}
+		}
+	});
+}
+
 protected void hookDropTarget() {
 	//Allow the real drop targets to make their changes first.
 	super.hookDropTarget();
