@@ -19,6 +19,8 @@ public EditPart createEditPart(EditPart context, Object model) {
 	
 	if (model instanceof LogicFlowContainer)
 		child = new LogicFlowContainerEditPart();
+	else if (model instanceof Wire)
+		child = new WireEditPart();
 	else if (model instanceof LED)
 		child = new LEDEditPart();
 	else if (model instanceof LogicLabel)

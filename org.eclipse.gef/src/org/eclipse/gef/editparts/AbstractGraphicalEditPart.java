@@ -172,6 +172,31 @@ protected void addTargetConnection(ConnectionEditPart connection, int index) {
 }
 
 /**
+ * <img src="../doc-files/green.gif"/> Creates a {@link ConnectionEditPart}
+ * for the given model.  Similar to {@link AbstractEditPart#createChild(Object)}.
+ * This method is called from {@link #refreshSourceConnections()}, and 
+ * {@link #refreshTargetConnections()}.
+ * 
+ * @param model the connection model object
+ */
+protected ConnectionEditPart createConnection(Object model) {
+	return (ConnectionEditPart)getViewer().getEditPartFactory().createEditPart(this, model);
+}
+
+/**
+ * Searches for an existing ConnectionEditPart in the EditPart registry and 
+ * returns it if one is found.  Otherwise, {@link #createConnection(Object)} 
+ * is called to create a new ConnectionEditPart.  Override this method if you 
+ * need to find an existing connection some other way.
+ */
+protected ConnectionEditPart createOrFindConnection(Object model) {
+	ConnectionEditPart conx = (ConnectionEditPart)getViewer().getEditPartRegistry().get(model);
+	if (conx != null)
+		return conx;
+	return createConnection(model);
+}
+
+/**
  * Returns the figure to be used as this part's visuals.
  */
 abstract protected IFigure createFigure();

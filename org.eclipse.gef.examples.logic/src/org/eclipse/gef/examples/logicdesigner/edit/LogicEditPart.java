@@ -47,22 +47,6 @@ protected void createEditPolicies(){
 abstract protected AccessibleEditPart createAccessible();
 
 /**
- * Returns a newly created Connection EditPart for the model
- * supplied. The connection EditPart is a WireEditPart
- *
- * @param wire  Model for the desired WireEditPart
- * @return  Returns the WireEditPart as a ConnectionEditPart
- */
-protected ConnectionEditPart createConnection(Object wire){
-	WireEditPart wirepart = (WireEditPart)getRoot().getViewer().getEditPartRegistry().get(wire);
-	if (wirepart == null) {
-		wirepart = new WireEditPart();
-		wirepart.setModel(wire);
-	}
-	return wirepart;
-}
-
-/**
  * Makes the EditPart insensible to changes in the model
  * by removing itself from the model's list of listeners.
  */

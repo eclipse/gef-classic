@@ -239,30 +239,6 @@ protected EditPart createChild(Object model) {
 }
 
 /**
- * <img src="../doc-files/green.gif"/> Creates a
- * <code>ConnectionEditPart</code> for the given model.
- * Similar to {@link #createChild(Object)}</code>.
- * called from <code>refreshSourceConnections()</code>,
- * and <code>refreshTargetConnections()</code>.
- * 
- * @param model the connection model object
- */
-protected ConnectionEditPart createConnection(Object model){
-	return null;
-}
-
-protected ConnectionEditPart createOrFindConnection(Object model){
-	try {
-		ConnectionEditPart connx;
-		connx = (ConnectionEditPart)getViewer().getEditPartRegistry().get(model);
-		if (connx != null)
-			return connx;
-	} catch (ClassCastException exception){
-	}
-	return createConnection(model);
-}
-
-/**
  * <img src="../doc-files/green.gif"/>Creates
  * the initial EditPolicies and reserves slots for dynamic ones.
  * Should be overridden to install the inital edit policies based on the
