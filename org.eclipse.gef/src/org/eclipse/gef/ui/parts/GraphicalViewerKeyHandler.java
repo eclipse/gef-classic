@@ -200,26 +200,34 @@ public boolean keyPressed(KeyEvent event) {
 		navigateIntoContainer(event);
 		return true;
 	}
+
 	switch (event.keyCode) {
 		case SWT.ARROW_LEFT:
-			return navigateNextSibling(event, PositionConstants.WEST);
+			if (navigateNextSibling(event, PositionConstants.WEST))
+				return true;
 		case SWT.ARROW_RIGHT:
-			return navigateNextSibling(event, PositionConstants.EAST);
+			if (navigateNextSibling(event, PositionConstants.EAST))
+				return true;
 		case SWT.ARROW_UP:
-			return navigateNextSibling(event, PositionConstants.NORTH);
+			if (navigateNextSibling(event, PositionConstants.NORTH))
+				return true;
 		case SWT.ARROW_DOWN:
-			return navigateNextSibling(event, PositionConstants.SOUTH);
+			if (navigateNextSibling(event, PositionConstants.SOUTH))
+				return true;
 
 		case SWT.HOME:
-			return navigateJumpSibling(event, PositionConstants.WEST);
+			if (navigateJumpSibling(event, PositionConstants.WEST))
+				return true;
 		case SWT.END:
-			return navigateJumpSibling(event, PositionConstants.EAST);
+			if (navigateJumpSibling(event, PositionConstants.EAST))
+				return true;
 		case SWT.PAGE_DOWN:
-			return navigateJumpSibling(event, PositionConstants.SOUTH);
+			if (navigateJumpSibling(event, PositionConstants.SOUTH))
+				return true;
 		case SWT.PAGE_UP:
-			return navigateJumpSibling(event, PositionConstants.NORTH);
+			if (navigateJumpSibling(event, PositionConstants.NORTH))
+				return true;
 	}
-	
 	return super.keyPressed(event);
 }
 
@@ -271,6 +279,7 @@ private void navigateIntoContainer(KeyEvent event) {
 }
 
 private boolean navigateJumpSibling(KeyEvent event, int direction) {
+	// TODO: Implement navigateJumpSibling() (for PGUP, PGDN, HOME and END key events)
 	return false;
 }
 
