@@ -21,6 +21,7 @@ import org.eclipse.swt.events.*;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.widgets.*;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ICellEditorListener;
 
@@ -60,6 +61,7 @@ private static class DirectEditBorder
 
 private AncestorListener ancestorListener;
 private EditPartListener editPartListener;
+private ControlListener controlListener;
 private IFigure cellEditorFrame;
 private FocusListener focusListener;
 private ICellEditorListener cellEditorListener;
@@ -70,6 +72,7 @@ private CellEditorLocator locator;
 private GraphicalEditPart source;
 private CellEditor ce;
 private Class editorType;
+private boolean committing = false;
 
 public DirectEditManager(GraphicalEditPart source, Class editorType, CellEditorLocator locator){
 //	if (!CellEditor.class.isAssignableFrom(editorType))
@@ -82,14 +85,19 @@ public DirectEditManager(GraphicalEditPart source, Class editorType, CellEditorL
 protected void bringDown(){
 	eraseFeedback();
 	unhookListeners();
-	getCellEditor().deactivate();
-	getCellEditor().dispose();
+	if (getCellEditor() != null) {
+		getCellEditor().deactivate();
+		getCellEditor().dispose();
+		setCellEditor(null);
+	}
 	request = null;
 	dirty = false;
-	setCellEditor(null);
 }
 
 protected void commit(){
+	if (committing)
+		return;
+	committing = true;
 	try {
 		eraseFeedback();
 		if (isDirty()){
@@ -100,6 +108,7 @@ protected void commit(){
 		}
 	} finally {
 		bringDown();
+		committing = false;
 	}
 }
 
@@ -165,27 +174,28 @@ private void handleValueChanged(){
 	placeCellEditor();
 }
 
-private void hookListeners(){
+private void hookListeners() {
 	ancestorListener = new AncestorListener.Stub() {
 		public void ancestorMoved(IFigure ancestor) {
 			placeCellEditor();
 		}
 	};
-
 	getEditPart().getFigure().addAncestorListener(ancestorListener);
 
 	Control control = getControl();
-	focusListener = new FocusAdapter(){
-		public void focusLost(FocusEvent e){
-			Display.getCurrent().asyncExec(new Runnable() {
-				public void run() {
+	
+	focusListener = new FocusAdapter() {
+		public void focusLost(FocusEvent e) {
+//			Display.getCurrent().asyncExec(new Runnable() {
+//				public void run() {
 					commit();
-				}
-			});
+//				}
+//			});
 		}
 	};
+	control.addFocusListener(focusListener);
 
-	control.addControlListener(new ControlAdapter() {
+	controlListener = new ControlAdapter() {
 		public void controlMoved(ControlEvent e) {
 			//This must be handled async because during scrolling, the CellEditor moves first, but then
 			//afterwards the viewport Scrolls, which would cause the shadow to move twice
@@ -195,29 +205,26 @@ private void hookListeners(){
 				}
 			});
 		}
-
 		public void controlResized(ControlEvent e) {
 			placeBorder();
 		}
+	};
+	control.addControlListener(controlListener);
 
-	});
-
-	control.addFocusListener(focusListener);
-
-	cellEditorListener = new ICellEditorListener(){
-		public void cancelEditor(){
+	cellEditorListener = new ICellEditorListener() {
+		public void cancelEditor() {
 			bringDown();
 		}
-		public void applyEditorValue(){
+		public void applyEditorValue() {
 			commit();
 		}
-		public void editorValueChanged(boolean old, boolean newState){
+		public void editorValueChanged(boolean old, boolean newState) {
 			handleValueChanged();
 		}
 	};
 	getCellEditor().addListener(cellEditorListener);
 	
-	editPartListener = new EditPartListener.Stub (){
+	editPartListener = new EditPartListener.Stub () {
 		public void partDeactivated(EditPart editpart) {
 			bringDown();
 		}
@@ -299,15 +306,24 @@ public void showFeedback(){
 	getEditPart().showSourceFeedback(getDirectEditRequest());
 }
 
-protected void unhookListeners(){
-	if (ancestorListener != null){
-		getEditPart().getFigure().removeAncestorListener(ancestorListener);
-		ancestorListener = null;
-	}
-	Control control = getCellEditor().getControl();
-	control.removeFocusListener(focusListener);
-	getCellEditor().removeListener(cellEditorListener);
+protected void unhookListeners() {
+	getEditPart().getFigure().removeAncestorListener(ancestorListener);
 	getEditPart().removeEditPartListener(editPartListener);
+	ancestorListener = null;
+	editPartListener = null;
+	
+	if (getCellEditor() == null)
+		return;
+	getCellEditor().removeListener(cellEditorListener);
+	cellEditorListener = null;
+
+	Control control = getCellEditor().getControl();
+	if (control == null || control.isDisposed())
+		return;
+	control.removeFocusListener(focusListener);
+	control.removeControlListener(controlListener);
+	focusListener = null;
+	controlListener = null;
 }
 
 }
