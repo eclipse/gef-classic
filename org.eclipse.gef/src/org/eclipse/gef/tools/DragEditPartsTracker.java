@@ -35,11 +35,10 @@ public class DragEditPartsTracker
 private static final int FLAG_SOURCE_FEEDBACK = SelectEditPartTracker.MAX_FLAG << 1;
 /** Max flag */
 protected static final int MAX_FLAG = FLAG_SOURCE_FEEDBACK;
-private List operationSet, exclusionSet;
+private List exclusionSet;
 private PrecisionPoint sourceFigureOffset;
 private SnapToStrategy helper;
 
-private Request sourceRequest;
 private PrecisionRectangle sourceRectangle;
 
 /**
@@ -112,7 +111,6 @@ protected Request createTargetRequest() {
 public void deactivate() {
 	eraseSourceFeedback();
 	super.deactivate();
-	operationSet = null;
 	exclusionSet = null;
 	sourceFigureOffset = null;
 	sourceRectangle = null;
