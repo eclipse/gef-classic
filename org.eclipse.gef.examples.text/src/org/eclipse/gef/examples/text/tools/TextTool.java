@@ -539,7 +539,6 @@ public void setDragTracker(DragTracker newDragTracker) {
 }
 
 public void setStyle(String styleID, Object newValue) {
-	
 	//Check for cancellations: lookup old style and remove any pending ones
 	Object oldValue = getSelectionStyle(styleID, false);
 	if (newValue.equals(oldValue)) {
@@ -565,7 +564,7 @@ public void setStyle(String styleID, Object newValue) {
 			styleValues.remove(prev);
 		}
 		styleKeys.add(0, styleID);
-		styleValues.add(0, styleValues);
+		styleValues.add(0, newValue);
 	} else if (c.canExecute()) {
 		//$TODO cleanup any pending styles?
 		executeCommand(c);
