@@ -17,6 +17,10 @@ import org.eclipse.swt.graphics.Image;
 
 public class SharedImages {
 
+public static final ImageDescriptor DESC_ZOOM_IN;
+public static final ImageDescriptor DESC_ZOOM_OUT;
+
+
 public static final ImageDescriptor DESC_HORZ_ALIGN_CENTER;
 public static final ImageDescriptor DESC_HORZ_ALIGN_LEFT;
 public static final ImageDescriptor DESC_HORZ_ALIGN_RIGHT;
@@ -37,6 +41,9 @@ public static final Image ICON_UP_GRAYED;
 public static final Image ICON_UP_PRESSED;
 
 static {
+	DESC_ZOOM_IN = createDescriptor("icons/zoomplus.gif"); //$NON-NLS-1$
+	DESC_ZOOM_OUT = createDescriptor("icons/zoomminus.gif"); //$NON-NLS-1$
+
 	DESC_VERT_ALIGN_BOTTOM = createDescriptor("icons/abottom.gif"); //$NON-NLS-1$
 	DESC_HORZ_ALIGN_CENTER = createDescriptor("icons/acenter.gif"); //$NON-NLS-1$
 	DESC_HORZ_ALIGN_LEFT = createDescriptor("icons/aleft.gif"); //$NON-NLS-1$

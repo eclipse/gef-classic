@@ -30,6 +30,12 @@ static class Helper {
 	}
 }
 
+public String ZoomAction_ZoomIn_ActionToolTipText = Helper.getString("%ZoomAction.ZoomIn.ActionToolTipText_UI_");//$NON-NLS-1$
+public String ZoomAction_ZoomIn_ActionLabelText=Helper.getString("%ZoomAction.ZoomIn.ActionLabelText_UI_");			//$NON-NLS-1$
+
+public String ZoomAction_ZoomOut_ActionToolTipText = Helper.getString("%ZoomAction.ZoomOut.ActionToolTipText_UI_");//$NON-NLS-1$
+public String ZoomAction_ZoomOut_ActionLabelText=Helper.getString("%ZoomAction.ZoomOut.ActionLabelText_UI_");			//$NON-NLS-1$
+
 public String AlignLeftAction_ActionToolTipText = Helper.getString("%AlignLeftAction.ActionToolTipText_UI_");//$NON-NLS-1$
 public String AlignLeftAction_ActionLabelText=Helper.getString("%AlignLeftAction.ActionLabelText_UI_");			//$NON-NLS-1$
 
@@ -55,6 +61,10 @@ public String UndoAction_ToolTipText=Helper.getString("%UndoAction.ActionToolTip
 public String DeleteAction_ActionToolTipText=Helper.getString("%DeleteAction.ActionToolTipText_UI_");	//$NON-NLS-1$
 public String DeleteAction_ActionLabelText=Helper.getString("%DeleteAction.ActionLabelText_UI_");		//$NON-NLS-1$
 public String DeleteAction_ActionDeleteCommandName=Helper.getString("%DeleteAction.ActionDeleteCommandName_UI_");//$NON-NLS-1$
+
+public String PrintAction_ActionToolTipText=Helper.getString("%PrintAction.ActionToolTipText_UI_");	//$NON-NLS-1$
+public String PrintAction_ActionLabelText=Helper.getString("%PrintAction.ActionLabelText_UI_");		//$NON-NLS-1$
+public String PrintAction_ActionDeleteCommandName=Helper.getString("%PrintAction.ActionDeleteCommandName_UI_");//$NON-NLS-1$
 
 public String RedoAction_ActionToolTipText=Helper.getString("%RedoAction.ActionToolTipText_UI_");		//$NON-NLS-1$
 public String RedoAction_ActionLabelText=Helper.getString("%RedoAction.ActionLabelText_UI_");			//$NON-NLS-1$
