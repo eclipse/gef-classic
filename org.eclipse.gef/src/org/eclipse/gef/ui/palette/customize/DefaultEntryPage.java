@@ -10,24 +10,17 @@
  *******************************************************************************/
 package org.eclipse.gef.ui.palette.customize;
 
-import org.eclipse.gef.palette.PaletteEntry;
-import org.eclipse.gef.palette.PaletteSeparator;
-import org.eclipse.gef.ui.palette.PaletteMessages;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.*;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.*;
 
 import org.eclipse.draw2d.FigureUtilities;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.KeyAdapter;
-import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Text;
+import org.eclipse.gef.palette.PaletteEntry;
+import org.eclipse.gef.palette.PaletteSeparator;
+import org.eclipse.gef.ui.palette.PaletteMessages;
 
 /**
  * This is a default implementation of the {@link EntryPage} interface.  It displays the
@@ -104,10 +97,9 @@ protected Text createDescText(Composite panel) {
 			FigureUtilities.getFontMetrics(description.getFont()).getHeight() * 2).height;
 	description.setLayoutData(data);
 	if (getPermission() >= PaletteEntry.PERMISSION_LIMITED_MODIFICATION) {
-		description.addKeyListener(new KeyAdapter() {
-			public void keyPressed(KeyEvent e) {
-				String newVal = ((Text)e.getSource()).getText();
-				handleDescriptionChanged(newVal);
+		description.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				handleDescriptionChanged(((Text)e.getSource()).getText());
 			}
 		});
 	}
@@ -164,10 +156,9 @@ protected Label createLabel(Composite panel, int style, String text) {
 protected Text createNameText(Composite panel) {
 	Text name = createText(panel, SWT.SINGLE | SWT.BORDER, entry.getLabel());
 	if (getPermission() >= PaletteEntry.PERMISSION_LIMITED_MODIFICATION) {
-		name.addKeyListener(new KeyAdapter() {
-			public void keyPressed(KeyEvent e) {
-				String newVal = ((Text)e.getSource()).getText();
-				handleNameChanged(newVal);
+		name.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				handleNameChanged(((Text)e.getSource()).getText());
 			}
 		});
 	}
