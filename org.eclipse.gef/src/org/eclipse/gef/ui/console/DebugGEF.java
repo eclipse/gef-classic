@@ -19,42 +19,65 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import java.util.List;
 import java.util.ArrayList;
 
-public class DebugGEF extends ViewPart{
+/**
+ * View used for debugging information in GEF
+ */
+public class DebugGEF extends ViewPart {
 
+/** Text field **/
 protected Text text;
+/** Container for all {@link DebugGEFAction}s **/
 protected List actions = null;
 
-public DebugGEF(){
+/**
+ * Creates a new DebugGEF ViewPart
+ */
+public DebugGEF() {
 	super();
 }
 
-public void createPartControl(Composite parent){
+/**
+ * @see org.eclipse.ui.IWorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
+ */
+public void createPartControl(Composite parent) {
 	text = new Text(parent, SWT.V_SCROLL | SWT.MULTI | SWT.BORDER);
-	text.setFont( new org.eclipse.swt.graphics.Font(parent.getDisplay(),"Arial",7, SWT.NATIVE)); //$NON-NLS-1$
+	text.setFont(new org.eclipse.swt.graphics.Font(parent.getDisplay(), "Arial", 7, 
+														SWT.NATIVE)); //$NON-NLS-1$
 	text.setText("GEF Debug"); //$NON-NLS-1$
 	GEF.setConsole(text);
 	makeActions();
 	fillActions();
 }
 
-public void dispose(){
+/**
+ * @see org.eclipse.ui.part.WorkbenchPart#dispose()
+ */
+public void dispose() {
 	GEF.setConsole(null);
 	super.dispose();
 }
 
-protected void fillActions(){
+/**
+ * Called by createPartControl(Composite). Adds all actions to the 
+ * {@link IToolBarManager}.
+ *
+ */
+protected void fillActions() {
 	IToolBarManager mgr = getViewSite().getActionBars().getToolBarManager();
-	for(int i=0;i<actions.size();i++){
+	for (int i = 0; i < actions.size(); i++) {
 		mgr.add((IAction)actions.get(i));
 	}
 }
 
-private ImageDescriptor getDescriptor(String image){
-	return ImageDescriptor.createFromFile(DebugGEF.class,image);
+private ImageDescriptor getDescriptor(String image) {
+	return ImageDescriptor.createFromFile(DebugGEF.class, image);
 }
 
-protected void makeActions(){
-	if( actions == null ) actions = new ArrayList();
+/**
+ * Called by createPartControl(Composite). Creates, initializes, and adds all actions.
+ */
+protected void makeActions() {
+	if (actions == null) actions = new ArrayList();
 	DebugGEFAction action = null;
 	action = new DebugGEFAction(DebugGEFAction.DEBUG_DND,
 		getDescriptor("icons/debugDND.gif")); //$NON-NLS-1$
@@ -102,8 +125,11 @@ protected void makeActions(){
 	actions.add(action);
 }
 
-public void setFocus(){
-	if( text != null )
+/**
+ * @see org.eclipse.ui.IWorkbenchPart#setFocus()
+ */
+public void setFocus() {
+	if (text != null)
 		text.setFocus();
 }
 
