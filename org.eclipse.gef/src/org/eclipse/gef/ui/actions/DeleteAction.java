@@ -82,12 +82,11 @@ public DeleteAction(IEditorPart editor, String label) {
 
 /**
  * Create a command to remove the selected objects.
- *
  * @param objects The objects to be deleted.
- *
  * @return The command to remove the selected objects.
+ * @deprecated this method will become an instance method in the next release.
  */
-protected Command createDeleteCommand(List objects) {
+public static Command createDeleteCommand(List objects) {
 	if (objects.isEmpty())
 		return null;
 	if (!(objects.get(0) instanceof EditPart))
