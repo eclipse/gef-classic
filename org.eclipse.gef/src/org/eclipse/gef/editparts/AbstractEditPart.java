@@ -617,16 +617,6 @@ public EditPart getTargetEditPart(Request request) {
 			return this;
 	}
 
-	/*
-	 *	No input policy understood this request.
-	 *	Promote the request to whatever is underneath.
-	 *	Calling getParent() is wrong since the parent may not
-	 *	be immediately underneath this EditPart, as in connections.
-	 */
-	GEF.hack();
-	if (getParent() != null)
-		return getParent().getTargetEditPart(request);
-
 	return null;
 }
 

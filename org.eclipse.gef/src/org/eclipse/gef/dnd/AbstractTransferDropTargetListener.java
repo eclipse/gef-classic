@@ -340,13 +340,11 @@ public boolean isEnabled(DropTargetEvent event) {
 			setCurrentEvent(event);
 			event.currentDataType = event.dataTypes[i];
 			updateTargetRequest();
-			EditPart ep = getViewer().findObjectAtExcluding(getDropLocation(), 
-															getExclusionSet());
-			if (ep != null)
-				ep = ep.getTargetEditPart(getTargetRequest());
+			updateTargetEditPart();
+			boolean result = getTargetEditPart() != null;
 			request = null;
-			if (ep != null)
-				return true;
+			target = null;
+			return result;
 		}
 	}
 	return false;
@@ -450,7 +448,15 @@ protected void unload() {
  * Updates the target EditPart.
  */
 protected void updateTargetEditPart() {
-	EditPart ep = getViewer().findObjectAtExcluding(getDropLocation(), getExclusionSet());
+	EditPart ep = getViewer()
+		.findObjectAtExcluding(
+			getDropLocation(),
+			getExclusionSet(),
+			new EditPartViewer.Conditional() {
+				public boolean evaluate(EditPart editpart) {
+					return editpart.getTargetEditPart(getTargetRequest()) != null;
+				}
+			});
 	if (ep != null)
 		ep = ep.getTargetEditPart(getTargetRequest());
 	setTargetEditPart(ep);
