@@ -49,12 +49,20 @@ protected void createLayers(LayeredPane layeredPane) {
 	layeredPane.add(new FeedbackLayer(), FEEDBACK_LAYER);
 }
 
-
 protected LayeredPane createPrintableLayers() {
 	FreeformLayeredPane layeredPane = new FreeformLayeredPane();
 	layeredPane.add(new FreeformLayer(), PRIMARY_LAYER);
 	layeredPane.add(new ConnectionLayer(), CONNECTION_LAYER);
 	return layeredPane;
+}
+
+/**
+ * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
+ */
+public Object getAdapter(Class adapter) {
+	if (adapter == AutoexposeHelper.class)
+		return new ViewportAutoexposeHelper(this);
+	return super.getAdapter(adapter);
 }
 
 /** 
