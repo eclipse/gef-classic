@@ -49,7 +49,7 @@ public Point getLocation() {
  * @see Object#toString()
  */
 public String toString() {
-	return "MouseEvent(" + x + ',' + y + " to Figure: " + source;//$NON-NLS-2$//$NON-NLS-1$
+	return "MouseEvent(" + x + ',' + y + ") to Figure: " + source;//$NON-NLS-2$//$NON-NLS-1$
 }
 
 }
