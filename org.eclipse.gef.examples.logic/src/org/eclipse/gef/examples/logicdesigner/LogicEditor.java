@@ -14,7 +14,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.draw2d.PositionConstants;
-import org.eclipse.draw2d.ZoomManager;
 import org.eclipse.gef.*;
 import org.eclipse.gef.dnd.TemplateTransferDragSourceListener;
 import org.eclipse.gef.examples.logicdesigner.edit.GraphicalPartFactory;
@@ -88,7 +87,6 @@ class OutlinePage
 
 private KeyHandler sharedKeyHandler;
 private PaletteRoot root;
-private ZoomManager zoomManager = new ZoomManager();
 
 // This class listens to changes to the file system in the workspace, and 
 // makes changes accordingly.
@@ -200,7 +198,7 @@ protected void configurePaletteViewer() {
 protected void configureGraphicalViewer() {
 	super.configureGraphicalViewer();
 	ScrollingGraphicalViewer viewer = (ScrollingGraphicalViewer)getGraphicalViewer();
-	viewer.setRootEditPart(new ScalableFreeformRootEditPart(getZoomManager()));
+	viewer.setRootEditPart(new ScalableFreeformRootEditPart());
 	viewer.setEditPartFactory(new GraphicalPartFactory());
 	viewer.setContextMenuProvider(new LogicContextMenuProvider(this, viewer));
 	viewer.setKeyHandler(new GraphicalViewerKeyHandler(viewer)
@@ -244,8 +242,6 @@ public Object getAdapter(Class type){
 		return new CommandStackInspectorPage(getCommandStack());
 	if (type == IContentOutlinePage.class)
 		return new OutlinePage(new TreeViewer());
-	if (type == ZoomManager.class)
-		return getZoomManager();
 	return super.getAdapter(type);
 }
 
@@ -275,10 +271,6 @@ protected PaletteRoot getPaletteRoot() {
 		root = LogicPlugin.createPalette();
 	}
 	return root;
-}
-
-protected ZoomManager getZoomManager() {
-	return zoomManager;
 }
 
 public void gotoMarker(IMarker marker) {}
