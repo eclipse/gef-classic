@@ -314,6 +314,7 @@ private ResourceTracker resourceListener = new ResourceTracker();
 private RulerComposite rulerComp;
 
 protected static final String PALETTE_SIZE = "Palette Size"; //$NON-NLS-1$
+protected static final String PALETTE_STATE = "Palette state"; //$NON-NLS-1$
 protected static final int DEFAULT_PALETTE_SIZE = 130;
 
 static {
@@ -394,34 +395,27 @@ protected void createOutputStream(OutputStream os)throws IOException {
 protected PaletteViewerProvider createPaletteViewerProvider() {
 	return new PaletteViewerProvider(getEditDomain()) {
 		private IMenuListener menuListener;
-		protected void configurePaletteViewer() {
-			super.configurePaletteViewer();
-			getPaletteViewer().setCustomizer(new LogicPaletteCustomizer());
+		protected void configurePaletteViewer(PaletteViewer viewer) {
+			super.configurePaletteViewer(viewer);
+			viewer.setCustomizer(new LogicPaletteCustomizer());
 		}
-		protected void hookPaletteViewer() {
-			super.hookPaletteViewer();
+		protected void hookPaletteViewer(PaletteViewer viewer) {
+			super.hookPaletteViewer(viewer);
 			final CopyTemplateAction copy = (CopyTemplateAction)getActionRegistry()
 					.getAction(GEFActionConstants.COPY);
-			getPaletteViewer().addSelectionChangedListener(copy);
+			viewer.addSelectionChangedListener(copy);
 			if (menuListener == null)
 				menuListener = new IMenuListener() {
 					public void menuAboutToShow(IMenuManager manager) {
 						manager.appendToGroup(GEFActionConstants.GROUP_COPY, copy);
 					}
 				};
-			getPaletteViewer().getContextMenu().addMenuListener(menuListener);
+			viewer.getContextMenu().addMenuListener(menuListener);
 			/*
 			 * @TODO:Pratik  check to see if this works properly.  add it to the right place.
 			 */
 			((IEditorSite)getSite()).getActionBars()
 					.setGlobalActionHandler(GEFActionConstants.COPY, copy);			
-		}
-		protected void unhookPaletteViewer() {
-			CopyTemplateAction copy = (CopyTemplateAction)getActionRegistry()
-					.getAction(GEFActionConstants.COPY);
-			getPaletteViewer().removeSelectionChangedListener(copy);
-			getPaletteViewer().getContextMenu().removeMenuListener(menuListener);
-			super.unhookPaletteViewer();
 		}
 	};
 }
@@ -478,6 +472,14 @@ protected Control getGraphicalControl() {
  */
 protected int getInitialPaletteSize() {
 	return LogicPlugin.getDefault().getPreferenceStore().getInt(PALETTE_SIZE);
+}
+
+protected int getInitialPaletteState() {
+	return LogicPlugin.getDefault().getPreferenceStore().getInt(PALETTE_STATE);
+}
+
+protected void handlePaletteDefaultStateChanged(int newState) {
+	LogicPlugin.getDefault().getPreferenceStore().setValue(PALETTE_STATE, newState);
 }
 
 /**
