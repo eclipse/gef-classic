@@ -60,7 +60,8 @@ public TextLocation getNextLocation(int movement, TextLocation current, Rectangl
 
 public Object getStyleState(String styleID, SelectionRange range) {
 	if (styleID.equals(GEFActionConstants.STYLE_BOLD) 
-			|| styleID.equals(GEFActionConstants.STYLE_FONT_SIZE))
+			|| styleID.equals(GEFActionConstants.STYLE_FONT_SIZE)
+			|| styleID.equals(GEFActionConstants.STYLE_FONT_FAMILY))
 		return StyleService.STATE_EDITABLE;
 	return StyleService.STATE_READ_ONLY;
 }
@@ -83,6 +84,16 @@ public Object getStyleValue(String styleID, SelectionRange range) {
 				return StyleService.UNDEFINED;
 		}
 		return new Integer(fontHeight);
+	} else if (styleID.equals(GEFActionConstants.STYLE_FONT_FAMILY)) {
+		String fontName = null;
+		for (Iterator iter = range.getLeafParts().iterator(); iter.hasNext();) {
+			TextRun run = (TextRun)((TextualEditPart)iter.next()).getModel();
+			if (fontName == null)
+				fontName = run.getContainer().getStyle().getFontFamily();
+			else if (!fontName.equals(run.getContainer().getStyle().getFontFamily()))
+				return StyleService.UNDEFINED;
+		}
+		return fontName;
 	}
 	return StyleService.UNDEFINED;
 }

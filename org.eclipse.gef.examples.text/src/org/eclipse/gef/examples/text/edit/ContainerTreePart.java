@@ -61,16 +61,17 @@ protected void refreshVisuals() {
 
 		case Container.TYPE_INLINE:
 			if (getContainer().getStyle().isSet(GEFActionConstants.STYLE_FONT_SIZE))
-				label = "FONT";
+				label = "FONT SIZE";
 			else if (getContainer().getStyle().isSet(GEFActionConstants.STYLE_BOLD))
 				label ="BOLD";
 			else if (getContainer().getStyle().isSet(GEFActionConstants.STYLE_ITALIC))
 				label = "ITALIC";
 			else if (getContainer().getStyle().isSet(GEFActionConstants.STYLE_UNDERLINE))
 				label ="UNDERLINE";
-			else {
+			else if (getContainer().getStyle().isSet(GEFActionConstants.STYLE_FONT_FAMILY))
+				label ="FONT";
+			else
 				label = "nested";
-			}
 			break;
 		default:
 			label = "unknown container";

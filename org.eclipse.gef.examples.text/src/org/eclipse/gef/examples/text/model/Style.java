@@ -72,6 +72,8 @@ public boolean isSet(String styleID) {
 		return italic;
 	if (GEFActionConstants.STYLE_UNDERLINE.equals(styleID))
 		return underline;
+	if (GEFActionConstants.STYLE_FONT_FAMILY.equals(styleID))
+		return fontFamily != null;
 	return false;
 }
 
