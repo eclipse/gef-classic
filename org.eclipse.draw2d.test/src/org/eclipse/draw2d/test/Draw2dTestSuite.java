@@ -39,6 +39,7 @@ public Draw2dTestSuite() {
 	addTest(new TestSuite(ImageUtilitiesTest.class));
 	addTest(new TestSuite(LookAheadTest.class));
 	addTest(new TestSuite(TextualTests.class));
+	addTest(new TestSuite(PointListTests.class));
 }
 
 }
