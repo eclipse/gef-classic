@@ -204,6 +204,9 @@ int getSelected();
  */
 EditPart getTargetEditPart(Request request);
 
+
+EditPartViewer getViewer();
+
 /**
  * Returns true if this EditPart has <i>focus</i>. The focus EditPart is a property of the
  * EditPartViewer. The Viewer keeps this property in sync with its focus.

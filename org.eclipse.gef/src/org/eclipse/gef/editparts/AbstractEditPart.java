@@ -625,7 +625,7 @@ public EditPart getTargetEditPart(Request request) {
  * @throws NullPointerException if the root is not found
  * @return the EditPartViewer
  */
-protected EditPartViewer getViewer() {
+public EditPartViewer getViewer() {
 	return getRoot().getViewer();
 }
 /** * @see org.eclipse.gef.EditPart#hasFocus() */
