@@ -1,6 +1,5 @@
-
 /*******************************************************************************
- * Copyright (c) 2000, 2003 IBM Corporation and others.
+ * Copyright (c) 2004 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,7 +11,7 @@
 package org.eclipse.gef.examples.logicdesigner.edit;
 
 import java.util.Iterator;
-import org.eclipse.jface.util.Assert;
+import java.util.List;
 
 import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.*;
@@ -20,6 +19,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.*;
 import org.eclipse.gef.commands.Command;
+import org.eclipse.gef.commands.CompoundCommand;
 import org.eclipse.gef.editpolicies.ResizableEditPolicy;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
 import org.eclipse.gef.requests.CreateRequest;
@@ -39,40 +39,46 @@ public LogicXYLayoutEditPolicy(XYLayout layout) {
 	setXyLayout(layout);
 }
 
-protected Command chainGuideAttachmentCommands(
-		Request request, LogicSubpart part, Command cmd) {
-	Assert.isNotNull(request);
-	Assert.isNotNull(part);
-	Assert.isNotNull(cmd);
-	
+protected Command chainGuideAttachmentCommand(
+		Request request, LogicSubpart part, Command cmd, boolean horizontal) {
 	Command result = cmd;
 	
-	// Attach to horizontal guide, if one is given
+	// Attach to guide, if one is given
 	Integer guidePos = (Integer)request.getExtendedData()
-			.get(SnapToGuides.KEY_HORIZONTAL_GUIDE);
+			.get(horizontal ? SnapToGuides.KEY_HORIZONTAL_GUIDE
+			                : SnapToGuides.KEY_VERTICAL_GUIDE);
 	if (guidePos != null) {
-		int hAlignment = ((Integer)request.getExtendedData()
-				.get(SnapToGuides.KEY_HORIZONTAL_ANCHOR)).intValue();
-		ChangeGuideCommand cgm = new ChangeGuideCommand(part, true);
-		cgm.setNewGuide(findGuideAt(guidePos.intValue(), true), hAlignment);
-		result = result.chain(cgm);
-	}
-	
-	// Attach to vertical guide, if one is given
-	guidePos = (Integer)request.getExtendedData()
-			.get(SnapToGuides.KEY_VERTICAL_GUIDE);
-	if (guidePos != null) {
-		int vAlignment = ((Integer)request.getExtendedData()
-				.get(SnapToGuides.KEY_VERTICAL_ANCHOR)).intValue();
-		ChangeGuideCommand cgm = new ChangeGuideCommand(part, false);
-		cgm.setNewGuide(findGuideAt(guidePos.intValue(), false), vAlignment);
+		int alignment = ((Integer)request.getExtendedData()
+				.get(horizontal ? SnapToGuides.KEY_HORIZONTAL_ANCHOR
+				                : SnapToGuides.KEY_VERTICAL_ANCHOR)).intValue();
+		ChangeGuideCommand cgm = new ChangeGuideCommand(part, horizontal);
+		cgm.setNewGuide(findGuideAt(guidePos.intValue(), horizontal), alignment);
 		result = result.chain(cgm);
 	}
 
 	return result;
 }
 
-protected Command createAddCommand(EditPart childEditPart, Object constraint) {
+protected Command chainGuideDetachmentCommand(Request request, LogicSubpart part,
+		Command cmd, boolean horizontal) {
+	Command result = cmd;
+	
+	// Detach from guide, if none is given
+	Integer guidePos = (Integer)request.getExtendedData()
+			.get(horizontal ? SnapToGuides.KEY_HORIZONTAL_GUIDE
+			                : SnapToGuides.KEY_VERTICAL_GUIDE);
+	if (guidePos == null)
+		result = result.chain(new ChangeGuideCommand(part, horizontal));
+
+	return result;
+}
+
+protected Command createAddCommand(EditPart child, Object constraint) {
+	return null;
+}
+
+protected Command createAddCommand(Request request, EditPart childEditPart, 
+		Object constraint) {
 	LogicSubpart part = (LogicSubpart)childEditPart.getModel();
 	Rectangle rect = (Rectangle)constraint;
 
@@ -87,8 +93,12 @@ protected Command createAddCommand(EditPart childEditPart, Object constraint) {
 	setConstraint.setPart(part);
 	setConstraint.setLabel(LogicMessages.LogicXYLayoutEditPolicy_AddCommandLabelText);
 	setConstraint.setDebugLabel("LogicXYEP setConstraint");//$NON-NLS-1$
-
-	return add.chain(setConstraint);
+	
+	Command cmd = add.chain(setConstraint);
+	cmd = chainGuideAttachmentCommand(request, part, cmd, true);
+	cmd = chainGuideAttachmentCommand(request, part, cmd, false);
+	cmd = chainGuideDetachmentCommand(request, part, cmd, true);
+	return chainGuideDetachmentCommand(request, part, cmd, false);
 }
 
 /**
@@ -110,11 +120,7 @@ protected Command createChangeConstraintCommand(ChangeBoundsRequest request,
 		Integer guidePos = (Integer)request.getExtendedData()
 				.get(SnapToGuides.KEY_HORIZONTAL_GUIDE);
 		if (guidePos != null) {
-			int hAlignment = ((Integer)request.getExtendedData()
-					.get(SnapToGuides.KEY_HORIZONTAL_ANCHOR)).intValue();
-			ChangeGuideCommand cgm = new ChangeGuideCommand(part, true);
-			cgm.setNewGuide(findGuideAt(guidePos.intValue(), true), hAlignment);
-			result = result.chain(cgm);
+			result = chainGuideAttachmentCommand(request, part, result, true);
 		} else if (part.getHorizontalGuide() != null) {
 			// SnapToGuides didn't provide a horizontal guide, but this part is attached
 			// to a horizontal guide.  Now we check to see if the part is attached to
@@ -126,10 +132,8 @@ protected Command createChangeConstraintCommand(ChangeBoundsRequest request,
 				edgeBeingResized = -1;
 			else
 				edgeBeingResized = 1;
-			if (alignment == edgeBeingResized) {
-				ChangeGuideCommand cgm = new ChangeGuideCommand(part, true);
-				result = result.chain(cgm);
-			}
+			if (alignment == edgeBeingResized)
+				result = result.chain(new ChangeGuideCommand(part, true));
 		}
 	}
 	
@@ -137,11 +141,7 @@ protected Command createChangeConstraintCommand(ChangeBoundsRequest request,
 		Integer guidePos = (Integer)request.getExtendedData()
 				.get(SnapToGuides.KEY_VERTICAL_GUIDE);
 		if (guidePos != null) {
-			int vAlignment = ((Integer)request.getExtendedData()
-					.get(SnapToGuides.KEY_VERTICAL_ANCHOR)).intValue();
-			ChangeGuideCommand cgm = new ChangeGuideCommand(part, false);
-			cgm.setNewGuide(findGuideAt(guidePos.intValue(), false), vAlignment);
-			result = result.chain(cgm);
+			result = chainGuideAttachmentCommand(request, part, result, false);
 		} else if (part.getVerticalGuide() != null) {
 			int alignment = part.getVerticalGuide().getAlignment(part);
 			int edgeBeingResized = 0;
@@ -149,42 +149,25 @@ protected Command createChangeConstraintCommand(ChangeBoundsRequest request,
 				edgeBeingResized = -1;
 			else
 				edgeBeingResized = 1;
-			if (alignment == edgeBeingResized) {
-				ChangeGuideCommand cgm = new ChangeGuideCommand(part, false);
-				result = result.chain(cgm);
-			}
+			if (alignment == edgeBeingResized)
+				result = result.chain(new ChangeGuideCommand(part, false));
 		}
 	}
 	
 	if (request.getType().equals(REQ_MOVE_CHILDREN)
 			|| request.getType().equals(REQ_ALIGN_CHILDREN)) {
-		Integer guidePos = (Integer)request.getExtendedData()
-				.get(SnapToGuides.KEY_HORIZONTAL_GUIDE);
-		ChangeGuideCommand cgm = new ChangeGuideCommand(part, true);
-		if (guidePos != null) {
-			int hAlignment = ((Integer)request.getExtendedData()
-					.get(SnapToGuides.KEY_HORIZONTAL_ANCHOR)).intValue();
-			cgm.setNewGuide(findGuideAt(guidePos.intValue(), true), hAlignment);
-		}
-		result = result.chain(cgm);
-		
-		guidePos = (Integer)request.getExtendedData()
-				.get(SnapToGuides.KEY_VERTICAL_GUIDE);
-		cgm = new ChangeGuideCommand(part, false);
-		if (guidePos != null) {
-			int vAlignment = ((Integer)request.getExtendedData()
-					.get(SnapToGuides.KEY_VERTICAL_ANCHOR)).intValue();
-			cgm.setNewGuide(findGuideAt(guidePos.intValue(), false), vAlignment);
-		}
-		result = result.chain(cgm);
+		result = chainGuideAttachmentCommand(request, part, result, true);
+		result = chainGuideAttachmentCommand(request, part, result, false);
+		result = chainGuideDetachmentCommand(request, part, result, true);
+		result = chainGuideDetachmentCommand(request, part, result, false);
 	}
 
 	return result;
 }
 
 protected EditPolicy createChildEditPolicy(EditPart child) {
-	if (child instanceof LEDEditPart ||
-	    child instanceof OutputEditPart ) {
+	if (child instanceof LEDEditPart 
+			|| child instanceof OutputEditPart) {
 		ResizableEditPolicy policy = new LogicResizableEditPolicy();
 		policy.setResizeDirections(0);
 		return policy;
@@ -228,6 +211,32 @@ protected LogicGuide findGuideAt(int pos, boolean horizontal) {
 			horizontal ? RulerProvider.PROPERTY_VERTICAL_RULER 
 			: RulerProvider.PROPERTY_HORIZONTAL_RULER));
 	return (LogicGuide)provider.getGuideAt(pos);
+}
+
+protected Command getAddCommand(Request generic) {
+	ChangeBoundsRequest request = (ChangeBoundsRequest)generic;
+	List editParts = request.getEditParts();
+	CompoundCommand command = new CompoundCommand();
+	command.setDebugLabel("Add in ConstrainedLayoutEditPolicy");//$NON-NLS-1$
+	GraphicalEditPart childPart;
+	Rectangle r;
+	Object constraint;
+
+	for (int i = 0; i < editParts.size(); i++) {
+		childPart = (GraphicalEditPart)editParts.get(i);
+		r = childPart.getFigure().getBounds().getCopy();
+		//convert r to absolute from childpart figure
+		childPart.getFigure().translateToAbsolute(r);
+		r = request.getTransformedRectangle(r);
+		//convert this figure to relative 
+		getLayoutContainer().translateToRelative(r);
+		getLayoutContainer().translateFromParent(r);
+		r.translate(getLayoutOrigin().getNegated());
+		constraint = getConstraintFor(r);
+		command.add(createAddCommand(generic, childPart,
+			translateToModelConstraint(constraint)));
+	}
+	return command.unwrap();
 }
 
 /**
@@ -281,7 +290,8 @@ protected Command getCreateCommand(CreateRequest request) {
 	create.setLocation(constraint);
 	create.setLabel(LogicMessages.LogicXYLayoutEditPolicy_CreateCommandLabelText);
 	
-	return chainGuideAttachmentCommands(request, newPart, create);
+	Command cmd = chainGuideAttachmentCommand(request, newPart, create, true);
+	return chainGuideAttachmentCommand(request, newPart, cmd, false);
 }
 
 /* (non-Javadoc)
