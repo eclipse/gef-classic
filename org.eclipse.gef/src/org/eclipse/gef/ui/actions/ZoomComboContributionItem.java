@@ -19,6 +19,8 @@ import org.eclipse.jface.action.ContributionItem;
 import org.eclipse.jface.util.Assert;
 import org.eclipse.ui.*;
 
+import org.eclipse.draw2d.FigureUtilities;
+
 import org.eclipse.gef.editparts.ZoomListener;
 import org.eclipse.gef.editparts.ZoomManager;
 
@@ -34,7 +36,7 @@ public class ZoomComboContributionItem
 {
 
 private Combo combo;
-private String initString = "8888%"; //$NON-NLS-1$
+private String[] initStrings;
 private ToolItem toolitem;
 private ZoomManager zoomManager;
 private IPartService service;
@@ -47,6 +49,7 @@ private IPartListener partListener;
 public ZoomComboContributionItem(IPartService partService) {
 	super(GEFActionConstants.ZOOM_TOOLBAR_WIDGET);
 	service = partService;
+	initStrings = new String[] {"8888%"};
 	Assert.isNotNull(partService);
 	partService.addPartListener(partListener = new IPartListener() {
 		public void partActivated(IWorkbenchPart part) {
@@ -66,7 +69,28 @@ public ZoomComboContributionItem(IPartService partService) {
  */
 public ZoomComboContributionItem(IPartService partService, String initString) {
 	super(GEFActionConstants.ZOOM_TOOLBAR_WIDGET);
-	this.initString = initString;
+	initStrings = new String[] {initString};
+	service = partService;
+	Assert.isNotNull(partService);
+	partService.addPartListener(partListener = new IPartListener() {
+		public void partActivated(IWorkbenchPart part) {
+			setZoomManager((ZoomManager) part.getAdapter(ZoomManager.class));
+		}
+		public void partBroughtToTop(IWorkbenchPart p) { }
+		public void partClosed(IWorkbenchPart p) { }
+		public void partDeactivated(IWorkbenchPart p) { }
+		public void partOpened(IWorkbenchPart p) { }
+	});
+}
+
+/**
+ * Constructor for ComboToolItem.
+ * @param partService used to add a PartListener
+ * @param initString the initial string displayed in the combo
+ */
+public ZoomComboContributionItem(IPartService partService, String[] strings) {
+	super(GEFActionConstants.ZOOM_TOOLBAR_WIDGET);
+	initStrings = strings;
 	service = partService;
 	Assert.isNotNull(partService);
 	partService.addPartListener(partListener = new IPartListener() {
@@ -132,9 +156,7 @@ protected Control createControl(Composite parent) {
 	});
 	
 	// Initialize width of combo
-	combo.setText(initString);
-	if (SWT.getPlatform().equals("gtk")) //$NON-NLS-1$
-		combo.setItems(new String[] {initString});
+	combo.setItems(initStrings);
 	toolitem.setWidth(computeWidth(combo));
 	refresh();
 	return combo;
