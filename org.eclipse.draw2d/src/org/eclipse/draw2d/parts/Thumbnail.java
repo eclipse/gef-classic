@@ -210,7 +210,7 @@ class ThumbnailUpdater implements Runnable {
 	 * not active or is already running, this method just returns.
 	 */
 	public void start() {
-		if (!isActive() || isRunning())
+		if (!isActive() || isRunning() || targetSize.isEmpty())
 			return;
 		
 		isRunning = true;
