@@ -338,11 +338,11 @@ public Point getLocation() {
 }
 
 /**
- * Returns an integer which represents the position of the given point with 
- * respect to this rectangle. Possible return values are WEST, EAST, NORTH, and 
- * SOUTH as found in {@link org.eclipse.draw2d.PositionConstants}.
+ * <P>Returns an integer which represents the position of the given point with  respect to
+ * this rectangle. Possible return values are bitwise ORs of the constants WEST, EAST,
+ * NORTH, and SOUTH as found in {@link org.eclipse.draw2d.PositionConstants}.
  * 
- * Returns PositionConstant.NONE if the given point is in this Rectangle.
+ * <P>Returns PositionConstant.NONE if the given point is inside this Rectangle.
  *
  * @param	pt	The Point whose position has to be determined
  * @return	An <code>int</code> which is a PositionConstant

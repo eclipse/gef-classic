@@ -51,6 +51,14 @@ public PrecisionPoint(double x, double y) {
 }
 
 /**
+ * @see org.eclipse.draw2d.geometry.Point#getCopy()
+ */
+public Point getCopy() {
+	return new PrecisionPoint(preciseX, preciseY);
+}
+
+
+/**
  * @see org.eclipse.draw2d.geometry.Point#performScale(double)
  */
 public void performScale(double factor) {
