@@ -44,6 +44,15 @@ protected Connection createDummyConnection(Request req) {
 	return new PolylineConnection();
 }
 
+public void deactivate() {
+	if (connectionFeedback != null) {
+		removeFeedback(connectionFeedback);
+		feedbackHelper = null;
+		connectionFeedback = null;
+	}
+	super.deactivate();
+}
+
 /**
  * Erases connection feedback if necessary. Frees unused fields.
  * @param request the CreateConnectionRequest */
