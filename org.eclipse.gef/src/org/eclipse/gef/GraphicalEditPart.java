@@ -10,62 +10,53 @@ import java.util.List;
 import org.eclipse.draw2d.*;
 
 /**
- * Specialized EditPart for use with Graphical draw2d Figures.
+ * A Specialization of {@link EditPart} for use with {@link GraphicalViewer
+ * GraphicalViewers}.  The <i>visual part</i> of a GraphicalEditPart is a {@link
+ * org.eclipse.draw2d.IFigure Figure}.
  */
 public interface GraphicalEditPart
 	extends EditPart
 {
 
 /**
- * Returns the outer-most figure representing this EditPart.
- This is the figure that will be added into the parent's content pane.
+ * Returns the primary Figure representing this GraphicalEditPart. The parent will add
+ * this Figure to its <i>content pane</i>.  The Figure may be a composition of several
+ * Figures.
+ * @return this EditPart's Figure
  */
 IFigure getFigure();
 
 /**
- * Returns the connections for which this EditPart is the <B>source</B>.
- * This method should only be called internally or by helpers such as
- * edit policies.
+ * Returns the <i>source</i> connections for this GraphicalEditPart. This method should
+ * only be called by the EditPart itself, and its helpers such as EditPolicies.
+ * @return the source connections
  */
 List getSourceConnections();
 
 /**
- * Returns the connections for which this EditPart is the <B>target</B>.
- * This method should only be called internally or by helpers such as
- * edit policies.
+ * Returns the <i>target</i> connections for this GraphicalEditPart. This method should
+ * only be called by the EditPart itself, and its helpers such as EditPolicies.
+ * @return the target connections
  */
 List getTargetConnections();
 
 /**
-The figure into which children will be placed. Should not return <code>null</code>,
-but may return the same figure as <code>getFigure()</code>. An example would be
-a GraphicalEditPart that uses a 
-<a href = "../../../../../../../org.eclipse.draw2d.doc.isv/reference/api/org/eclipse/draw2d/ScrollPane.html">
-<code>ScrollPane</code></a>, which looks like this:
-<table border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td><font size="4">&#9516;</font></td>
-    <td colspan="3">ScrollPane - returned by <code><b>getFigure()</b></code></td>
-  </tr>
-  <tr>
-    <td><font size="4">&#9492;</font></td>
-    <td><font size="4">&#9516;</font></td>
-    <td colspan="2">Viewport - (internal, does the scrolling)</td>
-  </tr>
-  <tr>
-    <td></td>
-    <td><font size="4">&#9492;</font></td>
-    <td><font size="4">&#9472;</font></td>
-    <td><b>View</b> - returned by <code><b>getContentPane()</b></code></td>
-  </tr>
-</table>
-<p>A ScrollPane already has a special child, so the GraphicalEditPart's children
-will get added to the <b>View</b></p>
+ * The Figure into which childrens' Figures will be added. May return the same Figure as
+ * {@link #getFigure()}. The GraphicalEditPart's {@link #getFigure() primary Figure} may
+ * be composed of multiple figures.  This is the figure in that composition that will
+ * contain children's figures.
+ * @return the <i>content pane</i> Figure
  */
 IFigure getContentPane();
 
 /**
- * A child can call this method to set the layout constraint for its figure.
+ * Sets the specified constraint for a child's Figure on the {@link #getContentPane()
+ * content pane} figure for this GraphicalEditPart. The constraint will be applied to the
+ * content pane's {@link LayoutManager}. <code>revalidate()</code> is called on the
+ * content pane, which will cuase it to layout during the next update.
+ * @param child the <i>child</i> GraphicalEditPart whose constraint is being set
+ * @param figure the Figure whose constraint is being set
+ * @param constraint the constraint for the draw2d {@link LayoutManager}
  */
 void setLayoutConstraint(EditPart child, IFigure figure, Object constraint);
 

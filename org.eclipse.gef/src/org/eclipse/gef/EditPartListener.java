@@ -19,43 +19,61 @@ public interface EditPartListener {
  * Listeners interested in just a subset of Events can extend this stub implementation.
  * Also, extending the Stub will reduce the impact of new API on this interface.
  */
-public class Stub implements EditPartListener{
-
-	public void childAdded(EditPart child, int index){}
-
-	public void partActivated(EditPart editpart){}
-
-	public void partDeactivated(EditPart editpart){}
-
-	public void removingChild(EditPart child, int index){}
-
-	public void selectedStateChanged(EditPart part){}
+public class Stub implements EditPartListener {
+	/**
+	 * @see org.eclipse.gef.EditPartListener#childAdded(EditPart, int)
+	 */
+	public void childAdded(EditPart child, int index) { }
+	/**
+	 * @see org.eclipse.gef.EditPartListener#partActivated(EditPart)
+	 */
+	public void partActivated(EditPart editpart) { }
+	/**
+	 * @see org.eclipse.gef.EditPartListener#partDeactivated(EditPart)
+	 */
+	public void partDeactivated(EditPart editpart) { }
+	/**
+	 * @see org.eclipse.gef.EditPartListener#removingChild(EditPart, int)
+	 */
+	public void removingChild(EditPart child, int index) { }
+	/**
+	 * @see org.eclipse.gef.EditPartListener#selectedStateChanged(EditPart)
+	 */
+	public void selectedStateChanged(EditPart part) { }
 };
 
 /**
  * Called after a child EditPart has been added to its parent.
+ * @param child the Child
+ * @param index the index at which the child was added
  */
 void childAdded(EditPart child, int index);
 
 /**
- * This method is currently never called by default.
+ * This method is currently never called.
+ * @param editpart the EditPart
  */
 void partActivated(EditPart editpart);
 
 /**
- * This method is currently never called by default.
+ * This method is currently never called.
+ * @param editpart the EditPart
  */
 void partDeactivated(EditPart editpart);
 
 /**
  * Called before a child EditPart is removed from its parent.
+ * @param child the Child being removed
+ * @param index the child's current location
  */
 void removingChild(EditPart child, int index);
 
 /**
- * Called when the selected state of an EditPart has changed.
- * @see EditPart#SELECTED
+ * Called when the selected state of an EditPart has changed.  Focus changes also result
+ * in this method being called.
+ * @param editpart the part whose selection was changed
+ * @see EditPart#getSelected()
  */
-void selectedStateChanged(EditPart part);
+void selectedStateChanged(EditPart editpart);
 
 }

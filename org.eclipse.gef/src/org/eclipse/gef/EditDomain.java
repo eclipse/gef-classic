@@ -12,70 +12,62 @@ import org.eclipse.swt.events.*;
 
 
 /**
- * The collective state of a GEF "application", defined as its Tools,
- * CommandStack, EditPartViewers, and their contents.
- * An EditDomain is similar to an Eclipse Editor
- * ({@link org.eclipse.ui.IEditorPart IEditorPart}).  However, rather
- * than specializing IEditorPart, EditDomain is a standalone Object. An Editor
- * corresponds to one SWT {@link org.eclipse.swt.widgets.Control Control} and
- * one IEditorInput.<P>
- * An EditDomain can encompass other {@link org.eclipse.ui.IWorkbenchPart WorkbenchPart}s,
- * such as Views, in addition to the Editor.
- * <P>Although rare, a single Editor may have multiple EditDomains, or vice-versa.
+ * The collective state of a GEF "application", loosely defined by a CommandStack,
+ * one or more EditPartViewers, and the active Tool. An EditDomain is usually tied with an
+ * Eclipse {@link org.eclipse.ui.IEditorPart IEditorPart}).  However, the distinction
+ * between EditorPart and EditDomain was made to allow for much flexible use of the
+ * Graphical Editing Framework.
  */
-
 public interface EditDomain {
 
 /**
- * Adds an EditPartViewer into the EditDomain. A viewer is
- * a UI component that Tools can work with.  A viewer is most likely
- * contained in a {@link org.eclipse.ui.part.WorkbenchPart WorkbenchPart}
- * of some form, such as the EditorPart or a ViewPart.
+ * Adds an EditPartViewer into the EditDomain.  A viewer is most likely placed in a {@link
+ * org.eclipse.ui.IWorkbenchPart WorkbenchPart} of some form, such as the IEditorPart or
+ * an IViewPart.
  * @param viewer The EditPartViewer
  */
 void addViewer(EditPartViewer viewer);
 
 /**
- * Called when a viewer that the editor controls has gained focus.
- * 
+ * Called when one of the EditDomain's Viewers receives keyboard focus.
  * @param event The SWT focus event 
- * @param viewer The source of the event.
+ * @param viewer the Viewer that received the event.
  */
 void focusGained(FocusEvent event, EditPartViewer viewer);
 
 /**
- * Called when a viewer that the editor controls has lost focus.
- * 
+ * Called when one of the EditDomain's Viewers is losing keyboard focus.
  * @param event The SWT focus event 
- * @param viewer The source of the event.
+ * @param viewer the Viewer that received the event.
  */
 void focusLost(FocusEvent event, EditPartViewer viewer);
 
 /**
  * Returns the active Tool
+ * @return the active Tool
  */
 Tool getActiveTool();
 
 /**
  * Returns the CommandStack.
- * Command stacks could potentially be shared across domains if this makes sense.
- * @return The command stack for this edit domain.
+ * Command stacks could potentially be shared across domains depending on the application.
+ * @return The command stack
  */
 CommandStack getCommandStack();
 
 /**
- * Called when a key is <B>pressed</B> within a viewer of this Domain.
+ * Called when a key is <B>pressed</B> on a Viewer.
  * @param keyEvent The SWT keyboard event 
  * @param viewer The source of the event.
  */
 void keyDown(KeyEvent keyEvent, EditPartViewer viewer);
 
 /**
- * Called when a key is <B>released</b> within a viewer of this Domain.
+ * Called when a key is <B>released</b> on a Viewer.
  * @param keyEvent The SWT keyboard event 
  * @param viewer the source of the event.
  */
-void keyUp(KeyEvent keyEvent, EditPartViewer view);
+void keyUp(KeyEvent keyEvent, EditPartViewer viewer);
 
 /**
  * Unloads the current tool and loads the default tool for this Domain.
@@ -83,80 +75,78 @@ void keyUp(KeyEvent keyEvent, EditPartViewer view);
 void loadDefaultTool();
 
 /**
- * Called when the mouse button has been double-clicked
- * on a viewer from this domain.
+ * Called when the mouse button has been double-clicked on a Viewer.
  * @param mouseEvent The SWT mouse event 
  * @param viewer The source of the event.
  */
-void mouseDoubleClick(MouseEvent mouseEvent, EditPartViewer view);
+void mouseDoubleClick(MouseEvent mouseEvent, EditPartViewer viewer);
 
 /**
- * Called when the mouse button has been pressed over
- * a viewer that the editor controls.
+ * Called when the mouse button has been pressed on a Viewer.
  * @param mouseEvent The SWT mouse event 
  * @param viewer The source of the event.
  */
-void mouseDown(MouseEvent mouseEvent, EditPartViewer view);
+void mouseDown(MouseEvent mouseEvent, EditPartViewer viewer);
 
 /**
- * Called when the mouse has been dragged within
- * a viewer that the editor controls.
+ * Called when the mouse has been dragged within a Viewer.
  * @param mouseEvent The SWT mouse event 
  * @param viewer The source of the event.
  */
-void mouseDrag(MouseEvent mouseEvent, EditPartViewer view);
+void mouseDrag(MouseEvent mouseEvent, EditPartViewer viewer);
 
 /**
- * Called when the mouse has hovered within
- * a viewer that the editor controls.
+ * Called when the mouse has hovered on a Viewer.
  * @param mouseEvent The SWT mouse event 
  * @param viewer The source of the event.
  */
-void mouseHover(MouseEvent mouseEvent, EditPartViewer view);
+void mouseHover(MouseEvent mouseEvent, EditPartViewer viewer);
 
 /**
- * Called when the mouse has been moved within
- * a viewer that the editor controls.
+ * Called when the mouse has been moved on a Viewer.
  * @param mouseEvent The SWT mouse event 
  * @param viewer The viewer that the mouse event is over.
  */
-void mouseMove(MouseEvent mouseEvent, EditPartViewer view);
+void mouseMove(MouseEvent mouseEvent, EditPartViewer viewer);
 
 /**
- * Called when the mouse button has been released over
- * a viewer that the editor controls.
+ * Called when the mouse button has been released on a Viewer.
  * @param mouseEvent The SWT mouse event 
  * @param viewer The source of the event.
  */
-void mouseUp(MouseEvent mouseEvent, EditPartViewer view);
+void mouseUp(MouseEvent mouseEvent, EditPartViewer viewer);
 
 /**
- * Called when a native drag has started.
- * 
+ * Called when a native drag has started on a Viewer.
  * @param event The DragSourceEvent
  * @param viewer The viewer where the drag started
  */
 void nativeDragStarted(DragSourceEvent event, EditPartViewer viewer);
 
 /**
- * Adds an already added viewer from the editor. 
- * A viewer that is removed from the editor will
- * no longer be manipulatable by the editor.
+ * Removes a previously added viewer from the EditDomain. A Viewer that is removed from
+ * the EditDomain will no longer forward input to the domain and its active Tool.
+ * @param viewer the Viewer being removed
  */
-void removeViewer(EditPartViewer view);
+void removeViewer(EditPartViewer viewer);
 
 /**
  * Sets the active Tool for this EditDomain.
+ * @param tool the Tool
  */
-public void setTool(Tool tool);
+void setTool(Tool tool);
 
 /**
- * Called when the mouse Enters a viewer from this domain.
+ * Called when the mouse enters a Viewer.
+ * @param mouseEvent the SWT mouse event
+ * @param viewer the Viewer being entered
  */
 void viewerEntered(MouseEvent mouseEvent, EditPartViewer viewer);
 
 /**
- * Called when the mouse Exits a viewer from this domain.
+ * Called when the mouse exits a Viewer.
+ * @param mouseEvent the SWT mouse event
+ * @param viewer the Viewer being exited
  */
 void viewerExited(MouseEvent mouseEvent, EditPartViewer viewer);
 
