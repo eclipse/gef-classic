@@ -92,7 +92,7 @@ public static final String NO_SELECTION_TITLE;
 /**
  * The String "Na&me:  "
  */
-public static final String NAME_LABEL ;
+public static final String NAME_LABEL;
 /**
  * The String "Des&cription:  "
  */
