@@ -28,7 +28,10 @@ import org.eclipse.draw2d.RectangleFigure;
 import org.eclipse.draw2d.UpdateListener;
 import org.eclipse.draw2d.geometry.Rectangle;
 
-public class PaintDamageEraseTest extends TestCase implements UpdateListener {
+public class PaintDamageEraseTest
+	extends TestCase
+	implements UpdateListener
+{
 
 private FigureCanvas fc;
 protected IFigure contents;
@@ -268,10 +271,6 @@ public PaintDamageEraseTest(String name) {
 	super(name);
 }
 
-
-/* (non-Javadoc)
- * @see org.eclipse.draw2d.UpdateListener#notifyPainting(org.eclipse.draw2d.geometry.Rectangle, java.util.Map)
- */
 public void notifyPainting(Rectangle damage, Map dirtyRegions) {
 	lastDamaged = damage;
 }
@@ -285,13 +284,8 @@ public void notifyValidating() {
 
 }
 
-final class FigureWithRelativeCoords extends RectangleFigure {
-	
-/* (non-Javadoc)
- * @see org.eclipse.draw2d.Figure#useLocalCoordinates()
- */
-protected boolean useLocalCoordinates() {
-	return true;
-}
-
+class FigureWithRelativeCoords extends RectangleFigure {
+	protected boolean useLocalCoordinates() {
+		return true;
+	}
 }
