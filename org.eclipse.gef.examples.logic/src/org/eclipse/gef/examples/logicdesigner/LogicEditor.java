@@ -96,10 +96,10 @@ class OutlinePage
 		getViewer().setEditDomain(getEditDomain());
 		getViewer().setEditPartFactory(new TreePartFactory());
 		ContextMenuProvider provider = new LogicContextMenuProvider(getViewer(), getActionRegistry());
-		getViewer().setContextMenuProvider(provider);
-		getSite().registerContextMenu("org.eclipse.gef.examples.logic.outline.contextmenu", //$NON-NLS-1$
-										provider.getMenuManager(), 
-										getSite().getSelectionProvider());
+		getViewer().setContextMenu(provider);
+		getSite().registerContextMenu(
+			"org.eclipse.gef.examples.logic.outline.contextmenu", //$NON-NLS-1$
+			provider, getSite().getSelectionProvider());
 		getViewer().setKeyHandler(getCommonKeyHandler());
 		getViewer().addDropTargetListener(
 			new LogicTemplateTransferDropTargetListener(getViewer()));
@@ -289,7 +289,7 @@ protected void configurePaletteViewer() {
 	super.configurePaletteViewer();
 	PaletteViewerImpl viewer = (PaletteViewerImpl)getPaletteViewer();
 	ContextMenuProvider provider = new PaletteContextMenuProvider(viewer);
-	getPaletteViewer().setContextMenuProvider(provider);
+	getPaletteViewer().setContextMenu(provider);
 	viewer.setCustomizer(new LogicPaletteCustomizer());
 }
 
@@ -297,12 +297,17 @@ protected void configurePaletteViewer() {
 protected void configureGraphicalViewer() {
 	super.configureGraphicalViewer();
 	ScrollingGraphicalViewer viewer = (ScrollingGraphicalViewer)getGraphicalViewer();
-	viewer.setRootEditPart(new ScalableFreeformRootEditPart());
+
+	ScalableFreeformRootEditPart root = new ScalableFreeformRootEditPart();
+	getActionRegistry().registerAction(new ZoomInAction(root.getZoomManager()));
+	getActionRegistry().registerAction(new ZoomOutAction(root.getZoomManager()));
+	viewer.setRootEditPart(root);
+
 	viewer.setEditPartFactory(new GraphicalPartFactory());
 	ContextMenuProvider provider = new LogicContextMenuProvider(viewer, getActionRegistry());
-	viewer.setContextMenuProvider(provider);
+	viewer.setContextMenu(provider);
 	getSite().registerContextMenu("org.eclipse.gef.examples.logic.editor.contextmenu", //$NON-NLS-1$
-		provider.getMenuManager(), viewer);
+		provider, viewer);
 	viewer.setKeyHandler(new GraphicalViewerKeyHandler(viewer)
 		.setParent(getCommonKeyHandler()));
 }
@@ -390,7 +395,7 @@ protected void hookPaletteViewer() {
 	final CopyTemplateAction copy = 
 			(CopyTemplateAction)getActionRegistry().getAction(GEFActionConstants.COPY);
 	getPaletteViewer().addSelectionChangedListener(copy);
-	getPaletteViewer().getContextMenuProvider().getMenuManager().addMenuListener(new IMenuListener() {
+	getPaletteViewer().getContextMenu().addMenuListener(new IMenuListener() {
 		public void menuAboutToShow(IMenuManager manager) {
 			manager.appendToGroup(GEFActionConstants.GROUP_COPY, copy);
 		}
