@@ -12,10 +12,11 @@ package org.eclipse.gef.examples.shapes.parts;
 
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.ComponentEditPolicy;
+import org.eclipse.gef.requests.GroupRequest;
+
 import org.eclipse.gef.examples.shapes.model.Shape;
 import org.eclipse.gef.examples.shapes.model.ShapesDiagram;
 import org.eclipse.gef.examples.shapes.model.commands.ShapeDeleteCommand;
-import org.eclipse.gef.requests.GroupRequest;
 
 /**
  * This edit policy enables the removal of a Shapes instance from its container. 

@@ -13,11 +13,13 @@ package org.eclipse.gef.examples.shapes.parts;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import org.eclipse.swt.graphics.Image;
+
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.editparts.AbstractTreeEditPart;
+
 import org.eclipse.gef.examples.shapes.model.ModelElement;
 import org.eclipse.gef.examples.shapes.model.Shape;
-import org.eclipse.swt.graphics.Image;
 
 /**
  * TreeEditPart used for Shape instances (more specific for EllipticalShape and

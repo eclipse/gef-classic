@@ -19,11 +19,28 @@ import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.EventObject;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Shell;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
+import org.eclipse.jface.util.TransferDropTargetListener;
+import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IFileEditorInput;
+import org.eclipse.ui.actions.ActionFactory;
+import org.eclipse.ui.actions.WorkspaceModifyOperation;
+import org.eclipse.ui.dialogs.SaveAsDialog;
+import org.eclipse.ui.part.FileEditorInput;
+import org.eclipse.ui.part.PageBook;
+import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
+
 import org.eclipse.gef.ContextMenuProvider;
 import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.gef.EditPartViewer;
@@ -33,9 +50,6 @@ import org.eclipse.gef.KeyStroke;
 import org.eclipse.gef.dnd.TemplateTransferDragSourceListener;
 import org.eclipse.gef.dnd.TemplateTransferDropTargetListener;
 import org.eclipse.gef.editparts.ScalableRootEditPart;
-import org.eclipse.gef.examples.shapes.model.ShapesDiagram;
-import org.eclipse.gef.examples.shapes.parts.ShapesEditPartFactory;
-import org.eclipse.gef.examples.shapes.parts.ShapesTreeEditPartFactory;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.requests.CreationFactory;
 import org.eclipse.gef.requests.SimpleFactory;
@@ -46,21 +60,10 @@ import org.eclipse.gef.ui.parts.ContentOutlinePage;
 import org.eclipse.gef.ui.parts.GraphicalEditorWithFlyoutPalette;
 import org.eclipse.gef.ui.parts.GraphicalViewerKeyHandler;
 import org.eclipse.gef.ui.parts.TreeViewer;
-import org.eclipse.jface.dialogs.ProgressMonitorDialog;
-import org.eclipse.jface.util.TransferDropTargetListener;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IFileEditorInput;
-import org.eclipse.ui.actions.ActionFactory;
-import org.eclipse.ui.actions.WorkspaceModifyOperation;
-import org.eclipse.ui.dialogs.SaveAsDialog;
-import org.eclipse.ui.part.FileEditorInput;
-import org.eclipse.ui.part.PageBook;
-import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
+
+import org.eclipse.gef.examples.shapes.model.ShapesDiagram;
+import org.eclipse.gef.examples.shapes.parts.ShapesEditPartFactory;
+import org.eclipse.gef.examples.shapes.parts.ShapesTreeEditPartFactory;
 
 /**
  * A graphical editor with flyout palette that can edit .shapes files.

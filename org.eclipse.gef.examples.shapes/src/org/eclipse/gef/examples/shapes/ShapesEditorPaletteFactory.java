@@ -10,9 +10,9 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.shapes;
 
-import org.eclipse.gef.examples.shapes.model.Connection;
-import org.eclipse.gef.examples.shapes.model.EllipticalShape;
-import org.eclipse.gef.examples.shapes.model.RectangularShape;
+import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.resource.ImageDescriptor;
+
 import org.eclipse.gef.palette.CombinedTemplateCreationEntry;
 import org.eclipse.gef.palette.ConnectionCreationToolEntry;
 import org.eclipse.gef.palette.MarqueeToolEntry;
@@ -26,8 +26,10 @@ import org.eclipse.gef.palette.ToolEntry;
 import org.eclipse.gef.requests.CreationFactory;
 import org.eclipse.gef.requests.SimpleFactory;
 import org.eclipse.gef.ui.palette.FlyoutPaletteComposite.FlyoutPreferences;
-import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.jface.resource.ImageDescriptor;
+
+import org.eclipse.gef.examples.shapes.model.Connection;
+import org.eclipse.gef.examples.shapes.model.EllipticalShape;
+import org.eclipse.gef.examples.shapes.model.RectangularShape;
 
 /**
  * Utility class that can create a GEF Palette.

@@ -13,6 +13,7 @@ package org.eclipse.gef.examples.shapes.model.commands;
 import java.util.Iterator;
 
 import org.eclipse.gef.commands.Command;
+
 import org.eclipse.gef.examples.shapes.model.Connection;
 import org.eclipse.gef.examples.shapes.model.Shape;
 

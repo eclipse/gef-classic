@@ -10,8 +10,9 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.shapes.model;
 
-import org.eclipse.gef.examples.shapes.ShapesPlugin;
 import org.eclipse.swt.graphics.Image;
+
+import org.eclipse.gef.examples.shapes.ShapesPlugin;
 
 /**
  * An elliptical shape.

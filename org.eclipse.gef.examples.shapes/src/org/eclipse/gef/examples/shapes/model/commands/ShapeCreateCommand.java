@@ -11,9 +11,10 @@
 package org.eclipse.gef.examples.shapes.model.commands;
 
 import org.eclipse.gef.commands.Command;
+import org.eclipse.gef.requests.CreateRequest;
+
 import org.eclipse.gef.examples.shapes.model.Shape;
 import org.eclipse.gef.examples.shapes.model.ShapesDiagram;
-import org.eclipse.gef.requests.CreateRequest;
 
 
 /**

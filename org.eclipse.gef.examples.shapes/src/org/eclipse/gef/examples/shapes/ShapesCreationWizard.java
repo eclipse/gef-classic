@@ -16,17 +16,19 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectOutputStream;
 
+import org.eclipse.swt.widgets.Composite;
+
 import org.eclipse.core.resources.IFile;
-import org.eclipse.gef.examples.shapes.model.ShapesDiagram;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 import org.eclipse.ui.ide.IDE;
+
+import org.eclipse.gef.examples.shapes.model.ShapesDiagram;
 
 /**
  * Create new new .shape-file. 

@@ -11,6 +11,7 @@
 package org.eclipse.gef.examples.shapes.model.commands;
 
 import org.eclipse.gef.commands.Command;
+
 import org.eclipse.gef.examples.shapes.model.Connection;
 
 /**

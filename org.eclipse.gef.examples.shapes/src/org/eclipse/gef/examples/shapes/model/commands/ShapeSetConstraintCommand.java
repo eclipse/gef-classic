@@ -11,10 +11,12 @@
 package org.eclipse.gef.examples.shapes.model.commands;
 
 import org.eclipse.draw2d.geometry.Rectangle;
+
 import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.commands.Command;
-import org.eclipse.gef.examples.shapes.model.Shape;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
+
+import org.eclipse.gef.examples.shapes.model.Shape;
 
 /**
  * A command to resize and/or move a shape.
