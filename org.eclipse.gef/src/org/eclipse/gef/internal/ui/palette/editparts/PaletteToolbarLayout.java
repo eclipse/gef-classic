@@ -106,9 +106,9 @@ public void layout(IFigure parent) {
 	 */	
 	int amntShrinkHeight = totalHeight - Math.max(availableHeight, totalMinHeight);
 
-//	if (amntShrinkHeight < 0) {
-//		amntShrinkHeight = 0;
-//	}
+	if (amntShrinkHeight < 0) {
+		amntShrinkHeight = 0;
+	}
 
 	for (int i = 0; i < numChildren; i++) {
 		int amntShrinkCurrentHeight = 0;

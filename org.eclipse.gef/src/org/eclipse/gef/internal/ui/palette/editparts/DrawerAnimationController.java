@@ -47,7 +47,7 @@ public void addDrawer(DrawerEditPart drawer) {
 
 public void animate(DrawerEditPart drawer) {
 	inProgress = true;
-	int num = getNumberOfOpenDrawers();
+//	int num = getNumberOfOpenDrawers();
 	if (drawer.getDrawerFigure().isExpanded()) {
 		List categoriesToCollapse = getDrawersToCollapse(drawer);
 		animate = new DrawerFigure[categoriesToCollapse.size() + 1];
@@ -58,22 +58,22 @@ public void animate(DrawerEditPart drawer) {
 			animate[count++] = drwr.getDrawerFigure();
 		}
 		animate[0] = drawer.getDrawerFigure();
-		num = num < 2 ? -1 : 0;
+//		num = num < 2 ? -1 : 0;
 	} else {
 		animate = new DrawerFigure[] {drawer.getDrawerFigure()};
-		num = num < 1 ? -1 : 0;
+//		num = num < 1 ? -1 : 0;
 	}
 	for (int i = 0; i < animate.length; i++) {
 		animate[i].setAnimating(true);
-		if (num < 0) {
-			animate[i].setAnimatingAlone(true);
-		}
+//		if (num < 0) {
+//			animate[i].setAnimatingAlone(true);
+//		}
 	}
 	start();
 	runAnimation();
 	for (int i = 0; i < animate.length; i++) {
 		animate[i].setAnimating(false);
-		animate[i].setAnimatingAlone(false);
+//		animate[i].setAnimatingAlone(false);
 	}
 	animate = null;
 }
