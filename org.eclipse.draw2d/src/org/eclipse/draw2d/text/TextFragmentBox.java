@@ -17,10 +17,10 @@ public class TextFragmentBox
 	extends FlowBox
 {
 
-/** The offset in pixels **/
+/** The offset in characters **/
 public int offset;
 
-/** The length in pixels **/
+/** The length in characters **/
 public int length;
 
 private int ascent;

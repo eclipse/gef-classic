@@ -15,11 +15,14 @@ package org.eclipse.draw2d.text;
  * notion of a baseline to {@link org.eclipse.draw2d.geometry.Rectangle}. <i>Ascent</i> is
  * the distance above the baseline. <i>Descent</i> is the distance below the baseline.
  * <P>
- * This class should not be treated as a <code>Rectangle</code> by clients.
+ * This class should not be treated as a <code>Rectangle</code> by clients.  It is
+ * important to use getters when available for lazy calculation of values.
  * @author hudsonr
  * @since 2.1
  */
 public class FlowBox {
+int height;
+int width;
 
 /**
  * The x location
@@ -29,8 +32,6 @@ public int x;
  * The y location
  */
 public int y;
-int width;
-int height;
 
 /**
  * This method must be called on a block that is completely positioned and committed.
@@ -45,7 +46,8 @@ public boolean containsPoint(int x, int y) {
 }
 
 /**
- * By default, a FlowBox is all ascent, and no descent, so the height is returned.
+ * Returns the amount of the box in pixels which is above the baseline.  By default, a
+ * FlowBox is all ascent, and no descent, so the height is returned.
  * @return the <i>ascent</i> in pixels above the baseline
  */
 public int getAscent() {
@@ -53,7 +55,16 @@ public int getAscent() {
 }
 
 /**
- * By default, a simple FlowBox is all ascent, and no descent. Zero is returned.
+ * Returns the baseline of this Box, which is the {@link #y} value plus the ascent.
+ * @return the baseline value.
+ */
+public int getBaseline() {
+	return y + getAscent();
+}
+
+/**
+ * Returns the amount of the box in pixels which is below the baseline.  By default, a
+ * simple FlowBox is all ascent, and no descent, so <code>0</code> is returned.
  * @return the <i>descent</i> in pixels below the baseline
  */
 public final int getDescent() {

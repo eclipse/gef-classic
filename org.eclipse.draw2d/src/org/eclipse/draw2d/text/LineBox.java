@@ -56,14 +56,6 @@ public int getAvailableWidth() {
 }
 
 /**
- * Returns the baseline of this LineBox, which is the y value plus the ascent.
- * @return the baseline value.
- */
-public int getBaseline() {
-	return y + getAscent();
-}
-
-/**
  * @see FlowBox#makeBaseline(int)
  */
 public void makeBaseline(int value) {
