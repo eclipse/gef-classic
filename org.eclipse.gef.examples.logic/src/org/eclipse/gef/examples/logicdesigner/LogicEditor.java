@@ -520,6 +520,7 @@ protected PaletteRoot getPaletteRoot() {
 public void gotoMarker(IMarker marker) {}
 
 protected void initializeGraphicalViewer() {
+	super.initializeGraphicalViewer();
 	getGraphicalViewer().setContents(getLogicDiagram());
 	
 	getGraphicalViewer().addDropTargetListener(
