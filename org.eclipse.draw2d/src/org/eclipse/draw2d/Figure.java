@@ -255,7 +255,7 @@ public void erase() {
  * @param c A Collection of IFigures to exclude from the search
  * @return The descendant Figure at (x,y)
  */
-protected IFigure findDescendantAtExcluding(int x, int y, Collection c) {
+protected IFigure findDescendantAtExcluding(int x, int y, TreeSearch search) {
 	PRIVATE_POINT.setLocation(x, y);
 	translateFromParent(PRIVATE_POINT);
 	if (!getClientArea(Rectangle.SINGLETON).contains(PRIVATE_POINT))
@@ -266,7 +266,7 @@ protected IFigure findDescendantAtExcluding(int x, int y, Collection c) {
 	while (iter.hasNext()) {
 		fig = iter.nextFigure();
 		if (fig.isVisible()) {
-			fig = fig.findFigureAtExcluding(PRIVATE_POINT.x, PRIVATE_POINT.y, c);
+			fig = fig.findFigureAt(PRIVATE_POINT.x, PRIVATE_POINT.y, search);
 			if (fig != null)
 				return fig;
 		}
@@ -286,23 +286,27 @@ public final IFigure findFigureAt(Point pt) {
  * @see org.eclipse.draw2d.IFigure#findFigureAt(int, int)
  */
 public final IFigure findFigureAt(int x, int y) {
-	return findFigureAtExcluding(x, y, Collections.EMPTY_LIST);
+	return findFigureAt(x, y, IdentitySearch.INSTANCE);
+}
+
+public IFigure findFigureAt(int x, int y, TreeSearch search) {
+	if (!containsPoint(x, y))
+		return null;
+	if (search.prune(this))
+		return null;
+	IFigure child = findDescendantAtExcluding(x, y, search);
+	if (child != null)
+		return child;
+	if (search.accept(this))
+		return this;
+	return null;
 }
 
 /**
  * @see org.eclipse.draw2d.IFigure#findFigureAtExcluding(int, int, Collection)
  */
-public IFigure findFigureAtExcluding(int x, int y, Collection c) {
-	if (!containsPoint(x, y))
-		return null;
-	if (c.contains(this))
-		return null;
-	IFigure child = findDescendantAtExcluding(x, y, c);
-	if (child != null)
-		return child;
-
-	//No children were found, but this figure containsPoint(x,y);
-	return this;
+public final IFigure findFigureAtExcluding(int x, int y, Collection c) {
+	return findFigureAt(x, y, new ExclusionSearch(c));
 }
 
 /**
@@ -1533,6 +1537,16 @@ public void validate() {
 	layout();
 	for (int i = 0; i < children.size(); i++)
 		((IFigure)children.get(i)).validate();
+}
+
+static class IdentitySearch implements TreeSearch {
+	static final TreeSearch INSTANCE = new IdentitySearch();
+	public boolean accept(IFigure f) {
+		return true;
+	}
+	public boolean prune(IFigure f) {
+		return false;
+	}
 }
 
 /**
