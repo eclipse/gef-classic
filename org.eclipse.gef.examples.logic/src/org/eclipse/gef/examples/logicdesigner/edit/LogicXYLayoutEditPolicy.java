@@ -19,6 +19,7 @@ import org.eclipse.gef.examples.logicdesigner.LogicMessages;
 import org.eclipse.gef.examples.logicdesigner.model.*;
 import org.eclipse.gef.examples.logicdesigner.model.commands.*;
 
+import org.eclipse.gef.requests.ChangeBoundsRequest;
 import org.eclipse.gef.requests.CreateRequest;
 
 public class LogicXYLayoutEditPolicy
@@ -50,6 +51,14 @@ protected Command createChangeConstraintCommand(EditPart child, Object constrain
 	locationCommand.setPart((LogicSubpart)child.getModel());
 	locationCommand.setLocation((Rectangle)constraint);
 	return locationCommand;
+}
+
+protected Command createChangeConstraintCommand(Request request, EditPart child,
+		Object constraint) {
+	SetConstraintCommand cmd = (SetConstraintCommand)createChangeConstraintCommand(
+			child, constraint);
+	cmd.setExtendedData((ChangeBoundsRequest)request);
+	return cmd;
 }
 
 protected EditPolicy createChildEditPolicy(EditPart child) {
