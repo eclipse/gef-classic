@@ -34,7 +34,7 @@ public int hashCode() {
  * @see java.lang.Object#toString()
  */
 public String toString() {
-	return "[" + n1 + ", " + n2 + "]"; //$NON-NLS-1$ //$NON-NLS-2$
+	return "[" + n1 + ", " + n2 + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 }
 
 }
