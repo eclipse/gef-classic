@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
 <plugin
    id="org.eclipse.gef.test"
    name="GEF JUnit Tests"
@@ -14,6 +15,8 @@
       <import plugin="org.eclipse.draw2d"/>
       <import plugin="org.eclipse.gef"/>
       <import plugin="org.junit"/>
+      <import plugin="org.eclipse.ui"/>
    </requires>
+
 
 </plugin>
