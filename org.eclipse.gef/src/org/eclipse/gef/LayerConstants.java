@@ -43,4 +43,9 @@ String FEEDBACK_LAYER = "Feedback Layer"; //$NON-NLS-1$
  */
 String PRINTABLE_LAYERS = "Printable Layers"; //$NON-NLS-1$
 
+/**
+ * The layer that contains all scaled layers.
+ */
+String SCALABLE_LAYERS = "Scalable Layers"; //$NON-NLS-1$
+
 }
