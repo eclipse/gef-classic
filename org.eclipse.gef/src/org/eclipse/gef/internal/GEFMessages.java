@@ -94,4 +94,9 @@ public static String ZoomIn_Tooltip = Helper.getString("%ZoomIn.Tooltip");//$NON
 public static String ZoomOut_Label = Helper.getString("%ZoomOut.Label");//$NON-NLS-1$
 public static String ZoomOut_Tooltip = Helper.getString("%ZoomOut.Tooltip");//$NON-NLS-1$
 
+// Strings for toggle ruler visibility actions
+public static String ToggleHRulerVisibility_Label = Helper.getString("%ToggleHRuler.Label"); //$NON-NLS-1$
+public static String ToggleHRulerVisibility_Tooltip = Helper.getString("%ToggleHRuler.Tooltip"); //$NON-NLS-1$
+public static String ToggleVRulerVisibility_Label = Helper.getString("%ToggleVRuler.Label"); //$NON-NLS-1$
+public static String ToggleVRulerVisibility_Tooltip = Helper.getString("%ToggleVRuler.Tooltip"); //$NON-NLS-1$
 }
