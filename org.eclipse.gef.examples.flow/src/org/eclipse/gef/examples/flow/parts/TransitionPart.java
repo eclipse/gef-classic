@@ -28,6 +28,8 @@ protected void applyGraphResults(CompoundDirectedGraph graph, Map map) {
 	PolylineConnection conn = (PolylineConnection)getConnectionFigure();
 	conn.setTargetDecoration(new PolygonDecoration());
 	conn.setConnectionRouter(null);
+	conn.setSourceAnchor(new XYAnchor(e.start));
+	conn.setTargetAnchor(new XYAnchor(e.end));
 	if (nodes != null) {
 		List bends = new ArrayList();
 		conn.setConnectionRouter(new BendpointConnectionRouter());
@@ -47,6 +49,7 @@ protected void applyGraphResults(CompoundDirectedGraph graph, Map map) {
 		conn.setRoutingConstraint(bends);
 	}
 }
+
 /**
  * @see org.eclipse.gef.editparts.AbstractEditPart#createEditPolicies()
  */
@@ -72,6 +75,18 @@ public void contributeToGraph(CompoundDirectedGraph graph, Map map) {
 	Edge e = new Edge(this, source, target);
 	graph.edges.add(e);
 	map.put(this, e);
+}
+
+/**
+ * @see org.eclipse.gef.editparts.AbstractConnectionEditPart#refreshSourceAnchor()
+ */
+protected void refreshSourceAnchor() {
+}
+
+/**
+ * @see org.eclipse.gef.editparts.AbstractConnectionEditPart#refreshTargetAnchor()
+ */
+protected void refreshTargetAnchor() {
 }
 
 }
