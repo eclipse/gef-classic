@@ -1,10 +1,12 @@
 package org.eclipse.gef.examples.logicdesigner.actions;
 
+import org.eclipse.ui.IEditorPart;
+
+import org.eclipse.draw2d.geometry.Point;
+
 import org.eclipse.gef.requests.CreationFactory;
 
 import org.eclipse.gef.examples.logicdesigner.model.LogicElementFactory;
-
-import org.eclipse.ui.IEditorPart;
 
 /**
  * @author Eric Bordeau
@@ -24,6 +26,14 @@ public LogicPasteTemplateAction(IEditorPart editor) {
  */
 protected CreationFactory getFactory(Object template) {
 	return new LogicElementFactory((String)template);
+}
+
+/**
+ * 
+ * @see org.eclipse.gef.examples.logicdesigner.actions.PasteTemplateAction#getPasteLocation()
+ */
+protected Point getPasteLocation() {
+	return new Point(10, 10);
 }
 
 }
