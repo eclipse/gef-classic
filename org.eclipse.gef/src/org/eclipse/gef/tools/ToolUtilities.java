@@ -84,4 +84,40 @@ private static boolean isAncestorContainedIn(Collection c, EditPart ep) {
 	return false;
 }
 
+/**
+ * Returns the common parent editpart for given pair of EditParts.  If the two parts are
+ * identical, the result is that part.  If the two parts do not have a common ancestor,
+ * some form of RuntimeException will be thrown.
+ * @since 3.1
+ * @param ll the first editpart
+ * @param rr the second editpart
+ * @return the editpart which is the common ancestor.
+ */
+public static EditPart findCommonAncestor(EditPart ll, EditPart rr) {
+	if (ll == rr)
+		return ll;
+	ArrayList leftAncestors = new ArrayList();
+	ArrayList rightAncestors = new ArrayList();
+	EditPart l = ll;
+	EditPart r = rr;
+	while (l != null) {
+		leftAncestors.add(l);
+		l = l.getParent();
+	}
+	while (r != null) {
+		rightAncestors.add(r);
+		r = r.getParent();
+	}
+
+	int il = leftAncestors.size() - 1;
+	int ir = rightAncestors.size() - 1;
+	while (leftAncestors.get(il) == rightAncestors.get(ir)) {
+		il--;
+		ir--;
+	}
+	il++;
+
+	return (EditPart)leftAncestors.get(il);
+}
+
 }
