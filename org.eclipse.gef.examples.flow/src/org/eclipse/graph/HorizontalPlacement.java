@@ -6,7 +6,7 @@ import java.util.*;
  * @author hudsonr
  * @since 2.1
  */
-public class HorizontalPlacement extends GraphVisitor {
+public class HorizontalPlacement extends SpanningTreeVisitor {
 
 class NodeCluster extends NodeList {
 
@@ -60,21 +60,27 @@ class NodeCluster extends NodeList {
 	void updateValues() {
 		pull = 0;
 		int pullCount = 0;
+		int unweighted = 0;
 		leftFreedom = rightFreedom = Integer.MAX_VALUE;
 		for (int j = 0; j < incoming.size(); j++) {
 			Edge e = incoming.getEdge(j);
 			pull -= e.getSlack() * e.weight;
+			unweighted -= e.getSlack();
 			pullCount += e.weight;
 			leftFreedom = Math.min(e.getSlack(), leftFreedom);
 		}
 		for (int j = 0; j < outgoing.size(); j++) {
 			Edge e = outgoing.getEdge(j);
 			pull += e.getSlack() * e.weight;
+			unweighted += e.getSlack();
 			pullCount += e.weight;
 			rightFreedom = Math.min(e.getSlack(), rightFreedom);
 		}
 		if (pullCount != 0)
 			pull /= pullCount;
+		else {
+			pull = unweighted / (outgoing.size() + incoming.size());
+		}
 	}
 }
 
@@ -184,10 +190,10 @@ private void balanceClusters() {
 			condition = balanceClusterSets();
 	} while (condition);
 	
-	for (int i = 0; i < allClusters.size(); i++) {
-		NodeCluster c = (NodeCluster)allClusters.get(i);
+//	for (int i = 0; i < allClusters.size(); i++) {
+//		NodeCluster c = (NodeCluster)allClusters.get(i);
 //		System.out.println("Cluster:\n\t" + c + "\n pull = :" + c.getPull());
-	}
+//	}
 }
 
 private boolean balanceClusterSets() {
@@ -310,14 +316,15 @@ Node get(Node key) {
 void growCluster(Node root, NodeCluster cluster, List allClusters) {
 	cluster.add(root);
 	clusterMap.put(root, cluster);
-	for (int i = 0; i < root.spanTreeChildren.size(); i++) {
-		Edge e = root.spanTreeChildren.getEdge(i);
+	EdgeList treeChildren = getSpanningTreeChildren(root);
+	for (int i = 0; i < treeChildren.size(); i++) {
+		Edge e = treeChildren.getEdge(i);
 		if (e.cut != 0)
-			growCluster(e.tail(), cluster, allClusters);
+			growCluster(getTreeTail(e), cluster, allClusters);
 		else {
 			NodeCluster newCluster = new NodeCluster();
 			allClusters.add(newCluster);
-			growCluster(e.tail(), newCluster, allClusters);
+			growCluster(getTreeTail(e), newCluster, allClusters);
 		}
 	}
 }
