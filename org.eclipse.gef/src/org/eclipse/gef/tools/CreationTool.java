@@ -35,6 +35,12 @@ public class CreationTool
 	extends TargetingTool
 {
 
+/**
+ * Property to be used in {@link AbstractTool#setProperties(java.util.Map)} for 
+ * {@link #setFactory(CreationFactory)}.
+ */
+public static final Object PROPERTY_CREATION_FACTORY = "gef.tools.creation.factory"; //$NON-NLS-1$
+
 private CreationFactory factory;
 private SnapToHelper helper;
 
@@ -54,6 +60,18 @@ public CreationTool() {
 public CreationTool(CreationFactory aFactory) {
 	this();
 	setFactory(aFactory);
+}
+
+/**
+ * @see org.eclipse.gef.tools.AbstractTool#applyProperty(java.lang.Object, java.lang.Object)
+ */
+protected void applyProperty(Object key, Object value) {
+	if (PROPERTY_CREATION_FACTORY.equals(key)) {
+		if (value instanceof CreationFactory)
+			setFactory((CreationFactory)value);
+		return;
+	}
+	super.applyProperty(key, value);
 }
 
 /**

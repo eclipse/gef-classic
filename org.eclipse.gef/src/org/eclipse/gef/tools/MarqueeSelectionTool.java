@@ -37,7 +37,6 @@ import org.eclipse.gef.KeyHandler;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.SharedCursors;
-import org.eclipse.gef.palette.MarqueeToolEntry;
 
 /**
  * A Tool which selects multiple objects inside a rectangular area of a Graphical Viewer. 
@@ -52,6 +51,25 @@ public class MarqueeSelectionTool
 	extends AbstractTool
 {
 
+/**
+ * The property to be used in {@link AbstractTool#setProperties(java.util.Map)} for 
+ * {@link #setSelectionType(int)}.
+ */
+public static final Object PROPERTY_SELECTION_TYPE = "gef.tools.marquee.selection"; //$NON-NLS-1$
+
+/**
+ * For marquee tools that should select nodes.  This is the default type for this
+ * tool.
+ * @since 3.1
+ */
+public static final int SELECT_NODES = 1;
+/**
+ * For marquee tools that should select connections
+ * @since 3.1
+ */
+public static final int SELECT_CONNECTIONS = 2;
+
+
 static final int TOGGLE_MODE = 1;
 static final int APPEND_MODE = 2;
 
@@ -61,30 +79,29 @@ private Figure marqueeRectangleFigure;
 private Set allChildren = new HashSet();
 private List selectedEditParts;
 private Request targetRequest;
-private int selectionType;
+private int selectionType = SELECT_NODES;
 
 private static final Request MARQUEE_REQUEST =
-	new Request(RequestConstants.REQ_SELECTION); 
+		new Request(RequestConstants.REQ_SELECTION); 
 
 /**
- * Creates a new MarqueeSelectionTool of default type 
- * {@link org.eclipse.gef.palette.MarqueeToolEntry#SELECT_NODES SELECT_NODES}.
+ * Creates a new MarqueeSelectionTool of default type {@link #SELECT_NODES}.
  */
 public MarqueeSelectionTool() {
-	this(MarqueeToolEntry.SELECT_NODES);
+	setDefaultCursor(SharedCursors.CROSS); 
+	setUnloadWhenFinished(false);
 }
 
 /**
- * Creates a new MarqueeSelectionTool that can select nodes and/or connections based on
- * the given type.
- * @param type MarqueeToolEntry#SELECT_NODES and/or MarqueeToolEntry#SELECT_CONNECTIONS
- * @since 3.1
+ * @see org.eclipse.gef.tools.AbstractTool#applyProperty(java.lang.Object, java.lang.Object)
  */
-public MarqueeSelectionTool(int type) {
-	selectionType = type & 3;
-	Assert.isTrue(selectionType != 0);
-	setDefaultCursor(SharedCursors.CROSS); 
-	setUnloadWhenFinished(false);
+protected void applyProperty(Object key, Object value) {
+	if (PROPERTY_SELECTION_TYPE.equals(key)) {
+		if (value instanceof Integer)
+			setSelectionType(((Integer)value).intValue());
+		return;
+	}
+	super.applyProperty(key, value);
 }
 
 private List calculateNewSelection() {
@@ -92,6 +109,7 @@ private List calculateNewSelection() {
 	// Calculate new selections based on which children fall
 	// inside the marquee selection rectangle.  Do not select
 	// children that are not visible.
+	Rectangle marqueeRect = getMarqueeSelectionRectangle();
 	for (Iterator itr = getAllChildren().iterator(); itr.hasNext();) {
 		EditPart child = (EditPart)itr.next();
 		if (!child.isSelectable())
@@ -100,8 +118,7 @@ private List calculateNewSelection() {
 		Rectangle r = figure.getBounds().getCopy();
 		figure.translateToAbsolute(r);
 
-		if (getMarqueeSelectionRectangle().contains(r.getTopLeft())
-		  && getMarqueeSelectionRectangle().contains(r.getBottomRight())
+		if (marqueeRect.contains(r)
 		  && figure.isShowing()
 		  && child.getTargetEditPart(MARQUEE_REQUEST) == child
 		  && isFigureVisible(figure))
@@ -151,9 +168,9 @@ private void getAllChildren(EditPart editPart, Set allChildren) {
 	List children = editPart.getChildren();
 	for (int i = 0; i < children.size(); i++) {
 		GraphicalEditPart child = (GraphicalEditPart) children.get(i);
-		if ((selectionType & MarqueeToolEntry.SELECT_NODES) != 0)
+		if ((selectionType & SELECT_NODES) != 0)
 			allChildren.add(child);
-		if ((selectionType & MarqueeToolEntry.SELECT_CONNECTIONS) != 0) {
+		if ((selectionType & SELECT_CONNECTIONS) != 0) {
 			allChildren.addAll(child.getSourceConnections());
 			allChildren.addAll(child.getTargetConnections());
 		}
@@ -352,6 +369,11 @@ public void setViewer(EditPartViewer viewer) {
 
 private void setSelectionMode(int mode) {
 	this.mode = mode;
+}
+
+public void setSelectionType(int type) {
+	selectionType = type & 3;
+	Assert.isTrue(selectionType != 0);
 }
 
 private void showMarqueeFeedback() {

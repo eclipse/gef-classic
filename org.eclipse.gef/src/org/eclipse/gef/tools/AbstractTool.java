@@ -10,10 +10,18 @@
  *******************************************************************************/
 package org.eclipse.gef.tools;
 
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.EventObject;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DragSourceEvent;
@@ -36,8 +44,8 @@ import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.EditDomain;
 import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.LayerConstants;
-import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.MouseWheelHandler;
+import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.Tool;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CommandStackListener;
@@ -70,111 +78,10 @@ public abstract class AbstractTool
 {
 
 /**
- * Allows the user to access mouse and keyboard input.
+ * The property to be used in {@link #setProperties(Map)} for 
+ * {@link #setUnloadWhenFinished(boolean)}
  */
-public static class Input
-	extends org.eclipse.gef.util.FlagSupport
-{
-	int modifiers;
-	Point mouse = new Point();
-	boolean verifyMouseButtons;
-
-	/**
-	 * Returns the event modifiers. Modifiers are defined in {@link MouseEvent#stateMask},
-	 * and include things like the mouse buttons and keyboard modifier keys.
-	 * @return the event modifiers
-	 */
-	protected int getModifiers() {
-		return modifiers;
-	}
-	
-	/**
-	 * Returns the current location of the mouse.
-	 * @return the mouse location
-	 */
-	public Point getMouseLocation() {
-		return mouse;
-	}
-
-	/**
-	 * Returns <code>true</code> if the ALT key is pressed.
-	 * @return <code>true</code> if the ALT key is pressed
-	 */
-	public boolean isAltKeyDown() {
-		return (modifiers & SWT.ALT) > 0;
-	}
-	
-	/**
-	 * Returns <code>true</code> if any of the mouse buttons are pressed.
-	 * @return <code>true</code> if any of the mouse buttons are pressed
-	 */
-	public boolean isAnyButtonDown() {
-		return getFlag(2 | 4 | 8 | 16 | 32);
-	}
-	
-	/**
-	 * Returns <code>true</code> if the CTRL key is pressed.
-	 * @return <code>true</code> of CTRL pressed
-	 */
-	public boolean isControlKeyDown() {
-		return (modifiers & SWT.CONTROL) > 0;
-	}
-	
-	/**
-	 * Returns <code>true</code> if the specified button is down.
-	 * @param which which button
-	 * @return <code>true</code> if the button is down
-	 */
-	public boolean isMouseButtonDown(int which) {
-		return getFlag(1 << which);
-	}
-	
-	/**
-	 * Returns <code>true</code> if the SHIFT key is pressed.
-	 * @return <code>true</code> if SHIFT pressed
-	 */
-	public boolean isShiftKeyDown() {
-		return (modifiers & SWT.SHIFT) > 0;
-	}
-	
-	/**
-	 * Sets the keyboard input based on the KeyEvent.
-	 * @param ke the key event providing the input
-	 */
-	public void setInput(KeyEvent ke) {
-		modifiers = ke.stateMask;
-	}
-
-	/**
-	 * Sets the mouse and keyboard input based on the MouseEvent.
-	 * @param me the mouse event providing the input
-	 */
-	public void setInput(MouseEvent me) {
-		setMouseLocation(me.x, me.y);
-		modifiers = me.stateMask;
-		if (verifyMouseButtons) {
-			setMouseButton(1, (modifiers & SWT.BUTTON1) != 0);
-			setMouseButton(2, (modifiers & SWT.BUTTON2) != 0);
-			setMouseButton(3, (modifiers & SWT.BUTTON3) != 0);
-			setMouseButton(4, (modifiers & SWT.BUTTON4) != 0);
-			setMouseButton(5, (modifiers & SWT.BUTTON5) != 0);
-			verifyMouseButtons = false;
-		}
-	}
-	
-	/**
-	 * Sets mouse button # <code>which</code> to be pressed if <code>state</code> is true.
-	 * @param which which button
-	 * @param state <code>true</code> if button down
-	 */
-	public void setMouseButton(int which, boolean state) {
-		setFlag(1 << which, state);
-	}
-	
-	void setMouseLocation(int x, int y) {
-		mouse.setLocation(x, y);
-	}
-}
+public static final Object PROPERTY_UNLOAD_WHEN_FINISHED = "gef.tools.unload"; //$NON-NLS-1$
 
 private static final int DRAG_THRESHOLD = 5;
 private static final int FLAG_ACTIVE = 8;
@@ -341,6 +248,51 @@ protected void addFeedback(IFigure figure) {
 	if (lm == null)
 		return;
 	lm.getLayer(LayerConstants.FEEDBACK_LAYER).add(figure);
+}
+
+/**
+ * This method is invoked from {@link #setProperties(Map)}.  Sub-classes can override to
+ * add support for more properties.  This method should fail silently in case of any
+ * error.
+ * <p>
+ * AbstractTool uses introspection to match any keys with properties.  For instance, the
+ * key "defaultCursor" would lead to the invocation of {@link #setDefaultCursor(Cursor)}
+ * with the provided value.
+ * @param key the key; may be <code>null</code>
+ * @param value the new value
+ * @since 3.1
+ * @see #setProperties(Map)
+ */
+protected void applyProperty(Object key, Object value) {
+	if (PROPERTY_UNLOAD_WHEN_FINISHED.equals(key)) {
+		if (value instanceof Boolean)
+			setUnloadWhenFinished(((Boolean)value).booleanValue());
+		return;
+	}
+	
+	if (!(key instanceof String))
+		return;
+	
+	try {
+		PropertyDescriptor[] descriptors = Introspector
+				.getBeanInfo(getClass(), Introspector.IGNORE_ALL_BEANINFO)
+				.getPropertyDescriptors();
+		PropertyDescriptor property = null;
+		for (int i = 0; i < descriptors.length; i++) {
+			if (descriptors[i].getName().equals(key)) {
+				property = descriptors[i];
+				break;
+			}
+		}
+		if (property != null) {
+			Method setter = property.getWriteMethod();
+			setter.setAccessible(true);
+			setter.invoke(this, new Object[] {value});
+		}
+	} catch (IntrospectionException ie) {
+	} catch (IllegalAccessException iae) {
+	} catch (InvocationTargetException ite) {
+	} catch (SecurityException se) { }
 }
 
 /**
@@ -1286,6 +1238,23 @@ void setMouseCapture(boolean value) {
 }
 
 /**
+ * An example is {@link #PROPERTY_UNLOAD_WHEN_FINISHED} -> Boolean.  AbstractTool uses
+ * introspection to set properties that are not explicitly specified.  For instance,
+ * the key "defaultCursor" will cause {@link #setDefaultCursor(Cursor)} to be invoked
+ * with the given value. 
+ * @see org.eclipse.gef.Tool#setProperties(java.util.Map)
+ */
+public void setProperties(Map properties) {
+	if (properties == null)
+		return;
+	Iterator entries = properties.entrySet().iterator();
+	while (entries.hasNext()) {
+		Entry entry = (Entry)entries.next();
+		applyProperty(entry.getKey(), entry.getValue());
+	}
+}
+
+/**
  * Sets the start mouse location, typically for a drag operation.
  * @param p the start location
  */
@@ -1401,6 +1370,113 @@ public void viewerExited(MouseEvent me, EditPartViewer viewer) {
 		getCurrentInput().setInput(me);
 		handleViewerExited();
 		setViewer(null);
+	}
+}
+
+/**
+ * Allows the user to access mouse and keyboard input.
+ */
+public static class Input
+	extends org.eclipse.gef.util.FlagSupport
+{
+	int modifiers;
+	Point mouse = new Point();
+	boolean verifyMouseButtons;
+
+	/**
+	 * Returns the event modifiers. Modifiers are defined in {@link MouseEvent#stateMask},
+	 * and include things like the mouse buttons and keyboard modifier keys.
+	 * @return the event modifiers
+	 */
+	protected int getModifiers() {
+		return modifiers;
+	}
+	
+	/**
+	 * Returns the current location of the mouse.
+	 * @return the mouse location
+	 */
+	public Point getMouseLocation() {
+		return mouse;
+	}
+
+	/**
+	 * Returns <code>true</code> if the ALT key is pressed.
+	 * @return <code>true</code> if the ALT key is pressed
+	 */
+	public boolean isAltKeyDown() {
+		return (modifiers & SWT.ALT) > 0;
+	}
+	
+	/**
+	 * Returns <code>true</code> if any of the mouse buttons are pressed.
+	 * @return <code>true</code> if any of the mouse buttons are pressed
+	 */
+	public boolean isAnyButtonDown() {
+		return getFlag(2 | 4 | 8 | 16 | 32);
+	}
+	
+	/**
+	 * Returns <code>true</code> if the CTRL key is pressed.
+	 * @return <code>true</code> of CTRL pressed
+	 */
+	public boolean isControlKeyDown() {
+		return (modifiers & SWT.CONTROL) > 0;
+	}
+	
+	/**
+	 * Returns <code>true</code> if the specified button is down.
+	 * @param which which button
+	 * @return <code>true</code> if the button is down
+	 */
+	public boolean isMouseButtonDown(int which) {
+		return getFlag(1 << which);
+	}
+	
+	/**
+	 * Returns <code>true</code> if the SHIFT key is pressed.
+	 * @return <code>true</code> if SHIFT pressed
+	 */
+	public boolean isShiftKeyDown() {
+		return (modifiers & SWT.SHIFT) > 0;
+	}
+	
+	/**
+	 * Sets the keyboard input based on the KeyEvent.
+	 * @param ke the key event providing the input
+	 */
+	public void setInput(KeyEvent ke) {
+		modifiers = ke.stateMask;
+	}
+
+	/**
+	 * Sets the mouse and keyboard input based on the MouseEvent.
+	 * @param me the mouse event providing the input
+	 */
+	public void setInput(MouseEvent me) {
+		setMouseLocation(me.x, me.y);
+		modifiers = me.stateMask;
+		if (verifyMouseButtons) {
+			setMouseButton(1, (modifiers & SWT.BUTTON1) != 0);
+			setMouseButton(2, (modifiers & SWT.BUTTON2) != 0);
+			setMouseButton(3, (modifiers & SWT.BUTTON3) != 0);
+			setMouseButton(4, (modifiers & SWT.BUTTON4) != 0);
+			setMouseButton(5, (modifiers & SWT.BUTTON5) != 0);
+			verifyMouseButtons = false;
+		}
+	}
+	
+	/**
+	 * Sets mouse button # <code>which</code> to be pressed if <code>state</code> is true.
+	 * @param which which button
+	 * @param state <code>true</code> if button down
+	 */
+	public void setMouseButton(int which, boolean state) {
+		setFlag(1 << which, state);
+	}
+	
+	void setMouseLocation(int x, int y) {
+		mouse.setLocation(x, y);
 	}
 }
 
