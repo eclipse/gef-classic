@@ -1,7 +1,6 @@
 package org.eclipse.gef.ui.palette.editparts;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
@@ -25,22 +24,9 @@ import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
  * 
  * @author Pratik Shah
  */
-public class DetailedLabelFigure 
+public class DetailedLabelFigure
 	extends Figure 
 {
-
-/**
- * Constant that indicates that this figure is not selected
- */
-public static final int NOT_SELECTED = 0;
-/**
- * Constant that indicates that this figure is selected and has focus
- */
-public static final int SELECTED_WITH_FOCUS = 1;
-/**
- * Constant that indicates that this figure is selected but does not have focus
- */
-public static final int SELECTED_WITHOUT_FOCUS = 2;
 
 public static final String SELECTED_PROPERTY = "selected"; //$NON-NLS-1$
 
@@ -50,8 +36,8 @@ private FlowPage page;
 private TextFlow nameText, descText;
 private Font boldFont;
 private FontData currentData;
-private boolean useLargeIcons;
-private int selectionState, layoutMode = -1;
+private boolean selectionState, useLargeIcons;
+private int layoutMode = -1;
 private List listeners = new ArrayList();
 
 /**
@@ -73,18 +59,6 @@ public DetailedLabelFigure() {
 	setLayoutManager(layout);
 }
 
-public void addChangeListener(ChangeListener listener) {
-	listeners.add(listener);
-}
-
-protected void fireStateChanged(String property) {
-	Iterator iter = listeners.iterator();
-	ChangeEvent change = new ChangeEvent(this, property);
-	while (iter.hasNext())
-		((ChangeListener)iter.next()).
-			handleStateChanged(change);
-}
-
 /**
  * @see java.lang.Object#finalize()
  */
@@ -96,14 +70,25 @@ protected void finalize() throws Throwable {
 	}
 }
 
-/** * @return whether this figure is selected or not */
-public boolean isSelected() {
-	return selectionState == SELECTED_WITH_FOCUS 
-	     || selectionState == SELECTED_WITHOUT_FOCUS;
+/**
+ * @see org.eclipse.draw2d.IFigure#handleFocusGained(FocusEvent)
+ */
+public void handleFocusGained(FocusEvent event) {
+	super.handleFocusGained(event);
+	updateColors();
 }
 
-public void removeChangeListener(ChangeListener listener) {
-	listeners.remove(listener);
+/**
+ * @see org.eclipse.draw2d.Figure#handleFocusLost(FocusEvent)
+ */
+public void handleFocusLost(FocusEvent event) {
+	super.handleFocusLost(event);
+	updateColors();
+}
+
+/** * @return whether this figure is selected or not */
+public boolean isSelected() {
+	return selectionState;
 }
 
 public void setDescription(String s) {
@@ -121,7 +106,6 @@ public void setDescription(String s) {
 public void setImage(Image icon) {
 	image.setImage(icon);
 }
-
 
 public void setLayoutMode(int layoutMode) {
 	updateFont(layoutMode);
@@ -164,16 +148,20 @@ public void setName(String str) {
 	nameText.setText(str);
 }
 
-public void setSelected(int state) {
+public void setSelected(boolean state) {
 	selectionState = state;
-	if (selectionState == SELECTED_WITH_FOCUS) {
-		setForegroundColor(ColorConstants.menuForegroundSelected);
-		setBackgroundColor(ColorConstants.menuBackgroundSelected);
-		fireStateChanged(SELECTED_PROPERTY);
-	} else if (selectionState == SELECTED_WITHOUT_FOCUS) {
-		setForegroundColor(null);
-		setBackgroundColor(ColorConstants.button);
-		fireStateChanged(SELECTED_PROPERTY);
+	updateColors();
+}
+
+protected void updateColors() {
+	if( isSelected() ){
+		if( hasFocus() ){
+			setForegroundColor(ColorConstants.menuForegroundSelected);
+			setBackgroundColor(ColorConstants.menuBackgroundSelected);
+		} else {
+			setForegroundColor(null);
+			setBackgroundColor(ColorConstants.button);
+		}
 	} else {
 		setForegroundColor(null);
 		setBackgroundColor(null);
@@ -271,7 +259,7 @@ private static int determineShading(int origColor, int shadeColor) {
 
 private class FocusableFlowPage extends FlowPage {
 	protected void paintFigure(Graphics g) {
-		if (selectionState == SELECTED_WITH_FOCUS) {
+		if (isSelected()) {
 			Rectangle childBounds = null;
 			List children = getChildren();
 			for (int i = 0; i < children.size(); i++) {
@@ -287,9 +275,11 @@ private class FocusableFlowPage extends FlowPage {
 			translateToParent(childBounds);
 			g.fillRectangle(childBounds);
 			super.paintFigure(g);
-			g.setForegroundColor(ColorConstants.black);
-			g.setBackgroundColor(ColorConstants.white);
-			g.drawFocus(childBounds.resize(-1, -1));
+			if (DetailedLabelFigure.this.hasFocus()) {
+				g.setForegroundColor(ColorConstants.black);
+				g.setBackgroundColor(ColorConstants.white);
+				g.drawFocus(childBounds.resize(-1, -1));
+			}
 		} else {
 			super.paintFigure(g);
 		}
@@ -308,7 +298,7 @@ private class SelectableImageFigure extends ImageFigure {
 		disposeShadedImage();
 	}
 	public Image getImage() {
-		if (isSelected()) {
+		if (isSelected() && DetailedLabelFigure.this.hasFocus()) {
 			if (shadedImage == null) {
 				ImageData data = createShadedImage(super.getImage(), 
 						ColorConstants.menuBackgroundSelected);
