@@ -49,25 +49,14 @@ private CategoryAnimationController controller;
 public CategoryFigure(final Control control) {
 	super();
 	setLayoutManager(new ToolbarLayout());
-	
-	// The header is toggle button with the label
-	Figure header = new Figure();
-	header.setForegroundColor(ColorConstants.black);
-	ToolbarLayout layout = new ToolbarLayout(ToolbarLayout.HORIZONTAL);
-	layout.setSpacing(2);
-	layout.setMinorAlignment(ToolbarLayout.ALIGN_CENTER);
-	header.setLayoutManager(layout);
+
+	// The label that is the heading for the category is in a toggle that can be used to 
+	// expand/collapse the category.	
 	categoryLabel = new Label();
 	categoryLabel.setLabelAlignment(Label.LEFT);
-	header.add(categoryLabel);
-	collapseToggle = new Toggle(header);
+	collapseToggle = new Toggle(categoryLabel);
 	collapseToggle.setOpaque(true);
 	collapseToggle.setSelected(true);	
-//	collapseToggle.addActionListener(new ActionListener() {
-//		public void actionPerformed(ActionEvent event) {
-//			revalidate();
-//		}
-//	});
 	collapseToggle.addChangeListener(new ChangeListener() {
 		public void handleStateChanged(ChangeEvent event) {
 			if (pinFigure == null) {
@@ -139,7 +128,7 @@ public CategoryFigure(final Control control) {
 				/*
 				 * @TODO:Pratik
 				 * Move the stuff about re-positioning the tooltip so that it is
-				 * completely visible on the screen in the tipHelper.
+				 * completely visible on the screen to the tipHelper.
 				 */
 				int shiftX = 0;
 				int shiftY = 0;
