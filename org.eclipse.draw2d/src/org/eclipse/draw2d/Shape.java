@@ -59,16 +59,16 @@ abstract protected void outlineShape(Graphics graphics);
  * a region to fill within that outline. Disabled shapes
  * must visually depict the disabled state. 
  */
-public void paintFigure(Graphics graphics){
-	if( !isEnabled() ){
-		graphics.translate(1,1);
+public void paintFigure(Graphics graphics) {
+	if (!isEnabled()) {
+		graphics.translate(1, 1);
 		graphics.setBackgroundColor(ColorConstants.buttonLightest);
 		graphics.setForegroundColor(ColorConstants.buttonLightest);
-		if (fill){
+		if (fill) {
 			graphics.setXORMode(xorFill);
 			fillShape(graphics);
 		}
-		if (outline){
+		if (outline) {
 			graphics.setXORMode(xorOutline);
 			graphics.setLineStyle(lineStyle);
 			graphics.setLineWidth(lineWidth);
@@ -76,13 +76,13 @@ public void paintFigure(Graphics graphics){
 		}
 		graphics.setBackgroundColor(ColorConstants.buttonDarker);
 		graphics.setForegroundColor(ColorConstants.buttonDarker);
-		graphics.translate(-1,-1);
+		graphics.translate(-1, -1);
 	}
-	if (fill){
+	if (fill) {
 		graphics.setXORMode(xorFill);
 		fillShape(graphics);
 	}
-	if (outline){
+	if (outline) {
 		graphics.setXORMode(xorOutline);
 		graphics.setLineStyle(lineStyle);
 		graphics.setLineWidth(lineWidth);
