@@ -10,9 +10,11 @@
  *******************************************************************************/
 package org.eclipse.gef.dnd;
 
+
 /**
- * 
- * @author ebordeau
+ * Transfer object used to transfer the template of a palette tool.  It is used for
+ * drag-and-drop from the palette as well as copy/paste from the palette.
+ * @author Eric Bordeau
  * @since 2.1 */
 public class TemplateTransfer
 	extends SimpleObjectTransfer
