@@ -40,4 +40,11 @@ public PaletteEntry createNewEntry(Shell shell) {
 	return separator;
 }
 
+/**
+ * @see org.eclipse.gef.ui.palette.customize.PaletteEntryFactory#determineTypeForNewEntry(org.eclipse.gef.palette.PaletteEntry)
+ */
+protected Object determineTypeForNewEntry(PaletteEntry selected) {
+	return PaletteSeparator.PALETTE_TYPE_SEPARATOR;
+}
+
 }

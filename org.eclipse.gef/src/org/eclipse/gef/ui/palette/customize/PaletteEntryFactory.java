@@ -57,7 +57,7 @@ private ImageDescriptor imageDescriptor;
  * this action was launched.  Will never be <code>null</code>.
  * @return PaletteEntry	The newly created <code>PaletteEntry</code>
  */
-public final PaletteEntry createNewEntry(Shell shell, PaletteEntry selected) {
+public PaletteEntry createNewEntry(Shell shell, PaletteEntry selected) {
 	PaletteContainer parent = determineContainerForNewEntry(selected);
 	int index = determineIndexForNewEntry(parent, selected);
 	PaletteEntry entry = createNewEntry(shell);
@@ -73,6 +73,7 @@ public final PaletteEntry createNewEntry(Shell shell, PaletteEntry selected) {
  * @return 		The newly created entry
  */
 protected abstract PaletteEntry createNewEntry(Shell shell);
+
 
 /**
  * This method is called by the <code>PaletteCustomizerDialog</code> to determine
@@ -95,8 +96,7 @@ public boolean canCreate(PaletteEntry selected) {
 	if (selected instanceof PaletteContainer) {
 		parent = (PaletteContainer)selected;
 	}
-	return parent.getUserModificationPermission() 
-					== PaletteEntry.PERMISSION_FULL_MODIFICATION;
+	return parent.acceptsType(determineTypeForNewEntry(selected));
 }
 
 /**
@@ -114,6 +114,21 @@ protected PaletteContainer determineContainerForNewEntry(PaletteEntry selected) 
 	if (selected instanceof PaletteContainer)
 		return (PaletteContainer)selected;
 	return selected.getParent();
+}
+
+/**
+ * Given the current selection, this method determines the type of the new entry 
+ * to be created.
+ * 
+ * <p>
+ * Sub-classes may override this method.
+ * </p>
+ * 
+ * @param	selected	The selected entry
+ * @return The type of the new entry to be created
+ */
+protected Object determineTypeForNewEntry(PaletteEntry selected) {
+	return PaletteEntry.PALETTE_TYPE_UNKNOWN;
 }
 
 /**

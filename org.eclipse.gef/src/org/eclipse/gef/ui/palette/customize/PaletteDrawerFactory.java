@@ -39,4 +39,11 @@ protected PaletteEntry createNewEntry(Shell shell) {
 	return entry;
 }
 
+/**
+ * @see org.eclipse.gef.ui.palette.customize.PaletteEntryFactory#determineTypeForNewEntry(org.eclipse.gef.palette.PaletteEntry)
+ */
+protected Object determineTypeForNewEntry(PaletteEntry selected) {
+	return PaletteDrawer.PALETTE_TYPE_DRAWER;
+}
+
 }
