@@ -15,6 +15,7 @@ import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 
+import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
 
 import org.eclipse.gef.AccessibleEditPart;
@@ -112,10 +113,10 @@ public DragTracker getDragTracker(Request request) {
 
 /**
  * Returns the image cache.
- * The cache is global, and is shared by all action contribution items.
- * This has the disadvantage that once an image is allocated, it is never freed until the display
- * is disposed.  However, it has the advantage that the same image in different contribution managers
- * is only ever created once.
+ * The cache is global, and is shared by all palette edit parts. This has the disadvantage
+ * that once an image is allocated, it is never freed until the display is disposed. 
+ * However, it has the advantage that the same image in different palettes is
+ * only ever created once.
  */
 protected ImageCache getImageCache() {
 	ImageCache cache = globalImageCache;
@@ -171,14 +172,32 @@ protected PaletteViewerPreferences getPreferenceSource() {
 	return ((PaletteViewerImpl)getViewer()).getPaletteViewerPreferences();
 }
 
+protected IFigure getToolTipFigure() {
+	return getFigure();
+}
+
 protected String getToolTipText() {
+	String text = null;
+	boolean needName = getPreferenceSource().getLayoutSetting() 
+				== PaletteViewerPreferences.LAYOUT_ICONS;
 	PaletteEntry entry = (PaletteEntry)getModel();
 	String desc = entry.getDescription();
-	if (desc == null) { 
-		desc = PaletteMessages.NO_DESCRIPTION_AVAILABLE;
+	if (desc == null || desc.trim().equals(entry.getLabel()) || desc.trim().equals("")) { //$NON-NLS-1$
+		if (needName) {
+			text = entry.getLabel();
+		}
+	} else {
+		if (needName) {
+			text = entry.getLabel() + " " + PaletteMessages.NAME_DESCRIPTION_SEPARATOR //$NON-NLS-1$
+					+ " " + desc; //$NON-NLS-1$
+		} else {
+			text = desc;
+		}
 	}
-	return entry.getLabel() + " " + PaletteMessages.NAME_DESCRIPTION_SEPARATOR //$NON-NLS-1$
-			+ " " + desc; //$NON-NLS-1$
+	if (text != null && text.trim().equals("")) { //$NON-NLS-1$
+		text = null;
+	}
+	return text;
 }
 
 /**
@@ -203,10 +222,16 @@ public void propertyChange(PropertyChangeEvent evt) {
  * @see org.eclipse.gef.editparts.AbstractEditPart#refreshVisuals()
  */
 protected void refreshVisuals() {
-	if (getFigure().getToolTip() == null) {
-		getFigure().setToolTip(new Label());
+	String tooltip = getToolTipText();
+	if (tooltip == null) {
+		getToolTipFigure().setToolTip(null);
+		return;
 	}
-	((Label)getFigure().getToolTip()).setText(getToolTipText());
+
+	if (getToolTipFigure().getToolTip() == null) {
+		getToolTipFigure().setToolTip(new Label());
+	}
+	((Label)getToolTipFigure().getToolTip()).setText(tooltip);
 }
 
 protected void setImageDescriptor(ImageDescriptor desc) {

@@ -65,6 +65,16 @@ public DrawerFigure(final Control control) {
 	
 	drawerLabel = new Label();
 	drawerLabel.setLabelAlignment(Label.LEFT);
+//	drawerLabel.addMouseListener(new MouseListener.Stub() {
+//		public void mousePressed(MouseEvent me) {
+//			if (me.button == 1) {
+////				collapseToggle.internalGetEventDispatcher().requestRemoveFocus(collapseToggle);
+//				if (tipHelper != null) {
+//					tipHelper.hide();
+//				}
+//			}
+//		}
+//	});
 
 	pinFigure = new ToggleButton(new ImageFigure(PIN));
 	pinFigure.setBorder(BUTTON_BORDER);
@@ -96,6 +106,27 @@ public DrawerFigure(final Control control) {
 			}
 		}
 	});
+	/*
+	 * @TODO:Pratik
+	 * 
+	 * There is a bug here.  Right-click on the name pop-up for the header of a drawer
+	 * figure in the palette.  This will hide the pop-up.  Right-click again, this time
+	 * on the collapse toggle, to bring up the drawer's context menu.  Now, left-click
+	 * on the collapse toggle.  The context menu will disappear, the name pop-up will
+	 * re-appear, and the drawer will collapse/expand.  If the drawer was in such a
+	 * position, that collapsing/expanding it will cause its header to move, the name
+	 * pop-up will now be floating over where the collapse toggle used to be, but is not
+	 * anymore.  To fix this, you can detect the left mouse click on the collapse toggle
+	 * and hide the name pop-up then.  The problem is that when you click on the
+	 * collapseToggle after the context menu has been brought up, it does not fire a mouse
+	 * pressed event.  The listener below, that is commented out for now, is never
+	 * notified.
+	 */
+//	collapseToggle.addMouseListener(new MouseListener.Stub(){
+//		public void mousePressed(MouseEvent me) {
+//			System.out.println("AAA");
+//		}
+//	});
 
 	add(collapseToggle);
 	createScrollpane();
@@ -218,6 +249,10 @@ public Dimension getPreferredSize(int w, int h) {
 	return pref.getScaled(scale).expand(min.getScaled(1.0f - scale));
 }
 
+public boolean isAnimating() {
+	return isAnimating;
+}
+
 /**
  * @return <code>true</code> if the drawer is expanded
  */
@@ -312,17 +347,24 @@ public void setTitleIcon(Image icon) {
 	drawerLabel.setIcon(icon);
 }
 
+/**
+ * Updates the tooltips.  The tooltip is displayed in two places: on the collapse toggle,
+ * and the pop-up for the collapse toggle (which is shown when the text on the collapse
+ * toggle is truncated).  The PaletteEditPart takes care of displaying the tooltip
+ * on the collapseToggle.  So, here, only the tooltip for the pop-up is updated.
+ *  * @param text	The text to be displayed on the tooltip. */
 public void setToolTipText(String text) {
-	// The tool tip will only show up on the collapse toggle...
-	if (collapseToggle.getToolTip() == null) {
-		collapseToggle.setToolTip(new Label());
-	}
-	((Label)collapseToggle.getToolTip()).setText(text);
-	
-	// and the pop-up for the collapse toggle, if there is one
+	// Display the tooltip on the pop-up for the collapse toggle, if there is one
 	if (tipLabel == null) {
 		return;
 	}
+
+	// If the text is null, don't show the tooltip
+	if (text == null) {
+		tipLabel.setToolTip(null);
+		return;
+	}
+	
 	if (tipLabel.getToolTip() == null) {
 		tipLabel.setToolTip(new Label());
 	}
