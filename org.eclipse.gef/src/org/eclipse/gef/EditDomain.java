@@ -48,6 +48,9 @@ private PaletteListener paletteListener = new PaletteListener() {
 	}
 };
 
+/**
+ * Constructs an EditDomain and loads the default tool.
+ */
 public EditDomain() {
 	loadDefaultTool();
 }

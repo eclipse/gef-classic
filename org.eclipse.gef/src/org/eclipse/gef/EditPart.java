@@ -208,7 +208,10 @@ int getSelected();
  */
 EditPart getTargetEditPart(Request request);
 
-
+/**
+ * Convenience method for returning the <code>EditPartViewer</code> for this part.
+ * @return the EditPartViewer
+ */
 EditPartViewer getViewer();
 
 /**

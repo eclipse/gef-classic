@@ -22,6 +22,20 @@ import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 
+/**
+ * An extended KeyHandler which processes default keystrokes for common navigation in a
+ * GraphicalViewer. This class can be used as a KeyHandler too; Unrecognized keystrokes
+ * are sent to the super's implementation. This class will process key events containing
+ * the following:
+ * <UL>
+ *   <LI>Arrow Keys (UP, DOWN, LEFT, RIGHT) with optional SHIFT and CONTROL modifiers
+ *   <LI>Arrow Keys (UP, DOWN) same as above, but with ALT modifier.
+ *   <LI>'\'Backslash and '/' Slash keys with optional SHIFT and CONTROL modifiers
+ * </UL>
+ * <P>All processed key events will do nothing other than change the selection and/or
+ * focus editpart for the viewer.
+ * @author hudsonr
+ */
 public class GraphicalViewerKeyHandler
 	extends KeyHandler
 {
@@ -34,11 +48,15 @@ int counter;
 private WeakReference cachedNode;
 private GraphicalViewer viewer;
 
-public GraphicalViewerKeyHandler(GraphicalViewer viewer){
+/**
+ * Constructs a key handler for the given viewer.
+ * @param viewer the viewer
+ */
+public GraphicalViewerKeyHandler(GraphicalViewer viewer) {
 	this.viewer = viewer;
 }
 
-private boolean acceptConnection(KeyEvent event){
+private boolean acceptConnection(KeyEvent event) {
 	return event.character == '/'
 		|| event.character == '?'
 		|| event.character == '\\'
@@ -46,22 +64,22 @@ private boolean acceptConnection(KeyEvent event){
 		|| event.character == '|';
 }
 
-private boolean acceptIntoContainer(KeyEvent event){
+private boolean acceptIntoContainer(KeyEvent event) {
 	return ((event.stateMask & SWT.ALT) != 0) && (event.keyCode == SWT.ARROW_DOWN);
 }
 
-private boolean acceptLeaveConnection(KeyEvent event){
+private boolean acceptLeaveConnection(KeyEvent event) {
 	int key = event.keyCode;
 	if (getFocus() instanceof ConnectionEditPart)
-		if ((key == SWT.ARROW_UP) ||
-		(key == SWT.ARROW_RIGHT) ||
-		(key == SWT.ARROW_DOWN) ||
-		(key == SWT.ARROW_LEFT))
+		if ((key == SWT.ARROW_UP)
+		  || (key == SWT.ARROW_RIGHT)
+		  || (key == SWT.ARROW_DOWN)
+		  || (key == SWT.ARROW_LEFT))
 			return true;
 	return false;
 }
 
-private boolean acceptLeaveContents(KeyEvent event){
+private boolean acceptLeaveContents(KeyEvent event) {
 	int key = event.keyCode;
 	return getFocus() == getViewer().getContents()
 		&& ((key == SWT.ARROW_UP)
@@ -70,19 +88,22 @@ private boolean acceptLeaveContents(KeyEvent event){
 			|| (key == SWT.ARROW_LEFT));
 }
 
-private boolean acceptOutOf(KeyEvent event){
+private boolean acceptOutOf(KeyEvent event) {
 	return ((event.stateMask & SWT.ALT) != 0) && (event.keyCode == SWT.ARROW_UP);
 }
 
-private ConnectionEditPart findConnection(GraphicalEditPart node, ConnectionEditPart current, boolean forward){
+private ConnectionEditPart findConnection(
+	GraphicalEditPart node,
+	ConnectionEditPart current,
+	boolean forward) {
 	List connections = new ArrayList(node.getSourceConnections());
 	connections.addAll(node.getTargetConnections());
 	if (connections.isEmpty())
 		return null;
 	if (forward)
-		counter ++;
+		counter++;
 	else
-		counter --;
+		counter--;
 	while (counter < 0)
 		counter += connections.size();
 	counter %= connections.size();
@@ -92,7 +113,11 @@ private ConnectionEditPart findConnection(GraphicalEditPart node, ConnectionEdit
 /*
  * pStart is a point in absolute coordinates.
  */
-private GraphicalEditPart findSibling(List siblings, Point pStart, int direction, EditPart exclude){
+private GraphicalEditPart findSibling(
+	List siblings,
+	Point pStart,
+	int direction,
+	EditPart exclude) {
 	GraphicalEditPart epCurrent;
 	GraphicalEditPart epFinal = null;
 	IFigure figure;
@@ -100,7 +125,7 @@ private GraphicalEditPart findSibling(List siblings, Point pStart, int direction
 	int distance = Integer.MAX_VALUE;
 
 	Iterator iter = siblings.iterator();
-	while (iter.hasNext()){
+	while (iter.hasNext()) {
 		epCurrent = (GraphicalEditPart)iter.next();
 		if (epCurrent == exclude || !epCurrent.isSelectable())
 			continue;
@@ -111,7 +136,7 @@ private GraphicalEditPart findSibling(List siblings, Point pStart, int direction
 			continue;
 
 		int d = pCurrent.getDistanceOrthogonal(pStart);
-		if (d < distance){
+		if (d < distance) {
 			distance = d;
 			epFinal = epCurrent;
 		}
@@ -123,12 +148,11 @@ Point getInterestingPoint(IFigure figure) {
 	return figure.getBounds().getCenter();
 }
 
-
 /**
- * Returns the cached node.  It is possible that the node is not longer in the viewer but has
- * not been garbage collected yet.
+ * Returns the cached node. It is possible that the node is not longer in the viewer but
+ * has not been garbage collected yet.
  */
-private GraphicalEditPart getCachedNode(){
+private GraphicalEditPart getCachedNode() {
 	if (cachedNode == null)
 		return null;
 	if (cachedNode.isEnqueued())
@@ -136,35 +160,43 @@ private GraphicalEditPart getCachedNode(){
 	return (GraphicalEditPart)cachedNode.get();
 }
 
-GraphicalEditPart getFocus(){
+GraphicalEditPart getFocus() {
 	return (GraphicalEditPart)getViewer().getFocusEditPart();
 }
 
-List getNavigationSiblings(){
+List getNavigationSiblings() {
 	return getFocus().getParent().getChildren();
 }
 
-protected GraphicalViewer getViewer(){
+/**
+ * Returns the viewer on which this key handler was created.
+ * @return the viewer
+ */
+protected GraphicalViewer getViewer() {
 	return viewer;
 }
 
+/**
+ * Extended to process key events described above.
+ * @see org.eclipse.gef.KeyHandler#keyPressed(org.eclipse.swt.events.KeyEvent)
+ */
 public boolean keyPressed(KeyEvent event) {
-	if (event.character == ' '){
+	if (event.character == ' ') {
 		processSelect(event);
 		return true;
-	} else if (acceptIntoContainer(event)){
+	} else if (acceptIntoContainer(event)) {
 		navigateIntoContainer(event);
 		return true;
 	} else if (acceptOutOf(event)) {
 		navigateOut(event);
 		return true;
-	} else if (acceptConnection(event)){
+	} else if (acceptConnection(event)) {
 		navigateConnections(event);
 		return true;
-	} else if (acceptLeaveConnection(event)){
+	} else if (acceptLeaveConnection(event)) {
 		navigateOutOfConnection(event);
 		return true;
-	} else if (acceptLeaveContents(event)){
+	} else if (acceptLeaveContents(event)) {
 		navigateIntoContainer(event);
 		return true;
 	}
@@ -191,16 +223,14 @@ public boolean keyPressed(KeyEvent event) {
 	return super.keyPressed(event);
 }
 
-private void navigateConnections(KeyEvent event){
+private void navigateConnections(KeyEvent event) {
 	GraphicalEditPart focus = getFocus();
 	ConnectionEditPart current = null;
 	GraphicalEditPart node = getCachedNode();
-	if (focus instanceof ConnectionEditPart){
+	if (focus instanceof ConnectionEditPart) {
 		current = (ConnectionEditPart)focus;
 		if (node == null
-			|| (node != current.getSource()
-				&& node != current.getTarget()))
-		{
+		  || (node != current.getSource() && node != current.getTarget())) {
 			node = (GraphicalEditPart)current.getSource();
 			counter = 0;
 		}
@@ -215,7 +245,7 @@ private void navigateConnections(KeyEvent event){
 	navigateTo(next, event);
 }
 
-private void navigateIntoContainer(KeyEvent event){
+private void navigateIntoContainer(KeyEvent event) {
 	GraphicalEditPart focus = getFocus();
 	List childList = focus.getChildren();
 	Point tl = focus.getContentPane().getBounds().getTopLeft();
@@ -224,14 +254,14 @@ private void navigateIntoContainer(KeyEvent event){
 	int current;
 	GraphicalEditPart closestPart = null;
 
-	for(int i=0; i<childList.size(); i++){	
+	for (int i = 0; i < childList.size(); i++) {	
 		GraphicalEditPart ged = (GraphicalEditPart)childList.get(i);
 		if (!ged.isSelectable())
 			continue;
 		Rectangle childBounds = ged.getFigure().getBounds();
 		
 		current = (childBounds.x - tl.x) + (childBounds.y - tl.y);
-		if (current < minimum){
+		if (current < minimum) {
 			minimum = current;
 			closestPart = ged;
 		}
@@ -240,7 +270,7 @@ private void navigateIntoContainer(KeyEvent event){
 		navigateTo(closestPart, event);
 }
 
-private boolean navigateJumpSibling(KeyEvent event, int direction){
+private boolean navigateJumpSibling(KeyEvent event, int direction) {
 	return false;
 }
 
@@ -260,7 +290,7 @@ boolean navigateNextSibling(KeyEvent event, int direction, List list) {
 	return true;
 }
 
-private void navigateOut(KeyEvent event){
+private void navigateOut(KeyEvent event) {
 	if (getFocus() == null
 		|| getFocus() == getViewer().getContents()
 		|| getFocus().getParent() == getViewer().getContents())
@@ -268,7 +298,7 @@ private void navigateOut(KeyEvent event){
 	navigateTo(getFocus().getParent(), event);
 }
 
-private void navigateOutOfConnection(KeyEvent event){
+private void navigateOutOfConnection(KeyEvent event) {
 	GraphicalEditPart cached = getCachedNode();
 	ConnectionEditPart conn = (ConnectionEditPart)getFocus();
 	if (cached != null
@@ -279,33 +309,31 @@ private void navigateOutOfConnection(KeyEvent event){
 		navigateTo(conn.getSource(), event);
 }
 
-void navigateTo(EditPart part, KeyEvent event){
+void navigateTo(EditPart part, KeyEvent event) {
 	if (part == null)
 		return;
-	if ((event.stateMask & SWT.SHIFT) != 0){
+	if ((event.stateMask & SWT.SHIFT) != 0) {
 		getViewer().appendSelection(part);
 		getViewer().setFocus(part);
-	}
-	else if ((event.stateMask & SWT.CONTROL) != 0)
+	} else if ((event.stateMask & SWT.CONTROL) != 0)
 		getViewer().setFocus(part);
 	else
 		getViewer().select(part);
 	getViewer().reveal(part);
 }
 
-private void processSelect(KeyEvent event){
+private void processSelect(KeyEvent event) {
 	EditPart part = getViewer().getFocusEditPart();
-	if ((event.stateMask & SWT.CONTROL) != 0 &&
-		part.getSelected() != EditPart.SELECTED_NONE)
-	{
+	if ((event.stateMask & SWT.CONTROL) != 0
+	  && part.getSelected() != EditPart.SELECTED_NONE)
 		getViewer().deselect(part);
-	} else {
+	else
 		getViewer().appendSelection(part);
-	}
+
 	getViewer().setFocus(part);
 }
 
-private void setCachedNode(GraphicalEditPart node){
+private void setCachedNode(GraphicalEditPart node) {
 	if (node == null)
 		cachedNode = null;
 	else 
