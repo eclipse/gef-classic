@@ -320,7 +320,7 @@ private void setRulerVisibility(boolean isVisible) {
 	}
 }
 
-public static class RulerBorder
+static class RulerBorder
 	extends AbstractBorder
 {
 	private static final Insets H_INSETS = new Insets(0, 1, 0, 0);
