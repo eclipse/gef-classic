@@ -43,8 +43,7 @@ protected class UpdateRequest
 }
 
 synchronized public void addDirtyRegion(IFigure figure, int x, int y, int w, int h){
-	//raw cannot be modified.
-	if (isHidden(figure))
+	if (!figure.isShowing())
 		return;
 	if (w == 0 || h == 0)
 		return;
@@ -70,15 +69,6 @@ protected Graphics getGraphics(Rectangle region){
 	if (graphicsSource == null)
 		return null;
 	return graphicsSource.getGraphics(region);
-}
-
-private boolean isHidden(IFigure figure){
-	while (figure != null){
-		if (!figure.isVisible())
-			return true;
-		figure = figure.getParent();
-	}
-	return false;
 }
 
 synchronized public void performUpdate(Rectangle exposed){
@@ -110,13 +100,13 @@ protected void releaseGraphics(Graphics graphics){
 	graphicsSource.flushGraphics(damage);
 }
 
-protected void repairDamage(){
+protected void repairDamage() {
 	Iterator keys = dirtyRegions.keySet().iterator();
 	Rectangle contribution;
 	IFigure figure;
 	IFigure walker;
 
-	while (keys.hasNext()){
+	while (keys.hasNext()) {
 		figure = (IFigure)keys.next();
 		walker = figure.getParent();
 		contribution = (Rectangle)dirtyRegions.get(figure);
