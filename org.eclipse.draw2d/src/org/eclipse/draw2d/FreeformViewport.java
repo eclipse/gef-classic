@@ -62,7 +62,7 @@ public FreeformViewport() {
 /**
  * Readjusts the scrollbars.  In doing so, it gets the freeform extent of the contents and
  * unions this rectangle with this viewport's client area, then sets the contents freeform
- * bounds to be this unioned rectangle.  Then procedes to set the scrollbar values based
+ * bounds to be this unioned rectangle.  Then proceeds to set the scrollbar values based
  * on this new information.
  * @see Viewport#readjustScrollBars()
  */
