@@ -78,6 +78,7 @@ void moveAll() {
  */
 protected void setUp() {
 	Figure contents = new Figure();
+	contents.addNotify();
 	contents.setBounds(new Rectangle(0, 0, 100, 100));
 	contents.add(commonAncestor = new LocalCoordinates());
 	commonAncestor.setBounds(new Rectangle(10, 10, 80, 80));
