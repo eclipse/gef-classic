@@ -39,8 +39,8 @@ import org.eclipse.draw2d.geometry.Insets;
  *   nodes
  * </UL>
  * 
- * @author hudsonr
- * @since 2.1
+ * @author Randy Hudson
+ * @since 2.1.2
  */
 public class Node {
 
@@ -74,6 +74,14 @@ public boolean flag;
 public int height = 40;
 
 /**
+ * A constraint used to control the ordering of nodes from left to right. By default, a
+ * node's constraint is <code>-1</code>. If two nodes have different values both >= 0, the
+ * node with the smaller constraint will be placed to the left of the other node. 
+ * Otherwise, no placement order is guaranteed.
+ */
+public int rowOrder = -1;
+
+/**
  * The edges for which this node is the target.
  */
 public EdgeList incoming = new EdgeList();
@@ -100,7 +108,7 @@ public int nestingIndex = -1;
 public EdgeList outgoing = new EdgeList();
 
 /**
- * For internal use only.
+ * For INTERNAL use only.
  */
 public int outgoingOffset = -1;
 
@@ -109,7 +117,7 @@ Insets padding;
 private Subgraph parent;
 
 /**
- * The horizontal row to which this node belongs.
+ * For INTERNAL use only. The horizontal row to which this node belongs.
  */
 public int rank;
 
