@@ -11,7 +11,16 @@ import java.util.List;
 import org.eclipse.swt.graphics.Image;
 
 public class PaletteCategory 
-	extends PaletteContainer {
+	extends PaletteContainer 
+{
+
+public static final String PROPERTY_INITIAL_STATUS = "Initial status"; //$NON-NLS-1$
+
+public static final int INITIAL_STATUS_EXPANDED = 0;
+public static final int INITIAL_STATUS_COLLAPSED = 1;
+public static final int INITIAL_STATUS_PINNED_OPEN = 2;
+
+private int initialStatus;
 
 public PaletteCategory(String label){
 	this(label, (Image)null);
@@ -29,6 +38,28 @@ public PaletteCategory(String label, List children){
 public PaletteCategory(String label,Image icon){
 	super(label, icon);
 	setType(PALETTE_TYPE_CATEGORY);
+}
+
+public int getInitialStatus() {
+	return initialStatus;
+}
+
+public boolean isInitiallyOpen() {
+	return (getInitialStatus() == INITIAL_STATUS_EXPANDED 
+			|| getInitialStatus() == INITIAL_STATUS_PINNED_OPEN);
+}
+
+public boolean isInitiallyPinned() {
+	return (getInitialStatus() == INITIAL_STATUS_PINNED_OPEN);
+}
+
+public void setInitialStatus(int status) {
+	if (getInitialStatus() == status) {
+		return;
+	}
+	int oldStatus = initialStatus;
+	initialStatus = status;
+	listeners.firePropertyChange(PROPERTY_INITIAL_STATUS, oldStatus, status);
 }
 	
 }

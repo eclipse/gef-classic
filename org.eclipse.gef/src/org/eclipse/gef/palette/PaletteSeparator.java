@@ -25,6 +25,12 @@ public class PaletteSeparator extends PaletteEntry {
  */
 public static final String NOT_A_MARKER = ""; //$NON-NLS-1$
 
+//@TODO:Pratik
+// Update this image
+private static Image icon = new Image(Display.getDefault(), WorkbenchImages.
+				getImageDescriptor(IWorkbenchGraphicConstants.IMG_CTOOL_BUILD_EXEC_HOVER).
+				getImageData());
+
 private String id;
 	
 /**
@@ -35,10 +41,7 @@ private String id;
 public PaletteSeparator(String id) {
 	super(PaletteMessages.NEW_SEPARATOR_LABEL, PaletteMessages.NEW_SEPARATOR_DESC);
 	setId(id);
-	//@TODO:Pratik
-	// Update this image
-	setSmallIcon(new Image(Display.getDefault(), WorkbenchImages.getImageDescriptor(
-	             IWorkbenchGraphicConstants.IMG_CTOOL_BUILD_EXEC_HOVER).getImageData()));
+	setSmallIcon(icon);
 }
 
 /**

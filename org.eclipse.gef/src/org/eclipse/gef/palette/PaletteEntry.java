@@ -12,7 +12,7 @@ import java.beans.PropertyChangeSupport;
 import org.eclipse.swt.graphics.Image;
 
 /**
- * Default implementation of PaletteEntry
+ * Root class (statically) for the palette model.
  * 
  * @author Pratik Shah
  */
@@ -178,7 +178,7 @@ public PaletteEntry(String label,
  * Any parameter can be <code>null</code>
  * </p>
  * 
- * @param label				Tbe entry's name
+ * @param label				The entry's name
  * @param shortDescription		The entry's description
  * @param iconSmall			The small icon to represent this entry
  * @param iconLarge			The large icon to represent this entry
@@ -186,11 +186,11 @@ public PaletteEntry(String label,
  * @param parent				The entry's parent
  */
 public PaletteEntry(String label,
-							String shortDescription,
-							Image iconSmall,
-							Image iconLarge,
-							Object type,
-							PaletteContainer parent) {
+					String shortDescription,
+					Image iconSmall,
+					Image iconLarge,
+					Object type,
+					PaletteContainer parent) {
 	setLabel(label);
 	setDescription(shortDescription);
 	setSmallIcon(iconSmall);
@@ -200,19 +200,13 @@ public PaletteEntry(String label,
 }
 
 /**
+ * A listener can only be added once.  Adding it more than once will do nothing.
+ * 
  * @see java.beans.PropertyChangeSupport#addPropertyChangeListener(java.beans.PropertyChangeListener)
  */
 public void addPropertyChangeListener(PropertyChangeListener listener) {
+	listeners.removePropertyChangeListener(listener);
 	listeners.addPropertyChangeListener(listener);
-}
-
-/**
- * @see PropertyChangeSupport#firePropertyChange(java.lang.String, java.lang.Object, java.lang.Object)
- */
-protected void firePropertyChange(String property,
-									Object oldVal,
-									Object newVal) {
-	listeners.firePropertyChange(property, oldVal, newVal);
 }
 
 /**
@@ -288,10 +282,7 @@ public void removePropertyChangeListener(PropertyChangeListener listener) {
 public void setDefault(boolean newDefault) {
 	if (newDefault != isDefault) {
 		isDefault = newDefault;
-		firePropertyChange(
-			PROPERTY_DEFAULT,
-			new Boolean(!isDefault),
-			new Boolean(isDefault));
+		listeners.firePropertyChange(PROPERTY_DEFAULT, !isDefault, isDefault);
 	}
 }
 
@@ -308,10 +299,7 @@ public void setDescription(String s) {
 	if (s == null || !s.equals(shortDescription)) {
 		String oldDescrption = shortDescription;
 		shortDescription = s;
-		firePropertyChange(
-			PROPERTY_DESCRIPTION,
-			oldDescrption,
-			shortDescription);
+		listeners.firePropertyChange(PROPERTY_DESCRIPTION, oldDescrption, shortDescription);
 	}
 }
 
@@ -328,7 +316,7 @@ public void setLabel(String s) {
 	if (s == null || !s.equals(label)) {
 		String oldLabel = label;
 		label = s;
-		firePropertyChange(PROPERTY_LABEL, oldLabel, label);
+		listeners.firePropertyChange(PROPERTY_LABEL, oldLabel, label);
 	}
 }
 
@@ -341,7 +329,7 @@ public void setLargeIcon(Image icon) {
 	if (icon != iconLarge) {
 		Image oldIcon = iconLarge;
 		iconLarge = icon;
-		firePropertyChange(PROPERTY_LARGE_ICON, oldIcon, iconLarge);
+		listeners.firePropertyChange(PROPERTY_LARGE_ICON, oldIcon, iconLarge);
 	}
 }
 
@@ -354,7 +342,7 @@ public void setParent(PaletteContainer newParent) {
 	if (parent != newParent) {
 		PaletteContainer oldParent = parent;
 		parent = newParent;
-		firePropertyChange(PROPERTY_PARENT, oldParent, parent);
+		listeners.firePropertyChange(PROPERTY_PARENT, oldParent, parent);
 	}
 }
 
@@ -367,7 +355,7 @@ public void setSmallIcon(Image icon) {
 	if (icon != iconSmall) {
 		Image oldIcon = iconSmall;
 		iconSmall = icon;
-		firePropertyChange(PROPERTY_SMALL_ICON, oldIcon, icon);
+		listeners.firePropertyChange(PROPERTY_SMALL_ICON, oldIcon, icon);
 	}
 }
 
@@ -384,7 +372,7 @@ public void setType(Object newType) {
 	if (type == null || !type.equals(newType)) {
 		Object oldType = type;
 		type = newType;
-		firePropertyChange(PROPERTY_TYPE, oldType, type);
+		listeners.firePropertyChange(PROPERTY_TYPE, oldType, type);
 	}
 }
 
@@ -397,10 +385,7 @@ public void setType(Object newType) {
 public void setVisible(boolean newVal) {
 	if (newVal != visible) {
 		visible = newVal;
-		firePropertyChange(
-			PROPERTY_VISIBLE,
-			new Boolean(!visible),
-			new Boolean(visible));
+		listeners.firePropertyChange(PROPERTY_VISIBLE, !visible, visible);
 	}
 }
 

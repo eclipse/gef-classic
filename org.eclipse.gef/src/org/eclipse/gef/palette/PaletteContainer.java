@@ -27,8 +27,6 @@ public class PaletteContainer
 public static final String
 	PROPERTY_CHILDREN_CHANGED = "Children Changed"; //$NON-NLS-1$
 
-		
-
 public static final String 
 	PALETTE_TYPE_CATEGORY = "Palette_Category"; //$NON-NLS-1$
 
@@ -76,10 +74,7 @@ public void add(int index, PaletteEntry entry) {
 	int actualIndex = index < 0 ? children.size() : index;
 	children.add(actualIndex, entry);
 	entry.setParent(this);
-	firePropertyChange(
-		PROPERTY_CHILDREN_CHANGED,
-		oldChildren,
-		getChildren());
+	listeners.firePropertyChange(PROPERTY_CHILDREN_CHANGED,	oldChildren, getChildren());
 }
 
 public void addAll(List newChildren) {
@@ -91,10 +86,7 @@ public void addAll(List newChildren) {
 			child.setParent(this);
 		}
 	}
-	firePropertyChange(
-		PROPERTY_CHILDREN_CHANGED,
-		oldChildren,
-		getChildren());
+	listeners.firePropertyChange(PROPERTY_CHILDREN_CHANGED,	oldChildren, getChildren());
 }
 
 /**
@@ -118,10 +110,7 @@ private boolean move(PaletteEntry entry, boolean up) {
 	List oldChildren = new ArrayList(children);
 	children.remove(entry);
 	children.add(index, entry);
-	firePropertyChange(
-		PROPERTY_CHILDREN_CHANGED,
-		oldChildren,
-		getChildren());
+	listeners.firePropertyChange(PROPERTY_CHILDREN_CHANGED,	oldChildren, getChildren());
 	return true;
 }
 
@@ -151,10 +140,7 @@ public void remove(PaletteEntry entry) {
 	List oldChildren = new ArrayList(children);
 	if (children.remove(entry)) {
 		entry.setParent(null);
-		firePropertyChange(
-			PROPERTY_CHILDREN_CHANGED,
-			oldChildren,
-			getChildren());
+		listeners.firePropertyChange(PROPERTY_CHILDREN_CHANGED,	oldChildren, getChildren());
 	}
 }
 
