@@ -74,6 +74,8 @@ public void visit(DirectedGraph graph) {
 		.visit(graph);
 	new HorizontalPlacement()
 		.visit(graph);
+	new PlaceEndpoints()
+		.visit(graph);
 	new InvertEdges()
 		.visit(graph);
 }

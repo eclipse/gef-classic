@@ -1,5 +1,7 @@
 package org.eclipse.draw2d.graph;
 
+import org.eclipse.draw2d.geometry.Point;
+
 /**
  * A directed Edge joining a source and target Node.  Edges indicate the dependencies
  * between nodes.  An Edge provides the information needed to perform a graph layout, and
@@ -68,10 +70,14 @@ public int offsetTarget = -1;
  * The source Node.
  */
 public Node source;
+
 /**
  * The target Node.
  */
 public Node target;
+
+public Point start;
+public Point end;
 
 /**
  * For internal use only. Field used during layout.
@@ -202,17 +208,26 @@ public Node opposite(Node end) {
 /**
  * Inverts this edge. (Source becomes target, target becomes source).
  */
-public void invert() {	
-	Node oldTarget = target;
-	
+public void invert() {
 	source.outgoing.remove(this);
 	target.incoming.remove(this);
 	
+	Node oldTarget = target;
 	target = source;
 	source = oldTarget;
+
+	int temp = offsetSource;
+	offsetSource = offsetTarget;
+	offsetTarget = temp;
 	
 	target.incoming.add(this);
 	source.outgoing.add(this);
+	
+	if (start != null) {
+		Point pt = start;
+		start = end;
+		end = pt;
+	}
 	
 	if (vNodes != null) {
 		NodeList newVNodes = new NodeList();
