@@ -129,7 +129,7 @@ public static int getTextForSpace(TextFragmentBox frag, String string, Font font
 }
 
 static void setupFragment(TextFragmentBox frag, Font f, String s) {
-	while (s.charAt(frag.length - 1) == ' ')
+	while (frag.length > 0 && s.charAt(frag.length - 1) == ' ')
 		frag.length--;
 	Dimension d = getStringExtents(s.substring(0, frag.length), f);
 	FontMetrics fm = getFontMetrics(f);
