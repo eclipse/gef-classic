@@ -75,8 +75,9 @@ public static final String MatchHeightAction_Tooltip;
 
 public static final String SelectionTool_Label;
 public static final String MarqueeTool_Label;
-public static final String MarqueeTool_Label_Nodes;
-public static final String MarqueeTool_Label_Connections;
+public static final String MarqueeTool_Desc;
+public static final String MarqueeTool_Nodes_Desc;
+public static final String MarqueeTool_Connections_Desc;
 public static final String UndoAction_Label;
 public static final String UndoAction_Tooltip;
 
@@ -187,8 +188,9 @@ static {
 
 	SelectionTool_Label = rb.getString("SelectionTool.Label");//$NON-NLS-1$
 	MarqueeTool_Label = rb.getString("MarqueeTool.Label");//$NON-NLS-1$
-	MarqueeTool_Label_Connections = rb.getString("MarqueeTool.Label.C");//$NON-NLS-1$
-	MarqueeTool_Label_Nodes = rb.getString("MarqueeTool.Label.N");//$NON-NLS-1$
+	MarqueeTool_Desc = rb.getString("MarqueeTool.Desc"); //$NON-NLS-1$
+	MarqueeTool_Nodes_Desc = rb.getString("MarqueeTool.N.Desc"); //$NON-NLS-1$
+	MarqueeTool_Connections_Desc = rb.getString("MarqueeTool.C.Desc"); //$NON-NLS-1$
 	UndoAction_Label = rb.getString("UndoAction.Label");//$NON-NLS-1$
 	UndoAction_Tooltip = rb.getString("UndoAction.Tooltip");//$NON-NLS-1$
 

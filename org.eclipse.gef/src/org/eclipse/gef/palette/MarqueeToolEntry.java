@@ -44,7 +44,7 @@ private int selectionType;
  * Creates a new MarqueeToolEntry that can select nodes
  */
 public MarqueeToolEntry() {
-	this(GEFMessages.MarqueeTool_Label_Nodes, null, SELECT_NODES);
+	this(GEFMessages.MarqueeTool_Label, null, SELECT_NODES);
 }
 
 /**
@@ -85,13 +85,15 @@ public MarqueeToolEntry(String label, String shortDesc, int type) {
 			SharedImages.DESC_MARQUEE_TOOL_24);
 	selectionType = type & 3;
 	Assert.isTrue(selectionType != 0);
-	if (label == null) {
+	if (label == null || label.length() == 0)
+		setLabel(GEFMessages.MarqueeTool_Label);
+	if (shortDesc == null || shortDesc.length() == 0) {
 		if (selectionType == SELECT_CONNECTIONS)
-			setLabel(GEFMessages.MarqueeTool_Label_Connections);
+			setDescription(GEFMessages.MarqueeTool_Connections_Desc);
 		else if (selectionType == SELECT_NODES)
-			setLabel(GEFMessages.MarqueeTool_Label_Nodes);
+			setDescription(GEFMessages.MarqueeTool_Nodes_Desc);
 		else
-			setLabel(GEFMessages.MarqueeTool_Label);
+			setDescription(GEFMessages.MarqueeTool_Desc);
 	}
 	setUserModificationPermission(PERMISSION_NO_MODIFICATION);
 }
