@@ -331,8 +331,9 @@ Dimension getPreferredSize();
 
 /**
  * Returns the desireable size for this IFigure using the provided width and height hints.
- * Returned Dimension is by value.  If a hint is less than or equal to 0 (usually, it's
- * set to -1), it means that hint should be ignored.
+ * The returned dimension may be by <i>reference</i>, and it must not be modified by the
+ * caller.  A value of <code>-1</code> indicates that there is no constraint in that
+ * direction.
  * 
  * @param wHint The width hint
  * @param hHint The height hint
