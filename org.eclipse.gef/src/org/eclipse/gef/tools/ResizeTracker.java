@@ -295,17 +295,21 @@ protected void updateSourceRequest() {
 		}
 		resize.width += d.width;
 	}
-
+	
 	request.setMoveDelta(corner);
 	request.setSizeDelta(resize);
 	request.setLocation(location);
 	request.setEditParts(getOperationSet());
 
 	request.getExtendedData().clear();
+	request.getExtendedData().put(SnapToHelper.CTRL_KEY, 
+			new Boolean(getCurrentInput().isControlKeyDown()));
+	request.getExtendedData().put(SnapToHelper.SHIFT_KEY, 
+			new Boolean(getCurrentInput().isShiftKeyDown()));
 	
 	if (!getCurrentInput().isAltKeyDown() && snapToHelper != null)
 		snapToHelper.snapResizeRequest(request, sourceRect.getPreciseCopy(),
-				SnapToHelper.SNAP_HORIZONTAL | SnapToHelper.SNAP_VERTICAL);
+				PositionConstants.NORTH_SOUTH | PositionConstants.EAST_WEST);
 }
 
 }
