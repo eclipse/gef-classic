@@ -538,37 +538,46 @@ private void transferState(PaletteViewer src, PaletteViewer dest) {
 }
 
 /**
- * FlyoutPreferences is used to save/load the preferences for the flyout palette. 
+ * FlyoutPreferences is used to save/load the preferences for the flyout palette.  
  * 
  * @author Pratik Shah
  * @since 3.0
  */
 public interface FlyoutPreferences {
 	/**
-	 * @return the saved dock location of the Palette: {@link PositionConstants#EAST east}
-	 * or {@link PositionConstants#WEST west}
+	 * When there is no saved dock location, this method can return any int (preferrably
+	 * a non-positive int).
+	 * @return the saved dock location of the Palette
 	 */
 	int getDockLocation();
 	/**
+	 * When there is no saved state, this method can return any int (preferrably a
+	 * non-positive int).
 	 * @return	the saved state of the palette (collapsed or pinned open)
 	 */
 	int getPaletteState();
 	/**
+	 * When there is no saved width, this method can return any int (preferrably a
+	 * non-positive int).
 	 * @return	the saved width of the flyout palette
 	 */
 	int getPaletteWidth();
 	/**
-	 * This method is invoked when the flyout palette's dock location is changed.
-	 * @param	location	PositionConstants.EAST or PositionConstants.WEST
+	 * This method is invoked when the flyout palette's dock location is changed.  The
+	 * provided dock location should be persisted and returned in 
+	 * {@link #getDockLocation()}.
+	 * @param	location	an int representing the dock location
 	 */
 	void setDockLocation(int location);
 	/**
-	 * This method is invoked when the flyout palette is pinned open or collapsed.
-	 * @param	state		the state of the flyout palette
+	 * This method is invoked when the flyout palette's default state is changed.  The
+	 * provided state should be persisted and returned in {@link #getPaletteState()}.
+	 * @param	state		an int the state of the flyout palette
 	 */
 	void setPaletteState(int state);
 	/**
-	 * This method is invoked when the flyout palette is resized.
+	 * This method is invoked when the flyout palette is resized.  The provided width
+	 * should be persisted and returned in {@link #getPaletteWidth()}.
 	 * @param	width	the new size of the flyout palette
 	 */
 	void setPaletteWidth(int width);
