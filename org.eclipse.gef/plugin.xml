@@ -7,7 +7,7 @@
    class="org.eclipse.gef.GEFPlugin">
 
    <runtime>
-      <library name="runtime/gef.jar">
+      <library name="gef.jar">
          <export name="*"/>
          <packages prefixes="org.eclipse.gef"/>
       </library>

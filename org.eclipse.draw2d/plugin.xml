@@ -6,7 +6,7 @@
    provider-name="Eclipse.org">
 
    <runtime>
-      <library name="runtime/draw2d.jar">
+      <library name="draw2d.jar">
         <export name = "*"/>
         <packages prefixes="org.eclipse.draw2d"/>
       </library>
