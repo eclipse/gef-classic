@@ -142,7 +142,6 @@ private IMemento capturedPaletteState;
 private Control graphicalControl, sash;
 private PaletteViewerProvider provider;
 private FlyoutPreferences prefs;
-private Font titleFont;
 private Point cachedBounds = new Point(0, 0); 
 private int dock = PositionConstants.EAST;
 private int paletteState = -1;
@@ -1315,6 +1314,7 @@ private static class FontManager {
 	private final String fontName = getFontType();
 	private List registrants = new ArrayList();
 	private Font titleFont;
+	private boolean newFontCreated = false;
 	private final IPropertyChangeListener fontListener = new IPropertyChangeListener() {
 		public void propertyChange(org.eclipse.jface.util.PropertyChangeEvent event) {
 			if (fontName.equals(event.getProperty()))
@@ -1324,15 +1324,19 @@ private static class FontManager {
 	private FontManager() {
 	}
 	protected final Font createTitleFont() {
-		// @TODO:Pratik Perhaps you could optimize this: if the font is already bold, 
-		// there's no need to embolden (or dispose) it.
+		newFontCreated = false;
 		FontData[] data = JFaceResources.getFont(fontName).getFontData();
 		for (int i = 0; i < data.length; i++)
-			data[i].setStyle(SWT.BOLD);
-		return new Font(Display.getCurrent(), data);
+			if ((data[i].getStyle() & SWT.BOLD) == 0) {
+				data[i].setStyle(data[i].getStyle() | SWT.BOLD);
+				newFontCreated = true;
+			}
+		if (newFontCreated)
+			return new Font(Display.getCurrent(), data);
+		return JFaceResources.getFont(fontName);
 	}
 	protected void dispose() {
-		if (titleFont != null && !titleFont.isDisposed())
+		if (newFontCreated && titleFont != null && !titleFont.isDisposed())
 			titleFont.dispose();
 		titleFont = null;
 		JFaceResources.getFontRegistry().removeListener(fontListener);
