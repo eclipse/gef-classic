@@ -14,6 +14,8 @@ import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 
+import org.eclipse.gef.SnapToGrid;
+
 /**
  * @author Pratik Shah
  */
@@ -21,7 +23,7 @@ public class GridLayer
 	extends FreeformLayer 
 {
 
-protected int gapX = 10, gapY = 10;
+protected int gapX = SnapToGrid.DEFAULT_GAP, gapY = gapX;
 protected Point origin = new Point();
 
 public GridLayer() {
@@ -32,7 +34,7 @@ public GridLayer() {
 
 /**
  * Overridden to indicate on preferred size.  The grid layer should not affect the size of
- * the layered pane in which is it placed.
+ * the layered pane in which it is placed.
  * @see org.eclipse.draw2d.Figure#getPreferredSize(int, int)
  */
 public Dimension getPreferredSize(int wHint, int hHint) {
