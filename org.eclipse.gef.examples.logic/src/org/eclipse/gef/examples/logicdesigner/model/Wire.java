@@ -29,13 +29,13 @@ protected String
 protected List bendpoints = new ArrayList();
 
 public void attachSource(){
-	if (getSource() == null)
+	if (getSource() == null || getSource().getSourceConnections().contains(this))
 		return;
 	getSource().connectOutput(this);
 }
 
 public void attachTarget(){
-	if (getTarget() == null)
+	if (getTarget() == null || getTarget().getTargetConnections().contains(this))
 		return;
 	getTarget().connectInput(this);
 }
