@@ -1,10 +1,3 @@
-package awt;
-
-import java.awt.AlphaComposite;
-import java.awt.Frame;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-
 /*******************************************************************************
  * Copyright (c) 2004 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials 
@@ -15,6 +8,12 @@ import java.awt.Graphics2D;
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
+package awt;
+
+import java.awt.AlphaComposite;
+import java.awt.Frame;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 /**
  * @since 3.1
