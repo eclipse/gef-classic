@@ -42,14 +42,17 @@ public IFigure getHeader() {
  */
 public Dimension getPreferredSize(int wHint, int hHint) {
 	Dimension dim = new Dimension();
-	dim.width = Math.max(wHint, getFooter().getPreferredSize().width);
-	dim.height = hHint;
+	dim.width = getFooter().getPreferredSize().width;
+	dim.width += getInsets().getWidth();
+	dim.height = 50;
 	return dim;
 }
 
 public void setBounds(Rectangle rect) {
 	super.setBounds(rect);
-	contents.setBounds(bounds);
+	rect = Rectangle.SINGLETON;
+	getClientArea(rect);
+	contents.setBounds(rect);
 	Dimension size = footer.getPreferredSize();
 	footer.setLocation(rect.getBottomLeft().translate(0, -size.height));
 	footer.setSize(size);

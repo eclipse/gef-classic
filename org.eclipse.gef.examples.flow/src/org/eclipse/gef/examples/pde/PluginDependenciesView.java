@@ -103,6 +103,7 @@ public void createPartControl(Composite comp) {
 	new VerticalPlacement().visit(g);
 
 	new MinCross().visit(g);
+	new LocalOptimizer().visit(g);
 	new HorizontalPlacement().visit(g);
 
 	for (int i = 0; i < subgraphRoots.size(); i++) {
