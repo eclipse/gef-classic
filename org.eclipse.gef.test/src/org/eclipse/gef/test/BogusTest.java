@@ -16,7 +16,7 @@ public BogusTest(String name) {
 }
 
 public void testTest() {
-	assertTrue(true);
+	assertTrue(false);
 }
 
 }
