@@ -24,7 +24,6 @@ class EditPartTipHelper
 {
 
 private static EditPartTipHelper currentHelper;
-private ShellListener shellListener;
 
 private static void setHelper(EditPartTipHelper helper) {
 	if (currentHelper != null && currentHelper != helper && currentHelper.isShowing())
@@ -73,14 +72,6 @@ public void displayToolTipAt(IFigure tip, int tipPosX, int tipPosY) {
 	}
 }
 
-public void dispose() {
-	if (shellListener != null) {
-		control.getShell().removeShellListener(shellListener);
-		shellListener = null;
-	}
-	super.dispose();
-}
-
 /**
  * @see org.eclipse.draw2d.PopUpHelper#hide()
  */
@@ -113,15 +104,15 @@ protected void hookShellListeners() {
 			}
 		}
 	});
-	if (shellListener == null) {
-		control.getShell().addShellListener(shellListener = new ShellAdapter() {
-			public void shellDeactivated(ShellEvent event) {
-				if (isShowing())
-					getShell().setCapture(false);
-				dispose();
-			}
-		});
-	}
+	
+	control.getShell().addShellListener(new ShellAdapter() {
+		public void shellDeactivated(ShellEvent event) {
+			if (isShowing())
+				getShell().setCapture(false);
+			dispose();
+		}
+	});
+
 	/* Workaround for GTK Bug - Control.setCapture(boolean) not implemented: 
 	   If the cursor is not over the shell when it is first painted, 
 	   hide the tooltip and dispose of the shell. */
