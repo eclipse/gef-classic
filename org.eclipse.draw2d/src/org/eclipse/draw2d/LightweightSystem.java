@@ -331,7 +331,7 @@ protected class RootFigure
 		return dispatcher;
 	}
 	
-	/** @see org.eclipse.draw2d.Figure#isVisible() */
+	/** @see org.eclipse.draw2d.Figure#isShowing() */
 	public boolean isShowing() {
 		return true;
 	}
