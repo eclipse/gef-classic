@@ -35,8 +35,6 @@ abstract protected class AccessibleGraphicalEditPart
 {
 	public void getChildCount(AccessibleControlEvent e) {
 		e.detail  = AbstractGraphicalEditPart.this.getChildren().size();
-//			+ AbstractGraphicalEditPart.this.getSourceConnections().size()
-//			+ AbstractGraphicalEditPart.this.getTargetConnections().size();
 	}
 	
 	public void getChildren(AccessibleControlEvent e) {

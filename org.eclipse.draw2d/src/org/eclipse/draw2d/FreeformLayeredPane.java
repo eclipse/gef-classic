@@ -48,7 +48,6 @@ public Rectangle getFreeformExtent(){
 protected void primTranslate(int dx, int dy){
 	bounds.x += dx;
 	bounds.y += dy;
-	System.out.println("prim Translate in LayeredPane");
 }
 
 public void remove(IFigure child) {

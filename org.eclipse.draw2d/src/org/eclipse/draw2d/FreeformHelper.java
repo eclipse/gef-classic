@@ -17,8 +17,6 @@ class FreeformHelper
 class ChildTracker implements FigureListener {
 	public void figureMoved(IFigure source) {
 		invalidate();
-		host.fireExtentChanged();
-		host.revalidate();
 	}
 };
 
@@ -51,6 +49,7 @@ public Rectangle getFreeformExtent(){
 		freeformExtent = new Rectangle(0,0,insets.getWidth(),insets.getHeight());
 	else
 		freeformExtent.expand(insets);
+//	System.out.println("New extent calculated for " + host + " = " + freeformExtent);
 	return freeformExtent;
 }
 
@@ -70,7 +69,6 @@ void invalidate(){
 public void notifyFreeformExtentChanged() {
 	//A childs freeform extent has changed, therefore this extent must be recalculated
 	invalidate();
-	host.fireExtentChanged();
 }
 
 public void setFreeformBounds(Rectangle bounds){

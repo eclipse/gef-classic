@@ -23,6 +23,7 @@ class FreeformViewportLayout
 		return ((FreeformFigure)getContents())
 			.getFreeformExtent()
 			.getExpanded(getInsets())
+			.union(0,0)
 			.union(wHint, hHint)
 			.getSize();
 	}
@@ -44,7 +45,7 @@ protected void readjustScrollBars(){
 		return;
 	FreeformFigure ff = (FreeformFigure)getContents();
 	Rectangle clientArea = getClientArea();
-	Rectangle bounds = ff.getFreeformExtent();
+	Rectangle bounds = ff.getFreeformExtent().getCopy();
 	bounds.union(0, 0, clientArea.width, clientArea.height);
 	ff.setFreeformBounds(bounds);
 

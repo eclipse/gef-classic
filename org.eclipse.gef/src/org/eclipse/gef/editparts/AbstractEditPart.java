@@ -539,10 +539,6 @@ protected boolean getFlag(int flag){
 	return (flags & flag) != 0;
 }
 
-public KeyHandler getKeyHandler(){
-	return null;
-}
-
 /**
  * <img src="../doc-files/black.gif"/> Returns the primary model object for
  * this EditPart.
@@ -809,7 +805,8 @@ protected void removeChild(EditPart child) {
 	if (index < 0)
 		return;
 	fireRemovingChild(child, index);
-	child.deactivate();
+	if (isActive())
+		child.deactivate();
 	removeChildVisual(child);
 	child.setParent(null);
 	getChildren().remove(child);
