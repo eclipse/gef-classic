@@ -2,6 +2,8 @@ package swt.experimentation;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.*;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Display;
@@ -23,6 +25,15 @@ public static void main(String[] args) {
 		}
 		public void dragFinished(DragSourceEvent event) {
 			System.out.println("Drag Finished");
+		}
+	});
+	canvas.addMouseListener(new MouseListener() {
+		public void mouseDoubleClick(MouseEvent event) {}
+		public void mouseDown(MouseEvent event) {
+			System.out.println("Mouse Down");
+		}
+		public void mouseUp(MouseEvent event) {
+			System.out.println("Mouse Up");
 		}
 	});
 	shell.open();
