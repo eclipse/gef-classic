@@ -22,9 +22,9 @@ protected IFigure getContents() {
 	IFigure panel = new Figure();
 	
 	Figure endPointPanel = new Figure();
-	endPointPanel.setBounds(new Rectangle(0,0,300,300));
+	endPointPanel.setBounds(new Rectangle(0,0,400,400));
 
-	endPointPanel.setBorder(new GroupBoxBorder("ChopBox Anchors"));
+	endPointPanel.setBorder(new GroupBoxBorder("Midpoint Locator"));
 	
 	RectangleFigure
 		node1 = new RectangleFigure(),
@@ -52,17 +52,17 @@ protected IFigure getContents() {
 	new Dragger(node2);
 
 	Figure ellipsePanel = new Figure();
-	ellipsePanel.setBounds(new Rectangle(320,0,300,300));
+	ellipsePanel.setBounds(new Rectangle(420,0,400,400));
 
-	ellipsePanel.setBorder(new GroupBoxBorder("Ellipse Anchors"));
+	ellipsePanel.setBorder(new GroupBoxBorder("Connection endpoint Locator"));
 	
 	Shape
 		node3 = new RectangleFigure(),
-		node4 = new Ellipse();
+		node4 = new RectangleFigure();
 	node3.setBackgroundColor(ColorConstants.green);
-	node3.setLocation(new Point(440,40));
+	node3.setLocation(new Point(480,40));
 	node4.setBackgroundColor(ColorConstants.black);
-	node4.setLocation(new Point(440, 200));
+	node4.setLocation(new Point(480, 230));
 	
 	PolylineConnection conn2 = new PolylineConnection();
 	conn2.setSourceAnchor(new ChopboxAnchor(node3));
@@ -88,7 +88,7 @@ protected IFigure getContents() {
 	Label instructions = 
 				new Label(" Drag the shapes to see the Locators in action ");
 	instructions.setBorder(new LineBorder());
-	instructions.setLocation(new Point(10, 320));
+	instructions.setLocation(new Point(10, 420));
 	instructions.setSize(instructions.getPreferredSize());
 	
 	ellipsePanel.add(node3);
@@ -109,7 +109,7 @@ protected IFigure getContents() {
 	 * @see org.eclipse.draw2d.examples.AbstractExample#hookShell()
 	 */
 	protected void hookShell() {
-		getFigureCanvas().setSize(650,400);	
+		getFigureCanvas().setSize(820,440);	
 	}
 
 	
