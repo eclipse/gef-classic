@@ -34,6 +34,16 @@ public IFigure getHeader() {
 	return header;
 }
 
+/**
+ * @see org.eclipse.draw2d.Figure#getPreferredSize(int, int)
+ */
+public Dimension getPreferredSize(int wHint, int hHint) {
+	Dimension dim = new Dimension();
+	dim.width = Math.max(wHint, header.getPreferredSize().width);
+	dim.height = hHint;
+	return dim;
+}
+
 public void setBounds(Rectangle rect) {
 	super.setBounds(rect);
 	contents.setBounds(bounds);
