@@ -48,10 +48,10 @@ public PolygonDecoration(){
 /**
  * @see org.eclipse.draw2d.IFigure#getBackgroundColor()
  */
-public Color getBackgroundColor() {
-	if (getLocalBackgroundColor() == null)
+public Color getLocalBackgroundColor() {
+	if (super.getLocalBackgroundColor() == null)
 		return getForegroundColor();
-	return super.getBackgroundColor();
+	return super.getLocalBackgroundColor();
 }
 
 /**
