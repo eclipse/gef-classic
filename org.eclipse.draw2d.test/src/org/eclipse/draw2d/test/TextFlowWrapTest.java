@@ -37,79 +37,91 @@ protected boolean failed;
 protected void setUp() throws Exception {
 	super.setUp();
 
+	failMsg = "\r\n";
+	failed = false;
+}
+
+public void testSoftWrapping() {
 	figure = new FlowPage();
 	textFlow = new TextFlow();
 	textFlow.setLayoutManager(new ParagraphTextLayout(textFlow, ParagraphTextLayout.WORD_WRAP_SOFT));
 	textFlow.setFont(TAHOMA);
 	figure.add(textFlow);
-	failMsg = "\r\n";
-	failed = false;
-}
 
-
-public void testWordWrap() {
-	doTest( "tester abc", "tester", "tester", "abc");
-	doTest( "tester abc", "tester a", "tester", "abc");
-	doTest( "tester abc", "tester ab", "tester", "abc");
-	doTest( "tester ab", "tester", "tester", "ab" );
-	doTest( "tester ab c", "tester", "tester", "ab c" );			
-	doTest( "tester ab", "teste", "teste", "r ab" );
-	doTest( "test\r ab c", "test ab c", "test"," ab c" );
-	doTest( "test\n ab c", "test ab c", "test"," ab c" );
-	doTest( "test\r\n abc def", "test abc def", "test", " abc def" );
-	doTest( "\rtester abc def", "tester", "", "tester" );
-	doTest( "\r\ntester abc def", "tester", "", "tester" );
-	doTest( "\ntester abc def", "tester", "", "tester" );
-	doTest( "tester abc\n def", "tester", "tester", "abc" );
-	doTest( "tester abc\r\n def", "tester", "tester", "abc" );
-	doTest( "tester abc\r def", "tester", "tester", "abc" );
-	doTest( "tester abc def\r\n", "tester", "tester", "abc" );
-	doTest( "tester abc def\r", "tester", "tester", "abc" );
-	doTest( "tester abc def\n", "tester", "tester", "abc" );
-	doTest( "blah blah blah", "blah blah", "blah blah", "blah" );
-	doTest( "blah blah blah", "blah", "blah", "blah");
-	doTest( "h hh h", "h hh", "h hh", "h" );
-	doTest( "h hh h", "h hh ", "h hh", "h" );
-	doTest( "x x x  x ", "x x x ", "x x x", "x");
-	doTest( "\n\nbreak", "break", "", "");
-	doTest( "\r\rbreak", "break", "", "");
-	doTest( "\r\n\r\nbreak", "break", "","");
+	doTest( "tester abc", "tester", new String[] {"tester", "abc"});
+	doTest( "tester abc", "tester a", new String[] {"tester", "abc"});
+	doTest( "tester abc", "tester ab", new String[] {"tester", "abc"});
+	doTest( "tester ab", "tester", new String[] {"tester", "ab"} );
+	doTest( "tester ab c", "tester", new String[] {"tester", "ab c"} );			
+	doTest( "tester ab", "teste", new String[] {"teste", "r ab"} );
+	doTest( "test\r ab c", "test ab c", new String[] {"test"," ab c"} );
+	doTest( "test\n ab c", "test ab c", new String[] {"test"," ab c"} );
+	doTest( "test\r\n abc def", "test abc def", new String[] {"test", " abc def" });
+	doTest( "\rtester abc def", "tester", new String[] {"", "tester" });
+	doTest( "\r\ntester abc def", "tester", new String[] {"", "tester" });
+	doTest( "\ntester abc def", "tester", new String[] {"", "tester"} );
+	doTest( "tester abc\n def", "tester", new String[] {"tester", "abc" });
+	doTest( "tester abc\r\n def", "tester", new String[] {"tester", "abc" });
+	doTest( "tester abc\r def", "tester", new String[] {"tester", "abc" });
+	doTest( "tester abc def\r\n", "tester", new String[] {"tester", "abc"} );
+	doTest( "tester abc def\r", "tester", new String[] {"tester", "abc" });
+	doTest( "tester abc def\n", "tester", new String[] {"tester", "abc"} );
+	doTest( "blah blah blah", "blah blah", new String[] {"blah blah", "blah"} );
+	doTest( "blah blah blah", "blah", new String[] {"blah", "blah"});
+	doTest( "h hh h", "h hh", new String[] {"h hh", "h" });
+	doTest( "h hh h", "h hh ", new String[] {"h hh", "h"} );
+	doTest( "x x x  x ", "x x x ", new String[] {"x x x", "x"});
+	doTest( "\n\nbreak", "break", new String[] {"", ""});
+	doTest( "\r\rbreak", "break", new String[] {"", ""});
+	doTest( "\r\n\r\nbreak", "break", new String[] {"",""});
+	
+	doTest("testers\r ab c", "testers", new String[] {"testers", " ab c"});
+	doTest("ab\tcd", "ab", new String[] {"ab", "cd"});
+	doTest("trailingSpace  \n  ", "trailingSpace", new String[] {"trailingSpace", ""});
 	
 	//do test with two \n 
 	assertFalse(failMsg, failed);
 }
 
-protected void doTest(String stringToTest, String widthString, String firstFrag, String secondFrag) {
+public void testHardWrapping() {
+	figure = new FlowPage();
+	textFlow = new TextFlow();
+	textFlow.setLayoutManager(new ParagraphTextLayout(textFlow, ParagraphTextLayout.WORD_WRAP_HARD));
+	textFlow.setFont(TAHOMA);
+	figure.add(textFlow);
+	doTest("Flow          Container", "Flow...", new String[] {"Flow...", "Container"});
+	doTest("Flow Container", "F", new String[] {"Flow", "Container"});
+}
+
+public void testTruncatedWrapping() {
+	figure = new FlowPage();
+	textFlow = new TextFlow();
+	textFlow.setLayoutManager(new ParagraphTextLayout(textFlow, ParagraphTextLayout.WORD_WRAP_TRUNCATE));
+	textFlow.setFont(TAHOMA);
+	figure.add(textFlow);
+}
+
+protected void doTest(String stringToTest, String widthString, String[] answers) {
 	figure.setSize(FigureUtilities.getStringExtents(widthString, TAHOMA).width,500);
 	textFlow.setText(stringToTest);
 	figure.getLayoutManager().layout(null);
 	Iterator frags = textFlow.getFragments().iterator();
-	TextFragmentBox frag = null;
 	
-	frag = (TextFragmentBox) frags.next();
-
-//		while (frags.hasNext()) {
-//			frag = (TextFragmentBox) frags.next();
-//		}
-
-	if (!stringToTest.substring(frag.offset, frag.offset + frag.length).equals(firstFrag)) {
-		failMsg += "Failed on: " + stringToTest + " Frag expected: -" + firstFrag + "- Got: -" + stringToTest.substring(frag.offset, frag.offset + frag.length) + "-\r\n";
-		failed = true;
-		return;
+	int index = 0;
+	for (; index < answers.length; index++) {
+		TextFragmentBox frag = null;
+		if (frags.hasNext())
+			frag = (TextFragmentBox) frags.next();
+		else
+			break;
+		if (!stringToTest.substring(frag.offset, frag.offset + frag.length).equals(answers[index])) {
+			failMsg += "Failed on: " + stringToTest + " Frag expected: -" + answers[index] + "- Got: -" + stringToTest.substring(frag.offset, frag.offset + frag.length) + "-\r\n";
+			failed = true;
+			return;
+		}
 	}
-
-	frag = (TextFragmentBox) frags.next();
-
-	if (!stringToTest.substring(frag.offset, frag.offset + frag.length).equals(secondFrag)) {
-		failMsg += "Failed on: " + stringToTest + " Frag expected: -" + secondFrag + "- Got: -" + stringToTest.substring(frag.offset, frag.offset + frag.length) + "-\r\n";
-		failed = true;
-	}
-}
-/*
- * @see TestCase#tearDown()
- */
-protected void tearDown() throws Exception {
-	super.tearDown();
+	if (index < answers.length)
+		failMsg += "Failed on: " + stringToTest + " Frag expected: -" + answers[index] + "No matching fragment\r\n";
 }
 
 }
