@@ -113,10 +113,10 @@ Node getLeft(Subgraph s) {
 		Node left = getPrime(s.left);
 		Node right = getPrime(getRight(s));
 		prime.edges.add(new Edge(left, right,s.width,1));
-		prime.edges.add(new Edge(left, head,0,1));
-		prime.edges.add(new Edge(head, right,0,1));
-		prime.edges.add(new Edge(left, tail,0,1));
-		prime.edges.add(new Edge(tail, right,0,1));
+		prime.edges.add(new Edge(left, head,0,100));
+//		prime.edges.add(new Edge(head, right,0,1));
+		prime.edges.add(new Edge(left, tail,0,100));
+//		prime.edges.add(new Edge(tail, right,0,1));
 	}
 	return s.left;
 }
