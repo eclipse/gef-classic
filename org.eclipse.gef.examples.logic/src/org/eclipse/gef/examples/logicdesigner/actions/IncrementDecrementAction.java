@@ -12,6 +12,9 @@ package org.eclipse.gef.examples.logicdesigner.actions;
 
 import java.util.List;
 
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.ui.IWorkbenchPart;
+
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
@@ -20,9 +23,6 @@ import org.eclipse.gef.commands.CompoundCommand;
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
 import org.eclipse.gef.examples.logicdesigner.LogicPlugin;
 import org.eclipse.gef.examples.logicdesigner.model.LED;
-import org.eclipse.jface.resource.ImageDescriptor;
-
-import org.eclipse.ui.IEditorPart;
 
 public class IncrementDecrementAction
 	extends org.eclipse.gef.ui.actions.SelectionAction
@@ -38,8 +38,8 @@ public static final String
 
 Request request;
 
-public IncrementDecrementAction(IEditorPart editor, boolean increment) {
-	super(editor);
+public IncrementDecrementAction(IWorkbenchPart part, boolean increment) {
+	super(part);
 	if (increment) {
 		request = new Request(INCREMENT_REQUEST);
 		setText(LogicMessages.IncrementDecrementAction_Increment_ActionLabelText);
