@@ -46,7 +46,7 @@ package org.eclipse.gef;
  * 	<LI>The connection can be deleted, leaving the source and target intact.
  * 	<LI>The connection cannot exist without a source and target.  A instance of when
  * 	  this is <B>not</B> true is <I>assocations</I>.  Associations are top-level object
- * 	  that are children of the diagram.  They probably only valid if they have a source
+ * 	  that are children of the diagram.  They are probably only valid if they have a source
  * 	  and target, but many applications allow you to create things in any order.
  * </UL>
  */
