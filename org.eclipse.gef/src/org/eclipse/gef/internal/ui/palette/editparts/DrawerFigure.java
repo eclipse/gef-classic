@@ -1,6 +1,7 @@
 package org.eclipse.gef.internal.ui.palette.editparts;
 
 
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Control;
 
@@ -33,12 +34,15 @@ protected static final Border BUTTON_BORDER = new ButtonBorder(
 protected static final Image PIN = new Image(null, ImageDescriptor.createFromFile(
 		Internal.class, "icons/pin_view.gif").getImageData()); //$NON-NLS-1$
 
+protected static final Color FG_COLOR = FigureUtilities.mixColors(
+		ColorConstants.buttonDarker, ColorConstants.button);
+
 private int layoutMode = -1;
-private Label drawerLabel;
+private Label drawerLabel, tipLabel;
 private ScrollPane scrollpane;
 private ToggleButton pinFigure;
 private Toggle collapseToggle;
-private boolean isAnimating, showPin, animatingAlone;
+private boolean isAnimating, showPin, animatingAlone, skipNextEvent;
 private DrawerAnimationController controller;
 private EditPartTipHelper tipHelper;
 
@@ -53,21 +57,7 @@ private EditPartTipHelper tipHelper;
 public DrawerFigure(final Control control) {
 	setLayoutManager(new PaletteToolbarLayout());
 
-	Figure title = new Figure() {
-		protected void paintFigure(Graphics g) {
-			super.paintFigure(g);
-			Rectangle r = Rectangle.SINGLETON;
-			r.setBounds(getBounds());
-			r.width = Math.min(50, r.width);
-			g.setForegroundColor(
-				FigureUtilities.mixColors(ColorConstants.buttonDarker, 
-				                          ColorConstants.button));
-//			g.setBackgroundColor(
-//				FigureUtilities.mixColors(ColorConstants.buttonDarker,ColorConstants.button));
-//				g.fillGradient(Rectangle.SINGLETON, false);
-		}
-	};
-	
+	Figure title = new Figure();	
 	title.setBorder(TITLE_MARGIN_BORDER);
 	BorderLayout borderLayout = new BorderLayout();
 	borderLayout.setHorizontalSpacing(2);
@@ -80,6 +70,7 @@ public DrawerFigure(final Control control) {
 	pinFigure.setBorder(BUTTON_BORDER);
 	pinFigure.setRolloverEnabled(true);
 	pinFigure.setRequestFocusEnabled(false);
+	pinFigure.setToolTip(new Label(PaletteMessages.TOOLTIP_PIN_FIGURE));
 
 	title.add(pinFigure, BorderLayout.RIGHT);
 	title.add(drawerLabel, BorderLayout.CENTER);
@@ -90,11 +81,7 @@ public DrawerFigure(final Control control) {
 			Rectangle r = Rectangle.SINGLETON;
 			r.setBounds(getBounds());
 			r.width = Math.min(50, r.width);
-			g.setForegroundColor(
-				FigureUtilities.mixColors(ColorConstants.buttonDarker, 
-				                          ColorConstants.button));
-//			g.setBackgroundColor(
-//				FigureUtilities.mixColors(ColorConstants.buttonDarker,ColorConstants.button));
+			g.setForegroundColor(FG_COLOR);
 			g.fillGradient(Rectangle.SINGLETON, false);
 		}
 
@@ -103,8 +90,10 @@ public DrawerFigure(final Control control) {
 	collapseToggle.setBorder(TOGGLE_BUTTON_BORDER);
 	collapseToggle.setRequestFocusEnabled(true);
 	collapseToggle.addChangeListener(new ChangeListener() {
-		public void handleStateChanged(ChangeEvent event) {
-			updatePin();
+		public void handleStateChanged(ChangeEvent e) {
+			if (e.getPropertyName().equals(ButtonModel.SELECTED_PROPERTY)) {
+				updatePin();
+			}
 		}
 	});
 
@@ -120,15 +109,27 @@ private void createHoverHelp(final Control control) {
 	}
 	// If a control was provided, create the tipLabel -- if the text in the header is
 	// truncated, it will display it as a tooltip.
-	final Label tipLabel =	new Label();
-	tipLabel.setOpaque(true);
-	tipLabel.setBackgroundColor(ColorConstants.tooltipBackground);
-	tipLabel.setForegroundColor(ColorConstants.tooltipForeground);	
+	tipLabel =	new Label() {
+		protected void paintFigure(Graphics graphics) {
+			Rectangle r = Rectangle.SINGLETON;
+			r.setBounds(getBounds());
+			r.width = Math.min(50, r.width);
+			graphics.pushState();
+			graphics.setForegroundColor(FG_COLOR);
+			graphics.fillGradient(Rectangle.SINGLETON, false);
+			graphics.popState();
+			super.paintFigure(graphics);
+		}
+	};
+	tipLabel.setOpaque(false);
 	tipLabel.setBorder(TOOLTIP_BORDER);
 	collapseToggle.addMouseMotionListener(new MouseMotionListener.Stub() {
-		public void mouseMoved(MouseEvent e) {
-			Rectangle labelBounds = drawerLabel.getBounds();
-			if (drawerLabel.isTextTruncated() && labelBounds.contains(e.x, e.y)) {
+		public void mouseEntered(MouseEvent e) {
+			if (skipNextEvent) {
+				skipNextEvent = false;
+				return;
+			}
+			if (drawerLabel.isTextTruncated()) {
 				tipLabel.setText(drawerLabel.getText());
 				tipLabel.setIcon(drawerLabel.getIcon());
 				tipLabel.setFont(drawerLabel.getFont());
@@ -142,12 +143,19 @@ private void createHoverHelp(final Control control) {
 	});
 	tipLabel.addMouseListener(new MouseListener.Stub() {
 		public void mousePressed(MouseEvent e) {
-			Rectangle original = getCollapseToggle().getBounds().getCopy();
-			getCollapseToggle().requestFocus();
-			setExpanded(!isExpanded());
-			// Hide the tip if expanding the drawer causes the collapse toggle to move
-			if (!original.equals(getCollapseToggle().getBounds())) {
+			if (e.button == 1) {
+				Rectangle original = getCollapseToggle().getBounds().getCopy();
+				getCollapseToggle().requestFocus();
+				setExpanded(!isExpanded());
+				// Hide the tip if expanding the drawer causes the collapse toggle to move
+				if (!original.equals(getCollapseToggle().getBounds())) {
+					tipHelper.hide();
+				}
+			} else {		
 				tipHelper.hide();
+				if (e.button == 3) {
+					skipNextEvent = true;
+				}
 			}
 		}
 	}); 			
@@ -302,6 +310,23 @@ public void setTitle(String s) {
  */
 public void setTitleIcon(Image icon) {
 	drawerLabel.setIcon(icon);
+}
+
+public void setToolTipText(String text) {
+	// The tool tip will only show up on the collapse toggle...
+	if (collapseToggle.getToolTip() == null) {
+		collapseToggle.setToolTip(new Label());
+	}
+	((Label)collapseToggle.getToolTip()).setText(text);
+	
+	// and the pop-up for the collapse toggle, if there is one
+	if (tipLabel == null) {
+		return;
+	}
+	if (tipLabel.getToolTip() == null) {
+		tipLabel.setToolTip(new Label());
+	}
+	((Label)tipLabel.getToolTip()).setText(text);
 }
 
 public void showPin(boolean show) {
