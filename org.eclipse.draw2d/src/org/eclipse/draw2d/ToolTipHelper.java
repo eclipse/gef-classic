@@ -115,7 +115,7 @@ public void dispose() {
  */
 protected void hookShellListeners() {
 	// Close the tooltip window if the mouse enters the tooltip
-	getShell().addMouseTrackListener(new MouseTrackAdapter(){
+	getShell().addMouseTrackListener(new MouseTrackAdapter() {
 		public void mouseEnter(org.eclipse.swt.events.MouseEvent e) {
 				hide();
 				currentTipSource = null;

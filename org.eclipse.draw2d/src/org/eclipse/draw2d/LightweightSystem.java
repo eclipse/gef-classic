@@ -81,7 +81,7 @@ protected void addListeners() {
 	canvas.addFocusListener(handler);
 	
 	if (SWT.getPlatform().equals("gtk")) { //$NON-NLS-1$
-		canvas.addControlListener(new ControlAdapter(){
+		canvas.addControlListener(new ControlAdapter() {
 			public void controlResized(ControlEvent e) {
 				LightweightSystem.this.controlResized();
 				((Canvas)e.widget).redraw();
@@ -100,7 +100,7 @@ protected void addListeners() {
 			}
 		});
 	} else {
-		canvas.addControlListener(new ControlAdapter(){
+		canvas.addControlListener(new ControlAdapter() {
 			public void controlResized(ControlEvent e) {
 				LightweightSystem.this.controlResized();
 			}

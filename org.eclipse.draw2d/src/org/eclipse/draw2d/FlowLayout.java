@@ -227,7 +227,7 @@ private void initRow() {
  * @since 2.0 
  */
 private void initVariables(IFigure parent) {
-	data.row = new IFigure[parent.getChildren().size()] ;
+	data.row = new IFigure[parent.getChildren().size()];
 	data.bounds = new Rectangle[data.row.length];
 	data.maxWidth = data.area.width;
 }
