@@ -102,22 +102,25 @@ protected boolean handleButtonDown(int button) {
 }
 
 protected boolean handleButtonUp(int button) {
-	setCurrentCommand(getCommand());
-	executeCurrentCommand();
+	if (stateTransition(STATE_DRAG_IN_PROGRESS, STATE_TERMINAL)) {
+		setCurrentCommand(getCommand());
+		executeCurrentCommand();
+	}
 	return true;
 }
 
 protected boolean isCreationValid() {
-	boolean result = true;
+	if (getState() == STATE_INVALID)
+		return false;
 	int position = getCurrentPosition();
 	Iterator guides = source.getRulerProvider().getGuides().iterator();
-	while (guides.hasNext() && result) {
+	while (guides.hasNext()) {
 		int guidePos = source.getRulerProvider().getGuidePosition(guides.next());
 		if (Math.abs(guidePos - position) < GuideEditPart.MIN_DISTANCE_BW_GUIDES) {
-			result = false;
+			return false;
 		}
 	}
-	return result;
+	return true;
 }
 
 protected boolean isDelete() {
@@ -138,7 +141,6 @@ protected boolean isDelete() {
 		max = min + zone.height;
 	}
 	return pos < min || pos > max;	
-
 }
 
 protected boolean movedPastThreshold() {
