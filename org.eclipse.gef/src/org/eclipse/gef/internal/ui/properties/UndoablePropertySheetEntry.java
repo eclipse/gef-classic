@@ -19,20 +19,15 @@ import org.eclipse.gef.commands.CommandStackListener;
 import org.eclipse.gef.commands.CompoundCommand;
 import org.eclipse.gef.commands.ForwardUndoCompoundCommand;
 /**
- * <code>PropertySheetEntry</code> is an implementation of
- * <code>IPropertySheetEntry</code> which uses <code>IPropertySource</code>
- * and <code>IPropertyDescriptor</code> to interact with domain model objects.
  * <p>
- * Every property sheet entry has a single descriptor (except the root entry
- * which has none). This descriptor determines what property
- * of its objects it will display/edit.
+ * UndoablePropertySheetEntry provides undo support for changes made to the model via 
+ * a PropertySheetEntry by wrapping the changes in a GEF Command and putting it on the
+ * CommandStack.
  * </p>
  * <p>
- * Entries do not listen for changes in their objects. Since there is no
- * restriction on properties being independent, a change in one property
- * may affect other properties. The value of a parent's property may also
- * change. As a result we are forced to refresh the entire entry tree
- * when a property changes value.
+ * <b>NOTE:</b> If you intend to use an IPropertySourceProvider for a PropertySheetPage
+ * whose root entry is an instance of of UndoablePropertySheetEntry, you should set the 
+ * IPropertySourceProvider on that root entry, rather than the PropertySheetPage.
  * </p>
  */
 public class UndoablePropertySheetEntry extends PropertySheetEntry {

@@ -32,7 +32,7 @@ import org.eclipse.gef.SnapToGuides;
 
 /**
  * An EditPolicy that is used to show snap feedback for guides (red lines) and geometry
- * (blue lines)
+ * (blue lines).  This policy is not required for Grids.
  * 
  * @author Randy Hudson
  * @author Pratik Shah
