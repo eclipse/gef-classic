@@ -15,6 +15,9 @@ import org.eclipse.gef.*;
 import org.eclipse.gef.editpolicies.RootComponentEditPolicy;
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
 import org.eclipse.gef.examples.logicdesigner.model.LogicDiagram;
+
+import org.eclipse.gef.requests.SelectionRequest;
+import org.eclipse.gef.tools.DeselectAllTracker;
 import org.eclipse.gef.tools.MarqueeDragTracker;
 import org.eclipse.swt.accessibility.AccessibleEvent;
 
@@ -66,6 +69,9 @@ protected IFigure createFigure() {
 }
 
 public DragTracker getDragTracker(Request req){
+	if (req instanceof SelectionRequest 
+		&& ((SelectionRequest)req).getLastButtonPressed() == 3)
+			return new DeselectAllTracker(this);
 	return new MarqueeDragTracker();
 }
 
