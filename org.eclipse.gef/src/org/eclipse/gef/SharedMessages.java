@@ -10,11 +10,7 @@
  *******************************************************************************/
 package org.eclipse.gef;
 
-import java.util.MissingResourceException;
-
-import org.eclipse.core.runtime.Platform;
-
-import org.osgi.framework.Bundle;
+import org.eclipse.gef.internal.GEFMessages;
 
 /**
  * This class contains UI strings (translated, if available) that clients can use.
@@ -22,30 +18,17 @@ import org.osgi.framework.Bundle;
  */
 public class SharedMessages {
 
-static class Helper {
-	private static final Bundle bundle = Platform.getBundle("org.eclipse.gef"); //$NON-NLS-1$
-	
-	public static String getString(String key) {
-		try {
-			return Platform.getResourceString(bundle, key);
-		} catch (MissingResourceException e) {
-			return key;
-		}
-	}
-}
-
 /**
  * The string "Page".
  */
-public static String FitAllAction_Label = Helper.getString("%FitAllAction.Label"); //$NON-NLS-1$
+public static String FitAllAction_Label = GEFMessages.FitAllAction_Label;
 /**
  * The string "Width".
  */
-public static String FitWidthAction_Label = Helper.getString("%FitWidthAction.Label"); //$NON-NLS-1$
+public static String FitWidthAction_Label = GEFMessages.FitWidthAction_Label;
 /**
  * The string "Height".
  */
-public static String FitHeightAction_Label =
-	Helper.getString("%FitHeightAction.Label"); //$NON-NLS-1$
+public static String FitHeightAction_Label = GEFMessages.FitHeightAction_Label;
 
 }
