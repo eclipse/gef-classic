@@ -44,11 +44,10 @@ int[] getHorizontalGuides() {
 	if (horizontalGuides == null) {
 		RulerProvider rProvider = ((RulerProvider)container.getViewer()
 				.getProperty(RulerProvider.VERTICAL));
-		if (rProvider != null) {
+		if (rProvider != null)
 			horizontalGuides = rProvider.getGuidePositions();	
-		} else {
+		else
 			horizontalGuides = new int[0];
-		}
 	}
 	return horizontalGuides;
 }
@@ -57,11 +56,10 @@ int[] getVerticalGuides() {
 	if (verticalGuides == null) {
 		RulerProvider rProvider = ((RulerProvider)container.getViewer()
 				.getProperty(RulerProvider.HORIZONTAL));
-		if (rProvider != null) {
+		if (rProvider != null)
 			verticalGuides = rProvider.getGuidePositions();	
-		} else {
+		else
 			verticalGuides = new int[0];
-		}
 	}
 	return verticalGuides;
 }
@@ -130,9 +128,8 @@ public boolean snapMoveRequest(ChangeBoundsRequest request,	PrecisionRectangle b
 	fig.translateToAbsolute(move);
 	request.setMoveDelta(move);
 	// If there are more than one edit parts being moved, detach them from all guides.
-	if (request.getEditParts().size() > 1) {
+	if (request.getEditParts().size() > 1)
 		request.getExtendedData().clear();
-	}
 	return true;
 
 }
@@ -199,9 +196,8 @@ public boolean snapResizeRequest(ChangeBoundsRequest request, PrecisionRectangle
 	request.setSizeDelta(resize);
 	request.setMoveDelta(move);
 	// If there are more than one edit parts being resized, detach them from all guides.
-	if (request.getEditParts().size() > 1) {
+	if (request.getEditParts().size() > 1)
 		request.getExtendedData().clear();
-	}
 	return true;
 }
 
