@@ -105,7 +105,7 @@ public static final int PERMISSION_FULL_MODIFICATION = 15;
 protected PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 
 private PaletteContainer parent;
-private String label;
+private String label, id;
 private String shortDescription;
 private ImageDescriptor iconSmall;
 private ImageDescriptor iconLarge;
@@ -176,11 +176,17 @@ public PaletteEntry(String label,
 					ImageDescriptor iconSmall,
 					ImageDescriptor iconLarge, 
 					Object type) {
+	this(label, shortDescription, iconSmall, iconLarge, type, null);
+}
+
+public PaletteEntry(String label, String shortDescription, ImageDescriptor smallIcon,
+		ImageDescriptor largeIcon, Object type, String id) {
 	setLabel(label);
 	setDescription(shortDescription);
 	setSmallIcon(iconSmall);
 	setLargeIcon(iconLarge);
 	setType(type);
+	setId(id);
 }
 
 /**
@@ -199,6 +205,17 @@ public void addPropertyChangeListener(PropertyChangeListener listener) {
  */
 public String getDescription() {
 	return shortDescription;
+}
+
+/**
+ * Returns the id.  If no ID has been set (or it is <code>null</code>), an empty String
+ * will be returned.
+ * @return	String id
+ */
+public String getId() {
+	if (id == null)
+		return ""; //$NON-NLS-1$
+	return id;
 }
 
 /**
@@ -287,6 +304,14 @@ public void setDescription(String s) {
 }
 
 /**
+ * Sets the id.  Can be <code>null</code>.
+ * @param id The new id to be set
+ */
+public void setId(String id) {
+	this.id = id;
+}
+
+/**
  * Mutator method for label
  * @param s	The new name
  */
@@ -328,23 +353,6 @@ public void setParent(PaletteContainer newParent) {
 }
 
 /**
- * Permissions are not checked before making modifications.  Clients should check the
- * permission before invoking a modification.  Sub-classes may extend the set of
- * permissions.  Current set has:
- * <UL>
- * 		<LI>PERMISSION_NO_MODIFICATION</LI>
- * 		<LI>PERMISSION_HIDE_ONLY</LI>
- * 		<LI>PERMISSION_LIMITED_MODIFICATION</LI>
- * 		<LI>PERMISSION_FULL_MODIFICATION</LI>
- * </UL>
- * Default is <code>PERMISSION_FULL_MODIFICATION</code>
- * 
- * @param	permission	One of the above-specified permission levels */
-public void setUserModificationPermission(int permission) {
-	this.permission = permission;
-}
-
-/**
  * Mutator method for small icon
  * 
  * @param 	icon	The new small icon to represent this entry
@@ -371,6 +379,24 @@ public void setType(Object newType) {
 		type = newType;
 		listeners.firePropertyChange(PROPERTY_TYPE, oldType, type);
 	}
+}
+
+/**
+ * Permissions are not checked before making modifications.  Clients should check the
+ * permission before invoking a modification.  Sub-classes may extend the set of
+ * permissions.  Current set has:
+ * <UL>
+ * 		<LI>PERMISSION_NO_MODIFICATION</LI>
+ * 		<LI>PERMISSION_HIDE_ONLY</LI>
+ * 		<LI>PERMISSION_LIMITED_MODIFICATION</LI>
+ * 		<LI>PERMISSION_FULL_MODIFICATION</LI>
+ * </UL>
+ * Default is <code>PERMISSION_FULL_MODIFICATION</code>
+ * 
+ * @param	permission	One of the above-specified permission levels
+ */
+public void setUserModificationPermission(int permission) {
+	this.permission = permission;
 }
 
 /**
