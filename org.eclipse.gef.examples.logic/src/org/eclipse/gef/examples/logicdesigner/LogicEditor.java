@@ -40,8 +40,8 @@ import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.internal.ui.rulers.ToggleRulerVisibilityAction;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.ui.actions.*;
-import org.eclipse.gef.ui.paletteview.DefaultPalettePage;
-import org.eclipse.gef.ui.paletteview.IPalettePage;
+import org.eclipse.gef.ui.views.palette.DefaultPalettePage;
+import org.eclipse.gef.ui.views.palette.IPalettePage;
 import org.eclipse.gef.ui.parts.*;
 import org.eclipse.gef.ui.stackview.CommandStackInspectorPage;
 
@@ -295,9 +295,6 @@ private IPartListener partListener = new IPartListener() {
 	public void partOpened(IWorkbenchPart part) {}
 };
 
-protected static final String PALETTE_SIZE = "Palette Size"; //$NON-NLS-1$
-protected static final int DEFAULT_PALETTE_SIZE = 130;
-	
 public LogicEditor() {
 	setEditDomain(new DefaultEditDomain(this));
 }
@@ -439,31 +436,12 @@ public Object getAdapter(Class type){
 					}
 				});
 			}
-			protected void initializePaletteViewer() {
-				super.initializePaletteViewer();
-				LogicPlugin.getDefault().getPreferenceStore().setDefault(
-						PALETTE_SIZE, DEFAULT_PALETTE_SIZE);
-			}
 		};
 	}
 	if (type == ZoomManager.class)
 		return getGraphicalViewer().getProperty(ZoomManager.class.toString());
 
 	return super.getAdapter(type);
-}
-
-/**
- * @see org.eclipse.gef.ui.parts.GraphicalEditorWithPalette#getInitialPaletteSize()
- */
-protected int getInitialPaletteSize() {
-	return LogicPlugin.getDefault().getPreferenceStore().getInt(PALETTE_SIZE);
-}
-
-/**
- * @see org.eclipse.gef.ui.parts.GraphicalEditorWithPalette#handlePaletteResized(int)
- */
-protected void handlePaletteResized(int newSize) {
-	LogicPlugin.getDefault().getPreferenceStore().setValue(PALETTE_SIZE, newSize);
 }
 
 /**
