@@ -14,10 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.gef.commands.Command;
+
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
-import org.eclipse.gef.examples.logicdesigner.model.LogicDiagram;
-import org.eclipse.gef.examples.logicdesigner.model.LogicSubpart;
-import org.eclipse.gef.examples.logicdesigner.model.Wire;
+import org.eclipse.gef.examples.logicdesigner.model.*;
 
 public class DeleteCommand
 	extends Command
@@ -25,6 +24,8 @@ public class DeleteCommand
 
 private LogicSubpart child;
 private LogicDiagram parent;
+private LogicGuide vGuide, hGuide;
+private int vAlign, hAlign;
 private int index = -1;
 private List sourceConnections = new ArrayList();
 private List targetConnections = new ArrayList();
@@ -53,14 +54,35 @@ private void deleteConnections(LogicSubpart part) {
 	}
 }
 
+private void detachFromGuides(LogicSubpart part) {
+	if (part.getVerticalGuide() != null) {
+		vGuide = part.getVerticalGuide();
+		vAlign = vGuide.getAlignment(part);
+		vGuide.detachPart(part);
+	}
+	if (part.getHorizontalGuide() != null) {
+		hGuide = part.getHorizontalGuide();
+		hAlign = hGuide.getAlignment(part);
+		hGuide.detachPart(part);
+	}
+		
+}
 public void execute() {
-	primExecute();
+	primExecute(); 
 }
 
 protected void primExecute() {
 	deleteConnections(child);
+	detachFromGuides(child);
 	index = parent.getChildren().indexOf(child);
 	parent.removeChild(child);
+}
+
+private void reattachToGuides(LogicSubpart part) {
+	if (vGuide != null)
+		vGuide.attachPart(part, vAlign);
+	if (hGuide != null)
+		hGuide.attachPart(part, hAlign);
 }
 
 public void redo() {
@@ -93,6 +115,7 @@ public void setParent(LogicDiagram p) {
 public void undo() {
 	parent.addChild(child, index);
 	restoreConnections();
+	reattachToGuides(child);
 }
 
 }
