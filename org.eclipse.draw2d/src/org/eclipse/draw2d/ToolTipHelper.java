@@ -62,7 +62,7 @@ private Point computeWindowLocation(IFigure tip, int eventX, int eventY) {
 	if (preferredLocation.y + tipSize.height > clientArea.height)  
 		preferredLocation.y = eventY - tipSize.height;
 	
-	if (preferredLocation.x + tip.getSize().width > clientArea.width)
+	if (preferredLocation.x + tipSize.width > clientArea.width)
 		preferredLocation.x -= (preferredLocation.x + tipSize.width) - clientArea.width;
 	
 	return preferredLocation; 
