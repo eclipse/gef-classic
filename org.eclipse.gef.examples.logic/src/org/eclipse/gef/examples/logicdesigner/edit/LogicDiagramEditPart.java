@@ -66,7 +66,7 @@ protected IFigure createFigure() {
 //	f.setBorder(new GroupBoxBorder("Diagram"));
 	f.setLayoutManager(new FreeformLayout());
 	f.setBorder(new MarginBorder(5));
-//	f.setBackgroundColor(ColorConstants.yellow);
+	f.setBackgroundColor(ColorConstants.listBackground);
 	f.setOpaque(true);
 	return f;
 }
