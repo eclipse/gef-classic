@@ -16,14 +16,11 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 
-import org.eclipse.draw2d.ConnectionLayer;
-import org.eclipse.draw2d.FanRouter;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.FreeformLayer;
 import org.eclipse.draw2d.FreeformLayout;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.MarginBorder;
-import org.eclipse.draw2d.ShortestPathConnectionRouter;
 
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.LayerConstants;
@@ -43,7 +40,6 @@ public class DiagramEditPart
 	implements LayerConstants
 {
 	
-private ShortestPathConnectionRouter spRouter;
 protected Adapter modelListener = new AdapterImpl() {
 	public void notifyChanged(Notification msg) {
 		handlePropertyChanged(msg);
@@ -73,7 +69,6 @@ protected void createEditPolicies() {
 }
 
 public void deactivate() {
-	getContentPane().removeLayoutListener(spRouter.getLayoutListener());
 	((Diagram)getModel()).eAdapters().remove(modelListener);
 	super.deactivate();
 }
@@ -82,19 +77,6 @@ protected void handlePropertyChanged(Notification msg) {
 	switch (msg.getFeatureID(Diagram.class)) {
 		case ModelPackage.DIAGRAM__CONTENTS:
 			refreshChildren();
-	}
-}
-
-protected void refreshVisuals() {
-	// refreshVisuals is called before activate(), so we add the router here (only once)
-	if (spRouter == null) {
-		ConnectionLayer cLayer = (ConnectionLayer) getLayer(CONNECTION_LAYER);
-		FanRouter router = new FanRouter();
-		router.setSeparation(30);
-		spRouter = new ShortestPathConnectionRouter(getFigure()); 
-		router.setNextRouter(spRouter);
-		cLayer.setConnectionRouter(router);
-		getContentPane().addLayoutListener(spRouter.getLayoutListener());
 	}
 }
 

@@ -29,10 +29,19 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.DanglingHREFException;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 
+import org.eclipse.draw2d.ConnectionLayer;
+import org.eclipse.draw2d.FanRouter;
+import org.eclipse.draw2d.ShortestPathConnectionRouter;
+
 import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.gef.EditPart;
+import org.eclipse.gef.GraphicalEditPart;
+import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.KeyHandler;
 import org.eclipse.gef.KeyStroke;
+import org.eclipse.gef.LayerConstants;
+import org.eclipse.gef.MouseWheelHandler;
+import org.eclipse.gef.MouseWheelZoomHandler;
 import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CompoundCommand;
@@ -49,7 +58,6 @@ import org.eclipse.gef.ui.palette.PaletteViewerProvider;
 import org.eclipse.gef.ui.palette.FlyoutPaletteComposite.FlyoutPreferences;
 import org.eclipse.gef.ui.parts.GraphicalEditorWithFlyoutPalette;
 import org.eclipse.gef.ui.parts.GraphicalViewerKeyHandler;
-import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 
 import org.eclipse.gef.examples.ediagram.EDiagramPlugin;
 import org.eclipse.gef.examples.ediagram.edit.parts.EDiagramPartFactory;
@@ -83,17 +91,15 @@ public void commandStackChanged(EventObject event) {
 
 protected void configureGraphicalViewer() {
 	super.configureGraphicalViewer();
-	final ScrollingGraphicalViewer viewer = (ScrollingGraphicalViewer)getGraphicalViewer();
+	GraphicalViewer viewer = getGraphicalViewer();
 
-	ScalableFreeformRootEditPart root = new ScalableFreeformRootEditPart();
-	viewer.setRootEditPart(root);
-
+	viewer.setRootEditPart(new ScalableFreeformRootEditPart());
 	viewer.setEditPartFactory(EDiagramPartFactory.getInstance());
 	
 	KeyHandler keyHandler = new GraphicalViewerKeyHandler(viewer) {
 		public boolean keyPressed(KeyEvent event) {
 			if (event.stateMask == SWT.CTRL && event.keyCode == SWT.DEL) {
-				List objects = viewer.getSelectedEditParts();
+				List objects = getGraphicalViewer().getSelectedEditParts();
 				if (objects == null || objects.isEmpty())
 					return true;
 				GroupRequest deleteReq = new GroupRequest(RequestConstants.REQ_DELETE);
@@ -115,6 +121,9 @@ protected void configureGraphicalViewer() {
 	keyHandler.put(KeyStroke.getPressed(SWT.F2, 0),
 			getActionRegistry().getAction(GEFActionConstants.DIRECT_EDIT));
 	viewer.setKeyHandler(keyHandler);
+	// Scroll-wheel Zoom
+	viewer.setProperty(MouseWheelHandler.KeyGenerator.getKey(SWT.CTRL), 
+			MouseWheelZoomHandler.SINGLETON);
 }
 
 protected void createActions() {
@@ -215,11 +224,24 @@ public void doSaveAs() {
 
 protected void initializeGraphicalViewer() {
 	super.initializeGraphicalViewer();
-	getGraphicalViewer().setContents(diagram);
-	getGraphicalViewer().addDropTargetListener(
-			new DiagramDropTargetListener(getGraphicalViewer()));
-	getGraphicalViewer().addDropTargetListener(
-			new EDiagramPaletteDropListener(getGraphicalViewer()));
+	GraphicalViewer viewer = getGraphicalViewer();
+	viewer.setContents(diagram);
+	viewer.addDropTargetListener(new DiagramDropTargetListener(viewer));
+	viewer.addDropTargetListener(new EDiagramPaletteDropListener(viewer));
+	
+	// add the router
+	ScalableFreeformRootEditPart root = 
+			(ScalableFreeformRootEditPart)viewer.getRootEditPart();
+	ConnectionLayer connLayer =
+			(ConnectionLayer)root.getLayer(LayerConstants.CONNECTION_LAYER);
+	GraphicalEditPart contentEditPart = (GraphicalEditPart)root.getContents();
+	FanRouter router = new FanRouter();
+	router.setSeparation(20);
+	ShortestPathConnectionRouter spRouter = 
+			new ShortestPathConnectionRouter(contentEditPart.getFigure()); 
+	router.setNextRouter(spRouter);
+	connLayer.setConnectionRouter(router);
+	contentEditPart.getContentPane().addLayoutListener(spRouter.getLayoutListener());
 }
 
 public boolean isDirty() {
