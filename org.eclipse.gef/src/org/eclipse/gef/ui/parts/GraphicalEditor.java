@@ -315,6 +315,14 @@ protected void initializeActionRegistry() {
 protected abstract void initializeGraphicalViewer();
 
 /**
+ * Returns <code>true</code> if the command stack is dirty
+ * @see org.eclipse.ui.ISaveablePart#isDirty()
+ */
+public boolean isDirty() {
+	return getCommandStack().isDirty();
+}
+
+/**
  * @see org.eclipse.ui.ISelectionListener#selectionChanged(IWorkbenchPart, ISelection)
  */
 public void selectionChanged(IWorkbenchPart part, ISelection selection) {
