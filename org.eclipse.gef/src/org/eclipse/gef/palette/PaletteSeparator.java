@@ -1,10 +1,9 @@
 package org.eclipse.gef.palette;
 
-import org.eclipse.gef.ui.palette.PaletteMessages;
-
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.ui.internal.IWorkbenchGraphicConstants;
-import org.eclipse.ui.internal.WorkbenchImages;
+
+import org.eclipse.gef.internal.Internal;
+import org.eclipse.gef.ui.palette.PaletteMessages;
 
 /**
  * A separator for the palette
@@ -24,10 +23,8 @@ public class PaletteSeparator extends PaletteEntry {
  */
 public static final String NOT_A_MARKER = ""; //$NON-NLS-1$
 
-//@TODO:Pratik
-// Update this image
-private static ImageDescriptor icon = WorkbenchImages
-	.getImageDescriptor(IWorkbenchGraphicConstants.IMG_CTOOL_BUILD_EXEC_HOVER);
+private static final ImageDescriptor icon = ImageDescriptor.createFromFile(
+				Internal.class, "icons/separator.gif"); //$NON-NLS-1$
 
 private String id;
 
