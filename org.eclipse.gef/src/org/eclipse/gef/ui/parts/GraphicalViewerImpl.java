@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.*;
+import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.widgets.*;
 
@@ -50,8 +51,8 @@ protected LightweightSystem createLightweightSystem(){
 	return new LightweightSystem();
 }
 
-public void dispose() {
-	super.dispose();
+public void handleDispose(DisposeEvent e) {
+	super.handleDispose(e);
 	getLightweightSystem().getUpdateManager().dispose();
 }
 
@@ -75,7 +76,11 @@ public EditPart findObjectAtExcluding(Point pt, Collection exclude, final Condit
 			super(coll);
 		}
 		public boolean accept(IFigure figure) {
-			EditPart editpart = (EditPart)getVisualPartMap().get(figure);
+			EditPart editpart = null;
+			while (editpart == null && figure != null) {
+				editpart = (EditPart)getVisualPartMap().get(figure);
+				figure = figure.getParent();
+			}
 			return editpart != null
 				&& (condition == null || condition.evaluate(editpart));
 		}
@@ -83,7 +88,11 @@ public EditPart findObjectAtExcluding(Point pt, Collection exclude, final Condit
 	IFigure figure = getLightweightSystem()
 		.getRootFigure()
 		.findFigureAt(pt.x, pt.y, new ConditionalTreeSearch(exclude));
-	EditPart part = (EditPart)getVisualPartMap().get(figure);
+	EditPart part = null;
+	while (part == null && figure != null) {
+		part = (EditPart)getVisualPartMap().get(figure);
+		figure = figure.getParent();
+	}
 	if (part == null)
 		return getContents();
 	return part;
