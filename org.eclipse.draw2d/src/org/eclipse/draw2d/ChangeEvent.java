@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2004 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -31,7 +31,8 @@ public ChangeEvent(Object source) {
 /**
  * Constructs a new ChangeEvent with the given source object and property name.
  * @param source The source of the event
- * @param property The property name */
+ * @param property The property name
+ */
 public ChangeEvent(Object source, String property) {
 	super(source);
 	setPropertyName(property);
@@ -39,14 +40,16 @@ public ChangeEvent(Object source, String property) {
 
 /**
  * Returns the name of the property that has changed.
- * @return String the name of the property that has changed */
+ * @return String the name of the property that has changed
+ */
 public String getPropertyName() {
 	return property;
 }
 
 /**
  * Sets the name of the property that has changed.
- * @param string The property name */
+ * @param string The property name
+ */
 protected void setPropertyName(String string) {
 	property = string;
 }

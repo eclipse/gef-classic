@@ -1,10 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2004 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -19,7 +19,8 @@ import org.eclipse.draw2d.Figure;
  * 
  * <P>WARNING: This class is not intended to be subclassed by clients.
  * @author hudsonr
- * @since 2.1 */
+ * @since 2.1
+ */
 public abstract class FlowContainerLayout
 	extends FlowFigureLayout
 	implements FlowContext
@@ -30,7 +31,9 @@ public abstract class FlowContainerLayout
  */
 LineBox currentLine;
 
-/** * @see org.eclipse.draw2d.text.FlowFigureLayout#FlowFigureLayout(FlowFigure) */
+/**
+ * @see org.eclipse.draw2d.text.FlowFigureLayout#FlowFigureLayout(FlowFigure)
+ */
 protected FlowContainerLayout(FlowFigure flowFigure) {
 	super(flowFigure);
 }
@@ -38,7 +41,9 @@ protected FlowContainerLayout(FlowFigure flowFigure) {
 /**
  * Clears the layout state every time a new box is added to the current line: 
  * {@link FlowContext#setConsumeSpaceOnNewLine(boolean)} and 
- * {@link FlowContext#setContinueOnSameLine(boolean)}. * @see org.eclipse.draw2d.text.FlowContext#addToCurrentLine(FlowBox) */
+ * {@link FlowContext#setContinueOnSameLine(boolean)}.
+ * @see org.eclipse.draw2d.text.FlowContext#addToCurrentLine(FlowBox)
+ */
 public void addToCurrentLine(FlowBox child) {
 	getCurrentLine().add(child);
 	setContinueOnSameLine(false);
@@ -64,7 +69,9 @@ protected abstract void flush();
 
 /**
  * FlowBoxes shouldn't be added directly to the current line.  Use 
- * {@link #addToCurrentLine(FlowBox)} for that. * @see org.eclipse.draw2d.text.FlowContext#getCurrentLine() */
+ * {@link #addToCurrentLine(FlowBox)} for that.
+ * @see org.eclipse.draw2d.text.FlowContext#getCurrentLine()
+ */
 LineBox getCurrentLine() {
 	if (currentLine == null)
 		createNewLine();
@@ -85,7 +92,9 @@ public boolean isCurrentLineOccupied() {
 	return currentLine != null && currentLine.isOccupied();
 }
 
-/** * @see FlowFigureLayout#layout() */
+/**
+ * @see FlowFigureLayout#layout()
+ */
 protected void layout() {
 	preLayout();
 	layoutChildren();

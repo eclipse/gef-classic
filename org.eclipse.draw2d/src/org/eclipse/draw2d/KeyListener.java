@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2004 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -17,7 +17,8 @@ public interface KeyListener {
 
 /**
  * Called when a key is pressed.
- * @param ke The KeyEvent object */
+ * @param ke The KeyEvent object
+ */
 void keyPressed(KeyEvent ke);
 
 /**
@@ -27,13 +28,18 @@ void keyPressed(KeyEvent ke);
 void keyReleased(KeyEvent ke);
 
 /**
- * An empty implementation of KeyListener for convenience. */
+ * An empty implementation of KeyListener for convenience.
+ */
 class Stub
 	implements KeyListener
 {
-	/**	 * @see org.eclipse.draw2d.KeyListener#keyPressed(KeyEvent)	 */
+	/**
+	 * @see org.eclipse.draw2d.KeyListener#keyPressed(KeyEvent)
+	 */
 	public void keyPressed(KeyEvent ke) { }
-	/**	 * @see org.eclipse.draw2d.KeyListener#keyReleased(KeyEvent)	 */
+	/**
+	 * @see org.eclipse.draw2d.KeyListener#keyReleased(KeyEvent)
+	 */
 	public void keyReleased(KeyEvent ke) { }
 
 }

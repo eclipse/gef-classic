@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2004 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -49,7 +49,8 @@ private static final ConnectionAnchor DEFAULT_TARGET_ANCHOR =
  * connection is the source or target of another connection, then its midpoint is used as
  * the accessible anchor location.
  * @author hudsonr
- * @since 2.0 */
+ * @since 2.0
+ */
 protected final class DefaultAccessibleAnchorProvider
 	implements AccessibleAnchorProvider
 {
@@ -57,7 +58,9 @@ protected final class DefaultAccessibleAnchorProvider
 	 * This class is internal, but is made protected so that JavaDoc will see it.
 	 */
 	DefaultAccessibleAnchorProvider() { }
-	/**	 * @see AccessibleAnchorProvider#getSourceAnchorLocations()	 */
+	/**
+	 * @see AccessibleAnchorProvider#getSourceAnchorLocations()
+	 */
 	public List getSourceAnchorLocations() {
 		List list = new ArrayList();
 		if (getFigure() instanceof Connection) {
@@ -69,7 +72,9 @@ protected final class DefaultAccessibleAnchorProvider
 		}
 		return list;
 	}
-	/**	 * @see AccessibleAnchorProvider#getTargetAnchorLocations()	 */
+	/**
+	 * @see AccessibleAnchorProvider#getTargetAnchorLocations()
+	 */
 	public List getTargetAnchorLocations() {
 		return getSourceAnchorLocations();
 	}
@@ -90,7 +95,9 @@ protected void activateFigure() {
 	getLayer(CONNECTION_LAYER).add(getFigure());
 }
 
-/** * @see org.eclipse.gef.EditPart#addNotify() */
+/**
+ * @see org.eclipse.gef.EditPart#addNotify()
+ */
 public void addNotify() {
 	activateFigure();
 	super.addNotify();
@@ -141,17 +148,23 @@ public Connection getConnectionFigure() {
 	return (Connection)getFigure();
 }
 
-/** * @see org.eclipse.gef.EditPart#getDragTracker(Request) */
+/**
+ * @see org.eclipse.gef.EditPart#getDragTracker(Request)
+ */
 public DragTracker getDragTracker(Request req) {
 	return new SelectEditPartTracker(this);
 }
 
-/** * @see org.eclipse.gef.ConnectionEditPart#getSource() */
+/**
+ * @see org.eclipse.gef.ConnectionEditPart#getSource()
+ */
 public EditPart getSource() {
 	return sourceEditPart;
 }
 
-/** * @see org.eclipse.gef.ConnectionEditPart#getTarget() */
+/**
+ * @see org.eclipse.gef.ConnectionEditPart#getTarget()
+ */
 public EditPart getTarget() {
 	return targetEditPart;
 }
@@ -200,7 +213,8 @@ protected ConnectionAnchor getTargetConnectionAnchor() {
 
 /**
  * Extended here to also refresh the ConnectionAnchors.
- * @see org.eclipse.gef.EditPart#refresh() */
+ * @see org.eclipse.gef.EditPart#refresh()
+ */
 public void refresh() {
 	refreshSourceAnchor();
 	refreshTargetAnchor();
@@ -226,7 +240,8 @@ protected void refreshTargetAnchor() {
 /**
  * Extended here to remove the ConnectionEditPart's connection figure from the connection
  * layer.
- * @see org.eclipse.gef.EditPart#removeNotify() */
+ * @see org.eclipse.gef.EditPart#removeNotify()
+ */
 public void removeNotify() {
 	deactivateFigure();
 	super.removeNotify();
@@ -234,7 +249,8 @@ public void removeNotify() {
 
 /**
  * Extended to implement automatic addNotify and removeNotify handling.
- * @see org.eclipse.gef.EditPart#setParent(EditPart) */
+ * @see org.eclipse.gef.EditPart#setParent(EditPart)
+ */
 public void setParent(EditPart parent) {
 	boolean wasNull = getParent() == null;
 	boolean becomingNull = parent == null;

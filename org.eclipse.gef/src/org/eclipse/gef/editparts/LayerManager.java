@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2004 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -24,7 +24,8 @@ import org.eclipse.gef.EditPart;
  * Viewer's {@link org.eclipse.gef.EditPartViewer#getEditPartRegistry() editPartRegsitry}
  * to find the <code>LayerManager</code>.
  * @author hudsonr
- * @since 2.0 */
+ * @since 2.0
+ */
 public interface LayerManager {
 
 /**
@@ -35,17 +36,20 @@ Object ID = new Object();
 /**
  * Returns a specified layer.
  * @param key a key identifying the layer
- * @return the specified layer */
+ * @return the specified layer
+ */
 IFigure getLayer(Object key);
 
 /**
  * A static helper
- * @since 2.0 */
+ * @since 2.0
+ */
 class Helper {
 	/**
 	 * Finds the LayerManager given any EditPart in the Viewer.
 	 * @param part any EditPart in a GraphicalViewer
-	 * @return the <code>LayerManager</code>	 */
+	 * @return the <code>LayerManager</code>
+	 */
 	public static LayerManager find(EditPart part) {
 		return (LayerManager)part.getViewer().getEditPartRegistry().get(ID);
 	}

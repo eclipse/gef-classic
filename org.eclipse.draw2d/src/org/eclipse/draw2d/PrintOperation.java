@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2004 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -20,7 +20,8 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * Implementation of draw2d's printing capabilities. 
  *  
  * @author Dan Lee
- * @author Eric Bordeau */
+ * @author Eric Bordeau
+ */
 public abstract class PrintOperation {
 
 private GC printerGC;  // Note: Only one GC instance should be created per print job
@@ -36,7 +37,8 @@ public PrintOperation() { }
 
 /**
  * Creates a new PrintOperation on Printer p
- * @param p The printer to print on */
+ * @param p The printer to print on
+ */
 public PrintOperation(Printer p) {
 	setPrinter(p);
 }
@@ -98,7 +100,8 @@ protected void restorePrintSource() { }
  * Returns a new PrinterGraphics setup for the Printer associated with this
  * PrintOperation.
  * 
- * @return PrinterGraphics The new PrinterGraphics */
+ * @return PrinterGraphics The new PrinterGraphics
+ */
 protected PrinterGraphics getFreshPrinterGraphics() {
 	if (printerGraphics != null) {
 		printerGraphics.dispose();
@@ -122,7 +125,8 @@ protected abstract void printPages();
 /**
  * Sets the print job into motion. 
  * 
- * @param jobName A String representing the name of the print job */
+ * @param jobName A String representing the name of the print job
+ */
 public void run(String jobName) {
 	preparePrintSource();
 	if (printer.startJob(jobName)) {
@@ -138,7 +142,8 @@ public void run(String jobName) {
  * Manipulates the PrinterGraphics to position it to paint in the desired region of the
  * page. (Default is the top left corner of the page).
  * 
- * @param pg The PrinterGraphics to setup */
+ * @param pg The PrinterGraphics to setup
+ */
 protected void setupGraphicsForPage(PrinterGraphics pg) {
 	Rectangle printRegion = getPrintRegion();
 	pg.clipRect(printRegion);

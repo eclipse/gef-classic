@@ -1,10 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2004 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -53,7 +53,8 @@ private EditPartListener listener;
 
 /**
  * Extends activate() to allow proper decoration of children.
- * @see org.eclipse.gef.EditPolicy#activate() */
+ * @see org.eclipse.gef.EditPolicy#activate()
+ */
 public void activate() {
 	setListener(createListener());
 	decorateChildren();
@@ -63,12 +64,14 @@ public void activate() {
 /**
  * Returns the "satellite" EditPolicy used to decorate the child.
  * @param child the child EditPart
- * @return an EditPolicy to be installed as the {@link EditPolicy#PRIMARY_DRAG_ROLE} */
+ * @return an EditPolicy to be installed as the {@link EditPolicy#PRIMARY_DRAG_ROLE}
+ */
 protected abstract EditPolicy createChildEditPolicy(EditPart child);
 
 /**
  * creates the EditPartListener for observing when children are added to the host.
- * @return EditPartListener */
+ * @return EditPartListener
+ */
 protected EditPartListener createListener() {
 	return new EditPartListener.Stub() {
 		public void childAdded(EditPart child, int index) {
@@ -88,7 +91,8 @@ protected IFigure createSizeOnDropFeedback(CreateRequest createRequest) {
 
 /**
  * Overrides deactivate to remove the EditPartListener.
- * @see org.eclipse.gef.EditPolicy#deactivate() */
+ * @see org.eclipse.gef.EditPolicy#deactivate()
+ */
 public void deactivate() {
 	if (sizeOnDropFeedback != null) {
 		removeFeedback(sizeOnDropFeedback);
@@ -101,7 +105,8 @@ public void deactivate() {
 /**
  * Decorates the child with a {@link EditPolicy#PRIMARY_DRAG_ROLE} such as {@link
  * ResizableEditPolicy}.
- * @param child the child EditPart being decorated */
+ * @param child the child EditPart being decorated
+ */
 protected void decorateChild(EditPart child) {
 	EditPolicy policy = createChildEditPolicy(child);
 	child.installEditPolicy(EditPolicy.PRIMARY_DRAG_ROLE, policy);
@@ -119,13 +124,15 @@ protected void decorateChildren() {
 /**
  * Erases target layout feedback. This method is the inverse of {@link
  * #showLayoutTargetFeedback(Request)}.
- * @param request the Request */
+ * @param request the Request
+ */
 protected void eraseLayoutTargetFeedback(Request request) {
 }
 
 /**
  * Erases size-on-drop feedback used during creation.
- * @param request the Request */
+ * @param request the Request
+ */
 protected void eraseSizeOnDropFeedback(Request request) {
 	if (sizeOnDropFeedback != null) {
 		removeFeedback(sizeOnDropFeedback);
@@ -135,7 +142,8 @@ protected void eraseSizeOnDropFeedback(Request request) {
 
 /**
  * Calls two more specific methods depending on the Request.
- * @see org.eclipse.gef.EditPolicy#eraseTargetFeedback(Request) */
+ * @see org.eclipse.gef.EditPolicy#eraseTargetFeedback(Request)
+ */
 public void eraseTargetFeedback(Request request) {
 	if (REQ_ADD.equals(request.getType())
 		|| REQ_MOVE.equals(request.getType())
@@ -152,7 +160,8 @@ public void eraseTargetFeedback(Request request) {
  * Override to return the <code>Command</code> to perform an {@link
  * RequestConstants#REQ_ADD ADD}. By default, <code>null</code> is returned.
  * @param request the ADD Request
- * @return A command to perform the ADD. */
+ * @return A command to perform the ADD.
+ */
 protected Command getAddCommand(Request request) {
 	return null;
 }
@@ -168,7 +177,8 @@ protected Command getCloneCommand(ChangeBoundsRequest request) {
 
 /**
  * Factors incoming requests into various specific methods.
- * @see org.eclipse.gef.EditPolicy#getCommand(Request) */
+ * @see org.eclipse.gef.EditPolicy#getCommand(Request)
+ */
 public Command getCommand(Request request) {
 	if (REQ_DELETE_DEPENDANT.equals(request.getType()))
 		return getDeleteDependantCommand(request);
@@ -194,7 +204,8 @@ public Command getCommand(Request request) {
 /**
  * Returns the <code>Command</code> to perform a create.
  * @param request the CreateRequest
- * @return a Command to perform a create */
+ * @return a Command to perform a create
+ */
 protected abstract Command getCreateCommand(CreateRequest request);
 
 /**
@@ -218,7 +229,8 @@ protected abstract Command getDeleteDependantCommand(Request request);
  * contentPane is the Figure which parents the childrens' figures. It is also the figure
  * which has the LayoutManager that corresponds to this EditPolicy. All operations should
  * be interpreted with respect to this figure.
- * @return the Figure that owns the corresponding <code>LayoutManager</code> */
+ * @return the Figure that owns the corresponding <code>LayoutManager</code>
+ */
 protected IFigure getLayoutContainer() {
 	return ((GraphicalEditPart)getHost()).getContentPane();
 }
@@ -226,7 +238,8 @@ protected IFigure getLayoutContainer() {
 /**
  * Returns the <code>Command</code> to move a group of children.
  * @param request the Request
- * @return the Command to perform the move */
+ * @return the Command to perform the move
+ */
 protected abstract Command getMoveChildrenCommand(Request request);
 
 /**
@@ -237,7 +250,8 @@ protected abstract Command getMoveChildrenCommand(Request request);
  * second part is to perform some adjustments on the remaining children. For example, a
  * Table layout might simplify itself by collapsing any unused columns and rows.
  * @param request the Request
- * @return <code>null</code> or a Command to perform an orphan */
+ * @return <code>null</code> or a Command to perform an orphan
+ */
 protected Command getOrphanChildrenCommand(Request request) {
 	return null;
 }
@@ -256,7 +270,8 @@ protected IFigure getSizeOnDropFeedback(CreateRequest createRequest) {
 
 /**
  * Lazily creates and returns the Figure to use for size-on-drop feedback.
- * @return the size-on-drop feedback figure */
+ * @return the size-on-drop feedback figure
+ */
 protected IFigure getSizeOnDropFeedback() {
 	if (sizeOnDropFeedback == null) {
 		sizeOnDropFeedback = new RectangleFigure();
@@ -270,7 +285,8 @@ protected IFigure getSizeOnDropFeedback() {
 
 /**
  * Returns the <i>host</i> if the Request is an ADD, MOVE, or CREATE.
- * @see org.eclipse.gef.EditPolicy#getTargetEditPart(Request) */
+ * @see org.eclipse.gef.EditPolicy#getTargetEditPart(Request)
+ */
 public EditPart getTargetEditPart(Request request) {
 	if (REQ_ADD.equals(request.getType())
 		|| REQ_MOVE.equals(request.getType())
@@ -286,7 +302,8 @@ public EditPart getTargetEditPart(Request request) {
  * <P>
  * The listener must be remembered in case this EditPolicy is removed from the host and
  * replaced with another LayoutEditPolicy.
- * @param listener <code>null</code> or the listener. */
+ * @param listener <code>null</code> or the listener.
+ */
 protected void setListener(EditPartListener listener) {
 	if (this.listener != null)
 		getHost().removeEditPartListener(this.listener);
@@ -309,13 +326,15 @@ protected void showLayoutTargetFeedback(Request request) { }
 
 /**
  * Shows size-on-drop feedback during creation.
- * @param request the CreateRequest */
+ * @param request the CreateRequest
+ */
 protected void showSizeOnDropFeedback(CreateRequest request) {
 }
 
 /**
  * Factors feedback requests into two more specific methods.
- * @see org.eclipse.gef.EditPolicy#showTargetFeedback(Request) */
+ * @see org.eclipse.gef.EditPolicy#showTargetFeedback(Request)
+ */
 public void showTargetFeedback(Request request) {
 	if (REQ_ADD.equals(request.getType())
 			|| REQ_CLONE.equals(request.getType())

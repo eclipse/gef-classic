@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2004 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -32,7 +32,8 @@ Printer printer;
 /**
  * Creates a new PrinterGraphics with Graphics g, using Printer p
  * @param g Graphics object to draw with
- * @param p Printer to print to */
+ * @param p Printer to print to
+ */
 public PrinterGraphics(Graphics g, Printer p) {
 	super(g);
 	printer = p;
@@ -51,7 +52,9 @@ private Image printerImage(Image image) {
 	imageCache.put(image, result);
 	return result;
 }
-/** * @see org.eclipse.draw2d.Graphics#drawImage(Image, int, int) */
+/**
+ * @see org.eclipse.draw2d.Graphics#drawImage(Image, int, int)
+ */
 public void drawImage(Image srcImage, int x, int y) {
 	super.drawImage(printerImage(srcImage), x, y);
 }

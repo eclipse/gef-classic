@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2004 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -36,7 +36,8 @@ public EllipseAnchor(IFigure owner) {
 /**
  * Returns a point on the ellipse (defined by the owner's bounding box) where the
  * connection should be anchored.
- * @see org.eclipse.draw2d.ConnectionAnchor#getLocation(Point) */
+ * @see org.eclipse.draw2d.ConnectionAnchor#getLocation(Point)
+ */
 public Point getLocation(Point reference) {
 	Rectangle r = Rectangle.SINGLETON;
 	r.setBounds(getOwner().getBounds());

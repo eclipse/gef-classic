@@ -1,10 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2004 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -34,7 +34,8 @@ public class InlineFlow extends FlowFigure {
 
 List fragments = new ArrayList(1);
 
-/** * Iterates over the children to find the width before a line-break is encountered.
+/**
+ * Iterates over the children to find the width before a line-break is encountered.
  * @see org.eclipse.draw2d.text.FlowFigure#addLeadingWordRequirements(int[])
  */
 public boolean addLeadingWordRequirements(int[] width) {
@@ -46,7 +47,8 @@ public boolean addLeadingWordRequirements(int[] width) {
 	return false;
 }
 
-/** * Extended to return false if the point is not also contained by at least one fragment.
+/**
+ * Extended to return false if the point is not also contained by at least one fragment.
  * @return <code>true</code> if a fragment contains the given point
  * @param x the relative x coordinate
  * @param y the relative y coordinate

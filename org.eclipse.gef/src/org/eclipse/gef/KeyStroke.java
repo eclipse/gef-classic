@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2004 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -25,7 +25,8 @@ public class KeyStroke {
  * {@link KeyEvent#stateMask} during a press event.
  * @param character the character to match
  * @param stateMask the stateMask to match
- * @return a new KeyStroke */
+ * @return a new KeyStroke
+ */
 public static KeyStroke getPressed(char character, int stateMask) {
 	return new KeyStroke(character, stateMask, true);
 }
@@ -138,7 +139,9 @@ public boolean equals(Object obj) {
 	return false;
 }
 
-/** * @see java.lang.Object#hashCode() */
+/**
+ * @see java.lang.Object#hashCode()
+ */
 public int hashCode() {
 	return (stateMask + 1)
 		* ((character ^ keyCode) + 1)  //One of these is always Zero.

@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2004 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -76,7 +76,8 @@ protected void paintFigure(Graphics graphics) {
 
 /**
  * Draws a checkered pattern to emulate a toggle button that is in the selected state.
- * @param graphics	The Graphics object used to paint */
+ * @param graphics	The Graphics object used to paint
+ */
 protected void fillCheckeredRectangle(Graphics graphics) {
 	graphics.setBackgroundColor(ColorConstants.button);
 	graphics.setForegroundColor(ColorConstants.buttonLightest);

@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2004 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -65,7 +65,8 @@ public LineBorder() { }
 
 /**
  * Returns the line color of this border.
- * @return The line color of this border */
+ * @return The line color of this border
+ */
 public Color getColor() {
 	return color;
 }
@@ -82,7 +83,8 @@ public Insets getInsets(IFigure figure) {
 
 /**
  * Returns the line width of this border.
- * @return The line width of this border */
+ * @return The line width of this border
+ */
 public int getWidth() {
 	return width;
 }
@@ -114,14 +116,16 @@ public void paint(IFigure figure, Graphics graphics, Insets insets) {
 
 /**
  * Sets the line color for this border.
- * @param color The line color */
+ * @param color The line color
+ */
 public void setColor(Color color) {
 	this.color = color;
 }
 
 /**
  * Sets the line width for this border.
- * @param width The line width */
+ * @param width The line width
+ */
 public void setWidth(int width) {
 	this.width = width;
 }

@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2004 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -41,7 +41,8 @@ public TemplateTransferDropTargetListener(EditPartViewer viewer) {
 }
 
 /**
- * @see org.eclipse.gef.dnd.AbstractTransferDropTargetListener#createTargetRequest() */
+ * @see org.eclipse.gef.dnd.AbstractTransferDropTargetListener#createTargetRequest()
+ */
 protected Request createTargetRequest() {
 	//Look at the data on templatetransfer.
 	//Create factory
@@ -52,7 +53,8 @@ protected Request createTargetRequest() {
 
 /**
  * A helper method that casts the target Request to a CreateRequest.
- * @return CreateRequest */
+ * @return CreateRequest
+ */
 protected final CreateRequest getCreateRequest() {
 	return ((CreateRequest)getTargetRequest());
 }
@@ -61,7 +63,8 @@ protected final CreateRequest getCreateRequest() {
  * Returns the appropriate Factory object to be used for the specified template. This
  * Factory is used on the CreateRequest that is sent to the target EditPart.
  * @param template the template Object
- * @return a Factory */
+ * @return a Factory
+ */
 protected abstract CreationFactory getFactory(Object template);
 
 /**
@@ -87,7 +90,8 @@ protected void handleDragOver() {
 
 /**
  * Overridden to select the created object.
- * @see org.eclipse.gef.dnd.AbstractTransferDropTargetListener#handleDrop() */
+ * @see org.eclipse.gef.dnd.AbstractTransferDropTargetListener#handleDrop()
+ */
 protected void handleDrop() {
 	super.handleDrop();
 	selectAddedObject();

@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2004 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -53,13 +53,16 @@ public AbstractTreeEditPart(Object model) {
 	setModel(model);
 }
 
-/** * Default constructor */
+/**
+ * Default constructor
+ */
 public AbstractTreeEditPart() { }
 
 /**
  * Implemented to assign the child its {@link TreeEditPart#setWidget(Widget) widget}.
  * Subclasses should not call or override this method.
- * @see org.eclipse.gef.editparts.AbstractEditPart#addChildVisual(EditPart, int) */
+ * @see org.eclipse.gef.editparts.AbstractEditPart#addChildVisual(EditPart, int)
+ */
 protected void addChildVisual(EditPart childEditPart, int index) {
 	Widget widget = getWidget();
 	TreeItem item;
@@ -73,7 +76,8 @@ protected void addChildVisual(EditPart childEditPart, int index) {
 /**
  * Convenience method that returns <code>true</code> if the widget is a TreeItem and is
  * safe to use.
- * @return <code>true</code> if the widget is a <code>TreeItem</code> and is not disposed */
+ * @return <code>true</code> if the widget is a <code>TreeItem</code> and is not disposed
+ */
 protected final boolean checkTreeItem() {
 	return !(widget == null || widget.isDisposed() || widget instanceof Tree);
 }
@@ -81,10 +85,13 @@ protected final boolean checkTreeItem() {
 /**
  * Override this method to install the EditPolicies
  * for your EditPart.
- * @see org.eclipse.gef.editparts.AbstractEditPart#createEditPolicies() */
+ * @see org.eclipse.gef.editparts.AbstractEditPart#createEditPolicies()
+ */
 protected void createEditPolicies() { }
 
-/** * @see org.eclipse.gef.EditPart#getDragTracker(Request) */
+/**
+ * @see org.eclipse.gef.EditPart#getDragTracker(Request)
+ */
 public DragTracker getDragTracker(Request req) {
 	return null;
 }
@@ -93,7 +100,8 @@ public DragTracker getDragTracker(Request req) {
  * Override this method to return the
  * <code>Image</code> for this EditPart's {@link #widget}. This method is called from
  * {@link #refreshVisuals()}.
- * @return the Image to be displayed in the TreeItem */
+ * @return the Image to be displayed in the TreeItem
+ */
 protected Image getImage() {
 	return null;
 }
@@ -108,7 +116,9 @@ protected String getText() {
 	return getClass().getName();
 }
 
-/** * @see org.eclipse.gef.TreeEditPart#getWidget() */
+/**
+ * @see org.eclipse.gef.TreeEditPart#getWidget()
+ */
 public Widget getWidget() {
 	return widget;
 }
@@ -121,7 +131,8 @@ public Widget getWidget() {
  * <P>
  * Subclasses might extend this method if they also want to change the TreeItem's
  * foreground or background color.
- * @see org.eclipse.gef.editparts.AbstractEditPart#refreshVisuals() */
+ * @see org.eclipse.gef.editparts.AbstractEditPart#refreshVisuals()
+ */
 protected void refreshVisuals() {
 	setWidgetImage(getImage());
 	setWidgetText(getText());
@@ -129,7 +140,8 @@ protected void refreshVisuals() {
 
 /**
  * Disposes the child's <code>widget</code> and sets it to <code>null</code>.
- * @see org.eclipse.gef.editparts.AbstractEditPart#removeChildVisual(EditPart) */
+ * @see org.eclipse.gef.editparts.AbstractEditPart#removeChildVisual(EditPart)
+ */
 protected void removeChildVisual(EditPart childEditPart) {
 	TreeEditPart treeEditPart = (TreeEditPart)childEditPart;
 	treeEditPart.getWidget().dispose();
@@ -148,7 +160,8 @@ protected void reorderChild(EditPart editpart, int index) {
 
 /**
  * Sets the {@link #widget}.
- * @see org.eclipse.gef.TreeEditPart#setWidget(Widget) */
+ * @see org.eclipse.gef.TreeEditPart#setWidget(Widget)
+ */
 public void setWidget(Widget widget) {
 	List children = getChildren();
 	if (widget != null) {

@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2004 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -21,7 +21,8 @@ public interface RootEditPart extends EditPart {
 /**
  * Returns the <i>contents</i> EditPart. A RootEditPart only has a single child, called its
  * <i>contents</i>.
- * @return the contents. */
+ * @return the contents.
+ */
 EditPart getContents();
 
 /**
@@ -33,7 +34,8 @@ EditPartViewer getViewer();
 /**
  * Sets the <i>contents</i> EditPart. A RootEditPart only has a single child, called its
  * <i>contents</i>.
- * @param editpart the contents */
+ * @param editpart the contents
+ */
 void setContents(EditPart editpart);
 
 /**

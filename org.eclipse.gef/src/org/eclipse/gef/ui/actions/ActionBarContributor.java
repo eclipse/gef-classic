@@ -1,10 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2004 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -115,19 +115,24 @@ protected IAction getAction(String id) {
 
 /**
  * returns this contributor's ActionRegsitry.
- * @return the ActionRegistry */
+ * @return the ActionRegistry
+ */
 protected ActionRegistry getActionRegistry() {
 	return registry;
 }
 
-/** * @see org.eclipse.ui.part.EditorActionBarContributor#init(IActionBars) */
+/**
+ * @see org.eclipse.ui.part.EditorActionBarContributor#init(IActionBars)
+ */
 public void init(IActionBars bars) {
 	buildActions();
 	declareGlobalActionKeys();
 	super.init(bars);
 }
 
-/** * @see org.eclipse.ui.IEditorActionBarContributor#setActiveEditor(IEditorPart) */
+/**
+ * @see org.eclipse.ui.IEditorActionBarContributor#setActiveEditor(IEditorPart)
+ */
 public void setActiveEditor(IEditorPart editor) {
 	ActionRegistry registry = (ActionRegistry)editor.getAdapter(ActionRegistry.class);
 	IActionBars bars = getActionBars();

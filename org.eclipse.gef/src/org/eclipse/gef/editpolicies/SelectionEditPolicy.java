@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2004 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -26,7 +26,8 @@ import org.eclipse.gef.RequestConstants;
  * the appropriate methods.
  * 
  * @author hudsonr
- * @since 2.0 */
+ * @since 2.0
+ */
 public abstract class SelectionEditPolicy
 	extends org.eclipse.gef.editpolicies.GraphicalEditPolicy
 {
@@ -38,7 +39,8 @@ boolean focus;
 /**
  * Extends activate to hook the appropriate listener and to initialize the visual changes
  * for representing selection/focus.
- * @see org.eclipse.gef.EditPolicy#activate() */
+ * @see org.eclipse.gef.EditPolicy#activate()
+ */
 public void activate() {
 	super.activate();
 	addSelectionListener();
@@ -62,7 +64,8 @@ protected void addSelectionListener() {
 /**
  * Extends deactivate to unhook the seleciton listener and to remove the visual
  * changes for representing selection/focus.
- * @see org.eclipse.gef.EditPolicy#deactivate() */
+ * @see org.eclipse.gef.EditPolicy#deactivate()
+ */
 public void deactivate() {
 	removeSelectionListener();
 	setSelectedState(EditPart.SELECTED_NONE);
@@ -70,7 +73,9 @@ public void deactivate() {
 	super.deactivate();
 }
 
-/** * @see org.eclipse.gef.EditPolicy#getTargetEditPart(Request) */
+/**
+ * @see org.eclipse.gef.EditPolicy#getTargetEditPart(Request)
+ */
 public EditPart getTargetEditPart(Request request) {
 	if (RequestConstants.REQ_SELECTION.equals(request.getType()))
 		return getHost();
@@ -99,7 +104,8 @@ protected void removeSelectionListener() {
  * Sets the internal focus value. This method is called automatically by the listener. If
  * the focus value is changed, either {@link #showFocus()} or {@link #hideFocus()} will be
  * called.
- * @param value <code>true</code> if the EditPolicy should show focus */
+ * @param value <code>true</code> if the EditPolicy should show focus
+ */
 protected void setFocus(boolean value) {
 	if (focus == value)
 		return;
@@ -114,7 +120,8 @@ protected void setFocus(boolean value) {
  * Sets the internal selection value. This method is called automatically by the listener.
  * If the selection value is changed, the appropriate method is called to show the
  * specified selection type.
- * @param type the type of selection the EditPolicy should display */
+ * @param type the type of selection the EditPolicy should display
+ */
 protected void setSelectedState(int type) {
 	if (state == type)
 		return;

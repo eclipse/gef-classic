@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2004 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -28,7 +28,8 @@ private static EditPartViewer viewer;
 
 /**
  * Returns the singleton instance.
- * @return The singleton instance */
+ * @return The singleton instance
+ */
 public static TreeViewerTransfer getInstance() {
 	return INSTANCE;
 }
@@ -51,14 +52,16 @@ protected String[] getTypeNames() {
 
 /**
  * Returns the viewer where the drag started.
- * @return The viewer where the drag started */
+ * @return The viewer where the drag started
+ */
 public EditPartViewer getViewer() {
 	return viewer;
 }
 
 /**
  * Sets the viewer where the drag started.
- * @param epv The viewer */
+ * @param epv The viewer
+ */
 public void setViewer(EditPartViewer epv) {
 	viewer = epv;
 }

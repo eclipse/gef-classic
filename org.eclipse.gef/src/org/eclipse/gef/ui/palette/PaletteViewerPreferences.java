@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2004 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -155,7 +155,9 @@ void addPropertyChangeListener(PropertyChangeListener listener);
  */
 int getAutoCollapseSetting();
 
-/** * @return The FontData for the font to be used in the palette. */
+/**
+ * @return The FontData for the font to be used in the palette.
+ */
 FontData getFontData();
 
 /**
@@ -187,7 +189,8 @@ int[] getSupportedLayoutModes();
  * checking to see if a certain layout is supported, you can call this method.
  * 
  * @param layout	LAYOUT_COLUMNS, LAYOUT_LIST, LAYOUT_ICONS, or LAYOUT_DETAILS
- * @return <code>true</code> if the given layout is a supported mode */
+ * @return <code>true</code> if the given layout is a supported mode
+ */
 boolean isSupportedLayoutMode(int layout);
 
 /**
@@ -214,7 +217,8 @@ void setAutoCollapseSetting(int newVal);
 /**
  * Sets the FontData for the palette.
  * 
- * @param	data	The FontData for the font to be used in the palette */
+ * @param	data	The FontData for the font to be used in the palette
+ */
 void setFontData(FontData data);
 
 /**

@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2004 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -31,7 +31,8 @@ import org.eclipse.gef.requests.ReconnectRequest;
  * 
  * Created on :Nov 11, 2002
  * @author hudsonr
- * @since 2.0 */
+ * @since 2.0
+ */
 public abstract class GraphicalNodeEditPolicy
 	extends GraphicalEditPolicy
 {
@@ -48,7 +49,8 @@ protected Connection connectionFeedback;
 /**
  * Returns a connection to be used as feeback during creates.
  * @param req the operation being performed
- * @return a connection to use as feedback */
+ * @return a connection to use as feedback
+ */
 protected Connection createDummyConnection(Request req) {
 	return new PolylineConnection();
 }
@@ -67,7 +69,8 @@ public void deactivate() {
 
 /**
  * Erases connection feedback if necessary. Frees unused fields.
- * @param request the CreateConnectionRequest */
+ * @param request the CreateConnectionRequest
+ */
 protected void eraseCreationFeedback(CreateConnectionRequest request) {
 	if (connectionFeedback != null) {
 		removeFeedback(connectionFeedback);
@@ -78,7 +81,8 @@ protected void eraseCreationFeedback(CreateConnectionRequest request) {
 
 /**
  * Calls {@link #eraseCreationFeedback(CreateConnectionRequest)} when appropriate.
- * @see org.eclipse.gef.EditPolicy#eraseSourceFeedback(Request) */
+ * @see org.eclipse.gef.EditPolicy#eraseSourceFeedback(Request)
+ */
 public void eraseSourceFeedback(Request request) {
 	if (REQ_CONNECTION_END.equals(request.getType()))
 		eraseCreationFeedback((CreateConnectionRequest)request);
@@ -92,7 +96,8 @@ protected void eraseTargetConnectionFeedback(DropRequest request) { }
 
 /**
  * Calls {@link #eraseTargetConnectionFeedback(DropRequest)} when appropriate.
- * @see org.eclipse.gef.EditPolicy#eraseTargetFeedback(Request) */
+ * @see org.eclipse.gef.EditPolicy#eraseTargetFeedback(Request)
+ */
 public void eraseTargetFeedback(Request request) {
 	if (REQ_CONNECTION_START.equals(request.getType())
 	  || REQ_CONNECTION_END.equals(request.getType())
@@ -104,7 +109,8 @@ public void eraseTargetFeedback(Request request) {
 /**
  * Factors the request into one of four abstract methods. Subclasses must implement these
  * methods.
- * @see org.eclipse.gef.EditPolicy#getCommand(Request) */
+ * @see org.eclipse.gef.EditPolicy#getCommand(Request)
+ */
 public Command getCommand(Request request) {
 	if (REQ_CONNECTION_START.equals(request.getType()))
 		return getConnectionCreateCommand((CreateConnectionRequest)request);
@@ -123,7 +129,8 @@ public Command getCommand(Request request) {
  * {@link CreateConnectionRequest#getStartCommand()} is used here to obtain the
  * contribution from the EditPart from which the User started the <i>creation</i>.
  * @param request the CreateConnectionRequest
- * @return the complete command to create a connection */
+ * @return the complete command to create a connection
+ */
 protected abstract Command getConnectionCompleteCommand(CreateConnectionRequest request);
 
 /**
@@ -132,7 +139,8 @@ protected abstract Command getConnectionCompleteCommand(CreateConnectionRequest 
  * necessary to create a Command that represents the entire creation.
  * @param request the CreateConnectionRequest
  * @see #getConnectionCompleteCommand(CreateConnectionRequest)
- * @return a Command representing half of a connection creation */
+ * @return a Command representing half of a connection creation
+ */
 protected abstract Command getConnectionCreateCommand(CreateConnectionRequest request);
 
 /**
@@ -140,7 +148,8 @@ protected abstract Command getConnectionCreateCommand(CreateConnectionRequest re
  * with the connection that will be used to display feedback, and that connection must be
  * added to the appropriate layer in the diagram.
  * @param request the CreateConnectionRequest
- * @return a FeedbackHelper */
+ * @return a FeedbackHelper
+ */
 protected FeedbackHelper getFeedbackHelper(CreateConnectionRequest request) {
 	if (feedbackHelper == null) {
 		feedbackHelper = new FeedbackHelper();
@@ -160,7 +169,8 @@ protected FeedbackHelper getFeedbackHelper(CreateConnectionRequest request) {
  * Returns the <code>Command</code> to reconnect a connection's <i>target</i> end to the
  * host.
  * @param request the ReconnectRequest
- * @return a Command */
+ * @return a Command
+ */
 protected abstract Command getReconnectTargetCommand(ReconnectRequest request);
 
 /**
@@ -175,7 +185,8 @@ protected abstract Command getReconnectSourceCommand(ReconnectRequest request);
  * Called during the display of creation feedback to snap the feedback to the nearest
  * source ConnectionAnchor.
  * @param request CreateConnectionRequest
- * @return <code>null</code> or the nearest source ConnectionAnchor */
+ * @return <code>null</code> or the nearest source ConnectionAnchor
+ */
 protected ConnectionAnchor getSourceConnectionAnchor(CreateConnectionRequest request) {
 	EditPart source = request.getSourceEditPart();
 	return source instanceof NodeEditPart 
@@ -199,7 +210,8 @@ protected ConnectionAnchor getTargetConnectionAnchor(CreateConnectionRequest req
 /**
  * Returns the <i>host</i> for the appropriate <code>Requests</code>. Returns
  * <code>null</code> otherwise.
- * @see org.eclipse.gef.EditPolicy#getTargetEditPart(Request) */
+ * @see org.eclipse.gef.EditPolicy#getTargetEditPart(Request)
+ */
 public EditPart getTargetEditPart(Request request) {
 	if (REQ_CONNECTION_START.equals(request.getType())
 		|| REQ_CONNECTION_END.equals(request.getType())
@@ -211,7 +223,8 @@ public EditPart getTargetEditPart(Request request) {
 
 /**
  * Shows feedback during a creation.
- * @param request CreateConnectionRequest */
+ * @param request CreateConnectionRequest
+ */
 protected void showCreationFeedback(CreateConnectionRequest request) {
 	FeedbackHelper helper = getFeedbackHelper(request);
 	Point p = new Point(request.getLocation());
@@ -220,7 +233,8 @@ protected void showCreationFeedback(CreateConnectionRequest request) {
 
 /**
  * calls {@link #showCreationFeedback(CreateConnectionRequest)} when appropriate.
- * @see org.eclipse.gef.EditPolicy#showSourceFeedback(Request) */
+ * @see org.eclipse.gef.EditPolicy#showSourceFeedback(Request)
+ */
 public void showSourceFeedback(Request request) {
 	if (REQ_CONNECTION_END.equals(request.getType()))
 		showCreationFeedback((CreateConnectionRequest)request);
@@ -228,12 +242,14 @@ public void showSourceFeedback(Request request) {
 
 /**
  * Override to show target connection feedback. Does nothing by default.
- * @param request the DropRequest */
+ * @param request the DropRequest
+ */
 protected void showTargetConnectionFeedback(DropRequest request) { }
 
 /**
  * Calls {@link #showTargetConnectionFeedback(DropRequest)} when appropriate.
- * @see org.eclipse.gef.EditPolicy#showTargetFeedback(Request) */
+ * @see org.eclipse.gef.EditPolicy#showTargetFeedback(Request)
+ */
 public void showTargetFeedback(Request request) {
 	if (REQ_CONNECTION_START.equals(request.getType())
 			|| REQ_CONNECTION_END.equals(request.getType())

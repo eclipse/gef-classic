@@ -1,10 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2004 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -32,7 +32,8 @@ import org.eclipse.gef.requests.DropRequest;
  * <P>
  * This EditPolicy factors the {@link #getCommand(Request)} into three different abstract
  * methods which subclasses must implement.
- * @since 2.0 */
+ * @since 2.0
+ */
 public abstract class TreeContainerEditPolicy 
 	extends AbstractEditPolicy 
 {
@@ -42,19 +43,22 @@ private static TreeItem[] oldSelection;
 /**
  * Returns a Command for adding the children to the container.
  * @param request the Request to add.
- * @return Command <code>null</code> or a Command to perform the add */
+ * @return Command <code>null</code> or a Command to perform the add
+ */
 protected abstract Command getAddCommand(ChangeBoundsRequest request);
 
 /**
  * Returns a Command for creating the object inside the container.
  * @param request the CreateRequest
- * @return Command <code>null</code> or a Command to perform the create */
+ * @return Command <code>null</code> or a Command to perform the create
+ */
 protected abstract Command getCreateCommand(CreateRequest request);
 
 /**
  * Returns a Command for moving the children within the container.
  * @param request the Request to move
- * @return Command <code>null</code> or a Command to perform the move */
+ * @return Command <code>null</code> or a Command to perform the move
+ */
 protected abstract Command getMoveChildrenCommand(ChangeBoundsRequest request);
 
 private void eraseDropFeedback(Request req) {
@@ -62,7 +66,9 @@ private void eraseDropFeedback(Request req) {
 	restoreSelection();
 }
 
-/** * @see org.eclipse.gef.EditPolicy#eraseTargetFeedback(Request) */
+/**
+ * @see org.eclipse.gef.EditPolicy#eraseTargetFeedback(Request)
+ */
 public void eraseTargetFeedback(Request req) {
 	if (req.getType().equals(REQ_MOVE)
 		|| req.getType().equals(REQ_ADD)
@@ -73,7 +79,8 @@ public void eraseTargetFeedback(Request req) {
 /**
  * Calculates the index of the TreeItem at given point.
  * @param pt the Point in the Viewer
- * @return the index of the TreeItem */
+ * @return the index of the TreeItem
+ */
 protected final int findIndexOfTreeItemAt(org.eclipse.draw2d.geometry.Point pt) {
 	int index = -1;
 	TreeItem item = findTreeItemAt(pt);	
@@ -89,12 +96,15 @@ protected final int findIndexOfTreeItemAt(org.eclipse.draw2d.geometry.Point pt) 
  * Calculates the <code>TreeItem</code> at a specified {@link
  * org.eclipse.draw2d.geometry.Point}.
  * @param pt the draw2d Point
- * @return <code>null</code> or the TreeItem */
+ * @return <code>null</code> or the TreeItem
+ */
 protected final TreeItem findTreeItemAt(org.eclipse.draw2d.geometry.Point pt) {
 	return getTree().getItem(new Point(pt.x, pt.y));			
 }
 
-/** * @see org.eclipse.gef.EditPolicy#getCommand(Request) */
+/**
+ * @see org.eclipse.gef.EditPolicy#getCommand(Request)
+ */
 public Command getCommand(Request req) {
 	if (req.getType().equals(REQ_MOVE_CHILDREN))
 		return getMoveChildrenCommand((ChangeBoundsRequest)req);
@@ -109,7 +119,8 @@ public Command getCommand(Request req) {
 /**
  * Returns the host EditPart when appropriate. Targeting is done by checking if the mouse
  * is clearly over the host's TreeItem.
- * @see org.eclipse.gef.EditPolicy#getTargetEditPart(Request) */
+ * @see org.eclipse.gef.EditPolicy#getTargetEditPart(Request)
+ */
 public EditPart getTargetEditPart(Request req) {
 	if (req.getType().equals(REQ_ADD)
 	  || req.getType().equals(REQ_MOVE)
@@ -195,7 +206,9 @@ private void showDropFeedback(DropRequest request) {
 	}
 }
 
-/** * @see org.eclipse.gef.EditPolicy#showTargetFeedback(Request) */
+/**
+ * @see org.eclipse.gef.EditPolicy#showTargetFeedback(Request)
+ */
 public void showTargetFeedback(Request req) {
 	if (req.getType().equals(REQ_MOVE)
 		|| req.getType().equals(REQ_ADD)

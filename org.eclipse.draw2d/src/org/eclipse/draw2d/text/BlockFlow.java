@@ -1,10 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2004 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -45,7 +45,8 @@ private int orientation = SWT.NONE;
 private boolean bidiValid;
 
 /**
- * Constructs a new BlockFlow. */
+ * Constructs a new BlockFlow.
+ */
 public BlockFlow() {
 	blockBox = createBlockBox();
 }
@@ -241,7 +242,8 @@ public void setOrientation(int orientation) {
  * Blocks with a Bidi orientation of SWT.RIGHT_TO_LEFT will be right-aligned if their
  * horizontal alignment is PositionConstants.LEFT, and left-aligned if their alignment
  * is PositionConstants.RIGHT.
- * @param value the aligment */
+ * @param value the aligment
+ */
 public void setHorizontalAligment(int value) {
 	if (!(value == PositionConstants.LEFT
 		|| value == PositionConstants.RIGHT

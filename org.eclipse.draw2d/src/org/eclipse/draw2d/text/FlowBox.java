@@ -1,10 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2004 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -34,7 +34,8 @@ private int x;
  * This method must be called on a block that is completely positioned and committed.
  * @param x X
  * @param y Y
- * @return <code>true</code> if the FlowBox contains the point */
+ * @return <code>true</code> if the FlowBox contains the point
+ */
 public abstract boolean containsPoint(int x, int y);
 
 /**
@@ -96,7 +97,8 @@ int getDescentWithBorder() {
 
 /**
  * Returns the width of the box.
- * @return the box's width */
+ * @return the box's width
+ */
 public int getWidth() {
 	return width;
 }

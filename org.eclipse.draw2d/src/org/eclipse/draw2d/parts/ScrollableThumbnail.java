@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2004 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -177,7 +177,8 @@ private ScrollSynchronizer syncher;
 private Viewport viewport;
 
 /**
- * Creates a new ScrollableThumbnail. */
+ * Creates a new ScrollableThumbnail.
+ */
 public ScrollableThumbnail() {
 	super();
 	initialize();
@@ -185,7 +186,8 @@ public ScrollableThumbnail() {
 
 /**
  * Creates a new ScrollableThumbnail that synchs with the given Viewport.
- * @param port The Viewport */
+ * @param port The Viewport
+ */
 public ScrollableThumbnail(Viewport port) {
 	super();
 	setViewport(port);
@@ -249,7 +251,8 @@ private void reconfigureSelectorBounds() {
  * Reconfigures the SelectorFigure's bounds if the scales have changed.
  * @param scaleX The X scale
  * @param scaleY The Y scale
- * @see org.eclipse.draw2d.parts.Thumbnail#setScales(float, float) */
+ * @see org.eclipse.draw2d.parts.Thumbnail#setScales(float, float)
+ */
 protected void setScales(float scaleX, float scaleY) {
 	if (scaleX == getScaleX() && scaleY == getScaleY())
 		return;
@@ -260,7 +263,8 @@ protected void setScales(float scaleX, float scaleY) {
 
 /**
  * Sets the Viewport that this ScrollableThumbnail will synch with.
- * @param port The Viewport */
+ * @param port The Viewport
+ */
 public void setViewport(Viewport port) {
 	port.addPropertyChangeListener(Viewport.PROPERTY_VIEW_LOCATION, propListener);
 	port.addFigureListener(figureListener);

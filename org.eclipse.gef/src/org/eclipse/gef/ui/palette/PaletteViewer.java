@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2004 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -49,7 +49,8 @@ import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
  * Graphical viewer for the GEF palette.
  * 
  * @author Randy Hudson
- * @author Pratik Shah */
+ * @author Pratik Shah
+ */
 public class PaletteViewer
 	extends ScrollingGraphicalViewer
 {
@@ -97,7 +98,8 @@ private PaletteViewerPreferences prefs = PREFERENCE_STORE;
 private Font font = null;
 
 /**
- * Constructor */
+ * Constructor
+ */
 public PaletteViewer() {
 	EditDomain domain = new EditDomain();
 	domain.setDefaultTool(new PaletteSelectionTool());
@@ -119,7 +121,9 @@ public void addPaletteListener(PaletteListener paletteListener) {
 		paletteListeners.add(paletteListener);
 }
 
-/** * @see org.eclipse.gef.ui.parts.GraphicalViewerImpl#createDefaultRoot() */
+/**
+ * @see org.eclipse.gef.ui.parts.GraphicalViewerImpl#createDefaultRoot()
+ */
 protected void createDefaultRoot() {
 	setRootEditPart(new PaletteRootEditPart());
 }
@@ -182,7 +186,8 @@ public PaletteCustomizer getCustomizer() {
  * NOTE: A PaletteCustomizer must be set for this viewer using the 
  * {@link #setCustomizer(PaletteCustomizer)} method before this method is invoked.
  * 
- * @return The dialog that can be used to customize entries on the palette */
+ * @return The dialog that can be used to customize entries on the palette
+ */
 public PaletteCustomizerDialog getCustomizerDialog() {
 	if (customizerDialog == null) {
 		customizerDialog = new PaletteCustomizerDialog(
@@ -191,7 +196,9 @@ public PaletteCustomizerDialog getCustomizerDialog() {
 	return customizerDialog;
 }
 
-/** * @return the entry for the currently active tool */
+/**
+ * @return the entry for the currently active tool
+ */
 public ToolEntry getActiveTool() {
 	return activeEntry;
 }
@@ -378,7 +385,8 @@ public void setActiveTool(ToolEntry newMode) {
 
 /**
  * Sets the root for this palette.
- * @param	root	the PaletteRoot for this palette */
+ * @param	root	the PaletteRoot for this palette
+ */
 public void setPaletteRoot(PaletteRoot root) {
 	if (root == paletteRoot)
 		return;

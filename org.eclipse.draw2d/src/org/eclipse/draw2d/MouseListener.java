@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2004 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -39,11 +39,17 @@ void mouseDoubleClicked(MouseEvent me);
 public class Stub
 	implements MouseListener
 {
-	/**	 * @see org.eclipse.draw2d.MouseListener#mousePressed(MouseEvent)	 */
+	/**
+	 * @see org.eclipse.draw2d.MouseListener#mousePressed(MouseEvent)
+	 */
 	public void mousePressed(MouseEvent me) { }
-	/**	 * @see org.eclipse.draw2d.MouseListener#mouseReleased(MouseEvent)	 */
+	/**
+	 * @see org.eclipse.draw2d.MouseListener#mouseReleased(MouseEvent)
+	 */
 	public void mouseReleased(MouseEvent me) { }
-	/**	 * @see org.eclipse.draw2d.MouseListener#mouseDoubleClicked(MouseEvent)	 */
+	/**
+	 * @see org.eclipse.draw2d.MouseListener#mouseDoubleClicked(MouseEvent)
+	 */
 	public void mouseDoubleClicked(MouseEvent me) { }
 }
 

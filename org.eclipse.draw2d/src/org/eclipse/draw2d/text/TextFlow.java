@@ -1,10 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2004 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -31,7 +31,8 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * <P>
  * WARNING: This class is not intended to be subclassed by clients.
  * @author hudsonr
- * @since 2.1 */
+ * @since 2.1
+ */
 public class TextFlow 
 	extends InlineFlow 
 {
@@ -43,14 +44,16 @@ private String text;
 
 /**
  * Constructs a new TextFlow with the empty String.
- * @see java.lang.Object#Object() */
+ * @see java.lang.Object#Object()
+ */
 public TextFlow() {
 	this(new String());
 }
 
 /**
  * Constructs a new TextFlow with the specified String.
- * @param s the string */
+ * @param s the string
+ */
 public TextFlow(String s) {
 	text = s;
 }
@@ -411,7 +414,8 @@ public int getPreviousVisibleOffset(int offset) {
 }
 
 /**
- * @return the String being displayed */
+ * @return the String being displayed
+ */
 public String getText() {
 	return text;
 }
@@ -428,7 +432,9 @@ public boolean isTextTruncated() {
 	return false;
 }
 
-/** * @see org.eclipse.draw2d.Figure#paintFigure(Graphics) */
+/**
+ * @see org.eclipse.draw2d.Figure#paintFigure(Graphics)
+ */
 protected void paintFigure(Graphics g) {
 	TextFragmentBox frag;
 	g.getClip(Rectangle.SINGLETON);
@@ -563,7 +569,8 @@ public void setSelection(int start, int end) {
 
 /**
  * Sets the string being displayed. Causes a <code>revalidate()</code> to occur.
- * @param s The new String.  It cannot be <code>null</code>. */
+ * @param s The new String.  It cannot be <code>null</code>.
+ */
 public void setText(String s) {
 	if (s != null && !s.equals(text)) {
 		text = s;

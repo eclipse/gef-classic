@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2004 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -24,7 +24,8 @@ public interface EditPartFactory {
  * Creates a new EditPart given the specified <i>context</i> and <i>model</i>.
  * @param context The context in which the EditPart is being created, such as its parent.
  * @param model the model of the EditPart being created
- * @return EditPart the new EditPart */
+ * @return EditPart the new EditPart
+ */
 EditPart createEditPart(EditPart context, Object model);
 
 }

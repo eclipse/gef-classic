@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2004 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -22,12 +22,15 @@ import org.eclipse.gef.requests.GroupRequest;
  * <P>
  * This EditPolicy is not a {@link org.eclipse.gef.editpolicies.GraphicalEditPolicy}, and
  * should not be used to show feedback or interact with the host's visuals in any way.
- * @since 2.0 */
+ * @since 2.0
+ */
 public abstract class ConnectionEditPolicy
 	extends AbstractEditPolicy
 {
 
-/** * @see org.eclipse.gef.EditPolicy#getCommand(Request) */
+/**
+ * @see org.eclipse.gef.EditPolicy#getCommand(Request)
+ */
 public Command getCommand(Request request) {
 	if (REQ_DELETE.equals(request.getType()))
 		return getDeleteCommand((GroupRequest)request);
@@ -37,7 +40,8 @@ public Command getCommand(Request request) {
 /**
  * Subclasses should implement to return the Command to delete the connection.
  * @param request the DeleteRequest
- * @return the Command to delete the connection */
+ * @return the Command to delete the connection
+ */
 protected abstract Command getDeleteCommand(GroupRequest request);
 
 }

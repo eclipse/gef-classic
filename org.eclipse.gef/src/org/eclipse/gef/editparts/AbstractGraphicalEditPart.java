@@ -1,10 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2004 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -69,16 +69,21 @@ protected List targetConnections;
 /**
  * A default implementation of {@link AccessibleEditPart}. Subclasses can extend this
  * implementation to get base accessibility for free.
- * @since 2.0 */
+ * @since 2.0
+ */
 protected abstract class AccessibleGraphicalEditPart
 	extends AccessibleEditPart
 {
-	/**	 * @see AccessibleEditPart#getChildCount(AccessibleControlEvent)	 */
+	/**
+	 * @see AccessibleEditPart#getChildCount(AccessibleControlEvent)
+	 */
 	public void getChildCount(AccessibleControlEvent e) {
 		e.detail  = AbstractGraphicalEditPart.this.getChildren().size();
 	}
 	
-	/**	 * @see AccessibleEditPart#getChildren(AccessibleControlEvent)	 */
+	/**
+	 * @see AccessibleEditPart#getChildren(AccessibleControlEvent)
+	 */
 	public void getChildren(AccessibleControlEvent e) {
 		List list = AbstractGraphicalEditPart.this.getChildren();
 		Object children[] = new Object[list.size()];
@@ -93,7 +98,9 @@ protected abstract class AccessibleGraphicalEditPart
 		e.children = children;
 	}
 	
-	/**	 * @see AccessibleEditPart#getLocation(AccessibleControlEvent)	 */
+	/**
+	 * @see AccessibleEditPart#getLocation(AccessibleControlEvent)
+	 */
 	public void getLocation(AccessibleControlEvent e) {
 		Rectangle bounds = getFigure().getBounds().getCopy();
 		getFigure().translateToAbsolute(bounds);
@@ -105,7 +112,9 @@ protected abstract class AccessibleGraphicalEditPart
 		e.height = bounds.height;
 	}
 
-	/**	 * @see AccessibleEditPart#getState(AccessibleControlEvent)	 */
+	/**
+	 * @see AccessibleEditPart#getState(AccessibleControlEvent)
+	 */
 	public void getState(AccessibleControlEvent e) {
 		e.detail = ACC.STATE_SELECTABLE | ACC.STATE_FOCUSABLE;
 		if (getSelected() != EditPart.SELECTED_NONE)
@@ -119,7 +128,8 @@ protected abstract class AccessibleGraphicalEditPart
  * The default implementation of {@link AccessibleAnchorProvider} returned in {@link
  * #getAdapter(Class)}. This implementation creates an accessible location located along
  * the right edge of the EditPart's Figure.
- * @since 2.0 */
+ * @since 2.0
+ */
 protected class DefaultAccessibleAnchorProvider
 	implements AccessibleAnchorProvider
 {
@@ -131,11 +141,15 @@ protected class DefaultAccessibleAnchorProvider
 		list.add(p);
 		return list;
 	}
-	/**	 * @see AccessibleAnchorProvider#getSourceAnchorLocations()	 */
+	/**
+	 * @see AccessibleAnchorProvider#getSourceAnchorLocations()
+	 */
 	public List getSourceAnchorLocations() {
 		return getDefaultLocations();
 	}
-	/**	 * @see AccessibleAnchorProvider#getTargetAnchorLocations()	 */
+	/**
+	 * @see AccessibleAnchorProvider#getTargetAnchorLocations()
+	 */
 	public List getTargetAnchorLocations() {
 		return getDefaultLocations();
 	}
@@ -166,7 +180,8 @@ static class MergedAccessibleHandles
 /**
  * Extends {@link AbstractEditPart#activate()} to also activate all <i>source</i>
  * ConnectionEditParts.
- * @see org.eclipse.gef.EditPart#activate() */
+ * @see org.eclipse.gef.EditPart#activate()
+ */
 public void activate() {
 	super.activate();
 	List l = getSourceConnections();
@@ -176,7 +191,8 @@ public void activate() {
 
 /**
  * Adds the child's Figure to the {@link #getContentPane() contentPane}.
- * @see org.eclipse.gef.editparts.AbstractEditPart#addChildVisual(EditPart, int) */
+ * @see org.eclipse.gef.editparts.AbstractEditPart#addChildVisual(EditPart, int)
+ */
 protected void addChildVisual(EditPart childEditPart, int index) {
 	IFigure child = ((GraphicalEditPart)childEditPart).getFigure();
 	getContentPane().add(child, index);
@@ -293,7 +309,8 @@ protected ConnectionEditPart createOrFindConnection(Object model) {
  * Extends {@link AbstractEditPart#deactivate()} to
  * also deactivate the source ConnectionEditParts. Subclasses should <em>extend</em> this
  * method to remove any listeners added in {@link #activate}.
- * @see org.eclipse.gef.EditPart#deactivate() */
+ * @see org.eclipse.gef.EditPart#deactivate()
+ */
 public void deactivate() {
 	List l = getSourceConnections();
 	for (int i = 0; i < l.size(); i++)
@@ -380,7 +397,8 @@ protected void fireTargetConnectionAdded(ConnectionEditPart connection, int inde
  * Currently, these types include {@link AccessibleHandleProvider} and {@link
  * AccessibleAnchorProvider}. Subclasses should <em>extend</em> this method to support
  * additional adapter types, or to replace the default provided adapaters.
- * @see org.eclipse.core.runtime.IAdaptable#getAdapter(Class) */
+ * @see org.eclipse.core.runtime.IAdaptable#getAdapter(Class)
+ */
 public Object getAdapter(Class key) {
 	if (key == AccessibleHandleProvider.class)
 		return new MergedAccessibleHandles(getEditPolicyIterator());
@@ -393,14 +411,16 @@ public Object getAdapter(Class key) {
 
 /**
  * If the children's Figures should be 
- * @see GraphicalEditPart#getContentPane() */
+ * @see GraphicalEditPart#getContentPane()
+ */
 public IFigure getContentPane() {
 	return getFigure();
 }
 
 /**
  * Overridden to return a default <code>DragTracker</code> for GraphicalEditParts.
- * @see org.eclipse.gef.EditPart#getDragTracker(Request) */
+ * @see org.eclipse.gef.EditPart#getDragTracker(Request)
+ */
 public DragTracker getDragTracker(Request request) {
 	return new org.eclipse.gef.tools.DragEditPartsTracker(this);
 }
@@ -408,7 +428,8 @@ public DragTracker getDragTracker(Request request) {
 /**
  * The default implementation calls {@link #createFigure()} if the figure is currently
  * <code>null</code>.
- * @see org.eclipse.gef.GraphicalEditPart#getFigure() */
+ * @see org.eclipse.gef.GraphicalEditPart#getFigure()
+ */
 public IFigure getFigure() {
 	if (figure == null)
 		setFigure(createFigure());
@@ -455,14 +476,18 @@ protected List getModelTargetConnections() {
 	return Collections.EMPTY_LIST;
 }
 
-/** * @see org.eclipse.gef.GraphicalEditPart#getSourceConnections() */
+/**
+ * @see org.eclipse.gef.GraphicalEditPart#getSourceConnections()
+ */
 public List getSourceConnections() {
 	if (sourceConnections == null)
 		return Collections.EMPTY_LIST;
 	return sourceConnections;
 }
 
-/** * @see org.eclipse.gef.GraphicalEditPart#getTargetConnections() */
+/**
+ * @see org.eclipse.gef.GraphicalEditPart#getTargetConnections()
+ */
 public List getTargetConnections() {
 	if (targetConnections == null)
 		return Collections.EMPTY_LIST;
@@ -523,7 +548,8 @@ protected void primRemoveTargetConnection(ConnectionEditPart connection) {
  * Extends {@link AbstractEditPart#refresh()} to refresh two additional structural
  * features: <i>source</i> and <i>target</i> connections. Subclasses should probably
  * override {@link AbstractEditPart#refreshVisuals()} instead of this method.
- * @see org.eclipse.gef.EditPart#refresh() */
+ * @see org.eclipse.gef.EditPart#refresh()
+ */
 public void refresh() {
 	super.refresh();
 	refreshSourceConnections();
@@ -643,14 +669,16 @@ protected void refreshTargetConnections() {
 /**
  * Registers the EditPart's Figure in the Viewer. This is what makes it possible for the
  * Viewer to map a mouse location to an EditPart.
- * @see org.eclipse.gef.editparts.AbstractEditPart#registerVisuals() */
+ * @see org.eclipse.gef.editparts.AbstractEditPart#registerVisuals()
+ */
 protected void registerVisuals() {
 	getViewer().getVisualPartMap().put(getFigure(), this);
 }
 
 /**
  * Adds the child's Figure to the {@link #getContentPane() contentPane}.
- * @see AbstractEditPart#removeChildVisual(EditPart) */
+ * @see AbstractEditPart#removeChildVisual(EditPart)
+ */
 protected void removeChildVisual(EditPart childEditPart) {
 	IFigure child = ((GraphicalEditPart)childEditPart).getFigure();
 	getContentPane().remove(child);
@@ -666,7 +694,8 @@ public void removeNodeListener(NodeListener listener) {
 /**
  * Extends {@link AbstractEditPart#removeNotify()} to cleanup
  * <code>ConnectionEditParts</code>.
- * @see EditPart#removeNotify() */
+ * @see EditPart#removeNotify()
+ */
 public void removeNotify() {
 	List conns;
 	conns = getSourceConnections();
@@ -708,7 +737,8 @@ protected void removeTargetConnection(ConnectionEditPart connection) {
 
 /**
  * This method is extended to preserve a LayoutManager constraint if one exists.
- * @see org.eclipse.gef.editparts.AbstractEditPart#reorderChild(EditPart, int) */
+ * @see org.eclipse.gef.editparts.AbstractEditPart#reorderChild(EditPart, int)
+ */
 protected void reorderChild(EditPart child, int index) {
 	// Save the constraint of the child so that it does not
 	// get lost during the remove and re-add.
@@ -752,14 +782,17 @@ protected void setFigure(IFigure figure) {
 	this.figure = figure;
 }
 
-/** * @see GraphicalEditPart#setLayoutConstraint(EditPart, IFigure, Object) */
+/**
+ * @see GraphicalEditPart#setLayoutConstraint(EditPart, IFigure, Object)
+ */
 public void setLayoutConstraint(EditPart child, IFigure childFigure, Object constraint) {
 	childFigure.getParent().setConstraint(childFigure, constraint);
 }
 
 /**
  * Implemented to remove the Figure from the Viewer's registry.
- * @see AbstractEditPart#unregisterVisuals() */
+ * @see AbstractEditPart#unregisterVisuals()
+ */
 protected void unregisterVisuals() {
 	getViewer().getVisualPartMap().remove(getFigure());
 }

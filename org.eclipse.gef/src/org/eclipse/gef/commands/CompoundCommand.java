@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2004 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -34,7 +34,8 @@ private List commandList = new ArrayList();
 
 /**
  * Constructs an empty CompoundCommand
- * @since 2.0 */
+ * @since 2.0
+ */
 public CompoundCommand() { }
 
 /**
@@ -47,13 +48,16 @@ public CompoundCommand(String label) {
 
 /**
  * Adds the specified command if it is not <code>null</code>.
- * @param command <code>null</code> or a Command */
+ * @param command <code>null</code> or a Command
+ */
 public void add(Command command) {
 	if (command != null)
 		commandList.add(command);
 }
 
-/** * @see org.eclipse.gef.commands.Command#canExecute() */
+/**
+ * @see org.eclipse.gef.commands.Command#canExecute()
+ */
 public boolean canExecute() {
 	if (commandList.size() == 0)
 		return false;
@@ -67,7 +71,9 @@ public boolean canExecute() {
 	return true;
 }
 
-/** * @see org.eclipse.gef.commands.Command#canUndo() */
+/**
+ * @see org.eclipse.gef.commands.Command#canUndo()
+ */
 public boolean canUndo() {
 	if (commandList.size() == 0)
 		return false;
@@ -83,7 +89,8 @@ public boolean canUndo() {
 
 /**
  * Disposes all contained Commands.
- * @see org.eclipse.gef.commands.Command#dispose() */
+ * @see org.eclipse.gef.commands.Command#dispose()
+ */
 public void dispose() {
 	for (int i = 0; i < commandList.size(); i++)
 		((Command)getCommands().get(i))
@@ -118,7 +125,9 @@ public List getCommands() {
 	return commandList;
 }
 
-/** * @see org.eclipse.gef.commands.Command#getLabel() */
+/**
+ * @see org.eclipse.gef.commands.Command#getLabel()
+ */
 public String getLabel() {
 	String label = super.getLabel();
 	if (label == null)
@@ -129,24 +138,31 @@ public String getLabel() {
 	return ((Command)commandList.get(0)).getLabel();
 }
 
-/** * @return <code>true</code> if the CompoundCommand is empty */
+/**
+ * @return <code>true</code> if the CompoundCommand is empty
+ */
 public boolean isEmpty() {
 	return commandList.isEmpty();
 }
 
-/** * @see org.eclipse.gef.commands.Command#redo() */
+/**
+ * @see org.eclipse.gef.commands.Command#redo()
+ */
 public void redo() {
 	for (int i = 0; i < commandList.size(); i++)
 		((Command) commandList.get(i)).redo();
 }
 
-/** * @return the number of contained Commands */
+/**
+ * @return the number of contained Commands
+ */
 public int size() {
 	return commandList.size();
 }
 
 /**
- * @see org.eclipse.gef.commands.Command#undo() */
+ * @see org.eclipse.gef.commands.Command#undo()
+ */
 public void undo() {
 	for (int i = commandList.size() - 1; i >= 0; i--)
 		((Command) commandList.get(i))

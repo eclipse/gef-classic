@@ -1,10 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2004 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -447,7 +447,9 @@ public Object getAdapter(Class key) {
 	return null;
 }
 
-/** * @see org.eclipse.gef.EditPart#getChildren() */
+/**
+ * @see org.eclipse.gef.EditPart#getChildren()
+ */
 public List getChildren() {
 	if (children == null)
 		return Collections.EMPTY_LIST;
@@ -496,14 +498,17 @@ private List getEditPolicyKeys() {
 /**
  * Returns an iterator for the specified type of listener
  * @param clazz the Listener type over which to iterate
- * @return Iterator */
+ * @return Iterator
+ */
 protected final Iterator getEventListeners(Class clazz) {
 	if (eventListeners == null)
 		return Collections.EMPTY_LIST.iterator();
 	return eventListeners.getListeners(clazz);
 }
 
-/** * @see org.eclipse.gef.EditPart#getEditPolicy(Object) */
+/**
+ * @see org.eclipse.gef.EditPart#getEditPolicy(Object)
+ */
 public EditPolicy getEditPolicy(Object key) {
 	int index = getEditPolicyKeys().indexOf(key);
 	if (index == -1)
@@ -532,7 +537,9 @@ protected final boolean getFlag(int flag) {
 	return (flags & flag) != 0;
 }
 
-/** * @see org.eclipse.gef.EditPart#getModel() */
+/**
+ * @see org.eclipse.gef.EditPart#getModel()
+ */
 public Object getModel() {
 	return model;
 }
@@ -550,17 +557,23 @@ protected List getModelChildren() {
 	return Collections.EMPTY_LIST;
 }
 
-/** * @see org.eclipse.gef.EditPart#getParent() */
+/**
+ * @see org.eclipse.gef.EditPart#getParent()
+ */
 public EditPart getParent() {
 	return parent;
 }
 
-/** * @see org.eclipse.gef.EditPart#getRoot() */
+/**
+ * @see org.eclipse.gef.EditPart#getRoot()
+ */
 public RootEditPart getRoot() {
 	return getParent().getRoot();
 }
 
-/** * @see org.eclipse.gef.EditPart#getSelected() */
+/**
+ * @see org.eclipse.gef.EditPart#getSelected()
+ */
 public int getSelected() {
 	return selected;
 }
@@ -607,12 +620,16 @@ public EditPart getTargetEditPart(Request request) {
 public EditPartViewer getViewer() {
 	return getRoot().getViewer();
 }
-/** * @see org.eclipse.gef.EditPart#hasFocus() */
+/**
+ * @see org.eclipse.gef.EditPart#hasFocus()
+ */
 public boolean hasFocus() {
 	return getFlag(FLAG_FOCUS);
 }
 
-/** * @see org.eclipse.gef.EditPart#installEditPolicy(Object, EditPolicy) */
+/**
+ * @see org.eclipse.gef.EditPart#installEditPolicy(Object, EditPolicy)
+ */
 public void installEditPolicy(Object key, EditPolicy editPolicy) {
 	Assert.isNotNull(key, "Edit Policies must be installed with keys");//$NON-NLS-1$
 	int index = editPolicyKeys.indexOf(key);
@@ -641,7 +658,8 @@ public boolean isActive() {
 
 /**
  * Reserved for future use
- * @return boolean */
+ * @return boolean
+ */
 public boolean isSelectable() {
 	return true;
 }
@@ -649,7 +667,8 @@ public boolean isSelectable() {
 /**
  * Subclasses should extend this method to handle Requests. For now, the default
  * implementation does not handle any requests.
- * @see org.eclipse.gef.EditPart#performRequest(Request) */
+ * @see org.eclipse.gef.EditPart#performRequest(Request)
+ */
 public void performRequest(Request req) {
 }
 
@@ -809,8 +828,10 @@ protected void removeChild(EditPart child) {
  */
 protected abstract void removeChildVisual(EditPart child);
 
-/** * No reason to override
- * @see org.eclipse.gef.EditPart#removeEditPartListener(EditPartListener) */
+/**
+ * No reason to override
+ * @see org.eclipse.gef.EditPart#removeEditPartListener(EditPartListener)
+ */
 public void removeEditPartListener(EditPartListener listener) {
 	eventListeners.removeListener(EditPartListener.class, listener);
 }
@@ -882,7 +903,9 @@ protected final void setFlag(int flag, boolean value) {
 	else flags &= ~flag;
 }
 
-/** * @see org.eclipse.gef.EditPart#setFocus(boolean) */
+/**
+ * @see org.eclipse.gef.EditPart#setFocus(boolean)
+ */
 public void setFocus(boolean value) {
 	if (hasFocus() == value)
 		return;
@@ -1045,7 +1068,8 @@ protected void unregisterModel() {
  * Unregisters the <i>visuals</i> in the {@link EditPartViewer#getVisualPartMap()}.
  * Subclasses should override this method for the visual part they support. {@link
  * AbstractGraphicalEditPart} and {@link AbstractTreeEditPart} already do this.
- */
+
+ */
 protected void unregisterVisuals() { }
 
 }

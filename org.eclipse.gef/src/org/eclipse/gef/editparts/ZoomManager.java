@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2004 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -329,7 +329,8 @@ public double[] getZoomLevels() {
 /**
  * Returns the list of zoom levels as Strings in percent notation, plus any additional
  * zoom levels that were contributed using {@link #setZoomLevelContributions(List)}.
- * @return List The list of zoom levels */
+ * @return List The list of zoom levels
+ */
 public String[] getZoomLevelsAsText() {
 	String[] zoomLevelStrings = new String[zoomLevels.length + zoomLevelContributions.size()];
 	for (int i = 0; i < zoomLevels.length; i++) {
@@ -421,7 +422,8 @@ public void setZoomAnimationStyle(int style) {
  * with the exception of a decimal point and a '%' as the last character. If the zoom level
  * contribution list has been set, this method should be overridden to provide the
  * appropriate zoom implementation for the new zoom levels.
- * @param zoomString The new zoom level */
+ * @param zoomString The new zoom level
+ */
 public void setZoomAsText(String zoomString) {
 	if (zoomString.equalsIgnoreCase(FIT_HEIGHT)) {
 		primSetZoom(getFitHeightZoomLevel() / multiplier);

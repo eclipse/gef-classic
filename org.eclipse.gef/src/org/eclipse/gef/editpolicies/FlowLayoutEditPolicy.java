@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2004 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -30,14 +30,17 @@ import org.eclipse.gef.requests.DropRequest;
  * how to map an <x,y> coordinate on the layout container to the appropriate index for the
  * operation being performed. It also shows target feedback consisting of an insertion
  * line at the appropriate location.
- * @since 2.0 */
+ * @since 2.0
+ */
 public abstract class FlowLayoutEditPolicy
 	extends OrderedLayoutEditPolicy
 {
 
 private Polyline insertionLine;
 
-/** * @see LayoutEditPolicy#eraseLayoutTargetFeedback(Request) */
+/**
+ * @see LayoutEditPolicy#eraseLayoutTargetFeedback(Request)
+ */
 protected void eraseLayoutTargetFeedback(Request request) {
 	if (insertionLine != null) {
 		removeFeedback(insertionLine);
@@ -53,7 +56,8 @@ private Rectangle getAbsoluteBounds(GraphicalEditPart ep) {
 
 /**
  * @param request the Request
- * @return the index for the insertion reference */
+ * @return the index for the insertion reference
+ */
 protected int getFeedbackIndexFor(Request request) {
 	List children = getHost().getChildren();
 	if (children.isEmpty())
@@ -163,7 +167,8 @@ protected boolean isHorizontal() {
 
 /**
  * Shows an insertion line if there is one or more current children.
- * @see LayoutEditPolicy#showLayoutTargetFeedback(Request) */
+ * @see LayoutEditPolicy#showLayoutTargetFeedback(Request)
+ */
 protected void showLayoutTargetFeedback(Request request) {
 	if (getHost().getChildren().size() == 0)
 		return;

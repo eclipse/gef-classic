@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2004 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -186,7 +186,8 @@ public int getMajorAlignment() {
 /**
  * Returns the spacing in pixels to be used between children in the direction parallel to
  * the layout's orientation.
- * @return the major spacing */
+ * @return the major spacing
+ */
 public int getMajorSpacing() {
 	return majorSpacing;
 }
@@ -209,7 +210,9 @@ public int getMinorAlignment() {
 }
 
 /**
- * Returns the spacing to be used between children within a row/column. * @return the minor spacing */
+ * Returns the spacing to be used between children within a row/column.
+ * @return the minor spacing
+ */
 public int getMinorSpacing() {
 	return minorSpacing;
 }
@@ -260,7 +263,9 @@ protected boolean isSensitiveVertically(IFigure parent) {
 	return !isHorizontal();
 }
 
-/** * @see org.eclipse.draw2d.LayoutManager#layout(IFigure) */
+/**
+ * @see org.eclipse.draw2d.LayoutManager#layout(IFigure)
+ */
 public void layout(IFigure parent) {
 	data = new WorkingData();
 	Rectangle relativeArea = parent.getClientArea();

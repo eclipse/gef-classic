@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2004 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -32,7 +32,8 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * smaller size. The Thumbnail will maintain the aspect ratio of the source 
  * Figure.
  * 
- * @author Eric Bordeau */
+ * @author Eric Bordeau
+ */
 public class Thumbnail 
 	extends Figure 
 	implements UpdateListener
@@ -271,14 +272,16 @@ private ThumbnailUpdater updater = new ThumbnailUpdater();
 
 /**
  * Creates a new Thumbnail.  The source Figure must be set separately if you
- * use this constructor. */
+ * use this constructor.
+ */
 public Thumbnail() {
 	super();	
 }
 
 /**
  * Creates a new Thumbnail with the given IFigure as its source figure.
- * @param fig The source figure */
+ * @param fig The source figure
+ */
 public Thumbnail(IFigure fig) {
 	this();
 	setSource(fig);
@@ -306,7 +309,8 @@ private Dimension adjustToAspectRatio(Dimension size, boolean adjustToMaxDimensi
 }
 
 /**
- * Deactivates this Thumbnail. */
+ * Deactivates this Thumbnail.
+ */
 public void deactivate() {
 	sourceFigure.getUpdateManager().removeUpdateListener(this);
 	updater.deactivate();
@@ -318,7 +322,8 @@ public void deactivate() {
  * 
  * @param wHint The width hint
  * @param hHint The height hint
- * @return The preferred size */
+ * @return The preferred size
+ */
 public Dimension getPreferredSize(int wHint, int hHint) {
 	if (prefSize == null)
 		return adjustToAspectRatio(getBounds().getSize(), false);
@@ -337,7 +342,8 @@ public Dimension getPreferredSize(int wHint, int hHint) {
 
 /**
  * Returns the scale factor on the X-axis.
- * @return X scale */
+ * @return X scale
+ */
 protected float getScaleX() {
 	return scaleX;
 }
@@ -394,7 +400,8 @@ protected Image getThumbnailImage() {
 
 /**
  * Returns <code>true</code> if the source figure has changed.
- * @return <code>true</code> if the source figure has changed */
+ * @return <code>true</code> if the source figure has changed
+ */
 protected boolean isDirty() {
 	return isDirty;
 }
@@ -426,7 +433,8 @@ public void notifyValidating() {
 }
 
 /**
- * @see org.eclipse.draw2d.Figure#paintFigure(Graphics) */
+ * @see org.eclipse.draw2d.Figure#paintFigure(Graphics)
+ */
 protected void paintFigure(Graphics graphics) {
 	Image thumbnail = getThumbnailImage();
 	if (thumbnail == null)
@@ -436,7 +444,8 @@ protected void paintFigure(Graphics graphics) {
 
 /**
  * Sets the dirty flag.
- * @param value The dirty value */
+ * @param value The dirty value
+ */
 public void setDirty(boolean value) {
 	isDirty = value;
 }
@@ -445,7 +454,8 @@ public void setDirty(boolean value) {
  * Sets the X and Y scales for the Thumbnail.  These scales represent the ratio
  * between the source figure and the Thumbnail.
  * @param x The X scale
- * @param y The Y scale */
+ * @param y The Y scale
+ */
 protected void setScales(float x, float y) {
 	scaleX = x;
 	scaleY = y;
@@ -454,7 +464,8 @@ protected void setScales(float x, float y) {
 /**
  * Sets the source Figure.  Also sets the scales and creates the necessary
  * update manager.
- * @param fig The source figure */
+ * @param fig The source figure
+ */
 public void setSource(IFigure fig) {
 	if (sourceFigure == fig)
 		return;

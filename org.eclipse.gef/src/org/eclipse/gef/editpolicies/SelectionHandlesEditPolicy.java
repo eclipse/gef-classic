@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2004 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -31,7 +31,8 @@ import org.eclipse.gef.LayerConstants;
  * SelectionHandlesEditPolicy implements {@link org.eclipse.core.runtime.IAdaptable} for
  * accessibility support. If any of the managed Handles provide accesible locations, then
  * a {@link org.eclipse.gef.AccessibleHandleProvider} is automatically created.
- * @since 2.0 */
+ * @since 2.0
+ */
 public abstract class SelectionHandlesEditPolicy
 	extends SelectionEditPolicy
 	implements IAdaptable
@@ -55,11 +56,13 @@ protected void addSelectionHandles() {
 
 /**
  * Subclasses must implement to provide the list of handles.
- * @return List of handles; cannot be <code>null</code> */
+ * @return List of handles; cannot be <code>null</code>
+ */
 protected abstract List createSelectionHandles();
 
 /**
- * @see org.eclipse.core.runtime.IAdaptable#getAdapter(Class) */
+ * @see org.eclipse.core.runtime.IAdaptable#getAdapter(Class)
+ */
 public Object getAdapter(Class key) {
 	if (key == AccessibleHandleProvider.class)
 		return new AccessibleHandleProvider() {
@@ -81,7 +84,8 @@ public Object getAdapter(Class key) {
 
 /**
  * Implemented to remove the handles.
- * @see org.eclipse.gef.editpolicies.SelectionEditPolicy#hideSelection() */
+ * @see org.eclipse.gef.editpolicies.SelectionEditPolicy#hideSelection()
+ */
 protected void hideSelection() {
 	removeSelectionHandles();
 }
@@ -100,7 +104,8 @@ protected void removeSelectionHandles() {
 
 /**
  * Implemented to add the selection handles
- * @see org.eclipse.gef.editpolicies.SelectionEditPolicy#showSelection() */
+ * @see org.eclipse.gef.editpolicies.SelectionEditPolicy#showSelection()
+ */
 protected void showSelection() {
 	addSelectionHandles();
 }

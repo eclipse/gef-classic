@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2004 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -42,12 +42,15 @@ private static final Border COLUMNS_BORDER = new MarginBorder(2, 1, 3, 2);
 /**
  * Constructor
  * 
- * @param	entry	The model entry */
+ * @param	entry	The model entry
+ */
 public TemplateEditPart(PaletteTemplateEntry entry) {
 	super(entry);
 }
 
-/** * @see org.eclipse.gef.internal.ui.palette.editparts.PaletteEditPart#createAccessible() */
+/**
+ * @see org.eclipse.gef.internal.ui.palette.editparts.PaletteEditPart#createAccessible()
+ */
 protected AccessibleEditPart createAccessible() {
 	return new AccessibleGraphicalEditPart (){
 		public void getDescription(AccessibleEvent e) {
@@ -64,7 +67,9 @@ protected AccessibleEditPart createAccessible() {
 	};
 }
 
-/** * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure() */
+/**
+ * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
+ */
 public IFigure createFigure() {
 	IFigure fig = new DetailedLabelFigure() {
 		public IFigure getToolTip() {
@@ -121,7 +126,9 @@ protected boolean nameNeededInToolTip() {
 	return label.isNameTruncated() || super.nameNeededInToolTip();
 }
 
-/** * @see org.eclipse.gef.editparts.AbstractEditPart#refreshVisuals() */
+/**
+ * @see org.eclipse.gef.editparts.AbstractEditPart#refreshVisuals()
+ */
 protected void refreshVisuals() {
 	DetailedLabelFigure fig = (DetailedLabelFigure)getFigure();
 	PaletteEntry entry = getPaletteEntry();
@@ -159,7 +166,9 @@ protected void setImageInFigure(Image image) {
 	fig.setImage(image);
 }
 
-/** * @see org.eclipse.gef.EditPart#setSelected(int) */
+/**
+ * @see org.eclipse.gef.EditPart#setSelected(int)
+ */
 public void setSelected(int value) {
 	super.setSelected(value);
 	DetailedLabelFigure label = (DetailedLabelFigure)getFigure();

@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2004 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -26,7 +26,8 @@ import org.eclipse.gef.requests.ChangeBoundsRequest;
  * this EditPolicy must perform the inverse mapping. Given a mouse location from the User,
  * the policy must determine the index at which the child[ren] should be added/created.
  * @author hudsonr
- * @since 2.0 */
+ * @since 2.0
+ */
 public abstract class OrderedLayoutEditPolicy
 	extends LayoutEditPolicy
 {
@@ -37,7 +38,8 @@ public abstract class OrderedLayoutEditPolicy
  * as the first child.
  * @param child the child being added
  * @param after <code>null</code> or a reference EditPart
- * @return a Command to add the child */
+ * @return a Command to add the child
+ */
 protected abstract Command createAddCommand(EditPart child, EditPart after);
 
 
@@ -45,7 +47,8 @@ protected abstract Command createAddCommand(EditPart child, EditPart after);
  * Since Ordered layouts generally don't use constraints, a {@link NonResizableEditPolicy}
  * is used by default for children. Subclasses may override this method to supply a
  * different EditPolicy.
- * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#createChildEditPolicy(EditPart) */
+ * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#createChildEditPolicy(EditPart)
+ */
 protected EditPolicy createChildEditPolicy(EditPart child) {
 	return new NonResizableEditPolicy();
 }
@@ -60,7 +63,8 @@ protected EditPolicy createChildEditPolicy(EditPart child) {
  * @param child the child being moved
  * @param after <code>null</code> or the EditPart that should be after (or to the right of) 
  * the child being moved
- * @return a Command to move the child */
+ * @return a Command to move the child
+ */
 protected abstract Command createMoveChildCommand(EditPart child, EditPart after);
 
 /**
@@ -71,7 +75,8 @@ protected abstract Command createMoveChildCommand(EditPart child, EditPart after
  * <P>
  * Subclasses must override {@link #createAddCommand(EditPart, EditPart)}, and should not
  * override this method.
- * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#getAddCommand(Request) */
+ * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#getAddCommand(Request)
+ */
 protected Command getAddCommand(Request req) {
 	ChangeBoundsRequest request = (ChangeBoundsRequest)req;
 	List editParts = request.getEditParts();
@@ -91,14 +96,16 @@ protected Command getAddCommand(Request req) {
  * <em>after</em> that EditPart. <code>null</code> is used to indicate the index that
  * comes after <em>no</em> EditPart, that is, it indicates the very first index.
  * @param request the Request
- * @return <code>null</code> or a reference EditPart */
+ * @return <code>null</code> or a reference EditPart
+ */
 protected abstract EditPart getInsertionReference(Request request);
 
 /**
  * A move is interpreted here as a change in order of the children. This method obtains
  * the proper index, and then calls {@link #createMoveChildCommand(EditPart, EditPart)},
  * which subclasses must implement. Subclasses should not override this method.
- * @see LayoutEditPolicy#getMoveChildrenCommand(Request) */
+ * @see LayoutEditPolicy#getMoveChildrenCommand(Request)
+ */
 protected Command getMoveChildrenCommand(Request request) {
 	CompoundCommand command = new CompoundCommand();
 	List editParts = ((ChangeBoundsRequest)request).getEditParts();

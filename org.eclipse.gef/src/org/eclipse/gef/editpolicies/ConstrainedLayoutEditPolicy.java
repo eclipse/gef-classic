@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2004 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -34,7 +34,8 @@ import org.eclipse.gef.requests.CreateRequest;
  * ConstrainedLayoutEditPolicy understands {@link RequestConstants#REQ_ALIGN_CHILDREN}
  * in addition to the Requests handled in the superclass.
  * @author hudsonr
- * @since 2.0 */
+ * @since 2.0
+ */
 public abstract class ConstrainedLayoutEditPolicy
 	extends LayoutEditPolicy
 {
@@ -46,7 +47,8 @@ public abstract class ConstrainedLayoutEditPolicy
  * @param child the EditPart of the child being added
  * @param constraint the model constraint, after being {@link 
  * #translateToModelConstraint(Object) translated}
- * @return the Command to add the child */
+ * @return the Command to add the child
+ */
 protected abstract Command createAddCommand(EditPart child, Object constraint);
 
 /**
@@ -75,7 +77,8 @@ protected Command createChangeConstraintCommand(ChangeBoundsRequest request,
  * @param child the EditPart of the child being changed
  * @param constraint the new constraint, after being {@link
  * #translateToModelConstraint(Object) translated}
- * @return Command */
+ * @return Command
+ */
 protected abstract Command createChangeConstraintCommand(
 	EditPart child,
 	Object constraint);
@@ -94,7 +97,8 @@ protected EditPolicy createChildEditPolicy(EditPart child) {
  * Overrides <code>getAddCommand()</code> to generate the proper constraint for each child
  * being added. Once the constraint is calculated, {@link
  * #createAddCommand(EditPart,Object)} is called. Subclasses must implement this method.
- * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#getAddCommand(Request) */
+ * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#getAddCommand(Request)
+ */
 protected Command getAddCommand(Request generic) {
 	ChangeBoundsRequest request = (ChangeBoundsRequest)generic;
 	List editParts = request.getEditParts();
@@ -129,14 +133,16 @@ protected Command getAddCommand(Request generic) {
  * Returns the command to align a group of children. By default, this is treated the same
  * as a resize, and {@link #getResizeChildrenCommand(ChangeBoundsRequest)} is returned.
  * @param request the AligmentRequest
- * @return the command to perform aligment */
+ * @return the command to perform aligment
+ */
 protected Command getAlignChildrenCommand(AlignmentRequest request) {
 	return getResizeChildrenCommand(request);
 }
 
 /**
  * Factors out RESIZE and ALIGN requests, otherwise calls <code>super</code>.
- * @see org.eclipse.gef.EditPolicy#getCommand(Request) */
+ * @see org.eclipse.gef.EditPolicy#getCommand(Request)
+ */
 public Command getCommand(Request request) {
 	if (REQ_RESIZE_CHILDREN.equals(request.getType()))
 		return getResizeChildrenCommand((ChangeBoundsRequest)request);
@@ -186,7 +192,8 @@ protected abstract Object getConstraintFor (Rectangle rect);
  * The CreateRequest's location is relative the Viewer. The location is made
  * layout-relative before calling one of the methods mentioned above.
  * @param request the CreateRequest
- * @return a draw2d constraint */
+ * @return a draw2d constraint
+ */
 protected Object getConstraintFor(CreateRequest request) {
 	IFigure figure = getLayoutContainer();
 
@@ -242,7 +249,8 @@ protected Object translateToModelConstraint(Object figureConstraint) {
 /**
  * Returns the <code>Command</code> to resize a group of children.
  * @param request the ChangeBoundsRequest
- * @return the Command */
+ * @return the Command
+ */
 protected Command getResizeChildrenCommand(ChangeBoundsRequest request) {
 	CompoundCommand resize = new CompoundCommand();
 	Command c;
@@ -262,7 +270,8 @@ protected Command getResizeChildrenCommand(ChangeBoundsRequest request) {
 /**
  * Returns the <code>Command</code> to move a group of children. By default, move is
  * treated the same as a resize.
- * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#getMoveChildrenCommand(Request) */
+ * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#getMoveChildrenCommand(Request)
+ */
 protected Command getMoveChildrenCommand(Request request) {
 	//By default, move and resize are treated the same for constrained layouts.
 	return getResizeChildrenCommand((ChangeBoundsRequest)request);
@@ -278,7 +287,8 @@ protected Command getMoveChildrenCommand(Request request) {
  * client area of the layout container. Thus, when processing Viewer-relative Points or
  * Rectangles, the clientArea's location (top-left corner) will be subtracted from the
  * Point/Rectangle, resulting in an offset from the LayoutOrigin.
- * @return Point */
+ * @return Point
+ */
 protected Point getLayoutOrigin() {
 	return getLayoutContainer().getClientArea().getLocation();
 }

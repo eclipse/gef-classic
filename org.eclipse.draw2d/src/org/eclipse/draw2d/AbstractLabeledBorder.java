@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2004 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -84,12 +84,16 @@ public Insets getInsets(IFigure fig) {
 	return insets;
 }
 
-/** * @see org.eclipse.draw2d.LabeledBorder#getLabel() */
+/**
+ * @see org.eclipse.draw2d.LabeledBorder#getLabel()
+ */
 public String getLabel() {
 	return label;
 }
 
-/** * @see org.eclipse.draw2d.Border#getPreferredSize(IFigure) */
+/**
+ * @see org.eclipse.draw2d.Border#getPreferredSize(IFigure)
+ */
 public Dimension getPreferredSize(IFigure fig) {
 	return new Dimension(getTextExtents(fig));
 }
@@ -136,7 +140,9 @@ public void setFont(Font font) {
 	invalidate();
 }
 
-/** * @see org.eclipse.draw2d.LabeledBorder#setLabel(String) */
+/**
+ * @see org.eclipse.draw2d.LabeledBorder#setLabel(String)
+ */
 public void setLabel(String s) {
 	label = ((s == null) ? "" : s);  //$NON-NLS-1$
 	invalidate();

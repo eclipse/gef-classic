@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2004 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -119,7 +119,8 @@ void refresh(boolean repopulateCombo) {
 /**
  * Computes the width required by control
  * @param control The control to compute width
- * @return int The width required */
+ * @return int The width required
+ */
 protected int computeWidth(Control control) {
 	int width = control.computeSize(SWT.DEFAULT, SWT.DEFAULT, true).x;
 	// $TODO: Windows workaround - Fixed in Eclipse 3.0 

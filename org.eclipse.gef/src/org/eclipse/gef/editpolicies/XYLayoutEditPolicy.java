@@ -1,10 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2004 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -27,7 +27,8 @@ import org.eclipse.gef.requests.CreateRequest;
  * 
  * Created on :Nov 12, 2002
  * @author hudsonr
- * @since 2.0 */
+ * @since 2.0
+ */
 public abstract class XYLayoutEditPolicy
 	extends ConstrainedLayoutEditPolicy
 {
@@ -94,7 +95,8 @@ public Object getConstraintFor(Rectangle r) {
 /**
  * Retrieves the child's current constraint from the <code>LayoutManager</code>.
  * @param child the child
- * @return the current constraint */
+ * @return the current constraint
+ */
 protected Rectangle getCurrentConstraintFor(GraphicalEditPart child) {
 	IFigure fig = child.getFigure();
 	return (Rectangle)fig.getParent().getLayoutManager().getConstraint(fig);
@@ -102,7 +104,8 @@ protected Rectangle getCurrentConstraintFor(GraphicalEditPart child) {
 
 /**
  * Returns {@link XYLayout#getOrigin(IFigure)}.
- * @see ConstrainedLayoutEditPolicy#getLayoutOrigin() */
+ * @see ConstrainedLayoutEditPolicy#getLayoutOrigin()
+ */
 protected Point getLayoutOrigin() {
 	return getXYLayout().getOrigin(getLayoutContainer());
 }
@@ -112,7 +115,8 @@ protected Point getLayoutOrigin() {
  * from {@link #getConstraintFor(ChangeBoundsRequest, GraphicalEditPart)}. By default,
  * a small <code>Dimension</code> is returned.
  * @param child the child
- * @return the minumum size */
+ * @return the minumum size
+ */
 protected Dimension getMinimumSizeFor(GraphicalEditPart child) {
 	return new Dimension(8, 8);
 }
@@ -138,7 +142,8 @@ public void setXyLayout(XYLayout xyLayout) {
 
 /**
  * Places the feedback rectangle where the User indicated.
- * @see LayoutEditPolicy#showSizeOnDropFeedback(CreateRequest) */
+ * @see LayoutEditPolicy#showSizeOnDropFeedback(CreateRequest)
+ */
 protected void showSizeOnDropFeedback(CreateRequest request) {	
 	Point p = new Point(request.getLocation().getCopy());
 	IFigure feedback = getSizeOnDropFeedback(request);

@@ -1,10 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2004 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -178,7 +178,9 @@ public final void add(IFigure figure) {
 public final void add(IFigure figure, int index) {
 	add(figure, null, index);
 }
-/** * @see IFigure#addAncestorListener(AncestorListener) */
+/**
+ * @see IFigure#addAncestorListener(AncestorListener)
+ */
 public void addAncestorListener(AncestorListener ancestorListener) {
 	if (ancestorHelper == null)
 		ancestorHelper = new AncestorHelper(this);
@@ -229,7 +231,8 @@ public void addLayoutListener(LayoutListener listener) {
 /**
  * Adds a listener of type <i>clazz</i> to this Figure's list of event listeners.
  * @param clazz The listener type
- * @param listener The listener */
+ * @param listener The listener
+ */
 protected void addListener(Class clazz, Object listener) {
 	eventListeners.addListener(clazz, listener);
 }
@@ -406,7 +409,8 @@ public IFigure findMouseEventTargetAt(int x, int y) {
  * @see #findMouseEventTargetAt(int, int)
  * @param x The X coordinate
  * @param y The Y coordinate
- * @return The deepest descendant for which isMouseEventTarget() returns true */
+ * @return The deepest descendant for which isMouseEventTarget() returns true
+ */
 protected IFigure findMouseEventTargetInDescendantsAt(int x, int y) {
 	PRIVATE_POINT.setLocation(x, y);
 	translateFromParent(PRIVATE_POINT);
@@ -579,7 +583,8 @@ public Cursor getCursor() {
 /**
  * Returns the value of the given flag.
  * @param flag The flag to get
- * @return The value of the given flag */
+ * @return The value of the given flag
+ */
 protected boolean getFlag(int flag) {
 	return (flags & flag) != 0;
 }
@@ -917,7 +922,9 @@ public void invalidate() {
 	setValid(false);
 }
 
-/** * @see IFigure#invalidateTree() */
+/**
+ * @see IFigure#invalidateTree()
+ */
 public void invalidateTree() {
 	invalidate();
 	for (Iterator iter = children.iterator(); iter.hasNext();) {
@@ -1818,7 +1825,8 @@ public static class FigureIterator {
 	private int index;
 	/**
 	 * Constructs a new FigureIterator for the given Figure.
-	 * @param figure The Figure whose children to iterate over	 */
+	 * @param figure The Figure whose children to iterate over
+	 */
 	public FigureIterator(IFigure figure) {
 		list = figure.getChildren();
 		index = list.size();
@@ -1832,7 +1840,8 @@ public static class FigureIterator {
 	}
 	/**
 	 * Returns <code>true</code> if there's another Figure to iterate over.
-	 * @return <code>true</code> if there's another Figure to iterate over	 */
+	 * @return <code>true</code> if there's another Figure to iterate over
+	 */
 	public boolean hasNext() {
 		return index > 0;
 	}

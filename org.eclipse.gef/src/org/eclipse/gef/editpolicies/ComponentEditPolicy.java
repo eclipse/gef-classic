@@ -1,10 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2004 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -30,7 +30,8 @@ import org.eclipse.gef.requests.GroupRequest;
  * <P>
  * This EditPolicy should not be used with {@link org.eclipse.gef.ConnectionEditPart}.
  * Connections do not really have a parent; use {@link ConnectionEditPolicy}.
- * @since 2.0 */
+ * @since 2.0
+ */
 public abstract class ComponentEditPolicy
 	extends AbstractEditPolicy
 {
@@ -38,14 +39,16 @@ public abstract class ComponentEditPolicy
 /**
  * Override to contribute to the component's being deleted.
  * @param deleteRequest the DeleteRequest
- * @return Command <code>null</code> or a contribution to the delete */
+ * @return Command <code>null</code> or a contribution to the delete
+ */
 protected Command createDeleteCommand(GroupRequest deleteRequest) {
 	return null;
 }
 
 /**
  * Factors the incoming Request into ORPHANs and DELETEs.
- * @see org.eclipse.gef.EditPolicy#getCommand(Request) */
+ * @see org.eclipse.gef.EditPolicy#getCommand(Request)
+ */
 public Command getCommand(Request request) {
 	if (REQ_ORPHAN.equals(request.getType()))
 		return getOrphanCommand();
@@ -58,7 +61,8 @@ public Command getCommand(Request request) {
  * Calls and returns {@link #createDeleteCommand(GroupRequest)}. This method is here for
  * historical reasons and used to perform additional function.
  * @param request the DeleteRequest
- * @return a delete command */
+ * @return a delete command
+ */
 protected Command getDeleteCommand(GroupRequest request) {
 	return createDeleteCommand(request);
 }

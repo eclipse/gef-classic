@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2004 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -206,7 +206,8 @@ protected void paintFigure(Graphics g) {
 /**
  * Sets the value of the LEDFigure to val.
  * 
- * @param val The value to set on this LEDFigure */
+ * @param val The value to set on this LEDFigure
+ */
 public void setValue(int val) {
 	value = String.valueOf(val);
 	if (val < 10)
@@ -215,7 +216,9 @@ public void setValue(int val) {
 }
 
 /**
- *  * @see java.lang.Object#toString() */
+ * 
+ * @see java.lang.Object#toString()
+ */
 public String toString() {
 	return "LEDFigure"; //$NON-NLS-1$
 }

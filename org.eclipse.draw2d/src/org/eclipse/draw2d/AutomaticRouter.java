@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2004 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -69,7 +69,9 @@ private class HashKey {
 	}
 }
 
-/** * @see org.eclipse.draw2d.ConnectionRouter#getConstraint(Connection) */
+/**
+ * @see org.eclipse.draw2d.ConnectionRouter#getConstraint(Connection)
+ */
 public Object getConstraint(Connection connection) {
 	if (next() != null)
 		return next().getConstraint(connection);
@@ -82,10 +84,13 @@ public Object getConstraint(Connection connection) {
  * words, the 2 connections are the exact same line.
  *  
  * @param list The PointList of a connection that collides with another connection
- * @param index The index of the current connection in the list of colliding connections */
+ * @param index The index of the current connection in the list of colliding connections
+ */
 protected abstract void handleCollision(PointList list, int index);
 
-/** * @see org.eclipse.draw2d.ConnectionRouter#invalidate(Connection) */
+/**
+ * @see org.eclipse.draw2d.ConnectionRouter#invalidate(Connection)
+ */
 public void invalidate(Connection conn) {
 	if (next() != null)
 		next().invalidate(conn);
@@ -113,7 +118,9 @@ protected ConnectionRouter next() {
 
 
 
-/** * @see org.eclipse.draw2d.ConnectionRouter#remove(Connection) */
+/**
+ * @see org.eclipse.draw2d.ConnectionRouter#remove(Connection)
+ */
 public void remove(Connection conn) {
 	if (conn.getSourceAnchor() == null || conn.getTargetAnchor() == null)
 		return;
@@ -132,7 +139,8 @@ public void remove(Connection conn) {
  * Routes the given connection.  Calls the 'next' router first (if one exists) and if no
  * bendpoints were added by the next router, collisions are dealt with by calling 
  * {@link #handleCollision(PointList, int)}.
- * @param conn The connection to route */
+ * @param conn The connection to route
+ */
 public void route(Connection conn) {
 	if (next() != null) 
 		next().route(conn);
@@ -169,7 +177,8 @@ public void route(Connection conn) {
  * An AutomaticRouter needs no constraints for the connections it routes.  This method
  * invalidates the connections and calls {@link #setConstraint(Connection, Object)} on the
  * {@link #next()} router.
- * @see org.eclipse.draw2d.ConnectionRouter#setConstraint(Connection, Object) */
+ * @see org.eclipse.draw2d.ConnectionRouter#setConstraint(Connection, Object)
+ */
 public void setConstraint(Connection connection, Object constraint) {
 	invalidate(connection);
 	if (next() != null)
@@ -178,7 +187,8 @@ public void setConstraint(Connection connection, Object constraint) {
 
 /**
  * Sets the start and end points for the given connection.
- * @param conn The connection */
+ * @param conn The connection
+ */
 protected void setEndPoints(Connection conn) {
 	PointList points = conn.getPoints();
 	points.removeAllPoints();

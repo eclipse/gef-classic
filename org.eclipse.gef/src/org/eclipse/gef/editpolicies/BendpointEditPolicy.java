@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2004 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -54,7 +54,8 @@ private static final Point ref2 = new Point();
 /**
  * <code>activate()</code> is extended to add a listener to the <code>Connection</code>
  * figure.
- * @see org.eclipse.gef.EditPolicy#activate() */
+ * @see org.eclipse.gef.EditPolicy#activate()
+ */
 public void activate() {
 	super.activate();
 	getConnection().addPropertyChangeListener(Connection.PROPERTY_POINTS, this);
@@ -122,7 +123,8 @@ protected List createSelectionHandles() {
 /**
  * <code>deactivate()</code> is extended to remove the property change listener on the
  * <code>Connection</code> figure.
- * @see org.eclipse.gef.EditPolicy#deactivate() */
+ * @see org.eclipse.gef.EditPolicy#deactivate()
+ */
 public void deactivate() {
 	getConnection().removePropertyChangeListener(Connection.PROPERTY_POINTS, this);
 	super.deactivate();
@@ -139,7 +141,9 @@ protected void eraseConnectionFeedback(BendpointRequest request) {
 	originalConstraint = null;
 }
 
-/** * @see org.eclipse.gef.EditPolicy#eraseSourceFeedback(Request) */
+/**
+ * @see org.eclipse.gef.EditPolicy#eraseSourceFeedback(Request)
+ */
 public void eraseSourceFeedback(Request request) {
 	if (REQ_MOVE_BENDPOINT.equals(request.getType())
 	  || REQ_CREATE_BENDPOINT.equals(request.getType()))
@@ -148,7 +152,8 @@ public void eraseSourceFeedback(Request request) {
 
 /**
  * Factors the Request into either a MOVE, a DELETE, or a CREATE of a bendpoint.
- * @see org.eclipse.gef.EditPolicy#getCommand(Request) */
+ * @see org.eclipse.gef.EditPolicy#getCommand(Request)
+ */
 public Command getCommand(Request request) {
 	if (REQ_MOVE_BENDPOINT.equals(request.getType())) {
 		if (isDeleting)
@@ -162,7 +167,8 @@ public Command getCommand(Request request) {
 
 /**
  * Convenience method for obtaining the host's <code>Connection</code> figure.
- * @return the Connection figure */
+ * @return the Connection figure
+ */
 protected Connection getConnection() {
 	return (Connection)((ConnectionEditPart)getHost()).getFigure();
 }
@@ -229,7 +235,8 @@ private boolean lineContainsPoint(Point p1, Point p2, Point p) {
 
 /**
  * If the number of bendpoints changes, handles are updated.
- * @see java.beans.PropertyChangeListener#propertyChange(PropertyChangeEvent) */
+ * @see java.beans.PropertyChangeListener#propertyChange(PropertyChangeEvent)
+ */
 public void propertyChange(PropertyChangeEvent evt) {
 	//$TODO optimize so that handles aren't added constantly.
 	if (getHost().getSelected() != EditPart.SELECTED_NONE)

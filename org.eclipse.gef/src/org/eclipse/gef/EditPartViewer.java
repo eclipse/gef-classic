@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2004 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -239,7 +239,8 @@ EditDomain getEditDomain();
  * to create the <i>contents</i> EditPart when {@link #setContents(Object)} is called. It
  * is made available so that other EditParts can use it to create their children or
  * connection editparts.
- * @return EditPartFactory */
+ * @return EditPartFactory
+ */
 EditPartFactory getEditPartFactory();
 
 /**
@@ -261,7 +262,8 @@ Map getEditPartRegistry();
  * is the same concept as focus in a native Tree or Table.  The User can change focus
  * using the keyboard without affecting the currently selected objects. Never returns
  * <code>null</code>.
- * @return the <i>focus</i> <code>EditPart</code> */
+ * @return the <i>focus</i> <code>EditPart</code>
+ */
 EditPart getFocusEditPart();
 
 /**
@@ -270,7 +272,8 @@ EditPart getFocusEditPart();
  * tool knows if it is in a state in which keys should be ignored, such as during a drag. 
  * By default, only the {@link org.eclipse.gef.tools.SelectionTool} forwards keysrokes. 
  * It does not do so during a drag.
- * @return <code>null</code> or a KeyHandler */
+ * @return <code>null</code> or a KeyHandler
+ */
 KeyHandler getKeyHandler();
 
 
@@ -334,7 +337,8 @@ Map getVisualPartMap();
 
 /**
  * Used for accessibility purposes.
- * @param acc the AccessibleEditPart */
+ * @param acc the AccessibleEditPart
+ */
 void registerAccessibleEditPart(AccessibleEditPart acc);
 
 /**
@@ -448,7 +452,8 @@ void setEditPartFactory(EditPartFactory factory);
 /**
  * Sets the <i>focus</i> EditPart.
  * @see #getFocusEditPart()
- * @param focus the FocusPart. */
+ * @param focus the FocusPart.
+ */
 void setFocus(EditPart focus);
 
 /**
@@ -488,7 +493,8 @@ void setRouteEventsToEditDomain(boolean value);
 
 /**
  * Used for accessibility purposes.
- * @param acc the accessible part */
+ * @param acc the accessible part
+ */
 void unregisterAccessibleEditPart(AccessibleEditPart acc);
 
 }

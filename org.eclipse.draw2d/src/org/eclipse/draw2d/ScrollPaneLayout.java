@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2004 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -30,7 +30,9 @@ protected static final int AUTO   = ScrollPane.AUTOMATIC;
 /** @see ScrollPane#ALWAYS */
 protected static final int ALWAYS = ScrollPane.ALWAYS;
 
-/** * @see AbstractHintLayout#calculateMinimumSize(IFigure, int, int) */
+/**
+ * @see AbstractHintLayout#calculateMinimumSize(IFigure, int, int)
+ */
 public Dimension calculateMinimumSize(IFigure figure, int w, int h) {
 	ScrollPane scrollpane = (ScrollPane)figure;
 	Insets insets = scrollpane.getInsets();
@@ -75,7 +77,9 @@ protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHi
 		.getExpanded(reservedWidth, reservedHeight);
 }
 
-/** * @see org.eclipse.draw2d.LayoutManager#layout(IFigure) */
+/**
+ * @see org.eclipse.draw2d.LayoutManager#layout(IFigure)
+ */
 public void layout(IFigure parent) {
 	ScrollPane scrollpane = (ScrollPane)parent;
 	Viewport viewport = scrollpane.getViewport();

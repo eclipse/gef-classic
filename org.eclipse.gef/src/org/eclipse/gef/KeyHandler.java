@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2004 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -33,7 +33,8 @@ import org.eclipse.jface.action.IAction;
  * KeyStrokes} to {@link org.eclipse.jface.action.IAction Actions} using the {@link
  * #put(KeyStroke, IAction)} and {@link #remove(KeyStroke)} API. The other is to subclass
  * KeyHandler, and override various methods. A combination of the two is also useful.
- * @since 2.0 */
+ * @since 2.0
+ */
 public class KeyHandler {
 
 private Map actions;
@@ -43,7 +44,8 @@ private KeyHandler parent;
  * Processes a <i>key pressed</i> event. This method is called by the Tool whenever a key
  * is pressed, and the Tool is in the proper state.
  * @param event the KeyEvent
- * @return <code>true</code> if KeyEvent was handled in some way */
+ * @return <code>true</code> if KeyEvent was handled in some way
+ */
 public boolean keyPressed(KeyEvent event) {
 	if (performStroke(new KeyStroke(event, true))) {
 		event.doit = false;
@@ -80,7 +82,8 @@ private final boolean performStroke(KeyStroke key) {
  * occurs matching the given KeyStroke, the Action will be <code>run()</code> iff it is
  * enabled.
  * @param keystroke the KeyStroke
- * @param action the Action to run */
+ * @param action the Action to run
+ */
 public void put(KeyStroke keystroke, IAction action) {
 	if (actions == null)
 		actions = new HashMap();
@@ -101,7 +104,8 @@ public void remove(KeyStroke keystroke) {
  * un-consumed KeyEvents. This KeyHandler will first attempt to handle KeyEvents. If it
  * does not recognize a given KeyEvent, that event is passed to its <i>parent</i>
  * @param parent the <i>parent</i> KeyHandler
- * @return <code>this</code> for convenience */
+ * @return <code>this</code> for convenience
+ */
 public KeyHandler setParent(KeyHandler parent) {
 	this.parent = parent;
 	return this;

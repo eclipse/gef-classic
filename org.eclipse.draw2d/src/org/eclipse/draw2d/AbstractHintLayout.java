@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2004 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -46,13 +46,15 @@ private Dimension cachedMinimumHint = new Dimension(-1, -1);
  * @param wHint the width hint
  * @param hHint the height hint
  * 
- * @return the layout's minimum size */
+ * @return the layout's minimum size
+ */
 protected Dimension calculateMinimumSize(IFigure container, int wHint, int hHint) {
 	return getPreferredSize(container, wHint, hHint);
 }
 
 /**
- * @see org.eclipse.draw2d.LayoutManager#getMinimumSize(IFigure, int, int) */
+ * @see org.eclipse.draw2d.LayoutManager#getMinimumSize(IFigure, int, int)
+ */
 public Dimension getMinimumSize(IFigure container, int w, int h) {
 	boolean flush = cachedMinimumHint.width != w
 		&& isSensitiveHorizontally(container);
@@ -68,7 +70,9 @@ public Dimension getMinimumSize(IFigure container, int w, int h) {
 	return minimumSize;
 }
 
-/** * @see org.eclipse.draw2d.LayoutManager#getPreferredSize(IFigure, int, int) */
+/**
+ * @see org.eclipse.draw2d.LayoutManager#getPreferredSize(IFigure, int, int)
+ */
 public final Dimension getPreferredSize(IFigure container, int w, int h) {
 	boolean flush = cachedPreferredHint.width != w
 		&& isSensitiveHorizontally(container);
@@ -84,7 +88,8 @@ public final Dimension getPreferredSize(IFigure container, int w, int h) {
 
 /**
  * Extends the superclass implementation to flush the cached minimum size.
- * @see org.eclipse.draw2d.LayoutManager#invalidate() */
+ * @see org.eclipse.draw2d.LayoutManager#invalidate()
+ */
 public void invalidate() {
 	minimumSize = null;
 	super.invalidate();
