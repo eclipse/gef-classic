@@ -131,9 +131,17 @@ public int getVerticalScrollBarVisibility(){
 }
 
 /**
+ * Returns the contents of the viewport.
+ * @return the contents of the viewport
+ */
+public IFigure getContents() {
+	return getView();
+}
+
+/**
  * Returns the ScrollPane's view. The view is the IFigure 
  * that is the contents of the ScrollPane.
- * 
+ * @deprecated use getContents()
  * @since 2.0
  */ 
 public IFigure getView() {
@@ -188,6 +196,14 @@ public void scrollTo(Point location){
  */
 public void scrollVerticalTo(int y){
 	getViewport().setVerticalLocation(y);
+}
+
+/**
+ * Sets the contents of the current viewport.
+ * @param figure the contents of the viewport
+ */
+public void setContents(IFigure figure) {
+	setView(figure);
 }
 
 /**
@@ -271,7 +287,7 @@ public void setVerticalScrollBarVisibility(int v){
  * Sets the ScrollPane's view to the passed IFigure.
  * The view is the top-level IFigure which represents the contents
  * of the ScrollPane.
- * 
+ * @deprecated call setContents(IFigure) instead
  * @since 2.0
  */
 public void setView(IFigure figure){
