@@ -9,38 +9,37 @@ package org.eclipse.draw2d.geometry;
 import org.eclipse.draw2d.geometry.Point;
 
 /**
- * Provides support for vector type calculations.
+ * Represents a 2-dimensional directionl Vector, or Ray.  {@link java.util.Vector} is commonly
+ * imported, so the name Ray was chosen.
  */
-final public class Ray {
+public final class Ray {
 
-public int x, y;
-
-/**
- * Constructs a Ray of no direction and magnitude.
- * 
- * @since 2.0
- */
-public Ray() {}
+/** the X value */
+public int x;
+/** the Y value*/
+public int y;
 
 /**
- * Constructs a Ray with direction from the
- * origin(0,0) to the coordinates given.
- * 
- * @param _x  Location along X Axis.
- * @param _y  Location along Y axis.
+ * Constructs a Ray &lt;0, 0&gt; with no direction and magnitude.
  * @since 2.0
  */
-public Ray(int _x, int _y) {
-	x = _x;
-	y = _y;
+public Ray() { }
+
+/**
+ * Constructs a Ray pointed in the specified direction.
+ * 
+ * @param x  X value.
+ * @param y  Y value.
+ * @since 2.0
+ */
+public Ray(int x, int y) {
+	this.x = x;
+	this.y = y;
 }
 
 /**
- * Constructs a Ray with direction from the
- * origin(0,0) to the Point given.
- *
- * @param p  Point to which the ray will point from 
- *            the origin.
+ * Constructs a Ray pointed in the direction specified by a Point.
+ * @param p the Point
  * @since 2.0
  */
 public Ray(Point p) {
@@ -48,11 +47,9 @@ public Ray(Point p) {
 }
 
 /**
- * Constructs a Ray which points from the first input
- * Point to the second input Point.
- *
- * @param start  Strarting point of the ray.
- * @param end  Ending point of the ray.
+ * Constructs a Ray representing the direction and magnitude between to provided Points.
+ * @param start Strarting Point
+ * @param end End Point
  * @since 2.0
  */
 public Ray(Point start, Point end) {
@@ -61,12 +58,9 @@ public Ray(Point start, Point end) {
 }
 
 /**
- * Constructs a Ray which connects both the Rays given
- * as input. The direction of the Ray is from the first
- * Ray to the second one.
- *
- * @param start  Direction of the start of this Ray.
- * @param end   Direction of the end of this Ray.
+ * Constructs a Ray representing the difference between two provided Rays.
+ * @param start  The start Ray
+ * @param end   The end Ray
  * @since 2.0
  */
 public Ray(Ray start, Ray end) {
@@ -75,38 +69,32 @@ public Ray(Ray start, Ray end) {
 }
 
 /**
- * Returns the cross product of this Ray and <i>r</i>.
- * Represents the amount by which two Rays
- * are directionally different.
- *
- * @param r  Ray being compared.
- * @return  Amount by which two rays are directionally
- * different. Parallel Rays result in a
- * distance of zero. Perpendicular rays result in a
- * distance of one.
+ * Calculates the magnitude of the cross product of this Ray with another.
+ * Represents the amount by which two Rays are directionally different.
+ * Parallel Rays return a value of 0.
+ * @param r  Ray being compared
+ * @return  The assimilarity
  * @see #similarity(Ray)
  * @since 2.0
  */
-public int assimilarity(Ray r){
-	return Math.abs(x * r.y + y * r.x);
+public int assimilarity(Ray r) {
+	return Math.abs(x * r.y - y * r.x);
 }
 
 /**
- * Returns the dot product of this Ray and <i>p</i>.
- *
- * @return dot product of the two Rays.
+ * Calculates the dot product of this Ray with another.
+ * @param r the Ray used to perform the dot product
+ * @return The dot product
  * @since 2.0
  */
-public int dotProduct(Ray p){
-	return x * p.x + y * p.y;
+public int dotProduct(Ray r) {
+	return x * r.x + y * r.y;
 }
 
 /**
- * Returns a new Ray which is the sum of 
- * this Ray and the input Ray <i>r</i>.
- *
- * @param r  Ray to be added to this Ray.
- * @return  New Ray which is the sum of two Rays.
+ * Creates a new Ray which is the sum of this Ray with another.
+ * @param r  Ray to be added with this Ray
+ * @return  a new Ray
  * @since 2.0
  */
 public Ray getAdded(Ray r) {
@@ -114,75 +102,59 @@ public Ray getAdded(Ray r) {
 }
 
 /**
- * Returns a new Ray which points, along all axes, to the middle
- * region of this Ray and the input Ray <i>r</i>.
- *  
+ * Creates a new Ray which represents the average of this Ray with another.
  * @param r  Ray to calculate the average.
- * @return  New Ray which is the average of the two Rays.
+ * @return  a new Ray
  * @since 2.0
  */
-public Ray getAveraged(Ray r){
-	return new Ray ((x+r.x)/2, (y+r.y)/2);
+public Ray getAveraged(Ray r) {
+	return new Ray ((x + r.x) / 2, (y + r.y) / 2);
 }
 
 /**
- * Returns a new Ray which has this Ray's magnitude scaled
- * by the value provided as input.
- *
+ * Creates a new Ray which represents this Ray scaled by the amount provided.
  * @param s  Value providing the amount to scale.
- * @return  New Ray containging the scaled values.
+ * @return  a new Ray
  * @since 2.0
  */
-public Ray getScaled(int s){
-	return new Ray(x*s, y*s);
+public Ray getScaled(int s) {
+	return new Ray(x * s, y * s);
 }
 
 /**
- * Returns whether this Ray points horizontally or not.
- *
- * @return  Result of the horizontal test.
+ * Returns true if this Ray has a non-zero horizontal comonent.
+ * @return  true if this Ray has a non-zero horizontal comonent
  * @since 2.0
  */
-public boolean isHorizontal(){
+public boolean isHorizontal() {
 	return x != 0;
 }
 
 /**
- * Returns the length of this Ray. Generally this is 
- * the distance from the point to which the Ray points
- * to the origin.
- *
- * @return  Length of this Ray as a double.
+ * Returns the length of this Ray.
+ * @return  Length of this Ray
  * @since 2.0
  */
 public double length() {
-	return Math.sqrt( dotProduct( this ) );
+	return Math.sqrt(dotProduct(this));
 }
 
 /**
- * Returns the similarity of direction between this Ray
- * and the Ray given. Parallel Rays return a
- * value of one. Perpendicular Rays return a value of
- * zero.
- *
- * @param r  Ray being tested for similarity.
- * @return  Similarity result.Parallel Rays return a
- * value of one, and perpendicular Rays give a value as
- * zero.
+ * Calculates the similarity of this Ray with another.
+ * Similarity is defined as the absolute value of the dotProduct()
+ * @param r  Ray being tested for similarity
+ * @return  the Similarity
  * @see #assimilarity(Ray)
  * @since 2.0
  */
-public int similarity(Ray r){
+public int similarity(Ray r) {
 	return Math.abs(dotProduct(r));
 }
 
 /**
- * Returns the String description of this Ray.
- *
- * @return  The String description of this Ray.
- * @since 2.0
+ * @return a String representation
  */
-public String toString(){
+public String toString() {
 	return "(" + x + "," + y + ")";//$NON-NLS-3$//$NON-NLS-2$//$NON-NLS-1$
 }
 

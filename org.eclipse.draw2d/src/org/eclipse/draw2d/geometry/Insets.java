@@ -7,66 +7,69 @@ package org.eclipse.draw2d.geometry;
  */
 
 /**
- * Provides support for side space measurements for 
- * {@link org.eclipse.draw2d.Border Borders}
+ * Stores four integers for top, left, bottom, and right measurements.
  */
 public class Insets
 	implements Cloneable, java.io.Serializable
 {
-public int left, top, bottom, right;
+
+/** distance from left  */
+public int left;
+/** distance from top*/
+public int top;
+/** distance from bottom*/
+public int bottom;
+/** distance from right */
+public int right;
 
 static final long serialVersionUID = 1;
 
 /**
- * Constructs an Insets with left, top, bottom and right
- * empty.
- * 
+ * Constructs an Insets with all zeroes.
  * @since 2.0
  */
-public Insets(){}
+public Insets() { }
 
 /**
- * Constructs an Insets with the initial values supplied
- * by the input Insets.
- *
- * @param i  Insets supplying the initial values.
+ * Constructs a new Insets with initial values the same as the provided Insets.
+ * @param i  The insets to copy.
  * @since 2.0
  */
-public Insets(Insets i){this(i.top, i.left, i.bottom, i.right);}
+public Insets(Insets i) {
+	this(i.top, i.left, i.bottom, i.right);
+}
 
 /**
- * Constructs an Insets with all the sides set to the size
- * given as input.
- *
- * @param i  Value applied to all the sides of the Insets.
+ * Constructs a new Insets with all the sides set to the speicifed value.
+ * @param i  Value applied to all sides of new Insets.
  * @since 2.0
  */
-public Insets(int i){this(i,i,i,i);}
+public Insets(int i) {
+	this(i, i, i, i);
+}
 
 /**
- * Constructs an Insets with the initial values set to the values
- * given as input.
- *
+ * Creates a new Insets with the specified top, left, bottom, and right values.
  * @param top  Value of the top space.
  * @param left  Value of the left space.
  * @param bottom  Value of the bottom space.
  * @param right  Value of the right space.
  * @since 2.0
  */
-public Insets(int top, int left, int bottom, int right){
+public Insets(int top, int left, int bottom, int right) {
 	this.top = top;
-	this.left=left;
+	this.left = left;
 	this.bottom = bottom;
 	this.right = right;
 }
 
 /**
- * Adds the input Insets to this Insets and returns this
- * Insets for convenience.
- *
+ * Adds the values of the specified Insets to this Insets' values.
+ * @return <code>this</code> for convenience
+ * @param insets the Insets being added
  * @since 2.0
  */
-public Insets add(Insets insets){
+public Insets add(Insets insets) {
 	top    += insets.top;
 	bottom += insets.bottom;
 	left   += insets.left;
@@ -75,104 +78,91 @@ public Insets add(Insets insets){
 }
 
 /**
- * Returns whether this Insets is equal to the Object input.
+ * Test for equality.
  * The Insets are equal if their top, left, bottom, and 
  * right values are equivalent.
  *
  * @param o  Object being tested for equality.
- * @return  boolean giving the result of the equality.
+ * @return  true if all values are the same.
  * @since 2.0
  */
-public boolean equals(Object o){
-	if (o instanceof Insets){
+public boolean equals(Object o) {
+	if (o instanceof Insets) {
 		Insets i = (Insets)o;
-		return i.top == top &&
-			 i.bottom == bottom &&
-			 i.left == left &&
-			 i.right == right;
+		return i.top == top
+			&& i.bottom == bottom
+			&& i.left == left
+			&& i.right == right;
 	}
 	return false;
 }
 
 /**
- * Returns a new Insets containing the incremented values of
- * this Insets and the input Insets.
- *
- * @param insets  Insets providing the increment values.
- * @return  A new Insets containing the new values.
+ * Creates an Insets representing the sum of this Insets with the specified Insets.
+ * @param insets  Insets to be added
+ * @return  A new Insets
  * @since 2.0
  */
-public Insets getAdded(Insets insets){
+public Insets getAdded(Insets insets) {
 	return new Insets(this).add(insets);
 }
 
 /**
- * Returns the height for this Insets, which
- * is this Inset's top and bottom values
- * addded together.
- *
- * @return The height of this Insets.
+ * Returns the height for this Insets, equal to <code>top</code> + <code>bottom</code>.
+ * @return The sum of top + bottom
  * @see  #getWidth()
  * @since 2.0
  */
-public int getHeight(){return top+bottom;}
+public int getHeight() {
+	return top + bottom;
+}
 
 /**
- * Returns a new Insets with transposed values.
+ * Creates a new Insets with transposed values.
  * Top and Left are transposed.
  * Bottom and Right are transposed.
- *
  * @return  New Insets with the transposed values.
  * @since 2.0
  */
-public Insets getTransposed(){return new Insets(this).transpose();}
+public Insets getTransposed() {
+	return new Insets(this).transpose();
+}
 
 /**
- * Returns the width for this Insets which is the 
- * left value added to the right.
- *
- * @return The width of this Insets.
+ * Returns the width for this Insets, equal to <code>left</code> + <code>right</code>.
+ * @return The sum of left + right
  * @see  #getHeight()
  * @since 2.0
  */
-public int getWidth(){return left+right;}
-
-/**
- * Returns whether this Insets has a value of zero
- * for its top, left, right, and bottom values. 
- *
- * @return Returns a <code>true</code> if all the 
- *          spaces are zero, else returns <code>false</code>
- * @since 2.0
- */
-public boolean isEmpty(){
-	return (
-		left == 0 &&
-		right== 0 &&
-		top  == 0 &&
-		bottom==0);
+public int getWidth() {
+	return left + right;
 }
 
 /**
- * Returns the description of this Insets as a String.
- *
- * @return  Desription.
+ * Returns true if all values are 0.
+ * @return true if all values are 0
  * @since 2.0
  */
-public String toString(){
-	return "Insets(t="+top+",l="+left+ //$NON-NLS-2$//$NON-NLS-1$
-		 ",b="+bottom+",r="+right+")";//$NON-NLS-3$//$NON-NLS-2$//$NON-NLS-1$
+public boolean isEmpty() {
+	return (left == 0 && right == 0 && top == 0 && bottom == 0);
 }
 
 /**
- * Interchanges the right-bottom and top-left spaces for this
- * Insets and returns this Insets for convinience. Can be used 
- * in orientation changes.
- *
- * @return This Insets with the transposed sides.
+ * @return String representation.
  * @since 2.0
  */
-public Insets transpose(){
+public String toString() {
+	return "Insets(t=" + top + ", l=" + left + //$NON-NLS-2$//$NON-NLS-1$
+		 ", b=" + bottom + ", r=" + right + ")";//$NON-NLS-3$//$NON-NLS-2$//$NON-NLS-1$
+}
+
+/**
+ * Transposes this object.  Top and Left are exchanged.  Bottom and Right are exchanged.
+ * Can be used in orientation changes.
+ * @return <code>this</code> for convenience
+ * @since 2.0
+ */
+public Insets transpose() {
 	int temp = top;
 	top = left;
 	left = temp;

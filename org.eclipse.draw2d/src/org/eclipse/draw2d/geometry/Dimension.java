@@ -7,7 +7,8 @@ package org.eclipse.draw2d.geometry;
  */
 
 /**
- * Provides support for the physical entity of dimension.
+ * Stores an integer width and height.  This class provides various methods for manipulating
+ * this Dimension or creating new derived Objects.
  */
 public class Dimension
 	implements Cloneable, java.io.Serializable
@@ -83,11 +84,10 @@ public boolean contains(Dimension d) {
 }
 
 /**
- * Returns whether the input Dimension fits into this Dimension.
- * A Dimension of the same size is considered to not "fit".
- *
+ * Returns true if this Dimension properly contains the one specified.  Proper containment
+ * is defined as containment using "<", instead of "<=".
  * @param d  Dimension being tested.
- * @return <code>boolean</code> specifying the result of the fit test.
+ * @return <code>true</code> if this Dimension properly contains the one specified
  * @since 2.0
  */
 public boolean containsProper(Dimension d) {
@@ -106,9 +106,8 @@ public void copyFrom(Dimension d) {
 }
 
 /**
- * Returns the area covered by this Dimension.
- *
- * @return  Returns the area covered by this Dimension.
+ * Returns the area of this Dimension.
+ * @return  The area of this Dimension.
  * @since 2.0
  */
 public int getArea() {
@@ -116,8 +115,7 @@ public int getArea() {
 }
 
 /**
- * Returns a copy of this Dimension
- *
+ * Creates a copy.
  * @return A copy of this Dimension
  * @since 2.0
  */
@@ -126,13 +124,10 @@ public Dimension getCopy() {
 }
 
 /**
- * Returns a Dimension comprised of the differences in width and 
- * height of this Dimension compared to the passsed Dimension.   
- *
- * @param d  Dimension being compared.
- * @return  A new Dimension signifying the difference of width and height.
- * @see #getExpanded(Dimension)
- * @see #getExpanded(int,int)
+ * Creates a new Dimension representing the difference between this Dimension
+ * and the one specified.
+ * @param d  Dimension being compared
+ * @return  A new Dimension
  * @since 2.0
  */
 public Dimension getDifference(Dimension d) {
@@ -140,12 +135,9 @@ public Dimension getDifference(Dimension d) {
 }
 
 /**
- * Returns a new Dimension which is comprised of
- * this Dimension's width expanded by <i>d</d>.width
- * and this Dimension's height expanded by <i>d</d>.height.
- *
+ * Creates a Dimension representing the sum of this Dimension and the one specified.
  * @param d  Dimension providing the expansion width and height.
- * @return  A new Dimension containing the expanded width and height.
+ * @return A new Dimension
  * @see #getDifference(Dimension)
  * @since 2.0
  */
@@ -154,13 +146,10 @@ public Dimension getExpanded(Dimension d) {
 }
 
 /**
- * Returns a new Dimension which is comprised of
- * this Dimension's width expanded by <i>w</i>.
- * and this Dimension's height expanded by <i>h</i>.
- *
+ * Creates a new Dimension representing the sum of this Dimension and the one specified.
  * @param w  Value by which the width of this is to be expanded.
  * @param h  Value by which the height of this is to be expanded.
- * @return  A new Dimension containing the expanded width and height.
+ * @return  A new Dimension
  * @see  #getDifference(Dimension)
  * @since 2.0
  */
@@ -169,10 +158,11 @@ public Dimension getExpanded(int w, int h) {
 }
 
 /**
- * Creates and returns a new Dimension representing the intersecting
- * region of this Dimension and the given Dimension.
- * 
+ * Creates a new Dimension representing the intersection of
+ * this Dimension and the one specified.
+ * @return A new Dimension
  * @see #intersect(Dimension)
+ * @param d The Dimension to intersect with
  * @since 2.0
  */
 public Dimension getIntersected(Dimension d) {
@@ -180,9 +170,8 @@ public Dimension getIntersected(Dimension d) {
 }
 
 /**
- * Returns a new Dimension with a negated copy of this Dimension. 
- *
- * @return	A negated copy of this Dimension
+ * Creates a new Dimension with negated values. 
+ * @return	A new Dimension
  * @since 2.0
  */
 public Dimension getNegated() {
@@ -190,12 +179,9 @@ public Dimension getNegated() {
 }
 
 /**
- * Returns whether the input Dimension is same
- * as this Dimension.
- * True if the height and width of this Dimension 
- * are equivalent to the input Dimension, false
+ * Returns whether the input Object is equivalent to this Dimension.
+ * True if the Object is a Dimension and its height and width are equal, false
  * otherwise.
- *
  * @param o  Object being tested for equality.
  * @return  Result of the size test.
  * @since 2.0
@@ -221,13 +207,10 @@ public boolean equals(int w, int h) {
 }
 
 /**
- * Increases the size of this Dimension by the Dimension
- * supplied as input, and returns this for convenience.
- *
+ * Expands the size of this Dimension by the specified amount.
  * @param d  Dimension providing the expansion width and height.
- * @return  Returns this Dimension with the expanded widht and height.
- * @see #expand(int,int)
- * @see #shrink(int,int)
+ * @return <code>this</code> for convenience
+ * @see #shrink(int, int)
  * @since 2.0
  */
 public Dimension expand(Dimension d) {
@@ -237,14 +220,10 @@ public Dimension expand(Dimension d) {
 }
 
 /**
- * Increases the size of this Dimension with the distances
- * of the input point from the origin along each of the axes,
- * and returns this for convenience.
- *
- * @param pt  Point supplying the dimensional values.
- * @return  Returns this Dimension with the incremented sizes.
- * @see #shrink(int,int)
+ * Expands the size of this Dimension by the specified amound.
  * @since 2.0
+ * @param pt  Point supplying the dimensional values.
+ * @return <code>this</code> for convenience
  */
 public Dimension expand(Point pt) {
 	width  += pt.x;
@@ -253,13 +232,11 @@ public Dimension expand(Point pt) {
 }
 
 /**
- * Increases the size of this Dimension by the width and height values 
- * supplied as input, and returns this for convenience.
- *
+ * Expands the size of this Dimension by the specified width and height.
+ * @since 2.0
  * @param w  Value by which the width should be increased.
  * @param h  Value by which the height should be increased.
- * @return  Returns this Dimension with the incremented sizes.
- * @since 2.0
+ * @return <code>this</code> for convenience
  */
 public Dimension expand(int w, int h) {
 	width  += w;
@@ -268,64 +245,45 @@ public Dimension expand(int w, int h) {
 }
 
 /**
- * Returns a new Dimension with its width and height scaled by the
- * input value supplied.
- *
- * @param amount  Value by which the width and height are scaled.
- * @return  A new Dimension containing the scaled width and height.
+ * Creates a new Dimension with its width and height scaled by the
+ * specified value.
+ * @param amount Value by which the width and height are scaled.
+ * @return  A new Dimension
  * @since 2.0
  */
-public Dimension getScaled(float amount) { return new Dimension(this).scale(amount);}
+public Dimension getScaled(float amount) {
+	return new Dimension(this)
+		.scale(amount);
+}
 
 /**
- * Returns a new Dimension with its height and width interchanged.
+ * Creates a new Dimension with its height and width swapped.
  * Useful in orientation change calculations.
- *
- * @return  Returns a new Dimension containing the switched width and height.
+ * @return  A new Dimension
  * @since 2.0
  */
-public Dimension getTransposed() { return new Dimension(this).transpose();}
+public Dimension getTransposed() {
+	return new Dimension(this)
+		.transpose();
+}
 
 /**
- * Returns a new Dimension containing the union of this
- * and the supplied Dimension. The union operation
- * takes the maximum of the width and height.
- *
+ * Creates a new Dimension representing the union of this Dimension with the one specified.
+ * Union is defined as the Max() of the values from each Dimension.
  * @param d  Dimension to be unioned.
- * @return  Returns a new Dimension with the unioned sizes.'
- * @see  #getDifference(Dimension)
+ * @return  A new Dimension
  * @since 2.0
  */
 public Dimension getUnioned(Dimension d) { return new Dimension(this).union(d);}
 
 /**
- * Returns true if this <code>Dimension</code> is greater than  
- * the given <code>Dimension</code> in at least one dimension
- * and greater than or equal to in the other.
- *
- * @param	d 	Dimension against which this Dimension is compared.
- * @return	A boolean indicating whether or not this Dimension is 
- *			greater than <i>d</i>.
+ * This Dimension is intersected with the one specified.  Intersection is performed by taking the
+ * Min() of the values from each dimension.
+ * @param d The Dimension used to perform the Min().
+ * @return <code>this</code> for convenience
  * @since 2.0
  */
-public boolean greaterThan( Dimension d ) {
-	if (width > d.width)
-		return height >= d.height;
-	if (height > d.height)
-		return width >= d.width;
-	return false;
-}
-
-/**
- * Modifies <code>this</code> Dimension in such a way that its 
- * width becomes the greater of <code>this</code> Dimension's height 
- * and <i>d</i>'s height, and its height becomes the greater of 
- * <code>this</code> Dimension's width and <i>d</i>'s width. <code>this</code> 
- * modified Dimension is returned for convenience.
- * 
- * @since 2.0
- */
-public Dimension intersect(Dimension d){
+public Dimension intersect(Dimension d) {
 	width = Math.min(d.width, width);
 	height = Math.min(d.height, height);
 	return this;
@@ -337,7 +295,7 @@ public Dimension intersect(Dimension d){
  * @return  <code>boolean<code> containing the emptiness test.
  * @since 2.0
  */
-public boolean isEmpty(){
+public boolean isEmpty() {
 	return (width <= 0) || (height <= 0);
 }
 
@@ -347,7 +305,7 @@ public boolean isEmpty(){
  * @return	Returns this Dimension for convenience.
  * @since 2.0
  */
-public Dimension negate(){
+public Dimension negate() {
 	width = 0 - width;
 	height = 0 - height;
 	return this;
@@ -362,7 +320,9 @@ public Dimension negate(){
  * @return  Returns this Dimension with the scaled values.
  * @since 2.0
  */
-public Dimension scale(float amount){return scale(amount, amount);}
+public Dimension scale(float amount) {
+	return scale(amount, amount);
+}
 
 /**
  * Scales the width of this Dimension by <i>w</i> and
@@ -374,9 +334,9 @@ public Dimension scale(float amount){return scale(amount, amount);}
  * @return  Returns this Dimension with the scaled values.
  * @since 2.0
  */
-public Dimension scale(float w, float h){
+public Dimension scale(float w, float h) {
 	width  = (int)(width * w + 0.5);
-	height = (int)(height* h + 0.5);
+	height = (int)(height * h + 0.5);
 	return this;
 }
 
@@ -390,31 +350,30 @@ public Dimension scale(float w, float h){
  * @return  Returns this Dimension with the reduced width and height values.
  * @since 2.0
  */
-public Dimension shrink(int w, int h){
-	return expand(-w,-h);
+public Dimension shrink(int w, int h) {
+	return expand(-w, -h);
 }
 
 /**
- * Returns a String description of this Dimension. 
- *
- * @return  Description as a String.
+ * @return String representation.
  * @since 2.0
  */
-public String toString(){
+
+public String toString() {
 	return "Dimension(" +  //$NON-NLS-1$
 		width + ", " +  //$NON-NLS-1$
 		height + ")"; //$NON-NLS-1$
 }
 
 /**
- * Switches the width and height of this Dimension, and
+ * Swaps the width and height of this Dimension, and
  * returns this for convenience. Can be useful in 
  * orientation changes.
  *
  * @return  This Dimension with the switched values.
  * @since 2.0
  */
-public Dimension transpose(){
+public Dimension transpose() {
 	int temp = width;
 	width = height;
 	height = temp;
@@ -430,9 +389,9 @@ public Dimension transpose(){
  * @return  Returns this Dimension with the unioned width and height.
  * @since 2.0
  */
-public Dimension union (Dimension d){
-	width = Math.max(width,d.width);
-	height = Math.max(height,d.height);
+public Dimension union (Dimension d) {
+	width = Math.max(width, d.width);
+	height = Math.max(height, d.height);
 	return this;
 }
 
