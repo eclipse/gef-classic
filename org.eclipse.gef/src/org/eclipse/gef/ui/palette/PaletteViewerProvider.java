@@ -84,6 +84,8 @@ public final void destroyPaletteViewer(PaletteViewer viewer) {
 	setPaletteViewer(viewer);
 	captureState(getPaletteViewer());
 	unhookPaletteViewer();
+	if (getEditDomain().getPaletteViewer() == getPaletteViewer())
+		getEditDomain().setPaletteViewer(null);
 	if (getPaletteViewer().getControl() != null 
 			&& !getPaletteViewer().getControl().isDisposed())
 		getPaletteViewer().getControl().dispose();
