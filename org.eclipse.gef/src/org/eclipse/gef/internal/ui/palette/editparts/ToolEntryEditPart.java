@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.gef.internal.ui.palette.editparts;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.accessibility.*;
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.graphics.Image;
@@ -27,6 +28,51 @@ import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
 public class ToolEntryEditPart
 	extends PaletteEditPart
 {
+
+class GTKToggleButtonTracker extends SingleSelectionTracker {
+	int gtkState = 0;
+	public void deactivate() {
+		if (gtkState != 2) {
+			getButtonModel().setArmed(false);
+			getButtonModel().setPressed(false);
+			getPaletteViewer().setActiveTool(null);
+		}
+		super.deactivate();
+	}
+	protected boolean handleButtonDown(int button) {
+		if (button == 2 && isInState(STATE_INITIAL))
+			performConditionalSelection();
+		super.handleButtonDown(button);
+		if (button == 1) {
+			getFigure().internalGetEventDispatcher().requestRemoveFocus(getFigure());
+			getButtonModel().setArmed(true);
+			getButtonModel().setPressed(true);
+		}
+		return true;
+	}
+	protected boolean handleButtonUp(int button) {
+		if (gtkState == 0)
+			gtkState = 2;
+		if (button == 1) {
+			getButtonModel().setPressed(false);
+			getButtonModel().setArmed(false);
+		}
+		return super.handleButtonUp(button);
+	}
+	protected boolean handleDrag() {
+		return true;
+	}
+	protected boolean handleNativeDragStarted(DragSourceEvent event) {
+		gtkState = 1;
+		getButtonModel().setPressed(false);
+		getButtonModel().setArmed(false);
+		return true;
+	}
+	protected boolean handleNativeDragFinished(DragSourceEvent event) {
+		getPaletteViewer().setActiveTool(null);
+		return true;
+	}
+}
 
 class ToggleButtonTracker extends SingleSelectionTracker {
 	protected boolean handleButtonDown(int button) {
@@ -134,7 +180,10 @@ private ButtonModel getButtonModel() {
  * @see org.eclipse.gef.internal.ui.palette.editparts.PaletteEditPart#getDragTracker(Request)
  */
 public DragTracker getDragTracker(Request request) {
-	return new ToggleButtonTracker();
+	if (SWT.getPlatform().equals("gtk"))
+		return new GTKToggleButtonTracker();
+	else
+		return new ToggleButtonTracker();
 }
 
 private ToolEntry getToolEntry() {
