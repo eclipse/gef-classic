@@ -12,7 +12,6 @@ package org.eclipse.gef.examples.logicdesigner.rulers;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.gef.commands.Command;
@@ -27,11 +26,10 @@ import org.eclipse.gef.examples.logicdesigner.model.commands.*;
  * @author Pratik Shah
  */
 public class LogicRulerProvider
-	implements RulerProvider
+	extends RulerProvider
 {
 	
 private LogicRuler ruler;
-private List listeners = new ArrayList();
 /*
  * @TODO:Pratik   when can you remove these two listeners?  right now, they are never
  * removed.  but that might be okay since you want to listen to them for as long as they
@@ -122,16 +120,6 @@ public int getGuidePosition(Object guide) {
 
 public List getGuides() {
 	return ruler.getGuides();
-}
-
-public void addRulerChangeListener(RulerChangeListener listener) {
-	if (!listeners.contains(listener)) {
-		listeners.add(listener);
-	}
-}
-
-public void removeRulerChangeListener(RulerChangeListener listener) {
-	listeners.remove(listener);
 }
 
 }
