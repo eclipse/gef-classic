@@ -34,12 +34,16 @@ protected void refreshVisuals() {
 		return;
 	cachedLayout = layout;
 	LayoutManager manager;
-	if (layout == PaletteViewerPreferences.LAYOUT_FOLDER)
+	if (layout == PaletteViewerPreferences.LAYOUT_FOLDER) {
 		manager = new FolderLayout();
-	else if (layout == PaletteViewerPreferences.LAYOUT_ICONS)
-		manager = new FlowLayout();
-	else
+	} else if (layout == PaletteViewerPreferences.LAYOUT_ICONS) {
+		FlowLayout flow = new FlowLayout();
+		flow.setMajorSpacing(0);
+		flow.setMinorSpacing(0);
+		manager = flow;
+	} else {
 		manager = new ToolbarLayout();
+	}
 	getContentPane().setLayoutManager(manager);
 }
 
