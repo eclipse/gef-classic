@@ -11,27 +11,29 @@ import java.util.EventObject;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.TextTransfer;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.*;
 
 import org.eclipse.core.resources.*;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.action.IMenuListener;
-import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.*;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.*;
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
 import org.eclipse.ui.dialogs.SaveAsDialog;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.IPageSite;
+import org.eclipse.ui.part.PageBook;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
+import org.eclipse.draw2d.LightweightSystem;
 import org.eclipse.draw2d.PositionConstants;
+import org.eclipse.draw2d.Viewport;
+import org.eclipse.draw2d.parts.ScrollableThumbnail;
+import org.eclipse.draw2d.parts.Thumbnail;
 
 import org.eclipse.gef.*;
 import org.eclipse.gef.dnd.TemplateTransferDragSourceListener;
@@ -58,6 +60,16 @@ public class LogicEditor
 class OutlinePage
 	extends ContentOutlinePage
 {
+	
+	private PageBook pageBook;
+	private Control outline;
+	private Canvas overview;
+	private Action showOutlineAction, showOverviewAction;
+	static final int ID_OUTLINE  = 0;
+	static final int ID_OVERVIEW = 1;
+	private boolean overviewInitialized;
+	private Thumbnail thumbnail;
+	
 	public OutlinePage(EditPartViewer viewer){
 		super(viewer);
 	}
@@ -89,10 +101,31 @@ class OutlinePage
 		getViewer().setKeyHandler(getCommonKeyHandler());
 		getViewer().addDropTargetListener(
 			new LogicTemplateTransferDropTargetListener(getViewer()));
+		IToolBarManager tbm = getSite().getActionBars().getToolBarManager();
+		showOutlineAction = new Action() {
+			public void run() {
+				showPage(ID_OUTLINE);
+			}
+		};
+		showOutlineAction.setImageDescriptor(ImageDescriptor.createFromFile(
+								LogicPlugin.class,"icons/outline.gif")); //$NON-NLS-1$
+		tbm.add(showOutlineAction);
+		showOverviewAction = new Action() {
+			public void run() {
+				showPage(ID_OVERVIEW);
+			}
+		};
+		showOverviewAction.setImageDescriptor(ImageDescriptor.createFromFile(
+								LogicPlugin.class,"icons/overview.gif")); //$NON-NLS-1$
+		tbm.add(showOverviewAction);
+		showPage(ID_OUTLINE);
 	}
 
 	public void createControl(Composite parent){
-		super.createControl(parent);
+		pageBook = new PageBook(parent, SWT.NONE);
+		outline = getViewer().createControl(pageBook);
+		overview = new Canvas(pageBook, SWT.NONE);
+		pageBook.showPage(outline);
 		configureOutlineViewer();
 		hookOutlineViewer();
 		initializeOutlineViewer();
@@ -103,12 +136,44 @@ class OutlinePage
 		super.dispose();
 	}
 	
+	public Control getControl() {
+		return pageBook;
+	}
+
 	protected void hookOutlineViewer(){
 		getSelectionSynchronizer().addViewer(getViewer());
 	}
 
 	protected void initializeOutlineViewer(){
 		getViewer().setContents(getLogicDiagram());
+	}
+	
+	protected void initializeOverview() {
+		LightweightSystem lws = new LightweightSystem(overview);
+		RootEditPart rep = getGraphicalViewer().getRootEditPart();
+		if (rep instanceof ScalableFreeformRootEditPart) {
+			ScalableFreeformRootEditPart root = (ScalableFreeformRootEditPart)rep;
+			thumbnail = new ScrollableThumbnail((Viewport)root.getFigure());
+			thumbnail.setSource(root.getLayer(LayerConstants.PRINTABLE_LAYERS));
+			lws.setContents(thumbnail);
+		}
+	}
+	
+	protected void showPage(int id) {
+		if (id == ID_OUTLINE) {
+			showOutlineAction.setChecked(true);
+			showOverviewAction.setChecked(false);
+			pageBook.showPage(outline);
+			if (thumbnail != null)
+				thumbnail.setVisible(false);
+		} else if (id == ID_OVERVIEW) {
+			if (!overviewInitialized)
+				initializeOverview();
+			showOutlineAction.setChecked(false);
+			showOverviewAction.setChecked(true);
+			pageBook.showPage(overview);
+			thumbnail.setVisible(true);
+		}
 	}
 	
 	protected void unhookOutlineViewer(){
