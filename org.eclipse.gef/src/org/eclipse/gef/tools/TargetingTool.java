@@ -152,8 +152,8 @@ protected EditPartViewer.Conditional getTargetingConditional() {
 }
 
 /**
- * Returns the current target editpart.
- * @return the target
+ * Returns <code>null</code> or the current target editpart.
+ * @return <code>null</code> or a target part
  */
 protected EditPart getTargetEditPart() {
 	return targetEditPart;
