@@ -54,10 +54,11 @@ private boolean acceptIntoExpandedDrawer(KeyEvent event){
 }
 
 private boolean acceptSetFocusOnDrawer(KeyEvent event) {
-	return event.keyCode == SWT.ARROW_LEFT	|| event.keyCode == SWT.ARROW_UP;
+	return (event.keyCode == SWT.ARROW_LEFT || event.keyCode == SWT.ARROW_UP)
+				&& getFocus().getParent() instanceof DrawerEditPart;
 }		
 
-private boolean acceptSetFocusOnNextDrawer(KeyEvent event) {
+private boolean acceptNextContainer(KeyEvent event) {
 	return event.keyCode == SWT.ARROW_DOWN;
 }		
 
@@ -73,7 +74,7 @@ private void buildNavigationList(EditPart palettePart, EditPart exclusion, Array
 			navList.add(palettePart);
 	}
 
-	for(int k=0; k<palettePart.getChildren().size(); k++){
+	for (int k=0; k<palettePart.getChildren().size(); k++) {
 		EditPart ep = (EditPart)(palettePart.getChildren().get(k));
 		buildNavigationList(ep, exclusion, navList);
 	}
@@ -99,7 +100,10 @@ Point getInterestingPoint(IFigure figure) {
  */
 List getNavigationSiblings(){
 	ArrayList siblingsList = new ArrayList();
-	buildNavigationList(getFocus().getParent(), getFocus().getParent(), siblingsList);
+	if (getFocus().getParent() instanceof GroupEditPart)
+		buildNavigationList(getFocus().getParent().getParent(), getFocus().getParent().getParent(), siblingsList);
+	else
+		buildNavigationList(getFocus().getParent(), getFocus().getParent(), siblingsList);
 	return siblingsList;
 }
 
@@ -125,6 +129,8 @@ boolean isExpandedDrawer(EditPart part){
 }
 
 public boolean keyPressed(KeyEvent event) {
+	if (!getFocus().getFigure().hasFocus())
+		getFocus().getFigure().internalGetEventDispatcher().requestFocus(getFocus().getFigure());
 	if (acceptExpandDrawer(event)) {
 		expandDrawer();
 		return true;
@@ -143,8 +149,8 @@ public boolean keyPressed(KeyEvent event) {
 		if (navigateToDrawer(event))
 			return true;
 	}
-	if (acceptSetFocusOnNextDrawer(event)) {
-		if (navigateToNextDrawer(event))
+	if (acceptNextContainer(event)) {
+		if (navigateToNextContainer(event))
 			return true;
 	}
 	return false;
@@ -180,7 +186,7 @@ private boolean navigateToDrawer(KeyEvent event){
 	return false;
 }
 
-private boolean navigateToNextDrawer(KeyEvent event) {
+private boolean navigateToNextContainer(KeyEvent event) {
 	EditPart current = getFocus();
 	while (current != null) {
 		if (current instanceof DrawerEditPart	|| current instanceof GroupEditPart) {
@@ -188,7 +194,11 @@ private boolean navigateToNextDrawer(KeyEvent event) {
 			int index = siblings.indexOf(current);
 			if (index != -1 && siblings.size() > index + 1) {
 				EditPart part = (EditPart)siblings.get(index + 1);
-				navigateTo(part, event);
+				if (part instanceof GroupEditPart && part.getChildren().size() > 0) {
+					EditPart child = (EditPart)part.getChildren().get(0);
+					navigateTo(child, event);
+				} else
+					navigateTo(part, event);
 				return true;
 			}
 			return false;
