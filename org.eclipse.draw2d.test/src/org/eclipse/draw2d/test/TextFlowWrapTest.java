@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.draw2d.test;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import junit.framework.TestCase;
@@ -27,11 +29,19 @@ public class TextFlowWrapTest
 {
 
 protected static final Font TAHOMA = new Font(null, "Tahoma", 8, 0);//$NON-NLS-1$
-
 // used to ensure that there are no extra fragments
-protected String TERMINATE = "#@$FREGWW@@#!";
+protected static final String TERMINATE = "#@terminate@#!";
+// used to ensure that two consecutive fragments are on the same line
+protected static final String SAMELINE = "#@sameline@#";
+// used to ensure that two consecutive fragments are on different lines
+protected static final String NEWLINE = "#@newline@#";
+// used to ensure that a fragment is truncated (this mark is placed after the fragment
+// that is supposed to be truncated)
+protected static final String TRUNCATED = "#@truncated@#";
+protected static final String NON_TRUNCATED = "#@non-truncated@#";
+
 protected FlowPage figure;
-protected TextFlow textFlow;
+protected TextFlow textFlow, textFlow2;
 protected String failMsg;
 protected boolean failed;
 
@@ -42,35 +52,104 @@ protected void setUp() throws Exception {
 }
 
 protected void doTest(String stringToTest, String widthString, String[] answers) {
-	figure.setSize(FigureUtilities.getStringExtents(widthString, TAHOMA).width,500);
-	textFlow.setText(stringToTest);
-	figure.getLayoutManager().layout(null);
-	Iterator frags = textFlow.getFragments().iterator();
+	doTest2(stringToTest, "", widthString, answers);
+}
+
+protected void doTest2(String string1, String string2, String widthString, String[] answers) {
+	int width = -1;
+	if (widthString != null)
+		width = FigureUtilities.getStringExtents(widthString, TAHOMA).width - 1;
+	figure.setSize(width, -1);
+	textFlow.setText(string1);
+	textFlow2.setText(string2);
+	figure.validate();
+	ArrayList list = new ArrayList(textFlow.getFragments());
+	list.addAll(textFlow2.getFragments());
+	Iterator frags = list.iterator();
 	
 	int index = 0;
+	TextFragmentBox previousFrag = null;
 	for (; index < answers.length; index++) {
 		String answer = answers[index];
 		if (answer == TERMINATE) {
 			if (frags.hasNext()) {
 				TextFragmentBox box = (TextFragmentBox)frags.next();
-				failMsg += "Failed on: " + stringToTest + " Found extra fragment: -" + stringToTest.substring(box.offset, box.offset + box.length) + "-\n";
+				failMsg += "Failed on: " + string1 + string2 + " Found extra fragment: -" + string1.substring(box.offset, box.offset + box.length) + "-\n";
 				failed = true;
 			}
 			return;
+		} else if (answer == TRUNCATED) {
+			boolean truncated = false;
+			try {
+				Field field = previousFrag.getClass().getDeclaredField("truncated");
+				field.setAccessible(true);
+				truncated = field.getBoolean(previousFrag);
+			} catch (Exception e) {
+			}
+			if (!truncated) {
+				failMsg += "Failed on: " + string1 + string2 + "Fragment not truncated";
+				failed = true;
+			}
+			continue;
+		} else if (answer == NON_TRUNCATED) {
+			boolean truncated = true;
+			try {
+				Field field = previousFrag.getClass().getDeclaredField("truncated");
+				field.setAccessible(true);
+				truncated = field.getBoolean(previousFrag);
+			} catch (Exception e) {
+			}
+			if (truncated) {
+				failMsg += "Failed on: " + string1 + string2 + "Fragment is truncated";
+				failed = true;
+			}
+			continue;
 		}
-		TextFragmentBox frag = null;
-		if (frags.hasNext())
-			frag = (TextFragmentBox) frags.next();
-		else
+
+		if (!frags.hasNext())
 			break;
-		if (!stringToTest.substring(frag.offset, frag.offset + frag.length).equals(answer)) {
-			failMsg += "Failed on: " + stringToTest + " Frag expected: -" + answer + "- Got: -" + stringToTest.substring(frag.offset, frag.offset + frag.length) + "-\n";
-			failed = true;
-			return;
+
+		TextFragmentBox frag = (TextFragmentBox) frags.next();
+		
+		if (answer == SAMELINE) {
+			if (previousFrag.y != frag.y) {
+				failMsg += "Failed on: " + string1 + string2 + " Fragments are not on the same line";
+				failed = true;
+				return;
+			}
+			index++;
+			if (index >= answers.length)
+				return;
+			answer = answers[index];
+		} else if (answer == NEWLINE) {
+			if (previousFrag.y == frag.y) {
+				failMsg += "Failed on: " + string1 + string2 + " Fragments are on the same line";
+				failed = true;
+				return;
+			}
+			index++;
+			if (index >= answers.length)
+				return;
+			answer = answers[index];
+		}
+		previousFrag = frag;
+		
+		if (textFlow.getFragments().contains(frag)) {
+			if (!string1.substring(frag.offset, frag.offset + frag.length).equals(answer)) {
+				failMsg += "Failed on: " + string1 + string2 + " Frag expected: -" + answer + "- Got: -" + string1.substring(frag.offset, frag.offset + frag.length) + "-\n";
+				failed = true;
+				return;
+			}
+		} else {
+			if (!string2.substring(frag.offset, frag.offset + frag.length).equals(answer)) {
+				failMsg += "Failed on: " + string1 + string2 + " Frag expected: -" + answer + "- Got: -" + string2.substring(frag.offset, frag.offset + frag.length) + "-\n";
+				failed = true;
+				return;
+			}
 		}
 	}
 	if (index < answers.length) {
-		failMsg += "Failed on: " + stringToTest + " Frag expected: -" + answers[index] + "- No corresponding fragment\n";
+		failMsg += "Failed on: " + string1 + string2 + " Frag expected: -" + answers[index] + "- No corresponding fragment\n";
 		failed = true;
 	}
 }
@@ -87,35 +166,59 @@ public void runGenericTests() {
 	doTest( "\rtester abc def", "tester", new String[] {"", "tester" });
 	doTest( "\r\ntester abc def", "tester", new String[] {"", "tester" });
 	doTest( "\ntester abc def", "tester", new String[] {"", "tester"} );
-	doTest( "tester abc\n def", "tester", new String[] {"tester", "abc" });
-	doTest( "tester abc\r\n def", "tester", new String[] {"tester", "abc" });
-	doTest( "tester abc\r def", "tester", new String[] {"tester", "abc" });
-	doTest( "tester abc def\r\n", "tester", new String[] {"tester", "abc"} );
-	doTest( "tester abc def\r", "tester", new String[] {"tester", "abc" });
-	doTest( "tester abc def\n", "tester", new String[] {"tester", "abc"} );
+	doTest( "tester abc\n def", "tester", new String[] {"tester", "abc", " def", TERMINATE });
+	doTest( "tester abc\r\n def", "tester", new String[] {"tester", "abc", " def", TERMINATE });
+	doTest( "tester abc\r def", "tester", new String[] {"tester", "abc", " def", TERMINATE });
+	doTest( "tester abc def\r\n", "tester", new String[] {"tester", "abc", "def", TERMINATE} );
+	doTest( "tester abc def\r", "tester", new String[] {"tester", "abc", "def", TERMINATE });
+	doTest( "tester abc def\n", "tester", new String[] {"tester", "abc", "def", TERMINATE} );
 	doTest( "blah blah blah", "blah blah", new String[] {"blah blah", "blah", TERMINATE});
 	doTest( "blah blah blah", "blah", new String[] {"blah", "blah"});
 	doTest( "h hh h", "h hh", new String[] {"h hh", "h", TERMINATE});
 	doTest( "h hh h", "h hh ", new String[] {"h hh", "h"} );
-	doTest( "x x x  x ", "x x x ", new String[] {"x x x", "x", TERMINATE});
+	doTest( "x x x  x ", "x x x ", new String[] {"x x x ", "x ", TERMINATE});
+	doTest( "x x x  x", "x x x", new String[] {"x x x", " x", TERMINATE});
 	doTest( "\n\nbreak", "break", new String[] {"", ""});
 	doTest( "\r\rbreak", "break", new String[] {"", ""});
-	doTest( "\r\n\r\nbreak", "break", new String[] {"",""});
+	doTest( "\r\n\r\nbreak", "break", new String[] {"", "", "break", TERMINATE});
+	doTest("crow ", "crow", new String[] {"crow", TERMINATE});
 	
+	doTest("abc - -moreango", "abc", new String[] {"abc", NEWLINE, "- -", NEWLINE});
+	doTest("abc def ghi", "abc def g", new String[] {"abc def", "ghi", TERMINATE});
+	doTest("blah blah ", "blah blah", new String[] {"blah blah", TERMINATE});
 	doTest("testers testers testers ab c", "testers testers test", new String[] {"testers testers", "testers ab c", TERMINATE});
 	doTest("testers\r ab c", "testers", new String[] {"testers", " ab c", TERMINATE});
 	doTest("ab\tcd", "ab", new String[] {"ab", "cd", TERMINATE});
-	doTest("trailingSpace  \n  ", "trailingSpace", new String[] {"trailingSpace", "", TERMINATE});
-	doTest("test \r b", "test", new String[] {"test", " b", TERMINATE});
-	doTest("   \n   \n   \n   ", "wwwwww", new String[] {"", "", "", "", TERMINATE});
+	doTest("trailingSpace  \n  ", "trailingSpace", new String[] {"trailingSpace", " ", "  ", TERMINATE});
+	doTest("test \r b", "test", new String[] {"test", "", " b", TERMINATE});
+	doTest("   \n   \n   \n   ", "wwwwww", new String[] {"   ", "   ", "   ", "   ", TERMINATE});
+	doTest("   \n  \n   ", " ", new String[] {" ", " ", " ", "", " ", " ", TERMINATE});
 	doTest("\r\r\n", "wwwwwww", new String[] {"", "", TERMINATE});
-	doTest("", "www", new String[] {"", TERMINATE});
+	doTest("", "www", new String[] {TERMINATE});
 	// empty string means availableWidth == 1
-	doTest("", "", new String[] {"", TERMINATE});
+	doTest("", "", new String[] {TERMINATE});
 	doTest("a cow\naha", "a cow", new String[] {"a cow", "aha", TERMINATE});
 	// chinese characters
 	doTest("\u7325\u7334\u7329", "\u7325\u7334", new String[]{"\u7325\u7334", "\u7329", TERMINATE});
 	doTest("\u7325\u7334\u7329", "\u7325", new String[]{"\u7325", "\u7334", "\u7329", TERMINATE});
+	
+	// BiDi
+	doTest2("\u0634", "foo-bar", "\u0634foo-", new String[] {"\u0634", SAMELINE, "foo-", NEWLINE, "bar"});
+	
+	// testing with multiple TextFlows will bring lookAhead into action
+	doTest2("foo1", " bar1", null, new String[] {"foo1", SAMELINE, " bar1", TERMINATE});
+	doTest2("foo2", " bar2", "foo2 ", new String[] {"foo2", "", "bar2", TERMINATE});
+	doTest2("foo3", " ba3", "foo3", new String[] {"foo3", NEWLINE, "ba3", TERMINATE});
+	doTest2("foo4 ", " bar4", "foo4 ", new String[] {"foo4 ", "bar4", TERMINATE});
+	doTest2("wwww ", " bar", "wwww", new String[] {"wwww", " bar", TERMINATE});
+	doTest2("foo5 ", "bar5", "foo5 ", new String[] {"foo5", "bar5", TERMINATE});
+	doTest2("foot bar", "xyz", "barxyz", new String[] {"foot", "bar", SAMELINE, "xyz", TERMINATE});
+	doTest2("foo\n", " bar6", null, new String[] {"foo", " bar6", TERMINATE});
+	doTest2("foo7-bar7", "mo", "foo7-ba", new String[] {"foo7-", NEWLINE, "bar7", SAMELINE, "mo", TERMINATE});
+	doTest2("foo-bar", "abc", "foo-barab", new String[] {"foo-", NEWLINE, "bar", SAMELINE, "abc", TERMINATE});
+	doTest2(" foobar", "abc", " foobarab", new String[] {"", NEWLINE, "foobar", SAMELINE});
+	doTest2("foo  bar", "abc", "foo  barab", new String[] {"foo ", NEWLINE, "bar", SAMELINE, "abc", TERMINATE});
+	doTest2("abd", "\u7325", "abd ", new String[] {"abd", NEWLINE, "\u7325"});
 }
 
 public void testHardWrapping() {
@@ -125,13 +228,23 @@ public void testHardWrapping() {
 			new ParagraphTextLayout(textFlow, ParagraphTextLayout.WORD_WRAP_HARD));
 	textFlow.setFont(TAHOMA);
 	figure.add(textFlow);
+	textFlow2 = new TextFlow();
+	textFlow2.setLayoutManager(
+			new ParagraphTextLayout(textFlow2, ParagraphTextLayout.WORD_WRAP_HARD));
+	textFlow2.setFont(TAHOMA);
+	figure.add(textFlow2);
 	
 	runGenericTests();
-	doTest("Flow    Container  ", "F", new String[] {"Flow", "Container", TERMINATE});
-	doTest("aha \nb \r c ", "", new String[] {"aha", "b", "", "c", TERMINATE});
+	doTest("ahahahah", "aha", new String[] {"ahahahah", TERMINATE});
+	doTest("Flow    Container  ", " ", new String[] {"Flow", " ", "", "Container", " ", TERMINATE});
+	doTest("aha \nb \r c ", "", new String[] {"aha", "", "b", "", "", "c", TERMINATE});
+	doTest2("one", "two", "onet", new String[] {"one", SAMELINE, "two", TERMINATE});
+	doTest2("one", "t ", "one", new String[] {"one", SAMELINE, "t", TERMINATE});
 	doTest("Flowing", "flow", new String[] {"Flowing", TERMINATE});
+	doTest2("foobar", "foobar", "foo", new String[] {"foobar", SAMELINE, "foobar"});
+	doTest2("home ", "alone", "home al", new String[] {"home", NEWLINE, "alone", TERMINATE});
 	
-//	assertFalse(failMsg, failed);
+	assertFalse(failMsg, failed);
 }
 
 public void testSoftWrapping() {
@@ -141,12 +254,20 @@ public void testSoftWrapping() {
 			new ParagraphTextLayout(textFlow, ParagraphTextLayout.WORD_WRAP_SOFT));
 	textFlow.setFont(TAHOMA);
 	figure.add(textFlow);
+	textFlow2 = new TextFlow();
+	textFlow2.setLayoutManager(
+			new ParagraphTextLayout(textFlow2, ParagraphTextLayout.WORD_WRAP_SOFT));
+	textFlow2.setFont(TAHOMA);
+	figure.add(textFlow2);
 	
 	runGenericTests();
-	doTest( "tester ab", "teste", new String[] {"teste", "r ab", TERMINATE} );
-	doTest("aha \nb \r c ", "", new String[] {"a", "h", "a", "b", "", "c", TERMINATE});
+	doTest( "tester ab", "teste", new String[] {"teste", NEWLINE, "r ab", TERMINATE} );
+	doTest("aha \nb \r c ", "", new String[] {"a", "h", "a", "", "b", "", "", "c", TERMINATE});
+	doTest("\u0634abcd", "\u0634abc", new String[] {"\u0634", SAMELINE, "abc", NEWLINE, "d", TERMINATE});
+	doTest2("foofoo", "foo", "foo", new String[] {"foo", NEWLINE, "foo", NEWLINE, "foo", TERMINATE});
+	doTest2("foofo", "ofoo", "foo", new String[] {"foo", NEWLINE, "fo", SAMELINE, "o", NEWLINE, "foo", TERMINATE});
 
-//	assertFalse(failMsg, failed);
+	assertFalse(failMsg, failed);
 }
 
 public void testTruncatedWrapping() {
@@ -156,22 +277,30 @@ public void testTruncatedWrapping() {
 			new ParagraphTextLayout(textFlow, ParagraphTextLayout.WORD_WRAP_TRUNCATE));
 	textFlow.setFont(TAHOMA);
 	figure.add(textFlow);
+	textFlow2 = new TextFlow();
+	textFlow2.setLayoutManager(
+			new ParagraphTextLayout(textFlow2, ParagraphTextLayout.WORD_WRAP_TRUNCATE));
+	textFlow2.setFont(TAHOMA);
+	figure.add(textFlow2);
 	
 	runGenericTests();
-	doTest("Flowing          Container", "Container", new String[] {"Flowing", "Container", TERMINATE});
-	doTest("Flowing          C", "Flo...", new String[] {"Flo", "C", TERMINATE});
-	doTest("         Foo", "Foo", new String[] {"", "Foo", TERMINATE});
-	doTest("aha \nb \r c ", "", new String[] {"a", "b", "", "c", TERMINATE});
-
-//	assertFalse(failMsg, failed);
-}
-
-public void testZeroWidth() {
-	/*
-	 * @TODO:Pratik    somehow need to test such that availableWidth == 0
-	 */
-	// FlowUtilities is not visible
-//	FlowUtilities.getTextForSpace(new TextFragmentBox(), "whatever", TAHOMA, 0, 0.0, ParagraphTextLayout.WORD_WRAP_TRUNCATE);
+	doTest("Flowing  Container", "Flo...", new String[] {"Flo", "", "Co", TERMINATE});
+	doTest("Flowing C", "Flo...", new String[] {"Flo", "C", TERMINATE});
+	doTest("Fooooooo", "...", new String[] {"", TRUNCATED, TERMINATE});
+	doTest("WWW", "|...", new String[] {"", TRUNCATED, TERMINATE});
+	doTest(" Foo", "Foo", new String[] {"", "Foo", TERMINATE});
+//	doTest("aha \nb \r c ", "", new String[] {"", TRUNCATED, "", "", TRUNCATED, "", "", "", TRUNCATED, TERMINATE});
+	doTest("aha \nb \r c ", "", new String[] {"", TRUNCATED, "", NON_TRUNCATED, "b", "", NON_TRUNCATED, "", "c", TERMINATE});
+	doTest("aha \nb \r c", "", new String[] {"", TRUNCATED, "", NON_TRUNCATED, "b", "", NON_TRUNCATED, "", "c", TERMINATE});
+	doTest("aha \nb \r w ", "..", new String[] {"", TRUNCATED, "", NON_TRUNCATED, "b", "", NON_TRUNCATED, "", "w", TERMINATE});
+	// truncation is not supported with BiDi and across figures (with look-ahead), so we're
+	// not testing it here
+//	doTest2("foobar", "foobar", "foobar...", new String[] {"foobar", SAMELINE, "", TERMINATE});
+//	doTest2("foobar", "foobar", "fooba...", new String[] {"fooba", TERMINATE});
+//	doTest2("foobar", "foobar", "f...", new String[] {"f", TERMINATE});
+	
+	
+	assertFalse(failMsg, failed);
 }
 
 }
