@@ -5,11 +5,10 @@
 <target name="init">    
     <echo message="Building ${pluginName}..." />
 	<property name="tempDir" value="\builds\antbuilds"/>
-	<property name="pluginName.temp.path"	value="${tempDir}/${pluginName}/plugins/${pluginName}"/>
+	<property name="pluginName.temp.path"	value="${tempDir}/plugins/${pluginName}"/>
 	<tstamp>
 	    <format property="creation.time" pattern="MMdd_HHmm"/>
 	</tstamp>
-	<delete dir="${tempDir}/${pluginName}"/>
 </target>
 
 <target name="copy" depends="init">
@@ -17,7 +16,6 @@
 </target>
 
 <target name="build" depends="copy">
-	<zip basedir="${tempDir}/${pluginName}" zipfile="${tempDir}/${pluginName}-${creation.time}.zip" />
 	<echo message="${pluginName} complete." />
 </target>
 

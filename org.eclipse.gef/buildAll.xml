@@ -1,4 +1,4 @@
-<project name="Build" default="Build" basedir=".">
+<project name="Build" default="BuildWithoutRuntime" basedir=".">
 
 <target name="Init">    
 	<property name="tempDir" value="\builds\antbuilds"/>
@@ -7,6 +7,7 @@
 	    <format property="creation.date" pattern="MMdd"/>
 	</tstamp>
 	<property name="timestamp" value="${creation.date}_${creation.time}"/>
+	<delete dir="${tempDir}/plugins"/>
 </target>
 
 <target name="BuildWithRuntime" depends="Init">
@@ -17,14 +18,10 @@
 </target>
 
 <target name="BuildWithoutRuntime" depends="Init">
-	<ant antfile="../org.eclipse.draw2d/build.xml" target="Build"/>
-	<ant antfile="build.xml" target="Build"/>
-	<ant antfile="../org.eclipse.gef.examples.logic/build.xml" target="Build"/>
+	<ant antfile="../org.eclipse.draw2d/build.xml" target="BuildWithoutRuntime"/>
+	<ant antfile="build.xml" target="BuildWithoutRuntime"/>
+	<ant antfile="../org.eclipse.gef.examples.logic/build.xml" target="BuildWithoutRuntime"/>
 	<echo message="Build complete."/>
-</target>
-
-<target name="Build">
-	<antcall target="BuildWithoutRuntime"/>
 </target>
 
 </project>

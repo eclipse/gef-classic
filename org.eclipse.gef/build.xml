@@ -1,48 +1,32 @@
-<project name="BuildPlugin" default="Build" basedir=".">
+<project name="BuildPlugin" default="BuildWithoutRuntime" basedir=".">
 
 <property name="pluginName" value="org.eclipse.gef"/>
 
 <target name="Init">    
-    <echo message="Processing ${pluginName}..." />
+    <echo message="Building ${pluginName}..." />
 	<property name="tempDir" value="\builds\antbuilds"/>
-	<property name="pluginName.temp.path" value="${tempDir}/${pluginName}/plugins/${pluginName}"/>
+	<property name="pluginName.temp.path" value="${tempDir}/plugins/${pluginName}"/>
 	<tstamp>
 	    <format property="creation.time" pattern="MMdd_HHmm"/>
 	</tstamp>
-	<!-- Clean the Directory Just in Case -->
-	<delete dir="${tempDir}/${pluginName}"/>
 </target>
 
-<target name="CopyWithoutRuntime" depends="Init">
-	<echo message="Performing copy..." />
+<target name="BuildWithoutRuntime" depends="Init">
 	<exportJar project="${pluginName}" exportSource="true" exportBinary="false" jarLocation="${pluginName.temp.path}"/>
 	<move file="${pluginName.temp.path}/src/src-src.jar" tofile="${pluginName.temp.path}/src/gef-src.jar"/>
 	<delete file="${pluginName.temp.path}/src/tests-src.jar"/>
 	<copyResources project="${pluginName}" toDir="${pluginName.temp.path}" exclude="tests\,oss_build.xml,oss_buildall.xml"/>
+	<echo message="${pluginName} complete." />
 </target>
 
-<target name="CopyWithRuntime" depends="Init">
-	<echo message="Performing copy..." />
+<target name="BuildWithRuntime" depends="Init">
 	<exportJar project="${pluginName}" exportSource="true" exportBinary="true" jarLocation="${pluginName.temp.path}"/>
 	<move file="${pluginName.temp.path}/src/src-src.jar" tofile="${pluginName.temp.path}/src/gef-src.jar"/>
 	<delete file="${pluginName.temp.path}/src/tests-src.jar"/>
 	<move file="${pluginName.temp.path}/runtime/src.jar" tofile="${pluginName.temp.path}/runtime/gef.jar"/>
 	<delete file="${pluginName.temp.path}/runtime/tests.jar"/>
 	<copyResources project="${pluginName}" toDir="${pluginName.temp.path}" exclude="tests\,oss_build.xml,oss_buildall.xml"/>
-</target>
-
-<target name="BuildWithoutRuntime" depends="CopyWithoutRuntime">
-	<echo message="Performing zip..." />
-	<zip basedir="${tempDir}/${pluginName}" zipfile="${tempDir}/${pluginName}-${creation.time}.zip" />
-</target>
-
-<target name="BuildWithRuntime" depends="CopyWithRuntime">
-	<echo message="Performing zip..." />
-	<zip basedir="${tempDir}/${pluginName}" zipfile="${tempDir}/${pluginName}-${creation.time}.zip" />
-</target>
-
-<target name="Build">
-	<antcall target="BuildWithoutRuntime"/>
+	<echo message="${pluginName} complete." />
 </target>
 
 </project>
