@@ -85,7 +85,7 @@ public Point getOrigin(IFigure parent) {
 
 /**
  * Implements the algorithm to layout the components of the given container figure.
- * Each component is laid out using it's own layout constraint specifying it's size
+ * Each component is laid out using its own layout constraint specifying its size
  * and position.
  * 
  * @see LayoutManager#layout(IFigure)
