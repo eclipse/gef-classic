@@ -425,16 +425,15 @@ protected Control createFontSettings(Composite parent) {
 	GridLayout layout = new GridLayout(2, false);
 	container.setLayout(layout);
 	
-	fontName = new Label(container, SWT.LEFT);
+	fontName = new Label(container, SWT.LEFT | SWT.WRAP);
 	fontName.setFont(container.getFont());
-	GridData data = new GridData(GridData.FILL_HORIZONTAL);
+	GridData data = new GridData(GridData.FILL_BOTH);
+	data.verticalSpan = 2;
 	fontName.setLayoutData(data);
 	updateFontName();
 	
 	createButton(container, FONT_CHANGE_ID, PaletteMessages.SETTINGS_FONT_CHANGE, 
 	             SWT.PUSH, null);
-	
-	new Label(container, SWT.NONE);
 	
 	createButton(container, DEFAULT_FONT_ID, PaletteMessages.SETTINGS_DEFAULT_FONT,
 	             SWT.PUSH, null);
