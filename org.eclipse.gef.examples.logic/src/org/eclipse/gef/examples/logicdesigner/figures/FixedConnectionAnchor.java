@@ -31,7 +31,7 @@ public FixedConnectionAnchor(IFigure owner) {
  * @see org.eclipse.draw2d.AbstractConnectionAnchor#ancestorMoved(IFigure)
  */
 public void ancestorMoved(IFigure figure) {
-	if (figure instanceof ScalableFreeformLayeredPane)
+	if (figure instanceof ScalableFigure)
 		return;
 	super.ancestorMoved(figure);
 }
