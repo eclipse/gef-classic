@@ -30,12 +30,15 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.util.TransferDropTargetListener;
+import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
+import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
 import org.eclipse.ui.dialogs.SaveAsDialog;
 import org.eclipse.ui.part.FileEditorInput;
+import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 import org.eclipse.gef.ContextMenuProvider;
@@ -48,6 +51,7 @@ import org.eclipse.gef.editparts.ScalableRootEditPart;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.requests.CreationFactory;
 import org.eclipse.gef.requests.SimpleFactory;
+import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.eclipse.gef.ui.palette.PaletteViewerProvider;
 import org.eclipse.gef.ui.palette.FlyoutPaletteComposite.FlyoutPreferences;
@@ -67,9 +71,9 @@ import org.eclipse.gef.examples.shapes.parts.ShapesTreeEditPartFactory;
 public class ShapesEditor extends GraphicalEditorWithFlyoutPalette {
 
 /** This is the root of the editor's model. */
-private ShapesDiagram diagram = new ShapesDiagram();
+private ShapesDiagram diagram;
 /** Palette component, holding the tools and shapes. */
-private PaletteRoot palette;
+private static PaletteRoot PALETTE_MODEL;
 
 /** Create a new ShapesEditor instance. This is called by the Workspace. */
 public ShapesEditor() {
@@ -231,10 +235,9 @@ protected FlyoutPreferences getPalettePreferences() {
  * @see org.eclipse.gef.ui.parts.GraphicalEditorWithFlyoutPalette#getPaletteRoot()
  */
 protected PaletteRoot getPaletteRoot() {
-	if (palette == null) {
-		palette = ShapesEditorPaletteFactory.createPalette();
-	}
-	return palette;
+	if (PALETTE_MODEL == null)
+		PALETTE_MODEL = ShapesEditorPaletteFactory.createPalette();
+	return PALETTE_MODEL;
 }
 
 private void handleLoadException(Exception e) {
@@ -344,6 +347,21 @@ public class ShapesEditorOutlinePage extends ContentOutlinePage {
 	 */
 	public Control getControl() {
 		return getViewer().getControl();
+	}
+	
+	/**
+	 * @see org.eclipse.ui.part.IPageBookViewPage#init(org.eclipse.ui.part.IPageSite)
+	 */
+	public void init(IPageSite pageSite) {
+		super.init(pageSite);
+		ActionRegistry registry = getActionRegistry();
+		IActionBars bars = pageSite.getActionBars();
+		String id = ActionFactory.UNDO.getId();
+		bars.setGlobalActionHandler(id, registry.getAction(id));
+		id = ActionFactory.REDO.getId();
+		bars.setGlobalActionHandler(id, registry.getAction(id));
+		id = ActionFactory.DELETE.getId();
+		bars.setGlobalActionHandler(id, registry.getAction(id));
 	}
 }
 
