@@ -41,7 +41,7 @@ public SimpleTextLayout(TextFlow flow) {
  */
 protected void layout() {
 	TextFlow textFlow = (TextFlow)getFlowFigure();
-	String text = ((TextFlow) textFlow).getText();
+	String text = textFlow.getText();
 	List fragments = textFlow.getFragments();
 	Font font = textFlow.getFont();
 	TextFragmentBox fragment;
