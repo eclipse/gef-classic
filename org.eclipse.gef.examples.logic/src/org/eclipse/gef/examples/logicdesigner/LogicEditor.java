@@ -42,13 +42,11 @@ import org.eclipse.gef.*;
 import org.eclipse.gef.editparts.ScalableFreeformRootEditPart;
 import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.palette.PaletteRoot;
-import org.eclipse.gef.rulers.*;
+import org.eclipse.gef.rulers.RulerProvider;
 import org.eclipse.gef.ui.actions.*;
 import org.eclipse.gef.ui.parts.*;
-import org.eclipse.gef.ui.rulers.*;
+import org.eclipse.gef.ui.rulers.RulerComposite;
 import org.eclipse.gef.ui.stackview.CommandStackInspectorPage;
-import org.eclipse.gef.ui.views.palette.PaletteViewerPage;
-import org.eclipse.gef.ui.views.palette.PalettePage;
 
 import org.eclipse.gef.examples.logicdesigner.actions.IncrementDecrementAction;
 import org.eclipse.gef.examples.logicdesigner.actions.LogicPasteTemplateAction;
@@ -62,7 +60,7 @@ import org.eclipse.gef.examples.logicdesigner.palette.LogicPaletteCustomizer;
 import org.eclipse.gef.examples.logicdesigner.rulers.LogicRulerProvider;
 
 public class LogicEditor
-	extends GraphicalEditor
+	extends GraphicalEditorWithMovablePalette
 {
 
 class OutlinePage
@@ -281,11 +279,6 @@ class ResourceTracker
 	}
 }
 
-private LogicDiagram logicDiagram = new LogicDiagram();
-private boolean savePreviouslyNeeded = false;
-private ResourceTracker resourceListener = new ResourceTracker();
-private RulerComposite rulerComp;
-
 private IPartListener partListener = new IPartListener() {
 	// If an open, unsaved file was deleted, query the user to either do a "Save As"
 	// or close the editor.
@@ -313,6 +306,20 @@ private IPartListener partListener = new IPartListener() {
 	public void partDeactivated(IWorkbenchPart part) {}
 	public void partOpened(IWorkbenchPart part) {}
 };
+
+private LogicDiagram logicDiagram = new LogicDiagram();
+private boolean savePreviouslyNeeded = false;
+private ResourceTracker resourceListener = new ResourceTracker();
+private RulerComposite rulerComp;
+private IMenuListener menuListener;
+
+protected static final String PALETTE_SIZE = "Palette Size"; //$NON-NLS-1$
+protected static final int DEFAULT_PALETTE_SIZE = 130;
+
+static {
+	LogicPlugin.getDefault().getPreferenceStore().setDefault(
+			PALETTE_SIZE, DEFAULT_PALETTE_SIZE);
+}
 
 public LogicEditor() {
 	setEditDomain(new DefaultEditDomain(this));
@@ -367,18 +374,20 @@ protected void configureGraphicalViewer() {
 	
 	loadProperties();
 
-	// Actions	
+	// Actions
 	IAction showRulers = new ToggleRulerVisibilityAction(getGraphicalViewer());
 	getActionRegistry().registerAction(showRulers);
-	getSite().getKeyBindingService().registerAction(showRulers);
 	
 	IAction snapAction = new ToggleSnapToGeometryAction(getGraphicalViewer());
 	getActionRegistry().registerAction(snapAction);
-	getSite().getKeyBindingService().registerAction(snapAction);
 
 	IAction showGrid = new ToggleGridVisibilityAction(getGraphicalViewer());
 	getActionRegistry().registerAction(showGrid);
-	getSite().getKeyBindingService().registerAction(showGrid);
+}
+
+protected void configurePaletteViewer() {
+	super.configurePaletteViewer();
+	getPaletteViewer().setCustomizer(new LogicPaletteCustomizer());
 }
 
 protected void createOutputStream(OutputStream os)throws IOException {
@@ -432,6 +441,9 @@ protected void loadProperties() {
 }
 
 public void dispose() {
+	/*
+	 * @TODO:Pratik  remove this part listener.  you can do this in the parent's part listener, i.e. somehow combine them 
+	 */
 	getSite().getWorkbenchWindow().getPartService().removePartListener(partListener);
 	partListener = null;
 	((FileEditorInput)getEditorInput()).getFile().getWorkspace().removeResourceChangeListener(resourceListener);
@@ -468,36 +480,24 @@ public Object getAdapter(Class type){
 		outlinePage = new OutlinePage(new TreeViewer());
 		return outlinePage;
 	}
-	if (type == PalettePage.class) {
-		return new PaletteViewerPage(getPaletteRoot(), getGraphicalViewer()) {
-			protected void configurePaletteViewer() {
-				super.configurePaletteViewer();
-				getPaletteViewer().setCustomizer(new LogicPaletteCustomizer());
-			}
-			public void dispose() {
-				CopyTemplateAction copy = (CopyTemplateAction)getActionRegistry()
-						.getAction(GEFActionConstants.COPY);
-				getPaletteViewer().removeSelectionChangedListener(copy);
-				super.dispose();
-			}
-			public void init(IPageSite pageSite) {
-				super.init(pageSite);
-				final CopyTemplateAction copy = (CopyTemplateAction)getActionRegistry()
-				.getAction(GEFActionConstants.COPY);
-				getPaletteViewer().addSelectionChangedListener(copy);
-				getPaletteViewer().getContextMenu().addMenuListener(new IMenuListener() {
-					public void menuAboutToShow(IMenuManager manager) {
-						manager.appendToGroup(GEFActionConstants.GROUP_COPY, copy);
-					}
-				});
-				getSite().getActionBars().setGlobalActionHandler(GEFActionConstants.COPY, copy);			
-			}
-		};
-	}
 	if (type == ZoomManager.class)
 		return getGraphicalViewer().getProperty(ZoomManager.class.toString());
 
 	return super.getAdapter(type);
+}
+
+/**
+ * @see org.eclipse.gef.ui.parts.GraphicalEditorWithPalette#getInitialPaletteSize()
+ */
+protected int getInitialPaletteSize() {
+	return LogicPlugin.getDefault().getPreferenceStore().getInt(PALETTE_SIZE);
+}
+
+/**
+ * @see org.eclipse.gef.ui.parts.GraphicalEditorWithPalette#handlePaletteResized(int)
+ */
+protected void handlePaletteResized(int newSize) {
+	LogicPlugin.getDefault().getPreferenceStore().setValue(PALETTE_SIZE, newSize);
 }
 
 /**
@@ -530,6 +530,32 @@ protected PaletteRoot getPaletteRoot() {
 
 public void gotoMarker(IMarker marker) {}
 
+protected void hookPaletteViewer() {
+	super.hookPaletteViewer();
+	final CopyTemplateAction copy = (CopyTemplateAction)getActionRegistry()
+			.getAction(GEFActionConstants.COPY);
+	getPaletteViewer().addSelectionChangedListener(copy);
+	if (menuListener == null)
+		menuListener = new IMenuListener() {
+			public void menuAboutToShow(IMenuManager manager) {
+				manager.appendToGroup(GEFActionConstants.GROUP_COPY, copy);
+			}
+		};
+	getPaletteViewer().getContextMenu().addMenuListener(menuListener);
+	/*
+	 * @TODO:Pratik  check to see if this works properly.  add it to the right place.
+	 */
+	((IEditorSite)getSite()).getActionBars().setGlobalActionHandler(GEFActionConstants.COPY, copy);			
+}
+
+protected void unhookPaletteViewer() {
+	CopyTemplateAction copy = (CopyTemplateAction)getActionRegistry()
+			.getAction(GEFActionConstants.COPY);
+	getPaletteViewer().removeSelectionChangedListener(copy);
+	getPaletteViewer().getContextMenu().removeMenuListener(menuListener);
+	super.unhookPaletteViewer();
+}
+
 protected void initializeGraphicalViewer() {
 	getGraphicalViewer().setContents(getLogicDiagram());
 	
@@ -543,18 +569,6 @@ protected void createActions() {
 	super.createActions();
 	ActionRegistry registry = getActionRegistry();
 	IAction action;
-	
-	action = new MatchWidthAction(this);
-	registry.registerAction(action);
-	getSelectionActions().add(action.getId());
-	
-	action = new MatchSizeAction(this);
-	registry.registerAction(action);
-	getSelectionActions().add(action.getId());
-	
-	action = new MatchHeightAction(this);
-	registry.registerAction(action);
-	getSelectionActions().add(action.getId());
 	
 	action = new CopyTemplateAction(this);
 	registry.registerAction(action);
@@ -598,10 +612,6 @@ protected void createActions() {
 	action = new AlignmentAction((IWorkbenchPart)this, PositionConstants.MIDDLE);
 	registry.registerAction(action);
 	getSelectionActions().add(action.getId());
-}
-
-public void createPartControl(Composite parent) {
-	createGraphicalViewer(parent);
 }
 
 /* (non-Javadoc)

@@ -13,23 +13,25 @@ package org.eclipse.gef.ui.parts;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
-import org.eclipse.swt.*;
-import org.eclipse.swt.widgets.*;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.*;
+import org.eclipse.swt.widgets.*;
+
 import org.eclipse.draw2d.ColorConstants;
 
 class Splitter extends Composite {
 
-private static final int SASH_WIDTH = 5;
+public static final int DEFAULT_SASH_WIDTH = 5;
 private static final int DRAG_MINIMUM = 62;
 private static final String MAINTAIN_SIZE = "maintain size";  //$NON-NLS-1$
 
 private int fixedSize = 150;
-private int orientation = SWT.HORIZONTAL;
+private int orientation = SWT.VERTICAL;
 private Sash[] sashes = new Sash[0];
 private Control[] controls = new Control[0];
 private Control maxControl = null;
 private Listener sashListener;
+private int sashWidth = DEFAULT_SASH_WIDTH;
 
 /**
  * PropertyChangeSupport
@@ -68,9 +70,9 @@ class SashPainter implements Listener {
 
 public Splitter(Composite parent, int style) {
 	super(parent, checkStyle(style));
-	if ((style & SWT.VERTICAL) != 0) {
-		orientation = SWT.VERTICAL;
-	}
+	
+	if ((style & SWT.HORIZONTAL) != 0)
+		orientation = SWT.HORIZONTAL;
 	
 	this.addListener(SWT.Resize, new Listener() {
 		public void handleEvent(Event e) {
@@ -100,10 +102,10 @@ public Point computeSize (int wHint, int hHint, boolean changed) {
 	boolean vertical = (getStyle() & SWT.VERTICAL) != 0;
 	if (vertical) {
 		width = wHint;
-		height += (controls.length - 1) * SASH_WIDTH;
+		height += (controls.length - 1) * getSashWidth();
 	} else {
 		height = hHint;
-		width += controls.length * SASH_WIDTH;
+		width += controls.length * getSashWidth();
 	}
 	for (int i = 0; i < controls.length; i++) {
 		if (vertical) {
@@ -129,6 +131,10 @@ public Point computeSize (int wHint, int hHint, boolean changed) {
  */
 public int getOrientation() {
 	return orientation;
+}
+
+public int getSashWidth() {
+	return sashWidth;
 }
 
 /**
@@ -215,18 +221,19 @@ public void layout(boolean changed) {
 		if (control.getData(MAINTAIN_SIZE) != null) {
 			width = fixedSize;
 			if (width > area.width) {
-				width = area.width - SASH_WIDTH;
+				width = area.width - getSashWidth();
 			}
 			control.setBounds(x, area.y, width, area.height);
-			x += width + SASH_WIDTH;
+			x += width + getSashWidth();
 		} else {
-			width = Math.max(area.width - fixedSize - SASH_WIDTH, 0);
+			width = Math.max(area.width - fixedSize - getSashWidth(), 0);
 			control.setBounds(x, area.y, width, area.height);
-			x += (width + SASH_WIDTH);
+			x += (width + getSashWidth());
 		}
 	}
-	sashes[0].setBounds(controls[0].getBounds().x + controls[0].getBounds().width, area.y, 
-	                    SASH_WIDTH, area.height);
+	if (sashes.length > 0)
+		sashes[0].setBounds(controls[0].getBounds().x + controls[0].getBounds().width, area.y, 
+				getSashWidth(), area.height);
 }
 
 public void maintainSize(Control c) {
@@ -235,22 +242,25 @@ public void maintainSize(Control c) {
 		Control ctrl = controls[i];
 		if (ctrl == c) {
 			ctrl.setData(MAINTAIN_SIZE, new Boolean(true));
+			break;
 		}
 	}
 }
 
 
 void paint(Sash sash, GC gc) {
+	if (getSashWidth() == 0)
+		return;
 	Point size = sash.getSize();
 	if (getOrientation() == SWT.HORIZONTAL) {
 		gc.setForeground(ColorConstants.buttonDarker);
-		gc.drawLine(SASH_WIDTH - 1, 0, SASH_WIDTH - 1, size.y);
+		gc.drawLine(getSashWidth() - 1, 0, getSashWidth() - 1, size.y);
 		gc.setForeground(ColorConstants.buttonLightest);
 		gc.drawLine(0, 0, 0, size.y);
 	} else {
 		gc.setForeground(ColorConstants.buttonDarker);
 		gc.drawLine(0, 0, size.x, 0);
-		gc.drawLine(0, SASH_WIDTH - 1, size.x, SASH_WIDTH - 1);
+		gc.drawLine(0, getSashWidth() - 1, size.x, getSashWidth() - 1);
 		gc.setForeground(ColorConstants.buttonLightest);
 		gc.drawLine(0, 1, size.x, 1);
 	}
@@ -264,10 +274,10 @@ private void onDragSash(Event event) {
 			if (controls[0].getData(MAINTAIN_SIZE) != null) {
 				event.x = Math.max(event.x, DRAG_MINIMUM);
 			} else {
-				event.x = Math.min(event.x, area.width - DRAG_MINIMUM - SASH_WIDTH);
+				event.x = Math.min(event.x, area.width - DRAG_MINIMUM - getSashWidth());
 			}
 		} else {
-			event.y = Math.min(event.y, area.height - DRAG_MINIMUM - SASH_WIDTH);
+			event.y = Math.min(event.y, area.height - DRAG_MINIMUM - getSashWidth());
 		}
 		return;
 	}
@@ -286,6 +296,7 @@ private void onDragSash(Event event) {
 	Control c2 = controls[sashIndex + 1];
 	Rectangle b1 = c1.getBounds();
 	Rectangle b2 = c2.getBounds();
+	controls = getControls(false);
 	
 	Rectangle sashBounds = sash.getBounds();
 	if (orientation == SWT.HORIZONTAL) {
@@ -331,6 +342,10 @@ public void setOrientation(int orientation) {
 		sashes[i].addListener(SWT.Selection, sashListener);
 	}
 	layout();
+}
+
+public void setSashWidth(int width) {
+	sashWidth = width;
 }
 
 public void setLayout (Layout layout) {
