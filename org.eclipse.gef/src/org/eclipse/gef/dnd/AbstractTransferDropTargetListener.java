@@ -166,6 +166,10 @@ protected void eraseTargetFeedback() {
 	}
 }
 
+protected Command getCommand() {
+	return getTargetEditPart().getCommand(getTargetRequest());
+}
+
 /**
  * Returns the current <code>DropTargetEvent</code>.
  * @return the current event
@@ -260,7 +264,7 @@ protected void handleDrop() {
 	updateTargetEditPart();
 	
 	if (getTargetEditPart() != null) {
-		Command command = getTargetEditPart().getCommand(getTargetRequest());
+		Command command = getCommand();
 		if (command != null && command.canExecute())
 			getViewer().getEditDomain().getCommandStack().execute(command);
 		else

@@ -95,7 +95,7 @@ protected void createEditPolicies() { }
 
 /** * @see org.eclipse.gef.EditPart#getDragTracker(Request) */
 public DragTracker getDragTracker(Request req) {
-	return new org.eclipse.gef.tools.DragTreeItemsTracker(this);
+	return null;
 }
 
 /**
