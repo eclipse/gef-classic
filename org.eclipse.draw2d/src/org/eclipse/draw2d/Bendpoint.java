@@ -13,15 +13,19 @@ package org.eclipse.draw2d;
 import org.eclipse.draw2d.geometry.Point;
 
 /**
- * A point used by a bendable {@link org.eclipse.draw2d.Connection}.
+ * A helper used to calculate the point at which a {@link org.eclipse.draw2d.Connection}
+ * should bend. A bendpoint returns a point <em>relative</em> to the connection figure on
+ * which it is being used. This was chosen so that fixed bendpoints would be easy to
+ * implement. A fixed bendpoint will have a fixed x and y value.  Although the absolute x
+ * and y location change during zoom and scrolling, the relative values stay the same.
  */
 public interface Bendpoint {
 
 /**
- * Returns the location of the bendpoint.  This may return the point by reference and
- * modifying it could produce unpredictable results.
+ * Returns the location of the bendpoint <em>relative</em> to the connection. The returned
+ * value may be by reference. The caller should NOT modify the returned value.
  * 
- * @return the location of the bendpoint
+ * @return the location of the bendpoint relative to the Connection
  */
 Point getLocation();
 
