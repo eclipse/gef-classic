@@ -295,7 +295,7 @@ public IFigure getContentPane() {
 }
 
 /**
- * @see Figure#getMinimumSize()
+ * @see Figure#getMinimumSize(int, int)
  */
 public Dimension getMinimumSize(int wHint, int hHint) {
 	/*
@@ -328,10 +328,10 @@ public ScrollPane getScrollpane() {
 
 protected void handleExpandStateChanged() {
 	if (isExpanded()) {
-		if (!getChildren().contains(scrollpane))
-			add(scrollpane);	
+		if (scrollpane.getParent() != this)
+			add(scrollpane);
 	} else {
-		if (getChildren().contains(scrollpane))
+		if (scrollpane.getParent() == this)
 			remove(scrollpane);
 	}
 	
@@ -368,7 +368,7 @@ public boolean isPinShowing() {
 
 public void setAnimating(boolean isAnimating) {
 	if (isAnimating) {
-		if (!getChildren().contains(scrollpane)) {
+		if (scrollpane.getParent() != this) {
 			addedScrollpane = true;
 			add(scrollpane);
 		}
