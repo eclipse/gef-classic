@@ -164,6 +164,13 @@ void flush();
 EditPart getContents();
 
 /**
+ * Returns the <code>ContextMenuProvider</code> for this viewer or <code>null</code> if 
+ * no provider exists.
+ * @return the ContextMenuProvider
+ */
+ContextMenuProvider getContextMenuProvider();
+
+/**
  * Returns the SWT <code>Control</code> for this viewer.
  * @return the SWT <code>Control</code>
  */
