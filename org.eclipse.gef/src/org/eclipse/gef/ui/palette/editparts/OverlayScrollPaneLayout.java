@@ -44,8 +44,8 @@ public void layout(IFigure parent){
 	Viewport viewport = scrollpane.getViewport();
 
 	Insets insets = new Insets();
-	insets.bottom = hBar.getPreferredSize().height;
-	insets.right  = vBar.getPreferredSize().width;
+	insets.bottom = hBar.getPreferredSize(clientArea.width, clientArea.height).height;
+	insets.right  = vBar.getPreferredSize(clientArea.width, clientArea.height).width;
 
 	int hVis = scrollpane.getHorizontalScrollBarVisibility(),
 	    vVis = scrollpane.getVerticalScrollBarVisibility();
@@ -57,8 +57,8 @@ public void layout(IFigure parent){
 
 	boolean none = available.contains(preferred),
 		  both = !none && vVis != NEVER && hVis != NEVER && preferred.contains(available),
-		  showV= both || preferred.height > available.height,
-		  showH= both || preferred.width  > available.width;
+		  showV = both || preferred.height > available.height,
+		  showH = both || preferred.width > available.width;
 
 	//Adjust for visibility override flags
 	showV = !(vVis == NEVER) && (showV || vVis == ALWAYS);
@@ -68,16 +68,16 @@ public void layout(IFigure parent){
 	if (!showH) insets.bottom = 0;
 	Rectangle bounds, viewportArea = clientArea;
 
-	if (showV){
+	if (showV) {
 		bounds = new Rectangle(
-			viewportArea.right()-insets.right,
+			viewportArea.right() - insets.right,
 			viewportArea.y, insets.right, viewportArea.height);
 		vBar.setBounds(bounds);
 		//vBar.setMaximum(preferred.height);
 	}
-	if (showH){
+	if (showH) {
 		bounds = new Rectangle(viewportArea.x, 
-			viewportArea.bottom()-insets.bottom,
+			viewportArea.bottom() - insets.bottom,
 			viewportArea.width, insets.bottom);
 		hBar.setBounds(bounds);
 		//hBar.setMaximum(preferred.width);

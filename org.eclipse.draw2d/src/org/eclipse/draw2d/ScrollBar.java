@@ -430,7 +430,7 @@ public void setValue(int v) {getRangeModel().setValue(v);}
  * 
  * @since 2.0
  */
-private void stepDown() {setValue(getValue() + getStepIncrement());}
+protected void stepDown() {setValue(getValue() + getStepIncrement());}
 
 /**
  * Causes the ScrollBar to scroll up (or left) by the 
@@ -438,7 +438,7 @@ private void stepDown() {setValue(getValue() + getStepIncrement());}
  * 
  * @since 2.0
  */
-private void stepUp() {setValue(getValue() - getStepIncrement());}
+protected void stepUp() {setValue(getValue() - getStepIncrement());}
 
 class ThumbDragger
 	extends MouseMotionListener.Stub

@@ -12,7 +12,7 @@ import org.eclipse.draw2d.geometry.*;
  * Private class that lays out the Figures that make up
  * a ScrollBar.
  */
-class ScrollBarLayout
+public class ScrollBarLayout
 	extends AbstractLayout
 {
 
