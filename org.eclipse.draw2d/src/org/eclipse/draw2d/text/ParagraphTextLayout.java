@@ -79,13 +79,13 @@ protected float getAverageCharWidth(TextFragmentBox fragment) {
 protected void layout() {
 	TextFlow flowFigure = (TextFlow)getFlowFigure();
 	
-	   List fragments = flowFigure.getFragments();//Reuse the previous List of fragments
-	 String string    = flowFigure.getText();
-	   Font font      = flowFigure.getFont();
-	    int i         = 0; //The index of the current fragment;
-	    int offset    = 0; //The current offset in the ORIGINAL text, not s
-	    int length    = 0; //The length of the current fragment
-	  float prevAvgCharWidth;
+	List fragments = flowFigure.getFragments();//Reuse the previous List of fragments
+	String string = flowFigure.getText();
+	Font font = flowFigure.getFont();
+	int i = 0; //The index of the current fragment;
+	int offset = 0; //The current offset in the ORIGINAL text, not s
+	int length = 0; //The length of the current fragment
+	float prevAvgCharWidth;
 	LineBox currentLine;
 	TextFragmentBox fragment;
 
@@ -93,8 +93,28 @@ protected void layout() {
 		fragment = null;
 		prevAvgCharWidth = 0f;
 		fragment = getFragment(i, fragments);
-		fragment.offset	= offset;
 		prevAvgCharWidth = getAverageCharWidth(fragment);
+
+		//Check for newline, if it exists, call context.endLine and skip over the newline
+		//Exccept for first time through, don't do this.
+		if (i != 0) {
+			boolean changed = false;
+			if (string.charAt(0) == '\r') {
+				string = string.substring(1);
+				changed = true;
+				offset += 1;
+			}
+			if (string.length() != 0 && string.charAt(0) == '\n') {
+				string = string.substring(1);
+				changed = true;
+				offset += 1;
+			}
+			if (changed) {
+				context.endLine();
+			}
+		}				
+		
+		fragment.offset = offset;
 		
 		//This loop is done at most twice.
 		//The second time through, a context.endLine()
@@ -121,7 +141,7 @@ protected void layout() {
 		if (string.length() > 0)
 			context.endLine();
 		i++;
-	} while (string.length() > 0 && length != 0);
+	} while (string.length() > 0);
 
 	//Remove the remaining unused fragments.
 	while (i < fragments.size())

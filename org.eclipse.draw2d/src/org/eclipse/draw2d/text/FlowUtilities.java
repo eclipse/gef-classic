@@ -52,23 +52,31 @@ public static int getTextForSpace(TextFragmentBox frag, String string, Font font
 		avg = metrics.getAverageCharWidth();
 
 	int firstBreak = breakItr.next();
-	MIN = min = (wrapping == ParagraphTextLayout.WORD_WRAP_HARD) ?  firstBreak : 1;
 
 	int winNL = string.indexOf("\r\n"); //$NON-NLS-1$
 	int macNL = string.indexOf('\r');
 	int unixNL = string.indexOf('\n');
 
+	MIN = min = (wrapping == ParagraphTextLayout.WORD_WRAP_HARD) ?  firstBreak : 1;
 	if (macNL == winNL)
 		macNL = -1; //If the Mac newline is just the prefix to the win NL, ignore it
 
 	max = string.length() + 1;
-	if (winNL != -1)
-		max = Math.min(max, winNL + 2);
-	if (unixNL != -1)
-		max = Math.min(max, unixNL + 1);
-	if (macNL != -1)
-		max = Math.min(max, macNL + 1);
+	
+	if (winNL != -1) {
+		max = Math.min(max, winNL);
+		min = Math.min(min, winNL);
+	}
+	if (unixNL != -1) {
+		max = Math.min(max, unixNL);
+		min = Math.min(min, unixNL);
+	}
+	if (macNL != -1) {
+		max = Math.min(max, macNL);
+		min = Math.min(min, macNL);
+	}
 
+	int origMax = max;
 	//The size of the current guess
 	int guess = 0,
 	    guessSize = 0;
@@ -92,34 +100,52 @@ public static int getTextForSpace(TextFragmentBox frag, String string, Font font
 			//We exceeded the available width
 			max = guess;
 	}
-	
+
 	int result = string.length();
 	switch (wrapping) {
 		case ParagraphTextLayout.WORD_WRAP_HARD :
-			if (min == string.length())
+			if (min == string.length() || min == winNL || min == unixNL || min == macNL)
 				result = min;
+			else if (max == origMax 
+						&& getStringExtents(string.substring(0, max), font).width 
+						<= availableWidth)
+				result = max;
 			else
 				result = Math.max(MIN, breakItr.preceding(Math.min(max + 1, 
-																	string.length() - 1)));
+																string.length() - 1)));
 			frag.length = result;
 			break;
 
 		case ParagraphTextLayout.WORD_WRAP_SOFT :
-			if (min == string.length())
+			if (min == string.length() || min == winNL || min == unixNL || min == macNL)
 				result = min;
-			else
+			else if (max == origMax
+						&& getStringExtents(string.substring(0, max), font).width 
+						<= availableWidth)
+				result = max;
+			else if (breakItr.isBoundary(min))
+			    result = min;
+			else if (breakItr.isBoundary(Math.min(max, string.length() - 1)))
+				result = max;
+			else 
 				result = breakItr.preceding(Math.min(max + 1, string.length() - 1));
 			if (result <= 0)
 				result = min;
 			frag.length = result;
 			break;
 		case ParagraphTextLayout.WORD_WRAP_TRUNCATE :
-			if (min == string.length()) {
+			if (min == string.length() || min == winNL || min == unixNL || min == macNL) {
 				result = frag.length = min;
 				setupFragment(frag, font, string);
 				if (frag.getWidth() <= availableWidth)
 					return result;
 				min -= 1;
+			} else if (max == origMax 
+						&& getStringExtents(string.substring(0, max), font).width 
+						<= availableWidth) {
+				result = frag.length = max;
+				setupFragment(frag, font, string);
+				return result;
 			}
 			result = breakItr.preceding(Math.min(max + 1, string.length() - 1));
 			if (result <= 0) {
@@ -146,7 +172,7 @@ public static int getTextForSpace(TextFragmentBox frag, String string, Font font
 }
 
 static void setupFragment(TextFragmentBox frag, Font f, String s) {
-	if (frag.length != s.length())
+	//if (frag.length != s.length()) 
 		while (frag.length > 0 && Character.isWhitespace(s.charAt(frag.length - 1)))
 			frag.length--;
 	Dimension d = getStringExtents(s.substring(0, frag.length), f);
