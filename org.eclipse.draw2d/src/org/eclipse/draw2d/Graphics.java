@@ -15,21 +15,6 @@ import org.eclipse.draw2d.geometry.*;
 
 public abstract class Graphics {
 
-static final protected class TransparencyFlag{
-	boolean val;
-	protected TransparencyFlag(boolean b){
-		val = b;
-	}
-	public boolean toBoolean(){return val;}
-};
-
-/**@deprecated use (draw/fill)(String/Text) methods instead*/
-public static TransparencyFlag
-	TRANSPARENT = new TransparencyFlag(true);
-/**@deprecated use (draw/fill)(String/Text) methods instead*/
-public static TransparencyFlag
-	NON_TRANSPARENT = new TransparencyFlag(false);
-
 public static final int
 	LINE_SOLID = SWT.LINE_SOLID,
 	LINE_DASH  = SWT.LINE_DASH,
@@ -38,91 +23,83 @@ public static final int
 	LINE_DOT	= SWT.LINE_DOT;
 
 public abstract void clipRect(Rectangle r);
-public abstract void drawArc(Rectangle r, int offset, int length);
-public abstract void fillArc(Rectangle r, int offset, int length);
 
-public abstract void drawFocus(Rectangle r);
+public final void drawArc(Rectangle r, int offset, int length){
+	drawArc(r.x, r.y, r.width, r.height, offset, length);
+}
+
+public abstract void drawArc(int x, int y, int w, int h, int offset, int length);
+
+public abstract void fillArc(int x, int y, int w, int h, int offset, int length);
+public final void fillArc(Rectangle r, int offset, int length){
+	fillArc(r.x, r.y, r.width, r.height, offset, length);
+}
+
+public final void drawFocus(Rectangle r){
+	drawFocus(r.x, r.y, r.width, r.height);
+}
+
 public abstract void drawFocus(int x, int y, int w, int h);
 
-public abstract void drawImage(Image srcImage, Point p);
+public final void drawImage(Image srcImage, Point p){
+	drawImage(srcImage, p.x, p.y);
+}
+
 public abstract void drawImage(Image srcImage, int x, int y);
-public abstract void drawImage(Image srcImage, Rectangle src, Rectangle dest);
+public final void drawImage(Image srcImage, Rectangle src, Rectangle dest){
+	drawImage(srcImage, src.x,src.y,src.width,src.height,dest.x,dest.y,dest.width,dest.height);
+}
 public abstract void drawImage(Image srcImage, int x1, int y1, int w1, int h1, int x2, int y2, int w2, int h2);
 
-public abstract void drawLine(Point p1, Point p2);
+public final void drawLine(Point p1, Point p2){
+	drawLine(p1.x, p1.y, p2.x, p2.y);
+}
 public abstract void drawLine(int x1, int y1, int x2, int y2);
 
-public abstract void drawOval(Rectangle r);
-public abstract void fillOval(Rectangle r);
+public final void drawOval(Rectangle r){
+	drawOval(r.x, r.y, r.width, r.height);
+}
+public abstract void drawOval(int x, int y, int w, int h);
+
+public final void fillOval(Rectangle r){
+	fillOval(r.x, r.y, r.width, r.height);
+}
+public abstract void fillOval(int x, int y, int w, int h);
 
 public abstract void drawPolygon(PointList points);
 public abstract void fillPolygon(PointList points);
 
 public abstract void drawPolyline(PointList points);
 
-public abstract void drawRectangle(Rectangle r);
+public final void drawRectangle(Rectangle r){
+	drawRectangle(r.x, r.y, r.width, r.height);
+}
 public abstract void drawRectangle(int x1, int x2, int width, int height);
-public abstract void fillRectangle(Rectangle r);
+public final void fillRectangle(Rectangle r){
+	fillRectangle(r.x, r.y, r.width, r.height);
+}
 public abstract void fillRectangle(int x1, int x2, int width, int height);
 
 public abstract void drawRoundRectangle(Rectangle r, int arcWidth, int arcHeight);
 public abstract void fillRoundRectangle(Rectangle r, int arcWidth, int arcHeight);
 
-/** 
- * @deprecated use {@link #drawString(String, Point)} and 
- * {@link #fillString(String, Point)}
- */
-public abstract void drawString(String s, Point p, TransparencyFlag transparent);
-
-/** 
- * @deprecated use {@link #drawText(String, Point)} and 
- * {@link #fillText(String, Point)}
- */
-public abstract void drawText(String s, Point p, TransparencyFlag transparent);
-
-/** 
- * @deprecated use {@link #drawString(String, int, int)} and 
- * {@link #fillString(String, int, int)}
- */
-public abstract void drawString(String s, int x, int y, TransparencyFlag transparent);
-
-/** 
- * @deprecated use {@link #drawText(String, int, int)} and 
- * {@link #fillText(String, int, int)}
- */
-public abstract void drawText(String s, int x, int y, TransparencyFlag transparent);
-
-public void drawText(String s, int x, int y){
-	drawText(s, x, y, TRANSPARENT);
+public abstract void drawText(String s, int x, int y);
+public abstract void drawString(String s, int x, int y);
+public final void drawString(String s, Point p){
+	drawString(s, p.x, p.y);
+}
+public final void drawText(String s, Point p){
+	drawText(s, p.x, p.y);
 }
 
-public void fillText(String s, int x, int y){
-	drawText(s, x, y, NON_TRANSPARENT);
+public final void fillString(String s, Point p){
+	fillString(s, p.x, p.y);
 }
-
-public void drawString(String s, int x, int y){
-	drawText(s, x, y, TRANSPARENT);
+public abstract void fillString(String s, int x, int y);
+public final void fillText(String s, Point p){
+	fillText(s, p.x, p.y);
 }
-
-public void fillString(String s, int x, int y){
-	drawString(s, x, y, NON_TRANSPARENT);
-}
-
-public void drawText(String s, Point p){
-	drawText(s, p.x, p.y, TRANSPARENT);
-}
-
-public void fillText(String s, Point p){
-	drawText(s, p.x, p.y, NON_TRANSPARENT);
-}
-
-public void drawString(String s, Point p){
-	drawString(s, p.x, p.y, TRANSPARENT);
-}
-
-public void fillString(String s, Point p){
-	drawString(s, p.x, p.y, NON_TRANSPARENT);
-}
+public abstract void fillText(String s, int x, int y);
 
 public abstract int getAdvanceWidth(char c);
 public abstract Color getBackgroundColor();
@@ -150,7 +127,9 @@ public abstract void setForegroundColor(Color rgb);
 public abstract void setLineStyle(int style);
 public abstract void setLineWidth(int width);
 public abstract void setXORMode(boolean b);
-public abstract void translate(Point pt);
+public final void translate(Point pt){
+	translate(pt.x, pt.y);
+}
 public abstract void translate(int x, int y);
 
 }

@@ -107,13 +107,9 @@ final protected void checkText(){
 		gc.setFont(appliedState.font = currentState.font);
 }
 
-public void drawArc(Rectangle r, int offset, int length){
+public void drawArc(int x, int y, int width, int height, int offset, int length){
 	checkPaint();
-	gc.drawArc(r.x + translateX, r.y + translateY, r.width, r.height, offset, length);
-}
-
-public final void drawFocus(Rectangle r){
-	drawFocus(r.x, r.y, r.width, r.height);
+	gc.drawArc(x + translateX, y + translateY, width, height, offset, length);
 }
 
 public void drawFocus(int x, int y, int w, int h){
@@ -122,13 +118,9 @@ public void drawFocus(int x, int y, int w, int h){
 	gc.drawFocus(x+translateX, y+translateY, w+1, h+1);
 }
 
-public void fillArc(Rectangle r, int offset, int length){
+public void fillArc(int x, int y, int width, int height, int offset, int length){
 	checkFill();
-	gc.fillArc(r.x + translateX, r.y + translateY, r.width, r.height, offset, length);
-}
-
-public void drawImage(Image srcImage, Point p){
-	drawImage(srcImage, p.x, p.y);
+	gc.fillArc(x + translateX, y + translateY, width, height, offset, length);
 }
 
 public void drawImage(Image srcImage, int x, int y){
@@ -136,17 +128,9 @@ public void drawImage(Image srcImage, int x, int y){
 	gc.drawImage(srcImage, x + translateX, y + translateY);
 }
 
-public void drawImage(Image srcImage, Rectangle src, Rectangle dest){
-	drawImage(srcImage, src.x,src.y,src.width,src.height,dest.x,dest.y,dest.width,dest.height);
-}
-
 public void drawImage(Image srcImage, int x1, int y1, int w1, int h1, int x2, int y2, int w2, int h2){
 	checkGC();
 	gc.drawImage(srcImage,x1,y1,w1,h1,x2+translateX,y2+translateY,w2,h2);
-}
-
-public void drawLine(Point p1, Point p2){
-	drawLine(p1.x, p1.y, p2.x, p2.y);
 }
 
 public void drawLine(int x1, int y1, int x2, int y2){
@@ -155,14 +139,14 @@ public void drawLine(int x1, int y1, int x2, int y2){
 			x2 + translateX, y2 + translateY);
 }
 
-public void drawOval(Rectangle r){
+public void drawOval(int x, int y, int width, int height){
 	checkPaint();
-	gc.drawOval(r.x + translateX, r.y + translateY, r.width, r.height);
+	gc.drawOval(x + translateX, y + translateY, width, height);
 }
 
-public void fillOval(Rectangle r){
+public void fillOval(int x, int y, int width, int height){
 	checkFill();
-	gc.fillOval(r.x + translateX, r.y + translateY, r.width, r.height);
+	gc.fillOval(x + translateX, y + translateY, width, height);
 }
 
 public void drawPolygon(PointList points){
@@ -201,17 +185,9 @@ public void drawPolyline(PointList points){
 	}
 }
 
-public void drawRectangle(Rectangle r){
-	drawRectangle(r.x, r.y, r.width, r.height);
-}
-
 public void drawRectangle(int x, int y, int width, int height){
 	checkPaint();
 	gc.drawRectangle(x + translateX, y + translateY, width, height);
-}
-
-public void fillRectangle(Rectangle r){
-	fillRectangle(r.x, r.y, r.width, r.height);
 }
 
 public void fillRectangle(int x, int y, int width, int height){
@@ -230,23 +206,10 @@ public void fillRoundRectangle(Rectangle r, int arcWidth, int arcHeight){
 }
 
 /** 
- * @deprecated use {@link Graphics#drawString(String, Point)} and 
- * {@link Graphics#fillString(String, Point)}
- */
-public void drawString(String s, Point p, Graphics.TransparencyFlag transparent){
-	drawString(s, p.x, p.y, transparent);
-}
-
-/** 
  * @deprecated use {@link Graphics#drawString(String, int, int)} and 
  * {@link Graphics#fillString(String, int, int)}
  */
-public void drawString(String s, int x, int y, Graphics.TransparencyFlag transparent){
-	checkText();
-	gc.drawString(s, x + translateX, y + translateY, transparent.toBoolean());
-}
-
-public void drawString(String s, int x, int y) {
+public void drawString(String s, int x, int y){
 	checkText();
 	gc.drawString(s, x + translateX, y + translateY, true);
 }
@@ -254,23 +217,6 @@ public void drawString(String s, int x, int y) {
 public void fillString(String s, int x, int y) {
 	checkText();
 	gc.drawString(s, x + translateX, y + translateY, false);
-}
-
-/** 
- * @deprecated use {@link Graphics#drawText(String, Point)} and 
- * {@link Graphics#fillText(String, Point)}
- */
-public void drawText(String s, Point p, Graphics.TransparencyFlag transparent){
-	drawText(s, p.x, p.y, transparent);
-}
-
-/** 
- * @deprecated use {@link Graphics#drawText(String, int, int)} and 
- * {@link Graphics#fillText(String, int, int)}
- */
-public void drawText(String s, int x, int y, Graphics.TransparencyFlag transparent){
-	checkText();
-	gc.drawText(s, x + translateX, y + translateY, transparent.toBoolean());
 }
 
 public void drawText(String s, int x, int y) {
@@ -340,8 +286,8 @@ public boolean getXORMode(){
 }
 
 public void popState(){
-	restoreState((State)stack.get(stackPointer - 1));
-	stackPointer -= 1;
+	stackPointer--;
+	restoreState((State)stack.get(stackPointer));
 }
 
 public void pushState(){
@@ -350,16 +296,12 @@ public void pushState(){
 		if(stack.size() > stackPointer) {
 			s = (State)stack.get(stackPointer);
 			s.copyFrom(currentState);
-		}
-		else {
+		} else {
 			stack.add(currentState.clone());
 		}
-		
-		stackPointer += 1;
-
-			
-	} catch (Exception e){
-		e.printStackTrace();
+		stackPointer++;
+	} catch (CloneNotSupportedException e){
+		throw new RuntimeException(e);
 	}
 }
 
@@ -447,10 +389,6 @@ protected void setTranslation(int x, int y){
 public void setXORMode(boolean b){
 	if (currentState.xor == b) return;
 	currentState.xor = b;
-}
-
-final public void translate(Point pt){
-	translate(pt.x, pt.y);
 }
 
 public void translate(int x, int y){
