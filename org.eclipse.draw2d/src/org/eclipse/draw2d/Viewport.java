@@ -78,7 +78,8 @@ public IFigure getContents() {
 }
 
 /**
- * @return the RangeModel associated with the horizontal motion of this Viewport
+ * Returns the RangeModel associated with the horizontal motion of this Viewport
+ * @return the RangeModel
  * 
  * @since 2.0
  */
@@ -113,7 +114,8 @@ public boolean getContentsTracksWidth() {
 }		
 
 /**
- * @return the RangeModel associated with the vertical motion of the Viewport
+ * Returns the range model associated with the vertical motion of the Viewport.
+ * @return the RangeModel
  * 
  * @since 2.0
  */
@@ -122,6 +124,7 @@ public RangeModel getVerticalRangeModel() {
 }
 
 /**
+ * Returns the current location of this Viewport.
  * @return the current location of this Viewport
  * 
  * @since 2.0
@@ -334,6 +337,7 @@ public void translateToParent(Translatable t) {
 }
 
 /**
+ * Returns <code>true</code> if this viewport uses graphics translation.
  * @return whether this viewport uses graphics translation
  */
 public boolean useGraphicsTranslate() {

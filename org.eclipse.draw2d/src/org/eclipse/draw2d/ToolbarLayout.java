@@ -15,14 +15,11 @@ import org.eclipse.draw2d.geometry.*;
 
 /**
  * Arranges figures in a single row or column.  Orientation can be set to produce either
- * a row or column layout.
- * <p>
- * This layout try to fit all children within the parent's client area.  To do this,
- * it compresses the children by some amount, but will not compress them smaller than
- * their minimum size.
- * <p>
- * If a child's preferred size is smaller than the row's or column's minor dimension,
- * the layout can be configured to stretch the child.
+ * a row or column layout. This layout tries to fit all children within the parent's 
+ * client area.  To do this, it compresses the children by some amount, but will not 
+ * compress them smaller than their minimum size. If a child's preferred size is smaller 
+ * than the row's or column's minor dimension, the layout can be configured to stretch the
+ * child.
  */
 public class ToolbarLayout
 	extends AbstractHintLayout
@@ -57,7 +54,7 @@ protected Transposer transposer; {
 	
 /**
  * Constructs a vertically oriented ToolbarLayout with child spacing of 0 pixels, 
- * matchWidth <code>true</code>, and <code>ALIGN_TOPLEFT</code> alignment.
+ * matchWidth <code>true</code>, and {@link #ALIGN_TOPLEFT} alignment.
  * 
  * @since 2.0
  */		
@@ -70,7 +67,7 @@ public ToolbarLayout() {
 
 /**
  * Constructs a ToolbarLayout with a specified orientation. Default values are: child 
- * spacing 0 pixels, matchWidth <code>false</code>, and <code>ALIGN_TOPLEFT</code> 
+ * spacing 0 pixels, matchWidth <code>false</code>, and {@link #ALIGN_TOPLEFT} 
  * alignment.
  * 
  * @param isHorizontal whether the children are oriented horizontally
