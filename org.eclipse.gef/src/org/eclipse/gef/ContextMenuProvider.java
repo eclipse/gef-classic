@@ -14,9 +14,6 @@ import org.eclipse.jface.action.MenuManager;
  * Extends MenuManager to allow building the context menu directly.
  * 
  * @author hudsonr
- *
- * To change this generated comment go to 
- * Window>Preferences>Java>Code Generation>Code Template
  */
 
 public abstract class ContextMenuProvider 

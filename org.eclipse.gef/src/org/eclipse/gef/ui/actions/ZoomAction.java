@@ -1,9 +1,3 @@
-/*
- * Created on Feb 28, 2003
- *
- * To change this generated comment go to 
- * Window>Preferences>Java>Code Generation>Code Template
- */
 package org.eclipse.gef.ui.actions;
 
 import org.eclipse.jface.action.Action;
