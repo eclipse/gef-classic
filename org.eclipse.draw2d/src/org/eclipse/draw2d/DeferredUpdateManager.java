@@ -83,7 +83,7 @@ synchronized public void performUpdate(Rectangle exposed){
 }
 
 synchronized public void performUpdate(){
-	if (updating)
+	if (isDisposed() || updating)
 		return;
 	updating = true;
 	try {
