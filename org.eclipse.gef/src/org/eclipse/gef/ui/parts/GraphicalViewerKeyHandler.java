@@ -205,25 +205,32 @@ public boolean keyPressed(KeyEvent event) {
 		case SWT.ARROW_LEFT:
 			if (navigateNextSibling(event, PositionConstants.WEST))
 				return true;
+			break;
 		case SWT.ARROW_RIGHT:
 			if (navigateNextSibling(event, PositionConstants.EAST))
 				return true;
+			break;
 		case SWT.ARROW_UP:
 			if (navigateNextSibling(event, PositionConstants.NORTH))
 				return true;
+			break;
 		case SWT.ARROW_DOWN:
 			if (navigateNextSibling(event, PositionConstants.SOUTH))
 				return true;
+			break;
 
 		case SWT.HOME:
 			if (navigateJumpSibling(event, PositionConstants.WEST))
 				return true;
+			break;
 		case SWT.END:
 			if (navigateJumpSibling(event, PositionConstants.EAST))
 				return true;
+			break;
 		case SWT.PAGE_DOWN:
 			if (navigateJumpSibling(event, PositionConstants.SOUTH))
 				return true;
+			break;
 		case SWT.PAGE_UP:
 			if (navigateJumpSibling(event, PositionConstants.NORTH))
 				return true;
