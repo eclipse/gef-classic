@@ -205,14 +205,9 @@ protected IFigure getToolTipFigure() {
 
 protected String getToolTipText() {
 	String text = null;
-	boolean needName = getPreferenceSource().getLayoutSetting() == PaletteViewerPreferences.LAYOUT_ICONS;
-	if (!getFigure().getChildren().isEmpty()) {
-		IFigure fig = (IFigure)getFigure().getChildren().get(0);
-		if (fig instanceof DetailedLabelFigure)
-			needName = needName || ((DetailedLabelFigure)fig).isNameTruncated();
-	}
 	PaletteEntry entry = (PaletteEntry)getModel();
 	String desc = entry.getDescription();
+	boolean needName = nameNeededInToolTip();
 	if (desc == null || desc.trim().equals(entry.getLabel()) || desc.trim().equals("")) { //$NON-NLS-1$
 		if (needName) {
 			text = entry.getLabel();
@@ -229,6 +224,10 @@ protected String getToolTipText() {
 		text = null;
 	}
 	return text;
+}
+
+protected boolean nameNeededInToolTip() {
+	return getPreferenceSource().getLayoutSetting() == PaletteViewerPreferences.LAYOUT_ICONS;
 }
 
 /**
@@ -249,20 +248,34 @@ public void propertyChange(PropertyChangeEvent evt) {
 	}
 }
 
+protected void refreshToolTip() {
+	String tooltipText = getToolTipText();
+	if (tooltipText == null) {
+		getToolTipFigure().setToolTip(null);
+		return;
+	}
+	IFigure tooltip = getToolTipFigure().getToolTip();
+	if (tooltip == null)
+		getToolTipFigure().setToolTip(createToolTip());
+	IFigure fig = (IFigure)getToolTipFigure().getToolTip().getChildren().get(0);
+	TextFlow tf = (TextFlow)fig.getChildren().get(0);
+	tf.setText(getToolTipText());
+}
+
 /**
  * @see org.eclipse.gef.editparts.AbstractEditPart#refreshVisuals()
  */
 protected void refreshVisuals() {
-	String tooltip = getToolTipText();
-	if (tooltip == null) {
-		getToolTipFigure().setToolTip(null);
-		return;
-	}
+	refreshToolTip();
+}
 
-	if (getToolTipFigure().getToolTip() == null) {
-		getToolTipFigure().setToolTip(createToolTip());
-	}
-	updateToolTipText();
+protected void setFigure(IFigure figure) {
+	super.setFigure(figure);
+	figure.addFigureListener(new FigureListener() {
+		public void figureMoved(IFigure source) {
+			refreshToolTip();
+		}
+	});
 }
 
 protected void setImageDescriptor(ImageDescriptor desc) {
@@ -292,12 +305,6 @@ private void traverseChildren(List children, boolean add) {
 			entry.removePropertyChangeListener(childListener);
 		}		
 	}
-}
-
-private void updateToolTipText() {
-	IFigure fig = (IFigure)getToolTipFigure().getToolTip().getChildren().get(0);
-	TextFlow tf = (TextFlow)fig.getChildren().get(0);
-	tf.setText(getToolTipText());
 }
 
 protected static class ImageCache {

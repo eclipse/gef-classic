@@ -203,6 +203,16 @@ protected String getToolTipText() {
 }
 
 /**
+ * If this edit part's name is truncated in its label, the name should be prepended to
+ * the tooltip.
+ * @return whether the name needs to be included in the tooltip
+ */
+protected boolean nameNeededInToolTip() {
+	DetailedLabelFigure label = (DetailedLabelFigure)getFigure().getChildren().get(0);
+	return label.isNameTruncated() || super.nameNeededInToolTip();
+}
+
+/**
  * @see org.eclipse.gef.editparts.AbstractEditPart#refreshVisuals()
  */
 protected void refreshVisuals() {

@@ -122,7 +122,7 @@ protected void hookShellListeners() {
 				Display.getCurrent().asyncExec(new Runnable() {
 					public void run() {
 						Shell active = Display.getCurrent().getActiveShell();
-						if (getShell() == active || control.getShell() == active)
+						if (getShell() == active || control.getShell() == active || getShell().isDisposed())
 							return;
 						if (isShowing())
 							getShell().setCapture(false);
