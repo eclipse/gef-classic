@@ -267,6 +267,39 @@ public static void paintEtchedBorder(Graphics g, Rectangle r,
 }
 
 /**
+ * Helper method to paint a grid.  Painting is optimized as it is restricted to the
+ * Graphics' clip.
+ * 
+ * @param	g			The Graphics object to be used for painting
+ * @param	f			The figure in which the grid is to be painted
+ * @param	origin		Any point where the grid lines are expected to intersect
+ * @param	distanceX	Distance between vertical grid lines
+ * @param	distanceY	Distance between horizontal grid lines
+ * 
+ * @since 3.0
+ */
+public static void paintGrid(Graphics g, Figure f, 
+		org.eclipse.draw2d.geometry.Point origin, int distanceX, int distanceY) {
+	Rectangle clip = g.getClip(Rectangle.SINGLETON);
+	if (origin.x >= clip.x)
+		while (origin.x - distanceX >= clip.x)
+			origin.x -= distanceX;
+	else
+		while (origin.x < clip.x)
+			origin.x += distanceX;
+	if (origin.y >= clip.y)
+		while (origin.y - distanceY >= clip.y)
+			origin.y -= distanceY;
+	else
+		while (origin.y < clip.y)
+			origin.y += distanceY;
+	for (int i = origin.x; i < clip.x + clip.width; i += distanceX)
+		g.drawLine(i, clip.y, i, clip.y + clip.height);
+	for (int i = origin.y; i < clip.y + clip.height; i += distanceY)
+		g.drawLine(clip.x, i, clip.x + clip.width, i);
+}
+
+/**
  * Paints a border with an etching effect, having a shadow of a darker version of g's 
  * background color, and a highlight a lighter version of g's background color.
  * 
