@@ -11,7 +11,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Control;
 
 import org.eclipse.draw2d.geometry.*;
-import org.eclipse.draw2d.util.ImageCache;
+import org.eclipse.draw2d.internal.ImageCache;
 
 class BufferedGraphicsSource
 	implements GraphicsSource

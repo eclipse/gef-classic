@@ -8,7 +8,7 @@ package org.eclipse.draw2d;
 
 import java.util.ArrayList;
 import org.eclipse.draw2d.geometry.*;
-import org.eclipse.draw2d.util.*;
+import org.eclipse.draw2d.internal.*;
 
 /**
  * The AutomaticRouter provides the facility to prevent {@link Connection Connections}

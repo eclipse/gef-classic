@@ -7,7 +7,8 @@ package org.eclipse.draw2d;
  */
 
 import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.util.UITimer;
+import org.eclipse.draw2d.internal.UITimer;
+
 import org.eclipse.swt.events.MouseTrackAdapter;
 import org.eclipse.swt.graphics.Point;
 

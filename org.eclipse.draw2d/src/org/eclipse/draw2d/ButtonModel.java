@@ -8,7 +8,7 @@ package org.eclipse.draw2d;
 
 import java.util.Iterator;
 
-import org.eclipse.draw2d.util.Timer;
+import org.eclipse.draw2d.internal.Timer;
 
 /**
  * A model for buttons containing several properties, including enabled, pressed,
