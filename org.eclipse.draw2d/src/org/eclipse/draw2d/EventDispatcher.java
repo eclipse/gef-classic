@@ -114,7 +114,7 @@ public abstract void dispatchMouseReleased(MouseEvent me);
  * @param event the SWT.MouseWheel event
  * @since 3.1
  */
-public abstract void dispatchMouseWheelScrolled(Event event);
+public void dispatchMouseWheelScrolled(Event event) { }
 
 /**
  * Returns the AccessibilityDispatcher.
