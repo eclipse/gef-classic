@@ -10,6 +10,9 @@ import java.util.*;
 
 
 import org.eclipse.draw2d.Connection;
+import org.eclipse.draw2d.geometry.*;
+import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.*;
 import org.eclipse.gef.commands.Command;
@@ -72,6 +75,38 @@ protected Object getType() {
 	return type;
 }
 
+private boolean lineContainsPoint(Point p1, Point p2, Point p) {
+	int tolerance = 7;
+	Rectangle rect = Rectangle.SINGLETON;
+	rect.setSize(0, 0);
+	rect.setLocation(p1.x, p1.y);
+	rect.union(p2.x, p2.y);
+	rect.expand(tolerance, tolerance);
+	if (!rect.contains(p.x, p.y))
+		return false;
+
+	int v1x, v1y, v2x, v2y;
+	int numerator, denominator;
+	double result = 0.0;
+
+	if (p1.x != p2.x && p1.y != p2.y) {
+		
+		v1x = p2.x - p1.x;
+		v1y = p2.y - p1.y;
+		v2x = p.x - p1.x;
+		v2y = p.y - p1.y;
+		
+		numerator = v2x * v1y - v1x * v2y;
+		denominator = v1x * v1x + v1y * v1y;
+
+		result = ((numerator << 10) / denominator * numerator) >> 10;
+	}
+	
+	// if it is the same point, and it passes the bounding box test,
+	// the result is always true.
+	return result <= tolerance * tolerance;
+}
+
 public void setConnectionEditPart(ConnectionEditPart cep){
 	editpart = cep;
 }
@@ -86,7 +121,27 @@ public void setType(Object type){
 
 protected void updateSourceRequest() {
 	BendpointRequest request = (BendpointRequest)getSourceRequest();
-	request.setLocation(getLocation());
+	Point p = getLocation();
+	request.setLocation(p);
+	if (REQ_CREATE_BENDPOINT.equals(getType()))
+		return;
+	PointList points = getConnection().getPoints();
+	Point p1 = points.getPoint(index);
+	getConnection().translateToAbsolute(p1);
+	int index2 = REQ_DELETE_BENDPOINT.equals(request.getType()) ? index + 1 : index + 2;
+	Point p2 = points.getPoint(index2);
+	getConnection().translateToAbsolute(p2);
+	if (lineContainsPoint(p1, p2, p)) {
+		if (REQ_MOVE_BENDPOINT.equals(getType())) {
+			request.setType(REQ_DELETE_BENDPOINT);
+			setType(REQ_DELETE_BENDPOINT);
+			eraseSourceFeedback();
+		}
+	} else if (REQ_DELETE_BENDPOINT.equals(getType())) {
+		request.setType(REQ_MOVE_BENDPOINT);
+		setType(REQ_MOVE_BENDPOINT);
+		eraseSourceFeedback();
+	}
 }
 
 }

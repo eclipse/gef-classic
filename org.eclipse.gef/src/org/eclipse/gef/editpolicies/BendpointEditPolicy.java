@@ -29,9 +29,6 @@ public abstract class BendpointEditPolicy
 private static List NULL_CONSTRAINT = new ArrayList();
 	
 private List originalConstraint;
-private Point ref1 = new Point(); 
-private Point ref2 = new Point();
-private boolean isDeleting = false;
 
 /**
  * Adds a PropertyChangeListener to the Connection so we can react
@@ -114,7 +111,7 @@ public void eraseSourceFeedback(Request request) {
 	if (REQ_MOVE_BENDPOINT.equals(request.getType())
 		|| REQ_CREATE_BENDPOINT.equals(request.getType())
 		|| REQ_DELETE_BENDPOINT.equals(request.getType()))
-		eraseConnectionFeedback((BendpointRequest) request);
+		eraseConnectionFeedback((BendpointRequest)request);
 }
 
 /**
@@ -128,11 +125,10 @@ public void eraseSourceFeedback(Request request) {
  * @see #getDeleteBendpointCommand(BendpointRequest)
  */
 public Command getCommand(Request request) {
-	if (REQ_MOVE_BENDPOINT.equals(request.getType())) {
-		if (isDeleting)
-			return getDeleteBendpointCommand((BendpointRequest)request);
+	if (REQ_MOVE_BENDPOINT.equals(request.getType()))
 		return getMoveBendpointCommand((BendpointRequest)request);
-	}
+	if (REQ_DELETE_BENDPOINT.equals(request.getType()))
+		return getDeleteBendpointCommand((BendpointRequest)request);
 	if (REQ_CREATE_BENDPOINT.equals(request.getType()))
 		return getCreateBendpointCommand((BendpointRequest)request);
 	return null;
@@ -143,14 +139,6 @@ public Command getCommand(Request request) {
  */
 protected Connection getConnection() {
 	return (Connection)((ConnectionEditPart)getHost()).getFigure();
-}
-
-private Point getFirstReferencePoint() {
-	return ref1;
-}
-
-private Point getSecondReferencePoint() {
-	return ref2;
 }
 
 /**
@@ -172,38 +160,6 @@ private boolean isAutomaticallyBending() {
 	List constraint = (List)getConnection().getRoutingConstraint();
 	PointList points = getConnection().getPoints();
 	return ((points.size() > 2) && (constraint == null || constraint.isEmpty()));
-}
-
-private boolean lineContainsPoint(Point p1, Point p2, Point p) {
-	int tolerance = 7;
-	Rectangle rect = Rectangle.SINGLETON;
-	rect.setSize(0, 0);
-	rect.setLocation(p1.x, p1.y);
-	rect.union(p2.x, p2.y);
-	rect.expand(tolerance, tolerance);
-	if (!rect.contains(p.x, p.y))
-		return false;
-
-	int v1x, v1y, v2x, v2y;
-	int numerator, denominator;
-	double result = 0.0;
-
-	if (p1.x != p2.x && p1.y != p2.y) {
-		
-		v1x = p2.x - p1.x;
-		v1y = p2.y - p1.y;
-		v2x = p.x - p1.x;
-		v2y = p.y - p1.y;
-		
-		numerator = v2x * v1y - v1x * v2y;
-		denominator = v1x * v1x + v1y * v1y;
-
-		result = ((numerator << 10) / denominator * numerator) >> 10;
-	}
-	
-	// if it is the same point, and it passes the bounding box test,
-	// the result is always true.
-	return result <= tolerance * tolerance;
 }
 
 /**
@@ -239,14 +195,6 @@ protected void saveOriginalConstraint() {
 	if (originalConstraint == null)
 		originalConstraint = NULL_CONSTRAINT;
 	getConnection().setRoutingConstraint(new ArrayList(originalConstraint));
-}
-
-private void setReferencePoints(BendpointRequest request) {
-	PointList points = getConnection().getPoints();
-	points.getPoint(ref1, request.getIndex());
-	getConnection().translateToAbsolute(ref1);
-	points.getPoint(ref2, request.getIndex() + 2);
-	getConnection().translateToAbsolute(ref2);
 }
 
 /**
@@ -294,21 +242,6 @@ protected void showDeleteBendpointFeedback(BendpointRequest request) {
  */
 protected void showMoveBendpointFeedback(BendpointRequest request) {
 	Point p = new Point(request.getLocation());
-	if (!isDeleting) {
-		setReferencePoints(request);
-	}
-	if (lineContainsPoint(getFirstReferencePoint(), getSecondReferencePoint(), p)) {
-		if (!isDeleting) {
-			isDeleting = true;
-			eraseSourceFeedback(request);
-			showDeleteBendpointFeedback(request);
-		}
-		return;
-	}
-	if (isDeleting) {
-		isDeleting = false;
-		eraseSourceFeedback(request);
-	}
 	if (originalConstraint == null)
 		saveOriginalConstraint();
 	List constraint = (List)getConnection().getRoutingConstraint();
@@ -330,6 +263,8 @@ public void showSourceFeedback(Request request) {
 		showMoveBendpointFeedback((BendpointRequest)request);
 	else if (REQ_CREATE_BENDPOINT.equals(request.getType()))
 		showCreateBendpointFeedback((BendpointRequest)request);
+	else if (REQ_DELETE_BENDPOINT.equals(request.getType()))
+		showDeleteBendpointFeedback((BendpointRequest)request);
 }
 
 }
