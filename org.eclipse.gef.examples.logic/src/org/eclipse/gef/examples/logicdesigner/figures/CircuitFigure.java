@@ -6,24 +6,21 @@ package org.eclipse.gef.examples.logicdesigner.figures;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.gef.examples.logicdesigner.LogicColorConstants;
 import org.eclipse.gef.examples.logicdesigner.model.*;
+import org.eclipse.gef.handles.HandleBounds;
+
 import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.*;
 
-import org.eclipse.swt.graphics.Color;
-
 public class CircuitFigure
-	extends NodeFigure 
+	extends NodeFigure
+	implements HandleBounds
 {
 
 private IFigure pane;
 
 public CircuitFigure() {
-	CircuitBorder border = new CircuitBorder();
-	border.setBorderColor(LogicColorConstants.logicGreen);
-	setBorder(border);
-	
+	setBorder(new CircuitBorder());
 	ScrollPane scrollpane = new ScrollPane();
 	pane = new FreeformLayer();
 	pane.setLayoutManager(new FreeformLayout());
@@ -56,16 +53,19 @@ protected void createConnectionAnchors() {
 	}
 }
 
-public Color getBorderColor(){
-	return ((CircuitBorder)getBorder()).getBorderColor();
-}
-
 public IFigure getContentsPane(){
 	return pane;
 }
 
 protected FixedConnectionAnchor getInputConnectionAnchor(int i) {
 	return (FixedConnectionAnchor) connectionAnchors.get(Circuit.TERMINALS_IN[i]);
+}
+
+/**
+ * @see org.eclipse.gef.handles.HandleBounds#getHandleBounds()
+ */
+public Rectangle getHandleBounds() {
+	return getBounds().getCropped(new Insets(2,0,2,0));
 }
 
 protected FixedConnectionAnchor getOutputConnectionAnchor(int i) {
@@ -97,12 +97,6 @@ protected void paintFigure(Graphics graphics) {
 	Rectangle rect = getBounds().getCopy();
 	rect.crop(new Insets(2,0,2,0));
 	graphics.fillRectangle(rect);
-}
-
-
-public void setBorderColor(Color c){
-	((CircuitBorder)getBorder()).setBorderColor(c);
-	repaint();
 }
 
 public void setInputConnectionAnchor(int i, ConnectionAnchor c) {
