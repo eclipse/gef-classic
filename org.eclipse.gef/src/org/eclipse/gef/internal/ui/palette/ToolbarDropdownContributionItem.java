@@ -45,11 +45,6 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 	 * before creation and after disposal.
 	 */
 	private Widget widget = null;
-
-	/**
-	 * Remembers the parent widget.
-	 */
-	private Widget parentWidget = null;
 	
 	/**
 	 * Nested class handles notification from SWT widget and from Action,
@@ -211,7 +206,6 @@ public void fill(Composite parent) {
 		if (action.getHelpListener() != null)
 			b.addHelpListener(action.getHelpListener());
 		widget = b;
-		parentWidget = parent;
 		
 		update(null);
 		
@@ -247,7 +241,6 @@ public void fill(Menu parent, int index) {
 		else
 			mi = new MenuItem(parent, flags);
 		widget = mi;
-		parentWidget = parent;
 
 		mi.setData(this);
 		mi.addListener(SWT.Arm, listener);
@@ -294,7 +287,6 @@ public void fill(ToolBar parent, int index) {
 		ti.addListener(SWT.Dispose, listener);
 
 		widget = ti;
-		parentWidget = parent;
 		
 		update(null);
 		
