@@ -11,6 +11,15 @@ public class ScalableFreeformRootEditPart
 {
 
 private ScalableFreeformLayeredPane scaledLayers;
+private ZoomManager zoomManager;
+
+/**
+ * Constructor for ScalableFreeformRootEditPart
+ */
+public ScalableFreeformRootEditPart() {
+	zoomManager = new ZoomManager((ScalableFreeformLayeredPane)getScaledLayers(),
+									((Viewport)getFigure()));
+}
 
 /**
  * @see org.eclipse.gef.ui.parts.FreeformGraphicalRootEditPart#createLayers(LayeredPane)
@@ -21,6 +30,10 @@ protected void createLayers(LayeredPane layeredPane) {
 	layeredPane.add(new FeedbackLayer(), FEEDBACK_LAYER);
 }
 
+/**
+ * Creates and returns the scalable layers of this EditPart
+ * 
+ * @return ScalableFreeformLayeredPane Pane that contains the scalable layers */
 protected ScalableFreeformLayeredPane createScaledLayers() {
 	ScalableFreeformLayeredPane layers = new ScalableFreeformLayeredPane();
 	layers.add(getPrintableLayers(), PRINTABLE_LAYERS);
@@ -37,10 +50,21 @@ public IFigure getLayer(Object key) {
 	return super.getLayer(key);
 }
 
+/**
+ * Returns the scalable layers of this EditPart
+ * @return LayeredPane */
 protected LayeredPane getScaledLayers() {
 	if (scaledLayers == null)
 		scaledLayers = createScaledLayers();
 	return scaledLayers;
+}
+
+/**
+ * Returns the zoomManager.
+ * @return ZoomManager
+ */
+public ZoomManager getZoomManager() {
+	return zoomManager;
 }
 
 }
