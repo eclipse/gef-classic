@@ -178,6 +178,7 @@ private int findPreviousLineOffset(Point p) {
 	layout.setText(fragString);
 	int trailing[] = new int[1];
 	int layoutOffset = layout.getOffset(p.x - box.x, p.y - box.y, trailing) + trailing[0];
+	layoutOffset -= getBidiPrefixLength(box, i);
 	layout.setText(""); //$NON-NLS-1$
 	return box.offset + layoutOffset;
 }
