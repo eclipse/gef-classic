@@ -89,7 +89,7 @@ import org.eclipse.draw2d.SWTGraphics;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Insets;
 
-import org.eclipse.gef.GraphicalViewer;
+import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.SharedCursors;
 import org.eclipse.gef.dnd.TemplateTransfer;
 import org.eclipse.gef.internal.GEFMessages;
@@ -472,14 +472,14 @@ public void setGraphicalControl(Control graphicalViewer) {
 
 /**
  * This method hooks a DropTargetListener that collapses the flyout patette when the user
- * drags something from  the palette and moves the cursor to the graphical viewer's
- * control.  If the auto-hide feature of the palette is to work properly, this method
- * should be called before any other drop target listeners are added to the graphical
- * viewer.
+ * drags something from  the palette and moves the cursor to the primary viewer's
+ * control.  If the auto-hide feature of the palette is to work properly when dragging, 
+ * this method should be called before any other drop target listeners are added to the 
+ * primary viewer.
  * 
- * @param	viewer	the primary graphical viewer
+ * @param	viewer	the primary viewer
  */
-public void hookDropTargetListener(GraphicalViewer viewer) {
+public void hookDropTargetListener(EditPartViewer viewer) {
 	viewer.addDropTargetListener(new TransferDropTargetListener() {
 		public void dragEnter(DropTargetEvent event) {
 		}
