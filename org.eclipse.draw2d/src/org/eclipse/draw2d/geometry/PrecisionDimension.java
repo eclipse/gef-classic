@@ -16,6 +16,12 @@ public double preciseWidth;
 public double preciseHeight;
 
 /**
+ * Constructs a new precision dimension.
+ */
+public PrecisionDimension() {
+}
+
+/**
  * Constructs a precision representation of the given dimension.
  * @param d the reference dimension
  */
