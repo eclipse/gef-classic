@@ -17,13 +17,6 @@ public void add(FlowBox box) {
 	unionInfo(box);
 }
 
-/**
- * Returns the available width
- * @see org.eclipse.draw2d.text.CompositeBox#getAvailableWidth() */
-public int getAvailableWidth() {
-	return recommendedWidth;
-}
-
 Rectangle toRectangle() {
 	return new Rectangle(x, y, width, height);
 }

@@ -36,7 +36,13 @@ public int getAscent() {
 	return ascent;
 }
 
+/**
+ * Returns the width available to child fragments.
+ * @return the width in pixels
+ */
 public int getAvailableWidth() {
+	if (recommendedWidth == -1)
+		return Integer.MAX_VALUE;
 	return recommendedWidth - width;
 }
 

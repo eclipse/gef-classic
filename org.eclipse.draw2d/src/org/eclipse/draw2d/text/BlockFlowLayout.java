@@ -55,8 +55,8 @@ public void endLine() {
  */
 protected void layoutChildren() {
 	boolean invalidate = invalid
-		|| blockBox.getAvailableWidth() != previousRecommendedWidth;
-	previousRecommendedWidth = blockBox.getAvailableWidth();
+		|| blockBox.getRecommendedWidth() != previousRecommendedWidth;
+	previousRecommendedWidth = blockBox.getRecommendedWidth();
 	List children = getFlowFigure().getChildren();
 	for (int i = 0; i < children.size(); i++) {
 		Figure f = (Figure)children.get(i);
@@ -85,10 +85,10 @@ protected void layoutLine() {
 	currentLine.x = 0;
 	switch (getBlockFlow().getHorizontalAligment()) {
 		case PositionConstants.RIGHT :
-			currentLine.x  = blockBox.getAvailableWidth() - currentLine.getWidth();
+			currentLine.x  = blockBox.getRecommendedWidth() - currentLine.getWidth();
 			break;
 		case PositionConstants.CENTER :
-			currentLine.x  = (blockBox.getAvailableWidth() - currentLine.getWidth()) / 2;
+			currentLine.x  = (blockBox.getRecommendedWidth() - currentLine.getWidth()) / 2;
 			break;
 	}
 	currentLine.commit();
@@ -131,7 +131,7 @@ protected void setupBlock() {
 protected void setupLine(LineBox line) {
 	line.clear();
 	line.x = 0;
-	line.setRecommendedWidth(blockBox.getAvailableWidth());
+	line.setRecommendedWidth(blockBox.getRecommendedWidth());
 	if (previousLine == null) {
 		line.y = 0;
 	} else {

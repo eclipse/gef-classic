@@ -34,11 +34,6 @@ public void clear() {
 }
 
 /**
- * Returns the width available to child fragments.
- * @return the width in pixels */
-public abstract int getAvailableWidth();
-
-/**
  * Overridden to unsure that the CompositeBox is valid.
  * @see FlowBox#getBounds() */
 //public Rectangle getBounds() {
@@ -49,6 +44,10 @@ public abstract int getAvailableWidth();
 /** * @return the List of fragments */
 public List getFragments() {
 	return fragments;
+}
+
+public int getRecommendedWidth() {
+	return recommendedWidth;
 }
 
 //public int getInnerTop() {
