@@ -60,15 +60,6 @@ public Insets getInsets(IFigure figure) {
 }
 
 /**
- * Returns <code>false</code>, forcing the figure of this border to fill up the occupying
- * region by itself.
- * @return <code>false</code> since this border is transparent
- */
-public boolean isOpaque() {
-	return false;
-}
-
-/**
  * This method does nothing, since this border is just for spacing.
  * @see org.eclipse.draw2d.Border#paint(IFigure, Graphics, Insets)
  */
