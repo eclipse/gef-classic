@@ -14,31 +14,54 @@ private boolean shouldSwap(Node current, Node next) {
 	int crossCount = 0;
 	int invertedCrossCount = 0;
 	
-	EdgeList currentIncoming = current.incoming;
-	EdgeList nextIncoming = next.incoming;
-	for (int i = 0; i < currentIncoming.size(); i++) {
-		Edge currentEdge = currentIncoming.getEdge(i);
-		for (int j = 0; j < nextIncoming.size(); j++) {
-			if (nextIncoming.getEdge(j).getIndexForRank(current.rank - 1)
-				< currentEdge.getIndexForRank(current.rank - 1))
+	EdgeList currentEdges = current.incoming;
+	EdgeList nextEdges = next.incoming;
+	int rank = current.rank - 1;
+	int iCurrent, iNext;
+
+	for (int i = 0; i < currentEdges.size(); i++) {
+		Edge currentEdge = currentEdges.getEdge(i);
+		iCurrent = currentEdge.getIndexForRank(rank);
+		for (int j = 0; j < nextEdges.size(); j++) {
+			iNext = nextEdges.getEdge(j).getIndexForRank(rank);
+			if (iNext < iCurrent)
 				crossCount++;
-			if (nextIncoming.getEdge(j).getIndexForRank(current.rank - 1) 
-				> currentEdge.getIndexForRank(current.rank - 1))
+			else if (iNext > iCurrent)
 				invertedCrossCount++;
+			else {
+				//edges go to the same location
+				int offsetDiff = nextEdges.getEdge(j).getSourceOffset() 
+						- currentEdge.getSourceOffset();
+				if (offsetDiff < 0)
+					crossCount++;
+				else if (offsetDiff > 0)
+					invertedCrossCount++;
+			}
 		}
 	}
 	
-	EdgeList currenteOutgoing = current.outgoing;
-	EdgeList nextOutgoing = next.outgoing;
-	for (int i = 0; i < currenteOutgoing.size(); i++) {
-		Edge currentEdge = currenteOutgoing.getEdge(i);
-		for (int j = 0; j < nextOutgoing.size(); j++) {
-			if (nextOutgoing.getEdge(j).getIndexForRank(current.rank + 1) 
-				< currentEdge.getIndexForRank(current.rank + 1))
+	currentEdges = current.outgoing;
+	nextEdges = next.outgoing;
+	rank = current.rank + 1;
+	
+	for (int i = 0; i < currentEdges.size(); i++) {
+		Edge currentEdge = currentEdges.getEdge(i);
+		iCurrent = currentEdge.getIndexForRank(rank);
+		for (int j = 0; j < nextEdges.size(); j++) {
+			iNext = nextEdges.getEdge(j).getIndexForRank(rank); 
+			if (iNext < iCurrent)
 				crossCount++;	
-			if (nextOutgoing.getEdge(j).getIndexForRank(current.rank + 1) 
-				> currentEdge.getIndexForRank(current.rank + 1))
+			else if (iNext > iCurrent)
 				invertedCrossCount++;
+			else {
+				//edges go to the same location
+				int offsetDiff = nextEdges.getEdge(j).getTargetOffset() 
+						- currentEdge.getTargetOffset();
+				if (offsetDiff < 0)
+					crossCount++;
+				else if (offsetDiff > 0)
+					invertedCrossCount++;
+			}
 		}
 	}
 	if (invertedCrossCount < crossCount)		
