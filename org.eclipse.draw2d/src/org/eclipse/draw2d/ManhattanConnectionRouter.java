@@ -86,7 +86,7 @@ private int getColumnNear(Connection connection, int r, int n, int x) {
 
 /**
  * Returns the direction the point <i>p</i> is in relation to the given rectangle.
- * Possible values are {@link #LEFT}, {@link #RIGHT}, {@link #UP} and {@link #DOWN}.
+ * Possible values are LEFT (-1,0), RIGHT (1,0), UP (0,-1) and DOWN (0,1).
  * 
  * @param r the rectangle
  * @param p the point
