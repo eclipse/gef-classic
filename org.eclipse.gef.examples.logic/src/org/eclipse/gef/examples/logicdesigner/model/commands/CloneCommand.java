@@ -61,10 +61,12 @@ protected void clonePart(LogicSubpart oldPart, LogicDiagram newParent, Rectangle
 		newPart = new GroundOutput();
 	} else if (oldPart instanceof LED) {
 		newPart = new LED();
+		newPart.setPropertyValue(LED.P_VALUE, oldPart.getPropertyValue(LED.P_VALUE));
 	} else if (oldPart instanceof LiveOutput) {
 		newPart = new LiveOutput();
 	} else if (oldPart instanceof LogicLabel) {
 		newPart = new LogicLabel();
+		((LogicLabel)newPart).setLabelContents(((LogicLabel)oldPart).getLabelContents());
 	} else if (oldPart instanceof OrGate) {
 		newPart = new OrGate();
 	} else if (oldPart instanceof LogicFlowContainer) {
