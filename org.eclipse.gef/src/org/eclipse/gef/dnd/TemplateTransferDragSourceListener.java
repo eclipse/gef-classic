@@ -32,7 +32,7 @@ public class TemplateTransferDragSourceListener
 {
 
 /**
- * @deprecated
+ * @deprecated Use the constructor without the transfer specified.
  * @param viewer viewer
  * @param xfer xfer
  */
