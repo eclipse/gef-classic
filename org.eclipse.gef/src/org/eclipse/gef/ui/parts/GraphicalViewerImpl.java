@@ -50,6 +50,11 @@ protected LightweightSystem createLightweightSystem(){
 	return new LightweightSystem();
 }
 
+public void dispose() {
+	super.dispose();
+	getLightweightSystem().getUpdateManager().dispose();
+}
+
 public Handle findHandleAt(Point p){
 	LayerManager layermanager = (LayerManager)getEditPartRegistry().get(LayerManager.ID);
 	if (layermanager == null)
