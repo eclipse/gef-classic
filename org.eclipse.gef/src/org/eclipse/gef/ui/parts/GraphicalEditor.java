@@ -48,6 +48,7 @@ import org.eclipse.gef.ui.actions.SaveAction;
 import org.eclipse.gef.ui.actions.SelectAllAction;
 import org.eclipse.gef.ui.actions.UndoAction;
 import org.eclipse.gef.ui.actions.UpdateAction;
+import org.eclipse.gef.ui.properties.UndoablePropertySheetEntry;
 
 /**
  * This class serves as a quick starting point for clients who are new to GEF. It will
@@ -188,7 +189,7 @@ protected ActionRegistry getActionRegistry() {
 public Object getAdapter(Class type) {
 	if (type == org.eclipse.ui.views.properties.IPropertySheetPage.class) {
 		PropertySheetPage page = new PropertySheetPage();
-		page.setRootEntry(GEFPlugin.createUndoablePropertySheetEntry(getCommandStack()));
+		page.setRootEntry(new UndoablePropertySheetEntry(getCommandStack()));
 		return page;
 	}
 	if (type == GraphicalViewer.class)
