@@ -304,7 +304,7 @@ class ResourceTracker
 		}
 	}	
 	public boolean visit(IResourceDelta delta) { 
-		if (delta == null || !delta.getResource().equals(((FileEditorInput)getEditorInput()).getFile()))
+		if (delta == null || !delta.getResource().equals(((IFileEditorInput)getEditorInput()).getFile()))
 			return true;
 			
 		if (delta.getKind() == IResourceDelta.REMOVED) {
@@ -351,7 +351,7 @@ private IPartListener partListener = new IPartListener() {
 	public void partActivated(IWorkbenchPart part) {
 		if (part != LogicEditor.this)
 			return;
-		if (!((FileEditorInput)getEditorInput()).getFile().exists()) {
+		if (!((IFileEditorInput)getEditorInput()).getFile().exists()) {
 			Shell shell = getSite().getShell();
 			String title = LogicMessages.GraphicalEditor_FILE_DELETED_TITLE_UI;
 			String message = LogicMessages.GraphicalEditor_FILE_DELETED_WITHOUT_SAVE_INFO;
@@ -504,7 +504,7 @@ protected PaletteViewerProvider createPaletteViewerProvider() {
 public void dispose() {
 	getSite().getWorkbenchWindow().getPartService().removePartListener(partListener);
 	partListener = null;
-	((FileEditorInput)getEditorInput()).getFile().getWorkspace().removeResourceChangeListener(resourceListener);
+	((IFileEditorInput)getEditorInput()).getFile().getWorkspace().removeResourceChangeListener(resourceListener);
 	super.dispose();
 }
 
@@ -555,9 +555,6 @@ protected Control getGraphicalControl() {
 protected KeyHandler getCommonKeyHandler(){
 	if (sharedKeyHandler == null){
 		sharedKeyHandler = new KeyHandler();
-		sharedKeyHandler.put(
-			KeyStroke.getPressed(SWT.DEL, 127, 0),
-			getActionRegistry().getAction(GEFActionConstants.DELETE));
 		sharedKeyHandler.put(
 			KeyStroke.getPressed(SWT.F2, 0),
 			getActionRegistry().getAction(GEFActionConstants.DIRECT_EDIT));
@@ -846,14 +843,14 @@ protected void superSetInput(IEditorInput input) {
 	// of proper implementation.  Plus, the resourceListener needs to be added 
 	// to the workspace the first time around.
 	if(getEditorInput() != null) {
-		IFile file = ((FileEditorInput)getEditorInput()).getFile();
+		IFile file = ((IFileEditorInput)getEditorInput()).getFile();
 		file.getWorkspace().removeResourceChangeListener(resourceListener);
 	}
 	
 	super.setInput(input);
 	
 	if(getEditorInput() != null) {
-		IFile file = ((FileEditorInput)getEditorInput()).getFile();
+		IFile file = ((IFileEditorInput)getEditorInput()).getFile();
 		file.getWorkspace().addResourceChangeListener(resourceListener);
 		setTitle(file.getName());
 	}
