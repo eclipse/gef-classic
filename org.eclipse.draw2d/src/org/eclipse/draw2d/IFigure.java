@@ -96,6 +96,8 @@ void add(IFigure figure, Object constraint, int index);
  */
 void addAncestorListener(AncestorListener listener);
 
+void addCoordinateListener(CoordinateListener listener);
+
 /**
  * Registers the given listener as a FigureListener of this IFigure.
  * @param listener The listener to add
@@ -109,10 +111,17 @@ void addFigureListener(FigureListener listener);
 void addFocusListener(FocusListener listener);
 
 /**
- * Registers the given listener as a KeyListner of this IFigure.
+ * Registers the given listener as a KeyListener of this IFigure.
  * @param listener The listener to add
  */
 void addKeyListener(KeyListener listener);
+
+/**
+ * Registers the given listener on this figure. 
+ * @since 3.1
+ * @param listener The listener to add
+ */
+void addLayoutListener(LayoutListener listener);
 
 /**
  * Registers the given listener as a MouseListener of this IFigure.
@@ -560,6 +569,8 @@ void remove(IFigure figure);
  */
 void removeAncestorListener(AncestorListener listener);
 
+void removeCoordinateListener(CoordinateListener listener);
+
 /**
  * Unregisters the given listener, so that it will no longer receive notification of
  * IFigure events.
@@ -580,6 +591,12 @@ void removeFocusListener(FocusListener listener);
  */
 void removeKeyListener(KeyListener listener);
 
+/**
+ * Removes the most recent occurence of the given listener.
+ * @since 3.1
+ * @param listener the listener to remove
+ */
+void removeLayoutListener(LayoutListener listener);
 
 /**
  * Unregisters the given listener, so that it will no longer receive notification of mouse

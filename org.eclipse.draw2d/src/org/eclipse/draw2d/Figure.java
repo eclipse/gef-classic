@@ -162,6 +162,13 @@ public void addAncestorListener(AncestorListener ancestorListener) {
 }
 
 /**
+ * @see org.eclipse.draw2d.IFigure#addCoordinateListener(org.eclipse.draw2d.CoordinateListener)
+ */
+public void addCoordinateListener(CoordinateListener listener) {
+	eventListeners.addListener(CoordinateListener.class, listener);
+}
+
+/**
  * @see org.eclipse.draw2d.IFigure#addFigureListener(FigureListener)
  */
 public void addFigureListener(FigureListener listener) {
@@ -181,6 +188,19 @@ public void addFocusListener(FocusListener listener) {
 public void addKeyListener(KeyListener listener) {
 	eventListeners.addListener(KeyListener.class, listener);
 }	
+
+/**
+ * Prepends the given layout listener to the list of layout listeners.
+ * @since 3.1
+ * @param listener the listener being added
+ */
+public void addLayoutListener(LayoutListener listener) {
+	if (layoutManager instanceof LayoutNotifier) {
+		LayoutNotifier notifier = (LayoutNotifier)layoutManager;
+		notifier.listeners.add(listener);
+	} else
+		layoutManager = new LayoutNotifier(layoutManager, listener);
+}
 
 /**
  * Adds a listener of type <i>clazz</i> to this Figure's list of event listeners.
@@ -380,6 +400,20 @@ protected IFigure findMouseEventTargetInDescendantsAt(int x, int y) {
 }
 
 /**
+ * Notifies to listeners that this figure's coordinate system has changed with respect to
+ * the absolute coordinate system.
+ * @since 3.1
+ */
+protected void fireCoordinateChanges() {
+	if (!eventListeners.containsListener(CoordinateListener.class))
+		return;
+	Iterator figureListeners = eventListeners.getListeners(CoordinateListener.class);
+	while (figureListeners.hasNext())
+		((CoordinateListener)figureListeners.next()).
+			coordinateSystemChanged(this);
+}
+
+/**
  * Notifies any {@link FigureListener FigureListeners} listening to this Figure that it
  * has moved.
  * 
@@ -543,7 +577,11 @@ public Insets getInsets() {
  * @see org.eclipse.draw2d.IFigure#getLayoutManager()
  */
 public LayoutManager getLayoutManager() {
-	return layoutManager;
+	LayoutManager manager = layoutManager;
+	while (manager instanceof LayoutNotifier)
+		manager = ((LayoutNotifier)manager).realLayout;
+	
+	return manager;
 }
 
 /**
@@ -1041,8 +1079,10 @@ protected void paintFigure(Graphics graphics) {
 protected void primTranslate(int dx, int dy) {
 	bounds.x += dx;
 	bounds.y += dy;
-	if (useLocalCoordinates())
+	if (useLocalCoordinates()) {
+		fireCoordinateChanges();
 		return;
+	}
 	for (int i = 0; i < children.size(); i++)
 		((IFigure)children.get(i)).translate(dx, dy);
 }
@@ -1094,6 +1134,10 @@ public void removeAncestorListener(AncestorListener listener) {
 	}
 }
 
+public void removeCoordinateListener(CoordinateListener listener) {
+	eventListeners.removeListener(CoordinateListener.class, listener);
+}
+
 /**
  * @see org.eclipse.draw2d.IFigure#removeFigureListener(FigureListener)
  */
@@ -1113,6 +1157,20 @@ public void removeFocusListener(FocusListener listener) {
  */
 public void removeKeyListener(KeyListener listener) {
 	eventListeners.removeListener(KeyListener.class, listener);
+}
+
+/**
+ * Removes the most recently added occurence of the given listener.
+ * @since 3.1
+ * @param listener the listener being removed
+ */
+public void removeLayoutListener(LayoutListener listener) {
+	if (layoutManager instanceof LayoutNotifier) {
+		LayoutNotifier notifier = (LayoutNotifier)layoutManager;
+		notifier.listeners.remove(listener);
+		if (notifier.listeners.isEmpty())
+			layoutManager = notifier.realLayout;
+	}
 }
 
 /**
@@ -1254,11 +1312,13 @@ public void setBounds(Rectangle rect) {
 		int dy = rect.y - y;
 		primTranslate(dx, dy);
 	}
+	
 	bounds.width = rect.width;
 	bounds.height = rect.height;
-	if (resize)
-		invalidate();
-	if (resize || translate) {
+	
+	if (translate || resize) {
+		if (resize)
+			invalidate();
 		fireMoved();
 		repaint();
 	}
@@ -1620,6 +1680,68 @@ protected static final class IdentitySearch implements TreeSearch {
 	 */
 	public boolean prune(IFigure f) {
 		return false;
+	}
+}
+
+static final class LayoutNotifier implements LayoutManager {
+	
+	LayoutManager realLayout;
+	List listeners = new ArrayList(1);
+	
+	LayoutNotifier(LayoutManager layout, LayoutListener listener) {
+		realLayout = layout;
+		listeners.add(listener);
+	}
+		
+	public Object getConstraint(IFigure child) {
+		if (realLayout != null)
+			return realLayout.getConstraint(child);
+		return null;
+	}
+
+	public Dimension getMinimumSize(IFigure container, int wHint, int hHint) {
+		if (realLayout != null)
+			return realLayout.getMinimumSize(container, wHint, hHint);
+		return null;
+	}
+
+	public Dimension getPreferredSize(IFigure container, int wHint, int hHint) {
+		if (realLayout != null)
+			return realLayout.getPreferredSize(container, wHint, hHint);
+		return null;
+	}
+
+	public void invalidate() {
+		for (int i = 0; i < listeners.size(); i++)
+			((LayoutListener)listeners.get(i)).invalidate();
+		
+		if (realLayout != null)
+			realLayout.invalidate();
+	}
+
+	public void layout(IFigure container) {
+		boolean consumed = false;
+		for (int i = 0; i < listeners.size(); i++)
+			consumed |= ((LayoutListener)listeners.get(i)).layout(container);
+
+		if (realLayout != null && !consumed)
+			realLayout.layout(container);
+		for (int i = 0; i < listeners.size(); i++)
+			((LayoutListener)listeners.get(i)).postLayout(container);
+	}
+
+	public void remove(IFigure child) {
+		for (int i = 0; i < listeners.size(); i++)
+			((LayoutListener)listeners.get(i)).remove(child);
+		if (realLayout != null)
+			realLayout.remove(child);
+	}
+
+	public void setConstraint(IFigure child, Object constraint) {
+		for (int i = 0; i < listeners.size(); i++)
+			((LayoutListener)listeners.get(i)).setConstraint(child, constraint);
+		if (realLayout != null)
+			realLayout.setConstraint(child, constraint);
 	}
 }
 
