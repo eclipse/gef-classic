@@ -166,13 +166,9 @@ private void handleValueChanged(){
 }
 
 private void hookCellEditor(){
-	ancestorListener = new AncestorListener() {
+	ancestorListener = new AncestorListener.Stub() {
 		public void ancestorMoved(IFigure source) {
 			placeCellEditor();
-		}
-		public void ancestorAdded(IFigure ancestor) {
-		}
-		public void ancestorRemoved(IFigure ancestor) {
 		}
 	};
 
