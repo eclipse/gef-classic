@@ -21,7 +21,6 @@ import org.eclipse.draw2d.FigureUtilities;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PrecisionPoint;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.GraphicalEditPart;
@@ -127,7 +126,7 @@ void highlightGuide(Integer pos, Color color, int offset) {
 	//pos is an integer relative to target's client area.
 	//translate pos to absolute, and then make it relative to fig.
 	int position = pos.intValue();
-	Point loc = new PrecisionPoint(position, position);
+	PrecisionPoint loc = new PrecisionPoint(position, position);
 	IFigure contentPane = ((GraphicalEditPart)getHost()).getContentPane();
 	contentPane.translateToParent(loc);
 	contentPane.translateToAbsolute(loc);
@@ -143,7 +142,7 @@ void highlightGuide(Integer pos, Color color, int offset) {
 		guide[offset] = fig;
 		addFeedback(fig);
 		fig.translateToRelative(loc);
-		position = offset % 2 == 0 ? loc.x : loc.y;
+		position = offset % 2 == 0 ? (int)(loc.preciseX + 0.5) : (int)(loc.preciseY + 0.5);
 		Rectangle figBounds = getLayer(LayerConstants.FEEDBACK_LAYER)
 				.getBounds().getCopy();
 		if ((offset % 2) == 1) {
