@@ -26,10 +26,37 @@ import org.eclipse.draw2d.geometry.PointList;
  */
 public class Path {
 
-private static final double OVAL_CONSTANT = 1.13;
-private static final double EPSILON = .08;
+/**
+ * A Stack of segments.
+ */
+private static class SegmentStack extends ArrayList {
 
-PointList points, bendpoints;
+Segment pop() {
+	return (Segment)remove(size() - 1);
+}	
+
+Obstacle popObstacle() {
+	return (Obstacle)remove(size() - 1);
+}
+
+void push(Object obj) {
+	add(obj);
+}
+
+}
+private static final double EPSILON = 1.04;
+
+private static final double OVAL_CONSTANT = 1.13;
+
+/**
+ * An arbitrary data field which can be used to map a Path back to some client object.
+ */
+public Object data;
+
+private static final Point CURRENT = new Point();
+private static final Point NEXT = new Point();
+
+private double distance;
 List grownSegments, segments, excludedObstacles;
 /**
  * this field is for internal use only.  It is true whenever a property has been changed
@@ -38,16 +65,15 @@ List grownSegments, segments, excludedObstacles;
 public boolean isDirty = true;
 boolean isInverted = false;
 boolean isMarked = false;
-Vertex start, end;
-double threshold;
 
-private double distance;
+PointList points, bendpoints;
 private double prevCost;
 private SegmentStack stack;
+Vertex start, end;
 private Path subPath;
-private Set visibleObstacles;
-private Set visibleVertices;
-public Object data;
+double threshold;
+Set visibleObstacles;
+Set visibleVertices;
 
 
 /**
@@ -282,6 +308,14 @@ private void addSegmentsFor(Vertex vertex, Obstacle obs) {
 }
 
 /**
+ * 
+ */
+void cleanup() {
+	//segments.clear();
+	visibleVertices.clear();
+}
+
+/**
  * Begins the creation of the visibility graph with the first segment
  * @param allObstacles list of all obstacles
  */
@@ -329,8 +363,8 @@ void fullReset() {
 	if (prevCost == 0) {
 		distance = start.getDistance(end);
 		threshold = distance * OVAL_CONSTANT;
-	} else 
-		threshold = distance + prevCost * EPSILON;
+	} else
+		threshold = prevCost * EPSILON;
 	visibleObstacles.clear();
 	reset();
 }
@@ -352,7 +386,8 @@ boolean generateShortestPath(List allObstacles) {
 }
 
 /**
- * Returns the list of bend points assigned to this path.
+ * Returns the list of constrained points through which this path must pass.  See also
+ * {@link #setBendPoints(PointList)}.
  * @return list of bend points.
  */
 public PointList getBendPoints() {
@@ -368,20 +403,20 @@ public Point getEndPoint() {
 }
 
 /**
- * Returns the start point for this path
- * @return start point for this path
- */
-public Point getStartPoint() {
-	return start;
-}
-
-/**
- * Returns a pointlist of the bendpoints in this path.
+ * Returns the solution to this path.
  * 
  * @return the points for this path.
  */
 public PointList getPoints() {
 	return points;
+}
+
+/**
+ * Returns the start point for this path
+ * @return start point for this path
+ */
+public Point getStartPoint() {
+	return start;
 }
 
 /**
@@ -496,6 +531,8 @@ void reconnectSubPaths() {
 		points.removePoint(points.size() - 1);
 		points.addAll(subPath.points);
 		
+		visibleObstacles.addAll(subPath.visibleObstacles);
+		
 		end = subPath.end;
 		subPath = null;
 	}
@@ -538,7 +575,8 @@ void reset() {
  * @param currentSegment the segment at which the path found it was inverted
  */
 void resetVertices(Segment currentSegment) {
-	for (int i = 0; i < grownSegments.indexOf(currentSegment); i++) {
+	int stop = grownSegments.indexOf(currentSegment);
+	for (int i = 0; i < stop; i++) {
 		Vertex vertex = ((Segment)grownSegments.get(i)).end;
 		if (vertex.type == Vertex.INNIE)
 			vertex.type = Vertex.OUTIE;
@@ -676,22 +714,31 @@ private void targetBesideSource(Obstacle source, Obstacle target) {
 }
 
 /**
- * A Stack of segments.
+ * Returns <code>true</code> if the path intersects the given obstacle.  Also dirties
+ * the path.
+ * @since 3.0
+ * @param obs the obstacle
+ * @return <code>true</code> if the path touches the obstacle
  */
-static private class SegmentStack extends ArrayList {
+ boolean testObstacle(Obstacle obs) {
+ 	//This will never actually happen because obstacles are not stored by identity
+	if (excludedObstacles.contains(obs))
+		return false;
+
+	Segment seg1 = new Segment(obs.topLeft, obs.bottomRight);
+	Segment seg2 = new Segment(obs.topRight, obs.bottomLeft);
 	
-Segment pop() {
-	return (Segment)remove(size() - 1);
-}	
-
-Obstacle popObstacle() {
-	return (Obstacle)remove(size() - 1);
-}
-
-void push(Object obj) {
-	add(obj);
-}
-
+	for (int s = 0; s < points.size() - 1; s++) {
+		points.getPoint(CURRENT, s);
+		points.getPoint(NEXT, s + 1);
+		
+		if (seg1.intersects(CURRENT, NEXT) || seg2.intersects(CURRENT, NEXT)
+				|| obs.contains(CURRENT) || obs.contains(NEXT)) {
+			isDirty = true;
+			return true;
+		}
+	}
+	return false;
 }
 
 }

@@ -56,16 +56,16 @@ static class PathStack extends ArrayList {
  */
 private static final int NUM_GROW_PASSES = 2;
 
-private List userObstacles;
-private List workingPaths;
-private List userPaths;
-private List orderedPaths;
-private List subPaths;
-
 private boolean growPassChangedObstacles;
+private List orderedPaths;
 private Map pathsToChildPaths;
 
 private PathStack stack;
+private List subPaths;
+
+private List userObstacles;
+private List userPaths;
+private List workingPaths;
 
 /**
  * Creates a new shortest path routing.
@@ -190,6 +190,16 @@ private void checkVertexIntersections() {
 }
 
 /**
+ * Frees up fields which aren't needed between invocations. 
+ */
+private void cleanup() {
+	for (int i = 0; i < userPaths.size(); i++) {
+		Path path = (Path)userPaths.get(i);
+		path.cleanup();
+	}
+}
+
+/**
  * Counts how many paths are on given vertices in order to increment their total count.
  */
 private void countVertices() {
@@ -212,6 +222,38 @@ private boolean dirtyPathsOn(Vertex vertex) {
 		return true;
 	}
 	return false;
+}
+
+/**
+ * Resyncs the parent paths with any new child paths that are necessary because bendpoints
+ * have been added to the parent path.
+ */
+private void generateChildPaths() {
+	for (int i = 0; i < userPaths.size(); i++) {
+		Path path = (Path)userPaths.get(i);
+		PointList bendPoints = path.bendpoints;
+		if (bendPoints != null && bendPoints.size() != 0) {
+			List childPaths = new ArrayList(bendPoints.size() + 1);
+			Path child = null;
+			Vertex prevVertex = path.start;
+			Vertex currVertex = null;
+			
+			for (int b = 0; b < bendPoints.size(); b++) {
+				Point bp = (Point)bendPoints.getPoint(b);
+				currVertex = new Vertex(bp, null);
+				child = new Path(prevVertex, currVertex);
+				childPaths.add(child);
+				workingPaths.add(child);
+				prevVertex = currVertex;
+			}
+			
+			child = new Path(prevVertex, path.end);
+			childPaths.add(child);
+			workingPaths.add(child);
+			pathsToChildPaths.put(path, childPaths);
+		} else
+			workingPaths.add(path);
+	} //End FOR
 }
 
 /**
@@ -491,8 +533,7 @@ private void recombineChildrenPaths() {
 	while (keyItr.hasNext()) {
 		Path path = (Path)keyItr.next();
 		
-		// reset points.
-		path.points.removeAllPoints();
+		path.fullReset();
 		
 		List childPaths = (List)pathsToChildPaths.get(path);
 		Path childPath = null;
@@ -502,6 +543,9 @@ private void recombineChildrenPaths() {
 			path.points.addAll(childPath.getPoints());
 			// path will overlap
 			path.points.removePoint(path.points.size() - 1);
+			//path.grownSegments.addAll(childPath.grownSegments);
+			path.segments.addAll(childPath.segments);
+			path.visibleObstacles.addAll(childPath.visibleObstacles);
 		}
 		
 		// add last point.
@@ -537,7 +581,7 @@ public boolean removeObstacle(Rectangle rect) {
  * Removes the given path from the routing.
  * 
  * @param path the path to remove.
- * @returns <code>true</code> if the removal may have affected one of the remaining paths
+ * @return <code>true</code> if the removal may have affected one of the remaining paths
  */
 public boolean removePath(Path path) {
 	userPaths.remove(path);
@@ -575,7 +619,7 @@ private void resetVertices() {
  */
 public List solve() {
 	
-	workingPaths = new ArrayList(userPaths);
+	workingPaths = new ArrayList(userPaths.size());
 	pathsToChildPaths = new HashMap();
 	generateChildPaths();
 
@@ -601,6 +645,8 @@ public List solve() {
 	recombineChildrenPaths();
 	pathsToChildPaths = null;
 	workingPaths = null;
+	
+	cleanup();
 	
 	return Collections.unmodifiableList(userPaths);
 }
@@ -728,22 +774,6 @@ private int testBentSegment(Segment segment, int index, Path path) {
 }
 
 /**
- * Tests a path to see if it contains the given obstacle and should be dirty.
- * @param path the path
- * @param obs the obstacle
- */
-private boolean testPath(Path path, Obstacle obs) {
-	for (int s = 0; s < path.segments.size(); s++) {
-		Segment segment = (Segment)path.segments.get(s);
-		if (testSegment(segment, obs, path)) {
-			path.isDirty = true;
-			return true;
-		}
-	}
-	return false;
-}
-
-/**
  * Tests all paths against the given obstacle
  * @param obs the obstacle
  */
@@ -751,80 +781,9 @@ private boolean testPaths(Obstacle obs) {
 	boolean result = false;
 	for (int i = 0; i < userPaths.size(); i++) {
 		Path path = (Path)userPaths.get(i);
-		result |= testPath(path, obs);
+		result |= path.testObstacle(obs);
 	}
 	return result;
-}
-
-/**
- * Tests the segment to see if it intersects the given obstacle
- * 
- * @param segment the segment
- * @param obs the obstacle
- * @param path the path
- * @return true if the segment intersects the obstacle
- */
-private boolean testSegment(Segment segment, Obstacle obs, Path path) {
-	if (segment.end.obs == obs || segment.start.obs == obs)
-		return false;
-	if (path.excludedObstacles.contains(obs))
-		return false;
-	
-	if (segment.intersects(obs.topLeft, obs.bottomRight) 
-			|| segment.intersects(obs.bottomLeft, obs.topRight)
-			|| obs.contains(segment.start) || obs.contains(segment.end))
-		return true;
-	
-	return false;	
-}
-
-/**
- * Resyncs the parent paths with any new child paths that are necessary because bendpoints
- * have been added to the parent path.
- */
-private void generateChildPaths() {
-	for (int i = 0; i < userPaths.size(); i++) {
-		Path path = (Path)userPaths.get(i);
-		if (path.isDirty) {
-			// ditch old paths, even if they dont exist
-			List childPaths = (List)pathsToChildPaths.remove(path);
-			if (childPaths != null)
-				workingPaths.removeAll(childPaths);
-			
-			// generate new paths if necessary
-			PointList bendPoints = path.bendpoints;
-			if (bendPoints != null && bendPoints.size() != 0) {
-				// make sure path is not in working paths.
-				workingPaths.remove(path);
-				
-				List newPaths = new ArrayList(bendPoints.size() + 1);
-				Path newPath = null;
-				Vertex prevVertex = path.start;
-				Vertex currVertex = null;
-				
-				for (int b = 0; b < bendPoints.size(); b++) {
-					Point bp = (Point)bendPoints.getPoint(b);
-					currVertex = new Vertex(bp, null);
-					newPath = new Path(prevVertex, currVertex);
-					newPaths.add(newPath);
-					workingPaths.add(newPath);
-					prevVertex = currVertex;
-				}
-				
-				newPath = new Path(prevVertex, path.end);
-				newPaths.add(newPath);
-				workingPaths.add(newPath);
-				
-				pathsToChildPaths.put(path, newPaths);
-			} else {
-				if (childPaths != null) {
-					// path no longer has child paths, but used to.
-					pathsToChildPaths.remove(path);
-					workingPaths.add(path);
-				}
-			}
-		}
-	}
 }
 
 /**
