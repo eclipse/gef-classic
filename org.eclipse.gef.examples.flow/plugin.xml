@@ -3,7 +3,7 @@
 <plugin
    id="org.eclipse.gef.examples.flow"
    name="GEF Flow Editor Example"
-   version="3.0.0"
+   version="3.0.1"
    provider-name="Eclipse.org"
    class="org.eclipse.gef.examples.flow.FlowPlugin">
 
