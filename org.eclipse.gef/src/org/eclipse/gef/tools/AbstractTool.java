@@ -642,7 +642,7 @@ protected boolean movedPastThreshold() {
  * @see org.eclipse.gef.Tool#nativeDragStarted(DragSourceEvent, EditPartViewer)
  */
 public void nativeDragFinished(DragSourceEvent event, EditPartViewer viewer) {
-	debug("Native drag started on " + viewer);//$NON-NLS-1$
+	debug("Native drag finished on " + viewer);//$NON-NLS-1$
 	setViewer(viewer);
 	handleNativeDragFinished(event);
 }
