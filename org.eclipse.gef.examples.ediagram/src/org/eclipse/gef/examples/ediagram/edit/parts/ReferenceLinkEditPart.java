@@ -14,7 +14,6 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EcorePackage;
 
-import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.ConnectionEndpointLocator;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
@@ -149,10 +148,6 @@ protected void refreshVisuals() {
 	updateSourceName();
 	updateTargetCount();
 	updateTargetName();
-	if (getRefView().isOppositeShown() && getEReference().getEOpposite() != null)
-		getFigure().setForegroundColor(ColorConstants.black);
-	else
-		getFigure().setForegroundColor(ColorConstants.lightBlue);
 }
 
 private void updateEOpposite(EReference opp) {
@@ -175,7 +170,7 @@ private void updateSourceCount() {
 		} else {
 			if (srcCount == null) {
 				srcCount = new Label();
-				srcCount.setForegroundColor(ColorConstants.blue);
+				srcCount.setOpaque(true);
 				getConnection().add(srcCount, srcCountLocator);
 			}
 			srcCount.setText(createCountString(getEReference().getEOpposite()));
@@ -202,7 +197,7 @@ private void updateSourceName() {
 	if (getRefView().isOppositeShown() && getEReference().getEOpposite() != null) {
 		if (srcName == null) {
 			srcName = new Label();
-			srcName.setForegroundColor(ColorConstants.blue);
+			srcName.setOpaque(true);
 			getConnection().add(srcName, srcNameLocator);
 		}
 		srcName.setText("+" + getEReference().getEOpposite().getName());
@@ -222,7 +217,7 @@ private void updateTargetCount() {
 	} else {
 		if (targetCount == null) {
 			targetCount = new Label();
-			targetCount.setForegroundColor(ColorConstants.red);
+			targetCount.setOpaque(true);
 			getConnection().add(targetCount, targetCountLocator);
 		}
 		targetCount.setText(createCountString(getEReference()));
@@ -253,7 +248,7 @@ private void updateTargetDecoration() {
 private void updateTargetName() {
 	if (targetName == null) {
 		targetName = new Label();
-		targetName.setForegroundColor(ColorConstants.red);
+		targetName.setOpaque(true);
 		getConnection().add(targetName, targetNameLocator);
 	}
 	targetName.setText("+" + getEReference().getName());
