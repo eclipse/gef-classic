@@ -15,6 +15,7 @@ import org.eclipse.gef.SharedCursors;
 import org.eclipse.draw2d.FigureCanvas;
 import org.eclipse.draw2d.geometry.Point;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.graphics.Cursor;
 
@@ -51,7 +52,8 @@ protected static final int MAX_STATE = PAN_IN_PROGRESS;
  * @return true if the space bar was the key event.
  */
 protected boolean acceptSpaceBar(KeyEvent e) {
-	return (e.character == ' ');
+	return (e.character == ' '
+		&& (e.stateMask & SWT.CTRL) == 0);
 }
 
 /**
