@@ -293,6 +293,7 @@ private Dimension adjustToAspectRatio(Dimension size, boolean adjustToMaxDimensi
  * Deactivates this Thumbnail. */
 public void deactivate() {
 	sourceFigure.getUpdateManager().removeUpdateListener(this);
+	updater.deactivate();
 }
 
 /**
