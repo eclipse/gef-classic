@@ -224,7 +224,7 @@ protected void hookControl() {
 		getRootEditPart().activate();
 	refreshDragSourceAdapter();
 	refreshDropTargetAdapter();
-	if (contextMenuProvider != null)
+	if (contextMenuProvider != null && contextMenuProvider.getMenuManager().getMenu() == null)
 		contextMenuProvider.createMenu();
 }
 
@@ -310,6 +310,8 @@ public void setContextMenuProvider(ContextMenuProvider provider) {
 	if (contextMenuProvider != null)
 		contextMenuProvider.dispose();
 	contextMenuProvider = provider;
+	if (control != null && contextMenuProvider.getMenuManager().getMenu() == null)
+		contextMenuProvider.createMenu();
 }
 
 public void setContents(EditPart editpart){

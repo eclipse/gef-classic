@@ -26,8 +26,6 @@ public ContextMenuProvider(EditPartViewer viewer) {
 	menuManager = new MenuManager();
 	menuManager.addMenuListener(this);
 	menuManager.setRemoveAllWhenShown(true);
-	if (viewer.getControl() != null)
-		createMenu();
 }
 
 public abstract void buildContextMenu(IMenuManager menu);
