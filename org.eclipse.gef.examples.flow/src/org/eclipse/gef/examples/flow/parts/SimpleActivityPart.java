@@ -12,7 +12,6 @@ import org.eclipse.draw2d.graph.*;
 import org.eclipse.gef.*;
 
 import org.eclipse.gef.examples.flow.FlowImages;
-import org.eclipse.gef.examples.flow.figures.SimpleActivityLabel;
 
 /**
  * @author hudsonr
