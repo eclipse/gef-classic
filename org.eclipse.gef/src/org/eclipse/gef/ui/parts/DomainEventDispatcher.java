@@ -248,6 +248,11 @@ public void dispatchMouseReleased(org.eclipse.swt.events.MouseEvent me){
 	}
 }
 
+public void dispatchNativeDragStarted(DragSourceEvent event, AbstractEditPartViewer viewer) {
+	setRouteEventsToEditor(false);
+	domain.nativeDragStarted(event, viewer);
+}
+
 private boolean draw2dBusy(){
 	if (getCurrentEvent() != null)
 		if (getCurrentEvent().isConsumed())
@@ -265,11 +270,6 @@ protected AccessibilityDispatcher getAccessibilityDispatcher() {
 
 protected final EditPartViewer getViewer(){
 	return viewer;
-}
-
-public void nativeDragStarted(DragSourceEvent event, AbstractEditPartViewer viewer) {
-	releaseCapture();
-	setRouteEventsToEditor(false);
 }
 
 private boolean okToDispatch() {

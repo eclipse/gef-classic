@@ -546,6 +546,10 @@ protected boolean handleKeyUp(KeyEvent e) {
  */
 protected boolean handleMove(){return false;}
 
+protected boolean handleNativeDragStarted(DragSourceEvent event){
+	return false;
+}
+
 /**
  * Called when the mouse enters an EditPartViewer.
  */
@@ -643,6 +647,8 @@ protected boolean movedPastThreshold() {
  */
 public void nativeDragStarted(DragSourceEvent event, EditPartViewer viewer) {
 	debug("Native drag started on " + viewer);//$NON-NLS-1$
+	setViewer(viewer);
+	handleNativeDragStarted(event);
 }
 
 /**
@@ -770,9 +776,7 @@ protected void refreshCursor(){
 }
 
 /**
- * Events will also be sent to the {@link IFigure figures} after
- * this method is called.
- * 
+ * Releases capture.
  * @see #setToolCapture()
  */
 protected void releaseToolCapture() {
@@ -873,11 +877,8 @@ protected void setState(int state){
 }
 
 /**
- * Captures all events and sends them to the tool.
- * Figures are not sent the event before the tool
- * when this capture model is active.
- * 
- * @see #releaseToolCapture()
+ * By setting capture on mouseDown, a tool can prevent native Drag operations from occuring. 
+ * {@link #releaseToolCapture()} must be called when capture is no longer needed.
  */
 protected void setToolCapture() {
 	getCurrentViewer().setRouteEventsToEditor(true);
@@ -885,14 +886,14 @@ protected void setToolCapture() {
 
 /**
  * Setting this to <code>true</code> will cause the tool
- * to be unloaded after one operation has finished
+ * to be unloaded after one operation has completed.
  */
 public void setUnloadWhenFinished(boolean value){
 	setFlag(FLAG_UNLOAD, value);
 }
 
 /**
- * Sets the viewer to the given EditPartViewer.
+ * Sets the active EditPartViewer.
  */
 public void setViewer(EditPartViewer viewer){
 	if (viewer == currentViewer)

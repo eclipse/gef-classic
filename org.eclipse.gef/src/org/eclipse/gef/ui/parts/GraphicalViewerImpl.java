@@ -133,25 +133,6 @@ protected IFigure getRootFigure(){
 	return rootFigure;
 }
 
-protected void hookDragSource() {
-	//Allow the real drop targets to make their changes first.
-	super.hookDragSource();
-
-	//Then force and update since async paints won't occurs during a Drag operation
-	getDragSource().addDragListener(new DragSourceAdapter() {
-		public void dragStart(DragSourceEvent event) {
-			// If Draw2d has consumed the mouse down event, set event.doit to false.
-			if (getEventDispatcher().isConsumed())
-				event.doit = false;
-			if (event.doit) {
-				getEditDomain().nativeDragStarted(event, GraphicalViewerImpl.this);
-				getEventDispatcher().nativeDragStarted(event, GraphicalViewerImpl.this);
-				flush();
-			}
-		}
-	});
-}
-
 protected void hookDropTarget() {
 	//Allow the real drop targets to make their changes first.
 	super.hookDropTarget();
@@ -188,6 +169,27 @@ public void registerAccessibleEditPart(AccessibleEditPart acc) {
 public void setCursor(Cursor newCursor){
 	if(getEventDispatcher() != null)
 		getEventDispatcher().setOverrideCursor(newCursor);
+}
+
+protected void setDragSource(DragSource source) {
+	super.setDragSource(source);
+
+	class TheLastListener extends DragSourceAdapter {
+		public void dragStart(DragSourceEvent event) {
+			// If the EventDispatcher has captured the mouse, don't perform native drag.
+			if (getEventDispatcher().isCaptured())
+				event.doit = false;
+			if (event.doit) {
+				//A drag is going to occur, tell the EditDomain
+				getEventDispatcher().dispatchNativeDragStarted(event, GraphicalViewerImpl.this);
+				
+				flush(); //deferred events are not processed during native Drag-and-Drop.
+			}
+		}
+	}
+
+	//This should be *the* last listener because all other listeners are hooked in super().
+	getDragSource().addDragListener(new TheLastListener());
 }
 
 public void setEditDomain(EditDomain domain){

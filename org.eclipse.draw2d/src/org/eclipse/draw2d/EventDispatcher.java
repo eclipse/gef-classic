@@ -53,6 +53,8 @@ abstract /*package*/ IFigure getFocusOwner();
 
 abstract /*package*/ IFigure getMouseTarget();
 
+abstract public boolean isCaptured();
+
 abstract /*package*/ void releaseCapture();
 
 abstract public void requestFocus(IFigure fig);

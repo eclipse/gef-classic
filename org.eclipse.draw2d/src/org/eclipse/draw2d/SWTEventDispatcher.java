@@ -33,9 +33,9 @@ private final static boolean DEBUG = false;
 
 protected static final int ANY_BUTTON = SWT.BUTTON1 | SWT.BUTTON2 | SWT.BUTTON3;
 
-private boolean captured;
 private boolean figureTraverse = true;
 
+private boolean captured;
 private IFigure root;
 private IFigure mouseTarget;
 private IFigure cursorTarget;
@@ -113,7 +113,7 @@ public void dispatchKeyTraversed(TraverseEvent e){
 	else{
 		e.doit = false;	
 		setFocus(nextFigure);
-	}	
+	}
 }
 
 public void dispatchMouseHover(org.eclipse.swt.events.MouseEvent me){
@@ -223,11 +223,7 @@ final protected FocusTraverseManager getFocusTraverseManager(){
 protected IFigure getMouseTarget(){return mouseTarget;}
 protected IFigure getRoot(){return root;}
 
-protected boolean isCaptured(){return captured;}
-
-public boolean isConsumed() {
-	return getCurrentEvent().isConsumed();
-}
+public boolean isCaptured(){return captured;}
 
 private void receive(org.eclipse.swt.events.MouseEvent me){
 	updateFigureUnderCursor(me);
@@ -235,8 +231,7 @@ private void receive(org.eclipse.swt.events.MouseEvent me){
 	if (captured){
 		if (mouseTarget != null)
 			currentEvent = new MouseEvent(me.x, me.y, this, mouseTarget, me.button, state);
-	}
-	else{
+	} else {
 		IFigure f = root.findMouseEventTargetAt(me.x, me.y);
 		if (f == mouseTarget){
 			if (mouseTarget != null)
@@ -271,6 +266,12 @@ public void requestRemoveFocus(IFigure fig){
 	if (getFocusOwner() == fig){
 		setFocus(null);
 	}
+	if (mouseTarget == fig)
+		mouseTarget = null;
+	if (cursorTarget == fig)
+		cursorTarget = null;
+	if (hoverSource == fig)
+		hoverSource = null;
 	getFocusTraverseManager().setCurrentFocusOwner(null);
 }
 
@@ -332,11 +333,10 @@ protected void setHoverSource(Figure figure,org.eclipse.swt.events.MouseEvent me
 		absolute = control.toDisplay(new org.eclipse.swt.graphics.Point(me.x, me.y));
 		toolTipHelper = getToolTipHelper();
 		toolTipHelper.updateToolTip(hoverSource, getCurrentToolTip(), absolute.x, absolute.y);	
+	} else if (toolTipHelper != null) {
+		// Update with null to clear hoverSource in ToolTipHelper
+		toolTipHelper.updateToolTip(hoverSource, getCurrentToolTip(), me.x, me.y);
 	}
-	else
-		if (toolTipHelper != null)
-			// Update with null to clear hoverSource in ToolTipHelper
-			toolTipHelper.updateToolTip(hoverSource, getCurrentToolTip(), me.x, me.y);
 }	
 
 protected void setMouseTarget(IFigure figure){
@@ -358,7 +358,7 @@ protected void updateFigureUnderCursor(org.eclipse.swt.events.MouseEvent me){
 	if(!captured){
 		IFigure f = root.findFigureAt(me.x, me.y);
 		setFigureUnderCursor(f);
-		if( (Figure)cursorTarget != hoverSource)
+		if((Figure)cursorTarget != hoverSource)
 			updateHoverSource(me);
 	}
 }
@@ -380,8 +380,7 @@ protected void updateHoverSource(org.eclipse.swt.events.MouseEvent me){
 				source = (Figure)source.getParent();		
 		}
 		setHoverSource(source,me);							
-	}
-	else{
+	} else {
 		setHoverSource(null,me);
 	}	
 }
