@@ -417,6 +417,8 @@ protected IFigure getLayer(Object layer) {
  * #refreshSourceConnections()} calls this method.  For each connection model object,
  * {@link #createConnection(Object)} will be called automatically to obtain a
  * corresponding {@link ConnectionEditPart}.
+ * <P>
+ * Callers must not modify the returned List.
  * @return the List of model source connections
  */
 protected List getModelSourceConnections() {
@@ -429,6 +431,8 @@ protected List getModelSourceConnections() {
  * #refreshTargetConnections()} calls this method.  For each connection model object,
  * {@link #createConnection(Object)} will be called automatically to obtain a
  * corresponding {@link ConnectionEditPart}.
+ * <P>
+ * Callers must not modify the returned List.
  * @return the List of model target connections
  */
 protected List getModelTargetConnections() {

@@ -552,7 +552,7 @@ public Object getModel() {
  * overridden to returns its children. This is what causes children EditParts to be
  * created.
  * <P>
- * Called by {@link #refreshChildren()}. Must not return <code>null</code>.
+ * Callers must not modify the returned List. Must not return <code>null</code>.
  * @return the List of children
  */
 protected List getModelChildren() {
