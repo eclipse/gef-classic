@@ -29,15 +29,16 @@ public abstract class AbstractTransferDropTargetListener
 	implements TransferDropTargetListener
 {
 
-private boolean showingFeedback;
 private DropTargetEvent currentEvent;
-private EditPartViewer viewer;
-private Transfer transfer;
-private EditPart target;
-private Request request;
-private Point prevMouseLoc;
-private long hoverStartTime = -1;
+private AutoexposeHelper exposeHelper;
 private boolean hovering = false;
+private long hoverStartTime = -1;
+private Point prevMouseLoc;
+private Request request;
+private boolean showingFeedback;
+private EditPart target;
+private Transfer transfer;
+private EditPartViewer viewer;
 
 /**
  * Constructs a new AbstractTransferDropTargetListener and sets the EditPartViewer.
@@ -56,6 +57,21 @@ public AbstractTransferDropTargetListener(EditPartViewer viewer) {
 public AbstractTransferDropTargetListener(EditPartViewer viewer, Transfer xfer) {
 	setViewer(viewer);
 	setTransfer(xfer);
+}
+
+private EditPart calculateTargetEditPart() {
+	EditPart ep = getViewer()
+		.findObjectAtExcluding(
+			getDropLocation(),
+			getExclusionSet(),
+			new EditPartViewer.Conditional() {
+				public boolean evaluate(EditPart editpart) {
+					return editpart.getTargetEditPart(getTargetRequest()) != null;
+				}
+			});
+	if (ep != null)
+		ep = ep.getTargetEditPart(getTargetRequest());
+	return ep;
 }
 
 /**
@@ -206,7 +222,8 @@ protected Point getDropLocation() {
 /**
  * Returns a Collection of {@link EditPart EditParts} that are to be excluded when
  * searching for the target EditPart.
- * @return A Collection of EditParts to be excluded */
+ * @return A Collection of EditParts to be excluded
+ */
 protected Collection getExclusionSet() {
 	return Collections.EMPTY_LIST;
 }
@@ -269,6 +286,11 @@ protected void handleDragOver() {
 	updateTargetRequest();
 	updateTargetEditPart();
 	showTargetFeedback();
+	if (exposeHelper != null) {
+		//If the expose helper does not wish to continue, set helper to null.
+		if (!exposeHelper.step(getDropLocation()))
+			exposeHelper = null;
+	}
 }
 
 /**
@@ -311,6 +333,7 @@ protected void handleExitingEditPart() {
  * Called when the mouse hovers during drag and drop.
  */
 protected void handleHover() {
+	updateAutoexposeHelper();
 }
 
 /**
@@ -353,6 +376,10 @@ private void resetHover() {
 		hoverStartTime = -1;
 		prevMouseLoc = null;
 	}
+}
+
+protected void setAutoexposeHelper(AutoexposeHelper helper) {
+	exposeHelper = helper;
 }
 
 /**
@@ -418,10 +445,12 @@ protected void showTargetFeedback() {
 /**
  * Tests whether the given event's location is different than the previous event's
  * location, and sets the remembered location to the current event's location.
- * @param event * @return boolean */
+ * @param event
+ * @return boolean
+ */
 private boolean testAndSet(DropTargetEvent event) {
 	boolean result = prevMouseLoc == null
-		|| (prevMouseLoc.x == event.x && prevMouseLoc.y == event.y);
+		|| !(prevMouseLoc.x == event.x && prevMouseLoc.y == event.y);
 	if (prevMouseLoc == null)
 		prevMouseLoc = new Point();
 	prevMouseLoc.x = event.x;
@@ -438,6 +467,21 @@ protected void unload() {
 	request = null;
 	setTargetEditPart(null);
 	setCurrentEvent(null);
+	setAutoexposeHelper(null);
+}
+
+/**
+ * Updates the active {@link AutoexposeHelper}. Does nothing if there is still an active
+ * helper. Otherwise, obtains a new helper (possible <code>null</code>) at the current
+ * mouse location and calls {@link #setAutoexposeHelper(AutoexposeHelper)}.
+ */
+protected void updateAutoexposeHelper() {
+	if (exposeHelper != null)
+		return;
+	AutoexposeHelper.Search search;
+	search = new AutoexposeHelper.Search(getDropLocation());
+	getViewer().findObjectAtExcluding(getDropLocation(), Collections.EMPTY_LIST, search);
+	setAutoexposeHelper(search.result);
 }
 
 /**
@@ -447,23 +491,8 @@ protected void updateTargetEditPart() {
 	setTargetEditPart(calculateTargetEditPart());
 }
 
-private EditPart calculateTargetEditPart() {
-	EditPart ep = getViewer()
-		.findObjectAtExcluding(
-			getDropLocation(),
-			getExclusionSet(),
-			new EditPartViewer.Conditional() {
-				public boolean evaluate(EditPart editpart) {
-					return editpart.getTargetEditPart(getTargetRequest()) != null;
-				}
-			});
-	if (ep != null)
-		ep = ep.getTargetEditPart(getTargetRequest());
-	return ep;
-}
-
 /**
- * Subclasses should implement this to update the target Request.
+ * Subclasses must implement this to update the target Request.
  */
 protected abstract void updateTargetRequest();
 
