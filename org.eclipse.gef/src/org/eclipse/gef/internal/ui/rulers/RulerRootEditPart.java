@@ -166,7 +166,6 @@ public class RulerViewport extends Viewport {
 				this.getContents().revalidate();
 			}						
 		}
-		getViewer().getControl().redraw();
 	}
 	public Dimension getPreferredSize(int wHint, int hHint) {
 		if (this.getContents() == null)
