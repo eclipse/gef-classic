@@ -86,6 +86,8 @@ public void visit(DirectedGraph g) {
 		.visit(graph);
 	new InvertEdges()
 		.visit(graph);
+	new RestoreCompoundGraph()
+		.visit(graph);
 }
 
 }

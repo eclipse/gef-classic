@@ -3,31 +3,20 @@ package org.eclipse.gef.examples.flow.parts;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.draw2d.ChopboxAnchor;
-import org.eclipse.draw2d.ConnectionAnchor;
-import org.eclipse.draw2d.Figure;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.Label;
-import org.eclipse.draw2d.LineBorder;
+import org.eclipse.jface.viewers.TextCellEditor;
+
+import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.Insets;
+import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.draw2d.graph.CompoundDirectedGraph;
 import org.eclipse.draw2d.graph.Subgraph;
-import org.eclipse.gef.ConnectionEditPart;
-import org.eclipse.gef.EditPolicy;
-import org.eclipse.gef.NodeEditPart;
-import org.eclipse.gef.Request;
-import org.eclipse.gef.examples.flow.figures.EndTag;
-import org.eclipse.gef.examples.flow.figures.StartTag;
-import org.eclipse.gef.examples.flow.figures.SubgraphFigure;
-import org.eclipse.gef.examples.flow.model.Activity;
+
+import org.eclipse.gef.*;
+import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
+
+import org.eclipse.gef.examples.flow.figures.*;
 import org.eclipse.gef.examples.flow.model.StructuredActivity;
-import org.eclipse.gef.examples.flow.policies.ActivityContainerEditPolicy;
-import org.eclipse.gef.examples.flow.policies.ActivityContainerHighlightEditPolicy;
-import org.eclipse.gef.examples.flow.policies.ActivityEditPolicy;
-import org.eclipse.gef.examples.flow.policies.ActivityNodeEditPolicy;
-import org.eclipse.gef.examples.flow.policies.StructuredActivityDirectEditPolicy;
-import org.eclipse.gef.examples.flow.policies.StructuredActivityLayoutEditPolicy;
-import org.eclipse.jface.viewers.TextCellEditor;
+import org.eclipse.gef.examples.flow.policies.*;
 
 /**
  * @author hudsonr
@@ -35,6 +24,9 @@ import org.eclipse.jface.viewers.TextCellEditor;
  */
 public class StructuredActivityPart extends ActivityPart 
 	implements NodeEditPart {
+
+static final Insets PADDING = new Insets(8, 6, 8, 6);
+static final Insets INNER_PADDING = new Insets(0);
 
 protected void applyChildrenResults(CompoundDirectedGraph graph, Map map) {
 	for (int i = 0; i < getChildren().size(); i++) {
@@ -76,9 +68,11 @@ public void contributeNodesToGraph(CompoundDirectedGraph graph, Subgraph s, Map 
 		me.width = fig.getPreferredSize(me.width, me.height).width;
 		int tagHeight = ((SubgraphFigure)fig).getHeader().getPreferredSize().height;
 		me.insets.top = tagHeight;
+		me.insets.left = 0;
 		me.insets.bottom = tagHeight;
 	}
-	me.setPadding(new Insets(12,8,12,8));
+	me.innerPadding = INNER_PADDING;
+	me.setPadding(PADDING);
 	map.put(this, me);
 	graph.nodes.add(me);
 	for (int i = 0; i < getChildren().size(); i++) {
@@ -88,10 +82,27 @@ public void contributeNodesToGraph(CompoundDirectedGraph graph, Subgraph s, Map 
 }
 
 protected IFigure createFigure() {
-	String name = ((Activity)getModel()).getName();
-	Figure f = new SubgraphFigure(new StartTag(name), new EndTag(name));
+	Figure f = new SubgraphFigure(new Label(""), new Label("")) {
+		/**
+		 * @see org.eclipse.draw2d.Figure#paintFigure(org.eclipse.draw2d.Graphics)
+		 */
+		protected void paintFigure(Graphics g) {
+			super.paintFigure(g);
+			Rectangle r = getBounds();
+			g.setBackgroundColor(ColorConstants.button);
+			if (getSelected() != EditPart.SELECTED_NONE) {
+				g.setBackgroundColor(ColorConstants.menuBackgroundSelected);
+				g.setForegroundColor(ColorConstants.menuForegroundSelected);
+			}
+			
+			g.fillRectangle(r.x, r.y, 3, r.height);
+			g.fillRectangle(r.right() - 3, r.y, 3, r.height);
+			g.fillRectangle(r.x, r.bottom() - 18, r.width, 18);
+			g.fillRectangle(r.x, r.y, r.width, 18);
+		}
+	};
+	f.setBorder(new MarginBorder(3,5,3,0));
 	f.setOpaque(true);
-	f.setBorder(new LineBorder());
 	return f;
 }
 
@@ -145,7 +156,7 @@ public ConnectionAnchor getTargetConnectionAnchor(Request request) {
  */
 protected void performDirectEdit() {
 	if (manager == null) {
-		Label l = ((StartTag)((SubgraphFigure) getFigure()).getHeader());
+		Label l = ((Label)((SubgraphFigure) getFigure()).getHeader());
 		manager =
 			new ActivityDirectEditManager(
 				this,

@@ -2,11 +2,13 @@ package org.eclipse.gef.examples.flow.parts;
 
 import java.util.Map;
 
+import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.AbstractConnectionAnchor;
 import org.eclipse.draw2d.ChopboxAnchor;
 import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
+import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.graph.CompoundDirectedGraph;
 import org.eclipse.draw2d.graph.Node;
@@ -29,6 +31,7 @@ public void contributeNodesToGraph(CompoundDirectedGraph graph, Subgraph s, Map 
 	n.incomingOffset = 5;
 	n.width = getFigure().getPreferredSize().width;
 	n.height = getFigure().getPreferredSize().height;
+	n.setPadding(new Insets(10,8,10,12));
 	map.put(this, n);
 	graph.nodes.add(n);
 }
@@ -38,6 +41,7 @@ public void contributeNodesToGraph(CompoundDirectedGraph graph, Subgraph s, Map 
  */
 protected IFigure createFigure() {
 	Label l = new Label();
+	l.setLabelAlignment(PositionConstants.LEFT);
 	l.setIcon(FlowImages.gear);
 	return l;
 }

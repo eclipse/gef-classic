@@ -28,6 +28,8 @@ protected void applyGraphResults(CompoundDirectedGraph graph, Map map) {
 	NodeList nodes = e.vNodes;
 	PolylineConnection conn = (PolylineConnection)getConnectionFigure();
 	conn.setTargetDecoration(new PolygonDecoration());
+	e.start.x = e.source.x + 10;
+	e.end.x = e.target.x + 10;
 	conn.setSourceAnchor(new XYAnchor(e.start));
 	conn.setTargetAnchor(new XYAnchor(e.end));
 	if (nodes != null) {
@@ -93,6 +95,7 @@ public void contributeToGraph(CompoundDirectedGraph graph, Map map) {
 	Node source = (Node)map.get(getSource());
 	Node target = (Node)map.get(getTarget());
 	Edge e = new Edge(this, source, target);
+	e.weight = 2;
 	graph.edges.add(e);
 	map.put(this, e);
 }

@@ -80,7 +80,7 @@ private void convertSubgraphEndpoints(CompoundDirectedGraph graph) {
 				newSource = s.head;
 			else
 				newSource = s.tail;
-			s.outgoing.remove(edge);
+			//s.outgoing.remove(edge);
 			edge.source = newSource;
 			newSource.outgoing.add(edge);
 		}
@@ -92,7 +92,7 @@ private void convertSubgraphEndpoints(CompoundDirectedGraph graph) {
 			else
 				newTarget = s.head;
 			
-			s.incoming.remove(edge);
+			//s.incoming.remove(edge);
 			edge.target = newTarget;
 			newTarget.incoming.add(edge);
 		}
