@@ -80,18 +80,4 @@ public void setSelected(int i){
 	refreshVisuals();
 }
 
-protected void refreshVisuals(){
-	super.refreshVisuals();
-	int i = getSelected();
-	if (i == SELECTED_NONE)
-		getCircuitBoardFigure().setBorderColor(
-			LogicColorConstants.logicGreen);
-	if (i == SELECTED_PRIMARY)
-		getCircuitBoardFigure().setBorderColor(
-			LogicColorConstants.logicPrimarySelectedColor);
-	if (i == SELECTED)
-		getCircuitBoardFigure().setBorderColor(
-			LogicColorConstants.logicSecondarySelectedColor);
-}
-
 }
