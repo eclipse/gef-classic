@@ -66,8 +66,7 @@ public Object getAdapter(Class adapter) {
 	if (adapter == AutoexposeHelper.class) {
 		if (((RulerEditPart)getContents()).isHorizontal())
 			return new ViewportAutoexposeHelper(this, HORIZONTAL_THRESHOLD);
-		else
-			return new ViewportAutoexposeHelper(this, VERTICAL_THRESHOLD);
+		return new ViewportAutoexposeHelper(this, VERTICAL_THRESHOLD);
 	}
 	return super.getAdapter(adapter);
 }
@@ -170,18 +169,17 @@ public class RulerViewport extends Viewport {
 		getViewer().getControl().redraw();
 	}
 	public Dimension getPreferredSize(int wHint, int hHint) {
-		if (this.getContents() == null) {
+		if (this.getContents() == null)
 			return new Dimension();
-		}
-		Dimension prefSize = this.getContents().getPreferredSize(wHint, hHint);
+		Dimension pSize = this.getContents().getPreferredSize(wHint, hHint);
 		if (horizontal) {
 			RangeModel rModel = getHorizontalRangeModel();
-			prefSize.width = rModel.getMaximum() - rModel.getMinimum();
+			pSize.width = rModel.getMaximum() - rModel.getMinimum();
 		} else {
 			RangeModel rModel = getVerticalRangeModel();
-			prefSize.height = rModel.getMaximum() - rModel.getMinimum();
+			pSize.height = rModel.getMaximum() - rModel.getMinimum();
 		}
-		return prefSize.expand(getInsets().getWidth(), getInsets().getHeight());
+		return pSize.expand(getInsets().getWidth(), getInsets().getHeight());
 	}
 	protected void readjustScrollBars() {
 		// since the range model is shared with the editor, the ruler viewports should
