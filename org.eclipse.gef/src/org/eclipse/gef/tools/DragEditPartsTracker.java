@@ -420,11 +420,9 @@ protected void repairStartLocation() {
 protected void setAutoexposeHelper(AutoexposeHelper helper) {
 	super.setAutoexposeHelper(helper);
 	if (helper != null && sourceRelativeStartPoint == null && isInDragInProgress()) {
-		if (sourceRelativeStartPoint == null) {
-			IFigure figure = ((GraphicalEditPart)getSourceEditPart()).getFigure();
-			sourceRelativeStartPoint = new PrecisionPoint(getStartLocation());
-			figure.translateToRelative(sourceRelativeStartPoint);
-		}
+		IFigure figure = ((GraphicalEditPart)getSourceEditPart()).getFigure();
+		sourceRelativeStartPoint = new PrecisionPoint(getStartLocation());
+		figure.translateToRelative(sourceRelativeStartPoint);
 	}
 }
 
@@ -467,6 +465,44 @@ protected void showSourceFeedback() {
 		editPart.showSourceFeedback(getTargetRequest());
 	}
 	setFlag(FLAG_SOURCE_FEEDBACK, true);
+}
+
+protected void setState(int state) {
+	boolean check = isInState(STATE_INITIAL);
+	super.setState(state);
+	if (check && isInState(STATE_DRAG | STATE_ACCESSIBLE_DRAG)) {
+		List editparts = getOperationSet();
+		for (int i = 0; i < editparts.size(); i++) {
+			GraphicalEditPart child = (GraphicalEditPart)editparts.get(i);
+			IFigure figure = child.getFigure();
+			PrecisionRectangle bounds = null;
+			if (figure instanceof HandleBounds)
+				bounds = new PrecisionRectangle(((HandleBounds)figure).getHandleBounds());
+			else
+				bounds = new PrecisionRectangle(figure.getBounds());
+			figure.translateToAbsolute(bounds);
+			
+			if (compoundSrcRect == null)
+				compoundSrcRect = bounds;
+			else
+				compoundSrcRect = new PrecisionRectangle(compoundSrcRect.union(bounds));
+			if (child == getSourceEditPart())
+				sourceRectangle = bounds;
+		}
+		if (sourceRectangle == null) {
+			/*
+			 * @TODO:Pratik    Check to see if this ever happens.  I.e., if the operation
+			 * set does not include the source edit part.
+			 */
+			IFigure figure = ((GraphicalEditPart)getSourceEditPart()).getFigure();
+			if (figure instanceof HandleBounds)
+				sourceRectangle = new PrecisionRectangle(
+						((HandleBounds)figure).getHandleBounds());
+			else
+				sourceRectangle = new PrecisionRectangle(figure.getBounds());
+			figure.translateToAbsolute(sourceRectangle);
+		}
+	}
 }
 
 /**
@@ -512,33 +548,10 @@ protected void updateTargetRequest() {
 	request.setMoveDelta(new Point(delta.width, delta.height));
 	request.getExtendedData().clear();
 		
-	if (helper != null && !getCurrentInput().isAltKeyDown()) {
-		// Lazily determine the values of sourceRectangle and compoundSrcRect, and
-		// cache them
-		if (sourceRectangle == null || compoundSrcRect == null) {
-			List editparts = getOperationSet();
-			for (int i = 0; i < editparts.size(); i++) {
-				GraphicalEditPart child = (GraphicalEditPart)editparts.get(i);
-				IFigure figure = child.getFigure();
-				PrecisionRectangle bounds = null;
-				if (figure instanceof HandleBounds)
-					bounds = new PrecisionRectangle(((HandleBounds)figure).getHandleBounds());
-				else
-					bounds = new PrecisionRectangle(figure.getBounds());
-				figure.translateToAbsolute(bounds);
-				
-				if (compoundSrcRect == null)
-					compoundSrcRect = bounds;
-				else
-					compoundSrcRect = new PrecisionRectangle(compoundSrcRect.union(bounds));
-				if (child == getSourceEditPart())
-					sourceRectangle = bounds;
-			}
-		}
+	if (helper != null && !getCurrentInput().isAltKeyDown())
 		helper.snapMoveRequest(request, sourceRectangle.getPreciseCopy(), 
 				compoundSrcRect.getPreciseCopy(), 
 				SnapToStrategy.SNAP_HORIZONTAL | SnapToStrategy.SNAP_VERTICAL);
-	}
 
 	request.setLocation(getLocation());
 	request.setType(getCommandName());
