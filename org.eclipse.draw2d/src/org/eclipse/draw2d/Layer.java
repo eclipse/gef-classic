@@ -36,13 +36,16 @@ public Layer getPreviousLayer(){
 }
 
 public UpdateManager getUpdateManager(){
+	//If someone has set the manager, get it.
 	UpdateManager manager = super.getUpdateManager();
-	if( (getParent() != null && getParent().getUpdateManager() != manager) ||
-	    (getParent() == null && manager != NO_MANAGER) )
-		return manager;
-	if (getNextLayer() != null){
+
+	if ((getParent() != null && getParent().getUpdateManager() != manager)
+		|| (getParent() == null && manager != NO_MANAGER))
+			return manager;
+
+	if (getNextLayer() != null)
 		return getNextLayer().getUpdateManager();
-	}
+
 	return manager;
 }
 
