@@ -66,17 +66,17 @@ int[] getVerticalGuides() {
 
 
 private double getCorrectionFor(int[] guides, double near, double far, Map extendedData, 
-                                boolean isVertical) {
-	double result = getCorrectionFor(guides, near, extendedData, isVertical, -1);
+                                  boolean isVertical) {
+	double result = getCorrectionFor(guides, (near + far) / 2, extendedData, isVertical, 0);
 	if (result == THRESHOLD)
-		result = getCorrectionFor(guides, (near + far) / 2, extendedData, isVertical, 0); 
+		result = getCorrectionFor(guides, near, extendedData, isVertical, -1); 
 	if (result == THRESHOLD)
 		result = getCorrectionFor(guides, far, extendedData, isVertical, 1);
 	return result;
 }
 
 private double getCorrectionFor(int[] guides, double value, Map extendedData, 
-                                boolean vert, int side) {
+                                  boolean vert, int side) {
 	double resultMag = THRESHOLD;
 	double result = THRESHOLD;
 	
@@ -153,6 +153,13 @@ public int snapMoveRequest(ChangeBoundsRequest request,	PrecisionRectangle baseR
  */
 public int snapResizeRequest(ChangeBoundsRequest request, PrecisionRectangle baseRect,
                              int snapOrientation) {
+	/*
+	 * @TODO:Pratik
+	 * Known Bugs: 
+	 * (1) Place a figure's top and left edges close to two guides, but not attached
+	 * to them.  Resize the bottom-right corner of the figure, and you will see that the
+	 * figure snaps to those two guides.  Or at least, they will be highlighted.  
+	 */
 	int origSnapOrientation = snapOrientation;
 	
 	if (request.getEditParts().size() != 1)
