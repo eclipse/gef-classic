@@ -529,6 +529,7 @@ private TextLayout zoomTextLayout(TextLayout layout) {
 	TextLayout zoomed = new TextLayout(Display.getCurrent());
 	zoomed.setText(layout.getText());
 	
+	zoomed.setWidth((int)(layout.getWidth() * zoom));
 	int length = layout.getText().length();
 	if (length > 0) {
 		int start = 0, offset = 1;
