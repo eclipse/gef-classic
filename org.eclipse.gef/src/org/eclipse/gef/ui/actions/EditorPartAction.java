@@ -7,7 +7,6 @@ package org.eclipse.gef.ui.actions;
  */
 
 import org.eclipse.gef.Disposable;
-import org.eclipse.gef.Updatable;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.jface.action.Action;
@@ -18,7 +17,7 @@ import org.eclipse.ui.IEditorPart;
  */
 public abstract class EditorPartAction
 	extends Action
-	implements Disposable, Updatable
+	implements Disposable, UpdateAction
 {
 
 /*
@@ -96,7 +95,7 @@ protected void setEditorPart(IEditorPart part) {
 }
 
 /**
- * @see org.eclipse.gef.Updatable#update()
+ * @see org.eclipse.gef.UpdateAction#update()
  */
 public void update() {
 	refresh();
