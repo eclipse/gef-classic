@@ -44,7 +44,7 @@ public double getScale() {
 }
 
 /**
- *  * @see org.eclipse.draw2d.Figure#paintClientArea(Graphics) */
+ * @see org.eclipse.draw2d.Figure#paintClientArea(Graphics) */
 protected void paintClientArea(Graphics graphics) {
 	if (getChildren().isEmpty())
 		return;

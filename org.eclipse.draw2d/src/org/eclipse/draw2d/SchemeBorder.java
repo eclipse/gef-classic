@@ -98,7 +98,7 @@ public static class Scheme {
 
 	/**
 	 * Calculates and retuns the opaque state of this border scheme. Returns 
-	 * <code>false<code> if any of the border colors are <code>null</code>. This is done 
+	 * <code>false</code> if any of the border colors are <code>null</code>. This is done 
 	 * to prevent the appearance of underlying pixels since the border color is 
 	 * <code>null</code>.
 	 * 
