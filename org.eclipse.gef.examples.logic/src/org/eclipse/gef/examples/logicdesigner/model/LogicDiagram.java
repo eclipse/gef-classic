@@ -20,6 +20,10 @@ import org.eclipse.ui.views.properties.ComboBoxPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 
 import org.eclipse.draw2d.PositionConstants;
+import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2d.geometry.Point;
+
+import org.eclipse.gef.SnapToGrid;
 
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
 
@@ -42,6 +46,8 @@ protected Integer connectionRouter = null;
 private boolean rulersVisibility = true;
 private boolean snapToGeometry = false;
 private boolean gridEnabled = false;
+private Dimension gridSpacing = new Dimension(SnapToGrid.DEFAULT_GAP, SnapToGrid.DEFAULT_GAP);
+private Point gridOrigin = new Point();
 
 public LogicDiagram() {
 	size.width = 100;
@@ -76,6 +82,14 @@ public Integer getConnectionRouter(){
 	if(connectionRouter==null)
 		connectionRouter = ROUTER_MANUAL;
 	return connectionRouter;
+}
+
+public Point getGridOrigin() {
+	return gridOrigin;
+}
+
+public Dimension getGridSpacing() {
+	return gridSpacing;
 }
 
 public Image getIconImage() {
@@ -164,6 +178,14 @@ public void setRulerVisibility(boolean newValue) {
 
 public void setGridEnabled(boolean isEnabled) {
 	gridEnabled = isEnabled;
+}
+
+public void setGridOrigin(Point origin) {
+	gridOrigin = origin;
+}
+
+public void setGridSpacing(Dimension spacing) {
+	gridSpacing = spacing;
 }
 
 public void setSnapToGeometry(boolean isEnabled) {
