@@ -23,7 +23,7 @@ public EditPart createEditPart(EditPart parentEditPart, Object model){
 	if( model instanceof PaletteRoot )
 		return createMainPaletteEditPart(parentEditPart, model);
 	if( model instanceof PaletteContainer )
-		if(PaletteDrawer.PALETTE_TYPE_TOOLS_DRAWER.equals(((PaletteContainer)model).getType()))
+		if(PaletteDrawer.PALETTE_TYPE_DRAWER.equals(((PaletteContainer)model).getType()))
 			return createDrawerEditPart(parentEditPart, model);
 	if( model instanceof PaletteContainer )
 		if(PaletteGroup.PALETTE_TYPE_GROUP.equals(((PaletteContainer)model).getType()) ||
