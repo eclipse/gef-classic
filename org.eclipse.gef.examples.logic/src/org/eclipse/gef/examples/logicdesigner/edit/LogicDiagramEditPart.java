@@ -27,6 +27,7 @@ import org.eclipse.draw2d.FreeformLayout;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.ManhattanConnectionRouter;
 import org.eclipse.draw2d.MarginBorder;
+import org.eclipse.draw2d.ShortestPathConnectionRouter;
 import org.eclipse.draw2d.XYLayout;
 
 import org.eclipse.gef.AccessibleEditPart;
@@ -48,7 +49,6 @@ import org.eclipse.gef.tools.DeselectAllTracker;
 import org.eclipse.gef.tools.MarqueeDragTracker;
 
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
-import org.eclipse.gef.examples.logicdesigner.figures.ShortestPathConnectionRouter;
 import org.eclipse.gef.examples.logicdesigner.model.LogicDiagram;
 
 /**
@@ -61,8 +61,6 @@ public class LogicDiagramEditPart
 	extends LogicContainerEditPart
 	implements LayerConstants
 {
-
-private FreeformLayout layout = new FreeformLayout();
 
 protected AccessibleEditPart createAccessible() {
 	return new AccessibleGraphicalEditPart(){
@@ -96,7 +94,7 @@ protected void createEditPolicies(){
 protected IFigure createFigure() {
 	Figure f = new FreeformLayer();
 //	f.setBorder(new GroupBoxBorder("Diagram"));
-	f.setLayoutManager(layout);
+	f.setLayoutManager(new FreeformLayout());
 	f.setBorder(new MarginBorder(5));
 	return f;
 }
@@ -182,22 +180,23 @@ public void propertyChange(PropertyChangeEvent evt) {
 
 protected void refreshVisuals() {
 	ConnectionLayer cLayer = (ConnectionLayer) getLayer(CONNECTION_LAYER);
-	getFigure().setLayoutManager(layout);
-	if (getLogicDiagram().getConnectionRouter().equals(LogicDiagram.ROUTER_MANUAL)){
+
+	if (cLayer.getConnectionRouter() instanceof ShortestPathConnectionRouter)
+		getContentPane().removeLayoutListener(
+				((ShortestPathConnectionRouter)cLayer.getConnectionRouter())
+						.getLayoutListener());
+	if (getLogicDiagram().getConnectionRouter().equals(LogicDiagram.ROUTER_MANUAL)) {
 		AutomaticRouter router = new FanRouter();
 		router.setNextRouter(new BendpointConnectionRouter());
 		cLayer.setConnectionRouter(router);
-	}
-	else if (getLogicDiagram().getConnectionRouter().equals(LogicDiagram.ROUTER_MANHATTAN))
+	} else if (getLogicDiagram().getConnectionRouter().equals(LogicDiagram.ROUTER_MANHATTAN))
 		cLayer.setConnectionRouter(new ManhattanConnectionRouter());
 	else {
 		ShortestPathConnectionRouter router =
 			new ShortestPathConnectionRouter(getFigure()); 
 		cLayer.setConnectionRouter(router);
-		getFigure().setLayoutManager(new ShortestPathConnectionRouter.LayoutWrapper(
-				layout,router));
+		getContentPane().addLayoutListener(router.getLayoutListener());
 	}
-
 }
 
 }
