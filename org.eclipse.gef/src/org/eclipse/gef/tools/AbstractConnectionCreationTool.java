@@ -30,6 +30,7 @@ private Command command;
 private EditPart connectionSource;
 private Request sourceRequest;
 private CreationFactory factory;
+private EditPartViewer viewer;
 
 private EditPartListener.Stub deactivationListener = new EditPartListener.Stub() {
 	public void partDeactivated(EditPart editpart) {
@@ -66,6 +67,7 @@ public void deactivate(){
 	setConnectionSource(null);
 	super.deactivate();
 	setState(STATE_TERMINAL);
+	viewer = null;
 }
 
 protected void eraseSourceFeedback() {
@@ -112,6 +114,7 @@ protected boolean handleButtonDown(int button) {
 		if (command != null) {
 			setState(STATE_CONNECTION_STARTED);
 			setCurrentCommand(command);
+			viewer = getCurrentViewer();
 		}
 	}
 
@@ -175,6 +178,8 @@ protected boolean handleInvalidInput(){
 }
 
 protected boolean handleMove() {
+	if (isInState(STATE_CONNECTION_STARTED) && viewer != getCurrentViewer())
+		return false;
 	if (isInState(STATE_CONNECTION_STARTED | STATE_INITIAL 
 			| STATE_ACCESSIBLE_DRAG_IN_PROGRESS)) {
 		updateTargetRequest();
