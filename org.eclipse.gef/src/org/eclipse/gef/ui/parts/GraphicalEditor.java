@@ -93,6 +93,8 @@ public void createPartControl(Composite parent) {
 }
 
 public void dispose() {
+	getCommandStack().removeCommandStackListener(this);
+	getSite().getWorkbenchWindow().getSelectionService().removeSelectionListener(this);
 	getEditDomain().setTool(null);
 	getActionRegistry().dispose();
 	getGraphicalViewer().dispose();
