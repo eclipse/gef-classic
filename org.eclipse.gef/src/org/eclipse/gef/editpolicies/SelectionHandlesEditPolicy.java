@@ -65,11 +65,13 @@ public Object getAdapter(Class key) {
 		return new AccessibleHandleProvider() {
 			public List getAccessibleHandleLocations() {
 				List result = new ArrayList();
-				for (int i = 0; i < handles.size(); i++) {
-					Point p = ((Handle)handles.get(i))
-						.getAccessibleLocation();
-					if (p != null)
-						result.add(p);
+				if (handles != null) {
+					for (int i = 0; i < handles.size(); i++) {
+						Point p = ((Handle)handles.get(i))
+							.getAccessibleLocation();
+						if (p != null)
+							result.add(p);
+					}
 				}
 				return result;
 			}
