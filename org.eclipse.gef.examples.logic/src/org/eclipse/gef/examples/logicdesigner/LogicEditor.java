@@ -34,6 +34,7 @@ import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.part.PageBook;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
+import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.LightweightSystem;
 import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.Viewport;
