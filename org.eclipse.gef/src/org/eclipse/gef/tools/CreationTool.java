@@ -105,6 +105,15 @@ protected boolean handleFocusLost() {
 	return false;
 }
 
+/**
+ * @see org.eclipse.gef.tools.TargetingTool#handleHover()
+ */
+protected boolean handleHover() {
+	if (isInState(STATE_INITIAL))
+		updateAutoexposeHelper();
+	return true;
+}
+
 protected boolean handleMove() {
 	updateTargetRequest();
 	updateTargetUnderMouse();
