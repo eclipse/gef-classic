@@ -48,7 +48,8 @@ import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 /**
  * Graphical viewer for the GEF palette.
  * 
- * @author Randy Hudson, Pratik Shah */
+ * @author Randy Hudson
+ * @author Pratik Shah */
 public class PaletteViewer
 	extends ScrollingGraphicalViewer
 {
@@ -184,9 +185,8 @@ public PaletteCustomizer getCustomizer() {
  * @return The dialog that can be used to customize entries on the palette */
 public PaletteCustomizerDialog getCustomizerDialog() {
 	if (customizerDialog == null) {
-		customizerDialog = new PaletteCustomizerDialog(getControl().getShell(),
-	                                                   getCustomizer(),
-	                                                   paletteRoot);
+		customizerDialog = new PaletteCustomizerDialog(
+				getControl().getShell(), getCustomizer(), getPaletteRoot());
 	}
 	return customizerDialog;
 }
@@ -307,8 +307,10 @@ public void removePaletteListener(PaletteListener paletteListener) {
  */
 public boolean restoreState(IMemento memento) {
 	try {
-		((PaletteEditPart)getEditPartRegistry().get(getPaletteRoot()))
-				.restoreState(memento);
+		PaletteEditPart part = (PaletteEditPart)getEditPartRegistry()
+				.get(getPaletteRoot());
+		if (part != null)
+			part.restoreState(memento);
 	} catch (RuntimeException re) {
 		/*
 		 * @TODO:Pratik   Perhaps you should log this exception.  Or not catch it at all. 
@@ -339,7 +341,10 @@ public void reveal(EditPart part) {
  * @since 3.0
  */
 public void saveState(IMemento memento) {
-	((PaletteEditPart)getEditPartRegistry().get(getPaletteRoot())).saveState(memento);
+	// Bug# 69026 - The PaletteRoot can be null initially for VEP
+	PaletteEditPart base = (PaletteEditPart)getEditPartRegistry().get(getPaletteRoot());
+	if (base != null)
+		base.saveState(memento);
 }
 
 /**
@@ -360,10 +365,9 @@ public void setCustomizer(PaletteCustomizer customizer) {
  */
 public void setActiveTool(ToolEntry newMode) {
 	if (newMode == null)
-		newMode = paletteRoot.getDefaultEntry();
-	if (activeEntry != null) {
+		newMode = getPaletteRoot().getDefaultEntry();
+	if (activeEntry != null)
 		getToolEntryEditPart(activeEntry).setToolSelected(false);
-	}
 	activeEntry = newMode;
 	if (activeEntry != null) {
 		ToolEntryEditPart editpart = getToolEntryEditPart(activeEntry);
