@@ -26,14 +26,14 @@ protected static final int MAX_FLAG = FLAG_SOURCE_FEEDBACK;
 private Command command;
 private EditPart connectionSource;
 private Request sourceRequest;
-private CreateRequest.Factory factory;
+private CreationFactory factory;
 
 public AbstractConnectionCreationTool() {
 	setDefaultCursor(SharedCursors.CURSOR_PLUG);
 	setDisabledCursor(SharedCursors.NO);
 }
 
-public AbstractConnectionCreationTool(CreateRequest.Factory factory) {
+public AbstractConnectionCreationTool(CreationFactory factory) {
 	this();
 	setFactory(factory);
 }
@@ -84,7 +84,7 @@ protected String getDebugNameForState(int s) {
 	return super.getDebugNameForState(s);
 }
 
-protected CreateRequest.Factory getFactory(){
+protected CreationFactory getFactory(){
 	return factory;
 }
 
@@ -153,7 +153,7 @@ protected boolean isShowingSourceFeedback(){
 	return getFlag(FLAG_SOURCE_FEEDBACK);
 }
 
-public void setFactory(CreateRequest.Factory factory){
+public void setFactory(CreationFactory factory){
 	this.factory = factory;
 }
 

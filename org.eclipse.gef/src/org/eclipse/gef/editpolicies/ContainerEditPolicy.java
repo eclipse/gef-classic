@@ -8,14 +8,13 @@ package org.eclipse.gef.editpolicies;
 
 import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
-import org.eclipse.gef.requests.CreateRequest;
-import org.eclipse.gef.requests.GroupRequest;
+import org.eclipse.gef.requests.*;
 
 public abstract class ContainerEditPolicy
 	extends AbstractEditPolicy
 {
 
-protected final void createCreateCommand(Object parent, CreateRequest.Factory factory) { }
+protected final void createCreateCommand(Object parent, CreationFactory factory) { }
 
 protected Command getAddCommand(GroupRequest request) {
 	return null;

@@ -9,20 +9,21 @@ package org.eclipse.gef.tools;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.*;
+import org.eclipse.gef.requests.*;
 import org.eclipse.gef.requests.CreateRequest;
 
 public class CreationTool
 	extends TargetingTool
 {
 
-private CreateRequest.Factory factory;
+private CreationFactory factory;
 
 public CreationTool() {
 	setDefaultCursor(SharedCursors.CURSOR_TREE_ADD);
 	setDisabledCursor(SharedCursors.NO);
 }
 
-public CreationTool(CreateRequest.Factory aFactory) {
+public CreationTool(CreationFactory aFactory) {
 	this();
 	setFactory(aFactory);
 }
@@ -45,7 +46,7 @@ protected String getDebugName(){
 	return "Creation Tool";//$NON-NLS-1$
 }
 
-protected CreateRequest.Factory getFactory(){
+protected CreationFactory getFactory(){
 	return factory;
 }
 
@@ -120,7 +121,7 @@ private void selectAddedObject() {
 	}
 }
 
-public void setFactory(CreateRequest.Factory factory){
+public void setFactory(CreationFactory factory){
 	this.factory = factory;
 }
 

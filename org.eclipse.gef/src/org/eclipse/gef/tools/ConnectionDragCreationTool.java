@@ -6,7 +6,7 @@ package org.eclipse.gef.tools;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.gef.requests.CreateRequest;
+import org.eclipse.gef.requests.CreationFactory;
 
 public class ConnectionDragCreationTool 
 	extends AbstractConnectionCreationTool
@@ -15,7 +15,7 @@ public class ConnectionDragCreationTool
 
 public ConnectionDragCreationTool(){}
 
-public ConnectionDragCreationTool(CreateRequest.Factory factory){
+public ConnectionDragCreationTool(CreationFactory factory){
 	setFactory(factory);
 }
 

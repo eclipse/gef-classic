@@ -1,6 +1,7 @@
 package org.eclipse.gef.dnd;
 
 import org.eclipse.gef.*;
+import org.eclipse.gef.requests.*;
 import org.eclipse.gef.requests.CreateRequest;
 import org.eclipse.swt.dnd.DND;
 
@@ -47,7 +48,7 @@ protected final CreateRequest getCreateRequest() {
  * Returns the appropriate Factory object to be used for the specified template. This
  * Factory is used on the CreateRequest that is sent to the target EditPart.
  * @param template the template Object * @return a Factory */
-protected abstract CreateRequest.Factory getFactory(Object template);
+protected abstract CreationFactory getFactory(Object template);
 
 /**
  * The purpose of a template is to be copied. Therefore, the drop operation can't be
