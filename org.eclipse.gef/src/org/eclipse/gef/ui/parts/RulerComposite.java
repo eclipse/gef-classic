@@ -12,8 +12,11 @@ package org.eclipse.gef.ui.parts;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.widgets.*;
 
@@ -23,8 +26,7 @@ import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.Insets;
 
 import org.eclipse.gef.*;
-import org.eclipse.gef.internal.ui.rulers.RulerEditPartFactory;
-import org.eclipse.gef.internal.ui.rulers.RulerRootEditPart;
+import org.eclipse.gef.internal.ui.rulers.*;
 
 /**
  * @author Pratik Shah
@@ -50,22 +52,70 @@ public RulerComposite(Composite parent, int style) {
 private GraphicalViewer createRulerContainer(int orientation) {
 	final boolean isHorizontal = orientation == PositionConstants.NORTH 
 			|| orientation == PositionConstants.SOUTH;
-	/*
-	 * @TODO:Pratik   implement reveal somehow
-	 */
 	ScrollingGraphicalViewer viewer = new ScrollingGraphicalViewer() {
 		public void appendSelection(EditPart editpart) {
-			boolean setFocus = editpart != focusPart;
+			if (editpart instanceof RootEditPart)
+				editpart = ((RootEditPart)editpart).getContents();
+			setFocus(editpart);
 			super.appendSelection(editpart);
-			if (setFocus) {
-				setFocus(editpart);
-			}
+		}
+		public Handle findHandleAt(org.eclipse.draw2d.geometry.Point p) {
+			final GraphicalEditPart gep = 
+					(GraphicalEditPart)findObjectAtExcluding(p, new ArrayList());
+			if (gep == null || !(gep instanceof GuideEditPart))
+				return null;
+			return new Handle() {
+				public DragTracker getDragTracker() {
+					return ((GuideEditPart)gep).getDragTracker(null);
+				}
+				public org.eclipse.draw2d.geometry.Point getAccessibleLocation() {
+					return null;
+				}
+			};
+		}
+		protected void handleFocusGained(FocusEvent fe) {
+			super.handleFocusGained(fe);
+			if (getFocusEditPart() != null)
+				reveal(getFocusEditPart());
+		}
+		public void reveal(EditPart part) {
+			// there's no need to reveal rulers (that causes undesired scrolling to
+			// the origin of the ruler)
+			if (part instanceof GuideEditPart)
+				super.reveal(part);
+		}
+		public void setContents(EditPart editpart) {
+			super.setContents(editpart);
+			setFocus(getContents());
 		}
 	};
 	viewer.setRootEditPart(new RulerRootEditPart(isHorizontal));
 	viewer.setEditPartFactory(new RulerEditPartFactory(diagramViewer));
 	viewer.createControl(this);
-	viewer.setKeyHandler(new GraphicalViewerKeyHandler(viewer));
+	viewer.setKeyHandler(new GraphicalViewerKeyHandler(viewer) {
+		public boolean keyPressed(KeyEvent event) {
+			if (event.keyCode == SWT.DEL) {
+				if (getFocus() instanceof GuideEditPart) {
+					RulerEditPart parent = (RulerEditPart)getFocus().getParent();					
+					getViewer().getEditDomain().getCommandStack().execute(
+							parent.getRulerProvider().getDeleteGuideCommand(
+							getFocus().getModel()));
+					navigateTo(parent, event);
+					return true;
+				} else {
+					return false;
+				}
+			} else if (((event.stateMask & SWT.ALT) != 0) 
+					&& (event.keyCode == SWT.ARROW_UP)) {
+				// ALT + UP_ARROW pressed
+				EditPart parent = getFocus().getParent();
+				if (parent instanceof RulerEditPart)
+					navigateTo(getFocus().getParent(), event);
+				return true;
+			}
+			return super.keyPressed(event);
+		}
+	});
 	((GraphicalEditPart)viewer.getRootEditPart()).getFigure()
 			.setBorder(new RulerBorder(isHorizontal));
 	viewer.setProperty(GraphicalViewer.class.toString(), diagramViewer);
@@ -87,8 +137,10 @@ private GraphicalViewer createRulerContainer(int orientation) {
 				editor.getViewport().getVerticalRangeModel());
 	}
 	
-	if (rulerEditDomain == null)
+	if (rulerEditDomain == null) {
 		rulerEditDomain = new EditDomain();
+		rulerEditDomain.setCommandStack(diagramViewer.getEditDomain().getCommandStack());
+	}
 	rulerEditDomain.addViewer(viewer);
 	return viewer;
 }
