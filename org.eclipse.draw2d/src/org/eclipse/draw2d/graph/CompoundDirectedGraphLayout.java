@@ -1,5 +1,7 @@
 package org.eclipse.draw2d.graph;
 
+import java.util.Iterator;
+
 import org.eclipse.draw2d.internal.graph.*;
 
 /**
@@ -31,7 +33,8 @@ public final class CompoundDirectedGraphLayout extends GraphVisitor {
 /**
  * @see org.eclipse.draw2d.internal.graph.GraphVisitor#visit(org.eclipse.draw2d.graph.DirectedGraph)
  */
-public void visit(DirectedGraph graph) {
+public void visit(DirectedGraph g) {
+	CompoundDirectedGraph graph = (CompoundDirectedGraph)g;
 	new CompoundBreakCycles()
 		.visit(graph);
 	new ConvertCompoundGraph()
@@ -47,11 +50,13 @@ public void visit(DirectedGraph graph) {
 	new CompoundVerticalPlacement()
 		.visit(graph);
 
-	EdgeList containment = ((CompoundDirectedGraph)graph).containment;
-	for (int i = 0; i < containment.size(); i++) {
-		Edge e = containment.getEdge(i);
-		if (e.getSlack() > 0)
+	Iterator containment = graph.containment.iterator();
+	while (containment.hasNext()) {
+		Edge e = (Edge)containment.next();
+		if (e.getSlack() > 0) {
 			graph.removeEdge(e);
+			containment.remove();
+		}
 	}
 	for (int i = 0; i < graph.ranks.size(); i++) {
 		Rank rank = graph.ranks.getRank(i);
@@ -68,6 +73,12 @@ public void visit(DirectedGraph graph) {
 	new SortSubgraphs()
 		.visit(graph);
 
+	containment = graph.containment.iterator();
+
+	while (containment.hasNext())
+		graph.removeEdge((Edge)containment.next());
+	graph.containment.clear();
+	
 	new CompoundHorizontalPlacement()
 		.visit(graph);
 		
