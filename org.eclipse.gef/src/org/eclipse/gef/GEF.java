@@ -17,6 +17,7 @@ import org.eclipse.swt.widgets.Text;
 
 /**
  * This is an internal class used for debugging
+ * @deprecated in 3.1  This class will be removed in future releases.
  */
 public final class GEF {
 
