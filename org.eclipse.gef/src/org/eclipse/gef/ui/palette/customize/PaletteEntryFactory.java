@@ -89,13 +89,15 @@ protected abstract PaletteEntry createNewEntry(Shell shell);
  * <code>PaletteEntryFactory</code> can create a new <code>PaletteEntry</code>
  */
 public boolean canCreate(PaletteEntry selected) {
-	if (selected instanceof PaletteRoot) {
+	if (selected instanceof PaletteRoot)
 		return false;
-	}
-	PaletteContainer parent = selected.getParent();
-	if (selected instanceof PaletteContainer) {
+	
+	PaletteContainer parent;
+	if (selected instanceof PaletteContainer)
 		parent = (PaletteContainer)selected;
-	}
+	else
+		parent = selected.getParent();
+	
 	return parent.getUserModificationPermission() == PaletteEntry.PERMISSION_FULL_MODIFICATION
 		&& parent.acceptsType(determineTypeForNewEntry(selected));
 }
