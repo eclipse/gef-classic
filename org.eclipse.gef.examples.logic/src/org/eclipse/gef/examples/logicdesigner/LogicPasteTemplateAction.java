@@ -1,7 +1,6 @@
 package org.eclipse.gef.examples.logicdesigner;
 
 import org.eclipse.gef.requests.CreateRequest.Factory;
-import org.eclipse.gef.ui.actions.PasteTemplateAction;
 import org.eclipse.ui.IEditorPart;
 
 /**

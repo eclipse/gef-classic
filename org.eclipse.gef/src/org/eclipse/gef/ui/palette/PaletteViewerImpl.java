@@ -63,9 +63,6 @@ public void addPaletteListener(PaletteListener paletteListener) {
 		paletteListeners.add(paletteListener);
 }
 
-public void addSelectionChangedListener(ISelectionChangedListener listener) {
-}
-
 protected void createDefaultRoot() {
 	setRootEditPart(new PaletteRootEditPart());
 }
@@ -121,10 +118,6 @@ public PaletteViewerPreferences getPaletteViewerPreferencesSource() {
 	return prefs;
 }
 
-public ISelection getSelection() {
-	return StructuredSelection.EMPTY;
-}
-
 /**
  * @see org.eclipse.gef.ui.parts.GraphicalViewerImpl#hookControl()
  */
@@ -142,9 +135,6 @@ public PaletteToolEntry getSelectedEntry() {
 
 public void removePaletteListener(PaletteListener paletteListener) {
 	paletteListeners.remove(paletteListener);
-}
-
-public void removeSelectionChangedListener(ISelectionChangedListener listener) {
 }
 
 /**
@@ -205,9 +195,8 @@ public void setSelection(PaletteEntry entry) {
 		}
 	} else {
 		selectedEntry = entry;
-		PaletteEditPart ep = (PaletteEditPart)getEditPartRegistry().get(entry);
-		if (ep instanceof EntryEditPart)
-			((EntryEditPart)ep).select();
+		EntryEditPart ep = (EntryEditPart)getEditPartRegistry().get(entry);
+		ep.select();
 		firePaletteSelectionChanged();
 	}
 }

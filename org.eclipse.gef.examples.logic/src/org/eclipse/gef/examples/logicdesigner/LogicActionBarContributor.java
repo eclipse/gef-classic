@@ -69,32 +69,6 @@ protected void createActions() {
 	action = new AlignmentRetargetAction(PositionConstants.BOTTOM);
 	getPage().addPartListener(action);
 	retargetActions.put(action.getId(), action);
-
-//	// Create copy action
-//	action = new RetargetAction(IWorkbenchActionConstants.COPY, 
-//								LogicMessages.CopyAction_ActionLabelText);
-//	action.setImageDescriptor(WorkbenchImages.getImageDescriptor(
-//								IWorkbenchGraphicConstants.IMG_CTOOL_COPY_EDIT));
-//	action.setHoverImageDescriptor(WorkbenchImages.getImageDescriptor(
-//								IWorkbenchGraphicConstants.IMG_CTOOL_COPY_EDIT_HOVER));
-//	action.setDisabledImageDescriptor(WorkbenchImages.getImageDescriptor(
-//								IWorkbenchGraphicConstants.IMG_CTOOL_COPY_EDIT_DISABLED));
-//	getPage().addPartListener(action);
-//	retargetActions.put(IWorkbenchActionConstants.COPY, action);
-
-	// Create zoom in action
-//	action = new RetargetAction(ZoomAction.ZOOM_OUT, 
-//								LogicMessages.ZoomAction_ZoomOut_ActionLabelText);
-//	action.setImageDescriptor(SharedImages.DESC_ZOOM_OUT);
-//	getPage().addPartListener(action);
-//	retargetActions.put(ZoomAction.ZOOM_OUT, action);
-
-	// Create zoom in action
-//	action = new RetargetAction(ZoomAction.ZOOM_IN, 
-//								LogicMessages.ZoomAction_ZoomIn_ActionLabelText);
-//	action.setImageDescriptor(SharedImages.DESC_ZOOM_IN);
-//	getPage().addPartListener(action);
-//	retargetActions.put(ZoomAction.ZOOM_IN, action);
 }
 
 /**

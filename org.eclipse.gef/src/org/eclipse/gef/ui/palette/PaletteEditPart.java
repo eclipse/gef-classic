@@ -95,7 +95,14 @@ protected AccessibleEditPart getAccessibleEditPart() {
  * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#getDragTracker(Request)
  */
 public DragTracker getDragTracker(Request request) {
-	return new SelectEditPartTracker(this);
+	return new SelectEditPartTracker(this) {
+		protected void performSelection() {
+			if (hasSelectionOccurred())
+				return;
+			setFlag(FLAG_SELECTION_PERFORMED, true);
+			getCurrentViewer().select(getSourceEditPart());
+		}
+	};
 }
 
 /**

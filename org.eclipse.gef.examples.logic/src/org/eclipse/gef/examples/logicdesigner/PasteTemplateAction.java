@@ -1,15 +1,21 @@
-package org.eclipse.gef.ui.actions;
+package org.eclipse.gef.examples.logicdesigner;
+
+import org.eclipse.ui.IEditorPart;
 
 import org.eclipse.draw2d.geometry.Point;
+
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.internal.GEFMessages;
 import org.eclipse.gef.requests.CreateRequest;
-import org.eclipse.ui.IEditorPart;
+import org.eclipse.gef.ui.actions.Clipboard;
+import org.eclipse.gef.ui.actions.GEFActionConstants;
+import org.eclipse.gef.ui.actions.SelectionAction;
 
 /**
- * If the current object on the system clipboard is a template and the current viewer is
- * a graphical viewer, this action will paste the template to the viewer.
+ * If the current object on the default GEF {@link org.eclipse.gef.ui.actions.Clipboard}
+ * is a template and the current viewer is a graphical viewer, this action will paste the
+ * template to the viewer.
  * @author Eric Bordeau
  */
 public abstract class PasteTemplateAction extends SelectionAction {
@@ -25,13 +31,23 @@ public PasteTemplateAction(IEditorPart editor) {
 }
 
 /**
- * @see org.eclipse.gef.ui.actions.EditorPartAction#calculateEnabled()
+ * Returns <code>true</code> if the {@link Clipboard clipboard's} contents are not
+ * <code>null</code> and the command returned by {@link #createPasteCommand()} can
+ * execute.
  */
 protected boolean calculateEnabled() {
-	return getClipboardContents() != null;
+	Command command = createPasteCommand();
+	return getClipboardContents() != null && command != null && command.canExecute();
 }
 
+/**
+ * Creates and returns a command (which may be <code>null</code>) to create a new EditPart
+ * based on the template on the clipboard.
+ * @return the paste command
+ */
 protected Command createPasteCommand() {
+	if (getSelectedObjects() == null || getSelectedObjects().isEmpty())
+		return null;
 	CreateRequest request = new CreateRequest();
 	request.setFactory(getFactory(getClipboardContents()));
 	request.setLocation(new Point(10, 10));
@@ -39,6 +55,10 @@ protected Command createPasteCommand() {
 	return ep.getCommand(request);
 }
 
+/**
+ * Returns the contents of the default GEF {@link Clipboard}.
+ * @return the clipboard's contents
+ */
 protected Object getClipboardContents() {
 	return Clipboard.getDefault().getContents();
 }
@@ -60,7 +80,7 @@ protected void init() {
 }
 
 /**
- * @see org.eclipse.jface.action.Action#run()
+ * Executes the command returned by {@link #createPasteCommand()}.
  */
 public void run() {
 	execute(createPasteCommand());

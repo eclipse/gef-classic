@@ -1,37 +1,28 @@
 package org.eclipse.gef.ui.actions;
 
-import java.util.List;
+import org.eclipse.jface.viewers.*;
+import org.eclipse.ui.IEditorPart;
 
 import org.eclipse.gef.internal.GEFMessages;
 import org.eclipse.gef.palette.PaletteTemplateEntry;
-import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.eclipse.gef.ui.palette.TemplateEditPart;
-import org.eclipse.ui.IEditorPart;
 
 /**
- * Copies the currently selected template in the palatte to the system clipboard.
+ * Copies the currently selected template in the palatte to the default GEF 
+ * {@link org.eclipse.gef.ui.actions.Clipboard}.
  * @author Eric Bordeau
  */
 public class CopyTemplateAction 
-	extends SelectionAction
+	extends EditorPartAction
+	implements ISelectionChangedListener
 {
 
-private PaletteTemplateEntry selectedEntry;
+private TemplateEditPart selectedPart;
 
 /**
- * CopyTemplateAction constructor.  Adds this action as a palette listener to the palette
- * veiwer that was passed in.
- * @param editor the editor
- * @param viewer the palette viewer
- */
-public CopyTemplateAction(IEditorPart editor, PaletteViewer viewer) {
-	super(editor);
-}
-
-/**
- * If you use this constructor, you must manually add this action to the palette viewer's
- * list of palette listeners.  Otherwise, this action's enabled state won't be updated
- * properly. 
+ * Constructs a new CopyTemplateAction.  You must manually add this action to the palette
+ * viewer's list of selection listeners.  Otherwise, this action's enabled state won't be
+ * updated properly.
  * 
  * @see org.eclipse.gef.ui.actions.EditorPartAction#EditorPartAction(IEditorPart)
  */
@@ -40,33 +31,18 @@ public CopyTemplateAction(IEditorPart editor) {
 }
 
 /**
- * @see org.eclipse.gef.ui.actions.EditorPartAction#calculateEnabled()
+ * Returns whether the selected EditPart is a {@link TemplateEditPart}.
+ * @return whether the selected EditPart is a TemplateEditPart
  */
 protected boolean calculateEnabled() {
-	return selectedEntry != null;
+	return selectedPart != null;
 }
 
 /**
  * @see org.eclipse.gef.ui.actions.EditorPartAction#dispose()
  */
 public void dispose() {
-	selectedEntry = null;
-}
-
-/**
- * @see org.eclipse.gef.ui.actions.SelectionAction#handleSelectionChanged()
- */
-protected void handleSelectionChanged() {
-	selectedEntry = null;
-	List sel = getSelectedObjects();
-	if (sel != null && sel.size() == 1) {
-		Object obj = sel.get(0);
-		if (obj instanceof TemplateEditPart) {
-			TemplateEditPart ep = (TemplateEditPart)obj;
-			selectedEntry = (PaletteTemplateEntry)ep.getModel();
-		}
-	}
-	super.handleSelectionChanged();
+	selectedPart = null;
 }
 
 /**
@@ -78,10 +54,31 @@ protected void init() {
 }
 
 /**
- * @see org.eclipse.jface.action.Action#run()
+ * Sets the default {@link Clipboard Clipboard's} contents to be the currently selected
+ * template.
  */
 public void run() {
-	Clipboard.getDefault().setContents(selectedEntry.getTemplate());
+	PaletteTemplateEntry entry = (PaletteTemplateEntry)selectedPart.getModel();
+	Clipboard.getDefault().setContents(entry.getTemplate());
+}
+
+/**
+ * Sets the selected EditPart and refreshes the enabled state of this action.
+ * 
+ * @see org.eclipse.jface.viewers.ISelectionChangedListener#selectionChanged(org.eclipse.jface.viewers.SelectionChangedEvent)
+ */
+public void selectionChanged(SelectionChangedEvent event) {
+	ISelection s = event.getSelection();
+	if (!(s instanceof IStructuredSelection))
+		return;
+	IStructuredSelection selection = (IStructuredSelection)s;
+	selectedPart = null;
+	if (selection != null && selection.size() == 1) {
+		Object obj = selection.getFirstElement();
+		if (obj instanceof TemplateEditPart)
+			selectedPart = (TemplateEditPart)obj;
+	}
+	refresh();
 }
 
 }
