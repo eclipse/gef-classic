@@ -71,8 +71,10 @@ void add(IFigure figure, int index);
 void add(IFigure figure, Object constraint);
 
 /**
- * Adds the given IFigure as a child of this IFigure at the given index with the given
- * constraint.
+ * Adds the child IFigure using the specified index and constraint. The child is removed
+ * from any previous parent.
+ * @throws IndexOutOfBoundsException if the index is out of range
+ * @throws IllegalArgumentException if adding the child creates a cycle
  * @param figure The IFigure to add
  * @param constraint The newly added IFigure's constraint
  * @param index The index where the IFigure should be added
@@ -191,7 +193,7 @@ IFigure findFigureAtExcluding(int x, int y, Collection collection);
 IFigure findMouseEventTargetAt(int x, int y);
 
 /**
- * Returns the background color.
+ * Returns the background color. Background color can be inherited from the parent.
  * @return The background color
  */
 Color getBackgroundColor();
@@ -205,7 +207,7 @@ Border getBorder();
 /**
  * Returns the smallest rectangle completely enclosing the IFigure. Implementation may
  * return the Rectangle by reference. For this reason, callers of this method must not
- * modify the returned Rectangle.
+ * modify the returned Rectangle. The Rectangle's values may change in the future.
  * @return This IFigure's bounds
  */
 Rectangle getBounds();
@@ -596,16 +598,17 @@ void setBackgroundColor(Color c);
 void setBorder(Border b);
 
 /**
- * Sets the bounds to the given rectangle.
+ * Sets the bounds to the bounds of the specified <code>Rectangle</code>.
  * @param rect The new bounds
  */
 void setBounds(Rectangle rect);
 
 /**
- * @deprecated Set the constraint while adding the Figure.
- * Sets the constraint of a previously added child.
- * @param child The IFigure whose constraint is being set
- * @param constraint The constraint
+ * Convenience method to set the constraint of the specified child in the current
+ * LayoutManager.
+ * @throws IllegalArgumentException if the child is not contained by this Figure
+ * @param child The figure whose constraint is being set
+ * @param constraint the constraint
  */
 void setConstraint(IFigure child, Object constraint);
 

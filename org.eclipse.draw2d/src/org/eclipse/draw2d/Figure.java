@@ -1218,7 +1218,6 @@ protected void setChildrenOrientation(int orientation) {
 }
 
 /**
- * @deprecated Set the constraint while adding the Figure.
  * @see org.eclipse.draw2d.IFigure#setConstraint(IFigure, Object)
  */
 public void setConstraint(IFigure child, Object constraint) {
