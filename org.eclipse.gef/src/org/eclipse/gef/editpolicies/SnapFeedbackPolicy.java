@@ -10,15 +10,25 @@
  *******************************************************************************/
 package org.eclipse.gef.editpolicies;
 
-import org.eclipse.swt.graphics.*;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.graphics.PaletteData;
 import org.eclipse.swt.widgets.Display;
-
-import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.geometry.*;
+import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.Figure;
+import org.eclipse.draw2d.FigureUtilities;
+import org.eclipse.draw2d.Graphics;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.PrecisionPoint;
 import org.eclipse.draw2d.geometry.Rectangle;
-
-import org.eclipse.gef.*;
+import org.eclipse.gef.GraphicalEditPart;
+import org.eclipse.gef.LayerConstants;
+import org.eclipse.gef.Request;
+import org.eclipse.gef.SnapToGeometry;
+import org.eclipse.gef.SnapToGuides;
 
 /**
  * @author Pratik Shah
@@ -121,7 +131,7 @@ void highlightGuide(Integer pos, Color color, int offset) {
 	IFigure contentPane = ((GraphicalEditPart)getHost()).getContentPane();
 	contentPane.translateToParent(loc);
 	contentPane.translateToAbsolute(loc);
-	
+
 	if (location[offset] == null || !location[offset].equals(pos)) {
 		location[offset] = pos;		
 		if (guide[offset] != null) {
@@ -134,9 +144,8 @@ void highlightGuide(Integer pos, Color color, int offset) {
 		addFeedback(fig);
 		fig.translateToRelative(loc);
 		position = offset % 2 == 0 ? loc.x : loc.y;
-	
 		Rectangle figBounds = getLayer(LayerConstants.FEEDBACK_LAYER)
-			.getBounds().getCopy();
+				.getBounds().getCopy();
 		if ((offset % 2) == 1) {
 			figBounds.height = 1;
 			figBounds.y = position;
@@ -144,7 +153,17 @@ void highlightGuide(Integer pos, Color color, int offset) {
 			figBounds.x = position;
 			figBounds.width = 1;
 		}
-		fig.setBounds(figBounds);
+		fig.setBounds(figBounds);	
+	} else {
+		// The feedback layer could have grown (if auto-scrolling), so resize the fade-in
+		// line.
+		IFigure fig = guide[offset];
+		Dimension size = fig.getSize();
+		if ((offset % 2) == 1)
+			size.width = getLayer(LayerConstants.FEEDBACK_LAYER).getBounds().width;
+		else
+			size.height = getLayer(LayerConstants.FEEDBACK_LAYER).getBounds().height;
+		fig.setSize(size);
 	}
 }
 
