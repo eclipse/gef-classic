@@ -35,6 +35,8 @@ public Object getNewObject() {
 		return new Activity();
 	else if (template.equals(SequentialActivity.class))	
 		return new SequentialActivity();
+	else if (template.equals(ParallelActivity.class))
+		return new ParallelActivity();
 	return null;
 }
 
