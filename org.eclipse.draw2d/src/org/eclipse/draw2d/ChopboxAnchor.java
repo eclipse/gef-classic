@@ -1,0 +1,82 @@
+package org.eclipse.draw2d;
+/*
+ * Licensed Material - Property of IBM
+ * (C) Copyright IBM Corp. 2001, 2002 - All Rights Reserved.
+ * US Government Users Restricted Rights - Use, duplication or disclosure
+ * restricted by GSA ADP Schedule Contract with IBM Corp.
+ */
+
+import org.eclipse.draw2d.geometry.*;
+
+/**
+ * The ChopboxAnchor's location is found by calculating
+ * the intersection of a line drawn from the center point of its owner's
+ * box to a reference point on that box.
+ * Thus {@link Connection Connections} using the ChopBoxAnchor will
+ * be oriented such that they point to their owner's center.
+ */
+public class ChopboxAnchor
+	extends AbstractConnectionAnchor
+{
+
+public ChopboxAnchor(){}
+
+/**
+ * Constructs a ChopboxAnchor with owner f.
+ * 
+ * @since 2.0
+ */
+public ChopboxAnchor(IFigure f){super(f);}
+
+public Point getLocation(Point reference){
+	Rectangle r = Rectangle.SINGLETON;
+	r.setBounds(getBox());
+	r.translate(-1,-1);
+	r.resize(1,1);
+
+	getOwner().translateToAbsolute(r);
+	float centerX = (float)r.x + 0.5f * (float)r.width;
+	float centerY = (float)r.y + 0.5f * (float)r.height;
+	
+	if (r.isEmpty() || (reference.x == (int)centerX && reference.y == (int)centerY))
+		return new Point((int)centerX, (int)centerY);  //This avoids divide-by-zero
+
+	float dx = (float)reference.x - centerX;
+	float dy = (float)reference.y - centerY;
+	
+	//r.width, r.height, dx, and dy are guaranteed to be non-zero. 
+	float scale = 0.5f / Math.max(Math.abs(dx)/r.width, Math.abs(dy)/r.height);
+
+	dx *= scale;
+	dy *= scale;
+	centerX += dx;
+	centerY += dy;
+
+	return new Point(Math.round(centerX), Math.round(centerY));
+}
+
+/**
+ * Returns the bounds of this ChopboxAnchor's owner.
+ * 
+ * @since 2.0
+ */
+protected Rectangle getBox() {
+	return getOwner().getBounds();
+}
+
+/*
+ * Returns the anchor's reference point. In the case
+ * of the ChopboxAnchor, this is the center of the
+ * anchor's owner.
+ */
+public Point getReferencePoint(){
+	if (getOwner() == null)
+		return null;
+	else{
+		Point ref = getBox().getCenter();
+		getOwner().translateToAbsolute(ref);
+		return ref;
+	}
+}
+
+}

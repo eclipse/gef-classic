@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ============================================================================= -->
+<!-- Define topics for the main guide                                              -->
+<!-- ============================================================================= -->
+<toc label="Reference">
+		<topic label="API Reference" href="reference/api/index.html" />
+</toc>

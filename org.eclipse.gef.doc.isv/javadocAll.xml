@@ -1,0 +1,21 @@
+<project name="JavaDocAll" default="start" basedir="../">
+
+<target name="draw2d">
+	<echo message="Generating javadoc for Draw2d..."/>
+	<ant antfile="org.eclipse.draw2d.doc.isv/javadoc.xml" target="start"/>
+	<echo message="Draw2d javadoc complete." />
+</target>
+
+<target name="gef">
+	<echo message="Generating javadoc for GEF..."/>
+	<ant antfile="org.eclipse.gef.doc.isv/javadoc.xml" target="start"/>
+	<echo message="GEF javadoc complete." />
+</target>
+
+<target name="start">
+	<antcall target="draw2d"/>
+	<antcall target="gef"/>
+</target>
+
+</project>
+

@@ -40,9 +40,9 @@ color="#000000"> org.eclipse.swt.widgets.Shell;</font>
 color="#000000"> org.eclipse.swt.SWT;
 
 </font><font size="2" color="#000084">import</font><font size="2"
-color="#000000"> com.ibm.etools.draw2d.*;
+color="#000000"> org.eclipse.draw2d.*;
 </font><font size="2" color="#000084">import </font><font size="2"
-color="#000000">com.ibm.etools.draw2d.geometry.*;
+color="#000000">org.eclipse.draw2d.geometry.*;
 
 </font><font size="2" color="#000084">public</font><font size="2"
 color="#000000"></font> <font size="2" color="#000084">class</font><font
@@ -78,7 +78,7 @@ color="#000000"> (!display.readAndDispatch ())
 <br>
 Running this will result in:
 <blockquote>
-  <p><img border="0" src="com/ibm/etools/draw2d/doc-files/helloworld.gif"
+  <p><img border="0" src="org/eclipse/draw2d/doc-files/helloworld.gif"
   width="203" height="54"></p>
 </blockquote>
 <h2>What's going on?</h2>
@@ -86,28 +86,28 @@ Running this will result in:
 the <u>SWT composite</u> and the <u>root</u> of the figure hierarchy that you
 want rendered, and the LightweightSystem sets up the rest with default
 values.&nbsp; &quot;The rest&quot; consists of an {@link
-com.ibm.etools.draw2d.EventDispatcher EventDispatcher}, which handles SWT events
+org.eclipse.draw2d.EventDispatcher EventDispatcher}, which handles SWT events
 and dispatches them to figures , and an {@link
-com.ibm.etools.draw2d.UpdateManager UpdateManager}, which handles layout and
+org.eclipse.draw2d.UpdateManager UpdateManager}, which handles layout and
 repaint requests from the figures in that system.</p>
-<p>&nbsp;<img border="0" src="com/ibm/etools/draw2d/doc-files/draw2d.gif"
+<p>&nbsp;<img border="0" src="org/eclipse/draw2d/doc-files/draw2d.gif"
 width="535" height="484"></p>
 <h2>More Examples</h2>
 <table border="0" width="80%" style="border-collapse: collapse" bordercolor="#111111" cellspacing="1">
   <tr>
     <td valign="top">
-    <p align="right"><img border="0" src="com/ibm/etools/draw2d/doc-files/demo2.gif"
+    <p align="right"><img border="0" src="org/eclipse/draw2d/doc-files/demo2.gif"
       width="174" height="107"></td>
     <td colspan="2" valign="top"><b>Demo2</b><br>
     This example shows basic use of a layout manager and how to create some
       of the provided figures.</td>
     <td>&nbsp;</td>
     <td rowspan="3">
-    <img border="0" src="com/ibm/etools/draw2d/doc-files/demo3.gif" width="263" height="330"></td>
+    <img border="0" src="org/eclipse/draw2d/doc-files/demo3.gif" width="263" height="330"></td>
   </tr>
   <tr>
     <td rowspan="2" valign="bottom">
-    <img border="0" src="com/ibm/etools/draw2d/doc-files/demo4.gif" width="243" height="245"></td>
+    <img border="0" src="org/eclipse/draw2d/doc-files/demo4.gif" width="243" height="245"></td>
     <td>&nbsp;</td>
     <td colspan="2" align="right"><b>Demo3<br>
     </b>This example demonstrates button use and the dynamic laying out of 

@@ -1,0 +1,95 @@
+package org.eclipse.draw2d.geometry;
+/*
+ * Licensed Material - Property of IBM
+ * (C) Copyright IBM Corp. 2001, 2002 - All Rights Reserved.
+ * US Government Users Restricted Rights - Use, duplication or disclosure
+ * restricted by GSA ADP Schedule Contract with IBM Corp.
+ */
+
+/**
+ * Conditionally transposes geometrical objects based 
+ * on an "enabled" flag. When enabled, the method 
+ * t(Object) will transpose the passed geometrical object.  
+ * Otherwise, the object will be returned without modification
+ */
+public class Transposer {
+
+protected boolean enabled = false;
+
+/**
+ * Disables transposing of inputs.
+ * 
+ * @see  #enable()
+ * @since 2.0
+ */
+public void disable(){enabled = false;}
+
+/**
+ * Enables transposing of inputs.
+ *
+ * @see  #disable()
+ * @since 2.0
+ */
+public void enable(){enabled = true;}
+
+/**
+ * Sets the enabled state of this Transposer.
+ *
+ * @param e  State to be set.
+ * @since 2.0
+ */
+public void setEnabled(boolean e){enabled = e;}
+
+/**
+ * Returns a new transposed Dimension of the input Dimension.
+ *
+ * @param d  Input dimension being transposed.
+ * @return  The transposed dimension.
+ * @since 2.0
+ */
+public Dimension t(Dimension d){
+	if (enabled)
+		return d.getTransposed();
+	return d;
+}
+
+/**
+ * Returns a new transposed Insets of the input Insets.
+ *
+ * @param i  Insets to be transposed.
+ * @return  The transposed Insets.
+ * @since 2.0
+ */
+public Insets t(Insets i){
+	if (enabled)
+		return i.getTransposed();
+	return i;
+}
+
+/**
+ * Returns a new transposed Point of the input Point.
+ *
+ * @param p  Point to be transposed.
+ * @return  The transposed Point.
+ * @since 2.0
+ */
+public Point t(Point p){
+	if (enabled)
+		return p.getTransposed();
+	return p;
+}
+
+/**
+ * Returns a new transposed Rectangle of the input Rectangle.
+ *
+ * @param r  Rectangle to be transposed.
+ * @return  The trasnposed Rectangle.
+ * @since 2.0
+ */
+public Rectangle t(Rectangle r){
+	if (enabled)
+		return r.getTransposed();
+	return r;
+}
+
+}

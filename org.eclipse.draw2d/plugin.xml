@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 
 <plugin
-   name = "IBM Draw2d"
-   id = "com.ibm.etools.draw2d"
+   name = "Draw2d"
+   id = "org.eclipse.draw2d"
    version = "2.0.0"
-   vendor-name = "IBM">
+   provider-name="Eclipse.org">
 
    <requires>
 	<import plugin="org.eclipse.swt" export="true"/>
@@ -13,10 +13,10 @@
 
    <runtime>
      <library name="runtime/draw2d.jar">
-         <export name="com.ibm.etools.draw2d.*"/>
-         <export name="com.ibm.etools.draw2d.resource.*"/>
-         <export name="com.ibm.etools.draw2d.parts.*"/>
-         <export name="com.ibm.etools.draw2d.geometry.*"/>
+         <export name="org.eclipse.draw2d.*"/>
+         <export name="org.eclipse.draw2d.resource.*"/>
+         <export name="org.eclipse.draw2d.parts.*"/>
+         <export name="org.eclipse.draw2d.geometry.*"/>
      </library>
    </runtime>
 
