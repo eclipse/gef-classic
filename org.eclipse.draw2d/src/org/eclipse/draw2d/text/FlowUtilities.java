@@ -53,7 +53,15 @@ public static int getTextForSpace(TextFragmentBox frag, String string, Font font
 
 	int firstBreak = breakItr.next();
 	MIN = min = (wrapping == ParagraphTextLayout.WORD_WRAP_HARD) ?  firstBreak : 1;
-	max = string.length() + 1;
+	max = string.indexOf("\r\n") + 2; // look for windows newlines //$NON-NLS-1$
+	if (max == 1) { // no windows newlines
+		max = string.indexOf('\r') + 1; // look for macos newlines
+		if (max == 0) { // no macos newlines
+			max = string.indexOf('\n') + 1; // look for unix newlines
+			if (max == 0)  // no unix newlines
+				max = string.length() + 1;
+		}
+	}
 
 	//The size of the current guess
 	int guess = 0,
@@ -69,7 +77,7 @@ public static int getTextForSpace(TextFragmentBox frag, String string, Font font
 		if (guess <= min) guess = min + 1;
 
 		//Measure the current guess
-		guessSize = getTextExtents(string.substring(0, guess), font).width;
+		guessSize = getStringExtents(string.substring(0, guess), font).width;
 
 		if (guessSize <= availableWidth)
 			//We did not use the available width
@@ -133,7 +141,7 @@ public static int getTextForSpace(TextFragmentBox frag, String string, Font font
 
 static void setupFragment(TextFragmentBox frag, Font f, String s) {
 	if (frag.length != s.length())
-		while (frag.length > 0 && s.charAt(frag.length - 1) == ' ')
+		while (frag.length > 0 && Character.isWhitespace(s.charAt(frag.length - 1)))
 			frag.length--;
 	Dimension d = getStringExtents(s.substring(0, frag.length), f);
 	FontMetrics fm = getFontMetrics(f);
