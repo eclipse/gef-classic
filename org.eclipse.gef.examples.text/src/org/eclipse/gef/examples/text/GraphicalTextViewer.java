@@ -9,8 +9,6 @@
 
 package org.eclipse.gef.examples.text;
   
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -23,8 +21,6 @@ import org.eclipse.draw2d.UpdateListener;
 import org.eclipse.draw2d.UpdateManager;
 import org.eclipse.draw2d.geometry.Rectangle;
 
-import org.eclipse.gef.EditPart;
-import org.eclipse.gef.tools.ToolUtilities;
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 
 import org.eclipse.gef.examples.text.edit.TextualEditPart;
@@ -44,65 +40,6 @@ class CaretRefresh implements Runnable {
 private Caret caret;
 private Runnable caretRefresh;
 private SelectionRange selectionRange;
-
-/**
- * @since 3.1
- * @param part
- * @param result
- */
-private void depthFirstTraversal(EditPart part, ArrayList result) {
-	if (part.getChildren().isEmpty())
-		result.add(part);
-	else
-		for (int i = 0; i < part.getChildren().size(); i++)
-			depthFirstTraversal((EditPart)part.getChildren().get(i), result);
-}
-
-/**
- * @since 3.1
- * @param start
- * @param end
- * @return
- */
-private List findLeavesBetweenInclusive(EditPart ll, EditPart rr) {
-	if (ll == rr) return Collections.singletonList(ll);
-	EditPart commonAncestor = ToolUtilities.findCommonAncestor(ll, rr);
-
-	EditPart l = ll.getParent();
-	List list;
-
-	ArrayList result = new ArrayList();
-	while (l != commonAncestor) {
-		list = l.getChildren();
-		int start = list.indexOf(ll);
-		for (int i = start; i < list.size(); i++)
-			depthFirstTraversal((EditPart)list.get(i), result);
-
-		ll = l;
-		l = l.getParent();
-	}
-
-	ArrayList rightSide = new ArrayList();
-	EditPart r = rr.getParent();
-	while (r != commonAncestor) {
-		list = r.getChildren();
-		int end = list.indexOf(rr);
-		for (int i = 0; i <= end; i++)
-			depthFirstTraversal((EditPart)list.get(i), rightSide);
-
-		rr = r;
-		r = r.getParent();
-	}
-
-	list = commonAncestor.getChildren();
-	int start = list.indexOf(ll) + 1;
-	int end = list.indexOf(rr);
-	for (int i = start; i < end; i++)
-		depthFirstTraversal((EditPart)list.get(i), result);
-
-	result.addAll(rightSide);
-	return result;
-}
 
 private Caret getCaret() {
 	if (caret == null && getControl() != null)
@@ -185,8 +122,7 @@ public void setCaretVisible(boolean value) {
 public void setSelectionRange(SelectionRange newRange) {
 	List currentSelection;
 	if (selectionRange != null) {
-		currentSelection = findLeavesBetweenInclusive(selectionRange.begin.part,
-				selectionRange.end.part);
+		currentSelection = selectionRange.getLeafParts();
 		for (int i = 0; i < currentSelection.size(); i++)
 			((TextualEditPart)currentSelection.get(i)).setSelection(-1, -1);
 		selectionRange.begin.part.setSelection(-1, -1);
@@ -194,9 +130,8 @@ public void setSelectionRange(SelectionRange newRange) {
 	}
 	selectionRange = newRange;
 	if (selectionRange != null) {
-		currentSelection = findLeavesBetweenInclusive(selectionRange.begin.part,
-				selectionRange.end.part);
-		for (int i = 0; i < currentSelection.size(); i++) {
+		currentSelection = selectionRange.getLeafParts();
+		for (int i = 1; i < currentSelection.size() - 1; i++) {
 			TextualEditPart textpart = (TextualEditPart)currentSelection.get(i);
 			textpart.setSelection(0, textpart.getLength());
 		}

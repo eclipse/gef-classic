@@ -21,8 +21,8 @@ public class TestModelUtil extends TestCase {
 static List result;
 
 public void testNestedBegin() {
-	Container doc = new Container(Container.TYPE_ROOT);
-	Container branch1 = new Container(0);
+	Container doc = new Block(Container.TYPE_ROOT);
+	Container branch1 = new Block(0);
 	TextRun start = new TextRun("12345");
 
 	doc.add(branch1);
@@ -58,8 +58,8 @@ public void testNestedBegin() {
 }
 
 public void testNestedEnd() {
-	Container doc = new Container(Container.TYPE_ROOT);
-	Container branch1 = new Container(0);
+	Container doc = new Block(Container.TYPE_ROOT);
+	Container branch1 = new Block(0);
 	TextRun run123 = new TextRun("12345");
 
 	branch1.add(run123);

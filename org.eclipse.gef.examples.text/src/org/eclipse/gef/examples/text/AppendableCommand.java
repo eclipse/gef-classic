@@ -17,7 +17,7 @@ package org.eclipse.gef.examples.text;
 public interface AppendableCommand {
 
 /**
- * Returns <code>true</code> if the command has pending, uncommited changes which can be
+ * Returns <code>true</code> if the command has pending, uncommitted changes which can be
  * executed. If this method return <code>true</code>, {@link #executePending()} may be
  * called later.  Otherwise, {@link #flushPending()} should be called to free up any 
  * @since 3.1

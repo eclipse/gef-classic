@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * @since 3.1
  */
-public class Container extends ModelElement {
+public abstract class Container extends ModelElement {
 
 public static final int TYPE_BULLETED_LIST = 1;
 public static final int TYPE_COMMENT = 2;
@@ -104,8 +104,10 @@ public int size() {
 	return getChildren().size();
 }
 
+abstract Container newContainer();
+
 public Container subdivideContainer(int offset) {
-	Container result = new Container(getType());
+	Container result = newContainer();
 	List reparent = getChildren().subList(offset, getChildren().size());
 	removeAll(reparent);
 	result.getChildren().addAll(reparent);

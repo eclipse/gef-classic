@@ -267,7 +267,7 @@ protected TextLocation searchLineAbove(TextLocation location, Rectangle caret) {
 		part = (TextualEditPart)getChildren().get(childIndex);
 		location = part.getNextLocation(LINE_UP_INTO, null, caret);
 		if (location != null) {
-			Rectangle newPlacement = part.getCaretPlacement(location.offset);
+			Rectangle newPlacement = location.part.getCaretPlacement(location.offset);
 			if (lineBounds == null)
 				lineBounds = new Rectangle(newPlacement);
 			else if (lineBounds.y > newPlacement.bottom())

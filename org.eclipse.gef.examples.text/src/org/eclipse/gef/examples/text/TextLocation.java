@@ -13,7 +13,6 @@ import org.eclipse.jface.util.Assert;
 
 import org.eclipse.gef.examples.text.edit.TextualEditPart;
 
-
 /**
  * @since 3.1
  */

@@ -18,9 +18,12 @@ import org.eclipse.gef.editpolicies.GraphicalEditPolicy;
 
 import org.eclipse.gef.examples.text.SelectionRange;
 import org.eclipse.gef.examples.text.TextLocation;
+import org.eclipse.gef.examples.text.model.Block;
 import org.eclipse.gef.examples.text.model.Container;
+import org.eclipse.gef.examples.text.model.InlineContainer;
 import org.eclipse.gef.examples.text.model.ModelLocation;
 import org.eclipse.gef.examples.text.model.TextRun;
+import org.eclipse.gef.examples.text.model.commands.ApplyBooleanStyle;
 import org.eclipse.gef.examples.text.model.commands.CompoundEditCommand;
 import org.eclipse.gef.examples.text.model.commands.ConvertElementCommand;
 import org.eclipse.gef.examples.text.model.commands.InsertString;
@@ -31,8 +34,9 @@ import org.eclipse.gef.examples.text.model.commands.ProcessMacroCommand;
 import org.eclipse.gef.examples.text.model.commands.PromoteElementCommand;
 import org.eclipse.gef.examples.text.model.commands.RemoveRange;
 import org.eclipse.gef.examples.text.model.commands.RemoveText;
+import org.eclipse.gef.examples.text.model.commands.SingleEditCommand;
 import org.eclipse.gef.examples.text.model.commands.SubdivideElement;
-import org.eclipse.gef.examples.text.tools.TextRequest;
+import org.eclipse.gef.examples.text.requests.TextRequest;
 
 /**
  * @since 3.1
@@ -48,7 +52,7 @@ private Command checkForConversion(TextLocation location) {
 	TextRun run = (TextRun)location.part.getModel();
 	String prefix = run.getText().substring(0, location.offset);
 	if (prefix.endsWith("<b>")) {
-		Container converted = new Container(Container.TYPE_INLINE);
+		Container converted = new InlineContainer(Container.TYPE_INLINE);
 		converted.getStyle().setBold(true);
 		TextRun boldText = new TextRun("BOLD");
 		converted.add(boldText);
@@ -58,14 +62,14 @@ private Command checkForConversion(TextLocation location) {
 		return command;
 	} else if (prefix.equals("()")) {
 		ConvertElementCommand command;
-		Container list = new Container(Container.TYPE_BULLETED_LIST);
+		Container list = new Block(Container.TYPE_BULLETED_LIST);
 		TextRun bullet = new TextRun("", TextRun.TYPE_BULLET);
 		list.add(bullet);
 		command = new ConvertElementCommand(run, 0, 2, list, new ModelLocation(bullet, 0));
 		return command;
 	} else if (prefix.equals("import")) {
 		ConvertElementCommand command;
-		Container imports = new Container(Container.TYPE_IMPORT_DECLARATIONS);
+		Container imports = new Block(Container.TYPE_IMPORT_DECLARATIONS);
 		TextRun statement = new TextRun("", TextRun.TYPE_IMPORT);
 		imports.add(statement);
 		command = new ConvertElementCommand(run, 0, 6, imports, new ModelLocation(statement,
@@ -105,6 +109,8 @@ private Command getBackspaceCommand(TextRequest request) {
 }
 
 public Command getCommand(Request request) {
+	if (TextRequest.REQ_STYLE == request.getType())
+		return getTextStyleApplication((TextRequest)request);
 	if (TextRequest.REQ_INSERT == request.getType())
 		return getTextInsertionCommand((TextRequest)request);
 	if (TextRequest.REQ_BACKSPACE == request.getType())
@@ -120,6 +126,24 @@ public Command getCommand(Request request) {
 	if (TextRequest.REQ_INDENT == request.getType())
 		return getIndentCommand((TextRequest)request);
 	return null;
+}
+
+/**
+ * @param request
+ * @return
+ * @since 3.1
+ */
+private Command getTextStyleApplication(TextRequest request) {
+	SelectionRange range = request.getSelectionRange();
+	if (range.isEmpty())
+		return null;
+	
+	ModelLocation start = new ModelLocation((TextRun)range.begin.part.getModel(), range.begin.offset);
+	ModelLocation end = new ModelLocation((TextRun)range.end.part.getModel(), range.end.offset);
+	ApplyBooleanStyle style = new ApplyBooleanStyle(start, end,
+			request.getStyleKeys(), request.getStyleValues());
+	
+	return new SingleEditCommand(style, start, end);
 }
 
 /**

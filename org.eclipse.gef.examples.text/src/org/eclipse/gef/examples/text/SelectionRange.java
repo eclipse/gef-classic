@@ -9,6 +9,13 @@
 
 package org.eclipse.gef.examples.text;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import org.eclipse.gef.EditPart;
+import org.eclipse.gef.tools.ToolUtilities;
+
 import org.eclipse.gef.examples.text.edit.TextualEditPart;
 
 public class SelectionRange {
@@ -18,6 +25,8 @@ public final TextLocation begin;
 public final TextLocation end;
 
 public final boolean isForward;
+
+private List leafParts;
 
 /**
  * Constructs a selection range which starts and ends at the given location. The direction
@@ -61,6 +70,62 @@ public SelectionRange(TextualEditPart part, int offset) {
 
 public SelectionRange(TextualEditPart begin, int bo, TextualEditPart end, int eo) {
 	this(new TextLocation(begin, bo), new TextLocation(end, eo));
+}
+
+private void depthFirstTraversal(EditPart part, ArrayList result) {
+	if (part.getChildren().isEmpty())
+		result.add(part);
+	else
+		for (int i = 0; i < part.getChildren().size(); i++)
+			depthFirstTraversal((EditPart)part.getChildren().get(i), result);
+}
+
+private List findLeavesBetweenInclusive(EditPart left, EditPart right) {
+	if (left == right)
+		return Collections.singletonList(left);
+	EditPart commonAncestor = ToolUtilities.findCommonAncestor(left, right);
+
+	EditPart nextLeft = left.getParent();
+	List children;
+
+	ArrayList result = new ArrayList();
+	while (nextLeft != commonAncestor) {
+		children = nextLeft.getChildren();
+		for (int i = children.indexOf(left); i < children.size(); i++)
+			depthFirstTraversal((EditPart)children.get(i), result);
+
+		left = nextLeft;
+		nextLeft = nextLeft.getParent();
+	}
+
+	ArrayList rightSide = new ArrayList();
+	EditPart nextRight = right.getParent();
+	while (nextRight != commonAncestor) {
+		children = nextRight.getChildren();
+		int end = children.indexOf(right);
+		for (int i = 0; i <= end; i++)
+			depthFirstTraversal((EditPart)children.get(i), rightSide);
+
+		right = nextRight;
+		nextRight = nextRight.getParent();
+	}
+
+	children = commonAncestor.getChildren();
+	int start = children.indexOf(left) + 1;
+	int end = children.indexOf(right);
+	for (int i = start; i < end; i++)
+		depthFirstTraversal((EditPart)children.get(i), result);
+
+	result.addAll(rightSide);
+	return result;
+}
+
+public List getLeafParts() {
+	if (leafParts == null) {
+		List list = findLeavesBetweenInclusive(begin.part, end.part);
+		leafParts = Collections.unmodifiableList(list);
+	}
+	return leafParts;
 }
 
 public boolean isEmpty() {

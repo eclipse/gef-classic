@@ -9,6 +9,9 @@
 
 package org.eclipse.gef.examples.text.tools;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ST;
 import org.eclipse.swt.events.KeyEvent;
@@ -21,6 +24,7 @@ import org.eclipse.draw2d.Cursors;
 
 import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.EditPart;
+import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.tools.SelectionTool;
 import org.eclipse.gef.tools.ToolUtilities;
@@ -31,12 +35,17 @@ import org.eclipse.gef.examples.text.SelectionRange;
 import org.eclipse.gef.examples.text.TextCommand;
 import org.eclipse.gef.examples.text.TextLocation;
 import org.eclipse.gef.examples.text.TextUtilities;
+import org.eclipse.gef.examples.text.actions.StyleListener;
+import org.eclipse.gef.examples.text.actions.StyleProvider;
+import org.eclipse.gef.examples.text.actions.StyleService;
+import org.eclipse.gef.examples.text.edit.TextStyleManager;
 import org.eclipse.gef.examples.text.edit.TextualEditPart;
+import org.eclipse.gef.examples.text.requests.TextRequest;
 
 /**
  * @since 3.1
  */
-public class TextTool extends SelectionTool {
+public class TextTool extends SelectionTool implements StyleProvider {
 
 static final boolean IS_CARBON = "carbon".equals(SWT.getPlatform()); //$NON-NLS-1$
 
@@ -46,14 +55,28 @@ private static final int MODE_DEL = 3;
 
 private static final int MODE_TYPING = 1;
 
-private AppendableCommand pending;
+private StyleListener listener;
+
+private AppendableCommand pendingCommand;
+private List styleKeys = new ArrayList();
+private List styleValues = new ArrayList();
 
 private int textInputMode;
+
+private final GraphicalTextViewer textViewer;
 
 /**
  * @since 3.1
  */
-public TextTool() {}
+public TextTool(GraphicalTextViewer viewer, StyleService service) {
+	this.textViewer = viewer;
+	service.setStyleProvider(this);
+}
+
+public void addStyleListener(StyleListener listener) {
+	Assert.isTrue(this.listener == null);
+	this.listener = listener;
+}
 
 protected Cursor calculateCursor() {
 	EditPart target = getTargetEditPart();
@@ -150,7 +173,7 @@ private boolean doBackspace() {
 	setTextInputMode(MODE_BS);
 	SelectionRange range = getTextualViewer().getSelectionRange();
 	if (range.isEmpty()) {
-		if (handleTextEdit(new TextRequest(TextRequest.REQ_BACKSPACE, range, pending)))
+		if (handleTextEdit(new TextRequest(TextRequest.REQ_BACKSPACE, range, pendingCommand)))
 			return true;
 		doSelect(TextualEditPart.COLUMN_PREVIOUS, false);
 		return false;
@@ -163,7 +186,7 @@ private boolean doDelete() {
 	SelectionRange range = getTextualViewer().getSelectionRange();
 
 	if (range.isEmpty()) {
-		if (handleTextEdit(new TextRequest(TextRequest.REQ_DELETE, range, pending)))
+		if (handleTextEdit(new TextRequest(TextRequest.REQ_DELETE, range, pendingCommand)))
 			return true;
 		doSelect(TextualEditPart.COLUMN_NEXT, false);
 		return false;
@@ -192,7 +215,10 @@ private boolean doIndent() {
 private boolean doInsertContent(char c) {
 	setTextInputMode(MODE_TYPING);
 	TextRequest edit = new TextRequest(getTextualViewer().getSelectionRange(), Character
-			.toString(c), pending);
+			.toString(c), pendingCommand);
+	String keys[] = new String[styleKeys.size()];
+	styleKeys.toArray(keys);
+	edit.setStyles(keys, styleValues.toArray());
 	return handleTextEdit(edit);
 }
 
@@ -232,7 +258,7 @@ private boolean doNewline() {
 	SelectionRange range = getTextualViewer().getSelectionRange();
 	TextRequest edit;
 	Assert.isTrue(range.isEmpty());
-	edit = new TextRequest(TextRequest.REQ_NEWLINE, range, pending);
+	edit = new TextRequest(TextRequest.REQ_NEWLINE, range, pendingCommand);
 	return handleTextEdit(edit);
 }
 
@@ -305,12 +331,57 @@ private boolean doUnindent() {
 	return handleTextEdit(edit);
 }
 
+private void flushStyles() {
+	styleKeys.clear();
+	styleValues.clear();
+}
+
 protected String getDebugName() {
 	return "TextTool";
 }
 
+private Object getSelectionStyle(String styleID, boolean isState) {
+	GraphicalTextViewer viewer = getTextualViewer();
+	TextRequest req = new TextRequest(TextRequest.REQ_STYLE, viewer.getSelectionRange());
+	req.setStyles(new String[] {styleID}, new Object[] {null});
+	EditPart target = getTextTarget(viewer, req);
+	if (target == null)
+		return StyleService.UNDEFINED;
+	TextStyleManager manager = (TextStyleManager)target
+			.getAdapter(TextStyleManager.class);
+	if (isState)
+		return manager.getStyleState(styleID, viewer.getSelectionRange());
+	return manager.getStyleValue(styleID, viewer.getSelectionRange());	
+}
+
+public Object getStyle(String styleID) {
+	for (int i = 0; i < styleKeys.size(); i++)
+		if (styleID.equals(styleKeys.get(i)))
+			return styleValues.get(i);
+	return getSelectionStyle(styleID, false);
+}
+
+public Object getStyleState(String styleID) {
+	return getSelectionStyle(styleID, true);
+}
+
+private TextualEditPart getTextTarget(GraphicalTextViewer viewer, Request request) {
+	SelectionRange range = viewer.getSelectionRange();
+	if (range == null)
+		return null;
+	EditPart target, candidate = ToolUtilities.findCommonAncestor(range.begin.part,
+			range.end.part);
+
+	target = candidate.getTargetEditPart(request);
+	while (target == null && candidate != null) {
+		candidate = candidate.getParent();
+		target = candidate.getTargetEditPart(request);
+	}
+	return (TextualEditPart)target;
+}
+
 GraphicalTextViewer getTextualViewer() {
-	return (GraphicalTextViewer)getCurrentViewer();
+	return textViewer;
 }
 
 protected boolean handleCommandStackChanged() {
@@ -339,16 +410,8 @@ protected boolean handleMove() {
 
 private boolean handleTextEdit(TextRequest edit) {
 	GraphicalTextViewer viewer = getTextualViewer();
-	SelectionRange range = viewer.getSelectionRange();
-	EditPart target, candidate = ToolUtilities.findCommonAncestor(range.begin.part,
-			range.end.part);
-
-	target = candidate.getTargetEditPart(edit);
-	while (target == null && candidate != null) {
-		candidate = candidate.getParent();
-		target = candidate.getTargetEditPart(edit);
-	}
-
+	EditPart target = getTextTarget(viewer, edit);
+	
 	Command insert = null;
 	if (target != null)
 		insert = target.getCommand(edit);
@@ -356,23 +419,21 @@ private boolean handleTextEdit(TextRequest edit) {
 	if (insert == null)
 		return false;
 
-	if (pending == null || insert != pending) {
+	if (pendingCommand == null || insert != pendingCommand) {
 		if (!insert.canExecute())
 			return false;
 		executeCommand(insert);
 		if (insert instanceof AppendableCommand)
-			pending = (AppendableCommand)insert;
+			pendingCommand = (AppendableCommand)insert;
 		else
-			pending = null;
+			pendingCommand = null;
 	} else {
-		if (!pending.canExecutePending())
+		if (!pendingCommand.canExecutePending())
 			return false;
-		pending.executePending();
+		pendingCommand.executePending();
+		viewer.setSelectionRange(((TextCommand)pendingCommand).getExecuteSelectionRange(viewer));
 	}
 
-	TextCommand textCommand = (TextCommand)insert;
-	viewer.setSelectionRange(new SelectionRange(textCommand
-			.getExecuteSelectionRange(viewer).end));
 	return true;
 }
 
@@ -435,18 +496,61 @@ private int lookupAction(int i) {
 	return 0;
 }
 
+public void removeStyleListener(StyleListener listener) {
+	Assert.isTrue(this.listener == listener);
+	this.listener = null;
+}
+
 public void setDragTracker(DragTracker newDragTracker) {
-	super.setDragTracker(newDragTracker);
+	if (getDragTracker() == newDragTracker)
+		return;
 	setTextInputMode(0);
+	super.setDragTracker(newDragTracker);
+}
+
+public void setStyle(String styleID, Object newValue) {
+	
+	//Check for cancellations: lookup old style and remove any pending ones
+	Object oldValue = getSelectionStyle(styleID, false);
+	if (newValue.equals(oldValue)) {
+		int prev = styleKeys.indexOf(styleID);
+		if (prev != - 1) {
+			styleKeys.remove(prev);
+			styleValues.remove(prev);
+			return;
+		}
+	}
+
+	//Try to apply immediately, pend otherwise.
+	GraphicalTextViewer viewer = getTextualViewer();
+	TextRequest req = new TextRequest(TextRequest.REQ_STYLE, viewer.getSelectionRange());
+	//$TODO should this be all pending styles or just the recently set?
+	req.setStyles(new String[] {styleID}, new Object[] {newValue});
+	EditPart target = getTextTarget(viewer, req);
+	Command c = target.getCommand(req);
+	if (c == null) {
+		int prev = styleKeys.indexOf(styleID);
+		if (prev != - 1) {
+			styleKeys.remove(prev);
+			styleValues.remove(prev);
+		}
+		styleKeys.add(0, styleID);
+		styleValues.add(0, styleValues);
+	} else if (c.canExecute()) {
+		//$TODO cleanup any pending styles?
+		executeCommand(c);
+	}
 }
 
 /**
  * @since 3.1
- * @param mode_typing2
+ * @param mode the new input mode
  */
 private void setTextInputMode(int mode) {
 	if (textInputMode != mode)
-		pending = null;
+		pendingCommand = null;
+	if (textInputMode != MODE_TYPING)
+		flushStyles();
 	textInputMode = mode;
 }
 

@@ -23,12 +23,13 @@
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            default="true"
-            name="Document Editor"
-            extensions="text"
-            icon="none.gif"
             class="org.eclipse.gef.examples.text.TextEditor"
-            id="GEF Text Example">
+            icon="none.gif"
+            default="true"
+            contributorClass="org.eclipse.gef.examples.text.TextActionBarContributor"
+            name="Document Editor"
+            id="GEF Text Example"
+            extensions="text">
       </editor>
    </extension>
 </plugin>

@@ -12,8 +12,10 @@ package org.eclipse.gef.examples.text;
 import org.eclipse.swt.widgets.Composite;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.action.IAction;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
+import org.eclipse.ui.IKeyBindingService;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
@@ -31,12 +33,15 @@ import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.gef.commands.CommandStackEvent;
 import org.eclipse.gef.commands.CommandStackEventListener;
 import org.eclipse.gef.editparts.ScalableRootEditPart;
+import org.eclipse.gef.ui.actions.ActionRegistry;
+import org.eclipse.gef.ui.actions.GEFActionConstants;
 import org.eclipse.gef.ui.parts.ContentOutlinePage;
 import org.eclipse.gef.ui.parts.GraphicalEditor;
 import org.eclipse.gef.ui.parts.TreeViewer;
 
+import org.eclipse.gef.examples.text.actions.StyleAction;
+import org.eclipse.gef.examples.text.actions.StyleService;
 import org.eclipse.gef.examples.text.edit.BlockTextualPart;
-import org.eclipse.gef.examples.text.edit.CompoundTextualPart;
 import org.eclipse.gef.examples.text.edit.ContainerTreePart;
 import org.eclipse.gef.examples.text.edit.DocumentPart;
 import org.eclipse.gef.examples.text.edit.ImportsPart;
@@ -44,7 +49,9 @@ import org.eclipse.gef.examples.text.edit.InlineTextualPart;
 import org.eclipse.gef.examples.text.edit.TextFlowPart;
 import org.eclipse.gef.examples.text.edit.TextLayoutPart;
 import org.eclipse.gef.examples.text.edit.TextRunTreePart;
+import org.eclipse.gef.examples.text.model.Block;
 import org.eclipse.gef.examples.text.model.Container;
+import org.eclipse.gef.examples.text.model.InlineContainer;
 import org.eclipse.gef.examples.text.model.TextRun;
 import org.eclipse.gef.examples.text.tools.TextTool;
 
@@ -54,6 +61,7 @@ import org.eclipse.gef.examples.text.tools.TextTool;
 public class TextEditor extends GraphicalEditor {
 
 private Container doc;
+private StyleService styleService = new StyleService();
 
 class TextOutlinePage extends ContentOutlinePage {
 
@@ -80,9 +88,50 @@ class TextOutlinePage extends ContentOutlinePage {
  */
 protected void configureGraphicalViewer() {
 	super.configureGraphicalViewer();
+	getEditDomain().setDefaultTool(
+			new TextTool((GraphicalTextViewer)getGraphicalViewer(), styleService));
+	getEditDomain().loadDefaultTool();
+
 	getGraphicalViewer().setRootEditPart(new ScalableRootEditPart());
 	((FigureCanvas)getGraphicalViewer().getControl()).getViewport()
 			.setContentsTracksWidth(true);
+}
+
+/**
+ * @see org.eclipse.gef.ui.parts.GraphicalEditor#createActions()
+ */
+protected void createActions() {
+	super.createActions();
+	IKeyBindingService service = getSite().getKeyBindingService();
+	ActionRegistry registry = getActionRegistry();
+	IAction action;
+	
+	action = new StyleAction(this, GEFActionConstants.STYLE_BOLD);
+	registry.registerAction(action);
+	getSelectionActions().add(action.getId());
+	service.registerAction(action);
+
+	action = new StyleAction(this, GEFActionConstants.STYLE_ITALIC);
+	registry.registerAction(action);
+	getSelectionActions().add(action.getId());
+	service.registerAction(action);
+
+	action = new StyleAction(this, GEFActionConstants.STYLE_UNDERLINE);
+	registry.registerAction(action);
+	getSelectionActions().add(action.getId());
+	service.registerAction(action);
+	
+	action = new StyleAction(this, GEFActionConstants.BLOCK_ALIGN_LEFT);
+	registry.registerAction(action);
+	getSelectionActions().add(action.getId());
+	
+	action = new StyleAction(this, GEFActionConstants.BLOCK_ALIGN_CENTER);
+	registry.registerAction(action);
+	getSelectionActions().add(action.getId());
+	
+	action = new StyleAction(this, GEFActionConstants.BLOCK_ALIGN_RIGHT);
+	registry.registerAction(action);
+	getSelectionActions().add(action.getId());
 }
 
 /**
@@ -100,6 +149,8 @@ protected void createGraphicalViewer(Composite parent) {
 public Object getAdapter(Class type) {
 	if (type == IContentOutlinePage.class)
 		return createOutlinePage();
+	if (type == StyleService.class)
+		return styleService;
 	return super.getAdapter(type);
 }
 
@@ -141,9 +192,9 @@ protected void initializeGraphicalViewer() {
 		}
 	});
 
-	doc = new Container(Container.TYPE_ROOT);
+	doc = new Block(Container.TYPE_ROOT);
 
-	Container block = new Container(Container.TYPE_COMMENT);
+	Container block = new Block(Container.TYPE_COMMENT);
 	
 	block.add(new TextRun("Copyright (c) 2004 IBM Corporation and others. All rights reserved. This program and " +
 			"the accompanying materials are made available under the terms of the Common Public " +
@@ -151,7 +202,7 @@ protected void initializeGraphicalViewer() {
 			"http://www.eclipse.org/legal/cpl-v10.html\r\n" + 
 			"Contributors: IBM Corporation - initial API and implementation"));
 	
-	Container inline = new Container(Container.TYPE_INLINE);
+	Container inline = new InlineContainer(Container.TYPE_INLINE);
 	inline.getStyle().setBold(true);
 	inline.add(new TextRun("ABC def GHI jkl MNO pqr STU vwxyz"));
 	block.add(inline);
@@ -182,18 +233,24 @@ public void init(IEditorSite site, IEditorInput input) throws PartInitException 
 			TextCommand command = (TextCommand)event.getCommand();
 			if (command != null) {
 				GraphicalTextViewer textViewer = (GraphicalTextViewer)getGraphicalViewer();
-				if (event.getDetail() == CommandStack.POST_REDO)
+				if (event.getDetail() == CommandStack.POST_EXECUTE)
+					textViewer.setSelectionRange(command
+							.getExecuteSelectionRange(textViewer));
+				else if (event.getDetail() == CommandStack.POST_REDO)
 					textViewer.setSelectionRange(command
 							.getRedoSelectionRange(textViewer));
 				else if (event.getDetail() == CommandStack.POST_UNDO)
 						textViewer.setSelectionRange(command
 								.getUndoSelectionRange(textViewer));
+				
 			}
 		}
-	});
-	getEditDomain().setDefaultTool(new TextTool());
-	getEditDomain().loadDefaultTool();
+	}); 
+	
 	super.init(site, input);
+
+	site.getKeyBindingService().setScopes(
+			new String[] {GEFActionConstants.CONTEXT_TEXT});
 	site.getActionBars().setGlobalActionHandler(ActionFactory.UNDO.getId(),
 			getActionRegistry().getAction(ActionFactory.UNDO.getId()));
 	site.getActionBars().setGlobalActionHandler(ActionFactory.REDO.getId(),

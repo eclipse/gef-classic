@@ -7,7 +7,7 @@
  * Contributors: IBM Corporation - initial API and implementation
  ****************************************************************************************/
 
-package org.eclipse.gef.examples.text.tools;
+package org.eclipse.gef.examples.text.requests;
 
 import org.eclipse.gef.Request;
 
@@ -23,7 +23,7 @@ public static final String REQ_BACKSPACE = "TextRequest.backspace";
 
 /**
  * The Request type for a break in the current line.  A line break is a newline within the
- * current paragraph or block, such as a bulleted or numbered list.  This requst indicates
+ * current paragraph or block, such as a bulleted or numbered list.  This request indicates
  * that SHIFT+ENTER was received
  */
 public static final String REQ_BREAK = "TextRequest.breakLine";
@@ -33,6 +33,8 @@ public static final String REQ_DELETE = "TextRequest.delete";
 public static final String REQ_INDENT = "TextRequest.indentText";
 
 public static final String REQ_INSERT = "TextRequest.input";
+
+public static final String REQ_STYLE = "TextRequest.style";
 
 /**
  * The Request type for a new page.  A "Page" may be interpreted to mean anything based
@@ -50,8 +52,9 @@ public static final String REQ_UNINDENT = "TextRequest.unindentText";
 private AppendableCommand previous;
 
 private SelectionRange range;
-
 private String text;
+private String[] styleKeys;
+private Object[] styleValues;
 
 /**
  * @param type
@@ -86,8 +89,30 @@ public SelectionRange getSelectionRange() {
 	return range;
 }
 
+/**
+ * @return the keys starting with most recent
+ * @since 3.1
+ */
+public String[] getStyleKeys() {
+	return styleKeys;
+}
+
+/**
+ * 
+ * @return the values starting with the most recent
+ * @since 3.1
+ */
+public Object[] getStyleValues() {
+	return styleValues;
+}
+
 public String getText() {
 	return text;
+}
+
+public void setStyles(String keys[], Object values[]) {
+	this.styleKeys = keys;
+	this.styleValues = values;
 }
 
 }
