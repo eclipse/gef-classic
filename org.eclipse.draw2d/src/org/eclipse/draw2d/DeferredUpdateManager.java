@@ -170,6 +170,8 @@ protected void repairDamage() {
 		figure = (IFigure)keys.next();
 		walker = figure.getParent();
 		contribution = (Rectangle)dirtyRegions.get(figure);
+		//A figure can't paint beyond its own bounds
+		contribution.intersect(figure.getBounds());
 		while (!contribution.isEmpty() && walker != null) {
 			walker.translateToParent(contribution);
 			contribution.intersect(walker.getBounds());
