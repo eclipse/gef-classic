@@ -21,7 +21,7 @@ static class RowEntry {
 static class RowKey {
 	int rank;
 	Subgraph s;
-	RowKey() {}
+	RowKey() { }
 	RowKey(Subgraph s, int rank) {
 		this.s = s;
 		this.rank = rank;
@@ -91,7 +91,8 @@ private void pullTogetherSubgraphs() {
 		Subgraph s = n.getParent();
 		if (s != null) {
 			RowEntry entry = getRowEntry(s, currentRow);
-			n.sortValue = n.sortValue * (1.0 - weight) + weight * entry.contribution/entry.count;
+			n.sortValue =
+				n.sortValue * (1.0 - weight) + weight * entry.contribution / entry.count;
 		}
 	}
 }

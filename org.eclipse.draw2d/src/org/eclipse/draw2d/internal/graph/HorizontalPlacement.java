@@ -59,14 +59,14 @@ class NodeCluster extends NodeList {
 	 */
 	public String toString() {
 		updateValues();
-		StringBuffer buffer = new StringBuffer("-----Cluster-------");
-		buffer.append("\n pull:" + pull);
-		buffer.append("\n left:" + leftFreedom);
-		buffer.append("\n right:" + rightFreedom);
-		buffer.append("\n modified:" + modified);
+		StringBuffer buffer = new StringBuffer("-----Cluster-------");//$NON-NLS-1$
+		buffer.append("\n pull:" + pull);//$NON-NLS-1$
+		buffer.append("\n left:" + leftFreedom);//$NON-NLS-1$
+		buffer.append("\n right:" + rightFreedom);//$NON-NLS-1$
+		buffer.append("\n modified:" + modified);//$NON-NLS-1$
 		for (int i = 0; i < this.size(); i++) {
 			Node node = (Node)this.get(i);
-			buffer.append("\n\t"+node);
+			buffer.append("\n\t" + node);//$NON-NLS-1$
 		}
 		return buffer.toString();
 	}
@@ -129,10 +129,10 @@ void addEdges(Node n, Node nPrime) {
 	for (int i = 0; i < n.incoming.size(); i++) {
 		Edge e = n.incoming.getEdge(i);
 		if (e.vNodes != null) {
-			Node nSource = e.vNodes.getNode(e.vNodes.size()-1);
+			Node nSource = e.vNodes.getNode(e.vNodes.size() - 1);
 			Node nPrimeSource = get(nSource);
 			Node ne = new Node (new NodePair(n, nSource));//$NON-NLS-1$
-			ne.y = (n.y + n.height + nSource.y)/2;
+			ne.y = (n.y + n.height + nSource.y) / 2;
 			prime.nodes.add(ne);
 			Edge eu = new Edge(ne, nPrimeSource);
 			Edge ev = new Edge(ne, nPrime);
@@ -145,7 +145,7 @@ void addEdges(Node n, Node nPrime) {
 			Node nSource = e.source;
 			Node nPrimeSource = get(e.source);
 			Node ne = new Node(new NodePair(n, nSource));//$NON-NLS-1$
-			ne.y = (n.y + n.height + nSource.y)/2;
+			ne.y = (n.y + n.height + nSource.y) / 2;
 			prime.nodes.add(ne);
 			Edge eu = new Edge(ne, nPrimeSource);
 			int dw = e.getSourceOffset() - e.getTargetOffset();
@@ -168,7 +168,7 @@ void addEdges(VirtualNode vn, Node nPrime) {
 	Node prevPrime = get(vn.prev);
 	Node vnSource = vn.prev;
 	Node ne = new Node(new NodePair(vn, vnSource));
-	ne.y = (vn.y + vn.height + vnSource.y)/2;
+	ne.y = (vn.y + vn.height + vnSource.y) / 2;
 
 	prime.nodes.add(ne);
 	Edge eu = new Edge(ne, prevPrime);
@@ -303,7 +303,7 @@ void buildGPrime() {
 
 	Rank rank;
 	Node n, nPrime;
-	for (int r = 1; r<ranks.size(); r++){
+	for (int r = 1; r < ranks.size(); r++) {
 		rank = ranks.getRank(r);
 		for (int i = 0; i < rank.count(); i++) {
 			n = rank.getNode(i);
@@ -316,7 +316,7 @@ void buildGPrime() {
 void buildRankSeparators(RankList ranks) {
 	Rank rank;
 	Node n, nPrime, prevNPrime;
-	for (int r = 0; r<ranks.size(); r++){
+	for (int r = 0; r < ranks.size(); r++) {
 		rank = ranks.getRank(r);
 		prevNPrime = null;
 		for (int i = 0; i < rank.count(); i++) {

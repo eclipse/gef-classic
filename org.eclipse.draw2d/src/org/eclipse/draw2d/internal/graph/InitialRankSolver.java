@@ -29,14 +29,13 @@ protected void solve() {
 		rankMe.clear();
 		for (i = 0; i < unranked.size();) {
 			node = unranked.getNode(i);
-			if (node.incoming.isCompletelyFlagged()){
+			if (node.incoming.isCompletelyFlagged()) {
 				rankMe.add(node);
 				unranked.remove(i);
-			}
-			else
+			} else
 				i++;
 		}
-		for (i=0; i < rankMe.size(); i++) {
+		for (i = 0; i < rankMe.size(); i++) {
 			node = rankMe.getNode(i);
 			node.rank = node.incoming.calculateRank();
 			node.outgoing.setFlags(true);
