@@ -227,7 +227,7 @@ public void setZoomManager(ZoomManager zm) {
  * @see org.eclipse.swt.events.SelectionListener#widgetDefaultSelected(SelectionEvent)
  */
 private void handleWidgetDefaultSelected(SelectionEvent event) {
-	// TODO: GTK Workaround (null check) - see SWT bug #44345
+	// TODO: GTK Workaround (fixed in 3.0) - see SWT bug #44345
 	if (zoomManager != null)
 		zoomManager.setZoomAsText(combo.getText());
 }
@@ -236,7 +236,7 @@ private void handleWidgetDefaultSelected(SelectionEvent event) {
  * @see org.eclipse.swt.events.SelectionListener#widgetSelected(SelectionEvent)
  */
 private void handleWidgetSelected(SelectionEvent event) {
-	// TODO: GTK Workaround (null check) - see SWT bug #44345
+	// TODO: GTK Workaround (fixed in 3.0) - see SWT bug #44345
 	if (zoomManager != null)
 		zoomManager.setZoomAsText(combo.getText());
 }
