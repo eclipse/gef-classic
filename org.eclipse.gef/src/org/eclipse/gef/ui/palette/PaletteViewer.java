@@ -339,7 +339,10 @@ public void reveal(EditPart part) {
  * @since 3.0
  */
 public void saveState(IMemento memento) {
-	((PaletteEditPart)getEditPartRegistry().get(getPaletteRoot())).saveState(memento);
+	// Bug# 69026 - The PaletteRoot can be null for VEP
+	PaletteEditPart base = (PaletteEditPart)getEditPartRegistry().get(getPaletteRoot());
+	if (base != null)
+		base.saveState(memento);
 }
 
 /**
