@@ -19,7 +19,6 @@ import org.eclipse.draw2d.FreeformLayer;
 import org.eclipse.draw2d.FreeformLayout;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.MarginBorder;
-import org.eclipse.draw2d.XYLayout;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.EditPart;
@@ -74,10 +73,7 @@ protected void createEditPolicies() {
 	installEditPolicy(EditPolicy.COMPONENT_ROLE, new RootComponentEditPolicy());
 	// handles constraint changes (e.g. moving and/or resizing) of model elements
 	// and creation of new model elements
-	XYLayout layout = (XYLayout) getContentPane().getLayoutManager();
-	installEditPolicy(EditPolicy.LAYOUT_ROLE,  new ShapesXYLayoutEditPolicy(layout));
-	// disable selection feedback for this edit part
-	installEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE, null);
+	installEditPolicy(EditPolicy.LAYOUT_ROLE,  new ShapesXYLayoutEditPolicy());
 }
 
 /* (non-Javadoc)
@@ -120,7 +116,7 @@ public void propertyChange(PropertyChangeEvent evt) {
 	// the ShapeDiagram instance and must cause a call of refreshChildren()
 	// to update the diagram's contents.
 	if (ShapesDiagram.CHILD_ADDED_PROP.equals(prop)
-		|| ShapesDiagram.CHILD_REMOVED_PROP.equals(prop)) {
+			|| ShapesDiagram.CHILD_REMOVED_PROP.equals(prop)) {
 		refreshChildren();
 	}
 }
@@ -131,20 +127,6 @@ public void propertyChange(PropertyChangeEvent evt) {
  * @author Elias Volanakis
  */
 private class ShapesXYLayoutEditPolicy extends XYLayoutEditPolicy {
-
-/** 
- * Create a new instance of this edit policy.
- * @param layout a non-null XYLayout instance. This should be the layout of the editpart's 
- *              figure where this instance is installed.
- * @throws IllegalArgumentException if layout is null 
- * @see DiagramEditPart#createEditPolicies()
- */
-ShapesXYLayoutEditPolicy(XYLayout layout) {
-	if (layout == null) {
-		throw new IllegalArgumentException();
-	}
-	setXyLayout(layout);
-}
 	
 /* (non-Javadoc)
  * @see org.eclipse.gef.editpolicies.ConstrainedLayoutEditPolicy#createAddCommand(org.eclipse.gef.EditPart, java.lang.Object)
