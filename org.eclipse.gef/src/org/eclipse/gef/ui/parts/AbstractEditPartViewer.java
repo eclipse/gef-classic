@@ -118,8 +118,6 @@ public void deselectAll(){
 
 public void handleDispose(DisposeEvent e){
 //	primDeselectAll();
-	if (getControl() != null && !getControl().isDisposed())
-		getControl().dispose();
 	setControl(null);
 }
 
