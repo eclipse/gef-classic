@@ -226,12 +226,12 @@ static TextLayout getTextLayout() {
 }
 
 static boolean isLineBreakingMark(char c) {
-	boolean result = c == '-' || Character.isWhitespace(c);
+	boolean result = Character.isWhitespace(c);
 	if (!result) {
-		// chinese characters and such would be caught in here
+		// chinese characters and such will be caught in here
 		BreakIterator breakItr = BreakIterator.getLineInstance();
 		breakItr.setText("a" + c + "a"); //$NON-NLS-1$ //$NON-NLS-2$
-		result = breakItr.isBoundary(2);
+		result = breakItr.isBoundary(1);
 	}
 	return result;
 }
