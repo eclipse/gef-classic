@@ -14,6 +14,8 @@ private static final String TYPE_NAME = "Template transfer"//$NON-NLS-1$
 	+ ":" + instance.hashCode();//$NON-NLS-1$
 private static final int TYPEID = registerType(TYPE_NAME);
 
+protected TemplateTransfer(){}
+
 public static TemplateTransfer getInstance() {
 	return instance;
 }
