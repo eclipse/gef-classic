@@ -105,9 +105,8 @@ protected void init() { }
  */
 public boolean isEnabled() {
 	if (lazyEnablement)
-		return calculateEnabled();
-	else
-		return super.isEnabled();
+		setEnabled(calculateEnabled());
+	return super.isEnabled();
 }
 
 /**
