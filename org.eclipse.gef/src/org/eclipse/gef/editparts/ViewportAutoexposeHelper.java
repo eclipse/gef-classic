@@ -15,7 +15,7 @@ public class ViewportAutoexposeHelper
 	implements AutoexposeHelper
 {
 
-private static final Insets EXPOSE_THRESHOLD = new Insets(10);
+private static final Insets EXPOSE_THRESHOLD = new Insets(18);
 
 public ViewportAutoexposeHelper(GraphicalEditPart owner) {
 	super(owner);
