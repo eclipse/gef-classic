@@ -49,13 +49,12 @@ public static final String STYLE_UNDERLINE = "org.eclipse.gef.text.underline"; /
  */
 public static final String STYLE_FONT_SIZE = "org.eclipse.gef.text.fontsize"; //$NON-NLS-1$
 
-public static final String BLOCK_ALIGN_CENTER="org.eclipse.gef.text.centerAlign"; //$NON-NLS-1$
-public static final String BLOCK_ALIGN_LEFT ="org.eclipse.gef.text.leftAlign"; //$NON-NLS-1$
-public static final String BLOCK_ALIGN_RIGHT ="org.eclipse.gef.text.rightAlign"; //$NON-NLS-1$
+public static final String BLOCK_ALIGN_CENTER="org.eclipse.gef.text.alignCenter"; //$NON-NLS-1$
+public static final String BLOCK_ALIGN_LEFT ="org.eclipse.gef.text.alignLeft"; //$NON-NLS-1$
+public static final String BLOCK_ALIGN_RIGHT ="org.eclipse.gef.text.alignRight"; //$NON-NLS-1$
 
 public static final String BLOCK_RTL ="org.eclipse.gef.text.rtl"; //$NON-NLS-1$
 public static final String BLOCK_LTR ="org.eclipse.gef.text.ltr"; //$NON-NLS-1$
-
 
 /**
  * Align bottom action id.
