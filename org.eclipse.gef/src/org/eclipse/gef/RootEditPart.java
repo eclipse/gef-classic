@@ -7,25 +7,35 @@ package org.eclipse.gef;
  */
 
 /**
- The top-level EditPart that bridges the gap between EditParts
- and their EditPartViewer.
- The Root can be used to gain access to the viewer.
+ * A RootEditPart is the <i>root</i> of an EditPartViewer. It bridges the gap between
+ * the EditPartViewer and its {@link EditPartViewer#getContents() contents}. It does not
+ * correspond to anything in the model, and typically can not be interacted with by the
+ * User. The Root provides a homogeneous context for the applications "real" EditParts.
  */
 public interface RootEditPart extends EditPart {
 
+/**
+ * Returns the <i>contents</i> EditPart. A RootEditPart only has a single child, called its
+ * <i>contents</i>.
+ * @return the contents. */
 EditPart getContents();
 
 /**
- * Return the EditPartViewerviewer for this root.
- * @return viewer The viewer.
+ * Returns the root's EditPartViewer.
+ * @return The <code>EditPartViewer</code>
  */
 EditPartViewer getViewer();
 
+/**
+ * Sets the <i>contents</i> EditPart. A RootEditPart only has a single child, called its
+ * <i>contents</i>.
+ * @param editpart the contents */
 void setContents(EditPart editpart);
 
 /**
- * Sets the viewer.
+ * Sets the root's EditPartViewer.
+ * @param viewer the EditPartViewer
  */
-void setViewer(EditPartViewer view);
+void setViewer(EditPartViewer viewer);
 
 }
