@@ -17,23 +17,20 @@ public class Label
 
 private static String ELLIPSIS = "..."; //$NON-NLS-1$
 
+
 private Image icon;
 private String text = "";//$NON-NLS-1$
 private String subStringText;
-
-private Dimension
-	textSize,
-	subStringTextSize,
-	iconSize = new Dimension(0,0);
-
-private Point iconLocation, textLocation;
-
-private int
-	textAlignment = CENTER,
-	iconAlignment = CENTER,
-	labelAlignment = CENTER,
-	textPlacement = EAST,
-	iconTextGap = 4;
+private Dimension textSize;
+private Dimension subStringTextSize;
+private Dimension iconSize = new Dimension(0,0);
+private Point iconLocation;
+private Point textLocation;
+private int textAlignment = CENTER;
+private int iconAlignment = CENTER;
+private int labelAlignment = CENTER;
+private int textPlacement = EAST;
+private int iconTextGap = 3;
 
 /**
  * Construct an empty Label.
@@ -153,7 +150,7 @@ private void calculateLocations(){
 		case BOTTOM: offset.height=offset.height*2; offset.scale(0.5f); break;
 		default: offset.scale(0.5f); break;
 	}
-		
+	
 	switch(textPlacement) {
 		case EAST:
 		case WEST: offset.height = 0; break;
@@ -167,7 +164,8 @@ private void calculateLocations(){
 
 private void calculatePlacement() {
 	int gap = iconTextGap;
-	if (icon == null || text.equals("")	) gap = 0;//$NON-NLS-1$
+	if (icon == null || text.equals("")) //$NON-NLS-1$
+		gap = 0;
 	Insets insets = getInsets();
 	
 	switch(textPlacement) {
@@ -428,7 +426,7 @@ protected void paintFigure(Graphics graphics){
 	graphics.translate(bounds.x, bounds.y);
 	if (icon != null)
 		graphics.drawImage(icon, getIconLocation());
-	if( !isEnabled() ){
+	if (!isEnabled()) {
 		graphics.translate(1,1);
 		graphics.setForegroundColor(ColorConstants.buttonLightest);
 		graphics.drawText(getSubStringText(), getTextLocation());
