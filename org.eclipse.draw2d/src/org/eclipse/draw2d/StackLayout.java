@@ -52,6 +52,10 @@ protected Dimension calculateMinimumSize(IFigure figure){
  * @since 2.0
  */
 protected Dimension calculatePreferredSize(IFigure figure, int wHint, int hHint){
+	if (wHint > -1)
+		wHint = Math.max(0, wHint - figure.getInsets().getWidth());
+	if (hHint > -1)
+		hHint = Math.max(0, hHint - figure.getInsets().getHeight());
 	Dimension d = new Dimension();
 	List children = figure.getChildren();
 	IFigure child;
