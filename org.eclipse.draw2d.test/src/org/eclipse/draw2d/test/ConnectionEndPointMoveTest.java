@@ -109,14 +109,8 @@ public void testConnectionDecoration() {
 	conn.layout();
 			
 	contents.getUpdateManager().performUpdate();
-	
-	boolean contains = false;
-	
-	if (lastDamaged.contains(origBounds)) {
-		contains = true;
-	}
-	
-	assertEquals(true, contains);
+		
+	assertTrue(lastDamaged.contains(origBounds));
 }
 
 /*
