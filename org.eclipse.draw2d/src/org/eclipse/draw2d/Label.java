@@ -558,6 +558,7 @@ public void setIconTextGap(int gap) {
 	if (iconTextGap == gap) 
 		return;
 	iconTextGap = gap;
+	repaint();
 	revalidate();
 }
 
