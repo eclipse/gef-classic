@@ -139,6 +139,7 @@ protected boolean handleButtonDown(int button) {
 		}
 	}
 	updateTargetRequest();
+	((SelectionRequest)getTargetRequest()).setLastButtonPressed(button);
 	updateTargetUnderMouse();
 	EditPart editpart = getTargetEditPart();
 	if(editpart != null){
@@ -152,6 +153,7 @@ protected boolean handleButtonDown(int button) {
 protected boolean handleButtonUp(int button) {
 	if (getCurrentInput().isAnyButtonDown())
 		return false;
+	((SelectionRequest)getTargetRequest()).setLastButtonPressed(0);
 	setDragTracker(null);
 	setState(STATE_INITIAL);
 	unlockTargetEditPart();
@@ -430,7 +432,6 @@ protected void updateTargetRequest(){
 	request.setModifiers(getCurrentInput().getModifiers());
 	request.setType(getCommandName());
 	request.setLocation(getLocation());
-	request.setLastButtonPressed(getCurrentInput().getLastButtonPressed());
 	updateHoverRequest();
 }
 

@@ -77,22 +77,7 @@ public static class Input
 	int modifiers;
 	boolean verifyMouseButtons;
 	Point mouse = new Point();
-	List pressedButtons = new ArrayList();
 
-	void buttonPressed(int button) {
-		pressedButtons.add(new Integer(button));
-	}
-	
-	void buttonReleased(int button) {
-		pressedButtons.remove(new Integer(button));
-	}
-	
-	public int getLastButtonPressed() {
-		if (pressedButtons.isEmpty())
-			return -1;
-		return ((Integer)pressedButtons.get(pressedButtons.size()-1)).intValue();
-	}
-	
 	protected int getModifiers() {
 		return modifiers;
 	}
@@ -145,10 +130,6 @@ public static class Input
 	 * <code>state</code> is true.
 	 */
 	public void setMouseButton(int which, boolean state){
-		if (state)
-			buttonPressed(which);
-		else
-			buttonReleased(which);
 		setFlag(1 << which, state);
 	}
 	
