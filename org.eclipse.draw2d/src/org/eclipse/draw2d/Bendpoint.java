@@ -9,16 +9,15 @@ package org.eclipse.draw2d;
 import org.eclipse.draw2d.geometry.Point;
 
 /**
- * A point used by a bendable Connection.
+ * A point used by a bendable {@link org.eclipse.draw2d.Connection}.
  */
 public interface Bendpoint {
 
 /**
- * Returns the location of the bendpoint.  This may return
- * the point by reference and modifying it could produce
- * unpredictable results.
+ * Returns the location of the bendpoint.  This may return the point by reference and
+ * modifying it could produce unpredictable results.
  * 
- * @return the location of the bendpoint.
+ * @return the location of the bendpoint
  */
 Point getLocation();
 

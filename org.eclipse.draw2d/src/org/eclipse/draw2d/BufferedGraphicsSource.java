@@ -28,17 +28,17 @@ private Rectangle inUse;
 
 static ArrayList list = new ArrayList();
 
-public BufferedGraphicsSource(Control c){
+public BufferedGraphicsSource(Control c) {
 	control = c;
-	control.addDisposeListener(new DisposeListener(){
-		public void widgetDisposed(DisposeEvent e){
+	control.addDisposeListener(new DisposeListener() {
+		public void widgetDisposed(DisposeEvent e) {
 			list.remove(BufferedGraphicsSource.this);
 		}
 	});
 	list.add(this);
 }
 
-public void flushGraphics(Rectangle region){
+public void flushGraphics(Rectangle region) {
 	if (inUse.isEmpty())
 		return;
 	controlGC.drawImage(getImage(),
@@ -49,12 +49,12 @@ public void flushGraphics(Rectangle region){
 	ImageCache.checkin(imageBuffer);
 }
 
-public Graphics getGraphics(Rectangle region){
+public Graphics getGraphics(Rectangle region) {
 	if (control == null || control.isDisposed())
 		return null;
 
 	org.eclipse.swt.graphics.Point ptSWT = control.getSize();
-	inUse = new Rectangle(0,0,ptSWT.x, ptSWT.y);
+	inUse = new Rectangle(0, 0, ptSWT.x, ptSWT.y);
 	inUse.intersect(region);
 	if (inUse.isEmpty())
 		return null;
@@ -73,15 +73,15 @@ public Graphics getGraphics(Rectangle region){
 	g.translate(inUse.getLocation().negate());
 	g.setClip(region);
 
-	g.clipRect(new Rectangle(0,0,ptSWT.x, ptSWT.y));
+	g.clipRect(new Rectangle(0, 0, ptSWT.x, ptSWT.y));
 	return g;
 }
 
-protected Image getImage(){
+protected Image getImage() {
 	return imageBuffer;
 }
 
-protected GC getImageGC(){
+protected GC getImageGC() {
 	return imageGC;
 }
 

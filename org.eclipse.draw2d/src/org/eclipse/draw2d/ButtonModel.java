@@ -11,16 +11,21 @@ import java.util.Iterator;
 import org.eclipse.draw2d.util.Timer;
 
 /**
- * A model for buttons.
+ * A model for buttons containing several properties, including enabled, pressed,
+ * selected, rollover enabled and mouseover.
  */
 public class ButtonModel {
 
-public static final String
-         ENABLED_PROPERTY = "enabled", //$NON-NLS-1$
-         PRESSED_PROPERTY = "pressed", //$NON-NLS-1$
-        SELECTED_PROPERTY = "selected", //$NON-NLS-1$
-ROLLOVER_ENABLED_PROPERTY = "rollover enabled", //$NON-NLS-1$
-       MOUSEOVER_PROPERTY = "mouseover"; //$NON-NLS-1$
+/** Enabled property */
+public static final String ENABLED_PROPERTY = "enabled"; //$NON-NLS-1$
+/** Pressed property */
+public static final String PRESSED_PROPERTY = "pressed"; //$NON-NLS-1$
+/** Selected property */
+public static final String SELECTED_PROPERTY = "selected"; //$NON-NLS-1$
+/** Rollover Enabled property */
+public static final String ROLLOVER_ENABLED_PROPERTY = "rollover enabled"; //$NON-NLS-1$
+/** Mouseover property */
+public static final String MOUSEOVER_PROPERTY = "mouseover"; //$NON-NLS-1$
 
 /**
  * @deprecated This property will soon disappear since it is simply defined by
@@ -28,38 +33,58 @@ ROLLOVER_ENABLED_PROPERTY = "rollover enabled", //$NON-NLS-1$
  */
 public static final String ARMED_PROPERTY = "armed";  //$NON-NLS-1$
 
-protected static final int
-           ARMED_FLAG = 1,
-         PRESSED_FLAG = 2,
-       MOUSEOVER_FLAG = 4,
-        SELECTED_FLAG = 8,
-         ENABLED_FLAG = 16,
-ROLLOVER_ENABLED_FLAG = 32,
-             MAX_FLAG = ROLLOVER_ENABLED_FLAG;
+/**
+ * Flags for button states.
+ */
+protected static final int 
+					ARMED_FLAG 				= 1,
+					PRESSED_FLAG 			= 2,
+					MOUSEOVER_FLAG 			= 4,
+					SELECTED_FLAG 			= 8,
+					ENABLED_FLAG 			= 16,
+					ROLLOVER_ENABLED_FLAG 	= 32,
+					MAX_FLAG 				= ROLLOVER_ENABLED_FLAG;
 
 private int state = ENABLED_FLAG;
 private Object data;
 
-public static final int
-	DEFAULT_FIRING_BEHAVIOR = 0,
-	REPEAT_FIRING_BEHAVIOR  = 1;
+/**
+ * Action performed events are not fired until the mouse button is released. 
+ */
+public static final int DEFAULT_FIRING_BEHAVIOR = 0;
 
+/**
+ * Action performed events fire repeatedly until the mouse button is released.
+ */
+public static final int REPEAT_FIRING_BEHAVIOR  = 1;
+
+/**
+ * The name of the action associated with this button.
+ */
 protected String actionName;
 
+/**
+ * The ButtonGroup this button belongs to (if any).
+ */
 protected ButtonGroup group = null;
 
 private EventListenerList listeners = new EventListenerList();
 
-protected ButtonStateTransitionListener firingBehavior;{
+/**
+ * Listens to button state transitions and fires action performed events based on the
+ * desired behavior ({@link #DEFAULT_FIRING_BEHAVIOR} or {@link #REPEAT_FIRING_BEHAVIOR}).
+ */
+protected ButtonStateTransitionListener firingBehavior; {
 	installFiringBehavior();
 }
 
 /**
  * Registers the given listener as an ActionListener.
  * 
+ * @param listener The ActionListener to add
  * @since 2.0
  */
-public void addActionListener(ActionListener listener){
+public void addActionListener(ActionListener listener) {
 	if (listener == null)
 		throw new IllegalArgumentException();
 	listeners.addListener(ActionListener.class, listener);
@@ -68,9 +93,10 @@ public void addActionListener(ActionListener listener){
 /**
  * Registers the given listener as a ChangeListener.
  * 
+ * @param listener The ChangeListener to add
  * @since 2.0
  */
-public void addChangeListener(ChangeListener listener){
+public void addChangeListener(ChangeListener listener) {
 	if (listener == null)
 		throw new IllegalArgumentException();
 	listeners.addListener(ChangeListener.class, listener);
@@ -79,21 +105,21 @@ public void addChangeListener(ChangeListener listener){
 /**
  * Registers the given listener as a ButtonStateTransitionListener.
  * 
+ * @param listener The ButtonStateTransitionListener to add
  * @since 2.0
  */
-public void addStateTransitionListener(ButtonStateTransitionListener listener){
+public void addStateTransitionListener(ButtonStateTransitionListener listener) {
 	if (listener == null)
 		throw new IllegalArgumentException();
 	listeners.addListener(ButtonStateTransitionListener.class, listener);
 }
 
 /**
- * Notifies any ActionListeners on this ButtonModel that an action
- * has been performed.
+ * Notifies any ActionListeners on this ButtonModel that an action has been performed.
  * 
  * @since 2.0
  */
-protected void fireActionPerformed(){
+protected void fireActionPerformed() {
 	Iterator iter = listeners.getListeners(ActionListener.class);
 	ActionEvent action = new ActionEvent(this);
 	while (iter.hasNext())
@@ -102,101 +128,104 @@ protected void fireActionPerformed(){
 }
 
 /**
- * Notifies any listening ButtonStateTransitionListener that the
- * pressed state of this button has been cancelled.
+ * Notifies any listening ButtonStateTransitionListener that the pressed state of this
+ * button has been cancelled.
  * 
  * @since 2.0
  */
-protected void fireCanceled(){
+protected void fireCanceled() {
 	Iterator iter = listeners.getListeners(ButtonStateTransitionListener.class);
-	while(iter.hasNext())
+	while (iter.hasNext())
 		((ButtonStateTransitionListener)iter.next()).
 			canceled();
 }
 
 /**
- * Notifies any listening ButtonStateTransitionListener that this
- * button has been pressed.
+ * Notifies any listening ButtonStateTransitionListener that this button has been pressed.
  * 
  * @since 2.0
  */
-protected void firePressed(){
+protected void firePressed() {
 	Iterator iter = listeners.getListeners(ButtonStateTransitionListener.class);
-	while(iter.hasNext())
+	while (iter.hasNext())
 		((ButtonStateTransitionListener)iter.next()).
 			pressed();
 }
 
 /** 
- * Notifies any listening ButtonStateTransitionListener that this
- * button has been released.
+ * Notifies any listening ButtonStateTransitionListener that this button has been
+ * released.
  * 
  * @since 2.0
  */
-protected void fireReleased(){
+protected void fireReleased() {
 	Iterator iter = listeners.getListeners(ButtonStateTransitionListener.class);
-	while(iter.hasNext())
+	while (iter.hasNext())
 		((ButtonStateTransitionListener)iter.next()).
 			released();
 }
 
 /**
- * Notifies any listening ButtonStateTransitionListeners that this 
- * button has resumed activity.
+ * Notifies any listening ButtonStateTransitionListeners that this button has resumed
+ * activity.
  * 
  * @since 2.0
  */
-protected void fireResume(){
+protected void fireResume() {
 	Iterator iter = listeners.getListeners(ButtonStateTransitionListener.class);
-	while(iter.hasNext())
+	while (iter.hasNext())
 		((ButtonStateTransitionListener)iter.next()).
 			resume();
 }
 
 /**
- * Notifies any listening ChangeListeners that this button's 
- * state has changed.
+ * Notifies any listening ChangeListeners that this button's state has changed.
  * 
+ * @param property The name of the property that changed
  * @since 2.0
  */
-protected void fireStateChanged(String property){
+protected void fireStateChanged(String property) {
 	Iterator iter = listeners.getListeners(ChangeListener.class);
 	ChangeEvent change = new ChangeEvent(this, property);
-	while(iter.hasNext())
+	while (iter.hasNext())
 		((ChangeListener)iter.next()).
 			handleStateChanged(change);
 }
 
 /**
- * Notifies any listening ButtonStateTransitionListeners that this 
- * button has suspended activity.
+ * Notifies any listening ButtonStateTransitionListeners that this button has suspended
+ * activity.
  * 
  * @since 2.0
  */
-protected void fireSuspend(){
+protected void fireSuspend() {
 	Iterator iter = listeners.getListeners(ButtonStateTransitionListener.class);
-	while(iter.hasNext())
+	while (iter.hasNext())
 		((ButtonStateTransitionListener)iter.next()).
 			suspend();
 }
 
-boolean getFlag(int which){
+boolean getFlag(int which) {
 	return (state & which) != 0;
 }
 
 /**
  * Returns the group to which this model belongs.
  * 
+ * @return The ButtonGroup to which this model belongs
  * @since 2.0
  */
-public ButtonGroup getGroup(){return group;}
+public ButtonGroup getGroup() {
+	return group;
+}
 
 /**
  * Returns an object representing user data.
  * 
+ * @return User data
  * @since 2.0
  */
-public Object getUserData(){
+public Object getUserData() {
 	return data;
 }
 
@@ -205,15 +234,15 @@ public Object getUserData(){
  * 
  * @since 2.0
  */
-protected void installFiringBehavior(){
+protected void installFiringBehavior() {
 	setFiringBehavior(DEFAULT_FIRING_BEHAVIOR);
 }
 
 /**
- * Returns <code>true</code> if this button is armed.
- * If a button is armed, it will fire an ActionPerformed
- * when released.
+ * Returns <code>true</code> if this button is armed. If a button is armed, it will fire
+ * an ActionPerformed when released.
  * 
+ * @return <code>true</code> if this button is armed
  * @since 2.0
  */
 public boolean isArmed() {
@@ -223,6 +252,7 @@ public boolean isArmed() {
 /**
  * Returns <code>true</code> if this button is enabled.
  * 
+ * @return <code>true</code> if this button is enabled
  * @since 2.0
  */
 public boolean isEnabled() {
@@ -232,6 +262,7 @@ public boolean isEnabled() {
 /**
  * Returns <code>true</code> if the mouse is over this button.
  * 
+ * @return <code>true</code> if the mouse is over this button
  * @since 2.0
  */
 public boolean isMouseOver() {
@@ -241,6 +272,7 @@ public boolean isMouseOver() {
 /**
  * Returns <code>true</code> if this button is pressed.
  * 
+ * @return <code>true</code> if this button is pressed
  * @since 2.0
  */
 public boolean isPressed() {
@@ -248,17 +280,16 @@ public boolean isPressed() {
 }
 
 /**
- * Returns the selection state of this model. If this model
- * belongs to any group, the group is queried for selection 
- * state, else the flags are used.
+ * Returns the selection state of this model. If this model belongs to any group, the
+ * group is queried for selection state, else the flags are used.
  *
- * @return  The selection state of this model.
+ * @return  <code>true</code> if this button is selected
  * @since 2.0
  */
-public boolean isSelected()   {
-	if( group==null){
+public boolean isSelected() {
+	if (group == null) {
 		return (state & SELECTED_FLAG) != 0;
-	}else{
+	} else {
 		return group.isSelected(this);
 	}
 }
@@ -266,38 +297,41 @@ public boolean isSelected()   {
 /**
  * Removes the given ActionListener.
  * 
+ * @param listener The ActionListener to remove
  * @since 2.0
  */
-public void removeActionListener(ActionListener listener){
+public void removeActionListener(ActionListener listener) {
 	listeners.removeListener(ActionListener.class, listener);
 }
 
 /**
  * Removes the given ChangeListener.
  * 
+ * @param listener The ChangeListener to remove
  * @since 2.0
  */
-public void removeChangeListener(ChangeListener listener){
+public void removeChangeListener(ChangeListener listener) {
 	listeners.removeListener(ChangeListener.class, listener);
 }
 
 /**
  * Removes the given ButtonStateTransitionListener.
  * 
+ * @param listener The ButtonStateTransitionListener to remove 
  * @since 2.0
  */
-public void removeStateTransitionListener(ButtonStateTransitionListener listener){
+public void removeStateTransitionListener(ButtonStateTransitionListener listener) {
 	listeners.removeListener(ButtonStateTransitionListener.class, listener);
 }
 
 /**
- * Sets this button to be armed.
- * If a button is armed, it will fire an ActionPerformed
+ * Sets this button to be armed. If a button is armed, it will fire an ActionPerformed
  * when released.
  *
+ *@param value The armed state
  * @since 2.0
  */
-public void setArmed(boolean value){
+public void setArmed(boolean value) {
 	if (isArmed() == value)
 		return;
 	if (!isEnabled())
@@ -309,12 +343,13 @@ public void setArmed(boolean value){
 /**
  * Sets this button to be enabled.
  * 
+ * @param value The enabled state
  * @since 2.0
  */
-public void setEnabled(boolean value){
+public void setEnabled(boolean value) {
 	if (isEnabled() == value)
 		return;
-	if(!value){
+	if (!value) {
 		setMouseOver(value);
 		setArmed(value);
 		setPressed(value);
@@ -324,21 +359,19 @@ public void setEnabled(boolean value){
 }
 
 /**
- * Sets the firing behavior for this button.
+ * Sets the firing behavior for this button. {@link #DEFAULT_FIRING_BEHAVIOR} is the
+ * default behavior, where action performed events are not fired until the mouse button is
+ * released. {@link #REPEAT_FIRING_BEHAVIOR} causes action performed events to fire
+ * repeatedly until the mouse button is released.
  * 
- * @param type DEFAULT_FIRING_BEHAVIOR is the default
- *         behavior. Action performed events are not fired
- *         until mouse button is released.
- *         REPEAT_FIRING_BEHAVIOR causes action performed events
- *         to fire repeatedly until the mouse button is released.
- * 
+ * @param type The firing behavior type
  * @since 2.0
  *          
  */
-public void setFiringBehavior(int type){
+public void setFiringBehavior(int type) {
 	if (firingBehavior != null)
 		removeStateTransitionListener(firingBehavior);
-	switch (type){
+	switch (type) {
 		case REPEAT_FIRING_BEHAVIOR:
 			firingBehavior = new RepeatFiringBehavior();
 			break;
@@ -348,7 +381,7 @@ public void setFiringBehavior(int type){
 	addStateTransitionListener(firingBehavior);
 }
 
-void setFlag(int flag, boolean value){
+void setFlag(int flag, boolean value) {
 	if (value)
 		state |= flag;
 	else
@@ -356,16 +389,16 @@ void setFlag(int flag, boolean value){
 }
 
 /**
- * Sets the ButtonGroup to which this model belongs to. Adds this
- * model as a listener to the group.
+ * Sets the ButtonGroup to which this model belongs to. Adds this model as a listener to
+ * the group.
  *
- * @param bg  Group to which this model belongs to.
+ * @param bg The group to which this model belongs.
  * @since 2.0
  */
-public void setGroup( ButtonGroup bg ){
+public void setGroup(ButtonGroup bg) {
 	if (group == bg)
 		return;
-	if(group != null)
+	if (group != null)
 		group.remove(this);
 	group = bg;
 	if (group != null)
@@ -375,9 +408,10 @@ public void setGroup( ButtonGroup bg ){
 /**
  * Sets the mouseover property of this button.
  * 
+ * @param value The value the mouseover property will be set to
  * @since 2.0
  */
-public void setMouseOver(boolean value){
+public void setMouseOver(boolean value) {
 	if (isMouseOver() == value)
 		return;
 	if (isPressed())
@@ -392,9 +426,10 @@ public void setMouseOver(boolean value){
 /**
  * Sets the pressed property of this button.
  * 
+ * @param value The value the pressed property will be set to
  * @since 2.0
  */
-protected void setPressed(boolean value){
+protected void setPressed(boolean value) {
 	if (isPressed() == value)
 		return;
 	setFlag(PRESSED_FLAG, value);
@@ -412,10 +447,11 @@ protected void setPressed(boolean value){
 /**
  * Sets this button to be selected.
  * 
+ * @param value The value the selected property will be set to
  * @since 2.0
  */
-public void setSelected(boolean value){
-	if (group == null){
+public void setSelected(boolean value) {
+	if (group == null) {
 		if (isSelected() == value)
 			return;
 	} else {
@@ -430,16 +466,19 @@ public void setSelected(boolean value){
 /**
  * Sets user data.
  * 
+ * @param data The user data
  * @since 2.0
  */
-public void setUserData(Object data){
+public void setUserData(Object data) {
 	this.data = data;
 }
 
 class DefaultFiringBehavior
 	extends ButtonStateTransitionListener
 {
-	public void released(){fireActionPerformed();}
+	public void released() {
+		fireActionPerformed();
+	}
 }
 
 class RepeatFiringBehavior
@@ -455,10 +494,10 @@ class RepeatFiringBehavior
 	
 	protected Timer timer;
 	
-	private Runnable runAction = new Runnable(){
-		public void run(){
-			org.eclipse.swt.widgets.Display.getDefault().syncExec(new Runnable(){
-				public void run(){
+	private Runnable runAction = new Runnable() {
+		public void run() {
+			org.eclipse.swt.widgets.Display.getDefault().syncExec(new Runnable() {
+				public void run() {
 					if (!isEnabled())
 						timer.cancel();
 					fireActionPerformed();
@@ -467,7 +506,7 @@ class RepeatFiringBehavior
 		}
 	};
 
-	public void pressed(){
+	public void pressed() {
 		fireActionPerformed();
 		if (!isEnabled())
 			return;
@@ -475,19 +514,19 @@ class RepeatFiringBehavior
 		timer.scheduleRepeatedly(runAction, INITIAL_DELAY, STEP_DELAY);
 	}
 
-	public void canceled(){
+	public void canceled() {
 		suspend();
 	}	
-	public void released(){
+	public void released() {
 		suspend();
 	}
 	
-	public void resume(){
+	public void resume() {
 		timer = new Timer();
 		timer.scheduleRepeatedly(runAction, STEP_DELAY, STEP_DELAY);
 	}
 	
-	public void suspend(){
+	public void suspend() {
 		if (timer == null) return;
 		timer.cancel();
 		timer = null;
