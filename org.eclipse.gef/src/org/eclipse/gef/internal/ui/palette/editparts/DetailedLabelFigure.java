@@ -71,6 +71,14 @@ public DetailedLabelFigure() {
 }
 
 /**
+* @see org.eclipse.draw2d.Figure#addNotify()
+*/
+public void addNotify() {
+	super.addNotify();
+	updateFont(layoutMode);
+}
+
+/**
  * Releases any OS resources used by the figure.
  */
 protected void dispose() {
@@ -230,9 +238,8 @@ private void updateFont(int layout) {
 			FONTCACHE.checkIn(boldFont);
 			boldFont = null;
 		}
-		if (layout == PaletteViewerPreferences.LAYOUT_DETAILS) {
+		if (layout == PaletteViewerPreferences.LAYOUT_DETAILS && cachedFont != null)
 			boldFont = FONTCACHE.checkOut(cachedFont);
-		}
 		nameText.setFont(boldFont);
 	}
 }
