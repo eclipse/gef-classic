@@ -142,8 +142,10 @@ class OutlinePage
 	
 	public void dispose(){
 		unhookOutlineViewer();
-		if (thumbnail != null)
+		if (thumbnail != null) {
 			thumbnail.deactivate();
+			thumbnail = null;
+		}
 		super.dispose();
 		LogicEditor.this.outlinePage = null;
 	}
@@ -177,7 +179,10 @@ class OutlinePage
 			lws.setContents(thumbnail);
 			disposeListener = new DisposeListener() {
 				public void widgetDisposed(DisposeEvent e) {
-					thumbnail.deactivate();
+					if (thumbnail != null) {
+						thumbnail.deactivate();
+						thumbnail = null;
+					}
 				}
 			};
 			getEditor().addDisposeListener(disposeListener);
