@@ -1,9 +1,9 @@
 package org.eclipse.gef.ui.actions;
 
+import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchActionConstants;
-import org.eclipse.ui.actions.RetargetAction;
-import org.eclipse.ui.internal.IWorkbenchGraphicConstants;
 import org.eclipse.ui.internal.WorkbenchImages;
+import org.eclipse.ui.actions.RetargetAction;
 
 import org.eclipse.gef.internal.GEFMessages;
 
@@ -18,11 +18,11 @@ public class CopyRetargetAction extends RetargetAction {
 public CopyRetargetAction() {
 	super(IWorkbenchActionConstants.COPY, GEFMessages.CopyAction_Label);
 	setImageDescriptor(WorkbenchImages.getImageDescriptor(
-								IWorkbenchGraphicConstants.IMG_CTOOL_COPY_EDIT));
+								ISharedImages.IMG_TOOL_COPY));
 	setHoverImageDescriptor(WorkbenchImages.getImageDescriptor(
-								IWorkbenchGraphicConstants.IMG_CTOOL_COPY_EDIT_HOVER));
+								ISharedImages.IMG_TOOL_COPY_HOVER));
 	setDisabledImageDescriptor(WorkbenchImages.getImageDescriptor(
-								IWorkbenchGraphicConstants.IMG_CTOOL_COPY_EDIT_DISABLED));
-}
+								ISharedImages.IMG_TOOL_COPY_DISABLED));
+}								
 
 }

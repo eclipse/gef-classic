@@ -8,15 +8,16 @@ package org.eclipse.gef.ui.actions;
 
 import java.util.List;
 
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.internal.WorkbenchImages;
+
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CompoundCommand;
-import org.eclipse.gef.internal.GEFMessages;
 import org.eclipse.gef.requests.GroupRequest;
-import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.internal.IWorkbenchGraphicConstants;
-import org.eclipse.ui.internal.WorkbenchImages;
+import org.eclipse.gef.internal.GEFMessages;
 
 /**
  * An action to delete selected objects.
@@ -40,20 +41,20 @@ public DeleteAction(IEditorPart editor) {
 /**
  * Initializes this action's text and images.
  */
-protected void init(){
+protected void init() {
 	super.init();
 	setText(GEFMessages.DeleteAction_Label);
 	setToolTipText(GEFMessages.DeleteAction_Tooltip);
 	setId(GEFActionConstants.DELETE);
 	setHoverImageDescriptor(
 		WorkbenchImages.getImageDescriptor(
-			IWorkbenchGraphicConstants.IMG_CTOOL_DELETE_EDIT_HOVER));
+			ISharedImages.IMG_TOOL_DELETE_HOVER));
 	setImageDescriptor(
 		WorkbenchImages.getImageDescriptor(
-			IWorkbenchGraphicConstants.IMG_CTOOL_DELETE_EDIT));
+			ISharedImages.IMG_TOOL_DELETE));
 	setDisabledImageDescriptor(
 		WorkbenchImages.getImageDescriptor(
-			IWorkbenchGraphicConstants.IMG_CTOOL_DELETE_EDIT_DISABLED));
+			ISharedImages.IMG_TOOL_DELETE_DISABLED));
 	setEnabled(false);
 }
 

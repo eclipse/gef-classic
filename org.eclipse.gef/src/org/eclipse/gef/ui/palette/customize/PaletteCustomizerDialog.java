@@ -19,6 +19,7 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.*;
 import org.eclipse.jface.util.Assert;
 import org.eclipse.jface.viewers.*;
+import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.internal.IWorkbenchGraphicConstants;
 import org.eclipse.ui.internal.WorkbenchImages;
 import org.eclipse.ui.part.PageBook;
@@ -1008,9 +1009,9 @@ private class DeleteAction extends PaletteCustomizationAction {
 		setEnabled(false);
 		setText(PaletteMessages.DELETE_LABEL);
 		setImageDescriptor(WorkbenchImages
-			.getImageDescriptor(IWorkbenchGraphicConstants.IMG_CTOOL_DELETE_EDIT_HOVER));
+			.getImageDescriptor(ISharedImages.IMG_TOOL_DELETE_HOVER));
 		setDisabledImageDescriptor(WorkbenchImages
-			.getImageDescriptor(IWorkbenchGraphicConstants.IMG_CTOOL_DELETE_EDIT_DISABLED));
+			.getImageDescriptor(ISharedImages.IMG_TOOL_DELETE_DISABLED));
 	}
 	
 	public void run() {

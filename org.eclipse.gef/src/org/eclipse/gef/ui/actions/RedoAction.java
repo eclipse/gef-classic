@@ -8,11 +8,12 @@ package org.eclipse.gef.ui.actions;
 
 import java.text.MessageFormat;
 
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.internal.WorkbenchImages;
+
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.internal.GEFMessages;
-import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.internal.IWorkbenchGraphicConstants;
-import org.eclipse.ui.internal.WorkbenchImages;
 
 /**
  * An action to redo the last command.
@@ -54,13 +55,13 @@ protected void init(){
 	setId(GEFActionConstants.REDO);
 	setHoverImageDescriptor(
 		WorkbenchImages.getImageDescriptor(
-			IWorkbenchGraphicConstants.IMG_CTOOL_REDO_EDIT_HOVER));
+			ISharedImages.IMG_TOOL_REDO_HOVER));
 	setImageDescriptor(
 		WorkbenchImages.getImageDescriptor(
-			IWorkbenchGraphicConstants.IMG_CTOOL_REDO_EDIT));
+			ISharedImages.IMG_TOOL_REDO));
 	setDisabledImageDescriptor(
 		WorkbenchImages.getImageDescriptor(
-			IWorkbenchGraphicConstants.IMG_CTOOL_REDO_EDIT_DISABLED));	
+			ISharedImages.IMG_TOOL_REDO_DISABLED));
 }
 
 /**

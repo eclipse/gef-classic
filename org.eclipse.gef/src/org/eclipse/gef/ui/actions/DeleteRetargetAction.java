@@ -1,9 +1,9 @@
 package org.eclipse.gef.ui.actions;
 
+import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchActionConstants;
-import org.eclipse.ui.actions.RetargetAction;
-import org.eclipse.ui.internal.IWorkbenchGraphicConstants;
 import org.eclipse.ui.internal.WorkbenchImages;
+import org.eclipse.ui.actions.RetargetAction;
 
 import org.eclipse.gef.internal.GEFMessages;
 
@@ -17,12 +17,13 @@ public class DeleteRetargetAction extends RetargetAction {
  */
 public DeleteRetargetAction() {
 	super(IWorkbenchActionConstants.DELETE, GEFMessages.DeleteAction_Label);
-	setImageDescriptor(WorkbenchImages.getImageDescriptor(
-								IWorkbenchGraphicConstants.IMG_CTOOL_DELETE_EDIT));
-	setHoverImageDescriptor(WorkbenchImages.getImageDescriptor(
-								IWorkbenchGraphicConstants.IMG_CTOOL_DELETE_EDIT_HOVER));
+	setHoverImageDescriptor(
+		WorkbenchImages.getImageDescriptor(ISharedImages.IMG_TOOL_DELETE_HOVER));
+	
+	setImageDescriptor(WorkbenchImages.getImageDescriptor(ISharedImages.IMG_TOOL_DELETE));
+	
 	setDisabledImageDescriptor(WorkbenchImages.getImageDescriptor(
-								IWorkbenchGraphicConstants.IMG_CTOOL_DELETE_EDIT_DISABLED));
+			ISharedImages.IMG_TOOL_DELETE_DISABLED));
 }
 
 }

@@ -1,9 +1,9 @@
 package org.eclipse.gef.ui.actions;
 
+import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchActionConstants;
-import org.eclipse.ui.actions.RetargetAction;
-import org.eclipse.ui.internal.IWorkbenchGraphicConstants;
 import org.eclipse.ui.internal.WorkbenchImages;
+import org.eclipse.ui.actions.RetargetAction;
 
 import org.eclipse.gef.internal.GEFMessages;
 
@@ -18,11 +18,11 @@ public class PasteRetargetAction extends RetargetAction {
 public PasteRetargetAction() {
 	super(IWorkbenchActionConstants.PASTE, GEFMessages.PasteAction_Label);
 	setImageDescriptor(WorkbenchImages.getImageDescriptor(
-								IWorkbenchGraphicConstants.IMG_CTOOL_PASTE_EDIT));
+								ISharedImages.IMG_TOOL_PASTE));
 	setHoverImageDescriptor(WorkbenchImages.getImageDescriptor(
-								IWorkbenchGraphicConstants.IMG_CTOOL_PASTE_EDIT_HOVER));
+								ISharedImages.IMG_TOOL_PASTE_HOVER));
 	setDisabledImageDescriptor(WorkbenchImages.getImageDescriptor(
-								IWorkbenchGraphicConstants.IMG_CTOOL_PASTE_EDIT_DISABLED));
+								ISharedImages.IMG_TOOL_PASTE_DISABLED));
 }
 
 }
