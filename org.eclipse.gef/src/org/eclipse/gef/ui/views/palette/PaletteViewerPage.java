@@ -14,6 +14,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.jface.util.TransferDragSourceListener;
 import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.part.Page;
 
@@ -37,11 +38,11 @@ public class PaletteViewerPage
 private GraphicalViewer diagramViewer;
 private PaletteRoot root;
 private PaletteViewer paletteViewer;
-//private TransferDragSourceListener listener;
+private TransferDragSourceListener listener;
 
 public PaletteViewerPage(PaletteRoot model, GraphicalViewer primaryViewer) {
 	super();
-	root = model;
+	setRoot(model);
 	diagramViewer = primaryViewer;
 }
 
@@ -67,8 +68,7 @@ public void createControl(Composite parent) {
 }
 
 public void dispose() {
-	//$TODO uncomment when NPE bug is fixed (50022)
-	//paletteViewer.removeDragSourceListener(listener);
+	paletteViewer.removeDragSourceListener(listener);
 }
 
 public Object getAdapter(Class type) {
@@ -114,9 +114,9 @@ public void init(IPageSite pageSite) {
  * Called to populate the palette viewer.
  */
 protected void initializePaletteViewer() {
-	diagramViewer.getEditDomain().setPaletteRoot(root);
+	diagramViewer.getEditDomain().setPaletteRoot(getRoot());
 	paletteViewer.addDragSourceListener(
-		/*listener=*/new TemplateTransferDragSourceListener(paletteViewer));
+		listener = new TemplateTransferDragSourceListener(paletteViewer));
 }
 
 public void setFocus() {
