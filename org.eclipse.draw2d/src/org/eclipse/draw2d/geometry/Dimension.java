@@ -11,7 +11,7 @@ package org.eclipse.draw2d.geometry;
  * this Dimension or creating new derived Objects.
  */
 public class Dimension
-	implements Cloneable, java.io.Serializable
+	implements Cloneable, java.io.Serializable, Translatable
 {
 
 /**The width.*/
@@ -251,7 +251,7 @@ public Dimension expand(int w, int h) {
  * @return  A new Dimension
  * @since 2.0
  */
-public Dimension getScaled(float amount) {
+public Dimension getScaled(double amount) {
 	return new Dimension(this)
 		.scale(amount);
 }
@@ -312,6 +312,18 @@ public Dimension negate() {
 }
 
 /**
+ * @see org.eclipse.draw2d.geometry.Translatable#performScale(double)
+ */
+public void performScale(double factor) {
+	scale(factor);
+}
+
+/**
+ * @see org.eclipse.draw2d.geometry.Translatable#performTranslate(int, int)
+ */
+public void performTranslate(int dx, int dy) { }
+
+/**
  * Scales the width and height of this Dimension by the amount supplied, and
  * returns this for convenience. 
  *
@@ -320,7 +332,7 @@ public Dimension negate() {
  * @return  Returns this Dimension with the scaled values.
  * @since 2.0
  */
-public Dimension scale(float amount) {
+public Dimension scale(double amount) {
 	return scale(amount, amount);
 }
 
@@ -334,7 +346,7 @@ public Dimension scale(float amount) {
  * @return  Returns this Dimension with the scaled values.
  * @since 2.0
  */
-public Dimension scale(float w, float h) {
+public Dimension scale(double w, double h) {
 	width  = (int)(Math.floor(width * w));
 	height = (int)(Math.floor(height * h));
 	return this;
