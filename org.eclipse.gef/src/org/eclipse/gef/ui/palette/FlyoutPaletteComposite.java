@@ -613,7 +613,7 @@ private class Sash extends Composite {
 	}
 	private void updateState() {
 		setCursor(isInState(STATE_EXPANDED | STATE_PINNED_OPEN) 
-				? SharedCursors.SIZEW : null);
+				? SharedCursors.SIZEWE : null);
 	}
 	
 	private class SashDragManager 
