@@ -145,7 +145,6 @@ public int snapMoveRequest(ChangeBoundsRequest request,	PrecisionRectangle baseR
 	fig.translateToAbsolute(move);
 	request.setMoveDelta(move);
 	return snapOrientation;
-
 }
 
 /**
@@ -153,13 +152,6 @@ public int snapMoveRequest(ChangeBoundsRequest request,	PrecisionRectangle baseR
  */
 public int snapResizeRequest(ChangeBoundsRequest request, PrecisionRectangle baseRect,
                              int snapOrientation) {
-	/*
-	 * @TODO:Pratik
-	 * Known Bugs: 
-	 * (1) Place a figure's top and left edges close to two guides, but not attached
-	 * to them.  Resize the bottom-right corner of the figure, and you will see that the
-	 * figure snaps to those two guides.  Or at least, they will be highlighted.  
-	 */
 	int origSnapOrientation = snapOrientation;
 	
 	if (request.getEditParts().size() != 1)
@@ -177,24 +169,18 @@ public int snapResizeRequest(ChangeBoundsRequest request, PrecisionRectangle bas
 	fig.translateToRelative(move);
 
 	boolean change = false;
-	/*
-	 * In order to preserve attachments to guides, there can be no optimizations.
-	 * getCorrectionFor(...) must be invoked for all directions, not just along the ones
-	 * that are being resized.
-	 */
-	// east
 	if ((origSnapOrientation & SNAP_HORIZONTAL) != 0) {
-		double rightCorrection = getCorrectionFor(getVerticalGuides(), 
-				baseRect.preciseRight(), request.getExtendedData(), true, 1);
-		if (rightCorrection != THRESHOLD) {
-			change = true;
-			snapOrientation = snapOrientation & SNAP_HORIZONTAL;
-			resize.preciseWidth += rightCorrection;
-		}
-		// west
-		// if we have a match on the right and we are resizing that way, use that match
-		if (rightCorrection == THRESHOLD 
-				|| (request.getResizeDirection() & PositionConstants.EAST) == 0) {
+		if ((request.getResizeDirection() & PositionConstants.EAST) != 0) {
+			// east
+			double rightCorrection = getCorrectionFor(getVerticalGuides(), 
+					baseRect.preciseRight(), request.getExtendedData(), true, 1);
+			if (rightCorrection != THRESHOLD) {
+				change = true;
+				snapOrientation = snapOrientation & SNAP_HORIZONTAL;
+				resize.preciseWidth += rightCorrection;
+			}
+		} else if ((request.getResizeDirection() & PositionConstants.WEST) != 0) {
+			// west
 			double leftCorrection = getCorrectionFor(getVerticalGuides(), 
 					baseRect.preciseX, request.getExtendedData(), true, -1);
 			if (leftCorrection != THRESHOLD) {
@@ -205,19 +191,18 @@ public int snapResizeRequest(ChangeBoundsRequest request, PrecisionRectangle bas
 			}
 		}
 	}
-	// south
 	if ((origSnapOrientation & SNAP_VERTICAL) != 0) {
-		double bottom = getCorrectionFor(getHorizontalGuides(), baseRect.preciseBottom(),
-				request.getExtendedData(), false, 1);
-		if (bottom != THRESHOLD) {
-			change = true;
-			snapOrientation = snapOrientation & SNAP_VERTICAL;
-			resize.preciseHeight += bottom;
-		}
-		// north
-		// if we have a match on the bottom and we are resizing south, keep this.
-		if (bottom == THRESHOLD 
-				|| (request.getResizeDirection() & PositionConstants.SOUTH) == 0) {	
+		if ((request.getResizeDirection() & PositionConstants.SOUTH) != 0) {
+			// south
+			double bottom = getCorrectionFor(getHorizontalGuides(), baseRect.preciseBottom(),
+					request.getExtendedData(), false, 1);
+			if (bottom != THRESHOLD) {
+				change = true;
+				snapOrientation = snapOrientation & SNAP_VERTICAL;
+				resize.preciseHeight += bottom;
+			}
+		} else if ((request.getResizeDirection() & PositionConstants.NORTH) != 0) {	
+			// north
 			double topCorrection = getCorrectionFor(getHorizontalGuides(), 
 					baseRect.preciseY, request.getExtendedData(), false, -1);
 			if (topCorrection != THRESHOLD) {

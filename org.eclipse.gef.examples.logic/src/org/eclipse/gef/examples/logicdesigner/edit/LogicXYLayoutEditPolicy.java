@@ -63,29 +63,72 @@ protected Command createChangeConstraintCommand(ChangeBoundsRequest request,
 		EditPart child, Object constraint) {
 	
 	SetConstraintCommand cmd = new SetConstraintCommand();
-	cmd.setPart((LogicSubpart)child.getModel());
+	LogicSubpart part = (LogicSubpart)child.getModel();
+	cmd.setPart(part);
 	cmd.setLocation((Rectangle)constraint);
-	
-	if (request.getResizeDirection() != PositionConstants.SOUTH 
-			&& request.getResizeDirection() != PositionConstants.NORTH) 
-		cmd.clearVerticalGuide();
-	if (request.getResizeDirection() != PositionConstants.EAST 
-			&& request.getResizeDirection() != PositionConstants.WEST) 
-		cmd.clearHorizontalGuide();
-	
-	Integer guidePos = (Integer)request.getExtendedData()
-			.get(SnapToGuides.PROPERTY_HORIZONTAL_GUIDE);
-	if (guidePos != null) {
-		int hAlignment = ((Integer)request.getExtendedData()
-				.get(SnapToGuides.PROPERTY_HORIZONTAL_ANCHOR)).intValue();
-		cmd.setHorizontalGuide(findGuideAt(guidePos.intValue(), true), hAlignment);
+
+	if ((request.getResizeDirection() & PositionConstants.NORTH_SOUTH) != 0) {
+		Integer guidePos = (Integer)request.getExtendedData()
+				.get(SnapToGuides.PROPERTY_HORIZONTAL_GUIDE);
+		if (guidePos != null) {
+			int hAlignment = ((Integer)request.getExtendedData()
+					.get(SnapToGuides.PROPERTY_HORIZONTAL_ANCHOR)).intValue();
+			cmd.setHorizontalGuide(findGuideAt(guidePos.intValue(), true), hAlignment);
+		} else if (part.getHorizontalGuide() != null) {
+			// SnapToGuides didn't provide a horizontal guide, but this part is attached
+			// to a horizontal guide.  Now we check to see if the part is attached to
+			// the guide along the edge being resized.  If that is the case, we need to
+			// detach the part from the guide; otherwise, we leave it alone.
+			int alignment = part.getHorizontalGuide().getAlignment(part);
+			int edgeBeingResized = 0;
+			if ((request.getResizeDirection() & PositionConstants.NORTH) != 0)
+				edgeBeingResized = -1;
+			else
+				edgeBeingResized = 1;
+			if (alignment == edgeBeingResized)
+				cmd.clearHorizontalGuide();
+		}
 	}
-	guidePos = (Integer)request.getExtendedData().get(SnapToGuides.PROPERTY_VERTICAL_GUIDE);
-	if (guidePos != null) {
-		int vAlignment = ((Integer)request.getExtendedData()
-				.get(SnapToGuides.PROPERTY_VERTICAL_ANCHOR)).intValue();
-		cmd.setVerticalGuide(findGuideAt(guidePos.intValue(), false), vAlignment);
+	
+	if ((request.getResizeDirection() & PositionConstants.EAST_WEST) != 0) {
+		Integer guidePos = (Integer)request.getExtendedData()
+				.get(SnapToGuides.PROPERTY_VERTICAL_GUIDE);
+		if (guidePos != null) {
+			int vAlignment = ((Integer)request.getExtendedData()
+					.get(SnapToGuides.PROPERTY_VERTICAL_ANCHOR)).intValue();
+			cmd.setVerticalGuide(findGuideAt(guidePos.intValue(), false), vAlignment);
+		} else if (part.getVerticalGuide() != null) {
+			int alignment = part.getVerticalGuide().getAlignment(part);
+			int edgeBeingResized = 0;
+			if ((request.getResizeDirection() & PositionConstants.WEST) != 0)
+				edgeBeingResized = -1;
+			else
+				edgeBeingResized = 1;
+			if (alignment == edgeBeingResized)
+				cmd.clearVerticalGuide();
+		}
 	}
+	
+	if (request.getType().equals(REQ_MOVE_CHILDREN)) {
+		Integer guidePos = (Integer)request.getExtendedData()
+				.get(SnapToGuides.PROPERTY_HORIZONTAL_GUIDE);
+		if (guidePos != null) {
+			int hAlignment = ((Integer)request.getExtendedData()
+					.get(SnapToGuides.PROPERTY_HORIZONTAL_ANCHOR)).intValue();
+			cmd.setHorizontalGuide(findGuideAt(guidePos.intValue(), true), hAlignment);
+		} else
+			cmd.clearHorizontalGuide();
+
+		guidePos = (Integer)request.getExtendedData()
+				.get(SnapToGuides.PROPERTY_VERTICAL_GUIDE);
+		if (guidePos != null) {
+			int vAlignment = ((Integer)request.getExtendedData()
+					.get(SnapToGuides.PROPERTY_VERTICAL_ANCHOR)).intValue();
+			cmd.setVerticalGuide(findGuideAt(guidePos.intValue(), false), vAlignment);
+		} else
+			cmd.clearVerticalGuide();
+	}
+
 	return cmd;
 }
 
