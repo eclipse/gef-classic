@@ -11,7 +11,10 @@
 package org.eclipse.draw2d;
 
 /**
- * Provides abstract support for a variety of shapes.
+ * Provides abstract support for a variety of shapes.  
+ * <p>
+ * When customizing shapes, you shouldn't override paintFigure().  Override fillShape() 
+ * and outlineShape() methods instead.
  */
 public abstract class Shape
 	extends Figure
