@@ -138,6 +138,7 @@ class OutlinePage
 		if (thumbnail != null)
 			thumbnail.deactivate();
 		super.dispose();
+		LogicEditor.this.outlinePage = null;
 	}
 	
 	public Object getAdapter(Class type) {
@@ -194,6 +195,8 @@ class OutlinePage
 
 private KeyHandler sharedKeyHandler;
 private PaletteRoot root;
+private OutlinePage outlinePage;
+private boolean editorSaving = false;
 
 // This class listens to changes to the file system in the workspace, and 
 // makes changes accordingly.
@@ -232,7 +235,20 @@ class ResourceTracker
 					}
 				});
 			}
-		}			
+		} else if (delta.getKind() == IResourceDelta.CHANGED) {
+			// the file was overwritten somehow (could have been replaced by another 
+			// version in the respository)
+			if (!editorSaving) {
+				final IFile newFile = ResourcesPlugin.getWorkspace().getRoot()
+						.getFile(delta.getFullPath());
+				Display display = getSite().getShell().getDisplay();
+				display.asyncExec(new Runnable() {
+					public void run() {
+						setInput(new FileEditorInput(newFile));
+					}
+				});
+			}
+		}
 		return false; 
 	}
 }
@@ -359,6 +375,7 @@ public void dispose() {
 
 public void doSave(IProgressMonitor progressMonitor) {
 	try {
+		editorSaving = true;
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		createOutputStream(out);
 		IFile file = ((IFileEditorInput)getEditorInput()).getFile();
@@ -369,6 +386,8 @@ public void doSave(IProgressMonitor progressMonitor) {
 	} 
 	catch (Exception e) {
 		e.printStackTrace();
+	} finally {
+		editorSaving = false;
 	}
 }
 
@@ -379,8 +398,10 @@ public void doSaveAs() {
 public Object getAdapter(Class type){
 	if (type == CommandStackInspectorPage.class)
 		return new CommandStackInspectorPage(getCommandStack());
-	if (type == IContentOutlinePage.class)
-		return new OutlinePage(new TreeViewer());
+	if (type == IContentOutlinePage.class) {
+		outlinePage = new OutlinePage(new TreeViewer());
+		return outlinePage;
+	}
 	if (type == ZoomManager.class)
 		return getGraphicalViewer().getProperty(ZoomManager.class.toString());
 
@@ -555,23 +576,30 @@ protected boolean performSaveAs() {
 	IWorkspace workspace= ResourcesPlugin.getWorkspace();
 	final IFile file= workspace.getRoot().getFile(path);
 	
-	WorkspaceModifyOperation op= new WorkspaceModifyOperation() {
-		public void execute(final IProgressMonitor monitor) throws CoreException {
-			try {
-				ByteArrayOutputStream out = new ByteArrayOutputStream();
-				createOutputStream(out);
-				file.create(new ByteArrayInputStream(out.toByteArray()), true, monitor);
-				out.close();
-			} 
-			catch (Exception e) {
-				e.printStackTrace();
+	if (!file.exists()) {
+		WorkspaceModifyOperation op= new WorkspaceModifyOperation() {
+			public void execute(final IProgressMonitor monitor) throws CoreException {
+				try {
+					ByteArrayOutputStream out = new ByteArrayOutputStream();
+					createOutputStream(out);
+					file.create(new ByteArrayInputStream(out.toByteArray()), true, monitor);
+					out.close();
+				} 
+				catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
+		};
+		try {
+			new ProgressMonitorDialog(getSite().getWorkbenchWindow().getShell()).run(false, true, op);			
 		}
-	};
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 	try {
-		new ProgressMonitorDialog(getSite().getWorkbenchWindow().getShell()).run(false, true, op);
-		setInput(new FileEditorInput((IFile)file));
+		superSetInput(new FileEditorInput((IFile)file));
 		getCommandStack().markSaveLocation();
 	} 
 	catch (Exception e) {
@@ -597,6 +625,13 @@ public void setInput(IEditorInput input) {
 	catch (Exception e) {
 		//This is just an example.  All exceptions caught here.
 		e.printStackTrace();
+	}
+	
+	if (getGraphicalViewer() != null) {
+		getGraphicalViewer().setContents(getLogicDiagram());
+	}
+	if (outlinePage != null) {
+		outlinePage.initializeOutlineViewer();
 	}
 }
 
