@@ -1,9 +1,7 @@
 package org.eclipse.draw2d.text;
 
-import org.eclipse.swt.graphics.Color;
-
 import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.geometry.*;
+import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
  * The base implementation for text flow figures. A flow figure is used to render a

@@ -6,15 +6,14 @@ package org.eclipse.gef.ui.palette;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.geometry.Insets;
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.gef.AccessibleEditPart;
-import org.eclipse.gef.palette.PaletteEntry;
 import org.eclipse.swt.accessibility.*;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Control;
+
+import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.geometry.Insets;
+import org.eclipse.gef.AccessibleEditPart;
+import org.eclipse.gef.palette.PaletteEntry;
 
 public class EntryEditPart
 	extends PaletteEditPart
