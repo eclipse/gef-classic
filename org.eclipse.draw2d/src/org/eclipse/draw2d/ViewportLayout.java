@@ -28,7 +28,7 @@ public class ViewportLayout
  * flexible, the minimum size required would be the just the size of the borders.
  * @see AbstractHintLayout#calculateMinimumSize(IFigure, int, int)
  */
-public Dimension calculateMinimumSize(IFigure figure, int wHint, int hHint) {
+protected Dimension calculateMinimumSize(IFigure figure, int wHint, int hHint) {
 	Viewport viewport = (Viewport)figure;
 	Dimension min = new Dimension();
 	Insets insets = viewport.getInsets();
