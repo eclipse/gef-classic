@@ -61,18 +61,30 @@ private int orientation = SWT.LEFT_TO_RIGHT;
 private BidiProcessor() { }
 
 /**
- * FlowFigures can make textual contributions for its block.  All contributions
- * are concatenated (in the order that they were contributed) to make the final
- * String which will determine the Bidi levels.
+ * Records a String contribution for this bidi context. Contributions are
+ * concatenated (in the order that they were contributed) to make the final
+ * String which will determine the bidi info for all contributors.
  * @param fig the figure that is contributing the given text
  * @param str the text contributed by the given figure
  * @see #addControlText(String)
  */
 public void add(FlowFigure fig, String str) {
-//	if (str.length() == 0)
-//		return;
+	//We are currently tracking empty contributions ("")
 	list.add(new BidiEntry(fig, bidiText.length(), str.length()));
 	bidiText.append(str);
+}
+
+/**
+ * Records a character contribution for this bidi context. Contributions are
+ * concatenated (in the order that they were contributed) to make the final
+ * String which will determine the bidi info for all contributors.
+ * @param fig the figure that is contributing the given text
+ * @param c the character being added
+ * @see #addControlText(String)
+ */
+public void add(FlowFigure fig, char c) {
+	list.add(new BidiEntry(fig, bidiText.length(), 1));
+	bidiText.append(c);
 }
 
 /**
@@ -80,10 +92,10 @@ public void add(FlowFigure fig, String str) {
  * but is not text that is visible on the screen.  The bidi level of such text is
  * reported back to the contributing figure.
  * 
- * @param str the contributed text
+ * @param c the control character
  */
-public void addControlText(String str) {
-	bidiText.append(str);
+public void addControlChar(char c) {
+	bidiText.append(c);
 }
 
 /**
