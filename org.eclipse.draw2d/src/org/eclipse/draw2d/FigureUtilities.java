@@ -380,6 +380,8 @@ protected static void setFont(Font f) {
  * @return the common ancestor
  */
 public static IFigure findCommonAncestor(IFigure l, IFigure r) {
+	if (l == r)
+		return l;
 	ArrayList left = new ArrayList();
 	ArrayList right = new ArrayList();
 	while (l != null) {
@@ -398,7 +400,10 @@ public static IFigure findCommonAncestor(IFigure l, IFigure r) {
 		il--;
 		ir--;
 	}
-	return (IFigure)left.get(++il);
+	++il;
+	if (il < left.size())
+		return (IFigure)left.get(il);
+	return null;
 }
 
 }
