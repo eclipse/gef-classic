@@ -13,14 +13,16 @@ package org.eclipse.gef.tools;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.gef.*;
-import org.eclipse.gef.requests.LocationRequest;
-import org.eclipse.gef.requests.SelectionRequest;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MouseEvent;
+
+import org.eclipse.draw2d.geometry.Point;
+
+import org.eclipse.gef.*;
+import org.eclipse.gef.requests.LocationRequest;
+import org.eclipse.gef.requests.SelectionRequest;
 
 /**
  * Tool to select and manipulate figures.
@@ -396,6 +398,23 @@ private boolean handleTraverseHandle(KeyEvent e) {
 		setLastHandleProvider(focus);
 	}
 
+	Point loc = (Point)locations.get(handleIndex);
+	org.eclipse.swt.graphics.Point swt = getCurrentViewer().getControl().toDisplay(
+			new org.eclipse.swt.graphics.Point(loc.x, loc.y));
+	if (getCurrentViewer().getControl().getDisplay().getCursorLocation().equals(swt)) {
+		// The cursor is already at the location that it is to be moved to.  So, we
+		// move to the next handle instead.  If there are no more handles, then we
+		// cancel the drag.
+		if (locations.size() > 1)
+			if (e.character == '.')
+				handleIndex = (++handleIndex) % locations.size();
+			else
+				handleIndex = (--handleIndex + locations.size()) % locations.size();
+		else {
+			placeMouseInViewer(loc.getTranslated(6, 6));
+			return false;
+		}
+	}
 	placeMouseInViewer((Point)locations.get(handleIndex));
 	return true;
 }
