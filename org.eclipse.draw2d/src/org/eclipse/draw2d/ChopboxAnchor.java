@@ -90,13 +90,9 @@ protected Rectangle getBox() {
  * @return The reference point
  */
 public Point getReferencePoint() {
-	if (getOwner() == null)
-		return null;
-	else {
-		Point ref = getBox().getCenter();
-		getOwner().translateToAbsolute(ref);
-		return ref;
-	}
+	Point ref = getBox().getCenter();
+	getOwner().translateToAbsolute(ref);
+	return ref;
 }
 
 
