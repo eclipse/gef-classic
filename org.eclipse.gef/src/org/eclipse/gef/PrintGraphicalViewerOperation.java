@@ -20,7 +20,11 @@ private List selectedEditParts;
 /**
  * Constructor for PrintGraphicalViewerOperation
  * 
- * @param p The Printer to print to * @param g The viewer containing what is to be printed */
+ * @param p The Printer to print to * @param g The viewer containing what is to be printed
+ * 			 NOTE: The GraphicalViewer to be printed must have a
+ * 			 {@link org.eclipse.draw2d.Layer Layer} with the {@link
+ * 			 org.eclipse.gef.LayerConstants PRINTABLE_LAYERS} key.
+ */
 public PrintGraphicalViewerOperation(Printer p, GraphicalViewer g) {
 	super(p);
 	viewer = g;
