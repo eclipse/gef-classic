@@ -22,8 +22,8 @@ public class SimpleActivityPart extends ActivityPart {
 
 public void contributeNodesToGraph(CompoundDirectedGraph graph, Subgraph s, Map map) {
 	Node n = new Node(this, s);
-	n.outgoingOffset = 5;
-	n.incomingOffset = 5;
+	n.outgoingOffset = getAnchorOffset();
+	n.incomingOffset = getAnchorOffset();
 	n.width = getFigure().getPreferredSize().width;
 	n.height = getFigure().getPreferredSize().height;
 	n.setPadding(new Insets(10,8,10,12));
