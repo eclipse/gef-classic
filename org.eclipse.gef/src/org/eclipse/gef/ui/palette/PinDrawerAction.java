@@ -15,6 +15,8 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.gef.internal.ui.palette.editparts.*;
 
 /**
+ * An action that can be used to pin the given drawer open.
+ * 
  * @author Pratik Shah
  */
 public class PinDrawerAction extends Action {
@@ -22,7 +24,7 @@ public class PinDrawerAction extends Action {
 private DrawerEditPart drawer;
 
 /**
- * Constructor for PinDrawerAction
+ * Constructor
  * 
  * @param	drawer	The EditPart for the drawer that this action pins/unpins
  */
@@ -34,6 +36,8 @@ public PinDrawerAction (DrawerEditPart drawer) {
 }
 
 /**
+ * Toggles the pinned open status of the drawer.
+ * 
  * @see org.eclipse.jface.action.Action#run()
  */
 public void run() {

@@ -15,42 +15,39 @@ import java.beans.PropertyChangeListener;
 import org.eclipse.swt.graphics.FontData;
 
 /**
- * Interface to the Object storing the viewer preferences
+ * <code>PaletteViewerPreferences</code> is used to store/persist the various settings of
+ * a GEF palette.
  * 
  * @author Pratik Shah
  */
 public interface PaletteViewerPreferences {
 
 /**
- * Constant for an Auto-Collapse Option
- * <p>
- * Indicates that containers should always auto-collapse
- * </p>
+ * This is a constant for one of the auto-collapse options.
+ * <br>
+ * Indicates that containers should always auto-collapse.
  */
 public static final int
 	COLLAPSE_ALWAYS = 2;
 /**
- * Constant for an Auto-Collapse Option
- * <p>
- * Indicates that containers should never auto-collapse
- * </p>
+ * This is a constant for one of the auto-collapse options.
+ * <br>
+ * Indicates that containers should never auto-collapse.
  */
 public static final int
 	COLLAPSE_NEVER  = 1;
 /**
- * Constant for an Auto-Collapse Option
- * <p>
- * Indicates that containers should auto-collapse as needed
- * This is the default auto-collapse setting.
- * </p>
+ * This is a constant for one of the auto-collapse options.
+ * <br>
+ * Indicates that containers should auto-collapse only when there is not enough room on
+ * the palette.  This is the default auto-collapse setting.
  */
 public static final int
 	COLLAPSE_AS_NEEDED = 0;
 /**
- * Constant for a Layout Option
- * <p>
+ * This is a constant for one of the layout options.
+ * <br>
  * Indicates that the palette should be displayed in the columns mode.
- * </p>
  */
 public static final int
 	LAYOUT_COLUMNS   = 1;
@@ -60,27 +57,24 @@ public static final int
 public static final int
 	LAYOUT_FOLDER    = LAYOUT_COLUMNS;
 /**
- * Constant for a Layout Option
- * <p>
+ * This is a constant for one of the layout options.
+ * <br>
  * Indicates that the palette should be displayed in the list mode.
  * This is the default layout setting.
- * </p>
  */
 public static final int
 	LAYOUT_LIST     = 0;
 /**
- * Constant for a Layout Option
- * <p>
+ * This is a constant for one of the layout options.
+ * <br>
  * Indicates that the palette should be displayed in the icons only mode.
- * </p>
  */
 public static final int
 	LAYOUT_ICONS    = 2;
 /**
- * Constant for a Layout Option
- * <p>
+ * This is a constant for one of the layout options.
+ * <br>
  * Indicates that the palette should be displayed in the details mode.
- * </p>
  */
 public static final int
 	LAYOUT_DETAILS   = 3;
@@ -143,7 +137,7 @@ public static final String
 public void addPropertyChangeListener(PropertyChangeListener listener);
 
 /**
- * Returns the current Auto-collapse settings flag.
+ * Returns the current auto-collapse setting.
  * <p> 
  * Possible values returned:
  * <ul>
@@ -152,7 +146,7 @@ public void addPropertyChangeListener(PropertyChangeListener listener);
  * 		<li>COLLAPSE_NEVER (Never collapse)</li>
  * </ul>
  * 
- * @return int	Flag indicating what the setting is
+ * @return One of the above-mentioned constants
  */
 public int getAutoCollapseSetting();
 
@@ -160,7 +154,7 @@ public int getAutoCollapseSetting();
 public FontData getFontData();
 
 /**
- * Returns the current Layout settings flag.
+ * Returns the current layout setting.
  * <p> 
  * Possible values returned:
  * <ul>
@@ -170,7 +164,7 @@ public FontData getFontData();
  * 		<li>LAYOUT_DETAILS (Details View)</li>
  * </ul>
  * 
- * @return int	Flag indicating what the setting is
+ * @return One of the above-mentioned constants
  */
 public int getLayoutSetting();
 
@@ -178,11 +172,14 @@ public int getLayoutSetting();
  * Returns the layout modes that are supported.  All four layout modes --
  * LAYOUT_COLUMNS, LAYOUT_LIST, LAYOUT_ICONS, LAYOUT_DETAILS -- are supported by default. 
  * 
- * @return int[] * @see #setSupportedLayoutModes(int[])
+ * @return The layout modes that are supported * @see #setSupportedLayoutModes(int[])
  */
 public int[] getSupportedLayoutModes();
 
 /**
+ * This is a convenience method.  Instead of getting the supported layout modes and
+ * checking to see if a certain layout is supported, you can call this method.
+ * 
  * @param layout	LAYOUT_COLUMNS, LAYOUT_LIST, LAYOUT_ICONS, or LAYOUT_DETAILS
  * @return <code>true</code> if the given layout is a supported mode */
 public boolean isSupportedLayoutMode(int layout);
@@ -202,13 +199,13 @@ public void removePropertyChangeListener(PropertyChangeListener listener);
  * 		<li>COLLAPSE_NEVER (Never collapse)</li>
  * </ul>
  * 
- * @param newVal	One of the above-mentioned flags
+ * @param newVal	One of the above-mentioned constants
  */
 public void setAutoCollapseSetting(int newVal);
 
 /**
  * Sets the FontData for the palette.
- *  * @param data	The FontData for the font to be used in the palette. */
+ *  * @param	data	The FontData for the font to be used in the palett */
 public void setFontData(FontData data);
 
 /**
@@ -216,19 +213,21 @@ public void setFontData(FontData data);
  * <p> 
  * Possible values:
  * <ul>
- * 		<li>LAYOUT_COLUMNS (columns View)</li>
+ * 		<li>LAYOUT_COLUMNS (Columns View)</li>
  * 		<li>LAYOUT_LIST (List View)</li> 
  * 		<li>LAYOUT_ICONS (Icons Only View)</li>
  * 		<li>LAYOUT_DETAILS (Details View)</li>
  * </ul>
  * 
- * @param newVal	One of the above-mentioned flags
+ * @param	newVal	One of the above-mentioned constants
  */
 public void setLayoutSetting(int newVal);
 
 /**
  * Sets the "Use Large Icons" option for the currently active layout.
- *  * @param newVal <code>true</code> if large icons are to be used */
+ *  * @param	newVal	<code>true</code> if large icons are to be used with the current layout
+ * 					setting
+ */
 public void setCurrentUseLargeIcons(boolean newVal);
 
 /**
@@ -239,38 +238,43 @@ public void setCurrentUseLargeIcons(boolean newVal);
  * called during set-up as soon as the preferences are created, and not later.
  * <p>
  * If the default layout mode and/or the current layout mode are not in the given array,
- * they will be updated to be the first mode in the given array.
- *  * @param modes	An array of layout modes desired.  The array must have at least one, and
- * 					is recommended to have at least two, of the recognized layout
- * 					modes.
+ * the first layout mode in the given array will be set to be the default/current layout.
+ * </p> <p>
+ * NOTE: The given array of layout modes should have at least one, and is recommended to
+ * have at least two, of the recognized layout modes.
+ * </p>
+ * @param	modes	an array of layout modes desired
  */
 public void setSupportedLayoutModes(int[] modes);
 
 /**
  * Sets the "Use Large Icons" option for the given layout.
- * <p>
- * The default is false for all layouts.
- * </p>
+ * <br> 
+ * The defaults are as follows:
+ * <ul>
+ * 	<li>LAYOUT_COLUMNS  - <code>true</code></li>
+ * 	<li>LAYOUT_LIST    - <code>false</code></li>
+ * 	<li>LAYOUT_ICONS   - <code>true</code></li>
+ * 	<li>LAYOUT_DETAILS - <code>false</code></li>
+ * </ul>
  * 
- * @param	layout	Indicates to change the icon setting associated with the given layout,
- * 					which could be any of LAYOUT_COLUMNS, LAYOUT_LIST, LAYOUT_ICONS, and
- * 					LAYOUT_DETAILS.
- * @param newVal	<code>true</code> if large icons are to be used with the given layout
+ * @param	layout	any of the above-mentioned constants
+ * @param	newVal	<code>true</code> if large icons are to be used with the given layout
  */
 public void setUseLargeIcons(int layout, boolean newVal);
 
 /**
+ * Indicated whether large icons should be used with the given layout mode.
+ * <br> 
  * The defaults are as follows:
  * <ul>
- * 	<li>LAYOUT_COLUMNS  - <code>true</code><li>
- * 	<li>LAYOUT_LIST    - <code>false</code><li>
- * 	<li>LAYOUT_ICONS   - <code>true</code><li>
- * 	<li>LAYOUT_DETAILS - <code>false</code><li>
+ * 	<li>LAYOUT_COLUMNS  - <code>true</code></li>
+ * 	<li>LAYOUT_LIST    - <code>false</code></li>
+ * 	<li>LAYOUT_ICONS   - <code>true</code></li>
+ * 	<li>LAYOUT_DETAILS - <code>false</code></li>
  * </ul>
  * 
- * @param	layout	Indicates to get the icon setting associated with the given layout, 
- * 					which could be any of LAYOUT_COLUMNS, LAYOUT_LIST, LAYOUT_ICONS, and
- * 					LAYOUT_DETAILS.
+ * @param	layout	any of the above-mentioned constants
  * @return <code>true</code> if large icons are to be used with the given layout
  */
 public boolean useLargeIcons(int layout);

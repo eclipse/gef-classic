@@ -26,8 +26,8 @@ public class PaletteEditPartFactory
 /**
  * Create DrawerEditPart - edit part for PaletteDrawer
  * 
- * @param parentEditPart	the parent of the new editpart to be created
- * @param model				the PaletteDrawer
+ * @param	parentEditPart	the parent of the new editpart to be created
+ * @param	model			the PaletteDrawer
  * @return the newly created EditPart
  */
 protected EditPart createDrawerEditPart(EditPart parentEditPart, Object model) {
@@ -60,8 +60,8 @@ public EditPart createEditPart(EditPart parentEditPart, Object model) {
 /**
  * Create SeparatorEditPart - edit part for PaletteSeparator
  * 
- * @param parentEditPart	the parent of the new editpart to be created
- * @param model				the PaletteSeparator
+ * @param	parentEditPart	the parent of the new editpart to be created
+ * @param	model			the PaletteSeparator
  * @return the newly created EditPart
  */
 protected EditPart createSeparatorEditPart(EditPart parentEditPart,	Object model) {
@@ -71,8 +71,8 @@ protected EditPart createSeparatorEditPart(EditPart parentEditPart,	Object model
 /**
  * Create ToolEntryEditPart - edit part for ToolEntry
  * 
- * @param parentEditPart	the parent of the new editpart to be created
- * @param model				the ToolEntry
+ * @param	parentEditPart	the parent of the new editpart to be created
+ * @param	model			the ToolEntry
  * @return the newly created EditPart
  */
 protected EditPart createEntryEditPart(EditPart parentEditPart, Object model) {
@@ -82,8 +82,8 @@ protected EditPart createEntryEditPart(EditPart parentEditPart, Object model) {
 /**
  * Create GroupEditPart - edit part for PaletteGroup
  * 
- * @param parentEditPart	the parent of the new editpart to be created
- * @param model				the PaletteGroup
+ * @param	parentEditPart	the parent of the new editpart to be created
+ * @param	model			the PaletteGroup
  * @return the newly created EditPart
  */
 protected EditPart createGroupEditPart(EditPart parentEditPart, Object model) {
@@ -93,8 +93,8 @@ protected EditPart createGroupEditPart(EditPart parentEditPart, Object model) {
 /**
  * Create SliderPaletteEditPart - edit part for PaletteRoot
  * 
- * @param parentEditPart	the parent of the new editpart to be created
- * @param model				the PaletteRoot
+ * @param	parentEditPart	the parent of the new editpart to be created
+ * @param	model			the PaletteRoot
  * @return the newly created EditPart
  */
 protected EditPart createMainPaletteEditPart(EditPart parentEditPart, Object model) {
@@ -104,8 +104,8 @@ protected EditPart createMainPaletteEditPart(EditPart parentEditPart, Object mod
 /**
  * Create TemplateEditPart - edit part for PaletteTemplateEntry
  * 
- * @param parentEditPart	the parent of the new editpart to be created
- * @param model				the PaletteTemplateEntry
+ * @param	parentEditPart	the parent of the new editpart to be created
+ * @param	model			the PaletteTemplateEntry
  * @return the newly created EditPart
  */
 protected EditPart createTemplateEditPart(EditPart parentEditPart, Object model) {

@@ -19,8 +19,7 @@ import org.eclipse.gef.ui.palette.customize.*;
 import org.eclipse.jface.action.Action;
 
 /**
- * Action to launch the PaletteCustomizerDialog, which allows to customize the
- * given PaletteViewer.
+ * This action launches the PaletteCustomizerDialog for the given palette.
  * 
  * @author Pratik Shah
  */
@@ -31,8 +30,7 @@ private PaletteViewer paletteViewer;
 /**
  * Constructor
  * 
- * @param palette	The Palette which has to be customized when this action is
- * run
+ * @param	palette		the palette which has to be customized when this action is run
  */
 public CustomizeAction(PaletteViewer palette) {
 	super();

@@ -32,13 +32,10 @@ import org.eclipse.gef.ui.palette.customize.PaletteSeparatorFactory;
 public abstract class PaletteCustomizer {
 
 /**
- * Indicates whether the given entry can be deleted from the model or not.
- * <p>
- * This default implementation returns <code>true</code> for all leaf (non-container)
- * entries. If the given entry is a <code>PaletteContainer</code>, it returns
- * <code>true</code> IFF all its children can be deleted as well.
- * </p>
- * <p>
+ * Indicates whether the given entry can be deleted from the model or not.  Whether or not
+ * an entry can be deleted depends on its permsission 
+ * ({@link PaletteEntry#getUserModificationPermission()}).
+ * <p> 
  * This method will be invoked by <code>PaletteCustomizerDialog</code> to determine
  * whether or not to enable the "Delete" action.
  * </p>
@@ -53,13 +50,15 @@ public boolean canDelete(PaletteEntry entry) {
 }
 
 /**
- * Indicates whether the given entry can be moved down or not.
+ * Indicates whether the given entry can be moved down or not.  Whether or not an entry
+ * can be moved down or not is determined by its parent's user modification
+ * permission ({@link PaletteEntry#getUserModificationPermission()}).
  * <p> 
  * Will be called by PaletteCustomizerDialog to determine whether or not to enable the
  * "Move Down" action.
  * </p>
  * 
- * @param	entry	The selected palette entry.  It'll never be <code>null</code>.
+ * @param	entry	The selected palette entry (it'll never be <code>null</code>)
  * @return	<code>true</code> if the given entry can be moved down
  * 
  * @see	#performMoveDown(PaletteEntry)
@@ -95,13 +94,15 @@ public boolean canMoveDown(PaletteEntry entry) {
 }
 
 /**
- * Indicates whether the given entry can be moved up or not.
+ * Indicates whether the given entry can be moved up or not.  Whether or not an entry can
+ * be moved up or not is determined by its parent's user modification permission
+ * ({@link PaletteEntry#getUserModificationPermission()}).
  * <p> 
  * Will be called by PaletteCustomizerDialog to determine whether or not to enable the
  * "Move Up" action.
  * </p>
  * 
- * @param	entry	The selected palette entry.  It'll never be <code>null</code>.
+ * @param	entry	The selected palette entry (it'll never be <code>null</code>)
  * @return	<code>true</code> if the given entry can be moved up
  * 
  * @see #performMoveUp(PaletteEntry)
@@ -139,7 +140,7 @@ public boolean canMoveUp(PaletteEntry entry) {
 /**
  * Returns the list of PaletteEntryFactories that can be used to create new palette
  * entries.  The String returned by the getText() method of each PaletteEntryFactory will
- * be used to populate the "New" drop down.  getImageDescriptor() will be used to set the
+ * be used to populate the "New" drop-down.  getImageDescriptor() will be used to set the
  * icons on the drop down.  This method can return null if there are no
  * PaletteEntryFactories available.
  * 
@@ -156,7 +157,8 @@ public List getNewEntryFactories() {
  * Returns an EntryPage that will display the custom properties of the
  * given entry.  Can return null if there are no custom properties.
  * 
- * @param	entry	The PaletteEntry whose properties page needs to be displayed
+ * @param	entry	The PaletteEntry whose properties page needs to be displayed (it'll 
+ * 					never be <code>null</code>)
  * @return	The EntryPage to represent the given entry
  */
 public EntryPage getPropertiesPage(PaletteEntry entry) {
@@ -168,9 +170,10 @@ public EntryPage getPropertiesPage(PaletteEntry entry) {
 
 /**
  * Updates the model by deleting the given entry from it.
- * Called when the "Delete" ToolItem in the PaletteCustomizerDialog is clicked.
+ * <br> 
+ * Called when the "Delete" action in the PaletteCustomizerDialog is executed.
  * 
- * @param	entry	The selected palette entry.  It'll never be <code>null</code>.
+ * @param	entry	The selected palette entry (it'll never be <code>null</code>)
  * 
  * @see #canDelete(PaletteEntry)
  */
@@ -180,9 +183,10 @@ public void performDelete(PaletteEntry entry) {
 
 /**
  * Updates the model by moving the entry down.
+ * <br> 
  * Called when the "Move Down" action in the PaletteCustomizerDialog is invoked.
  * 
- * @param	entry	The selected palette entry.  It'll never be <code>null</code>.
+ * @param	entry	The selected palette entry (it'll never be <code>null</code>)
  * 
  * @see #canMoveDown(PaletteEntry)
  */
@@ -208,9 +212,10 @@ public void performMoveDown(PaletteEntry entry) {
 
 /**
  * Updates the model by moving the entry up.
+ * <br> 
  * Called when the "Move Up" action in the PaletteCustomizerDialog is invoked.
  * 
- * @param	entry	The selected palette entry.  It'll never be <code>null</code>.
+ * @param	entry	The selected palette entry (it'll never be <code>null</code>)
  * 
  * @see #canMoveUp(PaletteEntry)
  */
@@ -237,8 +242,8 @@ public void performMoveUp(PaletteEntry entry) {
 /**
  * Undoes the changes made to the model since the last save.  
  * <p> 
- * This method is invoked when the "Cancel" button is hit on the
- * <code>PaletteCustomizerDialog</code>.  
+ * This method is invoked when the "Cancel" is selected in the
+ * <code>PaletteCustomizerDialog</code>.
  * </p>
  */
 public abstract void revertToSaved();
@@ -246,7 +251,7 @@ public abstract void revertToSaved();
 /**
  * Persists the changes made to the model.  
  * <p>
- * Called when <code>PaletteCustomizerDialog</code> is closed.
+ * Called when "OK" or "Apply" are selected in the <code>PaletteCustomizerDialog</code>.
  * </p>
  */
 public abstract void save();

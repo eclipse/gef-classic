@@ -16,6 +16,8 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.gef.ui.palette.customize.PaletteSettingsDialog;
 
 /**
+ * An action to launch the Settings dialog for the given palette.
+ * 
  * @author Pratik Shah
  */
 public class SettingsAction extends Action {
@@ -23,7 +25,7 @@ public class SettingsAction extends Action {
 private PaletteViewer paletteViewer;
 
 /**
- * Constructor for SettingsAction.
+ * Constructor
  * 
  * @param palette	The Palette which has to be customized when this action is run
  */

@@ -26,28 +26,31 @@ import org.eclipse.gef.GEFPlugin;
  * This is the default implementation for PaletteViewerPreferences.  It uses
  * a single IPreferenceStore to load and save the palette viewer settings.
  * <p>
- * It is recommended that the default constructor be used as that will cause the
- * preferences to be shared across different types of editors.  Sub-classes can add newer
- * preferences to the store by using {@link #getPreferenceStore()}.  If the client wishes
- * to restrict one of the existing preferences to their editor (say the auto-collapse
- * setting), sub-classes may override the necessary methods (in this case, 
- * {@link #getAutoCollapseSetting()} and {@link #setAutoCollapseSetting(int)}) and save
- * that preference in some other preference store.
+ * It is recommended that the default constructor be used (which will use the preference
+ * store in the GEF plugin) as that will cause the preferences to be shared across
+ * different types of editors.  If the client does not wisht to share one of the existing
+ * preferences for their editor (say the auto-collapse setting), they will have to
+ * sub-class this class and override the necessary methods (in this case,  {@link
+ * #getAutoCollapseSetting()} and {@link #setAutoCollapseSetting(int)}) and save that
+ * preference in some other preference store.  Sub-classes can add newer preferences to 
+ * the store by using {@link #getPreferenceStore()}.  
  * </p>
  * 
  * @author Pratik Shah
  */
-public class DefaultPaletteViewerPreferences
-	implements PaletteViewerPreferences
+public class DefaultPaletteViewerPreferences 
+	implements PaletteViewerPreferences 
 {
+
+private static final String DEFAULT_FONT = "Default"; //$NON-NLS-1$
 
 private PreferenceStoreListener listener;
 private IPropertyChangeListener fontListener;
 private FontData fontData;
 private PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 private IPreferenceStore store;
-private int[] supportedModes = {LAYOUT_COLUMNS, LAYOUT_LIST, 
-								LAYOUT_ICONS, LAYOUT_DETAILS};
+private int[] supportedModes =
+	{ LAYOUT_COLUMNS, LAYOUT_LIST, LAYOUT_ICONS, LAYOUT_DETAILS };
 
 /**
  * Default Constructor
@@ -62,7 +65,7 @@ public DefaultPaletteViewerPreferences() {
 /**
  * Constructor
  * 
- * @param	store	The IPreferenceStore where the settings are stored.
+ * @param	store	The IPreferenceStore where the settings are to be saved.
  */
 public DefaultPaletteViewerPreferences(final IPreferenceStore store) {
 	this.store = store;
@@ -72,22 +75,18 @@ public DefaultPaletteViewerPreferences(final IPreferenceStore store) {
 	store.setDefault(PREFERENCE_LIST_ICON_SIZE, false);
 	store.setDefault(PREFERENCE_LAYOUT, LAYOUT_LIST);
 	store.setDefault(PREFERENCE_AUTO_COLLAPSE, COLLAPSE_AS_NEEDED);
-	store.setDefault(PREFERENCE_FONT, JFaceResources.getDialogFont().
-			getFontData()[0].toString());
+	store.setDefault(PREFERENCE_FONT, DEFAULT_FONT);
 
 	listener = new PreferenceStoreListener();
 	store.addPropertyChangeListener(listener);
-	
+
 	fontListener = new IPropertyChangeListener() {
 		public void propertyChange(PropertyChangeEvent event) {
 			if (JFaceResources.DIALOG_FONT.equals(event.getProperty())) {
-				FontData data = JFaceResources.getDialogFont().getFontData()[0];
-				// We need to set the font data first because that will cause a property 
-				// change event to be fired.
-				if (getFontData().toString().equals(store.getDefaultString(PREFERENCE_FONT))) {
-					setFontData(data);
+				if (getPreferenceStore().getString(PREFERENCE_FONT).equals(DEFAULT_FONT)) {
+					setFontData(JFaceResources.getDialogFont().getFontData()[0]);
+					handlePreferenceStorePropertyChanged(PREFERENCE_FONT);
 				}
-				store.setDefault(PREFERENCE_FONT, data.toString());
 			}
 		}
 	};
@@ -105,7 +104,8 @@ public void addPropertyChangeListener(PropertyChangeListener listener) {
 }
 
 /**
- * Converts the given layout code to the matching preference name.
+ * This is a convenience method that converts the given layout mode to the matching
+ * preference name.
  * 
  * <UL>
  * <LI> int <-> String </LI>
@@ -115,8 +115,8 @@ public void addPropertyChangeListener(PropertyChangeListener listener) {
  * <LI> LAYOUT_DETAILS <-> PREFERENCE_DETAILS_ICON_SIZE </LI>
  * </UL>
  * 
- * @param layout	LAYOUT_LIST, LAYOUT_DETAILS, LAYOUT_COLUMNS, or LAYOUT_ICONS
- * @return	The corresponding preference String
+ * @param	layout	LAYOUT_LIST, LAYOUT_DETAILS, LAYOUT_COLUMNS, or LAYOUT_ICONS
+ * @return			The corresponding preference String
  */
 public static String convertLayoutToPreferenceName(int layout) {
 	String key = ""; //$NON-NLS-1$
@@ -134,11 +134,11 @@ public static String convertLayoutToPreferenceName(int layout) {
 			key = PREFERENCE_DETAILS_ICON_SIZE;
 			break;
 	}
-	return key;	
+	return key;
 }
 
 /**
- * Converts the given preference to the matching layout code.
+ * This convenience method converts the given preference to the matching layout mode.
  * 
  * <UL>
  * <LI> int <-> String </LI>
@@ -179,7 +179,7 @@ protected void firePropertyChanged(String property, Object newVal) {
  * @see org.eclipse.gef.ui.palette.PaletteViewerPreferences#getAutoCollapseSetting()
  */
 public int getAutoCollapseSetting() {
-	return store.getInt(PREFERENCE_AUTO_COLLAPSE);
+	return getPreferenceStore().getInt(PREFERENCE_AUTO_COLLAPSE);
 }
 
 /**
@@ -187,7 +187,12 @@ public int getAutoCollapseSetting() {
  */
 public FontData getFontData() {
 	if (fontData == null) {
-		fontData = new FontData(store.getString(PREFERENCE_FONT));
+		String value = getPreferenceStore().getString(PREFERENCE_FONT);
+		if (value.equals(DEFAULT_FONT)) {
+			fontData = JFaceResources.getDialogFont().getFontData()[0];
+		} else {
+			fontData = new FontData(value);
+		}
 	}
 	return fontData;
 }
@@ -196,7 +201,7 @@ public FontData getFontData() {
  * @see org.eclipse.gef.ui.palette.PaletteViewerPreferences#getLayoutSetting()
  */
 public int getLayoutSetting() {
-	return store.getInt(PREFERENCE_LAYOUT);
+	return getPreferenceStore().getInt(PREFERENCE_LAYOUT);
 }
 
 /**
@@ -208,7 +213,10 @@ public int[] getSupportedLayoutModes() {
 
 /**
  * This method is invoked when the preference store fires a property change.
- *  * @param property	The property String used for the change fired by the preference store. */
+ * 
+ * @param	property	The property String used for the change fired by the preference 
+ * 						store
+ */
 protected void handlePreferenceStorePropertyChanged(String property) {
 	if (property.equals(PREFERENCE_LAYOUT)) {
 		firePropertyChanged(property, new Integer(getLayoutSetting()));
@@ -217,12 +225,14 @@ protected void handlePreferenceStorePropertyChanged(String property) {
 	} else if (property.equals(PREFERENCE_FONT)) {
 		firePropertyChanged(property, getFontData());
 	} else {
-		firePropertyChanged(property, new Boolean(
-				useLargeIcons(convertPreferenceNameToLayout(property))));
+		firePropertyChanged(property,
+			new Boolean(useLargeIcons(convertPreferenceNameToLayout(property))));
 	}
 }
 
-/** * @return The IPreferenceStore used by this class to store the preferences. */
+/**
+ * @return The IPreferenceStore used by this class to store the preferences.
+ */
 protected IPreferenceStore getPreferenceStore() {
 	return store;
 }
@@ -250,7 +260,7 @@ public void removePropertyChangeListener(PropertyChangeListener listener) {
  * @see org.eclipse.gef.ui.palette.PaletteViewerPreferences#setAutoCollapseSetting(int)
  */
 public void setAutoCollapseSetting(int newVal) {
-	store.setValue(PREFERENCE_AUTO_COLLAPSE, newVal);
+	getPreferenceStore().setValue(PREFERENCE_AUTO_COLLAPSE, newVal);
 }
 
 /**
@@ -258,14 +268,18 @@ public void setAutoCollapseSetting(int newVal) {
  */
 public void setFontData(FontData data) {
 	fontData = data;
-	store.setValue(PREFERENCE_FONT, data.toString());
+	String value = data.toString();
+	if (fontData.equals(JFaceResources.getDialogFont().getFontData()[0])) {
+		value = DEFAULT_FONT;
+	}
+	getPreferenceStore().setValue(PREFERENCE_FONT, value);
 }
 
 /**
  * @see org.eclipse.gef.ui.palette.PaletteViewerPreferences#setLayoutSetting(int)
  */
 public void setLayoutSetting(int newVal) {
-	store.setValue(PREFERENCE_LAYOUT, newVal);
+	getPreferenceStore().setValue(PREFERENCE_LAYOUT, newVal);
 }
 
 /**
@@ -285,7 +299,8 @@ public void setCurrentUseLargeIcons(boolean newVal) {
  */
 public void setSupportedLayoutModes(int[] modes) {
 	supportedModes = modes;
-	if (!isSupportedLayoutMode(getPreferenceStore().getDefaultInt(PREFERENCE_LAYOUT))) {
+	if (!isSupportedLayoutMode(getPreferenceStore()
+				.getDefaultInt(PREFERENCE_LAYOUT))) {
 		getPreferenceStore().setDefault(PREFERENCE_LAYOUT, supportedModes[0]);
 	}
 	if (!isSupportedLayoutMode(getPreferenceStore().getInt(PREFERENCE_LAYOUT))) {
@@ -297,14 +312,14 @@ public void setSupportedLayoutModes(int[] modes) {
  * @see org.eclipse.gef.ui.palette.PaletteViewerPreferences#setUseLargeIcons(boolean)
  */
 public void setUseLargeIcons(int layout, boolean newVal) {
-	store.setValue(convertLayoutToPreferenceName(layout), newVal);
+	getPreferenceStore().setValue(convertLayoutToPreferenceName(layout), newVal);
 }
 
 /**
  * @see org.eclipse.gef.ui.palette.PaletteViewerPreferences#useLargeIcons()
  */
 public boolean useLargeIcons(int layout) {
-	return store.getBoolean(convertLayoutToPreferenceName(layout));
+	return getPreferenceStore().getBoolean(convertLayoutToPreferenceName(layout));
 }
 
 /**
@@ -315,9 +330,6 @@ public boolean useLargeIcons() {
 }
 
 private class PreferenceStoreListener implements IPropertyChangeListener {
-	/**
-	 * @see org.eclipse.jface.util.IPropertyChangeListener#propertyChange(PropertyChangeEvent)
-	 */
 	public void propertyChange(PropertyChangeEvent evt) {
 		handlePreferenceStorePropertyChanged(evt.getProperty());
 	}

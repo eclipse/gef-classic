@@ -17,7 +17,8 @@ import org.eclipse.gef.internal.ui.palette.editparts.DrawerEditPart;
 import org.eclipse.gef.ui.actions.GEFActionConstants;
 
 /**
- * Provides the context menu for a palette
+ * Provides the context menu for a palette.
+ * 
  * @author Pratik Shah
  */
 public class PaletteContextMenuProvider
@@ -27,14 +28,13 @@ public class PaletteContextMenuProvider
 /**
  * Constructor
  * 
- * @param palette the palette viewer for which the context menu has to be created
+ * @param	palette		the palette viewer for which the context menu has to be created
  */
 public PaletteContextMenuProvider(PaletteViewer palette) {
 	super(palette);
 }
 
 /**
- * Returns the palette viewer.
  * @return the palette viewer
  */
 protected PaletteViewer getPaletteViewer() {
@@ -42,19 +42,20 @@ protected PaletteViewer getPaletteViewer() {
 }
 
 /**
- * This is the actual method that builds the context menu.
+ * This is the method that builds the context menu.
  * 
- * @param menu The IMenuManager to which actions for the palette's context menu can be
- * 				added
+ * @param	menu	The IMenuManager to which actions for the palette's context menu can be
+ * 					added
  * @see org.eclipse.gef.ui.parts.ContextMenuProvider#buildContextMenu(org.eclipse.jface.action.IMenuManager)
  */
 public void buildContextMenu(IMenuManager menu) {
 	GEFActionConstants.addStandardActionGroups(menu);
 
 	Object selectedPart = getPaletteViewer().getSelectedEditParts().get(0);
-	if (selectedPart instanceof DrawerEditPart && ((DrawerEditPart)selectedPart).canBePinned()) {
+	if (selectedPart instanceof DrawerEditPart 
+					&& ((DrawerEditPart)selectedPart).canBePinned()) {
 		menu.appendToGroup(GEFActionConstants.MB_ADDITIONS, 
-							new PinDrawerAction((DrawerEditPart)selectedPart));
+						new PinDrawerAction((DrawerEditPart)selectedPart));
 	}
 	menu.appendToGroup(GEFActionConstants.GROUP_VIEW, new LayoutAction(
 			getPaletteViewer().getPaletteViewerPreferences()));

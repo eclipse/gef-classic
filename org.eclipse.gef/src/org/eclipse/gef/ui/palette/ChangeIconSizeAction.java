@@ -13,6 +13,9 @@ package org.eclipse.gef.ui.palette;
 import org.eclipse.jface.action.Action;
 
 /**
+ * This action toggles the "Use Large Icons" option for the current layout mode of the
+ * palette.
+ * 
  * @author Pratik Shah
  */
 public class ChangeIconSizeAction 
@@ -23,8 +26,8 @@ private PaletteViewerPreferences prefs;
 
 /**
  * Constructor
- *  * @param prefs	The <code>PaletteViewerPreferences</code> object that this action is
- * 					manipulating.
+ *  * @param	prefs	The <code>PaletteViewerPreferences</code> object that this action is
+ * 					manipulating
  */
 public ChangeIconSizeAction(PaletteViewerPreferences prefs) {
 	super(PaletteMessages.SETTINGS_USE_LARGE_ICONS_LABEL_CAPS);
@@ -33,6 +36,8 @@ public ChangeIconSizeAction(PaletteViewerPreferences prefs) {
 }
 
 /**
+ * Toggles the "Use Large Icons" option for the current layout mode.
+ * 
  * @see org.eclipse.jface.action.Action#run()
  */
 public void run() {

@@ -30,7 +30,7 @@ import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 /**
  * Graphical viewer for the GEF palette.
  * 
- * @author Pratik Shah, Randy Hudson */
+ * @author Randy Hudson, Pratik Shah */
 public class PaletteViewer
 	extends ScrollingGraphicalViewer
 {
@@ -86,8 +86,8 @@ public PaletteViewer() {
 /**
  * Adds the given PaletteListener as the one to be notified when the active tool on the
  * palette changes.
- *  * @param paletteListener	The listener that needs to be notified of active tool changes on
- * the palette
+ *  * @param	paletteListener		The listener that needs to be notified of active tool changes
+ * 								on the palette
  */
 public void addPaletteListener(PaletteListener paletteListener) {
 	if (paletteListeners != null)
@@ -111,11 +111,13 @@ private void disposeFont() {
  * to individual lightweight buttons that appear dynamically on each drawer. The default
  * settings is <code>false</code>. Enabling this setting requires additional horizontal
  * screen space for the scrollbar. Therefore, its use is discouraged.
+ * <p> 
+ * This setting must be changed prior to calling 
+ * {@link ScrollingGraphicalViewer#createControl(Composite)}.  After the control is
+ * created, changing this setting will have no effect.
+ * </p>
  * 
- * <P> This setting must be changed prior to calling {@link
- * ScrollingGraphicalViewer#createControl(Composite)}.  After the control is created,
- * changing this setting will have no effect.
- * @param value <code>true</code> if a vertical scrollbar should be displayed
+ * @param	value	<code>true</code> if a vertical scrollbar should be displayed
  */
 public void enableVerticalScrollbar(boolean value) {
 	this.globalScrollbar = true;
@@ -133,8 +135,7 @@ protected void fireModeChanged() {
 }
 
 /**
- * Returns the customizer.
- * @return PaletteCustomizer
+ * @return the customizer
  */
 public PaletteCustomizer getCustomizer() {
 	return customizer;
@@ -144,7 +145,7 @@ public PaletteCustomizer getCustomizer() {
  * NOTE: A PaletteCustomizer must be set for this viewer using the 
  * {@link #setCustomizer(PaletteCustomizer)} method before this method is invoked.
  * 
- * @return The dialog that can be used to customizer entries on the palette. */
+ * @return The dialog that can be used to customize entries on the palette */
 public PaletteCustomizerDialog getCustomizerDialog() {
 	if (customizerDialog == null) {
 		customizerDialog = new PaletteCustomizerDialog(getControl().getShell(),
@@ -154,15 +155,15 @@ public PaletteCustomizerDialog getCustomizerDialog() {
 	return customizerDialog;
 }
 
-/** * @return the entry for the currently active tool. */
+/** * @return the entry for the currently active tool */
 public ToolEntry getActiveTool() {
 	return activeEntry;
 }
 
 /**
- * @return The PaletteViewerPreferences that this palette is using to store its
- * 			preferences.  If none has been set, it returns the default one (which
- * 			uses the GEF preference store).
+ * @return	The PaletteViewerPreferences that this palette is using to store its
+ * 			preferences (if none has been set, it returns the default one, which uses
+ * 			the GEF preference store)
  */
 public PaletteViewerPreferences getPaletteViewerPreferences() {
 	return prefs;
@@ -198,8 +199,8 @@ protected void hookControl() {
 
 /**
  * The given PaletteListener will not be notified of active tool changes in the palette.
- *  * @param paletteListener	The PaletteListener which doesn't want to be notified of active
- * tool changes in the palette anymore.
+ *  * @param	paletteListener		the PaletteListener which doesn't want to be notified of active
+ * 								tool changes in the palette anymore
  */
 public void removePaletteListener(PaletteListener paletteListener) {
 	paletteListeners.remove(paletteListener);
@@ -207,7 +208,8 @@ public void removePaletteListener(PaletteListener paletteListener) {
 
 /**
  * Sets the customizer.
- * @param customizer The customizer to set
+ * 
+ * @param	customizer		the customizer to be set
  */
 public void setCustomizer(PaletteCustomizer customizer) {
 	this.customizer = customizer;
@@ -216,8 +218,8 @@ public void setCustomizer(PaletteCustomizer customizer) {
 /**
  * Sets the active entry for this palette.  The Editpart for the given entry will be
  * activated (selected).
- *  * @param newMode	ToolEntry whose EditPart has to be set as the active tool in this
- * palette.
+ *  * @param	newMode		the ToolEntry whose EditPart has to be set as the active tool in this
+ * 						palette
  */
 public void setActiveTool(ToolEntry newMode) {
 	if (newMode == null)
@@ -235,7 +237,7 @@ public void setActiveTool(ToolEntry newMode) {
 
 /**
  * Sets the root for this palette.
- *  * @param root The PaletteRoot for this palette. */
+ *  * @param	root	the PaletteRoot for this palette */
 public void setPaletteRoot(PaletteRoot root) {
 	paletteRoot = root;
 	if (paletteRoot != null) {
@@ -252,9 +254,10 @@ public void setPaletteRoot(PaletteRoot root) {
  * {@link #getPaletteViewerPreferencesSource()} is invoked).  Trying to invoke this method
  * after that could lead to problems where some preferences would still be stored in the
  * old preference store.
+ * </p>
  * 
- * @param	prefs	The PaletteViewerPreferences that is to be used to store all the
- * 					preferences for this palette.
+ * @param	prefs	the PaletteViewerPreferences that is to be used to store all the
+ * 					preferences for this palette
  */
 public void setPaletteViewerPreferences(PaletteViewerPreferences prefs) {
 	if (this.prefs != null)

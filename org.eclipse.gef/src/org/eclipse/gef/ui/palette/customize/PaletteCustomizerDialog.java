@@ -43,17 +43,16 @@ import org.eclipse.gef.ui.palette.PaletteCustomizer;
 import org.eclipse.gef.ui.palette.PaletteMessages;
 
 /**
- * This class implements a default dialog that allows customization of the
- * GEF palette.
- * 
- * The construction of the dialog is broken down into different methods in
- * order to allow clients to further customize the appearance of the dialog,
- * if so desired.
- * 
+ * This class implements a default dialog that allows customization of the different
+ * entries/items on a GEF palette, i.e. the model behind the palette.
+ * <p>
+ * The construction of the dialog is broken down into different methods in order to allow
+ * clients to further customize the appearance of the dialog, if so desired.
+ * </p><p>
  * This dialog can be re-used, i.e., it can be re-opened once closed.  There is no need to
  * create a new <code>PaletteCustomizerDialog</code> everytime a palette needs to be
  * customized.
- * 
+ * </p>
  * @author Pratik Shah
  * @see org.eclipse.gef.palette.PaletteEntry
  * @see org.eclipse.gef.ui.palette.PaletteCustomizer
@@ -64,9 +63,9 @@ public class PaletteCustomizerDialog
 {
 
 /**
- * The unique IDs for the various widgets.  These IDs can be used to retrieve
- * these widgets from the internal map (using {@link #getWidget(int)} or
- * {@link #getButton(int)}), or to identify widgets in {@link #buttonPressed(int)}.
+ * The unique ID for the Apply Button.  It can be used to retrieve
+ * that widget from the internal map (using {@link #getWidget(int)} or
+ * {@link #getButton(int)}), or to identify that widget in {@link #buttonPressed(int)}.
  */
 protected static final int APPLY_ID = IDialogConstants.CLIENT_ID + 1;
 
@@ -113,22 +112,6 @@ private ISelectionChangedListener pageFlippingPreventer = new ISelectionChangedL
 private boolean isSetup = true;
 
 /**
- * Used to cache the "Use Large Icons" setting
- * @see #cacheViewerSettings()
- */
-protected boolean initialUseLargeIcons;
-/**
- * Used to cache the layout setting
- * @see #cacheViewerSettings()
- */
-protected int initialLayout;
-/**
- * Used to cache the auto - collapse setting
- * @see #cacheViewerSettings()
- */
-protected int initialCollapse;
-
-/**
  * Constructs a new customizer dialog.
  * @param shell the parent Shell
  * @param customizer the customizer
@@ -138,7 +121,7 @@ public PaletteCustomizerDialog(Shell shell, PaletteCustomizer customizer, Palett
 	super(shell);
 	this.customizer = customizer;
 	this.root = root;
-	setShellStyle(getShellStyle() | SWT.RESIZE | SWT.MAX);
+	setShellStyle(getShellStyle() | SWT.RESIZE);
 }
 
 /**
@@ -157,7 +140,13 @@ protected void buttonPressed(int buttonId) {
 }
 
 /**
+ * This method should be invoked by EntryPages when an error that they had earlier
+ * reported (using {@link #showProblem(String)}) is fixed.  This will hide the error
+ * message, enable the OK and Apply buttons and re-allow changing selection in the outline
+ * tree.
+ * 
  * @see org.eclipse.gef.ui.palette.customize.EntryPageContainer#clearProblem()
+ * @see #showProblem(String)
  */
 public void clearProblem() {
 	if (errorMessage != null) {
@@ -170,7 +159,7 @@ public void clearProblem() {
 
 /**
  * <p> 
- * NOTE: This dialog can be re - opened.
+ * NOTE: This dialog can be re-opened.
  * </p>
  * 
  * @see org.eclipse.jface.window.Window#close()
@@ -232,10 +221,10 @@ protected void configureShell(Shell newShell) {
  * can be used to create any other button in the dialog.  The parent 
  * <code>Composite</code> must have a GridLayout.  These buttons will be  available
  * through {@link #getButton(int)} and {@link #getWidget(int)}.  Ensure that the various
- * buttons created by this method are given unique IDs.  Pass in a null image descriptor
- * if  you don't want the button to have an icon.  This method will take care of 
- * disposing the images that it creates.  {@link #buttonPressed(int)} will be called when
- * any of the buttons created by this method are clicked (selected).
+ * buttons created by this method are given unique IDs.  Pass in a <code>null</code> image
+ * descriptor if  you don't want the button to have an icon.  This method will take care
+ * of  disposing the images that it creates.  {@link #buttonPressed(int)} will be called
+ * when any of the buttons created by this method are clicked (selected).
  * 
  * @param	parent		The composite in which the button is to be created
  * @param	id			The button's unique ID
@@ -278,6 +267,8 @@ protected Button createButton(Composite parent, int id, String label,
 }
 
 /**
+ * Creates the OK, Cancel and Apply buttons
+ * 
  * @see org.eclipse.jface.dialogs.Dialog#createButtonsForButtonBar(Composite)
  */
 protected void createButtonsForButtonBar(Composite parent) {
@@ -441,7 +432,7 @@ protected Menu createOutlineContextMenu() {
  * created in {@link #createOutlineActions()}.
  * 
  * @param	parent		The Composite to which the ToolBar is to be added
- * @return Control		The newly created ToolBar
+ * @return				The newly created ToolBar
  */
 protected Control createOutlineToolBar(Composite parent) {
 	// A customized composite for the toolbar 
@@ -506,8 +497,8 @@ protected Control createOutlineToolBar(Composite parent) {
 /**
  * Creates the TreeViewer that is the outline of the model.
  * 
- * @param composite The Composite to which the ToolBar is to be added.
- * @return	The newly create TreeViewer
+ * @param	composite	The Composite to which the ToolBar is to be added
+ * @return				The newly created TreeViewer
  */
 protected TreeViewer createOutlineTreeViewer(Composite composite) {
 	Tree treeForViewer = new Tree (composite, SWT.BORDER);
@@ -742,7 +733,7 @@ protected final List getOutlineActions() {
 }
 
 /**
- * Provides sub - classes with access to the PaletteRoot
+ * Provides sub-classes with access to the PaletteRoot
  * 
  * @return the palette root
  */
@@ -752,7 +743,7 @@ protected PaletteRoot getPaletteRoot() {
 
 /**
  * @return		The PaletteEntry that is currently selected in the Outline Tree;
- * 				<code>null</code> if none is selected.
+ * 				<code>null</code> if none is selected
  */
 protected PaletteEntry getSelectedPaletteEntry() {
 	TreeItem item = getSelectedTreeItem();
@@ -764,8 +755,8 @@ protected PaletteEntry getSelectedPaletteEntry() {
 }
 
 /**
- * @return 	The TreeItem that is currently selected in the Outline Tree. <code>null</code>
- * 				if none is selected.
+ * @return 	The TreeItem that is currently selected in the Outline Tree; <code>null</code>
+ * 				if none is selected
  */
 protected TreeItem getSelectedTreeItem() {
 	TreeItem[] items = tree.getSelection();
@@ -780,8 +771,7 @@ protected TreeItem getSelectedTreeItem() {
  * internal map can be retrieved through this method.
  * 
  * @param 	id	The unique ID of the Widget that you wish to retrieve
- * @return 	The Widget, if one with the given id exists.  <code>null</code>
- * 				otherwise.
+ * @return 	The Widget, if one with the given id exists; <code>null</code> otherwise
  */
 protected Widget getWidget(int id) {
 	Widget widget = (Widget)widgets.get(new Integer(id));
@@ -795,11 +785,12 @@ protected Widget getWidget(int id) {
 /**
  * This method is invoked when the Apply button is pressed
  * <p>
- * IMPORTANT: Closing the dialog with the 'X' at the top right of the window, or by
- * hitting 'Esc' or any other way, corresponds to a "Cancel."  That will, however, not
- * result in this method being invoked.  To handle such cases, saving or rejecting the
- * changes is handled in {@link #close()}.  Override {@link #save()} and {@link
- * #revertToSaved()} to add to what needs to be done when saving or cancelling.
+ * IMPORTANT: It is recommended that you not override this method.  Closing the dialog
+ * with the 'X' at the top right of the window, or by hitting 'Esc' or any other way,
+ * corresponds to a "Cancel."  That will, however, not result in this method being
+ * invoked.  To handle such cases, saving or rejecting the changes is handled in {@link
+ * #close()}.  Override {@link #save()} and {@link #revertToSaved()} to add to what needs
+ * to be done when saving or cancelling.
  * </p>
  */
 protected final void handleApplyPressed() {
@@ -888,8 +879,8 @@ protected void save() {
  * of the propreties panel, and will show the properties of the selected item in the
  * properties panel.
  * 
- * @param entry	The new active entry (i.e., the new selected entry).  It can
- * be <code>null</code>.
+ * @param 	entry	The new active entry, i.e., the new selected entry (it can be
+ * 					<code>null</code>)
  */
 protected void setActiveEntry(PaletteEntry entry) {
 	if (activeEntry != null) {
@@ -983,17 +974,21 @@ protected void setActiveEntryPage(EntryPage page) {
 }
 
 /**
- * Selects the given PaletteEntry as the one to be selected when the dialog
+ * Sets the given PaletteEntry as the one to be selected when the dialog
  * opens.  It is discarded when the dialog is closed.
  * 
- * @param entry	The PaletteEntry that should be selected when the dialog
- * 					is opened
+ * @param	entry	The PaletteEntry that should be selected when the dialog is opened
  */
 public void setDefaultSelection(PaletteEntry entry) {
 	initialSelection = entry;
 }
 
 /**
+ * This method should be invoked by EntryPages when there is an error.  It will show the
+ * given error in the title of the properties panel.  OK and Apply buttons will be
+ * disabled.  Selecting some other entry in the outline tree will not be allowed until the
+ * error is fixed.
+ * 
  * @see org.eclipse.gef.ui.palette.customize.EntryPageContainer#showProblem(String)
  */
 public void showProblem(String error) {
@@ -1006,7 +1001,8 @@ public void showProblem(String error) {
 }
 
 /**
- * Updates the actions, enabling or disabling them as necessary.
+ * Updates the actions created in {@link #createOutlineActions()}, enabling or
+ * disabling them as necessary.
  */
 protected void updateActions() {
 	List actions = getOutlineActions();
