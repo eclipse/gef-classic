@@ -11,6 +11,7 @@ import org.eclipse.draw2d.graph.*;
 import org.eclipse.draw2d.graph.CompoundDirectedGraph;
 import org.eclipse.draw2d.graph.Node;
 
+import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.editparts.AbstractConnectionEditPart;
 import org.eclipse.gef.editpolicies.ConnectionEndpointEditPolicy;
@@ -68,6 +69,16 @@ protected IFigure createFigure() {
 	return conn;
 }
 
+/**
+ * @see org.eclipse.gef.EditPart#setSelected(int)
+ */
+public void setSelected(int value) {
+	super.setSelected(value);
+	if (value != EditPart.SELECTED_NONE)
+		((PolylineConnection)getFigure()).setLineWidth(2);
+	else
+		((PolylineConnection)getFigure()).setLineWidth(1);
+}
 
 public void contributeToGraph(CompoundDirectedGraph graph, Map map) {
 	Node source = (Node)map.get(getSource());

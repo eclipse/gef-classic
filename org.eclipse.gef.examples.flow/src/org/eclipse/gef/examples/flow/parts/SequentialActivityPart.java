@@ -45,6 +45,7 @@ public void contributeEdgesToGraph(CompoundDirectedGraph graph, Map map) {
 		node = (Node)map.get(a);
 		if (prev != null) {
 			Edge e = new Edge(prev, node);
+//			e.weight = 1000;
 			graph.edges.add(e);
 		}
 		prev = node;

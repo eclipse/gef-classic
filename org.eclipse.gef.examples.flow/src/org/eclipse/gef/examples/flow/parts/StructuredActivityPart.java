@@ -3,19 +3,19 @@ package org.eclipse.gef.examples.flow.parts;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.jface.viewers.TextCellEditor;
+
 import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.graph.CompoundDirectedGraph;
+import org.eclipse.draw2d.graph.Subgraph;
 
 import org.eclipse.gef.*;
 import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
 
-import org.eclipse.gef.examples.flow.figures.StartTag;
-import org.eclipse.gef.examples.flow.figures.SubgraphFigure;
+import org.eclipse.gef.examples.flow.figures.*;
 import org.eclipse.gef.examples.flow.model.Activity;
 import org.eclipse.gef.examples.flow.model.StructuredActivity;
 import org.eclipse.gef.examples.flow.policies.*;
-import org.eclipse.jface.viewers.TextCellEditor;
-import org.eclipse.draw2d.graph.CompoundDirectedGraph;
-import org.eclipse.draw2d.graph.Subgraph;
 
 /**
  * @author hudsonr
@@ -71,7 +71,7 @@ public void contributeNodesToGraph(CompoundDirectedGraph graph, Subgraph s, Map 
 
 protected IFigure createFigure() {
 	String name = ((Activity)getModel()).getName();
-	Figure f = new SubgraphFigure(new StartTag(name), new StartTag(name));
+	Figure f = new SubgraphFigure(new StartTag(name), new EndTag(name));
 	f.setOpaque(true);
 	f.setBorder(new LineBorder());
 	return f;
@@ -141,8 +141,9 @@ protected void performDirectEdit() {
  * @see org.eclipse.gef.editparts.AbstractEditPart#refreshVisuals()
  */
 protected void refreshVisuals() {
-	((StartTag)((SubgraphFigure)getFigure()).getHeader()).setText(getActivity().getName());
-	((StartTag)((SubgraphFigure)getFigure()).getFooter()).setText(getActivity().getName());
+	((Label)((SubgraphFigure)getFigure()).getHeader()).setText(getActivity().getName());
+	((Label)((SubgraphFigure)getFigure()).getFooter())
+		.setText("/" + getActivity().getName()); //$NON-NLS-1$
 }
 
 }
