@@ -49,11 +49,11 @@ public void testImageRotation() {
 		img1.dispose();
 		img2.dispose();
 		img3.dispose();
-		if (result1 != null && result1.handle != 0)
+		if (result1 != null && !result1.isDisposed())
 			result1.dispose();
-		if (result2 != null && result2.handle != 0)
+		if (result2 != null && !result2.isDisposed())
 			result2.dispose();
-		if (result3 != null && result3.handle != 0)
+		if (result3 != null && !result3.isDisposed())
 			result3.dispose();
 	}
 }
@@ -92,13 +92,13 @@ public void testRotatingImagesWithDifferentDepths() {
 		img2.dispose();
 		img3.dispose();
 		img4.dispose();
-		if (result1 != null && result1.handle != 0)
+		if (result1 != null && !result1.isDisposed())
 			result1.dispose();
-		if (result2 != null && result2.handle != 0)
+		if (result2 != null && !result2.isDisposed())
 			result2.dispose();
-		if (result3 != null && result3.handle != 0)
+		if (result3 != null && !result3.isDisposed())
 			result3.dispose();
-		if (result4 != null && result4.handle != 0)
+		if (result4 != null && !result4.isDisposed())
 			result4.dispose();
 	}
 }
