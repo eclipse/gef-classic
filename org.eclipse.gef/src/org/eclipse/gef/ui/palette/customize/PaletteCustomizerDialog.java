@@ -33,6 +33,7 @@ import org.eclipse.ui.internal.WorkbenchImages;
 import org.eclipse.ui.part.PageBook;
 
 import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.widgets.MultiLineLabel;
 
 import org.eclipse.gef.internal.Internal;
@@ -619,7 +620,8 @@ protected PageBook createPropertiesPanelTitle(Composite parent) {
 	layout.verticalSpacing = 0;
 	errorPage.setLayout(layout);
 	errorTitle = new MultiLineLabel(errorPage);
-	errorTitle.setImage(JFaceResources.getImage(DLG_IMG_MESSAGE_ERROR));
+	errorTitle.setImage(JFaceResources.getImage(DLG_IMG_MESSAGE_ERROR),
+			PositionConstants.WEST);
 	errorTitle.setFont(errorPage.getFont());
 	errorTitle.setLayoutData(new GridData(GridData.FILL_HORIZONTAL 
 	                            | GridData.VERTICAL_ALIGN_FILL));
