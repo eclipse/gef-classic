@@ -67,8 +67,10 @@ public static FontMetrics getFontMetrics(Font f){
 }
 
 protected static GC getGC(){
-	if (gc == null)
+	if (gc == null) {
 		gc = new GC(new Shell());
+		appliedFont = gc.getFont();
+	}
 	return gc;
 }
 
