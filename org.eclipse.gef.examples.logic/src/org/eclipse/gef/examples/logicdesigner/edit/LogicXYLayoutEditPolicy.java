@@ -86,7 +86,7 @@ protected EditPolicy createChildEditPolicy(EditPart child) {
 		return new NonResizableEditPolicy();
 	} else if (child instanceof LogicLabelEditPart) {
 		ResizableEditPolicy policy = new ResizableEditPolicy();
-		policy.setHandleDirections(PositionConstants.EAST | PositionConstants.WEST);
+		policy.setResizeDirections(PositionConstants.EAST | PositionConstants.WEST);
 		return policy;
 	}
 	
