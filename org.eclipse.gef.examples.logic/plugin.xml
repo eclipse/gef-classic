@@ -22,7 +22,7 @@
             default="true"
             icon="logic.gif"
             extensions="logic"
-            contributorClass="org.eclipse.gef.examples.logicdesigner.LogicActionBarContributor"
+            contributorClass="org.eclipse.gef.examples.logicdesigner.actions.LogicActionBarContributor"
             class="org.eclipse.gef.examples.logicdesigner.LogicEditor"
             id="Logic Graphical Editor">
       </editor>
