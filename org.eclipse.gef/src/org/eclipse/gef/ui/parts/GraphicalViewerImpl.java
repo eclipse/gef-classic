@@ -86,14 +86,13 @@ protected void handleDispose(DisposeEvent e) {
 }
 
 protected void handleFocusGained(FocusEvent fe) {
-	// @TODO:Pratik   Should the focus edit part be revealed?
-	if (getFocusEditPart() != null)
-		getFocusEditPart().setFocus(true);
+	if (focusPart != null)
+		focusPart.setFocus(true);
 }
 
 protected void handleFocusLost(FocusEvent fe) {
-	if (getFocusEditPart() != null)
-		getFocusEditPart().setFocus(false);
+	if (focusPart != null)
+		focusPart.setFocus(false);
 }
 
 /**
