@@ -68,6 +68,23 @@ public void performTranslate(int dx, int dy) {
 }
 
 /**
+ * Returns the bottom coordinte in double precision.
+ * @return the precise bottom
+ */
+public double preciseBottom() {
+	return preciseHeight + preciseY;
+}
+
+/**
+ * Returns the right side in double precision.
+ * @return the precise right
+ */
+public double preciseRight() {
+	return preciseWidth + preciseX;
+}
+
+
+/**
  * @see org.eclipse.draw2d.geometry.Rectangle#resize(org.eclipse.draw2d.geometry.Dimension)
  */
 public Rectangle resize(Dimension sizeDelta) {
@@ -129,7 +146,7 @@ public Rectangle translate(Point p) {
 	return this;
 }
 
-private void updateInts() {
+public final void updateInts() {
 	x = (int)Math.floor(preciseX + 0.000000001);
 	y = (int)Math.floor(preciseY + 0.000000001);
 	width = (int)Math.floor(preciseWidth + preciseX + 0.000000001) - x;

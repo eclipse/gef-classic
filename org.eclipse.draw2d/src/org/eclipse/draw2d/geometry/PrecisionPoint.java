@@ -104,4 +104,12 @@ public Point setLocation(Point pt) {
 	return this;
 }
 
+/**
+ * Updates the integer fields using the precise versions.
+ */
+public final void updateInts() {
+	x = (int)Math.floor(preciseX + 0.000000001);
+	y = (int)Math.floor(preciseY + 0.000000001);
+}
+
 }
