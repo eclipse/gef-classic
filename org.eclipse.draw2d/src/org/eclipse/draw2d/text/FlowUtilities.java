@@ -22,9 +22,8 @@ class FlowUtilities
  * faster calculation.
  * @param s the String * @param f the Font used for measuring * @param availableWidth the available width in pixels * @param avg 0.0, or an avg character width to use during calculation * @return int */
 public static int getTextForSpace(String s, Font f, int availableWidth, float avg) {
-	if (s == null || s.equals("")) { //$NON-NLS-1$
+	if (s.equals("")) //$NON-NLS-1$
 		return 0;
-	}
 	
 	FontMetrics metrics = getFontMetrics(f);
 	BreakIterator breakItr = BreakIterator.getLineInstance();

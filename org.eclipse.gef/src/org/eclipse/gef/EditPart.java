@@ -226,6 +226,13 @@ boolean hasFocus();
 void installEditPolicy(Object role, EditPolicy editPolicy);
 
 /**
+ * returns <code>true</code> if the EditPart is active. Editparts are active after
+ * {@link #activate()} is called, and until {@link #deactivate()} is called.
+ * @return <code>true</code> when active
+ */
+boolean isActive();
+
+/**
  * Returns <code>true</code> if the EditPart is selectable. A selectable EditPart may be
  * selected as a result of the {@link SelectionTool} receiving a mouse down, or as a
  * result of the User pressing a key to change selection.

@@ -19,7 +19,8 @@ public class SelectEditPartTracker
 {
 
 protected static final int FLAG_SELECTION_PERFORMED = TargetingTool.MAX_FLAG << 1;
-protected static final int MAX_FLAG = FLAG_SELECTION_PERFORMED;
+private static final int FLAG_ENABLE_DIRECT_EDIT = TargetingTool.MAX_FLAG << 2;
+protected static final int MAX_FLAG = FLAG_ENABLE_DIRECT_EDIT;
 
 private EditPart editpart;
 
@@ -63,6 +64,14 @@ protected boolean handleButtonDown(int button) {
 protected boolean handleButtonUp(int button) {
 	if (isInState(STATE_DRAG)) {
 		performSelection();
+		if (getFlag(FLAG_ENABLE_DIRECT_EDIT)) {
+			DirectEditRequest req = new DirectEditRequest();
+			req.setLocation(getCurrentInput().getMouseLocation());
+			new DelayedDirectEditHelper(
+				getSourceEditPart().getViewer(),
+				req,
+				getSourceEditPart());
+		}
 		if (button == 1 && getSourceEditPart().getSelected() != EditPart.SELECTED_NONE)
 			getCurrentViewer().reveal(getSourceEditPart());
 		setState(STATE_TERMINAL);
@@ -91,6 +100,8 @@ protected boolean hasSelectionOccurred() {
 protected void performConditionalSelection() {
 	if (getSourceEditPart().getSelected() == EditPart.SELECTED_NONE)
 		performSelection();
+	else
+		setFlag(FLAG_ENABLE_DIRECT_EDIT, true);
 }
 
 protected void performDirectEdit() {
@@ -120,6 +131,7 @@ protected void performSelection() {
 protected void resetFlags() {
 	super.resetFlags();
 	setFlag(FLAG_SELECTION_PERFORMED, false);
+	setFlag(FLAG_ENABLE_DIRECT_EDIT, false);
 }
 
 protected void setSourceEditPart(EditPart part) {
