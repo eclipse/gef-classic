@@ -46,15 +46,15 @@ public void setConstraint(IFigure figure, Object newConstraint) {
  * @return  Preferred size of the input figure.
  * @since 2.0
  */
-protected Dimension calculatePreferredSize(IFigure f){
+protected Dimension calculatePreferredSize(IFigure f, int wHint, int hHint) {
 	Rectangle rect = new Rectangle();
 	ListIterator children = f.getChildren().listIterator();
-	while (children.hasNext()){
+	while (children.hasNext()) {
 		IFigure child = (IFigure)children.next();
 		Rectangle r = (Rectangle)constraints.get(child);
 		if (r == null)
 			continue;
-		if(r.width==-1 && r.height==-1)
+		if (r.width == -1 && r.height == -1)
 			r = r.getResized(child.getPreferredSize());
 		rect.union(r);
 	}
