@@ -44,6 +44,11 @@ public static final String STYLE_ITALIC = "org.eclipse.gef.text.italic"; //$NON-
  */
 public static final String STYLE_UNDERLINE = "org.eclipse.gef.text.underline"; //$NON-NLS-1$
 
+/**
+ * Font size id.
+ */
+public static final String STYLE_FONT_SIZE = "org.eclipse.gef.text.fontsize"; //$NON-NLS-1$
+
 public static final String BLOCK_ALIGN_CENTER="org.eclipse.gef.text.centerAlign"; //$NON-NLS-1$
 public static final String BLOCK_ALIGN_LEFT ="org.eclipse.gef.text.leftAlign"; //$NON-NLS-1$
 public static final String BLOCK_ALIGN_RIGHT ="org.eclipse.gef.text.rightAlign"; //$NON-NLS-1$
