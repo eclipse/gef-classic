@@ -50,6 +50,16 @@ protected void createEditPolicies() {
 	installEditPolicy(EditPolicy.CONNECTION_ROLE, new TransitionEditPolicy());
 }
 
+/**
+ * @see org.eclipse.gef.editparts.AbstractConnectionEditPart#createFigure()
+ */
+protected IFigure createFigure() {
+	PolylineConnection conn =(PolylineConnection)super.createFigure();
+	conn.setTargetDecoration(new PolygonDecoration());
+	return conn;
+}
+
+
 public void contributeToGraph(CompoundDirectedGraph graph, Map map) {
 	Node source = (Node)map.get(getSource());
 	Node target = (Node)map.get(getTarget());
