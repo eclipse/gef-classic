@@ -24,7 +24,7 @@ private static void setHelper(EditPartTipHelper helper) {
 	currentHelper = helper;
 }
 
-public EditPartTipHelper(Control c){
+public EditPartTipHelper(Control c) {
 	super(c);	
 }
 
@@ -37,11 +37,27 @@ public EditPartTipHelper(Control c){
  * @param tipPosX X coordiante of tooltip to be displayed
  * @param tipPosY Y coordinate of tooltip to be displayed
  */
-public void displayToolTipAt(IFigure tip, int tipPosX, int tipPosY){
-	if(tip != null){
+public void displayToolTipAt(IFigure tip, int tipPosX, int tipPosY) {
+	if (tip != null) {
+		// Adjust the position if the tip will not be completely visible on the screen
+		int shiftX = 0;
+		int shiftY = 0;
+		Dimension tipSize = tip.getPreferredSize();
+		org.eclipse.swt.graphics.Rectangle area = control.getDisplay().getClientArea();
+		org.eclipse.swt.graphics.Point end = new org.eclipse.swt.graphics.Point(
+					tipPosX + tipSize.width, tipPosY + tipSize.height);
+		if (!area.contains(end)) {
+			shiftX = end.x - (area.x + area.width);
+			shiftY = end.y - (area.y + area.height);
+			shiftX = shiftX < 0 ? 0 : shiftX;
+			shiftY = shiftY < 0 ? 0 : shiftY;
+		}
+		tipPosX -= shiftX;
+		tipPosY -= shiftY;
+		
+		// Display the tip
 		EditPartTipHelper.setHelper(this);
 		getLightweightSystem().setContents(tip);
-		Dimension tipSize = tip.getPreferredSize();
 		setShellBounds(tipPosX, tipPosY, tipSize.width, tipSize.height);
 		show();
 		getShell().setCapture(true);
@@ -56,12 +72,12 @@ protected void hide() {
 	currentHelper = null;
 }
 
-protected void hookShellListeners(){
+protected void hookShellListeners() {
 
 	/* If the cursor leaves the tip window, hide the tooltip and
 	   dispose of its shell */
-	getShell().addMouseTrackListener(new MouseTrackAdapter(){
-		public void mouseExit(MouseEvent e){
+	getShell().addMouseTrackListener(new MouseTrackAdapter() {
+		public void mouseExit(MouseEvent e) {
 			getShell().setCapture(false);	
 			dispose();
 		}
@@ -70,10 +86,10 @@ protected void hookShellListeners(){
 	   dispose of the shell if the cursor is no longer in the 
 	   tooltip. This occurs in the rare case that a mouseEnter 
 	   is not received on the tooltip when it appears.*/
-	getShell().addMouseMoveListener(new MouseMoveListener(){
-		public void mouseMove(MouseEvent e){
-			Point eventPoint = getShell().toDisplay(new Point(e.x,e.y));
-			if(!getShell().getBounds().contains(eventPoint)){
+	getShell().addMouseMoveListener(new MouseMoveListener() {
+		public void mouseMove(MouseEvent e) {
+			Point eventPoint = getShell().toDisplay(new Point(e.x, e.y));
+			if (!getShell().getBounds().contains(eventPoint)) {
 				if (isShowing())
 					getShell().setCapture(false);
 				dispose();
