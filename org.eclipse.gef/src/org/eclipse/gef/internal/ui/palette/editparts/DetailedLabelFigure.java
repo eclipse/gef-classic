@@ -326,13 +326,13 @@ static private class SelectableImageFigure extends ImageFigure {
 
 private static class FontCache {
 	private Hashtable table = new Hashtable();
-	private class FontInfo {
+	private static class FontInfo {
 		private Font boldFont;
 		private int refCount;
 	}
 	
 	/*
-	 * Client can only check in fonts that they checked out from this cache, and should
+	 * Clients should only check in fonts that they checked out from this cache, and should
 	 * do only one check-in per checkout. If the given font is not found, a null pointer
 	 * exception will be encountered.
 	 */
