@@ -13,26 +13,25 @@
    <requires>
       <import plugin="org.eclipse.gef" version="3.0.0"/>
       <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.core.runtime.compatibility" optional="true"/>
       <import plugin="org.eclipse.core.resources"/>
       <import plugin="org.eclipse.ui.views"/>
       <import plugin="org.eclipse.ui.workbench"/>
       <import plugin="org.eclipse.ui.ide"/>
       <import plugin="org.eclipse.jface"/>
       <import plugin="org.eclipse.core.resources"/>
-      <import plugin="org.eclipse.osgi"/>
-      <import plugin="org.eclipse.core.runtime.compatibility"/>
    </requires>
 
 
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            name="%Logic_example_graphical_editor_name"
             default="true"
-            icon="logic.gif"
+            name="%Logic_example_graphical_editor_name"
             extensions="logic"
-            contributorClass="org.eclipse.gef.examples.logicdesigner.actions.LogicActionBarContributor"
+            icon="logic.gif"
             class="org.eclipse.gef.examples.logicdesigner.LogicEditor"
+            contributorClass="org.eclipse.gef.examples.logicdesigner.actions.LogicActionBarContributor"
             id="Logic Graphical Editor">
       </editor>
    </extension>
