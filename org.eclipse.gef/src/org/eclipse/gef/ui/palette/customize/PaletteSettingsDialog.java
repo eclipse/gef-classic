@@ -43,12 +43,12 @@ public class PaletteSettingsDialog
 	extends Dialog 
 {
 	
-protected PaletteViewerPreferences prefs;
-protected Label fontName;
-protected Image titleImage;
-protected PageBook book;
-protected Control folderPanel, detailsPanel, iconsPanel, listPanel;
-protected HashMap settings = new HashMap();
+private PaletteViewerPreferences prefs;
+private Label fontName;
+private Image titleImage;
+private PageBook book;
+private Control folderPanel, detailsPanel, iconsPanel, listPanel;
+private HashMap settings = new HashMap();
 
 private HashMap widgets = new HashMap();
 
@@ -79,7 +79,8 @@ protected static final int
 	COLLAPSE_NEEDED_ID           = IDialogConstants.CLIENT_ID + 10,
 	APPLY_ID                     = IDialogConstants.CLIENT_ID + 11,
 	LAYOUT_DETAILS_VIEW_ID       = IDialogConstants.CLIENT_ID + 12,
-	FONT_CHANGE_ID               = IDialogConstants.CLIENT_ID + 13;
+	FONT_CHANGE_ID               = IDialogConstants.CLIENT_ID + 13,
+	DEFAULT_FONT_ID				 = IDialogConstants.CLIENT_ID + 14;
 
 /**
  * Sub - classes that need to create their own unique IDs should do so by adding
@@ -136,6 +137,8 @@ protected void buttonPressed(int buttonId) {
 		handleIconSizeChanged(b.getSelection());
 	} else if (LAYOUT_LIST_ICON_SIZE_ID == buttonId) {
 		handleIconSizeChanged(b.getSelection());
+	} else if (DEFAULT_FONT_ID == buttonId) {
+		handleDefaultFontRequested();
 	} else {
 		super.buttonPressed(buttonId);
 	}
@@ -145,10 +148,14 @@ protected void cacheSettings() {
 	settings.put(CACHE_LAYOUT, new Integer(prefs.getLayoutSetting()));
 	settings.put(CACHE_COLLAPSE, new Integer(prefs.getAutoCollapseSetting()));
 	settings.put(CACHE_FONT, prefs.getFontData());
-	settings.put(CACHE_DETAILS_ICON_SIZE, new Boolean(prefs.useLargeIcons(PaletteViewerPreferences.LAYOUT_DETAILS)));
-	settings.put(CACHE_ICONS_ICON_SIZE, new Boolean(prefs.useLargeIcons(PaletteViewerPreferences.LAYOUT_ICONS)));
-	settings.put(CACHE_FOLDER_ICON_SIZE, new Boolean(prefs.useLargeIcons(PaletteViewerPreferences.LAYOUT_FOLDER)));
-	settings.put(CACHE_LIST_ICON_SIZE, new Boolean(prefs.useLargeIcons(PaletteViewerPreferences.LAYOUT_LIST)));
+	settings.put(CACHE_DETAILS_ICON_SIZE, 
+			new Boolean(prefs.useLargeIcons(PaletteViewerPreferences.LAYOUT_DETAILS)));
+	settings.put(CACHE_ICONS_ICON_SIZE, 
+			new Boolean(prefs.useLargeIcons(PaletteViewerPreferences.LAYOUT_ICONS)));
+	settings.put(CACHE_FOLDER_ICON_SIZE, 
+			new Boolean(prefs.useLargeIcons(PaletteViewerPreferences.LAYOUT_FOLDER)));
+	settings.put(CACHE_LIST_ICON_SIZE, 
+			new Boolean(prefs.useLargeIcons(PaletteViewerPreferences.LAYOUT_LIST)));
 }
 
 /**
@@ -369,17 +376,27 @@ protected Control createFontSettings(Composite parent) {
 	GridLayout layout = new GridLayout(1, false);
 	container.setLayout(layout);
 	
-	fontName = new Label(container, SWT.LEFT | SWT.WRAP);
+	fontName = new Label(container, SWT.LEFT);
 	fontName.setFont(container.getFont());
-	fontName.setText(PaletteMessages.SETTINGS_FONT_CURRENT 
-					+ StringConverter.asString(prefs.getFontData()));
-	GridData data = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
+	GridData data = new GridData(GridData.FILL_HORIZONTAL);
 	fontName.setLayoutData(data);
+	updateFontName();
 	
-	createButton(container, FONT_CHANGE_ID, PaletteMessages.SETTINGS_FONT_CHANGE, 
+	Composite innerComposite = new Composite(container, SWT.NONE);
+	layout = new GridLayout(2, false);
+	layout.marginHeight = 0;
+	layout.marginWidth = 0;
+	innerComposite.setLayout(layout);
+	data = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
+	innerComposite.setLayoutData(data);
+	
+	createButton(innerComposite, FONT_CHANGE_ID, PaletteMessages.SETTINGS_FONT_CHANGE, 
 	             SWT.PUSH, null);
 	((GridData)getButton(FONT_CHANGE_ID).getLayoutData()).horizontalAlignment = 
 					GridData.HORIZONTAL_ALIGN_BEGINNING;
+	
+	createButton(innerComposite, DEFAULT_FONT_ID, PaletteMessages.SETTINGS_DEFAULT_FONT,
+	             SWT.PUSH, null);
 					
 	return container;
 }
@@ -601,7 +618,12 @@ protected void handleChangeFontPressed() {
 	if (data != null) {
 		prefs.setFontData(data);
 	}
-	fontName.setText(StringConverter.asString(prefs.getFontData()));
+	updateFontName();
+}
+
+protected void handleDefaultFontRequested() {
+	prefs.setFontData(JFaceResources.getTextFont().getFontData()[0]);
+	updateFontName();
 }
 
 protected void handleIconSizeChanged(boolean selection) {
@@ -661,6 +683,18 @@ protected void showLayoutOptionsPage(Control page) {
 	if (x > 0 || y > 0) {
 		getShell().setSize(oldSize.x + x, oldSize.y + y);
 	}
+}
+
+protected void updateFontName() {
+	String name;
+//	System.out.println(prefs.getFontData().toString());
+//	System.out.println(JFaceResources.getTextFont().getFontData()[0].toString());
+	if (prefs.getFontData().equals((JFaceResources.getTextFont().getFontData()[0]))) {
+		name = PaletteMessages.SETTINGS_WORKBENCH_FONT_LABEL;
+	} else {
+		name = StringConverter.asString(prefs.getFontData());
+	}
+	fontName.setText(PaletteMessages.SETTINGS_FONT_CURRENT + name);
 }
 
 }
