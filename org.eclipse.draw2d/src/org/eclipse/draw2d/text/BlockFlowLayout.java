@@ -162,10 +162,6 @@ protected final BlockFlow getBlockFlow() {
 	return (BlockFlow)getFlowFigure();
 }
 
-/**
- * @return
- * @since 3.1
- */
 int getContextWidth() {
 	return getContext().getRemainingLineWidth();
 }

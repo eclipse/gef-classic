@@ -88,11 +88,11 @@ int getOuterDescent() {
 }
 
 int getAscentWithBorder() {
-	throw new RuntimeException("Not valid on this box type");
+	throw new RuntimeException("Not valid on this box type"); //$NON-NLS-1$
 }
 
 int getDescentWithBorder() {
-	throw new RuntimeException("Not valid on this box type");
+	throw new RuntimeException("Not valid on this box type"); //$NON-NLS-1$
 }
 
 /**

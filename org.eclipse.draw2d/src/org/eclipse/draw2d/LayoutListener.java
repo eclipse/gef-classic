@@ -25,7 +25,7 @@ class Stub implements LayoutListener {
 
 	/**
 	 * Stub which does nothing.
-	 * @see LayoutListener#invalidate()
+	 * @see LayoutListener#invalidate(IFigure)
 	 */
 	public void invalidate(IFigure container) { }
 	

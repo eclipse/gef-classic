@@ -19,7 +19,6 @@ import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.TraverseEvent;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Event;
 
 /**
  * The SWTEventDispatcher provides draw2d with the ability to dispatch SWT Events. The 
