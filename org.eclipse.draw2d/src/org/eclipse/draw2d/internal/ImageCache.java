@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.swt.SWTError;
 import org.eclipse.swt.graphics.Image;
 
 /**
@@ -62,10 +63,16 @@ public static boolean checkin(Image img) {
  * @param o The object requesting the image
  * @return An image at least as big as the desired size
  */
-public static Image checkout(Dimension d, Object o) {
-	d = d.getCopy();
-	d.width = ((d.width - 1) / 256 + 1) * 256;
-	d.height = ((d.height - 1) / 256 + 1) * 256;
+public static Image checkout(Dimension dim, Object o) {
+	Dimension d = dim.getCopy();
+	int powerOf2 = 128;
+	while (powerOf2 < d.height)
+		powerOf2 *= 2;
+	d.height = powerOf2;
+	powerOf2 = 128;
+	while (powerOf2 < d.width)
+		powerOf2 *= 2;
+	d.width = powerOf2;
 	Image result = null;
 	for (int i = 0; i < checkedIn.size(); i++) {
 		ImageInfo info = (ImageInfo)checkedIn.get(i);
@@ -89,16 +96,17 @@ public static Image checkout(Dimension d, Object o) {
 		return result;
 	
 	// Create a new image
+	ImageInfo newInfo;
 	try {
-		ImageInfo newInfo = new ImageInfo(d);
-		checkedOut.add(newInfo);
-		totalNumberOfImagesCreated++;
-		return newInfo.checkout(d, o);	
+		newInfo = new ImageInfo(d);
 	} catch (IllegalArgumentException e) {
-		return null;
+		newInfo = new ImageInfo(dim);
+	} catch (SWTError swte) {
+		newInfo = new ImageInfo(dim);
 	}
-}	
-
+	checkedOut.add(newInfo);
+	totalNumberOfImagesCreated++;
+	return newInfo.checkout(dim, o);
 }
 
-
+}
