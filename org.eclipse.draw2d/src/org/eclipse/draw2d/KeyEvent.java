@@ -35,11 +35,8 @@ public int keycode;
  * @param source the source of the event
  * @param ke an SWT key event used to supply the statemask, keycode and character
  */
-public KeyEvent(
-	EventDispatcher dispatcher,
-	IFigure source,
-	org.eclipse.swt.events.KeyEvent ke) 
-{
+public KeyEvent(EventDispatcher dispatcher, IFigure source,
+					org.eclipse.swt.events.KeyEvent ke) {
 	super(dispatcher, source, ke.stateMask);
 	character = ke.character;
 	keycode = ke.keyCode;

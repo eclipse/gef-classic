@@ -27,9 +27,8 @@ public int y;
 /** The button that was pressed or released: {1, 2, 3}. */
 public int button;
 
-MouseEvent(int x, int y, EventDispatcher dispatcher,
-	IFigure f, int button, int stateMask) 
-{
+MouseEvent(int x, int y, EventDispatcher dispatcher, 
+			IFigure f, int button, int stateMask) {
 	super(dispatcher, f, stateMask);
 	Point pt = Point.SINGLETON;
 	pt.setLocation(x, y);

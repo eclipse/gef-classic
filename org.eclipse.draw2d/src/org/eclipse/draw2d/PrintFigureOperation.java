@@ -25,9 +25,10 @@ private IFigure printSource;
 private Color oldBGColor;
 
 /**
- * Constructor for PrintFigureOperation. 
- * Note: Descendants must call setPrintSource(IFigure) to set
- *       the IFigure that is to be printed.
+ * Constructor for PrintFigureOperation.
+ * <p>
+ * Note: Descendants must call setPrintSource(IFigure) to set the IFigure that is to be 
+ * printed.
  * @see org.eclipse.draw2d.PrintOperation#PrintOperation(Printer) */
 protected PrintFigureOperation(Printer p) {
 	super(p);

@@ -14,18 +14,19 @@ import org.eclipse.draw2d.geometry.*;
 
 
 /**
- * The ScrollPaneLayout is responsible for laying out the
- * {@link Viewport Viewport} and {@link ScrollBar ScrollBars}
- * of a {@link ScrollPane ScrollPane}.
+ * The ScrollPaneLayout is responsible for laying out the {@link Viewport} and 
+ * {@link ScrollBar ScrollBars} of a {@link ScrollPane}.
  */
 public class ScrollPaneLayout
 	extends AbstractHintLayout
 {
 
-protected static final int
-	NEVER = ScrollPane.NEVER,
-	AUTO  = ScrollPane.AUTOMATIC,
-	ALWAYS= ScrollPane.ALWAYS;
+/** @see ScrollPane#NEVER */
+protected static final int NEVER  = ScrollPane.NEVER;
+/** @see ScrollPane#AUTOMATIC */
+protected static final int AUTO   = ScrollPane.AUTOMATIC;
+/** @see ScrollPane#ALWAYS */
+protected static final int ALWAYS = ScrollPane.ALWAYS;
 
 /** * @see AbstractHintLayout#calculateMinimumSize(IFigure, int, int) */
 public Dimension calculateMinimumSize(IFigure figure, int w, int h) {
@@ -36,20 +37,18 @@ public Dimension calculateMinimumSize(IFigure figure, int w, int h) {
 }
 
 /**
- * Calculates and returns the preferred size of the container based on the 
- * given hints.  If the given ScrollPane's (container's) horizontal and 
- * vertical scroll bar visibility is not <code>ScrollPane.NEVER</code>, then 
- * space for those bars is always deducted from the hints (whether or not we
- * actually need the scroll bars).
+ * Calculates and returns the preferred size of the container based on the given hints.  
+ * If the given ScrollPane's (<i>container</i>) horizontal and vertical scroll bar 
+ * visibility is not {@link ScrollPane#NEVER}, then space for those bars is always 
+ * deducted from the hints (whether or not we actually need the scroll bars).
  * 
- * @param	container	The ScrollPane whose preferred size needs to be 
- * 						calculated
- * @param	wHint		The width hint
- * @param	hHint		The height hint
- * @return	The preferred size of the given container
+ * @param container the ScrollPane whose preferred size needs to be calculated
+ * @param wHint the width hint
+ * @param hHint the height hint
+ * @return the preferred size of the given container
  * @since	2.0
  */
-protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHint){
+protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHint) {
 	ScrollPane scrollpane = (ScrollPane)container;
 	ScrollBar hBar = scrollpane.getHorizontalScrollBar();
 	ScrollBar vBar = scrollpane.getVerticalScrollBar();

@@ -15,7 +15,7 @@ import org.eclipse.swt.graphics.Color;
 /**
  * Provides a lowered border.
  */
-final public class SimpleLoweredBorder
+public final class SimpleLoweredBorder
 	extends SchemeBorder
 {
 
@@ -25,28 +25,24 @@ private static final Scheme DOUBLE = new Scheme(
 );
 
 /**
- * Constructs a SimpleLoweredBorder with the predefined 
- * button-pressed Scheme set as default.
+ * Constructs a SimpleLoweredBorder with the predefined button-pressed Scheme set as 
+ * default.
  * 
  * @since 2.0
  */
-public SimpleLoweredBorder(){
+public SimpleLoweredBorder() {
 	super(SCHEMES.BUTTON_PRESSED);
 }
 
 /**
- * Constructs a SimpleLoweredBorder with the width of
- * all sides provided as input. 
+ * Constructs a SimpleLoweredBorder with the width of all sides provided as input. If 
+ * width == 2, this SimpleLoweredBorder will use the local DOUBLE Scheme, otherwise it 
+ * will use the {@link SCHEMES#BUTTON_PRESSED} Scheme.
  *
- * @param width  Width of all the sides of the border.
- *                If width == 2, this SimpleLoweredBorder
- *                will use the local DOUBLE Scheme,
- *                Else this SimpleLoweredButton will
- *                use the SCHEMES.BUTTON_PRESSED Scheme.
- * 
+ * @param width the width of all the sides of the border
  * @since 2.0
  */
-public SimpleLoweredBorder(int width){
+public SimpleLoweredBorder(int width) {
 	super(width == 2 ? DOUBLE : SCHEMES.BUTTON_PRESSED);
 }
 

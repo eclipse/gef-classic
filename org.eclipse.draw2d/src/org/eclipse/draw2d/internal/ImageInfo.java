@@ -110,7 +110,7 @@ public boolean checkin(Image i) {
 }
 
 /**
- * Checks out the Image associated with this ImageInfo, as long as it is currently checked   * in and it is equal to or bigger than the desired size <i>d</i>.
+ * Checks out the Image associated with this ImageInfo, as long as it is currently checked * in and it is equal to or bigger than the desired size <i>d</i>.
  * 
  * @param d The desired size * @param holder The object requesting the Image * @return This ImageInfo's Image if it is of adequate size and checked in. */
 public Image checkout(Dimension d, Object holder) {

@@ -18,20 +18,15 @@ public static int NEVER = 0;
 public static int AUTOMATIC = 1;
 public static int ALWAYS = 2;
 
-static public class Result{
+public static class Result {
 	public boolean showH;
 	public boolean showV;
 	public Rectangle viewportArea;
 	public Insets insets;
 }
 
-public static Result solve(
-  Rectangle clientArea,
-  Viewport viewport,
-  int hVis,
-  int vVis,
-  int vBarWidth,
-  int hBarHeight) {
+public static Result solve(Rectangle clientArea, Viewport viewport, int hVis, int vVis,
+							int vBarWidth, int hBarHeight) {
 	Result result = new Result();
 
 	result.insets = new Insets();

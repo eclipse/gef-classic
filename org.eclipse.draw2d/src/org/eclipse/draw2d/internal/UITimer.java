@@ -16,7 +16,7 @@ public class UITimer
 	extends Timer
 {
 
-protected void preformRun(){
+protected void preformRun() {
 	Display.getDefault().syncExec(getRunnable());
 }
 

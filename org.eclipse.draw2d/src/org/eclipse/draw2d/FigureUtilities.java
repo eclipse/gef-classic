@@ -259,12 +259,8 @@ public static Color mixColors(Color c1, Color c2) {
  * @param highlight the highlight color
  * @since 2.0
  */
-public static void paintEtchedBorder(
-	Graphics g,
-	Rectangle r,
-	Color shadow,
-	Color highlight)
-{
+public static void paintEtchedBorder(Graphics g, Rectangle r, 
+										Color shadow, Color highlight) {
 	int x = r.x,
 		y = r.y,
 		w = r.width,

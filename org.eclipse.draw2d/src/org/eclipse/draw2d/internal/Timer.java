@@ -19,12 +19,12 @@ private Runnable run;
 private int initial, period;
 private boolean started, stopped;
 
-public void cancel(){
+public void cancel() {
 	stopped = true;
 }
 
-public Thread getThread(){
-	if (t == null){
+public Thread getThread() {
+	if (t == null) {
 		t = new Thread(this);
 		t.setPriority(Thread.MIN_PRIORITY);
 		t.setDaemon(true);
@@ -32,40 +32,40 @@ public Thread getThread(){
 	return t;
 }
 
-protected Runnable getRunnable(){
+protected Runnable getRunnable() {
 	return run;
 }
 
-protected void preformRun(){
-	if(getRunnable()!=null)
+protected void preformRun() {
+	if (getRunnable() != null)
 		getRunnable().run();
 }
 
-public synchronized void run(){
-	while (!stopped){
-		if (!started){
+public synchronized void run() {
+	while (!stopped) {
+		if (!started) {
 			started = true;
 			try {
 				wait(initial);
-			} catch (InterruptedException exc){}
+			} catch (InterruptedException exc) { }
 		} else 
 			try {
 				wait(period);
-			} catch (InterruptedException exc){}
+			} catch (InterruptedException exc) { }
 		if (stopped)
 			return;
 		preformRun();
 	}
 }
 
-public void scheduleRepeatedly(Runnable r, int initial, int delay){
+public void scheduleRepeatedly(Runnable r, int initial, int delay) {
 	run = r;
 	this.initial = initial;
 	this.period = delay;
 	start();
 }
 
-protected void start(){
+protected void start() {
 	getThread().start();
 }
 

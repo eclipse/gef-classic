@@ -57,9 +57,8 @@ public void drawImage(Image srcImage, int x, int y) {
 /**
  * @see Graphics#drawImage(Image, int, int, int, int, int, int, int, int)
  */
-public void drawImage(Image srcImage,
-	int sx, int sy, int sw,int sh,
-	int tx, int ty, int tw,int th) {
+public void drawImage(Image srcImage, int sx, int sy, int sw, int sh,
+										int tx, int ty, int tw, int th) {
 	super.drawImage(printerImage(srcImage), sx, sy, sw, sh, tx, ty, tw, th);
 }
 

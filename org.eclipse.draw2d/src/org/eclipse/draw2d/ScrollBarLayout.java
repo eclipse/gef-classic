@@ -13,41 +13,45 @@ package org.eclipse.draw2d;
 import org.eclipse.draw2d.geometry.*;
 
 /**
- * Private class that lays out the Figures that make up
- * a ScrollBar.
+ * Lays out the Figures that make up a ScrollBar.
  */
 public class ScrollBarLayout
 	extends AbstractLayout
 {
 
-public static final String 
-	UP_ARROW   = "up arrow",   //$NON-NLS-1$
-	DOWN_ARROW = "down arrow", //$NON-NLS-1$
-	THUMB      = "thumb",      //$NON-NLS-1$
-	PAGE_UP    = "page_up",    //$NON-NLS-1$
-	PAGE_DOWN  = "page_down";  //$NON-NLS-1$
+/** Used as a constraint for the up arrow figure. */
+public static final String UP_ARROW   = "up arrow";   //$NON-NLS-1$
+/** Used as a constraint for the down arrow figure. */
+public static final String DOWN_ARROW = "down arrow"; //$NON-NLS-1$
+/** Used as a constraint for the thumb figure. */
+public static final String THUMB      = "thumb";      //$NON-NLS-1$
+/** Used as a constraint for the page up figure. */
+public static final String PAGE_UP    = "page_up";    //$NON-NLS-1$
+/** Used as a constraint for the page down figure. */
+public static final String PAGE_DOWN  = "page_down";  //$NON-NLS-1$
 
 IFigure up, down, thumb, pageUp, pageDown;
 
 /**
- * Transposes values if the ScrollBar is horizontally oriented.
- * When used properly, the layout manager just needs to code for one
- * case: vertical orientation.
+ * Transposes values if the ScrollBar is horizontally oriented. When used properly, the 
+ * layout manager just needs to code for one case: vertical orientation.
  */
-final protected Transposer transposer;
+protected final Transposer transposer;
 
 /**
- * Constructs a ScrollBarLayout.
+ * Constructs a ScrollBarLayout. If the given Transposer is enabled, the Scrollbar will 
+ * be horizontally oriented. Otherwise, the ScrollBar will be vertically oriented.
  * 
- * @param t If enabled, Scrollbar will be horizontally oriented.
- *           If disabled, ScrollBar will be vertically oriented.
- * 
+ * @param t the Transposer
  * @since 2.0
  */
-public ScrollBarLayout(Transposer t){
+public ScrollBarLayout(Transposer t) {
 	transposer = t;
 }
 
+/**
+ * @see AbstractLayout#setConstraint(IFigure, Object)
+ */
 public void setConstraint(IFigure figure, Object constraint) {
 	if (constraint.equals(UP_ARROW))
 		up = figure;
@@ -62,13 +66,7 @@ public void setConstraint(IFigure figure, Object constraint) {
 }
 
 /**
- * Calculates and returns the preferred size of the container 
- * given as input.
- * 
- * @param parent  Figure whose preferred size is required.
- * @return  The preferred size of the figure input.
- * 
- * @since 2.0
+ * @see AbstractLayout#calculatePreferredSize(IFigure, int, int)
  */
 protected Dimension calculatePreferredSize(IFigure parent, int w, int h) {
 	Insets insets = transposer.t(parent.getInsets());
@@ -77,6 +75,9 @@ protected Dimension calculatePreferredSize(IFigure parent, int w, int h) {
 	return transposer.t(d);
 }
 
+/**
+ * @see LayoutManager#layout(IFigure)
+ */
 public void layout(IFigure parent) {
 	ScrollBar scrollBar = (ScrollBar) parent;
 
@@ -85,32 +86,31 @@ public void layout(IFigure parent) {
 	int extent = scrollBar.getExtent();
 	int max = scrollBar.getMaximum();
 	int min = scrollBar.getMinimum();
-	int totalRange =  max-min;
+	int totalRange =  max - min;
 	int valueRange = totalRange - extent;
-	if ((valueRange < 1) || (!scrollBar.isEnabled())){
+	if ((valueRange < 1) || (!scrollBar.isEnabled())) {
 		Rectangle boundsUpper = new Rectangle(trackBounds),
 		          boundsLower = new Rectangle(trackBounds);
 		boundsUpper.height /= 2;
 		boundsLower.y += boundsUpper.height;
-		boundsLower.height = trackBounds.height-boundsUpper.height;
-		if(pageUp!=null)
+		boundsLower.height = trackBounds.height - boundsUpper.height;
+		if (pageUp != null)
 			pageUp.setBounds(transposer.t(boundsUpper));
-		if(pageDown!=null)
+		if (pageDown != null)
 			pageDown.setBounds(transposer.t(boundsLower));
 		return;
 	}
 
 	if (totalRange == 0)
 		return;
-	int thumbHeight = Math.max(
-		thumb==null?0:thumb.getMinimumSize().height,
-		trackBounds.height * extent / totalRange);
+	int thumbHeight = Math.max(thumb == null ? 0 : thumb.getMinimumSize().height,
+								trackBounds.height * extent / totalRange);
 
-	if(thumb!=null)
+	if (thumb != null)
 		thumb.setVisible(trackBounds.height > thumbHeight);
 
-	int thumbY = trackBounds.y +
-		(trackBounds.height - thumbHeight) * (scrollBar.getValue()-min) / valueRange;
+	int thumbY = trackBounds.y + (trackBounds.height - thumbHeight) 
+					* (scrollBar.getValue() - min) / valueRange;
 
 	Rectangle thumbBounds =  new Rectangle(
 		trackBounds.x,
@@ -118,17 +118,17 @@ public void layout(IFigure parent) {
 		trackBounds.width,
 		thumbHeight);
 
-	if(thumb!=null)
+	if (thumb != null)
 		thumb.setBounds(transposer.t(thumbBounds));
 
-	if(pageUp!=null)
+	if (pageUp != null)
 		pageUp.setBounds(transposer.t(new Rectangle(
 			trackBounds.x,
 			trackBounds.y,
 			trackBounds.width,
 			thumbBounds.y - trackBounds.y)));
 
-	if(pageDown!=null)
+	if (pageDown != null)
 		pageDown.setBounds(transposer.t(new Rectangle(
 			trackBounds.x ,
 			thumbBounds.y + thumbHeight,
@@ -137,27 +137,27 @@ public void layout(IFigure parent) {
 }
 
 /**
- * Places the buttons and returns the Rectangle into which the 
- * Track should be placed.
- * The track consists of the pageup, pagedown, and thumb figures.
- * The Rectangle returned should be transposed correctly, 
- * that is, it should be vertically oriented.  
- * Users of the rectangle will re-transpose it for horizontal use.
+ * Places the buttons and returns the Rectangle into which the track should be placed.
+ * The track consists of the pageup, pagedown, and thumb figures. The Rectangle returned 
+ * should be transposed correctly, that is, it should be vertically oriented.  Users of 
+ * the rectangle will re-transpose it for horizontal use.
  * 
+ * @param scrollBar the scrollbar whose buttons are being layed out
+ * @return the Rectangle into which the track should be placed 
  * @since 2.0
  */
-protected Rectangle layoutButtons(ScrollBar scrollBar){
+protected Rectangle layoutButtons(ScrollBar scrollBar) {
 	Rectangle bounds = transposer.t(scrollBar.getClientArea());
 	Dimension buttonSize = new Dimension(
 		bounds.width,
-		Math.min(bounds.width,bounds.height/2));
+		Math.min(bounds.width, bounds.height / 2));
 
 	if (up != null)
 		up.setBounds(transposer.t(
 			new Rectangle(bounds.getTopLeft(), buttonSize)));
-	if (down != null){
+	if (down != null) {
 		Rectangle r = new Rectangle (
-			bounds.x, bounds.bottom()-buttonSize.height,
+			bounds.x, bounds.bottom() - buttonSize.height,
 			buttonSize.width, buttonSize.height);
 		down.setBounds(transposer.t(r));
 	}
@@ -170,6 +170,9 @@ protected Rectangle layoutButtons(ScrollBar scrollBar){
 	return trackBounds;
 }
 
+/**
+ * @see LayoutManager#remove(IFigure)
+ */
 public void remove(IFigure child) {
 	if (child == up) {
 		up = null;

@@ -24,9 +24,9 @@ public class ImageDataHelper {
  */
 public static int getNearestColorIndex(int red, int green, int blue, RGB[] colors) {
 	// I really don't know how to determine nearest color. So I choose the algorithm
-	// of treating each color as a vector in a 3D coordinate system where red, green, and blue
-	// are each an axis in that system. Then the nearest color is the shortest vector between
-	// the input color and each color in the RGB table.
+	// of treating each color as a vector in a 3D coordinate system where red, green, and 
+	// blue are each an axis in that system. Then the nearest color is the shortest vector
+	// between the input color and each color in the RGB table.
 	//
 	// The difference vector will result from the difference between each RGB.
 	// The length of this vector will be the Square root of r*r + g*g + b*b.
@@ -47,7 +47,9 @@ public static int getNearestColorIndex(int red, int green, int blue, RGB[] color
 		int redVector = rgbRed - red;
 		int greenVector = rgbGreen - green;
 		int blueVector = rgbBlue - blue;
-		int lengthSquared = redVector * redVector + greenVector * greenVector + blueVector * blueVector;
+		int lengthSquared = redVector * redVector 
+							+ greenVector * greenVector 
+							+ blueVector * blueVector;
 		if (lengthSquared < minLength) {
 			minLength = lengthSquared;
 			minIndex = i;
@@ -59,7 +61,8 @@ public static int getNearestColorIndex(int red, int green, int blue, RGB[] color
  * getPixels: getPixels into int array. This should be done in ImageData, but they
  * don't have that yet.
  */
-public static void getPixels(ImageData imageData, int x, int y, int width, int [] pixelRow) {
+public static void getPixels(ImageData imageData, int x, int y, 
+										int width, int [] pixelRow) {
 	byte[] data = imageData.data;
 	int depth = imageData.depth;
 	int bytesPerLine = imageData.bytesPerLine;
@@ -67,8 +70,8 @@ public static void getPixels(ImageData imageData, int x, int y, int width, int [
 		int index = (y * bytesPerLine) + (x >> 3);
 		int theByte = data[index] & 0xFF;
 		int mask = 1 << (7 - (x & 0x7));
-		int i=0;
-		for (int n=width; n > 1; n--, i++) {
+		int i = 0;
+		for (int n = width; n > 1; n--, i++) {
 			if ((theByte & mask) == 0) {
 				pixelRow[i] = 0;
 			} else {
@@ -98,7 +101,7 @@ public static void getPixels(ImageData imageData, int x, int y, int width, int [
 			pixelRow[i++] = theByte & 0x0F;
 			n--;
 		}
-		while(n>1) {
+		while (n > 1) {
 			int theByte = data[index++] & 0xFF;
 			pixelRow[i++] = theByte >> 4;
 			pixelRow[i++] = theByte & 0x0F;
@@ -112,33 +115,33 @@ public static void getPixels(ImageData imageData, int x, int y, int width, int [
 	}
 	if (depth == 8) {
 		int index = (y * bytesPerLine) + x ;
-		for (int i=0; i < width; i++) {
+		for (int i = 0; i < width; i++) {
 			pixelRow[i] = data[index++] & 0xFF;
 		}
 		return;
 	}
 	if (depth == 16) {
 		int index = (y * bytesPerLine) + (x * 2);
-		for (int i=0; i<width; i++) {
-			pixelRow[i] = ((data[index] & 0xFF) << 8) | (data[index+1] & 0xFF);
+		for (int i = 0; i < width; i++) {
+			pixelRow[i] = ((data[index] & 0xFF) << 8) | (data[index + 1] & 0xFF);
 			index += 2;
 		}
 		return;
 	}
 	if (depth == 24) {
 		int index = (y * bytesPerLine) + (x * 3);
-		for (int i=0; i<width; i++) {
-			pixelRow[i] = ((data[index] & 0xFF) << 16) | ((data[index+1] & 0xFF) << 8)
-				| (data[index+2] & 0xFF);
+		for (int i = 0; i < width; i++) {
+			pixelRow[i] = ((data[index] & 0xFF) << 16) | ((data[index + 1] & 0xFF) << 8)
+				| (data[index + 2] & 0xFF);
 			index += 3;
 		}
 		return;
 	}
 	if (depth == 32) {
 		int index = (y * bytesPerLine) + (x * 4);
-		for (int i=0; i<width; i++) {
-			pixelRow[i] = ((data[index] & 0xFF) << 24) | ((data[index+1] & 0xFF) << 16)
-				| ((data[index+2] & 0xFF) << 8) | (data[index + 3] & 0xFF);
+		for (int i = 0; i < width; i++) {
+			pixelRow[i] = ((data[index] & 0xFF) << 24) | ((data[index + 1] & 0xFF) << 16)
+				| ((data[index + 2] & 0xFF) << 8) | (data[index + 3] & 0xFF);
 			index += 4;
 		}
 		return;
@@ -148,7 +151,8 @@ public static void getPixels(ImageData imageData, int x, int y, int width, int [
  * mixAlphaWithinRegion: Mix in the alpha value using the given background color within the
  * region specified. Answer the new mixed in ImageData
  */
-public static ImageData mixAlphaWithinRegion(ImageData fromImageData, Region region, double alpha, RGB backColor) {
+public static ImageData mixAlphaWithinRegion(ImageData fromImageData, Region region, 
+														double alpha, RGB backColor) {
 	// We are using the alpha formula that Java uses:
 	// The formula is applied to each color component individually (Red, Green, Blue).
 	//   Cn = Co*a + Cb*(1-a)
@@ -157,15 +161,17 @@ public static ImageData mixAlphaWithinRegion(ImageData fromImageData, Region reg
 	//     a = The alpha value
 	//     Cb = Background Color component
 	//
-	// The alpha is in float, but we will be using integer arithmetic, so appropriate conversions will be made.
-	// We will need to find the appropriate fraction. We'll do that by turning it into a percentage. We will
-	// use the integer arithmetic on the Co*a side. We'll use the float for figuring out the Cb*(1-a) side since
-	// that side is constant.
+	// The alpha is in float, but we will be using integer arithmetic, so appropriate 
+	// conversions will be made. We will need to find the appropriate fraction. We'll do 
+	// that by turning it into a percentage. We will use the integer arithmetic on the 
+	// Co*a side. We'll use the float for figuring out the Cb*(1-a) side since that side 
+	// is constant.
 	double cba = 1 - alpha; //	The Cb alpha multiplier
 	int redCba = (int) (backColor.red * cba + .5); // Symetric round
 	int greenCba = (int) (backColor.green * cba + .5);
 	int blueCba = (int) (backColor.blue * cba + .5);
-	int aNum = (int) (alpha * 100. + .5); // Figure out the alpha numerator, the denominator will be 100.
+	// Figure out the alpha numerator, the denominator will be 100.
+	int aNum = (int) (alpha * 100. + .5); 
 
 	// Now go through the data, converting as necessary
 	PaletteData palette = fromImageData.palette;
@@ -173,7 +179,8 @@ public static ImageData mixAlphaWithinRegion(ImageData fromImageData, Region reg
 	RGB[] colors = palette.getRGBs();
 	byte[] fromData = fromImageData.data;
 	byte[] toData = new byte[fromData.length];
-	System.arraycopy(fromData, 0, toData, 0, fromData.length); // Copy over so that only changes need to be individually saved.
+	// Copy over so that only changes need to be individually saved.
+	System.arraycopy(fromData, 0, toData, 0, fromData.length); 
 	int depth = fromImageData.depth;
 	int bytesPerLine = fromImageData.bytesPerLine;
 
@@ -186,7 +193,8 @@ public static ImageData mixAlphaWithinRegion(ImageData fromImageData, Region reg
 	// of the rectangles of the region but still within the bounds of the region.
 	// Intersect it with the bounds of the image so that we never leave the image
 	// because the Region could be outside of the image bounds.
-	Rectangle outerBounds = region.getBounds().intersection(new Rectangle(0, 0, fromImageData.width, fromImageData.height));
+	Rectangle outerBounds = region.getBounds().intersection(
+						new Rectangle(0, 0, fromImageData.width, fromImageData.height));
 	if (depth == 1) {
 		// Do nothing for depth == 1 because that is just black and white and alpha
 		// makes little sense for this.
@@ -195,7 +203,7 @@ public static ImageData mixAlphaWithinRegion(ImageData fromImageData, Region reg
 		int endY = outerBounds.y + outerBounds.height;
 		for (; y < endY; y++) {
 			if (depth == 4) {
-				// Depth == 4 means we must have an indexed palette, can't get RGB into 4 bits.
+			// Depth == 4 means we must have an indexed palette, can't get RGB into 4 bits
 				int x = outerBounds.x;
 				int index = (y * bytesPerLine) + (x >> 1);
 				boolean isUpperNibble = (outerBounds.x & 0x1) == 0;
@@ -214,7 +222,8 @@ public static ImageData mixAlphaWithinRegion(ImageData fromImageData, Region reg
 						int blue = (color.blue * aNum) / 100 + blueCba;
 						pixel = getNearestColorIndex(red, green, blue, colors);
 						if (isUpperNibble)
-							toData[index] = (byte) ((toData[index] & 0x0F) | (byte) (pixel << 4));
+							toData[index] = (byte)((toData[index] & 0x0F) 
+											| (byte)(pixel << 4));
 						else
 							toData[index] = (byte) ((toData[index] & 0xF0) | (byte) pixel);
 					}
@@ -225,7 +234,7 @@ public static ImageData mixAlphaWithinRegion(ImageData fromImageData, Region reg
 				continue; // Go to next row
 			}
 			if (depth == 8) {
-				// Depth == 8 means we must have an indexed palette, can't get RGB into 8 bits.
+			// Depth == 8 means we must have an indexed palette, can't get RGB into 8 bits
 				int x = outerBounds.x;
 				int index = (y * bytesPerLine) + x;
 				int endX = x + outerBounds.width;
@@ -236,7 +245,8 @@ public static ImageData mixAlphaWithinRegion(ImageData fromImageData, Region reg
 						int red = (color.red * aNum) / 100 + redCba;
 						int green = (color.green * aNum) / 100 + greenCba;
 						int blue = (color.blue * aNum) / 100 + blueCba;
-						toData[index] = (byte) getNearestColorIndex(red, green, blue, colors);
+						toData[index] = (byte)getNearestColorIndex(red, green, 
+																	blue, colors);
 					}
 					index++;
 				}
@@ -251,23 +261,29 @@ public static ImageData mixAlphaWithinRegion(ImageData fromImageData, Region reg
 					if (region.contains(x, y)) {
 						int red, green, blue;
 						if (isDirect) {
-							// Can get RGB right out of the pixel. Since data is stored least significant byte first (i.e. Intel(R) format),
-							// the colors can be found as:
+							// Can get RGB right out of the pixel. Since data is stored 
+							// least significant byte first (i.e. Intel(R) format), the 
+							// colors can be found as:
 							//    xxxBBBBB xxxxxxxx
 							//    GGGxxxxx xxxxxxgg
 							//    xxxxxxxx xRRRRRxx
 							// Which if loaded into a register would be: xRRRRRggGGGBBBBB
 							blue = ((toData[index] & 0x1F) * aNum) / 100 + blueCba;
-							green = (((toData[index] & 0xFF) >>> 5 | (toData[index + 1] & 0x03) << 3) * aNum) / 100 + greenCba;
-							red = (((toData[index + 1] & 0xFF) >>> 2) * aNum) / 100 + redCba;
+							green = (((toData[index] & 0xFF) >>> 5 
+									| (toData[index + 1] & 0x03) << 3) * aNum) 
+										/ 100 + greenCba;
+							red = (((toData[index + 1] & 0xFF) >>> 2) * aNum) 
+										/ 100 + redCba;
 							toData[index] = (byte) (green << 5 | blue);
 							toData[index + 1] = (byte) (red << 2 | green >>> 3);
 						} else {
-							RGB color = colors[ (toData[index] & 0xFF) + ((toData[index + 1] & 0xFF) << 8)];
+							RGB color = colors[ (toData[index] & 0xFF) 
+										+ ((toData[index + 1] & 0xFF) << 8)];
 							red = (color.red * aNum) / 100 + redCba;
 							green = (color.green * aNum) / 100 + greenCba;
 							blue = (color.blue * aNum) / 100 + blueCba;
-							int newColorIndex = getNearestColorIndex(red, green, blue, colors);
+							int newColorIndex = getNearestColorIndex(red, green, 
+																		blue, colors);
 							toData[index] = (byte) newColorIndex;
 							toData[index + 1] = (byte) (newColorIndex >>> 8);
 						}
@@ -286,9 +302,11 @@ public static ImageData mixAlphaWithinRegion(ImageData fromImageData, Region reg
 					if (region.contains(x, y)) {
 						int red, green, blue;
 						if (isDirect) {
-							// Can get RGB right out of the pixel. The only difference between 23 and 32 is that 32 has an extra
-							// byte of zeroes attached. The number of bits and locations of the colors are the same.
-							// The data is stored as: (Stored in Intel(R) format, least significant first).
+							// Can get RGB right out of the pixel. The only difference 
+							// between 23 and 32 is that 32 has an extra byte of zeroes 
+							// attached. The number of bits and locations of the colors 
+							// are the same. The data is stored as: (Stored in Intel(R) 
+							// format, least significant first).
 							//   Byte 0: Blue
 							//   Byte 1: Green
 							//   Byte 2: Red
@@ -299,11 +317,14 @@ public static ImageData mixAlphaWithinRegion(ImageData fromImageData, Region reg
 							toData[index + 1] = (byte) green;
 							toData[index + 2] = (byte) red;
 						} else {
-							RGB color = colors[ (toData[index] & 0xFF) + ((toData[index + 1] & 0xFF) << 8) + ((toData[index + 2] & 0xFF) << 16)];
+							RGB color = colors[ (toData[index] & 0xFF) 
+										+ ((toData[index + 1] & 0xFF) << 8) 
+										+ ((toData[index + 2] & 0xFF) << 16)];
 							red = (color.red * aNum) / 100 + redCba;
 							green = (color.green * aNum) / 100 + greenCba;
 							blue = (color.blue * aNum) / 100 + blueCba;
-							int newColorIndex = getNearestColorIndex(red, green, blue, colors);
+							int newColorIndex = getNearestColorIndex(red, green, 
+																		blue, colors);
 							toData[index] = (byte) newColorIndex;
 							toData[index + 1] = (byte) (newColorIndex >>> 8);
 							toData[index + 2] = (byte) (newColorIndex >>> 16);
@@ -317,16 +338,15 @@ public static ImageData mixAlphaWithinRegion(ImageData fromImageData, Region reg
 	}
 
 	// We've created the new byte array, now create the new ImageData
-	return new ImageData(fromImageData.width, fromImageData.height, depth, palette, fromImageData.scanlinePad, toData);
+	return new ImageData(fromImageData.width, fromImageData.height, depth, palette, 
+							fromImageData.scanlinePad, toData);
 }
 /**
- * This method doesn't appear on ImageData, but it
- * should. But even so, they have bugs for depths
- * greater than 8.
+ * This method doesn't appear on ImageData, but it should. But even so, they have bugs for
+ * depths greater than 8.
  *
- * Copy width pixel values starting at offset x in
- * scanline y from the array pixels starting at
- * startIndex.
+ * Copy width pixel values starting at offset x in scanline y from the array pixels 
+ * starting at startIndex.
  *
  * @param x the x position of the pixel to set
  * @param y the y position of the pixel to set
@@ -338,7 +358,8 @@ public static ImageData mixAlphaWithinRegion(ImageData fromImageData, Region reg
  * @exception SWTError(ERROR_UNSUPPORTED_DEPTH)
  *	if the depth is not one of 1, 4, 8, 16, 24 or 32
  */
-public static void setPixels(ImageData dest, int x, int y, int putWidth, int[] pixels, int startIndex) {
+public static void setPixels(ImageData dest, int x, int y, int putWidth, 
+								int[] pixels, int startIndex) {
 	if (pixels == null) return;
 	int depth = dest.depth;
 	int bytesPerLine = dest.bytesPerLine;
@@ -395,7 +416,7 @@ public static void setPixels(ImageData dest, int x, int y, int putWidth, int[] p
 			index++;
 		}
 		while (n > 1) {
-			theByte = ((pixels[i] & 0x0F) << 4) | (pixels[i+1] & 0x0F);
+			theByte = ((pixels[i] & 0x0F) << 4) | (pixels[i + 1] & 0x0F);
 			data[index] = (byte)theByte;
 			i += 2;
 			n -= 2;
@@ -418,12 +439,13 @@ public static void setPixels(ImageData dest, int x, int y, int putWidth, int[] p
 		return;
 	}
 	if (depth == 16) {
-		// Bogus ---- ImageData was storing high-byte first. This is wrong on Intel, it is low byte first.
+		// Bogus ---- ImageData was storing high-byte first. This is wrong on Intel, it is
+		// low byte first.
 		index = (y * bytesPerLine) + (x * 2);
 		i = startIndex;
 		for (int j = 0; j < putWidth; j++) {
 			pixel = pixels[i];
-			data[index+1] = (byte)((pixel >> 8) & 0xFF);
+			data[index + 1] = (byte)((pixel >> 8) & 0xFF);
 			data[index] = (byte)(pixel & 0xFF);
 			i++;
 			index += 2;

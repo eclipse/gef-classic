@@ -63,7 +63,7 @@ public class MultiValueMap {
 		}
 	}
 	
-	public int size(){
+	public int size() {
 		return map.size();
 	}
 }
