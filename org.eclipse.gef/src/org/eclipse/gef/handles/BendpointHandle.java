@@ -13,8 +13,6 @@ package org.eclipse.gef.handles;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import org.eclipse.draw2d.Connection;
-
 import org.eclipse.gef.DragTracker;
 
 /**
@@ -28,16 +26,6 @@ public class BendpointHandle
 private int index;
 
 /**
- * Adds a PropertyChangeListener to this handle's owner figure (a
- * Connection), so that the handle can be revalidated when the 
- * Connection's points change.
- */
-public void addNotify() {
-	super.addNotify();
-	getOwnerFigure().addPropertyChangeListener(Connection.PROPERTY_POINTS, this);
-}
-
-/**
  * By default, <code>null</code> is returned for the DragTracker.
  * @return returns null by default
  */
@@ -46,14 +34,12 @@ protected DragTracker createDragTracker() {
 }
 
 /**
- * Returns the index.  This could mean different things for different
- * subclasses.  It could be the index of the point the handle belongs 
- * to.  Or it could be the index of the handle itself.  For
- * {@link BendpointCreationHandle}s and {@link BendpointMoveHandle}s,
- * this is the index of the handle itself, where these two types of
- * handles are indexed separately.  For example, if you have one bendpoint,
- * you will have 2 creation handles, indexed as 0 and 1, and 1 move handle,
- * indexed as 0.
+ * Returns the index. This could mean different things for different subclasses. It could
+ * be the index of the point the handle belongs to. Or it could be the index of the handle
+ * itself. For {@link BendpointCreationHandle}s and {@link BendpointMoveHandle}s, this
+ * is the index of the handle itself, where these two types of handles are indexed
+ * separately. For example, if you have one bendpoint, you will have 2 creation handles,
+ * indexed as 0 and 1, and 1 move handle, indexed as 0.
  * @return the index
  */
 public int getIndex() {
@@ -66,14 +52,6 @@ public int getIndex() {
  */
 public void propertyChange(PropertyChangeEvent event) {
 	revalidate();
-}
-
-/**
- * Removes this PropertyChangeListener from its owner figure.
- */
-public void removeNotify() {
-	getOwnerFigure().removePropertyChangeListener(Connection.PROPERTY_POINTS, this);
-	super.removeNotify();
 }
 
 /**
