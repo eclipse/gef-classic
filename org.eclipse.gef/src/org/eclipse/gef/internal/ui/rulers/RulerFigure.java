@@ -34,8 +34,8 @@ public class RulerFigure
 public int smallMarkWidth = 1;
 public int mediumMarkWidth = 3;
 public int textMargin = 3;
-public int minPixelsBetweenMarks = 4;
-public int minPixelsBetweenMajorMarks = 35;
+public int minPixelsBetweenMarks = 7;
+public int minPixelsBetweenMajorMarks = 47;
 
 protected Transposer transposer = new Transposer();
 protected ZoomManager zoomManager;
@@ -270,13 +270,23 @@ protected void paintFigure(Graphics graphics) {
 			String num = "" + (div / divsPerMajorMark) * unitsPerMajorMark; //$NON-NLS-1$
 			if (isHorizontal()) {
 				Dimension numSize = FigureUtilities.getStringExtents(num, getFont());
-				numSize.width--;
+				/*
+				 * FigureUtilities is increasing the width reported by GC by 1, so we
+				 * remove it here.  Also, if the actual width (the one reported
+				 * by the GC) is even, we want to increase it by 1.  This will ensure
+				 * that when marks marks are erased because they are too close to the
+				 * number, they are erased from both sides of that number.
+				 */
+				if (numSize.width % 2 == 0) {
+					numSize.width--;					
+				}
 				Point textLocation = new Point(y - (numSize.width / 2), 
 						clippedBounds.x + textMargin - leading); 
 				forbiddenZone.setLocation(textLocation);
 				forbiddenZone.setSize(numSize);
 				forbiddenZone.expand(1, 1);
 				graphics.fillRectangle(forbiddenZone);
+//				graphics.drawLine(y, clippedBounds.x, y, clippedBounds.x + clippedBounds.width);
 				graphics.drawText(num, textLocation);
 			} else {
 				Image numImage = ImageUtilities.createRotatedImageOfString(num, getFont(), 
@@ -286,7 +296,7 @@ protected void paintFigure(Graphics graphics) {
 				forbiddenZone.setLocation(textLocation);
 				forbiddenZone.setSize(numImage.getBounds().width, 
 						numImage.getBounds().height);
-				forbiddenZone.expand(1, 1);
+				forbiddenZone.expand(1, 1 + (numImage.getBounds().height % 2 == 0 ? 1 : 0));
 				graphics.fillRectangle(forbiddenZone);
 				graphics.drawImage(numImage, textLocation);
 				numImage.dispose();
