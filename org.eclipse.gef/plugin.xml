@@ -24,8 +24,9 @@
    <extension
          point="org.eclipse.ui.contexts">
       <context
-            name="%Context.GraphicalTextEditing.Name"
+            parentId="org.eclipse.ui.contexts.window"
             description="%Context.GraphicalTextEditing.Description"
+            name="%Context.GraphicalTextEditing.Name"
             id="org.eclipse.gef.textContext">
       </context>
    </extension>
@@ -37,14 +38,18 @@
             description="%ViewCategory.Label"
             id="org.eclipse.gef.category.view">
       </category>
-      <command 
+      <category
+            name="%FormatCategory.Label"
+            description="%FormatCategory.Label"
+            id="org.eclipse.gef.category.format">
+      </category>
+      <command
             name="%Palette.Label" 
             description="" 
             category="org.eclipse.ui.category.views" 
             id="org.eclipse.gef.ui.palette_view"> 
-      </command> 
-      
-      
+      </command>
+
       <command
             name="%ZoomIn.Tooltip"
             description="%ZoomIn.Tooltip"
@@ -59,16 +64,51 @@
       </keyBinding>
       
       <command
+            name="%StyleLeftToRight.Tooltip"
+            description="%StyleLeftToRight.Tooltip"
+            category="org.eclipse.gef.category.format"
+            id="org.eclipse.gef.text.ltr">
+      </command>
+      
+      <command
+            name="%StyleRightToLeft.Tooltip"
+            description="%StyleRightToLeft.Tooltip"
+            category="org.eclipse.gef.category.format"
+            id="org.eclipse.gef.text.rtl">
+      </command>
+      
+      <command
+            name="%StyleAlignLeft.Tooltip"
+            description="%StyleAlignLeft.Tooltip"
+            category="org.eclipse.gef.category.format"
+            id="org.eclipse.gef.text.alignLeft">
+      </command>
+
+      <command
+            name="%StyleAlignCenter.Tooltip"
+            description="%StyleAlignCenter.Tooltip"
+            category="org.eclipse.gef.category.format"
+            id="org.eclipse.gef.text.alignCenter">
+      </command>
+      
+      <command
+            name="%StyleAlignRight.Tooltip"
+            description="%StyleAlignRight.Tooltip"
+            category="org.eclipse.gef.category.format"
+            id="org.eclipse.gef.text.alignRight">
+      </command>
+
+      <command
 			name="%StyleBold.Tooltip"
 			description="%StyleBold.Tooltip"
 			category="org.eclipse.ui.category.edit"
 			id="org.eclipse.gef.text.bold">
       </command>
       <keyBinding
+            contextId="org.eclipse.gef.textContext"
             string="Ctrl+B"
-            scope="org.eclipse.gef.textScope"
-            command="org.eclipse.gef.text.bold"
-            configuration="org.eclipse.ui.defaultAcceleratorConfiguration">
+            commandId="org.eclipse.gef.text.bold"
+            keyConfigurationId="org.eclipse.ui.defaultAcceleratorConfiguration">
       </keyBinding>
       
       <command
@@ -78,10 +118,10 @@
 			id="org.eclipse.gef.text.italic">
       </command>
       <keyBinding
+            contextId="org.eclipse.gef.textContext"
             string="Ctrl+I"
-            scope="org.eclipse.gef.textScope"
-            command="org.eclipse.gef.text.italic"
-            configuration="org.eclipse.ui.defaultAcceleratorConfiguration">
+            commandId="org.eclipse.gef.text.italic"
+            keyConfigurationId="org.eclipse.ui.defaultAcceleratorConfiguration">
       </keyBinding>
 
       <command
@@ -91,10 +131,10 @@
 			id="org.eclipse.gef.text.underline">
       </command>
       <keyBinding
+            contextId="org.ecipse.gef.textContext"
             string="Ctrl+U"
-            scope="org.eclipse.gef.textScope"
-            command="org.eclipse.gef.text.underline"
-            configuration="org.eclipse.ui.defaultAcceleratorConfiguration">
+            commandId="org.eclipse.gef.text.underline"
+            keyConfigurationId="org.eclipse.ui.defaultAcceleratorConfiguration">
       </keyBinding>
 
       <command
@@ -104,10 +144,10 @@
             id="org.eclipse.gef.zoom_out">
       </command>
       <keyBinding
+            contextId="org.eclipse.ui.globalScope"
             string="Ctrl+-"
-            scope="org.eclipse.ui.globalScope"
-            command="org.eclipse.gef.zoom_out"
-            configuration="org.eclipse.ui.defaultAcceleratorConfiguration">
+            commandId="org.eclipse.gef.zoom_out"
+            keyConfigurationId="org.eclipse.ui.defaultAcceleratorConfiguration">
       </keyBinding>
    </extension>
    <extension
