@@ -63,6 +63,7 @@ protected Request createTargetRequest(){
 
 public void deactivate(){
 	eraseSourceFeedback();
+	setConnectionSource(null);
 	super.deactivate();
 	setState(STATE_TERMINAL);
 }
