@@ -318,13 +318,15 @@ public void drawText(String s, int x, int y, int style) {
 }
 
 /**
- * @see Graphics#drawTextLayout(TextLayout, int, int)
+ * @see Graphics#drawTextLayout(TextLayout, int, int, int, int, Color, Color)
  */
-public void drawTextLayout(TextLayout layout, int x, int y) {
+public void drawTextLayout(TextLayout layout, int x, int y, int selectionStart,
+		int selectionEnd, Color selectionForeground, Color selectionBackground) {
 	TextLayout scaled = zoomTextLayout(layout);
 	graphics.drawTextLayout(scaled,
 			(int)Math.floor(x * zoom + fractionalX),
-			(int)Math.floor(y * zoom + fractionalY));
+			(int)Math.floor(y * zoom + fractionalY),
+			selectionStart, selectionEnd, selectionBackground, selectionForeground);
 	scaled.dispose();
 }
 

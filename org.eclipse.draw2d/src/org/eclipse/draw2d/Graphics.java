@@ -128,10 +128,13 @@ public final void drawFocus(Rectangle r) {
 public abstract void drawFocus(int x, int y, int w, int h);
 
 /**
+ * Draws the given image at a point.
+ * @param image the image to draw
+ * @param p where to draw the image
  * @see #drawImage(Image, int, int)
  */
-public final void drawImage(Image srcImage, Point p) {
-	drawImage(srcImage, p.x, p.y);
+public final void drawImage(Image image, Point p) {
+	drawImage(image, p.x, p.y);
 }
 
 /**
@@ -187,6 +190,8 @@ public final void drawLine(Point p1, Point p2) {
 public abstract void drawLine(int x1, int y1, int x2, int y2);
 
 /**
+ * Draws an oval inside the given rectangle using the current foreground color.
+ * @param r the rectangle circumscribing the oval to be drawn
  * @see #drawOval(int, int, int, int)
  */
 public final void drawOval(Rectangle r) {
@@ -287,6 +292,8 @@ public void drawPolyline(int[] points) {
 public abstract void drawPolyline(PointList points);
 
 /**
+ * Draws the given rectangle using the current foreground color.
+ * @param r the rectangle to draw
  * @see #drawRectangle(int, int, int, int)
  */
 public final void drawRectangle(Rectangle r) {
@@ -305,6 +312,8 @@ public final void drawRectangle(Rectangle r) {
 public abstract void drawRectangle(int x, int y, int width, int height);
 
 /**
+ * Fills the given rectangle using the current background color.
+ * @param r the rectangle to fill
  * @see #fillRectangle(int, int, int, int)
  */
 public final void fillRectangle(Rectangle r) {
@@ -360,9 +369,25 @@ public abstract void drawText(String s, int x, int y);
  * @param x the x coordinate
  * @param y the y coordinate
  */
-public void drawTextLayout(TextLayout layout, int x, int y) {
+public final void drawTextLayout(TextLayout layout, int x, int y) {
+	drawTextLayout(layout, x, y, -1, -1, null, null);
+}
+
+/**
+ * @param x the x location
+ * @param y the y location
+ * @param layout the TextLayout being rendered
+ * @param selectionStart the start of selection
+ * @param selectionEnd the end of selection
+ * @param selectionForeground the foreground selection color
+ * @param selectionBackground the background selection color
+ * @see Graphics#drawTextLayout(TextLayout, int, int)
+ */
+public void drawTextLayout(TextLayout layout, int x, int y, int selectionStart,
+		int selectionEnd, Color selectionForeground, Color selectionBackground) {
 	throw new RuntimeException("The method has not been implemented"); //$NON-NLS-1$
 }
+
 
 /**
  * Draws the given string using the current font and foreground color. No tab expansion or 

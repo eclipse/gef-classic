@@ -312,13 +312,15 @@ public void drawText(String s, int x, int y) {
 	gc.drawText(s, x + translateX, y + translateY, true);
 }
 
-
 /**
- * @see Graphics#drawTextLayout(TextLayout, int, int)
+ * @see Graphics#drawTextLayout(TextLayout, int, int, int, int, Color, Color)
  */
-public void drawTextLayout(TextLayout layout, int x, int y) {
+public void drawTextLayout(TextLayout layout, int x, int y, int selectionStart,
+		int selectionEnd, Color selectionForeground, Color selectionBackground) {
+	//$TODO probably just call checkPaint since Font and BG color don't apply
 	checkText();
-	layout.draw(gc, x + translateX, y + translateY);
+	layout.draw(gc, x + translateX, y + translateY, selectionStart, selectionEnd,
+			selectionForeground, selectionBackground);
 }
 
 /**
