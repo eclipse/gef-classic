@@ -65,6 +65,11 @@ int WEST  =  8;
 /** East */
 int EAST  = 16;
 
+/** A constant indicating horizontal direction */
+int HORIZONTAL = 64;
+/** A constant indicating vertical direction */
+int VERTICAL = 128;
+
 /** North-East: a bit-wise OR of {@link #NORTH} and {@link #EAST} */
 int NORTH_EAST = NORTH | EAST;
 /** North-West: a bit-wise OR of {@link #NORTH} and {@link #WEST} */
@@ -77,5 +82,8 @@ int SOUTH_WEST = SOUTH | WEST;
 int NORTH_SOUTH = NORTH | SOUTH;
 /** East-West: a bit-wise OR of {@link #EAST} and {@link #WEST} */
 int EAST_WEST = EAST | WEST;
+
+/** North-South-East-West: a bit-wise OR of all 4 directions. */
+int NSEW = NORTH_SOUTH | EAST_WEST;
 
 }
