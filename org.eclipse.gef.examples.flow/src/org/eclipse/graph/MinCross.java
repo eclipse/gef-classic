@@ -9,19 +9,7 @@ import java.util.Comparator;
  */
 public class MinCross extends GraphVisitor {
 
-static class MedianComparator implements Comparator {
-	public int compare(Object o1, Object o2) {
-		double diff = ((Node)o1).sortValue - ((Node)o2).sortValue;
-		if (diff < 0.0)
-			return -1;
-		if (diff > 0.0)
-			return 1;
-		return 0;
-	}
-}
-
 private DirectedGraph g;
-private Comparator comparator = new MedianComparator();
 
 static final int MAX = 40;
 
@@ -57,7 +45,8 @@ void solve() {
 //				if (loop < MAX/4)
 //					node.sortValue = node.sortValue + Math.random() * rank.size() / (loop/3+2);
 			}
-			sortRank(rank);
+			rank.sort();
+			rank.assignIndices();
 		}
 
 		if (loop == MAX - 1)
@@ -89,25 +78,9 @@ void solve() {
 //				if (loop < MAX/4)
 //					node.sortValue = node.sortValue + Math.random() * rank.size() / (loop/3+2);
 			}
-			sortRank(rank);
+			rank.sort();
+			rank.assignIndices();
 		}
-	}
-}
-
-void sortRank(Rank rank) {
-	Collections.sort(rank,comparator);
-	int mag, n = 0;
-	Node node;
-	for (int i=0; i<rank.size(); i++) {
-		node = rank.getNode(i);
-		if (node instanceof VirtualNode)
-			mag = 1;
-		else
-			mag = node.incoming.size() + node.outgoing.size();
-		n += mag;
-		node.index = i;
-//		node.index = n;
-		n += mag;
 	}
 }
 

@@ -9,27 +9,42 @@ public class SortSubgraphs extends GraphVisitor {
 
 static class NestingTreeEntry {
 	List contents = new ArrayList();
-	Node subgraph;
-	double sortValue;
+	boolean isLeaf = true;
 	int size;
+	double sortValue;
+	Node subgraph;
 	
-	boolean swap(int index) {
-		Object left = contents.get(index);
-		Object right = contents.get(index + 1);
-		double iL = (left instanceof Node)
-			? ((Node)left).sortValue
-			: ((NestingTreeEntry)left).sortValue;
-		double iR = (right instanceof Node)
-			? ((Node)right).sortValue
-			: ((NestingTreeEntry)right).sortValue;
-		if (iL <= iR)
-			return false;
-		contents.set(index, right);
-		contents.set(index+1, left);
-		return true;
+	public void calculateSortValues() {
+		int total = 0;
+		for (int i = 0; i < contents.size(); i++) {
+			Object o = contents.get(i);
+			if (o instanceof NestingTreeEntry) {
+				isLeaf = false;
+				NestingTreeEntry e = (NestingTreeEntry)o;
+				e.calculateSortValues();
+				total += (int)(e.sortValue * e.size);
+				size += e.size;
+			} else {
+				total += ((Node)o).index;
+				size++;
+			}
+		}
+		sortValue = (double)total / size;
 	}
 	
+	public void getSortValueFromSubgraph() {
+		if (subgraph != null)
+			sortValue = subgraph.sortValue;
+		for (int i = 0; i < contents.size(); i++) {
+			Object o = contents.get(i);
+			if (o instanceof NestingTreeEntry)
+				((NestingTreeEntry)o).getSortValueFromSubgraph();
+		}
+	}
+
 	public void recursiveSort() {
+		if (isLeaf)
+			return;
 		boolean change = false;
 		//Use modified bubble sort for almost-sorted lists.
 		do {
@@ -49,31 +64,159 @@ static class NestingTreeEntry {
 		}
 	}
 	
-	public void calculateSortValues() {
-		int total = 0;
-		for (int i = 0; i < contents.size(); i++) {
-			Object o = contents.get(i);
-			if (o instanceof NestingTreeEntry) {
-				NestingTreeEntry e = (NestingTreeEntry)o;
-				e.calculateSortValues();
-				total += (int)(e.sortValue * e.size);
-				size += e.size;
-			} else {
-				total += ((Node)o).index;
-				size++;
-			}
-		}
-		sortValue = (double)total / size;
+	boolean swap(int index) {
+		Object left = contents.get(index);
+		Object right = contents.get(index + 1);
+		double iL = (left instanceof Node)
+			? ((Node)left).sortValue
+			: ((NestingTreeEntry)left).sortValue;
+		double iR = (right instanceof Node)
+			? ((Node)right).sortValue
+			: ((NestingTreeEntry)right).sortValue;
+		if (iL <= iR)
+			return false;
+		contents.set(index, right);
+		contents.set(index+1, left);
+		return true;
+	}
+	public String toString() {
+		return "Nesting:"+subgraph;
 	}
 }
 
 CompoundDirectedGraph g;
 
-Set mappings = new HashSet();
-
 Map nestingTreeMap = new HashMap();
-NodePair pair = new NodePair();
 NestingTreeEntry nestingTrees[];
+
+Set OGedges = new HashSet();
+Set OGmembers = new HashSet();
+NodePair pair = new NodePair();
+
+private void addToNestingTree(NestingTreeEntry branch) {
+	Subgraph subgraph = branch.subgraph.getParent();
+	NestingTreeEntry parent = (NestingTreeEntry)nestingTreeMap.get(subgraph);
+	if (parent == null) {
+		parent = new NestingTreeEntry();
+		parent.subgraph = subgraph;
+		nestingTreeMap.put(subgraph, parent);
+		if (subgraph != null)
+			addToNestingTree(parent);
+	}
+	parent.contents.add(branch);
+}
+
+private void addToNestingTree(Node child) {
+	Subgraph subgraph = child.getParent();
+	NestingTreeEntry parent = (NestingTreeEntry)nestingTreeMap.get(subgraph);
+	if (parent == null) {
+		parent = new NestingTreeEntry();
+		parent.subgraph = subgraph;
+		nestingTreeMap.put(subgraph, parent);
+		if (subgraph != null)
+			addToNestingTree(parent);
+	}
+	parent.contents.add(child);
+}
+
+private void breakSubgraphCycles() {
+	//The stack of nodes which have no unmarked incoming edges
+	List noLefts = new ArrayList();
+
+	int index = 1;
+	//Identify all initial nodes for removal
+	for (Iterator iter = OGmembers.iterator(); iter.hasNext();) {
+		Node node = (Node)iter.next();
+		if (node.x == 0)
+			sortedInsert(noLefts, node);
+	}
+	
+	Node cycleRoot;
+	do {
+		//Remove all leftmost nodes, updating the nodes to their right
+		while (noLefts.size() > 0) {
+			Node node = (Node)noLefts.remove(noLefts.size() - 1);
+			node.sortValue = index++;
+			OGmembers.remove(node);
+			if (node.toRight == null)
+				continue;
+			for (int i = 0; i < node.toRight.size(); i++) {
+				Node right = node.toRight.getNode(i);
+				right.x--;
+				if (right.x == 0)
+					sortedInsert(noLefts, right);
+			}
+		}
+		cycleRoot = null;
+		double min = 3.0; //All values should be between 0.0-1.0, so this is infinity.
+		for (Iterator iter = OGmembers.iterator(); iter.hasNext();) {
+			Node node = (Node)iter.next();
+			if (node.flag)
+				continue;
+			if (node.sortValue < min) {
+				cycleRoot = node;
+				min = node.sortValue;
+			}
+		}
+		if (cycleRoot != null) {
+			//break the cycle;
+			sortedInsert(noLefts, cycleRoot);
+			cycleRoot.x = -1; //prevent x from ever reaching 0
+		}
+	} while (cycleRoot != null);
+}
+
+private void buildSubgraphOrderingGraph() {
+	RankList ranks = g.ranks;
+	nestingTrees = new NestingTreeEntry[ranks.size()];
+	for (int r = 0; r < ranks.size(); r++) {
+		Rank rank = ranks.getRank(r);
+		nestingTreeMap.clear();
+		for (int j = 0; j < rank.size(); j++) {
+			Node node = rank.getNode(j);
+			addToNestingTree(node);
+		}
+		NestingTreeEntry entry = (NestingTreeEntry)nestingTreeMap.get(null);
+		nestingTrees[r] = entry;
+		entry.calculateSortValues();
+		entry.recursiveSort();
+	}
+
+	for (int i = 0; i < nestingTrees.length; i++) {
+		NestingTreeEntry entry = nestingTrees[i];
+		buildSubgraphOrderingGraph(entry);
+	}
+}
+
+private void buildSubgraphOrderingGraph(NestingTreeEntry entry) {
+	NodePair pair = new NodePair();
+	if (entry.isLeaf)
+		return;
+	for (int i = 0; i < entry.contents.size() - 1; i++) {
+		Object left = entry.contents.get(i);
+		Object right = entry.contents.get(i+1);
+		if (left instanceof Node)
+			pair.n1 = (Node)left;
+		else {
+			pair.n1 = ((NestingTreeEntry)left).subgraph;
+			buildSubgraphOrderingGraph((NestingTreeEntry)left);
+		}
+		if (right instanceof Node)
+			pair.n2 = (Node)right;
+		else {
+			pair.n2 = ((NestingTreeEntry)right).subgraph;
+			buildSubgraphOrderingGraph((NestingTreeEntry)right);
+		}
+		if (OGedges.contains(pair))
+			continue;
+		OGedges.add(pair);
+		pair.n1.leftToRight(pair.n2);
+		OGmembers.add(pair.n1);
+		OGmembers.add(pair.n2);
+		pair.n2.x++; //Using x field to count predecessors.
+		pair = new NodePair();
+	}
+}
 
 /**
  * Calculates the average position P for each node and subgraph.  The average position is
@@ -82,7 +225,7 @@ NestingTreeEntry nestingTrees[];
  * Runs in approximately linear time with respect to the number of nodes, including
  * virtual nodes.
  */
-private void assignSortValues() {
+private void calculateSortValues() {
 	RankList ranks = g.ranks;
 	
 	g.subgraphs.resetSortValues();
@@ -96,7 +239,6 @@ private void assignSortValues() {
 		Rank rank = ranks.getRank(r);
 		for (int j = 0; j < rank.size(); j++) {
 			Node node = rank.getNode(j);
-			node.x = 0;
 			node.sortValue =
 				(double)(node.index * 2 + 1) / (ranks.getRank(node.rank).size() * 2);
 			Subgraph parent = node.getParent();
@@ -115,117 +257,51 @@ private void assignSortValues() {
 	for (int i = 0; i < g.subgraphs.size(); i++) {
 		Subgraph subgraph = (Subgraph)g.subgraphs.get(i);
 		subgraph.sortValue /= subgraph.index;
-		subgraph.x = 0;
 		System.out.println(subgraph + " average " + subgraph.sortValue);
 	}
 }
 
-private void breakSubgraphCycles() {
-	Collection allNodes = new ArrayList(); //The set of all nodes in the POset
-	allNodes.addAll(g.nodes);
-	allNodes.addAll(g.subgraphs);
-	g.nodes.resetFlags(); //Flags will be set when node has been removed
-	g.subgraphs.resetFlags();
-	
-	Stack noLefts = new Stack(); //The stack of nodes which have no unmarked incoming edges
-	
-	//Identify all initial nodes for removal
-	for (Iterator iter = allNodes.iterator(); iter.hasNext();) {
-		Node node = (Node)iter.next();
-		if (node.x == 0)
-			noLefts.push(node);
-	}
-	
-	//Remove all leftmost nodes, updating the nodes to their right
-	while (noLefts.size() > 0) {
-		Node node = (Node)noLefts.pop();
-		node.flag = true;
-		allNodes.remove(node); //$TODO redundant
-		if (node.toRight == null)
-			continue;
-		for (int i = 0; i < node.toRight.size(); i++) {
-			Node right = node.toRight.getNode(i);
-			right.x--;
-			if (right.x == 0)
-				noLefts.push(right);
-		}
+private void repopulateRank(Rank r, NestingTreeEntry entry) {
+	for (int i = 0; i < entry.contents.size(); i++) {
+		Object o = entry.contents.get(i);
+		if (o instanceof Node)
+			r.add(o);
+		else
+			repopulateRank(r, (NestingTreeEntry)o);
 	}
 }
 
-private void addToNestingTree(NestingTreeEntry branch) {
-	Subgraph s = branch.subgraph.getParent();
-	NestingTreeEntry entry = (NestingTreeEntry)nestingTreeMap.get(s);
-	if (entry == null) {
-		entry = new NestingTreeEntry();
-		entry.subgraph = s;
-		nestingTreeMap.put(s, entry);
+private void repopulateRanks() {
+	for (int i = 0; i < nestingTrees.length; i++) {
+		Rank rank = g.ranks.getRank(i);
+		rank.clear();
+		repopulateRank(rank, nestingTrees[i]);
 	}
-	entry.contents.add(branch);
-	if (s != null)
-		addToNestingTree(s);
 }
 
-
-private void addToNestingTree(Node node) {
-	Subgraph s = node.getParent();
-	NestingTreeEntry entry = (NestingTreeEntry)nestingTreeMap.get(s);
-	if (entry == null) {
-		entry = new NestingTreeEntry();
-		entry.subgraph = s;
-		nestingTreeMap.put(s, entry);
-	}
-	entry.contents.add(node);
-	if (s != null)
-		addToNestingTree(entry);
+void sortedInsert(List list, Node node) {
+	int insert = 0;
+	while (insert < list.size()
+	  && ((Node)list.get(insert)).sortValue > node.sortValue)
+		insert++;
+	list.add(insert, node);
 }
 
-private void buildSubgraphOrderingGraph(NestingTreeEntry entry) {
-	
-}
-
-private void buildSubgraphOrderingGraph() {
-	RankList ranks = g.ranks;
-	for (int i = 0; i < ranks.size(); i++) {
-		Rank rank = ranks.getRank(i);
-		nestingTreeMap.clear();
-		for (int j = 0; j < rank.size(); j++) {
-			Node node = rank.getNode(j);
-			addToNestingTree(node);
-		}
-		NestingTreeEntry entry = (NestingTreeEntry)nestingTreeMap.get(null);
-		nestingTrees[i] = entry;
-		entry.calculateSortValues();
-		entry.recursiveSort();
-		buildSubgraphOrderingGraph(entry);
-
-//		for (int j = 0; j < rank.size() - 1; j++) {
-//			Node left = rank.getNode(j);
-//			Node right = rank.getNode(j+1);
-//			Subgraph ancestor = GraphUtilities.getCommonAncestor(left, right);
-//			while (left.getParent() != ancestor)
-//				left = left.getParent();
-//			while (right.getParent() != ancestor)
-//				right = right.getParent();
-//			if (left == right)
-//				continue;
-//			pair.n1 = left;
-//			pair.n2 = right;
-//			if (mappings.contains(pair))
-//				continue;
-//			mappings.add(pair);
-//			pair = new NodePair();
-//			left.leftToRight(right);
-//			right.x++; //Using x field to count predecessors.
-//		}
+private void topologicalSort() {
+	for (int i = 0; i < nestingTrees.length; i++) {
+		nestingTrees[i].getSortValueFromSubgraph();
+		nestingTrees[i].recursiveSort();
 	}
 }
 
 public void visit(DirectedGraph dg) {
 	g = (CompoundDirectedGraph)dg;
 	
-	assignSortValues();
 	buildSubgraphOrderingGraph();
+	calculateSortValues();
 	breakSubgraphCycles();
+	topologicalSort();
+	repopulateRanks();
 }
 
 }

@@ -223,7 +223,7 @@ public static void main(String[] args) {
  * @see org.eclipse.draw2d.examples.AbstractExample#getContents()
  */
 protected IFigure getContents() {
-	CompoundDirectedGraph graph = CompoundGraphTests.test1();
+	CompoundDirectedGraph graph = CompoundGraphTests.tangledSubgraphs();
 	buildPrime = false;
 	Figure contents = buildGraph(graph);
 	

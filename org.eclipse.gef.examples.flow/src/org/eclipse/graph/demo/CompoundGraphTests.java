@@ -170,6 +170,48 @@ static CompoundDirectedGraph test1() {
 	return graph;
 }
 
+static CompoundDirectedGraph tangledSubgraphs() {
+	Subgraph A, B, C, D;
+	Node a1, a2, b1, b2, c1, c2, d1, d2;
+	NodeList nodes = new NodeList();
+	EdgeList edges = new EdgeList();
+
+
+	nodes.add(A = new Subgraph("Subgraph A"));
+	nodes.add(B = new Subgraph("Subgraph B"));
+	nodes.add(C = new Subgraph("Subgraph C"));
+	nodes.add(D = new Subgraph("Subgraph D"));
+
+	nodes.add(a1 = new Node("a1", A));
+	nodes.add(a2 = new Node("a2", A));
+	edges.add(new Edge(a1, a2));
+
+
+	nodes.add(b1 = new Node("b1", B));
+	nodes.add(b2 = new Node("b2", B));
+	edges.add(new Edge(b1, b2));
+
+	nodes.add(c1 = new Node("c1", C));
+	nodes.add(c2 = new Node("c2", C));
+	edges.add(new Edge(c1, c2));
+
+	nodes.add(d1 = new Node("d1", D));
+	nodes.add(d2 = new Node("d2", D));
+	edges.add(new Edge(d1, d2));
+
+	CompoundDirectedGraph graph = new CompoundDirectedGraph();
+	graph.nodes = nodes;
+	graph.edges = edges;
+	
+	edges.add(new Edge(a1, d2));
+	edges.add(new Edge(d1, c2));
+	edges.add(new Edge(d1, b2));
+
+	new CompoundDirectedGraphLayout()
+		.visit(graph);
+	return graph;
+}
+
 static CompoundDirectedGraph test2() {
 	Subgraph s1, s2, s1_1;
 	Node n1, n2, n3, n4, n5, n6, n7, n8;
