@@ -32,11 +32,16 @@ private static Dimension ELLIPSIS_SIZE = new Dimension();
  * Returns the number of characters from the specified String that will fit in the
  * available amount of space. An average character width can be provided as a hint for
  * faster calculation.
+ * 
  * @param frag the TextFragmentBox
  * @param string the String * @param font the Font used for measuring * @param availableWidth the available width in pixels * @param avg 0.0, or an avg character width to use during calculation
- * @param wrapping the word wrap style * @return the number of characters that will fit in the space */
+ * @param wrapping the word wrap style * @return the number of characters that will fit in the given space */
 public static int getTextForSpace(TextFragmentBox frag, String string, Font font, 
 										int availableWidth, float avg, int wrapping) {
+	/*
+	 * Changes to this method should be tested with 
+	 * org.eclipse.draw2d.test.TextFlowWrapTest
+	 */
 	frag.truncated = false;
 	if (string.length() == 0) {
 		frag.length = 0;
@@ -44,54 +49,56 @@ public static int getTextForSpace(TextFragmentBox frag, String string, Font font
 		return 0;
 	}
 	
+	// Remove any offset the given String might have.  This is because 
+	// BreakIterator.isBoundary() has a bug where it doesn't take the offset into account.
+	string = new String(string.toString());
+	
 	FontMetrics metrics = getFontMetrics(font);
 	BreakIterator breakItr = BreakIterator.getLineInstance();
 	breakItr.setText(string);
+	// min is the max. no. of characters that can fit in the available width.  To get to 
+	// that last character that fits you'd do string.charAt(min - 1).  max is the least
+	// number of characters of the given string that will not fit in
+	// the available space.
 	int MIN, min, max;
+
+	MIN = min = (wrapping == ParagraphTextLayout.WORD_WRAP_HARD) ?  breakItr.next() : 1;
+	max = string.length() + 1;
 	if (avg == 0.0)
 		avg = metrics.getAverageCharWidth();
-
-	int firstBreak = breakItr.next();
 
 	int winNL = string.indexOf("\r\n"); //$NON-NLS-1$
 	int macNL = string.indexOf('\r');
 	int unixNL = string.indexOf('\n');
-
-	MIN = min = (wrapping == ParagraphTextLayout.WORD_WRAP_HARD) ?  firstBreak : 1;
 	if (macNL == winNL)
 		macNL = -1; //If the Mac newline is just the prefix to the win NL, ignore it
-
-	max = string.length() + 1;
-	
 	if (winNL != -1) {
-		max = Math.min(max, winNL);
-		min = Math.min(min, winNL);
+		winNL += 2;
+		max = Math.min(max, winNL + 1);
 	}
 	if (unixNL != -1) {
-		max = Math.min(max, unixNL);
-		min = Math.min(min, unixNL);
+		unixNL++;
+		max = Math.min(max, unixNL + 1);
 	}
 	if (macNL != -1) {
-		max = Math.min(max, macNL);
-		min = Math.min(min, macNL);
+		macNL++;
+		max = Math.min(max, macNL + 1);
 	}
 
-	int origMax = max;
-	//The size of the current guess
-	int guess = 0,
-	    guessSize = 0;
 
+	//The size of the current guess
+	int guess = 0, guessSize = 0;
 	while ((max - min) > 1) {
-		//Pick a new guess size
-		//	New guess is the last guess plus the missing width in pixels
-		//	divided by the average character size in pixels
+		// Pick a new guess size
+		// New guess is the last guess plus the missing width in pixels
+		// divided by the average character size in pixels
 		guess = guess + (int)((availableWidth - guessSize) / avg);
 
 		if (guess >= max) guess = max - 1;
 		if (guess <= min) guess = min + 1;
 
 		//Measure the current guess
-		guessSize = getStringExtents(string.substring(0, guess), font).width;
+		guessSize = getTextExtents(string.substring(0, guess), font).width;
 
 		if (guessSize <= availableWidth)
 			//We did not use the available width
@@ -100,92 +107,63 @@ public static int getTextForSpace(TextFragmentBox frag, String string, Font font
 			//We exceeded the available width
 			max = guess;
 	}
-
-	int result = string.length();
-	switch (wrapping) {
-		case ParagraphTextLayout.WORD_WRAP_HARD :
-			if (min == string.length() || min == winNL || min == unixNL || min == macNL)
-				result = min;
-			else if (max == origMax 
-						&& getStringExtents(string.substring(0, max), font).width 
-						<= availableWidth)
-				result = max;
-			else if (breakItr.isBoundary(Math.min(min, string.length() - 1))) {
-				if (min < string.length() && Character.isWhitespace(string.charAt(min)))
-					result = max;
-				else
-					result = min;
-			} else
-				result = Math.max(MIN, breakItr.preceding(Math.min(max, 
-																string.length() - 1)));
-			frag.length = result;
-			break;
-
-		case ParagraphTextLayout.WORD_WRAP_SOFT :
-			if (min == string.length() || min == winNL || min == unixNL || min == macNL)
-				result = min;
-			else if (max == origMax
-						&& getStringExtents(string.substring(0, max), font).width 
-						<= availableWidth)
-				result = max;
-			else if (breakItr.isBoundary(Math.min(min, string.length() - 1))) {
-				if (min < string.length() && Character.isWhitespace(string.charAt(min)))
-					result = max;
-				else
-					result = min;
-			} else 
-				result = breakItr.preceding(Math.min(max, string.length() - 1));
-			if (result <= 0)
-				result = min;
-			frag.length = result;
-			break;
-		case ParagraphTextLayout.WORD_WRAP_TRUNCATE :
-			if (min == string.length() || min == winNL || min == unixNL || min == macNL) {
-				result = frag.length = min;
-				setupFragment(frag, font, string);
-				if (frag.getWidth() <= availableWidth)
-					return result;
-				min -= 1;
-			} else if (max == origMax 
-						&& getStringExtents(string.substring(0, max), font).width 
-						<= availableWidth) {
-				result = frag.length = max;
-				setupFragment(frag, font, string);
-				return result;
-			} else if (breakItr.isBoundary(Math.min(min, string.length() - 1))) {
-				if (min < string.length() && Character.isWhitespace(string.charAt(min)))
-					result = max;
-				else
-					result = min;
-			} else
-				result = breakItr.preceding(Math.min(max, string.length() - 1));
-			if (result <= 0) {
-				ELLIPSIS_SIZE = FigureUtilities.getStringExtents(TextFlow.ELLIPSIS, font);
-				getTextForSpace(
-					frag,
-					string,
-					font,
-					availableWidth - ELLIPSIS_SIZE.width,
-					avg,
-					ParagraphTextLayout.WORD_WRAP_SOFT);
-				//frag.length = min;
-				frag.truncated = true;
-				result = breakItr.following(min);
-				if (result == BreakIterator.DONE)
-					result = string.length();
-			} else {
-				frag.length = result;
-			}
+		
+	// Skip forward until max is a non-white space character
+	if (min != winNL && min != macNL && min != unixNL) {
+		while (max <= string.length() && Character.isWhitespace(string.charAt(max - 1)))
+			max++;
+		// If the first character 
+		min = max - 1;
 	}
 
+	int result;
+	boolean needToSetLength = true;
+	if (min == string.length() || min == winNL || min == unixNL || min == macNL
+			|| breakItr.isBoundary(max - 1))
+		// min = last letter in the given string, max = past the last letter OR
+		// min = NewLine OR
+		// max = boundary (includes the cases of japanese characters
+		//                 and min = white space, max = non-white character
+		result = min;
+	else {
+		// min = non-white character, max = non-white character
+		result = breakItr.preceding(max - 1);
+		if (result == 0) {
+			switch (wrapping) {
+				case ParagraphTextLayout.WORD_WRAP_HARD :
+					result = MIN;
+					break;
+				case ParagraphTextLayout.WORD_WRAP_SOFT :
+					result = min;
+					break;
+				case ParagraphTextLayout.WORD_WRAP_TRUNCATE :
+					ELLIPSIS_SIZE = FigureUtilities
+							.getStringExtents(TextFlow.ELLIPSIS, font);
+					// This recursive invocation will set the fragment's length appropriately
+					getTextForSpace(frag, 
+							string, 
+							font, 
+							availableWidth - ELLIPSIS_SIZE.width, 
+							avg, 
+							ParagraphTextLayout.WORD_WRAP_SOFT);
+					needToSetLength = false;
+					frag.truncated = true;
+					result = breakItr.following(max - 1);
+					if (result == BreakIterator.DONE)
+						result = string.length();
+			}
+		}
+	}
+	
+	if (needToSetLength)
+		frag.length = result;
 	setupFragment(frag, font, string);
 	return result;
 }
 
 static void setupFragment(TextFragmentBox frag, Font f, String s) {
-	//if (frag.length != s.length()) 
-		while (frag.length > 0 && Character.isWhitespace(s.charAt(frag.length - 1)))
-			frag.length--;
+	while (frag.length > 0 && Character.isWhitespace(s.charAt(frag.length - 1)))
+		frag.length--;
 	Dimension d = getStringExtents(s.substring(0, frag.length), f);
 	FontMetrics fm = getFontMetrics(f);
 	frag.setHeight(fm.getHeight());
