@@ -59,9 +59,8 @@ int SELECTED_PRIMARY = 2;
 /**
  * Activates the EditPart.  EditParts that observe a dynamic model or support editing must
  * be <i>active</i>.
- * Called by the managing EditPart, or the Viewer in the case of the
- * {@link RootEditPart}. This method may be called again once
- * {@link #deactivate()} has been called.
+ * Called by the managing EditPart, or the Viewer in the case of the {@link RootEditPart}.
+ * This method may be called again once {@link #deactivate()} has been called.
  * <P>During activation the receiver should:
  * <UL>
  *   <LI>begin to observe its model if appropriate, and should continue the observation
@@ -84,6 +83,12 @@ void activate();
 void addEditPartListener(EditPartListener listener);
 
 /**
+ * Called <em>after</em> the EditPart has been added to its parent. This is used to
+ * indicate to the EditPart that it should refresh itself for the first time.
+ */
+void addNotify();
+
+/**
  * Deactivates the EditPart.  EditParts that observe a dynamic model or support editing must
  * be <i>active</i>.  <code>deactivate()</code> is guaranteed to be called when an EditPart
  * will no longer be used.
@@ -104,15 +109,6 @@ void addEditPartListener(EditPartListener listener);
 void deactivate();
 
 /**
- * Called when the EditPart is being permanently removed from its {@link EditPartViewer}.
- * This indicates that the EditPart will no longer be needed, and therefore should remove
- * itself from the Viewer's registries.  This method is <EM>not</EM> called when the
- * entire EditPartViewer is disposed.  This method is not the inverse of {@link
- * @activate}, and should not be used to remove listeners.
- */
-void dispose();
-
-/**
  * Erases <i>source</i> feedback for the specified {@link Request}. A Request is used to 
  * describe the type of source feedback that should be erased.  This method should only be 
  * called once to erase feedback.  It should only be called in conjunction with a prior 
@@ -131,9 +127,10 @@ void eraseSourceFeedback(Request request);
 void eraseTargetFeedback(Request request);
 
 /**
- * Returns the oaijea oiewjfa epofakwpefo akpeofk apoewkf efchildren for this EditPart. 
- * This method should rarely be called, and is only made public so that helper objects of 
- * this EditPart, such as EditPolicies, can obtain the children.
+ * Returns the List of children <code>EditParts</code>.  This method should rarely be
+ * called, and is only made public so that helper objects of  this EditPart, such as
+ * EditPolicies, can obtain the children. The returned List may be by reference, and
+ * should never be modified.
  * @return a <code>List</code> of children
  */
 List getChildren();
@@ -257,6 +254,15 @@ void removeEditPartListener(EditPartListener listener);
  * @see #installEditPolicy(Object, EditPolicy)
  */
 void removeEditPolicy(Object role);
+
+/**
+ * Called when the EditPart is being permanently removed from its {@link EditPartViewer}.
+ * This indicates that the EditPart will no longer be in the Viewer, and therefore should
+ * remove itself from the Viewer.  This method is <EM>not</EM> guaranteed to be called.
+ * This method is the inverse of {@link #addNotify()}
+ */
+void removeNotify();
+
 
 /**
  * <img src="doc-files/black.gif"/>Set the <i>focus<i> property to reflect the value in
