@@ -17,6 +17,7 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.graphics.Cursor;
 
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.geometry.*;
 
 import org.eclipse.gef.*;
@@ -432,22 +433,14 @@ protected void repairStartLocation() {
 	IFigure figure = ((GraphicalEditPart)getSourceEditPart()).getFigure();
 	PrecisionPoint newStart = (PrecisionPoint)sourceRelativeStartPoint.getCopy();
 	figure.translateToAbsolute(newStart);
-	Dimension delta = new Dimension(newStart.x - getStartLocation().x,
-									newStart.y - getStartLocation().y);
+	Point delta = new Point(newStart.x - getStartLocation().x,
+	                        newStart.y - getStartLocation().y);
 	setStartLocation(newStart);
 	// sourceRectangle and compoundSrcRect need to be updated as well when auto-scrolling
-	if (sourceRectangle != null) {
-		// Can't call setLocation(...) because sourceRectangle is a PrecisionRectangle
-		Point newLocation = sourceRectangle.getLocation().getTranslated(delta);
-		sourceRectangle.setX(newLocation.x);
-		sourceRectangle.setY(newLocation.y);
-	}
-	if (compoundSrcRect != null) {
-		// Can't call setLocation(...) because compoundSrcRect is a PrecisionRectangle
-		Point newLocation = compoundSrcRect.getLocation().getTranslated(delta);
-		compoundSrcRect.setX(newLocation.x);
-		compoundSrcRect.setY(newLocation.y);
-	}
+	if (sourceRectangle != null)
+		sourceRectangle.translate(delta);
+	if (compoundSrcRect != null)
+		compoundSrcRect.translate(delta);
 }
 
 protected void setAutoexposeHelper(AutoexposeHelper helper) {
@@ -558,11 +551,15 @@ protected void updateTargetRequest() {
 	
 	request.setMoveDelta(new Point(delta.width, delta.height));
 	request.getExtendedData().clear();
+	request.getExtendedData().put(SnapToHelper.CTRL_KEY, 
+			new Boolean(getCurrentInput().isControlKeyDown()));
+	request.getExtendedData().put(SnapToHelper.SHIFT_KEY, 
+			new Boolean(getCurrentInput().isShiftKeyDown()));
 		
 	if (snapToHelper != null && !getCurrentInput().isAltKeyDown())
 		snapToHelper.snapMoveRequest(request, sourceRectangle.getPreciseCopy(), 
 				compoundSrcRect.getPreciseCopy(), 
-				SnapToHelper.SNAP_HORIZONTAL | SnapToHelper.SNAP_VERTICAL);
+				PositionConstants.NORTH_SOUTH | PositionConstants.EAST_WEST);
 
 	request.setLocation(getLocation());
 	request.setType(getCommandName());
