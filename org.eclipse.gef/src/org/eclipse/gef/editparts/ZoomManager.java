@@ -18,9 +18,9 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.jface.util.Assert;
 
 import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.ScalableFigure;
-import org.eclipse.draw2d.Viewport;
 import org.eclipse.draw2d.geometry.*;
+
+import org.eclipse.gef.internal.GEFMessages;
 
 /**
  * Manage the primary zoom function in a graphical viewer.  This class is used by the zoom
@@ -54,13 +54,16 @@ private Viewport viewport;
 private double zoom = 1.0;
 private int zoomAnimationStyle = ANIMATE_NEVER;
 private double[] zoomLevels = { .5, .75, 1.0, 1.5, 2.0, 2.5, 3, 4 };
+private String FIT_PAGE = GEFMessages.FitPageAction_Label;
+private String FIT_WIDTH = GEFMessages.FitWidthAction_Label;
+private String FIT_HEIGHT = GEFMessages.FitHeightAction_Label;
 
 DecimalFormat format = new DecimalFormat("####%"); //$NON-NLS-1$
 
 /**
- * Creates a new ZoomManager
+ * Creates a new ZoomManager.
  * @param pane The ScalableFigure associated with this ZoomManager
- * @param viewport The Viewport assoicated with this viewport
+ * @param viewport The Viewport assoicated with this ZoomManager
  */
 public ZoomManager(ScalableFigure pane, Viewport viewport) {
 	this.pane = pane;
@@ -118,6 +121,26 @@ protected void fireZoomChanged() {
 		((ZoomListener)iter.next()).zoomChanged(zoom);
 }
 
+protected double getFitHeightZoomLevel() {
+	Dimension viewportSize = getViewport().getSize();
+	Rectangle figureBounds = getScalableFigure().getBounds();
+	return Math.min((double)viewportSize.height / (double)figureBounds.height * zoom, 1.0);
+}
+
+protected double getFitPageZoomLevel() {
+	Dimension viewportSize = getViewport().getSize();
+	Rectangle figureBounds = getScalableFigure().getBounds();
+	double widthScale = (double)viewportSize.width / (double)figureBounds.width * zoom;
+	double heightScale = (double)viewportSize.height / (double)figureBounds.height * zoom;
+	return Math.min(Math.min(widthScale, heightScale), 1.0);
+}
+
+protected double getFitWidthZoomLevel() {
+	Dimension viewportSize = getViewport().getSize();
+	Rectangle figureBounds = getScalableFigure().getBounds();
+	return Math.min((double)viewportSize.width / (double)figureBounds.width * zoom, 1.0);
+}
+
 /**
  * Returns the maxZoom.
  * @return double
@@ -131,7 +154,7 @@ public double getMaxZoom() {
  * @return double
  */
 public double getMinZoom() {
-	return getZoomLevels()[0];
+	return Math.min(getZoomLevels()[0], getFitPageZoomLevel());
 }
 
 /**
@@ -225,10 +248,13 @@ public double[] getZoomLevels() {
  * Returns the list of zoom levels as Strings in percent notation
  * @return List The list of zoom levels */
 public String[] getZoomLevelsAsText() {
-	String[] zoomLevelStrings = new String[zoomLevels.length];
+	String[] zoomLevelStrings = new String[zoomLevels.length + 3];
 	for (int i = 0; i < zoomLevels.length; i++) {
 		zoomLevelStrings[i] = format.format(zoomLevels[i]);
 	}
+	zoomLevelStrings[zoomLevels.length] = FIT_PAGE;
+	zoomLevelStrings[zoomLevels.length + 1] = FIT_WIDTH;
+	zoomLevelStrings[zoomLevels.length + 2] = FIT_HEIGHT;
 	return zoomLevelStrings;
 }
 
@@ -302,15 +328,39 @@ public void setZoomAnimationStyle(int style) {
  * Sets zoom to the passed string. The string must be composed of numeric characters only
  * with the exception of a decimal point and a '%' as the last character.
  * @param zoomString The new zoom level */
-public void setZoomAsText(String zoomString) {		
-	try {
-		//Trim off the '%'
-		if (zoomString.charAt(zoomString.length() - 1) == '%')
-			zoomString = zoomString.substring(0, zoomString.length() - 1);
-		double newZoom = Double.parseDouble(zoomString) / 100;
-		setZoom(newZoom / multiplier);
-	} catch (Exception e) {
-		Display.getCurrent().beep();
+public void setZoomAsText(String zoomString) {
+	/* If the viewport's contents' bounds are smaller than the viewport's bounds, the
+	 * contents figure will stretch to fit the viewport, which throws the new zoom
+	 * calculations off.  To correct this, I'm setting the zoom to 1.0. 
+	 */
+	if (zoomString.equals(FIT_HEIGHT)) {
+		setZoom(1.0 / multiplier);
+		setZoom(getFitHeightZoomLevel() / multiplier);
+		getViewport().getUpdateManager().performUpdate();
+		setZoom(1.0 / multiplier);
+		setZoom(getFitHeightZoomLevel() / multiplier);
+	} else if (zoomString.equals(FIT_PAGE)) {
+		setZoom(1.0 / multiplier);
+		setZoom(getFitPageZoomLevel() / multiplier);
+		getViewport().getUpdateManager().performUpdate();
+		setZoom(1.0 / multiplier);
+		setZoom(getFitPageZoomLevel() / multiplier);
+	} else if (zoomString.equals(FIT_WIDTH)) {
+		setZoom(1.0 / multiplier);
+		setZoom(getFitWidthZoomLevel() / multiplier);
+		getViewport().getUpdateManager().performUpdate();
+		setZoom(1.0 / multiplier);
+		setZoom(getFitWidthZoomLevel() / multiplier);
+	} else {	
+		try {
+			//Trim off the '%'
+			if (zoomString.charAt(zoomString.length() - 1) == '%')
+				zoomString = zoomString.substring(0, zoomString.length() - 1);
+			double newZoom = Double.parseDouble(zoomString) / 100;
+			setZoom(newZoom / multiplier);
+		} catch (Exception e) {
+			Display.getCurrent().beep();
+		}
 	}
 }
 
