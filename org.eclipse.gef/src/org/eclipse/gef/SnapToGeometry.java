@@ -13,7 +13,7 @@ import org.eclipse.gef.requests.CreateRequest;
 /**
  * @author Randy Hudson
  */
-public class SnapToGeometry implements SnapToStrategy {
+public class SnapToGeometry implements SnapToHelper {
 	
 public static final String PROPERTY_SNAP_ENABLED = "SnapToGeometry - $Property"; //$NON-NLS-1$
 	
@@ -130,10 +130,10 @@ public int snapCreateRequest(CreateRequest request, PrecisionRectangle baseRect,
 }
 
 /**
- * @see SnapToStrategy#snapMoveRequest(ChangeBoundsRequest, PrecisionRectangle)
+ * @see SnapToHelper#snapMoveRequest(ChangeBoundsRequest, PrecisionRectangle)
  */
 public int snapMoveRequest(ChangeBoundsRequest request,	PrecisionRectangle baseRect,
-                           PrecisionRectangle selectionRect, int snapOrientation) {
+		PrecisionRectangle selectionRect, int snapOrientation) {
 	populateRowsAndCols(request.getEditParts());
 	PrecisionPoint move = new PrecisionPoint(request.getMoveDelta());
 	IFigure fig = container.getContentPane();
@@ -176,7 +176,7 @@ public int snapMoveRequest(ChangeBoundsRequest request,	PrecisionRectangle baseR
 }
 
 /**
- * @see SnapToStrategy#snapResizeRequest(ChangeBoundsRequest, PrecisionRectangle)
+ * @see SnapToHelper#snapResizeRequest(ChangeBoundsRequest, PrecisionRectangle)
  */
 public int snapResizeRequest(ChangeBoundsRequest request, PrecisionRectangle baseRect,
                              int snapOrientation) {

@@ -10,11 +10,11 @@ import org.eclipse.gef.requests.CreateRequest;
 /**
  * @author Randy Hudson
  */
-public class CompoundSnapToStrategy implements SnapToStrategy {
+public class CompoundSnapToStrategy implements SnapToHelper {
 
-private SnapToStrategy[] delegates;
+private SnapToHelper[] delegates;
 
-public CompoundSnapToStrategy(SnapToStrategy delegates[]) {
+public CompoundSnapToStrategy(SnapToHelper delegates[]) {
 	Assert.isTrue(delegates.length != 0);
 	this.delegates = delegates;
 }
@@ -33,7 +33,7 @@ public int snapCreateRequest(CreateRequest request, PrecisionRectangle baseRect,
 }
 
 /**
- * @see SnapToStrategy#snapMoveRequest(ChangeBoundsRequest, PrecisionRectangle)
+ * @see SnapToHelper#snapMoveRequest(ChangeBoundsRequest, PrecisionRectangle)
  */
 public int snapMoveRequest(ChangeBoundsRequest request,	PrecisionRectangle baseRect,
                            PrecisionRectangle selectionRect, int snapOrientation) {
@@ -50,7 +50,7 @@ public int snapMoveRequest(ChangeBoundsRequest request,	PrecisionRectangle baseR
 }
 
 /**
- * @see org.eclipse.gef.SnapToStrategy#snapResizeRequest(org.eclipse.gef.requests.ChangeBoundsRequest,
+ * @see org.eclipse.gef.SnapToHelper#snapResizeRequest(org.eclipse.gef.requests.ChangeBoundsRequest,
  * org.eclipse.draw2d.geometry.PrecisionRectangle)
  */
 public int snapResizeRequest(ChangeBoundsRequest req, PrecisionRectangle baseRect,

@@ -8,7 +8,7 @@ import org.eclipse.gef.requests.CreateRequest;
 /**
  * @author Randy Hudson
  */
-public interface SnapToStrategy {
+public interface SnapToHelper {
 
 public static final int SNAP_HORIZONTAL = 1;
 public static final int SNAP_VERTICAL = 2;

@@ -10,7 +10,7 @@ import org.eclipse.gef.requests.CreateRequest;
 /**
  * @author Randy Hudson
  */
-public class SnapToGrid implements SnapToStrategy {
+public class SnapToGrid implements SnapToHelper {
 	
 public static final String PROPERTY_GRID_ENABLED = "SnapToGrid + $Property"; //$NON-NLS-1$
 public static final String PROPERTY_GRID_SPACING = "SnapToGrid - Grid Spacing"; //$NON-NLS-1$

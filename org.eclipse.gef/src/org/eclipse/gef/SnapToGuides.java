@@ -23,7 +23,7 @@ import org.eclipse.gef.rulers.*;
  * @author Randy Hudson
  */
 public class SnapToGuides 
-	implements SnapToStrategy 
+	implements SnapToHelper 
 {
 
 public static final String PROPERTY_VERTICAL_GUIDE = "vertical guide"; //$NON-NLS-1$
@@ -105,7 +105,7 @@ public int snapCreateRequest(CreateRequest request, PrecisionRectangle baseRect,
 }
 
 /**
- * @see SnapToStrategy#snapMoveRequest(ChangeBoundsRequest, PrecisionRectangle)
+ * @see SnapToHelper#snapMoveRequest(ChangeBoundsRequest, PrecisionRectangle)
  */
 public int snapMoveRequest(ChangeBoundsRequest request,	PrecisionRectangle baseRect,
                            PrecisionRectangle selectionRect, int snapOrientation) {
@@ -151,7 +151,7 @@ public int snapMoveRequest(ChangeBoundsRequest request,	PrecisionRectangle baseR
 }
 
 /**
- * @see SnapToStrategy#snapResizeRequest(ChangeBoundsRequest, PrecisionRectangle)
+ * @see SnapToHelper#snapResizeRequest(ChangeBoundsRequest, PrecisionRectangle)
  */
 public int snapResizeRequest(ChangeBoundsRequest request, PrecisionRectangle baseRect,
                              int snapOrientation) {
