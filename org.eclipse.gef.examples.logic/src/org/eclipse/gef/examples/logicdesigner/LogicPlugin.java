@@ -51,13 +51,13 @@ static private List createCategories(){
 }
 
 static private PaletteContainer createComplexPartsCategory(){
-	DefaultPaletteCategory category = new DefaultPaletteCategory(
+	PaletteCategory category = new PaletteCategory(
 		LogicMessages.LogicPlugin_Category_ComplexParts_Label,
 		new Image(null,Circuit.class.getResourceAsStream("icons/can.gif")));//$NON-NLS-1$
 
 	List entries = new ArrayList();
 	
-	TemplateEntry template = new DefaultTemplateEntry(
+	PaletteTemplateEntry template = new PaletteTemplateEntry(
 			TEMPLATE_HALF_ADDER,
 			LogicMessages.LogicPlugin_Tool_CreationTool_HalfAdder_Label,
 			LogicMessages.LogicPlugin_Tool_CreationTool_HalfAdder_Description,
@@ -66,7 +66,7 @@ static private PaletteContainer createComplexPartsCategory(){
 		);
 	entries.add(template);
 
-	template = new DefaultTemplateEntry(
+	template = new PaletteTemplateEntry(
 			TEMPLATE_FULL_ADDER,
 			LogicMessages.LogicPlugin_Tool_CreationTool_FullAdder_Label,
 			LogicMessages.LogicPlugin_Tool_CreationTool_FullAdder_Description,
@@ -77,7 +77,7 @@ static private PaletteContainer createComplexPartsCategory(){
 
 /*
 	entries.add(
-		new DefaultPaletteToolEntry(
+		new PaletteToolEntry(
 			new CreationTool(LogicDiagramFactory.getHalfAdderFactory()),
 			LogicMessages.LogicPlugin_Tool_CreationTool_HalfAdder_Label,
 			LogicMessages.LogicPlugin_Tool_CreationTool_HalfAdder_Description,
@@ -85,7 +85,7 @@ static private PaletteContainer createComplexPartsCategory(){
 			new Image(null,Circuit.class.getResourceAsStream("icons/halfadder.gif")))//$NON-NLS-1$
 		);
 	entries.add(
-		new DefaultPaletteToolEntry(
+		new PaletteToolEntry(
 			new CreationTool(LogicDiagramFactory.getFullAdderFactory()),
 			LogicMessages.LogicPlugin_Tool_CreationTool_FullAdder_Label,
 			LogicMessages.LogicPlugin_Tool_CreationTool_FullAdder_Description,
@@ -100,22 +100,22 @@ static private PaletteContainer createComplexPartsCategory(){
 
 static private PaletteContainer createComponentsCategory(){
 
-	DefaultPaletteCategory category = new DefaultPaletteCategory(
+	PaletteCategory category = new PaletteCategory(
 		LogicMessages.LogicPlugin_Category_Components_Label,
 		new Image(null,Circuit.class.getResourceAsStream("icons/comp.gif")));//$NON-NLS-1$
 
 	List entries = new ArrayList();
 	
-	TemplateEntry template = new DefaultTemplateEntry(
+	PaletteTemplateEntry template = new PaletteTemplateEntry(
 			TEMPLATE_LOGIC_LABEL,
 			LogicMessages.LogicPlugin_Tool_CreationTool_LogicLabel,
 			LogicMessages.LogicPlugin_Tool_CreationTool_LogicLabel,
-			new Image(null,Circuit.class.getResourceAsStream("icons/label.gif")), //$NON-NLS-1$
+			new Image(null,Circuit.class.getResourceAsStream("icons/label16.gif")), //$NON-NLS-1$
 			new Image(null,Circuit.class.getResourceAsStream("icons/label.gif"))//$NON-NLS-1$
 		);
 	entries.add(template);
 
-	template = new DefaultTemplateEntry(
+	template = new PaletteTemplateEntry(
 			TEMPLATE_FLOW_CONTAINER,
 			LogicMessages.LogicPlugin_Tool_CreationTool_FlowContainer_Label,
 			LogicMessages.LogicPlugin_Tool_CreationTool_FlowContainer_Description,
@@ -126,7 +126,7 @@ static private PaletteContainer createComponentsCategory(){
 
 //	entries.add( new PaletteSeparator(PaletteSeparator.NOT_A_MARKER) );
 	
-	template = new DefaultTemplateEntry(
+	template = new PaletteTemplateEntry(
 			TEMPLATE_LED,
 			LogicMessages.LogicPlugin_Tool_CreationTool_LED_Label,
 			LogicMessages.LogicPlugin_Tool_CreationTool_LED_Description,
@@ -135,7 +135,7 @@ static private PaletteContainer createComponentsCategory(){
 		);
 	entries.add(template);
 
-	template = new DefaultTemplateEntry(
+	template = new PaletteTemplateEntry(
 			TEMPLATE_CIRCUIT,
 			LogicMessages.LogicPlugin_Tool_CreationTool_Circuit_Label,
 			LogicMessages.LogicPlugin_Tool_CreationTool_Circuit_Description,
@@ -144,7 +144,7 @@ static private PaletteContainer createComponentsCategory(){
 		);
 	entries.add(template);
 
-	template = new DefaultTemplateEntry(
+	template = new PaletteTemplateEntry(
 			TEMPLATE_OR_GATE,
 			LogicMessages.LogicPlugin_Tool_CreationTool_ORGate_Label,
 			LogicMessages.LogicPlugin_Tool_CreationTool_ORGate_Description,
@@ -153,7 +153,7 @@ static private PaletteContainer createComponentsCategory(){
 		);
 	entries.add(template);
 
-	template = new DefaultTemplateEntry(
+	template = new PaletteTemplateEntry(
 			TEMPLATE_XOR_GATE,
 			LogicMessages.LogicPlugin_Tool_CreationTool_XORGate_Label,
 			LogicMessages.LogicPlugin_Tool_CreationTool_XORGate_Description,
@@ -162,7 +162,7 @@ static private PaletteContainer createComponentsCategory(){
 		);
 	entries.add(template);
 
-	template = new DefaultTemplateEntry(
+	template = new PaletteTemplateEntry(
 			TEMPLATE_AND_GATE,
 			LogicMessages.LogicPlugin_Tool_CreationTool_ANDGate_Label,
 			LogicMessages.LogicPlugin_Tool_CreationTool_ANDGate_Description,
@@ -171,26 +171,26 @@ static private PaletteContainer createComponentsCategory(){
 		);
 	entries.add(template);
 
-	template = new DefaultTemplateEntry(
+	template = new PaletteTemplateEntry(
 			TEMPLATE_LIVE_OUTPUT,
 			LogicMessages.LogicPlugin_Tool_CreationTool_LiveOutput_Label,
 			LogicMessages.LogicPlugin_Tool_CreationTool_LiveOutput_Description,
-			new Image(null,Circuit.class.getResourceAsStream("icons/live.gif")),//$NON-NLS-1$
-			null
+			new Image(null,Circuit.class.getResourceAsStream("icons/live16.gif")),//$NON-NLS-1$
+			new Image(null,Circuit.class.getResourceAsStream("icons/live.gif"))//$NON-NLS-1$
 		);
 	entries.add(template);
 
-	template = new DefaultTemplateEntry(
+	template = new PaletteTemplateEntry(
 			TEMPLATE_GROUND,
 			LogicMessages.LogicPlugin_Tool_CreationTool_Ground_Label,
 			LogicMessages.LogicPlugin_Tool_CreationTool_Ground_Description,
-			new Image(null,Circuit.class.getResourceAsStream("icons/ground.gif")),//$NON-NLS-1$
-			null
+			new Image(null,Circuit.class.getResourceAsStream("icons/ground16.gif")),//$NON-NLS-1$
+			new Image(null,Circuit.class.getResourceAsStream("icons/ground.gif"))//$NON-NLS-1$
 		);
 	entries.add(template);
 
 /*
-	PaletteToolEntry tool = new DefaultPaletteToolEntry(
+	PaletteToolEntry tool = new PaletteToolEntry(
 			new CreationTool(new CreateRequest.SimpleFactory(LogicLabel.class)),
 			LogicMessages.LogicPlugin_Tool_CreationTool_LogicLabel,
 			LogicMessages.LogicPlugin_Tool_CreationTool_LogicLabel,
@@ -199,7 +199,7 @@ static private PaletteContainer createComponentsCategory(){
 		);
 	entries.add(tool);
 
-	tool = new DefaultPaletteToolEntry(
+	tool = new PaletteToolEntry(
 			new CreationTool(new CreateRequest.SimpleFactory(LogicFlowContainer.class)),
 			LogicMessages.LogicPlugin_Tool_CreationTool_FlowContainer_Label,
 			LogicMessages.LogicPlugin_Tool_CreationTool_FlowContainer_Description,
@@ -208,7 +208,7 @@ static private PaletteContainer createComponentsCategory(){
 		);
 	entries.add(tool);
 	
-	tool = new DefaultPaletteToolEntry(
+	tool = new PaletteToolEntry(
 			new CreationTool(new CreateRequest.SimpleFactory(LED.class)),
 			LogicMessages.LogicPlugin_Tool_CreationTool_LED_Label,
 			LogicMessages.LogicPlugin_Tool_CreationTool_LED_Description,
@@ -217,7 +217,7 @@ static private PaletteContainer createComponentsCategory(){
 		);
 	entries.add(tool);
 
-	tool = new DefaultPaletteToolEntry(
+	tool = new PaletteToolEntry(
 			new CreationTool(new CreateRequest.SimpleFactory(Circuit.class)),
 			LogicMessages.LogicPlugin_Tool_CreationTool_Circuit_Label,
 			LogicMessages.LogicPlugin_Tool_CreationTool_Circuit_Description,
@@ -226,7 +226,7 @@ static private PaletteContainer createComponentsCategory(){
 		);
 	entries.add(tool);
 
-	tool = new DefaultPaletteToolEntry(
+	tool = new PaletteToolEntry(
 			new CreationTool(new CreateRequest.SimpleFactory(OrGate.class)),
 			LogicMessages.LogicPlugin_Tool_CreationTool_ORGate_Label,
 			LogicMessages.LogicPlugin_Tool_CreationTool_ORGate_Description,
@@ -235,7 +235,7 @@ static private PaletteContainer createComponentsCategory(){
 		);
 	entries.add(tool);
 	
-	tool = new DefaultPaletteToolEntry(
+	tool = new PaletteToolEntry(
 			new CreationTool(new CreateRequest.SimpleFactory(XORGate.class)),
 			LogicMessages.LogicPlugin_Tool_CreationTool_XORGate_Label,
 			LogicMessages.LogicPlugin_Tool_CreationTool_XORGate_Description,
@@ -244,7 +244,7 @@ static private PaletteContainer createComponentsCategory(){
 		);
 	entries.add(tool);
 
-	tool = new DefaultPaletteToolEntry(
+	tool = new PaletteToolEntry(
 			new CreationTool(new CreateRequest.SimpleFactory(AndGate.class)),
 			LogicMessages.LogicPlugin_Tool_CreationTool_ANDGate_Label,
 			LogicMessages.LogicPlugin_Tool_CreationTool_ANDGate_Description,
@@ -253,7 +253,7 @@ static private PaletteContainer createComponentsCategory(){
 		);
 	entries.add(tool);
 
-	tool = new DefaultPaletteToolEntry(
+	tool = new PaletteToolEntry(
 			new CreationTool(new CreateRequest.SimpleFactory(LiveOutput.class)),
 			LogicMessages.LogicPlugin_Tool_CreationTool_LiveOutput_Label,
 			LogicMessages.LogicPlugin_Tool_CreationTool_LiveOutput_Description,
@@ -262,7 +262,7 @@ static private PaletteContainer createComponentsCategory(){
 		);
 	entries.add(tool);
 
-	tool = new DefaultPaletteToolEntry(
+	tool = new PaletteToolEntry(
 			new CreationTool(new CreateRequest.SimpleFactory(GroundOutput.class)),
 			LogicMessages.LogicPlugin_Tool_CreationTool_Ground_Label,
 			LogicMessages.LogicPlugin_Tool_CreationTool_Ground_Description,
@@ -276,35 +276,36 @@ static private PaletteContainer createComponentsCategory(){
 }
 
 static private PaletteContainer createControlGroup(){
-	DefaultPaletteGroup controlGroup = new DefaultPaletteGroup(
+	PaletteGroup controlGroup = new PaletteGroup(
 		LogicMessages.LogicPlugin_Category_ControlGroup_Label);
 	controlGroup.setType(PaletteContainer.PALETTE_TYPE_GROUP);
 
 	List entries = new ArrayList();
 
 	PaletteToolEntry tool =
-		new DefaultPaletteToolEntry(
+		new PaletteToolEntry(
 			new SelectionTool(),
 			LogicMessages.LogicPlugin_Tool_SelectionTool_SelectionTool_Label,
 			LogicMessages.LogicPlugin_Tool_SelectionTool_SelectionTool_Description,
 			GEFPlugin.getImage(SharedImageConstants.ICON_TOOL_ARROW_16),
 			GEFPlugin.getImage(SharedImageConstants.ICON_TOOL_ARROW_32)
 		);
-	((DefaultPaletteEntry)tool).setDefault(true);
+	((PaletteEntry)tool).setDefault(true);
 //	entries.add(tool);
 
-	tool = new DefaultPaletteToolEntry(
+	tool = new PaletteToolEntry(
 			new MarqueeSelectionTool(),
 			LogicMessages.LogicPlugin_Tool_MarqueeSelectionTool_MarqueeSelectionTool_Label,
 			LogicMessages.LogicPlugin_Tool_MarqueeSelectionTool_MarqueeSelectionTool_Description,
-			GEFPlugin.getImage(SharedImageConstants.ICON_TOOL_MARQUEE_16),
-			GEFPlugin.getImage(SharedImageConstants.ICON_TOOL_MARQUEE_16)
+//			GEFPlugin.getImage(SharedImageConstants.ICON_TOOL_MARQUEE_16),
+			new Image(null,Circuit.class.getResourceAsStream("icons/marquee16.gif")), //$NON-NLS-1$
+			new Image(null,Circuit.class.getResourceAsStream("icons/marquee.gif")) //$NON-NLS-1$
 		);
 	entries.add(tool);
 	
 //	entries.add( new PaletteSeparator("org.eclipse.gef.examples.logicdesigner.logicplugin.sep2") ); //$NON-NLS-1$
 
-	tool = new DefaultPaletteToolEntry(
+	tool = new PaletteToolEntry(
 			new ConnectionCreationTool(),
 			LogicMessages.LogicPlugin_Tool_ConnectionCreationTool_ConnectionCreationTool_Label,
 			LogicMessages.LogicPlugin_Tool_ConnectionCreationTool_ConnectionCreationTool_Description,
@@ -319,7 +320,7 @@ static private PaletteContainer createControlGroup(){
 }
 
 static PaletteRoot createPalette() {
-	DefaultPaletteRoot logicPalette = new DefaultPaletteRoot(createCategories());
+	PaletteRoot logicPalette = new PaletteRoot(createCategories());
 	return logicPalette;
 }
 

@@ -1,6 +1,6 @@
 package org.eclipse.gef.ui.palette.customize;
 
-import org.eclipse.gef.palette.DefaultPaletteCategory;
+import org.eclipse.gef.palette.PaletteCategory;
 import org.eclipse.gef.palette.PaletteEntry;
 import org.eclipse.gef.ui.palette.PaletteMessages;
 import org.eclipse.swt.graphics.Image;
@@ -9,7 +9,7 @@ import org.eclipse.ui.internal.IWorkbenchGraphicConstants;
 import org.eclipse.ui.internal.WorkbenchImages;
 
 /**
- * Factory to create {@link org.eclipse.gef.palette.DefaultPaletteCategory categories}
+ * Factory to create {@link org.eclipse.gef.palette.PaletteCategory categories}
  * 
  * @author Pratik Shah
  */
@@ -32,8 +32,8 @@ public PaletteCategoryFactory() {
 protected PaletteEntry createNewEntry(Shell shell) {
 	Image img = new Image(shell.getDisplay(), 
 	                      getImageDescriptor().getImageData());
-	DefaultPaletteCategory category =
-				new DefaultPaletteCategory(PaletteMessages.NEW_CATEGORY_LABEL, img);
+	PaletteCategory category =
+				new PaletteCategory(PaletteMessages.NEW_CATEGORY_LABEL, img);
 	return category;
 }
 

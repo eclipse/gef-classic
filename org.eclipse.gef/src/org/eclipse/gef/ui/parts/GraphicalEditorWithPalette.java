@@ -36,9 +36,9 @@ private void createPaletteViewer(Composite parent) {
 
 public void createPartControl(Composite parent) {
 	Splitter splitter = new Splitter(parent, SWT.HORIZONTAL);
-	createPaletteViewer(splitter);
 	createGraphicalViewer(splitter);
-	splitter.setWeights(new int [] {1,6});
+	createPaletteViewer(splitter);
+	splitter.setWeights(new int [] {6, 1});
 }
 
 public void dispose(){

@@ -13,15 +13,15 @@ import org.eclipse.draw2d.ColorConstants;
 
 class Splitter extends Composite {
 
-	public int SASH_WIDTH = 3;
+public int SASH_WIDTH = 6;
 
-	private static final int DRAG_MINIMUM = 20;
-	
-	private int orientation = SWT.HORIZONTAL;
-	private Sash[] sashes = new Sash[0];
-	private Control[] controls = new Control[0];
-	private Control maxControl = null;
-	private Listener sashListener;
+private static final int DRAG_MINIMUM = 25;
+
+private int orientation = SWT.HORIZONTAL;
+private Sash[] sashes = new Sash[0];
+private Control[] controls = new Control[0];
+private Control maxControl = null;
+private Listener sashListener;
 
 class SashPainter implements Listener {
 	public void handleEvent(Event e) {
@@ -31,7 +31,7 @@ class SashPainter implements Listener {
 
 public Splitter(Composite parent, int style) {
 	super(parent, checkStyle(style));
-	if ((style & SWT.VERTICAL) != 0){
+	if ((style & SWT.VERTICAL) != 0) {
 		orientation = SWT.VERTICAL;
 	}
 	
@@ -64,7 +64,7 @@ public Point computeSize (int wHint, int hHint, boolean changed) {
 		height += (controls.length - 1) * SASH_WIDTH;
 	} else {
 		height = hHint;
-		width += controls.length *SASH_WIDTH;
+		width += controls.length * SASH_WIDTH;
 	}
 	for (int i = 0; i < controls.length; i++) {
 		if (vertical) {
@@ -90,7 +90,7 @@ public int getOrientation() {
 /**
  * Answer the control that currently is maximized in the SashForm.  This value may be null.
  */
-public Control getMaximizedControl(){
+public Control getMaximizedControl() {
 	return this.maxControl;
 }
 /**
@@ -143,7 +143,7 @@ public void layout(boolean changed) {
 	controls = newControls;
 	
 	if (maxControl != null && !maxControl.isDisposed()) {
-		for (int i= 0; i < controls.length; i++){
+		for (int i = 0; i < controls.length; i++) {
 			if (controls[i] != maxControl) {
 				controls[i].setBounds(-200, -200, 0, 0);
 			} else {
@@ -160,7 +160,7 @@ public void layout(boolean changed) {
 		int sashOrientation = (orientation == SWT.HORIZONTAL) ? SWT.VERTICAL : SWT.HORIZONTAL;
 		for (int i = sashes.length; i < newSashes.length; i++) {
 			newSashes[i] = new Sash(this, sashOrientation);
-			newSashes[i].setBackground(ColorConstants.buttonLightest);
+			newSashes[i].setBackground(ColorConstants.button);
 			newSashes[i].addListener(SWT.Paint, new SashPainter());
 			newSashes[i].addListener(SWT.Selection, sashListener);
 		}
@@ -244,13 +244,13 @@ public void layout(boolean changed) {
 }
 
 
-void paint(Sash sash, GC gc){
+void paint(Sash sash, GC gc) {
 	Point size = sash.getSize();
-	gc.setForeground(ColorConstants.buttonDarker);
-	if(getOrientation()==SWT.HORIZONTAL)
-		gc.drawLine(SASH_WIDTH-1,0,SASH_WIDTH-1,size.y);
-	else
-		gc.drawLine(0,SASH_WIDTH-1,size.x,SASH_WIDTH-1);
+	gc.setForeground(ColorConstants.buttonDarkest);
+	gc.drawLine(0, 0, 0, size.y);
+	gc.drawLine(SASH_WIDTH - 1, 0, SASH_WIDTH - 1, size.y);
+	gc.setForeground(ColorConstants.buttonLightest);
+	gc.drawLine(1, 0, 1, size.y);
 }
 
 private void onDragSash(Event event) {
@@ -258,16 +258,18 @@ private void onDragSash(Event event) {
 		// constrain feedback
 		Rectangle area = getClientArea();
 		if (orientation == SWT.HORIZONTAL) {
-			event.x = Math.min(Math.max(DRAG_MINIMUM, event.x), area.width - DRAG_MINIMUM);
+			event.x = Math.min(Math.max(DRAG_MINIMUM, event.x), area.width - DRAG_MINIMUM 
+							- SASH_WIDTH);
 		} else {
-			event.y = Math.min(Math.max(DRAG_MINIMUM, event.y), area.height - DRAG_MINIMUM);
+			event.y = Math.min(Math.max(DRAG_MINIMUM, event.y), area.height - DRAG_MINIMUM
+							- SASH_WIDTH);
 		}
 		return;
 	}
 
 	Sash sash = (Sash)event.widget;
 	int sashIndex = -1;
-	for (int i= 0; i < sashes.length; i++) {
+	for (int i = 0; i < sashes.length; i++) {
 		if (sashes[i] == sash) {
 			sashIndex = i;
 			break;
@@ -338,19 +340,19 @@ public void setLayout (Layout layout) {
  * if the value of control is null, the SashForm will minimize all controls and return to
  * the default layout where all controls are laid out separated by sashes.
  */
-public void setMaximizedControl(Control control){
+public void setMaximizedControl(Control control) {
 	if (control == null) {
 		if (maxControl != null) {
 			this.maxControl = null;
 			layout();
-			for (int i= 0; i < sashes.length; i++){
+			for (int i = 0; i < sashes.length; i++) {
 				sashes[i].setVisible(true);
 			}
 		}
 		return;
 	}
 	
-	for (int i= 0; i < sashes.length; i++){
+	for (int i = 0; i < sashes.length; i++) {
 		sashes[i].setVisible(false);
 	}
 	maxControl = control;

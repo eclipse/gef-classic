@@ -7,13 +7,22 @@ package org.eclipse.gef.ui.palette;
  */
 
 import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.*;
 import org.eclipse.gef.*;
 import org.eclipse.gef.editparts.ViewportExposeHelper;
 import org.eclipse.gef.palette.PaletteContainer;
+
+import org.eclipse.gef.internal.Internal;
+
+import org.eclipse.jface.resource.ImageDescriptor;
+
 import org.eclipse.swt.accessibility.*;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 
 public class CategoryEditPart 
 	extends PaletteEditPart
@@ -21,21 +30,19 @@ public class CategoryEditPart
 
 private ScrollPane scrollpane = null;
 private Toggle collapseToggle = null;
-private Orientable arrow = null;
 private Label categoryLabel = null;
+private int cachedLayout = -1;
 
-private final static Border BORDER_TITLE_MARGIN = new MarginBorder(2,5,2,2);
-private final static Color COLOR_TITLE_BACKGROUND = 
-	FigureUtilities.mixColors(ColorConstants.button, ColorConstants.white);
+private static Border SCROLL_PANE_BORDER = null;
 
-public CategoryEditPart(PaletteContainer category){
+public CategoryEditPart(PaletteContainer category) {
 	super(category);
 }
 
-public void activate(){
+public void activate() {
 	super.activate();
-	
-	final Label tipLabel = new Label(categoryLabel.getText(),categoryLabel.getIcon());	
+	final Label tipLabel =
+		new Label(categoryLabel.getText(), categoryLabel.getIcon());
 	final Control ctrl = getViewer().getControl();
 	
 	tipLabel.setOpaque(true);
@@ -45,19 +52,33 @@ public void activate(){
 	
 	collapseToggle.addMouseMotionListener(new MouseMotionListener.Stub(){
 		private EditPartTipHelper tipHelper;
-		public void mouseMoved(MouseEvent e){
+		public void mouseMoved(MouseEvent e) {
 			Rectangle labelBounds = categoryLabel.getBounds();
-			if(categoryLabel.isTextTruncated() && labelBounds.contains(e.x,e.y)){
-				if(tipHelper == null){
+			if (categoryLabel.isTextTruncated()
+				&& labelBounds.contains(e.x, e.y)) {
+				if (tipHelper == null) {
 					tipHelper = new EditPartTipHelper(ctrl);
 					Point labelLoc = categoryLabel.getLocation();
-					org.eclipse.swt.graphics.Point absolute;
-					absolute = ctrl.toDisplay(
-						new org.eclipse.swt.graphics.Point(labelLoc.x, labelLoc.y));
-					// Correct for the border on the tipLabel
-					tipHelper.displayToolTipAt(tipLabel, absolute.x-4, absolute.y-4);
-				}
-				else
+					org.eclipse.swt.graphics.Point absolute = ctrl.toDisplay(
+							new org.eclipse.swt.graphics.Point(labelLoc.x, labelLoc.y));
+					
+					int shiftX = 0;
+					int shiftY = 0;
+					Display display = Display.getCurrent();
+					org.eclipse.swt.graphics.Rectangle area = display.getClientArea();
+					org.eclipse.swt.graphics.Point end = 
+							new org.eclipse.swt.graphics.Point(
+											absolute.x + tipLabel.getBounds().width,
+											absolute.y + tipLabel.getBounds().height);
+					if (!area.contains(end)) {
+						shiftX = end.x - (area.x + area.width);
+						shiftY = end.y - (area.y + area.height);
+						shiftX = shiftX < 0 ? 0 : shiftX;
+						shiftY = shiftY < 0 ? 0 : shiftY;
+					}
+					tipHelper.displayToolTipAt(tipLabel, absolute.x - 4 - shiftX, 
+					                                     absolute.y - 4 - shiftY);
+				} else
 					tipHelper = null;	
 			}
 		}
@@ -70,8 +91,8 @@ public void activate(){
 	});
 
 	tipLabel.addMouseListener(new MouseListener.Stub(){
-		public void mousePressed(MouseEvent e){
-			if(!collapseToggle.isSelected())
+		public void mousePressed(MouseEvent e) {
+			if (!collapseToggle.isSelected())
 				collapseToggle.setSelected(true);
 			else
 				collapseToggle.setSelected(false);
@@ -79,60 +100,90 @@ public void activate(){
 	}); 			
 }
 
-private Figure createCollapseLabel(){
+/**
+ * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#addChildVisual(EditPart, int)
+ */
+protected void addChildVisual(EditPart childEditPart, int index) {
+	super.addChildVisual(childEditPart, index);
+}
+
+protected Figure createCollapseLabel() {
 	final Figure figure = new Figure();
 	figure.setForegroundColor(ColorConstants.black);
 	ToolbarLayout layout = new ToolbarLayout(ToolbarLayout.HORIZONTAL);
 	layout.setSpacing(2);
 	layout.setMinorAlignment(ToolbarLayout.ALIGN_CENTER);
 	figure.setLayoutManager(layout);
-	figure.add(arrow = getArrowRight());
 	categoryLabel = new Label();
 	categoryLabel.setLabelAlignment(Label.LEFT);
 	figure.add(categoryLabel);
 	return figure;
 }
 
-private Toggle createCollapseToggle(){
+protected Toggle createCollapseToggle() {
 	Toggle toggle = new Toggle(createCollapseLabel());
-	toggle.setBackgroundColor(COLOR_TITLE_BACKGROUND);
 	toggle.setOpaque(true);
 	toggle.setSelected(true);
 	toggle.addChangeListener(new ChangeListener(){
-		public void handleStateChanged(ChangeEvent event){
-			if(event.getPropertyName().equals(ButtonModel.SELECTED_PROPERTY)){
+		public void handleStateChanged(ChangeEvent event) {
+			if (event
+				.getPropertyName()
+				.equals(ButtonModel.SELECTED_PROPERTY)) {
 				refreshVisuals(true);
 			}
 		}
 	});
-	toggle.setBorder(BORDER_TITLE_MARGIN);
 	return toggle;
 }
 
-public IFigure createFigure(){
+public IFigure createFigure() {
 	AnimatableFigure mainFigure = new AnimatableFigure();
-	mainFigure.setBackgroundColor(ColorConstants.listBackground);
-	mainFigure.setForegroundColor(ColorConstants.listForeground);
 	mainFigure.setLayoutManager(new ToolbarLayout());
 
 	collapseToggle = createCollapseToggle();
 	scrollpane = new ScrollPane();
 	scrollpane.getViewport().setContentsTracksWidth(true);
-	scrollpane.setMinimumSize(new Dimension(0,0));
+	scrollpane.setMinimumSize(new Dimension(0, 0));
 	scrollpane.setHorizontalScrollBarVisibility(ScrollPane.NEVER);
 	scrollpane.setVerticalScrollBar(new PaletteScrollBar());
 	scrollpane.getVerticalScrollBar().setStepIncrement(22);
 	scrollpane.setLayoutManager(new OverlayScrollPaneLayout());
-//	scrollpane.setBorder(new SeparatorBorder());
+	if (SCROLL_PANE_BORDER == null) {
+		SeparatorBorder border = new SeparatorBorder();
+		border.setLocation(SeparatorBorder.BOTTOM);
+		SCROLL_PANE_BORDER = border;
+	}
+	scrollpane.setBorder(SCROLL_PANE_BORDER);
+	scrollpane.setBackgroundColor(ColorConstants.listBackground);
 	scrollpane.setView(new Figure());
-	scrollpane.getView().setLayoutManager(new ToolbarLayout());
-	mainFigure.add(collapseToggle);
+	scrollpane.getView().setBorder(MARGIN_BORDER);
+
+	Figure title = new Figure();
+	title.add(collapseToggle);
+	//@TODO:Pratik
+	// Change this image
+	Image pin = new Image(null, ImageDescriptor.createFromFile(Internal.class, 
+	                             "icons/pin_view.gif").getImageData()); //$NON-NLS-1$
+	ImageFigure imageFigure = new ImageFigure(pin);
+	ToggleButton pinFigure = new ToggleButton(imageFigure);
+	pinFigure.setBorder(new ButtonBorder(ButtonBorder.SCHEMES.TOOLBAR));
+	pinFigure.setRolloverEnabled(true);
+	pinFigure.setRequestFocusEnabled(false);
+	title.add(pinFigure);
+	BorderLayout layout = new BorderLayout();
+	layout.setHorizontalSpacing(3);
+	layout.setConstraint(pinFigure, BorderLayout.RIGHT);
+	layout.setConstraint(collapseToggle, BorderLayout.CENTER);
+	title.setLayoutManager(layout);
+	title.setBorder(BORDER_TITLE_MARGIN);
+
+	mainFigure.add(title);
 	mainFigure.add(scrollpane);
 	return mainFigure;
 }
 
 public Object getAdapter(Class key) {
-	if (key == ExposeHelper.class){
+	if (key == ExposeHelper.class) {
 		ViewportExposeHelper helper = new ViewportExposeHelper(this);
 		helper.setMinimumFrameCount(6);
 		return helper;
@@ -140,22 +191,12 @@ public Object getAdapter(Class key) {
 	return super.getAdapter(key);
 }
 
-private PaletteContainer getCategory(){
-	return (PaletteContainer)getModel();
-}
-
 public IFigure getContentPane() {
 	return scrollpane.getView();
 }
 
-public boolean isExpanded(){
+public boolean isExpanded() {
 	return collapseToggle.isSelected();
-}
-
-protected void addChildVisual(EditPart childEditPart, int index){
-	if((index>0) && (childEditPart instanceof GroupEditPart))
-		((GroupEditPart)childEditPart).getFigure().setBorder(new SeparatorBorder());
-	super.addChildVisual(childEditPart, index);
 }
 
 /**
@@ -164,11 +205,11 @@ protected void addChildVisual(EditPart childEditPart, int index){
 protected AccessibleEditPart createAccessible() {
 	return new AccessibleGraphicalEditPart(){
 		public void getDescription(AccessibleEvent e) {
-			e.result = getCategory().getDescription();
+			e.result = getPaletteEntry().getDescription();
 		}
 
 		public void getName(AccessibleEvent e) {
-			e.result = getCategory().getLabel();
+			e.result = getPaletteEntry().getLabel();
 		}
 
 		public void getRole(AccessibleControlEvent e) {
@@ -189,7 +230,7 @@ protected AccessibleEditPart createAccessible() {
  * Sometimes the scrollbar's minimum size if far more than
  * the compression desired, hence specific setting is required.
  */
-public void refreshChildren(){
+public void refreshChildren() {
 	super.refreshChildren();
 //	Dimension minSize = collapseToggle.getPreferredSize();
 //	minSize.height+=getFigure().getInsets().getHeight();
@@ -200,12 +241,12 @@ public void refreshChildren(){
 /**
  * Updates the title label.
  */
-private void refreshTitle() {
-	categoryLabel.setText(getCategory().getLabel());
-	categoryLabel.setIcon(getCategory().getSmallIcon());
+protected void refreshTitle() {
+	categoryLabel.setText(getPaletteEntry().getLabel());
+	categoryLabel.setIcon(getPaletteEntry().getSmallIcon());
 }
 
-protected void refreshVisuals(){
+protected void refreshVisuals() {
 	refreshVisuals (false);
 }
 
@@ -213,19 +254,18 @@ protected void refreshVisuals(){
  * Refreshes the Figure for this part.  If the animate flag is true, then the category's
  * Figure will slide open or closed.
  */
-protected void refreshVisuals(boolean animate){
+protected void refreshVisuals(boolean animate) {
 	refreshTitle();
-	if(collapseToggle.isSelected()){
+	updateLayout();
+	if (collapseToggle.isSelected()) {
 		scrollpane.setVisible(true);
-		arrow.setDirection(Orientable.SOUTH);
 		scrollpane.setVerticalScrollBarVisibility(ScrollPane.NEVER);
 		if (animate)
-			((AnimatableFigure)getFigure()).expand();
+			 ((AnimatableFigure) getFigure()).expand();
 		else
-			((AnimatableFigure)getFigure()).setExpanded(true);
+			 ((AnimatableFigure) getFigure()).setExpanded(true);
 		scrollpane.setVerticalScrollBarVisibility(ScrollPane.AUTOMATIC);
-	}else{
-		arrow.setDirection(Orientable.EAST);
+	} else {
 		scrollpane.setVerticalScrollBarVisibility(ScrollPane.NEVER);
 		if (animate)
 			((AnimatableFigure)getFigure()).collapse();
@@ -235,16 +275,37 @@ protected void refreshVisuals(boolean animate){
 	}
 }
 
-public void setExpanded(boolean expanded){
+public void setExpanded(boolean expanded) {
 	if (expanded == collapseToggle.isSelected())
 		return;
 	collapseToggle.setSelected(expanded);	
 }
 
-public void setSelected(int value){
+public void setSelected(int value) {
 	super.setSelected(value);
 	if (value == SELECTED_PRIMARY)
 		collapseToggle.requestFocus();
+}
+
+protected void updateLayout() {
+	int layout = getPreferenceSource().getLayoutSetting();
+	if (cachedLayout == layout) {
+		return;
+	}
+	
+	cachedLayout = layout;
+	
+	LayoutManager manager;
+	if (layout == PaletteViewerPreferences.LAYOUT_FOLDER) {
+		manager = new FolderLayout();
+	} else if (layout == PaletteViewerPreferences.LAYOUT_ICONS) {
+		manager = new FlowLayout();
+	} else {
+		ToolbarLayout toolbarLayout = new ToolbarLayout();
+		toolbarLayout.setSpacing(3);
+		manager = toolbarLayout;
+	}
+	scrollpane.getView().setLayoutManager(manager);
 }
 
 }

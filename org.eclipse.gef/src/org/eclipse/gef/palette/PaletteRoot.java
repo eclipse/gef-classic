@@ -6,9 +6,21 @@ package org.eclipse.gef.palette;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-public interface PaletteRoot 
-	extends PaletteContainer{
+import java.util.*;
 
-	static String PALETTE_TYPE_ROOT = "Palette_Root";//$NON-NLS-1$
+public class PaletteRoot
+	extends PaletteContainer
+{
+
+public static String PALETTE_TYPE_ROOT = "Palette_Root";//$NON-NLS-1$
+
+public PaletteRoot(List children) {
+	setType (PALETTE_TYPE_ROOT);
+	addAll(children);
+}
+
+public String toString() {
+	return "Palette Root"; //$NON-NLS-1$
+}
 
 }

@@ -2,11 +2,13 @@ package org.eclipse.gef.ui.palette;
 
 import org.eclipse.draw2d.*;
 import org.eclipse.gef.AccessibleEditPart;
-import org.eclipse.gef.palette.TemplateEntry;
+import org.eclipse.gef.palette.PaletteEntry;
+import org.eclipse.gef.palette.PaletteTemplateEntry;
 import org.eclipse.swt.accessibility.*;
+import org.eclipse.swt.graphics.Image;
 
 /**
- * A PaletteEditPart that has a {@link TemplateEntry} for its model and
+ * A PaletteEditPart that has a {@link PaletteTemplateEntry} for its model and
  * a {@link Label} for its figure.  This is used for dragging template objects 
  * from the palette to a GraphicalViewer to create new objects.
  * 
@@ -18,7 +20,7 @@ public class TemplateEditPart
 
 private static Border BORDER = new MarginBorder(3,0,3,0);
 
-public TemplateEditPart(TemplateEntry entry) {
+public TemplateEditPart(PaletteTemplateEntry entry) {
 	super(entry);
 }
 
@@ -39,14 +41,11 @@ protected AccessibleEditPart createAccessible() {
 }
 
 public IFigure createFigure() {
-	SelectableLabel label = new SelectableLabel();
-	label.setBorder(BORDER);
-	label.setLabelAlignment(PositionConstants.LEFT);
-	return label;
+	return new DetailedLabelFigure();
 }
 
-private TemplateEntry getTemplateEntry() {
-	return (TemplateEntry)getModel();
+private PaletteTemplateEntry getTemplateEntry() {
+	return (PaletteTemplateEntry)getModel();
 }
 
 private PaletteViewer getPaletteViewer() {
@@ -54,28 +53,40 @@ private PaletteViewer getPaletteViewer() {
 }
 
 protected void refreshVisuals() {
-	TemplateEntry entry = getTemplateEntry();
-	SelectableLabel label = (SelectableLabel)getFigure();
-
-	label.setText(entry.getLabel());
-	label.setIcon(entry.getSmallIcon());
-	
-	String desc = entry.getDescription();
-	if(desc != null && !desc.equals("") && !desc.equals(entry.getLabel())) //$NON-NLS-1$
-		label.setToolTip(new Label(desc));
+	DetailedLabelFigure fig = (DetailedLabelFigure)getFigure();
+	PaletteEntry entry = getPaletteEntry();
+	fig.setText(entry.getLabel());
+	boolean large = getPreferenceSource().useLargeIcons();
+	Image icon;
+	if (large) {
+		icon = entry.getLargeIcon();
+	} else {
+		icon = entry.getSmallIcon();
+	}
+	fig.setImage(icon);
+	fig.setLayoutMode(getPreferenceSource().getLayoutSetting());
+	super.refreshVisuals();
 }
 
 public void setFocus(boolean value) {
 	super.setFocus(value);
-	SelectableLabel label = (SelectableLabel)getFigure();
+	DetailedLabelFigure label = (DetailedLabelFigure)getFigure();
 	if (value)
-		label.requestFocus();
+		label.setSelected(DetailedLabelFigure.SELECTED_WITH_FOCUS);
+	else
+		label.setSelected(DetailedLabelFigure.SELECTED_WITHOUT_FOCUS);
 }
 
 public void setSelected(int value) {
 	super.setSelected(value);
-	SelectableLabel label = (SelectableLabel)getFigure();
-	label.setSelected(value == SELECTED_PRIMARY);
+	DetailedLabelFigure label = (DetailedLabelFigure)getFigure();
+	if( value == SELECTED_PRIMARY )
+		label.setSelected(DetailedLabelFigure.SELECTED_WITH_FOCUS);
+	else if( value == SELECTED )
+		label.setSelected(DetailedLabelFigure.SELECTED_WITHOUT_FOCUS);
+	else {
+		label.setSelected(DetailedLabelFigure.NOT_SELECTED);
+	}		
 }
 
 }

@@ -27,7 +27,7 @@ public EditPart createEditPart(EditPart parentEditPart, Object model){
 		if(	PaletteContainer.PALETTE_TYPE_GROUP.equals(((PaletteContainer)model).getType()) ||
 			PaletteContainer.PALETTE_TYPE_UNKNOWN.equals(((PaletteContainer)model).getType()))
 			return createGroupEditPart(parentEditPart, model);
-	if( model instanceof TemplateEntry)
+	if( model instanceof PaletteTemplateEntry)
 		return createTemplateEditPart(parentEditPart, model);
 	if( model instanceof PaletteSeparator )
 		return createSeparatorEditPart(parentEditPart, model);
@@ -62,7 +62,7 @@ protected EditPart createMainPaletteEditPart(EditPart parentEditPart, Object mod
 }
 
 protected EditPart createTemplateEditPart(EditPart parentEditPart, Object model) {
-	return new TemplateEditPart((TemplateEntry)model);
+	return new TemplateEditPart((PaletteTemplateEntry)model);
 }
 
 }

@@ -3,6 +3,7 @@ package org.eclipse.gef.ui.palette;
 import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.ui.parts.ContextMenuProvider;
 import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.Separator;
 
 /**
  * Provides the context menu for a palette
@@ -35,6 +36,9 @@ public PaletteContextMenuProvider(PaletteViewerImpl palette) {
  */
 public void buildContextMenu(IMenuManager menu, EditPartViewer viewer) {
 	if (paletteViewer.getCustomizer() != null)
+		menu.add(new LayoutAction(paletteViewer.getPaletteViewerPreferencesSource()));
+		menu.add(new IconSizeChangeAction(paletteViewer.getPaletteViewerPreferencesSource()));
+		menu.add(new Separator());
 		menu.add(new CustomizeAction(paletteViewer));
 }
 

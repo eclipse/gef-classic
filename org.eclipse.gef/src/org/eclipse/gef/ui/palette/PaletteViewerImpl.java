@@ -6,7 +6,10 @@ package org.eclipse.gef.ui.palette;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.draw2d.ButtonGroup;
@@ -16,9 +19,9 @@ import org.eclipse.gef.ui.palette.customize.*;
 import org.eclipse.gef.ui.parts.PaletteViewerKeyHandler;
 import org.eclipse.jface.viewers.*;
 
-public class PaletteViewerImpl 
+public class PaletteViewerImpl
 	extends org.eclipse.gef.ui.parts.GraphicalViewerImpl
-	implements PaletteViewer
+	implements PaletteViewer 
 {
 
 PaletteCustomizer customizer = null;
@@ -29,35 +32,56 @@ PaletteEntry selectedEntry = null;
 PaletteRoot paletteRoot = null;
 PaletteViewerPreferences prefs = null;
 
-public PaletteViewerImpl(){
+private boolean controlHooked = false;
+
+private PropertyChangeListener prefListener = new PropertyChangeListener() {
+	public void propertyChange(PropertyChangeEvent evt) {
+		EditPart root = getRootEditPart().getContents();
+		traverseEditParts(root);
+	}
+	private void traverseEditParts(EditPart part) {
+		part.refresh();
+		List children = part.getChildren();
+		for (Iterator iter = children.iterator(); iter.hasNext();) {
+			EditPart child = (EditPart) iter.next();
+			traverseEditParts(child);
+		}
+	}
+};
+
+public PaletteViewerImpl() {
 	setEditDomain(new DefaultEditDomain(null));
 	setKeyHandler(new PaletteViewerKeyHandler(this));
 	setContextMenuProvider(new PaletteContextMenuProvider(this));
-	setPaletteViewerPreferencesSource( new DefaultPaletteViewerPreferences(
-						GEFPlugin.getDefault().getPreferenceStore()) );
+	setPaletteViewerPreferencesSource(
+		new DefaultPaletteViewerPreferences(
+			GEFPlugin.getDefault().getPreferenceStore()));
 
 }
 
-public void addPaletteListener(PaletteListener paletteListener){
-	if(paletteListeners!=null)
+public void addPaletteListener(PaletteListener paletteListener) {
+	if (paletteListeners != null)
 		paletteListeners.add(paletteListener);
 }
 
-public void addSelectionChangedListener(ISelectionChangedListener listener){;}
+public void addSelectionChangedListener(ISelectionChangedListener listener) {
+}
 
-protected void createDefaultRoot(){
+protected void createDefaultRoot() {
 	setRootEditPart(new PaletteRootEditPart());
 }
 
-protected void firePaletteSelectionChanged(){
-	if(paletteListeners==null)return;
+protected void firePaletteSelectionChanged() {
+	if (paletteListeners == null)
+		return;
 	PaletteEvent event = new PaletteEvent(this, selectedEntry);
-	for(int listener=0; listener<paletteListeners.size(); listener++)
-		((PaletteListener)paletteListeners.get(listener)).entrySelected(event);
+	for (int listener = 0; listener < paletteListeners.size(); listener++)
+		((PaletteListener) paletteListeners.get(listener)).entrySelected(
+			event);
 }
 
-public ButtonGroup getButtonGroup(){
-	if(buttonGroup==null)
+public ButtonGroup getButtonGroup() {
+	if (buttonGroup == null)
 		buttonGroup = new ButtonGroup();
 	return buttonGroup;
 }
@@ -70,32 +94,51 @@ public PaletteCustomizer getCustomizer() {
 	return customizer;
 }
 
-public PaletteCustomizerDialog getCustomizerDialog(){
-	if (customizerDialog == null){
-		customizerDialog = new PaletteCustomizerDialog( getControl().getShell(),
-		                                    getCustomizer(), prefs, paletteRoot);
-		
+public PaletteCustomizerDialog getCustomizerDialog() {
+	if (customizerDialog == null) {
+		customizerDialog = new PaletteCustomizerDialog(getControl().getShell(),
+	                                                   getCustomizer(),
+	                                                   prefs,
+	                                                   paletteRoot);
 	}
 	return customizerDialog;
 }
 
-public EditPartFactory getEditPartFactory(){
+public EditPartFactory getEditPartFactory() {
 	if (super.getEditPartFactory() == null)
 		setEditPartFactory(new PaletteEditPartFactory());
 	return super.getEditPartFactory();
 }
 
-public ISelection getSelection(){return StructuredSelection.EMPTY;}
-
-public PaletteToolEntry getSelectedEntry(){
-	return (PaletteToolEntry)selectedEntry;
+public PaletteViewerPreferences getPaletteViewerPreferencesSource() {
+	return prefs;
 }
 
-public void removePaletteListener(PaletteListener paletteListener){
+public ISelection getSelection() {
+	return StructuredSelection.EMPTY;
+}
+
+/**
+ * @see org.eclipse.gef.ui.parts.GraphicalViewerImpl#hookControl()
+ */
+protected void hookControl() {
+	super.hookControl();
+	if (prefs != null) {
+		prefs.addPropertyChangeListener(prefListener);
+	}
+	controlHooked = true;
+}
+
+public PaletteToolEntry getSelectedEntry() {
+	return (PaletteToolEntry) selectedEntry;
+}
+
+public void removePaletteListener(PaletteListener paletteListener) {
 	paletteListeners.remove(paletteListener);
 }
 
-public void removeSelectionChangedListener(ISelectionChangedListener listener){;}
+public void removeSelectionChangedListener(ISelectionChangedListener listener) {
+}
 
 /**
  * Sets the customizer.
@@ -105,20 +148,28 @@ public void setCustomizer(PaletteCustomizer customizer) {
 	this.customizer = customizer;
 }
 
-public void setPaletteRoot(PaletteRoot root){
+public void setPaletteRoot(PaletteRoot root) {
 	paletteRoot = root;
-	if( paletteRoot != null){
-		EditPart palette = getEditPartFactory().createEditPart(getRootEditPart(), root);
+	if (paletteRoot != null) {
+		EditPart palette =
+			getEditPartFactory().createEditPart(getRootEditPart(), root);
 		getRootEditPart().setContents(palette);
 	}
 }
 
 public void setPaletteViewerPreferencesSource(PaletteViewerPreferences prefs) {
-	if( prefs == null ){
+	if (prefs == null) {
 		return;
 	}
-	
+
+	if (this.prefs != null) {
+		this.prefs.removePropertyChangeListener(prefListener);
+	}
+
 	this.prefs = prefs;
+	if (controlHooked) {
+		this.prefs.addPropertyChangeListener(prefListener);
+	}
 }
 
 /*
@@ -134,25 +185,34 @@ public void setSelection(ISelection newSelection){
 	}
 }*/
 
-public void setSelection(PaletteEntry entry){
+public void setSelection(PaletteEntry entry) {
 	if (selectedEntry == entry)
 		return;
-	if (entry == null){
+	if (entry == null) {
 		getButtonGroup().setSelected(null);
 		selectedEntry = null;
 		getButtonGroup().setSelected(getButtonGroup().getDefault());
-		if (getButtonGroup().getSelected() == null){
+		if (getButtonGroup().getSelected() == null) {
 			selectedEntry = null;
 			firePaletteSelectionChanged();
 		}
 	} else {
 		selectedEntry = entry;
-		EntryEditPart ep = (EntryEditPart)getEditPartRegistry().get(entry);
+		EntryEditPart ep = (EntryEditPart) getEditPartRegistry().get(entry);
 		ep.select();
 		firePaletteSelectionChanged();
 	}
 }
 
+/**
+ * @see org.eclipse.gef.ui.parts.AbstractEditPartViewer#unhookControl()
+ */
+protected void unhookControl() {
+	super.unhookControl();
+	if (prefs != null) {
+		prefs.removePropertyChangeListener(prefListener);
+	}
+	controlHooked = false;
 }
 
-
+}

@@ -1,6 +1,6 @@
 package org.eclipse.gef.ui.palette.customize;
 
-import org.eclipse.gef.palette.DefaultPaletteGroup;
+import org.eclipse.gef.palette.PaletteGroup;
 import org.eclipse.gef.palette.PaletteEntry;
 import org.eclipse.gef.ui.palette.PaletteMessages;
 
@@ -10,7 +10,7 @@ import org.eclipse.ui.internal.IWorkbenchGraphicConstants;
 import org.eclipse.ui.internal.WorkbenchImages;
 
 /**
- * Factory to create {@link org.eclipse.gef.palette.DefaultPaletteGroup groups}
+ * Factory to create {@link org.eclipse.gef.palette.PaletteGroup groups}
  * 
  * @author Pratik Shah
  */
@@ -35,8 +35,8 @@ public PaletteGroupFactory() {
 protected PaletteEntry createNewEntry(Shell shell) {
 	Image img = new Image(shell.getDisplay(), 
 	                      getImageDescriptor().getImageData());
-	DefaultPaletteGroup group =
-				new DefaultPaletteGroup(PaletteMessages.NEW_GROUP_LABEL);
+	PaletteGroup group =
+				new PaletteGroup(PaletteMessages.NEW_GROUP_LABEL);
 	//@TODO:Pratik
 	// You also need to set the large icons in all the factories
 	group.setSmallIcon(img);

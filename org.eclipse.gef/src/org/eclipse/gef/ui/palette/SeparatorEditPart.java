@@ -1,8 +1,11 @@
 package org.eclipse.gef.ui.palette;
 
+import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2d.geometry.Rectangle;
+
 import org.eclipse.gef.palette.PaletteSeparator;
 
 /**
@@ -26,17 +29,33 @@ public SeparatorEditPart(PaletteSeparator separator) {
  * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
  */
 protected IFigure createFigure() {
-	Figure figure = new SeparatorFigure();
-	figure.setSize(0, 7);
-	figure.setBorder(new SeparatorBorder());
-	return figure;
+	return new SeparatorFigure();
 }
 
 
-private class SeparatorFigure extends Figure {
+/**
+ * Figure for the separator
+ * 
+ * @author Pratik Shah */
+protected class SeparatorFigure extends Figure {
+	/**
+	 * Constructor
+	 */
+	public SeparatorFigure() {
+		super();
+		SeparatorBorder border = new SeparatorBorder();
+		border.setSidePadding(5);
+		setBorder(border);
+		setSize(0, 1);
+	}
+
+	/**
+	 * @see org.eclipse.draw2d.IFigure#getPreferredSize(int, int)
+	 */
 	public Dimension getPreferredSize(int wHint, int hHint) {
 		return new Dimension(wHint, getSize().height);
 	}
 }
+
 
 }

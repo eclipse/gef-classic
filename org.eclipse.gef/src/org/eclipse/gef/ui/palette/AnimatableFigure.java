@@ -6,6 +6,9 @@ package org.eclipse.gef.ui.palette;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
+import java.util.Collections;
+import java.util.List;
+
 import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.*;
 
@@ -15,6 +18,7 @@ class AnimatableFigure
 
 private AnimationModel animationModel = null;
 protected boolean expanded = true;
+private List animationPartners = Collections.EMPTY_LIST;
 private static final long delay = 150;
 
 public AnimatableFigure(){}
@@ -22,9 +26,16 @@ public AnimatableFigure(){}
 private void animate(){
 	animationModel = new AnimationModel(delay, expanded);
 	animationModel.animationStarted();
+	for (int i = 0; i < animationPartners.size(); i++) {
+		((AnimatableFigure)animationPartners.get(i)).animationModel = animationModel;
+		((AnimatableFigure)animationPartners.get(i)).setExpanded(false);
+	}
 	while(!animationModel.isFinished())
 		this.step();
 	step();
+	for (int i = 0; i < animationPartners.size(); i++) {
+		((AnimatableFigure)animationPartners.get(i)).animationModel = null;
+	}
 	animationModel=null;
 }
 
@@ -61,6 +72,10 @@ public Dimension getPreferredSize(int w, int h){
 	return pref.getScaled(scale).expand(min.getScaled(1.0f-scale));
 }
 
+public void setAnimationPartners(List list) {
+	animationPartners = list;
+}
+
 public void setExpanded(boolean value){
 	if (expanded == value)
 		return;
@@ -70,6 +85,10 @@ public void setExpanded(boolean value){
 
 private void step(){
 	revalidate();
+	for (int i = 0; i < animationPartners.size(); i++) {
+		((AnimatableFigure)animationPartners.get(i)).revalidate();
+	}
+
 	getUpdateManager().performUpdate();
 }
 

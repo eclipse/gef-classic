@@ -10,23 +10,23 @@ import java.util.List;
 
 import org.eclipse.swt.graphics.Image;
 
-public class DefaultPaletteCategory 
-	extends DefaultPaletteContainer {
+public class PaletteCategory 
+	extends PaletteContainer {
 
-public DefaultPaletteCategory(String label){
+public PaletteCategory(String label){
 	this(label, (Image)null);
 }
 
-public DefaultPaletteCategory(String label, Image icon, List children){
+public PaletteCategory(String label, Image icon, List children){
 	this(label, icon);
 	addAll(children);
 }
 
-public DefaultPaletteCategory(String label, List children){
+public PaletteCategory(String label, List children){
 	this(label, null, children);
 }
 
-public DefaultPaletteCategory(String label,Image icon){
+public PaletteCategory(String label,Image icon){
 	super(label, icon);
 	setType(PALETTE_TYPE_CATEGORY);
 }

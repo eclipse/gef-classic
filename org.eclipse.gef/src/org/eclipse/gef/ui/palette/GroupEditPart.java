@@ -6,6 +6,7 @@ package org.eclipse.gef.ui.palette;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
+import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.FlowLayout;
 import org.eclipse.draw2d.IFigure;
@@ -13,12 +14,14 @@ import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.StackLayout;
 import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.gef.palette.PaletteContainer;
+import org.eclipse.swt.graphics.Color;
 
 public class GroupEditPart 
 	extends PaletteEditPart 
 {
 	
 private Figure innerFigure;
+private int cachedLayout = -1;
 
 public GroupEditPart(PaletteContainer group) {
 	super(group);
@@ -26,17 +29,38 @@ public GroupEditPart(PaletteContainer group) {
 
 public IFigure createFigure() {
 	innerFigure = new Figure();
-	innerFigure.setBorder(new MarginBorder(new Insets(2)));
+	innerFigure.setBorder(BORDER_TITLE_MARGIN);
 	innerFigure.setOpaque(true);
-	innerFigure.setLayoutManager(new FlowLayout());
-	Figure outerFigure = new Figure();
-	outerFigure.setLayoutManager(new StackLayout());
-	outerFigure.add(innerFigure);
-	return outerFigure;
+	return innerFigure;
 }
 
-public IFigure getContentPane() {
-	return innerFigure;
+/**
+ * @see org.eclipse.gef.editparts.AbstractEditPart#refreshVisuals()
+ */
+protected void refreshVisuals() {
+	updateLayout();
+	super.refreshVisuals();
+}
+
+protected void updateLayout() {
+	int layout = getPreferenceSource().getLayoutSetting();
+	if (cachedLayout == layout) {
+		return;
+	}
+	
+	cachedLayout = layout;
+	
+	LayoutManager manager;
+	if (layout == PaletteViewerPreferences.LAYOUT_FOLDER) {
+		manager = new FolderLayout();
+	} else if (layout == PaletteViewerPreferences.LAYOUT_ICONS) {
+		manager = new FlowLayout();
+	} else {
+		ToolbarLayout toolbarLayout = new ToolbarLayout();
+		toolbarLayout.setSpacing(3);
+		manager = toolbarLayout;
+	}
+	innerFigure.setLayoutManager(manager);
 }
 
 }

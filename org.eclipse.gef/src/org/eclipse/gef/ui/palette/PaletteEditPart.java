@@ -12,13 +12,20 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.Border;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Triangle;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.gef.AccessibleEditPart;
+import org.eclipse.gef.DragTracker;
+import org.eclipse.gef.Request;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.palette.PaletteContainer;
 import org.eclipse.gef.palette.PaletteEntry;
+import org.eclipse.gef.tools.SelectEditPartTracker;
+
+import org.eclipse.swt.graphics.Color;
 
 abstract class PaletteEditPart 
 	extends AbstractGraphicalEditPart
@@ -35,6 +42,10 @@ private PropertyChangeListener childListener = new PropertyChangeListener() {
 };
 
 protected static int triangleSide = 10;
+protected static final Border MARGIN_BORDER = new MarginBorder(2, 2, 2, 2);
+protected static final Border BORDER_TITLE_MARGIN = new CompoundBorder(
+                                                      	new PaletteContainerBorder(),
+                                                      	MARGIN_BORDER);
 
 public PaletteEditPart(PaletteEntry model) {
 	setModel(model);
@@ -86,6 +97,13 @@ protected AccessibleEditPart getAccessibleEditPart() {
 }
 
 /**
+ * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#getDragTracker(Request)
+ */
+public DragTracker getDragTracker(Request request) {
+	return new SelectEditPartTracker(this);
+}
+
+/**
  * @see org.eclipse.gef.editparts.AbstractEditPart#getModelChildren()
  */
 public List getModelChildren() {
@@ -108,6 +126,14 @@ public List getModelChildren() {
 	return modelChildren;
 }
 
+protected PaletteEntry getPaletteEntry() {
+	return (PaletteEntry)getModel();
+}
+
+protected PaletteViewerPreferences getPreferenceSource(){
+	return ((PaletteViewerImpl)getViewer()).getPaletteViewerPreferencesSource();
+}
+
 /**
  * @see java.beans.PropertyChangeListener#propertyChange(PropertyChangeEvent)
  */
@@ -117,9 +143,22 @@ public void propertyChange(PropertyChangeEvent evt) {
 		refreshChildren();
 	} else if (property.equals(PaletteEntry.PROPERTY_LABEL)
 			|| property.equals(PaletteEntry.PROPERTY_SMALL_ICON)
-			|| property.equals(PaletteEntry.PROPERTY_LARGE_ICON)) {
+			|| property.equals(PaletteEntry.PROPERTY_LARGE_ICON)
+			|| property.equals(PaletteEntry.PROPERTY_DESCRIPTION)) {
 		refreshVisuals();
 	}
+}
+
+/**
+ * @see org.eclipse.gef.editparts.AbstractEditPart#refreshVisuals()
+ */
+protected void refreshVisuals() {
+	PaletteEntry entry = (PaletteEntry)getModel();
+	String desc = entry.getDescription();
+	if (desc == null || desc.trim().equals("")) { //$NON-NLS-1$
+		desc = entry.getLabel();
+	}
+	getFigure().setToolTip(new Label(desc));
 }
 
 private void traverseChildren(PaletteEntry parent, boolean add) {

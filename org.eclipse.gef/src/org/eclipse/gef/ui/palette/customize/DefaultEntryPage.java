@@ -103,7 +103,7 @@ protected Text createDescText(Composite panel) {
  * @return 		The newly created Button
  */
 protected Button createHiddenCheckBox(Composite panel) {
-	Button hidden = new Button(panel, SWT.CHECK);
+	Button hidden = new Button(panel, SWT.CHECK | SWT.NO_FOCUS);
 	hidden.setText(PaletteMessages.HIDDEN_LABEL);
 	hidden.setSelection(!entry.isVisible());
 	

@@ -7,14 +7,26 @@ package org.eclipse.gef.palette;
  */
 
 import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 
 import org.eclipse.swt.graphics.Image;
 
 /**
- * Interface for a PaletteEntry
+ * Default implementation of PaletteEntry
  * 
- * @author Pratik Shah */
-public interface PaletteEntry {
+ * @author Pratik Shah
+ */
+public class PaletteEntry
+{
+
+private PaletteContainer parent;
+private String label;
+private String shortDescription;
+private Image iconSmall;
+private Image iconLarge;
+private boolean isDefault = false;
+private boolean visible = true;
+private Object type = PaletteEntry.PALETTE_TYPE_UNKNOWN;
 
 /**
  * Property name for the entry's small icon 
@@ -67,64 +79,336 @@ public static final String
 /**
  * Type unknown
  */
-public static String PALETTE_TYPE_UNKNOWN = "Palette_type_Unknown";//$NON-NLS-1$
+public static final String PALETTE_TYPE_UNKNOWN = "Palette_type_Unknown";//$NON-NLS-1$
+
+/**
+ * PropertyChangeSupport
+ */
+protected PropertyChangeSupport listeners = new PropertyChangeSupport(this);
+
+/**
+ * Constructor
+ */
+public PaletteEntry() {
+	this(""); //$NON-NLS-1$
+}
+
+/**
+ * Constructor
+ * <p>
+ * Any parameter can be <code>null</code>
+ * </p>
+ * 
+ * @param	label	The entry's name
+ */
+public PaletteEntry(String label) {
+	this(label, "", null, null, null); //$NON-NLS-1$
+}
+
+/**
+ * Constructor
+ * <p>
+ * Any parameter can be <code>null</code>
+ * </p>
+ * 
+ * @param label	The entry's name
+ * @param shortDescription	The entry's description
+ */
+public PaletteEntry(String label, String shortDescription) {
+	this(label, shortDescription, null, null, null);
+}
+
+/**
+ * Constructor
+ * <p>
+ * Any parameter can be <code>null</code>
+ * </p>
+ * 
+ * @param label				Tbe entry's name
+ * @param shortDescription		The entry's description
+ * @param type					Tbe entry's name
+ */
+public PaletteEntry(String label,
+							String shortDescription,
+							Object type) {
+	this(label, shortDescription, null, null, type);
+}
+
+/**
+ * Constructor
+ * <p>
+ * Any parameter can be <code>null</code>
+ * </p>
+ * 
+ * @param label				Tbe entry's name
+ * @param shortDescription		The entry's description
+ * @param iconSmall			The small icon to represent this entry
+ * @param iconLarge			The large icon to represent this entry
+ */
+public PaletteEntry(String label,
+							String shortDescription,
+							Image iconSmall,
+							Image iconLarge) {
+	this(label, shortDescription, iconSmall, iconLarge, null);
+}
+
+/**
+ * Constructor
+ * <p>
+ * Any parameter can be <code>null</code>
+ * </p>
+ * 
+ * @param label				Tbe entry's name
+ * @param shortDescription		The entry's description
+ * @param iconSmall			The small icon to represent this entry
+ * @param iconLarge			The large icon to represent this entry
+ * @param type					The entry's type
+ */
+public PaletteEntry(String label,
+							String shortDescription,
+							Image iconSmall,
+							Image iconLarge,
+							Object type) {
+	this(label, shortDescription, iconSmall, iconLarge, type, null);
+}
+
+/**
+ * Constructor
+ * <p>
+ * Any parameter can be <code>null</code>
+ * </p>
+ * 
+ * @param label				Tbe entry's name
+ * @param shortDescription		The entry's description
+ * @param iconSmall			The small icon to represent this entry
+ * @param iconLarge			The large icon to represent this entry
+ * @param type					The entry's type
+ * @param parent				The entry's parent
+ */
+public PaletteEntry(String label,
+							String shortDescription,
+							Image iconSmall,
+							Image iconLarge,
+							Object type,
+							PaletteContainer parent) {
+	setLabel(label);
+	setDescription(shortDescription);
+	setSmallIcon(iconSmall);
+	setLargeIcon(iconLarge);
+	setType(type);
+	setParent(parent);
+}
 
 /**
  * @see java.beans.PropertyChangeSupport#addPropertyChangeListener(java.beans.PropertyChangeListener)
  */
-void addPropertyChangeListener(PropertyChangeListener listener);
+public void addPropertyChangeListener(PropertyChangeListener listener) {
+	listeners.addPropertyChangeListener(listener);
+}
 
 /**
- * @return the label for this entry.
+ * @see PropertyChangeSupport#firePropertyChange(java.lang.String, java.lang.Object, java.lang.Object)
  */
-String getLabel();
-
-/**
- * @return a large icon representing this entry.
- */
-Image getLargeIcon();
+protected void firePropertyChange(String property,
+									Object oldVal,
+									Object newVal) {
+	listeners.firePropertyChange(property, oldVal, newVal);
+}
 
 /**
  * @return a short desecription describing this entry.
  */
-String getDescription();
+public String getDescription() {
+	return shortDescription;
+}
+
+/**
+ * @return the label for this entry.
+ */
+public String getLabel() {
+	return label;
+}
+
+/**
+ * @return a large icon representing this entry.
+ */
+public Image getLargeIcon() {
+	return iconLarge;
+}
 
 /**
  * @return the parent container of this entry
  */
-PaletteContainer getParent();
+public PaletteContainer getParent() {
+	return parent;
+}
 
 /**
  * @return a small icon representing the entry.
  */
-Image getSmallIcon();
+public Image getSmallIcon() {
+	return iconSmall;
+}
 
 /**
  * @return the type of this entry. Useful for different interpretations 
  * of the palette model.
  */
-Object getType();
+public Object getType() {
+	return type;
+}
 
 /**
  * @return the default nature of the entry.
  */
-boolean isDefault();
+public boolean isDefault() {
+	return isDefault;
+}
 
 /**
  * @return whether or not this entry is visible.  An entry that is not visible is not
  * shown on the palette.
  */
-boolean isVisible();
+public boolean isVisible() {
+	return visible;
+}
 
 /**
  * @see java.beans.PropertyChangeSupport#removePropertyChangeListener(java.beans.PropertyChangeListener)
  */
-void removePropertyChangeListener(PropertyChangeListener listener);
+public void removePropertyChangeListener(PropertyChangeListener listener) {
+	listeners.removePropertyChangeListener(listener);
+}
+
+/**
+ * Mutator method for default
+ * 
+ * @param newDefault	The new default value
+ */
+public void setDefault(boolean newDefault) {
+	if (newDefault != isDefault) {
+		isDefault = newDefault;
+		firePropertyChange(
+			PROPERTY_DEFAULT,
+			new Boolean(!isDefault),
+			new Boolean(isDefault));
+	}
+}
+
+/**
+ * Mutator method for description
+ * 
+ * @param s	The new description
+ */
+public void setDescription(String s) {
+	if (s == null && shortDescription == null) {
+		return;
+	}
+
+	if (s == null || !s.equals(shortDescription)) {
+		String oldDescrption = shortDescription;
+		shortDescription = s;
+		firePropertyChange(
+			PROPERTY_DESCRIPTION,
+			oldDescrption,
+			shortDescription);
+	}
+}
+
+/**
+ * Mutator method for label
+ * 
+ * @param s	The new name
+ */
+public void setLabel(String s) {
+	if (s == null && label == null) {
+		return;
+	}
+
+	if (s == null || !s.equals(label)) {
+		String oldLabel = label;
+		label = s;
+		firePropertyChange(PROPERTY_LABEL, oldLabel, label);
+	}
+}
+
+/**
+ * Mutator method for large icon
+ * 
+ * @param 	icon	The large icon to represent this entry
+ */
+public void setLargeIcon(Image icon) {
+	if (icon != iconLarge) {
+		Image oldIcon = iconLarge;
+		iconLarge = icon;
+		firePropertyChange(PROPERTY_LARGE_ICON, oldIcon, iconLarge);
+	}
+}
 
 /**
  * Sets the parent of this entry
  * 
- * @param parent	The parent PaletteContainer
+ * @param newParent	The parent PaletteContainer
  */
-void setParent(PaletteContainer parent);
+public void setParent(PaletteContainer newParent) {
+	if (parent != newParent) {
+		PaletteContainer oldParent = parent;
+		parent = newParent;
+		firePropertyChange(PROPERTY_PARENT, oldParent, parent);
+	}
+}
+
+/**
+ * Mutator method for small icon
+ * 
+ * @param 	icon	The new small icon to represent this entry
+ */
+public void setSmallIcon(Image icon) {
+	if (icon != iconSmall) {
+		Image oldIcon = iconSmall;
+		iconSmall = icon;
+		firePropertyChange(PROPERTY_SMALL_ICON, oldIcon, icon);
+	}
+}
+
+/**
+ * Mutator method for type
+ * 
+ * @param newType	The new type
+ */
+public void setType(Object newType) {
+	if (newType == null && type == null) {
+		return;
+	}
+
+	if (type == null || !type.equals(newType)) {
+		Object oldType = type;
+		type = newType;
+		firePropertyChange(PROPERTY_TYPE, oldType, type);
+	}
+}
+
+/**
+ * Makes this entry visible or invisible.  An invisible entry does not show up on the
+ * palette.
+ * 
+ * @param newVal	The new boolean indicating whether the entry is visible or not
+ */
+public void setVisible(boolean newVal) {
+	if (newVal != visible) {
+		visible = newVal;
+		firePropertyChange(
+			PROPERTY_VISIBLE,
+			new Boolean(!visible),
+			new Boolean(visible));
+	}
+}
+
+/**
+ * @see java.lang.Object#toString()
+ */
+public String toString() {
+	return "Palette Entry (" + (label != null ? label : "") + ")"; //$NON-NLS-3$//$NON-NLS-2$//$NON-NLS-1$
+}
+
 }

@@ -7,11 +7,48 @@ package org.eclipse.gef.palette;
  */
 
 import org.eclipse.gef.Tool;
+import org.eclipse.swt.graphics.Image;
 
-public interface PaletteToolEntry
+/**
+ * A class used to represent a GEF tool on the palette.
+ */
+public class PaletteToolEntry
 	extends PaletteEntry
 {
 
-Tool getTool();
+protected Tool tool;
+
+public PaletteToolEntry(Tool tool, String label){
+	setLabel(label);
+	setTool(tool);
+}
+
+public PaletteToolEntry(Tool tool, String label, String shortDesc){
+	setTool(tool);
+	setLabel(label);
+	setDescription(shortDesc);
+}
+
+public PaletteToolEntry(
+	Tool tool,
+	String label,
+	String shortDesc,
+	Image iconSmall,
+	Image iconLarge)
+{
+	setTool(tool);
+	setLabel(label);
+	setDescription(shortDesc);
+	setSmallIcon(iconSmall);
+	setLargeIcon(iconLarge);
+}
+
+public Tool getTool(){
+	return tool;
+}
+
+public void setTool(Tool tool){
+	this.tool = tool;
+}
 
 }

@@ -127,7 +127,18 @@ public static final String MODEL_TYPE_GROUP;
  * The String "New Group"
  */
 public static final String NEW_GROUP_LABEL;
-
+/**
+ * The String "Layout"
+ */
+public static final String LAYOUT_MENU_LABEL;
+/**
+ * The String "Error"
+ */
+public static final String ERROR;
+/**
+ * The String "The currently displayed page contains invalid values."
+ */
+public static final String ABORT_PAGE_FLIPPING_MESSAGE;
 
 static {
 	ResourceBundle bundle =
@@ -163,6 +174,9 @@ static {
 	APPLY_LABEL = bundle.getString("APPLY_LABEL"); //$NON-NLS-1$
 	MODEL_TYPE_GROUP = bundle.getString("MODEL_TYPE_GROUP"); //$NON-NLS-1$
 	NEW_GROUP_LABEL = bundle.getString("NEW_GROUP_LABEL"); //$NON-NLS-1$
+	LAYOUT_MENU_LABEL = bundle.getString("LAYOUT_MENU_LABEL"); //$NON-NLS-1$
+	ERROR = bundle.getString("ERROR"); //$NON-NLS-1$
+	ABORT_PAGE_FLIPPING_MESSAGE = bundle.getString("ABORT_PAGE_FLIPPING_MESSAGE"); //$NON-NLS-1$
 }
 
 }

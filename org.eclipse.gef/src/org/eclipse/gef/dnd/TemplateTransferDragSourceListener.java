@@ -4,13 +4,13 @@ import java.util.List;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartViewer;
-import org.eclipse.gef.palette.TemplateEntry;
+import org.eclipse.gef.palette.PaletteTemplateEntry;
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.Transfer;
 
 /**
- * Allows a single {@link TemplateEntry TemplateEntry} to be dragged from an
- * EditPartViewer. The TemplateEntry's <i>template</i> object is the data that is being
+ * Allows a single {@link PaletteTemplateEntry PaletteTemplateEntry} to be dragged from an
+ * EditPartViewer. The PaletteTemplateEntry's <i>template</i> object is the data that is being
  * transfered to the <code>DropTarget</code>.
  * @since 2.1
  * @author Eric Bordeau
@@ -32,7 +32,7 @@ public TemplateTransferDragSourceListener(EditPartViewer viewer, Transfer xfer) 
  * Constructs a new listener for the specified EditPartViewer. The provided Viewer should
  * be one that is displaying a Palette. The TemplateTransferDragSourceListener will only
  * be enabled when a single EditPart is selected, and the EditPart's model is a
- * {@link TemplateEntry}.
+ * {@link PaletteTemplateEntry}.
  * @param viewer the EditPartViewer that is the drag source
  */
 public TemplateTransferDragSourceListener(EditPartViewer viewer) {
@@ -47,7 +47,7 @@ public void dragFinished(DragSourceEvent event) {
 }
 
 /**
- * Get the <i>template</i> from the selected {@link TemplateEntry} and sets it as the
+ * Get the <i>template</i> from the selected {@link PaletteTemplateEntry} and sets it as the
  * event data to be dropped.
  * @param event the DragSourceEvent
  */
@@ -56,7 +56,7 @@ public void dragSetData(DragSourceEvent event) {
 }
 
 /**
- * Cancels the drag if the selected item does not represent a TemplateEntry.
+ * Cancels the drag if the selected item does not represent a PaletteTemplateEntry.
  * @see DragSourceListener#dragStart(DragSourceEvent)
  */
 public void dragStart(DragSourceEvent event) {
@@ -74,8 +74,8 @@ protected Object getTemplate() {
 	List selection = getViewer().getSelectedEditParts();
 	if (selection.size() == 1) {
 		EditPart editpart = (EditPart)getViewer().getSelectedEditParts().get(0);
-		if (editpart.getModel() instanceof TemplateEntry)
-			return ((TemplateEntry)editpart.getModel()).getTemplate();
+		if (editpart.getModel() instanceof PaletteTemplateEntry)
+			return ((PaletteTemplateEntry)editpart.getModel()).getTemplate();
 	}
 	return null;
 }

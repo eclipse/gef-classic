@@ -18,7 +18,7 @@ import org.eclipse.ui.internal.WorkbenchImages;
  * 
  * @author Pratik Shah
  */
-public class PaletteSeparator extends DefaultPaletteEntry {
+public class PaletteSeparator extends PaletteEntry {
 	
 /**
  * This String can be used as an ID for separators that are not markers

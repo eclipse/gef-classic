@@ -2,8 +2,8 @@ package org.eclipse.gef.examples.logicdesigner;
 
 import java.util.List;
 
-import org.eclipse.gef.palette.DefaultPaletteContainer;
-import org.eclipse.gef.palette.DefaultPaletteGroup;
+import org.eclipse.gef.palette.PaletteContainer;
+import org.eclipse.gef.palette.PaletteGroup;
 import org.eclipse.gef.palette.PaletteContainer;
 import org.eclipse.gef.palette.PaletteEntry;
 import org.eclipse.gef.palette.PaletteSeparator;
@@ -40,7 +40,7 @@ public boolean canDelete(PaletteEntry entry) {
 public boolean canMoveDown(PaletteEntry entry) {
 	if( entry instanceof PaletteToolEntry ){
 		return false;
-	} else if( entry instanceof DefaultPaletteGroup ){
+	} else if( entry instanceof PaletteGroup ){
 		if( entry.getLabel().equals("Control Group") ){
 			return false;
 		}
@@ -57,7 +57,7 @@ public boolean canMoveDown(PaletteEntry entry) {
 public boolean canMoveUp(PaletteEntry entry) {
 	if( entry instanceof PaletteToolEntry ){
 		return false;
-	} else if( entry instanceof DefaultPaletteGroup ){
+	} else if( entry instanceof PaletteGroup ){
 		if( entry.getLabel().equals("Control Group") ){
 			return false;
 		}
@@ -77,7 +77,7 @@ public boolean canMoveUp(PaletteEntry entry) {
  */
 public EntryPage getPropertiesPage(PaletteEntry entry) {
 	if( entry instanceof PaletteSeparator || entry instanceof PaletteToolEntry || 
-	    entry instanceof DefaultPaletteGroup ){
+	    entry instanceof PaletteGroup ){
 		return new ReadOnlyEntryPage();
 	} else {
 		return new LogicEntryPage();
@@ -90,14 +90,14 @@ public EntryPage getPropertiesPage(PaletteEntry entry) {
  * @see org.eclipse.gef.ui.palette.PaletteCustomizer#performMoveDown(PaletteEntry)
  */
 public void performMoveDown(PaletteEntry entry){
-	DefaultPaletteContainer parent = (DefaultPaletteContainer)entry.getParent();
+	PaletteContainer parent = (PaletteContainer)entry.getParent();
 	if( !parent.moveDown(entry) ){
 		// This is the case of a PaletteEntry that is its parent's last child
 		parent.remove(entry);
-		DefaultPaletteContainer grandparent = (DefaultPaletteContainer)parent.getParent();
+		PaletteContainer grandparent = (PaletteContainer)parent.getParent();
 		List parents = grandparent.getChildren();
 		int index = parents.indexOf( parent );
-		DefaultPaletteContainer sibling = (DefaultPaletteContainer)parents.get(index+1);
+		PaletteContainer sibling = (PaletteContainer)parents.get(index+1);
 		sibling.add(0, entry);
 	}
 }
@@ -108,14 +108,14 @@ public void performMoveDown(PaletteEntry entry){
  * @see org.eclipse.gef.ui.palette.PaletteCustomizer#performMoveUp(PaletteEntry)
  */
 public void performMoveUp(PaletteEntry entry){
-	DefaultPaletteContainer parent = (DefaultPaletteContainer)entry.getParent();
+	PaletteContainer parent = (PaletteContainer)entry.getParent();
 	if( !parent.moveUp(entry) ){
 		//This is the case of a PaletteEntry that is its parent's first child
 		parent.remove(entry);
-		DefaultPaletteContainer grandparent = (DefaultPaletteContainer)parent.getParent();
+		PaletteContainer grandparent = (PaletteContainer)parent.getParent();
 		List parents = grandparent.getChildren();
 		int index = parents.indexOf( parent );
-		DefaultPaletteContainer sibling = (DefaultPaletteContainer)parents.get(index-1);
+		PaletteContainer sibling = (PaletteContainer)parents.get(index-1);
 		sibling.add(entry);
 	}
 }

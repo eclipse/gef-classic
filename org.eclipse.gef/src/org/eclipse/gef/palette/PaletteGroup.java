@@ -8,15 +8,15 @@ package org.eclipse.gef.palette;
 
 import java.util.List;
 
-public class DefaultPaletteGroup 
-	extends DefaultPaletteContainer {
+public class PaletteGroup 
+	extends PaletteContainer {
 
-public DefaultPaletteGroup(String label){
+public PaletteGroup(String label){
 	super(label);
 	setType(PALETTE_TYPE_GROUP);
 }
 
-public DefaultPaletteGroup(String label, List children){
+public PaletteGroup(String label, List children){
 	this(label);
 	addAll(children);
 }

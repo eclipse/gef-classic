@@ -102,6 +102,7 @@ private HashMap entriesToPages = new HashMap();
 private List actions;
 
 private boolean isError;
+private String errorMessage;
 private Tree tree;
 private Composite titlePage, errorPage;
 private PageBook propertiesPanelContainer;
@@ -221,6 +222,9 @@ public void clearProblem() {
 	if (isError) {
 		isError = false;
 		titleSwitcher.showPage(titlePage);
+		getButton(IDialogConstants.OK_ID).setEnabled(true);
+		getButton(APPLY_ID).setEnabled(true);
+		errorMessage = null;
 	}
 }
 
@@ -677,7 +681,7 @@ protected PageBook createPropertiesPanelTitle(Composite parent) {
  * 
  * @param composite	The composite in which the title is to be created
  * @param text			The title to be displayed
- * @return CLabel		The newly created CLabel for convenience
+ * @return 			The newly created CLabel for convenience
  */
 protected CLabel createSectionTitle(Composite composite, String text) {
 	CLabel cTitle = new CLabel(composite, SWT.LEFT);
@@ -1033,39 +1037,6 @@ protected Widget getWidget(int id) {
 }
 
 /**
- * This method is invoked when the activeEntryPage's state changes
- * 
- * <p>
- * NOTE: This method is sometimes also invoked, simply to update the status of the
- * buttons, even when there are no actual changes to the active page's state (for eg.,
- * when the palette settings are changed).
- * </p>
- * 
- * @param message		The message that was sent along with the state change notification
- * @param oldState		currently active page's old state * @param newState		currently active page's new state */
-//protected void handleActiveEntryPageStateChange(String message, 
-//                                                  int oldState, 
-//                                                  int newState) {
-//	if (newState == EntryPage.STATE_DIRTY) {
-//		titleSwitcher.showPage(titlePage);
-//		getButton(APPLY_ID).setEnabled(true);
-//		getButton(IDialogConstants.OK_ID).setEnabled(true);
-//		isError = false;
-//	} else if (newState == EntryPage.STATE_ERROR) {
-//		errorTitle.setText(message);
-//		titleSwitcher.showPage(errorPage);
-//		getButton(APPLY_ID).setEnabled(false);
-//		getButton(IDialogConstants.OK_ID).setEnabled(false);
-//		isError = true;
-//	} else if (newState == EntryPage.STATE_PERSISTED) {
-//		titleSwitcher.showPage(titlePage);
-//		getButton(APPLY_ID).setEnabled(false);
-//		getButton(IDialogConstants.OK_ID).setEnabled(true);
-//		isError = false;
-//	}
-//}
-
-/**
  * This method is invoked when the Apply button is pressed
  * <p>
  * IMPORTANT: Closing the dialog with the 'X' at the top right of the window, or by
@@ -1155,10 +1126,10 @@ protected void handleOutlineSelectionChanged() {
 
 	if (isError) {
 		MessageDialog dialog = new MessageDialog(getShell(),
-				JFaceResources.getString("AbortPageFlippingDialog.title"), //$NON-NLS-1$
+				PaletteMessages.ERROR, //$NON-NLS-1$
 				null, 
-				JFaceResources.getString("AbortPageFlippingDialog.message"), //$NON-NLS-1$
-				MessageDialog.WARNING, 
+				PaletteMessages.ABORT_PAGE_FLIPPING_MESSAGE + "\n" + errorMessage, //$NON-NLS-1$
+				MessageDialog.ERROR, 
 				new String[] { IDialogConstants.OK_LABEL }, 0);
 		dialog.open();
 		treeviewer.addPostSelectionChangedListener(pageFlippingPreventer);
@@ -1318,6 +1289,9 @@ public void showProblem(String error) {
 	isError = true;
 	errorTitle.setText(error);
 	titleSwitcher.showPage(errorPage);
+	getButton(IDialogConstants.OK_ID).setEnabled(false);
+	getButton(APPLY_ID).setEnabled(false);
+	errorMessage = error;
 }
 
 /**
