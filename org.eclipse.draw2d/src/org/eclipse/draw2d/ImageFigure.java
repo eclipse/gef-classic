@@ -89,10 +89,10 @@ protected void paintFigure(Graphics graphics) {
 	}
 	switch (alignment & PositionConstants.EAST_WEST) {
 		case PositionConstants.EAST:
-			x = area.x;
+			x = area.x + area.width - size.width;
 			break;
 		case PositionConstants.WEST:
-			x = area.x + area.width - size.width;
+			x = area.x;
 			break;
 		default:
 			x = (area.width - size.width) / 2 + area.x;
