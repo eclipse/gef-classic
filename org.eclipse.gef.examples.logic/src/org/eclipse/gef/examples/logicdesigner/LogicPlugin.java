@@ -132,7 +132,7 @@ static private PaletteContainer createComponentsDrawer(){
 		LogicMessages.LogicPlugin_Tool_CreationTool_XORGate_Label,
 		LogicMessages.LogicPlugin_Tool_CreationTool_XORGate_Description,
 		TemplateConstants.TEMPLATE_XOR_GATE,
-		new SimpleFactory(OrGate.class),
+		new SimpleFactory(XORGate.class),
 		ImageDescriptor.createFromFile(Circuit.class, "icons/xor16.gif"),//$NON-NLS-1$
 		ImageDescriptor.createFromFile(Circuit.class, "icons/xor24.gif")//$NON-NLS-1$
 	);
@@ -142,7 +142,7 @@ static private PaletteContainer createComponentsDrawer(){
 		LogicMessages.LogicPlugin_Tool_CreationTool_ANDGate_Label,
 		LogicMessages.LogicPlugin_Tool_CreationTool_ANDGate_Description,
 		TemplateConstants.TEMPLATE_AND_GATE,
-		new SimpleFactory(OrGate.class),
+		new SimpleFactory(AndGate.class),
 		ImageDescriptor.createFromFile(Circuit.class, "icons/and16.gif"),//$NON-NLS-1$
 		ImageDescriptor.createFromFile(Circuit.class, "icons/and24.gif")//$NON-NLS-1$
 	);
@@ -152,7 +152,7 @@ static private PaletteContainer createComponentsDrawer(){
 		LogicMessages.LogicPlugin_Tool_CreationTool_LiveOutput_Label,
 		LogicMessages.LogicPlugin_Tool_CreationTool_LiveOutput_Description,
 		TemplateConstants.TEMPLATE_LIVE_OUTPUT,
-		new SimpleFactory(OrGate.class),
+		new SimpleFactory(LiveOutput.class),
 		ImageDescriptor.createFromFile(Circuit.class, "icons/live16.gif"),//$NON-NLS-1$
 		ImageDescriptor.createFromFile(Circuit.class, "icons/live24.gif")//$NON-NLS-1$
 	);
@@ -162,7 +162,7 @@ static private PaletteContainer createComponentsDrawer(){
 		LogicMessages.LogicPlugin_Tool_CreationTool_Ground_Label,
 		LogicMessages.LogicPlugin_Tool_CreationTool_Ground_Description,
 		TemplateConstants.TEMPLATE_GROUND,
-		new SimpleFactory(OrGate.class),
+		new SimpleFactory(GroundOutput.class),
 		ImageDescriptor.createFromFile(Circuit.class, "icons/ground16.gif"),//$NON-NLS-1$
 		ImageDescriptor.createFromFile(Circuit.class, "icons/ground24.gif")//$NON-NLS-1$
 	);
