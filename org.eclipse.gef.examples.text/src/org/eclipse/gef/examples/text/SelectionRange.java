@@ -136,11 +136,11 @@ private List findNodesBetweenInclusive(EditPart left, EditPart right) {
 
 	ArrayList result = new ArrayList();
 
-	if (nextLeft == commonAncestor)
-		result.add(left);
+	//if (nextLeft == commonAncestor)
+	result.add(left);
 	while (nextLeft != commonAncestor) {
 		children = nextLeft.getChildren();
-		for (int i = children.indexOf(left); i < children.size(); i++)
+		for (int i = children.indexOf(left) + 1; i < children.size(); i++)
 			result.add(children.get(i));
 
 		left = nextLeft;
