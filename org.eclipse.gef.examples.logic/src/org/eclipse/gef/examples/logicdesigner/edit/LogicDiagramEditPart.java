@@ -77,7 +77,7 @@ protected IFigure createFigure() {
  * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
  */
 public Object getAdapter(Class adapter) {
-	if (adapter == SnapToStrategy.class) {
+	if (adapter == SnapToHelper.class) {
 		List snapStrategies = new ArrayList();
 		Boolean val = (Boolean)getViewer().getProperty(RulerProvider.PROPERTY_RULER_VISIBILITY);
 		if (val != null && val.booleanValue())
@@ -92,11 +92,11 @@ public Object getAdapter(Class adapter) {
 		if (snapStrategies.size() == 0)
 			return null;
 		if (snapStrategies.size() == 1)
-			return (SnapToStrategy)snapStrategies.get(0);
+			return (SnapToHelper)snapStrategies.get(0);
 
-		SnapToStrategy ss[] = new SnapToStrategy[snapStrategies.size()];
+		SnapToHelper ss[] = new SnapToHelper[snapStrategies.size()];
 		for (int i = 0; i < snapStrategies.size(); i++)
-			ss[i] = (SnapToStrategy)snapStrategies.get(i);
+			ss[i] = (SnapToHelper)snapStrategies.get(i);
 		return new CompoundSnapToStrategy(ss);
 	}
 	return super.getAdapter(adapter);
