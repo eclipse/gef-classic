@@ -11,28 +11,27 @@ import java.util.EventObject;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.TextTransfer;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.*;
 
 import org.eclipse.core.resources.*;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.action.IMenuListener;
-import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.*;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.*;
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
 import org.eclipse.ui.dialogs.SaveAsDialog;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.IPageSite;
+import org.eclipse.ui.part.PageBook;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
-import org.eclipse.draw2d.PositionConstants;
-import org.eclipse.draw2d.ZoomManager;
+import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.parts.ScrollableThumbnail;
+import org.eclipse.draw2d.parts.Thumbnail;
 
 import org.eclipse.gef.*;
 import org.eclipse.gef.dnd.TemplateTransferDragSourceListener;
@@ -63,7 +62,7 @@ class OutlinePage
 	private PageBook pageBook;
 	private Control outline;
 	private Canvas overview;
-	private Action showOutlineAction, showOverviewAction;
+	private IAction showOutlineAction, showOverviewAction;
 	static final int ID_OUTLINE  = 0;
 	static final int ID_OVERVIEW = 1;
 	private boolean overviewInitialized;
