@@ -29,7 +29,7 @@ private SelectionSynchronizer synchronizer;
 public GraphicalEditor(){}
 
 protected void configureGraphicalViewer(){
-	getGraphicalViewer().getControl().setBackground(ColorConstants.white);
+	getGraphicalViewer().getControl().setBackground(ColorConstants.listBackground);
 }
 
 /**
