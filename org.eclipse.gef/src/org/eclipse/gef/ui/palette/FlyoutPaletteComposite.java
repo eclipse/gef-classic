@@ -506,6 +506,17 @@ private void setState(int newState) {
 				pViewer.getControl().dispose();
 			pViewer = null;
 	}
+	/*
+	 * Fix for Bug# 63901
+	 * When the flyout collapses, if the palette has focus, throw focus to the
+	 * graphical control.  That way, hitting ESC will still deactivate the current tool
+	 * and load the default one.
+	 * Note that focus is being set on RulerComposite and not GraphicalViewer's
+	 * control.  But this is okay since RulerComposite passes the focus on to its
+	 * first child, which is the graphical viewer's control.
+	 */
+	if (paletteState == STATE_COLLAPSED && pViewer.getControl().isFocusControl())
+		graphicalControl.setFocus();
 	layout(true);
 	listeners.firePropertyChange(PROPERTY_STATE, oldState, newState);
 }
