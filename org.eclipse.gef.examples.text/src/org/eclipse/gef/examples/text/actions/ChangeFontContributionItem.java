@@ -10,8 +10,9 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.text.actions;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
-import java.util.TreeSet;
 
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.FontData;
@@ -31,11 +32,13 @@ public class ChangeFontContributionItem
 	
 private static final String[] FONT_NAMES;
 static {
+	Set set = new HashSet();
 	FontData[] fonts = Display.getCurrent().getFontList(null, true);
-	Set set = new TreeSet(); // a sorted set
 	for (int i = 0; i < fonts.length; i++)
 		set.add(fonts[i].getName());
-	FONT_NAMES = (String[])set.toArray(new String[set.size()]);
+	FONT_NAMES = new String[set.size()];
+	set.toArray(FONT_NAMES);
+	Arrays.sort(FONT_NAMES);
 }
 
 public ChangeFontContributionItem(IPartService service) {
