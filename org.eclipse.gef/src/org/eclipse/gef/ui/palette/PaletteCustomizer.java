@@ -8,7 +8,6 @@ import org.eclipse.gef.palette.PaletteContainer;
 import org.eclipse.gef.palette.PaletteEntry;
 import org.eclipse.gef.ui.palette.customize.EntryPage;
 import org.eclipse.gef.ui.palette.customize.PaletteCategoryFactory;
-import org.eclipse.gef.ui.palette.customize.PaletteGroupFactory;
 import org.eclipse.gef.ui.palette.customize.PaletteSeparatorFactory;
 import org.eclipse.gef.ui.palette.customize.ReadOnlyEntryPage;
 
