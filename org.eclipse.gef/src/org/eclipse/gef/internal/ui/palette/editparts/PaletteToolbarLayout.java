@@ -213,7 +213,7 @@ private void normalLayout(IFigure parent) {
 
 		int minWidth = minSizes[i].width;
 		int width = Math.min(prefSizes[i].width, child.getMaximumSize().width);
-		if (isMatchingWidth())
+		if (getStretchMinorAxis())
 			width = transposer.t(child.getMaximumSize()).width;
 		width = Math.max(minWidth, Math.min(clientArea.width, width));
 		newBounds.width = width;

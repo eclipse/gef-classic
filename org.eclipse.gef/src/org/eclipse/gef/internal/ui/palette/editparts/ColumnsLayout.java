@@ -21,33 +21,20 @@ import org.eclipse.draw2d.geometry.Dimension;
 /**
  * Special FlowLayout to display the palette in the columns view.
  * 
- * <p>
- * This layout is not for external use.
- * </p>
- * 
  * @author Pratik Shah
  */
 public class ColumnsLayout 
 	extends FlowLayout 
 {
-	
+
 private Dimension defaultConstraint = null;
 private Dimension cachedConstraint = null;
 
 /**
- * Constructor
+ * Constructs a new layout
  */
 public ColumnsLayout() {
-	this(true);
-}
-
-/**
- * Constructor
- * 
- * @param isHorizontal	<code>true</code> if this layout is in a horizontal orientation
- */
-public ColumnsLayout(boolean isHorizontal) {
-	super(isHorizontal);
+	super(true);
 	setMinorSpacing(0);
 	setMajorSpacing(0);
 	setStretchMinorAxis(true);

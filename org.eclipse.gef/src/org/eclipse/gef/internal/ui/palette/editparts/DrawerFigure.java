@@ -254,17 +254,12 @@ public Dimension getMinimumSize(int wHint, int hHint) {
 	if (isExpanded()) {
 		List children = getContentPane().getChildren();
 		if (!children.isEmpty()) {
-			Dimension headerSize = collapseToggle.getMinimumSize(wHint, hHint).getCopy();
-			headerSize.height += getContentPane().getInsets().getHeight();
-			Figure child = (Figure)children.get(0);
-			int childHeight = child.getMinimumSize(wHint, -1).height;
-			int multiplier = Math.min(3, children.size());
-			childHeight = Math.max((multiplier * childHeight), 40);			
-			childHeight = Math.min(childHeight, 80);
-			headerSize.height += childHeight;
-			headerSize.height = Math.min(headerSize.height, 
-			                             super.getPreferredSize(wHint, hHint).height);
-			return headerSize;
+			Dimension result = collapseToggle.getPreferredSize(wHint, hHint).getCopy();
+			result.height += getContentPane().getInsets().getHeight();
+			IFigure child = (IFigure)children.get(0);
+			int childHint = getContentPane().getClientArea(Rectangle.SINGLETON).width;
+			result.height += 3 * child.getPreferredSize(childHint, -1).height;
+			return result.intersect(getPreferredSize(wHint, hHint));
 		}
 	}
 

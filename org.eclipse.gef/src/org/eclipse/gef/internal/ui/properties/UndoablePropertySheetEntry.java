@@ -287,6 +287,18 @@ public IPropertySheetEntry[] getChildEntries() {
 		createChildEntries();
 	return childEntries;
 }
+
+/**
+ * returns the Command stack from the root entry
+ * @return
+ */
+protected CommandStack getCommandStack() {
+	//only the root has, and is listening too, the command stack
+	if (getParent() != null)
+		return ((UndoablePropertySheetEntry)getParent()).getCommandStack();
+	return stack;
+}
+
 /* (non-Javadoc)
  * Method declared on IPropertySheetEntry.
  */
@@ -559,7 +571,7 @@ public void resetPropertyValue() {
 		}
 	}
 	if (change) {
-		stack.execute(cc);
+		getCommandStack().execute(cc);
 		refreshValues();	
 	}
 }
@@ -698,6 +710,7 @@ protected void valueChanged(UndoablePropertySheetEntry child, CompoundCommand co
 	if (parent != null)
 		parent.valueChanged(this, command);
 	else {
+		//I am the root entry
 		stack.execute(command);
 	}
 }

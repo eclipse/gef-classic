@@ -29,16 +29,6 @@ public IFigure createFigure() {
 	figure.setOpaque(true);
 	figure.setForegroundColor(ColorConstants.listForeground);
 	figure.setBackgroundColor(ColorConstants.button);
-
-	// The controller is being created here because it cannot be created in the 
-	// constructor as its parent is not set at that point (and hence the viewer cannot
-	// be accessed).
-	controller = new DrawerAnimationController(
-			((PaletteViewer)getViewer()).getPaletteViewerPreferences());
-	getViewer().getEditPartRegistry().put(DrawerAnimationController.class, controller);
-	ToolbarLayout layout = new PaletteToolbarLayout(controller);
-	figure.setLayoutManager(layout);
-	
 	return figure;
 }
 
@@ -48,6 +38,18 @@ public IFigure createFigure() {
  * @see org.eclipse.gef.ui.palette.PaletteEditPart#refreshVisuals()
  */
 protected void refreshVisuals() {
+}
+
+/**
+ * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#registerVisuals()
+ */
+protected void registerVisuals() {
+	super.registerVisuals();
+	controller = new DrawerAnimationController(
+		((PaletteViewer)getViewer()).getPaletteViewerPreferences());
+	getViewer().getEditPartRegistry().put(DrawerAnimationController.class, controller);
+	ToolbarLayout layout = new PaletteToolbarLayout(controller);
+	getFigure().setLayoutManager(layout);
 }
 
 }
