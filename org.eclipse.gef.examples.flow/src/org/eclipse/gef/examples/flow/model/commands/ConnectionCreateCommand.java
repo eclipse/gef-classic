@@ -77,6 +77,14 @@ public Transition getTransition() {
 }
 
 /**
+ * @see org.eclipse.gef.commands.Command#redo()
+ */
+public void redo() {
+	source.addOutput(transition);
+	target.addInput(transition);
+}
+
+/**
  * Sets the source Activity
  * @param activity the source Activity
  */

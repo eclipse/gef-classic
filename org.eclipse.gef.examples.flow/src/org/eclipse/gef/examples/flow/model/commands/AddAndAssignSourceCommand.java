@@ -18,12 +18,24 @@ import org.eclipse.gef.examples.flow.model.StructuredActivity;
 /**
  * @author Daniel Lee
  */
-public class CreateAndAssignSourceCommand extends Command {
+public class AddAndAssignSourceCommand extends Command {
 
 private StructuredActivity parent;
 private Activity child;
 private Activity source;
 private Transition transition;
+
+/**
+ * @see org.eclipse.gef.commands.Command#canExecute()
+ */
+public boolean canExecute() {
+	for(int i = 0; i < source.getOutgoingTransitions().size(); i++) {
+		Activity target = ((Transition)source.getOutgoingTransitions().get(i)).target;
+		if (target.equals(child))
+			return false;
+	}
+	return true;
+}
 
 /**
  * @see org.eclipse.gef.commands.Command#execute()
@@ -33,7 +45,6 @@ public void execute() {
 	transition = new Transition(source, child);
 }
 
-
 /**
  * @see org.eclipse.gef.commands.Command#redo()
  */
@@ -42,6 +53,7 @@ public void redo() {
 	child.addInput(transition);
 	parent.addChild(child);
 }
+
 
 /**
  * Sets the parent ActivityDiagram
@@ -57,7 +69,6 @@ public void setParent(StructuredActivity sa) {
  */
 public void setChild(Activity activity) {
 	child = activity;
-	child.setName("a " + (parent.getChildren().size() + 1));
 }
 
 /**
