@@ -35,4 +35,36 @@
    </requires>
 
 
+ <extension-point id="acceleratorSets" name="%ExtPoint.acceleratorSets"/>
+   <extension-point id="actionDefinitions" name="%ExtPoint.actionDefinitions"/>
+
+   <extension
+         point="org.eclipse.ui.actionDefinitions">
+      <actionDefinition
+            name="%ActionDefinition.zoomIn.name"
+            description="%ActionDefinition.zoomIn.description"
+            id="org.eclipse.gef.zoom_in">
+      </actionDefinition>
+      <actionDefinition
+            name="%ActionDefinition.zoomOut.name"
+            description="%ActionDefinition.zoomOut.description"
+            id="org.eclipse.gef.zoom_out">
+      </actionDefinition>
+   </extension>
+   <extension
+         point="org.eclipse.ui.acceleratorSets">
+      <acceleratorSet
+            scopeId="org.eclipse.ui.globalScope"
+            configurationId="org.eclipse.ui.defaultAcceleratorConfiguration">
+         <accelerator
+               key="Ctrl+="
+               id="org.eclipse.gef.zoom_in">
+         </accelerator>
+         <accelerator
+               key="Ctrl+-"
+               id="org.eclipse.gef.zoom_out">
+         </accelerator>
+      </acceleratorSet>
+   </extension>
+
 </plugin>
