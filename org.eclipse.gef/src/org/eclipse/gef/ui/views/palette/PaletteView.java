@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.gef.ui.paletteview;
+package org.eclipse.gef.ui.views.palette;
 
 import org.eclipse.ui.*;
 import org.eclipse.ui.part.*;
