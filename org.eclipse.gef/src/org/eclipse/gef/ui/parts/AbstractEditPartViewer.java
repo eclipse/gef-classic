@@ -633,6 +633,8 @@ public void setProperty(String key, Object value) {
  */
 public void setRootEditPart(RootEditPart editpart) {
 	if (rootEditPart != null) {
+		if (rootEditPart.isActive())
+			rootEditPart.deactivate();
 		rootEditPart.setViewer(null);
 	}
 	rootEditPart = editpart;
