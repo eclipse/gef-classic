@@ -1,36 +1,22 @@
 package org.eclipse.draw2d.examples;
 
-import org.eclipse.draw2d.ChopboxAnchor;
-import org.eclipse.draw2d.Ellipse;
-import org.eclipse.draw2d.Figure;
-import org.eclipse.draw2d.FigureCanvas;
-import org.eclipse.draw2d.FlowLayout;
-import org.eclipse.draw2d.GroupBoxBorder;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.LightweightSystem;
-import org.eclipse.draw2d.LineBorder;
-import org.eclipse.draw2d.PolylineConnection;
-import org.eclipse.draw2d.PrintFigureOperation;
-import org.eclipse.draw2d.PrintOperation;
-import org.eclipse.draw2d.RectangleFigure;
-import org.eclipse.draw2d.RoundedRectangle;
-import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.printing.Printer;
+import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
+
+import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2d.geometry.Insets;
 
 /**
  * @author danlee
- *
  */
 public class PrintExample {
 
