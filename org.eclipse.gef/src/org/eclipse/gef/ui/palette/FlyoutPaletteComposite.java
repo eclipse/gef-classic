@@ -89,7 +89,7 @@ import org.eclipse.draw2d.SWTGraphics;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Insets;
 
-import org.eclipse.gef.EditPartViewer;
+import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.SharedCursors;
 import org.eclipse.gef.dnd.TemplateTransfer;
 import org.eclipse.gef.internal.GEFMessages;
@@ -235,7 +235,17 @@ private void addListenerToCtrlHierarchy(Control parent, int eventType,
 
 private IMemento capturePaletteState(PaletteViewer viewer) {
 	IMemento memento = XMLMemento.createWriteRoot("paletteState"); //$NON-NLS-1$
-	viewer.saveState(memento);
+	try {
+		viewer.saveState(memento);
+	} catch (RuntimeException re) {
+		// Bug 74843 -- See comment #1
+		// If there's a problem with saving the palette's state, it simply won't be
+		// transferred to the new palette
+		memento = null;
+		/*
+		 * @TODO:Pratik   You should log this exception.
+		 */
+	}
 	return memento;
 }
 
@@ -404,6 +414,19 @@ private void hookIntoWorkbench(final IWorkbenchWindow window) {
 	});
 }
 
+private boolean restorePaletteState(PaletteViewer newPalette, IMemento state) {
+	if (state != null) {
+		try {
+			return newPalette.restoreState(state);
+		} catch (RuntimeException re) {
+			/*
+			 * @TODO:Pratik  You should log this exception
+			 */
+		}
+	}
+	return false;
+}
+
 /**
  * If an external palette viewer is provided, palette state (that is captured in {@link
  * PaletteViewer#saveState(IMemento)} -- active tool, drawer expansion state, drawer pin
@@ -470,6 +493,10 @@ public void setGraphicalControl(Control graphicalViewer) {
 	});
 }
 
+/*
+ * @TODO:Pratik  For 4.0, change the parameter of this method to be EditpartViewer
+ * instead of GraphicalViewer.
+ */
 /**
  * This method hooks a DropTargetListener that collapses the flyout patette when the user
  * drags something from  the palette and moves the cursor to the primary viewer's
@@ -479,7 +506,7 @@ public void setGraphicalControl(Control graphicalViewer) {
  * 
  * @param	viewer	the primary viewer
  */
-public void hookDropTargetListener(EditPartViewer viewer) {
+public void hookDropTargetListener(GraphicalViewer viewer) {
 	viewer.addDropTargetListener(new TransferDropTargetListener() {
 		public void dragEnter(DropTargetEvent event) {
 		}
@@ -530,8 +557,8 @@ private void setState(int newState) {
 				pViewer = provider.createPaletteViewer(paletteContainer);
 				if (externalViewer != null)
 					transferState(externalViewer, pViewer);
-				else if (capturedPaletteState != null)
-					pViewer.restoreState(capturedPaletteState);
+				else
+					restorePaletteState(pViewer, capturedPaletteState);
 				capturedPaletteState = null;
 				minWidth = Math.max(pViewer.getControl().computeSize(0, 0).x, 
 						MIN_PALETTE_SIZE);
@@ -566,7 +593,7 @@ private void setState(int newState) {
 }
 
 private void transferState(PaletteViewer src, PaletteViewer dest) {
-	dest.restoreState(capturePaletteState(src));
+	restorePaletteState(dest, capturePaletteState(src));
 }
 
 private void updateState(IWorkbenchPage page) {
