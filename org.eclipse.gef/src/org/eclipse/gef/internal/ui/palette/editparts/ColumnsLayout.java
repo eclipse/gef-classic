@@ -38,7 +38,7 @@ public ColumnsLayout() {
 	setMinorSpacing(0);
 	setMajorSpacing(0);
 	setStretchMinorAxis(true);
-	setDefaultConstraint(new Dimension(60, 60));
+	setDefaultConstraint(new Dimension(55, 55));
 }
 
 /**
