@@ -10,9 +10,8 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.shapes.model;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 /**
  * A container for multiple shapes.
@@ -26,7 +25,7 @@ public static final String CHILD_ADDED_PROP = "ShapesDiagram.ChildAdded";
 /** Property ID to use when a child is removed from this diagram. */
 public static final String CHILD_REMOVED_PROP = "ShapesDiagram.ChildRemoved";
 private static final long serialVersionUID = 1;
-private Collection shapes = new Vector();
+private List shapes = new ArrayList();
 
 /** 
  * Add a shape to this diagram.
@@ -43,7 +42,7 @@ public boolean addChild(Shape s) {
 
 /** Return a List of Shapes in this diagram. */
 public List getChildren() {
-	return new Vector(shapes);
+	return shapes;
 }
 
 /**
