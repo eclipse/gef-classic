@@ -17,6 +17,7 @@ import org.eclipse.gef.GEF;
 
 /**
  * Actions associated with viewing debugging data in GEF
+ * @deprecated in 3.1
  */
 public class DebugGEFAction extends Action {
 

@@ -26,6 +26,7 @@ import org.eclipse.gef.GEF;
 
 /**
  * View used for debugging information in GEF
+ * @deprecated in 3.1
  */
 public class DebugGEF extends ViewPart {
 
