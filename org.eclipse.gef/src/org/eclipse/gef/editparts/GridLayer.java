@@ -70,7 +70,9 @@ protected void paintFigure(Graphics graphics) {
 }
 
 /**
- * Paints the grid.  Sub-classes can override to customize the grid's look.
+ * Paints the grid.  Sub-classes can override to customize the grid's look.  If this layer
+ * is being used with SnapToGrid, this method will only be invoked when the {@link
+ * SnapToGrid#PROPERTY_GRID_VISIBLE visibility} property is set to true.
  * 
  * @param	g	The Graphics object to be used to do the painting
  * @see FigureUtilities#paintGrid(Graphics, IFigure, org.eclipse.draw2d.geometry.Point, int, int)
