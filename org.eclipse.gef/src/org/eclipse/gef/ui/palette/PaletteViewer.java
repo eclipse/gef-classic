@@ -10,21 +10,23 @@
  *******************************************************************************/
 package org.eclipse.gef.ui.palette;
 
-import java.beans.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.*;
 
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.ui.IMemento;
 
 import org.eclipse.draw2d.FigureCanvas;
 
-import org.eclipse.gef.*;
+import org.eclipse.gef.EditDomain;
+import org.eclipse.gef.EditPart;
+import org.eclipse.gef.internal.ui.palette.PaletteSelectionTool;
 import org.eclipse.gef.internal.ui.palette.editparts.*;
-import org.eclipse.gef.internal.ui.palette.editparts.PaletteRootEditPart;
-import org.eclipse.gef.internal.ui.palette.editparts.ToolEntryEditPart;
 import org.eclipse.gef.palette.*;
 import org.eclipse.gef.ui.palette.customize.PaletteCustomizerDialog;
 import org.eclipse.gef.ui.parts.PaletteViewerKeyHandler;
@@ -80,7 +82,10 @@ private Font font = null;
 /**
  * Constructor */
 public PaletteViewer() {
-	setEditDomain(new EditDomain());
+	EditDomain domain = new EditDomain();
+	domain.setDefaultTool(new PaletteSelectionTool());
+	domain.loadDefaultTool();
+	setEditDomain(domain);
 	setKeyHandler(new PaletteViewerKeyHandler(this));
 	setEditPartFactory(new PaletteEditPartFactory());
 }
