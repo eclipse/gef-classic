@@ -13,6 +13,8 @@ package org.eclipse.gef.examples.logicdesigner.edit;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.*;
 import org.eclipse.gef.commands.Command;
+import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
+
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
 import org.eclipse.gef.examples.logicdesigner.model.*;
 import org.eclipse.gef.examples.logicdesigner.model.commands.*;
@@ -50,13 +52,13 @@ protected Command createChangeConstraintCommand(EditPart child, Object constrain
 	return locationCommand;
 }
 
-protected EditPolicy createChildEditPolicy(EditPart child){
+protected EditPolicy createChildEditPolicy(EditPart child) {
 	if (child instanceof LEDEditPart ||
 	    child instanceof OutputEditPart || 
 	    child instanceof LogicLabelEditPart) {
-		return new org.eclipse.gef.editpolicies.NonResizableEditPolicy();
+		return new NonResizableEditPolicy();
 	}
-	return new org.eclipse.gef.editpolicies.ResizableEditPolicy();
+	return super.createChildEditPolicy(child);
 }
 
 protected Command getCreateCommand(CreateRequest request) {
