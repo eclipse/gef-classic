@@ -36,7 +36,7 @@ private boolean horizontal;
 private List guides = new ArrayList();
 
 public LogicRuler(boolean isHorizontal) {
-	this(isHorizontal, RulerProvider.UNIT_INCHES);
+	this(isHorizontal, RulerProvider.UNIT_PIXELS);
 }
 
 public LogicRuler(boolean isHorizontal, int unit) {
