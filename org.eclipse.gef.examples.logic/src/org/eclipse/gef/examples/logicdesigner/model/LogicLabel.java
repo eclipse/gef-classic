@@ -10,14 +10,18 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner.model;
 
+import java.io.IOException;
+
 import org.eclipse.swt.graphics.Image;
 
 import org.eclipse.draw2d.geometry.Dimension;
+
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
 
 public class LogicLabel
 	extends LogicSubpart
 {
+static final long serialVersionUID = 1;
 
 private String text = 
 	LogicMessages.LogicPlugin_Tool_CreationTool_LogicLabel; 
@@ -46,6 +50,10 @@ protected String getNewID() {
 
 public Dimension getSize(){
 	return new Dimension(size.width, -1);
+}
+
+private void readObject(java.io.ObjectInputStream s) throws IOException, ClassNotFoundException {
+	s.defaultReadObject();
 }
 
 public void setSize(Dimension d) {
