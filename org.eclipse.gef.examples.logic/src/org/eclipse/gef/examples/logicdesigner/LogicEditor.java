@@ -69,7 +69,8 @@ class OutlinePage
 		getViewer().setEditPartFactory(new TreePartFactory());
 		ContextMenuProvider provider = new LogicContextMenuProvider(getViewer(), getActionRegistry());
 		getViewer().setContextMenuProvider(provider);
-		getSite().registerContextMenu("org.eclipse.gef.outline", provider.getMenuManager(), 
+		getSite().registerContextMenu(GEFActionConstants.CONTEXT_MENU_OUTLINE, 
+										provider.getMenuManager(), 
 										getSite().getSelectionProvider());
 		getViewer().setKeyHandler(getCommonKeyHandler());
 		getViewer().addDropTargetListener(
@@ -206,7 +207,11 @@ public void commandStackChanged(EventObject event) {
 protected void configurePaletteViewer() {
 	super.configurePaletteViewer();
 	PaletteViewerImpl viewer = (PaletteViewerImpl)getPaletteViewer();
-	getPaletteViewer().setContextMenuProvider(new PaletteContextMenuProvider(viewer, getActionRegistry()));
+	ContextMenuProvider provider = new PaletteContextMenuProvider(viewer, getActionRegistry());
+	getPaletteViewer().setContextMenuProvider(provider);
+	getSite().registerContextMenu(GEFActionConstants.CONTEXT_MENU_PALETTE, 
+									provider.getMenuManager(), 
+									getSite().getSelectionProvider());
 	viewer.setCustomizer(new LogicPaletteCustomizer());
 }
 
@@ -218,7 +223,8 @@ protected void configureGraphicalViewer() {
 	viewer.setEditPartFactory(new GraphicalPartFactory());
 	ContextMenuProvider provider = new LogicContextMenuProvider(viewer, getActionRegistry());
 	viewer.setContextMenuProvider(provider);
-	getSite().registerContextMenu("org.eclipse.gef.editor", provider.getMenuManager(), 
+	getSite().registerContextMenu(GEFActionConstants.CONTEXT_MENU_EDITOR, 
+									provider.getMenuManager(), 
 									getSite().getSelectionProvider());
 	viewer.setKeyHandler(new GraphicalViewerKeyHandler(viewer)
 		.setParent(getCommonKeyHandler()));
