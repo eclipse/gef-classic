@@ -36,8 +36,7 @@ public abstract class ComponentEditPolicy
 {
 
 /**
- * Override to contribute to the component's being deleted. DELETE will also be sent to
- * the parent. DELETE must be handled by either the child or the parent, or both.
+ * Override to contribute to the component's being deleted.
  * @param deleteRequest the DeleteRequest
  * @return Command <code>null</code> or a contribution to the delete */
 protected Command createDeleteCommand(GroupRequest deleteRequest) {
@@ -56,13 +55,10 @@ public Command getCommand(Request request) {
 }
 
 /**
- * Combines the DELETE contribution from this class and the parent. This classes
- * contribution is obtained by calling {@link #createDeleteCommand(GroupRequest)}. The
- * parent is sent 
- * {@link org.eclipse.gef.RequestConstants#REQ_DELETE_DEPENDANT REQ_DELETE_DEPENDANT}. 
- * The parent's contribution is combined with the local contribution and returned.
+ * Calls and returns {@link #createDeleteCommand(GroupRequest)}. This method is here for
+ * historical reasons and used to perform additional function.
  * @param request the DeleteRequest
- * @return the combined contributions from this EditPolicy and the parent EditPart */
+ * @return a delete command */
 protected Command getDeleteCommand(GroupRequest request) {
 	return createDeleteCommand(request);
 }
