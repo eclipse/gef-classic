@@ -62,8 +62,14 @@ public void endLine() {
  * @see FlowContainerLayout#flush()
  */
 protected void flush() {
-	if (currentLine != null)
+	if (currentLine != null) {
+		// We want to preserve the state when a linebox is being added
+		boolean newLine = context.getConsumeSpaceOnNewLine();
+		boolean sameLine = context.getContinueOnSameLine();
 		context.addToCurrentLine(currentLine);
+		context.setConsumeSpaceOnNewLine(newLine);
+		context.setContinueOnSameLine(sameLine);
+	}
 }
 /**
  * InlineFlowLayout gets this information from its context.
