@@ -37,7 +37,7 @@ public SimpleLoweredBorder() {
 /**
  * Constructs a SimpleLoweredBorder with the width of all sides provided as input. If 
  * width == 2, this SimpleLoweredBorder will use the local DOUBLE Scheme, otherwise it 
- * will use the {@link SCHEMES#BUTTON_PRESSED} Scheme.
+ * will use the {@link SchemeBorder.SCHEMES#BUTTON_PRESSED} Scheme.
  *
  * @param width the width of all the sides of the border
  * @since 2.0

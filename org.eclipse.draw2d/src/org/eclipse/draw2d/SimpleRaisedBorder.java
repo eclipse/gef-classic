@@ -25,9 +25,9 @@ private static final Scheme DOUBLE = new Scheme(
 );
 
 /**
- * Constructs a SimpleRaisedBorder with the predefined {@link SCHEMES#BUTTON_RAISED} 
+ * Constructs a SimpleRaisedBorder with the predefined {@link SchemeBorder.SCHEMES#BUTTON_RAISED} 
  * Scheme set as default.
- * 
+ *
  * @since 2.0
  */
 public SimpleRaisedBorder() {
@@ -37,7 +37,7 @@ public SimpleRaisedBorder() {
 /**
  * Constructs a SimpleRaisedBorder with the width of all sides provided as input. If 
  * width == 2, this SimpleRaisedBorder will use the local DOUBLE Scheme, otherwise it will
- * use the {@link SCHEMES#BUTTON_RAISED} Scheme. 
+ * use the {@link SchemeBorder.SCHEMES#BUTTON_RAISED} Scheme. 
  *
  * @param width the width of all the sides of the border
  * @since 2.0

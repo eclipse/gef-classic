@@ -476,12 +476,12 @@ protected class EventHandler
 		}
 	}
 	
-	/** @see MouseListener#mouseDoubleClick(MouseEvent) */
+	/** @see org.eclipse.swt.events.MouseListener#mouseDoubleClick(MouseEvent) */
 	public void mouseDoubleClick(MouseEvent e) {
 		getEventDispatcher().dispatchMouseDoubleClicked(e);
 	}
 		
-	/** @see MouseListener#mouseDown(MouseEvent) */
+	/** @see org.eclipse.swt.events.MouseListener#mouseDown(MouseEvent) */
 	public void mouseDown(MouseEvent e) {
 		getEventDispatcher().dispatchMousePressed(e);
 	}
@@ -506,7 +506,7 @@ protected class EventHandler
 		getEventDispatcher().dispatchMouseMoved(e);
 	}
 	
-	/** @see MouseListener#mouseUp(MouseEvent) */
+	/** @see org.eclipse.swt.events.MouseListener#mouseUp(MouseEvent) */
 	public void mouseUp(MouseEvent e) {
 		getEventDispatcher().dispatchMouseReleased(e);
 	}
