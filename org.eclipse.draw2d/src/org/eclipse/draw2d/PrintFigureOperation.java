@@ -14,10 +14,15 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.printing.Printer;
 import org.eclipse.swt.widgets.Display;
 
+import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.Rectangle;
+
 /**
  * Class responsible for printing Figures.
  * 
- * @author danlee
+ * @author Dan Lee
+ * @author Eric Bordeau
+ * @author Sven Müller
  */
 public class PrintFigureOperation extends PrintOperation {
 
@@ -47,6 +52,15 @@ public PrintFigureOperation(Printer p, IFigure srcFigure) {
 
 
 /**
+ * Returns the printSource.
+ * 
+ * @return IFigure The source IFigure
+ */
+protected IFigure getPrintSource() {
+	return printSource;
+}
+
+/**
  * @see org.eclipse.draw2d.PrintOperation#preparePrintSource()
  */
 protected void preparePrintSource() {
@@ -55,47 +69,66 @@ protected void preparePrintSource() {
 }
 
 /**
+ * Prints the pages based on the current print mode. * @see org.eclipse.draw2d.PrintOperation#printPages() */
+protected void printPages() {
+	double dpiScale = getPrinter().getDPI().x / Display.getCurrent().getDPI().x;
+	
+	Rectangle printRegion = getPrintRegion();
+	printRegion.width /= dpiScale;
+	printRegion.height /= dpiScale;
+	
+	Rectangle bounds = printSource.getBounds();
+	double xScale = (double)printRegion.width / bounds.width;
+	double yScale = (double)printRegion.height / bounds.height;
+	double scale = 1.0;
+	if (getPrintMode() == PrintOperation.FIT_PAGE)
+		scale = Math.min(xScale, yScale);
+	else if (getPrintMode() == PrintOperation.FIT_WIDTH)
+		scale = xScale;
+	else if (getPrintMode() == PrintOperation.FIT_HEIGHT)
+		scale = yScale;
+	
+	double x =	getPrintSource().getBounds().width  * scale / printRegion.width;
+	double y =	getPrintSource().getBounds().height * scale / printRegion.height;
+
+	int horizontalPages = (x > (int)x) ? (int)x + 1 : (int)x;
+	int verticalPages = (y > (int)y) ? (int)y + 1 : (int)y;
+	
+	IFigure figure = getPrintSource();
+	Point offset = figure.getBounds().getLocation();
+	PrinterGraphics g = getFreshPrinterGraphics();
+	g.scale(scale);
+	g.setForegroundColor(figure.getForegroundColor());
+	g.setBackgroundColor(figure.getBackgroundColor());
+	g.setFont(figure.getFont());
+	
+	Rectangle clipRect = new Rectangle();
+	for (int v = 0; v < verticalPages; v++) {
+		for (int h = 0; h < horizontalPages; h++) {
+			g.pushState();
+			getPrinter().startPage();
+			g.scale(dpiScale);
+			g.translate(-offset.x, -offset.y);
+			clipRect.setLocation(offset);
+			clipRect.setSize((int)(printRegion.width / scale), 
+							(int)(printRegion.height / scale));
+			g.clipRect(clipRect);
+			figure.paint(g);
+			getPrinter().endPage();
+			g.restoreState();
+			offset.x += (int)(printRegion.width / scale);
+		}
+		offset.y += (int)(printRegion.height / scale);
+		offset.x = figure.getBounds().getLocation().x;
+	}
+}
+
+/**
  * @see org.eclipse.draw2d.PrintOperation#restorePrintSource()
  */
 protected void restorePrintSource() {
 	getPrintSource().setBackgroundColor(oldBGColor);
 	oldBGColor = null;
-}
-
-/** * @see org.eclipse.draw2d.PrintOperation#printPages() */
-protected void printPages() {
-	getPrinter().startPage();
-
-	Graphics g = getFreshPrinterGraphics();
-	IFigure f = getPrintSource();
-	setupPrinterGraphicsFor(g, f);
-
-	f.paint(g);
-
-	getPrinter().endPage();
-}
-
-/**
- * Sets up Graphics object g for IFigure f.
- * @param g The Graphics to setup
- * @param f The IFigure used to setup g */
-protected void setupPrinterGraphicsFor(Graphics g, IFigure f) {
-	g.setForegroundColor(f.getForegroundColor());
-	g.setBackgroundColor(f.getBackgroundColor());
-	g.setFont(f.getFont());
-
-	g.scale((double)getPrinter().getDPI().x / Display.getDefault().getDPI().x);
-	g.translate(f.getBounds().getCopy().getLocation().negate());
-	g.clipRect(f.getBounds());
-}
-
-/**
- * Returns the printSource.
- * 
- * @return IFigure The source IFigure
- */
-protected IFigure getPrintSource() {
-	return printSource;
 }
 
 /**
