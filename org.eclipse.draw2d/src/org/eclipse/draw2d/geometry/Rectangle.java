@@ -1,7 +1,7 @@
 package org.eclipse.draw2d.geometry;
 /*
  * Licensed Material - Property of IBM
- * (C) Copyright IBM Corp. 2001, 2002 - All Rights Reserved.
+ *(C) Copyright IBM Corp. 2001, 2002 - All Rights Reserved.
  * US Government Users Restricted Rights - Use, duplication or disclosure
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
@@ -9,7 +9,7 @@ package org.eclipse.draw2d.geometry;
 import org.eclipse.draw2d.PositionConstants;
 
 /**
- * Represents a Rectangle (x, y, width, height). This class provides various methods
+ * Represents a Rectangle(x, y, width, height). This class provides various methods
  * for manipulating this Rectangle or creating new derived geometrical Objects.
  */
 public class Rectangle
@@ -30,14 +30,15 @@ public static final Rectangle SINGLETON = new Rectangle();
 static final long serialVersionUID = 1;
 
 /**
- * Constructs a Rectangle at the origin with zero 
- * width and height.
+ * Constructs a Rectangle at the origin with zero width and height.
+ * 
  * @since 2.0
  */
-public Rectangle () { }
+public Rectangle() { }
 
 /**
  * Constructs a Rectangle given a location and size.
+ * 
  * @param p  the location
  * @param size the size
  * @since 2.0
@@ -48,24 +49,27 @@ public Rectangle(Point p, Dimension size) {
 
 /**
  * Constructs a copy of the provided Rectangle.
+ * 
  * @param rect Rectangle supplying the initial values
  * @since 2.0
  */
-public Rectangle (Rectangle rect) {
+public Rectangle(Rectangle rect) {
 	this(rect.x, rect.y, rect.width, rect.height);
 }
 
 /**
- * Constructs a copy of the provided SWT {@link org.eclipse.swt.graphics.Rectangle Rectangle}.
+ * Constructs a copy of the provided SWT {@link org.eclipse.swt.graphics.Rectangle}.
+ * 
  * @param rect The SWT Rectangle being copied
  * @since 2.0
  */
-public Rectangle (org.eclipse.swt.graphics.Rectangle rect) {
+public Rectangle(org.eclipse.swt.graphics.Rectangle rect) {
 	this(rect.x, rect.y, rect.width, rect.height);
 }
 
 /**
  * Constructs a Rectangle with the provided values.
+ * 
  * @param x  X location
  * @param y  Y location
  * @param width  Width of the rectangle
@@ -81,6 +85,7 @@ public Rectangle(int x, int y, int width, int height) {
 
 /**
  * Constructs the smallest Rectangle that contains the specified Points.
+ * 
  * @param p1  Upper left hand corner
  * @param p2  Lower right hand corner
  * @since 2.0
@@ -91,7 +96,8 @@ public Rectangle(Point p1, Point p2) {
 }
 
 /**
- * Returns the y-coordinate of the bottom of this Rectangle
+ * Returns the y-coordinate of the bottom of this Rectangle.
+ * 
  * @return  The Y coordinate of the bottom
  * @since 2.0
  */
@@ -100,29 +106,29 @@ public int bottom() {
 }
 
 /**
- * Returns whether the given point is within the 
- * boundaries of this Rectangle.  The boundaries are inclusive of the top and left edges,
- * but exclusive of the bottom and right edges.
+ * Returns whether the given point is within the boundaries of this Rectangle.  
+ * The boundaries are inclusive of the top and left edges, but exclusive of the 
+ * bottom and right edges.
  * 
  * @param pt  Point being tested for containment
  * @return true if the Point is within this Rectangle
  * @since 2.0
  */
-public boolean contains (Point pt) {
+public boolean contains(Point pt) {
 	return contains(pt.x, pt.y);
 }
 
 /**
- * Returns whether the given coordinates are within the 
- * boundaries of this Rectangle.  The boundaries are inclusive of the top and left edges,
- * but exclusive of the bottom and right edges.
+ * Returns whether the given coordinates are within the boundaries of this 
+ * Rectangle.  The boundaries are inclusive of the top and left edges, but 
+ * exclusive of the bottom and right edges.
  *
  * @param x X value
  * @param y Y value
  * @return true if the coordinates are within this Rectangle
  * @since 2.0
  */
-public boolean contains (int x, int y) {
+public boolean contains(int x, int y) {
 	return x >= this.x
 		&& y >= this.y
 		&& x < this.x + this.width
@@ -137,7 +143,8 @@ public boolean contains (int x, int y) {
  * @since 2.0
  */
 public Rectangle crop(Insets insets) {
-	if (insets == null) return this;
+	if (insets == null) 
+		return this;
 	x += insets.left;
 	y += insets.top;
 	width -= (insets.getWidth());
@@ -146,13 +153,12 @@ public Rectangle crop(Insets insets) {
 }
 
 /**
- * Returns whether the input object is equal to this
- * Rectangle or not.
- * Rectangles are equivalent if their x, y, height, and 
- * width values are the same.
+ * Returns whether the input object is equal to this Rectangle or not. 
+ * Rectangles are equivalent if their x, y, height, and width values are the 
+ * same.
  *
- * @param o  Object being tested for equality.
- * @return  Returns the result of the equality test.
+ * @param o  Object being tested for equality
+ * @return  Returns the result of the equality test
  * @since 2.0
  */
 public boolean equals(Object o) {
@@ -168,13 +174,12 @@ public boolean equals(Object o) {
 }
 
 /**
- * Expands the horizontal and vertical sides of this
- * Rectangle with the values provided as input, and returns
- * this for convenience. The location of its center is 
- * kept constant.
+ * Expands the horizontal and vertical sides of this Rectangle with the values 
+ * provided as input, and returns this for convenience. The location of its 
+ * center is kept constant.
  * 
- * @param h  Horizontal increment.
- * @param v  Vertical increment.
+ * @param h  Horizontal increment
+ * @param v  Vertical increment
  * @return  <code>this</code> for convenience
  * @since 2.0
  */
@@ -183,9 +188,9 @@ public Rectangle expand(int h, int v) {
 }
 
 /**
- * Expands the horizontal and vertical sides of this
- * Rectangle by the width and height of the given Insets, 
- * and returns this for convenience.
+ * Expands the horizontal and vertical sides of this Rectangle by the width and 
+ * height of the given Insets, and returns this for convenience.
+ * 
  * @param insets contains the amounts to expand on each side
  * @return  <code>this</code> for convenience
  * @since 2.0
@@ -202,7 +207,7 @@ public Rectangle expand(Insets insets) {
  * Returns a new Point representing the middle point of the bottom side of this
  * Rectangle.
  *
- * @return  Point at the bottom of the Rectangle.
+ * @return  Point at the bottom of the Rectangle
  * @since 2.0
  */
 public Point getBottom() {
@@ -212,7 +217,7 @@ public Point getBottom() {
 /**
  * Returns a new Point representing the bottom left point of this Rectangle.
  *
- * @return  Point at the bottom left of the rectangle.
+ * @return  Point at the bottom left of the rectangle
  * @since 2.0
  */
 public Point getBottomLeft() {
@@ -222,7 +227,7 @@ public Point getBottomLeft() {
 /**
  * Returns a new Point representing the bottom right point of this Rectangle.
  *
- * @return  Point at the bottom right of the rectangle.
+ * @return  Point at the bottom right of the rectangle
  * @since 2.0
  */
 public Point getBottomRight() {
@@ -230,20 +235,19 @@ public Point getBottomRight() {
 }
 
 /**
- * Returns a new point representing the center of this
- * Rectangle.
+ * Returns a new point representing the center of this Rectangle.
  *
- * @return  Point at the center of the rectangle.
+ * @return  Point at the center of the rectangle
  */
 public Point getCenter() {
 	return new Point(x + width / 2, y + height / 2);
-	}
+}
 
 /**
- * Returns a new Rectangle which has the exact same parameters
- * as this Rectangle.
+ * Returns a new Rectangle which has the exact same parameters as this 
+ * Rectangle.
  *
- * @return  Copy of this Rectangle.
+ * @return  Copy of this Rectangle
  * @since 2.0
  */
 public Rectangle getCopy() {
@@ -257,8 +261,8 @@ public Rectangle getCopy() {
 /**
  * Returns a new Rectangle with the specified insets cropped.
  *
- * @param insets  Insets being cropped from the Rectangle.
- * @return  Cropped new Rectangle.
+ * @param insets  Insets being cropped from the Rectangle
+ * @return  Cropped new Rectangle
  */
 public Rectangle getCropped(Insets insets) {
 	Rectangle r = new Rectangle(this);
@@ -267,13 +271,13 @@ public Rectangle getCropped(Insets insets) {
 }
 
 /**
- * Returns a new incremented Rectangle, where the sides are
- * expanded by the horizonatal and vertical values provided.
- * The center of the Rectangle is maintained constant.
+ * Returns a new incremented Rectangle, where the sides are expanded by the 
+ * horizonatal and vertical values provided. The center of the Rectangle is 
+ * maintained constant.
  *
- * @param h  Horizontal increment.
- * @param v  Vertical Inrement.
- * @return  A new expanded Rectangle.
+ * @param h  Horizontal increment
+ * @param v  Vertical inrement
+ * @return  A new expanded Rectangle
  * @since 2.0
  */
 public Rectangle getExpanded(int h, int v) {
@@ -281,10 +285,11 @@ public Rectangle getExpanded(int h, int v) {
 }
 
 /**
- * Creates and returns a new Rectangle with the bounds of
- * <code>this</code> Rectangle, expanded by the given Insets.
+ * Creates and returns a new Rectangle with the bounds of <code>this</code> 
+ * Rectangle, expanded by the given Insets.
  *
- * @see #expand(Insets)
+ * @param insets The insets used to expand this rectangle
+ * @return A new expanded Rectangle
  * @since 2.0
  */
 public Rectangle getExpanded(Insets insets) {
@@ -293,12 +298,12 @@ public Rectangle getExpanded(Insets insets) {
 
 
 /**
- * Returns a new Rectangle which has the intersection of this
- * Rectangle and the rectangle provided as input. Returns an
- * empty Rectangle if there is no interection.
+ * Returns a new Rectangle which has the intersection of this Rectangle and the 
+ * rectangle provided as input. Returns an empty Rectangle if there is no 
+ * interection.
  *
- * @param rect  Rectangle provided to test for intersection.
- * @return  A new Rectangle representing the intersection.
+ * @param rect  Rectangle provided to test for intersection
+ * @return  A new Rectangle representing the intersection
  * @since 2.0
  */
 public Rectangle getIntersection(Rectangle rect) {
@@ -313,10 +318,10 @@ public Rectangle getIntersection(Rectangle rect) {
 }
 
 /**
- * Returns a new Rectangle representing the middle point of the 
- * left hand side of this Rectangle.
+ * Returns a new Point representing the middle point of the left hand side of 
+ * this Rectangle.
  *
- * @return  Point requested.
+ * @return  Point at the left of the Rectangle
  */
 public Point getLeft() {
 	return new Point(x, y + height / 2);
@@ -325,74 +330,22 @@ public Point getLeft() {
 /**
  * Returns the upper left hand corner of the rectangle.
  *
- * @return  Location of the rectangle.
+ * @return  Location of the rectangle
  * @see  #setLocation(Point)
  */
 public Point getLocation() {
 	return new Point(x, y);
 }
 
-
-
 /**
- * Returns a new rectangle with its width and height augmented.
- * @param w  Amount by which width is to be resized.
- * @param h  Amount by which height is to be resized.
- * @return a new rectangle with its width and height augmented
- */
-public Rectangle getResized(int w, int h) {
-	return new Rectangle(this).resize(w, h);
-}
-
-/**
- * Returns a new Rectangle which is shifted by the position
- * of the input Point supplied.
- * 
- * @param pt  Point providing the amount of shift along each axis.
- * @return  The new translated Rectangle.
- * @since 2.0
- */
-public Rectangle getTranslated(Point pt) {
-	return new Rectangle(this).translate(pt);
-}
-
-/**
- * Returns a new Rectangle which is shifted along each axis
- * by the passed values.
- *
- * @param dx  Displacement along X axis.
- * @param dy  Displacement along Y axis.
- * @return  The translated rectangle.
- * @since 2.0
- */
-public Rectangle getTranslated(int dx, int dy) {
-	return new Rectangle(this).translate(dx, dy);
-}
-
-/**
- * Returns a new rectangle whose width and height have
- * been interchanged. This can be useful in orientation
- * changes.
- *
- * @return  The transposed rectangle.
- * @since 2.0
- */
-public Rectangle getTransposed() {
-	Rectangle r = new Rectangle(this);
-	r.transpose();
-	return r;
-}
-
-/**
- * Returns an integer which represents the position of the
- * given point with respect to this rectangle. Possible return
- * values are WEST, EAST, NORTH, and SOUTH as found in 
- * {@link org.eclipse.draw2d.PositionConstants PositionConstants}  
+ * Returns an integer which represents the position of the given point with 
+ * respect to this rectangle. Possible return values are WEST, EAST, NORTH, and 
+ * SOUTH as found in {@link org.eclipse.draw2d.PositionConstants}.
  * 
  * Returns PositionConstant.NONE if the given point is in this Rectangle.
  *
  * @param	pt	The Point whose position has to be determined
- * @return	An int which is a PositionConstant
+ * @return	An <code>int</code> which is a PositionConstant
  * @see org.eclipse.draw2d.PositionConstants
  * @since 2.0
  */
@@ -416,12 +369,23 @@ public int getPosition(Point pt) {
 }	 
 
 /**
- * Returns a new Rectangle which is equivalent to this Rectangle 
- * with its dimensions modified by the passed Dimension <i>d</i>.
+ * Returns a new Rectangle which is equivalent to this Rectangle with its 
+ * dimensions modified by the passed width <i>w</i> and height <i>h</i>.
+
+ * @param w  Amount by which width is to be resized
+ * @param h  Amount by which height is to be resized
+ * @return a new rectangle with its width and height modified
+ */
+public Rectangle getResized(int w, int h) {
+	return new Rectangle(this).resize(w, h);
+}
+
+/**
+ * Returns a new Rectangle which is equivalent to this Rectangle with its 
+ * dimensions modified by the passed Dimension <i>d</i>.
  *
- * @param d  Dimensions by which the rectangle's size
- *            should be modified.
- * @return   The new rectangle with the modified dimensions. 
+ * @param d  Dimensions by which the rectangle's size should be modified
+ * @return   The new rectangle with the modified dimensions
  * @since 2.0
  */
 public Rectangle getResized(Dimension d) {
@@ -429,10 +393,10 @@ public Rectangle getResized(Dimension d) {
 }
 
 /**
- * Returns a new Point which represents the middle point of the 
- * right hand side of this Rectangle.
+ * Returns a new Point which represents the middle point of the right hand side 
+ * of this Rectangle.
  *
- * @return  The point requested.
+ * @return  Point at the right of the Rectangle
  * @since 2.0
  */
 public Point getRight() {
@@ -442,9 +406,7 @@ public Point getRight() {
 /**
  * Retuns the dimensions of this Rectangle.
  *
- * @return  Size of this Rectangle as a Dimension.
- * @see  #setSize(Dimension)
- * @see  #setSize(int,int)
+ * @return  Size of this Rectangle as a Dimension
  * @since 2.0
  */
 public Dimension getSize() {
@@ -452,10 +414,10 @@ public Dimension getSize() {
 }
 
 /**
- * Returns a new Point which represents the middle point of the top side 
- * of this Rectangle.
+ * Returns a new Point which represents the middle point of the top side of this 
+ * Rectangle.
  *
- * @return  The point requested.
+ * @return  Point at the top of the Rectangle
  * @since 2.0
  */
 public Point getTop() {
@@ -463,10 +425,10 @@ public Point getTop() {
 }
 
 /**
- * Returns a new Point which represents the top left hand corner of 
- * this Rectangle.
+ * Returns a new Point which represents the top left hand corner of this 
+ * Rectangle.
  *
- * @return The requested point.
+ * @return  Point at the top left of the rectangle
  * @since 2.0
  */
 public Point getTopLeft() {
@@ -474,10 +436,10 @@ public Point getTopLeft() {
 }
 
 /**
- * Returns a new Point which represents the top right hand corner 
- * of this Rectangle.
+ * Returns a new Point which represents the top right hand corner of this 
+ * Rectangle.
  *
- * @return The requested point.
+ * @return  Point at the top right of the rectangle
  * @since 2.0
  */
 public Point getTopRight() {
@@ -485,11 +447,48 @@ public Point getTopRight() {
 }
 
 /**
- * Returns the rectangular area which contains both this Rectangle
- * and the Rectangle supplied as input.
+ * Returns a new Rectangle which is shifted along each axis by the passed 
+ * values.
  *
- * @param rect  Rectangle for calculating union.
- * @return  Rectangular union region.
+ * @param dx  Displacement along X axis
+ * @param dy  Displacement along Y axis
+ * @return  The new translated rectangle
+ * @since 2.0
+ */
+public Rectangle getTranslated(int dx, int dy) {
+	return new Rectangle(this).translate(dx, dy);
+}
+
+/**
+ * Returns a new Rectangle which is shifted by the position of the given Point.
+ * 
+ * @param pt  Point providing the amount of shift along each axis
+ * @return  The new translated Rectangle
+ * @since 2.0
+ */
+public Rectangle getTranslated(Point pt) {
+	return new Rectangle(this).translate(pt);
+}
+
+/**
+ * Returns a new rectangle whose width and height have been interchanged, as well
+ * as its x and y values. This can be useful in orientation changes.
+ *
+ * @return  The transposed rectangle
+ * @since 2.0
+ */
+public Rectangle getTransposed() {
+	Rectangle r = new Rectangle(this);
+	r.transpose();
+	return r;
+}
+
+/**
+ * Returns a new Rectangle which contains both this Rectangle and the Rectangle 
+ * supplied as input.
+ *
+ * @param rect  Rectangle for calculating union
+ * @return  A new unioned Rectangle
  * @since 2.0
  */
 public Rectangle getUnion(Rectangle rect) {
@@ -504,14 +503,13 @@ public Rectangle getUnion(Rectangle rect) {
 }
 
 /**
- * Sets the size of this Rectangle to the intersection region
- * with the Rectangle supplied as input, and returns this for
- * convenience. The location and dimensions are set to zero if
- * there is no intersection with the input Rectangle.
+ * Sets the size of this Rectangle to the intersection region with the Rectangle 
+ * supplied as input, and returns this for convenience. The location and 
+ * dimensions are set to zero if there is no intersection with the input 
+ * Rectangle.
  *
  * @param rect  Rectangle for the calculating intersection.
  * @return  <code>this</code> for convenience
- * @see  #intersects(Rectangle)
  * @since 2.0
  */
 public Rectangle intersect(Rectangle rect) {
@@ -531,11 +529,10 @@ public Rectangle intersect(Rectangle rect) {
 }    
 
 /**
- * Returns if the input Rectangle intersects this Rectangle.
+ * Returns <code>true</code> if the input Rectangle intersects this Rectangle.
  *
- * @param rect  Rectangle for the intersetion test.
- * @return  Result of the intersection test.
- * @see  #intersects(Rectangle)
+ * @param rect  Rectangle for the intersetion test
+ * @return  <code>true</code> if the input Rectangle intersects this Rectangle
  * @since 2.0
  */
 public boolean intersects(Rectangle rect) {
@@ -546,9 +543,10 @@ public boolean intersects(Rectangle rect) {
 }
 
 /**
- * Returns whether this Rectangle has any dimensions.
+ * Returns <code>true</code> if this Rectangle's width or height is less than or
+ * equal to 0.
  * 
- * @return  Result of the emptiness test.
+ * @return  <code>true</code> if this Rectangle is empty
  * @since 2.0
  */
 public boolean isEmpty() {
@@ -556,34 +554,26 @@ public boolean isEmpty() {
 }
 
 /**
- * Scales the location and size of this Rectangle by the given scale.
- * 
- * @param factor The factor by which this rectangle will be scaled.
- * @since 2.0
+ * @see Translatable#performScale(float)
  */
 public void performScale(float factor) {
 	scale(factor);
 }
 
 /**
- * Translates <code>this</code> Rectangle by (dx,dy).
- *
- * @see #translate(int, int)
- * @since 2.0
+ * @see Translatable#performTranslate(int, int)
  */
 public void performTranslate(int dx, int dy) {
 	translate(dx, dy);
 }
 
 /**
- * Resizes this Rectangle by the dimensions provided as input, 
- * and returns this for convenience. This Rectange's width
- * will become this.width += sizeDelta.width. Likewise
- * for height.
+ * Resizes this Rectangle by the Dimension provided as input and returns this 
+ * for convenience. This Rectange's width will become this.width + sizeDelta.width. 
+ * Likewise for height.
  *
- * @param sizeDelta  Resize data as a Dimension. 
+ * @param sizeDelta  Resize data as a Dimension
  * @return  <code>this</code> for convenience
- * @see  #resize(int,int)
  * @since 2.0
  */
 public Rectangle resize(Dimension sizeDelta) {
@@ -593,15 +583,13 @@ public Rectangle resize(Dimension sizeDelta) {
 }
 
 /**
- * Resizes this Rectangle by the dimension values supplied as input, 
- * and returns this for convenience. This Rectangle's width will
- * become this.width += dw. This Rectangle's height will become
- * this.height += dh.
+ * Resizes this Rectangle by the values supplied as input and returns this for 
+ * convenience. This Rectangle's width will become this.width + dw. This 
+ * Rectangle's height will become this.height + dh.
  *
- * @param dw  Amount by which width is to be resized.
- * @param dh  Amount by which height is to be resized.
+ * @param dw  Amount by which width is to be resized
+ * @param dh  Amount by which height is to be resized
  * @return  <code>this</code> for convenience
- * @see #resize(Dimension)
  * @since 2.0
  */
 public Rectangle resize(int dw, int dh) {
@@ -611,9 +599,9 @@ public Rectangle resize(int dw, int dh) {
 }
 
 /**
- * Returns the right end of the rectangle along the X axis.
- *
- * @return  The requestion location.
+ * Returns the x-coordinate of the right side of this Rectangle.
+ * 
+ * @return  The X coordinate of the right side
  * @since 2.0
  */
 public int right() {
@@ -621,11 +609,10 @@ public int right() {
 }
 
 /**
- * Scales the location and size of this Rectangle by 
- * the given scale.  Returns itself for convenience.
+ * Scales the location and size of this Rectangle by the given scale and returns 
+ * this for convenience.
  * 
- * @param	scaleFactor	The factor by which this rectangle 
- *				        will be scaled
+ * @param	scaleFactor	The factor by which this rectangle will be scaled
  * @return  <code>this</code> for convenience
  * @since 2.0
  */
@@ -634,13 +621,11 @@ public final Rectangle scale(float scaleFactor) {
 }
 
 /**
- * Scales the location and size of this Rectangle by
- * the given scales.  Returns itself for convenience.
+ * Scales the location and size of this Rectangle by the given scales and returns 
+ * this for convenience.
  *
- * @param	scaleX	the factor by which the X
- *					dimension has to be scaled
- * @param	scaleY	the factor by which the Y
- *					dimension has to be scaled
+ * @param	scaleX	the factor by which the X dimension has to be scaled
+ * @param	scaleY	the factor by which the Y dimension has to be scaled
  * @return  <code>this</code> for convenience
  * @since 2.0
  */
@@ -653,10 +638,11 @@ public Rectangle scale(float scaleX, float scaleY) {
 }
 
 /**
- * Sets the parameters of this Rectangle from the 
- * Rectangle passed in.
+ * Sets the parameters of this Rectangle from the Rectangle passed in and 
+ * returns this for convenience.
+ * 
  * @return  <code>this</code> for convenience
- * @param rect Rectangle providing the bounding values.
+ * @param rect Rectangle providing the bounding values
  * @since 2.0
  */
 public Rectangle setBounds(Rectangle rect) {
@@ -668,10 +654,11 @@ public Rectangle setBounds(Rectangle rect) {
 }
 
 /**
- * Sets the location of this Rectangle to the point 
- * given as input.
+ * Sets the location of this Rectangle to the point given as input and returns
+ * this for convenience.
+ * 
  * @return  <code>this</code> for convenience
- * @param p  New position of this Rectangle.
+ * @param p  New position of this Rectangle
  * @since 2.0
  */
 public Rectangle setLocation(Point p) {
@@ -681,13 +668,12 @@ public Rectangle setLocation(Point p) {
 }
 
 /**
- * Sets the location of this Rectangle to the coordinates
- * given as input.
+ * Sets the location of this Rectangle to the coordinates given as input and 
+ * returns this for convenience.
  *
- * @param x1  Position of rectangle along X axis.
- * @param y1  Position of rectangle along Y axis.
+ * @param x1  The new X coordinate
+ * @param y1  The new Y coordinate
  * @return  <code>this</code> for convenience
- * @see  #getLocation()
  * @since 2.0
  */
 public Rectangle setLocation(int x1, int y1) {
@@ -697,13 +683,11 @@ public Rectangle setLocation(int x1, int y1) {
 }
 
 /**
- * Sets the dimensions of this Rectangle to the 
- * input Dimension values.
+ * Sets the width and height of this Rectangle to the width and height of the
+ * given Dimension and returns this for convenience.
  *
- * @param d  New Dimensions.
+ * @param d  The new Dimension
  * @return  <code>this</code> for convenience
- * @see  #setSize(int,int)
- * @see  #getSize()
  * @since 2.0
  */
 public Rectangle setSize(Dimension d) {
@@ -713,14 +697,12 @@ public Rectangle setSize(Dimension d) {
 }
 
 /**
- * Sets the dimensions of this Rectangle to the
- * values given as input.
+ * Sets the width of this Rectangle to <i>w</i> and the height of this 
+ * Rectangle to <i>h</i> and returns this for convenience.
  *
  * @return  <code>this</code> for convenience
- * @param w  New width.
- * @param h  New height.
- * @see  #setSize(Dimension)
- * @see  #getSize()
+ * @param w  The new width
+ * @param h  The new height
  * @since 2.0
  */
 public Rectangle setSize(int w, int h) {
@@ -730,13 +712,12 @@ public Rectangle setSize(int w, int h) {
 }
 
 /**
- * Shrinks the sides of this Rectangle by the 
- * horizontal and vertical values provided as input, and
- * returns this Rectangle for convenience. The center of this Rectangle 
- * is kept constant.
+ * Shrinks the sides of this Rectangle by the horizontal and vertical values 
+ * provided as input, and returns this Rectangle for convenience. The center of 
+ * this Rectangle is kept constant.
  *
- * @param h  Horizontal reduction amount.
- * @param v  Vertical reduction amount.
+ * @param h  Horizontal reduction amount
+ * @param v  Vertical reduction amount
  * @return  <code>this</code> for convenience
  * @since 2.0
  */
@@ -751,7 +732,7 @@ public Rectangle shrink(int h, int v) {
 /**
  * Returns the description of this Rectangle.
  *
- * @return String containing the description.
+ * @return String containing the description
  * @since 2.0
  */
 public String toString() {
@@ -760,11 +741,10 @@ public String toString() {
 }
 
 /**
- * Returns whether the input Rectangle touches this 
- * Rectangle.
+ * Returns <code>true</code> if the input Rectangle touches this Rectangle.
  *
- * @param rect  Rectangle being checked for contact.
- * @return  Result of the contact test.
+ * @param rect  Rectangle being checked for contact
+ * @return  <code>true</code> if rect touches this Rectangle
  * @since 2.0
  */
 public boolean touches(Rectangle rect) {
@@ -775,12 +755,12 @@ public boolean touches(Rectangle rect) {
 }
 
 /**
- * Returns this Rectangle after moving the center of the
- * coordinate system Point <i>p</i>.
+ * Moves this Rectangle horizontally by the x value of the given Point and 
+ * vertically by the y value of the given Point, then returns this Rectangle for
+ * convenience.
  *
- * @param p  Point which provides translation information.
+ * @param p  Point which provides translation information
  * @return  <code>this</code> for convenience
- * @see  #translate(int,int)
  */
 public Rectangle translate(Point p) {
 	x += p.x;
@@ -789,13 +769,12 @@ public Rectangle translate(Point p) {
 }
 
 /**
- * Returns this Rectangle after moving the center of the
- * coordinate system by the values specified along each axis.
+ * Moves this Rectangle horizontally by dx and vertically by dy, then returns 
+ * this Rectangle for convenience.
  *
- * @param dx  Shift along X axis.
- * @param dy  Shift along Y axis.
+ * @param dx  Shift along X axis
+ * @param dy  Shift along Y axis
  * @return  <code>this</code> for convenience
- * @see  #translate(Point)
  * @since 2.0
  */
 public Rectangle translate(int dx, int dy) {
@@ -805,8 +784,9 @@ public Rectangle translate(int dx, int dy) {
 }
 
 /**
- * Switches the location and the dimension of this
- * Rectangle. Useful for orientation changes.
+ * Switches the x and y values, as well as the width and height of this Rectangle. 
+ * Useful for orientation changes.
+ * 
  * @return  <code>this</code> for convenience
  * @since 2.0
  */
@@ -821,13 +801,10 @@ public Rectangle transpose() {
 }
 
 /**
- * Unions this Rectangle's <code>width</code> and <code>height</code>with the
- * specified Dimension.
+ * Unions this Rectangle's width and height with the specified Dimension.
+ * 
  * @param d Dimension being unioned
  * @return  <code>this</code> for convenience
- * @see  #union(int,int)
- * @see  #union(Point)
- * @see  #union(Rectangle)
  * @since 2.0
  */
 public Rectangle union(Dimension d) {
@@ -837,15 +814,12 @@ public Rectangle union(Dimension d) {
 }
 
 /**
- * Updates this Rectangle's bounds to the 
- * minimum size which can hold both this Rectangle
- * and the specified point at (x, y).
+ * Updates this Rectangle's bounds to the minimum size which can hold both this 
+ * Rectangle and the coordinate (x,y).
+ * 
  * @return  <code>this</code> for convenience
- * @param x1 point's X value
- * @param y1  point's Y value
- * @see  #union(Dimension)
- * @see  #union(Point)
- * @see  #union(Rectangle)
+ * @param x1 X coordinate
+ * @param y1 Y coordinate
  * @since 2.0
  */
 public Rectangle union(int x1, int y1) {
@@ -873,14 +847,10 @@ public Rectangle union(int x1, int y1) {
 }
 
 /**
- * Updates this Rectangle's dimensions to the 
- * minimum size which can hold both this Rectangle
- * and the supplied Point.
+ * Updates this Rectangle's bounds to the minimum size which can hold both this 
+ * Rectangle and the given Point.
  *
- * @param p  Point against which union is to be performed.
- * @see  #union(int,int)
- * @see  #union(Dimension)
- * @see  #union(Rectangle)
+ * @param p  Point to be unioned with this Rectangle
  * @since 2.0
  */
 public final void union(Point p) {
@@ -888,35 +858,28 @@ public final void union(Point p) {
 }
 
 /**
- * Updates this Rectangle's dimensions to the 
- * minimum size which can hold both this Rectangle
- * and the passed Rectangle <i>rect</i>.
+ * Updates this Rectangle's dimensions to the minimum size which can hold both 
+ * this Rectangle and the given Rectangle.
+ * 
  * @return  <code>this</code> for convenience
- * @param rect  Rectangle against which union is performed.
- * @see  #union(int,int)
- * @see  #union(Point)
- * @see  #union(Dimension)
+ * @param rect  Rectangle to be unioned with this Rectangle
  * @since 2.0
  */
-public final Rectangle union (Rectangle rect) {
+public final Rectangle union(Rectangle rect) {
 	if (rect == null)
 		return this;
-	return union (rect.x, rect.y, rect.width, rect.height);
+	return union(rect.x, rect.y, rect.width, rect.height);
 }
 
 /**
- * Updates this Rectangle's dimensions to the 
- * minimum size which can hold both this Rectangle
- * and the passed parameters.
+ * Updates this Rectangle's dimensions to the minimum size which can hold both 
+ * this Rectangle and the rectangle (x, y, w, h).
  *
  * @param x X coordiante of desired union.
  * @param y Y coordiante of desired union.
  * @param w Width of desired union.
  * @param h Height of desired union.
  * @return  <code>this</code> for convenience
- * @see  #union(int,int)
- * @see  #union(Point)
- * @see  #union(Dimension)
  * @since 2.0
  */
 public Rectangle union(int x, int y, int w, int h) {

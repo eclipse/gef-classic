@@ -7,8 +7,7 @@ package org.eclipse.draw2d.geometry;
  */
 
 /**
- * Provides support for transformations of scaling,
- * translation and rotation.
+ * Provides support for transformations of scaling, translation and rotation.
  */
 public class Transform {
 
@@ -20,38 +19,35 @@ private double
 	sin;
 
 /**
- * Sets the value for the amount of scaling to be done
- * along all axes.
+ * Sets the value for the amount of scaling to be done along both axes.
  *
- * @param scale  Value by which scaling has to be done.
- * @see  #setScale(double,double)
+ * @param scale  Scale factor
  * @since 2.0
  */
-public void setScale(double scale){
+public void setScale(double scale) {
 	scaleX = scaleY = scale;
 }
 
 /**
- * Sets the amount of scaling to be done along X and Y
- * axes individually.
+ * Sets the value for the amount of scaling to be done along X and Y axes 
+ * individually.
  *
- * @param x  Amount of scaling on X axis.
- * @param y  Amount of scaling on Y axis.
- * @see  #setScale(double)
+ * @param x  Amount of scaling on X axis
+ * @param y  Amount of scaling on Y axis
  * @since 2.0
  */
-public void setScale(double x, double y){
-	scaleX=x;
-	scaleY=y;
+public void setScale(double x, double y) {
+	scaleX = x;
+	scaleY = y;
 }
 
 /**
- * Sets the angle by which rotation is to be done.
+ * Sets the rotation angle.
  * 
- * @param angle  Angle of rotation.
+ * @param angle  Angle of rotation
  * @since 2.0
  */
-public void setRotation(double angle){
+public void setRotation(double angle) {
 	cos = Math.cos(angle);
 	sin = Math.sin(angle);
 }
@@ -59,34 +55,34 @@ public void setRotation(double angle){
 /**
  * Sets the translation amounts for both axes.
  *
- * @param x  Amount of shift on X axis.
- * @param y  Amount of shift on Y axis.
+ * @param x  Amount of shift on X axis
+ * @param y  Amount of shift on Y axis
  * @since 2.0
  */
-public void setTranslation(double x, double y){
+public void setTranslation(double x, double y) {
 	dx = x;
 	dy = y;
 }
 
 /**
- * Returns a new transformed Point of the input Point
- * based on the transformation values set.
+ * Returns a new transformed Point of the input Point based on the transformation 
+ * values set.
  *
- * @param p  Point being transformed.
- * @return  The transformed Point.
+ * @param p  Point being transformed
+ * @return  The transformed Point
  * @since 2.0
  */
-public Point getTransformed(Point p){
+public Point getTransformed(Point p) {
 	double x = p.x;
 	double y = p.y;
 	double temp;
 	x *= scaleX;
 	y *= scaleY;
 	
-	temp = x*cos - y*sin;
-	y    = x*sin + y*cos;
+	temp = x * cos - y * sin;
+	y    = x * sin + y * cos;
 	x = temp;
-	return new Point(Math.round(x+dx), Math.round(y+dy));
+	return new Point(Math.round(x + dx), Math.round(y + dy));
 }
 
 }
