@@ -234,6 +234,8 @@ public void insertPoint(Point p, int index) {
  * @since 3.1
  */
 public boolean intersects(Rectangle r) {
+	if (r.isEmpty())
+		return false;
 	for (int i = 0; i < size * 2; i += 2) {
 		if (r.contains(points[i], points[i + 1]))
 			return true;
