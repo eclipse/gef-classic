@@ -248,7 +248,9 @@ public boolean containsPoint(int x, int y) {
 public void erase() {
 	if (getParent() == null || !isVisible())
 		return;
-	Rectangle r = getBounds();
+	
+	Rectangle r = getBounds().getCopy();
+	getParent().translateToParent(r);
 	getParent().repaint(r.x, r.y, r.width, r.height);
 }
 
