@@ -38,29 +38,20 @@ public class Thumbnail
 	implements UpdateListener
 {
 
-private IFigure sourceFigure;
-private boolean isDirty;
-private float scaleX;
-private float scaleY;
-Dimension targetSize = new Dimension(0, 0);
-private Image thumbnailImage;
-private Dimension thumbnailImageSize;
-private ThumbnailUpdater updater = new ThumbnailUpdater();
-
 /**
  * This updates the Thumbnail by breaking the thumbnail {@link Image} into
  * several tiles and updating each tile individually.  
  */
 class ThumbnailUpdater implements Runnable {
-	protected int MAX_BUFFER_SIZE = 256;
+	static final int MAX_BUFFER_SIZE = 256;
+	private int currentHTile, currentVTile;
+	private int hTiles, vTiles;
+	private boolean isActive = true;
 
 	private boolean isRunning = false;
-	private boolean isActive = true;
-	private int hTiles, vTiles;
-	private Dimension tileSize;
 	private GC thumbnailGC;
 	private ScaledGraphics thumbnailGraphics;
-	private int currentHTile, currentVTile;
+	private Dimension tileSize;
 	
 	/**
 	 * Stops the updater and disposes of any resources.
@@ -115,14 +106,14 @@ class ThumbnailUpdater implements Runnable {
 	 * size and current tile index.
 	 */
 	public void resetTileValues() {
-		hTiles = (int)Math.ceil((float)sourceFigure.getSize().width 
+		hTiles = (int)Math.ceil((float)getSourceRectangle().width 
 									/ (float)MAX_BUFFER_SIZE);
-		vTiles = (int)Math.ceil((float)sourceFigure.getSize().height 
+		vTiles = (int)Math.ceil((float)getSourceRectangle().height 
 									/ (float)MAX_BUFFER_SIZE);
 		
-		tileSize = new Dimension((int)Math.ceil((float)sourceFigure.getSize().width 
+		tileSize = new Dimension((int)Math.ceil((float)getSourceRectangle().width 
 									/ (float)hTiles),
-								(int)Math.ceil((float)sourceFigure.getSize().height 
+								(int)Math.ceil((float)getSourceRectangle().height 
 									/ (float)vTiles));
 		
 		currentHTile = 0;
@@ -152,12 +143,12 @@ class ThumbnailUpdater implements Runnable {
 			return;
 		int v = getCurrentVTile();
 		int sy1 = v * tileSize.height;
-		int sy2 = Math.min((v + 1) * tileSize.height, sourceFigure.getSize().height);
+		int sy2 = Math.min((v + 1) * tileSize.height, getSourceRectangle().height);
 		
 		int h = getCurrentHTile();
 		int sx1 = h * tileSize.width;
-		int sx2 = Math.min((h + 1) * tileSize.width, sourceFigure.getSize().width);
-		org.eclipse.draw2d.geometry.Point p = sourceFigure.getBounds().getLocation();
+		int sx2 = Math.min((h + 1) * tileSize.width, getSourceRectangle().width);
+		org.eclipse.draw2d.geometry.Point p = getSourceRectangle().getLocation();
 
 		Rectangle rect = new Rectangle(sx1 + p.x, sy1 + p.y, sx2 - sx1, sy2 - sy1);
 		thumbnailGraphics.pushState();
@@ -234,7 +225,7 @@ class ThumbnailUpdater implements Runnable {
 		thumbnailGC = new GC(thumbnailImage);
 		thumbnailGraphics = new ScaledGraphics(new SWTGraphics(thumbnailGC));
 		thumbnailGraphics.scale(getScaleX());
-		thumbnailGraphics.translate(sourceFigure.getBounds().getLocation().negate());
+		thumbnailGraphics.translate(getSourceRectangle().getLocation().negate());
 		
 		Color color = sourceFigure.getForegroundColor();
 		if (color != null)
@@ -244,8 +235,8 @@ class ThumbnailUpdater implements Runnable {
 			thumbnailGraphics.setBackgroundColor(color);
 		thumbnailGraphics.setFont(sourceFigure.getFont());
 	
-		setScales(targetSize.width / (float)sourceFigure.getSize().width,
-			     targetSize.height / (float)sourceFigure.getSize().height);
+		setScales(targetSize.width / (float)getSourceRectangle().width,
+			     targetSize.height / (float)getSourceRectangle().height);
 
 		Display.getCurrent().asyncExec(this);
 	}
@@ -268,6 +259,15 @@ class ThumbnailUpdater implements Runnable {
 		// figure when the source is not dirty (i.e. showing/hiding the dock).
 	}
 }
+private boolean isDirty;
+private float scaleX;
+private float scaleY;
+
+private IFigure sourceFigure;
+Dimension targetSize = new Dimension(0, 0);
+private Image thumbnailImage;
+private Dimension thumbnailImageSize;
+private ThumbnailUpdater updater = new ThumbnailUpdater();
 
 /**
  * Creates a new Thumbnail.  The source Figure must be set separately if you
@@ -285,7 +285,7 @@ public Thumbnail(IFigure fig) {
 }
 
 private Dimension adjustToAspectRatio(Dimension size, boolean adjustToMaxDimension) {
-	Dimension sourceSize = sourceFigure.getSize();
+	Dimension sourceSize = getSourceRectangle().getSize();
 	Dimension borderSize = new Dimension(getInsets().getWidth(), getInsets().getHeight());
 	size.expand(borderSize.getNegated());
 	int width, height;
@@ -351,11 +351,22 @@ protected float getScaleY() {
 }
 
 /**
- * Returns the source figure.
+ * Returns the source figure being used to generate a thumbnail.
  * @return the source figure
  */
 protected IFigure getSource() {
 	return sourceFigure;
+}
+
+/**
+ * Returns the rectangular region relative to the source figure which will be the basis of
+ * the thumbnail.  The value may be returned by reference and should not be modified by
+ * the caller.
+ * @since 3.1
+ * @return the region of the source figure being used for the thumbnail
+ */
+protected Rectangle getSourceRectangle() {
+	return sourceFigure.getBounds();
 }
 
 /**
@@ -369,8 +380,8 @@ protected Image getThumbnailImage() {
 	targetSize = getPreferredSize();
 	targetSize.expand(new Dimension(getInsets().getWidth(), 
 									getInsets().getHeight()).negate());
-	setScales(targetSize.width / (float)sourceFigure.getSize().width,
-		     targetSize.height / (float)sourceFigure.getSize().height);
+	setScales(targetSize.width / (float)getSourceRectangle().width,
+		     targetSize.height / (float)getSourceRectangle().height);
 	if ((isDirty()) && !updater.isRunning())
 		updater.start();
 	else if (oldSize != null && !targetSize.equals(oldSize)) {
@@ -451,8 +462,8 @@ public void setSource(IFigure fig) {
 		sourceFigure.getUpdateManager().removeUpdateListener(this);
 	sourceFigure = fig;
 	if (sourceFigure != null) {
-		setScales((float)getSize().width / (float)sourceFigure.getSize().width,
-				(float)getSize().height / (float)sourceFigure.getSize().height);
+		setScales((float)getSize().width / (float)getSourceRectangle().width,
+				(float)getSize().height / (float)getSourceRectangle().height);
 		sourceFigure.getUpdateManager().addUpdateListener(this);
 		repaint();
 	}

@@ -23,6 +23,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.FigureListener;
+import org.eclipse.draw2d.FreeformFigure;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.KeyEvent;
@@ -44,18 +45,108 @@ public final class ScrollableThumbnail
 	extends Thumbnail
 {
 
-private SelectorFigure selector;
-private Viewport viewport;
+private class ClickScrollerAndDragTransferrer
+	extends MouseMotionListener.Stub
+	implements MouseListener
+{
+	private boolean dragTransfer;
+	public void mouseDoubleClicked(MouseEvent me) { }
+	public void mouseDragged(MouseEvent me) {
+		if (dragTransfer)
+			syncher.mouseDragged(me);
+	}
+	public void mousePressed(MouseEvent me) {
+		if (!(ScrollableThumbnail.this.getClientArea().contains(me.getLocation())))
+			return;
+		Dimension selectorCenter = selector.getBounds().getSize().scale(0.5f);
+		Point scrollPoint = me.getLocation()
+							.getTranslated(getLocation().getNegated())
+							.translate(selectorCenter.negate())
+							.scale(1.0f / getViewportScaleX(), 1.0f / getViewportScaleY())
+							.translate(
+									viewport.getHorizontalRangeModel().getMinimum(), 
+									viewport.getVerticalRangeModel().getMinimum());
+		viewport.setViewLocation(scrollPoint);
+		syncher.mousePressed(me);
+		dragTransfer = true;
+	}
+	public void mouseReleased(MouseEvent me) {
+		syncher.mouseReleased(me);
+		dragTransfer = false;
+	}
+}
 
-private ScrollSynchronizer syncher;
+private class ScrollSynchronizer
+	extends MouseMotionListener.Stub
+	implements MouseListener
+{
+	private Point startLocation;
+	private Point viewLocation;
+	
+	public void mouseDoubleClicked(MouseEvent me) { }
+
+	public void mouseDragged(MouseEvent me) {
+		Dimension d = me.getLocation().getDifference(startLocation);
+		d.scale(1.0f / getViewportScaleX(), 1.0f / getViewportScaleY());
+		viewport.setViewLocation(viewLocation.getTranslated(d));
+		me.consume();
+	}
+
+	public void mousePressed(MouseEvent me) {
+		startLocation = me.getLocation();
+		viewLocation = viewport.getViewLocation();
+		me.consume();
+	}
+
+	public void mouseReleased(MouseEvent me) { }
+}
+
+private class SelectorFigure
+	extends Figure
+{
+	{
+		Display display = Display.getCurrent();
+		PaletteData pData = new PaletteData(0xFF, 0xFF00, 0xFF0000);
+		RGB rgb = ColorConstants.menuBackgroundSelected.getRGB();
+		int fillColor = pData.getPixel(rgb);
+		ImageData iData = new ImageData(1, 1, 24, pData);
+		iData.setPixel(0, 0, fillColor);
+		iData.setAlpha(0, 0, 55);
+		image = new Image(display, iData);
+	}
+	private Rectangle iBounds = new Rectangle(0, 0, 1, 1);
+
+	private Image image;
+	
+	protected void dispose() {
+		image.dispose();
+	}
+
+	public void paintFigure(Graphics g) {
+		Rectangle bounds = getBounds().getCopy();		
+
+		// Avoid drawing images that are 0 in dimension
+		if (bounds.width < 5 || bounds.height < 5)
+			return;
+			
+		// Don't paint the selector figure if the entire source is visible.
+		Dimension thumbnailSize = new Dimension(getThumbnailImage());
+		// expand to compensate for rounding errors in calculating bounds
+		Dimension size = getSize().getExpanded(1, 1); 
+		if (size.contains(thumbnailSize))
+			return;
+
+		bounds.height--;
+		bounds.width--;
+		g.drawImage(image, iBounds, bounds);
+		
+		g.setForegroundColor(ColorConstants.menuBackgroundSelected);
+		g.drawRectangle(bounds);
+	}
+
+}
 private FigureListener figureListener = new FigureListener() {
 	public void figureMoved(IFigure source) {
-		reconfigureSelectorBounds();
-	}
-};
-
-private PropertyChangeListener propListener = new PropertyChangeListener() {
-	public void propertyChange(PropertyChangeEvent evt) {
 		reconfigureSelectorBounds();
 	}
 };
@@ -73,6 +164,17 @@ private KeyListener keyListener = new KeyListener.Stub() {
 			viewport.setViewLocation(viewport.getViewLocation().translate(0, moveY));
 		}
 	};
+
+private PropertyChangeListener propListener = new PropertyChangeListener() {
+	public void propertyChange(PropertyChangeEvent evt) {
+		reconfigureSelectorBounds();
+	}
+};
+
+private SelectorFigure selector;
+
+private ScrollSynchronizer syncher;
+private Viewport viewport;
 
 /**
  * Creates a new ScrollableThumbnail. */
@@ -101,6 +203,23 @@ public void deactivate() {
 	super.deactivate();
 }
 
+/**
+ * @see org.eclipse.draw2d.parts.Thumbnail#getSourceRectangle()
+ */
+protected Rectangle getSourceRectangle() {
+	if (getSource() instanceof FreeformFigure)
+		return ((FreeformFigure)getSource()).getFreeformExtent();
+	return super.getSourceRectangle();
+}
+
+private double getViewportScaleX() {
+	return (double)targetSize.width / viewport.getContents().getBounds().width;
+}
+
+private double getViewportScaleY() {
+	return (double)targetSize.height / viewport.getContents().getBounds().height;
+}
+
 private void initialize() {
 	selector = new SelectorFigure();
 	selector.addMouseListener(syncher = new ScrollSynchronizer());
@@ -124,14 +243,6 @@ private void reconfigureSelectorBounds() {
 	rect.scale(getViewportScaleX(), getViewportScaleY());
 	rect.translate(getClientArea().getLocation());
 	selector.setBounds(rect);
-}	
-
-private double getViewportScaleX() {
-	return (double)targetSize.width / viewport.getContents().getBounds().width;
-}
-
-private double getViewportScaleY() {
-	return (double)targetSize.height / viewport.getContents().getBounds().height;
 }
 
 /**
@@ -144,7 +255,6 @@ protected void setScales(float scaleX, float scaleY) {
 		return;
 		
 	super.setScales(scaleX, scaleY);
-	
 	reconfigureSelectorBounds();
 }
 
@@ -155,107 +265,6 @@ public void setViewport(Viewport port) {
 	port.addPropertyChangeListener(Viewport.PROPERTY_VIEW_LOCATION, propListener);
 	port.addFigureListener(figureListener);
 	viewport = port;
-}
-
-private class ScrollSynchronizer
-	extends MouseMotionListener.Stub
-	implements MouseListener
-{
-	private Point startLocation;
-	private Point viewLocation;
-
-	public void mouseDragged(MouseEvent me) {
-		Dimension d = me.getLocation().getDifference(startLocation);
-		d.scale(1.0f / getViewportScaleX(), 1.0f / getViewportScaleY());
-		viewport.setViewLocation(viewLocation.getTranslated(d));
-		me.consume();
-	}
-
-	public void mousePressed(MouseEvent me) {
-		startLocation = me.getLocation();
-		viewLocation = viewport.getViewLocation();
-		me.consume();
-	}
-
-	public void mouseReleased(MouseEvent me) { }
-	
-	public void mouseDoubleClicked(MouseEvent me) { }
-}
-
-private class ClickScrollerAndDragTransferrer
-	extends MouseMotionListener.Stub
-	implements MouseListener
-{
-	private boolean dragTransfer;
-	public void mouseDragged(MouseEvent me) {
-		if (dragTransfer)
-			syncher.mouseDragged(me);
-	}
-	public void mousePressed(MouseEvent me) {
-		if (!(ScrollableThumbnail.this.getClientArea().contains(me.getLocation())))
-			return;
-		Dimension selectorCenter = selector.getBounds().getSize().scale(0.5f);
-		Point scrollPoint = me.getLocation()
-							.getTranslated(getLocation().getNegated())
-							.translate(selectorCenter.negate())
-							.scale(1.0f / getViewportScaleX(), 1.0f / getViewportScaleY())
-							.translate(
-									viewport.getHorizontalRangeModel().getMinimum(), 
-									viewport.getVerticalRangeModel().getMinimum());
-		viewport.setViewLocation(scrollPoint);
-		syncher.mousePressed(me);
-		dragTransfer = true;
-	}
-	public void mouseReleased(MouseEvent me) {
-		syncher.mouseReleased(me);
-		dragTransfer = false;
-	}
-	public void mouseDoubleClicked(MouseEvent me) { }
-}
-
-private class SelectorFigure
-	extends Figure
-{
-
-	private Image image;
-	private Rectangle iBounds = new Rectangle(0, 0, 1, 1);
-	{
-		Display display = Display.getCurrent();
-		PaletteData pData = new PaletteData(0xFF, 0xFF00, 0xFF0000);
-		RGB rgb = ColorConstants.menuBackgroundSelected.getRGB();
-		int fillColor = pData.getPixel(rgb);
-		ImageData iData = new ImageData(1, 1, 24, pData);
-		iData.setPixel(0, 0, fillColor);
-		iData.setAlpha(0, 0, 55);
-		image = new Image(display, iData);
-	}
-	
-	protected void dispose() {
-		image.dispose();
-	}
-
-	public void paintFigure(Graphics g) {
-		Rectangle bounds = getBounds().getCopy();		
-
-		// Avoid drawing images that are 0 in dimension
-		if (bounds.width < 5 || bounds.height < 5)
-			return;
-			
-		// Don't paint the selector figure if the entire source is visible.
-		Dimension thumbnailSize = new Dimension(getThumbnailImage());
-		// expand to compensate for rounding errors in calculating bounds
-		Dimension size = getSize().getExpanded(1, 1); 
-		if (size.contains(thumbnailSize))
-			return;
-
-		bounds.height--;
-		bounds.width--;
-		g.drawImage(image, iBounds, bounds);
-		
-		g.setForegroundColor(ColorConstants.menuBackgroundSelected);
-		g.drawRectangle(bounds);
-	}
-
 }
 
 }
