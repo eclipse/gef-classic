@@ -54,8 +54,8 @@ protected void addSelectionHandles() {
 }
 
 /**
- * Subclasses must implement to provide the list of handles.
- * @return List of handles; cannot be <code>null</code> */
+ * Returns a List of zero or more selection handles.
+ * @return the List of handles */
 protected abstract List createSelectionHandles();
 
 /**
