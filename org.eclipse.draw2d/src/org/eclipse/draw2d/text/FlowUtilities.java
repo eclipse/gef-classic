@@ -82,7 +82,7 @@ public static int getTextForSpace(TextFragmentBox frag, String string, Font font
 			if (min == string.length())
 				result = min;
 			else
-				result = Math.max(MIN, breakItr.preceding(Math.min(max + 1, string.length()-1)));
+				result = Math.max(MIN, breakItr.preceding(Math.min(max + 1, string.length() - 1)));
 			frag.length = result;
 			break;
 

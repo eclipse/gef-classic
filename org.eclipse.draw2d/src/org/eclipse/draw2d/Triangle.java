@@ -10,50 +10,57 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.PointList;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2d.geometry.*;
 
 /**
  * A triangular graphical figure.
  */
-final public class Triangle
+public final class Triangle
 	extends Shape
 	implements Orientable
 {
 
+/** The direction this triangle will face. Possible values are 
+ * {@link PositionConstants#NORTH}, {@link PositionConstants#SOUTH}, 
+ * {@link PositionConstants#EAST} and {@link PositionConstants#WEST}.
+ */
 protected int direction = NORTH;
+/** The orientation of this triangle.  Possible values are {@link Orientable#VERTICAL} 
+ * and {@link Orientable#HORIZONTAL}.
+ */
 protected int orientation = VERTICAL;
 
+/** The points of the triangle. */
 protected PointList triangle = new PointList(3);
 
 /**
- * Fill the Triangle with the background color
- * set by <i>g</i>.
- * 
- * @since 2.0
+ * @see Shape#fillShape(Graphics)
  */
-protected void fillShape(Graphics g){
+protected void fillShape(Graphics g) {
 	g.fillPolygon(triangle);
 }
 
 /**
- * Draw the outline of the Triangle.
- * 
- * @since 2.0
+ * @see Shape#outlineShape(Graphics)
  */
-protected void outlineShape(Graphics g){
+protected void outlineShape(Graphics g) {
 	g.setForegroundColor(g.getBackgroundColor());
 	g.drawPolygon(triangle);
 }
 
-public void primTranslate(int dx, int dy){
+/**
+ * @see Figure#primTranslate(int, int)
+ */
+public void primTranslate(int dx, int dy) {
 	super.primTranslate(dx, dy);
 	triangle.translate(dx, dy);
 }
 
-public void setDirection(int value){
-	if ((value & (NORTH|SOUTH)) != 0)
+/**
+ * @see Orientable#setDirection(int)
+ */
+public void setDirection(int value) {
+	if ((value & (NORTH | SOUTH)) != 0)
 		orientation = VERTICAL;
 	else
 		orientation = HORIZONTAL;
@@ -62,59 +69,65 @@ public void setDirection(int value){
 	repaint();
 }
 
-public void setOrientation(int value){
-	if (orientation == VERTICAL && value == HORIZONTAL){
+/**
+ * @see Orientable#setOrientation(int)
+ */
+public void setOrientation(int value) {
+	if (orientation == VERTICAL && value == HORIZONTAL) {
 		if (direction == NORTH) setDirection(WEST);
 		else setDirection(EAST);
 	}
-	if (orientation == HORIZONTAL && value == VERTICAL){
+	if (orientation == HORIZONTAL && value == VERTICAL) {
 		if (direction == WEST) setDirection(NORTH);
 		else setDirection(SOUTH);
 	}
 }
 
-public void validate(){
+/**
+ * @see IFigure#validate()
+ */
+public void validate() {
 	super.validate();
 	Rectangle r = new Rectangle();
 	r.setBounds(getBounds());
 	r.crop(getInsets());
-	r.resize(-1,-1);
+	r.resize(-1, -1);
 	int size;
-	switch (direction & (NORTH | SOUTH)){
+	switch (direction & (NORTH | SOUTH)) {
 		case 0: //East or west.
-			size = Math.min(r.height/2, r.width);
-			r.x += (r.width -size)/2;
+			size = Math.min(r.height / 2, r.width);
+			r.x += (r.width - size) / 2;
 			break;
 		default: //North or south
-			size = Math.min(r.height, r.width/2);
-			r.y += (r.height-size)/2;
+			size = Math.min(r.height, r.width / 2);
+			r.y += (r.height - size) / 2;
 			break;
 	}
 
 	size = Math.max(size, 1); //Size cannot be negative
 
-	Point head,p2,p3;
+	Point head, p2, p3;
 
-	switch (direction){
+	switch (direction) {
 		case NORTH:
-			head = new Point(r.x+r.width/2, r.y);
-			p2   = new Point (head.x-size, head.y+size);
-			p3   = new Point (head.x+size, head.y+size);
+			head = new Point(r.x + r.width / 2, r.y);
+			p2   = new Point (head.x - size, head.y + size);
+			p3   = new Point (head.x + size, head.y + size);
 			break;
 		case SOUTH:
-			head = new Point (r.x+r.width/2, r.y+size);
-			p2   = new Point (head.x-size, head.y-size);
-			p3   = new Point (head.x+size, head.y-size);
+			head = new Point (r.x + r.width / 2, r.y + size);
+			p2   = new Point (head.x - size, head.y - size);
+			p3   = new Point (head.x + size, head.y - size);
 			break;
 		case WEST:
-			head = new Point (r.x, r.y+r.height/2);
-			p2   = new Point (head.x+size, head.y-size);
-			p3   = new Point (head.x+size, head.y+size);
+			head = new Point (r.x, r.y + r.height / 2);
+			p2   = new Point (head.x + size, head.y - size);
+			p3   = new Point (head.x + size, head.y + size);
 			break;
 		default:
-			head = new Point(r.x+size, r.y+r.height/2);
-			p2   = new Point(head.x-size, head.y-size);
-			p3   = new Point(head.x-size, head.y+size);
+			head = new Point(r.x + size, r.y + r.height / 2);
+			p2   = new Point(head.x - size, head.y - size);
+			p3   = new Point(head.x - size, head.y + size);
 
 	}
 	triangle.removeAllPoints();

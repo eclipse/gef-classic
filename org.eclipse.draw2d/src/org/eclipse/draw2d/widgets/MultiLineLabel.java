@@ -58,13 +58,14 @@ class FocusableViewport extends Viewport {
 		if (hasFocus()) {
 			graphics.setForegroundColor(ColorConstants.black);
 			graphics.setBackgroundColor(ColorConstants.white);
-			graphics.drawFocus(getBounds().getResized(-1,-1));
+			graphics.drawFocus(getBounds().getResized(-1, -1));
 		}
 	}
 }
 
 /**
- * @param parent
+ * Constructs a new MultiLineLabel with the given parent.
+ * @param parent the parent
  */
 public MultiLineLabel(Composite parent) {
 	super(parent);
@@ -122,6 +123,10 @@ private void addAccessibility() {
 	});
 }
 
+/**
+ * Returns the text in this label.
+ * @return the text
+ */
 public String getText() {
 	return textFlow.getText();
 }
@@ -134,6 +139,10 @@ public void setFont(Font font) {
 	textFlow.revalidate();
 }
 
+/**
+ * Sets the text for this label.
+ * @param text the new text
+ */
 public void setText(String text) {
 	textFlow.setText(text);
 }

@@ -19,21 +19,21 @@ public int length;
 private int ascent;
 boolean truncated;
 
-public TextFragmentBox(){}
+public TextFragmentBox() { }
 
-public int getAscent(){
+public int getAscent() {
 	return ascent;
 }
 
-public void setAscent(int a){
+public void setAscent(int a) {
 	ascent = a;
 }
 
-public void setHeight(int h){
+public void setHeight(int h) {
 	height = h;
 }
 
-public void setWidth (int w){
+public void setWidth (int w) {
 	width = w;
 }
 

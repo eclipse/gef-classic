@@ -16,11 +16,11 @@ import org.eclipse.draw2d.geometry.*;
 /**
  * Arranges figures in a single row or column.  Orientation can be set to produce either
  * a row or column layout.
- * 
+ * <p>
  * This layout try to fit all children within the parent's client area.  To do this,
  * it compresses the children by some amount, but will not compress them smaller than
  * their minimum size.
- * 
+ * <p>
  * If a child's preferred size is smaller than the row's or column's minor dimension,
  * the layout can be configured to stretch the child.
  */
@@ -33,14 +33,12 @@ protected boolean matchWidth;
 protected boolean horizontal = false;
 protected int minorAlignment;
 
-public static final int
-	ALIGN_CENTER = 0,
-	ALIGN_TOPLEFT = 1,
-	ALIGN_BOTTOMRIGHT = 2;
+public static final int ALIGN_CENTER = 0;
+public static final int ALIGN_TOPLEFT = 1;
+public static final int ALIGN_BOTTOMRIGHT = 2;
 
-public static final boolean
-	HORIZONTAL = true,
-	VERTICAL = false;
+public static final boolean HORIZONTAL = true;
+public static final boolean VERTICAL = false;
 
 protected Transposer transposer; {
 	transposer = new Transposer();
@@ -48,9 +46,8 @@ protected Transposer transposer; {
 }	
 	
 /**
- * Constructs a vertically oriented ToolbarLayout with 
- * child spacing of 0 pixels, matchWidth <code>true</code>, and 
- * <code>ALIGN_TOPLEFT</code> alignment.
+ * Constructs a vertically oriented ToolbarLayout with child spacing of 0 pixels, 
+ * matchWidth <code>true</code>, and <code>ALIGN_TOPLEFT</code> alignment.
  * 
  * @since 2.0
  */		
@@ -62,12 +59,11 @@ public ToolbarLayout() {
 }
 
 /**
- * Constructs a ToolbarLayout with a specified orientation.
- * Default values are: child spacing 0 pixels, matchWidth <code>false</code>,
- * and <code>ALIGN_TOPLEFT</code> alignment.
+ * Constructs a ToolbarLayout with a specified orientation. Default values are: child 
+ * spacing 0 pixels, matchWidth <code>false</code>, and <code>ALIGN_TOPLEFT</code> 
+ * alignment.
  * 
- * @param isHorizontal  false(VERTICAL) will orient children vertically;
- *                       true(HORIZONTAL) will orient children horizontally.
+ * @param isHorizontal whether the children are oriented horizontally
  * @since 2.0
  */
 public ToolbarLayout(boolean isHorizontal) {
@@ -101,10 +97,10 @@ private Dimension calculateChildrenSize(List children, int wHint, int hHint,
  * heights of all children, plus the spacing between them. The border and insets of the
  * container figure are also accounted for.
  * 
- * @param container The IFigure whose minimum size has to be calculated
- * @param wHint The width hint (the desired width of the container)
- * @param hHint The height hint (the desired height of the container)
- * @return The minimum size of the container
+ * @param container the figure whose minimum size has to be calculated
+ * @param wHint the width hint (the desired width of the container)
+ * @param hHint the height hint (the desired height of the container)
+ * @return the minimum size of the container
  * @see #getMinimumSize(IFigure, int, int)
  * @since 2.1
  */
@@ -143,10 +139,10 @@ public Dimension calculateMinimumSize(IFigure container, int wHint, int hHint) {
  * heights of all children, plus the spacing between them.  The border and insets of the
  * container figure are also accounted for.
  * 
- * @param container The IFigure whose preferred size has to be calculated
- * @param wHint The width hint (the desired width of the container)
- * @param hHint The height hint (the desired height of the container)
- * @return The preferred size of the container
+ * @param container the figure whose preferred size has to be calculated
+ * @param wHint the width hint (the desired width of the container)
+ * @param hHint the height hint (the desired height of the container)
+ * @return the preferred size of the container
  * @see #getPreferredSize(IFigure, int, int)
  * @since 2.0
  */
@@ -178,7 +174,7 @@ protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHi
 }
 
 /**
- * returns the minor aligment of the layout.  Minor minor axis is the axis perpindicular
+ * Returns the minor aligment of the layout.  Minor minor axis is the axis perpindicular
  * to the overall orientation set in the contructor.
  * @return the minor aligment
  */
@@ -187,15 +183,14 @@ public int getMinorAlignment() {
 }
 
 /**
- * returns the spacing between children
- * @return the spacing
+ * @return the spacing between children
  */
 public int getSpacing() {
 	return spacing;
 }
 
 /**
- * returns <code>true</code> if stretch minor axis has been enabled. The default value is
+ * Returns <code>true</code> if stretch minor axis has been enabled. The default value is
  * false.
  * @return <code>true</code> if stretch minor axis is enabled
  */
@@ -204,8 +199,7 @@ public boolean getStretchMinorAxis() {
 }
 
 /**
- * Returns whether the orientation of the layout is horizontal.
- * @return <code>true</code> if the orientation is horizontal
+ * @return whether the orientation of the layout is horizontal
  * @since 2.0
  */
 public boolean isHorizontal() {
@@ -332,10 +326,10 @@ public void layout(IFigure parent) {
 }				
 
 /**
- * Sets the alignment of the children contained in the layout.
+ * Sets the alignment of the children contained in the layout.  Possible values are 
+ * {@link #ALIGN_CENTER}, {@link #ALIGN_BOTTOMRIGHT} and {@link #ALIGN_TOPLEFT}.
  * 
- * @param   align 0 (ALIGN_CENTER), 1 (ALIGN_TOPLEFT)
- *		       2 (ALIGN_BOTTOMRIGHT)
+ * @param align the minor alignment
  * @since 2.0
  */
 public void setMinorAlignment(int align) {
@@ -343,9 +337,9 @@ public void setMinorAlignment(int align) {
 }
 
 /**
- * Sets the amount of space between children
+ * Sets the amount of space between children.
  * 
- * @param   space The amount of space between children.
+ * @param space the amount of space between children
  * @since 2.0
  */
 public void setSpacing(int space) {
@@ -353,12 +347,11 @@ public void setSpacing(int space) {
 }
 
 /**
- * Sets children's width (if vertically oriented) or height
- * (if horizontally oriented) to stretch with their container
+ * Sets children's width (if vertically oriented) or height (if horizontally oriented) to 
+ * stretch with their container.
  * 
- * @deprecated use setStretchMinorAxis
- * @param   match <code>true</code> will stretch the children, 
- *           <code>false</code> will not
+ * @deprecated use {@link #setStretchMinorAxis(boolean)}
+ * @param match whether to stretch children
  * @since 2.0
  */
 public void setMatchWidth(boolean match) {
@@ -368,7 +361,7 @@ public void setMatchWidth(boolean match) {
 /**
  * Causes children that are smaller in the dimension of the minor axis to be stretched to
  * fill the minor axis.  The minor axis is the opposite of the orientation.
- * @param  stretch whether to stretch children
+ * @param stretch whether to stretch children
  * @since 2.0
  */
 public void setStretchMinorAxis(boolean stretch) {
@@ -376,11 +369,9 @@ public void setStretchMinorAxis(boolean stretch) {
 }
 
 /**
- * Sets the orientation of the children in the 
- * ToolbarLayout.
+ * Sets the orientation of the children in the ToolbarLayout.
  * 
- * @param flag <code>true</code> sets orientation to vertical
- *              <code>false</code> sets oreintation to horizontal
+ * @param flag whether the orientation should be vertical
  * @since 2.0
  */
 public void setVertical(boolean flag) {

@@ -32,7 +32,7 @@ protected static class State
 	public Color
 		bgColor,
 		fgColor;
-	public int clipX,clipY,clipW,clipH; //X and Y are absolute here.
+	public int clipX, clipY, clipW, clipH; //X and Y are absolute here.
 	public Font font;  //Fonts are immutable, shared references are safe
 	public int
 		lineWidth,
@@ -40,11 +40,11 @@ protected static class State
 		dx, dy;
 	public boolean xor;
 
-	public Object clone() throws CloneNotSupportedException{
+	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
 	}
 
-	public void copyFrom(State state){
+	public void copyFrom(State state) {
 		bgColor = state.bgColor;
 		fgColor = state.fgColor;
 		lineStyle = state.lineStyle;
@@ -66,7 +66,7 @@ private final State currentState = new State();
 
 private GC gc;
 
-final private Rectangle relativeClip;
+private final Rectangle relativeClip;
 
 private List stack = new ArrayList();
 private int stackPointer = 0;
@@ -74,7 +74,11 @@ private int stackPointer = 0;
 private int translateX = 0;
 private int translateY = 0;
 
-public SWTGraphics(GC gc){
+/**
+ * Constructs a new SWTGraphics that draws to the Canvas using the given GC.
+ * @param gc the GC
+ */
+public SWTGraphics(GC gc) {
 	gc.setLineWidth(1);
 	this.gc = gc;
 	//No translation necessary because translation is <0,0> at construction.
@@ -82,19 +86,19 @@ public SWTGraphics(GC gc){
 	init();
 }
 
-final protected void checkFill(){
-	if(!appliedState.bgColor.equals(currentState.bgColor))
+protected final void checkFill() {
+	if (!appliedState.bgColor.equals(currentState.bgColor))
 		gc.setBackground(appliedState.bgColor = currentState.bgColor);
 	checkGC();
 }
 
-final protected void checkGC(){
-	if(appliedState.xor != currentState.xor)
+protected final void checkGC() {
+	if (appliedState.xor != currentState.xor)
 		gc.setXORMode(appliedState.xor = currentState.xor);
-	if(appliedState.clipX != currentState.clipX ||
-		appliedState.clipY != currentState.clipY || 
-		appliedState.clipW != currentState.clipW || 
-		appliedState.clipH != currentState.clipH){
+	if (appliedState.clipX != currentState.clipX 
+		|| appliedState.clipY != currentState.clipY 
+		|| appliedState.clipW != currentState.clipW 
+		|| appliedState.clipH != currentState.clipH) {
 		gc.setClipping(appliedState.clipX = currentState.clipX,
 						appliedState.clipY = currentState.clipY,
 						appliedState.clipW = currentState.clipW,
@@ -102,74 +106,100 @@ final protected void checkGC(){
 	}
 }
 
-final protected void checkPaint(){
+protected final void checkPaint() {
 	checkGC();
-	if(!appliedState.fgColor.equals(currentState.fgColor))
+	if (!appliedState.fgColor.equals(currentState.fgColor))
 		gc.setForeground(appliedState.fgColor = currentState.fgColor);
-	if(appliedState.lineStyle != currentState.lineStyle)
+	if (appliedState.lineStyle != currentState.lineStyle)
 		gc.setLineStyle(appliedState.lineStyle = currentState.lineStyle);
-	if(appliedState.lineWidth != currentState.lineWidth)
+	if (appliedState.lineWidth != currentState.lineWidth)
 		gc.setLineWidth(appliedState.lineWidth = currentState.lineWidth);
-	if(!appliedState.bgColor.equals(currentState.bgColor))
+	if (!appliedState.bgColor.equals(currentState.bgColor))
 		gc.setBackground(appliedState.bgColor = currentState.bgColor);
 }
 
-final protected void checkText(){
+protected final void checkText() {
 	checkPaint();
 	checkFill();
-	if(!appliedState.font.equals(currentState.font))
+	if (!appliedState.font.equals(currentState.font))
 		gc.setFont(appliedState.font = currentState.font);
 }
 
-public void clipRect(Rectangle rect){
+/**
+ * @see Graphics#clipRect(Rectangle)
+ */
+public void clipRect(Rectangle rect) {
 	relativeClip.intersect(rect);
-	setClipAbsolute(relativeClip.x+translateX,
-			    relativeClip.y+translateY,
+	setClipAbsolute(relativeClip.x + translateX,
+			    relativeClip.y + translateY,
 			    relativeClip.width,
 			    relativeClip.height);
 }
 
+/**
+ * @see Graphics#dispose()
+ */
 public void dispose() {
-	while(stackPointer > 0) {
+	while (stackPointer > 0) {
 		popState();
 	}
 }
 
-public void drawArc(int x, int y, int width, int height, int offset, int length){
+/**
+ * @see Graphics#drawArc(int, int, int, int, int, int)
+ */
+public void drawArc(int x, int y, int width, int height, int offset, int length) {
 	checkPaint();
 	gc.drawArc(x + translateX, y + translateY, width, height, offset, length);
 }
 
-public void drawFocus(int x, int y, int w, int h){
+/**
+ * @see Graphics#drawFocus(int, int, int, int)
+ */
+public void drawFocus(int x, int y, int w, int h) {
 	checkPaint();
 	checkFill();
-	gc.drawFocus(x+translateX, y+translateY, w+1, h+1);
+	gc.drawFocus(x + translateX, y + translateY, w + 1, h + 1);
 }
 
-public void drawImage(Image srcImage, int x, int y){
+/**
+ * @see Graphics#drawImage(Image, int, int)
+ */
+public void drawImage(Image srcImage, int x, int y) {
 	checkGC();
 	gc.drawImage(srcImage, x + translateX, y + translateY);
 }
 
-public void drawImage(Image srcImage, int x1, int y1, int w1, int h1, int x2, int y2, int w2, int h2){
+/**
+ * @see Graphics#drawImage(Image, int, int, int, int, int, int, int, int)
+ */
+public void drawImage(Image srcImage, int x1, int y1, int w1, int h1, int x2, int y2, int w2, int h2) {
 	checkGC();
-	gc.drawImage(srcImage,x1,y1,w1,h1,x2+translateX,y2+translateY,w2,h2);
+	gc.drawImage(srcImage, x1, y1, w1, h1, x2 + translateX, y2 + translateY, w2, h2);
 }
 
-public void drawLine(int x1, int y1, int x2, int y2){
+/**
+ * @see Graphics#drawLine(int, int, int, int)
+ */
+public void drawLine(int x1, int y1, int x2, int y2) {
 	checkPaint();
-	gc.drawLine(x1 + translateX, y1 + translateY,
-			x2 + translateX, y2 + translateY);
+	gc.drawLine(x1 + translateX, y1 + translateY, x2 + translateX, y2 + translateY);
 }
 
-public void drawOval(int x, int y, int width, int height){
+/**
+ * @see Graphics#drawOval(int, int, int, int)
+ */
+public void drawOval(int x, int y, int width, int height) {
 	checkPaint();
 	gc.drawOval(x + translateX, y + translateY, width, height);
 }
 
-public void drawPolygon(PointList points){
+/**
+ * @see Graphics#drawPolygon(PointList)
+ */
+public void drawPolygon(PointList points) {
 	checkPaint();
-	try{
+	try {
 		points.translate(translateX, translateY);
 		gc.drawPolygon(points.toIntArray());
 	} finally {
@@ -177,15 +207,18 @@ public void drawPolygon(PointList points){
 	}
 }
 
-public void drawPolyline(PointList points){
+/**
+ * @see Graphics#drawPolyline(PointList)
+ */
+public void drawPolyline(PointList points) {
 	checkPaint();
-	try{
+	try {
 		points.translate(translateX, translateY);
 		int array[] = points.toIntArray();
 		gc.drawPolyline(array);
-		if (getLineWidth() == 1 && array.length >=2){
-			int x = array[array.length-2];
-			int y = array[array.length-1];
+		if (getLineWidth() == 1 && array.length >= 2) {
+			int x = array[array.length - 2];
+			int y = array[array.length - 1];
 			gc.drawLine(x, y, x, y);
 		}
 	} finally {
@@ -193,46 +226,69 @@ public void drawPolyline(PointList points){
 	}
 }
 
-public void drawRectangle(int x, int y, int width, int height){
+/**
+ * @see Graphics#drawRectangle(int, int, int, int)
+ */
+public void drawRectangle(int x, int y, int width, int height) {
 	checkPaint();
 	gc.drawRectangle(x + translateX, y + translateY, width, height);
 }
 
-public void drawRoundRectangle(Rectangle r, int arcWidth, int arcHeight){
+/**
+ * @see Graphics#drawRoundRectangle(Rectangle, int, int)
+ */
+public void drawRoundRectangle(Rectangle r, int arcWidth, int arcHeight) {
 	checkPaint();
 	gc.drawRoundRectangle(r.x + translateX, r.y + translateY, r.width, r.height, arcWidth, arcHeight);
 }
 
-public void drawString(String s, int x, int y){
+/**
+ * @see Graphics#drawString(String, int, int)
+ */
+public void drawString(String s, int x, int y) {
 	checkText();
 	gc.drawString(s, x + translateX, y + translateY, true);
 }
 
+/**
+ * @see Graphics#drawText(String, int, int)
+ */
 public void drawText(String s, int x, int y) {
 	checkText();
 	gc.drawText(s, x + translateX, y + translateY, true);
 }
 
-public void fillArc(int x, int y, int width, int height, int offset, int length){
+/**
+ * @see Graphics#fillArc(int, int, int, int, int, int)
+ */
+public void fillArc(int x, int y, int width, int height, int offset, int length) {
 	checkFill();
 	gc.fillArc(x + translateX, y + translateY, width, height, offset, length);
 }
 
+/**
+ * @see Graphics#fillGradient(int, int, int, int, boolean)
+ */
 public void fillGradient(int x, int y, int w, int h, boolean vertical) {
 	checkFill();
 	checkPaint();
 	gc.fillGradientRectangle(x + translateX, y + translateY, w, h, vertical);
 }
 
-
-public void fillOval(int x, int y, int width, int height){
+/**
+ * @see Graphics#fillOval(int, int, int, int)
+ */
+public void fillOval(int x, int y, int width, int height) {
 	checkFill();
 	gc.fillOval(x + translateX, y + translateY, width, height);
 }
 
-public void fillPolygon(PointList points){
+/**
+ * @see Graphics#fillPolygon(PointList)
+ */
+public void fillPolygon(PointList points) {
 	checkFill();
-	try{
+	try {
 		points.translate(translateX, translateY);
 		gc.fillPolygon(points.toIntArray());
 	} finally {
@@ -240,61 +296,97 @@ public void fillPolygon(PointList points){
 	}
 }
 
-public void fillRectangle(int x, int y, int width, int height){
+/**
+ * @see Graphics#fillRectangle(int, int, int, int)
+ */
+public void fillRectangle(int x, int y, int width, int height) {
 	checkFill();
 	gc.fillRectangle(x + translateX, y + translateY, width, height);
 }
 
-public void fillRoundRectangle(Rectangle r, int arcWidth, int arcHeight){
+/**
+ * @see Graphics#fillRoundRectangle(Rectangle, int, int)
+ */
+public void fillRoundRectangle(Rectangle r, int arcWidth, int arcHeight) {
 	checkFill();
 	gc.fillRoundRectangle(r.x + translateX, r.y + translateY, r.width, r.height, arcWidth, arcHeight);
 }
 
+/**
+ * @see Graphics#fillString(String, int, int)
+ */
 public void fillString(String s, int x, int y) {
 	checkText();
 	gc.drawString(s, x + translateX, y + translateY, false);
 }
 
+/**
+ * @see Graphics#fillText(String, int, int)
+ */
 public void fillText(String s, int x, int y) {
 	checkText();
 	gc.drawText(s, x + translateX, y + translateY, false);
 }
 
-public Color getBackgroundColor(){
+/**
+ * @see Graphics#getBackgroundColor()
+ */
+public Color getBackgroundColor() {
 	return currentState.bgColor;
 }
 
-public Rectangle getClip(Rectangle rect){
+/**
+ * @see Graphics#getClip(Rectangle)
+ */
+public Rectangle getClip(Rectangle rect) {
 	rect.setBounds(relativeClip);
 	return rect;
 }
 
-public Font getFont(){
+/**
+ * @see Graphics#getFont()
+ */
+public Font getFont() {
 	return currentState.font;
 }
 
-public FontMetrics getFontMetrics(){
+/**
+ * @see Graphics#getFontMetrics()
+ */
+public FontMetrics getFontMetrics() {
 	checkText();
 	return gc.getFontMetrics();
 }
 
-public Color getForegroundColor(){
+/**
+ * @see Graphics#getForegroundColor()
+ */
+public Color getForegroundColor() {
 	return currentState.fgColor;
 }
 
-public int getLineStyle(){
+/**
+ * @see Graphics#getLineStyle()
+ */
+public int getLineStyle() {
 	return currentState.lineStyle;
 }
 
-public int getLineWidth(){
+/**
+ * @see Graphics#getLineWidth()
+ */
+public int getLineWidth() {
 	return currentState.lineWidth;
 }
 
-public boolean getXORMode(){
+/**
+ * @see Graphics#getXORMode()
+ */
+public boolean getXORMode() {
 	return currentState.xor;
 }
 
-protected void init(){
+protected void init() {
 //Current translation is assumed to be 0,0.
 	currentState.bgColor = appliedState.bgColor = gc.getBackground();
 	currentState.fgColor = appliedState.fgColor = gc.getForeground();
@@ -308,31 +400,40 @@ protected void init(){
 	currentState.xor = appliedState.xor = gc.getXORMode();
 }
 
-public void popState(){
+/**
+ * @see Graphics#popState()
+ */
+public void popState() {
 	stackPointer--;
 	restoreState((State)stack.get(stackPointer));
 }
 
-public void pushState(){
+/**
+ * @see Graphics#pushState()
+ */
+public void pushState() {
 	try {
 		State s;
-		if(stack.size() > stackPointer) {
+		if (stack.size() > stackPointer) {
 			s = (State)stack.get(stackPointer);
 			s.copyFrom(currentState);
 		} else {
 			stack.add(currentState.clone());
 		}
 		stackPointer++;
-	} catch (CloneNotSupportedException e){
+	} catch (CloneNotSupportedException e) {
 		throw new RuntimeException(e.getMessage());
 	}
 }
 
-public void restoreState(){
+/**
+ * @see Graphics#restoreState()
+ */
+public void restoreState() {
 	restoreState((State)stack.get(stackPointer - 1));
 }
 
-protected void restoreState(State s){
+protected void restoreState(State s) {
 	setBackgroundColor(s.bgColor);
 	setForegroundColor(s.fgColor);
 	setLineStyle(s.lineStyle);
@@ -350,32 +451,38 @@ protected void restoreState(State s){
 	relativeClip.height = s.clipH;
 }
 
-public void scale(double factor){
-}
+public void scale(double factor) { }
 
-public void setBackgroundColor(Color color){
+/**
+ * @see Graphics#setBackgroundColor(Color)
+ */
+public void setBackgroundColor(Color color) {
 	if (currentState.bgColor.equals(color))
 		return;
 	currentState.bgColor = color;
 }
 
-public void setClip(Rectangle rect){
+/**
+ * @see Graphics#setClip(Rectangle)
+ */
+public void setClip(Rectangle rect) {
 	relativeClip.x = rect.x;
 	relativeClip.y = rect.y;
 	relativeClip.width = rect.width;
-	relativeClip.height= rect.height;
+	relativeClip.height = rect.height;
 
-	setClipAbsolute(rect.x+translateX,
-			    rect.y+translateY,
+	setClipAbsolute(rect.x + translateX,
+			    rect.y + translateY,
 			    rect.width,
 			    rect.height);
 }
 
-protected void setClipAbsolute(int x, int y, int w, int h){
-	if (currentState.clipW == w &&
-	    currentState.clipH == h &&
-	    currentState.clipX == x &&
-	    currentState.clipY == y) return;
+protected void setClipAbsolute(int x, int y, int w, int h) {
+	if (currentState.clipW == w 
+		&& currentState.clipH == h 
+		&& currentState.clipX == x 
+		&& currentState.clipY == y) 
+			return;
 
 	currentState.clipX = x;
 	currentState.clipY = y;
@@ -383,38 +490,60 @@ protected void setClipAbsolute(int x, int y, int w, int h){
 	currentState.clipH = h;
 }
 
-public void setFont(Font f){
-	if (currentState.font == f) return;
+/**
+ * @see Graphics#setFont(Font)
+ */
+public void setFont(Font f) {
+	if (currentState.font == f) 
+		return;
 	currentState.font = f;
 }
 
-public void setForegroundColor(Color color){
+/**
+ * @see Graphics#setForegroundColor(Color)
+ */
+public void setForegroundColor(Color color) {
 	if (currentState.fgColor.equals(color))
 		return;
 	currentState.fgColor = color;
 }
 
-public void setLineStyle(int style){
-	if (currentState.lineStyle == style) return;
+/**
+ * @see Graphics#setLineStyle(int)
+ */
+public void setLineStyle(int style) {
+	if (currentState.lineStyle == style) 
+		return;
 	currentState.lineStyle = style;
 }
 
-public void setLineWidth(int width){
-	if (currentState.lineWidth == width) return;
+/**
+ * @see Graphics#setLineWidth(int)
+ */
+public void setLineWidth(int width) {
+	if (currentState.lineWidth == width) 
+		return;
 	currentState.lineWidth = width;
 }
 
-protected void setTranslation(int x, int y){
+protected void setTranslation(int x, int y) {
 	translateX = currentState.dx = x;
 	translateY = currentState.dy = y;
 }
 
-public void setXORMode(boolean b){
-	if (currentState.xor == b) return;
+/**
+ * @see Graphics#setXORMode(boolean)
+ */
+public void setXORMode(boolean b) {
+	if (currentState.xor == b) 
+		return;
 	currentState.xor = b;
 }
 
-public void translate(int x, int y){
+/**
+ * @see Graphics#translate(int, int)
+ */
+public void translate(int x, int y) {
 	setTranslation(translateX + x, translateY + y);
 	relativeClip.x -= x;
 	relativeClip.y -= y;

@@ -61,6 +61,9 @@ public ScrollableThumbnail(Viewport port) {
 	initialize();
 }
 
+/**
+ * @see Thumbnail#deactivate()
+ */
 public void deactivate() {
 	viewport.removePropertyChangeListener(Viewport.PROPERTY_VIEW_LOCATION, propListener);
 	viewport.removeFigureListener(figureListener);

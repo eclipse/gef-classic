@@ -64,9 +64,9 @@ public ParagraphTextLayout(TextFlow flow, int style) {
 	wrappingStyle = style;
 }
 
-protected float getAverageCharWidth(TextFragmentBox fragment){
+protected float getAverageCharWidth(TextFragmentBox fragment) {
 	if (fragment.width != 0 && fragment.length != 0)
-		return fragment.width/(float)fragment.length;
+		return fragment.width / (float)fragment.length;
 	return 0.0f;
 }
 
@@ -120,7 +120,7 @@ protected void layout() {
 
 	//Remove the remaining unused fragments.
 	while (i < fragments.size())
-		fragments.remove(fragments.size()-1);
+		fragments.remove(fragments.size() - 1);
 }
 
 }

@@ -17,16 +17,13 @@ import org.eclipse.swt.events.MouseTrackAdapter;
 import org.eclipse.swt.graphics.Point;
 
 /**
- * This class is used by SWTEventDispatcher as support to 
- * display Figure tooltips on a mouse hover event. Tooltips 
- * are drawn directly below the cursor unless the display 
- * does not allow, in which case the tooltip will be drawn 
- * directly above the cursor. Tooltips will be displayed
- * with a LineBorder. The background of the tooltips will
- * be the standard SWT tooltipBackground color unless 
- * the Figure's tooltip has set its own background.
+ * This class is used by SWTEventDispatcher as support to display Figure tooltips on a 
+ * mouse hover event. Tooltips are drawn directly below the cursor unless the display 
+ * does not allow, in which case the tooltip will be drawn directly above the cursor. 
+ * Tooltips will be displayed with a LineBorder. The background of the tooltips will be 
+ * the standard SWT tooltipBackground color unless the Figure's tooltip has set its own 
+ * background.
  */
- 
 public class ToolTipHelper 
 	extends PopUpHelper
 {
@@ -37,61 +34,53 @@ private IFigure currentTipSource;
 /**
  * Constructs a ToolTipHelper to be associated with Control <i>c</i>.
  * 
+ * @param c the control
  * @since 2.0
  */
-public ToolTipHelper(org.eclipse.swt.widgets.Control c){
+public ToolTipHelper(org.eclipse.swt.widgets.Control c) {
 	super(c);
 	getLightweightSystem().getRootFigure().setBorder(new LineBorder());
 	getShell().setBackground(ColorConstants.tooltipBackground);
 	getShell().setForeground(ColorConstants.tooltipForeground);
 }
 
-/**
- * Calculates the location where the tooltip will be
- * painted. Returns this as a Point. Tooltip will 
- * be painted directly below the cursor if possible,
- * otherwise it will be painted directly above cursor.
- *
- * @param tip  The tool tip to be displayed.
- * @param eventX X coordinate of the hover event
- * @param eventY Y coodrinate of the hover event
- * @since 2.0
+/*
+ * Calculates the location where the tooltip will be painted. Returns this as a Point. 
+ * Tooltip will be painted directly below the cursor if possible, otherwise it will be 
+ * painted directly above cursor.
  */
-private Point computeWindowLocation(IFigure tip, int eventX, int eventY){
+private Point computeWindowLocation(IFigure tip, int eventX, int eventY) {
 	org.eclipse.swt.graphics.Rectangle clientArea = control.getDisplay().getClientArea();
-	Point preferredLocation = new Point(eventX,eventY + 26);
+	Point preferredLocation = new Point(eventX, eventY + 26);
 	
 	Dimension tipSize = getLightweightSystem().getRootFigure().getPreferredSize();
 	
 	// Adjust location if tip is going to fall outside display
-	if( preferredLocation.y + tipSize.height > clientArea.height )  
+	if (preferredLocation.y + tipSize.height > clientArea.height)  
 		preferredLocation.y = eventY - tipSize.height;
 	
-	if( preferredLocation.x + tip.getSize().width > clientArea.width )
+	if (preferredLocation.x + tip.getSize().width > clientArea.width)
 		preferredLocation.x -= (preferredLocation.x + tipSize.width) - clientArea.width;
 	
 	return preferredLocation; 
 }
 
 /**
- * Sets the LightWeightSystem object's contents  
- * to the passed tooltip, and displays the tip.
- * The tip will be displayed only if the tip 
- * source is different than the previously viewed
- * tip source. I.E. The cursor has moved off of the 
- * previous tooltip source Figure. 
+ * Sets the LightWeightSystem's contents to the passed tooltip, and displays the tip. The 
+ * tip will be displayed only if the tip source is different than the previously viewed 
+ * tip source. (i.e. The cursor has moved off of the previous tooltip source figure.)
+ * <p>
+ * The tooltip will be painted directly below the cursor if possible, otherwise it will be 
+ * painted directly above cursor.
  *
- * Tooltip will  be painted directly below the cursor if possible,
- * otherwise it will be painted directly above cursor.
- *
- * @param hoverSource The Figure overwhich the hover event was fired. 
- * @param tip  The tool tip to be displayed.
- * @param eventX X coordinate of the hover event
- * @param eventY Y coordinate of the hover event
+ * @param hoverSource the figure over which the hover event was fired
+ * @param tip the tooltip to be displayed
+ * @param eventX the x coordinate of the hover event
+ * @param eventY the y coordinate of the hover event
  * @since 2.0
  */
-public void displayToolTipNear(IFigure hoverSource, IFigure tip, int eventX, int eventY){
-	if(tip != null && hoverSource != currentTipSource){
+public void displayToolTipNear(IFigure hoverSource, IFigure tip, int eventX, int eventY) {
+	if (tip != null && hoverSource != currentTipSource) {
 		getLightweightSystem().setContents(tip);
 		Point displayPoint = computeWindowLocation(tip, eventX, eventY);
 		Dimension tipSize = getLightweightSystem().getRootFigure().getPreferredSize();
@@ -99,8 +88,8 @@ public void displayToolTipNear(IFigure hoverSource, IFigure tip, int eventX, int
 		show();
 		currentTipSource = hoverSource;
 		timer = new UITimer();
-		timer.scheduleRepeatedly(new Runnable(){
-			public void run(){
+		timer.scheduleRepeatedly(new Runnable() {
+			public void run() {
 				hide();
 				timer.cancel();
 			}
@@ -108,20 +97,26 @@ public void displayToolTipNear(IFigure hoverSource, IFigure tip, int eventX, int
 	}
 }
 
-/* Dispose of the tooltip's shell and kill the timer */
-public void dispose(){
-	if(isShowing()){
+/** 
+ * Disposes of the tooltip's shell and kills the timer.
+ * 
+ * @see PopUpHelper#dispose()
+ */
+public void dispose() {
+	if (isShowing()) {
 		timer.cancel();
 		hide();
 	}	
 	getShell().dispose();
 }
 
-protected void hookShellListeners(){
-	
+/**
+ * @see PopUpHelper#hookShellListeners()
+ */
+protected void hookShellListeners() {
 	// Close the tooltip window if the mouse enters the tooltip
 	getShell().addMouseTrackListener(new MouseTrackAdapter(){
-		public void mouseEnter(org.eclipse.swt.events.MouseEvent e){
+		public void mouseEnter(org.eclipse.swt.events.MouseEvent e) {
 				hide();
 				currentTipSource = null;
 				timer.cancel();
@@ -130,33 +125,30 @@ protected void hookShellListeners(){
 }
 
 /**
- * Displays the hoverSource's tooltip if a tooltip of another  
- * source is currently being displayed. 
+ * Displays the hover source's tooltip if a tooltip of another source is currently being 
+ * displayed. 
  *
- * @param figureUnderMouse The Figure overwhich the cursor was when called 
- * @param tip  The tool tip to be displayed.
- * @param eventX X coordinate of the cursor
- * @param eventY Y coordinate of the cursor
+ * @param figureUnderMouse the figure over which the cursor was when called
+ * @param tip the tooltip to be displayed
+ * @param eventX the x coordinate of the cursor
+ * @param eventY the y coordinate of the cursor
  * @since 2.0
  */
-public void updateToolTip(IFigure figureUnderMouse, IFigure tip, int eventX, int eventY){
+public void updateToolTip(IFigure figureUnderMouse, IFigure tip, int eventX, int eventY) {
 	/* If the cursor is not on any Figures, it has been moved
 	   off of the control. Hide the tool tip. */
-	if(figureUnderMouse == null){ 
-		if(isShowing()){
+	if (figureUnderMouse == null) { 
+		if (isShowing()) {
 			hide();
 			timer.cancel();
 		}
 	}
-	/* Makes tooltip appear without a hover event if a tip
-	   is currently being displayed. */	
-	if(isShowing() && figureUnderMouse != currentTipSource){ 
+	// Makes tooltip appear without a hover event if a tip is currently being displayed
+	if (isShowing() && figureUnderMouse != currentTipSource) { 
 		hide();
 		timer.cancel();
 		displayToolTipNear(figureUnderMouse, tip, eventX, eventY);
-	}
-	/* If the tooltip is not being displayed, there is no current tip source */
-	else if(!isShowing() && figureUnderMouse != currentTipSource)		
+	} else if (!isShowing() && figureUnderMouse != currentTipSource)		
 		currentTipSource = null;			
 }
 

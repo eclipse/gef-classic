@@ -24,14 +24,17 @@ public class ToggleButton
 
 protected Label label = null;
 
+/**
+ * Constructs a new ToggleButton with no initial contents.
+ */
 public ToggleButton() {
 	setStyle(STYLE_BUTTON | STYLE_TOGGLE);
 }
 
 /**
- * Constructs a ToggleButton with the passed
- * IFigure as its contents.
+ * Constructs a ToggleButton with the passed IFigure as its contents.
  * 
+ * @param contents the contents of the toggle button
  * @since 2.0
  */
 public ToggleButton(IFigure contents) {
@@ -39,9 +42,9 @@ public ToggleButton(IFigure contents) {
 }
 
 /**
- * Constructs a ToggleButton with the passed
- * string as its text.
+ * Constructs a ToggleButton with the passed string as its text.
  * 
+ * @param text the text to be displayed on the button
  * @since 2.0
  */
 public ToggleButton(String text) {
@@ -49,9 +52,10 @@ public ToggleButton(String text) {
 }
 
 /**
- * Constructs a ToggleButton with a Label
- * containing the passed text and icon.
+ * Constructs a ToggleButton with a Label containing the passed text and icon.
  * 
+ * @param text the text
+ * @param normalIcon the icon
  * @since 2.0
  */
 public ToggleButton(String text, Image normalIcon) {

@@ -13,13 +13,13 @@ package org.eclipse.draw2d;
 import org.eclipse.swt.graphics.Image;
 
 /**
- * Basic Rule for Toggle: Whoever creates the toggle is
- * reponsible for response changes for it 
- * (selection / rollover / etc...). Only CheckBox does
- * its own listening.
+ * Basic Rule for Toggle: Whoever creates the toggle is reponsible for response changes 
+ * for it (selection, rollover, etc). Only {@link org.eclipse.draw2d.CheckBox} does its 
+ * own listening.
  */
 public class Toggle
-	extends Clickable{
+	extends Clickable
+{
 
 /**
  * Constructs a Toggle with no text or icon.
@@ -34,22 +34,29 @@ public Toggle() {
 /**
  * Constructs a Toggle with passed text and icon
  * 
+ * @param text the text
+ * @param icon the icon
  * @since 2.0
  */
-public Toggle(String text, Image icon){
+public Toggle(String text, Image icon) {
 	super(new Label(text, icon), STYLE_TOGGLE);
 }
 
 /**
- * Constructs a Toggle with passed IFigure as its 
- * contents.
+ * Constructs a Toggle with passed IFigure as its contents.
  * 
- * @since
+ * @param contents the contents
+ * @since 2.0
  */
-public Toggle(IFigure contents){
+public Toggle(IFigure contents) {
 	super(contents, STYLE_TOGGLE);
 }
 
+/**
+ * Constructs a Toggle with the passed figure as its contents and the given style.
+ * @param contents the contents
+ * @param style the style
+ */
 public Toggle(IFigure contents, int style) {
 	super(contents, style);
 }

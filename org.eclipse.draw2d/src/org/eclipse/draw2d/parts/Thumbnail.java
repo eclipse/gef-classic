@@ -333,6 +333,10 @@ protected float getScaleY() {
 	return scaleY;
 }
 
+/**
+ * Returns the source figure.
+ * @return the source figure
+ */
 protected IFigure getSource() {
 	return sourceFigure;
 }

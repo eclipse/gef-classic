@@ -24,26 +24,26 @@ public InlineFlowLayout(FlowFigure flow) {
 	super(flow);
 }
 
-public void addToCurrentLine(FlowBox block){
+public void addToCurrentLine(FlowBox block) {
 	getCurrentLine().add(block);
 	((InlineFlow)getFlowFigure()).getFragments().add(currentLine);
 }
 
-protected void createNewLine(){
+protected void createNewLine() {
 	currentLine = new LineBox();
 	setupLine(currentLine);
 }
 
-protected void cleanup(){
+protected void cleanup() {
 	currentLine = null;
 }
 
-protected void flush(){
+protected void flush() {
 	if (currentLine != null)
 		context.addToCurrentLine(currentLine);
 }
 
-public void endLine(){
+public void endLine() {
 	if (currentLine == null)
 		return;
 	//If nothing was ever placed in the line, ignore it.
@@ -68,11 +68,11 @@ public boolean isCurrentLineOccupied() {
 		|| context.isCurrentLineOccupied();
 }
 
-public void preLayout(){
+public void preLayout() {
 	((InlineFlow)getFlowFigure()).getFragments().clear();
 }
 
-protected void setupLine(LineBox line){
+protected void setupLine(LineBox line) {
 	LineBox parent = context.getCurrentLine();
 	line.x = 0;
 	line.y = context.getCurrentY();

@@ -146,7 +146,7 @@ public Point getPoint(int index) {
 	    throw new IndexOutOfBoundsException(
 	    	"Index: " + index + //$NON-NLS-1$
 	    	", Size: " + size); //$NON-NLS-1$
-	index  *= 2;
+	index *= 2;
 	return new Point(points[index], points[index + 1]);
 }
 
@@ -265,13 +265,17 @@ public void setPoint(Point pt, int index) {
 	points[index * 2 + 1] = pt.y;
 }
 
+/**
+ * Sets the size of this PointList.
+ * @param newSize the new size
+ */
 public void setSize(int newSize) {
-	if (points.length > newSize*2) {
+	if (points.length > newSize * 2) {
 		size = newSize;
 		return;
 	}
 	int[] newArray = new int[newSize * 2];
-	System.arraycopy(points,0,newArray,0,points.length);
+	System.arraycopy(points, 0, newArray, 0, points.length);
 	points = newArray;
 	size = newSize;
 }

@@ -41,11 +41,11 @@ public boolean containsPoint(int x, int y) {
 	return false;
 }
 
-protected FlowFigureLayout createDefaultFlowLayout(){
+protected FlowFigureLayout createDefaultFlowLayout() {
 	return new InlineFlowLayout(this);
 }
 
-public List getFragments(){
+public List getFragments() {
 	return fragments;
 }
 

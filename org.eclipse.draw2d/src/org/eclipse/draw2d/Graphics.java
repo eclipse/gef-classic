@@ -10,140 +10,393 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.FontMetrics;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.SWT;
-import org.eclipse.draw2d.geometry.*;
+import org.eclipse.swt.graphics.*;
 
+import org.eclipse.draw2d.geometry.*;
+import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.Rectangle;
+
+/**
+ * The Graphics class allows you to draw to a surface.  The drawXxx() methods that pertain 
+ * to shapes draw an outline of the shape, whereas the fillXxx() methods fill in the shape.
+ * Also provides for drawing text, lines and images.
+ */
 public abstract class Graphics {
 
-public static final int
-	LINE_SOLID = SWT.LINE_SOLID,
-	LINE_DASH  = SWT.LINE_DASH,
-	LINE_DASHDOT = SWT.LINE_DASHDOT,
-	LINE_DASHDOTDOT = SWT.LINE_DASHDOTDOT,
-	LINE_DOT	= SWT.LINE_DOT;
+/** @see SWT#LINE_SOLID */
+public static final int LINE_SOLID = SWT.LINE_SOLID;
+/** @see SWT#LINE_DASH */
+public static final int LINE_DASH = SWT.LINE_DASH;
+/** @see SWT#LINE_DASHDOT */
+public static final int LINE_DASHDOT = SWT.LINE_DASHDOT;
+/** @see SWT#LINE_DASHDOTDOT */
+public static final int LINE_DASHDOTDOT = SWT.LINE_DASHDOTDOT;
+/** @see SWT#LINE_DOT */
+public static final int LINE_DOT = SWT.LINE_DOT;
 
+/**
+ * Sets the clip region to the given rectangle.  Anything outside this rectangle will not
+ * be drawn.
+ * @param r the clip rectangle
+ */
 public abstract void clipRect(Rectangle r);
 
+/**
+ * Disposes this Graphics object.
+ */
 public abstract void dispose();
 
-public final void drawArc(Rectangle r, int offset, int length){
+/**
+ * @see #drawArc(int, int, int, int, int, int)
+ */
+public final void drawArc(Rectangle r, int offset, int length) {
 	drawArc(r.x, r.y, r.width, r.height, offset, length);
 }
 
 public abstract void drawArc(int x, int y, int w, int h, int offset, int length);
 
 public abstract void fillArc(int x, int y, int w, int h, int offset, int length);
-public final void fillArc(Rectangle r, int offset, int length){
+
+/**
+ * @see #fillArc(int, int, int, int, int, int)
+ */
+public final void fillArc(Rectangle r, int offset, int length) {
 	fillArc(r.x, r.y, r.width, r.height, offset, length);
 }
 
-
+/**
+ * @see #fillGradient(int, int, int, int, boolean)
+ */
 public final void fillGradient(Rectangle r, boolean vertical) {
 	fillGradient(r.x, r.y, r.width, r.height, vertical);
 }
 
+/**
+ * Fills the the given rectangle with a gradient from the foreground color to the 
+ * background color. If <i>vertical</i> is <code>true</code>, the gradient will go from 
+ * top to bottom.  Otherwise, it will go from left to right.
+ * background color.
+ *
+ * @param x the x coordinate
+ * @param y the y coordinate
+ * @param w the width
+ * @param h the height
+ * @param vertical whether the gradient should be vertical
+ */
 public abstract void fillGradient(int x, int y, int w, int h, boolean vertical);
 
-public final void drawFocus(Rectangle r){
+/**
+ * @see #drawFocus(int, int, int, int)
+ */
+public final void drawFocus(Rectangle r) {
 	drawFocus(r.x, r.y, r.width, r.height);
 }
 
+/**
+ * Draws a focus rectangle.
+ * 
+ * @param x the x coordinate
+ * @param y the y coordinate
+ * @param w the width
+ * @param h the height
+ */
 public abstract void drawFocus(int x, int y, int w, int h);
 
-public final void drawImage(Image srcImage, Point p){
+/**
+ * @see #drawImage(Image, int, int)
+ */
+public final void drawImage(Image srcImage, Point p) {
 	drawImage(srcImage, p.x, p.y);
 }
 
 public abstract void drawImage(Image srcImage, int x, int y);
-public final void drawImage(Image srcImage, Rectangle src, Rectangle dest){
-	drawImage(srcImage, src.x,src.y,src.width,src.height,dest.x,dest.y,dest.width,dest.height);
+
+/**
+ * @see #drawImage(Image, int, int, int, int, int, int, int, int)
+ */
+public final void drawImage(Image srcImage, Rectangle src, Rectangle dest) {
+	drawImage(srcImage, src.x, src.y, src.width, src.height, dest.x, dest.y, dest.width, dest.height);
 }
+
 public abstract void drawImage(Image srcImage, int x1, int y1, int w1, int h1, int x2, int y2, int w2, int h2);
 
-public final void drawLine(Point p1, Point p2){
+/**
+ * @see #drawLine(int, int, int, int)
+ */
+public final void drawLine(Point p1, Point p2) {
 	drawLine(p1.x, p1.y, p2.x, p2.y);
 }
+
+/**
+ * Draws a line between the points <code>(x1,y1)</code> and <code>(x2,y2)</code> using the
+ * foreground color.
+ * @param x1 the x coordinate for the first point
+ * @param y1 the y coordinate for the first point
+ * @param x2 the x coordinate for the second point
+ * @param y2 the y coordinate for the second point
+ */
 public abstract void drawLine(int x1, int y1, int x2, int y2);
 
-public final void drawOval(Rectangle r){
+/**
+ * @see #drawOval(int, int, int, int)
+ */
+public final void drawOval(Rectangle r) {
 	drawOval(r.x, r.y, r.width, r.height);
 }
+
+/**
+ * Draws the outline of an ellipse that fits inside the rectangle with the given
+ * properties using the foreground color.
+ * 
+ * @param x the x coordinate
+ * @param y the y coordinate
+ * @param w the width
+ * @param h the height
+ */
 public abstract void drawOval(int x, int y, int w, int h);
 
-public final void fillOval(Rectangle r){
+/**
+ * @see #fillOval(int, int, int, int)
+ */
+public final void fillOval(Rectangle r) {
 	fillOval(r.x, r.y, r.width, r.height);
 }
+
+/**
+ * Fills an ellipse that fits inside the rectangle with the given properties using the 
+ * background color.
+ * 
+ * @param x the x coordinate
+ * @param y the y coordinate
+ * @param w the width
+ * @param h the height
+ */
 public abstract void fillOval(int x, int y, int w, int h);
 
+/**
+ * Draws a closed polygon defined by the given <code>PointList</code> containing the 
+ * vertices.  The first and last points in the list will be connected.
+ * @param points the vertices
+ */
 public abstract void drawPolygon(PointList points);
+
+/**
+ * Fills a closed polygon defined by the given <code>PointList</code> containing the 
+ * vertices.  The first and last points in the list will be connected.
+ * @param points the vertices
+ */
 public abstract void fillPolygon(PointList points);
 
+/**
+ * Draws a polyline defined by the given <code>PointList</code> containing the vertices.
+ * The first and last points in the list will <b>not</b> be connected.
+ * @param points the vertices
+ */
 public abstract void drawPolyline(PointList points);
 
-public final void drawRectangle(Rectangle r){
+/**
+ * @see #drawRectangle(int, int, int, int)
+ */
+public final void drawRectangle(Rectangle r) {
 	drawRectangle(r.x, r.y, r.width, r.height);
 }
-public abstract void drawRectangle(int x1, int x2, int width, int height);
-public final void fillRectangle(Rectangle r){
+
+/**
+ * Draws a rectangle whose top-left corner is located at the point (x,y) with the given 
+ * width and height.
+ * 
+ * @param x the x coordinate
+ * @param y the y coordinate
+ * @param width the width
+ * @param height the height
+ */
+public abstract void drawRectangle(int x, int y, int width, int height);
+
+/**
+ * @see #fillRectangle(int, int, int, int)
+ */
+public final void fillRectangle(Rectangle r) {
 	fillRectangle(r.x, r.y, r.width, r.height);
 }
-public abstract void fillRectangle(int x1, int x2, int width, int height);
+
+/**
+ * Fills a rectangle whose top-left corner is located at the point (x,y) with the given
+ * width and height.
+ * 
+ * @param x the x coordinate
+ * @param y the y coordinate
+ * @param width the width
+ * @param height the height
+ */
+public abstract void fillRectangle(int x, int y, int width, int height);
 
 public abstract void drawRoundRectangle(Rectangle r, int arcWidth, int arcHeight);
+
 public abstract void fillRoundRectangle(Rectangle r, int arcWidth, int arcHeight);
 
 public abstract void drawText(String s, int x, int y);
+
 public abstract void drawString(String s, int x, int y);
 
-public final void drawString(String s, Point p){
+/**
+ * @see #drawString(String, int, int)
+ */
+public final void drawString(String s, Point p) {
 	drawString(s, p.x, p.y);
 }
 
-public final void drawText(String s, Point p){
+/**
+ * @see #drawText(String, int, int)
+ */
+public final void drawText(String s, Point p) {
 	drawText(s, p.x, p.y);
 }
 
-public final void fillString(String s, Point p){
+/**
+ * @see #fillString(String, int, int)
+ */
+public final void fillString(String s, Point p) {
 	fillString(s, p.x, p.y);
 }
 
 public abstract void fillString(String s, int x, int y);
 
-public final void fillText(String s, Point p){
+/**
+ * @see #fillText(String, int, int)
+ */
+public final void fillText(String s, Point p) {
 	fillText(s, p.x, p.y);
 }
 
 public abstract void fillText(String s, int x, int y);
 
+/**
+ * Returns the background color used for filling.
+ * @return the background color
+ */
 public abstract Color getBackgroundColor();
+
+/**
+ * Modifies the given rectangle to match the clip region and returns that rectangle.
+ * @param rect the rectangle to hold the clip region
+ * @return the clip rectangle
+ */
 public abstract Rectangle getClip(Rectangle rect);
+
+/**
+ * Returns the font used to draw and fill text.
+ * @return the font
+ */
 public abstract Font getFont();
+
+/**
+ * Returns the font metrics for the current font.
+ * @return the font metrics
+ */
 public abstract FontMetrics getFontMetrics();
+
+/**
+ * Returns the foreground color used to draw lines and text.
+ * @return the foreground color
+ */
 public abstract Color getForegroundColor();
+
+/**
+ * Returns the line style.
+ * @return the line style
+ */
 public abstract int getLineStyle();
+
+/**
+ * Returns the current line width.
+ * @return the line width
+ */
 public abstract int getLineWidth();
+
+/**
+ * Returns <code>true</code> if this graphics object should use XOR mode with painting.
+ * @return whether XOR mode is turned on
+ */
 public abstract boolean getXORMode();
 
+/**
+ * Pops the previous state of this graphics object off the stack (if {@link #pushState()} 
+ * has previously been called) and restores the current state to that popped state.
+ */
 public abstract void popState();
+
+/**
+ * Pushes the current state of this graphics object onto a stack.
+ */
 public abstract void pushState();
+
+/**
+ * Restores the previous state of this graphics object.
+ */
 public abstract void restoreState();
 
+/**
+ * Scales this graphics object by the given amount.  
+ * @param amount the scale factor
+ */
 public abstract void scale(double amount);
+
+/**
+ * Sets the background color.
+ * @param rgb the new background color
+ */
 public abstract void setBackgroundColor(Color rgb);
+
+/**
+ * Sets the clip rectangle. Painting will <b>not</b> occur outside this area.
+ * @param r the new clip rectangle
+ */
 public abstract void setClip(Rectangle r);
+
+/**
+ * Sets the font.
+ * @param f the new font
+ */
 public abstract void setFont(Font f);
+
+/**
+ * Sets the foreground color.
+ * @param rgb the new foreground color
+ */
 public abstract void setForegroundColor(Color rgb);
 
+/**
+ * Sets the line style.
+ * @param style the new style
+ */
 public abstract void setLineStyle(int style);
+
+/**
+ * Sets the line width.
+ * @param width the new width
+ */
 public abstract void setLineWidth(int width);
+
+/**
+ * Sets the XOR mode.
+ * @param b the new XOR mode
+ */
 public abstract void setXORMode(boolean b);
-public final void translate(Point pt){
+
+/**
+ * @see #translate(int, int)
+ */
+public final void translate(Point pt) {
 	translate(pt.x, pt.y);
 }
-public abstract void translate(int x, int y);
+
+/**
+ * Translates this graphics object so that its origin is offset horizontally by <i>dx</i> 
+ * and vertically by <i>dy</i>.
+ * @param dx the horizontal offset
+ * @param dy the vertical offset
+ */
+public abstract void translate(int dx, int dy);
 
 }

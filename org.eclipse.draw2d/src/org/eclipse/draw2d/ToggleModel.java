@@ -18,13 +18,12 @@ public class ToggleModel
 {
 
 /**
- * Notifies any ActionListeners on this ButtonModel that an action
- * has been performed. Sets this ButtonModel's selection to be 
- * the opposite of what it was.
+ * Notifies any ActionListeners on this ButtonModel that an action has been performed. 
+ * Sets this ButtonModel's selection to be the opposite of what it was.
  * 
  * @since 2.0
  */
-public void fireActionPerformed(){
+public void fireActionPerformed() {
 	setSelected(!isSelected());
 	super.fireActionPerformed();
 }

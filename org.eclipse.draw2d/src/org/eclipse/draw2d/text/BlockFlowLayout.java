@@ -138,7 +138,8 @@ protected void setupBlock() {
 }
 
 /**
- * Override to setup the line's x, remaining, and available width
+ * Override to setup the line's x, remaining, and available width.
+ * @param line the LineBox to set up
  */
 protected void setupLine(LineBox line) {
 	line.clear();
