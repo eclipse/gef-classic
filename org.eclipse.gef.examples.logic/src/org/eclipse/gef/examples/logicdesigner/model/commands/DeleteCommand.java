@@ -8,13 +8,16 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.gef.examples.logicdesigner.model;
+package org.eclipse.gef.examples.logicdesigner.model.commands;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
+import org.eclipse.gef.examples.logicdesigner.model.LogicDiagram;
+import org.eclipse.gef.examples.logicdesigner.model.LogicSubpart;
+import org.eclipse.gef.examples.logicdesigner.model.Wire;
 
 public class DeleteCommand
 	extends Command

@@ -8,10 +8,12 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.gef.examples.logicdesigner.model;
+package org.eclipse.gef.examples.logicdesigner.model.commands;
 
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
+import org.eclipse.gef.examples.logicdesigner.model.LogicDiagram;
+import org.eclipse.gef.examples.logicdesigner.model.LogicSubpart;
 
 public class CreateCommand
 	extends org.eclipse.gef.commands.Command
