@@ -213,8 +213,9 @@ protected void repairDamage() {
 	}
 
 	if (!dirtyRegions.isEmpty()) {
-		firePainting(damage, dirtyRegions);
+		Map oldRegions = dirtyRegions;		
 		dirtyRegions = new HashMap();
+		firePainting(damage, oldRegions);
 	}
 	
 	if (damage != null && !damage.isEmpty()) {
