@@ -42,7 +42,7 @@ import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.ui.actions.*;
 import org.eclipse.gef.ui.palette.PaletteContextMenuProvider;
-import org.eclipse.gef.ui.palette.PaletteViewerImpl;
+import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.eclipse.gef.ui.parts.*;
 import org.eclipse.gef.ui.stackview.CommandStackInspectorPage;
 
@@ -290,7 +290,7 @@ public void commandStackChanged(EventObject event) {
  */
 protected void configurePaletteViewer() {
 	super.configurePaletteViewer();
-	PaletteViewerImpl viewer = (PaletteViewerImpl)getPaletteViewer();
+	PaletteViewer viewer = (PaletteViewer)getPaletteViewer();
 	ContextMenuProvider provider = new PaletteContextMenuProvider(viewer);
 	getPaletteViewer().setContextMenu(provider);
 	viewer.setCustomizer(new LogicPaletteCustomizer());

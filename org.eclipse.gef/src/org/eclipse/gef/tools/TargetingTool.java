@@ -47,7 +47,7 @@ public void deactivate() {
 protected void doAutoexpose() {
 	if (exposeHelper == null)
 		return;
-	if (exposeHelper.step(getCurrentInput().getMouseLocation())) {
+	if (exposeHelper.step(getLocation())) {
 		handleAutoexpose();
 		Display.getCurrent().asyncExec(new QueuedAutoexpose());
 	} else
@@ -196,24 +196,30 @@ protected void unlockTargetEditPart() {
 	updateTargetUnderMouse();
 }
 
+/**
+ * Updates the active {@link AutoexposeHelper}. Does nothing if there is still an active
+ * helper. Otherwise, obtains a new helper (possible <code>null</code>) at the current
+ * mouse location and calls {@link #setAutoexposeHelper(AutoexposeHelper)}.
+ */
 protected void updateAutoexposeHelper() {
-	EditPart provider = getTargetEditPart();
-	AutoexposeHelper helper = null;
-	while (provider != null) {
-		helper = (AutoexposeHelper)provider.getAdapter(AutoexposeHelper.class);
-		if (helper != null && helper.detect(getCurrentInput().getMouseLocation()))
-			break;
-		provider = provider.getParent();
-	}
-	setAutoexposeHelper(helper);
+	if (exposeHelper != null)
+		return;
+	AutoexposeHelper.Search search;
+	search = new AutoexposeHelper.Search(getLocation());
+	getCurrentViewer()
+		.findObjectAtExcluding(getLocation(), Collections.EMPTY_LIST, search);
+	setAutoexposeHelper(search.result);
 }
 
-protected void updateTargetRequest(){}
+/**
+ * Subclasses should override to update the target request.
+ */
+protected void updateTargetRequest() { }
 
 /**
  * Returns <code>true</code> if the target has changed.
  */
-protected boolean updateTargetUnderMouse(){
+protected boolean updateTargetUnderMouse() {
 	if (!isTargetLocked()) {
 		Collection exclude = getExclusionSet();
 		EditPart editPart = getCurrentViewer().findObjectAtExcluding(
