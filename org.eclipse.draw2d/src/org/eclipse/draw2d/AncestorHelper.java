@@ -65,7 +65,7 @@ protected void addAncestors(IFigure rootFigure) {
 			ancestor != null;
 			ancestor = ancestor.getParent()) {
 		ancestor.addFigureListener(this);
-		ancestor.addPropertyChangeListener("parent", this);
+		ancestor.addPropertyChangeListener("parent", this); //$NON-NLS-1$
 	}
 }
 
