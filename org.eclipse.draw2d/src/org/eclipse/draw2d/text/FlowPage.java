@@ -14,6 +14,15 @@ import java.util.List;
 
 import org.eclipse.draw2d.geometry.*;
 
+/**
+ * The root of a Flow hierarchy. A flow page can be treated as a normal figure, but
+ * contains FlowFigures.
+ * 
+ * <P>A FlowPage will not have a defined width unless it is inside a figure whose layout
+ * provides width hints when calling {@link IFigure#getPreferredSize(int, int)}.
+ * 
+ * <P>WARNING: This class is not intended to be subclassed by clients.
+ */
 public class FlowPage
 	extends BlockFlow
 {
@@ -73,7 +82,11 @@ public void postValidate(){
  */
 public void setBounds(Rectangle r) {
 	super.setBounds(r);
-	setRecommendedWidth(r.width - getInsets().getWidth());
+	int newWidth = r.width - getInsets().getWidth();
+	if (getRecommendedWidth() != newWidth) {
+		setRecommendedWidth(newWidth);
+		getUpdateManager().addInvalidFigure(this);
+	}
 }
 
 private void setRecommendedWidth(int width) {

@@ -15,6 +15,8 @@ import org.eclipse.draw2d.*;
 /**
  * An inline flow that renders a sting of text across one or more lines. A TextFlow must
  * not have any children. It does not provide a {@link FlowContext}.
+ * 
+ * <P>WARNING: This class is not intended to be subclassed by clients.
  * @author hudsonr
  * @since 2.1 */
 public class TextFlow

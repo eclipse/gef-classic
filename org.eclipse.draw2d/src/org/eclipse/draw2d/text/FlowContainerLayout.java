@@ -15,6 +15,8 @@ import org.eclipse.draw2d.*;
 
 /**
  * A layout for FlowFigures with children.
+ * 
+ * <P>WARNING: This class is not intended to be subclassed by clients.
  * @author hudsonr
  * @since 2.1 */
 public abstract class FlowContainerLayout

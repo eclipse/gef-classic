@@ -17,6 +17,10 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * The base implementation for text flow figures. A flow figure is used to render a
  * document in which elements are laid out horizontally within a "line" until that line is
  * filled. Layout continues on the next line.
+ * 
+ * <p>WARNING: This class is not intended to be subclassed by clients. Future versions may
+ * contain additional abstract methods.
+ * 
  * @author hudsonr
  * @since 2.1 */
 public abstract class FlowFigure
@@ -50,22 +54,7 @@ protected abstract FlowFigureLayout createDefaultFlowLayout();
 
 protected void paintFigure(Graphics g){
 	super.paintFigure(g);
-//	FlowBox block;
-//	Rectangle r;
-//	Color bgColor = g.getBackgroundColor();
-//	for (int i=0; i< fragments.size(); i++){
-//		block = (FlowBox)fragments.get(i);
-//		r = block.getBounds();
-//		if (!g.getClip(Rectangle.SINGLETON).intersects(r))
-//			continue;
-//		//g.fillRectangle(r);
-//		if (SHOW_BASELINE){
-////			g.setBackgroundColor(FigureUtilities.darker(bgColor));
-////			g.fillRectangle(r.x,r.y+block.getAscent(), r.width, r.height-block.getAscent());
-////			g.setBackgroundColor(bgColor);
-//		}
-//	}
-//// 	g.drawRectangle(getBounds().getResized(-1,-1));
+// 	g.drawRectangle(getBounds().getResized(-1,-1));
 }
 
 /**

@@ -18,12 +18,14 @@ import org.eclipse.draw2d.PositionConstants;
  * A <code>FlowFigure</code> represented by a single {@link BlockBox} fragment containing
  * one or more lines. A BlockFlow is a creator of LineBoxes, which its children require
  * during layout. A BlockFlow can be thought of as a paragraph.
- * <P>
- * BlockFlows should be nested inside other BlockFlows, but it is also valid to place them
- * in InlineFlows. {@link FlowPage} can be used as a "root" block and can be added to
+ * 
+ * <P>BlockFlows should be nested inside other BlockFlows, but it is also valid to place
+ * them in InlineFlows. {@link FlowPage} can be used as a "root" block and can be added to
  * normal draw2d Figures.
- * <P>
- * Only {@link FlowFigure}s can be added to a BlockFlow.
+ * 
+ * <P>Only {@link FlowFigure}s can be added to a BlockFlow.
+ * 
+ * <P>WARNING: This class is not intended to be subclassed by clients.
  * @author hudsonr
  * @since 2.1
  */

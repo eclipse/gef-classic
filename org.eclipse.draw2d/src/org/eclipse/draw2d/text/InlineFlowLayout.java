@@ -11,7 +11,9 @@
 package org.eclipse.draw2d.text;
 
 /**
+ * The layout manager for {@link InlineFlow} figures.
  * 
+ * <P>WARNING: This class is not intended to be subclassed by clients.
  * @author hudsonr
  * @since 2.1 */
 public class InlineFlowLayout

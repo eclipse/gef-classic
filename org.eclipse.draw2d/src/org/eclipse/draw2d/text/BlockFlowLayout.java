@@ -15,6 +15,8 @@ import org.eclipse.draw2d.*;
 
 /**
  * The layout for {@link BlockFlow} figures.
+ * 
+ * <P>WARNING: This class is not intended to be subclassed by clients.
  * @author hudsonr
  * @since 2.1 */
 public class BlockFlowLayout

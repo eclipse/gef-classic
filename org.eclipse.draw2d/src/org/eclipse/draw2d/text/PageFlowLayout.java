@@ -10,6 +10,12 @@
  *******************************************************************************/
 package org.eclipse.draw2d.text;
 
+/**
+ * A block layout which requires no FlowContext to perform its layout. This class is used
+ * by {@link FlowPage}.
+ * 
+ * <P>WARNING: This class is not intended to be subclassed by clients.
+ */
 public class PageFlowLayout
 	extends BlockFlowLayout
 {

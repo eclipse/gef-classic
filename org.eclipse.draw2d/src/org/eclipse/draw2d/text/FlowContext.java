@@ -10,6 +10,12 @@
  *******************************************************************************/
 package org.eclipse.draw2d.text;
 
+/**
+ * The context that a {@link FlowFigureLayout} uses to perform its layout.
+ * 
+ * <P>WARNING: This interface is not intended to be implemented by clients. It exists to
+ * define the API between the layout and its context.
+ */
 public interface FlowContext {
 
 /**

@@ -18,8 +18,10 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * A <code>FlowFigure</code> represented by multiple <code>LineBox</code> fragments. An
  * <code>InlineFlow</code>'s parent must be either a {@link BlockFlow} or another
  * InlineFlow.
- * <P>
- * An InlineFlow may contain other InlineFlow figures.
+ * 
+ * <P>An InlineFlow may contain other InlineFlow figures.
+ * 
+ * <P>WARNING: This class is not intended to be subclassed by clients.
  * @author hudsonr
  * @since 2.0
  */
