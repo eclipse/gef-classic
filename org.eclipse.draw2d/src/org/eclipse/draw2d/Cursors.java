@@ -45,83 +45,83 @@ public static Cursor getDirectionalCursor(int direction) {
 }
 
 /**
- * @see {@link SWT#CURSOR_ARROW}
+ * @see SWT#CURSOR_ARROW 
  */
 public static final Cursor ARROW;
 /**
- * @see {@link SWT#CURSOR_SIZEN}
+ * @see SWT#CURSOR_SIZEN 
  */
 public static final Cursor SIZEN;
 /**
- * @see {@link SWT#CURSOR_SIZENE}
+ * @see SWT#CURSOR_SIZENE 
  */
 public static final Cursor SIZENE;
 /**
- * @see {@link SWT#CURSOR_SIZEE}
+ * @see SWT#CURSOR_SIZEE 
  */
 public static final Cursor SIZEE;
 /**
- * @see {@link SWT#CURSOR_SIZESE}
+ * @see SWT#CURSOR_SIZESE 
  */
 public static final Cursor SIZESE;
 /**
- * @see {@link SWT#CURSOR_SIZES}
+ * @see SWT#CURSOR_SIZES 
  */
 public static final Cursor SIZES;
 /**
- * @see {@link SWT#CURSOR_SIZESW}
+ * @see SWT#CURSOR_SIZESW 
  */
 public static final Cursor SIZESW;
 /**
- * @see {@link SWT#CURSOR_SIZEW}
+ * @see SWT#CURSOR_SIZEW 
  */
 public static final Cursor SIZEW;
 /**
- * @see {@link SWT#CURSOR_SIZENW}
+ * @see SWT#CURSOR_SIZENW 
  */
 public static final Cursor SIZENW;
 /**
- * @see {@link SWT#CURSOR_APPSTARTING}
+ * @see SWT#CURSOR_APPSTARTING 
  */
 public static final Cursor APPSTARTING;
 /**
- * @see {@link SWT#CURSOR_CROSS}
+ * @see SWT#CURSOR_CROSS 
  */
 public static final Cursor CROSS;
 /**
- * @see {@link SWT#CURSOR_HAND}
+ * @see SWT#CURSOR_HAND 
  */
 public static final Cursor HAND;
 /**
- * @see {@link SWT#CURSOR_HELP}
+ * @see SWT#CURSOR_HELP 
  */
 public static final Cursor HELP;
 /**
- * @see {@link SWT#CURSOR_IBEAM}
+ * @see SWT#CURSOR_IBEAM 
  */
 public static final Cursor IBEAM;
 /**
- * @see {@link SWT#CURSOR_NO}
+ * @see SWT#CURSOR_NO 
  */
 public static final Cursor NO;
 /**
- * @see {@link SWT#CURSOR_SIZEALL}
+ * @see SWT#CURSOR_SIZEALL 
  */
 public static final Cursor SIZEALL;
 /**
- * @see {@link SWT#CURSOR_SIZENESW}
+ * @see SWT#CURSOR_SIZENESW 
  */
 public static final Cursor SIZENESW;
 /**
- * @see {@link SWT#CURSOR_SIZENWSE}
+ * @see SWT#CURSOR_SIZENWSE 
  */
 public static final Cursor SIZENWSE;
 /**
- * @see {@link SWT#CURSOR_UPARROW}
+ * @see SWT#CURSOR_UPARROW 
  */
 public static final Cursor UPARROW;
 /**
- * @see {@link SWT#CURSOR_WAIT}
+ * @see SWT#CURSOR_WAIT 
  */
 public static final Cursor WAIT;
 
