@@ -791,7 +791,6 @@ protected Widget getWidget(int id) {
  */
 protected final void handleApplyPressed() {
 	save();
-//	getButton(APPLY_ID).setEnabled(false);
 }
 
 /**
@@ -808,7 +807,9 @@ protected void handleDelete() {
  * menu or the toolbar).  It moves the selected palette entry down.
  */
 protected void handleMoveDown() {
-	getCustomizer().performMoveDown(getSelectedPaletteEntry());
+	PaletteEntry entry = getSelectedPaletteEntry();
+	getCustomizer().performMoveDown(entry);
+	treeviewer.setSelection(new StructuredSelection(entry), true);
 	updateActions();
 	tree.setFocus();
 }
@@ -818,7 +819,9 @@ protected void handleMoveDown() {
  * menu or the toolbar).  It moves the selected entry up.
  */
 protected void handleMoveUp() {
-	getCustomizer().performMoveUp(getSelectedPaletteEntry());
+	PaletteEntry entry = getSelectedPaletteEntry();
+	getCustomizer().performMoveUp(entry);
+	treeviewer.setSelection(new StructuredSelection(entry), true);
 	updateActions();
 	tree.setFocus();
 }
@@ -847,17 +850,6 @@ protected void handleOutlineSelectionChanged() {
 		setActiveEntry(entry);
 	}
 	updateActions();
-}
-
-/** 
- * This method should be removed when the bug in 
- * Window#initializeBounds() is fixed
- */
-protected void initializeBounds() {
-	Point size = getInitialSize();
-	Point location = getInitialLocation(size);
-	
-	getShell().setBounds(location.x, location.y, size.x, size.y);
 }
 
 /**
@@ -1210,6 +1202,7 @@ private class FactoryWrapperAction extends Action {
 		PaletteEntry selected = getSelectedPaletteEntry();
 		if (selected == null) selected = getPaletteRoot();
 		factory.createNewEntry(getShell(), selected);
+		updateActions();
 		tree.setFocus();
 	}
 }
