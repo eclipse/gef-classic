@@ -142,7 +142,8 @@ void highlightGuide(Integer pos, Color color, int offset) {
 		guide[offset] = fig;
 		addFeedback(fig);
 		fig.translateToRelative(loc);
-		position = offset % 2 == 0 ? (int)(loc.preciseX + 0.5) : (int)(loc.preciseY + 0.5);
+		position = offset % 2 == 0 ? (int)Math.round(loc.preciseX) 
+		                           : (int)Math.round(loc.preciseY);
 		Rectangle figBounds = getLayer(LayerConstants.FEEDBACK_LAYER)
 				.getBounds().getCopy();
 		if ((offset % 2) == 1) {
