@@ -26,6 +26,7 @@ public final TextLocation end;
 
 public final boolean isForward;
 
+private List selectedParts;
 private List leafParts;
 
 /**
@@ -125,12 +126,64 @@ private List findLeavesBetweenInclusive(EditPart left, EditPart right) {
 	return result;
 }
 
+private List findNodesBetweenInclusive(EditPart left, EditPart right) {
+	if (left == right)
+		return Collections.singletonList(left);
+	EditPart commonAncestor = ToolUtilities.findCommonAncestor(left, right);
+
+	EditPart nextLeft = left.getParent();
+	List children;
+
+	ArrayList result = new ArrayList();
+
+	if (nextLeft == commonAncestor)
+		result.add(left);
+	while (nextLeft != commonAncestor) {
+		children = nextLeft.getChildren();
+		for (int i = children.indexOf(left); i < children.size(); i++)
+			result.add(children.get(i));
+
+		left = nextLeft;
+		nextLeft = nextLeft.getParent();
+	}
+
+	ArrayList rightSide = new ArrayList();
+	EditPart nextRight = right.getParent();
+	if (nextRight == commonAncestor)
+		rightSide.add(right);
+	while (nextRight != commonAncestor) {
+		children = nextRight.getChildren();
+		int end = children.indexOf(right);
+		for (int i = 0; i <= end; i++)
+			rightSide.add(children.get(i));
+
+		right = nextRight;
+		nextRight = nextRight.getParent();
+	}
+
+	children = commonAncestor.getChildren();
+	int start = children.indexOf(left) + 1;
+	int end = children.indexOf(right);
+	if (end > start)
+		result.addAll(children.subList(start, end));
+	result.addAll(rightSide);
+	return result;
+}
+
 public List getLeafParts() {
 	if (leafParts == null) {
 		List list = findLeavesBetweenInclusive(begin.part, end.part);
 		leafParts = Collections.unmodifiableList(list);
 	}
 	return leafParts;
+}
+
+public List getSelectedParts() {
+	if (selectedParts == null) {
+		List list = findNodesBetweenInclusive(begin.part, end.part);
+		selectedParts = Collections.unmodifiableList(list);
+	}
+	return selectedParts;
 }
 
 public boolean isEmpty() {
