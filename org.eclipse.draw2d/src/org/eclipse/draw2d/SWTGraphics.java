@@ -54,6 +54,12 @@ public void clipRect(Rectangle rect){
 			    relativeClip.height);
 }
 
+public void dispose() {
+	while(stackPointer > 0) {
+		popState();
+	}
+}
+
 protected void init(){
 //Current translation is assumed to be 0,0.
 	currentState.bgColor = appliedState.bgColor = gc.getBackground();
@@ -305,7 +311,7 @@ protected void restoreState(State s){
 	relativeClip.height = s.clipH;
 }
 
-public void scale(float factor){
+public void scale(double factor){
 }
 
 public void setBackgroundColor(Color color){

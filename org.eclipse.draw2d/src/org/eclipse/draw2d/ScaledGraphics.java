@@ -7,6 +7,7 @@ import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.draw2d.geometry.*;
 
 public class ScaledGraphics
@@ -14,20 +15,20 @@ public class ScaledGraphics
 {
 
 protected static class State {
-	private float zoom;
-	private float appliedX;
-	private float appliedY;
+	private double zoom;
+	private double appliedX;
+	private double appliedY;
 	private Font font;
 
 	protected State(){}
-	protected State(float zoom, float x, float y, Font font) {
+	protected State(double zoom, double x, double y, Font font) {
 		this.zoom = zoom;
 		this.appliedX = x;
 		this.appliedY = y;
 		this.font = font;
 	}
 	
-	protected void setValues(float zoom, float x, float y, Font font) {
+	protected void setValues(double zoom, double x, double y, Font font) {
 		this.zoom = zoom;
 		this.appliedX = x;
 		this.appliedY = y;
@@ -42,15 +43,15 @@ private static class FontHeightCache {
 
 private static final Rectangle TEMP = new Rectangle();
 private static final Point PT = new Point();
-private static Map fontCache = new HashMap();
+private Map fontCache = new HashMap();
 
 private FontHeightCache localCache = new FontHeightCache();
 private FontHeightCache targetCache = new FontHeightCache();
 private Graphics graphics;
 private Font localFont;
-private float fractionalX;
-private float fractionalY;
-private float zoom = 1.0f;
+private double fractionalX;
+private double fractionalY;
+double zoom = 1.0;
 private List stack = new ArrayList();
 private int stackPointer = 0;
 
@@ -61,6 +62,21 @@ public ScaledGraphics(Graphics g){
 
 public void clipRect(Rectangle r) {
 	graphics.clipRect(zoomRect(r));
+}
+
+public void dispose(){
+	
+	//Dispose fonts
+	Iterator iter = fontCache.values().iterator();
+	while (iter.hasNext()) {
+  		Font font = ((Font)iter.next());
+ 		font.dispose();
+ 	}
+
+	//Remove all states from the stack
+	while(stackPointer > 0) {
+		popState();
+	}
 }
 
 public void drawArc(int x, int y, int w, int h, int offset, int sweep) {
@@ -78,8 +94,8 @@ public void drawFocus(int x, int y, int w, int h) {
 public void drawImage(Image srcImage, int x, int y) {
 	org.eclipse.swt.graphics.Rectangle size = srcImage.getBounds();
 	graphics.drawImage(srcImage, 0, 0, size.width, size.height,
-		(int)(x*zoom), (int)(y*zoom),
-		(int)(size.width*zoom), (int)(size.height*zoom));
+		(int)(Math.floor((x*zoom +fractionalX))), (int)(Math.floor((y*zoom +fractionalY))),
+		(int)(Math.floor((size.width*zoom +fractionalX))), (int)(Math.floor((size.height*zoom +fractionalY))));
 }
 
 public void drawImage(Image srcImage,
@@ -93,10 +109,10 @@ public void drawImage(Image srcImage,
 
 public void drawLine(int x1, int y1, int x2, int y2) {
 	graphics.drawLine(
-		(int)(x1 * zoom),
-		(int)(y1 * zoom),
-		(int)(x2 * zoom),
-		(int)(y2 * zoom));
+		(int)(Math.floor((x1 * zoom +fractionalX))),
+		(int)(Math.floor((y1 * zoom +fractionalY))),
+		(int)(Math.floor((x2 * zoom +fractionalX))),
+		(int)(Math.floor((y2 * zoom +fractionalY))));
 }
 
 public void drawOval(int x, int y, int w, int h) {
@@ -165,7 +181,7 @@ public Rectangle getClip(Rectangle rect) {
 	int y = (int)(rect.y / zoom);
 	/*
 	 * If the clip rectangle is queried, perform an inverse zoom, and take the ceiling of
-	 * the resulting float. This is necessary because forward scaling essentially performs
+	 * the resulting double. This is necessary because forward scaling essentially performs
 	 * a floor() function. Without this, figures will think that they don't need to paint
 	 * when actually they do.
 	 */
@@ -235,11 +251,11 @@ public void restoreState() {
 	restoreLocalState((State)stack.get(stackPointer - 1));
 }
 
-public void scale(float amount) {
+public void scale(double amount) {
 	setScale(zoom * amount);
 }
 
-void setScale(float value){
+void setScale(double value){
 	if (zoom == value)
 		return;
 	this.zoom = value;
@@ -247,12 +263,16 @@ void setScale(float value){
 }
 
 Font getCachedFont(FontData data){
-	Font font = (Font)fontCache.get(new Integer(data.getHeight()));
+	Font font = (Font)fontCache.get(data);
 	if (font != null)
 		return font;
-	font = new Font(null, data);
-	fontCache.put(new Integer(data.getHeight()), font);
+	font = createFont (data);
+	fontCache.put(data, font);
 	return font;
+}
+
+Font createFont(FontData data) {
+	return new Font(Display.getCurrent(), data);
 }
 
 public void setBackgroundColor(Color rgb) {
@@ -276,7 +296,7 @@ public void setLineStyle(int style) {
 }
 
 public void setLineWidth(int width) {
-	graphics.setLineWidth(width);
+	graphics.setLineWidth(zoomLineWidth(width));
 }
 
 private void setLocalFont(Font f){
@@ -291,13 +311,11 @@ public void setXORMode(boolean b) {
 public void translate(int dx, int dy){
 	//fractionalX/Y is the fractional part left over from previous translates that gets lost
 	//in the integer approximation.
-	float dxFloat = dx * zoom + fractionalX;
-	float dyFloat = dy * zoom + fractionalY;
-	int dxRounded = (int)dxFloat;
-	int dyRounded = (int)dyFloat;
-	fractionalX = dxFloat - dxRounded;
-	fractionalY = dyFloat - dyRounded;
-	graphics.translate(dxRounded, dyRounded);
+	double dxFloat = dx * zoom + fractionalX;
+	double dyFloat = dy * zoom + fractionalY;
+	fractionalX = dxFloat - Math.floor(dxFloat);
+	fractionalY = dyFloat - Math.floor(dyFloat);
+	graphics.translate((int)dxFloat, (int)dyFloat);
 }
 
 private Point zoomTextPoint(int x, int y){
@@ -312,50 +330,60 @@ private Point zoomTextPoint(int x, int y){
 		targetCache.font = graphics.getFont();
 		targetCache.height = metric.getHeight() - metric.getDescent();
 	}
-	return new Point((int)x*zoom,
-		(int)(y + localCache.height - 1)*zoom - targetCache.height + 1);
+	return new Point(((int)(Math.floor((x*zoom)+fractionalX))),
+		(int)(Math.floor((y + localCache.height - 1)*zoom - targetCache.height + 1 +fractionalY)));
 }
 
 private PointList zoomPointList(PointList points){
 	PointList scaled = new PointList(points.size());
 	for (int i = 0; i < points.size(); i++) {
-		scaled.addPoint(points.getPoint(i).scale(zoom));
+		Point p = points.getPoint(i);
+		p.x = (int)(Math.floor((p.x * zoom + fractionalX)));
+		p.y = (int)(Math.floor((p.y * zoom + fractionalY)));
+		scaled.addPoint(p);
 	}
 	return scaled;
 }
 
 private Rectangle zoomFillRect(int x, int y, int w, int h){
-	TEMP.x = (int)(x * zoom);
-	TEMP.y = (int)(y * zoom);
-	TEMP.width = (int)((x+w - 1) * zoom) - TEMP.x + 1;
-	TEMP.height = (int)((y+h - 1) * zoom) - TEMP.y + 1;
+	TEMP.x = (int)(Math.floor((x * zoom + fractionalX)));
+	TEMP.y = (int)(Math.floor((y * zoom + fractionalY)));
+	TEMP.width = (int)(Math.floor(((x+w - 1) * zoom + fractionalX))) - TEMP.x + 1;
+	TEMP.height = (int)(Math.floor(((y+h - 1) * zoom + fractionalY))) - TEMP.y + 1;
 	return TEMP;
 }
 
-private Font zoomFont(Font f) {
+Font zoomFont(Font f) {
 	FontData data = getLocalFont().getFontData()[0];
-	data =
-		new FontData(
-			data.getName(),
-			(int) (data.getHeight() * zoom),
-			data.getStyle());
+	data = zoomFontData(data);
 	return getCachedFont(data);
 }
 
+FontData zoomFontData(FontData data) {
+	return new FontData(
+		data.getName(),
+		(int) (data.getHeight() * zoom),
+		data.getStyle());
+}
+
 private Rectangle zoomRect(int x, int y, int w, int h){
-	TEMP.x = (int)(x * zoom);
-	TEMP.y = (int)(y * zoom);
-	TEMP.width = (int)((x+w) * zoom) - TEMP.x;
-	TEMP.height = (int)((y+h) * zoom) - TEMP.y;
+	TEMP.x = (int)(Math.floor(x * zoom + fractionalX));
+	TEMP.y = (int)(Math.floor(y * zoom + fractionalY));
+	TEMP.width = (int)(Math.floor(((x+w) * zoom + fractionalX))) - TEMP.x;
+	TEMP.height = (int)(Math.floor(((y+h) * zoom + fractionalY))) - TEMP.y;
 	return TEMP;
 }
 
 private Rectangle zoomRect(Rectangle r){
-	TEMP.x = (int)(r.x * zoom);
-	TEMP.y = (int)(r.y * zoom);
-	TEMP.width = (int)(r.right() * zoom) - TEMP.x;
-	TEMP.height = (int)(r.bottom() * zoom) - TEMP.y;
+	TEMP.x = (int)(Math.floor((r.x * zoom + fractionalX)));
+	TEMP.y = (int)(Math.floor((r.y * zoom + fractionalY)));
+	TEMP.width = (int)(Math.floor((r.right() * zoom + fractionalX))) - TEMP.x;
+	TEMP.height = (int)(Math.floor((r.bottom() * zoom + fractionalY))) - TEMP.y;
 	return TEMP;
+}
+
+int zoomLineWidth(int w) {
+	return w;
 }
 
 }
