@@ -159,7 +159,8 @@ public EditPartViewer getViewer() {
 }
 
 /**
- * @see org.eclipse.gef.editparts.AbstractEditPart#refreshChildren()
+ * Overridden to do nothing since the child is explicitly set.
+ * @see AbstractEditPart#refreshChildren()
  */
 protected void refreshChildren() { }
 

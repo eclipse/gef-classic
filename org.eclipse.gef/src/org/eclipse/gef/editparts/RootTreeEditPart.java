@@ -100,6 +100,12 @@ public Widget getWidget() {
 }
 
 /**
+ * Overridden to do nothing since the child is explicitly set.
+ * @see org.eclipse.gef.editparts.AbstractEditPart#refreshChildren()
+ */
+protected void refreshChildren() { }
+
+/**
  * This is where the child gets removed.  This method is overridden
  * here so that the AbstractTreeEditPart does not dispose the widget,
  * which is the Tree in this case.  The tree is owned by the viewer, not the child.
