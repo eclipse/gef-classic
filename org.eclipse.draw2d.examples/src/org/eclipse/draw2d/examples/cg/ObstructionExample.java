@@ -95,7 +95,7 @@ class TestFigure extends Figure {
 
 		for (int i = 0; i < segs.size(); i++) {
 			ShortestPathRouting.Segment seg = (ShortestPathRouting.Segment)segs.get(i);
-			g.drawLine(seg.x1, seg.y1, seg.x2, seg.y2);
+			g.drawLine(seg.u, seg.v);
 		}
 		
 		g.setForegroundColor(ColorConstants.black);
@@ -103,7 +103,7 @@ class TestFigure extends Figure {
 		segs = routing.visibility;
 		for (int i = 0; i < segs.size(); i++) {
 			ShortestPathRouting.Segment seg = (ShortestPathRouting.Segment)segs.get(i);
-			g.drawLine(seg.x1, seg.y1, seg.x2, seg.y2);
+			g.drawLine(seg.u, seg.v);
 		}
 		
 		g.setBackgroundColor(ColorConstants.darkBlue);

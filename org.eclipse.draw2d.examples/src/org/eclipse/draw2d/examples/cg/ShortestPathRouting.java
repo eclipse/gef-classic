@@ -23,31 +23,21 @@ import org.eclipse.draw2d.geometry.*;
 public class ShortestPathRouting {
 
 static class Segment {
-	int x1;
-	int x2;
-	int y1;
-	int y2;
+	public Point u;
+	public Point v;
 
 	Segment() {}
 
-	Segment(int[] ints, int offset) {
-		this.x1 = ints[offset];
-		this.y1 = ints[offset + 1];
-		this.x2 = ints[offset + 2];
-		this.y2 = ints[offset + 3];
-	}
 	Segment(Point p1, Point p2) {
-		x1 = p1.x;
-		y1 = p1.y;
-		x2 = p2.x;
-		y2 = p2.y;
+		this.u = p1;
+		this.v = p2;
 	}
 	
 	private long cross (int x1, int y1, int x2, int y2) {
 		return x1 * y2 - x2 * y1;
 	}
 	
-	boolean intersects(int x3, int y3, int x4, int y4) {
+	boolean intersects(int sx, int sy, int tx, int ty) {
 		/*
 		 * Given the segments:
 		 * u-------v.
@@ -55,20 +45,20 @@ static class Segment {
 		 * If s->t is inside the triangle uvs, then check whether the line uv splits the
 		 * line st.
 		 */
-		int su_x = this.x1 - x3;
-		int su_y = this.y1 - y3;
-		int sv_x = this.x2 - x3;
-		int sv_y = this.y2 - y3;
-		int st_x = x3 - x4;
-		int st_y = y3 - y4;
+		int su_x = u.x - sx;
+		int su_y = u.y - sy;
+		int sv_x = v.x - sx;
+		int sv_y = v.y - sy;
+		int st_x = sx - tx;
+		int st_y = sy - ty;
 
 		long product = cross(sv_x, sv_y, st_x, st_y)
 			* cross(st_x, st_y, su_x, su_y);
 		if (product > 0) {
-			int uvx = this.x2 - this.x1;
-			int uvy = this.y2 - this.y1;
-			int tux = this.x1 - x4;
-			int tuy = this.y1 - y4;
+			int uvx = v.x - u.x;
+			int uvy = v.y - u.y;
+			int tux = u.x - tx;
+			int tuy = u.y - ty;
 			product = cross(-su_x, -su_y, uvx, uvy)
 				* cross(uvx, uvy, tux, tuy);
 			boolean intersects = product < 0;
@@ -79,13 +69,13 @@ static class Segment {
 	}
 	
 	boolean intersects(Segment other) {
-		return intersects(other.x1, other.y1, other.x2, other.y2);
+		return intersects(other.u.x, other.u.y, other.v.x, other.v.y);
 	}
 }
 Rectangle[] boxes;
 List segments;
 
-PointList v;
+PointList vertices;
 List visibility;
 
 
@@ -106,6 +96,7 @@ private void addSegment(Point start, Point end) {
 }
 
 public void setGoals(Point source, Point target) {
+	addSegment(source, target);
 	for (int i = 0; i < boxes.length; i++) {
 		Rectangle rect = boxes[i];
 		addSegments(rect, source);
@@ -146,7 +137,7 @@ private void addSegments(Rectangle rect, Point point) {
 
 public void setObstacles(Rectangle[] boxes) {
 	this.boxes = boxes;
-	v = new PointList();
+	vertices = new PointList();
 	segments = new ArrayList();
 	for (int i = 0; i < boxes.length; i++) {
 		Rectangle source = boxes[i];
@@ -166,16 +157,11 @@ public void setObstacles(Rectangle[] boxes) {
 	}
 	
 	visibility = new ArrayList();
-	Point p1 = new Point(), p2 = new Point();
 	Segment s = new Segment();
-	for (int i = 0; i < v.size() - 1; i++) {
-		for (int j = i + 1; j < v.size(); j++) {
-			v.getPoint(p1, i);
-			v.getPoint(p2, j);
-			s.x1 = p1.x;
-			s.y1 = p1.y;
-			s.x2 = p2.x;
-			s.y2 = p2.y;
+	for (int i = 0; i < vertices.size() - 1; i++) {
+		for (int j = i + 1; j < vertices.size(); j++) {
+			vertices.getPoint(s.u, i);
+			vertices.getPoint(s.v, j);
 			boolean isClean = true;
 			for (int k = 0; isClean && k < segments.size(); k++)
 				isClean &= !s.intersects((Segment)segments.get(k));
