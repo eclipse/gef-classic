@@ -11,6 +11,8 @@
 package org.eclipse.gef.ui.actions;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.SWTException;
+import org.eclipse.swt.events.*;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.*;
@@ -85,18 +87,24 @@ public ZoomComboContributionItem(IPartService partService, String initString) {
 void refresh() {
 	if (combo == null || combo.isDisposed())
 		return;
-	if (zoomManager == null) {
-		combo.setEnabled(false);
-		combo.removeAll();
-	} else {
-		combo.setItems(getZoomManager().getZoomLevelsAsText());
-		String zoom = getZoomManager().getZoomAsText();
-		int index = combo.indexOf(zoom);
-		if (index != -1)
-			combo.select(index);
-		else
-			combo.setText(zoom);
-		combo.setEnabled(true);
+	//$TODO GTK workaround
+	try {
+		if (zoomManager == null) {
+			combo.setEnabled(false);
+			combo.removeAll();
+		} else {
+			combo.setItems(getZoomManager().getZoomLevelsAsText());
+			String zoom = getZoomManager().getZoomAsText();
+			int index = combo.indexOf(zoom);
+			if (index != -1)
+				combo.select(index);
+			else
+				combo.setText(zoom);
+			combo.setEnabled(true);
+		}
+	} catch (SWTException exception) {
+		if (!SWT.getPlatform().equals("gtk"))
+			throw exception;
 	}
 }
 
@@ -133,8 +141,10 @@ protected Control createControl(Composite parent) {
  */
 public void dispose() {
 	service.removePartListener(partListener);
-	zoomManager.removeZoomListener(this);
-	zoomManager = null;
+	if (zoomManager != null) {
+		zoomManager.removeZoomListener(this);
+		zoomManager = null;
+	}
 	combo = null;
 }
 
