@@ -32,8 +32,7 @@
 a working knowledge of the following APIs:</font></p>
 <ul>
   <li><font size="2">Eclipse Workbench (Just the base platform, including JFace and SWT)</font></li>
-  <li><font size="2">draw2d</font></li>
-  <li><font size="2">Common Commands (<code>com.ibm.etools.common.command</code> plugin)</font></li>
+  <li><font size="2">Draw2d</font></li>
 </ul>
 <p>The majority of GEF applications will be Eclipse Editors ({@link org.eclipse.ui.IEditorPart}).&nbsp; Although this is not required, we will 
 generally assume that this is the case.&nbsp; The EditorPart is the single entry 
@@ -73,7 +72,7 @@ confined to just one View in a Perspective.</p>
 EditPartViewers by providing an EditPart as the contents.&nbsp; This is similar to supplying a content provider for JFace 
 Viewers.&nbsp; EditParts are discussed elsewhere.</p>
 <p align="center">
-<img border="1" src="com/ibm/etools/gef/doc-files/gefoverview.gif" width="757" height="524">
+<img border="1" src="org/eclipse/gef/doc-files/gefoverview.gif" width="757" height="524">
 </p>
 <p>&nbsp;</p>
 
@@ -83,7 +82,7 @@ Viewers.&nbsp; EditParts are discussed elsewhere.</p>
 
 <blockquote>
 
-<p>A GEF application is built from {@link com.ibm.etools.gef.EditPartViewer 
+<p>A GEF application is built from {@link org.eclipse.gef.EditPartViewer 
 EditPartViewers}, which are similar to JFace Viewers in that they adapt an 
 SWT Control.</p>
 
@@ -97,8 +96,8 @@ SWT Control.</p>
 <p>EditPartViewers are responsible for hit-testing a point, and mapping it to 
 the EditPart which created the visuals at that point.&nbsp; This is used by 
 Tools, which communicate with the EditParts. The two provided implementations, 
-{@link com.ibm.etools.gef.ui.parts.GraphicalViewerImpl GraphicalViewerImpl} and 
-{@link com.ibm.etools.gef.ui.parts.TreeViewer TreeViewer}, provide this type of 
+{@link org.eclipse.gef.ui.parts.GraphicalViewerImpl GraphicalViewerImpl} and 
+{@link org.eclipse.gef.ui.parts.TreeViewer TreeViewer}, provide this type of 
 support for Figures and TreeItems respectively.</p>
 
 <p>EditParts take the place of <code>ContentProviders</code> in JFace.&nbsp; Each EditPart is 
@@ -117,17 +116,17 @@ their own structure, etc., until the entire viewer is initialized.</p>
 EditParts.</p>
 
 <p align="center">
-<img border="0" src="com/ibm/etools/gef/doc-files/EditPartViewer.gif" width="560" height="372"></p>
+<img border="0" src="org/eclipse/gef/doc-files/EditPartViewer.gif" width="560" height="372"></p>
 
 <p>
 The RootEditPart is special.&nbsp; It should rarely be replaced.&nbsp; see: 
-{@link com.ibm.etools.gef.RootEditPart}.</p>
+{@link org.eclipse.gef.RootEditPart}.</p>
 
 </blockquote>
 <h1><a name="MVC">Model-View-Controller Paradigm</a></h1>
   <blockquote>
   <p>
-  <img border="1" src="com/ibm/etools/gef/doc-files/mvc-generic.gif" width="252"
+  <img border="1" src="org/eclipse/gef/doc-files/mvc-generic.gif" width="252"
   	height="181" align="left" hspace="4" vspace="2" alt="A typical MVC Architecture">MVC Architectures are quite common in UI frameworks.&nbsp; In general, the
   <i>model</i> represents the data being displayed, the <i>view</i> is 
   responsible for rendering the data, and the <i>controller</i> is responsible 
@@ -140,7 +139,7 @@ The RootEditPart is special.&nbsp; It should rarely be replaced.&nbsp; see:
   client of such a UI almost always has to wrapper their existing model to 
   comply to the view-specific one.</p>
   <p>
-      <img border="0" src="com/ibm/etools/gef/doc-files/mvc-gef.gif" width="438" height="380" align="right" alt="GEF's MVC">In 
+      <img border="0" src="org/eclipse/gef/doc-files/mvc-gef.gif" width="438" height="380" align="right" alt="GEF's MVC">In 
   GEF, their is generally no link between the view and model.&nbsp; This means 
   that almost any view can be used to render almost any model.&nbsp; There is no 
   need to wrap you model to conform to another API.&nbsp; In fact, the 
@@ -150,25 +149,25 @@ The RootEditPart is special.&nbsp; It should rarely be replaced.&nbsp; see:
   <dt><b>Model</b></dt>
   <dd>The model should 
 know nothing about its view or controller.&nbsp; It may reference them only as 
-  listeners to its notification mechanism. The model should be changed using {@link com.ibm.etools.common.command.Command 
+  listeners to its notification mechanism. The model should be changed using {@link org.eclipse.gef.commands.Command 
   Commands}.</dd>
   <dt><b>View</b></dt>
   <dd>The view can be several things.&nbsp; It includes the <i>visual part,</i> 
   which serves as the primary representation for the model object(s).&nbsp; The most flexible visual parts are {@link 
-com.ibm.etools.draw2d.Figure Figures} from draw2d.&nbsp; GEF also provides 
+org.eclipse.draw2d.Figure Figures} from draw2d.&nbsp; GEF also provides 
 support for SWT TreeItems, but support for other visuals can easily be added.&nbsp; While &quot;visual part&quot; refers to 
   the object primarily representing a 
 model object, the more encompassing &quot;view&quot; includes feedback, handles, tooltips, 
 and all things visible to the user.&nbsp; All of these make up the view, and it 
 is the controller's job to construct and manage them.</dd>
   <dt><b>Controller</b></dt>
-  <dd>A controller is an {@link com.ibm.etools.gef.EditPart EditPart}, and 
+  <dd>A controller is an {@link org.eclipse.gef.EditPart EditPart}, and 
   EditParts are the bread-and-butter of GEF.&nbsp; As you've read above, the 
   view may consists of several visuals.&nbsp; The visuals may be on different 
   graphical layers and appear at different times during editing:<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111">
     <tr>
       <td>
-      <img border="0" src="com/ibm/etools/gef/doc-files/complexview.gif" width="110" height="82"></td>
+      <img border="0" src="org/eclipse/gef/doc-files/complexview.gif" width="110" height="82"></td>
       <td valign="top">This picture depicts a complex <i>view</i> consisting of 
       the primary <i>visual part</i>, some resize handles, and feedback which is 
       displayed as the user drags the object.&nbsp; The entire view is managed 
@@ -181,7 +180,7 @@ is the controller's job to construct and manage them.</dd>
   task.<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111">
     <tr>
       <td>
-      <img border="0" src="com/ibm/etools/gef/doc-files/complexcommand.gif" width="250" height="212"></td>
+      <img border="0" src="org/eclipse/gef/doc-files/complexcommand.gif" width="250" height="212"></td>
       <td valign="top">A composite command to perform a delete is depicted here.&nbsp; 
       Imagine in the view shown above that there is a connection 
       from the OR-gate (in blue) to some other part not shown.&nbsp; When the 
@@ -196,14 +195,14 @@ is the controller's job to construct and manage them.</dd>
   of EditParts in an application may share some roles, but not others.&nbsp; 
   Some roles may change dynamically.&nbsp; To make the EditPart's job easier, 
   each role is implemented by a pluggable object called an {@link 
-  com.ibm.etools.gef.EditPolicy EditPolicy}.&nbsp; The next section on EditParts 
+  org.eclipse.gef.EditPolicy EditPolicy}.&nbsp; The next section on EditParts 
   will explain this in more detail.</dd>
 </dl>
 </blockquote>
 <h1><a name="EditParts">EditParts</a></h1>
 <blockquote>
   <p>
-  <img border="0" src="com/ibm/etools/gef/doc-files/EditPart.gif" align="right" width="347" height="231">An EditPart represents a single conceptual object with which the user can 
+  <img border="0" src="org/eclipse/gef/doc-files/EditPart.gif" align="right" width="347" height="231">An EditPart represents a single conceptual object with which the user can 
   directly or indirectly interact.&nbsp; In general, an EditPart will directly 
   represent something in the model.&nbsp; The EditPart itself is not visible to 
   the user, but will present itself through its <i>view</i>, as described above.</p>
@@ -212,7 +211,7 @@ is the controller's job to construct and manage them.</dd>
   implemented first is to populate the viewer with visuals, and to maintain 
   those visuals as the model changes.&nbsp; This topic is covered briefly in the
   <a href="#MVC">MVC Section</a>, and in more detail in the JavaDOC for {@link 
-  com.ibm.etools.gef.EditPart EditPart} and its abstract implementations.</p>
+  org.eclipse.gef.EditPart EditPart} and its abstract implementations.</p>
   <p>
   The second and more interesting role of an EditPart is to perform graphical 
   editing.&nbsp; Graphical editing is defined here as:</p>
@@ -244,7 +243,7 @@ is the controller's job to construct and manage them.</dd>
   <table border="0" cellpadding="2" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111">
     <tr>
       <td valign="top">
-      <img border="0" src="com/ibm/etools/gef/doc-files/important.gif" align="left" width="32" height="32"></td>
+      <img border="0" src="org/eclipse/gef/doc-files/important.gif" align="left" width="32" height="32"></td>
       <td>For all of these reasons, <u><b>the task of graphical editing is not 
   implemented directly by EditParts</b></u>.&nbsp; Instead, each EditPart 
   installs one or more EditPolicies, each of which focuses on its own editing 
@@ -261,7 +260,7 @@ is the controller's job to construct and manage them.</dd>
   <h3>EditPolicy</h3>
   <blockquote>
   <p>
-  <img border="0" src="com/ibm/etools/gef/doc-files/important.gif" align="left" width="32" height="32">An 
+  <img border="0" src="org/eclipse/gef/doc-files/important.gif" align="left" width="32" height="32">An 
   EditPolicy provides a specific editing role to an EditPart.&nbsp; A Role might 
   be something like &quot;layout management&quot;.&nbsp; That policy's role is loosely 
   defined by the Requests which it understands.&nbsp; <b>An EditPart iterates 
@@ -271,7 +270,7 @@ is the controller's job to construct and manage them.</dd>
   <h3>Roles</h3>
   <blockquote>
   <p>
-  <img border="0" src="com/ibm/etools/gef/doc-files/important.gif" align="left" width="32" height="32">An 
+  <img border="0" src="org/eclipse/gef/doc-files/important.gif" align="left" width="32" height="32">An 
   EditPolicy is installed into its EditPart using a String identifier key which 
   GEF refers to as a <b>Role</b>.&nbsp; A role is nothing more than the String 
   used when installing an EditPolicy.&nbsp; <b>The purpose of the key or Role is 
@@ -284,8 +283,8 @@ is the controller's job to construct and manage them.</dd>
   <h3>Requests</h3>
   <blockquote>
   <p>
-  <img border="0" src="com/ibm/etools/gef/doc-files/important.gif" align="left" width="32" height="32">{@link 
-  com.ibm.etools.gef.Request Requests} are used to communicate with an EditPart.&nbsp; 
+  <img border="0" src="org/eclipse/gef/doc-files/important.gif" align="left" width="32" height="32">{@link 
+  org.eclipse.gef.Request Requests} are used to communicate with an EditPart.&nbsp; 
   As mentioned before, the EditPart delegates all Requests to its installed 
   EditPolicies.&nbsp;&nbsp; Each Request has a <i>type</i> identifier which is 
   used to route/filter requests.&nbsp; Once this is done, Requests are sometimes 
@@ -666,7 +665,7 @@ is the controller's job to construct and manage them.</dd>
       <td height="20">&nbsp;</td>
       <td colspan="3" height="20">LayoutEditPolicy</td>
       <td rowspan="3" height="68">Work together with the Container Role to 
-      provide support for a {@link com.ibm.etools.draw2d.LayoutManager} in 
+      provide support for a {@link org.eclipse.draw2d.LayoutManager} in 
       graphical views.</td>
     </tr>
     <tr>
@@ -973,7 +972,7 @@ is the controller's job to construct and manage them.</dd>
   <h1><a name="Tools">Tools</a> and the Palette</h1>
   <blockquote>
     <p>
-    <img border="0" src="com/ibm/etools/gef/doc-files/EventFlow.gif" align="right" width="184" height="198">Tools allow EditParts and their EditPolicies to focus on high-level 
+    <img border="0" src="org/eclipse/gef/doc-files/EventFlow.gif" align="right" width="184" height="198">Tools allow EditParts and their EditPolicies to focus on high-level 
     operations rather than dealing with raw mouse and keyboard event data.&nbsp; 
     An EditDomain always has one active Tool, and its scope is all 
     EditPartViewers within that domain.</p>
@@ -984,8 +983,8 @@ is the controller's job to construct and manage them.</dd>
     or viewer may consume an event, preventing it from reaching the tool.&nbsp; 
     Similarly, the EditDomain may consume a keyboard event and decide to switch 
     to another Tool or perform some other action.</p>
-    <p>see {@link com.ibm.etools.gef.Tool}<br>
-    see {@link com.ibm.etools.gef.tools}</p>
+    <p>see {@link org.eclipse.gef.Tool}<br>
+    see {@link org.eclipse.gef.tools}</p>
     <p>A Palette is not required but is often used.&nbsp; If a palette is not 
     used, the EditDomain is generally initialized with the SelectionTool active, 
     and most likely remains in that mode.&nbsp; Using a palette is a two-step 
@@ -1023,18 +1022,18 @@ is the controller's job to construct and manage them.</dd>
     <p>The EditPart will create the view, and then initialize it with the 
     model's data.&nbsp; <u>Keep the next step in mind here</u>.&nbsp; View 
     initialization should be the same as maintaining the view when the model 
-    fires changes.&nbsp; See {@link com.ibm.etools.gef.editparts.AbstractEditPart#refresh} 
+    fires changes.&nbsp; See {@link org.eclipse.gef.editparts.AbstractEditPart#refresh} 
     and the various other refresh methods that it calls.&nbsp; Refresh() will be 
     called once for free when you EditPart is automatically initialized.</p>
     <p>That <i>contents</i> EditPart will then create its children.&nbsp; This 
-    is done by implementing {@link com.ibm.etools.gef.editparts.AbstractEditPart#getModelChildren 
+    is done by implementing {@link org.eclipse.gef.editparts.AbstractEditPart#getModelChildren 
     AbstractEditPart.getModelChildren()} and {@link 
-    com.ibm.etools.gef.editparts.AbstractEditPart#createChild 
+    org.eclipse.gef.editparts.AbstractEditPart#createChild 
     AbstractEditPart.createChild(Object)}.&nbsp; It may not be obvious at first 
     why creating the children is split into two methods.&nbsp; But, <u>think 
     ahead</u>; you will need to maintain this collection of children as the 
     model changes.&nbsp; Hooking into these two methods allows your EditPart to 
-    simply call {@link com.ibm.etools.gef.editparts.AbstractEditPart#refreshChildren 
+    simply call {@link org.eclipse.gef.editparts.AbstractEditPart#refreshChildren 
     refreshChildren()} whenever its model's children have changed.</p>
     <p>Connections are similar to children.&nbsp; There are methods for source 
     and target connections that parallel the ones for creating children above.&nbsp; 
@@ -1043,7 +1042,7 @@ is the controller's job to construct and manage them.</dd>
     <h3>Listening to your Model</h3>
     <blockquote>
     <p>At this point, you are displaying your model visually in a Viewer.</p>
-    <p>At {@link com.ibm.etools.gef.EditPart#activate() some point}, your 
+    <p>At {@link org.eclipse.gef.EditPart#activate() some point}, your 
     EditPart should start observing its model so it can respond to changes.&nbsp; 
     If your have a hybrid Editor that is only part GEF, you may be able to make 
     changes to your model using its other views.&nbsp; Or, you could hard-code 

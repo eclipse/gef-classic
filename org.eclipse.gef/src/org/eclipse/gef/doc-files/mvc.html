@@ -1,0 +1,35 @@
+<body>
+<h1>Model-View-Controller Architecture</h1>
+<h3>
+<img border="0" src="org/eclipse/gef/doc-files/mvc-generic.gif" width="249" height="177"></h3>
+<h3>Model</h3>
+<p>The <i>model</i> portion is somewhat self-explanatory.&nbsp; The model should 
+know nothing about the view or controller.&nbsp; It does however usually know 
+about listeners to which it fires notifications (listener-notifier pattern).&nbsp; 
+The model should be changed using {@link org.eclipse.gef.commands.Command 
+Commands}, and the view should be updated in response to notification.</p>
+<h3>View</h3>
+<p>The <i>view</i> can be several things.&nbsp; It includes the <i>visual part</i> 
+representing a model object(s).&nbsp; The most flexible visual parts are {@link 
+org.eclipse.draw2d.Figure Figures} from draw2d.&nbsp; GEF also provides 
+support for SWT TreeItems, but support for other visuals can easily be added.&nbsp; While &quot;visual part&quot; refers to an object directly representing a 
+model object, the more encompassing &quot;view&quot; includes feedback, handles, tooltips, 
+and all things visible to the user.&nbsp; All of these make up the view, and it 
+is the controller's job to construct and manage them.</p>
+<h3>Controller</h3>
+<p>The <i>controller</i> is the most interesting part and is the primary focus 
+of GEF.&nbsp; The controller is responsible for:</p>
+<ol>
+  <li>Building the <b>visual part</b> and all parts of the view</li>
+  <li>Modifying the model through Commands in response to user input</li>
+  <li>Observing the model and updating the view accordingly</li>
+</ol>
+<p>User input can be a wide variety of things.&nbsp; A part may support 
+multiple, unrelated types of editing behavior.&nbsp; To support this, GEF 
+provides a controller implementation whose entire behavior is provided by 
+plugging in one or more helper objects.&nbsp; This allows for higher code reuse 
+and easier code maintenance.</p>
+<p>A controller in GEF is an {@link org.eclipse.gef.EditPart EditPart}.</p>
+<p>
+<img border="0" src="org/eclipse/gef/doc-files/mvc-gef.gif" width="438" height="380"></p>
+</body>

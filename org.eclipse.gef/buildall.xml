@@ -1,0 +1,31 @@
+<project name="Build" default="Build" basedir=".">
+
+<target name="Init">    
+	<property name="tempDir" value="\builds\antbuilds"/>
+	<tstamp>
+	    <format property="creation.time" pattern="HHmm"/>
+	    <format property="creation.date" pattern="MMdd"/>
+	</tstamp>
+	<property name="timestamp" value="${creation.date}_${creation.time}"/>
+</target>
+
+<target name="BuildWithRuntime" depends="Init">
+	<ant antfile="../org.eclipse.draw2d/build.xml" target="BuildWithRuntime"/>
+	<ant antfile="build.xml" target="BuildWithRuntime"/>
+	<ant antfile="../org.eclipse.gef.examples.logic/build.xml" target="BuildWithRuntime"/>
+	<echo message="Build complete."/>
+</target>
+
+<target name="BuildWithoutRuntime" depends="Init">
+	<ant antfile="../org.eclipse.draw2d/build.xml" target="Build"/>
+	<ant antfile="build.xml" target="Build"/>
+	<ant antfile="../org.eclipse.gef.examples.logic/build.xml" target="Build"/>
+	<echo message="Build complete."/>
+</target>
+
+<target name="Build">
+	<antcall target="BuildWithoutRuntime"/>
+</target>
+
+</project>
+

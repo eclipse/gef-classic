@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>com.ibm.etools.gef.examples.logic</name>
+	<name>org.eclipse.gef.examples.logic</name>
 	<comment></comment>
 	<projects>
-		<project>org.eclipse.core.boot</project>
-		<project>org.eclipse.ui</project>
-		<project>com.ibm.etools.draw2d</project>
 		<project>com.ibm.etools.common.command</project>
-		<project>com.ibm.etools.gef</project>
-		<project>org.eclipse.core.runtime</project>
+		<project>com.ibm.etools.draw2d</project>
+		<project>org.eclipse.core.boot</project>
 		<project>org.eclipse.core.resources</project>
+		<project>org.eclipse.core.runtime</project>
+		<project>org.eclipse.gef</project>
 		<project>org.eclipse.swt</project>
+		<project>org.eclipse.ui</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

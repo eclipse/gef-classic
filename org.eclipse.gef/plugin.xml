@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 
 <plugin
-   name = "IBM Graphical Editor Framework"
-   id = "com.ibm.etools.gef"
+   name = "Graphical Editor Framework"
+   id = "org.eclipse.gef"
    version = "2.0.0"
-   vendor-name = "IBM">
+   provider-name="Eclipse.org">
 
    <requires>
-	<import plugin="com.ibm.etools.draw2d" version="2.0.0" export="true"/>
+	<import plugin="org.eclipse.draw2d" version="2.0.0" export="true"/>
 	<import plugin="org.eclipse.core.runtime" export="true"/>
 	<import plugin="org.eclipse.core.resources" export="true"/>
 	<import plugin="org.eclipse.ui" export="true"/>
@@ -15,23 +15,21 @@
 
    <runtime>
      <library name="runtime/gef.jar">
-         <export name="com.ibm.etools.common.command.*"/>
-
-         <export name="com.ibm.etools.gef.*"/>
-         <export name="com.ibm.etools.gef.dnd.*"/>
-         <export name="com.ibm.etools.gef.commands.*"/>
-         <export name="com.ibm.etools.gef.requests.*"/>
-         <export name="com.ibm.etools.gef.editparts.*"/>
-         <export name="com.ibm.etools.gef.editpolicies.*"/>
-         <export name="com.ibm.etools.gef.handles.*"/>
-         <export name="com.ibm.etools.gef.palette.*"/>
-         <export name="com.ibm.etools.gef.tools.*"/>
-         <export name="com.ibm.etools.gef.ui.actions.*"/>
-         <export name="com.ibm.etools.gef.ui.palette.*"/>
-         <export name="com.ibm.etools.gef.ui.parts.*"/>
-         <export name="com.ibm.etools.gef.ui.properties.*"/>
-         <export name="com.ibm.etools.gef.ui.console.*"/>
-         <export name="com.ibm.etools.gef.ui.stackview.*"/>
+         <export name="org.eclipse.gef.*"/>
+         <export name="org.eclipse.gef.dnd.*"/>
+         <export name="org.eclipse.gef.commands.*"/>
+         <export name="org.eclipse.gef.requests.*"/>
+         <export name="org.eclipse.gef.editparts.*"/>
+         <export name="org.eclipse.gef.editpolicies.*"/>
+         <export name="org.eclipse.gef.handles.*"/>
+         <export name="org.eclipse.gef.palette.*"/>
+         <export name="org.eclipse.gef.tools.*"/>
+         <export name="org.eclipse.gef.ui.actions.*"/>
+         <export name="org.eclipse.gef.ui.palette.*"/>
+         <export name="org.eclipse.gef.ui.parts.*"/>
+         <export name="org.eclipse.gef.ui.properties.*"/>
+         <export name="org.eclipse.gef.ui.console.*"/>
+         <export name="org.eclipse.gef.ui.stackview.*"/>
      </library>
    </runtime>
 </plugin>

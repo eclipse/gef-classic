@@ -2,13 +2,13 @@
 
 <plugin
 	name = "Logic GEF Example"
-	id = "com.ibm.etools.gef.examples.logicdesigner"
+	id = "org.eclipse.gef.examples.logicdesigner"
 	version = "2.0.0"
-	vendor-name = "IBM"
-	class="com.ibm.etools.gef.examples.logicdesigner.LogicPlugin">
+	provider-name="Eclipse.org"
+	class="org.eclipse.gef.examples.logicdesigner.LogicPlugin">
 
 	<requires>
-		<import plugin="com.ibm.etools.gef" version="2.0.0"/>
+		<import plugin="org.eclipse.gef" version="2.0.0"/>
 		<import plugin="org.eclipse.core.resources"/>
 	</requires>
 
@@ -22,34 +22,28 @@
 			name = "%Logic_example_graphical_editor_name"
 			icon = "logic.gif"
 			extensions = "logic"
-			class = "com.ibm.etools.gef.examples.logicdesigner.LogicEditor"
+			class = "org.eclipse.gef.examples.logicdesigner.LogicEditor"
 			default = "true"
-			contributorClass="com.ibm.etools.gef.examples.logicdesigner.LogicActionBarContributor">
+			contributorClass="org.eclipse.gef.examples.logicdesigner.LogicActionBarContributor">
 		</editor>
 	</extension>
 
-<!--
-	attribute from editor TAG above
-contributorClass="com.ibm.etools.gef.jface.GEFEditorContextContributor"
--->
- 
-   <extension
-      point = "org.eclipse.ui.newWizards">
-	<category
-	   id="com.ibm.etools.gef.examples.logic"
-	   name="%Logic_example_wizard_creation_name"
-	   parentCategory="org.eclipse.ui.Examples">
-	</category>
- 	<wizard
-	   id = "com.ibm.etools.gef.examples.logic.wizard.new.file"
-       name = "%Logic_example_wizard_name"
-	   availableAsShortcut="true"
-	   class="com.ibm.etools.gef.examples.logicdesigner.LogicCreationWizard"
-	   category="org.eclipse.ui.Examples/com.ibm.etools.gef.examples.logic"
-	   icon="logic.gif">
-    	   <description>%Logic_example_wizard_description</description>
-	   <selection class="org.eclipse.core.resources.IResource"/>
-	</wizard>
-   </extension>
+	<extension point = "org.eclipse.ui.newWizards">
+		<category
+			id="org.eclipse.gef.examples"
+			name="%GEF_example_wizard_category_name"
+			parentCategory="org.eclipse.ui.Examples">
+		</category>
+		<wizard
+			id = "org.eclipse.gef.examples.logic.wizard.new.file"
+			name = "%Logic_example_wizard_name"
+			availableAsShortcut="true"
+			class="org.eclipse.gef.examples.logicdesigner.LogicCreationWizard"
+			category="org.eclipse.ui.Examples/org.eclipse.gef.examples"
+			icon="logic.gif">
+				<description>%Logic_example_wizard_description</description>
+				<selection class="org.eclipse.core.resources.IResource"/>
+		</wizard>
+	</extension>
 
 </plugin>
