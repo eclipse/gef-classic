@@ -13,17 +13,15 @@ import org.eclipse.gef.requests.CreateRequest;
 /**
  * @author Randy Hudson
  */
-public class SnapToGeometry implements SnapToHelper {
+public class SnapToGeometry 
+	implements SnapToHelper 
+{
 	
-public static final String PROPERTY_SNAP_ENABLED = "SnapToGeometry - $Property"; //$NON-NLS-1$
-	
+public static final String PROPERTY_SNAP_ENABLED = "SnapToGeometry - $Property"; //$NON-NLS-1$	
 public static final String PROPERTY_HORIZONTAL_ANCHOR = "SnapToGeometry - $H Anchor"; //$NON-NLS-1$
 public static final String PROPERTY_VERTICAL_ANCHOR = "SnapToGeometry - $V Anchor"; //$NON-NLS-1$
 
-private GraphicalEditPart container;
-private static final double THRESHOLD = 5.0001;
-
-private static class Entry {
+protected static class Entry {
 	int side;
 	int offset;
 	
@@ -33,9 +31,11 @@ private static class Entry {
 	}
 }
 
-private Entry rows[];
-private Entry cols[];
-private boolean cachedCloneBool;
+protected static final double THRESHOLD = 5.0001;
+protected boolean cachedCloneBool;
+protected Entry rows[];
+protected Entry cols[];
+protected GraphicalEditPart container;
 
 public SnapToGeometry(GraphicalEditPart container) {
 	this.container = container;
@@ -105,19 +105,38 @@ private double getCorrectionFor(Entry entries[], Map extendedData, boolean vert,
 	return result;
 }
 
-private void populateRowsAndCols(List exclude, boolean isClone) {
+protected Rectangle getFigureBounds(IFigure fig) {
+	if (fig instanceof HandleBounds)
+		return ((HandleBounds)fig).getHandleBounds();
+	else
+		return fig.getBounds();
+}
+
+protected void populateRowsAndCols(List exclude, boolean isClone) {
 	if (rows == null || cols == null || isClone != cachedCloneBool) {
+		// If the operation changes from a move to a clone, or vice versa, the rows and
+		// cols need to be populated again.
 		cachedCloneBool = isClone;
+
+		// Don't snap to any figure that is being dragged
 		List children = new ArrayList(container.getChildren());
 		children.removeAll(exclude);
+		
+		// Don't snap to hidden figures
+		List hiddenChildren = new ArrayList();
+		for (Iterator iter = children.iterator(); iter.hasNext();) {
+			GraphicalEditPart child = (GraphicalEditPart) iter.next();
+			if (!child.getFigure().isVisible())
+				hiddenChildren.add(child);
+		}
+		children.removeAll(hiddenChildren);
+		
+		// Cache the edges that can be snapped to
 		rows = new Entry[children.size() * 3];
 		cols = new Entry[children.size() * 3];
 		for (int i = 0; i < children.size(); i++) {
 			GraphicalEditPart child = (GraphicalEditPart)children.get(i);
-			IFigure figure = child.getFigure();
-			Rectangle bounds = figure.getBounds();
-			if (figure instanceof HandleBounds)
-				bounds = ((HandleBounds)figure).getHandleBounds();
+			Rectangle bounds = getFigureBounds(child.getFigure());
 			cols[i * 3] = new Entry(-1, bounds.x);
 			rows[i * 3] = new Entry(-1, bounds.y);
 			cols[i * 3 + 1] = new Entry(0, bounds.x + bounds.width / 2);
