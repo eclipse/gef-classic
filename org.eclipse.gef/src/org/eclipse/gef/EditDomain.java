@@ -16,8 +16,6 @@ import java.util.List;
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.events.*;
 
-import org.eclipse.jface.util.Assert;
-
 import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.gef.palette.*;
 import org.eclipse.gef.tools.SelectionTool;
