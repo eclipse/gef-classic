@@ -432,9 +432,9 @@ public Border getBorder() {
 }
 
 /**
- * Returns the smallest rectangle completely enclosing the figure. Implementations may
- * return the Rectangle by reference. For this reason, callers of this method must not
- * modify the returned Rectangle.
+ * Returns the smallest rectangle completely enclosing the figure. Implementors may return
+ * the Rectangle by reference. For this reason, callers of this method must not modify the
+ * returned Rectangle.
  * @return The bounds of this Figure
  */
 public Rectangle getBounds() {
@@ -867,9 +867,16 @@ public void paint(Graphics graphics) {
 		graphics.setForegroundColor(fgColor);
 	if (font != null)
 		graphics.setFont(font);
-	paintFigure(graphics);
-	paintClientArea(graphics);
-	paintBorder(graphics);
+
+	graphics.pushState();
+	try {
+		paintFigure(graphics);
+		graphics.restoreState();
+		paintClientArea(graphics);
+		paintBorder(graphics);
+	} finally {
+		graphics.popState();
+	}
 }
 
 /**
@@ -884,14 +891,18 @@ protected void paintBorder(Graphics graphics) {
 }
 
 /**
- * Paints this Figure's children.
- * @param graphics The Graphics used to paint
+ * Paints this Figure's children. The caller must save the state of the graphics prior to
+ * calling this method, such that <code>graphics.restoreState()</code> may be called
+ * safely, and doing so will return the graphics to its original state when the method was
+ * entered.
+ * <P>
+ * This method must leave the Graphics in its original state upon return.
+ * @param graphics the graphics used to paint
  * @since 2.0
  */
 protected void paintChildren(Graphics graphics) {
 	IFigure child;
 
-	graphics.pushState();
 	Rectangle clip = Rectangle.SINGLETON;
 	for (int i = 0; i < children.size(); i++) {
 		child = (IFigure)children.get(i);
@@ -901,13 +912,13 @@ protected void paintChildren(Graphics graphics) {
 			graphics.restoreState();
 		}
 	}
-	graphics.popState();
 }
 
 /**
  * Paints this Figure's client area. The client area is typically defined as the anything
  * inside the Figure's {@link Border} or {@link Insets}, and by default includes the
- * children of this Figure. This method leaves the graphics context in its initial state.
+ * children of this Figure. On return, this method must leave the given Graphics in its
+ * initial state.
  * @param graphics The Graphics used to paint
  * @since 2.0
  */
@@ -918,18 +929,19 @@ protected void paintClientArea(Graphics graphics) {
 	boolean optimizeClip = getBorder() == null || getBorder().isOpaque();
 
 	if (useLocalCoordinates()) {
-		graphics.pushState();
 		graphics.translate(getBounds().x + getInsets().left, getBounds().y + getInsets().top);
 		if (!optimizeClip)
 			graphics.clipRect(getClientArea(PRIVATE_RECT));
+		graphics.pushState();
 		paintChildren(graphics);
 		graphics.popState();
+		graphics.restoreState();
 	} else {
 		if (optimizeClip)
 			paintChildren(graphics);
 		else {
-			graphics.pushState();
 			graphics.clipRect(getClientArea(PRIVATE_RECT));
+			graphics.pushState();
 			paintChildren(graphics);
 			graphics.popState();
 		}
@@ -937,8 +949,11 @@ protected void paintClientArea(Graphics graphics) {
 }
 
 /**
- * Paints this Figure's primary representation, or background. The client area is painted
- * next. Changes made to the graphics context here affect the other paint methods.
+ * Paints this Figure's primary representation, or background. Changes made to the
+ * graphics to the graphics current state will not affect the subsequent calls to {@link
+ * #paintClientArea(Graphics)} and {@link #paintBorder(Graphics)}. Furthermore, it is safe
+ * to call <code>graphics.restoreState()</code> within this method, and doing so will
+ * restore the graphics to its original state upon entry.
  * @param graphics The Graphics used to paint
  * @since 2.0
  */
@@ -1474,8 +1489,8 @@ public void translateToParent(Translatable t) {
  */
 public final void translateToRelative(Translatable t) {
 	if (getParent() != null) {
-		getParent().translateFromParent(t);
 		getParent().translateToRelative(t);
+		getParent().translateFromParent(t);
 	}
 }
 
