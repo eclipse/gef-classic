@@ -112,4 +112,10 @@ static final String GROUP_SAVE = "org.eclipse.gef.group.save"; //$NON-NLS-1$
  */
 static final String GROUP_UNDO = "org.eclipse.gef.group.undo"; //$NON-NLS-1$
 
+/** 
+ * Zoom contribution id. 
+ * Value: <code>"org.eclipse.gef.zoom"</code>
+ */
+static final String ZOOM = "org.eclipse.gef.zoom"; //$NON-NLS-1$
+
 }
