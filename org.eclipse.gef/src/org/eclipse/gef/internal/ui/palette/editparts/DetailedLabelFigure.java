@@ -1,4 +1,4 @@
-package org.eclipse.gef.ui.palette.editparts;
+package org.eclipse.gef.internal.ui.palette.editparts;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,7 +86,9 @@ public void handleFocusLost(FocusEvent event) {
 	updateColors();
 }
 
-/** * @return whether this figure is selected or not */
+/**
+ * @return whether this figure is selected or not
+ */
 public boolean isSelected() {
 	return selectionState;
 }
@@ -102,7 +104,8 @@ public void setDescription(String s) {
 /**
  * Sets the icon for this figure
  * 
- * @param icon The new image */
+ * @param icon The new image
+ */
 public void setImage(Image icon) {
 	image.setImage(icon);
 }

@@ -1,4 +1,4 @@
-package org.eclipse.gef.ui.palette.editparts;
+package org.eclipse.gef.internal.ui.palette.editparts;
 
 
 import org.eclipse.swt.graphics.Image;
@@ -172,6 +172,16 @@ public Toggle getCollapseToggle() {
 }
 
 /**
+ * @see org.eclipse.draw2d.Figure#getMinimumSize(int, int)
+ */
+public Dimension getMinimumSize(int wHint, int hHint) {
+	if (isAnimating)
+		return getPreferredSize(wHint, hHint);
+	return super.getMinimumSize(wHint, hHint);
+}
+
+
+/**
  * @see org.eclipse.draw2d.Figure#getPreferredSize(int, int)
  */
 public Dimension getPreferredSize(int w, int h) {
@@ -182,7 +192,7 @@ public Dimension getPreferredSize(int w, int h) {
 			return getMinimumSize();
 	}
 	Dimension pref = super.getPreferredSize(w, h);
-	Dimension min  = getMinimumSize();
+	Dimension min  = super.getMinimumSize(w,h);
 	float scale = controller.getAnimationProgress();
 	if (!isExpanded()) {
 		scale = 1.0f - scale;

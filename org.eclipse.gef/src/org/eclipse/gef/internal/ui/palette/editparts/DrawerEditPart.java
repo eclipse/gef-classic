@@ -1,4 +1,4 @@
-package org.eclipse.gef.ui.palette.editparts;
+package org.eclipse.gef.internal.ui.palette.editparts;
 /*
  * Licensed Material - Property of IBM
  * (C) Copyright IBM Corp. 2001, 2002 - All Rights Reserved.
@@ -110,7 +110,8 @@ public boolean isExpanded() {
 
 /**
  * Returns <code>true</code> if the drawer is pinned open.
- * @return boolean */
+ * @return boolean
+ */
 public boolean isPinnedOpen() {
 	return getDrawerFigure().isPinnedOpen();
 }
@@ -193,7 +194,7 @@ public void setExpanded(boolean expanded) {
 }
 
 /**
- * @see org.eclipse.gef.ui.palette.editparts.PaletteEditPart#setImageInFigure(Image)
+ * @see org.eclipse.gef.internal.ui.palette.editparts.PaletteEditPart#setImageInFigure(Image)
  */
 protected void setImageInFigure(Image image) {
 	getDrawerFigure().setTitleIcon(image);
@@ -201,7 +202,8 @@ protected void setImageInFigure(Image image) {
 
 /**
  * Sets the drawer's pinned state to the specified value.
- * @param pinned <code>true</code> if the drawer should be pinned when opened */
+ * @param pinned <code>true</code> if the drawer should be pinned when opened
+ */
 public void setPinnedOpen(boolean pinned) {
 	getDrawerFigure().setPinned(pinned);
 }

@@ -1,4 +1,4 @@
-package org.eclipse.gef.ui.palette.editparts;
+package org.eclipse.gef.internal.ui.palette.editparts;
 /*
  * Licensed Material - Property of IBM
  * (C) Copyright IBM Corp. 2001, 2002 - All Rights Reserved.
@@ -128,7 +128,7 @@ private ButtonModel getButtonModel() {
 }
 
 /**
- * @see org.eclipse.gef.ui.palette.editparts.PaletteEditPart#getDragTracker(Request)
+ * @see org.eclipse.gef.internal.ui.palette.editparts.PaletteEditPart#getDragTracker(Request)
  */
 public DragTracker getDragTracker(Request request) {
 	return new ToggleButtonTracker();
@@ -169,14 +169,16 @@ public void setToolSelected(boolean value) {
 }
 
 /**
- * @see org.eclipse.gef.ui.palette.editparts.PaletteEditPart#setImageInFigure(Image)
+ * @see org.eclipse.gef.internal.ui.palette.editparts.PaletteEditPart#setImageInFigure(Image)
  */
 protected void setImageInFigure(Image image) {
 	DetailedLabelFigure fig = (DetailedLabelFigure)(getFigure().getChildren().get(0));
 	fig.setImage(image);
 }
 
-/** * @see org.eclipse.gef.EditPart#setSelected(int) */
+/**
+ * @see org.eclipse.gef.EditPart#setSelected(int)
+ */
 public void setSelected(int value) {
 	super.setSelected(value);
 	if (value == SELECTED_PRIMARY

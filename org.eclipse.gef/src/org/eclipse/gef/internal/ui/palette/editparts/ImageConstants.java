@@ -1,4 +1,4 @@
-package org.eclipse.gef.ui.palette.editparts;
+package org.eclipse.gef.internal.ui.palette.editparts;
 
 import org.eclipse.gef.internal.Internal;
 import org.eclipse.swt.custom.ViewForm;

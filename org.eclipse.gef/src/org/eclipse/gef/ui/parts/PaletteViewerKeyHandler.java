@@ -17,9 +17,9 @@ import org.eclipse.draw2d.geometry.Point;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.ui.palette.PaletteViewer;
-import org.eclipse.gef.ui.palette.editparts.DrawerEditPart;
-import org.eclipse.gef.ui.palette.editparts.TemplateEditPart;
-import org.eclipse.gef.ui.palette.editparts.ToolEntryEditPart;
+import org.eclipse.gef.internal.ui.palette.editparts.DrawerEditPart;
+import org.eclipse.gef.internal.ui.palette.editparts.TemplateEditPart;
+import org.eclipse.gef.internal.ui.palette.editparts.ToolEntryEditPart;
 
 /**
  * KeyHandler for the {@link org.eclipse.gef.ui.palette.PaletteViewerImpl Palette}.

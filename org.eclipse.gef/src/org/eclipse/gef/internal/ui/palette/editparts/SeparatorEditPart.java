@@ -1,4 +1,4 @@
-package org.eclipse.gef.ui.palette.editparts;
+package org.eclipse.gef.internal.ui.palette.editparts;
 
 import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.Figure;
@@ -37,7 +37,8 @@ protected IFigure createFigure() {
 /**
  * Figure for the separator
  * 
- * @author Pratik Shah */
+ * @author Pratik Shah
+ */
 static class SeparatorFigure extends Figure {
 	/**
 	 * Constructor

@@ -1,4 +1,4 @@
-package org.eclipse.gef.ui.palette.editparts;
+package org.eclipse.gef.internal.ui.palette.editparts;
 
 import org.eclipse.swt.accessibility.ACC;
 import org.eclipse.swt.accessibility.AccessibleControlEvent;
@@ -51,7 +51,7 @@ public IFigure createFigure() {
 }
 
 /**
- * @see org.eclipse.gef.ui.palette.editparts.PaletteEditPart#getDragTracker(Request)
+ * @see org.eclipse.gef.internal.ui.palette.editparts.PaletteEditPart#getDragTracker(Request)
  */
 public DragTracker getDragTracker(Request request) {
 	return new SingleSelectionTracker() {
@@ -80,7 +80,7 @@ protected void refreshVisuals() {
 }
 
 /**
- * @see org.eclipse.gef.ui.palette.editparts.PaletteEditPart#setImageInFigure(Image)
+ * @see org.eclipse.gef.internal.ui.palette.editparts.PaletteEditPart#setImageInFigure(Image)
  */
 protected void setImageInFigure(Image image) {
 	DetailedLabelFigure fig = (DetailedLabelFigure)getFigure();

@@ -1,4 +1,4 @@
-package org.eclipse.gef.ui.palette.editparts;
+package org.eclipse.gef.internal.ui.palette.editparts;
 
 import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.Insets;
