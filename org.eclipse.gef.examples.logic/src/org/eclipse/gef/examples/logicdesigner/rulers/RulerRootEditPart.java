@@ -122,8 +122,15 @@ public class RulerViewport extends Viewport {
 			// this should never happen
 			return super.getPreferredSize(wHint, hHint);
 		}
-		return this.getContents().getPreferredSize(wHint, hHint)
-				.getExpanded(getInsets().getWidth(), getInsets().getHeight());
+		Dimension prefSize = this.getContents().getPreferredSize(wHint, hHint);
+		if (horizontal) {
+			RangeModel rModel = getHorizontalRangeModel();
+			prefSize.width = rModel.getMaximum() - rModel.getMinimum();
+		} else {
+			RangeModel rModel = getVerticalRangeModel();
+			prefSize.height = rModel.getMaximum() - rModel.getMinimum();
+		}
+		return prefSize.expand(getInsets().getWidth(), getInsets().getHeight());
 	}
 	protected void readjustScrollBars() {
 		// since the range model is shared with the editor, the ruler viewports should
