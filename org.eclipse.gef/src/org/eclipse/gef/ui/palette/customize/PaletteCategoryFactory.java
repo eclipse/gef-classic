@@ -30,10 +30,11 @@ public PaletteCategoryFactory() {
  * @see org.eclipse.gef.ui.palette.customize.PaletteEntryFactory#createNewEntry(Shell)
  */
 protected PaletteEntry createNewEntry(Shell shell) {
-	Image img = new Image(shell.getDisplay(), 
-	                      getImageDescriptor().getImageData());
-	PaletteCategory category =
-				new PaletteCategory(PaletteMessages.NEW_CATEGORY_LABEL, img);
+	// @TODO:Pratik
+	// A new image is created here everytime.  Should this image be static?
+	Image img = new Image(shell.getDisplay(), getImageDescriptor().getImageData());
+	PaletteCategory category = 
+					new PaletteCategory(PaletteMessages.NEW_CATEGORY_LABEL, img);
 	return category;
 }
 
