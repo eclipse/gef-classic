@@ -40,6 +40,9 @@ private static final List NULL_CONSTRAINT = new ArrayList();
 private List originalConstraint;
 private boolean isDeleting = false;
 
+private static final Point ref1 = new Point();
+private static final Point ref2 = new Point();
+
 /**
  * <code>activate()</code> is extended to add a listener to the <code>Connection</code>
  * figure.
@@ -249,11 +252,9 @@ protected void saveOriginalConstraint() {
 	getConnection().setRoutingConstraint(new ArrayList(originalConstraint));
 }
 
-private void setReferencePoints(BendpointRequest request, Point ref1, Point ref2) {
+private void setReferencePoints(BendpointRequest request) {
 	PointList points = getConnection().getPoints();
-	
 	int bpIndex = -1;
-	
 	List bendPoints = (List)getConnection().getRoutingConstraint();
 	Point bp = ((Bendpoint)bendPoints.get(request.getIndex())).getLocation();
 	
@@ -322,10 +323,9 @@ protected void showDeleteBendpointFeedback(BendpointRequest request) {
  */
 protected void showMoveBendpointFeedback(BendpointRequest request) {
 	Point p = new Point(request.getLocation());
-	Point ref1 = new Point();
-	Point ref2 = new Point();
 	if (!isDeleting)
-		setReferencePoints(request, ref1, ref2);
+		setReferencePoints(request);
+	
 	if (lineContainsPoint(ref1, ref2, p)) {
 		if (!isDeleting) {
 			isDeleting = true;
