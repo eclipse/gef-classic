@@ -44,7 +44,7 @@ public ChopboxAnchor(IFigure owner) {
 public boolean equals(Object obj) {
 	if (obj instanceof ChopboxAnchor) {
 		ChopboxAnchor other = (ChopboxAnchor)obj;
-		return other.getOwner() == getOwner() && other.getBox().equals(getBox());
+		return other.getOwner() == getOwner();
 	}
 	return false;
 }
@@ -107,6 +107,9 @@ public Point getReferencePoint() {
 	return ref;
 }
 
+/**
+ * @see java.lang.Object#hashCode()
+ */
 public int hashCode() {
 	if (getOwner() != null)
 		return getOwner().hashCode();
