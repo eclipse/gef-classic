@@ -33,54 +33,48 @@ public class AlignmentRetargetAction extends LabelRetargetAction {
 public AlignmentRetargetAction(int align) {
 	super(null, null);
 	switch (align) {
-		case PositionConstants.BOTTOM: {
+		case PositionConstants.BOTTOM:
 			setId(GEFActionConstants.ALIGN_BOTTOM);
 			setText(GEFMessages.AlignBottomAction_Label);
 			setToolTipText(GEFMessages.AlignBottomAction_Tooltip);
 			setImageDescriptor(InternalImages.DESC_VERT_ALIGN_BOTTOM);
 			setDisabledImageDescriptor(InternalImages.DESC_VERT_ALIGN_BOTTOM_DIS);
 			break;
-		}
-		case PositionConstants.CENTER: {
+		case PositionConstants.CENTER:
 			setId(GEFActionConstants.ALIGN_CENTER);
 			setText(GEFMessages.AlignCenterAction_Label);
 			setToolTipText(GEFMessages.AlignCenterAction_Tooltip);
 			setImageDescriptor(InternalImages.DESC_HORZ_ALIGN_CENTER);
 			setDisabledImageDescriptor(InternalImages.DESC_HORZ_ALIGN_CENTER_DIS);
 			break;
-		}
-		case PositionConstants.LEFT: {
+		case PositionConstants.LEFT:
 			setId(GEFActionConstants.ALIGN_LEFT);
 			setText(GEFMessages.AlignLeftAction_Label);
 			setToolTipText(GEFMessages.AlignLeftAction_Tooltip);
 			setImageDescriptor(InternalImages.DESC_HORZ_ALIGN_LEFT);
 			setDisabledImageDescriptor(InternalImages.DESC_HORZ_ALIGN_LEFT_DIS);
 			break;
-		}
-		case PositionConstants.MIDDLE: {
+		case PositionConstants.MIDDLE:
 			setId(GEFActionConstants.ALIGN_MIDDLE);
 			setText(GEFMessages.AlignMiddleAction_Label);
 			setToolTipText(GEFMessages.AlignMiddleAction_Tooltip);
 			setImageDescriptor(InternalImages.DESC_VERT_ALIGN_MIDDLE);
 			setDisabledImageDescriptor(InternalImages.DESC_VERT_ALIGN_MIDDLE_DIS);
 			break;
-		}
-		case PositionConstants.RIGHT: {
+		case PositionConstants.RIGHT:
 			setId(GEFActionConstants.ALIGN_RIGHT);
 			setText(GEFMessages.AlignRightAction_Label);
 			setToolTipText(GEFMessages.AlignRightAction_Tooltip);
 			setImageDescriptor(InternalImages.DESC_HORZ_ALIGN_RIGHT);
 			setDisabledImageDescriptor(InternalImages.DESC_HORZ_ALIGN_RIGHT_DIS);
 			break;
-		}
-		case PositionConstants.TOP: {
+		case PositionConstants.TOP:
 			setId(GEFActionConstants.ALIGN_TOP);
 			setText(GEFMessages.AlignTopAction_Label);
 			setToolTipText(GEFMessages.AlignTopAction_Tooltip);
 			setImageDescriptor(InternalImages.DESC_VERT_ALIGN_TOP);
 			setDisabledImageDescriptor(InternalImages.DESC_VERT_ALIGN_TOP_DIS);
 			break;
-		}
 	}
 }
 
