@@ -185,7 +185,7 @@ public List getModelChildren() {
 	if (getModel() instanceof PaletteContainer)
 		modelChildren = new ArrayList(((PaletteContainer)getModel()).getChildren());
 	else
-		modelChildren = Collections.EMPTY_LIST;
+		return Collections.EMPTY_LIST;
 	
 	PaletteEntry prevEntry = null;
 	for (Iterator iter = modelChildren.iterator(); iter.hasNext();) {
