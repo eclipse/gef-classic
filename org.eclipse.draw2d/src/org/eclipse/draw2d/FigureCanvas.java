@@ -109,20 +109,21 @@ public org.eclipse.swt.graphics.Point computeSize(int wHint, int hHint, boolean 
 	 * 
 	 * computeTrim(0,0,0,0).width + x*2 (will return width of vertical scrollbar)
 	 */
-	org.eclipse.swt.graphics.Rectangle trim;
 	/*
 	 * Fix for Bug# 67554
 	 * Motif leaves a few pixels of border around the canvas
 	 */
 	if ("motif".equals(SWT.getPlatform())) { //$NON-NLS-1$
-		trim = computeTrim(0,0,0,0);
+		org.eclipse.swt.graphics.Rectangle trim = computeTrim(0,0,0,0);
 		wHint += trim.x * 2;
 		hHint += trim.y * 2;
-	} else
-		trim = new org.eclipse.swt.graphics.Rectangle(0, 0, 0, 0);
+		Dimension size = getLightweightSystem().getRootFigure().getPreferredSize(wHint, hHint);
+		size.union(new Dimension(wHint, hHint));
+		size.expand(trim.x * -2, trim.y * -2);
+		return new org.eclipse.swt.graphics.Point(size.width, size.height);
+	}
 	Dimension size = getLightweightSystem().getRootFigure().getPreferredSize(wHint, hHint);
 	size.union(new Dimension(wHint, hHint));
-	size.expand(trim.x * -2, trim.y * -2);
 	return new org.eclipse.swt.graphics.Point(size.width, size.height);
 }
 
