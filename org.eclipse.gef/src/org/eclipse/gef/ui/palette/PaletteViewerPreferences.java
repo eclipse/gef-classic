@@ -99,7 +99,7 @@ public static final String
 public static final String
 	PREFERENCE_COLUMNS_ICON_SIZE  = "Use Large Icons - Columns"; //$NON-NLS-1$
 /**
- * @deprecated	Use PREFERENCE_COLUMN_ICON_SIZE instead.
+ * @deprecated	Use PREFERENCE_COLUMNS_ICON_SIZE instead.
  */
 public static final String
 	PREFERENCE_FOLDER_ICON_SIZE   = PREFERENCE_COLUMNS_ICON_SIZE;
@@ -205,7 +205,7 @@ public void setAutoCollapseSetting(int newVal);
 
 /**
  * Sets the FontData for the palette.
- *  * @param	data	The FontData for the font to be used in the palett */
+ *  * @param	data	The FontData for the font to be used in the palette */
 public void setFontData(FontData data);
 
 /**
@@ -243,6 +243,7 @@ public void setCurrentUseLargeIcons(boolean newVal);
  * NOTE: The given array of layout modes should have at least one, and is recommended to
  * have at least two, of the recognized layout modes.
  * </p>
+ * 
  * @param	modes	an array of layout modes desired
  */
 public void setSupportedLayoutModes(int[] modes);
