@@ -205,7 +205,7 @@ protected void setRootFigure(IFigure figure){
 	getLightweightSystem().setContents(rootFigure);
 }
 
-public void setRouteEventsToEditor(boolean value){
+public void setRouteEventsToEditDomain(boolean value){
 	getEventDispatcher().setRouteEventsToEditor(value);
 }
 
