@@ -35,7 +35,7 @@ protected Command getIncrementDecrementCommand(boolean type){
 }
 
 static class IncrementDecrementCommand 
-	extends org.eclipse.gef.commands.AbstractCommand{
+	extends org.eclipse.gef.commands.Command{
 	
 	boolean isIncrement = true;
 	LED child = null;
