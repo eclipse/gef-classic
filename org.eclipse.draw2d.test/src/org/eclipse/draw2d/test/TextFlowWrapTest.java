@@ -201,7 +201,6 @@ protected void runGenericTests() {
 }
 
 protected void runHardWrappingTests() {
-//	doTest("ab\tcd", "ab", new String[] {"ab", NEWLINE, "cd", TERMINATE});
 	doTest("ahahahah", "aha", new String[] {"ahahahah", TERMINATE});
 	doTest("Flow    Container  ", " ", new String[] {"Flow", " ", "", "Container", " ", TERMINATE});
 	doTest("aha \nb \r c ", "", new String[] {"aha", "", "b", "", "", "c", TERMINATE});
@@ -215,7 +214,6 @@ protected void runHardWrappingTests() {
 }
 
 protected void runSoftWrappingTests() {
-//	doTest("ab\tcd", "ab", new String[] {"ab", NEWLINE, "cd", TERMINATE});
 	doTest( "tester ab", "teste", new String[] {"teste", NEWLINE, "r ab", TERMINATE} );
 	doTest("aha \nb \r c ", "", new String[] {"a", "h", "a", "", "b", "", "", "c", TERMINATE});
 	doTest("\u0634abcd", "\u0634abc", new String[] {"\u0634", SAMELINE, "abc", NEWLINE, "d", TERMINATE});
@@ -224,7 +222,6 @@ protected void runSoftWrappingTests() {
 }
 
 protected void runTruncatedWrappingTests() {
-//	doTest("ab\tcd", "ab", new String[] {"", TRUNCATED, NEWLINE, "", TRUNCATED, TERMINATE});
 	doTest("Flowing  Container", "Flo...", new String[] {"Flo", NEWLINE, "Co", TERMINATE});
 	doTest("Flowing C", "Flo...", new String[] {"Flo", "C", TERMINATE});
 	doTest("Fooooooo", "...", new String[] {"", TRUNCATED, TERMINATE});
@@ -306,7 +303,7 @@ public void testInlineFlow() {
 	textFlow2.setFont(TAHOMA);
 	figure.add(textFlow2);
 	runGenericTests();
-	//runSoftWrappingTests();
+//	runSoftWrappingTests();
 	
 	figure = new FlowPage();
 	inline = new InlineFlow();
@@ -343,7 +340,7 @@ public void testNestedInlineFlows() {
 	textFlow2.setFont(TAHOMA);
 	inline2.add(textFlow2);
 	runGenericTests();
-	//runSoftWrappingTests();
+//	runSoftWrappingTests();
 	
 	figure = new FlowPage();
 	textFlow = new TextFlow();
