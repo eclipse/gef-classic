@@ -45,10 +45,8 @@ protected int getIndex() {
 }
 
 /**
- * Returns the point of reference associated with 
- * this locator. This point will be midway between
- * point numbers 'index' and 'index' + 1.
- * 
+ * Returns the point of reference associated with  this locator. This point will be midway
+ * between points at 'index' and 'index' + 1.
  * @since 2.0
  */
 protected Point getReferencePoint() {
@@ -58,6 +56,7 @@ protected Point getReferencePoint() {
 	Point p2 = conn.getPoints().getPoint(getIndex()+1);
 	p.x = (p2.x-p1.x)/2 + p1.x;
 	p.y = (p2.y-p1.y)/2 + p1.y;
+	conn.translateToAbsolute(p);
 	return p;
 }
 

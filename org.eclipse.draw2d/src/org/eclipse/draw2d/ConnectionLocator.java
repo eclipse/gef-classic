@@ -85,13 +85,15 @@ protected Connection getConnection() {
 }
 
 /**
- * Returns ConnectionLocator's reference point.
+ * Returns ConnectionLocator's reference point in absolute coordinates.
  * 
  * @return The reference point
  * @since 2.0
  */
 protected Point getReferencePoint() {
-	return getLocation(getConnection().getPoints());
+	Point p = getLocation(getConnection().getPoints());
+	getConnection().translateToAbsolute(p);
+	return p;
 }
 
 /**

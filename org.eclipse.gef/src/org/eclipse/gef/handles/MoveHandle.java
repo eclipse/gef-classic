@@ -81,7 +81,7 @@ public Point getAccessibleLocation(){
  */
 protected void initialize() {
 	setOpaque(false);
-	setBorder(new LineBorder());
+	setBorder(new LineBorder(1));
 	setCursor(Cursors.SIZEALL);
 }
 

@@ -95,6 +95,7 @@ public int getRelativePosition() {
 public void relocate(IFigure target) {
 	Dimension prefSize = target.getPreferredSize();
 	Point center = getReferencePoint();
+	target.translateToRelative(center);
 	target.setBounds(getNewBounds(prefSize, center));
 }
 

@@ -50,7 +50,9 @@ protected int getIndex() {
  * @since 2.0
  */
 protected Point getReferencePoint() {
-	return getConnection().getPoints().getPoint(Point.SINGLETON, getIndex());
+	Point p = getConnection().getPoints().getPoint(Point.SINGLETON, getIndex());
+	getConnection().translateToAbsolute(p);
+	return p;
 }
 
 }

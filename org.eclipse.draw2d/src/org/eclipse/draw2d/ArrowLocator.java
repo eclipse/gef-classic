@@ -35,7 +35,7 @@ public ArrowLocator(Connection connection, int tip) {
 public void relocate(IFigure target) {
 	PointList points = getConnection().getPoints();
 	RotatableDecoration arrow = (RotatableDecoration)target;
-	arrow.setLocation(getReferencePoint());
+	arrow.setLocation(getLocation(points));
 
 	if (getAlignment() == SOURCE)
 		arrow.setReferencePoint(points.getPoint(1));

@@ -44,14 +44,14 @@ public void relocate(IFigure target) {
 	Insets insets = target.getInsets();
 	Rectangle bounds;
 	if (getReference() instanceof HandleBounds)
-		bounds = ((HandleBounds)getReference()).getHandleBounds().getCopy();
+		bounds = ((HandleBounds)getReference()).getHandleBounds();
 	else
-		bounds = getReference().getBounds().getCopy();
-	bounds.resize(insets.right, insets.bottom);
+		bounds = getReference().getBounds();
+	bounds = bounds.getResized(-1, -1);
 	getReference().translateToAbsolute(bounds);
 	target.translateToRelative(bounds);
 	bounds.translate(-insets.left, -insets.top);
-	bounds.resize(-1,-1);
+	bounds.resize(insets.getWidth() + 1, insets.getHeight() + 1);
 	target.setBounds(bounds);
 }
 
