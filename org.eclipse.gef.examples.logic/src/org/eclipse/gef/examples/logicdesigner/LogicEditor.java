@@ -52,10 +52,9 @@ import org.eclipse.gef.examples.logicdesigner.dnd.TextTransferDropTargetListener
 import org.eclipse.gef.examples.logicdesigner.edit.GraphicalPartFactory;
 import org.eclipse.gef.examples.logicdesigner.edit.TreePartFactory;
 import org.eclipse.gef.examples.logicdesigner.model.LogicDiagram;
-import org.eclipse.gef.examples.logicdesigner.model.Ruler;
+import org.eclipse.gef.examples.logicdesigner.model.LogicRuler;
 import org.eclipse.gef.examples.logicdesigner.palette.LogicPaletteCustomizer;
-import org.eclipse.gef.examples.logicdesigner.rulers.LogicRootEditPart;
-import org.eclipse.gef.examples.logicdesigner.rulers.RulerComposite;
+import org.eclipse.gef.examples.logicdesigner.rulers.LogicRulerProvider;
 
 public class LogicEditor 
 	extends GraphicalEditorWithPalette 
@@ -226,15 +225,18 @@ class ResourceTracker
 			return true;
 			
 		if (delta.getKind() == IResourceDelta.REMOVED) {
+			Display display = getSite().getShell().getDisplay();
 			if ((IResourceDelta.MOVED_TO & delta.getFlags()) == 0) { // if the file was deleted
 				// NOTE: The case where an open, unsaved file is deleted is being handled by the 
 				// PartListener added to the Workbench in the initialize() method.
-				if (!isDirty()) 
-					closeEditor(false); 
-			} 
-			else { // else if it was moved or renamed
+				display.asyncExec(new Runnable() {
+					public void run() {
+						if (!isDirty()) 
+							closeEditor(false); 
+					}
+				});
+			} else { // else if it was moved or renamed
 				final IFile newFile = ResourcesPlugin.getWorkspace().getRoot().getFile(delta.getMovedToPath());
-				Display display = getSite().getShell().getDisplay();
 				display.asyncExec(new Runnable() {
 					public void run() {
 						superSetInput(new FileEditorInput(newFile));
@@ -334,7 +336,7 @@ protected void configureGraphicalViewer() {
 	super.configureGraphicalViewer();
 	ScrollingGraphicalViewer viewer = (ScrollingGraphicalViewer)getGraphicalViewer();
 
-	ScalableFreeformRootEditPart root = new LogicRootEditPart();
+	ScalableFreeformRootEditPart root = new ScalableFreeformRootEditPart();
 
 	List zoomLevels = new ArrayList(3);
 	zoomLevels.add(ZoomManager.FIT_ALL);
@@ -358,6 +360,8 @@ protected void configureGraphicalViewer() {
 		provider, viewer);
 	viewer.setKeyHandler(new GraphicalViewerKeyHandler(viewer)
 		.setParent(getCommonKeyHandler()));
+
+	loadRulers();
 }
 
 protected void createOutputStream(OutputStream os)throws IOException {
@@ -367,10 +371,18 @@ protected void createOutputStream(OutputStream os)throws IOException {
 }
 
 protected void loadRulers(){
-	createGraphicalRuler(PositionConstants.WEST);
-	createGraphicalRuler(PositionConstants.NORTH);
-	createGraphicalRuler(PositionConstants.EAST);
-	createGraphicalRuler(PositionConstants.SOUTH);
+	LogicRuler ruler = getLogicDiagram().getRuler(PositionConstants.WEST);
+	RulerProvider provider = null;
+	if (ruler != null) {
+		provider = new LogicRulerProvider(ruler);
+	}
+	getGraphicalViewer().setProperty(RulerProvider.VERTICAL, provider);
+	ruler = getLogicDiagram().getRuler(PositionConstants.NORTH);
+	provider = null;
+	if (ruler != null) {
+		provider = new LogicRulerProvider(ruler);
+	}
+	getGraphicalViewer().setProperty(RulerProvider.HORIZONTAL, provider);
 }
 
 public void dispose() {
@@ -539,14 +551,6 @@ protected void createActions() {
 	getSelectionActions().add(action.getId());
 }
 
-protected void createGraphicalRuler(int orientation) {
-	Ruler ruler = getLogicDiagram().getRuler(orientation);
-	if (ruler != null) {
-		rulerComp.addRuler(ruler, orientation);
-		getEditDomain().addViewer(rulerComp.getRulerContainer(orientation));
-	}
-}
-
 /* (non-Javadoc)
  * @see org.eclipse.gef.ui.parts.GraphicalEditor#createGraphicalViewer(org.eclipse.swt.widgets.Composite)
  */
@@ -554,7 +558,6 @@ protected void createGraphicalViewer(Composite parent) {
 	rulerComp = new RulerComposite(parent, SWT.NONE);
 	super.createGraphicalViewer(rulerComp);
 	rulerComp.setGraphicalViewer(getGraphicalViewer());
-	loadRulers();
 }
 
 protected FigureCanvas getEditor(){
@@ -636,14 +639,14 @@ public void setInput(IEditorInput input) {
 		e.printStackTrace();
 	}
 	
-	if (getGraphicalViewer() != null) {
-		getGraphicalViewer().setContents(getLogicDiagram());
-	}
-	if (outlinePage != null) {
-		outlinePage.setContents(getLogicDiagram());
-	}
-	if (rulerComp != null) {
-		loadRulers();		
+	if (!editorSaving) {
+		if (getGraphicalViewer() != null) {
+			getGraphicalViewer().setContents(getLogicDiagram());
+			loadRulers();
+		}
+		if (outlinePage != null) {
+			outlinePage.setContents(getLogicDiagram());
+		}
 	}
 }
 
