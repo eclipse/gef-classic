@@ -56,7 +56,7 @@ protected void createEditPolicies() {
  * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
  */
 protected IFigure createFigure() {
-	return new RulerViewport(horizontal);
+	return new RulerViewport();
 }
 
 /**
@@ -126,11 +126,20 @@ public void setViewer(EditPartViewer newViewer) {
 }
 
 public class RulerViewport extends Viewport {
-	private boolean horizontal;
-	public RulerViewport(boolean isHorizontal) {
+	public RulerViewport() {
 		super(true);
-		horizontal = isHorizontal;
 		setLayoutManager(null);
+		// The range model that's not shared is initialized such that it can't scroll
+		// anymore (otherwise, CTRL + SHIFT + ARROW scrolls it).
+		RangeModel bogusRangeModel;
+		if (horizontal)
+			bogusRangeModel = getVerticalRangeModel();
+		else
+			bogusRangeModel = getHorizontalRangeModel();
+		bogusRangeModel.setMinimum(0);
+		bogusRangeModel.setMaximum(100);
+		bogusRangeModel.setValue(0);
+		bogusRangeModel.setExtent(100);
 	}
 	protected void doLayout(boolean force) {
 		repaint();
