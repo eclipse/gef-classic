@@ -43,7 +43,6 @@ protected void showFocus() {
 	getLabel().setFocus(true);
 }
 
-
 /**
  * @see org.eclipse.gef.editpolicies.SelectionHandlesEditPolicy#showSelection()
  */
