@@ -12,13 +12,8 @@ package org.eclipse.gef.ui.views.palette;
 
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-
 import org.eclipse.jface.util.Assert;
-import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.part.Page;
-
-import org.eclipse.gef.internal.ui.palette.ToolbarDropdownContributionItem;
-import org.eclipse.gef.ui.palette.LayoutAction;
 import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.eclipse.gef.ui.palette.PaletteViewerProvider;
 
@@ -50,15 +45,6 @@ public void dispose() {
 
 public Control getControl() {
 	return viewer.getControl();
-}
-
-/**
- * @see org.eclipse.ui.part.IPageBookViewPage#init(org.eclipse.ui.part.IPageSite)
- */
-public void init(IPageSite pageSite) {
-	super.init(pageSite);
-	pageSite.getActionBars().getToolBarManager().add(new ToolbarDropdownContributionItem(
-			new LayoutAction(viewer.getPaletteViewerPreferences(), true)));
 }
 
 public void setFocus() {
