@@ -94,11 +94,12 @@ public DragTracker getDragTracker(Request req) {
 public IFigure getLayer(Object key){
 	if (innerLayers == null)
 		return null;
-		
-	IFigure layer = printableLayers.getLayer(key);
+	IFigure layer = innerLayers.getLayer(key);
 	if (layer != null)
 		return layer;
-	return innerLayers.getLayer(key);
+	if (printableLayers == null)
+		return null;
+	return printableLayers.getLayer(key);
 }
 
 /**
