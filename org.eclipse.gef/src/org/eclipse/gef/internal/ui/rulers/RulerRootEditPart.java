@@ -108,7 +108,7 @@ public class RulerViewport extends Viewport {
 		setLayoutManager(null);
 	}
 	public Dimension getPreferredSize(int wHint, int hHint) {
-		if (getContents() == null) {
+		if (this.getContents() == null) {
 			return new Dimension();
 		}
 		Dimension prefSize = this.getContents().getPreferredSize(wHint, hHint);
@@ -142,7 +142,7 @@ public class RulerViewport extends Viewport {
 		// not touch it
 	}
 	public void propertyChange(PropertyChangeEvent event) {
-		if (getContents() != null && event.getSource() instanceof RangeModel) {
+		if (this.getContents() != null && event.getSource() instanceof RangeModel) {
 			repaint();
 			String property = event.getPropertyName();
 			if (property.equals(RangeModel.PROPERTY_MAXIMUM) 
@@ -163,9 +163,9 @@ public class RulerViewport extends Viewport {
 					contentBounds.width = this.getContents().getPreferredSize().width;
 				}
 				contentBounds.translate(clientArea.x, clientArea.y);
-				if (!getContents().getBounds().equals(contentBounds)) {
-					getContents().setBounds(contentBounds);
-					getContents().revalidate();
+				if (!this.getContents().getBounds().equals(contentBounds)) {
+					this.getContents().setBounds(contentBounds);
+					this.getContents().revalidate();
 				}						
 			}
 			getUpdateManager().performUpdate();
