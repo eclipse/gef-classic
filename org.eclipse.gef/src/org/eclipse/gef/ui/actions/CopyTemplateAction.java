@@ -2,14 +2,12 @@ package org.eclipse.gef.ui.actions;
 
 import java.util.List;
 
-import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IWorkbenchActionConstants;
-
-import org.eclipse.gef.dnd.TemplateTransfer;
 import org.eclipse.gef.internal.GEFMessages;
 import org.eclipse.gef.palette.PaletteTemplateEntry;
 import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.eclipse.gef.ui.palette.TemplateEditPart;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IWorkbenchActionConstants;
 
 /**
  * Copies the currently selected template in the palatte to the system clipboard.
@@ -87,7 +85,7 @@ protected void init() {
  * @see org.eclipse.jface.action.Action#run()
  */
 public void run() {
-	TemplateTransfer.getInstance().setTemplate(selectedEntry.getTemplate());
+	Clipboard.getDefault().setContents(selectedEntry.getTemplate());
 }
 
 }

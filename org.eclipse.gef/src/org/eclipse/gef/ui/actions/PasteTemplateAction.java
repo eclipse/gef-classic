@@ -1,14 +1,12 @@
 package org.eclipse.gef.ui.actions;
 
-import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IWorkbenchActionConstants;
-
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.commands.Command;
-import org.eclipse.gef.dnd.TemplateTransfer;
 import org.eclipse.gef.internal.GEFMessages;
 import org.eclipse.gef.requests.CreateRequest;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IWorkbenchActionConstants;
 
 /**
  * If the current object on the system clipboard is a template and the current viewer is
@@ -45,7 +43,7 @@ protected Command createPasteCommand() {
 }
 
 protected Object getClipboardContents() {
-	return TemplateTransfer.getInstance().getTemplate();
+	return Clipboard.getDefault().getContents();
 }
 
 /**
