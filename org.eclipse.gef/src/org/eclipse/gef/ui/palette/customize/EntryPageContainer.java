@@ -21,13 +21,13 @@ public interface EntryPageContainer {
 /**
  * Clears the error.
  */
-public void clearProblem();
+void clearProblem();
 
 /**
  * Shows the error to the user.
  * 
  * @param description	A description of the problem.  Should be as brief as possible.
  */
-public void showProblem(String description);
+void showProblem(String description);
 
 }
