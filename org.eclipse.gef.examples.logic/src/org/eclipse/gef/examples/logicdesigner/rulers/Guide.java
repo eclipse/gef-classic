@@ -5,9 +5,8 @@ package org.eclipse.gef.examples.logicdesigner.rulers;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.Serializable;
 import java.util.*;
-import java.util.Hashtable;
-import java.util.Map;
 
 import org.eclipse.gef.examples.logicdesigner.model.LogicSubpart;
 
@@ -15,6 +14,7 @@ import org.eclipse.gef.examples.logicdesigner.model.LogicSubpart;
  * @author Pratik Shah
  */
 public class Guide 
+	implements Serializable
 {
 
 public static final String PROPERTY_POSITION = "position"; //$NON-NLS-1$

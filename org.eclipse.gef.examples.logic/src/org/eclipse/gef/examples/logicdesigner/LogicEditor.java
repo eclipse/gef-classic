@@ -39,9 +39,6 @@ import org.eclipse.gef.dnd.TemplateTransferDragSourceListener;
 import org.eclipse.gef.editparts.ScalableFreeformRootEditPart;
 import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.palette.PaletteRoot;
-import org.eclipse.gef.rulers.*;
-import org.eclipse.gef.rulers.RulerComposite;
-import org.eclipse.gef.rulers.RulerFigure;
 import org.eclipse.gef.ui.actions.*;
 import org.eclipse.gef.ui.palette.PaletteContextMenuProvider;
 import org.eclipse.gef.ui.palette.PaletteViewer;
@@ -56,6 +53,7 @@ import org.eclipse.gef.examples.logicdesigner.edit.GraphicalPartFactory;
 import org.eclipse.gef.examples.logicdesigner.edit.TreePartFactory;
 import org.eclipse.gef.examples.logicdesigner.model.LogicDiagram;
 import org.eclipse.gef.examples.logicdesigner.palette.LogicPaletteCustomizer;
+import org.eclipse.gef.examples.logicdesigner.rulers.*;
 
 public class LogicEditor 
 	extends GraphicalEditorWithPalette 
@@ -338,8 +336,6 @@ protected void configureGraphicalViewer() {
 		provider, viewer);
 	viewer.setKeyHandler(new GraphicalViewerKeyHandler(viewer)
 		.setParent(getCommonKeyHandler()));
-		
-	createRulers(root.getZoomManager());
 }
 
 protected void createOutputStream(OutputStream os)throws IOException {
@@ -348,14 +344,9 @@ protected void createOutputStream(OutputStream os)throws IOException {
 	out.close();	
 }
 
-protected void createRulers(ZoomManager zoomManager){
-	rulerComp.setEditor(getEditor());
-	RulerFigure vRuler = new RulerFigure(getEditor(), false, RulerFigure.UNIT_INCHES);
-	vRuler.setZoomManager(zoomManager);
-	rulerComp.addRuler(vRuler, PositionConstants.WEST);
-	RulerFigure hRuler = new RulerFigure(getEditor(), true, RulerFigure.UNIT_INCHES);
-	hRuler.setZoomManager(zoomManager);
-	rulerComp.addRuler(hRuler, PositionConstants.NORTH);
+protected void createRulers(){
+	createGraphicalRuler(PositionConstants.WEST);
+	createGraphicalRuler(PositionConstants.NORTH);
 }
 
 public void dispose() {
@@ -392,10 +383,7 @@ public Object getAdapter(Class type){
 	if (type == IContentOutlinePage.class)
 		return new OutlinePage(new TreeViewer());
 	if (type == ZoomManager.class)
-		return (
-			(ScalableFreeformRootEditPart) getGraphicalViewer()
-				.getRootEditPart())
-			.getZoomManager();
+		return getGraphicalViewer().getProperty(ZoomManager.class.toString());
 
 	return super.getAdapter(type);
 }
@@ -458,6 +446,7 @@ protected void hookPaletteViewer() {
 
 protected void initializeGraphicalViewer() {
 	getGraphicalViewer().setContents(getLogicDiagram());
+	
 	getGraphicalViewer().addDropTargetListener(
 		new LogicTemplateTransferDropTargetListener(getGraphicalViewer()));
 	getGraphicalViewer().addDropTargetListener(
@@ -521,12 +510,22 @@ protected void createActions() {
 	getSelectionActions().add(action.getId());
 }
 
+protected void createGraphicalRuler(int orientation) {
+	Ruler ruler = getLogicDiagram().getRuler(orientation);
+	if (ruler != null) {
+		rulerComp.addRuler(ruler, orientation);
+		getEditDomain().addViewer(rulerComp.getRulerContainer(orientation));
+	}
+}
+
 /* (non-Javadoc)
  * @see org.eclipse.gef.ui.parts.GraphicalEditor#createGraphicalViewer(org.eclipse.swt.widgets.Composite)
  */
 protected void createGraphicalViewer(Composite parent) {
 	rulerComp = new RulerComposite(parent, SWT.NONE);
 	super.createGraphicalViewer(rulerComp);
+	rulerComp.setGraphicalViewer(getGraphicalViewer());
+	createRulers();
 }
 
 protected FigureCanvas getEditor(){

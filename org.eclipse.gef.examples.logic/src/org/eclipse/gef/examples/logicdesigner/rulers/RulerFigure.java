@@ -1,7 +1,7 @@
 /*
  * Created on Oct 3, 2003
  */
-package org.eclipse.gef.rulers;
+package org.eclipse.gef.examples.logicdesigner.rulers;
 
 
 import org.eclipse.swt.widgets.Composite;
@@ -10,6 +10,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.*;
 
+import org.eclipse.gef.editparts.ZoomListener;
 import org.eclipse.gef.editparts.ZoomManager;
 
 /**
@@ -18,10 +19,6 @@ import org.eclipse.gef.editparts.ZoomManager;
 public class RulerFigure
 	extends Figure
 {
-
-public static final int UNIT_INCHES = 0;
-public static final int UNIT_CENTIMETERS = 1;
-public static final int UNIT_PIXELS = 2;
 
 /**
  * These fields allow the client to customize the look of the ruler.
@@ -35,13 +32,19 @@ public int textBottomMargin = 4;
 public int minPixelsBetweenMarks = 3;
 
 private boolean horizontal;
-private int unit, interval, divisions, cachedHeight, cachedLength = 0;
+private int unit, interval, divisions, cachedHeight, cachedY, cachedLength = 0;
 private double dpu = -1.0;
 private Dimension textSize, cachedPrefSize, cachedTextSize;
 
 protected Transposer transposer = new Transposer();
 protected FigureCanvas editor;
 protected ZoomManager zoom;
+
+private ZoomListener zoomListener = new ZoomListener() {
+	public void zoomChanged(double zoom) {
+		layout();
+	}
+};
 
 public RulerFigure(FigureCanvas editor, boolean isHorizontal, int unit) {
 	this.editor = editor;
@@ -50,6 +53,7 @@ public RulerFigure(FigureCanvas editor, boolean isHorizontal, int unit) {
 	setBackgroundColor(ColorConstants.white);
 	setBorder(new MarginBorder(transposer.t(new Insets(0, 3, 0, 4))));
 	setOpaque(true);
+	setLayoutManager(new RulerLayout());
 }
 
 private void calculateTextSize(Rectangle transposedBounds) {
@@ -60,7 +64,7 @@ private void calculateTextSize(Rectangle transposedBounds) {
 				("" + (int)(transposedBounds.y / getDPU())).length()); //$NON-NLS-1$
 	}
 	numLength = Math.max(2, numLength);
-	textSize = getTextSize(numLength);
+	textSize = getSizeOfText(numLength);
 }
 
 /*
@@ -83,11 +87,11 @@ protected void forceSWTLayoutIfNecessary() {
 
 protected double getDPU() {
 	if (dpu <= 0) {
-		if (getUnit() == UNIT_PIXELS) {
+		if (getUnit() == Ruler.UNIT_PIXELS) {
 			dpu = 1.0;
 		} else {
 			dpu = transposer.t(new Dimension(Display.getCurrent().getDPI())).height;
-			if (getUnit() == UNIT_CENTIMETERS) {
+			if (getUnit() == Ruler.UNIT_CENTIMETERS) {
 				dpu = dpu / 2.54;
 			}
 		}
@@ -98,10 +102,15 @@ protected double getDPU() {
 	return dpu;
 }
 
+// @TODO:Pratik    you should change this so that the preferred size is being calculated
+// based on the range model, and not the size of the editor.  this way, the editor
+// won't have to be passed around.
 public Dimension getPreferredSize(int wHint, int hHint) {
 	Rectangle viewBounds = transposer.t(editor.getContents().getBounds().getCopy());
-	if (cachedHeight != viewBounds.height || cachedPrefSize == null) {
+	if (cachedHeight != viewBounds.height || cachedY != viewBounds.y 
+			|| cachedPrefSize == null) {
 		cachedHeight = viewBounds.height;
+		cachedY = viewBounds.y;
 		calculateTextSize(viewBounds);
 		cachedPrefSize = transposer.t(new Dimension(transposer.t(textSize).width 
 				+ textLeftMargin + textRightMargin + mediumMarkWidth, 
@@ -115,7 +124,7 @@ public Dimension getPreferredSize(int wHint, int hHint) {
 }
 
 // length must be greater than or equal to 1
-private Dimension getTextSize(int length) {
+private Dimension getSizeOfText(int length) {
 	if (length != cachedLength) {
 		String number = "8"; //$NON-NLS-1$
 		for (int i = 1; i < length; i++) {
@@ -155,7 +164,7 @@ public boolean isHorizontal() {
  * @see org.eclipse.draw2d.Figure#paintFigure(org.eclipse.draw2d.Graphics)
  */
 protected void paintFigure(Graphics graphics) {
-	if( isOpaque() ) {
+	if (isOpaque()) {
 		graphics.fillRectangle(getClientArea());
 	}
 	double dotsPerUnit = getDPU();
@@ -226,9 +235,9 @@ protected void paintFigure(Graphics graphics) {
 		 * of divisions by a factor of 2 until there is enough space between them.
 		 */
 		divsPerMajorMark = 2;
-		if (getUnit() == UNIT_CENTIMETERS) {
+		if (getUnit() == Ruler.UNIT_CENTIMETERS) {
 			divsPerMajorMark = 10;
-		} else if (getUnit() == UNIT_INCHES) {
+		} else if (getUnit() == Ruler.UNIT_INCHES) {
 			divsPerMajorMark = 16;
 		}
 		while (dotsPerUnit * unitsPerMajorMark / divsPerMajorMark < minPixelsBetweenMarks) {
@@ -308,13 +317,17 @@ protected void paintFigure(Graphics graphics) {
 //			transposer.t(clippedBounds.getBottomRight()));
 }
 
+/* (non-Javadoc)
+ * @see org.eclipse.draw2d.Figure#setBounds(org.eclipse.draw2d.geometry.Rectangle)
+ */
+public void setBounds(Rectangle rect) {
+	// TODO Auto-generated method stub
+	super.setBounds(rect);
+}
+
 public void setHorizontal(boolean isHorizontal) {
 	horizontal = isHorizontal;
 	transposer.setEnabled(isHorizontal);
-}
-
-public void setZoomManager(ZoomManager manager) {
-	zoom = manager;
 }
 
 /**
@@ -342,6 +355,21 @@ public void setUnit(int unit) {
 		this.unit = unit;
 		invalidate();
 		forceSWTLayoutIfNecessary();
+	}
+}
+
+public void setZoomManager(ZoomManager manager) {
+	if (zoom != manager) {
+		if (zoom != null) {
+			zoom.removeZoomListener(zoomListener);
+		}
+		zoom = manager;
+		if (zoom != null) {
+			zoom.addZoomListener(zoomListener);
+		}
+	}
+	if (getLayoutManager() instanceof RulerLayout) {
+		((RulerLayout)getLayoutManager()).setZoomManager(zoom);		
 	}
 }
 

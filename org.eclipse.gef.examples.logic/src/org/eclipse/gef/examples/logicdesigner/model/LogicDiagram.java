@@ -17,7 +17,11 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.views.properties.ComboBoxPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 
+import org.eclipse.draw2d.PositionConstants;
+
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
+import org.eclipse.gef.examples.logicdesigner.rulers.Guide;
+import org.eclipse.gef.examples.logicdesigner.rulers.Ruler;
 
 public class LogicDiagram
 	extends LogicSubpart
@@ -29,6 +33,7 @@ private static Image LOGIC_ICON = new Image (null,
 	LogicDiagram.class.getResourceAsStream("icons/circuit16.gif")); //$NON-NLS-1$
 
 protected List children = new ArrayList();
+protected Ruler leftRuler, topRuler;
 public static String ID_ROUTER = "router";	//$NON-NLS-1$
 public static Integer ROUTER_MANUAL = new Integer(0);
 public static Integer ROUTER_MANHATTAN = new Integer(1);
@@ -39,6 +44,7 @@ public LogicDiagram() {
 	size.height= 100;
 	location.x = 20;
 	location.y = 20;
+	createRulers();
 }
 
 public void addChild(LogicElement child){
@@ -51,6 +57,34 @@ public void addChild(LogicElement child, int index){
 	else
 		children.add(child);
 	fireStructureChange(CHILDREN, child);
+}
+
+protected void createRulers() {
+	leftRuler = new Ruler(false);
+	topRuler = new Ruler(true);
+	
+	Guide g = new Guide(true);
+	g.setPosition(25);
+	leftRuler.addGuide(g);
+	g = new Guide(true);
+	g.setPosition(400);
+	leftRuler.addGuide(g);
+
+	g = new Guide(false);
+	g.setPosition(125);
+	topRuler.addGuide(g);
+	g = new Guide(false);
+	g.setPosition(325);
+	topRuler.addGuide(g);
+	g = new Guide(false);
+	g.setPosition(0);
+	topRuler.addGuide(g);
+	g = new Guide(false);
+	g.setPosition(-500);
+	topRuler.addGuide(g);
+	g = new Guide(false);
+	g.setPosition(1200);
+	topRuler.addGuide(g);
 }
 
 public List getChildren(){
@@ -95,6 +129,19 @@ public Object getPropertyValue(Object propName) {
 	if(propName.equals(ID_ROUTER))
 		return connectionRouter;
 	return super.getPropertyValue(propName);
+}
+
+public Ruler getRuler(int orientation) {
+	Ruler result = null;
+	switch (orientation) {
+		case PositionConstants.NORTH :
+			result = topRuler;
+			break;
+		case PositionConstants.WEST :
+			result = leftRuler;
+			break;
+	}
+	return result;
 }
 
 public void removeChild(LogicElement child){

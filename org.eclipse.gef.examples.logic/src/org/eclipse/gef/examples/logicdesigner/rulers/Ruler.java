@@ -5,6 +5,7 @@ package org.eclipse.gef.examples.logicdesigner.rulers;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,21 +13,33 @@ import java.util.List;
 /**
  * @author Pratik Shah
  */
-public class Ruler 
+public class Ruler
+	implements Serializable
 {
 
 // could mean that a guide was added or removed
 public static final String PROPERTY_CHILDREN = "children"; //$NON-NLS-1$
+public static final String PROPERTY_UNIT = "unit"; //$NON-NLS-1$
 
-protected PropertyChangeSupport listeners = new PropertyChangeSupport(this);	
+public static final int UNIT_INCHES = 0;
+public static final int UNIT_CENTIMETERS = 1;
+public static final int UNIT_PIXELS = 2;
+
+protected PropertyChangeSupport listeners = new PropertyChangeSupport(this);
+private int unit;	
 private boolean horizontal;
 private List guides = new ArrayList();
 
 public Ruler(boolean isHorizontal) {
-	horizontal = isHorizontal;
+	this(isHorizontal, UNIT_INCHES);
 }
 
-public void addGuide(Guide guide){
+public Ruler(boolean isHorizontal, int unit) {
+	horizontal = isHorizontal;
+	setUnit(unit);
+}
+
+public void addGuide(Guide guide) {
 	if (!guides.contains(guide)) {
 		guide.setHorizontal(!isHorizontal());
 		guides.add(guide);
@@ -43,6 +56,10 @@ public List getGuides() {
 	return guides;
 }
 
+public int getUnit() {
+	return unit;
+}
+
 public boolean isHorizontal() {
 	return horizontal;
 }
@@ -56,6 +73,14 @@ public void removeGuide(Guide guide) {
 
 public void removePropertyChangeListener(PropertyChangeListener listener) {
 	listeners.removePropertyChangeListener(listener);
+}
+
+public void setUnit(int newUnit) {
+	if (unit != newUnit) {
+		int oldUnit = unit;
+		unit = newUnit;
+		listeners.firePropertyChange(PROPERTY_UNIT, oldUnit, newUnit);
+	}
 }
 
 }

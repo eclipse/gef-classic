@@ -7,10 +7,8 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.geometry.Point;
 
-import org.eclipse.gef.EditPolicy;
-import org.eclipse.gef.GraphicalViewer;
+import org.eclipse.gef.*;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.rulers.GuideFigure;
 
@@ -42,7 +40,7 @@ public void activate() {
  * @see org.eclipse.gef.editparts.AbstractEditPart#createEditPolicies()
  */
 protected void createEditPolicies() {
-	installEditPolicy(EditPolicy.PRIMARY_DRAG_ROLE, new GuideEditPolicy());
+	installEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE, new GuideEditPolicy());
 }
 
 /*
@@ -50,7 +48,7 @@ protected void createEditPolicies() {
  * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
  */
 protected IFigure createFigure() {
-	return new GuideFigure();
+	return new GuideFigure(getGuide().isHorizontal());
 }
 
 /* (non-Javadoc)
@@ -72,16 +70,18 @@ protected Guide getGuide() {
 public void propertyChange(PropertyChangeEvent evt) {
 	String property = evt.getPropertyName();
 	if (property.equals(Guide.PROPERTY_POSITION)) {
-		Point location = getFigure().getBounds().getLocation();
-		if (getGuide().isHorizontal()) {
-			location.y = getGuide().getPosition();
-		} else {
-			location.x = getGuide().getPosition();
-		}
-		getFigure().setLocation(location);
+		refreshVisuals();
 	} else if (property.equals(Guide.PROPERTY_CHILDREN)) {
 		updateFeedbackInDiagram();
 	}
+}
+
+/* (non-Javadoc)
+ * @see org.eclipse.gef.editparts.AbstractEditPart#refreshVisuals()
+ */
+protected void refreshVisuals() {
+	((GraphicalEditPart)getParent()).setLayoutConstraint(this, getFigure(), 
+			new Integer(getGuide().getPosition()));	
 }
 
 /**

@@ -4,8 +4,6 @@
 package org.eclipse.gef.examples.logicdesigner.rulers;
 
 import org.eclipse.gef.*;
-import org.eclipse.gef.EditPart;
-import org.eclipse.gef.EditPartFactory;
 
 /**
  * @author Pratik Shah

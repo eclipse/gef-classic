@@ -11,11 +11,8 @@ import org.eclipse.draw2d.FigureCanvas;
 import org.eclipse.draw2d.IFigure;
 
 import org.eclipse.gef.GraphicalViewer;
-import org.eclipse.gef.RootEditPart;
-import org.eclipse.gef.editparts.*;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.editparts.ZoomManager;
-import org.eclipse.gef.rulers.RulerFigure;
 
 /**
  * @author Pratik Shah
@@ -26,17 +23,10 @@ public class RulerEditPart
 {
 	
 protected GraphicalViewer diagramViewer;
-protected ZoomManager zoomManager;
 	
 public RulerEditPart(Ruler model, GraphicalViewer primaryViewer) {
 	setModel(model);
 	diagramViewer = primaryViewer;
-	RootEditPart root = diagramViewer.getRootEditPart();
-	if (root instanceof ScalableFreeformRootEditPart) {
-		zoomManager = ((ScalableFreeformRootEditPart)root).getZoomManager();
-	} else if (root instanceof ScalableRootEditPart) {
-		zoomManager = ((ScalableRootEditPart)root).getZoomManager();
-	}
 }
 
 /* (non-Javadoc)
@@ -45,6 +35,9 @@ public RulerEditPart(Ruler model, GraphicalViewer primaryViewer) {
 public void activate() {
 	super.activate();
 	getRuler().addPropertyChangeListener(this);
+	getRulerFigure().setZoomManager(
+			(ZoomManager)diagramViewer.getProperty(ZoomManager.class.toString()));
+
 }
 
 /* (non-Javadoc)
@@ -59,8 +52,7 @@ protected void createEditPolicies() {
  */
 protected IFigure createFigure() {
 	RulerFigure ruler = new RulerFigure((FigureCanvas)diagramViewer.getControl(), 
-			getRuler().isHorizontal(), RulerFigure.UNIT_INCHES);
-	ruler.setZoomManager(zoomManager);
+			getRuler().isHorizontal(), getRuler().getUnit());
 	return ruler;
 }
 
@@ -69,6 +61,7 @@ protected IFigure createFigure() {
  */
 public void deactivate() {
 	getRuler().removePropertyChangeListener(this);
+	getRulerFigure().setZoomManager(null);
 	super.deactivate();
 }
 
@@ -79,16 +72,23 @@ protected List getModelChildren() {
 	return getRuler().getGuides();
 }
 
-public Ruler getRuler() {
+protected Ruler getRuler() {
 	return (Ruler)getModel();
+}
+
+protected RulerFigure getRulerFigure() {
+	return (RulerFigure)getFigure();
 }
 
 /* (non-Javadoc)
  * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
  */
 public void propertyChange(PropertyChangeEvent evt) {
-	if (evt.getPropertyName().equals(Ruler.PROPERTY_CHILDREN)) {
+	String property = evt.getPropertyName();
+	if (property.equals(Ruler.PROPERTY_CHILDREN)) {
 		refreshChildren();
+	} else if (property.equals(Ruler.PROPERTY_UNIT)) {
+		getRulerFigure().setUnit(getRuler().getUnit());
 	}
 }
 
