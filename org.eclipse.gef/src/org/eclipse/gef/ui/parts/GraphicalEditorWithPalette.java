@@ -40,8 +40,8 @@ protected void createPaletteViewer(Composite parent) {
 
 public void createPartControl(Composite parent) {
 	Splitter splitter = new Splitter(parent, SWT.HORIZONTAL);
-	createGraphicalViewer(splitter);
 	createPaletteViewer(splitter);
+	createGraphicalViewer(splitter);
 	splitter.maintainSize(getPaletteViewer().getControl());
 	splitter.setFixedSize(getInitialPaletteSize());
 	splitter.addFixedSizeChangeListener(new PropertyChangeListener() {
