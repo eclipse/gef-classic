@@ -16,6 +16,7 @@ import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.ui.IWorkbenchActionConstants;
+import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.actions.RetargetAction;
 
 import org.eclipse.draw2d.PositionConstants;
@@ -81,17 +82,17 @@ protected void buildActions() {
  * @see org.eclipse.gef.ui.actions.ActionBarContributor#declareGlobalActionKeys()
  */
 protected void declareGlobalActionKeys() {
-	addGlobalActionKey(IWorkbenchActionConstants.PRINT);
-	addGlobalActionKey(IWorkbenchActionConstants.SELECT_ALL);
-	addGlobalActionKey(IWorkbenchActionConstants.PASTE);
+	addGlobalActionKey(ActionFactory.PRINT.getId());
+	addGlobalActionKey(ActionFactory.SELECT_ALL.getId());
+	addGlobalActionKey(ActionFactory.PASTE.getId());
 }
 
 /**
  * @see org.eclipse.ui.part.EditorActionBarContributor#contributeToToolBar(IToolBarManager)
  */
 public void contributeToToolBar(IToolBarManager tbm) {
-	tbm.add(getAction(IWorkbenchActionConstants.UNDO));
-	tbm.add(getAction(IWorkbenchActionConstants.REDO));
+	tbm.add(getAction(ActionFactory.UNDO.getId()));
+	tbm.add(getAction(ActionFactory.REDO.getId()));
 	
 	tbm.add(new Separator());
 	tbm.add(getAction(IncrementDecrementAction.DECREMENT));
