@@ -34,7 +34,6 @@ public static final int DELETE_THRESHOLD = 15;
 	
 protected GraphicalViewer diagramViewer;
 protected RulerProvider rulerProvider;
-private ZoomManager zoomManager;
 private GuideLineFigure guideLineFig;
 private Cursor cursor = null;
 private ZoomListener zoomListener = new ZoomListener() {
@@ -58,7 +57,6 @@ private RulerChangeListener listener = new RulerChangeListener.Stub() {
 public GuideEditPart(Object model, GraphicalViewer primaryViewer) {
 	setModel(model);
 	diagramViewer = primaryViewer;
-	zoomManager = (ZoomManager)diagramViewer.getProperty(ZoomManager.class.toString());
 }
 
 /* (non-Javadoc)
@@ -67,8 +65,8 @@ public GuideEditPart(Object model, GraphicalViewer primaryViewer) {
 public void activate() {
 	super.activate();
 	getRulerProvider().addRulerChangeListener(listener);
-	if (zoomManager != null) {
-		zoomManager.addZoomListener(zoomListener);		
+	if (getZoomManager() != null) {
+		getZoomManager().addZoomListener(zoomListener);		
 	}
 }
 
@@ -99,13 +97,13 @@ protected GuideLineFigure createGuideLineFigure() {
  * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#deactivate()
  */
 public void deactivate() {
-	if (zoomManager != null) {
-		zoomManager.removeZoomListener(zoomListener);		
+	if (getZoomManager() != null) {
+		getZoomManager().removeZoomListener(zoomListener);		
 	}
 	getRulerProvider().removeRulerChangeListener(listener);
 	rulerProvider = null;
-	if (getGuideLayer().getChildren().contains(getGuideLineFigure())) {
-		getGuideLayer().remove(getGuideLineFigure());
+	if (getGuideLineFigure().getParent() != null) {
+		getGuideLineFigure().getParent().remove(getGuideLineFigure());
 	}
 	super.deactivate();
 }
@@ -144,25 +142,24 @@ public IFigure getGuideLineFigure() {
 	return guideLineFig;
 }
 
+public RulerEditPart getRulerEditPart() {
+	return (RulerEditPart)getParent();
+}
+
 public RulerProvider getRulerProvider() {
-	if (rulerProvider == null) {
-		rulerProvider = isHorizontal() 
-				? (RulerProvider)diagramViewer.getProperty(RulerProvider.VERTICAL)	
-				: (RulerProvider)diagramViewer.getProperty(RulerProvider.HORIZONTAL);
-	}
-	return rulerProvider;
+	return getRulerEditPart().getRulerProvider();
 }
 
 public int getZoomedPosition() {
 	double position = getRulerProvider().getGuidePosition(getModel());
-	if (zoomManager != null) {
-		position = Math.round(position * zoomManager.getZoom());
+	if (getZoomManager() != null) {
+		position = Math.round(position * getZoomManager().getZoom());
 	}	
 	return (int)position;
 }
 
 public ZoomManager getZoomManager() {
-	return zoomManager;
+	return getRulerEditPart().getZoomManager();
 }
 
 protected void handleGuideMoved() {
@@ -178,8 +175,7 @@ protected void handleZoomChanged() {
 }
 
 public boolean isHorizontal() {
-	return getParent().getModel() != ((RulerProvider)diagramViewer
-			.getProperty(RulerProvider.HORIZONTAL)).getRuler();
+	return !getRulerEditPart().isHorizontal();
 }
 
 /* (non-Javadoc)
