@@ -16,6 +16,8 @@ import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.TextTransfer;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.widgets.*;
 
 import org.eclipse.core.resources.*;
@@ -75,6 +77,7 @@ class OutlinePage
 	static final int ID_OUTLINE  = 0;
 	static final int ID_OVERVIEW = 1;
 	private Thumbnail thumbnail;
+	private DisposeListener disposeListener;
 	
 	public OutlinePage(EditPartViewer viewer){
 		super(viewer);
@@ -172,6 +175,12 @@ class OutlinePage
 			thumbnail.setBorder(new MarginBorder(3));
 			thumbnail.setSource(root.getLayer(LayerConstants.PRINTABLE_LAYERS));
 			lws.setContents(thumbnail);
+			disposeListener = new DisposeListener() {
+				public void widgetDisposed(DisposeEvent e) {
+					thumbnail.deactivate();
+				}
+			};
+			getEditor().addDisposeListener(disposeListener);
 		}
 	}
 	
@@ -198,6 +207,8 @@ class OutlinePage
 	
 	protected void unhookOutlineViewer(){
 		getSelectionSynchronizer().removeViewer(getViewer());
+		if (disposeListener != null && getEditor() != null && !getEditor().isDisposed())
+			getEditor().removeDisposeListener(disposeListener);
 	}
 }
 
