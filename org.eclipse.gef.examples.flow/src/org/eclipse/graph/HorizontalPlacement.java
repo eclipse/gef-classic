@@ -74,8 +74,11 @@ class NodeCluster extends NodeList {
 		incoming.addAll(other.incoming);
 		outgoing.addAll(other.outgoing);
 
-		incoming.removeAll(outgoing);
-		outgoing.removeAll(incoming);
+		for (Iterator iter = incoming.iterator(); iter.hasNext();) {
+			Object edge = iter.next();
+			if (outgoing.remove(edge))
+				iter.remove();
+		}
 	}
 
 	void updateValues() {
