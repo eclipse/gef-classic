@@ -17,7 +17,9 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.gef.SnapToGrid;
 
 /**
- * A layer that displays the grid
+ * This is a layer that displays the grid.  The default grid color is {@link
+ * org.eclipse.draw2d.ColorConstants#lightGray light gray}.  To change the grid color, set
+ * the foreground color for this layer.
  * 
  * @author Pratik Shah
  * @since 3.0
@@ -43,6 +45,7 @@ protected Point origin = new Point();
 
 /**
  * Constructor
+ * Sets the default grid color: ColorConstants.lightGray
  */
 public GridLayer() {
 	super();
@@ -50,7 +53,7 @@ public GridLayer() {
 }
 
 /**
- * Overridden to indicate on preferred size.  The grid layer should not affect the size of
+ * Overridden to indicate no preferred size.  The grid layer should not affect the size of
  * the layered pane in which it is placed.
  * @see org.eclipse.draw2d.Figure#getPreferredSize(int, int)
  */
@@ -67,10 +70,10 @@ protected void paintFigure(Graphics graphics) {
 }
 
 /**
- * Paints the grid.  This method will be invoked only if the grid is enabled.  Sub-classes 
- * can override to customize the grid's look.
+ * Paints the grid.  Sub-classes can override to customize the grid's look.
  * 
- * @param	g	The Graphics object to be used to do the painting 
+ * @param	g	The Graphics object to be used to do the painting
+ * @see FigureUtilities#paintGrid(Graphics, IFigure, org.eclipse.draw2d.geometry.Point, int, int)
  */
 protected void paintGrid(Graphics g) {
 	FigureUtilities.paintGrid(g, this, origin, gridX, gridY);
@@ -94,7 +97,8 @@ public void setOrigin(Point p) {
  * replaced with the {@link SnapToGrid#DEFAULT_GRID_SIZE default} spacing.  A negative
  * spacing will cause no grid lines to be drawn for that dimension.
  * 
- * @param	spacing		A dimension representing the horizontal and vertical gaps
+ * @param	spacing		A Dimension representing the horizontal (width) and vertical 
+ * 						(height) gaps
  */
 public void setSpacing(Dimension spacing) {
 	if (spacing == null)
