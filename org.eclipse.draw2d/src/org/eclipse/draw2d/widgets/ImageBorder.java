@@ -26,7 +26,7 @@ class ImageBorder
 	extends AbstractBorder 
 {
 
-/**
+/*
  * @TODO:Pratik	Need to test this class extensively
  * @TODO Test inside compound borders
  */
