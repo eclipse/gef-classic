@@ -482,7 +482,8 @@ protected class EventHandler
 	 */
 	public void handleEvent(Event event) {
 		// Mouse wheel events
-		getEventDispatcher().dispatchMouseWheelScrolled(event);
+		if (event.type == SWT.MouseWheel)
+			getEventDispatcher().dispatchMouseWheelScrolled(event);
 	}
 	
 	/** @see KeyListener#keyPressed(KeyEvent) */
