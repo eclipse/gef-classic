@@ -26,33 +26,25 @@ import org.eclipse.draw2d.text.TextFlow;
 import org.eclipse.draw2d.text.TextFragmentBox;
 
 public class TextFlowWrapTest
-	extends TestCase 
+	extends BaseTestCase 
 {
 
-protected static final Font TAHOMA = new Font(null, "Tahoma", 8, 0);//$NON-NLS-1$
+static final Font TAHOMA = new Font(null, "Tahoma", 8, 0);//$NON-NLS-1$
 // used to ensure that there are no extra fragments
-protected static final String TERMINATE = "#@terminate@#!";
+static final String TERMINATE = "#@terminate@#!";
 // used to ensure that two consecutive fragments are on the same line
-protected static final String SAMELINE = "#@sameline@#";
+static final String SAMELINE = "#@sameline@#";
 // used to ensure that two consecutive fragments are on different lines
-protected static final String NEWLINE = "#@newline@#";
+static final String NEWLINE = "#@newline@#";
 // used to ensure that a fragment is truncated (this mark is placed after the fragment
 // that is supposed to be truncated)
-protected static final String TRUNCATED = "#@truncated@#";
+static final String TRUNCATED = "#@truncated@#";
 //used to ensure that a fragment is not truncated (this mark is placed after the fragment
 //that is not supposed to be truncated)
-protected static final String NON_TRUNCATED = "#@non-truncated@#";
+static final String NON_TRUNCATED = "#@non-truncated@#";
 
-protected FlowPage figure;
-protected TextFlow textFlow, textFlow2;
-protected String failMsg;
-protected boolean failed;
-
-protected void setUp() throws Exception {
-	super.setUp();
-	failMsg = "\n";
-	failed = false;
-}
+FlowPage figure;
+TextFlow textFlow, textFlow2;
 
 protected void doTest(String stringToTest, String widthString, String[] answers) {
 	doTest2(stringToTest, "", widthString, answers);
@@ -62,7 +54,7 @@ protected void doTest2(String string1, String string2, String widthString, Strin
 	int width = -1;
 	if (widthString != null)
 		width = FigureUtilities.getStringExtents(widthString, TAHOMA).width;
-	figure.setSize(width, -1);
+	figure.setSize(width, 1000);
 	textFlow.setText(string1);
 	textFlow2.setText(string2);
 	figure.validate();
@@ -75,37 +67,14 @@ protected void doTest2(String string1, String string2, String widthString, Strin
 	for (; index < answers.length; index++) {
 		String answer = answers[index];
 		if (answer == TERMINATE) {
-//			if (frags.hasNext()) {
-//				TextFragmentBox box = (TextFragmentBox)frags.next();
-//				failMsg += "Failed on: " + string1 + string2 + " Found extra fragment: -" + string1.substring(box.offset, box.offset + box.length) + "-\n";
-//				failed = true;
-//			}
 			return;
 		} else if (answer == TRUNCATED) {
-			boolean truncated = false;
-			try {
-				Field field = previousFrag.getClass().getDeclaredField("truncated");
-				field.setAccessible(true);
-				truncated = field.getBoolean(previousFrag);
-			} catch (Exception e) {
-			}
-			if (!truncated) {
-				failMsg += "Failed on: " + string1 + string2 + "Fragment is not truncated\n";
-				failed = true;
-			}
+			assertTrue("Failed on: " + string1 + string2 + "Fragment is not truncated\n",
+					callBooleanMethod(previousFrag, "isTruncated"));
 			continue;
 		} else if (answer == NON_TRUNCATED) {
-			boolean truncated = true;
-			try {
-				Field field = previousFrag.getClass().getDeclaredField("truncated");
-				field.setAccessible(true);
-				truncated = field.getBoolean(previousFrag);
-			} catch (Exception e) {
-			}
-			if (truncated) {
-				failMsg += "Failed on: " + string1 + string2 + "Fragment is truncated\n";
-				failed = true;
-			}
+			assertFalse("Failed on: " + string1 + string2 + "Fragment is truncated\n",
+					callBooleanMethod(previousFrag, "isTruncated"));
 			continue;
 		}
 
@@ -115,46 +84,36 @@ protected void doTest2(String string1, String string2, String widthString, Strin
 		TextFragmentBox frag = (TextFragmentBox) frags.next();
 		
 		if (answer == SAMELINE) {
-			if (previousFrag.y != frag.y) {
-				failMsg += "Failed on: " + string1 + string2 + " Fragments are not on the same line\n";
-				failed = true;
-				return;
-			}
+			assertTrue("Failed on: " + string1 + string2 + " Fragments are not on the same line\n",
+					previousFrag.getBaseline() == frag.getBaseline());
 			index++;
-			if (index >= answers.length)
-				return;
 			answer = answers[index];
 		} else if (answer == NEWLINE) {
-			if (previousFrag.y == frag.y) {
-				failMsg += "Failed on: " + string1 + string2 + " Fragments are on the same line\n";
-				failed = true;
-				return;
-			}
+			assertTrue("Failed on: " + string1 + string2 + " Fragments are on the same line\n",
+					previousFrag.getBaseline() != frag.getBaseline());
 			index++;
-			if (index >= answers.length)
-				return;
 			answer = answers[index];
 		}
 		previousFrag = frag;
 		
 		if (textFlow.getFragments().contains(frag)) {
-			if (!string1.substring(frag.offset, frag.offset + frag.length).equals(answer)) {
-				failMsg += "Failed on: " + string1 + string2 + " Frag expected: -" + answer + "- Got: -" + string1.substring(frag.offset, frag.offset + frag.length) + "-\n";
-				failed = true;
-				return;
-			}
+			assertEquals("Failed on: \"" + string1 +"\" + \"" + string2
+					+ "\" Fragment expected: \"" + answer + "\" Got: \""
+					+ string1.substring(frag.offset, frag.offset + frag.length) + "\"\n",
+					string1.substring(frag.offset, frag.offset + frag.length), answer);
+			return;
 		} else {
-			if (!string2.substring(frag.offset, frag.offset + frag.length).equals(answer)) {
-				failMsg += "Failed on: " + string1 + string2 + " Frag expected: -" + answer + "- Got: -" + string2.substring(frag.offset, frag.offset + frag.length) + "-\n";
-				failed = true;
-				return;
-			}
+			assertEquals("Failed on: \"" + string1 +"\" + \"" + string2
+					+ "\" Fragment expected: \"" + answer + "\" Got: \""
+					+ string2.substring(frag.offset, frag.offset + frag.length) + "\"\n",
+					string2.substring(frag.offset, frag.offset + frag.length), answer);
+			return;
 		}
 	}
-	if (index < answers.length) {
-		failMsg += "Failed on: " + string1 + string2 + " Frag expected: -" + answers[index] + "- No corresponding fragment\n";
-		failed = true;
-	}
+	
+	assertFalse("Failed on: \"" + string1 +"\" + \"" + string2 + "\" Fragment expected: -"
+			+ answers[index] + "- No corresponding fragment\n",
+			index < answers.length);
 }
 
 protected void runGenericTests() {
@@ -283,8 +242,6 @@ public void testHardWrapping() {
 	
 	runGenericTests();
 	runHardWrappingTests();
-	
-	assertFalse(failMsg, failed);
 }
 
 public void testSoftWrapping() {
@@ -302,8 +259,6 @@ public void testSoftWrapping() {
 	
 	runGenericTests();
 	runSoftWrappingTests();
-
-	assertFalse(failMsg, failed);
 }
 
 public void testTruncatedWrapping() {
@@ -320,9 +275,7 @@ public void testTruncatedWrapping() {
 	figure.add(textFlow2);
 	
 	runGenericTests();
-	runTruncatedWrappingTests();	
-	
-	assertFalse(failMsg, failed);
+	runTruncatedWrappingTests();
 }
 
 public void testInlineFlow() {
@@ -358,8 +311,6 @@ public void testInlineFlow() {
 	runGenericTests();
 	runHardWrappingTests();
 	doTest2("def", "def", "defde", new String[] {"def", SAMELINE, "def", TERMINATE});
-	
-	assertFalse(failMsg, failed);
 }
 
 public void testNestedInlineFlows() {
@@ -399,8 +350,6 @@ public void testNestedInlineFlows() {
 	runGenericTests();
 	runHardWrappingTests();
 	doTest2("def", "def", "defde", new String[] {"def", SAMELINE, "def", TERMINATE});
-	
-	assertFalse(failMsg, failed);
 }
 
 }

@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.draw2d.test;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 
 import junit.framework.TestCase;
@@ -30,7 +32,22 @@ public BaseTestCase() {
 public BaseTestCase(String text) {
 	super(text);
 }
-	
+
+protected boolean callBooleanMethod(Object receiver, String method) {
+	try {
+		Method m = receiver.getClass().getMethod(method, null);
+		Boolean result = (Boolean)m.invoke(receiver, null);
+		return result.booleanValue();
+	} catch (NoSuchMethodException exc) {
+		fail(exc.getMessage());
+	} catch (IllegalAccessException exc) {
+		fail (exc.getMessage());
+	}catch (InvocationTargetException exc) {
+		fail (exc.getMessage());
+	}
+	return false;
+}
+
 public void assertEquals(Image expected, Image actual) {
 	assertTrue("The given images did not match", 
 			Arrays.equals(expected.getImageData().data, actual.getImageData().data));
