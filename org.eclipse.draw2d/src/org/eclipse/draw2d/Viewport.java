@@ -90,7 +90,7 @@ public RangeModel getHorizontalRangeModel() {
  * Returns <code>true</code> if the Viewport resizes itself in the vertical direction when 
  * the  available height of its view is decreased, false otherwise. This option is turned 
  * off by default, and can be activated by calling 
- * {@link #setContentsTracksHeight(boolean) and passing in <code>true</code>.
+ * {@link #setContentsTracksHeight(boolean)} and passing in <code>true</code>.
  * 
  * @return whether the contents tracks height
  * @since 2.0

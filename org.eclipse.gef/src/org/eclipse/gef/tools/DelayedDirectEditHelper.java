@@ -91,8 +91,7 @@ public void run() {
 	if (activeHelper == this 
 		&& part.isActive() 
 		&& viewer.getControl() != null
-		&& !viewer.getControl().isDisposed()) 
-	{			
+		&& !viewer.getControl().isDisposed()) {			
 			viewer.getControl().removeFocusListener(focus);
 			viewer.getControl().removeMouseListener(mouse);
 			viewer.getControl().removeKeyListener(key);

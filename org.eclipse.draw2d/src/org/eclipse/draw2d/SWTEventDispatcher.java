@@ -53,7 +53,7 @@ private FocusTraverseManager focusManager = new FocusTraverseManager();
 
 /** @see AccessibilityDispatcher **/
 /**
- * Implements {@link AccessibilityDispatcher} but does nothing in the implementation.
+ * Implements {@link EventDispatcher.AccessibilityDispatcher} but does nothing in the implementation.
  */
 protected class FigureAccessibilityDispatcher
 	extends AccessibilityDispatcher
