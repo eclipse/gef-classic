@@ -335,8 +335,8 @@ public Dimension scale(float amount) {
  * @since 2.0
  */
 public Dimension scale(float w, float h) {
-	width  = (int)(width * w + 0.5);
-	height = (int)(height * h + 0.5);
+	width  = (int)(Math.floor(width * w));
+	height = (int)(Math.floor(height * h));
 	return this;
 }
 

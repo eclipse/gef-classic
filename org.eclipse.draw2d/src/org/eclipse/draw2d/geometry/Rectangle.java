@@ -554,9 +554,9 @@ public boolean isEmpty() {
 }
 
 /**
- * @see Translatable#performScale(float)
+ * @see Translatable#performScale(double)
  */
-public void performScale(float factor) {
+public void performScale(double factor) {
 	scale(factor);
 }
 
@@ -616,7 +616,7 @@ public int right() {
  * @return  <code>this</code> for convenience
  * @since 2.0
  */
-public final Rectangle scale(float scaleFactor) {
+public final Rectangle scale(double scaleFactor) {
 	return scale(scaleFactor, scaleFactor);
 }
 
@@ -629,11 +629,11 @@ public final Rectangle scale(float scaleFactor) {
  * @return  <code>this</code> for convenience
  * @since 2.0
  */
-public Rectangle scale(float scaleX, float scaleY) {
-	x = (int)(x * scaleX + 0.5);
-	y = (int)(y * scaleY + 0.5);
-	width = (int)(width * scaleX + 0.5);
-	height = (int)(height * scaleY + 0.5);
+public Rectangle scale(double scaleX, double scaleY) {
+	x = (int)(Math.floor(x * scaleX));
+	y = (int)(Math.floor(y * scaleY));
+	width = (int)(Math.floor(width * scaleX));
+	height = (int)(Math.floor(height * scaleY));
 	return this;
 }
 

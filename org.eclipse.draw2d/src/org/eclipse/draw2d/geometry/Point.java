@@ -162,7 +162,7 @@ public int getPosition(Point p) {
  * @return A new Point
  * @since 2.0
  */
-public Point getScaled(float amount) {
+public Point getScaled(double amount) {
 	return getCopy().scale(amount);
 }
 
@@ -249,8 +249,8 @@ public Point negate() {
 	return this;
 }
 
-/** @see Translatable#performScale(float) */
-public void performScale(float factor) {
+/** @see Translatable#performScale(double) */
+public void performScale(double factor) {
 	scale(factor);
 }
 
@@ -265,9 +265,9 @@ public void performTranslate(int dx, int dy) {
  * @param amount scale factor
  * @since 2.0
  */
-public Point scale(float amount) {
-	x *= amount;
-	y *= amount;
+public Point scale(double amount) {
+	x = (int)Math.floor(x * amount);
+	y = (int)Math.floor(y * amount);
 	return this;
 }
 
@@ -278,9 +278,9 @@ public Point scale(float amount) {
  * @return  <code>this</code> for convenience
  * @since 2.0
  */
-public Point scale(float xAmount, float yAmount) {
-	x = Math.round(xAmount * x);
-	y = Math.round(yAmount * y);
+public Point scale(double xAmount, double yAmount) {
+	x = (int)Math.floor(x * xAmount);
+	y = (int)Math.floor(y * yAmount);
 	return this;
 }
 

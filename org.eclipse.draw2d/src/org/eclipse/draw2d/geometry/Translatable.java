@@ -27,6 +27,6 @@ void performTranslate(int dx, int dy);
  * @param factor The scale factor
  * @since 2.0
  */
-void performScale(float factor);
+void performScale(double factor);
 
 }
