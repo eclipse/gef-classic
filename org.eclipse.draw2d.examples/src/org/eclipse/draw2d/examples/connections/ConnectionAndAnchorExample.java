@@ -7,6 +7,7 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 
 /**
+ * This class demonstrates the use of connections, anchors, and locators in draw2d.
  * @author delee
  */
 public class ConnectionAndAnchorExample extends AbstractExample {
@@ -112,7 +113,6 @@ protected IFigure getContents() {
 		getFigureCanvas().setSize(820,440);	
 	}
 
-	
 	static class Dragger extends MouseMotionListener.Stub implements MouseListener {
 		  public Dragger(IFigure figure){
 				figure.addMouseMotionListener(this);
