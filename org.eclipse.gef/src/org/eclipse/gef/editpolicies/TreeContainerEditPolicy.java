@@ -35,17 +35,20 @@ private static TreeItem[] oldSelection;
 
 /**
  * Returns a Command for adding the children to the container.
- * @param request the Request to add. * @return Command <code>null</code> or a Command to perform the add */
+ * @param request the Request to add.
+ * @return Command <code>null</code> or a Command to perform the add */
 protected abstract Command getAddCommand(ChangeBoundsRequest request);
 
 /**
  * Returns a Command for creating the object inside the container.
- * @param request the CreateRequest * @return Command <code>null</code> or a Command to perform the create */
+ * @param request the CreateRequest
+ * @return Command <code>null</code> or a Command to perform the create */
 protected abstract Command getCreateCommand(CreateRequest request);
 
 /**
  * Returns a Command for moving the children within the container.
- * @param request the Request to move * @return Command <code>null</code> or a Command to perform the move */
+ * @param request the Request to move
+ * @return Command <code>null</code> or a Command to perform the move */
 protected abstract Command getMoveChildrenCommand(ChangeBoundsRequest request);
 
 private void eraseDropFeedback(Request req) {
@@ -63,7 +66,8 @@ public void eraseTargetFeedback(Request req) {
 
 /**
  * Calculates the index of the TreeItem ata  agiven point.
- * @param pt the Point in the Viewer * @return the index of the TreeItem */
+ * @param pt the Point in the Viewer
+ * @return the index of the TreeItem */
 protected final int findIndexOfTreeItemAt(org.eclipse.draw2d.geometry.Point pt) {
 	int index = -1;
 	TreeItem item = findTreeItemAt(pt);	
@@ -78,7 +82,8 @@ protected final int findIndexOfTreeItemAt(org.eclipse.draw2d.geometry.Point pt) 
 /**
  * Calculates the <code>TreeItem</code> at a specified {@link
  * org.eclipse.draw2d.geometry.Point}.
- * @param pt the draw2d Point * @return <code>null</code> or the TreeItem */
+ * @param pt the draw2d Point
+ * @return <code>null</code> or the TreeItem */
 protected final TreeItem findTreeItemAt(org.eclipse.draw2d.geometry.Point pt) {
 	return getTree().getItem(new Point(pt.x, pt.y));			
 }
