@@ -21,24 +21,21 @@ public class DrawerFigure
 	extends Figure 
 {
 
-static final Border MARGIN_BORDER = new MarginBorder(1,1,1,1);
-static final Border SCROLL_PANE_BORDER = new SeparatorBorder(0,0,1,0);
+static final Border MARGIN_BORDER = new MarginBorder(1);
 static final Border TOGGLE_BUTTON_BORDER = new RaisedBorder();
 static final Border TITLE_MARGIN_BORDER = new MarginBorder(1,0,1,0);
 
 //@TODO:Pratik
-// These images need to go in GEFSharedImages
+// This image needs to go in GEFSharedImages
 protected static final Image pin = new Image(null, ImageDescriptor.createFromFile(
 		Internal.class, "icons/pin_view.gif").getImageData()); //$NON-NLS-1$
-protected static final Image disabledPin = new Image(null, ImageDescriptor
-		.createFromFile(Internal.class, "icons/pin_disabled.gif").getImageData()); //$NON-NLS-1$
 
 private int layoutMode = -1;
 private Label drawerLabel;
 private ScrollPane scrollpane;
 private ToggleButton pinFigure;
 private Toggle collapseToggle;
-private boolean isAnimating;
+private boolean isAnimating, showPin;
 private DrawerAnimationController controller;
 
 /**
@@ -53,17 +50,17 @@ public DrawerFigure(final Control control) {
 	setLayoutManager(new ToolbarLayout());
 
 	Figure title = new Figure() {
-			protected void paintFigure(Graphics g) {
-				super.paintFigure(g);
-				Rectangle r = Rectangle.SINGLETON;
-				r.setBounds(getBounds());
-				r.width = Math.min(50, r.width);
-				g.setForegroundColor(
-					FigureUtilities.mixColors(ColorConstants.buttonDarker,ColorConstants.button));
-	//			g.setBackgroundColor(
-	//				FigureUtilities.mixColors(ColorConstants.buttonDarker,ColorConstants.button));
+		protected void paintFigure(Graphics g) {
+			super.paintFigure(g);
+			Rectangle r = Rectangle.SINGLETON;
+			r.setBounds(getBounds());
+			r.width = Math.min(50, r.width);
+			g.setForegroundColor(
+				FigureUtilities.mixColors(ColorConstants.buttonDarker,ColorConstants.button));
+//			g.setBackgroundColor(
+//				FigureUtilities.mixColors(ColorConstants.buttonDarker,ColorConstants.button));
 //				g.fillGradient(Rectangle.SINGLETON, false);
-			}
+		}
 	};
 	
 	title.setBorder(TITLE_MARGIN_BORDER);
@@ -74,7 +71,7 @@ public DrawerFigure(final Control control) {
 	drawerLabel = new Label();
 	drawerLabel.setLabelAlignment(Label.LEFT);
 
-	pinFigure = new ImageButton(pin, disabledPin);
+	pinFigure = new ToggleButton(new ImageFigure(pin));
 	pinFigure.setBorder(new ButtonBorder(ButtonBorder.SCHEMES.TOOLBAR));
 	pinFigure.setRolloverEnabled(true);
 	pinFigure.setRequestFocusEnabled(false);
@@ -97,19 +94,12 @@ public DrawerFigure(final Control control) {
 
 	};
 	collapseToggle.setSelected(true);
+	collapseToggle.setRequestFocusEnabled(true);
 	collapseToggle.setBorder(TOGGLE_BUTTON_BORDER);
 
 	collapseToggle.addChangeListener(new ChangeListener() {
 		public void handleStateChanged(ChangeEvent event) {
-			if (pinFigure == null) {
-				return;
-			}
-			if (isExpanded()) {
-				pinFigure.setEnabled(true);
-			} else {
-				pinFigure.setSelected(false);
-				pinFigure.setEnabled(false);
-			}
+			updatePin();
 		}
 	});
 
@@ -155,13 +145,12 @@ private void createHoverHelp(final Control control) {
 private void createScrollpane() {
 	scrollpane = new ScrollPane();
 	scrollpane.getViewport().setContentsTracksWidth(true);
+	scrollpane.getViewport().setBorder(new MarginBorder(3));
 	scrollpane.setMinimumSize(new Dimension(0, 0));
 	scrollpane.setHorizontalScrollBarVisibility(ScrollPane.NEVER);
 	scrollpane.setVerticalScrollBar(new PaletteScrollBar());
-	scrollpane.getVerticalScrollBar().setStepIncrement(22);
+	scrollpane.getVerticalScrollBar().setStepIncrement(33);
 	scrollpane.setLayoutManager(new OverlayScrollPaneLayout());
-//	scrollpane.setBorder(SCROLL_PANE_BORDER);
-	scrollpane.setBorder(new MarginBorder(3));
 	scrollpane.setBackgroundColor(ColorConstants.button);
 	scrollpane.setView(new Figure());
 	scrollpane.getView().setBorder(MARGIN_BORDER);
@@ -262,7 +251,7 @@ public void setLayoutMode(int layoutMode) {
  * @param	pinned	<code>true</code> if the drawer is to be pinned
  */
 public void setPinned(boolean pinned) {
-	if (!isExpanded()) {
+	if (!isExpanded() || !showPin) {
 		return;
 	}
 	
@@ -287,19 +276,20 @@ public void setTitleIcon(Image icon) {
 	drawerLabel.setIcon(icon);
 }
 
-private class ImageButton extends ToggleButton {
-	private ImageFigure image;
-	private Image enabled, disabled;
-	public ImageButton(Image enabled, Image disabled) {
-		super();
-		setContents(image = new ImageFigure());
-		this.enabled = enabled;
-		this.disabled = disabled;
-		setEnabled(isEnabled());
+public void showPin(boolean show) {
+	showPin = show;
+	updatePin();
+}
+
+protected void updatePin() {
+	if (pinFigure == null) {
+		return;
 	}
-	public void setEnabled(boolean value) {
-		image.setImage(value ? enabled : disabled);
-		super.setEnabled(value);
+	if (isExpanded() && showPin) {
+		pinFigure.setVisible(true);
+	} else {
+		pinFigure.setVisible(false);
+		pinFigure.setSelected(false);
 	}
 }
 
