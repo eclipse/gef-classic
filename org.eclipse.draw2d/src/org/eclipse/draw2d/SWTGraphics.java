@@ -317,7 +317,8 @@ public void drawText(String s, int x, int y) {
  * @see Graphics#drawTextLayout(TextLayout, int, int)
  */
 public void drawTextLayout(TextLayout layout, int x, int y) {
-	layout.draw(gc, x, y);
+	checkText();
+	layout.draw(gc, x + translateX, y + translateY);
 }
 
 /**
