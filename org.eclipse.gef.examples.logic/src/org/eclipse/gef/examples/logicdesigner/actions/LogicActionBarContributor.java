@@ -40,7 +40,7 @@ public class LogicActionBarContributor
 {
 
 /**
- * @see org.eclipse.gef.ui.actions.ActionBarContributor#createActions()
+ * @see org.eclipse.gef.ui.actions.ActionBarContributor#buildActions()
  */
 protected void buildActions() {
 	addRetargetAction(new UndoRetargetAction());
