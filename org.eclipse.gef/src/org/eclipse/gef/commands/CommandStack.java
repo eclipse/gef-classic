@@ -82,6 +82,16 @@ public void execute(Command command) {
 public void dispose() {
 	flushUndo();
 	flushRedo();
+}
+
+/**
+ * Flushes the entire stack and resets the save location to zero. This method might be
+ * called when performing "revert to saved".
+ */
+public void flush() {
+	flushRedo();
+	flushUndo();
+	saveLocation = 0;
 	notifyListeners();
 }
 
