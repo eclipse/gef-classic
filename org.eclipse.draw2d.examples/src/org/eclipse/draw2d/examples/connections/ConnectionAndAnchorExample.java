@@ -46,9 +46,9 @@ protected IFigure getContents() {
 		node1 = new RectangleFigure(),
 		node2 = new RectangleFigure();
 	node1.setBackgroundColor(ColorConstants.red);
-	node1.setLocation(new Point(40,40));
+	node1.setBounds(new Rectangle(40,40, 50, 30));
 	node2.setBackgroundColor(ColorConstants.blue);
-	node2.setLocation(new Point(200, 40));
+	node2.setBounds(new Rectangle(200,40, 50, 30));
 	
 	PolylineConnection conn = new PolylineConnection();
 	conn.setSourceAnchor(new ChopboxAnchor(node1));
@@ -60,6 +60,7 @@ protected IFigure getContents() {
 	label.setBackgroundColor(ColorConstants.buttonLightest);
 	label.setBorder(new LineBorder());
 	conn.add(label, new MidpointLocator(conn, 0));
+	//conn.setSourceDecoration(new ConnectionLabel());
 	
 	endPointPanel.add(node1);
 	endPointPanel.add(node2);
@@ -76,9 +77,9 @@ protected IFigure getContents() {
 		node3 = new RectangleFigure(),
 		node4 = new RectangleFigure();
 	node3.setBackgroundColor(ColorConstants.green);
-	node3.setLocation(new Point(480,40));
+	node3.setBounds(new Rectangle(480,40, 50, 30));
 	node4.setBackgroundColor(ColorConstants.black);
-	node4.setLocation(new Point(480, 230));
+	node4.setBounds(new Rectangle(480, 230, 50, 30));
 	
 	PolylineConnection conn2 = new PolylineConnection();
 	conn2.setSourceAnchor(new ChopboxAnchor(node3));
