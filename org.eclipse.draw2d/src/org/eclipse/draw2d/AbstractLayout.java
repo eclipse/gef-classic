@@ -25,6 +25,12 @@ public abstract class AbstractLayout
 protected Dimension preferredSize;
 
 /**
+ * Whether or not this layout pays attention to visiblity of figures when 
+ * calculating its bounds. By default, false.
+ */
+protected boolean observingVisibility = false;
+
+/**
  * This method is now {@link #calculatePreferredSize(IFigure, int, int)}.
  * @param container the figure
  */
@@ -72,6 +78,15 @@ public Dimension getMinimumSize(IFigure container, int wHint, int hHint) {
 }
 
 /**
+ * Returns whether or not this layout pays attention to visiblity when calculating its
+ * bounds.
+ * @return true if invisible figures should not contribute to this layout's bounds.
+ */
+public boolean getObservingVisibility() {
+	return observingVisibility;
+}
+
+/**
  * Returns the preferred size of the given figure, using width and height hints.  If the
  * preferred size is cached, that size  is returned.  Otherwise, {@link
  * #calculatePreferredSize(IFigure, int, int)} is called.
@@ -91,6 +106,7 @@ public Dimension getPreferredSize(IFigure container, int wHint, int hHint) {
  * @param container the figure
  */
 public final void getPreferredSize(IFigure container) { }
+
 
 /** * @see org.eclipse.draw2d.LayoutManager#invalidate() */
 public void invalidate() {
@@ -120,6 +136,17 @@ public void remove(IFigure child) {
  */
 public void setConstraint(IFigure child, Object constraint) {
 	invalidate(child);
+}
+
+/**
+ * Sets observingVisibility to the given value.
+ * @param newValue the newValue for whether or not to this layout pays attention to
+ * visiblity when calculating its bounds.
+ */
+public void setObserveVisibility(boolean newValue) {
+	if (observingVisibility == newValue)
+		return;
+	observingVisibility = newValue;
 }
 
 }
