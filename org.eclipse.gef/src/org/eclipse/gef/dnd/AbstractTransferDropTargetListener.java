@@ -282,7 +282,7 @@ protected void handleDragOperationChanged() {
 
 /**
  * Called whenever the User drags over the target. By default, the target Request and
- * target EditPart are updated, and feedback is 
+ * target EditPart are updated, feedback is shown, and auto-expose occurs.
  */
 protected void handleDragOver() {
 	updateTargetRequest();
