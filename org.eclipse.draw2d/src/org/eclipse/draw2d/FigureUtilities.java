@@ -398,7 +398,7 @@ public static IFigure findCommonAncestor(IFigure l, IFigure r) {
 		il--;
 		ir--;
 	}
-	return (IFigure)left.get(il);
+	return (IFigure)left.get(++il);
 }
 
 }
