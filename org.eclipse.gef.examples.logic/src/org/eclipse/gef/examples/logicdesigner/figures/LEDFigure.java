@@ -144,7 +144,7 @@ protected void paintFigure(Graphics g) {
 	g.drawLine(right, Y1, right, Y2);
 
 	// Draw the gaps for the connectors
-	g.setForegroundColor(ColorConstants.white);
+	g.setForegroundColor(ColorConstants.listBackground);
 	for (int i = 0; i < 4; i++) {
 		g.drawLine(GAP_CENTERS_X[i] - 2, Y1, GAP_CENTERS_X[i] + 3, Y1);
 		g.drawLine(GAP_CENTERS_X[i] - 2, Y2, GAP_CENTERS_X[i] + 3, Y2);
