@@ -21,7 +21,8 @@ public abstract class AbstractHintLayout
 {
 
 private Dimension minimumSize = null;
-private Dimension cachedHint = new Dimension(-1, -1);
+private Dimension cachedPreferredHint = new Dimension(-1, -1);
+private Dimension cachedMinimumHint = new Dimension(-1, -1);
 
 /**
  * Calculates the minimum size using the given width and height hints. This method is
@@ -38,15 +39,14 @@ protected Dimension calculateMinimumSize(IFigure container, int wHint, int hHint
 /**
  *  * @see org.eclipse.draw2d.LayoutManager#getMinimumSize(IFigure, int, int) */
 public Dimension getMinimumSize(IFigure container, int w, int h) {
-	boolean flush = cachedHint.width != w
+	boolean flush = cachedMinimumHint.width != w
 		&& isSensitiveHorizontally(container);
-	flush |= cachedHint.height != h
+	flush |= cachedMinimumHint.height != h
 		&& isSensitiveVertically(container);
 	if (flush) {
-		preferredSize = null;
 		minimumSize = null;
-		cachedHint.width = w;
-		cachedHint.height = h;
+		cachedMinimumHint.width = w;
+		cachedMinimumHint.height = h;
 	}
 	if (minimumSize == null)
 		minimumSize = calculateMinimumSize(container, w, h);
@@ -55,15 +55,14 @@ public Dimension getMinimumSize(IFigure container, int w, int h) {
 
 /** * @see org.eclipse.draw2d.LayoutManager#getPreferredSize(IFigure, int, int) */
 public final Dimension getPreferredSize(IFigure container, int w, int h) {
-	boolean flush = cachedHint.width != w
+	boolean flush = cachedPreferredHint.width != w
 		&& isSensitiveHorizontally(container);
-	flush |= cachedHint.height != h
+	flush |= cachedPreferredHint.height != h
 		&& isSensitiveVertically(container);
 	if (flush) {
-		minimumSize = null;
 		preferredSize = null;
-		cachedHint.width = w;
-		cachedHint.height = h;
+		cachedPreferredHint.width = w;
+		cachedPreferredHint.height = h;
 	}
 	return super.getPreferredSize(container, w, h);
 }
