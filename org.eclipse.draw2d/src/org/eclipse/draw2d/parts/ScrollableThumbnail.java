@@ -64,7 +64,10 @@ private void initialize() {
 
 private void reconfigureSelectorBounds() {
 	Rectangle rect = new Rectangle();
-	rect.setLocation(viewport.getViewLocation());
+	Point offset = viewport.getViewLocation();
+	offset.x -= viewport.getHorizontalRangeModel().getMinimum();
+	offset.y -= viewport.getVerticalRangeModel().getMinimum();
+	rect.setLocation(offset);
 	rect.setSize(viewport.getClientArea().getSize());
 	rect.scale(getViewportScaleX(), getViewportScaleY());
 	rect.translate(getClientArea().getLocation());
@@ -172,11 +175,11 @@ private class SelectorFigure
 	{
 		Display display = Display.getCurrent();
 		PaletteData pData = new PaletteData(0xFF, 0xFF00, 0xFF0000);
-		RGB rgb = new RGB(255, 157, 20);
+		RGB rgb = ColorConstants.menuBackgroundSelected.getRGB();
 		int fillColor = pData.getPixel(rgb);
 		ImageData iData = new ImageData(1, 1, 24, pData);
 		iData.setPixel(0, 0, fillColor);
-		iData.setAlpha(0, 0, 40);
+		iData.setAlpha(0, 0, 55);
 		image = new Image(display, iData);
 	}
 	
@@ -185,7 +188,7 @@ private class SelectorFigure
 	}
 
 	public void paintFigure(Graphics g) {
-		Rectangle bounds = getBounds();		
+		Rectangle bounds = getBounds().getCopy();		
 
 		// Avoid drawing images that are 0 in dimension
 		if (bounds.width < 5 || bounds.height < 5)
@@ -201,16 +204,12 @@ private class SelectorFigure
 		bounds.height--;
 		bounds.width--;
 		g.drawImage(image, iBounds, bounds);
-		bounds.height++;
-		bounds.width++;
-
-		g.drawImage(image, iBounds.x, iBounds.y, iBounds.width, iBounds.height, 
-							bounds.x, bounds.y, bounds.width - 2, 1);
-		g.drawImage(image, iBounds.x, iBounds.y, iBounds.width, iBounds.height, 
-							bounds.x, bounds.y + 1, 1, bounds.height - 2);
-		g.setForegroundColor(ColorConstants.gray);
-		g.drawLine(bounds.x + 2, bounds.bottom() - 1, bounds.right() - 1, bounds.bottom() - 1);
-		g.drawLine(bounds.right() - 1, bounds.y + 2, bounds.right() - 1, bounds.bottom() - 1);
+		
+		g.setForegroundColor(getSource().getBackgroundColor());
+		g.drawRectangle(bounds);
+		bounds.crop(new Insets(1));
+		g.setForegroundColor(ColorConstants.menuBackgroundSelected);
+		g.drawRectangle(bounds);
 	}
 
 }
