@@ -212,14 +212,16 @@ public void setGraphicalViewer(GraphicalViewer primaryViewer) {
 }
 
 private void setRuler(RulerProvider provider, int orientation) {
-	Object ruler = null;
-	if (provider != null) {
-		ruler = provider.getRuler();
-	}
-	GraphicalViewer container = getRulerContainer(orientation);
-	if (container.getContents() != ruler) {
-		container.setContents(ruler);
-		layout(true);
+	if (!isDisposed()) {
+		Object ruler = null;
+		if (provider != null) {
+			ruler = provider.getRuler();
+		}
+		GraphicalViewer container = getRulerContainer(orientation);
+		if (container.getContents() != ruler) {
+			container.setContents(ruler);
+			layout(true);			
+		}
 	}
 }
 
