@@ -263,8 +263,10 @@ protected void handleAutoexpose() {
  * @return <code>true</code> if the buttonDown was handled
  */
 protected boolean handleButtonDown(int button) {
-	if (getCurrentInput().isControlKeyDown())
+	if (getCurrentInput().isControlKeyDown()) {
 		setCloneActive(true);
+		handleDragInProgress();
+	}
 	
 	return super.handleButtonDown(button);
 }
@@ -346,6 +348,7 @@ protected boolean handleKeyDown(KeyEvent e) {
 		return true;
 	} else if (acceptCTRL(e)) {
 		setCloneActive(true);
+		handleDragInProgress();
 		return true;
 	} else if (acceptSHIFT(e)) {
 		handleDragInProgress();
@@ -364,6 +367,7 @@ protected boolean handleKeyUp(KeyEvent e) {
 		return true;
 	} else if (acceptCTRL(e)) {
 		setCloneActive(false);
+		handleDragInProgress();
 		return true;
 	} else if (acceptSHIFT(e)) {
 		handleDragInProgress();
@@ -431,7 +435,6 @@ protected void setCloneActive(boolean cloneActive) {
 	eraseSourceFeedback();
 	eraseTargetFeedback();
 	this.cloneActive = cloneActive;
-	handleDragInProgress();
 }
 
 /**
