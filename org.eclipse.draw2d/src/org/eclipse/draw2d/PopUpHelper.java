@@ -12,8 +12,11 @@ package org.eclipse.draw2d;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
+
+import org.eclipse.draw2d.geometry.Dimension;
 
 /**
  * Provides abstract support for classes that manage popups. Popups in Draw2d consist of a
@@ -55,7 +58,7 @@ protected LightweightSystem createLightweightSystem() {
  * @since 2.0
  */
 protected Shell createShell() {
-	return new Shell(control.getShell(), SWT.NO_TRIM | SWT.NO_FOCUS | SWT.ON_TOP);
+	return new Shell(control.getShell(), SWT.TOOL | SWT.ON_TOP);
 }
 
 /**
@@ -83,6 +86,17 @@ protected Shell getShell() {
 		hookShellListeners();
 	}		
 	return shell;
+}
+
+/**
+ * Returns the size needed to display the shell's trim.  This method should not be called
+ * until the shell has been created.
+ * @return the size of the shells trim.
+ * @since 3.1
+ */
+protected Dimension getShellTrimSize() {
+	Rectangle trim = shell.computeTrim(0, 0, 0, 0);
+	return new Dimension(trim.width, trim.height);
 }
 
 /**

@@ -42,7 +42,6 @@ private IFigure currentTipSource;
  */
 public ToolTipHelper(org.eclipse.swt.widgets.Control c) {
 	super(c);
-	getLightweightSystem().getRootFigure().setBorder(new LineBorder());
 	getShell().setBackground(ColorConstants.tooltipBackground);
 	getShell().setForeground(ColorConstants.tooltipForeground);
 }
@@ -56,8 +55,11 @@ private Point computeWindowLocation(IFigure tip, int eventX, int eventY) {
 	org.eclipse.swt.graphics.Rectangle clientArea = control.getDisplay().getClientArea();
 	Point preferredLocation = new Point(eventX, eventY + 26);
 	
-	Dimension tipSize = getLightweightSystem().getRootFigure().getPreferredSize();
-	
+	Dimension tipSize = getLightweightSystem()
+		.getRootFigure()
+		.getPreferredSize()
+		.getExpanded(getShellTrimSize());
+
 	// Adjust location if tip is going to fall outside display
 	if (preferredLocation.y + tipSize.height > clientArea.height)  
 		preferredLocation.y = eventY - tipSize.height;
@@ -86,8 +88,9 @@ public void displayToolTipNear(IFigure hoverSource, IFigure tip, int eventX, int
 	if (tip != null && hoverSource != currentTipSource) {
 		getLightweightSystem().setContents(tip);
 		Point displayPoint = computeWindowLocation(tip, eventX, eventY);
-		Dimension tipSize = getLightweightSystem().getRootFigure().getPreferredSize();
-		setShellBounds(displayPoint.x, displayPoint.y, tipSize.width, tipSize.height);
+		Dimension shellSize = getLightweightSystem().getRootFigure()
+			.getPreferredSize().getExpanded(getShellTrimSize());
+		setShellBounds(displayPoint.x, displayPoint.y, shellSize.width, shellSize.height);
 		show();
 		currentTipSource = hoverSource;
 		timer = new Timer(true);
