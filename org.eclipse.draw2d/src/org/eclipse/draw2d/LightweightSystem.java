@@ -89,14 +89,19 @@ protected void addListeners() {
 		});
 
 		canvas.addListener(SWT.Paint, new Listener() {
+			private boolean redrawFlag = false;
+			
 			public void handleEvent(Event e) {
 				Canvas c = (Canvas)e.widget;
 				Rectangle client = new Rectangle(c.getClientArea());
 				Rectangle clip = new Rectangle(e.gc.getClipping());
-				if (clip.equals(client))
-					LightweightSystem.this.paint(e.gc);
-				else
+				if (!clip.equals(client) && redrawFlag) {
+					redrawFlag = false;
 					c.redraw();
+				} else {
+					redrawFlag = true;		
+					LightweightSystem.this.paint(e.gc);
+				}
 			}
 		});
 	} else {
