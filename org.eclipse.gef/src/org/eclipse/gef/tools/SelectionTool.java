@@ -210,6 +210,15 @@ protected boolean handleButtonUp(int button) {
 }
 
 /**
+ * @see org.eclipse.gef.tools.AbstractTool#handleCommandStackChanged()
+ */
+protected boolean handleCommandStackChanged() {
+	if (getDragTracker() == null)
+		return super.handleCommandStackChanged();
+	return false;
+}
+
+/**
  * Sets the drag tracker to <code>null</code> and goes into the initial state when focus
  * is lost.
  * @see org.eclipse.gef.tools.AbstractTool#handleFocusLost()
@@ -611,4 +620,3 @@ protected String getDebugNameForState(int state) {
 }
 
 }
-

@@ -11,15 +11,14 @@
 package org.eclipse.gef.tools;
 
 import java.util.*;
+import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.events.*;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Scrollable;
+import org.eclipse.swt.widgets.*;
 
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Dimension;
@@ -27,6 +26,7 @@ import org.eclipse.draw2d.geometry.Point;
 
 import org.eclipse.gef.*;
 import org.eclipse.gef.commands.Command;
+import org.eclipse.gef.commands.CommandStackListener;
 import org.eclipse.gef.editparts.LayerManager;
 
 /**
@@ -255,6 +255,12 @@ public static class Input
 	}
 }
 
+private CommandStackListener commandStackListener = new CommandStackListener() {
+	public void commandStackChanged(EventObject event) {
+		handleCommandStackChanged();
+	}
+};
+
 boolean acceptAbort(KeyEvent e) {
 	return e.character == SWT.ESC;
 }
@@ -309,6 +315,7 @@ public void activate() {
 	setState(STATE_INITIAL);
 	setFlag(FLAG_ACTIVE, true);
 	debug("ACTIVATED");//$NON-NLS-1$
+	getDomain().getCommandStack().addCommandStackListener(commandStackListener);
 }
 
 /**
@@ -379,6 +386,7 @@ public void deactivate() {
 	operationSet = null;
 	current = null;
 	debug("DE-ACTIVATED"); //$NON-NLS-1$
+	getDomain().getCommandStack().removeCommandStackListener(commandStackListener);
 }
 
 /**
@@ -420,11 +428,13 @@ public void focusLost(FocusEvent event, EditPartViewer viewer) {
  * Execute the currently active command.
  */
 protected void executeCurrentCommand() {
+	getDomain().getCommandStack().removeCommandStackListener(commandStackListener);
 	Command curCommand = getCurrentCommand();
 	if (curCommand != null && curCommand.canExecute()) {
 		getDomain().getCommandStack().execute(curCommand);
 		setCurrentCommand(null);
 	}
+	getDomain().getCommandStack().addCommandStackListener(commandStackListener);
 }
 
 /**
@@ -610,6 +620,23 @@ protected boolean handleButtonUp(int button) {
 }
 
 /**
+ * Called when the command stack has changed, for instance, when a delete or undo command
+ * has been executed. By default, state is set to <code>STATE_INVALID</code> and 
+ * handleInvalidInput is called.  Subclasses may override this method to change what 
+ * is happened when the command stack changes. Returning <code>true</code> indicates
+ * that the change was handled in some way.
+ * @return
+ */
+protected boolean handleCommandStackChanged() {
+	if (!isInState(STATE_INITIAL)) {
+		setState(STATE_INVALID);
+		handleInvalidInput();
+		return true;
+	}
+	return false;
+}
+
+/**
  * Called when a mouse double-click occurs.  By default, nothing happens and
  * <code>false</code> is returned.  Subclasses may override this method to interpret
  * double-clicks.  Returning <code>true</code> indicates that the event was handled in
@@ -709,6 +736,15 @@ protected boolean handleFocusLost() {
  * @return <code>true</code> if the hover was handled
  */
 protected boolean handleHover() {
+	return false;
+}
+
+/**
+ * Called when invalid input is encountered. The state does not change, so the
+ * caller must set the state to {@link AbstractTool#STATE_INVALID}.
+ * @return <code>true</code>
+ */
+protected boolean handleInvalidInput() {
 	return false;
 }
 

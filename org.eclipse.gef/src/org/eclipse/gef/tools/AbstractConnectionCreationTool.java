@@ -206,6 +206,21 @@ protected boolean handleButtonUp(int button) {
 }
 
 /**
+ * @see org.eclipse.gef.tools.AbstractTool#handleCommandStackChanged()
+ */
+protected boolean handleCommandStackChanged() {
+	if (!isInState(STATE_INITIAL)) {
+		if (getCurrentInput().isMouseButtonDown(1))
+			setState(STATE_INVALID);
+		else
+			setState(STATE_INITIAL);	
+		handleInvalidInput();
+		return true;
+	}
+	return false;
+}
+
+/**
  * Method that is called when the gesture to create the connection has been received.
  * Subclasses may extend or override this method to do additional creation setup, such as
  * prompting the user to choose an option about the connection being created. Returns
