@@ -76,6 +76,8 @@ public Image getImage() {
  * @see org.eclipse.draw2d.Figure#getPreferredSize(int, int)
  */
 public Dimension getPreferredSize(int wHint, int hHint) {
+	if (size == null)
+		size = new Dimension();
 	return size;
 }
 
@@ -148,7 +150,7 @@ public void setImage(Image image) {
 	if (img != null)
 		size = new Rectangle(image.getBounds()).getSize();
 	else
-		size = new Dimension();
+		size = new Dimension();		
 	revalidate();
 	repaint();
 }
