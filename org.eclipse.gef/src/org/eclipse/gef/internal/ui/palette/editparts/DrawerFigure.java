@@ -55,7 +55,7 @@ private Label drawerLabel, tipLabel;
 private ScrollPane scrollpane;
 private ToggleButton pinFigure;
 private Toggle collapseToggle;
-private boolean showPin, skipNextEvent;
+private boolean showPin = true, skipNextEvent;
 private DrawerAnimationController controller;
 private EditPartTipHelper tipHelper;
 

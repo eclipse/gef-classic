@@ -16,8 +16,7 @@ import org.eclipse.gef.examples.logicdesigner.model.LogicDiagram;
 import org.eclipse.gef.examples.logicdesigner.model.LogicSubpart;
 
 public class ReorderPartCommand extends Command {
-	
-private boolean valuesInitialized;
+
 private int oldIndex, newIndex;
 private LogicSubpart child;
 private LogicDiagram parent;

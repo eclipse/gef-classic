@@ -152,8 +152,8 @@ public void setConnectionRouter(ConnectionRouter cr) {
 		connectionRouter.remove(this);
 		Object old = connectionRouter;
 		connectionRouter = cr;
-		revalidate();
 		firePropertyChange(Connection.PROPERTY_CONNECTION_ROUTER, old, cr);
+		revalidate();
 	}
 }
 

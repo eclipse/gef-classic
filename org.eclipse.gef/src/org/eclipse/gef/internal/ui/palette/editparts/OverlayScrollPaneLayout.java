@@ -55,9 +55,8 @@ public void layout(IFigure parent){
 	    vVis = scrollpane.getVerticalScrollBarVisibility();
 
 	Dimension available = clientArea.getSize(),
-			  preferred = viewport.getPreferredSize(
-				  available.width, available.height).getCopy();
-		    	
+		preferred =
+			viewport.getPreferredSize(available.width, available.height).getCopy();
 
 	boolean none = available.contains(preferred),
 		  both = !none && vVis != NEVER && hVis != NEVER && preferred.contains(available),
