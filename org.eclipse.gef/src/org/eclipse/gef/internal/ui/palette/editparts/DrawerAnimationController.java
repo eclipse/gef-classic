@@ -93,7 +93,7 @@ public float getAnimationProgress() {
 	if (presentTime > endTime)
 		return (float)1.0;
 	long timePassed = (presentTime - startTime);
-	float progress = ((float)timePassed) / ((float)NUM_OF_MILLISECONDS);
+	float progress = ((float)timePassed) / NUM_OF_MILLISECONDS;
 	return progress;
 }
 
@@ -176,7 +176,6 @@ protected List getDrawersToCollapse(DrawerEditPart drawer) {
 		drawersToCollapse.add(part);
 	}
 	return drawersToCollapse;
-	
 }
 
 }

@@ -80,7 +80,8 @@ public Object getAdapter(Class key) {
 	if (key == ExposeHelper.class) {
 		ViewportExposeHelper helper = new ViewportExposeHelper(this);
 		helper.setMinimumFrameCount(6);
-		helper.setMargin(new Insets(PaletteScrollBar.BUTTON_HEIGHT, 0, PaletteScrollBar.BUTTON_HEIGHT, 0));
+		helper.setMargin(new Insets(PaletteScrollBar.BUTTON_HEIGHT, 0, 
+				PaletteScrollBar.BUTTON_HEIGHT, 0));
 		return helper;
 	}
 	return super.getAdapter(key);
@@ -127,15 +128,9 @@ protected String getToolTipText() {
 }
 
 private DrawerAnimationController getAnimationController() {
-	DrawerAnimationController controller;
-	controller = (DrawerAnimationController)getViewer()
-		.getEditPartRegistry()
-		.get(DrawerAnimationController.class);
-	if (controller == null) {
-		controller = new DrawerAnimationController(getPreferenceSource());
-		getViewer().getEditPartRegistry().put(DrawerAnimationController.class, controller);
-	}
-	return controller;
+	return (DrawerAnimationController)getViewer()
+			.getEditPartRegistry()
+			.get(DrawerAnimationController.class);
 }
 
 /**

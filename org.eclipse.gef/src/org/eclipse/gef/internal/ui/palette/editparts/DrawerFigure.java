@@ -11,6 +11,8 @@
 package org.eclipse.gef.internal.ui.palette.editparts;
 
 
+import java.util.List;
+
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Control;
@@ -38,8 +40,10 @@ protected static final Border TOOLTIP_BORDER = new DrawerToolTipBorder();
 protected static final Border BUTTON_BORDER = new ButtonBorder(
 					ButtonBorder.SCHEMES.TOOLBAR);
 
-//@TODO:Pratik
-// This image needs to go in GEFSharedImages
+/*
+ * @TODO:Pratik
+ * This image needs to go in GEFSharedImages
+ */ 
 protected static final Image PIN = new Image(null, ImageDescriptor.createFromFile(
 		Internal.class, "icons/pin_view.gif").getImageData()); //$NON-NLS-1$
 
@@ -51,10 +55,9 @@ private Label drawerLabel, tipLabel;
 private ScrollPane scrollpane;
 private ToggleButton pinFigure;
 private Toggle collapseToggle;
-private boolean isAnimating, showPin, skipNextEvent;
+private boolean showPin, skipNextEvent;
 private DrawerAnimationController controller;
 private EditPartTipHelper tipHelper;
-private Dimension source, destination;
 
 /**
  * Constructor
@@ -65,7 +68,13 @@ private Dimension source, destination;
  * 						(the tip won't be displayed).
  */
 public DrawerFigure(final Control control) {
-	setLayoutManager(new PaletteToolbarLayout());
+	setLayoutManager(new PaletteToolbarLayout(null) {
+		protected boolean isChildGrowing(IFigure child) {
+			int wHint = child.getBounds().width;
+			return child.getPreferredSize(wHint, -1).height 
+					!= child.getMinimumSize(wHint, -1).height;
+		}
+	});
 
 	Figure title = new Figure();	
 	title.setBorder(TITLE_MARGIN_BORDER);
@@ -235,39 +244,41 @@ public Clickable getCollapseToggle() {
 	return collapseToggle;
 }
 
-/*
- * @TODO:Pratik
- * The minimum size fix related to bug #35176 can now be put in again, if so desired.  
- */
+public Dimension getMinimumSize(int wHint, int hHint) {
+	/*
+	 * Fix related to Bug #35176
+	 * The figure returns a minimum size that is of at least a certain height, so as to
+	 * prevent each drawer from getting too small (in which case, the scrollbars cover up
+	 * the entire available space).
+	 */
+	if (isExpanded()) {
+		List children = getContentPane().getChildren();
+		if (!children.isEmpty()) {
+			Dimension headerSize = collapseToggle.getMinimumSize(wHint, hHint).getCopy();
+			headerSize.height += getContentPane().getInsets().getHeight();
+			Figure child = (Figure)children.get(0);
+			int childHeight = child.getMinimumSize(wHint, -1).height;
+			int multiplier = Math.min(3, children.size());
+			childHeight = Math.max((multiplier * childHeight), 40);			
+			childHeight = Math.min(childHeight, 80);
+			headerSize.height += childHeight;
+			headerSize.height = Math.min(headerSize.height, 
+			                             super.getPreferredSize(wHint, hHint).height);
+			return headerSize;
+		}
+	}
+
+	return super.getMinimumSize(wHint, hHint);
+}
 
 /**
  * @see org.eclipse.draw2d.Figure#getPreferredSize(int, int)
  */
 public Dimension getPreferredSize(int w, int h) {
-	if (!isAnimating || !isAnimationDestinationKnown()) {
-		if (isExpanded())
-			return super.getPreferredSize(w, h);
-		else
-			return getMinimumSize();
-	}
-	float scale = controller.getAnimationProgress();
-	if (!isExpanded() && destination.height > source.height) {
-		scale = 1.0f - scale;
-	}
-	Dimension d = destination.getScaled(scale).expand(source.getScaled(1.0f - scale));
-	return d;
-}
-
-public boolean isAnimating() {
-	return isAnimating;
-}
-
-public boolean isAnimationDestinationKnown() {
-	return destination != null;
-}
-
-public Dimension getAnimationDestination(){
-	return destination;
+	if (isExpanded())
+		return super.getPreferredSize(w, h);
+	else
+		return getMinimumSize();
 }
 
 /**
@@ -289,30 +300,16 @@ public boolean isPinShowing() {
 	return isExpanded() && showPin;
 }
 
-public void setAnimating(boolean value) {
-	if (isAnimating == value)
-		return;
-	isAnimating = value;
+public void setAnimating(boolean isAnimating) {
 	if (isAnimating) {
-		source = getBounds().getSize();
-		if( !isExpanded() ){
-			// i'm collapsing
-			destination = getMinimumSize(-1, -1);
-		}
 		scrollpane.setVerticalScrollBarVisibility(ScrollPane.NEVER);
 	} else {
-		source = null;
-		destination = null;
 		scrollpane.setVerticalScrollBarVisibility(ScrollPane.AUTOMATIC);
 	}
 }
 
 public void setController(DrawerAnimationController controller) {
 	this.controller = controller;
-}
-
-public void setAnimationDestination(Dimension size) {
-	destination = size;
 }
 
 public void setExpanded(boolean value) {

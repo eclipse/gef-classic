@@ -12,10 +12,13 @@ package org.eclipse.gef.internal.ui.palette.editparts;
 
 import org.eclipse.draw2d.*;
 import org.eclipse.gef.palette.PaletteRoot;
+import org.eclipse.gef.ui.palette.PaletteViewer;
 
 public class SliderPaletteEditPart 
 	extends PaletteEditPart
 {
+
+private DrawerAnimationController controller;
 
 public SliderPaletteEditPart(PaletteRoot paletteRoot) {
 	super(paletteRoot);
@@ -26,8 +29,16 @@ public IFigure createFigure() {
 	figure.setOpaque(true);
 	figure.setForegroundColor(ColorConstants.listForeground);
 	figure.setBackgroundColor(ColorConstants.button);
-	ToolbarLayout layout = new PaletteToolbarLayout();
+
+	// The controller is being created here because it cannot be created in the 
+	// constructor as its parent is not set at that point (and hence the viewer cannot
+	// be accessed).
+	controller = new DrawerAnimationController(
+			((PaletteViewer)getViewer()).getPaletteViewerPreferences());
+	getViewer().getEditPartRegistry().put(DrawerAnimationController.class, controller);
+	ToolbarLayout layout = new PaletteToolbarLayout(controller);
 	figure.setLayoutManager(layout);
+	
 	return figure;
 }
 

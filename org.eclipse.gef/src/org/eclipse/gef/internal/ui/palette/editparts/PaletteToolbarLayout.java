@@ -20,34 +20,81 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
- * A ToolbarLayout-like layout for the palette.  The difference is that it stretches the 
- * Figures so that they take up all the available space on the palette. 
+ * A ToolbarLayout-like layout for the palette.  This layout is palette-specific and 
+ * should not be used externally.  This layout only works when vertically oriented.
  * 
  * @author Pratik Shah
  */
-public class PaletteToolbarLayout extends ToolbarLayout {
+public class PaletteToolbarLayout 
+	extends ToolbarLayout 
+{
 
-/**
- * Constructor
- */
-public PaletteToolbarLayout() {
-	super();
-}
+private Dimension[] sourceSizes;
+private Rectangle[] destinationSizes;
+private boolean scaling = false;
+private DrawerAnimationController controller;
 
 /**
  * Constructor
  * 
- * @param isHorizontal  false(VERTICAL) will orient children vertically;
- *                       true(HORIZONTAL) will orient children horizontally.
+ * @param	controller	Can be <code>null</code> if no animation is desired
  */
-public PaletteToolbarLayout(boolean isHorizontal) {
-	super(isHorizontal);
+public PaletteToolbarLayout(DrawerAnimationController controller) {
+	super();
+	this.controller = controller;
+}
+
+private void captureDestinationSizes(IFigure parent) {
+	List children = parent.getChildren();
+	destinationSizes = new Rectangle[children.size()];
+	for (int i = 0; i < children.size(); i++) {
+		destinationSizes[i] = ((IFigure)children.get(i)).getBounds().getCopy();
+	}
+}
+
+private void captureSourceSizes(IFigure parent) {
+	List children = parent.getChildren();
+	sourceSizes = new Dimension[children.size()];
+	for (int i = 0; i < children.size(); i++) {
+		sourceSizes[i] = ((IFigure)children.get(i)).getBounds().getSize();
+	}
 }
 
 /**
- * @see org.eclipse.draw2d.ToolbarLayout#layout(IFigure)
+ * A figure is growing if it's an expanded drawer.
+ * 
+ * @param 	child	The figure that is to be marked as growing or non-growing
+ * @return	<code>true</code> if the given child is considered growing
+ */
+protected boolean isChildGrowing(IFigure child) {
+	return child instanceof DrawerFigure && ((DrawerFigure)child).isExpanded();
+}
+
+private boolean isScaling() {
+	return scaling;
+}
+
+/**
+ * @see org.eclipse.draw2d.ToolbarLayout#layout(org.eclipse.draw2d.IFigure)
  */
 public void layout(IFigure parent) {
+	if (isScaling()) {
+		scaledLayout(parent);
+		setScaling(controller.getAnimationProgress() < 1.0);
+	} else {
+		if (controller != null && controller.isAnimationInProgress()) {
+			captureSourceSizes(parent);
+			normalLayout(parent);
+			captureDestinationSizes(parent);
+			setScaling(true);
+			scaledLayout(parent);
+		} else {
+			normalLayout(parent);
+		}
+	}
+}
+
+private void normalLayout(IFigure parent) {
 	List children = parent.getChildren();
 	List childrenGrabbingVertical = new ArrayList();
 	int numChildren = children.size();
@@ -55,88 +102,45 @@ public void layout(IFigure parent) {
 	int x = clientArea.x;
 	int y = clientArea.y;
 	int availableHeight = clientArea.height;
-	// Indicates whether this layout is a mock run or an actual layout.
-	boolean needToSetDestination = false;
+	boolean stretching;
 	Dimension prefSizes [] = new Dimension[numChildren];
 	Dimension minSizes [] = new Dimension[numChildren];
 	int totalHeight = 0, totalMinHeight = 0, heightOfNonGrowingChildren = 0, 
-		heightPerChild = 0, excessHeight = 0, amntShrinkHeight = 0;
-	IFigure child; 
+		heightPerChild = 0, excessHeight = 0;
 	
 	/*
-	 * Determine if this is a mock run or an actual layout.  This will be a mock run to
-	 * determine the destination sizes of animating figures if there are any animating
-	 * figures that do not know their destination sizes.
+	 * Determine hints.
 	 */
-	for (Iterator iter = children.iterator(); iter.hasNext();) {
-		child = (IFigure) iter.next();
-		if (child instanceof DrawerFigure) {
-			DrawerFigure fig = (DrawerFigure)child;
-			needToSetDestination |= fig.isAnimating() 
-				&& !fig.isAnimationDestinationKnown();
-		}
-	}
-
-	
-	// Calculate the width and height hints.  If it's a vertically-oriented layout,
-	// then ignore the height hint (set it to -1); otherwise, ignore the 
-	// width hint.  These hints will be passed to the children of the parent
-	// figure when getting their preferred size. 
-	int wHint = -1;
+	int wHint = parent.getClientArea(Rectangle.SINGLETON).width;;
 	int hHint = -1;    
-	if (isHorizontal()) {
-		hHint = parent.getClientArea(Rectangle.SINGLETON).height;
-	} else {
-		wHint = parent.getClientArea(Rectangle.SINGLETON).width;
-	}
 
-	/*		
-	 * Calculate sum of preferred heights of all children(totalHeight). 
-	 * Calculate sum of minimum heights of all children(minHeight).
-	 * Cache Preferred Sizes and Minimum Sizes of all children.
-	 *
-	 * totalHeight is the sum of the preferred heights of all children
-	 * totalMinHeight is the sum of the minimum heights of all children
-	 * prefMinSumHeight is the sum of the difference between all children's
-	 * preferred heights and minimum heights. (This is used as a ratio to 
-	 * calculate how much each child will shrink). 
+	/*
+	 * Store the preferred and minimum sizes of all figures.  Determine which figures can
+	 * be stretched/shrunk.
 	 */
 	for (int i = 0; i < numChildren; i++) {
-		child = (IFigure)children.get(i);
+		IFigure child = (IFigure)children.get(i);
 		
 		prefSizes[i] = transposer.t(child.getPreferredSize(wHint, hHint));
 		minSizes[i] = transposer.t(child.getMinimumSize(wHint, hHint));
-						
-		if (child instanceof DrawerFigure && ((DrawerFigure)child).isAnimating()) {
-			DrawerFigure fig = (DrawerFigure)child;
-			if( fig.isAnimationDestinationKnown() ){
-				// This animating figure already knows its destination.  It means that
-				// it is collapsing, and its destination is its minimum size.
-				if( needToSetDestination ){
-					// If this is just a mock run to determine destination sizes, take
-					// this figure's destination size (its min size) to correctly 
-					// determine other destinations.
-					prefSizes[i] = fig.getAnimationDestination();
-				}
-				heightOfNonGrowingChildren += prefSizes[i].height;
-			} else {
-				childrenGrabbingVertical.add(child);
-			}
-		} else if (prefSizes[i].height == minSizes[i].height) {
-			heightOfNonGrowingChildren += prefSizes[i].height;
-		} else {
-			childrenGrabbingVertical.add(child);
-		}
 		
 		totalHeight += prefSizes[i].height;
 		totalMinHeight += minSizes[i].height;
+						
+		if (isChildGrowing(child)) {
+			childrenGrabbingVertical.add(child);
+		} else {
+			heightOfNonGrowingChildren += prefSizes[i].height;
+		}
 	}
-	totalHeight += (numChildren - 1) * spacing;
-	totalMinHeight += (numChildren - 1) * spacing;
+	totalHeight += (numChildren - 1) * getSpacing();
+	totalMinHeight += (numChildren - 1) * getSpacing();
 
-
-	amntShrinkHeight = totalHeight - Math.max(availableHeight, totalMinHeight);
-
+	/*
+	 * This is the algorithm that determines which figures need to be compressed/stretched
+	 * and by how much.
+	 */
+	stretching = totalHeight - Math.max(availableHeight, totalMinHeight) < 0;
 	// So long as there is at least one child that can be grown, figure out how much
 	// height should be given to each growing child.  
 	if (!childrenGrabbingVertical.isEmpty()) {
@@ -155,14 +159,14 @@ public void layout(IFigure parent) {
 				IFigure childFig = (IFigure) iter.next();
 				int i = childFig.getParent().getChildren().indexOf(childFig);
 				boolean discardChild = false;
-				if (amntShrinkHeight > 0) {
-					// In case of shrinking, if the child's height is smaller than
-					// heightPerChild, mark that child as non-growing
-					discardChild = prefSizes[i].height < heightPerChild;
-				} else {
+				if (stretching) {
 					// In case of stretching, if the child's height is greater than
 					// heightPerChild, mark that child as non-growing
 					discardChild = prefSizes[i].height > heightPerChild;
+				} else {
+					// In case of shrinking, if the child's height is smaller than
+					// heightPerChild, mark that child as non-growing
+					discardChild = prefSizes[i].height < heightPerChild;
 				}
 				if (discardChild) {
 					spaceToConsume -= prefSizes[i].height;
@@ -178,116 +182,103 @@ public void layout(IFigure parent) {
 		} while (childrenDiscarded);
 	}
 
+	/*
+	 * Do the actual layout, i.e. set the bounds of all the figures.
+	 */
 	for (int i = 0; i < numChildren; i++) {
-		child = (IFigure)children.get(i);
+		IFigure child = (IFigure)children.get(i);
 
 		Rectangle newBounds = new Rectangle(x, y, prefSizes[i].width, prefSizes[i].height);
 
+		/*
+		 * Giving the excess available space to the last child causes one problem -- when
+		 * it's about to start compressing, the scrollbar might appear, then disappear,
+		 * and then re-appear as you keep making the palette shorter pixel by pixel.
+		 * But this bug is rare (three compressible drawers have to be expanded
+		 * for this bug to appear for one pixel, four for two pixels, five for three, and
+		 * so on), and hence can be ignored.  Also, for this bug to occur, the last child
+		 * would have to be a compressible drawer (one whose min height is not the same
+		 * as its pref height).
+		 */
 		if (childrenGrabbingVertical.contains(child)) {
 			// Set the height of growing children.  If this is the last one, give it
 			// the excess height.
 			childrenGrabbingVertical.remove(child);
-			if( childrenGrabbingVertical.isEmpty() ){
+			if (childrenGrabbingVertical.isEmpty()) {
 				newBounds.height = heightPerChild + excessHeight;
 			} else {
 				newBounds.height = heightPerChild;
 			}
 		}
 
-		// Set the destination of animating figures that don't know their
-		// destination yet, if there are any.  If not, go ahead and do the actual layout.
-		if(needToSetDestination){
-			if( child instanceof DrawerFigure ){
-				DrawerFigure fig = (DrawerFigure)child;
-				if( fig.isAnimating() && !fig.isAnimationDestinationKnown()){
-					fig.setAnimationDestination(newBounds.getSize());
-				}
-			}
-		} else {
-			int minWidth = minSizes[i].width;
-			int width = Math.min(prefSizes[i].width, child.getMaximumSize().width);
-			if (matchWidth)
-				width = transposer.t(child.getMaximumSize()).width;
-			width = Math.max(minWidth, Math.min(clientArea.width, width));
-			newBounds.width = width;
+		int minWidth = minSizes[i].width;
+		int width = Math.min(prefSizes[i].width, child.getMaximumSize().width);
+		if (isMatchingWidth())
+			width = transposer.t(child.getMaximumSize()).width;
+		width = Math.max(minWidth, Math.min(clientArea.width, width));
+		newBounds.width = width;
 
-			int adjust = clientArea.width - width;
-			switch (minorAlignment) {
-			case ALIGN_TOPLEFT: 
-				adjust = 0;
-				break;
-			case ALIGN_CENTER:
-				adjust /= 2;
-				break;
-			case ALIGN_BOTTOMRIGHT:
-				break;
-			}
-			newBounds.x += adjust;
-			child.setBounds(transposer.t(newBounds));
+		int adjust = clientArea.width - width;
+		switch (getMinorAlignment()) {
+		case ALIGN_TOPLEFT: 
+			adjust = 0;
+			break;
+		case ALIGN_CENTER:
+			adjust /= 2;
+			break;
+		case ALIGN_BOTTOMRIGHT:
+			break;
 		}
-		y += newBounds.height + spacing;
-	}
-	// If only the destinations for animating figures were set this time, do an
-	// actual layout.
-	if( needToSetDestination ){
-		layout(parent);
+		newBounds.x += adjust;
+		child.setBounds(transposer.t(newBounds));
+		y += newBounds.height + getSpacing();
 	}
 }
 
-//private Dimension[] sourceSizes, destinationSizes;
-//
-///* (non-Javadoc)
-// * @see org.eclipse.draw2d.ToolbarLayout#layout(org.eclipse.draw2d.IFigure)
-// */
-//public void layout(IFigure parent) {
-//	// Unless there is some figure animating, this is a straight-forward layout
-//	boolean needToSetDestination = false;
-//	List children = parent.getChildren();
-//	for (Iterator iter = children.iterator(); iter.hasNext();) {
-//		IFigure child = (IFigure) iter.next();
-//		if (child instanceof DrawerFigure) {
-//			DrawerFigure fig = (DrawerFigure)child;
-//			needToSetDestination = needToSetDestination || (fig.isAnimating() 
-//			                                            && !fig.isDestinationKnown());
-//		}
-//	}
-//	
-//	if (needToSetDestination) {
-//		setup(parent);
-//	}
-//}
-//
-//private void setup(IFigure parent) {
-//	List children = parent.getChildren();
-//	sourceSizes = new Dimension[children.size()];
-//	destinationSizes = new Dimension[children.size()];
-//	Dimension[] prefSizes = new Dimension[children.size()];
-//	Dimension[] minSizes = new Dimension[children.size()];
-//	
-//	int wHint = -1;
-//	int hHint = -1;    
-//	if (isHorizontal()) {
-//		hHint = parent.getClientArea(Rectangle.SINGLETON).height;
-//	} else {
-//		wHint = parent.getClientArea(Rectangle.SINGLETON).width;
-//	}
-//
-//	for (int i = 0; i < children.size(); i++) {
-//		IFigure child = (IFigure)children.get(i);
-//		sourceSizes[i] = child.getBounds().getSize();
-//		prefSizes[i] = child.getPreferredSize(wHint, hHint);
-//		minSizes[i] = child.getMinimumSize(wHint, hHint);
-//		if( child instanceof DrawerFigure ) {
-//			DrawerFigure drawer = (DrawerFigure)child;
-//			if( drawer.isExpanded() ){
-//				// you are here....how do you determine the destination size in this case?
-//			} else {
-//				destinationSizes[i] = minSizes[i];
-//			}
-//		} else {
-//			destinationSizes[i] = sourceSizes[i];
-//		}
-//	}
-//}
+private void scaledLayout(IFigure parent) {
+	Rectangle clientArea = transposer.t(parent.getClientArea());
+	int y = clientArea.y;
+	int availableHeight = clientArea.height;
+	// numGrowing indicates the number of figures that can be stretched/compressed
+	int totalHeight = 0, numGrowing = 0;	
+	List children = parent.getChildren();
+	float progress = controller.getAnimationProgress();
+	
+	for (int i = 0; i < children.size(); i++) {
+		int srcHeight = sourceSizes[i].height;
+		int dstHeight = destinationSizes[i].height;
+		int height = 0;
+		if (srcHeight == dstHeight) {
+			height = dstHeight;
+		} else if (srcHeight < dstHeight) {
+			height = (int)(progress * (float)(dstHeight - srcHeight)) + srcHeight;
+			numGrowing++;
+		} else {
+			height = srcHeight - (int)(progress * (float)(srcHeight - dstHeight));
+			numGrowing++;
+		}
+		totalHeight += height;
+		if (i == children.size() - 1 && numGrowing > 1) {
+			// If this is the last child, give it the excess height (the height left over
+			// because of rounding errors).  However, don't do this unless there is at
+			// least one other child that can be stretched.
+			height += (availableHeight - totalHeight);
+		}
+
+		IFigure child = (IFigure)children.get(i);
+		Rectangle newBounds = new Rectangle(destinationSizes[i].x, y, 
+		                                    destinationSizes[i].width, height);
+		child.setBounds(transposer.t(newBounds));
+		y += newBounds.height + getSpacing();
+	}
+}
+
+private void setScaling(boolean newVal) {
+	scaling = newVal;
+	if (!scaling) {
+		sourceSizes = null;
+		destinationSizes = null;
+	}
+}
 
 }
