@@ -6,12 +6,9 @@ package org.eclipse.draw2d;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import java.util.*;
-
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.events.*;
 
 import org.eclipse.draw2d.geometry.*;
 import org.eclipse.draw2d.util.ImageCache;
@@ -26,16 +23,8 @@ private GC      controlGC;
 private Control   control;
 private Rectangle inUse;
 
-static ArrayList list = new ArrayList();
-
 public BufferedGraphicsSource(Control c) {
 	control = c;
-	control.addDisposeListener(new DisposeListener() {
-		public void widgetDisposed(DisposeEvent e) {
-			list.remove(BufferedGraphicsSource.this);
-		}
-	});
-	list.add(this);
 }
 
 public void flushGraphics(Rectangle region) {

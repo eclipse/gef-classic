@@ -234,14 +234,6 @@ protected void hookEventHandler(ClickableEventHandler handler) {
 	addFocusListener(handler);
 }
 
-/*
- * Sets the ButtonModel to be used by this Clickable.
- *
- * @param model The model
- * @since 2.0
- */
-protected void hookModel(ButtonModel model) { }
-
 /**
  * Initializes this Clickable by setting a default model and adding a clickable event
  * handler for that model.

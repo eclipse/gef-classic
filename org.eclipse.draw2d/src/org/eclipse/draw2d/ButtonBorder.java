@@ -144,7 +144,10 @@ public static class ButtonScheme
  * Interface defining commonly used schemes for the ButtonBorder.
  */
 public static interface SCHEMES {
-
+	
+	/**
+	 * Various button schemes.
+	 */
 	final ButtonScheme
 		BUTTON_CONTRAST = new ButtonScheme(
 			new Color[]{button, buttonLightest},
