@@ -8,25 +8,8 @@
 
    <runtime>
       <library name="runtime/gef.jar">
-         <export name="org.eclipse.gef.*"/>
-         <export name="org.eclipse.gef.dnd.*"/>
-         <export name="org.eclipse.gef.commands.*"/>
-         <export name="org.eclipse.gef.requests.*"/>
-         <export name="org.eclipse.gef.editparts.*"/>
-         <export name="org.eclipse.gef.editpolicies.*"/>
-         <export name="org.eclipse.gef.handles.*"/>
-         <export name="org.eclipse.gef.palette.*"/>
-         <export name="org.eclipse.gef.print.*"/>
-         <export name="org.eclipse.gef.tools.*"/>
-         <export name="org.eclipse.gef.util.*"/>
-         <export name="org.eclipse.gef.ui.actions.*"/>
-         <export name="org.eclipse.gef.ui.palette.*"/>
-         <export name="org.eclipse.gef.internal.ui.palette.editparts.*"/>
-         <export name="org.eclipse.gef.ui.palette.customize.*"/>
-         <export name="org.eclipse.gef.ui.parts.*"/>
-         <export name="org.eclipse.gef.ui.properties.*"/>
-         <export name="org.eclipse.gef.ui.console.*"/>
-         <export name="org.eclipse.gef.ui.stackview.*"/>
+        <export name = "*"/>
+        <packages prefixes="org.eclipse.gef"/>
       </library>
    </runtime>
    <requires>
