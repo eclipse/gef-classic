@@ -38,7 +38,7 @@
    <extension
          point="org.eclipse.ui.views">
       <view
-            name="Plugin Dependencies"
+            name="Plugin Dependencies (GEF Example)"
             icon="view.gif"
             category="org.eclipse.ui"
             class="org.eclipse.gef.examples.pde.PluginDependenciesView"
