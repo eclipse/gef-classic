@@ -42,7 +42,7 @@ public ColumnsLayout() {
 }
 
 /**
- * @see org.eclipse.draw2d.FlowLayout#getChildPreferredSize(IFigure, int, int)
+ * @see org.eclipse.draw2d.FlowLayout#getChildSize(IFigure, int, int)
  */
 protected Dimension getChildSize (IFigure child, int wHint, int hHint) {
 	if (!(child instanceof SeparatorEditPart.SeparatorFigure)) {
@@ -85,39 +85,6 @@ private Dimension getMinimumHints(IFigure figure, int wHint, int hHint) {
 public void invalidate() {
 	super.invalidate();
 	cachedConstraint = null;
-}
-
-/*
- * Returns the maximum number of children that can be put in the row that has the given
- * figure.
- */
-private int maxChildrenInRowWith(IFigure figure) {
-	int count = 0;
-	boolean foundFigure = false;
-	List children = figure.getParent().getChildren();
-	for (int i = 0; i < children.size(); i++) {
-		count++;
-		IFigure child = (IFigure) children.get(i);
-		if (child == figure) {
-			foundFigure = true;
-			continue;
-		} else if (child instanceof SeparatorEditPart.SeparatorFigure) {
-			if (foundFigure) {
-				count--;
-				break;
-			} else {
-				count = 0;
-				continue;
-			}
-		}
-	}
-
-	if (count == 0) {
-		// This should never happen
-		count = children.size();
-	}
-	
-	return count;
 }
 
 /**
