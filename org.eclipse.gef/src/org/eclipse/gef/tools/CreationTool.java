@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.gef.tools;
 
+import org.eclipse.swt.graphics.Cursor;
+
 import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.geometry.*;
 
@@ -30,7 +32,6 @@ public class CreationTool
 private CreationFactory factory;
 private SnapToHelper helper;
 
-
 /**
  * Default constructor.  Sets the default and disabled cursors.
  */
@@ -46,6 +47,15 @@ public CreationTool() {
 public CreationTool(CreationFactory aFactory) {
 	this();
 	setFactory(aFactory);
+}
+
+/**
+ * @see org.eclipse.gef.tools.AbstractTool#calculateCursor()
+ */
+protected Cursor calculateCursor() {
+	if (isInState(STATE_INITIAL)) 
+		return getDefaultCursor();
+	return super.calculateCursor();
 }
 
 /**
