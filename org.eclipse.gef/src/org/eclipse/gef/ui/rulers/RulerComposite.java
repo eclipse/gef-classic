@@ -114,6 +114,14 @@ private static Rectangle calculateTrim(Canvas canvas) {
 	 */
 	Rectangle bounds = canvas.getBounds();
 	Rectangle clientArea = canvas.getClientArea();
+	if (clientArea.height <= 1 || clientArea.width <= 1) {
+		// This is probably the first layout for this canvas, so clientArea is not accurate.  
+		// Set bounds to some bogus value so that the clientArea is accurate compared to the 
+		// bounds, and trim can be accurately determined.
+		canvas.setBounds(0, 0, 100, 100);
+		bounds = canvas.getBounds();
+		clientArea = canvas.getClientArea();
+	}
 	Rectangle result = new Rectangle(
 			0, 0, bounds.width - clientArea.width, bounds.height - clientArea.height);
 	if (result.width != 0 || result.height != 0) {
@@ -264,7 +272,7 @@ public void layout(boolean change) {
 		if (change || needToLayout) {
 			needToLayout = false;
 			layingOut = true;
-			doLayout();	
+			doLayout();
 			layingOut = false;			
 		}
 	}
