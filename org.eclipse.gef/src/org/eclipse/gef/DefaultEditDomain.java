@@ -8,6 +8,7 @@ package org.eclipse.gef;
 
 import java.util.*;
 
+import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.events.*;
 import org.eclipse.ui.IEditorPart;
 
@@ -256,6 +257,15 @@ public void mouseUp(MouseEvent mouseEvent, EditPartViewer viewer) {
 	Tool tool = getActiveTool();
 	if (tool != null)	
 		tool.mouseUp(mouseEvent, viewer);	
+}
+
+/**
+ * @see org.eclipse.gef.EditDomain#nativeDragStarted(DragSourceEvent, EditPartViewer)
+ */
+public void nativeDragStarted(DragSourceEvent event, EditPartViewer viewer) {
+	Tool tool = getActiveTool();
+	if (tool != null)
+		tool.nativeDragStarted(event, viewer);
 }
 
 /**

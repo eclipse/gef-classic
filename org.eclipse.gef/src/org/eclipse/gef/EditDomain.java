@@ -7,6 +7,7 @@ package org.eclipse.gef;
  */
 
 import org.eclipse.gef.commands.CommandStack;
+import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.events.*;
 
 
@@ -128,6 +129,14 @@ void mouseMove(MouseEvent mouseEvent, EditPartViewer view);
  * @param viewer The source of the event.
  */
 void mouseUp(MouseEvent mouseEvent, EditPartViewer view);
+
+/**
+ * Called when a native drag has started.
+ * 
+ * @param event The DragSourceEvent
+ * @param viewer The viewer where the drag started
+ */
+void nativeDragStarted(DragSourceEvent event, EditPartViewer viewer);
 
 /**
  * Adds an already added viewer from the editor. 
