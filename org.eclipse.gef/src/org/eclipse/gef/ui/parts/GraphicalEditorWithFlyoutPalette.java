@@ -19,7 +19,7 @@ import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.ui.palette.FlyoutPaletteComposite;
 import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.eclipse.gef.ui.palette.PaletteViewerProvider;
-import org.eclipse.gef.ui.palette.FlyoutPaletteComposite.Preferences;
+import org.eclipse.gef.ui.palette.FlyoutPaletteComposite.FlyoutPreferences;
 import org.eclipse.gef.ui.views.palette.PalettePage;
 import org.eclipse.gef.ui.views.palette.PaletteViewerPage;
 
@@ -72,7 +72,7 @@ protected Control getGraphicalControl() {
 	return getGraphicalViewer().getControl();
 }
 
-protected abstract Preferences getPalettePreferences();
+protected abstract FlyoutPreferences getPalettePreferences();
 	
 /**
  * Returns the PaletteRoot for the palette viewer.
