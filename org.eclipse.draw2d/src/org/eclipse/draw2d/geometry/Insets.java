@@ -17,11 +17,6 @@ public class Insets
 	implements Cloneable, java.io.Serializable
 {
 
-/**
- * Empty insets.  Should not be modified. 
- */
-public static final Insets NO_INSETS = new Insets();
-
 /** distance from left  */
 public int left;
 /** distance from top*/

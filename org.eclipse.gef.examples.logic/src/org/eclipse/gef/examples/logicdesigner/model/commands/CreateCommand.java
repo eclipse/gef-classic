@@ -52,7 +52,7 @@ public void execute() {
 private Insets getInsets() {
 	if (child instanceof LED || child instanceof Circuit)
 		return new Insets(2, 0, 2, 0);
-	return Insets.NO_INSETS;
+	return new Insets();
 }
 
 public LogicDiagram getParent() {
