@@ -6,23 +6,24 @@ package org.eclipse.gef.ui.palette;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.gef.*;
-import org.eclipse.gef.ui.palette.editparts.*;
+import org.eclipse.gef.EditPart;
+import org.eclipse.gef.EditPartFactory;
 import org.eclipse.gef.palette.*;
+import org.eclipse.gef.ui.palette.editparts.*;
 
 public class PaletteEditPartFactory
 	implements EditPartFactory
 {
 
 protected EditPart createCategoryEditPart(EditPart parentEditPart, Object model){
-	return new CategoryEditPart((PaletteCategory)model);
+	return new DrawerEditPart((PaletteDrawer)model);
 }
 
 public EditPart createEditPart(EditPart parentEditPart, Object model){
 	if( model instanceof PaletteRoot )
 		return createMainPaletteEditPart(parentEditPart, model);
 	if( model instanceof PaletteContainer )
-		if(PaletteContainer.PALETTE_TYPE_CATEGORY.equals(((PaletteContainer)model).getType()))
+		if(PaletteDrawer.PALETTE_TYPE_DRAWER.equals(((PaletteContainer)model).getType()))
 			return createCategoryEditPart(parentEditPart, model);
 	if( model instanceof PaletteContainer )
 		if(	PaletteContainer.PALETTE_TYPE_GROUP.equals(((PaletteContainer)model).getType()) ||

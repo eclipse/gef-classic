@@ -9,13 +9,13 @@ import org.eclipse.gef.ui.palette.editparts.*;
  */
 public class PinCategoryAction extends Action {
 	
-private CategoryEditPart category;
+private DrawerEditPart category;
 
 /**
  * Constructor for PinCategoryAction.
  * @param fig
  */
-public PinCategoryAction (CategoryEditPart category) {
+public PinCategoryAction (DrawerEditPart category) {
 	this.category = category;
 	setChecked(category.isPinnedOpen());
 	setEnabled(category.isExpanded());

@@ -14,14 +14,17 @@ import org.eclipse.swt.events.KeyEvent;
 
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Point;
+
 import org.eclipse.gef.EditPart;
-import org.eclipse.gef.ui.palette.*;
-import org.eclipse.gef.ui.palette.editparts.*;
+import org.eclipse.gef.ui.palette.PaletteViewer;
+import org.eclipse.gef.ui.palette.editparts.DrawerEditPart;
+import org.eclipse.gef.ui.palette.editparts.TemplateEditPart;
+import org.eclipse.gef.ui.palette.editparts.ToolEntryEditPart;
 
 /**
  * KeyHandler for the {@link org.eclipse.gef.ui.palette.PaletteViewerImpl Palette}.
  * Handles traversal of Palette entries and collapse/expand of
- * {@link org.eclipse.gef.ui.palette.CategoryEditPart categories}.
+ * {@link org.eclipse.gef.ui.palette.DrawerEditPart categories}.
  */
 public class PaletteViewerKeyHandler
 	extends GraphicalViewerKeyHandler {
@@ -56,7 +59,7 @@ private void buildNavigationList(EditPart palettePart, EditPart exclusion, Array
 			return;
 		} 
 		else if (palettePart instanceof ToolEntryEditPart 
-				|| palettePart instanceof CategoryEditPart
+				|| palettePart instanceof DrawerEditPart
 				|| palettePart instanceof TemplateEditPart)
 			navList.add(palettePart);
 	}
@@ -68,12 +71,12 @@ private void buildNavigationList(EditPart palettePart, EditPart exclusion, Array
 }
 
 private void collapseCategory(){
-	CategoryEditPart category = (CategoryEditPart)getFocus();
+	DrawerEditPart category = (DrawerEditPart)getFocus();
 	category.setExpanded(false);
 }
 
 private void expandCategory(){
-	CategoryEditPart category = (CategoryEditPart)getFocus();
+	DrawerEditPart category = (DrawerEditPart)getFocus();
 	category.setExpanded(true);
 }
 
@@ -94,23 +97,23 @@ List getNavigationSiblings(){
 /**
  * Returns <code>true</code> if the passed
  * Editpart is a collapsed 
- * {@link org.eclipse.gef.ui.palette.CategoryEditPart Category},
+ * {@link org.eclipse.gef.ui.palette.DrawerEditPart Category},
  * false otherwise.
  */
 boolean isCollapsedCategory(EditPart part){
-	return part instanceof CategoryEditPart
-		&& !((CategoryEditPart)part).isExpanded();
+	return part instanceof DrawerEditPart
+		&& !((DrawerEditPart)part).isExpanded();
 }
 
 /**
  * Returns <code>true</code> if the passed
  * Editpart is an expanded 
- * {@link org.eclipse.gef.ui.palette.CategoryEditPart Category},
+ * {@link org.eclipse.gef.ui.palette.DrawerEditPart Category},
  * false otherwise.
  */
 boolean isExpandedCategory(EditPart part){
-	return part instanceof CategoryEditPart
-		&& ((CategoryEditPart)part).isExpanded();
+	return part instanceof DrawerEditPart
+		&& ((DrawerEditPart)part).isExpanded();
 }
 
 public boolean keyPressed(KeyEvent event) {
@@ -154,7 +157,7 @@ private boolean navigateToCategory(KeyEvent event){
 	boolean found = false;
 	EditPart parent = getFocus().getParent();
 	while(parent != null && !found){
-		if (parent instanceof CategoryEditPart){
+		if (parent instanceof DrawerEditPart){
 			navigateTo(parent,event);
 			found = true;
 		}

@@ -1,12 +1,13 @@
 package org.eclipse.gef.ui.palette.customize;
 
-import org.eclipse.gef.palette.PaletteCategory;
-import org.eclipse.gef.palette.PaletteEntry;
-import org.eclipse.gef.ui.palette.PaletteMessages;
 import org.eclipse.swt.widgets.Shell;
 
+import org.eclipse.gef.palette.PaletteDrawer;
+import org.eclipse.gef.palette.PaletteEntry;
+import org.eclipse.gef.ui.palette.PaletteMessages;
+
 /**
- * Factory to create {@link org.eclipse.gef.palette.PaletteCategory categories}
+ * Factory to create {@link org.eclipse.gef.palette.PaletteDrawer categories}
  * 
  * @author Pratik Shah
  */
@@ -23,7 +24,7 @@ public PaletteCategoryFactory() {
  * @see org.eclipse.gef.ui.palette.customize.PaletteEntryFactory#createNewEntry(Shell)
  */
 protected PaletteEntry createNewEntry(Shell shell) {
-	return new PaletteCategory(PaletteMessages.NEW_CATEGORY_LABEL);
+	return new PaletteDrawer(PaletteMessages.NEW_CATEGORY_LABEL);
 }
 
 }

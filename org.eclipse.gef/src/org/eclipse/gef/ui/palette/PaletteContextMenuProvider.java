@@ -5,7 +5,8 @@ import org.eclipse.jface.action.Separator;
 
 import org.eclipse.gef.ContextMenuProvider;
 import org.eclipse.gef.ui.actions.GEFActionConstants;
-import org.eclipse.gef.ui.palette.editparts.CategoryEditPart;
+import org.eclipse.gef.ui.palette.editparts.DrawerEditPart;
+import org.eclipse.gef.ui.palette.editparts.TemplateEditPart;
 
 /**
  * Provides the context menu for a palette
@@ -58,7 +59,7 @@ public void buildContextMenu(IMenuManager menu) {
 	Object selectedPart = getPaletteViewer().getSelectedEditParts().get(0);
 	if (selectedPart instanceof CategoryEditPart) {
 		menu.appendToGroup(GEFActionConstants.MB_ADDITIONS, 
-							new PinCategoryAction((CategoryEditPart)selectedPart));
+							new PinCategoryAction((DrawerEditPart)selectedPart));
 	}
 	menu.appendToGroup(GEFActionConstants.GROUP_VIEW, new FolderLayoutAction(
 			getPaletteViewer().getPaletteViewerPreferencesSource()));
