@@ -119,6 +119,15 @@ protected boolean handleDragStarted(){
 	return false;
 }
 
+/**
+ * @see org.eclipse.gef.tools.TargetingTool#handleHover()
+ */
+protected boolean handleHover() {
+	if (isInDragInProgress())
+		updateAutoexposeHelper();
+	return true;
+}
+
 protected boolean handleKeyDown(KeyEvent e){
 	if (acceptArrowKey(e)) {
 		if (stateTransition(STATE_INITIAL, STATE_ACCESSIBLE_DRAG_IN_PROGRESS)){

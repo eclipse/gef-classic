@@ -159,6 +159,15 @@ protected boolean handleFocusLost() {
 	return super.handleFocusLost();
 }
 
+/**
+ * @see org.eclipse.gef.tools.TargetingTool#handleHover()
+ */
+protected boolean handleHover() {
+	if (isInState(STATE_CONNECTION_STARTED))
+		updateAutoexposeHelper();
+	return true;
+}
+
 protected boolean handleInvalidInput(){
 	eraseSourceFeedback();
 	setConnectionSource(null);
