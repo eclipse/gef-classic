@@ -135,8 +135,16 @@ private void hookTargetAnchor() {
 public void layout() {
 	if (getSourceAnchor() != null && getTargetAnchor() != null)
 		getConnectionRouter().route(this);
+
+	Rectangle oldBounds = bounds;
 	super.layout();
 	bounds = null;
+	
+	if (!getBounds().contains(oldBounds)) {
+		getParent().translateToParent(oldBounds);
+		getUpdateManager().addDirtyRegion(getParent(), oldBounds);
+	}
+	
 	repaint();
 	fireMoved();
 }
