@@ -25,9 +25,9 @@ public interface ConnectionAnchor {
 void addAnchorListener(AnchorListener listener);
 
 /**
- * Returns the location where the Connection should be anchored.  The anhor may use the
- * given reference Point to calculate this location.
- * @param reference The reference Point
+ * Returns the location where the Connection should be anchored in absolute coordinates. 
+ * The anchor may use the given reference Point to calculate this location.
+ * @param reference The reference Point in absolute coordinates
  * @return The anchor's location
  */
 Point getLocation(Point reference);
@@ -40,8 +40,8 @@ Point getLocation(Point reference);
 IFigure getOwner();
 
 /**
- * Returns the reference point for this anchor. This might be used by another anchor to
- * determine its own location (i.e. {@link ChopboxAnchor}).
+ * Returns the reference point for this anchor in absolute coordinates. This might be used
+ * by another anchor to determine its own location (i.e. {@link ChopboxAnchor}).
  * @return The reference Point
  */
 Point getReferencePoint();

@@ -286,8 +286,8 @@ void removeEditPolicy(Object role);
 void removeNotify();
 
 /**
- * <img src="doc-files/black.gif"/>Set the <i>focus<i> property to reflect the value in
- * the EditPartViewer. Focus is determined by the EditPartViewer.
+ * Set the <i>focus</i> property to reflect the value in the EditPartViewer. Focus is
+ * determined by the EditPartViewer.
  * <P>
  * <I>Focus</I> is considered to be part of the selected state, changing this value
  * will fire {@link EditPartListener#selectedStateChanged(EditPart)}.
