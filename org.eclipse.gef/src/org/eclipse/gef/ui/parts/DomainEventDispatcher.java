@@ -20,6 +20,7 @@ import org.eclipse.swt.accessibility.AccessibleEvent;
 import org.eclipse.swt.accessibility.AccessibleListener;
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.TraverseEvent;
 import org.eclipse.swt.graphics.Cursor;
 
 import org.eclipse.draw2d.EventDispatcher;
@@ -242,6 +243,19 @@ public void dispatchKeyPressed(org.eclipse.swt.events.KeyEvent e) {
 	}
 	if (okToDispatch())
 		domain.keyDown(e, viewer);
+}
+
+/**
+ * @see org.eclipse.draw2d.SWTEventDispatcher#dispatchKeyTraversed(org.eclipse.swt.events.TraverseEvent)
+ */
+public void dispatchKeyTraversed(TraverseEvent e) {
+	if (!editorCaptured) {
+		super.dispatchKeyTraversed(e);
+		if (e.doit == false)
+			return;
+	}
+	if (okToDispatch())
+		domain.keyTraversed(e, viewer);
 }
 
 /**
