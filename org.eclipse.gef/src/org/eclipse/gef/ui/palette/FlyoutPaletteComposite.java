@@ -143,6 +143,15 @@ private Control graphicalControl, sash;
 private PaletteViewerProvider provider;
 private FlyoutPreferences prefs;
 private Point cachedBounds = new Point(0, 0);
+/*
+ * Fix for Bug# 71525
+ * transferFocus is used to transfer focus from the button in the vertical sash title
+ * to the button in the horizontal paletteComposite title.  When either button is pressed
+ * it is set to true, and when either the sash or the paletteComposite gets notified of 
+ * the change in state, they transfer the focus to their button if this flag is set to
+ * true and if that button is visible.
+ */
+private boolean transferFocus = false;
 private int dock = PositionConstants.EAST;
 private int paletteState = STATE_HIDDEN;
 private int paletteWidth = DEFAULT_PALETTE_SIZE;
@@ -671,36 +680,32 @@ private class Sash extends Composite {
 	 * @see org.eclipse.swt.widgets.Composite#layout(boolean)
 	 */
 	public void layout(boolean changed) {
+		if (button == null || title == null)
+			return;
+		
 		if (isInState(STATE_PINNED_OPEN)) {
 			title.setVisible(false);
 			button.setVisible(false);
 			return;
 		}
 		
-		boolean stealFocus = !button.getVisible();
 		title.setVisible(true);
-			button.setVisible(true);
+		button.setVisible(true);
 		Rectangle area = getClientArea();
 		// 1 pixel margin all around to draw the raised border
 		area.x += 1;
 		area.y += 1;
 		area.width -= 2;
 		area.height -= 2;
-		if (button.getVisible()) {
-			button.setBounds(area.x, area.y, area.width, area.width);
-			// 5-pixel spacing
-			area.y += area.width + 3;
+		button.setBounds(area.x, area.y, area.width, area.width);
+		// 5-pixel spacing
+		area.y += area.width + 3;
+		title.setBounds(area.x, area.y, area.width, 
+				title.computeSize(-1, -1).y);
+		if (transferFocus) {
+			transferFocus = false;
+			button.setFocus();
 		}
-		if (title.getVisible()) {
-			title.setBounds(area.x, area.y, area.width, 
-					title.computeSize(-1, -1).y);
-		}
-		if (stealFocus)
-			Display.getCurrent().asyncExec(new Runnable() {
-				public void run() {
-					button.setFocus();
-				}
-			});
 	}
 	private void paintSash(GC gc) {
 		Rectangle bounds = getBounds();
@@ -721,6 +726,7 @@ private class Sash extends Composite {
 			implements MouseMoveListener {
 		protected boolean dragging = false;
 		protected boolean correctState = false;
+		protected boolean mouseDown = false;
 		protected int origX;
 		protected Listener keyListener = new Listener() {
 			public void handleEvent(Event event) {
@@ -739,12 +745,14 @@ private class Sash extends Composite {
 		public void mouseDown(MouseEvent me) {
 			if (me.button != 1)
 				return;
-			dragging = true;
+			mouseDown = true;
 			correctState = isInState(STATE_EXPANDED | STATE_PINNED_OPEN);
 			origX = me.x;
 			Display.getCurrent().addFilter(SWT.KeyDown, keyListener);
 		}
 		public void mouseMove(MouseEvent me) {
+			if (mouseDown)
+				dragging = true;
 			if (dragging && correctState)
 				handleSashDragged(me.x - origX);
 		}
@@ -758,6 +766,7 @@ private class Sash extends Composite {
 			}
 			dragging = false;
 			correctState = false;
+			mouseDown = false;
 		}
 	}
 }
@@ -953,15 +962,11 @@ private class PaletteComposite extends Composite {
 		pViewer.getControl().setBounds(area);
 	}
 	protected void updateState() {
-		if (isInState(STATE_PINNED_OPEN)) {
-			title.setVisible(true);
-			if (!button.getVisible()) {
-				button.setVisible(true);
-				button.setFocus();
-			}
-		} else {
-			title.setVisible(false);
-			button.setVisible(false);
+		title.setVisible(isInState(STATE_PINNED_OPEN));
+		button.setVisible(isInState(STATE_PINNED_OPEN));
+		if (transferFocus && button.getVisible()) {
+			transferFocus = false;
+			button.setFocus();
 		}
 		layout(true);
 	}
@@ -1138,6 +1143,7 @@ private class ButtonCanvas extends Canvas {
 		b.setBorder(new ButtonBorder(ButtonBorder.SCHEMES.TOOLBAR));
 		b.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
+				transferFocus = true;
 				if (isInState(STATE_COLLAPSED))
 					setState(STATE_PINNED_OPEN);
 				else
