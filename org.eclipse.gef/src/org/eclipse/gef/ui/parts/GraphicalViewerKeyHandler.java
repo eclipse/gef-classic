@@ -218,11 +218,20 @@ protected GraphicalEditPart getFocusEditPart() {
 
 /**
  * Returns the list of editparts which are conceptually at the same level of navigation as
- * the currently focused editpart.  By default, this is the siblings of the focused part.
+ * the currently focused editpart.  By default, these are the siblings of the focused 
+ * part.
+ * <p>
+ * This implementation returns a list that contains the EditPart that has focus.
+ * </p>
  * @return a list of navigation editparts
  */
 List getNavigationSiblings() {
-	return getFocusEditPart().getParent().getChildren();
+	EditPart focusPart = getFocusEditPart();
+	if (focusPart.getParent() != null)
+		return focusPart.getParent().getChildren();
+	List list = new ArrayList();
+	list.add(focusPart);
+	return list;
 }
 
 /**
