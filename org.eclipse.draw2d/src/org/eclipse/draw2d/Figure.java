@@ -152,8 +152,8 @@ public void add(IFigure figure, Object constraint, int index) {
 		children.add(index, figure);
 
 	//Add to layout manager
-	if (getLayoutManager() != null)
-		getLayoutManager().setConstraint(figure, constraint);
+	if (layoutManager != null)
+		layoutManager.setConstraint(figure, constraint);
 	// The updates in the UpdateManager *have* to be
 	// done asynchronously, else will result in 
 	// incorrect dirty region corrections.
@@ -917,8 +917,8 @@ public boolean intersects(Rectangle rect) {
 public void invalidate() {
 	if (!isValid()) 
 		return;
-	if (getLayoutManager() != null)
-		getLayoutManager().invalidate();
+	if (layoutManager != null)
+		layoutManager.invalidate();
 	setValid(false);
 }
 
@@ -1018,8 +1018,8 @@ public boolean isVisible() {
  * @since 2.0
  */
 protected void layout() {
-	if (getLayoutManager() != null)
-		getLayoutManager().layout(this);
+	if (layoutManager != null)
+		layoutManager.layout(this);
 }
 
 /**
