@@ -175,7 +175,6 @@ static private PaletteContainer createComponentsDrawer(){
 static private PaletteContainer createControlGroup(PaletteRoot root){
 	PaletteGroup controlGroup = new PaletteGroup(
 		LogicMessages.LogicPlugin_Category_ControlGroup_Label);
-	controlGroup.setType(PaletteContainer.PALETTE_TYPE_GROUP);
 
 	List entries = new ArrayList();
 
