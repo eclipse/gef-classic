@@ -62,7 +62,7 @@ protected void addGlobalActionKey(String key) {
 /**
  * Adds the specified RetargetAction to this contributors <code>ActionRegistry</code>. The
  * RetargetAction is also added as a <code>IPartListener</code> of the contributor's page.
- * Also, the retarget actions ID is flagged as a global action key, by calling {@link
+ * Also, the retarget action's ID is flagged as a global action key, by calling {@link
  * #addGlobalActionKey(String)}.
  * @param action the retarget action being added
  */
