@@ -43,7 +43,7 @@ private static Image LOGIC_ICON = new Image (null,
 protected List children = new ArrayList();
 protected LogicRuler leftRuler, topRuler;
 protected Integer connectionRouter = null;
-private boolean rulersVisibility = true;
+private boolean rulersVisibility = false;
 private boolean snapToGeometry = false;
 private boolean gridEnabled = false;
 private Dimension gridSpacing = new Dimension(SnapToGrid.DEFAULT_GAP, SnapToGrid.DEFAULT_GAP);
