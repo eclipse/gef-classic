@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.shapes.model;
 
+import org.eclipse.ui.views.properties.ComboBoxPropertyDescriptor;
+import org.eclipse.ui.views.properties.IPropertyDescriptor;
+
 import org.eclipse.draw2d.Graphics;
 
 /**
@@ -17,20 +20,23 @@ import org.eclipse.draw2d.Graphics;
  * @author Elias Volanakis
  */
 public class Connection extends ModelElement {
+/** 
+ * Used for indicating that a Connection with solid line style should be created.
+ * @see org.eclipse.gef.examples.shapes.parts.ShapeEditPart#createEditPolicies() 
+ */
+public static final Integer SOLID_CONNECTION = new Integer(Graphics.LINE_SOLID);
 /**
  * Used for indicating that a Connection with dashed line style should be created.
  * @see org.eclipse.gef.examples.shapes.parts.ShapeEditPart#createEditPolicies()
  */
 public static final Integer DASHED_CONNECTION = new Integer(Graphics.LINE_DASH);
 /** Property ID to use when the line style of this connection is modified. */
-public static final String LINESTYLE_PROP = "Connection.LineStyle";
-
+public static final String LINESTYLE_PROP = "LineStyle";
+private static final IPropertyDescriptor[] descriptors = new IPropertyDescriptor[1];
+private static final String SOLID_STR = "Solid";
+private static final String DASHED_STR = "Dashed";
 private static final long serialVersionUID = 1;
-/** 
- * Used for indicating that a Connection with solid line style should be created.
- * @see org.eclipse.gef.examples.shapes.parts.ShapeEditPart#createEditPolicies() 
- */
-public static final Integer SOLID_CONNECTION = new Integer(Graphics.LINE_SOLID);
+
 /** True, if the connection is attached to its endpoints. */ 
 private boolean isConnected;
 /** Line drawing style for this connection. */
@@ -39,6 +45,11 @@ private int lineStyle = Graphics.LINE_SOLID;
 private Shape source;
 /** Connection's target endpoint. */
 private Shape target;
+
+static {
+	descriptors[0] = new ComboBoxPropertyDescriptor(LINESTYLE_PROP, LINESTYLE_PROP, 
+			new String[] {SOLID_STR, DASHED_STR});
+}
 
 /** 
  * Create a (solid) connection between two distinct shapes.
@@ -68,6 +79,29 @@ public void disconnect() {
  */
 public int getLineStyle() {
 	return lineStyle;
+}
+
+/**
+ * Returns the descriptor for the lineStyle property
+ * @see org.eclipse.ui.views.properties.IPropertySource#getPropertyDescriptors()
+ */
+public IPropertyDescriptor[] getPropertyDescriptors() {
+	return descriptors;
+}
+
+/**
+ * Returns the lineStyle as String for the Property Sheet
+ * @see org.eclipse.ui.views.properties.IPropertySource#getPropertyValue(java.lang.Object)
+ */
+public Object getPropertyValue(Object id) {
+	if (id.equals(LINESTYLE_PROP)) {
+		if (getLineStyle() == Graphics.LINE_DASH)
+			// Dashed is the second value in the combo dropdown
+			return new Integer(1);
+		// Solid is the first value in the combo dropdown
+		return new Integer(0);
+	}
+	return super.getPropertyValue(id);
 }
 
 /**
@@ -130,4 +164,17 @@ public void setLineStyle(int lineStyle) {
 	this.lineStyle = lineStyle;
 	firePropertyChange(LINESTYLE_PROP, null, new Integer(this.lineStyle));
 }
+
+/**
+ * Sets the lineStyle based on the String provided by the PropertySheet
+ * @see org.eclipse.ui.views.properties.IPropertySource#setPropertyValue(java.lang.Object, java.lang.Object)
+ */
+public void setPropertyValue(Object id, Object value) {
+	if (id.equals(LINESTYLE_PROP))
+		setLineStyle(new Integer(1).equals(value) 
+				? Graphics.LINE_DASH : Graphics.LINE_SOLID);
+	else
+		super.setPropertyValue(id, value);
+}
+
 }
