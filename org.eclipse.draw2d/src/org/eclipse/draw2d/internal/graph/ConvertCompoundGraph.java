@@ -74,16 +74,27 @@ private void convertSubgraphEndpoints(CompoundDirectedGraph graph) {
 	for (int i = 0; i < graph.edges.size(); i++) {
 		Edge edge = (Edge)graph.edges.get(i);
 		if (edge.source instanceof Subgraph) {
-			edge.source.outgoing.remove(edge);
-			Node tail = ((Subgraph)edge.source).tail;
-			edge.source = tail;
-			tail.outgoing.add(edge);
+			Subgraph s = (Subgraph)edge.source;
+			Node newSource;
+			if (s.isNested(edge.target))
+				newSource = s.head;
+			else
+				newSource = s.tail;
+			s.outgoing.remove(edge);
+			edge.source = newSource;
+			newSource.outgoing.add(edge);
 		}
 		if (edge.target instanceof Subgraph) {
-			edge.target.incoming.remove(edge);
-			Node head = ((Subgraph)edge.target).head;
-			edge.target = head;
-			head.incoming.add(edge);
+			Subgraph s = (Subgraph)edge.target;
+			Node newTarget;
+			if (s.isNested(edge.source))
+				newTarget = s.tail;
+			else
+				newTarget = s.head;
+			
+			s.incoming.remove(edge);
+			edge.target = newTarget;
+			newTarget.incoming.add(edge);
 		}
 	}
 }
