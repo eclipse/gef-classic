@@ -35,6 +35,10 @@ public Rectangle getClientArea(Rectangle rect) {
 	return rect;
 }
 
+/**
+ * Returns the current zoom scale level.
+ * @return the scale
+ */
 public double getScale() {
 	return scale;
 }

@@ -12,19 +12,46 @@ package org.eclipse.draw2d;
 
 import org.eclipse.draw2d.geometry.*;
 
+/**
+ * This class handles the calculation of solving for the area of a 
+ * {@link org.eclipse.draw2d.ScrollPane}'s viewport and insets. Also determines if
+ * the horizonal and vertical scrollbars should be visible.
+ */
 public class ScrollPaneSolver {
 
+/** Scrollbar visiblity constants **/
 public static int NEVER = 0;
 public static int AUTOMATIC = 1;
 public static int ALWAYS = 2;
 
+/**
+ * Container class for the results of ScrollPaneSolver's solve method
+ */
 public static class Result {
+	/** Show horizontal scrollbar boolean **/
 	public boolean showH;
+	
+	/** Show vertical scrollbar boolean **/
 	public boolean showV;
+	
+	/** Area of ScrollPane's viewport **/
 	public Rectangle viewportArea;
+	
+	/** Insets of ScrollPane **/
 	public Insets insets;
 }
 
+/**
+ * Solves for the viewport area, insets, and visiblity of horizontal and vertical
+ * scrollbars of a ScrollPane
+ * @param clientArea The ScrollPane's client area
+ * @param viewport The ScrollPane's Viewport
+ * @param hVis Horizontal scrollbar visibility
+ * @param vVis Vertical scrollbar visibility
+ * @param vBarWidth Width of vertical scrollbar
+ * @param hBarHeight Height of horizontal scrollbar
+ * @return the Result
+ */
 public static Result solve(Rectangle clientArea, Viewport viewport, int hVis, int vVis,
 							int vBarWidth, int hBarHeight) {
 	Result result = new Result();

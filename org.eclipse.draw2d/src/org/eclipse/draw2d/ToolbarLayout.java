@@ -28,18 +28,28 @@ public class ToolbarLayout
 	extends AbstractHintLayout
 {
 
+/** Space in pixels between Figures **/
 protected int spacing;
+/** Sets whether children should "stretch" with their container **/
 protected boolean matchWidth;
+/** Orientation of layout **/
 protected boolean horizontal = false;
+/** Alignment of layout **/
 protected int minorAlignment;
 
+/** Constant for center alignment **/
 public static final int ALIGN_CENTER = 0;
+/** Constant for top-left alignment **/
 public static final int ALIGN_TOPLEFT = 1;
+/** Constant for bottom-right alignment **/
 public static final int ALIGN_BOTTOMRIGHT = 2;
 
+/** Constant for horizontal alignment **/
 public static final boolean HORIZONTAL = true;
+/** Constant for vertical alignment **/
 public static final boolean VERTICAL = false;
 
+/** Transposer object used in layout calculations **/
 protected Transposer transposer; {
 	transposer = new Transposer();
 	transposer.setEnabled(horizontal);
@@ -296,7 +306,8 @@ public void layout(IFigure parent) {
 
 		child = (IFigure)children.get(i);
 	    if (prefMinSumHeight != 0)
-			amntShrinkCurrentHeight = (prefHeight - minHeight) * amntShrinkHeight / (prefMinSumHeight);
+			amntShrinkCurrentHeight = 
+					(prefHeight - minHeight) * amntShrinkHeight / (prefMinSumHeight);
 
 		int width = Math.min(prefWidth, child.getMaximumSize().width);
 		if (matchWidth)

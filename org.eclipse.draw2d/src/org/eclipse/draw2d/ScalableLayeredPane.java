@@ -36,6 +36,9 @@ public Rectangle getClientArea(Rectangle rect) {
 	return rect;
 }
 
+/**
+ * @see Figure#getPreferredSize(int, int)
+ */
 public Dimension getPreferredSize(int wHint, int hHint) {
 	Dimension d = super.getPreferredSize(wHint, hHint);
 	int w = getInsets().getWidth();
@@ -45,12 +48,15 @@ public Dimension getPreferredSize(int wHint, int hHint) {
 		.expand(w, h);
 }
 
+/**
+ * Returns the scale level, default is 1.0.
+ * @return the scale level
+ */
 public double getScale() {
 	return scale;
 }
 
 /**
- * 
  * @see org.eclipse.draw2d.Figure#paintClientArea(Graphics)
  */
 protected void paintClientArea(Graphics graphics) {

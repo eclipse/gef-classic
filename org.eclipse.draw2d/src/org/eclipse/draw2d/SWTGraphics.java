@@ -26,24 +26,35 @@ public class SWTGraphics
 	extends Graphics
 {
 
+/** Contains the state variables of this SWTGraphics object **/
 protected static class State
 	implements Cloneable
 {
+	/** Background and foreground colors **/
 	public Color
 		bgColor,
 		fgColor;
+	/** Clip values **/
 	public int clipX, clipY, clipW, clipH; //X and Y are absolute here.
+	/** Font value **/
 	public Font font;  //Fonts are immutable, shared references are safe
+	/** Line values**/
 	public int
 		lineWidth,
 		lineStyle,
 		dx, dy;
+	/** XOR value **/
 	public boolean xor;
 
+	/** @see Object#clone() **/
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
 	}
-
+	
+	/**
+	 * Copies all state information from the given State to this State
+	 * @param state The State to copy from
+	 */
 	public void copyFrom(State state) {
 		bgColor = state.bgColor;
 		fgColor = state.fgColor;
@@ -173,7 +184,8 @@ public void drawImage(Image srcImage, int x, int y) {
 /**
  * @see Graphics#drawImage(Image, int, int, int, int, int, int, int, int)
  */
-public void drawImage(Image srcImage, int x1, int y1, int w1, int h1, int x2, int y2, int w2, int h2) {
+public void drawImage(Image srcImage, int x1, int y1, int w1, int h1, int x2, int y2, 
+						int w2, int h2) {
 	checkGC();
 	gc.drawImage(srcImage, x1, y1, w1, h1, x2 + translateX, y2 + translateY, w2, h2);
 }
@@ -239,7 +251,8 @@ public void drawRectangle(int x, int y, int width, int height) {
  */
 public void drawRoundRectangle(Rectangle r, int arcWidth, int arcHeight) {
 	checkPaint();
-	gc.drawRoundRectangle(r.x + translateX, r.y + translateY, r.width, r.height, arcWidth, arcHeight);
+	gc.drawRoundRectangle(r.x + translateX, r.y + translateY, r.width, r.height, 
+							arcWidth, arcHeight);
 }
 
 /**
@@ -309,7 +322,8 @@ public void fillRectangle(int x, int y, int width, int height) {
  */
 public void fillRoundRectangle(Rectangle r, int arcWidth, int arcHeight) {
 	checkFill();
-	gc.fillRoundRectangle(r.x + translateX, r.y + translateY, r.width, r.height, arcWidth, arcHeight);
+	gc.fillRoundRectangle(r.x + translateX, r.y + translateY, r.width, r.height, 
+							arcWidth, arcHeight);
 }
 
 /**
@@ -386,6 +400,9 @@ public boolean getXORMode() {
 	return currentState.xor;
 }
 
+/**
+ * Called by constructor, initializes all State information for currentState
+ */
 protected void init() {
 //Current translation is assumed to be 0,0.
 	currentState.bgColor = appliedState.bgColor = gc.getBackground();
@@ -433,6 +450,10 @@ public void restoreState() {
 	restoreState((State)stack.get(stackPointer - 1));
 }
 
+/**
+ * Sets all State information to that of the given State, called by restoreState()
+ * @param s the State
+ */
 protected void restoreState(State s) {
 	setBackgroundColor(s.bgColor);
 	setForegroundColor(s.fgColor);
@@ -451,6 +472,9 @@ protected void restoreState(State s) {
 	relativeClip.height = s.clipH;
 }
 
+/**
+ * @see Graphics#scale(double)
+ */
 public void scale(double factor) { }
 
 /**
@@ -477,6 +501,13 @@ public void setClip(Rectangle rect) {
 			    rect.height);
 }
 
+/**
+ * Sets clip values to the given values.
+ * @param x the X value
+ * @param y the Y value
+ * @param w the width value
+ * @param h the height value
+ */
 protected void setClipAbsolute(int x, int y, int w, int h) {
 	if (currentState.clipW == w 
 		&& currentState.clipH == h 
@@ -526,6 +557,11 @@ public void setLineWidth(int width) {
 	currentState.lineWidth = width;
 }
 
+/**
+ * Sets the translation values of this to the given values
+ * @param x The x value
+ * @param y The y value
+ */
 protected void setTranslation(int x, int y) {
 	translateX = currentState.dx = x;
 	translateY = currentState.dy = y;

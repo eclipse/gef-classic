@@ -24,8 +24,10 @@ public class SchemeBorder
 	implements ColorConstants
 {
 
+/** The {@link SchemeBorder.Scheme} associated with this SchemeBorder **/
 protected Scheme scheme = null;
 
+/** Arrays of Colors, used for shadow or highlight effects **/
 protected static final Color
 	DARKEST_DARKER[]   = new Color[] {buttonDarkest,  buttonDarker},
 	LIGHTER_DARKER[]   = new Color[] {buttonLightest, buttonDarker},
@@ -39,6 +41,8 @@ protected static final Color
 public static class Scheme {
 	private Insets insets;
 	private boolean isOpaque = false;
+	
+	/** Arrays of Colors, used for highlight and shadow effecsts */
 	protected Color
 		highlight[],
 		shadow[];
@@ -169,11 +173,13 @@ public static class Scheme {
  * given as input to the {@link SchemeBorder SchemeBorder} to generate appropriate borders.
  */
 public static interface SCHEMES {
+	
+	/** Schemes used for shadow and highlight effects **/
 	public Scheme
 		BUTTON_CONTRAST = new Scheme(
 			new Color[]{button, buttonLightest},
 			DARKEST_DARKER
-		),
+		), 
 		BUTTON_RAISED = new Scheme(
 			new Color[]{buttonLightest},
 			DARKEST_DARKER

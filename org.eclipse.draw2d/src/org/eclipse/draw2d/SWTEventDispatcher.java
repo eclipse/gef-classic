@@ -51,6 +51,7 @@ protected org.eclipse.swt.widgets.Control control;
 private ToolTipHelper toolTipHelper;
 private FocusTraverseManager focusManager = new FocusTraverseManager();
 
+/** @see AccessibilityDispatcher **/
 /**
  * Implements {@link AccessibilityDispatcher} but does nothing in the implementation.
  */
@@ -98,7 +99,8 @@ public void dispatchFocusGained(org.eclipse.swt.events.FocusEvent e) {
 	 * set focus on first focusable child. 
 	 */
 	if (currentFocusOwner == null)
-		currentFocusOwner = getFocusTraverseManager().getNextFocusableFigure(root, focusOwner);
+		currentFocusOwner = 
+					getFocusTraverseManager().getNextFocusableFigure(root, focusOwner);
 	setFocus(currentFocusOwner);
 }
 
@@ -140,7 +142,8 @@ public void dispatchKeyTraversed(TraverseEvent e) {
 	if (e.detail == SWT.TRAVERSE_TAB_NEXT)
 		nextFigure = getFocusTraverseManager().getNextFocusableFigure(root, focusOwner);
 	else if (e.detail == SWT.TRAVERSE_TAB_PREVIOUS)
-		nextFigure = getFocusTraverseManager().getPreviousFocusableFigure(root, focusOwner);
+		nextFigure = 
+				getFocusTraverseManager().getPreviousFocusableFigure(root, focusOwner);
 
 	if (nextFigure == null)
 		e.doit = true;	
@@ -168,7 +171,7 @@ public void dispatchMouseHover(org.eclipse.swt.events.MouseEvent me) {
 		Control control = (Control)me.getSource();
 		org.eclipse.swt.graphics.Point absolute;
 		absolute = control.toDisplay(new org.eclipse.swt.graphics.Point(me.x, me.y));
-		toolTipHelper.displayToolTipNear(hoverSource, tip, absolute.x, absolute.y);			
+		toolTipHelper.displayToolTipNear(hoverSource, tip, absolute.x, absolute.y);
 	}
 }
 
@@ -194,7 +197,8 @@ public void dispatchMouseEntered(org.eclipse.swt.events.MouseEvent me) {
 public void dispatchMouseExited(org.eclipse.swt.events.MouseEvent me) {
 	setHoverSource(null, me);
 	if (mouseTarget != null) {
-		currentEvent = new MouseEvent(me.x, me.y, this, mouseTarget, me.button, me.stateMask);
+		currentEvent = 
+				new MouseEvent(me.x, me.y, this, mouseTarget, me.button, me.stateMask);
 		mouseTarget.handleMouseExited(currentEvent);
 	}
 	mouseTarget = null;
@@ -339,7 +343,8 @@ private void receive(org.eclipse.swt.events.MouseEvent me) {
 		IFigure f = root.findMouseEventTargetAt(me.x, me.y);
 		if (f == mouseTarget) {
 			if (mouseTarget != null)
-				currentEvent = new MouseEvent(me.x, me.y, this, mouseTarget, me.button, state);
+				currentEvent = 
+						new MouseEvent(me.x, me.y, this, mouseTarget, me.button, state);
 			return;
 		}
 		if (mouseTarget != null) {
@@ -477,7 +482,8 @@ protected void setHoverSource(Figure figure, org.eclipse.swt.events.MouseEvent m
 		org.eclipse.swt.graphics.Point absolute;
 		absolute = control.toDisplay(new org.eclipse.swt.graphics.Point(me.x, me.y));
 		toolTipHelper = getToolTipHelper();
-		toolTipHelper.updateToolTip(hoverSource, getCurrentToolTip(), absolute.x, absolute.y);	
+		toolTipHelper.updateToolTip(
+							hoverSource, getCurrentToolTip(), absolute.x, absolute.y);	
 	} else if (toolTipHelper != null) {
 		// Update with null to clear hoverSource in ToolTipHelper
 		toolTipHelper.updateToolTip(hoverSource, getCurrentToolTip(), me.x, me.y);

@@ -89,8 +89,8 @@ public RangeModel getHorizontalRangeModel() {
 /**
  * Returns <code>true</code> if the Viewport resizes itself in the vertical direction when 
  * the  available height of its view is decreased, false otherwise. This option is turned 
- * off by default, and can be activated by calling {@link #setContentsTracksHeight(boolean)}
- * and passing in <code>true</code>.
+ * off by default, and can be activated by calling 
+ * {@link #setContentsTracksHeight(boolean) and passing in <code>true</code>.
  * 
  * @return whether the contents tracks height
  * @since 2.0
@@ -169,10 +169,12 @@ public void propertyChange(PropertyChangeEvent event) {
 				localRevalidate();
 				if (useGraphicsTranslate()) {
 					repaint();
-					fireMoved(); //Must fire moved because the contents have been virtually scrolled.
+					fireMoved(); //Must fire moved because the contents have been 
+								 //virtually scrolled.
 				}
 			}
-			firePropertyChange(PROPERTY_VIEW_LOCATION, event.getOldValue(), event.getNewValue());
+			firePropertyChange(PROPERTY_VIEW_LOCATION, event.getOldValue(), 
+								event.getNewValue());
 		}
 	}
 }
@@ -187,8 +189,10 @@ public void propertyChange(PropertyChangeEvent event) {
 protected void readjustScrollBars() {
 	if (getContents() == null)
 		return;
-	getVerticalRangeModel().setAll(0, getClientArea().height, getContents().getBounds().height);		
-	getHorizontalRangeModel().setAll(0, getClientArea().width, getContents().getBounds().width);
+	getVerticalRangeModel().setAll(0, getClientArea().height, 
+									getContents().getBounds().height);		
+	getHorizontalRangeModel().setAll(0, getClientArea().width, 
+									getContents().getBounds().width);
 }
 
 /**

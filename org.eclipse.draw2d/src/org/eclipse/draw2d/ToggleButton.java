@@ -22,6 +22,7 @@ public class ToggleButton
 	extends Toggle
 {
 
+/**  This ToggleButton's Label **/
 protected Label label = null;
 
 /**
