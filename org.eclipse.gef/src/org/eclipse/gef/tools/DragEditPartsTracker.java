@@ -121,7 +121,7 @@ private void captureSourceDimensions() {
 		else
 			compoundSrcRect = new PrecisionRectangle(compoundSrcRect.union(bounds));
 		if (child == getSourceEditPart())
-			sourceRectangle = new PrecisionRectangle(bounds);
+			sourceRectangle = bounds;
 	}
 	if (sourceRectangle == null) {
 		/*
@@ -558,7 +558,7 @@ protected void updateTargetRequest() {
 	Point moveDelta = new Point(delta.width, delta.height);
 	request.getExtendedData().clear();
 	request.setMoveDelta(moveDelta);
-		
+	
 	if (snapToHelper != null && !getCurrentInput().isAltKeyDown()) {
 		PrecisionRectangle baseRect = sourceRectangle.getPreciseCopy();
 		PrecisionRectangle jointRect = compoundSrcRect.getPreciseCopy();
