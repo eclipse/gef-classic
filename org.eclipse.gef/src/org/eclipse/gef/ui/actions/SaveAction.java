@@ -11,6 +11,7 @@
 package org.eclipse.gef.ui.actions;
 
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.actions.ActionFactory;
 
 import org.eclipse.gef.internal.GEFMessages;
 
@@ -41,9 +42,9 @@ protected boolean calculateEnabled() {
  * Initializes this action's text.
  */
 protected void init() {
+	setId(ActionFactory.SAVE.getId());
 	setText(GEFMessages.SaveAction_Label);
 	setToolTipText(GEFMessages.SaveAction_Tooltip);
-	setId(GEFActionConstants.SAVE);
 }
 
 /**

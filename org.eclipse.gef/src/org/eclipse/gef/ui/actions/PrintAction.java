@@ -16,6 +16,7 @@ import org.eclipse.swt.printing.Printer;
 import org.eclipse.swt.printing.PrinterData;
 
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.actions.ActionFactory;
 
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.print.PrintGraphicalViewerOperation;
@@ -46,7 +47,7 @@ protected boolean calculateEnabled() {
  * @see org.eclipse.gef.ui.actions.EditorPartAction#init()
  */
 protected void init() {
-	setId(GEFActionConstants.PRINT);
+	setId(ActionFactory.PRINT.getId());
 }
 
 /**

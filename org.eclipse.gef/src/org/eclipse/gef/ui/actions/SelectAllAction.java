@@ -13,6 +13,7 @@ package org.eclipse.gef.ui.actions;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.actions.ActionFactory;
 
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.internal.GEFMessages;
@@ -35,7 +36,7 @@ public SelectAllAction(IWorkbenchPart part) {
 	this.part = part;
 	setText(GEFMessages.SelectAllAction_Label);
 	setToolTipText(GEFMessages.SelectAllAction_Tooltip);
-	setId(GEFActionConstants.SELECT_ALL);
+	setId(ActionFactory.SELECT_ALL.getId());
 }
 
 /**
