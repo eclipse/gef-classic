@@ -22,7 +22,54 @@ import org.eclipse.gef.commands.UnexecutableCommand;
 import org.eclipse.gef.tools.MarqueeDragTracker;
 
 /**
- * A Scalable RootEditPart
+ * A graphical root composed of regular {@link org.eclipse.draw2d.Layer Layers}. The
+ * layers are added to {@link org.eclipse.draw2d.LayeredPane} or {@link
+ * org.eclipse.draw2d.ScalableLayeredPane}.  All layers are positioned by {@link
+ * org.eclipse.draw2d.StackLayout}s, which means that the diagrams preferred size is the
+ * union of the preferred size of each layer, and all layers will be positioned to fill
+ * the entire diagram.
+ * <P>
+ * <EM>IMPORTANT</EM>ScalableRootEditPart uses a <code>Viewport</code> as its primary
+ * figure. It must be used with a {@link
+ * org.eclipse.gef.ui.parts.ScrollingGraphicalViewer}. The viewport gets installed into
+ * that viewer's {@link org.eclipse.draw2d.FigureCanvas}, which provides native scrollbars
+ * for scrolling the viewport.
+ * <P>
+ * The layer structure (top-to-bottom) for this root is:
+ * <table cellspacing="0" cellpadding="0">
+ *   <tr>
+ *     <td colspan="4">Root Layered Pane</td>
+ *   </tr>
+ *   <tr>
+ *     <td>&#9500;</td>
+ *     <td colspan="3">&nbsp;Feedback Layer</td>
+ *   </tr>
+ *   <tr>
+ *     <td>&#9500;</td>
+ *     <td colspan="3">&nbsp;Handle Layer</td>
+ *   </tr>
+ *   <tr>
+ *     <td>&#9492;</td>
+ *     <td colspan="2">&nbsp;Scalable Layers</td>
+ *     <td>({@link ScalableLayeredPane})</td>
+ *   </tr>
+ *   <tr>
+ *     <td>&nbsp;</td>
+ *     <td>&#9492;</td>
+ *     <td colspan="2">Printable Layers</td>
+ *   </tr>
+ *   <tr>
+ *     <td>&nbsp;</td>
+ *     <td>&nbsp;</td>
+ *     <td colspan="2">&#9500; Connection Layer</td>
+ *   </tr>
+ *   <tr>
+ *     <td>&nbsp;</td>
+ *     <td>&nbsp;</td>
+ *     <td>&#9492;&nbsp;Primary Layer</td>
+ *     <td>&nbsp;</td>
+ *   </tr>
+ * </table>
  * @author Eric Bordeau
  * @since 2.1.1
  */
@@ -48,11 +95,21 @@ class FeedbackLayer
 	}
 
 }
+
+/**
+ * The contents editpart.
+ * @deprecated call getContents()
+ */
 protected EditPart contents;
 private LayeredPane innerLayers;
 private LayeredPane printableLayers;
 
 private ScalableLayeredPane scaledLayers;
+
+/**
+ * The viewer.
+ * @deprecated call getViewer() to access
+ */
 protected EditPartViewer viewer;
 private ZoomManager zoomManager;
 
@@ -64,8 +121,14 @@ public ScalableRootEditPart() {
 		new ZoomManager((ScalableLayeredPane)getScaledLayers(), ((Viewport)getFigure()));
 }
 
-protected void createEditPolicies() {}
+/**
+ * @see org.eclipse.gef.editparts.AbstractEditPart#createEditPolicies()
+ */
+protected void createEditPolicies() { }
 
+/**
+ * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
+ */
 protected IFigure createFigure() {
 	Viewport viewport = createViewport();
 
@@ -81,15 +144,19 @@ protected IFigure createFigure() {
  */
 protected void createLayers(LayeredPane layeredPane) {
 	layeredPane.add(getScaledLayers(), SCALABLE_LAYERS);
-	layeredPane.add(new Layer(){
+	layeredPane.add(new Layer() {
 		public Dimension getPreferredSize(int wHint, int hHint) {
 			return new Dimension();
 		}
-
 	}, HANDLE_LAYER);
 	layeredPane.add(new FeedbackLayer(), FEEDBACK_LAYER);
 }
 
+/**
+ * Creates a layered pane and the layers that should be printed.
+ * @see org.eclipse.gef.print.PrintGraphicalViewerOperation
+ * @return a new LayeredPane containing the printable layers
+ */
 protected LayeredPane createPrintableLayers() {
 	printableLayers = new LayeredPane();
 	
@@ -98,16 +165,15 @@ protected LayeredPane createPrintableLayers() {
 	printableLayers.add(layer, PRIMARY_LAYER);
 
 	layer = new ConnectionLayer();
-	layer.setPreferredSize(new Dimension(5,5));
+	layer.setPreferredSize(new Dimension(5, 5));
 	printableLayers.add(layer, CONNECTION_LAYER);
 	
 	return printableLayers;
 }
 
 /**
- * Creates and returns the scalable layers of this EditPart
- * 
- * @return ScalableFreeformLayeredPane Pane that contains the scalable layers
+ * Creates a scalable layered pane and the layers that should be scaled.
+ * @return a new <code>ScalableLayeredPane</code> containing the scalable layers
  */
 protected ScalableLayeredPane createScaledLayers() {
 	ScalableLayeredPane layers = new ScalableLayeredPane();
@@ -115,40 +181,53 @@ protected ScalableLayeredPane createScaledLayers() {
 	return layers;
 }
 
+/**
+ * Constructs the viewport that will be used to contain all of the layers.
+ * @return a new Viewport
+ */
 protected Viewport createViewport() {
 	return new Viewport(true);
 }
 
-/** 
- * Doesnt provide any command support, returns an unexecutable command.
+/**
+ * The RootEditPart should never be asked for a command. The implementation returns an
+ * unexecutable command.
+ * @see org.eclipse.gef.EditPart#getCommand(org.eclipse.gef.Request)
  */
 public Command getCommand(Request req) {
 	return UnexecutableCommand.INSTANCE;
 }
 
 /**
- * Returns the figure to which childrens' figures will be added.
- * An example would be a ScrollPane.  Figures of child editpart are not
- * added to the ScrollPane, but to its ViewPort's View.
+ * The contents' Figure will be added to the PRIMARY_LAYER.
+ * @see org.eclipse.gef.GraphicalEditPart#getContentPane()
  */
 public IFigure getContentPane() {
 	return getLayer(PRIMARY_LAYER);
 }
 
+/**
+ * @see org.eclipse.gef.RootEditPart#getContents()
+ */
 public EditPart getContents() {
 	return contents;
 }
 
 /**
- * Return a drag tracker suitable for dragging this.
+ * Should not be called, but returns a MarqeeDragTracker for good measure.
+ * @see org.eclipse.gef.EditPart#getDragTracker(org.eclipse.gef.Request)
  */
 public DragTracker getDragTracker(Request req) {
-	// The drawing cannot be dragged.
+	/* 
+	 * The root will only be asked for a drag tracker if for some reason the contents
+	 * editpart says it is neither selector nor opaque.
+	 */
 	return new MarqueeDragTracker();
 }
 
 /**
- * @see org.eclipse.gef.ui.parts.FreeformGraphicalRootEditPart#getLayer(Object)
+ * Returns the layer indicated by the key. Searches all layered panes.
+ * @see LayerManager#getLayer(Object)
  */
 public IFigure getLayer(Object key) {
 	if (innerLayers == null)
@@ -163,12 +242,19 @@ public IFigure getLayer(Object key) {
 }
 
 /**
- * Returns the model of this EditPart. 
+ * The root editpart does not have a real model.  The LayerManager ID is returned so that
+ * this editpart gets registered using that key.
+ * @see org.eclipse.gef.EditPart#getModel()
  */
 public Object getModel() {
 	return LayerManager.ID;
 }
 
+/**
+ * Returns the LayeredPane that should be used during printing. This layer will be
+ * identified using {@link LayerConstants#PRINTABLE_LAYERS}.
+ * @return the layered pane containing all printable content
+ */
 protected LayeredPane getPrintableLayers() {
 	if (printableLayers == null)
 		printableLayers = createPrintableLayers();
@@ -176,8 +262,8 @@ protected LayeredPane getPrintableLayers() {
 }
 
 /**
- * Return this, as this is the root EditPart.
- * @return Root EditPart
+ * Returns <code>this</code>.
+ * @see org.eclipse.gef.EditPart#getRoot()
  */
 public RootEditPart getRoot() {
 	return this;
@@ -194,8 +280,8 @@ protected LayeredPane getScaledLayers() {
 }
 
 /**
- * Return the EditorView for this.
- * @param EditorView  The viewer for the Root.
+ * Returns the viewer that was set.
+ * @see org.eclipse.gef.EditPart#getViewer()
  */
 public EditPartViewer getViewer() {
 	return viewer;
@@ -209,24 +295,26 @@ public ZoomManager getZoomManager() {
 	return zoomManager;
 }
 
-public void refresh() {}
-
-protected void refreshChildren() {}
+/**
+ * Overridden to do nothing, child is set using setContents(EditPart)
+ * @see org.eclipse.gef.editparts.AbstractEditPart#refreshChildren()
+ */
+protected void refreshChildren() { }
 
 /**
- * Sets the contents.  The root contains a single child, called it's contents.
+ * @see org.eclipse.gef.RootEditPart#setContents(org.eclipse.gef.EditPart)
  */
 public void setContents(EditPart editpart) {
 	if (contents != null)
 		removeChild(contents);
 	contents = editpart;
 	if (contents != null)
-		addChild(contents,0);
+		addChild(contents, 0);
 }
 
 /**
- * Sets the viewer.
- * @param viewer EditPartViewer.
+ * Sets the EditPartViewer.
+ * @param newViewer the viewer
  */
 public void setViewer(EditPartViewer newViewer) {
 	if (viewer == newViewer)

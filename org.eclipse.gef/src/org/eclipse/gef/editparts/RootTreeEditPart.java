@@ -17,6 +17,13 @@ import org.eclipse.gef.*;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.UnexecutableCommand;
 
+/**
+ * The root editpart for a <code>TreeViewer</code>. There is limited control of a Tree, so
+ * this root implementation should work for all purposes.  This implementation does little
+ * more than hold onto the viewer, and pass the <code>Tree</code> to the contents as its
+ * widget.
+ * @author hudsonr
+ */
 public class RootTreeEditPart
 	extends org.eclipse.gef.editparts.AbstractEditPart
 	implements RootEditPart, TreeEditPart
@@ -33,40 +40,57 @@ private TreeEditPart contents;
  * @param childEditPart  EditPart of child to be added.
  * @param index  Position where it is to be added.
  */
-protected void addChildVisual(EditPart childEditPart, int index){
+protected void addChildVisual(EditPart childEditPart, int index) {
 	((TreeEditPart)childEditPart).setWidget(widget);
 }
 
-protected void createEditPolicies(){}
+/**
+ * @see org.eclipse.gef.editparts.AbstractEditPart#createEditPolicies()
+ */
+protected void createEditPolicies() { }
 
+/**
+ * @see org.eclipse.gef.EditPart#getCommand(org.eclipse.gef.Request)
+ */
 public Command getCommand(Request request) {
 	return UnexecutableCommand.INSTANCE;
 }
 
-public EditPart getContents(){
+/**
+ * @see org.eclipse.gef.RootEditPart#getContents()
+ */
+public EditPart getContents() {
 	return contents;
 }
 
-public DragTracker getDragTracker(Request request){
+/**
+ * This method will never be called on a tree root.
+ * @see org.eclipse.gef.EditPart#getDragTracker(org.eclipse.gef.Request)
+ */
+public DragTracker getDragTracker(Request request) {
 	return null;
 }
 
 /**
- * Returns itself
+ * Returns <code>this</code>.
+ * @see org.eclipse.gef.EditPart#getRoot()
  */
-public RootEditPart getRoot(){
+public RootEditPart getRoot() {
 	return this;
 }
 
 /**
- * Return the viewer that this root view object lives in.
- * @param viewer org.eclipse.gef.IGEFViewer  The viewer.
+ * @see org.eclipse.gef.RootEditPart#getViewer()
  */
-public EditPartViewer getViewer(){
+public EditPartViewer getViewer() {
 	return viewer;
 }
 
-public Widget getWidget(){
+/**
+ * The editpart holds onto the SWT Tree, which is also the contents' widget.
+ * @see org.eclipse.gef.TreeEditPart#getWidget()
+ */
+public Widget getWidget() {
 	return widget;
 }
 
@@ -81,28 +105,34 @@ protected void removeChildVisual(EditPart childEditPart) {
 	((TreeEditPart)childEditPart).setWidget(null);
 }
 
-public void setContents(EditPart editpart){
-	if(contents != null){
-		if(getWidget() != null)
+/**
+ * @see org.eclipse.gef.RootEditPart#setContents(org.eclipse.gef.EditPart)
+ */
+public void setContents(EditPart editpart) {
+	if (contents != null) {
+		if (getWidget() != null)
 			((Tree)getWidget()).removeAll();
 		removeChild(contents);
 	}
 	contents = (TreeEditPart)editpart;
-	if(contents != null){
+
+	if (contents != null)
 		addChild(contents, -1);
-	}
 }
 
 /**
- * Set the viewer that this root view object lives in.
- * @param viewer org.eclipse.gef.IGEFViewer  The viewer.
+ * @see org.eclipse.gef.RootEditPart#setViewer(org.eclipse.gef.EditPartViewer)
  */
-public void setViewer(EditPartViewer epviewer){
+public void setViewer(EditPartViewer epviewer) {
 	viewer = epviewer;
-//	setWidget(viewer.getControl());
 }
 
-public void setWidget(Widget w){
+/**
+ * Called by <code>TreeViewer</code> to set the <code>Tree</code> into the root.  The root
+ * simply holds onto this widget and passes it to the contents when the contents is added.
+ * @see org.eclipse.gef.TreeEditPart#setWidget(org.eclipse.swt.widgets.Widget)
+ */
+public void setWidget(Widget w) {
 	widget = w;
 	if (contents != null)
 		contents.setWidget(w);

@@ -32,13 +32,25 @@ public class GraphicalRootEditPart
 	implements RootEditPart, LayerConstants, LayerManager
 {
 
+/**
+ * The contents
+ */
 protected EditPart contents;
+/**
+ * the viewer
+ */
 protected EditPartViewer viewer;
 private LayeredPane innerLayers;
 private LayeredPane printableLayers;
 
-protected void createEditPolicies(){}
+/**
+ * @see org.eclipse.gef.editparts.AbstractEditPart#createEditPolicies()
+ */
+protected void createEditPolicies() { }
 
+/**
+ * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
+ */
 protected IFigure createFigure() {
 	innerLayers = new LayeredPane();
 	printableLayers = new LayeredPane();
@@ -48,40 +60,44 @@ protected IFigure createFigure() {
 	printableLayers.add(layer, PRIMARY_LAYER);
 
 	layer = new ConnectionLayer();
-	layer.setPreferredSize(new Dimension(5,5));
+	layer.setPreferredSize(new Dimension(5, 5));
 	printableLayers.add(layer, CONNECTION_LAYER);
 
 	innerLayers.add(printableLayers, PRINTABLE_LAYERS);
 	
 	layer = new Layer();
-	layer.setPreferredSize(new Dimension(5,5));
+	layer.setPreferredSize(new Dimension(5, 5));
 	innerLayers.add(layer, HANDLE_LAYER);
 
 	layer = new FeedbackLayer();
-	layer.setPreferredSize(new Dimension(5,5));
+	layer.setPreferredSize(new Dimension(5, 5));
 	innerLayers.add(layer, FEEDBACK_LAYER);
 	
 	ScrollPane pane = new ScrollPane();
-	pane.setViewport( new Viewport(true) );
-	pane.setContents( innerLayers );
+	pane.setViewport(new Viewport(true));
+	pane.setContents(innerLayers);
 
 	return pane;
 }
 
-/** 
- * Doesnt provide any command support, returns an
- * un-executable command
+/**
+ * Returns the unexecutable command.
+ * @see org.eclipse.gef.EditPart#getCommand(org.eclipse.gef.Request)
  */
-public Command getCommand(Request req){
+public Command getCommand(Request req) {
 	return UnexecutableCommand.INSTANCE;
 }
 
-public EditPart getContents(){
+/**
+ * @see org.eclipse.gef.RootEditPart#getContents()
+ */
+public EditPart getContents() {
 	return contents;
 }
 
 /**
- * Return a drag tracker suitable for dragging this.
+ * Should never be called.
+ * @see org.eclipse.gef.EditPart#getDragTracker(org.eclipse.gef.Request)
  */
 public DragTracker getDragTracker(Request req) {
 	// The drawing cannot be dragged.
@@ -89,9 +105,9 @@ public DragTracker getDragTracker(Request req) {
 }
 
 /**
- * Returns the layer for the given key
+ * @see LayerManager#getLayer(java.lang.Object)
  */
-public IFigure getLayer(Object key){
+public IFigure getLayer(Object key) {
 	if (innerLayers == null)
 		return null;
 	
@@ -102,51 +118,53 @@ public IFigure getLayer(Object key){
 }
 
 /**
- * Returns the figure to which childrens' figures will be added.
- * An example would be a ScrollPane.  Figures of child editpart are not
- * added to the ScrollPane, but to its ViewPort's View.
+ * Returns the primary layer, which will parent the contents editpart.
+ * @see org.eclipse.gef.GraphicalEditPart#getContentPane()
  */
-public IFigure getContentPane(){
+public IFigure getContentPane() {
 	return getLayer(PRIMARY_LAYER);
 }
 
 /**
- * Returns the model of this EditPart. 
+ * @see org.eclipse.gef.EditPart#getModel()
  */
-public Object getModel(){
+public Object getModel() {
 	return LayerManager.ID;
 }
 
 /**
- * Return this, as this is the root EditPart.
- * @return Root EditPart
+ * Returns <code>this</code>.
+ * @see org.eclipse.gef.EditPart#getRoot()
  */
-public RootEditPart getRoot() {return this;}
+public RootEditPart getRoot() {
+	return this;
+}
 
 /**
- * Return the EditorView for this.
- * @param EditorView  The viewer for the Root.
+ * @see org.eclipse.gef.EditPart#getViewer()
  */
-public EditPartViewer getViewer() {return viewer;}
-
-public void refresh(){}
-
-protected void refreshChildren(){}
+public EditPartViewer getViewer() {
+	return viewer;
+}
 
 /**
- * Sets the contents.  The root contains a single child, called it's contents.
+ * @see org.eclipse.gef.editparts.AbstractEditPart#refreshChildren()
  */
-public void setContents(EditPart editpart){
+protected void refreshChildren() { }
+
+/**
+ * @see org.eclipse.gef.RootEditPart#setContents(org.eclipse.gef.EditPart)
+ */
+public void setContents(EditPart editpart) {
 	if (contents != null)
 		removeChild(contents);
 	contents = editpart;
 	if (contents != null)
-		addChild(contents,0);
+		addChild(contents, 0);
 }
 
 /**
- * Sets the viewer.
- * @param viewer EditPartViewer.
+ * @see org.eclipse.gef.RootEditPart#setViewer(org.eclipse.gef.EditPartViewer)
  */
 public void setViewer(EditPartViewer newViewer) {
 	if (viewer == newViewer)
