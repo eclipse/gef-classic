@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.gef.examples"
       label="%featureName"
-      version="2.1.2"
+      version="3.0.0"
       provider-name="%providerName"
       image="eclipse_update_120.jpg">
 
@@ -15,7 +15,7 @@
    </license>
 
    <requires>
-      <import plugin="org.eclipse.gef" version="2.1.2" match="compatible"/>
+      <import plugin="org.eclipse.gef" version="3.0.0" match="compatible"/>
    </requires>
 
    <plugin
