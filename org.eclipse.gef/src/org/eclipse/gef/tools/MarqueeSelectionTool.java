@@ -61,13 +61,12 @@ private List calculateNewSelection() {
 		Rectangle r = figure.getBounds().getCopy();
 		figure.translateToAbsolute(r);
 
-		if ( getMarqueeSelectionRectangle().contains(r.getTopLeft()) &&
-			  getMarqueeSelectionRectangle().contains(r.getBottomRight()) && 
-			  figure.isVisible() ){
-				if(child.getTargetEditPart(MARQUEE_REQUEST) == child)
-					newSelections.add(child);			
-		}
-	}	
+		if (getMarqueeSelectionRectangle().contains(r.getTopLeft())
+		  && getMarqueeSelectionRectangle().contains(r.getBottomRight())
+		  && figure.isShowing()
+		  && child.getTargetEditPart(MARQUEE_REQUEST) == child)
+			newSelections.add(child);
+	}
 	return newSelections;
 }
 
