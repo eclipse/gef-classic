@@ -8,19 +8,15 @@ package org.eclipse.gef.examples.logicdesigner.edit;
 
 import java.util.*;
 
-import org.eclipse.swt.accessibility.*;
+import org.eclipse.draw2d.ConnectionAnchor;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.gef.*;
+import org.eclipse.gef.examples.logicdesigner.LogicMessages;
+import org.eclipse.gef.examples.logicdesigner.figures.LEDFigure;
+import org.eclipse.gef.examples.logicdesigner.model.LED;
 import org.eclipse.swt.accessibility.AccessibleControlEvent;
 import org.eclipse.swt.accessibility.AccessibleEvent;
 import org.eclipse.swt.graphics.Image;
-
-import org.eclipse.draw2d.*;
-
-import org.eclipse.gef.*;
-
-import org.eclipse.gef.examples.logicdesigner.model.*;
-import org.eclipse.gef.examples.logicdesigner.LogicMessages;
-import org.eclipse.gef.examples.logicdesigner.LogicPlugin;
-import org.eclipse.gef.examples.logicdesigner.figures.*;
 
 /**
  * Holds the EditPart signifying an LED.

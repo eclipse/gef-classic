@@ -6,15 +6,14 @@ package org.eclipse.gef.editpolicies;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.geometry.*;
-
-import org.eclipse.gef.*;
-import org.eclipse.gef.requests.*;
+import org.eclipse.gef.GraphicalEditPart;
+import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
-import org.eclipse.gef.handles.*;
+import org.eclipse.gef.handles.ResizableHandleKit;
+import org.eclipse.gef.requests.ChangeBoundsRequest;
 
 public class ResizableEditPolicy
 	extends NonResizableEditPolicy

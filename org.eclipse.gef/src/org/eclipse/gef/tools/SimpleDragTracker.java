@@ -6,20 +6,13 @@ package org.eclipse.gef.tools;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import java.util.*;
-
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.graphics.Cursor;
-
+import java.util.List;
 
 import org.eclipse.gef.*;
-import org.eclipse.gef.GEF;
-import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.UnexecutableCommand;
-
-import org.eclipse.draw2d.geometry.*;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.graphics.Cursor;
 
 /**
  * A tool that interacts with one or more sources only.

@@ -6,11 +6,8 @@ package org.eclipse.gef.examples.logicdesigner.edit;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.draw2d.*;
-import org.eclipse.gef.*;
-import org.eclipse.gef.requests.ReconnectRequest;
-
-import org.eclipse.gef.examples.logicdesigner.model.Wire;
+import org.eclipse.draw2d.PolylineConnection;
+import org.eclipse.gef.GraphicalEditPart;
 
 public class WireEndpointEditPolicy
 	extends org.eclipse.gef.editpolicies.ConnectionEndpointEditPolicy 

@@ -6,12 +6,12 @@ package org.eclipse.gef.ui.palette;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.geometry.*;
-import org.eclipse.gef.palette.*;
-import org.eclipse.gef.*;
 import java.util.List;
-import org.eclipse.swt.graphics.Color;
+
+import org.eclipse.draw2d.*;
+import org.eclipse.gef.EditPart;
+import org.eclipse.gef.GraphicalEditPart;
+import org.eclipse.gef.palette.PaletteRoot;
 
 public class SliderPaletteEditPart 
 	extends PaletteEditPart

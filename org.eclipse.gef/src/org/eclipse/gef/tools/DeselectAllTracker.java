@@ -6,8 +6,7 @@ package org.eclipse.gef.tools;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.gef.*;
+import org.eclipse.gef.EditPart;
 
 public class DeselectAllTracker
 	extends SelectEditPartTracker

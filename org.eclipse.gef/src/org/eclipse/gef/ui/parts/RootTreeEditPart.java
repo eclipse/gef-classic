@@ -6,13 +6,11 @@ package org.eclipse.gef.ui.parts;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import java.util.ArrayList;
-
-import org.eclipse.swt.widgets.Widget;
-import org.eclipse.swt.widgets.Tree;
-
 import org.eclipse.gef.*;
-import org.eclipse.gef.commands.*;
+import org.eclipse.gef.commands.Command;
+import org.eclipse.gef.commands.UnexecutableCommand;
+import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.Widget;
 
 public class RootTreeEditPart
 	extends org.eclipse.gef.editparts.AbstractEditPart

@@ -6,18 +6,16 @@ package org.eclipse.gef.ui.parts;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
  
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
-import org.eclipse.swt.graphics.Cursor;
+import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.gef.*;
 import org.eclipse.swt.accessibility.*;
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.MouseEvent;
-
-import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.geometry.*;
-
-import org.eclipse.gef.*;
+import org.eclipse.swt.graphics.Cursor;
 
 public class DomainEventDispatcher
 	extends SWTEventDispatcher

@@ -8,17 +8,14 @@ package org.eclipse.gef.tools;
 
 import java.util.List;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.graphics.Cursor;
-
 import org.eclipse.draw2d.PositionConstants;
-import org.eclipse.draw2d.geometry.*;
-
+import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.gef.*;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CompoundCommand;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
+import org.eclipse.swt.graphics.Cursor;
 
 
 public class ResizeTracker

@@ -6,15 +6,10 @@ package org.eclipse.gef.handles;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Cursor;
-import org.eclipse.swt.widgets.Display;
-
 import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.*;
-
-import org.eclipse.gef.*;
+import org.eclipse.gef.GraphicalEditPart;
+import org.eclipse.swt.graphics.Color;
 
 /**
  * A {@link Border} with a triangle in each corner.

@@ -6,11 +6,10 @@ package org.eclipse.gef.handles;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.geometry.*;
-
-import org.eclipse.gef.*;
-import org.eclipse.gef.tools.*;
+import org.eclipse.draw2d.ConnectionLocator;
+import org.eclipse.gef.ConnectionEditPart;
+import org.eclipse.gef.DragTracker;
+import org.eclipse.gef.tools.ConnectionEndpointTracker;
 
 /**
  * A handle used at the start of the {@link Connection}.  This is

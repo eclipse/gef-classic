@@ -6,11 +6,10 @@ package org.eclipse.gef;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import java.util.*;
+import java.util.List;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.gef.commands.Command;
-import org.eclipse.jface.action.*;
 
 
 

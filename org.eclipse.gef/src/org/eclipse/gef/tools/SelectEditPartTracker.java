@@ -6,13 +6,10 @@ package org.eclipse.gef.tools;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import java.util.*;
-
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Cursor;
+import java.util.List;
 
 import org.eclipse.gef.*;
-import org.eclipse.gef.ui.parts.TreeViewer;
+import org.eclipse.swt.graphics.Cursor;
 
 public class SelectEditPartTracker
 	extends TargetingTool

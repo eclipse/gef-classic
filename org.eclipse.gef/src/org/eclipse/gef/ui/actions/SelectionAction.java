@@ -6,12 +6,12 @@ package org.eclipse.gef.ui.actions;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 
 import org.eclipse.jface.viewers.*;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.internal.WorkbenchPlugin;
 
 /**
  * Superclass for an action needing the current selection.

@@ -8,10 +8,9 @@ package org.eclipse.gef.ui.parts;
 
 import java.util.*;
 
-import org.eclipse.ui.*;
+import org.eclipse.gef.EditPart;
+import org.eclipse.gef.EditPartViewer;
 import org.eclipse.jface.viewers.*;
-
-import org.eclipse.gef.*;
 
 public class SelectionSynchronizer
 	implements ISelectionChangedListener

@@ -6,15 +6,15 @@ package org.eclipse.gef.ui.parts;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import java.util.*;
+import java.util.Collection;
 
 import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.geometry.*;
-
 import org.eclipse.gef.*;
-import org.eclipse.gef.editparts.*;
-import org.eclipse.gef.tools.*;
-import org.eclipse.gef.commands.*;
+import org.eclipse.gef.commands.Command;
+import org.eclipse.gef.commands.UnexecutableCommand;
+import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
+import org.eclipse.gef.editparts.LayerManager;
+import org.eclipse.gef.tools.MarqueeDragTracker;
 
 /**
  * Provides support for representation of any other graphical

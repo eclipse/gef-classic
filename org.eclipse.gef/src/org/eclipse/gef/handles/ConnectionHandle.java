@@ -9,16 +9,8 @@ package org.eclipse.gef.handles;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Cursor;
-import org.eclipse.swt.widgets.Display;
-
-import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.geometry.*;
-
-import org.eclipse.gef.*;
-import org.eclipse.gef.commands.*;
-import org.eclipse.gef.tools.*;
+import org.eclipse.draw2d.Connection;
+import org.eclipse.draw2d.Cursors;
 
 /**
  * A handle used on a {@link Connection}.

@@ -7,14 +7,14 @@ package org.eclipse.gef;
  */
 
 import java.util.*;
-import org.eclipse.swt.graphics.Cursor;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.gef.dnd.*;
 
+import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.gef.dnd.TransferDragSourceListener;
+import org.eclipse.gef.dnd.TransferDropTargetListener;
 import org.eclipse.gef.ui.parts.ContextMenuProvider;
-import org.eclipse.draw2d.geometry.*;
-import org.eclipse.draw2d.util.*;
+import org.eclipse.swt.graphics.Cursor;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 
 /**
  * Displays EditParts, manages selection, and routes Input events to

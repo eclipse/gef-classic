@@ -6,13 +6,11 @@ package org.eclipse.gef.handles;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.swt.graphics.Color;
+import org.eclipse.draw2d.Cursors;
+import org.eclipse.draw2d.Locator;
+import org.eclipse.gef.DragTracker;
+import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.swt.graphics.Cursor;
-
-import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.geometry.*;
-
-import org.eclipse.gef.*;
 
 /**
  * A Handle used to resize a GraphicalEditPart.

@@ -6,15 +6,10 @@ package org.eclipse.gef.examples.logicdesigner.edit;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import java.util.*;
-
-import org.eclipse.gef.requests.BendpointRequest;
-import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.geometry.*;
-
+import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.gef.commands.Command;
-import org.eclipse.gef.examples.logicdesigner.*;
 import org.eclipse.gef.examples.logicdesigner.model.*;
+import org.eclipse.gef.requests.BendpointRequest;
 
 public class WireBendpointEditPolicy 
 	extends org.eclipse.gef.editpolicies.BendpointEditPolicy

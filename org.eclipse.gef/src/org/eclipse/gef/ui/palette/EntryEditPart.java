@@ -7,20 +7,13 @@ package org.eclipse.gef.ui.palette;
  */
 
 import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.FocusEvent;
-import org.eclipse.gef.palette.*;
-
-import org.eclipse.swt.accessibility.ACC;
-import org.eclipse.swt.accessibility.AccessibleControlEvent;
-import org.eclipse.swt.accessibility.AccessibleEvent;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.draw2d.geometry.*;
-import org.eclipse.swt.widgets.Control;
-
+import org.eclipse.draw2d.geometry.Insets;
+import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.gef.AccessibleEditPart;
-import org.eclipse.gef.EditPart;
-import org.eclipse.gef.EditPartListener;
-import org.eclipse.gef.EditPartViewer;
+import org.eclipse.gef.palette.PaletteEntry;
+import org.eclipse.swt.accessibility.*;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.widgets.Control;
 
 public class EntryEditPart
 	extends PaletteEditPart

@@ -6,12 +6,9 @@ package org.eclipse.gef.editpolicies;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import java.util.*;
-
-
-import org.eclipse.gef.*;
+import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
-import org.eclipse.gef.requests.*;
+import org.eclipse.gef.requests.DeleteRequest;
 
 abstract public class ConnectionEditPolicy
 	extends AbstractEditPolicy

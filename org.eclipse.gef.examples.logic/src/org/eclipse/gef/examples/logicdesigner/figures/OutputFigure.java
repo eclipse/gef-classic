@@ -6,13 +6,10 @@ package org.eclipse.gef.examples.logicdesigner.figures;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.geometry.*;
-
+import org.eclipse.draw2d.Label;
+import org.eclipse.draw2d.StackLayout;
+import org.eclipse.gef.examples.logicdesigner.model.SimpleOutput;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.gef.examples.logicdesigner.model.*;
-
-import java.util.Vector;
 
 public class OutputFigure 
 	extends NodeFigure 

@@ -6,7 +6,6 @@ package org.eclipse.gef.palette;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.gef.tools.*;
 import org.eclipse.gef.Tool;
 import org.eclipse.swt.graphics.Image;
 

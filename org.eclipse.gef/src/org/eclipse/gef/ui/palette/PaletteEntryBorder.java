@@ -7,8 +7,8 @@ package org.eclipse.gef.ui.palette;
  */
 
 import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.geometry.*;
-import org.eclipse.swt.graphics.Color;
+import org.eclipse.draw2d.geometry.Insets;
+import org.eclipse.draw2d.geometry.Rectangle;
 
 final public class PaletteEntryBorder 
 	extends org.eclipse.draw2d.AbstractBorder 

@@ -6,14 +6,10 @@ package org.eclipse.gef.examples.logicdesigner;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import java.io.*;
-
-import org.eclipse.draw2d.geometry.*;
-
-import org.eclipse.gef.requests.CreateRequest;
-
-import org.eclipse.gef.commands.Command;
+import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.gef.examples.logicdesigner.model.*;
+import org.eclipse.gef.requests.CreateRequest;
 
 public class LogicDiagramFactory {
 

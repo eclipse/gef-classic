@@ -6,10 +6,7 @@ package org.eclipse.gef.examples.logicdesigner.model;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import java.util.*;
-
-import org.eclipse.draw2d.geometry.*;
-import org.eclipse.ui.views.properties.IPropertyDescriptor;
+import org.eclipse.draw2d.geometry.Dimension;
 
 abstract public class SimpleOutput
 	extends LogicSubpart

@@ -6,23 +6,17 @@ package org.eclipse.gef.examples.logicdesigner.edit;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import java.util.*;
 import java.beans.PropertyChangeEvent;
-
-import org.eclipse.swt.accessibility.AccessibleEvent;
-import org.eclipse.swt.widgets.Display;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.geometry.*;
-
 import org.eclipse.gef.*;
-import org.eclipse.gef.commands.*;
 import org.eclipse.gef.editpolicies.RootComponentEditPolicy;
-import org.eclipse.gef.tools.*;
-import org.eclipse.gef.tools.DeselectAllTracker;
-
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
-import org.eclipse.gef.examples.logicdesigner.model.*;
+import org.eclipse.gef.examples.logicdesigner.model.LogicDiagram;
+import org.eclipse.gef.tools.MarqueeDragTracker;
+import org.eclipse.swt.accessibility.AccessibleEvent;
 
 /**
  * Holds all other LogicEditParts under this. It is 

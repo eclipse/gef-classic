@@ -8,18 +8,13 @@ package org.eclipse.gef.examples.logicdesigner.edit;
 
 import java.util.*;
 
-import org.eclipse.swt.graphics.Color;
-
-import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Rectangle;
-
 import org.eclipse.gef.*;
-
-import org.eclipse.gef.examples.logicdesigner.model.*;
-import org.eclipse.gef.examples.logicdesigner.figures.*;
 import org.eclipse.gef.editparts.ViewportExposeHelper;
 import org.eclipse.gef.examples.logicdesigner.LogicColorConstants;
+import org.eclipse.gef.examples.logicdesigner.figures.CircuitFigure;
 
 /**
  * Holds a circuit, which is a container capable of 

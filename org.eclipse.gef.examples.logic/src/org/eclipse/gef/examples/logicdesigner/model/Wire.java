@@ -7,10 +7,7 @@ package org.eclipse.gef.examples.logicdesigner.model;
  */
 
 import java.util.*;
-import org.eclipse.ui.views.properties.IPropertyDescriptor;
-import org.eclipse.gef.*;
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.Connection;
+
 import org.eclipse.draw2d.Bendpoint;
 
 public class Wire

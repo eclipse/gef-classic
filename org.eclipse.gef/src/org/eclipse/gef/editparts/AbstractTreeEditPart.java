@@ -6,19 +6,14 @@ package org.eclipse.gef.editparts;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import java.util.*;
-
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Widget;
-import org.eclipse.swt.widgets.TreeItem;
-import org.eclipse.swt.widgets.Tree;
-import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.events.DisposeEvent;
-
-import org.eclipse.jface.viewers.StructuredSelection;
+import java.util.Iterator;
+import java.util.List;
 
 import org.eclipse.gef.*;
-import org.eclipse.gef.commands.*;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.*;
 
 /**
  * Provides support for EditParts which belong to the

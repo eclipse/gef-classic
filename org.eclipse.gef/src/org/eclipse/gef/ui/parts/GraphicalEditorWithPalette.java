@@ -6,14 +6,12 @@ package org.eclipse.gef.ui.parts;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
+import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.gef.palette.PaletteRoot;
+import org.eclipse.gef.ui.palette.PaletteViewer;
+import org.eclipse.gef.ui.palette.PaletteViewerImpl;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
-
-import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.FigureUtilities;
-
-import org.eclipse.gef.palette.PaletteRoot;
-import org.eclipse.gef.ui.palette.*;
 
 public abstract class GraphicalEditorWithPalette 
 	extends GraphicalEditor 

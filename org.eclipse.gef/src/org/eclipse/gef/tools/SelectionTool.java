@@ -7,21 +7,16 @@ package org.eclipse.gef.tools;
  */
 
 import java.lang.ref.WeakReference;
-import java.util.*;
+import java.util.List;
 
-
+import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.gef.*;
+import org.eclipse.gef.requests.LocationRequest;
+import org.eclipse.gef.requests.SelectionRequest;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DragSourceEvent;
-import org.eclipse.swt.events.*;
-
-import org.eclipse.draw2d.geometry.*;
-
-import org.eclipse.gef.*;
-import org.eclipse.gef.handles.*;
-import org.eclipse.gef.ui.parts.TreeViewer;
-import org.eclipse.gef.requests.*;
-import org.eclipse.gef.commands.Command;
-import org.eclipse.gef.editparts.AbstractTreeEditPart;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.MouseEvent;
 
 /**
  * Tool to select and manipulate figures.

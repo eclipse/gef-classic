@@ -8,14 +8,10 @@ package org.eclipse.gef.tools;
 
 import java.util.*;
 
-import org.eclipse.jface.viewers.StructuredSelection;
-
 import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.geometry.*;
-
+import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.*;
-import org.eclipse.gef.commands.*;
-import org.eclipse.gef.editparts.*;
+import org.eclipse.jface.viewers.StructuredSelection;
 
 /**
  * This tool implements the selection of multiple objects in rectangular area.

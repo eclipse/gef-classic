@@ -12,9 +12,8 @@ package org.eclipse.gef.internal;
  * restricted by GSA ADP Schedule Contract with IBM Corp. 
  */
 
-import org.eclipse.jface.resource.*;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.ui.internal.*;
 
 public class SharedImages {
 

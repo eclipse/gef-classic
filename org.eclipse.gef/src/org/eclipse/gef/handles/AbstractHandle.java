@@ -6,13 +6,10 @@ package org.eclipse.gef.handles;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.swt.graphics.Cursor;
-import org.eclipse.swt.widgets.*;
-
 import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.geometry.*;
-
+import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.gef.*;
+import org.eclipse.swt.graphics.Cursor;
 
 /**
  * Base class for handles.

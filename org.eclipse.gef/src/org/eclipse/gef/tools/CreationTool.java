@@ -6,17 +6,11 @@ package org.eclipse.gef.tools;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import java.util.*;
-
-import org.eclipse.swt.widgets.Display;
-
-
-import org.eclipse.draw2d.geometry.*;
-
+import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.*;
-import org.eclipse.gef.requests.*;
-import org.eclipse.gef.commands.Command;
-import org.eclipse.gef.editparts.LayerManager;
+import org.eclipse.gef.requests.CreateRequest;
+import org.eclipse.swt.widgets.Display;
 
 public class CreationTool
 	extends TargetingTool

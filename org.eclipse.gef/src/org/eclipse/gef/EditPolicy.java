@@ -6,11 +6,7 @@ package org.eclipse.gef;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.jface.action.*;
-
-import org.eclipse.gef.*;
-import org.eclipse.gef.commands.*;
-import org.eclipse.gef.tools.*;
+import org.eclipse.gef.commands.Command;
 
 /**
 Responsible for providing <u>one</u> type of editing behavior

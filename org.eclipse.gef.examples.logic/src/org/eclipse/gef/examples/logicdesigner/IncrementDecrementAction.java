@@ -6,19 +6,15 @@ package org.eclipse.gef.examples.logicdesigner;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import java.util.*;
-
-import org.eclipse.ui.IEditorPart;
-import org.eclipse.jface.resource.ImageDescriptor;
-
+import java.util.List;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
-import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.gef.commands.CompoundCommand;
-
 import org.eclipse.gef.examples.logicdesigner.model.LED;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.ui.IEditorPart;
 
 public class IncrementDecrementAction
 	extends org.eclipse.gef.ui.actions.SelectionAction

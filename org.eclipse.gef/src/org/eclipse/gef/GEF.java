@@ -6,11 +6,10 @@ package org.eclipse.gef;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.events.*;
-import org.eclipse.swt.widgets.*;
-import org.eclipse.swt.SWT;
-import java.text.*;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
+import org.eclipse.swt.widgets.Text;
 
 /**
  * This is an internal class used for debugging and code management

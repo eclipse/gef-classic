@@ -6,15 +6,12 @@ package org.eclipse.gef.handles;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Cursor;
-import org.eclipse.swt.widgets.Display;
-
 import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.geometry.*;
-
-import org.eclipse.gef.*;
-import org.eclipse.gef.tools.*;
+import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.gef.DragTracker;
+import org.eclipse.gef.GraphicalEditPart;
+import org.eclipse.gef.tools.DragEditPartsTracker;
 
 /**
  * A Handle used for moving {@link GraphicalEditPart}s.

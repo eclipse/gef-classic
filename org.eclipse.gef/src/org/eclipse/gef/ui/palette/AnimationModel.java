@@ -6,12 +6,7 @@ package org.eclipse.gef.ui.palette;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.gef.palette.*;
-
-import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.geometry.*;
-
-import java.util.*;
+import java.util.Date;
 
 /**
  * Holds the count information, and notifies

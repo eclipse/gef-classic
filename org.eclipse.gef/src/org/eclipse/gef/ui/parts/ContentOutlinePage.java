@@ -6,13 +6,10 @@ package org.eclipse.gef.ui.parts;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
+import org.eclipse.gef.EditPartViewer;
 import org.eclipse.jface.viewers.*;
-
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-
-import org.eclipse.gef.EditPartViewer;
 
 public class ContentOutlinePage 
 	extends org.eclipse.ui.part.Page 

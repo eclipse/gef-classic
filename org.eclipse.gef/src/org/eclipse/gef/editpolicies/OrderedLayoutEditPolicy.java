@@ -6,15 +6,15 @@ package org.eclipse.gef.editpolicies;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import java.util.*;
-import org.eclipse.gef.tools.*;
-import org.eclipse.gef.commands.*;
+import java.util.List;
+
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.gef.*;
-import org.eclipse.gef.handles.*;
-import org.eclipse.gef.requests.*;
-import org.eclipse.draw2d.geometry.*;
-import org.eclipse.draw2d.*;
-import org.eclipse.swt.widgets.Listener;
+import org.eclipse.gef.commands.Command;
+import org.eclipse.gef.commands.CompoundCommand;
+import org.eclipse.gef.requests.ChangeBoundsRequest;
+import org.eclipse.gef.requests.CreateRequest;
 
 abstract public class OrderedLayoutEditPolicy
 	extends LayoutEditPolicy

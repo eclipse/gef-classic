@@ -9,18 +9,15 @@ package org.eclipse.gef.ui.parts;
 import java.util.*;
 import java.util.List;
 
-import org.eclipse.swt.widgets.*;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.events.*;
-import org.eclipse.swt.dnd.*;
-import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.viewers.ISelection;
-
-import org.eclipse.draw2d.geometry.*;
-
-import org.eclipse.gef.*;
+import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.gef.EditPart;
+import org.eclipse.gef.TreeEditPart;
 import org.eclipse.gef.internal.Timer;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.*;
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.*;
 
 public class TreeViewer
 	extends AbstractEditPartViewer

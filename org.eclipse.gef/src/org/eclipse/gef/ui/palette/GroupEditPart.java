@@ -7,11 +7,8 @@ package org.eclipse.gef.ui.palette;
  */
 
 import org.eclipse.draw2d.*;
-import org.eclipse.gef.palette.*;
-import org.eclipse.gef.*;
-import java.util.*;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.draw2d.geometry.Insets;
+import org.eclipse.gef.palette.PaletteContainer;
 
 public class GroupEditPart 
 	extends PaletteEditPart {

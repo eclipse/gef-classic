@@ -6,13 +6,12 @@ package org.eclipse.gef.examples.logicdesigner;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.jface.action.*;
-import org.eclipse.ui.*;
-
-import org.eclipse.gef.*;
-import org.eclipse.gef.internal.GEFMessages;
+import org.eclipse.gef.EditDomain;
+import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.ui.actions.*;
-import org.eclipse.gef.ui.actions.ActionRegistry;
+import org.eclipse.jface.action.*;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IWorkbenchActionConstants;
 
 public class LogicContextMenuProvider
 	implements org.eclipse.gef.ui.parts.ContextMenuProvider

@@ -8,10 +8,9 @@ package org.eclipse.gef.examples.logicdesigner.edit;
 
 
 import org.eclipse.gef.*;
-import org.eclipse.gef.requests.*;
-import org.eclipse.gef.examples.logicdesigner.model.*;
 import org.eclipse.gef.commands.Command;
-import org.eclipse.gef.examples.logicdesigner.figures.*;
+import org.eclipse.gef.examples.logicdesigner.model.*;
+import org.eclipse.gef.requests.CreateRequest;
 
 public class LogicFlowEditPolicy
 	extends org.eclipse.gef.editpolicies.FlowLayoutEditPolicy

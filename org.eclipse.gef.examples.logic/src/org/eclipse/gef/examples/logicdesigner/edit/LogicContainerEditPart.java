@@ -6,13 +6,12 @@ package org.eclipse.gef.examples.logicdesigner.edit;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import java.util.*;
+import java.util.List;
 
+import org.eclipse.gef.AccessibleEditPart;
+import org.eclipse.gef.EditPolicy;
+import org.eclipse.gef.examples.logicdesigner.model.LogicDiagram;
 import org.eclipse.swt.accessibility.AccessibleEvent;
-
-import org.eclipse.gef.*;
-import org.eclipse.gef.commands.Command;
-import org.eclipse.gef.examples.logicdesigner.model.*;
 
 
 /**

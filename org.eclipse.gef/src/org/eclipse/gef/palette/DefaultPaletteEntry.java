@@ -6,7 +6,6 @@ package org.eclipse.gef.palette;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import java.util.*;
 import org.eclipse.swt.graphics.Image;
 
 public class DefaultPaletteEntry

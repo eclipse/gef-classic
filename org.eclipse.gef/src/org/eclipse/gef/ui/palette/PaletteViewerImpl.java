@@ -6,15 +6,14 @@ package org.eclipse.gef.ui.palette;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import java.util.*;
-import java.beans.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.eclipse.jface.viewers.*;
-
-import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.ButtonGroup;
 import org.eclipse.gef.*;
 import org.eclipse.gef.palette.*;
 import org.eclipse.gef.ui.parts.PaletteViewerKeyHandler;
+import org.eclipse.jface.viewers.*;
 
 public class PaletteViewerImpl 
 	extends org.eclipse.gef.ui.parts.GraphicalViewerImpl

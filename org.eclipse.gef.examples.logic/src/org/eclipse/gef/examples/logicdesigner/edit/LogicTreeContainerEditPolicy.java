@@ -7,21 +7,15 @@ package org.eclipse.gef.examples.logicdesigner.edit;
  */
 
 import java.util.List;
- 
-import org.eclipse.swt.widgets.*;
-import org.eclipse.swt.graphics.Point;
 
-
-import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.draw2d.geometry.Dimension;
-
-import org.eclipse.gef.*;
-import org.eclipse.gef.requests.*;
-import org.eclipse.gef.commands.Command;
-import org.eclipse.gef.commands.CompoundCommand;
-import org.eclipse.gef.commands.UnexecutableCommand;
-import org.eclipse.gef.examples.logicdesigner.model.*;
+import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.gef.EditPart;
+import org.eclipse.gef.commands.*;
 import org.eclipse.gef.editpolicies.AbstractTreeContainerEditPolicy;
+import org.eclipse.gef.examples.logicdesigner.model.*;
+import org.eclipse.gef.requests.ChangeBoundsRequest;
+import org.eclipse.gef.requests.CreateRequest;
 
 public class LogicTreeContainerEditPolicy 
 	extends AbstractTreeContainerEditPolicy 

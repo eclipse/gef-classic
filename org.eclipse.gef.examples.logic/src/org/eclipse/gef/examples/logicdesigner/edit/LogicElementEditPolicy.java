@@ -6,18 +6,9 @@ package org.eclipse.gef.examples.logicdesigner.edit;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.jface.action.IToolBarManager;
-
-
-import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.geometry.*;
-
-import org.eclipse.gef.*;
-import org.eclipse.gef.requests.DeleteRequest;
-
 import org.eclipse.gef.commands.Command;
-import org.eclipse.gef.examples.logicdesigner.*;
 import org.eclipse.gef.examples.logicdesigner.model.*;
+import org.eclipse.gef.requests.DeleteRequest;
 
 public class LogicElementEditPolicy
 	extends org.eclipse.gef.editpolicies.ComponentEditPolicy

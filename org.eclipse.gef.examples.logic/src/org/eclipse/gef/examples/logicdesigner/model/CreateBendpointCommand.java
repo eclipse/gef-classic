@@ -6,7 +6,7 @@ package org.eclipse.gef.examples.logicdesigner.model;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.draw2d.geometry.*;
+
 
 public class CreateBendpointCommand 
 	extends BendpointCommand 

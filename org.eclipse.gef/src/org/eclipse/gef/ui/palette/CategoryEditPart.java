@@ -7,19 +7,13 @@ package org.eclipse.gef.ui.palette;
  */
 
 import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.FocusEvent;
-import org.eclipse.gef.palette.*;
-import org.eclipse.gef.*;
-import java.util.*;
-import org.eclipse.gef.editparts.*;
 import org.eclipse.draw2d.geometry.*;
-
-import org.eclipse.swt.accessibility.ACC;
-import org.eclipse.swt.accessibility.AccessibleControlEvent;
-import org.eclipse.swt.accessibility.AccessibleEvent;
+import org.eclipse.gef.*;
+import org.eclipse.gef.editparts.ViewportExposeHelper;
+import org.eclipse.gef.palette.PaletteContainer;
+import org.eclipse.swt.accessibility.*;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.draw2d.Label;
 
 public class CategoryEditPart 
 	extends PaletteEditPart

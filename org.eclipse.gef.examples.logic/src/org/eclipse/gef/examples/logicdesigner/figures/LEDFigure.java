@@ -6,12 +6,12 @@ package org.eclipse.gef.examples.logicdesigner.figures;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.geometry.*;
-
+import org.eclipse.draw2d.Label;
+import org.eclipse.draw2d.XYLayout;
+import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.gef.examples.logicdesigner.model.LED;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.gef.examples.logicdesigner.model.*;
-import java.util.*;
 
 public class LEDFigure 
 	extends NodeFigure 

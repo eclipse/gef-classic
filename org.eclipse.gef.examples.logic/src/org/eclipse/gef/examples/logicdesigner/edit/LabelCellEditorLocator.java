@@ -6,16 +6,12 @@ package org.eclipse.gef.examples.logicdesigner.edit;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
+import org.eclipse.draw2d.Label;
+import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.gef.tools.CellEditorLocator;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.part.CellEditorActionHandler;
-
-import org.eclipse.draw2d.Label;
-import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.gef.GEF;
-import org.eclipse.gef.tools.*;
-import org.eclipse.gef.tools.CellEditorLocator;
 
 final public class LabelCellEditorLocator
 	implements CellEditorLocator

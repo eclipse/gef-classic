@@ -7,24 +7,19 @@ package org.eclipse.gef.ui.parts;
  */
 
 import java.util.*;
-
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Canvas;
-import org.eclipse.swt.graphics.Cursor;
-import org.eclipse.swt.dnd.*;
+import java.util.List;
 
 import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.jface.action.IMenuManager;
-
-import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.geometry.*;
-
-import org.eclipse.gef.editparts.LayerManager;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.LightweightSystem;
+import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.gef.*;
-import org.eclipse.gef.handles.*;
+import org.eclipse.gef.editparts.LayerManager;
 import org.eclipse.gef.internal.Assert;
-import org.eclipse.gef.dnd.*;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.swt.dnd.*;
+import org.eclipse.swt.graphics.Cursor;
+import org.eclipse.swt.widgets.*;
 
 public class GraphicalViewerImpl
 	extends AbstractEditPartViewer

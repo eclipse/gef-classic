@@ -6,17 +6,11 @@ package org.eclipse.gef.handles;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.swt.graphics.Cursor;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.SWT;
-
 import org.eclipse.draw2d.Locator;
 import org.eclipse.draw2d.MidpointLocator;
-import org.eclipse.draw2d.geometry.*;
-
+import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.gef.*;
 import org.eclipse.gef.tools.ConnectionBendpointTracker;
-import org.eclipse.gef.ConnectionEditPart;
 
 /**
  * A BendpointHandle that is used to create a new bendpoint.

@@ -1,16 +1,9 @@
-package org.eclipse.gef.ui.palette;import org.eclipse.swt.widgets.Shell;
-/*
- * Licensed Material - Property of IBM
- * (C) Copyright IBM Corp. 2001, 2002 - All Rights Reserved.
- * US Government Users Restricted Rights - Use, duplication or disclosure
- * restricted by GSA ADP Schedule Contract with IBM Corp.
- */
-
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.graphics.*;
-import org.eclipse.swt.custom.ViewForm;
+package org.eclipse.gef.ui.palette;
 
 import org.eclipse.gef.internal.Internal;
+import org.eclipse.swt.custom.ViewForm;
+import org.eclipse.swt.graphics.*;
+import org.eclipse.swt.widgets.Display;
 
 public class ImageConstants {
 

@@ -6,17 +6,10 @@ package org.eclipse.gef.editpolicies;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import java.util.*;
-
-import org.eclipse.jface.action.*;
-
-import org.eclipse.draw2d.*;
+import org.eclipse.gef.GEF;
+import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CompoundCommand;
-import org.eclipse.draw2d.geometry.*;
-
-import org.eclipse.gef.*;
-import org.eclipse.gef.ui.actions.DeleteAction;
 import org.eclipse.gef.requests.*;
 
 abstract public class ComponentEditPolicy

@@ -6,9 +6,6 @@ package org.eclipse.gef.requests;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.*;
-
 import org.eclipse.gef.*;
 
 /**

@@ -6,11 +6,7 @@ package org.eclipse.gef;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.gef.tools.*;
-import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.Point;
-
-import org.eclipse.swt.graphics.Cursor;
 
 /**
  * A simple lightweight object that combines a small hit-test area with

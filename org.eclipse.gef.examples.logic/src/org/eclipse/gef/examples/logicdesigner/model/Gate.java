@@ -6,11 +6,6 @@ package org.eclipse.gef.examples.logicdesigner.model;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import java.util.*;
-
-import org.eclipse.swt.graphics.*;
-import org.eclipse.ui.views.properties.IPropertyDescriptor;
-
 abstract public class Gate
 	extends SimpleOutput
 {

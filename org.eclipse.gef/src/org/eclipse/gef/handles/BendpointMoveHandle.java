@@ -6,16 +6,10 @@ package org.eclipse.gef.handles;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.graphics.Cursor;
-
-import org.eclipse.draw2d.Locator;
 import org.eclipse.draw2d.BendpointLocator;
-import org.eclipse.draw2d.geometry.*;
-
+import org.eclipse.draw2d.Locator;
 import org.eclipse.gef.*;
-import org.eclipse.gef.tools.*;
+import org.eclipse.gef.tools.ConnectionBendpointTracker;
 
 /**
  * A BendpointHandle that is used to move an existing bendpoint.

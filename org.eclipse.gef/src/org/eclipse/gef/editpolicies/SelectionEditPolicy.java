@@ -6,8 +6,6 @@ package org.eclipse.gef.editpolicies;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import java.util.*;
-import org.eclipse.draw2d.*;
 import org.eclipse.gef.*;
 
 abstract public class SelectionEditPolicy

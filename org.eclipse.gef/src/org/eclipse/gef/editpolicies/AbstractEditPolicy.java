@@ -6,14 +6,8 @@ package org.eclipse.gef.editpolicies;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import java.util.*;
-
-
-import org.eclipse.jface.action.*;
-
 import org.eclipse.gef.*;
 import org.eclipse.gef.commands.Command;
-import org.eclipse.gef.editparts.LayerManager;
 
 
 /**

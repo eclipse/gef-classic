@@ -6,15 +6,10 @@ package org.eclipse.gef.examples.logicdesigner.edit;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.swt.graphics.Color;
-
-import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.geometry.*;
-
+import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.*;
-
-import org.eclipse.gef.examples.logicdesigner.figures.*;
 import org.eclipse.gef.examples.logicdesigner.LogicColorConstants;
+import org.eclipse.swt.graphics.Color;
 
 /**
  */

@@ -6,11 +6,10 @@ package org.eclipse.gef.examples.logicdesigner;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.jface.wizard.Wizard;
-import org.eclipse.gef.*;
-import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.INewWizard;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.ui.INewWizard;
+import org.eclipse.ui.IWorkbench;
 
 public class LogicCreationWizard extends Wizard implements INewWizard {
 	private CreateLogicPage1 logicPage = null;

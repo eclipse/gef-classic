@@ -7,9 +7,8 @@ package org.eclipse.gef.ui.stackview;
  */
 
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.ui.part.WorkbenchPart;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.viewers.TreeViewer;
 
 public class CommandStackViewerAction 
 	extends Action {

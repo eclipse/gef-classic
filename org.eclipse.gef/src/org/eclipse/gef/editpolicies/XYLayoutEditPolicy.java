@@ -6,14 +6,13 @@ package org.eclipse.gef.editpolicies;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import java.util.*;
-
-import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.XYLayout;
 import org.eclipse.draw2d.geometry.*;
-
-import org.eclipse.gef.*;
-import org.eclipse.gef.commands.Command;
-import org.eclipse.gef.requests.*;
+import org.eclipse.gef.GraphicalEditPart;
+import org.eclipse.gef.RequestConstants;
+import org.eclipse.gef.requests.ChangeBoundsRequest;
+import org.eclipse.gef.requests.CreateRequest;
 
 public abstract class XYLayoutEditPolicy
 	extends ConstrainedLayoutEditPolicy

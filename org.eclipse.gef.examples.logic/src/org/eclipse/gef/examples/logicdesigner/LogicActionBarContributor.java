@@ -6,8 +6,6 @@ package org.eclipse.gef.examples.logicdesigner;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.jface.action.Separator;
-
 import org.eclipse.gef.ui.actions.AlignmentAction;
 
 public class LogicActionBarContributor

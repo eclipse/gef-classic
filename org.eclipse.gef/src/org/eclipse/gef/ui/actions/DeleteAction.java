@@ -6,24 +6,17 @@ package org.eclipse.gef.ui.actions;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import java.util.*;
+import java.util.List;
 
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.viewers.*;
-
-import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IWorkbenchActionConstants;
-import org.eclipse.ui.internal.*;
-import org.eclipse.ui.internal.WorkbenchImages;
-
-
-import org.eclipse.gef.*;
+import org.eclipse.gef.EditPart;
+import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CompoundCommand;
 import org.eclipse.gef.internal.GEFMessages;
-import org.eclipse.gef.internal.Internal;
-import org.eclipse.gef.internal.SharedImages;
-import org.eclipse.gef.requests.*;
+import org.eclipse.gef.requests.DeleteRequest;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.internal.IWorkbenchGraphicConstants;
+import org.eclipse.ui.internal.WorkbenchImages;
 
 /**
  * An action to delete selected objects.

@@ -8,20 +8,19 @@ package org.eclipse.gef.examples.logicdesigner.edit;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.*;
-
-import org.eclipse.swt.accessibility.AccessibleEvent;
-import org.eclipse.swt.graphics.*;
-import org.eclipse.swt.widgets.Display;
-
-import org.eclipse.gef.*;
-import org.eclipse.gef.editparts.AbstractConnectionEditPart;
-
-import org.eclipse.gef.examples.logicdesigner.model.*;
-import org.eclipse.gef.examples.logicdesigner.LogicMessages;
-import org.eclipse.gef.examples.logicdesigner.figures.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.draw2d.*;
+import org.eclipse.gef.AccessibleEditPart;
+import org.eclipse.gef.EditPolicy;
+import org.eclipse.gef.editparts.AbstractConnectionEditPart;
+import org.eclipse.gef.examples.logicdesigner.LogicMessages;
+import org.eclipse.gef.examples.logicdesigner.model.Wire;
+import org.eclipse.gef.examples.logicdesigner.model.WireBendpoint;
+import org.eclipse.swt.accessibility.AccessibleEvent;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.widgets.Display;
 
 /**
  * Implements a Connection Editpart to represnt a Wire like

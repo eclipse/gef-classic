@@ -6,10 +6,11 @@ package org.eclipse.gef.ui.palette;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Image;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 import org.eclipse.draw2d.*;
-import java.beans.*;
+import org.eclipse.swt.graphics.Image;
 
 final public class PaletteScrollBar 
 	extends ScrollBar {

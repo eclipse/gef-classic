@@ -8,15 +8,14 @@ package org.eclipse.gef.editparts;
 
 import java.util.*;
 
-import org.eclipse.swt.accessibility.*;
 import org.eclipse.core.runtime.IAdaptable;
-
-import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.geometry.*;
-
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.LayoutManager;
+import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.*;
-import org.eclipse.gef.commands.*;
-import org.eclipse.gef.handles.*;
+import org.eclipse.swt.accessibility.ACC;
+import org.eclipse.swt.accessibility.AccessibleControlEvent;
 
 /**
  * Abstract class which uses IFigures for visuals.

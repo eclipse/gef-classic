@@ -6,14 +6,13 @@ package org.eclipse.gef.editpolicies;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.gef.tools.*;
-import org.eclipse.gef.commands.*;
-import org.eclipse.gef.*;
-import org.eclipse.gef.editparts.*;
-import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.geometry.*;
 import java.util.List;
-import org.eclipse.gef.requests.*;
+
+import org.eclipse.draw2d.FlowLayout;
+import org.eclipse.draw2d.Polyline;
+import org.eclipse.draw2d.geometry.*;
+import org.eclipse.gef.*;
+import org.eclipse.gef.requests.DropRequest;
 
 public abstract class FlowLayoutEditPolicy
 	extends OrderedLayoutEditPolicy

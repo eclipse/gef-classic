@@ -6,14 +6,13 @@ package org.eclipse.gef.editparts;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import java.util.*;
-
-import org.eclipse.gef.*;
-import org.eclipse.gef.commands.*;
-import org.eclipse.gef.tools.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.geometry.*;
+import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.gef.*;
+import org.eclipse.gef.tools.SelectEditPartTracker;
 
 /**
  * Provides support for connections based 

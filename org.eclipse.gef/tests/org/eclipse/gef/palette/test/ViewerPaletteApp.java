@@ -1,15 +1,11 @@
 package org.eclipse.gef.palette.test;
 
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Canvas;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.geometry.*;
-import javax.swing.JFrame;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.gef.palette.*;
-import java.util.*;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 
 public class ViewerPaletteApp {
 
