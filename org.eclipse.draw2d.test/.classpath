@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-    <classpathentry kind="src" path="text"/>
     <classpathentry kind="src" path="shapes"/>
     <classpathentry kind="src" path="zoom"/>
     <classpathentry kind="src" path="junit"/>
     <classpathentry kind="src" path="layout"/>
-    <classpathentry kind="var" path="JRE_LIB" rootpath="JRE_SRCROOT" sourcepath="JRE_SRC"/>
+    <classpathentry kind="var" path="JRE_LIB" sourcepath="JRE_SRC"/>
     <classpathentry kind="src" path="/org.eclipse.draw2d"/>
     <classpathentry kind="src" path="/org.eclipse.swt"/>
     <classpathentry kind="src" path="/org.junit"/>
