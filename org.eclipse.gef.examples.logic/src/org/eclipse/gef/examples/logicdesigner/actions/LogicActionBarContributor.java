@@ -104,6 +104,7 @@ public void contributeToMenu(IMenuManager menubar) {
 	MenuManager viewMenu = new MenuManager(LogicMessages.ViewMenu_LabelText);
 	viewMenu.add(getAction(GEFActionConstants.ZOOM_IN));
 	viewMenu.add(getAction(GEFActionConstants.ZOOM_OUT));
+	viewMenu.add(new Separator());
 	viewMenu.add(getAction(GEFActionConstants.TOGGLE_RULER_VISIBILITY));
 	viewMenu.add(getAction(GEFActionConstants.TOGGLE_GRID));
 	viewMenu.add(getAction(GEFActionConstants.TOGGLE_SNAP_TO_GEOMETRY));
