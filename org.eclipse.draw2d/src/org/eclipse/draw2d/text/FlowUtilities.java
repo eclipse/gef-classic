@@ -53,15 +53,40 @@ public static int getTextForSpace(TextFragmentBox frag, String string, Font font
 
 	int firstBreak = breakItr.next();
 	MIN = min = (wrapping == ParagraphTextLayout.WORD_WRAP_HARD) ?  firstBreak : 1;
-	max = string.indexOf("\r\n") + 2; // look for windows newlines //$NON-NLS-1$
-	if (max == 1) { // no windows newlines
-		max = string.indexOf('\r') + 1; // look for macos newlines
-		if (max == 0) { // no macos newlines
-			max = string.indexOf('\n') + 1; // look for unix newlines
-			if (max == 0)  // no unix newlines
-				max = string.length() + 1;
-		}
+	max = -1;
+	int winNL = string.indexOf("\r\n"); //$NON-NLS-1$
+	int unixNL = string.indexOf('\n');
+	int macNL = string.indexOf('\r');
+	if (unixNL != -1) { // there's a unix newline
+		max = unixNL;
+		if (macNL != -1) // there's also a mac newline
+			max = Math.min(unixNL, macNL);
+		if (winNL != -1) // there's also a windows newline
+			max = Math.min(max, winNL);
+	} else if (macNL != -1) { // there's a mac newline
+		max = macNL;
+		if (winNL != -1) // there's also a windows newline
+			max = Math.min(max, winNL);
+	} else if (winNL != -1) { // there's a windows newline
+		max = winNL;
 	}
+	// bump the maximum to the index of the first non-newline character 
+	// (or the string length + 1 if no newlines found)
+	if (max == -1) // there were no newlines
+		max = string.length() +  1;
+	else if (max == winNL) // the first newline was a windows newline
+		max += 2;
+	else // the first newline was either a unix or mac newline
+		max++;
+	
+//	if (max == 1) { // no windows newlines
+//		max = string.indexOf('\r') + 1; // look for macos newlines
+//		if (max == 0) { // no macos newlines
+//			max = string.indexOf('\n') + 1; // look for unix newlines
+//			if (max == 0)  // no unix newlines
+//				max = string.length() + 1;
+//		}
+//	}
 
 	//The size of the current guess
 	int guess = 0,
