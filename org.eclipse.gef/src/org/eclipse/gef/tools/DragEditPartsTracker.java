@@ -331,7 +331,8 @@ protected boolean handleButtonUp(int button) {
 protected boolean handleDragInProgress() {
 	if (isInDragInProgress()) {
 		updateTargetRequest();
-		updateTargetUnderMouse();
+		if (updateTargetUnderMouse())
+			updateTargetRequest();
 		showTargetFeedback();
 		showSourceFeedback();
 		setCurrentCommand(getCommand());
