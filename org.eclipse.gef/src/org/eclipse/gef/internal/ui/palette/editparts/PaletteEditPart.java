@@ -122,7 +122,7 @@ public DragTracker getDragTracker(Request request) {
  * However, it has the advantage that the same image in different palettes is
  * only ever created once.
  */
-protected ImageCache getImageCache() {
+protected static ImageCache getImageCache() {
 	ImageCache cache = globalImageCache;
 	if (cache == null) {
 		globalImageCache = cache = new ImageCache();
@@ -267,7 +267,7 @@ private void traverseChildren(List children, boolean add) {
 	}
 }
 
-protected class ImageCache {
+protected static class ImageCache {
 	/** Map from ImageDescriptor to Image */
 	private Map images = new HashMap(11);
 	
