@@ -109,11 +109,10 @@ public void relocate(IFigure target){
 	target.translateToRelative(tarBounds);
 
 	Dimension tarSize = target.getPreferredSize();
+
+	tarBounds.x += (int)(tarBounds.width*relativeX - ((tarSize.width+1)/2));
+	tarBounds.y += (int)(tarBounds.height*relativeY - ((tarSize.height+1)/2));
 	tarBounds.setSize(tarSize);
-
-	tarBounds.x += (int)($refBounds.width*relativeX - ((tarSize.width+1)/2));
-	tarBounds.y += (int)($refBounds.height*relativeY - ((tarSize.height+1)/2));
-
 	target.setBounds(tarBounds);
 }
 

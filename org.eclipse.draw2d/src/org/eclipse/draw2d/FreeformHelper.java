@@ -24,16 +24,16 @@ private FreeformFigure host;
 private Rectangle freeformExtent;
 private FigureListener figureListener = new ChildTracker();
 
-FreeformHelper(FreeformFigure host){
+FreeformHelper(FreeformFigure host) {
 	this.host = host;
 }
 
-public Rectangle getFreeformExtent(){
+public Rectangle getFreeformExtent() {
 	if (freeformExtent != null)
 		return freeformExtent;
 	Rectangle r;
 	List children = host.getChildren();
-	for (int i=0; i<children.size(); i++){
+	for (int i = 0; i < children.size(); i++) {
 		IFigure child = (IFigure)children.get(i);
 		if (child instanceof FreeformFigure)
 			r = ((FreeformFigure) child).getFreeformExtent();
@@ -46,14 +46,16 @@ public Rectangle getFreeformExtent(){
 	}
 	Insets insets = host.getInsets();
 	if (freeformExtent == null)
-		freeformExtent = new Rectangle(0,0,insets.getWidth(),insets.getHeight());
-	else
+		freeformExtent = new Rectangle(0, 0, insets.getWidth(), insets.getHeight());
+	else {
+		host.translateToParent(freeformExtent);
 		freeformExtent.expand(insets);
+	}
 //	System.out.println("New extent calculated for " + host + " = " + freeformExtent);
 	return freeformExtent;
 }
 
-public void hookChild(IFigure child){
+public void hookChild(IFigure child) {
 	invalidate();
 	if (child instanceof FreeformFigure)
 		((FreeformFigure)child).addFreeformListener(this);
@@ -61,9 +63,10 @@ public void hookChild(IFigure child){
 		child.addFigureListener(figureListener);
 }
 
-void invalidate(){
+void invalidate() {
 	freeformExtent = null;
 	host.fireExtentChanged();
+	host.revalidate();
 }
 
 public void notifyFreeformExtentChanged() {
@@ -71,17 +74,17 @@ public void notifyFreeformExtentChanged() {
 	invalidate();
 }
 
-public void setFreeformBounds(Rectangle bounds){
+public void setFreeformBounds(Rectangle bounds) {
 	host.setBounds(bounds);
 	List children = host.getChildren();
-	for (int i=0; i<children.size(); i++){
+	for (int i = 0; i < children.size(); i++) {
 		IFigure child = (IFigure)children.get(i);
 		if (child instanceof FreeformFigure)
 			((FreeformFigure) child).setFreeformBounds(bounds);
 	}
 }
 
-public void unhookChild(IFigure child){
+public void unhookChild(IFigure child) {
 	invalidate();
 	if (child instanceof FreeformFigure)
 		((FreeformFigure)child).removeFreeformListener(this);
