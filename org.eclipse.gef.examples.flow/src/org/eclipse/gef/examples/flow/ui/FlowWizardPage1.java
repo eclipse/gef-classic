@@ -10,6 +10,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.*;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 
+import org.eclipse.gef.examples.flow.FlowPlugin;
 import org.eclipse.gef.examples.flow.model.*;
 
 /**
@@ -25,7 +26,7 @@ public FlowWizardPage1(IWorkbench aWorkbench, IStructuredSelection selection) {
 	super("sampleFlowPage1", selection);
 	this.setTitle("Create Flow Example File");
 	this.setDescription("Create a new flow file resource");
-	this.setImageDescriptor(ImageDescriptor.createFromFile(ActivityDiagram.class,"icons/flowbanner.gif"));
+	this.setImageDescriptor(ImageDescriptor.createFromFile(FlowPlugin.class,"images/flowbanner.gif"));
 	this.workbench = aWorkbench;
 }
 
