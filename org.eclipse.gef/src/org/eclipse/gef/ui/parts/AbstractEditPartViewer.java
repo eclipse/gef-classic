@@ -285,6 +285,8 @@ public void select(EditPart editpart){
 }
 
 public void setContextMenuProvider(ContextMenuProvider provider) {
+	if (contextMenuProvider != null)
+		contextMenuProvider.dispose();
 	contextMenuProvider = provider;
 }
 
