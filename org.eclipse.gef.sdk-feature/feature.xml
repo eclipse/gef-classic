@@ -3,15 +3,16 @@
       id="org.eclipse.gef.sdk"
       label="%featureName"
       version="3.0.0"
-      image= "eclipse_update_120.jpg"
-      provider-name="%providerName">
+      provider-name="%providerName"
+      plugin="org.eclipse.gef.source"
+      image="eclipse_update_120.jpg">
 
    <description>
       %description
    </description>
-   
+
    <license url="%licenseURL">
-     %license
+      %license
    </license>
 
    <url>
@@ -23,6 +24,6 @@
 
   <includes id="org.eclipse.gef" version="0.0.0" /> 
   <includes id="org.eclipse.gef.source" version="0.0.0" /> 
- 
-  
+
+
 </feature>
