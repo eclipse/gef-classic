@@ -22,7 +22,7 @@ import org.eclipse.swt.graphics.Cursor;
  * A subclass of the SelectionTool that allows panning 
  * by holding down the space bar.
  */
-public class PanningTool 
+public class PanningSelectionTool 
 	extends SelectionTool 
 {
 	

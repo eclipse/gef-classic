@@ -13,36 +13,36 @@ package org.eclipse.gef.palette;
 import org.eclipse.gef.SharedImages;
 import org.eclipse.gef.Tool;
 import org.eclipse.gef.internal.GEFMessages;
-import org.eclipse.gef.tools.PanningTool;
+import org.eclipse.gef.tools.PanningSelectionTool;
 
 /**
- * A ToolEntry for a {@link PanningTool}.
+ * A ToolEntry for a {@link PanningSelectionTool}.
  * @author msorens
  * @since 3.0
  */
-public class PanningToolEntry extends ToolEntry {
+public class PanningSelectionToolEntry extends ToolEntry {
 
 /**
- * Creates a new PanningToolEntry.
+ * Creates a new PanningSelectionToolEntry.
  */
-public PanningToolEntry() {
+public PanningSelectionToolEntry() {
 	this(GEFMessages.SelectionTool_Label);
 }
 
 /**
- * Constructor for PanningToolEntry.
+ * Constructor for PanningSelectionToolEntry.
  * @param label the label
  */
-public PanningToolEntry(String label) {
+public PanningSelectionToolEntry(String label) {
 	this(label, null);
 }
 
 /**
- * Constructor for PanningToolEntry.
+ * Constructor for PanningSelectionToolEntry.
  * @param label the label
  * @param shortDesc the description
  */
-public PanningToolEntry(String label, String shortDesc) {
+public PanningSelectionToolEntry(String label, String shortDesc) {
 	super(
 		label,
 		shortDesc,
@@ -55,7 +55,7 @@ public PanningToolEntry(String label, String shortDesc) {
  * @see org.eclipse.gef.palette.ToolEntry#createTool()
  */
 public Tool createTool() {
-	return new PanningTool();
+	return new PanningSelectionTool();
 }
 
 }
