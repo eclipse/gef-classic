@@ -73,6 +73,12 @@ private boolean acceptCTRL(KeyEvent e) {
 	return (key == SWT.CTRL);
 }
 
+private boolean acceptSHIFT(KeyEvent e) {
+	return isInState(STATE_INITIAL | STATE_DRAG | STATE_DRAG_IN_PROGRESS
+		| STATE_ACCESSIBLE_DRAG | STATE_ACCESSIBLE_DRAG_IN_PROGRESS)
+		&& e.keyCode == SWT.SHIFT;
+}
+
 /**
  * @see org.eclipse.gef.tools.AbstractTool#activate()
  */
@@ -362,6 +368,9 @@ protected boolean handleKeyDown(KeyEvent e) {
 	} else if (acceptCTRL(e)) {
 		setCloneActive(true);
 		return true;
+	} else if (acceptSHIFT(e)) {
+		doDragInProgress();
+		return true;
 	}
 	
 	return false;	
@@ -376,6 +385,9 @@ protected boolean handleKeyUp(KeyEvent e) {
 		return true;
 	} else if (acceptCTRL(e)) {
 		setCloneActive(false);
+		return true;
+	} else if (acceptSHIFT(e)) {
+		doDragInProgress();
 		return true;
 	}
 	return false;
