@@ -146,7 +146,7 @@ public static final String NEW_GROUP_LABEL;
  */
 public static final String LAYOUT_MENU_LABEL;
 /**
- * The String "Error"
+ * The String "Could Not Accept Changes"
  */
 public static final String ERROR;
 /**
