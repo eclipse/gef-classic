@@ -161,7 +161,7 @@ protected Rectangle getInitialFeedbackBounds() {
  * Returns the command contribution to a change bounds request. The implementation
  * actually redispatches the request to the host's parent editpart as a {@link
  * RequestConstants#REQ_MOVE_CHILDREN} request.  The parent's contribution is returned.
- * @param request the change bounds requesgt
+ * @param request the change bounds request
  * @return the command contribution to the request
  */
 protected Command getMoveCommand(ChangeBoundsRequest request) {
