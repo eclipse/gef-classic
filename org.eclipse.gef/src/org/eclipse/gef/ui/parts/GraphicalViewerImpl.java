@@ -85,11 +85,21 @@ protected void handleDispose(DisposeEvent e) {
 	getLightweightSystem().getUpdateManager().dispose();
 }
 
+/**
+ * This method is invoked when this viewer's control gains focus.  It gives focus to the
+ * {@link AbstractEditPartViewer#focusPart focusPart}, if there is one.
+ * @param fe the focusEvent received by this viewer's control
+ */
 protected void handleFocusGained(FocusEvent fe) {
 	if (focusPart != null)
 		focusPart.setFocus(true);
 }
 
+/**
+ * This method is invoked when this viewer's control loses focus.  It removes focus from
+ * the {@link AbstractEditPartViewer#focusPart focusPart}, if there is one.
+ * @param fe the focusEvent received by this viewer's control
+ */
 protected void handleFocusLost(FocusEvent fe) {
 	if (focusPart != null)
 		focusPart.setFocus(false);
@@ -250,11 +260,12 @@ public void reveal(EditPart part) {
 		return;
 	EditPart current = part.getParent();
 	while (current != null) {
+		// @TODO:Pratik  remove unnecessary cast
 		if (current instanceof IAdaptable) {
 			IAdaptable adaptable = (IAdaptable) current;
 			ExposeHelper helper = (ExposeHelper)adaptable.getAdapter(ExposeHelper.class);
-			if (helper != null)
-				helper.exposeDescendant(part);
+		if (helper != null)
+			helper.exposeDescendant(part);
 		}
 		current = current.getParent();
 	}
@@ -330,9 +341,8 @@ protected void setDragSource(DragSource source) {
  */
 public void setEditDomain(EditDomain domain) {
 	super.setEditDomain(domain);
-	/*
-	 * @TODO:Pratik    what if the new edit domain is null?  skip the following step?
-	 */
+	// Set the new event dispatcher, even if the new domain is null.  This will dispose
+	// the old event dispatcher.
 	getLightweightSystem()
 		.setEventDispatcher(eventDispatcher = new DomainEventDispatcher(domain, this));
 }
