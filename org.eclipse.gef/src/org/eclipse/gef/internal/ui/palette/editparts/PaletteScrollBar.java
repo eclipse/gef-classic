@@ -22,8 +22,7 @@ protected Label upLabel;
 protected Label downLabel;
 
 private static final int BUTTON_HEIGHT = 12;
-private static final int SCROLL_TIME = 250;
-private static final Border SCROLL_BAR_BORDER = new RaisedBorder();
+private static final int SCROLL_TIME = 200;
 
 public PaletteScrollBar() {
 	super();
@@ -42,7 +41,6 @@ public IFigure findFigureAt(int x, int y, TreeSearch search) {
 
 protected Clickable createDefaultDownButton() {
 	downLabel = new Label(ImageConstants.down);
-	downLabel.setOpaque(true);
 	downLabel.setIcon(ImageConstants.down);
 	addPropertyChangeListener(new PropertyChangeListener(){
 		public void propertyChange(PropertyChangeEvent event) {
@@ -53,14 +51,13 @@ protected Clickable createDefaultDownButton() {
 	button.setRequestFocusEnabled(false);
 
 	button.setFiringMethod(Clickable.REPEAT_FIRING);
-	button.setBorder(SCROLL_BAR_BORDER);
-	button.setOpaque(false);
+	button.setBorder(ButtonBorder.TOOLBAR);
+	button.setOpaque(true);
 	return button;
 }
 
 protected Clickable createDefaultUpButton() {
 	upLabel = new Label(ImageConstants.up);
-	upLabel.setOpaque(true);
 	upLabel.setIcon(ImageConstants.up);
 	addPropertyChangeListener(new PropertyChangeListener(){
 		public void propertyChange(PropertyChangeEvent event) {
@@ -71,8 +68,8 @@ protected Clickable createDefaultUpButton() {
 	button.setRequestFocusEnabled(false);
 
 	button.setFiringMethod(Clickable.REPEAT_FIRING);
-	button.setBorder(SCROLL_BAR_BORDER);
-	button.setOpaque(false);
+	button.setBorder(ButtonBorder.TOOLBAR);
+	button.setOpaque(true);
 	return button;
 }
 
