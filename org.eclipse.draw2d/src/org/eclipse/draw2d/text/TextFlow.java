@@ -87,6 +87,7 @@ private int findNextLineOffset(Point p) {
 		return -1;
 	TextLayout layout = FlowUtilities.getTextLayout();
 	layout.setOrientation(SWT.LEFT_TO_RIGHT);
+	layout.setFont(getFont());
 	layout.setText(addJoiners(text).substring(box.offset, box.offset + box.length));
 	int trailing[] = new int[1];
 	int layoutOffset = layout.getOffset(p.x - box.x, p.y - box.y, trailing) + trailing[0];
@@ -108,6 +109,7 @@ private int findPreviousLineOffset(Point p) {
 		return -1;
 	TextLayout layout = FlowUtilities.getTextLayout();
 	layout.setOrientation(SWT.LEFT_TO_RIGHT);
+	layout.setFont(getFont());
 	layout.setText(addJoiners(text).substring(box.offset, box.offset + box.length));
 	int trailing[] = new int[1];
 	int layoutOffset = layout.getOffset(p.x - box.x, p.y - box.y, trailing) + trailing[0];
@@ -121,11 +123,12 @@ private int findPreviousLineOffset(Point p) {
  * being displayed.
  * @since 3.1
  * @param offset the location in this figures text
+ * @param trailing true if the caret is being placed after the offset
  * @exception IllegalArgumentException If the offset is not between <code>0</code> and the
  * length of the string inclusively
  * @return the caret bounds relative to this figure
  */
-public Rectangle getCaretPlacement(int offset) {
+public Rectangle getCaretPlacement(int offset, boolean trailing) {
 	if (offset < 0 || offset > text.length())
 		throw new IllegalArgumentException("Offset: " + offset //$NON-NLS-1$
 				+ " is invalid"); //$NON-NLS-1$
@@ -144,7 +147,7 @@ public Rectangle getCaretPlacement(int offset) {
 	layout.setFont(getFont());
 	String substring = addJoiners(text).substring(box.offset, box.offset + box.length);
 	layout.setText(substring);
-	Point where = new Point(layout.getLocation(offset, false));
+	Point where = new Point(layout.getLocation(offset, trailing));
 	layout.setText(""); //$NON-NLS-1$
 	
 	FontMetrics fm = FigureUtilities.getFontMetrics(getFont());
@@ -212,7 +215,7 @@ public int getNextOffset(Point p, boolean down) {
  * @param p a point relative to this figure
  * @return the offset in the string or <code>-1</code>
  */
-public int getOffset(Point p) {
+public int getOffset(Point p, int trailing[]) {
 	if (!getBounds().contains(p))
 		return -1;
 	for (int i = fragments.size() - 1; i >= 0; i--) {
@@ -224,7 +227,6 @@ public int getOffset(Point p) {
 		layout.setOrientation(SWT.LEFT_TO_RIGHT);
 		layout.setFont(getFont());
 		layout.setText(substring);
-		int trailing[] = new int[1];
 		int result = layout.getOffset(p.x - box.x, p.y - box.y, trailing);
 		layout.setText(""); //$NON-NLS-1$
 		return result + trailing[0] + box.offset;
@@ -313,7 +315,7 @@ protected void paintFigure(Graphics g) {
 // Paints the text based on selection and Bidi level.  Uses TextLayout as needed.
 private void paintText(Graphics g, String text, int x, int y, int selectionStart, 
 		int selectionEnd, int selectionType, boolean isBidi) {
-	System.out.println(text);
+
 	if (isBidi || selectionType == SELECT_PARTIAL) {
 		// Case of RTL text and/or partial selection
 		TextLayout layout = FlowUtilities.getTextLayout();
