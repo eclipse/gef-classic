@@ -9,25 +9,39 @@ package org.eclipse.draw2d;
 import org.eclipse.draw2d.geometry.Insets;
 
 /**
- * Provides for a simple border with all sides
- * of constant width.
+ * A Border that looks like the system's focus rectangle.
  */
 public class FocusBorder
 	extends AbstractBorder
 {
 
-public FocusBorder(){
-}
+/**
+ * Constructs a new FocusBorder. */
+public FocusBorder() { }
 
-public Insets getInsets(IFigure figure){
+/**
+ * @see org.eclipse.draw2d.Border#getInsets(IFigure)
+ */
+public Insets getInsets(IFigure figure) {
 	return new Insets(1);
 }
 
-public boolean isOpaque(){
+/**
+ * @see org.eclipse.draw2d.Border#isOpaque()
+ */
+public boolean isOpaque() {
 	return true;
 }
 
-public void paint(IFigure figure, Graphics graphics, Insets insets){
+/**
+ * Paints a rectangle that looks like the system's focus rectangle.
+ * @see org.eclipse.swt.graphics.GC#drawFocus(int, int, int, int)
+ * @see org.eclipse.draw2d.Border#paint(IFigure, Graphics, Insets)
+ * @param figure The figure this border belongs to
+ * @param graphics The graphics object used for painting
+ * @param insets The insets
+ */
+public void paint(IFigure figure, Graphics graphics, Insets insets) {
 	tempRect.setBounds(getPaintRectangle(figure, insets));
 	tempRect.width--;
 	tempRect.height--;
