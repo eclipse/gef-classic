@@ -223,6 +223,13 @@ boolean hasFocus();
 void installEditPolicy(Object role, EditPolicy editPolicy);
 
 /**
+ * Returns <code>true</code> if the EditPart is selectable. A selectable EditPart may be
+ * selected as a result of the {@link SelectionTool} receiving a mouse down, or as a
+ * result of the User pressing a key to change selection.
+ * @return <code>true</code> if the receiver can be selected */
+boolean isSelectable();
+
+/**
  * Performs the specified Request.  This method can be used to send a generic message
  * to an EditPart. If the EditPart interprets this request to mean make a change
  * in the model, it should still use <code>Commands</code> and the
