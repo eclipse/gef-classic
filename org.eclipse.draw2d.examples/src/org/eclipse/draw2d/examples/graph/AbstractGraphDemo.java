@@ -74,35 +74,33 @@ static class LeftOrRightAnchor extends ChopboxAnchor {
 static void buildEdgeFigure(Figure contents, Edge edge) {
 	PolylineConnection conn = connection(edge);
 	conn.setForegroundColor(ColorConstants.gray);
-	conn.setLineWidth(2);
-	
-	
-	if (edge.tree) {
-//			Label l = new Label ("(" + edge.cut + ")");
-//			l.setOpaque(true);
-//			conn.add(l, new ConnectionLocator(conn));
-//			conn.setLineWidth(3);
-//			PolygonDecoration dec = new PolygonDecoration();
-//			dec.setLineWidth(3);
-//			if (edge.head() == edge.target)
-//				conn.setSourceDecoration(dec);
-//			else
-//				conn.setTargetDecoration(dec);
-	} else {
-//			conn.setLineStyle(Graphics.LINE_DASHDOT);
-//			Label l = new Label (Integer.toString(edge.getSlack()));
-//			l.setOpaque(true);
-//			conn.add(l, new ConnectionEndpointLocator(conn, false));
-	}
+	PolygonDecoration dec = new PolygonDecoration();
+	conn.setTargetDecoration(dec);
 	Node s = edge.source;
 	Node t = edge.target;
-	
-	conn.setSourceAnchor(
-		new XYAnchor(new Point(s.x + edge.getSourceOffset(), s.y + s.height)));
-	conn.setTargetAnchor(
-		new XYAnchor(new Point(t.x + edge.getTargetOffset(), t.y)));
-//			conn.setSourceAnchor(new TopOrBottomAnchor(s));
-//			conn.setTargetAnchor(new TopOrBottomAnchor(t));
+		
+	conn.setSourceAnchor(new XYAnchor(edge.start));
+	conn.setTargetAnchor(new XYAnchor(edge.end));
+	conn.setConnectionRouter(null);
+	NodeList nodes = edge.vNodes;
+	if (nodes != null) {
+			List bends = new ArrayList();
+			conn.setConnectionRouter(new BendpointConnectionRouter());
+			for (int i = 0; i < nodes.size(); i++) {
+				Node vn = nodes.getNode(i);
+				int x = vn.x;
+				int y = vn.y;
+				if (edge.isFeedback) {
+					bends.add(new AbsoluteBendpoint(x, y + vn.height));
+					bends.add(new AbsoluteBendpoint(x, y));
+
+				} else {
+					bends.add(new AbsoluteBendpoint(x, y));
+					bends.add(new AbsoluteBendpoint(x, y + vn.height));
+				}
+			}
+		conn.setRoutingConstraint(bends);
+	}	
 	contents.add(conn);
 }
 
