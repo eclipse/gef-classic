@@ -108,9 +108,9 @@ public RulerComposite(Composite parent, int style) {
 
 private static Rectangle calculateTrim(Canvas canvas) {
 	/*
-	 * Fix for Bug# 67554
-	 * Calculating the trimming using clientArea because of Bug# 87712.  This fix
-	 * can be removed if that bug is fixed.
+	 * Workaround for Bug# 87712
+	 * Calculating the trimming using the clientArea.  This fix can be removed if 
+	 * that bug is fixed.
 	 */
 	Rectangle bounds = canvas.getBounds();
 	Rectangle clientArea = canvas.getClientArea();
@@ -199,11 +199,18 @@ private void doLayout() {
 		return;
 	}
 	
-	int leftWidth, topHeight;
-	leftWidth = left == null ? 0 
-			: left.getControl().computeSize(SWT.DEFAULT, SWT.DEFAULT).x;
-	topHeight = top == null ? 0 
-			: top.getControl().computeSize(SWT.DEFAULT, SWT.DEFAULT).y;
+	int leftWidth = 0, topHeight = 0;
+	Rectangle leftTrim = null, topTrim = null;
+	if (left != null) {
+		leftTrim = calculateTrim((Canvas)left.getControl());
+		leftWidth = left.getControl().computeSize(SWT.DEFAULT, SWT.DEFAULT).x 
+				+ leftTrim.width;
+	}
+	if (top != null) {
+		topTrim = calculateTrim((Canvas)top.getControl());
+		topHeight = top.getControl().computeSize(SWT.DEFAULT, SWT.DEFAULT).y
+				+ topTrim.height;
+	}
 
 	Rectangle size = getClientArea();
 	Point editorSize = new Point(size.width - leftWidth, size.height - topHeight);
@@ -221,7 +228,6 @@ private void doLayout() {
 	 */
 	Rectangle trim = calculateTrim(editor);
 	if (left != null) {
-		Rectangle leftTrim = calculateTrim((Canvas)left.getControl());
 		// The - 1 and + 1 are to compensate for the RulerBorder
 		Rectangle leftBounds = new Rectangle(0, topHeight - trim.x + leftTrim.x - 1, 
 				leftWidth, editorSize.y - trim.height + leftTrim.height + 1);
@@ -229,7 +235,6 @@ private void doLayout() {
 			left.getControl().setBounds(leftBounds);
 	}
 	if (top != null) {
-		Rectangle topTrim = calculateTrim((Canvas)top.getControl());
 		Rectangle topBounds = new Rectangle(leftWidth - trim.y + topTrim.y - 1, 0, 
 				editorSize.x - trim.width + topTrim.width + 1, topHeight);
 		if (!top.getControl().getBounds().equals(topBounds))
