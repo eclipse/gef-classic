@@ -173,7 +173,7 @@ public static interface SCHEMES {
 	/**
 	 * Various button schemes.
 	 */
-	final ButtonScheme
+	ButtonScheme
 		BUTTON_CONTRAST = new ButtonScheme(
 			new Color[] {button, buttonLightest},
 			DARKEST_DARKER
