@@ -14,7 +14,7 @@ import java.util.*;
  */
 public class CommandStack {
 
-private int undoLimit = 10;
+private int undoLimit = 0;
 private int saveLocation = 0;
 private Stack undo = new Stack();
 private Stack redo = new Stack();
