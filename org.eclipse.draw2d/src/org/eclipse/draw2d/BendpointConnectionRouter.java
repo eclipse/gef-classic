@@ -20,7 +20,7 @@ public class BendpointConnectionRouter
 
 private Map constraints = new HashMap(11);
 
-private static final Point A_POINT = new Point();
+private static final PrecisionPoint A_POINT = new PrecisionPoint();
 
 /**
  * Gets the constraint for the given {@link Connection}.  
