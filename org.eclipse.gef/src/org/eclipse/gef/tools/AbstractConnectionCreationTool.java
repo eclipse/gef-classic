@@ -33,7 +33,7 @@ private CreationFactory factory;
 
 private EditPartListener.Stub deactivationListener = new EditPartListener.Stub() {
 	public void partDeactivated(EditPart editpart) {
-		sourceDeactivated();
+		handleSourceDeactivated();
 	}
 };
 
@@ -161,6 +161,7 @@ protected boolean handleFocusLost() {
 
 protected boolean handleInvalidInput(){
 	eraseSourceFeedback();
+	setConnectionSource(null);
 	return super.handleInvalidInput();
 }
 
@@ -176,12 +177,14 @@ protected boolean handleMove() {
 	return true;
 }
 
-protected boolean isShowingSourceFeedback(){
-	return getFlag(FLAG_SOURCE_FEEDBACK);
+protected void handleSourceDeactivated() {
+	setState(STATE_INVALID);
+	handleInvalidInput();
+	handleFinished();
 }
 
-protected void sourceDeactivated() {
-	getDomain().loadDefaultTool();
+protected boolean isShowingSourceFeedback(){
+	return getFlag(FLAG_SOURCE_FEEDBACK);
 }
 
 protected void setConnectionSource(EditPart source) {
