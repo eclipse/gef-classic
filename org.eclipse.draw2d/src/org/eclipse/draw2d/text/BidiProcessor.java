@@ -195,7 +195,7 @@ public void process() {
 	
 	layout.setOrientation(orientation);
 	layout.setText(bidiText.toString());
-	int j = 0, offset = 0, prevLevel = -1;
+	int j = 0, offset, prevLevel = -1;
 	for (offset = 0; offset < chars.length; offset++) {
 		int newLevel = layout.getLevel(offset);
 		if (newLevel != prevLevel) {
@@ -217,7 +217,9 @@ public void process() {
 		levels = newLevels;
 	}
 	assignResults(levels);
-
+	
+	// reset the orientation of the layout, in case it was set to RTL
+	layout.setOrientation(SWT.LEFT_TO_RIGHT);
 	// will cause the fields to be reset for the next string to be processed
 	bidiText = null;
 	list.clear();
