@@ -17,15 +17,7 @@ abstract public class TemplateTransferDropTargetListener
 {
 
 public TemplateTransferDropTargetListener(EditPartViewer viewer) {
-	super(viewer);
-}
-
-public TemplateTransferDropTargetListener(EditPartViewer viewer, Transfer xfer) {
-	super(viewer, xfer);
-}
-
-protected boolean canHandleDrop(DropTargetEvent event) {
-	return true;
+	super(viewer, TemplateTransfer.getInstance());
 }
 
 protected Request createTargetRequest() {

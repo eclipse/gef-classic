@@ -22,17 +22,11 @@ public LogicTemplateTransferDropTargetListener(EditPartViewer viewer) {
 	super(viewer);
 }
 
-public LogicTemplateTransferDropTargetListener(EditPartViewer viewer, Transfer xfer) {
-	super(viewer, xfer);
-}
-
 protected CreateRequest.Factory getFactory(Object template) {
 	if (template instanceof String)
 		return new LogicTemplateFactory((String)template);
 	return null;
 }
-
-
 
 class LogicTemplateFactory implements CreateRequest.Factory {
 	
