@@ -33,6 +33,7 @@ static final long serialVersionUID = 1;
 public static String ID_ROUTER = "router";	//$NON-NLS-1$
 public static Integer ROUTER_MANUAL = new Integer(0);
 public static Integer ROUTER_MANHATTAN = new Integer(1);
+public static Integer ROUTER_SHORTEST_PATH = new Integer(2);
 private static int count;
 private static Image LOGIC_ICON = new Image (null,
 	LogicDiagram.class.getResourceAsStream("icons/circuit16.gif")); //$NON-NLS-1$
@@ -116,7 +117,8 @@ public IPropertyDescriptor[] getPropertyDescriptors() {
 				LogicMessages.PropertyDescriptor_LogicDiagram_ConnectionRouter,
 				new String[]{
 					LogicMessages.PropertyDescriptor_LogicDiagram_Manual,
-					LogicMessages.PropertyDescriptor_LogicDiagram_Manhattan});
+					LogicMessages.PropertyDescriptor_LogicDiagram_Manhattan,
+					LogicMessages.PropertyDescriptor_LogicDiagram_ShortestPath});
 		cbd.setLabelProvider(new ConnectionRouterLabelProvider());
 		return new IPropertyDescriptor[]{cbd};
 	}
@@ -216,6 +218,8 @@ private class ConnectionRouterLabelProvider
 				return LogicMessages.PropertyDescriptor_LogicDiagram_Manual;
 			if(ROUTER_MANHATTAN.intValue()==integer.intValue())
 				return LogicMessages.PropertyDescriptor_LogicDiagram_Manhattan;
+			if(ROUTER_SHORTEST_PATH.intValue()==integer.intValue())
+				return LogicMessages.PropertyDescriptor_LogicDiagram_ShortestPath;
 		}
 		return super.getText(element);
 	}

@@ -27,6 +27,7 @@ import org.eclipse.gef.tools.DeselectAllTracker;
 import org.eclipse.gef.tools.MarqueeDragTracker;
 
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
+import org.eclipse.gef.examples.logicdesigner.figures.ShortestPathConnectionRouter;
 import org.eclipse.gef.examples.logicdesigner.model.LogicDiagram;
 
 /**
@@ -39,7 +40,9 @@ public class LogicDiagramEditPart
 	extends LogicContainerEditPart
 	implements LayerConstants
 {
-	
+
+private FreeformLayout layout = new FreeformLayout();
+
 protected AccessibleEditPart createAccessible() {
 	return new AccessibleGraphicalEditPart(){
 		public void getName(AccessibleEvent e) {
@@ -68,7 +71,7 @@ protected void createEditPolicies(){
 protected IFigure createFigure() {
 	Figure f = new FreeformLayer();
 //	f.setBorder(new GroupBoxBorder("Diagram"));
-	f.setLayoutManager(new FreeformLayout());
+	f.setLayoutManager(layout);
 	f.setBorder(new MarginBorder(5));
 	return f;
 }
@@ -145,22 +148,31 @@ public ConnectionAnchor getTargetConnectionAnchor(int x, int y) {
 	return null;
 }
 
-public void propertyChange(PropertyChangeEvent evt){
+public void propertyChange(PropertyChangeEvent evt) {
 	if (LogicDiagram.ID_ROUTER.equals(evt.getPropertyName()))
 		refreshVisuals();
 	else
 		super.propertyChange(evt);
 }
 
-protected void refreshVisuals(){
+protected void refreshVisuals() {
 	ConnectionLayer cLayer = (ConnectionLayer) getLayer(CONNECTION_LAYER);
+	getFigure().setLayoutManager(layout);
 	if (getLogicDiagram().getConnectionRouter().equals(LogicDiagram.ROUTER_MANUAL)){
 		AutomaticRouter router = new FanRouter();
 		router.setNextRouter(new BendpointConnectionRouter());
 		cLayer.setConnectionRouter(router);
 	}
-	else
+	else if (getLogicDiagram().getConnectionRouter().equals(LogicDiagram.ROUTER_MANHATTAN))
 		cLayer.setConnectionRouter(new ManhattanConnectionRouter());
+	else {
+		ShortestPathConnectionRouter router =
+			new ShortestPathConnectionRouter(getFigure()); 
+		cLayer.setConnectionRouter(router);
+		getFigure().setLayoutManager(new ShortestPathConnectionRouter.LayoutWrapper(
+				layout,router));
+	}
+
 }
 
 }

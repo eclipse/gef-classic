@@ -34,6 +34,11 @@ public class LogicXYLayoutEditPolicy
 	extends org.eclipse.gef.editpolicies.XYLayoutEditPolicy
 {
 
+public LogicXYLayoutEditPolicy(XYLayout layout) {
+	super();
+	setXyLayout(layout);
+}
+
 protected Command chainGuideAttachmentCommands(
 		Request request, LogicSubpart part, Command cmd) {
 	Assert.isNotNull(request);
