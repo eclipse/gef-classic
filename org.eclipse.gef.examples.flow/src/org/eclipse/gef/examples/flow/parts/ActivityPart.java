@@ -5,17 +5,15 @@ import java.beans.PropertyChangeListener;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.gef.*;
+import org.eclipse.gef.EditPolicy;
+import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
 import org.eclipse.gef.examples.flow.model.Activity;
 import org.eclipse.gef.examples.flow.model.FlowElement;
 import org.eclipse.gef.examples.flow.policies.*;
-import org.eclipse.gef.tools.DirectEditManager;
 import org.eclipse.graph.*;
-import org.eclipse.jface.viewers.TextCellEditor;
 
 /**
  * @author hudsonr
@@ -25,8 +23,6 @@ public abstract class ActivityPart
 	extends AbstractGraphicalEditPart
 	implements PropertyChangeListener 
 {
-
-private DirectEditManager manager;
 
 /**
  * @see org.eclipse.gef.EditPart#activate()
@@ -94,24 +90,6 @@ protected List getModelSourceConnections() {
  */
 protected List getModelTargetConnections() {
 	return getActivity().getGuards();
-}
-
-private void performDirectEdit() {
-	if (manager == null)
-		manager =
-			new ActivityDirectEditManager(
-				this,
-				TextCellEditor.class,
-				new ActivityCellEditorLocator((Label) getFigure()));
-	manager.show();
-}
-
-/**
- * @see org.eclipse.gef.EditPart#performRequest(org.eclipse.gef.Request)
- */
-public void performRequest(Request request) {
-	if (request.getType() == RequestConstants.REQ_DIRECT_EDIT)
-		performDirectEdit();
 }
 
 /**
