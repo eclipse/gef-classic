@@ -296,7 +296,7 @@ protected void paintFigure(Graphics graphics) {
 				forbiddenZone.expand(1, 1);
 				graphics.fillRectangle(forbiddenZone);
 				// Uncomment the following line of code if you want to see a line at
-				// the exact position of the guide
+				// the exact position of the major mark
 //				graphics.drawLine(y, clippedBounds.x, y, clippedBounds.x + clippedBounds.width);
 				graphics.drawText(num, textLocation);
 			} else {
