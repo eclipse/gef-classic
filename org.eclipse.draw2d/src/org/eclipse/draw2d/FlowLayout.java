@@ -14,7 +14,7 @@ import java.util.*;
 import org.eclipse.draw2d.geometry.*;
 
 /**
- * Lays our children in rows or columns, wrapping when the current row/column is filled.
+ * Lays out children in rows or columns, wrapping when the current row/column is filled.
  * The aligment and spacing of rows in the parent can be configured.  The aligment and
  * spacing of children within a row can be configured.
  */
@@ -22,17 +22,17 @@ public class FlowLayout
 	extends AbstractHintLayout
 {
 
-/*
- * Constants defining the alignment of the components
- */
-public static final int
-	ALIGN_CENTER = 0,
-	ALIGN_LEFTTOP = 1,
-	ALIGN_RIGHTBOTTOM = 2;
+/** Constant to specify components to be aligned in the center */
+public static final int ALIGN_CENTER = 0;
+/** Constant to specify components to be aligned on the left/top */
+public static final int ALIGN_LEFTTOP = 1;
+/** Constant to specify components to be aligned on the right/bottom */
+public static final int ALIGN_RIGHTBOTTOM = 2;
 
-public static final boolean
-	HORIZONTAL = true,
-	VERTICAL = false;
+/** Constant to specify components should be layed out horizontally */
+public static final boolean HORIZONTAL = true;
+/** Constant to specify components should be layed out vertically */
+public static final boolean VERTICAL = false;
 
 protected boolean horizontal = true;
 protected boolean fill = false;

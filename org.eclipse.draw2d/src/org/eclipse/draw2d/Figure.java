@@ -252,11 +252,11 @@ public void erase() {
 
 /**
  * Returns a descendant of this Figure such that the Figure returned contains the point
- * (x, y), and is not a member of the Collection <i>c</i>. Returns <code>null</code> if
- * none found.
+ * (x, y), and is accepted by the given TreeSearch. Returns <code>null</code> if none 
+ * found.
  * @param x The X coordinate
  * @param y The Y coordinate
- * @param c A Collection of IFigures to exclude from the search
+ * @param search the TreeSearch
  * @return The descendant Figure at (x,y)
  */
 protected IFigure findDescendantAtExcluding(int x, int y, TreeSearch search) {
@@ -293,6 +293,15 @@ public final IFigure findFigureAt(int x, int y) {
 	return findFigureAt(x, y, IdentitySearch.INSTANCE);
 }
 
+/**
+ * Returns the IFigure at the given location provided it is accepted by the given
+ * TreeSearch.  Returns <code>null</code> if none found.
+ * 
+ * @param x the x coordinate
+ * @param y the y coordinate
+ * @param search the TreeSearch
+ * @return the figure at the given location
+ */
 public IFigure findFigureAt(int x, int y, TreeSearch search) {
 	if (!containsPoint(x, y))
 		return null;
@@ -586,6 +595,9 @@ public final Dimension getMinimumSize() {
 	return getMinimumSize(-1, -1);
 }
 
+/**
+ * @see IFigure#getMinimumSize(int, int)
+ */
 public Dimension getMinimumSize(int wHint, int hHint) {
 	if (minSize != null)
 		return minSize;

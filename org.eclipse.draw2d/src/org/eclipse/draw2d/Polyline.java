@@ -32,7 +32,7 @@ private static final Rectangle LINEBOUNDS = Rectangle.SINGLETON;
 /**
  * Adds the passed point to the Polyline.
  * 
- * @param pt The Point to be added to the Polyline.
+ * @param pt the Point to be added to the Polyline
  * @since 2.0
  */
 public void addPoint(Point pt) {
@@ -102,7 +102,7 @@ private boolean lineContainsPoint(
 }
 
 /**
- * Null implementation for a line
+ * Null implementation for a line.
  * @see org.eclipse.draw2d.Shape#fillShape(Graphics) */
 protected void fillShape(Graphics g) { }
 
@@ -126,11 +126,11 @@ public Point getEnd() {
 }
 
 /**
- * Returns the points in this Polyline <B>by reference</B>.
- * If the returned list is modified, this Polyline must
- * be informed by calling {@link #setPoints(PointList)}.  Failure to do so will result in
- * layout and paint problems.
+ * Returns the points in this Polyline <B>by reference</B>. If the returned list is 
+ * modified, this Polyline must be informed by calling {@link #setPoints(PointList)}.  
+ * Failure to do so will result in layout and paint problems.
  * 
+ * @return this Polyline's points
  * @since 2.0
  */
 public PointList getPoints() {
@@ -138,8 +138,7 @@ public PointList getPoints() {
 }
 
 /**
- * Returns the first point in the Polyline.
- * 
+ * @return the first point in the Polyline
  * @since 2.0
  */
 public Point getStart() {
@@ -149,9 +148,8 @@ public Point getStart() {
 /**
  * Inserts a given point at a specified index in the Polyline.
  * 
- * @param pt The point to be added
- * @param index The position in the Polyline where the 
- *               point is to be added.
+ * @param pt the point to be added
+ * @param index the position in the Polyline where the point is to be added
  * 
  * @since 2.0
  */
@@ -160,19 +158,28 @@ public void insertPoint(Point pt, int index) {
 	points.insertPoint(pt, index);
 	repaint();
 }
+
+/**
+ * @return <code>false</code> because Polyline's aren't filled
+ */
 public boolean isOpaque() {
 	return false;
 }
 
+/**
+ * @see Shape#outlineShape(Graphics)
+ */
 protected void outlineShape(Graphics g) {
 	g.drawPolyline(points);
 }
 
+/**
+ * @see Figure#primTranslate(int, int)
+ */
 public void primTranslate(int x, int y) { }
 
 /** 
- * Erases the Polyline and removes all of its
- * {@link Point Points}.
+ * Erases the Polyline and removes all of its {@link Point Points}.
  * 
  * @since 2.0
  */
@@ -185,7 +192,7 @@ public void removeAllPoints() {
 /**
  * Removes a point from the Polyline.
  * 
- * @param index The position of the point to be removed.
+ * @param index the position of the point to be removed
  * @since 2.0
  */
 public void removePoint(int index) {
@@ -197,8 +204,7 @@ public void removePoint(int index) {
 /**
  * Sets the end point of the Polyline
  * 
- * @param end The point that will become the last point
- *             in the Polyline. 
+ * @param end the point that will become the last point in the Polyline
  * @since 2.0
  */
 public void setEnd(Point end) {
@@ -211,8 +217,8 @@ public void setEnd(Point end) {
 /**
  * Sets the points at both extremes of the Polyline
  * 
- * @param start The point to become the first point in the Polyline.
- * @param end The point to become the last point in the Polyline.
+ * @param start the point to become the first point in the Polyline
+ * @param end the point to become the last point in the Polyline
  * @since 2.0
  */
 public void setEndpoints(Point start, Point end) {
@@ -247,10 +253,10 @@ public void setPoint(Point pt, int index) {
 }
 
 /**
- * Sets the list of points to be used by this polyline connection.
- * Removes any previously existing points. 
+ * Sets the list of points to be used by this polyline connection. Removes any previously 
+ * existing points. 
  *
- * @param points  New set of points.
+ * @param points new set of points
  * @since 2.0
  */
 public void setPoints(PointList points) {
@@ -264,8 +270,7 @@ public void setPoints(PointList points) {
 /**
  * Sets the start point of the Polyline
  * 
- * @param start The point that will become the first point
- *               in the Polyline.
+ * @param start the point that will become the first point in the Polyline
  * @since 2.0
  */
 public void setStart(Point start) {
@@ -275,6 +280,9 @@ public void setStart(Point start) {
 		setPoint(start, 0);
 }
 
+/**
+ * @see Figure#useLocalCoordinates()
+ */
 protected boolean useLocalCoordinates() {
 	return false;
 }

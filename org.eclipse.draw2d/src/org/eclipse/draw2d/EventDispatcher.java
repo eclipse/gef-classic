@@ -17,56 +17,141 @@ import org.eclipse.swt.events.TraverseEvent;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.widgets.Control;
 
-abstract public class EventDispatcher {
+/**
+ * Listens to various SWT events and dispatches these events to interested Draw2d objects. 
+ */
+public abstract class EventDispatcher {
 
-static public abstract class AccessibilityDispatcher
+	public abstract static class AccessibilityDispatcher
 	implements AccessibleControlListener, AccessibleListener
 {
-	public void getChild(AccessibleControlEvent e) {}
+	public void getChild(AccessibleControlEvent e) { }
 }
 
-abstract public void dispatchFocusGained(FocusEvent e);
+/**
+ * Dispatches a focus gained event.
+ * @param e the event
+ */
+public abstract void dispatchFocusGained(FocusEvent e);
 
-abstract public void dispatchFocusLost(FocusEvent e);
+/**
+ * Dispatches a focus lost event.
+ * @param e the event
+ */
+public abstract void dispatchFocusLost(FocusEvent e);
 
-abstract public void dispatchKeyPressed(KeyEvent e);
+/**
+ * Dispatches a key pressed event.
+ * @param e the event
+ */
+public abstract void dispatchKeyPressed(KeyEvent e);
 
-abstract public void dispatchKeyReleased(KeyEvent e);
+/**
+ * Dispatches a key released event.
+ * @param e the event
+ */
+public abstract void dispatchKeyReleased(KeyEvent e);
 
-abstract public void dispatchKeyTraversed(TraverseEvent e);
+/**
+ * Dispatches a key traversed event.
+ * @param e the event
+ */
+public abstract void dispatchKeyTraversed(TraverseEvent e);
 
-abstract public void dispatchMouseDoubleClicked(MouseEvent me);
+/**
+ * Dispatches a mouse double clicked event.
+ * @param me the event
+ */
+public abstract void dispatchMouseDoubleClicked(MouseEvent me);
 
-abstract public void dispatchMouseEntered(MouseEvent e);
+/**
+ * Dispatches a mouse entered event.
+ * @param e the event
+ */
+public abstract void dispatchMouseEntered(MouseEvent e);
 
-abstract public void dispatchMouseExited(MouseEvent e);
+/**
+ * Dispatches a mouse exited event.
+ * @param e the event
+ */
+public abstract void dispatchMouseExited(MouseEvent e);
 
-abstract public void dispatchMouseHover(MouseEvent me);
+/**
+ * Dispatches a mouse hover event.
+ * @param me the event
+ */
+public abstract void dispatchMouseHover(MouseEvent me);
 
-abstract public void dispatchMouseMoved(MouseEvent me);
+/**
+ * Dispatches a moved event event.
+ * @param me the event
+ */
+public abstract void dispatchMouseMoved(MouseEvent me);
 
-abstract public void dispatchMousePressed(MouseEvent me);
+/**
+ * Dispatches a mouse pressed event.
+ * @param me the event
+ */
+public abstract void dispatchMousePressed(MouseEvent me);
 
-abstract public void dispatchMouseReleased(MouseEvent me);
+/**
+ * Dispatches a mouse released event.
+ * @param me the event
+ */
+public abstract void dispatchMouseReleased(MouseEvent me);
 
-abstract protected AccessibilityDispatcher getAccessibilityDispatcher();
+protected abstract AccessibilityDispatcher getAccessibilityDispatcher();
 
-abstract /*package*/ IFigure getFocusOwner();
+/**
+ * @return the IFigure that currently has focus
+ */
+/*package*/ abstract IFigure getFocusOwner();
 
-abstract public boolean isCaptured();
+/**
+ * @return whether events are captured by a figure
+ */
+public abstract boolean isCaptured();
 
-abstract protected void releaseCapture();
+/**
+ * Releases capture initiated by {@link #setCapture(IFigure)}.
+ */
+protected abstract void releaseCapture();
 
-abstract public void requestFocus(IFigure fig);
+/**
+ * Requests focus for the given figure.
+ * @param fig the figure requesting focus
+ */
+public abstract void requestFocus(IFigure fig);
 
-abstract public void requestRemoveFocus(IFigure fig);
+/**
+ * Requests focus to be removed from the given figure.
+ * @param fig the figure requesting focus be removed
+ */
+public abstract void requestRemoveFocus(IFigure fig);
 
-abstract protected void setCapture(IFigure figure);
+/**
+ * Sets capture to the given figure.  All subsequent events will be sent to the given 
+ * figure until {@link #releaseCapture()} is called.
+ * 
+ * @param figure the figure capturing the events
+ */
+protected abstract void setCapture(IFigure figure);
 
-abstract public void setControl(Control control);
+/**
+ * Sets the contol associated with this event dispatcher.
+ * @param control the control
+ */
+public abstract void setControl(Control control);
 
-abstract public void setRoot(IFigure figure);
+/**
+ * Sets the root figure for this dispatcher.
+ * @param figure the root figure
+ */
+public abstract void setRoot(IFigure figure);
 
-abstract protected void updateCursor();
+/**
+ * Updates the cursor.
+ */
+protected abstract void updateCursor();
 
 }

@@ -12,34 +12,44 @@ package org.eclipse.draw2d;
 
 import org.eclipse.draw2d.geometry.*;
 
+/**
+ * An event caused by the user interacting with the mouse.
+ */
 public class MouseEvent
 	extends InputEvent
 {
 
-public int x,y;
+/** The X coordinate of the mouse event. */
+public int x;
+/** The Y coordinate of the mouse event. */
+public int y;
 
-/**
- * The button that was pressed or released: {1, 2, 3}.
- */
+/** The button that was pressed or released: {1, 2, 3}. */
 public int button;
 
 MouseEvent(int x, int y, EventDispatcher dispatcher,
-	IFigure f, int button, int stateMask)
+	IFigure f, int button, int stateMask) 
 {
 	super(dispatcher, f, stateMask);
 	Point pt = Point.SINGLETON;
-	pt.setLocation(x,y);
+	pt.setLocation(x, y);
 	f.translateToRelative(pt);
 	this.button = button;
-	this.x=pt.x;
-	this.y=pt.y;
+	this.x = pt.x;
+	this.y = pt.y;
 }
 
-public Point getLocation(){
-	return new Point(x,y);
+/**
+ * @return the location of this mouse event
+ */
+public Point getLocation() {
+	return new Point(x, y);
 }
 
-public String toString(){
+/**
+ * @see Object#toString()
+ */
+public String toString() {
 	return "MouseEvent(" + x + ',' + y + " to Figure: " + source;//$NON-NLS-2$//$NON-NLS-1$
 }
 

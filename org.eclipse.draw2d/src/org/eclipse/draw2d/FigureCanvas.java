@@ -29,7 +29,12 @@ public class FigureCanvas
 	extends Canvas
 {
 
-public static int NEVER = 0, AUTOMATIC = 1, ALWAYS = 2;  // ScrollBar visibility constants
+/** Never show scrollbar */
+public static int NEVER = 0;
+/** Automatically show scrollbar when needed */
+public static int AUTOMATIC = 1;
+/** Always show scrollbar */
+public static int ALWAYS = 2;
 
 private static int DEFAULT_INCREMENT = 10;
 
@@ -44,12 +49,12 @@ private PropertyChangeListener horizontalChangeListener = new PropertyChangeList
 		RangeModel model = getViewport().getHorizontalRangeModel();
 		hBarOffset = Math.max(0, -model.getMinimum());
 		getHorizontalBar().setValues(
-			model.getValue()+hBarOffset,
-			model.getMinimum()+hBarOffset,
-			model.getMaximum()+hBarOffset,
+			model.getValue() + hBarOffset,
+			model.getMinimum() + hBarOffset,
+			model.getMaximum() + hBarOffset,
 			model.getExtent(),
-			model.getExtent()/20,
-			model.getExtent()*3/4);
+			model.getExtent() / 20,
+			model.getExtent() * 3 / 4);
 	}
 };
 
@@ -59,12 +64,12 @@ private PropertyChangeListener verticalChangeListener = new PropertyChangeListen
 		RangeModel model = getViewport().getVerticalRangeModel();
 		vBarOffset = Math.max(0, -model.getMinimum());
 			getVerticalBar().setValues(
-				model.getValue()+vBarOffset,
-				model.getMinimum()+vBarOffset,
-				model.getMaximum()+vBarOffset,
+				model.getValue() + vBarOffset,
+				model.getMinimum() + vBarOffset,
+				model.getMaximum() + vBarOffset,
 				model.getExtent(),
-				model.getExtent()/20,
-				model.getExtent()*3/4);
+				model.getExtent() / 20,
+				model.getExtent() * 3 / 4);
 	}
 };
 
@@ -72,11 +77,18 @@ private final LightweightSystem lws;
 
 /**
  * Creates a new FigureCanvas with the given parent.
+ * 
+ * @param parent the parent
  */
 public FigureCanvas(Composite parent) {
 	this(parent, new LightweightSystem());
 }
 
+/**
+ * Constructs a new FigureCanvas with the given parent and LightweightSystem.
+ * @param parent the parent
+ * @param lws the LightweightSystem
+ */
 public FigureCanvas(Composite parent, LightweightSystem lws) {
 	super(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.NO_REDRAW_RESIZE | SWT.NO_BACKGROUND);
 	this.lws = lws;
@@ -102,33 +114,36 @@ public org.eclipse.swt.graphics.Point computeSize(int wHint, int hHint, boolean 
 }
 
 /**
- * Returns the contents of the {@link Viewport}.
+ * @return the contents of the {@link Viewport}.
  */
 public IFigure getContents() {
 	return getViewport().getContents();
 }
 
 /**
- * Returns the horizontal scrollbar visibility.
+ * @return the horizontal scrollbar visibility.
  */
 public int getHorizontalScrollBarVisibility() {
 	return hBarVisibility;
 }
 
+/**
+ * @return the LightweightSystem
+ */
 public LightweightSystem getLightweightSystem() {
 	return lws;
 }
 
 /**
- * Returns the vertical scrollbar visibility.
+ * @return the vertical scrollbar visibility.
  */
 public int getVerticalScrollBarVisibility() {
 	return vBarVisibility;
 }
 
 /**
- * Returns the Viewport.  If it's <code>null</code>, a new 
- * one is created.
+ * Returns the Viewport.  If it's <code>null</code>, a new one is created.
+ * @return the viewport
  */
 public Viewport getViewport() {
 	if (viewport == null)
@@ -150,18 +165,18 @@ private void hook() {
 
 	getHorizontalBar().addSelectionListener(new SelectionAdapter() {
 		public void widgetSelected(SelectionEvent event) {
-			scrollToX(getHorizontalBar().getSelection() -hBarOffset);
+			scrollToX(getHorizontalBar().getSelection() - hBarOffset);
 		}
 	});
 
 	getVerticalBar().addSelectionListener(new SelectionAdapter() {
 		public void widgetSelected(SelectionEvent event) {
-			scrollToY(getVerticalBar().getSelection()-vBarOffset);
+			scrollToY(getVerticalBar().getSelection() - vBarOffset);
 		}
 	});
 }
 
-private void hookViewport(){
+private void hookViewport() {
 	getViewport().
 		getHorizontalRangeModel().
 		addPropertyChangeListener(horizontalChangeListener);
@@ -170,7 +185,7 @@ private void hookViewport(){
 		addPropertyChangeListener(verticalChangeListener);
 }
 
-private void unhookViewport(){
+private void unhookViewport() {
 	getViewport().
 		getHorizontalRangeModel().
 		removePropertyChangeListener(horizontalChangeListener);
@@ -179,14 +194,14 @@ private void unhookViewport(){
 		removePropertyChangeListener(verticalChangeListener);
 }
 
-private void layoutViewport(){
+private void layoutViewport() {
 	ScrollPaneSolver.Result result;
 	result = ScrollPaneSolver.solve(new Rectangle(getBounds()).setLocation(0, 0),
 		getViewport(),
 		getHorizontalScrollBarVisibility(),
 		getVerticalScrollBarVisibility(),
-		computeTrim(0,0,0,0).width,
-		computeTrim(0,0,0,0).height);
+		computeTrim(0, 0, 0, 0).width,
+		computeTrim(0, 0, 0, 0).height);
 	if (getHorizontalBar().getVisible() != result.showH)
 		getHorizontalBar().setVisible(result.showH);
 	if (getVerticalBar().getVisible() != result.showV)
@@ -195,6 +210,8 @@ private void layoutViewport(){
 
 /**
  * Scrolls in an animated way to the new x and y location.
+ * @param x the x coordinate to scroll to
+ * @param y the y coordinate to scroll to
  */
 public void scrollSmoothTo(int x, int y) {
 	// Ensure newHOffset and newVOffset are within the appropriate ranges
@@ -204,38 +221,41 @@ public void scrollSmoothTo(int x, int y) {
 	int oldX = getViewport().getViewLocation().x;
 	int oldY = getViewport().getViewLocation().y;
 	int dx = x - oldX;
-	int dy = y -oldY;
+	int dy = y - oldY;
 
 	if (dx == 0 && dy == 0)
 		return; //Nothing to do.
 
 	Dimension viewingArea = getViewport().getClientArea().getSize();
 
-	int MIN_FRAMES = 3;
-	int MAX_FRAMES = 6;
-	if (dx == 0 || dy == 0){
-		MIN_FRAMES = 6;
-		MAX_FRAMES = 13;
+	int minFrames = 3;
+	int maxFrames = 6;
+	if (dx == 0 || dy == 0) {
+		minFrames = 6;
+		maxFrames = 13;
 	}
-	int FRAMES = (Math.abs(dx)+Math.abs(dy))/15;
-	FRAMES = Math.max(FRAMES, MIN_FRAMES);
-	FRAMES = Math.min(FRAMES, MAX_FRAMES);
+	int frames = (Math.abs(dx) + Math.abs(dy)) / 15;
+	frames = Math.max(frames, minFrames);
+	frames = Math.min(frames, maxFrames);
 
-	int stepX = Math.min((dx / FRAMES), (viewingArea.width/3));
-	int stepY = Math.min((dy / FRAMES), (viewingArea.height/3));
+	int stepX = Math.min((dx / frames), (viewingArea.width / 3));
+	int stepY = Math.min((dy / frames), (viewingArea.height / 3));
 
-	for (int i=1; i < FRAMES; i++){
-		scrollTo(oldX + i*stepX, oldY + i*stepY);
+	for (int i = 1; i < frames; i++) {
+		scrollTo(oldX + i * stepX, oldY + i * stepY);
 		getViewport().getUpdateManager().performUpdate();
 	}
-	scrollTo(x,y);
+	scrollTo(x, y);
 }
 
 /**
- * Scrolls the contents to the new x and y location.  
- * If this scroll operation only consists of a vertical or horizontal
- * scroll, a call will be made to {@link #scrollToY(int)} or 
- * {@link #scrollToX(int)}, respectively, to increase performance.
+ * Scrolls the contents to the new x and y location.  If this scroll operation only 
+ * consists of a vertical or horizontal scroll, a call will be made to 
+ * {@link #scrollToY(int)} or {@link #scrollToX(int)}, respectively, to increase 
+ * performance.
+ * 
+ * @param x the x coordinate to scroll to
+ * @param y the y coordinate to scroll to
  */
 public void scrollTo(int x, int y) {
 	x = verifyScrollBarOffset(getViewport().getHorizontalRangeModel(), x);
@@ -248,8 +268,9 @@ public void scrollTo(int x, int y) {
 		getViewport().setViewLocation(x, y);
 }
 /**
- * Scrolls the contents horizontally so that they are offset
- * by <code>newHOffset</code>. 
+ * Scrolls the contents horizontally so that they are offset by <code>hOffset</code>. 
+ * 
+ * @param hOffset the new horizontal offset
  */
 public void scrollToX(int hOffset) {
 	hOffset = verifyScrollBarOffset(getViewport().getHorizontalRangeModel(), hOffset);
@@ -263,7 +284,7 @@ public void scrollToX(int hOffset) {
 	Rectangle expose = clientArea.getCopy();
 	Point dest = clientArea.getTopLeft();
 	expose.width = Math.abs(dx);
-	if (dx < 0){ //Moving left?
+	if (dx < 0) { //Moving left?
 		blit.translate(-dx, 0); //Move blit area to the right
 		expose.x = dest.x + blit.width;
 	} else //Moving right
@@ -280,8 +301,9 @@ public void scrollToX(int hOffset) {
 }
 
 /**
- * Scrolls the contents vertically so that they are offset
- * by <code>newVOffset</code>. 
+ * Scrolls the contents vertically so that they are offset by <code>vOffset</code>. 
+ * 
+ * @param vOffset the new vertical offset
  */
 public void scrollToY(int vOffset) {
 	vOffset = verifyScrollBarOffset(getViewport().getVerticalRangeModel(), vOffset);
@@ -295,7 +317,7 @@ public void scrollToY(int vOffset) {
 	Rectangle expose = clientArea.getCopy();
 	Point dest = clientArea.getTopLeft();
 	expose.height = Math.abs(dy);
-	if (dy < 0){ //Moving up?
+	if (dy < 0) { //Moving up?
 		blit.translate(0, -dy); //Move blit area down
 		expose.y = dest.y + blit.height; //Move expose area down
 	} else //Moving down
@@ -313,27 +335,38 @@ public void scrollToY(int vOffset) {
 
 /**
  * Sets the contents of the {@link Viewport}.
+ * 
+ * @param figure the new contents
  */
 public void setContents(IFigure figure) {
 	getViewport().setContents(figure);
 }
 
 /**
- * Sets the horizontal scrollbar visibility.  Possible values are
- * {@link #AUTOMATIC}, {@link #ALWAYS}, and {@link #NEVER}.
+ * Sets the horizontal scrollbar visibility.  Possible values are {@link #AUTOMATIC}, 
+ * {@link #ALWAYS}, and {@link #NEVER}.
+ * 
+ * @param v the new visibility
  */
 public void setHorizontalScrollBarVisibility(int v) {
 	hBarVisibility = v;
 }
 
-public void setScrollBarVisibility(int both){
+/**
+ * Sets both the horizontal and vertical scrollbar visibility to the given value.  
+ * Possible values are {@link #AUTOMATIC}, {@link #ALWAYS}, and {@link #NEVER}.
+ * @param both the new visibility
+ */
+public void setScrollBarVisibility(int both) {
 	setHorizontalScrollBarVisibility(both);
 	setVerticalScrollBarVisibility(both);
 }
 
 /**
- * Sets the vertical scrollbar visibility.  Possible values are
- * {@link #AUTOMATIC}, {@link #ALWAYS}, and {@link #NEVER}.
+ * Sets the vertical scrollbar visibility.  Possible values are {@link #AUTOMATIC}, 
+ * {@link #ALWAYS}, and {@link #NEVER}.
+ * 
+ * @param v the new visibility
  */
 public void setVerticalScrollBarVisibility(int v) {
 	vBarVisibility = v;
@@ -342,6 +375,8 @@ public void setVerticalScrollBarVisibility(int v) {
 /**
  * Sets the Viewport. The given Viewport must use "fake" scrolling. That is, it must be
  * constructed using <code>new Viewport(true)</code>.
+ * 
+ * @param vp the new viewport
  */
 public void setViewport(Viewport vp) {
 	if (viewport != null)

@@ -26,39 +26,46 @@ public class Ellipse
  * 
  * @since 2.0
  */
-public Ellipse(){}
+public Ellipse() { }
 
+/**
+ * Returns whether the given point (x,y) is contained within this ellipse.
+ * @param x the x coordinate
+ * @param y the y coordinate
+ * @return whether the given point (x,y) is contained within this ellipse
+ */
 public boolean containsPoint(int x, int y) {
-	if (!super.containsPoint(x,y))
+	if (!super.containsPoint(x, y))
 		return false;
 	Rectangle r = getBounds();
-	long ux = x - r.x - r.width/2;
-	long uy = y - r.y - r.height/2;
-	return ((ux*ux) << 10 ) / (r.width*r.width) 
-		 + ((uy*uy) << 10) / (r.height*r.height) <= 256;
+	long ux = x - r.x - r.width / 2;
+	long uy = y - r.y - r.height / 2;
+	return ((ux * ux) << 10) / (r.width * r.width) 
+		 + ((uy * uy) << 10) / (r.height * r.height) <= 256;
 }
 
 /**
- * Fill the Ellipse with the background color
- * set by <i>graphics</i>.
+ * Fill the Ellipse with the background color set by <i>graphics</i>.
  * 
+ * @param graphics the graphics object
  * @since 2.0
  */
-protected void fillShape(Graphics graphics){
+protected void fillShape(Graphics graphics) {
 	graphics.fillOval(getBounds());
 }
 
 /**
  * Draw the outline of the Ellipse.
  * 
+ * @param graphics the graphics object
  * @since 2.0
  */
-protected void outlineShape(Graphics graphics){
+protected void outlineShape(Graphics graphics) {
 	Rectangle r = Rectangle.SINGLETON;
 	r.setBounds(getBounds());
 	r.width--;
 	r.height--;
-	r.shrink((lineWidth-1)/2,(lineWidth-1)/2);
+	r.shrink((lineWidth - 1) / 2, (lineWidth - 1) / 2);
 	graphics.drawOval(r);
 }
 

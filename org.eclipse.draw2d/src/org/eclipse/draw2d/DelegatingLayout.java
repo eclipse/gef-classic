@@ -32,22 +32,29 @@ private Map constraints = new HashMap();
  * For the DelegatingLayout, this is the largest width and height
  * values of the passed Figure's children.
  * 
+ * @param parent the figure whose preferred size is being calculated
+ * @param wHint the width hint
+ * @param hHint the height hint
+ * @return the preferred size
  * @since 2.0
  */
 protected Dimension calculatePreferredSize(IFigure parent, int wHint, int hHint) {
 	List children = parent.getChildren();
 	Dimension d = new Dimension();
-	for (int i=0; i<children.size(); i++) {
+	for (int i = 0; i < children.size(); i++) {
 		IFigure child = (IFigure)children.get(i);
 		d.union(child.getPreferredSize());
 	}
 	return d;
 }
 
+/**
+ * Lays out the given figure's children based on their {@link Locator} constraint.
+ * @param parent the figure whose children should be layed out
+ */
 public void layout(IFigure parent) {
-
 	List children = parent.getChildren();
-	for (int i=0; i<children.size(); i++) {
+	for (int i = 0; i < children.size(); i++) {
 		IFigure child = (IFigure)children.get(i);
 		Locator locator = (Locator)constraints.get(child);
 		if (locator != null) {
@@ -56,6 +63,11 @@ public void layout(IFigure parent) {
 	}
 }
 
+/**
+ * Sets the constraint for the given figure.
+ * @param figure the figure whose contraint is being set
+ * @param constraint the new constraint
+ */
 public void setConstraint(IFigure figure, Object constraint) {
 	super.setConstraint(figure, constraint);
 	if (constraint != null)

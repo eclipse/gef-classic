@@ -170,6 +170,14 @@ void erase();
  */
 IFigure findFigureAt(int x, int y);
 
+/**
+ * Returns the IFigure at the specified location based on the conditional TreeSearch.  May
+ * return <code>this</code> or <code>null</code>
+ * @param x the X coordinate
+ * @param y the Y coordinate
+ * @param search the conditional TreeSearch
+ * @return the IFigure at the specified location
+ */
 IFigure findFigureAt(int x, int y, TreeSearch search);
 
 /**

@@ -20,28 +20,28 @@ public final class EventListenerList {
 List listeners = new ArrayList(1);
 List types = new ArrayList(1);
 
-public void addListener(Class c, Object listener){
+public void addListener(Class c, Object listener) {
 	types.add(c);
 	listeners.add(listener);
 }
 
-public boolean containsListener(Class c){
-	for (int i=0; i < types.size(); i++)
+public boolean containsListener(Class c) {
+	for (int i = 0; i < types.size(); i++)
 		if (types.get(i) == c) return true;
 	return false;
 }
 
-public Iterator getListeners(Class c){
+public Iterator getListeners(Class c) {
 	List result = new ArrayList();
-	for (int i=0; i < types.size(); i++)
+	for (int i = 0; i < types.size(); i++)
 		if (types.get(i) == c)
 			result.add(listeners.get(i));
 	return result.iterator();
 }
 
-public void removeListener(Class c, Object listener){
-	for (int i=0; i < types.size(); i++)
-		if (listeners.get(i) == listener && types.get(i)==c){
+public void removeListener(Class c, Object listener) {
+	for (int i = 0; i < types.size(); i++)
+		if (listeners.get(i) == listener && types.get(i) == c) {
 			listeners.remove(i);
 			types.remove(i);
 			return;

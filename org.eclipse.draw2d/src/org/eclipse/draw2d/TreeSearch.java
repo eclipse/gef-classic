@@ -23,8 +23,8 @@ public interface TreeSearch {
 boolean accept(IFigure figure);
 
 /**
- * Returns <code>true</code> the figure and all of its contained figures should be pruned
- * from the search.
+ * Returns <code>true</code> if the figure and all of its contained figures should be 
+ * pruned from the search.
  * @param figure the current figure in the traversal * @return <code>true</code> if the subgraph should be pruned */
 boolean prune(IFigure figure);
 

@@ -20,34 +20,36 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class FigureUtilities {
 
-private static class ColorVector{
-	final static double RED_INTENSITY = 0.7, BLUE_INTENSITY = 1.3;
-	double r,g,b;
-	protected ColorVector(Color source){
+private static class ColorVector {
+	static final double RED_INTENSITY = 0.7, BLUE_INTENSITY = 1.3;
+	double r, g, b;
+	protected ColorVector(Color source) {
 		r = source.getRed();
 		g = source.getGreen();
 		b = source.getBlue();
 	}
 	
-	protected double getIntensity(){
-		return r*r*RED_INTENSITY + g*g + b*b*BLUE_INTENSITY;
+	protected double getIntensity() {
+		return r * r * RED_INTENSITY + g * g + b * b * BLUE_INTENSITY;
 	}
 
-	protected void normalize(double length){
-	}
+	protected void normalize(double length) { }
 };
 
 private static final float RGB_VALUE_MULTIPLIER = 0.6f;
 private static GC gc;
 private static Font appliedFont;
 private static FontMetrics metrics;
-private static Color ghostFillColor = new Color(null,31,31,31);
+private static Color ghostFillColor = new Color(null, 31, 31, 31);
 
 /**
- * Returns a Color the same as the passed color in a darker hue.
+ * Returns a new Color the same as the passed color in a darker hue.
+ * 
+ * @param color the color to darken
+ * @return the darkened color
  * @since 2.0
  */
-public static Color darker(Color color){
+public static Color darker(Color color) {
 	return new Color(null,
 		(int)(color.getRed()   * RGB_VALUE_MULTIPLIER),
 		(int)(color.getGreen() * RGB_VALUE_MULTIPLIER),
@@ -57,16 +59,22 @@ public static Color darker(Color color){
 /**
  * Returns the FontMetrics associated with the passed Font.
  * 
+ * @param f the font
+ * @return the FontMetrics for the given font
  * @since 2.0
  */
-public static FontMetrics getFontMetrics(Font f){
+public static FontMetrics getFontMetrics(Font f) {
 	setFont(f);
 	if (metrics == null)
 		metrics = getGC().getFontMetrics();
 	return metrics;
 }
 
-protected static GC getGC(){
+/**
+ * Returns the GC used for various utilities.
+ * @return the GC
+ */
+protected static GC getGC() {
 	if (gc == null) {
 		gc = new GC(new Shell());
 		appliedFont = gc.getFont();
@@ -74,43 +82,47 @@ protected static GC getGC(){
 	return gc;
 }
 
-protected static org.eclipse.swt.graphics.Point getTextDimension(String s, Font f){
+protected static org.eclipse.swt.graphics.Point getTextDimension(String s, Font f) {
 	setFont(f);
 	return getGC().textExtent(s);
 }
 
-protected static org.eclipse.swt.graphics.Point getStringDimension(String s, Font f){
+protected static org.eclipse.swt.graphics.Point getStringDimension(String s, Font f) {
 	setFont(f);
 	return getGC().stringExtent(s);
 }
 
 /**
- * Returns the largest substring of <i>s</i> in Font <i>f</i> that can
- * be confined to the number of pixels in <i>availableWidth<i>.
+ * Returns the largest substring of <i>s</i> in Font <i>f</i> that can be confined to the 
+ * number of pixels in <i>availableWidth<i>.
  * 
+ * @param s the original string
+ * @param f the font
+ * @param availableWidth the available width
+ * @return the largest substring that fits in the given width
  * @since 2.0
  */
-static int getLargestSubstringConfinedTo(String s, Font f, int availableWidth){
+static int getLargestSubstringConfinedTo(String s, Font f, int availableWidth) {
 	FontMetrics metrics = getFontMetrics(f);
 	int min, max;
 	float avg = metrics.getAverageCharWidth();
-	min=0;
-	max = s.length()+1;
+	min = 0;
+	max = s.length() + 1;
 
 	//The size of the current guess
 	int guess = 0,
 	    guessSize = 0;
-	while ((max-min)>1){
+	while ((max - min) > 1) {
 		//Pick a new guess size
 		//	New guess is the last guess plus the missing width in pixels
 		//	divided by the average character size in pixels
-		guess = guess + (int)((availableWidth-guessSize)/avg);
+		guess = guess + (int)((availableWidth - guessSize) / avg);
 
-		if (guess >= max) guess = max-1;
-		if (guess <= min) guess = min+1;
+		if (guess >= max) guess = max - 1;
+		if (guess <= min) guess = min + 1;
 
 		//Measure the current guess
-		guessSize = getTextExtents(s.substring(0,guess),f).width;
+		guessSize = getTextExtents(s.substring(0, guess), f).width;
 
 		if (guessSize < availableWidth)
 			//We did not use the available width
@@ -125,22 +137,28 @@ static int getLargestSubstringConfinedTo(String s, Font f, int availableWidth){
 /**
  * Returns the Dimensions of the given text, converting newlines and tabs appropriately.
  * 
+ * @param text the text
+ * @param f the font
+ * @return the dimensions of the given text
  * @since 2.0
  */
-public static Dimension getTextExtents(String text, Font f){
-	return new Dimension(getTextDimension(text,f)).expand(1,0);
+public static Dimension getTextExtents(String text, Font f) {
+	return new Dimension(getTextDimension(text, f)).expand(1, 0);
 }
 
 /**
  * Returns the Dimensions of <i>s</i> in Font <i>f</i>.
  * 
+ * @param s the string
+ * @param f the font
+ * @return the dimensions of the given string
  * @since 2.0
  */
-public static Dimension getStringExtents(String s, Font f){
-	return new Dimension(getStringDimension(s,f)).expand(1,0);
+public static Dimension getStringExtents(String s, Font f) {
+	return new Dimension(getStringDimension(s, f)).expand(1, 0);
 }
 
-public static void getTextExtents(String s, Font f, Dimension result){
+public static void getTextExtents(String s, Font f, Dimension result) {
 	org.eclipse.swt.graphics.Point pt = getTextDimension(s, f);
 	result.width = pt.x;
 	result.height = pt.y;
@@ -151,7 +169,7 @@ public static void getTextExtents(String s, Font f, Dimension result){
  * 
  * @since 2.0
  */
-public static int getTextWidth(String s, Font f){
+public static int getTextWidth(String s, Font f) {
 	return getTextDimension(s,f).x;
 }
 
@@ -159,7 +177,7 @@ public static int getTextWidth(String s, Font f){
  * Returns a Color the same as the passed color in a lighter hue.
  * @since 2.0
  */
-public static Color lighter(Color rgb){
+public static Color lighter(Color rgb) {
 	int r = rgb.getRed(),
 	    g = rgb.getGreen(),
 	    b = rgb.getBlue();
@@ -176,7 +194,7 @@ public static Color lighter(Color rgb){
  * 
  * @since 2.0
  */
-public static Shape makeGhostShape(Shape s){
+public static Shape makeGhostShape(Shape s) {
 	s.setBackgroundColor(ghostFillColor);
 	s.setFillXOR(true);
 	s.setOutlineXOR(true);

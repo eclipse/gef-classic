@@ -15,6 +15,9 @@ import java.util.*;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.widgets.Display;
 
+/**
+ * An UpdateManager that asynchronously updates the affected figures.  
+ */
 public class DeferredUpdateManager
 	extends UpdateManager
 {
@@ -28,55 +31,100 @@ private List invalidFigures = new ArrayList();
 private Map dirtyRegions = new HashMap();
 private Rectangle damage;
 
-public DeferredUpdateManager(GraphicsSource gs){
+/**
+ * Constructs a new DererredUpdateManager with the given GraphicsSource.
+ * @param gs the graphics source
+ */
+public DeferredUpdateManager(GraphicsSource gs) {
 	setGraphicsSource(gs);
 }
 
-public DeferredUpdateManager(){}
+/**
+ * Empty constructor.
+ */
+public DeferredUpdateManager() { }
 
+/**
+ * Calls {@link DeferredUpdateManager#performUpdate()}.
+ */
 protected class UpdateRequest
 	implements Runnable
 {
-	public void run(){
+	/**
+	 * Calls {@link DeferredUpdateManager#performUpdate()}.
+	 */
+	public void run() {
 		performUpdate();
 	}
 }
 
-synchronized public void addDirtyRegion(IFigure figure, int x, int y, int w, int h){
+/**
+ * Adds a dirty region (defined by the rectangle <i>x, y, w, h</i>) to the update queue.
+ * If the figure isn't visible or either the width or height are 0, the method returns
+ * without queueing the dirty region.
+ * 
+ * @param figure the figure that contains the dirty region
+ * @param x the x coordinate of the dirty region
+ * @param y the y coordinate of the dirty region
+ * @param w the width of the dirty region
+ * @param h the height of the dirty region
+ */
+public synchronized void addDirtyRegion(IFigure figure, int x, int y, int w, int h) {
 	if (!figure.isShowing())
 		return;
 	if (w == 0 || h == 0)
 		return;
 	Rectangle rect;
 	rect = (Rectangle)dirtyRegions.get(figure);
-	if (rect == null){
+	if (rect == null) {
 		rect = new Rectangle(x, y, w, h);
 		dirtyRegions.put(figure, rect);
-	}
-	else
+	} else
 		rect.union(x, y, w, h);
 	queueWork();
 }
 
-synchronized public void addInvalidFigure(IFigure f){
+/**
+ * Adds the given figure to the update queue.  Invalid figures will be validated before 
+ * the damaged regions are repainted.
+ * 
+ * @param f the invalid figure
+ */
+public synchronized void addInvalidFigure(IFigure f) {
 	if (invalidFigures.contains(f))
 		return;
 	queueWork();
 	invalidFigures.add(f);
 }
 
-protected Graphics getGraphics(Rectangle region){
+/**
+ * Returns a Graphics object for the given region.
+ * @param region the region to be repainted
+ * @return the Graphics object
+ */
+protected Graphics getGraphics(Rectangle region) {
 	if (graphicsSource == null)
 		return null;
 	return graphicsSource.getGraphics(region);
 }
 
-synchronized public void performUpdate(Rectangle exposed){
+/**
+ * Adds the given exposed region to the update queue and then performs the update.
+ * 
+ * @param exposed the exposed region
+ */
+public synchronized void performUpdate(Rectangle exposed) {
 	addDirtyRegion(root, exposed);
 	performUpdate();
 }
 
-synchronized public void performUpdate(){
+/**
+ * Performs the update.  Validates the invalid figures and then repaints the dirty
+ * regions.
+ * @see #validateFigures()
+ * @see #repairDamage()
+ */
+public synchronized void performUpdate() {
 	if (isDisposed() || updating)
 		return;
 	updating = true;
@@ -84,22 +132,34 @@ synchronized public void performUpdate(){
 		validateFigures();
 		updateQueued = false;
 		repairDamage();
-	} finally{
+	} finally {
 		updating = false;
 	}
 }
 
-protected void queueWork(){
-	if (!updateQueued){
+/**
+ * Posts an {@link UpdateRequest} using {@link Display#asyncExec(Runnable)}.  If work has
+ * already been queued, a new request is not needed.
+ */
+protected void queueWork() {
+	if (!updateQueued) {
 		Display.getCurrent().asyncExec(new UpdateRequest());
 		updateQueued = true;
 	}
 }
 
-protected void releaseGraphics(Graphics graphics){
+/**
+ * Releases the graphics object, which causes the GraphicsSource to flush.
+ * @param graphics the graphics object
+ */
+protected void releaseGraphics(Graphics graphics) {
 	graphicsSource.flushGraphics(damage);
 }
 
+/**
+ * Repaints the dirty regions on the update queue and calls 
+ * {@link UpdateManager#firePainting(Rectangle, Map)}, unless there are no dirty regions.
+ */
 protected void repairDamage() {
 	Iterator keys = dirtyRegions.keySet().iterator();
 	Rectangle contribution;
@@ -110,7 +170,7 @@ protected void repairDamage() {
 		figure = (IFigure)keys.next();
 		walker = figure.getParent();
 		contribution = (Rectangle)dirtyRegions.get(figure);
-		while (!contribution.isEmpty() && walker != null){
+		while (!contribution.isEmpty() && walker != null) {
 			walker.translateToParent(contribution);
 			contribution.intersect(walker.getBounds());
 			walker = walker.getParent();
@@ -138,23 +198,35 @@ protected void repairDamage() {
 	damage = null;
 }
 
-public void setGraphicsSource(GraphicsSource gs){
+/**
+ * Sets the graphics source.
+ * @param gs the graphics source
+ */
+public void setGraphicsSource(GraphicsSource gs) {
 	graphicsSource = gs;
 }
 
-public void setRoot(IFigure figure){
+/**
+ * Sets the root figure.
+ * @param figure the root figure
+ */
+public void setRoot(IFigure figure) {
 	root = figure;
 }
 
-protected void validateFigures(){
+/**
+ * Validates the invalid figures on the update queue and calls 
+ * {@link UpdateManager#fireValidating()} unless there are no invalid figures.
+ */
+protected void validateFigures() {
 	if (invalidFigures.isEmpty())
 		return;
 	try {
 		IFigure fig;
 		fireValidating();
-		for (int i=0; i < invalidFigures.size(); i++){
+		for (int i = 0; i < invalidFigures.size(); i++) {
 			fig = (IFigure) invalidFigures.get(i);
-			invalidFigures.set(i,null);
+			invalidFigures.set(i, null);
 			fig.validate();
 		}
 	} finally {

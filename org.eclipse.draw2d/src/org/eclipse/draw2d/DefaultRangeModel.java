@@ -28,6 +28,9 @@ public class DefaultRangeModel
 	implements RangeModel 
 {
 
+/**
+ * Listeners interested in the range model's property changes.
+ */
 protected PropertyChangeSupport propertyListeners = new PropertyChangeSupport(this);
 private int minimum = 0;
 private int maximum = 100;
@@ -37,6 +40,7 @@ private int value = 0;
 /**
  * Registers the given listener as a PropertyChangeListener.
  * 
+ * @param listener the listener to be added
  * @since 2.0
  */
 public void addPropertyChangeListener(PropertyChangeListener listener) {
@@ -44,35 +48,58 @@ public void addPropertyChangeListener(PropertyChangeListener listener) {
 }
 
 /**
- * Notifies any listening PropertyChangeListeners that the property 
- * with the given id has changed.
+ * Notifies any listening PropertyChangeListeners that the property with the given id has 
+ * changed.
  * 
+ * @param string the property name
+ * @param oldValue the old value
+ * @param newValue the new value
  * @since 2.0
  */
 protected void firePropertyChange(String string, int oldValue, int newValue) {
-	propertyListeners.firePropertyChange(string,oldValue,newValue);
+	propertyListeners.firePropertyChange(string, oldValue, newValue);
 }
 
+/**
+ * @return the extent
+ */
 public int getExtent() {
 	return extent;
 }
 
+/**
+ * @return the maximum value
+ */
 public int getMaximum() {
 	return maximum;
 }
 
+/**
+ * @return the minimum value
+ */
 public int getMinimum() {
 	return minimum;
 }
 
+/**
+ * @return the current value
+ */
 public int getValue() {
 	return value;
 }
 
+/**
+ * @return whether the extent is between the minimum and maximum values
+ */
 public boolean isEnabled() {
 	return (getMaximum() - getMinimum()) > getExtent();
 }
 
+/**
+ * Removes the given PropertyChangeListener from the list of listeners.
+ * 
+ * @param listener the listener to be removed
+ */
 public void removePropertyChangeListener(PropertyChangeListener listener) {
 	propertyListeners.removePropertyChangeListener(listener);
 }
@@ -96,11 +123,14 @@ public void setAll(int min, int ext, int max) {
 	setValue(getValue());
 }
 
-/*
- * Sets this RangeModel's extent and fires a property change.
+/**
+ * Sets this RangeModel's extent and fires a property change if the given value is 
+ * different from the current extent.
+ * 
+ * @param extent the new extent value
  */
 public void setExtent(int extent) {
-	if(this.extent == extent)
+	if (this.extent == extent)
 		return;
 	int oldValue = this.extent;
 	this.extent = extent;
@@ -108,11 +138,14 @@ public void setExtent(int extent) {
 	setValue(getValue());
 }
 
-/*
- * Sets this RangeModel's maximum value and fires a property change.
+/**
+ * Sets this RangeModel's maximum value and fires a property change if the given value is 
+ * different from the current maximum value.
+ * 
+ * @param maximum the new maximum value
  */
 public void setMaximum(int maximum) {
-	if(this.maximum == maximum)
+	if (this.maximum == maximum)
 		return;
 	int oldValue = this.maximum;
 	this.maximum = maximum;
@@ -120,11 +153,14 @@ public void setMaximum(int maximum) {
 	setValue(getValue());
 }
 
-/*
- * Sets this RangeModel's minimum value and fires a property change.
+/**
+ * Sets this RangeModel's minimum value and fires a property change if the given value is 
+ * different from the current minimum value.
+ * 
+ * @param minimum the new minumum value
  */
 public void setMinimum(int minimum) {
-	if(this.minimum == minimum)
+	if (this.minimum == minimum)
 		return;
 	int oldValue = this.minimum;
 	this.minimum = minimum;
@@ -132,8 +168,13 @@ public void setMinimum(int minimum) {
 	setValue(getValue());
 }
 
-/*
- * Sets this RangeModel's current value and fires a property change.
+/**
+ * Sets this RangeModel's current value.  If the given value is greater than the maximum, 
+ * the maximum value is used.  If the given value is less than the minimum, the minimum 
+ * value is used.  If the adjusted value is different from the current value, a property
+ * change is fired.
+ * 
+ * @param value the new value
  */
 public void setValue(int value) {
 	value = Math.max(getMinimum(), Math.min(getMaximum() - getExtent(), value));
