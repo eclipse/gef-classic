@@ -42,7 +42,6 @@ class EventDispatcher
 {
 	protected static final int ANY_BUTTON = SWT.BUTTON1 | SWT.BUTTON2 | SWT.BUTTON3;
 
-	private boolean dragInProgress = false;
 	public void keyPressed(KeyEvent kee) {
 		getEditDomain().keyDown(kee, TreeViewer.this);
 	}
@@ -53,7 +52,6 @@ class EventDispatcher
 		getEditDomain().mouseDoubleClick(me, TreeViewer.this);
 	}
 	public void mouseDown(MouseEvent me) {
-		dragInProgress = true;				 
 		getEditDomain().mouseDown(me, TreeViewer.this);
 	}
 	public void mouseEnter(MouseEvent me) {
@@ -72,7 +70,6 @@ class EventDispatcher
 			getEditDomain().mouseMove(me, TreeViewer.this);
 	}
 	public void mouseUp(MouseEvent me) {
-		dragInProgress = false;
 		getEditDomain().mouseUp(me, TreeViewer.this);
 	}
 	public void focusGained(FocusEvent event) {
