@@ -23,14 +23,15 @@ import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
 
 import org.eclipse.jface.action.*;
-import org.eclipse.jface.dialogs.*;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.*;
 import org.eclipse.jface.util.Assert;
 import org.eclipse.jface.viewers.*;
 import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.internal.IWorkbenchGraphicConstants;
 import org.eclipse.ui.internal.WorkbenchImages;
-import org.eclipse.ui.internal.ide.IDEInternalWorkbenchImages;
 import org.eclipse.ui.part.PageBook;
 
 import org.eclipse.draw2d.ColorConstants;
@@ -853,7 +854,7 @@ protected void handleOutlineSelectionChanged() {
 				PaletteMessages.ABORT_PAGE_FLIPPING_MESSAGE 
 					+  "\n" + errorMessage, //$NON-NLS-1$
 				MessageDialog.ERROR, 
-				new String[] {IDialogConstants.OK_LABEL}, 0);
+				new String[] { IDialogConstants.OK_LABEL }, 0);
 		dialog.open();
 		treeviewer.addPostSelectionChangedListener(pageFlippingPreventer);
 	} else {
@@ -1055,7 +1056,7 @@ private class MoveDownAction extends PaletteCustomizationAction {
 		setEnabled(false);
 		setText(PaletteMessages.MOVE_DOWN_LABEL);
 		setImageDescriptor(WorkbenchImages
-			.getImageDescriptor(IDEInternalWorkbenchImages.IMG_CTOOL_NEXT_NAV));
+			.getImageDescriptor(IWorkbenchGraphicConstants.IMG_CTOOL_NEXT_NAV));
 		setDisabledImageDescriptor(ImageDescriptor.createFromFile(
 			Internal.class, "icons/move_down_disabled.gif"));//$NON-NLS-1$
 	}
@@ -1083,7 +1084,7 @@ private class MoveUpAction extends PaletteCustomizationAction {
 		setEnabled(false);
 		setText(PaletteMessages.MOVE_UP_LABEL);
 		setImageDescriptor(WorkbenchImages
-			.getImageDescriptor(IDEInternalWorkbenchImages.IMG_CTOOL_PREVIOUS_NAV));
+			.getImageDescriptor(IWorkbenchGraphicConstants.IMG_CTOOL_PREVIOUS_NAV));
 		setDisabledImageDescriptor(ImageDescriptor.createFromFile(
 			Internal.class, "icons/move_up_disabled.gif")); //$NON-NLS-1$
 	}
