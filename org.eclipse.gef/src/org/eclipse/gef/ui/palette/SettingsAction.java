@@ -42,7 +42,7 @@ public SettingsAction(PaletteViewer palette) {
  */
 public void run() {
 	Dialog settings = new PaletteSettingsDialog(paletteViewer.getControl().getShell(), 
-			((PaletteViewer)paletteViewer).getPaletteViewerPreferences());
+			paletteViewer.getPaletteViewerPreferences());
 	settings.open();
 }
 
