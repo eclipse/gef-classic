@@ -71,7 +71,6 @@ public DetailedLabelFigure() {
  */
 protected void finalize() throws Throwable {
 	if (boldFont != null) {
-		nameText.setFont(null);
 		FONTCACHE.checkIn(boldFont);
 	}
 }
