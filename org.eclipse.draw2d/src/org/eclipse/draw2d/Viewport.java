@@ -37,33 +37,9 @@ private RangeModel
 }
 
 public Viewport(){}
+
 public Viewport(boolean setting){
 	useTranslate = setting;
-}
-
-/**
- * Return the first IFigure found at point (x, y) that is not
- * amongst the Collection <i>set</i>.
- * 
- * @param x X coordinate of point where desired descendant is located.
- * @param y Y coordinate of point where desired descendant is located.
- * @param set Collection to check for exclusion.
- * @since 2.0
- */
-public IFigure findDescendantAtExcluding(int x, int y, Collection set){
-	if (useGraphicsTranslate()){
-		x += getViewLocation().x;
-		y += getViewLocation().y;
-	}
-	return super.findDescendantAtExcluding(x, y, set);
-}
-
-/*package*/ IFigure findMouseEventTargetInDescendantsAt(int x, int y){
-	if (useGraphicsTranslate()){
-		x += getViewLocation().x;
-		y += getViewLocation().y;
-	}
-	return super.findMouseEventTargetInDescendantsAt(x,y);
 }
 
 public Rectangle getClientArea(Rectangle rect){
