@@ -6,6 +6,8 @@ package org.eclipse.gef.examples.logicdesigner.rulers;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import org.eclipse.swt.graphics.Color;
+
 import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -294,26 +296,17 @@ public static class GuideFeedbackFigure extends Figure {
 	/* (non-Javadoc)
 	 * @see org.eclipse.draw2d.Figure#paintFigure(org.eclipse.draw2d.Graphics)
 	 */
-	protected void paintFigure(Graphics graphics) {
-		/*
-		 * @TODO:Pratik  maybe you should just draw what's in the clip, instead of the
-		 * entire line.
-		 */
-		Rectangle clientArea = getClientArea(Rectangle.SINGLETON);
+	protected void paintFigure(Graphics g) {
+		Rectangle bounds = getBounds();
+		g.setLineStyle(Graphics.LINE_DOT);
+		g.setXORMode(true);
+		g.setForegroundColor(ColorConstants.darkGreen);
 		if (isHorizontal()) {
-			int startX = clientArea.x;
-			int startY = clientArea.y;
-			while (startX < clientArea.x + clientArea.width) {
-				graphics.drawLine(startX, startY, startX + lineWidth, startY);
-				startX += (lineWidth * 2);
-			}
+			g.drawLine(bounds.x, bounds.y, bounds.right(), bounds.y);
+			g.drawLine(bounds.x + 2, bounds.y, bounds.right(), bounds.y);
 		} else {
-			int startX = clientArea.x;
-			int startY = clientArea.y;
-			while (startY < clientArea.y + clientArea.height) {
-				graphics.drawLine(startX, startY, startX, startY + lineWidth);
-				startY += (lineWidth * 2);
-			}			
+			g.drawLine(bounds.x, bounds.y, bounds.x, bounds.bottom());
+			g.drawLine(bounds.x, bounds.y + 2, bounds.x, bounds.bottom());
 		}
 	}
 }
