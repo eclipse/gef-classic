@@ -3,9 +3,6 @@
 	<name>org.eclipse.gef.examples.logic</name>
 	<comment></comment>
 	<projects>
-		<project>org.eclipse.core.boot</project>
-		<project>org.eclipse.core.resources</project>
-		<project>org.eclipse.core.runtime</project>
 		<project>org.eclipse.gef</project>
 		<project>org.eclipse.swt</project>
 		<project>org.eclipse.ui</project>
