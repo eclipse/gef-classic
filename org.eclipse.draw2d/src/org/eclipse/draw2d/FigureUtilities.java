@@ -173,6 +173,7 @@ public static Color lighter(Color rgb){
 public static Shape makeGhostShape(Shape s){
 	s.setBackgroundColor(ghostFillColor);
 	s.setFillXOR(true);
+	s.setOutlineXOR(true);
 	return s;
 }
 
