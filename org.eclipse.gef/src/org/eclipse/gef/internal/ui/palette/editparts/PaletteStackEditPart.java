@@ -14,8 +14,12 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Iterator;
 
+import org.eclipse.swt.events.MenuEvent;
+import org.eclipse.swt.events.MenuListener;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
+
 import org.eclipse.jface.action.MenuManager;
 
 import org.eclipse.draw2d.*;
@@ -38,7 +42,7 @@ public class PaletteStackEditPart
 {
 	
 private static final Dimension EMPTY_DIMENSION = new Dimension(0, 0);
-	
+
 // listen to changes in palette layout.
 private PropertyChangeListener paletteLayoutListener = new PropertyChangeListener() {
 	public void propertyChange(PropertyChangeEvent event) {
@@ -224,6 +228,7 @@ public void deactivate() {
 	getStack().removePropertyChangeListener(stackListener);
 	getPaletteViewer().removePaletteListener(paletteListener);
 	getPaletteViewer().getPaletteViewerPreferences().removePropertyChangeListener(paletteLayoutListener);
+	
 	super.deactivate();
 }
 
@@ -254,7 +259,7 @@ private PaletteStack getStack() {
 /**
  * Opens the menu to display the choices for the active entry.
  */
-public void openMenu() {
+public void openMenu() {	
 	MenuManager menuManager = new MenuManager();
 	
 	Iterator children = getChildren().iterator();
@@ -284,6 +289,8 @@ public void openMenu() {
 	
 	menu.setLocation(menuLocation);
 
+	menu.addMenuListener(new StackMenuListener(menu, getViewer().getControl().getDisplay()));
+	
 	menu.setVisible(true);
 }
 
@@ -294,6 +301,7 @@ protected void refreshChildren() {
 	super.refreshChildren();
 
 	Iterator children = getChildren().iterator();
+	
 	while (children.hasNext()) {
 		PaletteEditPart editPart = (PaletteEditPart)children.next();
 		
@@ -319,6 +327,38 @@ public void showTargetFeedback(Request request) {
 	}
 	
 	super.showTargetFeedback(request);
+}
+
+}
+
+class StackMenuListener 
+	implements MenuListener
+{
+
+private Menu menu;
+private Display d;
+
+/**
+ * Creates a new listener to listen to the menu that it used to select the active tool
+ * on a stack. Disposes the stack with an asyncExec after hidden is called.
+ */
+StackMenuListener(Menu menu, Display d) {
+	this.menu = menu;
+	this.d = d;
+}
+
+public void menuShown(MenuEvent e) {}
+
+public void menuHidden(MenuEvent e) {
+	d.asyncExec(new Runnable() {
+		public void run() {
+			if (menu != null) {
+				if (!menu.isDisposed())
+					menu.dispose();
+				menu = null;
+			}
+		}
+	});
 }
 
 }
