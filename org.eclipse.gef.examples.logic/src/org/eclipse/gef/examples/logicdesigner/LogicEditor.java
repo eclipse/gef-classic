@@ -291,7 +291,7 @@ protected void configurePaletteViewer() {
 	ContextMenuProvider provider = new PaletteContextMenuProvider(viewer);
 	getPaletteViewer().setContextMenu(provider);
 	viewer.setCustomizer(new LogicPaletteCustomizer());
-	viewer.setPaletteViewerPreferencesSource(new LogicPaletteViewerPreferences());
+	viewer.setPaletteViewerPreferences(new LogicPaletteViewerPreferences());
 }
 
 
@@ -366,7 +366,7 @@ public Object getAdapter(Class type){
  */
 protected int getInitialPaletteSize() {
 	return ((LogicPaletteViewerPreferences)((PaletteViewerImpl)getPaletteViewer()).
-			getPaletteViewerPreferencesSource()).getPaletteSize();
+			getPaletteViewerPreferences()).getPaletteSize();
 }
 
 /**
@@ -374,7 +374,7 @@ protected int getInitialPaletteSize() {
  */
 protected void handlePaletteResized(int newSize) {
 	((LogicPaletteViewerPreferences)((PaletteViewerImpl)getPaletteViewer()).
-			getPaletteViewerPreferencesSource()).setPaletteSize(newSize);
+			getPaletteViewerPreferences()).setPaletteSize(newSize);
 }
 
 /**
