@@ -12,8 +12,8 @@ package org.eclipse.draw2d.graph;
 
 import java.util.*;
 
-import org.eclipse.draw2d.Bendpoint;
 import org.eclipse.draw2d.PositionConstants;
+import org.eclipse.draw2d.geometry.*;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 
@@ -56,22 +56,23 @@ static class PathStack extends ArrayList {
  */
 private static final int NUM_GROW_PASSES = 2;
 
-private List allObstacles, paths, allPaths, orderedPaths, subPaths;
+private List userObstacles;
+private List workingPaths;
+private List userPaths;
+private List orderedPaths;
+private List subPaths;
+
 private boolean growPassChangedObstacles;
 private Map pathsToChildPaths;
 
-private PathStack stack = new PathStack();
+private PathStack stack;
 
 /**
  * Creates a new shortest path routing.
  */
 public ShortestPathRouter() {
-	subPaths = new ArrayList();
-	paths = new ArrayList();
-	orderedPaths = new ArrayList();
-	allPaths = new ArrayList();
-	allObstacles = new ArrayList();
-	pathsToChildPaths = new HashMap();
+	userPaths = new ArrayList();
+	userObstacles = new ArrayList();
 }
 
 /**
@@ -81,18 +82,16 @@ public ShortestPathRouter() {
  */
 public void addObstacle(Rectangle rect) {
 	Obstacle obs = new Obstacle(rect);
-	allObstacles.add(obs);
+	userObstacles.add(obs);
 	testPaths(obs);
 }
 
 /**
  * Adds a path to the routing.
- * 
  * @param path the path to add.
  */
 public void addPath(Path path) {
-	allPaths.add(path);
-	paths.add(path);
+	userPaths.add(path);
 }
 
 /**
@@ -145,8 +144,8 @@ private void checkVertexForIntersections(Vertex vertex) {
 	
 	int xDist, yDist;
 	
-	for (int o = 0; o < allObstacles.size(); o++) {
-		Obstacle obs = (Obstacle)allObstacles.get(o);
+	for (int o = 0; o < userObstacles.size(); o++) {
+		Obstacle obs = (Obstacle)userObstacles.get(o);
 		if (obs != vertex.obs && r.intersects(obs)) {
 			int pos = obs.getPosition(vertex);
 			if (pos == 0)
@@ -181,8 +180,8 @@ private void checkVertexForIntersections(Vertex vertex) {
  * Checks all vertices along paths for intersections
  */
 private void checkVertexIntersections() {
-	for (int i = 0; i < paths.size(); i++) {
-		Path path = (Path)paths.get(i);
+	for (int i = 0; i < workingPaths.size(); i++) {
+		Path path = (Path)workingPaths.get(i);
 		
 		for (int s = 0; s < path.segments.size() - 1; s++) {
 			Vertex vertex = ((Segment)path.segments.get(s)).end;
@@ -195,8 +194,8 @@ private void checkVertexIntersections() {
  * Counts how many paths are on given vertices in order to increment their total count.
  */
 private void countVertices() {
-	for (int i = 0; i < paths.size(); i++) {
-		Path path = (Path) paths.get(i);
+	for (int i = 0; i < workingPaths.size(); i++) {
+		Path path = (Path) workingPaths.get(i);
 		for (int v = 0; v < path.segments.size() - 1; v++)
 			((Segment)path.segments.get(v)).end.totalCount++;
 	}
@@ -237,7 +236,7 @@ private Vertex getNearestVertex(Vertex v1, Vertex v2, Segment segment) {
  */
 private Path getSubpathForSplit(Path path, Segment segment) {
 	Path newPath = path.getSubPath(segment);
-	paths.add(newPath);
+	workingPaths.add(newPath);
 	subPaths.add(newPath);
 	return newPath;
 }
@@ -259,12 +258,12 @@ private void growObstacles() {
  */
 private void growObstaclesPass() {
 	// grow obstacles
-	for (int i = 0; i < allObstacles.size(); i++)
-		((Obstacle)allObstacles.get(i)).growVertices();
+	for (int i = 0; i < userObstacles.size(); i++)
+		((Obstacle)userObstacles.get(i)).growVertices();
 	
 	// go through paths and test segments
-	for (int i = 0; i < paths.size(); i++) {
-		Path path = (Path) paths.get(i);
+	for (int i = 0; i < workingPaths.size(); i++) {
+		Path path = (Path) workingPaths.get(i);
 
 		for (int e = 0; e < path.excludedObstacles.size(); e++)
 			((Obstacle)path.excludedObstacles.get(e)).exclude = true;
@@ -285,8 +284,8 @@ private void growObstaclesPass() {
 	}
 	
 	// revert obstacles
-	for (int i = 0; i < allObstacles.size(); i++)
-		((Obstacle)allObstacles.get(i)).shrinkVertices();
+	for (int i = 0; i < userObstacles.size(); i++)
+		((Obstacle)userObstacles.get(i)).shrinkVertices();
 }
 
 /**
@@ -294,7 +293,7 @@ private void growObstaclesPass() {
  * @param obs the obstacle
  */
 private void internalAddObstacle(Obstacle obs) {
-	allObstacles.add(obs);
+	userObstacles.add(obs);
 	testPaths(obs);
 }
 
@@ -306,23 +305,23 @@ private void internalAddObstacle(Obstacle obs) {
 private Obstacle internalRemoveObstacle(Rectangle rect) {
 	Obstacle obs = null;
 	int index = -1;
-	for (int i = 0; i < allObstacles.size(); i++) {
-		obs = (Obstacle)allObstacles.get(i);
+	for (int i = 0; i < userObstacles.size(); i++) {
+		obs = (Obstacle)userObstacles.get(i);
 		if (obs.equals(rect)) {
 			index = i;
 			break;
 		}
 	}
 		
-	allObstacles.remove(index);
+	userObstacles.remove(index);
 	
 	dirtyPathsOn(obs.bottomLeft);
 	dirtyPathsOn(obs.topLeft);
 	dirtyPathsOn(obs.bottomRight);
 	dirtyPathsOn(obs.topRight);
 
-	for (int p = 0; p < paths.size(); p++) {
-		Path path = (Path)paths.get(p);
+	for (int p = 0; p < userPaths.size(); p++) {
+		Path path = (Path)userPaths.get(p);
 		if (path.isDirty)
 			continue;
 		if (path.isObstacleVisible(obs)) 
@@ -353,9 +352,9 @@ private void labelPath(Path path) {
 		
 		if (vertex.type == Vertex.NOT_SET) {
 			labelVertex(segment, crossProduct, path);
-		} else if (!path.isInverted &&
-				((crossProduct > 0 && vertex.type == Vertex.OUTIE)
-				|| (crossProduct < 0 && vertex.type == Vertex.INNIE))) {
+		} else if (!path.isInverted
+				&& ((crossProduct > 0 && vertex.type == Vertex.OUTIE)
+						|| (crossProduct < 0 && vertex.type == Vertex.INNIE))) {
 			if (agree) {
 				// split detected.
 				stack.push(getSubpathForSplit(path, segment));
@@ -364,9 +363,9 @@ private void labelPath(Path path) {
 				path.isInverted = true;
 				path.resetVertices(segment);
 			}
-		} else if (path.isInverted &&
-				((crossProduct < 0 && vertex.type == Vertex.OUTIE)
-				|| (crossProduct > 0 && vertex.type == Vertex.INNIE))) {
+		} else if (path.isInverted
+				&& ((crossProduct < 0 && vertex.type == Vertex.OUTIE)
+						|| (crossProduct > 0 && vertex.type == Vertex.INNIE))) {
 			// split detected.
 			stack.push(getSubpathForSplit(path, segment));
 			return;
@@ -392,8 +391,8 @@ private void labelPath(Path path) {
  */
 private void labelPaths() {	
 	Path path = null;
-	for (int i = 0; i < paths.size(); i++) {
-		path = (Path) paths.get(i);
+	for (int i = 0; i < workingPaths.size(); i++) {
+		path = (Path) workingPaths.get(i);
 		stack.push(path);
 	}
 
@@ -406,8 +405,8 @@ private void labelPaths() {
 	}
 	
 	// revert is marked so we can use it again in ordering.
-	for (int i = 0;i < paths.size(); i++) {
-		path = (Path)paths.get(i);
+	for (int i = 0;i < workingPaths.size(); i++) {
+		path = (Path)workingPaths.get(i);
 		path.isMarked = false;
 	}
 }
@@ -474,19 +473,17 @@ private void orderPath(Path path) {
  * Orders all paths in the graph.
  */
 private void orderPaths() {
-	orderedPaths.clear();
-	
-	for (int i = 0; i < paths.size(); i++) {
-		Path path = (Path) paths.get(i);
+	for (int i = 0; i < workingPaths.size(); i++) {
+		Path path = (Path) workingPaths.get(i);
 		orderPath(path);
-	}	
+	}
 }
 
 /**
  * Populates the parent paths with all the child paths that were created to represent
  * bendpoints.
  */
-private void populateParentPaths() {
+private void recombineChildrenPaths() {
 	// only populate those paths with children paths.
 	Iterator keyItr = pathsToChildPaths.keySet().iterator();
 	while (keyItr.hasNext()) {
@@ -513,15 +510,15 @@ private void populateParentPaths() {
 /**
  * Reconnects all subpaths.
  */
-private void reconnectSubpaths() {
+private void recombineSubpaths() {
 	for (int p = 0; p < orderedPaths.size(); p++) {
 		Path path = (Path)orderedPaths.get(p);
 		path.reconnectSubPaths();
 	}
 
 	orderedPaths.removeAll(subPaths);
-	paths.removeAll(subPaths);
-	subPaths.clear();
+	workingPaths.removeAll(subPaths);
+	subPaths = null;
 }
 
 /**
@@ -539,34 +536,27 @@ public void removeObstacle(Rectangle rect) {
  * @param path the path to remove.
  */
 public void removePath(Path path) {
-	allPaths.remove(path);
-	if (pathsToChildPaths.containsKey(path)) {
-		List childPaths = (List)pathsToChildPaths.get(path);
-		for (int i = 0; i < childPaths.size(); i++) {
-			paths.remove(childPaths.get(i));
-		}
-	} else 
-		paths.remove(path);
+	userPaths.remove(path);
 }
 
 /**
  * Resets exclude field on all obstacles
  */
 private void resetObstacleExclusions() {
-	for (int i = 0; i < allObstacles.size(); i++)
-		((Obstacle)allObstacles.get(i)).exclude = false;
+	for (int i = 0; i < userObstacles.size(); i++)
+		((Obstacle)userObstacles.get(i)).exclude = false;
 }
 
 /**
  * Resets all vertices found on paths and obstacles.
  */
 private void resetVertices() {
-	for (int i = 0; i < allObstacles.size(); i++) {
-		Obstacle obs = (Obstacle)allObstacles.get(i);
+	for (int i = 0; i < userObstacles.size(); i++) {
+		Obstacle obs = (Obstacle)userObstacles.get(i);
 		obs.reset();
 	}
-	for (int i = 0; i < paths.size(); i++) {
-		Path path = (Path)paths.get(i);
+	for (int i = 0; i < workingPaths.size(); i++) {
+		Path path = (Path)workingPaths.get(i);
 		path.start.fullReset();
 		path.end.fullReset();
 	}
@@ -576,30 +566,38 @@ private void resetVertices() {
  * Updates the points in the paths in order to represent the current solution 
  * with the given paths and obstacles.
  *
- * @return returns the number of paths solved.
+ * @return returns the list of paths which were updated.
  */
-public int solve() {
-	updateChildPaths();
+public List solve() {
 	
-	int numSolved = solveDirtyPaths();
+	workingPaths = new ArrayList(userPaths);
+	pathsToChildPaths = new HashMap();
+	generateChildPaths();
+
+	solveDirtyPaths();
 	
 	countVertices();
-	
 	checkVertexIntersections();
-	
 	growObstacles();
-	
-	labelPaths();
-	
-	orderPaths();
-	
-	bendPaths();
 
-	reconnectSubpaths();
+	subPaths = new ArrayList();
+	stack = new PathStack();
+	labelPaths();
+	stack = null;
+
+	orderedPaths = new ArrayList();
+	orderPaths();
+	bendPaths();
 	
-	populateParentPaths();
+	recombineSubpaths();
+	orderedPaths = null;
+	subPaths = null;
 	
-	return numSolved;
+	recombineChildrenPaths();
+	pathsToChildPaths = null;
+	workingPaths = null;
+	
+	return Collections.unmodifiableList(userPaths);
 }
 
 /**
@@ -610,9 +608,9 @@ private int solveDirtyPaths() {
 	int numSolved = 0;
 	boolean pathFoundCheck = false;
 	
-	for (int i = 0; i < paths.size(); i++) {
-		Path path = (Path)paths.get(i);
-		path.refreshExcludedObstacles(allObstacles);
+	for (int i = 0; i < workingPaths.size(); i++) {
+		Path path = (Path)workingPaths.get(i);
+		path.refreshExcludedObstacles(userObstacles);
 		if (!path.isDirty) {
 			path.reset();
 			continue;
@@ -621,13 +619,13 @@ private int solveDirtyPaths() {
 		numSolved++;		
 		path.fullReset();
 		
-		pathFoundCheck = path.generateShortestPath(allObstacles);
+		pathFoundCheck = path.generateShortestPath(userObstacles);
 		if (!pathFoundCheck || path.end.cost > path.threshold) {
 			// path not found, or path found was too long
 			resetVertices();
 			path.fullReset();
 			path.threshold = 0;
-			pathFoundCheck = path.generateShortestPath(allObstacles);
+			pathFoundCheck = path.generateShortestPath(userObstacles);
 		}
 		
 		resetVertices();
@@ -649,26 +647,34 @@ private int solveDirtyPaths() {
  * @return 1 if new segments have been inserted
  */
 private int testBentSegment(Segment segment, int index, Path path) {
-	for (int i = 0; i < allObstacles.size(); i++) {
-		Obstacle obs = (Obstacle) allObstacles.get(i);
+	for (int i = 0; i < userObstacles.size(); i++) {
+		Obstacle obs = (Obstacle) userObstacles.get(i);
 		
 		if (segment.end.obs == obs || segment.start.obs == obs || obs.exclude)
 			continue;
 		Vertex vertex = null;
 
 		if (segment.getSlope() < 0) {
-			if (segment.intersects(obs.topLeft.x - Vertex.BEND_OFFSET, obs.topLeft.y - Vertex.BEND_OFFSET, 
-				obs.bottomRight.x + Vertex.BEND_OFFSET, obs.bottomRight.y + Vertex.BEND_OFFSET))
+			if (segment.intersects(obs.topLeft.x - Vertex.BEND_OFFSET,
+					obs.topLeft.y - Vertex.BEND_OFFSET,
+					obs.bottomRight.x + Vertex.BEND_OFFSET,
+					obs.bottomRight.y + Vertex.BEND_OFFSET))
 				vertex = getNearestVertex(obs.topLeft, obs.bottomRight, segment);
-			else if (segment.intersects(obs.bottomLeft.x - Vertex.BEND_OFFSET, obs.bottomLeft.y + Vertex.BEND_OFFSET, 
-				obs.topRight.x + Vertex.BEND_OFFSET, obs.topRight.y - Vertex.BEND_OFFSET))
+			else if (segment.intersects(obs.bottomLeft.x - Vertex.BEND_OFFSET,
+					obs.bottomLeft.y + Vertex.BEND_OFFSET,
+					obs.topRight.x + Vertex.BEND_OFFSET,
+					obs.topRight.y - Vertex.BEND_OFFSET))
 				vertex = getNearestVertex(obs.bottomLeft, obs.topRight, segment);
 		} else {
-			if (segment.intersects(obs.bottomLeft.x - Vertex.BEND_OFFSET, obs.bottomLeft.y + Vertex.BEND_OFFSET, 
-				obs.topRight.x + Vertex.BEND_OFFSET, obs.topRight.y - Vertex.BEND_OFFSET))
+			if (segment.intersects(obs.bottomLeft.x - Vertex.BEND_OFFSET,
+					obs.bottomLeft.y + Vertex.BEND_OFFSET,
+					obs.topRight.x + Vertex.BEND_OFFSET,
+					obs.topRight.y - Vertex.BEND_OFFSET))
 				vertex = getNearestVertex(obs.bottomLeft, obs.topRight, segment);
-			else if (segment.intersects(obs.topLeft.x - Vertex.BEND_OFFSET, obs.topLeft.y - Vertex.BEND_OFFSET, 
-				obs.bottomRight.x + Vertex.BEND_OFFSET, obs.bottomRight.y + Vertex.BEND_OFFSET))
+			else if (segment.intersects(obs.topLeft.x - Vertex.BEND_OFFSET,
+					obs.topLeft.y - Vertex.BEND_OFFSET,
+					obs.bottomRight.x + Vertex.BEND_OFFSET,
+					obs.bottomRight.y + Vertex.BEND_OFFSET))
 				vertex = getNearestVertex(obs.topLeft, obs.bottomRight, segment);
 		}
 
@@ -736,8 +742,8 @@ private void testPath(Path path, Obstacle obs) {
  * @param obs the obstacle
  */
 private void testPaths(Obstacle obs) {
-	for (int i = 0; i < paths.size(); i++) {
-		Path path = (Path)paths.get(i);
+	for (int i = 0; i < userPaths.size(); i++) {
+		Path path = (Path)userPaths.get(i);
 		testPath(path, obs);
 	}
 }
@@ -768,20 +774,20 @@ private boolean testSegment(Segment segment, Obstacle obs, Path path) {
  * Resyncs the parent paths with any new child paths that are necessary because bendpoints
  * have been added to the parent path.
  */
-private void updateChildPaths() {
-	for (int i = 0; i < allPaths.size(); i++) {
-		Path path = (Path)allPaths.get(i);
+private void generateChildPaths() {
+	for (int i = 0; i < userPaths.size(); i++) {
+		Path path = (Path)userPaths.get(i);
 		if (path.isDirty) {
 			// ditch old paths, even if they dont exist
 			List childPaths = (List)pathsToChildPaths.remove(path);
 			if (childPaths != null)
-				paths.removeAll(childPaths);
+				workingPaths.removeAll(childPaths);
 			
 			// generate new paths if necessary
-			List bendPoints = path.bendPoints;
-			if (bendPoints != null && !bendPoints.isEmpty()) {
+			PointList bendPoints = path.bendpoints;
+			if (bendPoints != null && bendPoints.size() != 0) {
 				// make sure path is not in working paths.
-				paths.remove(path);
+				workingPaths.remove(path);
 				
 				List newPaths = new ArrayList(bendPoints.size() + 1);
 				Path newPath = null;
@@ -789,24 +795,24 @@ private void updateChildPaths() {
 				Vertex currVertex = null;
 				
 				for (int b = 0; b < bendPoints.size(); b++) {
-					Bendpoint bp = (Bendpoint)bendPoints.get(b);
-					currVertex = new Vertex(bp.getLocation(), null);
+					Point bp = (Point)bendPoints.getPoint(b);
+					currVertex = new Vertex(bp, null);
 					newPath = new Path(prevVertex, currVertex);
 					newPaths.add(newPath);
-					paths.add(newPath);
+					workingPaths.add(newPath);
 					prevVertex = currVertex;
 				}
 				
 				newPath = new Path(prevVertex, path.end);
 				newPaths.add(newPath);
-				paths.add(newPath);
+				workingPaths.add(newPath);
 				
 				pathsToChildPaths.put(path, newPaths);
 			} else {
 				if (childPaths != null) {
 					// path no longer has child paths, but used to.
 					pathsToChildPaths.remove(path);
-					paths.add(path);
+					workingPaths.add(path);
 				}
 			}
 		}
