@@ -12,13 +12,13 @@ package org.eclipse.gef.ui.actions;
 
 import java.util.List;
 
-import org.eclipse.jface.action.Action;
 import org.eclipse.ui.IWorkbenchPart;
 
 import org.eclipse.draw2d.geometry.PrecisionDimension;
 import org.eclipse.draw2d.geometry.PrecisionRectangle;
 
 import org.eclipse.gef.*;
+import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CompoundCommand;
 import org.eclipse.gef.internal.GEFMessages;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
@@ -28,10 +28,8 @@ import org.eclipse.gef.requests.ChangeBoundsRequest;
  * of the Primary Selection EditPart's Figure.
  */
 public class MatchSizeAction
-	extends Action
+	extends SelectionAction
 {
-
-private IWorkbenchPart part;
 
 /**
  * Constructs a <code>MatchSizeAction</code> and associates it with the given
@@ -39,10 +37,73 @@ private IWorkbenchPart part;
  * @param part The workbench part associated with this MatchSizeAction
  */
 public MatchSizeAction(IWorkbenchPart part) {
-	this.part = part;
+	super(part);
 	setText(GEFMessages.MatchSizeAction_Label);
 	setToolTipText(GEFMessages.MatchSizeAction_Tooltip);
 	setId(GEFActionConstants.MATCH_SIZE);
+}
+
+/**
+ * @see org.eclipse.gef.ui.actions.WorkbenchPartAction#calculateEnabled()
+ */
+protected boolean calculateEnabled() {
+	Command cmd = createMatchSizeCommand(getSelectedObjects());
+	if (cmd == null)
+		return false;
+	return cmd.canExecute();
+}
+
+/**
+ * Create a command to resize the selected objects.
+ * @param objects The objects to be resized.
+ * @return The command to resize the selected objects.
+ */
+private Command createMatchSizeCommand(List objects) {
+	if (objects.isEmpty())
+		return null;
+	if (!(objects.get(0) instanceof GraphicalEditPart))
+		return null;
+
+	GraphicalEditPart primarySelection = getPrimarySelectionEditPart(getSelectedObjects());
+
+	if (primarySelection == null) 
+		return null;
+	
+	GraphicalEditPart part = null;
+	ChangeBoundsRequest request = null;
+	PrecisionDimension preciseDimension = null;
+	PrecisionRectangle precisePartBounds = null;
+	Command cmd = null;
+	CompoundCommand command = new CompoundCommand();
+	
+	PrecisionRectangle precisePrimaryBounds = new PrecisionRectangle(primarySelection
+			.getFigure().getBounds().getCopy());
+	primarySelection.getFigure().translateToAbsolute(precisePrimaryBounds);
+	
+	for (int i = 0; i < objects.size(); i++) {
+		part = (GraphicalEditPart)objects.get(i);
+		if (!part.equals(primarySelection)) {
+			request = new ChangeBoundsRequest(RequestConstants.REQ_RESIZE);
+			
+			precisePartBounds = new PrecisionRectangle(part.getFigure().getBounds().getCopy());
+			part.getFigure().translateToAbsolute(precisePartBounds);
+			
+			preciseDimension = new PrecisionDimension();
+			preciseDimension.preciseWidth = getPreciseWidthDelta(precisePartBounds, 
+					precisePrimaryBounds);
+			preciseDimension.preciseHeight = getPreciseHeightDelta(precisePartBounds, 
+					precisePrimaryBounds);
+			preciseDimension.updateInts();
+			
+			request.setSizeDelta(preciseDimension);
+			
+			cmd = part.getCommand(request);
+			if (cmd != null) 
+				command.add(cmd);			
+		}
+	}
+	
+	return command;
 }
 
 /**
@@ -87,49 +148,7 @@ protected double getPreciseWidthDelta(PrecisionRectangle precisePartBounds,
  * Selection's Figure.
  */
 public void run() {
-	GraphicalViewer viewer = (GraphicalViewer)part.getAdapter(GraphicalViewer.class);
-	if (viewer != null) {
-		
-		List editParts = viewer.getSelectedEditParts();
-		
-		GraphicalEditPart primarySelection = getPrimarySelectionEditPart(editParts);
-
-		GraphicalEditPart part = null;
-		ChangeBoundsRequest request = null;
-		PrecisionDimension preciseDimension = null;
-		PrecisionRectangle precisePartBounds = null;
-		CompoundCommand command = new CompoundCommand();
-		
-		PrecisionRectangle precisePrimaryBounds = new PrecisionRectangle(primarySelection
-				.getFigure().getBounds().getCopy());
-		primarySelection.getFigure().translateToAbsolute(precisePrimaryBounds);
-		
-		
-		for (int i = 0; i < editParts.size(); i++) {
-			part = (GraphicalEditPart)editParts.get(i);
-			if (!part.equals(primarySelection)) {
-				request = new ChangeBoundsRequest(RequestConstants.REQ_RESIZE);
-				
-				precisePartBounds = new PrecisionRectangle(part.getFigure().getBounds().getCopy());
-				part.getFigure().translateToAbsolute(precisePartBounds);
-				
-				preciseDimension = new PrecisionDimension();
-				preciseDimension.preciseWidth = getPreciseWidthDelta(precisePartBounds, 
-						precisePrimaryBounds);
-				preciseDimension.preciseHeight = getPreciseHeightDelta(precisePartBounds, 
-						precisePrimaryBounds);
-				preciseDimension.updateInts();
-				
-				request.setSizeDelta(preciseDimension);
-				
-				command.add(part.getCommand(request));			
-			}
-		}
-		
-		if (command.canExecute())
-			viewer.getEditDomain().getCommandStack().execute(command);		
-		
-	}
+	execute(createMatchSizeCommand(getSelectedObjects()));
 }
 
 }
