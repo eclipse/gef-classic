@@ -4,6 +4,7 @@
 	<comment></comment>
 	<projects>
 		<project>org.eclipse.draw2d</project>
+		<project>org.eclipse.swt</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
@@ -19,7 +20,6 @@
 	</buildSpec>
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
-		<nature>org.eclipse.team.cvs.core.cvsnature</nature>
 		<nature>com.atlassw.tools.eclipse.checkstyle.CheckstyleNature</nature>
 	</natures>
 </projectDescription>
