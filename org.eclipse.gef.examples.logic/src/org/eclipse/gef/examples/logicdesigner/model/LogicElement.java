@@ -37,6 +37,14 @@ protected void firePropertyChange(String prop, Object old, Object newValue){
 	listeners.firePropertyChange(prop, old, newValue);
 }
 
+protected void fireChildAdded(String prop, Object child, Object index) {
+	listeners.firePropertyChange(prop, index, child);
+}
+
+protected void fireChildRemoved(String prop, Object child) {
+	listeners.firePropertyChange(prop, child, null);
+}
+
 protected void fireStructureChange(String prop, Object child){
 	listeners.firePropertyChange(prop, null, child);
 }

@@ -65,7 +65,7 @@ public void addChild(LogicElement child, int index){
 		children.add(index,child);
 	else
 		children.add(child);
-	fireStructureChange(CHILDREN, child);
+	fireChildAdded(CHILDREN, child, new Integer(index));
 }
 
 protected void createRulers() {
@@ -160,7 +160,7 @@ private void readObject(java.io.ObjectInputStream s)
 }
 public void removeChild(LogicElement child){
 	children.remove(child);
-	fireStructureChange(CHILDREN, child);
+	fireChildRemoved(CHILDREN, child);
 }
 
 public void setConnectionRouter(Integer router){

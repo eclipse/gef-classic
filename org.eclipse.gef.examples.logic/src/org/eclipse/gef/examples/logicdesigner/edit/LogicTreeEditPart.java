@@ -81,9 +81,14 @@ protected List getModelChildren() {
 }
 
 public void propertyChange(PropertyChangeEvent change){
-	if (change.getPropertyName().equals(LogicDiagram.CHILDREN))
-		refreshChildren();
-	else
+	if (change.getPropertyName().equals(LogicDiagram.CHILDREN)) {
+		if (change.getOldValue() instanceof Integer)
+			// new child
+			addChild(createChild(change.getNewValue()), ((Integer)change.getOldValue()).intValue());	
+		else
+			// remove child
+			removeChild((EditPart)getViewer().getEditPartRegistry().get(change.getOldValue()));
+	} else
 		refreshVisuals();
 }
 
