@@ -27,6 +27,11 @@ String PRIMARY_LAYER = "Primary Layer"; //$NON-NLS-1$
 String CONNECTION_LAYER = "Connection Layer"; //$NON-NLS-1$
 
 /**
+ * Identifies the layer where Guides add feedback to the primary viewer.
+ */
+String GUIDE_LAYER = "Guide Layer"; //$NON-NLS-1$
+
+/**
  * Identifies the layer containing handles, which are typically editing
  * decorations that appear on top of any model representations.
  */
