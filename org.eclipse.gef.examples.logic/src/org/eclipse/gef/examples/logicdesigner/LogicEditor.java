@@ -14,6 +14,7 @@ import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.widgets.*;
 
 import org.eclipse.core.resources.*;
+import org.eclipse.core.runtime.*;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -61,6 +62,7 @@ public class LogicEditor
 
 class OutlinePage
 	extends ContentOutlinePage
+	implements IAdaptable
 {
 	
 	private PageBook pageBook;
@@ -138,6 +140,13 @@ class OutlinePage
 		super.dispose();
 	}
 	
+	public Object getAdapter(Class type) {
+		if (type == ZoomManager.class)
+			return ((ScalableFreeformRootEditPart)getGraphicalViewer()
+						.getRootEditPart()).getZoomManager();
+		return null;
+	}
+
 	public Control getControl() {
 		return pageBook;
 	}
