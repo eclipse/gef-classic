@@ -101,7 +101,10 @@ public void collapse() {
 	if (!expanded)
 		return;
 	setExpanded(false);
-	getRoot().validate();
+	IFigure root = this;
+	while (root.getParent() != null)
+		root = root.getParent();
+	root.validate();
 	setExpanded(true);
 	animationReset(getNodeBounds());
 	Animation.mark();

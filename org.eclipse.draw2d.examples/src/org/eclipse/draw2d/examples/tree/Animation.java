@@ -41,8 +41,11 @@ static void mark() {
 	current = start + 20;
 }
 
-static void captureLayout(TreeRoot root) {
+static void captureLayout(IFigure root) {
 	RECORDING = true;
+	while (root.getParent()!= null) {
+		root = root.getParent();
+	}
 	root.validate();
 	Iterator iter = initialStates.keySet().iterator();
 	while (iter.hasNext())
