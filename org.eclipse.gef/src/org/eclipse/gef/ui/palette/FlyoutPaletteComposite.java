@@ -117,6 +117,10 @@ private static final int MAX_PALETTE_SIZE = 500;
 
 private static final int STATE_HIDDEN = 8;
 private static final int STATE_EXPANDED = 1;
+/*
+ * This is the default state, i.e., when the palette view is not visible, if no initial
+ * state is provided, the flyout palette will show up as collapsed.
+ */
 private static final int STATE_COLLAPSED = 2;
 private static final int STATE_PINNED_OPEN = 4;
 
@@ -167,16 +171,12 @@ public FlyoutPaletteComposite(Composite parent, int style, IWorkbenchPage page,
 	hookIntoWorkbench(page.getWorkbenchWindow());
 
 	// Initialize the state properly
-	int defaultState = prefs.getPaletteState();
 	setPaletteWidth(prefs.getPaletteWidth());
 	setDockLocation(prefs.getDockLocation());
 	IViewPart part = page.findView(PaletteView.ID);
-	if (part == null) {
-		if (defaultState == STATE_COLLAPSED || defaultState == STATE_PINNED_OPEN)
-			setState(defaultState);
-		else
-			setState(STATE_COLLAPSED);
-	} else
+	if (part == null)
+		setState(prefs.getPaletteState());
+	else
 		setState(STATE_HIDDEN);
 
 	addListener(SWT.Resize, new Listener() {
@@ -484,7 +484,20 @@ public void hookDropTargetListener(GraphicalViewer viewer) {
 	});
 }
 
+/*
+ * If the given state is invalid (as could be the case when 
+ * FlyoutPreferences.getPaletteState() is invoked for the first time), it will be 
+ * defaulted to STATE_COLLAPSED.
+ */
 private void setState(int newState) {
+	/*
+	 * Fix for Bug# 69617
+	 * FlyoutPreferences.getPaletteState() could return an invalid state if none is
+	 * stored.  In that case, we use the default state: STATE_COLLAPSED.
+	 */
+	if ((newState & 
+			(STATE_COLLAPSED | STATE_EXPANDED | STATE_HIDDEN | STATE_PINNED_OPEN)) == 0)
+		newState = STATE_COLLAPSED;
 	if (paletteState == newState)
 		return;
 	int oldState = paletteState;
@@ -553,8 +566,9 @@ public interface FlyoutPreferences {
 	 */
 	int getDockLocation();
 	/**
-	 * When there is no saved state, this method can return any int (preferrably a
-	 * non-positive int).
+	 * When there is no saved state, this method can return any non-positive int.  
+	 * Undesired behaviour is possible if a positve int that coincides with one of the
+	 * state constants is returned.
 	 * @return	the saved state of the palette (collapsed or pinned open)
 	 */
 	int getPaletteState();
