@@ -61,7 +61,7 @@ public ScaledGraphics(Graphics g){
 }
 
 public void clipRect(Rectangle r) {
-	graphics.clipRect(zoomRect(r));
+	graphics.clipRect(zoomClipRect(r));
 }
 
 public void dispose(){
@@ -280,7 +280,7 @@ public void setBackgroundColor(Color rgb) {
 }
 
 public void setClip(Rectangle r) {
-	graphics.setClip(zoomRect(r));
+	graphics.setClip(zoomClipRect(r));
 }
 
 public void setFont(Font f) {
@@ -334,7 +334,7 @@ private Point zoomTextPoint(int x, int y){
 		(int)(Math.floor((y + localCache.height - 1)*zoom - targetCache.height + 1 +fractionalY)));
 }
 
-private PointList zoomPointList(PointList points){
+private PointList zoomPointList(PointList points) {
 	PointList scaled = new PointList(points.size());
 	for (int i = 0; i < points.size(); i++) {
 		Point p = points.getPoint(i);
@@ -345,11 +345,11 @@ private PointList zoomPointList(PointList points){
 	return scaled;
 }
 
-private Rectangle zoomFillRect(int x, int y, int w, int h){
+private Rectangle zoomFillRect(int x, int y, int w, int h) {
 	TEMP.x = (int)(Math.floor((x * zoom + fractionalX)));
 	TEMP.y = (int)(Math.floor((y * zoom + fractionalY)));
-	TEMP.width = (int)(Math.floor(((x+w - 1) * zoom + fractionalX))) - TEMP.x + 1;
-	TEMP.height = (int)(Math.floor(((y+h - 1) * zoom + fractionalY))) - TEMP.y + 1;
+	TEMP.width = (int)(Math.floor(((x + w - 1) * zoom + fractionalX))) - TEMP.x + 1;
+	TEMP.height = (int)(Math.floor(((y + h - 1) * zoom + fractionalY))) - TEMP.y + 1;
 	return TEMP;
 }
 
@@ -366,11 +366,19 @@ FontData zoomFontData(FontData data) {
 		data.getStyle());
 }
 
-private Rectangle zoomRect(int x, int y, int w, int h){
+private Rectangle zoomClipRect(Rectangle r) {
+	TEMP.x = (int)(Math.floor(r.x * zoom + fractionalX));
+	TEMP.y = (int)(Math.floor(r.y * zoom + fractionalY));
+	TEMP.width = (int)(Math.ceil(((r.x + r.width) * zoom + fractionalX))) - TEMP.x;
+	TEMP.height = (int)(Math.ceil(((r.y + r.height) * zoom + fractionalY))) - TEMP.y;
+	return TEMP;
+}
+
+private Rectangle zoomRect(int x, int y, int w, int h) {
 	TEMP.x = (int)(Math.floor(x * zoom + fractionalX));
 	TEMP.y = (int)(Math.floor(y * zoom + fractionalY));
-	TEMP.width = (int)(Math.floor(((x+w) * zoom + fractionalX))) - TEMP.x;
-	TEMP.height = (int)(Math.floor(((y+h) * zoom + fractionalY))) - TEMP.y;
+	TEMP.width = (int)(Math.floor(((x + w) * zoom + fractionalX))) - TEMP.x;
+	TEMP.height = (int)(Math.floor(((y + h) * zoom + fractionalY))) - TEMP.y;
 	return TEMP;
 }
 
