@@ -38,6 +38,7 @@ public class ResizeTracker
 private int direction;
 private GraphicalEditPart owner;
 private PrecisionRectangle sourceRect;
+private SnapToStrategy snapStrategies;
 
 /**
  * Constructs a resize tracker that resizes in the specified direction.  The direction is
@@ -50,6 +51,18 @@ public ResizeTracker(GraphicalEditPart owner, int direction) {
 	this.owner = owner;
 	this.direction = direction;
 	setDisabledCursor(SharedCursors.NO);
+	snapStrategies = (SnapToStrategy)getTargetEditPart().getAdapter(SnapToStrategy.class);
+}
+
+public void activate() {
+	super.activate();
+
+	IFigure figure = owner.getFigure();
+	if (figure instanceof HandleBounds)
+		sourceRect = new PrecisionRectangle(((HandleBounds)figure).getHandleBounds());
+	else
+		sourceRect = new PrecisionRectangle(figure.getBounds());
+	figure.translateToAbsolute(sourceRect);
 }
 
 /**
@@ -271,24 +284,9 @@ protected void updateSourceRequest() {
 
 	request.getExtendedData().clear();
 	
-	SnapToStrategy strategy = (SnapToStrategy)getTargetEditPart()
-			.getAdapter(SnapToStrategy.class);
-	
-	if (!getCurrentInput().isAltKeyDown() && strategy != null) {
-		// Lazily determine the value of sourceRect and cache it
-		if (sourceRect == null) {
-			IFigure figure = owner.getFigure();
-			if (figure instanceof HandleBounds)
-				sourceRect = new PrecisionRectangle(
-						((HandleBounds)figure).getHandleBounds());
-			else
-				sourceRect = new PrecisionRectangle(figure.getBounds());
-			figure.translateToAbsolute(sourceRect);
-		}
-		strategy.snapResizeRequest(request, sourceRect.getPreciseCopy(),
+	if (!getCurrentInput().isAltKeyDown() && snapStrategies != null)
+		snapStrategies.snapResizeRequest(request, sourceRect.getPreciseCopy(),
 				SnapToStrategy.SNAP_HORIZONTAL | SnapToStrategy.SNAP_VERTICAL);
-	}
-
 }
 
 }
