@@ -8,7 +8,7 @@ import org.eclipse.draw2d.geometry.*;
  */
 public class ScalableFreeformLayeredPane extends FreeformLayeredPane {
 
-private double zoom = 3.0;
+private double zoom = 1.0;
 
 /**
  * @see org.eclipse.draw2d.Figure#getClientArea()
