@@ -96,8 +96,7 @@ protected void hookPaletteViewer() {
 /**
  * @see org.eclipse.ui.part.IPageBookViewPage#init(org.eclipse.ui.part.IPageSite)
  */
-public void init(IPageSite pageSite) { 
-System.out.println( "init");
+public void init(IPageSite pageSite) {
 	super.init(pageSite);
 	pageSite.getActionBars().getToolBarManager().add(new ToolbarDropdownContributionItem(
 			new LayoutAction(getPaletteViewer().getPaletteViewerPreferences(), true)));
