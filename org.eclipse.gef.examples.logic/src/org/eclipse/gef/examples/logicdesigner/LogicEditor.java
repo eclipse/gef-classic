@@ -142,8 +142,7 @@ class OutlinePage
 	
 	public Object getAdapter(Class type) {
 		if (type == ZoomManager.class)
-			return ((ScalableFreeformRootEditPart)getGraphicalViewer()
-						.getRootEditPart()).getZoomManager();
+			return getGraphicalViewer().getProperty(ZoomManager.class.toString());
 		return null;
 	}
 
@@ -312,7 +311,7 @@ protected void configureGraphicalViewer() {
 	super.configureGraphicalViewer();
 	ScrollingGraphicalViewer viewer = (ScrollingGraphicalViewer)getGraphicalViewer();
 
-	ScalableFreeformRootEditPart root = new ScalableFreeformRootEditPart();
+	ScalableFreeformRootEditPart root = new LogicRootEditPart();
 
 	List zoomLevels = new ArrayList(3);
 	zoomLevels.add(ZoomManager.FIT_ALL);
