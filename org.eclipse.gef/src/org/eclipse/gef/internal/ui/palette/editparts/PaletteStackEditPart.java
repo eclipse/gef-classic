@@ -10,22 +10,18 @@
  *******************************************************************************/
 package org.eclipse.gef.internal.ui.palette.editparts;
 
-import java.util.Iterator;
-
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Iterator;
 
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.jface.action.MenuManager;
 
 import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.geometry.Insets;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2d.geometry.*;
 
-import org.eclipse.gef.GraphicalEditPart;
-import org.eclipse.gef.Request;
-import org.eclipse.gef.RequestConstants;
+import org.eclipse.gef.*;
 import org.eclipse.gef.palette.*;
 import org.eclipse.gef.ui.actions.SetActivePaletteToolAction;
 import org.eclipse.gef.ui.palette.PaletteViewer;
@@ -40,6 +36,8 @@ import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
 public class PaletteStackEditPart 
 	extends PaletteEditPart
 {
+	
+private static final Dimension EMPTY_DIMENSION = new Dimension(0, 0);
 	
 // listen to changes in palette layout.
 private PropertyChangeListener paletteLayoutListener = new PropertyChangeListener() {
@@ -161,6 +159,12 @@ private void checkActiveEntrySync() {
  */
 public IFigure createFigure() {
 	Figure figure = new Figure() {
+		public Dimension getPreferredSize(int wHint, int hHint) {
+			if (PaletteStackEditPart.this.getChildren().isEmpty())
+				return EMPTY_DIMENSION;
+			return super.getPreferredSize(wHint, hHint);
+		}
+		
 		public void paintBorder(Graphics graphics) {
 			int layoutMode = getPreferenceSource().getLayoutSetting();
 			if (layoutMode == PaletteViewerPreferences.LAYOUT_LIST

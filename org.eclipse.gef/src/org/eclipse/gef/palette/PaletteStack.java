@@ -44,13 +44,13 @@ public PaletteStack(String name, String desc, ImageDescriptor icon) {
 
 /**
  * Returns true if this type can be a child of this container
+ * Only accepts ToolEntry's.
  * 
  * @param type the type being requested
  * @return true if this can be a child of this container
  */
 public boolean acceptsType(Object type) {
-	if (type.equals(PALETTE_TYPE_STACK) || type.equals(PaletteDrawer.PALETTE_TYPE_DRAWER)
-			|| type.equals(PaletteSeparator.PALETTE_TYPE_SEPARATOR) || (getParent() != null
+	if (!type.equals(ToolEntry.PALETTE_TYPE_TOOL) || (getParent() != null
 					&& getParent().getUserModificationPermission() != PaletteEntry.PERMISSION_FULL_MODIFICATION))
 		return false;
 	return super.acceptsType(type);
