@@ -156,11 +156,12 @@ public void dispatchMouseExited(org.eclipse.swt.events.MouseEvent me) {
 
 public void dispatchMousePressed(org.eclipse.swt.events.MouseEvent me){
 	receive(me);
-	setCapture(mouseTarget);
 	if (mouseTarget != null){
 		if (DEBUG)
 			System.out.println("Pressed:\n\t" + currentEvent);//$NON-NLS-1$
 		mouseTarget.handleMousePressed(currentEvent);
+		if (currentEvent.isConsumed())
+			setCapture(mouseTarget);
 	}
 }
 
@@ -223,6 +224,10 @@ protected IFigure getMouseTarget(){return mouseTarget;}
 protected IFigure getRoot(){return root;}
 
 protected boolean isCaptured(){return captured;}
+
+public boolean isConsumed() {
+	return getCurrentEvent().isConsumed();
+}
 
 private void receive(org.eclipse.swt.events.MouseEvent me){
 	updateFigureUnderCursor(me);
