@@ -19,21 +19,21 @@ protected EditPart createDrawerEditPart(EditPart parentEditPart, Object model){
 	return new DrawerEditPart((PaletteDrawer)model);
 }
 
-public EditPart createEditPart(EditPart parentEditPart, Object model){
-	if( model instanceof PaletteRoot )
+public EditPart createEditPart(EditPart parentEditPart, Object model) {
+	if (model instanceof PaletteRoot)
 		return createMainPaletteEditPart(parentEditPart, model);
-	if( model instanceof PaletteContainer )
-		if(PaletteDrawer.PALETTE_TYPE_DRAWER.equals(((PaletteContainer)model).getType()))
+	if (model instanceof PaletteContainer)
+		if (PaletteDrawer.PALETTE_TYPE_DRAWER.equals(((PaletteContainer)model).getType()))
 			return createDrawerEditPart(parentEditPart, model);
-	if( model instanceof PaletteContainer )
-		if(PaletteGroup.PALETTE_TYPE_GROUP.equals(((PaletteContainer)model).getType()) ||
-			PaletteContainer.PALETTE_TYPE_UNKNOWN.equals(((PaletteContainer)model).getType()))
+	if (model instanceof PaletteContainer)
+		if (PaletteGroup.PALETTE_TYPE_GROUP.equals(((PaletteContainer) model).getType())
+				|| PaletteContainer.PALETTE_TYPE_UNKNOWN.equals(((PaletteContainer)model).getType()))
 			return createGroupEditPart(parentEditPart, model);
-	if( model instanceof PaletteTemplateEntry)
+	if (model instanceof PaletteTemplateEntry)
 		return createTemplateEditPart(parentEditPart, model);
-	if( model instanceof PaletteSeparator )
+	if (model instanceof PaletteSeparator)
 		return createSeparatorEditPart(parentEditPart, model);
-	if( model instanceof PaletteEntry )
+	if (model instanceof PaletteEntry)
 		return createEntryEditPart(parentEditPart, model);
 	return null;
 }
