@@ -13,6 +13,26 @@ class OverlayScrollPaneLayout
 	extends ScrollPaneLayout
 {
 
+/**
+ * {@inheritDoc}
+ * In OverlayScrollPane, scrollbars are overlayed on top of the Viewport,
+ * so the preferred size is just the Viewports preferred size.
+ * @since 2.0
+ */
+protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHint){
+	ScrollPane scrollpane = (ScrollPane)container;
+	Insets insets = scrollpane.getInsets();
+
+	int excludedWidth = insets.getWidth();
+	int excludedHeight = insets.getHeight();
+
+	return scrollpane
+		.getViewport()
+		.getPreferredSize(wHint - excludedWidth, hHint - excludedHeight)
+		.getExpanded(excludedWidth, excludedHeight);
+}
+
+/**{@inheritDoc}*/
 public void layout(IFigure parent){
 	ScrollPane scrollpane = (ScrollPane)parent;
 	Rectangle clientArea = parent.getClientArea();
@@ -28,14 +48,13 @@ public void layout(IFigure parent){
 	int hVis = scrollpane.getHorizontalScrollBarVisibility(),
 	    vVis = scrollpane.getVerticalScrollBarVisibility();
 
-	Dimension preferred = viewport.getPreferredSize(),
-		    available = clientArea.getSize(),
-		    guaranteed = new Dimension(available).shrink(
-		    	(vVis == NEVER ? 0 : insets.right),
-		    	(hVis == NEVER ? 0 : insets.bottom) );
+	Dimension available = clientArea.getSize(),
+			  preferred = viewport.getPreferredSize(
+				  available.width, available.height).getCopy();
+		    	
 
 	boolean none = available.contains(preferred),
-		  both = !none && vVis != NEVER && hVis != NEVER && preferred.contains(guaranteed),
+		  both = !none && vVis != NEVER && hVis != NEVER && preferred.contains(available),
 		  showV= both || preferred.height > available.height,
 		  showH= both || preferred.width  > available.width;
 

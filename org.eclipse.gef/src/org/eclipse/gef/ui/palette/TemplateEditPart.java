@@ -12,21 +12,14 @@ import org.eclipse.swt.accessibility.*;
  * 
  * @author Eric Bordeau
  */
-public class TemplateEditPart extends PaletteEditPart {
+public class TemplateEditPart
+	extends PaletteEditPart
+{
+
+private static Border BORDER = new MarginBorder(3,0,3,0);
 
 public TemplateEditPart(TemplateEntry entry) {
 	setModel(entry);
-}
-
-public void activate() {
-	super.activate();
-	
-	Label label = (Label)getFigure();
-	label.addFocusListener(new FocusListener.Stub() {
-		public void focusGained(FocusEvent event) {
-			getRoot().getViewer().select(TemplateEditPart.this);
-		}
-	});
 }
 
 protected AccessibleEditPart createAccessible() {
@@ -40,24 +33,15 @@ protected AccessibleEditPart createAccessible() {
 		}
 
 		public void getRole(AccessibleControlEvent e) {
-			e.detail = ACC.ROLE_LABEL;
-		}
-
-		public void getState(AccessibleControlEvent e) {
-			e.detail = ((SelectableLabel)getFigure()).isSelected()
-				? ACC.STATE_SELECTED
-				: ACC.STATE_SELECTABLE;
+			e.detail = ACC.ROLE_LISTITEM;
 		}
 	};
 }
 
 public IFigure createFigure() {
 	SelectableLabel label = new SelectableLabel();
-	label.setRequestFocusEnabled(true);
-	label.setBackgroundColor(ColorConstants.menuBackground);
-	label.setForegroundColor(ColorConstants.menuForeground);
-	label.setOpaque(false);
-	label.setLabelAlignment(PositionConstants.LEFT);
+	label.setBorder(BORDER);
+	label.setLabelAlignment(label.LEFT);
 	return label;
 }
 
@@ -86,25 +70,12 @@ public void setFocus(boolean value) {
 	SelectableLabel label = (SelectableLabel)getFigure();
 	if (value)
 		label.requestFocus();
-	//label.repaint();
 }
 
-public void setSelected(int value) { 
+public void setSelected(int value) {
 	super.setSelected(value);
 	SelectableLabel label = (SelectableLabel)getFigure();
-	if (value == SELECTED_PRIMARY) {
-		label.requestFocus();
-		label.setOpaque(true);
-		label.setBackgroundColor(ColorConstants.menuBackgroundSelected);
-		label.setForegroundColor(ColorConstants.menuForegroundSelected);
-		label.setSelected(true);
-	}
-	else if (value == SELECTED_NONE) {
-		label.setOpaque(false);
-		label.setBackgroundColor(ColorConstants.menuBackground);
-		label.setForegroundColor(ColorConstants.menuForeground);
-		label.setSelected(false);
-	}
+	label.setSelected(value == SELECTED_PRIMARY);
 }
 
 }

@@ -48,14 +48,14 @@ public void expand(){
 	animate();
 }
 
-public Dimension getPreferredSize(){
+public Dimension getPreferredSize(int w, int h){
 	if(animationModel == null){
 		if (expanded)
-			return super.getPreferredSize();
+			return super.getPreferredSize(w, h);
 		else
 			return getMinimumSize();
 	}
-	Dimension pref = super.getPreferredSize();
+	Dimension pref = super.getPreferredSize(w, h);
 	Dimension min  = getMinimumSize();
 	float scale = animationModel.getProgress();
 	return pref.getScaled(scale).expand(min.getScaled(1.0f-scale));
