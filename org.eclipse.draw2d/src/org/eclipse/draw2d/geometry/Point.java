@@ -122,15 +122,20 @@ public double getDistance(Point pt) {
 }
 
 /**
- * Calculates the distance squared between this Point and the one specified. 
+ * Calculates the distance squared between this Point and the one specified. If
+ * the distance squared is larger than the maximum integer value, then
+ * <code>Integer.MAX_VALUE</code> will be returned.
  * @param pt The reference Point
  * @return distance<sup>2</sup>
  * @since 2.0
  */
 public int getDistance2(Point pt) {
-	int i = pt.x - x;
-	int j = pt.y - y;
-	return i * i + j * j;
+	long i = pt.x - x;
+	long j = pt.y - y;
+	long result = i * i + j * j;
+	if (result > Integer.MAX_VALUE)
+		return Integer.MAX_VALUE;
+	return (int)result;
 }
 
 /**
