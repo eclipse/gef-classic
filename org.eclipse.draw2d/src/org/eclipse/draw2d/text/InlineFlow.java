@@ -160,7 +160,7 @@ public void setBorder(Border border) {
 	if (border instanceof FlowBorder)
 		super.setBorder(border);
 	else
-		throw new RuntimeException("Border must be an instance of FlowBorder");
+		throw new RuntimeException("Border must be an instance of FlowBorder"); //$NON-NLS-1$
 }
 
 }
