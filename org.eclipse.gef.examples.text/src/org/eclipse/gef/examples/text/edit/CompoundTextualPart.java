@@ -95,8 +95,8 @@ public TextLocation getNextLocation(CaretSearch search) {
 	switch (search.type) {
 		case CaretSearch.LINE_BOUNDARY:
 			if (search.isForward)
-				return searchLineBegin(search);
-			return searchLineEnd(search);
+				return searchLineEnd(search);
+			return searchLineBegin(search);
 
 		case CaretSearch.ROW:
 			if (search.isForward)

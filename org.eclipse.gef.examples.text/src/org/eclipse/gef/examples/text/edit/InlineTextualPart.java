@@ -27,7 +27,7 @@ public TextLocation getNextLocation(CaretSearch search) {
 			if (search.isRecursive)
 				break;
 			return getTextParent().getNextLocation(
-					search.continueSearch(this, search.isForward ? getLength() : 0));		
+					search.continueSearch(this, search.isForward ? 0 : getLength()));		
 		default:
 			break;
 	}
