@@ -19,6 +19,7 @@ import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.TraverseEvent;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
 
 /**
  * The SWTEventDispatcher provides draw2d with the ability to dispatch SWT Events. The 
@@ -30,9 +31,8 @@ public class SWTEventDispatcher
 	extends EventDispatcher
 {
 
-private static final boolean DEBUG = false;
-
 /** Used to tell if any button is pressed without regard to the specific button. */
+/* @TODO:Pratik  Should use SWT.BUTTON_MASK here? */
 protected static final int ANY_BUTTON = SWT.BUTTON1 | SWT.BUTTON2 | SWT.BUTTON3;
 
 private boolean figureTraverse = true;
@@ -209,8 +209,6 @@ public void dispatchMouseExited(org.eclipse.swt.events.MouseEvent me) {
 public void dispatchMousePressed(org.eclipse.swt.events.MouseEvent me) {
 	receive(me);
 	if (mouseTarget != null) {
-		if (DEBUG)
-			System.out.println("Pressed:\n\t" + currentEvent);//$NON-NLS-1$
 		mouseTarget.handleMousePressed(currentEvent);
 		if (currentEvent.isConsumed())
 			setCapture(mouseTarget);
@@ -222,30 +220,31 @@ public void dispatchMousePressed(org.eclipse.swt.events.MouseEvent me) {
  */
 public void dispatchMouseMoved(org.eclipse.swt.events.MouseEvent me) {
 	receive(me);
-	if (mouseTarget != null)
-		if ((me.stateMask & ANY_BUTTON) != 0) {
-			if (DEBUG)
-				System.out.println("Drag:\n\t" + currentEvent);//$NON-NLS-1$
+	if (mouseTarget != null) {
+		if ((me.stateMask & ANY_BUTTON) != 0)
 			mouseTarget.handleMouseDragged(currentEvent);
-		} else {
-			if (DEBUG)
-				System.out.println("Move:\n\t" + currentEvent);//$NON-NLS-1$
+		else
 			mouseTarget.handleMouseMoved(currentEvent);
-		}
+	}
 }
 
 /**
- * @see EventDispatcher#dispatchMouseReleased(MouseEvent)
+ * @see EventDispatcher#dispatchMouseReleased(org.eclipse.swt.events.MouseEvent)
  */
 public void dispatchMouseReleased(org.eclipse.swt.events.MouseEvent me) {
 	receive(me);
 	if (mouseTarget != null) {
-		if (DEBUG)
-			System.out.println("Released:\n\t" + currentEvent);//$NON-NLS-1$
 		mouseTarget.handleMouseReleased(currentEvent);
 	}
 	releaseCapture();
 	receive(me);
+}
+
+/**
+ * Mouse-wheel scrolls are ignored by default.
+ * @see org.eclipse.draw2d.EventDispatcher#dispatchMouseWheelScrolled(org.eclipse.swt.widgets.Event)
+ */
+public void dispatchMouseWheelScrolled(Event evt) {
 }
 
 /**
@@ -348,15 +347,11 @@ private void receive(org.eclipse.swt.events.MouseEvent me) {
 		}
 		if (mouseTarget != null) {
 			currentEvent = new MouseEvent(me.x, me.y, this, mouseTarget, me.button, state);
-			if (DEBUG)
-				System.out.println("Exit:\n\t" + currentEvent);//$NON-NLS-1$
 			mouseTarget.handleMouseExited(currentEvent);
 		}
 		setMouseTarget(f);
 		if (mouseTarget != null) {
 			currentEvent = new MouseEvent(me.x, me.y, this, mouseTarget, me.button, state);
-			if (DEBUG)
-				System.out.println("Enter:\n\t" + currentEvent);//$NON-NLS-1$
 			mouseTarget.handleMouseEntered(currentEvent);
 		}
 	}
@@ -458,6 +453,8 @@ protected void setFigureUnderCursor(IFigure f) {
  * @param fig the new focus figure
  */
 protected void setFocus(IFigure fig) {
+	if (fig == focusOwner)
+		return;
 	FocusEvent fe = new FocusEvent(focusOwner, fig);
 	IFigure oldOwner = focusOwner;
 	focusOwner = fig;
