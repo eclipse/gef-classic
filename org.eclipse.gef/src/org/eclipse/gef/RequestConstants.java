@@ -104,6 +104,11 @@ String REQ_CREATE = "create child"; //$NON-NLS-1$
 String REQ_ADD = "add children"; //$NON-NLS-1$
 
 /**
+ * Indicates that the reciever of the request should be cloned.
+ */
+String REQ_CLONE = "clone"; //$NON-NLS-1$
+
+/**
  * Constant used to indicate that the receiver of the Request is being deleted.
  */
 String REQ_DELETE = "delete"; //$NON-NLS-1$
