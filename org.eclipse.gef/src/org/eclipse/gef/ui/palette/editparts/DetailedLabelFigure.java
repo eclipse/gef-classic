@@ -279,6 +279,8 @@ private class FocusableFlowPage extends FlowPage {
 			g.setForegroundColor(ColorConstants.black);
 			g.setBackgroundColor(ColorConstants.white);
 			g.drawFocus(childBounds.resize(-1, -1));
+		} else {
+			super.paintFigure(g);
 		}
 	}
 }
