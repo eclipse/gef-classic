@@ -9,7 +9,7 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 
 /**
- * Performs a layout on a container containing {@link TreeBranch} figures. This layout is
+ * Performs a layout on a container containing {@link AbstractBranch} figures. This layout is
  * similar to FlowLayout, except that the children are squeezed together to overlap by
  * comparing their left and right contours.
  * @author hudsonr
@@ -76,6 +76,7 @@ public void layout(IFigure container) {
 	for (int i = 0; i < subtrees.size(); i++) {
 		subtree = (TreeBranch)subtrees.get(i);
 		subtree.toString();
+		subtree.setSize(subtree.getPreferredSize());
 		leftContour = subtree.getContourLeft();
 		int overlap = calculateOverlap(rightContour, leftContour);
 		contactDepth = pointOfContact;
