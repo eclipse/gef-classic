@@ -15,7 +15,13 @@ import java.util.List;
 import org.eclipse.draw2d.geometry.*;
 
 /**
- * Provides for graphical lines comprised of {@link Point Points}.
+ * Renders a {@link PointList} as a series of line segments.  A Polyline figure should be
+ * positioned by manipulating its points, <EM>NOT</EM> by calling
+ * {@link Figure#setBounds(Rectangle)}.
+ * <P>
+ * A polyline's bounds will be calculated automatically based on its PointList.  The
+ * bounds will be the smallest Rectangle large enough to render the line properly.
+ * Children should not be added to a Polyline and will not affect the bounds calculation.
  */
 public class Polyline
 	extends Shape
@@ -254,7 +260,7 @@ public void setPoint(Point pt, int index) {
 
 /**
  * Sets the list of points to be used by this polyline connection. Removes any previously 
- * existing points. 
+ * existing points. The polyline will hold onto the given list by reference.
  *
  * @param points new set of points
  * @since 2.0

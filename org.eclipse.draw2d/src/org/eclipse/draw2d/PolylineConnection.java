@@ -14,7 +14,21 @@ import java.util.List;
 import org.eclipse.draw2d.geometry.*;
 
 /**
- * Connection based on polyline. The layout of the connection is handled by routers.
+ * An implementation of {@link Connection} based on Polyline.  PolylineConnection adds
+ * the following additional features:
+ * <UL>
+ * <LI>
+ *   A {@link ConnectionRouter} may be provided which will be used to determine the
+ *   connections points. 
+ * <LI>
+ *   Children may be added. The bounds calculation is extended such that the bounds is
+ *   the smallest Rectangle which is large enough to display the Polyline and all of its
+ *   children figures.
+ * <LI>
+ *   A {@link DelegatingLayout} is set as the default layout.  A delegating layout allows
+ *   children to position themselves via {@link Locator Locators}.
+ * </UL>
+ * <P>
  */
 public class PolylineConnection
 	extends Polyline

@@ -13,7 +13,10 @@ package org.eclipse.draw2d;
 import java.util.List;
 
 /**
- * Draws a polygon which encloses all of its {@link org.eclipse.draw2d.geometry.Point}s.
+ * Renders a {@link org.eclipse.draw2d.geometry.PointList} as a polygonal shape.
+ * This class is similar to Polyline, except the PointList is closed and can be filled in
+ * as a solid shape.
+ * @see Polyline
  */
 public class Polygon
 	extends Polyline
