@@ -32,6 +32,10 @@ public CreateCommand() {
 	super(LogicMessages.CreateCommand_Label);
 }
 
+public boolean canExecute() {
+	return child != null && parent != null;
+}
+
 public void execute() {
 	if (rect != null) {
 		Insets expansion = getInsets();
@@ -52,10 +56,6 @@ private Insets getInsets() {
 	if (child instanceof LED || child instanceof Circuit)
 		return new Insets(2, 0, 2, 0);
 	return new Insets();
-}
-
-public LogicDiagram getParent() {
-	return parent;
 }
 
 public void redo() {
