@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.draw2d.text;
 
+import java.text.BreakIterator;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.FontMetrics;
@@ -39,6 +41,7 @@ static final String ELLIPSIS = "..."; //$NON-NLS-1$
 
 static final int SELECT_ALL = 1;
 static final int SELECT_PARTIAL = 2;
+private boolean prependJoiner, appendJoiner;
 private int selectBegin = -1;
 private int selectEnd = -1;
 private String text;
@@ -55,6 +58,74 @@ public TextFlow() {
  * @param s the string */
 public TextFlow(String s) {
 	text = s;
+}
+
+/**
+ * Same as invoking {@link #prependJoiner(String)} and {@link #appendJoiner(String)} with
+ * the given text.
+ * @param text the text to be formatted for shaping
+ * @return the given text with shaping characters appended as needed
+ * @since 3.1
+ */
+public String addJoiners(String text) {
+	text = prependJoiner(text);
+	return appendJoiner(text);
+}
+
+/**
+ * Returns the width of the text until the first line-break.
+ * @see org.eclipse.draw2d.text.FlowFigure#addLeadingWordRequirements(int[])
+ */
+public boolean addLeadingWordRequirements(int[] width) {
+	return addLeadingWordWidth(getText(), width);
+}
+
+/**
+ * Calculates the width taken up by the given text before a line-break is encountered.
+ * 
+ * @param text the text in which the break is to be found
+ * @param width the width before the next line-break (if one's found; the width of all
+ * the given text, otherwise) will be added on to the first int in the given array
+ * @return <code>true</code> if a line-break was found
+ * @since 3.1
+ */
+boolean addLeadingWordWidth(String text, int[] width) {
+	// Changes to this algorithm should be verified with LookAheadTest
+	BreakIterator spaceFinder = BreakIterator.getLineInstance();
+	text = "a" + text + "a"; //$NON-NLS-1$ //$NON-NLS-2$
+	spaceFinder.setText(text);
+	int index = FlowUtilities.findPreviousNonWS(text, spaceFinder.next());
+	boolean result = index < text.length() - 1;
+	if (index == text.length() - 1)
+		index--;
+	// An optimization to prevent unnecessary invocation of String.substring and 
+	// getStringExtents()
+	if (index + 1 == 1)
+		return result;
+	text = text.substring(1, index + 1);
+	
+	if (getBidiValues() == null)
+		width[0] += FlowUtilities.getStringExtents(text, getFont()).width - 1;
+	else {
+		org.eclipse.swt.graphics.TextLayout textLayout = FlowUtilities.getTextLayout();
+		textLayout.setText(text);
+		width[0] += textLayout.getBounds().width;
+	}
+	return result;
+}
+
+/**
+ * Appends the Zero-Width Joiner character at the end of the given String if required.
+ * 
+ * @param text the String to be formatted for shaping
+ * @return the given text with the shaping character appended if needed
+ * @see #setAppendJoiner(boolean)
+ * @since 3.1
+ */
+public String appendJoiner(String text) {
+	if (appendJoiner)
+		text += "\u200d"; //$NON-NLS-1$
+	return text;
 }
 
 /**
@@ -241,6 +312,15 @@ public String getText() {
 }
 
 /**
+ * @see org.eclipse.draw2d.text.FlowFigure#invalidateBidi()
+ */
+protected void invalidateBidi() {
+	super.invalidateBidi();
+	prependJoiner = false;
+	appendJoiner = false;
+}
+
+/**
  * Returns <code>true</code> if a portion if the text is truncated using ellipses ("...").
  * @return <code>true</code> if the text is truncated with ellipses
  */
@@ -287,9 +367,9 @@ protected void paintFigure(Graphics g) {
 		else
 			draw = text.substring(frag.offset, frag.offset + frag.length);
 
-		// Insert RLE if this fragment has RTL text.
+		// Insert RLO if this fragment has RTL text.
 		if (frag.isBidi())
-			draw = "\u202b" + draw; //$NON-NLS-1$
+			draw = "\u202e" + draw; //$NON-NLS-1$
 
 		if (!isEnabled()) {
 			Color fgColor = g.getForegroundColor();
@@ -315,12 +395,11 @@ protected void paintFigure(Graphics g) {
 // Paints the text based on selection and Bidi level.  Uses TextLayout as needed.
 private void paintText(Graphics g, String text, int x, int y, int selectionStart, 
 		int selectionEnd, int selectionType, boolean isBidi) {
-
 	if (isBidi || selectionType == SELECT_PARTIAL) {
 		// Case of RTL text and/or partial selection
 		TextLayout layout = FlowUtilities.getTextLayout();
 		layout.setOrientation(SWT.LEFT_TO_RIGHT);
-		layout.setFont(getFont());
+		layout.setFont(g.getFont());
 		layout.setText(text);
 		g.drawTextLayout(layout, x, y, selectionStart, selectionEnd, null, null);
 		// set the text to an empty string so that the current string is not held in memory
@@ -337,6 +416,35 @@ private void paintText(Graphics g, String text, int x, int y, int selectionStart
 	} else
 		// Case of no selection
 		g.drawString(text, x, y);
+}
+
+/**
+ * Prepends the Zero-Width Joiner character to the beginning of the given text if 
+ * required.
+ * 
+ * @param text the String that needs to be formatted for shaping
+ * @return the given text with shaping character prepended if needed
+ * @see #setPrependJoiner(boolean)
+ * @since 3.1
+ */
+public String prependJoiner(String text) {
+	if (prependJoiner)
+		text = "\u200d" + text; //$NON-NLS-1$
+	return text;
+}
+
+/**
+ * @see org.eclipse.draw2d.text.FlowFigure#setAppendJoiner(boolean)
+ */
+public void setAppendJoiner(boolean append) {
+	appendJoiner = append;
+}
+
+/**
+ * @see org.eclipse.draw2d.text.FlowFigure#setPrependJoiner(boolean)
+ */
+public void setPrependJoiner(boolean prepend) {
+	prependJoiner = prepend;
 }
 
 /**
