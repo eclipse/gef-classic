@@ -119,6 +119,7 @@ protected boolean handleButtonUp(int button) {
  * @see org.eclipse.gef.tools.AbstractTool#handleDoubleClick(int)
  */
 protected boolean handleDoubleClick(int button) {
+	setFlag(FLAG_ENABLE_DIRECT_EDIT, false);
 	if (button == 1)
 		performOpen();
 	return true;
