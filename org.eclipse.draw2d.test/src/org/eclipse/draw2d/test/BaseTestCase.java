@@ -16,6 +16,7 @@ import java.util.Arrays;
 
 import junit.framework.TestCase;
 
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 
 /**
@@ -24,7 +25,9 @@ import org.eclipse.swt.graphics.Image;
 public abstract class BaseTestCase 
 	extends TestCase 
 {
-	
+
+protected static final Font TAHOMA = new Font(null, "Tahoma", 8, 0);//$NON-NLS-1$
+
 public BaseTestCase() {
 	super();
 }
@@ -32,7 +35,7 @@ public BaseTestCase() {
 public BaseTestCase(String text) {
 	super(text);
 }
-
+	
 protected boolean callBooleanMethod(Object receiver, String method) {
 	try {
 		Method m = receiver.getClass().getMethod(method, null);
