@@ -194,7 +194,7 @@ protected void hookControl() {
 	canvas.getViewport().setContentsTracksHeight(!globalScrollbar);
 	canvas.setHorizontalScrollBarVisibility(FigureCanvas.NEVER);
 	canvas.setVerticalScrollBarVisibility(
-		globalScrollbar ? FigureCanvas.ALWAYS : FigureCanvas.NEVER);
+		globalScrollbar ? FigureCanvas.ALWAYS : FigureCanvas.AUTOMATIC);
 	if (prefs != null)
 		prefs.addPropertyChangeListener(prefListener);
 	updateFont();
