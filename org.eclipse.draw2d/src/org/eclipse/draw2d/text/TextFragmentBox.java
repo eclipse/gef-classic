@@ -23,10 +23,8 @@ public int offset;
 /** The length in characters **/
 public int length;
 
-/** Whether this fragment is truncated or not */
-public boolean truncated;
-
 private int ascent;
+boolean truncated;
 
 /**
  * Creates a new TextFragmentBox
