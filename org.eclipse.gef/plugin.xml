@@ -35,20 +35,16 @@
       <import plugin="org.eclipse.ui" export="true"/>
    </requires>
 
-
- <extension-point id="acceleratorSets" name="%ExtPoint.acceleratorSets"/>
-   <extension-point id="actionDefinitions" name="%ExtPoint.actionDefinitions"/>
-
    <extension
          point="org.eclipse.ui.actionDefinitions">
       <actionDefinition
-            name="%ActionDefinition.zoomIn.name"
-            description="%ActionDefinition.zoomIn.description"
+            name="%ZoomIn.Tooltip"
+            description="%ZoomIn.Tooltip"
             id="org.eclipse.gef.zoom_in">
       </actionDefinition>
       <actionDefinition
-            name="%ActionDefinition.zoomOut.name"
-            description="%ActionDefinition.zoomOut.description"
+            name="%ZoomOut.Tooltip"
+            description="%ZoomOut.Tooltip"
             id="org.eclipse.gef.zoom_out">
       </actionDefinition>
    </extension>
