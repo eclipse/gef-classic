@@ -3,7 +3,8 @@ package org.eclipse.draw2d.examples.tree;
 import java.util.*;
 
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2d.Viewport;
+import org.eclipse.draw2d.geometry.*;
 
 /**
  * @author hudsonr
@@ -11,12 +12,14 @@ import org.eclipse.draw2d.geometry.Rectangle;
  */
 public class Animation {
 	
-static final long DURATION = 200;
+static final long DURATION = 210;
 
 static long current;
 static double progress;
 static long start = -1;
 static long finish;
+static Viewport viewport;
+static Point viewportStart, viewportEnd;
 
 static boolean PLAYBACK;
 static boolean IN_PROGRESS;
@@ -26,13 +29,22 @@ static Map initialStates;
 static Map finalStates;
 
 static void end() {
+	Iterator iter = initialStates.keySet().iterator();
+	while (iter.hasNext())
+		((IFigure)iter.next()).revalidate();
 	IN_PROGRESS = false;
 	initialStates = null;
 	finalStates = null;
 	PLAYBACK = false;
+	viewportStart = viewportEnd = null;
+	viewport = null;
 }
 
-static void mark() {
+static void mark(IFigure figure) {
+	while (!(figure instanceof Viewport))
+		figure = figure.getParent();
+	viewport = (Viewport)figure;
+	viewportStart = viewport.getViewLocation();
 	IN_PROGRESS = true;
 	initialStates = new HashMap();
 	finalStates = new HashMap();
@@ -50,6 +62,7 @@ static void captureLayout(IFigure root) {
 	Iterator iter = initialStates.keySet().iterator();
 	while (iter.hasNext())
 		recordFinalStates((IFigure)iter.next());
+	viewportEnd = viewport.getViewLocation();
 	RECORDING = false;
 	PLAYBACK = true;
 }
@@ -112,9 +125,16 @@ static void swap() {
 static boolean step() {
 	current = System.currentTimeMillis() + 30;
 	progress = (double)(current - start)/(finish - start);
+	progress = Math.min(progress, 0.999);
 	Iterator iter = initialStates.keySet().iterator();
 	while (iter.hasNext())
 		((IFigure)iter.next()).revalidate();
+	viewport.validate();
+	Point loc = new Point(
+		(int)Math.round(viewportStart.x * (1-progress) + progress * viewportEnd.x),
+		(int)Math.round(viewportStart.y * (1-progress) + progress * viewportEnd.y)
+	);
+	viewport.setViewLocation(loc.x, loc.y);
 	return current < finish;
 }
 

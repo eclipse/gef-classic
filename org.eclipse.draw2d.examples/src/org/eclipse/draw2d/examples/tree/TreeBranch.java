@@ -3,6 +3,7 @@ package org.eclipse.draw2d.examples.tree;
 import java.util.List;
 
 import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.geometry.*;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 
@@ -100,16 +101,33 @@ public void animationReset(Rectangle bounds) {
 public void collapse() {
 	if (!expanded)
 		return;
-	setExpanded(false);
+
 	IFigure root = this;
-	while (root.getParent() != null)
+	Viewport port = null;
+	Point viewportStart = null;
+	while (root.getParent() != null) {
+		if (root instanceof Viewport)
+			port = ((Viewport)root);
 		root = root.getParent();
+	}
+	Point start = getNode().getBounds().getLocation();
+	viewportStart = port.getViewLocation();
+
+	setExpanded(false);
 	root.validate();
+	Point end = getNode().getBounds().getLocation();
+	
 	setExpanded(true);
 	animationReset(getNodeBounds());
-	Animation.mark();
+	Animation.mark(this);
 	Animation.captureLayout(getRoot());
 	Animation.swap();
+
+	root.validate();
+	Animation.viewportStart = viewportStart;
+	Animation.viewportEnd = viewportStart.getTranslated(
+		end.getDifference(start)
+	);
 	while(Animation.step())
 		getUpdateManager().performUpdate();
 	Animation.end();
@@ -127,11 +145,15 @@ public boolean containsPoint(int x, int y) {
 public void expand() {
 	if (expanded)
 		return;
+	Point start = getNodeBounds().getLocation();
 	setExpanded(true);
 	animationReset(getNodeBounds());
 	
-	Animation.mark();
+	Animation.mark(this);
 	Animation.captureLayout(getRoot());
+	Point end = getNodeBounds().getLocation();
+	Dimension delta = end.getDifference(start);
+	Animation.viewportEnd = Animation.viewportStart.getTranslated(delta);
 	while(Animation.step())
 		getUpdateManager().performUpdate();
 	Animation.end();
