@@ -123,12 +123,17 @@ private static final int MAX_PALETTE_SIZE = 500;
 
 private static final int STATE_HIDDEN = 8;
 private static final int STATE_EXPANDED = 1;
-/*
- * This is the default state, i.e., when the palette view is not visible, if no initial
- * state is provided, the flyout palette will show up as collapsed.
+/**
+ * One of the two possible initial states of the flyout palette.  This is the default one.
+ * When in this state, only the flyout palette's sash is visible.
  */
-private static final int STATE_COLLAPSED = 2;
-private static final int STATE_PINNED_OPEN = 4;
+public static final int STATE_COLLAPSED = 2;
+/**
+ * One of the two possible initial states of the flyout palette.  When in this state,
+ * the flyout palette is completely visible and pinned open so that it doesn't disappear
+ * when the user wanders away from the flyout.
+ */
+public static final int STATE_PINNED_OPEN = 4;
 
 private static final Image LEFT_ARROW = new Image(null, ImageDescriptor.createFromFile(
 		Internal.class, "icons/palette_left.gif").getImageData()); //$NON-NLS-1$
@@ -612,17 +617,18 @@ private void updateState(IWorkbenchPage page) {
  */
 public interface FlyoutPreferences {
 	/**
-	 * When there is no saved dock location, this method can return any int (preferrably
-	 * a non-positive int).
+	 * Should return {@link PositionConstants#EAST} or {@link PositionConstants#WEST}. 
+	 * Any other int will be ignored and the default dock location (EAST) will be 
+	 * used instead.
 	 * @return the saved dock location of the Palette
 	 */
 	int getDockLocation();
 	/**
-	 * When there is no saved state, this method can return any non-positive int.  This
-	 * will result in the palette using the default state (collapsed).  Undesired 
-	 * behaviour is possible if a positve int that coincides with one of the state 
-	 * constants is returned.
-	 * @return	the saved state of the palette (collapsed or pinned open)
+	 * When there is no saved state, this method can return any non-positive int (which 
+	 * will result in the palette using the default state -- collapsed), or
+	 * {@link FlyoutPaletteComposite#STATE_COLLAPSED}, or 
+	 * {@link FlyoutPaletteComposite#STATE_PINNED_OPEN}
+	 * @return	the saved state of the palette
 	 */
 	int getPaletteState();
 	/**
@@ -637,13 +643,15 @@ public interface FlyoutPreferences {
 	 * This method is invoked when the flyout palette's dock location is changed.  The
 	 * provided dock location should be persisted and returned in 
 	 * {@link #getDockLocation()}.
-	 * @param	location	an int representing the dock location
+	 * @param	location	{@link PositionConstants#EAST} or {@link PositionConstants#WEST}
 	 */
 	void setDockLocation(int location);
 	/**
-	 * This method is invoked when the flyout palette's default state is changed.  The
-	 * provided state should be persisted and returned in {@link #getPaletteState()}.
-	 * @param	state		an int the state of the flyout palette
+	 * This method is invoked when the flyout palette's state is changed (the new state
+	 * becomes the default).  The provided state should be persisted and returned in 
+	 * {@link #getPaletteState()}.
+	 * @param	state		{@link FlyoutPaletteComposite#STATE_COLLAPSED} or 
+	 * {@link FlyoutPaletteComposite#STATE_PINNED_OPEN}
 	 */
 	void setPaletteState(int state);
 	/**
