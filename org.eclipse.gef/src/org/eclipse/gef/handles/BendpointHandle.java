@@ -39,6 +39,7 @@ public void addNotify() {
 
 /**
  * By default, <code>null</code> is returned for the DragTracker.
+ * @return returns null by default
  */
 protected DragTracker createDragTracker() {
 	return null;
@@ -52,7 +53,8 @@ protected DragTracker createDragTracker() {
  * this is the index of the handle itself, where these two types of
  * handles are indexed separately.  For example, if you have one bendpoint,
  * you will have 2 creation handles, indexed as 0 and 1, and 1 move handle,
- * indexed as 0. 
+ * indexed as 0.
+ * @return the index
  */
 public int getIndex() {
 	return index;
@@ -60,6 +62,7 @@ public int getIndex() {
 
 /**
  * Revalidates this handle when the connection's points change.
+ * @param event the event that caused the points change
  */
 public void propertyChange(PropertyChangeEvent event) {
 	revalidate();

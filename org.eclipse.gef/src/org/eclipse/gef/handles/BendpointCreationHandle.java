@@ -26,18 +26,20 @@ public class BendpointCreationHandle
 
 {
 	setCursor(SharedCursors.SIZEALL);
-	setPreferredSize(new Dimension(DEFAULT_HANDLE_SIZE-2, DEFAULT_HANDLE_SIZE-2));
+	setPreferredSize(new Dimension(DEFAULT_HANDLE_SIZE - 2, DEFAULT_HANDLE_SIZE - 2));
 }
 
 /**
  * Creates a new BendpointCreationHandle.
  */
-public BendpointCreationHandle() {}
+public BendpointCreationHandle() { }
 
 /**
  * Creates a new BendpointCreationHandle, sets its owner to <code>owner</code>
  * and its index to <code>index</code>, and sets its locator to a new
  * {@link MidpointLocator}.
+ * @param owner the ConnectionEditPart owner
+ * @param index the index
  */
 public BendpointCreationHandle(ConnectionEditPart owner, int index) {
 	setOwner(owner);
@@ -49,6 +51,9 @@ public BendpointCreationHandle(ConnectionEditPart owner, int index) {
  * Creates a new BendpointCreationHandle and sets its owner to 
  * <code>owner</code>, sets its index to <code>index</code>, and
  * sets its locator to <code>locator</code>.
+ * @param owner the ConnectionEditPart owner
+ * @param index the index
+ * @param locator the Locator
  */
 public BendpointCreationHandle(ConnectionEditPart owner, int index, Locator locator) {
 	setOwner(owner);
@@ -58,6 +63,7 @@ public BendpointCreationHandle(ConnectionEditPart owner, int index, Locator loca
 
 /**
  * Creates and returns a new {@link ConnectionBendpointTracker}.
+ * @return the new ConnectionBendpointTracker
  */
 protected DragTracker createDragTracker() {
 	ConnectionBendpointTracker tracker;

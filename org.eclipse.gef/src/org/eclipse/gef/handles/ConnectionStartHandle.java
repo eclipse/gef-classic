@@ -19,32 +19,40 @@ import org.eclipse.gef.tools.ConnectionEndpointTracker;
  * A handle used at the start of the {@link org.eclipse.draw2d.Connection}.  
  * This is treated differently than the end of the Connection.
  */
-final public class ConnectionStartHandle
+public final class ConnectionStartHandle
 	extends ConnectionHandle
 {
 	
 /**
  * Creates a new ConnectionStartHandle, sets its owner to <code>owner</code>,
  * and sets its locator to a {@link ConnectionLocator}.
+ * @param owner the ConnectionEditPart owner
  */
 public ConnectionStartHandle(ConnectionEditPart owner) {
 	setOwner(owner);
-	setLocator(new ConnectionLocator(getConnection(),ConnectionLocator.SOURCE));
+	setLocator(new ConnectionLocator(getConnection(), ConnectionLocator.SOURCE));
 }
 
+/**
+ * Creates a new ConnectionStartHandle and sets its owner to <code>owner</code>.
+ * If the handle is fixed, it cannot be dragged.
+ * @param owner the ConnectionEditPart owner
+ * @param fixed if true, handle cannot be dragged.
+ */
 public ConnectionStartHandle(ConnectionEditPart owner, boolean fixed) {
 	super(fixed);
 	setOwner(owner);
-	setLocator(new ConnectionLocator(getConnection(),ConnectionLocator.SOURCE));
+	setLocator(new ConnectionLocator(getConnection(), ConnectionLocator.SOURCE));
 }
 
 /**
  * Creates a new ConnectionStartHandle.
  */
-public ConnectionStartHandle(){}
+public ConnectionStartHandle() { }
 
 /**
  * Creates and returns a new {@link ConnectionEndpointTracker}.
+ * @return the new ConnectionEndpointTracker
  */
 protected DragTracker createDragTracker() {
 	if (isFixed()) 

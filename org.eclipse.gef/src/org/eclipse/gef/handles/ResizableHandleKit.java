@@ -28,6 +28,8 @@ public class ResizableHandleKit {
 /**
  * Fills the given List with handles at each corner
  * and the north, south, east, and west of the GraphicalEditPart.
+ * @param part the owner GraphicalEditPart of the handles
+ * @param handles the List to add the handles to
  */
 public static void addHandles(GraphicalEditPart part, List handles) {
 	addMoveHandle(part, handles);
@@ -44,8 +46,10 @@ public static void addHandles(GraphicalEditPart part, List handles) {
 /**
  * Fills the given List with move borders at each side of a
  * figure.
+ * @param f the GraphicalEditPart thatis the owner of the handles
+ * @param handles the List to add the handles to
  */
-static public void addMoveHandle(GraphicalEditPart f, List handles) {
+public static void addMoveHandle(GraphicalEditPart f, List handles) {
 	handles.add(moveHandle(f));
 }
 
@@ -57,7 +61,12 @@ static Handle createHandle(GraphicalEditPart owner, int direction) {
 	return handle;
 }
 
-static public Handle moveHandle(GraphicalEditPart owner) {
+/**
+ * Returns a new {@link MoveHandle} with the given owner.
+ * @param owner the GraphicalEditPart that is the owner of the new MoveHandle 
+ * @return the new MoveHandle
+ */
+public static Handle moveHandle(GraphicalEditPart owner) {
 	return new MoveHandle(owner);
 }
 

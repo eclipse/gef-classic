@@ -28,8 +28,10 @@ public class NonResizableHandleKit {
 /**
  * Fills the given List with handles at each corner of a
  * figure.
+ * @param part the handles' GraphicalEditPart
+ * @param handles the List to add the four corner handles to
  */
-static public void addCornerHandles(GraphicalEditPart part, List handles) {
+public static void addCornerHandles(GraphicalEditPart part, List handles) {
 	handles.add(createHandle(part, PositionConstants.SOUTH_EAST));
 	handles.add(createHandle(part, PositionConstants.SOUTH_WEST));
 	handles.add(createHandle(part, PositionConstants.NORTH_WEST));
@@ -38,6 +40,8 @@ static public void addCornerHandles(GraphicalEditPart part, List handles) {
 
 /**
  * Fills the given List with handles at each corner.
+ * @param part the handles' GraphicalEditPart
+ * @param handles the List to add the handles to
  */
 public static void addHandles(GraphicalEditPart part, List handles) {
 	addMoveHandle(part, handles);
@@ -47,22 +51,26 @@ public static void addHandles(GraphicalEditPart part, List handles) {
 /**
  * Fills the given List with move borders at each side of a
  * figure.
+ * @param f the handles' GraphicalEditPart
+ * @param handles the List to add the handles to
  */
-static public void addMoveHandle(GraphicalEditPart f, List handles) {
+public static void addMoveHandle(GraphicalEditPart f, List handles) {
 	handles.add(moveHandle(f));
 }
 
 static Handle createHandle(GraphicalEditPart owner, int direction) {
-	ResizeHandle handle = new ResizeHandle(owner,direction);
+	ResizeHandle handle = new ResizeHandle(owner, direction);
 	handle.setCursor(SharedCursors.SIZEALL);
 	handle.setDragTracker(new DragEditPartsTracker(owner));
 	return handle;
 }
 
 /**
- * Adds a MoveHandle to the passed GraphicalEditPart.
+ * Returns a new {@link MoveHandle} with the given owner.
+ * @param owner the GraphicalEditPart that is the owner of the new MoveHandle 
+ * @return the new MoveHandle
  */
-static public Handle moveHandle(GraphicalEditPart owner) {
+public static Handle moveHandle(GraphicalEditPart owner) {
 	return new MoveHandle(owner);
 }
 

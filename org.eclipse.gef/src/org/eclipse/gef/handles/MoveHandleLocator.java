@@ -31,21 +31,24 @@ private IFigure reference;
  * Creates a new MoveHandleLocator and sets its reference
  * figure to <code>ref</code>.  The reference figure should 
  * be the handle's owner figure.
+ * @param ref the handle's owner
  */
-public MoveHandleLocator(IFigure ref){
+public MoveHandleLocator(IFigure ref) {
 	setReference(ref);
 }
 
 /**
  * Returns the reference figure for this locator.
+ * @return the handle's owner
  */
-protected IFigure getReference(){
+protected IFigure getReference() {
 	return reference;
 }
 
 /**
  * Sets the handle's bounds to that of its owner figure's
  * bounds, expanded by the handle's Insets.
+ * @param target The IFigure to relocate
  */
 public void relocate(IFigure target) {
 	Insets insets = target.getInsets();
@@ -64,8 +67,9 @@ public void relocate(IFigure target) {
 
 /**
  * Sets the reference figure.
+ * @param follow the reference figure, should be the handle's owner figure
  */
-public void setReference(IFigure follow){
+public void setReference(IFigure follow) {
 	this.reference = follow;
 }
 

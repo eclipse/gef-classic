@@ -34,8 +34,10 @@ private int cursorDirection = 0;
  * would place the handle in the lower-right corner of its
  * owner figure.  These direction constants can be found in
  * {@link org.eclipse.draw2d.PositionConstants}.
+ * @param owner owner of the ResizeHandle
+ * @param direction relative direction from the center of the owner figure
  */
-public ResizeHandle(GraphicalEditPart owner, int direction){
+public ResizeHandle(GraphicalEditPart owner, int direction) {
 	setOwner(owner);
 	setLocator(new RelativeHandleLocator(owner.getFigure(), direction));
 	setCursor(Cursors.getDirectionalCursor(direction));
@@ -53,6 +55,7 @@ public ResizeHandle(GraphicalEditPart owner, Locator loc, Cursor c) {
 
 /**
  * Returns <code>null</code> for the DragTracker.
+ * @return returns <code>null</code>
  */
 protected DragTracker createDragTracker() {
 	return null;

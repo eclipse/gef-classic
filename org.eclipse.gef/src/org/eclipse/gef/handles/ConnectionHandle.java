@@ -38,7 +38,7 @@ public ConnectionHandle() {
 }
 
 /**
- * Creates a new handle with the given fixed setting.  It the handle is fixed, it cannot
+ * Creates a new handle with the given fixed setting.  If the handle is fixed, it cannot
  * be dragged.
  * @param fixed <code>true</code> if the handle cannot be dragged.
  */

@@ -28,23 +28,28 @@ public class BendpointMoveHandle extends BendpointHandle {
 /**
  * Creates a new BendpointMoveHandle.
  */
-public BendpointMoveHandle() {}
+public BendpointMoveHandle() { }
 
 /**
  * Creates a new BendpointMoveHandle, sets its owner to <code>owner</code>
  * and its index to <code>index</code>, and sets its locator to a new
  * {@link BendpointLocator}.
+ * @param owner the ConnectionEditPart owner
+ * @param index the index
  */
 public BendpointMoveHandle(ConnectionEditPart owner, int index) {
 	setOwner(owner);
 	setIndex(index);
-	setLocator(new BendpointLocator(getConnection(), index+1));
+	setLocator(new BendpointLocator(getConnection(), index + 1));
 }
 
 /**
  * Creates a new BendpointMoveHandle and sets its owner to <code>owner</code>,
  * sets its index to <code>index</code>, and sets its locator to 
  * <code>locator</code>.
+ * @param owner the ConnectionEditPart owner
+ * @param index the index
+ * @param locator the Locator
  */
 public BendpointMoveHandle(ConnectionEditPart owner, int index, Locator locator) {
 	setOwner(owner);
@@ -54,6 +59,7 @@ public BendpointMoveHandle(ConnectionEditPart owner, int index, Locator locator)
 
 /**
  * Creates and returns a new {@link ConnectionBendpointTracker}.
+ * @return the new ConnectionBendpointTracker
  */
 protected DragTracker createDragTracker() {
 	ConnectionBendpointTracker tracker;
