@@ -404,8 +404,8 @@ public void notifyPainting(Rectangle damage, Map dirtyRegions) {
  * @see org.eclipse.draw2d.UpdateListener#notifyValidating()
  */
 public void notifyValidating() {
-	setDirty(true);
-	revalidate();
+//	setDirty(true);
+//	revalidate();
 }
 
 /**
