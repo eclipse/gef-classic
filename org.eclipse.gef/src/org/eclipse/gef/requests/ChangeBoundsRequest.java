@@ -48,7 +48,9 @@ public Point getLocation() {
 	return mouseLocation;
 }
 
-/** @deprecated @see {@link #getLocation()} */
+/** @deprecated Use {@link #getLocation() } 
+ *  @return The location of the mouse pointer.
+ */
 public Point getMouseLocation() {
 	return getLocation();
 }
@@ -121,7 +123,9 @@ public void setResizeDirection(int dir) {
 	resizeDirection = dir;
 }
 
-/** @deprecated @see #setLocation(Point) */
+/** @deprecated Use {@link #setLocation(Point)} 
+ *  @param p The location of the mouse pointer.
+ */
 public void setMouseLocation(Point p) {
 	setLocation(p);
 }
