@@ -195,7 +195,9 @@ protected Collection getExclusionSet() {
 		}
 		LayerManager layerManager = (LayerManager)getCurrentViewer().
 			getEditPartRegistry().get(LayerManager.ID);
-		exclusionSet.add(layerManager.getLayer(LayerConstants.CONNECTION_LAYER));
+		if (layerManager != null) {
+			exclusionSet.add(layerManager.getLayer(LayerConstants.CONNECTION_LAYER));			
+		}
 	}
 	return exclusionSet;
 }
