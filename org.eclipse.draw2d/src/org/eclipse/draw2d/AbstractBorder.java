@@ -42,4 +42,11 @@ public Dimension getPreferredSize(IFigure f) {
 	return EMPTY;
 }
 
+/**
+ * @see org.eclipse.draw2d.Border#isOpaque()
+ */
+public boolean isOpaque() {
+	return false;
+}
+
 }
