@@ -538,12 +538,12 @@ public void hookDropTargetListener(GraphicalViewer viewer) {
  */
 private void setState(int newState) {
 	/*
-	 * Fix for Bug# 69617
+	 * Fix for Bug# 69617 and Bug# 81248
 	 * FlyoutPreferences.getPaletteState() could return an invalid state if none is
 	 * stored.  In that case, we use the default state: STATE_COLLAPSED.
 	 */
-	if ((newState & 
-			(STATE_COLLAPSED | STATE_EXPANDED | STATE_HIDDEN | STATE_PINNED_OPEN)) == 0)
+	if (newState != STATE_HIDDEN && newState != STATE_PINNED_OPEN 
+			&& newState != STATE_EXPANDED)
 		newState = STATE_COLLAPSED;
 	if (paletteState == newState)
 		return;
