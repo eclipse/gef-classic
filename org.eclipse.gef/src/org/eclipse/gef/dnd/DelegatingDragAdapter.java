@@ -61,6 +61,13 @@ public void dragFinished(DragSourceEvent event) {
 	// if there is a listener that can handle the drop, delegate the event
 	if (currentListener != null)
 		currentListener.dragFinished(event);
+	else {
+		// The drag was canceled and currentListener was never set, so send the
+		// dragFinished event to all the active listeners. 
+		Iterator iter = activeListeners.iterator();
+		while (iter.hasNext())
+			((TransferDragSourceListener)iter.next()).dragFinished(event);
+	}
 }
 
 /**
