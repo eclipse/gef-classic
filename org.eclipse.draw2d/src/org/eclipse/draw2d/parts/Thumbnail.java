@@ -274,7 +274,7 @@ private Dimension adjustToAspectRatio(Dimension size, boolean adjustToMaxDimensi
 }
 
 /**
- * Deactivates this Thumbnail and as well as its {@link ThumbnailUpdater}. */
+ * Deactivates this Thumbnail. */
 public void deactivate() {
 	updater.deactivate();
 }
@@ -318,7 +318,7 @@ protected float getScaleY() {
 
 /**
  * Returns the scaled Image of the source Figure.  If the Image needs to be 
- * updated, the {@link ThumbnailUpdater} will notified.
+ * updated, the ThumbnailUpdater will notified.
  *  * @return The thumbnail image */
 protected Image getThumbnailImage() {
 	Dimension oldSize = targetSize;

@@ -24,7 +24,7 @@ import org.eclipse.swt.widgets.Display;
  * 		<li>Time elapsed since last use - 40% 
  * 		<li>Size of the image (and thus the resources it consumes) - 15% 
  * </ol>
- * If the calculated statistic is below the {@link #STAT_THRESHOLD}, the Image should be 
+ * If the calculated statistic is below a predetermined threshold, the Image should be 
  * disposed.
  */
 public class ImageInfo {
