@@ -10,16 +10,9 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner.model.commands;
 
-import java.util.Map;
-
-import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.Rectangle;
-
-import org.eclipse.gef.requests.ChangeBoundsRequest;
+import org.eclipse.draw2d.geometry.*;
 
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
-import org.eclipse.gef.examples.logicdesigner.edit.SnapToGuides;
 import org.eclipse.gef.examples.logicdesigner.model.Guide;
 import org.eclipse.gef.examples.logicdesigner.model.LogicSubpart;
 
@@ -35,7 +28,6 @@ private int oldVAlignment = -2, oldHAlignment = -2,
             newHAlignment = -2, newVAlignment = -2;
 private Guide oldVGuide, oldHGuide, newVGuide, newHGuide;
 private LogicSubpart part;
-private Map extendedData;
 
 protected void changeGuide(Guide oldGuide, Guide newGuide, int newAlignment) {
 	if (oldGuide != null && oldGuide != newGuide) {
@@ -60,32 +52,11 @@ public void execute() {
 
 	part.setLocation(newPos);
 	part.setSize(newSize);
-	
-	/*
-	 * @TODO:Pratik  extendedData can be null for commands that are not supported yet,
-	 * namely, add, create, orphan, etc.  Once those commands are supported, this check
-	 * will not be required.  Meanwhile, adding this check has the desired effect in
-	 * most cases.  For e.g., when adding an attached edit part to another edit part,
-	 * the source edit part will be un-attached from all guides.
-	 */
-	if (extendedData != null) {
-		newHGuide = (Guide)extendedData.get(SnapToGuides.HORIZONTAL_GUIDE);
-		if (newHGuide != null) {
-			newHAlignment = ((Integer)extendedData.get(SnapToGuides.HORIZONTAL_ANCHOR))
-					.intValue();		
-		}
-		newVGuide = (Guide)extendedData.get(SnapToGuides.VERTICAL_GUIDE);
-		if (newVGuide != null) {
-			newVAlignment = ((Integer)extendedData.get(SnapToGuides.VERTICAL_ANCHOR))
-					.intValue();		
-		}
-	}
-	
 	changeGuide(oldHGuide, newHGuide, newHAlignment);
 	changeGuide(oldVGuide, newVGuide, newVAlignment);
 }
 
-public String getLabel(){
+public String getLabel() {
 	if (oldSize.equals(newSize))
 		return LogicMessages.SetLocationCommand_Label_Location;
 	return LogicMessages.SetLocationCommand_Label_Resize;
@@ -96,11 +67,12 @@ public void redo() {
 	part.setLocation(newPos);
 }
 
-public void setExtendedData(ChangeBoundsRequest req) {
-	extendedData = req.getExtendedData();
+public void setHorizontalGuide(Guide guide, int alignment) {
+	newHGuide = guide;
+	newHAlignment = alignment;
 }
 
-public void setLocation(Rectangle r){
+public void setLocation(Rectangle r) {
 	setLocation(r.getLocation());
 	setSize(r.getSize());
 }
@@ -115,6 +87,11 @@ public void setPart(LogicSubpart part) {
 
 public void setSize(Dimension p) {
 	newSize = p;
+}
+
+public void setVerticalGuide(Guide guide, int alignment) {
+	newVGuide = guide;
+	newVAlignment = alignment;
 }
 
 public void undo() {
