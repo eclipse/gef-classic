@@ -266,6 +266,16 @@ public static final String RIGHT_LABEL;
  */
 public static final String RESIZE_LABEL;
 
+/**
+ * Show Palette
+ */
+public static final String PALETTE_SHOW;
+
+/**
+ * Hide Palette
+ */
+public static final String PALETTE_HIDE;
+
 static {
 	ResourceBundle bundle =
 		ResourceBundle.getBundle("org.eclipse.gef.ui.palette.messages"); //$NON-NLS-1$
@@ -348,6 +358,8 @@ static {
 	LEFT_LABEL = bundle.getString("LEFT_LABEL"); //$NON-NLS-1$
 	RIGHT_LABEL = bundle.getString("RIGHT_LABEL"); //$NON-NLS-1$
 	RESIZE_LABEL = bundle.getString("RESIZE_LABEL"); //$NON-NLS-1$
+	PALETTE_SHOW = bundle.getString("PALETTE_SHOW"); //$NON-NLS-1$
+	PALETTE_HIDE = bundle.getString("PALETTE_HIDE"); //$NON-NLS-1$
 }
 
 }
