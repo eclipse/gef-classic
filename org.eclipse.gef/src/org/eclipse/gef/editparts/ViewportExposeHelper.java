@@ -45,15 +45,20 @@ public void exposeDescendant(EditPart part) {
 		return;
 	IFigure target = ((GraphicalEditPart)part).getFigure();
 
-//exposeRegion starts off as target's expanded bounds in absolute coordinates
-	Rectangle exposeRegion = target.getBounds().getExpanded(5, 5);
+/* All calculations are done relative to the contents of the viewport. The expose margin
+ * is added in absolute coordinates, and then taken back to relative viewport coordinates.
+ */
+	Rectangle exposeRegion = target.getBounds().getCopy();
 	target.translateToAbsolute(exposeRegion);
+//	exposeRegion.expand(5,5);
+	port.getContents().translateToRelative(exposeRegion);
 
-//Offset is the contents top-left corner in absolute coordinates
 	Point offset = port.getContents().getBounds().getLocation();
-	port.getContents().translateToAbsolute(offset);
-//Subtract the offset, making the region now "view" relative.
+//By substracting the offset, the region is now the difference from the contents origin.
 	exposeRegion.translate(offset.negate());
+	exposeRegion.translate(
+		port.getHorizontalRangeModel().getMinimum(),
+		port.getVerticalRangeModel().getMinimum());
 
 	Dimension viewportSize = port.getClientArea().getSize();
 	Point topLeft = exposeRegion.getTopLeft();

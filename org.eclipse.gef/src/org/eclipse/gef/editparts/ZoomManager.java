@@ -23,8 +23,8 @@ public class ZoomManager {
 
 private List listeners = new ArrayList();
 
-private double maxZoom = 16.0;
-private double minZoom = .16;
+//private double maxZoom = 4.0;
+//private double minZoom = .5;
 private double multiplier = 1.0;
 private ScalableFreeformLayeredPane pane;
 private Viewport viewport;
@@ -72,7 +72,7 @@ protected void fireZoomChanged() {
  * @return double
  */
 public double getMaxZoom() {
-	return maxZoom;
+	return getZoomLevels()[getZoomLevels().length - 1];
 }
 
 /**
@@ -80,7 +80,7 @@ public double getMaxZoom() {
  * @return double
  */
 public double getMinZoom() {
-	return minZoom;
+	return getZoomLevels()[0];
 }
 
 /**
@@ -190,29 +190,17 @@ public void removeZoomListener(ZoomListener listener) {
 }
 
 /**
- * Sets the maxZoom.
- * @param maxZoom The maxZoom to set
- */
-public void setMaxZoom(double maxZoom) {
-	this.maxZoom = maxZoom;
-}
-
-/**
- * Sets the minZoom.
- * @param minZoom The minZoom to set
- */
-public void setMinZoom(double minZoom) {
-	this.minZoom = minZoom;
-}
-
-/**
- * Sets the mutltiplier. This value is used to use zoom levels internally that are
- * proportionally different than those displayed to the user. e.g. with a multiplier value
- * of 2.0, the zoom level 1.0 will be displayed as "200%".
+ * Sets the UI multiplier. The UI multiplier is applied to all zoom settings when they
+ * are presented to the user ({@link #getZoomAsText()}). Similarly, the multiplier is
+ * inversely applied when the user specifies a zoom level ({@link
+ * #setZoomAsText(String)}).
+ * <P> When the UI multiplier is <code>1.0</code>, the User will see the exact zoom level
+ * that is being applied. If the value is <code>2.0</code>, then a scale of
+ * <code>0.5</code> will be labeled "100%" to the User.
  * 
  * @param multiplier The mutltiplier to set
  */
-public void setMultiplier(double multiplier) {
+public void setUIMultiplier(double multiplier) {
 	this.multiplier = multiplier;
 }
 
@@ -230,23 +218,21 @@ public void setViewLocation(Point p) {
  * @param zoom the new zoom level
  * @return true if the zoom was applied, false if not
  */
-public boolean setZoom(double zoom) {
+public void setZoom(double zoom) {
+	zoom = Math.min(getMaxZoom(), zoom);
+	zoom = Math.max(getMinZoom(), zoom);
 	if (this.zoom == zoom)
-		return false;
-	if (zoom >= minZoom && zoom <= maxZoom) {
-		this.zoom = zoom;
-		pane.setZoom(zoom);
-		fireZoomChanged();
-		return true;
-	}
-	return false;		
+		return;
+	this.zoom = zoom;
+	pane.setScale(zoom);
+	fireZoomChanged();
 }
 
 /**
  * Sets zoom to the passed string. The string must be composed of numeric characters only
  * with the exception of a decimal point and a '%' as the last character.
  * @param zoomString The new zoom level */
-public void setZoom(String zoomString) {		
+public void setZoomAsText(String zoomString) {		
 	try {
 		//Trim off the '%'
 		if (zoomString.charAt(zoomString.length() - 1) == '%')
