@@ -38,7 +38,7 @@ private static final int FLAG_SOURCE_FEEDBACK = SelectEditPartTracker.MAX_FLAG <
 protected static final int MAX_FLAG = FLAG_SOURCE_FEEDBACK;
 private List exclusionSet;
 private PrecisionPoint sourceRelativeStartPoint;
-private SnapToStrategy snapToStrategy;
+private SnapToHelper snapToHelper;
 private PrecisionRectangle sourceRectangle, compoundSrcRect;
 private boolean cloneActive;
 
@@ -62,9 +62,7 @@ public DragEditPartsTracker(EditPart sourceEditPart) {
  */
 private boolean acceptCTRL(KeyEvent e) {
 	int key = e.keyCode;
-	if (!(isInState(STATE_INITIAL
-	  | STATE_DRAG
-	  | STATE_DRAG_IN_PROGRESS
+	if (!(isInState(STATE_DRAG_IN_PROGRESS
 	  | STATE_ACCESSIBLE_DRAG 
 	  | STATE_ACCESSIBLE_DRAG_IN_PROGRESS)))
 		return false;
@@ -72,8 +70,9 @@ private boolean acceptCTRL(KeyEvent e) {
 }
 
 private boolean acceptSHIFT(KeyEvent e) {
-	return isInState(STATE_INITIAL | STATE_DRAG | STATE_DRAG_IN_PROGRESS
-		| STATE_ACCESSIBLE_DRAG | STATE_ACCESSIBLE_DRAG_IN_PROGRESS)
+	return isInState(STATE_DRAG_IN_PROGRESS
+	  | STATE_ACCESSIBLE_DRAG
+	  | STATE_ACCESSIBLE_DRAG_IN_PROGRESS)
 		&& e.keyCode == SWT.SHIFT;
 }
 
@@ -141,7 +140,7 @@ public void deactivate() {
 	sourceRelativeStartPoint = null;
 	sourceRectangle = null;
 	compoundSrcRect = null;
-	snapToStrategy = null;
+	snapToHelper = null;
 }
 
 /**
@@ -445,9 +444,9 @@ protected void setTargetEditPart(EditPart editpart) {
 	if (getTargetEditPart() == editpart)
 		return;
 	super.setTargetEditPart(editpart);
-	snapToStrategy = null;
+	snapToHelper = null;
 	if (getTargetEditPart() != null)
-		snapToStrategy = (SnapToStrategy)getTargetEditPart().getAdapter(SnapToStrategy.class);
+		snapToHelper = (SnapToHelper)getTargetEditPart().getAdapter(SnapToHelper.class);
 }
 
 /**
@@ -545,10 +544,10 @@ protected void updateTargetRequest() {
 	request.setMoveDelta(new Point(delta.width, delta.height));
 	request.getExtendedData().clear();
 		
-	if (snapToStrategy != null && !getCurrentInput().isAltKeyDown())
-		snapToStrategy.snapMoveRequest(request, sourceRectangle.getPreciseCopy(), 
+	if (snapToHelper != null && !getCurrentInput().isAltKeyDown())
+		snapToHelper.snapMoveRequest(request, sourceRectangle.getPreciseCopy(), 
 				compoundSrcRect.getPreciseCopy(), 
-				SnapToStrategy.SNAP_HORIZONTAL | SnapToStrategy.SNAP_VERTICAL);
+				SnapToHelper.SNAP_HORIZONTAL | SnapToHelper.SNAP_VERTICAL);
 
 	request.setLocation(getLocation());
 	request.setType(getCommandName());

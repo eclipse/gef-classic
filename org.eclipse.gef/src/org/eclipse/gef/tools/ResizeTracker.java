@@ -38,7 +38,7 @@ public class ResizeTracker
 private int direction;
 private GraphicalEditPart owner;
 private PrecisionRectangle sourceRect;
-private SnapToStrategy snapToStrategy;
+private SnapToHelper snapToHelper;
 
 /**
  * Constructs a resize tracker that resizes in the specified direction.  The direction is
@@ -70,7 +70,7 @@ public ResizeTracker(GraphicalEditPart owner, int direction) {
 public void activate() {
 	super.activate();
 	if (owner != null) {
-		snapToStrategy = (SnapToStrategy)getTargetEditPart().getAdapter(SnapToStrategy.class);
+		snapToHelper = (SnapToHelper)getTargetEditPart().getAdapter(SnapToHelper.class);
 	
 		IFigure figure = owner.getFigure();
 		if (figure instanceof HandleBounds)
@@ -114,7 +114,7 @@ protected Request createSourceRequest() {
  */
 public void deactivate() {
 	sourceRect = null;
-	snapToStrategy = null;
+	snapToHelper = null;
 	super.deactivate();
 }
 
@@ -303,9 +303,9 @@ protected void updateSourceRequest() {
 
 	request.getExtendedData().clear();
 	
-	if (!getCurrentInput().isAltKeyDown() && snapToStrategy != null)
-		snapToStrategy.snapResizeRequest(request, sourceRect.getPreciseCopy(),
-				SnapToStrategy.SNAP_HORIZONTAL | SnapToStrategy.SNAP_VERTICAL);
+	if (!getCurrentInput().isAltKeyDown() && snapToHelper != null)
+		snapToHelper.snapResizeRequest(request, sourceRect.getPreciseCopy(),
+				SnapToHelper.SNAP_HORIZONTAL | SnapToHelper.SNAP_VERTICAL);
 }
 
 }
