@@ -57,7 +57,7 @@ protected void initializeGraphicalViewer() {
  * @return	the palette provider
  */
 protected PaletteViewerProvider createPaletteViewerProvider() {
-	return new PaletteViewerProvider(getGraphicalViewer().getEditDomain());
+	return new PaletteViewerProvider(getEditDomain());
 }
 
 /**
