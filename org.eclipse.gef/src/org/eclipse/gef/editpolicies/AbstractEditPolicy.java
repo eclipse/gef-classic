@@ -19,26 +19,6 @@ import org.eclipse.gef.commands.Command;
  * Since this is the default implementation of an interface, this document deals with
  * proper sub-classing.  This class is not the API.  For documentation on proper usage of
  * the public API, see the documentation for the interface itself: {@link EditPolicy}.
- * <P>
- * <Table>
- * 	 <tr>
- * 	   <TD><img src="../doc-files/green.gif"/>
- * 	   <TD>Indicates methods that are commonly overridden.
- *   </tr>
- *   <tr>
- *     <TD><img src="../doc-files/blue.gif"/>
- *     <TD>These methods might be overridden.
- * 	 </tr>
- * 	 <tr>
- * 	   <TD><img src="../doc-files/black.gif"/>
- * 	   <TD>Should rarely be overridden.
- * 	 </tr>
- *   <tr>
- * 	   <TD><img src="../doc-files/dblack.gif"/>
- * 	   <TD>Essentially "internal" and should never be overridden.
- *   </tr>
- * </table>
- * <P>
  */
 public abstract class AbstractEditPolicy
 	implements EditPolicy, RequestConstants
