@@ -17,6 +17,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.viewers.ISelection;
 
 import org.eclipse.draw2d.geometry.Point;
 
@@ -262,11 +263,24 @@ RootEditPart getRootEditPart();
 
 /**
  * Returns an unmodifiable <code>List</code> containing zero or more selected editparts.
- * This list may be empty. This list can be modified indirectly by calling other
+ * This list may be empty. In contrast, the inherited method
+ * {@link org.eclipse.jface.viewers.ISelectionProvider#getSelection()} should not return
+ * an empty selection.  When no editparts are selected, generally the contents editpart is
+ * considered to be selected.  This list can be modified indirectly by calling other
  * methods on the viewer.
  * @return a list containing zero or more editparts
  */
 List getSelectedEditParts();
+
+/**
+ * This method is inherited from {@link ISelectionProvider}.  This method should return a
+ * {@link org.eclipse.jface.viewers.StructuredSelection} containing one or more of the
+ * viewer's EditParts.  Whenever the user has deselected all editparts, the contents
+ * editpart should be returned.
+ * 
+ * @see org.eclipse.jface.viewers.ISelectionProvider#getSelection()
+ */
+ISelection getSelection();
 
 /**
  * Returns the {@link Map} for associating <i>visual parts</i> with their
