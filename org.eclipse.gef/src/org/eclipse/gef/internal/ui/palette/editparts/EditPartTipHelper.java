@@ -77,7 +77,6 @@ public void displayToolTipAt(IFigure tip, int tipPosX, int tipPosY) {
 public void dispose() {
 	if (shellListener != null) {
 		control.getShell().removeShellListener(shellListener);
-		getShell().removeShellListener(shellListener);
 		shellListener = null;
 	}
 	super.dispose();
@@ -123,7 +122,7 @@ protected void hookShellListeners() {
 				Display.getCurrent().asyncExec(new Runnable() {
 					public void run() {
 						Shell active = Display.getCurrent().getActiveShell();
-						System.out.println(active);
+						System.out.println("Deactivating...");
 						if (getShell() == active || control.getShell() == active)
 							return;
 						if (isShowing())
