@@ -11,6 +11,7 @@
 package org.eclipse.gef.ui.palette.customize;
 
 import org.eclipse.gef.palette.PaletteEntry;
+import org.eclipse.gef.palette.PaletteSeparator;
 import org.eclipse.gef.ui.palette.PaletteMessages;
 
 import org.eclipse.draw2d.FigureUtilities;
@@ -94,7 +95,6 @@ public void createControl(Composite parent, PaletteEntry entry) {
  */
 protected Text createDescText(Composite panel) {
 	String desc = entry.getDescription();
-	if (desc == null) desc = PaletteMessages.NO_DESCRIPTION_AVAILABLE;
 	Text description = createText(panel, 
 				SWT.MULTI | SWT.WRAP | SWT.BORDER | SWT.V_SCROLL, desc);
 	GridData data = new GridData(GridData.FILL_HORIZONTAL);
@@ -179,17 +179,19 @@ protected Text createNameText(Composite panel) {
  * 
  * @param panel	The Composite in which the Text is to be created
  * @param style	The stylebits for the Text
- * @param text		The text to be displayed in the Text
- * @return 		The newly created Text
+ * @param text The text to be displayed in the Text
+ * @return a text widget with griddata constraint
  */
 protected Text createText(Composite panel, int style, String text) {
-	if (getPermission() < PaletteEntry.PERMISSION_LIMITED_MODIFICATION) {
+	if (getEntry() instanceof PaletteSeparator 
+	  || getPermission() < PaletteEntry.PERMISSION_LIMITED_MODIFICATION) {
 		style = style | SWT.READ_ONLY;
 	}
 
 	Text textBox = new Text(panel, style);
 	textBox.setFont(panel.getFont());
-	textBox.setText(text);
+	if (text != null)
+		textBox.setText(text);
 	GridData data = new GridData(GridData.FILL_HORIZONTAL);
 	data.widthHint = 200;
 	textBox.setLayoutData(data);
