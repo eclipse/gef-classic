@@ -14,7 +14,7 @@ package org.eclipse.draw2d.text;
  * A Geometric object for representing a TextFragment region on a line of Text. 
  */
 public class TextFragmentBox
-	extends FlowBox
+	extends ContentBox
 {
 
 /** The offset in characters **/
