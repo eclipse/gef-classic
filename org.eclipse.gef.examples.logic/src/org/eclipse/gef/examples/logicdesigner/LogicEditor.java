@@ -45,7 +45,7 @@ import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.rulers.RulerProvider;
 import org.eclipse.gef.ui.actions.*;
 import org.eclipse.gef.ui.palette.*;
-import org.eclipse.gef.ui.palette.FlyoutPaletteComposite.FlyoutPreferences;
+import org.eclipse.gef.ui.palette.FlyoutPaletteComposite.Preferences;
 import org.eclipse.gef.ui.parts.*;
 import org.eclipse.gef.ui.rulers.RulerComposite;
 import org.eclipse.gef.ui.stackview.CommandStackInspectorPage;
@@ -490,7 +490,7 @@ protected LogicDiagram getLogicDiagram() {
 	return logicDiagram;
 }
 
-protected FlyoutPreferences getPalettePreferences() {
+protected Preferences getPalettePreferences() {
 	return new FlyoutPreferences() {
 		public int getDockLocation() {
 			return LogicPlugin.getDefault().getPreferenceStore()
