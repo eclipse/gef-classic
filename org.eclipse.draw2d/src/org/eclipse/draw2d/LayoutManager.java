@@ -45,7 +45,7 @@ Dimension getPreferredSize(IFigure container, int wHint, int hHint);
 
 /**
  * Tells the LayoutManager to throw away all cached information about the figures it is
- * resposible for. This method is called whenever the owning figure is invalidated.
+ * responsible for. This method is called whenever the owning figure is invalidated.
  */
 void invalidate();
 
