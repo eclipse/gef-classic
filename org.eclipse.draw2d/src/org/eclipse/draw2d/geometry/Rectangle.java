@@ -147,10 +147,10 @@ public boolean contains(Rectangle rect) {
  * @since 2.0
  */
 public boolean contains(int x, int y) {
-	return x >= this.x
-		&& y >= this.y
-		&& x < this.x + this.width
-		&& y < this.y + this.height;
+	return y >= this.y
+		&& y < this.y + this.height
+		&& x >= this.x
+		&& x < this.x + this.width;
 }
 
 /**
