@@ -40,8 +40,6 @@ protected EditDomain domain;
  * The viewer on which this dispatcher is created.
  */
 protected EditPartViewer viewer;
-private IFigure translationFigure;
-private Point currentEventPoint; 
 private boolean editorCaptured = false;
 private Cursor overrideCursor;
 private Map accessibles = new HashMap();
