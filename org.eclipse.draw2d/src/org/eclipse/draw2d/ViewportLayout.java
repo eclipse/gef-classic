@@ -42,19 +42,26 @@ protected Dimension calculatePreferredSize(IFigure parent, int wHint, int hHint)
 	Viewport viewport = (Viewport)parent;
 	Insets insets = viewport.getInsets();
 	IFigure contents = viewport.getContents();
-	int widthHint = -1;
-	int heightHint = -1;
 
 	if (viewport.getContentsTracksWidth() && wHint > -1)
-		widthHint = Math.max(0, wHint - insets.getWidth());
+		wHint = Math.max(0, wHint - insets.getWidth());
+	else
+		wHint = -1;
 	if (viewport.getContentsTracksHeight() && hHint > -1)
-		heightHint = Math.max(0, hHint - insets.getHeight());
+		hHint = Math.max(0, hHint - insets.getHeight());
+	else
+		hHint = -1;
 	
 	if (contents == null) {
 		return new Dimension(insets.getWidth(), insets.getHeight());
 	} else {
+		Dimension minSize = contents.getMinimumSize(wHint, hHint);
+		if (wHint > -1)
+			wHint = Math.max(wHint, minSize.width);
+		if (hHint > -1)
+			hHint = Math.max(hHint, minSize.height);
 		return contents
-			.getPreferredSize(widthHint, heightHint)
+			.getPreferredSize(wHint, hHint)
 			.getExpanded(insets.getWidth(), insets.getHeight());
 	}
 	
@@ -91,13 +98,17 @@ public void layout(IFigure figure) {
 	int hHint = viewport.getContentsTracksHeight() ? hints.height : -1;
 	
 	Dimension avail = viewport.getClientArea().getSize();
-	Dimension size = avail.getUnioned(contents.getPreferredSize(wHint, hHint));
+
 	Dimension min = contents.getMinimumSize(wHint, hHint);
 	
-	if (viewport.getContentsTracksHeight())
-		size.height = Math.max(min.height, avail.height);
-	if (viewport.getContentsTracksWidth())
-		size.width = Math.max(min.width, avail.width);
+	if (viewport.getContentsTracksHeight()) {
+		hHint = Math.max(min.height, avail.height);
+	}
+	if (viewport.getContentsTracksWidth()) {
+		wHint = Math.max(min.width, avail.width);
+	}
+
+	Dimension size = avail.getUnioned(contents.getPreferredSize(wHint, hHint));
 
 	contents.setBounds(new Rectangle(p, size));
 }
