@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003 IBM Corporation and others.
+ * Copyright (c) 2004 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,19 +17,27 @@ import org.eclipse.gef.internal.GEFMessages;
 import org.eclipse.gef.rulers.RulerProvider;
 
 /**
- * This action requires that the given graphical viewer have the ruler visibility
- * property (with RulerProvider.PROPERTY_RULER_VISIBILITY as the boolean). 
+ * An action that toggles the ruler {@link
+ * org.eclipse.gef.rulers.RulerProvider#PROPERTY_RULER_VISIBILITY visibility} property
+ * on the given viewer.  This action can handle the case where that property is not
+ * set on the viewer initially.
  * 
  * @author Pratik Shah
+ * @since 3.0
  */
 public class ToggleRulerVisibilityAction
 	extends Action 
 {
 
+/**
+ * The viewer whose ruler visibility property is to be toggled
+ */
 protected GraphicalViewer diagramViewer;
 	
 /**
  * Constructor
+ * @param	diagramViewer	the viewer on which the ruler visibility property is to be
+ * 							set
  */
 public ToggleRulerVisibilityAction(GraphicalViewer diagramViewer) {
 	super(GEFMessages.ToggleRulerVisibility_Label, AS_CHECK_BOX);
@@ -40,15 +48,23 @@ public ToggleRulerVisibilityAction(GraphicalViewer diagramViewer) {
 	setChecked(isChecked());
 }
 
+/**
+ * @see org.eclipse.jface.action.IAction#isChecked()
+ */
 public boolean isChecked() {
-	Boolean val = ((Boolean)diagramViewer.getProperty(RulerProvider.PROPERTY_RULER_VISIBILITY));
+	Boolean val = ((Boolean)diagramViewer
+			.getProperty(RulerProvider.PROPERTY_RULER_VISIBILITY));
 	if (val != null)
 		return val.booleanValue();
 	return false;
 }
 
+/**
+ * @see org.eclipse.jface.action.IAction#run()
+ */
 public void run() {
-	diagramViewer.setProperty(RulerProvider.PROPERTY_RULER_VISIBILITY, new Boolean(!isChecked()));
+	diagramViewer.setProperty(
+			RulerProvider.PROPERTY_RULER_VISIBILITY, new Boolean(!isChecked()));
 }
 
 }
