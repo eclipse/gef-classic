@@ -18,6 +18,9 @@ public class Dimension
 	implements Cloneable, java.io.Serializable, Translatable
 {
 
+/**A singleton for use in short calculations.  Use to avoid newing unnecessary objects.*/
+public static final Dimension SINGLETON = new Dimension();
+
 /**The width.*/
 public int width;
 /**The height. */
