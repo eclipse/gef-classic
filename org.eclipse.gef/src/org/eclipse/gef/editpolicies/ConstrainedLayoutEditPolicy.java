@@ -69,9 +69,9 @@ protected Command getAddCommand(Request generic) {
 		childPart.getFigure().translateToAbsolute(r);
 		r = request.getTransformedRectangle(r);
 		//convert this figure to relative 
-		r.translate(getLayoutOrigin().getNegated());
 		getLayoutContainer().translateToRelative(r);
 		getLayoutContainer().translateFromParent(r);
+		r.translate(getLayoutOrigin().getNegated());
 		constraint = getConstraintFor(r);
 		command.add(createAddCommand(childPart,
 			translateToModelConstraint(constraint)));

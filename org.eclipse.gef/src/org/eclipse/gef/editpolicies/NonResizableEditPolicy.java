@@ -112,6 +112,7 @@ protected IFigure getDragSourceFeedbackFigure() {
 	if (feedback == null) {
 		IFigure fig = ((GraphicalEditPart) getHost()).getFigure();
 		originalLocation = new Rectangle(fig.getBounds());
+		fig.translateToAbsolute(originalLocation);
 		feedback = createDragSourceFeedbackFigure();
 	}
 	return feedback;
@@ -157,7 +158,6 @@ protected void showChangeBoundsFeedback(ChangeBoundsRequest request) {
 	r.width += resize.width;
 	r.height += resize.height;
 
-	((GraphicalEditPart)getHost()).getFigure().translateToAbsolute(r);
 	p.translateToRelative(r);
 	p.setBounds(r);
 	if (useRealtimeFeedback) 

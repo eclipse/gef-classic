@@ -55,9 +55,11 @@ public Object getConstraintFor(Point p) {
  */
 protected Object getConstraintFor(ChangeBoundsRequest request, GraphicalEditPart child) {
 	Rectangle rect = child.getFigure().getBounds().getCopy();
+	child.getFigure().translateToAbsolute(rect);
 	rect = request.getTransformedRectangle(rect);
-
+	child.getFigure().translateToRelative(rect);
 	rect.translate(getLayoutOrigin().getNegated());
+
 	if (RequestConstants.REQ_MOVE_CHILDREN.equals(request.getType())) {
 		Rectangle cons = (Rectangle)getCurrentConstraintFor(child);
 		rect.setSize(cons.width, cons.height);
