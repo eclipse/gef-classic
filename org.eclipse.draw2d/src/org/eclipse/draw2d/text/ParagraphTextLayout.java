@@ -176,7 +176,6 @@ protected void layout() {
 			
 			advance = FlowUtilities.wrapFragmentInContext(fragment, segment,
 					context, lookahead, font, wrappingStyle);
-			context.addToCurrentLine(fragment);
 			segment = segment.substring(advance);
 			offset += advance;
 			if ((segment.length() > 0
