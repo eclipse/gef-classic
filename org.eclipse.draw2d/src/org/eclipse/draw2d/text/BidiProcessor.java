@@ -66,7 +66,6 @@ private BidiProcessor() { }
  * String which will determine the bidi info for all contributors.
  * @param fig the figure that is contributing the given text
  * @param str the text contributed by the given figure
- * @see #addControlChar(char)
  */
 public void add(FlowFigure fig, String str) {
 	//We are currently tracking empty contributions ("")
@@ -80,7 +79,6 @@ public void add(FlowFigure fig, String str) {
  * String which will determine the bidi info for all contributors.
  * @param fig the figure that is contributing the given text
  * @param c the character being added
- * @see #addControlChar(char)
  */
 public void add(FlowFigure fig, char c) {
 	list.add(new BidiEntry(fig, bidiText.length(), 1));
@@ -141,7 +139,7 @@ private void assignResults(int[] levels) {
 					// and the first character of this figure is Arabic
 					&& isJoiner(entry.begin)
 					// and the last character of the previous figure was Arabic
-					&& isPreceedingJoiner(entry.begin))
+					&& isPrecedingJoiner(entry.begin))
 				prevInfo.trailingJoiner = info.leadingJoiner = true;
 			prevEntry.fig.setBidiInfo(prevInfo);
 		}
@@ -169,7 +167,7 @@ private boolean isJoiningCharacter(char c) {
 			|| c == BidiChars.ZWJ;
 }
 
-private boolean isPreceedingJoiner(int begin) {
+private boolean isPrecedingJoiner(int begin) {
 	return begin > 0 && isJoiningCharacter(bidiText.charAt(begin - 1));
 }
 
