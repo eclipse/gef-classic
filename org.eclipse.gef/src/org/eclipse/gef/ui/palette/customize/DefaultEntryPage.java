@@ -102,7 +102,7 @@ protected Text createDescText(Composite panel) {
 	data.heightHint = description.computeTrim(0, 0, 10, 
 			FigureUtilities.getFontMetrics(description.getFont()).getHeight() * 2).height;
 	description.setLayoutData(data);
-	if (getPermission() >= getEntry().PERMISSION_LIMITED_MODIFICATION) {
+	if (getPermission() >= PaletteEntry.PERMISSION_LIMITED_MODIFICATION) {
 		description.addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
 				String newVal = ((Text)e.getSource()).getText();
@@ -126,7 +126,7 @@ protected Button createHiddenCheckBox(Composite panel) {
 	hidden.setText(PaletteMessages.HIDDEN_LABEL);
 	hidden.setSelection(!entry.isVisible());
 	
-	if (getPermission() == getEntry().PERMISSION_NO_MODIFICATION) {
+	if (getPermission() == PaletteEntry.PERMISSION_NO_MODIFICATION) {
 		hidden.setEnabled(false);
 	} else {
 		hidden.addSelectionListener(new SelectionAdapter() {
@@ -162,7 +162,7 @@ protected Label createLabel(Composite panel, int style, String text) {
  */
 protected Text createNameText(Composite panel) {
 	Text name = createText(panel, SWT.SINGLE | SWT.BORDER, entry.getLabel());
-	if (getPermission() >= getEntry().PERMISSION_LIMITED_MODIFICATION) {
+	if (getPermission() >= PaletteEntry.PERMISSION_LIMITED_MODIFICATION) {
 		name.addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
 				String newVal = ((Text)e.getSource()).getText();
@@ -183,7 +183,7 @@ protected Text createNameText(Composite panel) {
  * @return 		The newly created Text
  */
 protected Text createText(Composite panel, int style, String text) {
-	if (getPermission() < getEntry().PERMISSION_LIMITED_MODIFICATION) {
+	if (getPermission() < PaletteEntry.PERMISSION_LIMITED_MODIFICATION) {
 		style = style | SWT.READ_ONLY;
 	}
 

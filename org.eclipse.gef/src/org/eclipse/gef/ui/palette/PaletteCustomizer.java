@@ -46,7 +46,7 @@ public abstract class PaletteCustomizer {
  * @see #performDelete(PaletteEntry)
  */
 public boolean canDelete(PaletteEntry entry) {
-	return entry.getUserModificationPermission() == entry.PERMISSION_FULL_MODIFICATION;
+	return entry.getUserModificationPermission() == PaletteEntry.PERMISSION_FULL_MODIFICATION;
 }
 
 /**
@@ -66,7 +66,7 @@ public boolean canDelete(PaletteEntry entry) {
 public boolean canMoveDown(PaletteEntry entry) {
 	PaletteContainer parent = entry.getParent();
 	int parentPermission = parent.getUserModificationPermission();
-	if (parentPermission < parent.PERMISSION_LIMITED_MODIFICATION) {
+	if (parentPermission < PaletteEntry.PERMISSION_LIMITED_MODIFICATION) {
 		return false;
 	}
 	
@@ -76,7 +76,7 @@ public boolean canMoveDown(PaletteEntry entry) {
 	} else {
 		// The given entry is the last child in its parent.
 		if (entry instanceof PaletteContainer 
-					|| parentPermission != parent.PERMISSION_FULL_MODIFICATION) {
+					|| parentPermission != PaletteEntry.PERMISSION_FULL_MODIFICATION) {
 			return false;
 		}
 
@@ -85,7 +85,7 @@ public boolean canMoveDown(PaletteEntry entry) {
 		for (int i = parentIndex + 1; i < children.size(); i++) {
 			PaletteContainer parentSibling = (PaletteContainer)children.get(i);
 			if (parentSibling.getUserModificationPermission()
-						== entry.PERMISSION_FULL_MODIFICATION) {
+						== PaletteEntry.PERMISSION_FULL_MODIFICATION) {
 				return true;
 			}
 		}
@@ -110,7 +110,7 @@ public boolean canMoveDown(PaletteEntry entry) {
 public boolean canMoveUp(PaletteEntry entry) {
 	PaletteContainer parent = entry.getParent();
 	int parentPermission = parent.getUserModificationPermission();
-	if (parentPermission < parent.PERMISSION_LIMITED_MODIFICATION) {
+	if (parentPermission < PaletteEntry.PERMISSION_LIMITED_MODIFICATION) {
 		return false;
 	}
 	
@@ -120,7 +120,7 @@ public boolean canMoveUp(PaletteEntry entry) {
 	} else {
 		// The given entry is the first child in its parent.
 		if (entry instanceof PaletteContainer 
-					|| parentPermission != parent.PERMISSION_FULL_MODIFICATION) {
+					|| parentPermission != PaletteEntry.PERMISSION_FULL_MODIFICATION) {
 			return false;
 		}
 
@@ -129,7 +129,7 @@ public boolean canMoveUp(PaletteEntry entry) {
 		for (int i = parentIndex - 1; i >= 0; i--) {
 			PaletteContainer parentSibling = (PaletteContainer)children.get(i);
 			if (parentSibling.getUserModificationPermission()
-						== entry.PERMISSION_FULL_MODIFICATION) {
+						== PaletteEntry.PERMISSION_FULL_MODIFICATION) {
 				return true;
 			}
 		}
@@ -202,7 +202,7 @@ public void performMoveDown(PaletteEntry entry) {
 		for (int i = index + 1; i < parents.size(); i++) {
 			parentSibling = (PaletteContainer) parents.get(i);
 			if (parentSibling.getUserModificationPermission()
-						== parentSibling.PERMISSION_FULL_MODIFICATION) {
+						== PaletteEntry.PERMISSION_FULL_MODIFICATION) {
 				break;
 			}
 		}
@@ -231,7 +231,7 @@ public void performMoveUp(PaletteEntry entry) {
 		for (int i = index - 1; i >= 0; i--) {
 			parentSibling = (PaletteContainer) parents.get(i);
 			if (parentSibling.getUserModificationPermission()
-						== parentSibling.PERMISSION_FULL_MODIFICATION) {
+						== PaletteEntry.PERMISSION_FULL_MODIFICATION) {
 				break;
 			}
 		}

@@ -72,7 +72,7 @@ protected Button createOpenDrawerInitiallyOption(Composite panel) {
 	b.setFont(panel.getFont());
 	b.setText(PaletteMessages.EXPAND_DRAWER_AT_STARTUP_LABEL);
 	b.setSelection(getDrawer().isInitiallyOpen());
-	if (getPermission() >= getEntry().PERMISSION_LIMITED_MODIFICATION) {
+	if (getPermission() >= PaletteEntry.PERMISSION_LIMITED_MODIFICATION) {
 		b.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				handleOpenSelected(((Button)e.getSource()).getSelection());
@@ -100,7 +100,7 @@ protected Button createPinDrawerInitiallyOption(Composite panel) {
 	pinOption.setLayoutData(data);
 	pinOption.setEnabled(openDrawerOption.getSelection() && openDrawerOption.isEnabled());
 	pinOption.setSelection(getDrawer().isInitiallyPinned());
-	if (getPermission() >= getEntry().PERMISSION_LIMITED_MODIFICATION) {
+	if (getPermission() >= PaletteEntry.PERMISSION_LIMITED_MODIFICATION) {
 		pinOption.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				handlePinSelected(((Button)e.getSource()).getSelection());

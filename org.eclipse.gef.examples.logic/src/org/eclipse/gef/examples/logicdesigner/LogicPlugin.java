@@ -85,7 +85,7 @@ static private PaletteContainer createComplexPartsDrawer(){
 
 static private PaletteContainer createComplexTemplatePartsDrawer(){
 	PaletteDrawer drawer = new PaletteDrawer("Canned Templates", ImageDescriptor.createFromFile(Circuit.class, "icons/can.gif")); //$NON-NLS-2$
-	drawer.setUserModificationPermission(drawer.PERMISSION_FULL_MODIFICATION);
+	drawer.setUserModificationPermission(PaletteEntry.PERMISSION_FULL_MODIFICATION);
 
 	List entries = new ArrayList();
 
@@ -219,7 +219,7 @@ static private PaletteContainer createTemplateComponentsDrawer(){
 
 	PaletteDrawer drawer = new PaletteDrawer("Template Components",
 		ImageDescriptor.createFromFile(Circuit.class, "icons/comp.gif"));//$NON-NLS-1$
-	drawer.setUserModificationPermission(drawer.PERMISSION_FULL_MODIFICATION);
+	drawer.setUserModificationPermission(PaletteEntry.PERMISSION_FULL_MODIFICATION);
 
 	List entries = new ArrayList();
 	
@@ -325,7 +325,7 @@ static private PaletteContainer createControlGroup(PaletteRoot root){
 	
 	PaletteSeparator sep = new PaletteSeparator(
 			"org.eclipse.gef.examples.logicdesigner.logicplugin.sep2"); //$NON-NLS-1$
-	sep.setUserModificationPermission(sep.PERMISSION_NO_MODIFICATION);
+	sep.setUserModificationPermission(PaletteEntry.PERMISSION_NO_MODIFICATION);
 	entries.add(sep); //$NON-NLS-1$
 
 	tool = new ConnectionCreationToolEntry(
