@@ -41,18 +41,15 @@ public class CloneCommand
 	extends Command
 {
 
-private List parts;
+private List parts, newTopLevelParts, newConnections;
 private LogicDiagram parent;
-private List newParts;
-private Map bounds;
-private Map indexs;
+private Map bounds, indices, connectionPartMap;
 private ChangeGuideCommand vGuideCommand, hGuideCommand;
 private LogicGuide hGuide, vGuide;
 private int hAlignment, vAlignment;
 
 public CloneCommand() {
 	super(LogicMessages.CloneCommand_Label);
-	newParts = new LinkedList();
 	parts = new LinkedList();
 }
 
@@ -66,10 +63,10 @@ public void addPart(LogicSubpart part, Rectangle newBounds) {
 
 public void addPart(LogicSubpart part, int index) {
 	parts.add(part);
-	if (indexs == null) {
-		indexs = new HashMap();
+	if (indices == null) {
+		indices = new HashMap();
 	}
-	indexs.put(part, new Integer(index));
+	indices.put(part, new Integer(index));
 }
 
 protected void clonePart(LogicSubpart oldPart, LogicDiagram newParent, Rectangle newBounds,
@@ -101,7 +98,7 @@ protected void clonePart(LogicSubpart oldPart, LogicDiagram newParent, Rectangle
 	if (oldPart instanceof LogicDiagram) {
 		Iterator i = ((LogicDiagram)oldPart).getChildren().iterator();
 		while (i.hasNext()) {
-			// for children they will not need new bounds.
+			// for children they will not need new bounds
 			clonePart((LogicSubpart)i.next(), (LogicDiagram)newPart, null, 
 					newConnections, connectionPartMap, -1);
 		}
@@ -152,13 +149,15 @@ protected void clonePart(LogicSubpart oldPart, LogicDiagram newParent, Rectangle
 	// keep track of the new parts so we can delete them in undo
 	// keep track of the oldpart -> newpart map so that we can properly attach
 	// all connections.
-	newParts.add(newPart);
+	if (newParent == parent)
+		newTopLevelParts.add(newPart);
 	connectionPartMap.put(oldPart, newPart);
 }
 
 public void execute() {
-	Map connectionPartMap = new HashMap();
-	List newConnections = new LinkedList();
+	connectionPartMap = new HashMap();
+	newConnections = new LinkedList();
+	newTopLevelParts = new LinkedList();
 
 	Iterator i = parts.iterator();
 	
@@ -168,9 +167,9 @@ public void execute() {
 		if (bounds != null && bounds.containsKey(part)) {
 			clonePart(part, parent, (Rectangle)bounds.get(part), 
 					newConnections, connectionPartMap, -1);	
-		} else if (indexs != null && indexs.containsKey(part)) {
+		} else if (indices != null && indices.containsKey(part)) {
 			clonePart(part, parent, null, newConnections, 
-					connectionPartMap, ((Integer)indexs.get(part)).intValue());
+					connectionPartMap, ((Integer)indices.get(part)).intValue());
 		} else {
 			clonePart(part, parent, null, newConnections, connectionPartMap, -1);
 		}
@@ -189,26 +188,19 @@ public void execute() {
 		}
 	}
 	
-	// Parts should never be emtpy.  However, there is no such prerequisite and hence
-	// this precaution to prevent a runtime exception.
-	if (parts.isEmpty())
-		return;
-	
-	if (hGuide != null && hGuideCommand == null) {
+	if (hGuide != null) {
 		hGuideCommand = new ChangeGuideCommand(
 				(LogicSubpart)connectionPartMap.get(parts.get(0)), true);
 		hGuideCommand.setNewGuide(hGuide, hAlignment);
-	}
-	if (hGuideCommand != null)
 		hGuideCommand.execute();
+	}
 		
-	if (vGuide != null && vGuideCommand == null) {
+	if (vGuide != null) {
 		vGuideCommand = new ChangeGuideCommand(
 				(LogicSubpart)connectionPartMap.get(parts.get(0)), false);
 		vGuideCommand.setNewGuide(vGuide, vAlignment);
-	}
-	if (vGuideCommand != null)
 		vGuideCommand.execute();
+	}
 }
 
 public void setParent(LogicDiagram parent) {
@@ -216,7 +208,21 @@ public void setParent(LogicDiagram parent) {
 }
 
 public void redo() {
-	execute();
+	for (Iterator iter = newTopLevelParts.iterator(); iter.hasNext();)
+		parent.addChild((LogicSubpart)iter.next());
+	for (Iterator iter = newConnections.iterator(); iter.hasNext();) {
+		Wire conn = (Wire) iter.next();
+		LogicSubpart source = conn.getSource();
+		if (connectionPartMap.containsKey(source)) {
+			conn.setSource((LogicSubpart)connectionPartMap.get(source));
+			conn.attachSource();
+			conn.attachTarget();
+		}
+	}
+	if (hGuideCommand != null)
+		hGuideCommand.redo();
+	if (vGuideCommand != null)
+		vGuideCommand.redo();
 }
 
 public void setGuide(LogicGuide guide, int alignment, boolean isHorizontal) {
@@ -234,11 +240,8 @@ public void undo() {
 		hGuideCommand.undo();
 	if (vGuideCommand != null)
 		vGuideCommand.undo();
-	
-	Iterator i = newParts.iterator();
-	LogicSubpart part;
-	while (i.hasNext()) 
-		parent.removeChild((LogicSubpart)i.next());
+	for (Iterator iter = newTopLevelParts.iterator(); iter.hasNext();)
+		parent.removeChild((LogicSubpart)iter.next());
 }
 
 }
