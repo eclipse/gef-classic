@@ -108,7 +108,7 @@ public void addPropertyChangeListener(PropertyChangeListener listener) {
  * @param layout	LAYOUT_LIST, LAYOUT_DETAILS, LAYOUT_FOLDER, or LAYOUT_ICONS
  * @return	The corresponding preference String
  */
-protected String convertLayoutToPreferenceName(int layout) {
+public static String convertLayoutToPreferenceName(int layout) {
 	String key = ""; //$NON-NLS-1$
 	switch (layout) {
 		case LAYOUT_FOLDER :
@@ -142,7 +142,7 @@ protected String convertLayoutToPreferenceName(int layout) {
  * 						PREFERENCE_ICONS_ICON_SIZE or PREFERENCE_LIST_ICON_SIZE
  * @return	The corresponding layout code
  */
-protected int convertPreferenceNameToLayout(String preference) {
+public static int convertPreferenceNameToLayout(String preference) {
 	int layout = -1;
 	if (preference.equals(PREFERENCE_DETAILS_ICON_SIZE)) {
 		layout = LAYOUT_DETAILS;
@@ -154,14 +154,6 @@ protected int convertPreferenceNameToLayout(String preference) {
 		layout = LAYOUT_LIST;
 	}
 	return layout;
-}
-
-/**
- * @see org.eclipse.gef.ui.palette.PaletteViewerPreferences#dispose()
- */
-public void dispose() {
-	store.removePropertyChangeListener(listener);
-	JFaceResources.getFontRegistry().removeListener(fontListener);
 }
 
 /**
