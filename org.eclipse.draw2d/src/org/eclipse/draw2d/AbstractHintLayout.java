@@ -37,12 +37,13 @@ protected Dimension calculateMinimumSize(IFigure container, int wHint, int hHint
 
 /**
  *  * @see org.eclipse.draw2d.LayoutManager#getMinimumSize(IFigure, int, int) */
-public final Dimension getMinimumSize(IFigure container, int w, int h) {
+public Dimension getMinimumSize(IFigure container, int w, int h) {
 	boolean flush = cachedHint.width != w
 		&& isSensitiveHorizontally(container);
 	flush |= cachedHint.height != h
 		&& isSensitiveVertically(container);
 	if (flush) {
+		preferredSize = null;
 		minimumSize = null;
 		cachedHint.width = w;
 		cachedHint.height = h;
@@ -59,6 +60,7 @@ public final Dimension getPreferredSize(IFigure container, int w, int h) {
 	flush |= cachedHint.height != h
 		&& isSensitiveVertically(container);
 	if (flush) {
+		minimumSize = null;
 		preferredSize = null;
 		cachedHint.width = w;
 		cachedHint.height = h;
