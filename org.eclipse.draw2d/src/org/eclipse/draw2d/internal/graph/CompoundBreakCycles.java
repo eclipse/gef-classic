@@ -8,7 +8,7 @@ import org.eclipse.draw2d.graph.Subgraph;
 
 /**
  * This visitor eliminates cycles in the graph via a modified implementation of the 
- * Greedy-Cycle-Removal algorithm. The alogithm has been modified to handle the 
+ * Greedy-Cycle-Removal algorithm. The algorithm has been modified to handle the 
  * presence of Subgraphs. This algorithm determines which edges cause cycles in the 
  * graph and then inverts these edges. 
  * @author Daniel Lee
