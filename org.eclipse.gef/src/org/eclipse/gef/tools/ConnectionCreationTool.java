@@ -133,13 +133,24 @@ protected boolean handleKeyDown(KeyEvent event) {
 		}
 	}
 	
+	if (event.character == '/' || event.character == '\\') {
+		event.stateMask |= SWT.CONTROL;
+		if (getCurrentViewer().getKeyHandler().keyPressed(event)) {
+			navigateNextAnchor(0);
+			return true;
+		}
+	}
+	
 	if (acceptConnectionStart(event)) {
-		updateTargetUnderMouse();
-		setConnectionSource(getTargetEditPart());
-		((CreateConnectionRequest)getTargetRequest())
-			.setSourceEditPart(getTargetEditPart());
-		setState(STATE_ACCESSIBLE_DRAG_IN_PROGRESS);
-		placeMouseInViewer(getLocation().getTranslated(6, 6));
+		Command command = getCommand();
+		if (command != null && command.canExecute()) {
+			updateTargetUnderMouse();
+			setConnectionSource(getTargetEditPart());
+			((CreateConnectionRequest)getTargetRequest())
+				.setSourceEditPart(getTargetEditPart());
+			setState(STATE_ACCESSIBLE_DRAG_IN_PROGRESS);
+			placeMouseInViewer(getLocation().getTranslated(6, 6));
+		}
 		return true;
 	}
 	
