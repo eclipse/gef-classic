@@ -23,6 +23,7 @@ import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.palette.PaletteContainer;
 import org.eclipse.gef.palette.PaletteEntry;
 import org.eclipse.gef.tools.SelectEditPartTracker;
+import org.eclipse.gef.ui.palette.PaletteMessages;
 import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.eclipse.gef.ui.palette.PaletteViewerImpl;
 import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
@@ -92,12 +93,12 @@ class SingleSelectionTracker extends SelectEditPartTracker {
 	SingleSelectionTracker() {
 		super(PaletteEditPart.this);
 	}
-		protected void performSelection() {
-			if (hasSelectionOccurred())
-				return;
-			setFlag(FLAG_SELECTION_PERFORMED, true);
-			getCurrentViewer().select(getSourceEditPart());
-}
+	protected void performSelection() {
+		if (hasSelectionOccurred())
+			return;
+		setFlag(FLAG_SELECTION_PERFORMED, true);
+		getCurrentViewer().select(getSourceEditPart());
+	}
 }
 
 /**
@@ -166,10 +167,14 @@ public void propertyChange(PropertyChangeEvent evt) {
 protected void refreshVisuals() {
 	PaletteEntry entry = (PaletteEntry)getModel();
 	String desc = entry.getDescription();
-	if (desc == null || desc.trim().equals("")) { //$NON-NLS-1$
-		desc = entry.getLabel();
+	if (desc == null) { 
+		desc = ""; //$NON-NLS-1$
 	}
-	getFigure().setToolTip(new Label(desc));
+	if (getFigure().getToolTip() == null) {
+		getFigure().setToolTip(new Label());
+	}
+	((Label)getFigure().getToolTip()).setText(entry.getLabel() + " " +  //$NON-NLS-1$
+					PaletteMessages.NAME_DESCRIPTION_SEPARATOR + " " + desc);  //$NON-NLS-1$
 }
 
 protected void setImageDescriptor(ImageDescriptor desc) {
