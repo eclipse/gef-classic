@@ -32,13 +32,34 @@ protected static class Entry {
 }
 
 protected static final double THRESHOLD = 5.0001;
-protected boolean cachedCloneBool;
+private boolean cachedCloneBool;
 protected Entry rows[];
 protected Entry cols[];
 protected GraphicalEditPart container;
 
 public SnapToGeometry(GraphicalEditPart container) {
 	this.container = container;
+}
+
+protected List generateSnapPartsList(List operationSet, boolean isClone) {
+	// If cloning, snapping to the figures being dragged should be possible
+	if (isClone)
+		operationSet = Collections.EMPTY_LIST;
+	
+	// Don't snap to any figure that is being dragged
+	List children = new ArrayList(container.getChildren());
+	children.removeAll(operationSet);
+	
+	// Don't snap to hidden figures
+	List hiddenChildren = new ArrayList();
+	for (Iterator iter = children.iterator(); iter.hasNext();) {
+		GraphicalEditPart child = (GraphicalEditPart) iter.next();
+		if (!child.getFigure().isVisible())
+			hiddenChildren.add(child);
+	}
+	children.removeAll(hiddenChildren);
+
+	return children;
 }
 
 /**
@@ -105,45 +126,26 @@ private double getCorrectionFor(Entry entries[], Map extendedData, boolean vert,
 	return result;
 }
 
-protected Rectangle getFigureBounds(IFigure fig) {
+protected Rectangle getFigureBounds(GraphicalEditPart part) {
+	IFigure fig = part.getFigure();
 	if (fig instanceof HandleBounds)
 		return ((HandleBounds)fig).getHandleBounds();
 	else
 		return fig.getBounds();
 }
 
-protected void populateRowsAndCols(List exclude, boolean isClone) {
-	if (rows == null || cols == null || isClone != cachedCloneBool) {
-		// If the operation changes from a move to a clone, or vice versa, the rows and
-		// cols need to be populated again.
-		cachedCloneBool = isClone;
-
-		// Don't snap to any figure that is being dragged
-		List children = new ArrayList(container.getChildren());
-		children.removeAll(exclude);
-		
-		// Don't snap to hidden figures
-		List hiddenChildren = new ArrayList();
-		for (Iterator iter = children.iterator(); iter.hasNext();) {
-			GraphicalEditPart child = (GraphicalEditPart) iter.next();
-			if (!child.getFigure().isVisible())
-				hiddenChildren.add(child);
-		}
-		children.removeAll(hiddenChildren);
-		
-		// Cache the edges that can be snapped to
-		rows = new Entry[children.size() * 3];
-		cols = new Entry[children.size() * 3];
-		for (int i = 0; i < children.size(); i++) {
-			GraphicalEditPart child = (GraphicalEditPart)children.get(i);
-			Rectangle bounds = getFigureBounds(child.getFigure());
-			cols[i * 3] = new Entry(-1, bounds.x);
-			rows[i * 3] = new Entry(-1, bounds.y);
-			cols[i * 3 + 1] = new Entry(0, bounds.x + bounds.width / 2);
-			rows[i * 3 + 1] = new Entry(0, bounds.y + bounds.height / 2);
-			cols[i * 3 + 2] = new Entry(1, bounds.right());
-			rows[i * 3 + 2] = new Entry(1, bounds.bottom());
-		}
+protected void populateRowsAndCols(List parts) {
+	rows = new Entry[parts.size() * 3];
+	cols = new Entry[parts.size() * 3];
+	for (int i = 0; i < parts.size(); i++) {
+		GraphicalEditPart child = (GraphicalEditPart)parts.get(i);
+		Rectangle bounds = getFigureBounds(child);
+		cols[i * 3] = new Entry(-1, bounds.x);
+		rows[i * 3] = new Entry(-1, bounds.y);
+		cols[i * 3 + 1] = new Entry(0, bounds.x + bounds.width / 2);
+		rows[i * 3 + 1] = new Entry(0, bounds.y + bounds.height / 2);
+		cols[i * 3 + 2] = new Entry(1, bounds.right());
+		rows[i * 3 + 2] = new Entry(1, bounds.bottom());
 	}
 }
 
@@ -157,10 +159,12 @@ public int snapCreateRequest(CreateRequest request, PrecisionRectangle baseRect,
  */
 public int snapMoveRequest(ChangeBoundsRequest request,	PrecisionRectangle baseRect,
 		PrecisionRectangle selectionRect, int snapOrientation) {
-	if (request.getType().equals(RequestConstants.REQ_CLONE))
-		populateRowsAndCols(Collections.EMPTY_LIST, true);
-	else
-		populateRowsAndCols(request.getEditParts(), false);
+	boolean isClone = request.getType().equals(RequestConstants.REQ_CLONE);
+	if (rows == null || cols == null || isClone != cachedCloneBool) {
+		populateRowsAndCols(generateSnapPartsList(request.getEditParts(), isClone));
+		cachedCloneBool = isClone;
+	}
+
 	PrecisionPoint move = new PrecisionPoint(request.getMoveDelta());
 	IFigure fig = container.getContentPane();
 	baseRect.translate(move);
@@ -221,8 +225,10 @@ public int snapResizeRequest(ChangeBoundsRequest request, PrecisionRectangle bas
 	PrecisionPoint move = new PrecisionPoint(request.getMoveDelta());
 	IFigure fig = container.getContentPane();
 
-	populateRowsAndCols(request.getEditParts(), false);	
-	
+	if (rows == null || cols == null) {
+		populateRowsAndCols(generateSnapPartsList(request.getEditParts(), false));
+	}
+
 	baseRect.resize(resize);
 	baseRect.translate(move);
 	
