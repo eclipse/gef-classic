@@ -5,17 +5,14 @@ import java.util.HashMap;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.resource.JFaceColors;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.resource.StringConverter;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
@@ -34,7 +31,6 @@ import org.eclipse.ui.part.PageBook;
 
 import org.eclipse.gef.ui.palette.PaletteMessages;
 import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
-import org.eclipse.gef.internal.Internal;
 
 /**
  * @author Pratik Shah
@@ -45,12 +41,11 @@ public class PaletteSettingsDialog
 	
 private PaletteViewerPreferences prefs;
 private Label fontName;
-private Image titleImage;
 private PageBook book;
 private Control folderPanel, detailsPanel, iconsPanel, listPanel;
-private HashMap settings = new HashMap();
-
 private HashMap widgets = new HashMap();
+
+protected HashMap settings = new HashMap();
 
 protected static final String
 	CACHE_LAYOUT = "layout setting", //$NON-NLS-1$
@@ -162,8 +157,6 @@ protected void cacheSettings() {
  * @see org.eclipse.jface.window.Window#close()
  */
 public boolean close() {
-	titleImage.dispose();
-
 	// Save or dump changes
 	// This needs to be done here and not in the handle methods because the user can
 	// also close the dialog with the 'X' in the top right of the window (which 
@@ -234,7 +227,7 @@ protected Button createButton(Composite parent, int id, String label,
 	return button;
 }
 
-protected Control createCategoryCollapseOptions(Composite container) {
+protected Control createDrawerCollapseOptions(Composite container) {
 	Composite composite = new Composite(container, SWT.NONE);
 	composite.setFont(container.getFont());
 	GridLayout layout = new GridLayout(1, false);
@@ -246,16 +239,16 @@ protected Control createCategoryCollapseOptions(Composite container) {
 	GridData data = new GridData();
 	label.setLayoutData(data);
 	
-	Button b = createButton(composite, COLLAPSE_NEVER_ID, 
-			PaletteMessages.COLLAPSE_NEVER_LABEL, SWT.RADIO, null);
+	Button b = createButton(composite, COLLAPSE_ALWAYS_ID, 
+			PaletteMessages.COLLAPSE_ALWAYS_LABEL, SWT.RADIO, null);
 	((GridData)b.getLayoutData()).horizontalIndent = 5;
 	
 	b = createButton(composite, COLLAPSE_NEEDED_ID, 
 			PaletteMessages.COLLAPSE_AS_NEEDED_LABEL, SWT.RADIO, null);
 	((GridData)b.getLayoutData()).horizontalIndent = 5;
 		
-	b = createButton(composite, COLLAPSE_ALWAYS_ID, 
-			PaletteMessages.COLLAPSE_ALWAYS_LABEL, SWT.RADIO, null);
+	b = createButton(composite, COLLAPSE_NEVER_ID, 
+			PaletteMessages.COLLAPSE_NEVER_LABEL, SWT.RADIO, null);
 	((GridData)b.getLayoutData()).horizontalIndent = 5;
 	
 	// Load auto - collapse settings
@@ -291,31 +284,37 @@ protected Control createDialogArea(Composite parent) {
 	Composite composite = (Composite)super.createDialogArea(parent);
 	GridLayout layout = (GridLayout)composite.getLayout();
 	layout.horizontalSpacing = 0;
-	layout.verticalSpacing = 0;
 	layout.numColumns = 2;
 	
-	createSectionTitle(composite, PaletteMessages.SETTINGS_FONT_TITLE);
-	
 	Control child = createFontSettings(composite);
-	GridData data = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
+	GridData data = new GridData(GridData.FILL_HORIZONTAL);
 	data.horizontalSpan = 2;
+	data.horizontalIndent = 5;
 	child.setLayoutData(data);
 	
-	createSectionTitle(composite, PaletteMessages.SETTINGS_LAYOUT_OPTIONS_TITLE);
+	Label label = new Label(composite, SWT.SEPARATOR | SWT.HORIZONTAL);
+	data = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
+	data.horizontalSpan = 2;
+	label.setLayoutData(data);
 	
 	child = createLayoutSettings(composite);
 	data = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.FILL_VERTICAL);
 	data.horizontalSpan = 2;
+	data.horizontalIndent = 5;
 	child.setLayoutData(data);
 	
-	createSectionTitle(composite, PaletteMessages.SETTINGS_CATEGORY_OPTIONS_TITLE);
-	
-	child = createCategoryCollapseOptions(composite);
+	label = new Label(composite, SWT.SEPARATOR | SWT.HORIZONTAL);
 	data = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
 	data.horizontalSpan = 2;
+	label.setLayoutData(data);
+	
+	child = createDrawerCollapseOptions(composite);
+	data = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
+	data.horizontalSpan = 2;
+	data.horizontalIndent = 5;
 	child.setLayoutData(data);
 	
-	Label label = new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL);
+	label = new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL);
 	data = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
 	data.horizontalSpan = 2;
 	label.setLayoutData(data);
@@ -346,7 +345,8 @@ protected Control createFolderOptions(Composite parent) {
 	final Label label = new Label(container, SWT.NONE);
 	label.setFont(container.getFont());
 	label.setText(PaletteMessages.SETTINGS_LAYOUT_FOLDER_WIDTH);
-	data = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING | GridData.VERTICAL_ALIGN_BEGINNING);
+	data = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING 
+			| GridData.VERTICAL_ALIGN_BEGINNING);
 	label.setLayoutData(data);
 	label.setEnabled(false);
 	
@@ -373,7 +373,7 @@ protected Control createFolderOptions(Composite parent) {
 protected Control createFontSettings(Composite parent) {
 	Composite container = new Composite(parent, SWT.NONE);
 	container.setFont(parent.getFont());
-	GridLayout layout = new GridLayout(1, false);
+	GridLayout layout = new GridLayout(2, false);
 	container.setLayout(layout);
 	
 	fontName = new Label(container, SWT.LEFT);
@@ -382,20 +382,12 @@ protected Control createFontSettings(Composite parent) {
 	fontName.setLayoutData(data);
 	updateFontName();
 	
-	Composite innerComposite = new Composite(container, SWT.NONE);
-	layout = new GridLayout(2, false);
-	layout.marginHeight = 0;
-	layout.marginWidth = 0;
-	innerComposite.setLayout(layout);
-	data = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
-	innerComposite.setLayoutData(data);
-	
-	createButton(innerComposite, FONT_CHANGE_ID, PaletteMessages.SETTINGS_FONT_CHANGE, 
+	createButton(container, FONT_CHANGE_ID, PaletteMessages.SETTINGS_FONT_CHANGE, 
 	             SWT.PUSH, null);
-	((GridData)getButton(FONT_CHANGE_ID).getLayoutData()).horizontalAlignment = 
-					GridData.HORIZONTAL_ALIGN_BEGINNING;
 	
-	createButton(innerComposite, DEFAULT_FONT_ID, PaletteMessages.SETTINGS_DEFAULT_FONT,
+	new Label(container, SWT.NONE);
+	
+	createButton(container, DEFAULT_FONT_ID, PaletteMessages.SETTINGS_DEFAULT_FONT,
 	             SWT.PUSH, null);
 					
 	return container;
@@ -474,7 +466,6 @@ protected Control createLayoutSettings(Composite parent) {
 	book = new PageBook(composite, SWT.NONE);
 	book.setFont(composite.getFont());
 	data = new GridData(GridData.FILL_BOTH);
-//	data.widthHint = 250;
 	book.setLayoutData(data);
 	
 	folderPanel = createFolderOptions(book);
@@ -494,56 +485,6 @@ protected Control createListOptions(Composite parent) {
 	getButton(LAYOUT_LIST_ICON_SIZE_ID).setSelection(
 			prefs.useLargeIcons(PaletteViewerPreferences.LAYOUT_LIST));
 	return composite;
-}
-
-/**
- * A convenient method to create CLabel titles (like the ones used in the
- * Preferences dialog in the Eclipse workbench) throughout the dialog.
- * 
- * @param composite	The composite in which the title is to be created (it must have a
- * 						GridLayout with two columns).
- * @param text			The title to be displayed
- * @return 			The newly created CLabel for convenience
- */
-protected CLabel createSectionTitle(Composite composite, String text) {
-	CLabel cTitle = new CLabel(composite, SWT.LEFT);
-	Color background = JFaceColors.getBannerBackground(composite.getDisplay());
-	Color foreground = JFaceColors.getBannerForeground(composite.getDisplay());
-	JFaceColors.setColors(cTitle, foreground, background);
-	cTitle.setFont(JFaceResources.getBannerFont());
-	cTitle.setText(text);
-	cTitle.setLayoutData(new GridData(GridData.FILL_HORIZONTAL
-	                                | GridData.VERTICAL_ALIGN_FILL));
-	
-	if (titleImage == null) {
-		/*
-		 * @TODO:Pratik
-		 * Maybe this image can be added to GEFResources, or GEFImages or whatever class
-		 * that has images for GEF.
-		 */
-		titleImage = new Image(composite.getDisplay(), 
-		             ImageDescriptor.createFromFile(Internal.class, 
-		             "icons/customizer_dialog_title.gif").getImageData()); //$NON-NLS-1$
-		composite.addDisposeListener(new DisposeListener() {
-			public void widgetDisposed(DisposeEvent e) {
-				titleImage.dispose();
-				titleImage = null;
-			}
-		});
-	}
-	
-	Label imageLabel = new Label(composite, SWT.LEFT);
-	imageLabel.setBackground(background);
-	imageLabel.setImage(titleImage);
-	imageLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL
-	                                     | GridData.VERTICAL_ALIGN_FILL));
-
-	Label separator = new Label(composite, SWT.SEPARATOR | SWT.HORIZONTAL);
-	GridData data = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
-	data.horizontalSpan = 2;
-	separator.setLayoutData(data);
-
-	return cTitle;
 }
 
 protected Control createOptionsPage(Composite parent, String title, int buttonId) {
