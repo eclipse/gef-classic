@@ -16,7 +16,7 @@ package org.eclipse.draw2d.text;
  */
 public class NestedLine extends LineBox {
 
-private InlineFlow owner;
+InlineFlow owner;
 private LineRoot root;
 
 NestedLine(InlineFlow owner) {
