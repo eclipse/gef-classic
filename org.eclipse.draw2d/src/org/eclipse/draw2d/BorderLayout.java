@@ -53,34 +53,34 @@ protected Dimension calculateMinimumSize(IFigure container, int wHint, int hHint
 	int middleRowWidth = 0, middleRowHeight = 0;
 	int rows = 0, columns = 0;
 
-	if (top != null) {
+	if (top != null  && top.isVisible()) {
 		Dimension childSize = top.getMinimumSize(wHint, hHint);
 		hHint = Math.max(minHHint, hHint - (childSize.height + vGap));
 		minSize.setSize(childSize);
 		rows += 1;
 	}
-	if (bottom != null) {
+	if (bottom != null && bottom.isVisible()) {
 		Dimension childSize = bottom.getMinimumSize(wHint, hHint);
 		hHint = Math.max(minHHint, hHint - (childSize.height + vGap));
 		minSize.width = Math.max(minSize.width, childSize.width);
 		minSize.height += childSize.height;
 		rows += 1;
 	}
-	if (left != null) {
+	if (left != null && left.isVisible()) {
 		Dimension childSize = left.getMinimumSize(wHint, hHint);
 		middleRowWidth = childSize.width;
 		middleRowHeight = childSize.height;
 		wHint = Math.max(minWHint, wHint - (childSize.width + hGap));
 		columns += 1;
 	}
-	if (right != null) {
+	if (right != null  && right.isVisible()) {
 		Dimension childSize = right.getMinimumSize(wHint, hHint);
 		middleRowWidth += childSize.width;
 		middleRowHeight = Math.max(childSize.height, middleRowHeight);
 		wHint = Math.max(minWHint, wHint - (childSize.width + hGap));
 		columns += 1;
 	}
-	if (center != null) {
+	if (center != null && center.isVisible()) {
 		Dimension childSize = center.getMinimumSize(wHint, hHint);
 		middleRowWidth += childSize.width;
 		middleRowHeight = Math.max(childSize.height, middleRowHeight);
@@ -114,34 +114,34 @@ protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHi
 	int middleRowWidth = 0, middleRowHeight = 0;
 	int rows = 0, columns = 0;
 
-	if (top != null) {
+	if (top != null && top.isVisible()) {
 		Dimension childSize = top.getPreferredSize(wHint, hHint);
 		hHint = Math.max(minHHint, hHint - (childSize.height + vGap));
 		prefSize.setSize(childSize);
 		rows += 1;
 	}
-	if (bottom != null) {
+	if (bottom != null && bottom.isVisible()) {
 		Dimension childSize = bottom.getPreferredSize(wHint, hHint);
 		hHint = Math.max(minHHint, hHint - (childSize.height + vGap));
 		prefSize.width = Math.max(prefSize.width, childSize.width);
 		prefSize.height += childSize.height;
 		rows += 1;
 	}
-	if (left != null) {
+	if (left != null && left.isVisible()) {
 		Dimension childSize = left.getPreferredSize(wHint, hHint);
 		middleRowWidth = childSize.width;
 		middleRowHeight = childSize.height;
 		wHint = Math.max(minWHint, wHint - (childSize.width + hGap));
 		columns += 1;
 	}
-	if (right != null) {
+	if (right != null && right.isVisible()) {
 		Dimension childSize = right.getPreferredSize(wHint, hHint);
 		middleRowWidth += childSize.width;
 		middleRowHeight = Math.max(childSize.height, middleRowHeight);
 		wHint = Math.max(minWHint, wHint - (childSize.width + hGap));
 		columns += 1;
 	}
-	if (center != null) {
+	if (center != null && center.isVisible()) {
 		Dimension childSize = center.getPreferredSize(wHint, hHint);
 		middleRowWidth += childSize.width;
 		middleRowHeight = Math.max(childSize.height, middleRowHeight);
@@ -166,7 +166,7 @@ public void layout(IFigure container) {
 	int wHint = area.width;
 	int hHint = area.height;
 	int centerXLoc = 0, centerYLoc = 0;
-	if (top != null) {
+	if (top != null && top.isVisible()) {
 		Dimension childSize = top.getPreferredSize(wHint, hHint);
 		rect.setLocation(area.x, area.y);
 		rect.setSize(childSize);
@@ -175,7 +175,7 @@ public void layout(IFigure container) {
 		centerYLoc = rect.height + vGap;
 		hHint = Math.max(0, hHint - centerYLoc);
 	}
-	if (bottom != null) {
+	if (bottom != null && bottom.isVisible()) {
 		Dimension childSize = bottom.getPreferredSize(wHint, hHint);
 		rect.setSize(childSize);
 		rect.width = area.width;
@@ -183,7 +183,7 @@ public void layout(IFigure container) {
 		bottom.setBounds(rect);
 		hHint = Math.max(0, hHint - (rect.height + vGap));
 	}
-	if (left != null) {
+	if (left != null && left.isVisible()) {
 		Dimension childSize = left.getPreferredSize(wHint, hHint);
 		rect.setLocation(area.x, area.y + centerYLoc);
 		rect.width = childSize.width;
@@ -192,7 +192,7 @@ public void layout(IFigure container) {
 		centerXLoc = rect.width + hGap;
 		wHint = Math.max(0, wHint - centerXLoc);
 	}
-	if (right != null) {
+	if (right != null && right.isVisible()) {
 		Dimension childSize = right.getPreferredSize(wHint, hHint);
 		rect.width = childSize.width;
 		rect.height = hHint > 0 ? hHint : childSize.height;
@@ -200,7 +200,7 @@ public void layout(IFigure container) {
 		right.setBounds(rect);
 		wHint = Math.max(0, wHint - (rect.width + hGap));
 	}
-	if (center != null) {
+	if (center != null && center.isVisible()) {
 		rect.setLocation(area.x + centerXLoc, area.y + centerYLoc);
 		if (wHint > 0 && hHint > 0) {
 			rect.width = wHint;
