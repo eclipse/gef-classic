@@ -17,14 +17,13 @@ private ScalableFreeformLayeredPane scaledLayers = new ScalableFreeformLayeredPa
  */
 protected void createLayers(LayeredPane layeredPane) {
 	createScaledLayers(scaledLayers);
-	layeredPane.add(scaledLayers, PRINTABLE_LAYERS);
+	layeredPane.add(scaledLayers, "$Scaled Layers");//$NON-NLS-1$
 	layeredPane.add(new FreeformLayer(), HANDLE_LAYER);
 	layeredPane.add(new FeedbackLayer(), FEEDBACK_LAYER);
 }
 
 protected void createScaledLayers(LayeredPane layeredPane) {
-	layeredPane.add(new FreeformLayer(), PRIMARY_LAYER);
-	layeredPane.add(new ConnectionLayer(), CONNECTION_LAYER);
+	scaledLayers.add(createPrintableLayers(), PRINTABLE_LAYERS);
 }
 
 /**

@@ -47,16 +47,17 @@ protected IFigure createFigure() {
 }
 
 protected void createLayers(LayeredPane layeredPane) {
-	printableLayers = new FreeformLayeredPane();
-	createPrintableLayers(printableLayers);
+	printableLayers = createPrintableLayers();
 	layeredPane.add(printableLayers, PRINTABLE_LAYERS);
 	layeredPane.add(new FreeformLayer(), HANDLE_LAYER);
 	layeredPane.add(new FeedbackLayer(), FEEDBACK_LAYER);
 }
 
-protected void createPrintableLayers(LayeredPane layeredPane) {
+protected LayeredPane createPrintableLayers() {
+	FreeformLayeredPane layeredPane = new FreeformLayeredPane();
 	layeredPane.add(new FreeformLayer(), PRIMARY_LAYER);
 	layeredPane.add(new ConnectionLayer(), CONNECTION_LAYER);
+	return layeredPane;
 }	
 
 /** 
