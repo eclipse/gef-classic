@@ -131,7 +131,7 @@ private int findNextLineOffset(Point p) {
 	int i;
 	for (i = 0; i < fragments.size(); i++) {
 		box = (TextFragmentBox)fragments.get(i);
-		if (box.getBaseline() > p.y)
+		if (box.y > p.y)
 			break;
 		box = null;
 	}
@@ -232,7 +232,6 @@ public Rectangle getCaretPlacement(int offset, boolean trailing) {
 		trailing = false;
 	}
 	
-	
 	offset -= box.offset;
 	offset = Math.min(box.length, offset);
 	
@@ -242,8 +241,12 @@ public Rectangle getCaretPlacement(int offset, boolean trailing) {
 	String fragString;
 	if (bidiInfo == null)
 		fragString = text.substring(box.offset, box.offset + box.length);
-	else
+	else {
+		offset++;
+		if (i == 0 && bidiInfo.leadingJoiner)
+			offset++;
 		fragString = getBidiSubstring(box, i);
+	}
 
 	layout.setText(fragString);
 	Point where = new Point(layout.getLocation(offset, trailing));
@@ -251,10 +254,10 @@ public Rectangle getCaretPlacement(int offset, boolean trailing) {
 	
 	FontMetrics fm = FigureUtilities.getFontMetrics(getFont());
 	return new Rectangle(
-			where.x + box.x - 1,
+			where.x + box.x,
 			where.y + box.y,
 			1,
-			fm.getAscent() + fm.getLeading() + fm.getDescent());
+			fm.getHeight());
 }
 
 /**
@@ -448,11 +451,11 @@ protected void paintSelection(Graphics graphics) {
 			String text = getText().substring(frag.offset, frag.offset + frag.length);
 			if (frag.bidiLevel != -1) {
 				if (i == 0 && bidiInfo.leadingJoiner)
-					prefixCorrection = -2;
+					prefixCorrection = 2;
 				else
-					prefixCorrection = -1;
+					prefixCorrection = 1;
 				text = (frag.bidiLevel % 2 == 0 ? LRO : RLO)
-						+ (prefixCorrection == -1 ? "" : ZWJ)
+						+ (prefixCorrection == 1 ? "" : ZWJ)
 						+ text
 						+ (i == fragments.size() - 1 && bidiInfo.trailingJoiner ? ZWJ : "");
 			}
@@ -461,10 +464,10 @@ protected void paintSelection(Graphics graphics) {
 			layout.setFont(graphics.getFont());
 			layout.setText(text);
 			Rectangle rect = new Rectangle();
-			rect.setLocation(layout.getLocation(Math.max(selectionStart - frag.offset, 0)
-					+ prefixCorrection, false).x, 0);
+			rect.setLocation(layout.getLocation(
+					Math.max(selectionStart - frag.offset, 0) + prefixCorrection, false).x, 0);
 			rect.union(layout.getLocation(Math.min(selectionEnd - frag.offset,
-					frag.offset + frag.length) - 1, true).x, 0);
+					frag.offset + frag.length) - 1 + prefixCorrection, true).x, 0);
 			rect.width--;
 			rect.height = frag.getHeight();
 			rect.translate(frag.x, frag.y);
@@ -482,7 +485,7 @@ private void paintText(Graphics g, String draw, int x, int y, int bidiLevel) {
 		else
 			draw = RLO + draw;
 		TextLayout tl = FlowUtilities.getTextLayout();
-		tl.setFont(null);
+		tl.setFont(g.getFont());
 		tl.setText(draw);
 		g.drawTextLayout(tl, x, y);
 		// tl.setText("");

@@ -119,8 +119,9 @@ protected void layout() {
 	float prevAvgCharWidth;
 	LineBox currentLine;
 	TextFragmentBox fragment;
-	BidiInfo bidi = textFlow.getBidiInfo();
-	int levelInfo[] = (bidi == null) ? new int[] {-1} : bidi.levelInfo;
+	int levelInfo[] = (textFlow.getBidiInfo() == null)
+		? new int[] {-1}
+		: textFlow.getBidiInfo().levelInfo;
 	
 	String segment, segments[] = getSegments(textFlow.getText(), levelInfo);
 
