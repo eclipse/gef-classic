@@ -114,7 +114,7 @@ public void setTruncated(boolean value) {
  * @see java.lang.Object#toString()
  */
 public String toString() {
-	return "[" + offset + ", " + (offset + length) //$NON-NLS-1$ $NON-NLS- 2$
+	return "[" + offset + ", " + (offset + length) //$NON-NLS-1$ //$NON-NLS-2$
 		+ ") = \"" + textflow.getText().substring(offset, offset + length) + '\"'; //$NON-NLS-1$ 
 }
 
