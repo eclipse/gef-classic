@@ -104,11 +104,11 @@ private double getCorrectionFor(Entry entries[], Map extendedData, boolean vert,
 	return result;
 }
 
-private void populateRowsAndCols(List exclude, Rectangle srcRect) {
+private void populateRowsAndCols(List exclude) {
 	List children = new ArrayList(container.getChildren());
 	children.removeAll(exclude);
-	rows = new Entry[(children.size() + 1) * 3];
-	cols = new Entry[(children.size() + 1) * 3];
+	rows = new Entry[children.size() * 3];
+	cols = new Entry[children.size() * 3];
 	for (int i = 0; i < children.size(); i++) {
 		GraphicalEditPart child = (GraphicalEditPart)children.get(i);
 		IFigure figure = child.getFigure();
@@ -122,13 +122,6 @@ private void populateRowsAndCols(List exclude, Rectangle srcRect) {
 		cols[i * 3 + 2] = new Entry(1, bounds.right());
 		rows[i * 3 + 2] = new Entry(1, bounds.bottom());
 	}
-	int refIndex = cols.length;
-	cols[refIndex - 1] = new Entry(-1, srcRect.x);
-	rows[refIndex - 1] = new Entry(-1, srcRect.y);
-	cols[refIndex - 2] = new Entry(0, srcRect.x + srcRect.width / 2);
-	rows[refIndex - 2] = new Entry(0, srcRect.y + srcRect.height / 2);
-	cols[refIndex - 3] = new Entry(1, srcRect.right());
-	rows[refIndex - 3] = new Entry(1, srcRect.bottom());
 }
 
 public int snapCreateRequest(CreateRequest request, PrecisionRectangle baseRect,
@@ -141,7 +134,7 @@ public int snapCreateRequest(CreateRequest request, PrecisionRectangle baseRect,
  */
 public int snapMoveRequest(ChangeBoundsRequest request,	PrecisionRectangle baseRect,
                            PrecisionRectangle selectionRect, int snapOrientation) {
-	populateRowsAndCols(request.getEditParts(), selectionRect);
+	populateRowsAndCols(request.getEditParts());
 	PrecisionPoint move = new PrecisionPoint(request.getMoveDelta());
 	IFigure fig = container.getContentPane();
 	selectionRect.translate(move);
@@ -192,7 +185,7 @@ public int snapResizeRequest(ChangeBoundsRequest request, PrecisionRectangle bas
 	PrecisionPoint move = new PrecisionPoint(request.getMoveDelta());
 	IFigure fig = container.getContentPane();
 
-	populateRowsAndCols(request.getEditParts(), baseRect);	
+	populateRowsAndCols(request.getEditParts());	
 	
 	baseRect.resize(resize);
 	baseRect.translate(move);
