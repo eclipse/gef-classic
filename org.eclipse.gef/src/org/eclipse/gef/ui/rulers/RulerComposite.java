@@ -127,7 +127,7 @@ private GraphicalViewer createRulerContainer(int orientation) {
 	((GraphicalEditPart)viewer.getRootEditPart()).getFigure()
 			.setBorder(new RulerBorder(isHorizontal));
 	viewer.setProperty(GraphicalViewer.class.toString(), diagramViewer);
-	FigureCanvas canvas = getFigureCanvas(viewer);
+	FigureCanvas canvas = (FigureCanvas)viewer.getControl();
 	canvas.setScrollBarVisibility(FigureCanvas.NEVER);
 	if (font == null) {
 		FontData[] data = canvas.getFont().getFontData();
@@ -229,10 +229,6 @@ public void layout(boolean change) {
 		doLayout();	
 		layingOut = false;
 	}
-}
-
-private FigureCanvas getFigureCanvas(GraphicalViewer viewer) {
-	return (FigureCanvas)viewer.getControl();
 }
 
 /**
