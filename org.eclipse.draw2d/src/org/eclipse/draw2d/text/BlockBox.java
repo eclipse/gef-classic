@@ -27,6 +27,15 @@ public void add(FlowBox box) {
 	unionInfo(box);
 }
 
+/**
+ * A BlockBox will always return false for isBidi() since a block's contents are 
+ * unaffected by their surroundings and vice versa.
+ * @see org.eclipse.draw2d.text.FlowBox#isBidi()
+ */
+public boolean isBidi() {
+	return false;
+}
+
 Rectangle toRectangle() {
 	return new Rectangle(x, y, Math.max(width, recommendedWidth), height);
 }
