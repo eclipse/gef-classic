@@ -169,8 +169,12 @@ protected Object getConstraintFor(CreateRequest request) {
 
 	if (size == null || size.isEmpty())
 		return getConstraintFor(where);
-	else
+	else {
+		size = size.getCopy();
+		figure.translateToRelative(size);
+		figure.translateFromParent(size);	
 		return getConstraintFor(new Rectangle(where, size));
+	}
 }
 
 /**
