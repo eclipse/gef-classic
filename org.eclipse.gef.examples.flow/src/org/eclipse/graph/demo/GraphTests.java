@@ -199,10 +199,10 @@ public static DirectedGraph balanceThis2() {
 	edges.add(new Edge(g, e));
 	edges.add(new Edge(b2, a));
 	edges.add(new Edge(b3, a));
-	edges.add(new Edge(b4, a));
+	edges.add(new Edge(b4, a, 1, 2));
 
 	edges.add(new Edge(d, b3));
-//			edges.add(new Edge(f, b4));
+	edges.add(new Edge(f, b4));
 
 	edges.add(new Edge(c, a));
 //		edges.add(new Edge(b, g));
@@ -368,15 +368,6 @@ public static DirectedGraph graph1() {
 	row = joinRows(nodes, edges, row, new int[] {
 		1,1,2,1,3,1,4,1
 	});
-
-	for (int i = 0; i < nodes.size(); i++) {
-		Node node = nodes.getNode(i);
-		node.index = i;
-	}
-	for (int i = 0; i < edges.size(); i++) {
-		Edge edge = edges.getEdge(i);
-		System.out.println("  " + edge.source.index + " -> "+ edge.target.index + ";");
-	}
 
 	DirectedGraph graph = new DirectedGraph();
 	graph.nodes = nodes;
