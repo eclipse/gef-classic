@@ -29,7 +29,7 @@ final public class DeleteAction
 	extends SelectionAction
 {
 
-/** @deprecated */
+/** @deprecated use GEFActionConstants.DELETE */
 public static final String ID = GEFActionConstants.DELETE;
 
 /**
