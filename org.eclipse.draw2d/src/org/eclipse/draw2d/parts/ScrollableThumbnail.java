@@ -28,13 +28,22 @@ import org.eclipse.draw2d.geometry.*;
  */
 public final class ScrollableThumbnail 
 	extends Thumbnail
-	implements PropertyChangeListener, FigureListener
 {
 
 private SelectorFigure selector;
 private Viewport viewport;
 private ScrollBar hBar, vBar;
 private ScrollSynchronizer syncher;
+private FigureListener figureListener = new FigureListener() {
+	public void figureMoved(IFigure source) {
+		reconfigureSelectorBounds();
+	}
+};
+private PropertyChangeListener propListener = new PropertyChangeListener() {
+	public void propertyChange(PropertyChangeEvent evt) {
+		reconfigureSelectorBounds();
+	}
+};
 
 /**
  * Creates a new ScrollableThumbnail. */
@@ -53,14 +62,11 @@ public ScrollableThumbnail(Viewport port) {
 }
 
 public void deactivate() {
-	viewport.removePropertyChangeListener(Viewport.PROPERTY_VIEW_LOCATION, this);
-	viewport.removeFigureListener(this);
+	viewport.removePropertyChangeListener(Viewport.PROPERTY_VIEW_LOCATION, propListener);
+	viewport.removeFigureListener(figureListener);
 	super.deactivate();
 }
 
-public void figureMoved(IFigure fig) {
-	reconfigureSelectorBounds();
-}
 private void initialize() {
 	selector = new SelectorFigure();
 	selector.addMouseListener(syncher = new ScrollSynchronizer());
@@ -72,9 +78,6 @@ private void initialize() {
 	addMouseMotionListener(transferrer);
 }
 
-public void propertyChange(PropertyChangeEvent event) {
-	reconfigureSelectorBounds();
-}
 private void reconfigureSelectorBounds() {
 	Rectangle rect = new Rectangle();
 	Point offset = viewport.getViewLocation();
@@ -113,8 +116,8 @@ protected void setScales(float scaleX, float scaleY) {
  * Sets the Viewport that this ScrollableThumbnail will synch with.
  *  * @param port The Viewport */
 public void setViewport(Viewport port) {
-	port.addPropertyChangeListener(Viewport.PROPERTY_VIEW_LOCATION, this);
-	port.addFigureListener(this);
+	port.addPropertyChangeListener(Viewport.PROPERTY_VIEW_LOCATION, propListener);
+	port.addFigureListener(figureListener);
 	viewport = port;
 }
 
