@@ -6,27 +6,43 @@ package org.eclipse.draw2d;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-
+/**
+ * An event for property changes.  Includes the source of the event as well as the name of
+ * the property that has changed.
+ */
 public class ChangeEvent
 	extends java.util.EventObject
 {
 
 private String property;
 
-public ChangeEvent(Object source){
+/**
+ * Constructs a new ChangeEvent with the given object as the source of the event.
+ * @param source The source of the event
+ */
+public ChangeEvent(Object source) {
 	super(source);
 }
 
-public ChangeEvent(Object source, String property){
+/**
+ * Constructs a new ChangeEvent with the given source object and property name.
+ * @param source The source of the event * @param property The property name */
+public ChangeEvent(Object source, String property) {
 	super(source);
 	setPropertyName(property);
 }
 
-public String getPropertyName(){
+/**
+ * Returns the name of the property that has changed.
+ * @return String the name of the property that has changed */
+public String getPropertyName() {
 	return property;
 }
 
-protected void setPropertyName(String string){
+/**
+ * Sets the name of the property that has changed.
+ * @param string The property name */
+protected void setPropertyName(String string) {
 	property = string;
 }
 

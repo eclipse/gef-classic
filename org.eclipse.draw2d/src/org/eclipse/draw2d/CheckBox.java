@@ -9,21 +9,19 @@ package org.eclipse.draw2d;
 import org.eclipse.swt.graphics.*;
 
 /**
- * Checkbox - It is a toggle figure which toggles 
- * between the checked and unchecked figures to
- * simulate a check box. A check box contains a 
- * text label to represent it.
+ * A Checkbox is a toggle figure which toggles between the checked and unchecked figures
+ * to simulate a check box. A check box contains a text label to represent it.
  */
-final public class CheckBox 
+public final class CheckBox 
 	extends Toggle 
 {
 
 private Label label = null;
 
-final static Image
-	UNCHECKED = new Image( null,
+static final Image
+	UNCHECKED = new Image(null,
 		CheckBox.class.getResourceAsStream("images/checkboxenabledoff.gif")), //$NON-NLS-1$
-	CHECKED = new Image( null,
+	CHECKED = new Image(null,
 		CheckBox.class.getResourceAsStream("images/checkboxenabledon.gif")); //$NON-NLS-1$
 
 /**
@@ -31,12 +29,13 @@ final static Image
  * 
  * @since 2.0
  */
-public CheckBox() {this("");}//$NON-NLS-1$
+public CheckBox() {
+	this(""); //$NON-NLS-1$
+}
 
 /**
- * Constructs a CheckBox with the passed text in its
- * label
- * 
+ * Constructs a CheckBox with the passed text in its label.
+ * @param text The label text
  * @since 2.0
  */
 public CheckBox(String text) {
@@ -48,26 +47,25 @@ public CheckBox(String text) {
  * 
  * @since 2.0
  */
-protected void handleSelectionChanged(){
-	if( isSelected() )
+protected void handleSelectionChanged() {
+	if (isSelected())
 		label.setIcon(CHECKED);
 	else
 		label.setIcon(UNCHECKED);
 }
 
 /**
- * Initializes this Clickable by setting a default model
- * and adding a clickable event handler for that model.
- * Also adds a ChangeListener to update icon when 
- * selection status changes.
+ * Initializes this Clickable by setting a default model and adding a clickable event
+ * handler for that model. Also adds a ChangeListener to update icon when  selection
+ * status changes.
  * 
  * @since 2.0
  */
-protected void init(){
+protected void init() {
 	super.init();
-	addChangeListener(new ChangeListener (){
-		public void handleStateChanged(ChangeEvent changeEvent){
-			if(changeEvent.getPropertyName().equals(ButtonModel.SELECTED_PROPERTY))
+	addChangeListener(new ChangeListener () {
+		public void handleStateChanged(ChangeEvent changeEvent) { 
+			if (changeEvent.getPropertyName().equals(ButtonModel.SELECTED_PROPERTY))
 				handleSelectionChanged();
 		}
 	});
