@@ -14,6 +14,7 @@ import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Transposer;
 
+import org.eclipse.gef.EditPart;
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.editparts.ZoomListener;
 import org.eclipse.gef.editparts.ZoomManager;
@@ -26,7 +27,7 @@ import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 public class RulerComposite
 	extends Composite
 {
-
+	
 private Dimension cachedEditorSize;
 private GraphicalViewer left, right, top, bottom;
 private FigureCanvas editor;
@@ -42,9 +43,20 @@ public void addRuler(Ruler ruler, int orientation) {
 }
 
 protected GraphicalViewer createRulerContainer(int orientation) {
-	boolean isHorizontal = orientation == PositionConstants.NORTH 
+	final boolean isHorizontal = orientation == PositionConstants.NORTH 
 			|| orientation == PositionConstants.SOUTH;
-	ScrollingGraphicalViewer viewer = new ScrollingGraphicalViewer();
+	ScrollingGraphicalViewer viewer = new ScrollingGraphicalViewer() {
+		/* (non-Javadoc)
+		 * @see org.eclipse.gef.EditPartViewer#appendSelection(org.eclipse.gef.EditPart)
+		 */
+		public void appendSelection(EditPart editpart) {
+			boolean setFocus = editpart != focusPart;
+			super.appendSelection(editpart);
+			if (setFocus) {
+				setFocus(editpart);
+			}
+		}
+	};
 	viewer.setRootEditPart(new RulerRootEditPart(isHorizontal));
 	if (diagramViewer != null) {
 		viewer.setEditPartFactory(new RulerEditPartFactory(diagramViewer));	
@@ -187,8 +199,8 @@ private void relayout(Point editorCache) {
 		 * @TODO:Pratik
 		 * This is a hack.  Setting the editorSize (line above) is, for some reason, not
 		 * causing the scrollbars to disappear in the case where the editor has just
-		 * been opened (even though the size being set is big enough so that the scrollbars 
-		 * are not needed).  Calling setBounds(editor.getLocation().x, 
+		 * been opened (even though the size being set is big enough so that the 
+		 * scrollbars are not needed).  Calling setBounds(editor.getLocation().x, 
 		 * editor.getLocation().y,editorSize.x,editorSize.y) does not do it either.  
 		 * However, calling setLocation(editor.getLocation()) (line below) does it.  What 
 		 * a piece of crap.
@@ -267,7 +279,8 @@ public void setGraphicalViewer(GraphicalViewer primaryViewer) {
 		public void propertyChange(PropertyChangeEvent evt) {
 			String property = evt.getPropertyName();
 			if (property.equals(RangeModel.PROPERTY_MAXIMUM)
-					|| property.equals(RangeModel.PROPERTY_MINIMUM)) {
+					|| property.equals(RangeModel.PROPERTY_MINIMUM)
+					|| property.equals(RangeModel.PROPERTY_EXTENT)) {
 				if (!layingOut) {
 					if (needToLayout) {
 						layout(true);
