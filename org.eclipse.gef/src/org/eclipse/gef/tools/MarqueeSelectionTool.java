@@ -50,6 +50,8 @@ private List calculateNewSelection() {
 	// children who are not visible
 	for (int i = 0; i<children.size(); i++) {
 		EditPart child = (EditPart) children.get(i);
+		if (!child.isSelectable())
+			continue;
 		IFigure figure = ((GraphicalEditPart)child).getFigure();
 		Rectangle r = figure.getBounds().getCopy();
 		figure.translateToAbsolute(r);

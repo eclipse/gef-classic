@@ -97,7 +97,7 @@ private GraphicalEditPart findSibling(List siblings, Point pStart, int direction
 	Iterator iter = siblings.iterator();
 	while (iter.hasNext()){
 		epCurrent = (GraphicalEditPart)iter.next();
-		if (epCurrent == exclude)
+		if (epCurrent == exclude || !epCurrent.isSelectable())
 			continue;
 		figure = epCurrent.getFigure();
 		pCurrent = getInterestingPoint(figure);
@@ -221,6 +221,8 @@ private void navigateIntoContainer(KeyEvent event){
 
 	for(int i=0; i<childList.size(); i++){	
 		GraphicalEditPart ged = (GraphicalEditPart)childList.get(i);
+		if (!ged.isSelectable())
+			continue;
 		Rectangle childBounds = ged.getFigure().getBounds();
 		
 		current = (childBounds.x - tl.x) + (childBounds.y - tl.y);
