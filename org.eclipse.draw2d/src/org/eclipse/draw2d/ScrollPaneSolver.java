@@ -59,7 +59,6 @@ public static class Result {
 public static Result solve(Rectangle clientArea, Viewport viewport, int hVis, int vVis,
 							int vBarWidth, int hBarHeight) {
 	Result result = new Result();
-
 	result.insets = new Insets();
 	result.insets.bottom = hBarHeight;
 	result.insets.right  = vBarWidth;
@@ -76,12 +75,11 @@ public static Result solve(Rectangle clientArea, Viewport viewport, int hVis, in
 	Dimension preferred  = viewport.getPreferredSize(wHint, hHint).getCopy();
 	Insets viewportInsets = viewport.getInsets();
 	/*
-	 * This was calling viewport.getMinimumSize(), but viewports minimum size was really
+	 * This was calling viewport.getMinimumSize(), but viewport's minimum size was really
 	 * small, and wasn't a function of its contents.
 	 */
 	Dimension viewportMinSize = new Dimension(
-		viewportInsets.getWidth(),
-		viewportInsets.getHeight());
+			viewportInsets.getWidth(), viewportInsets.getHeight());
 	if (viewport.getContents() != null) {
 		if (viewport.getContentsTracksHeight() && hHint > -1)
 			hHint = Math.max(0, hHint - viewportInsets.getHeight());
@@ -106,8 +104,8 @@ public static Result solve(Rectangle clientArea, Viewport viewport, int hVis, in
 	       showH = both || preferred.width  > available.width;
 	
 	//Adjust for visibility override flags
-	result.showV = !(vVis == NEVER) && (showV  || vVis == ALWAYS);
-	result.showH = !(hVis == NEVER) && (showH  || hVis == ALWAYS);
+	result.showV = vVis != NEVER && (showV || vVis == ALWAYS);
+	result.showH = hVis != NEVER && (showH || hVis == ALWAYS);
 	
 	if (!result.showV)
 		result.insets.right = 0;
