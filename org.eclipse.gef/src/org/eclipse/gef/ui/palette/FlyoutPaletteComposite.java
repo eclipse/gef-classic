@@ -67,6 +67,7 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.XMLMemento;
+import org.eclipse.ui.internal.DragCursors;
 
 import org.eclipse.draw2d.ActionEvent;
 import org.eclipse.draw2d.ActionListener;
@@ -74,7 +75,6 @@ import org.eclipse.draw2d.Border;
 import org.eclipse.draw2d.Button;
 import org.eclipse.draw2d.ButtonBorder;
 import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.Cursors;
 import org.eclipse.draw2d.FocusEvent;
 import org.eclipse.draw2d.FocusListener;
 import org.eclipse.draw2d.Graphics;
@@ -139,9 +139,6 @@ private static final Image LEFT_ARROW = new Image(null, ImageDescriptor.createFr
 		Internal.class, "icons/palette_left.gif").getImageData()); //$NON-NLS-1$
 private static final Image RIGHT_ARROW = new Image(null, ImageDescriptor.createFromFile(
 		Internal.class, "icons/palette_right.gif").getImageData()); //$NON-NLS-1$
-
-private static Cursor DRAG_LEFT;
-private static Cursor DRAG_RIGHT;
 
 private PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 private Composite paletteContainer;
@@ -903,29 +900,12 @@ private class TitleDragManager
 						// update the cursor
 						Cursor cursor;
 						if (invalid)
-							cursor = Cursors.NO;
+							cursor = DragCursors.getCursor(DragCursors.INVALID);
 						else if ((!switchDock && dock == PositionConstants.EAST)
-								|| (switchDock && dock == PositionConstants.WEST)) {
-							if (DRAG_RIGHT == null) {
-								ImageDescriptor src = ImageDescriptor.createFromFile(
-										Internal.class, "icons/right_source.bmp"); //$NON-NLS-1$
-								ImageDescriptor mask = ImageDescriptor.createFromFile(
-										Internal.class, "icons/right_mask.bmp"); //$NON-NLS-1$
-								DRAG_RIGHT = new Cursor(null, src.getImageData(),
-										mask.getImageData(), 16, 16);
-							}
-							cursor = DRAG_RIGHT;
-						} else {
-							if (DRAG_LEFT == null) {
-								ImageDescriptor src = ImageDescriptor.createFromFile(
-										Internal.class, "icons/left_source.bmp"); //$NON-NLS-1$
-								ImageDescriptor mask = ImageDescriptor.createFromFile(
-										Internal.class, "icons/left_mask.bmp"); //$NON-NLS-1$
-								DRAG_LEFT = new Cursor(null, src.getImageData(),
-										mask.getImageData(), 16, 16);
-							}
-							cursor = DRAG_LEFT;
-						}
+								|| (switchDock && dock == PositionConstants.WEST))
+							cursor = DragCursors.getCursor(DragCursors.RIGHT);
+						else
+							cursor = DragCursors.getCursor(DragCursors.LEFT);
 						tracker.setCursor(cursor);
 						// update the rectangle only if it has changed
 						if (!tracker.getRectangles()[0].equals(placeHolder))
