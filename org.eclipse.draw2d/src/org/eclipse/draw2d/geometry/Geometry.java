@@ -23,40 +23,37 @@ public class Geometry
  * one of the two line segments starts or ends on the other line, then they are considered
  * to be intersecting.
  * 
- * @param start1x x coordinate of starting point of line 1
- * @param start1y y coordinate of starting point of line 1
- * @param end1x x coordinate of ending point of line 1
- * @param end1y y coordinate of endpoing point of line 1
- * @param start2x x coordinate of the starting point of line 2
- * @param start2y y coordinate of the starting point of line 2
- * @param end2x x coordinate of the ending point of line 2
- * @param end2y y coordinate of the ending point of line 2
+ * @param ux x coordinate of starting point of line 1
+ * @param uy y coordinate of starting point of line 1
+ * @param vx x coordinate of ending point of line 1
+ * @param vy y coordinate of endpoing point of line 1
+ * @param sx x coordinate of the starting point of line 2
+ * @param sy y coordinate of the starting point of line 2
+ * @param tx x coordinate of the ending point of line 2
+ * @param ty y coordinate of the ending point of line 2
  * @return <code>true</code> if the two line segments formed by the given coordinates 
  *         cross
  * @since 3.1
  */
-public static boolean linesIntersect(int start1x, int start1y, int end1x, int end1y, 
-		int start2x, int start2y, int end2x, int end2y) {
+public static boolean linesIntersect(int ux, int uy, int vx, int vy, 
+		int sx, int sy, int tx, int ty) {
 	/*
-	 * Given the segments: start1-------end1. start2-------end2. If start2->end2 is inside 
-	 * the triangle start1-end1-start2, then check whether the line start1->end1 splits 
-	 * the line start2->end2.
+	 * Given the segments: u-------v. s-------t. If s->t is inside the triangle u-v-s, 
+	 * then check whether the line u->u splits the line s->t.
 	 */
-	int deltaS1S2x = start1x - start2x;
-	int deltaS1S2y = start1y - start2y;
-	int deltaE1S2x = end1x - start2x;
-	int deltaE1S2y = end1y - start2y;
-	int deltaS2E2x = start2x - end2x;
-	int deltaS2E2y = start2y - end2y;
-	long product = cross(deltaE1S2x, deltaE1S2y, deltaS2E2x, deltaS2E2y)
-			* cross(deltaS2E2x, deltaS2E2y, deltaS1S2x, deltaS1S2y);
+	int us_x = ux - sx;
+	int us_y = uy - sy;
+	int vs_x = vx - sx;
+	int vs_y = vy - sy;
+	int st_x = sx - tx;
+	int st_y = sy - ty;
+	long product = cross(vs_x, vs_y, st_x, st_y) * cross(st_x, st_y, us_x, us_y);
 	if (product >= 0) {
-		int deltaE1S1x = end1x - start1x;
-		int deltaE1S1y = end1y - start1y;
-		int deltaS1E2x = start1x - end2x;
-		int deltaS1E2y = start1y - end2y;
-		product = cross(-deltaS1S2x, -deltaS1S2y, deltaE1S1x, deltaE1S1y)
-				* cross(deltaE1S1x, deltaE1S1y, deltaS1E2x, deltaS1E2y);
+		int vu_x = vx - ux;
+		int vu_y = vy - uy;
+		int ut_x = ux - tx;
+		int ut_y = uy - ty;
+		product = cross(-us_x, -us_y, vu_x, vu_y) * cross(vu_x, vu_y, ut_x, ut_y);
 		boolean intersects = product <= 0;
 		return intersects;
 	}
