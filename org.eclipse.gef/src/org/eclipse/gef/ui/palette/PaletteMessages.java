@@ -122,6 +122,10 @@ public static final String MODEL_TYPE_DRAWER;
  */
 public static final String MODEL_TYPE_SEPARATOR;
 /**
+ * The String "Stack"
+ */
+public static final String MODEL_TYPE_STACK;
+/**
  * The String "Separates entries in a palette container"
  */
 public static final String NEW_SEPARATOR_DESC;
@@ -133,6 +137,10 @@ public static final String NEW_DRAWER_LABEL;
  * The String "[Separator]"
  */
 public static final String NEW_SEPARATOR_LABEL;
+/**
+ * The String "New Stack"
+ */
+public static final String NEW_STACK_LABEL;
 /**
  * The String "Group"
  */
@@ -270,9 +278,11 @@ static {
 					= bundle.getString("MENU_OPEN_CUSTOMIZE_DIALOG"); //$NON-NLS-1$
 	MODEL_TYPE_DRAWER = bundle.getString("MODEL_TYPE_DRAWER"); //$NON-NLS-1$
 	MODEL_TYPE_SEPARATOR = bundle.getString("MODEL_TYPE_SEPARATOR"); //$NON-NLS-1$
+	MODEL_TYPE_STACK = bundle.getString("MODEL_TYPE_STACK"); //$NON-NLS-1$
 	NEW_SEPARATOR_DESC = bundle.getString("NEW_SEPARATOR_DESC"); //$NON-NLS-1$
 	NEW_DRAWER_LABEL = bundle.getString("NEW_DRAWER_LABEL"); //$NON-NLS-1$
 	NEW_SEPARATOR_LABEL = bundle.getString("NEW_SEPARATOR_LABEL"); //$NON-NLS-1$
+	NEW_STACK_LABEL = bundle.getString("NEW_STACK_LABEL");  //$NON-NLS-1
 	APPLY_LABEL = bundle.getString("APPLY_LABEL"); //$NON-NLS-1$
 	MODEL_TYPE_GROUP = bundle.getString("MODEL_TYPE_GROUP"); //$NON-NLS-1$
 	NEW_GROUP_LABEL = bundle.getString("NEW_GROUP_LABEL"); //$NON-NLS-1$
