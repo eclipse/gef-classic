@@ -14,6 +14,8 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.dnd.DropTargetEvent;
+import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.MouseAdapter;
@@ -31,11 +33,13 @@ import org.eclipse.swt.widgets.Listener;
 
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.util.Assert;
+import org.eclipse.jface.util.TransferDropTargetListener;
 import org.eclipse.ui.IPerspectiveDescriptor;
 import org.eclipse.ui.IPerspectiveListener;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.internal.Workbench;
 
 import org.eclipse.draw2d.ActionEvent;
 import org.eclipse.draw2d.ActionListener;
@@ -49,7 +53,9 @@ import org.eclipse.draw2d.SWTGraphics;
 import org.eclipse.draw2d.StackLayout;
 import org.eclipse.draw2d.ToggleButton;
 
+import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.SharedCursors;
+import org.eclipse.gef.dnd.TemplateTransfer;
 import org.eclipse.gef.internal.ui.palette.editparts.DrawerFigure;
 import org.eclipse.gef.ui.views.palette.PaletteView;
 
@@ -118,9 +124,34 @@ public FlyoverPaletteAutomaton(Composite parent, int style, IWorkbenchPage page,
 	hookIntoWorkbench(page.getWorkbenchWindow());
 
 	addListener(SWT.Resize, new Listener() {
+		private boolean skipNextEvent = false;
+		private boolean editorMaximized = false;
 		public void handleEvent(Event event) {
-			if (fixedSize > getClientArea().width / 2)
+			Rectangle area = getClientArea();
+			/*
+			 * @TODO:Pratik   Currently, there is no notification mechanism for when a
+			 * part in the workbench is maximized/minimized.  However, when the editor
+			 * is maximized/minimized, a resize event is fired (twice, actually) with
+			 * the size of the client area being (0,0).  For now, I am using that to
+			 * track when the editor is maximized/minimized.  Once the platform provides
+			 * notification for maximize/minimize actions, you can change to using that
+			 * instead of what you have now.  
+			 */
+			if (area.width == 0 && area.height == 0) {
+				if (skipNextEvent)
+					skipNextEvent = false;
+				else if (editorMaximized) {
+					editorMaximized = false;
+					skipNextEvent = true;
+					handleEditorMinimized();
+				} else {
+					editorMaximized = true;
+					skipNextEvent = true;
+					handleEditorMaximized();
+				}
+			} else if (fixedSize > getClientArea().width / 2) {
 				setFixedSize(getClientArea().width / 2);
+			}
 			layout();
 		}
 	});
@@ -157,6 +188,16 @@ protected void firePropertyChanged(String property, int oldValue, int newValue) 
 
 protected final int getFixedSize() {
 	return fixedSize;
+}
+
+protected void handleEditorMaximized() {
+	if (isInState(IN_VIEW))
+		setState(initialState);
+}
+
+protected void handleEditorMinimized() {
+	handlePerspectiveActivated(
+			Workbench.getInstance().getActiveWorkbenchWindow().getActivePage(), null);
 }
 
 protected void handlePerspectiveActivated(IWorkbenchPage page, 
@@ -294,6 +335,9 @@ public void setDockLocation(int position) {
 }
 
 public final void setFixedSize(int newSize) {
+	int width = getClientArea().width / 2;
+	if (width > MIN_PALETTE_SIZE && newSize > width)
+		newSize = width;
 	if (newSize < MIN_PALETTE_SIZE)
 		newSize = MIN_PALETTE_SIZE;
 	if (newSize > MAX_PALETTE_SIZE)
@@ -325,6 +369,35 @@ public void setGraphicalControl(Control graphicalViewer) {
 						setState(FLYOVER_COLLAPSED);
 				}
 			});
+		}
+	});
+}
+
+/**
+ * If the auto-hide feature of the palette is to work properly, this method should be
+ * called before any other drop target listeners are added to the graphical viewer.
+ */
+public void hookDropTargetListener(GraphicalViewer viewer) {
+	viewer.addDropTargetListener(new TransferDropTargetListener() {
+		public Transfer getTransfer() {
+			return TemplateTransfer.getInstance();
+		}
+		public boolean isEnabled(DropTargetEvent event) {
+			if (isInState(FLYOVER_EXPANDED))
+				setState(FLYOVER_COLLAPSED);
+			return false;
+		}
+		public void dragEnter(DropTargetEvent event) {
+		}
+		public void dragLeave(DropTargetEvent event) {
+		}
+		public void dragOperationChanged(DropTargetEvent event) {
+		}
+		public void dragOver(DropTargetEvent event) {
+		}
+		public void drop(DropTargetEvent event) {
+		}
+		public void dropAccept(DropTargetEvent event) {
 		}
 	});
 }
