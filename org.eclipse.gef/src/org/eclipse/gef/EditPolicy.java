@@ -114,8 +114,8 @@ String TREE_CONTAINER_ROLE = "TreeContainerEditPolicy"; //$NON-NLS-1$
  * also contribute feedback/visuals immediately, such as <i>selection handles</i>
  * if the EditPart was selected at the time of activation.
  * <P>
- * Activate will only be called after the host has been set, and that host has been
- * active.
+ * Activate is called after the <i>host</i> has been set, and that host has been
+ * activated.
  * @see EditPart#activate()
  * @see #deactivate()
  * @see EditPart#installEditPolicy(Object, EditPolicy)
@@ -125,7 +125,7 @@ void activate();
 /**
  * Deactivates the EditPolicy, the inverse of {@link #activate()}. Deactivate is called
  * when the <i>host</i> is deactivated, or when the EditPolicy is uninstalled from an
- * active host. Deactivate unhooks listeners, and removes all feedback.
+ * active host. Deactivate unhooks any listeners, and removes all feedback.
  * @see EditPart#deactivate()
  * @see #activate()
  * @see EditPart#removeEditPolicy(Object)
@@ -135,6 +135,10 @@ void deactivate();
 /**
  * Erases source feedback based on the given <code>Request</code>. Does nothing if the
  * EditPolicy does not apply to the given Request.
+ * <P>
+ * This method is declared on {@link EditPart#eraseSourceFeedback(Request) EditPart}, and
+ * is redeclared here so that EditPart can delegate its implementation to each of its
+ * EditPolicies.
  * @param request the Request
  */
 void eraseSourceFeedback(Request request);
@@ -142,6 +146,10 @@ void eraseSourceFeedback(Request request);
 /**
  * Erases target feedback based on the given <code>Request</code>. Does nothing if the
  * EditPolicy does not apply to the given Request.
+ * <P>
+ * This method is declared on {@link EditPart#eraseTargetFeedback(Request) EditPart}, and
+ * is redeclared here so that EditPart can delegate its implementation to each of its
+ * EditPolicies.
  * @param request the Request
  * */
 void eraseTargetFeedback(Request request);
@@ -151,6 +159,11 @@ void eraseTargetFeedback(Request request);
  * <code>null</code>. <code>null</code> is treated as a no-op by the caller, or an empty
  * contribution. The EditPolicy must return an {@link
  * org.eclipse.gef.commands.UnexecutableCommand} if it wishes to disallow the Request.
+ * <P>
+ * This method is declared on {@link EditPart#getCommand(Request) EditPart}, and is
+ * redeclared here so that EditPart can delegate its implementation to each of its
+ * EditPolicies. The EditPart will combine each EditPolicy's contribution into a
+ * {@link org.eclipse.gef.commands.CompoundCommand}.
  * @param request the Request
  * @return <code>null</code> or a Command contribution
  */
@@ -160,6 +173,11 @@ Command getCommand(Request request);
  * Returns <code>null</code> or the appropriate <code>EditPart<code> for the specified
  * <code>Request</code>. In general, this EditPolicy will return its <i>host</i> EditPart
  * if it understands the Request. Otherwise, it will return <code>null</code>.
+ * <P>
+ * This method is declared on {@link EditPart#getTargetEditPart(Request) EditPart}, and is
+ * redeclared here so that EditPart can delegate its implementation to each of its
+ * EditPolicies. The first non-<code>null</code> result returned by an EditPolicy is
+ * returned by the EditPart.
  * @param request the Request
  * @return <code>null</code> or the appropriate target <code>EditPart</code>
  */
@@ -177,6 +195,10 @@ void setHost(EditPart editpart);
  * to the Request.
  * <P>
  * Does nothing if the EditPolicy does not recognize the given Request.
+ * <P>
+ * This method is declared on {@link EditPart#showSourceFeedback(Request) EditPart}, and
+ * is redeclared here so that EditPart can delegate its implementation to each of its
+ * EditPolicies.
  * @param request the Request
  */
 void showSourceFeedback(Request request);
@@ -187,10 +209,24 @@ void showSourceFeedback(Request request);
  * to the Request.
  * <P>
  * Does nothing if the EditPolicy does not recognize the given request.
+ * <P>
+ * This method is declared on {@link EditPart#showTargetFeedback(Request) EditPart}, and
+ * is redeclared here so that EditPart can delegate its implementation to each of its
+ * EditPolicies.
  * @param request the Request
  */
 void showTargetFeedback(Request request);
 
+/**
+ * Returns <code>true</code> if this EditPolicy understand the specified request.
+ * <P>
+ * This method is declared on {@link EditPart#understandsRequest(Request) EditPart}, and
+ * is redeclared here so that EditPart can delegate its implementation to each of its
+ * EditPolicies. <code>EditPart</code> returns <code>true</code> if any of its
+ * EditPolicies returns <code>true</code>.  In other words, it performs a logical OR.
+ * @param request the Request * @return boolean <code>true</code> if the EditPolicy
+ * @see EditPart#understandsRequest(Request)
+ */
 boolean understandsRequest(Request request);
 
 }
