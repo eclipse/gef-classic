@@ -24,22 +24,10 @@ public abstract class AbstractConnectionEditPart
 	implements ConnectionEditPart, LayerConstants
 {
 
-/* This fixes a memory leak where a PolylineConnection being deleted would add itself to
- * these anchors as an AnchorListener even though it was being deleted.  This happens
- * after removeNotify() gets called on the PolylineConnection, so unhooking the anchor
- * there does no good.  As far as I know, these are only here to allow developers to see
- * that something went wrong, so nothing should be listening to them anyway.
- */
 private static final ConnectionAnchor DEFAULT_SOURCE_ANCHOR =
-	new XYAnchor(new Point(10, 10)) {
-		public void addAnchorListener(AnchorListener listener) {}
-		public void removeAnchorListener(AnchorListener listener) {}
-	};
+	new XYAnchor(new Point(10, 10));
 private static final ConnectionAnchor DEFAULT_TARGET_ANCHOR =
-	new XYAnchor(new Point(100, 100)) {
-		public void addAnchorListener(AnchorListener listener) {}
-		public void removeAnchorListener(AnchorListener listener) {}
-	};
+	new XYAnchor(new Point(100, 100));
 
 /**
  * Provides accessibility support for when connections are also themselves nodes. If a
