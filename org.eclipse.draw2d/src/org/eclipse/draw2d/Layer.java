@@ -1,4 +1,7 @@
 package org.eclipse.draw2d;
+
+import java.util.Collection;
+
 /*
  * Licensed Material - Property of IBM
  * (C) Copyright IBM Corp. 2001, 2002 - All Rights Reserved.
@@ -12,69 +15,40 @@ package org.eclipse.draw2d;
  * its Layers. 
  */
 public class Layer
-	extends TransparentFigure
+	extends Figure
 {
 
-protected Layer nextLayer, prevLayer;
-
 /**
- * Returns the next Layer.
+ * Overridden to implement transparent behavior.
  * 
+ * @param x X coordiante of point to search children for.
+ * @param y Y coordinate of point to search children for.
  * @since 2.0
- */
-public Layer getNextLayer(){
-	return nextLayer;
-}
-
-/**
- * Returns the previous Layer.
  * 
- * @since 2.0
  */
-public Layer getPreviousLayer(){
-	return prevLayer;
-}
-
-public UpdateManager getUpdateManager(){
-	//If someone has set the manager, get it.
-	UpdateManager manager = super.getUpdateManager();
-
-	if ((getParent() != null && getParent().getUpdateManager() != manager)
-		|| (getParent() == null && manager != NO_MANAGER))
-			return manager;
-
-	if (getNextLayer() != null)
-		return getNextLayer().getUpdateManager();
-
-	return manager;
-}
-
-public void paint(Graphics graphics){
-	if (getPreviousLayer() != null){
-		graphics.pushState();
-		getPreviousLayer().paint(graphics);
-		graphics.popState();
+public boolean containsPoint(int x, int y){
+	if (isOpaque())
+		return super.containsPoint(x, y);
+	for(int i=0;i<getChildren().size();i++){
+		IFigure child = (IFigure)getChildren().get(i);
+		if(child.containsPoint(x,y))
+			return true;
 	}
-	if (isVisible())
-		super.paint(graphics);
+	return false;
 }
 
 /**
- * Sets the next Layer to the passed value.
- * 
+ * Overridden to implement transparent behavior.
  * @since 2.0
  */
-public void setNextLayer(Layer layer){
-	nextLayer = layer;
-}
+public IFigure findFigureAtExcluding(int x, int y, Collection collection){
+	if (isOpaque())
+		return super.findFigureAtExcluding(x, y, collection);
 
-/**
- * Sets the previous Layer to the passed value.
- * 
- * @since 2.0
- */
-public void setPreviousLayer(Layer layer){
-	prevLayer = layer;
+	IFigure f = super.findFigureAtExcluding(x,y,collection);
+	if (f == this) 
+		return null;
+	return f;
 }
 
 }

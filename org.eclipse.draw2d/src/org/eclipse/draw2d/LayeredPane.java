@@ -24,7 +24,7 @@ private List layerKeys = new ArrayList();
 /**
  * Constructs a new layered pane with no layers in it.
  */
-public LayeredPane(){
+public LayeredPane() {
 	setLayoutManager(new StackLayout());
 }
 
@@ -38,19 +38,9 @@ public LayeredPane(){
  * @param index  Index where the layer should be added.
  * @since 2.0
  */
-public void add(IFigure figure, Object layerKey, int index){
+public void add(IFigure figure, Object layerKey, int index) {
 	if (index == -1) index = layerKeys.size();
-	Layer layer = (Layer) figure;
-
-	if (index > 0){
-		getLayer(index-1).setNextLayer(layer);
-		layer.setPreviousLayer(getLayer(index-1));
-	}
-	if (index < getChildren().size()){
-		getLayer(index).setPreviousLayer(layer);
-		layer.setNextLayer(getLayer(index));
-	}
-	super.add(layer, layerKey, index);
+	super.add(figure, null, index);
 	layerKeys.add(index, layerKey);
 }
 
@@ -64,7 +54,7 @@ public void add(IFigure figure, Object layerKey, int index){
  * @see  #addLayerBefore(Layer, Object, Object)
  * @since 2.0
  */
-public void addLayerAfter(Layer layer, Object key, Object after){
+public void addLayerAfter(Layer layer, Object key, Object after) {
 	int index = layerKeys.indexOf(after);
 	add(layer, key, ++index);
 }
@@ -79,7 +69,7 @@ public void addLayerAfter(Layer layer, Object key, Object after){
  * @see  #addLayerAfter(Layer, Object, Object)
  * @since 2.0
  */
-public void addLayerBefore(Layer layer, Object key, Object before){
+public void addLayerBefore(Layer layer, Object key, Object before) {
 	int index = layerKeys.indexOf(before);
 	add(layer, key, index);
 }
@@ -95,8 +85,10 @@ public void addLayerBefore(Layer layer, Object key, Object before){
  * @see  #removeLayer(Object)
  * @since 2.0
  */
-public Layer getLayer(Object key){
+public Layer getLayer(Object key) {
 	int index = layerKeys.indexOf(key);
+	if (index == -1)
+		return null;
 	return (Layer)getChildren().get(index);
 }
 
@@ -107,7 +99,7 @@ public Layer getLayer(Object key){
  * @return  The layer desired.
  * @since 2.0
  */
-protected Layer getLayer(int index){
+protected Layer getLayer(int index) {
 	return (Layer)getChildren().get(index);
 }
 
@@ -118,27 +110,14 @@ protected Layer getLayer(int index){
  *          is opaque, else returns <code>false</code>.
  * @since 2.0
  */
-public boolean isOpaque(){
-	if (super.isOpaque()) return true;
-	FigureIterator iterator = new FigureIterator(this);
-	while (iterator.hasNext())
-		if (iterator.nextFigure().isOpaque())
+public boolean isOpaque() {
+	if (super.isOpaque())
+		return true;
+	for (int i = 0; i < getChildren().size(); i++) {
+		if (((IFigure)getChildren().get(i)).isOpaque())
 			return true;
+	}
 	return false;
-}
-
-/**
- * Paints the children (layers) of this pane with the help
- * of the input graphics handle.
- *
- * @param g  Graphics handle for the painting.
- * @since 2.0
- */
-protected void paintChildren(Graphics g){
-	List list = getChildren();
-	if (list.isEmpty())
-		return;
-	((IFigure)list.get(list.size()-1)).paint(g);
 }
 
 /**
@@ -148,19 +127,20 @@ protected void paintChildren(Graphics g){
  * @param key  Key identifying the layer.
  * @since 2.0
  */
-public void removeLayer(Object key){
+public void removeLayer(Object key) {
 	removeLayer(layerKeys.indexOf(key));
 }
 
 /**
  * Removes the given layer from the layers in this figure.
  *
+ * @deprecated call remove(IFigure)
  * @param layer  Layer to be removed.
  * @see  #removeLayer(Object)
  * @since 2.0
  */
-public void removeLayer(IFigure layer){
-	removeLayer(getChildren().indexOf(layer));
+public void removeLayer(IFigure layer) {
+	remove(layer);
 }
 
 /**
@@ -172,18 +152,8 @@ public void removeLayer(IFigure layer){
  * @see  #removeLayer(IFigure)
  * @since 2.0
  */
-protected void removeLayer(int index){
+protected void removeLayer(int index) {
 	Layer removeLayer = getLayer(index);
-	Layer prevLayer = index > 0 ? getLayer(index-1) : null;
-	Layer nextLayer = getChildren().size() > index+1 ? getLayer(index+1) : null;
-
-	removeLayer.setNextLayer(null);
-	removeLayer.setPreviousLayer(null);
-	if (prevLayer != null)
-		prevLayer.setNextLayer(nextLayer);
-	if (nextLayer != null)
-		nextLayer.setPreviousLayer(prevLayer);
-
 	remove(removeLayer);
 	layerKeys.remove(index);	 	
 }
