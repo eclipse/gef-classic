@@ -125,12 +125,12 @@ public Command getCommand(Request request) {
 }
 
 /**
- * Returns the current handle directions integer that depicts which handles
+ * Returns the current resize directions integer that depicts which handles
  * can be resized on this object.
  * 
  * @return handle directions that can be resized
  */
-public int getHandleDirections() {
+public int getResizeDirections() {
 	return directions;
 }
 
@@ -159,7 +159,7 @@ protected Command getResizeCommand(ChangeBoundsRequest request) {
  * 
  * @param newDirections the new resizable directions integer
  */
-public void setHandleDirections(int newDirections) {
+public void setResizeDirections(int newDirections) {
 	directions = newDirections;
 }
 
