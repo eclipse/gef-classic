@@ -15,7 +15,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.jface.util.Assert;
 
 import org.eclipse.gef.EditDomain;
-import org.eclipse.gef.dnd.TemplateTransferDragSourceListener;
 
 /**
  * @author Pratik Shah
@@ -47,7 +46,6 @@ public final EditDomain getEditDomain() {
 
 protected void hookPaletteViewer(PaletteViewer viewer) {
 	getEditDomain().setPaletteViewer(viewer);
-	viewer.addDragSourceListener(new TemplateTransferDragSourceListener(viewer));
 }
 
 }
