@@ -445,19 +445,19 @@ protected void processSelect(KeyEvent event) {
 void scrollViewer(KeyEvent event) {
 	Viewport port = ((FigureCanvas)getViewer().getControl()).getViewport();
 	Point loc = port.getViewLocation();
-	int scrollOffset = 30;
+	Rectangle area = port.getClientArea(Rectangle.SINGLETON).scale(.1); 
 	switch (event.keyCode) {
 		case SWT.ARROW_DOWN:
-			port.setVerticalLocation(loc.y + scrollOffset);
+			port.setVerticalLocation(loc.y + area.height);
 			break;
 		case SWT.ARROW_UP:
-			port.setVerticalLocation(loc.y - scrollOffset);
+			port.setVerticalLocation(loc.y - area.height);
 			break;
 		case SWT.ARROW_LEFT:
-			port.setHorizontalLocation(loc.x - scrollOffset);
+			port.setHorizontalLocation(loc.x - area.width);
 			break;
 		case SWT.ARROW_RIGHT:
-			port.setHorizontalLocation(loc.x + scrollOffset);
+			port.setHorizontalLocation(loc.x + area.width);
 	}
 }
 
