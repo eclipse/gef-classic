@@ -254,23 +254,6 @@ protected void handleAutoexpose() {
 }
 
 /**
- * Called when the mouse button has been pressed. By default, nothing happens
- * and <code>false</code> is returned. Subclasses may override this method to interpret
- * the meaning of a mouse down. Returning <code>true</code> indicates that the button down
- * was handled in some way.
- * @param button which button went down
- * @return <code>true</code> if the buttonDown was handled
- */
-protected boolean handleButtonDown(int button) {
-	if (getCurrentInput().isControlKeyDown()) {
-		setCloneActive(true);
-		handleDragInProgress();
-	}
-	
-	return super.handleButtonDown(button);
-}
-
-/**
  * Erases feedback and calls {@link #performDrag()}.
  * @see org.eclipse.gef.tools.AbstractTool#handleButtonUp(int)
  */
@@ -465,6 +448,15 @@ protected void showSourceFeedback() {
 protected void setState(int state) {
 	boolean check = isInState(STATE_INITIAL);
 	super.setState(state);
+	
+	if (isInState(STATE_ACCESSIBLE_DRAG | STATE_DRAG_IN_PROGRESS
+			| STATE_ACCESSIBLE_DRAG_IN_PROGRESS)) {
+		if (getCurrentInput().isControlKeyDown()) {
+			setCloneActive(true);
+			handleDragInProgress();
+		}
+	}
+	
 	if (check && isInState(STATE_DRAG | STATE_ACCESSIBLE_DRAG 
 			| STATE_ACCESSIBLE_DRAG_IN_PROGRESS)) {
 		List editparts = getOperationSet();
