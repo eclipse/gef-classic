@@ -54,7 +54,7 @@ public static String CopyAction_ActionDeleteCommandName = Helper.getString("%Cop
 public static String CopyAction_Label = Helper.getString("%CopyAction.Label");//$NON-NLS-1$
 public static String CopyAction_Tooltip = Helper.getString("%CopyAction.Tooltip");//$NON-NLS-1$
 
-public static String FitPageAction_Label = Helper.getString("%FitPageAction.Label");//$NON-NLS-1$
+public static String FitAllAction_Label = Helper.getString("%FitAllAction.Label");//$NON-NLS-1$
 public static String FitWidthAction_Label = Helper.getString("%FitWidthAction.Label");//$NON-NLS-1$
 public static String FitHeightAction_Label = Helper.getString("%FitHeightAction.Label");//$NON-NLS-1$
 

@@ -54,9 +54,9 @@ private Viewport viewport;
 private double zoom = 1.0;
 private int zoomAnimationStyle = ANIMATE_NEVER;
 private double[] zoomLevels = { .5, .75, 1.0, 1.5, 2.0, 2.5, 3, 4 };
-public static final String FIT_DOCUMENT_HEIGHT = GEFMessages.FitHeightAction_Label;
-public static final String FIT_DOCUMENT_WIDTH = GEFMessages.FitWidthAction_Label;
-public static final String FIT_WHOLE_DOCUMENT = GEFMessages.FitPageAction_Label;
+public static final String FIT_HEIGHT = GEFMessages.FitHeightAction_Label;
+public static final String FIT_WIDTH = GEFMessages.FitWidthAction_Label;
+public static final String FIT_ALL = GEFMessages.FitAllAction_Label;
 private List zoomLevelContributions;
 
 DecimalFormat format = new DecimalFormat("####%"); //$NON-NLS-1$
@@ -352,19 +352,19 @@ public void setZoomAsText(String zoomString) {
 	 * contents figure will stretch to fit the viewport, which throws the new zoom
 	 * calculations off.  To correct this, I'm setting the zoom to 1.0. 
 	 */
-	if (zoomString.equals(FIT_DOCUMENT_HEIGHT)) {
+	if (zoomString.equals(FIT_HEIGHT)) {
 		setZoom(1.0 / multiplier);
 		setZoom(getFitHeightZoomLevel() / multiplier);
 		getViewport().getUpdateManager().performUpdate();
 		setZoom(1.0 / multiplier);
 		setZoom(getFitHeightZoomLevel() / multiplier);
-	} else if (zoomString.equals(FIT_WHOLE_DOCUMENT)) {
+	} else if (zoomString.equals(FIT_ALL)) {
 		setZoom(1.0 / multiplier);
 		setZoom(getFitPageZoomLevel() / multiplier);
 		getViewport().getUpdateManager().performUpdate();
 		setZoom(1.0 / multiplier);
 		setZoom(getFitPageZoomLevel() / multiplier);
-	} else if (zoomString.equals(FIT_DOCUMENT_WIDTH)) {
+	} else if (zoomString.equals(FIT_WIDTH)) {
 		setZoom(1.0 / multiplier);
 		setZoom(getFitWidthZoomLevel() / multiplier);
 		getViewport().getUpdateManager().performUpdate();
