@@ -145,21 +145,6 @@ public void deactivate() {
 }
 
 /**
- * Does the work for handleDragInProgress. 
- * @see org.eclipse.gef.tools.AbstractTool#handleDragInProgress()
- */
-protected boolean doDragInProgress() {
-	if (isInDragInProgress()) {
-		updateTargetRequest();
-		updateTargetUnderMouse();
-		showTargetFeedback();
-		showSourceFeedback();
-		setCurrentCommand(getCommand());
-	}
-	return true;	
-}
-
-/**
  * Asks the edit parts in the {@link AbstractTool#getOperationSet() operation set} to 
  * erase their source feedback.
  */
@@ -304,7 +289,14 @@ protected boolean handleButtonUp(int button) {
  * @see org.eclipse.gef.tools.AbstractTool#handleDragInProgress()
  */
 protected boolean handleDragInProgress() {
-	return doDragInProgress();
+	if (isInDragInProgress()) {
+		updateTargetRequest();
+		updateTargetUnderMouse();
+		showTargetFeedback();
+		showSourceFeedback();
+		setCurrentCommand(getCommand());
+	}
+	return true;
 }
 
 /**
@@ -356,7 +348,7 @@ protected boolean handleKeyDown(KeyEvent e) {
 		setCloneActive(true);
 		return true;
 	} else if (acceptSHIFT(e)) {
-		doDragInProgress();
+		handleDragInProgress();
 		return true;
 	}
 	
@@ -374,7 +366,7 @@ protected boolean handleKeyUp(KeyEvent e) {
 		setCloneActive(false);
 		return true;
 	} else if (acceptSHIFT(e)) {
-		doDragInProgress();
+		handleDragInProgress();
 		return true;
 	}
 	return false;
@@ -439,7 +431,7 @@ protected void setCloneActive(boolean cloneActive) {
 	eraseSourceFeedback();
 	eraseTargetFeedback();
 	this.cloneActive = cloneActive;
-	doDragInProgress();
+	handleDragInProgress();
 }
 
 /**
