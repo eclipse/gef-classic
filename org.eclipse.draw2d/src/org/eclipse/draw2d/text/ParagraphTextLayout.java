@@ -165,8 +165,11 @@ protected void layout() {
 				 * $TODO:Pratik change to String.regionMatches, or 2 charAt calls.  Note
 				 * that this case is a sub-case of the next test which is for whitespace.
 				 */
-				if (segment.substring(fragLength).startsWith("\r\n")) //$NON-NLS-1$
-					// special-case the WinNL character
+				if (segment.length() > fragLength + 1 
+						&& segment.charAt(fragLength) == '\r'
+						&& segment.charAt(fragLength + 1) == '\n')
+					// Special-case the WinNL character.  note that this a sub-case of the
+					// next test (which is for whitespace)
 					fragLength += 2;
 				else if (Character.isWhitespace(segment.charAt(fragLength)))
 					// if the first character that doesn't fit is a whitespace,
@@ -192,8 +195,8 @@ protected void layout() {
 					lookAheadWidth = lookAhead(segments, seg + 1);
 					if (lookAheadWidth > availableWidth) {
 						BreakIterator breakFinder = BreakIterator.getLineInstance();
-						breakFinder.setText(segment); //$NON-NLS-1$
-						int index = breakFinder.preceding(fragLength - 1);
+						breakFinder.setText(segment + "a"); //$NON-NLS-1$
+						int index = breakFinder.preceding(fragLength);
 						if (index > 0) {
 							// case: "foo barABC", where "foo bar" is in one figure and "ABC"
 							// is in another and there is only enough room to display 
@@ -203,6 +206,8 @@ protected void layout() {
 							int oldWidth = fragment.width;
 							FlowUtilities.setupFragment(fragment, font, segment);
 							lookAheadWidth += oldWidth - fragment.width;
+							availableWidth = context.getCurrentLine().getAvailableWidth() 
+									- fragment.width;
 						}
 					}
 				}
@@ -212,7 +217,7 @@ protected void layout() {
 				 *  this line and it does not start with a whitespace character and if
 				 *  this fragment ends in a whitespace character, we need to not paint
 				 *  that last character. Note that it is important to use
-				 *  string.charAt(length - 1) and not string.charAt(string.length() - 1)
+				 *  string.charAt(fragLength - 1) and not string.charAt(string.length() - 1)
 				 *  because we might not be putting the entire string on this line (as in
 				 *  the case "foo barABC", as explained in the if statement above).
 				 */
