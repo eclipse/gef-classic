@@ -19,8 +19,14 @@ import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 
+import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
+import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2d.geometry.Insets;
+import org.eclipse.draw2d.text.*;
+import org.eclipse.draw2d.text.BlockFlow;
+import org.eclipse.draw2d.text.TextFlow;
 
 import org.eclipse.gef.*;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
@@ -228,9 +234,32 @@ protected void refreshVisuals() {
 	}
 
 	if (getToolTipFigure().getToolTip() == null) {
-		getToolTipFigure().setToolTip(new Label());
+		getToolTipFigure().setToolTip(createToolTip());
 	}
-	((Label)getToolTipFigure().getToolTip()).setText(tooltip);
+	updateToolTipText();
+}
+
+private void updateToolTipText() {
+	IFigure fig = (IFigure)getToolTipFigure().getToolTip().getChildren().get(0);
+	TextFlow tf = (TextFlow)fig.getChildren().get(0);
+	tf.setText(getToolTipText());
+}
+
+private IFigure createToolTip() {
+	FlowPage fp = new FlowPage() {
+		public Dimension getPreferredSize(int w, int h) {
+			Dimension d = super.getPreferredSize(-1, -1);
+			if (d.width > 150)
+				d = super.getPreferredSize(150, -1);
+			return d;
+		}
+	};
+	fp.setOpaque(true);
+	fp.setBorder(new MarginBorder(new Insets(0, 2, 0, 0)));
+	BlockFlow bf = new BlockFlow();
+	bf.add(new TextFlow(getToolTipText()));
+	fp.add(bf);
+	return fp;
 }
 
 protected void setImageDescriptor(ImageDescriptor desc) {
