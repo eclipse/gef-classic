@@ -106,18 +106,6 @@ public void eraseSourceFeedback(Request request) {
 }
 
 /**
- * Returns the bounds of the host's figure by reference.  The returned Rectangle should
- * not be modified. Uses handle bounds if available. 
- * 
- * @return the host figure's bounding Rectangle
- */
-protected Rectangle initialFeedbackRectangle() {
-	if (((GraphicalEditPart)getHost()).getFigure() instanceof HandleBounds)
-		return ((HandleBounds)((GraphicalEditPart)getHost()).getFigure()).getHandleBounds();
-	return ((GraphicalEditPart)getHost()).getFigure().getBounds();
-}
-
-/**
  * @see org.eclipse.gef.EditPolicy#getCommand(org.eclipse.gef.Request)
  */
 public Command getCommand(Request request) {
@@ -205,6 +193,18 @@ protected void hideFocus() {
 	if (focusRect != null)
 		removeFeedback(focusRect);
 	focusRect = null;
+}
+
+/**
+ * Returns the bounds of the host's figure by reference.  The returned Rectangle should
+ * not be modified. Uses handle bounds if available. 
+ * 
+ * @return the host figure's bounding Rectangle
+ */
+protected Rectangle initialFeedbackRectangle() {
+	if (((GraphicalEditPart)getHost()).getFigure() instanceof HandleBounds)
+		return ((HandleBounds)((GraphicalEditPart)getHost()).getFigure()).getHandleBounds();
+	return ((GraphicalEditPart)getHost()).getFigure().getBounds();
 }
 
 /**
