@@ -37,6 +37,7 @@ import org.eclipse.ui.part.PageBook;
 import org.eclipse.draw2d.ColorConstants;
 
 import org.eclipse.gef.internal.Internal;
+import org.eclipse.gef.palette.*;
 import org.eclipse.gef.palette.PaletteEntry;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.ui.palette.PaletteCustomizer;
@@ -802,8 +803,17 @@ protected final void handleApplyPressed() {
  * menu or the toolbar).  It deletes the selected palette entry.
  */
 protected void handleDelete() {
-	getCustomizer().performDelete(getSelectedPaletteEntry());
+	PaletteEntry entry = getSelectedPaletteEntry();
+	PaletteContainer parent = entry.getParent();
+	// Get the index of the previous sibling
+	int index = parent.getChildren().indexOf(entry) - 1;
+	if (index < 0) // There is no previous sibling
+		index = 0;
+	getCustomizer().performDelete(entry);
 	tree.setFocus();
+	PaletteEntry newSelection = (PaletteEntry)parent.getChildren().get(index);
+	// Set selection to the previous sibling
+	treeviewer.setSelection(new StructuredSelection(newSelection));
 }
 
 /**
