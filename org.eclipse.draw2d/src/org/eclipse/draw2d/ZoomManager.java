@@ -14,6 +14,16 @@ public class ZoomManager {
 
 private List listeners = new ArrayList();
 private double zoom = 1.0;
+private double[] zoomSettings = { .25, .5, .75, 1.0, 1.25, 1.50, 1.75, 2.0, 2.25, 2.50, 
+									2.75, 3.00 };
+private int settingPointer = 3;
+private ScalableFreeformLayeredPane pane;
+private FreeformViewport viewport;
+
+public ZoomManager(ScalableFreeformLayeredPane pane, FreeformViewport viewport) {
+	this.pane = pane;
+	this.viewport = viewport;
+}	
 
 /**
  * Adds the given ZoomListener to this ZoomManager's list of listeners.
@@ -57,6 +67,25 @@ public void setZoom(double zoom) {
 		return;
 	this.zoom = zoom;
 	fireZoomChanged();
+}
+
+public void zoomIn() {
+	if( settingPointer < zoomSettings.length-1 ) {
+		settingPointer++;
+		zoom = zoomSettings[settingPointer];
+		pane.setZoom(zoom);
+		viewport.setViewLocation(500,500);
+		fireZoomChanged();
+	}	
+}	
+
+public void zoomOut() {
+	if( settingPointer > 0 ) {
+		settingPointer--;
+		zoom = zoomSettings[settingPointer];
+		pane.setZoom(zoom);
+		fireZoomChanged();
+	}	
 }
 
 }
