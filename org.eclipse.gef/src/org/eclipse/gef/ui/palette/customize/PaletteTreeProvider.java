@@ -5,11 +5,13 @@ import java.beans.PropertyChangeListener;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.jface.viewers.*;
-
 import org.eclipse.gef.palette.PaletteContainer;
 import org.eclipse.gef.palette.PaletteEntry;
 import org.eclipse.gef.palette.PaletteRoot;
+
+import org.eclipse.jface.viewers.ITreeContentProvider;
+import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.jface.viewers.Viewer;
 
 /**
  * This is the {@link org.eclipse.jface.viewers.IContentProvider} for the {@link
@@ -113,21 +115,11 @@ protected void handlePropertyChanged(PropertyChangeEvent evt) {
 	} else if (property.equals(PaletteContainer.PROPERTY_CHILDREN)) {
 		viewer.refresh(entry);
 		List oldChildren = (List)evt.getOldValue();
-		List newChildren = (List)evt.getNewValue();
-		entry.removePropertyChangeListener(modelListener);
 		for (Iterator iter = oldChildren.iterator(); iter.hasNext();) {
 			PaletteEntry child = (PaletteEntry) iter.next();
 			traverseModel(child, false);
 		}
 		traverseModel(entry, true);
-		// If a new child was added, select that new child
-		for (Iterator iter = newChildren.iterator(); iter.hasNext();) {
-			PaletteEntry child = (PaletteEntry) iter.next();
-			if (!oldChildren.contains(child)) {
-				viewer.setSelection(new StructuredSelection(child));
-				return;
-			}
-		}
 	}
 }
 
