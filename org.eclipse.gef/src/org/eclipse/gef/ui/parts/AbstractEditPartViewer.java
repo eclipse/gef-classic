@@ -17,6 +17,7 @@ import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.util.Assert;
 import org.eclipse.jface.viewers.*;
 
@@ -42,7 +43,7 @@ private Control control;
 private EditDomain domain;
 private RootEditPart rootEditPart;
 private EditPart focusPart;
-private ContextMenuProvider contextMenuProvider;
+private MenuManager contextMenu;
 private DelegatingDragAdapter dragAdapter = new DelegatingDragAdapter();
 private DragSource dragSource;
 private DelegatingDropAdapter dropAdapter = new DelegatingDropAdapter();
@@ -117,7 +118,8 @@ public void deselectAll(){
 }
 
 public void handleDispose(DisposeEvent e){
-//	primDeselectAll();
+	if (contextMenu != null)
+		contextMenu.dispose();
 	setControl(null);
 }
 
@@ -147,8 +149,8 @@ protected void fireSelectionChanged() {
 
 public void flush(){}
 
-public ContextMenuProvider getContextMenuProvider() {
-	return contextMenuProvider;
+public MenuManager getContextMenu() {
+	return contextMenu;
 }
 
 public EditPart getContents(){
@@ -229,8 +231,8 @@ protected void hookControl(){
 		getRootEditPart().activate();
 	refreshDragSourceAdapter();
 	refreshDropTargetAdapter();
-	if (contextMenuProvider != null && contextMenuProvider.getMenuManager().getMenu() == null)
-		contextMenuProvider.createMenu();
+	if (contextMenu != null)
+		getControl().setMenu(contextMenu.createContextMenu(getControl()));
 }
 
 protected void hookDragSource(){
@@ -311,12 +313,13 @@ public void select(EditPart editpart){
 	appendSelection(editpart);  // fireSelectionChanged() is called here
 }
 
-public void setContextMenuProvider(ContextMenuProvider provider) {
-	if (contextMenuProvider != null)
-		contextMenuProvider.dispose();
-	contextMenuProvider = provider;
-	if (control != null && contextMenuProvider.getMenuManager().getMenu() == null)
-		contextMenuProvider.createMenu();
+public void setContextMenu(MenuManager manager) {
+	if (contextMenu != null)
+		contextMenu.dispose();
+	contextMenu = manager;
+	if (getControl() != null && !getControl().isDisposed())
+		getControl().setMenu(
+			contextMenu.createContextMenu(getControl()));
 }
 
 public void setContents(EditPart editpart){
