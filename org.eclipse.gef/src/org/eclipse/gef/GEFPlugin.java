@@ -9,8 +9,10 @@ package org.eclipse.gef;
 import java.util.*;
 
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.core.internal.plugins.PluginDescriptor;
 import org.eclipse.core.runtime.IPluginDescriptor;
 import org.eclipse.jface.resource.*;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.views.properties.IPropertySheetEntry;
 
 import org.eclipse.gef.commands.CommandStack;
@@ -24,7 +26,7 @@ import org.eclipse.gef.internal.Internal;
  * @see #getImageDescriptor(String)
  */
 public final class GEFPlugin
-	extends org.eclipse.core.runtime.Plugin
+	extends AbstractUIPlugin
 	implements SharedImageConstants
 {
 

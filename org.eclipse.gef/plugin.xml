@@ -3,7 +3,8 @@
    id="org.eclipse.gef"
    name="Graphical Editor Framework"
    version="2.0.1"
-   provider-name="Eclipse.org">
+   provider-name="Eclipse.org"
+   class="org.eclipse.gef.GEFPlugin">
 
    <runtime>
       <library name="runtime/gef.jar">
