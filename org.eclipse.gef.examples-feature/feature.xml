@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.eclipse.gef.examples"
+      label="%featureName"
+      version="2.1.1"
+      provider-name="%providerName"
+      image="eclipse_update_120.jpg">
+
+   <description>
+      %description
+   </description>
+
+   <license>
+      %license
+   </license>
+
+   <requires>
+      <import plugin="org.eclipse.gef" version="2.1.1" match="compatible"/>
+   </requires>
+
+   <plugin
+         id="org.eclipse.gef.examples.logic"
+         download-size="0"
+         install-size="0"
+         version="0.0.0">
+   </plugin>
+	
+	<plugin
+         id="org.eclipse.gef.examples.flow"
+         download-size="0"
+         install-size="0"
+         version="0.0.0">
+   </plugin>
+   
+	<plugin
+         id="org.eclipse.gef.examples.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0">
+   </plugin>
+
+</feature>
