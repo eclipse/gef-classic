@@ -32,9 +32,9 @@ import org.eclipse.gef.commands.Command;
  * feedback, and most importantly, {@link #getCommand(Request) obtaining} commands. Only 
  * {@link Command Commands} should change the model.
  * <p>
- * IMPORTANT: This interface is not intended to be implemented by clients.  Clients should
- * inherit from {@link org.eclipse.gef.editparts.AbstractEditPart}.  New methods may be
- * added in the future.
+ * IMPORTANT: This interface is <EM>not<EM> intended to be implemented by clients. 
+ * Clients should inherit from {@link org.eclipse.gef.editparts.AbstractEditPart}.  New
+ * methods may be added in the future.
  */
 public interface EditPart 
 	extends IAdaptable
@@ -89,11 +89,10 @@ void addEditPartListener(EditPartListener listener);
 void addNotify();
 
 /**
- * Deactivates the EditPart.  EditParts that observe a dynamic model or support editing must
- * be <i>active</i>.  <code>deactivate()</code> is guaranteed to be called when an EditPart
- * will no longer be used.
- * Called by the managing EditPart, or the Viewer in the case of the
- * {@link RootEditPart}. This method may be called multiple times.
+ * Deactivates the EditPart. EditParts that observe a dynamic model or support editing
+ * must be <i>active</i>.  <code>deactivate()</code> is guaranteed to be called when an
+ * EditPart will no longer be used. Called by the managing EditPart, or the Viewer in the
+ * case of the {@link RootEditPart}. This method may be called multiple times.
  * <P>During deactivation the receiver should:
  * <UL>
  * 	<LI>remove all listeners that were added in {@link #activate}

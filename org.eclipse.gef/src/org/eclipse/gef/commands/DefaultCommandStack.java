@@ -144,7 +144,7 @@ public void redo() {
 
 /**
  * @param listener CommandStackListener
- * @see org.eclipse.gef.commands.CommandStack#removeCommandStackListener(CommandStackListener)
+ * @see CommandStack#removeCommandStackListener(CommandStackListener)
  */
 public void removeCommandStackListener(CommandStackListener listener) {
 	listeners.remove(listener);

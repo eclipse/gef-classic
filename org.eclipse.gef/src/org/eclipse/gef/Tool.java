@@ -10,13 +10,14 @@ import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.events.*;
 
 /**
- * A <code>Tool</code> interprets Mouse and Keyboard input from an
- * {@link EditDomain} and its {@link EditPartViewer EditPartViewers}.  The active Tool and
- * its state determines how the EditDomain will interpret input.  Input flows from a Viewer,
- * to the EditDomain, to the EditDomain's active Tool.
- * <P><code>Tools</code> process low-level events and turn them into higher-level operations.
- * These operations are encapsulated by {@link Request Requests}.  The Requests are then
- * used to communicate with EditParts in the Viewer to perform the User's operation.  Using
+ * A <code>Tool</code> interprets Mouse and Keyboard input from an {@link EditDomain} and
+ * its {@link EditPartViewer EditPartViewers}. The active Tool and its state determines
+ * how the EditDomain will interpret input. Input flows from a Viewer, to the EditDomain,
+ * to the EditDomain's active Tool.
+ * <P>
+ * <code>Tools</code> process low-level events and turn them into higher-level operations.
+ * These operations are encapsulated by {@link Request Requests}. The Requests are then
+ * used to communicate with EditParts in the Viewer to perform the User's operation. Using
  * Requests, Tools will:
  * <UL>
  * 	<LI>Ask EditParts for {@link org.eclipse.gef.commands.Command Commands} to perform
@@ -143,15 +144,16 @@ void mouseUp(MouseEvent mouseEvent, EditPartViewer viewer);
 void nativeDragStarted(DragSourceEvent event, EditPartViewer viewer);
 
 /**
- * Called to set the EditDomain for this Tool.  This is called right before {@link #activate()}.
+ * Called to set the EditDomain for this Tool. This is called right before {@link
+ * #activate()}.
  * @param domain The EditDomain to which this Tool belongs
  */
 void setEditDomain(EditDomain domain);
 
 /**
- * Called to set the current Viewer receiving events.  This method is rarely called, since the
- * Viewer is always passed along with the events themselves.  This method really just applies
- * to {@link DragTracker DragTrackers}.
+ * Called to set the current Viewer receiving events. This method is rarely called, since
+ * the Viewer is always passed along with the events themselves. This method really just
+ * applies to {@link DragTracker DragTrackers}.
  * @param viewer The current Viewer
  */
 void setViewer(EditPartViewer viewer);

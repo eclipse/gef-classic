@@ -34,12 +34,8 @@ public boolean isOpaque() {
 }
 
 /**
- * Paints a rectangle that looks like the system's focus rectangle.
- * @see org.eclipse.swt.graphics.GC#drawFocus(int, int, int, int)
+ * Paints a focus rectangle.
  * @see org.eclipse.draw2d.Border#paint(IFigure, Graphics, Insets)
- * @param figure The figure this border belongs to
- * @param graphics The graphics object used for painting
- * @param insets The insets
  */
 public void paint(IFigure figure, Graphics graphics, Insets insets) {
 	tempRect.setBounds(getPaintRectangle(figure, insets));

@@ -1,10 +1,4 @@
 package org.eclipse.gef;
-/*
- * Constant used to identifyLicensed Material - Property of IBM
- * Constant used to identify(C) Copyright IBM Corp. 2001, 2002 - All Rights Reserved.
- * Constant used to identifyUS Government Users Restricted Rights - Use, duplication or disclosure
- * Constant used to identifyrestricted by GSA ADP Schedule Contract with IBM Corp.
- */
 
 /**
  * The set of constants used to identify <code>Requests</code> by their {@link
