@@ -110,10 +110,16 @@ public void addPropertySheetEntryListener(IPropertySheetEntryListener listener) 
  * Method declared on IPropertySheetEntry.
  */
 public void applyEditorValue() {
-	// Check if editor has a valid value
-	if (editor == null || !editor.isValueValid()) 
+	if (editor == null) 
 		return;
-
+		
+	// Check if editor has a valid value
+	if (!editor.isValueValid()) {
+		setErrorText(editor.getErrorMessage());
+		return;
+	} else
+		setErrorText(null);
+		
 	// See if the value changed and if so update
 	Object newValue = editor.getValue();
 	boolean changed = false;
@@ -233,8 +239,13 @@ public void dispose() {
 	}
 	// recursive call to dispose children
 	if (childEntries != null)
-		for (int i = 0; i < childEntries.length; i++)
-			childEntries[i].dispose();
+		for (int i = 0; i < childEntries.length; i++) {
+			// an error in a property source may cause refreshChildEntries
+			// to fail. Since the Workbench handles such errors we
+			// can be left in a state where a child entry is null.
+			if (childEntries[i] != null)
+				childEntries[i].dispose();
+		}
 }
 /**
  * The child entries of this entry have changed 
@@ -298,7 +309,7 @@ public IPropertySheetEntry[] getChildEntries() {
 protected CommandStack getCommandStack() {
 	//only the root has, and is listening too, the command stack
 	if (getParent() != null)
-		return ((UndoablePropertySheetEntry)getParent()).getCommandStack();
+		return getParent().getCommandStack();
 	return stack;
 }
 
@@ -336,14 +347,6 @@ public CellEditor getEditor(Composite parent) {
 		setErrorText(editor.getErrorMessage());
 	}
 	return editor;
-}
-/**
- * Returns the edited value of this entry.
- *
- * @return the edited value of this entry
- */
-private Object getEditValue() {
-	return editValue;
 }
 /**
  * Returns the edit value for the object at the given index.
@@ -576,7 +579,7 @@ public void resetPropertyValue() {
 	}
 	if (change) {
 		getCommandStack().execute(cc);
-		refreshValues();	
+		refreshFromRoot();
 	}
 }
 
