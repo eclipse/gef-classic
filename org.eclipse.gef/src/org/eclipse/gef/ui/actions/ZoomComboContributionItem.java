@@ -132,6 +132,8 @@ protected Control createControl(Composite parent) {
 	
 	// Initialize width of combo
 	combo.setText(initString);
+	if (SWT.getPlatform().equals("gtk"))
+		combo.setItems(new String[] {initString});
 	toolitem.setWidth(computeWidth(combo));
 	refresh();
 	return combo;
