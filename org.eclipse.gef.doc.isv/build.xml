@@ -3,7 +3,7 @@
 <property name="pluginName" value="org.eclipse.gef.doc.isv"/>
 
 <target name="init">    
-    <echo message="Processing ${pluginName}." />
+    <echo message="Building ${pluginName}..." />
 	<property name="tempDir" value="\builds\antbuilds"/>
 	<property name="pluginName.temp.path"	value="${tempDir}/${pluginName}/plugins/${pluginName}"/>
 	<tstamp>
@@ -13,14 +13,12 @@
 </target>
 
 <target name="copy" depends="init">
-	<echo message="Performing copy." />
-	<copyProject project="${pluginName}" toDir="${pluginName.temp.path}" exclude="reference\,options.txt,packages.txt,doc.bat,package-list,oss_build.xml,javadoc.xml,javadocAll.xml"/>
+	<copyResources project="${pluginName}" toDir="${pluginName.temp.path}" exclude="reference\,package-list,javadoc.xml,javadocAll.xml"/>
 </target>
 
 <target name="build" depends="copy">
-	<echo message="Performing zip." />
 	<zip basedir="${tempDir}/${pluginName}" zipfile="${tempDir}/${pluginName}-${creation.time}.zip" />
-	<echo message="Build complete." />
+	<echo message="${pluginName} complete." />
 </target>
 
 </project>
