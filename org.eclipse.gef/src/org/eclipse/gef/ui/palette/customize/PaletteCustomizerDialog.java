@@ -623,14 +623,6 @@ protected PageBook createPropertiesPanelTitle(Composite parent) {
 	errorTitle.setFont(errorPage.getFont());
 	errorTitle.setLayoutData(new GridData(GridData.FILL_HORIZONTAL 
 	                            | GridData.VERTICAL_ALIGN_FILL));
-	errorTitle.addKeyListener(new KeyListener() {
-		public void keyPressed(KeyEvent e) {
-			if (e.keyCode == SWT.ESC)
-				cancelPressed();
-		}
-		public void keyReleased(KeyEvent e) {
-		}
-	});
 	Label separator = new Label(errorPage, SWT.SEPARATOR | SWT.HORIZONTAL);
 	separator.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 	
