@@ -9,9 +9,7 @@ package org.eclipse.gef.ui.parts;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
-import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.gef.palette.PaletteRoot;
-import org.eclipse.gef.ui.actions.CopyTemplateAction;
 import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.eclipse.gef.ui.palette.PaletteViewerImpl;
 
@@ -22,11 +20,6 @@ public abstract class GraphicalEditorWithPalette
 private PaletteViewer paletteViewer;
 
 protected void configurePaletteViewer() { }
-
-protected void createActions() {
-	super.createActions();
-	getActionRegistry().registerAction(new CopyTemplateAction(this));
-}
 
 private void createPaletteViewer(Composite parent) {
 	PaletteViewer viewer = new PaletteViewerImpl();
