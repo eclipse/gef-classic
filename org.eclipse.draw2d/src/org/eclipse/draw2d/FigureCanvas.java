@@ -84,13 +84,16 @@ public FigureCanvas(Composite parent, LightweightSystem lws) {
  * @see org.eclipse.swt.widgets.Composite#computeSize(int, int, boolean)
  */
 public org.eclipse.swt.graphics.Point computeSize(int wHint, int hHint, boolean changed) {
-	//@TODO:Pratik
-	// Need to add the size of the scrollbars.  Scrollbars could be auto, always on, or
-	// never.  Based on these settings, the available space, and the required space,
-	// determine whether scrollbars are shown or not, and add their size to the result.
-	// You can determine the sizes of scrollbars as follows:
-	//		computeTrim(0,0,0,0).width (will return width of vertical scrollbar)
+	/* @TODO
+	 * Need to add the size of the scrollbars.  Scrollbars could be auto, always on, or
+	 * never. Based on these settings, the available space, and the required space,
+	 * determine whether scrollbars are shown or not, and add their size to the result.
+	 * You can determine the sizes of scrollbars as follows:
+	 * 
+	 * computeTrim(0,0,0,0).width (will return width of vertical scrollbar)
+	 */
 	Dimension size = getLightweightSystem().getRootFigure().getPreferredSize(wHint, hHint);
+	size.union(new Dimension(wHint, hHint));
 	return new org.eclipse.swt.graphics.Point(size.width, size.height);
 }
 
@@ -331,7 +334,8 @@ public void setVerticalScrollBarVisibility(int v) {
 }
 
 /**
- * Sets the Viewport.
+ * Sets the Viewport. The given Viewport must use "fake" scrolling. That is, it must be
+ * constructed using <code>new Viewport(true)</code>.
  */
 public void setViewport(Viewport vp) {
 	if (viewport != null)

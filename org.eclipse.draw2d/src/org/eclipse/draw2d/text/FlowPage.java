@@ -30,9 +30,19 @@ public Dimension getPreferredSize(int w, int h) {
 	if (w >= 0) {
 		width = Math.max(0, w - getInsets().getWidth());
 	}
+	
+	//Flowpage must temporarily layout to determine its preferred size
+	int oldWidth = getRecommendedWidth();
 	setRecommendedWidth(width);
 	validate();
-	return pageSize.getExpanded(getInsets().getWidth(), getInsets().getHeight());
+	Dimension result = pageSize.getExpanded(getInsets().getWidth(), getInsets().getHeight());
+	
+	//Undo the temporary layout by restoring the old recommended width, and laying out if needed
+	if (getRecommendedWidth() != oldWidth) {
+		setRecommendedWidth(oldWidth);
+		getUpdateManager().addInvalidFigure(this);
+	}
+	return result;
 }
 
 int getRecommendedWidth() {
