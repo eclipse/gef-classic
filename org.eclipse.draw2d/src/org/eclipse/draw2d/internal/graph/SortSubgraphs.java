@@ -168,7 +168,7 @@ private void breakSubgraphCycles() {
 //			System.out.println("breaking cycle with:" + cycleRoot);
 //			Display.getCurrent().beep();
 			cycleRoot.x = -1; //prevent x from ever reaching 0
-		} else if (OGmembers.size() > 0)
+		} // else if (OGmembers.size() > 0)
 			//System.out.println("FAILED TO FIND CYCLE ROOT"); //$NON-NLS-1$
 	} while (cycleRoot != null);
 }
