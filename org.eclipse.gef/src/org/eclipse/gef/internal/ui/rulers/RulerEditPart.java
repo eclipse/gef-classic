@@ -73,7 +73,10 @@ protected void createEditPolicies() {
 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
 */
 protected IFigure createFigure() {
-	return new RulerFigure(isHorizontal(), getRulerProvider().getUnit());
+	RulerFigure ruler =  new RulerFigure(isHorizontal(), getRulerProvider().getUnit());
+	if (ruler.getUnit() == RulerProvider.UNIT_PIXELS)
+		ruler.setInterval(100, 2);
+	return ruler;
 }
 
 /* (non-Javadoc)
