@@ -41,7 +41,16 @@ protected AccessibleEditPart createAccessible() {
 }
 
 public IFigure createFigure() {
-	return new DetailedLabelFigure();
+	final DetailedLabelFigure figure = new DetailedLabelFigure();
+	figure.addChangeListener(new ChangeListener(){
+		public void handleStateChanged(ChangeEvent e) {
+			if (e.getPropertyName().equals(DetailedLabelFigure.SELECTED_PROPERTY)) {
+				if (figure.isSelected())
+					getPaletteViewer().setSelection(getPaletteEntry());
+			}
+		}
+	});
+	return figure;
 }
 
 private PaletteTemplateEntry getTemplateEntry() {
