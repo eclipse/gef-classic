@@ -23,7 +23,8 @@ import org.eclipse.draw2d.geometry.PointList;
 
 /**
  * A Path representation for the ShortestPathRouting. A Path has a start and end point 
- * and may have bendpoints. The output of a path is accessed via the method <code>getPoints()</code>.
+ * and may have bendpoints. The output of a path is accessed via the method
+ * <code>getPoints()</code>.
  * 
  * This class is for internal use only.
  * @author Whitney Sorenson
@@ -143,39 +144,68 @@ Path(Vertex start, Vertex end) {
  * @param target the target obstacle
  */
 private void addAllSegmentsBetween(Obstacle source, Obstacle target) {
-	addConnectingSegment(new Segment(source.bottomLeft, target.bottomLeft), source, target, false);
-	addConnectingSegment(new Segment(source.bottomLeft, target.bottomRight), source, target, false);
-	addConnectingSegment(new Segment(source.bottomRight, target.bottomLeft), source, target, true);
-	addConnectingSegment(new Segment(source.bottomRight, target.bottomRight), source, target, true);
-	addConnectingSegment(new Segment(source.topLeft, target.topRight),  source, target, true);
-	addConnectingSegment(new Segment(source.topLeft, target.topLeft), source, target, true);
-	addConnectingSegment(new Segment(source.topRight, target.topRight), source, target, false);
-	addConnectingSegment(new Segment(source.topRight, target.topLeft), source, target, false);
+	addConnectingSegment(new Segment(source.bottomLeft, target.bottomLeft),
+			source, target, false, false);
+	addConnectingSegment(new Segment(source.bottomRight, target.bottomRight),
+			source, target, true, true);
+	addConnectingSegment(new Segment(source.topLeft, target.topLeft),
+			source, target, true, true);
+	addConnectingSegment(new Segment(source.topRight, target.topRight),
+			source, target, false, false);
+
+	if (source.bottom() == target.bottom()) {
+		addConnectingSegment(new Segment(source.bottomLeft, target.bottomRight),
+				source, target, false, true);
+		addConnectingSegment(new Segment(source.bottomRight, target.bottomLeft),
+				source, target, true, false);
+	}
+	if (source.y == target.y) {
+		addConnectingSegment(new Segment(source.topLeft, target.topRight),
+				source, target, true, false);
+		addConnectingSegment(new Segment(source.topRight, target.topLeft),
+				source, target, false, true);
+	}
+	if (source.x == target.x) {
+		addConnectingSegment(new Segment(source.bottomLeft, target.topLeft),
+				source, target, false, true);
+		addConnectingSegment(new Segment(source.topLeft, target.bottomLeft),
+				source, target, true, false);
+	}
+	if (source.right() == target.right()) {
+		addConnectingSegment(new Segment(source.bottomRight, target.topRight),
+				source, target, true, false);
+		addConnectingSegment(new Segment(source.topRight, target.bottomRight),
+				source, target, false, true);
+	}
 }
 
 /**
  * Attempts to add a segment between the given obstacles to the visibility graph. This 
  * method is specifically written for the case where the two obstacles intersect and contains
- * a boolean as to whether to check the diagnol that includes the top right point of the other obstacle.
+ * a boolean as to whether to check the diagonal that includes the top right point of the
+ * other obstacle.
  * 
  * @param segment the segment to check
  * @param o1 the first obstacle
  * @param o2 the second obstacle
- * @param checkTopRight whether or not to check the diagnol containing top right point
+ * @param checkTopRight1 whether or not to check the diagonal containing top right point
  */
-private void addConnectingSegment(Segment segment, Obstacle o1, Obstacle o2, boolean checkTopRight) {
+private void addConnectingSegment(Segment segment, Obstacle o1, Obstacle o2, boolean checkTopRight1, boolean checkTopRight2) {
 	if (threshold != 0
 			&& (segment.end.getDistance(end) + segment.end.getDistance(start) > threshold
 				|| segment.start.getDistance(end) + segment.start.getDistance(start) > threshold))
 		return;
-	if (o2.contains(segment.start) || o1.contains(segment.end)) 
+	
+	if (o2.containsProper(segment.start) || o1.containsProper(segment.end)) 
 		return;
 	
-	if (checkTopRight && (segment.intersects(o1.x, o1.bottom() - 1, o1.right() - 1, o1.y) 
-			|| segment.intersects(o2.x, o2.bottom() - 1, o2.right() - 1, o2.y)))
+	if (checkTopRight1 && segment.intersects(o1.x, o1.bottom() - 1, o1.right() - 1, o1.y))
 		return;
-	if (!checkTopRight && (segment.intersects(o1.x, o1.y, o1.right() - 1, o1.bottom() - 1)
-			|| segment.intersects(o2.x, o2.y, o2.right() - 1, o2.bottom() - 1)))
+	if (checkTopRight2 && segment.intersects(o2.x, o2.bottom() - 1, o2.right() - 1, o2.y))
+		return;
+	if (!checkTopRight1 && segment.intersects(o1.x, o1.y, o1.right() - 1, o1.bottom() - 1))
+		return;
+	if (!checkTopRight2 && segment.intersects(o2.x, o2.y, o2.right() - 1, o2.bottom() - 1))
 		return;
 	
 	stack.push(o1);
@@ -247,8 +277,8 @@ private void addSegment(Segment segment, Obstacle exclude1, Obstacle exclude2, L
 
 		if (segment.intersects(obs.x, obs.y, obs.right() - 1, obs.bottom() - 1)
 				|| segment.intersects(obs.x, obs.bottom() - 1, obs.right() - 1, obs.y)
-				|| obs.contains(segment.start) 
-				|| obs.contains(segment.end)) {
+				|| obs.containsProper(segment.start) 
+				|| obs.containsProper(segment.end)) {
 			if (!visibleObstacles.contains(obs))
 				addObstacle(obs);
 			return;
@@ -312,6 +342,22 @@ private void addSegmentsFor(Vertex vertex, Obstacle obs) {
 			seg = new Segment(vertex, obs.topLeft);
 			seg2 = new Segment(vertex, obs.bottomLeft);
 			break;
+		default:
+			if (vertex.x == obs.x) {
+				seg = new Segment(vertex, obs.topLeft);
+				seg2 = new Segment(vertex, obs.bottomLeft);
+			} else if (vertex.y == obs.y) {
+				seg = new Segment(vertex, obs.topLeft);
+				seg2 = new Segment(vertex, obs.topRight);
+			} else if (vertex.y == obs.bottom() - 1) {
+				seg = new Segment(vertex, obs.bottomLeft);
+				seg2 = new Segment(vertex, obs.bottomRight);
+			} else if (vertex.x == obs.right() - 1) {
+				seg = new Segment(vertex, obs.topRight);
+				seg2 = new Segment(vertex, obs.bottomRight);
+			} else {
+				throw new RuntimeException("Vertex does not meet any expected conditions"); //$NON-NLS-1$
+			}
 	}
 	
 	stack.push(obs);
@@ -541,10 +587,13 @@ public Point getStartPoint() {
 Path getSubPath(Segment currentSegment) {
 	// ready new path
 	Path newPath = new Path(currentSegment.start, end);
-	newPath.grownSegments = new ArrayList(grownSegments.subList(grownSegments.indexOf(currentSegment), grownSegments.size()));
+	newPath.grownSegments = new ArrayList(grownSegments.subList(
+			grownSegments.indexOf(currentSegment),
+			grownSegments.size()));
 	
 	// fix old path
-	grownSegments = new ArrayList(grownSegments.subList(0, grownSegments.indexOf(currentSegment) + 1));		
+	grownSegments = new ArrayList(grownSegments.subList(
+			0, grownSegments.indexOf(currentSegment) + 1));		
 	end = currentSegment.end;
 	
 	subPath = newPath;
@@ -661,7 +710,22 @@ void refreshExcludedObstacles(List allObstacles) {
 	
 	for (int i = 0; i < allObstacles.size(); i++) {
 		Obstacle o = (Obstacle)allObstacles.get(i);
-		o.exclude = o.contains(start) || o.contains(end);
+		
+		if (o.contains(start)) {
+			if (o.containsProper(start))
+				o.exclude = true;
+			else {
+				//Check for corners
+			}
+		}
+		
+		if (o.contains(end)) {
+			if (o.containsProper(end))
+				o.exclude = true;
+			else {
+				//check for corners
+			}
+		}
 
 		if (o.exclude && !excludedObstacles.contains(o))
 			excludedObstacles.add(o);
