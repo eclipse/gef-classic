@@ -46,7 +46,7 @@ public void deactivate() {
 	super.deactivate();
 }
 
-public TextLocation getLocation(Point absolute) {
+public TextLocation getLocation(Point absolute, int trailing[]) {
 	return null;
 }
 

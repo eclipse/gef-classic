@@ -21,18 +21,19 @@ import org.eclipse.gef.examples.text.TextLocation;
  */
 public interface TextualEditPart extends GraphicalEditPart {
 
-int COLUMN_PREVIOUS = 1;
-int COLUMN_NEXT = 2;
-int COLUMN_PREVIOUS_INTO = 3;
-int COLUMN_NEXT_INTO = 4;
-int LINE_UP = 5;
-int LINE_DOWN = 6;
-int LINE_UP_INTO = 7;
-int LINE_DOWN_INTO = 8;
-int LINE_END = 9;
-int LINE_START = 10;
-int LINE_END_QUERY = 11;
-int LINE_START_QUERY = 12;
+/**
+ * @since 3.1
+ * @return
+ */
+boolean acceptsCaret();
+
+/**
+ * Returns the placement for the caret in absolute coordinates.
+ * @since 3.1
+ * @param offset the location of the caret within the receiver
+ * @return the absolute caret location
+ */
+Rectangle getCaretPlacement(int offset, boolean isAfter);
 
 /**
  * Returns the length in characters of this part
@@ -41,17 +42,9 @@ int LINE_START_QUERY = 12;
  */
 int getLength();
 
-/**
- * Returns the placement for the caret in absolute coordinates.
- * @since 3.1
- * @param offset the location of the caret within the receiver
- * @return the absolute caret location
- */
-Rectangle getCaretPlacement(int offset);
+TextLocation getLocation(Point absolute, int trailing[]);
 
-TextLocation getNextLocation(int movement, TextLocation current, Rectangle caret);
-
-TextLocation getLocation(Point absolute);
+TextLocation getNextLocation(CaretSearch search);
 
 /**
  * Sets the begin and ending selection indices.  Indices are zero-based, and are specified
@@ -63,11 +56,5 @@ TextLocation getLocation(Point absolute);
  * @param end the end offset or -1
  */
 void setSelection(int begin, int end);
-
-/**
- * @since 3.1
- * @return
- */
-boolean acceptsCaret();
 
 }

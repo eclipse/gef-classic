@@ -12,6 +12,7 @@
 package org.eclipse.gef.examples.text.edit;
 
 import java.beans.PropertyChangeEvent;
+import java.text.BreakIterator;
 
 import org.eclipse.jface.util.Assert;
 
@@ -47,10 +48,10 @@ protected IFigure createFigure() {
 	return flow;
 }
 
-public Rectangle getCaretPlacement(int offset) {
+public Rectangle getCaretPlacement(int offset, boolean trailing) {
 	Assert.isTrue(offset <= getLength());
 
-	Rectangle result = getTextFlow().getCaretPlacement(offset);
+	Rectangle result = getTextFlow().getCaretPlacement(offset, trailing);
 	getFigure().translateToAbsolute(result);
 	return result;
 }
@@ -63,74 +64,81 @@ public int getLength() {
 	return getTextFlow().getText().length();
 }
 
-public TextLocation getLocation(Point absolute) {
+public TextLocation getLocation(Point absolute, int trailing[]) {
 	Point pt = absolute.getCopy();
 	getFigure().translateToRelative(pt);
-	int offset = getTextFlow().getOffset(pt);
+	int offset = getTextFlow().getOffset(pt, trailing);
 	if (offset == - 1)
 		return null;
 	return new TextLocation(this, offset);
 }
 
-public TextLocation getNextLocation(int movement, TextLocation current, Rectangle caret) {
-	Point where = null;
+public TextLocation getNextLocation(CaretSearch search) {
+	Point where = new Point();
 	int offset;
-	switch (movement) {
-		case LINE_START_QUERY:
-			where = caret.getCenter();
+	switch (search.type) {
+		case CaretSearch.LINE_BOUNDARY:
+			if (!search.isRecursive)
+				break;
+			where.y = search.y;
 			getFigure().translateToRelative(where);
-			offset = getTextFlow().getFirstOffsetForLine(where.y);
+			if (search.isForward)
+				offset = getTextFlow().getLastOffsetForLine(where.y);
+			else
+				offset = getTextFlow().getFirstOffsetForLine(where.y);
 			if (offset == - 1)
 				return null;
 			return new TextLocation(this, offset);
-		case LINE_END_QUERY:
-			where = caret.getCenter(); 
-			getFigure().translateToRelative(where);
-			offset = getTextFlow().getLastOffsetForLine(where.y);
-			if (offset == - 1)
-				return null;
-			return new TextLocation(this, offset);
-		case COLUMN_PREVIOUS_INTO:
-			return new TextLocation(this, getLength());
-		
-		case COLUMN_NEXT_INTO:
-			return new TextLocation(this, 0);
-		
-		case COLUMN_NEXT:
-			if (current.offset < getLength())
-				return new TextLocation(this, current.offset + 1);
-			break;
 			
-		case COLUMN_PREVIOUS:
-			if (current.offset > 0)
-				return new TextLocation(this, current.offset - 1);
+		case CaretSearch.COLUMN:
+			if (search.isRecursive) {
+				if (search.isInto) {
+					if (search.isForward)
+						return new TextLocation(this, 0);
+					else
+						return new TextLocation(this, getLength());
+				} else {
+					if (getLength() > 0)
+						if (search.isForward)
+							return new TextLocation(this, 1);
+						else
+							return new TextLocation(this, getLength() - 1);
+					//In the rare case that this is an empty element, skip it.
+					return null;
+				}
+			}
+				
+			if (search.isForward && search.where.offset < getLength())
+				return new TextLocation(this, search.where.offset + 1);
+			if (!search.isForward && search.where.offset > 0)
+				return new TextLocation(this, search.where.offset - 1);
 			break;
 		
-		case LINE_DOWN_INTO:
-			where = caret.getBottom();
-		case LINE_UP_INTO:
-			if (where == null)
-				where = caret.getTop().translate(0, -1);
+		case CaretSearch.ROW:
+			if (!search.isRecursive)
+				break;
+			where.x = search.x;
+			where.y = search.y;
 			getFigure().translateToRelative(where);
-			//Rectangle area = getFigure().getClientArea();
-			//where.translate(-area.x, -area.y);
 
-			offset = getTextFlow().getNextOffset(where, movement == LINE_DOWN_INTO);
+			offset = getTextFlow().getNextOffset(where, search.isForward);
 			if (offset == -1)
 				return null;
 			return new TextLocation(this, offset);
-		
-		case LINE_UP:
-		case LINE_DOWN:
-		case LINE_START:
-		case LINE_END:
-			//Allow ancestor block to perform LINE searches.
-			return getTextParent().getNextLocation(movement, current, caret);
+		case CaretSearch.WORD_BOUNDARY:
+			String text = getTextFlow().getText();
+			BreakIterator iter = BreakIterator.getWordInstance();
+			iter.setText(text);
+			if (search.isForward)
+				offset = iter.following(search.where.offset);
+			else
+				offset = iter.preceding(search.where.offset);
+			if (offset == BreakIterator.DONE)
+				return getTextParent().getNextLocation(search);
+			return new TextLocation(this, offset);
 	}
-	if (current == null)
-		return null;
 	return ((TextualEditPart)getParent())
-		.getNextLocation(movement, current, caret);
+		.getNextLocation(search);
 }
 
 TextFlow getTextFlow() {

@@ -79,8 +79,8 @@ protected IFigure createFigure() {
 /**
  * @see TextualEditPart#getCaretPlacement(int)
  */
-public Rectangle getCaretPlacement(int offset) {
-	Point pt = new Point(textLayout.getLocation(offset, false));
+public Rectangle getCaretPlacement(int offset, boolean trailing) {
+	Point pt = new Point(textLayout.getLocation(offset, trailing));
 	pt.translate(getFigure().getClientArea().getLocation());
 	Rectangle result = new Rectangle(pt.x, pt.y, 1, 12);
 	getFigure().translateToAbsolute(result);
@@ -101,45 +101,44 @@ public int getLength() {
 	return textLayout.getText().length();
 }
 
-public TextLocation getLocation(Point absolute) {
+public TextLocation getLocation(Point absolute, int trailing[]) {
 	Point pt = Point.SINGLETON.setLocation(absolute);
 	IFigure f = getFigure();
 	f.translateToRelative(pt);
 	pt.translate(f.getClientArea().getLocation().negate());
 	
-	int byReference[] = new int[1];
-	int offset = textLayout.getOffset(pt.x, pt.y, byReference);
-	return new TextLocation(this, offset + byReference[0]);
+	int offset = textLayout.getOffset(pt.x, pt.y, trailing);
+	return new TextLocation(this, offset + trailing[0]);
 }
 
 /**
  * @see TextualEditPart#getNextLocation(int, TextLocation)
  */
-public TextLocation getNextLocation(int movement, TextLocation current, Rectangle caret) {
-	switch (movement) {
-		case COLUMN_PREVIOUS_INTO:
-			return new TextLocation(this, getLength());
-		
-		case COLUMN_NEXT_INTO:
-			return new TextLocation(this, 0);
-		
-		case COLUMN_NEXT:
-			if (current.offset < getLength())
-				return new TextLocation(this, current.offset + 1);
-			break;
+public TextLocation getNextLocation(CaretSearch search) {
+	switch (search.type) {
+		case CaretSearch.COLUMN:
+			if (search.isForward) {
+				if (search.isRecursive)
+					return new TextLocation(this, 0);
+				if (search.where.offset < getLength())
+					return new TextLocation(this, search.where.offset + 1);
+				else
+					break;
+			} else {
+				if (search.isRecursive)
+					return new TextLocation(this, getLength() - 1);
+				if (search.where.offset > 0)
+					return new TextLocation(this, search.where.offset - 1);
+				else
+					break;
+			}
 			
-		case COLUMN_PREVIOUS:
-			if (current.offset > 0)
-				return new TextLocation(this, current.offset - 1);
-			break;
-		
-		case LINE_DOWN_INTO:
-		case LINE_DOWN:
+		case CaretSearch.ROW:
 			int offset;
-			if (current != null && current.part == this)
-				offset = findNextLineOffset(current.offset, true);
+			if (search.where != null && search.where.part == this)
+				offset = findNextLineOffset(search.where.offset, search.isForward);
 			else {
-				Point caretBottom = caret.getBottom();
+				Point caretBottom = new Point(0, search.y); //was Top or Bottom of caret
 				getFigure().translateToRelative(caretBottom);
 				Rectangle clientArea = getFigure().getClientArea();
 				caretBottom.translate(-clientArea.x, -clientArea.y);
@@ -148,26 +147,8 @@ public TextLocation getNextLocation(int movement, TextLocation current, Rectangl
 			if (offset > - 1)
 				return new TextLocation(this, offset);
 			break;
-			
-		case LINE_UP_INTO:
-		case LINE_UP:
-			if (current != null && current.part == this)
-				offset = findNextLineOffset(current.offset, false);
-			else {
-				Point caretTop = caret.getTop();
-				getFigure().translateToRelative(caretTop);
-				Rectangle clientArea = getFigure().getClientArea();
-				caretTop.translate(-clientArea.x, -clientArea.y);
-				offset = findOffsetForPoint(caretTop);
-			}
-			if (offset > - 1)
-				return new TextLocation(this, offset);
-			break;
 	}
-	if (current == null)
-		return null;
-	return ((TextualEditPart)getParent())
-		.getNextLocation(movement, current, caret);
+	return ((TextualEditPart)getParent()).getNextLocation(search);
 }
 
 /**

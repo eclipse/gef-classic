@@ -69,8 +69,8 @@ protected IFigure createFigure() {
 /**
  * @see TextualEditPart#getCaretPlacement(int)
  */
-public Rectangle getCaretPlacement(int offset) {
-	throw new RuntimeException("not supported");
+public Rectangle getCaretPlacement(int offset, boolean trailing) {
+	throw new RuntimeException("This part cannot place the caret");
 }
 
 protected Container getContainer() {
@@ -91,36 +91,30 @@ protected List getModelChildren() {
 /**
  * @see TextualEditPart#getNextLocation(int, TextLocation)
  */
-public TextLocation getNextLocation(int movement, TextLocation current, Rectangle caret) {
-	switch (movement) {
-		case LINE_START_QUERY:
-			return searchLineBegin(caret);
+public TextLocation getNextLocation(CaretSearch search) {
+	switch (search.type) {
+		case CaretSearch.LINE_BOUNDARY:
+			if (search.isForward)
+				return searchLineBegin(search);
+			return searchLineEnd(search);
 
-		case LINE_END_QUERY:
-			return searchLineEnd(caret);
+		case CaretSearch.ROW:
+			if (search.isForward)
+				return searchLineBelow(search);
+			return searchLineAbove(search);
 
-		case LINE_DOWN_INTO:
-			return searchLineBelow(current, caret);
-
-		case LINE_UP_INTO:
-			return searchLineAbove(current, caret);
-			
-		case COLUMN_NEXT:
-			return searchForward(current, caret, false);
-		case COLUMN_NEXT_INTO:
-			return searchForward(current, caret, true);
-		
-		case COLUMN_PREVIOUS:
-			return searchBackwards(current, caret,  false);
-		case COLUMN_PREVIOUS_INTO:
-			return searchBackwards(current, caret, true);
+		case CaretSearch.WORD_BOUNDARY:
+		case CaretSearch.COLUMN:
+			if (search.isForward)
+				return searchForward(search);
+			return searchBackwards(search);
 
 		default:
 			break;
 	}
 
 	if (getParent() instanceof TextualEditPart)
-		return getTextParent().getNextLocation(movement, current, caret);
+		return getTextParent().getNextLocation(search);
 	return null;
 }
 
@@ -140,48 +134,52 @@ protected void refreshVisuals() {
 	getFigure().setFont(new Font(null, basis));
 }
 
-TextLocation searchBackwards(TextLocation current, Rectangle caret, boolean into) {
+TextLocation searchBackwards(CaretSearch search) {
+	TextLocation current = search.where;
 	int childIndex = (current == null) ? getChildren().size() - 1
 			: getChildren().indexOf(current.part) - 1;
 	TextualEditPart part;
 	while (childIndex >= 0) {
 		part = (TextualEditPart)getChildren().get(childIndex--);
-		return part.getNextLocation(COLUMN_PREVIOUS_INTO, null, caret);
+		return part.getNextLocation(search.recurseSearch());
 	}
-	if (into)
+	if (search.isRecursive)
 		return null;
-	current = new TextLocation(this, childIndex);
 	if (getParent() instanceof TextualEditPart)
-		return getTextParent().getNextLocation(COLUMN_PREVIOUS, current, caret);
+		return getTextParent().getNextLocation(search.continueSearch(this, 0));
 	return null;
 }
 
-TextLocation searchForward(TextLocation current, Rectangle caret, boolean into) {
+TextLocation searchForward(CaretSearch search) {
+	TextLocation current = search.where;
+	
 	int childIndex = (current == null) ? 0
 			: getChildren().indexOf(current.part) + 1;
 	int childCount = getChildren().size();
 	TextualEditPart part;
+	CaretSearch recurse = search.recurseSearch();
 	while (childIndex < childCount) {
 		part = (TextualEditPart)getChildren().get(childIndex++);
-		return part.getNextLocation(COLUMN_NEXT_INTO, null,
-				caret);
+		return part.getNextLocation(recurse);
 	}
-	if (into)
+	if (search.isRecursive)
 		return null;
-	current = new TextLocation(this, getChildren().size());
+	if (this instanceof BlockTextualPart)
+		search.isInto = true;
 	if (getParent() instanceof TextualEditPart)
-		return getTextParent().getNextLocation(COLUMN_NEXT, current, caret);
+		return getTextParent().getNextLocation(
+				search.continueSearch(this, getLength()));
 	return null;
 }
 
-protected TextLocation searchLineBegin(Rectangle caret) {
+protected TextLocation searchLineBegin(CaretSearch search) {
 	int childIndex = 0;
 	int childCount = getChildren().size();
 	TextualEditPart newPart;
 	TextLocation result;
 	while (childIndex < childCount) {
 		newPart = (TextualEditPart)getChildren().get(childIndex);
-		result = newPart.getNextLocation(LINE_START_QUERY, null, caret);
+		result = newPart.getNextLocation(search.recurseSearch());
 		if (result != null)
 			return result;
 		childIndex++;
@@ -189,13 +187,13 @@ protected TextLocation searchLineBegin(Rectangle caret) {
 	return null;
 }
 
-protected TextLocation searchLineEnd(Rectangle caret) {
+protected TextLocation searchLineEnd(CaretSearch search) {
 	int childIndex = getChildren().size() - 1;
-	TextualEditPart newPart;
+	TextualEditPart child;
 	TextLocation result;
 	while (childIndex >= 0) {
-		newPart = (TextualEditPart)getChildren().get(childIndex);
-		result = newPart.getNextLocation(LINE_END_QUERY, null, caret);
+		child = (TextualEditPart)getChildren().get(childIndex);
+		result = child.getNextLocation(search.recurseSearch());
 		if (result != null)
 			return result;
 		childIndex--;
@@ -203,11 +201,13 @@ protected TextLocation searchLineEnd(Rectangle caret) {
 	return null;
 }
 
-protected TextLocation searchLineBelow(TextLocation location, Rectangle caret) {
+protected TextLocation searchLineBelow(CaretSearch search) {
 	//The top of this figure must be below the bottom of the caret
 //	if (getFigure().getBounds().y < caret.bottom())
 		//return null;
 
+	TextLocation location = search.where;
+	
 	int childIndex;
 	int childCount = getChildren().size();
 	TextualEditPart part;
@@ -222,11 +222,13 @@ protected TextLocation searchLineBelow(TextLocation location, Rectangle caret) {
 	TextLocation result = null;
 	int dx = Integer.MAX_VALUE;
 	Rectangle lineBounds = null;
+	search = search.recurseSearch();
 	while (childIndex < childCount) {
 		part = (TextualEditPart)getChildren().get(childIndex);
-		location = part.getNextLocation(LINE_DOWN_INTO, null, caret);
+		location = part.getNextLocation(search);
 		if (location != null) {
-			Rectangle newPlacement = location.part.getCaretPlacement(location.offset);
+			//$TODO need to set advancing on getNextLocation
+			Rectangle newPlacement = location.part.getCaretPlacement(location.offset, false);
 			if (lineBounds == null)
 				lineBounds = new Rectangle(newPlacement);
 			else if (lineBounds.y > newPlacement.bottom())
@@ -234,7 +236,7 @@ protected TextLocation searchLineBelow(TextLocation location, Rectangle caret) {
 			else
 				lineBounds.union(newPlacement);
 			
-			int distance = Math.abs(newPlacement.x - caret.x);
+			int distance = Math.abs(newPlacement.x - search.x);
 			if (distance < dx) {
 				result = location;
 				dx = distance;
@@ -245,13 +247,14 @@ protected TextLocation searchLineBelow(TextLocation location, Rectangle caret) {
 	return result;
 }
 
-protected TextLocation searchLineAbove(TextLocation location, Rectangle caret) {
+protected TextLocation searchLineAbove(CaretSearch search) {
 	//The bottom of this figure must be above the top of the caret
 	//if (getFigure().getBounds().bottom() > caret.y)
 	//	return null;
 	
 	int childIndex;
 	TextualEditPart part;
+	TextLocation location = search.where;
 	if (location == null)
 		childIndex = getChildren().size() - 1;
 	else {
@@ -265,9 +268,9 @@ protected TextLocation searchLineAbove(TextLocation location, Rectangle caret) {
 	Rectangle lineBounds = null;
 	while (childIndex >= 0) {
 		part = (TextualEditPart)getChildren().get(childIndex);
-		location = part.getNextLocation(LINE_UP_INTO, null, caret);
+		location = part.getNextLocation(search.recurseSearch());
 		if (location != null) {
-			Rectangle newPlacement = location.part.getCaretPlacement(location.offset);
+			Rectangle newPlacement = location.part.getCaretPlacement(location.offset, false);
 			if (lineBounds == null)
 				lineBounds = new Rectangle(newPlacement);
 			else if (lineBounds.y > newPlacement.bottom())
@@ -275,7 +278,7 @@ protected TextLocation searchLineAbove(TextLocation location, Rectangle caret) {
 			else
 				lineBounds.union(newPlacement);
 			
-			int distance = Math.abs(newPlacement.x - caret.x);
+			int distance = Math.abs(newPlacement.x - search.x);
 			if (distance < dx) {
 				result = location;
 				dx = distance;

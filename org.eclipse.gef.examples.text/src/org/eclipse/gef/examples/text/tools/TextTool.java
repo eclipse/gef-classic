@@ -21,6 +21,7 @@ import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.jface.util.Assert;
 
 import org.eclipse.draw2d.Cursors;
+import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.EditPart;
@@ -38,6 +39,7 @@ import org.eclipse.gef.examples.text.TextUtilities;
 import org.eclipse.gef.examples.text.actions.StyleListener;
 import org.eclipse.gef.examples.text.actions.StyleProvider;
 import org.eclipse.gef.examples.text.actions.StyleService;
+import org.eclipse.gef.examples.text.edit.CaretSearch;
 import org.eclipse.gef.examples.text.edit.TextStyleManager;
 import org.eclipse.gef.examples.text.edit.TextualEditPart;
 import org.eclipse.gef.examples.text.requests.TextRequest;
@@ -115,37 +117,49 @@ private void doAction(int action, KeyEvent event) {
 		case ST.SELECT_LINE_START:
 			append = true;
 		case ST.LINE_START:
-			doSelect(TextualEditPart.LINE_START, append);
+			doSelect(CaretSearch.LINE_BOUNDARY, false, append);
+			break;
+//	WORD_PREV
+		case ST.SELECT_WORD_NEXT:
+			append = true;
+		case ST.WORD_NEXT:
+			doSelect(CaretSearch.WORD_BOUNDARY, true, append);
+			break;
+//	WORD_NEXT
+		case ST.SELECT_WORD_PREVIOUS:
+			append = true;
+		case ST.WORD_PREVIOUS:
+			doSelect(CaretSearch.WORD_BOUNDARY, false, append);
 			break;
 //END
 		case ST.SELECT_LINE_END:
 			append = true;
 		case ST.LINE_END:
-			doSelect(TextualEditPart.LINE_END, append);
+			doSelect(CaretSearch.LINE_BOUNDARY, true, append);
 			break;
 //LEFT
 		case ST.SELECT_COLUMN_PREVIOUS:
 			append = true;
 		case ST.COLUMN_PREVIOUS:
-			doSelect(TextualEditPart.COLUMN_PREVIOUS, append);
+			doSelect(CaretSearch.COLUMN, false, append);
 			break;
 //RIGHT
 		case ST.SELECT_COLUMN_NEXT:
 			append = true;
 		case ST.COLUMN_NEXT:
-			doSelect(TextualEditPart.COLUMN_NEXT, append);
+			doSelect(CaretSearch.COLUMN, true, append);
 			break;
 //UP
 		case ST.SELECT_LINE_UP:
 			append = true;
 		case ST.LINE_UP:
-			doSelect(TextualEditPart.LINE_UP, append);
+			doSelect(CaretSearch.ROW, false, append);
 			break;
 //DOWN
 		case ST.SELECT_LINE_DOWN:
 			append = true;
 		case ST.LINE_DOWN:
-			doSelect(TextualEditPart.LINE_DOWN, append);
+			doSelect(CaretSearch.ROW, true, append);
 			break;
 //TAB
 		case SWT.TAB | SWT.SHIFT:
@@ -175,7 +189,7 @@ private boolean doBackspace() {
 	if (range.isEmpty()) {
 		if (handleTextEdit(new TextRequest(TextRequest.REQ_BACKSPACE, range, pendingCommand)))
 			return true;
-		doSelect(TextualEditPart.COLUMN_PREVIOUS, false);
+		doSelect(CaretSearch.COLUMN, false, false);
 		return false;
 	} else
 		return handleTextEdit(new TextRequest(TextRequest.REQ_REMOVE_RANGE, range));
@@ -188,7 +202,7 @@ private boolean doDelete() {
 	if (range.isEmpty()) {
 		if (handleTextEdit(new TextRequest(TextRequest.REQ_DELETE, range, pendingCommand)))
 			return true;
-		doSelect(TextualEditPart.COLUMN_NEXT, false);
+		doSelect(CaretSearch.COLUMN, true, false);
 		return false;
 	} else
 		return handleTextEdit(new TextRequest(TextRequest.REQ_REMOVE_RANGE, range));
@@ -262,7 +276,7 @@ private boolean doNewline() {
 	return handleTextEdit(edit);
 }
 
-private void doSelect(int direction, boolean appendSelection) {
+private void doSelect(int type, boolean isForward, boolean appendSelection) {
 	TextLocation caretLocation = getTextualViewer().getCaretLocation();
 	SelectionRange range = getTextualViewer().getSelectionRange();
 
@@ -272,8 +286,15 @@ private void doSelect(int direction, boolean appendSelection) {
 	else
 		otherEnd = range.end;
 
-	TextLocation newCaretLocation = caretLocation.part.getNextLocation(direction,
-			caretLocation, getTextualViewer().getCaretBounds());
+	Rectangle caretBounds =getTextualViewer().getCaretBounds();
+	CaretSearch search = new CaretSearch();
+	search.isForward = isForward;
+	search.type = type;
+	search.x = caretBounds.x;
+	search.y = isForward ? caretBounds.bottom() : caretBounds.y;
+	search.where = getTextualViewer().getCaretLocation();
+	
+	TextLocation newCaretLocation = caretLocation.part.getNextLocation(search);
 
 	if (newCaretLocation == null)
 		return;
@@ -284,7 +305,10 @@ private void doSelect(int direction, boolean appendSelection) {
 			range = new SelectionRange(newCaretLocation, otherEnd, false);
 		getTextualViewer().setSelectionRange(range);
 	} else {
-		getTextualViewer().setSelectionRange(new SelectionRange(newCaretLocation));
+		if (search.isForward)
+			getTextualViewer().setSelectionRange(new SelectionRange(newCaretLocation, newCaretLocation, true));
+		else
+			getTextualViewer().setSelectionRange(new SelectionRange(newCaretLocation, newCaretLocation, false));
 	}
 }
 
@@ -453,8 +477,14 @@ private int lookupAction(int i) {
 			return ST.SELECT_COLUMN_NEXT;
 		case SWT.ARROW_LEFT | SWT.SHIFT:
 			return ST.SELECT_COLUMN_PREVIOUS;
-		case ST.SELECT_WORD_NEXT:
+		case SWT.ARROW_RIGHT | SWT.CONTROL:
+			return ST.WORD_NEXT;
+		case SWT.ARROW_RIGHT | SWT.CONTROL | SWT.SHIFT:
 			return ST.SELECT_WORD_NEXT;
+		case SWT.ARROW_LEFT| SWT.CONTROL:
+			return ST.WORD_PREVIOUS;
+		case SWT.ARROW_LEFT| SWT.CONTROL | SWT.SHIFT:
+			return ST.SELECT_WORD_PREVIOUS;
 		
 		case ST.LINE_END:
 			return ST.LINE_END;

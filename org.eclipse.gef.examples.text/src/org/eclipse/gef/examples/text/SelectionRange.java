@@ -89,6 +89,9 @@ private List findLeavesBetweenInclusive(EditPart left, EditPart right) {
 	List children;
 
 	ArrayList result = new ArrayList();
+
+	if (nextLeft == commonAncestor)
+		result.add(left);
 	while (nextLeft != commonAncestor) {
 		children = nextLeft.getChildren();
 		for (int i = children.indexOf(left); i < children.size(); i++)
@@ -100,6 +103,8 @@ private List findLeavesBetweenInclusive(EditPart left, EditPart right) {
 
 	ArrayList rightSide = new ArrayList();
 	EditPart nextRight = right.getParent();
+	if (nextRight == commonAncestor)
+		rightSide.add(right);
 	while (nextRight != commonAncestor) {
 		children = nextRight.getChildren();
 		int end = children.indexOf(right);

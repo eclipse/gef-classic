@@ -102,7 +102,12 @@ void queueCaretRefresh() {
 void refreshCaret() {
 	if (getCaretOwner() == null)
 		return;
-	Rectangle r = getCaretOwner().getCaretPlacement(getCaretLocation().offset);
+	Rectangle r;
+	if (getSelectionRange().isForward && getCaretLocation().offset > 0) {
+		r = getCaretOwner().getCaretPlacement(getCaretLocation().offset - 1, true);
+	} else {
+		r = getCaretOwner().getCaretPlacement(getCaretLocation().offset, false);
+	}
 	getCaret().setBounds(r.x, r.y, r.width, r.height);
 }
 

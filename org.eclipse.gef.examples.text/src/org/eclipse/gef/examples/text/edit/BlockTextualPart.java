@@ -11,8 +11,6 @@
 
 package org.eclipse.gef.examples.text.edit;
 
-import org.eclipse.draw2d.geometry.Rectangle;
-
 import org.eclipse.gef.examples.text.TextLocation;
 
 /**
@@ -24,29 +22,26 @@ public BlockTextualPart(Object model) {
 	super(model);
 }
 
-public TextLocation getNextLocation(int movement, TextLocation current, Rectangle caret) {
+public TextLocation getNextLocation(CaretSearch search) {
 	
 	TextLocation result;
-	switch (movement) {
-		case LINE_UP:
-			result = searchLineAbove(current, caret);
+	switch (search.type) {
+		case CaretSearch.ROW:
+			if (search.isForward)
+				result = searchLineBelow(search);
+			else
+				result = searchLineAbove(search);
 			if (result == null && getParent() instanceof TextualEditPart)
-				return getTextParent().getNextLocation(LINE_UP,
-						new TextLocation(this, 0), caret);
+				return getTextParent().getNextLocation(
+						search.continueSearch(this, search.isForward ? getLength() : 0));
 			return result;
-		case LINE_DOWN:
-			result = searchLineBelow(current, caret);
-			if (result == null && getParent() instanceof TextualEditPart)
-				return getTextParent().getNextLocation(LINE_DOWN,
-						new TextLocation(this, getLength()), caret);
-			return result;
-		case LINE_START:
-			return searchLineBegin(caret);
-		case LINE_END:
-			return searchLineEnd(caret);
+		case CaretSearch.LINE_BOUNDARY:
+			if (search.isForward)
+				return searchLineEnd(search);
+			return searchLineBegin(search);
 
 		default:
-			return super.getNextLocation(movement, current, caret);
+			return super.getNextLocation(search);
 	}
 }
 

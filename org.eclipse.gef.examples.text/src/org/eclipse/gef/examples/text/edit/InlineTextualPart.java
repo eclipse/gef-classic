@@ -9,8 +9,6 @@
 
 package org.eclipse.gef.examples.text.edit;
 
-import org.eclipse.draw2d.geometry.Rectangle;
-
 import org.eclipse.gef.examples.text.TextLocation;
 
 /**
@@ -22,22 +20,18 @@ public InlineTextualPart(Object model) {
 	super(model);
 }
 
-public TextLocation getNextLocation(int movement, TextLocation current, Rectangle caret) {
-	switch (movement) {
-		case LINE_START:
-		case LINE_UP:
-			return getTextParent().getNextLocation(movement,
-					new TextLocation(this, getChildren().size()),
-					caret);
-		case LINE_DOWN:
-		case LINE_END:
-			return getTextParent().getNextLocation(movement,
-					new TextLocation(this, 0), caret);
-		
+public TextLocation getNextLocation(CaretSearch search) {
+	switch (search.type) {
+		case CaretSearch.LINE_BOUNDARY:
+		case CaretSearch.ROW:
+			if (search.isRecursive)
+				break;
+			return getTextParent().getNextLocation(
+					search.continueSearch(this, search.isForward ? getLength() : 0));		
 		default:
 			break;
 	}
-	return super.getNextLocation(movement, current, caret);
+	return super.getNextLocation(search);
 }
 
 }
