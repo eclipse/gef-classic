@@ -239,6 +239,15 @@ public final void fillOval(Rectangle r) {
 public abstract void fillOval(int x, int y, int w, int h);
 
 /**
+ * Draws a closed polygon defined by the given Integer array containing the vertices in
+ * x,y order.  The first and last points in the list will be connected.
+ * @param points the vertices
+ */
+public void drawPolygon(int[] points) {
+	drawPolygon(getPointList(points));
+}
+
+/**
  * Draws a closed polygon defined by the given <code>PointList</code> containing the 
  * vertices.  The first and last points in the list will be connected.
  * @param points the vertices
@@ -246,11 +255,29 @@ public abstract void fillOval(int x, int y, int w, int h);
 public abstract void drawPolygon(PointList points);
 
 /**
+ * Fills a closed polygon defined by the given Integer array containing the 
+ * vertices in x,y order.  The first and last points in the list will be connected.
+ * @param points the vertices
+ */
+public void fillPolygon(int[] points) {
+	fillPolygon(getPointList(points));
+}
+
+/**
  * Fills a closed polygon defined by the given <code>PointList</code> containing the 
  * vertices.  The first and last points in the list will be connected.
  * @param points the vertices
  */
 public abstract void fillPolygon(PointList points);
+
+/**
+ * Draws a polyline defined by the given Integer array containing the vertices in x,y
+ * order. The first and last points in the list will <b>not</b> be connected.
+ * @param points the vertices
+ */
+public void drawPolyline(int[] points) {
+	drawPolyline(getPointList(points));
+}
 
 /**
  * Draws a polyline defined by the given <code>PointList</code> containing the vertices.
@@ -429,6 +456,18 @@ public abstract int getLineStyle();
  * @return the line width
  */
 public abstract int getLineWidth();
+
+/**
+ * Returns a pointlist containing all the points from the integer array.
+ * @param points an integer array of x,y points
+ * @return the corresponding pointlist
+ */
+private PointList getPointList(int[] points) {
+	PointList pointList = new PointList(points.length / 2);
+	for (int i = 0; i < points.length; i += 2)
+		pointList.addPoint(points[i], points[i + 1]);
+	return pointList;
+}
 
 /**
  * Returns <code>true</code> if this graphics object should use XOR mode with painting.

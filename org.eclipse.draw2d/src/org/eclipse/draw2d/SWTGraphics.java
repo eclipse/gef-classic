@@ -236,35 +236,48 @@ public void drawPoint(int x, int y) {
 }
 
 /**
+ * @see Graphics#drawPolygon(int[])
+ */
+public void drawPolygon(int[] points) {
+	checkPaint();
+	try {
+		translatePointArray(points, translateX, translateY);
+		gc.drawPolygon(points);
+	} finally {
+		translatePointArray(points, -translateX, -translateY);
+	}
+}
+
+/**
  * @see Graphics#drawPolygon(PointList)
  */
 public void drawPolygon(PointList points) {
+	drawPolygon(points.toIntArray());
+}
+
+/**
+ * @see org.eclipse.draw2d.Graphics#drawPolyline(int[])
+ */
+public void drawPolyline(int[] points) {
 	checkPaint();
 	try {
-		points.translate(translateX, translateY);
-		gc.drawPolygon(points.toIntArray());
+		translatePointArray(points, translateX, translateY);
+		gc.drawPolyline(points);
+		if (getLineWidth() == 1 && points.length >= 2) {
+			int x = points[points.length - 2];
+			int y = points[points.length - 1];
+			gc.drawLine(x, y, x, y);
+		}
 	} finally {
-		points.translate(-translateX, -translateY);
-	}
+		translatePointArray(points, -translateX, -translateY);
+	}	
 }
 
 /**
  * @see Graphics#drawPolyline(PointList)
  */
 public void drawPolyline(PointList points) {
-	checkPaint();
-	try {
-		points.translate(translateX, translateY);
-		int array[] = points.toIntArray();
-		gc.drawPolyline(array);
-		if (getLineWidth() == 1 && array.length >= 2) {
-			int x = array[array.length - 2];
-			int y = array[array.length - 1];
-			gc.drawLine(x, y, x, y);
-		}
-	} finally {
-		points.translate(-translateX, -translateY);
-	}
+	drawPolyline(points.toIntArray());
 }
 
 /**
@@ -326,16 +339,23 @@ public void fillOval(int x, int y, int width, int height) {
 }
 
 /**
+ * @see Graphics#fillPolygon(int[])
+ */
+public void fillPolygon(int[] points) {
+	checkFill();
+	try {
+		translatePointArray(points, translateX, translateY);
+		gc.fillPolygon(points);
+	} finally {
+		translatePointArray(points, -translateX, -translateY);
+	}
+}
+
+/**
  * @see Graphics#fillPolygon(PointList)
  */
 public void fillPolygon(PointList points) {
-	checkFill();
-	try {
-		points.translate(translateX, translateY);
-		gc.fillPolygon(points.toIntArray());
-	} finally {
-		points.translate(-translateX, -translateY);
-	}
+	fillPolygon(points.toIntArray());
 }
 
 /**
@@ -603,6 +623,15 @@ public void setXORMode(boolean b) {
 	if (currentState.xor == b) 
 		return;
 	currentState.xor = b;
+}
+
+private void translatePointArray(int[] points, int translateX, int translateY) {
+	if (translateX == 0 && translateY == 0)
+		return;
+	for (int i = 0; i < points.length; i += 2) {
+		points[i] += translateX;
+		points[i + 1] += translateY;
+	}
 }
 
 /**

@@ -123,13 +123,7 @@ double zoom = 1.0;
 private List stack = new ArrayList();
 private int stackPointer = 0;
 private FontKey fontKey = new FontKey();
-private static PointList[] pointListCache = new PointList[8];
 private boolean allowText = true;
-
-static {
-	for (int i = 0; i < pointListCache.length; i++)
-		pointListCache[i] = new PointList(i + 1);
-}
 
 /**
  * Constructs a new ScaledGraphics based on the given Graphics object.
@@ -228,9 +222,16 @@ public void fillOval(int x, int y, int w, int h) {
 	graphics.fillOval(zoomFillRect(x, y, w, h));
 }
 
+/**
+ * @see Graphics#drawPolygon(int[])
+ */
+public void drawPolygon(int[] points) {
+	graphics.drawPolygon(zoomPointList(points));
+}
+
 /** @see Graphics#drawPolygon(PointList) */
 public void drawPolygon(PointList points) {
-	graphics.drawPolygon(zoomPointList(points));
+	graphics.drawPolygon(zoomPointList(points.toIntArray()));
 }
 
 /** @see Graphics#drawPoint(int, int) */
@@ -238,14 +239,28 @@ public void drawPoint(int x, int y) {
 	graphics.drawPoint((int)Math.floor(x * zoom + fractionalX),(int)Math.floor(y * zoom + fractionalY));
 }
 
+/**
+ * @see Graphics#fillPolygon(int[])
+ */
+public void fillPolygon(int[] points) {
+	graphics.fillPolygon(zoomPointList(points));
+}
+
 /** @see Graphics#fillPolygon(PointList) */
 public void fillPolygon(PointList points) {
-	graphics.fillPolygon(zoomPointList(points));
+	graphics.fillPolygon(zoomPointList(points.toIntArray()));
+}
+
+/**
+ * @see Graphics#drawPolyline(int[])
+ */
+public void drawPolyline(int[] points) {
+	graphics.drawPolyline(zoomPointList(points));
 }
 
 /** @see Graphics#drawPolyline(PointList) */
 public void drawPolyline(PointList points) {
-	graphics.drawPolyline(zoomPointList(points));
+	graphics.drawPolyline(zoomPointList(points.toIntArray()));
 }
 
 /** @see Graphics#drawRectangle(int, int, int, int) */
@@ -504,37 +519,12 @@ private Point zoomTextPoint(int x, int y) {
 											- targetCache.height + 1 + fractionalY)));
 }
 
-private PointList zoomPointList(PointList points) {
-	PointList scaled = null;
-	
-	// Look in cache for a PointList with the same length as 'points'
-	for (int i = 0; i < pointListCache.length; i++) {
-		if (pointListCache[i].size() == points.size()) {
-			scaled = pointListCache[i];
-			
-			// Move this PointList up one notch in the array
-			if (i != 0) {
-				PointList temp = pointListCache[i - 1];
-				pointListCache[i - 1] = scaled;
-				pointListCache[i] = temp;	
-			}
-		}
+private int[] zoomPointList(int[] points) {
+	for (int i = 0; i < points.length; i+= 2) {
+		points[i] = (int)(Math.floor((points[i] * zoom + fractionalX)));
+		points[i + 1] = (int)(Math.floor((points[i + 1] * zoom + fractionalY)));
 	}
-	
-	// If no PointList is found, take the one that is last and resize it.
-	if (scaled == null) {
-		scaled = pointListCache[pointListCache.length - 1];
-		scaled.setSize(points.size());
-	}
-	
-	// Scale the points and set em
-	for (int i = 0; i < scaled.size(); i++) {
-		Point p = points.getPoint(Point.SINGLETON, i);
-		p.x = (int)(Math.floor((p.x * zoom + fractionalX)));
-		p.y = (int)(Math.floor((p.y * zoom + fractionalY)));
-		scaled.setPoint(p, i);
-	}
-	return scaled;
+	return points;
 }
 
 private Rectangle zoomFillRect(int x, int y, int w, int h) {
