@@ -20,6 +20,7 @@ import org.eclipse.jface.util.Assert;
 import org.eclipse.draw2d.UpdateListener;
 import org.eclipse.draw2d.UpdateManager;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2d.text.CaretInfo;
 
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 
@@ -102,13 +103,13 @@ void queueCaretRefresh() {
 void refreshCaret() {
 	if (getCaretOwner() == null)
 		return;
-	Rectangle r;
+	CaretInfo info;
 	if (getSelectionRange().isForward && getCaretLocation().offset > 0) {
-		r = getCaretOwner().getCaretPlacement(getCaretLocation().offset - 1, true);
+		info = getCaretOwner().getCaretPlacement(getCaretLocation().offset - 1, true);
 	} else {
-		r = getCaretOwner().getCaretPlacement(getCaretLocation().offset, false);
+		info = getCaretOwner().getCaretPlacement(getCaretLocation().offset, false);
 	}
-	getCaret().setBounds(r.x, r.y, r.width, r.height);
+	getCaret().setBounds(info.getX(), info.top(), 1, info.getHeight());
 }
 
 public void setCaretVisible(boolean value) {
