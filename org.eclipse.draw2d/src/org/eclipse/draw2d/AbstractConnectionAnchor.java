@@ -9,8 +9,7 @@ package org.eclipse.draw2d;
 import org.eclipse.draw2d.geometry.Point;
 
 /**
- * Provides support for anchors which depend on a figure
- * for thier location. 
+ * Provides support for anchors which depend on a figure for thier location. 
  * @author hudsonr
  */
 public abstract class AbstractConnectionAnchor
@@ -18,8 +17,6 @@ public abstract class AbstractConnectionAnchor
 	implements AncestorListener
 {
 
-/**
- */
 private IFigure owner;
 
 /**
@@ -30,22 +27,20 @@ private IFigure owner;
 public AbstractConnectionAnchor() { }
 
 /**
- * Constructs an AbstractConnectionAnchor with the owner 
- * supplied as input.
+ * Constructs an AbstractConnectionAnchor with the owner supplied as input.
  *
  * @since 2.0
- * @param owner  Owner of this anchor.
+ * @param owner  Owner of this anchor
  */
 public AbstractConnectionAnchor(IFigure owner) {
 	setOwner(owner);
 }
 
 /**
- * Adds the given listener to the listeners to be 
- * notified of anchor location changes.
+ * Adds the given listener to the listeners to be notified of anchor location changes.
  *
  * @since 2.0
- * @param listener   Listener to be added.
+ * @param listener   Listener to be added
  * @see  #removeAnchorListener(AnchorListener)
  */
 public void addAnchorListener(AnchorListener listener) {
@@ -60,7 +55,7 @@ public void addAnchorListener(AnchorListener listener) {
  * Notifies all the listeners of this anchor's location change.
  *
  * @since 2.0
- * @param figure  Anchor-owning Figure which has moved.
+ * @param figure  Anchor-owning Figure which has moved
  * @see org.eclipse.draw2d.AncestorListener#ancestorMoved(IFigure)
  */
 public void ancestorMoved(IFigure figure) {
@@ -68,23 +63,20 @@ public void ancestorMoved(IFigure figure) {
 }
 
 /**
- * @param ancestor IFigure
  * @see org.eclipse.draw2d.AncestorListener#ancestorAdded(IFigure)
  */
 public void ancestorAdded(IFigure ancestor) { }
 
 /**
- * @param ancestor IFigure
  * @see org.eclipse.draw2d.AncestorListener#ancestorRemoved(IFigure)
  */
 public void ancestorRemoved(IFigure ancestor) { }
 
 /** 
- * Returns the owner Figure on which this anchor's
- * location is dependent.
+ * Returns the owner Figure on which this anchor's location is dependent.
  *
  * @since 2.0
- * @return  Owner of this anchor.
+ * @return  Owner of this anchor
  * @see #setOwner(IFigure)
  */
 public IFigure getOwner() {
@@ -92,12 +84,12 @@ public IFigure getOwner() {
 }
 
 /**
- * Returns the point which is used as the reference by this 
- * AbstractConnectionAnchor. It is generally dependent on the Figure
- * which is the owner of this AbstractConnectionAnchor.
+ * Returns the point which is used as the reference by this AbstractConnectionAnchor. It
+ * is generally dependent on the Figure which is the owner of this
+ * AbstractConnectionAnchor.
  *
  * @since 2.0
- * @return  The reference point of this anchor.
+ * @return  The reference point of this anchor
  * @see org.eclipse.draw2d.ConnectionAnchor#getReferencePoint()
  */
 public Point getReferencePoint() {
@@ -111,13 +103,12 @@ public Point getReferencePoint() {
 }
 
 /**
- * Removes the given listener from this anchor. 
- * If all the listeners are removed, then this anchor
- * removes itself from its owner.
+ * Removes the given listener from this anchor. If all the listeners are removed, then
+ * this anchor removes itself from its owner.
  *
  * @since 2.0
- * @param listener  Listener to be removed from this anchors listeners list.
- * @see  #addAnchorListener(AnchorListener)
+ * @param listener  Listener to be removed from this anchors listeners list
+ * @see #addAnchorListener(AnchorListener)
  */
 public void removeAnchorListener(AnchorListener listener) {
 	super.removeAnchorListener(listener);
@@ -126,11 +117,10 @@ public void removeAnchorListener(AnchorListener listener) {
 }
 
 /**
- * Sets the owner of this anchor, on whom this anchors location
- * is dependent.
+ * Sets the owner of this anchor, on whom this anchors location is dependent.
  *
  * @since 2.0
- * @param owner  Owner of this anchor.
+ * @param owner  Owner of this anchor
  */
 public void setOwner(IFigure owner) {
 	this.owner = owner;

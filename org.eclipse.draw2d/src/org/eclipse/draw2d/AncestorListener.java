@@ -7,32 +7,36 @@ package org.eclipse.draw2d;
  */
 
 /**
- * A listener interface for receiving changes in the 
- * ancestor hierarchy of the listening IFigure.
+ * A listener interface for receiving changes in the ancestor hierarchy of the listening
+ * IFigure.
  */
 public interface AncestorListener {
 
 /**
- * Called when an ancestor has been added into the listening
- * figure's hierarchy.
+ * Called when an ancestor has been added into the listening figure's hierarchy.
+ * @param ancestor The ancestor that was added
  */
-public void ancestorAdded(IFigure ancestor);
+void ancestorAdded(IFigure ancestor);
 
 /**
  * Called when an ancestor has moved to a new location.
+ * @param ancestor The ancestor that has moved
  */
-public void ancestorMoved(IFigure ancestor);
+void ancestorMoved(IFigure ancestor);
 
 /**
- * Called when an ancestor has been removed from the listening
- * figure's hierarchy.
+ * Called when an ancestor has been removed from the listening figure's hierarchy.
+ * @param ancestor The ancestor that has been removed
  */
-public void ancestorRemoved(IFigure ancestor);
+void ancestorRemoved(IFigure ancestor);
 
+/**
+ * An empty implementation of AncestorListener for convenience.
+ */
 class Stub implements AncestorListener {
-	public void ancestorMoved(IFigure ancestor){}
-	public void ancestorAdded(IFigure ancestor){}
-	public void ancestorRemoved(IFigure ancestor){}
+	public void ancestorMoved(IFigure ancestor) { }
+	public void ancestorAdded(IFigure ancestor) { }
+	public void ancestorRemoved(IFigure ancestor) { }
 }
 
 }

@@ -16,8 +16,6 @@ public abstract class AbstractBorder
 	implements Border
 {
 
-/**
- */
 private static final Dimension EMPTY = new Dimension();
 
 /** A temporary Rectangle*/
@@ -28,9 +26,9 @@ protected static Rectangle tempRect = new Rectangle();
  * inserts.  This method exists for convenience and performance; the method does not new
  * any Objects and returns a rectangle which the caller can manipulate.
  * @since 2.0
- * @param figure  Figure for which the paintable rectangle is needed. 
- * @param insets The insets.
- * @return The paintable region on the Figure f.
+ * @param figure  Figure for which the paintable rectangle is needed
+ * @param insets The insets
+ * @return The paintable region on the Figure f
  */
 protected static final Rectangle getPaintRectangle(IFigure figure, Insets insets) {
 	tempRect.setBounds(figure.getBounds());
@@ -38,8 +36,6 @@ protected static final Rectangle getPaintRectangle(IFigure figure, Insets insets
 }
 
 /**
- * @param f IFigure
- * @return Dimension
  * @see org.eclipse.draw2d.Border#getPreferredSize(IFigure)
  */
 public Dimension getPreferredSize(IFigure f) {

@@ -20,6 +20,6 @@ public interface Bendpoint {
  * 
  * @return the location of the bendpoint.
  */
-public Point getLocation();
+Point getLocation();
 
 }

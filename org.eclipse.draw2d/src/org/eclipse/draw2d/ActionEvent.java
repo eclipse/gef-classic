@@ -6,22 +6,23 @@ package org.eclipse.draw2d;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-
 public class ActionEvent
 	extends java.util.EventObject
 {
 
 private String actionName;
 
-public ActionEvent(Object source){
+public ActionEvent(Object source) {
 	super(source);
 }
 
-public ActionEvent(Object source, String name){
+public ActionEvent(Object source, String name) {
 	super(source);
 	actionName = name;
 }
 
-public String getActionName(){return actionName;}
+public String getActionName() {
+	return actionName;
+}
 
 }

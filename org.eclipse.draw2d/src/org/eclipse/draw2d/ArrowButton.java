@@ -9,10 +9,9 @@ package org.eclipse.draw2d;
 import org.eclipse.draw2d.geometry.*;
 
 /**
- * ArrowButton - Button containing an arrow in it, and providing
- * directional support for the arrow.
+ * A Button containing an arrow in it, and providing directional support for the arrow.
  */
-final public class ArrowButton
+public final class ArrowButton
 	extends Button
 	implements Orientable
 {
@@ -24,31 +23,31 @@ final public class ArrowButton
 }
 
 /**
- * Constructs a default ArrowButton with the arrow pointing 
- * north.
+ * Constructs a default ArrowButton with the arrow pointing north.
  * 
  * @since 2.0
- * 
  */
-public ArrowButton(){}
+public ArrowButton() { }
 
 /**
- * Constructs an ArrowButton with the arrow having the direction
- * given in the input.
+ * Constructs an ArrowButton with the arrow having the direction given in the input.
+ * The direction can be one of many directional constants defined in 
+ * {@link PositionConstants}.
  *
- * @param direction  Direction of the arrow. Can be one of 
- * many directional constants defined in {@link PositionConstants}.
+ * @param direction  Direction of the arrow
  * @since 2.0
  */
-public ArrowButton(int direction){setDirection(direction);}
+public ArrowButton(int direction) {
+	setDirection(direction);
+}
 
 /**
- * Contructs a triangle with a black background pointing north,
- * and sets it as the contents of the button.
+ * Contructs a triangle with a black background pointing north, and sets it as the
+ * contents of the button.
  * 
  * @since 2.0
  */
-protected void createTriangle(){
+protected void createTriangle() {
 	Triangle tri = new Triangle();
 	tri.setOutline(false);
 	tri.setBackgroundColor(ColorConstants.black);
@@ -56,11 +55,15 @@ protected void createTriangle(){
 	setContents(tri);
 }
 
-public void setDirection(int value){
+/**
+ * @see org.eclipse.draw2d.Orientable#setDirection(int)
+ */
+public void setDirection(int value) {
 	setChildrenDirection(value);
 }
 
-public void setOrientation(int value){
+/** * @see org.eclipse.draw2d.Orientable#setOrientation(int) */
+public void setOrientation(int value) {
 	setChildrenOrientation(value);
 }
 

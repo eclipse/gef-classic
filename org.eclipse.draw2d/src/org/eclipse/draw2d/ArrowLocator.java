@@ -9,27 +9,29 @@ package org.eclipse.draw2d;
 import org.eclipse.draw2d.geometry.*;
 
 /**
- * Repositions a {@link Figure Figure} attached to a 
- * {@link Connection Connection} when the Connection is moved. 
- * The ArrowLocator is used to reposition and place
- * {@link RotatableDecoration RotatableDecorations} at the start, 
- * end, or middle of a connection.
+ * Repositions a {@link Figure Figure} attached to a {@link Connection} when the
+ * Connection is moved.  The ArrowLocator is used to reposition and place 
+ * {@link RotatableDecoration RotatableDecorations} at the start or end of a connection.
  */
 public class ArrowLocator extends ConnectionLocator {
 
 /**
- * Constructs an ArrowLocator associated with passed connection and
- * tip location.
+ * Constructs an ArrowLocator associated with passed connection and tip location (either
+ * {@link ConnectionLocator#START} or {@link ConnectionLocator#END}).
  * 
- * @param connection Connection associated with the locator
- * @param tip Orientation of tip. Use constants 
- * 			   ConnectionLocator.START or ConnectionLocator.END
+ * @param connection The connection associated with the locator
+ * @param tip Orientation of the tip
  * @since 2.0
  */
 public ArrowLocator(Connection connection, int tip) {
 	super(connection, tip);
 }
 
+/**
+ * Relocates the passed in figure (which must be a {@link RotatableDecoration}) at either
+ * the start or end of the connection.
+ * @param target The RotatableDecoration to relocate
+ */
 public void relocate(IFigure target) {
 	PointList points = getConnection().getPoints();
 	RotatableDecoration arrow = (RotatableDecoration)target;
@@ -38,7 +40,7 @@ public void relocate(IFigure target) {
 	if (getAlignment() == START)
 		arrow.setReferencePoint(points.getPoint(1));
 	else if (getAlignment() == END)
-		arrow.setReferencePoint(points.getPoint(points.size()-2));
+		arrow.setReferencePoint(points.getPoint(points.size() - 2));
 }
 
 }

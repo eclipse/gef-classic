@@ -7,14 +7,14 @@ package org.eclipse.draw2d;
  */
 
 /**
- * A listener interface for receiving notification that
- * an anchor has moved.
+ * A listener interface for receiving notification that an anchor has moved.
  */
 public interface AnchorListener {
 
 /**
  * Called when an anchor has moved to a new location.
+ * @param anchor The anchor that has moved.
  */
-public void anchorMoved(ConnectionAnchor anchor);
+void anchorMoved(ConnectionAnchor anchor);
 
 }
