@@ -17,196 +17,86 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.jface.util.TransferDragSourceListener;
-import org.eclipse.ui.*;
-import org.eclipse.ui.IPartListener2;
-import org.eclipse.ui.IWorkbenchPartReference;
-import org.eclipse.ui.part.IPageSite;
-import org.eclipse.ui.part.Page;
-
-import org.eclipse.gef.ContextMenuProvider;
-import org.eclipse.gef.dnd.TemplateTransferDragSourceListener;
-import org.eclipse.gef.editparts.ZoomManager;
-import org.eclipse.gef.internal.ui.palette.ToolbarDropdownContributionItem;
+import org.eclipse.gef.DefaultEditDomain;
+import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.ui.palette.*;
+import org.eclipse.gef.ui.palette.FlyoverPaletteAutomaton;
+import org.eclipse.gef.ui.views.palette.DefaultPalettePage;
 import org.eclipse.gef.ui.views.palette.PalettePage;
-import org.eclipse.gef.ui.views.palette.PaletteView;
 
 /**
+ * <EM>IMPORTANT</EM>This class should only be used as a reference for creating your own
+ * EditorPart implementation. This class will not suit everyone's needs, and may change in
+ * the future. Clients may copy the implementation.
+ * 
  * @author Pratik Shah
  */
 public abstract class GraphicalEditorWithMovablePalette
-	extends GraphicalEditorWithPalette 
+	extends GraphicalEditor
 {
 	
-/*
- * @TODO:Pratik    maybe this class shouldn't inherit from graphicaleditorw/palette
- * since it overrides most of its methods.
- */
-	
-private boolean paletteInEditor;
-private Splitter splitter;
-private TransferDragSourceListener listener;
-private PropertyChangeListener sizeListener = new PropertyChangeListener() {
-	public void propertyChange(PropertyChangeEvent evt) {
-		handlePaletteResized(((Splitter)evt.getSource()).getFixedSize());
-	}
-};
-	
-private IPartListener2 partListener = new IPartListener2() {
-	public void partActivated(IWorkbenchPartReference ref) {
-	}
-	public void partBroughtToTop(IWorkbenchPartReference ref) {
-	}
-	public void partClosed(IWorkbenchPartReference ref) {
-		if (ref.getId().equals(PaletteView.ID) && !splitter.isDisposed())
-			createPaletteInEditor(false);
-	}
-	public void partDeactivated(IWorkbenchPartReference ref) {
-	}
-	public void partOpened(IWorkbenchPartReference ref) {
-		if (ref.getId().equals(PaletteView.ID) && !splitter.isDisposed())
-			closePaletteInEditor(false);
-	}
-	public void partHidden(IWorkbenchPartReference ref) {
-	}
-	public void partVisible(IWorkbenchPartReference ref) {
-	}
-	public void partInputChanged(IWorkbenchPartReference ref) {
-	}
-};
+private PaletteViewerProvider provider;
 
-protected void closePaletteInEditor(boolean force) {
-	if (paletteInEditor || force) {
-		// the palette is disposed when the new one is set
-		splitter.setMaximizedControl(splitter.getChildren()[0]);
-		paletteInEditor = false;
-	}
-}
-
-protected void configurePaletteViewer() {
-	super.configurePaletteViewer();
-	ContextMenuProvider provider = new PaletteContextMenuProvider(getPaletteViewer());
-	getPaletteViewer().setContextMenu(provider);
-}
-
-protected void createPaletteInEditor(boolean force) {
-	if (!paletteInEditor || force) {
-		/*
-		 * @TODO:Pratik  use setRedraw() at other places in this class to reduce 
-		 * flickering.  See if you can also prevent resize.
-		 */
-		splitter.setRedraw(false);
-		createPaletteViewer(splitter);
-		splitter.maintainSize(getPaletteViewer().getControl());
-		getPaletteViewer().getControl().moveAbove(splitter.getChildren()[0]);
-		splitter.setMaximizedControl(null);
-		splitter.setRedraw(true);
-		paletteInEditor = true;
-	}
-}
-
-protected void createPaletteViewer(Composite parent) {
-	PaletteViewer viewer = new PaletteViewer();
-	viewer.createControl(parent);
-	setPaletteViewer(viewer);
+protected PaletteViewerProvider createPaletteViewerProvider() {
+	return new PaletteViewerProvider(getGraphicalViewer().getEditDomain());
 }
 
 public void createPartControl(Composite parent) {
-	splitter = new Splitter(parent, SWT.HORIZONTAL);
-	createGraphicalViewer(splitter);
-	splitter.addFixedSizeChangeListener(sizeListener);
+	FlyoverPaletteAutomaton splitter = new FlyoverPaletteAutomaton(parent, SWT.NONE, 
+			getSite().getPage());
+	super.createPartControl(splitter);
+	splitter.setPaletteViewerProvider(getPaletteViewerProvider());
+	splitter.setGraphicalControl(getGraphicalControl());
 	splitter.setFixedSize(getInitialPaletteSize());
-
-	paletteInEditor = getSite().getWorkbenchWindow().getActivePage()
-			.findView(PaletteView.ID) == null;
-	if (paletteInEditor) {
-		createPaletteInEditor(true);
-	} else {
-		closePaletteInEditor(true);
-	}
-}
-
-public void dispose() {
-	splitter.removeFixedSizeChangeListener(sizeListener);
-	getSite().getWorkbenchWindow().getPartService().removePartListener(partListener);
-	super.dispose();
+	splitter.addFixedSizeChangeListener(new PropertyChangeListener() {
+		public void propertyChange(PropertyChangeEvent evt) {
+			handlePaletteResized(((Integer)evt.getNewValue()).intValue());
+		}
+	});
 }
 
 public Object getAdapter(Class type) {
 	if (type == PalettePage.class)
-		return new GraphicalEditorPalettePage();
+		return new DefaultPalettePage(getPaletteViewerProvider());
 	return super.getAdapter(type);
 }
 
-protected void hookPaletteViewer() {
-	super.hookPaletteViewer();
-	getPaletteViewer().addDragSourceListener(
-			listener = new TemplateTransferDragSourceListener(getPaletteViewer()));		
+protected Control getGraphicalControl() {
+	return getGraphicalViewer().getControl();
 }
 
-protected void setPaletteViewer(PaletteViewer paletteViewer) {
-	if (getPaletteViewer() == paletteViewer)
-		return;
-	if (getPaletteViewer() != null) {
-		unhookPaletteViewer();
-		if (getPaletteViewer().getControl() != null 
-				&& !getPaletteViewer().getControl().isDisposed()) {
-			getPaletteViewer().getControl().dispose();
-		}
-	}
-	super.setPaletteViewer(paletteViewer);
-	if (getPaletteViewer() != null) {
-		configurePaletteViewer();
-		hookPaletteViewer();
-		initializePaletteViewer();
-	}
+/**
+ * Returns the PaletteRoot for the palette viewer.
+ * @return the palette root
+ */
+protected abstract PaletteRoot getPaletteRoot();
+
+protected final PaletteViewerProvider getPaletteViewerProvider() {
+	if (provider == null)
+		provider = createPaletteViewerProvider();
+	return provider;
 }
 
-protected void setSite(IWorkbenchPartSite site) {
-	super.setSite(site);
-	getSite().getWorkbenchWindow().getPartService().addPartListener(partListener);
+/**
+ * Returns the initial palette size in pixels. Subclasses may override this method to
+ * return a persisted value.
+ * @see #handlePaletteResized(int)
+ * @return the initial size of the palette in pixels.
+ */
+protected int getInitialPaletteSize() {
+	return FlyoverPaletteAutomaton.DEFAULT_PALETTE_SIZE;
 }
 
-protected void unhookPaletteViewer() {
-	getPaletteViewer().removeDragSourceListener(listener);
-	listener = null;
-}
+/**
+ * Called whenever the user resizes the palette.  Sub-classes can store the new palette
+ * size.
+ * @param newSize the new size in pixels
+ */
+protected abstract void handlePaletteResized(int newSize);
 
-protected class GraphicalEditorPalettePage
-		extends Page
-		implements PalettePage, IAdaptable {
-	protected PaletteViewer viewer;
-	public void init(IPageSite site) {
-		super.init(site);
-		getSite().getActionBars().getToolBarManager().add(
-				new ToolbarDropdownContributionItem(new LayoutAction(
-				getPaletteViewer().getPaletteViewerPreferences(), true)));
-	}
-	public void createControl(Composite parent) {
-		createPaletteViewer(parent);
-		viewer = GraphicalEditorWithMovablePalette.this.getPaletteViewer();
-	}
-	public void dispose() {
-		if (getControl() != null && !getControl().isDisposed())
-			getControl().dispose();
-		viewer = null;
-	}
-	public Object getAdapter(Class adapter) {
-		if (adapter == ZoomManager.class)
-			return getGraphicalViewer().getProperty(ZoomManager.class.toString());
-		return null;
-	}
-	public Control getControl() {
-		return getPaletteViewer().getControl();
-	}
-	public PaletteViewer getPaletteViewer() {
-		return viewer;
-	}
-	public void setFocus() {
-		getControl().setFocus();
-	}
+protected void setEditDomain(DefaultEditDomain ed) {
+	super.setEditDomain(ed);
+	getEditDomain().setPaletteRoot(getPaletteRoot());
 }
 
 }
