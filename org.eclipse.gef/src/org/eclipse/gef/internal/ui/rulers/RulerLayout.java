@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003 IBM Corporation and others.
+ * Copyright (c) 2004 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,26 +17,32 @@ import org.eclipse.draw2d.XYLayout;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 
-
+/**
+ * A custom layout manager for rulers.  It is not meant to be used externally or with
+ * any figure other than a {@link org.eclipse.gef.internal.ui.rulers.RulerFigure ruler}.
+ * 
+ * @author Pratik Shah
+ * @since 3.0
+ */
 public class RulerLayout 
 	extends XYLayout
 {
 
-/* (non-Javadoc)
+/**
  * @see org.eclipse.draw2d.AbstractLayout#calculatePreferredSize(org.eclipse.draw2d.IFigure, int, int)
  */
 protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHint) {
 	return new Dimension(1, 1);
 }
 
-/* (non-Javadoc)
+/**
  * @see org.eclipse.draw2d.AbstractLayout#getConstraint(org.eclipse.draw2d.IFigure)
  */
 public Object getConstraint(IFigure child) {
 	return constraints.get(child);
 }
 
-/* (non-Javadoc)
+/**
  * @see org.eclipse.draw2d.LayoutManager#layout(org.eclipse.draw2d.IFigure)
  */
 public void layout(IFigure container) {
