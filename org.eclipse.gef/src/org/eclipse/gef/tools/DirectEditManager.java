@@ -101,7 +101,7 @@ protected void commit(){
 	try {
 		eraseFeedback();
 		if (isDirty()){
-			CommandStack stack = getEditPart().getRoot().getViewer().getEditDomain().getCommandStack();
+			CommandStack stack = getEditPart().getViewer().getEditDomain().getCommandStack();
 			Command command = getEditPart().getCommand(getDirectEditRequest());
 			if (command != null && command.canExecute())
 				stack.execute(command);
@@ -279,7 +279,7 @@ public void setLocator(CellEditorLocator locator) {
 public void show(){
 	if (getCellEditor() != null)
 		return;
-	Composite composite = (Composite)source.getRoot().getViewer().getControl();
+	Composite composite = (Composite)source.getViewer().getControl();
 	setCellEditor(createCellEditorOn(composite));
 	if (getCellEditor() == null)
 		return;
