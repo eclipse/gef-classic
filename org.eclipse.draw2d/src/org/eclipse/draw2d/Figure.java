@@ -27,7 +27,6 @@ import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.draw2d.geometry.Translatable;
-import org.eclipse.draw2d.internal.Draw2dMessages;
 
 /**
  * The base implementation for graphical figures.
@@ -107,14 +106,13 @@ public void add(IFigure figure, Object constraint, int index) {
 	if (children == Collections.EMPTY_LIST)
 		children = new ArrayList(2);
 	if (index < -1 || index > children.size())
-		throw new IndexOutOfBoundsException(
-			Draw2dMessages.ERR_Figure_Add_Exception_OutOfBounds);
+		throw new IndexOutOfBoundsException("Index does not exist"); //$NON-NLS-1$
 
 	//Check for Cycle in heirarchy
 	for (IFigure f = this; f != null; f = f.getParent())
 		if (figure == f)
 			throw new IllegalArgumentException(
-						Draw2dMessages.ERR_Figure_Add_Exception_IllegalArgument);
+						"Figure being added introduces cycle"); //$NON-NLS-1$
 
 	//Detach the child from previous parent
 	if (figure.getParent() != null)
@@ -1055,9 +1053,9 @@ protected void primTranslate(int dx, int dy) {
  * @param figure The Figure to remove
  */
 public void remove(IFigure figure) {
-	if ((figure.getParent() != this) || !children.contains(figure))
+	if ((figure.getParent() != this))
 		throw new IllegalArgumentException(
-						Draw2dMessages.ERR_Figure_Remove_Exception_IllegalArgument);
+				"Figure is not a child"); //$NON-NLS-1$
 	figure.removeNotify();
 	if (layoutManager != null)
 		layoutManager.remove(figure);
@@ -1318,7 +1316,7 @@ protected void setChildrenOrientation(int orientation) {
 public void setConstraint(IFigure child, Object constraint) {
 	if (child.getParent() != this)
 		throw new IllegalArgumentException(
-			Draw2dMessages.ERR_Figure_SetConstraint_Exception_IllegalArgument);
+			"Figure must be a child"); //$NON-NLS-1$
 	
 	if (layoutManager != null)
 		layoutManager.setConstraint(child, constraint);
