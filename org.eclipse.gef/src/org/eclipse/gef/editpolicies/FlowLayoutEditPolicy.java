@@ -12,8 +12,7 @@ package org.eclipse.gef.editpolicies;
 
 import java.util.List;
 
-import org.eclipse.draw2d.FlowLayout;
-import org.eclipse.draw2d.Polyline;
+import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.*;
 
 import org.eclipse.gef.*;
@@ -151,7 +150,8 @@ private Point getLocationFromRequest(Request request) {
  * @return <code>true</code> if the host's LayoutManager is in a horizontal orientation
  */
 protected boolean isHorizontal() {
-	return ((FlowLayout) getHostFigure().getLayoutManager()).isHorizontal();
+	IFigure figure = ((GraphicalEditPart)getHost()).getContentPane();
+	return ((FlowLayout)figure.getLayoutManager()).isHorizontal();
 }
 
 /**
