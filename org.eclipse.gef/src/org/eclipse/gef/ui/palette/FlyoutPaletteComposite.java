@@ -85,7 +85,7 @@ protected Control graphicalControl;
 protected PaletteViewerProvider provider;
 protected int dock = PositionConstants.EAST;
 protected int paletteState = -1;
-protected int initialState = FLYOVER_COLLAPSED;
+protected int defaultState = FLYOVER_COLLAPSED;
 private int fixedSize = DEFAULT_PALETTE_SIZE;
 
 /*
@@ -124,48 +124,18 @@ public FlyoutPaletteComposite(Composite parent, int style, IWorkbenchPage page,
 	hookIntoWorkbench(page.getWorkbenchWindow());
 
 	addListener(SWT.Resize, new Listener() {
-		private boolean skipNextEvent = false;
-		private boolean editorMaximized = false;
 		public void handleEvent(Event event) {
 			Rectangle area = getClientArea();
-			System.out.println(area);
-			/*
-			 * @TODO:Pratik   Currently, there is no notification mechanism for when a
-			 * part in the workbench is maximized/minimized.  However, when the editor
-			 * is maximized/minimized, a resize event is fired (twice, actually) with
-			 * the size of the client area being (0,0).  For now, I am using that to
-			 * track when the editor is maximized/minimized.  Once the platform provides
-			 * notification for maximize/minimize actions, you can change to using that
-			 * instead of what you have now.  
-			 */
-			if (isMaximizeOrMinimizeTrigger(area)) {
-				if (skipNextEvent)
-					skipNextEvent = false;
-				else if (editorMaximized) {
-					editorMaximized = false;
-					skipNextEvent = true;
-					handleEditorMinimized();
-				} else {
-					editorMaximized = true;
-					skipNextEvent = true;
-					handleEditorMaximized();
-				}
-			} else if (fixedSize > getClientArea().width / 2) {
-				setFixedSize(getClientArea().width / 2);
+			if (fixedSize > area.width / 2) {
+				setFixedSize(area.width / 2);
 			}
 			layout();
-		}
-		private boolean isMaximizeOrMinimizeTrigger(Rectangle area) {
-			if (SWT.getPlatform().equals("gtk")) //$NON-NLS-1$
-				return area.height == 1 && area.width == 1;
-			else
-				return area.height == 0 && area.width == 0;
 		}
 	});
 
 	IViewPart part = page.findView(PaletteView.ID);
 	if (part == null)
-		setState(initialState);
+		setState(defaultState);
 	else
 		setState(IN_VIEW);	
 }
@@ -197,9 +167,13 @@ protected final int getFixedSize() {
 	return fixedSize;
 }
 
+/*
+ * @TODO:Pratik  handleEditorMaximized and handleEditorMinimized are never invoked
+ * because currently there's no mechanism in the platform to detect these actions.
+ */
 protected void handleEditorMaximized() {
 	if (isInState(IN_VIEW))
-		setState(initialState);
+		setState(defaultState);
 }
 
 protected void handleEditorMinimized() {
@@ -211,7 +185,7 @@ protected void handlePerspectiveActivated(IWorkbenchPage page,
 		IPerspectiveDescriptor perspective) {
 	IViewPart view = page.findView(PaletteView.ID);
 	if (view == null && isInState(IN_VIEW))
-		setState(initialState);
+		setState(defaultState);
 	if (view != null && !isInState(IN_VIEW))
 		setState(IN_VIEW);
 }
@@ -320,15 +294,15 @@ public void setExternalViewer(PaletteViewer viewer) {
 		externalViewer.applyState(pViewer.captureState());
 }
 
-public void setInitialState(int state) {
+public void setDefaultState(int state) {
 	if (state != FLYOVER_COLLAPSED && state != FLYOVER_PINNED_OPEN)
 		return;
-	if (initialState != state) {
-		int oldValue = initialState;
-		initialState = state;
+	if (defaultState != state) {
+		int oldValue = defaultState;
+		defaultState = state;
 		if (isInState(oldValue))
-			setState(initialState);
-		firePropertyChanged(PROPERTY_DEFAULT_STATE, oldValue, initialState);
+			setState(defaultState);
+		firePropertyChanged(PROPERTY_DEFAULT_STATE, oldValue, defaultState);
 	}
 }
 
@@ -386,14 +360,6 @@ public void setGraphicalControl(Control graphicalViewer) {
  */
 public void hookDropTargetListener(GraphicalViewer viewer) {
 	viewer.addDropTargetListener(new TransferDropTargetListener() {
-		public Transfer getTransfer() {
-			return TemplateTransfer.getInstance();
-		}
-		public boolean isEnabled(DropTargetEvent event) {
-			if (isInState(FLYOVER_EXPANDED))
-				setState(FLYOVER_COLLAPSED);
-			return false;
-		}
 		public void dragEnter(DropTargetEvent event) {
 		}
 		public void dragLeave(DropTargetEvent event) {
@@ -406,6 +372,14 @@ public void hookDropTargetListener(GraphicalViewer viewer) {
 		}
 		public void dropAccept(DropTargetEvent event) {
 		}
+		public Transfer getTransfer() {
+			return TemplateTransfer.getInstance();
+		}
+		public boolean isEnabled(DropTargetEvent event) {
+			if (isInState(FLYOVER_EXPANDED))
+				setState(FLYOVER_COLLAPSED);
+			return false;
+		}
 	});
 }
 
@@ -414,7 +388,7 @@ protected void setState(int newState) {
 		return;
 	paletteState = newState;
 	if (isInState(FLYOVER_COLLAPSED | FLYOVER_PINNED_OPEN))
-		setInitialState(newState);
+		setDefaultState(newState);
 	switch (paletteState) {
 		case FLYOVER_EXPANDED:
 //			Display.getCurrent().timerExec(250, new Runnable() {
