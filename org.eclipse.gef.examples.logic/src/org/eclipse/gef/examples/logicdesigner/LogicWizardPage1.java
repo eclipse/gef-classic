@@ -19,8 +19,8 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
@@ -34,7 +34,7 @@ import org.eclipse.gef.examples.logicdesigner.model.LogicDiagram;
 
 public class LogicWizardPage1 
 	extends WizardNewFileCreationPage 
-	implements MouseListener
+	implements SelectionListener
 {
 
 private IWorkbench	workbench;
@@ -68,12 +68,12 @@ public void createControl(Composite parent) {
 	// sample section generation checkboxes
 	model1 = new Button(group,SWT.RADIO);
 	model1.setText(LogicMessages.CreateLogicPage1_ModelNames_EmptyModelName);
-	model1.addMouseListener(this);
+	model1.addSelectionListener(this);
 	model1.setSelection(true);
 
 	model2 = new Button(group,SWT.RADIO);
 	model2.setText(LogicMessages.CreateLogicPage1_ModelNames_FourBitAdderModelName);
-	model2.addMouseListener(this);
+	model2.addSelectionListener(this);
 	
 	new Label(composite,SWT.NONE);
 	
@@ -122,20 +122,23 @@ public boolean finish() {
 	return true;
 }
 
-public void mouseDoubleClick(MouseEvent e) {}
-
-public void mouseDown(MouseEvent e) {}
-
-public void mouseUp(MouseEvent e) {
-	Widget w = e.widget;
-	if (w.equals(model1)) {
+/**
+ * @see org.eclipse.swt.events.SelectionListener#widgetSelected(SelectionEvent)
+ */
+public void widgetSelected(SelectionEvent e) {
+	if( e.getSource() == model1 ){
 		modelSelected = 1;
 		setFileName("emptyModel" + exampleCount + ".logic");  //$NON-NLS-2$//$NON-NLS-1$
-	}
-	if (w.equals(model2)) {
+	} else {
 		modelSelected = 2;
 		setFileName("fourBitAdder" + exampleCount + ".logic");  //$NON-NLS-2$//$NON-NLS-1$
 	}
+}
+
+/**
+ * Empty method
+ */
+public void widgetDefaultSelected(SelectionEvent e) {
 }
 
 }
