@@ -29,7 +29,7 @@ public class PaletteToolbarLayout
 	extends ToolbarLayout 
 {
 
-private Dimension[] sourceSizes;
+private Rectangle[] sourceSizes;
 private Rectangle[] destinationSizes;
 private boolean scaling = false;
 private DrawerAnimationController controller;
@@ -54,9 +54,9 @@ private void captureDestinationSizes(IFigure parent) {
 
 private void captureSourceSizes(IFigure parent) {
 	List children = parent.getChildren();
-	sourceSizes = new Dimension[children.size()];
+	sourceSizes = new Rectangle[children.size()];
 	for (int i = 0; i < children.size(); i++) {
-		sourceSizes[i] = ((IFigure)children.get(i)).getBounds().getSize();
+		sourceSizes[i] = ((IFigure)children.get(i)).getBounds().getCopy();
 	}
 }
 
@@ -80,14 +80,13 @@ private boolean isScaling() {
 public void layout(IFigure parent) {
 	if (isScaling()) {
 		scaledLayout(parent);
-		setScaling(controller.getAnimationProgress() < 1.0);
+		setScaling(controller.isAnimationInProgress());
 	} else {
 		if (controller != null && controller.isAnimationInProgress()) {
 			captureSourceSizes(parent);
 			normalLayout(parent);
 			captureDestinationSizes(parent);
 			setScaling(true);
-			scaledLayout(parent);
 		} else {
 			normalLayout(parent);
 		}
@@ -111,8 +110,8 @@ private void normalLayout(IFigure parent) {
 	/*
 	 * Determine hints.
 	 */
-	int wHint = parent.getClientArea(Rectangle.SINGLETON).width;
-	int hHint = -1;    
+	int wHint = isHorizontal() ? -1 : clientArea.width;
+	int hHint = isHorizontal() ? clientArea.width : -1;
 
 	/*
 	 * Store the preferred and minimum sizes of all figures.  Determine which figures can
@@ -145,9 +144,15 @@ private void normalLayout(IFigure parent) {
 	// height should be given to each growing child.  
 	if (!childrenGrabbingVertical.isEmpty()) {
 		 // We only want the last child to stretch.  So, we remove all but the last
-		 // growing child.
+		 // growing child.  We add the preferred height of the children being marked
+		 // non-growing to heightOfNonGrowingChildren.
 		if (stretching) {
-			Object last = childrenGrabbingVertical.get(childrenGrabbingVertical.size() - 1);
+			for (int i = 0; i < childrenGrabbingVertical.size() - 1; i++) {
+				int index = children.indexOf(childrenGrabbingVertical.get(i));
+				heightOfNonGrowingChildren += prefSizes[index].height; 
+			}
+			Object last = childrenGrabbingVertical.get(
+					childrenGrabbingVertical.size() - 1);
 			childrenGrabbingVertical.clear();
 			childrenGrabbingVertical.add(last);
 		}
@@ -244,40 +249,20 @@ private void normalLayout(IFigure parent) {
 }
 
 private void scaledLayout(IFigure parent) {
-	Rectangle clientArea = transposer.t(parent.getClientArea());
-	int y = clientArea.y;
-	int availableHeight = clientArea.height;
-	// numGrowing indicates the number of figures that can be stretched/compressed
-	int totalHeight = 0, numGrowing = 0;	
 	List children = parent.getChildren();
 	float progress = controller.getAnimationProgress();
-	
+	   
 	for (int i = 0; i < children.size(); i++) {
-		int srcHeight = sourceSizes[i].height;
-		int dstHeight = destinationSizes[i].height;
-		int height = 0;
-		if (srcHeight == dstHeight) {
-			height = dstHeight;
-		} else if (srcHeight < dstHeight) {
-			height = (int)(progress * (dstHeight - srcHeight)) + srcHeight;
-			numGrowing++;
-		} else {
-			height = srcHeight - (int)(progress * (srcHeight - dstHeight));
-			numGrowing++;
-		}
-		totalHeight += height;
-		if (i == children.size() - 1 && numGrowing > 1) {
-			// If this is the last child, give it the excess height (the height left over
-			// because of rounding errors).  However, don't do this unless there is at
-			// least one other child that can be stretched.
-			height += (availableHeight - totalHeight);
-		}
-
+		Rectangle rect1 = sourceSizes[i];
+		Rectangle rect2 = destinationSizes[i];
 		IFigure child = (IFigure)children.get(i);
-		Rectangle newBounds = new Rectangle(destinationSizes[i].x, y, 
-		                                    destinationSizes[i].width, height);
-		child.setBounds(transposer.t(newBounds));
-		y += newBounds.height + getSpacing();
+	      
+		child.setBounds(new Rectangle(
+				Math.round(progress * rect2.x + (1-progress) * rect1.x),
+				Math.round(progress * rect2.y + (1-progress) * rect1.y),
+				Math.round(progress * rect2.width + (1-progress) * rect1.width),
+				Math.round(progress * rect2.height + (1-progress) * rect1.height)
+		));
 	}
 }
 

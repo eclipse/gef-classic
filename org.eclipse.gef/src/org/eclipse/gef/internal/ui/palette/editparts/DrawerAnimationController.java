@@ -58,6 +58,12 @@ public void animate(DrawerEditPart drawer) {
 	} else {
 		animate = new DrawerFigure[] {drawer.getDrawerFigure()};
 	}
+
+	for (int i = 0; i < animate.length; i++) {
+		animate[i].revalidate();
+	}
+	animate[0].getParent().validate();
+	
 	for (int i = 0; i < animate.length; i++) {
 		animate[i].setAnimating(true);
 	}
@@ -65,14 +71,16 @@ public void animate(DrawerEditPart drawer) {
 	runAnimation();
 	for (int i = 0; i < animate.length; i++) {
 		animate[i].setAnimating(false);
+		animate[i].revalidate();
 	}
+	animate[0].getUpdateManager().performUpdate();
+	
 	animate = null;
 }
 
 void runAnimation() {
 	while (inProgress)
 		step();
-	step();
 }
 
 void step() {
