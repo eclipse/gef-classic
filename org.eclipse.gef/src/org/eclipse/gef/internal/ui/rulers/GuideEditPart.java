@@ -23,8 +23,8 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.gef.*;
 import org.eclipse.gef.editparts.*;
 import org.eclipse.gef.editpolicies.SelectionEditPolicy;
-import org.eclipse.gef.internal.GEFMessages;
-import org.eclipse.gef.rulers.*;
+import org.eclipse.gef.rulers.RulerChangeListener;
+import org.eclipse.gef.rulers.RulerProvider;
 import org.eclipse.gef.tools.DragEditPartsTracker;
 
 /**
@@ -74,11 +74,17 @@ public void activate() {
 
 protected AccessibleEditPart createAccessibleEditPart() {
 	return new AccessibleGraphicalEditPart(){
+		public void getDescription(AccessibleEvent e) {
+			if (getRulerProvider() != null)
+				getRulerProvider().getAccGuideDescription(e, GuideEditPart.this);
+		}
 		public void getName(AccessibleEvent e) {
-			e.result = GEFMessages.Guide_Label;
+			if (getRulerProvider() != null)
+				getRulerProvider().getAccGuideName(e, GuideEditPart.this);
 		}
 		public void getValue(AccessibleControlEvent e) {
-			e.result = "" + getRulerProvider().getGuidePosition(getModel()); //$NON-NLS-1$
+			if (getRulerProvider() != null)
+				getRulerProvider().getAccGuideValue(e, GuideEditPart.this);
 		}
 	};
 }
@@ -193,7 +199,6 @@ protected void handleGuideMoved() {
 }
 
 protected void handlePartAttachmentChanged(Object part) {
-	refreshVisuals();
 }
 
 protected void handleZoomChanged() {
