@@ -12,11 +12,15 @@ package org.eclipse.gef.tools;
 
 import java.util.*;
 
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.widgets.Display;
+
+import org.eclipse.jface.viewers.StructuredSelection;
+
 import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.Rectangle;
+
 import org.eclipse.gef.*;
-import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.swt.events.KeyEvent;
 
 /**
  * A Tool which selects multiple objects inside a rectangular area of a Graphical Viewer. 
@@ -36,7 +40,7 @@ static final int APPEND_MODE = 2;
 
 private int mode;
 
-private Shape marqueeRectangleFigure;
+private Figure marqueeRectangleFigure;
 private List allChildren = new ArrayList();
 private List selectedEditParts;
 private Request targetRequest;
@@ -153,12 +157,7 @@ protected String getDebugName() {
 
 private IFigure getMarqueeFeedbackFigure() {		
 	if (marqueeRectangleFigure == null) {
-		marqueeRectangleFigure = new RectangleFigure();
-		marqueeRectangleFigure.setFill(false);
-		marqueeRectangleFigure.setLineStyle(Graphics.LINE_DASHDOT);
-		marqueeRectangleFigure.setForegroundColor(ColorConstants.white);
-		marqueeRectangleFigure.setBackgroundColor(ColorConstants.black);
-		marqueeRectangleFigure.setOutlineXOR(true);
+		marqueeRectangleFigure = new MarqueeRectangleFigure();
 		addFeedback(marqueeRectangleFigure);
 	}
 	return marqueeRectangleFigure;
@@ -317,6 +316,57 @@ private void showTargetFeedback() {
 		EditPart editPart = (EditPart) selectedEditParts.get(i);
 		editPart.showTargetFeedback(getTargetRequest());
 	}
+}
+
+class MarqueeRectangleFigure 
+extends Figure {
+
+private int offset = 0;
+private boolean schedulePaint = true;
+
+/**
+ * @see org.eclipse.draw2d.Figure#paintFigure(org.eclipse.draw2d.Graphics)
+ */
+protected void paintFigure(Graphics graphics) {	
+	Rectangle bounds = getBounds().getCopy();
+	graphics.translate(getLocation());
+	
+	graphics.setXORMode(true);
+	graphics.setForegroundColor(ColorConstants.white);
+	graphics.setBackgroundColor(ColorConstants.black);
+	
+	graphics.setLineStyle(Graphics.LINE_DOT);
+	
+	if (offset == 0 || offset == 4 || offset == 5)
+		graphics.drawPoint(bounds.width - 1, 0);
+	if (offset == 0 || offset == 1)
+		graphics.drawPoint(0, bounds.height - 1);
+		
+	graphics.drawLine((bounds.width % 6 - 7) + offset, 0, bounds.width + 6, 0);
+	graphics.drawLine(bounds.width - 1, offset - 6, bounds.width - 1, bounds.height + 6);
+	graphics.drawLine(bounds.width + 7 - (bounds.width % 6) - offset, bounds.height - 1, 
+			0 - 6, bounds.height - 1);
+	graphics.drawLine(0, bounds.height - offset, 0, -6);
+	
+	graphics.translate(getLocation().getNegated());
+	
+	if (schedulePaint) {
+		Display display = Display.getCurrent();
+		Display.getCurrent().timerExec(150, new Runnable() {
+			public void run() {
+				offset++;
+				if (offset > 5)
+					offset = 0;	
+				
+				schedulePaint = true;
+				repaint();
+			}
+		});
+	}
+	
+	schedulePaint = false;
+}
+	
 }
 
 }
