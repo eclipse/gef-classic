@@ -9,10 +9,12 @@ package org.eclipse.gef;
 import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.gef.ui.actions.GEFActionConstants;
 import org.eclipse.jface.action.*;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.widgets.Menu;
 
 public abstract class ContextMenuProvider 
-	implements IMenuListener 
+	implements IMenuListener, DisposeListener
 {
 
 private ActionRegistry registry;
@@ -34,8 +36,11 @@ public Menu createContextMenu() {
 
 	Menu menu = menuManager.createContextMenu(getViewer().getControl());
 	getViewer().getControl().setMenu(menu);
+	menu.addDisposeListener(this);
 	return menu;
 }
+
+public void dispose() {}
 
 protected ActionRegistry getActionRegistry() {
 	return registry;
@@ -71,6 +76,15 @@ protected void setActionRegistry(ActionRegistry registry) {
 
 protected void setViewer(EditPartViewer viewer) {
 	this.viewer = viewer;
+}
+
+/**
+ * @see org.eclipse.swt.events.DisposeListener#widgetDisposed(org.eclipse.swt.events.DisposeEvent)
+ */
+public void widgetDisposed(DisposeEvent e) {
+	dispose();
+	menuManager.getMenu().removeDisposeListener(this);
+	menuManager = null;
 }
 
 }
