@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.gef;
 
-import org.eclipse.swt.graphics.Image;
-
 import org.eclipse.jface.resource.ImageDescriptor;
 
 import org.eclipse.gef.internal.Internal;
@@ -47,12 +45,6 @@ static {
 	DESC_SELECTION_TOOL_24 = createDescriptor("icons/arrow24.gif"); //$NON-NLS-1$
 	DESC_MARQUEE_TOOL_16 = createDescriptor("icons/marquee16.gif"); //$NON-NLS-1$
 	DESC_MARQUEE_TOOL_24 = createDescriptor("icons/marquee24.gif"); //$NON-NLS-1$
-}
-
-private static Image create(String filename) {
-	return ImageDescriptor.createFromFile(
-		Internal.class,
-		filename).createImage();
 }
 
 private static ImageDescriptor createDescriptor(String filename) {
