@@ -129,13 +129,16 @@ public SnapToGuides(GraphicalEditPart container) {
  */
 protected double getCorrectionFor(int[] guides, double near, double far, Map extendedData, 
                                   boolean isVertical) {
+	far -= 1.0;
+	double total = near + far;
+	//If the width is even, there is no middle pixel so favor the left - most pixel.
 	if ((int)(near - far) % 2 == 0)
-		far -= 1.0;
-	double result = getCorrectionFor(guides, (near + far - 1) / 2, extendedData, isVertical, 0);
+		total -= 1.0;
+	double result = getCorrectionFor(guides, total / 2, extendedData, isVertical, 0);
 	if (result == THRESHOLD)
 		result = getCorrectionFor(guides, near, extendedData, isVertical, -1); 
 	if (result == THRESHOLD)
-		result = getCorrectionFor(guides, far - 1, extendedData, isVertical, 1);
+		result = getCorrectionFor(guides, far, extendedData, isVertical, 1);
 	return result;
 }
 
