@@ -18,8 +18,7 @@ import org.eclipse.swt.widgets.*;
 
 import org.eclipse.draw2d.FigureUtilities;
 
-import org.eclipse.gef.palette.PaletteEntry;
-import org.eclipse.gef.palette.PaletteSeparator;
+import org.eclipse.gef.palette.*;
 import org.eclipse.gef.ui.palette.PaletteMessages;
 
 /**
@@ -119,7 +118,8 @@ protected Button createHiddenCheckBox(Composite panel) {
 	hidden.setText(PaletteMessages.HIDDEN_LABEL);
 	hidden.setSelection(!entry.isVisible());
 	
-	if (getPermission() == PaletteEntry.PERMISSION_NO_MODIFICATION) {
+	if (getPermission() == PaletteEntry.PERMISSION_NO_MODIFICATION 
+			|| (getEntry().getParent() != null && getEntry().getParent() instanceof PaletteStack)) {
 		hidden.setEnabled(false);
 	} else {
 		hidden.addSelectionListener(new SelectionAdapter() {
