@@ -141,11 +141,8 @@ protected void eraseConnectionMoveFeedback(ReconnectRequest request) {
  */
 public void eraseSourceFeedback(Request request) {
 	if (REQ_RECONNECT_TARGET.equals(request.getType())
-	  || REQ_RECONNECT_SOURCE.equals(request.getType())) {
+	  || REQ_RECONNECT_SOURCE.equals(request.getType()))
 		eraseConnectionMoveFeedback((ReconnectRequest)request);
-		debugFeedback("Request to erase \"" + request.getType() //$NON-NLS-1$
-			+ "\" source feedback"); //$NON-NLS-1$
-	}
 }
 
 /**

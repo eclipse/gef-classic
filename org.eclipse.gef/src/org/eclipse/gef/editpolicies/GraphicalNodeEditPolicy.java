@@ -72,11 +72,8 @@ protected void eraseCreationFeedback(CreateConnectionRequest request) {
  * Calls {@link #eraseCreationFeedback(CreateConnectionRequest)} when appropriate.
  * @see org.eclipse.gef.EditPolicy#eraseSourceFeedback(Request) */
 public void eraseSourceFeedback(Request request) {
-	if (REQ_CONNECTION_END.equals(request.getType())) {
+	if (REQ_CONNECTION_END.equals(request.getType()))
 		eraseCreationFeedback((CreateConnectionRequest)request);
-		debugFeedback("Request to erase \"" + request.getType()//$NON-NLS-1$
-			+ "\" source feedback");//$NON-NLS-1$
-	}
 }
 
 /**
@@ -92,11 +89,8 @@ public void eraseTargetFeedback(Request request) {
 	if (REQ_CONNECTION_START.equals(request.getType())
 	  || REQ_CONNECTION_END.equals(request.getType())
 	  || REQ_RECONNECT_SOURCE.equals(request.getType())
-	  || REQ_RECONNECT_TARGET.equals(request.getType())) {
+	  || REQ_RECONNECT_TARGET.equals(request.getType()))
 		eraseTargetConnectionFeedback((DropRequest) request);
-		debugFeedback("Request to erase \"" + request.getType() //$NON-NLS-1$
-			+ "\" target feedback"); //$NON-NLS-1$
-	}
 }
 
 /**
@@ -220,11 +214,8 @@ protected void showCreationFeedback(CreateConnectionRequest request) {
  * calls {@link #showCreationFeedback(CreateConnectionRequest)} when appropriate.
  * @see org.eclipse.gef.EditPolicy#showSourceFeedback(Request) */
 public void showSourceFeedback(Request request) {
-	if (REQ_CONNECTION_END.equals(request.getType())) {
+	if (REQ_CONNECTION_END.equals(request.getType()))
 		showCreationFeedback((CreateConnectionRequest)request);
-		debugFeedback("Request to show \"" + request.getType()//$NON-NLS-1$
-			+ "\" SOURCE feeback");//$NON-NLS-1$
-	}
 }
 
 /**
@@ -237,13 +228,10 @@ protected void showTargetConnectionFeedback(DropRequest request) { }
  * @see org.eclipse.gef.EditPolicy#showTargetFeedback(Request) */
 public void showTargetFeedback(Request request) {
 	if (REQ_CONNECTION_START.equals(request.getType())
-		|| REQ_CONNECTION_END.equals(request.getType())
-		|| REQ_RECONNECT_SOURCE.equals(request.getType())
-		|| REQ_RECONNECT_TARGET.equals(request.getType())) {
+			|| REQ_CONNECTION_END.equals(request.getType())
+			|| REQ_RECONNECT_SOURCE.equals(request.getType())
+			|| REQ_RECONNECT_TARGET.equals(request.getType()))
 		showTargetConnectionFeedback((DropRequest) request);
-		debugFeedback("Request to show \"" + request.getType()//$NON-NLS-1$
-			+ "\" TARGET feeback"); //$NON-NLS-1$
-	}
 }
 
 }

@@ -302,14 +302,11 @@ protected void setAutoexposeHelper(AutoexposeHelper helper) {
  */
 protected void setTargetEditPart(EditPart editpart) {
 	if (editpart != targetEditPart) {
-		if (targetEditPart != null) {
-			debug("Leaving:\t" + targetEditPart);//$NON-NLS-1$
+		if (targetEditPart != null)
 			handleExitingEditPart();
-		}
 		targetEditPart = editpart;
 		if (getTargetRequest() instanceof TargetRequest)
 			((TargetRequest)getTargetRequest()).setTargetEditPart(targetEditPart);
-		debug("Entering:\t" + targetEditPart);//$NON-NLS-1$
 		handleEnteredEditPart();
 	}
 }

@@ -98,8 +98,6 @@ protected Request createTargetRequest() {
  * @see DropTargetListener#dragEnter(DropTargetEvent)
  */
 public void dragEnter(DropTargetEvent event) {
-	if (GEF.DebugDND)
-		GEF.debug("Drag Enter: " + toString()); //$NON-NLS-1$
 	resetHover();
 	setCurrentEvent(event);
 }
@@ -112,8 +110,6 @@ public void dragEnter(DropTargetEvent event) {
  * @see DropTargetListener#dragLeave(DropTargetEvent)
  */
 public void dragLeave(DropTargetEvent event) {
-	if (GEF.DebugDND)
-		GEF.debug("Drag Leave: " + toString()); //$NON-NLS-1$
 	setCurrentEvent(event);
 	unload();
 }
@@ -125,8 +121,6 @@ public void dragLeave(DropTargetEvent event) {
  * @see DropTargetListener#dragOperationChanged(DropTargetEvent)
  */
 public void dragOperationChanged(DropTargetEvent event) {
-	if (GEF.DebugDND)
-		GEF.debug("Drag Operation Changed: " + toString()); //$NON-NLS-1$
 	resetHover();
 	setCurrentEvent(event);
 	handleDragOperationChanged();
@@ -140,8 +134,6 @@ public void dragOperationChanged(DropTargetEvent event) {
  */
 public void dragOver(DropTargetEvent event) {
 	setCurrentEvent(event);
-	if (GEF.DebugDND)
-		GEF.debug("Drag Over: " + toString()); //$NON-NLS-1$
 	handleDragOver();
 	if (testAndSet(event)) {
 		resetHover();
@@ -152,8 +144,6 @@ public void dragOver(DropTargetEvent event) {
 		if (hoverStartTime == -1) {
 			hoverStartTime = currentTime;
 		} else if (currentTime - hoverStartTime > 400) {
-			if (GEF.DebugDND)
-				GEF.debug("Drag Hover: " + toString()); //$NON-NLS-1$
 			handleHover();
 			hovering = true;
 		}
@@ -167,8 +157,6 @@ public void dragOver(DropTargetEvent event) {
  * @see DropTargetListener#drop(DropTargetEvent)
  */
 public void drop(DropTargetEvent event) {
-	if (GEF.DebugDND)
-		GEF.debug("Drop: " + toString()); //$NON-NLS-1$
 	setCurrentEvent(event);
 	eraseTargetFeedback();
 	handleDrop();
@@ -181,8 +169,6 @@ public void drop(DropTargetEvent event) {
  * @see DropTargetListener#dropAccept(DropTargetEvent)
  */
 public void dropAccept(DropTargetEvent event) {
-	if (GEF.DebugDND)
-		GEF.debug("Drop Accept: " + toString()); //$NON-NLS-1$
 	setCurrentEvent(event);
 }
 
@@ -410,19 +396,11 @@ public void setCurrentEvent(DropTargetEvent currentEvent) {
  */
 protected void setTargetEditPart(EditPart ep) {
 	if (ep != target) {
-		if (target != null) {
+		if (target != null)
 			handleExitingEditPart();
-			if (GEF.DebugDND) {
-				GEF.debug("Exited EditPart: " + target.toString()); //$NON-NLS-1$
-			}
-		}
 		target = ep;
-		if (target != null) {
+		if (target != null)
 			handleEnteredEditPart();
-			if (GEF.DebugDND) {
-				GEF.debug("Entered EditPart: " + target); //$NON-NLS-1$
-			}
-		}
 	}
 }
 

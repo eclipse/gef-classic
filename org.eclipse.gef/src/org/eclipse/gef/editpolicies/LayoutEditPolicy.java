@@ -314,14 +314,11 @@ protected void showSizeOnDropFeedback(CreateRequest request) {
  * @see org.eclipse.gef.EditPolicy#showTargetFeedback(Request) */
 public void showTargetFeedback(Request request) {
 	if (REQ_ADD.equals(request.getType())
-		|| REQ_CLONE.equals(request.getType())
-		|| REQ_MOVE.equals(request.getType())
-		|| REQ_RESIZE_CHILDREN.equals(request.getType())
-		|| REQ_CREATE.equals(request.getType())) {
-		debugFeedback("Request to show \"" + request.getType()//$NON-NLS-1$
-			+ "\" target feedback"); //$NON-NLS-1$
+			|| REQ_CLONE.equals(request.getType())
+			|| REQ_MOVE.equals(request.getType())
+			|| REQ_RESIZE_CHILDREN.equals(request.getType())
+			|| REQ_CREATE.equals(request.getType()))
 		showLayoutTargetFeedback(request);
-	}
 
 	if (REQ_CREATE.equals(request.getType())) {
 		CreateRequest createReq = (CreateRequest)request;

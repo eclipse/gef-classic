@@ -127,7 +127,6 @@ protected static class EditPolicyIterator {
  * @see #deactivate()
  */
 public void activate() {
-	debugPush("Activating");//$NON-NLS-1$
 	setFlag(FLAG_ACTIVE, true);
 
 	activateEditPolicies();
@@ -137,7 +136,6 @@ public void activate() {
 		((EditPart)c.get(i)).activate();
 
 	fireActivated();
-	debugPop();
 }
 
 /**
@@ -252,7 +250,6 @@ protected abstract void createEditPolicies();
  * @see  #activate()
  */
 public void deactivate() {
-	debugPush("Deactivating");//$NON-NLS-1$
 	List c = getChildren();
 	for (int i = 0; i < c.size(); i++)
 		((EditPart)c.get(i)).deactivate();
@@ -261,14 +258,12 @@ public void deactivate() {
 	
 	setFlag(FLAG_ACTIVE, false);
 	fireDeactivated();
-	debugPop();
 }
 
 /**
  * Deactivates all installed EditPolicies.
  */
 protected void deactivateEditPolicies() {
-	debug("Deactivating EditPolicies");//$NON-NLS-1$
 	EditPolicyIterator i = getEditPolicyIterator();
 	while (i.hasNext())
 		i.next().deactivate();
@@ -329,8 +324,6 @@ public void eraseSourceFeedback(Request request) {
 			iter.next().
 				eraseSourceFeedback(request);
 	}
-	debugFeedback("Request to erase \"" + request.getType()//$NON-NLS-1$
-		+ "\" SOURCE feedback");//$NON-NLS-1$
 }
 
 /**
@@ -355,8 +348,6 @@ public void eraseTargetFeedback(Request request) {
 			iter.next().
 				eraseTargetFeedback(request);
 	}
-	debugFeedback("Request to erase \"" + request.getType()//$NON-NLS-1$
-		+ "\" TARGET feedback");//$NON-NLS-1$
 }
 
 /**
@@ -672,7 +663,6 @@ public void performRequest(Request req) {
  * of structural refreshing.
  */
 public void refresh() {
-	debug("Refresh");//$NON-NLS-1$
 	refreshVisuals();
 	refreshChildren();
 }
@@ -856,7 +846,6 @@ public void removeEditPolicy(Object key) {
  * @see org.eclipse.gef.EditPart#removeNotify()
  */
 public void removeNotify() {
-	debugPush("removeNotify"); //$NON-NLS-1$
 	if (getSelected() != SELECTED_NONE)
 		getViewer().deselect(this);
 	if (hasFocus())
@@ -867,7 +856,6 @@ public void removeNotify() {
 		((EditPart)children.get(i))
 			.removeNotify();
 	unregister();
-	GEF.debugPop();
 }
 
 /**
@@ -960,8 +948,6 @@ public void setSelected(int value) {
  * @param request the Request
  */
 public void showSourceFeedback(Request request) {
-	debugFeedback("Request to show \"" + request.getType()//$NON-NLS-1$
-		+ "\" SOURCE feedback");//$NON-NLS-1$
 	if (!isActive())
 		return;
 	EditPolicyIterator i = getEditPolicyIterator();
@@ -987,8 +973,6 @@ public void showSourceFeedback(Request request) {
  * @param request the Request
  */
 public void showTargetFeedback(Request request) {
-	debugFeedback("Request to show \"" + request.getType()//$NON-NLS-1$
-		+ "\" TARGET feedback");//$NON-NLS-1$
 	if (!isActive())
 		return;
 	EditPolicyIterator i = getEditPolicyIterator();
@@ -1038,7 +1022,6 @@ protected void unregister() {
 	unregisterAccessibility();
 	unregisterVisuals();
 	unregisterModel();
-	debug("Unregister");//$NON-NLS-1$
 }
 
 /**

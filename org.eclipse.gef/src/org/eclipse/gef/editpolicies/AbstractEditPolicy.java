@@ -43,7 +43,6 @@ public void deactivate() { }
 protected final void debugFeedback(String message) {
 	if (!GEF.DebugFeedback)
 		return;
-	GEF.debug("\tFEEDBACK:\t" + toString() + ":\t" + message);//$NON-NLS-2$//$NON-NLS-1$
 }
 
 /**

@@ -314,7 +314,6 @@ public void activate() {
 	getCurrentInput().verifyMouseButtons = true;
 	setState(STATE_INITIAL);
 	setFlag(FLAG_ACTIVE, true);
-	debug("ACTIVATED");//$NON-NLS-1$
 	getDomain().getCommandStack().addCommandStackListener(commandStackListener);
 }
 
@@ -385,7 +384,6 @@ public void deactivate() {
 	setCurrentCommand(null);
 	operationSet = null;
 	current = null;
-	debug("DE-ACTIVATED"); //$NON-NLS-1$
 	getDomain().getCommandStack().removeCommandStackListener(commandStackListener);
 }
 
@@ -408,7 +406,6 @@ protected void debug(String message) {
  */
 public void focusGained(FocusEvent event, EditPartViewer viewer) {
 	setViewer(viewer);
-	debug("Focus Gained: " + viewer); //$NON-NLS-1$
 	handleFocusGained();
 }
 
@@ -420,7 +417,6 @@ public void focusGained(FocusEvent event, EditPartViewer viewer) {
  */
 public void focusLost(FocusEvent event, EditPartViewer viewer) {
 	setViewer(viewer);
-	debug("Focus Lost: " + viewer); //$NON-NLS-1$
 	handleFocusLost();
 }
 
@@ -888,8 +884,6 @@ protected boolean isInState(int state) {
 public void keyDown(KeyEvent evt, EditPartViewer viewer) {
 	setViewer(viewer);
 	getCurrentInput().setInput(evt);
-	debug("Key (" + evt.character + ','//$NON-NLS-1$
-		+ evt.keyCode + ") down:\t"); //$NON-NLS-1$
 	handleKeyDown(evt);
 }
 
@@ -902,8 +896,6 @@ public void keyDown(KeyEvent evt, EditPartViewer viewer) {
 public void keyUp(KeyEvent evt, EditPartViewer viewer) {
 	setViewer(viewer);
 	getCurrentInput().setInput(evt);
-	debug("Key (" + evt.character + ','//$NON-NLS-1$
-		+ evt.keyCode + ") up:\t");//$NON-NLS-1$
 	handleKeyUp(evt);
 }
 
@@ -928,7 +920,6 @@ protected boolean movedPastThreshold() {
  * @see org.eclipse.gef.Tool#nativeDragStarted(DragSourceEvent, EditPartViewer)
  */
 public void nativeDragFinished(DragSourceEvent event, EditPartViewer viewer) {
-	debug("Native drag finished on " + viewer);//$NON-NLS-1$
 	setViewer(viewer);
 	handleNativeDragFinished(event);
 }
@@ -937,7 +928,6 @@ public void nativeDragFinished(DragSourceEvent event, EditPartViewer viewer) {
  * @see org.eclipse.gef.Tool#nativeDragStarted(DragSourceEvent, EditPartViewer)
  */
 public void nativeDragStarted(DragSourceEvent event, EditPartViewer viewer) {
-	debug("Native drag started on " + viewer);//$NON-NLS-1$
 	setViewer(viewer);
 	handleNativeDragStarted(event);
 }
@@ -954,7 +944,6 @@ public void mouseDoubleClick(MouseEvent me, EditPartViewer viewer) {
 	setViewer(viewer);
 	getCurrentInput().setInput(me);
 
-	debug("B" + me.button + " double click on:\t");//$NON-NLS-2$//$NON-NLS-1$
 	handleDoubleClick(me.button);
 }
 
@@ -973,7 +962,6 @@ public void mouseDown(MouseEvent me, EditPartViewer viewer) {
 	startX = me.x;
 	startY = me.y;
 
-	debug("B" + me.button + " down on:\t");//$NON-NLS-2$//$NON-NLS-1$
 	handleButtonDown(me.button);
 }
 
@@ -1005,7 +993,6 @@ public void mouseDrag(MouseEvent me, EditPartViewer viewer) {
 public void mouseHover(MouseEvent me, EditPartViewer viewer) {
 	setViewer(viewer);
 	getCurrentInput().setInput(me);
-	debug("Mouse hover occured");//$NON-NLS-1$
 	handleHover();
 }
 
@@ -1052,7 +1039,6 @@ public void mouseUp(MouseEvent me, EditPartViewer viewer) {
 	setViewer(viewer);
 	getCurrentInput().setInput(me);
 	getCurrentInput().setMouseButton(me.button, false);
-	debug("B" + me.button + " up on:\t");//$NON-NLS-2$//$NON-NLS-1$
 	handleButtonUp(me.button);
 }
 
@@ -1206,10 +1192,6 @@ protected void setStartLocation(Point p) {
  */
 protected void setState(int state) {
 	this.state = state;
-	if (GEF.DebugToolStates)
-		GEF.debug("STATE CHANGE:\t" + getDebugName() + //$NON-NLS-1$
-			":\t" + getDebugNameForState(this.state) + //$NON-NLS-1$
-			" <" + state + '>'); //$NON-NLS-1$
 }
 
 /**
@@ -1288,12 +1270,9 @@ protected final boolean unloadWhenFinished() {
  */
 public void viewerEntered(MouseEvent me, EditPartViewer viewer) {
 	getCurrentInput().setInput(me);
-	if (getCurrentViewer() != null && getCurrentViewer() != viewer) {
-		debug("Mouse exited viewer:\t" + getCurrentViewer().toString()); //$NON-NLS-1$
+	if (getCurrentViewer() != null && getCurrentViewer() != viewer)
 		handleViewerExited();
-	}
 	setViewer(viewer);
-	debug("Mouse entered viewer:\t" + getCurrentViewer().toString()); //$NON-NLS-1$
 	handleViewerEntered();
 }
 
@@ -1310,7 +1289,6 @@ public void viewerExited(MouseEvent me, EditPartViewer viewer) {
 	 */
 	if (viewer == getCurrentViewer()) {
 		getCurrentInput().setInput(me);
-		debug("Mouse exited viewer:\t" + viewer.toString());//$NON-NLS-1$
 		handleViewerExited();
 		setViewer(null);
 	}
