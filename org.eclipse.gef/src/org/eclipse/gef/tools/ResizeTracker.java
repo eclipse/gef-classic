@@ -62,15 +62,6 @@ public void activate() {
 }
 
 /**
- * @see org.eclipse.gef.tools.AbstractTool#calculateCursor()
- */
-protected Cursor calculateCursor() {
-	if (isInState(STATE_INITIAL))
-		return getDefaultCursor();
-	return super.calculateCursor();
-}
-
-/**
  * Returns all selected parts which understand resizing.
  * @see org.eclipse.gef.tools.AbstractTool#createOperationSet()
  */
