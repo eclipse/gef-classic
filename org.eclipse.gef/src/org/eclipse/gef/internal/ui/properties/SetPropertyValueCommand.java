@@ -13,6 +13,7 @@ package org.eclipse.gef.internal.ui.properties;
 import java.text.MessageFormat;
 
 import org.eclipse.ui.views.properties.IPropertySource;
+import org.eclipse.ui.views.properties.IPropertySource2;
 
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.internal.GEFMessages;
@@ -56,7 +57,11 @@ public void execute() {
 	if (propertyValue instanceof IPropertySource)
 		propertyValue = ((IPropertySource)propertyValue).getEditableValue();
 	getTarget().setPropertyValue(propertyName, propertyValue);
-	resetOnUndo = wasPropertySet != getTarget().isPropertySet(propertyName);
+	if (getTarget() instanceof IPropertySource2)
+		resetOnUndo = !wasPropertySet
+				&& ((IPropertySource2)getTarget()).isPropertyResettable(propertyName);
+	else
+		resetOnUndo = !wasPropertySet && getTarget().isPropertySet(propertyName);
 	if (resetOnUndo)
 		undoValue = null;
 }
