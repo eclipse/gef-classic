@@ -14,6 +14,7 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.gef.internal.InternalImages;
 import org.eclipse.gef.palette.PaletteContainer;
 import org.eclipse.gef.palette.PaletteEntry;
+import org.eclipse.gef.palette.PaletteSeparator;
 
 import org.eclipse.draw2d.ColorConstants;
 
@@ -72,11 +73,15 @@ public Color getForeground(Object element) {
 public Image getImage(Object element) {
 	PaletteEntry entry = (PaletteEntry)element;
 	ImageDescriptor descriptor = entry.getSmallIcon();
-	if (descriptor == null && (entry instanceof PaletteContainer)) {
-		descriptor = InternalImages.DESC_FOLDER_OPEN;
+	if (descriptor == null ){
+		if (entry instanceof PaletteContainer) {
+			descriptor = InternalImages.DESC_FOLDER_OPEN;
+		} else if (entry instanceof PaletteSeparator) {
+			descriptor = InternalImages.DESC_SEPARATOR;
+		} else {
+			return null;
+		}
 	}
-	if (descriptor == null)
-		return null;
 	return getCachedImage(descriptor);
 }
 
