@@ -564,12 +564,8 @@ protected void updateTargetRequest() {
 	if (snapToHelper != null && !getCurrentInput().isAltKeyDown()) {
 		PrecisionRectangle baseRect = sourceRectangle.getPreciseCopy();
 		PrecisionRectangle selectionRect = compoundSrcRect.getPreciseCopy();
-		baseRect.preciseX += request.getMoveDelta().x;
-		selectionRect.preciseX += request.getMoveDelta().x;		
-		baseRect.preciseY += request.getMoveDelta().y;
-		selectionRect.preciseY += request.getMoveDelta().y;
-		baseRect.updateInts();
-		selectionRect.updateInts();
+		baseRect.translate(request.getMoveDelta());
+		selectionRect.translate(request.getMoveDelta());
 		snapToHelper.snapRectangle(request, baseRect, selectionRect, false, 
 				PositionConstants.NORTH_SOUTH | PositionConstants.EAST_WEST);
 		baseRect.preciseX -= sourceRectangle.preciseX;
