@@ -15,9 +15,13 @@ private IFigure printSource;
 private Color oldBGColor;
 
 /**
- * Constructor for PrintFigureOperation.
- */
-public PrintFigureOperation() { }
+ * Constructor for PrintFigureOperation. 
+ * Note: Descendants must call setPrintSource(IFigure) to set
+ *       the IFigure that is to be printed.
+ *  * @see org.eclipse.draw2d.PrintOperation#PrintOperation(Printer) */
+protected PrintFigureOperation(Printer p) {
+	super(p);
+}
 
 /**
  * Constructor for PrintFigureOperation.
@@ -30,11 +34,12 @@ public PrintFigureOperation(Printer p, IFigure srcFigure) {
 	setPrintSource(srcFigure);
 }
 
+
 /**
  * @see org.eclipse.draw2d.PrintOperation#preparePrintSource()
  */
 protected void preparePrintSource() {
-	oldBGColor = getPrintSource().getBackgroundColor();
+	oldBGColor = getPrintSource().getLocalBackgroundColor();
 	getPrintSource().setBackgroundColor(ColorConstants.white);
 }
 
@@ -87,7 +92,7 @@ protected IFigure getPrintSource() {
  * Sets the printSource.
  * @param printSource The printSource to set
  */
-public void setPrintSource(IFigure printSource) {
+protected void setPrintSource(IFigure printSource) {
 	this.printSource = printSource;
 }
 
