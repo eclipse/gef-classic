@@ -33,13 +33,14 @@ public final class ScrollableThumbnail
 
 private SelectorFigure selector;
 private Viewport viewport;
-private ScrollBar hBar, vBar;
+
 private ScrollSynchronizer syncher;
 private FigureListener figureListener = new FigureListener() {
 	public void figureMoved(IFigure source) {
 		reconfigureSelectorBounds();
 	}
 };
+
 private PropertyChangeListener propListener = new PropertyChangeListener() {
 	public void propertyChange(PropertyChangeEvent evt) {
 		reconfigureSelectorBounds();
@@ -48,7 +49,7 @@ private PropertyChangeListener propListener = new PropertyChangeListener() {
 private KeyListener keyListener = new KeyListener.Stub() {
 	public void keyPressed(KeyEvent ke) {
 		int moveX = viewport.getClientArea().width / 4; 
-		int moveY = viewport.getClientArea().height /4;
+		int moveY = viewport.getClientArea().height / 4;
 		if (ke.keycode == SWT.ARROW_LEFT || ke.keycode == SWT.HOME)
 			viewport.setViewLocation(viewport.getViewLocation().translate(-moveX, 0));
 		else if (ke.keycode == SWT.ARROW_RIGHT || ke.keycode == SWT.END)
