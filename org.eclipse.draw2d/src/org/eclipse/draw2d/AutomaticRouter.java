@@ -19,7 +19,7 @@ import org.eclipse.draw2d.util.*;
  * Also provides access to its 'next' router so that manual routing in
  * subclasses is possible.
  */
-abstract public class AutomaticRouter
+public abstract class AutomaticRouter
 	extends AbstractRouter 
 {
 
@@ -39,14 +39,13 @@ private class HashKey {
 		boolean isEqual = false;
 		HashKey hashKey;
 		
-		if(object instanceof HashKey) {
+		if (object instanceof HashKey) {
 			hashKey = (HashKey)object;
 			ConnectionAnchor hkA1 = hashKey.getFirstAnchor();
 			ConnectionAnchor hkA2 = hashKey.getSecondAnchor();
 			
-			isEqual = 
-				(hkA1.equals(anchor1) && hkA2.equals(anchor2)) ||
-				(hkA1.equals(anchor2) && hkA2.equals(anchor1));
+			isEqual = (hkA1.equals(anchor1) && hkA2.equals(anchor2))
+				|| (hkA1.equals(anchor2) && hkA2.equals(anchor1));
 		}
 		return isEqual;
 	}
@@ -64,13 +63,13 @@ private class HashKey {
 	}
 }
 
-public Object getConstraint(Connection connection){
+public Object getConstraint(Connection connection) {
 	if (next() != null)
 		return next().getConstraint(connection);
 	return null;
 }
 
-abstract protected void handleCollision(PointList list, int index);
+protected abstract void handleCollision(PointList list, int index);
 
 public void invalidate(Connection conn) {
 	if (conn.getSourceAnchor() == null || conn.getTargetAnchor() == null)
@@ -82,14 +81,13 @@ public void invalidate(Connection conn) {
 		if (index == -1)
 			return;
 		connections.remove(connectionKey, conn);
-		for(int i = index; i < connectionList.size(); i++)
+		for (int i = index; i < connectionList.size(); i++)
 			((Connection)connectionList.get(i)).revalidate();
 	}
 }
 
 /**
- * Returns the next router.
- * 
+ * @return The next router.
  * @since 2.0
  */
 protected ConnectionRouter next() {
@@ -104,7 +102,7 @@ public void remove(Connection conn) {
 	if (connectionList != null) {
 		int index = connectionList.indexOf(conn);
 		connections.remove(connectionKey, conn);
-		for(int i = index + 1; i < connectionList.size(); i++)
+		for (int i = index + 1; i < connectionList.size(); i++)
 			((Connection)connectionList.get(i)).revalidate();
 	}
 	if (next() != null) 
@@ -123,22 +121,20 @@ public void route(Connection conn) {
 		HashKey connectionKey = new HashKey(conn);
 		ArrayList connectionList = connections.get(connectionKey);
 		
-		if(connectionList != null) {
+		if (connectionList != null) {
 			
 			int index;
 			
 			if (connectionList.contains(conn)) {
 				index = connectionList.indexOf(conn) + 1;	
-			}
-			else {
+			} else {
 				index = connectionList.size() + 1;
 				connections.put(connectionKey, conn);
 			}
 			
 			handleCollision(points, index);
 			conn.setPoints(points);
-		}
-		else {
+		} else {
 			connections.put(connectionKey, conn);
 		}
 	}
@@ -159,7 +155,7 @@ protected void setEndPoints(Connection conn) {
 
 /**
  * Sets the next router to the passed value.
- * 
+ * @param router the ConnectionRouter
  * @since 2.0
  */
 public void setNextRouter(ConnectionRouter router) {

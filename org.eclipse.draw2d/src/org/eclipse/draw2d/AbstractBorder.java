@@ -17,6 +17,7 @@ public abstract class AbstractBorder
 
 private static final Dimension EMPTY = new Dimension();
 
+/** A temporary Rectangle*/
 protected static Rectangle tempRect = new Rectangle();
 
 /**
@@ -28,16 +29,15 @@ protected static Rectangle tempRect = new Rectangle();
  * @return  The paintable region of f.
  * @since 2.0
  */
-static protected final Rectangle getPaintRectangle(IFigure f, Insets insets){
+static protected final Rectangle getPaintRectangle(IFigure f, Insets insets) {
 	tempRect.setBounds(f.getBounds());
 	return tempRect.crop(insets);
 }
 
 /*
- * Returns the preferred size of this border as applied to
- * the given figure.
+ * From Interface
  */
-public Dimension getPreferredSize(IFigure f){
+public Dimension getPreferredSize(IFigure f) {
 	return EMPTY;
 }
 

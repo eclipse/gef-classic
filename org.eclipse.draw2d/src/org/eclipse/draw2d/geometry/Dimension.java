@@ -13,7 +13,10 @@ public class Dimension
 	implements Cloneable, java.io.Serializable
 {
 
-public int width, height;
+/**The width.*/
+public int width;
+/**The height. */
+public int height;
 
 static final long serialVersionUID = 1;
 
@@ -22,7 +25,7 @@ static final long serialVersionUID = 1;
  * 
  * @since 2.0
  */
-public Dimension(){}
+public Dimension() { }
 
 /**
  * Constructs a Dimension with the width and height of the 
@@ -31,7 +34,7 @@ public Dimension(){}
  * @param d  Dimension supplying the initial values.
  * @since 2.0
  */
-public Dimension(Dimension d){width = d.width; height = d.height;}
+public Dimension(Dimension d) { width = d.width; height = d.height;}
 
 /**
  * Constructs a Dimension where the width and height are the 
@@ -40,7 +43,7 @@ public Dimension(Dimension d){width = d.width; height = d.height;}
  * @param pt  Point supplying the initial values.
  * @since 2.0
  */
-public Dimension(org.eclipse.swt.graphics.Point pt){width = pt.x; height = pt.y;}
+public Dimension(org.eclipse.swt.graphics.Point pt) { width = pt.x; height = pt.y;}
 
 /**
  * Constructs a Dimension with the supplied width and 
@@ -50,7 +53,7 @@ public Dimension(org.eclipse.swt.graphics.Point pt){width = pt.x; height = pt.y;
  * @param h  Height of the Dimension.
  * @since 2.0
  */
-public Dimension(int w, int h){width = w; height = h;}
+public Dimension(int w, int h) { width = w; height = h;}
 
 /**
  * Constructs a Dimension with the width and height of the Image
@@ -61,7 +64,7 @@ public Dimension(int w, int h){width = w; height = h;}
  * @see  org.eclipse.swt.graphics.Image
  * @since 2.0
  */
-public Dimension(org.eclipse.swt.graphics.Image image){
+public Dimension(org.eclipse.swt.graphics.Image image) {
 	org.eclipse.swt.graphics.Rectangle r = image.getBounds();
 	width = r.width;
 	height = r.height;
@@ -72,10 +75,10 @@ public Dimension(org.eclipse.swt.graphics.Image image){
  * A Dimension of the same size is considered to "fit". 
  *
  * @param d  Dimension being tested.
- * @param  <code>boolean</code> specifying the result of the fit test.
+ * @return  <code>boolean</code> specifying the result of the fit test.
  * @since 2.0
  */
-public boolean contains(Dimension d){
+public boolean contains(Dimension d) {
 	return width >= d.width && height >= d.height;
 }
 
@@ -84,10 +87,10 @@ public boolean contains(Dimension d){
  * A Dimension of the same size is considered to not "fit".
  *
  * @param d  Dimension being tested.
- * @param  <code>boolean</code> specifying the result of the fit test.
+ * @return <code>boolean</code> specifying the result of the fit test.
  * @since 2.0
  */
-public boolean containsProper(Dimension d){
+public boolean containsProper(Dimension d) {
 	return width > d.width && height > d.height;
 }
 
@@ -97,9 +100,9 @@ public boolean containsProper(Dimension d){
  * @param d  Dimension supplying the values.
  * @since 2.0
  */
-public void copyFrom(Dimension d){
+public void copyFrom(Dimension d) {
 	width = d.width;
-	height= d.height;
+	height = d.height;
 }
 
 /**
@@ -108,7 +111,7 @@ public void copyFrom(Dimension d){
  * @return  Returns the area covered by this Dimension.
  * @since 2.0
  */
-public int getArea(){
+public int getArea() {
 	return width * height;
 }
 
@@ -118,8 +121,8 @@ public int getArea(){
  * @return A copy of this Dimension
  * @since 2.0
  */
-public Dimension getCopy(){
-	return new Dimension( this );
+public Dimension getCopy() {
+	return new Dimension(this);
 }
 
 /**
@@ -132,8 +135,8 @@ public Dimension getCopy(){
  * @see #getExpanded(int,int)
  * @since 2.0
  */
-public Dimension getDifference(Dimension d){
-	return new Dimension(width-d.width, height-d.height);
+public Dimension getDifference(Dimension d) {
+	return new Dimension(width - d.width, height - d.height);
 }
 
 /**
@@ -146,8 +149,8 @@ public Dimension getDifference(Dimension d){
  * @see #getDifference(Dimension)
  * @since 2.0
  */
-public Dimension getExpanded(Dimension d){
-	return new Dimension(width+d.width, height+d.height);
+public Dimension getExpanded(Dimension d) {
+	return new Dimension(width + d.width, height + d.height);
 }
 
 /**
@@ -161,8 +164,8 @@ public Dimension getExpanded(Dimension d){
  * @see  #getDifference(Dimension)
  * @since 2.0
  */
-public Dimension getExpanded(int w, int h){
-	return new Dimension(width+w, height+h);
+public Dimension getExpanded(int w, int h) {
+	return new Dimension(width + w, height + h);
 }
 
 /**
@@ -172,7 +175,7 @@ public Dimension getExpanded(int w, int h){
  * @see #intersect(Dimension)
  * @since 2.0
  */
-public Dimension getIntersected(Dimension d){
+public Dimension getIntersected(Dimension d) {
 	return new Dimension(this).intersect(d);
 }
 
@@ -182,8 +185,8 @@ public Dimension getIntersected(Dimension d){
  * @return	A negated copy of this Dimension
  * @since 2.0
  */
-public Dimension getNegated(){
-	return new Dimension( 0 - width, 0 - height );
+public Dimension getNegated() {
+	return new Dimension(0 - width, 0 - height);
 }
 
 /**
@@ -197,8 +200,8 @@ public Dimension getNegated(){
  * @return  Result of the size test.
  * @since 2.0
  */
-public boolean equals(Object o){
-	if (o instanceof Dimension){
+public boolean equals(Object o) {
+	if (o instanceof Dimension) {
 		Dimension d = (Dimension)o;
 		return (d.width == width && d.height == height);
 	}
@@ -208,10 +211,12 @@ public boolean equals(Object o){
 /**
  * Returns whether this Dimension's width and height are
  * equal to the given width and height.
- * 
+ * @param w width
+ * @param h height
+ * @return true if both width and height are equal.
  * @since 2.0
  */
-public boolean equals(int w, int h){
+public boolean equals(int w, int h) {
 	return width == w && height == h;
 }
 
@@ -225,9 +230,9 @@ public boolean equals(int w, int h){
  * @see #shrink(int,int)
  * @since 2.0
  */
-public Dimension expand(Dimension d){
-	width += d.width;
-	height+= d.height;
+public Dimension expand(Dimension d) {
+	width  += d.width;
+	height += d.height;
 	return this;
 }
 
@@ -241,9 +246,9 @@ public Dimension expand(Dimension d){
  * @see #shrink(int,int)
  * @since 2.0
  */
-public Dimension expand(Point pt){
-	width += pt.x;
-	height+= pt.y;
+public Dimension expand(Point pt) {
+	width  += pt.x;
+	height += pt.y;
 	return this;
 }
 
@@ -256,9 +261,9 @@ public Dimension expand(Point pt){
  * @return  Returns this Dimension with the incremented sizes.
  * @since 2.0
  */
-public Dimension expand(int w, int h){
-	width += w;
-	height+= h;
+public Dimension expand(int w, int h) {
+	width  += w;
+	height += h;
 	return this;
 }
 
@@ -270,7 +275,7 @@ public Dimension expand(int w, int h){
  * @return  A new Dimension containing the scaled width and height.
  * @since 2.0
  */
-public Dimension getScaled(float amount){return new Dimension(this).scale(amount);}
+public Dimension getScaled(float amount) { return new Dimension(this).scale(amount);}
 
 /**
  * Returns a new Dimension with its height and width interchanged.
@@ -279,7 +284,7 @@ public Dimension getScaled(float amount){return new Dimension(this).scale(amount
  * @return  Returns a new Dimension containing the switched width and height.
  * @since 2.0
  */
-public Dimension getTransposed(){return new Dimension(this).transpose();}
+public Dimension getTransposed() { return new Dimension(this).transpose();}
 
 /**
  * Returns a new Dimension containing the union of this
@@ -291,7 +296,7 @@ public Dimension getTransposed(){return new Dimension(this).transpose();}
  * @see  #getDifference(Dimension)
  * @since 2.0
  */
-public Dimension getUnioned(Dimension d){return new Dimension(this).union(d);}
+public Dimension getUnioned(Dimension d) { return new Dimension(this).union(d);}
 
 /**
  * Returns true if this <code>Dimension</code> is greater than  
@@ -303,10 +308,10 @@ public Dimension getUnioned(Dimension d){return new Dimension(this).union(d);}
  *			greater than <i>d</i>.
  * @since 2.0
  */
-public boolean greaterThan( Dimension d ){
-	if( width > d.width )
+public boolean greaterThan( Dimension d ) {
+	if (width > d.width)
 		return height >= d.height;
-	if( height > d.height )
+	if (height > d.height)
 		return width >= d.width;
 	return false;
 }
@@ -396,9 +401,9 @@ public Dimension shrink(int w, int h){
  * @since 2.0
  */
 public String toString(){
-	return "Dimension("+ //$NON-NLS-1$
-		width+", "+ //$NON-NLS-1$
-		height+")"; //$NON-NLS-1$
+	return "Dimension(" +  //$NON-NLS-1$
+		width + ", " +  //$NON-NLS-1$
+		height + ")"; //$NON-NLS-1$
 }
 
 /**
@@ -427,7 +432,7 @@ public Dimension transpose(){
  */
 public Dimension union (Dimension d){
 	width = Math.max(width,d.width);
-	height= Math.max(height,d.height);
+	height = Math.max(height,d.height);
 	return this;
 }
 
