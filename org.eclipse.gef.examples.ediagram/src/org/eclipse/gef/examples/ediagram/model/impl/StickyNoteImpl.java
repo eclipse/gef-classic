@@ -1,8 +1,18 @@
 /**
  * <copyright>
+ *******************************************************************************
+ * Copyright (c) 2004 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials 
+ * are made available under the terms of the Common Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/cpl-v10.html
+ * 
+ * Contributors:
+ *     IBM Corporation - initial API and implementation
+ *******************************************************************************
  * </copyright>
  *
- * $Id: StickyNoteImpl.java,v 1.1 2004/11/11 06:03:50 pshah Exp $
+ * $Id: StickyNoteImpl.java,v 1.2 2004/12/07 19:07:09 pshah Exp $
  */
 package org.eclipse.gef.examples.ediagram.model.impl;
 
@@ -171,12 +181,12 @@ public class StickyNoteImpl extends NodeImpl implements StickyNote
 			switch (eContainerFeatureID)
 			{
 				case ModelPackage.STICKY_NOTE__DIAGRAM:
-					return ((InternalEObject)eContainer).eInverseRemove(this, ModelPackage.DIAGRAM__CONTENTS, Diagram.class, msgs);
+					return eContainer.eInverseRemove(this, ModelPackage.DIAGRAM__CONTENTS, Diagram.class, msgs);
 				default:
 					return eDynamicBasicRemoveFromContainer(msgs);
 			}
 		}
-		return ((InternalEObject)eContainer).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - eContainerFeatureID, null, msgs);
+		return eContainer.eInverseRemove(this, EOPPOSITE_FEATURE_BASE - eContainerFeatureID, null, msgs);
 	}
 
 	/**

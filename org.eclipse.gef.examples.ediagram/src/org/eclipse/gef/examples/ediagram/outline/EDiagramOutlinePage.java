@@ -22,7 +22,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.ui.IActionBars;
-import org.eclipse.ui.IWorkbenchActionConstants;
+import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.part.Page;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
@@ -77,9 +77,9 @@ public void init(IPageSite pageSite) {
 	super.init(pageSite);
 
 	IActionBars bars = pageSite.getActionBars();
-	String id = IWorkbenchActionConstants.UNDO;
+	String id = ActionFactory.UNDO.getId();
 	bars.setGlobalActionHandler(id, registry.getAction(id));
-	id = IWorkbenchActionConstants.REDO;
+	id = ActionFactory.REDO.getId();
 	bars.setGlobalActionHandler(id, registry.getAction(id));
 	bars.updateActionBars();
 	

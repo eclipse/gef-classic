@@ -31,7 +31,6 @@ import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 
 import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.gef.EditPart;
-import org.eclipse.gef.GEFPlugin;
 import org.eclipse.gef.KeyHandler;
 import org.eclipse.gef.KeyStroke;
 import org.eclipse.gef.RequestConstants;

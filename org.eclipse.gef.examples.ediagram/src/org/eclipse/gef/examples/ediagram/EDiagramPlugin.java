@@ -1,13 +1,22 @@
 /**
  * <copyright>
+ *******************************************************************************
+ * Copyright (c) 2004 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials 
+ * are made available under the terms of the Common Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/cpl-v10.html
+ * 
+ * Contributors:
+ *     IBM Corporation - initial API and implementation
+ *******************************************************************************
  * </copyright>
  *
- * $Id: EDiagramPlugin.java,v 1.1 2004/11/11 06:03:49 pshah Exp $
+ * $Id: EDiagramPlugin.java,v 1.2 2004/12/07 19:07:09 pshah Exp $
  */
 package org.eclipse.gef.examples.ediagram;
 
 import org.eclipse.emf.common.EMFPlugin;
-
 import org.eclipse.emf.common.util.ResourceLocator;
 
 /**

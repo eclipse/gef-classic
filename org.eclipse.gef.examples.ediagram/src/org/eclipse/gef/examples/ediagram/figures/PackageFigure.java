@@ -12,7 +12,6 @@ package org.eclipse.gef.examples.ediagram.figures;
 
 import org.eclipse.swt.graphics.Color;
 
-import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.LineBorder;
