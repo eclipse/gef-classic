@@ -265,13 +265,9 @@ public void setSize(int newSize) {
 		size = newSize;
 		return;
 	}
-	
-	int newArrayLength = newSize * 2;
-	int oldArrayLength = points.length;
-	
-	int[] newArray = new int[newArrayLength];
+	int[] newArray = new int[newSize * 2];
+	System.arraycopy(points,0,newArray,0,points.length);
 	points = newArray;
-	System.arraycopy(points,0,newArray,0,oldArrayLength);
 	size = newSize;
 }
 
