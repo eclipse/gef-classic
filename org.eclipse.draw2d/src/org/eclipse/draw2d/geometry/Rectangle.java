@@ -141,7 +141,7 @@ public Rectangle crop(Insets insets) {
 	x += insets.left;
 	y += insets.top;
 	width -= (insets.getWidth());
-	height-= (insets.getHeight());
+	height -= (insets.getHeight());
 	return this;
 }
 
@@ -159,10 +159,10 @@ public boolean equals(Object o) {
 	if (this == o) return true;
 	if (o instanceof Rectangle) {
 		Rectangle r = (Rectangle)o;
-		return (x == r.x) &&
-			 (y == r.y) &&
-			 (width == r.width) &&
-			 (height== r.height);
+		return (x == r.x) 
+			&& (y  == r.y) 
+			&& (width  == r.width) 
+			&& (height == r.height);
 	}
 	return false;
 }
@@ -178,12 +178,15 @@ public boolean equals(Object o) {
  * @return  <code>this</code> for convenience
  * @since 2.0
  */
-public Rectangle expand(int h, int v) {return shrink(-h,-v);}
+public Rectangle expand(int h, int v) {
+	return shrink(-h, -v);
+}
 
 /**
  * Expands the horizontal and vertical sides of this
  * Rectangle by the width and height of the given Insets, 
  * and returns this for convenience.
+ * @param insets contains the amounts to expand on each side
  * @return  <code>this</code> for convenience
  * @since 2.0
  */
@@ -202,7 +205,9 @@ public Rectangle expand(Insets insets) {
  * @return  Point at the bottom of the Rectangle.
  * @since 2.0
  */
-public Point getBottom() {return new Point(x+width/2,bottom());}
+public Point getBottom() {
+	return new Point(x + width / 2, bottom());
+}
 
 /**
  * Returns a new Point representing the bottom left point of this Rectangle.
@@ -210,7 +215,9 @@ public Point getBottom() {return new Point(x+width/2,bottom());}
  * @return  Point at the bottom left of the rectangle.
  * @since 2.0
  */
-public Point getBottomLeft() {return new Point(x, y + height);}
+public Point getBottomLeft() {
+	return new Point(x, y + height);
+}
 
 /**
  * Returns a new Point representing the bottom right point of this Rectangle.
@@ -218,7 +225,9 @@ public Point getBottomLeft() {return new Point(x, y + height);}
  * @return  Point at the bottom right of the rectangle.
  * @since 2.0
  */
-public Point getBottomRight() {return new Point(x + width, y + height);}
+public Point getBottomRight() {
+	return new Point(x + width, y + height);
+}
 
 /**
  * Returns a new point representing the center of this
@@ -226,7 +235,9 @@ public Point getBottomRight() {return new Point(x + width, y + height);}
  *
  * @return  Point at the center of the rectangle.
  */
-public Point getCenter() {return new Point(x+width/2, y+height/2);}
+public Point getCenter() {
+	return new Point(x + width / 2, y + height / 2);
+	}
 
 /**
  * Returns a new Rectangle which has the exact same parameters
@@ -236,7 +247,7 @@ public Point getCenter() {return new Point(x+width/2, y+height/2);}
  * @since 2.0
  */
 public Rectangle getCopy() {
-	try{
+	try {
 		return (Rectangle)clone();
 	} catch (CloneNotSupportedException exc) {
 		return new Rectangle(this);
@@ -265,7 +276,9 @@ public Rectangle getCropped(Insets insets) {
  * @return  A new expanded Rectangle.
  * @since 2.0
  */
-public Rectangle getExpanded(int h, int v) { return new Rectangle(this).expand(h,v);}
+public Rectangle getExpanded(int h, int v) {
+	return new Rectangle(this).expand(h, v);
+}
 
 /**
  * Creates and returns a new Rectangle with the bounds of
@@ -294,7 +307,7 @@ public Rectangle getIntersection(Rectangle rect) {
 	int y1 = Math.max(y, rect.y);
 	int y2 = Math.min(y + height, rect.y + rect.height);
 	if (((x2 - x1) < 0) || ((y2 - y1) < 0))
-		return new Rectangle(0,0,0,0);	// No intersection
+		return new Rectangle(0, 0, 0, 0);  // No intersection
 	else
 		return new Rectangle(x1, y1, x2 - x1, y2 - y1);
 }
@@ -306,7 +319,7 @@ public Rectangle getIntersection(Rectangle rect) {
  * @return  Point requested.
  */
 public Point getLeft() {
-	return new Point(x,y+height/2);
+	return new Point(x, y + height / 2);
 }
 
 /**
@@ -316,13 +329,16 @@ public Point getLeft() {
  * @see  #setLocation(Point)
  */
 public Point getLocation() {
-	return new Point(x,y);
+	return new Point(x, y);
 }
 
 
 
 /**
  * Returns a new rectangle with its width and height augmented.
+ * @param w  Amount by which width is to be resized.
+ * @param h  Amount by which height is to be resized.
+ * @return a new rectangle with its width and height augmented
  */
 public Rectangle getResized(int w, int h) {
 	return new Rectangle(this).resize(w, h);
@@ -350,7 +366,7 @@ public Rectangle getTranslated(Point pt) {
  * @since 2.0
  */
 public Rectangle getTranslated(int dx, int dy) {
-	return new Rectangle(this).translate(dx,dy);
+	return new Rectangle(this).translate(dx, dy);
 }
 
 /**
@@ -383,17 +399,17 @@ public Rectangle getTransposed() {
 public int getPosition(Point pt) {
 	int result = PositionConstants.NONE;
 		
-	if(contains(pt))
+	if (contains(pt))
 		return result;
 		
-	if(pt.x < x)
+	if (pt.x < x)
 		result = PositionConstants.WEST;
-	else if(pt.x > (x + width))
+	else if (pt.x > (x + width))
 		result = PositionConstants.EAST;
 		
-	if(pt.y < y)
+	if (pt.y < y)
 		result = result | PositionConstants.NORTH;
-	else if(pt.y > (y + height))
+	else if (pt.y > (y + height))
 		result = result | PositionConstants.SOUTH;
 		
 	return result;
@@ -419,7 +435,9 @@ public Rectangle getResized(Dimension d) {
  * @return  The point requested.
  * @since 2.0
  */
-public Point	getRight()	 {return new Point(right(), y+height/2);}
+public Point getRight() {
+	return new Point(right(), y + height / 2);
+}
 
 /**
  * Retuns the dimensions of this Rectangle.
@@ -429,7 +447,9 @@ public Point	getRight()	 {return new Point(right(), y+height/2);}
  * @see  #setSize(int,int)
  * @since 2.0
  */
-public Dimension	getSize()	 {return new Dimension(width,height);}
+public Dimension getSize() {
+	return new Dimension(width, height);
+}
 
 /**
  * Returns a new Point which represents the middle point of the top side 
@@ -438,7 +458,9 @@ public Dimension	getSize()	 {return new Dimension(width,height);}
  * @return  The point requested.
  * @since 2.0
  */
-public Point	getTop()	 {return new Point(x+width/2,y);}
+public Point getTop() {
+	return new Point(x + width / 2, y);
+}
 
 /**
  * Returns a new Point which represents the top left hand corner of 
@@ -447,7 +469,9 @@ public Point	getTop()	 {return new Point(x+width/2,y);}
  * @return The requested point.
  * @since 2.0
  */
-public Point	getTopLeft() {return new Point(x,y);}
+public Point getTopLeft() {
+	return new Point(x, y);
+}
 
 /**
  * Returns a new Point which represents the top right hand corner 
@@ -456,7 +480,9 @@ public Point	getTopLeft() {return new Point(x,y);}
  * @return The requested point.
  * @since 2.0
  */
-public Point	getTopRight() {return new Point (x+width,y);}
+public Point getTopRight() {
+	return new Point(x + width, y);
+}
 
 /**
  * Returns the rectangular area which contains both this Rectangle
@@ -471,9 +497,9 @@ public Rectangle getUnion(Rectangle rect) {
 		return new Rectangle(this);
 	Rectangle union = new Rectangle(
 		Math.min(x, rect.x),
-		Math.min(y, rect.y),0,0);
-	union.width = Math.max(x+width, rect.x+rect.width) - union.x;
-	union.height= Math.max(y+height,rect.y+rect.height)- union.y;
+		Math.min(y, rect.y), 0, 0);
+	union.width = Math.max(x + width, rect.x + rect.width) - union.x;
+	union.height = Math.max(y + height, rect.y + rect.height) - union.y;
 	return union;
 }
 
@@ -513,10 +539,10 @@ public Rectangle intersect(Rectangle rect) {
  * @since 2.0
  */
 public boolean intersects(Rectangle rect) {
-	return rect.x < x + width &&
-		 rect.y < y + height &&
-		 rect.x + rect.width > x &&
-		 rect.y + rect.height > y;
+	return rect.x < x + width 
+		&& rect.y < y + height 
+		&& rect.x + rect.width > x 
+		&& rect.y + rect.height > y;
 }
 
 /**
@@ -529,6 +555,12 @@ public boolean isEmpty() {
 	return width <= 0 || height <= 0;
 }
 
+/**
+ * Scales the location and size of this Rectangle by the given scale.
+ * 
+ * @param factor The factor by which this rectangle will be scaled.
+ * @since 2.0
+ */
 public void performScale(float factor) {
 	scale(factor);
 }
@@ -556,7 +588,7 @@ public void performTranslate(int dx, int dy) {
  */
 public Rectangle resize(Dimension sizeDelta) {
 	width += sizeDelta.width;
-	height+= sizeDelta.height;
+	height += sizeDelta.height;
 	return this;
 }
 
@@ -574,7 +606,7 @@ public Rectangle resize(Dimension sizeDelta) {
  */
 public Rectangle resize(int dw, int dh) {
 	width += dw;
-	height+= dh;
+	height += dh;
 	return this;
 }
 
@@ -584,7 +616,9 @@ public Rectangle resize(int dw, int dh) {
  * @return  The requestion location.
  * @since 2.0
  */
-public int right() {return x+width;}
+public int right() {
+	return x + width;
+}
 
 /**
  * Scales the location and size of this Rectangle by 
@@ -595,8 +629,8 @@ public int right() {return x+width;}
  * @return  <code>this</code> for convenience
  * @since 2.0
  */
-final public Rectangle scale(float scaleFactor) {
-	return scale (scaleFactor, scaleFactor);
+public final Rectangle scale(float scaleFactor) {
+	return scale(scaleFactor, scaleFactor);
 }
 
 /**
@@ -629,7 +663,7 @@ public Rectangle setBounds(Rectangle rect) {
 	x = rect.x;
 	y = rect.y;
 	width = rect.width;
-	height= rect.height;
+	height = rect.height;
 	return this;
 }
 
@@ -656,7 +690,7 @@ public Rectangle setLocation(Point p) {
  * @see  #getLocation()
  * @since 2.0
  */
-public Rectangle setLocation(int x1,int y1) {
+public Rectangle setLocation(int x1, int y1) {
 	x = x1;
 	y = y1;
 	return this;
@@ -673,8 +707,8 @@ public Rectangle setLocation(int x1,int y1) {
  * @since 2.0
  */
 public Rectangle setSize(Dimension d) {
-	width=d.width;
-	height=d.height;
+	width = d.width;
+	height = d.height;
 	return this;
 }
 
@@ -690,9 +724,10 @@ public Rectangle setSize(Dimension d) {
  * @since 2.0
  */
 public Rectangle setSize(int w, int h) {
-	width=w;
-	height=h;
-	return this;}
+	width = w;
+	height = h;
+	return this;
+}
 
 /**
  * Shrinks the sides of this Rectangle by the 
@@ -706,8 +741,10 @@ public Rectangle setSize(int w, int h) {
  * @since 2.0
  */
 public Rectangle shrink(int h, int v) {
-	x += h; width -= (h+h);
-	y += v; height-= (v+v);
+	x += h; 
+	width -= (h + h);
+	y += v; 
+	height -= (v + v);
 	return this;
 }
 
@@ -718,8 +755,8 @@ public Rectangle shrink(int h, int v) {
  * @since 2.0
  */
 public String toString() {
-	return 	"Rectangle("+x+", "+y+", "+ //$NON-NLS-3$//$NON-NLS-2$//$NON-NLS-1$
-			width+", "+height+")";//$NON-NLS-2$//$NON-NLS-1$
+	return "Rectangle(" + x + ", " + y + ", " + //$NON-NLS-3$//$NON-NLS-2$//$NON-NLS-1$
+			width + ", " + height + ")";//$NON-NLS-2$//$NON-NLS-1$
 }
 
 /**
@@ -731,10 +768,10 @@ public String toString() {
  * @since 2.0
  */
 public boolean touches(Rectangle rect) {
-	return rect.x <= x + width &&
-		 rect.y <= y + height &&
-		 rect.x + rect.width >= x &&
-		 rect.y + rect.height >= y;
+	return rect.x <= x + width 
+		&& rect.y <= y + height 
+		&& rect.x + rect.width >= x 
+		&& rect.y + rect.height >= y;
 }
 
 /**
@@ -745,7 +782,7 @@ public boolean touches(Rectangle rect) {
  * @return  <code>this</code> for convenience
  * @see  #translate(int,int)
  */
-public Rectangle translate (Point p) {
+public Rectangle translate(Point p) {
 	x += p.x;
 	y += p.y;
 	return this;
@@ -761,7 +798,11 @@ public Rectangle translate (Point p) {
  * @see  #translate(Point)
  * @since 2.0
  */
-public Rectangle translate (int dx, int dy) {x+=dx; y+=dy; return this;}
+public Rectangle translate(int dx, int dy) {
+	x += dx; 
+	y += dy; 
+	return this;
+}
 
 /**
  * Switches the location and the dimension of this
@@ -789,7 +830,7 @@ public Rectangle transpose() {
  * @see  #union(Rectangle)
  * @since 2.0
  */
-public Rectangle union (Dimension d) {
+public Rectangle union(Dimension d) {
 	width = Math.max(width, d.width);
 	height = Math.max(height, d.height);
 	return this;
@@ -809,23 +850,23 @@ public Rectangle union (Dimension d) {
  */
 public Rectangle union(int x1, int y1) {
 	if (x1 < x) {
-		width += (x-x1);
+		width += (x - x1);
 		x = x1;
 	} else {
-		int right = x+width;
+		int right = x + width;
 		if (x1 >= right) {
 			right = x1 + 1;
 			width = right - x;
 		}
 	}
 	if (y1 < y) {
-		height += (y-y1);
+		height += (y - y1);
 		y = y1;
 	} else {
-		int bottom = y+height;
+		int bottom = y + height;
 		if (y1 >= bottom) {
-			bottom = y1+1;
-			height= bottom - y;
+			bottom = y1 + 1;
+			height = bottom - y;
 		}
 	}
 	return this;
@@ -837,13 +878,12 @@ public Rectangle union(int x1, int y1) {
  * and the supplied Point.
  *
  * @param p  Point against which union is to be performed.
- * @return  <code>this</code> for convenience
  * @see  #union(int,int)
  * @see  #union(Dimension)
  * @see  #union(Rectangle)
  * @since 2.0
  */
-final public void union(Point p) {
+public final void union(Point p) {
 	union(p.x, p.y);
 }
 
@@ -858,7 +898,7 @@ final public void union(Point p) {
  * @see  #union(Dimension)
  * @since 2.0
  */
-final public Rectangle union (Rectangle rect) {
+public final Rectangle union (Rectangle rect) {
 	if (rect == null)
 		return this;
 	return union (rect.x, rect.y, rect.width, rect.height);
@@ -869,23 +909,23 @@ final public Rectangle union (Rectangle rect) {
  * minimum size which can hold both this Rectangle
  * and the passed parameters.
  *
- * @param _x X coordiante of desired union.
- * @param _y Y coordiante of desired union.
- * @param _w Width of desired union.
- * @param _h Height of desired union.
+ * @param x X coordiante of desired union.
+ * @param y Y coordiante of desired union.
+ * @param w Width of desired union.
+ * @param h Height of desired union.
  * @return  <code>this</code> for convenience
  * @see  #union(int,int)
  * @see  #union(Point)
  * @see  #union(Dimension)
  * @since 2.0
  */
-public Rectangle union(int x_, int y_, int w, int h) {
-	int right = Math.max(this.x+width, x_+w);
-	int bottom= Math.max(this.y+height, y_ + h);
-	this.x = Math.min(this.x, x_);
-	this.y = Math.min(this.y, y_);
+public Rectangle union(int x, int y, int w, int h) {
+	int right = Math.max(this.x + width, x + w);
+	int bottom = Math.max(this.y + height, y + h);
+	this.x = Math.min(this.x, x);
+	this.y = Math.min(this.y, y);
 	this.width = right - this.x;
-	this.height= bottom- this.y;
+	this.height = bottom - this.y;
 	return this;
 }
 
