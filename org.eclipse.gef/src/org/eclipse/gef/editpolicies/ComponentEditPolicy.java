@@ -36,7 +36,7 @@ public abstract class ComponentEditPolicy
  * Override to contribute to the component's being deleted. DELETE will also be sent to
  * the parent. DELETE must be handled by either the child or the parent, or both.
  * @param deleteRequest the DeleteRequest * @return Command <code>null</code> or a contribution to the delete */
-protected Command createDeleteCommand(DeleteRequest deleteRequest) {
+protected Command createDeleteCommand(GroupRequest deleteRequest) {
 	return null;
 }
 
@@ -47,7 +47,7 @@ public Command getCommand(Request request) {
 	if (REQ_ORPHAN.equals(request.getType()))
 		return getOrphanCommand();
 	if (REQ_DELETE.equals(request.getType()))
-		return getDeleteCommand((DeleteRequest)request);
+		return getDeleteCommand((GroupRequest)request);
 	return null;
 }
 
@@ -57,17 +57,8 @@ public Command getCommand(Request request) {
  * parent is sent {@link RequestConstants#REQ_DELETE_DEPENDANT REQ_DELETE_DEPENDANT}. The
  * parent's contribution is combined with the local contribution and returned.
  * @param request the DeleteRequest * @return the combined contributions from this EditPolicy and the parent EditPart */
-protected Command getDeleteCommand(DeleteRequest request) {
-	CompoundCommand cc = new CompoundCommand();
-	cc.setDebugLabel("Delete in ComponentEditPolicy");//$NON-NLS-1$
-
-	cc.add(createDeleteCommand(request));
-
-	ForwardedRequest deleteRequest = new ForwardedRequest(REQ_DELETE_DEPENDANT, getHost());
-	cc.add(getHost().getParent().getCommand(deleteRequest));
-
-	//Note that if CompoundCommand cc isEmpty(), the delete will not be executable.
-	return cc.unwrap();
+protected Command getDeleteCommand(GroupRequest request) {
+	return createDeleteCommand(request);
 }
 
 /**

@@ -15,7 +15,6 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.*;
-import org.eclipse.gef.editpolicies.NodeEditPolicy;
 import org.eclipse.gef.examples.logicdesigner.figures.NodeFigure;
 import org.eclipse.gef.examples.logicdesigner.model.LogicSubpart;
 import org.eclipse.gef.examples.logicdesigner.model.Wire;
@@ -41,7 +40,6 @@ public void activate(){
 protected void createEditPolicies(){
 	installEditPolicy(EditPolicy.COMPONENT_ROLE,new LogicElementEditPolicy());
 	installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE, new LogicNodeEditPolicy());
-	installEditPolicy(EditPolicy.NODE_ROLE, new NodeEditPolicy());
 }
 
 abstract protected AccessibleEditPart createAccessible();

@@ -9,35 +9,28 @@ package org.eclipse.gef.examples.logicdesigner.edit;
 import java.util.List;
 
 import org.eclipse.gef.EditPart;
-import org.eclipse.gef.Request;
-import org.eclipse.gef.requests.CreateRequest;
-import org.eclipse.gef.requests.GroupRequest;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CompoundCommand;
+import org.eclipse.gef.editpolicies.ContainerEditPolicy;
+import org.eclipse.gef.requests.CreateRequest;
+import org.eclipse.gef.requests.GroupRequest;
 
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
 import org.eclipse.gef.examples.logicdesigner.model.*;
 
 public class LogicContainerEditPolicy
-	extends org.eclipse.gef.editpolicies.ContainerEditPolicy
+	extends ContainerEditPolicy
 {
-
-protected Command getAddCommand(GroupRequest request){
-	return null;
-}
-
-protected Command getDeleteDependantCommand(Request request) {
-	return null;
-}
 
 protected Command getCreateCommand(CreateRequest request) {
 	return null;
 }
 
-public Command getOrphanChildrenCommand(GroupRequest request){
+public Command getOrphanChildrenCommand(GroupRequest request) {
 	List parts = request.getEditParts();
-	CompoundCommand result = new CompoundCommand(LogicMessages.LogicContainerEditPolicy_OrphanCommandLabelText);
-	for (int i=0; i<parts.size(); i++){
+	CompoundCommand result = 
+		new CompoundCommand(LogicMessages.LogicContainerEditPolicy_OrphanCommandLabelText);
+	for (int i = 0; i < parts.size(); i++) {
 		OrphanChildCommand orphan = new OrphanChildCommand();
 		orphan.setChild((LogicSubpart)((EditPart)parts.get(i)).getModel());
 		orphan.setParent((LogicDiagram)getHost().getModel());

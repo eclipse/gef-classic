@@ -50,7 +50,6 @@ protected void createEditPolicies() {
 		component = new LogicElementEditPolicy();
 	installEditPolicy(EditPolicy.COMPONENT_ROLE, component);
 	installEditPolicy(EditPolicy.PRIMARY_DRAG_ROLE, new LogicTreeEditPolicy());
-	installEditPolicy(EditPolicy.NODE_ROLE, new LogicTreeNodeEditPolicy());
 }
 
 public void deactivate(){

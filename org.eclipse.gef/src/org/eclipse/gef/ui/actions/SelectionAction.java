@@ -58,12 +58,7 @@ public void dispose(){
  * @return The current selection.
  */
 protected ISelection getSelection() {
-	if (isDynamic())
-		return selection;
-	return getEditorPart().
-		getSite().
-		getPage().
-		getSelection();
+	return selection;
 }
 
 /**
@@ -87,11 +82,8 @@ protected void handleSelectionChanged(){
  * the selection service.
  */
 protected void hookEditorPart() {
-	getEditorPart().
-		getSite().
-		getWorkbenchWindow().
-		getSelectionService().
-		addSelectionListener(this);
+	getEditorPart().getSite().getWorkbenchWindow().getSelectionService()
+		.addSelectionListener(this);
 }
 
 /**
@@ -121,11 +113,8 @@ protected void setSelection(ISelection selection) {
  * Removes this selection listener from the selection service.
  */
 protected void unhookEditorPart() {
-	getEditorPart().
-		getSite().
-		getWorkbenchWindow().
-		getSelectionService().
-		removeSelectionListener(this);
+	getEditorPart().getSite().getWorkbenchWindow().getSelectionService()
+		.removeSelectionListener(this);
 }
 
 }

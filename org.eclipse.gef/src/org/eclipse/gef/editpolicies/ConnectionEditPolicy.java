@@ -8,7 +8,7 @@ package org.eclipse.gef.editpolicies;
 
 import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
-import org.eclipse.gef.requests.DeleteRequest;
+import org.eclipse.gef.requests.GroupRequest;
 
 /**
  * A model-based EditPolicy for connections. A model-based EditPolicy only knows about
@@ -25,34 +25,14 @@ public abstract class ConnectionEditPolicy
 
 /** * @see org.eclipse.gef.EditPolicy#getCommand(Request) */
 public Command getCommand(Request request) {
-	if (REQ_SOURCE_DELETED.equals(request.getType()))
-		return getSourceDeletedCommand((DeleteRequest)request);
-	if (REQ_TARGET_DELETED.equals(request.getType()))
-		return getTargetDeletedCommand((DeleteRequest)request);
 	if (REQ_DELETE.equals(request.getType()))
-		return getDeleteCommand((DeleteRequest)request);
+		return getDeleteCommand((GroupRequest)request);
 	return null;
 }
 
 /**
  * Subclasses should implement to return the Command to delete the connection.
  * @param request the DeleteRequest * @return the Command to delete the connection */
-protected abstract Command getDeleteCommand(DeleteRequest request);
-
-/**
- * Calls {@link #getDeleteCommand(DeleteRequest)}.
- * @param request the request * @return a Command */
-protected Command getSourceDeletedCommand(DeleteRequest request) {
-	return getDeleteCommand(request);
-}
-
-/**
- * Calls {@link #getDeleteCommand(DeleteRequest)}.
- * @param request the request
- * @return a Command
- */
-protected Command getTargetDeletedCommand(DeleteRequest request) {
-	return getDeleteCommand(request);
-}
+protected abstract Command getDeleteCommand(GroupRequest request);
 
 }
