@@ -17,9 +17,8 @@ import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
  * A Figure that simply contains an Image.  Use this Figure, instead of a Label, when
- * displaying Images without any accompanying text.  Using Labels for displaying Images
- * can stress your resources.  Note that it is the client's responsibility to dispose
- * the given image.
+ * displaying Images without any accompanying text.  Note that it is the client's responsibility to dispose
+ * the given image.  There is no "free" resource management in GEF.
  * 
  * @author Pratik Shah
  */
