@@ -64,8 +64,8 @@ protected List generateSnapPartsList(List operationSet) {
  * Returns the correction value for the given entries and sides.  During a move, the left,
  * right, or center is free to snap to a location.
  * @param entries the entries
- * @param near the left/top side
- * @param far the right/bottom side
+ * @param near the left/top side inclusively
+ * @param far the right/bottom side exclusively
  * @return the correction amount or THRESHOLD if no correction is required
  */
 protected double getCorrectionFor(Entry entries[], Map extendedData, boolean vert, 
@@ -74,7 +74,7 @@ protected double getCorrectionFor(Entry entries[], Map extendedData, boolean ver
 	if (result == THRESHOLD)
 		result = getCorrectionFor(entries, extendedData, vert, near, -1);
 	if (result == THRESHOLD)
-		result = getCorrectionFor(entries, extendedData, vert, far, 1);
+		result = getCorrectionFor(entries, extendedData, vert, far - 1, 1);
 	return result;
 }
 
@@ -142,10 +142,10 @@ protected void populateRowsAndCols(List parts) {
 		Rectangle bounds = getFigureBounds(child);
 		cols[i * 3] = new Entry(-1, bounds.x);
 		rows[i * 3] = new Entry(-1, bounds.y);
-		cols[i * 3 + 1] = new Entry(0, bounds.x + bounds.width / 2);
-		rows[i * 3 + 1] = new Entry(0, bounds.y + bounds.height / 2);
-		cols[i * 3 + 2] = new Entry(1, bounds.right());
-		rows[i * 3 + 2] = new Entry(1, bounds.bottom());
+		cols[i * 3 + 1] = new Entry(0, bounds.x + (bounds.width - 1) / 2);
+		rows[i * 3 + 1] = new Entry(0, bounds.y + (bounds.height - 1) / 2);
+		cols[i * 3 + 2] = new Entry(1, bounds.right() - 1);
+		rows[i * 3 + 2] = new Entry(1, bounds.bottom() - 1);
 	}
 }
 

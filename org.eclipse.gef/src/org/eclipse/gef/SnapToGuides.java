@@ -71,11 +71,11 @@ protected int[] getVerticalGuides() {
 
 protected double getCorrectionFor(int[] guides, double near, double far, Map extendedData, 
                                   boolean isVertical) {
-	double result = getCorrectionFor(guides, (near + far) / 2, extendedData, isVertical, 0);
+	double result = getCorrectionFor(guides, (near + far - 1) / 2, extendedData, isVertical, 0);
 	if (result == THRESHOLD)
 		result = getCorrectionFor(guides, near, extendedData, isVertical, -1); 
 	if (result == THRESHOLD)
-		result = getCorrectionFor(guides, far, extendedData, isVertical, 1);
+		result = getCorrectionFor(guides, far - 1, extendedData, isVertical, 1);
 	return result;
 }
 

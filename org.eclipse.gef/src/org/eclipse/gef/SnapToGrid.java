@@ -9,16 +9,53 @@ import org.eclipse.draw2d.geometry.*;
 public class SnapToGrid
 	extends SnapToHelper
 {
-	
-public static final String PROPERTY_GRID_ENABLED = "SnapToGrid.isEnabled"; //$NON-NLS-1$
-public static final String PROPERTY_GRID_VISIBLE = "SnapToGrid.isVisible"; //$NON-NLS-1$
-public static final String PROPERTY_GRID_SPACING = "SnapToGrid.GridSpacing"; //$NON-NLS-1$
-public static final String PROPERTY_GRID_ORIGIN = "SnapToGrid.GridOrigin"; //$NON-NLS-1$
-public static final int DEFAULT_GAP = 12;
 
+/**
+ * A viewer property indicating whether the snap function is enabled. The
+ * value must  be a Boolean.
+ */
+public static final String PROPERTY_GRID_ENABLED = "SnapToGrid.isEnabled"; //$NON-NLS-1$
+
+/**
+ * A viewer property indicating whether the grid should be displayed. The
+ * value must be a Boolean.
+ */
+public static final String PROPERTY_GRID_VISIBLE = "SnapToGrid.isVisible"; //$NON-NLS-1$
+/**
+ * A viewer property indicating the grid spacing.  The value must be a
+ * {@link Dimension}.
+ */
+public static final String PROPERTY_GRID_SPACING = "SnapToGrid.GridSpacing"; //$NON-NLS-1$
+/**
+ * A viewer property indicating the grid's origin.  The value must be a
+ * {@link Point}.
+ */
+public static final String PROPERTY_GRID_ORIGIN = "SnapToGrid.GridOrigin"; //$NON-NLS-1$
+
+/**
+ * The default grid size if the viewer does not specify a size.
+ * @see #PROPERTY_GRID_SPACING
+ */
+public static final int DEFAULT_GRID_SIZE = 12;
+
+/**
+ * The graphical part whose content's figure defines the grid.
+ */
 protected GraphicalEditPart container;
+
+/**
+ * The horizontal interval for the grid
+ */
 protected int gridX;
+
+/**
+ * The vertical interval for the grid
+ */
 protected int gridY;
+
+/**
+ * The origin of the grid.
+ */
 protected Point origin;
 
 /**
@@ -35,9 +72,9 @@ public SnapToGrid(GraphicalEditPart container) {
 		gridY = spacing.height;
 	}
 	if (gridX == 0)
-		gridX = DEFAULT_GAP;
+		gridX = DEFAULT_GRID_SIZE;
 	if (gridY == 0)
-		gridY = DEFAULT_GAP;
+		gridY = DEFAULT_GRID_SIZE;
 	Point loc = (Point)container.getViewer().getProperty(PROPERTY_GRID_ORIGIN);
 	if (loc != null)
 		origin = loc;
@@ -57,12 +94,14 @@ public int snapRectangle(Request request, int snapLocations,
 	makeRelative(container.getContentPane(), correction);
 	
 	if (gridX > 0 && (snapLocations & EAST) != 0) {
-		correction.preciseWidth -= Math.IEEEremainder(rect.preciseRight() - origin.x, gridX);
+		correction.preciseWidth -= Math.IEEEremainder(rect.preciseRight()
+				- origin.x - 1, gridX);
 		snapLocations &= ~EAST;
 	}
 	
 	if ((snapLocations & (WEST | HORIZONTAL)) != 0 && gridX > 0) {
-		double leftCorrection = Math.IEEEremainder(rect.preciseX - origin.x, gridX);
+		double leftCorrection = Math.IEEEremainder(rect.preciseX - origin.x,
+				gridX);
 		correction.preciseX -= leftCorrection;
 		if ((snapLocations & HORIZONTAL) == 0)
 			correction.preciseWidth += leftCorrection;
@@ -70,7 +109,8 @@ public int snapRectangle(Request request, int snapLocations,
 	}
 	
 	if ((snapLocations & SOUTH) != 0 && gridY > 0) {
-		correction.preciseHeight -= Math.IEEEremainder(rect.preciseBottom() - origin.y, gridY);
+		correction.preciseHeight -= Math.IEEEremainder(rect.preciseBottom()
+				- origin.y - 1, gridY);
 		snapLocations &= ~SOUTH;
 	}
 	
