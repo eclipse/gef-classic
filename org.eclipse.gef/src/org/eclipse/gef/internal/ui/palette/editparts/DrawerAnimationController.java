@@ -115,7 +115,7 @@ protected List getDrawersToCollapse(DrawerEditPart drawer) {
 	if (autoCollapseMode == PaletteViewerPreferences.COLLAPSE_ALWAYS) {
 		for (Iterator iter = drawers.iterator(); iter.hasNext();) {
 			DrawerEditPart cat = (DrawerEditPart) iter.next();
-			if (cat.isExpanded() && !cat.getDrawerFigure().isPinnedOpen() && cat != drawer) {
+			if (cat.isExpanded() && cat != drawer) {
 				drawersToCollapse.add(cat);
 			}
 		}
