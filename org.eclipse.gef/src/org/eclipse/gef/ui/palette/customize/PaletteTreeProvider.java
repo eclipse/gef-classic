@@ -109,9 +109,10 @@ protected void handlePropertyChanged(PropertyChangeEvent evt) {
 	PaletteEntry entry = ((PaletteEntry)evt.getSource());
 	String property = evt.getPropertyName();
 	if (property.equals(PaletteEntry.PROPERTY_LABEL)
-	  || property.equals(PaletteEntry.PROPERTY_SMALL_ICON)
-	  || property.equals(PaletteEntry.PROPERTY_VISIBLE)) {
+	  || property.equals(PaletteEntry.PROPERTY_SMALL_ICON)) {
 		viewer.update(entry, null);
+	} else if(property.equals(PaletteEntry.PROPERTY_VISIBLE)){
+		viewer.refresh(entry);
 	} else if (property.equals(PaletteContainer.PROPERTY_CHILDREN_CHANGED)) {
 		viewer.refresh(entry);
 		List oldChildren = (List)evt.getOldValue();

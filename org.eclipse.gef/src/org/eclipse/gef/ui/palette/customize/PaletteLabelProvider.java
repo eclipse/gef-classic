@@ -2,9 +2,11 @@ package org.eclipse.gef.ui.palette.customize;
 
 import java.util.*;
 
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.viewers.IColorProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -13,13 +15,17 @@ import org.eclipse.gef.internal.InternalImages;
 import org.eclipse.gef.palette.PaletteContainer;
 import org.eclipse.gef.palette.PaletteEntry;
 
+import org.eclipse.draw2d.ColorConstants;
+
 /**
  * This class is the ILabelProvider for the {@link org.eclipse.jface.viewers.TreeViewer}
  * used in {@link org.eclipse.gef.ui.palette.customize.PaletteCustomizerDialog}.
  * 
  * @author Pratik Shah
  */
-class PaletteLabelProvider implements ILabelProvider {
+class PaletteLabelProvider 
+	implements ILabelProvider, IColorProvider 
+{
 
 private TreeViewer treeviewer;
 private Map imageCache = new HashMap();
@@ -33,6 +39,13 @@ public PaletteLabelProvider(TreeViewer viewer) {
 	treeviewer = viewer;
 }
 
+/**
+ * @see org.eclipse.jface.viewers.IColorProvider#getBackground(Object)
+ */
+public Color getBackground(Object element) {
+	return null;
+}
+
 private Image getCachedImage(ImageDescriptor descriptor) {
 	Image image = (Image)imageCache.get(descriptor);
 	if (image == null) {
@@ -40,6 +53,17 @@ private Image getCachedImage(ImageDescriptor descriptor) {
 		imageCache.put(descriptor, image);
 	}
 	return image;
+}
+
+/**
+ * @see org.eclipse.jface.viewers.IColorProvider#getForeground(Object)
+ */
+public Color getForeground(Object element) {
+	PaletteEntry entry = (PaletteEntry)element;
+	if (!entry.isVisible() || !entry.getParent().isVisible()) {
+		return ColorConstants.gray;
+	}
+	return null;
 }
 
 /**
@@ -60,12 +84,7 @@ public Image getImage(Object element) {
  * @see org.eclipse.jface.viewers.ILabelProvider#getText(Object)
  */
 public String getText(Object element) {
-	PaletteEntry entry = (PaletteEntry)element;
-	String text = entry.getLabel();
-	if (!entry.isVisible()) {
-		text = text + "**"; //$NON-NLS-1$
-	}
-	return text;
+	return ((PaletteEntry)element).getLabel();
 }
 
 /**
