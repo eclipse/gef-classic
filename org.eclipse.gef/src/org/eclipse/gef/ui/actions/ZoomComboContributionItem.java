@@ -130,6 +130,14 @@ protected Control createControl(Composite parent) {
 			handleWidgetDefaultSelected(e);
 		}
 	});
+	combo.addFocusListener(new FocusListener() {
+		public void focusGained(FocusEvent e) {
+			// do nothing
+		}
+		public void focusLost(FocusEvent e) {
+			refresh();
+		}
+	});
 	combo.addDisposeListener(new DisposeListener() {
 		public void widgetDisposed(DisposeEvent e) {
 			dispose();
@@ -227,9 +235,7 @@ public void setZoomManager(ZoomManager zm) {
  * @see org.eclipse.swt.events.SelectionListener#widgetDefaultSelected(SelectionEvent)
  */
 private void handleWidgetDefaultSelected(SelectionEvent event) {
-	// TODO: GTK Workaround (fixed in 3.0) - see SWT bug #44345
-	if (zoomManager != null)
-		zoomManager.setZoomAsText(combo.getText());
+	handleWidgetSelected(event);
 }
 
 /**
@@ -239,6 +245,7 @@ private void handleWidgetSelected(SelectionEvent event) {
 	// TODO: GTK Workaround (fixed in 3.0) - see SWT bug #44345
 	if (zoomManager != null)
 		zoomManager.setZoomAsText(combo.getText());
+	refresh();
 }
 
 /**
