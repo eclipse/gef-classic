@@ -56,10 +56,14 @@ protected AccessibleEditPart createAccessible() {
  */
 protected void createEditPolicies(){
 	super.createEditPolicies();
+
 	installEditPolicy(EditPolicy.NODE_ROLE, null);
 	installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE, null);
 	installEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE, null);
 	installEditPolicy(EditPolicy.COMPONENT_ROLE, new RootComponentEditPolicy());
+	installEditPolicy(EditPolicy.LAYOUT_ROLE, new LogicXYLayoutEditPolicy(
+			(XYLayout)getContentPane().getLayoutManager()));
+
 	installEditPolicy("Snap Feedback", new SnapFeedbackPolicy()); //$NON-NLS-1$
 }
 

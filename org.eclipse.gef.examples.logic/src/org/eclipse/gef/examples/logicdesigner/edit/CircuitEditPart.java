@@ -12,15 +12,15 @@ package org.eclipse.gef.examples.logicdesigner.edit;
 
 import java.util.*;
 
-import org.eclipse.draw2d.ConnectionAnchor;
-import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.Rectangle;
+
 import org.eclipse.gef.*;
 import org.eclipse.gef.editparts.ViewportAutoexposeHelper;
 import org.eclipse.gef.editparts.ViewportExposeHelper;
 
-import org.eclipse.gef.examples.logicdesigner.figures.*;
 import org.eclipse.gef.examples.logicdesigner.figures.CircuitFigure;
+import org.eclipse.gef.examples.logicdesigner.figures.FigureFactory;
 
 /**
  * Holds a circuit, which is a container capable of 
@@ -32,6 +32,8 @@ public class CircuitEditPart
 
 protected void createEditPolicies(){
 	super.createEditPolicies();
+	installEditPolicy(EditPolicy.LAYOUT_ROLE, new LogicXYLayoutEditPolicy(
+			(XYLayout)getContentPane().getLayoutManager()));
 	installEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE, new ContainerHighlightEditPolicy());
 }
 

@@ -12,12 +12,12 @@ package org.eclipse.gef.examples.logicdesigner.edit;
 
 import java.util.List;
 
-import org.eclipse.gef.AccessibleEditPart;
-import org.eclipse.gef.EditPolicy;
-import org.eclipse.gef.examples.logicdesigner.model.LogicDiagram;
 import org.eclipse.swt.accessibility.AccessibleEvent;
 
-import org.eclipse.draw2d.XYLayout;
+import org.eclipse.gef.AccessibleEditPart;
+import org.eclipse.gef.EditPolicy;
+
+import org.eclipse.gef.examples.logicdesigner.model.LogicDiagram;
 
 
 /**
@@ -40,8 +40,6 @@ protected AccessibleEditPart createAccessible() {
 protected void createEditPolicies() {
 	super.createEditPolicies();
 	installEditPolicy(EditPolicy.CONTAINER_ROLE, new LogicContainerEditPolicy());
-	installEditPolicy(EditPolicy.LAYOUT_ROLE, new LogicXYLayoutEditPolicy(
-			(XYLayout)getContentPane().getLayoutManager()));
 }
 
 /**
