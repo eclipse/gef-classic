@@ -17,7 +17,6 @@ public class FixedConnectionAnchor
 	extends AbstractConnectionAnchor
 {
 
-private Object direction;
 public boolean leftToRight = true;
 public int offsetH;
 public int offsetV;
@@ -58,4 +57,20 @@ public Point getReferencePoint(){
 	return getLocation(null);
 }
 	
+/**
+ * @param offsetH The offsetH to set.
+ */
+public void setOffsetH(int offsetH) {
+	this.offsetH = offsetH;
+	fireAnchorMoved();
+}
+
+/**
+ * @param offsetV The offsetV to set.
+ */
+public void setOffsetV(int offsetV) {
+	this.offsetV = offsetV;
+	fireAnchorMoved();
+}
+
 }
