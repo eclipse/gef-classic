@@ -24,14 +24,14 @@ import org.eclipse.gef.ui.palette.PaletteViewerProvider;
 /**
  * @author Pratik Shah
  */
-public class DefaultPalettePage 
+public class PaletteViewerPage 
 	extends Page
 	implements PalettePage, IAdaptable {
 	
 protected PaletteViewerProvider provider;
 protected PaletteViewer viewer;
 	
-public DefaultPalettePage(PaletteViewerProvider pvProvider) {
+public PaletteViewerPage(PaletteViewerProvider pvProvider) {
 	Assert.isNotNull(pvProvider);
 	provider = pvProvider;
 }

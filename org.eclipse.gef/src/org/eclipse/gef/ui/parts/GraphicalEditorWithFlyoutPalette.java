@@ -21,7 +21,7 @@ import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.ui.palette.*;
 import org.eclipse.gef.ui.palette.FlyoutPaletteComposite;
-import org.eclipse.gef.ui.views.palette.DefaultPalettePage;
+import org.eclipse.gef.ui.views.palette.PaletteViewerPage;
 import org.eclipse.gef.ui.views.palette.PalettePage;
 
 /**
@@ -123,7 +123,7 @@ protected void setEditDomain(DefaultEditDomain ed) {
 	getEditDomain().setPaletteRoot(getPaletteRoot());
 }
 
-protected class CustomPalettePage extends DefaultPalettePage {
+protected class CustomPalettePage extends PaletteViewerPage {
 	public CustomPalettePage(PaletteViewerProvider provider) {
 		super(provider);
 	}
