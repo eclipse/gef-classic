@@ -138,6 +138,7 @@ protected boolean handleButtonDown(int button) {
 			return true;
 		}
 	}
+	updateTargetRequest();
 	updateTargetUnderMouse();
 	EditPart editpart = getTargetEditPart();
 	if(editpart != null){
@@ -429,6 +430,7 @@ protected void updateTargetRequest(){
 	request.setModifiers(getCurrentInput().getModifiers());
 	request.setType(getCommandName());
 	request.setLocation(getLocation());
+	request.setLastButtonPressed(getCurrentInput().getLastButtonPressed());
 	updateHoverRequest();
 }
 
