@@ -86,9 +86,7 @@ class EventDispatcher
 private EventDispatcher dispatcher;
 
 /**
- * The constructor.  It sets up the default root edit part.
- * The setEditor() and either one of createControl() or setControl()
- * methods should be called to completely set up the GEFTreeViewer.
+ * Constructs a TreeViewer with the default root editpart.
  */
 public TreeViewer() {
 	dispatcher = new EventDispatcher();

@@ -47,7 +47,7 @@ private DomainEventDispatcher eventDispatcher;
 private FocusListener lFocus;
 
 /**
- * Constructs a GraphicalViewerImpl.
+ * Constructs a GraphicalViewerImpl with the default root editpart.
  */
 public GraphicalViewerImpl() {
 	createDefaultRoot();
