@@ -43,18 +43,6 @@ public RulerComposite(Composite parent, int style) {
 	super(parent, style);
 }
 
-private void setRuler(RulerProvider provider, int orientation) {
-	Object ruler = null;
-	if (provider != null) {
-		ruler = provider.getRuler();
-	}
-	GraphicalViewer container = getRulerContainer(orientation);
-	if (container.getContents() != ruler) {
-		container.setContents(ruler);
-		layout(true);
-	}
-}
-
 private GraphicalViewer createRulerContainer(int orientation) {
 	final boolean isHorizontal = orientation == PositionConstants.NORTH 
 			|| orientation == PositionConstants.SOUTH;
@@ -68,11 +56,11 @@ private GraphicalViewer createRulerContainer(int orientation) {
 		}
 	};
 	viewer.setRootEditPart(new RulerRootEditPart(isHorizontal));
-	if (diagramViewer != null) {
-		viewer.setEditPartFactory(new RulerEditPartFactory(diagramViewer));	
-	}
+	viewer.setEditPartFactory(new RulerEditPartFactory(diagramViewer));
 	viewer.createControl(this);
 	viewer.setKeyHandler(new GraphicalViewerKeyHandler(viewer));
+	((GraphicalEditPart)viewer.getRootEditPart()).getFigure()
+			.setBorder(new RulerBorder(isHorizontal));
 	FigureCanvas canvas = getFigureCanvas(viewer);
 	canvas.setScrollBarVisibility(FigureCanvas.NEVER);
 	if (font == null) {
@@ -83,15 +71,14 @@ private GraphicalViewer createRulerContainer(int orientation) {
 		font = new Font(Display.getCurrent(), data);
 	}
 	canvas.setFont(font);
-	if (editor != null) {
-		if (isHorizontal) {
-			canvas.getViewport().setHorizontalRangeModel(
-					editor.getViewport().getHorizontalRangeModel());
-		} else {
-			canvas.getViewport().setVerticalRangeModel(
-					editor.getViewport().getVerticalRangeModel());
-		}
+	if (isHorizontal) {
+		canvas.getViewport().setHorizontalRangeModel(
+				editor.getViewport().getHorizontalRangeModel());
+	} else {
+		canvas.getViewport().setVerticalRangeModel(
+				editor.getViewport().getVerticalRangeModel());
 	}
+	diagramViewer.getEditDomain().addViewer(viewer);
 	return viewer;
 }
 
@@ -99,6 +86,42 @@ public void dispose() {
 	super.dispose();
 	if (font != null) {
 		font.dispose();
+	}
+}
+
+private void doLayout() {
+	int leftWidth, rightWidth, topHeight, bottomHeight;
+	leftWidth = left == null ? 0 
+			: left.getControl().computeSize(SWT.DEFAULT, SWT.DEFAULT).x;
+	rightWidth = 0; 
+	topHeight = top == null ? 0 
+			: top.getControl().computeSize(SWT.DEFAULT, SWT.DEFAULT).y;
+	bottomHeight = 0; 
+
+	Point size = getSize();
+	Point editorSize = new Point(size.x - (leftWidth + rightWidth), 
+						   size.y - (topHeight + bottomHeight));
+	if (!editor.getSize().equals(editorSize)) {
+		editor.setSize(editorSize);		
+	}
+	Point editorLocation = new Point(leftWidth, topHeight);
+	if (!editor.getLocation().equals(editorLocation)) {
+		editor.setLocation(editorLocation);
+	}
+
+	int vBarWidth = 0, hBarHeight = 0;
+	if (editor.getVerticalBar().getVisible()) {
+		vBarWidth = editor.computeTrim(0, 0, 0, 0).width;
+	}
+	if (editor.getHorizontalBar().getVisible()) {
+		hBarHeight = editor.computeTrim(0, 0, 0, 0).height;
+	}
+	
+	if (left != null) {
+		left.getControl().setBounds(0, topHeight, leftWidth, editorSize.y - hBarHeight);
+	}
+	if (top != null) {
+		top.getControl().setBounds(leftWidth, 0, editorSize.x - vBarWidth, topHeight);
 	}
 }
 
@@ -132,42 +155,6 @@ public void layout(boolean change) {
 	}
 }
 
-private void doLayout() {
-	int leftWidth, rightWidth, topHeight, bottomHeight;
-	leftWidth = left == null ? 0 
-			: left.getControl().computeSize(SWT.DEFAULT, SWT.DEFAULT).x;
-	rightWidth = 0; 
-	topHeight = top == null ? 0 
-			: top.getControl().computeSize(SWT.DEFAULT, SWT.DEFAULT).y;
-	bottomHeight = 0; 
-
-	Point size = getSize();
-	Point editorSize = new Point(size.x - (leftWidth + rightWidth), 
-	                       size.y - (topHeight + bottomHeight));
-	if (!editor.getSize().equals(editorSize)) {
-		editor.setSize(editorSize);		
-	}
-	Point editorLocation = new Point(leftWidth, topHeight);
-	if (!editor.getLocation().equals(editorLocation)) {
-		editor.setLocation(editorLocation);
-	}
-
-	int vBarWidth = 0, hBarHeight = 0;
-	if (editor.getVerticalBar().getVisible()) {
-		vBarWidth = editor.computeTrim(0, 0, 0, 0).width;
-	}
-	if (editor.getHorizontalBar().getVisible()) {
-		hBarHeight = editor.computeTrim(0, 0, 0, 0).height;
-	}
-	
-	if (left != null) {
-		left.getControl().setBounds(0, topHeight, leftWidth, editorSize.y - hBarHeight);
-	}
-	if (top != null) {
-		top.getControl().setBounds(leftWidth, 0, editorSize.x - vBarWidth, topHeight);
-	}
-}
-
 private FigureCanvas getFigureCanvas(GraphicalViewer viewer) {
 	return (FigureCanvas)viewer.getControl();
 }
@@ -193,17 +180,6 @@ public void setGraphicalViewer(GraphicalViewer primaryViewer) {
 	editor = (FigureCanvas)diagramViewer.getControl();
 	((GraphicalEditPart)diagramViewer.getRootEditPart()).getFigure()
 			.setBorder(new EditorBorder());
-
-	if (left != null) {
-		left.setEditPartFactory(new RulerEditPartFactory(diagramViewer));
-		getFigureCanvas(left).getViewport().setVerticalRangeModel(
-				editor.getViewport().getVerticalRangeModel());
-	}
-	if (top != null) {
-		top.setEditPartFactory(new RulerEditPartFactory(diagramViewer));
-		getFigureCanvas(top).getViewport().setHorizontalRangeModel(
-				editor.getViewport().getHorizontalRangeModel());
-	}
 
 	// layout whenever the scrollbars are shown or hidden, and whenever the RulerComposite
 	// is resized
@@ -234,12 +210,18 @@ public void setGraphicalViewer(GraphicalViewer primaryViewer) {
 			PositionConstants.NORTH);
 	setRuler((RulerProvider)diagramViewer.getProperty(RulerProvider.VERTICAL), 
 			PositionConstants.WEST);
-	((GraphicalEditPart)getRulerContainer(PositionConstants.NORTH).getRootEditPart())
-			.getFigure().setBorder(new RulerBorder(true));
-	((GraphicalEditPart)getRulerContainer(PositionConstants.WEST).getRootEditPart())
-			.getFigure().setBorder(new RulerBorder(false));
-	diagramViewer.getEditDomain().addViewer(getRulerContainer(PositionConstants.NORTH));
-	diagramViewer.getEditDomain().addViewer(getRulerContainer(PositionConstants.WEST));
+}
+
+private void setRuler(RulerProvider provider, int orientation) {
+	Object ruler = null;
+	if (provider != null) {
+		ruler = provider.getRuler();
+	}
+	GraphicalViewer container = getRulerContainer(orientation);
+	if (container.getContents() != ruler) {
+		container.setContents(ruler);
+		layout(true);
+	}
 }
 
 public static class EditorBorder
