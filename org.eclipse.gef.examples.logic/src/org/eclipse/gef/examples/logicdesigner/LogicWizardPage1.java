@@ -57,8 +57,6 @@ public void createControl(Composite parent) {
 	
 	Composite composite = (Composite)getControl();
 	
-//	new Label(composite,SWT.NONE);
-	
 	// sample section generation group
 	Group group = new Group(composite,SWT.NONE);
 	group.setLayout(new GridLayout());
@@ -76,7 +74,7 @@ public void createControl(Composite parent) {
 	model2.addSelectionListener(this);
 	
 	new Label(composite,SWT.NONE);
-	composite.pack();
+
 	setPageComplete(validatePage());
 }
 
