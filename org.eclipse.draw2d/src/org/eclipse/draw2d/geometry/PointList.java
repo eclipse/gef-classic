@@ -33,7 +33,7 @@ static final long serialVersionUID = 1;
 public PointList() { }
 
 /** 
- * Constructs a PointList with capacity <i>size</i>.
+ * Constructs a PointList with initial capacity <i>size</i>, but no points.
  * 
  * @param size  Number of points to hold.
  * @since 2.0
@@ -94,7 +94,7 @@ public Rectangle getBounds() {
  * @return PointList A copy of this PointList */
 public PointList getCopy() {
 	PointList result = new PointList(size);
-	System.arraycopy(points, 0, result.points, 0, points.length);
+	System.arraycopy(points, 0, result.points, 0, size * 2);
 	result.size = size;
 	result.bounds = null;
 	return result;
