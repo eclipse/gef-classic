@@ -1,11 +1,12 @@
 package org.eclipse.gef.examples.logicdesigner.figures;
 
-import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.swt.graphics.Color;
+
+import org.eclipse.gef.examples.logicdesigner.LogicColorConstants;
+
 
 /**
  * @author danlee
@@ -47,7 +48,7 @@ static {
   * Constructor for XOrGateFigure.
   */
 public XOrGateFigure() {
-	super();
+	setBackgroundColor(LogicColorConstants.xorGate);
 }
 
 /**
@@ -71,7 +72,6 @@ protected void paintFigure(Graphics g) {
 
 	//Draw an oval that represents the bottom arc
 	r.y += 4;
-	g.setBackgroundColor(new Color (null, 255, 255, 0));
 	
 	/* 
 	 * Draw the bottom gate arc.

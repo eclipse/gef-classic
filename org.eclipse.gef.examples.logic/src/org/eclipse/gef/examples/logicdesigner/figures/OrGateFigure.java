@@ -5,6 +5,9 @@ import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
+
+import org.eclipse.gef.examples.logicdesigner.LogicColorConstants;
+
 import org.eclipse.swt.graphics.Color;
 
 /**
@@ -29,7 +32,7 @@ static {
 /** * Creates a new OrGateFigure
  */
 public OrGateFigure() {
-	super();
+	setBackgroundColor(LogicColorConstants.orGate);
 }
 
 /**
@@ -53,7 +56,6 @@ protected void paintFigure(Graphics g) {
 
 	//Draw the bottom arc of the gate
 	r.y += 4;
-	g.setBackgroundColor(new Color (null, 0, 134, 255));
 	g.fillOval(r);
 	r.width--;
 	r.height--;
