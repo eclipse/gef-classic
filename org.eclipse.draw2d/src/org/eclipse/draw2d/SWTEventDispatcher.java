@@ -404,7 +404,7 @@ protected void setCapture(IFigure figure) {
  * @see EventDispatcher#setControl(Control)
  */
 public void setControl(Control c) {
-	if (control != null)
+	if (control != null && !control.isDisposed())
 		throw new RuntimeException(
 			Draw2dMessages.ERR_SWTEventDispatcher_SetControl_Exception_Runtime);
 	if (c != null)
