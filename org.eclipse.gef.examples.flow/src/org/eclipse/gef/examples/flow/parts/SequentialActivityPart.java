@@ -46,4 +46,11 @@ public void contributeEdgesToGraph(CompoundDirectedGraph graph, Map map) {
 	}
 }
 
+/**
+ * @see org.eclipse.gef.examples.flow.parts.StructuredActivityPart#getAnchorOffset()
+ */
+int getAnchorOffset() {
+	return 15;
+}
+
 }

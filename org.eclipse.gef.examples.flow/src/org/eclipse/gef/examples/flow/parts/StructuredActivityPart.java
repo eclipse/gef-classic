@@ -102,6 +102,10 @@ public void performRequest(Request request) {
 	}
 }
 
+int getAnchorOffset() {
+	return -1;
+}
+
 public IFigure getContentPane() {
 	if (getFigure() instanceof SubgraphFigure)
 		return ((SubgraphFigure)getFigure()).getContents();
@@ -112,36 +116,8 @@ protected List getModelChildren() {
 	return getStructuredActivity().getChildren();
 }
 
-/**
- * @see NodeEditPart#getSourceConnectionAnchor(org.eclipse.gef.ConnectionEditPart)
- */
-public ConnectionAnchor getSourceConnectionAnchor(ConnectionEditPart connection) {
-	return new SimpleActivityPart.BottomAnchor(getFigure());
-}
-
-/**
- * @see org.eclipse.gef.NodeEditPart#getSourceConnectionAnchor(org.eclipse.gef.Request)
- */
-public ConnectionAnchor getSourceConnectionAnchor(Request request) {
-	return new ChopboxAnchor(getFigure());
-}
-
 StructuredActivity getStructuredActivity() {
 	return (StructuredActivity)getModel();
-}
-
-/**
- * @see NodeEditPart#getTargetConnectionAnchor(org.eclipse.gef.ConnectionEditPart)
- */
-public ConnectionAnchor getTargetConnectionAnchor(ConnectionEditPart connection) {
-	return new SimpleActivityPart.TopAnchor(getFigure());
-}
-
-/**
- * @see org.eclipse.gef.NodeEditPart#getTargetConnectionAnchor(org.eclipse.gef.Request)
- */
-public ConnectionAnchor getTargetConnectionAnchor(Request request) {
-	return new ChopboxAnchor(getFigure());
 }
 
 /**

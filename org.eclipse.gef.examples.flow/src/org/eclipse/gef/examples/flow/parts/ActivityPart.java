@@ -5,6 +5,7 @@ import java.beans.PropertyChangeListener;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.draw2d.graph.*;
@@ -23,7 +24,7 @@ import org.eclipse.gef.examples.flow.policies.*;
  */
 public abstract class ActivityPart 
 	extends AbstractGraphicalEditPart
-	implements PropertyChangeListener 
+	implements PropertyChangeListener, NodeEditPart
 {
 
 protected DirectEditManager manager;
@@ -46,8 +47,6 @@ protected void applyGraphResults(CompoundDirectedGraph graph, Map map) {
 	}
 }
 
-public abstract void contributeNodesToGraph(CompoundDirectedGraph graph, Subgraph s, Map map);
-
 public void contributeEdgesToGraph(CompoundDirectedGraph graph, Map map) {
 	List outgoing = getSourceConnections();
 	for (int i = 0; i < outgoing.size(); i++) {
@@ -59,6 +58,8 @@ public void contributeEdgesToGraph(CompoundDirectedGraph graph, Map map) {
 		child.contributeEdgesToGraph(graph, map);
 	}
 }
+
+public abstract void contributeNodesToGraph(CompoundDirectedGraph graph, Subgraph s, Map map);
 
 /**
  * @see org.eclipse.gef.editparts.AbstractEditPart#createEditPolicies()
@@ -98,6 +99,36 @@ protected List getModelSourceConnections() {
  */
 protected List getModelTargetConnections() {
 	return getActivity().getIncomingTransitions();
+}
+
+abstract int getAnchorOffset();
+
+/**
+ * @see NodeEditPart#getSourceConnectionAnchor(org.eclipse.gef.ConnectionEditPart)
+ */
+public ConnectionAnchor getSourceConnectionAnchor(ConnectionEditPart connection) {
+	return new BottomAnchor(getFigure(), getAnchorOffset());
+}
+
+/**
+ * @see org.eclipse.gef.NodeEditPart#getSourceConnectionAnchor(org.eclipse.gef.Request)
+ */
+public ConnectionAnchor getSourceConnectionAnchor(Request request) {
+	return new BottomAnchor(getFigure(), getAnchorOffset());
+}
+
+/**
+ * @see NodeEditPart#getTargetConnectionAnchor(org.eclipse.gef.ConnectionEditPart)
+ */
+public ConnectionAnchor getTargetConnectionAnchor(ConnectionEditPart connection) {
+	return new TopAnchor(getFigure(), getAnchorOffset());
+}
+
+/**
+ * @see org.eclipse.gef.NodeEditPart#getTargetConnectionAnchor(org.eclipse.gef.Request)
+ */
+public ConnectionAnchor getTargetConnectionAnchor(Request request) {
+	return new TopAnchor(getFigure(), getAnchorOffset());
 }
 
 protected void performDirectEdit() {

@@ -12,12 +12,13 @@ import org.eclipse.draw2d.graph.*;
 import org.eclipse.gef.*;
 
 import org.eclipse.gef.examples.flow.FlowImages;
+import org.eclipse.gef.examples.flow.figures.SimpleActivityLabel;
 
 /**
  * @author hudsonr
  * Created on Jul 17, 2003
  */
-public class SimpleActivityPart extends ActivityPart implements NodeEditPart {
+public class SimpleActivityPart extends ActivityPart {
 
 public void contributeNodesToGraph(CompoundDirectedGraph graph, Subgraph s, Map map) {
 	Node n = new Node(this, s);
@@ -40,50 +41,8 @@ protected IFigure createFigure() {
 	return l;
 }
 
-static class TopAnchor extends AbstractConnectionAnchor {
-	TopAnchor (IFigure source) {
-		super(source);
-	}
-	public Point getLocation(Point reference) {
-		return getOwner().getBounds().getLocation().translate(5,0);
-	}
-}
-
-static class BottomAnchor extends AbstractConnectionAnchor {
-	BottomAnchor (IFigure source) {
-		super(source);
-	}
-	public Point getLocation(Point reference) {
-		return getOwner().getBounds().getBottomLeft().translate(5,-1);
-	}
-}
-
-/**
- * @see NodeEditPart#getSourceConnectionAnchor(org.eclipse.gef.ConnectionEditPart)
- */
-public ConnectionAnchor getSourceConnectionAnchor(ConnectionEditPart connection) {
-	return new BottomAnchor(getFigure());
-}
-
-/**
- * @see org.eclipse.gef.NodeEditPart#getSourceConnectionAnchor(org.eclipse.gef.Request)
- */
-public ConnectionAnchor getSourceConnectionAnchor(Request request) {
-	return new ChopboxAnchor(getFigure());
-}
-
-/**
- * @see NodeEditPart#getTargetConnectionAnchor(org.eclipse.gef.ConnectionEditPart)
- */
-public ConnectionAnchor getTargetConnectionAnchor(ConnectionEditPart connection) {
-	return new TopAnchor(getFigure());
-}
-
-/**
- * @see org.eclipse.gef.NodeEditPart#getTargetConnectionAnchor(org.eclipse.gef.Request)
- */
-public ConnectionAnchor getTargetConnectionAnchor(Request request) {
-	return new ChopboxAnchor(getFigure());
+int getAnchorOffset() {
+	return 9;
 }
 
 protected void performDirectEdit() {
