@@ -104,9 +104,9 @@ static int getBorderDescentWithMargin(InlineFlow owner) {
 }
 
 /**
- * Provides a TextLayout that can be used by the Draw2d text package for Bidi.  If clients
- * modify the TextLayout's orientation, they should restore it to LTR before returning.
- * This TextLayout should not be disposed by clients.
+ * Provides a TextLayout that can be used by the Draw2d text package for Bidi. 
+ * If clients modify the TextLayout's orientation, they should restore it to LTR
+ * before returning. This TextLayout should not be disposed by clients.
  * 
  * @return an SWT TextLayout that can be used for Bidi
  * @since 3.1
@@ -263,10 +263,16 @@ public static int wrapFragmentInContext(TextFragmentBox frag, String string,
  
 	if (min == strLen) {
 		//Everything fits
-		if (string.charAt(strLen - 1) == ' ' 
-				&& lookahead.getWidth() > availableWidth - frag.getWidth()) {
-			frag.length = result - 1;
-			frag.setWidth(-1);
+		if (string.charAt(strLen - 1) == ' ') {
+			if (frag.getWidth() == -1) {
+				frag.length = result;
+				frag.setWidth(measureString(frag, string, result, font));
+			}
+			if (lookahead.getWidth() > availableWidth - frag.getWidth()) {
+				frag.length = result - 1;
+				frag.setWidth(-1);
+			} else
+				frag.length = result;
 		} else
 			frag.length = result;
 	} else if (min == firstDelimiter) {
@@ -323,7 +329,6 @@ public static int wrapFragmentInContext(TextFragmentBox frag, String string,
 			frag.length--;
 		frag.setWidth(-1);
 	}
-
 	
 	setupFragment(frag, font, string);
 	return result;
