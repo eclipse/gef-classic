@@ -2,6 +2,8 @@ package org.eclipse.gef.ui.palette;
 
 import java.util.*;
 
+import org.eclipse.draw2d.IFigure;
+
 /**
  * @author Randy Hudson, Pratik Shah
  */
@@ -19,7 +21,7 @@ private int autoCollapseMode;
 private PaletteViewerPreferences prefs;
 
 /**
- * Constructor for CategoryAnimationController.
+ * Constructor
  */
 public CategoryAnimationController(PaletteViewerPreferences prefs) {
 	super();
@@ -34,7 +36,7 @@ public void addCategory(CategoryEditPart category) {
 public void animate(CategoryEditPart cat) {
 	inProgress = true;
 	if (cat.getCategoryFigure().isExpanded()) {
-		List categoriesToCollapse = calculate(cat);
+		List categoriesToCollapse = getCategoriesToCollapse(cat);
 		animate = new CategoryFigure[categoriesToCollapse.size() + 1];
 		int count = 1;
 		for (Iterator iter = categoriesToCollapse.iterator(); iter.hasNext();) {
@@ -98,20 +100,59 @@ public void start() {
 	endTime = startTime + numberOfMilliSeconds;
 }
 
-private List calculate(CategoryEditPart category) {
+protected List getCategoriesToCollapse(CategoryEditPart category) {
 	int autoCollapseMode = prefs.getAutoCollapseSetting();
-	if (autoCollapseMode == PaletteViewerPreferences.COLLAPSE_NEVER
-		|| autoCollapseMode == PaletteViewerPreferences.COLLAPSE_AS_NEEDED) {
+	
+	// Collapse never
+	if (autoCollapseMode == PaletteViewerPreferences.COLLAPSE_NEVER) {
 		return Collections.EMPTY_LIST;
 	} 
+	
+	// Collapse always
 	List categoriesToCollapse = new ArrayList();
-	for (Iterator iter = categories.iterator(); iter.hasNext();) {
-		CategoryEditPart cat = (CategoryEditPart) iter.next();
-		if (cat.isExpanded() && !cat.getCategoryFigure().isPinnedOpen() && cat != category) {
-			categoriesToCollapse.add(cat);
+	if (autoCollapseMode == PaletteViewerPreferences.COLLAPSE_ALWAYS) {
+		for (Iterator iter = categories.iterator(); iter.hasNext();) {
+			CategoryEditPart cat = (CategoryEditPart) iter.next();
+			if (cat.isExpanded() && !cat.getCategoryFigure().isPinnedOpen() && cat != category) {
+				categoriesToCollapse.add(cat);
+			}
+		}
+		return categoriesToCollapse;
+	}
+	
+	// Collapse as needed
+	List potentialCategoriesToCollapse = new ArrayList();
+	CategoryFigure catFigure = category.getCategoryFigure();
+	int availableWidth = catFigure.getParent().getClientArea().width;
+	int availableHeight = catFigure.getParent().getSize().height;
+	int requiredHeight = 0;
+	for (Iterator iter = category.getParent().getChildren().iterator(); iter.hasNext();) {
+		PaletteEditPart part = (PaletteEditPart) iter.next();
+		IFigure fig = part.getFigure();
+		int height = fig.getPreferredSize(availableWidth, -1).height;
+		requiredHeight += height;
+		if (!(part instanceof CategoryEditPart)) {
+			continue;
+		}
+		CategoryFigure figure = (CategoryFigure)fig;
+		if (figure.isExpanded() && !figure.isPinnedOpen()) {
+			potentialCategoriesToCollapse.add(part);
 		}
 	}
+	for (int i = potentialCategoriesToCollapse.size() - 1; i >= 0
+				&& requiredHeight > availableHeight; i--) {
+		CategoryEditPart part = (CategoryEditPart)potentialCategoriesToCollapse.get(i);
+		if (part == category) {
+			continue;
+		}
+		int expandedHeight = part.getFigure().getPreferredSize(availableWidth, -1).height;
+		part.setExpanded(false);
+		int collapsedHeight = part.getFigure().getPreferredSize(availableWidth, -1).height;
+		requiredHeight -= (expandedHeight - collapsedHeight);
+		categoriesToCollapse.add(part);
+	}
 	return categoriesToCollapse;
+	
 }
 
 }
