@@ -200,6 +200,9 @@ public List getModelChildren() {
 			else if (!iter.hasNext())
 				// last item in a group is a separator, don't need it
 				iter.remove();
+			else if (!entry.isVisible())
+				// or if separator is not visible
+				iter.remove();
 		} else if (!entry.isVisible())
 			iter.remove();
 		prevEntry = entry;
