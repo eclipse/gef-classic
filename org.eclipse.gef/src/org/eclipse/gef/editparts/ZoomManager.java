@@ -244,7 +244,6 @@ public void setZoom(double zoom) {
 	Point p2 = getViewport().getClientArea().getCenter();
 	p2.scale(zoom / prevZoom);
 	Dimension dif = p2.getDifference(p1);
-	System.out.println(dif);
 	Point p = getViewport().getViewLocation();
 	p.x += dif.width;
 	p.y += dif.height;
