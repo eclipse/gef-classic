@@ -33,16 +33,13 @@ import org.eclipse.draw2d.text.TextFlow;
 public final class MultiLineLabel extends FigureCanvas {
 
 private TextFlow textFlow;
-private ImageFigure imgFig;
+private ImageBorder imgBorder = new ImageBorder(2);
 
 class FocusableViewport extends Viewport {
 	FocusableViewport() {
 		super(true);
-	}
-	
-	{
 		setFocusTraversable(true);
-		setBorder(new MarginBorder(2));
+		setBorder(imgBorder);
 	}
 	
 	public void handleFocusGained(FocusEvent event) {
@@ -135,7 +132,7 @@ private void addAccessibility() {
 }
 
 public Image getImage() {
-	return imgFig.getImage();
+	return imgBorder.getImage();
 }
 
 /**
@@ -157,23 +154,12 @@ public void setFont(Font font) {
 /**
  * @param	image	The <code>Image</code> to be used for this label.  It can be 
  * 					<code>null</code>.
+ * @param	position	The position of the Image: PositionConstants.NORTH, SOUTH, EAST
+ * 						or WEST
+ * @see	ImageBorder#setImage(Image, int)
  */
-public void setImage(Image image) {
-	if (image != null) {
-		if (imgFig == null) {
-			imgFig = new ImageFigure();
-			imgFig.setAlignment(PositionConstants.NORTH);
-			getContents().add(imgFig);
-			getContents().setConstraint(imgFig, BorderLayout.LEFT);		
-		}
-		if (imgFig.getImage() != image)
-			imgFig.setImage(image);
-	} else {
-		if (imgFig != null) {
-			getContents().remove(imgFig);
-			imgFig = null;
-		}
-	}
+public void setImage(Image image, int position) {
+	imgBorder.setImage(image, position);
 }
 
 /**
