@@ -10,7 +10,11 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner.model.commands;
 
+import java.util.Iterator;
+import java.util.Vector;
+
 import org.eclipse.gef.commands.Command;
+
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
 import org.eclipse.gef.examples.logicdesigner.model.LogicSubpart;
 import org.eclipse.gef.examples.logicdesigner.model.Wire;
@@ -34,6 +38,16 @@ public ConnectionCommand() {
 }
 
 public boolean canExecute(){
+	if (target != null) {
+		Vector conns = target.getConnections();
+		Iterator i = conns.iterator();
+		while (i.hasNext()) {
+			Wire conn = (Wire)i.next();
+			if (targetTerminal != null && conn.getTargetTerminal() != null)
+				if (conn.getTargetTerminal().equals(targetTerminal))
+					return false;
+		}
+	}
 	return true;
 }
 
