@@ -511,6 +511,14 @@ void invalidate();
 void invalidateTree();
 
 /**
+ * Returns <code>true</code> if this figure is capable of applying a local coordinate
+ * system which affects its children.
+ * @since 3.1
+ * @return <code>true</code> if this figure provides local coordinates to children
+ */
+boolean isCoordinateSystem();
+
+/**
  * Returns <code>true</code> if this IFigure is enabled.
  * @return <code>true</code> if this IFigure is enabled
  */

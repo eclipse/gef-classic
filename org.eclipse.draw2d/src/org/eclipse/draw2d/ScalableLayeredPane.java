@@ -27,7 +27,7 @@ public class ScalableLayeredPane
 private double scale = 1.0;
 
 /**
- * @see org.eclipse.draw2d.Figure#getClientArea()
+ * @see IFigure#getClientArea(Rectangle)
  */
 public Rectangle getClientArea(Rectangle rect) {
 	super.getClientArea(rect);
@@ -56,6 +56,13 @@ public Dimension getPreferredSize(int wHint, int hHint) {
  */
 public double getScale() {
 	return scale;
+}
+
+/**
+ * @see org.eclipse.draw2d.IFigure#isCoordinateSystem()
+ */
+public boolean isCoordinateSystem() {
+	return true;
 }
 
 /**
@@ -88,16 +95,8 @@ public void setScale(double newZoom) {
 		return;
 	scale = newZoom;
 	fireMoved(); //for AncestorListener compatibility
-	fireCoordinateChanges();
 	revalidate();
 	repaint();
-}
-
-/**
- * @see org.eclipse.draw2d.Figure#translateToParent(Translatable)
- */
-public void translateToParent(Translatable t) {
-	t.performScale(scale);
 }
 
 /**
@@ -105,6 +104,13 @@ public void translateToParent(Translatable t) {
  */
 public void translateFromParent(Translatable t) {
 	t.performScale(1 / scale);
+}
+
+/**
+ * @see org.eclipse.draw2d.Figure#translateToParent(Translatable)
+ */
+public void translateToParent(Translatable t) {
+	t.performScale(scale);
 }
 
 }

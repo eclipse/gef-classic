@@ -93,14 +93,14 @@ private AncestorHelper ancestorHelper;
 
 /**
  * Calls {@link #add(IFigure, Object, int)} with -1 as the index.
- * @see org.eclipse.draw2d.IFigure#add(IFigure, Object)
+ * @see IFigure#add(IFigure, Object)
  */
 public final void add(IFigure figure, Object constraint) {
 	add(figure, constraint, -1);
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#add(IFigure, Object, int)
+ * @see IFigure#add(IFigure, Object, int)
  */
 public void add(IFigure figure, Object constraint, int index) {
 	if (children == Collections.EMPTY_LIST)
@@ -141,7 +141,7 @@ public void add(IFigure figure, Object constraint, int index) {
 /**
  * Calls {@link #add(IFigure, Object, int)} with <code>null</code> as the constraint and 
  * -1 as the index.
- * @see org.eclipse.draw2d.IFigure#add(IFigure)
+ * @see IFigure#add(IFigure)
  */
 public final void add(IFigure figure) {
 	add(figure, null, -1);
@@ -149,12 +149,12 @@ public final void add(IFigure figure) {
 
 /**
  * Calls {@link #add(IFigure, Object, int)} with <code>null</code> as the constraint.
- * @see org.eclipse.draw2d.IFigure#add(IFigure, int)
+ * @see IFigure#add(IFigure, int)
  */
 public final void add(IFigure figure, int index) {
 	add(figure, null, index);
 }
-/** * @see org.eclipse.draw2d.IFigure#addAncestorListener(AncestorListener) */
+/** * @see IFigure#addAncestorListener(AncestorListener) */
 public void addAncestorListener(AncestorListener ancestorListener) {
 	if (ancestorHelper == null)
 		ancestorHelper = new AncestorHelper(this);
@@ -162,28 +162,28 @@ public void addAncestorListener(AncestorListener ancestorListener) {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#addCoordinateListener(org.eclipse.draw2d.CoordinateListener)
+ * @see IFigure#addCoordinateListener(CoordinateListener)
  */
 public void addCoordinateListener(CoordinateListener listener) {
 	eventListeners.addListener(CoordinateListener.class, listener);
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#addFigureListener(FigureListener)
+ * @see IFigure#addFigureListener(FigureListener)
  */
 public void addFigureListener(FigureListener listener) {
 	eventListeners.addListener(FigureListener.class, listener);
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#addFocusListener(FocusListener)
+ * @see IFigure#addFocusListener(FocusListener)
  */
 public void addFocusListener(FocusListener listener) {
 	eventListeners.addListener(FocusListener.class, listener);
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#addKeyListener(KeyListener)
+ * @see IFigure#addKeyListener(KeyListener)
  */
 public void addKeyListener(KeyListener listener) {
 	eventListeners.addListener(KeyListener.class, listener);
@@ -211,14 +211,14 @@ protected void addListener(Class clazz, Object listener) {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#addMouseListener(MouseListener)
+ * @see IFigure#addMouseListener(MouseListener)
  */
 public void addMouseListener(MouseListener listener) {
 	eventListeners.addListener(MouseListener.class, listener);
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#addMouseMotionListener(MouseMotionListener)
+ * @see IFigure#addMouseMotionListener(MouseMotionListener)
  */
 public void addMouseMotionListener(MouseMotionListener listener) {
 	eventListeners.addListener(MouseMotionListener.class, listener);
@@ -235,7 +235,7 @@ public void addNotify() {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#addPropertyChangeListener(String,
+ * @see IFigure#addPropertyChangeListener(String,
  * PropertyChangeListener)
  */
 public void addPropertyChangeListener(String property, PropertyChangeListener listener) {
@@ -245,7 +245,7 @@ public void addPropertyChangeListener(String property, PropertyChangeListener li
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#addPropertyChangeListener(PropertyChangeListener)
+ * @see IFigure#addPropertyChangeListener(PropertyChangeListener)
  */
 public void addPropertyChangeListener(PropertyChangeListener listener) {
 	if (propertyListeners == null)
@@ -255,7 +255,7 @@ public void addPropertyChangeListener(PropertyChangeListener listener) {
 
 /**
  * This method is final.  Override {@link #containsPoint(int, int)} if needed.
- * @see org.eclipse.draw2d.IFigure#containsPoint(Point)
+ * @see IFigure#containsPoint(Point)
  * @since 2.0
  */
 public final boolean containsPoint(Point p) {
@@ -263,14 +263,14 @@ public final boolean containsPoint(Point p) {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#containsPoint(int, int)
+ * @see IFigure#containsPoint(int, int)
  */
 public boolean containsPoint(int x, int y) {
 	return getBounds().contains(x, y);
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#erase()
+ * @see IFigure#erase()
  */
 public void erase() {
 	if (getParent() == null || !isVisible())
@@ -311,21 +311,21 @@ protected IFigure findDescendantAtExcluding(int x, int y, TreeSearch search) {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#findFigureAt(Point)
+ * @see IFigure#findFigureAt(Point)
  */
 public final IFigure findFigureAt(Point pt) {
 	return findFigureAtExcluding(pt.x, pt.y, Collections.EMPTY_LIST);
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#findFigureAt(int, int)
+ * @see IFigure#findFigureAt(int, int)
  */
 public final IFigure findFigureAt(int x, int y) {
 	return findFigureAt(x, y, IdentitySearch.INSTANCE);
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#findFigureAt(int, int, org.eclipse.draw2d.TreeSearch)
+ * @see IFigure#findFigureAt(int, int, TreeSearch)
  */
 public IFigure findFigureAt(int x, int y, TreeSearch search) {
 	if (!containsPoint(x, y))
@@ -341,7 +341,7 @@ public IFigure findFigureAt(int x, int y, TreeSearch search) {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#findFigureAtExcluding(int, int, Collection)
+ * @see IFigure#findFigureAtExcluding(int, int, Collection)
  */
 public final IFigure findFigureAtExcluding(int x, int y, Collection c) {
 	return findFigureAt(x, y, new ExclusionSearch(c));
@@ -400,11 +400,12 @@ protected IFigure findMouseEventTargetInDescendantsAt(int x, int y) {
 }
 
 /**
- * Notifies to listeners that this figure's coordinate system has changed with respect to
- * the absolute coordinate system.
+ * Notifies to all {@link CoordinateListener}s that this figure's local coordinate system
+ * has changed in a way which affects the absolute bounds of figures contained within. 
+ * 
  * @since 3.1
  */
-protected void fireCoordinateChanges() {
+protected void fireCoordinateSystemChanged() {
 	if (!eventListeners.containsListener(CoordinateListener.class))
 		return;
 	Iterator figureListeners = eventListeners.getListeners(CoordinateListener.class);
@@ -414,18 +415,31 @@ protected void fireCoordinateChanges() {
 }
 
 /**
- * Notifies any {@link FigureListener FigureListeners} listening to this Figure that it
- * has moved.
- * 
- * @since 2.0
+ * Notifies to all {@link FigureListener}s that this figure has moved. Moved means
+ * that the bounds have changed in some way, location and/or size. 
+ * @since 3.1
  */
-protected void fireMoved() {
+protected void fireFigureMoved() {
 	if (!eventListeners.containsListener(FigureListener.class))
 		return;
 	Iterator figureListeners = eventListeners.getListeners(FigureListener.class);
 	while (figureListeners.hasNext())
 		((FigureListener)figureListeners.next()).
 			figureMoved(this);
+}
+
+/**
+ * Fires both figuremoved and coordinate system changed. This method exists for
+ * compatibility. Some listeners which used to listen for figureMoved now listen for
+ * coordinates changed.  So to be sure that those new listeners are notified, any client
+ * code which used called this method will also result in notification of coordinate
+ * changes.
+ * @since 2.0
+ * @deprecated call fireFigureMoved() or fireCoordinateSystemChanged() as appropriate
+ */
+protected void fireMoved() {
+	fireFigureMoved();
+	fireCoordinateSystemChanged();
 }
 
 /**
@@ -474,7 +488,7 @@ protected void firePropertyChange(String property, int old, int current) {
  * Returns this Figure's background color.  If this Figure's background color is
  * <code>null</code> and its parent is not <code>null</code>, the background color is
  * inherited from the parent.
- * @see org.eclipse.draw2d.IFigure#getBackgroundColor()
+ * @see IFigure#getBackgroundColor()
  */
 public Color getBackgroundColor() {
 	if (bgColor == null && getParent() != null)
@@ -483,7 +497,7 @@ public Color getBackgroundColor() {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#getBorder()
+ * @see IFigure#getBorder()
  */
 public Border getBorder() {
 	return border;
@@ -500,14 +514,14 @@ public Rectangle getBounds() {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#getChildren()
+ * @see IFigure#getChildren()
  */
 public List getChildren() {
 	return children;
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#getClientArea(Rectangle)
+ * @see IFigure#getClientArea(Rectangle)
  */
 public Rectangle getClientArea(Rectangle rect) {
 	rect.setBounds(getBounds());
@@ -518,14 +532,14 @@ public Rectangle getClientArea(Rectangle rect) {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#getClientArea()
+ * @see IFigure#getClientArea()
  */
 public final Rectangle getClientArea() {
 	return getClientArea(new Rectangle());
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#getCursor()
+ * @see IFigure#getCursor()
  */
 public Cursor getCursor() {
 	if (cursor == null && getParent() != null)
@@ -542,7 +556,7 @@ protected boolean getFlag(int flag) {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#getFont()
+ * @see IFigure#getFont()
  */
 public Font getFont() {
 	if (font != null)
@@ -553,7 +567,7 @@ public Font getFont() {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#getForegroundColor()
+ * @see IFigure#getForegroundColor()
  */
 public Color getForegroundColor() {
 	if (fgColor == null && getParent() != null)
@@ -574,7 +588,7 @@ public Insets getInsets() {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#getLayoutManager()
+ * @see IFigure#getLayoutManager()
  */
 public LayoutManager getLayoutManager() {
 	LayoutManager manager = layoutManager;
@@ -626,7 +640,7 @@ public final Point getLocation() {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#getMaximumSize()
+ * @see IFigure#getMaximumSize()
  */
 public Dimension getMaximumSize() {
 	if (maxSize != null)
@@ -635,7 +649,7 @@ public Dimension getMaximumSize() {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#getMinimumSize()
+ * @see IFigure#getMinimumSize()
  */
 public final Dimension getMinimumSize() {
 	return getMinimumSize(-1, -1);
@@ -656,21 +670,21 @@ public Dimension getMinimumSize(int wHint, int hHint) {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#getParent()
+ * @see IFigure#getParent()
  */
 public IFigure getParent() {
 	return parent;
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#getPreferredSize()
+ * @see IFigure#getPreferredSize()
  */
 public final Dimension getPreferredSize() {
 	return getPreferredSize(-1, -1);
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#getPreferredSize(int, int)
+ * @see IFigure#getPreferredSize(int, int)
  */
 public Dimension getPreferredSize(int wHint, int hHint) {
 	if (prefSize != null)
@@ -684,21 +698,21 @@ public Dimension getPreferredSize(int wHint, int hHint) {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#getSize()
+ * @see IFigure#getSize()
  */
 public final Dimension getSize() {
 	return getBounds().getSize();
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#getToolTip()
+ * @see IFigure#getToolTip()
  */
 public IFigure getToolTip() {
 	return toolTip;
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#getUpdateManager()
+ * @see IFigure#getUpdateManager()
  */
 public UpdateManager getUpdateManager() {
 	if (getParent() != null) 
@@ -708,7 +722,7 @@ public UpdateManager getUpdateManager() {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#handleFocusGained(FocusEvent)
+ * @see IFigure#handleFocusGained(FocusEvent)
  */
 public void handleFocusGained(FocusEvent event) {
 	Iterator iter = eventListeners.getListeners(FocusListener.class);
@@ -718,7 +732,7 @@ public void handleFocusGained(FocusEvent event) {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#handleFocusLost(FocusEvent)
+ * @see IFigure#handleFocusLost(FocusEvent)
  */
 public void handleFocusLost(FocusEvent event) {
 	Iterator iter = eventListeners.getListeners(FocusListener.class);
@@ -728,7 +742,7 @@ public void handleFocusLost(FocusEvent event) {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#handleKeyPressed(KeyEvent)
+ * @see IFigure#handleKeyPressed(KeyEvent)
  */
 public void handleKeyPressed(KeyEvent event) {
 	Iterator iter = eventListeners.getListeners(KeyListener.class);
@@ -738,7 +752,7 @@ public void handleKeyPressed(KeyEvent event) {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#handleKeyReleased(KeyEvent)
+ * @see IFigure#handleKeyReleased(KeyEvent)
  */
 public void handleKeyReleased(KeyEvent event) {
 	Iterator iter = eventListeners.getListeners(KeyListener.class);
@@ -748,7 +762,7 @@ public void handleKeyReleased(KeyEvent event) {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#handleMouseDoubleClicked(MouseEvent)
+ * @see IFigure#handleMouseDoubleClicked(MouseEvent)
  */
 public void handleMouseDoubleClicked(MouseEvent event) {
 	Iterator iter = eventListeners.getListeners(MouseListener.class);
@@ -758,7 +772,7 @@ public void handleMouseDoubleClicked(MouseEvent event) {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#handleMouseDragged(MouseEvent)
+ * @see IFigure#handleMouseDragged(MouseEvent)
  */
 public void handleMouseDragged(MouseEvent event) {
 	Iterator iter = eventListeners.getListeners(MouseMotionListener.class);
@@ -768,7 +782,7 @@ public void handleMouseDragged(MouseEvent event) {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#handleMouseEntered(MouseEvent)
+ * @see IFigure#handleMouseEntered(MouseEvent)
  */
 public void handleMouseEntered(MouseEvent event) {
 	Iterator iter = eventListeners.getListeners(MouseMotionListener.class);
@@ -778,7 +792,7 @@ public void handleMouseEntered(MouseEvent event) {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#handleMouseExited(MouseEvent)
+ * @see IFigure#handleMouseExited(MouseEvent)
  */
 public void handleMouseExited(MouseEvent event) {
 	Iterator iter = eventListeners.getListeners(MouseMotionListener.class);
@@ -788,7 +802,7 @@ public void handleMouseExited(MouseEvent event) {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#handleMouseHover(MouseEvent)
+ * @see IFigure#handleMouseHover(MouseEvent)
  */
 public void handleMouseHover(MouseEvent event) {
 	Iterator iter = eventListeners.getListeners(MouseMotionListener.class);
@@ -798,7 +812,7 @@ public void handleMouseHover(MouseEvent event) {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#handleMouseMoved(MouseEvent)
+ * @see IFigure#handleMouseMoved(MouseEvent)
  */
 public void handleMouseMoved(MouseEvent event) {
 	Iterator iter = eventListeners.getListeners(MouseMotionListener.class);
@@ -808,7 +822,7 @@ public void handleMouseMoved(MouseEvent event) {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#handleMousePressed(MouseEvent)
+ * @see IFigure#handleMousePressed(MouseEvent)
  */
 public void handleMousePressed(MouseEvent event) {
 	Iterator iter = eventListeners.getListeners(MouseListener.class);
@@ -818,7 +832,7 @@ public void handleMousePressed(MouseEvent event) {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#handleMouseReleased(MouseEvent)
+ * @see IFigure#handleMouseReleased(MouseEvent)
  */
 public void handleMouseReleased(MouseEvent event) {
 	Iterator iter = eventListeners.getListeners(MouseListener.class);
@@ -828,7 +842,7 @@ public void handleMouseReleased(MouseEvent event) {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#hasFocus()
+ * @see IFigure#hasFocus()
  */
 public boolean hasFocus() {
 	EventDispatcher dispatcher = internalGetEventDispatcher();
@@ -838,7 +852,7 @@ public boolean hasFocus() {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#internalGetEventDispatcher()
+ * @see IFigure#internalGetEventDispatcher()
  */
 public EventDispatcher internalGetEventDispatcher() {
 	if (getParent() != null)
@@ -847,14 +861,14 @@ public EventDispatcher internalGetEventDispatcher() {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#intersects(Rectangle)
+ * @see IFigure#intersects(Rectangle)
  */
 public boolean intersects(Rectangle rect) {
 	return getBounds().intersects(rect);
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#invalidate()
+ * @see IFigure#invalidate()
  */
 public void invalidate() {
 	if (!isValid()) 
@@ -864,7 +878,7 @@ public void invalidate() {
 	setValid(false);
 }
 
-/** * @see org.eclipse.draw2d.IFigure#invalidateTree() */
+/** * @see IFigure#invalidateTree() */
 public void invalidateTree() {
 	invalidate();
 	for (Iterator iter = children.iterator(); iter.hasNext();) {
@@ -874,14 +888,21 @@ public void invalidateTree() {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#isEnabled()
+ * @see IFigure#isCoordinateSystem()
+ */
+public boolean isCoordinateSystem() {
+	return useLocalCoordinates();
+}
+
+/**
+ * @see IFigure#isEnabled()
  */
 public boolean isEnabled() {
 	return (flags & FLAG_ENABLED) != 0;
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#isFocusTraversable()
+ * @see IFigure#isFocusTraversable()
  */
 public boolean isFocusTraversable() {
 	return (flags & FLAG_FOCUS_TRAVERSABLE) != 0;
@@ -898,21 +919,21 @@ protected boolean isMouseEventTarget() {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#isOpaque()
+ * @see IFigure#isOpaque()
  */
 public boolean isOpaque() {
 	return (flags & FLAG_OPAQUE) != 0;
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#isRequestFocusEnabled()
+ * @see IFigure#isRequestFocusEnabled()
  */
 public boolean isRequestFocusEnabled() {
 	return (flags & FLAG_FOCUSABLE) != 0;
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#isShowing()
+ * @see IFigure#isShowing()
  */
 public boolean isShowing() {
 	return isVisible()
@@ -941,7 +962,7 @@ protected boolean isValidationRoot() {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#isVisible()
+ * @see IFigure#isVisible()
  */
 public boolean isVisible() {
 	return getFlag(FLAG_VISIBLE);
@@ -1080,7 +1101,7 @@ protected void primTranslate(int dx, int dy) {
 	bounds.x += dx;
 	bounds.y += dy;
 	if (useLocalCoordinates()) {
-		fireCoordinateChanges();
+		fireCoordinateSystemChanged();
 		return;
 	}
 	for (int i = 0; i < children.size(); i++)
@@ -1122,7 +1143,7 @@ public void removeAll() {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#removeAncestorListener(AncestorListener)
+ * @see IFigure#removeAncestorListener(AncestorListener)
  */
 public void removeAncestorListener(AncestorListener listener) {
 	if (ancestorHelper != null) {
@@ -1134,26 +1155,29 @@ public void removeAncestorListener(AncestorListener listener) {
 	}
 }
 
+/**
+ * @see IFigure#removeCoordinateListener(CoordinateListener)
+ */
 public void removeCoordinateListener(CoordinateListener listener) {
 	eventListeners.removeListener(CoordinateListener.class, listener);
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#removeFigureListener(FigureListener)
+ * @see IFigure#removeFigureListener(FigureListener)
  */
 public void removeFigureListener(FigureListener listener) {
 	eventListeners.removeListener(FigureListener.class, listener);
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#removeFocusListener(FocusListener)
+ * @see IFigure#removeFocusListener(FocusListener)
  */
 public void removeFocusListener(FocusListener listener) {
 	eventListeners.removeListener(FocusListener.class, listener);
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#removeKeyListener(org.eclipse.draw2d.KeyListener)
+ * @see IFigure#removeKeyListener(KeyListener)
  */
 public void removeKeyListener(KeyListener listener) {
 	eventListeners.removeListener(KeyListener.class, listener);
@@ -1186,14 +1210,14 @@ protected void removeListener(Class clazz, Object listener) {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#removeMouseListener(MouseListener)
+ * @see IFigure#removeMouseListener(MouseListener)
  */
 public void removeMouseListener(MouseListener listener) {
 	eventListeners.removeListener(MouseListener.class, listener);
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#removeMouseMotionListener(MouseMotionListener)
+ * @see IFigure#removeMouseMotionListener(MouseMotionListener)
  */
 public void removeMouseMotionListener(MouseMotionListener listener) {
 	eventListeners.removeListener(MouseMotionListener.class, listener);
@@ -1210,7 +1234,7 @@ public void removeNotify() {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#removePropertyChangeListener(PropertyChangeListener)
+ * @see IFigure#removePropertyChangeListener(PropertyChangeListener)
  */
 public void removePropertyChangeListener(PropertyChangeListener listener) {
 	if (propertyListeners == null) return;
@@ -1228,14 +1252,14 @@ public void removePropertyChangeListener(
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#repaint(Rectangle)
+ * @see IFigure#repaint(Rectangle)
  */
 public final void repaint(Rectangle rect) {
 	repaint(rect.x, rect.y, rect.width, rect.height);
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#repaint(int, int, int, int)
+ * @see IFigure#repaint(int, int, int, int)
  */
 public void repaint(int x, int y, int w, int h) {
 	if (isVisible())
@@ -1243,14 +1267,14 @@ public void repaint(int x, int y, int w, int h) {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#repaint()
+ * @see IFigure#repaint()
  */
 public void repaint() {
 	repaint(getBounds());
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#requestFocus()
+ * @see IFigure#requestFocus()
  */
 public final void requestFocus() {
 	if (!isRequestFocusEnabled() || hasFocus())
@@ -1262,7 +1286,7 @@ public final void requestFocus() {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#revalidate()
+ * @see IFigure#revalidate()
  */
 public void revalidate() {
 	invalidate();
@@ -1273,7 +1297,7 @@ public void revalidate() {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#setBackgroundColor(Color)
+ * @see IFigure#setBackgroundColor(Color)
  */
 public void setBackgroundColor(Color bg) {
 	bgColor = bg;
@@ -1281,7 +1305,7 @@ public void setBackgroundColor(Color bg) {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#setBorder(Border)
+ * @see IFigure#setBorder(Border)
  */
 public void setBorder(Border border) {
 	this.border = border;
@@ -1319,7 +1343,7 @@ public void setBounds(Rectangle rect) {
 	if (translate || resize) {
 		if (resize)
 			invalidate();
-		fireMoved();
+		fireFigureMoved();
 		repaint();
 	}
 }
@@ -1371,7 +1395,7 @@ protected void setChildrenOrientation(int orientation) {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#setConstraint(IFigure, Object)
+ * @see IFigure#setConstraint(IFigure, Object)
  */
 public void setConstraint(IFigure child, Object constraint) {
 	if (child.getParent() != this)
@@ -1384,7 +1408,7 @@ public void setConstraint(IFigure child, Object constraint) {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#setCursor(Cursor)
+ * @see IFigure#setCursor(Cursor)
  */
 public void setCursor(Cursor cursor) {
 	if (this.cursor == cursor)
@@ -1396,7 +1420,7 @@ public void setCursor(Cursor cursor) {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#setEnabled(boolean)
+ * @see IFigure#setEnabled(boolean)
  */
 public void setEnabled(boolean value) {
 	if (isEnabled() == value) 
@@ -1418,7 +1442,7 @@ protected final void setFlag(int flag, boolean value) {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#setFocusTraversable(boolean)
+ * @see IFigure#setFocusTraversable(boolean)
  */
 public void setFocusTraversable(boolean focusTraversable) {
 	if (isFocusTraversable() == focusTraversable)
@@ -1427,7 +1451,7 @@ public void setFocusTraversable(boolean focusTraversable) {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#setFont(Font)
+ * @see IFigure#setFont(Font)
  */
 public void setFont(Font f) {
 	if (font != f) {
@@ -1437,7 +1461,7 @@ public void setFont(Font f) {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#setForegroundColor(Color)
+ * @see IFigure#setForegroundColor(Color)
  */
 public void setForegroundColor(Color fg) {
 	if (fgColor != null && fgColor.equals(fg)) 
@@ -1447,7 +1471,7 @@ public void setForegroundColor(Color fg) {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#setLayoutManager(LayoutManager)
+ * @see IFigure#setLayoutManager(LayoutManager)
  */
 public void setLayoutManager(LayoutManager manager) {
 	layoutManager = manager;
@@ -1455,7 +1479,7 @@ public void setLayoutManager(LayoutManager manager) {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#setLocation(Point)
+ * @see IFigure#setLocation(Point)
  */
 public void setLocation(Point p) {
 	if (getLocation().equals(p)) 
@@ -1466,7 +1490,7 @@ public void setLocation(Point p) {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#setMaximumSize(Dimension)
+ * @see IFigure#setMaximumSize(Dimension)
  */
 public void setMaximumSize(Dimension d) {
 	if (maxSize != null && maxSize.equals(d)) 
@@ -1476,7 +1500,7 @@ public void setMaximumSize(Dimension d) {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#setMinimumSize(Dimension)
+ * @see IFigure#setMinimumSize(Dimension)
  */
 public void setMinimumSize(Dimension d) {
 	if (minSize != null && minSize.equals(d)) 
@@ -1486,7 +1510,7 @@ public void setMinimumSize(Dimension d) {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#setOpaque(boolean)
+ * @see IFigure#setOpaque(boolean)
  */
 public void setOpaque(boolean opaque) {
 	if (isOpaque() == opaque)
@@ -1496,7 +1520,7 @@ public void setOpaque(boolean opaque) {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#setParent(IFigure)
+ * @see IFigure#setParent(IFigure)
  */
 public void setParent(IFigure p) {
 	IFigure oldParent = parent;
@@ -1505,7 +1529,7 @@ public void setParent(IFigure p) {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#setPreferredSize(Dimension)
+ * @see IFigure#setPreferredSize(Dimension)
  */
 public void setPreferredSize(Dimension size) {
 	if (prefSize != null && prefSize.equals(size))
@@ -1526,7 +1550,7 @@ public final void setPreferredSize(int w, int h) {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#setRequestFocusEnabled(boolean)
+ * @see IFigure#setRequestFocusEnabled(boolean)
  */
 public void setRequestFocusEnabled(boolean requestFocusEnabled) {
 	if (isRequestFocusEnabled() == requestFocusEnabled)
@@ -1535,14 +1559,14 @@ public void setRequestFocusEnabled(boolean requestFocusEnabled) {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#setSize(Dimension)
+ * @see IFigure#setSize(Dimension)
  */
 public final void setSize(Dimension d) {
 	setSize(d.width, d.height);
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#setSize(int, int)
+ * @see IFigure#setSize(int, int)
  */
 public void setSize(int w, int h) {
 	Rectangle bounds = getBounds();
@@ -1554,7 +1578,7 @@ public void setSize(int w, int h) {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#setToolTip(IFigure)
+ * @see IFigure#setToolTip(IFigure)
  */
 public void setToolTip(IFigure f) {
 	if (toolTip == f)
@@ -1573,7 +1597,7 @@ public void setValid(boolean value) {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#setVisible(boolean)
+ * @see IFigure#setVisible(boolean)
  */
 public void setVisible(boolean visible) {
 	boolean currentVisibility = isVisible();
@@ -1588,15 +1612,15 @@ public void setVisible(boolean visible) {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#translate(int, int)
+ * @see IFigure#translate(int, int)
  */
 public final void translate(int x, int y) {
 	primTranslate(x, y);
-	fireMoved();
+	fireFigureMoved();
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#translateFromParent(Translatable)
+ * @see IFigure#translateFromParent(Translatable)
  */
 public void translateFromParent(Translatable t) {
 	if (useLocalCoordinates())
@@ -1606,7 +1630,7 @@ public void translateFromParent(Translatable t) {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#translateToAbsolute(Translatable)
+ * @see IFigure#translateToAbsolute(Translatable)
  */
 public final void translateToAbsolute(Translatable t) {
 	if (getParent() != null) {
@@ -1616,7 +1640,7 @@ public final void translateToAbsolute(Translatable t) {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#translateToParent(Translatable)
+ * @see IFigure#translateToParent(Translatable)
  */
 public void translateToParent(Translatable t) {
 	if (useLocalCoordinates())
@@ -1626,7 +1650,7 @@ public void translateToParent(Translatable t) {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#translateToRelative(Translatable)
+ * @see IFigure#translateToRelative(Translatable)
  */
 public final void translateToRelative(Translatable t) {
 	if (getParent() != null) {
@@ -1646,7 +1670,7 @@ protected boolean useLocalCoordinates() {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#validate()
+ * @see IFigure#validate()
  */
 public void validate() {
 	if (isValid())

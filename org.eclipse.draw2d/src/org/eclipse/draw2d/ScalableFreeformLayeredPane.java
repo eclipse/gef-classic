@@ -45,6 +45,13 @@ public double getScale() {
 }
 
 /**
+ * @see org.eclipse.draw2d.IFigure#isCoordinateSystem()
+ */
+public boolean isCoordinateSystem() {
+	return true;
+}
+
+/**
  * @see org.eclipse.draw2d.Figure#paintClientArea(Graphics) */
 protected void paintClientArea(Graphics graphics) {
 	if (getChildren().isEmpty())
@@ -72,7 +79,6 @@ public void setScale(double newZoom) {
 		return;
 	scale = newZoom;
 	superFireMoved(); //For AncestorListener compatibility
-	fireCoordinateChanges();
 	getFreeformHelper().invalidate();
 	repaint();
 }

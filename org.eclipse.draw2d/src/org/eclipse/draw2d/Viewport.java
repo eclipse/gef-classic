@@ -163,6 +163,13 @@ protected void paintClientArea(Graphics g) {
 }
 
 /**
+ * @see org.eclipse.draw2d.Figure#isCoordinateSystem()
+ */
+public boolean isCoordinateSystem() {
+	return useGraphicsTranslate() || super.isCoordinateSystem();
+}
+
+/**
  * Listens for either of the {@link RangeModel RangeModels} to fire a property change
  * event and updates the view accordingly.  
  * @param event the event
@@ -174,9 +181,7 @@ public void propertyChange(PropertyChangeEvent event) {
 				localRevalidate();
 				if (useGraphicsTranslate()) {
 					repaint();
-					fireMoved(); //Must fire moved because the contents have been 
-								 //virtually scrolled.
-					fireCoordinateChanges();
+					fireMoved(); 
 				}
 			}
 			firePropertyChange(PROPERTY_VIEW_LOCATION, event.getOldValue(), 
