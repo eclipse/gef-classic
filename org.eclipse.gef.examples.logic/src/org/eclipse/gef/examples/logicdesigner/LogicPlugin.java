@@ -322,7 +322,7 @@ static private PaletteContainer createControlGroup(){
 			new CreationTool(new CreateRequest.SimpleFactory(AndGate.class)),
 			LogicMessages.LogicPlugin_Tool_CreationTool_ANDGate_Label,
 			LogicMessages.LogicPlugin_Tool_CreationTool_ANDGate_Description,
-			new Image(null,Circuit.class.getResourceAsStream("icons/and.gif")),//$NON-NLS-1$
+			new Image(null,Circuit.class.getResourceAsStream("icons/and16.gif")),//$NON-NLS-1$
 			new Image(null,Circuit.class.getResourceAsStream("icons/and.gif"))//$NON-NLS-1$
 		);
 	entries.add(tool);
