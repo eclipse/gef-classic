@@ -17,7 +17,6 @@ public abstract class AbstractLocator
 
 private int relativePosition = PositionConstants.CENTER;
 private int gap;
-private static double sqrt2 = Math.sqrt(2.0);
 
 /**
  * Creates a new AbstractLocator.

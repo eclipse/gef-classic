@@ -20,7 +20,7 @@ public class ChopboxAnchor
 
 /**
  * Constructs a new ChopboxAnchor. */
-public ChopboxAnchor() { }
+protected ChopboxAnchor() { }
 
 /**
  * Constructs a ChopboxAnchor with the given <i>owner</i> figure.

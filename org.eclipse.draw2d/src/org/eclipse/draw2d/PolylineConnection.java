@@ -81,13 +81,6 @@ protected RotatableDecoration getEndDecoration(){
 	return getTargetDecoration();
 }
 
-/*
- * Returns the list of points being used by this PolylineConnection <b>by reference</b>.
- */
-public PointList getPoints(){
-	return super.getPoints();
-}
-
 public Object getRoutingConstraint() {
 	if (getConnectionRouter() != null)
 		return (List)getConnectionRouter().getConstraint(this);

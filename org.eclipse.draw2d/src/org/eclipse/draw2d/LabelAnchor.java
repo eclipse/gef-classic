@@ -22,7 +22,7 @@ public class LabelAnchor
  * 
  * @since 2.0
  */
-public LabelAnchor() { }
+protected LabelAnchor() { }
 
 /**
  * Constructs a LabelAnchor with owner <i>label</i>.

@@ -49,7 +49,7 @@ public PolygonDecoration(){
  * 
  * @since 2.0
  */
-protected PointList getPoints(){
+public PointList getPoints(){
 	if (points == null){
 		points = new PointList();
 		for (int i=0; i < template.size(); i++)

@@ -194,11 +194,10 @@ protected void configurePaletteViewer() {
 				new LogicPaletteCustomizer() );
 }
 
-
 protected void configureGraphicalViewer() {
 	super.configureGraphicalViewer();
 	ScrollingGraphicalViewer viewer = (ScrollingGraphicalViewer)getGraphicalViewer();
-	viewer.setRootEditPart(new FreeformGraphicalRootEditPart());
+	viewer.setRootEditPart(new ScalableFreeformRootEditPart());
 	viewer.setEditPartFactory(new GraphicalPartFactory());
 //	((FigureCanvas)viewer.getControl()).setScrollBarVisibility(FigureCanvas.ALWAYS);
 	viewer.setContextMenuProvider(getContextMenuProvider());

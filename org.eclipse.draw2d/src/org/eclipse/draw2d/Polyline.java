@@ -129,7 +129,7 @@ public Point getEnd() {
  * 
  * @since 2.0
  */
-protected PointList getPoints() {
+public PointList getPoints() {
 	return points;
 }
 

@@ -7,10 +7,13 @@ package org.eclipse.gef.requests;
  */
 
 import org.eclipse.jface.viewers.CellEditor;
-import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
 
-public class DirectEditRequest extends Request {
+/**
+ * A request to perform direct editing on the receiver of the Request.
+ * @author hudsonr
+ * @since 2.0 */
+public class DirectEditRequest extends LocationRequest {
 
 private Object feature;
 private CellEditor celleditor;
@@ -31,8 +34,8 @@ public DirectEditRequest(Object type) {
 }
 
 /**
- * If the EditPart supports direct editing of multiple features, this parameter can be used to
- * discriminate among them.
+ * If the EditPart supports direct editing of multiple features, this parameter can be
+ * used to discriminate among them.
  */
 public Object getDirectEditFeature(){
 	return feature;
