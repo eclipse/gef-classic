@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.geometry.*;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 
@@ -194,17 +195,15 @@ protected void hideFocus() {
  * @param request the request
  */
 protected void showChangeBoundsFeedback(ChangeBoundsRequest request) {
-	IFigure p = getDragSourceFeedbackFigure();
+	IFigure feedback = getDragSourceFeedbackFigure();
 	
-	Rectangle r = getHostFigure().getBounds().getCopy();
-	getHostFigure().translateToAbsolute(r);
-	r.translate(request.getMoveDelta());
-	Dimension resize = request.getSizeDelta();
-	r.width += resize.width;
-	r.height += resize.height;
-
-	p.translateToRelative(r);
-	p.setBounds(r);
+	PrecisionRectangle rect = new PrecisionRectangle(getHostFigure().getBounds());
+	getHostFigure().translateToAbsolute(rect);
+	rect.translate(request.getMoveDelta());
+	rect.resize(request.getSizeDelta());
+	
+	feedback.translateToRelative(rect);
+	feedback.setBounds(rect);
 }
 
 /**
