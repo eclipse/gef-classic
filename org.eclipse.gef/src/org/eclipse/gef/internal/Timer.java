@@ -6,14 +6,13 @@ package org.eclipse.gef.internal;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-
 public class Timer
 	implements Runnable
 {
 private Thread t;
 private Runnable run;
 private int initial, period;
-private boolean started, stopped;
+private boolean started, stopped = true;
 
 public void cancel(){
 	stopped = true;

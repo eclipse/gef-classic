@@ -34,12 +34,6 @@ public void execute() {
 		parent.addChild(child,index);
 }
 
-public String getDescription() {
-	String name = child.getClass().getName();
-	name = name.substring(name.lastIndexOf(".")+1);//$NON-NLS-1$
-	return LogicMessages.CreateCommand_Description + " " + name;  //$NON-NLS-1$
-}
-
 public LogicDiagram getParent() {
 	return parent;
 }

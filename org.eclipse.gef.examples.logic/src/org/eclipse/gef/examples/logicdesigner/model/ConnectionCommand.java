@@ -52,7 +52,7 @@ public void execute() {
 	}
 }
 
-public String getDescription() {
+public String getLabel() {
 	return LogicMessages.ConnectionCommand_Description;
 }
 

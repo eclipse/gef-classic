@@ -25,12 +25,6 @@ public void execute() {
 	primExecute();
 }
 
-public String getDescription() {
-	String name = child.getClass().getName();
-	name = name.substring(name.lastIndexOf(".")+1);  //$NON-NLS-1$
-	return LogicMessages.DeleteCommand_Description + " " + name;  //$NON-NLS-1$
-}
-
 protected void primExecute() {
 	index=parent.getChildren().indexOf(child);
 	parent.removeChild(child);

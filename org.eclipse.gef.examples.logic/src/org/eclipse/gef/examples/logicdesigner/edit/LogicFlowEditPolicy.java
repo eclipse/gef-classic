@@ -25,10 +25,6 @@ protected Command createAddCommand(EditPart child, EditPart after) {
 	return command;
 }
 
-protected EditPolicy createChildEditPolicy(EditPart child) {
-	return new org.eclipse.gef.editpolicies.NonResizableEditPolicy();
-}
-
 protected Command createMoveChildCommand(EditPart child, EditPart after) {
 	LogicSubpart childModel = (LogicSubpart)child.getModel();
 	LogicDiagram parentModel = (LogicDiagram)getHost().getModel();

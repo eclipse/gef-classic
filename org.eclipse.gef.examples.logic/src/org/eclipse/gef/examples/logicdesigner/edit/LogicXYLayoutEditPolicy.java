@@ -71,15 +71,4 @@ protected Command getOrphanChildrenCommand(Request request) {
 	return null;
 }
 
-protected void showDragTargetFeedback(Request request) {
-	// Don't show any target feedback on the GraphViewer
-	// background.
-}
-
-//protected void showSizeOnDropFeedback(Tool tool) {
-//	if (((CreationTool)tool).getNewObject() instanceof Circuit) {
-//		super.showSizeOnDropFeedback(tool);
-//	}
-//}
-
 }

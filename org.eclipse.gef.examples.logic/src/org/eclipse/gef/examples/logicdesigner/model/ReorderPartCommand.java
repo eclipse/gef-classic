@@ -29,11 +29,6 @@ public void execute() {
 	parent.addChild(child, newIndex);
 }
 
-public String getDescription() {
-	return LogicMessages.ReorderPartCommand_Description + child.getID() + " in " + parent.getID() + //$NON-NLS-1$
-			" from index " + oldIndex + " to " + newIndex;//$NON-NLS-2$//$NON-NLS-1$
-}
-
 public void undo() {
 	parent.removeChild(child);
 	parent.addChild(child, oldIndex);
