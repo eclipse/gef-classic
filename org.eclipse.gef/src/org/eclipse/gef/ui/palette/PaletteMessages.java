@@ -92,7 +92,7 @@ public static final String NO_DESCRIPTION_AVAILABLE;
  */
 public static final String NO_SELECTION_MADE;
 /**
- * The String "&Customize..."
+ * The String "Cus&tomize..."
  */
 public static final String MENU_OPEN_CUSTOMIZE_DIALOG;
 /**
@@ -156,7 +156,7 @@ public static final String SETTINGS_FONT_TITLE;
  */
 public static final String SETTINGS_FONT_CHANGE;
 /**
- * The String "Current Font: "
+ * The String "Current font: "
  */
 public static final String SETTINGS_FONT_CURRENT;
 /**
@@ -203,6 +203,14 @@ public static final String CATEGORY_PIN;
  * The String "Un&pin"
  */
 public static final String CATEGORY_UNPIN;
+/**
+ * The String "&Restore Default"
+ */
+public static final String SETTINGS_DEFAULT_FONT;
+/**
+ * The String "<Using Workbench Text Font>"
+ */
+public static final String SETTINGS_WORKBENCH_FONT_LABEL;
 
 static {
 	ResourceBundle bundle =
@@ -257,6 +265,8 @@ static {
 	SETTINGS_LAYOUT_FOLDER_WIDTH = bundle.getString("SETTINGS_LAYOUT_FOLDER_WIDTH"); //$NON-NLS-1$	
 	CATEGORY_PIN = bundle.getString("CATEGORY_PIN"); //$NON-NLS-1$	
 	CATEGORY_UNPIN = bundle.getString("CATEGORY_UNPIN"); //$NON-NLS-1$	
+	SETTINGS_DEFAULT_FONT = bundle.getString("SETTINGS_DEFAULT_FONT"); //$NON-NLS-1$	
+	SETTINGS_WORKBENCH_FONT_LABEL = bundle.getString("SETTINGS_WORKBENCH_FONT_LABEL"); //$NON-NLS-1$	
 }
 
 }
