@@ -21,10 +21,6 @@ public TextTransferDropTargetListener(EditPartViewer viewer, Transfer xfer) {
 	super(viewer, xfer);
 }
 
-protected boolean canHandleDrop(DropTargetEvent event) {
-	return true;
-}
-
 protected Request createTargetRequest() {
 	return new NativeDropRequest();
 }
