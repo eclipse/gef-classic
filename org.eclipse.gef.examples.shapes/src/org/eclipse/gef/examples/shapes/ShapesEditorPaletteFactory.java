@@ -87,6 +87,9 @@ static PaletteRoot createPalette() {
  */
 static FlyoutPreferences createPalettePreferences() {
 	return new FlyoutPreferences() {
+		private IPreferenceStore getPreferenceStore() {
+			return ShapesPlugin.getDefault().getPreferenceStore();
+		}
 		public int getDockLocation() {
 			return getPreferenceStore().getInt(PALETTE_DOCK_LOCATION);
 		}
@@ -152,14 +155,6 @@ private static PaletteContainer createToolsGroup(PaletteRoot palette) {
 	toolGroup.add(tool);
 
 	return toolGroup;
-}
-
-/** 
- * Returns the preference store for the ShapesPlugin.
- * @see org.eclipse.ui.plugin.AbstractUIPlugin#getPreferenceStore() 
- */
-private static IPreferenceStore getPreferenceStore() {
-	return ShapesPlugin.getDefault().getPreferenceStore();
 }
 
 /** Utility class. */
