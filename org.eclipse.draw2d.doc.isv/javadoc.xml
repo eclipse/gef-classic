@@ -3,7 +3,7 @@
 <property name="pluginName" value="org.eclipse.draw2d.doc.isv" />
 
 <target name="init">    
-	<property name="pluginDir" value="${basedir}/${pluginName}" />
+	<property name="pluginDir" value="../${pluginName}" />
 	<property name="targetDir" value=".." />
 	<property name="docDir" value="${pluginDir}/reference/api" />
 	<delete dir="${docDir}" />
@@ -32,8 +32,8 @@
 				Windowtitle="Draw2D API Specification"
 				Doctitle="Draw2D API Specification"
 				Header="Draw2D v2.0"
-				Overview="${basedir}/org.eclipse.draw2d/src/overview.html">
-		<link offline="true" href="../../../org.eclipse.platform.doc.isv/reference/api" packagelistLoc="${basedir}/org.eclipse.platform.doc.isv/reference/api"/>
+				Overview="../org.eclipse.draw2d/src/overview.html">
+		<link offline="true" href="../../../org.eclipse.platform.doc.isv/reference/api" packagelistLoc="../org.eclipse.platform.doc.isv/reference/api"/>
 		<link href="http://java.sun.com/j2se/1.3/docs/api/" />
 	</javadoc>
 	<delete file="${pluginDir}/doc.zip" />
