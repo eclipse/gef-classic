@@ -27,7 +27,8 @@ private Rectangle tabRect;
 
 protected Insets calculateInsets(IFigure figure) {
 	// subtracting 2 from the padding height is a hack
-	return new Insets(getTextExtents(figure).height + getPadding().getHeight() - 2, 0, 0, 0);
+	return 
+		new Insets(getTextExtents(figure).height + getPadding().getHeight() - 2, 0, 0, 0);
 }
 
 public boolean containsPoint(int x, int y) {

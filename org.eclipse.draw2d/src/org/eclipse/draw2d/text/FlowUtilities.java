@@ -19,7 +19,7 @@ import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.*;
 
 /**
- * Utility class for FlowFigures
+ * Utility class for FlowFigures.
  * @author hudsonr
  * @since 2.1 */
 class FlowUtilities
@@ -32,8 +32,11 @@ private static Dimension ELLIPSIS_SIZE = new Dimension();
  * Returns the number of characters from the specified String that will fit in the
  * available amount of space. An average character width can be provided as a hint for
  * faster calculation.
- * @param s the String * @param f the Font used for measuring * @param availableWidth the available width in pixels * @param avg 0.0, or an avg character width to use during calculation * @return int */
-public static int getTextForSpace(TextFragmentBox frag, String string, Font font, int availableWidth, float avg, int WRAPPING) {
+ * @param frag the TextFragmentBox
+ * @param string the String * @param font the Font used for measuring * @param availableWidth the available width in pixels * @param avg 0.0, or an avg character width to use during calculation
+ * @param wrapping the word wrap style * @return the number of characters that will fit in the space */
+public static int getTextForSpace(TextFragmentBox frag, String string, Font font, 
+										int availableWidth, float avg, int wrapping) {
 	frag.truncated = false;
 	if (string.length() == 0) {
 		frag.length = 0;
@@ -49,7 +52,7 @@ public static int getTextForSpace(TextFragmentBox frag, String string, Font font
 		avg = metrics.getAverageCharWidth();
 
 	int firstBreak = breakItr.next();
-	MIN = min = (WRAPPING == ParagraphTextLayout.WORD_WRAP_HARD) ?  firstBreak : 1;
+	MIN = min = (wrapping == ParagraphTextLayout.WORD_WRAP_HARD) ?  firstBreak : 1;
 	max = string.length() + 1;
 
 	//The size of the current guess
@@ -77,12 +80,13 @@ public static int getTextForSpace(TextFragmentBox frag, String string, Font font
 	}
 	
 	int result = string.length();
-	switch (WRAPPING) {
+	switch (wrapping) {
 		case ParagraphTextLayout.WORD_WRAP_HARD :
 			if (min == string.length())
 				result = min;
 			else
-				result = Math.max(MIN, breakItr.preceding(Math.min(max + 1, string.length() - 1)));
+				result = Math.max(MIN, breakItr.preceding(Math.min(max + 1, 
+																	string.length() - 1)));
 			frag.length = result;
 			break;
 

@@ -109,11 +109,15 @@ class ThumbnailUpdater implements Runnable {
 	 * size and current tile index.
 	 */
 	public void resetTileValues() {
-		hTiles = (int)Math.ceil((float)sourceFigure.getSize().width / (float)MAX_BUFFER_SIZE);
-		vTiles = (int)Math.ceil((float)sourceFigure.getSize().height / (float)MAX_BUFFER_SIZE);
+		hTiles = (int)Math.ceil((float)sourceFigure.getSize().width 
+									/ (float)MAX_BUFFER_SIZE);
+		vTiles = (int)Math.ceil((float)sourceFigure.getSize().height 
+									/ (float)MAX_BUFFER_SIZE);
 		
-		tileSize = new Dimension((int)Math.ceil((float)sourceFigure.getSize().width / (float)hTiles),
-								(int)Math.ceil((float)sourceFigure.getSize().height / (float)vTiles));
+		tileSize = new Dimension((int)Math.ceil((float)sourceFigure.getSize().width 
+									/ (float)hTiles),
+								(int)Math.ceil((float)sourceFigure.getSize().height 
+									/ (float)vTiles));
 		
 		currentHTile = 0;
 		currentVTile = 0;
@@ -216,7 +220,9 @@ class ThumbnailUpdater implements Runnable {
 		if (!targetSize.equals(thumbnailImageSize)) {
 			if (thumbnailImage != null)
 				thumbnailImage.dispose();
-			thumbnailImage = new Image(Display.getDefault(), targetSize.width, targetSize.height);
+			thumbnailImage = new Image(Display.getDefault(), 
+										targetSize.width, 
+										targetSize.height);
 			thumbnailImageSize = new Dimension(targetSize);
 		}
 		thumbnailGC = new GC(thumbnailImage);
@@ -278,11 +284,15 @@ private Dimension adjustToAspectRatio(Dimension size, boolean adjustToMaxDimensi
 	size.expand(borderSize.getNegated());
 	int width, height;
 	if (adjustToMaxDimension) {
-		width  = Math.max(size.width, (int)(size.height * sourceSize.width / (float)sourceSize.height + 0.5));
-		height = Math.max(size.height, (int)(size.width * sourceSize.height / (float)sourceSize.width + 0.5));
+		width  = Math.max(size.width, (int)(size.height * sourceSize.width 
+											/ (float)sourceSize.height + 0.5));
+		height = Math.max(size.height, (int)(size.width * sourceSize.height 
+											/ (float)sourceSize.width + 0.5));
 	} else {
-		width  = Math.min(size.width,  (int)(size.height * sourceSize.width / (float)sourceSize.height + 0.5));
-		height = Math.min(size.height, (int)(size.width * sourceSize.height / (float)sourceSize.width + 0.5));
+		width  = Math.min(size.width,  (int)(size.height * sourceSize.width 
+											/ (float)sourceSize.height + 0.5));
+		height = Math.min(size.height, (int)(size.width * sourceSize.height 
+											/ (float)sourceSize.width + 0.5));
 	}
 	size.width  = width;
 	size.height = height;
@@ -350,7 +360,8 @@ protected IFigure getSource() {
 protected Image getThumbnailImage() {
 	Dimension oldSize = targetSize;
 	targetSize = getPreferredSize();
-	targetSize.expand(new Dimension(getInsets().getWidth(), getInsets().getHeight()).negate());
+	targetSize.expand(new Dimension(getInsets().getWidth(), 
+									getInsets().getHeight()).negate());
 	setScales(targetSize.width / (float)sourceFigure.getSize().width,
 		     targetSize.height / (float)sourceFigure.getSize().height);
 	if ((isDirty()) && !updater.isRunning())

@@ -11,9 +11,9 @@
 package org.eclipse.draw2d.geometry;
 
 /** 
- * Represents a List of Points.  This class is used for building an <code>int[]</code>.
- * The array is internal, and is constructed and queried by the client using {@link Point Points}.
- * SWT uses integer arrays when painting polylines and polygons.
+ * Represents a List of Points. This class is used for building an <code>int[]</code>.
+ * The array is internal, and is constructed and queried by the client using 
+ * {@link Point Points}. SWT uses integer arrays when painting polylines and polygons.
  */
 public class PointList
 	implements java.io.Serializable, Translatable
@@ -121,8 +121,8 @@ public Point getLastPoint() {
 }
 
 /** 
- * Returns the midpoint of the list of Points.  The midpoint is the median of the List, unless
- * there are 2 medians (size is even), then the middle of the medians is returned.
+ * Returns the midpoint of the list of Points. The midpoint is the median of the List, 
+ * unless there are 2 medians (size is even), then the middle of the medians is returned.
  * @return The midpoint
  * @throws IndexOutOfBoundsException if the list is empty
  */
