@@ -39,6 +39,7 @@ Obstacle(Rectangle rect) {
 /**
  * Returns <code>true</code> if the given point is contained but not on the boundary of
  * this obstacle.
+ * @param p a point
  * @return <code>true</code> if properly contained
  */
 public boolean containsProper(Point p) {
