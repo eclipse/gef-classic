@@ -42,6 +42,16 @@ private int direction;
  */
 public ResizeTracker(int direction) {
 	this.direction = direction;
+	setDisabledCursor(SharedCursors.NO);
+}
+
+/**
+ * @see org.eclipse.gef.tools.AbstractTool#calculateCursor()
+ */
+protected Cursor calculateCursor() {
+	if (isInState(STATE_INITIAL))
+		return getDefaultCursor();
+	return super.calculateCursor();
 }
 
 /**
