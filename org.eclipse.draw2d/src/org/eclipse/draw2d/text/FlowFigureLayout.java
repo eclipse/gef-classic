@@ -90,8 +90,7 @@ public Dimension getPreferredSize(IFigure container, int wHint, int hHint) {
 public void invalidate() { }
 
 /**
- * Called during {@link #layout(IFigure)}. The {@link  #invalid} flag is reset after this
- * method is called.
+ * Called during {@link #layout(IFigure)}.
  */
 protected abstract void layout();
 

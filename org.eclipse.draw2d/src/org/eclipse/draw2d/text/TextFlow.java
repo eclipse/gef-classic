@@ -378,11 +378,6 @@ public int getOffset(Point p, int trailing[]) {
 	return -1;
 }
 
-
-/**
- * @return
- * @since 3.1
- */
 private int getBidiPrefixLength(TextFragmentBox box, int index) {
 	if (box.getBidiLevel() < 1)
 		return 0;
@@ -538,7 +533,7 @@ private void paintText(Graphics g, String draw, int x, int y, int bidiLevel) {
 }
 
 /**
- * @see org.eclipse.draw2d.text.FlowFigure#setBidiValues(int[])
+ * @see org.eclipse.draw2d.text.FlowFigure#setBidiInfo(org.eclipse.draw2d.text.BidiInfo)
  */
 public void setBidiInfo(BidiInfo info) {
 	this.bidiInfo = info;

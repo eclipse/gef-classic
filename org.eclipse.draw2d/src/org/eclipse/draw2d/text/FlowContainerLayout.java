@@ -39,9 +39,7 @@ protected FlowContainerLayout(FlowFigure flowFigure) {
 }
 
 /**
- * Clears the layout state every time a new box is added to the current line: 
- * {@link FlowContext#setConsumeSpaceOnNewLine(boolean)} and 
- * {@link FlowContext#setContinueOnSameLine(boolean)}.
+ * Adds the given box the current line and clears the context's state.
  * @see org.eclipse.draw2d.text.FlowContext#addToCurrentLine(FlowBox)
  */
 public void addToCurrentLine(FlowBox child) {

@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.draw2d.text;
 
-import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 

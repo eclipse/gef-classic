@@ -76,7 +76,7 @@ void setLineRoot(LineRoot root) {
  * @see org.eclipse.draw2d.text.CompositeBox#setLineTop(int)
  */
 public void setLineTop(int top) {
-	throw new RuntimeException("not supported");
+	throw new RuntimeException("not supported"); //$NON-NLS-1$
 }
 
 }

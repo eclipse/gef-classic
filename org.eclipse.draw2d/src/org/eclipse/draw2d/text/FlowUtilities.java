@@ -59,12 +59,6 @@ private static int findFirstDelimeter(String string) {
 	return Math.min(macNL, unixNL);
 }
 
-/**
- * @param frag
- * @param font
- * @return
- * @since 3.1
- */
 private static float getAverageCharWidth(TextFragmentBox fragment, Font font) {
 	if (fragment.getWidth() > 0 && fragment.length != 0)
 		return fragment.getWidth()/ (float)fragment.length;
@@ -132,13 +126,6 @@ private static void initBidi(TextFragmentBox frag, String string, Font font) {
 	}
 }
 
-/**
- * @param string
- * @param guess
- * @param font
- * @return
- * @since 3.1
- */
 private static int measureString(TextFragmentBox frag, String string, int guess, Font font) {
 	if (frag.requiresBidi())
 		return getTextLayout().getBounds(0, guess - 1).width;
@@ -172,7 +159,7 @@ static void setupFragment(TextFragmentBox frag, Font f, String s) {
  * @param frag the TextFragmentBox
  * @param string the String
  * @param font the Font used for measuring
- * @param availableWidth the available width in pixels
+ * @param context the flow context
  * @param wrapping the word wrap style
  * @return the number of characters that will fit in the given space; can be 0 (eg., when
  * the first character of the given string is a newline)

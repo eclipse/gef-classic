@@ -55,7 +55,6 @@ boolean getContinueOnSameLine();
  * @param child the search will occur starting from the figure after the given child
  * @param width the width before the next line-break (if one's found; all the width,
  * otherwise) will be added on to the first int in the given array
- * @return boolean indicating whether a line-break was found
  * @since 3.1
  */
 void getWidthLookahead(FlowFigure child, int width[]);
