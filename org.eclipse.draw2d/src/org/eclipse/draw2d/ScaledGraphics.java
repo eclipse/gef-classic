@@ -522,7 +522,8 @@ private Point zoomTextPoint(int x, int y) {
 private int[] zoomPointList(int[] points) {
 	for (int i = 0; i < points.length; i+= 2) {
 		points[i] = (int)(Math.floor((points[i] * zoom + fractionalX)));
-		points[i + 1] = (int)(Math.floor((points[i + 1] * zoom + fractionalY)));
+		if ((i + 1) < points.length)
+			points[i + 1] = (int)(Math.floor((points[i + 1] * zoom + fractionalY)));
 	}
 	return points;
 }

@@ -630,7 +630,8 @@ private void translatePointArray(int[] points, int translateX, int translateY) {
 		return;
 	for (int i = 0; i < points.length; i += 2) {
 		points[i] += translateX;
-		points[i + 1] += translateY;
+		if ((i + 1) < points.length)
+			points[i + 1] += translateY;
 	}
 }
 
