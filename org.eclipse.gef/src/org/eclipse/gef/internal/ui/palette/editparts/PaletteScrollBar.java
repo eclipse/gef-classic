@@ -41,7 +41,7 @@ private static final Border CONTRAST = new CompoundBorder(
 	}, BORDER
 );
 
-private static final int BUTTON_HEIGHT = 12;
+public static final int BUTTON_HEIGHT = 12;
 private static final int SCROLL_TIME = 200;
 
 private static final Image TRANSPARENCY;
