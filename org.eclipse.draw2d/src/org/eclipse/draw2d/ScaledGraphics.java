@@ -19,20 +19,23 @@ protected static class State {
 	private double appliedX;
 	private double appliedY;
 	private Font font;
+	private int lineWidth; 
 
 	protected State(){}
-	protected State(double zoom, double x, double y, Font font) {
+	protected State(double zoom, double x, double y, Font font, int lineWidth) {
 		this.zoom = zoom;
 		this.appliedX = x;
 		this.appliedY = y;
 		this.font = font;
+		this.lineWidth = lineWidth;
 	}
 	
-	protected void setValues(double zoom, double x, double y, Font font) {
+	protected void setValues(double zoom, double x, double y, Font font, int lineWidth) {
 		this.zoom = zoom;
 		this.appliedX = x;
 		this.appliedY = y;
 		this.font = font;
+		this.lineWidth = lineWidth;
 	}
 }
 
@@ -49,6 +52,7 @@ private FontHeightCache localCache = new FontHeightCache();
 private FontHeightCache targetCache = new FontHeightCache();
 private Graphics graphics;
 private Font localFont;
+private int localLineWidth;
 private double fractionalX;
 private double fractionalY;
 double zoom = 1.0;
@@ -58,6 +62,7 @@ private int stackPointer = 0;
 public ScaledGraphics(Graphics g){
 	graphics = g;
 	localFont = g.getFont();
+	localLineWidth = g.getLineWidth();
 }
 
 public void clipRect(Rectangle r) {
@@ -65,6 +70,10 @@ public void clipRect(Rectangle r) {
 }
 
 public void dispose(){
+	//Remove all states from the stack
+	while(stackPointer > 0) {
+		popState();
+	}
 	
 	//Dispose fonts
 	Iterator iter = fontCache.values().iterator();
@@ -73,10 +82,6 @@ public void dispose(){
  		font.dispose();
  	}
 
-	//Remove all states from the stack
-	while(stackPointer > 0) {
-		popState();
-	}
 }
 
 public void drawArc(int x, int y, int w, int h, int offset, int sweep) {
@@ -228,11 +233,12 @@ public void popState() {
 
 public void pushState() {
 	State s;
-	if(stack.size() > stackPointer) {
+	if (stack.size() > stackPointer) {
 		s = (State)stack.get(stackPointer);
-		s.setValues(zoom, fractionalX, fractionalY, getLocalFont());
+		s.setValues(zoom, fractionalX, fractionalY, getLocalFont(), localLineWidth);
 	} else {
-		stack.add(new State(zoom, fractionalX, fractionalY, getLocalFont()));
+		stack.add(new State(zoom, fractionalX, fractionalY, getLocalFont(), 
+								localLineWidth));
 	}
 	stackPointer++;
 
@@ -260,6 +266,7 @@ void setScale(double value){
 		return;
 	this.zoom = value;
 	graphics.setFont(zoomFont(getLocalFont()));
+	graphics.setLineWidth(zoomLineWidth(localLineWidth));
 }
 
 Font getCachedFont(FontData data){
