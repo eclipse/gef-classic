@@ -12,9 +12,12 @@ package org.eclipse.gef.internal.ui.palette.editparts;
 
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Dimension;
+
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.*;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 
 class EditPartTipHelper 
 	extends org.eclipse.draw2d.PopUpHelper
@@ -101,6 +104,27 @@ protected void hookShellListeners() {
 			}
 		}
 	});
+	/* Workaround for GTK Bug - Control.setCapture(boolean) not implemented: 
+	   If the cursor is not over the shell when it is first painted, 
+	   hide the tooltip and dispose of the shell. */
+	if (SWT.getPlatform().equals("gtk")) {
+		getShell().addPaintListener(new PaintListener() {
+			public void paintControl(PaintEvent event) {
+				Point cursorLoc = Display.getCurrent().getCursorLocation();
+				if (!getShell().getBounds().contains(cursorLoc)) {
+					// This must be run asynchronously.  If not, other paint 
+					// listeners may attempt to paint on a disposed control.
+					Display.getCurrent().asyncExec(new Runnable() {
+						public void run() {
+							if (isShowing())
+								getShell().setCapture(false);
+							dispose();
+						}
+					});
+				}
+			}
+		});
+	}
 }
 
 }
