@@ -6,14 +6,14 @@ package org.eclipse.gef.ui.parts;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Composite;
+
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.ui.actions.CopyTemplateAction;
 import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.eclipse.gef.ui.palette.PaletteViewerImpl;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.IWorkbenchActionConstants;
 
 public abstract class GraphicalEditorWithPalette 
 	extends GraphicalEditor 
@@ -27,14 +27,13 @@ protected void configurePaletteViewer() {
 
 protected void createActions() {
 	super.createActions();
-	setAction(IWorkbenchActionConstants.COPY, new CopyTemplateAction(this));
+	getActionRegistry().registerAction(new CopyTemplateAction(this));
 }
 
 private void createPaletteViewer(Composite parent) {
 	PaletteViewer viewer = new PaletteViewerImpl();
 	viewer.createControl(parent);
 	setPaletteViewer(viewer);
-	viewer.addPaletteListener((CopyTemplateAction)getAction(IWorkbenchActionConstants.COPY));
 	configurePaletteViewer();
 	hookPaletteViewer();
 	initializePaletteViewer();
@@ -45,7 +44,6 @@ public void createPartControl(Composite parent) {
 	createGraphicalViewer(splitter);
 	createPaletteViewer(splitter);
 	splitter.setWeights(new int[] {6, 1});
-//	initializeActions();
 }
 
 public void dispose() {
