@@ -203,6 +203,7 @@ private void doLayout() {
 	Rectangle leftTrim = null, topTrim = null;
 	if (left != null) {
 		leftTrim = calculateTrim((Canvas)left.getControl());
+		// Adding the trim width here because FigureCanvas#computeSize() does not
 		leftWidth = left.getControl().computeSize(SWT.DEFAULT, SWT.DEFAULT).x 
 				+ leftTrim.width;
 	}
