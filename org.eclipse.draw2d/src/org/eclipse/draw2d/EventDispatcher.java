@@ -47,26 +47,22 @@ abstract public void dispatchMouseReleased(MouseEvent me);
 
 abstract protected AccessibilityDispatcher getAccessibilityDispatcher();
 
-abstract /*package*/ IFigure getCursorTarget();
-
 abstract /*package*/ IFigure getFocusOwner();
-
-abstract /*package*/ IFigure getMouseTarget();
 
 abstract public boolean isCaptured();
 
-abstract /*package*/ void releaseCapture();
+abstract protected void releaseCapture();
 
 abstract public void requestFocus(IFigure fig);
 
 abstract public void requestRemoveFocus(IFigure fig);
 
-abstract /*package*/ void setCapture(IFigure figure);
+abstract protected void setCapture(IFigure figure);
 
 abstract public void setControl(Control control);
 
 abstract public void setRoot(IFigure figure);
 
-abstract /*package*/ void updateCursor();
+abstract protected void updateCursor();
 
 }
