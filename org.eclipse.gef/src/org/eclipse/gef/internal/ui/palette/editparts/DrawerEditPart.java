@@ -10,31 +10,23 @@
  *******************************************************************************/
 package org.eclipse.gef.internal.ui.palette.editparts;
 
-import org.eclipse.swt.accessibility.ACC;
-import org.eclipse.swt.accessibility.AccessibleControlEvent;
-import org.eclipse.swt.accessibility.AccessibleEvent;
+import org.eclipse.swt.accessibility.*;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 
-import org.eclipse.draw2d.ButtonModel;
-import org.eclipse.draw2d.ChangeEvent;
-import org.eclipse.draw2d.ChangeListener;
-import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.FocusEvent;
-import org.eclipse.draw2d.FocusListener;
-import org.eclipse.draw2d.IFigure;
+import org.eclipse.jface.resource.ImageDescriptor;
+
+import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.Insets;
 
 import org.eclipse.gef.AccessibleEditPart;
 import org.eclipse.gef.ExposeHelper;
 import org.eclipse.gef.editparts.ViewportExposeHelper;
+import org.eclipse.gef.internal.InternalImages;
 import org.eclipse.gef.palette.PaletteDrawer;
 import org.eclipse.gef.palette.PaletteTemplateEntry;
+import org.eclipse.gef.ui.palette.Memento;
 import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
-
-import org.eclipse.gef.internal.InternalImages;
-
-import org.eclipse.jface.resource.ImageDescriptor;
 
 /**
  * EditPart for a PaletteDrawer
@@ -75,6 +67,10 @@ public IFigure createFigure() {
 		}
 	});
 	return fig;
+}
+
+public Memento createMemento() {
+	return new DrawerMemento().storeState(this);
 }
 
 /**
@@ -256,6 +252,40 @@ private class ToggleListener implements ChangeListener {
 			&& !getAnimationController().isAnimationInProgress()) {
 				getAnimationController().animate(DrawerEditPart.this);
 		}
+	}
+}
+
+protected static class DrawerMemento extends DefaultPaletteMemento {
+	private boolean expanded;
+	private boolean pinned;
+	/*
+	 * @TODO:Pratik  storing the scroll location might not scroll to the exact spot
+	 * if the palette's width has changed
+	 */
+	private int scrollLocation, min, max, extent;
+	protected Memento restoreState(PaletteEditPart part) {
+		super.restoreState(part);
+		DrawerEditPart dep = (DrawerEditPart)part;
+		dep.setExpanded(expanded);
+		dep.setPinnedOpen(pinned);
+		RangeModel rModel = dep.getDrawerFigure().getScrollpane().getViewport()
+				.getVerticalRangeModel();
+		rModel.setAll(min, extent, max);
+		rModel.setValue(scrollLocation);
+		return this;
+	}
+	protected Memento storeState(PaletteEditPart part) {
+		super.storeState(part);
+		DrawerEditPart dep = (DrawerEditPart)part;
+		expanded = dep.isExpanded();
+		pinned = dep.isPinnedOpen();
+		RangeModel rModel = dep.getDrawerFigure().getScrollpane().getViewport()
+				.getVerticalRangeModel();
+		min = rModel.getMinimum();
+		max = rModel.getMaximum();
+		extent = rModel.getExtent();
+		scrollLocation = rModel.getValue();
+		return this;
 	}
 }
 
