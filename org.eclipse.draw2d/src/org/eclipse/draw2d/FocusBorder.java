@@ -45,7 +45,6 @@ public void paint(IFigure figure, Graphics graphics, Insets insets) {
 	tempRect.setBounds(getPaintRectangle(figure, insets));
 	tempRect.width--;
 	tempRect.height--;
-	graphics.setXORMode(true);
 	graphics.setForegroundColor(ColorConstants.black);
 	graphics.setBackgroundColor(ColorConstants.white);
 	graphics.drawFocus(tempRect);
