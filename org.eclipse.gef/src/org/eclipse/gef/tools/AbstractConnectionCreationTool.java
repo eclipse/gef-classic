@@ -31,6 +31,12 @@ private EditPart connectionSource;
 private Request sourceRequest;
 private CreationFactory factory;
 
+private EditPartListener.Stub deactivationListener = new EditPartListener.Stub() {
+	public void partDeactivated(EditPart editpart) {
+		sourceDeactivated();
+	}
+};
+
 public AbstractConnectionCreationTool() {
 	setDefaultCursor(SharedCursors.CURSOR_PLUG);
 	setDisabledCursor(SharedCursors.NO);
@@ -173,8 +179,16 @@ protected boolean isShowingSourceFeedback(){
 	return getFlag(FLAG_SOURCE_FEEDBACK);
 }
 
+protected void sourceDeactivated() {
+	getDomain().loadDefaultTool();
+}
+
 protected void setConnectionSource(EditPart source) {
+	if (connectionSource != null)
+		connectionSource.removeEditPartListener(deactivationListener);
 	connectionSource = source;
+	if (connectionSource != null)
+		connectionSource.addEditPartListener(deactivationListener);
 }
 
 public void setFactory(CreationFactory factory){
