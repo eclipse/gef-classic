@@ -563,15 +563,18 @@ protected void updateTargetRequest() {
 		
 	if (snapToHelper != null && !getCurrentInput().isAltKeyDown()) {
 		PrecisionRectangle baseRect = sourceRectangle.getPreciseCopy();
-		PrecisionRectangle selectionRect = compoundSrcRect.getPreciseCopy();
+		PrecisionRectangle result = new PrecisionRectangle(
+				new Rectangle(request.getMoveDelta(), new Dimension()));
 		baseRect.translate(request.getMoveDelta());
-		selectionRect.translate(request.getMoveDelta());
-		snapToHelper.snapRectangle(request, baseRect, selectionRect, false, 
+		int snapOrientation = snapToHelper.snapRectangle(request, baseRect, result, false, 
 				PositionConstants.NORTH_SOUTH | PositionConstants.EAST_WEST);
-		baseRect.preciseX -= sourceRectangle.preciseX;
-		baseRect.preciseY -= sourceRectangle.preciseY;
-		baseRect.updateInts();
-		request.setMoveDelta(baseRect.getLocation());
+		if (snapOrientation != PositionConstants.NONE) {
+			PrecisionRectangle selectionRect = compoundSrcRect.getPreciseCopy();
+			selectionRect.translate(request.getMoveDelta());
+			snapToHelper.snapRectangle(request, selectionRect, result, false, 
+					snapOrientation);
+		}
+		request.setMoveDelta(result.getLocation());
 	}
 
 	request.setLocation(getLocation());

@@ -19,17 +19,19 @@ public CompoundSnapToHelper(SnapToHelper delegates[]) {
 	this.delegates = delegates;
 }
 
-public int snapLocation(Request request, PrecisionPoint location, int snapOrientation) {
+public int snapLocation(Request request, PrecisionPoint location, 
+		PrecisionPoint result, int snapOrientation) {
 	for (int i = 0; i < delegates.length && snapOrientation != NONE; i++)
-		snapOrientation = delegates[i].snapLocation(request, location, snapOrientation);
+		snapOrientation = delegates[i].snapLocation(request, location, result, 
+				snapOrientation);
 	return snapOrientation;
 }
 
 public int snapRectangle(Request request, PrecisionRectangle baseRect, 
-		PrecisionRectangle selectionRect, boolean canResize, int snapOrientation) {
+		PrecisionRectangle result, boolean canResize, int snapOrientation) {
 	for (int i = 0; i < delegates.length && snapOrientation != NONE; i++)
-		snapOrientation = delegates[i].snapRectangle(request, baseRect, selectionRect, 
-				canResize, snapOrientation);
+		snapOrientation = delegates[i].snapRectangle(request, baseRect, result, canResize,
+				snapOrientation);
 	return snapOrientation;
 }
 

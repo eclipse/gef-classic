@@ -28,16 +28,17 @@ protected void makeRelative(IFigure fig, Translatable t) {
 	fig.translateToRelative(t);
 }
 	
-public int snapLocation(Request request, PrecisionPoint location, int snapOrientation) {
-	Rectangle.SINGLETON.setSize(0, 0);
-	PrecisionRectangle baseRect = new PrecisionRectangle(Rectangle.SINGLETON);
-	baseRect.preciseX = location.preciseX;
-	baseRect.preciseY = location.preciseY;
-	baseRect.updateInts();
-	snapOrientation = snapResizeRect(request, baseRect, snapOrientation & ~SOUTH_EAST);
-	location.preciseX = baseRect.preciseX;
-	location.preciseY = baseRect.preciseY;
-	location.updateInts();
+public int snapLocation(Request request, PrecisionPoint location, PrecisionPoint result, 
+		int snapOrientation) {
+	PrecisionRectangle baseRect = new PrecisionRectangle(new Rectangle());
+	PrecisionRectangle resultRect = baseRect.getPreciseCopy();
+	baseRect.translate(location);
+	resultRect.translate(result);
+	snapOrientation = snapResizeRect(request, baseRect, resultRect,
+			snapOrientation & ~SOUTH_EAST);
+	result.preciseX = resultRect.preciseX;
+	result.preciseY = result.preciseY;
+	result.updateInts();
 	return snapOrientation;
 }
 
@@ -46,20 +47,20 @@ public int snapLocation(Request request, PrecisionPoint location, int snapOrient
  * to indicate the adjustment amount.
  */
 public int snapRectangle(Request request, PrecisionRectangle baseRect, 
-		PrecisionRectangle selectionRect, boolean canResize, int snapOrientation) {
+		PrecisionRectangle result, boolean canResize, int snapOrientation) {
 	if (canResize)
-		return snapResizeRect(request, baseRect, snapOrientation);
+		return snapResizeRect(request, baseRect, result, snapOrientation);
 	else
-		return snapMoveRect(request, baseRect, selectionRect, snapOrientation);
+		return snapMoveRect(request, baseRect, result, snapOrientation);
 }
 
-protected int snapMoveRect(Request request, PrecisionRectangle baseRect,
-		PrecisionRectangle compoundRect, int snapOrientation) {
+protected int snapMoveRect(Request request, PrecisionRectangle baseRect, 
+		PrecisionRectangle result, int snapOrientation) {
 	return snapOrientation;
 }
 
 protected int snapResizeRect(Request request, PrecisionRectangle baseRect, 
-		int snapOrientation) {
+		PrecisionRectangle result, int snapOrientation) {
 	return snapOrientation;
 }
 

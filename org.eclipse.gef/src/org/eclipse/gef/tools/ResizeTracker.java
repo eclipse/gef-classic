@@ -326,20 +326,16 @@ protected void updateSourceRequest() {
 		PrecisionRectangle rect = sourceRect.getPreciseCopy();
 		Rectangle addendum = new Rectangle(
 				request.getMoveDelta(), request.getSizeDelta());
+		PrecisionRectangle result = new PrecisionRectangle(addendum);
 		rect.preciseX += addendum.x;
 		rect.preciseY += addendum.y;
 		rect.preciseWidth += addendum.width;
 		rect.preciseHeight += addendum.height;
 		rect.updateInts();
 		snapToHelper.snapRectangle(request, rect, 
-				rect, true, request.getResizeDirection());
-		rect.preciseX -= sourceRect.preciseX;
-		rect.preciseY -= sourceRect.preciseY;
-		rect.preciseWidth -= sourceRect.preciseWidth;
-		rect.preciseHeight -= sourceRect.preciseHeight;
-		rect.updateInts();
-		request.setMoveDelta(rect.getLocation());
-		request.setSizeDelta(rect.getSize());
+				result, true, request.getResizeDirection());
+		request.setMoveDelta(result.getLocation());
+		request.setSizeDelta(result.getSize());
 	}
 }
 

@@ -257,10 +257,11 @@ protected void updateTargetRequest() {
 		req.getExtendedData().clear();
 		if (!getCurrentInput().isAltKeyDown() && helper != null) {
 			PrecisionRectangle baseRect = new PrecisionRectangle(bounds);
-			helper.snapRectangle(req, baseRect, baseRect, 
+			PrecisionRectangle result = baseRect.getPreciseCopy();
+			helper.snapRectangle(req, baseRect, result, 
 					true, PositionConstants.NORTH_SOUTH | PositionConstants.EAST_WEST);
-			req.setLocation(baseRect.getLocation());
-			req.setSize(baseRect.getSize());
+			req.setLocation(result.getLocation());
+			req.setSize(result.getSize());
 		}
 	} else {
 		req.setSize(null);

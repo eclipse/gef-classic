@@ -97,7 +97,7 @@ protected double getCorrectionFor(int[] guides, double value, Map extendedData,
 }
 
 protected int performCenteredResize(Request request, PrecisionRectangle baseRect, 
-		int snapOrientation) {
+		PrecisionRectangle result, int snapOrientation) {
 	if ((snapOrientation & EAST_WEST) != 0) {
 		double rightCorrection = getCorrectionFor(getVerticalGuides(), 
 				baseRect.preciseRight(), request.getExtendedData(), true, 1);
@@ -109,8 +109,8 @@ protected int performCenteredResize(Request request, PrecisionRectangle baseRect
 		if(Math.abs(leftCorrection) <= Math.abs(rightCorrection)
 				&& leftCorrection != THRESHOLD) {
 			snapOrientation &= ~EAST_WEST;
-			baseRect.preciseWidth -= (leftCorrection * 2);
-			baseRect.preciseX += leftCorrection;
+			result.preciseWidth -= (leftCorrection * 2);
+			result.preciseX += leftCorrection;
 			
 		} else if (rightCorrection != THRESHOLD) {
 			// Restore the guide and anchor information, in case it was over-written
@@ -118,8 +118,8 @@ protected int performCenteredResize(Request request, PrecisionRectangle baseRect
 			request.getExtendedData().put(PROPERTY_VERTICAL_GUIDE, vGuide);
 			request.getExtendedData().put(PROPERTY_VERTICAL_ANCHOR, vAnchor);
 			snapOrientation &= ~EAST_WEST;
-			baseRect.preciseWidth += (rightCorrection * 2);
-			baseRect.preciseX -= rightCorrection;
+			result.preciseWidth += (rightCorrection * 2);
+			result.preciseX -= rightCorrection;
 		}
 	}
 	
@@ -135,12 +135,12 @@ protected int performCenteredResize(Request request, PrecisionRectangle baseRect
 			request.getExtendedData().put(PROPERTY_VERTICAL_GUIDE, hGuide);
 			request.getExtendedData().put(PROPERTY_VERTICAL_ANCHOR, hAnchor);
 			snapOrientation &= ~NORTH_SOUTH;
-			baseRect.preciseHeight -= (topCorrection * 2);
-			baseRect.preciseY += topCorrection;
+			result.preciseHeight -= (topCorrection * 2);
+			result.preciseY += topCorrection;
 		} else if (bottom != THRESHOLD) {
 			snapOrientation &= ~NORTH_SOUTH;
-			baseRect.preciseHeight += (2 * bottom);
-			baseRect.preciseY -= bottom;
+			result.preciseHeight += (2 * bottom);
+			result.preciseY -= bottom;
 		}
 	}
 
@@ -148,7 +148,7 @@ protected int performCenteredResize(Request request, PrecisionRectangle baseRect
 }
 
 protected int snapMoveRect(Request request, PrecisionRectangle baseRect,
-		PrecisionRectangle compoundRect, int snapOrientation) {
+		PrecisionRectangle result, int snapOrientation) {
 	// If there are more than one edit parts being moved, detach them from all guides.
 	if (request instanceof GroupRequest 
 			&& ((GroupRequest)request).getEditParts().size() > 1)
@@ -174,15 +174,15 @@ protected int snapMoveRect(Request request, PrecisionRectangle baseRect,
 	else
 		snapOrientation &= ~NORTH_SOUTH;
 
-	baseRect.preciseX += xcorrect;
-	baseRect.preciseY += ycorrect;
+	result.preciseX += xcorrect;
+	result.preciseY += ycorrect;
 	makeAbsolute(container.getContentPane(), baseRect);
-	baseRect.updateInts();
+	result.updateInts();
 	return snapOrientation;
 }
 
 protected int snapResizeRect(Request request, PrecisionRectangle baseRect,
-		int snapOrientation) {
+		PrecisionRectangle result, int snapOrientation) {
 	if (request instanceof GroupRequest 
 			&& ((GroupRequest)request).getEditParts().size() > 1)
 		return snapOrientation;
@@ -191,7 +191,8 @@ protected int snapResizeRect(Request request, PrecisionRectangle baseRect,
 
 	if (request instanceof ChangeBoundsRequest && 
 			((ChangeBoundsRequest)request).isCenteredResize()) {
-		snapOrientation = performCenteredResize(request, baseRect, snapOrientation);
+		snapOrientation = performCenteredResize(request, baseRect, result, 
+				snapOrientation);
 	} else {
 		boolean snapped = false;
 		if ((snapOrientation & EAST) != 0) {
@@ -200,7 +201,7 @@ protected int snapResizeRect(Request request, PrecisionRectangle baseRect,
 			if (rightCorrection != THRESHOLD) {
 				snapped = true;
 				snapOrientation &= ~EAST;
-				baseRect.preciseWidth += rightCorrection;
+				result.preciseWidth += rightCorrection;
 			}
 		} 
 		if (!snapped && (snapOrientation & WEST) != 0) {
@@ -208,8 +209,8 @@ protected int snapResizeRect(Request request, PrecisionRectangle baseRect,
 					baseRect.preciseX, request.getExtendedData(), true, -1);
 			if (leftCorrection != THRESHOLD) {
 				snapOrientation &= ~WEST;
-				baseRect.preciseWidth -= leftCorrection;
-				baseRect.preciseX += leftCorrection;
+				result.preciseWidth -= leftCorrection;
+				result.preciseX += leftCorrection;
 			}
 		}
 		snapped = false;
@@ -219,7 +220,7 @@ protected int snapResizeRect(Request request, PrecisionRectangle baseRect,
 			if (bottom != THRESHOLD) {
 				snapped = true;
 				snapOrientation &= ~SOUTH;
-				baseRect.preciseHeight += bottom;
+				result.preciseHeight += bottom;
 			}
 		}
 		if (!snapped && (snapOrientation & NORTH) != 0) {	
@@ -227,14 +228,14 @@ protected int snapResizeRect(Request request, PrecisionRectangle baseRect,
 					baseRect.preciseY, request.getExtendedData(), false, -1);
 			if (topCorrection != THRESHOLD) {
 				snapOrientation &= ~NORTH;
-				baseRect.preciseHeight -= topCorrection;
-				baseRect.preciseY += topCorrection;
+				result.preciseHeight -= topCorrection;
+				result.preciseY += topCorrection;
 			}
 		}
 	}
 	
 	makeAbsolute(container.getContentPane(), baseRect);
-	baseRect.updateInts();
+	result.updateInts();
 	return snapOrientation;
 }
 
