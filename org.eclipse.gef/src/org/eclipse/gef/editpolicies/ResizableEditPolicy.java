@@ -81,7 +81,7 @@ protected Command getResizeCommand(ChangeBoundsRequest request) {
 	req.setMoveDelta(request.getMoveDelta());
 	req.setSizeDelta(request.getSizeDelta());
 	req.setLocation(request.getLocation());
-	req.getExtendedData().putAll(request.getExtendedData());
+	req.setExtendedData(request.getExtendedData());
 	req.setResizeDirection(request.getResizeDirection());
 	return getHost().getParent().getCommand(req);
 }
