@@ -47,7 +47,7 @@ public LogicWizardPage1(IWorkbench aWorkbench, IStructuredSelection selection) {
 	super("sampleLogicPage1", selection);  //$NON-NLS-1$
 	this.setTitle(LogicMessages.CreateLogicPage1_Title);
 	this.setDescription(LogicMessages.CreateLogicPage1_Description);
-	this.setImageDescriptor(ImageDescriptor.createFromFile(getClass(),"icons/logic.gif"));  //$NON-NLS-1$
+	this.setImageDescriptor(ImageDescriptor.createFromFile(getClass(),"icons/logicbanner.gif"));  //$NON-NLS-1$
 	this.workbench = aWorkbench;
 }
 
@@ -57,7 +57,7 @@ public void createControl(Composite parent) {
 	
 	Composite composite = (Composite)getControl();
 	
-	new Label(composite,SWT.NONE);
+//	new Label(composite,SWT.NONE);
 	
 	// sample section generation group
 	Group group = new Group(composite,SWT.NONE);
@@ -76,7 +76,7 @@ public void createControl(Composite parent) {
 	model2.addSelectionListener(this);
 	
 	new Label(composite,SWT.NONE);
-	
+	composite.pack();
 	setPageComplete(validatePage());
 }
 
