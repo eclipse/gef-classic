@@ -121,6 +121,14 @@ public static final Cursor SIZENESW;
  */
 public static final Cursor SIZENWSE;
 /**
+ * @see SWT#CURSOR_SIZEWE
+ */
+public static final Cursor SIZEWE;
+/**
+ * @see	SWT#CURSOR_SIZENS
+ */
+public static final Cursor SIZENS;
+/**
  * @see SWT#CURSOR_UPARROW 
  */
 public static final Cursor UPARROW;
@@ -139,6 +147,8 @@ static {
 	SIZESW  = new Cursor(null, SWT.CURSOR_SIZESW);
 	SIZEW   = new Cursor(null, SWT.CURSOR_SIZEW);
 	SIZENW  = new Cursor(null, SWT.CURSOR_SIZENW);
+	SIZENS  = new Cursor(null, SWT.CURSOR_SIZENS);
+	SIZEWE  = new Cursor(null, SWT.CURSOR_SIZEWE);
 	APPSTARTING	= new Cursor(null, SWT.CURSOR_APPSTARTING);
 	CROSS   = new Cursor(null, SWT.CURSOR_CROSS);
 	HAND    = new Cursor(null, SWT.CURSOR_HAND);
