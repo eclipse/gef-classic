@@ -33,7 +33,7 @@ private static Image LOGIC_ICON = new Image (null,
 	LogicDiagram.class.getResourceAsStream("icons/circuit16.gif")); //$NON-NLS-1$
 
 protected List children = new ArrayList();
-protected Ruler leftRuler, topRuler;
+protected LogicRuler leftRuler, topRuler;
 public static String ID_ROUTER = "router";	//$NON-NLS-1$
 public static Integer ROUTER_MANUAL = new Integer(0);
 public static Integer ROUTER_MANHATTAN = new Integer(1);
@@ -44,7 +44,6 @@ public LogicDiagram() {
 	size.height= 100;
 	location.x = 20;
 	location.y = 20;
-	createRulers();
 }
 
 public void addChild(LogicElement child){
@@ -57,11 +56,6 @@ public void addChild(LogicElement child, int index){
 	else
 		children.add(child);
 	fireStructureChange(CHILDREN, child);
-}
-
-protected void createRulers() {
-	leftRuler = new Ruler(false);
-	topRuler = new Ruler(true);
 }
 
 public List getChildren(){
@@ -108,13 +102,19 @@ public Object getPropertyValue(Object propName) {
 	return super.getPropertyValue(propName);
 }
 
-public Ruler getRuler(int orientation) {
-	Ruler result = null;
+public LogicRuler getRuler(int orientation) {
+	LogicRuler result = null;
 	switch (orientation) {
 		case PositionConstants.NORTH :
+			if (topRuler == null) {
+				topRuler = new LogicRuler(true);
+			}
 			result = topRuler;
 			break;
 		case PositionConstants.WEST :
+			if (leftRuler == null) {
+				leftRuler = new LogicRuler(false);
+			}
 			result = leftRuler;
 			break;
 	}
@@ -122,12 +122,8 @@ public Ruler getRuler(int orientation) {
 }
 
 private void readObject(java.io.ObjectInputStream s)
-	throws IOException, ClassNotFoundException {
+		throws IOException, ClassNotFoundException {
 	s.defaultReadObject();
-	if (this.leftRuler == null)
-		leftRuler = new Ruler(false);
-	if (this.topRuler == null)
-		topRuler = new Ruler(true);
 }
 public void removeChild(LogicElement child){
 	children.remove(child);
