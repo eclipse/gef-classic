@@ -65,9 +65,9 @@ public</font><font size="1"> </font><font size="1" COLOR="#000084">static</font>
       node2.setLocation(</font><font size="1" COLOR="#000084">new</font><font size="1"> Point(100,100));
 
       PolylineConnection conn = </font><font size="1" COLOR="#000084">new</font><font size="1"> PolylineConnection();
-      conn.setStartAnchor(</font><font size="1" COLOR="#000084">new</font><font size="1"> ChopboxAnchor(node1));
-      conn.setEndAnchor(</font><font size="1" COLOR="#000084">new</font><font size="1"> ChopboxAnchor(node2));
-      conn.setEndDecoration(</font><font size="1" COLOR="#000084">new</font><font size="1"> PolygonDecoration());
+      conn.setSourceAnchor(</font><font size="1" COLOR="#000084">new</font><font size="1"> ChopboxAnchor(node1));
+      conn.setTargetAnchor(</font><font size="1" COLOR="#000084">new</font><font size="1"> ChopboxAnchor(node2));
+      conn.setTargetDecoration(</font><font size="1" COLOR="#000084">new</font><font size="1"> PolygonDecoration());
 
 <font size="1">      Label label = </font><font size="1" COLOR="#000084">new</font><font size="1"> Label(</font><font size="1" COLOR="#008484">&quot;Midpoint&quot;</font><font size="1">);
       label.setOpaque(</font><font size="1" COLOR="#000084">true</font><font size="1">);
