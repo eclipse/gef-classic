@@ -19,6 +19,8 @@ import org.eclipse.jface.action.ContributionItem;
 import org.eclipse.jface.util.Assert;
 import org.eclipse.ui.*;
 
+import org.eclipse.draw2d.FigureUtilities;
+
 import org.eclipse.gef.editparts.ZoomListener;
 import org.eclipse.gef.editparts.ZoomManager;
 
@@ -107,7 +109,10 @@ void refresh() {
  * @param control The control to compute width
  * @return int The width required */
 protected int computeWidth(Control control) {
-	return control.computeSize(SWT.DEFAULT, SWT.DEFAULT, true).x;
+	// $TODO: Windows workaround - Fixed in Eclipse 3.0 
+	// Combo is not wide enough to show all text - add enough space for another character
+	return control.computeSize(SWT.DEFAULT, SWT.DEFAULT, true).x
+		+ FigureUtilities.getTextWidth("8", control.getFont());
 }
 
 /**
