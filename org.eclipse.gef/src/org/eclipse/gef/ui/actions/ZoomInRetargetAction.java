@@ -31,7 +31,6 @@ public ZoomInRetargetAction() {
 	setId(GEFActionConstants.ZOOM_IN);
 	setToolTipText(GEFMessages.ZoomIn_Tooltip);
 	setImageDescriptor(InternalImages.DESC_ZOOM_IN);
-	setActionDefinitionId(GEFActionConstants.ZOOM_IN);
 }
 
 }

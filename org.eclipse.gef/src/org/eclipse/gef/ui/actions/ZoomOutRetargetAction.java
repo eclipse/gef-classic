@@ -31,7 +31,6 @@ public ZoomOutRetargetAction() {
 	setId(GEFActionConstants.ZOOM_OUT);
 	setToolTipText(GEFMessages.ZoomOut_Tooltip);
 	setImageDescriptor(InternalImages.DESC_ZOOM_OUT);
-	setActionDefinitionId(GEFActionConstants.ZOOM_OUT);
 }
 
 }
