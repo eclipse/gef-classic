@@ -175,7 +175,7 @@ Eclipse Platform readme for requirements of the Eclipse platform.</p>
 
     <td width="42%">RedHat Linux 7.2 x86 GTK 2.0</td>
 
-    <td width="19%">Early Access</td>
+    <td width="19%">Primary</td>
 
   </tr>
 
@@ -196,6 +196,14 @@ Eclipse Platform readme for requirements of the Eclipse platform.</p>
 GEF 2.1 is the first release publicly available via open source.&nbsp; Previous 
 releases used a different package name, and are not compatible.<h2>
  3. <a name="Known Issues"></a> Known Issues</h2>
+<h4>
+ GTK</h4>
+<blockquote>
+<p>
+ The clip region of an SWT GC in GTK gets lost whenever an Image is drawn.&nbsp; 
+ As a result, figures which expect paint calls to get clipped will not see them 
+ clipped on GTK following and drawImage calls.</p>
+</blockquote>
 <h4>
  Printing</h4>
 <blockquote>
