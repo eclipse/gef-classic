@@ -48,8 +48,8 @@ public void remove(Connection connection) {
 }
 
 /**
- * Routes the {@link Connection}.  Expects the constraint to be a {@link java.util.List}
- * of {@link Point Points} representing the bendpoints.
+ * Routes the {@link Connection}.  Expects the constraint to be a List
+ * of {@link org.eclipse.draw2d.Bendpoint Bendpoints}.
  *
  * @param conn The connection to route
  */
