@@ -31,6 +31,10 @@ private static int WIN_X_OFFSET = -4;
 private static int WIN_W_OFFSET = 5;
 private static int GTK_X_OFFSET = 0;
 private static int GTK_W_OFFSET = 0;
+private static int MAC_X_OFFSET = -3;
+private static int MAC_W_OFFSET = 9;
+private static int MAC_Y_OFFSET = -3;
+private static int MAC_H_OFFSET = 6;
 
 public LabelCellEditorLocator(StickyNoteFigure stickyNote) {
 	setLabel(stickyNote);
@@ -42,18 +46,25 @@ public void relocate(CellEditor celleditor) {
 	Rectangle rect = stickyNote.getClientArea().getCopy();
 	stickyNote.translateToAbsolute(rect);
 	
-	int xOffset;
-	int wOffset;
-		
+	int xOffset = 0;
+	int wOffset = 0;
+	int yOffset = 0;
+	int hOffset = 0;
+	
 	if (SWT.getPlatform().equalsIgnoreCase("gtk")) {
 		xOffset = GTK_X_OFFSET;
 		wOffset = GTK_W_OFFSET;
+	} else if (SWT.getPlatform().equalsIgnoreCase("carbon")) {
+		xOffset = MAC_X_OFFSET;
+		wOffset = MAC_W_OFFSET;
+		yOffset = MAC_Y_OFFSET;
+		hOffset = MAC_H_OFFSET;
 	} else {
 		xOffset = WIN_X_OFFSET;
 		wOffset = WIN_W_OFFSET;
 	}
 
-	text.setBounds(rect.x + xOffset, rect.y, rect.width + wOffset, rect.height);	
+	text.setBounds(rect.x + xOffset, rect.y + yOffset, rect.width + wOffset, rect.height + hOffset);	
 }
 
 /**
