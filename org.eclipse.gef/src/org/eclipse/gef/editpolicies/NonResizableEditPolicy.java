@@ -10,18 +10,19 @@
  *******************************************************************************/
 package org.eclipse.gef.editpolicies;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.geometry.PrecisionRectangle;
-import org.eclipse.draw2d.geometry.Rectangle;
-
 import org.eclipse.gef.*;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.handles.*;
 import org.eclipse.gef.requests.AlignmentRequest;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
+import org.eclipse.gef.tools.SelectEditPartTracker;
+
+import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.geometry.PrecisionRectangle;
+import org.eclipse.draw2d.geometry.Rectangle;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Provide support for selecting and positioning a non-resizable editpart.  Selection is
@@ -40,6 +41,7 @@ public class NonResizableEditPolicy
 
 private IFigure focusRect;
 private IFigure feedback;
+private boolean isDraggable = true;
 
 /**
  * Creates the figure used for feedback.
@@ -51,7 +53,7 @@ protected IFigure createDragSourceFeedbackFigure() {
 	FigureUtilities.makeGhostShape(r);
 	r.setLineStyle(Graphics.LINE_DOT);
 	r.setForegroundColor(ColorConstants.white);
-	r.setBounds(getBounds());
+	r.setBounds(initialFeedbackRectangle());
 	addFeedback(r);
 	return r;
 }
@@ -61,7 +63,11 @@ protected IFigure createDragSourceFeedbackFigure() {
  */
 protected List createSelectionHandles() {
  	List list = new ArrayList();
- 	NonResizableHandleKit.addHandles((GraphicalEditPart)getHost(), list);
+ 	if (isDraggable)
+ 		NonResizableHandleKit.addHandles((GraphicalEditPart)getHost(), list);
+ 	else
+ 		NonResizableHandleKit.addHandles((GraphicalEditPart)getHost(), list, 
+ 				new SelectEditPartTracker(getHost()), SharedCursors.ARROW);
  	return list;
 }
 
@@ -93,7 +99,7 @@ protected void eraseChangeBoundsFeedback(ChangeBoundsRequest request) {
  * @see org.eclipse.gef.EditPolicy#eraseSourceFeedback(org.eclipse.gef.Request)
  */
 public void eraseSourceFeedback(Request request) {
-	if (REQ_MOVE.equals(request.getType())
+	if ((REQ_MOVE.equals(request.getType()) && isDraggable)
 	    || REQ_CLONE.equals(request.getType())
 		|| REQ_ADD.equals(request.getType()))
 		eraseChangeBoundsFeedback((ChangeBoundsRequest) request);
@@ -101,10 +107,13 @@ public void eraseSourceFeedback(Request request) {
 
 /**
  * Returns the bounds of the host's figure by reference.  The returned Rectangle should
- * not be modified.
+ * not be modified. Uses handle bounds if available. 
+ * 
  * @return the host figure's bounding Rectangle
  */
-private Rectangle getBounds() {
+protected Rectangle initialFeedbackRectangle() {
+	if (((GraphicalEditPart)getHost()).getFigure() instanceof HandleBounds)
+		return ((HandleBounds)((GraphicalEditPart)getHost()).getFigure()).getHandleBounds();
 	return ((GraphicalEditPart)getHost()).getFigure().getBounds();
 }
 
@@ -114,7 +123,7 @@ private Rectangle getBounds() {
 public Command getCommand(Request request) {
 	Object type = request.getType();
 
-	if (REQ_MOVE.equals(type))
+	if (REQ_MOVE.equals(type) && isDraggable)
 		return getMoveCommand((ChangeBoundsRequest)request);
 	if (REQ_ORPHAN.equals(type))
 		return getOrphanCommand(request);
@@ -145,6 +154,15 @@ protected Command getAlignCommand(AlignmentRequest request) {
 	req.setAlignment(request.getAlignment());
 	req.setAlignmentRectangle(request.getAlignmentRectangle());
 	return getHost().getParent().getCommand(req);
+}
+
+/**
+ * Returns true if this EditPolicy allows its EditPart to be dragged.
+ * 
+ * @return true if the EditPart can be dragged.
+ */
+public boolean getIsDraggable() {
+	return isDraggable;
 }
 
 /**
@@ -190,13 +208,25 @@ protected void hideFocus() {
 }
 
 /**
+ * Sets the dragability of the EditPolicy to the given value. If the value is 
+ * false, the EditPolicy should not allow its EditPart to be dragged.
+ * 
+ * @param isDraggable whether or not the EditPolicy can be dragged.
+ */
+public void setIsDragable(boolean isDraggable) {
+	if (isDraggable == this.isDraggable)
+		return;
+	this.isDraggable = isDraggable;
+}
+
+/**
  * Shows or updates feedback for a change bounds request.
  * @param request the request
  */
 protected void showChangeBoundsFeedback(ChangeBoundsRequest request) {
 	IFigure feedback = getDragSourceFeedbackFigure();
 	
-	PrecisionRectangle rect = new PrecisionRectangle(getHostFigure().getBounds());
+	PrecisionRectangle rect = new PrecisionRectangle(initialFeedbackRectangle().getCopy());
 	getHostFigure().translateToAbsolute(rect);
 	rect.translate(request.getMoveDelta());
 	rect.resize(request.getSizeDelta());
@@ -242,7 +272,7 @@ protected void showFocus() {
  * @see org.eclipse.gef.EditPolicy#showSourceFeedback(org.eclipse.gef.Request)
  */
 public void showSourceFeedback(Request request) {
-	if (REQ_MOVE.equals(request.getType())
+	if ((REQ_MOVE.equals(request.getType()) && isDraggable)
 		|| REQ_ADD.equals(request.getType())
 		|| REQ_CLONE.equals(request.getType())) 
 		showChangeBoundsFeedback((ChangeBoundsRequest) request);
@@ -254,8 +284,9 @@ public void showSourceFeedback(Request request) {
  * @see org.eclipse.gef.EditPolicy#understandsRequest(org.eclipse.gef.Request)
  */
 public boolean understandsRequest(Request request) {
-	if (REQ_MOVE.equals(request.getType())
-		|| REQ_CLONE.equals(request.getType())
+	if (REQ_MOVE.equals(request.getType()))
+		return isDraggable;
+	else if (REQ_CLONE.equals(request.getType())
 		|| REQ_ADD.equals(request.getType())
 		|| REQ_ORPHAN.equals(request.getType())
 		|| REQ_ALIGN.equals(request.getType()))

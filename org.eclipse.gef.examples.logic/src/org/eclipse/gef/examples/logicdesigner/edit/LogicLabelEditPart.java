@@ -12,14 +12,18 @@ package org.eclipse.gef.examples.logicdesigner.edit;
 
 import java.beans.PropertyChangeEvent;
 
-import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.accessibility.AccessibleControlEvent;
 import org.eclipse.swt.accessibility.AccessibleEvent;
 
-import org.eclipse.draw2d.*;
+import org.eclipse.jface.viewers.TextCellEditor;
+
+import org.eclipse.draw2d.IFigure;
+
 import org.eclipse.gef.*;
 import org.eclipse.gef.tools.DirectEditManager;
+
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
+import org.eclipse.gef.examples.logicdesigner.figures.StickyNoteFigure;
 import org.eclipse.gef.examples.logicdesigner.model.LogicLabel;
 
 public class LogicLabelEditPart
@@ -40,10 +44,6 @@ protected AccessibleEditPart createAccessible() {
 
 private DirectEditManager manager;
 
-private static Border BORDER = new CompoundBorder(
-	new LineBorder(),
-	new MarginBorder(2)
-);
 
 protected void createEditPolicies(){
 	super.createEditPolicies();
@@ -53,8 +53,7 @@ protected void createEditPolicies(){
 }
 
 protected IFigure createFigure() {
-	Label label = new Label();
-	label.setBorder(BORDER);
+	StickyNoteFigure label = new StickyNoteFigure();
 	return label;
 }
 
@@ -65,7 +64,7 @@ private LogicLabel getLogicLabel(){
 private void performDirectEdit(){
 	if(manager == null)
 		manager = new LogicLabelEditManager(this, 
-			TextCellEditor.class, new LabelCellEditorLocator((Label)getFigure()));
+			TextCellEditor.class, new LabelCellEditorLocator((StickyNoteFigure)getFigure()));
 	manager.show();
 }
 
@@ -82,7 +81,7 @@ public void propertyChange(PropertyChangeEvent evt){
 }
 
 protected void refreshVisuals() {
-	((Label)getFigure()).setText(getLogicLabel().getLabelContents());
+	((StickyNoteFigure)getFigure()).setText(getLogicLabel().getLabelContents());
 	super.refreshVisuals();
 }
 

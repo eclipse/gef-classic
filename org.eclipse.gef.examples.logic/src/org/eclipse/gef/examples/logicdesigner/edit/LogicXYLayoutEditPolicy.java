@@ -13,14 +13,16 @@ package org.eclipse.gef.examples.logicdesigner.edit;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.*;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
+import org.eclipse.gef.editpolicies.ResizableEditPolicy;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
 import org.eclipse.gef.requests.CreateRequest;
-import org.eclipse.gef.rulers.*;
+import org.eclipse.gef.rulers.RulerProvider;
 
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
 import org.eclipse.gef.examples.logicdesigner.model.*;
@@ -79,10 +81,16 @@ protected Command createChangeConstraintCommand(ChangeBoundsRequest request,
 
 protected EditPolicy createChildEditPolicy(EditPart child) {
 	if (child instanceof LEDEditPart ||
-	    child instanceof OutputEditPart || 
-	    child instanceof LogicLabelEditPart) {
+	    child instanceof OutputEditPart ) {
+		//|| child instanceof LogicLabelEditPart) {
 		return new NonResizableEditPolicy();
+	} else if (child instanceof LogicLabelEditPart) {
+		ResizableEditPolicy policy = new ResizableEditPolicy();
+		policy.setHandleDirections(PositionConstants.EAST | PositionConstants.WEST);
+		return policy;
 	}
+	
+	//return new LogicResizableEditPolicy();
 	return super.createChildEditPolicy(child);
 }
 

@@ -10,13 +10,13 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner.edit;
 
-import org.eclipse.draw2d.Label;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.DirectEditPolicy;
+import org.eclipse.gef.requests.DirectEditRequest;
+
+import org.eclipse.gef.examples.logicdesigner.figures.StickyNoteFigure;
 import org.eclipse.gef.examples.logicdesigner.model.LogicLabel;
 import org.eclipse.gef.examples.logicdesigner.model.commands.LogicLabelCommand;
-
-import org.eclipse.gef.requests.DirectEditRequest;
 
 public class LabelDirectEditPolicy 
 	extends DirectEditPolicy {
@@ -36,9 +36,10 @@ protected Command getDirectEditCommand(DirectEditRequest edit) {
  */
 protected void showCurrentEditValue(DirectEditRequest request) {
 	String value = (String)request.getCellEditor().getValue();
-	((Label)getHostFigure()).setText(value);
+	((StickyNoteFigure)getHostFigure()).setText(value);
 	//hack to prevent async layout from placing the cell editor twice.
 	getHostFigure().getUpdateManager().performUpdate();
+	
 }
 
 }

@@ -11,21 +11,24 @@
 package org.eclipse.gef.examples.logicdesigner.edit;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.VerifyListener;
-import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
-import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
+import org.eclipse.jface.viewers.CellEditor;
+import org.eclipse.jface.viewers.TextCellEditor;
+
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.geometry.Dimension;
 
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.tools.CellEditorLocator;
 import org.eclipse.gef.tools.DirectEditManager;
+
+import org.eclipse.gef.examples.logicdesigner.figures.StickyNoteFigure;
 
 public class LogicLabelEditManager 
 	extends DirectEditManager 
@@ -55,31 +58,18 @@ protected void bringDown() {
 }
 
 protected void initCellEditor() {
+	
 	Text text = (Text)getCellEditor().getControl();
-	verifyListener = new VerifyListener() {
-		public void verifyText(VerifyEvent event) {
-			Text text = (Text)getCellEditor().getControl();
-			String oldText = text.getText();
-			String leftText = oldText.substring(0, event.start);
-			String rightText = oldText.substring(event.end, oldText	.length());
-			GC gc = new GC(text);
-			Point size = gc.textExtent(leftText + event.text + rightText);
-			gc.dispose();
-			if (size.x != 0)
-				size = text.computeSize(size.x, SWT.DEFAULT);
-			getCellEditor().getControl().setSize(size.x, size.y);
-		}
-	};
-	text.addVerifyListener(verifyListener);
 
-	Label label = (Label)((GraphicalEditPart)getEditPart()).getFigure();
-	String initialLabelText = label.getText();
+	
+	StickyNoteFigure stickyNote = (StickyNoteFigure)((GraphicalEditPart)getEditPart()).getFigure();
+	String initialLabelText = stickyNote.getText();
 	getCellEditor().setValue(initialLabelText);
 	IFigure figure = ((GraphicalEditPart)getEditPart()).getFigure();
 	scaledFont = figure.getFont();
 	FontData data = scaledFont.getFontData()[0];
 	Dimension fontSize = new Dimension(0, data.getHeight());
-	label.translateToAbsolute(fontSize);
+	stickyNote.translateToAbsolute(fontSize);
 	data.setHeight(fontSize.height);
 	scaledFont = new Font(null, data);
 	
@@ -87,11 +77,42 @@ protected void initCellEditor() {
 	text.selectAll();
 }
 
-protected void unhookListeners() {
-	super.unhookListeners();
-	Text text = (Text)getCellEditor().getControl();
-	text.removeVerifyListener(verifyListener);
-	verifyListener = null;
+/**
+ * Creates the cell editor on the given composite.  The cell editor is created by 
+ * instantiating the cell editor type passed into this DirectEditManager's constuctor.
+ * @param composite the composite to create the cell editor on
+ * @return the newly created cell editor
+ */
+protected CellEditor createCellEditorOn(Composite composite) {
+	return new TextCellEditor(composite, SWT.MULTI | SWT.WRAP);
 }
 
+class MultiTextCellEditor extends TextCellEditor {
+	
+	public MultiTextCellEditor(Composite parent, int style) {
+		super(parent, style);
+	}
+	
+	protected void keyReleaseOccured(KeyEvent keyEvent) {
+		if (keyEvent.character == '\r') {
+			if ((keyEvent.stateMask & SWT.CTRL) != 0) {
+				keyEvent.doit = false;
+				int index = text.getText().lastIndexOf("\r\n");
+				if (index == -1)
+					index = text.getText().lastIndexOf('\r');
+				if (index == -1)
+					index = text.getText().lastIndexOf('\n');
+				if (index != -1)
+					text.setText(text.getText().substring(0, index));
+				
+				fireApplyEditorValue();
+				deactivate();
+			}
+		} else
+			super.keyReleaseOccured(keyEvent);
+	}
 }
+
+
+}
+ 

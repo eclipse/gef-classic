@@ -10,14 +10,17 @@
  *******************************************************************************/
 package org.eclipse.gef.editpolicies;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
+import org.eclipse.gef.handles.NonResizableHandleKit;
 import org.eclipse.gef.handles.ResizableHandleKit;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
+
+import org.eclipse.draw2d.PositionConstants;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Provides support for selecting, positioning, and resizing an editpart.  Selection is
@@ -36,12 +39,67 @@ public class ResizableEditPolicy
 	extends NonResizableEditPolicy
 {
 
+private int directions = -1;
+	
 /**
  * @see org.eclipse.gef.editpolicies.SelectionHandlesEditPolicy#createSelectionHandles()
  */
 protected List createSelectionHandles() {
 	List list = new ArrayList();
- 	ResizableHandleKit.addHandles((GraphicalEditPart)getHost(), list);
+	
+	if (directions != -1) {
+		ResizableHandleKit.addMoveHandle((GraphicalEditPart)getHost(), list);
+		if ((directions & PositionConstants.EAST) != 0)
+			ResizableHandleKit.addHandle((GraphicalEditPart)getHost(), list, 
+					PositionConstants.EAST);
+		else
+			NonResizableHandleKit.addHandle((GraphicalEditPart)getHost(), list, 
+					PositionConstants.EAST);
+		if ((directions & PositionConstants.SOUTH_EAST) == PositionConstants.SOUTH_EAST)
+			ResizableHandleKit.addHandle((GraphicalEditPart)getHost(), list, 
+					PositionConstants.SOUTH_EAST);
+		else
+			NonResizableHandleKit.addHandle((GraphicalEditPart)getHost(), list,
+					PositionConstants.SOUTH_EAST);
+		if ((directions & PositionConstants.SOUTH) != 0)
+			ResizableHandleKit.addHandle((GraphicalEditPart)getHost(), list, 
+					PositionConstants.SOUTH);
+		else
+			NonResizableHandleKit.addHandle((GraphicalEditPart)getHost(), list, 
+					PositionConstants.SOUTH);
+		if ((directions & PositionConstants.SOUTH_WEST) == PositionConstants.SOUTH_WEST)
+			ResizableHandleKit.addHandle((GraphicalEditPart)getHost(), list, 
+					PositionConstants.SOUTH_WEST);
+		else
+			NonResizableHandleKit.addHandle((GraphicalEditPart)getHost(), list, 
+						PositionConstants.SOUTH_WEST);
+		if ((directions & PositionConstants.WEST) != 0)
+			ResizableHandleKit.addHandle((GraphicalEditPart)getHost(), list, 
+					PositionConstants.WEST);
+		else
+			NonResizableHandleKit.addHandle((GraphicalEditPart)getHost(), list, 
+						PositionConstants.WEST);
+		if ((directions & PositionConstants.NORTH_WEST) == PositionConstants.NORTH_WEST)
+			ResizableHandleKit.addHandle((GraphicalEditPart)getHost(), list, 
+					PositionConstants.NORTH_WEST);
+		else
+			NonResizableHandleKit.addHandle((GraphicalEditPart)getHost(), list, 
+					PositionConstants.NORTH_WEST);
+		if ((directions & PositionConstants.NORTH) != 0)
+			ResizableHandleKit.addHandle((GraphicalEditPart)getHost(), list, 
+					PositionConstants.NORTH);
+		else
+			NonResizableHandleKit.addHandle((GraphicalEditPart)getHost(), list, 
+					PositionConstants.NORTH);
+		if ((directions & PositionConstants.NORTH_EAST) == PositionConstants.NORTH_EAST)
+			ResizableHandleKit.addHandle((GraphicalEditPart)getHost(), list, 
+					PositionConstants.NORTH_EAST);
+		else
+			NonResizableHandleKit.addHandle((GraphicalEditPart)getHost(), list, 
+						PositionConstants.NORTH_EAST);	
+	} else
+		ResizableHandleKit.addHandles((GraphicalEditPart)getHost(), list);
+	
  	return list;
 }
 
@@ -67,6 +125,16 @@ public Command getCommand(Request request) {
 }
 
 /**
+ * Returns the current handle directions integer that depicts which handles
+ * can be resized on this object.
+ * 
+ * @return handle directions that can be resized
+ */
+public int getHandleDirections() {
+	return directions;
+}
+
+/**
  * Returns the command contribution for the given resize request. By default, the request
  * is redispatched to the host's parent as a {@link
  * org.eclipse.gef.RequestConstants#REQ_RESIZE_CHILDREN}.  The parent's editpolicies
@@ -84,6 +152,15 @@ protected Command getResizeCommand(ChangeBoundsRequest request) {
 	req.setExtendedData(request.getExtendedData());
 	req.setResizeDirection(request.getResizeDirection());
 	return getHost().getParent().getCommand(req);
+}
+
+/**
+ * Sets the handle directions that are resizable to the given integer. 
+ * 
+ * @param newDirections the new resizable directions integer
+ */
+public void setHandleDirections(int newDirections) {
+	directions = newDirections;
 }
 
 /**
