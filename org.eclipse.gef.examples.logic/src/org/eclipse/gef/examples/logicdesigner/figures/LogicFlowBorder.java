@@ -29,11 +29,11 @@ public LogicFlowBorder(int width) {
 public LogicFlowBorder(int width, Color color) {
 	this(width);
 	setGrabBarColor(color);
-	setOutlineColor(ColorConstants.listForeground);
+	setColor(ColorConstants.listForeground);
 }
 
 public Insets getInsets(IFigure figure){
-	return new Insets(width+2, grabBarWidth+2, width+2, width+2);
+	return new Insets(getWidth()+2, grabBarWidth+2, getWidth()+2, getWidth()+2);
 }
 
 public Dimension getPreferredSize() {
@@ -54,14 +54,6 @@ public void setGrabBarColor(Color color) {
 
 public void setGrabBarWidth(int width) {
 	grabBarWidth = width;
-}
-
-public void setOutlineColor(Color c) {
-	color = c;
-}
-
-public void setOutlineWidth(int w) {
-	width = w;
 }
 
 }
