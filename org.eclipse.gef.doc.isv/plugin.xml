@@ -2,7 +2,7 @@
 <plugin
    id="org.eclipse.gef.doc.isv"
    name="Graphical Editor Framework Documentation"
-   version="2.0.1"
+   version="2.1.0"
    provider-name="Eclipse.org">
 
    <runtime>
