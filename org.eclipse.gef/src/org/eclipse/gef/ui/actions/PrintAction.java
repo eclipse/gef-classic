@@ -19,6 +19,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.actions.ActionFactory;
 
 import org.eclipse.gef.GraphicalViewer;
+import org.eclipse.gef.internal.GEFMessages;
 import org.eclipse.gef.print.PrintGraphicalViewerOperation;
 
 /**
@@ -47,6 +48,9 @@ protected boolean calculateEnabled() {
  * @see org.eclipse.gef.ui.actions.EditorPartAction#init()
  */
 protected void init() {
+	super.init();
+	setText(GEFMessages.PrintAction_Label);
+	setToolTipText(GEFMessages.PrintAction_Tooltip);
 	setId(ActionFactory.PRINT.getId());
 }
 
