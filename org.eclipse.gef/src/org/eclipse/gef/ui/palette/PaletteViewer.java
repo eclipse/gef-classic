@@ -15,16 +15,18 @@ import java.beans.PropertyChangeListener;
 import java.util.*;
 
 import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.ui.IMemento;
 
 import org.eclipse.draw2d.FigureCanvas;
+import org.eclipse.draw2d.IFigure;
 
 import org.eclipse.gef.EditDomain;
 import org.eclipse.gef.EditPart;
+import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.internal.ui.palette.PaletteSelectionTool;
 import org.eclipse.gef.internal.ui.palette.editparts.*;
 import org.eclipse.gef.palette.*;
@@ -208,6 +210,24 @@ private ToolEntryEditPart getToolEntryEditPart(ToolEntry entry) {
 protected void handleDispose(DisposeEvent e) {
 	super.handleDispose(e);
 	disposeFont();
+}
+
+/**
+ * @see org.eclipse.gef.ui.parts.GraphicalViewerImpl#handleFocusGained(FocusEvent)
+ */
+protected void handleFocusGained(FocusEvent fe) {
+	super.handleFocusGained(fe);
+	/*
+	 * Fix for Bug# 63297
+	 * When the palette gets focus, the LWS will take care of setting focus on the
+	 * correct figure.  However, when the user clicks on an entry, the focus is "thrown
+	 * away."  In that case, the LWS would set focus on the first focusable figure.  We
+	 * override that here and set focus on the correct/selected figure.
+	 */
+	if (focusPart == null) {
+		IFigure fig = ((GraphicalEditPart)getFocusEditPart()).getFigure();
+		fig.internalGetEventDispatcher().requestFocus(fig);
+	}
 }
 
 /**
