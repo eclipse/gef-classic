@@ -157,5 +157,13 @@ protected boolean handleKeyUp(KeyEvent e) {
 
 	return super.handleKeyUp(e);
 }
-	
+
+/**
+ * @see org.eclipse.gef.tools.AbstractTool#handleViewerEntered()
+ */
+protected boolean handleViewerEntered() {
+	refreshCursor();
+	return super.handleViewerEntered();
+}
+
 }
