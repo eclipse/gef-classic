@@ -1,4 +1,4 @@
-package swt.experimentation;
+package swt.bugs;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
@@ -21,11 +21,8 @@ public static void main(String[] args) {
 			boolean expanded = item1.getExpanded();
 		}
 	});
-
 	shell.open();
-
 	tree.removeAll();
-
 	Display display = Display.getDefault();
 	while (!shell.isDisposed())
 		if (!display.readAndDispatch())

@@ -1,4 +1,4 @@
-package bugs;
+package swt.bugs;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.printing.Printer;

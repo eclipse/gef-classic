@@ -1,4 +1,4 @@
-package bugs;
+package swt.bugs;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;

@@ -1,4 +1,4 @@
-package bugs;
+package swt.bugs;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
@@ -18,7 +18,7 @@ import org.eclipse.swt.widgets.TreeItem;
 /*
  * Shows that expansion comes after key events, but before mouse events.
  */
-public class TreeExpansion {
+public class GTKTreeItemAccess {
 
 public static void main(String[] args) {
 	Display display = new Display();

@@ -1,5 +1,5 @@
 
-package bugs;
+package swt.bugs;
 import java.lang.reflect.Method;
 
 import org.eclipse.swt.custom.CCombo;

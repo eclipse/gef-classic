@@ -2,7 +2,7 @@
  * The control should be given a chance to process the ESC key.
  */
 
-package bugs;
+package swt.bugs;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;

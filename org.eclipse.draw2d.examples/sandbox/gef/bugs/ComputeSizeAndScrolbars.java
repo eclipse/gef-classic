@@ -1,4 +1,4 @@
-package bugs.gef;
+package gef.bugs;
 
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.FigureCanvas;

@@ -1,5 +1,3 @@
-package swt.experimentation;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DragSource;
@@ -41,7 +39,9 @@ public static void main(String[] args) {
 		public void dragStart(DragSourceEvent event) {
 			System.out.println("Drag Start");
 		}
-		public void dragSetData(DragSourceEvent event) {}
+		public void dragSetData(DragSourceEvent event) {
+			event.data = "Now it works";
+		}
 		public void dragFinished(DragSourceEvent event) {
 			System.out.println("Drag Finished");
 		}

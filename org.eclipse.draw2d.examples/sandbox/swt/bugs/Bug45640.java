@@ -1,4 +1,4 @@
-package bugs;
+package swt.bugs;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.GC;
