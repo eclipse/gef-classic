@@ -29,7 +29,6 @@ import org.eclipse.gef.EditPartFactory;
 import org.eclipse.gef.EditPartListener;
 import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.EditPolicy;
-import org.eclipse.gef.GEF;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.RootEditPart;
@@ -287,33 +286,18 @@ protected void deactivateEditPolicies() {
  * This method will log a message to GEF's trace/debug system if the corresponding flag
  * for EditParts is set to true.
  * @param message a debug message
+ * @deprecated in 3.1
  */
 protected final void debug(String message) {
-	if (!GEF.DebugEditParts)
-		return;
-	GEF.debug("EDITPART:\t" + toString() + ":\t" + message);//$NON-NLS-2$//$NON-NLS-1$
-}
-
-void debugPop() {
-	if (!GEF.DebugEditParts)
-		return;
-	GEF.debugPop();
-}
-
-void debugPush(String heading) {
-	if (GEF.DebugEditParts)
-		GEF.debugPush("EDITPART:\t" + toString()//$NON-NLS-1$
-			+ ": " + heading);//$NON-NLS-1$
 }
 
 /**
  * This method will log the message to GEF's trace/debug system if the corrseponding flag
  * for FEEDBACK is set to true.
  * @param message  Message to be passed
+ * @deprecated in 3.1
  */
 protected final void debugFeedback(String message) {
-	if (GEF.DebugFeedback)
-		GEF.debug("FEEDBACK:\t" + toString() + ":\t" + message);//$NON-NLS-2$//$NON-NLS-1$
 }
 
 /**
