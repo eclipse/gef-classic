@@ -95,8 +95,8 @@ public FlyoverPaletteAutomaton(Composite parent, int style, IWorkbenchPage page)
 
 	IViewPart part = page.findView(PaletteView.ID);
 	if (part == null)
-		setState(FLYOVER_COLLAPSED);
-	providePartService(page);
+		paletteState = 2;
+	providePartService(page.getWorkbenchWindow().getPartService());
 }
 
 private IPartListener2 partListener = new IPartListener2() {
