@@ -7,7 +7,7 @@ package org.eclipse.gef.examples.logicdesigner;
  */
 
 import org.eclipse.gef.ui.actions.AlignmentAction;
-import org.eclipse.gef.ui.actions.ZoomAction;
+//import org.eclipse.gef.ui.actions.ZoomAction;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.actions.RetargetAction;
 
@@ -82,18 +82,18 @@ protected void createActions() {
 	retargetActions.put(AlignmentAction.ID_ALIGN_BOTTOM, action);
 
 	// Create zoom in action
-	action = new RetargetAction(ZoomAction.ZOOM_OUT, 
-								LogicMessages.ZoomAction_ZoomOut_ActionLabelText);
-	action.setImageDescriptor(SharedImages.DESC_ZOOM_OUT);
-	getPage().addPartListener(action);
-	retargetActions.put(ZoomAction.ZOOM_OUT, action);
+//	action = new RetargetAction(ZoomAction.ZOOM_OUT, 
+//								LogicMessages.ZoomAction_ZoomOut_ActionLabelText);
+//	action.setImageDescriptor(SharedImages.DESC_ZOOM_OUT);
+//	getPage().addPartListener(action);
+//	retargetActions.put(ZoomAction.ZOOM_OUT, action);
 
 	// Create zoom in action
-	action = new RetargetAction(ZoomAction.ZOOM_IN, 
-								LogicMessages.ZoomAction_ZoomIn_ActionLabelText);
-	action.setImageDescriptor(SharedImages.DESC_ZOOM_IN);
-	getPage().addPartListener(action);
-	retargetActions.put(ZoomAction.ZOOM_IN, action);
+//	action = new RetargetAction(ZoomAction.ZOOM_IN, 
+//								LogicMessages.ZoomAction_ZoomIn_ActionLabelText);
+//	action.setImageDescriptor(SharedImages.DESC_ZOOM_IN);
+//	getPage().addPartListener(action);
+//	retargetActions.put(ZoomAction.ZOOM_IN, action);
 }
 
 /**
@@ -102,8 +102,8 @@ protected void createActions() {
 protected void declareActions() {
 	super.declareActions();
 
-	globalActions.add(ZoomAction.ZOOM_IN);
-	globalActions.add(ZoomAction.ZOOM_OUT);
+//	globalActions.add(ZoomAction.ZOOM_IN);
+//	globalActions.add(ZoomAction.ZOOM_OUT);
 	globalActions.add(IncrementDecrementAction.INCREMENT);
 	globalActions.add(IncrementDecrementAction.DECREMENT);
 	globalActions.add(AlignmentAction.ID_ALIGN_LEFT);
@@ -113,8 +113,8 @@ protected void declareActions() {
 	globalActions.add(AlignmentAction.ID_ALIGN_MIDDLE);
 	globalActions.add(AlignmentAction.ID_ALIGN_BOTTOM);
 
-	toolbarActions.add(ZoomAction.ZOOM_OUT);
-	toolbarActions.add(ZoomAction.ZOOM_IN);
+//	toolbarActions.add(ZoomAction.ZOOM_OUT);
+//	toolbarActions.add(ZoomAction.ZOOM_IN);
 	toolbarActions.add(SEPARATOR);
 	toolbarActions.add(IncrementDecrementAction.INCREMENT);
 	toolbarActions.add(IncrementDecrementAction.DECREMENT);

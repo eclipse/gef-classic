@@ -82,6 +82,7 @@ protected void createGraphicalViewer(Composite parent) {
  */
 public void createPartControl(Composite parent) {
 	createGraphicalViewer(parent);
+	initializeActions();
 }
 
 public void dispose() {
@@ -170,7 +171,14 @@ public void init(IEditorSite site, IEditorInput input) throws PartInitException 
 	setSite(site);
 	setInput(input);
 	getCommandStack().addCommandStackListener(this);
-	getSite().getWorkbenchWindow().getSelectionService().addSelectionListener(this);}
+	getSite().getWorkbenchWindow().getSelectionService().addSelectionListener(this);
+}
+
+protected void initializeActions() {
+	createActions();
+	updatePropertyDependentActions();
+	updateStackDependentActions();
+}
 
 /**
  * Override to set the contents of the GraphicalViewer after it has been created.
@@ -260,9 +268,6 @@ protected void setGraphicalViewer(GraphicalViewer viewer) {
 
 protected void setSite(org.eclipse.ui.IWorkbenchPartSite site){
 	super.setSite(site);
-	createActions();
-	updatePropertyDependentActions();
-	updateStackDependentActions();
 }
 
 private void updateAction(String id) {

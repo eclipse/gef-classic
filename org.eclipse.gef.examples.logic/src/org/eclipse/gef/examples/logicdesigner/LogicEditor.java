@@ -292,8 +292,8 @@ protected void initializePaletteViewer() {
 protected void createActions() {
 	super.createActions();
 	
-	setAction(ZoomAction.ZOOM_IN, new ZoomAction(this, true));
-	setAction(ZoomAction.ZOOM_OUT, new ZoomAction(this, false));
+//	setAction(ZoomAction.ZOOM_IN, new ZoomAction(this, true));
+//	setAction(ZoomAction.ZOOM_OUT, new ZoomAction(this, false));
 
 	setAction(IncrementDecrementAction.INCREMENT, 
 				new IncrementDecrementAction(this, true));

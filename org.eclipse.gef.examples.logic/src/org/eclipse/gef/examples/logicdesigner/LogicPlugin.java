@@ -315,6 +315,15 @@ static private PaletteContainer createControlGroup(){
 		);
 	entries.add(tool);
 
+//	tool = new PaletteToolEntry(
+//			new ZoomTool(),
+//			"Zoom",
+//			"Zoom Tool",
+//			new Image(null,Circuit.class.getResourceAsStream("icons/connection16.gif")),//$NON-NLS-1$
+//			new Image(null,Circuit.class.getResourceAsStream("icons/connection32.gif"))//$NON-NLS-1$
+//		);
+//	entries.add(tool);
+
 	controlGroup.addAll(entries);
 	return controlGroup;
 }
