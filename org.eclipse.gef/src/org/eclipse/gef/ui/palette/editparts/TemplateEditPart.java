@@ -10,15 +10,13 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.MarginBorder;
 
 import org.eclipse.gef.AccessibleEditPart;
+import org.eclipse.gef.DragTracker;
+import org.eclipse.gef.Request;
 import org.eclipse.gef.palette.PaletteEntry;
 import org.eclipse.gef.palette.PaletteTemplateEntry;
 
 /**
- * A PaletteEditPart that has a {@link PaletteTemplateEntry} for its model and
- * a {@link Label} for its figure.  This is used for dragging template objects 
- * from the palette to a GraphicalViewer to create new objects.
- * 
- * @author Eric Bordeau
+ * @author Eric Bordeau, Pratik Shah
  */
 public class TemplateEditPart
 	extends PaletteEditPart
@@ -47,8 +45,22 @@ protected AccessibleEditPart createAccessible() {
 }
 
 public IFigure createFigure() {
-	return new DetailedLabelFigure();
-			}
+	IFigure fig = new DetailedLabelFigure();
+	fig.setRequestFocusEnabled(true);
+	return fig;
+}
+
+/**
+ * @see org.eclipse.gef.ui.palette.editparts.PaletteEditPart#getDragTracker(Request)
+ */
+public DragTracker getDragTracker(Request request) {
+	return new SingleSelectionTracker() {
+		protected boolean handleButtonDown(int button) {
+			getFigure().requestFocus();
+			return super.handleButtonDown(button);
+		}
+	};
+}
 
 private PaletteTemplateEntry getTemplateEntry() {
 	return (PaletteTemplateEntry)getModel();
@@ -67,15 +79,6 @@ protected void refreshVisuals() {
 	super.refreshVisuals();
 }
 
-public void setFocus(boolean value) {
-	super.setFocus(value);
-	DetailedLabelFigure label = (DetailedLabelFigure)getFigure();
-	if (value)
-		label.setSelected(DetailedLabelFigure.SELECTED_WITH_FOCUS);
-	else
-		label.setSelected(DetailedLabelFigure.SELECTED_WITHOUT_FOCUS);
-}
-
 /**
  * @see org.eclipse.gef.ui.palette.editparts.PaletteEditPart#setImageInFigure(Image)
  */
@@ -87,12 +90,11 @@ protected void setImageInFigure(Image image) {
 public void setSelected(int value) {
 	super.setSelected(value);
 	DetailedLabelFigure label = (DetailedLabelFigure)getFigure();
-	if( value == SELECTED_PRIMARY )
-		label.setSelected(DetailedLabelFigure.SELECTED_WITH_FOCUS);
-	else if( value == SELECTED )
-		label.setSelected(DetailedLabelFigure.SELECTED_WITHOUT_FOCUS);
-	else {
-		label.setSelected(DetailedLabelFigure.NOT_SELECTED);
+	if (value == SELECTED_PRIMARY) {
+		label.requestFocus();
+		label.setSelected(true);
+	} else {
+		label.setSelected(false);
 	}		
 }
 
