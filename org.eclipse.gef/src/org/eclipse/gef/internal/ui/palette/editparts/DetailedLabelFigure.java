@@ -95,6 +95,9 @@ public boolean isSelected() {
 }
 
 public void setDescription(String s) {
+	if (s == null) {
+		s = PaletteMessages.NO_DESCRIPTION_AVAILABLE;
+	}
 	String str = " " + PaletteMessages.NAME_DESCRIPTION_SEPARATOR + " " + s; //$NON-NLS-1$ //$NON-NLS-2$
 	if (descText.getText().equals(str)) {
 		return;
@@ -158,8 +161,8 @@ public void setSelected(boolean state) {
 }
 
 protected void updateColors() {
-	if( isSelected() ){
-		if( hasFocus() ){
+	if (isSelected()) {
+		if (hasFocus()) {
 			setForegroundColor(ColorConstants.menuForegroundSelected);
 			setBackgroundColor(ColorConstants.menuBackgroundSelected);
 		} else {
@@ -232,7 +235,7 @@ public static ImageData createShadedImage(Image fromImage, Color shade) {
 	return data;
 }
 
-private void updateFont(int layout){
+private void updateFont(int layout) {
 	boolean layoutChanged = (layoutMode != layout);
 	/*
 	 * @TODO:Pratik
