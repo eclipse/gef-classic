@@ -48,6 +48,7 @@ private boolean snapToGeometry = false;
 private boolean gridEnabled = false;
 private Dimension gridSpacing = new Dimension(SnapToGrid.DEFAULT_GAP, SnapToGrid.DEFAULT_GAP);
 private Point gridOrigin = new Point();
+private double zoom;
 
 public LogicDiagram() {
 	size.width = 100;
@@ -98,6 +99,10 @@ public Image getIconImage() {
 
 public String getNewID() {
 	return Integer.toString(count++);
+}
+
+public double getZoom() {
+	return zoom;
 }
 
 /**
@@ -190,6 +195,10 @@ public void setGridSpacing(Dimension spacing) {
 
 public void setSnapToGeometry(boolean isEnabled) {
 	snapToGeometry = isEnabled;
+}
+
+public void setZoom(double zoom) {
+	this.zoom = zoom;
 }
 
 public String toString(){

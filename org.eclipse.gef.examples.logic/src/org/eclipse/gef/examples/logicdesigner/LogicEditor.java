@@ -402,6 +402,12 @@ protected void loadProperties() {
 	if (origin == null)
 		origin = new Point();
 	getGraphicalViewer().setProperty(SnapToGrid.GRID_ORIGIN, origin);
+	
+	// Zoom
+	ZoomManager manager = (ZoomManager)getGraphicalViewer()
+			.getProperty(ZoomManager.class.toString());
+	if (manager != null)
+		manager.setZoom(getLogicDiagram().getZoom());
 }
 
 public void dispose() {
@@ -649,6 +655,10 @@ protected void saveProperties() {
 			.getProperty(SnapToGrid.GRID_ORIGIN));
 	getLogicDiagram().setGridSpacing((Dimension)getGraphicalViewer()
 			.getProperty(SnapToGrid.GRID_SPACING));
+	ZoomManager manager = (ZoomManager)getGraphicalViewer()
+			.getProperty(ZoomManager.class.toString());
+	if (manager != null)
+		getLogicDiagram().setZoom(manager.getZoom());
 }
 
 public void setInput(IEditorInput input) {
