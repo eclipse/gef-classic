@@ -202,7 +202,7 @@ private void doLayout() {
 	/*
 	 * Fix for Bug# 67554
 	 * Motif leaves a few pixels of space around the Canvas which
-	 * can cause the rulers to misaligned.
+	 * can cause the rulers to be misaligned.
 	 */
 	if (editor.getVerticalBar().getVisible())
 		vBarWidth = trim.width + ("motif".equals(SWT.getPlatform()) ? trim.x * 2 : 0); //$NON-NLS-1$
