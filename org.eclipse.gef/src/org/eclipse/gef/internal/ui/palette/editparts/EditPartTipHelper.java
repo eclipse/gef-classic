@@ -107,7 +107,7 @@ protected void hookShellListeners() {
 	/* Workaround for GTK Bug - Control.setCapture(boolean) not implemented: 
 	   If the cursor is not over the shell when it is first painted, 
 	   hide the tooltip and dispose of the shell. */
-	if (SWT.getPlatform().equals("gtk")) {
+	if (SWT.getPlatform().equals("gtk")) {  //$NON-NLS-1$
 		getShell().addPaintListener(new PaintListener() {
 			public void paintControl(PaintEvent event) {
 				Point cursorLoc = Display.getCurrent().getCursorLocation();
