@@ -26,7 +26,8 @@ private PaletteViewerPreferences prefs;
 
 /**
  * Constructor
- *  * @param	prefs	The <code>PaletteViewerPreferences</code> object that this action is
+ * 
+ * @param	prefs	The <code>PaletteViewerPreferences</code> object that this action is
  * 					manipulating
  */
 public ChangeIconSizeAction(PaletteViewerPreferences prefs) {

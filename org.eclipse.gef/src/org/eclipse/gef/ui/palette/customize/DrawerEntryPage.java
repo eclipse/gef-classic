@@ -116,7 +116,8 @@ private Composite getComposite() {
 
 /**
  * Convenience method that provides access to the PaletteDrawer.
- *  * @return the entry as a PaletteDrawer */
+ * 
+ * @return the entry as a PaletteDrawer */
 protected PaletteDrawer getDrawer() {
 	return (PaletteDrawer)getEntry();
 }
@@ -126,7 +127,8 @@ protected PaletteDrawer getDrawer() {
  * start-up is toggled.
  * <p>
  * It sets the initial state of the drawer accordingly.
- *  * @param selection	<code>true</code> if that option is now selected */
+ * 
+ * @param selection	<code>true</code> if that option is now selected */
 protected void handleOpenSelected(boolean selection) {
 	int status = selection ? PaletteDrawer.INITIAL_STATE_OPEN
 	                       : PaletteDrawer.INITIAL_STATE_CLOSED;
@@ -142,7 +144,8 @@ protected void handleOpenSelected(boolean selection) {
  * start-up is toggled.
  * <p>
  * It sets the initial state of the drawer accordingly.
- *  * @param selection	<code>true</code> if that option is now selected
+ * 
+ * @param selection	<code>true</code> if that option is now selected
  */
 protected void handlePinSelected(boolean selection) {
 	int status = selection ? PaletteDrawer.INITIAL_STATUS_PINNED_OPEN

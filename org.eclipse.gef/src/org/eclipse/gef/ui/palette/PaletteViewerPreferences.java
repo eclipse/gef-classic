@@ -172,7 +172,8 @@ public int getLayoutSetting();
  * Returns the layout modes that are supported.  All four layout modes --
  * LAYOUT_COLUMNS, LAYOUT_LIST, LAYOUT_ICONS, LAYOUT_DETAILS -- are supported by default. 
  * 
- * @return The layout modes that are supported * @see #setSupportedLayoutModes(int[])
+ * @return The layout modes that are supported
+ * @see #setSupportedLayoutModes(int[])
  */
 public int[] getSupportedLayoutModes();
 
@@ -205,7 +206,8 @@ public void setAutoCollapseSetting(int newVal);
 
 /**
  * Sets the FontData for the palette.
- *  * @param	data	The FontData for the font to be used in the palette */
+ * 
+ * @param	data	The FontData for the font to be used in the palette */
 public void setFontData(FontData data);
 
 /**
@@ -225,7 +227,8 @@ public void setLayoutSetting(int newVal);
 
 /**
  * Sets the "Use Large Icons" option for the currently active layout.
- *  * @param	newVal	<code>true</code> if large icons are to be used with the current layout
+ * 
+ * @param	newVal	<code>true</code> if large icons are to be used with the current layout
  * 					setting
  */
 public void setCurrentUseLargeIcons(boolean newVal);

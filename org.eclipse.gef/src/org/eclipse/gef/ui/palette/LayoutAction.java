@@ -50,7 +50,9 @@ public LayoutAction(PaletteViewerPreferences prefs) {
 /**
  * Helper method that wraps the given action in an ActionContributionItem and then adds it
  * to the given menu.
- *  * @param	parent	The menu to which the given action is to be added * @param	action	The action that is to be added to the given menu */
+ * 
+ * @param	parent	The menu to which the given action is to be added
+ * @param	action	The action that is to be added to the given menu */
 protected void addActionToMenu(Menu parent, IAction action) {
 	ActionContributionItem item = new ActionContributionItem(action);
 	item.fill(parent, -1);

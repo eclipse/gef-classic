@@ -244,7 +244,8 @@ public Object getType() {
  * 		<LI>PERMISSION_LIMITED_MODIFICATION</LI>
  * 		<LI>PERMISSION_FULL_MODIFICATION</LI>
  * </UL>
- *  * @return the permission level for this entry.  
+ * 
+ * @return the permission level for this entry.  
  * @see	#setUserModificationPermission(int)
  */
 public int getUserModificationPermission() {
@@ -334,7 +335,8 @@ public void setParent(PaletteContainer newParent) {
  * 		<LI>PERMISSION_FULL_MODIFICATION</LI>
  * </UL>
  * Default is <code>PERMISSION_FULL_MODIFICATION</code>
- *  * @param permission	One of the above-specified permission levels */
+ * 
+ * @param	permission	One of the above-specified permission levels */
 public void setUserModificationPermission(int permission) {
 	this.permission = permission;
 }
