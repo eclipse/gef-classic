@@ -127,7 +127,14 @@ public EditPart findObjectAtExcluding(Point pt, Collection exclude, Conditional 
 	} else {
 		result = (EditPart)tree.getData();
 	}
-	return exclude.contains(result) ? null : result;
+	while (result != null) {
+		if (!exclude.contains(result)
+			&& (condition == null
+				|| condition.evaluate(result)))
+			return result;
+		result = result.getParent();
+	}
+	return null;
 }
 
 protected void fireSelectionChanged() {
