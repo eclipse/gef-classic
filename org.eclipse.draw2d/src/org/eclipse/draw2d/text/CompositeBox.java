@@ -70,7 +70,7 @@ public boolean isBidi() {
 	return false;
 }
 
-/** * @see org.eclipse.draw2d.geometry.Rectangle#isEmpty() */
+/** * @return <code>true</code> if this box contains any fragments */
 public boolean isOccupied() {
 	return !fragments.isEmpty();
 }
