@@ -147,7 +147,6 @@ void navigateTo(EditPart part, KeyEvent event) {
 	if (part == null)
 		return;
 	getViewer().select(part);
-	getViewer().setFocus(part);
 }
 
 private boolean navigateToCategory(KeyEvent event){
