@@ -12,10 +12,9 @@ import java.text.NumberFormat;
 import org.eclipse.swt.widgets.Text;
 
 /**
- * This is an internal class used for debugging and code management
+ * This is an internal class used for debugging
  */
-
-final public class GEF{
+public final class GEF {
 
 static final String TAB = "  ";//$NON-NLS-1$
 

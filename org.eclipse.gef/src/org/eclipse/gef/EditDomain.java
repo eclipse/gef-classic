@@ -131,7 +131,8 @@ void nativeDragStarted(DragSourceEvent event, EditPartViewer viewer);
 void removeViewer(EditPartViewer viewer);
 
 /**
- * Sets the active Tool for this EditDomain.
+ * Sets the active Tool for this EditDomain. If a current Tool is active, it is
+ * deactivated. The new Tool is told its EditDomain, and is activated.
  * @param tool the Tool
  */
 void setTool(Tool tool);
