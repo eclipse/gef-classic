@@ -12,6 +12,9 @@ import java.awt.geom.*;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
 
+/**
+ * @author hudsonr
+ * @since 2.0 */
 public class StrokePointList {
 
 static float segment [] = new float[6];
