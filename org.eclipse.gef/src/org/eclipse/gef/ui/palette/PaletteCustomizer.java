@@ -13,14 +13,8 @@ package org.eclipse.gef.ui.palette;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.gef.palette.PaletteContainer;
-import org.eclipse.gef.palette.PaletteDrawer;
-import org.eclipse.gef.palette.PaletteEntry;
-import org.eclipse.gef.ui.palette.customize.DefaultEntryPage;
-import org.eclipse.gef.ui.palette.customize.DrawerEntryPage;
-import org.eclipse.gef.ui.palette.customize.EntryPage;
-import org.eclipse.gef.ui.palette.customize.PaletteDrawerFactory;
-import org.eclipse.gef.ui.palette.customize.PaletteSeparatorFactory;
+import org.eclipse.gef.palette.*;
+import org.eclipse.gef.ui.palette.customize.*;
 
 /**
  * <code>PaletteCustomizer</code> is the <code>PaletteCustomizerDialog</code>'s interface
@@ -46,6 +40,8 @@ public abstract class PaletteCustomizer {
  * @see #performDelete(PaletteEntry)
  */
 public boolean canDelete(PaletteEntry entry) {
+	if (entry instanceof PaletteStack) 
+		return false;
 	return entry.getUserModificationPermission() 
 											== PaletteEntry.PERMISSION_FULL_MODIFICATION;
 }
@@ -71,26 +67,33 @@ public boolean canMoveDown(PaletteEntry entry) {
 		return false;
 	}
 	
-	List children = parent.getChildren();
-	if (children.indexOf(entry) + 1 != children.size()) {
+	if (parent.getChildren().indexOf(entry) + 1 != parent.getChildren().size()) {
 		return true;
 	} else {
 		// The given entry is the last child in its parent.
-		if (entry instanceof PaletteContainer 
-					|| parentPermission != PaletteEntry.PERMISSION_FULL_MODIFICATION) {
+		if (parentPermission != PaletteEntry.PERMISSION_FULL_MODIFICATION
+				|| parent.getParent() == null)
 			return false;
-		}
-
-		children = parent.getParent().getChildren();
+	
+		// try to place in grand parent
+		if (parent.getParent().acceptsType(entry.getType()))
+			return true;
+		
+		// walk parent siblings till we find one it can go into.
+		List children = parent.getParent().getChildren();
 		int parentIndex = children.indexOf(parent);
+		PaletteEntry parentSibling = null;
+		
 		for (int i = parentIndex + 1; i < children.size(); i++) {
-			PaletteContainer parentSibling = (PaletteContainer)children.get(i);
-			if (parentSibling.getUserModificationPermission()
-						== PaletteEntry.PERMISSION_FULL_MODIFICATION) {
-				return true;
+			parentSibling = (PaletteEntry)children.get(i);
+			if (parentSibling instanceof PaletteContainer) {
+				if (((PaletteContainer)parentSibling).acceptsType(entry.getType()))
+					return true;
 			}
 		}
+		
 		return false;
+		
 	}
 }
 
@@ -115,27 +118,33 @@ public boolean canMoveUp(PaletteEntry entry) {
 		return false;
 	}
 	
-	List children = parent.getChildren();
-	if (children.indexOf(entry) != 0) {
+	if (parent.getChildren().indexOf(entry) != 0) {
 		return true;
 	} else {
-		// The given entry is the first child in its parent.
-		if (entry instanceof PaletteContainer 
-					|| parentPermission != PaletteEntry.PERMISSION_FULL_MODIFICATION) {
+		// The given entry is the first child in its parent
+		if (parentPermission != PaletteEntry.PERMISSION_FULL_MODIFICATION
+				|| parent.getParent() == null)
 			return false;
-		}
-
-		children = parent.getParent().getChildren();
+		
+		// try to place in grand parent
+		if (parent.getParent().acceptsType(entry.getType()))
+			return true;
+		
+		// walk parent siblings till we find one it can go into.
+		List children = parent.getParent().getChildren();
 		int parentIndex = children.indexOf(parent);
+		PaletteEntry parentSibling = null;
+		
 		for (int i = parentIndex - 1; i >= 0; i--) {
-			PaletteContainer parentSibling = (PaletteContainer)children.get(i);
-			if (parentSibling.getUserModificationPermission()
-						== PaletteEntry.PERMISSION_FULL_MODIFICATION) {
-				return true;
+			parentSibling = (PaletteEntry)children.get(i);
+			if (parentSibling instanceof PaletteContainer) {
+				if (((PaletteContainer)parentSibling).acceptsType(entry.getType()))
+					return true;
 			}
 		}
+	
 		return false;
-	}
+	}	
 }
 
 /**
@@ -148,8 +157,9 @@ public boolean canMoveUp(PaletteEntry entry) {
  * @return	The List of PaletteEntryFactories
  */
 public List getNewEntryFactories() {
-	List list = new ArrayList(3);
+	List list = new ArrayList(4);
 	list.add(new PaletteSeparatorFactory());
+	list.add(new PaletteStackFactory());
 	list.add(new PaletteDrawerFactory());
 	return list;
 }
@@ -195,19 +205,34 @@ public void performMoveDown(PaletteEntry entry) {
 	PaletteContainer parent = entry.getParent();
 	if (!parent.moveDown(entry)) {
 		// This is the case of a PaletteEntry that is its parent's last child
-		parent.remove(entry);
-		PaletteContainer grandparent = parent.getParent();
-		List parents = grandparent.getChildren();
-		int index = parents.indexOf(parent);
-		PaletteContainer parentSibling = null;
-		for (int i = index + 1; i < parents.size(); i++) {
-			parentSibling = (PaletteContainer) parents.get(i);
-			if (parentSibling.getUserModificationPermission()
-						== PaletteEntry.PERMISSION_FULL_MODIFICATION) {
-				break;
+		// and will have to move down into the next slot in the grandparent
+		PaletteEntry parentSibling = null;
+		PaletteContainer newParent = parent.getParent();
+		int insertionIndex = 0;
+		
+		if (newParent.acceptsType(entry.getType()))
+			insertionIndex = newParent.getChildren().indexOf(parent) + 1;
+		else {		
+			List parents = newParent.getChildren();
+			
+			for (int i = parents.indexOf(parent) + 1; i < parents.size(); i++) {
+				parentSibling = (PaletteEntry)parents.get(i);
+				if (parentSibling instanceof PaletteContainer) {
+					newParent = (PaletteContainer)parentSibling;
+					if (newParent.acceptsType(entry.getType())) {
+						break;
+					}
+				}
 			}
 		}
-		parentSibling.add(0, entry);
+		
+		parent.remove(entry);
+		
+		// fix for stack going away and messing up insertionIndex.
+		if (insertionIndex != 0 && newParent.getChildren().indexOf(parent) == -1)
+			insertionIndex -= 1;
+		
+		newParent.add(insertionIndex, entry);
 	}
 }
 
@@ -224,19 +249,31 @@ public void performMoveUp(PaletteEntry entry) {
 	PaletteContainer parent = entry.getParent();
 	if (!parent.moveUp(entry)) {
 		//This is the case of a PaletteEntry that is its parent's first child
-		parent.remove(entry);
-		PaletteContainer grandparent = parent.getParent();
-		List parents = grandparent.getChildren();
-		int index = parents.indexOf(parent);
-		PaletteContainer parentSibling = null;
-		for (int i = index - 1; i >= 0; i--) {
-			parentSibling = (PaletteContainer) parents.get(i);
-			if (parentSibling.getUserModificationPermission()
-						== PaletteEntry.PERMISSION_FULL_MODIFICATION) {
-				break;
+		//and we should move up in the grand parent.
+		PaletteEntry parentSibling = null;
+		PaletteContainer newParent = parent.getParent();
+		int insertionIndex = 0;
+		
+		if (newParent.acceptsType(entry.getType()))
+			insertionIndex = newParent.getChildren().indexOf(parent);
+		else {		
+			List parents = newParent.getChildren();
+			
+			for (int i = parents.indexOf(parent) - 1; i >= 0; i--) {
+				parentSibling = (PaletteEntry)parents.get(i);
+				if (parentSibling instanceof PaletteContainer) {
+					newParent = (PaletteContainer)parentSibling;
+					if (newParent.acceptsType(entry.getType())) {
+						insertionIndex = newParent.getChildren().size();
+						break;
+					}
+				}
 			}
 		}
-		parentSibling.add(entry);
+		
+		parent.remove(entry);
+	
+		newParent.add(insertionIndex, entry);
 	}
 }
 
