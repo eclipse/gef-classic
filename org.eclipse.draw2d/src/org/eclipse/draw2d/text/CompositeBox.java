@@ -11,10 +11,11 @@
 package org.eclipse.draw2d.text;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
- * A FlowBox that can contain other BlockInfos. The contained BlockInfos are called
+ * A FlowBox that can contain other FlowBoxes. The contained FlowBoxes are called
  * <i>fragments</i>.
  * @author hudsonr
  * @since 2.1 */
@@ -44,14 +45,6 @@ public void clear() {
 	resetInfo();
 }
 
-/**
- * Overridden to ensure that the CompositeBox is valid.
- * @see FlowBox#getBounds() */
-//public Rectangle getBounds() {
-//	validate();
-//	return this;
-//}
-
 /** * @return the List of fragments */
 public List getFragments() {
 	return fragments;
@@ -65,10 +58,17 @@ public int getRecommendedWidth() {
 	return recommendedWidth;
 }
 
-//public int getInnerTop() {
-//	validate();
-//	return y;
-//}
+/**
+ * @see org.eclipse.draw2d.text.FlowBox#isBidi()
+ */
+public boolean isBidi() {
+	for (Iterator iter = getFragments().iterator(); iter.hasNext();) {
+		FlowBox box = (FlowBox)iter.next();
+		if (box.isBidi())
+			return true;
+	}
+	return false;
+}
 
 /** * @see org.eclipse.draw2d.geometry.Rectangle#isEmpty() */
 public boolean isOccupied() {
