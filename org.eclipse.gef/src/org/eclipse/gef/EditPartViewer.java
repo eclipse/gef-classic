@@ -86,11 +86,9 @@ interface Conditional {
 }
 
 /**
- * Adds a <code>TransferDragSourceListener</code> to this viewer. This has the side-effect
- * of creating a {@link org.eclipse.swt.dnd.DragSource} on the viewer's Control. A Control
- * can only have a single DragSource. Clients must not create their own DragSource when
- * using this method.
- * @param listener the listener
+ * Provided for compatibility with existing code.
+ * @param listener a drag source listener
+ * @deprecated @see #addDragSourceListener(TransferDragSourceListener)
  */
 void addDragSourceListener(org.eclipse.gef.dnd.TransferDragSourceListener listener);
 
@@ -104,11 +102,9 @@ void addDragSourceListener(org.eclipse.gef.dnd.TransferDragSourceListener listen
 void addDragSourceListener(TransferDragSourceListener listener);
 
 /**
- * Adds a <code>TransferDropTargetListener</code> to this viewer. This has the side-effect
- * of creating a {@link org.eclipse.swt.dnd.DropTarget} on the viewer's Control. A Control
- * can only have a single DropTarget. Clients must not create their own DropTarget when
- * using this method.
+ * Provided for compatibility with existing code.
  * @param listener the listener
+ * @deprecated @see #addDropTargetListener(TransferDropTargetListener)
  */
 void addDropTargetListener(org.eclipse.gef.dnd.TransferDropTargetListener listener);
 
@@ -459,9 +455,13 @@ void setFocus(EditPart focus);
 void setKeyHandler(KeyHandler keyHandler);
 
 /**
- * Sets a viewer property to the given value.
- * @param propertyName
- * @param value
+ * Sets a property on this viewer.  A viewer property is an arbitrary key-value pair that
+ * can be queried and observed via {@link
+ * #addPropertyChangeListener(PropertyChangeListener)}.  A <code>null</code> value will
+ * remove the property from the viewer.
+ * @param propertyName a unique string identifying the property 
+ * @param value the properties new value or <code>null</code> to remove
+ * @since 3.0
  */
 void setProperty(String propertyName, Object value);
 

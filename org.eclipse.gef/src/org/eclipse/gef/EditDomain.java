@@ -119,6 +119,11 @@ public Tool getDefaultTool() {
 	return defaultTool;
 }
 
+/**
+ * Returns the palette viewer currently associated with this domain.
+ * @since 1.0
+ * @return The current palette viewer
+ */
 public PaletteViewer getPaletteViewer() {
 	return paletteViewer;
 }

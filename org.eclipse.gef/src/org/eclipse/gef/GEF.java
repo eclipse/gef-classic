@@ -27,21 +27,53 @@ static int msgCount;
 static int tab;
 static NumberFormat formatter = new DecimalFormat();
 
-public static boolean
-	DebugTools = false,
-	DebugEvents = false,
-	DebugEditParts = false,
-	DebugPainting = false,
-	DebugFeedback = false,
-	GlobalDebug = false,
-	DebugToolStates = false,
-	DebugDND = false;
+/**
+ * @deprecated
+ */
+public static boolean DebugTools = false;
+/**
+ * @deprecated
+ */
+public static boolean DebugEvents = false;
+/**
+ * @deprecated
+ */
+public static boolean DebugEditParts = false;
+/**
+ * @deprecated
+ */
+public static boolean DebugPainting = false;
+/**
+ * @deprecated
+ */
+public static boolean DebugFeedback = false;
+/**
+ * @deprecated
+ */
+public static boolean GlobalDebug = false;
+/**
+ * @deprecated
+ */
+public static boolean DebugToolStates = false;
+/**
+ * @deprecated
+ */
+public static boolean DebugDND = false;
 
+/**
+ * Clears the trace console if active
+ * @since 1.0
+ */
 public static void clearConsole() {
 	if (text == null) return;
 	text.setText("");//$NON-NLS-1$
 }
 
+/**
+ * Sets a text control to be used as a console.
+ * @since 1.0
+ * @param textBox the text control for streaming
+ */
 public static void setConsole(Text textBox) {
 	msgCount = 0;
 	formatter.setMinimumIntegerDigits(2);
@@ -49,15 +81,29 @@ public static void setConsole(Text textBox) {
 	text = textBox;
 }
 
+/**
+ * decrements the tracing indentation
+ * @since 2.0
+ */
 public static void debugPop() {
 	tab--;
 }
 
+/**
+ * Prints the given string to a trace window and increments indentation.
+ * @since 2.0
+ * @param heading the message describing the indented text to follow
+ */
 public static void debugPush(String heading) {
 	debug(heading);
 	tab++;
 }
 
+/**
+ * Prints the given message to a trace window if available.
+ * @since 1.0
+ * @param message a debug message
+ */
 public static void debug(String message) {
 	String lineNumber = formatter.format(new Long(msgCount++));
 	msgCount %= 100;
@@ -67,8 +113,5 @@ public static void debug(String message) {
 	if (text != null)
 		text.append('\n' + lineNumber + '\t' + indent + message);
 }
-
-public static void hack() { }
-public static void optimize() { }
 
 }
