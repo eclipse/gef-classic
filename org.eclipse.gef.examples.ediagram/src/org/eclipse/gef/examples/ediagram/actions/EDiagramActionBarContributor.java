@@ -11,7 +11,6 @@
 package org.eclipse.gef.examples.ediagram.actions;
 
 import org.eclipse.jface.action.IToolBarManager;
-import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.actions.ActionFactory;
 
 import org.eclipse.gef.ui.actions.ActionBarContributor;
@@ -40,8 +39,8 @@ public void contributeToToolBar(IToolBarManager toolBarManager) {
 }
 
 protected void declareGlobalActionKeys() {
-	addGlobalActionKey(IWorkbenchActionConstants.PRINT);
-	addGlobalActionKey(IWorkbenchActionConstants.SELECT_ALL);
+	addGlobalActionKey(ActionFactory.PRINT.getId());
+	addGlobalActionKey(ActionFactory.SELECT_ALL.getId());
 }
 
 }
