@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fileset-config file-format-version="1.0.0">
+    <fileset check-config-name="GEF Checks" enabled="true" name="java">
+        <file-match-pattern include-pattern="true" match-pattern=".java$"/>
+        <file-match-pattern include-pattern="false" match-pattern="org.eclipse.*.internal.*.java$"/>
+    </fileset>
+</fileset-config>
