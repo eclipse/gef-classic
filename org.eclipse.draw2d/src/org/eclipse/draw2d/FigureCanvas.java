@@ -298,7 +298,7 @@ public void scrollToX(int hOffset) {
 	getViewport().setIgnoreScroll(true);
 	getViewport().setHorizontalLocation(hOffset);
 	getViewport().setIgnoreScroll(false);
-//	redraw(expose.x, expose.y, expose.width, expose.height, true);
+	redraw(expose.x, expose.y, expose.width, expose.height, true);
 }
 
 /**
@@ -331,7 +331,7 @@ public void scrollToY(int vOffset) {
 	getViewport().setIgnoreScroll(true);
 	getViewport().setVerticalLocation(vOffset);
 	getViewport().setIgnoreScroll(false);
-//	redraw(expose.x, expose.y, expose.width, expose.height, true);
+	redraw(expose.x, expose.y, expose.width, expose.height, true);
 }
 
 /**
