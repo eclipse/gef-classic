@@ -55,7 +55,8 @@ private int printMode = TILE;
  * <p>
  * Note: Descendants must call setPrintSource(IFigure) to set the IFigure that is to be 
  * printed.
- * @see org.eclipse.draw2d.PrintOperation#PrintOperation(Printer) */
+ * @see org.eclipse.draw2d.PrintOperation#PrintOperation(Printer)
+ */
 protected PrintFigureOperation(Printer p) {
 	super(p);
 }
@@ -98,7 +99,9 @@ protected void preparePrintSource() {
 }
 
 /**
- * Prints the pages based on the current print mode. * @see org.eclipse.draw2d.PrintOperation#printPages() */
+ * Prints the pages based on the current print mode.
+ * @see org.eclipse.draw2d.PrintOperation#printPages()
+ */
 protected void printPages() {
 	Graphics graphics = getFreshPrinterGraphics();
 	IFigure figure = getPrintSource();
@@ -127,7 +130,8 @@ protected void printPages() {
 /**
  * Sets up Graphics object for the given IFigure.
  * @param graphics The Graphics to setup
- * @param figure The IFigure used to setup graphics */
+ * @param figure The IFigure used to setup graphics
+ */
 protected void setupPrinterGraphicsFor(Graphics graphics, IFigure figure) {
 	double dpiScale = getPrinter().getDPI().x / Display.getCurrent().getDPI().x;
 	
