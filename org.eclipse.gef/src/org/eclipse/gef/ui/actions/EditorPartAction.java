@@ -6,20 +6,19 @@ package org.eclipse.gef.ui.actions;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.jface.action.*;
-import org.eclipse.ui.IEditorPart;
-
-
 import org.eclipse.gef.Disposable;
+import org.eclipse.gef.Updatable;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CommandStack;
+import org.eclipse.jface.action.Action;
+import org.eclipse.ui.IEditorPart;
 
 /**
  * Base class for actions used by GEF editors.
  */
 public abstract class EditorPartAction
 	extends Action
-	implements Disposable
+	implements Disposable, Updatable
 {
 
 /*
@@ -43,13 +42,9 @@ public EditorPartAction(IEditorPart editor) {
 protected abstract boolean calculateEnabled();
 
 /**
- * Called when the action is about to be disposed.  Subclasses
- * should override {@link #unhookEditorPart()} instead of this
- * method to perform any final clean-up.
+ * Called when the action is about to be disposed.
  */
-public void dispose(){
-	unhookEditorPart();
-}
+public void dispose() {}
 
 /**
  * Executes the given {@link Command}.
@@ -75,11 +70,6 @@ protected IEditorPart getEditorPart() {
 }
 
 /**
- * Adds any needed listeners.
- */
-protected void hookEditorPart() {}
-
-/**
  * Initializes this action.
  */
 protected void init(){}
@@ -94,7 +84,7 @@ public boolean isEnabled() {
 /**
  * Refreshes the properties of this action.
  */
-protected void refresh(){
+protected void refresh() {
 	setEnabled(calculateEnabled());
 }
 
@@ -103,13 +93,13 @@ protected void refresh(){
  */
 protected void setEditorPart(IEditorPart part) {
 	editorPart = part;
-	if (editorPart != null)
-		hookEditorPart();
 }
 
 /**
- * Remove any needed listeners.
+ * @see org.eclipse.gef.Updatable#update()
  */
-protected void unhookEditorPart(){}
+public void update() {
+	refresh();
+}
 
 }
