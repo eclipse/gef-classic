@@ -39,8 +39,8 @@ protected ThumbDragger thumbDragger = new ThumbDragger();
 
 private boolean isHorizontal = false;
 
-private int pageIncrement = 20;
-private int stepIncrement = 5;
+private int pageIncrement = 50;
+private int stepIncrement = 10;
 
 final protected Transposer transposer = new Transposer();
 

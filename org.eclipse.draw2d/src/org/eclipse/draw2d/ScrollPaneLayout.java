@@ -111,8 +111,18 @@ public void layout(IFigure parent) {
 	}
 	vBar.setVisible(result.showV);
 	hBar.setVisible(result.showH);
-	hBar.setPageIncrement(hBar.getRangeModel().getExtent());
-	vBar.setPageIncrement(vBar.getRangeModel().getExtent());
+	
+	int vStepInc = vBar.getStepIncrement();
+	int vPageInc = vBar.getRangeModel().getExtent() - vStepInc;
+	if (vPageInc < vStepInc)
+		vPageInc = vStepInc;
+	vBar.setPageIncrement(vPageInc);
+	
+	int hStepInc = hBar.getStepIncrement();
+	int hPageInc = hBar.getRangeModel().getExtent() - hStepInc;
+	if (hPageInc < hStepInc)
+		hPageInc = hStepInc;
+	hBar.setPageIncrement(hPageInc);
 }
 
 }
