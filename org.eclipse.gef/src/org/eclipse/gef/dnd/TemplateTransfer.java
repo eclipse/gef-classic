@@ -18,10 +18,10 @@ public class TemplateTransfer
 	extends SimpleObjectTransfer
 {
 
-private static final TemplateTransfer instance = new TemplateTransfer();
+private static final TemplateTransfer INSTANCE = new TemplateTransfer();
 private static final String TYPE_NAME = "Template transfer"//$NON-NLS-1$
 	+ System.currentTimeMillis()
-	+ ":" + instance.hashCode();//$NON-NLS-1$
+	+ ":" + INSTANCE.hashCode();//$NON-NLS-1$
 private static final int TYPEID = registerType(TYPE_NAME);
 
 private TemplateTransfer() { }
@@ -31,7 +31,7 @@ private TemplateTransfer() { }
  * @return the singleton
  */
 public static TemplateTransfer getInstance() {
-	return instance;
+	return INSTANCE;
 }
 
 /**

@@ -20,9 +20,7 @@ import org.eclipse.gef.*;
 import org.eclipse.gef.tools.SelectEditPartTracker;
 
 /**
- * Provides support for connections based 
- * EditParts.
- *
+ * The base implementation for {@link org.eclipse.gef.ConnectionEditPart}.
  */
 public abstract class AbstractConnectionEditPart
 	extends AbstractGraphicalEditPart

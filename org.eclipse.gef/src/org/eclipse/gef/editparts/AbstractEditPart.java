@@ -83,13 +83,15 @@ protected static class EditPolicyIterator {
 
 	/**
 	 * Constructs an Iterator for the given <code>List</code>.
+	 * @param list the list of policies.
 	 */
 	public EditPolicyIterator(List list) {
 		iter = list.iterator();
 	}
 
 	/**
-	 * 
+	 * Returns the next non-<code>null</code> EditPolicy.
+	 * @return the next non-<code>null</code> EditPolicy.
 	 */
 	public EditPolicy next() {
 		Object temp = next;
@@ -609,9 +611,7 @@ public EditPart getTargetEditPart(Request request) {
 }
 
 /**
- * A convenience method which uses the Root to obtain the EditPartViewer.
- * @throws NullPointerException if the root is not found
- * @return the EditPartViewer
+ * @see org.eclipse.gef.EditPart#getViewer()
  */
 public EditPartViewer getViewer() {
 	return getRoot().getViewer();

@@ -15,6 +15,14 @@ import org.eclipse.jface.viewers.*;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
+/**
+ * A adapter for an outline page containing a single EditPartViewer. This class handles
+ * selection processing and widget focus. There is no need to manage viewer lifecycle. 
+ * When <code>dispose()</code> is called in the superclass, the EditPartViewer will
+ * receive widget dispose callback, and perform any necessary cleanup. This class is just
+ * an adapter.
+ * @author hudsonr
+ */
 public class ContentOutlinePage 
 	extends org.eclipse.ui.part.Page 
 	implements org.eclipse.ui.views.contentoutline.IContentOutlinePage
@@ -24,65 +32,73 @@ private EditPartViewer viewer;
 private Control control;
 
 /**
- * The constructor for the Outline Page.  It takes an EditPartViewer.
+ * Constructs a ContentOutlinePage for the given viewer.
+ * @param viewer the viewer
  */
-public ContentOutlinePage(EditPartViewer viewer){
+public ContentOutlinePage(EditPartViewer viewer) {
 	this.viewer = viewer;
 }
 
-/* (non-Javadoc)
- * Method declared on ISelectionProvider.
+/**
+ * @see ISelectionProvider#addSelectionChangedListener(ISelectionChangedListener)
  */
-public void addSelectionChangedListener(ISelectionChangedListener listener){
+public void addSelectionChangedListener(ISelectionChangedListener listener) {
 	getViewer().addSelectionChangedListener(listener);
 }
 
 /**
- * Creates the control for the viewer.  
+ * Forwards the createControl request to the editpartviewer.
+ * @see org.eclipse.ui.part.IPage#createControl(org.eclipse.swt.widgets.Composite)
  */
-public void createControl(Composite parent){
+public void createControl(Composite parent) {
 	control = getViewer().createControl(parent);
 }
 
 /**
- * Returns the control of the GEFgetViewer()
+ * @see org.eclipse.ui.part.IPage#getControl()
  */
-public Control getControl(){
+public Control getControl() {
 	return control;
 }
 
-/* (non-Javadoc)
- * Method declared on ISelectionProvider.
+/**
+ * Forwards selection request to the viewer.
+ * @see org.eclipse.jface.viewers.ISelectionProvider#getSelection()
  */
-public ISelection getSelection(){
+public ISelection getSelection() {
+	//$TODO when could this even happen?
 	if (getViewer() == null)
 		return StructuredSelection.EMPTY;
 	return getViewer().getSelection();
 }
 
-protected EditPartViewer getViewer(){
+/**
+ * Returns the EditPartViewer
+ * @return the viewer
+ */
+protected EditPartViewer getViewer() {
 	return viewer;
 }
 
-/* (non-Javadoc)
- * Method declared on ISelectionProvider.
+/**
+ * @see ISelectionProvider#removeSelectionChangedListener(ISelectionChangedListener)
  */
-public void removeSelectionChangedListener(ISelectionChangedListener listener){
+public void removeSelectionChangedListener(ISelectionChangedListener listener) {
 	getViewer().removeSelectionChangedListener(listener);
 }
 
 /**
  * Sets focus to a part in the page.
  */
-public void setFocus(){
+public void setFocus() {
 	if (getControl() != null)
 		getControl().setFocus();
 }
 
-/* (non-Javadoc)
- * Method declared on ISelectionProvider.
+/**
+ * @see ISelectionProvider#setSelection(org.eclipse.jface.viewers.ISelection)
  */
-public void setSelection(ISelection selection){
+public void setSelection(ISelection selection) {
 	if (getViewer() != null)
 		getViewer().setSelection(selection);
 }

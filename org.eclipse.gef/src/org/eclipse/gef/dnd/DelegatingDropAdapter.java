@@ -10,9 +10,7 @@
  *******************************************************************************/
 package org.eclipse.gef.dnd;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import org.eclipse.swt.dnd.*;
 
@@ -203,7 +201,9 @@ public void removeDropTargetListener(TransferDropTargetListener listener) {
 /**
  * Returns <code>true</code> if the new listener is different than the previous
  */
-private boolean setCurrentListener(TransferDropTargetListener listener, DropTargetEvent event) {
+private boolean setCurrentListener(
+	TransferDropTargetListener listener,
+	DropTargetEvent event) {
 	if (currentListener == listener)
 		return false;
 	if (currentListener != null)

@@ -13,7 +13,17 @@ package org.eclipse.gef.commands;
 import java.util.*;
 
 /**
- * A default implementation for the CommandStack interface.
+ * An implementation of a command stack.  A command stack manages the executing, undoing,
+ * and redoing of {@link Command Commands}.  Executed commands are pushed onto an undo
+ * stack. Commands that are undone are pushed onto a Redo stack. Whenever a new command is
+ * executed, the Redo stack is flushed.
+ * <P>
+ * A CommandStack contains a dirty property. This property can be used to determine
+ * when persisting the Commands' changes is required. The stack is dirty whenever the last
+ * executed or redone command is different than the command that was at the top of the
+ * undo stack when {@link #markSaveLocation()} was last called. Upon construction, the
+ * undo stack is empty, and is not dirty.
+ * 
  * @author hudsonr
  */
 public class CommandStack {
@@ -29,7 +39,7 @@ private Stack redo = new Stack();
 protected List listeners = new ArrayList();
 
 /**
- * Constructs a command stack.
+ * Constructs a command stack. By default, there is no undo limit.
  */
 public CommandStack() { }
 
@@ -147,10 +157,20 @@ public int getUndoLimit() {
 	return undoLimit;
 }
 
+/**
+ * Returns true if the stack is dirty. The stack is dirty whenever the last executed or
+ * redone command is different than the command that was at the top of the undo stack when
+ * {@link #markSaveLocation()} was last called. 
+ * @return <code>true</code> if the stack is dirty
+ */
 public boolean isDirty() {
 	return undo.size() != saveLocation;
 }
 
+/**
+ * Marks the last executed or redone Command as the point at which the changes were saved.
+ * Calculation of {@link #isDirty()} will be based on this checkpoint.
+ */
 public void markSaveLocation() {
 	saveLocation = undo.size();
 	notifyListeners();

@@ -32,13 +32,26 @@ public class FreeformGraphicalRootEditPart
 	implements RootEditPart, LayerConstants, LayerManager
 {
 
+/**
+ * @deprecated call getContents()
+ */
 protected EditPart contents;
+
+/**
+ * @deprecated call getViewer()
+ */
 protected EditPartViewer viewer;
 private LayeredPane innerLayers;
 private LayeredPane printableLayers;
 
-protected void createEditPolicies(){}
+/**
+ * @see org.eclipse.gef.editparts.AbstractEditPart#createEditPolicies()
+ */
+protected void createEditPolicies() { }
 
+/**
+ * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
+ */
 protected IFigure createFigure() {
 	FreeformViewport viewport = new FreeformViewport();
 	innerLayers = new FreeformLayeredPane();
@@ -47,12 +60,20 @@ protected IFigure createFigure() {
 	return viewport;
 }
 
+/**
+ * Creates the top-most set of layers on the given layered pane.
+ * @param layeredPane the parent for the created layers
+ */
 protected void createLayers(LayeredPane layeredPane) {
 	layeredPane.add(getPrintableLayers(), PRINTABLE_LAYERS);
 	layeredPane.add(new FreeformLayer(), HANDLE_LAYER);
 	layeredPane.add(new FeedbackLayer(), FEEDBACK_LAYER);
 }
 
+/**
+ * Returns the set of layers that should be printed.
+ * @return a LayeredPane containing the layers which are printable.
+ */
 protected LayeredPane createPrintableLayers() {
 	FreeformLayeredPane layeredPane = new FreeformLayeredPane();
 	layeredPane.add(new FreeformLayer(), PRIMARY_LAYER);

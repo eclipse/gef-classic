@@ -10,9 +10,7 @@
  *******************************************************************************/
 package org.eclipse.gef.dnd;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import org.eclipse.swt.dnd.*;
 
@@ -161,9 +159,10 @@ public void removeDragSourceListener(TransferDragSourceListener listener) {
 }
 
 /**
- * Updates the current listener to one that can handle the drag.  There can be many listeners 
- * and each listener may be able to handle many TransferData types.  The first listener found 
- * that can handle a drag of one of the given TransferData types will be selected.
+ * Updates the current listener to one that can handle the drag. There can be many
+ * listeners  and each listener may be able to handle many TransferData types.  The first
+ * listener found  that can handle a drag of one of the given TransferData types will be
+ * selected.
  */
 private void updateCurrentListener(DragSourceEvent event) {
 	currentListener = null;

@@ -384,6 +384,10 @@ private void resetHover() {
 	}
 }
 
+/**
+ * Sets the current autoexpose helper.
+ * @param helper the autoexpose helper
+ */
 protected void setAutoexposeHelper(AutoexposeHelper helper) {
 	exposeHelper = helper;
 }
