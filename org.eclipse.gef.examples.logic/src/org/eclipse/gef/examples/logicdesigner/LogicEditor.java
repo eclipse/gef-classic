@@ -56,7 +56,7 @@ import org.eclipse.gef.examples.logicdesigner.model.LogicRuler;
 import org.eclipse.gef.examples.logicdesigner.palette.LogicPaletteCustomizer;
 import org.eclipse.gef.examples.logicdesigner.rulers.LogicRulerProvider;
 
-public class LogicEditor 
+public class LogicEditor
 	extends GraphicalEditor
 {
 
@@ -350,6 +350,18 @@ protected void configureGraphicalViewer() {
 	IAction showRulers = new ToggleRulerVisibilityAction(getGraphicalViewer());
 	getActionRegistry().registerAction(showRulers);
 	getSite().getKeyBindingService().registerAction(showRulers);
+	
+	viewer.setProperty(SnapToGeometry.PROPERTY_SNAP_ENABLED, 
+			new Boolean(getLogicDiagram().isSnapToGeometryEnabled()));
+	IAction snapAction = new ToggleSnapToGeometryAction(getGraphicalViewer());
+	getActionRegistry().registerAction(snapAction);
+	getSite().getKeyBindingService().registerAction(snapAction);
+
+	viewer.setProperty(SnapToGrid.PROPERTY_GRID_ENABLED, 
+			new Boolean(getLogicDiagram().isGridEnabled()));
+	IAction showGrid = new ToggleGridAction(getGraphicalViewer());
+	getActionRegistry().registerAction(showGrid);
+	getSite().getKeyBindingService().registerAction(showGrid);
 }
 
 protected void createOutputStream(OutputStream os)throws IOException {
@@ -427,8 +439,8 @@ public Object getAdapter(Class type){
 			}
 			protected void hookPaletteViewer() {
 				super.hookPaletteViewer();
-				final CopyTemplateAction copy = 
-				(CopyTemplateAction)getActionRegistry().getAction(GEFActionConstants.COPY);
+				final CopyTemplateAction copy = (CopyTemplateAction)getActionRegistry()
+						.getAction(GEFActionConstants.COPY);
 				getPaletteViewer().addSelectionChangedListener(copy);
 				getPaletteViewer().getContextMenu().addMenuListener(new IMenuListener() {
 					public void menuAboutToShow(IMenuManager manager) {

@@ -40,6 +40,8 @@ protected List children = new ArrayList();
 protected LogicRuler leftRuler, topRuler;
 protected Integer connectionRouter = null;
 private boolean rulersVisibility = true;
+private boolean snapToGeometry = false;
+private boolean gridEnabled = false;
 
 public LogicDiagram() {
 	size.width = 100;
@@ -127,6 +129,14 @@ public boolean getRulerVisibility() {
 	return rulersVisibility;
 }
 
+public boolean isGridEnabled() {
+	return gridEnabled;
+}
+
+public boolean isSnapToGeometryEnabled() {
+	return snapToGeometry;
+}
+
 private void readObject(java.io.ObjectInputStream s)
 		throws IOException, ClassNotFoundException {
 	s.defaultReadObject();
@@ -150,6 +160,14 @@ public void setPropertyValue(Object id, Object value){
 
 public void setRulerVisibility(boolean newValue) {
 	rulersVisibility = newValue;
+}
+
+public void setGridEnabled(boolean isEnabled) {
+	gridEnabled = isEnabled;
+}
+
+public void setSnapToGeometry(boolean isEnabled) {
+	snapToGeometry = isEnabled;
 }
 
 public String toString(){

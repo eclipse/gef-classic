@@ -15,6 +15,8 @@ import org.eclipse.gef.requests.ChangeBoundsRequest;
  */
 public class SnapToGeometry implements SnapToStrategy {
 	
+public static final String PROPERTY_SNAP_ENABLED = "SnapToGeometry - $Property"; //$NON-NLS-1$
+	
 public static final String HORIZONTAL_ANCHOR = "SnapToGeometry - $H Anchor"; //$NON-NLS-1$
 public static final String VERTICAL_ANCHOR = "SnapToGeometry - $V Anchor"; //$NON-NLS-1$
 

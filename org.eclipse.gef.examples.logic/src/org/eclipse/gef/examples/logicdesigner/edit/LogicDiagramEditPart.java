@@ -24,6 +24,7 @@ import org.eclipse.gef.editpolicies.SnapFeedbackPolicy;
 import org.eclipse.gef.requests.SelectionRequest;
 import org.eclipse.gef.tools.DeselectAllTracker;
 import org.eclipse.gef.tools.MarqueeDragTracker;
+import org.eclipse.gef.ui.parts.RulerProvider;
 
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
 import org.eclipse.gef.examples.logicdesigner.model.LogicDiagram;
@@ -81,10 +82,25 @@ protected IFigure createFigure() {
  */
 public Object getAdapter(Class adapter) {
 	if (adapter == SnapToStrategy.class) {
-		SnapToStrategy ss[] = new SnapToStrategy[3];
-		ss[0] = new SnapToGuides(this);
-		ss[1] = new SnapToGeometry(this);
-		ss[2] = new SnapToGrid(this);
+		List snapStrategies = new ArrayList();
+		Boolean val = (Boolean)getViewer().getProperty(SnapToGeometry.PROPERTY_SNAP_ENABLED);
+		if (val != null && val.booleanValue())
+			snapStrategies.add(new SnapToGeometry(this));
+		val = (Boolean)getViewer().getProperty(RulerProvider.RULER_VISIBILITY);
+		if (val != null && val.booleanValue())
+			snapStrategies.add(new SnapToGuides(this));
+		val = (Boolean)getViewer().getProperty(SnapToGrid.PROPERTY_GRID_ENABLED);
+		if (val != null && val.booleanValue())
+			snapStrategies.add(new SnapToGrid(this));
+		
+		if (snapStrategies.size() == 0)
+			return null;
+		if (snapStrategies.size() == 1)
+			return (SnapToStrategy)snapStrategies.get(0);
+
+		SnapToStrategy ss[] = new SnapToStrategy[snapStrategies.size()];
+		for (int i = 0; i < snapStrategies.size(); i++)
+			ss[i] = (SnapToStrategy)snapStrategies.get(i);
 		return new CompoundSnapToStrategy(ss);
 	}
 	return super.getAdapter(adapter);

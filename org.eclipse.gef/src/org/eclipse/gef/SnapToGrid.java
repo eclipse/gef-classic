@@ -11,6 +11,8 @@ import org.eclipse.gef.requests.ChangeBoundsRequest;
  */
 public class SnapToGrid implements SnapToStrategy {
 	
+public static final String PROPERTY_GRID_ENABLED = "SnapToGrid + $Property"; //$NON-NLS-1$
+	
 private GraphicalEditPart container;
 private int gridX = 10, gridY = 10;
 

@@ -97,9 +97,13 @@ public static String ZoomIn_Tooltip = Helper.getString("%ZoomIn.Tooltip");//$NON
 public static String ZoomOut_Label = Helper.getString("%ZoomOut.Label");//$NON-NLS-1$
 public static String ZoomOut_Tooltip = Helper.getString("%ZoomOut.Tooltip");//$NON-NLS-1$
 
-// Strings for toggle ruler visibility action
+// View menu actions
 public static String ToggleRulerVisibility_Label = Helper.getString("%ToggleRuler.Label"); //$NON-NLS-1$
 public static String ToggleRulerVisibility_Tooltip = Helper.getString("%ToggleRuler.Tooltip"); //$NON-NLS-1$
+public static String ToggleSnapToGeometry_Label = Helper.getString("%ToggleSnap.Label"); //$NON-NLS-1$
+public static String ToggleSnapToGeometry_Tooltip = Helper.getString("%ToggleSnap.Tooltip"); //$NON-NLS-1$
+public static String ToggleGrid_Label = Helper.getString("%ToggleGrid.Label"); //$NON-NLS-1$
+public static String ToggleGrid_Tooltip = Helper.getString("%ToggleGrid.Tooltip"); //$NON-NLS-1$
 
 // Palette view Strings
 public static String Palette_Label = Helper.getString("%Palette.Label"); //$NON-NLS-1$
