@@ -40,6 +40,7 @@ public Object getObject() {
  * @see org.eclipse.swt.dnd.Transfer#javaToNative(Object, TransferData)
  */
 public void javaToNative(Object object, TransferData transferData) {
+	setObject(object);
 	startTime = System.currentTimeMillis();
 	if (transferData != null)
 		super.javaToNative(String.valueOf(startTime).getBytes(), transferData);
