@@ -78,7 +78,7 @@ public int snapCreateRequest(CreateRequest request, PrecisionRectangle baseRect,
 		double bottom = Math.IEEEremainder(baseRect.preciseBottom() - origin.y, gridY);
 		baseRect.preciseHeight -= bottom;
 	}
-	baseRect.updateInts();
+//	baseRect.updateInts();
 //	System.out.println(baseRect);
 //	System.out.println("=================="); 
 	fig.translateToAbsolute(baseRect);
