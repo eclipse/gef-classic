@@ -16,7 +16,7 @@ public class CopyRetargetAction extends RetargetAction {
  * Constructs a new CopyRetargetAction with the default ID, label and image.
  */
 public CopyRetargetAction() {
-	super(IWorkbenchActionConstants.COPY, GEFMessages.CopyAction_ActionLabelText);
+	super(IWorkbenchActionConstants.COPY, GEFMessages.CopyAction_Label);
 	setImageDescriptor(WorkbenchImages.getImageDescriptor(
 								IWorkbenchGraphicConstants.IMG_CTOOL_COPY_EDIT));
 	setHoverImageDescriptor(WorkbenchImages.getImageDescriptor(

@@ -19,7 +19,7 @@ public class UndoRetargetAction extends LabelRetargetAction {
  */
 public UndoRetargetAction() {
 	super(IWorkbenchActionConstants.UNDO,
-			MessageFormat.format(GEFMessages.UndoAction_ActionLabelText, 
+			MessageFormat.format(GEFMessages.UndoAction_Label, 
 									new Object[] {""}).trim()); //$NON-NLS-1$
 	setImageDescriptor(WorkbenchImages.getImageDescriptor(
 								IWorkbenchGraphicConstants.IMG_CTOOL_UNDO_EDIT));

@@ -16,7 +16,7 @@ public class PasteRetargetAction extends RetargetAction {
  * Constructs a new PasteRetargetAction with the default ID, label and image.
  */
 public PasteRetargetAction() {
-	super(IWorkbenchActionConstants.PASTE, GEFMessages.PasteAction_ActionLabelText);
+	super(IWorkbenchActionConstants.PASTE, GEFMessages.PasteAction_Label);
 	setImageDescriptor(WorkbenchImages.getImageDescriptor(
 								IWorkbenchGraphicConstants.IMG_CTOOL_PASTE_EDIT));
 	setHoverImageDescriptor(WorkbenchImages.getImageDescriptor(

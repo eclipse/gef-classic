@@ -42,8 +42,8 @@ public DeleteAction(IEditorPart editor) {
  */
 protected void init(){
 	super.init();
-	setText(GEFMessages.DeleteAction_ActionLabelText);
-	setToolTipText(GEFMessages.DeleteAction_ActionToolTipText);
+	setText(GEFMessages.DeleteAction_Label);
+	setToolTipText(GEFMessages.DeleteAction_Tooltip);
 	setId(GEFActionConstants.DELETE);
 	setHoverImageDescriptor(
 		WorkbenchImages.getImageDescriptor(

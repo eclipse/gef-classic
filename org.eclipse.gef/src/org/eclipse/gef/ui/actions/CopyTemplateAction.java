@@ -50,7 +50,7 @@ public void dispose() {
  */
 protected void init() {
 	setId(GEFActionConstants.COPY);
-	setText(GEFMessages.CopyAction_ActionLabelText);
+	setText(GEFMessages.CopyAction_Label);
 }
 
 /**

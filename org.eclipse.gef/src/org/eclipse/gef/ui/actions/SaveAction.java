@@ -35,9 +35,8 @@ protected boolean calculateEnabled() {
  * Initializes this action's text.
  */
 protected void init(){
-	setText(GEFMessages.SaveAction_ActionLabelText + 
-			 GEFMessages.SaveAction_ActionShortcutText);
-	setToolTipText(GEFMessages.SaveAction_ActionToolTipText);
+	setText(GEFMessages.SaveAction_Label);
+	setToolTipText(GEFMessages.SaveAction_Tooltip);
 	setId(GEFActionConstants.SAVE);
 }
 

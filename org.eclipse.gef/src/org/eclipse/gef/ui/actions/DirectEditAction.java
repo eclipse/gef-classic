@@ -1,11 +1,12 @@
 package org.eclipse.gef.ui.actions;
 
 import org.eclipse.swt.widgets.Display;
+
 import org.eclipse.ui.IEditorPart;
 
-import org.eclipse.gef.*;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.Request;
+import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.internal.GEFMessages;
 
 public class DirectEditAction
@@ -62,8 +63,8 @@ public void setDirectEditRequest(Request req){
 
 protected void init() {
 	super.init();
-	setText(GEFMessages.RenameAction_ActionLabelText);
-	setToolTipText(GEFMessages.RenameAction_ActionToolTipText);
+	setText(GEFMessages.RenameAction_Label);
+	setToolTipText(GEFMessages.RenameAction_Tooltip);
 	setId(GEFActionConstants.DIRECT_EDIT);
 }
 

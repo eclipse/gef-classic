@@ -16,7 +16,7 @@ public class DeleteRetargetAction extends RetargetAction {
  * Constructs a new DeleteRetargetAction with the default ID, label and image.
  */
 public DeleteRetargetAction() {
-	super(IWorkbenchActionConstants.DELETE, GEFMessages.DeleteAction_ActionLabelText);
+	super(IWorkbenchActionConstants.DELETE, GEFMessages.DeleteAction_Label);
 	setImageDescriptor(WorkbenchImages.getImageDescriptor(
 								IWorkbenchGraphicConstants.IMG_CTOOL_DELETE_EDIT));
 	setHoverImageDescriptor(WorkbenchImages.getImageDescriptor(

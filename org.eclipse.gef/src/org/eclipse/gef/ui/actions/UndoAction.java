@@ -45,12 +45,12 @@ protected boolean calculateEnabled(){
 protected void init(){
 	super.init();
 	setToolTipText(MessageFormat.format(
-			GEFMessages.UndoAction_ToolTipText,	
+			GEFMessages.UndoAction_Tooltip,	
 			new Object[] {""}).trim());  //$NON-NLS-1$
 	setText(MessageFormat.format(
-			GEFMessages.UndoAction_ActionLabelText, 
+			GEFMessages.UndoAction_Label, 
 			new Object[] {""}).trim()  //$NON-NLS-1$
-			+ GEFMessages.UndoAction_ActionShortcutText);
+			);
 	setId(GEFActionConstants.UNDO);
 	setHoverImageDescriptor(
 		WorkbenchImages.getImageDescriptor(
@@ -69,12 +69,12 @@ protected void init(){
 protected void refresh(){
 	Command undoCmd = getCommandStack().getUndoCommand();
 	setToolTipText(MessageFormat.format(
-			GEFMessages.UndoAction_ToolTipText,
+			GEFMessages.UndoAction_Tooltip,
 			new Object []{getLabelForCommand(undoCmd)}).trim());
 	setText(MessageFormat.format(
-			GEFMessages.UndoAction_ActionLabelText,
+			GEFMessages.UndoAction_Label,
 			new Object []{getLabelForCommand(undoCmd)}).trim()
-			+ GEFMessages.UndoAction_ActionShortcutText);
+			);
 	super.refresh();
 }
 

@@ -45,12 +45,12 @@ protected boolean calculateEnabled(){
 protected void init(){
 	super.init();
 	setToolTipText(MessageFormat.format(
-			GEFMessages.RedoAction_ActionToolTipText,	
+			GEFMessages.RedoAction_Tooltip,	
 			new Object[] {""}).trim());  //$NON-NLS-1$
 	setText(MessageFormat.format(
-			GEFMessages.RedoAction_ActionLabelText, 
+			GEFMessages.RedoAction_Label, 
 			new Object[] {""}).trim()  //$NON-NLS-1$
-			+ GEFMessages.RedoAction_ActionShortcutText);
+			);
 	setId(GEFActionConstants.REDO);
 	setHoverImageDescriptor(
 		WorkbenchImages.getImageDescriptor(
@@ -66,15 +66,14 @@ protected void init(){
 /**
  * Refreshes this action's text to use the last undone command's label.
  */
-protected void refresh(){
+protected void refresh() {
 	Command redoCmd = getCommandStack().getRedoCommand();
 	setToolTipText(MessageFormat.format(
-			GEFMessages.RedoAction_ActionToolTipText,
+			GEFMessages.RedoAction_Tooltip,
 			new Object [] {getLabelForCommand(redoCmd)}).trim());
 	setText(MessageFormat.format(
-			GEFMessages.RedoAction_ActionLabelText,
-			new Object[]{getLabelForCommand(redoCmd)}).trim()
-			+ GEFMessages.RedoAction_ActionShortcutText);
+			GEFMessages.RedoAction_Label,
+			new Object[]{getLabelForCommand(redoCmd)}).trim());
 	super.refresh();
 }
 

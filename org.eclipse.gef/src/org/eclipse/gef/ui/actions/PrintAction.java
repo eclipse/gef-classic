@@ -1,10 +1,14 @@
 package org.eclipse.gef.ui.actions;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.printing.PrintDialog;
+import org.eclipse.swt.printing.Printer;
+import org.eclipse.swt.printing.PrinterData;
+
+import org.eclipse.ui.IEditorPart;
+
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.PrintGraphicalViewerOperation;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.printing.*;
-import org.eclipse.ui.IEditorPart;
 
 /**
  * @author hudsonr
