@@ -119,7 +119,6 @@ class SegmentLookahead implements FlowUtilities.LookAhead {
 					getContext().getWidthLookahead(textFlow, width);
 				}
 			}
-			return width[0];
 		}
 		return width[0];
 	}
