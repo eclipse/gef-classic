@@ -12,10 +12,12 @@ package org.eclipse.gef.examples.logicdesigner.actions;
 
 import org.eclipse.jface.action.*;
 import org.eclipse.ui.IWorkbenchActionConstants;
+import org.eclipse.ui.actions.RetargetAction;
 
 import org.eclipse.draw2d.PositionConstants;
 
 import org.eclipse.gef.editparts.ZoomManager;
+import org.eclipse.gef.internal.GEFMessages;
 import org.eclipse.gef.ui.actions.*;
 
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
@@ -44,6 +46,13 @@ protected void buildActions() {
 	
 	addRetargetAction(new ZoomInRetargetAction());
 	addRetargetAction(new ZoomOutRetargetAction());
+	
+	addRetargetAction(new RetargetAction(
+			GEFActionConstants.TOGGLE_HORIZONTAL_RULER_VISIBILITY, 
+			GEFMessages.ToggleHRulerVisibility_Label));
+	addRetargetAction(new RetargetAction(
+			GEFActionConstants.TOGGLE_VERTICAL_RULER_VISIBILITY, 
+			GEFMessages.ToggleVRulerVisibility_Label));
 	
 //	addRetargetAction(new DirectEditRetargetAction());
 }
@@ -90,6 +99,8 @@ public void contributeToMenu(IMenuManager menubar) {
 	MenuManager viewMenu = new MenuManager(LogicMessages.ViewMenu_LabelText);
 	viewMenu.add(getAction(GEFActionConstants.ZOOM_IN));
 	viewMenu.add(getAction(GEFActionConstants.ZOOM_OUT));
+	viewMenu.add(getAction(GEFActionConstants.TOGGLE_HORIZONTAL_RULER_VISIBILITY));
+	viewMenu.add(getAction(GEFActionConstants.TOGGLE_VERTICAL_RULER_VISIBILITY));
 	menubar.insertAfter(IWorkbenchActionConstants.M_EDIT, viewMenu);
 }
 

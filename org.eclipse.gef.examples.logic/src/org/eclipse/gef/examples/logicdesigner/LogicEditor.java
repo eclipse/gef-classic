@@ -38,6 +38,7 @@ import org.eclipse.gef.*;
 import org.eclipse.gef.dnd.TemplateTransferDragSourceListener;
 import org.eclipse.gef.editparts.ScalableFreeformRootEditPart;
 import org.eclipse.gef.editparts.ZoomManager;
+import org.eclipse.gef.internal.ui.rulers.ToggleRulerVisibilityAction;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.ui.actions.*;
 import org.eclipse.gef.ui.palette.PaletteContextMenuProvider;
@@ -362,6 +363,14 @@ protected void configureGraphicalViewer() {
 		.setParent(getCommonKeyHandler()));
 
 	loadRulers();
+	IAction showHRuler = new ToggleRulerVisibilityAction(
+			rulerComp, PositionConstants.NORTH, getGraphicalViewer());
+	IAction showVRuler = new ToggleRulerVisibilityAction(
+			rulerComp,	PositionConstants.WEST, getGraphicalViewer());
+	getActionRegistry().registerAction(showHRuler);
+	getActionRegistry().registerAction(showVRuler);
+	getSite().getKeyBindingService().registerAction(showHRuler);
+	getSite().getKeyBindingService().registerAction(showVRuler);
 }
 
 protected void createOutputStream(OutputStream os)throws IOException {
