@@ -11,18 +11,6 @@ import java.util.EventObject;
 
 import org.eclipse.core.resources.*;
 import org.eclipse.core.runtime.*;
-import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.dialogs.ProgressMonitorDialog;
-import org.eclipse.swt.dnd.TextTransfer;
-import org.eclipse.swt.widgets.*;
-import org.eclipse.ui.*;
-import org.eclipse.ui.actions.WorkspaceModifyOperation;
-import org.eclipse.ui.dialogs.SaveAsDialog;
-import org.eclipse.ui.part.FileEditorInput;
-import org.eclipse.ui.part.IPageSite;
-import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
-
 import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.gef.*;
 import org.eclipse.gef.dnd.TemplateTransferDragSourceListener;
@@ -36,6 +24,18 @@ import org.eclipse.gef.ui.palette.PaletteContextMenuProvider;
 import org.eclipse.gef.ui.palette.PaletteViewerImpl;
 import org.eclipse.gef.ui.parts.*;
 import org.eclipse.gef.ui.stackview.CommandStackInspectorPage;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.dnd.TextTransfer;
+import org.eclipse.swt.widgets.*;
+import org.eclipse.ui.*;
+import org.eclipse.ui.actions.WorkspaceModifyOperation;
+import org.eclipse.ui.dialogs.SaveAsDialog;
+import org.eclipse.ui.part.FileEditorInput;
+import org.eclipse.ui.part.IPageSite;
+import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 public class LogicEditor 
 	extends GraphicalEditorWithPalette 
@@ -268,10 +268,10 @@ protected KeyHandler getCommonKeyHandler(){
 		sharedKeyHandler = new KeyHandler();
 		sharedKeyHandler.put(
 			KeyStroke.getPressed(SWT.DEL, 127, 0),
-			getAction(DeleteAction.ID));
+			getActionRegistry().getAction(DeleteAction.ID));
 		sharedKeyHandler.put(
 			KeyStroke.getPressed(SWT.F2, 0),
-			getAction(DirectEditAction.ID));
+			getActionRegistry().getAction(DirectEditAction.ID));
 	}
 	return sharedKeyHandler;
 }
