@@ -19,13 +19,13 @@ import org.eclipse.gef.internal.GEFMessages;
 /**
  * @author Pratik Shah
  */
-public class ToggleGridVisibilityAction
+public class ToggleGridAction
 	extends Action 
 {
 	
 private GraphicalViewer diagramViewer;
 
-public ToggleGridVisibilityAction(GraphicalViewer diagramViewer) {
+public ToggleGridAction(GraphicalViewer diagramViewer) {
 	super(GEFMessages.ToggleGrid_Label, AS_CHECK_BOX);
 	this.diagramViewer = diagramViewer;
 	setToolTipText(GEFMessages.ToggleGrid_Tooltip);
@@ -42,8 +42,9 @@ public boolean isChecked() {
 }
 
 public void run() {
-	diagramViewer.setProperty(SnapToGrid.PROPERTY_GRID_ENABLED, 
-			new Boolean(!isChecked()));
+	boolean val = !isChecked();
+	diagramViewer.setProperty(SnapToGrid.PROPERTY_GRID_VISIBLE, new Boolean(val));
+	diagramViewer.setProperty(SnapToGrid.PROPERTY_GRID_ENABLED, new Boolean(val));
 }
 
 }
