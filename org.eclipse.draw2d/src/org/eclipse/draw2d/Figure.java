@@ -1590,8 +1590,8 @@ public void validate() {
 		((IFigure)children.get(i)).validate();
 }
 
-static class IdentitySearch implements TreeSearch {
-	static final TreeSearch INSTANCE = new IdentitySearch();
+static protected final class IdentitySearch implements TreeSearch {
+	public static final TreeSearch INSTANCE = new IdentitySearch();
 	public boolean accept(IFigure f) {
 		return true;
 	}
