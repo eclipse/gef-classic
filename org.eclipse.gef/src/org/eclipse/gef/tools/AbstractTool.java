@@ -230,6 +230,14 @@ public static class Input
 	void setMouseLocation(int x, int y) {
 		mouse.setLocation(x, y);
 	}
+	
+	/**
+	 * Sets the keyboard input based on the KeyEvent.
+	 * @param ke the key event providing the input
+	 */
+	public void setInput(KeyEvent ke) {
+		modifiers = ke.stateMask;
+	}
 
 	/**
 	 * Sets the mouse and keyboard input based on the MouseEvent.
@@ -840,6 +848,7 @@ protected boolean isInState(int state) {
  */
 public void keyDown(KeyEvent evt, EditPartViewer viewer) {
 	setViewer(viewer);
+	getCurrentInput().setInput(evt);
 	debug("Key (" + evt.character + ','//$NON-NLS-1$
 		+ evt.keyCode + ") down:\t"); //$NON-NLS-1$
 	handleKeyDown(evt);
@@ -853,6 +862,7 @@ public void keyDown(KeyEvent evt, EditPartViewer viewer) {
  */
 public void keyUp(KeyEvent evt, EditPartViewer viewer) {
 	setViewer(viewer);
+	getCurrentInput().setInput(evt);
 	debug("Key (" + evt.character + ','//$NON-NLS-1$
 		+ evt.keyCode + ") up:\t");//$NON-NLS-1$
 	handleKeyUp(evt);
