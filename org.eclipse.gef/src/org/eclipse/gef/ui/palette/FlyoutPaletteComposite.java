@@ -129,6 +129,10 @@ public FlyoutPaletteComposite(Composite parent, int style, IWorkbenchPage page,
 	addListener(SWT.Resize, new Listener() {
 		public void handleEvent(Event event) {
 			Rectangle area = getClientArea();
+			// Sometimes, the editor is resized to 1,1 or 0,0 (depending on the platform)
+			// when the editor is closed or maximized.  We have to ignore such resizes.
+			if (area.width < minWidth)
+				return;
 			if (fixedSize > area.width / 2) {
 				setFixedSize(area.width / 2);
 			}
