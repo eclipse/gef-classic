@@ -62,15 +62,20 @@ private PropertyChangeListener verticalChangeListener = new PropertyChangeListen
 	}
 };
 
-private InternalLightweightSystem lws;
+private final LightweightSystem lws;
 
 /**
  * Creates a new FigureCanvas with the given parent.
  */
 public FigureCanvas(Composite parent) {
+	this(parent, new LightweightSystem());
+}
+
+public FigureCanvas(Composite parent, LightweightSystem lws) {
 	super(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.NO_REDRAW_RESIZE | SWT.NO_BACKGROUND);
-	init();
-	hookControl();
+	this.lws = lws;
+	lws.setControl(this);
+	hook();
 }
 
 /**
@@ -111,7 +116,15 @@ public Viewport getViewport() {
 /**
  * Adds listeners for scrolling.
  */
-private void hookControl() {
+private void hook() {
+	getLightweightSystem().getUpdateManager().addUpdateListener(new UpdateListener() {
+		public void notifyPainting(Rectangle damage) { }
+		public void notifyValidating() {
+			if (!isDisposed())
+				layoutViewport();
+		}
+	});
+
 	getHorizontalBar().addSelectionListener(new SelectionAdapter() {
 		public void widgetSelected(SelectionEvent event) {
 			scrollToX(getHorizontalBar().getSelection() -hBarOffset);
@@ -141,13 +154,6 @@ private void unhookViewport(){
 	getViewport().
 		getVerticalRangeModel().
 		removePropertyChangeListener(verticalChangeListener);
-}
-
-private void init(){
-	lws = new InternalLightweightSystem();
-	lws.setControl(this);
-	getHorizontalBar().setIncrement(DEFAULT_INCREMENT);
-	getVerticalBar().setIncrement(DEFAULT_INCREMENT);
 }
 
 private void layoutViewport(){
@@ -322,25 +328,6 @@ public void setViewport(Viewport vp) {
 private int verifyScrollBarOffset(RangeModel model, int value) {
 	value = Math.max(model.getMinimum(), value);
 	return Math.min(model.getMaximum() - model.getExtent(), value);
-}
-
-class InternalLightweightSystem
-	extends LightweightSystem
-{
-	class ProxyRootFigure extends RootFigure{
-		public void validate(){
-			if (isDisposed())
-				return;
-			layoutViewport();
-			super.validate();
-		}
-		public boolean isOpaque(){
-			return true;
-		}
-	}
-	protected RootFigure createRootFigure(){
-		return new ProxyRootFigure();
-	}
 }
 
 }
