@@ -29,6 +29,16 @@ public GridLayer() {
 	setForegroundColor(ColorConstants.lightGray);
 }
 
+
+/**
+ * Overridden to indicate on preferred size.  The grid layer should not affect the size of
+ * the layered pane in which is it placed.
+ * @see org.eclipse.draw2d.Figure#getPreferredSize(int, int)
+ */
+public Dimension getPreferredSize(int wHint, int hHint) {
+	return new Dimension();
+}
+
 protected void paintFigure(Graphics graphics) {
 	super.paintFigure(graphics);
 	paintGrid(graphics);
