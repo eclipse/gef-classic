@@ -13,11 +13,12 @@ package org.eclipse.draw2d;
 import org.eclipse.draw2d.geometry.*;
 
 /**
- * @author hudsonr
- * @since 2.1
+ * A non-freeform, scalable layered pane.  
+ * @author Eric Bordeau
+ * @since 2.1.1
  */
-public class ScalableFreeformLayeredPane 
-	extends FreeformLayeredPane 
+public class ScalableLayeredPane 
+	extends LayeredPane 
 	implements ScalableFigure
 {
 
@@ -35,8 +36,19 @@ public Rectangle getClientArea(Rectangle rect) {
 	return rect;
 }
 
+public Dimension getPreferredSize(int wHint, int hHint) {
+	Dimension d = super.getPreferredSize(wHint, hHint);
+	int w = getInsets().getWidth();
+	int h = getInsets().getHeight();
+	return d.getExpanded(-w, -h)
+		.scale(scale)
+		.expand(w,h);
+}
+
 /**
- *  * @see org.eclipse.draw2d.Figure#paintClientArea(Graphics) */
+ * 
+ * @see org.eclipse.draw2d.Figure#paintClientArea(Graphics)
+ */
 protected void paintClientArea(Graphics graphics) {
 	if (getChildren().isEmpty())
 		return;
@@ -57,11 +69,12 @@ protected void paintClientArea(Graphics graphics) {
 
 /**
  * Sets the zoom level
- * @param newZoom The new zoom level */
+ * @param newZoom The new zoom level
+ */
 public void setScale(double newZoom) {
 	scale = newZoom;
-	superFireMoved();
-	getFreeformHelper().invalidate();
+	fireMoved();
+	revalidate();
 }
 
 /**
@@ -76,13 +89,6 @@ public void translateToParent(Translatable t) {
  */
 public void translateFromParent(Translatable t) {
 	t.performScale(1 / scale);
-}
-
-/**
- * @see org.eclipse.draw2d.Figure#useLocalCoordinates()
- */
-protected final boolean useLocalCoordinates() {
-	return false;
 }
 
 }

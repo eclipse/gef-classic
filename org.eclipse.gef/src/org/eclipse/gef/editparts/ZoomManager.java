@@ -15,7 +15,10 @@ import java.util.*;
 
 import org.eclipse.swt.widgets.Display;
 
-import org.eclipse.draw2d.ScalableFreeformLayeredPane;
+import org.eclipse.jface.util.Assert;
+
+import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.ScalableFigure;
 import org.eclipse.draw2d.Viewport;
 import org.eclipse.draw2d.geometry.*;
 
@@ -23,6 +26,7 @@ import org.eclipse.draw2d.geometry.*;
  * This class will manage the zoom for a GraphicalEditor.  Objects interested in zoom
  * changes should register as a ZoomListener with this class.
  * 
+ * @author Dan Lee
  * @author Eric Bordeau
  */
 public class ZoomManager {
@@ -35,7 +39,7 @@ public static final int ANIMATE_ZOOM_IN_OUT = 1;
 private List listeners = new ArrayList();
 
 private double multiplier = 1.0;
-private ScalableFreeformLayeredPane pane;
+private ScalableFigure pane;
 private Viewport viewport;
 private double zoom = 1.0;
 private int zoomAnimationStyle = ANIMATE_NEVER;
@@ -44,6 +48,17 @@ private double[] zoomLevels = { .5, .75, 1.0, 1.5, 2.0, 2.5, 3, 4 };
 DecimalFormat format = new DecimalFormat("####%"); //$NON-NLS-1$
 
 /**
+ * Creates a new ZoomManager
+ * @param pane The ScalableFigure associated with this ZoomManager
+ * @param viewport The Viewport assoicated with this viewport
+ */
+public ZoomManager(ScalableFigure pane, Viewport viewport) {
+	this.pane = pane;
+	this.viewport = viewport;
+}
+
+/**
+ * @deprecated Use {@link #ZoomManager(ScalableFigure, Viewport)} instead.
  * Creates a new ZoomManager
  * @param pane The ScalableFreeformLayeredPane associated with this ZoomManager
  * @param viewport The Viewport assoicated with this viewport
@@ -133,11 +148,13 @@ public double getNextZoomLevel() {
 }
 
 /**
+ * @deprecated Use {@link #getScalableFigure()} instead.
  * Returns the pane.
- * @return ScalableFreeformLayeredPane
+ * @return the pane
  */
 public ScalableFreeformLayeredPane getPane() {
-	return pane;
+	Assert.isTrue(pane instanceof ScalableFreeformLayeredPane);
+	return (ScalableFreeformLayeredPane)pane;
 }
 
 /**
@@ -151,6 +168,10 @@ public double getPreviousZoomLevel() {
 		if (zoomLevels[i] >= zoom)
 			return zoomLevels[i - 1];
 	return getMinZoom();
+}
+
+public ScalableFigure getScalableFigure() {
+	return pane;
 }
 
 /**
@@ -309,7 +330,7 @@ private void performAnimatedZoom(Rectangle rect, boolean zoomIn, int iterationCo
 		zoomIncrement = (getPreviousZoomLevel() - zoom) / iterationCount;
 	}
 	
-	getPane().translateToRelative(rect);
+	getScalableFigure().translateToRelative(rect);
 	Point originalViewLocation = getViewport().getViewLocation();
 	Point finalViewLocation = calculateViewLocation(rect, finalRatio);
 	
