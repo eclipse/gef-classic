@@ -35,6 +35,7 @@ private int cornerSize;
  */
 public BentCornerFigure() {
 	setBackgroundColor(ColorConstants.tooltipBackground);
+	setForegroundColor(ColorConstants.tooltipForeground);
 	setCornerSize(DEFAULT_CORNER_SIZE);
 }
 
