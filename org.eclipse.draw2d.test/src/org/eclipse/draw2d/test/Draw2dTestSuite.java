@@ -27,7 +27,7 @@ public static Test suite() {
  * Constructs a new Draw2dTestSuite. Add any JUnit tests to the suite here.
  */
 public Draw2dTestSuite() {
-	addTest(new TestSuite(BogusTest.class));
+//	addTest(new TestSuite(BogusTest.class));
 	addTest(new TestSuite(ScaledGraphicsTest.class));
 }
 

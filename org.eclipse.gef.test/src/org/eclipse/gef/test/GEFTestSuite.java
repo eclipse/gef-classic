@@ -27,7 +27,7 @@ public static Test suite() {
  * Constructs a new GEFTestSuite. Add any JUnit tests to the suite here.
  */
 public GEFTestSuite() {
-	addTest(new TestSuite(BogusTest.class));
+//	addTest(new TestSuite(BogusTest.class));
 }
 
 }
