@@ -18,9 +18,11 @@ import org.eclipse.gef.internal.GEFMessages;
 /**
  * @author Pratik Shah
  */
-public class PaletteView 
+public class PaletteView
 	extends PageBookView
 {
+	
+public static final String ID = "org.eclipse.gef.ui.palette_view"; //$NON-NLS-1$
 
 protected IPage createDefaultPage(PageBook book) {
 	MessagePage page = new MessagePage();
