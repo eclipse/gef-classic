@@ -13,11 +13,12 @@ package org.eclipse.gef;
 import java.util.Map;
 
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.geometry.*;
 
 import org.eclipse.gef.requests.ChangeBoundsRequest;
 import org.eclipse.gef.requests.CreateRequest;
-import org.eclipse.gef.rulers.*;
+import org.eclipse.gef.rulers.RulerProvider;
 
 /**
  * @author Randy Hudson
@@ -39,13 +40,10 @@ public SnapToGuides(GraphicalEditPart container) {
 	this.container = container;
 }
 
-/*
- * @TODO:Pratik   make sure it's okay to cache these
- */
-int[] getHorizontalGuides() {
+int[] getHorizontalGuides() {	
 	if (horizontalGuides == null) {
 		RulerProvider rProvider = ((RulerProvider)container.getViewer()
-				.getProperty(RulerProvider.PROPERTY_VERTICAL_RULER));
+					.getProperty(RulerProvider.PROPERTY_VERTICAL_RULER));
 		if (rProvider != null)
 			horizontalGuides = rProvider.getGuidePositions();	
 		else
@@ -155,26 +153,7 @@ public int snapMoveRequest(ChangeBoundsRequest request,	PrecisionRectangle baseR
  */
 public int snapResizeRequest(ChangeBoundsRequest request, PrecisionRectangle baseRect,
                              int snapOrientation) {
-	/*
-	 * @TODO:Pratik
-	 * Known issues that still need to be tackled:
-	 * (1) This method snaps in both directions, irrespective of what the specified
-	 * snapOrientation is.  This is not causing any problems at the moment because it
-	 * always gets SNAP_HORIZONTAL | SNAP_VERTICAL.  However, it still needs to be fixed.
-	 * (2) Attach a circuit to a horizontal and vertical guide (so that the circuit is
-	 * in the 4th quadrant of the two axes).  Resize the top that is attached to the
-	 * horizontal guide, and the circuit will detach from both guides.
-	 * (3) Attach a circuit's vertical center to a guide.  Now resize the top.  The part
-	 * is detached from the vertical guide.
-	 * (4) If the left edge of a figure is attached to a guide, resizing the right
-	 * edge will not snap it to a new guide.  This is because the algorithm below snaps
-	 * to the first guide it finds (which is the one on the left), and hence never goes
-	 * to the one on the right.  But in this case, because just the right side is being
-	 * resized, the vertical left and center guides should be ignored.
-	 * (5) There are some other issues with when to show feedback as well.  For instance,
-	 * when a part is being resized in the horizontal direction, attachments to 
-	 * horizontal guides should not be highlighted, but still be preserved.
-	 */
+	int origSnapOrientation = snapOrientation;
 	
 	if (request.getEditParts().size() != 1)
 		return snapOrientation;
@@ -197,40 +176,51 @@ public int snapResizeRequest(ChangeBoundsRequest request, PrecisionRectangle bas
 	 * that are being resized.
 	 */
 	// east
-	double rightCorrection = getCorrectionFor(getVerticalGuides(), 
-			baseRect.preciseRight(), request.getExtendedData(), true, 1);
-	if (rightCorrection != THRESHOLD) {
-		change = true;
-		snapOrientation = snapOrientation & SNAP_HORIZONTAL;
-		resize.preciseWidth += rightCorrection;
-	}
-	// west
-	double leftCorrection = getCorrectionFor(getVerticalGuides(), baseRect.preciseX, 
-			request.getExtendedData(), true, -1);
-	if (leftCorrection != THRESHOLD) {
-		change = true;
-		snapOrientation = snapOrientation & SNAP_HORIZONTAL;
-		resize.preciseWidth -= leftCorrection;
-		move.preciseX += leftCorrection;
+	if ((origSnapOrientation & SNAP_HORIZONTAL) != 0) {
+		double rightCorrection = getCorrectionFor(getVerticalGuides(), 
+				baseRect.preciseRight(), request.getExtendedData(), true, 1);
+		if (rightCorrection != THRESHOLD) {
+			change = true;
+			snapOrientation = snapOrientation & SNAP_HORIZONTAL;
+			resize.preciseWidth += rightCorrection;
+		}
+		// west
+		// if we have a match on the right and we are resizing that way, use that match
+		if (rightCorrection == THRESHOLD 
+				|| request.getResizeDirection() != PositionConstants.EAST) {
+			double leftCorrection = getCorrectionFor(getVerticalGuides(), 
+					baseRect.preciseX, request.getExtendedData(), true, -1);
+			if (leftCorrection != THRESHOLD) {
+				change = true;
+				snapOrientation = snapOrientation & SNAP_HORIZONTAL;
+				resize.preciseWidth -= leftCorrection;
+				move.preciseX += leftCorrection;
+			}
+		}
 	}
 	// south
-	double bottom = getCorrectionFor(getHorizontalGuides(), baseRect.preciseBottom(),
-			request.getExtendedData(), false, 1);
-	if (bottom != THRESHOLD) {
-		change = true;
-		snapOrientation = snapOrientation & SNAP_VERTICAL;
-		resize.preciseHeight += bottom;
+	if ((origSnapOrientation & SNAP_VERTICAL) != 0) {
+		double bottom = getCorrectionFor(getHorizontalGuides(), baseRect.preciseBottom(),
+				request.getExtendedData(), false, 1);
+		if (bottom != THRESHOLD) {
+			change = true;
+			snapOrientation = snapOrientation & SNAP_VERTICAL;
+			resize.preciseHeight += bottom;
+		}
+		// north
+		// if we have a match on the bottom and we are resizing south, keep this.
+		if (bottom == THRESHOLD || request.getResizeDirection() != PositionConstants.SOUTH) {	
+			double topCorrection = getCorrectionFor(getHorizontalGuides(), 
+					baseRect.preciseY, request.getExtendedData(), false, -1);
+			if (topCorrection != THRESHOLD) {
+				change = true;
+				snapOrientation = snapOrientation & SNAP_VERTICAL;
+				resize.preciseHeight -= topCorrection;
+				move.preciseY += topCorrection;
+			}
+		}
 	}
-	// north
-	double topCorrection = getCorrectionFor(getHorizontalGuides(), baseRect.preciseY,
-			request.getExtendedData(), false, -1);
-	if (topCorrection != THRESHOLD) {
-		change = true;
-		snapOrientation = snapOrientation & SNAP_VERTICAL;
-		resize.preciseHeight -= topCorrection;
-		move.preciseY += topCorrection;
-	}
-
+	
 	if (!change)
 		return snapOrientation;
 	
