@@ -247,6 +247,7 @@ protected void setInput(IEditorInput input) {
 	} catch (Exception e) {
 		//This is just an example.  All exceptions caught here.
 		e.printStackTrace();
+		diagram = new ActivityDiagram();
 	}
 }
 
