@@ -10,12 +10,13 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner.model;
 
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.ui.views.properties.IPropertyDescriptor;
-import org.eclipse.ui.views.properties.TextPropertyDescriptor;
-
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
+import org.eclipse.jface.viewers.ICellEditorValidator;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.ui.views.properties.IPropertyDescriptor;
+import org.eclipse.ui.views.properties.PropertyDescriptor;
+import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 
 public class LED
 	extends LogicSubpart
@@ -46,19 +47,25 @@ public static String
 protected boolean bits[] = new boolean[4];
 
 static{
+	PropertyDescriptor pValueProp = new TextPropertyDescriptor(P_VALUE, 
+			LogicMessages.PropertyDescriptor_LED_Value);
+	pValueProp.setValidator(new ICellEditorValidator() {
+		public String isValid(Object value) {
+			try {
+				new Integer((String)value);
+				return null;
+			} catch (NumberFormatException exc) {
+				return LogicMessages.CellEditorValidator_NotANumberMessage;
+			}
+		}
+	});
 	if(descriptors!=null){
 		newDescriptors = new IPropertyDescriptor[descriptors.length+1];
 		for(int i=0;i<descriptors.length;i++)
 			newDescriptors[i] = descriptors[i];
-		newDescriptors[descriptors.length]=
-			new TextPropertyDescriptor(P_VALUE, 
-				LogicMessages.PropertyDescriptor_LED_Value);
-	}else{
-		newDescriptors = new IPropertyDescriptor[]{
-			new TextPropertyDescriptor(P_VALUE, 
-				LogicMessages.PropertyDescriptor_LED_Value)
-		};
-	}
+		newDescriptors[descriptors.length] = pValueProp;
+	} else
+		newDescriptors = new IPropertyDescriptor[]{pValueProp};
 }
 
 public LED() {

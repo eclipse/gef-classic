@@ -28,8 +28,7 @@ protected static IPropertyDescriptor[] descriptors;
 
 static{
 	PropertyDescriptor widthProp =
-		new TextPropertyDescriptor(
-			ID_WIDTH,
+		new TextPropertyDescriptor(ID_WIDTH,
 			LogicMessages.DimensionPropertySource_Property_Width_Label);
 	widthProp.setValidator(new ICellEditorValidator() {
 		public String isValid(Object value) {
@@ -37,16 +36,24 @@ static{
 				new Integer((String)value);
 				return null;
 			} catch (NumberFormatException exc) {
-				return "Not a number";
+				return LogicMessages.CellEditorValidator_NotANumberMessage;
 			}
 		}
 	});
-	descriptors =
-		new IPropertyDescriptor[] {
-			widthProp,
-			new TextPropertyDescriptor(
-				ID_HEIGHT,
-				LogicMessages.DimensionPropertySource_Property_Height_Label)};
+	PropertyDescriptor heightProp = 
+		new TextPropertyDescriptor(ID_HEIGHT,
+			LogicMessages.DimensionPropertySource_Property_Height_Label);
+	heightProp.setValidator(new ICellEditorValidator() {
+		public String isValid(Object value) {
+			try {
+				new Integer((String)value);
+				return null;
+			} catch (NumberFormatException exc) {
+				return LogicMessages.CellEditorValidator_NotANumberMessage;
+			}
+		}
+	});
+	descriptors = new IPropertyDescriptor[] {widthProp,heightProp};
 }
 
 protected Dimension dimension = null;

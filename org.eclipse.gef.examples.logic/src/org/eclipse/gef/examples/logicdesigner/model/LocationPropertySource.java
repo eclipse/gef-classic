@@ -10,12 +10,13 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner.model;
 
-import org.eclipse.ui.views.properties.IPropertyDescriptor;
-import org.eclipse.ui.views.properties.IPropertySource;
-import org.eclipse.ui.views.properties.TextPropertyDescriptor;
-
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
+import org.eclipse.jface.viewers.ICellEditorValidator;
+import org.eclipse.ui.views.properties.IPropertyDescriptor;
+import org.eclipse.ui.views.properties.IPropertySource;
+import org.eclipse.ui.views.properties.PropertyDescriptor;
+import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 
 public class LocationPropertySource
 	implements IPropertySource{
@@ -25,10 +26,33 @@ public static String ID_YPOS = "yPos"; //$NON-NLS-1$
 protected static IPropertyDescriptor[] descriptors;
 
 static{
-	descriptors = new IPropertyDescriptor[] {
-		new TextPropertyDescriptor(ID_XPOS,LogicMessages.LocationPropertySource_Property_X_Label),
-		new TextPropertyDescriptor(ID_YPOS,LogicMessages.LocationPropertySource_Property_Y_Label)
-	};
+	PropertyDescriptor xProp =
+		new TextPropertyDescriptor(ID_XPOS,
+			LogicMessages.LocationPropertySource_Property_X_Label);
+	xProp.setValidator(new ICellEditorValidator() {
+		public String isValid(Object value) {
+			try {
+				new Integer((String)value);
+				return null;
+			} catch (NumberFormatException exc) {
+				return LogicMessages.CellEditorValidator_NotANumberMessage;
+			}
+		}
+	});
+	PropertyDescriptor yProp = 
+		new TextPropertyDescriptor(ID_YPOS,
+			LogicMessages.LocationPropertySource_Property_Y_Label);
+	yProp.setValidator(new ICellEditorValidator() {
+		public String isValid(Object value) {
+			try {
+				new Integer((String)value);
+				return null;
+			} catch (NumberFormatException exc) {
+				return LogicMessages.CellEditorValidator_NotANumberMessage;
+			}
+		}
+	});	
+	descriptors = new IPropertyDescriptor[] {xProp, yProp};
 }
 
 protected Point point = null;

@@ -140,6 +140,8 @@ public String CloneCommand_Label = Helper.getString("%CloneCommand.Label"); //$N
 
 public String ViewMenu_LabelText = Helper.getString("%ViewMenu.LabelText_UI_"); //$NON-NLS-1$
 
+public String CellEditorValidator_NotANumberMessage = Helper.getString("%CellEditorValidator.NotANumberMessage"); //$NON-NLS-1$
+
 public String PaletteCustomizer_InvalidCharMessage = Helper.getString("%PaletteCustomizer.InvalidCharMessage"); //$NON-NLS-1$
 
 public String XORGate_LabelText = Helper.getString("%XORGate.LabelText");  //$NON-NLS-1$
