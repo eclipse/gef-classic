@@ -56,15 +56,14 @@
             configuration="org.eclipse.ui.defaultAcceleratorConfiguration">
       </keyBinding>
    </extension>
-   <extension
-         point="org.eclipse.ui.views">
+
+	<extension point="org.eclipse.ui.views">
 		<view 
+			id="org.eclipse.gef.ui.palette_view"
 			name="%Palette.Label"
-            icon="icons\debugGEF.gif"
-            category="org.eclipse.ui"
 			class="org.eclipse.gef.ui.views.palette.PaletteView"
-            id="org.eclipse.gef.ui.palette_view">
-      </view>
+			category="org.eclipse.ui"
+			icon="icons\palette_view.gif"/>
 	</extension>
 
     <extension point="org.eclipse.ui.perspectiveExtensions"> 
@@ -77,4 +76,4 @@
                 visible="false"/>
         </perspectiveExtension> 
     </extension> 
-   </plugin>
+</plugin>
