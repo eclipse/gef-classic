@@ -13,6 +13,9 @@ package org.eclipse.gef.examples.logicdesigner.edit;
 import java.util.List;
 
 import org.eclipse.gef.EditPolicy;
+import org.eclipse.gef.RootEditPart;
+import org.eclipse.gef.editpolicies.RootComponentEditPolicy;
+
 import org.eclipse.gef.examples.logicdesigner.model.LogicDiagram;
 
 /**
@@ -37,6 +40,9 @@ protected void createEditPolicies() {
 	super.createEditPolicies();
 	installEditPolicy(EditPolicy.CONTAINER_ROLE, new LogicContainerEditPolicy());
 	installEditPolicy(EditPolicy.TREE_CONTAINER_ROLE, new LogicTreeContainerEditPolicy());
+	//If this editpart is the contents of the viewer, then it is not deletable!
+	if (getParent() instanceof RootEditPart)
+		installEditPolicy(EditPolicy.COMPONENT_ROLE, new RootComponentEditPolicy());
 }
 
 /**
