@@ -11,17 +11,17 @@
 package org.eclipse.gef.examples.logicdesigner.edit;
 
 import org.eclipse.draw2d.*;
+
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
-
-import org.eclipse.gef.examples.logicdesigner.figures.*;
-import org.eclipse.gef.examples.logicdesigner.figures.NodeFigure;
-import org.eclipse.gef.examples.logicdesigner.model.*;
-import org.eclipse.gef.examples.logicdesigner.model.commands.*;
-
 import org.eclipse.gef.requests.CreateConnectionRequest;
 import org.eclipse.gef.requests.ReconnectRequest;
+
+import org.eclipse.gef.examples.logicdesigner.figures.FigureFactory;
+import org.eclipse.gef.examples.logicdesigner.figures.NodeFigure;
+import org.eclipse.gef.examples.logicdesigner.model.*;
+import org.eclipse.gef.examples.logicdesigner.model.commands.ConnectionCommand;
 
 public class LogicNodeEditPolicy
 	extends org.eclipse.gef.editpolicies.GraphicalNodeEditPolicy
