@@ -25,8 +25,11 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.draw2d.geometry.Translatable;
 
 /**
- * A lightweight graphical representation.  Figures are rendered to a {@link Graphics} 
- * object. Figures can be composed to create complex renderings.
+ * A lightweight graphical object.  Figures are rendered to a {@link Graphics}  object.
+ * Figures can be composed to create complex graphics.
+ * 
+ * <P>
+ * WARNING: This interface is not intended to be implemented by clients.
  */
 public interface IFigure {
 
@@ -60,66 +63,75 @@ Dimension MIN_DIMENSION = new Dimension(5, 5);
 Insets NO_INSETS = new NoInsets();
 
 /**
- * Adds the given IFigure as a child of this IFigure.
+ * Adds the given IFigure as a child of this IFigure.  The same as calling {@link
+ * #add(IFigure, Object, int) add(figure, null, -1)}.
  * @param figure The IFigure to add
  */
 void add(IFigure figure);
 
 /**
- * Adds the given IFigure as a child of this IFigure at the given index.
+ * Adds the given IFigure as a child of this IFigure at the given index.  The same as
+ * calling {@link #add(IFigure, Object, int) add(figure, null, index)}.
  * @param figure The IFigure to add
  * @param index The index where the IFigure should be added
  */
 void add(IFigure figure, int index);
 
 /**
- * Adds the given IFigure as a child of this IFigure with the given constraint.
+ * Adds the given IFigure as a child of this IFigure with the given constraint.  The same
+ * as calling {@link #add(IFigure, Object, int) add(figure, constraint, -1)}.
  * @param figure The IFigure to add
  * @param constraint The newly added IFigure's constraint
  */
 void add(IFigure figure, Object constraint);
 
 /**
- * Adds the child IFigure using the specified index and constraint. The child is removed
- * from any previous parent.
- * @throws IndexOutOfBoundsException if the index is out of range
- * @throws IllegalArgumentException if adding the child creates a cycle
+ * Adds the child with the specified index and constraint. The child's parent is currently
+ * not null, it is removed from that parent.  If this figure has a LayoutManager, then
+ * {@link LayoutManager#setConstraint(IFigure, Object)} shall be called on the layout.
  * @param figure The IFigure to add
  * @param constraint The newly added IFigure's constraint
  * @param index The index where the IFigure should be added
+ * @throws IndexOutOfBoundsException if the index is out of range
+ * @throws IllegalArgumentException if adding the child creates a cycle
  */
 void add(IFigure figure, Object constraint, int index);
 
 /**
- * Registers the given listener as an AncestorListener of this IFigure.
+ * Registers the given listener as an AncestorListener of this figure.
  * @param listener The listener to add
  */
 void addAncestorListener(AncestorListener listener);
 
+/**
+ * Registers the given listener as a CoordinateListener of this figure.
+ * @param listener the listener to add
+ * @since 3.1
+ */
 void addCoordinateListener(CoordinateListener listener);
 
 /**
- * Registers the given listener as a FigureListener of this IFigure.
+ * Registers the given listener as a FigureListener of this figure.
  * @param listener The listener to add
  */
 void addFigureListener(FigureListener listener);
 
 /**
- * Registers the given listener as a FocusListener of this IFigure.
+ * Registers the given listener as a FocusListener of this figure.
  * @param listener The listener to add
  */
 void addFocusListener(FocusListener listener);
 
 /**
- * Registers the given listener as a KeyListener of this IFigure.
+ * Registers the given listener as a KeyListener of this figure.
  * @param listener The listener to add
  */
 void addKeyListener(KeyListener listener);
 
 /**
  * Registers the given listener on this figure. 
- * @since 3.1
  * @param listener The listener to add
+ * @since 3.1
  */
 void addLayoutListener(LayoutListener listener);
 
@@ -281,7 +293,8 @@ Font getFont();
 Color getForegroundColor();
 
 /**
- * Returns the current Insets.  May be returned by reference.
+ * Returns the current Insets.  May be returned by reference.  The returned value should
+ * not be modified.
  * @return The current Insets.
  */
 Insets getInsets();
@@ -332,24 +345,26 @@ Dimension getMinimumSize(int wHint, int hHint);
 /**
  * Returns the IFigure that is the current parent of this IFigure or <code>null</code> if
  * there is no parent.
- * @return The current parent of this IFigure
+ * @return <code>null</code> or the parent figure
  */
 IFigure getParent();
 
 /**
- * Returns the desireable size for this IFigure. The returned value should not be modified.
+ * Returns the preferred size for this IFigure. The returned value must not be modified
+ * by the caller.  If the figure has no preference, it returns its current size.  The same
+ * as calling {@link #getPreferredSize(int, int) getPreferredSize(-1, -1)}.
  * @return The preferred size
  */
 Dimension getPreferredSize();
 
 /**
- * Returns the desireable size for this IFigure using the provided width and height hints.
+ * Returns the preferred size for this IFigure using the provided width and height hints.
  * The returned dimension may be by <i>reference</i>, and it must not be modified by the
  * caller.  A value of <code>-1</code> indicates that there is no constraint in that
  * direction.
  * 
- * @param wHint The width hint
- * @param hHint The height hint
+ * @param wHint a width hint
+ * @param hHint a height hint
  * @return The preferred size
  */ 
 Dimension getPreferredSize(int wHint, int hHint);
@@ -501,7 +516,8 @@ EventDispatcher internalGetEventDispatcher();
 boolean intersects(Rectangle rect);
 
 /**
- * Invalidates this IFigure.
+ * Invalidates this IFigure.  If this figure has a LayoutManager, then
+ * {@link LayoutManager#invalidate()} should be called on that layout.
  */
 void invalidate();
 
@@ -565,7 +581,9 @@ boolean isVisible();
 void paint(Graphics graphics);
 
 /**
- * Removes the given IFigure from this IFigure's list of children.
+ * Removes the given child from this figure's children.  If this figure has a
+ * LayoutManager, then {@link LayoutManager#remove(IFigure)} shall be called on that
+ * layout with the child.
  * @param figure The IFigure to remove
  */
 void remove(IFigure figure);
@@ -577,6 +595,12 @@ void remove(IFigure figure);
  */
 void removeAncestorListener(AncestorListener listener);
 
+/**
+ * Unregisters the given listener, so that it will no longer receive notification of
+ * coordinate changes.
+ * @param listener the listener to remove
+ * @since 3.1
+ */
 void removeCoordinateListener(CoordinateListener listener);
 
 /**
@@ -697,9 +721,9 @@ void setBounds(Rectangle rect);
 /**
  * Convenience method to set the constraint of the specified child in the current
  * LayoutManager.
- * @throws IllegalArgumentException if the child is not contained by this Figure
  * @param child The figure whose constraint is being set
  * @param constraint the constraint
+ * @throws IllegalArgumentException if the child is not contained by this Figure
  */
 void setConstraint(IFigure child, Object constraint);
 
@@ -844,7 +868,9 @@ void translateToParent(Translatable t);
 void translateToRelative(Translatable t);
 
 /**
- * Causes this IFigure to layout itself, as well as its children.
+ * Indicates that this figure should make itself valid.  Validation includes invoking
+ * layout on a LayoutManager if present, and then validating all children figures. 
+ * Default validation uses pre-order, depth-first ordering.
  */
 void validate();
 
