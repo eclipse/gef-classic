@@ -19,7 +19,6 @@ import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.EventObject;
 
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
@@ -37,7 +36,6 @@ import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
 import org.eclipse.ui.dialogs.SaveAsDialog;
 import org.eclipse.ui.part.FileEditorInput;
-import org.eclipse.ui.part.PageBook;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 import org.eclipse.gef.ContextMenuProvider;
@@ -70,8 +68,6 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette {
 
 /** This is the root of the editor's model. */
 private ShapesDiagram diagram = new ShapesDiagram();
-/** OutlinePage instance for this editor. */
-private IContentOutlinePage outlinePage;
 /** Palette component, holding the tools and shapes. */
 private PaletteRoot palette;
 
@@ -145,16 +141,6 @@ private TransferDropTargetListener createTransferDropTargetListener() {
 	};
 }
 
-/**
- * Forget the outline page for this editor.
- * Note that this is called from ShapesEditorOutlinePage#dispose, so the outline page
- * is already disposed.
- * @see ShapesEditorOutlinePage#dispose()
- */
-private void disposeOutlinePage() {
-	outlinePage = null;
-}
-
 /* (non-Javadoc)
  * @see org.eclipse.ui.ISaveablePart#doSave(org.eclipse.core.runtime.IProgressMonitor)
  */
@@ -224,19 +210,13 @@ public void doSaveAs() {
 	} // if
 }
 
-/* (non-Javadoc)
- * @see org.eclipse.gef.ui.parts.GraphicalEditorWithFlyoutPalette#getAdapter(java.lang.Class)
- */
 public Object getAdapter(Class type) {
-	// returns the content outline page for this editor
-	if (type == IContentOutlinePage.class) {
-		outlinePage = new ShapesEditorOutlinePage(this, new TreeViewer()); 
-		return outlinePage;
-	}
+	if (type == IContentOutlinePage.class)
+		return new ShapesEditorOutlinePage(new TreeViewer());
 	return super.getAdapter(type);
 }
 
-private ShapesDiagram getModel() {
+ShapesDiagram getModel() {
 	return diagram;
 }
 
@@ -316,55 +296,37 @@ protected void setInput(IEditorInput input) {
 /**
  * Creates an outline pagebook for this editor.
  */
-public class ShapesEditorOutlinePage extends ContentOutlinePage {
-	/** 
-	 * Pointer to the editor instance associated with this outline page.
-	 * Used for calling back on editor methods.
-	 */
-	private final ShapesEditor editor;
-	/** A pagebook can containt multiple pages (just one in our case). */
-	private PageBook pagebook;
-	
+public class ShapesEditorOutlinePage extends ContentOutlinePage {	
 	/**
 	 * Create a new outline page for the shapes editor.
-	 * @param editor the editor associated with this outline page (non-null)
 	 * @param viewer a viewer (TreeViewer instance) used for this outline page
 	 * @throws IllegalArgumentException if editor is null
 	 */
-	public ShapesEditorOutlinePage(ShapesEditor editor, EditPartViewer viewer) {
+	public ShapesEditorOutlinePage(EditPartViewer viewer) {
 		super(viewer);
-		if (editor == null) {
-			throw new IllegalArgumentException();
-		}
-		this.editor = editor;
 	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.part.IPage#createControl(org.eclipse.swt.widgets.Composite)
 	 */
 	public void createControl(Composite parent) {
-		pagebook = new PageBook(parent, SWT.NONE);
-
 		// create outline viewer page
-		Control outline = getViewer().createControl(pagebook);
+		getViewer().createControl(parent);
 		// configure outline viewer
-		getViewer().setEditDomain(editor.getEditDomain());
+		getViewer().setEditDomain(getEditDomain());
 		getViewer().setEditPartFactory(new ShapesTreeEditPartFactory());
 		// configure & add context menu to viewer
 		ContextMenuProvider cmProvider = new ShapesEditorContextMenuProvider(
-				getViewer(), 
-				editor.getActionRegistry()); 
+				getViewer(), getActionRegistry()); 
 		getViewer().setContextMenu(cmProvider);
 		getSite().registerContextMenu(
 				"org.eclipse.gef.examples.shapes.outline.contextmenu",
-				cmProvider,
-				getSite().getSelectionProvider());		
+				cmProvider, getSite().getSelectionProvider());		
 		// hook outline viewer
-		editor.getSelectionSynchronizer().addViewer(getViewer());
+		getSelectionSynchronizer().addViewer(getViewer());
 		// initialize outline viewer with model
-		getViewer().setContents(editor.getModel());
+		getViewer().setContents(getModel());
 		// show outline viewer
-		pagebook.showPage(outline);
 	}
 	
 	/* (non-Javadoc)
@@ -372,17 +334,17 @@ public class ShapesEditorOutlinePage extends ContentOutlinePage {
 	 */
 	public void dispose() {
 		// unhook outline viewer
-		editor.getSelectionSynchronizer().removeViewer(getViewer());
+		getSelectionSynchronizer().removeViewer(getViewer());
 		// dispose
 		super.dispose();
-		editor.disposeOutlinePage();
 	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.part.IPage#getControl()
 	 */
 	public Control getControl() {
-		return pagebook;
+		return getViewer().getControl();
 	}
-} // inner class 
+}
+
 }
