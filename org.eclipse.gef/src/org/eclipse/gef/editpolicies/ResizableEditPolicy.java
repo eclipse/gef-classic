@@ -47,7 +47,9 @@ private int directions = -1;
 protected List createSelectionHandles() {
 	List list = new ArrayList();
 	
-	if (directions != -1) {
+	if (directions == 0)
+		NonResizableHandleKit.addHandles((GraphicalEditPart)getHost(), list);
+	else if (directions != -1) {
 		ResizableHandleKit.addMoveHandle((GraphicalEditPart)getHost(), list);
 		if ((directions & PositionConstants.EAST) != 0)
 			ResizableHandleKit.addHandle((GraphicalEditPart)getHost(), list, 
