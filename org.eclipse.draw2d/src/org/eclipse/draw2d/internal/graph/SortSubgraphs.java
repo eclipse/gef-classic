@@ -2,8 +2,6 @@ package org.eclipse.draw2d.internal.graph;
 
 import java.util.*;
 
-import org.eclipse.swt.widgets.Display;
-
 import org.eclipse.draw2d.graph.*;
 
 /**
@@ -63,7 +61,7 @@ static class NestingTreeEntry {
 			for (int i = contents.size() - 2; i >= 0; i--)
 				change |= swap(i);
 		} while (change);
-		for (int i=0; i<contents.size(); i++) {
+		for (int i = 0; i < contents.size(); i++) {
 			Object o = contents.get(i);
 			if (o instanceof NestingTreeEntry)
 				((NestingTreeEntry)o).recursiveSort();
@@ -82,11 +80,11 @@ static class NestingTreeEntry {
 		if (iL <= iR)
 			return false;
 		contents.set(index, right);
-		contents.set(index+1, left);
+		contents.set(index + 1, left);
 		return true;
 	}
 	public String toString() {
-		return "Nesting:"+subgraph;
+		return "Nesting:" + subgraph; //$NON-NLS-1$
 	}
 }
 

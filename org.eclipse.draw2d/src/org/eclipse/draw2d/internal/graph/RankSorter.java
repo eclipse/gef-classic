@@ -19,7 +19,7 @@ protected void assignIncomingSortValues() {
 	prevRankSize = g.ranks.getRank(currentRow - 1).total;
 	if (currentRow < g.ranks.size() - 1)
 		nextRankSize = g.ranks.getRank(currentRow + 1).total;
-	for (int n = 0; n<rank.count(); n++) {
+	for (int n = 0; n < rank.count(); n++) {
 		node = rank.getNode(n);
 		sortValueIncoming(g, currentRow, progress);
 	}
@@ -43,10 +43,10 @@ double evaluateNodeIncoming() {
 	do {
 		change = false;
 		for (int i = 0; i < incoming.size() - 1; i++) {
-			if (incoming.getSourceIndex(i) > incoming.getSourceIndex(i+1)) {
+			if (incoming.getSourceIndex(i) > incoming.getSourceIndex(i + 1)) {
 				Edge e = incoming.getEdge(i);
-				incoming.set(i, incoming.get(i+1));
-				incoming.set(i+1, e);
+				incoming.set(i, incoming.get(i + 1));
+				incoming.set(i + 1, e);
 				change = true;
 			}
 		}
@@ -71,9 +71,9 @@ double evaluateNodeIncoming() {
 	}
 	if (progress > 0.25 && progress < 0.75) {
 		if (flipflop.nextBoolean())
-			return (l + l + r)/3.0;
+			return (l + l + r) / 3.0;
 		else
-			return (r + r + l)/3.0;
+			return (r + r + l) / 3.0;
 	}
 	return (l + r) / 2.0;
 }
@@ -84,10 +84,10 @@ double evaluateNodeOutgoing() {
 	do {
 		change = false;
 		for (int i = 0; i < outgoing.size() - 1; i++) {
-			if (outgoing.getTargetIndex(i) > outgoing.getTargetIndex(i+1)) {
+			if (outgoing.getTargetIndex(i) > outgoing.getTargetIndex(i + 1)) {
 				Edge e = outgoing.getEdge(i);
-				outgoing.set(i, outgoing.get(i+1));
-				outgoing.set(i+1, e);
+				outgoing.set(i, outgoing.get(i + 1));
+				outgoing.set(i + 1, e);
 				change = true;
 			}
 		}
@@ -110,9 +110,9 @@ double evaluateNodeOutgoing() {
 	}
 	if (progress > 0.25 && progress < 0.75) {
 		if (flipflop.nextBoolean())
-			return (l + l + r)/3.0;
+			return (l + l + r) / 3.0;
 		else
-			return (r + r + l)/3.0;
+			return (r + r + l) / 3.0;
 	}
 	return (l + r) / 2.0;
 }
