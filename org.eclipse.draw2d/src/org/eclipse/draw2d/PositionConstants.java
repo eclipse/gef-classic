@@ -37,9 +37,9 @@ int NONE  =  0;
 int NORTH =  1;
 /** South */
 int SOUTH =  4;
-/** East */
-int WEST  =  8;
 /** West */
+int WEST  =  8;
+/** East */
 int EAST  = 16;
 /** North-East: a bit-wise OR of {@link #NORTH} and {@link #EAST} */
 int NORTH_EAST = NORTH | EAST;
