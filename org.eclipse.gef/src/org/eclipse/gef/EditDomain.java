@@ -154,9 +154,9 @@ public void keyDown(KeyEvent keyEvent, EditPartViewer viewer) {
 
 /**
  * Called when a traversal occurs on a viewer.
- * @since 3.1
- * @param keyEvent the SWT traverse event
+ * @param traverseEvent the SWT traverse event
  * @param viewer the source of the event
+ * @since 3.1
  */
 public void keyTraversed(TraverseEvent traverseEvent, EditPartViewer viewer) {
 	Tool tool = getActiveTool();
