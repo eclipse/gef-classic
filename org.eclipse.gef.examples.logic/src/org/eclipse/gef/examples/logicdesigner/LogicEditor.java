@@ -260,6 +260,9 @@ private IPartListener partListener = new IPartListener() {
 	public void partOpened(IWorkbenchPart part) {}
 };
 
+protected static final String PALETTE_SIZE = "Palette Size"; //$NON-NLS-1$
+protected static final int DEFAULT_PALETTE_SIZE = 130;
+	
 public LogicEditor() {
 	setEditDomain(new DefaultEditDomain(this));
 }
@@ -291,7 +294,6 @@ protected void configurePaletteViewer() {
 	ContextMenuProvider provider = new PaletteContextMenuProvider(viewer);
 	getPaletteViewer().setContextMenu(provider);
 	viewer.setCustomizer(new LogicPaletteCustomizer());
-	viewer.setPaletteViewerPreferences(new LogicPaletteViewerPreferences());
 }
 
 
@@ -365,16 +367,14 @@ public Object getAdapter(Class type){
  * @see org.eclipse.gef.ui.parts.GraphicalEditorWithPalette#getInitialPaletteSize()
  */
 protected int getInitialPaletteSize() {
-	return ((LogicPaletteViewerPreferences)((PaletteViewerImpl)getPaletteViewer()).
-			getPaletteViewerPreferences()).getPaletteSize();
+	return LogicPlugin.getDefault().getPreferenceStore().getInt(PALETTE_SIZE);
 }
 
 /**
  * @see org.eclipse.gef.ui.parts.GraphicalEditorWithPalette#handlePaletteResized(int)
  */
 protected void handlePaletteResized(int newSize) {
-	((LogicPaletteViewerPreferences)((PaletteViewerImpl)getPaletteViewer()).
-			getPaletteViewerPreferences()).setPaletteSize(newSize);
+	LogicPlugin.getDefault().getPreferenceStore().setValue(PALETTE_SIZE, newSize);
 }
 
 /**
@@ -431,6 +431,8 @@ protected void initializePaletteViewer() {
 	super.initializePaletteViewer();
 	getPaletteViewer().addDragSourceListener(
 		new TemplateTransferDragSourceListener(getPaletteViewer()));
+	LogicPlugin.getDefault().getPreferenceStore().setDefault(
+				PALETTE_SIZE, DEFAULT_PALETTE_SIZE);
 }
 
 protected void createActions() {
