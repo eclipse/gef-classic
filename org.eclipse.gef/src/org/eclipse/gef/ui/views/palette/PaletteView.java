@@ -54,8 +54,7 @@ protected IWorkbenchPart getBootstrapPart() {
 	IWorkbenchPage persp = getSite().getWorkbenchWindow().getActivePage();
 	if (persp != null)
 		return persp.getActiveEditor();
-	else
-		return null;
+	return null;
 }
 
 protected boolean isImportant(IWorkbenchPart part) {
