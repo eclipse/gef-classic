@@ -18,10 +18,10 @@ import org.eclipse.gef.EditPart;
  * @author hudsonr
  * @since 2.0 */
 public class ViewportExposeHelper
+	extends ViewportHelper
 	implements ExposeHelper
 {
 
-private GraphicalEditPart owner;
 private int minimumFrameCount = 3;
 private int maximumFrameCount = 8;
 
@@ -31,7 +31,7 @@ private int maximumFrameCount = 8;
  * <i>contentsPane</i> and its <i>figure</i> inclusively.
  * @param owner the GraphicalEditPart that owns the Viewport */
 public ViewportExposeHelper(GraphicalEditPart owner) {
-	this.owner = owner;
+	super(owner);
 }
 
 /**
@@ -85,22 +85,6 @@ public void exposeDescendant(EditPart part) {
 		port.getUpdateManager().performUpdate();
 	}
 	port.setViewLocation(finalLocation);
-}
-
-private Viewport findViewport(GraphicalEditPart part) {
-	IFigure figure = null;
-	Viewport port = null;
-	do {
-		if (figure == null)
-			figure = part.getContentPane();
-		else
-			figure = figure.getParent();
-		if (figure instanceof Viewport) {
-			port = (Viewport) figure;
-			break;
-		}
-	} while (figure != part.getFigure() && figure != null);
-	return port;
 }
 
 /**
