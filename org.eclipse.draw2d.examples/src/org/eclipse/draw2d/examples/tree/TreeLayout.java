@@ -83,7 +83,6 @@ public void layout(IFigure container) {
 	
 	for (int i = 0; i < subtrees.size(); i++) {
 		subtree = (TreeBranch)subtrees.get(i);
-		subtree.toString();
 		
 		//Give the subtree its preferred size before asking for contours
 		Dimension subtreeSize = subtree.getPreferredSize();

@@ -85,6 +85,7 @@ public void layout(IFigure f) {
 	Animation.recordInitialState(f);
 	if (Animation.playbackState(f))
 		return;
+	branch.getContentsPane().validate();
 
 	Transposer transposer = getTransposer();
 	Rectangle clientArea = new Rectangle();

@@ -60,11 +60,11 @@ boolean expanded = true;
 IFigure node;
 int style;
 
-TreeBranch(IFigure title) {
+public TreeBranch(IFigure title) {
 	this(title, STYLE_NORMAL);
 }
 
-TreeBranch(IFigure title, int style) {
+public TreeBranch(IFigure title, int style) {
 	setStyle(style);
 	if (title.getBorder() == null)
 		title.setBorder(new LineBorder(ColorConstants.gray, 2));
@@ -73,11 +73,23 @@ TreeBranch(IFigure title, int style) {
 	add(title);
 }
 
-void animationReset(Rectangle bounds) {
+/**
+ * recursively set all nodes and sub-treebranch nodes to the same location.  This gives
+ * the appearance of all nodes coming from the same place.
+ * @param bounds where to set
+ */
+public void animationReset(Rectangle bounds) {
 	List subtrees = contents.getChildren();
-//	contents.setBounds(bounds);
-	node.setLocation(bounds.getLocation());
-	revalidate();
+	contents.setBounds(bounds);
+
+	//Make the center of this node match the center of the given bounds
+	Rectangle r = node.getBounds();
+	int dx = bounds.x + bounds.width / 2 - r.x - r.width/2;
+	int dy = bounds.y + bounds.height/ 2 - r.y - r.height/2;
+	node.translate(dx, dy);
+	revalidate(); //Otherwise, this branch will not layout
+	
+	//Pass the location to all children
 	for (int i=0; i<subtrees.size(); i++){
 		TreeBranch subtree = (TreeBranch)subtrees.get(i);
 		subtree.setBounds(bounds);
@@ -229,6 +241,8 @@ final void setRowHeights(int heights[], int offset) {
 }
 
 public void setStyle(int style) {
+	if (this.style == style)
+		return;
 	this.style = style;
 	switch (style) {
 		case STYLE_HANGING :
@@ -253,7 +267,7 @@ String toString(int level) {
 	String result = "";
 	for (int i=0; i<level; i++)
 		result += "  ";
-	result += getChildren().get(0) + "\n";
+	result += getChildren().get(1) + "\n";
 	for (int i=0; i<contents.getChildren().size(); i++)
 		result += ((TreeBranch)contents.getChildren().get(i)).toString(level + 1);
 	return result;
