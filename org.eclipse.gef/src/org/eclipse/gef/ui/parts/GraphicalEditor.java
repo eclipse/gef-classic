@@ -288,7 +288,7 @@ protected abstract void initializeGraphicalViewer();
  */
 public void selectionChanged(IWorkbenchPart part, ISelection selection) {
 	// If not the active editor, ignore selection changed.
-	if (this.equals(getSite().getWorkbenchWindow().getActivePage().getActiveEditor()))
+	if (this.equals(getSite().getPage().getActiveEditor()))
 		updateActions(selectionActions);
 }
 
