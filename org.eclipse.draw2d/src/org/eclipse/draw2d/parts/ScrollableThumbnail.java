@@ -18,9 +18,11 @@ import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.*;
 
 /**
- * Scrollable, scaled image representation of a Figure.
+ * A scaled image representation of a Figure.  If the source Figure is not completely 
+ * visible, a SelectorFigure is placed over the thumbnail representing the viewable area 
+ * and can be dragged around to scroll the source figure.
  */
-final public class ScrollableThumbnail 
+public final class ScrollableThumbnail 
 	extends Thumbnail
 {
 
@@ -29,18 +31,23 @@ private Viewport viewport;
 private ScrollBar hBar, vBar;
 private ScrollSynchronizer syncher;
 
-public ScrollableThumbnail(){
+/**
+ * Creates a new ScrollableThumbnail. */
+public ScrollableThumbnail() {
 	super();
 	initialize();
 }
 
-public ScrollableThumbnail(Viewport port){
+/**
+ * Creates a new ScrollableThumbnail that synchs with the given Viewport.
+ *  * @param port The Viewport */
+public ScrollableThumbnail(Viewport port) {
 	super();
 	setViewport(port);
 	initialize();
 }
 
-private void initialize(){
+private void initialize() {
 	selector = new SelectorFigure();
 	selector.addMouseListener(syncher = new ScrollSynchronizer());
 	selector.addMouseMotionListener(syncher);
@@ -51,7 +58,7 @@ private void initialize(){
 	addMouseMotionListener(transferrer);
 }
 
-private void reconfigureSelectorBounds(){
+private void reconfigureSelectorBounds() {
 	Rectangle rect = new Rectangle();
 	rect.setLocation(viewport.getViewLocation());
 	rect.setSize(viewport.getSize());
@@ -60,8 +67,13 @@ private void reconfigureSelectorBounds(){
 	selector.setBounds(rect);
 }	
 
-protected void setScales(float scaleX, float scaleY){
-	if(scaleX == getScaleX() && scaleY == getScaleY())
+/**
+ * Reconfigures the SelectorFigure's bounds if the scales have changed.
+ * 
+ * @param scaleX The X scale * @param scaleY The Y scale
+ * @see org.eclipse.draw2d.parts.Thumbnail#setScales(float, float) */
+protected void setScales(float scaleX, float scaleY) {
+	if (scaleX == getScaleX() && scaleY == getScaleY())
 		return;
 		
 	super.setScales(scaleX, scaleY);
@@ -69,14 +81,17 @@ protected void setScales(float scaleX, float scaleY){
 	reconfigureSelectorBounds();
 }
 
-public void setViewport(Viewport port){
-	port.addPropertyChangeListener(Viewport.PROPERTY_VIEW_LOCATION, new PropertyChangeListener(){
-		public void propertyChange(PropertyChangeEvent event){
+/**
+ * Sets the Viewport that this ScrollableThumbnail will synch with.
+ *  * @param port The Viewport */
+public void setViewport(Viewport port) {
+	port.addPropertyChangeListener(Viewport.PROPERTY_VIEW_LOCATION, new PropertyChangeListener() {
+		public void propertyChange(PropertyChangeEvent event) {
 			reconfigureSelectorBounds();
 		}
 	});
-	port.addFigureListener(new FigureListener(){
-		public void figureMoved(IFigure fig){
+	port.addFigureListener(new FigureListener() {
+		public void figureMoved(IFigure fig) {
 			reconfigureSelectorBounds();
 		}
 	});
@@ -90,23 +105,22 @@ private class ScrollSynchronizer
 	private Point startLocation;
 	private Point viewLocation;
 
-	public void mouseDragged(MouseEvent me){
+	public void mouseDragged(MouseEvent me) {
 		Dimension d = me.getLocation().getDifference(startLocation);
-		d.scale(1.0f/getScaleX(), 1.0f/getScaleY());
+		d.scale(1.0f / getScaleX(), 1.0f / getScaleY());
 		viewport.setViewLocation(viewLocation.getTranslated(d));
 		me.consume();
 	}
 
-	public void mousePressed(MouseEvent me){
+	public void mousePressed(MouseEvent me) {
 		startLocation = me.getLocation();
 		viewLocation = viewport.getViewLocation();
 		me.consume();
 	}
 
-	public void mouseReleased(MouseEvent me){}
+	public void mouseReleased(MouseEvent me) { }
 	
-	public void mouseDoubleClicked(MouseEvent me){}
-	
+	public void mouseDoubleClicked(MouseEvent me) { }
 }
 
 private class ClickScrollerAndDragTransferrer
@@ -114,25 +128,27 @@ private class ClickScrollerAndDragTransferrer
 	implements MouseListener
 {
 	private boolean dragTransfer;
-	public void mouseDragged(MouseEvent me){
-		if(dragTransfer)
+	public void mouseDragged(MouseEvent me) {
+		if (dragTransfer)
 			syncher.mouseDragged(me);
 	}
-	public void mousePressed(MouseEvent me){
-		if(!(ScrollableThumbnail.this.getClientArea().contains(me.getLocation())))
+	public void mousePressed(MouseEvent me) {
+		if (!(ScrollableThumbnail.this.getClientArea().contains(me.getLocation())))
 			return;
 		Dimension selectorCenter = selector.getBounds().getSize().scale(0.5f);
-		Point scrollPoint = me.getLocation().getTranslated(getLocation().getNegated()).translate(selectorCenter.negate()).scale(1.0f/getScaleX(),
-																						     1.0f/getScaleY());
+		Point scrollPoint = me.getLocation()
+							.getTranslated(getLocation().getNegated())
+							.translate(selectorCenter.negate())
+							.scale(1.0f / getScaleX(), 1.0f / getScaleY());
 		viewport.setViewLocation(scrollPoint);
 		syncher.mousePressed(me);
 		dragTransfer = true;
 	}
-	public void mouseReleased(MouseEvent me){
+	public void mouseReleased(MouseEvent me) {
 		syncher.mouseReleased(me);
 		dragTransfer = false;
 	}
-	public void mouseDoubleClicked(MouseEvent me){}
+	public void mouseDoubleClicked(MouseEvent me) { }
 }
 
 private class SelectorFigure
@@ -144,7 +160,7 @@ private class SelectorFigure
 	{
 		Display display = Display.getDefault();
 		PaletteData pData = new PaletteData(0xFF, 0xFF00, 0xFF0000);
-		RGB rgb = new RGB(255,157,20);
+		RGB rgb = new RGB(255, 157, 20);
 		int fillColor = pData.getPixel(rgb);
 		ImageData iData = new ImageData(1, 1, 24, pData);
 		iData.setPixel(0, 0, fillColor);
@@ -152,21 +168,22 @@ private class SelectorFigure
 		image = new Image(display, iData);
 	}
 	
-	protected void finalize(){
+	protected void finalize() {
 		image.dispose();
 	}
 
-	public void paintFigure(Graphics g){
+	public void paintFigure(Graphics g) {
 		Rectangle bounds = getBounds();		
 
 		// Avoid drawing images that are 0 in dimension
-		if(bounds.width < 5 || bounds.height < 5)
+		if (bounds.width < 5 || bounds.height < 5)
 			return;
 			
 		// Don't paint the selector figure if the entire source is visible.
 		Dimension thumbnailSize = ScrollableThumbnail.this.getClientArea().getSize();
-		Dimension size = getSize().getExpanded(1, 1); // expand to compensate for rounding errors in calculating bounds
-		if(size.contains(thumbnailSize))
+		// expand to compensate for rounding errors in calculating bounds
+		Dimension size = getSize().getExpanded(1, 1); 
+		if (size.contains(thumbnailSize))
 			return;
 
 		bounds.height--;
@@ -175,8 +192,10 @@ private class SelectorFigure
 		bounds.height++;
 		bounds.width++;
 
-		g.drawImage(image, iBounds.x, iBounds.y, iBounds.width, iBounds.height, bounds.x, bounds.y, bounds.width - 2, 1);
-		g.drawImage(image, iBounds.x, iBounds.y, iBounds.width, iBounds.height, bounds.x, bounds.y + 1, 1, bounds.height - 2);
+		g.drawImage(image, iBounds.x, iBounds.y, iBounds.width, iBounds.height, 
+							bounds.x, bounds.y, bounds.width - 2, 1);
+		g.drawImage(image, iBounds.x, iBounds.y, iBounds.width, iBounds.height, 
+							bounds.x, bounds.y + 1, 1, bounds.height - 2);
 		g.setForegroundColor(ColorConstants.gray);
 		g.drawLine(bounds.x + 2, bounds.bottom() - 1, bounds.right() - 1, bounds.bottom() - 1);
 		g.drawLine(bounds.right() - 1, bounds.y + 2, bounds.right() - 1, bounds.bottom() - 1);

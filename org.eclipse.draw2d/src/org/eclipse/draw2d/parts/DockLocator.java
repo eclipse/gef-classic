@@ -19,8 +19,10 @@ public final class DockLocator
 
 /**
  * Sets the Dock's location.
+ * 
+ * @param fig The figure to relocate
  */
-public void relocate(IFigure fig){
+public void relocate(IFigure fig) {
 	Dock dock = (Dock)fig;
 	IFigure port = dock.getHost();
 	Dimension prefSize = dock.getPreferredSize();
