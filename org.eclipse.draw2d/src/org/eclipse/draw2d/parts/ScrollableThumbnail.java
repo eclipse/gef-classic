@@ -61,11 +61,19 @@ private void initialize() {
 private void reconfigureSelectorBounds() {
 	Rectangle rect = new Rectangle();
 	rect.setLocation(viewport.getViewLocation());
-	rect.setSize(viewport.getSize());
-	rect.scale(getScaleX(), getScaleY());
+	rect.setSize(viewport.getClientArea().getSize());
+	rect.scale(getViewportScaleX(), getViewportScaleY());
 	rect.translate(getClientArea().getLocation());
 	selector.setBounds(rect);
 }	
+
+private double getViewportScaleX() {
+	return (double)targetSize.width / viewport.getContents().getBounds().width;
+}
+
+private double getViewportScaleY() {
+	return (double)targetSize.height / viewport.getContents().getBounds().height;
+}
 
 /**
  * Reconfigures the SelectorFigure's bounds if the scales have changed.
@@ -107,7 +115,7 @@ private class ScrollSynchronizer
 
 	public void mouseDragged(MouseEvent me) {
 		Dimension d = me.getLocation().getDifference(startLocation);
-		d.scale(1.0f / getScaleX(), 1.0f / getScaleY());
+		d.scale(1.0f / getViewportScaleX(), 1.0f / getViewportScaleY());
 		viewport.setViewLocation(viewLocation.getTranslated(d));
 		me.consume();
 	}
@@ -139,7 +147,7 @@ private class ClickScrollerAndDragTransferrer
 		Point scrollPoint = me.getLocation()
 							.getTranslated(getLocation().getNegated())
 							.translate(selectorCenter.negate())
-							.scale(1.0f / getScaleX(), 1.0f / getScaleY());
+							.scale(1.0f / getViewportScaleX(), 1.0f / getViewportScaleY());
 		viewport.setViewLocation(scrollPoint);
 		syncher.mousePressed(me);
 		dragTransfer = true;
