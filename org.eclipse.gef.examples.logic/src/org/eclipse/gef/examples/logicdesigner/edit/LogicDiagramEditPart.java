@@ -97,7 +97,7 @@ public Object getAdapter(Class adapter) {
 		SnapToHelper ss[] = new SnapToHelper[snapStrategies.size()];
 		for (int i = 0; i < snapStrategies.size(); i++)
 			ss[i] = (SnapToHelper)snapStrategies.get(i);
-		return new CompoundSnapToStrategy(ss);
+		return new CompoundSnapToHelper(ss);
 	}
 	return super.getAdapter(adapter);
 }
