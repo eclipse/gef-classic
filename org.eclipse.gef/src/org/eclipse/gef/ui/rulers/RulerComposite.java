@@ -106,26 +106,35 @@ public RulerComposite(Composite parent, int style) {
 	});
 }
 
+/*
+ * Calculates the proper trim.  Includes scrollbars' sizes only if they're visible.
+ */
 private static Rectangle calculateTrim(Canvas canvas) {
 	/*
 	 * Workaround for Bug# 87712
-	 * Calculating the trimming using the clientArea.  This fix can be removed if 
+	 * Calculating the trim using the clientArea.  This workaround can be removed if 
 	 * that bug is fixed.
 	 */
+	Rectangle trim = null;
 	Rectangle bounds = canvas.getBounds();
 	Rectangle clientArea = canvas.getClientArea();
-	if (clientArea.height <= 1 || clientArea.width <= 1) {
-		// This is probably the first layout for this canvas, so clientArea is not 
-		// accurate.  Set bounds to some bogus value so that the clientArea is accurate 
-		// compared to the bounds, and trim can be accurately determined.
-		canvas.setBounds(0, 0, 100, 100);
-		bounds = canvas.getBounds();
-		clientArea = canvas.getClientArea();
+	// The client area may not be accurate if this is the first layout for rulers.
+	if (clientArea.height <= 1 || clientArea.width <= 1) { 
+		if ("carbon".equals(SWT.getPlatform())) { //$NON-NLS-1$
+			trim = canvas.computeTrim(0, 0, 0, 0);
+			clientArea.width = 0 - trim.x * 2;
+			clientArea.height = 0 - trim.y * 2;
+		} else {
+			// On all platforms other than MacOS, rulers have no trim
+			clientArea.width = bounds.width;
+			clientArea.height = bounds.height;
+		}
 	}
 	Rectangle result = new Rectangle(
 			0, 0, bounds.width - clientArea.width, bounds.height - clientArea.height);
 	if (result.width != 0 || result.height != 0) {
-		Rectangle trim = canvas.computeTrim(0, 0, 0, 0);
+		if (trim == null)
+			trim = canvas.computeTrim(0, 0, 0, 0);
 		result.x = result.height == 0 ? 0 : trim.x;
 		result.y = result.width == 0 ? 0 : trim.y;
 	}
