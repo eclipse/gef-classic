@@ -1038,7 +1038,7 @@ protected void reactivate() {
 
 /**
  * Sets the cursor being displayed to the appropriate cursor.  If the tool is active, the
- * current cursor being displayed is updates by calling {@link #calculateCursor()}.
+ * current cursor being displayed is updated by calling {@link #calculateCursor()}.
  */
 protected void refreshCursor() {
 	if (isActive())
