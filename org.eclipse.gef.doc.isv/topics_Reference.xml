@@ -3,9 +3,6 @@
 <!-- ============================================================================= -->
 <!-- Define topics for the main guide                                              -->
 <!-- ============================================================================= -->
-<!ENTITY ref "Reference">
-<!ENTITY api_ref "API Reference">
-
-<toc label="ref">
-		<topic label="api_ref" href="reference/api/index.html" />
+<toc label="Reference">
+		<topic label="API Reference" href="reference/api/index.html" />
 </toc>

@@ -3,16 +3,9 @@
 <!-- ============================================================================= -->
 <!-- Define topics for the main guide                                              -->
 <!-- ============================================================================= -->
-
-<!ENTITY guide "Guide">
-<!ENTITY overview "Visual Overview">
-<!ENTITY layout_demo "LayoutManager Demo">
-<!ENTITY click_scroll_demo "Clicking and Scrolling Demo">
-<!ENTITY conn_anchor_demo "Connectoins and Anchors Demo">
-
-<toc label="guide">
-		<topic label="overview" href="reference/api/org/eclipse/draw2d/doc-files/draw2d.gif" />
-		<topic label="layout_demo" href="reference/api/org/eclipse/draw2d/doc-files/demo2.html" />
-		<topic label="click_scroll_demo" href="reference/api/org/eclipse/draw2d/doc-files/demo3.html" />
-		<topic label="conn_anchor_demo" href="reference/api/org/eclipse/draw2d/doc-files/demo4.html" />
+<toc label="Guide">
+		<topic label="Visual Overview" href="reference/api/org/eclipse/draw2d/doc-files/draw2d.gif" />
+		<topic label="LayoutManager Demo" href="reference/api/org/eclipse/draw2d/doc-files/demo2.html" />
+		<topic label="Clicking and Scrolling Demo" href="reference/api/org/eclipse/draw2d/doc-files/demo3.html" />
+		<topic label="Connections and Anchors Demo" href="reference/api/org/eclipse/draw2d/doc-files/demo4.html" />
 </toc>

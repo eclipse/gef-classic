@@ -4,15 +4,11 @@
 <!-- Define the top level topics                                                   -->
 <!-- ============================================================================= -->
 
-<!ENTITY developer_guide "GEF Developer Guide">
-<!ENTITY programmer_guide "Programmer&apos;s Guide">
-<!ENTITY ref "Reference">
-
-<toc label="developer_guide">
-	<topic label="programmer_guide">
+<toc label="GEF Developer Guide">
+	<topic label="Programmer&apos;s Guide">
 		<link toc="topics_Guide.xml" />
 	</topic>
-	<topic label="ref">
+	<topic label="Reference">	
 		<link toc="topics_Reference.xml" />
 	</topic>
 </toc>
