@@ -55,7 +55,7 @@ private void buildNavigationList(EditPart palettePart, EditPart exclusion, Array
 			navList.add(palettePart);
 			return;
 		} 
-		else if (palettePart instanceof EntryEditPart 
+		else if (palettePart instanceof ToolEntryEditPart 
 				|| palettePart instanceof CategoryEditPart
 				|| palettePart instanceof TemplateEditPart)
 			navList.add(palettePart);
