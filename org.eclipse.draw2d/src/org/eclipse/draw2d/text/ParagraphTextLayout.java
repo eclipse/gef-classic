@@ -141,7 +141,7 @@ protected void layout() {
 			//was requested, and the loop will break.
 			while (true) {
 				currentLine = context.getCurrentLine();
-				if (!currentLine.isOccupied()
+				if (!context.isCurrentLineOccupied()
 						&& context.getConsumeSpaceOnNewLine() 
 						&& Character.isWhitespace(segment.charAt(0))) {
 					segment = segment.substring(1);
@@ -154,17 +154,13 @@ protected void layout() {
 						prevAvgCharWidth, wrappingStyle);
 				
 				if (fragment.width <= currentLine.getAvailableWidth()
-						|| !currentLine.isOccupied()
+						|| !context.isCurrentLineOccupied()
 						|| context.getContinueOnSameLine())
 					break;
 				context.endLine();
 			}
 			if (fragLength != segment.length()) {
 				// all the given text did not fit on this line and we might have to wrap
-				/*
-				 * $TODO:Pratik change to String.regionMatches, or 2 charAt calls.  Note
-				 * that this case is a sub-case of the next test which is for whitespace.
-				 */
 				if (segment.length() > fragLength + 1 
 						&& segment.charAt(fragLength) == '\r'
 						&& segment.charAt(fragLength + 1) == '\n')
@@ -184,6 +180,7 @@ protected void layout() {
 					FlowUtilities.setupFragment(fragment, font, segment);
 				}
 				context.addToCurrentLine(fragment);
+				context.endLine();
 			} else {
 				// all of string fit on the current line
 				int lookAheadWidth = -1;
@@ -221,6 +218,7 @@ protected void layout() {
 				 *  because we might not be putting the entire string on this line (as in
 				 *  the case "foo barABC", as explained in the if statement above).
 				 */
+				boolean endLine = false;
 				if (Character.isWhitespace(segment.charAt(fragLength - 1))) {
 					if (lookAheadWidth == -1)
 						lookAheadWidth = lookAhead(segments, seg + 1);
@@ -228,6 +226,7 @@ protected void layout() {
 						fragment.length--;
 						FlowUtilities.setupFragment(fragment, font, segment);
 					}
+					endLine = true;
 				}
 
 				context.addToCurrentLine(fragment);
@@ -246,14 +245,11 @@ protected void layout() {
 				// space on the new line (regardless of whether this line ended in
 				// whitespace or not)
 				context.setConsumeSpaceOnNewLine(true);
+				if (endLine || fragment.truncated || fragLength < segment.length())
+					context.endLine();
 			}
-			
 			segment = segment.substring(fragLength);
 			offset += fragLength;
-			if (segment.length() > 0 || fragment.truncated
-					|| (currentLine.getAvailableWidth() <= 0
-					&& !context.getContinueOnSameLine()))
-				context.endLine();
 			fragIndex++;
 		}
 	}
