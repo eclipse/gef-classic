@@ -14,6 +14,6 @@ public interface Disposable {
 /**
  * Performs and necessary cleanup.
  */
-public void dispose();
+void dispose();
 
 }

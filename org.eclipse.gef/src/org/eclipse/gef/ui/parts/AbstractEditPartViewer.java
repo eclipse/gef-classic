@@ -380,7 +380,7 @@ public void setRootEditPart(RootEditPart editpart){
 		rootEditPart.activate();
 }
 
-public void setRouteEventsToEditor(boolean value){}
+public void setRouteEventsToEditDomain(boolean value){}
 
 /**
  * This method will clear the current selection, and set
