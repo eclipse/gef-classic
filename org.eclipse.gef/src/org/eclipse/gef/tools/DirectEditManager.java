@@ -187,8 +187,13 @@ private void hookListeners(){
 
 	control.addControlListener(new ControlAdapter() {
 		public void controlMoved(ControlEvent e) {
-			if (showingFeedback)
-				placeBorder();
+			//This must be handled async because during scrolling, the CellEditor moves first, but then
+			//afterwards the viewport Scrolls, which would cause the shadow to move twice
+			Display.getCurrent().asyncExec(new Runnable() {
+				public void run() {
+					placeBorder();
+				}
+			});
 		}
 
 		public void controlResized(ControlEvent e) {
@@ -228,11 +233,13 @@ protected boolean isDirty(){
 }
 
 private void placeBorder(){
-	IFigure shadow = getCellEditorFrame();
-	Rectangle rect = new Rectangle(getCellEditor().getControl().getBounds());
-	rect.expand(shadow.getInsets());
-	shadow.translateToRelative(rect);
-	shadow.setBounds(rect);
+	if (showingFeedback) {
+		IFigure shadow = getCellEditorFrame();
+		Rectangle rect = new Rectangle(getCellEditor().getControl().getBounds());
+		rect.expand(shadow.getInsets());
+		shadow.translateToRelative(rect);
+		shadow.setBounds(rect);
+	}
 }
 
 private void placeCellEditor(){
@@ -272,7 +279,7 @@ public void show(){
 		return;
 	initCellEditor();
 	getCellEditor().activate();
-	locator.relocate(getCellEditor());
+	placeCellEditor();
 	getControl().setVisible(true);
 	getControl().setFocus();
 	showFeedback();
