@@ -127,7 +127,7 @@ public void setCaretVisible(boolean value) {
 public void setSelectionRange(SelectionRange newRange) {
 	List currentSelection;
 	if (selectionRange != null) {
-		currentSelection = selectionRange.getLeafParts();
+		currentSelection = selectionRange.getSelectedParts();
 		for (int i = 0; i < currentSelection.size(); i++)
 			((TextualEditPart)currentSelection.get(i)).setSelection(-1, -1);
 		selectionRange.begin.part.setSelection(-1, -1);
@@ -135,7 +135,7 @@ public void setSelectionRange(SelectionRange newRange) {
 	}
 	selectionRange = newRange;
 	if (selectionRange != null) {
-		currentSelection = selectionRange.getLeafParts();
+		currentSelection = selectionRange.getSelectedParts();
 		for (int i = 1; i < currentSelection.size() - 1; i++) {
 			TextualEditPart textpart = (TextualEditPart)currentSelection.get(i);
 			textpart.setSelection(0, textpart.getLength());
