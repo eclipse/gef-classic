@@ -20,7 +20,7 @@ public PinDrawerAction (DrawerEditPart drawer) {
 	this.drawer = drawer;
 	setChecked(drawer.isPinnedOpen());
 	setEnabled(drawer.isExpanded());
-	setText(PaletteMessages.DRAWER_PIN);
+	setText(PaletteMessages.PINNED);
 }
 
 /**

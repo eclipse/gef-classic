@@ -50,11 +50,19 @@ public static final String SETTINGS_LIST_VIEW_LABEL;
 /**
  * The String "&Use large icons"
  */
-public static final String USE_LARGE_ICONS_LABEL;
+public static final String SETTINGS_USE_LARGE_ICONS_LABEL;
+/**
+ * The String "&Use Large Icons"
+ */
+public static final String SETTINGS_USE_LARGE_ICONS_LABEL_CAPS;
 /**
  * The String "&Icons only"
  */
 public static final String SETTINGS_ICONS_VIEW_LABEL;
+/**
+ * The String "&Icons Only"
+ */
+public static final String SETTINGS_ICONS_VIEW_LABEL_CAPS;
 /**
  * The String "&Never close"
  */
@@ -168,9 +176,9 @@ public static final String SETTINGS_LAYOUT_TITLE;
  */
 public static final String SETTINGS_DRAWER_OPTIONS_TITLE;
 /**
- * The String "&Set expanded when editor opens"
+ * The String "&Open drawer at start-up"
  */
-public static final String EXPAND_LABEL;
+public static final String EXPAND_DRAWER_AT_STARTUP_LABEL;
 /**
  * The String "Folder layout options"
  */
@@ -180,7 +188,7 @@ public static final String SETTINGS_OPTIONS_FOLDER;
  */
 public static final String SETTINGS_OPTIONS_LIST;
 /**
- * The String "Icons Only layout options"
+ * The String " layout options"
  */
 public static final String SETTINGS_OPTIONS_ICONS_ONLY;
 /**
@@ -196,9 +204,9 @@ public static final String SETTINGS_LAYOUT_FOLDER_OVERRIDE_WIDTH;
  */
 public static final String SETTINGS_LAYOUT_FOLDER_WIDTH;
 /**
- * The String "&Pin open"
+ * The String "&Pin drawer open at start-up"
  */
-public static final String DRAWER_PIN;
+public static final String DRAWER_PIN_AT_STARTUP;
 /**
  * The String "&Restore Default"
  */
@@ -211,6 +219,14 @@ public static final String SETTINGS_WORKBENCH_FONT_LABEL;
  * The String "-"
  */
 public static final String NAME_DESCRIPTION_SEPARATOR;
+/**
+ * The String "&Pinned"
+ */
+public static final String PINNED;
+/**
+ * The String "Pin Open"
+ */
+public static final String TOOLTIP_PIN_FIGURE;
 
 static {
 	ResourceBundle bundle =
@@ -225,7 +241,7 @@ static {
 	NEW_LABEL = bundle.getString("NEW_LABEL"); //$NON-NLS-1$
 	SETTINGS_FOLDER_VIEW_LABEL = bundle.getString("SETTINGS_FOLDER_VIEW_LABEL"); //$NON-NLS-1$
 	SETTINGS_LIST_VIEW_LABEL = bundle.getString("SETTINGS_LIST_VIEW_LABEL"); //$NON-NLS-1$
-	USE_LARGE_ICONS_LABEL = bundle.getString("USE_LARGE_ICONS_LABEL"); //$NON-NLS-1$
+	SETTINGS_USE_LARGE_ICONS_LABEL = bundle.getString("SETTINGS_USE_LARGE_ICONS_LABEL"); //$NON-NLS-1$
 	SETTINGS_ICONS_VIEW_LABEL = bundle.getString("SETTINGS_ICONS_VIEW_LABEL"); //$NON-NLS-1$
 	COLLAPSE_NEVER_LABEL = bundle.getString("COLLAPSE_NEVER_LABEL"); //$NON-NLS-1$
 	COLLAPSE_ALWAYS_LABEL = bundle.getString("COLLAPSE_ALWAYS_LABEL"); //$NON-NLS-1$
@@ -256,17 +272,21 @@ static {
 	SETTINGS_FONT_CURRENT = bundle.getString("SETTINGS_FONT_CURRENT"); //$NON-NLS-1$	
 	SETTINGS_LAYOUT_TITLE = bundle.getString("SETTINGS_LAYOUT_TITLE"); //$NON-NLS-1$	
 	SETTINGS_DRAWER_OPTIONS_TITLE = bundle.getString("SETTINGS_DRAWER_OPTIONS_TITLE"); //$NON-NLS-1$	
-	EXPAND_LABEL = bundle.getString("EXPAND_LABEL"); //$NON-NLS-1$	
+	EXPAND_DRAWER_AT_STARTUP_LABEL = bundle.getString("EXPAND_DRAWER_AT_STARTUP_LABEL"); //$NON-NLS-1$	
 	SETTINGS_OPTIONS_FOLDER = bundle.getString("SETTINGS_OPTIONS_FOLDER"); //$NON-NLS-1$	
 	SETTINGS_OPTIONS_LIST = bundle.getString("SETTINGS_OPTIONS_LIST"); //$NON-NLS-1$	
 	SETTINGS_OPTIONS_ICONS_ONLY = bundle.getString("SETTINGS_OPTIONS_ICONS_ONLY"); //$NON-NLS-1$	
 	SETTINGS_OPTIONS_DETAILS = bundle.getString("SETTINGS_OPTIONS_DETAILS"); //$NON-NLS-1$	
 	SETTINGS_LAYOUT_FOLDER_OVERRIDE_WIDTH = bundle.getString("SETTINGS_LAYOUT_FOLDER_OVERRIDE_WIDTH"); //$NON-NLS-1$	
 	SETTINGS_LAYOUT_FOLDER_WIDTH = bundle.getString("SETTINGS_LAYOUT_FOLDER_WIDTH"); //$NON-NLS-1$	
-	DRAWER_PIN = bundle.getString("DRAWER_PIN"); //$NON-NLS-1$	
+	DRAWER_PIN_AT_STARTUP = bundle.getString("DRAWER_PIN_AT_STARTUP"); //$NON-NLS-1$	
 	SETTINGS_DEFAULT_FONT = bundle.getString("SETTINGS_DEFAULT_FONT"); //$NON-NLS-1$	
 	SETTINGS_WORKBENCH_FONT_LABEL = bundle.getString("SETTINGS_WORKBENCH_FONT_LABEL"); //$NON-NLS-1$	
 	NAME_DESCRIPTION_SEPARATOR = bundle.getString("NAME_DESCRIPTION_SEPARATOR"); //$NON-NLS-1$	
+	SETTINGS_ICONS_VIEW_LABEL_CAPS = bundle.getString("SETTINGS_ICONS_VIEW_LABEL_CAPS"); //$NON-NLS-1$	
+	SETTINGS_USE_LARGE_ICONS_LABEL_CAPS = bundle.getString("SETTINGS_USE_LARGE_ICONS_LABEL_CAPS"); //$NON-NLS-1$	
+	PINNED = bundle.getString("PINNED"); //$NON-NLS-1$	
+	TOOLTIP_PIN_FIGURE = bundle.getString("TOOLTIP_PIN_FIGURE"); //$NON-NLS-1$	
 }
 
 }

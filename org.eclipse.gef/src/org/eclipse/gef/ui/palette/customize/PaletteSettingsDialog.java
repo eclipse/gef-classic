@@ -498,7 +498,7 @@ protected Control createOptionsPage(Composite parent, String title, int buttonId
 	contents.setLayoutData(data);
 	contents.setText(title);
 	
-	createButton(contents, buttonId, PaletteMessages.USE_LARGE_ICONS_LABEL, 
+	createButton(contents, buttonId, PaletteMessages.SETTINGS_USE_LARGE_ICONS_LABEL, 
 			SWT.CHECK, null);
 	
 	return contents;

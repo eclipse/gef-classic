@@ -25,7 +25,7 @@ public void createControl(Composite parent, PaletteEntry entry) {
 	
 	b = new Button(panel, SWT.CHECK);
 	b.setFont(panel.getFont());
-	b.setText(PaletteMessages.EXPAND_LABEL);
+	b.setText(PaletteMessages.EXPAND_DRAWER_AT_STARTUP_LABEL);
 	b.setSelection(getDrawer().isInitiallyOpen());
 	if (!isReadOnly()) {
 		b.addSelectionListener(new SelectionAdapter() {
@@ -39,7 +39,7 @@ public void createControl(Composite parent, PaletteEntry entry) {
 	
 	pinOption = new Button(panel, SWT.CHECK);
 	pinOption.setFont(panel.getFont());
-	pinOption.setText(PaletteMessages.DRAWER_PIN);
+	pinOption.setText(PaletteMessages.DRAWER_PIN_AT_STARTUP);
 	GridData data = new GridData();
 	data.horizontalIndent = 15;
 	pinOption.setLayoutData(data);

@@ -17,7 +17,7 @@ private PaletteViewerPreferences prefs;
  * 					manipulating.
  */
 public ChangeIconSizeAction(PaletteViewerPreferences prefs) {
-	super(PaletteMessages.USE_LARGE_ICONS_LABEL);
+	super(PaletteMessages.SETTINGS_USE_LARGE_ICONS_LABEL_CAPS);
 	this.prefs = prefs;
 	setChecked(prefs.useLargeIcons());
 }
