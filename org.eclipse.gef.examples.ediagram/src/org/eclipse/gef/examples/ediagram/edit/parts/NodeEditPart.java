@@ -40,6 +40,8 @@ public abstract class NodeEditPart
 	implements org.eclipse.gef.NodeEditPart
 {
 
+private ChopboxAnchor anchor;
+
 public NodeEditPart(Node model) {
 	super(model);
 }
@@ -77,19 +79,27 @@ protected List getModelTargetConnections() {
 }
 
 public ConnectionAnchor getSourceConnectionAnchor(ConnectionEditPart connection) {
-	return new ChopboxAnchor(getFigure());
+	if (anchor == null)
+		anchor = new ChopboxAnchor(getFigure());
+	return anchor;
 }
 
 public ConnectionAnchor getSourceConnectionAnchor(Request request) {
-	return new ChopboxAnchor(getFigure());
+	if (anchor == null)
+		anchor = new ChopboxAnchor(getFigure());
+	return anchor;
 }
 
 public ConnectionAnchor getTargetConnectionAnchor(ConnectionEditPart connection) {
-	return new ChopboxAnchor(getFigure());
+	if (anchor == null)
+		anchor = new ChopboxAnchor(getFigure());
+	return anchor;
 }
 
 public ConnectionAnchor getTargetConnectionAnchor(Request request) {
-	return new ChopboxAnchor(getFigure());
+	if (anchor == null)
+		anchor = new ChopboxAnchor(getFigure());
+	return anchor;
 }
 
 protected void handlePropertyChanged(Notification msg) {
