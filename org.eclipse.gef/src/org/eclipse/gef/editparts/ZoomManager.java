@@ -57,7 +57,7 @@ private double[] zoomLevels = { .5, .75, 1.0, 1.5, 2.0, 2.5, 3, 4 };
 public static final String FIT_HEIGHT = GEFMessages.FitHeightAction_Label;
 public static final String FIT_WIDTH = GEFMessages.FitWidthAction_Label;
 public static final String FIT_ALL = GEFMessages.FitAllAction_Label;
-private List zoomLevelContributions;
+private List zoomLevelContributions = Collections.EMPTY_LIST;
 
 DecimalFormat format = new DecimalFormat("####%"); //$NON-NLS-1$
 
@@ -155,7 +155,9 @@ public double getMaxZoom() {
  * @return double
  */
 public double getMinZoom() {
-	return Math.min(getZoomLevels()[0], getFitPageZoomLevel());
+	if (getZoomLevelContributions().contains(FIT_ALL))
+		return Math.min(getZoomLevels()[0], getFitPageZoomLevel());
+	return getZoomLevels()[0];
 }
 
 /**
@@ -260,10 +262,7 @@ public double[] getZoomLevels() {
  * zoom levels that were contributed using {@link #setZoomLevelContributions(List)}.
  * @return List The list of zoom levels */
 public String[] getZoomLevelsAsText() {
-	int size = zoomLevels.length;
-	if (zoomLevelContributions != null)
-		size += zoomLevelContributions.size();
-	String[] zoomLevelStrings = new String[size];
+	String[] zoomLevelStrings = new String[zoomLevels.length + zoomLevelContributions.size()];
 	for (int i = 0; i < zoomLevels.length; i++) {
 		zoomLevelStrings[i] = format.format(zoomLevels[i]);
 	}
