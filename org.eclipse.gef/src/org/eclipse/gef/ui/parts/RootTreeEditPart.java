@@ -28,7 +28,9 @@ private TreeEditPart contents;
  * @param childEditPart  EditPart of child to be added.
  * @param index  Position where it is to be added.
  */
-protected void addChildVisual(EditPart childEditPart, int index){}
+protected void addChildVisual(EditPart childEditPart, int index){
+	((TreeEditPart)childEditPart).setWidget(widget);
+}
 
 protected void createEditPolicies(){}
 
@@ -70,20 +72,19 @@ public Widget getWidget(){
  *
  * @param childEditPart  EditPart of child to be removed.
  */
-protected void removeChildVisual(EditPart childEditPart){}
+protected void removeChildVisual(EditPart childEditPart) { 
+	((TreeEditPart)childEditPart).setWidget(null);
+}
 
 public void setContents(EditPart editpart){
 	if(contents != null){
 		if(getWidget() != null)
 			((Tree)getWidget()).removeAll();
-		contents.dispose();
 		removeChild(contents);
-		contents.setWidget(null);
 	}
 	contents = (TreeEditPart)editpart;
 	if(contents != null){
 		addChild(contents, -1);
-		contents.setWidget(getWidget());
 	}
 }
 
