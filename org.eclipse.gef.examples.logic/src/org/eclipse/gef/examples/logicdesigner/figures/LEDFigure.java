@@ -92,10 +92,7 @@ public void setConstraint(IFigure child, Object constraint) {
 /**
  * Creates a new LEDFigure
  */
-public LEDFigure() {
-	getBounds().width = 61;
-	getBounds().height = 47;
-	
+public LEDFigure() {	
 	FixedConnectionAnchor c;
 	c = new FixedConnectionAnchor(this);
 	c.offsetH = 51;
@@ -209,9 +206,12 @@ protected void paintFigure(Graphics g) {
  * @param val The value to set on this LEDFigure
  */
 public void setValue(int val) {
-	value = String.valueOf(val);
+	String newValue = String.valueOf(val);
 	if (val < 10)
-		value = "0" + value;	//$NON-NLS-1$
+		newValue = "0" + newValue;	//$NON-NLS-1$
+	if (newValue.equals(value))
+		return;
+	value = newValue;
 	repaint();
 }
 

@@ -8,6 +8,7 @@ Bundle-Localization: plugin
 Export-Package: org.eclipse.draw2d,
  org.eclipse.draw2d.doc-files,
  org.eclipse.draw2d.graph,
+ org.eclipse.draw2d.geometry,
  org.eclipse.draw2d.images,
  org.eclipse.draw2d.internal,
  org.eclipse.draw2d.internal.graph,
