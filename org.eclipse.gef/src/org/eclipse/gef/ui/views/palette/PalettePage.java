@@ -15,6 +15,6 @@ import org.eclipse.ui.part.IPageBookViewPage;
 /**
  * @author Pratik Shah
  */
-public interface IPalettePage extends IPageBookViewPage {
+public interface PalettePage extends IPageBookViewPage {
 
 }

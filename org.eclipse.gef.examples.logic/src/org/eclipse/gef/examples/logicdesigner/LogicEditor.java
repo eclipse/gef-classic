@@ -46,7 +46,7 @@ import org.eclipse.gef.ui.parts.*;
 import org.eclipse.gef.ui.rulers.*;
 import org.eclipse.gef.ui.stackview.CommandStackInspectorPage;
 import org.eclipse.gef.ui.views.palette.DefaultPalettePage;
-import org.eclipse.gef.ui.views.palette.IPalettePage;
+import org.eclipse.gef.ui.views.palette.PalettePage;
 
 import org.eclipse.gef.examples.logicdesigner.actions.IncrementDecrementAction;
 import org.eclipse.gef.examples.logicdesigner.actions.LogicPasteTemplateAction;
@@ -360,7 +360,7 @@ protected void configureGraphicalViewer() {
 	getActionRegistry().registerAction(snapAction);
 	getSite().getKeyBindingService().registerAction(snapAction);
 
-	IAction showGrid = new ToggleGridAction(getGraphicalViewer());
+	IAction showGrid = new ToggleGridVisibilityAction(getGraphicalViewer());
 	getActionRegistry().registerAction(showGrid);
 	getSite().getKeyBindingService().registerAction(showGrid);
 }
@@ -448,7 +448,7 @@ public Object getAdapter(Class type){
 		outlinePage = new OutlinePage(new TreeViewer());
 		return outlinePage;
 	}
-	if (type == IPalettePage.class) {
+	if (type == PalettePage.class) {
 		return new DefaultPalettePage(getPaletteRoot(), getGraphicalViewer()) {
 			protected void configurePaletteViewer() {
 				super.configurePaletteViewer();

@@ -31,18 +31,17 @@ import org.eclipse.gef.ui.palette.*;
  */
 public class DefaultPalettePage 
 	extends Page
-	implements IPalettePage, IAdaptable
+	implements PalettePage, IAdaptable
 {
 
-protected GraphicalViewer diagramViewer;
-protected PaletteRoot root;
+private GraphicalViewer diagramViewer;
+private PaletteRoot root;
 private PaletteViewer paletteViewer;
 private TransferDragSourceListener listener;
 
 public DefaultPalettePage(PaletteRoot model, GraphicalViewer primaryViewer) {
 	super();
 	root = model;
-	
 	diagramViewer = primaryViewer;
 }
 

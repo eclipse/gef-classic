@@ -316,7 +316,7 @@ static private PaletteContainer createControlGroup(PaletteRoot root){
 
 	List entries = new ArrayList();
 
-	ToolEntry tool = new PanningToolEntry();
+	ToolEntry tool = new PanningSelectionToolEntry();
 	entries.add(tool);
 	root.setDefaultEntry(tool);
 
