@@ -6,8 +6,6 @@ package org.eclipse.gef.palette;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import java.util.*;
-
 public class PaletteRoot
 	extends PaletteContainer
 {

@@ -7,7 +7,6 @@ package org.eclipse.gef.palette;
  */
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.jface.resource.ImageDescriptor;

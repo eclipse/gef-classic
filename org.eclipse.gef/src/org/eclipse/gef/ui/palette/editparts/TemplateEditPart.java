@@ -1,12 +1,17 @@
 package org.eclipse.gef.ui.palette.editparts;
 
-import org.eclipse.draw2d.*;
+import org.eclipse.swt.accessibility.ACC;
+import org.eclipse.swt.accessibility.AccessibleControlEvent;
+import org.eclipse.swt.accessibility.AccessibleEvent;
+import org.eclipse.swt.graphics.Image;
+
+import org.eclipse.draw2d.Border;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.MarginBorder;
+
 import org.eclipse.gef.AccessibleEditPart;
-import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.eclipse.gef.palette.PaletteEntry;
 import org.eclipse.gef.palette.PaletteTemplateEntry;
-import org.eclipse.swt.accessibility.*;
-import org.eclipse.swt.graphics.Image;
 
 /**
  * A PaletteEditPart that has a {@link PaletteTemplateEntry} for its model and

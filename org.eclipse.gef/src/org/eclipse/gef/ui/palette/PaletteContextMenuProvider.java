@@ -6,7 +6,6 @@ import org.eclipse.jface.action.Separator;
 import org.eclipse.gef.ContextMenuProvider;
 import org.eclipse.gef.ui.actions.GEFActionConstants;
 import org.eclipse.gef.ui.palette.editparts.DrawerEditPart;
-import org.eclipse.gef.ui.palette.editparts.TemplateEditPart;
 
 /**
  * Provides the context menu for a palette
