@@ -36,28 +36,42 @@ public abstract class GraphicalEditorWithMovablePalette
 {
 	
 private PaletteViewerProvider provider;
+private FlyoverPaletteAutomaton splitter;
+private CustomPalettePage page;
 
 protected PaletteViewerProvider createPaletteViewerProvider() {
 	return new PaletteViewerProvider(getGraphicalViewer().getEditDomain());
 }
 
 public void createPartControl(Composite parent) {
-	FlyoverPaletteAutomaton splitter = new FlyoverPaletteAutomaton(parent, SWT.NONE, 
-			getSite().getPage());
+	splitter = new FlyoverPaletteAutomaton(parent, SWT.NONE, getSite().getPage(),
+			getPaletteViewerProvider());
+	splitter.setInitialState(getInitialPaletteState());
 	super.createPartControl(splitter);
-	splitter.setPaletteViewerProvider(getPaletteViewerProvider());
 	splitter.setGraphicalControl(getGraphicalControl());
+	if (page != null) {
+		splitter.setExternalViewer(page.getPaletteViewer());
+		page = null;
+	}
 	splitter.setFixedSize(getInitialPaletteSize());
-	splitter.addFixedSizeChangeListener(new PropertyChangeListener() {
+	splitter.addPropertyChangeListener(new PropertyChangeListener() {
 		public void propertyChange(PropertyChangeEvent evt) {
-			handlePaletteResized(((Integer)evt.getNewValue()).intValue());
+			if (evt.getPropertyName().equals(FlyoverPaletteAutomaton.PROPERTY_DEFAULT_STATE))
+				handlePaletteDefaultStateChanged(((Integer)evt.getNewValue()).intValue());
+			else
+				handlePaletteResized(((Integer)evt.getNewValue()).intValue());
 		}
 	});
 }
 
 public Object getAdapter(Class type) {
-	if (type == PalettePage.class)
-		return new DefaultPalettePage(getPaletteViewerProvider());
+	if (type == PalettePage.class) {
+		if (splitter == null) {
+			page = new CustomPalettePage(getPaletteViewerProvider());
+			return page;
+		}
+		return new CustomPalettePage(getPaletteViewerProvider());
+	}
 	return super.getAdapter(type);
 }
 
@@ -87,6 +101,12 @@ protected int getInitialPaletteSize() {
 	return FlyoverPaletteAutomaton.DEFAULT_PALETTE_SIZE;
 }
 
+protected int getInitialPaletteState() {
+	return FlyoverPaletteAutomaton.FLYOVER_COLLAPSED;
+}
+
+protected abstract void handlePaletteDefaultStateChanged(int newState);
+
 /**
  * Called whenever the user resizes the palette.  Sub-classes can store the new palette
  * size.
@@ -97,6 +117,25 @@ protected abstract void handlePaletteResized(int newSize);
 protected void setEditDomain(DefaultEditDomain ed) {
 	super.setEditDomain(ed);
 	getEditDomain().setPaletteRoot(getPaletteRoot());
+}
+
+protected class CustomPalettePage extends DefaultPalettePage {
+	public CustomPalettePage(PaletteViewerProvider provider) {
+		super(provider);
+	}
+	public void createControl(Composite parent) {
+		super.createControl(parent);
+		if (splitter != null)
+			splitter.setExternalViewer(viewer);
+	}
+	public void dispose() {
+		if (splitter != null)
+			splitter.setExternalViewer(null);
+		super.dispose();
+	}
+	public PaletteViewer getPaletteViewer() {
+		return viewer;
+	}
 }
 
 }

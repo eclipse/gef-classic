@@ -22,7 +22,6 @@ import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.MouseTrackAdapter;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -32,11 +31,11 @@ import org.eclipse.swt.widgets.Listener;
 
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.util.Assert;
-import org.eclipse.ui.IPartListener2;
-import org.eclipse.ui.IPartService;
+import org.eclipse.ui.IPerspectiveDescriptor;
+import org.eclipse.ui.IPerspectiveListener;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchPartReference;
+import org.eclipse.ui.IWorkbenchWindow;
 
 import org.eclipse.draw2d.ActionEvent;
 import org.eclipse.draw2d.ActionListener;
@@ -62,89 +61,127 @@ public class FlyoverPaletteAutomaton
 {
 	
 public static final int DEFAULT_PALETTE_SIZE = 125;
-	
-private static final int FLYOVER_EXPANDED = 1;
-private static final int FLYOVER_COLLAPSED = 2;
-private static final int IN_EDITOR = 4;
-private static final int IN_VIEW = 8;
+public static final String PROPERTY_FIXEDSIZE 
+		= "org.eclipse.gef.ui.palette.fpa.fixedsize"; //$NON-NLS-1$
+public static final String PROPERTY_DEFAULT_STATE
+		= "org.eclipse.gef.ui.palette.fpa.initState"; //$NON-NLS-1$
 
-private Sash sash;
-private int paletteState = IN_VIEW;
-private PaletteViewer pViewer;
-private Control graphicalControl;
-private PaletteViewerProvider provider;
+protected static final int MIN_PALETTE_SIZE = 60;
+protected static final int MAX_PALETTE_SIZE = 500;
+protected static final int FLYOVER_EXPANDED = 1;
+public static final int FLYOVER_COLLAPSED = 2;
+public static final int FLYOVER_PINNED_OPEN = 4;
+protected static final int IN_VIEW = 8;
+
+protected Sash sash;
+protected PaletteViewer pViewer, externalViewer;
+protected Control graphicalControl;
+protected PaletteViewerProvider provider;
+protected int dock = PositionConstants.EAST;
+protected int paletteState = -1;
+protected int initialState = FLYOVER_COLLAPSED;
 private int fixedSize = DEFAULT_PALETTE_SIZE;
+
+/*
+ * @TODO:Pratik    perhaps you can make Sash a Composite
+ */
+protected IPerspectiveListener perspectiveListener = new IPerspectiveListener() {
+	public void perspectiveActivated(IWorkbenchPage page, 
+			IPerspectiveDescriptor perspective) {
+		handlePerspectiveActivated(page, perspective);
+	}
+	public void perspectiveChanged(IWorkbenchPage page,
+			IPerspectiveDescriptor perspective, String changeId) {
+		handlePerspectiveChanged(page, perspective, changeId);
+	}
+};
+
+/*
+ * @TODO:Pratik  break up this class into a two-class (maybe more?) hierarchy.  one would 
+ * simply provide the flyover in the editor.  the other one would hook up to work with
+ * the palette view.  AutoHidingPalette and FlyoverPaletteAutomaton.  Also, maybe you can
+ * have a CollapsiblePalette (no flyover), and as the root of the hierarchy, a generic
+ * CollapsibleControl (where you can have any control in place of the palette viewer).
+ */
 
 /**
  * PropertyChangeSupport
  */
 protected PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 
-public static final String PROPERTY_FIXEDSIZE = "org.eclipse.gef.ui.palette.fpa.fixedsize"; //$NON-NLS-1$
-private static final int MIN_PALETTE_SIZE = 55;
-
-public FlyoverPaletteAutomaton(Composite parent, int style, IWorkbenchPage page) {
+public FlyoverPaletteAutomaton(Composite parent, int style, IWorkbenchPage page,
+		PaletteViewerProvider pvProvider) {
 	super(parent, style & SWT.BORDER);
-	sash = new Sash(this);
+	Assert.isNotNull(pvProvider);
+	provider = pvProvider;
+	sash = createSash();
+	hookIntoWorkbench(page.getWorkbenchWindow());
 
 	addListener(SWT.Resize, new Listener() {
 		public void handleEvent(Event event) {
+			if (fixedSize > getClientArea().width / 2)
+				setFixedSize(getClientArea().width / 2);
 			layout();
 		}
 	});
 
 	IViewPart part = page.findView(PaletteView.ID);
 	if (part == null)
-		// Cannot invoke setState() just yet
-		paletteState = FLYOVER_COLLAPSED;
-	providePartService(page.getWorkbenchWindow().getPartService());
+		setState(initialState);
+	else
+		setState(IN_VIEW);	
 }
 
-private IPartListener2 partListener = new IPartListener2() {
-	public void partActivated(IWorkbenchPartReference ref) {
-	}
-	public void partBroughtToTop(IWorkbenchPartReference ref) {
-	}
-	public void partClosed(IWorkbenchPartReference ref) {
-		if (ref.getId().equals(PaletteView.ID))
-			handlePaletteViewClosed(ref);
-	}
-	public void partDeactivated(IWorkbenchPartReference ref) {
-	}
-	public void partOpened(IWorkbenchPartReference ref) {
-		if (ref.getId().equals(PaletteView.ID))
-			handlePaletteViewOpened(ref);
-	}
-	public void partHidden(IWorkbenchPartReference ref) {
-	}
-	public void partVisible(IWorkbenchPartReference ref) {
-	}
-	public void partInputChanged(IWorkbenchPartReference ref) {
-	}
-};
-
-public void addFixedSizeChangeListener(PropertyChangeListener listener) {
+public void addPropertyChangeListener(PropertyChangeListener listener) {
 	listeners.addPropertyChangeListener(listener);
 }
 
-protected void fireSizeChanged(int oldValue, int newValue) {
-	listeners.firePropertyChange(PROPERTY_FIXEDSIZE, oldValue, newValue);
+protected final void addListenerToCtrlHierarchy(Control parent, int eventType, 
+		Listener listener) {
+	parent.addListener(eventType, listener);
+	if (!(parent instanceof Composite))
+		return;
+	Control[] children = ((Composite)parent).getChildren();
+	for (int i = 0; i < children.length; i++) {
+		addListenerToCtrlHierarchy(children[i], eventType, listener);
+	}
 }
 
-protected int getFixedSize() {
+protected Sash createSash() {
+	return new Sash(this);
+}
+
+protected void firePropertyChanged(String property, int oldValue, int newValue) {
+	listeners.firePropertyChange(property, oldValue, newValue);
+}
+
+protected final int getFixedSize() {
 	return fixedSize;
 }
 
-protected PaletteViewerProvider getPaletteViewerProvider() {
-	return provider;
+protected void handlePerspectiveActivated(IWorkbenchPage page, 
+		IPerspectiveDescriptor perspective) {
+	IViewPart view = page.findView(PaletteView.ID);
+	if (view == null && isInState(IN_VIEW))
+		setState(initialState);
+	if (view != null && !isInState(IN_VIEW))
+		setState(IN_VIEW);
 }
 
-protected void handlePaletteViewClosed(IWorkbenchPartReference ref) {
-	setState(FLYOVER_COLLAPSED);
+protected void handlePerspectiveChanged(IWorkbenchPage page, 
+		IPerspectiveDescriptor perspective, String changeId) {
+	if (changeId.equals(IWorkbenchPage.CHANGE_VIEW_SHOW) 
+			|| changeId.equals(IWorkbenchPage.CHANGE_VIEW_HIDE));
+		handlePerspectiveActivated(page, perspective);
 }
 
-protected void handlePaletteViewOpened(IWorkbenchPartReference ref) {
-	setState(IN_VIEW);
+// Will return false if ancestor or descendant is null
+protected final boolean isDescendantOf(Control ancestor, Control descendant) {
+	if (descendant == null)
+		return false;
+	if (ancestor == descendant)
+		return true;
+	return isDescendantOf(ancestor, descendant.getParent());
 }
 
 protected boolean isInState(int state) {
@@ -152,17 +189,53 @@ protected boolean isInState(int state) {
 }
 
 public void layout(boolean changed) {
+	if (graphicalControl == null || graphicalControl.isDisposed())
+		return;
+	
 	Rectangle area = getClientArea();
 	if (area.width == 0 || area.height == 0) return;
 	
+	setRedraw(false);
 	int sashWidth = 15; //sash.getBounds().width;
-	if (isInState(IN_VIEW) && graphicalControl != null  && !graphicalControl.isDisposed()) {
+	if (isInState(IN_VIEW)) {
 		graphicalControl.moveAbove(sash);
 		graphicalControl.setBounds(area);
-	} else if (isInState(FLYOVER_COLLAPSED)) {
+	} else if (dock == PositionConstants.EAST)
+		layoutComponentsEast(area, sashWidth);
+	else
+		layoutComponentsWest(area, sashWidth);
+	setRedraw(true);
+	update();
+}
+
+protected final void layoutComponentsEast(Rectangle area, int sashWidth) {
+	if (isInState(FLYOVER_COLLAPSED)) {
+		graphicalControl.moveAbove(sash);
+		sash.setBounds(area.x + area.width - sashWidth, area.y, sashWidth, area.height);
+		graphicalControl.setBounds(area.x, area.y, area.width - sashWidth, area.height);
+	} else if (isInState(FLYOVER_EXPANDED)) {
+		pViewer.getControl().moveAbove(graphicalControl);
+		sash.moveAbove(pViewer.getControl());
+		pViewer.getControl().setBounds(area.x + area.width - fixedSize, area.y, fixedSize, 
+				area.height);
+		sash.setBounds(area.x + area.width - fixedSize - sashWidth, area.y, sashWidth, 
+				area.height);
+		graphicalControl.setBounds(area.x, area.y, area.width - sashWidth, area.height);
+	} else if (isInState(FLYOVER_PINNED_OPEN)) {
+		pViewer.getControl().setBounds(area.x + area.width - fixedSize, area.y, fixedSize, 
+				area.height);
+		sash.setBounds(area.x + area.width - fixedSize - sashWidth, area.y, sashWidth, 
+				area.height);
+		graphicalControl.setBounds(area.x, area.y, area.width - sashWidth - fixedSize, 
+				area.height);		
+	}
+}
+
+protected final void layoutComponentsWest(Rectangle area, int sashWidth) {
+	if (isInState(FLYOVER_COLLAPSED)) {
 		graphicalControl.moveAbove(sash);
 		sash.setBounds(area.x, area.y, sashWidth, area.height);
-		graphicalControl.setBounds(area.x + sashWidth, area.y, 
+		graphicalControl.setBounds(area.x + sashWidth, area.y,
 				area.width - sashWidth, area.height);
 	} else if (isInState(FLYOVER_EXPANDED)) {
 		pViewer.getControl().moveAbove(graphicalControl);
@@ -171,32 +244,64 @@ public void layout(boolean changed) {
 		sash.setBounds(area.x + fixedSize, area.y, sashWidth, area.height);
 		graphicalControl.setBounds(area.x + sashWidth, area.y, 
 				area.width - sashWidth, area.height);
-	} else if (isInState(IN_EDITOR)) {
+	} else if (isInState(FLYOVER_PINNED_OPEN)) {
 		pViewer.getControl().setBounds(area.x, area.y, fixedSize, area.height);
 		sash.setBounds(area.x + fixedSize, area.y, sashWidth, area.height);
 		graphicalControl.setBounds(area.x + fixedSize + sashWidth, area.y,
 				area.width - sashWidth - fixedSize, area.height);		
-	}
+	}	
 }
 
-protected void providePartService(final IPartService partService) {
-	partService.addPartListener(partListener);
+protected void hookIntoWorkbench(final IWorkbenchWindow window) {
+	window.addPerspectiveListener(perspectiveListener);
 	addDisposeListener(new DisposeListener() {
 		public void widgetDisposed(DisposeEvent e) {
-			partService.removePartListener(partListener);
+			window.removePerspectiveListener(perspectiveListener);
+			perspectiveListener = null;
 		}
 	});
 }
 
-public void removeFixedSizeChangeListener(PropertyChangeListener listener) {
+public void removePropertyChangeListener(PropertyChangeListener listener) {
 	listeners.removePropertyChangeListener(listener);
 }
 
-public void setFixedSize(int newSize) {
-	if (fixedSize != newSize && newSize >= MIN_PALETTE_SIZE) {
+public void setExternalViewer(PaletteViewer viewer) {
+	externalViewer = viewer;
+	if (externalViewer != null && pViewer != null)
+		externalViewer.applyState(pViewer.captureState());
+}
+
+public void setInitialState(int state) {
+	if (state != FLYOVER_COLLAPSED && state != FLYOVER_PINNED_OPEN)
+		return;
+	if (initialState != state) {
+		int oldValue = initialState;
+		initialState = state;
+		if (isInState(oldValue))
+			setState(initialState);
+		firePropertyChanged(PROPERTY_DEFAULT_STATE, oldValue, initialState);
+	}
+}
+
+public void setDockLocation(int position) {
+	if (position != PositionConstants.EAST && position != PositionConstants.WEST)
+		return;
+	if (position != dock) {
+		dock = position;
+		layout();
+	}
+}
+
+public final void setFixedSize(int newSize) {
+	if (newSize < MIN_PALETTE_SIZE)
+		newSize = MIN_PALETTE_SIZE;
+	if (newSize > MAX_PALETTE_SIZE)
+		newSize = MAX_PALETTE_SIZE;
+	if (fixedSize != newSize) {
 		int oldValue = fixedSize;
 		fixedSize = newSize;
-		fireSizeChanged(oldValue, fixedSize);
+		firePropertyChanged(PROPERTY_FIXEDSIZE, oldValue, fixedSize);
 		if (pViewer != null)
 			layout();
 	}
@@ -205,57 +310,72 @@ public void setFixedSize(int newSize) {
 // should only be invoked once
 public void setGraphicalControl(Control graphicalViewer) {
 	Assert.isTrue(graphicalViewer.getParent() == this);
+	Assert.isTrue(graphicalControl == null);
+	Assert.isTrue(graphicalViewer != null);
 	graphicalControl = graphicalViewer;
-}
-
-public void setPaletteViewerProvider(PaletteViewerProvider pvProvider) {
-	if (getPaletteViewerProvider() != null)
-		throw new RuntimeException("setPaletteViewerProvider() should only be invoked once.");
-	provider = pvProvider;
+	addListenerToCtrlHierarchy(graphicalControl, SWT.MouseEnter, new Listener() {
+		public void handleEvent(Event event) {
+			if (!isInState(FLYOVER_EXPANDED))
+				return;
+			Display.getCurrent().timerExec(250, new Runnable() {
+				public void run() {
+					if (isDescendantOf(graphicalControl, 
+							Display.getCurrent().getCursorControl()) 
+							&& isInState(FLYOVER_EXPANDED))
+						setState(FLYOVER_COLLAPSED);
+				}
+			});
+		}
+	});
 }
 
 protected void setState(int newState) {
 	if (paletteState == newState)
 		return;
 	paletteState = newState;
+	if (isInState(FLYOVER_COLLAPSED | FLYOVER_PINNED_OPEN))
+		setInitialState(newState);
 	switch (paletteState) {
 		case FLYOVER_EXPANDED:
-			Display.getCurrent().timerExec(250, new Runnable() {
-				public void run() {
-					if (!isInState(FLYOVER_EXPANDED))
-						return;
-					Point pt = Display.getCurrent().getCursorLocation();
-					pt = toControl(pt);
-					if (sash.getBounds().contains(pt)
-							|| pViewer.getControl().getBounds().contains(pt))
-						Display.getCurrent().timerExec(250, this);
-					else
-						setState(FLYOVER_COLLAPSED);
-				}
-			});
+//			Display.getCurrent().timerExec(250, new Runnable() {
+//				public void run() {
+//					if (!isInState(FLYOVER_EXPANDED))
+//						return;
+//					if (isDescendantOf(graphicalControl, 
+//							Display.getCurrent().getCursorControl()))
+//						setState(FLYOVER_COLLAPSED);
+//					else
+//						Display.getCurrent().timerExec(250, this);
+//				}
+//			});
 		case FLYOVER_COLLAPSED:
-		case IN_EDITOR:
-			if (pViewer == null)
-				pViewer = getPaletteViewerProvider().createPaletteViewer(this);
+		case FLYOVER_PINNED_OPEN:
+			if (pViewer == null) {
+				pViewer = provider.createPaletteViewer(this);
+				if (externalViewer != null)
+					pViewer.applyState(externalViewer.captureState());
+			}
 			break;
 		case IN_VIEW:
 			if (pViewer == null)
-				break; // this shouldn't happen
-			getPaletteViewerProvider().destroyPaletteViewer(pViewer);
+				break;
+			if (externalViewer != null) {
+				provider.getEditDomain().setPaletteViewer(externalViewer);
+				externalViewer.applyState(pViewer.captureState());
+			}
+			if (provider.getEditDomain().getPaletteViewer() == pViewer)
+				provider.getEditDomain().setPaletteViewer(null);
+			if (pViewer.getControl() != null && !pViewer.getControl().isDisposed())
+				pViewer.getControl().dispose();
 			pViewer = null;
 	}
 	sash.updateState();
 	layout();
 }
 
-/*
- * @TODO:Pratik  Don't forget to restrict the palette from getting smaller than a certain
- * size.
- */
 protected class Sash extends Composite {
-	protected FigureCanvas figCanvas;
-	protected ToggleButton b;
 	protected Image img;
+	protected ToggleButton b;
 	public Sash(Composite parent) {
 		super(parent, SWT.NONE);
 		setFont(JFaceResources.getBannerFont());
@@ -277,7 +397,7 @@ protected class Sash extends Composite {
 		});
 	}
 	protected void createButton() {
-		figCanvas = new FigureCanvas(this);
+		FigureCanvas figCanvas = new FigureCanvas(this);
 		ImageFigure fig = new ImageFigure(DrawerFigure.PIN);
 		fig.setAlignment(PositionConstants.NORTH_WEST);
 		figCanvas.setCursor(SharedCursors.ARROW);
@@ -287,19 +407,21 @@ protected class Sash extends Composite {
 		b.setLayoutManager(new StackLayout());
 		b.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				if (isInState(IN_EDITOR) && !b.isSelected())
+				if (isInState(FLYOVER_PINNED_OPEN) && !b.isSelected())
 					setState(FLYOVER_COLLAPSED);
 				else if (isInState(FLYOVER_EXPANDED) && b.isSelected())
-					setState(IN_EDITOR);
+					setState(FLYOVER_PINNED_OPEN);
 				else if (isInState(FLYOVER_COLLAPSED) && b.isSelected())
-					setState(IN_EDITOR);
+					setState(FLYOVER_PINNED_OPEN);
 			}
 		});
 		figCanvas.setContents(b);
 		figCanvas.setBounds(1, 1, 13, 13);
 	}
 	protected void handleSashDragged(int shiftAmount) {
-		setFixedSize(getFixedSize() + shiftAmount);
+		int newSize = fixedSize + 
+				(dock == PositionConstants.EAST ? -shiftAmount : shiftAmount);
+		setFixedSize(newSize);
 	}
 	protected void paintSash(GC gc) {
 		SWTGraphics graphics = new SWTGraphics(gc);
@@ -309,8 +431,8 @@ protected class Sash extends Composite {
 					"Palette", graphics.getFont(),
 					graphics.getForegroundColor(), graphics.getBackgroundColor());
 		}
-		graphics.drawImage(img, 3, bounds.height / 2 - img.getBounds().height / 2);
 		graphics.setForegroundColor(ColorConstants.buttonLightest);
+		graphics.drawImage(img, 3, bounds.height / 2 - img.getBounds().height / 2);
 		graphics.drawLine(0, 0, bounds.width - 1, 0);
 		graphics.drawLine(0, 0, 0, bounds.height - 1);
 		graphics.setForegroundColor(ColorConstants.buttonDarker);
@@ -319,9 +441,12 @@ protected class Sash extends Composite {
 		graphics.dispose();
 	}
 	protected void updateState() {
-		setCursor(isInState(FLYOVER_EXPANDED | IN_EDITOR) ? SharedCursors.SIZEW : null);
+		setCursor(isInState(FLYOVER_EXPANDED | FLYOVER_PINNED_OPEN) 
+				? SharedCursors.SIZEW : null);
 		if (isInState(IN_VIEW))
 			b.setSelected(false);
+		if (isInState(FLYOVER_PINNED_OPEN))
+			b.setSelected(true);
 	}
 	protected class DragManager 
 			extends MouseAdapter 
@@ -334,7 +459,7 @@ protected class Sash extends Composite {
 			Sash.this.addMouseListener(this);
 		}
 		public void handleEvent(Event event) {
-			dragging = isInState(FLYOVER_EXPANDED | IN_EDITOR);
+			dragging = isInState(FLYOVER_EXPANDED | FLYOVER_PINNED_OPEN);
 			origX = event.x;
 		}
 		public void mouseMove(MouseEvent e) {
