@@ -47,7 +47,6 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.util.Assert;
-import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.TransferDropTargetListener;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IPerspectiveDescriptor;
@@ -61,16 +60,20 @@ import org.eclipse.ui.internal.Workbench;
 
 import org.eclipse.draw2d.ActionEvent;
 import org.eclipse.draw2d.ActionListener;
+import org.eclipse.draw2d.Border;
 import org.eclipse.draw2d.ButtonBorder;
 import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.FigureUtilities;
 import org.eclipse.draw2d.FocusEvent;
 import org.eclipse.draw2d.FocusListener;
 import org.eclipse.draw2d.Graphics;
+import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.ImageFigure;
 import org.eclipse.draw2d.ImageUtilities;
+import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.LightweightSystem;
+import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.PositionConstants;
+import org.eclipse.draw2d.SWTGraphics;
 import org.eclipse.draw2d.StackLayout;
 import org.eclipse.draw2d.ToggleButton;
 import org.eclipse.draw2d.geometry.Dimension;
@@ -88,7 +91,7 @@ import org.eclipse.gef.ui.views.palette.PaletteView;
 public class FlyoutPaletteComposite 
 	extends Composite
 {
-	
+
 private static final String PROPERTY_PALETTE_WIDTH
 		= "org.eclipse.gef.ui.palette.fpa.paletteWidth"; //$NON-NLS-1$
 private static final String PROPERTY_STATE
@@ -109,7 +112,7 @@ private Composite sash, paletteContainer;
 private PaletteViewer pViewer, externalViewer;
 private Control graphicalControl;
 private PaletteViewerProvider provider;
-private Preferences prefs;
+private FlyoutPreferences prefs;
 private int dock = PositionConstants.EAST;
 private int paletteState = -1;
 private int paletteWidth = DEFAULT_PALETTE_SIZE;
@@ -132,7 +135,7 @@ private IPerspectiveListener perspectiveListener = new IPerspectiveListener() {
 private PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 
 public FlyoutPaletteComposite(Composite parent, int style, IWorkbenchPage page,
-		PaletteViewerProvider pvProvider, Preferences preferences) {
+		PaletteViewerProvider pvProvider, FlyoutPreferences preferences) {
 	super(parent, style & SWT.BORDER);
 	provider = pvProvider;
 	sash = createSash();
@@ -249,6 +252,22 @@ private Composite createSash() {
 }
 
 private Control createTitle(Composite parent, boolean isHorizontal) {
+	IFigure contents;
+	if (!isHorizontal)
+		contents = new DragFigure();
+	else
+		contents = new TitleLabel();
+	contents.setRequestFocusEnabled(true);
+	contents.setFocusTraversable(true);
+	contents.addFocusListener(new FocusListener() {
+		public void focusGained(FocusEvent fe) {
+			fe.gainer.repaint();
+		}
+		public void focusLost(FocusEvent fe) {
+			fe.loser.repaint();
+		}
+	});
+	
 	final LightweightSystem lws = new LightweightSystem();
 	Canvas canvas = new Canvas(parent, SWT.NO_REDRAW_RESIZE | SWT.NO_BACKGROUND) {
 		public Point computeSize(int wHint, int hHint, boolean changed) {
@@ -258,9 +277,9 @@ private Control createTitle(Composite parent, boolean isHorizontal) {
 		}
 	};
 	lws.setControl(canvas);
+	lws.setContents(contents);
 	canvas.setCursor(SharedCursors.SIZEALL);
 	canvas.setLayoutData(new RowData());
-	lws.setContents(new DragFigure(isHorizontal));
 	new TitleDragManager(canvas);
 	MenuManager manager = new MenuManager();
 	final IAction resizeAction = new ResizeAction(); 
@@ -536,7 +555,7 @@ private void transferState(PaletteViewer src, PaletteViewer dest) {
 	dest.restoreState(memento);
 }
 
-public interface Preferences {
+public interface FlyoutPreferences {
 	public int getDockLocation();
 	public int getPaletteState();
 	public int getPaletteWidth();
@@ -858,7 +877,7 @@ private class PaletteContainer extends Composite {
 			int buttonX = area.width - buttonSize.x - 1;
 			button.setBounds(buttonX, 0, buttonSize.x, height);
 			// leave some space to the left and right of the title
-			title.setBounds(3, 0, buttonX - 6, height);
+			title.setBounds(0, 0, buttonX, height);
 			area.y += height;
 			area.height -= height;
 		}
@@ -878,91 +897,93 @@ private class PaletteContainer extends Composite {
 
 private class DragFigure 
 		extends ImageFigure {
-	protected static final int MARGIN_SPACE = 0;
-	protected static final int H_GAP = 4;
-	protected static final int LINE_LENGTH = 30;
-	
-	public DragFigure(final boolean isHorizontal) {
+	public DragFigure() {
 		setFont(JFaceResources.getBannerFont());
-		JFaceResources.getFontRegistry().addListener(new IPropertyChangeListener() {
-			public void propertyChange(org.eclipse.jface.util.PropertyChangeEvent event) {
-				if (event.getProperty().equals(JFaceResources.BANNER_FONT)) {
-					setFont(JFaceResources.getBannerFont());
-					updateImage(isHorizontal);
-					if (paletteContainer.getVisible() && isHorizontal)
-						paletteContainer.layout();
-					else if (sash.getChildren()[0].getVisible() && !isHorizontal)
-						FlyoutPaletteComposite.this.layout();
-				}
-			}
-		});
-		setRequestFocusEnabled(true);
-		setFocusTraversable(true);
-		setAlignment(PositionConstants.CENTER);
-		
-		addFocusListener(new FocusListener() {
-			public void focusGained(FocusEvent fe) {
-				repaint();
-			}
-			public void focusLost(FocusEvent fe) {
-				repaint();
-			}
-		});
-		
-		updateImage(isHorizontal);
-		
+		updateImage();
 		FlyoutPaletteComposite.this.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
 				getImage().dispose();
 			}
 		});
 	}	
-	protected void updateImage(final boolean isHorizontal) {
-		if (getImage() != null)
-			getImage().dispose();
-		Image image = createImage();
-		if (!isHorizontal)
-			image = ImageUtilities.createRotatedImage(image);
-		setImage(image);
-	}
-	protected Image createImage() {
-		Image img = null;
-		Dimension imageSize = FigureUtilities.getStringExtents(
-				GEFMessages.Palette_Label, getFont());
-		// We reduce the width by 1 because FigureUtilities, for some reason, is 
-		// increasing it by 1
-		imageSize.expand(H_GAP * 2 + MARGIN_SPACE * 2 + LINE_LENGTH * 2 - 1, 
-				MARGIN_SPACE * 2);
-		img = new Image(null, imageSize.width, imageSize.height);
-		GC gc = new GC(img);
-		gc.setBackground(ColorConstants.button);
-		gc.fillRectangle(0, 0, imageSize.width, imageSize.height);
-		gc.setFont(getFont());
-		gc.drawText(GEFMessages.Palette_Label, MARGIN_SPACE + LINE_LENGTH + H_GAP, 
-				MARGIN_SPACE);
-		gc.setForeground(ColorConstants.buttonLightest);
-		int centerY = imageSize.height / 2;
-		gc.drawLine(MARGIN_SPACE, centerY - 3, MARGIN_SPACE + LINE_LENGTH, centerY - 3);
-		gc.drawLine(MARGIN_SPACE, centerY + 2, MARGIN_SPACE + LINE_LENGTH, centerY + 2);
-		gc.drawLine(imageSize.width - MARGIN_SPACE - LINE_LENGTH, centerY - 3, 
-				imageSize.width - MARGIN_SPACE, centerY - 3);
-		gc.drawLine(imageSize.width - MARGIN_SPACE - LINE_LENGTH, centerY + 2, 
-				imageSize.width - MARGIN_SPACE, centerY + 2);
-		gc.setForeground(ColorConstants.buttonDarker);
-		gc.drawLine(MARGIN_SPACE, centerY + 3, MARGIN_SPACE + LINE_LENGTH, centerY + 3);
-		gc.drawLine(MARGIN_SPACE, centerY - 2, MARGIN_SPACE + LINE_LENGTH, centerY - 2);
-		gc.drawLine(imageSize.width - MARGIN_SPACE - LINE_LENGTH, centerY - 2, 
-				imageSize.width - MARGIN_SPACE, centerY - 2);
-		gc.drawLine(imageSize.width - MARGIN_SPACE - LINE_LENGTH, centerY + 3, 
-				imageSize.width - MARGIN_SPACE, centerY + 3);
-		gc.dispose();
-		return img;
-	}	
 	protected void paintFigure(Graphics graphics) {
 		super.paintFigure(graphics);
 		if (hasFocus())
 			graphics.drawFocus(0, 0, bounds.width - 1, bounds.height - 1);
 	}
+	protected void updateImage() {
+		if (getImage() != null)
+			getImage().dispose();
+		Image img = null;
+		TitleLabel fig = new TitleLabel();
+		fig.setOpaque(true);
+		fig.setBackgroundColor(ColorConstants.button);
+		Dimension imageSize = fig.getActualPreferredSize();
+		fig.setSize(imageSize);
+		img = new Image(null, imageSize.width, imageSize.height);
+		GC gc = new GC(img);
+		Graphics graphics = new SWTGraphics(gc);
+		fig.paint(graphics);
+		graphics.dispose();
+		gc.dispose();
+		setImage(ImageUtilities.createRotatedImage(img));
+		img.dispose();
+	}
+}
+
+private static class TitleLabel extends Label {
+	private static final int H_GAP = 4;
+	private static final int LINE_LENGTH = 20;
+	protected static final Border BORDER = new MarginBorder(0, 3, 0, 3);
+	public TitleLabel() {
+		super(GEFMessages.Palette_Label);
+		setFont(JFaceResources.getBannerFont());
+		setBorder(BORDER);
+		Label tooltip = new Label(getText());
+		tooltip.setBorder(BORDER);
+		setToolTip(tooltip);
+	}
+	public Dimension getActualPreferredSize() {
+		return super.getPreferredSize(-1, -1).getExpanded(
+				(LINE_LENGTH  + H_GAP) * 2, 0);
+	}
+	public IFigure getToolTip() {
+		if (isTextTruncated())
+			return super.getToolTip();
+		return null;
+	}
+	protected void paintFigure(Graphics graphics) {
+		super.paintFigure(graphics);
+		org.eclipse.draw2d.geometry.Rectangle area = getClientArea();
+		org.eclipse.draw2d.geometry.Rectangle textBounds = getTextBounds();
+		// We reduce the width by 1 because FigureUtilities grows it by 1 unnecessarily
+		textBounds.width--;
+		int lineWidth = Math.min((area.width - textBounds.width - H_GAP * 2) / 2, 
+				LINE_LENGTH); 
+		if (lineWidth > 6) {
+			graphics.setForegroundColor(ColorConstants.buttonLightest);
+			int centerY = area.height / 2;
+			graphics.drawLine(textBounds.x - H_GAP - lineWidth, centerY - 3, 
+					textBounds.x - H_GAP, centerY - 3);
+			graphics.drawLine(textBounds.x - H_GAP - lineWidth, centerY + 2, 
+					textBounds.x - H_GAP, centerY + 2);
+			graphics.drawLine(textBounds.right() + H_GAP, centerY - 3, 
+					textBounds.right() + H_GAP + lineWidth, centerY - 3);
+			graphics.drawLine(textBounds.right() + H_GAP, centerY + 2, 
+					textBounds.right() + H_GAP + lineWidth, centerY + 2);
+			graphics.setForegroundColor(ColorConstants.buttonDarker);
+			graphics.drawLine(textBounds.x - H_GAP - lineWidth, centerY + 3, 
+					textBounds.x - H_GAP, centerY + 3);
+			graphics.drawLine(textBounds.x - H_GAP - lineWidth, centerY - 2, 
+					textBounds.x - H_GAP, centerY - 2);
+			graphics.drawLine(textBounds.right() + H_GAP, centerY - 2, 
+					textBounds.right() + H_GAP + lineWidth, centerY - 2);
+			graphics.drawLine(textBounds.right() + H_GAP, centerY + 3, 
+					textBounds.right() + H_GAP + lineWidth, centerY + 3);
+		}
+		if (hasFocus())
+			graphics.drawFocus(0, 0, bounds.width - 1, bounds.height - 1);
+	}	
 }
 
 }
