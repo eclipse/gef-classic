@@ -26,11 +26,11 @@ public class GraphicalViewerImpl
 	implements GraphicalViewer
 {
 
-private LightweightSystem system;
+final private LightweightSystem lws = createLightweightSystem();
 IFigure rootFigure;
 private DomainEventDispatcher eventDispatcher;
 
-{
+public GraphicalViewerImpl() {
 	createDefaultRoot();
 }
 
@@ -41,6 +41,10 @@ public Control createControl(Composite composite){
 
 protected void createDefaultRoot(){
 	setRootEditPart(new GraphicalRootEditPart());
+}
+
+protected LightweightSystem createLightweightSystem(){
+	return new LightweightSystem();
 }
 
 protected void expose(EditPart part){
@@ -118,9 +122,7 @@ protected LayerManager getLayerManager(){
 }
 
 protected LightweightSystem getLightweightSystem(){
-	if (system == null)
-		system = new LightweightSystem();
-	return system;
+	return lws;
 }
 
 /**@deprecated There is no reason to call this method*/
@@ -177,7 +179,6 @@ protected void setDragSource(DragSource source) {
 			if (event.doit) {
 				//A drag is going to occur, tell the EditDomain
 				getEventDispatcher().dispatchNativeDragStarted(event, GraphicalViewerImpl.this);
-				
 				flush(); //deferred events are not processed during native Drag-and-Drop.
 			}
 		}
@@ -194,23 +195,14 @@ public void setEditDomain(EditDomain domain){
 		.setEventDispatcher(eventDispatcher = new DomainEventDispatcher(domain, this));
 }
 
-void setLightweightSystem(LightweightSystem lws){
-	if (getControl() != null)
-		throw new RuntimeException("The LightweightSystem cannot be changed once the Control has been set"); //$NON-NLS-1$
-	system = lws;
-	if (eventDispatcher != null)
-		system.setEventDispatcher(eventDispatcher);
-	if (rootFigure != null)
-		system.setContents(rootFigure);
-}
-
 public void setRootEditPart(RootEditPart editpart){
 	super.setRootEditPart(editpart);
 	setRootFigure(((GraphicalEditPart)editpart).getFigure());
 }
 
 protected void setRootFigure(IFigure figure){
-	getLightweightSystem().setContents( rootFigure = figure );
+	rootFigure = figure;
+	getLightweightSystem().setContents(rootFigure);
 }
 
 public void setRouteEventsToEditor(boolean value){

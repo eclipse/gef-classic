@@ -18,10 +18,10 @@ public class ScrollingGraphicalViewer
 	extends GraphicalViewerImpl
 {
 
-public ScrollingGraphicalViewer(){}
+public ScrollingGraphicalViewer() { }
 
 public final Control createControl(Composite parent){
-	FigureCanvas canvas = new FigureCanvas(parent);
+	FigureCanvas canvas = new FigureCanvas(parent, getLightweightSystem());
 	super.setControl(canvas);
 	installRootFigure();
 	return canvas;
@@ -49,12 +49,6 @@ protected void expose(org.eclipse.gef.EditPart part){
 
 private FigureCanvas getFigureCanvas(){
 	return (FigureCanvas)getControl();
-}
-
-protected LightweightSystem getLightweightSystem(){
-	if (getControl() == null)
-		return super.getLightweightSystem();
-	return getFigureCanvas().getLightweightSystem();
 }
 
 private void installRootFigure(){

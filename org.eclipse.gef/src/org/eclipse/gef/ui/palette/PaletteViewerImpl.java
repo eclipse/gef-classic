@@ -25,6 +25,11 @@ ButtonGroup buttonGroup = null;
 PaletteEntry selectedEntry = null;
 PaletteRoot paletteRoot = null;
 
+public PaletteViewerImpl() {
+	setEditDomain(new DefaultEditDomain(null));
+	setKeyHandler(new PaletteViewerKeyHandler(this));
+}
+
 public void addPaletteListener(PaletteListener paletteListener){
 	if(paletteListeners!=null)
 		paletteListeners.add(paletteListener);
@@ -56,11 +61,6 @@ public EditPartFactory getEditPartFactory(){
 }
 
 public ISelection getSelection(){return StructuredSelection.EMPTY;}
-
-protected void init(){
-	setEditDomain(new DefaultEditDomain(null));
-	setKeyHandler(new PaletteViewerKeyHandler(this));
-}
 
 public PaletteToolEntry getSelectedEntry(){
 	return (PaletteToolEntry)selectedEntry;
