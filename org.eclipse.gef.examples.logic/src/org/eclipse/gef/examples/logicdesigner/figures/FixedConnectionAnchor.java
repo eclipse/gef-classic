@@ -36,7 +36,7 @@ public Point getLocation(Point reference) {
 	else
 		x = r.right() - 1 - offsetH;
 	
-	Point p = new Point(x, y);
+	Point p = new PrecisionPoint(x,y);
 	getOwner().translateToAbsolute(p);
 	return p;
 }
