@@ -18,7 +18,7 @@ public class Polyline
 {
 
 PointList points = new PointList();
-private static final int TOLERANCE = 3;
+private static final int TOLERANCE = 1;
 private static final Rectangle LINEBOUNDS = Rectangle.SINGLETON;
 
 {
@@ -40,13 +40,12 @@ public void addPoint(Point pt) {
 /** * @see org.eclipse.draw2d.IFigure#containsPoint(int, int) */
 public boolean containsPoint(int x, int y) {
 
-	int tolerance = TOLERANCE + lineWidth / 2;
-	
+	int tolerance = lineWidth / 2;
 	LINEBOUNDS.setBounds(getBounds());
 	LINEBOUNDS.expand(tolerance, tolerance);
 	if (!LINEBOUNDS.contains(x, y))
 		return false;
-
+	tolerance += TOLERANCE;
 	int ints[] = points.toIntArray();
 	for (int index = 0; index < ints.length - 3; index  += 2) {
 		if (lineContainsPoint(ints[index], ints[index + 1],
