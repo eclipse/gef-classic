@@ -13,6 +13,8 @@ package org.eclipse.draw2d;
 import org.eclipse.swt.SWTError;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Canvas;
+import org.eclipse.swt.widgets.Caret;
 import org.eclipse.swt.widgets.Control;
 
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -32,6 +34,17 @@ public BufferedGraphicsSource(Control c) {
 public void flushGraphics(Rectangle region) {
 	if (inUse.isEmpty())
 		return;
+	
+	boolean restoreCaret = false;
+	Canvas canvas = null;
+	if (control instanceof Canvas) {
+		canvas = (Canvas)control;
+		Caret caret = canvas.getCaret();
+		if (caret != null)
+			restoreCaret = caret.isVisible();
+		if (restoreCaret)
+			caret.setVisible(false);
+	}
 	/*
 	 * The imageBuffer may be null if double-buffering was not successful.
 	 */
@@ -46,6 +59,9 @@ public void flushGraphics(Rectangle region) {
 	}
 	controlGC.dispose();
 	controlGC = null;
+	
+	if (restoreCaret)
+		canvas.getCaret().setVisible(true);
 }
 
 public Graphics getGraphics(Rectangle region) {
