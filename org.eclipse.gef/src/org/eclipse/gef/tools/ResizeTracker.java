@@ -70,7 +70,8 @@ public ResizeTracker(GraphicalEditPart owner, int direction) {
 public void activate() {
 	super.activate();
 	if (owner != null) {
-		snapToHelper = (SnapToHelper)getTargetEditPart().getAdapter(SnapToHelper.class);
+		if (getTargetEditPart() != null)
+			snapToHelper = (SnapToHelper)getTargetEditPart().getAdapter(SnapToHelper.class);
 	
 		IFigure figure = owner.getFigure();
 		if (figure instanceof HandleBounds)
@@ -123,7 +124,8 @@ public void deactivate() {
  * {@link #getTargetEditPart() target} to erase target feedback.
  */
 protected void eraseTargetFeedback() {
-	getTargetEditPart().eraseTargetFeedback(getSourceRequest());
+	if (getTargetEditPart() != null)
+		getTargetEditPart().eraseTargetFeedback(getSourceRequest());
 }
 
 /**
@@ -174,7 +176,8 @@ protected int getResizeDirection() {
 /**
  * The TargetEditPart is the parent of the EditPart being resized.
  * 
- * @return	The target EditPart
+ * @return	The target EditPart; may be <code>null</code> in 2.1 applications that use
+ * the now deprecated {@link ResizeTracker#ResizeTracker(int) constructor}.
  */
 protected GraphicalEditPart getTargetEditPart() {
 	if (owner != null)
