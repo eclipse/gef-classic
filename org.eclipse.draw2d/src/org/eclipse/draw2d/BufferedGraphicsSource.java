@@ -55,10 +55,10 @@ public void flushGraphics(Rectangle region) {
 	 * The imageBuffer may be null if double-buffering was not successful.
 	 */
 	if (imageBuffer != null) {
+		imageGC.dispose();
 		controlGC.drawImage(getImage(),
 				0, 0, inUse.width, inUse.height,
 				inUse.x, inUse.y, inUse.width, inUse.height);
-		imageGC.dispose();
 		imageBuffer.dispose();
 		imageBuffer = null;
 		imageGC = null;
@@ -91,7 +91,7 @@ public Graphics getGraphics(Rectangle region) {
 	} catch (IllegalArgumentException tooBig) {
 		imageBuffer = null;
 	}
-
+	
 	controlGC = new GC(control,
 			control.getStyle() & (SWT.RIGHT_TO_LEFT | SWT.LEFT_TO_RIGHT));
 	Graphics graphics;
