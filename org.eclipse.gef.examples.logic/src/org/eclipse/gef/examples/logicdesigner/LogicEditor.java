@@ -315,8 +315,14 @@ protected void configureGraphicalViewer() {
 	ScrollingGraphicalViewer viewer = (ScrollingGraphicalViewer)getGraphicalViewer();
 
 	ScalableFreeformRootEditPart root = new ScalableFreeformRootEditPart();
-	getActionRegistry().registerAction(new ZoomInAction(root.getZoomManager()));
-	getActionRegistry().registerAction(new ZoomOutAction(root.getZoomManager()));
+
+	IAction zoomIn = new ZoomInAction(root.getZoomManager());
+	IAction zoomOut = new ZoomOutAction(root.getZoomManager());
+	getActionRegistry().registerAction(zoomIn);
+	getActionRegistry().registerAction(zoomOut);
+	getSite().getKeyBindingService().registerAction(zoomIn);
+	getSite().getKeyBindingService().registerAction(zoomOut);
+
 	viewer.setRootEditPart(root);
 
 	viewer.setEditPartFactory(new GraphicalPartFactory());
