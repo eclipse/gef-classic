@@ -730,7 +730,7 @@ protected void refreshChildren() {
 		if (editPart != null)
 			reorderChild (editPart, i);
 		else {
-			//And editpart for this model doesn't exist yet.  Create and insert one.
+			//An editpart for this model doesn't exist yet.  Create and insert one.
 			editPart = createChild(model);
 			addChild(editPart, i);
 		}
