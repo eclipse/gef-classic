@@ -5,27 +5,50 @@ import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.geometry.*;
 
 /**
- * Tools use SnapToHelpers on a per-operation basis. For example, for a move operation,
- * the life-cycle of a SnapToHelper begins when a drag is initiated, and ends when the
- * drag is over. If another drag is initiated right after the first one is completed, new
- * SnapToHelpers are employed. The same applies for creation and resize operations.
- * 
+ * A helper used temporarily by Tools for snapping certain mouse interactions.
+ * SnapToHelpers helpers should not be reused by tools or by the editparts which provide
+ * them to the tools. For example, for a move operation, the life-cycle of a SnapToHelper
+ * begins when a drag is initiated, and ends when the drag is over. If another drag is
+ * initiated right after the first one is completed, new SnapToHelpers are employed. This
+ * means that helpers can assume that everything else is static, and there is no need to
+ * track changes outside of the helper.
+ * @since 3.0
  * @author Randy Hudson
  * @author Pratik Shah
  */
 public abstract class SnapToHelper implements PositionConstants {
 
-protected void makeAbsolute(IFigure fig, Translatable t) {
-	fig.translateToAbsolute(t);
-}
-
-protected void makeRelative(IFigure fig, Translatable t) {
-	fig.translateToRelative(t);
+/**
+ * Translates from a given figure to absolute coordinates.
+ * 
+ * @param figure the reference figure
+ * @param t the object to translate
+ */
+protected void makeAbsolute(IFigure figure, Translatable t) {
+	figure.translateToAbsolute(t);
 }
 
 /**
- * Applies a snapping correction to the given result paremeter.
- * @since 3.0
+ * Translates from absolute to coordinates relative to the given figure.
+ * @param figure the reference figure
+ * @param t the object to translate
+ */
+protected void makeRelative(IFigure figure, Translatable t) {
+	figure.translateToRelative(t);
+}
+
+/**
+ * Applies a snapping correction to the given result. Snapping can occur in the four
+ * primary directions: NORTH, SOUTH, EAST, WEST, as defined on {@link PositionConstants}.
+ * By default a Point is treated as an empty Rectangle. Only NORTH and WEST should be used
+ * in general.  But SOUTH and EAST may also be used.  Similarly, VERTICAL and HORIZONTAL
+ * may be used to allow a point to snap to the "center" or "middle" as defined by the
+ * concrete subclass.
+ * <P>
+ * The returned value should be a subset of the given snapDirections based on what
+ * correction was applied to the result.  e.g., if the <b>x</b> value was adjusted, the
+ * returned value should not contain WEST, EAST, or HORIZONTAL.
+ * 
  * @param request a request or <code>null</code>
  * @param snapDirections the directions in which snapping should occur.
  * @param where the rectangle used to determine snapping
@@ -48,6 +71,23 @@ public int snapPoint(Request request, int snapDirections,
 	return snapDirections;
 }
 
+/**
+ * A convenience method for snapping a Point based on an array of rectangles. By default,
+ * this method will construct an empty rectangle at the same locations as the provided
+ * point, and call {@link #snapRectangle(Request, int, PrecisionRectangle[],
+ * PrecisionRectangle)}. The intended usage of this method is when dragging one or more
+ * parts in a diagram.
+ * <P>
+ * The returned value should be a subset of the given snapDirections based on what
+ * correction was applied to the result.  e.g., if the <b>x</b> value was adjusted, the
+ * returned value should not contain WEST, EAST, or HORIZONTAL.
+ * 
+ * @param request the request or <code>null</code>
+ * @param snapLocations the types of snapping to perform
+ * @param rects an array of one or more rectangles used to perform the snapping
+ * @param result the correction will be applied to this point
+ * @return the remaining snap locations
+ */
 public int snapPoint(Request request, int snapLocations,
 		PrecisionRectangle rects[], PrecisionPoint result) {
 	PrecisionRectangle resultRect = new PrecisionRectangle();
@@ -61,10 +101,13 @@ public int snapPoint(Request request, int snapLocations,
 }
 
 /**
- * Applies the snap correction to the given result parameter.
- * @since 3.0
- * @param request the request
- * @param baseRects the prioritized rectangle to snap to
+ * A convenience method for snapping a Rectangle based on one or more rectangles.  This
+ * method will call {@link #snapRectangle(Request, int, PrecisionRectangle,
+ * PrecisionRectangle)} for each rectangle in the array or until no more snap locations
+ * remain.
+ * 
+ * @param request the request or <code>null</code>
+ * @param baseRects the prioritized rectangles to snap to
  * @param result the output
  * @param snapOrientation the input snap locations
  * @return the remaining snap locations
@@ -79,11 +122,18 @@ public int snapRectangle(Request request, int snapOrientation,
 }
 
 /**
- * Applies the snap correction to the given result parameter.
+ * Applies a snap correction to a Rectangle based on a given Rectangle.  The provided
+ * baseRect will be used as a reference for snapping.  The types of snapping to be
+ * performed are indicated by the snapOrientation parameter. The correction is applied to
+ * the result field.
+ * <P>
+ * The baseRect is not modified. The correction is applied to the result. The requests
+ * {@link Request#getExtendedData() extended data} may contain additional information
+ * about the snapping which was performed.
  * @since 3.0
- * @param request the request
- * @param baseRect the rectangle with which to snap
- * @param result the output
+ * @param request the request or <code>null</code>
+ * @param baseRect the input rectangle
+ * @param result the correction is applied to this rectangle
  * @param snapOrientation the input snap locations
  * @return the remaining snap locations
  */

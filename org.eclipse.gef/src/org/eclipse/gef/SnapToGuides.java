@@ -18,6 +18,21 @@ import org.eclipse.gef.requests.GroupRequest;
 import org.eclipse.gef.rulers.RulerProvider;
 
 /**
+ * A temporary helper used to perform snapping to guides. Snapping is based on the
+ * existing children of a <I>container</I>.  When snapping a rectangle, the edges of the
+ * rectangle will snap to edges of other rectangles generated from the children of the
+ * given container.  Similarly, the centers and middles of rectangles will snap to each
+ * other.
+ * <P>
+ * If the snap request is being made during a Move, Reparent or Resize, then the figures
+ * of the participants of that request will not be used for snapping.  If the request is a
+ * Clone, then the figures for the parts being cloned will be used as possible snap
+ * locations.
+ * <P>
+ * This helper does not keep up with changes made to the container editpart.  Clients
+ * should instantiate a new helper each time one is requested and not hold onto instances
+ * of the helper.
+ * 
  * @author Randy Hudson
  * @author Pratik Shah
  */
