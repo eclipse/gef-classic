@@ -198,10 +198,16 @@ private void doLayout() {
 		editor.setLocation(editorLocation);
 
 	int vBarWidth = 0, hBarHeight = 0;
+	Rectangle trim = editor.computeTrim(0, 0, 0, 0);
+	/*
+	 * Fix for Bug# 67554
+	 * Motif leaves a few pixels of space around the Canvas which
+	 * can cause the rulers to misaligned.
+	 */
 	if (editor.getVerticalBar().getVisible())
-		vBarWidth = editor.computeTrim(0, 0, 0, 0).width;
+		vBarWidth = trim.width + ("motif".equals(SWT.getPlatform()) ? trim.x * 2 : 0); //$NON-NLS-1$
 	if (editor.getHorizontalBar().getVisible())
-		hBarHeight = editor.computeTrim(0, 0, 0, 0).height;
+		hBarHeight = trim.height + ("motif".equals(SWT.getPlatform()) ? trim.y * 2 : 0); //$NON-NLS-1$
 	
 	if (left != null) {
 		Rectangle leftBounds = new Rectangle(
