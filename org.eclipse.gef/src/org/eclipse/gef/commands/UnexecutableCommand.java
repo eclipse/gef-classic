@@ -13,7 +13,7 @@ package org.eclipse.gef.commands;
 /**
  * A Command which can never be executed
  */
-public class UnexecutableCommand
+public final class UnexecutableCommand
 	extends Command
 {
 
