@@ -30,23 +30,11 @@ static String getString(String key) {
 }
 }
 
-String PasteAction_ActionToolTipText = Helper
-		.getString("%PasteAction.ActionToolTipText_UI_"); //$NON-NLS-1$
-
 String PasteAction_ActionLabelText = Helper
 		.getString("%PasteAction.ActionLabelText_UI_"); //$NON-NLS-1$
 
 String PasteAction_ActionDeleteCommandName = Helper
 		.getString("%PasteAction.ActionDeleteCommandName_UI_");//$NON-NLS-1$
-
-String CopyAction_ActionToolTipText = Helper
-		.getString("%CopyAction.ActionToolTipText_UI_"); //$NON-NLS-1$
-
-String CopyAction_ActionLabelText = Helper
-		.getString("%CopyAction.ActionLabelText_UI_"); //$NON-NLS-1$
-
-String CopyAction_ActionDeleteCommandName = Helper
-		.getString("%CopyAction.ActionDeleteCommandName_UI_");//$NON-NLS-1$
 
 String ZoomAction_ZoomIn_ActionToolTipText = Helper
 		.getString("%ZoomAction.ZoomIn.ActionToolTipText_UI_");//$NON-NLS-1$
@@ -172,18 +160,6 @@ String LogicPlugin_Tool_CreationTool_Ground_Label = Helper
 
 String LogicPlugin_Tool_CreationTool_Ground_Description = Helper
 		.getString("%LogicPlugin.Tool.CreationTool.Ground.Description"); //$NON-NLS-1$
-
-String LogicPlugin_Tool_SelectionTool_SelectionTool_Label = Helper
-		.getString("%LogicPlugin.Tool.SelectionTool.SelectionTool.Label"); //$NON-NLS-1$
-
-String LogicPlugin_Tool_SelectionTool_SelectionTool_Description = Helper
-		.getString("%LogicPlugin.Tool.SelectionTool.SelectionTool.Description"); //$NON-NLS-1$
-
-String LogicPlugin_Tool_MarqueeSelectionTool_MarqueeSelectionTool_Label = Helper
-		.getString("%LogicPlugin.Tool.MarqueeSelectionTool.MarqueeSelectionTool.Label"); //$NON-NLS-1$
-
-String LogicPlugin_Tool_MarqueeSelectionTool_MarqueeSelectionTool_Description = Helper
-		.getString("%LogicPlugin.Tool.MarqueeSelectionTool.MarqueeSelectionTool.Description"); //$NON-NLS-1$
 
 String LogicPlugin_Tool_ConnectionCreationTool_ConnectionCreationTool_Label = Helper
 		.getString("%LogicPlugin.Tool.ConnectionCreationTool.ConnectionCreationTool.Label"); //$NON-NLS-1$
@@ -322,4 +298,6 @@ String PaletteCustomizer_InvalidCharMessage = Helper
 String XORGate_LabelText = Helper.getString("%XORGate.LabelText"); //$NON-NLS-1$
 
 String Wire_LabelText = Helper.getString("%Wire.LabelText"); //$NON-NLS-1$
+
+String Marquee_Stack = Helper.getString("%Marquee.Stack"); //$NON-NLS-1$
 }

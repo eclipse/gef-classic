@@ -343,14 +343,14 @@ static private PaletteContainer createControlGroup(PaletteRoot root){
 	entries.add(tool);
 	root.setDefaultEntry(tool);
 
-	tool = new MarqueeToolEntry();
-	entries.add(tool);
+	PaletteStack marqueeStack = new PaletteStack("Marquee Tools", "", null);
+	marqueeStack.add(new MarqueeToolEntry(MarqueeToolEntry.SELECT_NODES));
+	marqueeStack.add(new MarqueeToolEntry(MarqueeToolEntry.SELECT_CONNECTIONS));
+	marqueeStack.add(new MarqueeToolEntry(
+			MarqueeToolEntry.SELECT_NODES | MarqueeToolEntry.SELECT_CONNECTIONS));
+	marqueeStack.setUserModificationPermission(PaletteEntry.PERMISSION_NO_MODIFICATION);
+	entries.add(marqueeStack);
 	
-	PaletteSeparator sep = new PaletteSeparator(
-			"org.eclipse.gef.examples.logicdesigner.logicplugin.sep2"); //$NON-NLS-1$
-	sep.setUserModificationPermission(PaletteEntry.PERMISSION_NO_MODIFICATION);
-	entries.add(sep); //$NON-NLS-1$
-
 	tool = new ConnectionCreationToolEntry(
 		LogicMessages.LogicPlugin_Tool_ConnectionCreationTool_ConnectionCreationTool_Label,
 		LogicMessages.LogicPlugin_Tool_ConnectionCreationTool_ConnectionCreationTool_Description,
