@@ -12,13 +12,12 @@ package org.eclipse.draw2d;
 
 import java.util.*;
 
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.FontData;
-import org.eclipse.swt.graphics.FontMetrics;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.widgets.Display;
+
 import org.eclipse.draw2d.geometry.*;
+import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
  * A Graphics object able to scale all operations based on the current scale factor.
@@ -310,6 +309,25 @@ public void drawText(String s, int x, int y) {
 		graphics.drawText(s, zoomTextPoint(x, y));
 }
 
+/**
+ * @see org.eclipse.draw2d.Graphics#drawText(java.lang.String, int, int, int)
+ */
+public void drawText(String s, int x, int y, int style) {
+	if (allowText)
+		graphics.drawText(s, zoomTextPoint(x, y), style);
+}
+
+/**
+ * @see Graphics#drawTextLayout(TextLayout, int, int)
+ */
+public void drawTextLayout(TextLayout layout, int x, int y) {
+	TextLayout scaled = zoomTextLayout(layout);
+	graphics.drawTextLayout(scaled,
+			(int)Math.floor(x * zoom + fractionalX),
+			(int)Math.floor(y * zoom + fractionalY));
+	scaled.dispose();
+}
+
 /** @see Graphics#fillText(String, int, int) */
 public void fillText(String s, int x, int y) {
 	if (allowText)
@@ -505,6 +523,30 @@ public void translate(int dx, int dy) {
 	fractionalX = dxFloat - Math.floor(dxFloat);
 	fractionalY = dyFloat - Math.floor(dyFloat);
 	graphics.translate((int)Math.floor(dxFloat), (int)Math.floor(dyFloat));
+}
+
+private TextLayout zoomTextLayout(TextLayout layout) {
+	TextLayout zoomed = new TextLayout(Display.getCurrent());
+	zoomed.setText(layout.getText());
+	
+	int length = layout.getText().length();
+	if (length > 0) {
+		int start = 0, offset = 1;
+		TextStyle style = null, lastStyle = layout.getStyle(0);
+		for (; offset <= length; offset++) {
+			if (offset != length
+					&& (style = layout.getStyle(offset)) == lastStyle)
+				continue;
+			int end = offset;
+			
+			TextStyle zoomedStyle = new TextStyle(zoomFont(lastStyle.font),
+					lastStyle.foreground, lastStyle.background);
+			zoomed.setStyle(zoomedStyle, start, end);
+			lastStyle = style;
+			start = offset;
+		}
+	}
+	return zoomed;
 }
 
 private Point zoomTextPoint(int x, int y) {

@@ -354,6 +354,17 @@ public abstract void fillRoundRectangle(Rectangle r, int arcWidth, int arcHeight
 public abstract void drawText(String s, int x, int y);
 
 /**
+ * Renders the specified TextLayout to this Graphics.
+ * @since 3.0
+ * @param layout the TextLayout
+ * @param x the x coordinate
+ * @param y the y coordinate
+ */
+public void drawTextLayout(TextLayout layout, int x, int y) {
+	throw new RuntimeException("The method has not been implemented"); //$NON-NLS-1$
+}
+
+/**
  * Draws the given string using the current font and foreground color. No tab expansion or 
  * carriage return processing will be performed. The background of the string will be
  * transparent.
@@ -376,6 +387,32 @@ public final void drawString(String s, Point p) {
  */
 public final void drawText(String s, Point p) {
 	drawText(s, p.x, p.y);
+}
+
+/**
+ * Draws a string using the specified styles. The styles are defined by {@link
+ * GC#drawText(String, int, int, int)}.
+ * @param s the String to draw
+ * @param x the x location
+ * @param y the y location
+ * @param style the styles used to render the string
+ * @since 3.0
+ */
+public void drawText(String s, int x, int y, int style) {
+	throw new RuntimeException("Graphics#drawText(String, int, int, int)" + //$NON-NLS-1$
+			"is not implemented properly on " + getClass().getName()); //$NON-NLS-1$
+}
+
+/**
+ * Draws a string using the specified styles. The styles are defined by {@link
+ * GC#drawText(String, int, int, int)}.
+ * @param s the String to draw
+ * @param p the point at which to draw the string
+ * @param style the styles used to render the string
+ * @since 3.0
+ */
+public final void drawText(String s, Point p, int style) {
+	drawText(s, p.x, p.y, style);
 }
 
 /**
