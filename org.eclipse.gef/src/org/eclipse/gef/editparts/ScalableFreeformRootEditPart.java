@@ -90,6 +90,7 @@ protected void createLayers(LayeredPane layeredPane) {
  */
 protected ScalableFreeformLayeredPane createScaledLayers() {
 	ScalableFreeformLayeredPane layers = new ScalableFreeformLayeredPane();
+	layers.add(createGridLayer(), GRID_LAYER);
 	layers.add(getPrintableLayers(), PRINTABLE_LAYERS);
 	return layers;
 }

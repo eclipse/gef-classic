@@ -10,13 +10,13 @@
  *******************************************************************************/
 package org.eclipse.gef.editparts;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2d.geometry.*;
 
 import org.eclipse.gef.*;
-import org.eclipse.gef.LayerConstants;
-import org.eclipse.gef.RootEditPart;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.UnexecutableCommand;
 import org.eclipse.gef.tools.MarqueeDragTracker;
@@ -103,8 +103,16 @@ class FeedbackLayer
 protected EditPart contents;
 private LayeredPane innerLayers;
 private LayeredPane printableLayers;
-
 private ScalableLayeredPane scaledLayers;
+private PropertyChangeListener gridListener = new PropertyChangeListener() {
+	public void propertyChange(PropertyChangeEvent evt) {
+		String property = evt.getPropertyName();
+		if (property.equals(SnapToGrid.GRID_ORIGIN)
+				|| property.equals(SnapToGrid.GRID_SPACING)
+				|| property.equals(SnapToGrid.PROPERTY_GRID_ENABLED))
+			updateGridProperties();
+	}
+};
 
 /**
  * The viewer.
@@ -137,6 +145,10 @@ protected IFigure createFigure() {
 
 	viewport.setContents(innerLayers);
 	return viewport;
+}
+
+protected GridLayer createGridLayer() {
+	return new GridLayer();
 }
 
 /**
@@ -178,6 +190,7 @@ protected LayeredPane createPrintableLayers() {
  */
 protected ScalableLayeredPane createScaledLayers() {
 	ScalableLayeredPane layers = new ScalableLayeredPane();
+	layers.add(createGridLayer(), GRID_LAYER);
 	layers.add(getPrintableLayers(), PRINTABLE_LAYERS);
 	return layers;
 }
@@ -308,6 +321,10 @@ protected void refreshChildren() { }
 protected void register() {
 	super.register();
 	viewer.setProperty(ZoomManager.class.toString(), getZoomManager());
+	if (getLayer(GRID_LAYER) != null) {
+		getViewer().addPropertyChangeListener(gridListener);
+		updateGridProperties();
+	}
 }
 
 /**
@@ -339,8 +356,20 @@ public void setViewer(EditPartViewer newViewer) {
  * @see org.eclipse.gef.editparts.AbstractEditPart#unregister()
  */
 protected void unregister() {
+	getViewer().removePropertyChangeListener(gridListener);
 	super.unregister();
 	getViewer().setProperty(ZoomManager.class.toString(), null);
+}
+
+protected void updateGridProperties() {
+	GridLayer grid = (GridLayer)getLayer(GRID_LAYER);
+	boolean visible = false;
+	Boolean val = (Boolean)getViewer().getProperty(SnapToGrid.PROPERTY_GRID_ENABLED);
+	if (val != null)
+		visible = val.booleanValue();
+	grid.setVisible(visible);
+	grid.setOrigin((Point)getViewer().getProperty(SnapToGrid.GRID_ORIGIN));
+	grid.setSpacing((Dimension)getViewer().getProperty(SnapToGrid.GRID_SPACING));
 }
 
 }

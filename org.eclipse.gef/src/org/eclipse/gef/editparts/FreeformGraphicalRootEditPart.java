@@ -10,7 +10,12 @@
  *******************************************************************************/
 package org.eclipse.gef.editparts;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2d.geometry.Point;
 
 import org.eclipse.gef.*;
 import org.eclipse.gef.commands.Command;
@@ -82,6 +87,15 @@ protected EditPart contents;
 protected EditPartViewer viewer;
 private LayeredPane innerLayers;
 private LayeredPane printableLayers;
+private PropertyChangeListener gridListener = new PropertyChangeListener() {
+	public void propertyChange(PropertyChangeEvent evt) {
+		String property = evt.getPropertyName();
+		if (property.equals(SnapToGrid.GRID_ORIGIN)
+				|| property.equals(SnapToGrid.GRID_SPACING)
+				|| property.equals(SnapToGrid.PROPERTY_GRID_ENABLED))
+			updateGridProperties();
+	}
+};
 
 /**
  * @see org.eclipse.gef.editparts.AbstractEditPart#createEditPolicies()
@@ -100,10 +114,21 @@ protected IFigure createFigure() {
 }
 
 /**
+ * Creates a {@link GridLayer grid}.  Sub-classes can override this method to
+ * customize the appearance of the grid.
+ * 
+ * The grid should be the first layer, i.e., it should be beneath the primary layer.
+ */
+protected GridLayer createGridLayer() {
+	return new GridLayer();
+}
+
+/**
  * Creates the top-most set of layers on the given layered pane.
  * @param layeredPane the parent for the created layers
  */
 protected void createLayers(LayeredPane layeredPane) {
+	layeredPane.add(createGridLayer(), GRID_LAYER);
 	layeredPane.add(getPrintableLayers(), PRINTABLE_LAYERS);
 	layeredPane.add(new FreeformLayer(), HANDLE_LAYER);
 	layeredPane.add(new FeedbackLayer(), FEEDBACK_LAYER);
@@ -224,6 +249,14 @@ public EditPartViewer getViewer() {
  */
 protected void refreshChildren() { }
 
+protected void register() {
+	if (getLayer(GRID_LAYER) != null) {
+		getViewer().addPropertyChangeListener(gridListener);
+		updateGridProperties();
+	}
+	super.register();
+}
+
 /**
  * @see org.eclipse.gef.RootEditPart#setContents(org.eclipse.gef.EditPart)
  */
@@ -247,6 +280,25 @@ public void setViewer(EditPartViewer newViewer) {
 	viewer = newViewer;
 	if (viewer != null)
 		register();
+}
+
+/**
+ *  @see AbstractEditPart#unregister();
+ */
+protected void unregister() {
+	getViewer().removePropertyChangeListener(gridListener);
+	super.unregister();
+}
+
+protected void updateGridProperties() {
+	GridLayer grid = (GridLayer)getLayer(GRID_LAYER);
+	boolean visible = false;
+	Boolean val = (Boolean)getViewer().getProperty(SnapToGrid.PROPERTY_GRID_ENABLED);
+	if (val != null)
+		visible = val.booleanValue();
+	grid.setVisible(visible);
+	grid.setOrigin((Point)getViewer().getProperty(SnapToGrid.GRID_ORIGIN));
+	grid.setSpacing((Dimension)getViewer().getProperty(SnapToGrid.GRID_SPACING));
 }
 
 class FeedbackLayer

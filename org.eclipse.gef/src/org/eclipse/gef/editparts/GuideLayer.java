@@ -26,10 +26,6 @@ public class GuideLayer
 	
 private Map constraints;
 	
-public GuideLayer() {
-	super();
-}
-
 public Object getConstraint(IFigure child) {
 	return getConstraints().get(child);
 }
