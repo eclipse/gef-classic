@@ -108,4 +108,6 @@ public static String ToggleGrid_Tooltip = Helper.getString("%ToggleGrid.Tooltip"
 // Palette view Strings
 public static String Palette_Label = Helper.getString("%Palette.Label"); //$NON-NLS-1$
 public static String Palette_Not_Available = Helper.getString("%Palette_Not_Available"); //$NON-NLS-1$
+
+public static String Guide_Label = Helper.getString("%Guide.Label"); //$NON-NLS-1$
 }
