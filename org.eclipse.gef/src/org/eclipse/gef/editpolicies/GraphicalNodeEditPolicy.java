@@ -149,6 +149,18 @@ protected FeedbackHelper getFeedbackHelper(CreateConnectionRequest request) {
 }
 
 /**
+ * Feedback should be added to the scaled feedback layer.
+ * @see org.eclipse.gef.editpolicies.GraphicalEditPolicy#getFeedbackLayer()
+ */
+protected IFigure getFeedbackLayer() {
+	/*
+	 * Fix for Bug# 66590
+	 * Feedback needs to be added to the scaled feedback layer
+	 */
+	return getLayer(LayerConstants.SCALED_FEEDBACK_LAYER);
+}
+
+/**
  * Returns the <code>Command</code> to reconnect a connection's <i>target</i> end to the
  * host.
  * @param request the ReconnectRequest
