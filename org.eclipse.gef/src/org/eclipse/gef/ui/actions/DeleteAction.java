@@ -25,7 +25,7 @@ import org.eclipse.gef.requests.GroupRequest;
 /**
  * An action to delete selected objects.
  */
-final public class DeleteAction
+public class DeleteAction
 	extends SelectionAction
 {
 
