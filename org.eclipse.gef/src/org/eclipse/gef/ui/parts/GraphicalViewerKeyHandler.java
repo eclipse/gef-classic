@@ -17,8 +17,11 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 
 import org.eclipse.gef.*;
+
+import org.eclipse.draw2d.FigureCanvas;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.PositionConstants;
+import org.eclipse.draw2d.Viewport;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 
@@ -54,6 +57,12 @@ private GraphicalViewer viewer;
  */
 public GraphicalViewerKeyHandler(GraphicalViewer viewer) {
 	this.viewer = viewer;
+}
+
+boolean acceptScroll(KeyEvent event) {
+	return ((event.stateMask & SWT.CTRL) != 0 && (event.stateMask & SWT.SHIFT) != 0 
+			&& (event.keyCode == SWT.ARROW_DOWN || event.keyCode == SWT.ARROW_LEFT
+			|| event.keyCode == SWT.ARROW_RIGHT || event.keyCode == SWT.ARROW_UP));
 }
 
 /**
@@ -242,6 +251,9 @@ public boolean keyPressed(KeyEvent event) {
 	} else if (acceptLeaveContents(event)) {
 		navigateIntoContainer(event);
 		return true;
+	} else if (acceptScroll(event)) {
+		scrollViewer(event);
+		return true;
 	}
 
 	switch (event.keyCode) {
@@ -428,6 +440,25 @@ protected void processSelect(KeyEvent event) {
 		getViewer().appendSelection(part);
 
 	getViewer().setFocus(part);
+}
+
+void scrollViewer(KeyEvent event) {
+	Viewport port = ((FigureCanvas)getViewer().getControl()).getViewport();
+	Point loc = port.getViewLocation();
+	int scrollOffset = 30;
+	switch (event.keyCode) {
+		case SWT.ARROW_DOWN:
+			port.setVerticalLocation(loc.y + scrollOffset);
+			break;
+		case SWT.ARROW_UP:
+			port.setVerticalLocation(loc.y - scrollOffset);
+			break;
+		case SWT.ARROW_LEFT:
+			port.setHorizontalLocation(loc.x - scrollOffset);
+			break;
+		case SWT.ARROW_RIGHT:
+			port.setHorizontalLocation(loc.x + scrollOffset);
+	}
 }
 
 private void setCachedNode(GraphicalEditPart node) {
