@@ -25,7 +25,9 @@ private Dimension resizeDelta = new Dimension();
 private int resizeDirection;
 private Point mouseLocation;
 private int flags = 0;
-private int CONSTRAINED_RESIZE = 1, CENTERED_RESIZE = 2, CONSTRAINED_MOVE = 4;
+private static final int CONSTRAINED_RESIZE = 1;
+private static final int CENTERED_RESIZE = 2;
+private static final int CONSTRAINED_MOVE = 4;
 
 /**
  * Default constructor.
@@ -107,26 +109,56 @@ public Rectangle getTransformedRectangle(Rectangle rect) {
 		.resize(resizeDelta);
 }
 
+/**
+ * Returns true if the request is for a centered resize.
+ * @since 3.0
+ * @return  <code>true</code> if centered resize
+ */
 public boolean isCenteredResize() {
 	return (flags & CENTERED_RESIZE) != 0;
 }
 
+/**
+ * Returns <code>true</code> if the request is for a constrained move 
+ * @since 3.0
+ * @return <code>true</code> if a constrained move
+ */
 public boolean isConstrainedMove() {
 	return (flags & CONSTRAINED_MOVE) != 0;
 }
 
+/**
+ * Returns <code>true</code> if the request is for a constrained resize
+ * @since 3.0
+ * @return <code>true</code> if a constrained resize
+ */
 public boolean isConstrainedResize() {
 	return (flags & CONSTRAINED_RESIZE) == CONSTRAINED_RESIZE;
 }
 
+/**
+ * Used to set whether a centered resize is being performed. 
+ * @since 3.0
+ * @param value <code>true</code> if the request is for a centered resize
+ */
 public void setCenteredResize(boolean value) {
 	flags = value ? (flags | CENTERED_RESIZE) : (flags & ~CENTERED_RESIZE); 
 }
 
+/**
+ * Used to set whether a constrained move is being performed. 
+ * @since 3.0
+ * @param value <code>true</code> if the request is for a constrained move
+ */
 public void setConstrainedMove(boolean value) {
 	flags = value ? (flags | CONSTRAINED_MOVE) : (flags & ~CONSTRAINED_MOVE);
 }
 
+/**
+ * Used to set whether a constrained resize is being performed. 
+ * @since 3.0
+ * @param value <code>true</code> if the request is for a constrained resize
+ */
 public void setConstrainedResize(boolean value) {
 	flags = value ? (flags | CONSTRAINED_RESIZE) : (flags & ~CONSTRAINED_RESIZE); 
 }
