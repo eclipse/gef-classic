@@ -952,9 +952,13 @@ final protected boolean unloadWhenFinished(){
  * handle this event should override {@link #handleViewerEntered()}.
  */
 public void viewerEntered(MouseEvent me, EditPartViewer viewer) {
-	//setViewer(viewer);
 	getCurrentInput().setInput(me);
-	debug("Mouse entered viewer:\t" + viewer.toString());//$NON-NLS-1$
+	if (getCurrentViewer() != null) {
+		debug("Mouse exited viewer (FAKE):\t" + getCurrentViewer().toString()); //$NON-NLS-1$
+		handleViewerExited();
+	}
+	setViewer(viewer);
+	debug("Mouse entered viewer:\t" + getCurrentViewer().toString()); //$NON-NLS-1$
 	handleViewerEntered();
 }
 
@@ -963,10 +967,12 @@ public void viewerEntered(MouseEvent me, EditPartViewer viewer) {
  * handle this event should override {@link #handleViewerExited()}.
  */
 public void viewerExited(MouseEvent me, EditPartViewer viewer) {
-	//setViewer(viewer);
-	getCurrentInput().setInput(me);
-	debug("Mouse exited viewer:\t" + viewer.toString());//$NON-NLS-1$
-	handleViewerExited();
+	if (viewer == getCurrentViewer()) {
+		getCurrentInput().setInput(me);
+		debug("Mouse exited viewer:\t" + viewer.toString());//$NON-NLS-1$
+		handleViewerExited();
+		setViewer(null);
+	}
 }
 
 }
