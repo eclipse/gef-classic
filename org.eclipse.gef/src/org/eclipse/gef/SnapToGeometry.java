@@ -51,7 +51,7 @@ public SnapToGeometry(GraphicalEditPart container) {
  */
 private double getCorrectionFor(Entry entries[], Map extendedData, boolean vert, 
                                 double near, double far) {
-	double result = getCorrectionFor(entries, extendedData, vert, (near + far) / 2, 0);
+	double result = getCorrectionFor(entries, extendedData, vert, (near + far - 1) / 2, 0);
 	if (result == THRESHOLD)
 		result = getCorrectionFor(entries, extendedData, vert, near, -1);
 	if (result == THRESHOLD)
