@@ -62,7 +62,7 @@ import org.eclipse.jface.util.TransferDropTargetListener;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IPerspectiveDescriptor;
 import org.eclipse.ui.IPerspectiveListener;
-import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.XMLMemento;
@@ -108,7 +108,7 @@ public class FlyoutPaletteComposite
 	extends Composite
 {
 	
-private static final FontManager fontManager = new FontManager();
+private static final FontManager FONT_MGR = new FontManager();
 	
 private static final String PROPERTY_PALETTE_WIDTH
 		= "org.eclipse.gef.ui.palette.fpa.paletteWidth"; //$NON-NLS-1$
@@ -142,9 +142,9 @@ private IMemento capturedPaletteState;
 private Control graphicalControl, sash;
 private PaletteViewerProvider provider;
 private FlyoutPreferences prefs;
-private Point cachedBounds = new Point(0, 0); 
+private Point cachedBounds = new Point(0, 0);
 private int dock = PositionConstants.EAST;
-private int paletteState = -1;
+private int paletteState = STATE_HIDDEN;
 private int paletteWidth = DEFAULT_PALETTE_SIZE;
 private int minWidth = MIN_PALETTE_SIZE;
 private int cachedSize = -1, cachedState = -1, cachedLocation = -1;
@@ -164,14 +164,14 @@ private IPerspectiveListener perspectiveListener = new IPerspectiveListener() {
  * Constructor
  * 
  * @param	parent		The parent Composite
- * @param	style		The style of the widget to construct
+ * @param	style		The style of the widget to construct; only SWT.BORDER is allowed
  * @param	page		The current workbench page
  * @param	pvProvider	The provider that is to be used to create the flyout palette
  * @param	preferences	To save/retrieve the preferences for the flyout
  */
 public FlyoutPaletteComposite(Composite parent, int style, IWorkbenchPage page,
 		PaletteViewerProvider pvProvider, FlyoutPreferences preferences) {
-	super(parent, style);
+	super(parent, style & SWT.BORDER);
 	provider = pvProvider;
 	prefs = preferences;
 	sash = createSash();
@@ -183,11 +183,7 @@ public FlyoutPaletteComposite(Composite parent, int style, IWorkbenchPage page,
 		prefs.setPaletteWidth(DEFAULT_PALETTE_SIZE);
 	setPaletteWidth(prefs.getPaletteWidth());
 	setDockLocation(prefs.getDockLocation());
-	IViewPart part = page.findView(PaletteView.ID);
-	if (part == null)
-		setState(prefs.getPaletteState());
-	else
-		setState(STATE_HIDDEN);
+	updateState(page);
 
 	addListener(SWT.Resize, new Listener() {
 		public void handleEvent(Event event) {
@@ -261,24 +257,19 @@ private void handleEditorMaximized() {
 }
 
 private void handleEditorMinimized() {
-	handlePerspectiveActivated(
-			Workbench.getInstance().getActiveWorkbenchWindow().getActivePage(), null);
+	updateState(Workbench.getInstance().getActiveWorkbenchWindow().getActivePage());
 }
 
 private void handlePerspectiveActivated(IWorkbenchPage page, 
 		IPerspectiveDescriptor perspective) {
-	IViewPart view = page.findView(PaletteView.ID);
-	if (view == null && isInState(STATE_HIDDEN))
-		setState(prefs.getPaletteState());
-	if (view != null && !isInState(STATE_HIDDEN))
-		setState(STATE_HIDDEN);
+	updateState(page);
 }
 
 private void handlePerspectiveChanged(IWorkbenchPage page, 
 		IPerspectiveDescriptor perspective, String changeId) {
 	if (changeId.equals(IWorkbenchPage.CHANGE_VIEW_SHOW) 
 			|| changeId.equals(IWorkbenchPage.CHANGE_VIEW_HIDE))
-		handlePerspectiveActivated(page, perspective);
+		updateState(page);
 }
 
 // Will return false if the ancestor or descendant is null
@@ -301,7 +292,7 @@ private boolean isInState(int state) {
  * @see	Composite#layout(boolean)
  */
 public void layout(boolean changed) {
-	if (graphicalControl == null || graphicalControl.isDisposed())
+	if (graphicalControl == null || graphicalControl.isDisposed()) 
 		return;
 	
 	Rectangle area = getClientArea();
@@ -567,6 +558,14 @@ private void setState(int newState) {
 
 private void transferState(PaletteViewer src, PaletteViewer dest) {
 	dest.restoreState(capturePaletteState(src));
+}
+
+private void updateState(IWorkbenchPage page) {
+	IViewReference view = page.findViewReference(PaletteView.ID);
+	if (view == null && isInState(STATE_HIDDEN))
+		setState(prefs.getPaletteState());
+	if (view != null && !isInState(STATE_HIDDEN))
+		setState(STATE_HIDDEN);
 }
 
 /**
@@ -1222,7 +1221,7 @@ private class TitleCanvas extends Canvas {
 		lws.setControl(this);
 		lws.setContents(contents);
 		setCursor(SharedCursors.SIZEALL);
-		fontManager.register(this);
+		FONT_MGR.register(this);
 		new TitleDragManager(this);
 		final MenuManager manager = new MenuManager();
 		MenuManager mgr = new MenuManager(PaletteMessages.DOCK_LABEL);
@@ -1242,7 +1241,7 @@ private class TitleCanvas extends Canvas {
 		
 		addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
-				fontManager.unregister(TitleCanvas.this);
+				FONT_MGR.unregister(TitleCanvas.this);
 				manager.dispose();
 			}
 		});		
@@ -1328,6 +1327,13 @@ private static class FontManager {
 		FontData[] data = JFaceResources.getFont(fontName).getFontData();
 		for (int i = 0; i < data.length; i++)
 			if ((data[i].getStyle() & SWT.BOLD) == 0) {
+				/*
+				 * @TODO:Pratik  need to test this in an environment where there are
+				 * multiple FontDatas for a font
+				 */
+				// Any problems with style settings (eg., in the case of a font that
+				// does not support bold case), will cause the font to ignore that style
+				// setting.
 				data[i].setStyle(data[i].getStyle() | SWT.BOLD);
 				newFontCreated = true;
 			}
