@@ -28,6 +28,22 @@ import org.eclipse.swt.graphics.TextLayout;
 public final class BidiProcessor {
 
 /**
+ * A helper class to hold information about contributions made to this processor.
+ * 
+ * @author Pratik Shah
+ * @since 3.1
+ */
+private static class BidiEntry {
+	int begin, end;
+	FlowFigure fig;
+	BidiEntry(FlowFigure fig, int offset, int length) {
+		this.fig = fig;
+		this.begin = offset;
+		this.end = offset + length;
+	}
+}
+
+/**
  * A singleton instance.
  */
 public static final BidiProcessor INSTANCE = new BidiProcessor();
@@ -47,8 +63,8 @@ private BidiProcessor() { }
  * @see #addControlText(String)
  */
 public void add(FlowFigure fig, String str) {
-	if (str.length() == 0)
-		return;
+//	if (str.length() == 0)
+//		return;
 	list.add(new BidiEntry(fig, bidiText.length(), str.length()));
 	bidiText.append(str);
 }
@@ -83,8 +99,17 @@ private void assignResults(int[] levels) {
 		while (levels[end] < entry.end)
 			end += 2;
 		
-		int levelInfo[] = new int[end - start - 1];
-		System.arraycopy(levels, start + 1, levelInfo, 0, levelInfo.length);
+		int levelInfo[];
+		if (end == start) {
+			levelInfo = new int[1];
+			if (prevInfo != null)
+				levelInfo[0] = prevInfo.levelInfo[prevInfo.levelInfo.length - 1];
+			else
+				levelInfo[0] = (orientation == SWT.LEFT_TO_RIGHT) ? 0 : 1;
+		} else {
+			levelInfo = new int[end - start - 1];
+			System.arraycopy(levels, start + 1, levelInfo, 0, levelInfo.length);
+		}
 		for (int j = 1; j < levelInfo.length; j += 2)
 			levelInfo[j] -= entry.begin;
 		info.levelInfo = levelInfo;
@@ -96,9 +121,9 @@ private void assignResults(int[] levels) {
 					// and the level run is odd
 					&& levels[start + 1] % 2 == 1
 					// and the first character of this figure is Arabic
-					&& isArabic(bidiText.charAt(entry.begin))
+					&& isJoiner(entry.begin)
 					// and the last character of the previous figure was Arabic
-					&& isArabic(bidiText.charAt(prevEntry.end - 1)))
+					&& isPreceedingJoiner(entry.begin))
 				prevInfo.trailingJoiner = info.leadingJoiner = true;
 			prevEntry.fig.setBidiInfo(prevInfo);
 		}
@@ -114,12 +139,30 @@ private void assignResults(int[] levels) {
 }
 
 /**
+ * @param begin
+ * @return
+ * @since 3.1
+ */
+private boolean isJoiner(int begin) {
+	return begin < bidiText.length() && isJoiningCharacter(bidiText.charAt(begin));
+}
+
+/**
  * @param the character to be evaluated
  * @return <code>true</code> if the given character is Arabic or ZWJ
  */
-private boolean isArabic(char c) {
+private boolean isJoiningCharacter(char c) {
 	return Character.getDirectionality(c) == Character.DIRECTIONALITY_RIGHT_TO_LEFT_ARABIC
-			|| c == '\u200d';
+			|| c == BidiChars.ZWJ;
+}
+
+/**
+ * @param begin
+ * @return
+ * @since 3.1
+ */
+private boolean isPreceedingJoiner(int begin) {
+	return begin > 0 && isJoiningCharacter(bidiText.charAt(begin - 1));
 }
 
 /**
@@ -184,22 +227,6 @@ public void setOrientation(int newOrientation) {
 	bidiText = new StringBuffer();
 	list.clear();
 	orientation = newOrientation;
-}
-
-/**
- * A helper class to hold information about contributions made to this processor.
- * 
- * @author Pratik Shah
- * @since 3.1
- */
-private static class BidiEntry {
-	FlowFigure fig;
-	int begin, end;
-	BidiEntry(FlowFigure fig, int begin, int end) {
-		this.fig = fig;
-		this.begin = begin;
-		this.end = end;
-	}
 }
 
 }
