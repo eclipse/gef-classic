@@ -11,8 +11,6 @@
 package org.eclipse.gef.internal.ui.palette.editparts;
 
 
-import java.util.List;
-
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Control;
@@ -240,40 +238,11 @@ public Clickable getCollapseToggle() {
  * @see org.eclipse.draw2d.Figure#getMinimumSize(int, int)
  */
 public Dimension getMinimumSize(int wHint, int hHint) {
-//	if (animatingAlone) {
-//		return getPreferredSize(wHint, hHint);
-//	}
-
-	Dimension size = super.getMinimumSize(wHint, hHint);
-	
-	/*
-	 * @TODO:Pratik
-	 * Temporary fix for Bug #35176
-	 * The figure returns a minimum size that is of at least a certain height, so as to
-	 * prevent each drawer from getting too small (in which case, the scrollbars cover up
-	 * the entire available space).  Once the PaletteToolbarLayout is fixed so that it
-	 * makes all the children the same size, this fix won't be needed anymore and can be
-	 * removed.
-	 */
-	if (isExpanded() && !isAnimating) {
-		List children = getContentPane().getChildren();
-		if (!children.isEmpty()) {
-			Dimension headerSize = collapseToggle.getMinimumSize(wHint, hHint).getCopy();
-			headerSize.height += getContentPane().getInsets().getHeight();
-			Figure child = (Figure)children.get(0);
-			int childHeight = child.getMinimumSize(wHint, -1).height;
-			int multiplier = Math.min(3, children.size());
-			childHeight = Math.max((multiplier * childHeight), 40);			
-			childHeight = Math.min(childHeight, 80);
-			headerSize.height += childHeight;
-			headerSize.height = Math.min(headerSize.height, 
-			                             super.getPreferredSize(wHint, hHint).height);
-			headerSize.width = size.width;
-			return headerSize;
-		}
+	if (animatingAlone) {
+		return getPreferredSize(wHint, hHint);
 	}
-	
-	return size;
+
+	return super.getMinimumSize(wHint, hHint);
 }
 
 /**
