@@ -27,7 +27,6 @@ public ZoomOutAction(ZoomManager zoomManager) {
 	super(GEFMessages.ZoomOut_Label, InternalImages.DESC_ZOOM_OUT, zoomManager);
 	setId(GEFActionConstants.ZOOM_OUT);
 	setToolTipText(GEFMessages.ZoomOut_Tooltip);
-	setActionDefinitionId(GEFActionConstants.ZOOM_OUT);
 }
 
 /**
