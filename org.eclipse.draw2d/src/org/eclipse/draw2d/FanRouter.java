@@ -39,7 +39,7 @@ protected void handleCollision(PointList points, int index) {
 	Point start = points.getFirstPoint();
 	Point end = points.getLastPoint();
 	
-	if (points.size() == 2 & start.equals(end))
+	if (start.equals(end))
 		return;
 	
 	Point midPoint = new Point((end.x + start.x) / 2, (end.y + start.y) / 2);

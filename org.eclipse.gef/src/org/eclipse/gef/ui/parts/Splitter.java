@@ -21,7 +21,7 @@ import org.eclipse.draw2d.ColorConstants;
 class Splitter extends Composite {
 
 private static final int SASH_WIDTH = 5;
-private static final int DRAG_MINIMUM = 50;
+private static final int DRAG_MINIMUM = 62;
 private static final String MAINTAIN_SIZE = "maintain size";  //$NON-NLS-1$
 
 private int fixedSize = 150;

@@ -26,19 +26,19 @@ static public class Result{
 }
 
 public static Result solve(
-	Rectangle $REFclientArea,
-	Viewport viewport,
-	int hVis, int vVis,
-	int vBarWidth, int hBarHeight)
-{
-
+  Rectangle clientArea,
+  Viewport viewport,
+  int hVis,
+  int vVis,
+  int vBarWidth,
+  int hBarHeight) {
 	Result result = new Result();
 
 	result.insets = new Insets();
 	result.insets.bottom = hBarHeight;
 	result.insets.right  = vBarWidth;
 	
-	Dimension available  = $REFclientArea.getSize();
+	Dimension available  = clientArea.getSize();
 	Dimension guaranteed = new Dimension(available).shrink(
 		    	(vVis == NEVER ? 0 : result.insets.right),
 		    	(hVis == NEVER ? 0 : result.insets.bottom));
@@ -46,17 +46,27 @@ public static Result solve(
 	int hHint = guaranteed.height;
 
 	Dimension preferred  = viewport.getPreferredSize(wHint, hHint).getCopy();
-	
-	//This was calling viewport.getMinimumSize(), but viewports minimum size was really small,
-	//and wasn't a function of its contents.
+	Insets viewportInsets = viewport.getInsets();
+	/*
+	 * This was calling viewport.getMinimumSize(), but viewports minimum size was really
+	 * small, and wasn't a function of its contents.
+	 */
 	Dimension viewportMinSize = new Dimension(
-		viewport.getInsets().getWidth(),
-		viewport.getInsets().getHeight());
-	if (viewport.getContents() != null)
-		viewportMinSize.expand(viewport.getContents().getMinimumSize(wHint, hHint));
+		viewportInsets.getWidth(),
+		viewportInsets.getHeight());
+	if (viewport.getContents() != null) {
+		if (viewport.getContentsTracksHeight() && hHint > -1)
+			hHint = Math.max(0, hHint - viewportInsets.getHeight());
+		if (viewport.getContentsTracksWidth() && wHint > -1)
+			wHint = Math.max(0, wHint - viewportInsets.getWidth());
+		viewportMinSize.expand(
+			viewport.getContents().getMinimumSize(wHint, hHint));
+	}
 
-	//Adjust preferred size if tracking flags set.  Basically, tracking == "compress view until
-	// its minimum size is reached".
+	/*
+	 * Adjust preferred size if tracking flags set.  Basically, tracking == "compress view
+	 * until its minimum size is reached".
+	 */
 	if (viewport.getContentsTracksHeight())
 		preferred.height = viewportMinSize.height;
 	if (viewport.getContentsTracksWidth())
@@ -64,8 +74,8 @@ public static Result solve(
 
 	boolean none = available.contains(preferred),
 	        both = !none && preferred.containsProper(guaranteed),
-		  showV= both || preferred.height > available.height,
-		  showH= both || preferred.width  > available.width;
+	       showV = both || preferred.height > available.height,
+	       showH = both || preferred.width  > available.width;
 	
 	//Adjust for visibility override flags
 	result.showV = !(vVis == NEVER) && (showV  || vVis == ALWAYS);
@@ -75,7 +85,7 @@ public static Result solve(
 		result.insets.right = 0;
 	if (!result.showH)
 		result.insets.bottom = 0;
-	result.viewportArea = $REFclientArea.getCropped(result.insets);
+	result.viewportArea = clientArea.getCropped(result.insets);
 	viewport.setBounds(result.viewportArea);
 	return result;
 }
