@@ -56,10 +56,7 @@ private void eraseAttachedPartsFeedback(Request request) {
 	}
 }
 
-public void eraseSourceFeedback(Request request) {
-	// If "Esc" was preseed, place the guide back at its original location
-	getGuideEditPart().updateLocationOfFigures(getGuideEditPart().getZoomedPosition());
-	
+public void eraseSourceFeedback(Request request) {	
 	if (getDummyGuideFigure().getParent() != null) {
 		getDummyGuideFigure().getParent().remove(getDummyGuideFigure());			
 	}
@@ -217,7 +214,7 @@ public void showSourceFeedback(Request request) {
 		getHostFigure().setVisible(true);
 		getGuideEditPart().getGuideLineFigure().setVisible(true);
 		if (isMoveValid(newPosition)) {
-			getGuideEditPart().setCurrentCursor(null);			
+			getGuideEditPart().setCurrentCursor(null);		
 			getGuideEditPart().updateLocationOfFigures(newPosition);
 			showAttachedPartsFeedback(req);
 		} else {
