@@ -2,6 +2,8 @@ package org.eclipse.graph;
 
 import java.util.*;
 
+import org.eclipse.swt.widgets.Display;
+
 /**
  * @author hudsonr
  */
@@ -152,11 +154,9 @@ private void breakSubgraphCycles() {
 			}
 		}
 		cycleRoot = null;
-		double min = 3.0; //All values should be between 0.0-1.0, so this is infinity.
+		double min = Double.MAX_VALUE;
 		for (Iterator iter = OGmembers.iterator(); iter.hasNext();) {
 			Node node = (Node)iter.next();
-			if (node.flag)
-				continue;
 			if (node.sortValue < min) {
 				cycleRoot = node;
 				min = node.sortValue;
@@ -166,6 +166,7 @@ private void breakSubgraphCycles() {
 			//break the cycle;
 			sortedInsert(noLefts, cycleRoot);
 //			System.out.println("breaking cycle with:" + cycleRoot);
+//			Display.getCurrent().beep();
 			cycleRoot.x = -1; //prevent x from ever reaching 0
 		} else if (OGmembers.size() > 0)
 			System.out.println("FAILED TO FIND CYCLE ROOT");
@@ -178,7 +179,7 @@ private void buildSubgraphOrderingGraph() {
 	for (int r = 0; r < ranks.size(); r++) {
 		Rank rank = ranks.getRank(r);
 		nestingTreeMap.clear();
-		for (int j = 0; j < rank.size(); j++) {
+		for (int j = 0; j < rank.count(); j++) {
 			Node node = rank.getNode(j);
 			addToNestingTree(node);
 		}
@@ -238,7 +239,7 @@ private void calculateSortValues() {
 	 */
 	for (int r = 0; r < ranks.size(); r++) {
 		Rank rank = ranks.getRank(r);
-		for (int j = 0; j < rank.size(); j++) {
+		for (int j = 0; j < rank.count(); j++) {
 			Node node = rank.getNode(j);
 			node.sortValue = node.index;
 			Subgraph parent = node.getParent();
@@ -304,7 +305,7 @@ private void topologicalSort() {
 void init() {
 	for (int r = 0; r < g.ranks.size(); r++) {
 		Rank rank = g.ranks.getRank(r);
-		for (int i = 0; i < rank.size(); i++) {
+		for (int i = 0; i < rank.count(); i++) {
 			Node n = (Node)rank.get(i);
 			n.workingData[0] = new NodeList();
 		}

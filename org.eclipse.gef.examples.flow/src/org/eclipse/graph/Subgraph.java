@@ -4,7 +4,6 @@ import org.eclipse.draw2d.geometry.Insets;
 
 
 /**
- * 
  * @author hudsonr
  * Created on Jul 2, 2003
  */
@@ -32,7 +31,7 @@ public void addMember(Node n) {
 
 /**
  * Returns <code>true</code> if the given node is properly contained inside this subgraph.
- * @param n the node
+ * @param n the node in question
  * @return <code>true</code> if contained
  */
 public boolean isNested(Node n) {
