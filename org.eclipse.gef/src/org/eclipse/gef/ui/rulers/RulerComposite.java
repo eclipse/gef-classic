@@ -227,10 +227,10 @@ public void setGraphicalViewer(ScrollingGraphicalViewer primaryViewer) {
 	// is resized
 	layoutListener = new Listener() {
 		public void handleEvent(Event event) {
-			if (!layingOut) {
-				needToLayout = true;
-				Display.getCurrent().asyncExec(runnable);
-			}
+			// @TODO:Pratik  If you use Display.asyncExec(runnable) here, some flashing
+			// occurs.  You can see it when the palette is in the editor, and you hit
+			// the button to expand/collapse it.
+			layout(true);
 		}
 	};
 	addListener(SWT.Resize, layoutListener);
