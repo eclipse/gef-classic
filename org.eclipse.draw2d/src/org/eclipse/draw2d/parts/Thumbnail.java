@@ -222,6 +222,7 @@ class ThumbnailUpdater implements Runnable {
 		thumbnailGC = new GC(thumbnailImage);
 		thumbnailGraphics = new ScaledGraphics(new SWTGraphics(thumbnailGC));
 		thumbnailGraphics.scale(getScaleX());
+		thumbnailGraphics.translate(sourceFigure.getBounds().getLocation().negate());
 		
 		Color color = sourceFigure.getForegroundColor();
 		if (color != null)
@@ -353,7 +354,7 @@ protected Image getThumbnailImage() {
 		revalidate();
 		updater.restart();
 	}
-		
+	
 	return thumbnailImage;
 }
 
