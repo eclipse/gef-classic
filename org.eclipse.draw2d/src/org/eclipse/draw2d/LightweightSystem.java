@@ -12,27 +12,17 @@ package org.eclipse.draw2d;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.accessibility.*;
-
-import org.eclipse.swt.events.ControlAdapter;
-import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.*;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
-import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
-import org.eclipse.swt.events.MouseMoveListener;
-import org.eclipse.swt.events.MouseTrackListener;
-import org.eclipse.swt.events.TraverseEvent;
-import org.eclipse.swt.events.TraverseListener;
-import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.widgets.Canvas;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.graphics.*;
+import org.eclipse.swt.widgets.*;
 
-import org.eclipse.draw2d.geometry.*;
+import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
  * The LightweightSystem is the link between SWT and draw2d.
@@ -87,16 +77,38 @@ protected void addListeners(){
 	canvas.addKeyListener(handler);
 	canvas.addTraverseListener(handler);
 	canvas.addFocusListener(handler);
-	canvas.addControlListener(new ControlAdapter(){
-		public void controlResized(ControlEvent e) {
-			LightweightSystem.this.controlResized();
-		}
-	});
-	canvas.addListener(SWT.Paint, new Listener() {
-		public void handleEvent(Event e) {
-			LightweightSystem.this.paint(e.gc);
-		}
-	});
+	
+	if (SWT.getPlatform().equals("gtk")) {
+		canvas.addControlListener(new ControlAdapter(){
+			public void controlResized(ControlEvent e) {
+				LightweightSystem.this.controlResized();
+				((Canvas)e.widget).redraw();
+			}
+		});
+
+		canvas.addListener(SWT.Paint, new Listener() {
+			public void handleEvent(Event e) {
+				Canvas c = (Canvas)e.widget;
+				Rectangle client = new Rectangle(c.getClientArea());
+				Rectangle clip = new Rectangle(e.gc.getClipping());
+				if (clip.equals(client))
+					LightweightSystem.this.paint(e.gc);
+				else
+					c.redraw();
+			}
+		});
+	} else {
+		canvas.addControlListener(new ControlAdapter(){
+			public void controlResized(ControlEvent e) {
+				LightweightSystem.this.controlResized();
+			}
+		});
+		canvas.addListener(SWT.Paint, new Listener() {
+			public void handleEvent(Event e) {
+				LightweightSystem.this.paint(e.gc);
+			}
+		});
+	}
 
 	root.setBounds(oldControlSize);
 	getUpdateManager().performUpdate();
