@@ -21,7 +21,7 @@ import org.eclipse.gef.palette.PaletteDrawer;
 import org.eclipse.gef.palette.PaletteGroup;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.palette.PaletteSeparator;
-import org.eclipse.gef.palette.SelectionToolEntry;
+import org.eclipse.gef.palette.PanningSelectionToolEntry;
 import org.eclipse.gef.palette.ToolEntry;
 import org.eclipse.gef.requests.CreationFactory;
 import org.eclipse.gef.requests.SimpleFactory;
@@ -121,7 +121,7 @@ private static PaletteContainer createToolsGroup(PaletteRoot palette) {
 	PaletteGroup toolGroup = new PaletteGroup("Tools");
 
 	// Add a selection tool to the group
-	ToolEntry tool = new SelectionToolEntry();
+	ToolEntry tool = new PanningSelectionToolEntry();
 	toolGroup.add(tool);
 	palette.setDefaultEntry(tool);
 	
