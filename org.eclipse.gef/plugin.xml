@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+
+<plugin
+   name = "IBM Graphical Editor Framework"
+   id = "com.ibm.etools.gef"
+   version = "2.0.0"
+   vendor-name = "IBM">
+
+   <requires>
+	<import plugin="com.ibm.etools.draw2d" version="2.0.0" export="true"/>
+	<import plugin="org.eclipse.core.runtime" export="true"/>
+	<import plugin="org.eclipse.core.resources" export="true"/>
+	<import plugin="org.eclipse.ui" export="true"/>
+   </requires>
+
+   <runtime>
+     <library name="runtime/gef.jar">
+         <export name="com.ibm.etools.common.command.*"/>
+
+         <export name="com.ibm.etools.gef.*"/>
+         <export name="com.ibm.etools.gef.dnd.*"/>
+         <export name="com.ibm.etools.gef.commands.*"/>
+         <export name="com.ibm.etools.gef.requests.*"/>
+         <export name="com.ibm.etools.gef.editparts.*"/>
+         <export name="com.ibm.etools.gef.editpolicies.*"/>
+         <export name="com.ibm.etools.gef.handles.*"/>
+         <export name="com.ibm.etools.gef.palette.*"/>
+         <export name="com.ibm.etools.gef.tools.*"/>
+         <export name="com.ibm.etools.gef.ui.actions.*"/>
+         <export name="com.ibm.etools.gef.ui.palette.*"/>
+         <export name="com.ibm.etools.gef.ui.parts.*"/>
+         <export name="com.ibm.etools.gef.ui.properties.*"/>
+         <export name="com.ibm.etools.gef.ui.console.*"/>
+         <export name="com.ibm.etools.gef.ui.stackview.*"/>
+     </library>
+   </runtime>
+</plugin>

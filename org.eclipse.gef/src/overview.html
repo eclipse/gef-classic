@@ -1,0 +1,1090 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+
+<head>
+<!--
+/**
+ * <copyright>
+ *
+ * (C) COPYRIGHT International Business Machines Corporation 2000.
+ *
+ * </copyright>
+ */
+-->
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<title>GEF Overview</title>
+</head>
+ 
+<body>
+<p>
+<a href="#Introduction">Introduction</a><br>
+<a href="#EditPartViewer">EditPartViewers</a><br>
+<a href="#MVC">Model View Controller Architecture</a><br>
+<a href="#EditParts">EditParts</a><br>
+<a href="#EditPolicies">EditPolicies Requests, and Roles</a><br>
+<a href="#Tools">Tools and the Palette</a><br>
+<a href="#Steps">The Steps to Building a GEF application</a>.
+</p>
+<h1><a name="Introduction">Introduction to GEF</a></h1>
+<blockquote>
+<p><font size="2">This documentation assumes 
+a working knowledge of the following APIs:</font></p>
+<ul>
+  <li><font size="2">Eclipse Workbench (Just the base platform, including JFace and SWT)</font></li>
+  <li><font size="2">draw2d</font></li>
+  <li><font size="2">Common Commands (<code>com.ibm.etools.common.command</code> plugin)</font></li>
+</ul>
+<p>The majority of GEF applications will be Eclipse Editors ({@link org.eclipse.ui.IEditorPart}).&nbsp; Although this is not required, we will 
+generally assume that this is the case.&nbsp; The EditorPart is the single entry 
+point into your applications code.&nbsp; Once created, it will build the bulk of 
+the remaining pieces.&nbsp; A full blown graphical EditorPart would generally 
+consist of the following:</p>
+<ul>
+  <li>the EditorPart, which constructs the primary Control and most other parts</li>
+  <li>SWT Controls and GEF viewers for those controls</li>
+  <li>a PaletteViewer and a Palette model for it</li>
+  <li>an OutlinePage, which might host one of the GEF viewers</li>
+  <li>a PropertySheetPage, which, among other things, should integrate undo/redo 
+  capabilities.</li>
+  <li>an <b>EditDomain</b>, which ties together everything, and hosts the undo 
+  stack</li>
+</ul>
+  <table border="1" cellpadding="2" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111">
+    <tr>
+      <td width="17" bgcolor="#000080">&nbsp;</td>
+      <td>
+<b><a name="EditDomain">EditDomain</a></b><p>Many GEF developers wonder why 
+EditDomain doesn't just specialize IEditorPart.&nbsp; An EditDomain is a single 
+editing &quot;session&quot;.&nbsp; For 
+most applications, there is a one-to-one relationship between the EditDomain and 
+the EditorPart, and they can be thought of as a single unit.&nbsp; However, 
+making the EditDomain its own Object and interface decouples the role of 
+<u>graphical editing</u> from the <u>resource management</u> role of an 
+EditorPart.&nbsp; As an added benefit, flexibility is increased. It may span 
+across multiple EditorParts working on the same model instance, or it may be 
+confined to just one View in a Perspective.</p>
+      </td>
+    </tr>
+  </table>
+  <p>The following diagram depicts the in-memory model of a typical GEF editor.&nbsp; 
+  Eclipse creates the EditorPart and then sends it the IEditorInput. The EditorPart 
+  initializes the EditDomain, viewers, palette, etc.&nbsp; The EditorPart then bootstraps the 
+EditPartViewers by providing an EditPart as the contents.&nbsp; This is similar to supplying a content provider for JFace 
+Viewers.&nbsp; EditParts are discussed elsewhere.</p>
+<p align="center">
+<img border="1" src="com/ibm/etools/gef/doc-files/gefoverview.gif" width="757" height="524">
+</p>
+<p>&nbsp;</p>
+
+</blockquote>
+
+<h1><a name="EditPartViewer">EditPartViewers</a></h1>
+
+<blockquote>
+
+<p>A GEF application is built from {@link com.ibm.etools.gef.EditPartViewer 
+EditPartViewers}, which are similar to JFace Viewers in that they adapt an 
+SWT Control.</p>
+
+<p>EditPartViewers know about two things:</p>
+
+  <ol>
+    <li>EditParts</li>
+    <li>Some type of visuals (for example, draw2d Figures or SWT TreeItems).</li>
+  </ol>
+
+<p>EditPartViewers are responsible for hit-testing a point, and mapping it to 
+the EditPart which created the visuals at that point.&nbsp; This is used by 
+Tools, which communicate with the EditParts. The two provided implementations, 
+{@link com.ibm.etools.gef.ui.parts.GraphicalViewerImpl GraphicalViewerImpl} and 
+{@link com.ibm.etools.gef.ui.parts.TreeViewer TreeViewer}, provide this type of 
+support for Figures and TreeItems respectively.</p>
+
+<p>EditParts take the place of <code>ContentProviders</code> in JFace.&nbsp; Each EditPart is 
+its own &quot;mini&quot; ContentProvider, responsible for creating and maintaining its own 
+structure.&nbsp; Continuing with the JFace analogy, each EditPart is also its 
+own &quot;mini&quot; <code>LabelProvider</code>, responsible for creating and maintaining its visuals, 
+whatever they may be.</p>
+
+<p>An EditPartViewer is bootstrapped by providing the top-level EditPart 
+for that viewer, called its <b>contents</b>.&nbsp; Once the contents is in place 
+and the viewer is realized (meaning it has an SWT Control), it will begin 
+populating the viewer with additional EditParts, which in turn each initialize 
+their own structure, etc., until the entire viewer is initialized.</p>
+
+<p>EditPartViewers are <code>ISelectionProviders</code> and maintain the set of selected 
+EditParts.</p>
+
+<p align="center">
+<img border="0" src="com/ibm/etools/gef/doc-files/EditPartViewer.gif" width="560" height="372"></p>
+
+<p>
+The RootEditPart is special.&nbsp; It should rarely be replaced.&nbsp; see: 
+{@link com.ibm.etools.gef.RootEditPart}.</p>
+
+</blockquote>
+<h1><a name="MVC">Model-View-Controller Paradigm</a></h1>
+  <blockquote>
+  <p>
+  <img border="1" src="com/ibm/etools/gef/doc-files/mvc-generic.gif" width="252"
+  	height="181" align="left" hspace="4" vspace="2" alt="A typical MVC Architecture">MVC Architectures are quite common in UI frameworks.&nbsp; In general, the
+  <i>model</i> represents the data being displayed, the <i>view</i> is 
+  responsible for rendering the data, and the <i>controller</i> is responsible 
+  for handling  user input, making changes on the model if necessary, and 
+  refreshing the view.</p>
+  <p>In many implementations (<code>JTree</code>, for example), the model's API is designed specifically for the 
+  view.&nbsp; When the view renders itself, it communicates heavily with the 
+  model.&nbsp; This allows many optimizations, but it makes it difficult to use 
+  the view-model pair for anything but their default.&nbsp; In addition, the 
+  client of such a UI almost always has to wrapper their existing model to 
+  comply to the view-specific one.</p>
+  <p>
+      <img border="0" src="com/ibm/etools/gef/doc-files/mvc-gef.gif" width="438" height="380" align="right" alt="GEF's MVC">In 
+  GEF, their is generally no link between the view and model.&nbsp; This means 
+  that almost any view can be used to render almost any model.&nbsp; There is no 
+  need to wrap you model to conform to another API.&nbsp; In fact, the 
+      view-to-model mapping may not be 1-to-1.&nbsp; The roles of <i>model, 
+  view, </i>and <i>controller</i> for GEF are defined below:</p>
+<dl>
+  <dt><b>Model</b></dt>
+  <dd>The model should 
+know nothing about its view or controller.&nbsp; It may reference them only as 
+  listeners to its notification mechanism. The model should be changed using {@link com.ibm.etools.common.command.Command 
+  Commands}.</dd>
+  <dt><b>View</b></dt>
+  <dd>The view can be several things.&nbsp; It includes the <i>visual part,</i> 
+  which serves as the primary representation for the model object(s).&nbsp; The most flexible visual parts are {@link 
+com.ibm.etools.draw2d.Figure Figures} from draw2d.&nbsp; GEF also provides 
+support for SWT TreeItems, but support for other visuals can easily be added.&nbsp; While &quot;visual part&quot; refers to 
+  the object primarily representing a 
+model object, the more encompassing &quot;view&quot; includes feedback, handles, tooltips, 
+and all things visible to the user.&nbsp; All of these make up the view, and it 
+is the controller's job to construct and manage them.</dd>
+  <dt><b>Controller</b></dt>
+  <dd>A controller is an {@link com.ibm.etools.gef.EditPart EditPart}, and 
+  EditParts are the bread-and-butter of GEF.&nbsp; As you've read above, the 
+  view may consists of several visuals.&nbsp; The visuals may be on different 
+  graphical layers and appear at different times during editing:<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111">
+    <tr>
+      <td>
+      <img border="0" src="com/ibm/etools/gef/doc-files/complexview.gif" width="110" height="82"></td>
+      <td valign="top">This picture depicts a complex <i>view</i> consisting of 
+      the primary <i>visual part</i>, some resize handles, and feedback which is 
+      displayed as the user drags the object.&nbsp; The entire view is managed 
+      by the EditPart.</td>
+    </tr>
+  </table><br>
+  The view can be  complex, but so can the model.&nbsp; Another EditPart 
+  responsibility is to manipulate the model with commands.&nbsp; A complex model 
+  can lead to complex commands.&nbsp; This makes the creation of such commands a challenging 
+  task.<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111">
+    <tr>
+      <td>
+      <img border="0" src="com/ibm/etools/gef/doc-files/complexcommand.gif" width="250" height="212"></td>
+      <td valign="top">A composite command to perform a delete is depicted here.&nbsp; 
+      Imagine in the view shown above that there is a connection 
+      from the OR-gate (in blue) to some other part not shown.&nbsp; When the 
+      gate's parent, the selected object, is deleted, the connection  needs to be 
+      removed.&nbsp; In GEF, this is done generically so that there are no 
+      assumptions by the parent of its child's structure.&nbsp; The child is 
+      told what is happening, and provides its contribution.</td>
+    </tr>
+  </table>
+  The job of the controller is a complex aggregation of many roles.&nbsp; Yet, 
+  at the same time, the roles may be independent of each other.&nbsp; Some types 
+  of EditParts in an application may share some roles, but not others.&nbsp; 
+  Some roles may change dynamically.&nbsp; To make the EditPart's job easier, 
+  each role is implemented by a pluggable object called an {@link 
+  com.ibm.etools.gef.EditPolicy EditPolicy}.&nbsp; The next section on EditParts 
+  will explain this in more detail.</dd>
+</dl>
+</blockquote>
+<h1><a name="EditParts">EditParts</a></h1>
+<blockquote>
+  <p>
+  <img border="0" src="com/ibm/etools/gef/doc-files/EditPart.gif" align="right" width="347" height="231">An EditPart represents a single conceptual object with which the user can 
+  directly or indirectly interact.&nbsp; In general, an EditPart will directly 
+  represent something in the model.&nbsp; The EditPart itself is not visible to 
+  the user, but will present itself through its <i>view</i>, as described above.</p>
+  <p>
+  The most fundamental role of an EditPart and the one that is usually 
+  implemented first is to populate the viewer with visuals, and to maintain 
+  those visuals as the model changes.&nbsp; This topic is covered briefly in the
+  <a href="#MVC">MVC Section</a>, and in more detail in the JavaDOC for {@link 
+  com.ibm.etools.gef.EditPart EditPart} and its abstract implementations.</p>
+  <p>
+  The second and more interesting role of an EditPart is to perform graphical 
+  editing.&nbsp; Graphical editing is defined here as:</p>
+  <p><ul>
+  <li><b>Manipulating the Model </b>- EditParts must manipulate the model by 
+  creating Commands in response to Requests.<li><b>Display Feedback</b> -&nbsp; 
+  EditParts should show feedback during complex interactions with the user.</li>
+  <li><b>Delegation</b> - Either of the previous two jobs can delegated to 
+  additional EditParts.</li>
+</ul>
+  <p>Examples of graphical editing might include:</p>
+  <ol>
+    <li>resizing and moving parts within a layout</li>
+    <li>creating and editing connections</li>
+    <li>dropping parts inside other parts</li>
+  </ol>
+  <p>Many more types of interactions are conceivable.&nbsp; Consider the 
+  following:</p>
+  <ul>
+    <li>Many types of interactions are unrelated to each other</li>
+    <li>Some of these interactions are shared across different types EditParts, 
+    while others are not</li>
+    <li>Some types of interactions (layouts, for example) are dynamic and depend 
+    on state</li>
+    <li>The java programming language only supports single inheritance</li>
+    <li>Separation of concerns allows for easier code management and assignment 
+    to developers</li>
+  </ul>
+  <table border="0" cellpadding="2" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111">
+    <tr>
+      <td valign="top">
+      <img border="0" src="com/ibm/etools/gef/doc-files/important.gif" align="left" width="32" height="32"></td>
+      <td>For all of these reasons, <u><b>the task of graphical editing is not 
+  implemented directly by EditParts</b></u>.&nbsp; Instead, each EditPart 
+  installs one or more EditPolicies, each of which focuses on its own editing 
+  concern.&nbsp; Then, the EditPart forwards edit requests to every installed 
+  EditPolicy, returning the compiled contributions when necessary.&nbsp; The
+  <a href="#EditPolicies">next section</a> describes the provided EditPolicies 
+  and shows when and how each should be used and extended.</td>
+    </tr>
+  </table>
+  </p>
+</blockquote>
+<h1><a name="EditPolicies">Using EditPolicies, Requests, and Roles</a></h1>
+<blockquote>
+  <h3>EditPolicy</h3>
+  <blockquote>
+  <p>
+  <img border="0" src="com/ibm/etools/gef/doc-files/important.gif" align="left" width="32" height="32">An 
+  EditPolicy provides a specific editing role to an EditPart.&nbsp; A Role might 
+  be something like &quot;layout management&quot;.&nbsp; That policy's role is loosely 
+  defined by the Requests which it understands.&nbsp; <b>An EditPart iterates 
+  over all of its EditPolicies to handle Requests</b>.&nbsp; EditPolicies ignore 
+  the Requests that don't apply to them.</p>
+  </blockquote>
+  <h3>Roles</h3>
+  <blockquote>
+  <p>
+  <img border="0" src="com/ibm/etools/gef/doc-files/important.gif" align="left" width="32" height="32">An 
+  EditPolicy is installed into its EditPart using a String identifier key which 
+  GEF refers to as a <b>Role</b>.&nbsp; A role is nothing more than the String 
+  used when installing an EditPolicy.&nbsp; <b>The purpose of the key or Role is 
+  to allow the EditPolicy to be swapped or replaced</b>. Since an EditPart 
+  implementation installs its policies, a subclass may need to override a policy 
+  added by its superclass.&nbsp; Or, the dynamic state of the model may 
+  determine the set of installed EditPolicies.&nbsp; &quot;Role&quot; and &quot;EditPolicy&quot; are 
+  used interchangeably.</p>
+  </blockquote>
+  <h3>Requests</h3>
+  <blockquote>
+  <p>
+  <img border="0" src="com/ibm/etools/gef/doc-files/important.gif" align="left" width="32" height="32">{@link 
+  com.ibm.etools.gef.Request Requests} are used to communicate with an EditPart.&nbsp; 
+  As mentioned before, the EditPart delegates all Requests to its installed 
+  EditPolicies.&nbsp;&nbsp; Each Request has a <i>type</i> identifier which is 
+  used to route/filter requests.&nbsp; Once this is done, Requests are sometimes 
+  cast to a more specific type to obtain additional information.&nbsp; A typed 
+  Request will be referred to as just a &quot;Request&quot; in this document.</p>
+  </blockquote>
+  <p>GEF defines a common set of Requests,  EditPolicies, and the Roles that 
+  those EditPolicies provide.&nbsp; The developer can ignore these, use them, and/or extend 
+  them.</p>
+  <p>Roles and EditPolicies in GEF are partitioned into two basic types: graphical, and 
+  non-graphical.&nbsp; Non-graphical roles handle everything that can be handled 
+  from the model without knowing about any type of view.&nbsp; This means that 
+  those roles are reusable in different types of viewers.&nbsp; Graphical roles 
+  handle everything that requires knowledge of the view.&nbsp; Obviously this 
+  includes feedback, but it also includes taking positional data and converting 
+  it to something in the model.</p>
+  <p>Many non-graphical roles have a graphical counterpart.&nbsp; Request may be 
+  handled by either the non-graphical or graphical role, or by both together.&nbsp; 
+  For example, when adding something to a container, the Container Role may 
+  perform the primitive addition, while the Layout Role handles the mouse 
+  coordinates and generates a location constraint for the new child.</p>
+</blockquote>
+  <h2><a name="Roles">Roles</a> and their definitions:</h2>
+<blockquote>
+  <table border="0" cellpadding="2" cellspacing="0"
+  style="border-style:solid; border-width:2; border-collapse: collapse; font-family:Verdana; font-size:10pt" bordercolor="#000000">
+    <tr>
+      <td bgcolor="#000080" valign="bottom" height="20">
+      <font color="#FFFFFF"><b>Role</b></font></td>
+      <td bgcolor="#000080" valign="bottom" height="20">
+      <b><font color="#FFFFFF">Definition</font></b></td>
+    </tr>
+    <tr>
+      <td colspan="2" bgcolor="#FFFF99" height="20"><b>--- Non-graphical Roles</b></td>
+    </tr>
+    <tr>
+      <td height="40">COMPONENT_ROLE</td>
+      <td height="40">The fundamental role that most EditParts should have.&nbsp; A 
+      component is something that is in a parent, and can be deleted from that 
+      parent.&nbsp; More generally, it is anything that involves <b>only</b> 
+      this EditPart (and doesn't involve the view, since it is non-graphical).&nbsp; 
+      In the Logic example, the LEDEditParts have a specialized EditPolicy in 
+      the Component Role that knows how to increment the value of the LED 
+      object.</td>
+    </tr>
+    <tr>
+      <td height="60" bgcolor="#EAEAFA">CONNECTION_ROLE</td>
+      <td height="60" bgcolor="#EAEAFA">The fundamental role that ConnectionEditParts should have 
+      (instead of a COMPONENT_ROLE).&nbsp; 
+      Connections are slightly different than components because deletion 
+      typically means to remove the connection from its source and target node, 
+      not necessarily to remove it from a parent.</td>
+    </tr>
+    <tr>
+      <td height="36">CONTAINER_ROLE</td>
+      <td height="36">The fundamental role that most EditParts with children should have.&nbsp; 
+      A container may be involved in adds/orphans, and creates/deletes.</td>
+    </tr>
+    <tr>
+      <td height="40" bgcolor="#EAEAFA">NODE_ROLE</td>
+      <td height="40" bgcolor="#EAEAFA">The fundamental role that most node EditParts (parts which 
+      have connections to them) should have.&nbsp; The node role may participate 
+      in connection creates, reconnects, and deletions.</td>
+    </tr>
+    <tr>
+      <td colspan="2" bgcolor="#FFFF99" height="20"><b>--- Graphical Roles</b></td>
+    </tr>
+    <tr>
+      <td height="40">PRIMARY_DRAG_ROLE</td>
+      <td height="40">Used to allow the user to drag the EditPart.&nbsp; The user may drag 
+      it directly by clicking and dragging, or perhaps indirectly by clicking on 
+      a Handle which that part created.</td>
+    </tr>
+    <tr>
+      <td height="60" bgcolor="#EAEAFA">LAYOUT_ROLE</td>
+      <td height="60" bgcolor="#EAEAFA">The Layout role is placed on a container EditPart that has 
+      a graphical layout.&nbsp; If the layout has constraints, it will handle 
+      calculating the proper constraints for the input, or it may have no 
+      constraints other than the index where children will be placed.</td>
+    </tr>
+    <tr>
+      <td height="20"><font SIZE="2">GRAPHICAL_NODE_ROLE</font></td>
+      <td height="20">A node supports connections to <i>terminals</i>.&nbsp; 
+      When creating and manipulating connections, EditPolicies with this role 
+      might analyze a Request's data to perform &quot;hit testing&quot; on the graphical 
+      view and determine the semantics of the connection.</td>
+    </tr>
+    <tr>
+      <td height="20" bgcolor="#EAEAFA"><span style="font-size: 9pt">CONNECTION_ENDPOINTS_ROLE</span></td>
+      <td height="20" bgcolor="#EAEAFA">Allows the user to drag the ends of a ConnectionEditPart 
+      in a graphical way.</td>
+    </tr>
+    <tr>
+      <td height="20"><span style="font-size: 9pt">CONNECTION_BENDPOINTS_ROLE</span></td>
+      <td height="20">Allows the user to drag and create bendpoints in the 
+      middle of a connection.</td>
+    </tr>
+    <tr>
+      <td height="20" bgcolor="#EAEAFA">SELECTION_FEEDBACK_ROLE</td>
+      <td height="20" bgcolor="#EAEAFA">This role is a feedback only.&nbsp; The SelectionTool will 
+      send two types of requests to parts as the mouse enters and pauses over 
+      objects.&nbsp; EditPolicies implementing this role may alter the 
+      EditPart's view in some way, or popup hints and labels and the like.</td>
+    </tr>
+    <tr>
+      <td height="20">TREE_CONTAINER_ROLE</td>
+      <td height="20">The equivalent of a Layout Role for a native SWT Tree.&nbsp; 
+      This EditPolicy should show feedback in the Tree and calculate indices 
+      similar to dragging in file explorers.</td>
+    </tr>
+    </table>
+</blockquote>
+  <h2><a name="Requests">Request </a>Types and Their Uses:</h2>
+<blockquote>
+  <table border="0" cellspacing="0" bordercolor="black" style="border-style:solid; border-width:2; padding:0; border-collapse: collapse; font-family:Verdana; font-size:10pt" cellpadding="2">
+    <COLGROUP><COLGROUP align = "center"
+     style="border-width: 0px 1px 0px 1px; border-style : solid; border-color: black">
+    <THEAD valign = "bottom">
+    <tr>
+      <td valign="bottom"><b>Request</b></td>
+      <td valign="bottom"><b>Receiver</b></td>
+      <td valign="bottom">
+      <b>Definition</b></td>
+      <td valign="bottom">
+      <b>EditPolicies which understand that Request</b></td>
+    </tr>
+    <TBODY>
+    <tr>
+      <td colspan="4" bgcolor="#FFFF99" style="border-left-width: 1; border-right-width: 1; border-top-style: solid; border-top-width: 1; border-bottom-width: 1"><b>--- Manipulating Connection Semantics</b></td>
+    </tr>
+    <tr>
+      <td>REQ_CONNECTION_SOURCE</td>
+      <td>Node</td>
+      <td>To create the source half 
+      of a connection.&nbsp; This Request works in conjunction with 
+      REQ_CONNECTION_TARGET</td>
+      <td>GraphicalNodeEditPolicy</td>
+    </tr>
+    <tr>
+      <td bgcolor="#EAEAFA">REQ_CONNECTION_TARGET</td>
+      <td bgcolor="#EAEAFA">Node</td>
+      <td bgcolor="#EAEAFA">To complete the creation of 
+      a connection.</td>
+      <td bgcolor="#EAEAFA">GraphicalNodeEditPolicy</td>
+    </tr>
+    <tr>
+      <td>REQ_RECONNECT_SOURCE</td>
+      <td>Node</td>
+      <td>To reconnect the  
+      source endpoint of a connection</td>
+      <td>GraphicalNodeEditPolicy<br>
+      ConnectionEndpointEditPolicy</td>
+    </tr>
+    <tr>
+      <td bgcolor="#EAEAFA">REQ_RECONNECT_TARGET</td>
+      <td bgcolor="#EAEAFA">Node</td>
+      <td bgcolor="#EAEAFA">To reconnect the  
+      target endpoint of a connection</td>
+      <td bgcolor="#EAEAFA">GraphicalNodeEditPolicy<br>
+      ConnectionEndpointEditPolicy</td>
+    </tr>
+    <tr>
+      <td colspan="4" bgcolor="#FFFF99" style="border-left-width: 1; border-right-width: 1; border-top-style: solid; border-top-width: 1; border-bottom-width: 1"><b>--- Manipulating Connection 
+      Bendpoints</b></td>
+    </tr>
+    <tr>
+      <td>REQ_MOVE_BENDPOINT</td>
+      <td>
+      Conn.</td>
+      <td>To move an 
+      existing bendpoint</td>
+      <td>BendpointEditPolicy</td>
+    </tr>
+    <tr>
+      <td bgcolor="#EAEAFA">REQ_DELETE_BENDPOINT</td>
+      <td bgcolor="#EAEAFA">
+      Conn.</td>
+      <td bgcolor="#EAEAFA">To delete 
+      an existing bendpoint</td>
+      <td bgcolor="#EAEAFA">BendpointEditPolicy</td>
+    </tr>
+    <tr>
+      <td>REQ_CREATE_BENDPOINT</td>
+      <td>
+      Conn.</td>
+      <td>To create 
+      a new bendpoint</td>
+      <td>BendpointEditPolicy</td>
+    </tr>
+    <tr>
+      <td colspan="4" bgcolor="#FFFF99" style="border-left-width: 1; border-right-width: 1; border-top-style: solid; border-top-width: 1; border-bottom-width: 1">
+      <b>---
+      Moving objects within a container</b></td>
+    </tr>
+    <tr>
+      <td>REQ_RESIZE</td>
+      <td>Child</td>
+      <td>To change the size and/or 
+      location of an object</td>
+      <td>ResizableEditPolicy</td>
+    </tr>
+    <tr>
+      <td bgcolor="#EAEAFA">REQ_RESIZE_CHILD</td>
+      <td bgcolor="#EAEAFA">Parent</td>
+      <td bgcolor="#EAEAFA">To change the size and/or 
+      location of an object's child</td>
+      <td bgcolor="#EAEAFA">LayoutEditPolicy</td>
+    </tr>
+    <tr>
+      <td>REQ_MOVE</td>
+      <td>Child</td>
+      <td>To move an object</td>
+      <td>ResizableEditPolicy</td>
+    </tr>
+    <tr>
+      <td bgcolor="#EAEAFA">REQ_MOVE_CHILDREN</td>
+      <td bgcolor="#EAEAFA">Parent</td>
+      <td bgcolor="#EAEAFA">To move an object's child</td>
+      <td bgcolor="#EAEAFA">LayoutEditPolicy</td>
+    </tr>
+    <tr>
+      <td colspan="4" bgcolor="#FFFF99" style="border-left-width: 1; border-right-width: 1; border-top-style: solid; border-top-width: 1; border-bottom-width: 1"><b>--- Reparenting objects across 
+      multiple containers</b></td>
+    </tr>
+    <tr>
+      <td>REQ_ORPHAN</td>
+      <td>Child</td>
+      <td>Ask the child to disassociate itself from its parent</td>
+      <td>ComponentEditPolicy<br>
+      [Non]ResizableEditPolicy</td>
+    </tr>
+    <tr>
+      <td bgcolor="#EAEAFA">REQ_ORPHAN_CHILDREN</td>
+      <td bgcolor="#EAEAFA">Parent</td>
+      <td bgcolor="#EAEAFA">Ask the parent to disassociate a set of children</td>
+      <td bgcolor="#EAEAFA">ContainerEditPolicy<br>
+      LayoutEditPolicy</td>
+    </tr>
+    <tr>
+      <td>REQ_CREATE</td>
+      <td>Parent</td>
+      <td>Ask the parent to create a new child</td>
+      <td>ContainerEditPolicy<br>
+      LayoutEditPolicy</td>
+    </tr>
+    <tr>
+      <td bgcolor="#EAEAFA">REQ_ADD</td>
+      <td bgcolor="#EAEAFA">Parent</td>
+      <td bgcolor="#EAEAFA">Ask the parent to add an existing child (a 
+      re-parenting)</td>
+      <td bgcolor="#EAEAFA">ContainerEditPolicy<br>
+      LayoutEditPolicy</td>
+    </tr>
+    <tr>
+      <td colspan="4" bgcolor="#FFFF99" style="border-left-width: 1; border-right-width: 1; border-top-style: solid; border-top-width: 1; border-bottom-width: 1"><b>--- Deleting objects</b></td>
+    </tr>
+    <tr>
+      <td>REQ_DELETE</td>
+      <td>Any</td>
+      <td>To delete the object</td>
+      <td>All, potentially</td>
+    </tr>
+    <tr>
+      <td bgcolor="#EAEAFA">REQ_SOURCE_DELETED</td>
+      <td bgcolor="#EAEAFA">Conn.</td>
+      <td bgcolor="#EAEAFA">Indicates that the 
+      connection's source will be deleted</td>
+      <td bgcolor="#EAEAFA">ConnectionEditPolicy</td>
+    </tr>
+    <tr>
+      <td>REQ_TARGET_DELETED</td>
+      <td>Conn.</td>
+      <td>Indicates that the 
+      connection's target will be deleted</td>
+      <td>ConnectionEditPolicy</td>
+    </tr>
+    <tr>
+      <td bgcolor="#EAEAFA">REQ_DELETE_DEPENDANT</td>
+      <td bgcolor="#EAEAFA">Parent</td>
+      <td bgcolor="#EAEAFA">Indicates that the parent's 
+      child will be deleted</td>
+      <td bgcolor="#EAEAFA">ContainerEditPolicy<br>
+      LayoutEditPolicy</td>
+    </tr>
+    <tr>
+      <td>REQ_ANCESTOR_DELETED</td>
+      <td>Descendant</td>
+      <td>Indicates that an object's 
+      ancestor will be deleted</td>
+      <td>All, potentially</td>
+    </tr>
+    <tr>
+      <td colspan="4" bgcolor="#FFFF99" style="border-left-width: 1; border-right-width: 1; border-top-style: solid; border-top-width: 1; border-bottom-width: 1"><b>--- Miscellaneous</b></td>
+    </tr>
+    <tr>
+      <td>REQ_SELECTION</td>
+      <td>Any</td>
+      <td>The Selection Tool is over 
+      an object</td>
+      <td>SelectionEditPolicy<br>
+      and others</td>
+    </tr>
+    <tr>
+      <td bgcolor="#EAEAFA">REQ_SELECTION_HOVER</td>
+      <td bgcolor="#EAEAFA">Any</td>
+      <td bgcolor="#EAEAFA">The Selection Tool has 
+      paused over an object</td>
+      <td bgcolor="#EAEAFA">SelectionEditPolicy<br>
+      and others</td>
+    </tr>
+    <tr>
+      <td colspan="4" bgcolor="#FFFF99" style="border-left-width: 1; border-right-width: 1; border-top-style: solid; border-top-width: 1; border-bottom-width: 1"><b>--- Not yet implemented</b></td>
+    </tr>
+    <tr>
+      <td>REQ_ALIGN</td>
+      <td>Child</td>
+      <td>To align an object to a 
+      constraint</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td bgcolor="#EAEAFA">REQ_ALIGN_CHILD</td>
+      <td bgcolor="#EAEAFA">Parent</td>
+      <td bgcolor="#EAEAFA">To align a child to a 
+      constraint</td>
+      <td bgcolor="#EAEAFA">&nbsp;</td>
+    </tr>
+    </table>
+</blockquote>
+  <h2>Index to the Included EditPolicies:</h2>
+<blockquote>
+  <table border="0" cellpadding="2" cellspacing="0"
+  	style="border-style:solid; border-width:2; padding:0; border-collapse: collapse; font-family:Verdana; font-size:10pt"
+  bordercolor="#111111" height="407">
+    <tr>
+      <td colspan="5" height="20"><font color="#808080">AbstractEditPolicy</font></td>
+      <td height="20">Description</td>
+    </tr>
+    <tr>
+      <td height="20"><font color="#FFFFFF">m</font></td>
+      <td colspan="4" height="20">AbsractTreeContainerEditPolicy</td>
+      <td height="20">Works together with the Container Role and SWT Trees</td>
+    </tr>
+    <tr>
+      <td height="20">&nbsp;</td>
+      <td colspan="4" height="20">ComponentEditPolicy</td>
+      <td height="20">Support for the Component Role</td>
+    </tr>
+    <tr>
+      <td height="20">&nbsp;</td>
+      <td height="20"><font color="#FFFFFF">m</font></td>
+      <td colspan="3" height="20">RootComponentEditPolicy</td>
+      <td height="20">Disallows deletion</td>
+    </tr>
+    <tr>
+      <td height="20">&nbsp;</td>
+      <td colspan="4" height="20">ConnectionEditPolicy</td>
+      <td height="20">Support for the Connection Role</td>
+    </tr>
+    <tr>
+      <td height="20">&nbsp;</td>
+      <td colspan="4" height="20">ContainerEditPolicy</td>
+      <td height="20">Support for the Container Role</td>
+    </tr>
+    <tr>
+      <td height="20">&nbsp;</td>
+      <td colspan="4" height="20"><font color="#808080">GraphicalEditPolicy</font></td>
+      <td height="20">&nbsp;</td>
+    </tr>
+    <tr>
+      <td height="20">&nbsp;</td>
+      <td height="20">&nbsp;</td>
+      <td colspan="3" height="20">GraphicalNodeEditPolicy</td>
+      <td height="20">Works together with NodeEditPolicy for figure support</td>
+    </tr>
+    <tr>
+      <td height="20">&nbsp;</td>
+      <td height="20">&nbsp;</td>
+      <td colspan="3" height="20">LayoutEditPolicy</td>
+      <td rowspan="3" height="68">Work together with the Container Role to 
+      provide support for a {@link com.ibm.etools.draw2d.LayoutManager} in 
+      graphical views.</td>
+    </tr>
+    <tr>
+      <td height="20">&nbsp;</td>
+      <td height="20">&nbsp;</td>
+      <td height="20"><font color="#FFFFFF">m</font></td>
+      <td colspan="2" height="20">ConstrainedLayoutEditPolicy</td>
+    </tr>
+    <tr>
+      <td height="20">&nbsp;</td>
+      <td height="20">&nbsp;</td>
+      <td height="20">&nbsp;</td>
+      <td colspan="2" height="20">OrderedLayoutEditPolicy</td>
+    </tr>
+    <tr>
+      <td height="20">&nbsp;</td>
+      <td height="20">&nbsp;</td>
+      <td colspan="3" height="20"><font color="#808080">SelectionHandlesEditPolicy</font></td>
+      <td height="20">When selected, subclasses will override to add handles</td>
+    </tr>
+    <tr>
+      <td height="20">&nbsp;</td>
+      <td height="20">&nbsp;</td>
+      <td height="20">&nbsp;</td>
+      <td colspan="2" height="20">BendpointEditPolicy</td>
+      <td height="20">Adds handles for bending connections</td>
+    </tr>
+    <tr>
+      <td height="19">&nbsp;</td>
+      <td height="19">&nbsp;</td>
+      <td height="19">&nbsp;</td>
+      <td colspan="2" height="19">EndpointEditPolicy</td>
+      <td height="19">Adds handles for reconnection connections</td>
+    </tr>
+    <tr>
+      <td height="20">&nbsp;</td>
+      <td height="20">&nbsp;</td>
+      <td height="20">&nbsp;</td>
+      <td colspan="2" height="20">NonResizableEditPolicy</td>
+      <td height="20">Adds handles for moving a part</td>
+    </tr>
+    <tr>
+      <td height="20">&nbsp;</td>
+      <td height="20">&nbsp;</td>
+      <td height="20">&nbsp;</td>
+      <td height="20"><font color="#FFFFFF">m</font></td>
+      <td height="20">ResizableEditPolicy</td>
+      <td height="20">Adds handles for moving/resizing a part</td>
+    </tr>
+    <tr>
+      <td height="20">&nbsp;</td>
+      <td colspan="4" height="20">NodeEditPolicy</td>
+      <td height="20">Support for the Node Role</td>
+    </tr>
+  </table>
+</blockquote>
+  <h2>Typical Actions for each Request Type</h2>
+<blockquote>
+  <table border="1" cellpadding="2" cellspacing="0" style="border-collapse: collapse; font-family:Verdana; font-size:10pt" bordercolor="#000080">
+    <tr>
+      <td colspan="2"><span style="font-size: 14pt">ComponentEditPolicy</span></td>
+    </tr>
+    <tr>
+      <td bgcolor="#000080" valign="bottom"><b><font color="#FFFFFF">Request</font></b></td>
+      <td bgcolor="#000080" valign="bottom"><b><font color="#FFFFFF">Action</font></b></td>
+      </tr>
+    <tr>
+      <td>REQ_DELETE</td>
+      <td>The request to perform a delete is sent directly to the selected 
+      EditParts.<p>By default, the delete request is 
+      turned into a REQ_DELETE_DEPENDANT, which is forwarded to the parent 
+      EditPart, whose result is then returned.&nbsp; In short, delete on a child 
+      is delegated to the parent, who is more likely to know how to perform the 
+      deletion.</p>
+      <p>Depending on your application's model, you may decide to implement the 
+      delete in the component or its parent, or both may be involved.</p>
+      </td>
+    </tr>
+    <tr>
+      <td>REQ_ORPHAN</td>
+      <td>The default drag tool will send the Orphan request directly to the 
+      EditParts that are selected and being dragged.&nbsp; By default, the 
+      orphan request is turned into a REQ_ORPHAN_CHILDREN Request, which is 
+      forwarded to the parent, similar to REQ_DELETE above.</td>
+    </tr>
+    </table>
+  <BR/>
+  <table border="1" cellpadding="2" cellspacing="0" style="border-collapse: collapse; font-family:Verdana; font-size:10pt" bordercolor="#000080">
+    <tr>
+      <td colspan="2"><font size="4">ConnectionEditPolicy</font></td>
+    </tr>
+    <tr>
+      <td bgcolor="#000080" valign="bottom"><b><font color="#FFFFFF">Request</font></b></td>
+      <td bgcolor="#000080" valign="bottom"><b><font color="#FFFFFF">Action</font></b></td>
+      </tr>
+    <tr>
+      <td>REQ_DELETE</td>
+      <td>The ConnectionEditPolicy should delete the connection from its source 
+      and target</td>
+    </tr>
+    <tr>
+      <td>REQ_SOURCE_DELETED</td>
+      <td>When the source is deleted from the model, ConnectionEditPolicy should 
+      either delete the connection also, or at least detach the connection from 
+      the source.</td>
+    </tr>
+    <tr>
+      <td>REQ_TARGET_DELETED</td>
+      <td>When the target is deleted from the model, ConnectionEditPolicy should 
+      either delete the connection also, or at least detach the connection from 
+      the target.</td>
+    </tr>
+    </table>
+  <BR/>
+  <table border="1" cellpadding="2" cellspacing="0" style="border-collapse: collapse; font-family:Verdana; font-size:10pt" bordercolor="#000080">
+    <tr>
+      <td colspan="2"><span style="font-size: 14pt">ContainerEditPolicy</span></td>
+    </tr>
+    <tr>
+      <td bgcolor="#000080" valign="bottom"><b><font color="#FFFFFF">Request</font></b></td>
+      <td bgcolor="#000080" valign="bottom"><b><font color="#FFFFFF">Action</font></b></td>
+      </tr>
+    <tr>
+      <td>REQ_DELETE</td>
+      <td>When a container is deleted, it should indicate to its children that 
+      it is being deleted, so that they can detach themselves from anything in 
+      the model that is not encompassed by the container's sub-tree.&nbsp; It 
+      does this by sending a REQ_ANCESTOR_DELETED to its children.</td>
+    </tr>
+    <tr>
+      <td><font SIZE="2">REQ_ANCESTOR_DELETED</font></td>
+      <td>When the container's parent or ancestor is deleted, it will receive a 
+      forwarded REQ_ANCESTOR_DELETED (see REQ_DELETE above).&nbsp; A container 
+      should continue to forward the REQ_ANCESTOR_DELETED to its descendants.</td>
+    </tr>
+    <tr>
+      <td><font SIZE="2">REQ_CREATE<br>
+      REQ_ADD<br>
+      REQ_DELETE_DEPENDANT<br>
+      REQ_ORPHAN_CHILDREN</font></td>
+      <td>A ContainerEditPolicy may be involved in adding/removing and 
+      creating/deleting children.&nbsp; For example, sometimes adding a child to 
+      a parent also requires setting some type of constraint describing the 
+      nature of the relationship.&nbsp; Similarly, for undo purposes, taking the 
+      child out of the relationship would require storing that old constraint.</td>
+    </tr>
+  </table>
+  <BR/>
+  <table border="1" cellpadding="2" cellspacing="0" style="border-collapse: collapse; font-family:Verdana; font-size:10pt" bordercolor="#000080">
+    <tr>
+      <td colspan="2"><span style="font-size: 14pt">NodeEditPolicy</span></td>
+    </tr>
+    <tr>
+      <td bgcolor="#000080" valign="bottom"><b><font color="#FFFFFF">Request</font></b></td>
+      <td bgcolor="#000080" valign="bottom"><b><font color="#FFFFFF">Action</font></b></td>
+      </tr>
+    <tr>
+      <td>REQ_DELETE<br>
+      REQ_ANCESTOR_DELETED</td>
+      <td>Whether a Node itself or its ancestor is deleted, the Node will 
+      forward a REQ_SOURCE_DELETED to all of its source connections, and 
+      similarly for its targets.&nbsp; This will allow the connections to detach 
+      themselves from the source/target or to remove themselves entirely.</td>
+    </tr>
+    <tr>
+      <td>[REQ_CONNECTION_SOURCE]<br>
+      [REQ_RECONNECT_TARGET]</td>
+      <td>Currently, NodeEditPolicy does not handle requests that allow you to 
+      create and manipulate connections.&nbsp; But, if connections could be 
+      created without knowledge of the view or mouse coordinates, then it would 
+      make sense to handle such requests here.&nbsp; (For example, a popup menu 
+      could be used to determine how to make the connection)</td>
+    </tr>
+  </table>
+  <br/>
+  <table border="1" cellpadding="2" cellspacing="0" style="border-collapse: collapse; font-family:Verdana; font-size:10pt" bordercolor="#000080">
+    <tr>
+      <td colspan="2"><span style="font-size: 14pt">
+      AbstractTreeContainerEditPolicy</span></td>
+    </tr>
+    <tr>
+      <td bgcolor="#000080" valign="bottom"><b><font color="#FFFFFF">Request</font></b></td>
+      <td bgcolor="#000080" valign="bottom"><b><font color="#FFFFFF">Action</font></b></td>
+      </tr>
+    <tr>
+      <td>REQ_ADD<br>
+      REQ_CREATE</td>
+      <td>In situations where the index is important, a ContainerEditPolicy will 
+      not be able to perform adds or creates in an SWT Tree because it does not 
+      understand how to process the mouse position.&nbsp; So, an application may 
+      choose to use a specialized TreeContainerEditPolicy to handle adds and 
+      creates in the TreeViewer.&nbsp; This EditPolicy also shows feedback in 
+      the Tree.</td>
+    </tr>
+    <tr>
+      <td>REQ_MOVE</td>
+      <td>Moves in the tree are nothing more than re-orderings.&nbsp; Again, a 
+      knowledge of the SWT Tree is necessary to determine the new order, and 
+      this EditPolicy handles all Tree-related interactions.</td>
+    </tr>
+  </table>
+  <br/>
+  <table border="1" cellpadding="2" cellspacing="0" style="border-collapse: collapse; font-family:Verdana; font-size:10pt" bordercolor="#000080">
+    <tr>
+      <td colspan="2"><span style="font-size: 14pt">GraphicalNodeEditPolicy</span></td>
+    </tr>
+    <tr>
+      <td bgcolor="#000080" valign="bottom"><b><font color="#FFFFFF">Request</font></b></td>
+      <td bgcolor="#000080" valign="bottom"><b><font color="#FFFFFF">Action</font></b></td>
+      </tr>
+    <tr>
+      <td><font SIZE="2">REQ_CONNECTION_SOURCE<br>
+      REQ_CONNECTION_TARGET</font></td>
+      <td>Starting a connection and ending it (the two steps to create a new 
+      connection) are handle by this edit policy.&nbsp; Most likely, the policy 
+      would show feedback as the user creates the connection.&nbsp; Also, if the 
+      &quot;ports&quot; or &quot;terminals&quot; to which the connections should connect are 
+      determined by mouse position, then the command to perform the creation 
+      would probably be created here too.</td>
+    </tr>
+    <tr>
+      <td><font SIZE="2">REQ_RECONNECT_TARGET<br>
+      REQ_RECONNECT_SOURCE</font></td>
+      <td>It is assumed that reconnecting the source or target ends of a 
+      connection involves the Nodes view and the mouse location.&nbsp; If this 
+      is the case, then the GraphicalNodeEditPolicy would best be able to handle 
+      the add.&nbsp; Even if location doesn't matter, the 
+      GraphicalNodeEditPolicy may show feedback to indicate that it is currently 
+      the target node under the mouse.</td>
+    </tr>
+  </table>
+  <br/>
+  <table border="1" cellpadding="2" cellspacing="0" style="border-collapse: collapse; font-family:Verdana; font-size:10pt" bordercolor="#000080">
+    <tr>
+      <td valign="bottom"><span style="font-size: 14pt">OrderedLayoutEditPolicy</span></td>
+      <td valign="bottom">Works in conjunction with ContainerEditPolicy to 
+      handle the role of creating, moving, re-parenting, and deleting children.&nbsp; 
+      An ordered layout is one that places children based solely on their order 
+      in the container.</td>
+    </tr>
+    <tr>
+      <td bgcolor="#000080" valign="bottom"><b><font color="#FFFFFF">Request</font></b></td>
+      <td bgcolor="#000080" valign="bottom"><b><font color="#FFFFFF">Action</font></b></td>
+      </tr>
+    <tr>
+      <td><font SIZE="2">REQ_CREATE<br>
+      REQ_ADD</font></td>
+      <td>A LayoutEditPolicy is typically involved in the creation or adding of 
+      a child to the container.&nbsp; Order-based 
+      layouts will require the policy to determine the index of the add or 
+      create.</td>
+    </tr>
+    <tr>
+      <td><font SIZE="2">REQ_ORPHAN_CHILDREN<br>
+      </font>REQ_DELETE_DEPENDANT</td>
+      <td>For order-based layouts, there is little undo information to be stored 
+      when deleting or orphaning a child other than its index.&nbsp; This could 
+      be done here or by the ContainerEditPolicy.&nbsp; Or, if the layout index 
+      could be different than the container's index, in which case both policies 
+      would have to respond.</td>
+    </tr>
+    <tr>
+      <td><font SIZE="2">REQ_MOVE_CHILDREN</font></td>
+      <td>A move in an ordered-layout is really just re-ordering of indexes.</td>
+    </tr>
+  </table>
+  <BR/>
+  <table border="1" cellpadding="2" cellspacing="0" style="border-collapse: collapse; font-family:Verdana; font-size:10pt" bordercolor="#000080">
+    <tr>
+      <td valign="bottom"><span style="font-size: 14pt">ConstrainedLayoutEditPolicy</span></td>
+      <td valign="bottom">Works in conjunction with ContainerEditPolicy to 
+      handle the role of creating, moving, re-parenting, and deleting children.&nbsp; 
+      A constrained layout is one that places children based on a constraint 
+      object.</td>
+    </tr>
+    <tr>
+      <td bgcolor="#000080" valign="bottom"><b><font color="#FFFFFF">Request</font></b></td>
+      <td bgcolor="#000080" valign="bottom"><b><font color="#FFFFFF">Action</font></b></td>
+      </tr>
+    <tr>
+      <td><font SIZE="2">REQ_CREATE<br>
+      REQ_ADD</font></td>
+      <td>A ConstrainedLayoutEditPolicy works together with an EditPart whose 
+      Figure's layout uses constraints.&nbsp; During adds and creates, these 
+      constraints must be calculated.</td>
+    </tr>
+    <tr>
+      <td><font SIZE="2">REQ_ORPHAN_CHILDREN<br>
+      </font>REQ_DELETE_DEPENDANT</td>
+      <td>For undo support, constraints must be remembered so that they can be 
+      reverted later.&nbsp; Additionally, complex layouts may decide to adjust the constraints of the remaining 
+      children.&nbsp; For example, a 
+      column becomes empty so it is removed and the other columns are shifted 
+      over.</td>
+    </tr>
+    <tr>
+      <td><font SIZE="2">REQ_MOVE_CHILDREN<br>
+      REQ_RESIZE_CHILD</font></td>
+      <td>New constraints must be calculated for the object(s) being moved or 
+      resized. Constraints of other objects may be modified in some cases.</td>
+    </tr>
+  </table>
+</blockquote>
+  <h1><a name="Tools">Tools</a> and the Palette</h1>
+  <blockquote>
+    <p>
+    <img border="0" src="com/ibm/etools/gef/doc-files/EventFlow.gif" align="right" width="184" height="198">Tools allow EditParts and their EditPolicies to focus on high-level 
+    operations rather than dealing with raw mouse and keyboard event data.&nbsp; 
+    An EditDomain always has one active Tool, and its scope is all 
+    EditPartViewers within that domain.</p>
+    <p>Tools receive events through the path displayed here.&nbsp; Events arise 
+    at the SWT Control itself.&nbsp; Presumably, the EditPartViewer or something 
+    internal to it receives those events.&nbsp; At any of the steps along the 
+    way the event may be processed and consumed.&nbsp; For example, the control 
+    or viewer may consume an event, preventing it from reaching the tool.&nbsp; 
+    Similarly, the EditDomain may consume a keyboard event and decide to switch 
+    to another Tool or perform some other action.</p>
+    <p>see {@link com.ibm.etools.gef.Tool}<br>
+    see {@link com.ibm.etools.gef.tools}</p>
+    <p>A Palette is not required but is often used.&nbsp; If a palette is not 
+    used, the EditDomain is generally initialized with the SelectionTool active, 
+    and most likely remains in that mode.&nbsp; Using a palette is a two-step 
+    process.&nbsp; The palette model and the PaletteViewer must be provided to 
+    the EditDomain.&nbsp; Since the domain's Tool may be changed through means 
+    external to the PaletteViewer, it must be able to synchronize the 
+    PaletteViewer with the active tool.</p>
+  </blockquote>
+  <h1><a name="Steps">The Steps to Building a GEF Application</a></h1>
+  <blockquote>
+    <h3>Planning</h3>
+    <blockquote>
+    <p>Of course planning is always the first step to any application.&nbsp; But 
+    here, planning refers to planning the visual display of your application.&nbsp; 
+    Perhaps a mockup or a previous version of the product could be used.&nbsp; A 
+    little investigative work may be required here to determine what is 
+    possible.&nbsp; Pure draw2d test cases could be developed for this purpose.</p>
+    <p>Before the next step, you should have the framework for your editor.&nbsp; 
+    This means an EditorPart that will open your resource type, and the various 
+    views it will use.&nbsp; To get started fast, you can subclass 
+    GraphicalEditorPart.&nbsp; It is recommended that you eventually write your 
+    own EditorPart.</p>
+    </blockquote>
+    <h3>Displaying your Model</h3>
+    <blockquote>
+    <p>At this point, you should have a blank EditorPart of some type that is 
+    opening on your application's resource.&nbsp; Also, you should already be 
+    saturating your model from the resource.&nbsp; The goal in this step is to 
+    see the model displayed.</p>
+    <p>In order to display you model, you must create EditPart implementations 
+    that map your model onto a view, such as draw2d Figures.&nbsp; The first 
+    EditPart you create will be the <i>contents</i> of the EditPartViewer it 
+    belongs in.&nbsp; For a figure-based viewer, this EditPart typically creates 
+    just a big white rectangular figure to serve as the canvas' background.</p>
+    <p>The EditPart will create the view, and then initialize it with the 
+    model's data.&nbsp; <u>Keep the next step in mind here</u>.&nbsp; View 
+    initialization should be the same as maintaining the view when the model 
+    fires changes.&nbsp; See {@link com.ibm.etools.gef.editparts.AbstractEditPart#refresh} 
+    and the various other refresh methods that it calls.&nbsp; Refresh() will be 
+    called once for free when you EditPart is automatically initialized.</p>
+    <p>That <i>contents</i> EditPart will then create its children.&nbsp; This 
+    is done by implementing {@link com.ibm.etools.gef.editparts.AbstractEditPart#getModelChildren 
+    AbstractEditPart.getModelChildren()} and {@link 
+    com.ibm.etools.gef.editparts.AbstractEditPart#createChild 
+    AbstractEditPart.createChild(Object)}.&nbsp; It may not be obvious at first 
+    why creating the children is split into two methods.&nbsp; But, <u>think 
+    ahead</u>; you will need to maintain this collection of children as the 
+    model changes.&nbsp; Hooking into these two methods allows your EditPart to 
+    simply call {@link com.ibm.etools.gef.editparts.AbstractEditPart#refreshChildren 
+    refreshChildren()} whenever its model's children have changed.</p>
+    <p>Connections are similar to children.&nbsp; There are methods for source 
+    and target connections that parallel the ones for creating children above.&nbsp; 
+    See the Logic example for more help.</p>
+    </blockquote>
+    <h3>Listening to your Model</h3>
+    <blockquote>
+    <p>At this point, you are displaying your model visually in a Viewer.</p>
+    <p>At {@link com.ibm.etools.gef.EditPart#activate() some point}, your 
+    EditPart should start observing its model so it can respond to changes.&nbsp; 
+    If your have a hybrid Editor that is only part GEF, you may be able to make 
+    changes to your model using its other views.&nbsp; Or, you could hard-code 
+    some tests, perhaps invoking operations on the display thread from some 
+    timer thread in the background.</p>
+    <p>Changes to your model are either structural, affecting the EditPart's 
+    children or connections, or non-structural, affecting only the EditParts 
+    view.&nbsp; When handling changes, your EditPart should call out to the 
+    proper <code>refresh</code> method, such as <code>refreshView()</code> for non-structural 
+    changes.&nbsp; For performance reasons, you may wish to further decompose 
+    refreshView() into methods of finer granularity if your view is complex.</p>
+    <p>Up until this point, your application probably has no need for 
+    EditPolicies since we have yet to add editing support.</p>
+    </blockquote>
+    <h3>Editing your Model</h3>
+    <blockquote>
+    <p>You are now ready to begin adding edit support.&nbsp; In the beginning 
+    there are probably a lot of things you can do with the EditDomain's default 
+    tool, the SelectionTool.&nbsp; So you won't need a Palette right away.</p>
+    <p>You can begin with basic operations like a resize, bending connections, 
+    or deleting objects (although delete can get pretty complicated).&nbsp; If 
+    your application supports it, you could then add the ability to move objects 
+    from one container to another, or move the endpoints of connections from one 
+    node to another.</p>
+    <p>Next, you can define a PaletteModel for your application.&nbsp; Most of 
+    the items on palettes are CreationTools which create different types of 
+    objects, including connections.&nbsp; You can customize the Palette to 
+    contain Tool you want.</p>
+    <p>Once you can create, you can implement the remaining capabilities for 
+    your editor.</p>
+    </blockquote>
+    <h3>Polishing your application</h3>
+    <blockquote>
+    <p>Put the finishing touches on your application by fine-tuning feedback and 
+    integrating into Eclipse.&nbsp; This includes things like Toolbar Actions, 
+    Menu Actions, Property Sheet support, Markers, etc.&nbsp; For Actions there 
+    is an ActionRegistry in GEF that will allow you to define a pool of actions 
+    that appear in multiple places.&nbsp; There is also Context Menu support 
+    that can be plugged into GEF Viewers.</p>
+    </blockquote>
+  </blockquote>
+</body>
+
+</html>

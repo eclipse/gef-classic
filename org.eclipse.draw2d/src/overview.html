@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+
+<head>
+<!--
+/**
+ * <copyright>
+ *
+ * (C) COPYRIGHT International Business Machines Corporation 2000.
+ *
+ * </copyright>
+ */
+-->
+
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+</head>
+
+<body>
+
+<h1>Introduction to draw2d</h1>
+<p><b>draw2d</b> is a lightweight widget system that is hosted on an SWT
+Composite.&nbsp; A draw2d instance consists of an SWT Composite, a Lightweight
+System, and its contents: figures.&nbsp; Figures are the building blocks for
+draw2d.&nbsp; Here is how &quot;Hello World&quot; translates into a draw2d
+program:</p>
+
+
+  <table border="1" width="80%">
+    <tr>
+      <td bgcolor="#000080"><b><font face="Arial" color="#FFFFFF">Listing for
+        &quot;Hello World&quot;</font></b></td>
+    </tr>
+    <tr>
+      <td>
+        <pre><font size="2" color="#000084">import</font><font size="2"
+color="#000000"> org.eclipse.swt.widgets.Shell;</font>
+<font size="2" color="#000084">import</font><font size="2" color="#000000"> org.eclipse.swt.widgets.Display;
+</font><font size="2" color="#000084">import</font><font size="2"
+color="#000000"> org.eclipse.swt.SWT;
+
+</font><font size="2" color="#000084">import</font><font size="2"
+color="#000000"> com.ibm.etools.draw2d.*;
+</font><font size="2" color="#000084">import </font><font size="2"
+color="#000000">com.ibm.etools.draw2d.geometry.*;
+
+</font><font size="2" color="#000084">public</font><font size="2"
+color="#000000"></font> <font size="2" color="#000084">class</font><font
+size="2" color="#000000"> HelloWorld {
+	</font><font size="2" color="#000084">public</font><font size="2"
+color="#000000"></font> <font size="2" color="#000084">static</font><font
+size="2" color="#000000"></font> <font size="2" color="#000084">void</font><font
+size="2" color="#000000"> main(String args[]){
+		Shell shell = </font><font size="2" color="#000084">new</font><font
+size="2" color="#000000"> Shell();
+		shell.open();
+		shell.setText(</font><font size="2" color="#008484">&quot;Draw2d Hello World&quot;</font><font
+size="2" color="#000000">);
+		LightweightSystem lws = </font><font size="2" color="#000084">new</font><font
+size="2" color="#000000"> LightweightSystem(shell);
+		IFigure label = </font><font size="2" color="#000084">new</font><font
+size="2" color="#000000"> Label(</font><font size="2" color="#008484">&quot;Hello World&quot;</font><font
+size="2" color="#000000">);
+		lws.setContents(label);
+		Display display = Display.getDefault();
+		</font><font size="2" color="#000084">while</font><font size="2"
+color="#000000"> (!shell.isDisposed ()) {
+			</font><font size="2" color="#000084">if</font><font size="2"
+color="#000000"> (!display.readAndDispatch ())
+				display.sleep ();
+		}
+	}
+}</font></pre>
+      </td>
+    </tr>
+  </table>
+
+<br>
+Running this will result in:
+<blockquote>
+  <p><img border="0" src="com/ibm/etools/draw2d/doc-files/helloworld.gif"
+  width="203" height="54"></p>
+</blockquote>
+<h2>What's going on?</h2>
+<p>The LightweightSystem is the &quot;glue&quot; for draw2d.&nbsp; You provide
+the <u>SWT composite</u> and the <u>root</u> of the figure hierarchy that you
+want rendered, and the LightweightSystem sets up the rest with default
+values.&nbsp; &quot;The rest&quot; consists of an {@link
+com.ibm.etools.draw2d.EventDispatcher EventDispatcher}, which handles SWT events
+and dispatches them to figures , and an {@link
+com.ibm.etools.draw2d.UpdateManager UpdateManager}, which handles layout and
+repaint requests from the figures in that system.</p>
+<p>&nbsp;<img border="0" src="com/ibm/etools/draw2d/doc-files/draw2d.gif"
+width="535" height="484"></p>
+<h2>More Examples</h2>
+<table border="0" width="80%" style="border-collapse: collapse" bordercolor="#111111" cellspacing="1">
+  <tr>
+    <td valign="top">
+    <p align="right"><img border="0" src="com/ibm/etools/draw2d/doc-files/demo2.gif"
+      width="174" height="107"></td>
+    <td colspan="2" valign="top"><b>Demo2</b><br>
+    This example shows basic use of a layout manager and how to create some
+      of the provided figures.</td>
+    <td>&nbsp;</td>
+    <td rowspan="3">
+    <img border="0" src="com/ibm/etools/draw2d/doc-files/demo3.gif" width="263" height="330"></td>
+  </tr>
+  <tr>
+    <td rowspan="2" valign="bottom">
+    <img border="0" src="com/ibm/etools/draw2d/doc-files/demo4.gif" width="243" height="245"></td>
+    <td>&nbsp;</td>
+    <td colspan="2" align="right"><b>Demo3<br>
+    </b>This example demonstrates button use and the dynamic laying out of 
+    figures.&nbsp; It also shows how to use a ScrollPane</td>
+  </tr>
+  <tr>
+    <td colspan="2"><b>Demo 4<br>
+    </b>This example demonstrates the usage of a Connection Figure.&nbsp;&nbsp; 
+    It deomonstrates how to decorate the connection, and simple routing support. </td>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+<blockquote>
+  <p>&nbsp;</p>
+</blockquote>
+
+</body>
+
+</html>

@@ -1,0 +1,181 @@
+package com.ibm.etools.gef.tools;
+/*
+ * Licensed Material - Property of IBM
+ * (C) Copyright IBM Corp. 2001, 2002 - All Rights Reserved.
+ * US Government Users Restricted Rights - Use, duplication or disclosure
+ * restricted by GSA ADP Schedule Contract with IBM Corp.
+ */
+
+import java.util.*;
+
+import com.ibm.etools.common.command.Command;
+import com.ibm.etools.common.command.UnexecutableCommand;
+
+import com.ibm.etools.gef.*;
+import com.ibm.etools.gef.requests.TargetRequest;
+
+abstract public class TargetingTool
+	extends AbstractTool
+{
+
+private static final int FLAG_LOCK_TARGET = AbstractTool.MAX_FLAG << 1;
+private static final int FLAG_TARGET_FEEDBACK = AbstractTool.MAX_FLAG << 2;
+protected static final int MAX_FLAG = FLAG_TARGET_FEEDBACK;
+
+private Request targetRequest;
+private EditPart targetEditPart;
+
+protected Request createTargetRequest(){
+	Request request = new Request();
+	request.setType(getCommandName());
+	return request;
+}
+
+public void deactivate() {
+	if (isHoverActive())
+		resetHover();
+	if (isTargetLocked())
+		unlockTargetEditPart();
+	eraseTargetFeedback();
+	targetEditPart = null;
+	targetRequest = null;
+	super.deactivate();
+}
+
+/**
+ * Erase feedback indicating that the viewer object is no longer 
+ * the target of a drag.
+ */
+protected void eraseTargetFeedback() {
+	if (!isShowingTargetFeedback())
+		return;
+	setFlag(FLAG_TARGET_FEEDBACK, false);
+	if (getTargetEditPart() != null)
+		getTargetEditPart().eraseTargetFeedback(getTargetRequest());
+}
+
+protected Command getCommand(){
+	if (getTargetEditPart() == null)
+		return null;
+	return getTargetEditPart().
+		getCommand(getTargetRequest());
+}
+
+/**
+ * Returns a List of EditParts that should be excluded from
+ * the possible Targets for this tools operations
+ * Example, when dragging an object, the object should be excluded
+ * to prevent you from dropping the object inside itself.
+ */
+protected Collection getExclusionSet(){
+	return Collections.EMPTY_LIST;
+}
+
+protected EditPart getTargetEditPart(){
+	return targetEditPart;
+}
+
+protected Request getTargetRequest(){
+	if (targetRequest == null)
+		setTargetRequest(createTargetRequest());
+	return targetRequest;
+}
+
+protected boolean handleEnteredEditPart() {
+	updateTargetRequest();
+	showTargetFeedback();
+	return true;
+}
+
+protected boolean handleExitingEditPart() {
+	resetHover();
+	eraseTargetFeedback();
+	return true;
+}
+
+protected boolean handleHoverStop(){return false;}
+
+protected boolean handleInvalidInput(){
+	eraseTargetFeedback();
+	setCurrentCommand(UnexecutableCommand.INSTANCE);
+	return true;
+}
+
+protected final void handleLeavingEditPart() throws Exception {}
+
+protected boolean handleViewerExited() {
+	setTargetEditPart(null);
+	return true;
+}
+
+protected boolean isShowingTargetFeedback(){
+	return getFlag(FLAG_TARGET_FEEDBACK);
+}
+
+protected boolean isTargetLocked(){
+	return getFlag(FLAG_LOCK_TARGET);
+}
+
+protected void lockTargetEditPart(EditPart editpart) {
+	if (editpart == null)  {
+		unlockTargetEditPart();
+		return;
+	}
+	setFlag(FLAG_LOCK_TARGET, true);
+	setTargetEditPart(editpart);
+}
+
+void resetHover(){
+	if (isHoverActive())
+		handleHoverStop();
+	setHoverActive(false);
+}
+
+protected void setTargetEditPart(EditPart editpart){
+	if (editpart != targetEditPart){
+		if (targetEditPart != null){
+			debug("Leaving:\t" + targetEditPart);//$NON-NLS-1$
+			handleExitingEditPart();
+		}
+		targetEditPart = editpart;
+		if (getTargetRequest() instanceof TargetRequest)
+			((TargetRequest)getTargetRequest()).setTargetEditPart(targetEditPart);
+		debug("Entering:\t" + targetEditPart);//$NON-NLS-1$
+		handleEnteredEditPart();
+	}
+}
+
+protected void setTargetRequest(Request req){
+	targetRequest = req;
+}
+
+protected void showTargetFeedback() {
+	if (getTargetEditPart() != null)
+		getTargetEditPart().showTargetFeedback(getTargetRequest());
+	setFlag(FLAG_TARGET_FEEDBACK, true);
+}
+
+protected void unlockTargetEditPart() {
+	setFlag(FLAG_LOCK_TARGET, false);
+	updateTargetUnderMouse();
+}
+
+protected void updateTargetRequest(){}
+
+/**
+ * Returns true if the target has changed.
+ */
+protected boolean updateTargetUnderMouse(){
+	if (!isTargetLocked()) {
+		Collection set = getExclusionSet();
+		EditPart editPart = getCurrentViewer().findObjectAtExcluding(getLocation(),set);
+		if (editPart != null)
+			editPart = editPart.getTargetEditPart(getTargetRequest());
+		boolean changed = getTargetEditPart() != editPart;
+		setTargetEditPart(editPart);
+		return changed;
+	} else
+		return false;
+}
+
+}

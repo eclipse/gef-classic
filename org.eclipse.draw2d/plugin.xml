@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+
+<plugin
+   name = "IBM Draw2d"
+   id = "com.ibm.etools.draw2d"
+   version = "2.0.0"
+   vendor-name = "IBM">
+
+   <requires>
+	<import plugin="org.eclipse.swt" export="true"/>
+	<import plugin="org.eclipse.ui" export="true"/>
+   </requires>
+
+   <runtime>
+     <library name="runtime/draw2d.jar">
+         <export name="com.ibm.etools.draw2d.*"/>
+         <export name="com.ibm.etools.draw2d.resource.*"/>
+         <export name="com.ibm.etools.draw2d.parts.*"/>
+         <export name="com.ibm.etools.draw2d.geometry.*"/>
+     </library>
+   </runtime>
+
+</plugin>
