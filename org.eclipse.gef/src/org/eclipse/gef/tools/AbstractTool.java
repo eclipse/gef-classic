@@ -911,12 +911,25 @@ protected boolean isInState(int state) {
 }
 
 /**
+ * Default implementation always returns <code>true</code>.  Sub-classes may override.
+ * @param viewer the viewer where the event occured
+ * @return <code>true</code> if this tool is interested in events occuring in the given
+ * viewer; <code>false</code> otherwise
+ * @since 3.1
+ */
+protected boolean isViewerImportant(EditPartViewer viewer) {
+	return true;
+}
+
+/**
  * Receives a KeyDown event for the given viewer.  Subclasses wanting to handle this
  * event should override {@link #handleKeyDown(KeyEvent)}.
  * @param evt the key event
  * @param viewer the originating viewer
  */
 public void keyDown(KeyEvent evt, EditPartViewer viewer) {
+	if (!isViewerImportant(viewer))
+		return;
 	setViewer(viewer);
 	getCurrentInput().setInput(evt);
 	handleKeyDown(evt);
@@ -929,6 +942,8 @@ public void keyDown(KeyEvent evt, EditPartViewer viewer) {
  * @param viewer the originating viewer
  */
 public void keyTraversed(TraverseEvent event, EditPartViewer viewer) {
+	if (!isViewerImportant(viewer))
+		return;
 	setViewer(viewer);
 	getCurrentInput().setInput(event);
 	handleKeyTraversed(event);
@@ -941,6 +956,8 @@ public void keyTraversed(TraverseEvent event, EditPartViewer viewer) {
  * @param viewer the originating viewer
  */
 public void keyUp(KeyEvent evt, EditPartViewer viewer) {
+	if (!isViewerImportant(viewer))
+		return;
 	setViewer(viewer);
 	getCurrentInput().setInput(evt);
 	handleKeyUp(evt);
@@ -953,7 +970,7 @@ public void keyUp(KeyEvent evt, EditPartViewer viewer) {
  * @param viewer the originating viewer
  */
 public void mouseDoubleClick(MouseEvent me, EditPartViewer viewer) {
-	if (me.button > 5)
+	if (me.button > 5 || !isViewerImportant(viewer))
 		return;
 	setViewer(viewer);
 	getCurrentInput().setInput(me);
@@ -968,6 +985,8 @@ public void mouseDoubleClick(MouseEvent me, EditPartViewer viewer) {
  * @param viewer the originating viewer
  */
 public void mouseDown(MouseEvent me, EditPartViewer viewer) {
+	if (!isViewerImportant(viewer))
+		return;
 	setViewer(viewer);
 
 	getCurrentInput().setInput(me);
@@ -986,6 +1005,8 @@ public void mouseDown(MouseEvent me, EditPartViewer viewer) {
  * @param viewer the originating viewer
  */
 public void mouseDrag(MouseEvent me, EditPartViewer viewer) {
+	if (!isViewerImportant(viewer))
+		return;
 	setViewer(viewer);
 	boolean wasDragging = movedPastThreshold();
 	getCurrentInput().setInput(me);
@@ -1005,6 +1026,8 @@ public void mouseDrag(MouseEvent me, EditPartViewer viewer) {
  * 
  */
 public void mouseHover(MouseEvent me, EditPartViewer viewer) {
+	if (!isViewerImportant(viewer))
+		return;
 	setViewer(viewer);
 	getCurrentInput().setInput(me);
 	handleHover();
@@ -1017,6 +1040,8 @@ public void mouseHover(MouseEvent me, EditPartViewer viewer) {
  * @param viewer the originating viewer
  */
 public void mouseMove(MouseEvent me, EditPartViewer viewer) {
+	if (!isViewerImportant(viewer))
+		return;
 	setViewer(viewer);
 	if (!isInputSynched(me)) {
 		boolean b1 = getCurrentInput().isMouseButtonDown(1);
@@ -1050,6 +1075,8 @@ public void mouseMove(MouseEvent me, EditPartViewer viewer) {
  * @param viewer the originating viewer
  */
 public void mouseUp(MouseEvent me, EditPartViewer viewer) {
+	if (!isViewerImportant(viewer))
+		return;
 	setViewer(viewer);
 	getCurrentInput().setInput(me);
 	getCurrentInput().setMouseButton(me.button, false);
@@ -1077,6 +1104,8 @@ protected boolean movedPastThreshold() {
  * @see org.eclipse.gef.Tool#nativeDragFinished(DragSourceEvent, EditPartViewer)
  */
 public void nativeDragFinished(DragSourceEvent event, EditPartViewer viewer) {
+	if (!isViewerImportant(viewer))
+		return;
 	setViewer(viewer);
 	handleNativeDragFinished(event);
 }
@@ -1085,6 +1114,8 @@ public void nativeDragFinished(DragSourceEvent event, EditPartViewer viewer) {
  * @see org.eclipse.gef.Tool#nativeDragStarted(DragSourceEvent, EditPartViewer)
  */
 public void nativeDragStarted(DragSourceEvent event, EditPartViewer viewer) {
+	if (!isViewerImportant(viewer))
+		return;
 	setViewer(viewer);
 	handleNativeDragStarted(event);
 }
@@ -1308,14 +1339,16 @@ protected final boolean unloadWhenFinished() {
  * Receives the mouse entered event.  Subclasses wanting to handle this event should 
  * override {@link #handleViewerEntered()}.
  * <p>
- * FEATURE in SWT: mouseExit comes after mouseEntered on the new . Therefore, if the
- * current viewer is not <code>null</code>, it means the exit has not been sent yet by
+ * FEATURE in SWT: mouseExit comes after mouseEntered on the new control. Therefore, if 
+ * the current viewer is not <code>null</code>, it means the exit has not been sent yet by
  * SWT. To maintain proper ordering, GEF fakes the exit and calls {@link
  * #handleViewerExited()}. The real exit will then be ignored.
  * @param me the mouse event
  * @param viewer the originating viewer
  */
 public void viewerEntered(MouseEvent me, EditPartViewer viewer) {
+	if (!isViewerImportant(viewer))
+		return;
 	getCurrentInput().setInput(me);
 	if (getCurrentViewer() != null && getCurrentViewer() != viewer)
 		handleViewerExited();
