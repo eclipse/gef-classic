@@ -164,11 +164,11 @@ static {
 	UndoAction_Label = rb.getString("UndoAction.Label");//$NON-NLS-1$
 	UndoAction_Tooltip = rb.getString("UndoAction.Tooltip");//$NON-NLS-1$
 
-	ZoomIn_Label = Platform.getResourceString(bundle, "ZoomIn.Label");//$NON-NLS-1$
-	ZoomIn_Tooltip = Platform.getResourceString(bundle, "ZoomIn.Tooltip");//$NON-NLS-1$
+	ZoomIn_Label = Platform.getResourceString(bundle, "%ZoomIn.Label");//$NON-NLS-1$
+	ZoomIn_Tooltip = Platform.getResourceString(bundle, "%ZoomIn.Tooltip");//$NON-NLS-1$
 
-	ZoomOut_Label = Platform.getResourceString(bundle, "ZoomOut.Label");//$NON-NLS-1$
-	ZoomOut_Tooltip = Platform.getResourceString(bundle, "ZoomOut.Tooltip");//$NON-NLS-1$
+	ZoomOut_Label = Platform.getResourceString(bundle, "%ZoomOut.Label");//$NON-NLS-1$
+	ZoomOut_Tooltip = Platform.getResourceString(bundle, "%ZoomOut.Tooltip");//$NON-NLS-1$
 
 //	 View menu actions
 	ToggleRulerVisibility_Label = rb.getString("ToggleRuler.Label"); //$NON-NLS-1$
@@ -179,7 +179,7 @@ static {
 	ToggleGrid_Tooltip = rb.getString("ToggleGrid.Tooltip"); //$NON-NLS-1$
 
 //	 Palette view Strings
-	Palette_Label = Platform.getResourceString(bundle, "Palette.Label"); //$NON-NLS-1$
+	Palette_Label = Platform.getResourceString(bundle, "%Palette.Label"); //$NON-NLS-1$
 	Palette_Not_Available = rb.getString("Palette_Not_Available"); //$NON-NLS-1$
 
 //	 Rulers and guides
