@@ -15,6 +15,8 @@ import org.eclipse.ui.IWorkbenchActionConstants;
 
 import org.eclipse.draw2d.PositionConstants;
 
+import org.eclipse.gef.SharedMessages;
+import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.ui.actions.*;
 
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
@@ -75,7 +77,10 @@ public void contributeToToolBar(IToolBarManager tbm) {
 	tbm.add(getAction(GEFActionConstants.ALIGN_BOTTOM));
 	
 	tbm.add(new Separator());
-	tbm.add(new ZoomComboContributionItem(getPage()));
+	String[] zoomStrings = new String[] {	ZoomManager.FIT_ALL, 
+											ZoomManager.FIT_HEIGHT, 
+											ZoomManager.FIT_WIDTH	};
+	tbm.add(new ZoomComboContributionItem(getPage(), zoomStrings));
 }
 
 /**
