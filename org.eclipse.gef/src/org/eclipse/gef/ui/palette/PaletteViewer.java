@@ -20,6 +20,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.draw2d.FigureCanvas;
 
 import org.eclipse.gef.*;
+import org.eclipse.gef.internal.ui.palette.editparts.*;
 import org.eclipse.gef.internal.ui.palette.editparts.PaletteRootEditPart;
 import org.eclipse.gef.internal.ui.palette.editparts.ToolEntryEditPart;
 import org.eclipse.gef.palette.*;
@@ -195,6 +196,20 @@ protected void hookControl() {
 	if (prefs != null)
 		prefs.addPropertyChangeListener(prefListener);
 	updateFont();
+}
+
+public boolean isExpanded(PaletteDrawer drawer) {
+	EditPart ep = (EditPart)getEditPartRegistry().get(drawer);
+	if (ep instanceof DrawerEditPart)
+		return ((DrawerEditPart)ep).isExpanded();
+	return false;
+}
+
+public boolean isPinned(PaletteDrawer drawer) {
+	EditPart ep = (EditPart)getEditPartRegistry().get(drawer);
+	if (ep instanceof DrawerEditPart)
+		return ((DrawerEditPart)ep).isPinnedOpen();
+	return false;
 }
 
 /**
