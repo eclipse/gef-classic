@@ -42,7 +42,7 @@ protected FlowFigureLayout createDefaultFlowLayout() {
 }
 
 /**
- * @see org.eclipse.draw2d.Figure#getMinimumSize()
+ * @see org.eclipse.draw2d.Figure#getMinimumSize(int, int)
  */
 public Dimension getMinimumSize(int w, int h) {
 	return getPreferredSize(w, h);

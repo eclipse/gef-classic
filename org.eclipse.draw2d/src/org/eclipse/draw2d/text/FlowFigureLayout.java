@@ -49,7 +49,7 @@ protected FlowFigureLayout(FlowFigure flowfigure) {
 /**
  * TextFlowLayouts do not calculate a preferred size because it is too expensive.
  * {@link FlowPage} will actually layout itself in order to calculate preferredSize.
- * @see AbstractLayout#calculatePreferredSize(IFigure)
+ * @see AbstractLayout#calculatePreferredSize(IFigure, int, int)
  */
 public Dimension calculatePreferredSize(IFigure f, int w, int h) {
 	return null;
