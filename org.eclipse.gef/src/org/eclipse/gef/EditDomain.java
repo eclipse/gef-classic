@@ -16,6 +16,8 @@ import java.util.List;
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.events.*;
 
+import org.eclipse.jface.util.Assert;
+
 import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.gef.palette.*;
 import org.eclipse.gef.tools.SelectionTool;
@@ -119,8 +121,12 @@ public Tool getDefaultTool() {
 	return defaultTool;
 }
 
+public PaletteViewer getPaletteViewer() {
+	return paletteViewer;
+}
+
 private void handlePaletteToolChanged() {
-	ToolEntry entry = paletteViewer.getActiveTool();
+	ToolEntry entry = getPaletteViewer().getActiveTool();
 	if (entry != null)
 		setActiveTool(entry.createTool());
 	else
@@ -158,10 +164,10 @@ public void loadDefaultTool() {
 	setActiveTool(null);
 	if (paletteRoot != null) {
 		if (paletteRoot.getDefaultEntry() != null) {
-			paletteViewer.setActiveTool(paletteRoot.getDefaultEntry());
+			getPaletteViewer().setActiveTool(paletteRoot.getDefaultEntry());
 			return;
 		} else
-			paletteViewer.setActiveTool(null);
+			getPaletteViewer().setActiveTool(null);
 	}
 	setActiveTool(getDefaultTool());
 }
@@ -287,10 +293,14 @@ public void setDefaultTool(Tool tool) {
  * @param root the palette's root
  */
 public void setPaletteRoot(PaletteRoot root) {
+	if (paletteRoot == root)
+		return;
+	Assert.isTrue(paletteRoot == null, "You can only set an EditDomain's palette root once.");
 	paletteRoot = root;
-	if (paletteViewer != null)
-		paletteViewer.setPaletteRoot(paletteRoot);
-	loadDefaultTool();
+	if (getPaletteViewer() != null) {
+		getPaletteViewer().setPaletteRoot(paletteRoot);
+		loadDefaultTool();
+	}
 }
 
 /**
@@ -298,11 +308,17 @@ public void setPaletteRoot(PaletteRoot root) {
  * @param palette the PaletteViewer
  */
 public void setPaletteViewer(PaletteViewer palette) {
-	palette.addPaletteListener(paletteListener);
+	if (palette == paletteViewer)
+		return;
+	if (paletteViewer != null)
+		paletteViewer.removePaletteListener(paletteListener);
 	paletteViewer = palette;
-	if (paletteRoot != null) {
-		paletteViewer.setPaletteRoot(paletteRoot);
-		loadDefaultTool();
+	if (paletteViewer != null) {
+		palette.addPaletteListener(paletteListener);
+		if (paletteRoot != null) {
+			paletteViewer.setPaletteRoot(paletteRoot);
+			loadDefaultTool();
+		}
 	}
 }
 
