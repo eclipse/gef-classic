@@ -15,8 +15,10 @@ import java.beans.PropertyChangeListener;
 import java.util.List;
 
 import org.eclipse.draw2d.Figure;
+import org.eclipse.draw2d.FreeformLayer;
 import org.eclipse.draw2d.FreeformLayout;
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.XYLayout;
 import org.eclipse.draw2d.geometry.Rectangle;
 
@@ -82,7 +84,8 @@ protected void createEditPolicies() {
  * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
  */
 protected IFigure createFigure() {
-	Figure f = new Figure();
+	Figure f = new FreeformLayer();
+	f.setBorder(new MarginBorder(3));
 	f.setLayoutManager(new FreeformLayout());
 	return f;
 }
