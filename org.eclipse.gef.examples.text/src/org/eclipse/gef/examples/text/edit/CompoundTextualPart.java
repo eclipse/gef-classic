@@ -119,13 +119,15 @@ public void propertyChange(PropertyChangeEvent evt) {
 }
 
 TextLocation searchBackwards(CaretSearch search) {
-	TextLocation current = search.where;
-	int childIndex = (current == null) ? getChildren().size() - 1
-			: getChildren().indexOf(current.part) - 1;
+	TextLocation location = search.where;
+	int childIndex = (location == null) ? getChildren().size() - 1
+			: getChildren().indexOf(location.part) - 1;
 	TextualEditPart part;
 	while (childIndex >= 0) {
 		part = (TextualEditPart)getChildren().get(childIndex--);
-		return part.getNextLocation(search.recurseSearch());
+		location = part.getNextLocation(search.recurseSearch());
+		if (location != null)
+			return location;
 	}
 	if (search.isRecursive)
 		return null;
@@ -135,16 +137,18 @@ TextLocation searchBackwards(CaretSearch search) {
 }
 
 TextLocation searchForward(CaretSearch search) {
-	TextLocation current = search.where;
+	TextLocation location = search.where;
 	
-	int childIndex = (current == null) ? 0
-			: getChildren().indexOf(current.part) + 1;
+	int childIndex = (location == null) ? 0
+			: getChildren().indexOf(location.part) + 1;
 	int childCount = getChildren().size();
 	TextualEditPart part;
 	CaretSearch recurse = search.recurseSearch();
 	while (childIndex < childCount) {
 		part = (TextualEditPart)getChildren().get(childIndex++);
-		return part.getNextLocation(recurse);
+		location = part.getNextLocation(recurse);
+		if (location != null)
+			return location;
 	}
 	if (search.isRecursive)
 		return null;
