@@ -10,33 +10,19 @@
  *******************************************************************************/
 package org.eclipse.draw2d.graph;
 
-import java.util.Collections;
-import java.util.Comparator;
-
 /**
  * @author hudsonr
- * @since 2.1
+ * @since 2.1.2
  */
 public class Rank extends NodeList {
 
-private Comparator comparator = new MedianComparator();
 final int hash = new Object().hashCode();
+
 /**
  * For internal use only.  The total "size" of this rank, where size may be weighted per
  * node.
  */
 public int total;
-
-static class MedianComparator implements Comparator {
-	public int compare(Object o1, Object o2) {
-		double diff = ((Node)o1).sortValue - ((Node)o2).sortValue;
-		if (diff < 0.0)
-			return -1;
-		if (diff > 0.0)
-			return 1;
-		return 0;
-	}
-}
 
 /**
  * Adds a node to this rank.
@@ -44,6 +30,27 @@ static class MedianComparator implements Comparator {
  */
 public void add(Node n) {
 	super.add(n);
+}
+
+/**
+ * $TODO move this to RankSorter
+ * @deprecated
+ */
+public void assignIndices() {
+	total = 0;
+	Node node;
+
+	int mag;
+	for (int i = 0; i < size(); i++) {
+		node = getNode(i);
+		mag = Math.max(1, node.incoming.size() + node.outgoing.size());
+		mag = Math.min(mag, 5);
+		if (node instanceof SubgraphBoundary)
+			mag = 4;
+		total += mag;
+		node.index = total;
+		total += mag;
+	}
 }
 
 /**
@@ -55,48 +62,23 @@ public int count() {
 }
 
 /**
- * @see java.lang.Object#equals(java.lang.Object)
+ * @see Object#equals(Object)
  */
 public boolean equals(Object o) {
 	return o == this;
 }
 
 /**
- * @see java.util.AbstractList#hashCode()
+ * @see Object#hashCode()
+ * Overridden for speed based on absolute equality.
  */
 public int hashCode() {
 	return hash;
 }
 
 /**
- * $TODO move this to RankSorter
+ * @deprecated Do not call
  */
-public void sort() {
-	Collections.sort(this, comparator);
-}
-
-/**
- * $TODO move this to RankSorter
- */
-public void assignIndices() {
-	total = 0;
-	Node node;
-//	for (int i=0; i<size(); i++) {
-//		node = getNode(i);
-//		node.index = i;
-//	}
-//	total = size() - 1;
-
-	int mag;
-	for (int i = 0; i < size(); i++) {
-		node = getNode(i);
-		mag = node.incoming.size() + node.outgoing.size() + 1;
-//		if (node instanceof SubgraphBoundary)
-//			mag = 4;
-		total += mag;
-		node.index = total;
-		total += mag;
-	}
-}
+public void sort() { }
 
 }
