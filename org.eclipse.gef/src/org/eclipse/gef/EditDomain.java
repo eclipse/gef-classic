@@ -295,7 +295,8 @@ public void setDefaultTool(Tool tool) {
 public void setPaletteRoot(PaletteRoot root) {
 	if (paletteRoot == root)
 		return;
-	Assert.isTrue(paletteRoot == null, "You can only set an EditDomain's palette root once.");
+	Assert.isTrue(paletteRoot == null, 
+			"You can only set an EditDomain's palette root once."); //$NON-NLS-1$
 	paletteRoot = root;
 	if (getPaletteViewer() != null) {
 		getPaletteViewer().setPaletteRoot(paletteRoot);
