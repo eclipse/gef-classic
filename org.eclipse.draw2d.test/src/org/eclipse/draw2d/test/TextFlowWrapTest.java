@@ -73,11 +73,11 @@ protected void doTest2(String string1, String string2, String widthString, Strin
 			return;
 		} else if (answer == TRUNCATED) {
 			assertTrue("Failed on: " + string1 + string2 + "Fragment is not truncated\n",
-					callBooleanMethod(previousFrag, "isTruncated"));
+					previousFrag.isTruncated());
 			continue;
 		} else if (answer == NON_TRUNCATED) {
 			assertFalse("Failed on: " + string1 + string2 + "Fragment is truncated\n",
-					callBooleanMethod(previousFrag, "isTruncated"));
+					previousFrag.isTruncated());
 			continue;
 		}
 
@@ -121,8 +121,7 @@ protected void doTest2(String string1, String string2, String widthString, Strin
 		// which would cause an index out of bounds exception if there were no leftover
 		// fragments
 		assertFalse("Failed on: \"" + string1 +"\" + \"" + string2 + "\" Fragment expected: -"
-				+ answers[index] + "- No corresponding fragment\n",
-				true);
+				+ answers[index] + "- No corresponding fragment\n", true);
 	}
 }
 
