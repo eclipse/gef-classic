@@ -47,8 +47,8 @@ private PropertyChangeListener propListener = new PropertyChangeListener() {
 };
 private KeyListener keyListener = new KeyListener.Stub() {
 	public void keyPressed(KeyEvent ke) {
-		int moveX = (int)(viewport.getClientArea().width * .25); 
-		int moveY = (int)(viewport.getClientArea().height * .25);
+		int moveX = viewport.getClientArea().width / 4; 
+		int moveY = viewport.getClientArea().height /4;
 		if (ke.keycode == SWT.ARROW_LEFT || ke.keycode == SWT.HOME)
 			viewport.setViewLocation(viewport.getViewLocation().translate(-moveX, 0));
 		else if (ke.keycode == SWT.ARROW_RIGHT || ke.keycode == SWT.END)
@@ -82,7 +82,6 @@ public ScrollableThumbnail(Viewport port) {
 public void deactivate() {
 	viewport.removePropertyChangeListener(Viewport.PROPERTY_VIEW_LOCATION, propListener);
 	viewport.removeFigureListener(figureListener);
-	selector.deactivate();
 	super.deactivate();
 }
 
@@ -212,7 +211,7 @@ private class SelectorFigure
 		image = new Image(display, iData);
 	}
 	
-	protected void deactivate() {
+	protected void finalize() {
 		image.dispose();
 	}
 
