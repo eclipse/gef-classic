@@ -123,7 +123,7 @@ public EditPart findObjectAtExcluding(
 			return editpart != null
 				&& (condition == null || condition.evaluate(editpart));
 		}
-	};
+	}
 	IFigure figure = getLightweightSystem()
 		.getRootFigure()
 		.findFigureAt(pt.x, pt.y, new ConditionalTreeSearch(exclude));

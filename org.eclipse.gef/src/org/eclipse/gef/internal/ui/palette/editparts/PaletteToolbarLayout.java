@@ -111,7 +111,7 @@ private void normalLayout(IFigure parent) {
 	/*
 	 * Determine hints.
 	 */
-	int wHint = parent.getClientArea(Rectangle.SINGLETON).width;;
+	int wHint = parent.getClientArea(Rectangle.SINGLETON).width;
 	int hHint = -1;    
 
 	/*

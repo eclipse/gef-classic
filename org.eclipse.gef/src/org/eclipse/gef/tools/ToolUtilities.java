@@ -29,7 +29,7 @@ public static List getSelectionWithoutDependants(EditPartViewer viewer) {
 	List selectedParts = viewer.getSelectedEditParts();
 	List result = new ArrayList();
 	for (int i = 0; i < selectedParts.size(); i++) {
-		GraphicalEditPart editpart = (GraphicalEditPart)selectedParts.get(i);;
+		GraphicalEditPart editpart = (GraphicalEditPart)selectedParts.get(i);
 		if (!isAncestorContainedIn(selectedParts, editpart))
 			result.add(editpart);
 	}
@@ -45,7 +45,7 @@ public static List getSelectionWithoutDependants(EditPartViewer viewer) {
 public static List getSelectionWithoutDependants(List selectedParts) {
 	List result = new ArrayList();
 	for (int i = 0; i < selectedParts.size(); i++) {
-		GraphicalEditPart editpart = (GraphicalEditPart)selectedParts.get(i);;
+		GraphicalEditPart editpart = (GraphicalEditPart)selectedParts.get(i);
 		if (!isAncestorContainedIn(selectedParts, editpart))
 			result.add(editpart);
 	}
