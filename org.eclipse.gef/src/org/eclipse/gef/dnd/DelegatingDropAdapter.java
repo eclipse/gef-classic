@@ -79,8 +79,7 @@ public void dragLeave(final DropTargetEvent event) {
 				getCurrentListener().dragLeave(event);
 			}
 		});
-//Cannot do this because dragLeave actually happens right before a Drop.
-//	setCurrentListener(null);
+	setCurrentListener(null);
 }
 
 /**
@@ -134,14 +133,14 @@ public void dragOver(final DropTargetEvent event) {
 public void drop(final DropTargetEvent event) {
 	if (GEF.DebugDND)
 		GEF.debug("Drop: " + toString()); //$NON-NLS-1$
-	if (getCurrentListener() != null) {
-		Platform.run(new SafeRunnable() {
-			public void run() throws Exception {
+	Platform.run(new SafeRunnable() {
+		public void run() throws Exception {
+			updateCurrentListener(event);
+			if (getCurrentListener() != null) 
 				getCurrentListener().drop(event);
-			}
-		});
-	}
-	setCurrentListener(null);
+			setCurrentListener(null);
+		}
+	});
 }
 
 /**

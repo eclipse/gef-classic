@@ -56,6 +56,7 @@ protected abstract CreateRequest.Factory getFactory(Object template);
  */
 protected void handleDragOver() {
 	getCurrentEvent().detail = DND.DROP_COPY;
+	getCurrentEvent().feedback = DND.FEEDBACK_SCROLL | DND.FEEDBACK_EXPAND;
 	super.handleDragOver();
 }
 

@@ -6,6 +6,9 @@ package org.eclipse.gef.dnd;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
+import java.util.Collection;
+import java.util.Collections;
+
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.gef.*;
 import org.eclipse.gef.commands.Command;
@@ -67,8 +70,10 @@ protected Request createTargetRequest() {
 }
 
 /**
- * Called when this listener is temporarily disabled.  Sets the Request and target 
- * EditPart to <code>null</code>.
+ * Called when this listener is temporarily disabled. Sets the Request and target EditPart
+ * to <code>null</code>. Since {@link DropTargetListener#dragLeave(DropTargetEvent)} is
+ * called right before the drop occurs, this will be called at that time, but activate()
+ * will be called just prior to the drop.
  * 
  * @see TransferDropTargetListener#deactivate()
  */
@@ -191,6 +196,10 @@ protected Point getDropLocation() {
 	return new Point(swt.x, swt.y);
 }
 
+protected Collection getExclusionSet() {
+	return Collections.EMPTY_LIST;
+}
+
 /**
  * Returns the current <i>target</i> <code>EditPart</code>.
  * @return the target EditPart
@@ -308,7 +317,8 @@ public boolean isEnabled(DropTargetEvent event) {
 			setCurrentEvent(event);
 			event.currentDataType = event.dataTypes[i];
 			updateTargetRequest();
-			EditPart ep = getViewer().findObjectAt(getDropLocation());
+			EditPart ep = getViewer().findObjectAtExcluding(getDropLocation(), 
+															getExclusionSet());
 			if (ep != null)
 				ep = ep.getTargetEditPart(getTargetRequest());
 			request = null;
@@ -393,7 +403,7 @@ protected void unload() {
  * Updates the target EditPart.
  */
 protected void updateTargetEditPart() {
-	EditPart ep = getViewer().findObjectAt(getDropLocation());
+	EditPart ep = getViewer().findObjectAtExcluding(getDropLocation(), getExclusionSet());
 	if (ep != null)
 		ep = ep.getTargetEditPart(getTargetRequest());
 	setTargetEditPart(ep);

@@ -1,5 +1,6 @@
 package org.eclipse.gef.dnd;
 
+import java.util.*;
 import java.util.Iterator;
 import java.util.List;
 
@@ -7,41 +8,19 @@ import org.eclipse.gef.*;
 import org.eclipse.gef.commands.*;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
 import org.eclipse.swt.dnd.DND;
-import org.eclipse.swt.widgets.Tree;
-import org.eclipse.swt.widgets.TreeItem;
 
 public class LocalTransferDropListener
 	extends AbstractTransferDropTargetListener
 {
 
-private TreeItem[] selectedItems;
-
 public LocalTransferDropListener(EditPartViewer viewer) {
 	super(viewer, LocalTransfer.getInstance());
 }
 
-/**
- * @see org.eclipse.gef.dnd.AbstractTransferDropTargetListener#activate()
- */
-public void activate() {
-	super.activate();
-	selectedItems = ((Tree)getViewer().getControl()).getSelection();
-}
-
 protected Request createTargetRequest() {
-	getCurrentEvent().feedback = DND.FEEDBACK_SCROLL | DND.FEEDBACK_EXPAND;
 	ChangeBoundsRequest request = new ChangeBoundsRequest(RequestConstants.REQ_MOVE);
 	request.setEditParts((List)LocalTransfer.getInstance().getObject());
 	return request;
-}
-
-/**
- * @see org.eclipse.gef.dnd.AbstractTransferDropTargetListener#deactivate()
- */
-public void deactivate() {
-	restoreSelection();
-	selectedItems = null;
-	super.deactivate();
 }
 
 protected Command getCommand() {
@@ -74,22 +53,21 @@ protected String getCommandName() {
 	return RequestConstants.REQ_ADD;
 }
 
+protected Collection getExclusionSet() {
+	List selection = getViewer().getSelectedEditParts();
+	List exclude = new ArrayList(selection);
+	exclude.addAll(includeChildren(selection));
+	return exclude;
+}
+
 protected void handleDragOver() {
 	if (LocalTransfer.getInstance().getViewer() != getViewer()) {
 		getCurrentEvent().detail = DND.DROP_NONE;
 		return;
 	}
+	getCurrentEvent().feedback = DND.FEEDBACK_SCROLL | DND.FEEDBACK_EXPAND;
 	super.handleDragOver();
 }
-
-/**
- * @see org.eclipse.gef.dnd.AbstractTransferDropTargetListener#handleDrop()
- */
-protected void handleDrop() {
-	selectedItems = null;
-	super.handleDrop();
-}
-
 
 protected EditPart getSourceEditPart() {
 	List selection = (List)LocalTransfer.getInstance().getObject();
@@ -98,43 +76,25 @@ protected EditPart getSourceEditPart() {
 	return (EditPart)selection.get(0);
 }
 
-private Tree getTree() {
-	return (Tree)getViewer().getControl();
+protected List includeChildren(List list) {
+	List result = new ArrayList();
+	for(int i = 0; i < list.size(); i++){
+		List children = ((EditPart)list.get(i)).getChildren();
+		result.addAll(children);
+		result.addAll(includeChildren(children));
+	}
+	return result;
 }
 
 protected boolean isMove() {
-	return getSourceEditPart().getParent() == getTargetEditPart();
-}
-
-/**
- * Method restoreSelection.
- */
-private void restoreSelection() {
-	if (selectedItems != null)
-		getTree().setSelection(selectedItems);
-}
-
-/**
- * @see org.eclipse.gef.dnd.AbstractTransferDropTargetListener#setTargetEditPart(EditPart)
- */
-protected void setTargetEditPart(EditPart ep) {
-	if (getTargetEditPart() != ep){
-		if (ep != null && ((TreeEditPart)ep).getWidget() instanceof TreeItem) {
-			GEF.debug("bogus restore");
-			restoreSelection();
-			getTree().setSelection(new TreeItem[]{
-				(TreeItem)((TreeEditPart)ep).getWidget()});
-			GEF.debug("setting to " + ep);
-		} else {
-			if (ep == null){
-				GEF.debug("restoring to " + selectedItems);
-				restoreSelection();
-			} else {
-				getTree().setSelection(new TreeItem[0]);
-			}
-		}
+	EditPart source = getSourceEditPart();
+	List selection = (List)LocalTransfer.getInstance().getObject();
+	for (int i = 0; i < selection.size(); i++) {
+		EditPart ep = (EditPart)selection.get(i);
+		if (ep.getParent() != source.getParent())
+			return false;
 	}
-	super.setTargetEditPart(ep);
+	return source.getParent() == getTargetEditPart();
 }
 
 protected void updateTargetRequest() {

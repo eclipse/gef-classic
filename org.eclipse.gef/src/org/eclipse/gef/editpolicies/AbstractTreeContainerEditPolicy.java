@@ -11,13 +11,10 @@ import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Widget;
 import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.widgets.Display;
-
 
 import org.eclipse.gef.*;
 import org.eclipse.gef.requests.*;
 import org.eclipse.gef.commands.Command;
-import org.eclipse.gef.internal.Timer;
 
 /**
  * An EditPolicy for handling ADDS, MOVES, and CREATES on a {@link TreeEditPart}.
@@ -32,7 +29,7 @@ public abstract class AbstractTreeContainerEditPolicy
 	extends AbstractEditPolicy 
 {
 
-private Timer autoExpandTimer = new Timer();
+private TreeItem[] selection;
 
 /**
  * Returns a Command for adding the children to the container.
@@ -51,11 +48,11 @@ protected abstract Command getMoveChildrenCommand(ChangeBoundsRequest request);
 
 private void eraseAddFeedback(Request req) {
 	getTree().setInsertMark(null, true);
+	restoreSelection();
 }
 
 private void eraseCreateFeedback(Request req) {
 	eraseAddFeedback(req);
-	autoExpandTimer.cancel();
 }
 
 private void eraseMoveFeedback(Request req) {
@@ -117,8 +114,10 @@ public EditPart getTargetEditPart(Request req) {
 		DropRequest drop = (DropRequest) req;
 		Point where = new Point(drop.getLocation().x, drop.getLocation().y);
 		Widget widget = ((TreeEditPart) getHost()).getWidget();
-		if (widget instanceof Tree)
+		if (widget instanceof Tree) {
+			getTree().setSelection(new TreeItem[0]);
 			return getHost();
+		}
 		TreeItem treeitem = (TreeItem) widget;
 		Rectangle bounds = treeitem.getBounds();
 		int fudge = bounds.height / 5;
@@ -127,12 +126,14 @@ public EditPart getTargetEditPart(Request req) {
 				bounds.x,
 				bounds.y + fudge,
 				bounds.width,
-				bounds.height - fudge * 2);
+				bounds.height - (treeitem.getExpanded() ? 0 : fudge * 2));
 		//Point is either outside the Treeitem, or inside the inner Rect.
-		if (!bounds.contains(where) || inner.contains(where))
+		if (!bounds.contains(where) || inner.contains(where)) {
+			getTree().setSelection(new TreeItem[]{(TreeItem)((TreeEditPart)getHost()).getWidget()});
 			return getHost();
+		}
 	}
-	
+	restoreSelection();
 	return null;
 }
 
@@ -158,6 +159,11 @@ private boolean isInUpperHalf(Rectangle rect,
 	return tempRect.contains(new Point(pt.x, pt.y));
 }
 
+private void restoreSelection() {
+	if (selection != null)
+		getTree().setSelection(selection);
+}
+
 private void showAddFeedback(Request req) {
 	if (!(req instanceof ChangeBoundsRequest))
 		return;
@@ -172,7 +178,7 @@ private void showAddFeedback(Request req) {
 			insertMarkAfterLastChild(tree.getItems());
 		}
 	} else if (item == ((TreeEditPart)getHost()).getWidget()) {
-		insertMarkAfterLastChild(item.getItems());
+		tree.setInsertMark(null, true);
 	} else {
 		boolean before = isInUpperHalf(item.getBounds(), pt);
 		tree.setInsertMark(item, before);
@@ -193,30 +199,11 @@ private void showCreateFeedback(Request req) {
 			insertMarkAfterLastChild(tree.getItems());
 		}
 	} else if (item == ((TreeEditPart)getHost()).getWidget()) {
-		insertMarkAfterLastChild(item.getItems());
+		tree.setInsertMark(null, true);
 	} else {
 		boolean before = isInUpperHalf(item.getBounds(), pt);
 		tree.setInsertMark(item, before);
 	}
-	
-	if (!(autoExpandTimer.hasStopped())) {
-		return;
-	}
-	
-	autoExpandTimer = new Timer();
-	autoExpandTimer.scheduleRepeatedly(new Runnable() {
-		public void run() {
-			Display display = tree.getDisplay();
-			display.syncExec(new Runnable() {
-				public void run() {
-					Widget widget = ((TreeEditPart)getHost()).getWidget();
-					if (widget instanceof TreeItem)
-						((TreeItem)widget).setExpanded(true);
-					autoExpandTimer.cancel();
-				}
-			});
-		}
-	}, 500, 10000);
 }
 
 private void showMoveFeedback(Request req) {

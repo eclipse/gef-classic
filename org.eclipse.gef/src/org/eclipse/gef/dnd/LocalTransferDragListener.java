@@ -3,13 +3,13 @@ package org.eclipse.gef.dnd;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.gef.EditPart;
-import org.eclipse.gef.EditPartViewer;
+import org.eclipse.jface.viewers.StructuredSelection;
+
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.Transfer;
 
-import org.eclipse.jface.viewers.*;
-import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.gef.EditPart;
+import org.eclipse.gef.EditPartViewer;
 
 public class LocalTransferDragListener extends AbstractTransferDragSourceListener {
 
@@ -47,8 +47,7 @@ protected void revertModelSelection() {
 	for (int i = 0; i < modelSelection.size(); i++) {
 		list.add(getViewer().getEditPartRegistry().get(modelSelection.get(i)));
 	}
-	IStructuredSelection selection = new StructuredSelection(list);
-	getViewer().setSelection(selection);
+	getViewer().setSelection(new StructuredSelection(list));
 }
 
 protected void saveModelSelection(List editPartSelection) {

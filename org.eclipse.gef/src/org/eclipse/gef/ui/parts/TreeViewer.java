@@ -29,14 +29,67 @@ public class TreeViewer
 
 private boolean ignore = false;
 
+class EventDispatcher
+	implements MouseListener, MouseMoveListener, KeyListener, MouseTrackListener, FocusListener
+{
+	protected static final int ANY_BUTTON = SWT.BUTTON1 | SWT.BUTTON2 | SWT.BUTTON3;
+
+	private boolean dragInProgress = false;
+	public void keyPressed(KeyEvent kee){
+		getEditDomain().keyDown(kee, TreeViewer.this);
+	}
+	public void keyReleased(KeyEvent kee){
+		getEditDomain().keyUp(kee, TreeViewer.this);
+	}
+	public void mouseDoubleClick(MouseEvent me){
+		getEditDomain().mouseDoubleClick(me, TreeViewer.this);
+	}
+	public void mouseDown(MouseEvent me){
+		dragInProgress = true;				 
+		getEditDomain().mouseDown(me, TreeViewer.this);
+	}
+	public void mouseEnter(MouseEvent me) {
+		getEditDomain().viewerEntered(me, TreeViewer.this);
+	}
+	public void mouseExit(MouseEvent me) {
+		//me.x = -1;
+		getEditDomain().viewerExited(me, TreeViewer.this);
+		mouseMove(me);
+	}
+	public void mouseHover(MouseEvent me) {
+		getEditDomain().mouseHover(me, TreeViewer.this);
+	}
+	public void mouseMove(MouseEvent me){
+		if ((me.stateMask & ANY_BUTTON) != 0)
+			getEditDomain().mouseDrag(me, TreeViewer.this);
+		else
+			getEditDomain().mouseMove(me, TreeViewer.this);
+	}
+	public void mouseUp(MouseEvent me){
+		dragInProgress = false;
+		getEditDomain().mouseUp(me, TreeViewer.this);
+	}
+	public void focusGained(FocusEvent event) {
+		getEditDomain().focusGained(event, TreeViewer.this);
+	}
+	public void focusLost(FocusEvent event) {
+		getEditDomain().focusLost(event, TreeViewer.this);
+	}
+}
+
+private EventDispatcher dispatcher;
+
 /**
  * The constructor.  It sets up the default root edit part.
  * The setEditor() and either one of createControl() or setControl()
  * methods should be called to completely set up the GEFTreeViewer.
  */
 public TreeViewer() {
+	dispatcher = new EventDispatcher();
 	RootTreeEditPart rep = new RootTreeEditPart();
 	setRootEditPart(rep);
+	addDragSourceListener(new LocalTransferDragListener(this));
+	addDropTargetListener(new LocalTransferDropListener(this));
 }
 
 /**
@@ -62,16 +115,13 @@ public EditPart findObjectAt(Point pt) {
 }
 
 /**
- * Returns the <code>Data</code> of the TreeItem at the given point.
- * Returns null if the Point is not on the Control (Tree).  Returns
- * the data of the Tree if there is no TreeItem at the given point.
- * At this point, the collection is ignored.  Sub-classes can override
- * this method to respect the request to exclude the Objects in the 
- * given Collection. 
+ * Returns the <code>Data</code> of the TreeItem at the given point. Returns null if the
+ * Point is not on the Control (Tree).  Returns the data of the Tree if there is no
+ * TreeItem at the given point. Sub-classes can override this method to respect the
+ * request to exclude the Objects in the  given Collection. 
  *
  * @param	pt		The location at which to look for a TreeItem
  * @param	exclude	The collection of EditParts to be excluded.
- *				NOTE: The current implementation ignores this Collection.
  */ 
 public EditPart findObjectAtExcluding(Point pt, Collection exclude) {
 	if (getControl() == null)
@@ -106,26 +156,12 @@ protected void hookControl() {
 	if (getControl() == null)
 		return;
 	
-	addDragSourceListener(new LocalTransferDragListener(this));
-	addDropTargetListener(new LocalTransferDropListener(this));
-	
 	final Tree tree = (Tree)getControl();
-	tree.addFocusListener(new FocusAdapter() {
-		public void focusGained(FocusEvent event) {
-			getEditDomain().focusGained(event, TreeViewer.this);
-		}
-		public void focusLost(FocusEvent event) {
-			getEditDomain().focusLost(event, TreeViewer.this);
-		}
-	});
-	tree.addKeyListener(new KeyAdapter() {
-		public void keyPressed(KeyEvent event) {
-			getEditDomain().keyDown(event, TreeViewer.this);
-		}
-		public void keyReleased(KeyEvent event) {
-			getEditDomain().keyUp(event, TreeViewer.this);
-		}
-	});
+	tree.addFocusListener(dispatcher);
+	tree.addMouseListener(dispatcher);
+	tree.addMouseMoveListener(dispatcher);
+	tree.addKeyListener(dispatcher);
+	tree.addMouseTrackListener(dispatcher);
 	tree.addSelectionListener(new SelectionListener() {
 		public void widgetSelected(SelectionEvent e) {
 			TreeItem[] ties = tree.getSelection();
