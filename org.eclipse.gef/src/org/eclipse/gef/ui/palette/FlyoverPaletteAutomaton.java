@@ -95,7 +95,8 @@ public FlyoverPaletteAutomaton(Composite parent, int style, IWorkbenchPage page)
 
 	IViewPart part = page.findView(PaletteView.ID);
 	if (part == null)
-		paletteState = 2;
+		// Cannot invoke setState() just yet
+		paletteState = FLYOVER_COLLAPSED;
 	providePartService(page.getWorkbenchWindow().getPartService());
 }
 
