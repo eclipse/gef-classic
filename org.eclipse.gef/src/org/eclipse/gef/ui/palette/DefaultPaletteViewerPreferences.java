@@ -8,8 +8,6 @@ import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 
-import org.eclipse.gef.GEFPlugin;
-
 import org.eclipse.swt.graphics.FontData;
 
 /**
@@ -267,7 +265,7 @@ public boolean useLargeIcons(int layout) {
 /**
  * @see org.eclipse.gef.ui.palette.PaletteViewerPreferences#useLargeIconsCurrently()
  */
-public boolean useLargeIconsCurrently() {
+public boolean useLargeIcons() {
 	return useLargeIcons(getLayoutSetting());
 }
 

@@ -19,14 +19,14 @@ private PaletteViewerPreferences prefs;
 public ChangeIconSizeAction(PaletteViewerPreferences prefs) {
 	super(PaletteMessages.USE_LARGE_ICONS_LABEL);
 	this.prefs = prefs;
-	setChecked(prefs.useLargeIconsCurrently());
+	setChecked(prefs.useLargeIcons());
 }
 
 /**
  * @see org.eclipse.jface.action.Action#run()
  */
 public void run() {
-	prefs.setCurrentUseLargeIcons(!prefs.useLargeIconsCurrently());
+	prefs.setCurrentUseLargeIcons(!prefs.useLargeIcons());
 }
 
 }
