@@ -233,13 +233,13 @@ protected void configureShell(Shell newShell) {
  * buttons created by this method are given unique IDs.  Pass in a null image descriptor
  * if  you don't want the button to have an icon.  This method will take care of 
  * disposing the images that it creates.  {@link #buttonPressed(int)} will be called when
- * any of the buttons created by this method are  clicked (selected).
+ * any of the buttons created by this method are clicked (selected).
  * 
  * @param	parent		The composite in which the button is to be created
  * @param	id			The button's unique ID
  * @param	label		The button's text
  * @param	stylebits	The style bits for creating the button (eg., 
- * 						<code>SWT.PUSH</code) or <code>SWT.CHECK</code>)
+ * 						<code>SWT.PUSH</code> or <code>SWT.CHECK</code>)
  * @param	descriptor	The ImageDescriptor from which the image/icon for this
  * 						button should be created
  * @return				The newly created button for convenience
@@ -849,7 +849,7 @@ protected void handleOutlineSelectionChanged() {
 
 	if (errorMessage != null) {
 		MessageDialog dialog = new MessageDialog(getShell(),
-				PaletteMessages.ERROR, //$NON-NLS-1$
+				PaletteMessages.ERROR,
 				null, 
 				PaletteMessages.ABORT_PAGE_FLIPPING_MESSAGE + "\n" + errorMessage, //$NON-NLS-1$
 				MessageDialog.ERROR, 
