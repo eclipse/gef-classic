@@ -12,7 +12,7 @@
  *******************************************************************************
  * </copyright>
  *
- * $Id: StickyNoteImpl.java,v 1.2 2004/12/07 19:07:09 pshah Exp $
+ * $Id: StickyNoteImpl.java,v 1.3 2005/01/17 22:29:09 pshah Exp $
  */
 package org.eclipse.gef.examples.ediagram.model.impl;
 
@@ -47,13 +47,6 @@ import org.eclipse.gef.examples.ediagram.model.StickyNote;
  */
 public class StickyNoteImpl extends NodeImpl implements StickyNote
 {
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public static final String copyright = ""; //$NON-NLS-1$
-
 	/**
 	 * The default value of the '{@link #getText() <em>Text</em>}' attribute.
 	 * <!-- begin-user-doc -->

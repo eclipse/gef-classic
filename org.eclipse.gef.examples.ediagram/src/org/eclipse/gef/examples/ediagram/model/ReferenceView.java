@@ -21,13 +21,6 @@ public interface ReferenceView
 	extends Link{
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	String copyright = ""; //$NON-NLS-1$
-
-	/**
 	 * @model 
 	 */
 	EReference getEReference();

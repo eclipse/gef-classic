@@ -12,7 +12,7 @@
  *******************************************************************************
  * </copyright>
  *
- * $Id: ModelSwitch.java,v 1.2 2004/12/07 19:07:09 pshah Exp $
+ * $Id: ModelSwitch.java,v 1.3 2005/01/17 22:29:09 pshah Exp $
  */
 package org.eclipse.gef.examples.ediagram.model.util;
 
@@ -44,13 +44,6 @@ import org.eclipse.gef.examples.ediagram.model.StickyNote;
  * @generated
  */
 public class ModelSwitch {
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public static final String copyright = ""; //$NON-NLS-1$
-
 	/**
 	 * The cached model package
 	 * <!-- begin-user-doc -->

@@ -12,7 +12,7 @@
  *******************************************************************************
  * </copyright>
  *
- * $Id: DiagramImpl.java,v 1.2 2004/12/07 19:07:09 pshah Exp $
+ * $Id: DiagramImpl.java,v 1.3 2005/01/17 22:29:09 pshah Exp $
  */
 package org.eclipse.gef.examples.ediagram.model.impl;
 
@@ -49,13 +49,6 @@ import org.eclipse.gef.examples.ediagram.model.Node;
  */
 public class DiagramImpl extends EObjectImpl implements Diagram
 {
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public static final String copyright = ""; //$NON-NLS-1$
-
 	/**
 	 * The cached value of the '{@link #getImports() <em>Imports</em>}' reference list.
 	 * <!-- begin-user-doc -->

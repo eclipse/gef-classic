@@ -12,7 +12,7 @@
  *******************************************************************************
  * </copyright>
  *
- * $Id: NodeImpl.java,v 1.2 2004/12/07 19:07:09 pshah Exp $
+ * $Id: NodeImpl.java,v 1.3 2005/01/17 22:29:09 pshah Exp $
  */
 package org.eclipse.gef.examples.ediagram.model.impl;
 
@@ -57,13 +57,6 @@ import org.eclipse.gef.examples.ediagram.model.Node;
  */
 public abstract class NodeImpl extends EObjectImpl implements Node
 {
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public static final String copyright = ""; //$NON-NLS-1$
-
 	/**
 	 * The default value of the '{@link #getLocation() <em>Location</em>}' attribute.
 	 * <!-- begin-user-doc -->
