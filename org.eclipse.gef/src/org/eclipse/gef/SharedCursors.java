@@ -10,11 +10,9 @@
  *******************************************************************************/
 package org.eclipse.gef;
 
-import java.io.IOException;
-import java.io.InputStream;
-
 import org.eclipse.swt.graphics.Cursor;
-import org.eclipse.swt.graphics.ImageData;
+
+import org.eclipse.jface.resource.ImageDescriptor;
 
 import org.eclipse.draw2d.Cursors;
 
@@ -53,19 +51,9 @@ static {
 }
 
 private static Cursor createCursor(String sourceName, String maskName) {
-	InputStream srcStream = Internal.class.getResourceAsStream(sourceName);
-	InputStream maskStream = Internal.class.getResourceAsStream(maskName);
-	Cursor cursor = new Cursor(null, new ImageData(srcStream), 
-			new ImageData(maskStream), 0, 0);
-	try {
-		srcStream.close();
-	} catch (IOException ioe) {
-	}
-	try {
-		maskStream.close();
-	} catch (IOException ioe) {
-	}
-	return cursor;
+	ImageDescriptor src = ImageDescriptor.createFromFile(Internal.class, sourceName);
+	ImageDescriptor mask = ImageDescriptor.createFromFile(Internal.class, maskName);
+	return new Cursor(null, src.getImageData(), mask.getImageData(), 0, 0);
 }
 
 }
