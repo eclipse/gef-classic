@@ -499,6 +499,8 @@ private void setState(int newState) {
 					transferState(externalViewer, pViewer);
 				else if (capturedPaletteState != null) {
 					pViewer.restoreState(capturedPaletteState);
+					// @TODO:Pratik  this should be moved out of this else - if statement,
+					// just in case
 					capturedPaletteState = null;
 				}
 				minWidth = Math.max(pViewer.getControl().computeSize(0, 0).x, 
