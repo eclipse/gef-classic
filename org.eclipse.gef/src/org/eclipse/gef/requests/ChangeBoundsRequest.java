@@ -65,14 +65,14 @@ public Point getMoveDelta() {
 /**
  * Returns the direction the figure is being resized.  Possible values are
  * <ul>
- * 		<li>{@link PositionConstants#EAST}
- * 		<li>{@link PositionConstants#WEST}
- * 		<li>{@link PositionConstants#NORTH}
- * 		<li>{@link PositionConstants#SOUTH} 
- * 		<li>{@link PositionConstants#NORTH_EAST}
- * 		<li>{@link PositionConstants#NORTH_WEST}
- * 		<li>{@link PositionConstants#SOUTH_EAST}
- * 		<li>{@link PositionConstants#SOUTH_WEST} 
+ * 		<li>{@link org.eclipse.draw2d.PositionConstants#EAST}
+ * 		<li>{@link org.eclipse.draw2d.PositionConstants#WEST}
+ * 		<li>{@link org.eclipse.draw2d.PositionConstants#NORTH}
+ * 		<li>{@link org.eclipse.draw2d.PositionConstants#SOUTH} 
+ * 		<li>{@link org.eclipse.draw2d.PositionConstants#NORTH_EAST}
+ * 		<li>{@link org.eclipse.draw2d.PositionConstants#NORTH_WEST}
+ * 		<li>{@link org.eclipse.draw2d.PositionConstants#SOUTH_EAST}
+ * 		<li>{@link org.eclipse.draw2d.PositionConstants#SOUTH_WEST} 
  * </ul>
  * 
  * @return the resize direction

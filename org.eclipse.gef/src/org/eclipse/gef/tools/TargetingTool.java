@@ -132,7 +132,8 @@ protected Collection getExclusionSet() {
  * current mouse location indicates a target for the operation's request, using
  * {@link EditPart#getTargetEditPart(Request)}.  If <code>null</code> is returned, then
  * the conditional fails, and the search continues.
- * @see EditPartViewer#findObjectAtExcluding(Point, Collection, Conditional)
+ * @see EditPartViewer#findObjectAtExcluding(Point, Collection, 
+ * 													EditPartViewer.Conditional)
  * @return the targeting conditional
  */
 protected EditPartViewer.Conditional getTargetingConditional() {
