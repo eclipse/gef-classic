@@ -68,7 +68,7 @@ protected Object getConstraintFor(ChangeBoundsRequest request, GraphicalEditPart
 	rect.translate(getLayoutOrigin().getNegated());
 
 	if (request.getSizeDelta().width == 0 && request.getSizeDelta().height == 0) { // move
-		Rectangle cons = (Rectangle)getCurrentConstraintFor(child);
+		Rectangle cons = getCurrentConstraintFor(child);
 		rect.setSize(cons.width, cons.height);
 	} else { // resize
 		Dimension minSize = getMinimumSizeFor(child);

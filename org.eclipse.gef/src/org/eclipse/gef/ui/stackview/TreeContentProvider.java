@@ -62,8 +62,8 @@ public Object[] getElements(Object o) {
 	if (o instanceof CommandStack) {
 		return ((CommandStack)o).getCommands();
 	}
-	if (o instanceof CompoundCommand) {
-	}
+//	if (o instanceof CompoundCommand) {
+//	}
 	return null;
 }
 

@@ -15,8 +15,6 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.*;
 
-import org.eclipse.gef.GraphicalEditPart;
-
 /**
  * A {@link Border} with a triangle in each corner.
  * @deprecated this class is no longer used
@@ -25,7 +23,6 @@ public final class CornerTriangleBorder
 	extends AbstractBorder
 {
 
-private GraphicalEditPart ownerEditPart;
 private boolean isPrimary = true;
 
 /**

@@ -335,7 +335,7 @@ protected void updateActions(List actionIds) {
 	ActionRegistry registry = getActionRegistry();
 	Iterator iter = actionIds.iterator();
 	while (iter.hasNext()) {
-		IAction action = registry.getAction((String)iter.next());
+		IAction action = registry.getAction(iter.next());
 		if (action instanceof UpdateAction)
 			((UpdateAction)action).update();
 	}

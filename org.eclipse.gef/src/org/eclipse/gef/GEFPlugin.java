@@ -30,7 +30,7 @@ private static GEFPlugin singleton;
 */
 public GEFPlugin(IPluginDescriptor descriptor) {
 	super(descriptor);
-	if (singleton==null)
+	if (singleton == null)
 		singleton = this;
 }
 
@@ -39,14 +39,14 @@ public GEFPlugin(IPluginDescriptor descriptor) {
  *
  * @return the default GEFPlugin singleton
  */
-static public GEFPlugin getDefault() {
+public static GEFPlugin getDefault() {
 	return singleton;
 }
 
 /**
  * Create a root undoable property sheet entry.
  */
-public static IPropertySheetEntry createUndoablePropertySheetEntry(CommandStack stack){
+public static IPropertySheetEntry createUndoablePropertySheetEntry(CommandStack stack) {
 	return new org.eclipse.gef.internal.ui.properties.UndoablePropertySheetEntry(stack);
 }
 

@@ -16,7 +16,6 @@ import org.eclipse.draw2d.PositionConstants;
 
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.Handle;
-import org.eclipse.gef.tools.ResizeTracker;
 
 /**
  * A set of utility methods to create Handles for the common

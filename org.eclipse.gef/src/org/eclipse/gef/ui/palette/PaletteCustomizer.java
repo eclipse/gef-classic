@@ -192,11 +192,11 @@ public void performDelete(PaletteEntry entry) {
  * @see #canMoveDown(PaletteEntry)
  */
 public void performMoveDown(PaletteEntry entry) {
-	PaletteContainer parent = (PaletteContainer)entry.getParent();
+	PaletteContainer parent = entry.getParent();
 	if (!parent.moveDown(entry)) {
 		// This is the case of a PaletteEntry that is its parent's last child
 		parent.remove(entry);
-		PaletteContainer grandparent = (PaletteContainer)parent.getParent();
+		PaletteContainer grandparent = parent.getParent();
 		List parents = grandparent.getChildren();
 		int index = parents.indexOf(parent);
 		PaletteContainer parentSibling = null;
@@ -221,11 +221,11 @@ public void performMoveDown(PaletteEntry entry) {
  * @see #canMoveUp(PaletteEntry)
  */
 public void performMoveUp(PaletteEntry entry) {
-	PaletteContainer parent = (PaletteContainer)entry.getParent();
+	PaletteContainer parent = entry.getParent();
 	if (!parent.moveUp(entry)) {
 		//This is the case of a PaletteEntry that is its parent's first child
 		parent.remove(entry);
-		PaletteContainer grandparent = (PaletteContainer)parent.getParent();
+		PaletteContainer grandparent = parent.getParent();
 		List parents = grandparent.getChildren();
 		int index = parents.indexOf(parent);
 		PaletteContainer parentSibling = null;

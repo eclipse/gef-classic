@@ -381,7 +381,7 @@ private void showCellEditorFrame() {
  * Asks the source edit part to show source feedback.
  */
 public void showFeedback() {
-	if (showingFeedback == false)
+	if (!showingFeedback)
 		showCellEditorFrame();
 	showingFeedback = true;
 	showCellEditorFrame();

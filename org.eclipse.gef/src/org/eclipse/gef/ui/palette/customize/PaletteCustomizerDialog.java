@@ -853,7 +853,7 @@ protected void handleOutlineSelectionChanged() {
 				PaletteMessages.ABORT_PAGE_FLIPPING_MESSAGE 
 					+  "\n" + errorMessage, //$NON-NLS-1$
 				MessageDialog.ERROR, 
-				new String[] { IDialogConstants.OK_LABEL }, 0);
+				new String[] {IDialogConstants.OK_LABEL}, 0);
 		dialog.open();
 		treeviewer.addPostSelectionChangedListener(pageFlippingPreventer);
 	} else {
@@ -1154,12 +1154,6 @@ private class NewAction
 
 	public Menu getMenu(Menu parent) {
 		Menu menu = new Menu(parent);
-		menu.addDisposeListener(new DisposeListener() {
-			public void widgetDisposed(DisposeEvent e) {
-				System.out.println("menu disposed");
-
-			}
-		});
 		for (Iterator iter = factories.iterator(); iter.hasNext();) {
 			FactoryWrapperAction action = (FactoryWrapperAction) iter.next();
 			if (action.isEnabled()) {

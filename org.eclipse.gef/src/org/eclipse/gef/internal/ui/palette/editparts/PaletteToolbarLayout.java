@@ -251,10 +251,10 @@ private void scaledLayout(IFigure parent) {
 		if (srcHeight == dstHeight) {
 			height = dstHeight;
 		} else if (srcHeight < dstHeight) {
-			height = (int)(progress * (float)(dstHeight - srcHeight)) + srcHeight;
+			height = (int)(progress * (dstHeight - srcHeight)) + srcHeight;
 			numGrowing++;
 		} else {
-			height = srcHeight - (int)(progress * (float)(srcHeight - dstHeight));
+			height = srcHeight - (int)(progress * (srcHeight - dstHeight));
 			numGrowing++;
 		}
 		totalHeight += height;

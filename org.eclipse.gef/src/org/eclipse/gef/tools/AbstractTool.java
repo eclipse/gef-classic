@@ -125,7 +125,8 @@ protected static final int MOUSE_BUTTON_ANY =
 private static final int DRAG_THRESHOLD = 5;
 private static final int FLAG_PAST_THRESHOLD = 1;
 private static final int FLAG_HOVER = 2;
-private static final int FLAG_UNLOAD = 4;{
+private static final int FLAG_UNLOAD = 4;
+{
 	setFlag(FLAG_UNLOAD, true);
 }
 private static final int FLAG_ACTIVE = 8;

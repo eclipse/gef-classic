@@ -95,7 +95,7 @@ public void deactivate() {
  * Erases the source feedback.
  */
 protected void eraseSourceFeedback() {
-	if (getFlag(FLAG_SOURCE_FEEBBACK) != true)
+	if (!getFlag(FLAG_SOURCE_FEEBBACK))
 		return;
 	setFlag(FLAG_SOURCE_FEEBBACK, false);
 	getConnectionEditPart().eraseSourceFeedback(getTargetRequest());
