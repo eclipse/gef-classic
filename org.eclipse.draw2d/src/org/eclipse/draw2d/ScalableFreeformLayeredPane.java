@@ -35,10 +35,6 @@ public Rectangle getClientArea(Rectangle rect) {
 	return rect;
 }
 
-public Rectangle getUnzoomedPreferredBounds() {
-	return getFreeformExtent();
-}
-
 /**
  * Returns the current zoom scale level.
  * @return the scale

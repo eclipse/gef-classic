@@ -1,6 +1,14 @@
+/*******************************************************************************
+ * Copyright (c) 2003 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials 
+ * are made available under the terms of the Common Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/cpl-v10.html
+ * 
+ * Contributors:
+ *     IBM Corporation - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.draw2d;
-
-import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
  * A figure that can be scaled.
@@ -20,10 +28,5 @@ double getScale();
  * @param scale the scale
  */
 void setScale(double scale);
-
-/**
- * @return	the preferred bounds without taking the zoom factor into account
- */
-Rectangle getUnzoomedPreferredBounds();
 
 }

@@ -129,11 +129,18 @@ protected void fireZoomChanged() {
 }
 
 protected double getFitHeightZoomLevel() {
-	Insets insets = getScalableFigure().getInsets();
+	IFigure fig = getScalableFigure();
+	Insets insets = fig.getInsets();
 	double viewportHeight = getViewport().getSize().height - insets.getHeight();
-	Rectangle figureBounds = getScalableFigure().getUnzoomedPreferredBounds()
-			.getCropped(insets).union(0, 0);
-	return Math.min(viewportHeight / figureBounds.height * zoom * multiplier, multiplier);
+	Rectangle figureBounds;
+	if (fig instanceof FreeformFigure) {
+		figureBounds = ((FreeformFigure)fig).getFreeformExtent().getCopy();
+	} else {
+		figureBounds = fig.getBounds().getCopy();
+		figureBounds.setSize(fig.getPreferredSize());
+	}
+	figureBounds.crop(insets).scale(1 / zoom).union(0, 0);
+	return Math.min(viewportHeight / figureBounds.height * multiplier, multiplier);
 }
 
 protected double getFitPageZoomLevel() {
@@ -141,11 +148,18 @@ protected double getFitPageZoomLevel() {
 }
 
 protected double getFitWidthZoomLevel() {
-	Insets insets = getScalableFigure().getInsets();
+	IFigure fig = getScalableFigure();
+	Insets insets = fig.getInsets();
 	double viewportWidth = getViewport().getSize().width - insets.getWidth();
-	Rectangle figureBounds = getScalableFigure().getUnzoomedPreferredBounds()
-			.getCropped(insets).union(0, 0);
-	return Math.min(viewportWidth / figureBounds.width * zoom * multiplier, multiplier);
+	Rectangle figureBounds;
+	if (fig instanceof FreeformFigure) {
+		figureBounds = ((FreeformFigure)fig).getFreeformExtent().getCopy();
+	} else {
+		figureBounds = fig.getBounds().getCopy();
+		figureBounds.setSize(fig.getPreferredSize());
+	}
+	figureBounds.crop(insets).scale(1 / zoom).union(0, 0);
+	return Math.min(viewportWidth / figureBounds.width * multiplier, multiplier);
 }
 
 /**
@@ -360,18 +374,19 @@ public void setZoomAnimationStyle(int style) {
 public void setZoomAsText(String zoomString) {
 	if (zoomString.equals(FIT_HEIGHT)) {
 		primSetZoom(getFitHeightZoomLevel() / multiplier);
-		viewport.getVerticalRangeModel().setValue(
+		viewport.getUpdateManager().performUpdate();
+		viewport.setViewLocation(viewport.getHorizontalRangeModel().getValue(), 
 				viewport.getVerticalRangeModel().getMinimum());
 	} else if (zoomString.equals(FIT_ALL)) {
 		primSetZoom(getFitPageZoomLevel() / multiplier);
-		viewport.getHorizontalRangeModel().setValue(
-				viewport.getHorizontalRangeModel().getMinimum());
-		viewport.getVerticalRangeModel().setValue(
+		viewport.getUpdateManager().performUpdate();
+		viewport.setViewLocation(viewport.getHorizontalRangeModel().getMinimum(), 
 				viewport.getVerticalRangeModel().getMinimum());
 	} else if (zoomString.equals(FIT_WIDTH)) {
 		primSetZoom(getFitWidthZoomLevel() / multiplier);
-		viewport.getHorizontalRangeModel().setValue(
-				viewport.getHorizontalRangeModel().getMinimum());
+		viewport.getUpdateManager().performUpdate();
+		viewport.setViewLocation(viewport.getHorizontalRangeModel().getMinimum(),
+				viewport.getVerticalRangeModel().getValue());
 	} else {
 		try {
 			//Trim off the '%'
