@@ -16,6 +16,7 @@ import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.*;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.swt.events.KeyEvent;
 
 /**
  * A Tool which selects multiple objects inside a rectangular area of a Graphical Viewer. 
@@ -241,6 +242,20 @@ protected boolean handleInvalidInput() {
 	eraseTargetFeedback();
 	eraseMarqueeFeedback();
 	return true;
+}
+
+/**
+ * Handles high-level processing of a key down event. 
+ * KeyEvents are forwarded to the current viewer's {@link KeyHandler}, 
+ * via {@link KeyHandler#keyPressed(KeyEvent)}.
+ */
+protected boolean handleKeyDown(KeyEvent e) {
+	if (super.handleKeyDown(e))
+		return true;
+	if (getCurrentViewer().getKeyHandler() != null
+		&& getCurrentViewer().getKeyHandler().keyPressed(e))
+		return true;
+	return false;		
 }
 
 private boolean isGraphicalViewer() {
