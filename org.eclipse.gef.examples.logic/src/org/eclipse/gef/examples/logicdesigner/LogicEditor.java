@@ -45,7 +45,7 @@ import org.eclipse.gef.ui.actions.*;
 import org.eclipse.gef.ui.parts.*;
 import org.eclipse.gef.ui.rulers.*;
 import org.eclipse.gef.ui.stackview.CommandStackInspectorPage;
-import org.eclipse.gef.ui.views.palette.DefaultPalettePage;
+import org.eclipse.gef.ui.views.palette.PaletteViewerPage;
 import org.eclipse.gef.ui.views.palette.PalettePage;
 
 import org.eclipse.gef.examples.logicdesigner.actions.IncrementDecrementAction;
@@ -449,7 +449,7 @@ public Object getAdapter(Class type){
 		return outlinePage;
 	}
 	if (type == PalettePage.class) {
-		return new DefaultPalettePage(getPaletteRoot(), getGraphicalViewer()) {
+		return new PaletteViewerPage(getPaletteRoot(), getGraphicalViewer()) {
 			protected void configurePaletteViewer() {
 				super.configurePaletteViewer();
 				getPaletteViewer().setCustomizer(new LogicPaletteCustomizer());
