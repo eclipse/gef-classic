@@ -237,7 +237,7 @@ protected abstract Command getMoveChildrenCommand(Request request);
 
 /**
  * Returns the <code>Command</code> to orphan a group of children. The contribution to
- * orphan might contain two parts, both of which are option. The first part is to
+ * orphan might contain two parts, both of which are optional. The first part is to
  * actually remove the children from their existing parent. Some application models will
  * perform an orphan implicitly when the children are added to their new parent. The
  * second part is to perform some adjustments on the remaining children. For example, a
