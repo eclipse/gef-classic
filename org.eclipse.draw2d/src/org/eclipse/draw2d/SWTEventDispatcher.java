@@ -145,9 +145,7 @@ public void dispatchKeyTraversed(TraverseEvent e) {
 		nextFigure = 
 				getFocusTraverseManager().getPreviousFocusableFigure(root, focusOwner);
 
-	if (nextFigure == null)
-		e.doit = true;	
-	else {
+	if (nextFigure != null) {
 		e.doit = false;	
 		setFocus(nextFigure);
 	}
