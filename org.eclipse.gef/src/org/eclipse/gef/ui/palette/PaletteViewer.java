@@ -35,22 +35,12 @@ public class PaletteViewer
 private class PreferenceListener
 	implements PropertyChangeListener
 {
-	private Font font = null;
-	void disposeFont() {
-		if (font != null) {
-			font.dispose();
-			font = null;
-		}
-	}
 	public void propertyChange(PropertyChangeEvent evt) {
 		String property = evt.getPropertyName();
 		EditPart root = getRootEditPart().getContents();
 		if (property.equals(PaletteViewerPreferences.PREFERENCE_FONT)) {
-			disposeFont();
-			font = new Font(Display.getCurrent(), 
-					getPaletteViewerPreferences().getFontData());
+			updateFont();
 			IFigure fig = ((GraphicalEditPart)root).getFigure();
-			fig.setFont(font);
 			fig.invalidateTree();
 			refreshAllEditParts(root);
 		} else if (property.equals(PaletteViewerPreferences.PREFERENCE_LAYOUT) 
@@ -82,6 +72,7 @@ private List paletteListeners = new ArrayList();
 private PaletteRoot paletteRoot = null;
 private PreferenceListener prefListener = new PreferenceListener();
 private PaletteViewerPreferences prefs = PREFERENCE_STORE;
+private Font font = null;
 
 public PaletteViewer() {
 	setEditDomain(new EditDomain());
@@ -96,6 +87,13 @@ public void addPaletteListener(PaletteListener paletteListener) {
 
 protected void createDefaultRoot() {
 	setRootEditPart(new PaletteRootEditPart());
+}
+
+private void disposeFont() {
+	if (font != null) {
+		font.dispose();
+		font = null;
+	}
 }
 
 /**
@@ -160,7 +158,7 @@ private ToolEntryEditPart getToolEntryEditPart(ToolEntry entry) {
  */
 protected void handleDispose(DisposeEvent e) {
 	super.handleDispose(e);
-	prefListener.disposeFont();
+	disposeFont();
 }
 
 /**
@@ -176,6 +174,7 @@ protected void hookControl() {
 		globalScrollbar ? FigureCanvas.ALWAYS : FigureCanvas.NEVER);
 	if (prefs != null)
 		prefs.addPropertyChangeListener(prefListener);
+	updateFont();
 }
 
 public void removePaletteListener(PaletteListener paletteListener) {
@@ -237,8 +236,20 @@ public void setPaletteViewerPreferences(PaletteViewerPreferences prefs) {
  */
 protected void unhookControl() {
 	super.unhookControl();
+	disposeFont();
 	if (prefs != null)
 		prefs.removePropertyChangeListener(prefListener);
+}
+
+private void updateFont() {
+	disposeFont();
+
+	if (getControl() == null || getControl().isDisposed()) {
+		return;
+	}
+	
+	font = new Font(Display.getCurrent(), getPaletteViewerPreferences().getFontData());
+	getControl().setFont(font);
 }
 
 }

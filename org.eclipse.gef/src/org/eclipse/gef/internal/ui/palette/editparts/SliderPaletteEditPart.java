@@ -12,8 +12,6 @@ package org.eclipse.gef.internal.ui.palette.editparts;
 
 import org.eclipse.draw2d.*;
 import org.eclipse.gef.palette.PaletteRoot;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.widgets.Display;
 
 public class SliderPaletteEditPart 
 	extends PaletteEditPart
@@ -28,7 +26,6 @@ public IFigure createFigure() {
 	figure.setOpaque(true);
 	figure.setForegroundColor(ColorConstants.listForeground);
 	figure.setBackgroundColor(ColorConstants.button);
-	figure.setFont(new Font(Display.getCurrent(), getPreferenceSource().getFontData()));
 	ToolbarLayout layout = new PaletteToolbarLayout();
 	figure.setLayoutManager(layout);
 	return figure;
