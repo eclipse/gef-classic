@@ -49,7 +49,8 @@ public void addDirtyRegion(IFigure figure, Rectangle rect) {
 }
 
 /**
- * Causes an update to occur at some itme, and the given runnable to be executed upon completion.
+ * Causes an update to occur at some time, and the given runnable to be executed
+ * following the update.
  * @since 3.1
  * @param run the runnable
  */
