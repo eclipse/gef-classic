@@ -9,10 +9,13 @@ import java.util.List;
 
 import org.eclipse.draw2d.FigureCanvas;
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.geometry.Point;
 
-import org.eclipse.gef.GraphicalViewer;
+import org.eclipse.gef.*;
+import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.editparts.ZoomManager;
+import org.eclipse.gef.tools.SimpleDragTracker;
 
 /**
  * @author Pratik Shah
@@ -66,6 +69,55 @@ public void deactivate() {
 }
 
 /* (non-Javadoc)
+ * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#getDragTracker(org.eclipse.gef.Request)
+ */
+public DragTracker getDragTracker(Request request) {
+	return new SimpleDragTracker() {
+		protected boolean handleButtonDown(int button) {
+			updateSourceRequest();
+			setCurrentCommand(getCommand());
+			executeCurrentCommand();
+			return true;
+		}
+		protected Command getCommand() {
+			/*
+			 * @TODO:Pratik    Externalize this string when this class is put in its
+			 * proper package.
+			 */
+			Command cmd = new Command("Create Guide") {
+				private Guide guide;
+				public boolean canUndo() {
+					return true;
+				}
+				public void execute() {
+					guide = new Guide(!getRuler().isHorizontal());
+					Point pt = getStartLocation();
+					getFigure().translateToRelative(pt);
+					int position = getRuler().isHorizontal() ? pt.x : pt.y;
+					ZoomManager zoom = (ZoomManager)diagramViewer
+							.getProperty(ZoomManager.class.toString());
+					if (zoom != null) {
+						position *= (zoom.getUIMultiplier() / zoom.getZoom());
+					}
+					guide.setPosition(position);
+					getRuler().addGuide(guide);
+				}
+				public void undo() {
+					getRuler().removeGuide(guide);
+				}
+			};
+			return cmd;
+		}
+		protected String getCommandName() {
+			return REQ_CREATE;
+		}
+		protected String getDebugName() {
+			return "Guide creation"; //$NON-NLS-1$
+		}
+	};
+}
+
+/* (non-Javadoc)
  * @see org.eclipse.gef.editparts.AbstractEditPart#getModelChildren()
  */
 protected List getModelChildren() {
@@ -78,6 +130,17 @@ protected Ruler getRuler() {
 
 protected RulerFigure getRulerFigure() {
 	return (RulerFigure)getFigure();
+}
+
+/* (non-Javadoc)
+ * @see org.eclipse.gef.EditPart#getTargetEditPart(org.eclipse.gef.Request)
+ */
+public EditPart getTargetEditPart(Request request) {
+	if (request.getType().equals(REQ_MOVE)) {
+		return this;
+	} else {
+		return super.getTargetEditPart(request);
+	}
 }
 
 /* (non-Javadoc)
