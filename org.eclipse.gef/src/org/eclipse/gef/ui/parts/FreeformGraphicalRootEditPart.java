@@ -34,6 +34,7 @@ public class FreeformGraphicalRootEditPart
 protected EditPart contents;
 protected EditPartViewer viewer;
 private LayeredPane innerLayers;
+private LayeredPane printableLayers;
 
 protected void createEditPolicies(){}
 
@@ -46,11 +47,17 @@ protected IFigure createFigure() {
 }
 
 protected void createLayers(LayeredPane layeredPane) {
-	layeredPane.add(new FreeformLayer(), PRIMARY_LAYER);
-	layeredPane.add(new ConnectionLayer(), CONNECTION_LAYER);
+	printableLayers = new FreeformLayeredPane();
+	createPrintableLayers(printableLayers);
+	layeredPane.add(printableLayers, PRINTABLE_LAYERS);
 	layeredPane.add(new FreeformLayer(), HANDLE_LAYER);
 	layeredPane.add(new FeedbackLayer(), FEEDBACK_LAYER);
 }
+
+protected void createPrintableLayers(LayeredPane layeredPane) {
+	layeredPane.add(new FreeformLayer(), PRIMARY_LAYER);
+	layeredPane.add(new ConnectionLayer(), CONNECTION_LAYER);
+}	
 
 /** 
  * Doesnt provide any command support, returns an
@@ -85,6 +92,12 @@ public DragTracker getDragTracker(Request req) {
  * Returns the layer for the given key
  */
 public IFigure getLayer(Object key){
+	if (innerLayers == null)
+		return null;
+		
+	IFigure layer = printableLayers.getLayer(key);
+	if (layer != null)
+		return layer;
 	return innerLayers.getLayer(key);
 }
 

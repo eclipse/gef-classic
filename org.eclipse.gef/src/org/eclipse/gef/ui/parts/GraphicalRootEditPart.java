@@ -34,20 +34,24 @@ public class GraphicalRootEditPart
 protected EditPart contents;
 protected EditPartViewer viewer;
 private LayeredPane innerLayers;
+private LayeredPane printableLayers;
 
 protected void createEditPolicies(){}
 
 protected IFigure createFigure() {
 	innerLayers = new LayeredPane();
-
+	printableLayers = new LayeredPane();
+	
 	Layer layer = new Layer();
 	layer.setLayoutManager(new StackLayout());
-	innerLayers.add(layer, PRIMARY_LAYER);
+	printableLayers.add(layer, PRIMARY_LAYER);
 
 	layer = new ConnectionLayer();
 	layer.setPreferredSize(new Dimension(5,5));
-	innerLayers.add(layer, CONNECTION_LAYER);
+	printableLayers.add(layer, CONNECTION_LAYER);
 
+	innerLayers.add(printableLayers, PRINTABLE_LAYERS);
+	
 	layer = new Layer();
 	layer.setPreferredSize(new Dimension(5,5));
 	innerLayers.add(layer, HANDLE_LAYER);
@@ -89,6 +93,10 @@ public DragTracker getDragTracker(Request req) {
 public IFigure getLayer(Object key){
 	if (innerLayers == null)
 		return null;
+	
+	IFigure layer = printableLayers.getLayer(key);
+	if (layer != null)
+		return layer;	
 	return innerLayers.getLayer(key);
 }
 
