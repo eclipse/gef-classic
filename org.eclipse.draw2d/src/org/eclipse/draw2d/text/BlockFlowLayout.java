@@ -148,6 +148,8 @@ protected void flush() {
  * @see FlowContainerLayout#preLayout()
  */
 protected void preLayout() {
+	setContinueOnSameLine(false);
+	setConsumeSpaceOnNewLine(false);
 	blockBox = getBlockFlow().getBlockBox();
 	setupBlock();
 	//Probably could setup current and previous line here, or just previous
