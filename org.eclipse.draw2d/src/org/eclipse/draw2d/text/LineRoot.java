@@ -53,7 +53,7 @@ private void buildBidiTree(FlowBox box, BidiLevelNode node, List branches) {
 		List children = ((LineBox)box).getFragments();
 		for (int i = 0; i < children.size(); i++)
 			buildBidiTree((FlowBox)children.get(i), node, branches);
-		if (!(box instanceof LineRoot))
+		if (box != this)
 			branches.add(box);
 	} else {
 		ContentBox leafBox = (ContentBox)box;
