@@ -5,6 +5,10 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Dimension;
 
 /**
+ * The dummy layout class does nothing during normal layouts.  The Graph layout is
+ * entirely performed in one place: {@link GraphLayoutManager}, on the diagram's figure.
+ * During animation, THIS layout will playback the intermediate steps between the two
+ * invocations of the graph layout.
  * @author hudsonr
  */
 public class DummyLayout extends AbstractLayout {
