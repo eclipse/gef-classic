@@ -21,6 +21,7 @@ import org.eclipse.jface.util.Assert;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2d.text.CaretInfo;
 import org.eclipse.draw2d.text.TextFlow;
 
 import org.eclipse.gef.DragTracker;
@@ -61,12 +62,10 @@ public void deactivate() {
 		FontCache.checkIn(localFont);
 }
 
-public Rectangle getCaretPlacement(int offset, boolean trailing) {
+public CaretInfo getCaretPlacement(int offset, boolean trailing) {
 	Assert.isTrue(offset <= getLength());
 
-	Rectangle result = getTextFlow().getCaretPlacement(offset, trailing);
-	getFigure().translateToAbsolute(result);
-	return result;
+	return getTextFlow().getCaretPlacement(offset, trailing);
 }
 
 public DragTracker getDragTracker(Request request) {
@@ -93,7 +92,7 @@ public TextLocation getNextLocation(CaretSearch search) {
 		case CaretSearch.LINE_BOUNDARY:
 			if (!search.isRecursive)
 				break;
-			where.y = search.y;
+			where.y = search.baseline;
 			getFigure().translateToRelative(where);
 			if (search.isForward)
 				offset = getTextFlow().getLastOffsetForLine(where.y);
@@ -134,7 +133,7 @@ public TextLocation getNextLocation(CaretSearch search) {
 			if (!search.isRecursive)
 				break;
 			where.x = search.x;
-			where.y = search.y;
+			where.y = search.baseline;
 			getFigure().translateToRelative(where);
 
 			offset = getTextFlow().getNextOffset(where, search.isForward);
@@ -143,12 +142,16 @@ public TextLocation getNextLocation(CaretSearch search) {
 			return new TextLocation(this, offset);
 		case CaretSearch.WORD_BOUNDARY:
 			String text = getTextFlow().getText();
+			int length = text.length();
 			int referenceOffset = (search.where == null) ? 0 : search.where.offset; 
-			if (referenceOffset <= getLength()) {
+			if (referenceOffset <= length) {
 				BreakIterator iter = BreakIterator.getWordInstance();
 				iter.setText(text);
 				if (search.isForward) {
-					offset = iter.following(referenceOffset);
+					if (referenceOffset < length)
+						offset = iter.following(referenceOffset);
+					else
+						offset = BreakIterator.DONE;
 				} else {
 					if (referenceOffset == text.length()) {
 						iter.last();
@@ -159,6 +162,8 @@ public TextLocation getNextLocation(CaretSearch search) {
 				if (offset != BreakIterator.DONE)
 					return new TextLocation(this, offset);
 			}
+			if (search.isRecursive)
+				return null;
 			return getTextParent().getNextLocation(search);
 	}
 	return ((TextualEditPart)getParent()).getNextLocation(search);

@@ -62,24 +62,24 @@ static final boolean IS_CARBON = "carbon".equals(SWT.getPlatform()); //$NON-NLS-
 private static final int MODE_BS = 2;
 private static final int MODE_DEL = 3;
 private static final int MODE_TYPING = 1;
-
-private final GraphicalTextViewer textViewer;
-private final StyleService styleService;
-private StyleListener listener;
-private AppendableCommand pendingCommand;
-private List styleKeys = new ArrayList();
-private List styleValues = new ArrayList();
-private int textInputMode;
 private CommandStackListener commandListener = new CommandStackListener() {
 	public void commandStackChanged(EventObject event) {
 		fireStyleChanges();
 	}
 };
+private StyleListener listener;
+private AppendableCommand pendingCommand;
 private ISelectionChangedListener selectionListener = new ISelectionChangedListener() {
 	public void selectionChanged(SelectionChangedEvent event) {
 		fireStyleChanges();
 	}
 }; 
+private List styleKeys = new ArrayList();
+private final StyleService styleService;
+private List styleValues = new ArrayList();
+private int textInputMode;
+
+private final GraphicalTextViewer textViewer;
 
 /**
  * @since 3.1
@@ -316,7 +316,8 @@ private void doSelect(int type, boolean isForward, boolean appendSelection) {
 	search.isForward = isForward;
 	search.type = type;
 	search.x = caretBounds.x;
-	search.y = caretBounds.y;
+	//$TODO y coord needs to be the baseline location
+	search.baseline = caretBounds.y + caretBounds.height / 2;
 	search.where = getTextualViewer().getCaretLocation();
 	
 	TextLocation newCaretLocation = caretLocation.part.getNextLocation(search);
