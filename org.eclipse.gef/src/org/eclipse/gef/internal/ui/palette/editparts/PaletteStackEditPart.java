@@ -188,7 +188,7 @@ public IFigure createFigure() {
 			Rectangle rect = getBounds().getCopy();
 
 			graphics.translate(getLocation());
-			graphics.setBackgroundColor(ColorConstants.black);
+			graphics.setBackgroundColor(ColorConstants.listForeground);
 			
 			// fill the corner arrow
 			int[] points = new int[6];
@@ -329,7 +329,7 @@ protected void refreshChildren() {
  */
 public void showTargetFeedback(Request request) {
 	// if menu is showing, don't show feedback. this is a fix
-	// for the occashion when show is called after forced erase
+	// for the occasion when show is called after forced erase
 	if (menu != null && !menu.isDisposed() && menu.isVisible())
 		return;
 		
@@ -450,7 +450,7 @@ public void paint(Graphics graphics) {
 	Rectangle rect = getBounds().getCopy();
 
 	graphics.translate(getLocation());
-	graphics.setBackgroundColor(ColorConstants.black);
+	graphics.setBackgroundColor(ColorConstants.listForeground);
 	
 	// fill the arrow
 	int[] points = new int[8];
