@@ -32,7 +32,7 @@ import org.eclipse.gef.commands.Command;
  * feedback, and most importantly, {@link #getCommand(Request) obtaining} commands. Only 
  * {@link Command Commands} should change the model.
  * <p>
- * IMPORTANT: This interface is <EM>not<EM> intended to be implemented by clients. 
+ * IMPORTANT: This interface is <EM>not</EM> intended to be implemented by clients. 
  * Clients should inherit from {@link org.eclipse.gef.editparts.AbstractEditPart}.  New
  * methods may be added in the future.
  */
@@ -194,7 +194,7 @@ RootEditPart getRoot();
 int getSelected();
 
 /**
- * Return the <code>EditPart<code> that should be used as the <i>target</i> for the
+ * Return the <code>EditPart</code> that should be used as the <i>target</i> for the
  * specified <code>Request</code>. Tools will generally call this method with the mouse
  * location so that the receiver can implement drop targeting. Typically, if this EditPart
  * is not the requested target (for example, this EditPart is not a composite), it will
