@@ -85,14 +85,14 @@ static {
 	ICON_MATCH_HEIGHT = createDescriptor("icons/sizevt.gif"); //$NON-NLS-1$
 }
 
-static private Image create(String filename){
+private static Image create(String filename) {
 	return ImageDescriptor.createFromFile(
 		InternalImages.class,
 		filename).createImage();
 }
 
-static private ImageDescriptor createDescriptor(String filename){
-	return ImageDescriptor.createFromFile(InternalImages.class,filename);
+private static ImageDescriptor createDescriptor(String filename) {
+	return ImageDescriptor.createFromFile(InternalImages.class, filename);
 }
 
 } 	
