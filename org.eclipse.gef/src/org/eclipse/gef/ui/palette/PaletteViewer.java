@@ -18,7 +18,6 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.draw2d.FigureCanvas;
-import org.eclipse.draw2d.IFigure;
 
 import org.eclipse.gef.*;
 import org.eclipse.gef.internal.ui.palette.editparts.PaletteRootEditPart;
@@ -40,8 +39,6 @@ private class PreferenceListener
 		EditPart root = getRootEditPart().getContents();
 		if (property.equals(PaletteViewerPreferences.PREFERENCE_FONT)) {
 			updateFont();
-			IFigure fig = ((GraphicalEditPart)root).getFigure();
-			fig.invalidateTree();
 			refreshAllEditParts(root);
 		} else if (property.equals(PaletteViewerPreferences.PREFERENCE_LAYOUT) 
 				|| property.equals(PaletteViewerPreferences.PREFERENCE_AUTO_COLLAPSE)
