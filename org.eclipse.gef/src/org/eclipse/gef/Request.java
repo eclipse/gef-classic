@@ -7,35 +7,42 @@ package org.eclipse.gef;
  */
 
 /**
- Encapsulates the information EditParts need to perform various functions.
- Using specific Request types when communicating with EditParts defines a
- clear contract between the Requester and the receiver of the Request.
+ * An Object used to communicate with EditParts. Request encapsulates the information
+ * EditParts need to perform various functions. Requests are used for obtaining commands,
+ * showing feedback, and performing generic operations.
  */
 public class Request {
 
 private Object type;
 
-public Request(){}
+/**
+ * Constructs an empty Request */
+public Request() { }
 
 /**
- * Constructs a Request with the type <B>type</b>
+ * Constructs a Request with the specified <i>type</i>
+ * @param type the Request type
+ * @see #getType()
  */
-public Request(Object type){
+public Request(Object type) {
 	setType(type);
 }
 
 /**
- * returns the type of the request
+ * Returns the type of the request. The type is often used as a quick way to filter
+ * recognized Requests. Once the type is identified, the Request is usually cast to a more
+ * specific subclass containing additional data.
+ * @return the Request <i>type</i>
  */
-public Object getType(){
+public Object getType() {
 	return type;
 }
 
 /**
- * Sets the type of the request
- * @param type the new Request type
+ * Sets the type of the Request.
+ * @param type the Request type
  */
-public void setType(Object type){
+public void setType(Object type) {
 	this.type = type;
 }
 
