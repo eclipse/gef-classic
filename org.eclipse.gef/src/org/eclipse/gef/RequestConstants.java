@@ -41,13 +41,6 @@ String REQ_RECONNECT_TARGET  = "Reconnection target";//$NON-NLS-1$
 String REQ_MOVE_BENDPOINT    = "move bendpoint";//$NON-NLS-1$
 
 /**
- * Constant used to identify that an existing bendpoint is being deleted by the User. This
- * generally happens when the user is moving an existing bendpoint into a location that
- * indicates that the bendpoint is no longer needed.
- */
-String REQ_DELETE_BENDPOINT  = "delete bendpoint";//$NON-NLS-1$
-
-/**
  * Constant used to identify that a bendpoint is being inserted by the User.
  */
 String REQ_CREATE_BENDPOINT  = "create bendpoint";//$NON-NLS-1$

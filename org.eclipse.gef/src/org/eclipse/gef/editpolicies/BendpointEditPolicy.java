@@ -109,8 +109,7 @@ protected void eraseConnectionFeedback(BendpointRequest request) {
 /** * @see org.eclipse.gef.EditPolicy#eraseSourceFeedback(Request) */
 public void eraseSourceFeedback(Request request) {
 	if (REQ_MOVE_BENDPOINT.equals(request.getType())
-	  || REQ_CREATE_BENDPOINT.equals(request.getType())
-	  || REQ_DELETE_BENDPOINT.equals(request.getType()))
+	  || REQ_CREATE_BENDPOINT.equals(request.getType()))
 		eraseConnectionFeedback((BendpointRequest) request);
 }
 
