@@ -4,6 +4,8 @@ import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.draw2d.parts.Thumbnail;
+
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -18,14 +20,16 @@ public static void main(String[] args) {
 	Display display = new Display();
 	
 	mainShell = new Shell(display);
+	mainShell.setText("Source Shell");
 	mainShell.setLayout(new FillLayout());
 	FigureCanvas mainCanvas = new FigureCanvas(mainShell);
 	mainCanvas.setContents(getContents());
 	
-	overviewShell = new Shell(display);
+	overviewShell = new Shell(display, SWT.TITLE| SWT.RESIZE | SWT.NO_REDRAW_RESIZE | SWT.NO_BACKGROUND);
+	overviewShell.setText("Overview Shell");
 	overviewShell.setLayout(new FillLayout());
-	FigureCanvas overviewCanvas = new FigureCanvas(overviewShell);
-	overviewCanvas.setContents(createThumbnail(getContents()));
+	LightweightSystem overviewLWS = new LightweightSystem(overviewShell);
+	overviewLWS.setContents(createThumbnail(getContents()));
 
 	mainShell.setSize(600, 600);
 	mainShell.open();
@@ -99,6 +103,7 @@ private static Figure createContents() {
 
 protected static Figure createThumbnail(Figure source) {
 	Thumbnail thumbnail = new Thumbnail();
+	thumbnail.setBorder(new GroupBoxBorder("Overview Figure"));
 	thumbnail.setSource(source);
 	return thumbnail;
 }
