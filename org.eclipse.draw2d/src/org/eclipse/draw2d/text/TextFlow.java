@@ -58,7 +58,7 @@ protected void paintFigure(Graphics g) {
 
 /**
  * Sets the string being displayed. Causes a <code>revalidate()</code> to occur.
- * @param s the new String */
+ * @param s The new String.  It cannot be <code>null</code>. */
 public void setText(String s) {
 	text = s;
 	revalidate();
