@@ -110,12 +110,9 @@ public static int getTextForSpace(TextFragmentBox frag, String string, Font font
 						&& getStringExtents(string.substring(0, max), font).width 
 						<= availableWidth)
 				result = max;
-			else if (breakItr.isBoundary(Math.min(min, string.length() - 1))) {
-				if (min != string.length() && Character.isWhitespace(string.charAt(max)))
-					result = max;
-				else
-					result = min;
-			} else
+			else if (breakItr.isBoundary(Math.min(max, string.length() - 1)))
+				result = max;
+			else
 				result = Math.max(MIN, breakItr.preceding(Math.min(max, 
 																string.length() - 1)));
 			frag.length = result;
@@ -128,13 +125,10 @@ public static int getTextForSpace(TextFragmentBox frag, String string, Font font
 						&& getStringExtents(string.substring(0, max), font).width 
 						<= availableWidth)
 				result = max;
-			else if (breakItr.isBoundary(Math.min(min, string.length() - 1))) {
-				if (min != string.length() && Character.isWhitespace(string.charAt(max)))
-					result = max;
-				else
-					result = min;
-			} else 
-				result = breakItr.preceding(Math.min(max + 1, string.length() - 1));
+			else if (breakItr.isBoundary(Math.min(max, string.length() - 1)))
+				result = max;
+			else 
+				result = breakItr.preceding(Math.min(max, string.length() - 1));
 			if (result <= 0)
 				result = min;
 			frag.length = result;
@@ -152,12 +146,10 @@ public static int getTextForSpace(TextFragmentBox frag, String string, Font font
 				result = frag.length = max;
 				setupFragment(frag, font, string);
 				return result;
-			} else if (breakItr.isBoundary(Math.min(min, string.length() - 1))) {
-				if (min != string.length() && Character.isWhitespace(string.charAt(max)))
-					result = max;
-				else
-					result = min;
-			} else
+			}
+			else if (breakItr.isBoundary(Math.min(max, string.length() - 1)))
+				result = max;
+			else
 				result = breakItr.preceding(Math.min(max, string.length() - 1));
 			if (result <= 0) {
 				ELLIPSIS_SIZE = FigureUtilities.getStringExtents(TextFlow.ELLIPSIS, font);
