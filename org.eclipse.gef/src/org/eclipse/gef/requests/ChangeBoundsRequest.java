@@ -23,11 +23,6 @@ public class ChangeBoundsRequest
 	implements DropRequest
 {
 
-public static final String VERTICAL_GUIDE = "$vertical guide";
-public static final String VERTICAL_ANCHOR = "$vertical anchor";
-public static final String HORIZONTAL_GUIDE = "$horz guide";
-public static final String HORIZONTAL_ANCHOR = "$horz anchor";	
-	
 private Point moveDelta = new Point();
 private Dimension resizeDelta = new Dimension();
 private int resizeDirection;

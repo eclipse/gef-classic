@@ -19,8 +19,9 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
 
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
+import org.eclipse.gef.examples.logicdesigner.edit.SnapToGuides;
+import org.eclipse.gef.examples.logicdesigner.model.Guide;
 import org.eclipse.gef.examples.logicdesigner.model.LogicSubpart;
-import org.eclipse.gef.examples.logicdesigner.rulers.Guide;
 
 public class SetConstraintCommand
 	extends org.eclipse.gef.commands.Command
@@ -68,14 +69,14 @@ public void execute() {
 	 * the source edit part will be un-attached from all guides.
 	 */
 	if (extendedData != null) {
-		newHGuide = (Guide)extendedData.get(ChangeBoundsRequest.HORIZONTAL_GUIDE);
+		newHGuide = (Guide)extendedData.get(SnapToGuides.HORIZONTAL_GUIDE);
 		if (newHGuide != null) {
-			newHAlignment = ((Integer)extendedData.get(ChangeBoundsRequest.HORIZONTAL_ANCHOR))
+			newHAlignment = ((Integer)extendedData.get(SnapToGuides.HORIZONTAL_ANCHOR))
 					.intValue();		
 		}
-		newVGuide = (Guide)extendedData.get(ChangeBoundsRequest.VERTICAL_GUIDE);
+		newVGuide = (Guide)extendedData.get(SnapToGuides.VERTICAL_GUIDE);
 		if (newVGuide != null) {
-			newVAlignment = ((Integer)extendedData.get(ChangeBoundsRequest.VERTICAL_ANCHOR))
+			newVAlignment = ((Integer)extendedData.get(SnapToGuides.VERTICAL_ANCHOR))
 					.intValue();		
 		}
 	}

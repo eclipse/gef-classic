@@ -22,7 +22,6 @@ import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.draw2d.PositionConstants;
 
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
-import org.eclipse.gef.examples.logicdesigner.rulers.Ruler;
 
 public class LogicDiagram
 	extends LogicSubpart

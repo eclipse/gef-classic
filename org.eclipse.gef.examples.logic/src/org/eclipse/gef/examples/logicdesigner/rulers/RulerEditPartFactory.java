@@ -5,6 +5,8 @@ package org.eclipse.gef.examples.logicdesigner.rulers;
 
 import org.eclipse.gef.*;
 
+import org.eclipse.gef.examples.logicdesigner.model.*;
+
 /**
  * @author Pratik Shah
  */

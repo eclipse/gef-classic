@@ -13,13 +13,15 @@ import org.eclipse.draw2d.geometry.*;
 import org.eclipse.gef.editparts.ZoomListener;
 import org.eclipse.gef.editparts.ZoomManager;
 
+import org.eclipse.gef.examples.logicdesigner.model.Ruler;
+
 /**
  * @author Pratik Shah
  */
 public class RulerFigure
 	extends Figure
 {
-	
+
 /**
  * These fields allow the client to customize the look of the ruler.
  */
@@ -30,7 +32,7 @@ public int minPixelsBetweenMarks = 4;
 public int minPixelsBetweenMajorMarks = 35;
 
 protected Transposer transposer = new Transposer();
-protected ZoomManager zoom;
+protected ZoomManager zoomManager;
 
 /*
  * This is an artificial border.  When asked for the preferred size, the figure adds 
@@ -68,8 +70,8 @@ protected double getDPU() {
 				dpu = dpu / 2.54;
 			}
 		}
-		if (zoom != null) {
-			dpu = dpu * zoom.getZoom() / zoom.getUIMultiplier();
+		if (zoomManager != null) {
+			dpu = dpu * zoomManager.getZoom() / zoomManager.getUIMultiplier();
 		}
 	}
 	return dpu;
@@ -271,7 +273,7 @@ protected void paintFigure(Graphics graphics) {
 				graphics.fillRectangle(forbiddenZone);
 				graphics.drawText(num, textLocation);
 			} else {
-				Image numImage = ImageUtilities.getRotatedLeft(num, getFont(), 
+				Image numImage = ImageUtilities.createRotatedImageOfString(num, getFont(), 
 						getForegroundColor(), getBackgroundColor());
 				Point textLocation = new Point(clippedBounds.x + textMargin,
 						y - (numImage.getBounds().height / 2));
@@ -339,13 +341,13 @@ public void setUnit(int newUnit) {
 }
 
 public void setZoomManager(ZoomManager manager) {
-	if (zoom != manager) {
-		if (zoom != null) {
-			zoom.removeZoomListener(zoomListener);
+	if (zoomManager != manager) {
+		if (zoomManager != null) {
+			zoomManager.removeZoomListener(zoomListener);
 		}
-		zoom = manager;
-		if (zoom != null) {
-			zoom.addZoomListener(zoomListener);
+		zoomManager = manager;
+		if (zoomManager != null) {
+			zoomManager.addZoomListener(zoomListener);
 		}
 	}
 }

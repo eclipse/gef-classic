@@ -10,12 +10,18 @@ import org.eclipse.draw2d.geometry.*;
 import org.eclipse.gef.SnapToStrategy;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
 
-import org.eclipse.gef.examples.logicdesigner.rulers.Guide;
+import org.eclipse.gef.examples.logicdesigner.model.Guide;
 
 /**
  * @author Randy Hudson
  */
 public class SnapToGuides implements SnapToStrategy {
+
+	
+public static final String VERTICAL_GUIDE = "vertical guide";
+public static final String HORIZONTAL_GUIDE = "horizontal guide";
+public static final String VERTICAL_ANCHOR = "vertical attachment";
+public static final String HORIZONTAL_ANCHOR = "horizontal attachment";
 
 private static final double THRESHOLD = 5.01;
 private LogicDiagramEditPart diagramEditPart;
@@ -58,10 +64,8 @@ private double getCorrectionFor(Guide[] guides, double value, Map extendedData,
 		
 		magnitude = Math.abs(value - offset);
 		if (magnitude < resultMag) {
-			extendedData.put(vert ? ChangeBoundsRequest.VERTICAL_GUIDE 
-			                      : ChangeBoundsRequest.HORIZONTAL_GUIDE, guides[i]);
-			extendedData.put(vert ? ChangeBoundsRequest.VERTICAL_ANCHOR 
-			                : ChangeBoundsRequest.HORIZONTAL_ANCHOR, new Integer(side));
+			extendedData.put(vert ? VERTICAL_GUIDE : HORIZONTAL_GUIDE, guides[i]);
+			extendedData.put(vert ? VERTICAL_ANCHOR : HORIZONTAL_ANCHOR, new Integer(side));
 			resultMag = magnitude;
 			result = offset - value;
 		}

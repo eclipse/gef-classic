@@ -21,7 +21,6 @@ import org.eclipse.ui.views.properties.PropertyDescriptor;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
-import org.eclipse.gef.examples.logicdesigner.rulers.Guide;
 
 abstract public class LogicSubpart
 	extends LogicElement

@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner.model;
 
+import org.eclipse.jface.viewers.ICellEditorValidator;
+import org.eclipse.ui.views.properties.*;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertySource;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
@@ -25,10 +27,26 @@ public static String ID_HEIGHT = "height";//$NON-NLS-1$
 protected static IPropertyDescriptor[] descriptors;
 
 static{
-	descriptors = new IPropertyDescriptor[] {
-		new TextPropertyDescriptor(ID_WIDTH,LogicMessages.DimensionPropertySource_Property_Width_Label),
-		new TextPropertyDescriptor(ID_HEIGHT,LogicMessages.DimensionPropertySource_Property_Height_Label)
-	};
+	PropertyDescriptor widthProp =
+		new TextPropertyDescriptor(
+			ID_WIDTH,
+			LogicMessages.DimensionPropertySource_Property_Width_Label);
+	widthProp.setValidator(new ICellEditorValidator() {
+		public String isValid(Object value) {
+			try {
+				new Integer((String)value);
+				return null;
+			} catch (NumberFormatException exc) {
+				return "Not a number";
+			}
+		}
+	});
+	descriptors =
+		new IPropertyDescriptor[] {
+			widthProp,
+			new TextPropertyDescriptor(
+				ID_HEIGHT,
+				LogicMessages.DimensionPropertySource_Property_Height_Label)};
 }
 
 protected Dimension dimension = null;

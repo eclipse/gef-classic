@@ -14,6 +14,8 @@ import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.ui.parts.GraphicalViewerKeyHandler;
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 
+import org.eclipse.gef.examples.logicdesigner.model.*;
+
 /**
  * @author Pratik Shah
  */

@@ -20,6 +20,7 @@ import org.eclipse.gef.requests.ChangeBoundsRequest;
 import org.eclipse.gef.rulers.GuideFigure;
 import org.eclipse.gef.tools.DragEditPartsTracker;
 
+import org.eclipse.gef.examples.logicdesigner.model.*;
 import org.eclipse.gef.examples.logicdesigner.model.LogicSubpart;
 
 /**

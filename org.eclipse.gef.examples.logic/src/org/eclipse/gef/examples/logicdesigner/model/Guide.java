@@ -1,14 +1,13 @@
 /*
  * Created on Oct 24, 2003
  */
-package org.eclipse.gef.examples.logicdesigner.rulers;
+package org.eclipse.gef.examples.logicdesigner.model;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import java.util.*;
 
-import org.eclipse.gef.examples.logicdesigner.model.LogicSubpart;
 
 /**
  * @author Pratik Shah

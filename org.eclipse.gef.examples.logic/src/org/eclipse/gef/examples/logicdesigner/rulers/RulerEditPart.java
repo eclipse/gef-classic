@@ -16,6 +16,8 @@ import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.tools.SimpleDragTracker;
 
+import org.eclipse.gef.examples.logicdesigner.model.*;
+
 /**
  * @author Pratik Shah
  */
