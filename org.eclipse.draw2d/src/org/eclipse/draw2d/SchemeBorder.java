@@ -175,7 +175,7 @@ public static class Scheme {
 public static interface SCHEMES {
 	
 	/** Schemes used for shadow and highlight effects **/
-	public Scheme
+	Scheme
 		BUTTON_CONTRAST = new Scheme(
 			new Color[]{button, buttonLightest},
 			DARKEST_DARKER
