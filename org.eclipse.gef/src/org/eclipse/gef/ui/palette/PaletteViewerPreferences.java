@@ -31,113 +31,112 @@ public interface PaletteViewerPreferences {
  * <br>
  * Indicates that containers should always auto-collapse.
  */
-public static final int
-	COLLAPSE_ALWAYS = 2;
+int COLLAPSE_ALWAYS = 2;
+
 /**
  * This is a constant for one of the auto-collapse options.
  * <br>
  * Indicates that containers should never auto-collapse.
  */
-public static final int
-	COLLAPSE_NEVER  = 1;
+int COLLAPSE_NEVER = 1;
+
 /**
  * This is a constant for one of the auto-collapse options.
  * <br>
  * Indicates that containers should auto-collapse only when there is not enough room on
  * the palette.  This is the default auto-collapse setting.
  */
-public static final int
-	COLLAPSE_AS_NEEDED = 0;
+int COLLAPSE_AS_NEEDED = 0;
+
 /**
  * This is a constant for one of the layout options.
  * <br>
  * Indicates that the palette should be displayed in the columns mode.
  */
-public static final int
-	LAYOUT_COLUMNS   = 1;
+int LAYOUT_COLUMNS = 1;
+
 /**
  * @deprecated	Use LAYOUT_COLUMNS instead.
  */
-public static final int
-	LAYOUT_FOLDER    = LAYOUT_COLUMNS;
+int LAYOUT_FOLDER = LAYOUT_COLUMNS;
+
 /**
  * This is a constant for one of the layout options.
  * <br>
  * Indicates that the palette should be displayed in the list mode.
  * This is the default layout setting.
  */
-public static final int
-	LAYOUT_LIST     = 0;
+int LAYOUT_LIST = 0;
+
 /**
  * This is a constant for one of the layout options.
  * <br>
  * Indicates that the palette should be displayed in the icons only mode.
  */
-public static final int
-	LAYOUT_ICONS    = 2;
+int LAYOUT_ICONS = 2;
+
 /**
  * This is a constant for one of the layout options.
  * <br>
  * Indicates that the palette should be displayed in the details mode.
  */
-public static final int
-	LAYOUT_DETAILS   = 3;
+int LAYOUT_DETAILS   = 3;
+
 /**
  * Property name for the layout setting.  If the PropertyChangeEvent fired
  * has this property name, it means that the layout setting was changed.
  */
-public static final String
-	PREFERENCE_LAYOUT             = "Layout Setting"; //$NON-NLS-1$
+String PREFERENCE_LAYOUT = "Layout Setting"; //$NON-NLS-1$
+
 /**
  * Property name for the auto-collapse setting.  If the PropertyChangeEvent 
  * fired has this property name, it means that the auto-collapse setting 
  * was changed.
  */
-public static final String
-	PREFERENCE_AUTO_COLLAPSE      = "Auto-Collapse Setting"; //$NON-NLS-1$
+String PREFERENCE_AUTO_COLLAPSE = "Auto-Collapse Setting"; //$NON-NLS-1$
+
 /**
  * Property name for the large icon setting for columns layout.  If the PropertyChangeEvent
  * fired has this property name, it means that the large icon setting was changed for
  * columns layout.  Large icons are default.
  */
-public static final String
-	PREFERENCE_COLUMNS_ICON_SIZE  = "Use Large Icons - Columns"; //$NON-NLS-1$
+String PREFERENCE_COLUMNS_ICON_SIZE  = "Use Large Icons - Columns"; //$NON-NLS-1$
+
 /**
  * @deprecated	Use PREFERENCE_COLUMNS_ICON_SIZE instead.
  */
-public static final String
-	PREFERENCE_FOLDER_ICON_SIZE   = PREFERENCE_COLUMNS_ICON_SIZE;
+String PREFERENCE_FOLDER_ICON_SIZE   = PREFERENCE_COLUMNS_ICON_SIZE;
+
 /**
  * Property name for the large icon setting for list layout.  If the PropertyChangeEvent
  * fired has this property name, it means that the large icon setting was changed for
  * list layout.  Small icons are default.
  */
-public static final String
-	PREFERENCE_LIST_ICON_SIZE     = "Use Large Icons - List"; //$NON-NLS-1$
+String PREFERENCE_LIST_ICON_SIZE = "Use Large Icons - List"; //$NON-NLS-1$
+
 /**
  * Property name for the large icon setting for icons only layout.  If the
  * PropertyChangeEvent fired has this property name, it means that the large icon setting
  * was changed for icons only layout.  Large icons are default.
  */
-public static final String
-	PREFERENCE_ICONS_ICON_SIZE    = "Use Large Icons - Icons"; //$NON-NLS-1$
+String PREFERENCE_ICONS_ICON_SIZE = "Use Large Icons - Icons"; //$NON-NLS-1$
+
 /**
  * Property name for the large icon setting for details layout.  If the
  * PropertyChangeEvent fired has this property name, it means that the large icon setting
  * was changed for details layout.  Small icons are default.
  */
-public static final String
-	PREFERENCE_DETAILS_ICON_SIZE  = "Use Large Icons - Details"; //$NON-NLS-1$
+String PREFERENCE_DETAILS_ICON_SIZE = "Use Large Icons - Details"; //$NON-NLS-1$
+
 /**
  * Property name for the palette font setting.  If the PropertyChangeEvent fired
  * has this property name, it means that the palette font was changed.
  */
-public static final String
-	PREFERENCE_FONT               = "Palette Font"; //$NON-NLS-1$ 
+String PREFERENCE_FONT = "Palette Font"; //$NON-NLS-1$ 
 
 /**
  * @see java.beans.PropertyChangeSupport#addPropertyChangeListener(
- * 														java.beans.PropertyChangeListener)
+ * java.beans.PropertyChangeListener)
  */
 void addPropertyChangeListener(PropertyChangeListener listener);
 
