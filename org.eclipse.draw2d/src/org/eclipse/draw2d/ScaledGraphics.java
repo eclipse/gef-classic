@@ -321,11 +321,11 @@ public void drawText(String s, int x, int y, int style) {
  * @see Graphics#drawTextLayout(TextLayout, int, int)
  */
 public void drawTextLayout(TextLayout layout, int x, int y) {
-	TextLayout scaled = zoomTextLayout(layout);
-	graphics.drawTextLayout(scaled,
-			(int)Math.floor(x * zoom + fractionalX),
-			(int)Math.floor(y * zoom + fractionalY));
-	scaled.dispose();
+//	TextLayout scaled = zoomTextLayout(layout);
+//	graphics.drawTextLayout(scaled,
+//			(int)Math.floor(x * zoom + fractionalX),
+//			(int)Math.floor(y * zoom + fractionalY));
+//	scaled.dispose();
 }
 
 /** @see Graphics#fillText(String, int, int) */
@@ -525,30 +525,30 @@ public void translate(int dx, int dy) {
 	graphics.translate((int)Math.floor(dxFloat), (int)Math.floor(dyFloat));
 }
 
-private TextLayout zoomTextLayout(TextLayout layout) {
-	TextLayout zoomed = new TextLayout(Display.getCurrent());
-	zoomed.setText(layout.getText());
-	
-	zoomed.setWidth((int)(layout.getWidth() * zoom));
-	int length = layout.getText().length();
-	if (length > 0) {
-		int start = 0, offset = 1;
-		TextStyle style = null, lastStyle = layout.getStyle(0);
-		for (; offset <= length; offset++) {
-			if (offset != length
-					&& (style = layout.getStyle(offset)) == lastStyle)
-				continue;
-			int end = offset;
-			
-			TextStyle zoomedStyle = new TextStyle(zoomFont(lastStyle.font),
-					lastStyle.foreground, lastStyle.background);
-			zoomed.setStyle(zoomedStyle, start, end);
-			lastStyle = style;
-			start = offset;
-		}
-	}
-	return zoomed;
-}
+//private TextLayout zoomTextLayout(TextLayout layout) {
+//	TextLayout zoomed = new TextLayout(Display.getCurrent());
+//	zoomed.setText(layout.getText());
+//	
+//	zoomed.setWidth((int)(layout.getWidth() * zoom));
+//	int length = layout.getText().length();
+//	if (length > 0) {
+//		int start = 0, offset = 1;
+//		TextStyle style = null, lastStyle = layout.getStyle(0);
+//		for (; offset <= length; offset++) {
+//			if (offset != length
+//					&& (style = layout.getStyle(offset)) == lastStyle)
+//				continue;
+//			int end = offset;
+//			
+//			TextStyle zoomedStyle = new TextStyle(zoomFont(lastStyle.font),
+//					lastStyle.foreground, lastStyle.background);
+//			zoomed.setStyle(zoomedStyle, start, end);
+//			lastStyle = style;
+//			start = offset;
+//		}
+//	}
+//	return zoomed;
+//}
 
 private Point zoomTextPoint(int x, int y) {
 	if (localCache.font != localFont) {
