@@ -25,5 +25,6 @@ org.eclipse.gef.tools
 org.eclipse.gef.ui.actions
 org.eclipse.gef.ui.console
 org.eclipse.gef.ui.palette
+org.eclipse.gef.ui.palette.customize
 org.eclipse.gef.ui.parts
 org.eclipse.gef.ui.stackview
