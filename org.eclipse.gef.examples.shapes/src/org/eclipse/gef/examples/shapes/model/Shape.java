@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.shapes.model;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +24,8 @@ import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
+
+import org.eclipse.gef.examples.shapes.ShapesPlugin;
 
 /**
  * Abstract prototype of a shape.
@@ -88,6 +92,16 @@ static {
 		});
 	}
 } // static
+
+protected static Image createImage(String name) {
+	InputStream stream = ShapesPlugin.class.getResourceAsStream(name);
+	Image image = new Image(null, stream);
+	try {
+		stream.close();
+	} catch (IOException ioe) {
+	}
+	return image;
+}
 
 /** Location of this shape. */
 private Point location = new Point(0, 0);

@@ -12,16 +12,14 @@ package org.eclipse.gef.examples.shapes.model;
 
 import org.eclipse.swt.graphics.Image;
 
-import org.eclipse.gef.examples.shapes.ShapesPlugin;
-
 /**
  * An elliptical shape.
  * @author Elias Volanakis
  */
 public class EllipticalShape extends Shape {
+
 /** A 16x16 pictogram of an elliptical shape. */
-private static final Image ELLIPSE_ICON 
-	= new Image(null, ShapesPlugin.class.getResourceAsStream("icons/ellipse16.gif"));
+private static final Image ELLIPSE_ICON = createImage("icons/ellipse16.gif");
 
 private static final long serialVersionUID = 1;
 

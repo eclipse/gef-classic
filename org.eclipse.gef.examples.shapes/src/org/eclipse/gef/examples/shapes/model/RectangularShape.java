@@ -12,8 +12,6 @@ package org.eclipse.gef.examples.shapes.model;
 
 import org.eclipse.swt.graphics.Image;
 
-import org.eclipse.gef.examples.shapes.ShapesPlugin;
-
 
 /**
  * A rectangular shape.
@@ -21,8 +19,7 @@ import org.eclipse.gef.examples.shapes.ShapesPlugin;
  */
 public class RectangularShape extends Shape {
 /** A 16x16 pictogram of a rectangular shape. */
-private static final Image RECTANGLE_ICON 
-	= new Image(null, ShapesPlugin.class.getResourceAsStream("icons/rectangle16.gif"));
+private static final Image RECTANGLE_ICON = createImage("icons/rectangle16.gif");
 
 private static final long serialVersionUID = 1;
 

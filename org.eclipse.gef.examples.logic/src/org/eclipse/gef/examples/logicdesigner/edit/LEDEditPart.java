@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner.edit;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -39,6 +41,16 @@ public class LEDEditPart
 
 private static Image LED_SEL_PRIM_BG;
 private static Image LED_SEL_SECD_BG;
+
+private static Image createImage(String name) {
+	InputStream stream = LEDFigure.class.getResourceAsStream(name);
+	Image image = new Image(null, stream);
+	try {
+		stream.close();
+	} catch (IOException ioe) {
+	}
+	return image;
+}
 
 protected AccessibleEditPart createAccessible() {
 	return new AccessibleGraphicalEditPart(){
@@ -95,13 +107,13 @@ public Object getAdapter(Class key) {
 
 protected Image getBackgroundImage(int state){
 	if (state == SELECTED_PRIMARY){
-		if(LED_SEL_PRIM_BG==null)
-			LED_SEL_PRIM_BG = new Image(null, LEDFigure.class.getResourceAsStream("icons/ledbgprim.gif"));  //$NON-NLS-1$
+		if(LED_SEL_PRIM_BG == null)
+			LED_SEL_PRIM_BG = createImage("icons/ledbgprim.gif");  //$NON-NLS-1$
 		return LED_SEL_PRIM_BG;
 	}
 	if (state == SELECTED){
-		if(LED_SEL_SECD_BG==null)
-			LED_SEL_SECD_BG = new Image(null, LEDFigure.class.getResourceAsStream("icons/ledbgsel.gif"));  //$NON-NLS-1$
+		if(LED_SEL_SECD_BG == null)
+			LED_SEL_SECD_BG = createImage("icons/ledbgsel.gif");  //$NON-NLS-1$
 		return LED_SEL_SECD_BG;
 	}
 	return null;
