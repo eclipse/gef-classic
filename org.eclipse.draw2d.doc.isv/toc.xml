@@ -2,12 +2,15 @@
 <!-- ============================================================================= -->
 <!-- Define the top level topics                                                   -->
 <!-- ============================================================================= -->
+<!ENTITY dev_guide "Draw2D Developers&apos; Guide">
+<!ENTITY prog_guide "Programmers&apos; Guide">
+<!ENTITY ref "Reference">
 
-<toc label="Draw2D Developers Guide">
-	<topic label="Programmer's Guide">
+<toc label="dev_guide">
+	<topic label="prog_guide">
 		<link toc="topics_Guide.xml" />
 	</topic>
-	<topic label="Reference">
+	<topic label="ref">
 		<link toc="topics_Reference.xml" />
 	</topic>
 </toc>

@@ -2,11 +2,13 @@
 <!-- ============================================================================= -->
 <!-- Define topics for the main guide                                              -->
 <!-- ============================================================================= -->
+
+<!ENTITY guide "Guide">
 <!ENTITY intro "Introduction">
 <!ENTITY mvc "Model-View-Controller Paradigm">
 <!ENTITY terms "Terminology">
 
-<toc label="Guide">
+<toc label="guide">
 		<topic label="intro" href="reference/api/overview-summary.html#Introduction" />
 		<topic label="EditPartViewers" href="reference/api/overview-summary.html#EditPartViewer" />
 		<topic label="mvc" href="reference/api/overview-summary.html#MVC" />
