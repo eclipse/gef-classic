@@ -45,17 +45,22 @@ private static final int
 	FLAG_ENABLED = 1 << 4,
 	FLAG_FOCUS_TRAVERSABLE = 1 << 5;
 
+private static final int
+	FLAG_REALIZED = 1 << 31;
+
 /**
  * The largest flag defined in this class.  If subclasses define flags, they should
  * declare them as larger than this value and redefine MAX_FLAG to be their largest flag
  * value.
+ * <P>
+ * This constant is evaluated at runtime and will not be inlined by the compiler.
  */
-protected static int MAX_FLAG = FLAG_FOCUS_TRAVERSABLE;
+protected static int MAX_FLAG = new Integer(FLAG_FOCUS_TRAVERSABLE).intValue();
 
 /**
  * The rectangular area that this Figure occupies.
  */
-protected Rectangle bounds = new Rectangle(0, 0, 64, 36);
+protected Rectangle bounds = new Rectangle(0, 0, 0, 0);
 
 private LayoutManager layoutManager;
 
@@ -72,21 +77,44 @@ private EventListenerList eventListeners = new EventListenerList();
 
 private List children = Collections.EMPTY_LIST;
 
-/** This Figure's preferred size. */
+/**
+ * This Figure's preferred size.
+ */
 protected Dimension prefSize;
-/** This Figure's minimum size. */
+
+/**
+ * This Figure's minimum size.
+ */
 protected Dimension minSize;
-/** This Figure's maximum size. */
+
+/**
+ * This Figure's maximum size.
+ */
 protected Dimension maxSize;
-/** This Figure's font. */
+
+/** 
+ * @deprecated access using {@link #getLocalFont()}
+ */
 protected Font font;
-/** This Figure's background color. */
+
+/**
+ * @deprecated access using {@link #getLocalBackgroundColor()}.
+ */
 protected Color bgColor;
-/** This Figure's foreground color. */
+
+/**
+ * @deprecated access using {@link #getLocalForegroundColor()}.
+ */
 protected Color fgColor;
-/** This Figure's border. */
+
+/**
+ * @deprecated access using {@link #getBorder()}
+ */
 protected Border border;
-/** This Figure's tooltip. */
+
+/**
+ * @deprecated access using {@link #getToolTip()}
+ */
 protected IFigure toolTip;
 
 private AncestorHelper ancestorHelper;
@@ -108,7 +136,7 @@ public void add(IFigure figure, Object constraint, int index) {
 	if (index < -1 || index > children.size())
 		throw new IndexOutOfBoundsException("Index does not exist"); //$NON-NLS-1$
 
-	//Check for Cycle in heirarchy
+	//Check for Cycle in hierarchy
 	for (IFigure f = this; f != null; f = f.getParent())
 		if (figure == f)
 			throw new IllegalArgumentException(
@@ -134,7 +162,8 @@ public void add(IFigure figure, Object constraint, int index) {
 
 	//Parent the figure
 	figure.setParent(this);
-	figure.addNotify();
+	if (getFlag(FLAG_REALIZED))
+		figure.addNotify();
 	figure.repaint();
 }
 
@@ -230,6 +259,9 @@ public void addMouseMotionListener(MouseMotionListener listener) {
  * @since 2.0
  */
 public void addNotify() {
+	if (getFlag(FLAG_REALIZED))
+		throw new RuntimeException("addNotify() should not be called multiple times"); //$NON-NLS-1$
+	setFlag(FLAG_REALIZED, true);
 	for (int i = 0; i < children.size(); i++)
 		((IFigure)children.get(i)).addNotify();
 }
@@ -276,7 +308,7 @@ public void erase() {
 	if (getParent() == null || !isVisible())
 		return;
 	
-	Rectangle r = getBounds().getCopy();
+	Rectangle r = new Rectangle(getBounds());
 	getParent().translateToParent(r);
 	getParent().repaint(r.x, r.y, r.width, r.height);
 }
@@ -378,7 +410,7 @@ public IFigure findMouseEventTargetAt(int x, int y) {
  * <code>null</code> if none found.
  * @see #findMouseEventTargetAt(int, int)
  * @param x The X coordinate
- * @param y The Y coordiante
+ * @param y The Y coordinate
  * @return The deepest descendant for which isMouseEventTarget() returns true */
 protected IFigure findMouseEventTargetInDescendantsAt(int x, int y) {
 	PRIVATE_POINT.setLocation(x, y);
@@ -601,11 +633,11 @@ public LayoutManager getLayoutManager() {
 }
 
 /**
- * Returns an Iterator containing the listeners of type <i>clazz</i> that are listening to
- * this Figure. If there are no listeners of type <i>clazz</i>, an Iterator of an empty
- * list is returned.
+ * Returns an Iterator over the listeners of type <i>clazz</i> that are listening to
+ * this Figure. If there are no listeners of type <i>clazz</i>, an empty iterator is
+ * returned.
  * @param clazz The type of listeners to get
- * @return An Iterator containing the listeners of type <i>clazz</i>
+ * @return An Iterator over the requested listeners
  * @since 2.0
  */
 protected Iterator getListeners(Class clazz) {
@@ -615,18 +647,28 @@ protected Iterator getListeners(Class clazz) {
 }
 
 /**
- * Returns the local background Color of this Figure. Does not inherit this Color from the
- * parent, may return null.
- * @return bgColor The local background Color
+ * Returns <code>null</code> or the local background Color of this Figure. Does not
+ * inherit this Color from the parent.
+ * @return bgColor <code>null</code> or the local background Color
  */
 public Color getLocalBackgroundColor() {
 	return bgColor;
 }	
 
 /**
- * Returns the local foreground Color of this Figure. Does not inherit this Color from the
- * parent, may return null.
- * @return fgColor The local foreground Color
+ * Returns <code>null</code> or the local font setting for this figure.  Does not return
+ * values inherited from the parent figure.
+ * @return <code>null</code> or the local font
+ * @since 3.1
+ */
+protected Font getLocalFont() {
+	return font;
+}
+
+/**
+ * Returns <code>null</code> or the local foreground Color of this Figure. Does not
+ * inherit this Color from the parent.
+ * @return fgColor <code>null</code> or the local foreground Color
  */
 public Color getLocalForegroundColor() {
 	return fgColor;
@@ -1119,7 +1161,8 @@ public void remove(IFigure figure) {
 	if ((figure.getParent() != this))
 		throw new IllegalArgumentException(
 				"Figure is not a child"); //$NON-NLS-1$
-	figure.removeNotify();
+	if (getFlag(FLAG_REALIZED))
+		figure.removeNotify();
 	if (layoutManager != null)
 		layoutManager.remove(figure);
 	// The updates in the UpdateManager *have* to be
@@ -1233,6 +1276,7 @@ public void removeNotify() {
 		((IFigure)children.get(i)).removeNotify();
 	if (internalGetEventDispatcher() != null)
 		internalGetEventDispatcher().requestRemoveFocus(this);
+	setFlag(FLAG_REALIZED, false);
 }
 
 /**
