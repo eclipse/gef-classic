@@ -17,7 +17,8 @@ import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.draw2d.geometry.*;
 
 /**
- * An interface for graphical figures.
+ * A lightweight graphical representation.  Figures are rendered to a {@link Graphics} object.
+ * Figures can be compose to create complex renderings.
  */
 public interface IFigure
 {

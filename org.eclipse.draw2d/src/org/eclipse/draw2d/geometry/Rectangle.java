@@ -113,7 +113,7 @@ public void union (Dimension d){
 }
 
 /**
- * Updates this Rectangle's Dimensions to the 
+ * Updates this Rectangle's bounds to the 
  * minimum size which can hold both this Rectangle
  * and the supplied point, given its X and Y 
  * coordinates.
@@ -127,7 +127,7 @@ public void union (Dimension d){
  * @see  #union(Rectangle)
  * @since 2.0
  */
-public void union(int x1, int y1){
+public Rectangle union(int x1, int y1){
 	if (x1 < x){
 		width += (x-x1);
 		x = x1;
@@ -148,6 +148,7 @@ public void union(int x1, int y1){
 			height= bottom - y;
 		}
 	}
+	return this;
 }
 
 /**
@@ -299,8 +300,7 @@ public Rectangle expand(int h, int v){return shrink(-h,-v);}
 /**
  * Expands the horizontal and vertical sides of this
  * Rectangle by the width and height of the given Insets, 
- * and returns this for convenience. The location of its 
- * center is kept constant.
+ * and returns this for convenience.
  * 
  * @since 2.0
  */
@@ -387,7 +387,6 @@ public Rectangle getExpanded(int h, int v){ return new Rectangle(this).expand(h,
 /**
  * Creates and returns a new Rectangle with the bounds of
  * <code>this</code> Rectangle, expanded by the given Insets.
- * The location of its center is kept constant.
  *
  * @see #expand(Insets)
  * @since 2.0
