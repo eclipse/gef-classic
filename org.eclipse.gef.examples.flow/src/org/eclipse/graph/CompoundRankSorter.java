@@ -8,10 +8,11 @@ import java.util.*;
 public class CompoundRankSorter extends RankSorter {
 
 static class RowEntry {
-	int contribution;
+	double contribution;
 	int count;
 	void reset() {
-		count = contribution = 0;
+		count = 0;
+		contribution = 0;
 	}
 }
 
@@ -46,41 +47,82 @@ void addRowEntry(Subgraph s, int row) {
 		map.put(new RowKey(s, row), new RowEntry());
 }
 
-double evaluateOutgoing(double progress) {
-	double result = super.evaluateOutgoing(progress);
+protected void assignIncomingSortValues() {
+	super.assignIncomingSortValues();
+	pullTogetherSubgraphs();
+}
+
+/**
+ * @see org.eclipse.graph.RankSorter#assignOutgoingSortValues()
+ */
+protected void assignOutgoingSortValues() {
+	super.assignOutgoingSortValues();
+	pullTogetherSubgraphs();
+}
+
+private void pullTogetherSubgraphs() {
+	if (true)
+		return;
+	for (int j = 0; j < rank.count(); j++) {
+		Node n = rank.getNode(j);
+		Subgraph s = n.getParent();
+		while (s != null) {
+			getRowEntry(s, currentRow).reset();
+			s = s.getParent();
+		}
+	}
+	for (int j = 0; j < rank.count(); j++) {
+		Node n = rank.getNode(j);
+		Subgraph s = n.getParent();
+		while (s != null) {
+			RowEntry entry = getRowEntry(s, currentRow);
+			entry.count++;
+			entry.contribution += n.sortValue;
+			s = s.getParent();
+		}
+	}
+	
+	double weight = 0.5;// * (1.0 - progress) * 3;
+	
+	for (int j = 0; j < rank.count(); j++) {
+		Node n = rank.getNode(j);
+		Subgraph s = n.getParent();
+		if (s != null) {
+			RowEntry entry = getRowEntry(s, currentRow);
+			n.sortValue = n.sortValue * (1.0 - weight) + weight * entry.contribution/entry.count;
+		}
+	}
+}
+
+double evaluateNodeOutgoing() {
+	double result = super.evaluateNodeOutgoing();
 //	result += Math.random() * rankSize * (1.0 - progress) / 3.0;
-	if ((progress > 0.2 && progress < 0.6) || progress > 0.8) {
+	if (progress > 0.2) {
 		Subgraph s = node.getParent();
 		double connectivity = mergeConnectivity(s, node.rank + 1, result, progress);
 		result = connectivity;
-//		if (connectivity >= 0.0)
-//			result = connectivity * progress + (1.0 - progress) * result;
 	}
 	return result;
 }
 
-double evaluateIncoming(double progress) {
-	double result = super.evaluateIncoming(progress);
+double evaluateNodeIncoming() {
+	double result = super.evaluateNodeIncoming();
 //	result += Math.random() * rankSize * (1.0 - progress) / 3.0;
-	if ((progress > 0.2 && progress < 0.6) || progress > 0.8) {
+	if (progress > 0.2) {
 		Subgraph s = node.getParent();
 		double connectivity = mergeConnectivity(s, node.rank - 1, result, progress);
 		result = connectivity;
-//		if (connectivity >= 0.0)
-//			result = connectivity * progress + (1.0 - progress) * result;
 	}
 	return result;
 }
 
 double mergeConnectivity(Subgraph s, int row, double result, double scaleFactor) {
-	if (scaleFactor < 0.85 && ((int)(scaleFactor * 91) % 7) > 4)
-		return result;
 	while (s != null && getRowEntry(s, row) == null)
 		s = s.getParent();
 	if (s != null) {
 		RowEntry entry = getRowEntry(s, row);
 		double connectivity = ((double)entry.contribution) / entry.count;
-		result = connectivity*0.5 + (0.5) * result;
+		result = connectivity * 0.3 + (0.7) * result;
 		s = s.getParent();
 	}
 	return result;
@@ -92,7 +134,8 @@ RowEntry getRowEntry(Subgraph s, int row) {
 	return (RowEntry)map.get(key);
 }
 
-void init(DirectedGraph g) {
+public void init(DirectedGraph g) {
+	super.init(g);
 	init = true;
 	for (int row = 0; row < g.ranks.size(); row++) {
 		Rank rank = g.ranks.getRank(row);
@@ -107,24 +150,17 @@ void init(DirectedGraph g) {
 	}
 }
 
-public void sortRankOutgoing(DirectedGraph g, Rank rank, int row, double progress) {
-	super.sortRankOutgoing(g, rank, row, progress);
-	updateRank(rank, row);
+protected void postSort() {
+	super.postSort();
+	updateRank(rank);
 }
 
-public void sortRankIncoming(DirectedGraph g, Rank rank, int row, double progress) {
-	if (!init)
-		init(g);
-	super.sortRankIncoming(g, rank, row, progress);
-	updateRank(rank, row);
-}
-
-void updateRank(Rank rank, int row) {
+void updateRank(Rank rank) {
 	for (int j = 0; j < rank.count(); j++) {
 		Node n = rank.getNode(j);
 		Subgraph s = n.getParent();
 		while (s != null) {
-			getRowEntry(s, row).reset();
+			getRowEntry(s, currentRow).reset();
 			s = s.getParent();
 		}
 	}
@@ -132,7 +168,7 @@ void updateRank(Rank rank, int row) {
 		Node n = rank.getNode(j);
 		Subgraph s = n.getParent();
 		while (s != null) {
-			RowEntry entry = getRowEntry(s, row);
+			RowEntry entry = getRowEntry(s, currentRow);
 			entry.count++;
 			entry.contribution += n.index;
 			s = s.getParent();
@@ -141,11 +177,6 @@ void updateRank(Rank rank, int row) {
 }
 
 }
-
-
-
-
-
 
 
 
