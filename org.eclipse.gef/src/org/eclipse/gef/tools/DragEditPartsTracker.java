@@ -117,9 +117,9 @@ private void captureSourceDimensions() {
 		figure.translateToAbsolute(bounds);
 		
 		if (compoundSrcRect == null)
-			compoundSrcRect = bounds;
+			compoundSrcRect = new PrecisionRectangle(bounds);
 		else
-			compoundSrcRect = new PrecisionRectangle(compoundSrcRect.union(bounds));
+			compoundSrcRect = compoundSrcRect.union(bounds);
 		if (child == getSourceEditPart())
 			sourceRectangle = bounds;
 	}
