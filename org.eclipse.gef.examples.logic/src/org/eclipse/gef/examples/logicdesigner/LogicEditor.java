@@ -14,6 +14,7 @@ import org.eclipse.core.runtime.*;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.widgets.*;
 import org.eclipse.ui.*;
@@ -272,6 +273,12 @@ protected void initializeGraphicalViewer() {
 	getGraphicalViewer().setContents(getLogicDiagram());
 	getGraphicalViewer().addDropTargetListener(
 		new TextTransferDropTargetListener(getGraphicalViewer(), TextTransfer.getInstance()));
+}
+
+protected void initializePaletteViewer() {
+	super.initializePaletteViewer();
+	getPaletteViewer().addDragSourceListener(
+		new TextTransferDragSourceListener(getPaletteViewer(), TextTransfer.getInstance()));
 }
 
 public void init(IEditorSite site, IEditorInput input) throws PartInitException {
