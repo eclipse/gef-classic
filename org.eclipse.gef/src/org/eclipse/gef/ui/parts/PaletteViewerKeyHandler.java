@@ -129,8 +129,6 @@ boolean isExpandedDrawer(EditPart part){
 }
 
 public boolean keyPressed(KeyEvent event) {
-	if (!getFocus().getFigure().hasFocus())
-		getFocus().getFigure().internalGetEventDispatcher().requestFocus(getFocus().getFigure());
 	if (acceptExpandDrawer(event)) {
 		expandDrawer();
 		return true;
