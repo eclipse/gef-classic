@@ -30,6 +30,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
+import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
@@ -63,13 +64,13 @@ import org.eclipse.draw2d.ActionEvent;
 import org.eclipse.draw2d.ActionListener;
 import org.eclipse.draw2d.ButtonBorder;
 import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.FigureCanvas;
 import org.eclipse.draw2d.FigureUtilities;
 import org.eclipse.draw2d.FocusEvent;
 import org.eclipse.draw2d.FocusListener;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.ImageFigure;
 import org.eclipse.draw2d.ImageUtilities;
+import org.eclipse.draw2d.LightweightSystem;
 import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.StackLayout;
 import org.eclipse.draw2d.ToggleButton;
@@ -142,8 +143,12 @@ public FlyoutPaletteComposite(Composite parent, int style, IWorkbenchPage page,
 	addListener(SWT.Resize, new Listener() {
 		public void handleEvent(Event event) {
 			Rectangle area = getClientArea();
-			// Sometimes, the editor is resized to 1,1 or 0,0 (depending on the platform)
-			// when the editor is closed or maximized.  We have to ignore such resizes.
+			/*
+			 * @TODO:Pratik
+			 * Sometimes, the editor is resized to 1,1 or 0,0 (depending on the platform)
+			 * when the editor is closed or maximized.  We have to ignore such resizes.
+			 * See Bug# 62748
+			 */
 			if (area.width < minWidth)
 				return;
 			layout();
@@ -176,11 +181,18 @@ protected Composite createPaletteContainer() {
 	return new PaletteContainer(this, SWT.NONE);
 }
 
-protected FigureCanvas createPinButton(Composite parent) {
-	FigureCanvas figCanvas = new FigureCanvas(parent);
-	figCanvas.setCursor(SharedCursors.ARROW);
-	figCanvas.setScrollBarVisibility(FigureCanvas.NEVER);
-	figCanvas.setLayoutData(new RowData());
+protected Control createPinButton(Composite parent) {
+	final LightweightSystem lws = new LightweightSystem();
+	Canvas canvas = new Canvas(parent, SWT.NO_REDRAW_RESIZE | SWT.NO_BACKGROUND) {
+		public Point computeSize(int wHint, int hHint, boolean changed) {
+			Dimension size = lws.getRootFigure().getPreferredSize(wHint, hHint);
+			size.union(new Dimension(wHint, hHint));
+			return new org.eclipse.swt.graphics.Point(size.width, size.height);
+		}
+	};
+	lws.setControl(canvas);
+	canvas.setCursor(SharedCursors.ARROW);
+	canvas.setLayoutData(new RowData());
 	ImageFigure fig = new ImageFigure(DrawerFigure.PIN);
 	fig.setAlignment(PositionConstants.NORTH_WEST);
 	final ToggleButton b = new ToggleButton(fig);
@@ -207,42 +219,45 @@ protected FigureCanvas createPinButton(Composite parent) {
 		}
 	};
 	addPropertyChangeListener(listener);
-	figCanvas.setContents(b);
-	figCanvas.setBounds(1, 1, 13, 13);
-	figCanvas.addDisposeListener(new DisposeListener() {
+	lws.setContents(b);
+	canvas.setBounds(1, 1, 13, 13);
+	canvas.addDisposeListener(new DisposeListener() {
 		public void widgetDisposed(DisposeEvent e) {
 			removePropertyChangeListener(listener);
 		}
 	});
-	return figCanvas;
+	return canvas;
 }
 
 protected Composite createSash() {
 	return new Sash(this);
 }
 
-protected FigureCanvas createTitle(Composite parent, boolean isHorizontal) {
-	/*
-	 * @TODO:Pratik   there is a bug in figure canvas that gives it scroll bars
-	 * even though you have specified NEVER
-	 */
-	FigureCanvas figCanvas = new FigureCanvas(parent);
-	figCanvas.setCursor(SharedCursors.SIZEALL);
-	figCanvas.setScrollBarVisibility(FigureCanvas.NEVER);
-	figCanvas.setLayoutData(new RowData());
-	figCanvas.setContents(new DragFigure(isHorizontal));
-	new TitleDragManager(figCanvas);
+protected Control createTitle(Composite parent, boolean isHorizontal) {
+	final LightweightSystem lws = new LightweightSystem();
+	Canvas canvas = new Canvas(parent, SWT.NO_REDRAW_RESIZE | SWT.NO_BACKGROUND) {
+		public Point computeSize(int wHint, int hHint, boolean changed) {
+			Dimension size = lws.getRootFigure().getPreferredSize(wHint, hHint);
+			size.union(new Dimension(wHint, hHint));
+			return new org.eclipse.swt.graphics.Point(size.width, size.height);
+		}
+	};
+	lws.setControl(canvas);
+	canvas.setCursor(SharedCursors.SIZEALL);
+	canvas.setLayoutData(new RowData());
+	lws.setContents(new DragFigure(isHorizontal));
+	new TitleDragManager(canvas);
 	MenuManager manager = new MenuManager();
 	final IAction resizeAction = new ResizeAction(); 
 	manager.add(resizeAction);
 	manager.add(new DockAction());
-	figCanvas.setMenu(manager.createContextMenu(figCanvas));
+	canvas.setMenu(manager.createContextMenu(canvas));
 	manager.addMenuListener(new IMenuListener() {
 		public void menuAboutToShow(IMenuManager manager) {
 			resizeAction.setEnabled(resizeAction.isEnabled());
 		}
 	});
-	return figCanvas;
+	return canvas;
 }
 
 public final int getDockLocation() {
@@ -284,7 +299,7 @@ protected void handlePerspectiveChanged(IWorkbenchPage page,
 		handlePerspectiveActivated(page, perspective);
 }
 
-// Will return false if ancestor or descendant is null
+// Will return false if ancestor or descendant is null, and true if both are null
 protected final boolean isDescendantOf(Control ancestor, Control descendant) {
 	if (descendant == null)
 		return false;
@@ -314,6 +329,7 @@ public void layout(boolean changed) {
 	setRedraw(false);
 	if (isInState(IN_VIEW)) {
 		sash.setVisible(false);
+		paletteContainer.setVisible(false);
 		graphicalControl.setBounds(area);
 	} else if (dock == PositionConstants.EAST)
 		layoutComponentsEast(area, sashWidth, paletteWidth);
@@ -326,13 +342,11 @@ public void layout(boolean changed) {
 protected final void layoutComponentsEast(Rectangle area, int sashWidth, 
 		int paletteWidth) {
 	if (isInState(FLYOUT_COLLAPSED)) {
-		sash.setVisible(true);
 		paletteContainer.setVisible(false);
 		sash.setBounds(area.x + area.width - sashWidth, area.y, sashWidth, area.height);
 		graphicalControl.setBounds(area.x, area.y, area.width - sashWidth, area.height);
-	} else if (isInState(FLYOUT_EXPANDED)) {
 		sash.setVisible(true);
-		paletteContainer.setVisible(true);
+	} else if (isInState(FLYOUT_EXPANDED)) {
 		paletteContainer.moveAbove(graphicalControl);
 		sash.moveAbove(paletteContainer);
 		paletteContainer.setBounds(area.x + area.width - paletteWidth, area.y, 
@@ -340,15 +354,17 @@ protected final void layoutComponentsEast(Rectangle area, int sashWidth,
 		sash.setBounds(area.x + area.width - paletteWidth - sashWidth, area.y, sashWidth, 
 				area.height);
 		graphicalControl.setBounds(area.x, area.y, area.width - sashWidth, area.height);
-	} else if (isInState(FLYOUT_PINNED_OPEN)) {
 		sash.setVisible(true);
 		paletteContainer.setVisible(true);
+	} else if (isInState(FLYOUT_PINNED_OPEN)) {
 		paletteContainer.setBounds(area.x + area.width - paletteWidth, area.y, 
 				paletteWidth, area.height);
 		sash.setBounds(area.x + area.width - paletteWidth - sashWidth, area.y, sashWidth, 
 				area.height);
 		graphicalControl.setBounds(area.x, area.y, area.width - sashWidth - paletteWidth, 
 				area.height);		
+		sash.setVisible(true);
+		paletteContainer.setVisible(true);
 	}
 }
 
@@ -513,7 +529,7 @@ protected void setState(int newState) {
 			pViewer = null;
 	}
 	layout();
-	listeners.firePropertyChange(PROPERTY_STATE, newState, oldState);
+	listeners.firePropertyChange(PROPERTY_STATE, oldState, newState);
 }
 
 protected void transferState(PaletteViewer src, PaletteViewer dest) {
@@ -523,7 +539,7 @@ protected void transferState(PaletteViewer src, PaletteViewer dest) {
 }
 
 protected class Sash extends Composite {
-	protected FigureCanvas button, title;
+	protected Control button, title, actualSash;
 	public Sash(Composite parent) {
 		super(parent, SWT.NONE);
 
@@ -590,6 +606,9 @@ protected class Sash extends Composite {
 		}
 	}
 	
+	/*
+	 * @TODO:Pratik   ALT+TAB while dragging puts this drag manager in an invalid state
+	 */
 	protected class SashDragManager 
 			extends MouseAdapter 
 			implements MouseMoveListener, Listener {
@@ -683,29 +702,13 @@ protected class ResizeAction extends Action {
 		 * vertically while dragging it horizontally
 		 * See bug# 62528
 		 */
-		final Tracker tracker = 
-				new Tracker(FlyoutPaletteComposite.this, SWT.LEFT | SWT.RIGHT);
+		final Tracker tracker = new Tracker(FlyoutPaletteComposite.this, 
+				SWT.RIGHT | SWT.LEFT);
 		Rectangle[] rects = new Rectangle[1];
 		rects[0] = sash.getBounds();
-	//	System.out.println("original bounds: " + rects[0]);
 		tracker.setCursor(SharedCursors.SIZEE);
 		tracker.setRectangles(rects);
 		tracker.setStippled(true);
-	//	tracker.addControlListener(new ControlListener() {
-	//		public void controlMoved(ControlEvent e) {
-	//			Rectangle[] rects2 = tracker.getRectangles();
-	//			System.out.println("sash bounds: " + Sash.this.getBounds()); //$NON-NLS-1$
-	//			System.out.println("tracker bounds: " + tracker.getRectangles()[0]);
-	//			int deltaX = Sash.this.getBounds().x - tracker.getRectangles()[0].x;
-	//			if (dock == PositionConstants.WEST)
-	//				deltaX = -deltaX;
-	//			System.out.println("deltaX: " + deltaX);
-	//			setFixedSize(pViewer.getControl().getBounds().width + deltaX);
-	//			System.out.println("==========");
-	//		}
-	//		public void controlResized(ControlEvent e) {
-	//		}
-	//	});
 		if (tracker.open()) {
 			int deltaX = sash.getBounds().x - tracker.getRectangles()[0].x;
 			if (dock == PositionConstants.WEST)
@@ -716,20 +719,15 @@ protected class ResizeAction extends Action {
 	}
 }
 
-/*
- * @TODO:Pratik   ALT+TAB while dragging puts these drag managers in invalid state
- */
 protected class TitleDragManager
 		extends MouseAdapter
 		implements Listener {
 	protected boolean switchDock = false;
-	protected boolean dragging = false;
 	public TitleDragManager(Control ctrl) {
 		ctrl.addListener(SWT.DragDetect, this);
 		ctrl.addMouseListener(this);
 	}
 	public void handleEvent(Event event) {
-		dragging = true;
 		switchDock = false;
 		Rectangle bounds = sash.getBounds();
 		if (paletteContainer.getVisible())
@@ -739,12 +737,14 @@ protected class TitleDragManager
 		tracker.setRectangles(new Rectangle[] {origBounds});
 		tracker.setStippled(true);
 		tracker.addListener(SWT.Move, new Listener() {
-			public void handleEvent(Event event) {
+			public void handleEvent(final Event event) {
 				Display.getCurrent().syncExec(new Runnable() {
 					public void run() {
 						Control ctrl = Display.getCurrent().getCursorControl();
-						switchDock = !isDescendantOf(sash, ctrl) 
-								&& !isDescendantOf(paletteContainer, ctrl);
+						switchDock = isDescendantOf(graphicalControl, ctrl);
+						boolean invalid = false;
+						if (!switchDock)
+							invalid = !isDescendantOf(FlyoutPaletteComposite.this, ctrl);
 						Rectangle placeHolder = origBounds;
 						if (switchDock) {
 							if (dock == PositionConstants.EAST) {
@@ -762,12 +762,12 @@ protected class TitleDragManager
 						if (switchDock)
 							dock = PositionConstants.EAST_WEST & ~dock;
 						Cursor cursor;
-						if (dock == PositionConstants.EAST)
-							cursor = DragCursors.getCursor(
-									DragCursors.positionToDragCursor(SWT.RIGHT));
+						if (invalid)
+							cursor = DragCursors.getCursor(DragCursors.INVALID);
+						else if (dock == PositionConstants.EAST)
+							cursor = DragCursors.getCursor(DragCursors.RIGHT);
 						else
-							cursor = DragCursors.getCursor(
-									DragCursors.positionToDragCursor(SWT.LEFT));
+							cursor = DragCursors.getCursor(DragCursors.LEFT);
 						tracker.setCursor(cursor);
 						// update the rectangle only if it has changed
 						if (!tracker.getRectangles()[0].equals(placeHolder))
@@ -781,17 +781,16 @@ protected class TitleDragManager
 		tracker.dispose();
 	}
 	public void mouseUp(MouseEvent me) {
-		if (!dragging && me.button == 1)
+		if (me.button == 1)
 			if (isInState(FLYOUT_COLLAPSED))
 				setState(FLYOUT_EXPANDED);
 			else if (isInState(FLYOUT_EXPANDED))
 				setState(FLYOUT_COLLAPSED);
-		dragging = false;
 	}
 }
 
 protected class PaletteContainer extends Composite {
-	protected FigureCanvas button, title;
+	protected Control button, title;
 	public PaletteContainer(Composite parent, int style) {
 		super(parent, style);
 		createComponents();
@@ -825,9 +824,11 @@ protected class PaletteContainer extends Composite {
 			Point titleSize = title.computeSize(-1, -1);
 			Point buttonSize = button.computeSize(-1, -1);
 			int height = Math.max(titleSize.y, buttonSize.y);
-			button.setBounds(area.width - buttonSize.x - 1, 0, 
-					buttonSize.x, buttonSize.y);
-			int remainingWidth = button.getBounds().x - 2;
+			// leave some space on the right of the button
+			int buttonX = area.width - buttonSize.x - 1;
+			button.setBounds(buttonX, 0, buttonSize.x, buttonSize.y);
+			// leave some space to the left of the button
+			int remainingWidth = buttonX - 2;
 			int x = 0;
 			if (remainingWidth < titleSize.x)
 				x = (remainingWidth - titleSize.x) / 2;
@@ -850,7 +851,7 @@ protected class PaletteContainer extends Composite {
 }
 
 protected class DragFigure 
-	extends ImageFigure {
+		extends ImageFigure {
 	protected static final int MARGIN_SPACE = 0;
 	protected static final int H_GAP = 4;
 	protected static final int LINE_LENGTH = 30;
@@ -900,6 +901,8 @@ protected class DragFigure
 		Image img = null;
 		Dimension imageSize = FigureUtilities.getStringExtents(
 				GEFMessages.Palette_Label, getFont());
+		// We reduce the width by 1 because FigureUtilities, for some reason, is 
+		// increasing it by 1
 		imageSize.expand(H_GAP * 2 + MARGIN_SPACE * 2 + LINE_LENGTH * 2 - 1, 
 				MARGIN_SPACE * 2);
 		img = new Image(null, imageSize.width, imageSize.height);
