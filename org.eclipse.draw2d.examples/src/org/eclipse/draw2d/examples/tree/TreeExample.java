@@ -6,7 +6,6 @@ import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.examples.AbstractExample;
 
 /**
- * 
  * @author hudsonr
  * Created on Apr 18, 2003
  */

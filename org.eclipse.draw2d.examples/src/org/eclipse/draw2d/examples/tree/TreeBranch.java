@@ -15,15 +15,17 @@ private int[] cachedContourLeft;
 private int[] cachedContourRight;
 private IFigure contents = new Figure();
 private int depth = -1;
+private int aligment;
 private int[] preferredRowHeights;
 private int[] rowHeights;
 
 private IFigure title;
 
 public TreeBranch(IFigure title) {
-	ToolbarLayout layout = new ToolbarLayout();
-	layout.setMinorAlignment(ToolbarLayout.ALIGN_CENTER);
-	layout.setSpacing(10);
+	FlowLayout layout = new FlowLayout(FlowLayout.VERTICAL);
+	layout.setMinorSpacing(20);
+	layout.setMinorAlignment(FlowLayout.ALIGN_LEFTTOP);
+//	layout.setSpacing(10);
 	layout.setStretchMinorAxis(false);
 	setLayoutManager(layout);
 	this.title = title;
@@ -32,6 +34,10 @@ public TreeBranch(IFigure title) {
 	add(contents);
 	contents.setLayoutManager(new TreeLayout());
 //	contents.setBorder(new LineBorder(ColorConstants.black, 4));
+}
+
+public int getAlignment() {
+	return aligment;
 }
 
 public IFigure getContentsPane() {
@@ -125,6 +131,30 @@ protected void paintFigure(Graphics g) {
 	g.drawLine(xMin, yMid, xMax, yMid);
 }
 
+public void setAlignment(int value) {
+	aligment = value;
+}
+
+/**
+ * @see java.lang.Object#toString()
+ */
+public String toString() {
+	return toString(0);
+}
+
+String toString(int level) {
+	String result = "";
+	for (int i=0; i<level; i++)
+		result += "  ";
+	try {
+		result += ((Label)getChildren().get(0)).getText() + "\n";
+	} catch (ClassCastException e) {
+		result += getChildren().get(0);
+	}
+	for (int i=0; i<contents.getChildren().size(); i++)
+		result += ((TreeBranch)contents.getChildren().get(i)).toString(level + 1);
+	return result;
+}
 
 void updateContours() {
 	//Make sure we layout first
