@@ -261,7 +261,6 @@ public void layout(IFigure parent) {
 	data = new WorkingData();
 	Rectangle relativeArea = parent.getClientArea();
 	data.area = transposer.t(relativeArea);
-//	data.spacing = new Dimension (getMinorSpacing(), getMajorSpacing());
 
 	Iterator iterator= parent.getChildren().iterator();
 	int dx;

@@ -104,7 +104,6 @@ protected void layout() {
 				prevAvgCharWidth,
 				wrappingStyle);
 			
-//			FlowUtilities.setupFragment(fragment, font, string);
 			if (fragment.width < currentLine.getAvailableWidth()
 			  || !context.isCurrentLineOccupied())
 				break;
