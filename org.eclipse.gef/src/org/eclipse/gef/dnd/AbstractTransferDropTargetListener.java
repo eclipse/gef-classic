@@ -73,6 +73,7 @@ public void deactivate() {
 public void dragEnter(DropTargetEvent event) {
 	if (GEF.DebugDND)
 		GEF.debug("Drag Enter: " + toString()); //$NON-NLS-1$
+	handleDragEnter();
 }
 
 /**
@@ -192,6 +193,8 @@ public Transfer getTransfer() {
 public EditPartViewer getViewer() {
 	return viewer;
 }
+
+protected void handleDragEnter() {} 
 
 /**
  * Called when the user changes the Drag operation.

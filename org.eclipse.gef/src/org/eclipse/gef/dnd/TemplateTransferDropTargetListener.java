@@ -32,9 +32,8 @@ protected CreateRequest getCreateRequest() {
 
 abstract protected CreateRequest.Factory getFactory(Object template);
 
-protected boolean handleDragEnter() {
+protected void handleDragEnter() {
 	getCurrentEvent().detail = DND.DROP_COPY;
-	return true;
 }
 
 protected void updateTargetRequest() {
