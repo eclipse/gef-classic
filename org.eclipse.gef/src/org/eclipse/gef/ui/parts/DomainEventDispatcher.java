@@ -142,6 +142,7 @@ public void dispatchFocusGained(FocusEvent event) {
 public void dispatchFocusLost(FocusEvent event) {
 	super.dispatchFocusLost(event);
 	domain.focusLost(event, viewer);
+	setRouteEventsToEditor(false);
 }
 
 public void dispatchKeyPressed(org.eclipse.swt.events.KeyEvent e) { 
