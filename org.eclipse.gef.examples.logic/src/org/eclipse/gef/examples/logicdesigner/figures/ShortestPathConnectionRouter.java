@@ -213,7 +213,7 @@ public void route(Connection conn) {
 			PointList points = path.getPoints().getCopy();
 			Point ref1, ref2, start, end;
 			ref1 = new PrecisionPoint(points.getPoint(1));
-			ref2 = new PrecisionPoint(points.getPoint(points.size() - 1));
+			ref2 = new PrecisionPoint(points.getPoint(points.size() - 2));
 			current.translateToAbsolute(ref1);
 			current.translateToAbsolute(ref2);
 			
