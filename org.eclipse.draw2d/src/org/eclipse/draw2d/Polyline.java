@@ -293,11 +293,4 @@ public void setStart(Point start) {
 		setPoint(start, 0);
 }
 
-/**
- * @see Figure#useLocalCoordinates()
- */
-protected boolean useLocalCoordinates() {
-	return false;
-}
-
 }
