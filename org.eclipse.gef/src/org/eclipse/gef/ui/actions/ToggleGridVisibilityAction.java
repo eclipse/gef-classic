@@ -19,13 +19,13 @@ import org.eclipse.gef.internal.GEFMessages;
 /**
  * @author Pratik Shah
  */
-public class ToggleGridAction
+public class ToggleGridVisibilityAction
 	extends Action 
 {
 	
 private GraphicalViewer diagramViewer;
 
-public ToggleGridAction(GraphicalViewer diagramViewer) {
+public ToggleGridVisibilityAction(GraphicalViewer diagramViewer) {
 	super(GEFMessages.ToggleGrid_Label, AS_CHECK_BOX);
 	this.diagramViewer = diagramViewer;
 	setToolTipText(GEFMessages.ToggleGrid_Tooltip);
