@@ -121,7 +121,7 @@ protected void layout() {
 		if (string.length() > 0)
 			context.endLine();
 		i++;
-	} while (string.length() > 0 && fragment.length != 0);
+	} while (string.length() > 0 && length != 0);
 
 	//Remove the remaining unused fragments.
 	while (i < fragments.size())
