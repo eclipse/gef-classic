@@ -14,10 +14,10 @@ public class SnapToGrid
 	extends SnapToHelper
 {
 	
-public static final String PROPERTY_GRID_ENABLED = "SnapToGrid + $Property"; //$NON-NLS-1$
-public static final String PROPERTY_GRID_VISIBLE = "SnapToGrid + $Visible"; //$NON-NLS-1$
-public static final String PROPERTY_GRID_SPACING = "SnapToGrid - Grid Spacing"; //$NON-NLS-1$
-public static final String PROPERTY_GRID_ORIGIN = "SnapToGrid - $Grid Origin"; //$NON-NLS-1$
+public static final String PROPERTY_SNAP_TO_GRID_ENABLED = "org.eclipse.gef.stg.grid"; //$NON-NLS-1$
+public static final String PROPERTY_GRID_VISIBLE = "org.eclipse.gef.stg.visible"; //$NON-NLS-1$
+public static final String PROPERTY_GRID_SPACING = "org.eclipse.gef.stg.spacing"; //$NON-NLS-1$
+public static final String PROPERTY_GRID_ORIGIN = "org.eclipse.gef.stg.origin"; //$NON-NLS-1$
 public static final int DEFAULT_GAP = 12;
 	
 protected GraphicalEditPart container;

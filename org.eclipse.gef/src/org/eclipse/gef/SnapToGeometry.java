@@ -20,11 +20,11 @@ public class SnapToGeometry
 	extends SnapToHelper 
 {
 	
-public static final String PROPERTY_SNAP_ENABLED = "SnapToGeometry - $Property"; //$NON-NLS-1$	
-public static final String PROPERTY_NORTH_ANCHOR = "SnapToGeometry - $H Anchor"; //$NON-NLS-1$
-public static final String PROPERTY_SOUTH_ANCHOR = "org.eclipse.gef.SnapToGeometry.south"; //$NON-NLS-1$
-public static final String PROPERTY_WEST_ANCHOR = "SnapToGeometry - $V Anchor"; //$NON-NLS-1$
-public static final String PROPERTY_EAST_ANCHOR = "org.eclipse.gef.SnapToGeometry.east"; //$NON-NLS-1$
+public static final String PROPERTY_SNAP_TO_GEOM_ENABLED = "org.eclipse.gef.geom.snap"; //$NON-NLS-1$	
+public static final String KEY_NORTH_ANCHOR = "org.eclipse.gef.geom.nAnchor"; //$NON-NLS-1$
+public static final String KEY_SOUTH_ANCHOR = "org.eclipse.gef.geom.sAnchor"; //$NON-NLS-1$
+public static final String KEY_WEST_ANCHOR = "org.eclipse.gef.geom.wAnchor"; //$NON-NLS-1$
+public static final String KEY_EAST_ANCHOR = "org.eclipse.gef.geom.eAnchor"; //$NON-NLS-1$
 
 protected static class Entry {
 	int side;
@@ -96,9 +96,9 @@ protected double getCorrectionFor(Entry entries[], Map extendedData, boolean ver
 	
 	String property;
 	if (side == -1)
-		property = vert ? PROPERTY_WEST_ANCHOR : PROPERTY_NORTH_ANCHOR;
+		property = vert ? KEY_WEST_ANCHOR : KEY_NORTH_ANCHOR;
 	else
-		property = vert ? PROPERTY_EAST_ANCHOR : PROPERTY_SOUTH_ANCHOR;
+		property = vert ? KEY_EAST_ANCHOR : KEY_SOUTH_ANCHOR;
 	
 	for (int i = 0; i < entries.length; i++) {
 		Entry entry = entries[i];
@@ -156,12 +156,12 @@ protected int performCenteredResize(Request request, PrecisionRectangle baseRect
 			snapOrientation &= ~EAST_WEST;
 			result.preciseWidth -= (leftCorrection * 2);
 			result.preciseX += leftCorrection;
-			request.getExtendedData().remove(PROPERTY_EAST_ANCHOR);
+			request.getExtendedData().remove(KEY_EAST_ANCHOR);
 		} else if (rightCorrection != THRESHOLD) {
 			snapOrientation &= ~EAST_WEST;
 			result.preciseWidth += (rightCorrection * 2);
 			result.preciseX -= rightCorrection;
-			request.getExtendedData().remove(PROPERTY_WEST_ANCHOR);
+			request.getExtendedData().remove(KEY_WEST_ANCHOR);
 		}
 	}
 	
@@ -175,12 +175,12 @@ protected int performCenteredResize(Request request, PrecisionRectangle baseRect
 			snapOrientation &= ~NORTH_SOUTH;
 			result.preciseHeight -= (topCorrection * 2);
 			result.preciseY += topCorrection;
-			request.getExtendedData().remove(PROPERTY_SOUTH_ANCHOR);
+			request.getExtendedData().remove(KEY_SOUTH_ANCHOR);
 		} else if (bottom != THRESHOLD) {
 			snapOrientation &= ~NORTH_SOUTH;
 			result.preciseHeight += (bottom * 2);
 			result.preciseY -= bottom;
-			request.getExtendedData().remove(PROPERTY_NORTH_ANCHOR);
+			request.getExtendedData().remove(KEY_NORTH_ANCHOR);
 		}
 	}
 

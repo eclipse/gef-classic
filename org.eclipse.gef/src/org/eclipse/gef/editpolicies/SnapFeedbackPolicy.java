@@ -175,22 +175,22 @@ public void showTargetFeedback(Request req) {
 			|| req.getType().equals(REQ_CREATE)) {
 
 		Integer value;
-		value = (Integer)req.getExtendedData().get(SnapToGeometry.PROPERTY_WEST_ANCHOR);
+		value = (Integer)req.getExtendedData().get(SnapToGeometry.KEY_WEST_ANCHOR);
 		highlightGuide(value, ColorConstants.blue, 0);
 		
-		value = (Integer)req.getExtendedData().get(SnapToGeometry.PROPERTY_NORTH_ANCHOR);
+		value = (Integer)req.getExtendedData().get(SnapToGeometry.KEY_NORTH_ANCHOR);
 		highlightGuide(value, ColorConstants.blue, 1);
 		
-		value = (Integer)req.getExtendedData().get(SnapToGeometry.PROPERTY_EAST_ANCHOR);
+		value = (Integer)req.getExtendedData().get(SnapToGeometry.KEY_EAST_ANCHOR);
 		highlightGuide(value, ColorConstants.blue, 2);
 		
-		value = (Integer)req.getExtendedData().get(SnapToGeometry.PROPERTY_SOUTH_ANCHOR);
+		value = (Integer)req.getExtendedData().get(SnapToGeometry.KEY_SOUTH_ANCHOR);
 		highlightGuide(value, ColorConstants.blue, 3);
 
-		value = (Integer)req.getExtendedData().get(SnapToGuides.PROPERTY_VERTICAL_GUIDE);
+		value = (Integer)req.getExtendedData().get(SnapToGuides.KEY_VERTICAL_GUIDE);
 		highlightGuide(value, ColorConstants.red, 4);
 		
-		value = (Integer)req.getExtendedData().get(SnapToGuides.PROPERTY_HORIZONTAL_GUIDE);
+		value = (Integer)req.getExtendedData().get(SnapToGuides.KEY_HORIZONTAL_GUIDE);
 		highlightGuide(value, ColorConstants.red, 5);
 	}
 }

@@ -44,10 +44,10 @@ protected Command chainGuideAttachmentCommands(
 	
 	// Attach to horizontal guide, if one is given
 	Integer guidePos = (Integer)request.getExtendedData()
-			.get(SnapToGuides.PROPERTY_HORIZONTAL_GUIDE);
+			.get(SnapToGuides.KEY_HORIZONTAL_GUIDE);
 	if (guidePos != null) {
 		int hAlignment = ((Integer)request.getExtendedData()
-				.get(SnapToGuides.PROPERTY_HORIZONTAL_ANCHOR)).intValue();
+				.get(SnapToGuides.KEY_HORIZONTAL_ANCHOR)).intValue();
 		ChangeGuideCommand cgm = new ChangeGuideCommand(part, true);
 		cgm.setNewGuide(findGuideAt(guidePos.intValue(), true), hAlignment);
 		result = result.chain(cgm);
@@ -55,10 +55,10 @@ protected Command chainGuideAttachmentCommands(
 	
 	// Attach to vertical guide, if one is given
 	guidePos = (Integer)request.getExtendedData()
-			.get(SnapToGuides.PROPERTY_VERTICAL_GUIDE);
+			.get(SnapToGuides.KEY_VERTICAL_GUIDE);
 	if (guidePos != null) {
 		int vAlignment = ((Integer)request.getExtendedData()
-				.get(SnapToGuides.PROPERTY_VERTICAL_ANCHOR)).intValue();
+				.get(SnapToGuides.KEY_VERTICAL_ANCHOR)).intValue();
 		ChangeGuideCommand cgm = new ChangeGuideCommand(part, false);
 		cgm.setNewGuide(findGuideAt(guidePos.intValue(), false), vAlignment);
 		result = result.chain(cgm);
@@ -103,10 +103,10 @@ protected Command createChangeConstraintCommand(ChangeBoundsRequest request,
 
 	if ((request.getResizeDirection() & PositionConstants.NORTH_SOUTH) != 0) {
 		Integer guidePos = (Integer)request.getExtendedData()
-				.get(SnapToGuides.PROPERTY_HORIZONTAL_GUIDE);
+				.get(SnapToGuides.KEY_HORIZONTAL_GUIDE);
 		if (guidePos != null) {
 			int hAlignment = ((Integer)request.getExtendedData()
-					.get(SnapToGuides.PROPERTY_HORIZONTAL_ANCHOR)).intValue();
+					.get(SnapToGuides.KEY_HORIZONTAL_ANCHOR)).intValue();
 			ChangeGuideCommand cgm = new ChangeGuideCommand(part, true);
 			cgm.setNewGuide(findGuideAt(guidePos.intValue(), true), hAlignment);
 			result = result.chain(cgm);
@@ -130,10 +130,10 @@ protected Command createChangeConstraintCommand(ChangeBoundsRequest request,
 	
 	if ((request.getResizeDirection() & PositionConstants.EAST_WEST) != 0) {
 		Integer guidePos = (Integer)request.getExtendedData()
-				.get(SnapToGuides.PROPERTY_VERTICAL_GUIDE);
+				.get(SnapToGuides.KEY_VERTICAL_GUIDE);
 		if (guidePos != null) {
 			int vAlignment = ((Integer)request.getExtendedData()
-					.get(SnapToGuides.PROPERTY_VERTICAL_ANCHOR)).intValue();
+					.get(SnapToGuides.KEY_VERTICAL_ANCHOR)).intValue();
 			ChangeGuideCommand cgm = new ChangeGuideCommand(part, false);
 			cgm.setNewGuide(findGuideAt(guidePos.intValue(), false), vAlignment);
 			result = result.chain(cgm);
@@ -154,21 +154,21 @@ protected Command createChangeConstraintCommand(ChangeBoundsRequest request,
 	if (request.getType().equals(REQ_MOVE_CHILDREN)
 			|| request.getType().equals(REQ_ALIGN_CHILDREN)) {
 		Integer guidePos = (Integer)request.getExtendedData()
-				.get(SnapToGuides.PROPERTY_HORIZONTAL_GUIDE);
+				.get(SnapToGuides.KEY_HORIZONTAL_GUIDE);
 		ChangeGuideCommand cgm = new ChangeGuideCommand(part, true);
 		if (guidePos != null) {
 			int hAlignment = ((Integer)request.getExtendedData()
-					.get(SnapToGuides.PROPERTY_HORIZONTAL_ANCHOR)).intValue();
+					.get(SnapToGuides.KEY_HORIZONTAL_ANCHOR)).intValue();
 			cgm.setNewGuide(findGuideAt(guidePos.intValue(), true), hAlignment);
 		}
 		result = result.chain(cgm);
 		
 		guidePos = (Integer)request.getExtendedData()
-				.get(SnapToGuides.PROPERTY_VERTICAL_GUIDE);
+				.get(SnapToGuides.KEY_VERTICAL_GUIDE);
 		cgm = new ChangeGuideCommand(part, false);
 		if (guidePos != null) {
 			int vAlignment = ((Integer)request.getExtendedData()
-					.get(SnapToGuides.PROPERTY_VERTICAL_ANCHOR)).intValue();
+					.get(SnapToGuides.KEY_VERTICAL_ANCHOR)).intValue();
 			cgm.setNewGuide(findGuideAt(guidePos.intValue(), false), vAlignment);
 		}
 		result = result.chain(cgm);
@@ -248,19 +248,19 @@ protected Command getCloneCommand(ChangeBoundsRequest request) {
 	
 	// Attach to horizontal guide, if one is given
 	Integer guidePos = (Integer)request.getExtendedData()
-			.get(SnapToGuides.PROPERTY_HORIZONTAL_GUIDE);
+			.get(SnapToGuides.KEY_HORIZONTAL_GUIDE);
 	if (guidePos != null) {
 		int hAlignment = ((Integer)request.getExtendedData()
-				.get(SnapToGuides.PROPERTY_HORIZONTAL_ANCHOR)).intValue();
+				.get(SnapToGuides.KEY_HORIZONTAL_ANCHOR)).intValue();
 		clone.setGuide(findGuideAt(guidePos.intValue(), true), hAlignment, true);
 	}
 	
 	// Attach to vertical guide, if one is given
 	guidePos = (Integer)request.getExtendedData()
-			.get(SnapToGuides.PROPERTY_VERTICAL_GUIDE);
+			.get(SnapToGuides.KEY_VERTICAL_GUIDE);
 	if (guidePos != null) {
 		int vAlignment = ((Integer)request.getExtendedData()
-				.get(SnapToGuides.PROPERTY_VERTICAL_ANCHOR)).intValue();
+				.get(SnapToGuides.KEY_VERTICAL_ANCHOR)).intValue();
 		clone.setGuide(findGuideAt(guidePos.intValue(), false), vAlignment, false);
 	}
 

@@ -26,10 +26,10 @@ public class SnapToGuides
 	extends SnapToHelper 
 {
 
-public static final String PROPERTY_VERTICAL_GUIDE = "vertical guide"; //$NON-NLS-1$
-public static final String PROPERTY_HORIZONTAL_GUIDE = "horizontal guide"; //$NON-NLS-1$
-public static final String PROPERTY_VERTICAL_ANCHOR = "vertical attachment"; //$NON-NLS-1$
-public static final String PROPERTY_HORIZONTAL_ANCHOR = "horizontal attachment"; //$NON-NLS-1$
+public static final String KEY_VERTICAL_GUIDE = "org.eclipse.gef.snapGuides.vGuide"; //$NON-NLS-1$
+public static final String KEY_HORIZONTAL_GUIDE = "org.eclipse.gef.snapGuides.hGuide"; //$NON-NLS-1$
+public static final String KEY_VERTICAL_ANCHOR = "org.eclipse.gef.snapGuides.vAnchor"; //$NON-NLS-1$
+public static final String KEY_HORIZONTAL_ANCHOR = "org.eclipse.gef.snapGuides.hAnchor"; //$NON-NLS-1$
 
 protected static final double THRESHOLD = 7.01;
 protected GraphicalEditPart container;
@@ -85,9 +85,9 @@ protected double getCorrectionFor(int[] guides, double value, Map extendedData,
 		
 		magnitude = Math.abs(value - offset);
 		if (magnitude < resultMag) {
-			extendedData.put(vert ? PROPERTY_VERTICAL_GUIDE : PROPERTY_HORIZONTAL_GUIDE, 
+			extendedData.put(vert ? KEY_VERTICAL_GUIDE : KEY_HORIZONTAL_GUIDE, 
 					new Integer(guides[i]));
-			extendedData.put(vert ? PROPERTY_VERTICAL_ANCHOR : PROPERTY_HORIZONTAL_ANCHOR, 
+			extendedData.put(vert ? KEY_VERTICAL_ANCHOR : KEY_HORIZONTAL_ANCHOR, 
 					new Integer(side));
 			resultMag = magnitude;
 			result = offset - value;
@@ -102,8 +102,8 @@ protected int performCenteredResize(Request request, PrecisionRectangle baseRect
 		double rightCorrection = getCorrectionFor(getVerticalGuides(), 
 				baseRect.preciseRight(), request.getExtendedData(), true, 1);
 		// Store the guide and anchor information, in case leftCorrection over-writes it
-		Object vGuide = request.getExtendedData().get(PROPERTY_VERTICAL_GUIDE);
-		Object vAnchor = request.getExtendedData().get(PROPERTY_VERTICAL_ANCHOR);
+		Object vGuide = request.getExtendedData().get(KEY_VERTICAL_GUIDE);
+		Object vAnchor = request.getExtendedData().get(KEY_VERTICAL_ANCHOR);
 		double leftCorrection = getCorrectionFor(getVerticalGuides(), 
 				baseRect.preciseX, request.getExtendedData(), true, -1);
 		if(Math.abs(leftCorrection) <= Math.abs(rightCorrection)
@@ -115,8 +115,8 @@ protected int performCenteredResize(Request request, PrecisionRectangle baseRect
 		} else if (rightCorrection != THRESHOLD) {
 			// Restore the guide and anchor information, in case it was over-written
 			// by leftCorrection
-			request.getExtendedData().put(PROPERTY_VERTICAL_GUIDE, vGuide);
-			request.getExtendedData().put(PROPERTY_VERTICAL_ANCHOR, vAnchor);
+			request.getExtendedData().put(KEY_VERTICAL_GUIDE, vGuide);
+			request.getExtendedData().put(KEY_VERTICAL_ANCHOR, vAnchor);
 			snapOrientation &= ~EAST_WEST;
 			result.preciseWidth += (rightCorrection * 2);
 			result.preciseX -= rightCorrection;
@@ -126,14 +126,14 @@ protected int performCenteredResize(Request request, PrecisionRectangle baseRect
 	if ((snapOrientation & NORTH_SOUTH) != 0) {
 		double topCorrection = getCorrectionFor(getHorizontalGuides(), 
 				baseRect.preciseY, request.getExtendedData(), false, -1);
-		Object hGuide = request.getExtendedData().get(PROPERTY_VERTICAL_GUIDE);
-		Object hAnchor = request.getExtendedData().get(PROPERTY_VERTICAL_ANCHOR);
+		Object hGuide = request.getExtendedData().get(KEY_VERTICAL_GUIDE);
+		Object hAnchor = request.getExtendedData().get(KEY_VERTICAL_ANCHOR);
 		double bottom = getCorrectionFor(getHorizontalGuides(), 
 				baseRect.preciseBottom(), request.getExtendedData(), false, 1);
 		if(Math.abs(topCorrection) <= Math.abs(bottom)
 				&& topCorrection != THRESHOLD) {
-			request.getExtendedData().put(PROPERTY_VERTICAL_GUIDE, hGuide);
-			request.getExtendedData().put(PROPERTY_VERTICAL_ANCHOR, hAnchor);
+			request.getExtendedData().put(KEY_VERTICAL_GUIDE, hGuide);
+			request.getExtendedData().put(KEY_VERTICAL_ANCHOR, hAnchor);
 			snapOrientation &= ~NORTH_SOUTH;
 			result.preciseHeight -= (topCorrection * 2);
 			result.preciseY += topCorrection;

@@ -639,11 +639,11 @@ protected void loadProperties() {
 			new Boolean(getLogicDiagram().getRulerVisibility()));
 	
 	// Snap to Geometry property
-	getGraphicalViewer().setProperty(SnapToGeometry.PROPERTY_SNAP_ENABLED, 
+	getGraphicalViewer().setProperty(SnapToGeometry.PROPERTY_SNAP_TO_GEOM_ENABLED, 
 			new Boolean(getLogicDiagram().isSnapToGeometryEnabled()));
 	
 	// Grid properties
-	getGraphicalViewer().setProperty(SnapToGrid.PROPERTY_GRID_ENABLED, 
+	getGraphicalViewer().setProperty(SnapToGrid.PROPERTY_SNAP_TO_GRID_ENABLED, 
 			new Boolean(getLogicDiagram().isGridEnabled()));
 	// We keep grid visibility and enablement in sync
 	getGraphicalViewer().setProperty(SnapToGrid.PROPERTY_GRID_VISIBLE, 
@@ -721,9 +721,9 @@ protected void saveProperties() {
 	getLogicDiagram().setRulerVisibility(((Boolean)getGraphicalViewer()
 			.getProperty(RulerProvider.PROPERTY_RULER_VISIBILITY)).booleanValue());
 	getLogicDiagram().setGridEnabled(((Boolean)getGraphicalViewer()
-			.getProperty(SnapToGrid.PROPERTY_GRID_ENABLED)).booleanValue());
+			.getProperty(SnapToGrid.PROPERTY_SNAP_TO_GRID_ENABLED)).booleanValue());
 	getLogicDiagram().setSnapToGeometry(((Boolean)getGraphicalViewer()
-			.getProperty(SnapToGeometry.PROPERTY_SNAP_ENABLED)).booleanValue());
+			.getProperty(SnapToGeometry.PROPERTY_SNAP_TO_GEOM_ENABLED)).booleanValue());
 	getLogicDiagram().setGridOrigin((Point)getGraphicalViewer()
 			.getProperty(SnapToGrid.PROPERTY_GRID_ORIGIN));
 	getLogicDiagram().setGridSpacing((Dimension)getGraphicalViewer()

@@ -35,7 +35,7 @@ public ToggleGridAction(GraphicalViewer diagramViewer) {
 }
 
 public boolean isChecked() {
-	Boolean val = (Boolean)diagramViewer.getProperty(SnapToGrid.PROPERTY_GRID_ENABLED);
+	Boolean val = (Boolean)diagramViewer.getProperty(SnapToGrid.PROPERTY_SNAP_TO_GRID_ENABLED);
 	if (val != null)
 		return val.booleanValue();
 	return false;
@@ -44,7 +44,7 @@ public boolean isChecked() {
 public void run() {
 	boolean val = !isChecked();
 	diagramViewer.setProperty(SnapToGrid.PROPERTY_GRID_VISIBLE, new Boolean(val));
-	diagramViewer.setProperty(SnapToGrid.PROPERTY_GRID_ENABLED, new Boolean(val));
+	diagramViewer.setProperty(SnapToGrid.PROPERTY_SNAP_TO_GRID_ENABLED, new Boolean(val));
 }
 
 }
