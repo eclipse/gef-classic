@@ -21,6 +21,7 @@ import org.eclipse.draw2d.graph.Subgraph;
 /**
  * Some utility methods for graphs.
  * @author Eric Bordeau
+ * @since 2.1.2
  */
 public class GraphUtilities {
 
@@ -137,6 +138,18 @@ public static boolean willCauseCycle(Node source, Node target) {
 	NodeList nodes = search(target, new NodeList());
 	nodes.resetFlags();
 	return nodes.contains(source);
+}
+
+static boolean isConstrained(Node left, Node right) {
+	Subgraph common = left.getParent();
+	while (common != null && !common.isNested(right)) {
+		left = left.getParent();
+		common = left.getParent();
+	}
+	while (right.getParent() != common)
+		right = right.getParent();
+	return (left.constraint != -1 && right.constraint != -1)
+	  && left.constraint != right.constraint;
 }
 
 }

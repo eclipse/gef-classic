@@ -20,8 +20,9 @@ import org.eclipse.draw2d.graph.Subgraph;
 import org.eclipse.draw2d.graph.SubgraphBoundary;
 
 /**
- * @author hudsonr
- * Created on Jul 2, 2003
+ * Converts a compound directed graph into a simple directed graph.
+ * @author Randy Hudson
+ * @since 2.1.2
  */
 public class ConvertCompoundGraph extends GraphVisitor {
 
