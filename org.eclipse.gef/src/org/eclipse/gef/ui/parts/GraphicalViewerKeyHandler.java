@@ -56,6 +56,9 @@ public GraphicalViewerKeyHandler(GraphicalViewer viewer) {
 	this.viewer = viewer;
 }
 
+/**
+ * @return	<code>true</code> if key pressed indicates a connection traversal/selection
+ */
 protected boolean acceptConnection(KeyEvent event) {
 	return event.character == '/'
 		|| event.character == '?'
@@ -64,10 +67,17 @@ protected boolean acceptConnection(KeyEvent event) {
 		|| event.character == '|';
 }
 
+/**
+ * @return	<code>true</code> if the keys pressed indicate to traverse inside a container
+ */
 protected boolean acceptIntoContainer(KeyEvent event) {
 	return ((event.stateMask & SWT.ALT) != 0) && (event.keyCode == SWT.ARROW_DOWN);
 }
 
+/**
+ * @return	<code>true</code> if the keys pressed indicate to stop traversing/selecting
+ * 			connection
+ */
 protected boolean acceptLeaveConnection(KeyEvent event) {
 	int key = event.keyCode;
 	if (getFocusEditPart() instanceof ConnectionEditPart)
@@ -79,6 +89,10 @@ protected boolean acceptLeaveConnection(KeyEvent event) {
 	return false;
 }
 
+/**
+ * @return	<code>true</code> if the viewer's contents has focus and one of the arrow
+ * 			keys is pressed
+ */
 protected boolean acceptLeaveContents(KeyEvent event) {
 	int key = event.keyCode;
 	return getFocusEditPart() == getViewer().getContents()
@@ -88,14 +102,24 @@ protected boolean acceptLeaveContents(KeyEvent event) {
 			|| (key == SWT.ARROW_LEFT));
 }
 
+/**
+ * @return	<code>true</code> if the keys pressed indicate to traverse to the parent of
+ * 			the currently focused EditPart
+ */
 protected boolean acceptOutOf(KeyEvent event) {
 	return ((event.stateMask & SWT.ALT) != 0) && (event.keyCode == SWT.ARROW_UP);
 }
 
-protected ConnectionEditPart findConnection(
-	GraphicalEditPart node,
-	ConnectionEditPart current,
-	boolean forward) {
+/**
+ * Given a connection on a node, this method finds the next (or the previous) connection
+ * of that node.
+ * 
+ * @param	node	The EditPart whose connections are being traversed
+ * @param	current	The connection relative to which the next connection has to be found
+ * @param	forward	<code>true</code> if the next connection has to be found; false otherwise
+ */
+protected ConnectionEditPart findConnection(GraphicalEditPart node, 
+                                            ConnectionEditPart current, boolean forward) {
 	List connections = new ArrayList(node.getSourceConnections());
 	connections.addAll(node.getTargetConnections());
 	if (connections.isEmpty())
@@ -110,14 +134,19 @@ protected ConnectionEditPart findConnection(
 	return (ConnectionEditPart)connections.get(counter % connections.size());
 }
 
-/*
- * pStart is a point in absolute coordinates.
+/**
+ * Given an absolute point (pStart) and a list of EditParts, this method finds the closest
+ * EditPart (except for the one to be excluded) in the given direction.
+ * 
+ * @param	siblings	List of sibling EditParts
+ * @param	pStart		The starting point (must be in absolute coordinates) from which
+ * 						the next sibling is to be found.
+ * @param	direction	PositionConstants
+ * @param	exclude		The EditPart to be excluded from the search
+ * 
  */
-protected GraphicalEditPart findSibling(
-	List siblings,
-	Point pStart,
-	int direction,
-	EditPart exclude) {
+protected GraphicalEditPart findSibling(List siblings, Point pStart, int direction,
+                                        EditPart exclude) {
 	GraphicalEditPart epCurrent;
 	GraphicalEditPart epFinal = null;
 	IFigure figure;
@@ -130,7 +159,7 @@ protected GraphicalEditPart findSibling(
 		if (epCurrent == exclude || !epCurrent.isSelectable())
 			continue;
 		figure = epCurrent.getFigure();
-		pCurrent = getInterestingPoint(figure);
+		pCurrent = getNavigationPoint(figure);
 		figure.translateToAbsolute(pCurrent);
 		if (pStart.getPosition(pCurrent) != direction)
 			continue;
@@ -144,7 +173,13 @@ protected GraphicalEditPart findSibling(
 	return epFinal;
 }
 
-protected Point getInterestingPoint(IFigure figure) {
+/**
+ * Figures' navigation points are used to determine their direction compared to one 
+ * another, and the distance between them.
+ *  
+ * @return	the center of the given figure
+ */
+protected Point getNavigationPoint(IFigure figure) {
 	return figure.getBounds().getCenter();
 }
 
@@ -160,10 +195,16 @@ private GraphicalEditPart getCachedNode() {
 	return (GraphicalEditPart)cachedNode.get();
 }
 
+/**
+ * @return	the EditPart that has focus
+ */
 protected GraphicalEditPart getFocusEditPart() {
 	return (GraphicalEditPart)getViewer().getFocusEditPart();
 }
 
+/**
+ * @return	the siblings of the EditPart that has focus
+ */
 protected List getNavigationSiblings() {
 	return getFocusEditPart().getParent().getChildren();
 }
@@ -238,6 +279,9 @@ public boolean keyPressed(KeyEvent event) {
 	return super.keyPressed(event);
 }
 
+/**
+ * This method navigates through connections based on the keys pressed.
+ */
 protected void navigateConnections(KeyEvent event) {
 	GraphicalEditPart focus = getFocusEditPart();
 	ConnectionEditPart current = null;
@@ -260,6 +304,10 @@ protected void navigateConnections(KeyEvent event) {
 	navigateTo(next, event);
 }
 
+/**
+ * This method traverses to the closest child of the currently focused EditPart, if it has
+ * one.
+ */
 protected void navigateIntoContainer(KeyEvent event) {
 	GraphicalEditPart focus = getFocusEditPart();
 	List childList = focus.getChildren();
@@ -285,19 +333,34 @@ protected void navigateIntoContainer(KeyEvent event) {
 		navigateTo(closestPart, event);
 }
 
+/**
+ * Not yet implemented.
+ */
 protected boolean navigateJumpSibling(KeyEvent event, int direction) {
 	// TODO: Implement navigateJumpSibling() (for PGUP, PGDN, HOME and END key events)
 	return false;
 }
 
+/**
+ * Traverses to the next sibling in the given direction.
+ * 
+ * @param	event		the KeyEvent for the keys that were pressed to trigger this traversal
+ * @param	direction	PositionConstants.* indicating the direction in which to traverse
+ */
 protected boolean navigateNextSibling(KeyEvent event, int direction) {
 	return navigateNextSibling(event, direction, getNavigationSiblings());
 }
 
+/**
+ * Traverses to the closest EditPart in the given list that is also in the given direction.
+ * 
+ * @param	event		the KeyEvent for the keys that were pressed to trigger this traversal
+ * @param	direction	PositionConstants.* indicating the direction in which to traverse
+ */
 protected boolean navigateNextSibling(KeyEvent event, int direction, List list) {
 	GraphicalEditPart epStart = getFocusEditPart();
 	IFigure figure = epStart.getFigure();
-	Point pStart = getInterestingPoint(figure);
+	Point pStart = getNavigationPoint(figure);
 	figure.translateToAbsolute(pStart);
 	EditPart next = findSibling(list, pStart, direction, epStart);
 	if (next == null)
@@ -306,6 +369,9 @@ protected boolean navigateNextSibling(KeyEvent event, int direction, List list) 
 	return true;
 }
 
+/**
+ * Navigates to the parent of the currently focused EditPart.
+ */
 protected void navigateOut(KeyEvent event) {
 	if (getFocusEditPart() == null
 		|| getFocusEditPart() == getViewer().getContents()
@@ -314,6 +380,9 @@ protected void navigateOut(KeyEvent event) {
 	navigateTo(getFocusEditPart().getParent(), event);
 }
 
+/**
+ * Navigates to the source or target of the currently focused ConnectionEditPart.
+ */
 protected void navigateOutOfConnection(KeyEvent event) {
 	GraphicalEditPart cached = getCachedNode();
 	ConnectionEditPart conn = (ConnectionEditPart)getFocusEditPart();
@@ -325,6 +394,12 @@ protected void navigateOutOfConnection(KeyEvent event) {
 		navigateTo(conn.getSource(), event);
 }
 
+/**
+ * Navigates to the given EditPart
+ * 
+ * @param	part	the EditPart to navigate to
+ * @param	event	the KeyEvent that triggered this traversal
+ */
 protected void navigateTo(EditPart part, KeyEvent event) {
 	if (part == null)
 		return;
@@ -338,6 +413,10 @@ protected void navigateTo(EditPart part, KeyEvent event) {
 	getViewer().reveal(part);
 }
 
+/**
+ * This method is invoked when the user presses the space bar.  It toggles the selection
+ * of the EditPart that currently has focus.
+ */
 protected void processSelect(KeyEvent event) {
 	EditPart part = getViewer().getFocusEditPart();
 	if ((event.stateMask & SWT.CONTROL) != 0
