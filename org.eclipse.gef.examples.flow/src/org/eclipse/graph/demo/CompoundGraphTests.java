@@ -8,7 +8,7 @@ import org.eclipse.graph.*;
  */
 public class CompoundGraphTests {
 
-static CompoundDirectedGraph chains() {
+public static CompoundDirectedGraph chains() {
 	Subgraph s1, s2, s3, sb;
 	Node nx,n0,n1, n2, n3, n4, n5, n6, na, nb;
 	NodeList nodes = new NodeList();
@@ -57,7 +57,7 @@ static CompoundDirectedGraph chains() {
 	return graph;
 }
 
-static CompoundDirectedGraph pull() {
+public static CompoundDirectedGraph pull() {
 	Subgraph s1, s2;
 	Node a,b,c,d,e,f,g,h,i,j,k,x,l,m,n,y;
 	Node r,t;
@@ -127,7 +127,7 @@ static CompoundDirectedGraph pull() {
 	return graph;
 }
 
-static CompoundDirectedGraph test1() {
+public static CompoundDirectedGraph test1() {
 	Subgraph s1, s2;
 	Node n1, n2, n3, n4, n5, n6, n7;
 	NodeList nodes = new NodeList();
@@ -170,7 +170,7 @@ static CompoundDirectedGraph test1() {
 	return graph;
 }
 
-static CompoundDirectedGraph tangledSubgraphs() {
+public static CompoundDirectedGraph tangledSubgraphs() {
 	Subgraph A, B, C, D;
 	Node a1, a2, b1, b2, c1, c2, d1, d2;
 	NodeList nodes = new NodeList();
@@ -212,7 +212,7 @@ static CompoundDirectedGraph tangledSubgraphs() {
 	return graph;
 }
 
-static CompoundDirectedGraph test2() {
+public static CompoundDirectedGraph test2() {
 	Subgraph s1, s2, s1_1;
 	Node n1, n2, n3, n4, n5, n6, n7, n8;
 	NodeList nodes = new NodeList();

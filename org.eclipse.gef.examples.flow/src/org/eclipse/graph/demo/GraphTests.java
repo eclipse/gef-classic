@@ -22,7 +22,7 @@ private static void addNodes(NodeList nodes, Node[] row) {
 			nodes.add(row[i]);
 }
 
-static DirectedGraph anotherTour() {
+public static DirectedGraph anotherTour() {
 	NodeList nodes = new NodeList();
 	EdgeList edges = new EdgeList();
 	
@@ -82,7 +82,7 @@ static DirectedGraph anotherTour() {
 	return graph;
 }
 
-static DirectedGraph balanceThis1() {
+public static DirectedGraph balanceThis1() {
 	Node a,b1, b2, b3, b4,b5,c,d,e,f,g;
 	NodeList nodes = new NodeList();
 	EdgeList edges = new EdgeList();
@@ -126,7 +126,7 @@ static DirectedGraph balanceThis1() {
 	return graph;
 }
 
-static DirectedGraph balanceThis2() {
+public static DirectedGraph balanceThis2() {
 	Node a,b2, b3, b4,c,d,e,f,g;
 	NodeList nodes = new NodeList();
 	EdgeList edges = new EdgeList();
@@ -164,7 +164,7 @@ static DirectedGraph balanceThis2() {
 	return graph;
 }
 	
-static DirectedGraph balanceThis3() {
+public static DirectedGraph balanceThis3() {
 	Node top1, top2;
 	Node a1, a2, a3, a4;
 	Node b1, b2, b3, b4, b5, b6;
@@ -231,7 +231,7 @@ static DirectedGraph balanceThis3() {
 
 }
 
-static DirectedGraph fourLevelBinaryTree() {
+public static DirectedGraph fourLevelBinaryTree() {
 	NodeList nodes = new NodeList();
 	EdgeList edges = new EdgeList();
 	
@@ -272,7 +272,7 @@ static DirectedGraph fourLevelBinaryTree() {
 	return graph;
 }
 
-static DirectedGraph graph1() {
+public static DirectedGraph graph1() {
 	NodeList nodes = new NodeList();
 	EdgeList edges = new EdgeList();
 	
@@ -336,7 +336,7 @@ static DirectedGraph graph1() {
 	return graph;
 }
 
-static DirectedGraph graph2() {
+public static DirectedGraph graph2() {
 	NodeList nodes = new NodeList();
 	EdgeList edges = new EdgeList();
 	
@@ -396,7 +396,7 @@ static DirectedGraph graph2() {
 	return graph;
 }
 
-static DirectedGraph graph3() {
+public static DirectedGraph graph3() {
 	NodeList nodes = new NodeList();
 	EdgeList edges = new EdgeList();
 	
@@ -495,7 +495,7 @@ private static void shuffleConnections(int[] conns) {
 	}
 }
 
-static DirectedGraph simpleGraph() {
+public static DirectedGraph simpleGraph() {
 	Node a,b,c,d,e,f,g,h,i,x;
 	NodeList nodes = new NodeList();
 	EdgeList edges = new EdgeList();
@@ -550,7 +550,7 @@ static DirectedGraph simpleGraph() {
 	return graph;
 }
 
-static DirectedGraph test1() {
+public static DirectedGraph test1() {
 	Node a,b,c,d,e,f,g;
 	NodeList nodes = new NodeList();
 	EdgeList edges = new EdgeList();
@@ -580,7 +580,7 @@ static DirectedGraph test1() {
 	return graph;
 }
 
-static DirectedGraph test2() {
+public static DirectedGraph test2() {
 	Node a,b,c,d,e,f,g,h,i,j,k,l;
 	NodeList nodes = new NodeList();
 	EdgeList edges = new EdgeList();
@@ -615,7 +615,7 @@ static DirectedGraph test2() {
 	return graph;
 }
 
-static DirectedGraph test3() {
+public static DirectedGraph test3() {
 	Node a,b,c,d;
 	NodeList nodes = new NodeList();
 	EdgeList edges = new EdgeList();
@@ -641,7 +641,7 @@ static DirectedGraph test3() {
 	return graph;
 }
 
-static DirectedGraph test4() {
+public static DirectedGraph test4() {
 	Node a;
 	Node b,c,d;
 	Node e,f,g;
@@ -690,7 +690,7 @@ static DirectedGraph test4() {
 	return graph;
 }
 
-static DirectedGraph tinyGraph() {
+public static DirectedGraph tinyGraph() {
 	Node a,b,c,d,e,f,g;
 	NodeList nodes = new NodeList();
 	EdgeList edges = new EdgeList();
@@ -722,7 +722,7 @@ static DirectedGraph tinyGraph() {
 }
 
 
-static DirectedGraph unstableGraph() {
+public static DirectedGraph unstableGraph() {
 	Node a0,b0,c0,a1,b1,c1,a2, b2, c2;
 	NodeList nodes = new NodeList();
 	EdgeList edges = new EdgeList();

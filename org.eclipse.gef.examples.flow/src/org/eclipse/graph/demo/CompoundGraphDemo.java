@@ -1,96 +1,22 @@
 package org.eclipse.graph.demo;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.eclipse.swt.graphics.Font;
-
-import org.eclipse.graph.*;
+import java.lang.reflect.Method;
 
 import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.graph.*;
+import org.eclipse.swt.graphics.Font;
 
 /**
  * @author hudsonr
  * @since 2.1
  */
 public class CompoundGraphDemo
-	extends AbstractExample
+	extends AbstractGraphDemo
 {
 
-static class LeftOrRightAnchor extends ChopboxAnchor {
-	public LeftOrRightAnchor(IFigure owner) {
-		super(owner);
-	}
-	public Point getLocation(Point reference) {
-		Point p;
-		p = getOwner().getBounds().getCenter();
-		getOwner().translateToAbsolute(p);
-		if (reference.x < p.x)
-			p = getOwner().getBounds().getLeft();
-		else
-			p =getOwner().getBounds().getRight();
-		getOwner().translateToAbsolute(p);
-		return p;
-	}
-}
-
-static class TopOrBottomAnchor extends ChopboxAnchor {
-	public TopOrBottomAnchor(IFigure owner) {
-		super(owner);
-	}
-	public Point getLocation(Point reference) {
-		Point p;
-		p = getOwner().getBounds().getCenter();
-		getOwner().translateToAbsolute(p);
-		if (reference.y < p.y)
-			p = getOwner().getBounds().getTop();
-		else
-			p =getOwner().getBounds().getBottom();
-		getOwner().translateToAbsolute(p);
-		return p;
-	}
-}
-
-static boolean buildPrime;
-
 static int HEIGHT = 100;
-
-private static void buildEdgeFigure(Figure contents, Edge edge) {
-			PolylineConnection conn = connection(edge);
-			conn.setForegroundColor(ColorConstants.gray);
-			conn.setLineWidth(2);
-			
-			
-			if (edge.tree) {
-	//			Label l = new Label ("(" + edge.cut + ")");
-	//			l.setOpaque(true);
-	//			conn.add(l, new ConnectionLocator(conn));
-	//			conn.setLineWidth(3);
-	//			PolygonDecoration dec = new PolygonDecoration();
-	//			dec.setLineWidth(3);
-	//			if (edge.head() == edge.target)
-	//				conn.setSourceDecoration(dec);
-	//			else
-	//				conn.setTargetDecoration(dec);
-			} else {
-	//			conn.setLineStyle(Graphics.LINE_DASHDOT);
-	//			Label l = new Label (Integer.toString(edge.getSlack()));
-	//			l.setOpaque(true);
-	//			conn.add(l, new ConnectionEndpointLocator(conn, false));
-			}
-			Node s = edge.source;
-			Node t = edge.target;
-			
-			conn.setSourceAnchor(
-				new XYAnchor(new Point(s.x + edge.getSourceOffset(), s.y + s.height)));
-			conn.setTargetAnchor(
-				new XYAnchor(new Point(t.x + edge.getTargetOffset(), t.y)));
-//			conn.setSourceAnchor(new TopOrBottomAnchor(s));
-//			conn.setTargetAnchor(new TopOrBottomAnchor(t));
-			contents.add(conn);
-}
 
 static public Figure buildGraph(CompoundDirectedGraph graph) {
 	Figure contents = new Panel();
@@ -115,20 +41,6 @@ static public Figure buildGraph(CompoundDirectedGraph graph) {
 	if (buildPrime)
 		buildPrimeGraph(graph.gPrime, contents);
 	return contents;
-}
-
-private static void buildNodeFigure(Figure contents, Node node) {
-	Label label;
-	label = new Label();
-	label.setBackgroundColor(ColorConstants.lightGray);
-	label.setOpaque(true);
-	label.setBorder(new LineBorder());
-	if (node.incoming.isEmpty())
-		label.setBorder(new LineBorder(2));
-	String text = node.data.toString();// + "(" + node.index +","+node.sortValue+ ")";
-	label.setText(text);
-	node.data = label;
-	contents.add(label, new Rectangle(node.x, node.y, node.width, node.height));
 }
 
 static public void buildPrimeGraph(DirectedGraph graph, Figure panel) {
@@ -168,51 +80,10 @@ static public void buildPrimeGraph(DirectedGraph graph, Figure panel) {
 	}
 }
 
-private static PolylineConnection buildPrimeEdge(Edge e) {
-	PolylineConnection line = new PolylineConnection();
-	
-	if (e.tree) {
-		PolygonDecoration dec = new PolygonDecoration();
-		dec.setLineWidth(2);
-		if (e.head() == e.target)
-			line.setSourceDecoration(dec);
-		else
-			line.setTargetDecoration(dec);
-	
-		line.setLineWidth(3);
-		Label l = new Label (e.cut+"");
-		l.setOpaque(true);
-		line.add(l, new ConnectionLocator(line));
-	}
-	else {
-		line.setLineStyle(Graphics.LINE_DOT);
-		Label l = new Label (e.getSlack()+"");
-		l.setOpaque(true);
-		line.add(l, new ConnectionLocator(line));
-	}
-	return line;
-}
-
 private static void buildSubgraphFigure(Figure contents, Subgraph s) {
 	Figure figure = new Figure();	
 	figure.setBorder(new LineBorder(ColorConstants.blue, s.insets.left));
 	contents.add(figure, new Rectangle(s.x, s.y, s.width, s.height));
-}
-
-static PolylineConnection connection(Edge e) {
-	PolylineConnection conn = new PolylineConnection();
-	conn.setConnectionRouter(new BendpointConnectionRouter());
-	List bends = new ArrayList();
-	NodeList nodes = e.vNodes;
-	if (nodes != null) {
-		for (int i=0; i<nodes.size(); i++) {
-			Node n = nodes.getNode(i);
-			bends.add(new AbsoluteBendpoint(n.x, n.y));
-			bends.add(new AbsoluteBendpoint(n.x, n.y + 40));
-		}
-	}
-	conn.setRoutingConstraint(bends);
-	return conn;
 }
 
 public static void main(String[] args) {
@@ -223,11 +94,35 @@ public static void main(String[] args) {
  * @see org.eclipse.draw2d.examples.AbstractExample#getContents()
  */
 protected IFigure getContents() {
-	CompoundDirectedGraph graph = CompoundGraphTests.tangledSubgraphs();
-	buildPrime = false;
+	CompoundDirectedGraph graph = null;
+	try {
+		graph =
+			(CompoundDirectedGraph) (CompoundGraphTests
+				.class
+				.getMethod(graphMethod, null)
+				.invoke(null, null)); 
+	} catch (Exception e) {
+		System.out.println("Could not build graph");
+	}
 	Figure contents = buildGraph(graph);
-	
 	return contents;
+}
+
+/**
+ * @see org.eclipse.graph.demo.GraphDemo#getGraphMethods()
+ */
+protected String[] getGraphMethods() {
+	Method[] methods = CompoundGraphTests.class.getMethods();
+	String[] methodNames = new String[methods.length];
+	
+	int nameIndex = 0;
+	for (int i = 0; i < methods.length; i++) {
+		if (methods[i].getReturnType().equals(CompoundDirectedGraph.class)) {
+			methodNames[nameIndex] = methods[i].getName();
+			nameIndex++;
+		}
+	}
+	return methodNames;
 }
 
 }

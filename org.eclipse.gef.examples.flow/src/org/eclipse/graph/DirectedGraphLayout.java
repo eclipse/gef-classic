@@ -20,8 +20,10 @@ public void visit(DirectedGraph graph) {
 		.visit(graph);
 	new MinCross()
 		.visit(graph);
-	new HorizontalPlacement()
+	new LocalOptimizer()
 		.visit(graph);
+	new HorizontalPlacement()
+		.visit(graph);	
 }
 
 }
