@@ -129,7 +129,9 @@ protected void paintClientArea(Graphics g){
 		Point p = getViewLocation();
 		try {
 			g.translate(-p.x,-p.y);
+			g.pushState();
 			super.paintClientArea(g);
+			g.popState();
 		} finally {
 			g.translate(p.x,p.y);
 		}

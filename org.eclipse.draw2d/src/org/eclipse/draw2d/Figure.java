@@ -962,6 +962,7 @@ protected void paintClientArea(Graphics graphics) {
 			graphics.pushState();
 			paintChildren(graphics);
 			graphics.popState();
+			graphics.restoreState();
 		}
 	}
 }

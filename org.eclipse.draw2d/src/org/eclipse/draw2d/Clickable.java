@@ -304,7 +304,9 @@ protected void paintBorder(Graphics graphics) {
 protected void paintClientArea(Graphics graphics) {
 	if (isStyle(STYLE_BUTTON) && (getModel().isArmed() || getModel().isSelected())) {
 		graphics.translate(1, 1);
+		graphics.pushState();
 		super.paintClientArea(graphics);
+		graphics.popState();
 		graphics.translate(-1, -1);
 	} else 
 		super.paintClientArea(graphics);
