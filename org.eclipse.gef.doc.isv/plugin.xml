@@ -28,6 +28,7 @@
             file="topics_Reference.xml">
       </toc>
    </extension>
+<!--   
    <extension
          point="org.eclipse.ui.views">
       <category
@@ -49,5 +50,5 @@
             id="GEF CommandStack View">
       </view>
    </extension>
-
+-->
 </plugin>
