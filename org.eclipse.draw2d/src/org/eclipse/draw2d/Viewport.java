@@ -168,12 +168,8 @@ public void propertyChange(PropertyChangeEvent event){
 protected void readjustScrollBars(){
 	if (getContents() == null)
 		return;
-	getVerticalRangeModel().setExtent(getClientArea().height);
-	getVerticalRangeModel().setMinimum(0);
-	getVerticalRangeModel().setMaximum(getContents().getBounds().height);		
-	getHorizontalRangeModel().setExtent(getClientArea().width);
-	getHorizontalRangeModel().setMinimum(0);
-	getHorizontalRangeModel().setMaximum(getContents().getBounds().width);
+	getVerticalRangeModel().setAll(0, getClientArea().height, getContents().getBounds().height);		
+	getHorizontalRangeModel().setAll(0, getClientArea().width, getContents().getBounds().width);
 }
 
 /**

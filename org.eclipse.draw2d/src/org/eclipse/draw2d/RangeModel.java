@@ -76,6 +76,14 @@ boolean isEnabled();
 void removePropertyChangeListener(PropertyChangeListener listener);
 
 /**
+ * Sets min, extent, and max all at once.
+ * @param min the new mininum
+ * @param extent the new extent
+ * @param max the new maximum
+ */
+void setAll(int min, int extent, int max);
+
+/**
  * Sets the extent.
  * @param extent The extent
  */

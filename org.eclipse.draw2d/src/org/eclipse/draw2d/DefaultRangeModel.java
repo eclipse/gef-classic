@@ -77,6 +77,25 @@ public void removePropertyChangeListener(PropertyChangeListener listener) {
 	propertyListeners.removePropertyChangeListener(listener);
 }
 
+/**
+ * @see org.eclipse.draw2d.RangeModel#setAll(int, int, int)
+ */
+public void setAll(int min, int ext, int max) {
+	int oldMin = minimum;
+	int oldExtent = extent;
+	int oldMax = maximum;
+	maximum = max;
+	minimum = min;
+	extent = ext;
+	if (oldMax != max)
+		firePropertyChange(PROPERTY_MAXIMUM, oldMax, max);
+	if (oldExtent != ext)
+		firePropertyChange(PROPERTY_EXTENT, oldExtent, ext);
+	if (oldMin != min)
+		firePropertyChange(PROPERTY_MINIMUM, oldMin, min);
+	setValue(getValue());
+}
+
 /*
  * Sets this RangeModel's extent and fires a property change.
  */
