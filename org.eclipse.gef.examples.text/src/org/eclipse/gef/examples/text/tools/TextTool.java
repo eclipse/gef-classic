@@ -10,6 +10,7 @@
 package org.eclipse.gef.examples.text.tools;
 
 import java.util.ArrayList;
+import java.util.EventObject;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
@@ -19,6 +20,8 @@ import org.eclipse.swt.events.TraverseEvent;
 import org.eclipse.swt.graphics.Cursor;
 
 import org.eclipse.jface.util.Assert;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 
 import org.eclipse.draw2d.Cursors;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -27,6 +30,7 @@ import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
+import org.eclipse.gef.commands.CommandStackListener;
 import org.eclipse.gef.tools.SelectionTool;
 import org.eclipse.gef.tools.ToolUtilities;
 
@@ -47,32 +51,48 @@ import org.eclipse.gef.examples.text.requests.TextRequest;
 /**
  * @since 3.1
  */
-public class TextTool extends SelectionTool implements StyleProvider {
+public class TextTool 
+	extends SelectionTool 
+	implements StyleProvider 
+{
 
 static final boolean IS_CARBON = "carbon".equals(SWT.getPlatform()); //$NON-NLS-1$
 
 private static final int MODE_BS = 2;
-
 private static final int MODE_DEL = 3;
-
 private static final int MODE_TYPING = 1;
 
+private final GraphicalTextViewer textViewer;
+private final StyleService styleService;
 private StyleListener listener;
-
 private AppendableCommand pendingCommand;
 private List styleKeys = new ArrayList();
 private List styleValues = new ArrayList();
-
 private int textInputMode;
-
-private final GraphicalTextViewer textViewer;
+private CommandStackListener commandListener = new CommandStackListener() {
+	public void commandStackChanged(EventObject event) {
+		fireStyleChanges();
+	}
+};
+private ISelectionChangedListener selectionListener = new ISelectionChangedListener() {
+	public void selectionChanged(SelectionChangedEvent event) {
+		fireStyleChanges();
+	}
+}; 
 
 /**
  * @since 3.1
  */
 public TextTool(GraphicalTextViewer viewer, StyleService service) {
-	this.textViewer = viewer;
-	service.setStyleProvider(this);
+	textViewer = viewer;
+	styleService = service;
+}
+
+public void activate() {
+	super.activate();
+	styleService.setStyleProvider(this);
+	textViewer.getEditDomain().getCommandStack().addCommandStackListener(commandListener);
+	textViewer.addSelectionChangedListener(selectionListener);
 }
 
 public void addStyleListener(StyleListener listener) {
@@ -96,6 +116,10 @@ protected Cursor calculateCursor() {
  */
 public void deactivate() {
 	setTextInputMode(0);
+	styleService.setStyleProvider(null);
+	textViewer.getEditDomain().getCommandStack()
+			.removeCommandStackListener(commandListener);
+	textViewer.removeSelectionChangedListener(selectionListener);
 	super.deactivate();
 }
 
@@ -355,6 +379,11 @@ private boolean doUnindent() {
 	return handleTextEdit(edit);
 }
 
+private void fireStyleChanges() {
+	if (listener != null)
+		listener.styleChanged(null);
+}
+
 private void flushStyles() {
 	styleKeys.clear();
 	styleValues.clear();
@@ -397,7 +426,7 @@ private TextualEditPart getTextTarget(GraphicalTextViewer viewer, Request reques
 			range.end.part);
 
 	target = candidate.getTargetEditPart(request);
-	while (target == null && candidate != null) {
+	while (target == null && candidate.getParent() != null) {
 		candidate = candidate.getParent();
 		target = candidate.getTargetEditPart(request);
 	}

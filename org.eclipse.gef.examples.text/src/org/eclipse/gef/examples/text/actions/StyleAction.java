@@ -11,33 +11,43 @@
 
 package org.eclipse.gef.examples.text.actions;
 
+import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
-import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.jface.util.Assert;
 
 import org.eclipse.gef.internal.GEFMessages;
 import org.eclipse.gef.internal.InternalImages;
 import org.eclipse.gef.ui.actions.GEFActionConstants;
-import org.eclipse.gef.ui.actions.WorkbenchPartAction;
 
 /**
  * @since 3.1
  */
-public class StyleAction extends WorkbenchPartAction {
+public class StyleAction 
+	extends Action {
+
+private StyleService service;
+private StyleListener styleListener = new StyleListener() {
+	public void styleChanged(String styleID) {
+		if (styleID == null || styleID.equals(getId()))
+			refresh();
+	}
+};
+	
+public StyleAction(StyleService service, String styleID) {
+	this(service, styleID, IAction.AS_CHECK_BOX);
+}
 
 /**
  * @param part
  * @since 3.1
  */
-public StyleAction(IWorkbenchPart part, String styleID) {
-	super(part, IAction.AS_CHECK_BOX);
+public StyleAction(StyleService service, String styleID, int style) {
+	setStyleService(service);
 	setId(styleID);
 	configureStyleAction(this);
 }
 
 protected boolean calculateEnabled() {
-	StyleService service = getStyleService();
-	if (service == null)
-		return false;
 	return service.getStyleState(getId()) == StyleService.STATE_EDITABLE;
 }
 
@@ -72,20 +82,22 @@ static void configureStyleAction(IAction a) {
 		throw new RuntimeException("The given style ID was not recognized"); //$NON-NLS-1$
 	}
 }
-
-StyleService getStyleService() {
-	return (StyleService)getWorkbenchPart().getAdapter(StyleService.class);
-}
-
+	
 public void run() {
-	StyleService service = getStyleService();
 	service.setStyle(getId(), isChecked() ? Boolean.TRUE : Boolean.FALSE);
 }
 
-public void update() {
-	StyleService service = getStyleService();
-	setChecked(service != null && service.getStyle(getId()).equals(Boolean.TRUE));
-	setEnabled(service != null && service.getStyleState(getId()).equals(StyleService.STATE_EDITABLE));
+// should only be called once
+private void setStyleService(StyleService styleService) {
+	Assert.isNotNull(styleService);
+	service = styleService;
+	// no need to remove this listener; it will be GCed when the editor's closed
+	service.addStyleListener(styleListener);
+}
+
+public void refresh() {
+	setChecked(service.getStyle(getId()).equals(Boolean.TRUE));
+	setEnabled(service.getStyleState(getId()).equals(StyleService.STATE_EDITABLE));
 }
 
 }

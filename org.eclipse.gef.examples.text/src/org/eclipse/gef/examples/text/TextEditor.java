@@ -121,32 +121,26 @@ protected void createActions() {
 	ActionRegistry registry = getActionRegistry();
 	IAction action;
 	
-	action = new StyleAction(this, GEFActionConstants.STYLE_BOLD);
+	action = new StyleAction(styleService, GEFActionConstants.STYLE_BOLD);
 	registry.registerAction(action);
-	getSelectionActions().add(action.getId());
 	service.registerAction(action);
 
-	action = new StyleAction(this, GEFActionConstants.STYLE_ITALIC);
+	action = new StyleAction(styleService, GEFActionConstants.STYLE_ITALIC);
 	registry.registerAction(action);
-	getSelectionActions().add(action.getId());
 	service.registerAction(action);
 
-	action = new StyleAction(this, GEFActionConstants.STYLE_UNDERLINE);
+	action = new StyleAction(styleService, GEFActionConstants.STYLE_UNDERLINE);
 	registry.registerAction(action);
-	getSelectionActions().add(action.getId());
 	service.registerAction(action);
 	
-	action = new StyleAction(this, GEFActionConstants.BLOCK_ALIGN_LEFT);
+	action = new StyleAction(styleService, GEFActionConstants.BLOCK_ALIGN_LEFT);
 	registry.registerAction(action);
-	getSelectionActions().add(action.getId());
 	
-	action = new StyleAction(this, GEFActionConstants.BLOCK_ALIGN_CENTER);
+	action = new StyleAction(styleService, GEFActionConstants.BLOCK_ALIGN_CENTER);
 	registry.registerAction(action);
-	getSelectionActions().add(action.getId());
 	
-	action = new StyleAction(this, GEFActionConstants.BLOCK_ALIGN_RIGHT);
+	action = new StyleAction(styleService, GEFActionConstants.BLOCK_ALIGN_RIGHT);
 	registry.registerAction(action);
-	getSelectionActions().add(action.getId());
 }
 
 /**
