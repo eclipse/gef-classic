@@ -12,16 +12,13 @@ package org.eclipse.gef.ui.actions;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
-import org.eclipse.swt.events.*;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.*;
 
 import org.eclipse.jface.action.ContributionItem;
 import org.eclipse.jface.util.Assert;
-import org.eclipse.ui.IPartListener;
-import org.eclipse.ui.IPartService;
-import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.*;
 
 import org.eclipse.gef.editparts.ZoomListener;
 import org.eclipse.gef.editparts.ZoomManager;
@@ -103,7 +100,7 @@ void refresh() {
 			combo.setEnabled(true);
 		}
 	} catch (SWTException exception) {
-		if (!SWT.getPlatform().equals("gtk"))
+		if (!SWT.getPlatform().equals("gtk")) //$NON-NLS-1$
 			throw exception;
 	}
 }

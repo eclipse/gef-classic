@@ -180,7 +180,7 @@ private ButtonModel getButtonModel() {
  * @see org.eclipse.gef.internal.ui.palette.editparts.PaletteEditPart#getDragTracker(Request)
  */
 public DragTracker getDragTracker(Request request) {
-	if (SWT.getPlatform().equals("gtk"))
+	if (SWT.getPlatform().equals("gtk"))  //$NON-NLS-1$
 		return new GTKToggleButtonTracker();
 	else
 		return new ToggleButtonTracker();
