@@ -17,10 +17,11 @@ package org.eclipse.draw2d.text;
  * <P>
  * This class should not be treated as a <code>Rectangle</code> by clients.  It is
  * important to use getters when available for lazy calculation of values.
+ * 
  * @author hudsonr
  * @since 2.1
  */
-public class FlowBox {
+public abstract class FlowBox {
 int height;
 int width;
 
@@ -41,8 +42,8 @@ public int y;
 public boolean containsPoint(int x, int y) {
 	return x >= this.x
 		&& y >= this.y
-		&& x < this.x + this.width
-		&& y < this.y + this.height;
+		&& x < this.x + width
+		&& y < this.y + height;
 }
 
 /**
@@ -84,6 +85,17 @@ public int getHeight() {
  * @return width */
 public int getWidth() {
 	return width;
+}
+
+/**
+ * Returns true if any of the children are bi-directional.  Default implementation
+ * always returns false.
+ * 
+ * @return <code>true</code> if the box is bi-directional
+ * @since 3.1
+ */
+public boolean isBidi() {
+	return false;
 }
 
 /**
