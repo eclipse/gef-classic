@@ -46,7 +46,12 @@ public static final String PROPERTY_INITIAL_STATUS = "Initial status"; //$NON-NL
  */
 public static final int INITIAL_STATE_OPEN = 0,
                         INITIAL_STATE_CLOSED = 1,
-                        INITIAL_STATUS_PINNED_OPEN = 2;
+                        INITIAL_STATE_PINNED_OPEN = 2;
+
+/**
+ * @deprecated use {@link #INITIAL_STATE_PINNED_OPEN}
+ */
+public static final int INITIAL_STATUS_PINNED_OPEN = 2;
 
 private int initialState;
 private Object drawerType;
@@ -104,14 +109,14 @@ public int getInitialState() {
  */
 public boolean isInitiallyOpen() {
 	return (getInitialState() == INITIAL_STATE_OPEN 
-			|| getInitialState() == INITIAL_STATUS_PINNED_OPEN);
+			|| getInitialState() == INITIAL_STATE_PINNED_OPEN);
 }
 
 /**
  * @return <code>true</code> if the drawer is to be pinned open initially.
  */
 public boolean isInitiallyPinned() {
-	return (getInitialState() == INITIAL_STATUS_PINNED_OPEN);
+	return (getInitialState() == INITIAL_STATE_PINNED_OPEN);
 }
 
 /**

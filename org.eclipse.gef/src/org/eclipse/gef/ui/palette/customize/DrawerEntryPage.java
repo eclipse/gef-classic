@@ -148,7 +148,7 @@ protected void handleOpenSelected(boolean selection) {
  * @param selection	<code>true</code> if that option is now selected
  */
 protected void handlePinSelected(boolean selection) {
-	int status = selection ? PaletteDrawer.INITIAL_STATUS_PINNED_OPEN
+	int status = selection ? PaletteDrawer.INITIAL_STATE_PINNED_OPEN
 	                       : PaletteDrawer.INITIAL_STATE_OPEN;
 	getDrawer().setInitialState(status);
 }
