@@ -39,7 +39,7 @@ public class CreationTool
  * Property to be used in {@link AbstractTool#setProperties(java.util.Map)} for 
  * {@link #setFactory(CreationFactory)}.
  */
-public static final Object PROPERTY_CREATION_FACTORY = "gef.tools.creation.factory"; //$NON-NLS-1$
+public static final Object PROPERTY_CREATION_FACTORY = "factory"; //$NON-NLS-1$
 
 private CreationFactory factory;
 private SnapToHelper helper;

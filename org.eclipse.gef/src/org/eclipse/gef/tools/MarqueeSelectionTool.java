@@ -55,7 +55,7 @@ public class MarqueeSelectionTool
  * The property to be used in {@link AbstractTool#setProperties(java.util.Map)} for 
  * {@link #setSelectionType(int)}.
  */
-public static final Object PROPERTY_SELECTION_TYPE = "gef.tools.marquee.selection"; //$NON-NLS-1$
+public static final Object PROPERTY_SELECTION_TYPE = "selectionType"; //$NON-NLS-1$
 
 /**
  * For marquee tools that should select nodes.  This is the default type for this

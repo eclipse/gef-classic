@@ -81,7 +81,7 @@ public abstract class AbstractTool
  * The property to be used in {@link #setProperties(Map)} for 
  * {@link #setUnloadWhenFinished(boolean)}
  */
-public static final Object PROPERTY_UNLOAD_WHEN_FINISHED = "gef.tools.unload"; //$NON-NLS-1$
+public static final Object PROPERTY_UNLOAD_WHEN_FINISHED = "unloadWhenFinished"; //$NON-NLS-1$
 
 private static final int DRAG_THRESHOLD = 5;
 private static final int FLAG_ACTIVE = 8;
@@ -286,7 +286,7 @@ protected void applyProperty(Object key, Object value) {
 		}
 		if (property != null) {
 			Method setter = property.getWriteMethod();
-			setter.setAccessible(true);
+//			setter.setAccessible(true);
 			setter.invoke(this, new Object[] {value});
 		}
 	} catch (IntrospectionException ie) {
