@@ -29,7 +29,7 @@ public void ancestorMoved(IFigure ancestor);
  */
 public void ancestorRemoved(IFigure ancestor);
 
-class Stub {
+class Stub implements AncestorListener {
 	public void ancestorMoved(IFigure ancestor){}
 	public void ancestorAdded(IFigure ancestor){}
 	public void ancestorRemoved(IFigure ancestor){}

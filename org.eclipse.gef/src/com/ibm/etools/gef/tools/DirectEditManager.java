@@ -58,7 +58,7 @@ private static class DirectEditBorder
 	}
 }
 
-private FigureListener figureListener;
+private AncestorListener ancestorListener;
 private EditPartListener editPartListener;
 private IFigure cellEditorFrame;
 private FocusListener focusListener;
@@ -166,13 +166,17 @@ private void handleValueChanged(){
 }
 
 private void hookCellEditor(){
-	figureListener = new FigureListener() {
-		public void figureMoved(IFigure source) {
+	ancestorListener = new AncestorListener() {
+		public void ancestorMoved(IFigure source) {
 			placeCellEditor();
+		}
+		public void ancestorAdded(IFigure ancestor) {
+		}
+		public void ancestorRemoved(IFigure ancestor) {
 		}
 	};
 
-	getEditPart().getFigure().addFigureListener(figureListener);
+	getEditPart().getFigure().addAncestorListener(ancestorListener);
 
 	Control control = getControl();
 	focusListener = new FocusAdapter(){
@@ -287,8 +291,8 @@ public void showFeedback(){
 }
 
 protected void unhookCellEditor(){
-	if (figureListener != null)
-		getEditPart().getFigure().removeFigureListener(figureListener);
+	if (ancestorListener != null)
+		getEditPart().getFigure().removeAncestorListener(ancestorListener);
 	Control control = getCellEditor().getControl();
 	control.removeFocusListener(focusListener);
 	getCellEditor().removeListener(cellEditorListener);
