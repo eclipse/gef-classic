@@ -17,8 +17,11 @@ import org.eclipse.gef.SnapToGrid;
 import org.eclipse.gef.internal.GEFMessages;
 
 /**
- * An action that toggles the grid.  This action keeps the visibility and enablement
- * properties in sync, i.e., it toggles both at the same time.
+ * An action that toggles the grid.  This action keeps the {@link
+ * org.eclipse.gef.SnapToGrid#PROPERTY_GRID_VISIBLE visibility} and {@link
+ * org.eclipse.gef.SnapToGrid#PROPERTY_GRID_ENABLED enabled}
+ * properties in sync, i.e., it toggles both at the same time.  This action can handle
+ * the case where these properties are not set on the given viewer initially.
  * 
  * @author Pratik Shah
  * @since 3.0
@@ -31,7 +34,8 @@ private GraphicalViewer diagramViewer;
 
 /**
  * Constructor
- * @param	diagramViewer	the GraphicalViewer on which the grid enablement is set
+ * @param	diagramViewer	the GraphicalViewer on which the grid enablement and 
+ * 							visibility properties are to be set
  */
 public ToggleGridAction(GraphicalViewer diagramViewer) {
 	super(GEFMessages.ToggleGrid_Label, AS_CHECK_BOX);
