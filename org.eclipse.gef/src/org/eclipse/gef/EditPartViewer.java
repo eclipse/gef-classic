@@ -18,12 +18,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.util.TransferDragSourceListener;
+import org.eclipse.jface.util.TransferDropTargetListener;
 import org.eclipse.jface.viewers.ISelection;
 
 import org.eclipse.draw2d.geometry.Point;
-
-import org.eclipse.gef.dnd.TransferDragSourceListener;
-import org.eclipse.gef.dnd.TransferDropTargetListener;
 
 /**
  * An adapter on an SWT {@link org.eclipse.swt.widgets.Control} that manages the
@@ -92,8 +91,28 @@ interface Conditional {
  * can only have a single DragSource. Clients must not create their own DragSource when
  * using this method.
  * @param listener the listener
+ * @deprecated
+ */
+void addDragSourceListener(org.eclipse.gef.dnd.TransferDragSourceListener listener);
+
+/**
+ * Adds a <code>TransferDragSourceListener</code> to this viewer. This has the side-effect
+ * of creating a {@link org.eclipse.swt.dnd.DragSource} on the viewer's Control. A Control
+ * can only have a single DragSource. Clients must not create their own DragSource when
+ * using this method.
+ * @param listener the listener
  */
 void addDragSourceListener(TransferDragSourceListener listener);
+
+/**
+ * Adds a <code>TransferDropTargetListener</code> to this viewer. This has the side-effect
+ * of creating a {@link org.eclipse.swt.dnd.DropTarget} on the viewer's Control. A Control
+ * can only have a single DropTarget. Clients must not create their own DropTarget when
+ * using this method.
+ * @param listener the listener
+ * @deprecated
+ */
+void addDropTargetListener(org.eclipse.gef.dnd.TransferDropTargetListener listener);
 
 /**
  * Adds a <code>TransferDropTargetListener</code> to this viewer. This has the side-effect
@@ -326,8 +345,26 @@ void registerAccessibleEditPart(AccessibleEditPart acc);
  * DragSource that was created will be disposed.
  * @see #addDragSourceListener(TransferDragSourceListener)
  * @param listener the listener
+ * @deprecated
+ */
+void removeDragSourceListener(org.eclipse.gef.dnd.TransferDragSourceListener listener);
+
+/**
+ * Removes the specified drag source listener.  If all listeners are removed, the
+ * DragSource that was created will be disposed.
+ * @see #addDragSourceListener(TransferDragSourceListener)
+ * @param listener the listener
  */
 void removeDragSourceListener(TransferDragSourceListener listener);
+
+/**
+ * Removes the specified drop target listener. If all listeners are removed, the
+ * DropTarget that was created will be disposed.
+ * @see #addDropTargetListener(TransferDropTargetListener)
+ * @param listener
+ * @deprecated
+ */
+void removeDropTargetListener(org.eclipse.gef.dnd.TransferDropTargetListener listener);
 
 /**
  * Removes the specified drop target listener. If all listeners are removed, the

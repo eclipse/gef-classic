@@ -10,9 +10,6 @@
  *******************************************************************************/
 package org.eclipse.gef.dnd;
 
-import org.eclipse.swt.dnd.DragSourceListener;
-import org.eclipse.swt.dnd.Transfer;
-
 /**
  * A DragSourceListener that can handle one type of SWT {@link Transfer}. The purpose of a
  * TransferDragSourceListener is to:
@@ -25,15 +22,10 @@ import org.eclipse.swt.dnd.Transfer;
  * unrelated types of Drags. DelegatingDragAdapter then combines the function of each
  * TransferDragSourceListener, while allowing them to be implemented as if they were the
  * only DragSourceListener.
+ * @deprecated use org.eclipse.jface.util.TransferDragSourceListener instead
  */
 public interface TransferDragSourceListener 
-	extends DragSourceListener
+	extends org.eclipse.jface.util.TransferDragSourceListener
 {
-
-/**
- * Returns the Transfer that this listener works with.
- * @return the Transfer associated with this listener
- */
-Transfer getTransfer();
 
 }
