@@ -95,6 +95,12 @@ static final String GROUP_SAVE = "org.eclipse.gef.group.save"; //$NON-NLS-1$
 static final String GROUP_UNDO = "org.eclipse.gef.group.undo"; //$NON-NLS-1$
 
 /** 
+ * Context menu group for view related actions. 
+ * Value: <code>"org.eclipse.gef.group.view"</code>
+ */
+static final String GROUP_VIEW = "org.eclipse.gef.group.view"; //$NON-NLS-1$
+
+/** 
  * Zoom contribution id. 
  * Value: <code>"org.eclipse.gef.zoom"</code>
  */
