@@ -96,7 +96,7 @@ public Graphics getGraphics(Rectangle region) {
 			control.getStyle() & (SWT.RIGHT_TO_LEFT | SWT.LEFT_TO_RIGHT));
 	Graphics graphics;
 	if (imageBuffer != null) {
-		imageGC = new GC(imageBuffer);
+		imageGC = new GC(imageBuffer, control.getStyle() & (SWT.RIGHT_TO_LEFT | SWT.LEFT_TO_RIGHT));
 		imageGC.setBackground(controlGC.getBackground());
 		imageGC.setForeground(controlGC.getForeground());
 		imageGC.setFont(controlGC.getFont());
