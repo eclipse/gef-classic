@@ -291,7 +291,7 @@ private void doSelect(int type, boolean isForward, boolean appendSelection) {
 	search.isForward = isForward;
 	search.type = type;
 	search.x = caretBounds.x;
-	search.y = isForward ? caretBounds.bottom() : caretBounds.y;
+	search.y = caretBounds.y;
 	search.where = getTextualViewer().getCaretLocation();
 	
 	TextLocation newCaretLocation = caretLocation.part.getNextLocation(search);
