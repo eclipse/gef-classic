@@ -30,6 +30,7 @@ import org.eclipse.gef.palette.PaletteTemplateEntry;
 import org.eclipse.gef.palette.PanningSelectionToolEntry;
 import org.eclipse.gef.palette.ToolEntry;
 import org.eclipse.gef.requests.SimpleFactory;
+import org.eclipse.gef.tools.MarqueeSelectionTool;
 
 import org.eclipse.gef.examples.logicdesigner.model.AndGate;
 import org.eclipse.gef.examples.logicdesigner.model.Circuit;
@@ -47,17 +48,6 @@ public class LogicPlugin
 {
 
 private static LogicPlugin singleton;
-
-public LogicPlugin(IPluginDescriptor desc){
-	super(desc);
-	if( singleton == null ){
-		singleton = this;
-	}
-}
-
-public static LogicPlugin getDefault(){
-	return singleton;
-}
 
 static private List createCategories(PaletteRoot root){
 	List categories = new ArrayList();
@@ -238,7 +228,7 @@ static private PaletteContainer createComponentsDrawer(){
 	return drawer;
 }
 
-static private PaletteContainer createTemplateComponentsDrawer(){
+static private PaletteContainer createComponentsTemplateDrawer(){
 
 	PaletteDrawer drawer = new PaletteDrawer("Template Components",
 		ImageDescriptor.createFromFile(Circuit.class, "icons/comp.gif"));//$NON-NLS-1$
@@ -344,10 +334,15 @@ static private PaletteContainer createControlGroup(PaletteRoot root){
 	root.setDefaultEntry(tool);
 
 	PaletteStack marqueeStack = new PaletteStack("Marquee Tools", "", null);
-	marqueeStack.add(new MarqueeToolEntry(MarqueeToolEntry.SELECT_NODES));
-	marqueeStack.add(new MarqueeToolEntry(MarqueeToolEntry.SELECT_CONNECTIONS));
-	marqueeStack.add(new MarqueeToolEntry(
-			MarqueeToolEntry.SELECT_NODES | MarqueeToolEntry.SELECT_CONNECTIONS));
+	marqueeStack.add(new MarqueeToolEntry());
+	MarqueeToolEntry marquee = new MarqueeToolEntry();
+	marquee.setToolProperty(MarqueeSelectionTool.PROPERTY_SELECTION_TYPE, 
+			new Integer(MarqueeSelectionTool.SELECT_CONNECTIONS));
+	marqueeStack.add(marquee);
+	marquee = new MarqueeToolEntry();
+	marquee.setToolProperty(MarqueeSelectionTool.PROPERTY_SELECTION_TYPE, new Integer(
+			MarqueeSelectionTool.SELECT_CONNECTIONS | MarqueeSelectionTool.SELECT_NODES));
+	marqueeStack.add(marquee);
 	marqueeStack.setUserModificationPermission(PaletteEntry.PERMISSION_NO_MODIFICATION);
 	entries.add(marqueeStack);
 	
@@ -367,6 +362,17 @@ static PaletteRoot createPalette() {
 	PaletteRoot logicPalette = new PaletteRoot();
 	logicPalette.addAll(createCategories(logicPalette));
 	return logicPalette;
+}
+
+public static LogicPlugin getDefault(){
+	return singleton;
+}
+
+public LogicPlugin(IPluginDescriptor desc){
+	super(desc);
+	if( singleton == null ){
+		singleton = this;
+	}
 }
 
 }
