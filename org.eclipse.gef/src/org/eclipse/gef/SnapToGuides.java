@@ -38,7 +38,7 @@ import org.eclipse.gef.rulers.RulerProvider;
  * @author Pratik Shah
  */
 public class SnapToGuides 
-	extends SnapToHelper 
+	extends SnapToHelper
 {
 
 /**
@@ -114,38 +114,6 @@ public SnapToGuides(GraphicalEditPart container) {
 }
 
 /**
- * Returns the horizontal guides in the coordinates of the container's contents pane.
- * @return the horizontal guides 
- */
-protected int[] getHorizontalGuides() {	
-	if (horizontalGuides == null) {
-		RulerProvider rProvider = ((RulerProvider)container.getViewer()
-					.getProperty(RulerProvider.PROPERTY_VERTICAL_RULER));
-		if (rProvider != null)
-			horizontalGuides = rProvider.getGuidePositions();	
-		else
-			horizontalGuides = new int[0];
-	}
-	return horizontalGuides;
-}
-
-/**
- * Returns the vertical guides in the coordinates of the container's contents pane.
- * @return the vertical guides 
- */
-protected int[] getVerticalGuides() {
-	if (verticalGuides == null) {
-		RulerProvider rProvider = ((RulerProvider)container.getViewer()
-				.getProperty(RulerProvider.PROPERTY_HORIZONTAL_RULER));
-		if (rProvider != null)
-			verticalGuides = rProvider.getGuidePositions();	
-		else
-			verticalGuides = new int[0];
-	}
-	return verticalGuides;
-}
-
-/**
  * Returns the correction for the given near and far sides of a rectangle or {@link
  * #THRESHOLD} if no correction was found.  The near side represents the top or left side
  * of a rectangle being snapped.  Similar for far.  If snapping occurs, the extendedData
@@ -205,6 +173,38 @@ protected double getCorrectionFor(int[] guides, double value, Map extendedData,
 		}
 	}
 	return result;
+}
+
+/**
+ * Returns the horizontal guides in the coordinates of the container's contents pane.
+ * @return the horizontal guides 
+ */
+protected int[] getHorizontalGuides() {	
+	if (horizontalGuides == null) {
+		RulerProvider rProvider = ((RulerProvider)container.getViewer()
+					.getProperty(RulerProvider.PROPERTY_VERTICAL_RULER));
+		if (rProvider != null)
+			horizontalGuides = rProvider.getGuidePositions();	
+		else
+			horizontalGuides = new int[0];
+	}
+	return horizontalGuides;
+}
+
+/**
+ * Returns the vertical guides in the coordinates of the container's contents pane.
+ * @return the vertical guides 
+ */
+protected int[] getVerticalGuides() {
+	if (verticalGuides == null) {
+		RulerProvider rProvider = ((RulerProvider)container.getViewer()
+				.getProperty(RulerProvider.PROPERTY_HORIZONTAL_RULER));
+		if (rProvider != null)
+			verticalGuides = rProvider.getGuidePositions();	
+		else
+			verticalGuides = new int[0];
+	}
+	return verticalGuides;
 }
 
 /**
