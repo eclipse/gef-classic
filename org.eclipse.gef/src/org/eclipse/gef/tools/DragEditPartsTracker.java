@@ -95,7 +95,6 @@ protected Request createTargetRequest() {
 public void deactivate() {
 	eraseSourceFeedback();
 	super.deactivate();
-	setAutoexposeHelper(null);
 	operationSet = null;
 	exclusionSet = null;
 	sourceFigureOffset = null;
