@@ -1201,7 +1201,8 @@ private class FactoryWrapperAction extends Action {
 	public void run() {
 		PaletteEntry selected = getSelectedPaletteEntry();
 		if (selected == null) selected = getPaletteRoot();
-		factory.createNewEntry(getShell(), selected);
+		PaletteEntry newEntry = factory.createNewEntry(getShell(), selected);
+		treeviewer.setSelection(new StructuredSelection(newEntry), true);
 		updateActions();
 		tree.setFocus();
 	}
