@@ -39,6 +39,10 @@ private PaletteViewerProvider provider;
 private FlyoverPaletteAutomaton splitter;
 private CustomPalettePage page;
 
+protected void initializeGraphicalViewer() {
+	splitter.hookDropTargetListener(getGraphicalViewer());
+}
+
 protected PaletteViewerProvider createPaletteViewerProvider() {
 	return new PaletteViewerProvider(getGraphicalViewer().getEditDomain());
 }
