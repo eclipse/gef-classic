@@ -97,7 +97,6 @@ public void dispose() {
 	getSite().getWorkbenchWindow().getSelectionService().removeSelectionListener(this);
 	getEditDomain().setTool(null);
 	getActionRegistry().dispose();
-	getGraphicalViewer().dispose();
 	super.dispose();
 }
 
