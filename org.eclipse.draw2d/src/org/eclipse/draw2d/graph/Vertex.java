@@ -208,4 +208,11 @@ void updateOffset() {
 		offset = ((nearestObstacle / 2) - 1) / totalCount;
 }
 
+/**
+ * @see org.eclipse.draw2d.geometry.Point#toString()
+ */
+public String toString() {
+	return "V(" + origX + ", " + origY + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+}
+
 }
