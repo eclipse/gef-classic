@@ -32,6 +32,11 @@ static final long serialVersionUID = 1;
  */
 public PointList() { }
 
+/**
+ * Constructs a PointList with the given points.
+ * @param points int array where two consecutive ints form the coordinates of a point
+ * @since 3.1
+ */
 public PointList(int points[]) {
 	this.points = points;
 	this.size = points.length / 2;
@@ -59,6 +64,7 @@ public void addAll(PointList source) {
 	
 /** 
  * Adds Point <i>p</i> to this PointList.
+ * @param p the point to be added
  * @see  #removePoint(int)
  * @since 2.0
  */
@@ -76,7 +82,7 @@ public void addPoint(int x, int y) {
 	bounds = null;
 	int index = size * 2;
 	ensureCapacity(size + 1);
-	points[index]   = x;
+	points[index] = x;
 	points[index + 1] = y;
 	size++;
 }
@@ -218,6 +224,39 @@ public void insertPoint(Point p, int index) {
 }
 
 /**
+ * Determines whether any of the line segments represented by this PointList intersect
+ * the given Rectangle.  If a segment touches the given rectangle, that's considered
+ * intersection.
+ * 
+ * @param r the rectangle
+ * @return <code>true</code> if the given rectangle intersects any of the line segments 
+ *         represented by this PointList
+ * @since 3.1
+ */
+public boolean intersects(Rectangle r) {
+	for (int i = 0; i < size * 2; i += 2) {
+		if (r.contains(points[i], points[i + 1]))
+			return true;
+	}
+	int diagonal1x1 = r.x,
+		diagonal1y1 = r.y,
+		diagonal1x2 = r.x + r.width,
+		diagonal1y2 = r.y + r.height,
+		diagonal2x1 = r.x + r.width,
+		diagonal2y1 = r.y,
+		diagonal2x2 = r.x,
+		diagonal2y2 = r.y + r.height;
+	for (int i = 0; i < (size - 1) * 2; i += 2) {
+		if (Geometry.linesIntersect(diagonal1x1, diagonal1y1, diagonal1x2, 
+				diagonal1y2, points[i], points[i + 1], points[i + 2], points[i + 3])
+				|| Geometry.linesIntersect(diagonal2x1, diagonal2y1, diagonal2x2, 
+				diagonal2y2, points[i], points[i + 1], points[i + 2], points[i + 3]))
+			return true;
+	}
+	return false;
+}
+
+/**
  * @see org.eclipse.draw2d.geometry.Translatable#performScale(double)
  */
 public void performScale(double factor) {
@@ -284,7 +323,7 @@ public void setPoint(Point pt, int index) {
 	    throw new IndexOutOfBoundsException(
 	    	"Index: " + index + //$NON-NLS-1$
 	    	", Size: " + size); //$NON-NLS-1$
-if (bounds != null && !bounds.contains(pt));
+	if (bounds != null && !bounds.contains(pt))
 		bounds = null;
 	points[index * 2] = pt.x;
 	points[index * 2 + 1] = pt.y;
