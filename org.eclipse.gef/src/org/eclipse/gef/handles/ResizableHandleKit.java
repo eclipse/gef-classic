@@ -12,9 +12,6 @@ import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.Handle;
 import org.eclipse.gef.tools.ResizeTracker;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Cursor;
-import org.eclipse.swt.widgets.Display;
 
 /**
  * A set of utility methods to create Handles for the common
@@ -22,16 +19,6 @@ import org.eclipse.swt.widgets.Display;
  * @see Handle
  */
 public class ResizableHandleKit {
-
-protected final static Cursor NORTH_CURSOR = new Cursor(Display.getDefault(), SWT.CURSOR_SIZEN);
-protected final static Cursor SOUTH_CURSOR = new Cursor(Display.getDefault(), SWT.CURSOR_SIZES);
-protected final static Cursor EAST_CURSOR = new Cursor(Display.getDefault(), SWT.CURSOR_SIZEE);
-protected final static Cursor WEST_CURSOR = new Cursor(Display.getDefault(), SWT.CURSOR_SIZEW);
-protected final static Cursor NORTHEAST_CURSOR = new Cursor(Display.getDefault(), SWT.CURSOR_SIZENE);
-protected final static Cursor NORTHWEST_CURSOR = new Cursor(Display.getDefault(), SWT.CURSOR_SIZENW);
-protected final static Cursor SOUTHEAST_CURSOR = new Cursor(Display.getDefault(), SWT.CURSOR_SIZESE);
-protected final static Cursor SOUTHWEST_CURSOR = new Cursor(Display.getDefault(), SWT.CURSOR_SIZESW);
-
 
 /**
  * Fills the given List with handles at each corner
