@@ -121,8 +121,9 @@ private Node findNodeWithMaxDegree(NodeList nodes) {
 	
 	for (int i = 0; i < nodes.size(); i++) {
 		Node node = nodes.getNode(i);
-		if (getOutDegree(node) - getInDegree(node) >= max && node.flag == false) {
-			max = getOutDegree(node) - getInDegree(node);
+		int degree = getNestedOutDegree(node) - getNestedInDegree(node);
+		if (degree >= max && node.flag == false) {
+			max = degree;
 			maxNode = node;
 		}
 	}
@@ -134,6 +135,9 @@ private int getChildCount(Node n) {
 }	
 
 private int getInDegree(Node n) {
+	return n.workingInts[1];}
+
+private int getNestedInDegree(Node n) {
 	int result = n.workingInts[1];
 	if (n instanceof Subgraph) {
 		Subgraph s = (Subgraph)n;
@@ -144,11 +148,7 @@ private int getInDegree(Node n) {
 	return result;
 }
 
-private int getOrderIndex(Node n) {
-	return n.workingInts[0];
-}
-
-private int getOutDegree(Node n) {
+private int getNestedOutDegree(Node n) {
 	int result = n.workingInts[2];
 	if (n instanceof Subgraph) {
 		Subgraph s = (Subgraph)n;
@@ -157,6 +157,14 @@ private int getOutDegree(Node n) {
 				result += getOutDegree(s.members.getNode(i));
 	}
 	return result;
+}
+
+private int getOrderIndex(Node n) {
+	return n.workingInts[0];
+}
+
+private int getOutDegree(Node n) {
+	return n.workingInts[2];
 }
 
 private void initializeDegrees(DirectedGraph g) {
@@ -226,8 +234,8 @@ private void remove(Subgraph s, Node n) {
 		if (!s.isNested(e.source) && !e.flag) {
 			//Remove e
 			e.flag = true;
-			setOutDegree(e.source, getOutDegree(e.source) - 1);
-			setInDegree(e.target, getInDegree(e.target) - 1);
+			changeOutDegree(e.source, -1);
+			changeInDegree(e.target, -1);
 		}
 	}
 	for (int i = 0; i < n.outgoing.size(); i++) {
@@ -235,8 +243,8 @@ private void remove(Subgraph s, Node n) {
 		if (!s.isNested(e.target) && !e.flag) {
 			//Remove e
 			e.flag = true;
-			setOutDegree(e.source, getOutDegree(e.source) - 1);
-			setInDegree(e.target, getInDegree(e.target) - 1);
+			changeOutDegree(e.source, -1);
+			changeInDegree(e.target, -1);
 		}
 	}
 
@@ -262,7 +270,7 @@ private void removeOutgoingEdges(Node n) {
 		Edge e = n.outgoing.getEdge(i);
 		if (!e.flag) {
 			e.flag = true;
-			setInDegree(e.target, getInDegree(e.target) - 1);
+			changeInDegree(e.target, -1);
 		}
 	}
 }
