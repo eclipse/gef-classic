@@ -14,7 +14,6 @@ import java.util.Iterator;
 
 import org.eclipse.swt.graphics.Cursor;
 
-import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -38,7 +37,6 @@ private IFigure guide, guideline;
 public RulerDragTracker(RulerEditPart source) {
 	this.source = source;
 	guide = new GuideFigure(!source.isHorizontal());
-	guide.setBackgroundColor(ColorConstants.blue);
 	guide.setVisible(false);
 	guideline = new GuideEditPart.GuideLineFigure();
 	guideline.setVisible(false);
