@@ -622,7 +622,7 @@ protected void handleChangeFontPressed() {
 }
 
 protected void handleDefaultFontRequested() {
-	prefs.setFontData(JFaceResources.getTextFont().getFontData()[0]);
+	prefs.setFontData(JFaceResources.getDialogFont().getFontData()[0]);
 	updateFontName();
 }
 
