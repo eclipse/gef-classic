@@ -31,7 +31,7 @@ import org.eclipse.jface.util.PropertyChangeEvent;
  * This class may be instantiated; it is not intended to be subclassed.
  * </p>
  */
-class ToolbarDropdownContributionItem extends ContributionItem {
+public class ToolbarDropdownContributionItem extends ContributionItem {
 
 	private static ImageCache globalImageCache;
 	
