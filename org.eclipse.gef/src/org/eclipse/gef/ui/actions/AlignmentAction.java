@@ -180,8 +180,7 @@ protected void initUI() {
 			setId(GEFActionConstants.ALIGN_LEFT);
 			setText(GEFMessages.AlignLeftAction_Label);
 			setToolTipText(GEFMessages.AlignLeftAction_Tooltip);
-			setHoverImageDescriptor(InternalImages.DESC_HORZ_ALIGN_LEFT);
-			setImageDescriptor(InternalImages.DESC_HORZ_ALIGN_LEFT_BW);
+			setImageDescriptor(InternalImages.DESC_HORZ_ALIGN_LEFT);
 			setDisabledImageDescriptor(InternalImages.DESC_HORZ_ALIGN_LEFT_DIS);
 			break;
 		
@@ -189,8 +188,7 @@ protected void initUI() {
 			setId(GEFActionConstants.ALIGN_RIGHT);
 			setText(GEFMessages.AlignRightAction_Label);
 			setToolTipText(GEFMessages.AlignRightAction_Tooltip);
-			setHoverImageDescriptor(InternalImages.DESC_HORZ_ALIGN_RIGHT);
-			setImageDescriptor(InternalImages.DESC_HORZ_ALIGN_RIGHT_BW);
+			setImageDescriptor(InternalImages.DESC_HORZ_ALIGN_RIGHT);
 			setDisabledImageDescriptor(InternalImages.DESC_HORZ_ALIGN_RIGHT_DIS);
 			break;
 		
@@ -198,8 +196,7 @@ protected void initUI() {
 			setId(GEFActionConstants.ALIGN_TOP);
 			setText(GEFMessages.AlignTopAction_Label);
 			setToolTipText(GEFMessages.AlignTopAction_Tooltip);
-			setHoverImageDescriptor(InternalImages.DESC_VERT_ALIGN_TOP);
-			setImageDescriptor(InternalImages.DESC_VERT_ALIGN_TOP_BW);
+			setImageDescriptor(InternalImages.DESC_VERT_ALIGN_TOP);
 			setDisabledImageDescriptor(InternalImages.DESC_VERT_ALIGN_TOP_DIS);
 			break;
 		
@@ -207,8 +204,7 @@ protected void initUI() {
 			setId(GEFActionConstants.ALIGN_BOTTOM);
 			setText(GEFMessages.AlignBottomAction_Label);
 			setToolTipText(GEFMessages.AlignBottomAction_Tooltip);
-			setHoverImageDescriptor(InternalImages.DESC_VERT_ALIGN_BOTTOM);
-			setImageDescriptor(InternalImages.DESC_VERT_ALIGN_BOTTOM_BW);
+			setImageDescriptor(InternalImages.DESC_VERT_ALIGN_BOTTOM);
 			setDisabledImageDescriptor(InternalImages.DESC_VERT_ALIGN_BOTTOM_DIS);
 			break;
 		
@@ -216,8 +212,7 @@ protected void initUI() {
 			setId(GEFActionConstants.ALIGN_CENTER);
 			setText(GEFMessages.AlignCenterAction_Label);
 			setToolTipText(GEFMessages.AlignCenterAction_Tooltip);
-			setHoverImageDescriptor(InternalImages.DESC_HORZ_ALIGN_CENTER);
-			setImageDescriptor(InternalImages.DESC_HORZ_ALIGN_CENTER_BW);
+			setImageDescriptor(InternalImages.DESC_HORZ_ALIGN_CENTER);
 			setDisabledImageDescriptor(InternalImages.DESC_HORZ_ALIGN_CENTER_DIS);
 			break;
 		
@@ -225,8 +220,7 @@ protected void initUI() {
 			setId(GEFActionConstants.ALIGN_MIDDLE);
 			setText(GEFMessages.AlignMiddleAction_Label);
 			setToolTipText(GEFMessages.AlignMiddleAction_Tooltip);
-			setHoverImageDescriptor(InternalImages.DESC_VERT_ALIGN_MIDDLE);
-			setImageDescriptor(InternalImages.DESC_VERT_ALIGN_MIDDLE_BW);
+			setImageDescriptor(InternalImages.DESC_VERT_ALIGN_MIDDLE);
 			setDisabledImageDescriptor(InternalImages.DESC_VERT_ALIGN_MIDDLE_DIS);
 			break;
 	}

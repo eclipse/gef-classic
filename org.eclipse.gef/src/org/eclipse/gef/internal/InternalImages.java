@@ -35,14 +35,6 @@ public static final ImageDescriptor DESC_VERT_ALIGN_MIDDLE;
 public static final ImageDescriptor DESC_VERT_ALIGN_TOP;
 public static final ImageDescriptor DESC_VERT_ALIGN_BOTTOM;
 
-public static final ImageDescriptor DESC_HORZ_ALIGN_CENTER_BW;
-public static final ImageDescriptor DESC_HORZ_ALIGN_LEFT_BW;
-public static final ImageDescriptor DESC_HORZ_ALIGN_RIGHT_BW;
-
-public static final ImageDescriptor DESC_VERT_ALIGN_MIDDLE_BW;
-public static final ImageDescriptor DESC_VERT_ALIGN_TOP_BW;
-public static final ImageDescriptor DESC_VERT_ALIGN_BOTTOM_BW;
-
 public static final ImageDescriptor DESC_HORZ_ALIGN_CENTER_DIS;
 public static final ImageDescriptor DESC_HORZ_ALIGN_LEFT_DIS;
 public static final ImageDescriptor DESC_HORZ_ALIGN_RIGHT_DIS;
@@ -74,13 +66,6 @@ static {
 	DESC_VERT_ALIGN_MIDDLE = createDescriptor("icons/alignmid.gif"); //$NON-NLS-1$
 	DESC_HORZ_ALIGN_RIGHT = createDescriptor("icons/alignright.gif"); //$NON-NLS-1$
 	DESC_VERT_ALIGN_TOP = createDescriptor("icons/aligntop.gif"); //$NON-NLS-1$
-
-	DESC_VERT_ALIGN_BOTTOM_BW = createDescriptor("icons/alignbottom_bw.gif"); //$NON-NLS-1$
-	DESC_HORZ_ALIGN_CENTER_BW = createDescriptor("icons/aligncenter_bw.gif"); //$NON-NLS-1$
-	DESC_HORZ_ALIGN_LEFT_BW = createDescriptor("icons/alignleft_bw.gif"); //$NON-NLS-1$
-	DESC_VERT_ALIGN_MIDDLE_BW = createDescriptor("icons/alignmid_bw.gif"); //$NON-NLS-1$
-	DESC_HORZ_ALIGN_RIGHT_BW = createDescriptor("icons/alignright_bw.gif"); //$NON-NLS-1$
-	DESC_VERT_ALIGN_TOP_BW = createDescriptor("icons/aligntop_bw.gif"); //$NON-NLS-1$
 
 	DESC_VERT_ALIGN_BOTTOM_DIS = createDescriptor("icons/alignbottom_d.gif"); //$NON-NLS-1$
 	DESC_HORZ_ALIGN_CENTER_DIS = createDescriptor("icons/aligncenter_d.gif"); //$NON-NLS-1$
