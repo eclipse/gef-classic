@@ -10,11 +10,12 @@ public class HorizontalPlacement extends SpanningTreeVisitor {
 
 class NodeCluster extends NodeList {
 
-	EdgeList incoming = new EdgeList();
+	final int hash = new Object().hashCode();
+	Set incoming = new HashSet();
 	int leftFreedom;
 	
 	int modified;
-	EdgeList outgoing = new EdgeList();
+	Set outgoing = new HashSet();
 	int pull;
 	int rightFreedom;
 	
@@ -36,10 +37,21 @@ class NodeCluster extends NodeList {
 		}
 	}
 
+	public boolean equals(Object o) {
+		return o == this;
+	}
+
 	int getPull() {
 		return pull;
 	}
 	
+	/**
+	 * @see java.util.AbstractList#hashCode()
+	 */
+	public int hashCode() {
+		return hash;
+	}
+
 	/**
 	 * @see java.util.AbstractCollection#toString()
 	 */
@@ -57,20 +69,31 @@ class NodeCluster extends NodeList {
 		return buffer.toString();
 	}
 
+	void union(NodeCluster other) {
+		addAll(other);
+		incoming.addAll(other.incoming);
+		incoming.removeAll(other.outgoing);
+		incoming.removeAll(outgoing);
+		
+		outgoing.addAll(other.outgoing);
+		outgoing.removeAll(other.incoming);
+		outgoing.removeAll(incoming);
+	}
+
 	void updateValues() {
 		pull = 0;
 		int pullCount = 0;
 		int unweighted = 0;
 		leftFreedom = rightFreedom = Integer.MAX_VALUE;
-		for (int j = 0; j < incoming.size(); j++) {
-			Edge e = incoming.getEdge(j);
+		for (Iterator iter = incoming.iterator(); iter.hasNext();) {
+			Edge e = (Edge)iter.next();
 			pull -= e.getSlack() * e.weight;
 			unweighted -= e.getSlack();
 			pullCount += e.weight;
 			leftFreedom = Math.min(e.getSlack(), leftFreedom);
 		}
-		for (int j = 0; j < outgoing.size(); j++) {
-			Edge e = outgoing.getEdge(j);
+		for (Iterator iter = outgoing.iterator(); iter.hasNext();) {
+			Edge e = (Edge)iter.next();
 			pull += e.getSlack() * e.weight;
 			unweighted += e.getSlack();
 			pullCount += e.weight;
@@ -211,15 +234,14 @@ private boolean balanceClusterSets() {
 			boolean condition;
 			do {
 				condition = false;
-				for (int ei = 0; ei < cluster.incoming.size(); ei++) {
-					Edge e = (Edge)cluster.incoming.get(ei);
+				for (Iterator iter = cluster.incoming.iterator(); iter.hasNext();) {
+					Edge e = (Edge) iter.next();
 					if (e.getSlack() == 0) {
 						condition = true;
 						set.add((NodeCluster)clusterMap.get(e.source));
 					}
 				}
 				cluster = getCachedClusterSet(set);
-				cluster.build();
 				cluster.updateValues();
 			} while (cluster.leftFreedom == 0 && cluster.pull < 0 && condition);
 			if (cluster.pull < 0) {
@@ -235,15 +257,14 @@ private boolean balanceClusterSets() {
 			boolean condition;
 			do {
 				condition = false;
-				for (int ei = 0; ei < cluster.outgoing.size(); ei++) {
-					Edge e = (Edge)cluster.outgoing.get(ei);
+				for (Iterator iter = cluster.outgoing.iterator(); iter.hasNext();) {
+					Edge e = (Edge) iter.next();
 					if (e.getSlack() == 0) {
 						condition = true;
 						set.add((NodeCluster)clusterMap.get(e.target));
 					}
 				}
 				cluster = getCachedClusterSet(set);
-				cluster.build();
 				cluster.updateValues();
 			} while (cluster.rightFreedom == 0 && cluster.pull > 0 && condition);
 			if (cluster.pull > 0) {
@@ -263,10 +284,10 @@ private NodeCluster getCachedClusterSet(Set set) {
 		return cluster;
 	cluster = new NodeCluster();
 	Iterator iter = set.iterator();
-	while (iter.hasNext())
-		cluster.addAll((NodeCluster)iter.next());
 
-	cluster.build();
+	while (iter.hasNext())
+		cluster.union((NodeCluster)iter.next());
+
 	cluster.updateValues();
 //	System.out.println("built SUPERCLUSTER:" + cluster);
 	
