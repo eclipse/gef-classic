@@ -108,7 +108,7 @@ private static class FontHeightCache {
 }
 
 private static final Rectangle TEMP = new Rectangle();
-private static final Point PT = new Point();
+//private static final Point PT = new Point();
 private Map fontCache = new HashMap();
 private Map fontDataCache = new HashMap();
 
@@ -568,13 +568,13 @@ private Rectangle zoomRect(int x, int y, int w, int h) {
 	return TEMP;
 }
 
-private Rectangle zoomRect(Rectangle r) {
-	TEMP.x = (int)(Math.floor((r.x * zoom + fractionalX)));
-	TEMP.y = (int)(Math.floor((r.y * zoom + fractionalY)));
-	TEMP.width = (int)(Math.floor((r.right() * zoom + fractionalX))) - TEMP.x;
-	TEMP.height = (int)(Math.floor((r.bottom() * zoom + fractionalY))) - TEMP.y;
-	return TEMP;
-}
+//private Rectangle zoomRect(Rectangle r) {
+//	TEMP.x = (int)(Math.floor((r.x * zoom + fractionalX)));
+//	TEMP.y = (int)(Math.floor((r.y * zoom + fractionalY)));
+//	TEMP.width = (int)(Math.floor((r.right() * zoom + fractionalX))) - TEMP.x;
+//	TEMP.height = (int)(Math.floor((r.bottom() * zoom + fractionalY))) - TEMP.y;
+//	return TEMP;
+//}
 
 int zoomLineWidth(int w) {
 	return w;

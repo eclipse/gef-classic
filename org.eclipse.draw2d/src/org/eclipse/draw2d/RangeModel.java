@@ -22,13 +22,13 @@ import java.beans.*;
 public interface RangeModel {
 
 /** Value property name */
-static String PROPERTY_VALUE = "value"; //$NON-NLS-1$
+String PROPERTY_VALUE = "value"; //$NON-NLS-1$
 /** Extent property name */
-static String PROPERTY_EXTENT = "extent"; //$NON-NLS-1$
+String PROPERTY_EXTENT = "extent"; //$NON-NLS-1$
 /** Minimum property name */
-static String PROPERTY_MINIMUM = "minimum"; //$NON-NLS-1$
+String PROPERTY_MINIMUM = "minimum"; //$NON-NLS-1$
 /** Maximum property name */
-static String PROPERTY_MAXIMUM = "maximum"; //$NON-NLS-1$
+String PROPERTY_MAXIMUM = "maximum"; //$NON-NLS-1$
 
 /**
  * Registers listener as a PropertyChangeListener of this RangeModel.  Listeners will be

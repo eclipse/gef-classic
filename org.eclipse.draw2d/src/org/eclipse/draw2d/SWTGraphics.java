@@ -74,6 +74,9 @@ protected static class State
 	}
 }
 
+/**
+ * debug flag.
+ */
 public static boolean debug = false;
 private final State appliedState = new State();
 private final State currentState = new State();
