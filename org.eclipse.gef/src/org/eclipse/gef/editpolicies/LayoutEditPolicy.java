@@ -52,7 +52,7 @@ private IFigure sizeOnDropFeedback;
 private EditPartListener listener;
 
 /**
- * Extends activate() to 
+ * Extends activate() to allow proper decoration of children.
  * @see org.eclipse.gef.EditPolicy#activate() */
 public void activate() {
 	setListener(createListener());
