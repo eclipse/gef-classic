@@ -58,7 +58,6 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IPartListener;
-import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchPartSite;
 import org.eclipse.ui.actions.ActionFactory;
@@ -83,6 +82,8 @@ import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.KeyHandler;
 import org.eclipse.gef.KeyStroke;
 import org.eclipse.gef.LayerConstants;
+import org.eclipse.gef.MouseWheelHandler;
+import org.eclipse.gef.MouseWheelZoomHandler;
 import org.eclipse.gef.RootEditPart;
 import org.eclipse.gef.SnapToGeometry;
 import org.eclipse.gef.SnapToGrid;
@@ -150,11 +151,11 @@ class OutlinePage
 		super.init(pageSite);
 		ActionRegistry registry = getActionRegistry();
 		IActionBars bars = pageSite.getActionBars();
-		String id = IWorkbenchActionConstants.UNDO;
+		String id = ActionFactory.UNDO.getId();
 		bars.setGlobalActionHandler(id, registry.getAction(id));
-		id = IWorkbenchActionConstants.REDO;
+		id = ActionFactory.REDO.getId();
 		bars.setGlobalActionHandler(id, registry.getAction(id));
-		id = IWorkbenchActionConstants.DELETE;
+		id = ActionFactory.DELETE.getId();
 		bars.setGlobalActionHandler(id, registry.getAction(id));
 		id = IncrementDecrementAction.INCREMENT;
 		bars.setGlobalActionHandler(id, registry.getAction(id));
@@ -739,6 +740,10 @@ protected void loadProperties() {
 			.getProperty(ZoomManager.class.toString());
 	if (manager != null)
 		manager.setZoom(getLogicDiagram().getZoom());
+	// Scroll-wheel Zoom
+	getGraphicalViewer().setProperty(MouseWheelHandler.KeyGenerator.getKey(SWT.CTRL), 
+			MouseWheelZoomHandler.SINGLETON);
+
 }
 
 protected boolean performSaveAs() {
@@ -852,7 +857,7 @@ protected void superSetInput(IEditorInput input) {
 	if(getEditorInput() != null) {
 		IFile file = ((IFileEditorInput)getEditorInput()).getFile();
 		file.getWorkspace().addResourceChangeListener(resourceListener);
-		setTitle(file.getName());
+		setPartName(file.getName());
 	}
 }
 
