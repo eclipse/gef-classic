@@ -32,6 +32,7 @@ public class CreationTool
 private CreationFactory factory;
 private SnapToHelper helper;
 
+
 /**
  * Default constructor.  Sets the default and disabled cursors.
  */
@@ -254,10 +255,13 @@ protected void updateTargetRequest() {
 		req.setSize(bounds.getSize());
 		req.setLocation(bounds.getLocation());
 		req.getExtendedData().clear();
-		// Snap only when size on drop is employed
-		if (!getCurrentInput().isAltKeyDown() && helper != null)
-			helper.snapCreateRequest(getCreateRequest(), new PrecisionRectangle(bounds),
-					PositionConstants.NORTH_SOUTH | PositionConstants.EAST_WEST);
+		if (!getCurrentInput().isAltKeyDown() && helper != null) {
+			PrecisionRectangle baseRect = new PrecisionRectangle(bounds);
+			helper.snapRectangle(req, baseRect, baseRect, 
+					true, PositionConstants.NORTH_SOUTH | PositionConstants.EAST_WEST);
+			req.setLocation(baseRect.getLocation());
+			req.setSize(baseRect.getSize());
+		}
 	} else {
 		req.setSize(null);
 		req.setLocation(getLocation());

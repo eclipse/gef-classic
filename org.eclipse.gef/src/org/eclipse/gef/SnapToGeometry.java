@@ -1,20 +1,23 @@
 package org.eclipse.gef;
 
-import java.util.*;
-
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.geometry.*;
-
+import org.eclipse.draw2d.geometry.PrecisionRectangle;
+import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.handles.HandleBounds;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
-import org.eclipse.gef.requests.CreateRequest;
+import org.eclipse.gef.requests.GroupRequest;
 
 /**
  * @author Randy Hudson
  * @author Pratik Shah
  */
 public class SnapToGeometry 
-	implements SnapToHelper 
+	extends SnapToHelper 
 {
 	
 public static final String PROPERTY_SNAP_ENABLED = "SnapToGeometry - $Property"; //$NON-NLS-1$	
@@ -34,7 +37,7 @@ protected static class Entry {
 }
 
 protected static final double THRESHOLD = 5.0001;
-private boolean cachedCloneBool;
+protected boolean cachedCloneBool;
 protected Entry rows[];
 protected Entry cols[];
 protected GraphicalEditPart container;
@@ -43,11 +46,7 @@ public SnapToGeometry(GraphicalEditPart container) {
 	this.container = container;
 }
 
-protected List generateSnapPartsList(List operationSet, boolean isClone) {
-	// If cloning, snapping to the figures being dragged should be possible
-	if (isClone)
-		operationSet = Collections.EMPTY_LIST;
-	
+protected List generateSnapPartsList(List operationSet) {
 	// Don't snap to any figure that is being dragged
 	List children = new ArrayList(container.getChildren());
 	children.removeAll(operationSet);
@@ -72,7 +71,7 @@ protected List generateSnapPartsList(List operationSet, boolean isClone) {
  * @param far the right/bottom side
  * @return the correction amount or THRESHOLD if no correction is required
  */
-private double getCorrectionFor(Entry entries[], Map extendedData, boolean vert, 
+protected double getCorrectionFor(Entry entries[], Map extendedData, boolean vert, 
                                 double near, double far) {
 	double result = getCorrectionFor(entries, extendedData, vert, (near + far - 1) / 2, 0);
 	if (result == THRESHOLD)
@@ -90,7 +89,7 @@ private double getCorrectionFor(Entry entries[], Map extendedData, boolean vert,
  * @param side
  * @return
  */
-private double getCorrectionFor(Entry entries[], Map extendedData, boolean vert, 
+protected double getCorrectionFor(Entry entries[], Map extendedData, boolean vert, 
                                 double value, int side) {
 	double resultMag = THRESHOLD;
 	double result = THRESHOLD;
@@ -139,6 +138,49 @@ protected Rectangle getFigureBounds(GraphicalEditPart part) {
 		return fig.getBounds();
 }
 
+protected int performCenteredResize(Request request, PrecisionRectangle baseRect,
+		int snapOrientation) {
+	if ((snapOrientation & EAST_WEST) != 0) {
+		double leftCorrection = getCorrectionFor(cols, request.getExtendedData(), 
+				true, baseRect.preciseX, -1);
+		double rightCorrection = getCorrectionFor(cols, request.getExtendedData(), 
+				true, baseRect.preciseRight(), 1);
+		if (Math.abs(leftCorrection) <= Math.abs(rightCorrection)
+				&& leftCorrection != THRESHOLD) {
+			snapOrientation &= ~EAST_WEST;
+			baseRect.preciseWidth -= (leftCorrection * 2);
+			baseRect.preciseX += leftCorrection;
+			request.getExtendedData().remove(PROPERTY_EAST_ANCHOR);
+		} else if (rightCorrection != THRESHOLD) {
+			snapOrientation &= ~EAST_WEST;
+			baseRect.preciseWidth += (rightCorrection * 2);
+			baseRect.preciseX -= rightCorrection;
+			request.getExtendedData().remove(PROPERTY_WEST_ANCHOR);
+		}
+	}
+	
+	if ((snapOrientation & NORTH_SOUTH) != 0) {
+		double topCorrection = getCorrectionFor(rows, request.getExtendedData(), 
+				false, baseRect.preciseY, -1);
+		double bottom = getCorrectionFor(rows, request.getExtendedData(), false,
+				baseRect.preciseBottom(), 1);
+		if (Math.abs(topCorrection) <= Math.abs(bottom)
+				&& topCorrection != THRESHOLD) {
+			snapOrientation &= ~NORTH_SOUTH;
+			baseRect.preciseHeight -= (topCorrection * 2);
+			baseRect.preciseY += topCorrection;
+			request.getExtendedData().remove(PROPERTY_SOUTH_ANCHOR);
+		} else if (bottom != THRESHOLD) {
+			snapOrientation &= ~NORTH_SOUTH;
+			baseRect.preciseHeight += (bottom * 2);
+			baseRect.preciseY -= bottom;
+			request.getExtendedData().remove(PROPERTY_NORTH_ANCHOR);
+		}
+	}
+
+	return snapOrientation;
+}
+
 protected void populateRowsAndCols(List parts) {
 	rows = new Entry[parts.size() * 3];
 	cols = new Entry[parts.size() * 3];
@@ -154,84 +196,19 @@ protected void populateRowsAndCols(List parts) {
 	}
 }
 
-public int snapCreateRequest(CreateRequest request, PrecisionRectangle baseRect,
-                             int snapOrientation) {
-	if (rows == null || cols == null) {
-		populateRowsAndCols(generateSnapPartsList(Collections.EMPTY_LIST, false));
-	}
-
-	IFigure fig = container.getContentPane();	
-	fig.translateToRelative(baseRect);
-	boolean change = false;
-
-	if ((snapOrientation & WEST) != 0) {
-		double leftCorrection = getCorrectionFor(cols, request.getExtendedData(), true,
-				baseRect.preciseX, -1);
-		if (leftCorrection != THRESHOLD) {
-			change = true;
-			snapOrientation &= ~WEST;
-			baseRect.preciseWidth -= leftCorrection;
-			baseRect.preciseX += leftCorrection;
-		} 
-	}
-	if ((snapOrientation & EAST) != 0) {
-		double rightCorrection = getCorrectionFor(cols, request.getExtendedData(), true,
-				baseRect.preciseRight(), 1);
-		if (rightCorrection != THRESHOLD) {
-			change = true;
-			snapOrientation &= ~EAST;
-			baseRect.preciseWidth += rightCorrection;
-		}
-	}
-	if ((snapOrientation & NORTH) != 0) {
-		double topCorrection = getCorrectionFor(rows, request.getExtendedData(), false,
-				baseRect.preciseY, -1);
-		if (topCorrection != THRESHOLD) {
-			change = true;
-			snapOrientation &= ~NORTH;
-			baseRect.preciseHeight -= topCorrection;
-			baseRect.preciseY += topCorrection;
-		} 
-	} 
-	if ((snapOrientation & SOUTH) != 0) {
-		double bottom = getCorrectionFor(rows, request.getExtendedData(), false,
-				baseRect.preciseBottom(), 1);
-		if (bottom != THRESHOLD) {
-			change = true;
-			snapOrientation &= ~SOUTH;
-			baseRect.preciseHeight += bottom;
-		}
-	}
-	
-	if (!change)
-		return snapOrientation;
-	
-	fig.translateToAbsolute(baseRect);
-	baseRect.updateInts();
-	request.setSize(baseRect.getSize());
-	request.setLocation(baseRect.getLocation());
-	
-	return snapOrientation;
-}
-
-/**
- * @see SnapToHelper#snapMoveRequest(ChangeBoundsRequest, PrecisionRectangle)
- */
-public int snapMoveRequest(ChangeBoundsRequest request,	PrecisionRectangle baseRect,
-		PrecisionRectangle selectionRect, int snapOrientation) {
+protected int snapMoveRect(Request request, PrecisionRectangle baseRect,
+		PrecisionRectangle compoundSrcRect, int snapOrientation) {
 	boolean isClone = request.getType().equals(RequestConstants.REQ_CLONE);
 	if (rows == null || cols == null || isClone != cachedCloneBool) {
-		populateRowsAndCols(generateSnapPartsList(request.getEditParts(), isClone));
 		cachedCloneBool = isClone;
+		List exclusionSet = Collections.EMPTY_LIST;
+		if (!isClone && request instanceof GroupRequest)
+			exclusionSet = ((GroupRequest)request).getEditParts();
+		populateRowsAndCols(generateSnapPartsList(exclusionSet));
 	}
 
-	PrecisionPoint move = new PrecisionPoint(request.getMoveDelta());
-	IFigure fig = container.getContentPane();
-	baseRect.translate(move);
-	selectionRect.translate(move);
-	fig.translateToRelative(baseRect);
-	fig.translateToRelative(selectionRect);
-	fig.translateToRelative(move);
+	makeRelative(container.getContentPane(), baseRect);
+	makeRelative(container.getContentPane(), compoundSrcRect);
 
 	double xcorrect = THRESHOLD, ycorrect = THRESHOLD;
 	if ((snapOrientation & EAST_WEST) != 0) {
@@ -239,152 +216,88 @@ public int snapMoveRequest(ChangeBoundsRequest request,	PrecisionRectangle baseR
 				baseRect.preciseX, baseRect.preciseRight());
 		if (xcorrect == THRESHOLD)
 			xcorrect = getCorrectionFor(cols, request.getExtendedData(), true, 
-					selectionRect.preciseX, selectionRect.preciseRight());
+					compoundSrcRect.preciseX, compoundSrcRect.preciseRight());
 	}
 	if ((snapOrientation & NORTH_SOUTH) != 0) {
 		ycorrect = getCorrectionFor(rows, request.getExtendedData(), false, 
 				baseRect.preciseY, baseRect.preciseBottom());
 		if (ycorrect == THRESHOLD)
 			ycorrect = getCorrectionFor(rows, request.getExtendedData(), false, 
-					selectionRect.preciseY, selectionRect.preciseBottom());
+					compoundSrcRect.preciseY, compoundSrcRect.preciseBottom());
 	}
 
-	//If neither value is being corrected, return false
-	if (xcorrect == THRESHOLD && ycorrect == THRESHOLD)
-		return snapOrientation;
-
-	if (xcorrect != THRESHOLD)
+	if (xcorrect == THRESHOLD)
+		xcorrect = 0.0;
+	else
 		snapOrientation &= ~EAST_WEST;
-	if (ycorrect != THRESHOLD)
+	
+	if (ycorrect == THRESHOLD)
+		ycorrect = 0.0;
+	else
 		snapOrientation &= ~NORTH_SOUTH;
 	
-	if (ycorrect == THRESHOLD)  {
-		ycorrect = 0.0;
-	} else if (xcorrect == THRESHOLD) {
-		xcorrect = 0.0;
-	}
-		
-	move.preciseX += xcorrect;
-	move.preciseY += ycorrect;
-	move.updateInts();
-	fig.translateToAbsolute(move);
-	request.setMoveDelta(move);
+	baseRect.preciseX += xcorrect;
+	baseRect.preciseY += ycorrect;
+	makeAbsolute(container.getContentPane(), baseRect);
+	makeAbsolute(container.getContentPane(), compoundSrcRect);
+	baseRect.updateInts();
 	
 	return snapOrientation;
 }
 
-/**
- * @see SnapToHelper#snapResizeRequest(ChangeBoundsRequest, PrecisionRectangle)
- */
-public int snapResizeRequest(ChangeBoundsRequest request, PrecisionRectangle baseRect,
-                             int snapOrientation) {
-	int dir = request.getResizeDirection();
-	PrecisionDimension resize = new PrecisionDimension(request.getSizeDelta());
-	PrecisionPoint move = new PrecisionPoint(request.getMoveDelta());
-	IFigure fig = container.getContentPane();
-
+protected int snapResizeRect(Request request, PrecisionRectangle baseRect,
+		int snapOrientation) {
 	if (rows == null || cols == null) {
-		populateRowsAndCols(generateSnapPartsList(request.getEditParts(), false));
+		List exclusionSet = Collections.EMPTY_LIST;
+		if (request instanceof GroupRequest)
+			exclusionSet = ((GroupRequest)request).getEditParts();
+		populateRowsAndCols(generateSnapPartsList(exclusionSet));
 	}
 
-	baseRect.resize(resize);
-	baseRect.translate(move);
+	makeRelative(container.getContentPane(), baseRect);
 	
-	fig.translateToRelative(baseRect);
-	fig.translateToRelative(resize);
-	fig.translateToRelative(move);
-
-	
-	boolean change = false;
-	if ((snapOrientation & EAST_WEST) != 0)
-		if (request.isCenteredResize()) {
-			double leftCorrection = getCorrectionFor(cols, request.getExtendedData(), true,
-					baseRect.preciseX, -1);
-			double rightCorrection = getCorrectionFor(cols, request.getExtendedData(), true,
-					baseRect.preciseRight(), 1);
-			if (Math.abs(leftCorrection) <= Math.abs(rightCorrection)
-					&& leftCorrection != THRESHOLD) {
-				change = true;
-				snapOrientation &= ~EAST_WEST;
-				resize.preciseWidth -= (leftCorrection * 2);
-				move.preciseX += leftCorrection;
-				request.getExtendedData().remove(PROPERTY_EAST_ANCHOR);
-			} else if (rightCorrection != THRESHOLD) {
-				change = true;
-				snapOrientation &= ~EAST_WEST;
-				resize.preciseWidth += (rightCorrection * 2);
-				move.preciseX -= rightCorrection;
-				request.getExtendedData().remove(PROPERTY_WEST_ANCHOR);
-			}
-		} else if ((dir & EAST) != 0 && (snapOrientation & EAST) != 0) {
-			double rightCorrection = getCorrectionFor(cols, request.getExtendedData(), true,
-					baseRect.preciseRight(), 1);
+	if (request instanceof ChangeBoundsRequest && 
+			((ChangeBoundsRequest)request).isCenteredResize()) {
+		snapOrientation = performCenteredResize(request, baseRect, snapOrientation);
+	} else {
+		if ((snapOrientation & EAST) != 0) {
+			double rightCorrection = getCorrectionFor(cols, request.getExtendedData(), 
+					true, baseRect.preciseRight(), 1);
 			if (rightCorrection != THRESHOLD) {
-				change = true;
 				snapOrientation &= ~EAST;
-				resize.preciseWidth += rightCorrection;
-			}
-		} else if ((dir & WEST) != 0 && (snapOrientation & WEST) != 0) {
-			double leftCorrection = getCorrectionFor(cols, request.getExtendedData(), true,
-					baseRect.preciseX, -1);
-			if (leftCorrection != THRESHOLD) {
-				change = true;
-				snapOrientation &= ~WEST;
-				resize.preciseWidth -= leftCorrection;
-				move.preciseX += leftCorrection;
+				baseRect.preciseWidth += rightCorrection;
 			}
 		}
-	
-	if ((snapOrientation & NORTH_SOUTH) != 0)
-		if (request.isCenteredResize()) {
-			double topCorrection = getCorrectionFor(rows, request.getExtendedData(), false,
-					baseRect.preciseY, -1);
-			double bottom = getCorrectionFor(rows, request.getExtendedData(), false,
-					baseRect.preciseBottom(), 1);
-			if (Math.abs(topCorrection) <= Math.abs(bottom)
-					&& topCorrection != THRESHOLD) {
-				change = true;
-				snapOrientation &= ~NORTH_SOUTH;
-				resize.preciseHeight -= (topCorrection * 2);
-				move.preciseY += topCorrection;
-				request.getExtendedData().remove(PROPERTY_SOUTH_ANCHOR);
-			} else if (bottom != THRESHOLD) {
-				change = true;
-				snapOrientation &= ~NORTH_SOUTH;
-				resize.preciseHeight += (bottom * 2);
-				move.preciseY -= bottom;
-				request.getExtendedData().remove(PROPERTY_NORTH_ANCHOR);
+		if ((snapOrientation & WEST) != 0) {
+			double leftCorrection = getCorrectionFor(cols, request.getExtendedData(), 
+					true, baseRect.preciseX, -1);
+			if (leftCorrection != THRESHOLD) {
+				snapOrientation &= ~WEST;
+				baseRect.preciseWidth -= leftCorrection;
+				baseRect.preciseX += leftCorrection;
 			}
-		} else if ((dir & SOUTH) != 0 && (snapOrientation & SOUTH) != 0) {
+		}
+		if ((snapOrientation & SOUTH) != 0) {
 			double bottom = getCorrectionFor(rows, request.getExtendedData(), false,
 					baseRect.preciseBottom(), 1);
 			if (bottom != THRESHOLD) {
-				change = true;
 				snapOrientation &= ~SOUTH;
-				resize.preciseHeight += bottom;
+				baseRect.preciseHeight += bottom;
 			}
-		} else if ((dir & NORTH) != 0 && (snapOrientation & NORTH) != 0) {
-			double topCorrection = getCorrectionFor(rows, request.getExtendedData(), false,
-					baseRect.preciseY, -1);
+		} 
+		if ((snapOrientation & NORTH) != 0) {
+			double topCorrection = getCorrectionFor(rows, request.getExtendedData(), 
+					false, baseRect.preciseY, -1);
 			if (topCorrection != THRESHOLD) {
-				change = true;
 				snapOrientation &= ~NORTH;
-				resize.preciseHeight -= topCorrection;
-				move.preciseY += topCorrection;
+				baseRect.preciseHeight -= topCorrection;
+				baseRect.preciseY += topCorrection;
 			}
 		}
+	}
 	
-	if (!change)
-		return snapOrientation;
-	
-	fig.translateToAbsolute(resize);
-	fig.translateToAbsolute(move);
-	resize.updateInts();
-	move.updateInts();
-
-	request.setSizeDelta(resize);
-	request.setMoveDelta(move);
-	
+	makeAbsolute(container.getContentPane(), baseRect);
+	baseRect.updateInts();
 	return snapOrientation;
 }
 

@@ -12,11 +12,10 @@ package org.eclipse.gef;
 
 import java.util.Map;
 
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.geometry.*;
+import org.eclipse.draw2d.geometry.PrecisionRectangle;
 
 import org.eclipse.gef.requests.ChangeBoundsRequest;
-import org.eclipse.gef.requests.CreateRequest;
+import org.eclipse.gef.requests.GroupRequest;
 import org.eclipse.gef.rulers.RulerProvider;
 
 /**
@@ -24,7 +23,7 @@ import org.eclipse.gef.rulers.RulerProvider;
  * @author Pratik Shah
  */
 public class SnapToGuides 
-	implements SnapToHelper 
+	extends SnapToHelper 
 {
 
 public static final String PROPERTY_VERTICAL_GUIDE = "vertical guide"; //$NON-NLS-1$
@@ -32,15 +31,15 @@ public static final String PROPERTY_HORIZONTAL_GUIDE = "horizontal guide"; //$NO
 public static final String PROPERTY_VERTICAL_ANCHOR = "vertical attachment"; //$NON-NLS-1$
 public static final String PROPERTY_HORIZONTAL_ANCHOR = "horizontal attachment"; //$NON-NLS-1$
 
-private static final double THRESHOLD = 7.01;
-private GraphicalEditPart container;
-private int[] verticalGuides, horizontalGuides;
+protected static final double THRESHOLD = 7.01;
+protected GraphicalEditPart container;
+protected int[] verticalGuides, horizontalGuides;
 
 public SnapToGuides(GraphicalEditPart container) {
 	this.container = container;
 }
 
-int[] getHorizontalGuides() {	
+protected int[] getHorizontalGuides() {	
 	if (horizontalGuides == null) {
 		RulerProvider rProvider = ((RulerProvider)container.getViewer()
 					.getProperty(RulerProvider.PROPERTY_VERTICAL_RULER));
@@ -52,7 +51,7 @@ int[] getHorizontalGuides() {
 	return horizontalGuides;
 }
 
-int[] getVerticalGuides() {
+protected int[] getVerticalGuides() {
 	if (verticalGuides == null) {
 		RulerProvider rProvider = ((RulerProvider)container.getViewer()
 				.getProperty(RulerProvider.PROPERTY_HORIZONTAL_RULER));
@@ -65,7 +64,7 @@ int[] getVerticalGuides() {
 }
 
 
-private double getCorrectionFor(int[] guides, double near, double far, Map extendedData, 
+protected double getCorrectionFor(int[] guides, double near, double far, Map extendedData, 
                                   boolean isVertical) {
 	double result = getCorrectionFor(guides, (near + far) / 2, extendedData, isVertical, 0);
 	if (result == THRESHOLD)
@@ -75,7 +74,7 @@ private double getCorrectionFor(int[] guides, double near, double far, Map exten
 	return result;
 }
 
-private double getCorrectionFor(int[] guides, double value, Map extendedData, 
+protected double getCorrectionFor(int[] guides, double value, Map extendedData, 
                                   boolean vert, int side) {
 	double resultMag = THRESHOLD;
 	double result = THRESHOLD;
@@ -97,81 +96,65 @@ private double getCorrectionFor(int[] guides, double value, Map extendedData,
 	return result;
 }
 
-public int snapCreateRequest(CreateRequest request, PrecisionRectangle baseRect,
-                             int snapOrientation) {
-	IFigure fig = container.getContentPane();
-	fig.translateToRelative(baseRect);
-	boolean change = false;
-	
-	if ((snapOrientation & WEST) != 0) {
-		// west
-		double leftCorrection = getCorrectionFor(getVerticalGuides(), 
-				baseRect.preciseX, request.getExtendedData(), true, -1);
-		if (leftCorrection != THRESHOLD) {
-			change = true;
-			snapOrientation &= ~WEST;
-			baseRect.preciseX += leftCorrection;
-			baseRect.preciseWidth -= leftCorrection;
-		} 
-	}
-	if (!change && (snapOrientation & EAST) != 0) {
-		// east
+protected int performCenteredResize(Request request, PrecisionRectangle baseRect, 
+		int snapOrientation) {
+	if ((snapOrientation & EAST_WEST) != 0) {
 		double rightCorrection = getCorrectionFor(getVerticalGuides(), 
 				baseRect.preciseRight(), request.getExtendedData(), true, 1);
-		if (rightCorrection != THRESHOLD) {
-			change = true;
-			snapOrientation &= ~EAST;
-			baseRect.preciseWidth += rightCorrection;
+		// Store the guide and anchor information, in case leftCorrection over-writes it
+		Object vGuide = request.getExtendedData().get(PROPERTY_VERTICAL_GUIDE);
+		Object vAnchor = request.getExtendedData().get(PROPERTY_VERTICAL_ANCHOR);
+		double leftCorrection = getCorrectionFor(getVerticalGuides(), 
+				baseRect.preciseX, request.getExtendedData(), true, -1);
+		if(Math.abs(leftCorrection) <= Math.abs(rightCorrection)
+				&& leftCorrection != THRESHOLD) {
+			snapOrientation &= ~EAST_WEST;
+			baseRect.preciseWidth -= (leftCorrection * 2);
+			baseRect.preciseX += leftCorrection;
+			
+		} else if (rightCorrection != THRESHOLD) {
+			// Restore the guide and anchor information, in case it was over-written
+			// by leftCorrection
+			request.getExtendedData().put(PROPERTY_VERTICAL_GUIDE, vGuide);
+			request.getExtendedData().put(PROPERTY_VERTICAL_ANCHOR, vAnchor);
+			snapOrientation &= ~EAST_WEST;
+			baseRect.preciseWidth += (rightCorrection * 2);
+			baseRect.preciseX -= rightCorrection;
 		}
-	}
-	boolean snapHorizontal = false;
-	if ((snapOrientation & NORTH) != 0) {
-		// north
-		double topCorrection = getCorrectionFor(getHorizontalGuides(), 
-				baseRect.preciseY, request.getExtendedData(), false, -1);
-		if (topCorrection != THRESHOLD) {
-			change = true;
-			snapHorizontal = true;
-			snapOrientation &= ~NORTH;
-			baseRect.preciseHeight -= topCorrection;
-			baseRect.preciseY += topCorrection;
-		}
-	}
-	if (!snapHorizontal && (snapOrientation & SOUTH) != 0) {
-		// south
-		double bottom = getCorrectionFor(getHorizontalGuides(), baseRect.preciseBottom(),
-				request.getExtendedData(), false, 1);
-		if (bottom != THRESHOLD) {
-			change = true;
-			snapOrientation &= ~SOUTH;
-			baseRect.preciseHeight += bottom;
-		}		
 	}
 	
-	if (!change)
-		return snapOrientation;
-	baseRect.updateInts();
-	fig.translateToAbsolute(baseRect);
-	baseRect.updateInts();
-	request.setSize(baseRect.getSize());
-	request.setLocation(baseRect.getLocation());
+	if ((snapOrientation & NORTH_SOUTH) != 0) {
+		double topCorrection = getCorrectionFor(getHorizontalGuides(), 
+				baseRect.preciseY, request.getExtendedData(), false, -1);
+		Object hGuide = request.getExtendedData().get(PROPERTY_VERTICAL_GUIDE);
+		Object hAnchor = request.getExtendedData().get(PROPERTY_VERTICAL_ANCHOR);
+		double bottom = getCorrectionFor(getHorizontalGuides(), 
+				baseRect.preciseBottom(), request.getExtendedData(), false, 1);
+		if(Math.abs(topCorrection) <= Math.abs(bottom)
+				&& topCorrection != THRESHOLD) {
+			request.getExtendedData().put(PROPERTY_VERTICAL_GUIDE, hGuide);
+			request.getExtendedData().put(PROPERTY_VERTICAL_ANCHOR, hAnchor);
+			snapOrientation &= ~NORTH_SOUTH;
+			baseRect.preciseHeight -= (topCorrection * 2);
+			baseRect.preciseY += topCorrection;
+		} else if (bottom != THRESHOLD) {
+			snapOrientation &= ~NORTH_SOUTH;
+			baseRect.preciseHeight += (2 * bottom);
+			baseRect.preciseY -= bottom;
+		}
+	}
+
 	return snapOrientation;
 }
 
-/**
- * @see SnapToHelper#snapMoveRequest(ChangeBoundsRequest, PrecisionRectangle)
- */
-public int snapMoveRequest(ChangeBoundsRequest request,	PrecisionRectangle baseRect,
-                           PrecisionRectangle selectionRect, int snapOrientation) {
+protected int snapMoveRect(Request request, PrecisionRectangle baseRect,
+		PrecisionRectangle compoundRect, int snapOrientation) {
 	// If there are more than one edit parts being moved, detach them from all guides.
-	if (request.getEditParts().size() != 1)
+	if (request instanceof GroupRequest 
+			&& ((GroupRequest)request).getEditParts().size() > 1)
 		return snapOrientation;
 	
-	PrecisionPoint move = new PrecisionPoint(request.getMoveDelta());
-	IFigure fig = container.getContentPane();
-	baseRect.translate(move);
-	fig.translateToRelative(baseRect);
-	fig.translateToRelative(move);
+	makeRelative(container.getContentPane(), baseRect);
 
 	double xcorrect = THRESHOLD, ycorrect = THRESHOLD;
 	if ((snapOrientation & EAST_WEST) != 0)
@@ -181,150 +164,77 @@ public int snapMoveRequest(ChangeBoundsRequest request,	PrecisionRectangle baseR
 		ycorrect = getCorrectionFor(getHorizontalGuides(), baseRect.preciseY,
 				baseRect.preciseBottom(), request.getExtendedData(), false);
 	
-	//If neither value is being corrected, return false
-	if (xcorrect == THRESHOLD && ycorrect == THRESHOLD)
-		return snapOrientation;
-	
-	if (xcorrect != THRESHOLD)
+	if (xcorrect == THRESHOLD)
+		xcorrect = 0.0;
+	else
 		snapOrientation &= ~EAST_WEST;
-	if (ycorrect != THRESHOLD)
-		snapOrientation &= ~NORTH_SOUTH;
-
+	
 	if (ycorrect == THRESHOLD)
 		ycorrect = 0.0;
-	else if (xcorrect == THRESHOLD)
-		xcorrect = 0.0;
-	
-	move.preciseX += xcorrect;
-	move.preciseY += ycorrect;
-	move.updateInts();
-	fig.translateToAbsolute(move);
-	request.setMoveDelta(move);
+	else
+		snapOrientation &= ~NORTH_SOUTH;
+
+	baseRect.preciseX += xcorrect;
+	baseRect.preciseY += ycorrect;
+	makeAbsolute(container.getContentPane(), baseRect);
+	baseRect.updateInts();
 	return snapOrientation;
 }
 
-/**
- * @see SnapToHelper#snapResizeRequest(ChangeBoundsRequest, PrecisionRectangle)
- */
-public int snapResizeRequest(ChangeBoundsRequest request, PrecisionRectangle baseRect,
-                             int snapOrientation) {
-	if (request.getEditParts().size() != 1)
+protected int snapResizeRect(Request request, PrecisionRectangle baseRect,
+		int snapOrientation) {
+	if (request instanceof GroupRequest 
+			&& ((GroupRequest)request).getEditParts().size() > 1)
 		return snapOrientation;
 	
-	int dir = request.getResizeDirection();
-	PrecisionDimension resize = new PrecisionDimension(request.getSizeDelta());
-	PrecisionPoint move = new PrecisionPoint(request.getMoveDelta());
+	makeRelative(container.getContentPane(), baseRect);
 
-	IFigure fig = container.getContentPane();
-	baseRect.resize(resize);
-	baseRect.translate(move);
-	
-	fig.translateToRelative(baseRect);
-	fig.translateToRelative(resize);
-	fig.translateToRelative(move);
-
-	boolean change = false;
-	if ((snapOrientation & EAST_WEST) != 0) {
-		if (request.isCenteredResize()) {
-			double rightCorrection = getCorrectionFor(getVerticalGuides(), 
-					baseRect.preciseRight(), request.getExtendedData(), true, 1);
-			// Store the guide and anchor information, in case leftCorrection over-writes 
-			// it
-			Object vGuide = request.getExtendedData().get(PROPERTY_VERTICAL_GUIDE);
-			Object vAnchor = request.getExtendedData().get(PROPERTY_VERTICAL_ANCHOR);
-			double leftCorrection = getCorrectionFor(getVerticalGuides(), 
-					baseRect.preciseX, request.getExtendedData(), true, -1);
-			if(Math.abs(leftCorrection) <= Math.abs(rightCorrection)
-					&& leftCorrection != THRESHOLD) {
-				change = true;
-				snapOrientation &= ~EAST_WEST;
-				resize.preciseWidth -= (leftCorrection * 2);
-				move.preciseX += leftCorrection;
-			} else if (rightCorrection != THRESHOLD) {
-				// Restore the guide and anchor information, in case it was over-written
-				// by leftCorrection
-				request.getExtendedData().put(PROPERTY_VERTICAL_GUIDE, vGuide);
-				request.getExtendedData().put(PROPERTY_VERTICAL_ANCHOR, vAnchor);
-				change = true;
-				snapOrientation &= ~EAST_WEST;
-				resize.preciseWidth += (rightCorrection * 2);
-				move.preciseX -= rightCorrection;
-			}
-		} else if ((dir & EAST) != 0 && (snapOrientation & EAST) != 0) {
-			// east
+	if (request instanceof ChangeBoundsRequest && 
+			((ChangeBoundsRequest)request).isCenteredResize()) {
+		snapOrientation = performCenteredResize(request, baseRect, snapOrientation);
+	} else {
+		boolean snapped = false;
+		if ((snapOrientation & EAST) != 0) {
 			double rightCorrection = getCorrectionFor(getVerticalGuides(), 
 					baseRect.preciseRight(), request.getExtendedData(), true, 1);
 			if (rightCorrection != THRESHOLD) {
-				change = true;
+				snapped = true;
 				snapOrientation &= ~EAST;
-				resize.preciseWidth += rightCorrection;
+				baseRect.preciseWidth += rightCorrection;
 			}
-		} else if ((dir & WEST) != 0 && (snapOrientation & WEST) != 0) {
-			// west
+		} 
+		if (!snapped && (snapOrientation & WEST) != 0) {
 			double leftCorrection = getCorrectionFor(getVerticalGuides(), 
 					baseRect.preciseX, request.getExtendedData(), true, -1);
 			if (leftCorrection != THRESHOLD) {
-				change = true;
 				snapOrientation &= ~WEST;
-				resize.preciseWidth -= leftCorrection;
-				move.preciseX += leftCorrection;
+				baseRect.preciseWidth -= leftCorrection;
+				baseRect.preciseX += leftCorrection;
 			}
 		}
-	}
-	if ((snapOrientation & NORTH_SOUTH) != 0) {
-		if (request.isCenteredResize()) {
-			// This is a centered resize in the vertical direction
-			double topCorrection = getCorrectionFor(getHorizontalGuides(), 
-					baseRect.preciseY, request.getExtendedData(), false, -1);
-			Object hGuide = request.getExtendedData().get(PROPERTY_VERTICAL_GUIDE);
-			Object hAnchor = request.getExtendedData().get(PROPERTY_VERTICAL_ANCHOR);
-			double bottom = getCorrectionFor(getHorizontalGuides(), 
-					baseRect.preciseBottom(), request.getExtendedData(), false, 1);
-			if(Math.abs(topCorrection) <= Math.abs(bottom)
-					&& topCorrection != THRESHOLD) {
-				request.getExtendedData().put(PROPERTY_VERTICAL_GUIDE, hGuide);
-				request.getExtendedData().put(PROPERTY_VERTICAL_ANCHOR, hAnchor);
-				change = true;
-				snapOrientation &= ~NORTH_SOUTH;
-				resize.preciseHeight -= (topCorrection * 2);
-				move.preciseY += topCorrection;
-			} else if (bottom != THRESHOLD) {
-				change = true;
-				snapOrientation = snapOrientation & EAST_WEST;
-				resize.preciseHeight += (2 * bottom);
-				move.preciseY -= bottom;
-			}
-		} else if ((dir & SOUTH) != 0 && (snapOrientation & SOUTH) != 0) {
-			// south
+		snapped = false;
+		if ((snapOrientation & SOUTH) != 0) {
 			double bottom = getCorrectionFor(getHorizontalGuides(), 
 					baseRect.preciseBottom(), request.getExtendedData(), false, 1);
 			if (bottom != THRESHOLD) {
-				change = true;
+				snapped = true;
 				snapOrientation &= ~SOUTH;
-				resize.preciseHeight += bottom;
+				baseRect.preciseHeight += bottom;
 			}
-		} else if ((dir & NORTH) != 0 && (snapOrientation & NORTH) != 0) {	
-			// north
+		}
+		if (!snapped && (snapOrientation & NORTH) != 0) {	
 			double topCorrection = getCorrectionFor(getHorizontalGuides(), 
 					baseRect.preciseY, request.getExtendedData(), false, -1);
 			if (topCorrection != THRESHOLD) {
-				change = true;
 				snapOrientation &= ~NORTH;
-				resize.preciseHeight -= topCorrection;
-				move.preciseY += topCorrection;
+				baseRect.preciseHeight -= topCorrection;
+				baseRect.preciseY += topCorrection;
 			}
 		}
 	}
 	
-	if (!change)
-		return snapOrientation;
-	
-	fig.translateToAbsolute(resize);
-	fig.translateToAbsolute(move);
-	resize.updateInts();	
-	move.updateInts();
-	request.setSizeDelta(resize);
-	request.setMoveDelta(move);
+	makeAbsolute(container.getContentPane(), baseRect);
+	baseRect.updateInts();
 	return snapOrientation;
 }
 

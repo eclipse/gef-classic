@@ -1,25 +1,27 @@
 package org.eclipse.gef;
 
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.geometry.*;
+import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.PrecisionRectangle;
 
 import org.eclipse.gef.requests.ChangeBoundsRequest;
-import org.eclipse.gef.requests.CreateRequest;
 
 /**
  * @author Randy Hudson
  * @author Pratik Shah
  */
-public class SnapToGrid implements SnapToHelper {
+public class SnapToGrid
+	extends SnapToHelper 
+{
 	
 public static final String PROPERTY_GRID_ENABLED = "SnapToGrid + $Property"; //$NON-NLS-1$
 public static final String PROPERTY_GRID_SPACING = "SnapToGrid - Grid Spacing"; //$NON-NLS-1$
 public static final String PROPERTY_GRID_ORIGIN = "SnapToGrid - $Grid Origin"; //$NON-NLS-1$
 public static final int DEFAULT_GAP = 12;
 	
-private GraphicalEditPart container;
-private int gridX, gridY;
-private Point origin;
+protected GraphicalEditPart container;
+protected int gridX, gridY;
+protected Point origin;
 
 /**
  * Constructs a snap-to-grid strategy on the given editpart.  The editpart should be the
@@ -28,7 +30,8 @@ private Point origin;
  */
 public SnapToGrid(GraphicalEditPart gep) {
 	container = gep;
-	Dimension spacing = (Dimension)container.getViewer().getProperty(PROPERTY_GRID_SPACING);
+	Dimension spacing = (Dimension)container.getViewer()
+			.getProperty(PROPERTY_GRID_SPACING);
 	if (spacing != null) {
 		gridX = spacing.width;
 		gridY = spacing.height;
@@ -44,140 +47,94 @@ public SnapToGrid(GraphicalEditPart gep) {
 		origin = new Point();
 }
 
-public int snapCreateRequest(CreateRequest request, PrecisionRectangle baseRect,
-                             int snapOrientation) {
-	if (snapOrientation == NONE)
-		return snapOrientation;
-	
-	IFigure fig = container.getContentPane();
-	fig.translateToRelative(baseRect);
-//	System.out.println(baseRect);
-	if ((snapOrientation & WEST) != 0 && gridX > 0) {
-		double xCorrection = Math.IEEEremainder(baseRect.preciseX - origin.x, gridX);
-		baseRect.preciseX -= xCorrection;
-		baseRect.preciseWidth += xCorrection;
-//		System.out.println("leftCorrection: " + (0 - xCorrection));
-//		baseRect.updateInts();
-//		System.out.println(baseRect);
-	}
-	if ((snapOrientation & EAST) != 0 && gridX > 0) {
+protected int performCenteredResize(PrecisionRectangle baseRect, int snapOrientation) {
+	if ((snapOrientation & EAST_WEST) != 0 && gridX > 0) {
+		double leftCorrection = Math.IEEEremainder(
+				baseRect.preciseX - origin.x, gridX);
 		double rightCorrection = Math.IEEEremainder(
 				baseRect.preciseRight() - origin.x, gridX);
-		baseRect.preciseWidth -= rightCorrection;
-//		System.out.println("rightCorrection: " + (0 - rightCorrection));
-//		baseRect.updateInts();
-//		System.out.println(baseRect);
+		if (Math.abs(leftCorrection) <= Math.abs(rightCorrection)) {
+			baseRect.preciseWidth += (leftCorrection * 2);
+			baseRect.preciseX -= leftCorrection;
+		} else {
+			baseRect.preciseWidth -= (2 * rightCorrection);
+			baseRect.preciseX += rightCorrection;
+		}
+		snapOrientation &= ~EAST_WEST;
 	}
-
-	if ((snapOrientation & NORTH) != 0 && gridY > 0) {
-		double yCorrection = Math.IEEEremainder(baseRect.preciseY - origin.y, gridY);
-		baseRect.preciseY -= yCorrection;
-		baseRect.preciseHeight += yCorrection;
-	}
-	if ((snapOrientation & SOUTH) != 0 && gridY > 0) {
+	
+	if ((snapOrientation & NORTH_SOUTH) != 0 && gridY > 0) {
+		double topCorrection = Math.IEEEremainder(baseRect.preciseY - origin.y, gridY);
 		double bottom = Math.IEEEremainder(baseRect.preciseBottom() - origin.y, gridY);
-		baseRect.preciseHeight -= bottom;
+		if (Math.abs(topCorrection) <= Math.abs(bottom)) {
+			baseRect.preciseHeight += (topCorrection * 2);
+			baseRect.preciseY -= topCorrection;
+		} else {
+			baseRect.preciseHeight -= (bottom * 2);
+			baseRect.preciseY += bottom;
+		}
+		snapOrientation &= ~NORTH_SOUTH;
 	}
-//	baseRect.updateInts();
-//	System.out.println(baseRect);
-//	System.out.println("=================="); 
-	fig.translateToAbsolute(baseRect);
-	baseRect.updateInts();
-	request.setLocation(baseRect.getLocation());
-	request.setSize(baseRect.getSize());
-
-	return NONE;
+	
+	return snapOrientation;
 }
 
-public int snapMoveRequest(ChangeBoundsRequest request, PrecisionRectangle baseRect,
-                           PrecisionRectangle selectionRect, int snapOrientation) {
-	PrecisionPoint move = new PrecisionPoint(request.getMoveDelta());
-	
-	IFigure fig = container.getContentPane();
-	baseRect.translate(move);
-	fig.translateToRelative(baseRect);
-	fig.translateToRelative(move);
+protected int snapMoveRect(Request request, PrecisionRectangle baseRect,
+		PrecisionRectangle compoundRect, int snapOrientation) {
+	makeRelative(container.getContentPane(), baseRect);
 
 	double xCorrection = 0.0, yCorrection = 0.0;
-	if ((snapOrientation & EAST_WEST) != 0 && gridX > 0)
+	if ((snapOrientation & WEST) != 0 && gridX > 0)
 		xCorrection = Math.IEEEremainder(baseRect.preciseX - origin.x, gridX);
-	if ((snapOrientation & NORTH_SOUTH) != 0 && gridY > 0)
+	if ((snapOrientation & NORTH) != 0 && gridY > 0)
 		yCorrection = Math.IEEEremainder(baseRect.preciseY - origin.y, gridY);
 	
-	move.preciseX -= xCorrection;
-	move.preciseY -= yCorrection;
-	move.updateInts();
-	fig.translateToAbsolute(move);
-	request.setMoveDelta(move);
+	baseRect.preciseX -= xCorrection;
+	baseRect.preciseY -= yCorrection;
+	makeAbsolute(container.getContentPane(), baseRect);
+	baseRect.updateInts();
 	return NONE;
 }
 
-public int snapResizeRequest(ChangeBoundsRequest request, PrecisionRectangle baseRect,
-                             int snapOrientation) {
-	int dir = request.getResizeDirection();
-	PrecisionDimension resize = new PrecisionDimension(request.getSizeDelta());
-	PrecisionPoint move = new PrecisionPoint(request.getMoveDelta());
-	
-	IFigure fig = container.getContentPane();
-	baseRect.resize(resize);
-	baseRect.translate(move);
-	
-	fig.translateToRelative(baseRect);
-	fig.translateToRelative(resize);
-	fig.translateToRelative(move);
+protected int snapResizeRect(Request request, PrecisionRectangle baseRect, 
+		int snapOrientation) {	
+	makeRelative(container.getContentPane(), baseRect);
 
-	if ((snapOrientation & EAST_WEST) != 0 && gridX > 0)
-		if (request.isCenteredResize()) {
-			double leftCorrection = Math.IEEEremainder(
-					baseRect.preciseX - origin.x, gridX);
+	if (request instanceof ChangeBoundsRequest 
+			&& ((ChangeBoundsRequest)request).isCenteredResize()) {
+		snapOrientation = performCenteredResize(baseRect, snapOrientation);
+	} else {
+		if ((snapOrientation & EAST) != 0 && gridX > 0) {
 			double rightCorrection = Math.IEEEremainder(
 					baseRect.preciseRight() - origin.x, gridX);
-			if (Math.abs(leftCorrection) <= Math.abs(rightCorrection)) {
-				resize.preciseWidth += (leftCorrection * 2);
-				move.preciseX -= leftCorrection;
-			} else {
-				resize.preciseWidth -= (2 * rightCorrection);
-				move.preciseX += rightCorrection;
-			}
-		} else if ((dir & EAST) != 0 && (snapOrientation & EAST) != 0) {
-			double rightCorrection = Math.IEEEremainder(
-					baseRect.preciseRight() - origin.x, gridX);
-			resize.preciseWidth -= rightCorrection;
-		} else if ((dir & WEST) != 0 && (snapOrientation & WEST) != 0) {
+			baseRect.preciseWidth -= rightCorrection;
+			snapOrientation &= ~EAST;
+		}
+		if ((snapOrientation & WEST) != 0 && gridX > 0) {
 			double leftCorrection = Math.IEEEremainder(
 					baseRect.preciseX - origin.x, gridX);
-			resize.preciseWidth += leftCorrection;
-			move.preciseX -= leftCorrection;
+			baseRect.preciseWidth += leftCorrection;
+			baseRect.preciseX -= leftCorrection;
+			snapOrientation &= ~WEST;
 		}
-	
-	if ((snapOrientation & NORTH_SOUTH) != 0 && gridY > 0)
-		if (request.isCenteredResize()) {
-			double topCorrection = Math.IEEEremainder(baseRect.preciseY - origin.y, gridY);
-			double bottom = Math.IEEEremainder(baseRect.preciseBottom() - origin.y, gridY);
-			if (Math.abs(topCorrection) <= Math.abs(bottom)) {
-				resize.preciseHeight += (topCorrection * 2);
-				move.preciseY -= topCorrection;
-			} else {
-				resize.preciseHeight -= (bottom * 2);
-				move.preciseY += bottom;
-			}
-		} else if ((dir & SOUTH) != 0 && (snapOrientation & SOUTH) != 0) {
-			double bottom = Math.IEEEremainder(baseRect.preciseBottom() - origin.y, gridY);
-			resize.preciseHeight -= bottom;
-		} else if ((dir & NORTH) != 0 && (snapOrientation & NORTH) != 0) {
-			double topCorrection = Math.IEEEremainder(baseRect.preciseY - origin.y, gridY);
-			resize.preciseHeight += topCorrection;
-			move.preciseY -= topCorrection;
+		if ((snapOrientation & SOUTH) != 0 && gridY > 0) {
+			double bottom = Math.IEEEremainder(
+					baseRect.preciseBottom() - origin.y, gridY);
+			baseRect.preciseHeight -= bottom;
+			snapOrientation &= ~SOUTH;
 		}
+		if ((snapOrientation & NORTH) != 0 && gridY > 0) {
+			double topCorrection = Math.IEEEremainder(
+					baseRect.preciseY - origin.y, gridY);
+			baseRect.preciseHeight += topCorrection;
+			baseRect.preciseY -= topCorrection;
+			snapOrientation &= ~NORTH;
+		}
+	}
 
-	fig.translateToAbsolute(resize);
-	fig.translateToAbsolute(move);
-	resize.updateInts();	
-	move.updateInts();
-
-	request.setSizeDelta(resize);
-	request.setMoveDelta(move);
-	return NONE;
+	makeAbsolute(container.getContentPane(), baseRect);
+	baseRect.updateInts();	
+	return snapOrientation;
 }
 
 }

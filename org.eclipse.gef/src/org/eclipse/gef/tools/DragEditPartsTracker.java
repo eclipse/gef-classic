@@ -561,10 +561,22 @@ protected void updateTargetRequest() {
 	request.setMoveDelta(new Point(delta.width, delta.height));
 	request.getExtendedData().clear();
 		
-	if (snapToHelper != null && !getCurrentInput().isAltKeyDown())
-		snapToHelper.snapMoveRequest(request, sourceRectangle.getPreciseCopy(), 
-				compoundSrcRect.getPreciseCopy(), 
+	if (snapToHelper != null && !getCurrentInput().isAltKeyDown()) {
+		PrecisionRectangle baseRect = sourceRectangle.getPreciseCopy();
+		PrecisionRectangle selectionRect = compoundSrcRect.getPreciseCopy();
+		baseRect.preciseX += request.getMoveDelta().x;
+		selectionRect.preciseX += request.getMoveDelta().x;		
+		baseRect.preciseY += request.getMoveDelta().y;
+		selectionRect.preciseY += request.getMoveDelta().y;
+		baseRect.updateInts();
+		selectionRect.updateInts();
+		snapToHelper.snapRectangle(request, baseRect, selectionRect, false, 
 				PositionConstants.NORTH_SOUTH | PositionConstants.EAST_WEST);
+		baseRect.preciseX -= sourceRectangle.preciseX;
+		baseRect.preciseY -= sourceRectangle.preciseY;
+		baseRect.updateInts();
+		request.setMoveDelta(baseRect.getLocation());
+	}
 
 	request.setLocation(getLocation());
 	request.setType(getCommandName());
