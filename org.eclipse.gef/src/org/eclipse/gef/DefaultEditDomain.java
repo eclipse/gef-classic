@@ -27,7 +27,7 @@ import org.eclipse.gef.palette.*;
  * <UL>
  *   <LI>{@link #setTool(Tool)} is called with some other Tool
  *   <LI>A {@link org.eclipse.gef.palette.PaletteRoot} is provided which contains a
- *   default entry which is a {@link org.eclipse.gef.palette.PaletteToolEntry}. In which
+ *   default entry which is a {@link org.eclipse.gef.palette.ToolEntry}. In which
  *   case that entry's tool is made the active Tool.
  * </UL>
  * <P>
@@ -52,20 +52,9 @@ private IEditorPart editorPart;
  * accordingly.
  */
 private PaletteListener paletteListener = new PaletteListener() {
-	public void entrySelected(PaletteEvent event) {
-		Object paletteEntry = event.getEntry();
-		if (paletteEntry instanceof PaletteToolEntry)
-			setTool(((PaletteToolEntry) paletteEntry).getTool());
-		else if (paletteEntry == null)
-			setTool(null);
-	};
-	public void newDefaultEntry(PaletteEvent event) {
-		Object paletteEntry = event.getEntry();
-		if (paletteEntry instanceof PaletteToolEntry)
-			setDefaultTool(((PaletteToolEntry) paletteEntry).getTool());
-		else
-			setDefaultTool(null);
-	};
+	public void modeChanged() {
+		handlePaletteModeChanged();
+	}
 };
 
 /**
@@ -156,6 +145,14 @@ public void keyUp(KeyEvent keyEvent, EditPartViewer viewer) {
 		tool.keyUp(keyEvent, viewer);
 }
 
+private void handlePaletteModeChanged() {
+	ToolEntry entry = paletteViewer.getMode();
+	if (entry != null)
+		setTool(entry.createTool());
+	else
+		setTool(getDefaultTool());
+}
+
 /**
  * Sets the current Tool to the default tool. The default tool is determined by first
  * seeing if the PaletteViewer provides a default Tool.  If not, the EditDomain's default
@@ -163,14 +160,14 @@ public void keyUp(KeyEvent keyEvent, EditPartViewer viewer) {
  */
 public void loadDefaultTool() {
 	setTool(null);
-	
-	if (paletteViewer != null) {
-		paletteViewer.setSelection((PaletteEntry)null);
-		if (getActiveTool() == null)
-			setTool(getDefaultTool());
-	} else {
-		setTool(getDefaultTool());
+	if (paletteRoot != null) {
+		if (paletteRoot.getDefaultEntry() != null) {
+			paletteViewer.setMode(paletteRoot.getDefaultEntry());
+			return;
+		} else
+			paletteViewer.setMode(null);
 	}
+	setTool(getDefaultTool());
 }
 
 /** * @see org.eclipse.gef.EditDomain#mouseDoubleClick(MouseEvent, EditPartViewer) */
@@ -213,6 +210,15 @@ public void mouseUp(MouseEvent mouseEvent, EditPartViewer viewer) {
 	Tool tool = getActiveTool();
 	if (tool != null)	
 		tool.mouseUp(mouseEvent, viewer);	
+}
+
+/**
+ * @see org.eclipse.gef.EditDomain#nativeDragStarted(DragSourceEvent, EditPartViewer)
+ */
+public void nativeDragFinished(DragSourceEvent event, EditPartViewer viewer) {
+	Tool tool = getActiveTool();
+	if (tool != null)
+		tool.nativeDragFinished(event, viewer);
 }
 
 /**
