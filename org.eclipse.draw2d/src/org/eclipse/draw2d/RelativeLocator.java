@@ -103,17 +103,16 @@ protected IFigure getReferenceFigure(){
 
 public void relocate(IFigure target){
 	IFigure reference = getReferenceFigure();
-	Rectangle $refBounds = getReferenceBox(); //Do not modify this RECT
-	Rectangle tarBounds = $refBounds.getCopy();
-	reference.translateToAbsolute(tarBounds);
-	target.translateToRelative(tarBounds);
+	Rectangle targetBounds = getReferenceBox().getCopy();
+	reference.translateToAbsolute(targetBounds);
+	target.translateToRelative(targetBounds);
 
-	Dimension tarSize = target.getPreferredSize();
+	Dimension targetSize = target.getPreferredSize();
 
-	tarBounds.x += (int)(tarBounds.width*relativeX - ((tarSize.width+1)/2));
-	tarBounds.y += (int)(tarBounds.height*relativeY - ((tarSize.height+1)/2));
-	tarBounds.setSize(tarSize);
-	target.setBounds(tarBounds);
+	targetBounds.x += (int)(targetBounds.width*relativeX - ((targetSize .width+1)/2));
+	targetBounds.y += (int)(targetBounds.height*relativeY - ((targetSize .height+1)/2));
+	targetBounds.setSize(targetSize );
+	target.setBounds(targetBounds);
 }
 
 /**
@@ -126,5 +125,3 @@ public void setReferenceFigure(IFigure reference){
 }
 
 }
-
-
