@@ -359,11 +359,14 @@ protected boolean isDirty() {
  * @see org.eclipse.draw2d.UpdateListener#notifyPainting(Rectangle)
  */
 public void notifyPainting(Rectangle damage, Map dirtyRegions) {
-	Iterator keys = dirtyRegions.keySet().iterator();
+	Iterator dirtyFigures = dirtyRegions.keySet().iterator();
+	// Keep a list of affected figures.  If we come across it again, we can stop walking
+	// up its hierarchy and move on to the next figure in dirtyFigures.
 	List affectedFigures = new ArrayList();
-	while (keys.hasNext()) {
-		IFigure current = (IFigure)keys.next();
+	while (dirtyFigures.hasNext()) {
+		IFigure current = (IFigure)dirtyFigures.next();
 		while (current != null) {
+			// If we've already seen this figure, we don't need to check its ancestors.
 			if (affectedFigures.contains(current)) {
 				current = null;
 				continue;
