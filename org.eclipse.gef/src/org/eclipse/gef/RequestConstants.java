@@ -55,7 +55,7 @@ String REQ_MOVE_BENDPOINT    = "move bendpoint";//$NON-NLS-1$
 String REQ_CREATE_BENDPOINT  = "create bendpoint";//$NON-NLS-1$
 
 /**
- * Indicates that the receiver of the request is being resized.
+ * Indicates that a part (or a group of parts) is being resized.
  */
 String REQ_RESIZE = "resize"; //$NON-NLS-1$
 
@@ -65,7 +65,7 @@ String REQ_RESIZE = "resize"; //$NON-NLS-1$
 String REQ_RESIZE_CHILDREN = "resize children"; //$NON-NLS-1$
 
 /**
- * Indicates that the receiver of the request is being moved.
+ * Indicates that a part (or a group of parts) is being moved within its current parent.
  */
 String REQ_MOVE = "move"; //$NON-NLS-1$
 
