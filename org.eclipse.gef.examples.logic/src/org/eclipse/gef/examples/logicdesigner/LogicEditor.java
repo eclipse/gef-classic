@@ -313,6 +313,7 @@ protected void initializeActionRegistry() {
 	registry.registerAction(new AlignmentAction(this, PositionConstants.BOTTOM));
 	registry.registerAction(new AlignmentAction(this, PositionConstants.CENTER));
 	registry.registerAction(new AlignmentAction(this, PositionConstants.MIDDLE));
+	registry.registerAction(new PrintAction(this));
 }
 
 public boolean isDirty() {
