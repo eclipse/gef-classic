@@ -28,7 +28,7 @@
 			includes="reference/**"
 		/>
 		<copy todir="${destination.temp.folder}/${full.name}">
-			<fileset dir="${basedir}" includes="*.properties,*.xml,*.zip,icons/" excludes="build.properties,build*.xml" />
+			<fileset dir="${basedir}" includes="about.html,*.properties,*.xml,*.zip,icons/" excludes="build.properties,build*.xml" />
 		</copy>
 	</target>
 
