@@ -52,14 +52,15 @@ protected EditPolicy createChildEditPolicy(EditPart child) {
 }
 
 /**
- * Returns the <code>Command</code> to move the specified child before a reference
+ * Returns the <code>Command</code> to move the specified child before the given reference
  * <code>EditPart</code>. If the reference is <code>null</code>, the child should be
  * moved in front of all children.
  * <P>
  * A move is a change in the order of the children, which indirectly causes a change in
  * location on the screen.
  * @param child the child being moved
- * @param after <code>null</code> or the EditPart that should be after the child being moved
+ * @param after <code>null</code> or the EditPart that should be after (or to the right of) 
+ * the child being moved
  * @return a Command to move the child */
 protected abstract Command createMoveChildCommand(EditPart child, EditPart after);
 
