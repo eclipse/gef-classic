@@ -19,6 +19,9 @@ public abstract class AbstractRouter
 	implements ConnectionRouter
 {
 
+private static final Point START = new Point();
+private static final Point END = new Point();
+
 /**
  * Returns the constraint for the given Connection.
  * 
@@ -31,19 +34,27 @@ public Object getConstraint(Connection connection) {
 }
 
 /**
- * Returns a Point representing the end of the given Connection.
+ * A convenience method for obtaining a connection's endpoint.  The connection's endpoint
+ * is a point in absolute coordinates obtained by using its source and target {@link
+ * ConnectionAnchor}. The returned Point is a static singleton that is reused to reduce
+ * garbage collection. The caller may modify this point in any way. However, the point
+ * will be reused and its values overwritten during the next call to this method.
  * 
- * @param conn The connection
- * @return The end point
+ * @param connection The connection
+ * @return The endpoint
  * @since 2.0
  */
-protected Point getEndPoint(Connection conn) {
-	Point ref = conn.getSourceAnchor().getReferencePoint();
-	return conn.getTargetAnchor().getLocation(ref);
+protected Point getEndPoint(Connection connection) {
+	Point ref = connection.getSourceAnchor().getReferencePoint();
+	return END.setLocation(connection.getTargetAnchor().getLocation(ref));
 }
 
 /**
- * Returns a Point representing the start of the given Connection.
+ * A convenience method for obtaining a connection's start point.  The connection's
+ * startpoint is a point in absolute coordinates obtained by using its source and target
+ * {@link ConnectionAnchor}. The returned Point is a static singleton that is reused to
+ * reduce garbage collection. The caller may modify this point in any way. However, the
+ * point will be reused and its values overwritten during the next call to this method.
  * 
  * @param conn The connection
  * @return The start point
@@ -51,7 +62,7 @@ protected Point getEndPoint(Connection conn) {
  */
 protected Point getStartPoint(Connection conn) {
 	Point ref = conn.getTargetAnchor().getReferencePoint();
-	return conn.getSourceAnchor().getLocation(ref);
+	return START.setLocation(conn.getSourceAnchor().getLocation(ref));
 }
 
 /**
