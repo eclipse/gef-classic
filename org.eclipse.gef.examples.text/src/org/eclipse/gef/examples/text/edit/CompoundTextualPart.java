@@ -12,10 +12,6 @@ package org.eclipse.gef.examples.text.edit;
 import java.beans.PropertyChangeEvent;
 import java.util.List;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.FontData;
-
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.IFigure;
@@ -30,7 +26,6 @@ import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.examples.text.TextLocation;
 import org.eclipse.gef.examples.text.figures.CommentPage;
 import org.eclipse.gef.examples.text.model.Container;
-import org.eclipse.gef.examples.text.model.Style;
 
 /**
  * @since 3.1
@@ -121,17 +116,6 @@ public TextLocation getNextLocation(CaretSearch search) {
 public void propertyChange(PropertyChangeEvent evt) {
 	if (evt.getPropertyName().equals("children"))
 		refreshChildren();
-}
-
-protected void refreshVisuals() {
-	Style style = getContainer().getStyle();
-	FontData basis = getFigure().getParent().getFont().getFontData()[0];
-	if (style.getFontHeight() > 0)
-		basis.setHeight(style.getFontHeight());
-	if (style.getFontFamily() != null)
-		basis.setName(style.getFontFamily());
-	basis.setStyle((style.isBold() ? SWT.BOLD : 0) | (style.isItalic() ? SWT.ITALIC : 0));
-	getFigure().setFont(new Font(null, basis));
 }
 
 TextLocation searchBackwards(CaretSearch search) {
