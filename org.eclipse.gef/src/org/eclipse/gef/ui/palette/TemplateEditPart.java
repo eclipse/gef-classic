@@ -42,7 +42,7 @@ protected AccessibleEditPart createAccessible() {
 
 public IFigure createFigure() {
 	return new DetailedLabelFigure();
-}
+			}
 
 private PaletteTemplateEntry getTemplateEntry() {
 	return (PaletteTemplateEntry)getModel();
@@ -55,8 +55,9 @@ private PaletteViewer getPaletteViewer() {
 protected void refreshVisuals() {
 	DetailedLabelFigure fig = (DetailedLabelFigure)getFigure();
 	PaletteEntry entry = getPaletteEntry();
-	fig.setText(entry.getLabel());
-	boolean large = getPreferenceSource().useLargeIcons();
+	fig.setName(entry.getLabel());
+	fig.setDescription(entry.getDescription());
+	boolean large = getPreferenceSource().useLargeIconsCurrently();
 	Image icon;
 	if (large) {
 		icon = entry.getLargeIcon();

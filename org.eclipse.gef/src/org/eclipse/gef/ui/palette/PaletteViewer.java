@@ -24,7 +24,7 @@ ISelection getSelection();
 
 void setPaletteRoot(PaletteRoot root);
 
-void setPaletteViewerPreferencesSource( PaletteViewerPreferences prefs );
+void setPaletteViewerPreferencesSource(PaletteViewerPreferences prefs);
 
 void setSelection(PaletteEntry entry);
 

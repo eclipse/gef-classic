@@ -13,38 +13,52 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.draw2d.ButtonGroup;
+import org.eclipse.draw2d.IFigure;
 
 import org.eclipse.gef.*;
 import org.eclipse.gef.palette.*;
-import org.eclipse.gef.ui.palette.customize.PaletteCustomizerDialog;
+import org.eclipse.gef.ui.palette.customize.*;
 import org.eclipse.gef.ui.parts.PaletteViewerKeyHandler;
+
+import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
+
+import org.eclipse.jface.viewers.*;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.widgets.Display;
 
 public class PaletteViewerImpl
 	extends org.eclipse.gef.ui.parts.GraphicalViewerImpl
 	implements PaletteViewer 
 {
 
-PaletteCustomizer customizer = null;
-PaletteCustomizerDialog customizerDialog = null;
-List paletteListeners = new ArrayList();
-ButtonGroup buttonGroup = null;
-PaletteEntry selectedEntry = null;
-PaletteRoot paletteRoot = null;
-PaletteViewerPreferences prefs = null;
+private PaletteCustomizer customizer = null;
+private PaletteCustomizerDialog customizerDialog = null;
+private List paletteListeners = new ArrayList();
+private ButtonGroup buttonGroup = null;
+private PaletteEntry selectedEntry = null;
+private PaletteRoot paletteRoot = null;
+private PaletteViewerPreferences prefs = null;
 
 private boolean controlHooked = false;
 
 private PropertyChangeListener prefListener = new PropertyChangeListener() {
 	public void propertyChange(PropertyChangeEvent evt) {
 		EditPart root = getRootEditPart().getContents();
-		traverseEditParts(root);
+		if (evt.getPropertyName().equals(PaletteViewerPreferences.PREFERENCE_FONT)) {
+			Font font = new Font(Display.getCurrent(), 
+					getPaletteViewerPreferencesSource().getFontData());
+			IFigure fig = ((AbstractGraphicalEditPart)root).getFigure();
+			fig.setFont(font);
+			fig.invalidateTree();
+		}
+		refreshAllEditParts(root);
 	}
-	private void traverseEditParts(EditPart part) {
+	private void refreshAllEditParts(EditPart part) {
 		part.refresh();
 		List children = part.getChildren();
 		for (Iterator iter = children.iterator(); iter.hasNext();) {
 			EditPart child = (EditPart) iter.next();
-			traverseEditParts(child);
+			refreshAllEditParts(child);
 		}
 	}
 };
@@ -52,10 +66,6 @@ private PropertyChangeListener prefListener = new PropertyChangeListener() {
 public PaletteViewerImpl() {
 	setEditDomain(new DefaultEditDomain(null));
 	setKeyHandler(new PaletteViewerKeyHandler(this));
-	setPaletteViewerPreferencesSource(
-		new DefaultPaletteViewerPreferences(
-			GEFPlugin.getDefault().getPreferenceStore()));
-
 }
 
 public void addPaletteListener(PaletteListener paletteListener) {
@@ -102,7 +112,6 @@ public PaletteCustomizerDialog getCustomizerDialog() {
 	if (customizerDialog == null) {
 		customizerDialog = new PaletteCustomizerDialog(getControl().getShell(),
 	                                                   getCustomizer(),
-	                                                   prefs,
 	                                                   paletteRoot);
 	}
 	return customizerDialog;
@@ -115,6 +124,13 @@ public EditPartFactory getEditPartFactory() {
 }
 
 public PaletteViewerPreferences getPaletteViewerPreferencesSource() {
+	if (prefs == null) {
+		prefs = new DefaultPaletteViewerPreferences(
+						GEFPlugin.getDefault().getPreferenceStore());
+		if (controlHooked) {
+			prefs.addPropertyChangeListener(prefListener);
+		}
+	}
 	return prefs;
 }
 
@@ -154,6 +170,12 @@ public void setPaletteRoot(PaletteRoot root) {
 	}
 }
 
+/*
+ * @TODO:Pratik
+ * Looks like we don't really need this method.  It can only be called once anyways
+ * (before getPaletteViewerPreferencesSource() is called the first time), and probably
+ * right after construction.  Discuss this with Randy.
+ */
 public void setPaletteViewerPreferencesSource(PaletteViewerPreferences prefs) {
 	if (prefs == null) {
 		return;

@@ -2,6 +2,8 @@ package org.eclipse.gef.ui.palette;
 
 import java.beans.PropertyChangeListener;
 
+import org.eclipse.swt.graphics.FontData;
+
 /**
  * Interface to the Object storing the viewer preferences
  * 
@@ -29,6 +31,7 @@ public static final int
  * Auto-Collapse Option Flag
  * <p>
  * Indicates that containers should auto-collapse as needed
+ * This is the default auto-collapse setting.
  * </p>
  */
 public static final int
@@ -36,7 +39,7 @@ public static final int
 /**
  * Layout Option Flag
  * <p>
- * Indicates that the palette should be displayed in the folder view.
+ * Indicates that the palette should be displayed in the folder mode.
  * </p>
  */
 public static final int
@@ -44,8 +47,8 @@ public static final int
 /**
  * Layout Option Flag
  * <p>
- * Indicates that the palette should be displayed in the list view
- * This is the default auto-collapse setting.
+ * Indicates that the palette should be displayed in the list mode.
+ * This is the default layout setting.
  * </p>
  */
 public static final int
@@ -53,37 +56,81 @@ public static final int
 /**
  * Layout Option Flag
  * <p>
- * Indicates that the palette should be displayed in the icons only view.
- * This is the default layotu setting.
+ * Indicates that the palette should be displayed in the icons only mode.
  * </p>
  */
 public static final int
 	LAYOUT_ICONS    = 2;
-
+/**
+ * Layout Option Flag
+ * <p>
+ * Indicates that the palette should be displayed in the details mode.
+ * </p>
+ */
+public static final int
+	LAYOUT_DETAILS   = 3;
 /**
  * Property name for the layout setting.  If the PropertyChangeEvent fired
  * has this property name, it means that the layout setting was changed.
  */
 public static final String
-	PREFERENCE_LAYOUT           = "Layout Setting"; //$NON-NLS-1$
+	PREFERENCE_LAYOUT             = "Layout Setting"; //$NON-NLS-1$
 /**
  * Property name for the auto-collapse setting.  If the PropertyChangeEvent 
  * fired has this property name, it means that the auto-collapse setting 
  * was changed.
  */
 public static final String
-	PREFERENCE_AUTO_COLLAPSE    = "Auto-Collapse Setting"; //$NON-NLS-1$
+	PREFERENCE_AUTO_COLLAPSE      = "Auto-Collapse Setting"; //$NON-NLS-1$
 /**
- * Property name for the large icon setting.  If the PropertyChangeEvent fired
- * has this property name, it means that the large icon setting was changed.
+ * Property name for the large icon setting for folder layout.  If the PropertyChangeEvent
+ * fired has this property name, it means that the large icon setting was changed for
+ * folder layout.  Large icons are default.
  */
 public static final String
-	PREFERENCE_LARGE_ICONS      = "Use Large Icons"; //$NON-NLS-1$
+	PREFERENCE_FOLDER_ICON_SIZE   = "Use Large Icons - Folder"; //$NON-NLS-1$
+/**
+ * Property name for the large icon setting for list layout.  If the PropertyChangeEvent
+ * fired has this property name, it means that the large icon setting was changed for
+ * list layout.  Small icons are default.
+ */
+public static final String
+	PREFERENCE_LIST_ICON_SIZE     = "Use Large Icons - List"; //$NON-NLS-1$
+/**
+ * Property name for the large icon setting for icons only layout.  If the
+ * PropertyChangeEvent fired has this property name, it means that the large icon setting
+ * was changed for icons only layout.  Large icons are default.
+ */
+public static final String
+	PREFERENCE_ICONS_ICON_SIZE    = "Use Large Icons - Icons"; //$NON-NLS-1$
+/**
+ * Property name for the large icon setting for details layout.  If the
+ * PropertyChangeEvent fired has this property name, it means that the large icon setting
+ * was changed for details layout.  Small icons are default.
+ */
+public static final String
+	PREFERENCE_DETAILS_ICON_SIZE  = "Use Large Icons - Details"; //$NON-NLS-1$
+/**
+ * Property name for the palette size setting.  If the PropertyChangeEvent fired
+ * has this property name, it means that the palette size was changed.
+ */
+public static final String
+	PREFERENCE_PALETTE_SIZE       = "Palette Size"; //$NON-NLS-1$ 
+/**
+ * Property name for the palette font setting.  If the PropertyChangeEvent fired
+ * has this property name, it means that the palette font was changed.
+ */
+public static final String
+	PREFERENCE_FONT               = "Palette Font"; //$NON-NLS-1$ 
 
 /**
  * @see java.beans.PropertyChangeSupport#addPropertyChangeListener(java.beans.PropertyChangeListener)
  */
 public void addPropertyChangeListener(PropertyChangeListener listener);
+
+//@TODO:Pratik
+// Need to change the javadoc comments so that you are not using paragraphs everywhere,
+// but are using <UL> and <LI> tags.
 
 /**
  * Called when the preferences are being disposed.
@@ -109,6 +156,9 @@ void dispose();
  */
 public int getAutoCollapseSetting();
 
+/** * @return The FontData for the font to be used in the palette. */
+public FontData getFontData();
+
 /**
  * Returns the current Layout settings flag.
  * <p> 
@@ -123,10 +173,16 @@ public int getAutoCollapseSetting();
  * <p>
  * 		LAYOUT_ICONS (Icons Only View)
  * </p>
+ * <p>
+ * 		LAYOUT_DETAILS (Details View)
+ * </p>
  * 
  * @return int	Flag indicating what the setting is
  */
 public int getLayoutSetting();
+
+/** * @return the size (width) of the palette */
+public int getPaletteSize();
 
 /**
  * @see java.beans.PropertyChangeSupport#removePropertyChangeListener(java.beans.PropertyChangeListener)
@@ -153,6 +209,11 @@ public void removePropertyChangeListener(PropertyChangeListener listener);
 public void setAutoCollapseSetting(int newVal);
 
 /**
+ * Sets the FontData for the palette.
+ *  * @param data	The FontData for the font to be used in the palette. */
+public void setFontData(FontData data);
+
+/**
  * Sets the layout setting.
  * <p> 
  * Possible flags:
@@ -166,23 +227,56 @@ public void setAutoCollapseSetting(int newVal);
  * <p>
  * 		LAYOUT_ICONS (Icons Only View)
  * </p>
+ * <p>
+ * 		LAYOUT_DETAILS (Details View)
+ * </p>
  * 
  * @param newVal	One of the above-mentioned flags
  */
 public void setLayoutSetting(int newVal);
 
 /**
- * Sets the "Use Large Icons" setting.  The value is <code>false</code> by
- * default.
+ * Saves the size (width) of the palette.
  * 
- * @param newVal	A boolean indicating whether to use large icons or not.
+ * @param newSize	The new width of the palette
  */
-public void setUseLargeIcons(boolean newVal);
+public void setPaletteSize(int newSize);
 
 /**
- * @return A boolean indicating whether or not large icons should be used
- * in the Palette
+ * Sets the "Use Large Icons" option for the currently active layout.
+ *  * @param newVal <code>true</code> if large icons are to be used */
+public void setCurrentUseLargeIcons(boolean newVal);
+
+/**
+ * Sets the "Use Large Icons" option for the given layout.
+ * <p>
+ * The default is false for all layouts.
+ * </p>
+ * 
+ * @param	layout	Indicates to change the icon setting associated with the given layout,
+ * 					which could be any of LAYOUT_FOLDER, LAYOUT_LIST, LAYOUT_ICONS,
+ * 					LAYOUT_DETAILS.
+ * @param newVal	<code>true</code> if large icons are to be used with the given layout;
+ * 					<code>false</code> otherwise
  */
-public boolean useLargeIcons();
+public void setUseLargeIcons(int layout, boolean newVal);
+
+/**
+ * <p>
+ * The default is false for all layouts.
+ * </p>
+ * 
+ * @param	layout	Indicates to get the icon setting associated with the given layout, which
+ * 					could be any of LAYOUT_FOLDER, LAYOUT_LIST, LAYOUT_ICONS,
+ * 					LAYOUT_DETAILS.
+ * @return <code>true</code> if large icons are to be used with the given layout
+ */
+public boolean useLargeIcons(int layout);
+
+/**
+ * @return <code>true</code> if large icons are to be used with the currently active
+ * layout
+ */
+public boolean useLargeIconsCurrently();
 
 }

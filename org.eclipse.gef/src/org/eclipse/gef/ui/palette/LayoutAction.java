@@ -56,6 +56,10 @@ protected List createActions() {
 	action.setText(PaletteMessages.SETTINGS_ICONS_VIEW_LABEL);
 	list.add(action);
 	
+	action = new LayoutChangeAction(PaletteViewerPreferences.LAYOUT_DETAILS);
+	action.setText(PaletteMessages.SETTINGS_DETAILS_VIEW_LABEL);
+	list.add(action);
+
 	return list;
 }
 

@@ -9,6 +9,7 @@ package org.eclipse.gef.ui.palette;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -101,7 +102,7 @@ public DragTracker getDragTracker(Request request) {
 				return;
 			setFlag(FLAG_SELECTION_PERFORMED, true);
 			getCurrentViewer().select(getSourceEditPart());
-		}
+}
 	};
 }
 
@@ -113,7 +114,7 @@ public List getModelChildren() {
 	if (getModel() instanceof PaletteContainer) {
 		modelChildren = new ArrayList(((PaletteContainer)getModel()).getChildren());
 	} else {
-		modelChildren = super.getModelChildren();
+		modelChildren = Collections.EMPTY_LIST;
 	}
 	
 	List childrenToBeRemoved = new ArrayList();
@@ -132,7 +133,7 @@ protected PaletteEntry getPaletteEntry() {
 	return (PaletteEntry)getModel();
 }
 
-protected PaletteViewerPreferences getPreferenceSource(){
+protected PaletteViewerPreferences getPreferenceSource() {
 	return ((PaletteViewerImpl)getViewer()).getPaletteViewerPreferencesSource();
 }
 
@@ -142,7 +143,10 @@ protected PaletteViewerPreferences getPreferenceSource(){
 public void propertyChange(PropertyChangeEvent evt) {
 	String property = evt.getPropertyName();
 	if (property.equals(PaletteContainer.PROPERTY_CHILDREN_CHANGED)) {
+		traverseChildren((List)evt.getOldValue(), false);
 		refreshChildren();
+		traverseChildren((List)evt.getNewValue(), true);
+		
 	} else if (property.equals(PaletteEntry.PROPERTY_LABEL)
 			|| property.equals(PaletteEntry.PROPERTY_SMALL_ICON)
 			|| property.equals(PaletteEntry.PROPERTY_LARGE_ICON)
@@ -167,9 +171,11 @@ private void traverseChildren(PaletteEntry parent, boolean add) {
 	if (!(parent instanceof PaletteContainer)) {
 		return;
 	}
-	
 	PaletteContainer container = (PaletteContainer)parent;
-	List children = container.getChildren();
+	traverseChildren(container.getChildren(), add);
+}
+
+private void traverseChildren(List children, boolean add) {	
 	for (Iterator iter = children.iterator(); iter.hasNext();) {
 		PaletteEntry entry = (PaletteEntry) iter.next();
 		if (add) {

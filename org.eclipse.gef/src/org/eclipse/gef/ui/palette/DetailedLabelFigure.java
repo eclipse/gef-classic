@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.PaletteData;
+import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.Insets;
@@ -42,7 +44,8 @@ public static final String SELECTED_PROPERTY = "selected"; //$NON-NLS-1$
 private Image shadedIcon;
 private ImageFigure image;
 private FlowPage page;
-private TextFlow text;
+private TextFlow nameText, descText;
+private Font boldFont;
 private boolean useLargeIcons;
 private int selectionState, layoutMode = -1;
 private List listeners = new ArrayList();
@@ -55,8 +58,9 @@ public DetailedLabelFigure() {
 	image.setAlignment(PositionConstants.NORTH);
 	page = new FocusableFlowPage();
 	page.setBorder(new MarginBorder(0, 2, 0, 2));
-	text = new TextFlow();
-	page.add(text);
+	nameText = new TextFlow();
+	descText = new TextFlow();
+	page.add(nameText);
 	add(image);
 	add(page);
 	BorderLayout layout = new BorderLayout();
@@ -77,6 +81,17 @@ protected void fireStateChanged(String property) {
 			handleStateChanged(change);
 }
 
+/**
+ * @see java.lang.Object#finalize()
+ */
+protected void finalize() throws Throwable {
+	if (boldFont != null) {
+		nameText.setFont(null);
+		boldFont.dispose();
+		boldFont = null;
+	}
+}
+
 /** * @return whether this figure is selected or not */
 public boolean isSelected() {
 	return selectionState == SELECTED_WITH_FOCUS 
@@ -85,6 +100,14 @@ public boolean isSelected() {
 
 public void removeChangeListener(ChangeListener listener) {
 	listeners.remove(listener);
+}
+
+public void setDescription(String s) {
+	/*
+	 * @TODO:Pratik
+	 * Does this string need to be externalized?
+	 */
+	descText.setText(" - " + s); //$NON-NLS-1$
 }
 
 /**
@@ -96,15 +119,21 @@ public void setImage(Image icon) {
 }
 
 public void setLayoutMode(int layoutMode) {
+	updateFont(layoutMode);
+	
 	if (layoutMode == this.layoutMode) {
 		return;
 	}
 	
 	this.layoutMode = layoutMode;
+
+	add(page);
+	if (page.getChildren().contains(descText)) {
+		page.remove(descText);
+	}
 	
 	BorderLayout layout = (BorderLayout) getLayoutManager();
 	if (layoutMode == PaletteViewerPreferences.LAYOUT_FOLDER) {
-		add(page);
 		page.setHorizontalAligment(PositionConstants.CENTER);
 		layout.setConstraint(image, BorderLayout.TOP);
 		layout.setConstraint(page, BorderLayout.CENTER);
@@ -112,15 +141,19 @@ public void setLayoutMode(int layoutMode) {
 		layout.setConstraint(image, BorderLayout.CENTER);
 		remove(page);
 	} else if (layoutMode == PaletteViewerPreferences.LAYOUT_LIST) {
-		add(page);
+		page.setHorizontalAligment(PositionConstants.LEFT);
+		layout.setConstraint(image, BorderLayout.LEFT);
+		layout.setConstraint(page, BorderLayout.CENTER);
+	} else if (layoutMode == PaletteViewerPreferences.LAYOUT_DETAILS) {
+		page.add(descText);
 		page.setHorizontalAligment(PositionConstants.LEFT);
 		layout.setConstraint(image, BorderLayout.LEFT);
 		layout.setConstraint(page, BorderLayout.CENTER);
 	}
 }
 
-public void setText(String str) {
-	text.setText(str);
+public void setName(String str) {
+	nameText.setText(str);
 }
 
 public void setSelected(int state) {
@@ -196,6 +229,26 @@ public static ImageData createShadedImage(Image fromImage, Color shade) {
 	return data;
 }
 
+private void updateFont(int layout){
+	if (boldFont != null) {
+		nameText.setFont(null);
+		boldFont.dispose();
+		boldFont = null;
+	}
+	if (layout == PaletteViewerPreferences.LAYOUT_DETAILS) {
+		/*
+		 * @TODO:Pratik
+		 * Find out if getting the first FontData in the array is valid.
+		 * You also need to figure out a way of disposing this Font.  Right now you are
+		 * doing it through the finalize method.
+		 */
+		FontData data = getFont().getFontData()[0];
+		data.setStyle(SWT.BOLD);
+		boldFont = new Font(Display.getCurrent(), data);
+		nameText.setFont(boldFont);
+	}
+}
+
 private static int determineShading(int origColor, int shadeColor) {
 	return (origColor + shadeColor) / 2;
 }
@@ -203,17 +256,24 @@ private static int determineShading(int origColor, int shadeColor) {
 private class FocusableFlowPage extends FlowPage {
 	protected void paintFigure(Graphics g) {
 		if (selectionState == SELECTED_WITH_FOCUS) {
-			Rectangle rect = ((Figure)getChildren().get(0)).getBounds().getCropped(
-					new Insets(0, -2, 1, -1)); // Right is -1 and not -2 to not leave
-					                           // too much space on the right
-			translateToParent(rect);
-			g.fillRectangle(rect);
+			Rectangle childBounds = null;
+			List children = getChildren();
+			for (int i = 0; i < children.size(); i++) {
+				Figure child = (Figure) children.get(i);
+				if (i == 0) {
+					childBounds = new Rectangle(child.getBounds());
+				} else {
+					childBounds.union(child.getBounds());
+				}
+			}
+			childBounds.crop(new Insets(0, -2, 1, -1)); // Right is -1 and not -2 to not leave
+					                                    // too much space on the right
+			translateToParent(childBounds);
+			g.fillRectangle(childBounds);
 			super.paintFigure(g);
-			g.pushState();
 			g.setForegroundColor(ColorConstants.black);
 			g.setBackgroundColor(ColorConstants.white);
-			g.drawFocus(rect.resize(-1, -1));
-			g.popState();
+			g.drawFocus(childBounds.resize(-1, -1));
 		}
 	}
 }

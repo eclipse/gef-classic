@@ -6,6 +6,9 @@ package org.eclipse.gef.ui.parts;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+
 import org.eclipse.swt.*;
 import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.graphics.*;
@@ -13,15 +16,54 @@ import org.eclipse.draw2d.ColorConstants;
 
 class Splitter extends Composite {
 
-public int SASH_WIDTH = 6;
+private static final int SASH_WIDTH = 6;
+private static final int DRAG_MINIMUM = 50;
+private static final String MAINTAIN_SIZE = "maintain size";  //$NON-NLS-1$
 
-private static final int DRAG_MINIMUM = 25;
-
+private int fixedSize = 150;
 private int orientation = SWT.HORIZONTAL;
 private Sash[] sashes = new Sash[0];
 private Control[] controls = new Control[0];
 private Control maxControl = null;
 private Listener sashListener;
+
+/**
+ * PropertyChangeSupport
+ */
+protected PropertyChangeSupport listeners = new PropertyChangeSupport(this);
+
+/**
+ * @see java.beans.PropertyChangeSupport#addPropertyChangeListener(java.beans.PropertyChangeListener)
+ */
+public void addFixedSizeChangeListener(PropertyChangeListener listener) {
+	listeners.addPropertyChangeListener(listener);
+}
+
+/**
+ * @see java.beans.PropertyChangeSupport#firePropertyChange(java.lang.String, int, int)
+ */
+protected void firePropertyChange(int oldValue, int newValue) {
+	listeners.firePropertyChange(MAINTAIN_SIZE, oldValue, newValue);
+}
+
+/**
+ * @see java.beans.PropertyChangeSupport#removePropertyChangeListener(java.beans.PropertyChangeListener)
+ */
+public void removeFixedSizeChangeListener(PropertyChangeListener listener) {
+	listeners.removePropertyChangeListener(listener);
+}
+
+public int getFixedSize() {
+	return fixedSize;
+}
+
+public void setFixedSize(int newSize) {
+	if (newSize == fixedSize) {
+		return;
+	}
+	
+	firePropertyChange(fixedSize, fixedSize = newSize);
+}
 
 class SashPainter implements Listener {
 	public void handleEvent(Event e) {
@@ -47,10 +89,12 @@ public Splitter(Composite parent, int style) {
 		}
 	};
 }
+
 private static int checkStyle (int style) {
 	int mask = SWT.BORDER;
 	return style & mask;
 }
+
 public Point computeSize (int wHint, int hHint, boolean changed) {
 	
 	Control[] controls = getControls(true);
@@ -72,14 +116,18 @@ public Point computeSize (int wHint, int hHint, boolean changed) {
 			height += size.y;	
 		} else {
 			Point size = controls[i].computeSize(SWT.DEFAULT, hHint);
+			if (controls[i].getData(MAINTAIN_SIZE) != null) {
+				size.x = fixedSize;
+			}
 			width += size.x;
 		}
 	}
-	if (wHint != SWT.DEFAULT) width = wHint;
-	if (hHint != SWT.DEFAULT) height = hHint;
+//	if (wHint != SWT.DEFAULT) width = wHint;
+//	if (hHint != SWT.DEFAULT) height = hHint;
 	
 	return new Point(width, height);
 }
+
 /**
  * Answer SWT.HORIZONTAL if the controls in the SashForm are laid out side by side.
  * Answer SWT.VERTICAL   if the controls in the SashForm are laid out top to bottom.
@@ -87,38 +135,14 @@ public Point computeSize (int wHint, int hHint, boolean changed) {
 public int getOrientation() {
 	return orientation;
 }
+
 /**
  * Answer the control that currently is maximized in the SashForm.  This value may be null.
  */
 public Control getMaximizedControl() {
 	return this.maxControl;
 }
-/**
- * Answer the relative weight of each child in the SashForm.  The weight represents the
- * percent of the total width (if SashForm has Horizontal orientation) or 
- * total height (if SashForm has Vertical orientation) each control occupies.
- * The weights are returned in order of the creation of the widgets (weight[0]
- * corresponds to the weight of the first child created).
- */
 
-public int[] getWeights() {
-	Control[] cArray = getControls(false);
-	float[] ratios = new float[cArray.length];
-	for (int i = 0; i < cArray.length; i++) {
-		Float ratio = (Float)cArray[i].getData("layout ratio");//$NON-NLS-1$
-		if (ratio != null) {
-			ratios[i] = ratio.floatValue();
-		} else {
-			ratios[i] = (float)0.2;
-		}
-	}
-	
-	int[] weights = new int[cArray.length];
-	for (int i = 0; i < weights.length; i++) {
-		weights[i] = (int)(ratios[i] * 1000);
-	}
-	return weights;
-}
 private Control[] getControls(boolean onlyVisible) {
 	Control[] children = getChildren();
 	Control[] controls = new Control[0];
@@ -134,6 +158,7 @@ private Control[] getControls(boolean onlyVisible) {
 	}
 	return controls;
 }
+
 public void layout(boolean changed) {
 	Rectangle area = getClientArea();
 	if (area.width == 0 || area.height == 0) return;
@@ -184,62 +209,37 @@ public void layout(boolean changed) {
 	
 	if (controls.length == 0) return;
 	
-	// get the ratios
-	float[] ratios = new float[controls.length];
-	float total = 0;
+	//@TODO
+	// This only works if the orientation is horizontal, there are two children and one 
+	// of them has been set to maintain its size.
+	int x = area.x;
+	int width;
 	for (int i = 0; i < controls.length; i++) {
-		Float ratio = (Float)controls[i].getData("layout ratio");//$NON-NLS-1$
-		if (ratio != null) {
-			ratios[i] = ratio.floatValue();
+		Control control = controls[i];
+		if (control.getData(MAINTAIN_SIZE) != null) {
+			width = fixedSize;
+			if (width > area.width) {
+				width = area.width - SASH_WIDTH;
+			}
+			control.setBounds(x, area.y, width, area.height);
+			x += width + SASH_WIDTH;
 		} else {
-			ratios[i] = (float)0.2;
+			width = Math.max(area.width - fixedSize - SASH_WIDTH, 0);
+			control.setBounds(x, area.y, width, area.height);
+			x += (width + SASH_WIDTH);
 		}
-		total += ratios[i];
 	}
-	
-	if (orientation == SWT.HORIZONTAL) {
-		total += (float)sashes.length * ((float)SASH_WIDTH / (float)area.width);
-	} else {
-		total += (float)sashes.length * ((float)SASH_WIDTH / (float)area.height);
-	}
-	
-	if (orientation == SWT.HORIZONTAL) {
-		int width = (int)((ratios[0] / total) * (float)area.width);
-		int x = area.x;
-		controls[0].setBounds(x, area.y, width, area.height);
-		x += width;
-		for (int i = 1; i < controls.length - 1; i++) {
-			sashes[i - 1].setBounds(x, area.y, SASH_WIDTH, area.height);
-			x += SASH_WIDTH;
-			width = (int)((ratios[i] / total) * (float)area.width);
-			controls[i].setBounds(x, area.y, width, area.height);
-			x += width;
-		}
-		if (controls.length > 1) {
-			sashes[sashes.length - 1].setBounds(x, area.y, SASH_WIDTH, area.height);
-			x += SASH_WIDTH;
-			width = area.width - x;
-			controls[controls.length - 1].setBounds(x, area.y, width, area.height);
-		}
-	} else {
-		int height = (int)((ratios[0] / total) * (float)area.height);
-		int y = area.y;
-		controls[0].setBounds(area.x, y, area.width, height);
-		y += height;
-		for (int i = 1; i < controls.length - 1; i++) {
-			sashes[i - 1].setBounds(area.x, y, area.width, SASH_WIDTH);
-			y += SASH_WIDTH;
-			height = (int)((ratios[i] / total) * (float)area.height);
-			controls[i].setBounds(area.x, y, area.width, height);
-			y += height;
-		}
-		if (controls.length > 1) {
-			sashes[sashes.length - 1].setBounds(area.x, y, area.width, SASH_WIDTH);
-			y += SASH_WIDTH;
-			height = area.height - y;
-			controls[controls.length - 1].setBounds(area.x, y, area.width, height);
-		}
+	sashes[0].setBounds(controls[0].getBounds().x + controls[0].getBounds().width, area.y, 
+	                    SASH_WIDTH, area.height);
+}
 
+public void maintainSize(Control c) {
+	Control[] controls = getControls(false);
+	for (int i = 0; i < controls.length; i++) {
+		Control ctrl = controls[i];
+		if (ctrl == c) {
+			ctrl.setData(MAINTAIN_SIZE, new Boolean(true));
+		}
 	}
 }
 
@@ -266,11 +266,13 @@ private void onDragSash(Event event) {
 		// constrain feedback
 		Rectangle area = getClientArea();
 		if (orientation == SWT.HORIZONTAL) {
-			event.x = Math.min(Math.max(DRAG_MINIMUM, event.x), area.width - DRAG_MINIMUM 
-							- SASH_WIDTH);
+			if (controls[0].getData(MAINTAIN_SIZE) != null) {
+				event.x = Math.max(event.x, DRAG_MINIMUM);
+			} else {
+				event.x = Math.min(event.x, area.width - DRAG_MINIMUM - SASH_WIDTH);
+			}
 		} else {
-			event.y = Math.min(Math.max(DRAG_MINIMUM, event.y), area.height - DRAG_MINIMUM
-							- SASH_WIDTH);
+			event.y = Math.min(event.y, area.height - DRAG_MINIMUM - SASH_WIDTH);
 		}
 		return;
 	}
@@ -291,33 +293,30 @@ private void onDragSash(Event event) {
 	Rectangle b2 = c2.getBounds();
 	
 	Rectangle sashBounds = sash.getBounds();
-	Rectangle area = getClientArea();
 	if (orientation == SWT.HORIZONTAL) {
 		int shift = event.x - sashBounds.x;
 		b1.width += shift;
 		b2.x += shift;
 		b2.width -= shift;
-		if (b1.width < DRAG_MINIMUM || b2.width < DRAG_MINIMUM) {
-			return;
-		}
-		c1.setData("layout ratio", new Float((float)b1.width / (float)area.width));//$NON-NLS-1$
-		c2.setData("layout ratio", new Float((float)b2.width / (float)area.width));//$NON-NLS-1$
 	} else {
 		int shift = event.y - sashBounds.y;
 		b1.height += shift;
 		b2.y += shift;
 		b2.height -= shift;
-		if (b1.height < DRAG_MINIMUM || b2.height < DRAG_MINIMUM) {
-			return;
-		}
-		c1.setData("layout ratio", new Float((float)b1.height / (float)area.height));//$NON-NLS-1$
-		c2.setData("layout ratio", new Float((float)b2.height / (float)area.height));//$NON-NLS-1$
 	}
 	
 	c1.setBounds(b1);
 	sash.setBounds(event.x, event.y, event.width, event.height);
 	c2.setBounds(b2);
+	//@TODO
+	// This will only work when you have two controls, one of whom is set to maintain size
+	if (c1.getData(MAINTAIN_SIZE) != null) {
+		setFixedSize(c1.getBounds().width);
+	} else {
+		setFixedSize(c2.getBounds().width);
+	}
 }
+
 /**
  * If orientation is SWT.HORIZONTAL, lay the controls in the SashForm out side by side.
  * If orientation is SWT.VERTICAL,   lay the controls in the SashForm out top to bottom.
@@ -338,9 +337,11 @@ public void setOrientation(int orientation) {
 	}
 	layout();
 }
+
 public void setLayout (Layout layout) {
 	// SashForm does not use Layout
 }
+
 /**
  * Specify the control that should take up the entire client area of the SashForm.  
  * If one control has been maximized, and this method is called with a different control, 
@@ -366,43 +367,6 @@ public void setMaximizedControl(Control control) {
 	maxControl = control;
 	layout();
 
-//		// walk up
-//		w= getParent();
-//		if (w instanceof SplitForm)
-//			 ((SplitForm) w).internalMaximize(this);
-//		else
-//			layout(true);
 }
 
-/**
- * Specify the relative weight of each child in the SashForm.  This will determine
- * what percent of the total width (if SashForm has Horizontal orientation) or 
- * total height (if SashForm has Vertical orientation) each control will occupy.
- * The weights must be positive values and there must be an entry for each
- * non-sash child of the SashForm.
- */
-public void setWeights(int[] weights) {
-	Control[] cArray = getControls(false);
-	if (weights == null || weights.length != cArray.length) {
-		SWT.error(SWT.ERROR_INVALID_ARGUMENT);
-	}
-	
-	int total = 0;
-	for (int i = 0; i < weights.length; i++) {
-		if (weights[i] < 0) {
-			SWT.error(SWT.ERROR_INVALID_ARGUMENT);
-		}
-		total += weights[i];
-	}
-	if (total == 0) {
-		SWT.error(SWT.ERROR_INVALID_ARGUMENT);
-	}
-	for (int i = 0; i < cArray.length; i++) {
-		cArray[i].setData("layout ratio", new Float((float)weights[i] / (float)total));//$NON-NLS-1$
-	}
-	
-	layout();
 }
-}
-
-

@@ -2,6 +2,7 @@ package org.eclipse.gef.ui.palette;
 
 import org.eclipse.gef.ContextMenuProvider;
 import org.eclipse.gef.ui.actions.ActionRegistry;
+
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.ui.IWorkbenchActionConstants;
@@ -14,6 +15,15 @@ import org.eclipse.ui.IWorkbenchActionConstants;
 public class PaletteContextMenuProvider
 	extends ContextMenuProvider
 {
+
+/*
+ * @TODO:Pratik
+ * Figure out how the actions for the menu should be created.  The way it works for
+ * editors is that the editor holds on to all the actions, and the menu provider for the
+ * editor gets them from the editor and adds them to the menu.  Here, maybe the
+ * paletteviewer can hold on to all the actions.  Right now, new actions are created every
+ * time the menu pops up.
+ */	
 
 /**
  * Constructor
@@ -44,12 +54,20 @@ public void buildContextMenu(IMenuManager menu) {
 	Object selectedPart = getPaletteViewer().getSelectedEditParts().get(0);
 	if (selectedPart instanceof TemplateEditPart) {
 		menu.add(getActionRegistry().getAction(IWorkbenchActionConstants.COPY));
-	}
-	if (getPaletteViewer().getCustomizer() != null)
-		menu.add(new LayoutAction(getPaletteViewer().getPaletteViewerPreferencesSource()));
-		menu.add(new IconSizeChangeAction(getPaletteViewer().getPaletteViewerPreferencesSource()));
 		menu.add(new Separator());
+	} else if (selectedPart instanceof CategoryEditPart) {
+		menu.add(new PinCategoryAction(
+				((CategoryEditPart)selectedPart).getCategoryFigure()));
+		menu.add(new Separator());
+	}
+	menu.add(new LayoutAction(getPaletteViewer().getPaletteViewerPreferencesSource()));
+	menu.add(new ChangeIconSizeAction(
+			getPaletteViewer().getPaletteViewerPreferencesSource()));
+	menu.add(new Separator());
+	if (getPaletteViewer().getCustomizer() != null) {
 		menu.add(new CustomizeAction(getPaletteViewer()));
+	}
+	menu.add(new SettingsAction(getPaletteViewer()));
 }
 
 }

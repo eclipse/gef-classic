@@ -14,7 +14,7 @@ public class PaletteEditPartFactory
 {
 
 protected EditPart createCategoryEditPart(EditPart parentEditPart, Object model){
-	return new CategoryEditPart((PaletteContainer)model);
+	return new CategoryEditPart((PaletteCategory)model);
 }
 
 public EditPart createEditPart(EditPart parentEditPart, Object model){

@@ -25,6 +25,7 @@ private PaletteViewerImpl paletteViewer;
  * run
  */
 public CustomizeAction(PaletteViewerImpl palette) {
+	super();
 	setText(PaletteMessages.MENU_OPEN_CUSTOMIZE_DIALOG);
 	this.paletteViewer = palette;
 }

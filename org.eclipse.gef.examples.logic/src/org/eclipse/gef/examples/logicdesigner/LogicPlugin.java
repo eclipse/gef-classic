@@ -96,8 +96,8 @@ static private PaletteContainer createComponentsCategory(){
 	
 	PaletteTemplateEntry template = new PaletteTemplateEntry(
 			TemplateConstants.TEMPLATE_LOGIC_LABEL,
-			LogicMessages.LogicPlugin_Tool_CreationTool_LogicLabel,
-			LogicMessages.LogicPlugin_Tool_CreationTool_LogicLabel,
+			LogicMessages.LogicPlugin_Tool_CreationTool_Label_Label,
+			LogicMessages.LogicPlugin_Tool_CreationTool_Label_Description,
 			new Image(null,Circuit.class.getResourceAsStream("icons/label16.gif")), //$NON-NLS-1$
 			new Image(null,Circuit.class.getResourceAsStream("icons/label24.gif"))//$NON-NLS-1$
 		);

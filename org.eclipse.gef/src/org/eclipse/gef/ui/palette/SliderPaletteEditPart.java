@@ -8,6 +8,8 @@ package org.eclipse.gef.ui.palette;
 
 import org.eclipse.draw2d.*;
 import org.eclipse.gef.palette.PaletteRoot;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.widgets.Display;
 
 public class SliderPaletteEditPart 
 	extends PaletteEditPart
@@ -22,12 +24,15 @@ public IFigure createFigure() {
 	figure.setOpaque(true);
 	figure.setForegroundColor(ColorConstants.listForeground);
 	figure.setBackgroundColor(ColorConstants.button);
+	figure.setFont(new Font(Display.getCurrent(), getPreferenceSource().getFontData()));
 	ToolbarLayout layout = new ToolbarLayout();
 	figure.setLayoutManager(layout);
 	return figure;
 }
 
 /**
+ * This method overrides super's functionality to do nothing.
+ * 
  * @see org.eclipse.gef.ui.palette.PaletteEditPart#refreshVisuals()
  */
 protected void refreshVisuals() {

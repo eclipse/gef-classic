@@ -146,8 +146,9 @@ protected void refreshVisuals() {
 	PaletteEntry entry = getPaletteEntry();
 
 	DetailedLabelFigure fig = (DetailedLabelFigure)(button.getChildren().get(0));
-	fig.setText(entry.getLabel());
-	boolean large = getPreferenceSource().useLargeIcons();
+	fig.setName(entry.getLabel());
+	fig.setDescription(entry.getDescription());
+	boolean large = getPreferenceSource().useLargeIconsCurrently();
 	Image icon;
 	if (large) {
 		icon = entry.getLargeIcon();

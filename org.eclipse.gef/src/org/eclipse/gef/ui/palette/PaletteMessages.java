@@ -16,13 +16,9 @@ public static final String CUSTOMIZE_DIALOG_TITLE;
  */
 public static final String COLLAPSE_OPTIONS_TITLE;
 /**
- * The String "Layout: "
+ * The String "Layout Options"
  */
 public static final String SETTINGS_LAYOUT_OPTIONS_TITLE;
-/**
- * The String "Palette Settings"
- */
-public static final String PALETTE_SETTINGS_TITLE;
 /**
  * The String "&Apply"
  */
@@ -52,7 +48,7 @@ public static final String SETTINGS_FOLDER_VIEW_LABEL;
  */
 public static final String SETTINGS_LIST_VIEW_LABEL;
 /**
- * The String "Use lar&ge icons"
+ * The String "&Use large icons"
  */
 public static final String USE_LARGE_ICONS_LABEL;
 /**
@@ -60,11 +56,11 @@ public static final String USE_LARGE_ICONS_LABEL;
  */
 public static final String SETTINGS_ICONS_VIEW_LABEL;
 /**
- * The String "Ne&ver"
+ * The String "&Never"
  */
 public static final String COLLAPSE_NEVER_LABEL;
 /**
- * The String "Alwa&ys"
+ * The String "&Always"
  */
 public static final String COLLAPSE_ALWAYS_LABEL;
 /**
@@ -128,7 +124,7 @@ public static final String MODEL_TYPE_GROUP;
  */
 public static final String NEW_GROUP_LABEL;
 /**
- * The String "Layout"
+ * The String "&Layout"
  */
 public static final String LAYOUT_MENU_LABEL;
 /**
@@ -139,6 +135,74 @@ public static final String ERROR;
  * The String "The currently displayed page contains invalid values."
  */
 public static final String ABORT_PAGE_FLIPPING_MESSAGE;
+/**
+ * The String "&Settings..."
+ */
+public static final String MENU_OPEN_SETTINGS_DIALOG;
+/**
+ * The String "Palette Settings"
+ */
+public static final String SETTINGS_DIALOG_TITLE;
+/**
+ * The String "&Details"
+ */
+public static final String SETTINGS_DETAILS_VIEW_LABEL;
+/**
+ * The String "Font"
+ */
+public static final String SETTINGS_FONT_TITLE;
+/**
+ * The String "&Change..."
+ */
+public static final String SETTINGS_FONT_CHANGE;
+/**
+ * The String "Current Font: "
+ */
+public static final String SETTINGS_FONT_CURRENT;
+/**
+ * The String "Layout: "
+ */
+public static final String SETTINGS_LAYOUT_TITLE;
+/**
+ * The String "Category Options"
+ */
+public static final String SETTINGS_CATEGORY_OPTIONS_TITLE;
+/**
+ * The String "&Set expanded when editor opens"
+ */
+public static final String EXPAND_LABEL;
+/**
+ * The String "Folder Layout Options"
+ */
+public static final String SETTINGS_OPTIONS_FOLDER;
+/**
+ * The String "List Layout Options"
+ */
+public static final String SETTINGS_OPTIONS_LIST;
+/**
+ * The String "Icons Only Layout Options"
+ */
+public static final String SETTINGS_OPTIONS_ICONS_ONLY;
+/**
+ * The String "Details Layout Options"
+ */
+public static final String SETTINGS_OPTIONS_DETAILS;
+/**
+ * The String "&Override default column width settings"
+ */
+public static final String SETTINGS_LAYOUT_FOLDER_OVERRIDE_WIDTH;
+/**
+ * The String "Colu&mn width (in pixels): "
+ */
+public static final String SETTINGS_LAYOUT_FOLDER_WIDTH;
+/**
+ * The String "&Pin open"
+ */
+public static final String CATEGORY_PIN;
+/**
+ * The String "Un&pin"
+ */
+public static final String CATEGORY_UNPIN;
 
 static {
 	ResourceBundle bundle =
@@ -147,7 +211,6 @@ static {
 	CUSTOMIZE_DIALOG_TITLE = bundle.getString("CUSTOMIZE_DIALOG_TITLE"); //$NON-NLS-1$
 	COLLAPSE_OPTIONS_TITLE = bundle.getString("COLLAPSE_OPTIONS_TITLE"); //$NON-NLS-1$
 	SETTINGS_LAYOUT_OPTIONS_TITLE = bundle.getString("SETTINGS_LAYOUT_OPTIONS_TITLE"); //$NON-NLS-1$
-	PALETTE_SETTINGS_TITLE = bundle.getString("PALETTE_SETTINGS_TITLE"); //$NON-NLS-1$
 	MOVE_UP_LABEL = bundle.getString("MOVE_UP_LABEL"); //$NON-NLS-1$
 	MOVE_DOWN_LABEL = bundle.getString("MOVE_DOWN_LABEL"); //$NON-NLS-1$
 	DELETE_LABEL = bundle.getString("DELETE_LABEL"); //$NON-NLS-1$
@@ -177,6 +240,23 @@ static {
 	LAYOUT_MENU_LABEL = bundle.getString("LAYOUT_MENU_LABEL"); //$NON-NLS-1$
 	ERROR = bundle.getString("ERROR"); //$NON-NLS-1$
 	ABORT_PAGE_FLIPPING_MESSAGE = bundle.getString("ABORT_PAGE_FLIPPING_MESSAGE"); //$NON-NLS-1$
+	MENU_OPEN_SETTINGS_DIALOG = bundle.getString("MENU_OPEN_SETTINGS_DIALOG"); //$NON-NLS-1$
+	SETTINGS_DIALOG_TITLE = bundle.getString("SETTINGS_DIALOG_TITLE"); //$NON-NLS-1$
+	SETTINGS_DETAILS_VIEW_LABEL = bundle.getString("SETTINGS_DETAILS_VIEW_LABEL"); //$NON-NLS-1$
+	SETTINGS_FONT_TITLE = bundle.getString("SETTINGS_FONT_TITLE"); //$NON-NLS-1$	
+	SETTINGS_FONT_CHANGE = bundle.getString("SETTINGS_FONT_CHANGE"); //$NON-NLS-1$	
+	SETTINGS_FONT_CURRENT = bundle.getString("SETTINGS_FONT_CURRENT"); //$NON-NLS-1$	
+	SETTINGS_LAYOUT_TITLE = bundle.getString("SETTINGS_LAYOUT_TITLE"); //$NON-NLS-1$	
+	SETTINGS_CATEGORY_OPTIONS_TITLE = bundle.getString("SETTINGS_CATEGORY_OPTIONS_TITLE"); //$NON-NLS-1$	
+	EXPAND_LABEL = bundle.getString("EXPAND_LABEL"); //$NON-NLS-1$	
+	SETTINGS_OPTIONS_FOLDER = bundle.getString("SETTINGS_OPTIONS_FOLDER"); //$NON-NLS-1$	
+	SETTINGS_OPTIONS_LIST = bundle.getString("SETTINGS_OPTIONS_LIST"); //$NON-NLS-1$	
+	SETTINGS_OPTIONS_ICONS_ONLY = bundle.getString("SETTINGS_OPTIONS_ICONS_ONLY"); //$NON-NLS-1$	
+	SETTINGS_OPTIONS_DETAILS = bundle.getString("SETTINGS_OPTIONS_DETAILS"); //$NON-NLS-1$	
+	SETTINGS_LAYOUT_FOLDER_OVERRIDE_WIDTH = bundle.getString("SETTINGS_LAYOUT_FOLDER_OVERRIDE_WIDTH"); //$NON-NLS-1$	
+	SETTINGS_LAYOUT_FOLDER_WIDTH = bundle.getString("SETTINGS_LAYOUT_FOLDER_WIDTH"); //$NON-NLS-1$	
+	CATEGORY_PIN = bundle.getString("CATEGORY_PIN"); //$NON-NLS-1$	
+	CATEGORY_UNPIN = bundle.getString("CATEGORY_UNPIN"); //$NON-NLS-1$	
 }
 
 }

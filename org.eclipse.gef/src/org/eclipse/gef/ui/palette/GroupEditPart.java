@@ -32,7 +32,6 @@ public IFigure createFigure() {
  */
 protected void refreshVisuals() {
 	updateLayout();
-	super.refreshVisuals();
 }
 
 protected void updateLayout() {

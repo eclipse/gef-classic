@@ -14,7 +14,8 @@ import org.eclipse.gef.ui.palette.customize.ReadOnlyEntryPage;
 
 /**
  * <code>PaletteCustomizer</code> is the <code>PaletteCustomizerDialog</code>'s interface
- * to the model.  This class is responsible for transferring changes to the model.
+ * to the model.  This class is responsible for propogating to the model changes made in
+ * the dialog.
  * 
  * @author Pratik Shah
  */
@@ -100,10 +101,9 @@ public boolean canMoveUp(PaletteEntry entry) {
 /**
  * Returns the list of PaletteEntryFactories that can be used to create new palette
  * entries.  The String returned by the getText() method of each PaletteEntryFactory will
- * be used to populate the "New" ToolItem drop down.  getImageDescriptor() will be used to
- * set the icons on the drop down.  Clicking on the "New" ToolItem will launch the first
- * action in the list.  The rest have to be picked from the drop down.  This method can
- * return null if there are no PaletteEntryFactories available.
+ * be used to populate the "New" drop down.  getImageDescriptor() will be used to set the
+ * icons on the drop down.  This method can return null if there are no
+ * PaletteEntryFactories available.
  * 
  * @return	The List of PaletteEntryFactories
  */
