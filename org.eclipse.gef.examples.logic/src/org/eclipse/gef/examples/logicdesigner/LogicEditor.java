@@ -15,6 +15,8 @@ import org.eclipse.draw2d.FigureCanvas;
 import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.gef.*;
 import org.eclipse.gef.commands.CommandStackListener;
+import org.eclipse.gef.dnd.TemplateTransfer;
+import org.eclipse.gef.dnd.TemplateTransferDragSourceListener;
 import org.eclipse.gef.examples.logicdesigner.edit.GraphicalPartFactory;
 import org.eclipse.gef.examples.logicdesigner.edit.TreePartFactory;
 import org.eclipse.gef.examples.logicdesigner.model.LogicDiagram;
@@ -268,13 +270,15 @@ public void gotoMarker(IMarker marker) {}
 protected void initializeGraphicalViewer() {
 	getGraphicalViewer().setContents(getLogicDiagram());
 	getGraphicalViewer().addDropTargetListener(
+		new LogicTemplateTransferDropTargetListener(getGraphicalViewer(), TemplateTransfer.getInstance()));
+	getGraphicalViewer().addDropTargetListener(
 		new TextTransferDropTargetListener(getGraphicalViewer(), TextTransfer.getInstance()));
 }
 
 protected void initializePaletteViewer() {
 	super.initializePaletteViewer();
 	getPaletteViewer().addDragSourceListener(
-		new TextTransferDragSourceListener(getPaletteViewer(), TextTransfer.getInstance()));
+		new TemplateTransferDragSourceListener(getPaletteViewer(), TemplateTransfer.getInstance()));
 }
 
 public void init(IEditorSite site, IEditorInput input) throws PartInitException {
