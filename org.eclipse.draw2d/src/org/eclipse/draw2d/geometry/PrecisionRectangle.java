@@ -19,7 +19,10 @@ public double preciseX;
 /** Double value for Y */
 public double preciseY;
 
-PrecisionRectangle() { }
+/**
+ * Constructs a new PrecisionRectangle with all values 0.
+ */
+public PrecisionRectangle() { }
 
 /**
  * Constructs a new PrecisionRectangle from the given integer Rectangle.

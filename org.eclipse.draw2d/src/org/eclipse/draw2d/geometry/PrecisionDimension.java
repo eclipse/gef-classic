@@ -22,6 +22,15 @@ public PrecisionDimension() {
 }
 
 /**
+ * Constructs a new precision dimension.
+ */
+public PrecisionDimension(double width, double height) {
+	preciseWidth = width;
+	preciseHeight = height;
+	updateInts();
+}
+
+/**
  * Constructs a precision representation of the given dimension.
  * @param d the reference dimension
  */
