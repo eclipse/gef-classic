@@ -28,8 +28,8 @@ import org.eclipse.gef.internal.GEFMessages;
  * Clients wishing to utilize this GEF feature should do the following:
  * <ul>
  * 		<li>Extend this class and override the necessary methods.  Also provide a 
- * 			notification mechanism to notify <code>RulerChangeListener</code>s of 
- * 			changes in ruler properties.</li>
+ * 			notification mechanism to notify registered <code>RulerChangeListener</code>s 
+ * 			of changes in ruler properties.</li>
  * 		<li>Set instances of that class as properties on the diagram's graphical viewer
  * 			(PROPERTY_HORIZONTAL_RULER and/or PROPERTY_VERTICAL_RULER)</li>
  * 		<li>Set PROPERTY_RULER_VISIBILITY to be <code>true</code> on the graphical viewer.</li>
@@ -41,21 +41,34 @@ import org.eclipse.gef.internal.GEFMessages;
 public abstract class RulerProvider {
 
 /**
- * The following are properties that should be set on the graphical viewer.
- * PROPERTY_HORIZONTAL_RULER and PROPERTY_VERTICAL_RULER should have RulerProviders as
- * their values, whereas PROPERTY_RULER_VISIBILITY should have a Boolean value.
+ * The following property should be set on the graphical viewer. PROPERTY_HORIZONTAL_RULER
+ * should have a RulerProvider as its value.
  */
 public static final String PROPERTY_HORIZONTAL_RULER = "horizontal ruler"; //$NON-NLS-1$
+/**
+ * The following property should be set on the graphical viewer. 
+ * PROPERTY_RULER_VISIBILITY should have a Boolean value.
+ */
 public static final String PROPERTY_RULER_VISIBILITY = "ruler$visibility"; //$NON-NLS-1$
+/**
+ * The following property should be set on the graphical viewer. PROPERTY_VERTICAL_RULER
+ * should have a RulerProvider as its value.
+ */
 public static final String PROPERTY_VERTICAL_RULER = "vertical ruler"; //$NON-NLS-1$
 
 /**
- * The following indicate the measurement system that a ruler should display.  Note that
- * this setting does not affect how a guide's position is interpreted (it is always
- * taken as pixels).
+ * Constant indicating that the ruler should display centimeters.  Note that this setting
+ * does not affect how a guide's position is interpreted (it is always taken as pixels).
  */
 public static final int UNIT_CENTIMETERS = 1;
+/**
+ * Constant indicating that the ruler should display inches.  Note that this setting
+ * does not affect how a guide's position is interpreted (it is always taken as pixels).
+ */
 public static final int UNIT_INCHES = 0;
+/**
+ * Constant indicating that the ruler should display pixel count.
+ */
 public static final int UNIT_PIXELS = 2;
 
 /**
@@ -65,39 +78,47 @@ public static final int UNIT_PIXELS = 2;
 protected List listeners = new ArrayList();
 
 /**
- * The given listener will be 
+ * The given listener will be notified of changes in ruler properties.
+ * @param	listener	the listener that is to be notified of changes in ruler properties
  */
 public void addRulerChangeListener(RulerChangeListener listener) {
-	if (!listeners.contains(listener)) {
+	if (!listeners.contains(listener))
 		listeners.add(listener);
-	}
 }
 
 /**
- * @see	org.eclipse.swt.accessibility.AccessibleAdapter#getDescription(org.eclipse.swt.accessibility.AccessibleEvent)
+ * Return the description of the control or specified child in
+ * the <code>result</code> field of the event object. Returning
+ * an empty string tells the client that the control or child
+ * does not have a description, and returning null tells the
+ * client to use the platform description.
+ * 
  * @param	e		AccessibleEvent
  * @param	guide	The guide whose accessibility information is requested
- * @return			A default description of guides
+ * @see	org.eclipse.swt.accessibility.AccessibleAdapter#getDescription(org.eclipse.swt.accessibility.AccessibleEvent)
  */
 public void getAccGuideDescription(AccessibleEvent e, Object guide) {
 	e.result = GEFMessages.Guide_Desc;
 }
 
 /**
- * @see	org.eclipse.swt.accessibility.AccessibleAdapter#getName(org.eclipse.swt.accessibility.AccessibleEvent)
+ * Return the given guide's name/label in the <code>result</code> field of the given
+ * event.
+ * 
  * @param	e		AccessibleEvent
  * @param	guide	The guide whose accessibility information is requested
- * @return			A default name for guides
+ * @see	org.eclipse.swt.accessibility.AccessibleAdapter#getName(org.eclipse.swt.accessibility.AccessibleEvent)
  */
 public void getAccGuideName(AccessibleEvent e, Object guide) {
 	e.result = GEFMessages.Guide_Label; 
 }
 
 /**
- * @see	org.eclipse.swt.accessibility.AccessibleControlAdapter#getValue(org.eclipse.swt.accessibility.AccessibleControlEvent)
+ * Return the guide's position in the <code>result</code> field of the given event.
+ * 
  * @param	e		AccessibleEvent
  * @param	guide	The guide whose accessibility information is requested
- * @return			The guide's position
+ * @see	org.eclipse.swt.accessibility.AccessibleControlAdapter#getValue(org.eclipse.swt.accessibility.AccessibleControlEvent)
  */
 public void getAccGuideValue(AccessibleControlEvent e, Object guide) {
 	e.result = "" + getGuidePosition(guide); //$NON-NLS-1$
@@ -234,6 +255,7 @@ public int getUnit() {
 
 /**
  * The given listener will not be notified of changes in the ruler anymore.
+ * @param	listener	the listener that is to be removed
  */
 public void removeRulerChangeListener(RulerChangeListener listener) {
 	listeners.remove(listener);
@@ -242,6 +264,10 @@ public void removeRulerChangeListener(RulerChangeListener listener) {
 /**
  * This method will be invoked when the user requests that the ruler display a different
  * measurement.  The default implementation ignores the user's request.
+ * 
+ * @param	newUnit		the new unit of measurement; will be one of 
+ * 						{@link #UNIT_CENTIMETERS}, {@link #UNIT_INCHES}, or 
+ * 						{@link #UNIT_PIXELS}
  */
 public void setUnit(int newUnit) {
 }
