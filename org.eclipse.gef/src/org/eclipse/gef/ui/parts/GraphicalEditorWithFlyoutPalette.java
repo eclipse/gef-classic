@@ -86,10 +86,6 @@ protected final PaletteViewerProvider getPaletteViewerProvider() {
 	return provider;
 }
 
-protected int getInitialPaletteState() {
-	return FlyoutPaletteComposite.STATE_COLLAPSED;
-}
-
 protected void setEditDomain(DefaultEditDomain ed) {
 	super.setEditDomain(ed);
 	getEditDomain().setPaletteRoot(getPaletteRoot());
