@@ -113,6 +113,17 @@ protected IFigure getToolTipFigure() {
 	return getDrawerFigure().getCollapseToggle();
 }
 
+/**
+ * @see org.eclipse.gef.internal.ui.palette.editparts.PaletteEditPart#getToolTipText()
+ */
+protected String getToolTipText() {
+	String text = super.getToolTipText();
+	if (text != null && text.equals(getDrawer().getLabel())) {
+		text = null;
+	}
+	return text;
+}
+
 private DrawerAnimationController getAnimationController() {
 	DrawerAnimationController controller;
 	controller = (DrawerAnimationController)getViewer()
