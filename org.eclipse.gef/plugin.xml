@@ -62,7 +62,7 @@
 			name="%Palette.Label"
 			class="org.eclipse.gef.ui.views.palette.PaletteView"
 			category="org.eclipse.ui"
-			icon="icons\debugGEF.gif"/>
+			icon="icons\palette_view.gif"/>
 	</extension>
 
 </plugin>
