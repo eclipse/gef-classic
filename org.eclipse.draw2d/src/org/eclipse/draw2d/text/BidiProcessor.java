@@ -31,7 +31,7 @@ public final class BidiProcessor {
  * $TODO Workaround for Carbon.  AWT DLL cannot start properly on carbon.
  * Waiting for bug 82104
  */
-private static final boolean isMacOS = SWT.getPlatform().equals("carbon"); 
+private static final boolean isMacOS = SWT.getPlatform().equals("carbon"); //$NON-NLS-1$
 
 /**
  * A helper class to hold information about contributions made to this processor.
