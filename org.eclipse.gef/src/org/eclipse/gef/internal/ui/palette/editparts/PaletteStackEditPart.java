@@ -11,7 +11,6 @@
 package org.eclipse.gef.internal.ui.palette.editparts;
 
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.Iterator;
 
 import org.eclipse.swt.events.MenuEvent;
@@ -61,14 +60,6 @@ public class PaletteStackEditPart
 {
 	
 private static final Dimension EMPTY_DIMENSION = new Dimension(0, 0);
-
-// listen to changes in stack
-private PropertyChangeListener stackListener = new PropertyChangeListener() {
-	public void propertyChange(PropertyChangeEvent event) {
-		if (event.getPropertyName().equals(PaletteStack.PROPERTY_ACTIVE_ENTRY))
-			activeEntryChanged(event.getOldValue(), event.getNewValue());
-	}
-};
 
 // listen to changes of clickable tool figure
 private ChangeListener clickableListener = new ChangeListener() {
@@ -122,7 +113,6 @@ private Menu menu;
  */
 public PaletteStackEditPart(PaletteStack model) {
 	super(model);
-	model.addPropertyChangeListener(stackListener);
 }
 
 /**
@@ -226,7 +216,7 @@ public IFigure createFigure() {
 
 	int layoutMode = getPreferenceSource().getLayoutSetting();
 	if (layoutMode == PaletteViewerPreferences.LAYOUT_LIST
-	  || layoutMode == PaletteViewerPreferences.LAYOUT_DETAILS)
+			|| layoutMode == PaletteViewerPreferences.LAYOUT_DETAILS)
 		figure.add(arrowFigure, BorderLayout.RIGHT);
 	return figure;
 }
@@ -239,7 +229,6 @@ public void deactivate() {
 		activeFigure.removeChangeListener(clickableListener);
 	arrowFigure.removeActionListener(actionListener);
 	arrowFigure.removeChangeListener(clickableArrowListener);
-	getStack().removePropertyChangeListener(stackListener);
 	getPaletteViewer().removePaletteListener(paletteListener);
 	super.deactivate();
 }
@@ -281,8 +270,8 @@ public void openMenu() {
 		part = (PaletteEditPart)children.next();
 		entry = (PaletteEntry)part.getModel();
 		
-		menuManager.add(new SetActivePaletteToolAction(getPaletteViewer(), entry.getLabel(), 
-				entry.getSmallIcon(), 
+		menuManager.add(new SetActivePaletteToolAction(getPaletteViewer(), 
+				entry.getLabel(), entry.getSmallIcon(), 
 				getStack().getActiveEntry().equals(entry), (ToolEntry)entry));
 	}
 	
@@ -302,6 +291,16 @@ public void openMenu() {
 	menu.setLocation(menuLocation);
 	menu.addMenuListener(new StackMenuListener(menu, getViewer().getControl().getDisplay()));
 	menu.setVisible(true);
+}
+
+/**
+ * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+ */
+public void propertyChange(PropertyChangeEvent event) {
+	if (event.getPropertyName().equals(PaletteStack.PROPERTY_ACTIVE_ENTRY))
+		activeEntryChanged(event.getOldValue(), event.getNewValue());
+	else
+		super.propertyChange(event);
 }
 
 /**
@@ -326,10 +325,8 @@ protected void refreshVisuals() {
 			|| layoutMode == PaletteViewerPreferences.LAYOUT_DETAILS) {
 		if (!getFigure().getChildren().contains(arrowFigure))
 			getFigure().add(arrowFigure, BorderLayout.RIGHT);
-	} else {
-		if (getFigure().getChildren().contains(arrowFigure))
-			getFigure().remove(arrowFigure);
-	}
+	} else if (getFigure().getChildren().contains(arrowFigure))
+		getFigure().remove(arrowFigure);
 }
 
 /**
@@ -368,8 +365,14 @@ StackMenuListener(Menu menu, Display d) {
 	this.d = d;
 }
 
+/**
+ * @see org.eclipse.swt.events.MenuListener#menuShown(org.eclipse.swt.events.MenuEvent)
+ */
 public void menuShown(MenuEvent e) {}
 
+/**
+ * @see org.eclipse.swt.events.MenuListener#menuHidden(org.eclipse.swt.events.MenuEvent)
+ */
 public void menuHidden(MenuEvent e) {
 	d.asyncExec(new Runnable() {
 		public void run() {
@@ -421,7 +424,7 @@ protected void fillCheckeredRectangle(Graphics graphics) {
 }
 
 /**
- * Return false so that the focus rectangle is not drawn.
+ * @return false so that the focus rectangle is not drawn.
  */
 public boolean hasFocus() {
 	return false;
