@@ -8,12 +8,7 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchActionConstants;
 
 import org.eclipse.gef.GraphicalViewer;
-import org.eclipse.gef.LayerConstants;
 import org.eclipse.gef.PrintGraphicalViewerOperation;
-import org.eclipse.gef.editparts.LayerManager;
-
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.PrintFigureOperation;
 
 /**
  * @author hudsonr

@@ -9,7 +9,6 @@ package org.eclipse.gef.examples.logicdesigner.figures;
 import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.*;
 import org.eclipse.gef.examples.logicdesigner.LogicColorConstants;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Color;
 
 public class CircuitBorder  
