@@ -239,7 +239,7 @@ public void setSourceDecoration(RotatableDecoration dec){
 		remove(getSourceDecoration());
 	startArrow = dec;
 	if (dec != null)
-		add(dec, new ArrowLocator(this, ConnectionLocator.START));
+		add(dec, new ArrowLocator(this, ConnectionLocator.SOURCE));
 }
 
 /**
@@ -271,7 +271,7 @@ public void setTargetDecoration(RotatableDecoration dec){
 		remove(getTargetDecoration());
 	endArrow = dec;
 	if (dec != null)
-		add(dec, new ArrowLocator(this, ConnectionLocator.END));
+		add(dec, new ArrowLocator(this, ConnectionLocator.TARGET));
 }
 
 private void unhookSourceAnchor(){

@@ -37,9 +37,9 @@ public void relocate(IFigure target) {
 	RotatableDecoration arrow = (RotatableDecoration)target;
 	arrow.setLocation(getReferencePoint());
 
-	if (getAlignment() == START)
+	if (getAlignment() == SOURCE)
 		arrow.setReferencePoint(points.getPoint(1));
-	else if (getAlignment() == END)
+	else if (getAlignment() == TARGET)
 		arrow.setReferencePoint(points.getPoint(points.size() - 2));
 }
 

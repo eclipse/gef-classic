@@ -25,13 +25,13 @@ final public class ConnectionEndHandle
  */
 public ConnectionEndHandle(ConnectionEditPart owner) {
 	setOwner(owner);
-	setLocator(new ConnectionLocator(getConnection(), ConnectionLocator.END));
+	setLocator(new ConnectionLocator(getConnection(), ConnectionLocator.TARGET));
 }
 
 public ConnectionEndHandle(ConnectionEditPart owner, boolean fixed) {
 	super(fixed);
 	setOwner(owner);
-	setLocator(new ConnectionLocator(getConnection(), ConnectionLocator.END));
+	setLocator(new ConnectionLocator(getConnection(), ConnectionLocator.TARGET));
 }
 
 /**

@@ -25,13 +25,13 @@ final public class ConnectionStartHandle
  */
 public ConnectionStartHandle(ConnectionEditPart owner) {
 	setOwner(owner);
-	setLocator(new ConnectionLocator(getConnection(),ConnectionLocator.START));
+	setLocator(new ConnectionLocator(getConnection(),ConnectionLocator.SOURCE));
 }
 
 public ConnectionStartHandle(ConnectionEditPart owner, boolean fixed) {
 	super(fixed);
 	setOwner(owner);
-	setLocator(new ConnectionLocator(getConnection(),ConnectionLocator.START));
+	setLocator(new ConnectionLocator(getConnection(),ConnectionLocator.SOURCE));
 }
 
 /**
