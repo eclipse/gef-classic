@@ -19,6 +19,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2d.text.*;
 import org.eclipse.draw2d.text.FlowPage;
 import org.eclipse.draw2d.text.TextFlow;
 
@@ -53,8 +54,15 @@ public DetailedLabelFigure() {
 	image.setAlignment(PositionConstants.NORTH);
 	page = new FocusableFlowPage();
 	page.setBorder(PAGE_BORDER);
+
 	nameText = new TextFlow();
+	nameText.setLayoutManager(
+		new ParagraphTextLayout(nameText, ParagraphTextLayout.WORD_WRAP_TRUNCATE));
+
 	descText = new TextFlow();
+	descText.setLayoutManager(
+		new ParagraphTextLayout(descText, ParagraphTextLayout.WORD_WRAP_TRUNCATE));
+
 	page.add(nameText);
 	add(image);
 	add(page);
