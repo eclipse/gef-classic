@@ -7,7 +7,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 
-import org.eclipse.draw2d.FigureCanvas;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Point;
 
@@ -54,9 +53,7 @@ protected void createEditPolicies() {
  * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
  */
 protected IFigure createFigure() {
-	RulerFigure ruler = new RulerFigure((FigureCanvas)diagramViewer.getControl(), 
-			getRuler().isHorizontal(), getRuler().getUnit());
-	return ruler;
+	return new RulerFigure(getRuler().isHorizontal(), getRuler().getUnit());
 }
 
 /* (non-Javadoc)
