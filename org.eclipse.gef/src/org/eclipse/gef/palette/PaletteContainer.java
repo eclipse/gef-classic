@@ -15,8 +15,6 @@ import java.util.List;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 
-import org.eclipse.gef.internal.GEFMessages;
-
 /**
  * Default implementation of PaletteContainer
  * 
@@ -72,7 +70,7 @@ public void add(PaletteEntry entry) {
  */
 public void add(int index, PaletteEntry entry) {
 	if (!acceptsType(entry.getType()))
-		throw new IllegalArgumentException(GEFMessages.Palette_Illegal_Type_Exception);
+		throw new IllegalArgumentException("This container can not contain this type of child: " + entry.getType()); //$NON-NLS-1$
 			
 	List oldChildren = new ArrayList(getChildren());
 
@@ -91,7 +89,7 @@ public void addAll(List list) {
 	for (int i = 0; i < list.size(); i++) {
 		PaletteEntry child = (PaletteEntry) list.get(i);
 			if (!acceptsType(child.getType()))
-				throw new IllegalArgumentException(GEFMessages.Palette_Illegal_Type_Exception);
+				throw new IllegalArgumentException("This container can not contain this type of child: " + child.getType()); //$NON-NLS-1$
 			getChildren().add(child);
 			child.setParent(this);
 	}
@@ -119,7 +117,7 @@ public void appendToSection(String id, PaletteEntry entry) {
 	if (found)
 		add(entry);
 	else
-		throw new IllegalArgumentException(GEFMessages.Palette_Section_Not_Found_Exception + ": " + id);
+		throw new IllegalArgumentException("Section not found: " + id); //$NON-NLS-1$
 }
 
 /**

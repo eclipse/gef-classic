@@ -60,8 +60,6 @@ public static String DeleteAction_Tooltip = Helper.getString("%DeleteAction.Tool
 
 public static String ERR_Assert_IsNotNull_Exception_AssertionFailed = Helper.getString("%Assert.IsNotNull.Exception.AssertionFailed_EXC_");//$NON-NLS-1$
 public static String ERR_Assert_IsTrue_Exception_AssertionFailed = Helper.getString("%Assert.IsTrue.Exception.AssertionFailed_EXC_");//$NON-NLS-1$
-public static String Palette_Illegal_Type_Exception = Helper.getString("%Palette.Illegal.Type.Exception"); //$NON-NLS-1$
-public static String Palette_Section_Not_Found_Exception = Helper.getString("%Palette.Section.Not.Found.Exception"); //$NON-NLS-1$
 
 public static String GraphicalEditor_CLOSE_BUTTON_UI = Helper.getString("%GraphicalEditor.CLOSE_BUTTON_UI_");//$NON-NLS-1$
 public static String GraphicalEditor_FILE_DELETED_TITLE_UI = Helper.getString("%GraphicalEditor.FILE_DELETED_TITLE_UI_");//$NON-NLS-1$
