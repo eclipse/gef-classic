@@ -29,7 +29,7 @@ protected void run(){
 	shell.setLayout(new FillLayout());
 	setFigureCanvas(new FigureCanvas(shell));
 	getFigureCanvas().setContents(getContents());
-	shell.setSize(300,260);
+	shell.setSize(600,500);
 	shell.open();
 	while (!shell.isDisposed())
 		while (!d.readAndDispatch())

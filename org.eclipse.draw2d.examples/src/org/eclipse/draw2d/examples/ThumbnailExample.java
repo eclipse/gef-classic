@@ -1,16 +1,20 @@
 package org.eclipse.draw2d.examples;
 
-import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.draw2d.parts.Thumbnail;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-public class OverviewExample {
+import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2d.parts.Thumbnail;
+
+/**
+ * This example demonstrates an overview window
+ * @author hudsonr
+ */
+public class ThumbnailExample {
 
 private static Figure contents;
 private static Shell mainShell, overviewShell;

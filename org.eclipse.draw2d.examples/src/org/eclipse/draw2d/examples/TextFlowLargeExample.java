@@ -12,8 +12,13 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.SWT;
 
-public class FlowDemo
-{
+/**
+ * The example is used to build large draw2d.text flow documents to benchmark the layout
+ * performance as the document changes.  In this case, we allow fake typing of text.
+ * @author hudsonr
+ */
+
+public class TextFlowLargeExample {
 
 static int KEYS_TYPED = 0;
 static boolean PERFORMANCE = false;
@@ -82,12 +87,12 @@ static public void populatePage(){
 		
 		FlowFigure inline = new InlineFlow();
 		inline.setBackgroundColor(ColorConstants.yellow);
-		FlowDemoFactory.addSentences(inline,4);
+		TextFlowFactory.addSentences(inline,4);
 		ff.add(inline);
 		
 		BlockFlow block = new BlockFlow();
 		block.setHorizontalAligment(PositionConstants.CENTER);
-		FlowDemoFactory.addFontSizes(block, 7,16);
+		TextFlowFactory.addFontSizes(block, 7,16);
 		page.add(block);
 	}
 }

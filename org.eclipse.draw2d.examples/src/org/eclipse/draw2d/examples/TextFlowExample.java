@@ -9,11 +9,12 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.text.*;
 
 /**
+ * This example shows the basic ways that the draw2d.text figures can be used.
  * 
  * @author hudsonr
  * @since 2.0
  */
-public class TextExample extends AbstractExample {
+public class TextFlowExample extends AbstractExample {
 
 static protected IFigure createAlignmentParagraph() {
 	BlockFlow block = new BlockFlow();
@@ -137,7 +138,7 @@ protected IFigure getContents() {
 }
 
 public static void main(String[] args) {
-	new TextExample().run();
+	new TextFlowExample().run();
 }
 
 /**

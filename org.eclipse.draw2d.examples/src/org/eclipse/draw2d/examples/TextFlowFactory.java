@@ -3,7 +3,11 @@ package org.eclipse.draw2d.examples;
 import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.text.*;
 
-public class FlowDemoFactory {
+/**
+ * Used by TextFlowLargeExample to build paragraphs.
+ * @author hudsonr
+ */
+public class TextFlowFactory {
 
 static void addFontSizes(Figure parent, int min, int max){
 	for (int i=min; i<max; i++){
