@@ -20,7 +20,6 @@ public abstract class InputEvent
 {
 
 private int state;
-private EventDispatcher dispatcher;
 
 private boolean consumed = false;
 
@@ -48,7 +47,6 @@ public static final int ANY_BUTTON = BUTTON1 | BUTTON2 | BUTTON3;
 public InputEvent(EventDispatcher dispatcher, IFigure source, int state) {
 	super(source);
 	this.state = state;
-	this.dispatcher = dispatcher;
 }
 
 /**
