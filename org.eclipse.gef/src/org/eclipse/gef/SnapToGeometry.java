@@ -293,7 +293,7 @@ public int snapRectangle(Request request, int snapOrientation,
 	PrecisionRectangle correction = new PrecisionRectangle();
 	makeRelative(container.getContentPane(), correction);
 
-	//Recaculate snapping locations if needed
+	//Recalculate snapping locations if needed
 	boolean isClone = request.getType().equals(RequestConstants.REQ_CLONE);
 	if (rows == null || cols == null || isClone != cachedCloneBool) {
 		cachedCloneBool = isClone;
@@ -325,7 +325,7 @@ public int snapRectangle(Request request, int snapOrientation,
 	
 	if ((snapOrientation & EAST) != 0) {
 		double rightCorrection = getCorrectionFor(cols, request.getExtendedData(), 
-				true, baseRect.preciseRight(), 1);
+				true, baseRect.preciseRight() - 1, 1);
 		if (rightCorrection != THRESHOLD) {
 			snapOrientation &= ~EAST;
 			correction.preciseWidth += rightCorrection;
@@ -344,7 +344,7 @@ public int snapRectangle(Request request, int snapOrientation,
 	
 	if ((snapOrientation & SOUTH) != 0) {
 		double bottom = getCorrectionFor(rows, request.getExtendedData(), false,
-				baseRect.preciseBottom(), 1);
+				baseRect.preciseBottom() - 1, 1);
 		if (bottom != THRESHOLD) {
 			snapOrientation &= ~SOUTH;
 			correction.preciseHeight += bottom;
