@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.gef;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * An Object used to communicate with EditParts. Request encapsulates the information
  * EditParts need to perform various functions. Requests are used for obtaining commands,
@@ -19,6 +22,7 @@ package org.eclipse.gef;
 public class Request {
 
 private Object type;
+private Map extendedData;
 
 /**
  * Constructs an empty Request */
@@ -34,6 +38,18 @@ public Request(Object type) {
 }
 
 /**
+ * Returns a Map that can be used to save useful information in this request.
+ * 
+ * @return	a map to store useful information
+ */
+public Map getExtendedData() {
+	if (extendedData == null) {
+		extendedData = new HashMap();
+	}
+	return extendedData;
+}
+
+/**
  * Returns the type of the request. The type is often used as a quick way to filter
  * recognized Requests. Once the type is identified, the Request is usually cast to a more
  * specific subclass containing additional data.
@@ -41,6 +57,15 @@ public Request(Object type) {
  */
 public Object getType() {
 	return type;
+}
+
+/**
+ * Sets the given map to be the new extended data (by reference) for this request.
+ * 
+ * @param	map		The new map
+ */
+public void setExtendedData(Map map) {
+	extendedData = map;
 }
 
 /**
