@@ -21,6 +21,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.AccessibleEditPart;
 import org.eclipse.gef.ConnectionEditPart;
+import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.NodeEditPart;
@@ -174,8 +175,16 @@ final protected String mapConnectionAnchorToTerminal(ConnectionAnchor c){
  */
 public void propertyChange(PropertyChangeEvent evt){
 	String prop = evt.getPropertyName();
-	if (LogicSubpart.CHILDREN.equals(prop))
-		refreshChildren();
+	if (LogicSubpart.CHILDREN.equals(prop)) {
+		if (evt.getOldValue() instanceof Integer)
+			// new child
+			addChild(createChild(evt.getNewValue()), ((Integer)evt
+					.getOldValue()).intValue());
+		else
+			// remove child
+			removeChild((EditPart)getViewer().getEditPartRegistry().get(
+					evt.getOldValue()));
+	}
 	else if (LogicSubpart.INPUTS.equals(prop))
 		refreshTargetConnections();
 	else if (LogicSubpart.OUTPUTS.equals(prop))
