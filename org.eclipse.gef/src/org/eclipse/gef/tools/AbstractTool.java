@@ -767,7 +767,6 @@ void placeMouseInViewer(Point p){
 	org.eclipse.swt.graphics.Point swt = new org.eclipse.swt.graphics.Point(p.x, p.y);
 	swt = c.toDisplay(swt);
 	c.getDisplay().setCursorLocation(swt);
-	getCurrentInput().setMouseLocation(p.x, p.y);
 }
 
 /**

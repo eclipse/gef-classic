@@ -1,10 +1,14 @@
+/*******************************************************************************
+ * Copyright (c) 2000, 2003 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials 
+ * are made available under the terms of the Common Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/cpl-v10.html
+ * 
+ * Contributors:
+ *     IBM Corporation - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.gef.tools;
-/*
- * Licensed Material - Property of IBM
- * (C) Copyright IBM Corp. 2001, 2002 - All Rights Reserved.
- * US Government Users Restricted Rights - Use, duplication or disclosure
- * restricted by GSA ADP Schedule Contract with IBM Corp.
- */
 
 import java.util.List;
 
@@ -13,7 +17,6 @@ import org.eclipse.swt.events.KeyEvent;
 
 import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.AccessibleAnchorProvider;
 import org.eclipse.gef.EditPart;
@@ -47,15 +50,6 @@ protected boolean handleButtonDown(int button) {
 	if (isInState(STATE_CONNECTION_STARTED))
 		//Fake a drag to cause feedback to be displayed immediately on mouse down.
 		handleDrag();
-	return true;
-}
-
-protected boolean handleDragInProgress(){
-	updateTargetRequest();
-	updateTargetUnderMouse();
-	showSourceFeedback();
-	showTargetFeedback();
-	setCurrentCommand(getCommand());
 	return true;
 }
 
