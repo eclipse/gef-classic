@@ -332,8 +332,12 @@ public Map getEditPartRegistry() {
 public EditPart getFocusEditPart() {
 	if (focusPart != null)
 		return focusPart;
-	if (getSelectedEditParts().isEmpty())
-		return getContents();
+	if (getSelectedEditParts().isEmpty()) {
+		if (getContents() != null)
+			return getContents();
+		else
+			return getRootEditPart();
+	}
 	List selection = getSelectedEditParts();
 	return (EditPart)selection.get(selection.size() - 1);
 }

@@ -61,7 +61,7 @@ private boolean acceptIntoExpandedDrawer(KeyEvent event) {
 
 private boolean acceptOpenContextMenu(KeyEvent event) {
 	return event.keyCode == SWT.ARROW_DOWN && (event.stateMask & SWT.ALT) > 0
-	&& isContextMenu(getFocusEditPart());
+			&& isContextMenu(getFocusEditPart());
 }
 
 private boolean acceptSetFocusOnDrawer(KeyEvent event) {
@@ -81,7 +81,7 @@ private void buildNavigationList(EditPart palettePart, EditPart exclusion,
 		if (isCollapsedDrawer(palettePart)) {
 			navList.add(palettePart);
 			return;
-		} else if (stackPart instanceof PaletteStackEditPart 
+		} else if (stackPart instanceof PaletteStackEditPart
 				&& stackPart.getChildren().contains(palettePart)) {
 			// we only want to add the top level item to the navlist
 			if (((PaletteStack)((PaletteStackEditPart)stackPart).getModel())
@@ -127,6 +127,10 @@ protected List getNavigationSiblings() {
 	ArrayList siblingsList = new ArrayList();
 	EditPart focusPart = getFocusEditPart();
 	EditPart parent = focusPart.getParent();
+	if (parent == null) {
+		siblingsList.add(focusPart);
+		return siblingsList;
+	}
 	if (parent instanceof GroupEditPart || parent instanceof PaletteStackEditPart) {	
 		EditPart grandParent = parent.getParent();
 		buildNavigationList(grandParent, grandParent, siblingsList, grandParent);
