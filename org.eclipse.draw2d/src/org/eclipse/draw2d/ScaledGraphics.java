@@ -520,11 +520,12 @@ private Point zoomTextPoint(int x, int y) {
 }
 
 private int[] zoomPointList(int[] points) {
+	int[] newArray = new int[points.length];
 	for (int i = 0; (i + 1) < points.length; i+= 2) {
-		points[i] = (int)(Math.floor((points[i] * zoom + fractionalX)));
-		points[i + 1] = (int)(Math.floor((points[i + 1] * zoom + fractionalY)));
+		newArray[i] = (int)(Math.floor((points[i] * zoom + fractionalX)));
+		newArray[i + 1] = (int)(Math.floor((points[i + 1] * zoom + fractionalY)));
 	}
-	return points;
+	return newArray;
 }
 
 private Rectangle zoomFillRect(int x, int y, int w, int h) {
