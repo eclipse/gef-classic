@@ -16,6 +16,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 
 import org.eclipse.gef.palette.PaletteDrawer;
 import org.eclipse.gef.palette.PaletteEntry;
@@ -35,9 +36,29 @@ private Button openDrawerOption, pinDrawerOption;
 /** * @see org.eclipse.gef.ui.palette.customize.EntryPage#createControl(Composite, PaletteEntry) */
 public void createControl(Composite parent, PaletteEntry entry) {
 	super.createControl(parent, entry);
+
+	openDrawerOption = createOpenDrawerInitiallyOption(getComposite());
+	pinDrawerOption = createPinDrawerInitiallyOption(getComposite());
 	
-	openDrawerOption = createOpenDrawerInitiallyOption((Composite)getControl());
-	pinDrawerOption = createPinDrawerInitiallyOption((Composite)getControl());
+	Control[] oldTablist = getComposite().getTabList();
+	if (!contains(oldTablist, openDrawerOption)) {
+		// This means that the super class must've set a specific tab order on this 
+		// composite.  We need to add the two newly created controls to this tab order.
+		Control[] newTablist = new Control[oldTablist.length + 2];
+		System.arraycopy(oldTablist, 0, newTablist, 0, oldTablist.length);
+		newTablist[newTablist.length - 2] = openDrawerOption;
+		newTablist[newTablist.length - 1] = pinDrawerOption;
+		getComposite().setTabList(newTablist);
+	}
+}
+
+private boolean contains(Object[] array, Object obj) {
+	for (int i = array.length - 1; i >= 0; i--) {
+		if (obj == array[i]) {
+			return true;
+		}
+	}
+	return false;
 }
 
 /**
@@ -87,6 +108,10 @@ protected Button createPinDrawerInitiallyOption(Composite panel) {
 		});
 	}
 	return pinOption;
+}
+
+private Composite getComposite() {
+	return (Composite)getControl();
 }
 
 /**
