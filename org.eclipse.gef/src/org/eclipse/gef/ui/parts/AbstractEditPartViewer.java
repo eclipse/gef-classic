@@ -296,7 +296,7 @@ public Map getEditPartRegistry() {
 public EditPart getFocusEditPart() {
 	if (focusPart != null)
 		return focusPart;
-	if (getSelectedEditParts().isEmpty() && getContents() != null)
+	if (getSelectedEditParts().isEmpty())
 		return getContents();
 	List selection = getSelectedEditParts();
 	return (EditPart)selection.get(selection.size() - 1);
@@ -597,12 +597,11 @@ public void setEditPartFactory(EditPartFactory factory) {
 public void setFocus(EditPart part) {
 	if (focusPart == part)
 		return;
-	if (focusPart != null)
+	if (focusPart != null && getControl() != null && getControl().isFocusControl())
 		focusPart.setFocus(false);
 	focusPart = part;
-	if (focusPart != null) {
+	if (focusPart != null && getControl() != null && getControl().isFocusControl())
 		focusPart.setFocus(true);
-	}
 }
 
 /**
