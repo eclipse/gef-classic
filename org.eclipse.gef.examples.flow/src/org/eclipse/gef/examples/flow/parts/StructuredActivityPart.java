@@ -58,6 +58,9 @@ public void contributeNodesToGraph(CompoundDirectedGraph graph, Subgraph s, Map 
 	Subgraph me = new Subgraph(this, s);
 	me.outgoingOffset = 5;
 	me.incomingOffset = 5;
+	IFigure fig = getFigure();
+	if (fig instanceof SubgraphFigure)
+		me.width = fig.getPreferredSize(me.width, me.height).width;
 	map.put(this, me);
 	graph.nodes.add(me);
 	for (int i = 0; i < getChildren().size(); i++) {
