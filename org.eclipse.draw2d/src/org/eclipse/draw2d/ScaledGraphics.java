@@ -164,17 +164,16 @@ public void dispose() {
 
 /** @see Graphics#drawArc(int, int, int, int, int, int) */
 public void drawArc(int x, int y, int w, int h, int offset, int sweep) {
-	if (offset == 0 || sweep == 0)
-		return;
 	Rectangle z = zoomRect(x, y, w, h);
-	if (!z.isEmpty())
-		graphics.drawArc(z, offset, sweep);
+	if (z.isEmpty() || sweep == 0)
+		return;
+	graphics.drawArc(z, offset, sweep);
 }
 
 /** @see Graphics#fillArc(int, int, int, int, int, int) */
 public void fillArc(int x, int y, int w, int h, int offset, int sweep) {
 	Rectangle z = zoomFillRect(x, y, w, h);
-	if (offset == 0 || sweep == 0 || z.isEmpty())
+	if (z.isEmpty() || sweep == 0)
 		return;
 	graphics.fillArc(z, offset, sweep);
 }
