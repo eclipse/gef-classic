@@ -226,7 +226,7 @@ public void setTitle(String title) {
 /**
  * Sets the host figure for this Dock.   * @param host The host figure */
 public void setHost(IFigure host) {
-	host = host;
+	this.host = host;
 	if (contents != null)
 		contents.setMaximumSize(host.getSize().getScaled(0.5f));
 	host.addFigureListener(new FigureListener() {
