@@ -20,6 +20,7 @@
       <import plugin="org.eclipse.draw2d"/>
       <import plugin="org.eclipse.gef"/>
       <import plugin="org.eclipse.osgi"/>
+      <import plugin="org.eclipse.core.runtime.compatibility"/>
    </requires>
 
 

@@ -20,18 +20,19 @@
       <import plugin="org.eclipse.jface"/>
       <import plugin="org.eclipse.core.resources"/>
       <import plugin="org.eclipse.osgi"/>
+      <import plugin="org.eclipse.core.runtime.compatibility"/>
    </requires>
 
 
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            default="true"
             name="%Logic_example_graphical_editor_name"
-            extensions="logic"
+            default="true"
             icon="logic.gif"
-            class="org.eclipse.gef.examples.logicdesigner.LogicEditor"
+            extensions="logic"
             contributorClass="org.eclipse.gef.examples.logicdesigner.actions.LogicActionBarContributor"
+            class="org.eclipse.gef.examples.logicdesigner.LogicEditor"
             id="Logic Graphical Editor">
       </editor>
    </extension>

@@ -16,6 +16,7 @@
       <import plugin="org.eclipse.swt" export="true"/>
       <import plugin="org.eclipse.core.runtime"/>
       <import plugin="org.eclipse.osgi"/>
+      <import plugin="org.eclipse.core.runtime.compatibility"/>
    </requires>
 
 

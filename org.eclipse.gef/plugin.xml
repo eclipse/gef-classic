@@ -22,7 +22,9 @@
       <import plugin="org.eclipse.jface"/>
       <import plugin="org.eclipse.ui.ide"/>
       <import plugin="org.eclipse.osgi"/>
+      <import plugin="org.eclipse.core.runtime.compatibility"/>
    </requires>
+
 
    <extension
          point="org.eclipse.ui.commands">
@@ -33,8 +35,8 @@
       </category>
       <command
             name="%ZoomIn.Tooltip"
-            category="org.eclipse.gef.category.view"
             description="%ZoomIn.Tooltip"
+            category="org.eclipse.gef.category.view"
             id="org.eclipse.gef.zoom_in">
       </command>
       <keyBinding
@@ -45,8 +47,8 @@
       </keyBinding>
       <command
             name="%ZoomOut.Tooltip"
-            category="org.eclipse.gef.category.view"
             description="%ZoomOut.Tooltip"
+            category="org.eclipse.gef.category.view"
             id="org.eclipse.gef.zoom_out">
       </command>
       <keyBinding
@@ -56,24 +58,28 @@
             configuration="org.eclipse.ui.defaultAcceleratorConfiguration">
       </keyBinding>
    </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            name="%Palette.Label"
+            icon="icons\palette_view.gif"
+            category="org.eclipse.ui"
+            class="org.eclipse.gef.ui.views.palette.PaletteView"
+            id="org.eclipse.gef.ui.palette_view">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="org.eclipse.ui.resourcePerspective">
+         <view
+               ratio="0.16"
+               relative="org.eclipse.ui.editorss"
+               visible="false"
+               relationship="left"
+               id="org.eclipse.gef.ui.palette_view">
+         </view>
+      </perspectiveExtension>
+   </extension>
 
-	<extension point="org.eclipse.ui.views">
-		<view 
-			id="org.eclipse.gef.ui.palette_view"
-			name="%Palette.Label"
-			class="org.eclipse.gef.ui.views.palette.PaletteView"
-			category="org.eclipse.ui"
-			icon="icons\palette_view.gif"/>
-	</extension>
-
-    <extension point="org.eclipse.ui.perspectiveExtensions"> 
-        <perspectiveExtension 
-            targetID="org.eclipse.ui.resourcePerspective"> 
-            <view id="org.eclipse.gef.ui.palette_view" 
-                relative="org.eclipse.ui.editorss"
-                relationship="left"
-                ratio="0.16"
-                visible="false"/>
-        </perspectiveExtension> 
-    </extension> 
 </plugin>
