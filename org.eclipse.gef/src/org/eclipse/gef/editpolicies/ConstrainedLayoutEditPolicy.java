@@ -42,6 +42,11 @@ protected abstract Command createAddCommand(
 	EditPart child,
 	Object constraint);
 
+protected Command createChangeConstraintCommand(Request request, EditPart child, 
+                                                Object constraint) {
+	return createChangeConstraintCommand(child, constraint);
+}
+
 /**
  * Returns the <code>Command</code> to change the specified child's constraint. The
  * constraint has been converted from a draw2d constraint to an object suitable for the
@@ -200,7 +205,7 @@ protected Command getResizeChildrenCommand(ChangeBoundsRequest request) {
 
 	for (int i = 0; i < children.size(); i++) {
 		child = (GraphicalEditPart)children.get(i);
-		c = createChangeConstraintCommand(child,
+		c = createChangeConstraintCommand(request, child,
 			translateToModelConstraint(
 				getConstraintFor(request, child)));
 		resize.add(c);
