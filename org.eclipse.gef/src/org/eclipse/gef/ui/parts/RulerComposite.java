@@ -216,7 +216,7 @@ private GraphicalViewer getRulerContainer(int orientation) {
  * @see org.eclipse.swt.widgets.Composite#layout(boolean)
  */
 public void layout(boolean change) {
-	if (!layingOut) {
+	if (!layingOut && !isDisposed()) {
 		checkWidget();
 		layingOut = true;
 		doLayout();	
@@ -294,7 +294,11 @@ private void setRuler(RulerProvider provider, int orientation) {
 	GraphicalViewer container = getRulerContainer(orientation);
 	if (container.getContents() != ruler) {
 		container.setContents(ruler);
-		layout(true);			
+		Display.getCurrent().asyncExec(new Runnable() {
+			public void run() {
+				layout(true);
+			}
+		});
 	}
 }
 
