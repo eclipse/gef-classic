@@ -3,6 +3,7 @@
 	<name>org.eclipse.draw2d.examples</name>
 	<comment></comment>
 	<projects>
+		<project>org.eclipse.draw2d</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
