@@ -182,6 +182,31 @@ public Rectangle translate(Point p) {
 	return this;
 }
 
+/**
+ * Unions the given PrecisionRectangle with this rectangle and returns <code>this</code>
+ * for convenience.
+ * @since 3.0
+ * @param other the rectangle being unioned
+ * @return <code>this</code> for convenience
+ */
+public PrecisionRectangle union(PrecisionRectangle other) {
+	double newright = Math.max(preciseRight(), other.preciseRight());
+	double newbottom = Math.max(preciseBottom(), other.preciseBottom());
+	preciseX = Math.min(preciseX, other.preciseX);
+	preciseY = Math.min(preciseY, other.preciseY);
+	preciseWidth = newright - preciseX;
+	preciseHeight = newbottom - preciseY;
+	updateInts();
+	
+	return this;
+}
+
+/**
+ * Updates the integer values based on the current precise values.  The integer values ar
+ * the floor of the double values.  This is called automatically when calling api which is
+ * overridden in this class.
+ * @since 3.0
+ */
 public final void updateInts() {
 	x = (int)Math.floor(preciseX + 0.000000001);
 	y = (int)Math.floor(preciseY + 0.000000001);
