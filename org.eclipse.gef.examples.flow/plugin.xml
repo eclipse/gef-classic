@@ -10,8 +10,12 @@
       <library name="flow.jar"/>
    </runtime>
    <requires>
-      <import plugin="org.eclipse.core.resources"/>
-      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.core.runtime" export="false"/>
+      <import plugin="org.eclipse.core.resources" export="false"/>
+      <import plugin="org.eclipse.ui.views" export="false"/>
+      <import plugin="org.eclipse.ui.workbench" export="false"/>
+      <import plugin="org.eclipse.jface" export="false"/>
+      <import plugin="org.eclipse.ui.ide" export="false"/>
       <import plugin="org.eclipse.draw2d"/>
       <import plugin="org.eclipse.gef"/>
    </requires>

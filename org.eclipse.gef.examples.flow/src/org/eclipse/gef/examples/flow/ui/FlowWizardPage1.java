@@ -9,6 +9,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.*;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
+import org.eclipse.ui.ide.IDE;
 
 import org.eclipse.gef.examples.flow.FlowPlugin;
 import org.eclipse.gef.examples.flow.model.*;
@@ -119,8 +120,8 @@ public boolean finish() {
 	try {
 		IWorkbenchWindow dwindow = workbench.getActiveWorkbenchWindow();
 		IWorkbenchPage page = dwindow.getActivePage();
-		if (page != null) 
-			page.openEditor(newFile);
+		if (page != null)
+			IDE.openEditor(page, newFile, true); 
 	} 
 	catch (org.eclipse.ui.PartInitException e) {
 		e.printStackTrace();

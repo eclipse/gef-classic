@@ -28,6 +28,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
+import org.eclipse.ui.ide.IDE;
 
 import org.eclipse.gef.examples.logicdesigner.model.*;
 import org.eclipse.gef.examples.logicdesigner.model.LogicDiagram;
@@ -109,8 +110,8 @@ public boolean finish() {
 	try {
 		IWorkbenchWindow dwindow = workbench.getActiveWorkbenchWindow();
 		IWorkbenchPage page = dwindow.getActivePage();
-		if (page != null) 
-			page.openEditor(newFile);
+		if (page != null)
+			IDE.openEditor(page, newFile, true);
 	} 
 	catch (org.eclipse.ui.PartInitException e) {
 		e.printStackTrace();
