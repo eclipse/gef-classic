@@ -16,7 +16,10 @@ Map imageCache = new HashMap();
 
 Printer printer;
 
-public PrinterGraphics(Graphics g, Printer p){
+/**
+ * Creates a new PrinterGraphics with Graphics g, using Printer p
+ * @param g Graphics object to draw with * @param p Printer to print to */
+public PrinterGraphics(Graphics g, Printer p) {
 	super(g);
 	printer = p;
 }
@@ -34,7 +37,7 @@ private Image printerImage(Image image) {
 	imageCache.put(image, result);
 	return result;
 }
-
+/** * @see org.eclipse.draw2d.Graphics#drawImage(Image, int, int) */
 public void drawImage(Image srcImage, int x, int y) {
 	super.drawImage(printerImage(srcImage), x, y);
 }
@@ -45,8 +48,8 @@ public void drawImage(Image srcImage,
 	super.drawImage(printerImage(srcImage), sx, sy, sw, sh, tx, ty, tw, th);
 }
 
-FontData zoomFontData(FontData data) {
-	return data;
+int zoomFontHeight(int height) {
+	return height;
 }
 
 int zoomLineWidth(int w) {

@@ -39,6 +39,36 @@ protected static class State {
 	}
 }
 
+static class FontKey {
+	Font font;
+	int height;
+	protected FontKey() { }
+	protected FontKey(Font font, int height) {
+		this.font = font;
+		this.height = height;
+	}
+	
+	/**
+	 * @see java.lang.Object#equals(Object)
+	 */
+	public boolean equals(Object obj) {
+		return (((FontKey)obj).font.equals(font) 
+				&& ((FontKey)obj).height == height);
+	}
+
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	public int hashCode() {
+		return font.hashCode() ^ height;
+	}
+
+	protected void setValues(Font font, int height) {
+		this.font = font;
+		this.height = height;
+	}
+}
+
 private static class FontHeightCache {
 	Font font;
 	int height;
@@ -47,6 +77,7 @@ private static class FontHeightCache {
 private static final Rectangle TEMP = new Rectangle();
 private static final Point PT = new Point();
 private Map fontCache = new HashMap();
+private Map fontDataCache = new HashMap();
 
 private FontHeightCache localCache = new FontHeightCache();
 private FontHeightCache targetCache = new FontHeightCache();
@@ -58,6 +89,13 @@ private double fractionalY;
 double zoom = 1.0;
 private List stack = new ArrayList();
 private int stackPointer = 0;
+private FontKey fontKey = new FontKey();
+private static PointList[] pointListCache = new PointList[8];
+
+static {
+	for (int i = 0; i < pointListCache.length; i++)
+		pointListCache[i] = new PointList(i+1);
+}
 
 public ScaledGraphics(Graphics g){
 	graphics = g;
@@ -78,18 +116,25 @@ public void dispose(){
 	//Dispose fonts
 	Iterator iter = fontCache.values().iterator();
 	while (iter.hasNext()) {
-  		Font font = ((Font)iter.next());
+		Font font = ((Font)iter.next());
  		font.dispose();
  	}
 
 }
 
 public void drawArc(int x, int y, int w, int h, int offset, int sweep) {
-	graphics.drawArc(zoomRect(x,y,w,h), offset, sweep);
+	if (offset == 0 || sweep == 0)
+		return;
+	Rectangle z = zoomRect(x, y, w, h);
+	if (!z.isEmpty())
+		graphics.drawArc(z, offset, sweep);
 }
 
 public void fillArc(int x, int y, int w, int h, int offset, int sweep) {
-	graphics.fillArc(zoomFillRect(x,y,w,h), offset, sweep);
+	Rectangle z = zoomFillRect(x, y, w, h);
+	if (offset == 0 || sweep == 0 || z.isEmpty())
+		return;
+	graphics.fillArc(z, offset, sweep);
 }
 
 public void drawFocus(int x, int y, int w, int h) {
@@ -108,8 +153,10 @@ public void drawImage(Image srcImage,
 	int tx, int ty, int tw, int th)
 {
 	//"t" == target rectangle, "s" = source
+			 
 	Rectangle t = zoomRect(tx, ty, tw, th);
-	graphics.drawImage(srcImage, sx,sy,sw,sh, t.x, t.y, t.width, t.height);
+	if (!t.isEmpty())
+		graphics.drawImage(srcImage, sx,sy,sw,sh, t.x, t.y, t.width, t.height);
 }
 
 public void drawLine(int x1, int y1, int x2, int y2) {
@@ -274,13 +321,25 @@ void setScale(double value){
 	graphics.setLineWidth(zoomLineWidth(localLineWidth));
 }
 
-Font getCachedFont(FontData data){
-	Font font = (Font)fontCache.get(data);
+Font getCachedFont(FontKey key) {
+	Font font = (Font)fontCache.get(key);
 	if (font != null)
 		return font;
-	font = createFont (data);
-	fontCache.put(data, font);
-	return font;
+	key = new FontKey(key.font, key.height);
+	FontData data = key.font.getFontData()[0];
+	data.setHeight(key.height);
+	Font zoomedFont = createFont(data);
+	fontCache.put(key,zoomedFont);
+	return zoomedFont;
+}
+
+FontData getCachedFontData(Font f) {
+	FontData data = (FontData)fontDataCache.get(f);
+	if (data != null)
+		return data;
+	data = getLocalFont().getFontData()[0];
+	fontDataCache.put(f,data);
+	return data;
 }
 
 Font createFont(FontData data) {
@@ -352,12 +411,34 @@ private Point zoomTextPoint(int x, int y){
 }
 
 private PointList zoomPointList(PointList points) {
-	PointList scaled = new PointList(points.size());
-	for (int i = 0; i < points.size(); i++) {
-		Point p = points.getPoint(i);
+	PointList scaled = null;
+	
+	// Look in cache for a PointList with the same length as 'points'
+	for (int i = 0; i < pointListCache.length; i++) {
+		if (pointListCache[i].size() == points.size()) {
+			scaled = pointListCache[i];
+			
+			// Move this PointList up one notch in the array
+			if (i != 0) {
+				PointList temp = pointListCache[i - 1];
+				pointListCache[i - 1] = scaled;
+				pointListCache[i] = temp;	
+			}
+		}
+	}
+	
+	// If no PointList is found, take the one that is last and resize it.
+	if (scaled == null) {
+		scaled = pointListCache[pointListCache.length - 1];
+		scaled.setSize(points.size());
+	}
+	
+	// Scale the points and set em
+	for (int i = 0; i < scaled.size(); i++) {
+		Point p = points.getPoint(Point.SINGLETON, i);
 		p.x = (int)(Math.floor((p.x * zoom + fractionalX)));
 		p.y = (int)(Math.floor((p.y * zoom + fractionalY)));
-		scaled.addPoint(p);
+		scaled.setPoint(p, i);
 	}
 	return scaled;
 }
@@ -371,17 +452,14 @@ private Rectangle zoomFillRect(int x, int y, int w, int h) {
 }
 
 Font zoomFont(Font f) {
-	FontData data = getLocalFont().getFontData()[0];
-	data = zoomFontData(data);
-	return getCachedFont(data);
+	FontData data = getCachedFontData(f);
+	fontKey.setValues(f, zoomFontHeight(data.getHeight()));
+	return getCachedFont(fontKey);
 }
 
-FontData zoomFontData(FontData data) {
-	return new FontData(
-		data.getName(),
-		(int) (data.getHeight() * zoom),
-		data.getStyle());
-}
+int zoomFontHeight(int height) {
+	return ((int)(zoom * height));
+}	
 
 private Rectangle zoomClipRect(Rectangle r) {
 	TEMP.x = (int)(Math.floor(r.x * zoom + fractionalX));
