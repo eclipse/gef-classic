@@ -250,6 +250,19 @@ private void balanceClusters() {
 
 private boolean balanceClusterSets() {
 	NodeCluster cluster, seed;
+	
+	for (Iterator itr = clusterSetCache.values().iterator(); itr.hasNext();) {
+		seed = (NodeCluster)itr.next();
+		seed.updateValues();
+		if (seed.pull < 0 && seed.leftFreedom > 0) {
+			seed.adjustRank(Math.max(seed.pull, -seed.leftFreedom));
+			return true;
+		} else if (seed.pull > 0 && seed.rightFreedom > 0) {
+			seed.adjustRank(Math.min(seed.pull, seed.rightFreedom));
+			return true;
+		}
+	}
+	
 	for (int i = 0; i < allClusters.size(); i++) {
 		seed = (NodeCluster)allClusters.get(i);
 		if (seed.pull < 0 && seed.leftFreedom == 0) {
