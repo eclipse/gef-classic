@@ -65,7 +65,7 @@ protected IFigure createFigure() {
 
 protected void createEditPolicies() {
 	installEditPolicy(EditPolicy.COMPONENT_ROLE, new RootComponentEditPolicy());
-	installEditPolicy(EditPolicy.CONTAINER_ROLE, new DiagramLayoutEditPolicy());
+	installEditPolicy(EditPolicy.LAYOUT_ROLE, new DiagramLayoutEditPolicy());
 }
 
 public void deactivate() {
