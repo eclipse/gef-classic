@@ -20,16 +20,16 @@ import org.eclipse.ui.part.Page;
 import org.eclipse.gef.ContextMenuProvider;
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.dnd.TemplateTransferDragSourceListener;
-import org.eclipse.gef.dnd.TransferDragSourceListener;
 import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.internal.ui.palette.ToolbarDropdownContributionItem;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.ui.palette.*;
 
 /**
+ * A PalettePage which uses the PaletteViewer do display a palette.
  * @author Pratik Shah
  */
-public class DefaultPalettePage 
+public class PaletteViewerPage 
 	extends Page
 	implements PalettePage, IAdaptable
 {
@@ -37,9 +37,9 @@ public class DefaultPalettePage
 private GraphicalViewer diagramViewer;
 private PaletteRoot root;
 private PaletteViewer paletteViewer;
-private TransferDragSourceListener listener;
+//private TransferDragSourceListener listener;
 
-public DefaultPalettePage(PaletteRoot model, GraphicalViewer primaryViewer) {
+public PaletteViewerPage(PaletteRoot model, GraphicalViewer primaryViewer) {
 	super();
 	root = model;
 	diagramViewer = primaryViewer;
@@ -77,10 +77,18 @@ public Object getAdapter(Class type) {
 	return null;
 }
 
+/**
+ * @see org.eclipse.ui.part.IPage#getControl()
+ */
 public Control getControl() {
 	return paletteViewer.getControl();
 }
 
+/**
+ * Returns the palette viewer
+ * @since 3.0
+ * @return
+ */
 public PaletteViewer getPaletteViewer() {
 	return paletteViewer;
 }
@@ -108,7 +116,7 @@ public void init(IPageSite pageSite) {
 protected void initializePaletteViewer() {
 	diagramViewer.getEditDomain().setPaletteRoot(root);
 	paletteViewer.addDragSourceListener(
-			listener = new TemplateTransferDragSourceListener(paletteViewer));
+		/*listener=*/new TemplateTransferDragSourceListener(paletteViewer));
 }
 
 public void setFocus() {
@@ -119,4 +127,16 @@ protected void setPaletteViewer(PaletteViewer viewer) {
 	paletteViewer = viewer;
 }
 
+/**
+ * @return Returns the root.
+ */
+protected PaletteRoot getRoot() {
+	return root;
+}
+/**
+ * @param root The root to set.
+ */
+protected void setRoot(PaletteRoot root) {
+	this.root = root;
+}
 }
