@@ -240,7 +240,7 @@ private void createScrollpane() {
 	scrollpane.setMinimumSize(new Dimension(0, 0));
 	scrollpane.setHorizontalScrollBarVisibility(ScrollPane.NEVER);
 	scrollpane.setVerticalScrollBar(new PaletteScrollBar());
-	scrollpane.getVerticalScrollBar().setStepIncrement(33);
+	scrollpane.getVerticalScrollBar().setStepIncrement(20);
 	scrollpane.setLayoutManager(new OverlayScrollPaneLayout());
 	scrollpane.setContents(new Figure());
 	scrollpane.getContents().setOpaque(true);

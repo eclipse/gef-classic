@@ -150,7 +150,7 @@ protected void stepUp() {
 }
 
 protected void timedStep(boolean up) {
-	int increment = Math.max(getExtent() * 3 / 4, getStepIncrement());
+	int increment = Math.max(getExtent() * 1 / 2, getStepIncrement());
 	int value = getValue();
 	long startTime = System.currentTimeMillis();
 	long elapsedTime = System.currentTimeMillis() - startTime;
