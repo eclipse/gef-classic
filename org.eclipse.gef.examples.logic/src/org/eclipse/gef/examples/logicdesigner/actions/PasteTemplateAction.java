@@ -52,7 +52,7 @@ protected Command createPasteCommand() {
 		return null;
 	CreateRequest request = new CreateRequest();
 	request.setFactory(getFactory(getClipboardContents()));
-	request.setLocation(new Point(10, 10));
+	request.setLocation(getPasteLocation());
 	EditPart ep = (EditPart)getSelectedObjects().get(0);
 	return ep.getCommand(request);
 }
@@ -72,6 +72,8 @@ protected Object getClipboardContents() {
  * @return a Factory
  */
 protected abstract CreationFactory getFactory(Object template);
+
+protected abstract Point getPasteLocation();
 
 /**
  * @see org.eclipse.gef.ui.actions.EditorPartAction#init()
