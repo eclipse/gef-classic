@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.widgets.Display;
 
@@ -35,30 +36,12 @@ private List paletteListeners = new ArrayList();
 private ToolEntry activeEntry = null;
 private PaletteRoot paletteRoot = null;
 private PaletteViewerPreferences prefs = null;
-
+private PreferenceListener prefListener = new PreferenceListener();
 private boolean controlHooked = false;
 
-private PropertyChangeListener prefListener = new PropertyChangeListener() {
-	public void propertyChange(PropertyChangeEvent evt) {
-		EditPart root = getRootEditPart().getContents();
-		if (evt.getPropertyName().equals(PaletteViewerPreferences.PREFERENCE_FONT)) {
-			Font font = new Font(Display.getCurrent(), 
-					getPaletteViewerPreferencesSource().getFontData());
-			IFigure fig = ((AbstractGraphicalEditPart)root).getFigure();
-			fig.setFont(font);
-			fig.invalidateTree();
-		}
-		refreshAllEditParts(root);
-	}
-	private void refreshAllEditParts(EditPart part) {
-		part.refresh();
-		List children = part.getChildren();
-		for (Iterator iter = children.iterator(); iter.hasNext();) {
-			EditPart child = (EditPart) iter.next();
-			refreshAllEditParts(child);
-		}
-	}
-};
+private static final PaletteViewerPreferences PREFERENCE_STORE = 
+				new DefaultPaletteViewerPreferences();
+
 
 public PaletteViewerImpl() {
 	setEditDomain(new DefaultEditDomain(null));
@@ -77,9 +60,9 @@ protected void createDefaultRoot() {
 /**
  * @see org.eclipse.gef.EditPartViewer#dispose()
  */
-public void dispose() {
-	super.dispose();
-	prefs.dispose();
+public void handleDispose(DisposeEvent e) {
+	super.handleDispose(e);
+	prefListener.disposeFont();
 }
 
 protected void fireModeChanged() {
@@ -118,7 +101,7 @@ public EditPartFactory getEditPartFactory() {
  */
 public PaletteViewerPreferences getPaletteViewerPreferencesSource() {
 	if (prefs == null) {
-		prefs = new DefaultPaletteViewerPreferences();
+		prefs = PREFERENCE_STORE;
 		if (controlHooked) {
 			prefs.addPropertyChangeListener(prefListener);
 		}
@@ -196,12 +179,12 @@ public void setMode(ToolEntry newMode) {
 	if (newMode == null)
 		newMode = paletteRoot.getDefaultEntry();
 	if (activeEntry != null) {
-		getToolEntryEditPart(activeEntry).setActive(false);
+		getToolEntryEditPart(activeEntry).setToolSelected(false);
 	}
 	activeEntry = newMode;
 	if (activeEntry != null) {
 		ToolEntryEditPart editpart = getToolEntryEditPart(activeEntry);
-		editpart.setActive(true);
+		editpart.setToolSelected(true);
 		select(editpart);
 		}
 	fireModeChanged();
@@ -216,6 +199,44 @@ protected void unhookControl() {
 		prefs.removePropertyChangeListener(prefListener);
 	}
 	controlHooked = false;
+}
+
+private class PreferenceListener
+	implements PropertyChangeListener
+{
+	private Font font = null;
+	public void propertyChange(PropertyChangeEvent evt) {
+		String property = evt.getPropertyName();
+		EditPart root = getRootEditPart().getContents();
+		if (property.equals(PaletteViewerPreferences.PREFERENCE_FONT)) {
+			disposeFont();
+			font = new Font(Display.getCurrent(), 
+					getPaletteViewerPreferencesSource().getFontData());
+			IFigure fig = ((AbstractGraphicalEditPart)root).getFigure();
+			fig.setFont(font);
+			fig.invalidateTree();
+		} else if (property.equals(PaletteViewerPreferences.PREFERENCE_LAYOUT) 
+				|| property.equals(PaletteViewerPreferences.PREFERENCE_AUTO_COLLAPSE)
+				|| property.equals(DefaultPaletteViewerPreferences
+					.convertLayoutToPreferenceName(getPaletteViewerPreferencesSource()
+					.getLayoutSetting()))) {
+			refreshAllEditParts(root);
+		}
+	}
+	void disposeFont() {
+		if (font != null) {
+			font.dispose();
+			font = null;
+		}		
+	}
+	private void refreshAllEditParts(EditPart part) {
+		part.refresh();
+		List children = part.getChildren();
+		for (Iterator iter = children.iterator(); iter.hasNext();) {
+			EditPart child = (EditPart) iter.next();
+			refreshAllEditParts(child);
+		}
+	}
 }
 
 }
