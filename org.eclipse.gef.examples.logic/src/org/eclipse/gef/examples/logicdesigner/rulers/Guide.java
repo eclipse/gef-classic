@@ -34,6 +34,7 @@ public Guide(boolean isHorizontal) {
 	setHorizontal(isHorizontal);
 }
 
+// -1 is left; 0, center; 1, right (same thing for top, middle, bottom, respectively)
 public void addPart(LogicSubpart part, int alignment) {
 	if (getMap().containsKey(part)) {
 		int key = ((Integer)getMap().get(part)).intValue();
@@ -42,6 +43,15 @@ public void addPart(LogicSubpart part, int alignment) {
 		}
 	}
 	getMap().put(part, new Integer(alignment));
+	Guide parent = isHorizontal() ? part.getHorizontalGuide() : part.getVerticalGuide();
+	if (parent != null && parent != this) {
+		parent.removePart(part);
+	}
+	if (isHorizontal()) {
+		part.setHorizontalGuide(this);
+	} else {
+		part.setVerticalGuide(this);
+	}
 	listeners.firePropertyChange(PROPERTY_CHILDREN, null, part);
 }
 
@@ -71,7 +81,12 @@ public boolean isHorizontal() {
 public void removePart(LogicSubpart part) {
 	if (getMap().containsKey(part)) {
 		getMap().remove(part);
-		listeners.firePropertyChange(PROPERTY_CHILDREN, null, part);		
+		if (isHorizontal()) {
+			part.setHorizontalGuide(null);
+		} else {
+			part.setVerticalGuide(null);
+		}
+		listeners.firePropertyChange(PROPERTY_CHILDREN, null, part);
 	}
 }
 
