@@ -13,26 +13,23 @@ package org.eclipse.draw2d;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
- * Draws an ellipse whose major and
- * minor radii are determined by the 
- * bounds set to it.
+ * An figure that draws an ellipse filling its bounds.
  */
 public class Ellipse
 	extends Shape
 {
 
 /**
- * Constructs a default Ellipse.
- * 
+ * Constructs a new Ellipse with the default values of a Shape.
  * @since 2.0
  */
 public Ellipse() { }
 
 /**
- * Returns whether the given point (x,y) is contained within this ellipse.
+ * Returns <code>true</code> if the given point (x,y) is contained within this ellipse.
  * @param x the x coordinate
  * @param y the y coordinate
- * @return whether the given point (x,y) is contained within this ellipse
+ * @return <code>true</code>if the given point is contained
  */
 public boolean containsPoint(int x, int y) {
 	if (!super.containsPoint(x, y))
@@ -45,20 +42,16 @@ public boolean containsPoint(int x, int y) {
 }
 
 /**
- * Fill the Ellipse with the background color set by <i>graphics</i>.
- * 
- * @param graphics the graphics object
- * @since 2.0
+ * Fills the ellipse.
+ * @see org.eclipse.draw2d.Shape#fillShape(org.eclipse.draw2d.Graphics)
  */
 protected void fillShape(Graphics graphics) {
 	graphics.fillOval(getBounds());
 }
 
 /**
- * Draw the outline of the Ellipse.
- * 
- * @param graphics the graphics object
- * @since 2.0
+ * Outlines the ellipse.
+ * @see org.eclipse.draw2d.Shape#outlineShape(org.eclipse.draw2d.Graphics)
  */
 protected void outlineShape(Graphics graphics) {
 	Rectangle r = Rectangle.SINGLETON;
