@@ -286,9 +286,11 @@ protected void refreshDragSourceAdapter() {
 		return;
 	if (getDelegatingDragAdapter().isEmpty())
 		setDragSource(null);
-	else
+	else {
 		if (getDragSource() == null)
 			setDragSource(new DragSource(getControl(), DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_LINK));
+		getDragSource().setTransfer(getDelegatingDragAdapter().getTransferTypes());
+	}
 }
 
 protected void refreshDropTargetAdapter() {
