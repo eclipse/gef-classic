@@ -156,11 +156,11 @@ public int getHorizontalAligment() {
  * @see org.eclipse.draw2d.text.FlowFigure#invalidateBidi()
  */
 protected void invalidateBidi() {
-	// do nothing
+	// override super to do nothing
 }
 
 /**
- * @see org.eclipse.draw2d.Figure#paint(org.eclipse.draw2d.Graphics)
+ * @see org.eclipse.draw2d.Figure#paintBorder(org.eclipse.draw2d.Graphics)
  */
 public void paintBorder(Graphics graphics) {
 	if (getBorder() instanceof FlowBorder) {
@@ -189,7 +189,7 @@ public void postValidate() {
 }
 
 /**
- * @see FlowFigure#revalidate(IFigure)
+ * @see FlowFigure#revalidate()
  */
 public void revalidate() {
 	BlockFlowLayout layout = (BlockFlowLayout)getLayoutManager();
