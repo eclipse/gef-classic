@@ -7,6 +7,7 @@
  *
  * Contributors:
  *    Elias Volanakis - initial API and implementation
+ *    IBM Corporation
  *******************************************************************************/
 package org.eclipse.gef.examples.shapes.model.commands;
 
