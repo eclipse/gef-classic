@@ -79,7 +79,7 @@ protected void paintFigure(Graphics graphics) {
  * SnapToGrid#PROPERTY_GRID_VISIBLE visibility} property is set to true.
  * 
  * @param	g	The Graphics object to be used to do the painting
- * @see FigureUtilities#paintGrid(Graphics, IFigure, org.eclipse.draw2d.geometry.Point, int, int)
+ * @see FigureUtilities#paintGrid(Graphics, IFigure, Point, int, int)
  */
 protected void paintGrid(Graphics g) {
 	FigureUtilities.paintGrid(g, this, origin, gridX, gridY);
