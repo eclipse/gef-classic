@@ -20,8 +20,6 @@ import org.eclipse.swt.events.TraverseEvent;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.widgets.Control;
 
-import org.eclipse.draw2d.internal.Draw2dMessages;
-
 /**
  * The SWTEventDispatcher provides draw2d with the ability to dispatch SWT Events. The 
  * {@link org.eclipse.draw2d.LightweightSystem} adds SWT event listeners on its Canvas. 
@@ -54,9 +52,9 @@ protected org.eclipse.swt.widgets.Control control;
 private ToolTipHelper toolTipHelper;
 private FocusTraverseManager focusManager = new FocusTraverseManager();
 
-/** @see AccessibilityDispatcher **/
 /**
- * Implements {@link EventDispatcher.AccessibilityDispatcher} but does nothing in the implementation.
+ * Implements {@link EventDispatcher.AccessibilityDispatcher} but
+ * does nothing in the implementation.
  */
 protected class FigureAccessibilityDispatcher
 	extends AccessibilityDispatcher
@@ -92,7 +90,7 @@ protected class FigureAccessibilityDispatcher
 }
 
 /**
- * @see EventDispatcher#dispatchFocusGained(FocusEvent)
+ * @see EventDispatcher#dispatchFocusGained(org.eclipse.swt.events.FocusEvent)
  */
 public void dispatchFocusGained(org.eclipse.swt.events.FocusEvent e) {
 	IFigure currentFocusOwner = getFocusTraverseManager().getCurrentFocusOwner();
@@ -108,14 +106,14 @@ public void dispatchFocusGained(org.eclipse.swt.events.FocusEvent e) {
 }
 
 /**
- * @see EventDispatcher#dispatchFocusLost(FocusEvent)
+ * @see EventDispatcher#dispatchFocusLost(org.eclipse.swt.events.FocusEvent)
  */
 public void dispatchFocusLost(org.eclipse.swt.events.FocusEvent e) {
 	setFocus(null);
 }
 
 /**
- * @see EventDispatcher#dispatchKeyPressed(KeyEvent)
+ * @see EventDispatcher#dispatchKeyPressed(org.eclipse.swt.events.KeyEvent)
  */
 public void dispatchKeyPressed(org.eclipse.swt.events.KeyEvent e) {
 	if (focusOwner != null) {
@@ -125,7 +123,7 @@ public void dispatchKeyPressed(org.eclipse.swt.events.KeyEvent e) {
 }
 
 /**
- * @see EventDispatcher#dispatchKeyReleased(KeyEvent)
+ * @see EventDispatcher#dispatchKeyReleased(org.eclipse.swt.events.KeyEvent)
  */
 public void dispatchKeyReleased(org.eclipse.swt.events.KeyEvent e) {
 	if (focusOwner != null) {
@@ -155,7 +153,7 @@ public void dispatchKeyTraversed(TraverseEvent e) {
 }
 
 /**
- * @see EventDispatcher#dispatchMouseHover(MouseEvent)
+ * @see EventDispatcher#dispatchMouseHover(org.eclipse.swt.events.MouseEvent)
  */
 public void dispatchMouseHover(org.eclipse.swt.events.MouseEvent me) {
 	receive(me);
@@ -177,7 +175,7 @@ public void dispatchMouseHover(org.eclipse.swt.events.MouseEvent me) {
 }
 
 /**
- * @see EventDispatcher#dispatchMouseDoubleClicked(MouseEvent)
+ * @see EventDispatcher#dispatchMouseDoubleClicked(org.eclipse.swt.events.MouseEvent)
  */
 public void dispatchMouseDoubleClicked(org.eclipse.swt.events.MouseEvent me) {
 	receive(me);
@@ -186,14 +184,14 @@ public void dispatchMouseDoubleClicked(org.eclipse.swt.events.MouseEvent me) {
 }
 
 /**
- * @see EventDispatcher#dispatchMouseEntered(MouseEvent)
+ * @see EventDispatcher#dispatchMouseEntered(org.eclipse.swt.events.MouseEvent)
  */
 public void dispatchMouseEntered(org.eclipse.swt.events.MouseEvent me) {
 	receive(me);
 }
 
 /**
- * @see EventDispatcher#dispatchMouseExited(MouseEvent)
+ * @see EventDispatcher#dispatchMouseExited(org.eclipse.swt.events.MouseEvent)
  */
 public void dispatchMouseExited(org.eclipse.swt.events.MouseEvent me) {
 	setHoverSource(null, me);
@@ -206,7 +204,7 @@ public void dispatchMouseExited(org.eclipse.swt.events.MouseEvent me) {
 }
 
 /**
- * @see EventDispatcher#dispatchMousePressed(MouseEvent)
+ * @see EventDispatcher#dispatchMousePressed(org.eclipse.swt.events.MouseEvent)
  */
 public void dispatchMousePressed(org.eclipse.swt.events.MouseEvent me) {
 	receive(me);
@@ -220,7 +218,7 @@ public void dispatchMousePressed(org.eclipse.swt.events.MouseEvent me) {
 }
 
 /**
- * @see EventDispatcher#dispatchMouseMoved(MouseEvent)
+ * @see EventDispatcher#dispatchMouseMoved(org.eclipse.swt.events.MouseEvent)
  */
 public void dispatchMouseMoved(org.eclipse.swt.events.MouseEvent me) {
 	receive(me);
@@ -407,7 +405,7 @@ protected void setCapture(IFigure figure) {
 public void setControl(Control c) {
 	if (control != null && !control.isDisposed())
 		throw new RuntimeException(
-			Draw2dMessages.ERR_SWTEventDispatcher_SetControl_Exception_Runtime);
+				"Can not set control again once it has been set"); //$NON-NLS-1$
 	if (c != null)
 		c.addDisposeListener(new org.eclipse.swt.events.DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
