@@ -22,15 +22,15 @@ private int oldIndex, newIndex;
 private LogicSubpart child;
 private LogicDiagram parent;
 
-public ReorderPartCommand(LogicSubpart child, LogicDiagram parent, int oldIndex, int newIndex ) {
+public ReorderPartCommand(LogicSubpart child, LogicDiagram parent, int newIndex ) {
 	super(LogicMessages.ReorderPartCommand_Label);
 	this.child = child;
 	this.parent = parent;
-	this.oldIndex = oldIndex;
 	this.newIndex = newIndex;
 }
 
 public void execute() {
+	oldIndex = parent.getChildren().indexOf(child);
 	parent.removeChild(child);
 	parent.addChild(child, newIndex);
 }

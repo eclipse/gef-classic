@@ -84,7 +84,7 @@ protected Command createMoveChildCommand(EditPart child, EditPart after) {
 	int newIndex = getHost().getChildren().indexOf(after);
 	if (newIndex > oldIndex)
 		newIndex--;
-	ReorderPartCommand command = new ReorderPartCommand(childModel, parentModel, oldIndex, newIndex);
+	ReorderPartCommand command = new ReorderPartCommand(childModel, parentModel, newIndex);
 	return command;
 }
 

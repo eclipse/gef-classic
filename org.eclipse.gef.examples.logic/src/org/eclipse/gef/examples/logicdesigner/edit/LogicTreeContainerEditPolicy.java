@@ -92,13 +92,13 @@ protected Command getMoveChildrenCommand(ChangeBoundsRequest request){
 		if(oldIndex == tempIndex || oldIndex + 1 == tempIndex){
 			command.add(UnexecutableCommand.INSTANCE);
 			return command;
-		} else if(oldIndex < tempIndex){
+		} else if(oldIndex <= tempIndex){
 			tempIndex--;
 		}
 		command.add(new ReorderPartCommand(
 					(LogicSubpart)child.getModel(), 
 					(LogicDiagram)getHost().getModel(), 
-					oldIndex, tempIndex)); 
+					tempIndex));
 	}
 	return command;
 }
