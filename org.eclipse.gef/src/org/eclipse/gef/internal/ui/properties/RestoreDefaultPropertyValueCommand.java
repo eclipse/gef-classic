@@ -11,54 +11,93 @@
 package org.eclipse.gef.internal.ui.properties;
 
 import org.eclipse.ui.views.properties.IPropertySource;
+import org.eclipse.ui.views.properties.IPropertySource2;
 
 import org.eclipse.gef.commands.Command;
+import org.eclipse.gef.internal.GEFMessages;
 
-public class RestoreDefaultPropertyValueCommand extends Command {
+/**
+ * A Command used to restore the default value of a property.
+ * @author Pratik Shah
+ */
+public class RestoreDefaultPropertyValueCommand 
+	extends Command 
+{
 
-protected Object propertyValue;
+/** the property that has to be reset */
 protected Object propertyName;
+/** the current non-default value of the property */
 protected Object undoValue;
-protected boolean resetOnUndo;
+/** the property source whose property has to be reset */
 protected IPropertySource target;
 
-public RestoreDefaultPropertyValueCommand() { }
+/**
+ * Default Constructor: Sets the label for the Command
+ * @since 3.1
+ */
+public RestoreDefaultPropertyValueCommand() {
+	super(GEFMessages.RestoreDefaultValueCommand_Label);
+}
 
+/**
+ * Returns <code>true</code> IFF:<br>
+ * 1) the target and property have been specified<br>
+ * 2) the property has a default value<br>
+ * 3) the value set for that property is not the default
+ * @see org.eclipse.gef.commands.Command#canExecute()
+ */
 public boolean canExecute() {
-	return true;
+	boolean answer = false;
+	if (target != null && propertyName != null) {
+		answer = target.isPropertySet(propertyName);
+		if (target instanceof IPropertySource2)
+			answer = answer 
+					&& (((IPropertySource2)target).isPropertyResettable(propertyName));
+	}
+	return answer;
 }
 
+/**
+ * Caches the undo value and invokes redo()
+ * @see org.eclipse.gef.commands.Command#execute()
+ */
 public void execute() {
-	resetOnUndo = getTarget().isPropertySet(propertyName);
-	if (resetOnUndo) {
-		undoValue = getTarget().getPropertyValue(propertyName);
-		getTarget().resetPropertyValue(propertyName);	
-	} else
-		undoValue = null;
-		
+	undoValue = target.getPropertyValue(propertyName);
+	if (undoValue instanceof IPropertySource)
+		undoValue = ((IPropertySource)undoValue).getEditableValue();
+	redo();
 }
 
-public IPropertySource getTarget() { return target;}
+/**
+ * Sets the IPropertySource.
+ * @param propSource the IPropertySource whose property has to be reset
+ */
+public void setTarget(IPropertySource propSource) {
+	target = propSource;
+}
 
-public void setTarget(IPropertySource aTarget) {target = aTarget;}
-
+/**
+ * Resets the specified property on the specified IPropertySource
+ * @see org.eclipse.gef.commands.Command#redo()
+ */
 public void redo() {
-	execute();
+	target.resetPropertyValue(propertyName);
 }
+
+/**
+ * Sets the property that is to be reset.
+ * @param pName the property to be reset
+ */
 public void setPropertyId(Object pName) {
 	propertyName = pName;
 }
 
-public void setPropertyValue(Object val) {
-	propertyValue = val;
-}
+/**
+ * Restores the non-default value that was reset. 
+ * @see org.eclipse.gef.commands.Command#undo()
+ */
 public void undo() {
-	if (resetOnUndo)
-		getTarget().setPropertyValue(propertyName, undoValue);
-	else
-		getTarget().resetPropertyValue(propertyName);
+	target.setPropertyValue(propertyName, undoValue);
 }
 
 }
-
-

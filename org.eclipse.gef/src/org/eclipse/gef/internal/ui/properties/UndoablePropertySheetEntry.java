@@ -90,7 +90,6 @@ public void resetPropertyValue() {
 			restoreCmd = new RestoreDefaultPropertyValueCommand();
 			restoreCmd.setTarget(source);
 			restoreCmd.setPropertyId(getDescriptor().getId());
-			restoreCmd.setPropertyValue(source.getPropertyValue(getDescriptor().getId()));
 			cc.add(restoreCmd);			
 			change = true;
 		}

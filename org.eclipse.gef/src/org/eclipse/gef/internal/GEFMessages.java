@@ -63,6 +63,7 @@ public static final String RenameAction_Tooltip;
 public static final String SaveAction_Label;
 public static final String SaveAction_Tooltip;
 public static final String SetPropertyValueCommand_Label;
+public static final String RestoreDefaultValueCommand_Label;
 
 public static final String SelectAllAction_Label;
 public static final String SelectAllAction_Tooltip;
@@ -176,6 +177,7 @@ static {
 	SaveAction_Label = rb.getString("SaveAction.Label");//$NON-NLS-1$
 	SaveAction_Tooltip = rb.getString("SaveAction.Tooltip");//$NON-NLS-1$
 	SetPropertyValueCommand_Label = rb.getString("SetPropertyValueCommand.Label_UI_");//$NON-NLS-1$
+	RestoreDefaultValueCommand_Label = rb.getString("RestoreDefault.Label"); //$NON-NLS-1$
 
 	SelectAllAction_Label = rb.getString("SelectAllAction.Label");//$NON-NLS-1$
 	SelectAllAction_Tooltip = rb.getString("SelectAllAction.Tooltip");//$NON-NLS-1$
