@@ -25,16 +25,17 @@ public TemplateTransferDragSourceListener(EditPartViewer viewer, Transfer xfer) 
  * Cancel the drag if the selected item isn't a PaletteTemplateEntry.
  */
 public void dragStart(DragSourceEvent event) {
-	List selection = getViewer().getSelectedEditParts();
-	if (!selection.isEmpty()) {
-		EditPart editpart = (EditPart)getViewer().getSelectedEditParts().get(0);
-		if (editpart.getModel() instanceof TemplateEntry) {
-			TemplateEntry entry = (TemplateEntry)editpart.getModel();
-			TemplateTransfer.getInstance().setTemplate(entry.getTemplate());
-		}
-		else
-			event.doit = false;
-	}
+	Object template = getTemplate();
+	if (template == null)
+		event.doit = false;
+	TemplateTransfer.getInstance().setTemplate(template);
+}
+
+/**
+ * @see org.eclipse.gef.dnd.AbstractTransferDragSourceListener#dragFinished(DragSourceEvent)
+ */
+public void dragFinished(DragSourceEvent event) {
+	TemplateTransfer.getInstance().setTemplate(null);
 }
 
 /**
@@ -42,9 +43,17 @@ public void dragStart(DragSourceEvent event) {
  * it as the event data to be dropped.
  */
 public void dragSetData(DragSourceEvent event) {
-	EditPart editpart = (EditPart)getViewer().getSelectedEditParts().get(0);
-	TemplateEntry entry = (TemplateEntry)editpart.getModel();
-	event.data = entry.getTemplate();
+	event.data = getTemplate();
+}
+
+protected Object getTemplate(){
+	List selection = getViewer().getSelectedEditParts();
+	if (selection.size() == 1) {
+		EditPart editpart = (EditPart)getViewer().getSelectedEditParts().get(0);
+		if (editpart.getModel() instanceof TemplateEntry)
+			return ((TemplateEntry)editpart.getModel()).getTemplate();
+	}
+	return null;
 }
 
 }

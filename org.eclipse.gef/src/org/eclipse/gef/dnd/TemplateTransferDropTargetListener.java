@@ -36,6 +36,23 @@ protected void handleDragEnter() {
 	getCurrentEvent().detail = DND.DROP_COPY;
 }
 
+protected void handleDrop() {
+	super.handleDrop();
+	selectAddedObject();
+}
+
+private void selectAddedObject() {
+	Object model = getCreateRequest().getNewObject();
+	if (model == null)
+		return;
+	EditPartViewer viewer = getViewer();
+	Object editpart = viewer.getEditPartRegistry().get(model);
+	if (editpart instanceof EditPart){
+		getViewer().flush();
+		viewer.select((EditPart)editpart);
+	}
+}
+
 protected void updateTargetRequest() {
 	CreateRequest request = getCreateRequest();
 	request.setLocation(getDropLocation());

@@ -73,6 +73,7 @@ public void deactivate() {
 public void dragEnter(DropTargetEvent event) {
 	if (GEF.DebugDND)
 		GEF.debug("Drag Enter: " + toString()); //$NON-NLS-1$
+	setCurrentEvent(event);
 	handleDragEnter();
 }
 
