@@ -82,6 +82,18 @@ protected static org.eclipse.swt.graphics.Point getTextDimension(String s, Font 
 }
 
 /**
+ * Returns the highest ancestor for the given figure
+ * @since 3.0
+ * @param figure a figure
+ * @return the root ancestor
+ */
+public static IFigure getRoot(IFigure figure) {
+	while (figure.getParent() != null)
+		figure = figure.getParent();
+	return figure;
+}
+
+/**
  * Returns the dimensions of the String <i>s</i> using the font <i>f</i>. No tab
  * expansion or carriage return processing will be performed.
  * @param s the string

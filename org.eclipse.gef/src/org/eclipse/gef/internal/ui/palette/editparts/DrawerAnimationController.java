@@ -12,6 +12,7 @@ package org.eclipse.gef.internal.ui.palette.editparts;
 
 import java.util.*;
 
+import org.eclipse.draw2d.FigureUtilities;
 import org.eclipse.draw2d.IFigure;
 
 import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
@@ -21,11 +22,11 @@ import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
  */
 class DrawerAnimationController {
 
-
 private long startTime = System.currentTimeMillis();
-private long endTime = 0, presentTime = 1;
+private long endTime = 0, presentTime = 0;
 private static final int NUM_OF_MILLISECONDS = 150;
 private boolean inProgress;
+private boolean recording;
 private List drawers = new ArrayList();
 private DrawerFigure[] animate;
 
@@ -44,7 +45,6 @@ public void addDrawer(DrawerEditPart drawer) {
 }
 
 public void animate(DrawerEditPart drawer) {
-	inProgress = true;
 	if (drawer.getDrawerFigure().isExpanded()) {
 		List categoriesToCollapse = getDrawersToCollapse(drawer);
 		animate = new DrawerFigure[categoriesToCollapse.size() + 1];
@@ -55,24 +55,25 @@ public void animate(DrawerEditPart drawer) {
 			animate[count++] = drwr.getDrawerFigure();
 		}
 		animate[0] = drawer.getDrawerFigure();
-	} else {
+	} else
 		animate = new DrawerFigure[] {drawer.getDrawerFigure()};
-	}
-
-	for (int i = 0; i < animate.length; i++) {
-		animate[i].revalidate();
-	}
-	animate[0].getParent().validate();
 	
-	for (int i = 0; i < animate.length; i++) {
+
+	for (int i = 0; i < animate.length; i++)
+		animate[i].revalidate();
+	
+	recording = true;
+	FigureUtilities.getRoot(animate[0]).validate();
+	recording = false;
+	
+	for (int i = 0; i < animate.length; i++)
 		animate[i].setAnimating(true);
-	}
+	
 	start();
 	runAnimation();
-	for (int i = 0; i < animate.length; i++) {
+	for (int i = 0; i < animate.length; i++)
 		animate[i].setAnimating(false);
-		animate[i].revalidate();
-	}
+	
 	animate[0].getUpdateManager().performUpdate();
 	
 	animate = null;
@@ -81,16 +82,19 @@ public void animate(DrawerEditPart drawer) {
 void runAnimation() {
 	while (inProgress)
 		step();
+	step();
 }
 
 void step() {
-	for (int i = 0; i < animate.length; i++) {
-		animate[i].revalidate();
-	}
 	presentTime = System.currentTimeMillis();
-	animate[0].getUpdateManager().performUpdate();
-	if (presentTime > endTime)
+	if (presentTime > endTime) {
 		inProgress = false;
+		return;
+	}
+	
+	for (int i = 0; i < animate.length; i++)
+		animate[i].revalidate();
+	animate[0].getUpdateManager().performUpdate();
 }
 
 /**
@@ -182,6 +186,14 @@ protected List getDrawersToCollapse(DrawerEditPart drawer) {
 		drawersToCollapse.add(part);
 	}
 	return drawersToCollapse;
+}
+
+/**
+ * @since 3.0
+ * @return
+ */
+public boolean isRecording() {
+	return recording;
 }
 
 }

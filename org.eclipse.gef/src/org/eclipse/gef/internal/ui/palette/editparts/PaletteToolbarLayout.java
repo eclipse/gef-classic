@@ -31,7 +31,6 @@ public class PaletteToolbarLayout
 
 private Rectangle[] sourceSizes;
 private Rectangle[] destinationSizes;
-private boolean scaling = false;
 private DrawerAnimationController controller;
 
 /**
@@ -40,7 +39,6 @@ private DrawerAnimationController controller;
  * @param	controller	Can be <code>null</code> if no animation is desired
  */
 public PaletteToolbarLayout(DrawerAnimationController controller) {
-	super();
 	this.controller = controller;
 }
 
@@ -70,27 +68,18 @@ protected boolean isChildGrowing(IFigure child) {
 	return child instanceof DrawerFigure && ((DrawerFigure)child).isExpanded();
 }
 
-private boolean isScaling() {
-	return scaling;
-}
-
 /**
  * @see org.eclipse.draw2d.ToolbarLayout#layout(org.eclipse.draw2d.IFigure)
  */
 public void layout(IFigure parent) {
-	if (isScaling()) {
+	if (controller != null && controller.isRecording()) {
+		captureSourceSizes(parent);
+		normalLayout(parent);
+		captureDestinationSizes(parent);
+	} else if (controller != null && controller.isAnimationInProgress())
 		scaledLayout(parent);
-		setScaling(controller.isAnimationInProgress());
-	} else {
-		if (controller != null && controller.isAnimationInProgress()) {
-			captureSourceSizes(parent);
-			normalLayout(parent);
-			captureDestinationSizes(parent);
-			setScaling(true);
-		} else {
-			normalLayout(parent);
-		}
-	}
+	else
+		normalLayout(parent);
 }
 
 private void normalLayout(IFigure parent) {
@@ -110,8 +99,8 @@ private void normalLayout(IFigure parent) {
 	/*
 	 * Determine hints.
 	 */
-	int wHint = isHorizontal() ? -1 : clientArea.width;
-	int hHint = isHorizontal() ? clientArea.width : -1;
+	int wHint = parent.getClientArea(Rectangle.SINGLETON).width;
+	int hHint = -1;    
 
 	/*
 	 * Store the preferred and minimum sizes of all figures.  Determine which figures can
@@ -251,26 +240,18 @@ private void normalLayout(IFigure parent) {
 private void scaledLayout(IFigure parent) {
 	List children = parent.getChildren();
 	float progress = controller.getAnimationProgress();
-	   
+	
 	for (int i = 0; i < children.size(); i++) {
 		Rectangle rect1 = sourceSizes[i];
 		Rectangle rect2 = destinationSizes[i];
 		IFigure child = (IFigure)children.get(i);
-	      
+		
 		child.setBounds(new Rectangle(
-				Math.round(progress * rect2.x + (1-progress) * rect1.x),
-				Math.round(progress * rect2.y + (1-progress) * rect1.y),
-				Math.round(progress * rect2.width + (1-progress) * rect1.width),
-				Math.round(progress * rect2.height + (1-progress) * rect1.height)
+			Math.round(progress * rect2.x + (1-progress) * rect1.x),
+			Math.round(progress * rect2.y + (1-progress) * rect1.y),
+			Math.round(progress * rect2.width + (1-progress) * rect1.width),
+			Math.round(progress * rect2.height + (1-progress) * rect1.height)
 		));
-	}
-}
-
-private void setScaling(boolean newVal) {
-	scaling = newVal;
-	if (!scaling) {
-		sourceSizes = null;
-		destinationSizes = null;
 	}
 }
 
