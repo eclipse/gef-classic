@@ -56,8 +56,6 @@ class ToggleButtonTracker extends SingleSelectionTracker {
 	}
 }
 
-private static final Border BORDER_LABEL_MARGIN = new MarginBorder(new Insets(2,2,2,3));
-
 private DetailedLabelFigure customLabel;
 
 public ToolEntryEditPart(PaletteEntry paletteEntry) {

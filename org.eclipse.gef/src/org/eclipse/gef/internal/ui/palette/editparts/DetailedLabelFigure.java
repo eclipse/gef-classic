@@ -29,6 +29,7 @@ public class DetailedLabelFigure
 {
 
 public static final String SELECTED_PROPERTY = "selected"; //$NON-NLS-1$
+private static final Border PAGE_BORDER = new MarginBorder(0, 2, 0, 2);
 
 private Image shadedIcon;
 private ImageFigure image;
@@ -47,7 +48,7 @@ public DetailedLabelFigure() {
 	image = new SelectableImageFigure();
 	image.setAlignment(PositionConstants.NORTH);
 	page = new FocusableFlowPage();
-	page.setBorder(new MarginBorder(0, 2, 0, 2));
+	page.setBorder(PAGE_BORDER);
 	nameText = new TextFlow();
 	descText = new TextFlow();
 	page.add(nameText);

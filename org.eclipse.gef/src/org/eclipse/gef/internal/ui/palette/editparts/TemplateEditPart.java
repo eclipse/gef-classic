@@ -22,7 +22,7 @@ public class TemplateEditPart
 	extends PaletteEditPart
 {
 
-private static final Border BORDER = new MarginBorder(1, 1, 2, 2);
+private static final Border BORDER = new MarginBorder(1, 1, 1, 2);
 
 /**
  * Constructor
