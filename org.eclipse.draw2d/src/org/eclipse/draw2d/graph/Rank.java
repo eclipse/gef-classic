@@ -80,7 +80,7 @@ public void assignIndices() {
 	int mag;
 	for (int i = 0; i < size(); i++) {
 		node = getNode(i);
-		mag = node.incoming.size() + node.outgoing.size();
+		mag = node.incoming.size() + node.outgoing.size() + 1;
 //		if (node instanceof SubgraphBoundary)
 //			mag = 4;
 		total += mag;
