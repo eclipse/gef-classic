@@ -23,10 +23,13 @@ public class PaletteSelectionTool
 	extends SelectionTool
 {
 
+private PaletteViewer getPaletteViewer() {
+	return (PaletteViewer)getCurrentViewer();
+}
+
 private boolean handleAbort(KeyEvent e) {
 	if (e.keyCode == SWT.ESC) {
-		return (getCurrentViewer() instanceof PaletteViewer 
-				&& ((PaletteViewer)getCurrentViewer()).getPaletteRoot().getDefaultEntry() != null);
+		return (getPaletteViewer().getPaletteRoot().getDefaultEntry() != null);
 	}
 	return false;
 }
@@ -40,8 +43,7 @@ protected boolean handleKeyDown(KeyEvent e) {
 }
 
 private void loadDefaultTool() {
-	((PaletteViewer)getCurrentViewer()).setActiveTool(
-			((PaletteViewer)getCurrentViewer()).getPaletteRoot().getDefaultEntry());
+	getPaletteViewer().setActiveTool(getPaletteViewer().getPaletteRoot().getDefaultEntry());
 }
 
 }
