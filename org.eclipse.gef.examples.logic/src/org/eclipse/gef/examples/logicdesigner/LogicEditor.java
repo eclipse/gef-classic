@@ -27,6 +27,7 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.*;
+import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
 import org.eclipse.ui.dialogs.SaveAsDialog;
 import org.eclipse.ui.part.*;
@@ -371,9 +372,9 @@ protected void configureGraphicalViewer() {
 	ContextMenuProvider provider = new LogicContextMenuProvider(viewer, getActionRegistry());
 	viewer.setContextMenu(provider);
 	getSite().registerContextMenu("org.eclipse.gef.examples.logic.editor.contextmenu", //$NON-NLS-1$
-		provider, viewer);
+			provider, viewer);
 	viewer.setKeyHandler(new GraphicalViewerKeyHandler(viewer)
-		.setParent(getCommonKeyHandler()));
+			.setParent(getCommonKeyHandler()));
 	
 	loadProperties();
 
@@ -386,12 +387,31 @@ protected void configureGraphicalViewer() {
 
 	IAction showGrid = new ToggleGridAction(getGraphicalViewer());
 	getActionRegistry().registerAction(showGrid);
+	
+	Listener listener = new Listener() {
+		public void handleEvent(Event event) {
+			handleActivationChanged(event);
+		}
+	};
+	getGraphicalControl().addListener(SWT.Activate, listener);
+	getGraphicalControl().addListener(SWT.Deactivate, listener);
 }
 
 protected void createOutputStream(OutputStream os)throws IOException {
 	ObjectOutputStream out = new ObjectOutputStream(os);
 	out.writeObject(getLogicDiagram());
 	out.close();	
+}
+
+protected CustomPalettePage createPalettePage() {
+	return new CustomPalettePage(getPaletteViewerProvider()) {
+		public void init(IPageSite pageSite) {
+			super.init(pageSite);
+			IAction copy = getActionRegistry().getAction(ActionFactory.COPY.getId());
+			pageSite.getActionBars().setGlobalActionHandler(
+					ActionFactory.COPY.getId(), copy);
+		}
+	};
 }
 
 protected PaletteViewerProvider createPaletteViewerProvider() {
@@ -404,7 +424,7 @@ protected PaletteViewerProvider createPaletteViewerProvider() {
 		protected void hookPaletteViewer(PaletteViewer viewer) {
 			super.hookPaletteViewer(viewer);
 			final CopyTemplateAction copy = (CopyTemplateAction)getActionRegistry()
-					.getAction(GEFActionConstants.COPY);
+					.getAction(ActionFactory.COPY.getId());
 			viewer.addSelectionChangedListener(copy);
 			if (menuListener == null)
 				menuListener = new IMenuListener() {
@@ -413,11 +433,6 @@ protected PaletteViewerProvider createPaletteViewerProvider() {
 					}
 				};
 			viewer.getContextMenu().addMenuListener(menuListener);
-			/*
-			 * @TODO:Pratik  check to see if this works properly.  add it to the right place.
-			 */
-			((IEditorSite)getSite()).getActionBars()
-					.setGlobalActionHandler(GEFActionConstants.COPY, copy);			
 		}
 	};
 }
@@ -525,6 +540,18 @@ protected PaletteRoot getPaletteRoot() {
 }
 
 public void gotoMarker(IMarker marker) {}
+
+protected void handleActivationChanged(Event event) {
+	IAction copy = null;
+	if (event.type == SWT.Deactivate)
+		copy = getActionRegistry().getAction(ActionFactory.COPY.getId());
+	if (getEditorSite().getActionBars().getGlobalActionHandler(ActionFactory.COPY.getId()) 
+			!= copy) {
+		getEditorSite().getActionBars().setGlobalActionHandler(
+				ActionFactory.COPY.getId(), copy);
+		getEditorSite().getActionBars().updateActionBars();
+	}
+}
 
 protected void initializeGraphicalViewer() {
 	super.initializeGraphicalViewer();
