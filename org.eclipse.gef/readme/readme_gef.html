@@ -1,377 +1,241 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
+
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>GEF Project Release Notes 3.0.1</title>
 </head>
+
 <body>
 
 <h1>GEF Project Release Notes</h1>
-
 <p>Release 3.0.1<br>
 Last revised August 04, 2004</p>
-
 <blockquote>
-<p><a href="#Target Operating Environments">1. Target
-Platforms</a><br>
-<a href="#Compatibility with Previous Release"> 2. Compatibility with
-Previous Release</a><br>
-<a href="#Known Issues">3. Known Issues</a></p>
+	<p><a href="#Target Operating Environments">1. Target Platforms</a><br>
+	<a href="#Compatibility with Previous Release">2. Compatibility with Previous 
+	Release</a><br>
+	<a href="#Known Issues">3. Known Issues</a><br>
+	<a href="#Defects Fixed in Maintenance Releases">4. Defects Fixed in Maintenance 
+	Releases</a></p>
 </blockquote>
-
-<h2>1. <a name="Target Operating Environments"></a> Target Platforms</h2>
-
-<p>GEF 3.0 requires the Eclipse 3.0 Rich Client Platform and the optional <b> <code>org.eclipse.ui.views</code></b> 
-plug-in.&nbsp;
-See the Eclipse Platform readme for requirements of the Eclipse
-platform.</p>
-
-<p>GEF 3.0.x has been tested and validated on the following Java 2
-Platform implementations:</p>
+<h2>1. <a name="Target Operating Environments"></a>Target Platforms</h2>
+<p>GEF 3.0 requires the Eclipse 3.0 Rich Client Platform and the optional <b>
+<code>org.eclipse.ui.views</code></b> plug-in.&nbsp; See the Eclipse Platform readme 
+for requirements of the Eclipse platform.</p>
+<p>GEF 3.0.x has been tested and validated on the following Java 2 Platform implementations:</p>
 <table width="821" border="1" id="table1">
-  <tr bgcolor="#CCCCCC">
-    <th colspan="4">
-      <div align="center">
-        <b><font size="+1">Eclipse Reference Platforms</font></b>
-      </div>
-    </th>
-  </tr>
-  <tr>
-    <td width="205"><b>Operating system</b></td>
-    <td width="76"><b>Processor architecture</b></td>
-    <td width="59"><b>Window system</b></td>
-    <td width="453"><b>Java 2 Platform</b></td>
-  </tr>
-  <tr>
-    <td width="205">Microsoft Windows XP</td>
-    <td width="76">Intel x86</td>
-    <td width="59">Win32</td>
-    <td width="453">Sun Java 2 SDK, Standard Edition, version 1.4.2_03 for
-      Microsoft Windows</td>
-  </tr>
-  <tr>
-    <td width="205">Microsoft Windows XP</td>
-    <td width="76">Intel x86</td>
-    <td width="59">Win32</td>
-    <td width="453">
-      IBM 32-bit SDK for Windows, Java 2 Technology Edition, Version 1.4.1</td>
-  </tr>
-  <tr>
-    <td width="205">Red Hat Enterprise Linux WS 3</td>
-    <td width="76">Intel x86</td>
-    <td width="59">GTK</td>
-    <td width="453">Sun Java 2 SDK, Standard Edition, 1.4.2_03 for Linux x86</td>
-  </tr>
-  <tr>
-    <td width="205">Red Hat Enterprise Linux WS 3</td>
-    <td width="76">Intel x86</td>
-    <td width="59">GTK</td>
-    <td width="453">IBM 32-bit SDK for Linux on Intel architecture, Java 2
-      Technology Edition, Version 1.4.1</td>
-  </tr>
-  <tr>
-    <td width="205">SuSE Linux 8.2</td>
-    <td width="76">Intel x86</td>
-    <td width="59">GTK</td>
-    <td width="453">Sun Java 2 SDK, Standard Edition, 1.4.2_03 for Linux x86</td>
-  </tr>
-  <tr>
-    <td width="205">SuSE Linux 8.2</td>
-    <td width="76">Intel x86</td>
-    <td width="59">GTK</td>
-    <td width="453">IBM 32-bit SDK for Linux on Intel architecture, Java 2
-      Technology Edition, Version 1.4.1</td>
-  </tr>
-  <tr>
-    <td width="205">Sun Solaris 8</td>
-    <td width="76">SPARC</td>
-    <td width="59">Motif</td>
-    <td width="453">Sun Java 2 SDK, Standard Edition, 1.4.2_03 for Solaris SPARC</td>
-  </tr>
-  <tr>
-    <td width="205">HP HP-UX 11i</td>
-    <td width="76">hp9000<br>
-      PA-RISC</td>
-    <td width="59">Motif</td>
-    <td width="453"><span class="header">HP-UX SDK for the Java 2 platform,
-      version 1.4.2.00 for hp9000 PA-RISC</span></td>
-  </tr>
-  <tr>
-    <td width="205" height="21">IBM AIX 5L Version 5.2</td>
-    <td width="76">PowerPC</td>
-    <td width="59">Motif</td>
-    <td width="453">
-      IBM 32-bit SDK for AIX, Java 2 Technology Edition, Version 1.4.1</td>
-  </tr>
-  <tr>
-    <td width="205">Apple Mac OS X 10.3</td>
-    <td width="76">PowerPC</td>
-    <td width="59">Carbon</td>
-    <td width="453">Java 2 Standard Edition 1.4.1 for Mac OS X</td>
-  </tr>
+	<tr bgcolor="#CCCCCC">
+		<th colspan="4">
+		<div align="center">
+			<b><font size="+1">Eclipse Reference Platforms</font></b> </div>
+		</th>
+	</tr>
+	<tr>
+		<td width="205"><b>Operating system</b></td>
+		<td width="76"><b>Processor architecture</b></td>
+		<td width="59"><b>Window system</b></td>
+		<td width="453"><b>Java 2 Platform</b></td>
+	</tr>
+	<tr>
+		<td width="205">Microsoft Windows XP</td>
+		<td width="76">Intel x86</td>
+		<td width="59">Win32</td>
+		<td width="453">Sun Java 2 SDK, Standard Edition, version 1.4.2_03 for Microsoft 
+		Windows</td>
+	</tr>
+	<tr>
+		<td width="205">Microsoft Windows XP</td>
+		<td width="76">Intel x86</td>
+		<td width="59">Win32</td>
+		<td width="453">IBM 32-bit SDK for Windows, Java 2 Technology Edition, Version 
+		1.4.1</td>
+	</tr>
+	<tr>
+		<td width="205">Red Hat Enterprise Linux WS 3</td>
+		<td width="76">Intel x86</td>
+		<td width="59">GTK</td>
+		<td width="453">Sun Java 2 SDK, Standard Edition, 1.4.2_03 for Linux x86</td>
+	</tr>
+	<tr>
+		<td width="205">Red Hat Enterprise Linux WS 3</td>
+		<td width="76">Intel x86</td>
+		<td width="59">GTK</td>
+		<td width="453">IBM 32-bit SDK for Linux on Intel architecture, Java 2 Technology 
+		Edition, Version 1.4.1</td>
+	</tr>
+	<tr>
+		<td width="205">SuSE Linux 8.2</td>
+		<td width="76">Intel x86</td>
+		<td width="59">GTK</td>
+		<td width="453">Sun Java 2 SDK, Standard Edition, 1.4.2_03 for Linux x86</td>
+	</tr>
+	<tr>
+		<td width="205">SuSE Linux 8.2</td>
+		<td width="76">Intel x86</td>
+		<td width="59">GTK</td>
+		<td width="453">IBM 32-bit SDK for Linux on Intel architecture, Java 2 Technology 
+		Edition, Version 1.4.1</td>
+	</tr>
+	<tr>
+		<td width="205">Sun Solaris 8</td>
+		<td width="76">SPARC</td>
+		<td width="59">Motif</td>
+		<td width="453">Sun Java 2 SDK, Standard Edition, 1.4.2_03 for Solaris SPARC</td>
+	</tr>
+	<tr>
+		<td width="205">HP HP-UX 11i</td>
+		<td width="76">hp9000<br>
+		PA-RISC</td>
+		<td width="59">Motif</td>
+		<td width="453"><span class="header">HP-UX SDK for the Java 2 platform, 
+		version 1.4.2.00 for hp9000 PA-RISC</span></td>
+	</tr>
+	<tr>
+		<td width="205" height="21">IBM AIX 5L Version 5.2</td>
+		<td width="76">PowerPC</td>
+		<td width="59">Motif</td>
+		<td width="453">IBM 32-bit SDK for AIX, Java 2 Technology Edition, Version 
+		1.4.1</td>
+	</tr>
+	<tr>
+		<td width="205">Apple Mac OS X 10.3</td>
+		<td width="76">PowerPC</td>
+		<td width="59">Carbon</td>
+		<td width="453">Java 2 Standard Edition 1.4.1 for Mac OS X</td>
+	</tr>
 </table>
-
-<h2>2. <a name="Compatibility with Previous Release"></a> Compatibility with Previous Release</h2>
-
-<p><b>API Contract Compatibility:</b> GEF 3.0 is upwards
-contract-compatible with GEF 2.1 except where the Eclipse Platform .&nbsp; Downward contract compatibility
-is not supported. There is no guarantee that compliance with 3.0
-APIs would ensure compliance with 2.1 APIs. Refer to <i><a href="http://eclipse.org/eclipse/development/java-api-evolution.html">Evolving
-Java-based APIs</a></i> for a discussion of the kinds of API changes that
-maintain contract compatibility.</p>
-<p><b>Binary (plug-in) Compatibility:</b> GEF 3.0 is upwards
-binary-compatible with GEF 2.1 except in those areas noted in
-the <em>Eclipse
-3.0 Plug-in Migration Guide</em>. Eclipse 3.0 will include additional runtime
-compatibility mechanisms to provide effective binary API compatibility. Downward
-plug-in compatibility is not supported. Plug-ins for Eclipse SDK 3.0 will not be
-usable in Eclipse SDK 2.0 or 2.1. Refer to <i><a href="http://eclipse.org/eclipse/development/java-api-evolution.html">Evolving
-Java-based APIs</a></i> for a discussion of the kinds of API changes that
-maintain binary compatibility.
-<p><b>Non-compliant usage of API's</b>: All non-API methods and classes, and
-everything in a package with &quot;internal&quot; in its name, are
-considered implementation details which may vary between operating environment
-and are subject to change without notice. Client plug-ins that directly depend
-on anything other than what is specified in the API are inherently
-unsupportable and receive no guarantees about compatibility within a single
-release or across releases. Refer to <i><a href="http://www.eclipse.org/articles/Article-API%20use/eclipse-api-usage-rules.html">How
-to Use the Eclipse API</a></i> for information about how to write compliant
+<h2>2. <a name="Compatibility with Previous Release"></a>Compatibility with Previous 
+Release</h2>
+<p><b>API Contract Compatibility:</b> GEF 3.0 is upwards contract-compatible with 
+GEF 2.1 except where the Eclipse Platform .&nbsp; Downward contract compatibility 
+is not supported. There is no guarantee that compliance with 3.0 APIs would ensure 
+compliance with 2.1 APIs. Refer to <i>
+<a href="http://eclipse.org/eclipse/development/java-api-evolution.html">Evolving 
+Java-based APIs</a></i> for a discussion of the kinds of API changes that maintain 
+contract compatibility.</p>
+<p><b>Binary (plug-in) Compatibility:</b> GEF 3.0 is upwards binary-compatible with 
+GEF 2.1 except in those areas noted in the <em>Eclipse 3.0 Plug-in Migration Guide</em>. 
+Eclipse 3.0 will include additional runtime compatibility mechanisms to provide 
+effective binary API compatibility. Downward plug-in compatibility is not supported. 
+Plug-ins for Eclipse SDK 3.0 will not be usable in Eclipse SDK 2.0 or 2.1. Refer 
+to <i><a href="http://eclipse.org/eclipse/development/java-api-evolution.html">Evolving 
+Java-based APIs</a></i> for a discussion of the kinds of API changes that maintain 
+binary compatibility. </p>
+<p><b>Non-compliant usage of API&#39;s</b>: All non-API methods and classes, and everything 
+in a package with &quot;internal&quot; in its name, are considered implementation details 
+which may vary between operating environment and are subject to change without notice. 
+Client plug-ins that directly depend on anything other than what is specified in 
+the API are inherently unsupportable and receive no guarantees about compatibility 
+within a single release or across releases. Refer to <i>
+<a href="http://www.eclipse.org/articles/Article-API%20use/eclipse-api-usage-rules.html">
+How to Use the Eclipse API</a></i> for information about how to write compliant 
 plug-ins.&nbsp; </p>
-<h2>3. <a name="Known Issues"></a> Known Issues</h2>
+<h2>3. <a name="Known Issues"></a>Known Issues</h2>
 <h4>Win32 - Printing</h4>
 <blockquote>
-<p>Some fonts scale differently on the printer than they do on the
-screen. This may result in printed text appearing wider than the
-same text on the screen. This is only a problem with certain
-vector fonts.</p>
-<p>Images with transparency masks may print incorrectly. This is a
-limitation in SWT, which GEF uses for printing.</p>
-<p>Printing is not implemented on some SWT platforms.</p>
+	<p>Some fonts scale differently on the printer than they do on the screen. This 
+	may result in printed text appearing wider than the same text on the screen. 
+	This is only a problem with certain vector fonts.</p>
+	<p>Images with transparency masks may print incorrectly. This is a limitation 
+	in SWT, which GEF uses for printing.</p>
+	<p>Printing is not implemented on some SWT platforms.</p>
 </blockquote>
-
-<h2>4. <a name-"Defects Fixed in Maintenance Releases" >Defects Fixed in Maintenance Releases</h2>
+<h2>4. <a name="Defects Fixed in Maintenance Releases">Defects Fixed in Maintenance 
+Releases</h2>
 <h3>4.1 Defects fixed in release 3.0.1 since 3.0.0</h3>
-<p>Release 3.0.1 is a maintenance release to fix serious defects present in
-release 3.0.0. These changes only affect some plug-ins and features.
-Modified plug-ins have version id &quot;3.0.1&quot;; plug-ins unchanged since
-the 3.0 release still have version id &quot;3.0.0&quot;. Note, however,
-that all features now have version id &quot;3.0.1&quot; (even if none of their
-plug-ins changed).</p>
+<p>Release 3.0.1 is a maintenance release to fix serious defects present in release 
+3.0.0. These changes only affect some plug-ins and features. Modified plug-ins have 
+version id &quot;3.0.1&quot;; plug-ins unchanged since the 3.0 release still have version 
+id &quot;3.0.0&quot;. Note, however, that all features now have version id &quot;3.0.1&quot; (even if 
+none of their plug-ins changed).</p>
 <p>Maintenance release 3.0.1 contains fixes for the following defects:</p>
-  <table cellspacing="0" cellpadding="4" width="100%">
-    <tr align="left">
-      <th colspan="1">
-        <a href="https://bugs.eclipse.org/bugs/buglist.cgi?product=GEF&target_milestone=3.0.1&amp;order=bugs.bug_id">ID</a>
-      </th>
-      <th colspan="1">
-        <a href="https://bugs.eclipse.org/bugs/buglist.cgi?product=GEF&target_milestone=3.0.1&amp;order=bugs.short_desc,bugs.bug_id">Summary</a>
-      </th>
-    </tr>
-
-  <tr class="bz_ bz_ ">
-
-    <td>
-      <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=52542">52542</a>
-    </td>
-
-    <td>Snap-To-Geometry is off by 1 pixel when snapping to center
-    </td>
-
-  </tr>
-
-  
-
-
-  
-
-  <tr class="bz_ bz_ ">
-
-    <td>
-      <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=67554">67554</a>
-    </td>
-
-    <td>RulerFigure does not appear proper on Sun Solaris 9
-    </td>
-
-  </tr>
-
-  
-
-
-  
-
-  <tr class="bz_ bz_ ">
-
-    <td>
-      <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=68113">68113</a>
-    </td>
-
-    <td>NPE encountered in PaletteViewer.handleFocusGained()
-    </td>
-
-  </tr>
-
-  
-
-
-  
-
-  <tr class="bz_ bz_ ">
-
-    <td>
-      <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=69026">69026</a>
-    </td>
-
-    <td>NPEs when a Palette Viewer's root is not yet set
-    </td>
-
-  </tr>
-
-  
-
-
-  
-
-  <tr class="bz_ bz_ ">
-
-    <td>
-      <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=69098">69098</a>
-    </td>
-
-    <td>Tools in Flyout Palette not working when Palette View is ...
-    </td>
-
-  </tr>
-
-  
-
-
-  
-
-  <tr class="bz_ bz_ ">
-
-    <td>
-      <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=69250">69250</a>
-    </td>
-
-    <td>Ragged Baseline changing fonts in TextFlow
-    </td>
-
-  </tr>
-
-  
-
-
-  
-
-  <tr class="bz_ bz_ ">
-
-    <td>
-      <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=69316">69316</a>
-    </td>
-
-    <td>MergedAccessibleHandlers NPE
-    </td>
-
-  </tr>
-
-  
-
-
-  
-
-  <tr class="bz_ bz_ ">
-
-    <td>
-      <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=69427">69427</a>
-    </td>
-
-    <td>Logic ReadMe out of date
-    </td>
-
-  </tr>
-
-  
-
-
-  
-
-  <tr class="bz_ bz_ ">
-
-    <td>
-      <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=69617">69617</a>
-    </td>
-
-    <td>Problems with GraphicalEditorWithFlyoutPalette
-    </td>
-
-  </tr>
-
-  
-
-
-  
-
-  <tr class="bz_ bz_ ">
-
-    <td>
-      <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=69976">69976</a>
-    </td>
-
-    <td>TVT3.0:  truncated hover text in Logic Diagram example
-    </td>
-
-  </tr>
-
-  
-
-
-  
-
-  <tr class="bz_ bz_ ">
-
-    <td>
-      <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=70152">70152</a>
-    </td>
-
-    <td>Add &quot;Example&quot; to plugin dependency view name
-    </td>
-
-  </tr>
-
-  
-
-
-  
-
-  <tr class="bz_ bz_ ">
-
-    <td>
-      <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=70931">70931</a>
-    </td>
-
-    <td>Javadoc links to JRE classes should be 1.4.1
-    </td>
-
-  </tr>
-
-  
-    </table>
-<p>Note: the above table was generated with the Bugzilla query: 
+<table cellspacing="0" cellpadding="4" width="100%">
+	<tr align="left">
+		<th colspan="1">
+		<a href="https://bugs.eclipse.org/bugs/buglist.cgi?product=GEF&target_milestone=3.0.1&order=bugs.bug_id">
+		ID</a> </th>
+		<th colspan="1">
+		<a href="https://bugs.eclipse.org/bugs/buglist.cgi?product=GEF&target_milestone=3.0.1&order=bugs.short_desc,bugs.bug_id">
+		Summary</a> </th>
+	</tr>
+	<tr class="bz_ bz_ ">
+		<td><a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=52542">52542</a>
+		</td>
+		<td>Snap-To-Geometry is off by 1 pixel when snapping to center </td>
+	</tr>
+	<tr class="bz_ bz_ ">
+		<td><a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=67554">67554</a>
+		</td>
+		<td>RulerFigure does not appear proper on Sun Solaris 9 </td>
+	</tr>
+	<tr class="bz_ bz_ ">
+		<td><a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=68113">68113</a>
+		</td>
+		<td>NPE encountered in PaletteViewer.handleFocusGained() </td>
+	</tr>
+	<tr class="bz_ bz_ ">
+		<td><a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=69026">69026</a>
+		</td>
+		<td>NPEs when a Palette Viewer&#39;s root is not yet set </td>
+	</tr>
+	<tr class="bz_ bz_ ">
+		<td><a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=69098">69098</a>
+		</td>
+		<td>Tools in Flyout Palette not working when Palette View is ... </td>
+	</tr>
+	<tr class="bz_ bz_ ">
+		<td><a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=69250">69250</a>
+		</td>
+		<td>Ragged Baseline changing fonts in TextFlow </td>
+	</tr>
+	<tr class="bz_ bz_ ">
+		<td><a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=69316">69316</a>
+		</td>
+		<td>MergedAccessibleHandlers NPE </td>
+	</tr>
+	<tr class="bz_ bz_ ">
+		<td><a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=69427">69427</a>
+		</td>
+		<td>Logic ReadMe out of date </td>
+	</tr>
+	<tr class="bz_ bz_ ">
+		<td><a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=69617">69617</a>
+		</td>
+		<td>Problems with GraphicalEditorWithFlyoutPalette </td>
+	</tr>
+	<tr class="bz_ bz_ ">
+		<td><a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=69976">69976</a>
+		</td>
+		<td>TVT3.0: truncated hover text in Logic Diagram example </td>
+	</tr>
+	<tr class="bz_ bz_ ">
+		<td><a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=70152">70152</a>
+		</td>
+		<td>Add &quot;Example&quot; to plugin dependency view name </td>
+	</tr>
+	<tr class="bz_ bz_ ">
+		<td><a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=70931">70931</a>
+		</td>
+		<td>Javadoc links to JRE classes should be 1.4.1 </td>
+	</tr>
+</table>
+<p>Note: the above table was generated with the Bugzilla query: </a>
 <a href="https://bugs.eclipse.org/bugs/buglist.cgi?product=GEF&target_milestone=3.0.1&order=bugs.bug_id">
 https://bugs.eclipse.org/bugs/buglist.cgi?product=GEF&amp;target_milestone=3.0.1&amp;order=bugs.bug_id</a></p>
 <hr>
-<p>Java and all Java-based trademarks are trademarks of Sun
-Microsystems, Inc. in the United States, other countries, or both.</p>
-<p>IBM is a trademark of International Business Machines Corporation in
+<p>Java and all Java-based trademarks are trademarks of Sun Microsystems, Inc. in 
 the United States, other countries, or both.</p>
-<p>Microsoft, Windows, Windows NT, and the Windows logo are trademarks
-of Microsoft Corporation in the United States, other countries, or both.</p>
-<p>Apple and Mac OS are trademarks of Apple Computer, Inc., registered in the
-U.S. and other countries.</p>
-<p>Other company, product, and service names may be trademarks or
-service marks of others.</p>
+<p>IBM is a trademark of International Business Machines Corporation in the United 
+States, other countries, or both.</p>
+<p>Microsoft, Windows, Windows NT, and the Windows logo are trademarks of Microsoft 
+Corporation in the United States, other countries, or both.</p>
+<p>Apple and Mac OS are trademarks of Apple Computer, Inc., registered in the U.S. 
+and other countries.</p>
+<p>Other company, product, and service names may be trademarks or service marks 
+of others.</p>
 <p>(c) Copyright Eclipse contributors and others 2004</p>
 
 </body>
+
 </html>
