@@ -35,7 +35,7 @@ private EditPartViewer viewer;
 private Transfer transfer;
 private EditPart target;
 private Request request;
-private Point prevMouseLoc = new Point();
+private Point prevMouseLoc;
 private long hoverStartTime = -1;
 private boolean hovering = false;
 
@@ -76,10 +76,8 @@ protected Request createTargetRequest() {
 public void dragEnter(DropTargetEvent event) {
 	if (GEF.DebugDND)
 		GEF.debug("Drag Enter: " + toString()); //$NON-NLS-1$
-	setCurrentEvent(event);
-	prevMouseLoc.x = event.x;
-	prevMouseLoc.y = event.y;
 	resetHover();
+	setCurrentEvent(event);
 }
 
 /**
@@ -94,7 +92,6 @@ public void dragLeave(DropTargetEvent event) {
 		GEF.debug("Drag Leave: " + toString()); //$NON-NLS-1$
 	setCurrentEvent(event);
 	unload();
-	resetHover();
 }
 
 /**
@@ -106,8 +103,8 @@ public void dragLeave(DropTargetEvent event) {
 public void dragOperationChanged(DropTargetEvent event) {
 	if (GEF.DebugDND)
 		GEF.debug("Drag Operation Changed: " + toString()); //$NON-NLS-1$
-	setCurrentEvent(event);
 	resetHover();
+	setCurrentEvent(event);
 	handleDragOperationChanged();
 }
 
@@ -119,7 +116,7 @@ public void dragOperationChanged(DropTargetEvent event) {
  */
 public void dragOver(DropTargetEvent event) {
 	setCurrentEvent(event);
-	if (isMouseMoving(event)) {
+	if (testAndSet(event)) {
 		resetHover();
 		if (GEF.DebugDND)
 			GEF.debug("Drag Over: " + toString()); //$NON-NLS-1$
@@ -127,18 +124,16 @@ public void dragOver(DropTargetEvent event) {
 	} else {
 		if (hovering)
 			return;
-		long currentTime = System.currentTimeMillis();
+		long currentTime = event.time;
 		if (hoverStartTime == -1) {
 			hoverStartTime = currentTime;
 		} else if (currentTime - hoverStartTime > 400) {
 			if (GEF.DebugDND)
 				GEF.debug("Drag Hover: " + toString()); //$NON-NLS-1$
-			handleDragHover();
+			handleHover();
 			hovering = true;
 		}
 	}
-	prevMouseLoc.x = event.x;
-	prevMouseLoc.y = event.y;
 }
 
 /**
@@ -250,13 +245,6 @@ protected EditPartViewer getViewer() {
 }
 
 /**
- * Called when the mouse hovers during drag and drop.
- */
-protected void handleDragHover() {
-	
-}
-
-/**
  * Called when the user changes the Drag operation. By default, target feedback is erased.
  * The target Request and target EditPart are updated, and target feedback is
  * re-displayed on the new target.
@@ -321,6 +309,18 @@ protected void handleExitingEditPart() {
 }
 
 /**
+ * Called when the mouse hovers during drag and drop.
+ */
+protected void handleHover() {
+}
+
+/**
+ * Called when the mouse resumes motion after having hovered.
+ */
+protected void handleHoverStop() {
+}
+
+/**
  * Returns <code>true</code> if this TransferDropTargetListener is enabled for the
  * specified <code>DropTargetEvent</code>.  By default, this is calculated by comparing
  * the event's {@link DropTargetEvent#dataTypes dataTypes} with the <code>Transfer's</code>
@@ -351,13 +351,13 @@ public boolean isEnabled(DropTargetEvent event) {
 	return false;
 }
 
-private boolean isMouseMoving(DropTargetEvent event) {
-	return prevMouseLoc.x != event.x || prevMouseLoc.y != event.y;
-}
-
 private void resetHover() {
-	hovering = false;
-	hoverStartTime = -1;
+	if (hovering) {
+		handleHoverStop();
+		hovering = false;
+		hoverStartTime = -1;
+		prevMouseLoc = null;
+	}
 }
 
 /**
@@ -421,14 +421,28 @@ protected void showTargetFeedback() {
 }
 
 /**
+ * Tests whether the given event's location is different than the previous event's
+ * location, and sets the remembered location to the current event's location.
+ * @param event * @return boolean */
+private boolean testAndSet(DropTargetEvent event) {
+	boolean result = prevMouseLoc == null
+		|| (prevMouseLoc.x == event.x && prevMouseLoc.y == event.y);
+	if (prevMouseLoc == null)
+		prevMouseLoc = new Point();
+	prevMouseLoc.x = event.x;
+	prevMouseLoc.y = event.y;
+	return result;
+}
+
+/**
  * Erases target feedback and sets the request to <code>null</code>.
  */
 protected void unload() {
+	resetHover();
 	eraseTargetFeedback();
 	request = null;
 	setTargetEditPart(null);
 	setCurrentEvent(null);
-	resetHover();
 }
 
 /**
