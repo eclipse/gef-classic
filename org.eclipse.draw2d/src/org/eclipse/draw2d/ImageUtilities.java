@@ -61,10 +61,13 @@ public static Image createRotatedImage(Image srcImage) {
 		SWT.error(SWT.ERROR_THREAD_INVALID_ACCESS);
 
 	ImageData srcData = srcImage.getImageData();
+	ImageData destData;
 	if (srcData.depth < 8)
-		return rotatePixelByPixel(srcData);
+		destData = rotatePixelByPixel(srcData);
 	else
-		return rotateOptimized(srcData);
+		destData = rotateOptimized(srcData);
+	
+	return new Image(display, destData);
 }
 
 /**
@@ -131,7 +134,7 @@ private static int determineShading(int origColor, int shadeColor) {
 	return (origColor + shadeColor) / 2;
 }
 
-private static Image rotateOptimized(ImageData srcData) {
+private static ImageData rotateOptimized(ImageData srcData) {
 	int bytesPerPixel = Math.max(1, srcData.depth / 8);
 	int destBytesPerLine = ((srcData.height * bytesPerPixel - 1) / srcData.scanlinePad + 1) 
 			* srcData.scanlinePad;
@@ -145,11 +148,11 @@ private static Image rotateOptimized(ImageData srcData) {
 			System.arraycopy(srcData.data, srcIndex, newData, destIndex, bytesPerPixel);
 		}
 	}
-	return new Image(Display.getCurrent(), new ImageData(srcData.height, srcData.width, 
-					srcData.depth, srcData.palette, srcData.scanlinePad, newData));
+	return new ImageData(srcData.height, srcData.width, srcData.depth, srcData.palette, 
+			srcData.scanlinePad, newData);
 }
 
-private static Image rotatePixelByPixel(ImageData srcData) {
+private static ImageData rotatePixelByPixel(ImageData srcData) {
 	ImageData destData = new ImageData(srcData.height, srcData.width, srcData.depth, 
 			srcData.palette); 
 	for (int y = 0; y < srcData.height; y++) {
@@ -157,7 +160,7 @@ private static Image rotatePixelByPixel(ImageData srcData) {
 			destData.setPixel(y, srcData.width - x - 1,	srcData.getPixel(x, y));
 		}
 	}
-	return new Image(Display.getCurrent(), destData);
+	return destData;
 }
 
 }
