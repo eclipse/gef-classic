@@ -10,15 +10,17 @@
  *******************************************************************************/
 package org.eclipse.gef.ui.actions;
 
+import org.eclipse.ui.actions.LabelRetargetAction;
+
 import org.eclipse.draw2d.PositionConstants;
+
 import org.eclipse.gef.internal.GEFMessages;
 import org.eclipse.gef.internal.InternalImages;
-import org.eclipse.ui.actions.RetargetAction;
 
 /**
  * @author Eric Bordeau
  */
-public class AlignmentRetargetAction extends RetargetAction {
+public class AlignmentRetargetAction extends LabelRetargetAction {
 
 /**
  * Constructs a new AlignmentRetargetAction with the default ID, label and image based on
