@@ -105,11 +105,11 @@ public static class Input
 	}
 	
 	/**
-	 * Returns <code>true</code> if any of the 3 mouse buttons are pressed.
-	 * @return <code>true</code> if any of the 3 mouse buttons are pressed
+	 * Returns <code>true</code> if any of the mouse buttons are pressed.
+	 * @return <code>true</code> if any of the mouse buttons are pressed
 	 */
 	public boolean isAnyButtonDown() {
-		return getFlag(2 | 4 | 8);
+		return getFlag(2 | 4 | 8 | 16 | 32);
 	}
 	
 	/**
@@ -153,9 +153,11 @@ public static class Input
 		setMouseLocation(me.x, me.y);
 		modifiers = me.stateMask;
 		if (verifyMouseButtons) {
-			setMouseButton(1, (modifiers & MOUSE_BUTTON1) != 0);
-			setMouseButton(2, (modifiers & MOUSE_BUTTON2) != 0);
-			setMouseButton(3, (modifiers & MOUSE_BUTTON3) != 0);
+			setMouseButton(1, (modifiers & SWT.BUTTON1) != 0);
+			setMouseButton(2, (modifiers & SWT.BUTTON2) != 0);
+			setMouseButton(3, (modifiers & SWT.BUTTON3) != 0);
+			setMouseButton(4, (modifiers & SWT.BUTTON4) != 0);
+			setMouseButton(5, (modifiers & SWT.BUTTON5) != 0);
 			verifyMouseButtons = false;
 		}
 	}
@@ -192,22 +194,24 @@ protected static final int MAX_STATE = 32;
 
 /**
  * constant used for mouse button 1.
+ * @deprecated Use {@link SWT#BUTTON1} instead.
  */
 protected static final int MOUSE_BUTTON1 = SWT.BUTTON1;
 /**
  * constant used for mouse button 2.
+ * @deprecated Use {@link SWT#BUTTON2} instead.
  */
 protected static final int MOUSE_BUTTON2 = SWT.BUTTON2;
 /**
  * constant used for mouse button 3.
+ * @deprecated Use {@link SWT#BUTTON3} instead.
  */
 protected static final int MOUSE_BUTTON3 = SWT.BUTTON3;
-
 /**
- * constant used to indicate any of the 3 mouse buttons.
+ * constant used to indicate any of the mouse buttons.
+ * @deprecated Use {@link SWT#BUTTON_MASK} instead.
  */
-protected static final int MOUSE_BUTTON_ANY =
-	MOUSE_BUTTON1 | MOUSE_BUTTON2 | MOUSE_BUTTON3;
+protected static final int MOUSE_BUTTON_ANY = SWT.BUTTON_MASK;
 
 /**
  * The state indicating that the keyboard is being used to perform a drag that is normally
@@ -222,7 +226,7 @@ protected static final int STATE_ACCESSIBLE_DRAG = 16;
 protected static final int STATE_ACCESSIBLE_DRAG_IN_PROGRESS = 32;
 
 /**
- * The state indicating that one or more buttons is pressed, but the user has not moved
+ * The state indicating that one or more buttons are pressed, but the user has not moved
  * past the drag threshold.  Many tools will do nothing during this state but wait
  * until {@link #STATE_DRAG_IN_PROGRESS} is entered.
  */
@@ -257,23 +261,19 @@ protected static final int STATE_TERMINAL = 1 << 30;
 private long accessibleBegin;
 
 private int accessibleStep;
-private Command        command;
+private Command command;
 
 private CommandStackListener commandStackListener = new CommandStackListener() {
 	public void commandStackChanged(EventObject event) {
 		handleCommandStackChanged();
 	}
 };
-private Input          current;
+private Input current;
 private EditPartViewer currentViewer;
-private Cursor   defaultCursor;
-private Cursor   disabledCursor;
-
-private EditDomain     domain;
-private List           operationSet;
-private int            startX;
-private int            startY;
-private int            state;
+private Cursor defaultCursor, disabledCursor;
+private EditDomain domain;
+private List operationSet;
+private int startX, startY, state;
 
 boolean acceptAbort(KeyEvent e) {
 	return e.character == SWT.ESC;
@@ -890,13 +890,11 @@ boolean isInDragInProgress() {
  */
 private boolean isInputSynched(MouseEvent event) {
 	Input input = getCurrentInput();
-	boolean button1ok =
-		input.isMouseButtonDown(1) == ((event.stateMask & SWT.BUTTON1) != 0);
-	boolean button2ok =
-		input.isMouseButtonDown(2) == ((event.stateMask & SWT.BUTTON2) != 0);
-	boolean button3ok =
-		input.isMouseButtonDown(3) == ((event.stateMask & SWT.BUTTON3) != 0);
-	return (button1ok && button2ok && button3ok);
+	return input.isMouseButtonDown(1) == ((event.stateMask & SWT.BUTTON1) != 0)
+			&& input.isMouseButtonDown(2) == ((event.stateMask & SWT.BUTTON2) != 0)
+			&& input.isMouseButtonDown(3) == ((event.stateMask & SWT.BUTTON3) != 0)
+			&& input.isMouseButtonDown(4) == ((event.stateMask & SWT.BUTTON4) != 0)
+			&& input.isMouseButtonDown(5) == ((event.stateMask & SWT.BUTTON5) != 0);
 }
 
 /**
@@ -1045,11 +1043,15 @@ public void mouseMove(MouseEvent me, EditPartViewer viewer) {
 		boolean b1 = getCurrentInput().isMouseButtonDown(1);
 		boolean b2 = getCurrentInput().isMouseButtonDown(2);
 		boolean b3 = getCurrentInput().isMouseButtonDown(3);
+		boolean b4 = getCurrentInput().isMouseButtonDown(4);
+		boolean b5 = getCurrentInput().isMouseButtonDown(5);
 		getCurrentInput().verifyMouseButtons = true;
 		getCurrentInput().setInput(me);
 		if (b1) handleButtonUp(1);
 		if (b2) handleButtonUp(2);
 		if (b3) handleButtonUp(3);
+		if (b4) handleButtonUp(4);
+		if (b5) handleButtonUp(5);
 		if (getDomain().getActiveTool() != this)
 			return;
 		/* 

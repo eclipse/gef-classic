@@ -31,9 +31,11 @@ public class SWTEventDispatcher
 	extends EventDispatcher
 {
 
-/** Used to tell if any button is pressed without regard to the specific button. */
-/* @TODO:Pratik  Should use SWT.BUTTON_MASK here? */
-protected static final int ANY_BUTTON = SWT.BUTTON1 | SWT.BUTTON2 | SWT.BUTTON3;
+/** 
+ * Used to tell if any button is pressed without regard to the specific button. 
+ * @deprecated Use {@link SWT#BUTTON_MASK} instead. 
+ */
+protected static final int ANY_BUTTON = SWT.BUTTON_MASK;
 
 private boolean figureTraverse = true;
 
@@ -221,7 +223,7 @@ public void dispatchMousePressed(org.eclipse.swt.events.MouseEvent me) {
 public void dispatchMouseMoved(org.eclipse.swt.events.MouseEvent me) {
 	receive(me);
 	if (mouseTarget != null) {
-		if ((me.stateMask & ANY_BUTTON) != 0)
+		if ((me.stateMask & SWT.BUTTON_MASK) != 0)
 			mouseTarget.handleMouseDragged(currentEvent);
 		else
 			mouseTarget.handleMouseMoved(currentEvent);

@@ -35,8 +35,13 @@ public static final int BUTTON1 = SWT.BUTTON1;
 public static final int BUTTON2 = SWT.BUTTON2;
 /** @see SWT#BUTTON3 */
 public static final int BUTTON3 = SWT.BUTTON3;
-/** A bitwise OR'ing of {@link #BUTTON1}, {@link #BUTTON2} and {@link #BUTTON3} */
-public static final int ANY_BUTTON = BUTTON1 | BUTTON2 | BUTTON3;
+/** @see SWT#BUTTON4 */
+public static final int BUTTON4 = SWT.BUTTON4;
+/** @see SWT#BUTTON5 */
+public static final int BUTTON5 = SWT.BUTTON5;
+/** A bitwise OR'ing of {@link #BUTTON1}, {@link #BUTTON2}, {@link #BUTTON3},
+ * {@link #BUTTON4} and {@link #BUTTON5} */
+public static final int ANY_BUTTON = SWT.BUTTON_MASK;
 
 /**
  * Constructs a new InputEvent.
@@ -59,7 +64,7 @@ public void consume() {
 /**
  * Returns the event statemask, which is a bitwise OR'ing of any of the following: 
  * {@link #ALT}, {@link #CONTROL}, {@link #SHIFT}, {@link #BUTTON1}, {@link #BUTTON2}, 
- * and {@link #BUTTON3}.
+ * {@link #BUTTON3}, {@link #BUTTON4} and {@link #BUTTON5}.
  * @return the state
  */
 public int getState() {
