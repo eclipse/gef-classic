@@ -18,6 +18,7 @@ import org.eclipse.draw2d.ChopboxAnchor;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.Ellipse;
+import org.eclipse.draw2d.EllipseAnchor;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.RectangleFigure;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -53,7 +54,7 @@ import org.eclipse.gef.examples.shapes.model.commands.ConnectionReconnectCommand
 class ShapeEditPart extends AbstractGraphicalEditPart 
 	implements PropertyChangeListener, NodeEditPart {
 	
-private ChopboxAnchor anchor;
+private ConnectionAnchor anchor;
 
 /**
  * Upon activation, attach to the model element as a property change listener.
@@ -157,6 +158,19 @@ private Shape getCastedModel() {
 	return (Shape) getModel();
 }
 
+protected ConnectionAnchor getConnectionAnchor() {
+	if (anchor == null) {
+		if (getModel() instanceof EllipticalShape)
+			anchor = new EllipseAnchor(getFigure());
+		else if (getModel() instanceof RectangularShape)
+			anchor = new ChopboxAnchor(getFigure());
+		else
+			// if Shapes gets extended the conditions above must be updated
+			throw new IllegalArgumentException("unexpected model");
+	}
+	return anchor;
+}
+
 /*
  * (non-Javadoc)
  * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#getModelSourceConnections()
@@ -178,9 +192,7 @@ protected List getModelTargetConnections() {
  * @see org.eclipse.gef.NodeEditPart#getSourceConnectionAnchor(org.eclipse.gef.ConnectionEditPart)
  */
 public ConnectionAnchor getSourceConnectionAnchor(ConnectionEditPart connection) {
-	if (anchor == null)
-		anchor = new ChopboxAnchor(getFigure());
-	return anchor;
+	return getConnectionAnchor();
 }
 
 /*
@@ -188,9 +200,7 @@ public ConnectionAnchor getSourceConnectionAnchor(ConnectionEditPart connection)
  * @see org.eclipse.gef.NodeEditPart#getSourceConnectionAnchor(org.eclipse.gef.Request)
  */
 public ConnectionAnchor getSourceConnectionAnchor(Request request) {
-	if (anchor == null)
-		anchor = new ChopboxAnchor(getFigure());
-	return anchor;
+	return getConnectionAnchor();
 }
 
 /*
@@ -198,9 +208,7 @@ public ConnectionAnchor getSourceConnectionAnchor(Request request) {
  * @see org.eclipse.gef.NodeEditPart#getTargetConnectionAnchor(org.eclipse.gef.ConnectionEditPart)
  */
 public ConnectionAnchor getTargetConnectionAnchor(ConnectionEditPart connection) {
-	if (anchor == null)
-		anchor = new ChopboxAnchor(getFigure());
-	return anchor;
+	return getConnectionAnchor();
 }
 
 /*
@@ -208,9 +216,7 @@ public ConnectionAnchor getTargetConnectionAnchor(ConnectionEditPart connection)
  * @see org.eclipse.gef.NodeEditPart#getTargetConnectionAnchor(org.eclipse.gef.Request)
  */
 public ConnectionAnchor getTargetConnectionAnchor(Request request) {
-	if (anchor == null)
-		anchor = new ChopboxAnchor(getFigure());
-	return anchor;
+	return getConnectionAnchor();
 }
 
 /* (non-Javadoc)
