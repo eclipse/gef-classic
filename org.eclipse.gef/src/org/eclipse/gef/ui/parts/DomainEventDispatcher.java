@@ -66,8 +66,11 @@ protected class EditPartAccessibilityDispatcher
 {
 	private AccessibleEditPart get(int childID) {
 		if (childID == ACC.CHILDID_SELF || childID == ACC.CHILDID_NONE)
-			return (AccessibleEditPart)getViewer().getContents()
-				.getAdapter(AccessibleEditPart.class);
+			if (getViewer().getContents() != null)
+				return (AccessibleEditPart)getViewer().getContents()
+					.getAdapter(AccessibleEditPart.class);
+			else
+				return null;
 		return (AccessibleEditPart)accessibles.get(new Integer(childID));
 	}
 	
