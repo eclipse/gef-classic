@@ -54,8 +54,15 @@ public CreationTool(CreationFactory aFactory) {
  * @see org.eclipse.gef.tools.AbstractTool#calculateCursor()
  */
 protected Cursor calculateCursor() {
-	if (isInState(STATE_INITIAL)) 
-		return getDefaultCursor();
+	/*
+	 * Fix for Bug# 66010
+	 * The following two lines of code were added for the case where a tool is
+	 * activated via the keyboard (that code hasn't been released yet).  However, they
+	 * were causing a problem as described in 66010.  Since the keyboard activation code
+	 * is not being released for 3.0, the following lines are being commented out.
+	 */
+//	if (isInState(STATE_INITIAL)) 
+//		return getDefaultCursor();
 	return super.calculateCursor();
 }
 
