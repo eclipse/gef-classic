@@ -28,8 +28,8 @@ private Object template;
  * Constructs a combined CreationTool and Template Entry with the given parameters.
  * @param label the label
  * @param shortDesc the descriptoin
- * @param factory the CreationFactory
  * @param template the template object
+ * @param factory the CreationFactory
  * @param iconSmall the small icon
  * @param iconLarge the large icon
  */
