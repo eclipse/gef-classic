@@ -11,7 +11,7 @@ import org.eclipse.draw2d.geometry.*;
  * Created on Apr 28, 2003
  */
 public class Animation {
-	
+
 static final long DURATION = 210;
 
 static long current;
@@ -19,7 +19,9 @@ static double progress;
 static long start = -1;
 static long finish;
 static Viewport viewport;
-static Point viewportStart, viewportEnd;
+static IFigure trackMe;
+static IFigure showMe;
+static Point trackLocation;
 
 static boolean PLAYBACK;
 static boolean IN_PROGRESS;
@@ -36,15 +38,18 @@ static void end() {
 	initialStates = null;
 	finalStates = null;
 	PLAYBACK = false;
-	viewportStart = viewportEnd = null;
+	trackMe = null;
+	showMe = null;
 	viewport = null;
 }
 
 static void mark(IFigure figure) {
+	trackMe = figure;
+	trackLocation = trackMe.getBounds().getLocation();
 	while (!(figure instanceof Viewport))
 		figure = figure.getParent();
 	viewport = (Viewport)figure;
-	viewportStart = viewport.getViewLocation();
+	
 	IN_PROGRESS = true;
 	initialStates = new HashMap();
 	finalStates = new HashMap();
@@ -55,14 +60,13 @@ static void mark(IFigure figure) {
 
 static void captureLayout(IFigure root) {
 	RECORDING = true;
-	while (root.getParent()!= null) {
+	while (root.getParent()!= null)
 		root = root.getParent();
-	}
+
 	root.validate();
 	Iterator iter = initialStates.keySet().iterator();
 	while (iter.hasNext())
 		recordFinalStates((IFigure)iter.next());
-	viewportEnd = viewport.getViewLocation();
 	RECORDING = false;
 	PLAYBACK = true;
 }
@@ -127,14 +131,16 @@ static boolean step() {
 	progress = (double)(current - start)/(finish - start);
 	progress = Math.min(progress, 0.999);
 	Iterator iter = initialStates.keySet().iterator();
+	
 	while (iter.hasNext())
 		((IFigure)iter.next()).revalidate();
 	viewport.validate();
-	Point loc = new Point(
-		(int)Math.round(viewportStart.x * (1-progress) + progress * viewportEnd.x),
-		(int)Math.round(viewportStart.y * (1-progress) + progress * viewportEnd.y)
-	);
-	viewport.setViewLocation(loc.x, loc.y);
+	
+	Point loc = viewport.getViewLocation();
+	loc.translate(trackMe.getBounds().getLocation().getDifference(trackLocation));
+	viewport.setViewLocation(loc);
+	trackLocation = trackMe.getBounds().getLocation();
+	
 	return current < finish;
 }
 

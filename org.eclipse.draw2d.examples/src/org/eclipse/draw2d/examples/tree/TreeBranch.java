@@ -110,24 +110,20 @@ public void collapse() {
 			port = ((Viewport)root);
 		root = root.getParent();
 	}
-	Point start = getNode().getBounds().getLocation();
 	viewportStart = port.getViewLocation();
-
+	Point nodeStart = node.getBounds().getLocation();
 	setExpanded(false);
 	root.validate();
-	Point end = getNode().getBounds().getLocation();
 	
 	setExpanded(true);
 	animationReset(getNodeBounds());
-	Animation.mark(this);
+	Animation.mark(getNode());
 	Animation.captureLayout(getRoot());
 	Animation.swap();
+	Animation.trackLocation = nodeStart;
 
 	root.validate();
-	Animation.viewportStart = viewportStart;
-	Animation.viewportEnd = viewportStart.getTranslated(
-		end.getDifference(start)
-	);
+	port.setViewLocation(viewportStart);
 	while(Animation.step())
 		getUpdateManager().performUpdate();
 	Animation.end();
@@ -145,15 +141,12 @@ public boolean containsPoint(int x, int y) {
 public void expand() {
 	if (expanded)
 		return;
-	Point start = getNodeBounds().getLocation();
 	setExpanded(true);
 	animationReset(getNodeBounds());
 	
-	Animation.mark(this);
+	Animation.mark(getNode());
 	Animation.captureLayout(getRoot());
-	Point end = getNodeBounds().getLocation();
-	Dimension delta = end.getDifference(start);
-	Animation.viewportEnd = Animation.viewportStart.getTranslated(delta);
+
 	while(Animation.step())
 		getUpdateManager().performUpdate();
 	Animation.end();
