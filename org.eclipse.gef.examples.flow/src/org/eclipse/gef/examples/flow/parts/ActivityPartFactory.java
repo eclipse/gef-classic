@@ -17,6 +17,8 @@ public EditPart createEditPart(EditPart context, Object model) {
 	EditPart part = null;
 	if (model instanceof ActivityDiagram)
 		part = new ActivityDiagramPart();
+	else if (model instanceof ParallelActivity)
+		part = new StructuredActivityPart();
 	else if (model instanceof SequentialActivity)
 		part = new SequentialActivityPart();
 	else if (model instanceof Activity)

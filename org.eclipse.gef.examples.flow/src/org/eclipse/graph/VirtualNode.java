@@ -14,6 +14,7 @@ VirtualNode(Edge e, int i) {
 	incoming.add(e);
 	outgoing.add(e);
 	width = e.width;
+	height = 0;
 	rank = i;
 }
 

@@ -14,12 +14,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.runtime.IPluginDescriptor;
-import org.eclipse.gef.examples.flow.model.Activity;
-import org.eclipse.gef.examples.flow.model.SequentialActivity;
-import org.eclipse.gef.palette.*;
-import org.eclipse.gef.requests.SimpleFactory;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+
+import org.eclipse.gef.palette.*;
+import org.eclipse.gef.requests.SimpleFactory;
+
+import org.eclipse.gef.examples.flow.model.*;
 
 /**
  * Plugin class used by the flow editor.
@@ -61,9 +62,19 @@ private static PaletteContainer createComponentsDrawer() {
 
 	combined = new CombinedTemplateCreationEntry(
 		"Sequential Activity",
-		"Create a new Sequential Activity Node",
+		"Create a Sequential Activity",
 		SequentialActivity.class,
 		new SimpleFactory(SequentialActivity.class),
+		ImageDescriptor.createFromFile(Activity.class, "icons/comp.gif"), 
+		ImageDescriptor.createFromFile(Activity.class, "icons/comp.gif")
+	);
+	entries.add(combined);
+
+	combined = new CombinedTemplateCreationEntry(
+		"Parallel Activity",
+		"Create a  Parallel Activity",
+		ParallelActivity.class,
+		new SimpleFactory(ParallelActivity.class),
 		ImageDescriptor.createFromFile(Activity.class, "icons/comp.gif"), 
 		ImageDescriptor.createFromFile(Activity.class, "icons/comp.gif")
 	);

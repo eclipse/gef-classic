@@ -135,13 +135,10 @@ private int incomingIndex(int i) {
 	return e.source.index;
 }
 
-public void leftToRight(Node right) {
+public void leftOf(Node right) {
 	if (toRight == null)
 		toRight = new NodeList();
 	toRight.add(right);
-	if (right.toLeft == null)
-		right.toLeft = new NodeList();
-	right.toLeft.add(this);
 }
 
 public double medianIncoming() {

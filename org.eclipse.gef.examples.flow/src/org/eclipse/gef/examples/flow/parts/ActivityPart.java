@@ -132,4 +132,11 @@ public void propertyChange(PropertyChangeEvent evt) {
 	((GraphicalEditPart)(getViewer().getContents())).getFigure().revalidate();
 }
 
+/**
+ * @see org.eclipse.gef.editparts.AbstractEditPart#toString()
+ */
+public String toString() {
+	return getModel().toString();
+}
+
 }

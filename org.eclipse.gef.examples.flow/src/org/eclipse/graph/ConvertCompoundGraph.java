@@ -48,6 +48,7 @@ private void connectHead(CompoundDirectedGraph graph, Node node, Subgraph parent
 	}
 	if (connectHead) {
 		Edge e = new Edge(parent.head, node);
+		e.weight = 0;
 		graph.edges.add(e);
 		graph.containment.add(e);
 	}
@@ -62,6 +63,7 @@ private void connectTail(CompoundDirectedGraph graph, Node node, Subgraph parent
 	}
 	if (connectTail) {
 		Edge e = new Edge(node, parent.tail);
+		e.weight = 0;
 		graph.edges.add(e);
 		graph.containment.add(e);
 	}

@@ -25,7 +25,9 @@ static class NestingTreeEntry {
 				total += (int)(e.sortValue * e.size);
 				size += e.size;
 			} else {
-				total += ((Node)o).index;
+				Node n = (Node)o;
+				n.sortValue = n.index;
+				total += n.index;
 				size++;
 			}
 		}
@@ -162,7 +164,8 @@ private void breakSubgraphCycles() {
 			//break the cycle;
 			sortedInsert(noLefts, cycleRoot);
 			cycleRoot.x = -1; //prevent x from ever reaching 0
-		}
+		} else if (OGmembers.size() > 0)
+			System.out.println("FAILED TO FIND CYCLE ROOT");
 	} while (cycleRoot != null);
 }
 
@@ -192,29 +195,24 @@ private void buildSubgraphOrderingGraph(NestingTreeEntry entry) {
 	NodePair pair = new NodePair();
 	if (entry.isLeaf)
 		return;
-	for (int i = 0; i < entry.contents.size() - 1; i++) {
-		Object left = entry.contents.get(i);
-		Object right = entry.contents.get(i+1);
-		if (left instanceof Node)
-			pair.n1 = (Node)left;
-		else {
-			pair.n1 = ((NestingTreeEntry)left).subgraph;
-			buildSubgraphOrderingGraph((NestingTreeEntry)left);
-		}
+	for (int i = 0; i < entry.contents.size(); i++) {
+		Object right = entry.contents.get(i);
 		if (right instanceof Node)
 			pair.n2 = (Node)right;
 		else {
 			pair.n2 = ((NestingTreeEntry)right).subgraph;
 			buildSubgraphOrderingGraph((NestingTreeEntry)right);
 		}
-		if (OGedges.contains(pair))
-			continue;
-		OGedges.add(pair);
-		pair.n1.leftToRight(pair.n2);
-		OGmembers.add(pair.n1);
-		OGmembers.add(pair.n2);
-		pair.n2.x++; //Using x field to count predecessors.
-		pair = new NodePair();
+		if (pair.n1 != null && !OGedges.contains(pair)) {
+			OGedges.add(pair);
+			pair.n1.leftOf(pair.n2);
+			OGmembers.add(pair.n1);
+			OGmembers.add(pair.n2);
+			pair.n2.x++; //Using x field to count predecessors.
+			pair = new NodePair(pair.n2, null);
+		} else {
+			pair.n1 = pair.n2;
+		}
 	}
 }
 
@@ -257,7 +255,6 @@ private void calculateSortValues() {
 	for (int i = 0; i < g.subgraphs.size(); i++) {
 		Subgraph subgraph = (Subgraph)g.subgraphs.get(i);
 		subgraph.sortValue /= subgraph.index;
-		System.out.println(subgraph + " average " + subgraph.sortValue);
 	}
 }
 

@@ -124,4 +124,13 @@ public void setPropertyValue(Object id, Object value){
 		setName((String)value);
 }
 
+/**
+ * @see java.lang.Object#toString()
+ */
+public String toString() {
+	String className = getClass().getName();
+	className = className.substring(className.lastIndexOf('.') + 1);
+	return className + "(" + name +")";
+}
+
 }

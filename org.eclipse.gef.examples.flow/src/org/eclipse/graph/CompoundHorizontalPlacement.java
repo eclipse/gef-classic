@@ -9,7 +9,7 @@ import java.util.Set;
  */
 public class CompoundHorizontalPlacement extends HorizontalPlacement {
 
-class LeftRight {
+class LeftRight {//$TODO Delete and use NodePair class, equivalent
 	Object left, right;
 	LeftRight(Object l, Object r) {
 		left = l; right = r;

@@ -186,7 +186,7 @@ private void balanceClusters() {
 	
 	for (int i = 0; i < allClusters.size(); i++) {
 		NodeCluster c = (NodeCluster)allClusters.get(i);
-		System.out.println("Cluster:\n\t" + c + "\n pull = :" + c.getPull());
+//		System.out.println("Cluster:\n\t" + c + "\n pull = :" + c.getPull());
 	}
 }
 
@@ -259,7 +259,7 @@ private NodeCluster getCachedClusterSet(Set set) {
 
 	cluster.build();
 	cluster.updateValues();
-	System.out.println("built SUPERCLUSTER:" + cluster);
+//	System.out.println("built SUPERCLUSTER:" + cluster);
 	
 	clusterSetCache.put(set, cluster);
 	return cluster;
