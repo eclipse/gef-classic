@@ -41,14 +41,12 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Tracker;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.action.IMenuCreator;
+import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
@@ -131,6 +129,7 @@ private static final Image RIGHT_ARROW = new Image(null, ImageDescriptor.createF
 private PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 private Composite paletteContainer;
 private PaletteViewer pViewer, externalViewer;
+private IMemento capturedPaletteState;
 private Control graphicalControl, sash;
 private PaletteViewerProvider provider;
 private FlyoutPreferences prefs;
@@ -219,6 +218,12 @@ private final void addListenerToCtrlHierarchy(Control parent, int eventType,
 	for (int i = 0; i < children.length; i++) {
 		addListenerToCtrlHierarchy(children[i], eventType, listener);
 	}
+}
+
+private IMemento capturePaletteState(PaletteViewer viewer) {
+	IMemento memento = XMLMemento.createWriteRoot("paletteState"); //$NON-NLS-1$
+	viewer.saveState(memento);
+	return memento;
 }
 
 private Control createFlyoutControlButton(Composite parent) {
@@ -384,10 +389,11 @@ private void hookIntoWorkbench(final IWorkbenchWindow window) {
  * @param	viewer	The external palette viewer used in the PaletteView
  */
 public void setExternalViewer(PaletteViewer viewer) {
+	if (viewer == null && externalViewer != null)
+		capturedPaletteState = capturePaletteState(externalViewer);
 	externalViewer = viewer;
-	if (externalViewer != null && pViewer != null) {
+	if (externalViewer != null && pViewer != null)
 		transferState(pViewer, externalViewer);
-	}
 }
 
 private void setDockLocation(int position) {
@@ -479,6 +485,10 @@ private void setState(int newState) {
 				pViewer = provider.createPaletteViewer(paletteContainer);
 				if (externalViewer != null)
 					transferState(externalViewer, pViewer);
+				else if (capturedPaletteState != null) {
+					pViewer.restoreState(capturedPaletteState);
+					capturedPaletteState = null;
+				}
 				minWidth = Math.max(pViewer.getControl().computeSize(0, 0).x, 
 						MIN_PALETTE_SIZE);
 			}
@@ -501,9 +511,7 @@ private void setState(int newState) {
 }
 
 private void transferState(PaletteViewer src, PaletteViewer dest) {
-	IMemento memento = XMLMemento.createWriteRoot("paletteState"); //$NON-NLS-1$
-	src.saveState(memento);
-	dest.restoreState(memento);
+	dest.restoreState(capturePaletteState(src));
 }
 
 public interface FlyoutPreferences {
@@ -652,61 +660,6 @@ private class Sash extends Composite {
 	}
 }
 
-private class DockAction 
-		extends Action 
-		implements IMenuCreator {
-	private Menu menu;
-	public DockAction() {
-		setMenuCreator(this);
-		setText(PaletteMessages.DOCK_LABEL);
-	}		
-	private void addActionToMenu(Menu parent, IAction action) {
-		ActionContributionItem item = new ActionContributionItem(action);
-		item.fill(parent, -1);
-	}
-	public void dispose() {
-		// Menu should already be disposed, but this is a precaution
-		if (menu != null  && !menu.isDisposed())
-			menu.dispose();
-		menu = null;
-	}
-	public Menu getMenu(Control parent) {
-		return null;
-	}
-	public Menu getMenu(Menu parent) {
-		if (menu == null) {
-			menu = new Menu(parent);
-			addActionToMenu(menu, new ChangeDockAction(
-					PaletteMessages.LEFT_LABEL, PositionConstants.WEST));
-			addActionToMenu(menu, new ChangeDockAction(
-					PaletteMessages.RIGHT_LABEL, PositionConstants.EAST));
-		}
-		return menu;
-	}
-	protected void update() {
-		if (menu != null && !menu.isDisposed()) {
-			MenuItem[] items = menu.getItems();
-			for (int i = 0; i < items.length; i++) {
-				ActionContributionItem item = (ActionContributionItem)items[i].getData();
-				item.update();
-			}
-		}
-	}
-	private class ChangeDockAction extends Action {
-		private int position;
-		public ChangeDockAction(String text, int position) {
-			super(text, IAction.AS_RADIO_BUTTON);
-			this.position = position;
-		}
-		public boolean isChecked() {
-			return dock == position;
-		}
-		public void run() {
-			setDockLocation(position);
-		}
-	}
-}
-
 private class ResizeAction extends Action {
 	public ResizeAction() {
 		super(PaletteMessages.RESIZE_LABEL);
@@ -750,12 +703,16 @@ private class TitleDragManager
 			threshold = Integer.MAX_VALUE / 2;
 		else
 			threshold = -1;
-		final int switchThreshold = FlyoutPaletteComposite.this.getSize().x / 2;
+		final Composite flyout = FlyoutPaletteComposite.this;
+		final int switchThreshold = flyout.toDisplay(flyout.getSize().x / 2, 0).x;
 		Rectangle bounds = sash.getBounds();
 		if (paletteContainer.getVisible())
 			bounds = bounds.union(paletteContainer.getBounds());
+		Point converted = flyout.toDisplay(bounds.x, bounds.y);
+		bounds.x = converted.x;
+		bounds.y = converted.y;
 		final Rectangle origBounds = bounds;
-		final Tracker tracker = new Tracker(FlyoutPaletteComposite.this, SWT.NULL);
+		final Tracker tracker = new Tracker(Display.getDefault(), SWT.NULL);
 		tracker.setRectangles(new Rectangle[] {origBounds});
 		tracker.setStippled(true);
 		tracker.addListener(SWT.Move, new Listener() {
@@ -763,7 +720,7 @@ private class TitleDragManager
 				Display.getCurrent().syncExec(new Runnable() {
 					public void run() {
 						Control ctrl = Display.getCurrent().getCursorControl();
-						Point pt = FlyoutPaletteComposite.this.toControl(evt.x, evt.y); 
+						Point pt = new Point(evt.x, evt.y);
 						switchDock = isDescendantOf(graphicalControl, ctrl) 
 								&& ((dock == PositionConstants.WEST && pt.x > threshold - 10)
 								|| (dock == PositionConstants.EAST && pt.x < threshold + 10));
@@ -781,15 +738,17 @@ private class TitleDragManager
 						}
 						Rectangle placeHolder = origBounds;
 						if (switchDock) {
-							if (dock == PositionConstants.EAST) {
+							if (dock == PositionConstants.EAST)
 								placeHolder = new Rectangle(0, 0,
 										origBounds.width, origBounds.height);
-							} else {
-								placeHolder = new Rectangle(
-										FlyoutPaletteComposite.this.getBounds().width 
+							else
+								placeHolder = new Rectangle(flyout.getBounds().width 
 										- origBounds.width, 0, origBounds.width, 
 										origBounds.height);
-							}
+							Point converted = flyout.toDisplay(
+									placeHolder.x, placeHolder.y);
+							placeHolder.x = converted.x;
+							placeHolder.y = converted.y;
 						}
 						// update the cursor
 						Cursor cursor;
@@ -995,7 +954,8 @@ private static class TitleLabel extends Label {
 		super.paintFigure(graphics);
 		if (hasFocus())
 			graphics.drawFocus(0, 0, bounds.width - 1, bounds.height - 1);
-		org.eclipse.draw2d.geometry.Rectangle area = getBounds().getCopy().crop(super.getInsets());
+		org.eclipse.draw2d.geometry.Rectangle area = 
+				getBounds().getCropped(super.getInsets());
 		org.eclipse.draw2d.geometry.Rectangle textBounds = getTextBounds();
 		// We reduce the width by 1 because FigureUtilities grows it by 1 unnecessarily
 		textBounds.width--;
@@ -1180,15 +1140,18 @@ private class TitleCanvas extends Canvas {
 		setCursor(SharedCursors.SIZEALL);
 		new TitleDragManager(this);
 		final MenuManager manager = new MenuManager();
-		final IAction resizeAction = new ResizeAction(); 
-		final DockAction dockAction = new DockAction();
-		manager.add(resizeAction);
-		manager.add(dockAction);
+		MenuManager mgr = new MenuManager(PaletteMessages.DOCK_LABEL);
+		mgr.add(new ChangeDockAction(PaletteMessages.LEFT_LABEL, PositionConstants.WEST));
+		mgr.add(new ChangeDockAction(PaletteMessages.RIGHT_LABEL, PositionConstants.EAST));
+		manager.add(new ResizeAction());
+		manager.add(mgr);
 		setMenu(manager.createContextMenu(this));
-		manager.addMenuListener(new IMenuListener() {
-			public void menuAboutToShow(IMenuManager mgr) {
-				resizeAction.setEnabled(resizeAction.isEnabled());
-				dockAction.update();
+		mgr.addMenuListener(new IMenuListener() {
+			public void menuAboutToShow(IMenuManager menuMgr) {
+				IContributionItem[] items = menuMgr.getItems();
+				for (int i = 0; i < items.length; i++) {
+					((ActionContributionItem)items[i]).update();
+				}
 			}
 		});
 		
@@ -1216,6 +1179,20 @@ private class TitleCanvas extends Canvas {
 				e.detail = ACC.ROLE_SLIDER;
 			}
 		});
+	}
+}
+
+private class ChangeDockAction extends Action {
+	private int position;
+	public ChangeDockAction(String text, int position) {
+		super(text, IAction.AS_RADIO_BUTTON);
+		this.position = position;
+	}
+	public boolean isChecked() {
+		return dock == position;
+	}
+	public void run() {
+		setDockLocation(position);
 	}
 }
 
