@@ -39,8 +39,8 @@ public class ResizeFontContributionItem
 	extends ContributionItem
 {
 
-private static final String[] INIT_SIZES = new String[] {"8", "9", "10", "11", "12", 
-		"14", "16", "18", "20", "22", "24", "26", "28", "36", "48", "72"};
+private static final String[] INIT_SIZES = new String[] {"8", "9", "10", "11",
+		"12", "14", "16", "18", "20", "22", "24", "26", "28", "36", "48", "72"};
 private Combo combo;
 private ToolItem toolItem;
 private StyleService styleService;
@@ -101,7 +101,6 @@ protected Control createControl(Composite parent) {
 	
 	// Initialize width of combo
 	combo.setItems(INIT_SIZES);
-	combo.setEnabled(false);
 	toolItem.setWidth(combo.computeSize(SWT.DEFAULT, SWT.DEFAULT, true).x);
 	refresh();
 	return combo;
@@ -146,20 +145,18 @@ protected void handleWidgetSelected(SelectionEvent e) {
 }
 
 protected void refresh() {
-	if (combo == null || styleService == null)
+	if (combo == null)
 		return;
 	
 	boolean enablement = true;
-	if (!styleService.getStyleState(GEFActionConstants.STYLE_FONT_SIZE)
-			.equals(StyleService.STATE_EDITABLE)) {
-		// we want the combo disabled, but still want to update the font size
+	if (styleService == null)
 		enablement = false;
-	}
-	Object style = styleService.getStyle(GEFActionConstants.STYLE_FONT_SIZE);
-	if (StyleService.UNDEFINED.equals(style)) {
-		combo.setText("");
-		enablement = false;
-	} else {
+	else {
+		if (!styleService.getStyleState(GEFActionConstants.STYLE_FONT_SIZE)
+				.equals(StyleService.STATE_EDITABLE))
+			// we want the combo disabled, but still want to update the font size
+			enablement = false;
+		Object style = styleService.getStyle(GEFActionConstants.STYLE_FONT_SIZE);
 		String size = style.toString();
 		if (StyleService.UNDEFINED.equals(style))
 			size = "";
