@@ -140,8 +140,7 @@ public void removeLayer(IFigure layer) {
  */
 protected void removeLayer(int index) {
 	Layer removeLayer = getLayer(index);
-	remove(removeLayer);
-	layerKeys.remove(index);	 	
+	remove(removeLayer);	 	
 }
 
 }
