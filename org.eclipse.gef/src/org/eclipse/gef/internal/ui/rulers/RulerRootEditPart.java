@@ -13,10 +13,12 @@ package org.eclipse.gef.internal.ui.rulers;
 import java.beans.PropertyChangeEvent;
 
 import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.geometry.*;
+import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.*;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
+import org.eclipse.gef.editparts.ViewportAutoexposeHelper;
 
 /**
  * @author Pratik Shah
@@ -41,16 +43,25 @@ protected void addChildVisual(EditPart childEditPart, int index) {
 }
 
 /* (non-Javadoc)
+ * @see org.eclipse.gef.editparts.AbstractEditPart#createEditPolicies()
+ */
+protected void createEditPolicies() {
+}
+
+/* (non-Javadoc)
  * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
  */
 protected IFigure createFigure() {
 	return new RulerViewport(horizontal);
 }
 
-/* (non-Javadoc)
- * @see org.eclipse.gef.editparts.AbstractEditPart#createEditPolicies()
+/**
+ * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
  */
-protected void createEditPolicies() {
+public Object getAdapter(Class adapter) {
+	if (adapter == AutoexposeHelper.class)
+		return new ViewportAutoexposeHelper(this);
+	return super.getAdapter(adapter);
 }
 
 /* (non-Javadoc)
@@ -153,6 +164,22 @@ public class RulerViewport extends Viewport {
 		// since the range model is shared with the editor, the ruler viewports should
 		// not touch it
 	}
+	protected void paintBorder(Graphics graphics) {
+		super.paintBorder(graphics);
+		if (((RulerFigure)getContents()).getDrawFocus()) {
+			Rectangle focusBounds = getBounds().getCopy();
+			if (((RulerFigure)getContents()).isHorizontal()) {
+				focusBounds.resize(-2, -4);
+				focusBounds.x++;
+			} else {
+				focusBounds.resize(-4, -2);
+				focusBounds.y++;
+			}
+			graphics.setForegroundColor(ColorConstants.black);
+			graphics.setBackgroundColor(ColorConstants.white);
+			graphics.drawFocus(focusBounds);
+		}
+	}
 	public void propertyChange(PropertyChangeEvent event) {
 		if (this.getContents() != null && event.getSource() instanceof RangeModel) {
 			String property = event.getPropertyName();
@@ -164,7 +191,9 @@ public class RulerViewport extends Viewport {
 	public void setContents(IFigure figure) {
 		super.setContents(figure);
 		// Need to layout when contents change
-		doLayout(true);
+		if (this.getContents() != null) {
+			doLayout(true);
+		}
 	}
 	protected boolean useLocalCoordinates() {
 		return true;
