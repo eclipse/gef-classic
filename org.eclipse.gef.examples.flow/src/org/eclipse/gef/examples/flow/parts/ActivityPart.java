@@ -8,11 +8,14 @@ import java.util.Map;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.GraphicalEditPart;
+import org.eclipse.gef.Request;
+import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
 import org.eclipse.gef.examples.flow.model.Activity;
 import org.eclipse.gef.examples.flow.model.FlowElement;
 import org.eclipse.gef.examples.flow.policies.*;
+import org.eclipse.gef.tools.DirectEditManager;
 import org.eclipse.draw2d.graph.*;
 
 /**
@@ -23,6 +26,8 @@ public abstract class ActivityPart
 	extends AbstractGraphicalEditPart
 	implements PropertyChangeListener 
 {
+
+protected DirectEditManager manager;
 
 /**
  * @see org.eclipse.gef.EditPart#activate()
@@ -95,6 +100,17 @@ protected List getModelSourceConnections() {
  */
 protected List getModelTargetConnections() {
 	return getActivity().getIncomingTransitions();
+}
+
+protected void performDirectEdit() {
+}
+
+/**
+ * @see org.eclipse.gef.EditPart#performRequest(org.eclipse.gef.Request)
+ */
+public void performRequest(Request request) {
+	if (request.getType() == RequestConstants.REQ_DIRECT_EDIT)
+		performDirectEdit();
 }
 
 /**

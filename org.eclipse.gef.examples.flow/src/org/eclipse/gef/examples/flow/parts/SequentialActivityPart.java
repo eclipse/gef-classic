@@ -28,6 +28,7 @@ protected void createEditPolicies() {
 		EditPolicy.SELECTION_FEEDBACK_ROLE,
 		new ActivityContainerHighlightEditPolicy());
 	installEditPolicy(EditPolicy.LAYOUT_ROLE, new SequentialActivityLayoutEditPolicy());
+	installEditPolicy(EditPolicy.DIRECT_EDIT_ROLE, new StructuredActivityDirectEditPolicy());
 }
 
 /**

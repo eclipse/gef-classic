@@ -2,16 +2,19 @@ package org.eclipse.gef.examples.flow.parts;
 
 import java.util.Map;
 
-import org.eclipse.draw2d.graph.*;
-
-import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.AbstractConnectionAnchor;
+import org.eclipse.draw2d.ChopboxAnchor;
+import org.eclipse.draw2d.ConnectionAnchor;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.geometry.Point;
-
-import org.eclipse.gef.*;
-import org.eclipse.gef.tools.DirectEditManager;
-
+import org.eclipse.draw2d.graph.CompoundDirectedGraph;
+import org.eclipse.draw2d.graph.Node;
+import org.eclipse.draw2d.graph.Subgraph;
+import org.eclipse.gef.ConnectionEditPart;
+import org.eclipse.gef.NodeEditPart;
+import org.eclipse.gef.Request;
 import org.eclipse.gef.examples.flow.FlowImages;
-
 import org.eclipse.jface.viewers.TextCellEditor;
 
 /**
@@ -19,8 +22,6 @@ import org.eclipse.jface.viewers.TextCellEditor;
  * Created on Jul 17, 2003
  */
 public class SimpleActivityPart extends ActivityPart implements NodeEditPart {
-
-private DirectEditManager manager;
 
 public void contributeNodesToGraph(CompoundDirectedGraph graph, Subgraph s, Map map) {
 	Node n = new Node(this, s);
@@ -87,22 +88,16 @@ public ConnectionAnchor getTargetConnectionAnchor(Request request) {
 	return new ChopboxAnchor(getFigure());
 }
 
-private void performDirectEdit() {
-	if (manager == null)
+protected void performDirectEdit() {
+	if (manager == null) {
+		Label l = (Label)getFigure();
 		manager =
 			new ActivityDirectEditManager(
 				this,
 				TextCellEditor.class,
-				new ActivityCellEditorLocator((Label) getFigure()));
+				new ActivityCellEditorLocator(l), l);
+	}
 	manager.show();
-}
-
-/**
- * @see org.eclipse.gef.EditPart#performRequest(org.eclipse.gef.Request)
- */
-public void performRequest(Request request) {
-	if (request.getType() == RequestConstants.REQ_DIRECT_EDIT)
-		performDirectEdit();
 }
 
 /**

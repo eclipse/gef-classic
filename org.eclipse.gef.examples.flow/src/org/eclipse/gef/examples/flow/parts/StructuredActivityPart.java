@@ -10,8 +10,10 @@ import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
 
 import org.eclipse.gef.examples.flow.figures.StartTag;
 import org.eclipse.gef.examples.flow.figures.SubgraphFigure;
+import org.eclipse.gef.examples.flow.model.Activity;
 import org.eclipse.gef.examples.flow.model.StructuredActivity;
 import org.eclipse.gef.examples.flow.policies.*;
+import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.draw2d.graph.CompoundDirectedGraph;
 import org.eclipse.draw2d.graph.Subgraph;
 
@@ -48,7 +50,8 @@ protected void createEditPolicies() {
 	installEditPolicy(
 		EditPolicy.SELECTION_FEEDBACK_ROLE,
 		new ActivityContainerHighlightEditPolicy());
-	installEditPolicy(EditPolicy.CONTAINER_ROLE, new ActivityContainerEditPolicy());	
+	installEditPolicy(EditPolicy.CONTAINER_ROLE, new ActivityContainerEditPolicy());
+	installEditPolicy(EditPolicy.DIRECT_EDIT_ROLE, new StructuredActivityDirectEditPolicy());
 }
 
 public void contributeNodesToGraph(CompoundDirectedGraph graph, Subgraph s, Map map) {
@@ -64,7 +67,8 @@ public void contributeNodesToGraph(CompoundDirectedGraph graph, Subgraph s, Map 
 }
 
 protected IFigure createFigure() {
-	Figure f = new SubgraphFigure(new StartTag(), new StartTag());
+	String name = ((Activity)getModel()).getName();
+	Figure f = new SubgraphFigure(new StartTag(name), new StartTag(name));
 	f.setOpaque(true);
 	f.setBorder(new LineBorder());
 	return f;
@@ -115,6 +119,27 @@ public ConnectionAnchor getTargetConnectionAnchor(Request request) {
 	return new ChopboxAnchor(getFigure());
 }
 
-protected void refreshVisuals() {}
+/**
+ * @see org.eclipse.gef.examples.flow.parts.ActivityPart#performDirectEdit()
+ */
+protected void performDirectEdit() {
+	if (manager == null) {
+		Label l = ((StartTag)((SubgraphFigure) getFigure()).getHeader());
+		manager =
+			new ActivityDirectEditManager(
+				this,
+				TextCellEditor.class,
+				new ActivityCellEditorLocator(l),l);
+	}
+	manager.show();
+}
+
+/**
+ * @see org.eclipse.gef.editparts.AbstractEditPart#refreshVisuals()
+ */
+protected void refreshVisuals() {
+	((StartTag)((SubgraphFigure)getFigure()).getHeader()).setText(getActivity().getName());
+	((StartTag)((SubgraphFigure)getFigure()).getFooter()).setText(getActivity().getName());
+}
 
 }

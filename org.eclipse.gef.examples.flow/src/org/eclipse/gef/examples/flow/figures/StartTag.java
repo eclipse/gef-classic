@@ -12,9 +12,13 @@ import org.eclipse.gef.examples.flow.FlowImages;
  */
 public class StartTag extends Label {
 
-{
+/**
+ * Creates a new StartTag
+ * @param name the text to display in this StartTag
+ */
+public StartTag(String name) {
 	setIconTextGap(8);
-	setText("StartTag");
+	setText(name);
 	setIcon(FlowImages.gear);
 }
 

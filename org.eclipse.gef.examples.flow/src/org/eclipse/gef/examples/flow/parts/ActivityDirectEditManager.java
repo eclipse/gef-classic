@@ -31,7 +31,8 @@ import org.eclipse.swt.widgets.Text;
 public class ActivityDirectEditManager extends DirectEditManager {
 
 Font scaledFont;
-private VerifyListener verifyListener;
+protected VerifyListener verifyListener;
+protected Label activityLabel;
 
 /**
  * Creates a new ActivityDirectEditManager with the given attributes.
@@ -40,8 +41,9 @@ private VerifyListener verifyListener;
  * @param locator the CellEditorLocator
  */
 public ActivityDirectEditManager(GraphicalEditPart source, Class editorType,
-									CellEditorLocator locator) {
+									CellEditorLocator locator, Label label) {
 	super(source, editorType, locator);
+	activityLabel = label;
 }
 
 /**
@@ -77,15 +79,14 @@ protected void initCellEditor() {
 		}
 	};
 	text.addVerifyListener(verifyListener);
-
-	Label label = (Label)((GraphicalEditPart)getEditPart()).getFigure();
-	String initialLabelText = label.getText();
+	
+	String initialLabelText = activityLabel.getText();
 	getCellEditor().setValue(initialLabelText);
 	IFigure figure = ((GraphicalEditPart)getEditPart()).getFigure();
 	scaledFont = figure.getFont();
 	FontData data = scaledFont.getFontData()[0];
 	Dimension fontSize = new Dimension(0, data.getHeight());
-	label.translateToAbsolute(fontSize);
+	activityLabel.translateToAbsolute(fontSize);
 	data.setHeight(fontSize.height);
 	scaledFont = new Font(null, data);
 	

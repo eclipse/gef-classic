@@ -79,11 +79,18 @@ protected IFigure createFigure() {
 	f.setLayoutManager(new GraphLayoutManager());
 	return f;
 }
+
 /**
  * @see org.eclipse.gef.editparts.AbstractEditPart#isSelectable()
  */
 public boolean isSelectable() {
 	return false;
+}
+
+/**
+ * @see org.eclipse.gef.examples.flow.parts.StructuredActivityPart#refreshVisuals()
+ */
+protected void refreshVisuals() {
 }
 
 }
