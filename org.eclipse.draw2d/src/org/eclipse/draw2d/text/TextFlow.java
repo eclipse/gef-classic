@@ -23,6 +23,7 @@ public class TextFlow
 	extends InlineFlow
 {
 
+static final String ELLIPSIS = "..."; //$NON-NLS-1$
 private String text;
 
 /**
@@ -78,7 +79,7 @@ protected void paintFigure(Graphics g) {
 				frag.x, frag.y);
 		else
 			g.drawString(
-				text.substring(frag.offset, frag.offset + frag.length) + "...", //$NON-NLS-1$
+				text.substring(frag.offset, frag.offset + frag.length) + ELLIPSIS,
 				frag.x, frag.y);
 //		g.drawRectangle(frag);
 	}

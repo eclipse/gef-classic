@@ -90,7 +90,7 @@ public static int getTextForSpace(TextFragmentBox frag, String string, Font font
 			if (min == string.length())
 				result = min;
 			else
-				result = breakItr.preceding(Math.min(max + 1, string.length()-1));
+				result = breakItr.preceding(Math.min(max + 1, string.length() - 1));
 			if (result <= 0)
 				result = min;
 			frag.length = result;
@@ -103,10 +103,9 @@ public static int getTextForSpace(TextFragmentBox frag, String string, Font font
 					return result;
 				min -= 1;
 			}
-			result = breakItr.preceding(Math.min(max + 1, string.length()-1));
+			result = breakItr.preceding(Math.min(max + 1, string.length() - 1));
 			if (result <= 0) {
-				String ELLIPSIS = "..."; //$NON-NLS-1$
-				ELLIPSIS_SIZE = FigureUtilities.getStringExtents(ELLIPSIS, font);
+				ELLIPSIS_SIZE = FigureUtilities.getStringExtents(TextFlow.ELLIPSIS, font);
 				getTextForSpace(
 					frag,
 					string,
