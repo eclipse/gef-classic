@@ -29,6 +29,7 @@ private static int count;
 
 public LogicLabel() {
 	super();
+	size.width = 50;
 }
 
 public String getLabelContents(){
@@ -44,7 +45,12 @@ protected String getNewID() {
 }
 
 public Dimension getSize(){
-	return new Dimension(-1, -1);
+	return new Dimension(size.width, -1);
+}
+
+public void setSize(Dimension d) {
+	d.height = -1;
+	super.setSize(d);
 }
 
 public void setLabelContents(String s){
@@ -58,5 +64,8 @@ public String toString() {
 					                + LogicMessages.PropertyDescriptor_Label_Text  
 					                + "=" + getLabelContents(); //$NON-NLS-1$ 
 }
+
+
+
 
 }
