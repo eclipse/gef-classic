@@ -23,7 +23,9 @@ public class GridLayer
 	extends FreeformLayer 
 {
 
-protected int gapX = SnapToGrid.DEFAULT_GAP, gapY = gapX;
+protected int gridX = SnapToGrid.DEFAULT_GRID_SIZE;
+protected int gridY = SnapToGrid.DEFAULT_GRID_SIZE;
+
 protected Point origin = new Point();
 
 public GridLayer() {
@@ -53,7 +55,7 @@ protected void paintFigure(Graphics graphics) {
  * @param	g	The Graphics object to be used to do the painting 
  */
 protected void paintGrid(Graphics g) {
-	FigureUtilities.paintGrid(g, this, origin, gapX, gapY);
+	FigureUtilities.paintGrid(g, this, origin, gridX, gridY);
 }
 
 public void setOrigin(Point p) {
@@ -64,9 +66,9 @@ public void setOrigin(Point p) {
 }
 
 public void setSpacing(Dimension spacing) {
-	if (spacing != null && !spacing.equals(gapX, gapY)) {
-		gapX = spacing.width != 0 ? spacing.width : gapX;
-		gapY = spacing.height != 0 ? spacing.height : gapY;
+	if (!spacing.equals(gridX, gridY)) {
+		gridX = spacing.width != 0 ? spacing.width : gridX;
+		gridY = spacing.height != 0 ? spacing.height : gridY;
 		repaint();
 	}
 }
