@@ -97,20 +97,21 @@ public void layout(IFigure figure) {
 	int wHint = viewport.getContentsTracksWidth() ? hints.width : -1;
 	int hHint = viewport.getContentsTracksHeight() ? hints.height : -1;
 	
-	Dimension avail = viewport.getClientArea().getSize();
-
+	Dimension newSize = viewport.getClientArea().getSize();
 	Dimension min = contents.getMinimumSize(wHint, hHint);
+	Dimension pref = contents.getPreferredSize(wHint, hHint);
 	
-	if (viewport.getContentsTracksHeight()) {
-		hHint = Math.max(min.height, avail.height);
-	}
-	if (viewport.getContentsTracksWidth()) {
-		wHint = Math.max(min.width, avail.width);
-	}
+	if (viewport.getContentsTracksHeight())
+		newSize.height = Math.max(newSize.height, min.height);
+	else
+		newSize.height = Math.max(newSize.height, pref.height);
 
-	Dimension size = avail.getUnioned(contents.getPreferredSize(wHint, hHint));
-
-	contents.setBounds(new Rectangle(p, size));
+	if (viewport.getContentsTracksWidth())
+		newSize.width = Math.max(newSize.width, min.width);
+	else
+		newSize.width = Math.max(newSize.width, pref.width);
+	
+	contents.setBounds(new Rectangle(p, newSize));
 }
 
 }
