@@ -79,8 +79,7 @@ protected int getCurrentPosition() {
 	int position = getCurrentPositionZoomed();
 	ZoomManager zoomManager = source.getZoomManager();
 	if (zoomManager != null) {
-		position = (int)Math.round(
-				position * (zoomManager.getUIMultiplier() / zoomManager.getZoom()));
+		position = (int)Math.round(position / zoomManager.getZoom());
 	}
 	return position;
 }

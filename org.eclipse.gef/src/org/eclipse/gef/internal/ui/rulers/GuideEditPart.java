@@ -14,7 +14,6 @@ import org.eclipse.swt.graphics.Cursor;
 
 import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.*;
 import org.eclipse.gef.editparts.*;
@@ -157,9 +156,9 @@ public RulerProvider getRulerProvider() {
 public int getZoomedPosition() {
 	double position = getRulerProvider().getGuidePosition(getModel());
 	if (zoomManager != null) {
-		position *= (zoomManager.getZoom() / zoomManager.getUIMultiplier());
+		position = Math.round(position * zoomManager.getZoom());
 	}	
-	return (int)Math.round(position);
+	return (int)position;
 }
 
 public ZoomManager getZoomManager() {

@@ -71,8 +71,7 @@ public Command getCommand(Request request) {
 		if (isMoveValid(getGuideEditPart().getZoomedPosition() + pDelta)) {
 			ZoomManager zoomManager = getGuideEditPart().getZoomManager();
 			if (zoomManager != null) {
-				pDelta *= (zoomManager.getUIMultiplier() 
-						/ zoomManager.getZoom());				
+				pDelta = (int)Math.round(pDelta / zoomManager.getZoom());				
 			}
 			cmd = getGuideEditPart().getRulerProvider()
 					.getMoveGuideCommand(getHost().getModel(), pDelta);			
@@ -124,7 +123,7 @@ protected boolean isMoveValid(int zoomedPosition) {
 	ZoomManager zoomManager = getGuideEditPart().getZoomManager();
 	int position = zoomedPosition;
 	if (zoomManager != null) {
-		position *= (zoomManager.getUIMultiplier() / zoomManager.getZoom());
+		position = (int)Math.round(position / zoomManager.getZoom());
 	}
 	Iterator guides = getGuideEditPart().getRulerProvider().getGuides().iterator();
 	while (guides.hasNext()) {
