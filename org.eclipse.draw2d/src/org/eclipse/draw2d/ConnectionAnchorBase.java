@@ -9,10 +9,8 @@ package org.eclipse.draw2d;
 import java.util.*;
 
 /**
- * Provides support for a connection anchor. A connection
- * anchor is one of the end points of a {@link Connection connection}.
- * It holds listeners and notifies them if the anchor
- * is moved.
+ * Provides support for a ConnectionAnchor. A ConnectionAnchor is one of the end points
+ * of a {@link Connection}. It holds listeners and notifies them if the anchor is moved.
  */
 public abstract class ConnectionAnchorBase
 	implements ConnectionAnchor
@@ -23,18 +21,19 @@ public abstract class ConnectionAnchorBase
  */
 protected List listeners = new ArrayList(1);
 
+/** * @see org.eclipse.draw2d.ConnectionAnchor#addAnchorListener(AnchorListener) */
 public void addAnchorListener(AnchorListener listener) {
 	listeners.add(listener);
 }
 
+/** * @see org.eclipse.draw2d.ConnectionAnchor#removeAnchorListener(AnchorListener) */
 public void removeAnchorListener(AnchorListener listener) {
 	listeners.remove(listener);
 }
 
 /** 
- * Notifies all the listeners in the list of a change in 
- * position of this anchor. This is called from one of the
- * implementing anchors, when its location is changed.
+ * Notifies all the listeners in the list of a change in position of this anchor. This is
+ * called from one of the implementing anchors when its location is changed.
  * 
  * @since 2.0
  */
