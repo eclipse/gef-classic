@@ -48,6 +48,12 @@ private Listener layoutListener;
 private PropertyChangeListener propertyListener;
 private boolean layingOut = false;
 private boolean isRulerVisible = true;
+private boolean needToLayout = false;
+private Runnable runnable = new Runnable() {
+	public void run() {
+		layout(false);
+	}
+};
 
 public RulerComposite(Composite parent, int style) {
 	super(parent, style);
@@ -59,70 +65,19 @@ public RulerComposite(Composite parent, int style) {
 }
 
 private GraphicalViewer createRulerContainer(int orientation) {
+	ScrollingGraphicalViewer viewer = new RulerViewer();
 	final boolean isHorizontal = orientation == PositionConstants.NORTH 
 			|| orientation == PositionConstants.SOUTH;
-	ScrollingGraphicalViewer viewer = new ScrollingGraphicalViewer() {
-		public void appendSelection(EditPart editpart) {
-			if (editpart instanceof RootEditPart)
-				editpart = ((RootEditPart)editpart).getContents();
-			setFocus(editpart);
-			super.appendSelection(editpart);
-		}
-		public Handle findHandleAt(org.eclipse.draw2d.geometry.Point p) {
-			final GraphicalEditPart gep = 
-					(GraphicalEditPart)findObjectAtExcluding(p, new ArrayList());
-			if (gep == null || !(gep instanceof GuideEditPart))
-				return null;
-			return new Handle() {
-				public DragTracker getDragTracker() {
-					return ((GuideEditPart)gep).getDragTracker(null);
-				}
-				public org.eclipse.draw2d.geometry.Point getAccessibleLocation() {
-					return null;
-				}
-			};
-		}
-		public void reveal(EditPart part) {
-			// there's no need to reveal rulers (that causes undesired scrolling to
-			// the origin of the ruler)
-			if (part != getContents())
-				super.reveal(part);
-		}
-		public void setContents(EditPart editpart) {
-			super.setContents(editpart);
-			setFocus(getContents());
-		}
-	};
+
+	// Finish initializing the viewer
 	viewer.setRootEditPart(new RulerRootEditPart(isHorizontal));
 	viewer.setEditPartFactory(new RulerEditPartFactory(diagramViewer));
 	viewer.createControl(this);
-	viewer.setKeyHandler(new GraphicalViewerKeyHandler(viewer) {
-		public boolean keyPressed(KeyEvent event) {
-			if (event.keyCode == SWT.DEL) {
-				if (getFocusEditPart() instanceof GuideEditPart) {
-					RulerEditPart parent = (RulerEditPart)getFocusEditPart().getParent();
-					getViewer().getEditDomain().getCommandStack().execute(
-							parent.getRulerProvider().getDeleteGuideCommand(
-							getFocusEditPart().getModel()));
-					event.doit = false;
-					return true;
-				} else {
-					return false;
-				}
-			} else if (((event.stateMask & SWT.ALT) != 0) 
-					&& (event.keyCode == SWT.ARROW_UP)) {
-				// ALT + UP_ARROW pressed
-				EditPart parent = getFocusEditPart().getParent();
-				if (parent instanceof RulerEditPart)
-					navigateTo(getFocusEditPart().getParent(), event);
-				return true;
-			}
-			return super.keyPressed(event);
-		}
-	});
 	((GraphicalEditPart)viewer.getRootEditPart()).getFigure()
 			.setBorder(new RulerBorder(isHorizontal));
 	viewer.setProperty(GraphicalViewer.class.toString(), diagramViewer);
+	
+	// Configure the viewer's control
 	FigureCanvas canvas = (FigureCanvas)viewer.getControl();
 	canvas.setScrollBarVisibility(FigureCanvas.NEVER);
 	if (font == null) {
@@ -140,28 +95,50 @@ private GraphicalViewer createRulerContainer(int orientation) {
 		canvas.getViewport().setVerticalRangeModel(
 				editor.getViewport().getVerticalRangeModel());
 	}
-	viewer.setContextMenu(new RulerContextMenuProvider(viewer));
-	
+
+	// Add the viewer to the rulerEditDomain
 	if (rulerEditDomain == null) {
 		rulerEditDomain = new EditDomain();
 		rulerEditDomain.setCommandStack(diagramViewer.getEditDomain().getCommandStack());
 	}
 	rulerEditDomain.addViewer(viewer);
+	
 	return viewer;
 }
 
 private void disposeResources() {
-	if (diagramViewer != null) {
+	if (diagramViewer != null)
 		diagramViewer.removePropertyChangeListener(propertyListener);
-	}
-	if (font != null) {
+	if (font != null)
 		font.dispose();
-	}
 	// layoutListener is not being removed from the scroll bars because they are already
 	// disposed at this point.
 }
 
+private void disposeRulerViewer(GraphicalViewer viewer) {
+	if (viewer == null)
+		return;
+	/*
+	 * There's a tie from the editor's range model to the RulerViewport (via a listener) 
+	 * to the RulerRootEditPart to the RulerViewer.  Break this tie so that the viewer 
+	 * doesn't leak and can be garbage collected.
+	 */
+	RangeModel rModel = new DefaultRangeModel();
+	Viewport port = ((FigureCanvas)viewer.getControl()).getViewport();
+	port.setHorizontalRangeModel(rModel);
+	port.setVerticalRangeModel(rModel);
+	rulerEditDomain.removeViewer(viewer);
+	viewer.getControl().dispose();
+}
+
 private void doLayout() {
+	if (left == null && top == null) {
+		Rectangle area = getClientArea();
+		if (!editor.getBounds().equals(area))
+			editor.setBounds(area);
+		return;
+	}
+	
 	int leftWidth, rightWidth, topHeight, bottomHeight;
 	leftWidth = left == null ? 0 
 			: left.getControl().computeSize(SWT.DEFAULT, SWT.DEFAULT).x;
@@ -172,28 +149,30 @@ private void doLayout() {
 
 	Point size = getSize();
 	Point editorSize = new Point(size.x - (leftWidth + rightWidth), 
-						   size.y - (topHeight + bottomHeight));
-	if (!editor.getSize().equals(editorSize)) {
+			   size.y - (topHeight + bottomHeight));
+	if (!editor.getSize().equals(editorSize))
 		editor.setSize(editorSize);		
-	}
 	Point editorLocation = new Point(leftWidth, topHeight);
-	if (!editor.getLocation().equals(editorLocation)) {
+	if (!editor.getLocation().equals(editorLocation))
 		editor.setLocation(editorLocation);
-	}
 
 	int vBarWidth = 0, hBarHeight = 0;
-	if (editor.getVerticalBar().getVisible()) {
+	if (editor.getVerticalBar().getVisible())
 		vBarWidth = editor.computeTrim(0, 0, 0, 0).width;
-	}
-	if (editor.getHorizontalBar().getVisible()) {
+	if (editor.getHorizontalBar().getVisible())
 		hBarHeight = editor.computeTrim(0, 0, 0, 0).height;
-	}
 	
 	if (left != null) {
-		left.getControl().setBounds(0, topHeight - 1, leftWidth, editorSize.y - hBarHeight);
+		Rectangle leftBounds = new Rectangle(
+				0, topHeight - 1, leftWidth, editorSize.y - hBarHeight);
+		if (!left.getControl().getBounds().equals(leftBounds))
+			left.getControl().setBounds(leftBounds);
 	}
 	if (top != null) {
-		top.getControl().setBounds(leftWidth - 1, 0, editorSize.x - vBarWidth, topHeight);
+		Rectangle topBounds = new Rectangle(
+				leftWidth - 1, 0, editorSize.x - vBarWidth, topHeight);
+		if (!top.getControl().getBounds().equals(topBounds))
+			top.getControl().setBounds(topBounds);
 	}
 }
 
@@ -201,15 +180,9 @@ private GraphicalViewer getRulerContainer(int orientation) {
 	GraphicalViewer result = null;
 	switch(orientation) {
 		case PositionConstants.NORTH:
-			if (top == null) {
-				top = createRulerContainer(orientation);
-			}
 			result = top;
 			break;
 		case PositionConstants.WEST:
-			if (left == null) {
-				left = createRulerContainer(orientation);
-			}
 			result = left;
 	}
 	return result;
@@ -221,9 +194,12 @@ private GraphicalViewer getRulerContainer(int orientation) {
 public void layout(boolean change) {
 	if (!layingOut && !isDisposed()) {
 		checkWidget();
-		layingOut = true;
-		doLayout();	
-		layingOut = false;
+		if (change || needToLayout) {
+			needToLayout = false;
+			layingOut = true;
+			doLayout();	
+			layingOut = false;			
+		}
 	}
 }
 
@@ -233,8 +209,8 @@ public void layout(boolean change) {
  * only be invoked once.
  * <p>
  * To create ruler(s), simply add the RulerProvider(s) (with the right key: 
- * RulerProvider.PROPERTY_HORIZONTAL_RULER or RulerProvider.PROPERTY_VERTICAL_RULER) as a property on the viewer (it
- * can be done after this method is invoked).
+ * RulerProvider.PROPERTY_HORIZONTAL_RULER or RulerProvider.PROPERTY_VERTICAL_RULER) 
+ * as a property on the viewer (it can be done after this method is invoked).
  * 
  * @param	primaryViewer	The GraphicalViewer for which the rulers have to be created.
  */
@@ -251,7 +227,10 @@ public void setGraphicalViewer(ScrollingGraphicalViewer primaryViewer) {
 	// is resized
 	layoutListener = new Listener() {
 		public void handleEvent(Event event) {
-			layout(true);
+			if (!layingOut) {
+				needToLayout = true;
+				Display.getCurrent().asyncExec(runnable);
+			}
 		}
 	};
 	addListener(SWT.Resize, layoutListener);
@@ -264,14 +243,16 @@ public void setGraphicalViewer(ScrollingGraphicalViewer primaryViewer) {
 		public void propertyChange(PropertyChangeEvent evt) {
 			String property = evt.getPropertyName();
 			if (RulerProvider.PROPERTY_HORIZONTAL_RULER.equals(property)) {
-				setRuler((RulerProvider)diagramViewer.getProperty(RulerProvider.PROPERTY_HORIZONTAL_RULER), 
+				setRuler((RulerProvider)diagramViewer
+						.getProperty(RulerProvider.PROPERTY_HORIZONTAL_RULER), 
 					PositionConstants.NORTH);
 			} else if (RulerProvider.PROPERTY_VERTICAL_RULER.equals(property)) {
-				setRuler((RulerProvider)diagramViewer.getProperty(RulerProvider.PROPERTY_VERTICAL_RULER),
+				setRuler((RulerProvider)diagramViewer
+						.getProperty(RulerProvider.PROPERTY_VERTICAL_RULER),
 					PositionConstants.WEST);
 			} else if (RulerProvider.PROPERTY_RULER_VISIBILITY.equals(property))
-				setRulerVisibility(((Boolean)diagramViewer
-						.getProperty(RulerProvider.PROPERTY_RULER_VISIBILITY)).booleanValue());
+				setRulerVisibility(((Boolean)diagramViewer.getProperty(
+						RulerProvider.PROPERTY_RULER_VISIBILITY)).booleanValue());
 		}
 	};
 	diagramViewer.addPropertyChangeListener(propertyListener);
@@ -279,25 +260,49 @@ public void setGraphicalViewer(ScrollingGraphicalViewer primaryViewer) {
 			.getProperty(RulerProvider.PROPERTY_RULER_VISIBILITY);
 	if (rulerVisibility != null)
 		setRulerVisibility(rulerVisibility.booleanValue());
-	setRuler((RulerProvider)diagramViewer.getProperty(RulerProvider.PROPERTY_HORIZONTAL_RULER), 
-			PositionConstants.NORTH);
-	setRuler((RulerProvider)diagramViewer.getProperty(RulerProvider.PROPERTY_VERTICAL_RULER), 
-			PositionConstants.WEST);
+	setRuler((RulerProvider)diagramViewer.getProperty(
+			RulerProvider.PROPERTY_HORIZONTAL_RULER), PositionConstants.NORTH);
+	setRuler((RulerProvider)diagramViewer.getProperty(
+			RulerProvider.PROPERTY_VERTICAL_RULER), PositionConstants.WEST);
 }
 
 private void setRuler(RulerProvider provider, int orientation) {
 	Object ruler = null;
-	if (isRulerVisible && provider != null) {
+	if (isRulerVisible && provider != null)
+		// provider.getRuler() might return null (at least the API does not prevent that)
 		ruler = provider.getRuler();
+	
+	if (ruler == null) {
+		// Ruler is not visible or is not present
+		setRulerContainer(null, orientation);
+		// Layout right-away to prevent an empty control from showing
+		layout(true);
+		return;
 	}
+	
 	GraphicalViewer container = getRulerContainer(orientation);
+	if (container == null) {
+		container = createRulerContainer(orientation);
+		setRulerContainer(container, orientation);
+	}
 	if (container.getContents() != ruler) {
 		container.setContents(ruler);
-		Display.getCurrent().asyncExec(new Runnable() {
-			public void run() {
-				layout(true);
-			}
-		});
+		needToLayout = true;
+		Display.getCurrent().asyncExec(runnable);
+	}
+}
+
+private void setRulerContainer(GraphicalViewer container, int orientation) {
+	if (orientation == PositionConstants.NORTH) {
+		if (top == container)
+			return;
+		disposeRulerViewer(top);
+		top = container;		
+	} else if (orientation == PositionConstants.WEST) {
+		if (left == container)
+			return;
+		disposeRulerViewer(left);
+		left = container;		
 	}
 }
 
@@ -313,7 +318,7 @@ private void setRulerVisibility(boolean isVisible) {
 	}
 }
 
-static class RulerBorder
+private static class RulerBorder
 	extends AbstractBorder
 {
 	private static final Insets H_INSETS = new Insets(0, 1, 0, 0);
@@ -335,6 +340,76 @@ static class RulerBorder
 			graphics.drawLine(figure.getBounds().getTopLeft(), 
 					figure.getBounds().getTopRight()
 					.translate(new org.eclipse.draw2d.geometry.Point(-4, 0)));
+		}
+	}
+}
+
+private static class RulerViewer
+	extends ScrollingGraphicalViewer
+{
+	public RulerViewer() {
+		super();
+		init();
+	}
+	public void appendSelection(EditPart editpart) {
+		if (editpart instanceof RootEditPart)
+			editpart = ((RootEditPart)editpart).getContents();
+		setFocus(editpart);
+		super.appendSelection(editpart);
+	}
+	public Handle findHandleAt(org.eclipse.draw2d.geometry.Point p) {
+		final GraphicalEditPart gep = 
+				(GraphicalEditPart)findObjectAtExcluding(p, new ArrayList());
+		if (gep == null || !(gep instanceof GuideEditPart))
+			return null;
+		return new Handle() {
+			public DragTracker getDragTracker() {
+				return ((GuideEditPart)gep).getDragTracker(null);
+			}
+			public org.eclipse.draw2d.geometry.Point getAccessibleLocation() {
+				return null;
+			}
+		};
+	}
+	protected void init() {
+		setContextMenu(new RulerContextMenuProvider(this));
+		setKeyHandler(new RulerKeyHandler(this));
+	}
+	public void reveal(EditPart part) {
+		// there's no need to reveal rulers (that causes undesired scrolling to
+		// the origin of the ruler)
+		if (part != getContents())
+			super.reveal(part);
+	}
+	public void setContents(EditPart editpart) {
+		super.setContents(editpart);
+		setFocus(getContents());
+	}
+	protected static class RulerKeyHandler extends GraphicalViewerKeyHandler {
+		public RulerKeyHandler(GraphicalViewer viewer) {
+			super(viewer);
+		}
+		public boolean keyPressed(KeyEvent event) {
+			if (event.keyCode == SWT.DEL) {
+				if (getFocusEditPart() instanceof GuideEditPart) {
+					RulerEditPart parent = 
+							(RulerEditPart)getFocusEditPart().getParent();
+					getViewer().getEditDomain().getCommandStack().execute(
+							parent.getRulerProvider().getDeleteGuideCommand(
+							getFocusEditPart().getModel()));
+					event.doit = false;
+					return true;
+				}
+				return false;
+			} else if (((event.stateMask & SWT.ALT) != 0)
+					&& (event.keyCode == SWT.ARROW_UP)) {
+				// ALT + UP_ARROW pressed
+				EditPart parent = getFocusEditPart().getParent();
+				if (parent instanceof RulerEditPart)
+					navigateTo(getFocusEditPart().getParent(), event);
+				return true;
+			}
+			return super.keyPressed(event);
 		}
 	}
 }
