@@ -200,7 +200,6 @@ public void setActiveTool(ToolEntry newMode) {
 	if (activeEntry != null) {
 		ToolEntryEditPart editpart = getToolEntryEditPart(activeEntry);
 		editpart.setToolSelected(true);
-		select(editpart);
 		}
 	fireModeChanged();
 	}
