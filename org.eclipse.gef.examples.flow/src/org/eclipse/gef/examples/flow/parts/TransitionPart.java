@@ -1,20 +1,15 @@
 package org.eclipse.gef.examples.flow.parts;
 
 import java.util.*;
-import java.util.ArrayList;
-import java.util.Map;
 
 import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.AbsoluteBendpoint;
-import org.eclipse.draw2d.PolylineConnection;
 import org.eclipse.draw2d.graph.*;
-import org.eclipse.draw2d.graph.CompoundDirectedGraph;
-import org.eclipse.draw2d.graph.Node;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.editparts.AbstractConnectionEditPart;
 import org.eclipse.gef.editpolicies.ConnectionEndpointEditPolicy;
+
 import org.eclipse.gef.examples.flow.policies.TransitionEditPolicy;
 
 /**

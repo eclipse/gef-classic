@@ -2,24 +2,17 @@ package org.eclipse.gef.examples.flow.parts;
 
 import java.util.Map;
 
+import org.eclipse.jface.viewers.TextCellEditor;
+
 import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.AbstractConnectionAnchor;
-import org.eclipse.draw2d.ChopboxAnchor;
-import org.eclipse.draw2d.ConnectionAnchor;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.graph.CompoundDirectedGraph;
-import org.eclipse.draw2d.graph.Node;
-import org.eclipse.draw2d.graph.Subgraph;
-import org.eclipse.gef.ConnectionEditPart;
-import org.eclipse.gef.NodeEditPart;
-import org.eclipse.gef.Request;
+import org.eclipse.draw2d.graph.*;
+
+import org.eclipse.gef.*;
+
 import org.eclipse.gef.examples.flow.FlowImages;
 import org.eclipse.gef.examples.flow.figures.SimpleActivityLabel;
-
-import org.eclipse.jface.viewers.TextCellEditor;
 
 /**
  * @author hudsonr

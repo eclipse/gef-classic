@@ -21,7 +21,7 @@ import org.eclipse.gef.examples.flow.policies.*;
  * @author hudsonr
  * Created on Jun 30, 2003
  */
-public class StructuredActivityPart extends ActivityPart 
+public abstract class StructuredActivityPart extends ActivityPart 
 	implements NodeEditPart {
 
 static final Insets PADDING = new Insets(8, 6, 8, 6);
@@ -80,32 +80,6 @@ public void contributeNodesToGraph(CompoundDirectedGraph graph, Subgraph s, Map 
 	}
 }
 
-protected IFigure createFigure() {
-	Figure f = new SubgraphFigure(new Label(""), new Label("")) {
-		/**
-		 * @see org.eclipse.draw2d.Figure#paintFigure(org.eclipse.draw2d.Graphics)
-		 */
-		protected void paintFigure(Graphics g) {
-			super.paintFigure(g);
-			Rectangle r = getBounds();
-			g.setBackgroundColor(ColorConstants.button);
-			if (getSelected() != EditPart.SELECTED_NONE) {
-				g.setBackgroundColor(ColorConstants.menuBackgroundSelected);
-				g.setForegroundColor(ColorConstants.menuForegroundSelected);
-			}
-			
-			g.fillRectangle(r.x, r.y, 3, r.height);
-			g.fillRectangle(r.right() - 3, r.y, 3, r.height);
-			g.fillRectangle(r.x, r.bottom() - 18, r.width, 18);
-			g.fillRectangle(r.x, r.y, r.width, 18);
-		}
-	};
-	f.setBorder(new MarginBorder(3,5,3,0));
-	f.setOpaque(true);
-	return f;
-}
-
-
 private boolean directEditHitTest(Point requestLoc) {
 	IFigure header = ((SubgraphFigure)getFigure()).getHeader();
 	header.translateToRelative(requestLoc);
@@ -115,8 +89,19 @@ private boolean directEditHitTest(Point requestLoc) {
 }
 
 /**
- * @see org.eclipse.gef.GraphicalEditPart#getContentPane()
+ * @see org.eclipse.gef.EditPart#performRequest(org.eclipse.gef.Request)
  */
+public void performRequest(Request request) {
+	if (request.getType() == RequestConstants.REQ_DIRECT_EDIT) {
+		if (request instanceof DirectEditRequest
+			&& !directEditHitTest(((DirectEditRequest) request)
+				.getLocation()
+				.getCopy()))
+			return;
+		performDirectEdit();
+	}
+}
+
 public IFigure getContentPane() {
 	if (getFigure() instanceof SubgraphFigure)
 		return ((SubgraphFigure)getFigure()).getContents();
@@ -172,20 +157,6 @@ protected void performDirectEdit() {
 				new ActivityCellEditorLocator(l),l);
 	}
 	manager.show();
-}
-
-/**
- * @see org.eclipse.gef.EditPart#performRequest(org.eclipse.gef.Request)
- */
-public void performRequest(Request request) {
-	if (request.getType() == RequestConstants.REQ_DIRECT_EDIT) {
-		if (request instanceof DirectEditRequest
-			&& !directEditHitTest(((DirectEditRequest) request)
-				.getLocation()
-				.getCopy()))
-			return;
-		performDirectEdit();
-	}
 }
 
 /**

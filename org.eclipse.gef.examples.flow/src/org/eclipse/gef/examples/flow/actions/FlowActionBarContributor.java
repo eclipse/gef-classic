@@ -10,11 +10,10 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.flow.actions;
 
-import org.eclipse.gef.ui.actions.*;
-import org.eclipse.gef.ui.actions.ActionBarContributor;
-import org.eclipse.gef.ui.actions.UndoRetargetAction;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.ui.IWorkbenchActionConstants;
+
+import org.eclipse.gef.ui.actions.*;
 
 /**
  * Contributes actions to the Editor.

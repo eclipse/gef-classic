@@ -12,8 +12,9 @@ package org.eclipse.gef.examples.flow.dnd;
 
 import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.dnd.TemplateTransferDropTargetListener;
-import org.eclipse.gef.examples.flow.model.FlowElementFactory;
 import org.eclipse.gef.requests.CreationFactory;
+
+import org.eclipse.gef.examples.flow.model.FlowElementFactory;
 
 /**
  * Provides a listener for dropping templates onto the flow editor.

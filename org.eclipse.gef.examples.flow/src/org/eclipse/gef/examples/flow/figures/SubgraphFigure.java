@@ -1,6 +1,7 @@
 package org.eclipse.gef.examples.flow.figures;
 
-import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.Figure;
+import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 
@@ -60,6 +61,9 @@ public void setBounds(Rectangle rect) {
 	size = header.getPreferredSize();
 	header.setSize(size);
 	header.setLocation(rect.getLocation());
+}
+
+public void setSelected(boolean value) {
 }
 
 }

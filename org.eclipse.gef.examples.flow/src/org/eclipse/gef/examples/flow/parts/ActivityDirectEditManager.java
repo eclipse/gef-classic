@@ -10,19 +10,19 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.flow.parts;
 
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.Label;
-import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.gef.GraphicalEditPart;
-import org.eclipse.gef.tools.CellEditorLocator;
-import org.eclipse.gef.tools.DirectEditManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.graphics.*;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.Text;
+
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.Label;
+import org.eclipse.draw2d.geometry.Dimension;
+
+import org.eclipse.gef.GraphicalEditPart;
+import org.eclipse.gef.tools.CellEditorLocator;
+import org.eclipse.gef.tools.DirectEditManager;
 
 /**
  * DirectEditManager for Activities
