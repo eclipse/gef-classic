@@ -32,7 +32,7 @@ protected void setUp() throws Exception {
 }
 
 
-public void testXYLayout() {
+public void testPreferredSize() {
 	layout = new XYLayout();
 	contents = new RectangleFigure();
 	contents.setLayoutManager(layout);
