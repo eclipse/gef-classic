@@ -2,8 +2,7 @@ package org.eclipse.gef.palette;
 
 import org.eclipse.gef.ui.palette.PaletteMessages;
 
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Display;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.internal.IWorkbenchGraphicConstants;
 import org.eclipse.ui.internal.WorkbenchImages;
 
@@ -19,7 +18,7 @@ import org.eclipse.ui.internal.WorkbenchImages;
  * @author Pratik Shah
  */
 public class PaletteSeparator extends PaletteEntry {
-	
+
 /**
  * This String can be used as an ID for separators that are not markers
  */
@@ -27,12 +26,11 @@ public static final String NOT_A_MARKER = ""; //$NON-NLS-1$
 
 //@TODO:Pratik
 // Update this image
-private static Image icon = new Image(Display.getDefault(), WorkbenchImages.
-				getImageDescriptor(IWorkbenchGraphicConstants.IMG_CTOOL_BUILD_EXEC_HOVER).
-				getImageData());
+private static ImageDescriptor icon = WorkbenchImages
+	.getImageDescriptor(IWorkbenchGraphicConstants.IMG_CTOOL_BUILD_EXEC_HOVER);
 
 private String id;
-	
+
 /**
  * Constructor
  * 

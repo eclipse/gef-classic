@@ -9,7 +9,7 @@ package org.eclipse.gef.palette;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
-import org.eclipse.swt.graphics.Image;
+import org.eclipse.jface.resource.ImageDescriptor;
 
 /**
  * Root class (statically) for the palette model.
@@ -22,8 +22,8 @@ public class PaletteEntry
 private PaletteContainer parent;
 private String label;
 private String shortDescription;
-private Image iconSmall;
-private Image iconLarge;
+private ImageDescriptor iconSmall;
+private ImageDescriptor iconLarge;
 private boolean isDefault = false;
 private boolean visible = true;
 private Object type = PaletteEntry.PALETTE_TYPE_UNKNOWN;
@@ -147,8 +147,8 @@ public PaletteEntry(String label,
  */
 public PaletteEntry(String label,
 							String shortDescription,
-							Image iconSmall,
-							Image iconLarge) {
+							ImageDescriptor iconSmall,
+							ImageDescriptor iconLarge) {
 	this(label, shortDescription, iconSmall, iconLarge, null);
 }
 
@@ -166,8 +166,8 @@ public PaletteEntry(String label,
  */
 public PaletteEntry(String label,
 							String shortDescription,
-							Image iconSmall,
-							Image iconLarge,
+							ImageDescriptor iconSmall,
+							ImageDescriptor iconLarge,
 							Object type) {
 	this(label, shortDescription, iconSmall, iconLarge, type, null);
 }
@@ -187,8 +187,8 @@ public PaletteEntry(String label,
  */
 public PaletteEntry(String label,
 					String shortDescription,
-					Image iconSmall,
-					Image iconLarge,
+					ImageDescriptor iconSmall,
+					ImageDescriptor iconLarge,
 					Object type,
 					PaletteContainer parent) {
 	setLabel(label);
@@ -226,7 +226,7 @@ public String getLabel() {
 /**
  * @return a large icon representing this entry.
  */
-public Image getLargeIcon() {
+public ImageDescriptor getLargeIcon() {
 	return iconLarge;
 }
 
@@ -240,7 +240,7 @@ public PaletteContainer getParent() {
 /**
  * @return a small icon representing the entry.
  */
-public Image getSmallIcon() {
+public ImageDescriptor getSmallIcon() {
 	return iconSmall;
 }
 
@@ -325,9 +325,9 @@ public void setLabel(String s) {
  * 
  * @param 	icon	The large icon to represent this entry
  */
-public void setLargeIcon(Image icon) {
+public void setLargeIcon(ImageDescriptor icon) {
 	if (icon != iconLarge) {
-		Image oldIcon = iconLarge;
+		ImageDescriptor oldIcon = iconLarge;
 		iconLarge = icon;
 		listeners.firePropertyChange(PROPERTY_LARGE_ICON, oldIcon, iconLarge);
 	}
@@ -351,9 +351,9 @@ public void setParent(PaletteContainer newParent) {
  * 
  * @param 	icon	The new small icon to represent this entry
  */
-public void setSmallIcon(Image icon) {
+public void setSmallIcon(ImageDescriptor icon) {
 	if (icon != iconSmall) {
-		Image oldIcon = iconSmall;
+		ImageDescriptor oldIcon = iconSmall;
 		iconSmall = icon;
 		listeners.firePropertyChange(PROPERTY_SMALL_ICON, oldIcon, icon);
 	}

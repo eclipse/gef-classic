@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.swt.graphics.Image;
+import org.eclipse.jface.resource.ImageDescriptor;
 
 /**
  * Default implementation of PaletteContainer
@@ -56,7 +56,7 @@ public PaletteContainer(String label) {
  * 
  * @see org.eclipse.gef.palette.PaletteEntry#PaletteEntry(String)
  */
-public PaletteContainer(String label, Image icon) {
+public PaletteContainer(String label, ImageDescriptor icon) {
 	super(label);
 	setSmallIcon(icon);
 }

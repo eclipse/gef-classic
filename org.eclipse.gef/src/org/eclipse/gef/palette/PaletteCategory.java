@@ -8,7 +8,7 @@ package org.eclipse.gef.palette;
 
 import java.util.List;
 
-import org.eclipse.swt.graphics.Image;
+import org.eclipse.jface.resource.ImageDescriptor;
 
 public class PaletteCategory 
 	extends PaletteContainer 
@@ -23,10 +23,10 @@ public static final int INITIAL_STATUS_PINNED_OPEN = 2;
 private int initialStatus;
 
 public PaletteCategory(String label){
-	this(label, (Image)null);
+	this(label, (ImageDescriptor)null);
 }
 
-public PaletteCategory(String label, Image icon, List children){
+public PaletteCategory(String label, ImageDescriptor icon, List children){
 	this(label, icon);
 	addAll(children);
 }
@@ -35,7 +35,7 @@ public PaletteCategory(String label, List children){
 	this(label, null, children);
 }
 
-public PaletteCategory(String label,Image icon){
+public PaletteCategory(String label,ImageDescriptor icon){
 	super(label, icon);
 	setType(PALETTE_TYPE_CATEGORY);
 }

@@ -7,7 +7,7 @@ package org.eclipse.gef.palette;
  */
 
 import org.eclipse.gef.Tool;
-import org.eclipse.swt.graphics.Image;
+import org.eclipse.jface.resource.ImageDescriptor;
 
 /**
  * A class used to represent a GEF tool on the palette.
@@ -33,8 +33,8 @@ public PaletteToolEntry(
 	Tool tool,
 	String label,
 	String shortDesc,
-	Image iconSmall,
-	Image iconLarge)
+	ImageDescriptor iconSmall,
+	ImageDescriptor iconLarge)
 {
 	setTool(tool);
 	setLabel(label);

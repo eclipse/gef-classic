@@ -1,6 +1,6 @@
 package org.eclipse.gef.palette;
 
-import org.eclipse.swt.graphics.Image;
+import org.eclipse.jface.resource.ImageDescriptor;
 
 /**
  * @see org.eclipse.gef.palette.PaletteTemplateEntry
@@ -23,7 +23,7 @@ public PaletteTemplateEntry(Object template, String label, String shortDesc) {
 	setTemplate(template);
 }
 
-public PaletteTemplateEntry(Object template, String label, String shortDesc, Image iconSmall, Image iconLarge) {
+public PaletteTemplateEntry(Object template, String label, String shortDesc, ImageDescriptor iconSmall, ImageDescriptor iconLarge) {
 	super(label, shortDesc, iconSmall, iconLarge);
 	setTemplate(template);
 }
