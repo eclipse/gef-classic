@@ -27,7 +27,7 @@ private Point moveDelta = new Point();
 private Dimension resizeDelta = new Dimension();
 private int resizeDirection;
 private Point mouseLocation;
-private Map extendedData = new HashMap();
+private Map extendedData;
 
 /**
  * Default constructor.
@@ -43,7 +43,15 @@ public ChangeBoundsRequest(Object type) {
 	setType(type);
 }
 
+/**
+ * Returns a Map that can be used to save useful information in this request.
+ * 
+ * @return	a map to store useful information
+ */
 public Map getExtendedData() {
+	if (extendedData == null) {
+		extendedData = new HashMap();
+	}
 	return extendedData;
 }
 
@@ -120,6 +128,15 @@ public Rectangle getTransformedRectangle(Rectangle rect) {
  */
 public void setMoveDelta(Point p) {
 	moveDelta = p;
+}
+
+/**
+ * Sets the given map to be the new extended data (by reference) for this request.
+ * 
+ * @param	map		The new map
+ */
+public void setExtendedData(Map map) {
+	extendedData = map;
 }
 
 /**
