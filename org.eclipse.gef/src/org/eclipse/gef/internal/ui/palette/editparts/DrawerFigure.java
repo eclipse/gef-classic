@@ -98,7 +98,7 @@ public DrawerFigure(final Control control) {
 	};
 	collapseToggle.setSelected(true);
 	collapseToggle.setBorder(TOGGLE_BUTTON_BORDER);
-
+	collapseToggle.setRequestFocusEnabled(true);
 	collapseToggle.addChangeListener(new ChangeListener() {
 		public void handleStateChanged(ChangeEvent event) {
 			updatePin();
@@ -140,6 +140,7 @@ private void createHoverHelp(final Control control) {
 	tipLabel.addMouseListener(new MouseListener.Stub() {
 		public void mousePressed(MouseEvent e) {
 			Rectangle original = getCollapseToggle().getBounds().getCopy();
+			getCollapseToggle().requestFocus();
 			setExpanded(!isExpanded());
 			// Hide the tip if expanding the drawer causes the collapse toggle to move
 			if (!original.equals(getCollapseToggle().getBounds())) {
@@ -171,9 +172,9 @@ public IFigure getContentPane() {
 }
 
 /**
- * @return The Toggle that is used to expand/collapse the drawer.
+ * @return The Clickable that is used to expand/collapse the drawer.
  */
-public Toggle getCollapseToggle() {
+public Clickable getCollapseToggle() {
 	return collapseToggle;
 }
 

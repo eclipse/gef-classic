@@ -16,6 +16,8 @@ import org.eclipse.draw2d.ButtonModel;
 import org.eclipse.draw2d.ChangeEvent;
 import org.eclipse.draw2d.ChangeListener;
 import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.FocusEvent;
+import org.eclipse.draw2d.FocusListener;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.AccessibleEditPart;
 import org.eclipse.gef.ExposeHelper;
@@ -51,6 +53,13 @@ public IFigure createFigure() {
 	fig.setPinned(getDrawer().isInitiallyPinned());
 	fig.getCollapseToggle().addChangeListener(new ToggleListener());	
 	fig.getCollapseToggle().setRequestFocusEnabled(true);
+	fig.getCollapseToggle().addFocusListener(new FocusListener() {
+		public void focusGained(FocusEvent fe) {
+			getViewer().select(DrawerEditPart.this);
+		}
+		public void focusLost(FocusEvent fe) {
+		}
+	});
 	return fig;
 }
 
@@ -97,9 +106,7 @@ private DrawerAnimationController getAnimationController() {
 		.get(DrawerAnimationController.class);
 	if (controller == null) {
 		controller = new DrawerAnimationController(getPreferenceSource());
-		getViewer().getEditPartRegistry().put(
-			DrawerAnimationController.class, 
-			controller);
+		getViewer().getEditPartRegistry().put(DrawerAnimationController.class, controller);
 	}
 	return controller;
 }
