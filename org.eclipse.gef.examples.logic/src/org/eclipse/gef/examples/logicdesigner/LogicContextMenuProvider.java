@@ -78,7 +78,9 @@ public void buildContextMenu(IMenuManager manager) {
 	action = getActionRegistry().getAction(GEFActionConstants.ALIGN_RIGHT);
 	if (action.isEnabled())
 		submenu.add(action);
-
+		
+	submenu.add(new Separator());
+	
 	action = getActionRegistry().getAction(GEFActionConstants.ALIGN_TOP);
 	if (action.isEnabled())
 		submenu.add(action);
