@@ -12,10 +12,17 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.swt.dnd.*;
 
 /**
- * An abstract implementation of TransferDropTargetListener that adds a reference to 
- * the {@link EditPartViewer} that contains the {@link DropTarget} widget.
+ * An abstract implementation of TransferDropTargetListener for use with {@link
+ * EditPartViewer}s. The Viewer's <code>Control</code> should be the Drop target. In order
+ * to communicate with EditParts in a consistent way, DropTargetEvents are processed into
+ * {@link Request Requests}.
+ * <P>
+ * Dropping is inherantly a targeting interaction. This class handles calculating the
+ * <i>target</i> EditPart. It also handles common targeting behavior, such as interacting
+ * with the target EditPart or its ancestors to achieve things like
+ * auto-scroll/auto-expose.
  */
-abstract public class AbstractTransferDropTargetListener 
+public abstract class AbstractTransferDropTargetListener 
 	implements TransferDropTargetListener
 {
 
@@ -27,15 +34,18 @@ private EditPart target;
 private Request request;
 
 /**
- * Creates a new AbstractTransferDropTargetListener with the given EditPartViewer.
+ * Constructs a new AbstractTransferDropTargetListener and sets the EditPartViewer.
+ * @param viewer the EditPartViewer
  */
 public AbstractTransferDropTargetListener(EditPartViewer viewer) {
 	setViewer(viewer);
 }
 
 /**
- * Creates a new AbstractTransferDropTargetListener with the given EditPartViewer 
- * and Transfer.
+ * Constructs a new AbstractTransferDropTargetListener and sets the EditPartViewer and
+ * Transfer. The Viewer's Control should be the Drop target.
+ * @param viewer the EditPartViewer
+ * @param xfer the Transfer
  */
 public AbstractTransferDropTargetListener(EditPartViewer viewer, Transfer xfer) {
 	setViewer(viewer);
@@ -45,11 +55,12 @@ public AbstractTransferDropTargetListener(EditPartViewer viewer, Transfer xfer) 
 /**
  * @see TransferDropTargetListener#activate()
  */
-public void activate() {}
+public void activate() { }
 
 /**
- * Creates and returns a new Request.  Subclasses can override this method to
- * create specialized requests.
+ * Creates and returns the <code>Request</code> that will be sent to the targeted
+ * EditPart. Subclasses can override to create specialized requests.
+ * @return the <code>Request</code> to be used with the <i>target</i> EditPart
  */
 protected Request createTargetRequest() {
 	return new Request();
@@ -67,19 +78,23 @@ public void deactivate() {
 }
 
 /**
- * Updates the DropData and then handles the event.  Subclasses should 
- * override {@link #handleDragEnter()} to perform actions for this event.
+ * Stores the information about the current DropTargetEvent. This method may not be called
+ * on the listener, because the listener may not be made active until after the mouse has
+ * entered the drop target.
+ * @see DropTargetListener#dragEnter(DropTargetEvent)
  */
 public void dragEnter(DropTargetEvent event) {
 	if (GEF.DebugDND)
 		GEF.debug("Drag Enter: " + toString()); //$NON-NLS-1$
 	setCurrentEvent(event);
-	handleDragEnter();
 }
 
 /**
- * Updates the DropData, handles the event, and then unloads the drag 
- * event.
+ * Stores the information about the current DropTargetEvent and then calls
+ * <code>unload()</code>. Subclasses should override {@link #unload()} to perform actions
+ * for this event. For some reason, SWT also calls <code>dragLeave()</code> when the
+ * actual drop is performed, even though the mouse has not left the drop target.
+ * @see DropTargetListener#dragLeave(DropTargetEvent)
  */
 public void dragLeave(DropTargetEvent event) {
 	if (GEF.DebugDND)
@@ -89,8 +104,10 @@ public void dragLeave(DropTargetEvent event) {
 }
 
 /**
- * Updates the DropData and then handles the event.  Subclasses should 
- * override {@link #handleDragOperationChanged()} to perform actions for this event.
+ * Stores the information about the current DropTargetEvent and then calls
+ * <code>handleDragOperationChanged()</code>. Subclasses should override {@link
+ * #handleDragOperationChanged()} to perform actions for this event.
+ * @see DropTargetListener#dragOperationChanged(DropTargetEvent)
  */
 public void dragOperationChanged(DropTargetEvent event) {
 	if (GEF.DebugDND)
@@ -100,8 +117,10 @@ public void dragOperationChanged(DropTargetEvent event) {
 }
 
 /**
- * Updates the DropData and then handles the event.  Subclasses should 
- * override {@link #handleDragOver()} to perform actions for this event.
+ * Stores the information about the current DropTargetEvent and then calls
+ * <code>handleDragOver()</code>. Subclasses should override {@link #handleDragOver()} to
+ * perform actions for this event.
+ * @see DropTargetListener#dragOver(org.eclipse.swt.dnd.DropTargetEvent)
  */
 public void dragOver(DropTargetEvent event) {
 	if (GEF.DebugDND)
@@ -111,8 +130,10 @@ public void dragOver(DropTargetEvent event) {
 }
 
 /**
- * Updates the DropData and then handles the event.  Subclasses should 
- * override {@link #handleDrop()} to perform actions for this event.
+ * Stores the information about the current DropTargetEvent and then calls
+ * {@link #handleDrop()}, followed by {@link #unload()}. Subclasses should override
+ * these methods to perform actions for this event.
+ * @see DropTargetListener#drop(DropTargetEvent)
  */
 public void drop(DropTargetEvent event) {
 	if (GEF.DebugDND)
@@ -123,7 +144,9 @@ public void drop(DropTargetEvent event) {
 }
 
 /**
- * Updates the DropData and then handles the event.
+ * Stores the current <code>DropTargetEvent</code> and does nothing. By default, the drop
+ * is accepted.
+ * @see DropTargetListener#dropAccept(DropTargetEvent)
  */
 public void dropAccept(DropTargetEvent event) {
 	if (GEF.DebugDND)
@@ -132,28 +155,31 @@ public void dropAccept(DropTargetEvent event) {
 }
 
 /**
- * Tells the target EditPart to erase its target feedback.
- * Does nothing if there is no target, or if the target has not been requested to
- * show target feedback.
+ * Calls <code>eraseTargetFeedback(Request)</code> on the current <i>target</i>, using
+ * the target Request. Does nothing if there is no target, or if the target has not been
+ * requested to show target feedback.
  */
 protected void eraseTargetFeedback() {
-	if (getTargetEditPart() != null && showingFeedback){
+	if (getTargetEditPart() != null && showingFeedback) {
 		showingFeedback = false;
 		getTargetEditPart().eraseTargetFeedback(getTargetRequest());
 	}
 }
 
 /**
- * Returns the current DropTargetEvent.
+ * Returns the current <code>DropTargetEvent</code>.
+ * @return the current event
  */
 public DropTargetEvent getCurrentEvent() {
 	return currentEvent;
 }
 
 /**
- * Returns the current mouse location, as a Draw2d Point, relative to the Control.
+ * Returns the current mouse location, as a {@link Point}. The location is relative to the
+ * control's client area.
+ * @return the drop location
  */
-protected Point getDropLocation(){
+protected Point getDropLocation() {
 	org.eclipse.swt.graphics.Point swt;
 	swt = new org.eclipse.swt.graphics.Point(getCurrentEvent().x, getCurrentEvent().y);
 	DropTarget target = (DropTarget)getCurrentEvent().widget;
@@ -162,16 +188,17 @@ protected Point getDropLocation(){
 }
 
 /**
- * Returns the target EditPart.
+ * Returns the current <i>target</i> <code>EditPart</code>.
+ * @return the target EditPart
  */
 protected EditPart getTargetEditPart() {
 	return target;
 }
 
 /**
- * Returns the target request.  If the request is null, 
- * {@link #createTargetRequest()} is called and the newly
- * created request is returned.
+ * Returns the target <code>Request</code>.  If the target Request is <code>null</code>,
+ * {@link #createTargetRequest()} is called and the newly created Request is returned.
+ * @return the target Request
  */
 protected Request getTargetRequest() {
 	if (request == null)
@@ -180,37 +207,39 @@ protected Request getTargetRequest() {
 }
 
 /**
- * Returns the Transfer type that this listener can handle.
+ * @see TransferDropTargetListener#getTransfer()
  */
 public Transfer getTransfer() {
 	return transfer;
 }
 
 /**
- * Returns the EditPartViewer that is the target of the drop.
+ * Returns the <code>EditPartViewer</code> that is the target of the drop.
+ * @return the EditPartViewer
  */
-public EditPartViewer getViewer() {
+protected EditPartViewer getViewer() {
 	return viewer;
 }
 
-protected void handleDragEnter() {} 
-
 /**
- * Called when the user changes the Drag operation.
+ * Called when the user changes the Drag operation. By default, target feedback is erased.
+ * The target Request and target EditPart are updated, and target feedback is
+ * re-displayed on the new target.
  */
 protected void handleDragOperationChanged() {
-//Erase any old feedback
+	//Erase any old feedback now, in case the request changes substantially
 	eraseTargetFeedback();
-//Update request based on the new operation type
+
+	//Update request based on the new operation type
 	updateTargetRequest();
-//Update the target based on the updated request
+
+	//Update the target based on the updated request
 	updateTargetEditPart();
-//Show target feedback
-	showTargetFeedback();
 }
 
 /**
- * Updates the target Request and EditPart.
+ * Called whenever the User drags over the target. By default, the target Request and
+ * target EditPart are updated, and feedback is 
  */
 protected void handleDragOver() {
 	updateTargetRequest();
@@ -219,56 +248,67 @@ protected void handleDragOver() {
 }
 
 /**
- * Sets the event's <code>detail</code> field to <code>DND.DROP_NONE</code> if its
- * <code>data</code> field is <code>null</code>.  Otherwise, updates the target
- * Request and EditPart, gets a command from the target EditPart, then executes
- * that command.  
+ * Updates the target Request and target EditPart, and performs the drop. By default,
+ * the drop is performed by asking the target EditPart for a Command using the target
+ * Request.  This Command is then executed on the CommandStack.
+ * <P>
+ * If there is no target EditPart or no executable Command, the event's
+ * <code>detail</code> field is set to <code>DND.DROP_NONE</code>.
  */
 protected void handleDrop() {
 	updateTargetRequest();
 	updateTargetEditPart();
 	
-	if (getTargetEditPart() != null){
+	if (getTargetEditPart() != null) {
 		Command command = getTargetEditPart().getCommand(getTargetRequest());
-		getViewer().getEditDomain().getCommandStack().execute(command);
+		if (command != null && command.canExecute())
+			getViewer().getEditDomain().getCommandStack().execute(command);
+		else
+			getCurrentEvent().detail = DND.DROP_NONE;
 	} else
 		getCurrentEvent().detail = DND.DROP_NONE;
 }
 
 /**
- * Shows target feedback.  Subclasses should return <code>true</code> when 
- * overriding this method.
+ * Called when a new target EditPart has been entered. By default, the new target is asked
+ * to show feedback.
  */
-protected boolean handleEnteredEditPart() {
+protected void handleEnteredEditPart() {
 	showTargetFeedback();
-	return true;
 }
 
 /**
- * Erases target feedback.  Subclasses should return <code>true</code> when 
- * overriding this method.
+ * Called as the current target EditPart is being exited. By default, the target is asked
+ * to erase feedback.
  */
-protected boolean handleExitingEditPart() {
+protected void handleExitingEditPart() {
 	eraseTargetFeedback(); 
-	return true;
 }
 
 /**
- * Returns <code>true</code> if one of the TransferData types in the event is 
- * supported by this listener.  Also has the side effect of setting 
- * <code>event.currentDataType</code> to the first supported TransferData type.  
+ * Returns <code>true</code> if this TransferDropTargetListener is enabled for the
+ * specified <code>DropTargetEvent</code>.  By default, this is calculated by comparing
+ * the event's {@link DropTargetEvent#dataTypes dataTypes} with the <code>Transfer's</code>
+ * supported types ({@link Transfer#isSupportedType(TransferData}). If a dataType is
+ * supported, an attempt is made to find a <i>target</i> <code>EditPart</code> at the
+ * current drop location. If a target <code>EditPart</code> is found, <code>true</code> is
+ * returned, and the DropTargetEvent's {@link DropTargetEvent#currentDataType} is set to
+ * the dataType that matched.
+ * @param event the DropTargetEvent
+ * @return <code>true</code> if this TransferDropTargetListener is enabled for the given
+ * DropTargetEvent
  */
 public boolean isEnabled(DropTargetEvent event) {
-	for (int i=0; i<event.dataTypes.length; i++) {
+	for (int i = 0; i < event.dataTypes.length; i++) {
 		if (getTransfer().isSupportedType(event.dataTypes[i])) {
 			setCurrentEvent(event);
 			event.currentDataType = event.dataTypes[i];
 			updateTargetRequest();
-			updateTargetEditPart();
-			Command command = null;
-			if (getTargetEditPart() != null)
-				command = getTargetEditPart().getCommand(getTargetRequest());
-			if (command != null && command.canExecute())
+			EditPart ep = getViewer().findObjectAt(getDropLocation());
+			if (ep != null)
+				ep = ep.getTargetEditPart(getTargetRequest());
+			request = null;
+			if (ep != null)
 				return true;
 		}
 	}
@@ -277,26 +317,30 @@ public boolean isEnabled(DropTargetEvent event) {
 
 /**
  * Sets the current DropTargetEvent.
+ * @param currentEvent the DropTargetEvent
  */
 public void setCurrentEvent(DropTargetEvent currentEvent) {
 	this.currentEvent = currentEvent;
 }
 
 /**
- * Sets the target EditPart.
+ * Sets the <i>target</i> <code>EditPart</code>. If the target is changing, {@link
+ * #handleExitingEditPart()} is called before the target changes, and {@link
+ * #handleEnteredEditPart()} is called afterwards.
+ * @param ep the new target EditPart
  */
 protected void setTargetEditPart(EditPart ep) {
 	if (ep != target) {
 		if (target != null) {
 			handleExitingEditPart();
-			if (GEF.DebugDND){
+			if (GEF.DebugDND) {
 				GEF.debug("Exited EditPart: " + target.toString()); //$NON-NLS-1$
 			}
 		}
 		target = ep;
-		if (target != null){
+		if (target != null) {
 			handleEnteredEditPart();
-			if (GEF.DebugDND){
+			if (GEF.DebugDND) {
 				GEF.debug("Entered EditPart: " + target); //$NON-NLS-1$
 			}
 		}
@@ -305,25 +349,27 @@ protected void setTargetEditPart(EditPart ep) {
 
 /**
  * Sets the Tranfer type that this listener can handle.
+ * @param xfer the Transfer
  */
-public void setTransfer(Transfer xfer) {
+protected void setTransfer(Transfer xfer) {
 	transfer = xfer;
 }
 
 /**
  * Sets the EditPartViewer.
+ * @param viewer the EditPartViewer
  */
 protected void setViewer(EditPartViewer viewer) {
 	this.viewer = viewer;
 }
 
 /**
- * Asks the target EditPart to show target feedback if it is not <code>null</code>.
- * 
+ * Asks the target <code>EditPart</code> to show target feedback if it is not
+ * <code>null</code>.
  * @see EditPart#showTargetFeedback(Request)
  */
 protected void showTargetFeedback() {
-	if (getTargetEditPart() != null){
+	if (getTargetEditPart() != null) {
 		showingFeedback = true;
 		getTargetEditPart().showTargetFeedback(getTargetRequest());
 	}
@@ -352,6 +398,6 @@ protected void updateTargetEditPart() {
 /**
  * Subclasses should implement this to update the target Request.
  */
-abstract protected void updateTargetRequest();
+protected abstract void updateTargetRequest();
 
 }

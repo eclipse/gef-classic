@@ -9,26 +9,34 @@ import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.Transfer;
 
 /**
- * This class will allow for dragging template objects from the 
- * {@link org.eclipse.gef.ui.palette.PaletteViewer} to the 
- * {@link org.eclipse.gef.GraphicalViewer}.
- * 
+ * Allows a single {@link TemplateEntry TemplateEntry} to be dragged from an
+ * EditPartViewer. The TemplateEntry's <i>template</i> object is the data that is being
+ * transfered to the <code>DropTarget</code>.
+ * @since 2.1
  * @author Eric Bordeau
  */
-public class TemplateTransferDragSourceListener extends AbstractTransferDragSourceListener {
+public class TemplateTransferDragSourceListener
+	extends AbstractTransferDragSourceListener
+{
 
+/**
+ * @deprecated
+ * @param viewer viewer
+ * @param xfer xfer
+ */
 public TemplateTransferDragSourceListener(EditPartViewer viewer, Transfer xfer) {
 	super(viewer, xfer);
 }
 
 /**
- * Cancel the drag if the selected item isn't a PaletteTemplateEntry.
+ * Constructs a new listener for the specified EditPartViewer. The provided Viewer should
+ * be one that is displaying a Palette. The TemplateTransferDragSourceListener will only
+ * be enabled when a single EditPart is selected, and the EditPart's model is a
+ * {@link TemplateEntry}.
+ * @param viewer the EditPartViewer that is the drag source
  */
-public void dragStart(DragSourceEvent event) {
-	Object template = getTemplate();
-	if (template == null)
-		event.doit = false;
-	TemplateTransfer.getInstance().setTemplate(template);
+public TemplateTransferDragSourceListener(EditPartViewer viewer) {
+	super(viewer, TemplateTransfer.getInstance());
 }
 
 /**
@@ -39,14 +47,30 @@ public void dragFinished(DragSourceEvent event) {
 }
 
 /**
- * Get the Template from the selected PaletteTemplateEntry and set
- * it as the event data to be dropped.
+ * Get the <i>template</i> from the selected {@link TemplateEntry} and sets it as the
+ * event data to be dropped.
+ * @param event the DragSourceEvent
  */
 public void dragSetData(DragSourceEvent event) {
 	event.data = getTemplate();
 }
 
-protected Object getTemplate(){
+/**
+ * Cancels the drag if the selected item does not represent a TemplateEntry.
+ * @see DragSourceListener#dragStart(DragSourceEvent)
+ */
+public void dragStart(DragSourceEvent event) {
+	Object template = getTemplate();
+	if (template == null)
+		event.doit = false;
+	TemplateTransfer.getInstance().setTemplate(template);
+}
+
+/**
+ * A helper method that returns <code>null</code> or the <i>template</i> Object from the
+ * currently selected EditPart.
+ * @return the template */
+protected Object getTemplate() {
 	List selection = getViewer().getSelectedEditParts();
 	if (selection.size() == 1) {
 		EditPart editpart = (EditPart)getViewer().getSelectedEditParts().get(0);

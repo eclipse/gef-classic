@@ -10,10 +10,10 @@ import org.eclipse.swt.dnd.*;
 import org.eclipse.gef.*;
 
 /**
- * An abstract implementation of TransferDragSourceListener that adds a reference to 
- * the {@link EditPartViewer} that contains the {@link DragSource} widget.
+ * An abstract implementation of <code>TransferDragSourceListener</code>
+ * associated with an {@link EditPartViewer}
  */
-abstract public class AbstractTransferDragSourceListener
+public abstract class AbstractTransferDragSourceListener
 	implements TransferDragSourceListener
 {
 
@@ -21,15 +21,18 @@ private EditPartViewer viewer;
 private Transfer transfer;
 
 /**
- * Creates a new AbstractTransferDragSourceListener with the given EditPartViewer.
+ * Constructs an AbstractTransferDragSourceListener for the given EditPartViewer.
+ * @param viewer the EditPartViewer
  */
 public AbstractTransferDragSourceListener(EditPartViewer viewer) {
 	setViewer(viewer);
 }
 
 /**
- * Creates a new AbstractTransferDragSourceListener with the given EditPartViewer 
- * and Transfer.
+ * Constructs an AbstractTransferDragSourceListener with the specified EditPartViewer and
+ * Transfer.
+ * @param viewer the EditPartViewer
+ * @param xfer the Transfer
  */
 public AbstractTransferDragSourceListener(EditPartViewer viewer, Transfer xfer) {
 	setViewer(viewer);
@@ -39,16 +42,14 @@ public AbstractTransferDragSourceListener(EditPartViewer viewer, Transfer xfer) 
 /** 
  * @see DragSourceListener#dragFinished(DragSourceEvent)
  */
-public void dragFinished(DragSourceEvent event) {}
+public void dragFinished(DragSourceEvent event) { }
 
 /**
  * @see DragSourceListener#dragStart(DragSourceEvent)
  */
-public void dragStart(DragSourceEvent event) {}
+public void dragStart(DragSourceEvent event) { }
 
 /**
- * Returns the Transfer that this listener can handle.
- * 
  * @see TransferDragSourceListener#getTransfer()
  */
 public Transfer getTransfer() {
@@ -56,21 +57,24 @@ public Transfer getTransfer() {
 }
 
 /**
- * Returns the EditPartViewer that is the source of the drag.
+ * Returns the <code>EditPartViewer</code>.
+ * @return the EditPartViewer
  */
 protected EditPartViewer getViewer() {
 	return viewer;
 }
 
 /**
- * Sets the Transfer that this listener can handle.
+ * Sets the <code>Transfer</code> for this listener.
+ * @param xfer the Transfer
  */
-public void setTransfer(Transfer xfer) {
+protected void setTransfer(Transfer xfer) {
 	transfer = xfer;
 }
 
 /**
- * Sets the EditPartViewer that is the source of the drag.
+ * Sets the EditPartViewer for this listener.
+ * @param viewer the EditPartViewer
  */
 protected void setViewer(EditPartViewer viewer) {
 	this.viewer = viewer;

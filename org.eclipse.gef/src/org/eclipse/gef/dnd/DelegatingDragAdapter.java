@@ -13,10 +13,23 @@ import org.eclipse.swt.dnd.*;
 import org.eclipse.gef.GEF;
 
 /**
- * A DragSourceListener that allows many {@link TransferDragSourceListener}s to be added 
- * to it.  When the DragSource fires a DragSourceEvent, this listener calculates which 
- * one of the added listeners is able to complete the drag operation and forwards the 
- * event to that listener.
+ * A DragSourceListener that maintains and delegates to a set of {@link
+ * TransferDragSourceListener}s. Each TransferDragSourceListener can then be implemented
+ * as if it were the DragSource's only DragSourceListener.
+ * <P>
+ * When a native Drag is started, a subset of all <code>TransferDragSourceListeners</code>
+ * is generated and stored in a list of <i>active</i> listeners. This subset is calculated
+ * by forwarding {@link DragSourceListener#dragStart(DragSourceEvent) to every listener,
+ * and inspecting changes to the {@link DragSourceEvent#doit doit} field. The
+ * <code>DragSource</code>'s set of supported Transfer types ({@link
+ * DragSource#setTransfer(Transfer[])}) is updated to reflect the Transfer types
+ * corresponding to the active listener subset.
+ * <P>
+ * If and when {@link #dragSetData(DragSourceEvent)} is called, a single
+ * <code>TransferDragSourceListener</code> is chosen, and only it is allowed to set the
+ * drag data. The chosen listener is the first listener in the subset of active listeners
+ * whose Transfer supports ({@link Transfer#isSupportedType(TransferData)}) the dataType
+ * on the <code>DragSourceEvent</code>.
  */
 public class DelegatingDragAdapter 
 	implements DragSourceListener 
@@ -27,16 +40,18 @@ private List activeListeners = new ArrayList();
 private TransferDragSourceListener currentListener;
 
 /**
- * Adds the given TransferDragSourceListener to the list of listeners.
+ * Adds the given TransferDragSourceListener. The set of Transfer types is updated to
+ * reflect the change.
+ * @param listener the new listener
  */
 public void addDragSourceListener(TransferDragSourceListener listener) {
 	listeners.add(listener);
 }
 
 /**
- * Forwards this event to the current listener.  Doesn't 
- * update the current listener, since the current listener 
- * is already the one that completed the drag operation.
+ * The drop has successfully completed. This event is Forwarded to the current listener.
+ * Doesn't update the current listener, since the current listener  is already the one
+ * that completed the drag operation.
  * 
  * @see DragSourceListener#dragFinished(DragSourceEvent)
  */
@@ -74,28 +89,62 @@ public void dragSetData(DragSourceEvent event) {
 public void dragStart(DragSourceEvent event) {
 	if (GEF.DebugDND)
 		GEF.debug("Drag Start: " + toString()); //$NON-NLS-1$
-	boolean origDoit = event.doit;  // the listeners may change event.doit, so save the original value
-	boolean doit = false;  // true if any one of the listeners can handle the drag
+	// the listeners may change event.doit, so save the original value
+	boolean doitOriginal = event.doit;
+	boolean doitFinal = false;// true if any one of the listeners can handle the drag
 	List transfers = new ArrayList(listeners.size());
 	
-	for (int i=0; i<listeners.size(); i++) {
+	for (int i = 0; i < listeners.size(); i++) {
 		TransferDragSourceListener listener = (TransferDragSourceListener)listeners.get(i);
-		event.doit = origDoit;  // restore event.doit to its original value
-		listener.dragStart(event); 	// delegate the event
-		// if listener can handle the drag, add it and its transfer to the appropriate lists
-		if (event.doit) {  
+		// restore event.doit to its original value
+		event.doit = doitOriginal;
+		listener.dragStart(event);
+		if (event.doit) { //Equivalent to "The listener is enabled for this drag"
 			transfers.add(listener.getTransfer());
 			activeListeners.add(listener);
 		}
-		// set doit to true if the current listener or any of 
-		// the previous listeners can handle the drag
-		doit = doit || event.doit;  
+		doitFinal |= event.doit;
 	}
 	
-	if (doit)  // if any of the listeners can handle the drag, set the transfers on the DragSource
-		((DragSource)event.widget).setTransfer((Transfer[])transfers.toArray(new Transfer[transfers.size()]));
+	if (doitFinal)
+		((DragSource)event.widget).setTransfer(
+			(Transfer[])transfers.toArray(new Transfer[transfers.size()]));
 	
-	event.doit = doit;  // event.doit should be true if any of the listeners can handle the drag
+	event.doit = doitFinal;
+}
+
+/**
+ * Combines the <code>Transfer<code>s from every TransferDragSourceListener.
+ * @return the combined <code>Transfer</code>s
+ */
+public Transfer[] getTransferTypes() {
+	Transfer[] types = new Transfer[listeners.size()];
+	for (int i = 0; i < listeners.size(); i++) {
+		TransferDragSourceListener listener = (TransferDragSourceListener)listeners.get(i);
+		types[i] = listener.getTransfer();
+	}
+	return types;
+}
+
+/**
+ * Returns <code>true</code> if there are no listeners to delegate the events to.
+ * @return <code>true</code> if there are no <code>TransferDragSourceListeners</code>
+ */
+public boolean isEmpty() {
+	return listeners.isEmpty();
+}
+
+/**
+ * Adds the given TransferDragSourceListener. The set of Transfer types is updated to
+ * reflect the change.
+ * @param listener the listener being removed
+ */
+public void removeDragSourceListener(TransferDragSourceListener listener) {
+	listeners.remove(listener);
+	if (currentListener == listener)
+		currentListener = null;
+	if (activeListeners.contains(listener))
+		activeListeners.remove(listener);
 }
 
 /**
@@ -116,32 +165,6 @@ private void updateCurrentListener(DragSourceEvent event) {
 			return;
 		}
 	}
-}
-
-/**
- * Adds the Transfer from each listener to an array and returns that array.
- */
-public Transfer[] getTransferTypes() {
-	Transfer[] types = new Transfer[listeners.size()];
-	for (int i=0; i<listeners.size(); i++) {
-		TransferDragSourceListener listener = (TransferDragSourceListener)listeners.get(i);
-		types[i] = listener.getTransfer();
-	}
-	return types;
-}
-
-/**
- * Returns <code>true</code> if there are no listeners to delegate the events to.
- */
-public boolean isEmpty() {
-	return listeners.isEmpty();
-}
-
-/**
- * Removes the given TransferDragSourceListener from the list of listeners.
- */
-public void removeDragSourceListener(TransferDragSourceListener listener) {
-	listeners.remove(listener);
 }
 
 }
