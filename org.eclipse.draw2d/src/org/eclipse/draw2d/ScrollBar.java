@@ -210,7 +210,7 @@ public void setDownClickable(Clickable down){
 	if (buttonDown != null) {
 		if (buttonDown instanceof Orientable)
 			((Orientable)buttonDown).setDirection(isHorizontal() ? Orientable.EAST : Orientable.SOUTH);
-		buttonDown.setFiringMethod(buttonDown.REPEAT_FIRING);
+		buttonDown.setFiringMethod(Clickable.REPEAT_FIRING);
 		buttonDown.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e){stepDown();}
 		});
@@ -232,7 +232,7 @@ public void setUpClickable(Clickable up){
 	if (up != null){
 		if (up instanceof Orientable)
 			((Orientable)up).setDirection(isHorizontal() ? Orientable.WEST : Orientable.NORTH);
-		buttonUp.setFiringMethod(buttonUp.REPEAT_FIRING);
+		buttonUp.setFiringMethod(Clickable.REPEAT_FIRING);
 		buttonUp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {stepUp();}
 		});
@@ -343,7 +343,7 @@ public void setPageDown(Clickable down){
 		remove(pageDown);
 	pageDown=down;
 	if(pageDown != null){
-		pageDown.setFiringMethod(pageDown.REPEAT_FIRING);
+		pageDown.setFiringMethod(Clickable.REPEAT_FIRING);
 		pageDown.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent event){
 				pageDown();
@@ -365,7 +365,7 @@ public void setPageUp(Clickable up){
 		remove(pageUp);
 	pageUp = up;
 	if(pageUp != null){
-		pageUp.setFiringMethod(pageUp.REPEAT_FIRING);
+		pageUp.setFiringMethod(Clickable.REPEAT_FIRING);
 		pageUp.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent event){
 				pageUp();

@@ -41,7 +41,7 @@ protected AccessibleEditPart createAccessible() {
 public IFigure createFigure() {
 	SelectableLabel label = new SelectableLabel();
 	label.setBorder(BORDER);
-	label.setLabelAlignment(label.LEFT);
+	label.setLabelAlignment(PositionConstants.LEFT);
 	return label;
 }
 

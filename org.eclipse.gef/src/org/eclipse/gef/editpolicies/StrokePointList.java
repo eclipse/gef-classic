@@ -41,7 +41,7 @@ static PointList strokeList(PointList list, int offset) {
 		int type = iter.currentSegment(segment);
 		currentSegment.addPoint(Math.round(segment[0]), Math.round(segment[1]));
 		iter.next();
-		if (type == iter.SEG_CLOSE) {
+		if (type == PathIterator.SEG_CLOSE) {
 			if (currentSegment.size() > largestSegmentSize) {
 				result = currentSegment;
 				largestSegmentSize = currentSegment.size();

@@ -42,16 +42,16 @@ public static Circuit createFullAdder() {
 	circuit.addChild(circuit1);
 	circuit.addChild(circuit2);
 
-	connect(circuit, circuit.TERMINALS_OUT[0], circuit1, circuit1.TERMINALS_IN[0]);
-	connect(circuit, circuit.TERMINALS_OUT[2], circuit1, circuit1.TERMINALS_IN[3]);
-	connect(circuit, circuit.TERMINALS_OUT[3], circuit2, circuit2.TERMINALS_IN[3]);
-	connect(circuit1,circuit1.TERMINALS_OUT[7],circuit2, circuit2.TERMINALS_IN[0]);
+	connect(circuit, Circuit.TERMINALS_OUT[0], circuit1, Circuit.TERMINALS_IN[0]);
+	connect(circuit, Circuit.TERMINALS_OUT[2], circuit1, Circuit.TERMINALS_IN[3]);
+	connect(circuit, Circuit.TERMINALS_OUT[3], circuit2, Circuit.TERMINALS_IN[3]);
+	connect(circuit1, Circuit.TERMINALS_OUT[7], circuit2, Circuit.TERMINALS_IN[0]);
 
 	circuit.addChild(or);
-	connect(or, or.TERMINAL_OUT, circuit, circuit.TERMINALS_IN[4]);
-	connect(circuit1, circuit1.TERMINALS_OUT[4], or, or.TERMINAL_A);
-	connect(circuit2, circuit2.TERMINALS_OUT[4], or, or.TERMINAL_B);
-	connect(circuit2, circuit2.TERMINALS_OUT[7], circuit, circuit.TERMINALS_IN[7]);
+	connect(or, SimpleOutput.TERMINAL_OUT, circuit, Circuit.TERMINALS_IN[4]);
+	connect(circuit1, Circuit.TERMINALS_OUT[4], or, Gate.TERMINAL_A);
+	connect(circuit2, Circuit.TERMINALS_OUT[4], or, Gate.TERMINAL_B);
+	connect(circuit2, Circuit.TERMINALS_OUT[7], circuit, Circuit.TERMINALS_IN[7]);
 
 	return circuit;
 }
@@ -70,13 +70,13 @@ public static Circuit createHalfAdder() {
 	circuit.addChild(xor);
 	circuit.addChild(and);
 
-	connect(circuit, circuit.TERMINALS_OUT[0], and, and.TERMINAL_A);
-	connect(circuit, circuit.TERMINALS_OUT[3], and, and.TERMINAL_B);
-	connect(circuit, circuit.TERMINALS_OUT[0], xor, xor.TERMINAL_A);
-	connect(circuit, circuit.TERMINALS_OUT[3], xor, xor.TERMINAL_B);
+	connect(circuit, Circuit.TERMINALS_OUT[0], and, Gate.TERMINAL_A);
+	connect(circuit, Circuit.TERMINALS_OUT[3], and, Gate.TERMINAL_B);
+	connect(circuit, Circuit.TERMINALS_OUT[0], xor, Gate.TERMINAL_A);
+	connect(circuit, Circuit.TERMINALS_OUT[3], xor, Gate.TERMINAL_B);
 
-	connect(and, and.TERMINAL_OUT, circuit, circuit.TERMINALS_IN[4]);
-	connect(xor, xor.TERMINAL_OUT, circuit, circuit.TERMINALS_IN[7]);
+	connect(and, SimpleOutput.TERMINAL_OUT, circuit, Circuit.TERMINALS_IN[4]);
+	connect(xor, SimpleOutput.TERMINAL_OUT, circuit, Circuit.TERMINALS_IN[7]);
 	return circuit;
 }
 
@@ -106,31 +106,31 @@ protected static Object createLargeModel() {
 	circuit2 = createFullAdder();
 	circuit2.setLocation(new Point(305, 104));
 	root.addChild(circuit2);
-	connect(circuit1, circuit1.TERMINALS_OUT[4], circuit2, circuit2.TERMINALS_IN[3]);
+	connect(circuit1, Circuit.TERMINALS_OUT[4], circuit2, Circuit.TERMINALS_IN[3]);
 	//
 	circuit3 = createFullAdder();
 	circuit3.setLocation(new Point(155, 104));
 	root.addChild(circuit3);
-	connect(circuit2, circuit2.TERMINALS_OUT[4], circuit3, circuit3.TERMINALS_IN[3]);
+	connect(circuit2, Circuit.TERMINALS_OUT[4], circuit3, Circuit.TERMINALS_IN[3]);
 	//
 	circuit4 = createFullAdder();
 	circuit4.setLocation(new Point(5, 104));
 	//
-	connect(led1, led1.TERMINAL_1_OUT, circuit1, circuit1.TERMINALS_IN[0]);
-	connect(led1, led1.TERMINAL_2_OUT, circuit2, circuit2.TERMINALS_IN[0]);
-	connect(led1, led1.TERMINAL_3_OUT, circuit3, circuit3.TERMINALS_IN[0]);
-	connect(led2, led2.TERMINAL_1_OUT, circuit1, circuit1.TERMINALS_IN[3]);
-	connect(led2, led2.TERMINAL_2_OUT, circuit2, circuit2.TERMINALS_IN[2]);
-	connect(circuit1, circuit1.TERMINALS_OUT[7], led3, led3.TERMINAL_1_IN);
-	connect(circuit2, circuit1.TERMINALS_OUT[7], led3, led3.TERMINAL_2_IN);
-	connect(circuit3, circuit1.TERMINALS_OUT[7], led3, led3.TERMINAL_3_IN);
+	connect(led1, LED.TERMINAL_1_OUT, circuit1, Circuit.TERMINALS_IN[0]);
+	connect(led1, LED.TERMINAL_2_OUT, circuit2, Circuit.TERMINALS_IN[0]);
+	connect(led1, LED.TERMINAL_3_OUT, circuit3, Circuit.TERMINALS_IN[0]);
+	connect(led2, LED.TERMINAL_1_OUT, circuit1, Circuit.TERMINALS_IN[3]);
+	connect(led2, LED.TERMINAL_2_OUT, circuit2, Circuit.TERMINALS_IN[2]);
+	connect(circuit1, Circuit.TERMINALS_OUT[7], led3, LED.TERMINAL_1_IN);
+	connect(circuit2, Circuit.TERMINALS_OUT[7], led3, LED.TERMINAL_2_IN);
+	connect(circuit3, Circuit.TERMINALS_OUT[7], led3, LED.TERMINAL_3_IN);
 	//
-	connect(led2, led2.TERMINAL_3_OUT, circuit3, circuit3.TERMINALS_IN[2]);
+	connect(led2, LED.TERMINAL_3_OUT, circuit3, Circuit.TERMINALS_IN[2]);
 	root.addChild(circuit4);
-	connect(led2, led2.TERMINAL_4_OUT, circuit4, circuit4.TERMINALS_IN[2]);
-	connect(circuit3, circuit3.TERMINALS_OUT[4], circuit4, circuit4.TERMINALS_IN[3]);
-	connect(led1, led1.TERMINAL_4_OUT, circuit4, circuit4.TERMINALS_IN[0]);
-	connect(circuit4, circuit1.TERMINALS_OUT[7], led3, led3.TERMINAL_4_IN);
+	connect(led2, LED.TERMINAL_4_OUT, circuit4, Circuit.TERMINALS_IN[2]);
+	connect(circuit3, Circuit.TERMINALS_OUT[4], circuit4, Circuit.TERMINALS_IN[3]);
+	connect(led1, LED.TERMINAL_4_OUT, circuit4, Circuit.TERMINALS_IN[0]);
+	connect(circuit4, Circuit.TERMINALS_OUT[7], led3, LED.TERMINAL_4_IN);
 
 	return root;
 }

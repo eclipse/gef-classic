@@ -13,7 +13,6 @@ import org.eclipse.jface.resource.*;
 import org.eclipse.gef.commands.AbstractCommand;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CommandStack;
-import org.eclipse.gef.commands.DefaultCommandStack;
 
 public class TreeLabelProvider
 	implements org.eclipse.jface.viewers.ILabelProvider
@@ -37,10 +36,6 @@ public void dispose(){}
 public Image getImage(Object o){
 	if(o instanceof Command){
 		Command command = (Command)o;
-//		if(((DefaultCommandStack)stack).canUndoCommand(command)) 
-//			return yesIcon;
-//		if(((DefaultCommandStack)stack).canRedoCommand(command)) 
-//			return noIcon;
 		if(command.canUndo())
 			return yesIcon;
 		else

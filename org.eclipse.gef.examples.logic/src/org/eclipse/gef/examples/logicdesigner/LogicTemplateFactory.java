@@ -40,16 +40,16 @@ class LogicTemplateFactory implements CreateRequest.Factory {
 		circuit.addChild(circuit1);
 		circuit.addChild(circuit2);
 	
-		connect(circuit, circuit.TERMINALS_OUT[0], circuit1, circuit1.TERMINALS_IN[0]);
-		connect(circuit, circuit.TERMINALS_OUT[2], circuit1, circuit1.TERMINALS_IN[3]);
-		connect(circuit, circuit.TERMINALS_OUT[3], circuit2, circuit2.TERMINALS_IN[3]);
-		connect(circuit1,circuit1.TERMINALS_OUT[7],circuit2, circuit2.TERMINALS_IN[0]);
+		connect(circuit, Circuit.TERMINALS_OUT[0], circuit1, Circuit.TERMINALS_IN[0]);
+		connect(circuit, Circuit.TERMINALS_OUT[2], circuit1, Circuit.TERMINALS_IN[3]);
+		connect(circuit, Circuit.TERMINALS_OUT[3], circuit2, Circuit.TERMINALS_IN[3]);
+		connect(circuit1,Circuit.TERMINALS_OUT[7],circuit2, Circuit.TERMINALS_IN[0]);
 	
 		circuit.addChild(or);
-		connect(or, or.TERMINAL_OUT, circuit, circuit.TERMINALS_IN[4]);
-		connect(circuit1, circuit1.TERMINALS_OUT[4], or, or.TERMINAL_A);
-		connect(circuit2, circuit2.TERMINALS_OUT[4], or, or.TERMINAL_B);
-		connect(circuit2, circuit2.TERMINALS_OUT[7], circuit, circuit.TERMINALS_IN[7]);
+		connect(or, SimpleOutput.TERMINAL_OUT, circuit, Circuit.TERMINALS_IN[4]);
+		connect(circuit1, Circuit.TERMINALS_OUT[4], or, Gate.TERMINAL_A);
+		connect(circuit2, Circuit.TERMINALS_OUT[4], or, Gate.TERMINAL_B);
+		connect(circuit2, Circuit.TERMINALS_OUT[7], circuit, Circuit.TERMINALS_IN[7]);
 	
 		return circuit;
 	}
@@ -68,13 +68,13 @@ class LogicTemplateFactory implements CreateRequest.Factory {
 		circuit.addChild(xor);
 		circuit.addChild(and);
 	
-		connect(circuit, circuit.TERMINALS_OUT[0], and, and.TERMINAL_A);
-		connect(circuit, circuit.TERMINALS_OUT[3], and, and.TERMINAL_B);
-		connect(circuit, circuit.TERMINALS_OUT[0], xor, xor.TERMINAL_A);
-		connect(circuit, circuit.TERMINALS_OUT[3], xor, xor.TERMINAL_B);
+		connect(circuit, Circuit.TERMINALS_OUT[0], and, Gate.TERMINAL_A);
+		connect(circuit, Circuit.TERMINALS_OUT[3], and, Gate.TERMINAL_B);
+		connect(circuit, Circuit.TERMINALS_OUT[0], xor, Gate.TERMINAL_A);
+		connect(circuit, Circuit.TERMINALS_OUT[3], xor, Gate.TERMINAL_B);
 	
-		connect(and, and.TERMINAL_OUT, circuit, circuit.TERMINALS_IN[4]);
-		connect(xor, xor.TERMINAL_OUT, circuit, circuit.TERMINALS_IN[7]);
+		connect(and, SimpleOutput.TERMINAL_OUT, circuit, Circuit.TERMINALS_IN[4]);
+		connect(xor, SimpleOutput.TERMINAL_OUT, circuit, Circuit.TERMINALS_IN[7]);
 		return circuit;
 	}
 	

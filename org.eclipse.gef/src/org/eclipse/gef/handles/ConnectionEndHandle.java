@@ -9,6 +9,7 @@ package org.eclipse.gef.handles;
 import org.eclipse.draw2d.ConnectionLocator;
 import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.DragTracker;
+import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.tools.ConnectionEndpointTracker;
 
 /**
@@ -47,7 +48,7 @@ protected DragTracker createDragTracker() {
 		return null;
 	ConnectionEndpointTracker tracker;
 	tracker = new ConnectionEndpointTracker((ConnectionEditPart)getOwner());
-	tracker.setCommandName(tracker.REQ_RECONNECT_TARGET);
+	tracker.setCommandName(RequestConstants.REQ_RECONNECT_TARGET);
 	tracker.setDefaultCursor(getCursor());
 	return tracker;
 }

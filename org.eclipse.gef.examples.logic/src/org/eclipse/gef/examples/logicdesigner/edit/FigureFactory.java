@@ -29,7 +29,7 @@ public static PolylineConnection createNewWire(Wire wire){
 		arrow = null;
 	else {
 		arrow = new PolygonDecoration();
-		arrow.setTemplate(arrow.INVERTED_TRIANGLE_TIP);
+		arrow.setTemplate(PolygonDecoration.INVERTED_TRIANGLE_TIP);
 		arrow.setScale(5,2.5);
 	}
 	conn.setSourceDecoration(arrow);
@@ -38,7 +38,7 @@ public static PolylineConnection createNewWire(Wire wire){
 		arrow = null;
 	else {
 		arrow = new PolygonDecoration();
-		arrow.setTemplate(arrow.INVERTED_TRIANGLE_TIP);
+		arrow.setTemplate(PolygonDecoration.INVERTED_TRIANGLE_TIP);
 		arrow.setScale(5,2.5);
 	}
 	conn.setTargetDecoration(arrow);

@@ -284,7 +284,7 @@ void navigateTo(EditPart part, KeyEvent event){
 private void processSelect(KeyEvent event){
 	EditPart part = getViewer().getFocusEditPart();
 	if ((event.stateMask & SWT.CONTROL) != 0 &&
-		part.getSelected() != part.SELECTED_NONE)
+		part.getSelected() != EditPart.SELECTED_NONE)
 	{
 		getViewer().deselect(part);
 	} else {

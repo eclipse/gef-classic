@@ -45,7 +45,7 @@ protected Clickable createDefaultDownButton(){
 		}
 	});
 
-	button.setFiringMethod(button.REPEAT_FIRING);
+	button.setFiringMethod(Clickable.REPEAT_FIRING);
 	button.setRolloverEnabled(true);
 	button.setBorder(dropshadow);
 	button.setOpaque(false);
@@ -69,7 +69,7 @@ protected Clickable createDefaultUpButton(){
 		}
 	});
 
-	button.setFiringMethod(button.REPEAT_FIRING);
+	button.setFiringMethod(Clickable.REPEAT_FIRING);
 	button.setRolloverEnabled(true);
 	button.setBorder(dropshadow);
 	button.setOpaque(false);
