@@ -134,9 +134,15 @@ public void paintBorder(Graphics graphics) {
  */
 public void postValidate() {
 	setBounds(getBlockBox().toRectangle().expand(getInsets()));
-	List v = getChildren();
-	for (int i = 0; i < v.size(); i++)
-		((FlowFigure)v.get(i)).postValidate();
+}
+
+/**
+ * @see FlowFigure#revalidate(IFigure)
+ */
+public void revalidate() {
+	BlockFlowLayout layout = (BlockFlowLayout)getLayoutManager();
+	layout.blockContentsChanged();
+	super.revalidate();
 }
 
 /**

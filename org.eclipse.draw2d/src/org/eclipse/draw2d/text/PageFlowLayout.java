@@ -29,25 +29,16 @@ public PageFlowLayout(FlowPage page) {
 }
 
 /**
- * @see BlockFlowLayout#endBlock()
- */
-protected void endBlock() { }
-
-/**
- * TODO: This method is not being called.
- */
-public void postValidate() { }
-
-/**
  * Setup blockBox to the initial bounds of the Page
  */
 protected void setupBlock() {
-	//Remove all current Fragments
+	int newWidth = ((FlowPage)getFlowFigure()).getRecommendedWidth();
+	if (blockBox.recommendedWidth == newWidth)
+		return;
+	blockInvalid = true;
 	blockBox.clear();
-
-	//Setup the one fragment for this Block with the correct X and available width
-	blockBox.setRecommendedWidth(((FlowPage)getFlowFigure()).getRecommendedWidth());
-	blockBox.x = 0;
+	blockBox.x = blockBox.y = 0;
+	blockBox.setRecommendedWidth(newWidth);
 }
 
 }

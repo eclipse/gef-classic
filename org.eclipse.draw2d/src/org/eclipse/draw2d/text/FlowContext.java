@@ -32,15 +32,6 @@ void endLine();
 
 /**
  * This method is used to convey layout state to different FlowFigures.  This state is
- * cleared when a fragments is added to the current line and once the layout is complete.
- * @return <code>true</code> if leading whitespace should be consumed on the newline
- * @since 3.1
- * @see #setConsumeSpaceOnNewLine(boolean)
- */
-boolean getConsumeSpaceOnNewLine();
-
-/**
- * This method is used to convey layout state to different FlowFigures.  This state is
  * cleared when a fragment is added to the current line and once the layout is complete.
  * @return <code>true</code> if the next fragment should be placed on the current line
  * @since 3.1
@@ -74,18 +65,6 @@ boolean getWordWidthFollowing(FlowFigure child, int[] width);
 /**
  * @return <code>true</code> if the current line contains any fragments */
 boolean isCurrentLineOccupied();
-
-/**
- * This method is used to convey layout state to different FlowFigures.  This state is
- * cleared when a fragment is added and once the layout is complete.
- * 
- * @param consume <code>true</code> indicates that the next TextFlow to be laid out should 
- * not display its first whitespace character (if it has one), if it is being placed on
- * a new line
- * @since 3.1
- * @see #getConsumeSpaceOnNewLine()
- */
-void setConsumeSpaceOnNewLine(boolean consume);
 
 /**
  * This method is used to convey layout state to different FlowFigures.  This state is

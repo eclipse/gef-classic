@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.draw2d.text;
 
-import org.eclipse.draw2d.AbstractLayout;
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.LayoutManager;
 import org.eclipse.draw2d.geometry.Dimension;
 
 /**
@@ -21,18 +21,13 @@ import org.eclipse.draw2d.geometry.Dimension;
  * @author hudsonr
  * @since 2.1 */
 public abstract class FlowFigureLayout
-	extends AbstractLayout
+	implements LayoutManager
 {
-
-/**
- * <code>true</code> if the context has changed, and a layout is needed.
- */
-protected boolean invalid = true;
 
 /**
  * The flow context in which this LayoutManager exists.
  */
-protected FlowContext context;
+private FlowContext context;
 
 /**
  * The figure passed by layout(Figure) is held for convenience.
@@ -47,12 +42,20 @@ protected FlowFigureLayout(FlowFigure flowfigure) {
 }
 
 /**
- * TextFlowLayouts do not calculate a preferred size because it is too expensive.
- * {@link FlowPage} will actually layout itself in order to calculate preferredSize.
- * @see AbstractLayout#calculatePreferredSize(IFigure, int, int)
+ * Not applicable.
+ * @see org.eclipse.draw2d.LayoutManager#getConstraint(org.eclipse.draw2d.IFigure)
  */
-public Dimension calculatePreferredSize(IFigure f, int w, int h) {
+public Object getConstraint(IFigure child) {
 	return null;
+}
+
+/**
+ * Returns this layout's context or <code>null</code>.
+ * @return <code>null</code> or a context
+ * @since 3.1
+ */
+protected FlowContext getContext() {
+	return context;
 }
 
 /** * @return the FlowFigure */
@@ -61,24 +64,49 @@ protected FlowFigure getFlowFigure() {
 }
 
 /**
- * Marks this layout as invalid.
- * @see org.eclipse.draw2d.LayoutManager#invalidate() */
-public void invalidate() {
-	invalid = true;
-	super.invalidate();
+ * Not applicable.
+ * @see org.eclipse.draw2d.LayoutManager#getMinimumSize(org.eclipse.draw2d.IFigure, int, int)
+ */
+public Dimension getMinimumSize(IFigure container, int wHint, int hHint) {
+	return null;
 }
 
-/** * @see org.eclipse.draw2d.LayoutManager#layout(IFigure) */
-public final void layout(IFigure figure) {
-	layout ();
-	invalid = false;
+/**
+ * Not applicable.
+ * @see org.eclipse.draw2d.LayoutManager#getPreferredSize(org.eclipse.draw2d.IFigure, int, int)
+ */
+public Dimension getPreferredSize(IFigure container, int wHint, int hHint) {
+	return null;
 }
+
+/**
+ * Not applicable. 
+ * @see org.eclipse.draw2d.LayoutManager#invalidate()
+ */
+public void invalidate() { }
 
 /**
  * Called during {@link #layout(IFigure)}. The {@link  #invalid} flag is reset after this
  * method is called.
  */
 protected abstract void layout();
+
+/** * @see org.eclipse.draw2d.LayoutManager#layout(IFigure) */
+public final void layout(IFigure figure) {
+	layout ();
+}
+
+/**
+ * Not applicable.
+ * @see org.eclipse.draw2d.LayoutManager#remove(org.eclipse.draw2d.IFigure)
+ */
+public void remove(IFigure child) { }
+
+/**
+ * Not applicable.
+ * @see org.eclipse.draw2d.LayoutManager#setConstraint(org.eclipse.draw2d.IFigure, java.lang.Object)
+ */
+public void setConstraint(IFigure child, Object constraint) { }
 
 /**
  * Sets the context for this layout manager.

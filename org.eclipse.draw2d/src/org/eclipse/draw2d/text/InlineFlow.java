@@ -115,6 +115,7 @@ public void postValidate() {
 		bottom = Math.max(bottom, box.y + box.height);
 	}
 	setBounds(new Rectangle(left, top, right - left, bottom - top));
+	repaint();
 	list = getChildren();
 	for (int i = 0; i < list.size(); i++)
 		((FlowFigure)list.get(i)).postValidate();

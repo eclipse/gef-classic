@@ -10,8 +10,11 @@
  *******************************************************************************/
 package org.eclipse.draw2d.text;
 
+import java.util.List;
+
 import org.eclipse.swt.SWT;
 
+import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.PositionConstants;
 
 /**
@@ -25,9 +28,9 @@ public class BlockFlowLayout
 {
 
 BlockBox blockBox;
-private boolean consumeSpace = false;
 private boolean continueOnSameLine = false;
 private LineBox previousLine = null;
+boolean blockInvalid = false;
 
 /**
  * Creates a new BlockFlowLayout with the given BlockFlow.
@@ -38,18 +41,27 @@ public BlockFlowLayout(BlockFlow blockFlow) {
 }
 
 /**
+ * @see FlowContainerLayout#addToCurrentLine(FlowBox)
+ */
+public void addToCurrentLine(FlowBox block) {
+	super.addToCurrentLine(block);
+}
+
+/**
+ * Marks the blocks contents as changed.  This means that children will be invalidated
+ * during validation.
+ * @since 3.1
+ */
+public void blockContentsChanged() {
+	blockInvalid = true;
+}
+
+/**
  * @see FlowContainerLayout#cleanup()
  */
 protected void cleanup() {
 	super.cleanup();
 	currentLine = previousLine = null;
-}
-
-/**
- * @see org.eclipse.draw2d.text.FlowContext#getConsumeSpaceOnNewLine()
- */
-public boolean getConsumeSpaceOnNewLine() {
-	return consumeSpace;
 }
 
 /**
@@ -72,8 +84,16 @@ protected void createNewLine() {
  * to the current line and then ends the line.
  */
 protected void endBlock() {
-	context.addToCurrentLine(blockBox);
-	context.endLine();
+	if (getContext() != null) {
+		getContext().addToCurrentLine(blockBox);
+		getContext().endLine();
+	}
+	if (blockInvalid) {
+		blockInvalid = false;
+		List v = getFlowFigure().getChildren();
+		for (int i = 0; i < v.size(); i++)
+			((FlowFigure)v.get(i)).postValidate();
+	}
 }
 
 /**
@@ -135,6 +155,10 @@ protected void layoutLine() {
 	blockBox.add(currentLine);
 }
 
+boolean forceChildInvalidation(Figure f) {
+	return blockInvalid;
+}
+
 /**
  * @see FlowContainerLayout#flush()
  */
@@ -149,17 +173,9 @@ protected void flush() {
  */
 protected void preLayout() {
 	setContinueOnSameLine(false);
-	setConsumeSpaceOnNewLine(false);
 	blockBox = getBlockFlow().getBlockBox();
 	setupBlock();
 	//Probably could setup current and previous line here, or just previous
-}
-
-/**
- * @see org.eclipse.draw2d.text.FlowContext#setConsumeSpaceOnNewLine(boolean)
- */
-public void setConsumeSpaceOnNewLine(boolean eat) {
-	consumeSpace = eat;
 }
 
 /**
@@ -174,16 +190,16 @@ public void setContinueOnSameLine(boolean value) {
  */
 protected void setupBlock() {
 	//Ask for a new line, in case we are in the middle of a line
-	context.endLine();
-	LineBox line = context.getCurrentLine();
-//	int recommended = line.getAvailableWidth();
-//	if (recommended != previousRecommendedWidth)
-		//Remove all current Fragments
+	getContext().endLine();
+	LineBox line = getContext().getCurrentLine();
+	int recommended = line.getAvailableWidth();
+	if (recommended != blockBox.recommendedWidth) {
+		blockInvalid = true;
 		blockBox.clear();
-
+		blockBox.setRecommendedWidth(recommended);
+	}
 	//Setup the one fragment for this Block with the correct X and available width
-	blockBox.setRecommendedWidth(line.getAvailableWidth());
-	blockBox.y = context.getCurrentY();
+	blockBox.y = getContext().getCurrentY();
 	blockBox.x = 0;
 }
 

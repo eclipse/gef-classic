@@ -27,7 +27,7 @@ public abstract class CompositeBox
  * The contained fragments.
  */
 protected List fragments = new ArrayList();
-int recommendedWidth;
+int recommendedWidth = -1;
 
 /**
  * Adds the specified FlowBox. Updates the width, height, and ascent properties.

@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.draw2d.text;
 
-import java.text.BreakIterator;
 import java.util.List;
 
 import org.eclipse.swt.graphics.Font;
@@ -107,13 +106,13 @@ class SegmentLookahead implements FlowUtilities.LookAhead {
 		int startingIndex = seg + 1;
 		TextFlow textFlow = (TextFlow)getFlowFigure();
 		if (startingIndex == segs.length)
-			context.getWordWidthFollowing(textFlow, width);
+			getContext().getWordWidthFollowing(textFlow, width);
 		else {
 			String rest = segs[startingIndex];
 			for (int k = startingIndex + 1; k < segs.length; k++)
 				rest += segs[k];
 			if (!textFlow.addLeadingWordWidth(rest, width))
-				context.getWordWidthFollowing(textFlow, width);
+				getContext().getWordWidthFollowing(textFlow, width);
 		}
 		return width[0];
 	}
@@ -121,9 +120,6 @@ class SegmentLookahead implements FlowUtilities.LookAhead {
 
 /** * @see org.eclipse.draw2d.text.FlowFigureLayout#layout() */
 protected void layout() {
-	/*
-	 * Changes to this algorithm should be tested using TextFlowWrapTest.
-	 */
 	TextFlow textFlow = (TextFlow)getFlowFigure();
 	int offset = 0;
 	
@@ -131,8 +127,7 @@ protected void layout() {
 	Font font = textFlow.getFont();
 	int fragIndex = 0;
 	int advance = 0;
-
-	LineBox currentLine;
+	
 	TextFragmentBox fragment;
 	int levelInfo[] = (textFlow.getBidiInfo() == null)
 		? new int[] {-1}
@@ -151,22 +146,15 @@ protected void layout() {
 			fragment.offset = offset;
 			fragment.setBidiLevel(levelInfo[seg * 2]);
 			
-			currentLine = context.getCurrentLine();
-			if (!context.isCurrentLineOccupied()
-					&& context.getConsumeSpaceOnNewLine() 
-					&& Character.isWhitespace(segment.charAt(0))) {
-				segment = segment.substring(1);
-				offset++;
-				fragment.offset++;
-			}
 			advance = FlowUtilities.wrapFragmentInContext(fragment, segment,
-					context, lookahead, font, wrappingStyle);
+					getContext(), lookahead, font, wrappingStyle);
 			
 			segment = segment.substring(advance);
 			offset += advance;
-			if ((segment.length() > 0 && !context.getContinueOnSameLine())
+			if ((segment.length() > 0 && !getContext().getContinueOnSameLine()
+					|| fragment.length < advance)
 					|| fragment.truncated)
-				context.endLine();
+				getContext().endLine();
 			fragIndex++;
 		} while (segment.length() > 0 || fragment.length < advance);
 	}

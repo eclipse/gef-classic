@@ -30,11 +30,12 @@ public int getBidiLevel() {
 }
 
 /**
- * Returns <code>true</code> if the bidi level for this box is right-to-left.
+ * Returns <code>true</code> if the bidi level for this box is specified, and is not the
+ * default level (0).
  * @see org.eclipse.draw2d.text.FlowBox#requiresBidi()
  */
 public boolean requiresBidi() {
-	return bidiLevel != -1;
+	return bidiLevel > 0;
 }
 
 /**

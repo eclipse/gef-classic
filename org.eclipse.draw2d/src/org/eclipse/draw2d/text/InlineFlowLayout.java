@@ -53,8 +53,8 @@ public void endLine() {
 		return;
 	//If nothing was ever placed in the line, ignore it.
 	if (currentLine.isOccupied())
-		context.addToCurrentLine(currentLine);
-	context.endLine();
+		getContext().addToCurrentLine(currentLine);
+	getContext().endLine();
 	currentLine = null;
 }
 
@@ -64,21 +64,10 @@ public void endLine() {
 protected void flush() {
 	if (currentLine != null) {
 		// We want to preserve the state when a linebox is being added
-		boolean newLine = context.getConsumeSpaceOnNewLine();
-		boolean sameLine = context.getContinueOnSameLine();
-		context.addToCurrentLine(currentLine);
-		context.setConsumeSpaceOnNewLine(newLine);
-		context.setContinueOnSameLine(sameLine);
+		boolean sameLine = getContext().getContinueOnSameLine();
+		getContext().addToCurrentLine(currentLine);
+		getContext().setContinueOnSameLine(sameLine);
 	}
-}
-/**
- * InlineFlowLayout gets this information from its context.
- * @see org.eclipse.draw2d.text.FlowContext#getConsumeSpaceOnNewLine()
- */
-public boolean getConsumeSpaceOnNewLine() {
-	if (context != null)
-		return context.getConsumeSpaceOnNewLine();
-	return false;
 }
 
 /**
@@ -86,9 +75,7 @@ public boolean getConsumeSpaceOnNewLine() {
  * @see org.eclipse.draw2d.text.FlowContext#getContinueOnSameLine()
  */
 public boolean getContinueOnSameLine() {
-	if (context != null)
-		return context.getContinueOnSameLine();
-	return false;
+	return getContext().getContinueOnSameLine();
 }
 
 /**
@@ -104,8 +91,8 @@ public int getCurrentY() {
  */
 public boolean getWordWidthFollowing(FlowFigure child, int[] width) {
 	boolean result = super.getWordWidthFollowing(child, width); 
-	if (!result && context != null)
-		return context.getWordWidthFollowing(getFlowFigure(), width);
+	if (!result && getContext() != null)
+		return getContext().getWordWidthFollowing(getFlowFigure(), width);
 	return result;
 }
 
@@ -113,8 +100,8 @@ public boolean getWordWidthFollowing(FlowFigure child, int[] width) {
  * @see org.eclipse.draw2d.text.FlowContainerLayout#isCurrentLineOccupied()
  */
 public boolean isCurrentLineOccupied() {
-	return !currentLine.getFragments().isEmpty()
-		|| context.isCurrentLineOccupied();
+	return (currentLine != null && !currentLine.getFragments().isEmpty())
+		|| getContext().isCurrentLineOccupied();
 }
 
 /**
@@ -126,20 +113,10 @@ public void preLayout() {
 
 /**
  * InlineFlow passes this information to its context.
- * @see org.eclipse.draw2d.text.FlowContext#setConsumeSpaceOnNewLine(boolean)
- */
-public void setConsumeSpaceOnNewLine(boolean consume) {
-	if (context != null)
-		context.setConsumeSpaceOnNewLine(consume);
-}
-
-/**
- * InlineFlow passes this information to its context.
  * @see org.eclipse.draw2d.text.FlowContext#setContinueOnSameLine(boolean)
  */
 public void setContinueOnSameLine(boolean value) {
-	if (context != null)
-		context.setContinueOnSameLine(value);
+	getContext().setContinueOnSameLine(value);
 }
 
 /**
@@ -147,9 +124,9 @@ public void setContinueOnSameLine(boolean value) {
  * @param line The LineBox to initialize.
  */
 protected void setupLine(LineBox line) {
-	LineBox parent = context.getCurrentLine();
+	LineBox parent = getContext().getCurrentLine();
 	line.x = 0;
-	line.y = context.getCurrentY();
+	line.y = getContext().getCurrentY();
 	line.setRecommendedWidth(parent.getAvailableWidth());
 }
 

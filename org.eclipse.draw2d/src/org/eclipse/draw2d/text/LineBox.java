@@ -148,8 +148,8 @@ protected void unionInfo(FlowBox blockInfo) {
  */
 private static class BidiLevelNode extends ArrayList
 {
-	private int level;
-	private final BidiLevelNode parent;
+	int level;
+	final BidiLevelNode parent;
 
 	BidiLevelNode() {
 		this(null, 0);

@@ -54,8 +54,8 @@ protected void layout() {
 		fragment.length = result - offset;
 		fragment.offset = offset;
 		FlowUtilities.setupFragment(fragment, font, text);
-		context.addToCurrentLine(fragment);
-		context.endLine();
+		getContext().addToCurrentLine(fragment);
+		getContext().endLine();
 		offset = result + delimeterLength;
 	}
 	//Remove the remaining unused fragments.

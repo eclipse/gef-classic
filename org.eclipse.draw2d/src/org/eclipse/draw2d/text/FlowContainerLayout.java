@@ -36,12 +36,11 @@ protected FlowContainerLayout(FlowFigure flowFigure) {
 }
 
 /**
- * Clears the layout state everytime a new box is added to the current line: 
+ * Clears the layout state every time a new box is added to the current line: 
  * {@link FlowContext#setConsumeSpaceOnNewLine(boolean)} and 
  * {@link FlowContext#setContinueOnSameLine(boolean)}. * @see org.eclipse.draw2d.text.FlowContext#addToCurrentLine(FlowBox) */
 public void addToCurrentLine(FlowBox block) {
 	getCurrentLine().add(block);
-	setConsumeSpaceOnNewLine(false);
 	setContinueOnSameLine(false);
 }
 
@@ -110,9 +109,14 @@ protected void layoutChildren() {
 	List children = getFlowFigure().getChildren();
 	for (int i = 0; i < children.size(); i++) {
 		Figure f = (Figure)children.get(i);
-		f.invalidate();
+		if (forceChildInvalidation(f))
+			f.invalidate();
 		f.validate();
 	}
+}
+
+boolean forceChildInvalidation(Figure f) {
+	return true;
 }
 
 /**

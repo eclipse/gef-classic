@@ -138,9 +138,10 @@ public void setBidiInfo(BidiInfo info) { }
  * @see Figure#setBounds(Rectangle)
  */
 public void setBounds(Rectangle r) {
-	if (getBounds().equals(r))
+	if (bounds.equals(r))
 		return;
-	erase();
+	if (!r.contains(bounds))
+		erase();
 	bounds.x = r.x;
 	bounds.y = r.y;
 	bounds.width = r.width;

@@ -28,6 +28,9 @@ class FlowUtilities
 	extends FigureUtilities
 {
 
+static final BreakIterator LINE_BREAK = BreakIterator.getLineInstance();
+static final BreakIterator WORD_BREAK = BreakIterator.getWordInstance();
+
 interface LookAhead {
 	int getWidth();
 }
@@ -36,7 +39,6 @@ private static int ELLIPSIS_SIZE;
 private static TextLayout layout;
 
 private static int findFirstDelimeter(String string) {
-	int winNL = string.indexOf("\r\n"); //$NON-NLS-1$
 	int macNL = string.indexOf('\r');
 	int unixNL = string.indexOf('\n');
 	
@@ -44,10 +46,8 @@ private static int findFirstDelimeter(String string) {
 		macNL = Integer.MAX_VALUE;
 	if (unixNL == -1)
 		unixNL = Integer.MAX_VALUE;
-	if (winNL == -1)
-		winNL = Integer.MAX_VALUE;
 
-	return Math.min(Math.min(macNL, unixNL), winNL);
+	return Math.min(macNL, unixNL);
 }
 
 /**
@@ -69,17 +69,18 @@ public static int wrapFragmentInContext(TextFragmentBox frag, String string,
 	frag.truncated = false;
 	int strLen = string.length();
 	if (strLen == 0) {
+		frag.width = -1;
 		frag.length = 0;
 		setupFragment(frag, font, string);
 		context.addToCurrentLine(frag);
 		return 0;
 	}
 	
-	BreakIterator lineBreak = BreakIterator.getLineInstance();
-	lineBreak.setText(string);
+	LINE_BREAK.setText(string);
 
 	initBidi(frag, string, font);
 	float avgCharWidth = getAverageCharWidth(frag, font);
+	frag.width = -1;
 	
 	/*
 	 * Setup initial boundaries within the string.
@@ -87,7 +88,7 @@ public static int wrapFragmentInContext(TextFragmentBox frag, String string,
 	int absoluteMin = 0;
 	int max, min = 1;
 	if (wrapping == ParagraphTextLayout.WORD_WRAP_HARD) {
-		absoluteMin = lineBreak.next();
+		absoluteMin = LINE_BREAK.next();
 		while (absoluteMin > 0 && Character.isWhitespace(string.charAt(absoluteMin - 1)))
 			absoluteMin--;
 		min = Math.max(absoluteMin, 1);
@@ -98,7 +99,6 @@ public static int wrapFragmentInContext(TextFragmentBox frag, String string,
 	else
 		max = Math.min(strLen, firstDelimiter) + 1;
 
-	
 	
 	int availableWidth = context.getCurrentLine().getAvailableWidth();
 	int guess = 0, guessSize = 0;
@@ -122,23 +122,27 @@ public static int wrapFragmentInContext(TextFragmentBox frag, String string,
 		// Pick a new guess size
 		// New guess is the last guess plus the missing width in pixels
 		// divided by the average character size in pixels
-		guess += Math.round((availableWidth - guessSize) / avgCharWidth);
+		guess += 0.5f + (availableWidth - guessSize) / avgCharWidth;
 
 		if (guess >= max) guess = max - 1;
 		if (guess <= min) guess = min + 1;
 
 		guessSize = measureString(frag, string, guess, font);
 		
-		if (guess == strLen && lookahead != null) {
-			if (canBreakAfter(string.charAt(strLen - 1)))
-					lookahead = null;
-			else
-				guessSize += lookahead.getWidth();
+		if (guess == strLen
+				&& lookahead != null
+				&& !canBreakAfter(string.charAt(strLen - 1))
+				&& guessSize + lookahead.getWidth() > availableWidth) {
+			max = guess;
+			continue;
 		}
 
-		if (guessSize <= availableWidth)
+		if (guessSize <= availableWidth) {
 			min = guess;
-		else
+			frag.width = guessSize;
+			if (guessSize == availableWidth)
+				max = guess + 1;
+		} else
 			max = guess;
 	}
 	
@@ -146,7 +150,7 @@ public static int wrapFragmentInContext(TextFragmentBox frag, String string,
  
 	if (min == strLen) {
 		//Everything fits
-		frag.length = result = min;
+		frag.length = result;
 	} else if (min == firstDelimiter) {
 		//move result past the delimiter
 		frag.length = result;
@@ -156,17 +160,19 @@ public static int wrapFragmentInContext(TextFragmentBox frag, String string,
 				result++;
 		} else if (string.charAt(min) == '\n')
 			result++;
-	} else if (lineBreak.isBoundary(min)
-			|| string.charAt(min) == ' '
-			|| canBreakAfter(string.charAt(min - 1))) {
-		frag.length = result = min;
+	} else if (string.charAt(min) == ' '
+			|| canBreakAfter(string.charAt(min - 1))
+			|| LINE_BREAK.isBoundary(min)) {
+		frag.length = min;
 		if (string.charAt(min) == ' ')
 			result++;
-		else if (string.charAt(min - 1) == ' ')
+		else if (string.charAt(min - 1) == ' ') {
 			frag.length--;
+			frag.width = -1;
+		}
 	} else {
 		// In the middle of an unbreakable offset.
-		result = lineBreak.preceding(min);
+		result = LINE_BREAK.preceding(min);
 		if (result == 0) {
 			switch (wrapping) {
 				case ParagraphTextLayout.WORD_WRAP_SOFT :
@@ -185,7 +191,7 @@ public static int wrapFragmentInContext(TextFragmentBox frag, String string,
 					} else
 						frag.length = 0;
 					frag.truncated = true;
-					result = lineBreak.following(max - 1);
+					result = LINE_BREAK.following(max - 1);
 					break;
 				default:
 					result = min;
@@ -194,6 +200,7 @@ public static int wrapFragmentInContext(TextFragmentBox frag, String string,
 		frag.length = result;
 		if (string.charAt(result - 1) == ' ')
 			frag.length--;
+		frag.width = -1;
 	}
 	
 	setupFragment(frag, font, string);
@@ -218,8 +225,7 @@ private static int measureString(TextFragmentBox frag, String string, int guess,
 	if (frag.requiresBidi())
 		return getTextLayout().getBounds(0, guess - 1).width;
 	else
-		return getStringExtents(string.substring(0, guess), font).width;
-
+		return getStringDimension(string.substring(0, guess), font).x;
 }
 
 /**
@@ -267,8 +273,10 @@ static TextLayout getTextLayout() {
 }
 
 static boolean canBreakAfter(char c) {
-	boolean result = c == '-' || Character.isWhitespace(c);
+	boolean result = Character.isWhitespace(c) || c == '-';
 	if (!result) {
+		if (c <= 'z' && c >= 'a')
+			return false;
 		// chinese characters and such would be caught in here
 		BreakIterator breakItr = BreakIterator.getLineInstance();
 		breakItr.setText(c + "a"); //$NON-NLS-1$
@@ -278,22 +286,24 @@ static boolean canBreakAfter(char c) {
 }
 
 static void setupFragment(TextFragmentBox frag, Font f, String s) {
-	int width;
-	if (s.length() == 0 || frag.length == 0)
-		width = 0;
-	else if (frag.requiresBidi()) {
-		TextLayout textLayout = getTextLayout();
-		textLayout.setFont(f);
-		textLayout.setText(s);
-		width = textLayout.getBounds(0, frag.length - 1).width;
-	} else
-		width = getStringExtents(s.substring(0, frag.length), f).width;
+	if (frag.width == -1 || frag.truncated) {
+		int width;
+		if (s.length() == 0 || frag.length == 0)
+			width = 0;
+		else if (frag.requiresBidi()) {
+			TextLayout textLayout = getTextLayout();
+			textLayout.setFont(f);
+			textLayout.setText(s);
+			width = textLayout.getBounds(0, frag.length - 1).width;
+		} else
+			width = getStringDimension(s.substring(0, frag.length), f).x;
+		if (frag.truncated)
+			width += ELLIPSIS_SIZE;
+		frag.setWidth(width);
+	}
 	FontMetrics fm = getFontMetrics(f);
 	frag.setHeight(fm.getHeight());
 	frag.setAscent(frag.getHeight() - fm.getDescent());
-	if (frag.truncated)
-		width += ELLIPSIS_SIZE;
-	frag.setWidth(width);
 }
 
 }
