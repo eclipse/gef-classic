@@ -58,8 +58,8 @@ static class LeftOrRightAnchor extends ChopboxAnchor {
  */
 static void buildEdgeFigure(Figure contents, Edge edge) {
 	PolylineConnection conn = connection(edge);
-	conn.setForegroundColor(ColorConstants.gray);
-	conn.setLineWidth(2);
+//	conn.setForegroundColor(ColorConstants.gray);
+//	conn.setLineWidth(2);
 	
 	
 	if (edge.tree) {
@@ -99,11 +99,12 @@ static void buildEdgeFigure(Figure contents, Edge edge) {
 static void buildNodeFigure(Figure contents, Node node) {
 	Label label;
 	label = new Label();
-	label.setBackgroundColor(ColorConstants.lightGray);
+	label.setBackgroundColor(ColorConstants.darkGray);
+	label.setForegroundColor(ColorConstants.white);
 	label.setOpaque(true);
-	label.setBorder(new LineBorder());
-	if (node.incoming.isEmpty())
-		label.setBorder(new LineBorder(2));
+	label.setBorder(new MarginBorder(3));
+//	if (node.incoming.isEmpty())
+//		label.setBorder(new LineBorder(2));
 	String text = node.data.toString();// + "(" + node.index +","+node.sortValue+ ")";
 	label.setText(text);
 	node.data = label;

@@ -9,6 +9,7 @@ import org.eclipse.core.runtime.*;
 import org.eclipse.ui.part.ViewPart;
 
 import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.graph.*;
 import org.eclipse.draw2d.internal.graph.*;
 
@@ -29,7 +30,7 @@ public void createPartControl(Composite comp) {
 	canvas = new FigureCanvas(comp);
 //	canvas.setFont(new Font(null, "Arial", 8, 0));
 	Label dummy = new Label();
-	dummy.setBorder(new MarginBorder(2));
+	dummy.setBorder(new MarginBorder(3));
 	dummy.setFont(canvas.getFont());
 
 	IPluginDescriptor plugins[] = Platform.getPluginRegistry().getPluginDescriptors();
@@ -37,6 +38,7 @@ public void createPartControl(Composite comp) {
 	ToggleButton.class.toString();
 	
 	DirectedGraph g = new DirectedGraph();
+	g.setDefaultPadding(new Insets(20));
 	
 	Node ECLIPSE = new PluginNode("Eclipse");
 	g.nodes.add(ECLIPSE);
@@ -44,6 +46,8 @@ public void createPartControl(Composite comp) {
 	
 	for (int i=0; i<plugins.length; i++) {
 		IPluginDescriptor desc = plugins[i];
+		if (ignoreDescriptor(desc))
+			continue;
 		Node n = new PluginNode(desc.getLabel());
 		dummy.setText(desc.getLabel());
 		n.width = dummy.getPreferredSize().width;
@@ -53,6 +57,8 @@ public void createPartControl(Composite comp) {
 	
 	for (int i=0; i<plugins.length; i++) {
 		IPluginDescriptor desc = plugins[i];
+		if (ignoreDescriptor(desc))
+			continue;
 		IPluginPrerequisite prereqs[] = desc.getPluginPrerequisites();
 		for (int j = 0; j < prereqs.length; j++) {
 			Node target = get(desc);
@@ -63,6 +69,8 @@ public void createPartControl(Composite comp) {
 	
 	for (int i=0; i<plugins.length; i++) {
 		IPluginDescriptor desc = plugins[i];
+		if (ignoreDescriptor(desc))
+			continue;
 		Node n = get(desc);
 		if (n.incoming.isEmpty()) {
 			if (n.outgoing.isEmpty())
@@ -104,21 +112,31 @@ public void createPartControl(Composite comp) {
 	new PopulateRanks().visit(g);
 	new VerticalPlacement().visit(g);
 
+	for (int i = 0; i < subgraphRoots.size(); i++) {
+		Edge e = (Edge)subgraphRoots.getEdge(i);
+		g.removeEdge(e);
+	}
+	g.removeNode(ECLIPSE);
+
 	new MinCross().visit(g);
 	new LocalOptimizer().visit(g);
 	new HorizontalPlacement().visit(g);
 
-	for (int i = 0; i < subgraphRoots.size(); i++) {
-		Edge e = (Edge)subgraphRoots.getEdge(i);
-		g.edges.remove(e);
-	}
-	g.nodes.remove(ECLIPSE);
 	for (int i = 0; i < g.edges.size(); i++) {
 		Edge e = (Edge)g.edges.get(i);
 		System.out.println(e.source + " -> " + e.target + ";");
 	}
 
 	canvas.setContents(DirectedGraphDemo.buildGraph(g));
+}
+
+/**
+ * @since 3.0
+ * @param desc
+ * @return
+ */
+private boolean ignoreDescriptor(IPluginDescriptor desc) {
+	return desc.getUniqueIdentifier().indexOf("org.eclipse.gef") != -1;
 }
 
 void put(IPluginDescriptor desc, Node n){
