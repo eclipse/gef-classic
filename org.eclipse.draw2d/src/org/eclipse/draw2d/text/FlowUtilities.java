@@ -165,9 +165,6 @@ static void setupFragment(TextFragmentBox frag, Font f, String s) {
 			width += ELLIPSIS_SIZE;
 		frag.setWidth(width);
 	}
-//	FontMetrics fm = getFontMetrics(f);
-//	frag.setHeight(fm.getHeight());
-//	frag.setAscent(frag.getHeight() - fm.getDescent());
 }
 
 /**
@@ -329,13 +326,8 @@ public static int wrapFragmentInContext(TextFragmentBox frag, String string,
 			frag.length--;
 		frag.setWidth(-1);
 	}
-
 	
 	setupFragment(frag, font, string);
-//	context.addToCurrentLine(frag);
-//	if (frag.length == absoluteMin && frag.length == strLen
-//			&& lookahead != null && lookahead.getWidth() > 0)
-//		context.setContinueOnSameLine(true);
 	return result;
 }
 
