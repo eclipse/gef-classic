@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.draw2d.text;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.TextLayout;
@@ -21,10 +22,13 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
- * An inline flow that renders a sting of text across one or more lines. A TextFlow must
+ * An inline flow that renders a string of text across one or more lines. A TextFlow must
  * not have any children. It does not provide a {@link FlowContext}.
- * 
- * <P>WARNING: This class is not intended to be subclassed by clients.
+ * <p>
+ * The TextFlow's fragments are sized using the text plus any required joiners.  Clients
+ * should add the joiners to the text before breaking it up according to fragments.
+ * <P>
+ * WARNING: This class is not intended to be subclassed by clients.
  * @author hudsonr
  * @since 2.1 */
 public class TextFlow
@@ -54,24 +58,18 @@ public TextFlow(String s) {
 }
 
 /**
+ * A TextFlow contributes its text.
+ * @see org.eclipse.draw2d.text.FlowFigure#contributeBidi(org.eclipse.draw2d.text.BidiProcessor)
+ */
+protected void contributeBidi(BidiProcessor proc) {
+	proc.add(this, getText());
+}
+
+/**
  * @see org.eclipse.draw2d.text.InlineFlow#createDefaultFlowLayout()
  */
 protected FlowFigureLayout createDefaultFlowLayout() {
 	return new ParagraphTextLayout(this);
-}
-
-/**
- * Returns the offset nearest the given point either up or down one line.  If no offset
- * is found, -1 is returned.
- * @since 3.1
- * @param p a reference point
- * @param down <code>true</code> if the search is down
- * @return the next offset or <code>-1</code>
- */
-public int getNextOffset(Point p, boolean down) {
-	if (down)
-		return findNextLineOffset(p);
-	return findPreviousLineOffset(p);
 }
 
 private int findNextLineOffset(Point p) {
@@ -87,14 +85,13 @@ private int findNextLineOffset(Point p) {
 	}
 	if (box == null)
 		return -1;
-	TextLayout layout = new TextLayout(null);
-	try {
-		layout.setText(text.substring(box.offset, box.offset + box.length));
-		int trailing[] = new int[1];
-		return box.offset + layout.getOffset(p.x - box.x, p.y - box.y, trailing) + trailing[0];
-	} finally {
-		layout.dispose();
-	}
+	TextLayout layout = FlowUtilities.getTextLayout();
+	layout.setOrientation(SWT.LEFT_TO_RIGHT);
+	layout.setText(addJoiners(text).substring(box.offset, box.offset + box.length));
+	int trailing[] = new int[1];
+	int layoutOffset = layout.getOffset(p.x - box.x, p.y - box.y, trailing) + trailing[0];
+	layout.setText(""); //$NON-NLS-1$
+	return box.offset + layoutOffset;
 }
 
 private int findPreviousLineOffset(Point p) {
@@ -109,14 +106,13 @@ private int findPreviousLineOffset(Point p) {
 	}
 	if (box == null)
 		return -1;
-	TextLayout layout = new TextLayout(null);
-	try {
-		layout.setText(text.substring(box.offset, box.offset + box.length));
-		int trailing[] = new int[1];
-		return box.offset + layout.getOffset(p.x - box.x, p.y - box.y, trailing) + trailing[0];
-	} finally {
-		layout.dispose();
-	}
+	TextLayout layout = FlowUtilities.getTextLayout();
+	layout.setOrientation(SWT.LEFT_TO_RIGHT);
+	layout.setText(addJoiners(text).substring(box.offset, box.offset + box.length));
+	int trailing[] = new int[1];
+	int layoutOffset = layout.getOffset(p.x - box.x, p.y - box.y, trailing) + trailing[0];
+	layout.setText(""); //$NON-NLS-1$
+	return box.offset + layoutOffset; 
 }
 
 /**
@@ -143,17 +139,13 @@ public Rectangle getCaretPlacement(int offset) {
 	offset -= box.offset;
 	offset = Math.min(box.length, offset);
 	
-	TextLayout layout = new TextLayout(null);
-	Point where;
-	try {
-		layout.setFont(getFont());
-		String substring = text.substring(box.offset, box.offset + box.length);
-		layout.setText(substring);
-		where = new Point(layout.getLocation(offset, false));
-	} finally {
-		layout.dispose();
-		layout = null;
-	}
+	TextLayout layout = FlowUtilities.getTextLayout();
+	layout.setOrientation(SWT.LEFT_TO_RIGHT);
+	layout.setFont(getFont());
+	String substring = addJoiners(text).substring(box.offset, box.offset + box.length);
+	layout.setText(substring);
+	Point where = new Point(layout.getLocation(offset, false));
+	layout.setText(""); //$NON-NLS-1$
 	
 	FontMetrics fm = FigureUtilities.getFontMetrics(getFont());
 	return new Rectangle(
@@ -198,6 +190,20 @@ public int getLastOffsetForLine(int y) {
 }
 
 /**
+ * Returns the offset nearest the given point either up or down one line.  If no offset
+ * is found, -1 is returned.
+ * @since 3.1
+ * @param p a reference point
+ * @param down <code>true</code> if the search is down
+ * @return the next offset or <code>-1</code>
+ */
+public int getNextOffset(Point p, boolean down) {
+	if (down)
+		return findNextLineOffset(p);
+	return findPreviousLineOffset(p);
+}
+
+/**
  * Returns the textual offset nearest the specified point. The must be relative to this
  * figure. If the point is not inside any fragment, <code>-1</code> is returned. 
  * Otherwise the offset will be between 0 and <code>getText().length()</code> inclusively.
@@ -213,18 +219,15 @@ public int getOffset(Point p) {
 		TextFragmentBox box = (TextFragmentBox)fragments.get(i);
 		if (!box.containsPoint(p.x, p.y))
 			continue;
-		String substring = text.substring(box.offset, box.offset + box.length);
-		TextLayout layout = new TextLayout(null);
-		try {
-			layout.setFont(getFont());
-			layout.setText(substring);
-			int trailing[] = new int[1];
-			int result = layout.getOffset(p.x - box.x, p.y - box.y, trailing);
-			return result + trailing[0] + box.offset;
-		} finally {
-			layout.dispose();
-			layout = null;
-		}
+		String substring = addJoiners(text).substring(box.offset, box.offset + box.length);
+		TextLayout layout = FlowUtilities.getTextLayout();
+		layout.setOrientation(SWT.LEFT_TO_RIGHT);
+		layout.setFont(getFont());
+		layout.setText(substring);
+		int trailing[] = new int[1];
+		int result = layout.getOffset(p.x - box.x, p.y - box.y, trailing);
+		layout.setText(""); //$NON-NLS-1$
+		return result + trailing[0] + box.offset;
 	}
 	return -1;
 }
@@ -249,11 +252,11 @@ public boolean isTextTruncated() {
 
 /** * @see org.eclipse.draw2d.Figure#paintFigure(Graphics) */
 protected void paintFigure(Graphics g) {
-//	super.paintFigure(g);
 	TextFragmentBox frag;
 	g.getClip(Rectangle.SINGLETON);
 	int yStart = Rectangle.SINGLETON.y;
 	int yEnd = Rectangle.SINGLETON.bottom();
+	String text = addJoiners(getText());
 	
 	int selectType;
 	for (int i = 0; i < fragments.size(); i++) {
@@ -263,7 +266,7 @@ protected void paintFigure(Graphics g) {
 		if (yEnd < frag.y)
 			break;
 		String draw;
-
+		
 		if (selectBegin == -1)
 			selectType = 0;
 		else if (selectEnd < frag.offset)
@@ -276,44 +279,62 @@ protected void paintFigure(Graphics g) {
 			else
 				selectType = SELECT_PARTIAL;
 		}
-		
+
 		if (frag.truncated)
 			draw = text.substring(frag.offset, frag.offset + frag.length) + ELLIPSIS;
 		else
 			draw = text.substring(frag.offset, frag.offset + frag.length);
+
+		// Insert RLE if this fragment has RTL text.
+		if (frag.isBidi())
+			draw = "\u202b" + draw; //$NON-NLS-1$
+
 		if (!isEnabled()) {
+			Color fgColor = g.getForegroundColor();
 			g.setForegroundColor(ColorConstants.buttonLightest);
-			g.drawString(draw, frag.x + 1, frag.y + 1);
+			paintText(g, draw, frag.x + 1, frag.y + 1, -1, -1, 0, frag.isBidi());
 			g.setForegroundColor(ColorConstants.buttonDarker);
-			g.drawString(draw, frag.x, frag.y);
-			g.restoreState();
+			paintText(g, draw, frag.x, frag.y, -1, -1, 0, frag.isBidi());
+			g.setForegroundColor(fgColor);
 		} else {
-			if (selectType == 0) {
-				g.drawString(draw, frag.x, frag.y);
-			} else if (selectType == SELECT_ALL) {
-				Color fg = g.getForegroundColor();
-				Color bg = g.getBackgroundColor();
-				g.setForegroundColor(ColorConstants.menuForegroundSelected);
-				g.setBackgroundColor(ColorConstants.menuBackgroundSelected);
-				g.fillString(draw, frag.x, frag.y);
-				g.setForegroundColor(fg);
-				g.setBackgroundColor(bg);
-			} else {
-				TextLayout layout = new TextLayout (null);
-				layout.setFont(getFont());
-				try {
-					layout.setText(text.substring(frag.offset, frag.offset + frag.length));
-					g.drawTextLayout(layout, frag.x, frag.y,
-							selectBegin - frag.offset,
-							selectEnd - frag.offset,
-							null, null);
-				} finally {
-					layout.dispose();
-					layout = null;
-				}
+			int start = -1, end = -1;
+			if (selectType == SELECT_ALL) {
+				start = 0;
+				end = frag.length - 1;
+			} else if (selectType == SELECT_PARTIAL) {
+				start = selectBegin - frag.offset;
+				end = selectEnd - frag.offset;
 			}
+			paintText(g, draw, frag.x, frag.y, start, end, selectType, frag.isBidi());
 		}
 	}
+}
+
+// Paints the text based on selection and Bidi level.  Uses TextLayout as needed.
+private void paintText(Graphics g, String text, int x, int y, int selectionStart, 
+		int selectionEnd, int selectionType, boolean isBidi) {
+	System.out.println(text);
+	if (isBidi || selectionType == SELECT_PARTIAL) {
+		// Case of RTL text and/or partial selection
+		TextLayout layout = FlowUtilities.getTextLayout();
+		layout.setOrientation(SWT.LEFT_TO_RIGHT);
+		layout.setFont(getFont());
+		layout.setText(text);
+		g.drawTextLayout(layout, x, y, selectionStart, selectionEnd, null, null);
+		// set the text to an empty string so that the current string is not held in memory
+		layout.setText(""); //$NON-NLS-1$
+	} else if (selectionType == SELECT_ALL) {
+		// Case of complete selection (and no RTL text)
+		Color fg = g.getForegroundColor();
+		Color bg = g.getBackgroundColor();
+		g.setForegroundColor(ColorConstants.menuForegroundSelected);
+		g.setBackgroundColor(ColorConstants.menuBackgroundSelected);
+		g.fillString(text, x, y);
+		g.setForegroundColor(fg);
+		g.setBackgroundColor(bg);
+	} else
+		// Case of no selection
+		g.drawString(text, x, y);
 }
 
 /**
@@ -343,9 +364,12 @@ public void setSelection(int begin, int end) {
  * Sets the string being displayed. Causes a <code>revalidate()</code> to occur.
  * @param s The new String.  It cannot be <code>null</code>. */
 public void setText(String s) {
-	text = s;
-	revalidate();
-	repaint();
+	if (s != null && !s.equals(text)) {
+		text = s;
+		revalidateBidi(this);
+		revalidate();
+		repaint();
+	}
 }
 
 }
