@@ -205,9 +205,12 @@ protected void readjustScrollBars() {
  * @since 2.0
  */
 public void setContents(IFigure figure) {
+	if (view == figure) return;
 	if (view != null) remove(view);
 	view = figure;
-	add(figure);
+	if (view != null) {
+		add(figure);		
+	}
 }
 
 /**
