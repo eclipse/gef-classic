@@ -1590,11 +1590,27 @@ public void validate() {
 		((IFigure)children.get(i)).validate();
 }
 
-static protected final class IdentitySearch implements TreeSearch {
+/**
+ * A search which does not filter any figures.
+ * since 3.0
+ */
+protected static final class IdentitySearch implements TreeSearch {
+	/**
+	 * The singleton instance.
+	 */
 	public static final TreeSearch INSTANCE = new IdentitySearch();
+	private IdentitySearch() { }
+	/**
+	 * Always returns <code>true</code>.
+	 * @see TreeSearch#accept(IFigure)
+	 */
 	public boolean accept(IFigure f) {
 		return true;
 	}
+	/**
+	 * Always returns <code>false</code>.
+	 * @see TreeSearch#prune(IFigure)
+	 */
 	public boolean prune(IFigure f) {
 		return false;
 	}
