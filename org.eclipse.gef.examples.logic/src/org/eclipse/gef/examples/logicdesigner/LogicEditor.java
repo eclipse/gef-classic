@@ -244,9 +244,9 @@ class ResourceTracker
 				});
 			}
 		} else if (delta.getKind() == IResourceDelta.CHANGED) {
-			// the file was overwritten somehow (could have been replaced by another 
-			// version in the respository)
 			if (!editorSaving) {
+				// the file was overwritten somehow (could have been replaced by another 
+				// version in the respository)
 				final IFile newFile = ResourcesPlugin.getWorkspace().getRoot()
 						.getFile(delta.getFullPath());
 				Display display = getSite().getShell().getDisplay();
