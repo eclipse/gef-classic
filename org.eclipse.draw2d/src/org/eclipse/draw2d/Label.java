@@ -26,8 +26,8 @@ private String text = "";//$NON-NLS-1$
 private String subStringText;
 
 private Dimension
-	textSize = new Dimension(0,0),
-	subStringTextSize = new Dimension(0,0),
+	textSize,
+	subStringTextSize,
 	iconSize = new Dimension(0,0);
 
 private Point iconLocation, textLocation;
