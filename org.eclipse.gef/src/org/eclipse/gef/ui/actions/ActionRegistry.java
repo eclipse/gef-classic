@@ -64,8 +64,12 @@ public void registerAction(IAction action) {
 /**
  * Register an action with this registry using the given id.
  */
-private void registerAction(String key, IAction action) {
-	map.put(key, action);
+private void registerAction(String id, IAction action) {
+	map.put(id, action);
+}
+
+public void removeAction(IAction action) {
+	map.remove(action.getId());
 }
 
 }

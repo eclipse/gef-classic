@@ -8,8 +8,7 @@ package org.eclipse.gef.ui.actions;
 
 import java.util.*;
 
-import org.eclipse.jface.action.IToolBarManager;
-import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.action.IAction;
 import org.eclipse.ui.*;
 import org.eclipse.ui.actions.RetargetAction;
 import org.eclipse.ui.part.EditorActionBarContributor;
@@ -18,112 +17,40 @@ import org.eclipse.ui.part.EditorActionBarContributor;
  * Contributes actions to the workbench.
  * !!Warning:  This class is subject to change.
  */
-public class ActionBarContributor 
+public abstract class ActionBarContributor 
 	extends EditorActionBarContributor
 {
 
-public static final String SEPARATOR = "$separator";  //$NON-NLS-1$
-
-/**
- * A list of global actions.  Any action that should be shared between more than one view
- * or editor should be put in this list.  
- */
-protected List globalActions = new ArrayList();
-
-/**
- * A list of actions that will be on the toolbar.  These should be actions that need to be
- * explicitly added to the toolbar.  For example, a print button is already on the toolbar
- * so we do not need to add one.  But there is no delete button by default, so the delete
- * action ID should get added to this list.
- */
-protected List toolbarActions = new ArrayList();
+private ActionRegistry registry = new ActionRegistry();
 
 /**
  * Contains the {@link RetargetAction}s that are registered as global action handlers.  We
  * need to hold on to these so that we can remove them as PartListeners in dispose().
  */
-protected Map retargetActions = new HashMap();
+private List retargetActions = new ArrayList();
+private List globalActionKeys = new ArrayList();
 
-/**
- * The active editor.
- */
-private IEditorPart activeEditor;
+protected void addAction(IAction action) {
+	getActionRegistry().registerAction(action);
+}
 
-/**
- * @see org.eclipse.ui.part.EditorActionBarContributor#contributeToToolBar(org.eclipse.jface.action.IToolBarManager)
- */
-public void contributeToToolBar(IToolBarManager tbm) {
-	Iterator iter = toolbarActions.iterator();
-	while (iter.hasNext()) {
-		String id = (String)iter.next();
-		if (id == SEPARATOR)
-			tbm.add(new Separator());
-		else
-			tbm.add(getRetargetAction(id));
-	}
-	getActionBars().updateActionBars();
+protected void addGlobalActionKey(String key) {
+	globalActionKeys.add(key);
+}
+
+protected void addRetargetAction(RetargetAction action) {
+	addAction(action);
+	retargetActions.add(action);
+	getPage().addPartListener(action);
+	addGlobalActionKey(action.getId());
 }
 
 /**
- * Creates and initializes the {@link RetargetAction RetargetActions}.
+ * Creates and initializes Actions managed by this contributor.
  */
-protected void createActions() {
-	RetargetAction action;
+protected abstract void buildActions();
 
-	// Create undo action	
-	action = new UndoRetargetAction();
-	getPage().addPartListener(action);
-	retargetActions.put(action.getId(), action);
-	
-	// Create redo action
-	action = new RedoRetargetAction();
-	getPage().addPartListener(action);
-	retargetActions.put(action.getId(), action);
-	
-	// Create delete action
-	action = new DeleteRetargetAction();
-	getPage().addPartListener(action);
-	retargetActions.put(action.getId(), action);
-	
-	// Create print action
-	action = new PrintRetargetAction();
-	getPage().addPartListener(action);
-	retargetActions.put(action.getId(), action);
-//
-//	// Create copy action
-//	action = new CopyRetargetAction();
-//	getPage().addPartListener(action);
-//	retargetActions.put(action.getId(), action);
-//
-//	// Create paste action
-//	action = new PasteRetargetAction();
-//	getPage().addPartListener(action);
-//	retargetActions.put(action.getId(), action);
-}
-
-/**
- * Initializes the global and toolbar action lists.  
- *
- * @see #globalActions
- * @see #toolbarActions
- * @see #init(IActionBars)
- */
-protected void declareActions() {
-	globalActions.add(IWorkbenchActionConstants.UNDO);
-	globalActions.add(IWorkbenchActionConstants.REDO);
-	globalActions.add(IWorkbenchActionConstants.DELETE);
-	globalActions.add(IWorkbenchActionConstants.PRINT);
-//	globalActions.add(IWorkbenchActionConstants.COPY);
-//	globalActions.add(IWorkbenchActionConstants.PASTE);
-	
-	toolbarActions.add(IWorkbenchActionConstants.UNDO);
-	toolbarActions.add(IWorkbenchActionConstants.REDO);
-	toolbarActions.add(IWorkbenchActionConstants.DELETE);
-	toolbarActions.add(SEPARATOR);
-//	toolbarActions.add(IWorkbenchActionConstants.COPY);
-//	toolbarActions.add(IWorkbenchActionConstants.PASTE);
-//	toolbarActions.add(SEPARATOR);
-}
+protected abstract void declareGlobalActionKeys();
 
 /**
  * Remove the {@link RetargetAction}s that are {@link org.eclipse.ui.IPartListener}s on
@@ -131,52 +58,41 @@ protected void declareActions() {
  * @see org.eclipse.ui.part.EditorActionBarContributor#dispose()
  */
 public void dispose() {
-	Iterator iter = retargetActions.values().iterator();
-	while (iter.hasNext())
-		getPage().removePartListener((RetargetAction)iter.next());
+	for (int i = 0; i < retargetActions.size(); i++) {
+		RetargetAction action = (RetargetAction)retargetActions.get(i);
+		getPage().removePartListener(action);
+	}
+	registry.dispose();
 	retargetActions = null;
+	registry = null;
+}
+
+protected IAction getAction(String id) {
+	return getActionRegistry().getAction(id);
 }
 
 /**
- * Returns the active editor.
- */
-protected IEditorPart getActiveEditor() {
-	return activeEditor;
+ * returns the ActionRegistry.
+ * @return the ActionRegistry */
+protected ActionRegistry getActionRegistry() {
+	return registry;
 }
 
-/**
- * Returns the RetargetAction for the given id.
- * @param id the action id
- * @return the RetargetAction for the given id
- */
-protected RetargetAction getRetargetAction(String id) {
-	return (RetargetAction)retargetActions.get(id);
-}
-
-/**
- * Initializes the contributor.
- *
- * @param bars The <code>IActionBars</code> for the workbench.
- */
+/** * @see org.eclipse.ui.part.EditorActionBarContributor#init(IActionBars) */
 public void init(IActionBars bars) {
-	declareActions();
-	createActions();
+	buildActions();
+	declareGlobalActionKeys();
 	super.init(bars);
 }
 
-/**
- * Sets the active editor and updates the global actions.
- */
+/** * @see org.eclipse.ui.IEditorActionBarContributor#setActiveEditor(IEditorPart) */
 public void setActiveEditor(IEditorPart editor) {
-	activeEditor = editor;
 	ActionRegistry registry = (ActionRegistry)editor.getAdapter(ActionRegistry.class);
 	IActionBars bars = getActionBars();
-
-	for (int i = 0; i < globalActions.size(); i++) {
-		String id = (String)globalActions.get(i);
+	for (int i = 0; i < globalActionKeys.size(); i++) {
+		String id = (String)globalActionKeys.get(i);
 		bars.setGlobalActionHandler(id, registry.getAction(id));
 	}
-	
 	getActionBars().updateActionBars();
 }
 
