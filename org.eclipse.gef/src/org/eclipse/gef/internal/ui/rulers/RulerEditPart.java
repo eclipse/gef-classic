@@ -101,6 +101,15 @@ protected AccessibleEditPart getAccessibleEditPart() {
 	};
 }
 
+/**
+ * Returns the GraphicalViewer associated with the diagram.
+ * 
+ * @return graphical viewer associated with the diagram.
+ */
+protected GraphicalViewer getDiagramViewer() {
+	return diagramViewer;
+}
+
 /* (non-Javadoc)
 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#getDragTracker(org.eclipse.gef.Request)
 */
