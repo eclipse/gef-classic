@@ -21,6 +21,7 @@ import org.eclipse.draw2d.geometry.Point;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.internal.ui.palette.editparts.*;
+import org.eclipse.gef.palette.PaletteStack;
 import org.eclipse.gef.ui.palette.PaletteViewer;
 
 /**
@@ -54,33 +55,46 @@ private boolean acceptIntoExpandedDrawer(KeyEvent event) {
 		&& isExpandedDrawer(getFocusEditPart());
 }
 
+private boolean acceptOpenContextMenu(KeyEvent event) {
+	return event.keyCode == SWT.ARROW_DOWN && (event.stateMask & SWT.ALT) > 0
+	&& isContextMenu(getFocusEditPart());
+}
+
 private boolean acceptSetFocusOnDrawer(KeyEvent event) {
 	return (event.keyCode == SWT.ARROW_LEFT || event.keyCode == SWT.ARROW_UP)
-				&& getFocusEditPart().getParent() instanceof DrawerEditPart;
+				&& ((getFocusEditPart().getParent() instanceof PaletteStackEditPart && 
+				getFocusEditPart().getParent().getParent() instanceof DrawerEditPart)
+				|| getFocusEditPart().getParent() instanceof DrawerEditPart);
 }		
 
 private boolean acceptNextContainer(KeyEvent event) {
 	return event.keyCode == SWT.ARROW_DOWN;
 }		
 
-private void buildNavigationList(
-	EditPart palettePart,
-	EditPart exclusion,
-	ArrayList navList) {
+private void buildNavigationList(EditPart palettePart, EditPart exclusion,
+		ArrayList navList, EditPart stackPart) {
 	if (palettePart != exclusion) {
 		if (isCollapsedDrawer(palettePart)) {
 			navList.add(palettePart);
 			return;
-		} else if (palettePart instanceof ToolEntryEditPart 
+		} else if (stackPart instanceof PaletteStackEditPart 
+				&& stackPart.getChildren().contains(palettePart)) {
+			// we only want to add the top level item to the navlist
+			if (((PaletteStack)((PaletteStackEditPart)stackPart).getModel())
+				.getActiveEntry().equals(palettePart.getModel()))
+				navList.add(palettePart);
+		} else if ((palettePart instanceof ToolEntryEditPart 
 		  || palettePart instanceof DrawerEditPart
-		  || palettePart instanceof TemplateEditPart) {
+		  || palettePart instanceof TemplateEditPart)) {
 			navList.add(palettePart);
 		}
 	}
 
 	for (int k = 0; k < palettePart.getChildren().size(); k++) {
 		EditPart ep = (EditPart)(palettePart.getChildren().get(k));
-		buildNavigationList(ep, exclusion, navList);
+		if (ep instanceof PaletteStackEditPart)
+			stackPart = ep;
+		buildNavigationList(ep, exclusion, navList, stackPart);
 	}
 }
 
@@ -94,7 +108,7 @@ private void expandDrawer() {
 	drawer.setExpanded(true);
 }
 
-Point getNavigationPoint(IFigure figure) {
+protected Point getNavigationPoint(IFigure figure) {
 	return figure.getBounds().getTopLeft();
 }
 
@@ -102,15 +116,18 @@ Point getNavigationPoint(IFigure figure) {
  * Returns a list of {@link org.eclipse.gef.EditPart EditParts}
  * eligible for selection.
  */
-List getNavigationSiblings() {
+protected List getNavigationSiblings() {
 	ArrayList siblingsList = new ArrayList();
-	if (getFocusEditPart().getParent() instanceof GroupEditPart)
+	if (getFocusEditPart().getParent() instanceof GroupEditPart
+			|| getFocusEditPart().getParent() instanceof PaletteStackEditPart)		
 		buildNavigationList(
 			getFocusEditPart().getParent().getParent(),
 			getFocusEditPart().getParent().getParent(),
-			siblingsList);
+			siblingsList,
+			getFocusEditPart().getParent().getParent());
 	else
-		buildNavigationList(getFocusEditPart().getParent(), getFocusEditPart().getParent(), siblingsList);
+		buildNavigationList(getFocusEditPart().getParent(), getFocusEditPart().getParent(), siblingsList, 
+				getFocusEditPart().getParent());
 	return siblingsList;
 }
 
@@ -136,16 +153,29 @@ boolean isExpandedDrawer(EditPart part) {
 }
 
 /**
+ * Returns <code>true</code> if the passed
+ * Editpart's parent contains a context menu, false otherwise.
+ */
+boolean isContextMenu(EditPart part) {
+	return part.getParent() instanceof PaletteStackEditPart;
+}
+
+/**
  * Extends keyPressed to look for palette navigation keys.
  * @see org.eclipse.gef.KeyHandler#keyPressed(org.eclipse.swt.events.KeyEvent)
  */
 public boolean keyPressed(KeyEvent event) {
+
 	if (acceptExpandDrawer(event)) {
 		expandDrawer();
 		return true;
 	}	
 	if (acceptCollapseDrawer(event)) {
 		collapseDrawer();
+		return true;
+	}
+	if (acceptOpenContextMenu(event)) {
+		openContextMenu();
 		return true;
 	}
 	if (acceptIntoExpandedDrawer(event)) {
@@ -167,7 +197,7 @@ public boolean keyPressed(KeyEvent event) {
 
 private boolean navigateIntoExpandedDrawer(KeyEvent event) {
 	ArrayList potentials = new ArrayList();
-	buildNavigationList(getFocusEditPart(), getFocusEditPart(), potentials);
+	buildNavigationList(getFocusEditPart(), getFocusEditPart(), potentials, getFocusEditPart());
 	if (!potentials.isEmpty()) {
 		navigateTo((EditPart)potentials.get(0), event);
 		return true;
@@ -198,12 +228,16 @@ private boolean navigateToDrawer(KeyEvent event) {
 private boolean navigateToNextContainer(KeyEvent event) {
 	EditPart current = getFocusEditPart();
 	while (current != null) {
-		if (current instanceof DrawerEditPart	|| current instanceof GroupEditPart) {
+		if (current instanceof DrawerEditPart 
+				|| current instanceof GroupEditPart
+				|| current instanceof PaletteStackEditPart ) {
 			List siblings = current.getParent().getChildren();
 			int index = siblings.indexOf(current);
 			if (index != -1 && siblings.size() > index + 1) {
 				EditPart part = (EditPart)siblings.get(index + 1);
-				if (part instanceof GroupEditPart && part.getChildren().size() > 0) {
+				if ((part instanceof GroupEditPart 
+						|| part instanceof PaletteStackEditPart)
+						&& part.getChildren().size() > 0) {					
 					EditPart child = (EditPart)part.getChildren().get(0);
 					navigateTo(child, event);
 				} else
@@ -215,6 +249,10 @@ private boolean navigateToNextContainer(KeyEvent event) {
 		current = current.getParent();
 	}
 	return false;
+}
+
+private void openContextMenu() {
+	((PaletteStackEditPart)getFocusEditPart().getParent()).openMenu();
 }
 
 }
