@@ -34,13 +34,13 @@ private void deleteConnections(Activity a) {
 		for (int i = 0; i < children.size(); i++)
 			deleteConnections((Activity)children.get(i));
 	}
-	sourceConnections.addAll(a.getGuards());
+	sourceConnections.addAll(a.getIncomingTransitions());
 	for (int i = 0; i < sourceConnections.size(); i++) {
 		Transition t = (Transition)sourceConnections.get(i);
 		t.source.removeOutput(t);
 		a.removeInput(t);
 	}
-	targetConnections.addAll(a.getTransitions());
+	targetConnections.addAll(a.getOutgoingTransitions());
 	for (int i = 0; i < targetConnections.size(); i++) {
 		Transition t = (Transition)targetConnections.get(i);
 		t.target.removeInput(t);

@@ -36,7 +36,7 @@ public boolean canExecute() {
 		return false;
 	
 	// Check for existence of connection already
-	List transistions = source.getTransitions();
+	List transistions = source.getOutgoingTransitions();
 	for (int i = 0; i < transistions.size(); i++) {
 		if (((Transition)transistions.get(i)).target.equals(target))
 			return false;

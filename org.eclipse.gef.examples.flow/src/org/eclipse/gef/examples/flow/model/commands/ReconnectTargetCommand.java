@@ -38,7 +38,7 @@ public boolean canExecute() {
 	if (transition.source.equals(target))
 		return false;
 	
-	List transitions = source.getTransitions();	
+	List transitions = source.getOutgoingTransitions();	
 	for (int i = 0; i < transitions.size(); i++) {
 		Transition trans = ((Transition)(transitions.get(i)));
 		if (trans.target.equals(target) && !trans.target.equals(oldTarget))

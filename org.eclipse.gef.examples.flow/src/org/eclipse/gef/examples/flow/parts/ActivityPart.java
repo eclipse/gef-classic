@@ -82,14 +82,14 @@ protected Activity getActivity() {
  * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#getModelSourceConnections()
  */
 protected List getModelSourceConnections() {
-	return getActivity().getTransitions();
+	return getActivity().getOutgoingTransitions();
 }
 
 /**
  * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#getModelTargetConnections()
  */
 protected List getModelTargetConnections() {
-	return getActivity().getGuards();
+	return getActivity().getIncomingTransitions();
 }
 
 /**

@@ -21,8 +21,8 @@ public class Activity
 {
 
 protected static IPropertyDescriptor[] descriptors;
-public static final String NAME = "name"; //$NON-NLS-1$
 
+public static final String NAME = "name"; //$NON-NLS-1$
 static {
 	descriptors = new IPropertyDescriptor[] {
 		new TextPropertyDescriptor(NAME, "Name")};
@@ -32,6 +32,7 @@ static final long serialVersionUID = 1;
 private List inputs = new ArrayList();
 private String name = "Activity";
 private List outputs = new ArrayList();
+private int sortIndex;
 
 public Activity() {}
 public Activity(String s) {
@@ -48,12 +49,16 @@ public void addOutput(Transition transtition) {
 	fireStructureChange(OUTPUTS, transtition);
 }
 
-public List getGuards() {
+public List getIncomingTransitions() {
 	return inputs;
 }
 
 public String getName() {
 	return name;
+}
+
+public List getOutgoingTransitions() {
+	return outputs;
 }
 
 //public List getConnections() {
@@ -90,8 +95,8 @@ public Object getPropertyValue(Object propName) {
 	return super.getPropertyValue(propName);
 }
 
-public List getTransitions() {
-	return outputs;
+public int getSortIndex() {
+	return sortIndex;
 }
 
 public boolean isPropertySet() {
@@ -122,6 +127,10 @@ public void setName(String s) {
 public void setPropertyValue(Object id, Object value){
 	if (id == NAME)
 		setName((String)value);
+}
+
+public void setSortIndex(int i) {
+	sortIndex = i;
 }
 
 /**
