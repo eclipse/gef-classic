@@ -10,7 +10,10 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
-import java.util.*;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 
 import org.eclipse.draw2d.geometry.*;
 
@@ -293,7 +296,7 @@ public void route(Connection conn) {
 	Ray startNormal = getStartDirection(conn);
 	Ray endNormal   = getEndDirection(conn);
 
-	Vector positions = new Vector(5);
+	List positions = new ArrayList(5);
 	boolean horizontal = startNormal.isHorizontal();
 	if (horizontal) 
 		positions.add(new Integer(start.y));
