@@ -12,6 +12,8 @@ package org.eclipse.gef.editpolicies;
 
 import java.util.*;
 
+import org.eclipse.swt.graphics.Color;
+
 import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.Rectangle;
 
@@ -22,14 +24,14 @@ import org.eclipse.gef.requests.ChangeBoundsRequest;
 /**
  * @author Pratik Shah
  */
-public class SnapToGuideFeedback 
-	extends GraphicalEditPolicy 
+public class SnapFeedbackPolicy 
+	extends GraphicalEditPolicy
 {
 	
 private List figures = new ArrayList();
 private ZoomManager zoomManager;
 	
-public void eraseSourceFeedback(Request request) {
+public void eraseTargetFeedback(Request request) {
 	for (Iterator iter = figures.iterator(); iter.hasNext();) {
 		IFigure fig = (IFigure)iter.next();
 		if (fig.getParent() != null) {
@@ -39,11 +41,12 @@ public void eraseSourceFeedback(Request request) {
 	figures.clear();		
 }
 
-protected void highlightGuide(Integer pos, boolean horizontal) {
+protected void highlightGuide(Integer pos, Color color, boolean horizontal) {
 	if (pos == null) {
 		return;
 	}
 	int position = pos.intValue();
+	
 	if (zoomManager != null) {
 		position = (int)Math.round(position * zoomManager.getZoom());
 	}
@@ -59,7 +62,7 @@ protected void highlightGuide(Integer pos, boolean horizontal) {
 	}
 	IFigure fig = new Figure();
 	fig.setOpaque(true);
-	fig.setBackgroundColor(ColorConstants.red);
+	fig.setBackgroundColor(color);
 	addFeedback(fig);
 	fig.setBounds(figBounds);
 	figures.add(fig);
@@ -71,16 +74,20 @@ public void setHost(EditPart host) {
 			.getProperty(ZoomManager.class.toString());
 }
 
-public void showSourceFeedback(Request request) {
-	eraseSourceFeedback(request);
+public void showTargetFeedback(Request request) {
 	if (request.getType().equals(REQ_MOVE)
-	  || request.getType().equals(REQ_RESIZE)
-	  || request.getType().equals(REQ_CLONE)) {
+			|| request.getType().equals(REQ_RESIZE)
+			|| request.getType().equals(REQ_CLONE)) {
+		eraseTargetFeedback(request);
 		ChangeBoundsRequest req = (ChangeBoundsRequest)request;
-		highlightGuide(
-				(Integer)req.getExtendedData().get(SnapToGuides.VERTICAL_GUIDE), false);
-		highlightGuide(
-				(Integer)req.getExtendedData().get(SnapToGuides.HORIZONTAL_GUIDE), true);
+		highlightGuide((Integer)req.getExtendedData().get(SnapToGuides.VERTICAL_GUIDE), 
+				ColorConstants.red, false);
+		highlightGuide((Integer)req.getExtendedData().get(SnapToGuides.HORIZONTAL_GUIDE), 
+				ColorConstants.red, true);
+		highlightGuide((Integer)req.getExtendedData().get(SnapToGeometry.VERTICAL_ANCHOR), 
+				ColorConstants.blue, false);
+		highlightGuide((Integer)req.getExtendedData().get(SnapToGeometry.HORIZONTAL_ANCHOR), 
+				ColorConstants.blue, true);
 	}
 }
 
