@@ -68,7 +68,6 @@ private class PreferenceListener
 private static final PaletteViewerPreferences PREFERENCE_STORE = 
 				new DefaultPaletteViewerPreferences();
 private ToolEntry activeEntry = null;
-
 private PaletteCustomizer customizer = null;
 private PaletteCustomizerDialog customizerDialog = null;
 private boolean globalScrollbar = false;
@@ -279,6 +278,9 @@ public void reveal(EditPart part) {
 	DrawerEditPart drawer = findContainingDrawer(part.getParent());
 	if (drawer != null && !drawer.isExpanded())
 		drawer.setExpanded(true);
+	// if the part is inside a stack, set it to be the top level item of the stack.
+	if (part.getParent() != null && part.getParent() instanceof PaletteStackEditPart)
+		((PaletteStack)part.getParent().getModel()).setActiveEntry((PaletteEntry)part.getModel());
 	super.reveal(part);
 }
 
