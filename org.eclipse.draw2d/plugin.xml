@@ -8,10 +8,11 @@
    <runtime>
       <library name="runtime/draw2d.jar">
          <export name="org.eclipse.draw2d.*"/>
-         <export name="org.eclipse.draw2d.text.*"/>
-         <export name="org.eclipse.draw2d.resource.*"/>
-         <export name="org.eclipse.draw2d.parts.*"/>
          <export name="org.eclipse.draw2d.geometry.*"/>
+         <export name="org.eclipse.draw2d.parts.*"/>
+         <export name="org.eclipse.draw2d.resource.*"/>
+         <export name="org.eclipse.draw2d.text.*"/>
+         <export name="org.eclipse.draw2d.widgets.*"/>
       </library>
    </runtime>
    <requires>
