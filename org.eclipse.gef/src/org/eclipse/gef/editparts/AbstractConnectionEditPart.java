@@ -239,12 +239,15 @@ public void setParent(EditPart parent) {
  * @param editPart  EditPart which is the source.
  */
 public void setSource(EditPart editPart) {
+	if (sourceEditPart == editPart)
+		return;
 	sourceEditPart = editPart;
 	if (sourceEditPart != null)
 		setParent(sourceEditPart.getRoot());
 	else if (getTarget() == null)
 		setParent(null);
-	refresh();
+	if (sourceEditPart != null && targetEditPart != null)
+		refresh();
 }
 
 /**
@@ -253,12 +256,15 @@ public void setSource(EditPart editPart) {
  * @param editPart  EditPart which is the target.
  */
 public void setTarget(EditPart editPart) {
+	if (targetEditPart == editPart)
+		return;
 	targetEditPart = editPart;
 	if (editPart != null)
 		setParent(editPart.getRoot());
 	else if (getSource() == null)
 		setParent(null);
-	refresh();
+	if (sourceEditPart != null && targetEditPart != null)
+		refresh();
 }
 
 }
