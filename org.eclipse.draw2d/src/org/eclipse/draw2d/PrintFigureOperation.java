@@ -71,7 +71,11 @@ public PrintFigureOperation(Printer p, IFigure srcFigure) {
 	setPrintSource(srcFigure);
 }
 
-
+/**
+ * Returns the current print mode.  The print mode is one of: {@link #FIT_HEIGHT},
+ * {@link #FIT_PAGE}, or {@link #FIT_WIDTH}.
+ * @return the print mode
+ */
 protected int getPrintMode() {
 	return printMode;
 }
