@@ -11,13 +11,13 @@
 package org.eclipse.gef.ui.actions;
 
 import org.eclipse.gef.commands.Command;
-import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IWorkbenchPart;
 
 /**
  * Superclass for actions needing access to the stack.
  */
 public abstract class StackAction
-	extends EditorPartAction
+	extends WorkbenchPartAction
 {
 
 /**
@@ -26,7 +26,7 @@ public abstract class StackAction
  *
  * @param editor The editor this action is associated with.
  */
-public StackAction(IEditorPart editor) {
+public StackAction(IWorkbenchPart editor) {
 	super(editor);
 }
 

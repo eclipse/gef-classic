@@ -24,7 +24,7 @@ import org.eclipse.gef.palette.PaletteTemplateEntry;
  * @author Eric Bordeau
  */
 public class CopyTemplateAction 
-	extends EditorPartAction
+	extends WorkbenchPartAction
 	implements ISelectionChangedListener
 {
 
@@ -39,6 +39,8 @@ private Object template;
  */
 public CopyTemplateAction(IEditorPart editor) {
 	super(editor);
+	setId(GEFActionConstants.COPY);
+	setText(GEFMessages.CopyAction_Label);
 }
 
 /**
@@ -54,14 +56,6 @@ protected boolean calculateEnabled() {
  */
 public void dispose() {
 	template = null;
-}
-
-/**
- * @see org.eclipse.gef.ui.actions.EditorPartAction#init()
- */
-protected void init() {
-	setId(GEFActionConstants.COPY);
-	setText(GEFMessages.CopyAction_Label);
 }
 
 /**

@@ -25,7 +25,7 @@ import org.eclipse.gef.commands.CommandStack;
  */
 public abstract class WorkbenchPartAction
 	extends Action
-	implements Disposable
+	implements Disposable, UpdateAction
 {
 
 private IWorkbenchPart workbenchPart;

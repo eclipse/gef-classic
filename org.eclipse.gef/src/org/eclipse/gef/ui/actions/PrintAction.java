@@ -15,7 +15,7 @@ import org.eclipse.swt.printing.PrintDialog;
 import org.eclipse.swt.printing.Printer;
 import org.eclipse.swt.printing.PrinterData;
 
-import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IWorkbenchPart;
 
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.print.PrintGraphicalViewerOperation;
@@ -24,14 +24,14 @@ import org.eclipse.gef.print.PrintGraphicalViewerOperation;
  * @author hudsonr
  * @since 2.1
  */
-public class PrintAction extends EditorPartAction {
+public class PrintAction extends WorkbenchPartAction {
 
 /**
  * Constructor for PrintAction.
- * @param editor The EditorPart associated with this PrintAction
+ * @param part The workbench part associated with this PrintAction
  */
-public PrintAction(IEditorPart editor) {
-	super(editor);
+public PrintAction(IWorkbenchPart part) {
+	super(part);
 }
 
 /**
@@ -54,7 +54,7 @@ protected void init() {
  */
 public void run() {
 	GraphicalViewer viewer;
-	viewer = (GraphicalViewer)getEditorPart().getAdapter(GraphicalViewer.class);
+	viewer = (GraphicalViewer)getWorkbenchPart().getAdapter(GraphicalViewer.class);
 	
 	PrintDialog dialog = new PrintDialog(viewer.getControl().getShell(), SWT.NULL);
 	PrinterData data = dialog.open();
@@ -62,8 +62,8 @@ public void run() {
 	if (data != null) {
 		PrintGraphicalViewerOperation op = 
 					new PrintGraphicalViewerOperation(new Printer(data), viewer);
-		op.run(getEditorPart().getTitle());
-	}	
+		op.run(getWorkbenchPart().getTitle());
+	}
 }
 
 }

@@ -14,14 +14,13 @@ import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.jface.viewers.*;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPart;
 
 /**
  * Superclass for an action needing the current selection.
  */
 public abstract class SelectionAction
-	extends EditorPartAction
+	extends WorkbenchPartAction
 {
 private ISelectionProvider provider;
 
@@ -34,10 +33,11 @@ private ISelection selection;
  * Creates a <code>SelectionAction</code> and associates it with the given editor.
  * @deprecated use IWorkbenchPart constructor, SelectionAction will be changed to inherit
  * from WorkbenchPartAction in next release
- * @param editor The editor that this action is associated with.
+ * @param part The workbench part associated with this action
+ * @param style the style for this action
  */
-public SelectionAction(IEditorPart editor) {
-	this((IWorkbenchPart)editor);
+public SelectionAction(IWorkbenchPart part, int style) {
+	super(part, style);
 }
 
 /**
