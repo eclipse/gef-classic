@@ -203,7 +203,7 @@ private boolean setCurrentListener(TransferDropTargetListener listener, DropTarg
 		currentListener.dragLeave(event);
 	currentListener = listener;
 	if (GEF.DebugDND)
-		GEF.debug("Current listener " + listener); //$NON-NLS-1$
+		GEF.debug("Current drop listener: " + listener); //$NON-NLS-1$
 	if (currentListener != null)
 		currentListener.dragEnter(event);
 	return true;
