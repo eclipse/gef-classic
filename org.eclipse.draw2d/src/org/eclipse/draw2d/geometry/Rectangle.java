@@ -375,12 +375,12 @@ public int getPosition(Point pt) {
 		
 	if (pt.x < x)
 		result = PositionConstants.WEST;
-	else if (pt.x > (x + width))
+	else if (pt.x >= (x + width))
 		result = PositionConstants.EAST;
 		
 	if (pt.y < y)
 		result = result | PositionConstants.NORTH;
-	else if (pt.y > (y + height))
+	else if (pt.y >= (y + height))
 		result = result | PositionConstants.SOUTH;
 		
 	return result;
