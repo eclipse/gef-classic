@@ -38,8 +38,9 @@ private static TextLayout layout;
  * preceding the given index.  Note that the returned index may be -1.
  */
 static int findPreviousNonWS(String str, int index) {
-	if (index == BreakIterator.DONE || index == str.length())
+	if (index == BreakIterator.DONE)
 		return index;
+	index--;
 	while (index > 0 && Character.isWhitespace(str.charAt(index)))
 		index--;
 	return index;
@@ -81,7 +82,7 @@ public static int getTextForSpace(TextFragmentBox frag, String string, Font font
 	// smallest possible number of characters that will not fit in the available space.
 	int min, max;
 	if (wrapping == ParagraphTextLayout.WORD_WRAP_HARD)
-		min = Math.max(1, breakItr.next());
+		min = Math.max(1, findPreviousNonWS(string, breakItr.next()) + 1);
 	else
 		min = 1;
 	max = string.length() + 1;
@@ -132,7 +133,7 @@ public static int getTextForSpace(TextFragmentBox frag, String string, Font font
 		if (guess <= min) guess = min + 1;
 
 		//Measure the current guess
-		if (frag.requiresBidi())
+		if (textLayout != null)
 			guessSize = textLayout.getBounds(0, guess - 1).width;
 		else
 			guessSize = getTextExtents(string.substring(0, guess), font).width - 1;
