@@ -6,30 +6,62 @@ package org.eclipse.gef.ui.parts;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.swt.widgets.Composite;
+import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
+import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.gef.*;
+import org.eclipse.gef.DefaultEditDomain;
+import org.eclipse.gef.GEFPlugin;
+import org.eclipse.gef.GraphicalViewer;
+import org.eclipse.gef.commands.CommandStack;
+import org.eclipse.gef.commands.CommandStackListener;
+import org.eclipse.gef.ui.actions.*;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.*;
+import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorSite;
+import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.views.properties.PropertySheetPage;
 
-import org.eclipse.draw2d.ColorConstants;
-
-import org.eclipse.gef.*;
-import org.eclipse.gef.commands.CommandStack;
-import org.eclipse.gef.ui.actions.*;
-
 public abstract class GraphicalEditor
 	extends EditorPart
+	implements CommandStackListener, ISelectionListener
 {
 
 private DefaultEditDomain editDomain;
 private GraphicalViewer graphicalViewer;
-private ActionRegistry actionRegistry;
 private SelectionSynchronizer synchronizer;
+private Map actions = new HashMap();
+private List selectionActions = new ArrayList();
+private List stackActions = new ArrayList();
+private List propertyActions = new ArrayList();
 
-public GraphicalEditor(){}
+public GraphicalEditor() {}
 
-protected void configureGraphicalViewer(){
+public void commandStackChanged(EventObject event) {
+	updateStackDependentActions();
+}
+
+protected void configureGraphicalViewer() {
 	getGraphicalViewer().getControl().setBackground(ColorConstants.listBackground);
+}
+
+protected void createActions() {
+	setAction(IWorkbenchActionConstants.UNDO, new UndoAction(this));
+	markAsStackDependentAction(IWorkbenchActionConstants.UNDO, true);
+	setAction(IWorkbenchActionConstants.REDO, new RedoAction(this));
+	markAsStackDependentAction(IWorkbenchActionConstants.REDO, true);
+	setAction(IWorkbenchActionConstants.DELETE, new DeleteAction(this));
+	markAsSelectionDependentAction(IWorkbenchActionConstants.DELETE, true);
+	setAction(IWorkbenchActionConstants.SAVE, new SaveAction(this));
+	markAsPropertyDependentAction(IWorkbenchActionConstants.SAVE, true);
+	setAction(IWorkbenchActionConstants.PRINT, new PrintAction(this));
 }
 
 /**
@@ -54,15 +86,36 @@ public void createPartControl(Composite parent) {
 
 public void dispose() {
 	getEditDomain().setTool(null);
-	getActionRegistry().dispose();
+	disposeActions();
 	getGraphicalViewer().dispose();
 	super.dispose();
 }
 
-protected ActionRegistry getActionRegistry() {
-	if (actionRegistry == null)
-		actionRegistry = new ActionRegistry();
-	return actionRegistry;
+/**
+ * Iterates through the registered actions and calls {@link 
+ */
+protected void disposeActions() {
+	Iterator iter = actions.values().iterator();
+	while (iter.hasNext()) {
+		Object action = iter.next();
+		if (action instanceof Disposable)
+			((Disposable)action).dispose();
+	}
+}
+
+/**
+ * @see org.eclipse.ui.part.WorkbenchPart#firePropertyChange(int)
+ */
+protected void firePropertyChange(int property) {
+	super.firePropertyChange(property);
+	updatePropertyDependentActions();
+}
+
+/**
+ * Returns the action with the given id.  <i>id</i> must not be <code>null</code>.
+ * @param id The id of the requested action. * @return IAction The action corresponding to id. */
+public IAction getAction(String id) {
+	return (IAction)actions.get(id);
 }
 
 /**
@@ -81,8 +134,6 @@ public Object getAdapter(Class type) {
 		return getGraphicalViewer();
 	if (type == CommandStack.class)
 		return getCommandStack();
-	if (type == ActionRegistry.class)
-		return getActionRegistry();
 	return super.getAdapter(type);
 }
 
@@ -115,19 +166,11 @@ protected void hookGraphicalViewer() {
 	getSite().setSelectionProvider(getGraphicalViewer());
 }
 
-/**
- * initializes the ActionRegistry.  Subclasses may extend this method to register additional
- * Actions.  This registry may be used by {@link ActionBarContributor ActionBarContributors}
- * and/or {@link ContextMenuProvider ContextMenuProviders}.
- * <P>This method may be called on Editor creation, or lazily
- * the first time {@link #getActionRegistry()} is called.
- */
-protected void initializeActionRegistry() {
-	getActionRegistry().registerAction(new UndoAction(this));
-	getActionRegistry().registerAction(new RedoAction(this));
-	getActionRegistry().registerAction(new DeleteAction(this));
-	getActionRegistry().registerAction(new SaveAction(this));
-}
+public void init(IEditorSite site, IEditorInput input) throws PartInitException {
+	setSite(site);
+	setInput(input);
+	getCommandStack().addCommandStackListener(this);
+	getSite().getWorkbenchWindow().getSelectionService().addSelectionListener(this);}
 
 /**
  * Override to set the contents of the GraphicalViewer after it has been created.
@@ -136,10 +179,64 @@ protected void initializeActionRegistry() {
 abstract protected void initializeGraphicalViewer();
 
 /**
- * Sets the ActionRegistry for this EditorPart.
+ * Marks or unmarks the given action to be updated on property changes.
+ *
+ * @param id the action id
+ * @param mark <code>true</code> if the action is property dependent
  */
-protected void setActionRegistry(ActionRegistry registry) {
-	actionRegistry = registry;
+public void markAsPropertyDependentAction(String id, boolean mark) {
+	if (mark)
+		if (!propertyActions.contains(id))
+			propertyActions.add(id);
+	else
+		propertyActions.remove(id);
+}
+
+/**
+ * Marks or unmarks the given action to be updated on selection changes.
+ *
+ * @param id the action id
+ * @param mark <code>true</code> if the action is selection dependent
+ */
+public void markAsSelectionDependentAction(String id, boolean mark) {
+	if (mark)
+		if (!selectionActions.contains(id))
+			selectionActions.add(id);
+	else
+		selectionActions.remove(id);
+}
+
+/**
+ * Marks or unmarks the given action to be updated on stack changes.
+ *
+ * @param id the action id
+ * @param mark <code>true</code> if the action is stack dependent
+ */
+public void markAsStackDependentAction(String id, boolean mark) {
+	if (mark)
+		if (!stackActions.contains(id))
+			stackActions.add(id);
+	else
+		stackActions.remove(id);
+}
+
+/**
+ * @see org.eclipse.ui.ISelectionListener#selectionChanged(IWorkbenchPart, ISelection)
+ */
+public void selectionChanged(IWorkbenchPart part, ISelection selection) {
+	updateSelectionDependentActions();
+}
+
+/**
+ * Registers the given action and associates it with the given id. <i>id</i> must not be
+ * <code>null</code>. If <i>action</i> is <code>null</code>, the action previously
+ * associated with <i>id</i> will be removed.
+ * @param id The id of the action being set. * @param action The action being set, or null. */
+public void setAction(String id, IAction action) {
+	if (action == null)
+		actions.remove(id);
+	else
+		actions.put(id, action);
 }
 
 /**
@@ -163,7 +260,37 @@ protected void setGraphicalViewer(GraphicalViewer viewer) {
 
 protected void setSite(org.eclipse.ui.IWorkbenchPartSite site){
 	super.setSite(site);
-	initializeActionRegistry();
+	createActions();
+	updatePropertyDependentActions();
+	updateStackDependentActions();
+}
+
+private void updateAction(String id) {
+	if (id == null)
+		return;
+	if (actions != null) {
+		IAction action = (IAction)actions.get(id);
+		if (action instanceof Updatable)
+			((Updatable)action).update();
+	}
+}
+
+protected void updatePropertyDependentActions() {
+	Iterator iter = propertyActions.iterator();
+	while (iter.hasNext())
+		updateAction((String)iter.next());
+}
+
+protected void updateSelectionDependentActions() {
+	Iterator iter = selectionActions.iterator();
+	while (iter.hasNext())
+		updateAction((String)iter.next());
+}
+
+protected void updateStackDependentActions() {
+	Iterator iter = stackActions.iterator();
+	while (iter.hasNext())
+		updateAction((String)iter.next());
 }
 
 }
