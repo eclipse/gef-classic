@@ -50,6 +50,12 @@ class ConnectionFocus
 	implements PropertyChangeListener
 {
 	PointList second;
+	AncestorListener ancestorListener = new AncestorListener.Stub() {
+		public void ancestorMoved(IFigure ancestor) {
+			revalidate();
+		}
+	};
+	
 	ConnectionFocus() {
 		setForegroundColor(XORFocusColor);
 		setBackgroundColor(ColorConstants.black);
@@ -62,6 +68,7 @@ class ConnectionFocus
 	public void addNotify() {
 		super.addNotify();
 		getConnection().addPropertyChangeListener(Connection.PROPERTY_POINTS, this);
+		getConnection().addAncestorListener(ancestorListener);
 	}
 	protected void outlineShape(Graphics g) {
 		super.outlineShape(g);
@@ -73,6 +80,7 @@ class ConnectionFocus
 
 	public void removeNotify() {
 		getConnection().removePropertyChangeListener(Connection.PROPERTY_POINTS, this);
+		getConnection().removeAncestorListener(ancestorListener);
 		super.removeNotify();
 	}
 	
