@@ -15,10 +15,11 @@ import java.util.List;
 import org.eclipse.jface.action.Action;
 import org.eclipse.ui.IWorkbenchPart;
 
-import org.eclipse.draw2d.geometry.*;
+import org.eclipse.draw2d.geometry.PrecisionDimension;
+import org.eclipse.draw2d.geometry.PrecisionRectangle;
 
 import org.eclipse.gef.*;
-import org.eclipse.gef.commands.Command;
+import org.eclipse.gef.commands.CompoundCommand;
 import org.eclipse.gef.internal.GEFMessages;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
 
@@ -95,9 +96,9 @@ public void run() {
 
 		GraphicalEditPart part = null;
 		ChangeBoundsRequest request = null;
-		Command command = null;
 		PrecisionDimension preciseDimension = null;
 		PrecisionRectangle precisePartBounds = null;
+		CompoundCommand command = new CompoundCommand();
 		
 		PrecisionRectangle precisePrimaryBounds = new PrecisionRectangle(primarySelection
 				.getFigure().getBounds().getCopy());
@@ -121,11 +122,12 @@ public void run() {
 				
 				request.setSizeDelta(preciseDimension);
 				
-				command = part.getCommand(request);
-				if (command != null && command.canExecute())
-					viewer.getEditDomain().getCommandStack().execute(command);
+				command.add(part.getCommand(request));			
 			}
 		}
+		
+		if (command.canExecute())
+			viewer.getEditDomain().getCommandStack().execute(command);		
 		
 	}
 }
