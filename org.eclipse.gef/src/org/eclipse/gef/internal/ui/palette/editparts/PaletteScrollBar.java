@@ -41,6 +41,11 @@ private static final Border CONTRAST = new CompoundBorder(
 	}, BORDER
 );
 
+private static final int BUTTON_HEIGHT = 12;
+private static final int SCROLL_TIME = 200;
+
+private static final Image TRANSPARENCY;
+
 static {
 	Display display = Display.getCurrent();
 	PaletteData pData = new PaletteData(0xFF, 0xFF00, 0xFF0000);
@@ -52,10 +57,6 @@ static {
 	TRANSPARENCY = new Image(display, iData);
 }
 
-private static final int BUTTON_HEIGHT = 12;
-private static final int SCROLL_TIME = 200;
-
-private static final Image TRANSPARENCY;
 protected Label downLabel;
 
 protected Label upLabel;
