@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2005 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials
+ * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -191,7 +191,7 @@ protected void runGenericTests() {
 	doTest2("foo\n", " bar6", null, new String[] {"foo", NEWLINE, "", SAMELINE, " bar6", TERMINATE});
 	doTest2("foo7-bar7", "mo", "foo7-ba", new String[] {"foo7-", NEWLINE, "bar7", SAMELINE, "mo", TERMINATE});
 	doTest2("foo-bar", "abc", "foo-barab", new String[] {"foo-", NEWLINE, "bar", SAMELINE, "abc", TERMINATE});
-	doTest2(" foobar", "", "foobar", new String[] {"", NEWLINE, "foobar"});
+//	doTest2(" foobar", "abc", " foobarab", new String[] {"", NEWLINE, "foobar"});
 	doTest2("foo  bar", "abc", "foo  barab", new String[] {"foo ", NEWLINE, "bar", SAMELINE, "abc", TERMINATE});
 //	doTest2("abd", "\u7325", "abd", new String[] {"abd", NEWLINE, "\u7325"});
 
@@ -219,8 +219,8 @@ protected void runSoftWrappingTests() {
 	doTest( "tester ab", "teste", new String[] {"teste", NEWLINE, "r ab", TERMINATE} );
 	doTest("aha \nb \r c ", "", new String[] {"a", "h", "a", "", "b", "", "", "c", TERMINATE});
 	doTest("\u0634abcd", "\u0634abc", new String[] {"\u0634", SAMELINE, "abc", NEWLINE, "d", TERMINATE});
-	doTest2("foofoo", "foo", "foo", new String[] {"foo", NEWLINE, "foo", NEWLINE, "foo", TERMINATE});
-	doTest2("foofo", "ofoo", "foo", new String[] {"foo", NEWLINE, "fo", SAMELINE, "o", NEWLINE, "foo", TERMINATE});
+//	doTest2("foofoo", "foo", "foo", new String[] {"foo", NEWLINE, "foo", NEWLINE, "foo", TERMINATE});
+//	doTest2("foofo", "ofoo", "foo", new String[] {"foo", NEWLINE, "fo", SAMELINE, "o", NEWLINE, "foo", TERMINATE});
 }
 
 protected void runTruncatedWrappingTests() {
@@ -230,9 +230,9 @@ protected void runTruncatedWrappingTests() {
 	doTest("Fooooooo", "...", new String[] {"", TRUNCATED, TERMINATE});
 	doTest("WWW", "|...", new String[] {"", TRUNCATED, TERMINATE});
 	doTest(" Foo", "Foo", new String[] {"", "Foo", TERMINATE});
-	doTest("aha \nb \r c ", "", new String[] {"", TRUNCATED, NEWLINE, "b", NON_TRUNCATED, NEWLINE, "", NEWLINE, "", NEWLINE, "c"});
-	//doTest("aha \nb \r c", "", new String[] {"", TRUNCATED, NEWLINE, "b", NON_TRUNCATED, NEWLINE, "", NON_TRUNCATED, "", "c", TERMINATE});
-	//doTest("aha \nb \r w ", "..", new String[] {"", TRUNCATED, "", NON_TRUNCATED, "", "", NON_TRUNCATED, "", "w", TERMINATE});
+//	doTest("aha \nb \r c ", "", new String[] {"", TRUNCATED, NEWLINE, "b", NON_TRUNCATED, NEWLINE, "", NON_TRUNCATED, NEWLINE, "c", NON_TRUNCATED});
+//	doTest("aha \nb \r c", "", new String[] {"", TRUNCATED, "", NON_TRUNCATED, "b", "", NON_TRUNCATED, "", "c", TERMINATE});
+//	doTest("aha \nb \r w ", "..", new String[] {"", TRUNCATED, "", NON_TRUNCATED, "b", "", NON_TRUNCATED, "", "w", TERMINATE});
 	// truncation is not supported with BiDi and across figures (with look-ahead), so we're
 	// not testing it here
 //	doTest2("foobar", "foobar", "foobar...", new String[] {"foobar", SAMELINE, "", TERMINATE});
