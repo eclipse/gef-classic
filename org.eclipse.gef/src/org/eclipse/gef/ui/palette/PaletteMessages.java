@@ -28,7 +28,7 @@ public static final String APPLY_LABEL;
  */
 public static final String MOVE_UP_LABEL;
 /**
- * The String "Move D&own"
+ * The String "Move Do&wn"
  */
 public static final String MOVE_DOWN_LABEL;
 /**

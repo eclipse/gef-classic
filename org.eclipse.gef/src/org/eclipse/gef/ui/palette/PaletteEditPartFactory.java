@@ -26,7 +26,7 @@ public EditPart createEditPart(EditPart parentEditPart, Object model){
 		if(PaletteDrawer.PALETTE_TYPE_DRAWER.equals(((PaletteContainer)model).getType()))
 			return createDrawerEditPart(parentEditPart, model);
 	if( model instanceof PaletteContainer )
-		if(	PaletteContainer.PALETTE_TYPE_GROUP.equals(((PaletteContainer)model).getType()) ||
+		if(PaletteGroup.PALETTE_TYPE_GROUP.equals(((PaletteContainer)model).getType()) ||
 			PaletteContainer.PALETTE_TYPE_UNKNOWN.equals(((PaletteContainer)model).getType()))
 			return createGroupEditPart(parentEditPart, model);
 	if( model instanceof PaletteTemplateEntry)
