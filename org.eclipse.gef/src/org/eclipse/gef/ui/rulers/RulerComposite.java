@@ -85,7 +85,7 @@ private GraphicalViewer createRulerContainer(int orientation) {
 		public void reveal(EditPart part) {
 			// there's no need to reveal rulers (that causes undesired scrolling to
 			// the origin of the ruler)
-			if (part instanceof GuideEditPart)
+			if (part != getContents())
 				super.reveal(part);
 		}
 		public void setContents(EditPart editpart) {
