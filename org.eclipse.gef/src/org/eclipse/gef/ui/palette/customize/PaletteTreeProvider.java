@@ -5,14 +5,11 @@ import java.beans.PropertyChangeListener;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.jface.viewers.*;
+
 import org.eclipse.gef.palette.PaletteContainer;
 import org.eclipse.gef.palette.PaletteEntry;
 import org.eclipse.gef.palette.PaletteRoot;
-import org.eclipse.jface.viewers.ITreeContentProvider;
-import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.swt.widgets.TreeItem;
 
 /**
  * This is the {@link org.eclipse.jface.viewers.IContentProvider} for the {@link
@@ -113,7 +110,7 @@ protected void handlePropertyChanged(PropertyChangeEvent evt) {
 		viewer.update(entry, null);
 	} else if(property.equals(PaletteEntry.PROPERTY_VISIBLE)){
 		viewer.refresh(entry);
-	} else if (property.equals(PaletteContainer.PROPERTY_CHILDREN_CHANGED)) {
+	} else if (property.equals(PaletteContainer.PROPERTY_CHILDREN)) {
 		viewer.refresh(entry);
 		List oldChildren = (List)evt.getOldValue();
 		List newChildren = (List)evt.getNewValue();
@@ -128,23 +125,6 @@ protected void handlePropertyChanged(PropertyChangeEvent evt) {
 			PaletteEntry child = (PaletteEntry) iter.next();
 			if (!oldChildren.contains(child)) {
 				viewer.setSelection(new StructuredSelection(child));
-				return;
-			}
-		}
-		// If a child was deleted, select its parent.  If the parent is the root,
-		// select the first element in the tree
-		for (Iterator iter = oldChildren.iterator(); iter.hasNext();) {
-			PaletteEntry child = (PaletteEntry) iter.next();
-			if (!newChildren.contains(child)) {
-				if (entry instanceof PaletteRoot) {
-					TreeItem[] items = viewer.getTree().getItems();
-					if (items.length > 0) {
-						PaletteEntry selection = (PaletteEntry)items[0].getData();
-						viewer.setSelection(new StructuredSelection(selection));
-					}
-				} else {
-					viewer.setSelection(new StructuredSelection(entry));
-				}
 				return;
 			}
 		}

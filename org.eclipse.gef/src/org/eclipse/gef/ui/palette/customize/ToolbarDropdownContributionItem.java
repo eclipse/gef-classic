@@ -1,14 +1,19 @@
-package org.eclipse.gef.ui.palette;
+package org.eclipse.gef.ui.palette.customize;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.*;
 
 import org.eclipse.jface.action.*;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.*;
-import org.eclipse.swt.widgets.*;
 
 /**
  * A contribution item which delegates to an action.
@@ -16,7 +21,7 @@ import org.eclipse.swt.widgets.*;
  * This class may be instantiated; it is not intended to be subclassed.
  * </p>
  */
-public class GEFActionContributionItem extends ContributionItem {
+class ToolbarDropdownContributionItem extends ContributionItem {
 
 	private static ImageCache globalImageCache;
 	
@@ -42,10 +47,10 @@ public class GEFActionContributionItem extends ContributionItem {
 	 */
 	private class ActionListener implements Listener, IPropertyChangeListener {
 		public void handleEvent(Event event) {
-			GEFActionContributionItem.this.handleWidgetEvent(event);
+			ToolbarDropdownContributionItem.this.handleWidgetEvent(event);
 		}
 		public void propertyChange(PropertyChangeEvent event) {
-			GEFActionContributionItem.this.actionPropertyChange(event);
+			ToolbarDropdownContributionItem.this.actionPropertyChange(event);
 		}
 	}
 
@@ -127,7 +132,7 @@ public class GEFActionContributionItem extends ContributionItem {
  *
  * @param action the action
  */
-public GEFActionContributionItem(IAction action) {
+public ToolbarDropdownContributionItem(IAction action) {
 	super(action.getId());
 	this.action = action;
 }
@@ -169,10 +174,10 @@ private static boolean belongsToContextMenu(MenuItem item) {
  * Two action contribution items are equal if they refer to the identical Action.
  */
 public boolean equals(Object o) {
-	if (!(o instanceof GEFActionContributionItem)) {
+	if (!(o instanceof ToolbarDropdownContributionItem)) {
 		return false;
 	}
-	return action.equals(((GEFActionContributionItem) o).action);
+	return action.equals(((ToolbarDropdownContributionItem) o).action);
 }
 /**
  * The <code>GEFActionContributionItem</code> implementation of this <code>IContributionItem</code>

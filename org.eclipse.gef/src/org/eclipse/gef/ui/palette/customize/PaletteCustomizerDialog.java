@@ -17,6 +17,7 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.*;
+import org.eclipse.jface.util.Assert;
 import org.eclipse.jface.viewers.*;
 import org.eclipse.ui.internal.IWorkbenchGraphicConstants;
 import org.eclipse.ui.internal.WorkbenchImages;
@@ -27,7 +28,6 @@ import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.gef.internal.Internal;
 import org.eclipse.gef.palette.PaletteEntry;
 import org.eclipse.gef.palette.PaletteRoot;
-import org.eclipse.gef.ui.palette.GEFActionContributionItem;
 import org.eclipse.gef.ui.palette.PaletteCustomizer;
 import org.eclipse.gef.ui.palette.PaletteMessages;
 
@@ -68,7 +68,6 @@ private HashMap widgets = new HashMap();
 private HashMap entriesToPages = new HashMap();
 private List actions;
 
-private boolean isError;
 private String errorMessage;
 private Tree tree;
 private Composite titlePage, errorPage;
@@ -118,19 +117,13 @@ protected int initialLayout;
 protected int initialCollapse;
 
 /**
- * Constructor
- * 
- * @param parentShell	The parent shell, or <code>null</code> to create a 
- * 						top - level shell
- * @param customizer	The provided customizer that will be called to handle
- * 						the various customization tasks (such as deleting 
- * 						palette entries).  It cannot be <code>null</code>.
- * @param root			The PaletteRoot which has the model that this dialog is customizing.  
- * 						It cannot be <code>null</code>.
+ * Constructs a new customizer dialog.
+ * @param shell the parent Shell
+ * @param customizer the customizer
+ * @param root the palette root
  */
-public PaletteCustomizerDialog(Shell parentShell, PaletteCustomizer customizer,
-                                PaletteRoot root) {
-	super(parentShell);
+public PaletteCustomizerDialog(Shell shell, PaletteCustomizer customizer, PaletteRoot root) {
+	super(shell);
 	this.customizer = customizer;
 	this.root = root;
 	setShellStyle(getShellStyle() | SWT.RESIZE | SWT.MAX);
@@ -155,8 +148,7 @@ protected void buttonPressed(int buttonId) {
  * @see org.eclipse.gef.ui.palette.customize.EntryPageContainer#clearProblem()
  */
 public void clearProblem() {
-	if (isError) {
-		isError = false;
+	if (errorMessage != null) {
 		titleSwitcher.showPage(titlePage);
 		getButton(IDialogConstants.OK_ID).setEnabled(true);
 		getButton(APPLY_ID).setEnabled(true);
@@ -208,7 +200,7 @@ public boolean close() {
 	initialSelection = null;
 	activeEntry = null;
 	title = null;
-	isError = false;
+	errorMessage = null;
 		
 	return returnVal;
 }
@@ -481,7 +473,7 @@ protected Control createOutlineToolBar(Composite parent) {
 	ToolBarManager tbMgr = new ToolBarManager(SWT.FLAT | SWT.HORIZONTAL);
 	List actions = getOutlineActions();
 	for (int i = 0; i < actions.size(); i++) {
-		tbMgr.add(new GEFActionContributionItem(((IAction)actions.get(i))));
+		tbMgr.add(new ToolbarDropdownContributionItem(((IAction)actions.get(i))));
 	}
 	tbMgr.createControl(composite);
 	tbMgr.getControl().setFont(composite.getFont());
@@ -512,7 +504,14 @@ protected TreeViewer createOutlineTreeViewer(Composite composite) {
 	// dialog from shrinking to an unusually small size.
 	data.heightHint = 200;
 	treeForViewer.setLayoutData(data);
-	TreeViewer viewer = new TreeViewer(treeForViewer);
+	TreeViewer viewer = new TreeViewer(treeForViewer) {
+		protected void preservingSelection(Runnable updateCode) {
+			if ((getTree().getStyle() & SWT.SINGLE) != 0)
+				updateCode.run();
+			else
+				super.preservingSelection(updateCode);
+		}
+	};
 	viewer.setContentProvider(new PaletteTreeProvider(viewer));
 	treeViewerLabelProvider = new PaletteLabelProvider(viewer);
 	viewer.setLabelProvider(treeViewerLabelProvider);
@@ -834,7 +833,7 @@ protected void handleOutlineSelectionChanged() {
 		return;
 	}
 
-	if (isError) {
+	if (errorMessage != null) {
 		MessageDialog dialog = new MessageDialog(getShell(),
 				PaletteMessages.ERROR, //$NON-NLS-1$
 				null, 
@@ -982,7 +981,7 @@ public void setDefaultSelection(PaletteEntry entry) {
  * @see org.eclipse.gef.ui.palette.customize.EntryPageContainer#showProblem(String)
  */
 public void showProblem(String error) {
-	isError = true;
+	Assert.isNotNull(error);
 	errorTitle.setText(error);
 	titleSwitcher.showPage(errorPage);
 	getButton(IDialogConstants.OK_ID).setEnabled(false);
