@@ -70,6 +70,14 @@ protected void createDefaultRoot() {
 	setRootEditPart(new PaletteRootEditPart());
 }
 
+/**
+ * @see org.eclipse.gef.EditPartViewer#dispose()
+ */
+public void dispose() {
+	super.dispose();
+	prefs.dispose();
+}
+
 protected void firePaletteSelectionChanged() {
 	if (paletteListeners == null)
 		return;
@@ -197,8 +205,9 @@ public void setSelection(PaletteEntry entry) {
 		}
 	} else {
 		selectedEntry = entry;
-		EntryEditPart ep = (EntryEditPart) getEditPartRegistry().get(entry);
-		ep.select();
+		PaletteEditPart ep = (PaletteEditPart)getEditPartRegistry().get(entry);
+		if (ep instanceof EntryEditPart)
+			((EntryEditPart)ep).select();
 		firePaletteSelectionChanged();
 	}
 }

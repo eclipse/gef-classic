@@ -86,6 +86,11 @@ public static final String
 public void addPropertyChangeListener(PropertyChangeListener listener);
 
 /**
+ * Called when the preferences are being disposed.
+ */
+void dispose();
+
+/**
  * Returns the current Auto-collapse settings flag.
  * <p> 
  * Possible flags:

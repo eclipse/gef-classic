@@ -44,6 +44,13 @@ public void addPropertyChangeListener(PropertyChangeListener listener) {
 }
 
 /**
+ * @see org.eclipse.gef.ui.palette.PaletteViewerPreferences#dispose()
+ */
+public void dispose() {
+	store.removePropertyChangeListener(listener);
+}
+
+/**
  * The oldValue of the PropertyChangeEvent that is fired will always be null.
  * 
  * @see java.beans.PropertyChangeSupport#firePropertyChange(java.lang.String, java.lang.Object, java.lang.Object)
