@@ -32,14 +32,15 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * WARNING: This class is not intended to be subclassed by clients.
  * @author hudsonr
  * @since 2.1 */
-public class TextFlow extends InlineFlow {
+public class TextFlow 
+	extends InlineFlow 
+{
 
 static final String ELLIPSIS = "..."; //$NON-NLS-1$
-
 static final int SELECT_ALL = 1;
 static final int SELECT_PARTIAL = 2;
-private BidiInfo bidiInfo;
 
+private BidiInfo bidiInfo;
 private int selectionEnd = -1;
 private String text;
 
@@ -75,28 +76,24 @@ public boolean addLeadingWordRequirements(int[] width) {
  * @since 3.1
  */
 boolean addLeadingWordWidth(String text, int[] width) {
-
 	if (text.length() == 0)
 		return false;
-
 	if (Character.isWhitespace(text.charAt(0)))
 		return true;
 
-	BreakIterator wordBreaker = FlowUtilities.WORD_BREAK;
+	BreakIterator lineBreaker = FlowUtilities.LINE_BREAK;
 	text = 'a' + text + 'a';
-	wordBreaker.setText(text);
-	int index = wordBreaker.next();
-	boolean result = index < text.length() - 1;
-
-	// An optimization to prevent unnecessary invocation of String.substring and 
-	// getStringExtents()
-	if (index == 0)
-		return result;
-	
-	while (text.charAt(index - 1) == ' ')
+	lineBreaker.setText(text);
+	int index = lineBreaker.next() - 1;
+	while (Character.isWhitespace(text.charAt(index)))
 		index--;
-	text = text.substring(1, index);
-	
+	boolean result = index < text.length() - 1;
+	// index should point to the end of the actual text (not incluing the 'a' that was 
+	// appended), if there were no breaks
+	if (index == text.length() - 1)
+		index--;
+	text = text.substring(1, index + 1);
+
 	if (bidiInfo == null)
 		width[0] += FlowUtilities.getStringExtents(text, getFont()).width;
 	else {
