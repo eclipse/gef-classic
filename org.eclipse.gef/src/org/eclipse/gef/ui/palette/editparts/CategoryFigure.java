@@ -39,6 +39,7 @@ static {
 	SCROLL_PANE_BORDER.setLocation(SeparatorBorder.BOTTOM);
 }
 
+private int layoutMode = -1;
 private final Label categoryLabel;
 private final ScrollPane scrollpane;
 private final ToggleButton pinFigure;
@@ -211,6 +212,12 @@ public void setExpanded(boolean value) {
 }
 
 public void setLayoutMode(int layoutMode) {
+	if (this.layoutMode == layoutMode) {
+		return;
+	}
+	
+	this.layoutMode = layoutMode;
+	
 	LayoutManager manager;
 	if (layoutMode == PaletteViewerPreferences.LAYOUT_FOLDER) {
 		manager = new FolderLayout();
