@@ -10,22 +10,29 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner.edit;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.events.VerifyListener;
+import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.Text;
 
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
-import org.eclipse.draw2d.geometry.*;
+import org.eclipse.draw2d.geometry.Dimension;
 
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.tools.CellEditorLocator;
 import org.eclipse.gef.tools.DirectEditManager;
 
 public class LogicLabelEditManager 
-	extends DirectEditManager {
+	extends DirectEditManager 
+{
 
 Font scaledFont;
+private VerifyListener verifyListener;
 
 public LogicLabelEditManager(
 		GraphicalEditPart source,
@@ -48,10 +55,27 @@ protected void bringDown() {
 }
 
 protected void initCellEditor() {
+	Text text = (Text)getCellEditor().getControl();
+	verifyListener = new VerifyListener() {
+		public void verifyText(VerifyEvent event) {
+			Text text = (Text)getCellEditor().getControl();
+			String oldText = text.getText();
+			String leftText = oldText.substring(0, event.start);
+			String rightText = oldText.substring(event.end, oldText	.length());
+			GC gc = new GC(text);
+			String s = leftText + event.text + rightText;
+			Point size = gc.textExtent(leftText + event.text + rightText);
+			gc.dispose();
+			if (size.x != 0)
+				size = text.computeSize(size.x, SWT.DEFAULT);
+			getCellEditor().getControl().setSize(size.x, size.y);
+		}
+	};
+	text.addVerifyListener(verifyListener);
+
 	Label label = (Label)((GraphicalEditPart)getEditPart()).getFigure();
 	String initialLabelText = label.getText();
 	getCellEditor().setValue(initialLabelText);
-	Text text = (Text)getCellEditor().getControl();
 	IFigure figure = ((GraphicalEditPart)getEditPart()).getFigure();
 	scaledFont = figure.getFont();
 	FontData data = scaledFont.getFontData()[0];
@@ -62,6 +86,13 @@ protected void initCellEditor() {
 	
 	text.setFont(scaledFont);
 	text.selectAll();
+}
+
+protected void unhookListeners() {
+	super.unhookListeners();
+	Text text = (Text)getCellEditor().getControl();
+	text.removeVerifyListener(verifyListener);
+	verifyListener = null;
 }
 
 }
