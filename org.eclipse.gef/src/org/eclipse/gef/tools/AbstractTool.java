@@ -948,13 +948,18 @@ final protected boolean unloadWhenFinished(){
 }
 
 /**
- * Handles the mouse entering a viewer.  Subclasses wanting to 
- * handle this event should override {@link #handleViewerEntered()}.
+ * Handles the mouse entering a viewer.  Subclasses wanting to handle this event should 
+ * override {@link #handleViewerEntered()}.  
+ * <p>NOTE: If the current viewer is not <code>null</code>, it means 
+ * {@link #viewerExited(MouseEvent, EditPartViewer)} on the previous viewer will come 
+ * after this viewer entered event.  As a workaround for this "feature" in SWT, 
+ * {@link #handleViewerExited()} is called and the subsequent viewer exited event will be
+ * ignored.
  */
 public void viewerEntered(MouseEvent me, EditPartViewer viewer) {
 	getCurrentInput().setInput(me);
 	if (getCurrentViewer() != null) {
-		debug("Mouse exited viewer (FAKE):\t" + getCurrentViewer().toString()); //$NON-NLS-1$
+		debug("Mouse exited viewer:\t" + getCurrentViewer().toString()); //$NON-NLS-1$
 		handleViewerExited();
 	}
 	setViewer(viewer);
