@@ -35,6 +35,9 @@ private EditPartViewer viewer;
 private Transfer transfer;
 private EditPart target;
 private Request request;
+private Point prevMouseLoc = new Point();
+private long hoverStartTime = -1;
+private boolean hovering = false;
 
 /**
  * Constructs a new AbstractTransferDropTargetListener and sets the EditPartViewer.
@@ -56,30 +59,12 @@ public AbstractTransferDropTargetListener(EditPartViewer viewer, Transfer xfer) 
 }
 
 /**
- * @see TransferDropTargetListener#activate()
- */
-public void activate() { }
-
-/**
  * Creates and returns the <code>Request</code> that will be sent to the targeted
  * EditPart. Subclasses can override to create specialized requests.
  * @return the <code>Request</code> to be used with the <i>target</i> EditPart
  */
 protected Request createTargetRequest() {
 	return new Request();
-}
-
-/**
- * Called when this listener is temporarily disabled. Sets the Request and target EditPart
- * to <code>null</code>. Since {@link DropTargetListener#dragLeave(DropTargetEvent)} is
- * called right before the drop occurs, this will be called at that time, but activate()
- * will be called just prior to the drop.
- * 
- * @see TransferDropTargetListener#deactivate()
- */
-public void deactivate() {
-	setTargetEditPart(null);
-	request = null;
 }
 
 /**
@@ -92,13 +77,9 @@ public void dragEnter(DropTargetEvent event) {
 	if (GEF.DebugDND)
 		GEF.debug("Drag Enter: " + toString()); //$NON-NLS-1$
 	setCurrentEvent(event);
-}
-
-public void dragHover(DropTargetEvent event) {
-	if (GEF.DebugDND)
-		GEF.debug("Drag Hover: " + toString()); //$NON-NLS-1$
-	setCurrentEvent(event);
-	handleDragHover();
+	prevMouseLoc.x = event.x;
+	prevMouseLoc.y = event.y;
+	resetHover();
 }
 
 /**
@@ -113,6 +94,7 @@ public void dragLeave(DropTargetEvent event) {
 		GEF.debug("Drag Leave: " + toString()); //$NON-NLS-1$
 	setCurrentEvent(event);
 	unload();
+	resetHover();
 }
 
 /**
@@ -125,6 +107,7 @@ public void dragOperationChanged(DropTargetEvent event) {
 	if (GEF.DebugDND)
 		GEF.debug("Drag Operation Changed: " + toString()); //$NON-NLS-1$
 	setCurrentEvent(event);
+	resetHover();
 	handleDragOperationChanged();
 }
 
@@ -135,10 +118,27 @@ public void dragOperationChanged(DropTargetEvent event) {
  * @see DropTargetListener#dragOver(org.eclipse.swt.dnd.DropTargetEvent)
  */
 public void dragOver(DropTargetEvent event) {
-	if (GEF.DebugDND)
-		GEF.debug("Drag Over: " + toString()); //$NON-NLS-1$
 	setCurrentEvent(event);
-	handleDragOver();
+	if (isMouseMoving(event)) {
+		resetHover();
+		if (GEF.DebugDND)
+			GEF.debug("Drag Over: " + toString()); //$NON-NLS-1$
+		handleDragOver();
+	} else {
+		if (hovering)
+			return;
+		long currentTime = System.currentTimeMillis();
+		if (hoverStartTime == -1) {
+			hoverStartTime = currentTime;
+		} else if (currentTime - hoverStartTime > 400) {
+			if (GEF.DebugDND)
+				GEF.debug("Drag Hover: " + toString()); //$NON-NLS-1$
+			handleDragHover();
+			hovering = true;
+		}
+	}
+	prevMouseLoc.x = event.x;
+	prevMouseLoc.y = event.y;
 }
 
 /**
@@ -351,6 +351,15 @@ public boolean isEnabled(DropTargetEvent event) {
 	return false;
 }
 
+private boolean isMouseMoving(DropTargetEvent event) {
+	return prevMouseLoc.x != event.x || prevMouseLoc.y != event.y;
+}
+
+private void resetHover() {
+	hovering = false;
+	hoverStartTime = -1;
+}
+
 /**
  * Sets the current DropTargetEvent.
  * @param currentEvent the DropTargetEvent
@@ -419,6 +428,7 @@ protected void unload() {
 	request = null;
 	setTargetEditPart(null);
 	setCurrentEvent(null);
+	resetHover();
 }
 
 /**
