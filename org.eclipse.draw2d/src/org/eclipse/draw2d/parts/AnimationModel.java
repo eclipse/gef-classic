@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.draw2d.parts;
 
-import java.util.Date;
 
 /**
  * Holds the count information, and notifies interested figures of changes in 
@@ -18,13 +17,14 @@ import java.util.Date;
  */
 class AnimationModel {
 
-protected long startTime = new Date().getTime();
-protected long endTime = new Date().getTime();
-protected long numberOfMilliSeconds = 0;
+protected long startTime;
+protected long endTime;
+protected long numberOfMilliSeconds;
 
 /**
  * Default constructor taking in number of milliseconds the animation should 
  * take.
+ * @param numberOfMilliSeconds the number of milliseconds the animation should last
  */
 public AnimationModel(long numberOfMilliSeconds) {
 	this.numberOfMilliSeconds = numberOfMilliSeconds;
@@ -35,15 +35,15 @@ public AnimationModel(long numberOfMilliSeconds) {
  * to get ready for animation start.
  */
 public void start() {
-	startTime = new Date().getTime();
+	startTime = System.currentTimeMillis();
 	endTime = startTime + numberOfMilliSeconds;
 }
 
 /**
- * Returns value of current position (between 0.0 and 1.0).
+ * @return value of current position (between 0.0 and 1.0).
  */
 public float getValue() {
-	long presentTime = new Date().getTime();
+	long presentTime = System.currentTimeMillis();
 	if (presentTime > endTime) 
 		return (float)1.0;
 	long timePassed = (presentTime - startTime);
@@ -52,5 +52,3 @@ public float getValue() {
 }
 
 }
-
-
