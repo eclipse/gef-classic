@@ -522,11 +522,10 @@ public void setIcon(Image image) {
 }
 
 /**
- * Sets the icon alignment relative to the .abel's alignment to the passed value. The
- * default is {@link PositionConstants#CENTER}. Other possible values are 
- * {@link PositionConstants#TOP}, {@link PositionConstants#BOTTOM}, 
- * {@link PositionConstants#LEFT} and {@link PositionConstants#RIGHT}.
- * 
+ * This method sets the alignment of the icon within the icon dimension.  The dimension
+ * should be the same size as the Image itself, so calling this method should have no
+ * affect.
+ * @deprecated The icons should be displayed at 1:1 
  * @param align the icon alignment 
  * @since 2.0
  */
@@ -542,6 +541,7 @@ public void setIconAlignment (int align) {
  * Sets the label's icon size to the passed Dimension.
  * 
  * @param d the new icon size
+ * @deprecated the icon is automatically displayed at 1:1
  * @since 2.0
  */
 public void setIconDimension(Dimension d) {
@@ -567,10 +567,16 @@ public void setIconTextGap(int gap) {
 }
 
 /**
- * Sets the Label's alignment to the passed value. The default is 
- * {@link PositionConstants#CENTER}. Other possible values are 
- * {@link PositionConstants#TOP}, {@link PositionConstants#BOTTOM}, 
- * {@link PositionConstants#LEFT} and {@link PositionConstants#RIGHT}.
+ * Sets the alignment of the entire label (icon and text). If this figure's bounds
+ * are larger than the size needed to display the label, the label will be aligned
+ * accordingly. Valid values are:
+ * <UL>
+ *   <LI><EM>{@link PositionConstants#CENTER}</EM>
+ *   <LI>{@link PositionConstants#TOP}
+ *   <LI>{@link PositionConstants#BOTTOM}
+ *   <LI>{@link PositionConstants#LEFT}
+ *   <LI>{@link PositionConstants#RIGHT}
+ * </UL>
  * 
  * @param align label alignment
  */
@@ -584,7 +590,6 @@ public void setLabelAlignment(int align) {
 
 /**
  * Sets the label's text.
- * 
  * @param s the new label text
  * @since 2.0
  */
@@ -596,15 +601,21 @@ public void setText(String s) {
 		return;
 	text = s;
 	revalidate();
-	repaint();  //If the new text does not cause a new size, we still need to paint.
+	repaint();
 }
 
 /**
- * Sets the text alignment of the Label relative to the label alignment. The default is 
- * {@link PositionConstants#CENTER}. Other possible values are 
- * {@link PositionConstants#TOP}, {@link PositionConstants#BOTTOM}, 
- * {@link PositionConstants#LEFT} and {@link PositionConstants#RIGHT}.
- * 
+ * Sets the alignment of the Text relative to the icon. The text alignment must be
+ * orthogonal to the text placement. For example, if the placement is EAST, then the
+ * text can be aligned using TOP, CENTER, or BOTTOM. Valid values are:
+ * <UL>
+ *   <LI><EM>{@link PositionConstants#CENTER}</EM>
+ *   <LI>{@link PositionConstants#TOP}
+ *   <LI>{@link PositionConstants#BOTTOM}
+ *   <LI>{@link PositionConstants#LEFT}
+ *   <LI>{@link PositionConstants#RIGHT}
+ * </UL>
+ * @see #setLabelAlignment(int)
  * @param align the text alignment
  * @since 2.0
  */
@@ -617,10 +628,13 @@ public void setTextAlignment(int align) {
 }
 
 /**
- * Sets the text placement of the label relative to its icon. The default is 
- * {@link PositionConstants#EAST}. Other possible values are 
- * {@link PositionConstants#NORTH}, {@link PositionConstants#SOUTH} and
- * {@link PositionConstants#WEST}.
+ * Sets the placement of text relative to the label's icon. Valid values are:
+ * <UL>
+ *   <LI><EM>{@link PositionConstants#EAST}</EM>
+ *   <LI>{@link PositionConstants#NORTH}
+ *   <LI>{@link PositionConstants#SOUTH}
+ *   <LI>{@link PositionConstants#WEST}
+ * </UL>
  * 
  * @param where the text placement
  * @since 2.0
