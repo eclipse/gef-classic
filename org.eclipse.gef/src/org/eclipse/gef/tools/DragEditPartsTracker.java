@@ -165,8 +165,7 @@ protected List createOperationSet() {
 protected Request createTargetRequest() {
 	if (isCloneActive())
 		return new ChangeBoundsRequest(REQ_CLONE);
-	else
-		return new ChangeBoundsRequest(REQ_MOVE);
+	return new ChangeBoundsRequest(REQ_MOVE);
 }
 
 /**
@@ -414,7 +413,7 @@ protected boolean isMove() {
 	while (part != getTargetEditPart() && part != null) {
 		if (part.getParent() == getTargetEditPart() 
 				&& part.getSelected() != EditPart.SELECTED_NONE)
-				return true;
+			return true;
 		part = part.getParent();
 	}
 	return false;
@@ -562,8 +561,8 @@ protected void updateTargetRequest() {
 	if (snapToHelper != null && !getCurrentInput().isAltKeyDown()) {
 		PrecisionRectangle baseRect = sourceRectangle.getPreciseCopy();
 		PrecisionRectangle jointRect = compoundSrcRect.getPreciseCopy();
-		baseRect.translate(request.getMoveDelta());
-		jointRect.translate(request.getMoveDelta());
+		baseRect.translate(moveDelta);
+		jointRect.translate(moveDelta);
 		
 		PrecisionPoint preciseDelta = new PrecisionPoint(moveDelta);
 		snapToHelper.snapPoint(request,

@@ -131,8 +131,7 @@ protected Rectangle getFigureBounds(GraphicalEditPart part) {
 	IFigure fig = part.getFigure();
 	if (fig instanceof HandleBounds)
 		return ((HandleBounds)fig).getHandleBounds();
-	else
-		return fig.getBounds();
+	return fig.getBounds();
 }
 
 protected void populateRowsAndCols(List parts) {
