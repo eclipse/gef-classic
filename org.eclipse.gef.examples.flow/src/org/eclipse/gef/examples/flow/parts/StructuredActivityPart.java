@@ -5,8 +5,6 @@ import java.util.Map;
 
 import org.eclipse.draw2d.*;
 import org.eclipse.gef.*;
-import org.eclipse.gef.EditPolicy;
-import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
 import org.eclipse.gef.examples.flow.model.StructuredActivity;
 import org.eclipse.gef.examples.flow.policies.*;
