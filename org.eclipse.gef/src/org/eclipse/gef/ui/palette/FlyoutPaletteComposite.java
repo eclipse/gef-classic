@@ -29,7 +29,6 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.RowData;
-import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -90,32 +89,33 @@ public class FlyoutPaletteComposite
 	extends Composite
 {
 	
-public static final int DEFAULT_PALETTE_SIZE = 125;
-public static final String PROPERTY_FIXEDSIZE 
-		= "org.eclipse.gef.ui.palette.fpa.fixedsize"; //$NON-NLS-1$
-public static final String PROPERTY_STATE
+private static final String PROPERTY_PALETTE_WIDTH
+		= "org.eclipse.gef.ui.palette.fpa.paletteWidth"; //$NON-NLS-1$
+private static final String PROPERTY_STATE
 		= "org.eclipse.gef.ui.palette.fpa.state"; //$NON-NLS-1$
-public static final String PROPERTY_DOCK_LOCATION
+private static final String PROPERTY_DOCK_LOCATION
 		= "org.eclipse.gef.ui.palette.fpa.dock"; //$NON-NLS-1$
 
-protected static final int MIN_PALETTE_SIZE = 20;
-protected static final int MAX_PALETTE_SIZE = 500;
-public static final int IN_VIEW = 8;
-public static final int FLYOUT_EXPANDED = 1;
-public static final int FLYOUT_COLLAPSED = 2;
-public static final int FLYOUT_PINNED_OPEN = 4;
+private static final int DEFAULT_PALETTE_SIZE = 125;
+private static final int MIN_PALETTE_SIZE = 20;
+private static final int MAX_PALETTE_SIZE = 500;
 
-protected Composite sash, paletteContainer;
-protected PaletteViewer pViewer, externalViewer;
-protected Control graphicalControl;
-protected PaletteViewerProvider provider;
-protected int dock = PositionConstants.EAST;
-protected int paletteState = -1;
-protected int defaultState = FLYOUT_COLLAPSED;
-private int fixedSize = DEFAULT_PALETTE_SIZE;
+public static final int STATE_HIDDEN = 8;
+public static final int STATE_EXPANDED = 1;
+public static final int STATE_COLLAPSED = 2;
+public static final int STATE_PINNED_OPEN = 4;
+
+private Composite sash, paletteContainer;
+private PaletteViewer pViewer, externalViewer;
+private Control graphicalControl;
+private PaletteViewerProvider provider;
+private Preferences prefs;
+private int dock = PositionConstants.EAST;
+private int paletteState = -1;
+private int paletteWidth = DEFAULT_PALETTE_SIZE;
 private int minWidth = MIN_PALETTE_SIZE;
 
-protected IPerspectiveListener perspectiveListener = new IPerspectiveListener() {
+private IPerspectiveListener perspectiveListener = new IPerspectiveListener() {
 	public void perspectiveActivated(IWorkbenchPage page, 
 			IPerspectiveDescriptor perspective) {
 		handlePerspectiveActivated(page, perspective);
@@ -129,16 +129,20 @@ protected IPerspectiveListener perspectiveListener = new IPerspectiveListener() 
 /**
  * PropertyChangeSupport
  */
-protected PropertyChangeSupport listeners = new PropertyChangeSupport(this);
+private PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 
 public FlyoutPaletteComposite(Composite parent, int style, IWorkbenchPage page,
-		PaletteViewerProvider pvProvider) {
+		PaletteViewerProvider pvProvider, Preferences preferences) {
 	super(parent, style & SWT.BORDER);
-	Assert.isNotNull(pvProvider);
 	provider = pvProvider;
 	sash = createSash();
 	paletteContainer = createPaletteContainer();
 	hookIntoWorkbench(page.getWorkbenchWindow());
+
+	prefs = preferences;
+	int defaultState = prefs.getPaletteState();
+	setPaletteWidth(prefs.getPaletteWidth());
+	setDockLocation(prefs.getDockLocation());
 
 	addListener(SWT.Resize, new Listener() {
 		public void handleEvent(Event event) {
@@ -155,18 +159,30 @@ public FlyoutPaletteComposite(Composite parent, int style, IWorkbenchPage page,
 		}
 	});
 
+	listeners.addPropertyChangeListener(new PropertyChangeListener() {
+		public void propertyChange(PropertyChangeEvent evt) {
+			String property = evt.getPropertyName();
+			if (property.equals(PROPERTY_PALETTE_WIDTH))
+				prefs.setPaletteWidth(paletteWidth);
+			else if (property.equals(PROPERTY_DOCK_LOCATION))
+				prefs.setDockLocation(dock);
+			else if (property.equals(PROPERTY_STATE))
+				if (paletteState == STATE_COLLAPSED || paletteState == STATE_PINNED_OPEN)
+					prefs.setPaletteState(paletteState);
+		}
+	});
+
 	IViewPart part = page.findView(PaletteView.ID);
-	if (part == null)
-		setState(defaultState);
-	else
-		setState(IN_VIEW);	
+	if (part == null) {
+		if (defaultState == STATE_COLLAPSED || defaultState == STATE_PINNED_OPEN)
+			setState(defaultState);
+		else
+			setState(STATE_COLLAPSED);
+	} else
+		setState(STATE_HIDDEN);
 }
 
-public void addPropertyChangeListener(PropertyChangeListener listener) {
-	listeners.addPropertyChangeListener(listener);
-}
-
-protected final void addListenerToCtrlHierarchy(Control parent, int eventType, 
+private final void addListenerToCtrlHierarchy(Control parent, int eventType, 
 		Listener listener) {
 	parent.addListener(eventType, listener);
 	if (!(parent instanceof Composite))
@@ -177,11 +193,11 @@ protected final void addListenerToCtrlHierarchy(Control parent, int eventType,
 	}
 }
 
-protected Composite createPaletteContainer() {
+private Composite createPaletteContainer() {
 	return new PaletteContainer(this, SWT.NONE);
 }
 
-protected Control createPinButton(Composite parent) {
+private Control createPinButton(Composite parent) {
 	final LightweightSystem lws = new LightweightSystem();
 	Canvas canvas = new Canvas(parent, SWT.NO_REDRAW_RESIZE | SWT.NO_BACKGROUND) {
 		public Point computeSize(int wHint, int hHint, boolean changed) {
@@ -194,46 +210,45 @@ protected Control createPinButton(Composite parent) {
 	canvas.setCursor(SharedCursors.ARROW);
 	canvas.setLayoutData(new RowData());
 	ImageFigure fig = new ImageFigure(DrawerFigure.PIN);
-	fig.setAlignment(PositionConstants.NORTH_WEST);
 	final ToggleButton b = new ToggleButton(fig);
 	b.setRolloverEnabled(true);
 	b.setBorder(new ButtonBorder(ButtonBorder.SCHEMES.TOOLBAR));
 	b.setLayoutManager(new StackLayout());
 	b.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent event) {
-			if (isInState(FLYOUT_PINNED_OPEN) && !b.isSelected())
-				setState(FLYOUT_COLLAPSED);
-			else if (isInState(FLYOUT_EXPANDED) && b.isSelected())
-				setState(FLYOUT_PINNED_OPEN);
-			else if (isInState(FLYOUT_COLLAPSED) && b.isSelected())
-				setState(FLYOUT_PINNED_OPEN);
+			if (isInState(STATE_PINNED_OPEN) && !b.isSelected())
+				setState(STATE_COLLAPSED);
+			else if (isInState(STATE_EXPANDED) && b.isSelected())
+				setState(STATE_PINNED_OPEN);
+			else if (isInState(STATE_COLLAPSED) && b.isSelected())
+				setState(STATE_PINNED_OPEN);
 		}
 	});
 	final PropertyChangeListener listener = new PropertyChangeListener() {
 		public void propertyChange(PropertyChangeEvent evt) {
 			if (evt.getPropertyName().equals(PROPERTY_STATE))
-				if (isInState(IN_VIEW | FLYOUT_COLLAPSED | FLYOUT_EXPANDED))
+				if (isInState(STATE_HIDDEN | STATE_COLLAPSED | STATE_EXPANDED))
 					b.setSelected(false);
-				else if (isInState(FLYOUT_PINNED_OPEN))
+				else if (isInState(STATE_PINNED_OPEN))
 					b.setSelected(true);
 		}
 	};
-	addPropertyChangeListener(listener);
+	listeners.addPropertyChangeListener(listener);
 	lws.setContents(b);
 	canvas.setBounds(1, 1, 13, 13);
 	canvas.addDisposeListener(new DisposeListener() {
 		public void widgetDisposed(DisposeEvent e) {
-			removePropertyChangeListener(listener);
+			listeners.removePropertyChangeListener(listener);
 		}
 	});
 	return canvas;
 }
 
-protected Composite createSash() {
+private Composite createSash() {
 	return new Sash(this);
 }
 
-protected Control createTitle(Composite parent, boolean isHorizontal) {
+private Control createTitle(Composite parent, boolean isHorizontal) {
 	final LightweightSystem lws = new LightweightSystem();
 	Canvas canvas = new Canvas(parent, SWT.NO_REDRAW_RESIZE | SWT.NO_BACKGROUND) {
 		public Point computeSize(int wHint, int hHint, boolean changed) {
@@ -253,19 +268,17 @@ protected Control createTitle(Composite parent, boolean isHorizontal) {
 	manager.add(new DockAction());
 	canvas.setMenu(manager.createContextMenu(canvas));
 	manager.addMenuListener(new IMenuListener() {
-		public void menuAboutToShow(IMenuManager manager) {
+		public void menuAboutToShow(IMenuManager mgr) {
 			resizeAction.setEnabled(resizeAction.isEnabled());
 		}
 	});
+	canvas.addMouseTrackListener(new MouseTrackAdapter() {
+		public void mouseHover(MouseEvent e) {
+			if (isInState(STATE_COLLAPSED))
+				setState(STATE_EXPANDED);
+		}
+	});
 	return canvas;
-}
-
-public final int getDockLocation() {
-	return dock;
-}
-
-public final int getFixedSize() {
-	return fixedSize;
 }
 
 /*
@@ -273,26 +286,26 @@ public final int getFixedSize() {
  * because currently there's no mechanism in the platform to detect these actions.
  * See Bug# 58190
  */
-protected void handleEditorMaximized() {
-	if (isInState(IN_VIEW))
-		setState(defaultState);
+private void handleEditorMaximized() {
+	if (isInState(STATE_HIDDEN))
+		setState(prefs.getPaletteState());
 }
 
-protected void handleEditorMinimized() {
+private void handleEditorMinimized() {
 	handlePerspectiveActivated(
 			Workbench.getInstance().getActiveWorkbenchWindow().getActivePage(), null);
 }
 
-protected void handlePerspectiveActivated(IWorkbenchPage page, 
+private void handlePerspectiveActivated(IWorkbenchPage page, 
 		IPerspectiveDescriptor perspective) {
 	IViewPart view = page.findView(PaletteView.ID);
-	if (view == null && isInState(IN_VIEW))
-		setState(defaultState);
-	if (view != null && !isInState(IN_VIEW))
-		setState(IN_VIEW);
+	if (view == null && isInState(STATE_HIDDEN))
+		setState(prefs.getPaletteState());
+	if (view != null && !isInState(STATE_HIDDEN))
+		setState(STATE_HIDDEN);
 }
 
-protected void handlePerspectiveChanged(IWorkbenchPage page, 
+private void handlePerspectiveChanged(IWorkbenchPage page, 
 		IPerspectiveDescriptor perspective, String changeId) {
 	if (changeId.equals(IWorkbenchPage.CHANGE_VIEW_SHOW) 
 			|| changeId.equals(IWorkbenchPage.CHANGE_VIEW_HIDE))
@@ -300,7 +313,7 @@ protected void handlePerspectiveChanged(IWorkbenchPage page,
 }
 
 // Will return false if ancestor or descendant is null, and true if both are null
-protected final boolean isDescendantOf(Control ancestor, Control descendant) {
+private final boolean isDescendantOf(Control ancestor, Control descendant) {
 	if (descendant == null)
 		return false;
 	if (ancestor == descendant)
@@ -320,82 +333,80 @@ public void layout(boolean changed) {
 	if (area.width == 0 || area.height == 0) return;
 	
 	int sashWidth = sash.computeSize(-1, -1).x;
-	int paletteWidth = fixedSize;
+	int pWidth = paletteWidth;
 	int maxWidth = Math.min(area.width / 2, MAX_PALETTE_SIZE);
 	maxWidth = Math.max(maxWidth, minWidth);
-	paletteWidth = Math.max(paletteWidth, minWidth);
-	paletteWidth = Math.min(paletteWidth, maxWidth);
+	pWidth = Math.max(pWidth, minWidth);
+	pWidth = Math.min(pWidth, maxWidth);
 	
 	setRedraw(false);
-	if (isInState(IN_VIEW)) {
+	if (isInState(STATE_HIDDEN)) {
 		sash.setVisible(false);
 		paletteContainer.setVisible(false);
 		graphicalControl.setBounds(area);
 	} else if (dock == PositionConstants.EAST)
-		layoutComponentsEast(area, sashWidth, paletteWidth);
+		layoutComponentsEast(area, sashWidth, pWidth);
 	else
-		layoutComponentsWest(area, sashWidth, paletteWidth);
+		layoutComponentsWest(area, sashWidth, pWidth);
 	setRedraw(true);
 	update();
 }
 
-protected final void layoutComponentsEast(Rectangle area, int sashWidth, 
-		int paletteWidth) {
-	if (isInState(FLYOUT_COLLAPSED)) {
+private final void layoutComponentsEast(Rectangle area, int sashWidth, int pWidth) {
+	if (isInState(STATE_COLLAPSED)) {
 		paletteContainer.setVisible(false);
 		sash.setBounds(area.x + area.width - sashWidth, area.y, sashWidth, area.height);
 		graphicalControl.setBounds(area.x, area.y, area.width - sashWidth, area.height);
 		sash.setVisible(true);
-	} else if (isInState(FLYOUT_EXPANDED)) {
+	} else if (isInState(STATE_EXPANDED)) {
 		paletteContainer.moveAbove(graphicalControl);
 		sash.moveAbove(paletteContainer);
-		paletteContainer.setBounds(area.x + area.width - paletteWidth, area.y, 
-				paletteWidth, area.height);
-		sash.setBounds(area.x + area.width - paletteWidth - sashWidth, area.y, sashWidth, 
+		paletteContainer.setBounds(area.x + area.width - pWidth, area.y, 
+				pWidth, area.height);
+		sash.setBounds(area.x + area.width - pWidth - sashWidth, area.y, sashWidth, 
 				area.height);
 		graphicalControl.setBounds(area.x, area.y, area.width - sashWidth, area.height);
 		sash.setVisible(true);
 		paletteContainer.setVisible(true);
-	} else if (isInState(FLYOUT_PINNED_OPEN)) {
-		paletteContainer.setBounds(area.x + area.width - paletteWidth, area.y, 
-				paletteWidth, area.height);
-		sash.setBounds(area.x + area.width - paletteWidth - sashWidth, area.y, sashWidth, 
+	} else if (isInState(STATE_PINNED_OPEN)) {
+		paletteContainer.setBounds(area.x + area.width - pWidth, area.y, 
+				pWidth, area.height);
+		sash.setBounds(area.x + area.width - pWidth - sashWidth, area.y, sashWidth, 
 				area.height);
-		graphicalControl.setBounds(area.x, area.y, area.width - sashWidth - paletteWidth, 
+		graphicalControl.setBounds(area.x, area.y, area.width - sashWidth - pWidth, 
 				area.height);		
 		sash.setVisible(true);
 		paletteContainer.setVisible(true);
 	}
 }
 
-protected final void layoutComponentsWest(Rectangle area, int sashWidth, 
-		int paletteWidth) {
-	if (isInState(FLYOUT_COLLAPSED)) {
+private final void layoutComponentsWest(Rectangle area, int sashWidth, int pWidth) {
+	if (isInState(STATE_COLLAPSED)) {
 		sash.setVisible(true);
 		paletteContainer.setVisible(false);
 		sash.setBounds(area.x, area.y, sashWidth, area.height);
 		graphicalControl.setBounds(area.x + sashWidth, area.y,
 				area.width - sashWidth, area.height);
-	} else if (isInState(FLYOUT_EXPANDED)) {
+	} else if (isInState(STATE_EXPANDED)) {
 		sash.setVisible(true);
 		paletteContainer.setVisible(true);
 		paletteContainer.moveAbove(graphicalControl);
 		sash.moveAbove(paletteContainer);
-		paletteContainer.setBounds(area.x, area.y, paletteWidth, area.height);
-		sash.setBounds(area.x + paletteWidth, area.y, sashWidth, area.height);
+		paletteContainer.setBounds(area.x, area.y, pWidth, area.height);
+		sash.setBounds(area.x + pWidth, area.y, sashWidth, area.height);
 		graphicalControl.setBounds(area.x + sashWidth, area.y, 
 				area.width - sashWidth, area.height);
-	} else if (isInState(FLYOUT_PINNED_OPEN)) {
+	} else if (isInState(STATE_PINNED_OPEN)) {
 		sash.setVisible(true);
 		paletteContainer.setVisible(true);
-		paletteContainer.setBounds(area.x, area.y, paletteWidth, area.height);
-		sash.setBounds(area.x + paletteWidth, area.y, sashWidth, area.height);
-		graphicalControl.setBounds(area.x + paletteWidth + sashWidth, area.y,
-				area.width - sashWidth - paletteWidth, area.height);		
+		paletteContainer.setBounds(area.x, area.y, pWidth, area.height);
+		sash.setBounds(area.x + pWidth, area.y, sashWidth, area.height);
+		graphicalControl.setBounds(area.x + pWidth + sashWidth, area.y,
+				area.width - sashWidth - pWidth, area.height);		
 	}	
 }
 
-protected void hookIntoWorkbench(final IWorkbenchWindow window) {
+private void hookIntoWorkbench(final IWorkbenchWindow window) {
 	window.addPerspectiveListener(perspectiveListener);
 	addDisposeListener(new DisposeListener() {
 		public void widgetDisposed(DisposeEvent e) {
@@ -405,10 +416,6 @@ protected void hookIntoWorkbench(final IWorkbenchWindow window) {
 	});
 }
 
-public void removePropertyChangeListener(PropertyChangeListener listener) {
-	listeners.removePropertyChangeListener(listener);
-}
-
 public void setExternalViewer(PaletteViewer viewer) {
 	externalViewer = viewer;
 	if (externalViewer != null && pViewer != null) {
@@ -416,32 +423,23 @@ public void setExternalViewer(PaletteViewer viewer) {
 	}
 }
 
-public void setDefaultState(int state) {
-	if (state != FLYOUT_COLLAPSED && state != FLYOUT_PINNED_OPEN)
-		return;
-	if (defaultState != state) {
-		if (isInState(defaultState))
-			setState(state);
-		defaultState = state;
-	}
-}
-
-public void setDockLocation(int position) {
+private void setDockLocation(int position) {
 	if (position != PositionConstants.EAST && position != PositionConstants.WEST)
 		return;
 	if (position != dock) {
 		int oldPosition = dock;
 		dock = position;
 		listeners.firePropertyChange(PROPERTY_DOCK_LOCATION, oldPosition, dock);
-		layout();
+		if (pViewer != null)
+			layout();
 	}
 }
 
-public final void setFixedSize(int newSize) {
-	if (fixedSize != newSize) {
-		int oldValue = fixedSize;
-		fixedSize = newSize;
-		listeners.firePropertyChange(PROPERTY_FIXEDSIZE, oldValue, fixedSize);
+private final void setPaletteWidth(int newSize) {
+	if (paletteWidth != newSize) {
+		int oldValue = paletteWidth;
+		paletteWidth = newSize;
+		listeners.firePropertyChange(PROPERTY_PALETTE_WIDTH, oldValue, paletteWidth);
 		if (pViewer != null)
 			layout();
 	}
@@ -455,14 +453,14 @@ public void setGraphicalControl(Control graphicalViewer) {
 	graphicalControl = graphicalViewer;
 	addListenerToCtrlHierarchy(graphicalControl, SWT.MouseEnter, new Listener() {
 		public void handleEvent(Event event) {
-			if (!isInState(FLYOUT_EXPANDED))
+			if (!isInState(STATE_EXPANDED))
 				return;
 			Display.getCurrent().timerExec(250, new Runnable() {
 				public void run() {
 					if (isDescendantOf(graphicalControl, 
-							Display.getCurrent().getCursorControl()) 
-							&& isInState(FLYOUT_EXPANDED))
-						setState(FLYOUT_COLLAPSED);
+							Display.getCurrent().getCursorControl())
+							&& isInState(STATE_EXPANDED))
+						setState(STATE_COLLAPSED);
 				}
 			});
 		}
@@ -491,22 +489,22 @@ public void hookDropTargetListener(GraphicalViewer viewer) {
 			return TemplateTransfer.getInstance();
 		}
 		public boolean isEnabled(DropTargetEvent event) {
-			if (isInState(FLYOUT_EXPANDED))
-				setState(FLYOUT_COLLAPSED);
+			if (isInState(STATE_EXPANDED))
+				setState(STATE_COLLAPSED);
 			return false;
 		}
 	});
 }
 
-protected void setState(int newState) {
+private void setState(int newState) {
 	if (paletteState == newState)
 		return;
 	int oldState = paletteState;
 	paletteState = newState;
 	switch (paletteState) {
-		case FLYOUT_EXPANDED:
-		case FLYOUT_COLLAPSED:
-		case FLYOUT_PINNED_OPEN:
+		case STATE_EXPANDED:
+		case STATE_COLLAPSED:
+		case STATE_PINNED_OPEN:
 			if (pViewer == null) {
 				pViewer = provider.createPaletteViewer(paletteContainer);
 				if (externalViewer != null)
@@ -515,7 +513,7 @@ protected void setState(int newState) {
 						MIN_PALETTE_SIZE);
 			}
 			break;
-		case IN_VIEW:
+		case STATE_HIDDEN:
 			if (pViewer == null)
 				break;
 			if (externalViewer != null) {
@@ -532,33 +530,33 @@ protected void setState(int newState) {
 	listeners.firePropertyChange(PROPERTY_STATE, oldState, newState);
 }
 
-protected void transferState(PaletteViewer src, PaletteViewer dest) {
+private void transferState(PaletteViewer src, PaletteViewer dest) {
 	IMemento memento = XMLMemento.createWriteRoot("paletteState"); //$NON-NLS-1$
 	src.saveState(memento);
 	dest.restoreState(memento);
 }
 
-protected class Sash extends Composite {
-	protected Control button, title, actualSash;
+public interface Preferences {
+	public int getDockLocation();
+	public int getPaletteState();
+	public int getPaletteWidth();
+	public void setDockLocation(int location);
+	public void setPaletteState(int state);
+	public void setPaletteWidth(int width);
+}
+
+private class Sash extends Composite {
+	private Control button, title;
 	public Sash(Composite parent) {
 		super(parent, SWT.NONE);
-
-		RowLayout layout = new RowLayout(SWT.VERTICAL);
-		layout.wrap = false;
-		layout.marginBottom = 1;
-		layout.marginTop = 1;
-		layout.marginLeft = 1;
-		layout.marginRight = 1;
-		layout.spacing = 5;
-		setLayout(layout);
 		button = createPinButton(this);
 		title = createTitle(this, false);
 		new SashDragManager();
 		
 		addMouseTrackListener(new MouseTrackAdapter() {
 			public void mouseHover(MouseEvent e) {
-				if (isInState(FLYOUT_COLLAPSED))
-					setState(FLYOUT_EXPANDED);
+				if (isInState(STATE_COLLAPSED))
+					setState(STATE_EXPANDED);
 			}
 		});
 
@@ -568,7 +566,13 @@ protected class Sash extends Composite {
 			}
 		});
 		
-		FlyoutPaletteComposite.this.addPropertyChangeListener(new PropertyChangeListener() {
+		addListener(SWT.Resize, new Listener() {
+			public void handleEvent(Event event) {
+				layout();
+			}
+		});
+		
+		listeners.addPropertyChangeListener(new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
 				if (evt.getPropertyName().equals(PROPERTY_STATE))
 					updateState();
@@ -576,16 +580,45 @@ protected class Sash extends Composite {
 		});
 	}
 	public Point computeSize(int wHint, int hHint, boolean changed) {
-		if (isInState(FLYOUT_PINNED_OPEN))
+		if (isInState(STATE_PINNED_OPEN))
 			return new Point(6, 1);
-		return super.computeSize(wHint, hHint, changed);
+		Point buttonSize = button.computeSize(wHint, hHint);
+		Point titleSize = title.computeSize(wHint, hHint);
+		return new Point(Math.max(buttonSize.x, titleSize.x) + 2, 
+				buttonSize.y + titleSize.y + 7);
+		
 	}
-	protected void handleSashDragged(int shiftAmount) {
+	private void handleSashDragged(int shiftAmount) {
 		int newSize = paletteContainer.getBounds().width + 
 				(dock == PositionConstants.EAST ? -shiftAmount : shiftAmount);
-		setFixedSize(newSize);
+		setPaletteWidth(newSize);
 	}
-	protected void paintSash(GC gc) {
+	public void layout(boolean changed) {
+		if (isInState(STATE_PINNED_OPEN)) {
+			title.setVisible(false);
+			button.setVisible(false);
+			return;
+		}
+		
+		title.setVisible(true);
+		button.setVisible(true);
+		Rectangle area = getClientArea();
+		// 1 pixel margin all around
+		area.x += 1;
+		area.y += 1;
+		area.width -= 2;
+		area.height -= 2;
+		if (button.getVisible()) {
+			button.setBounds(area.x, area.y, area.width - 1, area.width - 1);
+			// 5-pixel spacing
+			area.y += area.width + 5;
+		}
+		if (title.getVisible()) {
+			title.setBounds(area.x, area.y, area.width, 
+					title.computeSize(-1, -1).y);
+		}
+	}
+	private void paintSash(GC gc) {
 		Rectangle bounds = getBounds();
 		gc.setForeground(ColorConstants.buttonLightest);
 		gc.drawLine(0, 0, bounds.width, 0);
@@ -594,22 +627,15 @@ protected class Sash extends Composite {
 		gc.drawLine(bounds.width - 1, 0, bounds.width - 1, bounds.height - 1);
 		gc.drawLine(0, bounds.height - 1, bounds.width - 1, bounds.height - 1);
 	}
-	protected void updateState() {
-		setCursor(isInState(FLYOUT_EXPANDED | FLYOUT_PINNED_OPEN) 
+	private void updateState() {
+		setCursor(isInState(STATE_EXPANDED | STATE_PINNED_OPEN) 
 				? SharedCursors.SIZEW : null);
-		if (isInState(FLYOUT_PINNED_OPEN)) {
-			title.setVisible(false);
-			button.setVisible(false);
-		} else {
-			title.setVisible(true);
-			button.setVisible(true);
-		}
 	}
 	
 	/*
 	 * @TODO:Pratik   ALT+TAB while dragging puts this drag manager in an invalid state
 	 */
-	protected class SashDragManager 
+	private class SashDragManager 
 			extends MouseAdapter 
 			implements MouseMoveListener, Listener {
 		protected boolean dragging = false;
@@ -622,7 +648,7 @@ protected class Sash extends Composite {
 		}
 		public void handleEvent(Event event) {
 			dragging = true;
-			correctState = isInState(FLYOUT_EXPANDED | FLYOUT_PINNED_OPEN);
+			correctState = isInState(STATE_EXPANDED | STATE_PINNED_OPEN);
 			origX = event.x;
 		}
 		public void mouseMove(MouseEvent e) {
@@ -631,17 +657,17 @@ protected class Sash extends Composite {
 		}
 		public void mouseUp(MouseEvent me) {
 			if (!dragging && me.button == 1)
-				if (isInState(FLYOUT_COLLAPSED))
-					setState(FLYOUT_EXPANDED);
-				else if (isInState(FLYOUT_EXPANDED))
-					setState(FLYOUT_COLLAPSED);
+				if (isInState(STATE_COLLAPSED))
+					setState(STATE_EXPANDED);
+				else if (isInState(STATE_EXPANDED))
+					setState(STATE_COLLAPSED);
 			dragging = false;
 			correctState = false;
 		}
 	}
 }
 
-protected class DockAction 
+private class DockAction 
 		extends Action 
 		implements IMenuCreator {
 	private Menu menu;
@@ -689,19 +715,14 @@ protected class DockAction
 	}
 }
 
-protected class ResizeAction extends Action {
+private class ResizeAction extends Action {
 	public ResizeAction() {
 		super(PaletteMessages.RESIZE_LABEL);
 	}
 	public boolean isEnabled() {
-		return !isInState(FLYOUT_COLLAPSED);
+		return !isInState(STATE_COLLAPSED);
 	}
 	public void run() {
-		/*
-		 * @TODO:Pratik   The tracker is off if you are using the mouse and move it
-		 * vertically while dragging it horizontally
-		 * See bug# 62528
-		 */
 		final Tracker tracker = new Tracker(FlyoutPaletteComposite.this, 
 				SWT.RIGHT | SWT.LEFT);
 		Rectangle[] rects = new Rectangle[1];
@@ -713,16 +734,17 @@ protected class ResizeAction extends Action {
 			int deltaX = sash.getBounds().x - tracker.getRectangles()[0].x;
 			if (dock == PositionConstants.WEST)
 				deltaX = -deltaX;
-			setFixedSize(paletteContainer.getBounds().width + deltaX);
+			setPaletteWidth(paletteContainer.getBounds().width + deltaX);
 		}
 		tracker.dispose();
 	}
 }
 
-protected class TitleDragManager
+private class TitleDragManager
 		extends MouseAdapter
 		implements Listener {
 	protected boolean switchDock = false;
+	protected boolean dragging = false;
 	public TitleDragManager(Control ctrl) {
 		ctrl.addListener(SWT.DragDetect, this);
 		ctrl.addMouseListener(this);
@@ -737,7 +759,7 @@ protected class TitleDragManager
 		tracker.setRectangles(new Rectangle[] {origBounds});
 		tracker.setStippled(true);
 		tracker.addListener(SWT.Move, new Listener() {
-			public void handleEvent(final Event event) {
+			public void handleEvent(final Event evt) {
 				Display.getCurrent().syncExec(new Runnable() {
 					public void run() {
 						Control ctrl = Display.getCurrent().getCursorControl();
@@ -758,13 +780,11 @@ protected class TitleDragManager
 							}
 						}
 						// update the cursor
-						int dock = getDockLocation();
-						if (switchDock)
-							dock = PositionConstants.EAST_WEST & ~dock;
 						Cursor cursor;
 						if (invalid)
 							cursor = DragCursors.getCursor(DragCursors.INVALID);
-						else if (dock == PositionConstants.EAST)
+						else if ((!switchDock && dock == PositionConstants.EAST)
+								|| (switchDock && dock == PositionConstants.WEST))
 							cursor = DragCursors.getCursor(DragCursors.RIGHT);
 						else
 							cursor = DragCursors.getCursor(DragCursors.LEFT);
@@ -776,26 +796,35 @@ protected class TitleDragManager
 				});
 			}
 		});
-		if (tracker.open() && switchDock)
-			setDockLocation(PositionConstants.EAST_WEST & ~getDockLocation());
+		if (tracker.open()) {
+			if (switchDock)
+				setDockLocation(PositionConstants.EAST_WEST & ~dock);
+		} else
+			/*
+			 * @TODO:Pratik   does this work on GTK?
+			 */
+			dragging = true;
 		tracker.dispose();
 	}
 	public void mouseUp(MouseEvent me) {
-		if (me.button == 1)
-			if (isInState(FLYOUT_COLLAPSED))
-				setState(FLYOUT_EXPANDED);
-			else if (isInState(FLYOUT_EXPANDED))
-				setState(FLYOUT_COLLAPSED);
+		if (me.button != 1 || dragging) {
+			dragging = false;
+			return;
+		}
+		if (isInState(STATE_COLLAPSED))
+			setState(STATE_EXPANDED);
+		else if (isInState(STATE_EXPANDED))
+			setState(STATE_COLLAPSED);
 	}
 }
 
-protected class PaletteContainer extends Composite {
+private class PaletteContainer extends Composite {
 	protected Control button, title;
 	public PaletteContainer(Composite parent, int style) {
 		super(parent, style);
 		createComponents();
 
-		addPropertyChangeListener(new PropertyChangeListener() {
+		listeners.addPropertyChangeListener(new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
 				if (evt.getPropertyName().equals(PROPERTY_STATE))
 					updateState();
@@ -824,22 +853,19 @@ protected class PaletteContainer extends Composite {
 			Point titleSize = title.computeSize(-1, -1);
 			Point buttonSize = button.computeSize(-1, -1);
 			int height = Math.max(titleSize.y, buttonSize.y);
+			buttonSize.x = Math.max(height, buttonSize.x);
 			// leave some space on the right of the button
 			int buttonX = area.width - buttonSize.x - 1;
-			button.setBounds(buttonX, 0, buttonSize.x, buttonSize.y);
-			// leave some space to the left of the button
-			int remainingWidth = buttonX - 2;
-			int x = 0;
-			if (remainingWidth < titleSize.x)
-				x = (remainingWidth - titleSize.x) / 2;
-			title.setBounds(x, 0, remainingWidth - x, height);
+			button.setBounds(buttonX, 0, buttonSize.x, height);
+			// leave some space to the left and right of the title
+			title.setBounds(3, 0, buttonX - 6, height);
 			area.y += height;
 			area.height -= height;
 		}
 		pViewer.getControl().setBounds(area);
 	}
 	protected void updateState() {
-		if (isInState(FLYOUT_PINNED_OPEN)) {
+		if (isInState(STATE_PINNED_OPEN)) {
 			title.setVisible(true);
 			button.setVisible(true);
 		} else {
@@ -850,7 +876,7 @@ protected class PaletteContainer extends Composite {
 	}
 }
 
-protected class DragFigure 
+private class DragFigure 
 		extends ImageFigure {
 	protected static final int MARGIN_SPACE = 0;
 	protected static final int H_GAP = 4;
@@ -872,6 +898,8 @@ protected class DragFigure
 		});
 		setRequestFocusEnabled(true);
 		setFocusTraversable(true);
+		setAlignment(PositionConstants.CENTER);
+		
 		addFocusListener(new FocusListener() {
 			public void focusGained(FocusEvent fe) {
 				repaint();
