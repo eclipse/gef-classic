@@ -1,5 +1,6 @@
 package org.eclipse.draw2d.examples.graph;
 
+import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.graph.*;
 
 /**
@@ -51,7 +52,10 @@ public static CompoundDirectedGraph chains() {
 	nodes.add(s2 = new Subgraph("S2"));
 	nodes.add(s3 = new Subgraph("S3"));
 	nodes.add(sb = new Subgraph("SB"));
-
+	
+	s1.setPadding(new Insets(10));
+	s1.innerPadding = new Insets(1);
+	s1.insets = new Insets(9);
 	edges.add(new Edge(s1, s2));
 	edges.add(new Edge(s1, sb));
 	edges.add(new Edge(sb, s3));
