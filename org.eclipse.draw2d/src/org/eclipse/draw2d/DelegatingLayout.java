@@ -74,6 +74,14 @@ public void layout(IFigure parent) {
 }
 
 /**
+ * Removes the locator for the given figure.
+ * @param child the child being removed
+ */
+public void remove(IFigure child) {
+	constraints.remove(child);
+}
+
+/**
  * Sets the constraint for the given figure.
  * @param figure the figure whose contraint is being set
  * @param constraint the new constraint
