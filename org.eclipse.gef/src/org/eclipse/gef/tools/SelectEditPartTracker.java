@@ -84,9 +84,8 @@ protected boolean hasSelectionOccurred(){
 }
 
 /**
- * Ensures that the source EditPart is selected.  If the source part is not selected,
- * performSelection() is called. Note that either Control or Shift modifiers will still
- * result in the source getting selected.
+ * Calls performSelection if the source is not selected.  If the source is selected, it may be
+ * part of a larger selection which the user is trying to drag or operate on, so do nothing.
  */
 protected void performConditionalSelection(){
 	if (getSourceEditPart().getSelected() == EditPart.SELECTED_NONE)

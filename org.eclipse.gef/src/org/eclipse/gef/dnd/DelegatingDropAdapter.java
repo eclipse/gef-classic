@@ -183,6 +183,8 @@ public boolean isEmpty() {
  * Removes the given TransferDropTargetListener from the list of listeners.
  */
 public void removeDropTargetListener(TransferDropTargetListener listener) {
+	if (currentListener == listener)
+		setCurrentListener(null);
 	listeners.remove(listener);
 }
 

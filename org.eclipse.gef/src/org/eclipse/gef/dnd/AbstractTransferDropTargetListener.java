@@ -12,7 +12,6 @@ import org.eclipse.swt.widgets.Widget;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.gef.*;
 import org.eclipse.gef.commands.Command;
-import org.eclipse.gef.requests.CreateRequest;
 
 /**
  * An abstract implementation of TransferDropTargetListener that adds a reference to 
@@ -22,12 +21,12 @@ abstract public class AbstractTransferDropTargetListener
 	implements TransferDropTargetListener
 {
 
+private boolean showingFeedback;
 private DropTargetEvent currentEvent;
 private EditPartViewer viewer;
 private Transfer transfer;
 private EditPart target;
 private Request request;
-private int oldDropType;
 
 /**
  * Creates a new AbstractTransferDropTargetListener with the given EditPartViewer.
@@ -49,14 +48,6 @@ public AbstractTransferDropTargetListener(EditPartViewer viewer, Transfer xfer) 
  * @see TransferDropTargetListener#activate()
  */
 public void activate() {}
-
-/**
- * Subclasses can look at the event and return <code>false</code>
- * if they can't handle the drop.
- */
-protected boolean canHandleDrop(DropTargetEvent event) {
-	return true;
-}
 
 /**
  * Creates and returns a new Request.  Subclasses can override this method to
@@ -84,8 +75,6 @@ public void deactivate() {
 public void dragEnter(DropTargetEvent event) {
 	if (GEF.DebugDND)
 		GEF.debug("Drag Enter: " + toString()); //$NON-NLS-1$
-	setCurrentEvent(event);
-	handleDragEnter();
 }
 
 /**
@@ -97,7 +86,6 @@ public void dragLeave(DropTargetEvent event) {
 	if (GEF.DebugDND)
 		GEF.debug("Drag Leave: " + toString()); //$NON-NLS-1$
 	setCurrentEvent(event);
-	handleDragLeave();
 	unload();
 }
 
@@ -132,6 +120,7 @@ public void drop(DropTargetEvent event) {
 		GEF.debug("Drop: " + toString()); //$NON-NLS-1$
 	setCurrentEvent(event);
 	handleDrop();
+	unload();
 }
 
 /**
@@ -142,17 +131,18 @@ public void dropAccept(DropTargetEvent event) {
 	if (GEF.DebugDND)
 		GEF.debug("Drop Accept: " + toString()); //$NON-NLS-1$
 	setCurrentEvent(event);
-	handleDropAccept();
 }
 
 /**
- * Erases the target feedback if the target EditPart is not <code>null</code>.
- * 
- * @see EditPart#eraseTargetFeedback(Request)
+ * Tells the target EditPart to erase its target feedback.
+ * Does nothing if there is no target, or if the target has not been requested to
+ * show target feedback.
  */
 protected void eraseTargetFeedback() {
-	if (getTargetEditPart() != null)
+	if (getTargetEditPart() != null && showingFeedback){
+		showingFeedback = false;
 		getTargetEditPart().eraseTargetFeedback(getTargetRequest());
+	}
 }
 
 /**
@@ -171,10 +161,6 @@ protected Point getDropLocation(){
 	DropTarget target = (DropTarget)getCurrentEvent().widget;
 	swt = target.getControl().toControl(swt);
 	return new Point(swt.x, swt.y);
-}
-
-protected int getPreviousDropType() {
-	return oldDropType;
 }
 
 /**
@@ -210,40 +196,25 @@ public EditPartViewer getViewer() {
 }
 
 /**
- * Updates the target Request and EditPart.  Subclasses should return 
- * <code>true</code> when overriding this method.
+ * Called when the user changes the Drag operation.
  */
-protected boolean handleDragEnter() {
-	updateTargetRequest();
-	updateTargetEditPart();
-	return true;
-}
-
-/**
- * Erases target feedback.  Subclasses should return <code>true</code> 
- * when overriding this method.
- */
-protected boolean handleDragLeave() {
+protected void handleDragOperationChanged() {
+//Erase any old feedback
 	eraseTargetFeedback();
-	return true;
+//Update request based on the new operation type
+	updateTargetRequest();
+//Update the target based on the updated request
+	updateTargetEditPart();
+//Show target feedback
+	showTargetFeedback();
 }
 
 /**
- * Subclasses should return <code>true</code> when overriding this method.
+ * Updates the target Request and EditPart.
  */
-protected boolean handleDragOperationChanged() {
-	return false;
-}
-
-/**
- * Updates the target Request and EditPart.  Subclasses should return 
- * <code>true</code> when overriding this method.
- */
-protected boolean handleDragOver() {
+protected void handleDragOver() {
 	updateTargetRequest();
 	updateTargetEditPart();
-	showTargetFeedback();
-	return true;
 }
 
 /**
@@ -252,25 +223,15 @@ protected boolean handleDragOver() {
  * Request and EditPart, gets a command from the target EditPart, then executes
  * that command.  
  */
-protected boolean handleDrop() {
-	if (getCurrentEvent().data == null) {
-		getCurrentEvent().detail = DND.DROP_NONE;
-		return false;
-	}
-	
+protected void handleDrop() {
 	updateTargetRequest();
 	updateTargetEditPart();
-
-	Command command = getTargetEditPart().getCommand(getTargetRequest());
-	getViewer().getEditDomain().getCommandStack().execute(command);
-	return true; 
-}
-
-/**
- * Subclasses should return <code>true</code> when overriding this method.
- */
-protected boolean handleDropAccept() {
-	return false;
+	
+	if (getTargetEditPart() != null){
+		Command command = getTargetEditPart().getCommand(getTargetRequest());
+		getViewer().getEditDomain().getCommandStack().execute(command);
+	} else
+		getCurrentEvent().detail = DND.DROP_NONE;
 }
 
 /**
@@ -298,18 +259,17 @@ protected boolean handleExitingEditPart() {
  */
 public boolean isEnabled(DropTargetEvent event) {
 	for (int i=0; i<event.dataTypes.length; i++) {
-		if (getTransfer().isSupportedType(event.dataTypes[i]))
-			if (canHandleDrop(event)) {
-				setCurrentEvent(event);
-				event.currentDataType = event.dataTypes[i];
-				updateTargetRequest();
-				updateTargetEditPart();
-				Command command = null;
-				if (getTargetEditPart() != null)
-					command = getTargetEditPart().getCommand(getTargetRequest());
-				if (command != null && command.canExecute())
-					return true;
-			}
+		if (getTransfer().isSupportedType(event.dataTypes[i])) {
+			setCurrentEvent(event);
+			event.currentDataType = event.dataTypes[i];
+			updateTargetRequest();
+			updateTargetEditPart();
+			Command command = null;
+			if (getTargetEditPart() != null)
+				command = getTargetEditPart().getCommand(getTargetRequest());
+			if (command != null && command.canExecute())
+				return true;
+		}
 	}
 	return false;
 }
@@ -333,9 +293,11 @@ protected void setTargetEditPart(EditPart ep) {
 			}
 		}
 		target = ep;
-		handleEnteredEditPart();
-		if (GEF.DebugDND){
-			GEF.debug("Entered EditPart: " + target); //$NON-NLS-1$
+		if (target != null){
+			handleEnteredEditPart();
+			if (GEF.DebugDND){
+				GEF.debug("Entered EditPart: " + target); //$NON-NLS-1$
+			}
 		}
 	}
 }
@@ -350,7 +312,7 @@ public void setTransfer(Transfer xfer) {
 /**
  * Sets the EditPartViewer.
  */
-public void setViewer(EditPartViewer viewer) {
+protected void setViewer(EditPartViewer viewer) {
 	this.viewer = viewer;
 }
 
@@ -360,16 +322,20 @@ public void setViewer(EditPartViewer viewer) {
  * @see EditPart#showTargetFeedback(Request)
  */
 protected void showTargetFeedback() {
-	if (getTargetEditPart() != null)
+	if (getTargetEditPart() != null){
+		showingFeedback = true;
 		getTargetEditPart().showTargetFeedback(getTargetRequest());
+	}
 }
 
 /**
  * Erases target feedback and sets the request to <code>null</code>.
  */
-public void unload() {
+protected void unload() {
 	eraseTargetFeedback();
 	request = null;
+	setTargetEditPart(null);
+	setCurrentEvent(null);
 }
 
 /**
