@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.draw2d.text;
 
+import org.eclipse.swt.SWT;
+
 import org.eclipse.draw2d.PositionConstants;
 
 /**
@@ -22,8 +24,7 @@ public class BlockFlowLayout
 	extends FlowContainerLayout
 {
 
-private LineBox
-	previousLine = null;
+private LineBox previousLine = null;
 
 BlockBox blockBox;
 
@@ -93,12 +94,19 @@ protected final BlockFlow getBlockFlow() {
 }
 
 /**
- * Adjust all fragments in the current line to have the same baseline.
- * Do any additional adjustments, such as horizontal alignment.
+ * Align the line horizontally and then commit it.
  */
 protected void layoutLine() {
+	// align the current line
 	currentLine.x = 0;
-	switch (getBlockFlow().getHorizontalAligment()) {
+	int alignment = getBlockFlow().getHorizontalAligment();
+	if (getBlockFlow().getBidiOrientation() == SWT.RIGHT_TO_LEFT) {
+		if (alignment == PositionConstants.LEFT)
+			alignment = PositionConstants.RIGHT;
+		else if (alignment == PositionConstants.RIGHT)
+			alignment = PositionConstants.LEFT;
+	}
+	switch (alignment) {
 		case PositionConstants.RIGHT :
 			currentLine.x  = blockBox.getRecommendedWidth() - currentLine.getWidth();
 			break;
@@ -106,6 +114,7 @@ protected void layoutLine() {
 			currentLine.x  = (blockBox.getRecommendedWidth() - currentLine.getWidth()) / 2;
 			break;
 	}
+	
 	currentLine.commit();
 	blockBox.add(currentLine);
 }

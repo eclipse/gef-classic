@@ -65,6 +65,29 @@ public ParagraphTextLayout(TextFlow flow, int style) {
 }
 
 /**
+ * Given the Bidi levels of the given text, this method breaks the given text up by
+ * its level runs.
+ * @param text the String that needs to be broken up into its level runs
+ * @param levels the Bidi levels
+ * @return	an array of Strings where each String is in the same level run and the
+ * concatenation of all Strings would equal the given text
+ */
+protected String[] breakText(String text, int[] levels) {
+	if (levels == null || levels.length == 2)
+		return new String[] {text};
+	String[] results = new String[levels.length / 2];
+	for (int i = 0; i < results.length; i++) {
+		int start = i * 2 + 1;
+		int end = start + 2;
+		if (end < levels.length)
+			results[i] = text.substring(levels[start], levels[end]);
+		else
+			results[i] = text.substring(levels[start]);
+	}
+	return results;
+}
+
+/**
  * Returns the average character width of given TextFragmentbox
  * @param fragment the TextFragmentBox
  * @return the average character width 
@@ -78,9 +101,8 @@ protected float getAverageCharWidth(TextFragmentBox fragment) {
 /** * @see org.eclipse.draw2d.text.FlowFigureLayout#layout() */
 protected void layout() {
 	TextFlow flowFigure = (TextFlow)getFlowFigure();
-	
+
 	List fragments = flowFigure.getFragments();//Reuse the previous List of fragments
-	String string = flowFigure.getText();
 	Font font = flowFigure.getFont();
 	int i = 0; //The index of the current fragment;
 	int offset = 0; //The current offset in the ORIGINAL text, not s
@@ -88,41 +110,48 @@ protected void layout() {
 	float prevAvgCharWidth;
 	LineBox currentLine;
 	TextFragmentBox fragment;
-
-	do {
-		fragment = null;
-		prevAvgCharWidth = 0f;
-		fragment = getFragment(i, fragments);
-		prevAvgCharWidth = getAverageCharWidth(fragment);
-		
-		fragment.offset = offset;
-		
-		//This loop is done at most twice.
-		//The second time through, a context.endLine()
-		//was requested, and the loop will break.
-		while (true) {
-			currentLine = context.getCurrentLine();
-			length = FlowUtilities.getTextForSpace(
-				fragment,
-				string,
-				font,
-				currentLine.getAvailableWidth(),
-				prevAvgCharWidth,
-				wrappingStyle);
+	int[] bidiValues = flowFigure.getBidiValues();
+	String[] strings = breakText(flowFigure.getText(), bidiValues);
+	strings[0] = flowFigure.prependJoiner(strings[0]);
+	strings[strings.length - 1] = flowFigure.appendJoiner(strings[strings.length - 1]);
+	
+	for (int j = 0; j < strings.length; j++) {
+		String string = strings[j];
+		do {
+			fragment = null;
+			prevAvgCharWidth = 0f;
+			fragment = getFragment(i, fragments);
+			prevAvgCharWidth = getAverageCharWidth(fragment);
 			
-			if (fragment.width <= currentLine.getAvailableWidth()
-			  || !context.isCurrentLineOccupied())
-				break;
-			context.endLine();
-		}
-		//fragment.x = context.getCurrentX();
-		context.addToCurrentLine(fragment);
-		string = string.substring(length);
-		offset += length;
-		if (string.length() > 0 || fragment.truncated)
-			context.endLine();
-		i++;
-	} while (string.length() > 0);
+			fragment.offset = offset;
+			fragment.setBidiLevel(bidiValues == null ? -1 : bidiValues[j * 2]);
+			
+			//This loop is done at most twice.
+			//The second time through, a context.endLine()
+			//was requested, and the loop will break.
+			while (true) {
+				currentLine = context.getCurrentLine();
+				length = FlowUtilities.getTextForSpace(
+						fragment,
+						string,
+						font,
+						currentLine.getAvailableWidth(),
+						prevAvgCharWidth,
+						wrappingStyle);
+				
+				if (fragment.width <= currentLine.getAvailableWidth()
+				  || !context.isCurrentLineOccupied())
+					break;
+				context.endLine();
+			}
+			context.addToCurrentLine(fragment);
+			string = string.substring(length);
+			offset += length;
+			if (string.length() > 0 || fragment.truncated)
+				context.endLine();
+			i++;
+		} while (string.length() > 0);
+	}
 
 	//Remove the remaining unused fragments.
 	while (i < fragments.size())
@@ -130,5 +159,3 @@ protected void layout() {
 }
 
 }
-
-
