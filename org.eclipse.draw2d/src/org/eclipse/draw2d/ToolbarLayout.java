@@ -306,7 +306,7 @@ public void layout(IFigure parent) {
 			amntShrinkCurrentHeight = 
 					(prefHeight - minHeight) * amntShrinkHeight / (prefMinSumHeight);
 
-		int width = Math.min(prefWidth, child.getMaximumSize().width);
+	    int width = Math.min(prefWidth, transposer.t(child.getMaximumSize()).width);
 		if (matchWidth)
 			width = transposer.t(child.getMaximumSize()).width;
 		width = Math.max(minWidth, Math.min(clientArea.width, width));
