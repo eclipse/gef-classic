@@ -19,16 +19,19 @@ public class FanRouter
 private int separation = 10;
 
 /**
- * Returns the colliding {@link Connection Connection's} 
- * separation in pixels.
- * 
- * @since 2.0 
+ * @return the separation in pixels between fanned connections.
+ * @since 2.0
  */
 public int getSeparation() {
 	return separation;	
 }
 
-protected void handleCollision(PointList points, int index){
+/**
+ * Modifies a given PointList that collides with some other PointList.
+ * @param points the colliding points to be modified
+ * @param index indicates that this it the i<sup>th</sup> PointList in a group of colliding points.
+ */
+protected void handleCollision(PointList points, int index) {
 	Point start = points.getFirstPoint();
 	Point end = points.getLastPoint();
 	
@@ -41,12 +44,11 @@ protected void handleCollision(PointList points, int index){
 	
 	Point bendPoint;
 		
-	if (index%2 == 0) {
+	if (index % 2 == 0) {
 		bendPoint = new Point(
 			midPoint.x + (index / 2) * (-1 * ySeparation),
 			midPoint.y + (index / 2) * xSeparation);
-	}
-	else {
+	} else {
 		bendPoint = new Point(
 			midPoint.x + (index / 2) * ySeparation,
 			midPoint.y + (index / 2) * (-1 * xSeparation));
@@ -58,7 +60,7 @@ protected void handleCollision(PointList points, int index){
 /**
  * Sets the colliding {@link Connection Connection's} 
  * separation in pixels.
- * 
+ * @param value the separation in pixels
  * @since 2.0 
  */
 public void setSeparation(int value) {
