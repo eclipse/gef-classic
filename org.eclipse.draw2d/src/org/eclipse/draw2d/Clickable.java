@@ -28,7 +28,12 @@ public class Clickable
 private static final int
 	ROLLOVER_ENABLED_FLAG = Figure.MAX_FLAG << 1,
 	STYLE_BUTTON_FLAG = Figure.MAX_FLAG << 2,
-	STYLE_TOGGLE_FLAG = Figure.MAX_FLAG << 3,
+	STYLE_TOGGLE_FLAG = Figure.MAX_FLAG << 3;
+
+/**
+ * The highest reserved flag used by this class
+ */
+protected static int
 	MAX_FLAG = STYLE_TOGGLE_FLAG;
 
 /**

@@ -116,7 +116,7 @@ protected Point getLocation(PointList points) {
 			return points.getPoint(Point.SINGLETON, 0);
 		case TARGET:
 			return points.getPoint(Point.SINGLETON, points.size() - 1);
-		case MIDDLE: {
+		case MIDDLE:
 			if (points.size() % 2 == 0) {
 				int i = points.size() / 2;
 				int j = i - 1;
@@ -128,7 +128,6 @@ protected Point getLocation(PointList points) {
 			}
 			int i = (points.size() - 1) / 2;
 			return points.getPoint(Point.SINGLETON, i);
-		}
 		default:
 			return new Point();
 	}

@@ -20,22 +20,6 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class FigureUtilities {
 
-private static class ColorVector {
-	static final double RED_INTENSITY = 0.7, BLUE_INTENSITY = 1.3;
-	double r, g, b;
-	protected ColorVector(Color source) {
-		r = source.getRed();
-		g = source.getGreen();
-		b = source.getBlue();
-	}
-	
-	protected double getIntensity() {
-		return r * r * RED_INTENSITY + g * g + b * b * BLUE_INTENSITY;
-	}
-
-	protected void normalize(double length) { }
-}
-
 private static final float RGB_VALUE_MULTIPLIER = 0.6f;
 private static GC gc;
 private static Font appliedFont;

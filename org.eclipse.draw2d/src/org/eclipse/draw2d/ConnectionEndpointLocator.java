@@ -161,11 +161,19 @@ private IFigure getConnectionOwner() {
 	return connOwner;	
 }
 
-private int getUDistance() {
+/**
+ * Returns the distance in pixels from the anchor's owner.
+ * @return the offset distance from the endpoint figure
+ */
+public int getUDistance() {
 	return uDistance;
 }
 
-private int getVDistance() {
+/**
+ * Returns the distance in pixels from the connection
+ * @return the offset from the connection itself
+ */
+public int getVDistance() {
 	return vDistance;
 }
 
