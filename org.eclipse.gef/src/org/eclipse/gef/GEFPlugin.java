@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.gef;
 
-import org.eclipse.core.runtime.IPluginDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.views.properties.IPropertySheetEntry;
 
@@ -28,10 +27,8 @@ private static GEFPlugin singleton;
 /**
  Creates the singleton instance of the GEF plugin.
 */
-public GEFPlugin(IPluginDescriptor descriptor) {
-	super(descriptor);
-	if (singleton == null)
-		singleton = this;
+public GEFPlugin() {
+	singleton = this;
 }
 
 /**
@@ -44,7 +41,11 @@ public static GEFPlugin getDefault() {
 }
 
 /**
- * Create a root undoable property sheet entry.
+ * Create a property sheet entry which will execute commands on a command stack.  Calls to
+ * setting property values will be wrapped inside a single command which is executed on
+ * the given stack.
+ * @param stack a command stack
+ * @return the implementation for the entry
  */
 public static IPropertySheetEntry createUndoablePropertySheetEntry(CommandStack stack) {
 	return new org.eclipse.gef.internal.ui.properties.UndoablePropertySheetEntry(stack);
