@@ -772,7 +772,7 @@ protected void refreshCursor(){
  * @see #setToolCapture()
  */
 protected void releaseToolCapture() {
-	getCurrentViewer().setRouteEventsToEditor(false);
+	getCurrentViewer().setRouteEventsToEditDomain(false);
 }
 
 /**
@@ -873,7 +873,7 @@ protected void setState(int state){
  * {@link #releaseToolCapture()} must be called when capture is no longer needed.
  */
 protected void setToolCapture() {
-	getCurrentViewer().setRouteEventsToEditor(true);
+	getCurrentViewer().setRouteEventsToEditDomain(true);
 }
 
 /**
