@@ -219,6 +219,10 @@ public void runGenericTests() {
 	doTest2(" foobar", "abc", " foobarab", new String[] {"", NEWLINE, "foobar", SAMELINE});
 	doTest2("foo  bar", "abc", "foo  barab", new String[] {"foo ", NEWLINE, "bar", SAMELINE, "abc", TERMINATE});
 	doTest2("abd", "\u7325", "abd ", new String[] {"abd", NEWLINE, "\u7325"});
+
+	doTest("a one. two", "a one", new String[] {"a", NEWLINE, "one.", NEWLINE, "two"});
+	doTest("a one-two", "a one", new String[] {"a", NEWLINE, "one-", NEWLINE, "two"});
+	doTest2("a abc", "-def", "a abc", new String[] {"a", NEWLINE, "abc", SAMELINE, "-", NEWLINE, "def", TERMINATE});
 }
 
 public void testHardWrapping() {
