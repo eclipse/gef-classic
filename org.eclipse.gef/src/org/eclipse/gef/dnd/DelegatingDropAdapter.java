@@ -10,7 +10,9 @@
  *******************************************************************************/
 package org.eclipse.gef.dnd;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import org.eclipse.swt.dnd.*;
 

@@ -10,7 +10,9 @@
  *******************************************************************************/
 package org.eclipse.gef.dnd;
 
-import org.eclipse.swt.dnd.*;
+import org.eclipse.swt.dnd.DropTargetEvent;
+import org.eclipse.swt.dnd.DropTargetListener;
+import org.eclipse.swt.dnd.Transfer;
 
 /**
  * A <code>DropTragetListener</code> that handles one type of SWT {@link Transfer}. The
