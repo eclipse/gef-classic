@@ -13,8 +13,14 @@ import org.eclipse.draw2d.IFigure;
 
 import org.eclipse.gef.AccessibleAnchorProvider;
 
+import org.eclipse.gef.examples.logicdesigner.figures.AndGateFigure;
 import org.eclipse.gef.examples.logicdesigner.figures.GateFigure;
+import org.eclipse.gef.examples.logicdesigner.figures.OrGateFigure;
 import org.eclipse.gef.examples.logicdesigner.figures.OutputFigure;
+import org.eclipse.gef.examples.logicdesigner.figures.XOrGateFigure;
+import org.eclipse.gef.examples.logicdesigner.model.AndGate;
+import org.eclipse.gef.examples.logicdesigner.model.OrGate;
+import org.eclipse.gef.examples.logicdesigner.model.XORGate;
 
 /**
  * EditPart for holding gates in the Logic Example.
@@ -29,10 +35,17 @@ public class GateEditPart
  * @return A new Figure of this.
  */
 protected IFigure createFigure() {
+	OutputFigure figure;
 	if (getModel() == null)
 		return null;
-	OutputFigure figure = new GateFigure();
-	figure.setImage(getSimpleOutput().getIcon());
+	if (getModel() instanceof OrGate)	
+		figure = new OrGateFigure();
+	else if (getModel() instanceof AndGate)
+		figure = new AndGateFigure();
+	else if (getModel() instanceof XORGate)
+		figure = new XOrGateFigure();
+	else
+		figure = new GateFigure();
 	return figure;
 }
 

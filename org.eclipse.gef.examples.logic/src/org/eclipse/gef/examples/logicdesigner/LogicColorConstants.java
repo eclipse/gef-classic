@@ -13,7 +13,9 @@ import org.eclipse.draw2d.FigureUtilities;
 public interface LogicColorConstants
 	extends ColorConstants{
 	public final static Color 
-		logicGreen = new Color(null, 40,100,70),
+		logicGreen = new Color(null, 123,174,148),
+		logicHighlight = new Color(null,66,166,115),
+		connectorGreen = new Color(null,0,69,40),
 		logicPrimarySelectedColor = new Color(null, 10,36,106),
 		logicSecondarySelectedColor = FigureUtilities.mixColors(logicPrimarySelectedColor, button),
 		logicBackgroundBlue = new Color(null, 200, 200, 240);

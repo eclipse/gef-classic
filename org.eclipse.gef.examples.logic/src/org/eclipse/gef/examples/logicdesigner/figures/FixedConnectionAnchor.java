@@ -29,12 +29,12 @@ public Point getLocation(Point reference) {
 	if (topDown)
 		y = r.y + offsetV;
 	else
-		y = r.y + r.height - offsetV;
+		y = r.bottom() - 1 - offsetV;
 
 	if (leftToRight)
 		x = r.x + offsetH;
 	else
-		x = r.x + r.width - offsetH;
+		x = r.right() - 1 - offsetH;
 	
 	Point p = new Point(x, y);
 	getOwner().translateToAbsolute(p);

@@ -12,7 +12,7 @@ import org.eclipse.draw2d.geometry.*;
 
 import org.eclipse.swt.graphics.Color;
 
-public class CircuitFigure 
+public class CircuitFigure
 	extends NodeFigure 
 {
 
@@ -40,10 +40,10 @@ protected void createConnectionAnchors() {
 		out= new FixedConnectionAnchor(this);
 		if (i > 3){
 			in.topDown = false;
-			in.offsetV = getInsets().top;
+			in.offsetV = 5;
 			out.topDown= false;
 		} else {
-			out.offsetV = getInsets().top;
+			out.offsetV = 5;
 		}
 		setOutputConnectionAnchor(i,out);
 		setInputConnectionAnchor(i,in);
@@ -76,13 +76,11 @@ public Dimension getPreferredSize(int w, int h) {
 }
 
 protected void layoutConnectionAnchors() {
-	int innerwidth = getBounds().width - getInsets().right*2;
 	int x;
 	for (int i = 0; i < 4; i++){
 		x = (2*i+1) * getSize().width / 8;
-		getOutputConnectionAnchor(i+4).offsetH = x;
-		getInputConnectionAnchor(i).offsetH = x;
-		x = getInsets().right + (2*i+1) * innerwidth / 8;
+		getOutputConnectionAnchor(i+4).offsetH = x-2;
+		getInputConnectionAnchor(i).offsetH = x-2;
 		getInputConnectionAnchor(i+4).offsetH = x;
 		getOutputConnectionAnchor(i).offsetH = x;
 	}

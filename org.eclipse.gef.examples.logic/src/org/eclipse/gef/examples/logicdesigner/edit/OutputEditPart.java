@@ -6,18 +6,21 @@ package org.eclipse.gef.examples.logicdesigner.edit;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import java.util.*;
-
-import org.eclipse.swt.accessibility.AccessibleEvent;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
 
 import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.IFigure;
-
 import org.eclipse.gef.AccessibleAnchorProvider;
 import org.eclipse.gef.AccessibleEditPart;
-
+import org.eclipse.gef.examples.logicdesigner.figures.GroundFigure;
+import org.eclipse.gef.examples.logicdesigner.figures.LiveOutputFigure;
 import org.eclipse.gef.examples.logicdesigner.figures.OutputFigure;
+import org.eclipse.gef.examples.logicdesigner.model.GroundOutput;
+import org.eclipse.gef.examples.logicdesigner.model.LiveOutput;
 import org.eclipse.gef.examples.logicdesigner.model.SimpleOutput;
+import org.eclipse.swt.accessibility.AccessibleEvent;
 
 /**
  * EditPart for Output types in Logic Example
@@ -38,10 +41,15 @@ protected AccessibleEditPart createAccessible() {
  * Returns a newly created Figure.
  */
 protected IFigure createFigure() {
+	OutputFigure figure;
 	if (getModel() == null)
 		return null;
-	OutputFigure figure = new OutputFigure();
-	figure.setImage(getSimpleOutput().getIcon());
+	else if (getModel() instanceof LiveOutput)
+		figure =  new LiveOutputFigure();
+	else if (getModel() instanceof GroundOutput)
+		figure = new GroundFigure();
+	else
+		figure = new OutputFigure();
 	return figure;
 }
 

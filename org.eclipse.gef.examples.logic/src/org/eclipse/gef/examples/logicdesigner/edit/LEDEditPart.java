@@ -127,7 +127,6 @@ public void propertyChange(java.beans.PropertyChangeEvent change){
 public void refreshVisuals() {
 	getLEDFigure().setValue(getLEDModel().getValue());
 	super.refreshVisuals();
-	getLEDFigure().setBackgroundImage(getBackgroundImage(getSelected()));
 }
 
 public void setSelected(int i){

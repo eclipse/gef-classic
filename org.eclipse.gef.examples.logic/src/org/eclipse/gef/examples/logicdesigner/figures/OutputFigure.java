@@ -6,10 +6,8 @@ package org.eclipse.gef.examples.logicdesigner.figures;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.StackLayout;
 import org.eclipse.gef.examples.logicdesigner.model.SimpleOutput;
-import org.eclipse.swt.graphics.Image;
 
 public class OutputFigure 
 	extends NodeFigure 
@@ -18,15 +16,10 @@ public class OutputFigure
 public OutputFigure() {
 	FixedConnectionAnchor outputConnectionAnchor = new FixedConnectionAnchor(this);
 	outputConnectionAnchor.topDown = false;
-	outputConnectionAnchor.offsetH = 8;
+	outputConnectionAnchor.offsetH = 7;
 	outputConnectionAnchors.addElement(outputConnectionAnchor);
 	connectionAnchors.put(SimpleOutput.TERMINAL_OUT, outputConnectionAnchor);
 	setLayoutManager(new StackLayout());
-}
-
-public void setImage (Image image) {
-	if(image == null) return;
-	add(new Label(image));
 }
 
 }

@@ -6,6 +6,7 @@ package org.eclipse.gef.examples.logicdesigner.figures;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
+import org.eclipse.draw2d.Graphics;
 import org.eclipse.gef.examples.logicdesigner.model.Gate;
 
 public class GateFigure  
@@ -17,7 +18,7 @@ public GateFigure() {
 	inputConnectionAnchorA = new FixedConnectionAnchor(this);
 	inputConnectionAnchorA.offsetH = 4;
 	inputConnectionAnchorB = new FixedConnectionAnchor(this);
-	inputConnectionAnchorB.offsetH =11;
+	inputConnectionAnchorB.offsetH =10;
 	inputConnectionAnchors.addElement(inputConnectionAnchorA);
 	inputConnectionAnchors.addElement(inputConnectionAnchorB);
 	connectionAnchors.put(Gate.TERMINAL_A, inputConnectionAnchorA);

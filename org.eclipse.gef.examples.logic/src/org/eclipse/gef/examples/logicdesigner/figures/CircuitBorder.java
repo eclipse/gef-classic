@@ -8,6 +8,7 @@ package org.eclipse.gef.examples.logicdesigner.figures;
 
 import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.*;
+import org.eclipse.gef.examples.logicdesigner.LogicColorConstants;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Color;
 
@@ -15,31 +16,52 @@ public class CircuitBorder
 	extends AbstractBorder
 {
 
-private static Image downTab = new Image(null,CircuitBorder.class.getResourceAsStream("icons/downtab.bmp"));//$NON-NLS-1$
 private Color borderColor = ColorConstants.button;
+private static Insets insets = new Insets(6,6,6,6);
+private static PointList connector = new PointList();
+private static PointList bottomConnector = new PointList();
 
-private static Color inner = new Color(null,186,176,190);
-private static Insets insets = new Insets(14,10,14,10);
-private static Image upTab = new Image(null, CircuitBorder.class.getResourceAsStream("icons/uptab.bmp"));//$NON-NLS-1$
+static {
+	connector.addPoint(-2, 0);
+	connector.addPoint(1, 0);
+	connector.addPoint(2, 1);
+	connector.addPoint(2, 5);
+	connector.addPoint(-1, 5);
+	connector.addPoint(-1, 1);
+
+	bottomConnector.addPoint(-2, -1);
+	bottomConnector.addPoint(1, -1);
+	bottomConnector.addPoint(2, -2);
+	bottomConnector.addPoint(2, -6);
+	bottomConnector.addPoint(-1, -6);
+	bottomConnector.addPoint(-1, -2);
+}
 	
-private void drawSoldering(Graphics g, Rectangle rec) {
-	g.setForegroundColor(FigureUtilities.lighter(borderColor));
-	int y1 = rec.y,
-		y2 = y1 + insets.top - 5,
-		y3 = y1 + rec.height - insets.bottom,
-		y4 = y3 + insets.bottom - 5,
-		width = rec.width,
-		innerwidth = width - insets.right * 2,
-		x1,x2;
-	for (int i = 0; i < 4; i++){
-		x1 = rec.x+(2*i+1) * width / 8;
-		g.drawImage(upTab,x1-2,y1);
-		g.drawImage(downTab, x1-2,y4);
-		x2 = rec.x+insets.right + (2*i+1) * innerwidth / 8;
-		g.drawImage(downTab, x2-2,y2);
-		g.drawImage(upTab, x2-2,y3);
-		g.drawLine( x1,y1+5,x2,y2);
-		g.drawLine( x2,y3+5,x1,y4);
+private void drawConnectors(Graphics g, Rectangle rec) {
+	int y1 = rec.y,  
+		width = rec.width,x1,
+		bottom = y1 + rec.height;
+	g.setBackgroundColor(LogicColorConstants.connectorGreen);
+	for (int i = 0; i < 4; i++) {
+		x1 = rec.x + (2 * i + 1) * width / 8;
+		
+		//Draw the "gap" for the connector
+		g.setForegroundColor(ColorConstants.white);
+		g.drawLine(x1 - 2, y1 + 2, x1 + 3, y1 + 2);
+		
+		//Draw the connectors
+		g.setForegroundColor(LogicColorConstants.connectorGreen);
+		connector.translate(x1, y1);
+		g.fillPolygon(connector);
+		g.drawPolygon(connector);
+		connector.translate(-x1, -y1);
+		g.setForegroundColor(ColorConstants.white);
+		g.drawLine(x1 - 2, bottom - 3, x1 + 3, bottom - 3);
+		g.setForegroundColor(LogicColorConstants.connectorGreen);
+		bottomConnector.translate(x1, bottom);
+		g.fillPolygon(bottomConnector);
+		g.drawPolygon(bottomConnector);
+		bottomConnector.translate(-x1, -bottom);
 	}
 }
 
@@ -58,43 +80,26 @@ public boolean isOpaque() {
 public void paint(IFigure figure, Graphics g, Insets in) {
 	Rectangle r = figure.getBounds().getCropped(in);
 	
-	Rectangle rec = r.getExpanded(4,0);
-	g.setLineWidth(28);
 	g.setForegroundColor(borderColor);
-	g.drawRectangle(rec);
-	g.setLineWidth(1);
+	g.setBackgroundColor(borderColor);
+	
+	//Draw the sides of the border
+	g.fillRectangle(r.x, r.y + 2, r.width, 6);
+	g.fillRectangle(r.x, r.bottom() - 8, r.width, 6);
+	g.fillRectangle(r.x, r.y + 2, 6, r.height - 4);
+	g.fillRectangle(r.right() - 6, r.y + 2, 6, r.height - 4);
 
-	//Outer Highlight
-	Color lighter = FigureUtilities.lighter(borderColor);
-	Color darker = ColorConstants.black;
-	g.setForegroundColor(lighter);
-	g.drawLine(r.x, r.y, r.right(), r.y);
-	g.drawLine(r.x, r.y, r.x, r.bottom());
-	r.crop(new Insets(1,1,0,0));
-
-	//Outer Shadow
-	r.width--; r.height--;
-	g.setForegroundColor(darker);
-	g.drawLine(r.right(), r.bottom(), r.right(), r.y);
-	g.drawLine(r.right(), r.bottom(), r.x, r.bottom());
-
-	r.expand(1,1);
+	//Outline the border
+	g.setForegroundColor(LogicColorConstants.connectorGreen);
+	g.drawLine(r.x, r.y + 2, r.right() - 1, r.y + 2);
+	g.drawLine(r.x, r.bottom() - 3, r.right() - 1, r.bottom() - 3);
+	g.drawLine(r.x, r.y + 2, r.x, r.bottom() - 3);
+	g.drawLine(r.right() - 1, r.bottom() - 3, r.right() - 1, r.y + 2);
+	
+	r.crop(new Insets(1, 1, 0, 0));
+	r.expand(1, 1);
 	r.crop(getInsets(figure));
-
-	//Outer Inner Highlight
-	g.setForegroundColor(darker);
-	g.drawLine(r.x, r.y, r.right(), r.y);
-	g.drawLine(r.x, r.y, r.x, r.bottom());
-	r.crop(new Insets(1,1,0,0));
-
-	//Outer Inner Shadow
-	r.width--; r.height--;
-	g.setForegroundColor(lighter);
-	g.drawLine(r.right(), r.bottom(), r.right(), r.y);
-	g.drawLine(r.right(), r.bottom(), r.x, r.bottom());
-
-	g.setBackgroundColor(inner);
-	drawSoldering(g,figure.getBounds().getCropped(in));
+	drawConnectors(g, figure.getBounds().getCropped(in));
 }
 
 void setBorderColor(Color c){

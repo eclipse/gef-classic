@@ -24,7 +24,7 @@ private static Image LED_ICON = new Image(null,
 private static int count;
 public static String P_VALUE = "value";  //$NON-NLS-1$
 protected static IPropertyDescriptor[] newDescriptors = null;
-protected Dimension defaultSize = new Dimension(60,48);
+protected static final Dimension defaultSize = new Dimension(61,47);
 
 //Inputs
 public static String
