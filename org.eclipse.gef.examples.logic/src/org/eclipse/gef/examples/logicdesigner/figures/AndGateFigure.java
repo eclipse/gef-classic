@@ -3,7 +3,8 @@ package org.eclipse.gef.examples.logicdesigner.figures;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.swt.graphics.Color;
+
+import org.eclipse.gef.examples.logicdesigner.LogicColorConstants;
 
 /**
  * @author danlee
@@ -16,7 +17,7 @@ private static final Dimension SIZE = new Dimension(15, 17);
  * Constructor for AndGateFigure.
  */
 public AndGateFigure() {
-	super();
+	setBackgroundColor(LogicColorConstants.andGate);
 }
 
 /**
@@ -39,7 +40,6 @@ protected void paintFigure(Graphics g) {
 	g.drawLine(r.right() - 3, r.y, r.right() - 3, r.y - 2);
 
 	//draw main area
-	g.setBackgroundColor(new Color (null, 230, 25, 25));
 	g.fillRectangle(r);
 	
 	//outline main area
