@@ -52,6 +52,8 @@ import org.eclipse.gef.examples.shapes.model.commands.ConnectionReconnectCommand
  */
 class ShapeEditPart extends AbstractGraphicalEditPart 
 	implements PropertyChangeListener, NodeEditPart {
+	
+private ChopboxAnchor anchor;
 
 /**
  * Upon activation, attach to the model element as a property change listener.
@@ -176,7 +178,9 @@ protected List getModelTargetConnections() {
  * @see org.eclipse.gef.NodeEditPart#getSourceConnectionAnchor(org.eclipse.gef.ConnectionEditPart)
  */
 public ConnectionAnchor getSourceConnectionAnchor(ConnectionEditPart connection) {
-	return new ChopboxAnchor(getFigure());
+	if (anchor == null)
+		anchor = new ChopboxAnchor(getFigure());
+	return anchor;
 }
 
 /*
@@ -184,7 +188,9 @@ public ConnectionAnchor getSourceConnectionAnchor(ConnectionEditPart connection)
  * @see org.eclipse.gef.NodeEditPart#getSourceConnectionAnchor(org.eclipse.gef.Request)
  */
 public ConnectionAnchor getSourceConnectionAnchor(Request request) {
-	return new ChopboxAnchor(getFigure());
+	if (anchor == null)
+		anchor = new ChopboxAnchor(getFigure());
+	return anchor;
 }
 
 /*
@@ -192,7 +198,9 @@ public ConnectionAnchor getSourceConnectionAnchor(Request request) {
  * @see org.eclipse.gef.NodeEditPart#getTargetConnectionAnchor(org.eclipse.gef.ConnectionEditPart)
  */
 public ConnectionAnchor getTargetConnectionAnchor(ConnectionEditPart connection) {
-	return new ChopboxAnchor(getFigure());
+	if (anchor == null)
+		anchor = new ChopboxAnchor(getFigure());
+	return anchor;
 }
 
 /*
@@ -200,7 +208,9 @@ public ConnectionAnchor getTargetConnectionAnchor(ConnectionEditPart connection)
  * @see org.eclipse.gef.NodeEditPart#getTargetConnectionAnchor(org.eclipse.gef.Request)
  */
 public ConnectionAnchor getTargetConnectionAnchor(Request request) {
-	return new ChopboxAnchor(getFigure());
+	if (anchor == null)
+		anchor = new ChopboxAnchor(getFigure());
+	return anchor;
 }
 
 /* (non-Javadoc)
@@ -210,24 +220,20 @@ public void propertyChange(PropertyChangeEvent evt) {
 	String prop = evt.getPropertyName();
 	if (Shape.SIZE_PROP.equals(prop) || Shape.LOCATION_PROP.equals(prop)) {
 		refreshVisuals();
-	}
-	if (Shape.SOURCE_CONNECTIONS_PROP.equals(prop)) {
+	} else if (Shape.SOURCE_CONNECTIONS_PROP.equals(prop)) {
 		refreshSourceConnections();
-	}
-	if (Shape.TARGET_CONNECTIONS_PROP.equals(prop)) {
+	} else if (Shape.TARGET_CONNECTIONS_PROP.equals(prop)) {
 		refreshTargetConnections();
 	}
 }
 
 protected void refreshVisuals() {
-	// transfer the size and location from the model instance to the corresponding figure
-	Rectangle bounds = new Rectangle(getCastedModel().getLocation(),
-			getCastedModel().getSize());
-	figure.setBounds(bounds);
 	// notify parent container of changed position & location
 	// if this line is removed, the XYLayoutManager used by the parent container 
 	// (the Figure of the ShapesDiagramEditPart), will not know the bounds of this figure
 	// and will not draw it correctly.
-	((GraphicalEditPart) getParent()).setLayoutConstraint(this, figure, bounds);
+	Rectangle bounds = new Rectangle(getCastedModel().getLocation(),
+			getCastedModel().getSize());
+	((GraphicalEditPart) getParent()).setLayoutConstraint(this, getFigure(), bounds);
 }
 }
