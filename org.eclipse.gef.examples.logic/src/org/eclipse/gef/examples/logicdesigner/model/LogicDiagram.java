@@ -20,8 +20,6 @@ import org.eclipse.ui.views.properties.ComboBoxPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 
 import org.eclipse.draw2d.PositionConstants;
-import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Point;
 
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
 
@@ -45,8 +43,6 @@ protected Integer connectionRouter = null;
 private boolean rulersVisibility = false;
 private boolean snapToGeometry = false;
 private boolean gridEnabled = false;
-private Dimension gridSpacing = new Dimension(25, 25);
-private Point gridOrigin = new Point();
 private double zoom = 1.0;
 
 public LogicDiagram() {
