@@ -45,6 +45,9 @@ public class PaletteViewer
 private class PreferenceListener
 	implements PropertyChangeListener
 {
+	/**
+	 * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+	 */
 	public void propertyChange(PropertyChangeEvent evt) {
 		String property = evt.getPropertyName();
 		EditPart root = getRootEditPart().getContents();
@@ -123,8 +126,8 @@ private void disposeFont() {
  * screen space for the scrollbar. Therefore, its use is discouraged.
  * <p> 
  * This setting must be changed prior to calling 
- * {@link ScrollingGraphicalViewer#createControl(Composite)}.  After the control is
- * created, changing this setting will have no effect.
+ * {@link ScrollingGraphicalViewer#createControl(org.eclipse.swt.widgets.Composite)}. 
+ * After the control is  created, changing this setting will have no effect.
  * </p>
  * 
  * @param	value	<code>true</code> if a vertical scrollbar should be displayed
@@ -222,7 +225,9 @@ protected void handleFocusGained(FocusEvent fe) {
 	 * When the palette gets focus, the LWS will take care of setting focus on the
 	 * correct figure.  However, when the user clicks on an entry, the focus is "thrown
 	 * away."  In that case, the LWS would set focus on the first focusable figure.  We
-	 * override that here and set focus on the correct/selected figure.
+	 * override that here and set focus on the correct/selected figure.  Invoking
+	 * getFocusEditPart().setFocus(true) does not work because that editpart thinks it
+	 * already has focus (it's not aware of focus being thrown away) and does nothing.
 	 */
 	if (focusPart == null) {
 		IFigure fig = ((GraphicalEditPart)getFocusEditPart()).getFigure();
@@ -280,7 +285,15 @@ public void removePaletteListener(PaletteListener paletteListener) {
 	paletteListeners.remove(paletteListener);
 }
 
-// Fails silently
+/**
+ * Tries to apply the state of the given IMemento to the contents of this viewer.  It
+ * fails silently, i.e. no exceptions are thrown if the given state could not be applied.
+ * 
+ * @param memento	The memento that has the state to be applied to the contents of this
+ * 					viewer
+ * @return	a boolean indicating whether or not the given memento was successfully applied
+ * @since 3.0
+ */
 public boolean restoreState(IMemento memento) {
 	try {
 		((PaletteEditPart)getEditPartRegistry().get(getPaletteRoot()))
@@ -309,6 +322,11 @@ public void reveal(EditPart part) {
 	super.reveal(part);
 }
 
+/**
+ * Captures the state of the contents of this viewer in the given memento
+ * @param memento	the IMemento in which the state is to be saved
+ * @since 3.0
+ */
 public void saveState(IMemento memento) {
 	((PaletteEditPart)getEditPartRegistry().get(getPaletteRoot())).saveState(memento);
 }
