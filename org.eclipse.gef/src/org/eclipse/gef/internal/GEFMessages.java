@@ -78,11 +78,15 @@ public static final String MarqueeTool_Label;
 public static final String UndoAction_Label;
 public static final String UndoAction_Tooltip;
 
+// Zoom strings
 public static final String ZoomIn_Label;
 public static final String ZoomIn_Tooltip;
-
 public static final String ZoomOut_Label;
 public static final String ZoomOut_Tooltip;
+public static final String FitAllAction_Label;
+public static final String FitWidthAction_Label;
+public static final String FitHeightAction_Label;
+
 
 // View menu actions
 public static final String ToggleRulerVisibility_Label;
@@ -108,6 +112,7 @@ public static final String Create_Guide_Tooltip;
 static {
 	Bundle bundle = Platform.getBundle("org.eclipse.gef");//$NON-NLS-1$
 	ResourceBundle rb = ResourceBundle.getBundle("org.eclipse.gef.internal.messages"); //$NON-NLS-1$
+	
 	
 	AlignBottomAction_Label = rb.getString("AlignBottomAction.Label");//$NON-NLS-1$
 	AlignBottomAction_Tooltip = rb.getString("AlignBottomAction.Tooltip");//$NON-NLS-1$
@@ -169,8 +174,12 @@ static {
 
 	ZoomOut_Label = Platform.getResourceString(bundle, "%ZoomOut.Label");//$NON-NLS-1$
 	ZoomOut_Tooltip = Platform.getResourceString(bundle, "%ZoomOut.Tooltip");//$NON-NLS-1$
+	
+	FitAllAction_Label = rb.getString("FitAllAction.Label"); //$NON-NLS-1$
+	FitHeightAction_Label = rb.getString("FitHeightAction.Label"); //$NON-NLS-1$
+	FitWidthAction_Label = rb.getString("FitWidthAction.Label"); //$NON-NLS-1$
 
-//	 View menu actions
+	// View menu actions
 	ToggleRulerVisibility_Label = rb.getString("ToggleRuler.Label"); //$NON-NLS-1$
 	ToggleRulerVisibility_Tooltip = rb.getString("ToggleRuler.Tooltip"); //$NON-NLS-1$
 	ToggleSnapToGeometry_Label = rb.getString("ToggleSnap.Label"); //$NON-NLS-1$
@@ -178,11 +187,11 @@ static {
 	ToggleGrid_Label = rb.getString("ToggleGrid.Label"); //$NON-NLS-1$
 	ToggleGrid_Tooltip = rb.getString("ToggleGrid.Tooltip"); //$NON-NLS-1$
 
-//	 Palette view Strings
+	// Palette view Strings
 	Palette_Label = Platform.getResourceString(bundle, "%Palette.Label"); //$NON-NLS-1$
 	Palette_Not_Available = rb.getString("Palette_Not_Available"); //$NON-NLS-1$
 
-//	 Rulers and guides
+	// Rulers and guides
 	Ruler_Horizontal_Label = rb.getString("Ruler.Horizontal"); //$NON-NLS-1$
 	Ruler_Vertical_Label = rb.getString("Ruler.Vertical"); //$NON-NLS-1$
 	Ruler_Desc = rb.getString("Ruler.Desc"); //$NON-NLS-1$
