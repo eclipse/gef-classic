@@ -63,7 +63,6 @@ protected void initCellEditor() {
 			String leftText = oldText.substring(0, event.start);
 			String rightText = oldText.substring(event.end, oldText	.length());
 			GC gc = new GC(text);
-			String s = leftText + event.text + rightText;
 			Point size = gc.textExtent(leftText + event.text + rightText);
 			gc.dispose();
 			if (size.x != 0)
