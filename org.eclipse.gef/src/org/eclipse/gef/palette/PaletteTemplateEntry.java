@@ -12,7 +12,7 @@ public class PaletteTemplateEntry
 {
 
 private Object template;
-public static final String PALETTE_TYPE_TEMPLATE = "$Palette Template";
+public static final String PALETTE_TYPE_TEMPLATE = "$Palette Template";  //$NON-NLS-1$
 
 public PaletteTemplateEntry(
   String label,

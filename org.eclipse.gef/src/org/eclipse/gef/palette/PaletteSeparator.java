@@ -20,7 +20,7 @@ private String id;
 public static final Object PALETTE_TYPE_SEPARATOR = "$Palette Separator";//$NON-NLS-1$
 
 public PaletteSeparator() {
-	this ("");
+	this ("");  //$NON-NLS-1$
 }
 
 /**
