@@ -101,6 +101,16 @@ protected Layer getLayer(int index) {
 }
 
 /**
+ * @see org.eclipse.draw2d.IFigure#remove(org.eclipse.draw2d.IFigure)
+ */
+public void remove(IFigure figure) {
+	int index = getChildren().indexOf(figure);
+	if (index != -1)
+		layerKeys.remove(index);
+	super.remove(figure);
+}
+
+/**
  * Removes the layer identified by the given key from this layered pane.
  *
  * @param key the key of the layer to be removed
