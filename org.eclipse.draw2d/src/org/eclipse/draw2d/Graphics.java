@@ -29,16 +29,35 @@ import org.eclipse.draw2d.geometry.Rectangle;
  */
 public abstract class Graphics {
 
-/** @see SWT#LINE_SOLID */
-public static final int LINE_SOLID = SWT.LINE_SOLID;
-/** @see SWT#LINE_DASH */
+/**
+ * @see SWT#LINE_CUSTOM
+ */
+public static final int LINE_CUSTOM = SWT.LINE_CUSTOM;
+
+/**
+ * @see SWT#LINE_DASH
+ */
 public static final int LINE_DASH = SWT.LINE_DASH;
-/** @see SWT#LINE_DASHDOT */
+
+/**
+ * @see SWT#LINE_DASHDOT
+ */
 public static final int LINE_DASHDOT = SWT.LINE_DASHDOT;
-/** @see SWT#LINE_DASHDOTDOT */
+
+/**
+ * @see SWT#LINE_DASHDOTDOT
+ */
 public static final int LINE_DASHDOTDOT = SWT.LINE_DASHDOTDOT;
-/** @see SWT#LINE_DOT */
+
+/**
+ * @see SWT#LINE_DOT
+ */
 public static final int LINE_DOT = SWT.LINE_DOT;
+
+/**
+ * @see SWT#LINE_SOLID
+ */
+public static final int LINE_SOLID = SWT.LINE_SOLID;
 
 /**
  * Sets the clip region to the given rectangle.  Anything outside this rectangle will not
@@ -48,16 +67,9 @@ public static final int LINE_DOT = SWT.LINE_DOT;
 public abstract void clipRect(Rectangle r);
 
 /**
- * Disposes this Graphics object.
+ * Disposes this object, releasing any resources.
  */
 public abstract void dispose();
-
-/**
- * @see #drawArc(int, int, int, int, int, int)
- */
-public final void drawArc(Rectangle r, int offset, int length) {
-	drawArc(r.x, r.y, r.width, r.height, offset, length);
-}
 
 /**
  * Draws the outline of an arc located at (x,y) with width <i>w</i> and height <i>h</i>. 
@@ -74,52 +86,10 @@ public final void drawArc(Rectangle r, int offset, int length) {
 public abstract void drawArc(int x, int y, int w, int h, int offset, int length);
 
 /**
- * Fills the interior of an arc located at (<i>x</i>,<i>y</i>) with width <i>w</i> and 
- * height <i>h</i>. The starting angle of the arc (specified in degrees) is <i>offset</i>
- * and <i>length</i> is the arc's angle (specified in degrees).
- * 
- * @param x the x coordinate
- * @param y the y coordinate
- * @param w the width
- * @param h the height
- * @param offset the start angle
- * @param length the length of the arc
+ * @see #drawArc(int, int, int, int, int, int)
  */
-public abstract void fillArc(int x, int y, int w, int h, int offset, int length);
-
-/**
- * @see #fillArc(int, int, int, int, int, int)
- */
-public final void fillArc(Rectangle r, int offset, int length) {
-	fillArc(r.x, r.y, r.width, r.height, offset, length);
-}
-
-/**
- * @see #fillGradient(int, int, int, int, boolean)
- */
-public final void fillGradient(Rectangle r, boolean vertical) {
-	fillGradient(r.x, r.y, r.width, r.height, vertical);
-}
-
-/**
- * Fills the the given rectangle with a gradient from the foreground color to the 
- * background color. If <i>vertical</i> is <code>true</code>, the gradient will go from 
- * top to bottom.  Otherwise, it will go from left to right.
- * background color.
- *
- * @param x the x coordinate
- * @param y the y coordinate
- * @param w the width
- * @param h the height
- * @param vertical whether the gradient should be vertical
- */
-public abstract void fillGradient(int x, int y, int w, int h, boolean vertical);
-
-/**
- * @see #drawFocus(int, int, int, int)
- */
-public final void drawFocus(Rectangle r) {
-	drawFocus(r.x, r.y, r.width, r.height);
+public final void drawArc(Rectangle r, int offset, int length) {
+	drawArc(r.x, r.y, r.width, r.height, offset, length);
 }
 
 /**
@@ -133,13 +103,10 @@ public final void drawFocus(Rectangle r) {
 public abstract void drawFocus(int x, int y, int w, int h);
 
 /**
- * Draws the given image at a point.
- * @param image the image to draw
- * @param p where to draw the image
- * @see #drawImage(Image, int, int)
+ * @see #drawFocus(int, int, int, int)
  */
-public final void drawImage(Image image, Point p) {
-	drawImage(image, p.x, p.y);
+public final void drawFocus(Rectangle r) {
+	drawFocus(r.x, r.y, r.width, r.height);
 }
 
 /**
@@ -149,14 +116,6 @@ public final void drawImage(Image image, Point p) {
  * @param y the y coordinate
  */
 public abstract void drawImage(Image srcImage, int x, int y);
-
-/**
- * @see #drawImage(Image, int, int, int, int, int, int, int, int)
- */
-public final void drawImage(Image srcImage, Rectangle src, Rectangle dest) {
-	drawImage(srcImage, src.x, src.y, src.width, src.height, 
-						dest.x, dest.y, dest.width, dest.height);
-}
 
 /**
  * Draws a rectangular section of the given Image to the specified rectangular reagion on
@@ -178,10 +137,21 @@ public abstract void drawImage(Image srcImage, int x1, int y1, int w1, int h1,
 													int x2, int y2, int w2, int h2);
 
 /**
- * @see #drawLine(int, int, int, int)
+ * Draws the given image at a point.
+ * @param image the image to draw
+ * @param p where to draw the image
+ * @see #drawImage(Image, int, int)
  */
-public final void drawLine(Point p1, Point p2) {
-	drawLine(p1.x, p1.y, p2.x, p2.y);
+public final void drawImage(Image image, Point p) {
+	drawImage(image, p.x, p.y);
+}
+
+/**
+ * @see #drawImage(Image, int, int, int, int, int, int, int, int)
+ */
+public final void drawImage(Image srcImage, Rectangle src, Rectangle dest) {
+	drawImage(srcImage, src.x, src.y, src.width, src.height, 
+						dest.x, dest.y, dest.width, dest.height);
 }
 
 /**
@@ -195,12 +165,10 @@ public final void drawLine(Point p1, Point p2) {
 public abstract void drawLine(int x1, int y1, int x2, int y2);
 
 /**
- * Draws an oval inside the given rectangle using the current foreground color.
- * @param r the rectangle circumscribing the oval to be drawn
- * @see #drawOval(int, int, int, int)
+ * @see #drawLine(int, int, int, int)
  */
-public final void drawOval(Rectangle r) {
-	drawOval(r.x, r.y, r.width, r.height);
+public final void drawLine(Point p1, Point p2) {
+	drawLine(p1.x, p1.y, p2.x, p2.y);
 }
 
 /**
@@ -213,6 +181,15 @@ public final void drawOval(Rectangle r) {
  * @param h the height
  */
 public abstract void drawOval(int x, int y, int w, int h);
+
+/**
+ * Draws an oval inside the given rectangle using the current foreground color.
+ * @param r the rectangle circumscribing the oval to be drawn
+ * @see #drawOval(int, int, int, int)
+ */
+public final void drawOval(Rectangle r) {
+	drawOval(r.x, r.y, r.width, r.height);
+}
 
 /** 
  * Draws a pixel, using the foreground color, at the specified
@@ -231,24 +208,6 @@ public void drawPoint(int x, int y) {
 }
 
 /**
- * @see #fillOval(int, int, int, int)
- */
-public final void fillOval(Rectangle r) {
-	fillOval(r.x, r.y, r.width, r.height);
-}
-
-/**
- * Fills an ellipse that fits inside the rectangle with the given properties using the 
- * background color.
- * 
- * @param x the x coordinate
- * @param y the y coordinate
- * @param w the width
- * @param h the height
- */
-public abstract void fillOval(int x, int y, int w, int h);
-
-/**
  * Draws a closed polygon defined by the given Integer array containing the vertices in
  * x,y order.  The first and last points in the list will be connected.
  * @param points the vertices
@@ -263,22 +222,6 @@ public void drawPolygon(int[] points) {
  * @param points the vertices
  */
 public abstract void drawPolygon(PointList points);
-
-/**
- * Fills a closed polygon defined by the given Integer array containing the 
- * vertices in x,y order.  The first and last points in the list will be connected.
- * @param points the vertices
- */
-public void fillPolygon(int[] points) {
-	fillPolygon(getPointList(points));
-}
-
-/**
- * Fills a closed polygon defined by the given <code>PointList</code> containing the 
- * vertices.  The first and last points in the list will be connected.
- * @param points the vertices
- */
-public abstract void fillPolygon(PointList points);
 
 /**
  * Draws a polyline defined by the given Integer array containing the vertices in x,y
@@ -297,15 +240,6 @@ public void drawPolyline(int[] points) {
 public abstract void drawPolyline(PointList points);
 
 /**
- * Draws the given rectangle using the current foreground color.
- * @param r the rectangle to draw
- * @see #drawRectangle(int, int, int, int)
- */
-public final void drawRectangle(Rectangle r) {
-	drawRectangle(r.x, r.y, r.width, r.height);
-}
-
-/**
  * Draws a rectangle whose top-left corner is located at the point (x,y) with the given 
  * width and height.
  * 
@@ -317,24 +251,13 @@ public final void drawRectangle(Rectangle r) {
 public abstract void drawRectangle(int x, int y, int width, int height);
 
 /**
- * Fills the given rectangle using the current background color.
- * @param r the rectangle to fill
- * @see #fillRectangle(int, int, int, int)
+ * Draws the given rectangle using the current foreground color.
+ * @param r the rectangle to draw
+ * @see #drawRectangle(int, int, int, int)
  */
-public final void fillRectangle(Rectangle r) {
-	fillRectangle(r.x, r.y, r.width, r.height);
+public final void drawRectangle(Rectangle r) {
+	drawRectangle(r.x, r.y, r.width, r.height);
 }
-
-/**
- * Fills a rectangle whose top-left corner is located at the point (x,y) with the given
- * width and height.
- * 
- * @param x the x coordinate
- * @param y the y coordinate
- * @param width the width
- * @param height the height
- */
-public abstract void fillRectangle(int x, int y, int width, int height);
 
 /**
  * Draws a rectangle with rounded corners using the foreground color.  <i>arcWidth</i> and
@@ -346,15 +269,24 @@ public abstract void fillRectangle(int x, int y, int width, int height);
  */
 public abstract void drawRoundRectangle(Rectangle r, int arcWidth, int arcHeight);
 
+
 /**
- * Fills a rectangle with rounded corners using the background color.  <i>arcWidth</i> and
- * <i>arcHeight</i> represent the horizontal and vertical diameter of the corners.
+ * Draws the given string using the current font and foreground color. No tab expansion or 
+ * carriage return processing will be performed. The background of the string will be
+ * transparent.
  * 
- * @param r the rectangle
- * @param arcWidth the arc width
- * @param arcHeight the arc height
+ * @param s the string
+ * @param x the x coordinate
+ * @param y the y coordinate
  */
-public abstract void fillRoundRectangle(Rectangle r, int arcWidth, int arcHeight);
+public abstract void drawString(String s, int x, int y);
+
+/**
+ * @see #drawString(String, int, int)
+ */
+public final void drawString(String s, Point p) {
+	drawString(s, p.x, p.y);
+}
 
 /**
  * Draws the given string using the current font and foreground color. Tab expansion and 
@@ -366,6 +298,39 @@ public abstract void fillRoundRectangle(Rectangle r, int arcWidth, int arcHeight
  * @param y the y coordinate
  */
 public abstract void drawText(String s, int x, int y);
+
+/**
+ * Draws a string using the specified styles. The styles are defined by {@link
+ * GC#drawText(String, int, int, int)}.
+ * @param s the String to draw
+ * @param x the x location
+ * @param y the y location
+ * @param style the styles used to render the string
+ * @since 3.0
+ */
+public void drawText(String s, int x, int y, int style) {
+	throw new RuntimeException("Graphics#drawText(String, int, int, int)" + //$NON-NLS-1$
+			"is not implemented properly on " + getClass().getName()); //$NON-NLS-1$
+}
+
+/**
+ * @see #drawText(String, int, int)
+ */
+public final void drawText(String s, Point p) {
+	drawText(s, p.x, p.y);
+}
+
+/**
+ * Draws a string using the specified styles. The styles are defined by {@link
+ * GC#drawText(String, int, int, int)}.
+ * @param s the String to draw
+ * @param p the point at which to draw the string
+ * @param style the styles used to render the string
+ * @since 3.0
+ */
+public final void drawText(String s, Point p, int style) {
+	drawText(s, p.x, p.y, style);
+}
 
 /**
  * Renders the specified TextLayout to this Graphics.
@@ -393,64 +358,111 @@ public void drawTextLayout(TextLayout layout, int x, int y, int selectionStart,
 	throw new RuntimeException("The method has not been implemented"); //$NON-NLS-1$
 }
 
-
 /**
- * Draws the given string using the current font and foreground color. No tab expansion or 
- * carriage return processing will be performed. The background of the string will be
- * transparent.
+ * Fills the interior of an arc located at (<i>x</i>,<i>y</i>) with width <i>w</i> and 
+ * height <i>h</i>. The starting angle of the arc (specified in degrees) is <i>offset</i>
+ * and <i>length</i> is the arc's angle (specified in degrees).
  * 
- * @param s the string
  * @param x the x coordinate
  * @param y the y coordinate
+ * @param w the width
+ * @param h the height
+ * @param offset the start angle
+ * @param length the length of the arc
  */
-public abstract void drawString(String s, int x, int y);
+public abstract void fillArc(int x, int y, int w, int h, int offset, int length);
 
 /**
- * @see #drawString(String, int, int)
+ * @see #fillArc(int, int, int, int, int, int)
  */
-public final void drawString(String s, Point p) {
-	drawString(s, p.x, p.y);
+public final void fillArc(Rectangle r, int offset, int length) {
+	fillArc(r.x, r.y, r.width, r.height, offset, length);
 }
 
 /**
- * @see #drawText(String, int, int)
+ * Fills the the given rectangle with a gradient from the foreground color to the 
+ * background color. If <i>vertical</i> is <code>true</code>, the gradient will go from 
+ * top to bottom.  Otherwise, it will go from left to right.
+ * background color.
+ *
+ * @param x the x coordinate
+ * @param y the y coordinate
+ * @param w the width
+ * @param h the height
+ * @param vertical whether the gradient should be vertical
  */
-public final void drawText(String s, Point p) {
-	drawText(s, p.x, p.y);
+public abstract void fillGradient(int x, int y, int w, int h, boolean vertical);
+
+/**
+ * @see #fillGradient(int, int, int, int, boolean)
+ */
+public final void fillGradient(Rectangle r, boolean vertical) {
+	fillGradient(r.x, r.y, r.width, r.height, vertical);
 }
 
 /**
- * Draws a string using the specified styles. The styles are defined by {@link
- * GC#drawText(String, int, int, int)}.
- * @param s the String to draw
- * @param x the x location
- * @param y the y location
- * @param style the styles used to render the string
- * @since 3.0
+ * Fills an ellipse that fits inside the rectangle with the given properties using the 
+ * background color.
+ * 
+ * @param x the x coordinate
+ * @param y the y coordinate
+ * @param w the width
+ * @param h the height
  */
-public void drawText(String s, int x, int y, int style) {
-	throw new RuntimeException("Graphics#drawText(String, int, int, int)" + //$NON-NLS-1$
-			"is not implemented properly on " + getClass().getName()); //$NON-NLS-1$
+public abstract void fillOval(int x, int y, int w, int h);
+
+/**
+ * @see #fillOval(int, int, int, int)
+ */
+public final void fillOval(Rectangle r) {
+	fillOval(r.x, r.y, r.width, r.height);
 }
 
 /**
- * Draws a string using the specified styles. The styles are defined by {@link
- * GC#drawText(String, int, int, int)}.
- * @param s the String to draw
- * @param p the point at which to draw the string
- * @param style the styles used to render the string
- * @since 3.0
+ * Fills a closed polygon defined by the given Integer array containing the 
+ * vertices in x,y order.  The first and last points in the list will be connected.
+ * @param points the vertices
  */
-public final void drawText(String s, Point p, int style) {
-	drawText(s, p.x, p.y, style);
+public void fillPolygon(int[] points) {
+	fillPolygon(getPointList(points));
 }
 
 /**
- * @see #fillString(String, int, int)
+ * Fills a closed polygon defined by the given <code>PointList</code> containing the 
+ * vertices.  The first and last points in the list will be connected.
+ * @param points the vertices
  */
-public final void fillString(String s, Point p) {
-	fillString(s, p.x, p.y);
+public abstract void fillPolygon(PointList points);
+
+/**
+ * Fills a rectangle whose top-left corner is located at the point (x,y) with the given
+ * width and height.
+ * 
+ * @param x the x coordinate
+ * @param y the y coordinate
+ * @param width the width
+ * @param height the height
+ */
+public abstract void fillRectangle(int x, int y, int width, int height);
+
+/**
+ * Fills the given rectangle using the current background color.
+ * @param r the rectangle to fill
+ * @see #fillRectangle(int, int, int, int)
+ */
+public final void fillRectangle(Rectangle r) {
+	fillRectangle(r.x, r.y, r.width, r.height);
 }
+
+/**
+ * Fills a rectangle with rounded corners using the background color.  <i>arcWidth</i> and
+ * <i>arcHeight</i> represent the horizontal and vertical diameter of the corners.
+ * 
+ * @param r the rectangle
+ * @param arcWidth the arc width
+ * @param arcHeight the arc height
+ */
+public abstract void fillRoundRectangle(Rectangle r, int arcWidth, int arcHeight);
 
 /**
  * Draws the given string using the current font and foreground color. No tab expansion or 
@@ -464,10 +476,10 @@ public final void fillString(String s, Point p) {
 public abstract void fillString(String s, int x, int y);
 
 /**
- * @see #fillText(String, int, int)
+ * @see #fillString(String, int, int)
  */
-public final void fillText(String s, Point p) {
-	fillText(s, p.x, p.y);
+public final void fillString(String s, Point p) {
+	fillString(s, p.x, p.y);
 }
 
 /**
@@ -480,6 +492,23 @@ public final void fillText(String s, Point p) {
  * @param y the y coordinate
  */
 public abstract void fillText(String s, int x, int y);
+
+/**
+ * @see #fillText(String, int, int)
+ */
+public final void fillText(String s, Point p) {
+	fillText(s, p.x, p.y);
+}
+
+/**
+ * Returns the current absolute scaling which will be applied to the underlying Device
+ * when painting to this Graphics.  The default value is 1.0.
+ * @since 3.0
+ * @return the effective absolute scaling factor
+ */
+public double getAbsoluteScale() {
+	return 1.0;
+}
 
 /**
  * Returns the background color used for filling.
@@ -537,16 +566,6 @@ private PointList getPointList(int[] points) {
 }
 
 /**
- * Returns the current absolute scaling which will be applied to the underlying Device
- * when painting to this Graphics.  The default value is 1.0.
- * @since 3.0
- * @return the effective absolute scaling factor
- */
-public double getAbsoluteScale() {
-	return 1.0;
-}
-
-/**
  * Returns <code>true</code> if this graphics object should use XOR mode with painting.
  * @return whether XOR mode is turned on
  */
@@ -569,10 +588,30 @@ public abstract void pushState();
 public abstract void restoreState();
 
 /**
- * Scales this graphics object by the given amount.  
+ * Rotates the receiver's coordinates by the given angle. All subsequent
+ * painting will be performed in the resulting coordinates. Some functions are
+ * illegal when a rotated coordinates system is in use.  To restore access to
+ * those functions, it is necessary to call restore or pop to return to a non
+ * rotated state.
+ * @param degrees the degrees to rotate
+ * @since 3.1
+ */
+public void rotate(float degrees) { }
+
+/**
+ * Scales this graphics object by the given amount.
  * @param amount the scale factor
  */
 public abstract void scale(double amount);
+
+/**
+ * Sets the alpha to the given value.  Values may range from 0 to 255.  A value
+ * of 0 is completely transparent.
+ * 
+ * @param alpha an alpha value (0-255)
+ * @since 3.1
+ */
+public void setAlpha(int alpha) { }
 
 /**
  * Sets the background color.
@@ -599,6 +638,33 @@ public abstract void setFont(Font f);
 public abstract void setForegroundColor(Color rgb);
 
 /**
+ * Sets the receiver's line cap style to the argument, which must be one of the
+ * constants <code>SWT.CAP_FLAT</code>, <code>SWT.CAP_ROUND</code>, or
+ * <code>SWT.CAP_SQUARE</code>.
+ * @param cap the line cap
+ * @since 3.1
+ */
+public void setLineCap(int cap) { }
+
+/**
+ * Sets the dash pattern when the custom line style is in use. Because this
+ * feature is rarely used, the dash pattern may not be preserved when calling
+ * {@link #pushState()} and {@link #popState()}.
+ * @param dash the pixel pattern
+ * @since 3.1
+ */
+public void setLineDash(int dash[]) { }
+
+/**
+ * Sets the receiver's line join style to the argument, which must be one of the
+ * constants <code>SWT.JOIN_MITER</code>, <code>SWT.JOIN_ROUND</code>, or
+ * <code>SWT.JOIN_BEVEL</code>.
+ * @param join the join type
+ * @since 3.1
+ */
+public void setLineJoin(int join) { }
+
+/**
  * Sets the line style.
  * @param style the new style
  */
@@ -617,18 +683,18 @@ public abstract void setLineWidth(int width);
 public abstract void setXORMode(boolean b);
 
 /**
+ * Translates the receiver's coordinates by the specified x and y amounts. All
+ * subsequent painting will be performed in the resulting coordinate system.
+ * @param dx the horizontal offset
+ * @param dy the vertical offset
+ */
+public abstract void translate(int dx, int dy);
+
+/**
  * @see #translate(int, int)
  */
 public final void translate(Point pt) {
 	translate(pt.x, pt.y);
 }
-
-/**
- * Translates this graphics object so that its origin is offset horizontally by <i>dx</i> 
- * and vertically by <i>dy</i>.
- * @param dx the horizontal offset
- * @param dy the vertical offset
- */
-public abstract void translate(int dx, int dy);
 
 }

@@ -19,42 +19,124 @@ import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.TextLayout;
+import org.eclipse.swt.graphics.Transform;
 
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
- * Implementation of providing the drawing capabilities of SWT's GC class in Draw2d.
- * There are 2 states contained in this graphics class -- the applied state which is the
- * actual state of the GC and the current state which is the current state of this
- * graphics object.  Certain properties can be changed multiple times and the GC won't be
- * updated until it's actually used.
+ * A concrete implementation of <code>Graphics</code> using an SWT
+ * <code>GC</code>. There are 2 states contained in this graphics class -- the
+ * applied state which is the actual state of the GC and the current state which
+ * is the current state of this graphics object.  Certain properties can be
+ * changed multiple times and the GC won't be updated until it's actually used.
+ * <P>
+ * WARNING: This class is not intended to be subclassed.
  */
 public class SWTGraphics
 	extends Graphics
 {
 
-/** Contains the state variables of this SWTGraphics object **/
-protected static class State
+/**
+ * An internal type used to represent and update the GC clip area.
+ * @since 3.1
+ */
+interface Clipping {
+	Rectangle getBoundingBox(Rectangle rect);
+	Clipping getCopy();
+	void intersect(Rectangle rect);
+	void scale(double amount);
+	void setOn(GC gc);
+	void translate(int dx, int dy);
+}
+
+/**
+ * Any state stored in this class is only applied when it is needed by a
+ * specific graphics call.
+ * @since 3.1
+ */
+static class LazyState {
+	public Color bgColor;
+	Clipping clipping;
+	public Color fgColor;
+	public Font font;
+	public int lineStyle;
+	public int lineWidth;
+}
+
+class RectangleClipping implements Clipping {
+	private double top, left, botm, rt;
+	RectangleClipping() { }
+	RectangleClipping(org.eclipse.swt.graphics.Rectangle rect) {
+		left = rect.x;
+		top = rect.y;
+		rt = rect.x + rect.width;
+		botm = rect.y + rect.height;
+	}
+	RectangleClipping(Rectangle rect) {
+		left = rect.x;
+		top = rect.y;
+		rt = rect.right();
+		botm = rect.bottom();
+	}
+	public Rectangle getBoundingBox(Rectangle rect) {
+		rect.x = (int)left;
+		rect.y = (int)top;
+		rect.width = (int)Math.ceil(rt) - rect.x;
+		rect.height = (int)Math.ceil(botm) - rect.y;
+		return rect;
+	}
+	public Clipping getCopy() {
+		RectangleClipping result = new RectangleClipping();
+		result.left = left;
+		result.rt = rt;
+		result.top = top;
+		result.botm = botm;
+		return result;
+	}
+	public void intersect(Rectangle rect) {
+		left = Math.max(left, rect.x);
+		rt = Math.min(rt, rect.right());
+		top = Math.max(top, rect.y);
+		botm = Math.min(botm, rect.bottom());
+		if (rt < left || botm < top) {
+			rt = left - 1;//Use negative size to ensure ceiling function doesn't add a pixel
+			botm = top - 1;
+		}
+	}
+	public void scale(double s) {
+		top /= s;
+		left /= s;
+		botm /= s;
+		rt /= s;
+	}
+	public void setOn(GC gc) {
+		int xInt = (int)Math.floor(left);
+		int yInt = (int)Math.floor(top);
+		gc.setClipping(xInt, yInt,
+				(int)Math.ceil(rt) - xInt,
+				(int)Math.ceil(botm) - yInt);
+	}
+	public void translate(int dx, int dy) {
+		left += dx;
+		rt += dx;
+		top += dy;
+		botm += dy;
+	}
+}
+
+/**
+ * Contains the entire state of the Graphics.
+ */
+static class State
+	extends LazyState
 	implements Cloneable
 {
-	/** Background and foreground colors **/
-	public Color
-		bgColor,
-		fgColor;
-	/** Clip values **/
-	public int clipX, clipY, clipW, clipH; //X and Y are absolute here.
-	/** Font value **/
-	public Font font;  //Fonts are immutable, shared references are safe
-	/** Line values**/
-	public int
-		lineWidth,
-		lineStyle,
-		dx, dy;
-	/** XOR value **/
-	public boolean xor;
-
-	/** @see Object#clone() **/
+	float affineMatrix[];
+	int alpha;
+	int lineAttributes;
+	int lineDash[];
+	boolean xor;
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
 	}
@@ -68,14 +150,13 @@ protected static class State
 		fgColor = state.fgColor;
 		lineStyle = state.lineStyle;
 		lineWidth = state.lineWidth;
-		dx = state.dx;
-		dy = state.dy;
 		font = state.font;
-		clipX = state.clipX;
-		clipY = state.clipY;
-		clipW = state.clipW;
-		clipH = state.clipH;
 		xor = state.xor;
+		lineDash = state.lineDash;
+		lineAttributes = state.lineAttributes;
+		affineMatrix = state.affineMatrix;
+		clipping = state.clipping;
+		alpha = state.alpha;
 	}
 }
 
@@ -83,18 +164,16 @@ protected static class State
  * debug flag.
  */
 public static boolean debug = false;
-private final State appliedState = new State();
+private final LazyState appliedState = new LazyState();
 private final State currentState = new State();
-
 private GC gc;
-
-private final Rectangle relativeClip;
+private boolean sharedClip;
 
 private List stack = new ArrayList();
 private int stackPointer = 0;
 
-private int translateX = 0;
-private int translateY = 0;
+Transform transform;
+private boolean transformDirty;
 
 /**
  * Constructs a new SWTGraphics that draws to the Canvas using the given GC.
@@ -102,8 +181,8 @@ private int translateY = 0;
  */
 public SWTGraphics(GC gc) {
 	this.gc = gc;
+	transform = new Transform(null);
 	//No translation necessary because translation is <0,0> at construction.
-	relativeClip = new Rectangle(gc.getClipping());
 	init();
 }
 
@@ -121,17 +200,8 @@ protected final void checkFill() {
  * If the XOR or the clip region has changed, these changes will be pushed to the GC.
  */
 protected final void checkGC() {
-	if (appliedState.xor != currentState.xor)
-		gc.setXORMode(appliedState.xor = currentState.xor);
-	if (appliedState.clipX != currentState.clipX 
-		|| appliedState.clipY != currentState.clipY 
-		|| appliedState.clipW != currentState.clipW 
-		|| appliedState.clipH != currentState.clipH) {
-		gc.setClipping(appliedState.clipX = currentState.clipX,
-						appliedState.clipY = currentState.clipY,
-						appliedState.clipW = currentState.clipW,
-						appliedState.clipH = currentState.clipH);
-	}
+//	if (appliedState.clipping != currentState.clipping)
+//		clipping.setOn(GC);
 }
 
 /**
@@ -165,11 +235,12 @@ protected final void checkText() {
  * @see Graphics#clipRect(Rectangle)
  */
 public void clipRect(Rectangle rect) {
-	relativeClip.intersect(rect);
-	setClipAbsolute(relativeClip.x + translateX,
-			    relativeClip.y + translateY,
-			    relativeClip.width,
-			    relativeClip.height);
+	if (sharedClip) {
+		currentState.clipping = currentState.clipping.getCopy();
+		sharedClip = false;
+	}
+	currentState.clipping.intersect(rect);
+	currentState.clipping.setOn(gc);
 }
 
 /**
@@ -179,6 +250,7 @@ public void dispose() {
 	while (stackPointer > 0) {
 		popState();
 	}
+	transform.dispose();
 }
 
 /**
@@ -186,7 +258,7 @@ public void dispose() {
  */
 public void drawArc(int x, int y, int width, int height, int offset, int length) {
 	checkPaint();
-	gc.drawArc(x + translateX, y + translateY, width, height, offset, length);
+	gc.drawArc(x, y, width, height, offset, length);
 }
 
 /**
@@ -195,7 +267,7 @@ public void drawArc(int x, int y, int width, int height, int offset, int length)
 public void drawFocus(int x, int y, int w, int h) {
 	checkPaint();
 	checkFill();
-	gc.drawFocus(x + translateX, y + translateY, w + 1, h + 1);
+	gc.drawFocus(x, y, w + 1, h + 1);
 }
 
 /**
@@ -203,7 +275,7 @@ public void drawFocus(int x, int y, int w, int h) {
  */
 public void drawImage(Image srcImage, int x, int y) {
 	checkGC();
-	gc.drawImage(srcImage, x + translateX, y + translateY);
+	gc.drawImage(srcImage, x, y);
 }
 
 /**
@@ -212,7 +284,7 @@ public void drawImage(Image srcImage, int x, int y) {
 public void drawImage(Image srcImage, int x1, int y1, int w1, int h1, int x2, int y2, 
 						int w2, int h2) {
 	checkGC();
-	gc.drawImage(srcImage, x1, y1, w1, h1, x2 + translateX, y2 + translateY, w2, h2);
+	gc.drawImage(srcImage, x1, y1, w1, h1, x2, y2, w2, h2);
 }
 
 /**
@@ -220,7 +292,7 @@ public void drawImage(Image srcImage, int x1, int y1, int w1, int h1, int x2, in
  */
 public void drawLine(int x1, int y1, int x2, int y2) {
 	checkPaint();
-	gc.drawLine(x1 + translateX, y1 + translateY, x2 + translateX, y2 + translateY);
+	gc.drawLine(x1, y1, x2, y2);
 }
 
 /**
@@ -228,7 +300,7 @@ public void drawLine(int x1, int y1, int x2, int y2) {
  */
 public void drawOval(int x, int y, int width, int height) {
 	checkPaint();
-	gc.drawOval(x + translateX, y + translateY, width, height);
+	gc.drawOval(x, y, width, height);
 }
 
 /**
@@ -236,7 +308,7 @@ public void drawOval(int x, int y, int width, int height) {
  */
 public void drawPoint(int x, int y) {
 	checkPaint();
-	gc.drawPoint(x + translateX, y + translateY);
+	gc.drawPoint(x, y);
 }
 
 /**
@@ -244,12 +316,7 @@ public void drawPoint(int x, int y) {
  */
 public void drawPolygon(int[] points) {
 	checkPaint();
-	try {
-		translatePointArray(points, translateX, translateY);
-		gc.drawPolygon(points);
-	} finally {
-		translatePointArray(points, -translateX, -translateY);
-	}
+	gc.drawPolygon(points);
 }
 
 /**
@@ -264,17 +331,7 @@ public void drawPolygon(PointList points) {
  */
 public void drawPolyline(int[] points) {
 	checkPaint();
-	try {
-		translatePointArray(points, translateX, translateY);
-		gc.drawPolyline(points);
-		if (getLineWidth() == 1 && points.length >= 2) {
-			int x = points[points.length - 2];
-			int y = points[points.length - 1];
-			gc.drawLine(x, y, x, y);
-		}
-	} finally {
-		translatePointArray(points, -translateX, -translateY);
-	}	
+	gc.drawPolyline(points);
 }
 
 /**
@@ -289,7 +346,7 @@ public void drawPolyline(PointList points) {
  */
 public void drawRectangle(int x, int y, int width, int height) {
 	checkPaint();
-	gc.drawRectangle(x + translateX, y + translateY, width, height);
+	gc.drawRectangle(x, y, width, height);
 }
 
 /**
@@ -297,7 +354,7 @@ public void drawRectangle(int x, int y, int width, int height) {
  */
 public void drawRoundRectangle(Rectangle r, int arcWidth, int arcHeight) {
 	checkPaint();
-	gc.drawRoundRectangle(r.x + translateX, r.y + translateY, r.width, r.height, 
+	gc.drawRoundRectangle(r.x, r.y, r.width, r.height, 
 							arcWidth, arcHeight);
 }
 
@@ -306,7 +363,7 @@ public void drawRoundRectangle(Rectangle r, int arcWidth, int arcHeight) {
  */
 public void drawString(String s, int x, int y) {
 	checkText();
-	gc.drawString(s, x + translateX, y + translateY, true);
+	gc.drawString(s, x, y, true);
 }
 
 /**
@@ -314,7 +371,7 @@ public void drawString(String s, int x, int y) {
  */
 public void drawText(String s, int x, int y) {
 	checkText();
-	gc.drawText(s, x + translateX, y + translateY, true);
+	gc.drawText(s, x, y, true);
 }
 
 /**
@@ -324,7 +381,7 @@ public void drawTextLayout(TextLayout layout, int x, int y, int selectionStart,
 		int selectionEnd, Color selectionForeground, Color selectionBackground) {
 	//$TODO probably just call checkPaint since Font and BG color don't apply
 	checkText();
-	layout.draw(gc, x + translateX, y + translateY, selectionStart, selectionEnd,
+	layout.draw(gc, x, y, selectionStart, selectionEnd,
 			selectionForeground, selectionBackground);
 }
 
@@ -333,7 +390,7 @@ public void drawTextLayout(TextLayout layout, int x, int y, int selectionStart,
  */
 public void fillArc(int x, int y, int width, int height, int offset, int length) {
 	checkFill();
-	gc.fillArc(x + translateX, y + translateY, width, height, offset, length);
+	gc.fillArc(x, y, width, height, offset, length);
 }
 
 /**
@@ -342,7 +399,7 @@ public void fillArc(int x, int y, int width, int height, int offset, int length)
 public void fillGradient(int x, int y, int w, int h, boolean vertical) {
 	checkFill();
 	checkPaint();
-	gc.fillGradientRectangle(x + translateX, y + translateY, w, h, vertical);
+	gc.fillGradientRectangle(x, y, w, h, vertical);
 }
 
 /**
@@ -350,7 +407,7 @@ public void fillGradient(int x, int y, int w, int h, boolean vertical) {
  */
 public void fillOval(int x, int y, int width, int height) {
 	checkFill();
-	gc.fillOval(x + translateX, y + translateY, width, height);
+	gc.fillOval(x, y, width, height);
 }
 
 /**
@@ -358,12 +415,7 @@ public void fillOval(int x, int y, int width, int height) {
  */
 public void fillPolygon(int[] points) {
 	checkFill();
-	try {
-		translatePointArray(points, translateX, translateY);
-		gc.fillPolygon(points);
-	} finally {
-		translatePointArray(points, -translateX, -translateY);
-	}
+	gc.fillPolygon(points);
 }
 
 /**
@@ -378,7 +430,7 @@ public void fillPolygon(PointList points) {
  */
 public void fillRectangle(int x, int y, int width, int height) {
 	checkFill();
-	gc.fillRectangle(x + translateX, y + translateY, width, height);
+	gc.fillRectangle(x, y, width, height);
 }
 
 /**
@@ -386,7 +438,7 @@ public void fillRectangle(int x, int y, int width, int height) {
  */
 public void fillRoundRectangle(Rectangle r, int arcWidth, int arcHeight) {
 	checkFill();
-	gc.fillRoundRectangle(r.x + translateX, r.y + translateY, r.width, r.height, 
+	gc.fillRoundRectangle(r.x, r.y, r.width, r.height, 
 							arcWidth, arcHeight);
 }
 
@@ -395,7 +447,7 @@ public void fillRoundRectangle(Rectangle r, int arcWidth, int arcHeight) {
  */
 public void fillString(String s, int x, int y) {
 	checkText();
-	gc.drawString(s, x + translateX, y + translateY, false);
+	gc.drawString(s, x, y, false);
 }
 
 /**
@@ -403,7 +455,7 @@ public void fillString(String s, int x, int y) {
  */
 public void fillText(String s, int x, int y) {
 	checkText();
-	gc.drawText(s, x + translateX, y + translateY, false);
+	gc.drawText(s, x, y, false);
 }
 
 /**
@@ -417,8 +469,9 @@ public Color getBackgroundColor() {
  * @see Graphics#getClip(Rectangle)
  */
 public Rectangle getClip(Rectangle rect) {
-	rect.setBounds(relativeClip);
-	return rect;
+	if (currentState.clipping != null)
+		return currentState.clipping.getBoundingBox(rect);
+	throw new IllegalStateException("Clipping cannot be queried at this point");
 }
 
 /**
@@ -468,17 +521,16 @@ public boolean getXORMode() {
  * Called by constructor, initializes all State information for currentState
  */
 protected void init() {
-//Current translation is assumed to be 0,0.
 	currentState.bgColor = appliedState.bgColor = gc.getBackground();
 	currentState.fgColor = appliedState.fgColor = gc.getForeground();
 	currentState.font = appliedState.font = gc.getFont();
 	currentState.lineWidth = appliedState.lineWidth = gc.getLineWidth();
 	currentState.lineStyle = appliedState.lineStyle = gc.getLineStyle();
-	currentState.clipX = appliedState.clipX = relativeClip.x;
-	currentState.clipY = appliedState.clipY = relativeClip.y;
-	currentState.clipW = appliedState.clipW = relativeClip.width;
-	currentState.clipH = appliedState.clipH = relativeClip.height;
-	currentState.xor = appliedState.xor = gc.getXORMode();
+	currentState.xor = /*appliedState.xor = */ gc.getXORMode();
+	currentState.lineAttributes = gc.getLineCap() << 2 | gc.getLineJoin();
+	currentState.lineDash = gc.getLineDash();
+	currentState.clipping = new RectangleClipping(gc.getClipping());
+	currentState.alpha = gc.getAlpha();
 }
 
 /**
@@ -493,14 +545,22 @@ public void popState() {
  * @see Graphics#pushState()
  */
 public void pushState() {
+	if (currentState.clipping == null)
+		throw new IllegalStateException(
+				"The clipping has been modified in a way that cannot be saved and restored.");
 	try {
 		State s;
+		if (transformDirty) {
+			transformDirty = false;
+			transform.getElements(currentState.affineMatrix = new float[6]);
+		}
 		if (stack.size() > stackPointer) {
 			s = (State)stack.get(stackPointer);
 			s.copyFrom(currentState);
 		} else {
 			stack.add(currentState.clone());
 		}
+		sharedClip = true;
 		stackPointer++;
 	} catch (CloneNotSupportedException e) {
 		throw new RuntimeException(e.getMessage());
@@ -519,27 +579,58 @@ public void restoreState() {
  * @param s the State
  */
 protected void restoreState(State s) {
+	//Must set the transformation matrix first since it affects font, clipping, and linewidth.
+	setAffineMatrix(s.affineMatrix);
+	currentState.clipping = s.clipping;
+	s.clipping.setOn(gc);
+	sharedClip = true;
 	setBackgroundColor(s.bgColor);
 	setForegroundColor(s.fgColor);
 	setLineStyle(s.lineStyle);
 	setLineWidth(s.lineWidth);
 	setFont(s.font);
 	setXORMode(s.xor);
-	setClipAbsolute(s.clipX, s.clipY, s.clipW, s.clipH);
+	setAlpha(s.alpha);
+}
 
-	translateX = currentState.dx = s.dx;
-	translateY = currentState.dy = s.dy;
-
-	relativeClip.x = s.clipX - translateX;
-	relativeClip.y = s.clipY - translateY;
-	relativeClip.width = s.clipW;
-	relativeClip.height = s.clipH;
+/**
+ * @see Graphics#rotate(float)
+ */
+public final void rotate(float degrees) {
+	transform.rotate(degrees);
+	transformDirty = true;
+	currentState.clipping = null;
+	gc.setTransform(transform);
 }
 
 /**
  * @see Graphics#scale(double)
  */
-public void scale(double factor) { }
+public void scale(double factor) {
+	//Flush any line widths, font settings, and clipping
+	checkText();
+	transform.scale((float)factor, (float)factor);
+	gc.setTransform(transform);
+	transformDirty = true;
+	if (currentState.clipping != null)
+		currentState.clipping.scale(factor);
+}
+
+private void setAffineMatrix(float[] m) {
+	if (!transformDirty && currentState.affineMatrix == m)
+		return;
+	currentState.affineMatrix = m;
+	if (m == null)
+		transform.setElements(1, 0, 0, 1, 0, 0);
+	else
+		transform.setElements(m[0], m[1], m[2], m[3], m[4], m[5]);
+	gc.setTransform(transform);
+}
+
+public void setAlpha(int alpha) {
+	if (currentState.alpha != alpha)
+		gc.setAlpha(this.currentState.alpha = alpha);
+}
 
 /**
  * @see Graphics#setBackgroundColor(Color)
@@ -552,15 +643,8 @@ public void setBackgroundColor(Color color) {
  * @see Graphics#setClip(Rectangle)
  */
 public void setClip(Rectangle rect) {
-	relativeClip.x = rect.x;
-	relativeClip.y = rect.y;
-	relativeClip.width = rect.width;
-	relativeClip.height = rect.height;
-
-	setClipAbsolute(rect.x + translateX,
-			    rect.y + translateY,
-			    rect.width,
-			    rect.height);
+	currentState.clipping = new RectangleClipping(rect);
+	currentState.clipping.setOn(gc);
 }
 
 /**
@@ -571,16 +655,7 @@ public void setClip(Rectangle rect) {
  * @param h the height value
  */
 protected void setClipAbsolute(int x, int y, int w, int h) {
-	if (currentState.clipW == w 
-		&& currentState.clipH == h 
-		&& currentState.clipX == x 
-		&& currentState.clipY == y) 
-			return;
-
-	currentState.clipX = x;
-	currentState.clipY = y;
-	currentState.clipW = w;
-	currentState.clipH = h;
+	//MUSTFIX - this method was being called from setClip
 }
 
 /**
@@ -598,6 +673,34 @@ public void setForegroundColor(Color color) {
 }
 
 /**
+ * @see org.eclipse.draw2d.Graphics#setLineCap(int)
+ */
+public void setLineCap(int cap) {
+	if ((currentState.lineAttributes >> 2 | 3) == cap)
+		return;
+	currentState.lineAttributes &= ~12;
+	gc.setLineCap(cap);
+	currentState.lineAttributes |= (cap << 2); 
+}
+
+/**
+ * @see org.eclipse.draw2d.Graphics#setLineDash(int[])
+ */
+public void setLineDash(int[] dash) {
+	gc.setLineDash(currentState.lineDash = dash);
+}
+
+/**
+ * @see org.eclipse.draw2d.Graphics#setLineJoin(int)
+ */
+public void setLineJoin(int join) {
+	if ((currentState.lineAttributes & 3) == join)
+		return;
+	currentState.lineAttributes &= ~3;
+	gc.setLineJoin(currentState.lineAttributes = join);
+}
+
+/**
  * @see Graphics#setLineStyle(int)
  */
 public void setLineStyle(int style) {
@@ -612,38 +715,25 @@ public void setLineWidth(int width) {
 }
 
 /**
- * Sets the translation values of this to the given values
- * @param x The x value
- * @param y The y value
- */
-protected void setTranslation(int x, int y) {
-	translateX = currentState.dx = x;
-	translateY = currentState.dy = y;
-}
-
-/**
  * @see Graphics#setXORMode(boolean)
  */
 public void setXORMode(boolean b) {
-	currentState.xor = b;
-}
-
-private void translatePointArray(int[] points, int translateX, int translateY) {
-	if (translateX == 0 && translateY == 0)
-		return;
-	for (int i = 0; (i + 1) < points.length; i += 2) {
-		points[i] += translateX;
-		points[i + 1] += translateY;
-	}
+	gc.setXORMode(currentState.xor = b);
 }
 
 /**
  * @see Graphics#translate(int, int)
  */
-public void translate(int x, int y) {
-	setTranslation(translateX + x, translateY + y);
-	relativeClip.x -= x;
-	relativeClip.y -= y;
+public void translate(int dx, int dy) {
+	if (sharedClip) {
+		currentState.clipping = currentState.clipping.getCopy();
+		sharedClip = false;
+	}
+	transform.translate(dx, dy);
+	if (currentState.clipping != null)
+		currentState.clipping.translate(-dx, -dy);
+	transformDirty = true;
+	gc.setTransform(transform);
 }
 
 }
