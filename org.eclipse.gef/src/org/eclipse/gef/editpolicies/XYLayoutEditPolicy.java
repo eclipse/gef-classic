@@ -56,25 +56,32 @@ public Object getConstraintFor(Point p) {
  * from getting lost. If the Request is a MOVE, the existing width and height are
  * preserved. During RESIZE, the new width and height have a lower bound determined by
  * {@link #getMinimumSizeFor(GraphicalEditPart)}.
- * @see ConstrainedLayoutEditPolicy#getConstraintFor(ChangeBoundsRequest,
- * 	GraphicalEditPart)
+ * 
+ * @see ConstrainedLayoutEditPolicy#getConstraintFor(ChangeBoundsRequest, GraphicalEditPart)
  */
 protected Object getConstraintFor(ChangeBoundsRequest request, GraphicalEditPart child) {
 	Rectangle rect = new PrecisionRectangle(child.getFigure().getBounds());
 	child.getFigure().translateToAbsolute(rect);
+	Rectangle original = rect.getCopy();
 	rect = request.getTransformedRectangle(rect);
 	child.getFigure().translateToRelative(rect);
 	rect.translate(getLayoutOrigin().getNegated());
 
-	if (request.getSizeDelta().width == 0 && request.getSizeDelta().height == 0) {
+	if (request.getSizeDelta().width == 0 && request.getSizeDelta().height == 0) { // move
 		Rectangle cons = (Rectangle)getCurrentConstraintFor(child);
 		rect.setSize(cons.width, cons.height);
-	} else {
+	} else { // resize
 		Dimension minSize = getMinimumSizeFor(child);
-		if (rect.width < minSize.width)
+		if (rect.width < minSize.width) {
 			rect.width = minSize.width;
-		if (rect.height < minSize.height)
+			if (rect.x > (original.right() - minSize.width))
+				rect.x = original.right() - minSize.width;
+		}
+		if (rect.height < minSize.height) {
 			rect.height = minSize.height;
+			if (rect.y > (original.bottom() - minSize.height))
+				rect.y = original.bottom() - minSize.height;
+		}
 	}
 	return getConstraintFor(rect);
 }
