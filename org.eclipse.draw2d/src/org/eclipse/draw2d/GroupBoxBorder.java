@@ -7,7 +7,6 @@ package org.eclipse.draw2d;
  */
 
 import org.eclipse.draw2d.geometry.*;
-import org.eclipse.swt.graphics.RGB;
 
 /**
  * A labeled border intended to house a Figure with a group of children.

@@ -6,11 +6,9 @@ package org.eclipse.draw2d;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import java.util.*;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.draw2d.geometry.*;
+import java.util.Iterator;
+
 import org.eclipse.draw2d.util.Timer;
-import java.beans.*;
 
 /**
  * A model for buttons.

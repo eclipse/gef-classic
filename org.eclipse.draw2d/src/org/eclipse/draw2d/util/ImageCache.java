@@ -6,10 +6,11 @@ package org.eclipse.draw2d.util;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.draw2d.geometry.*;
-import org.eclipse.draw2d.internal.Draw2dMessages;
 
 public class ImageCache {
 	

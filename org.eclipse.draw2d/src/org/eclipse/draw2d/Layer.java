@@ -6,10 +6,6 @@ package org.eclipse.draw2d;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import java.util.*;
-
-import org.eclipse.draw2d.geometry.*;
-
 /**
  * Transparent Figure intended to be added exclusively to 
  * a {@link LayeredPane}, who has the responsibilty of managing 

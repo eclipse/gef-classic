@@ -6,10 +6,8 @@ package org.eclipse.draw2d;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.swt.graphics.Cursor;
 
 /**
  * A collection of cursors.

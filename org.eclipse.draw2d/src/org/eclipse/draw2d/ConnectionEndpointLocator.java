@@ -5,9 +5,6 @@ package org.eclipse.draw2d;
  * US Government Users Restricted Rights - Use, duplication or disclosure
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
-import java.awt.geom.*;
-
-import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.*;
 
 /**

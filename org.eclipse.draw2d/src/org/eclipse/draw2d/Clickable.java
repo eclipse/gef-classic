@@ -6,11 +6,9 @@ package org.eclipse.draw2d;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import java.util.*;
+import java.util.Iterator;
 
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.draw2d.geometry.*;
-import org.eclipse.draw2d.util.Timer;
+import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
  * Clickable - that which responds to mouse clicks in some way

@@ -6,17 +6,14 @@ package org.eclipse.draw2d;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
+import org.eclipse.draw2d.internal.Draw2dMessages;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.graphics.Cursor;
-import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.accessibility.AccessibleControlEvent;
+import org.eclipse.swt.accessibility.AccessibleEvent;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.TraverseEvent;
-import org.eclipse.swt.accessibility.*;
-
-import org.eclipse.draw2d.EventDispatcher.AccessibilityDispatcher;
-import org.eclipse.draw2d.geometry.*;
-import org.eclipse.draw2d.internal.Draw2dMessages;
+import org.eclipse.swt.graphics.Cursor;
+import org.eclipse.swt.widgets.Control;
 
 /**
  * The SWTEventDispatcher provides draw2d with the ability to 

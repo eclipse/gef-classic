@@ -6,8 +6,8 @@ package org.eclipse.draw2d;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.swt.graphics.RGB;
-import org.eclipse.draw2d.geometry.*;
+import org.eclipse.draw2d.geometry.Insets;
+import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
  * Provides a two pixel wide constant sized border,

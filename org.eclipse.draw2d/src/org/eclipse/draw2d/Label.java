@@ -6,13 +6,9 @@ package org.eclipse.draw2d;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.swt.graphics.RGB;
+import org.eclipse.draw2d.geometry.*;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.FontMetrics;
-import org.eclipse.swt.graphics.FontData;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.draw2d.geometry.*;
 
 public class Label
 	extends Figure

@@ -6,10 +6,8 @@ package org.eclipse.draw2d;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Color;
-
-import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.swt.graphics.Font;
 
 /**
  * Provides for a frame-like border which contains a 

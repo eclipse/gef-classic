@@ -6,12 +6,11 @@ package org.eclipse.draw2d;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Color;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import org.eclipse.draw2d.geometry.*;
-
-import java.beans.*;
+import org.eclipse.swt.graphics.Color;
 
 /**
  * Provides for the scrollbars used by the

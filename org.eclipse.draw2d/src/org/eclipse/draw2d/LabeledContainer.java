@@ -7,7 +7,6 @@ package org.eclipse.draw2d;
  */
 
 import org.eclipse.swt.graphics.Font;
-import org.eclipse.draw2d.geometry.*;
 
 /**
  * LabeledContainer - Container with a title bar

@@ -8,11 +8,9 @@ package org.eclipse.draw2d.util;
 
 import java.util.Date;
 
+import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
-
-import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.internal.Draw2dMessages;
 
 public class ImageInfo {
 	

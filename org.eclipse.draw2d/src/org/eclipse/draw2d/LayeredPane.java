@@ -6,8 +6,8 @@ package org.eclipse.draw2d;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.draw2d.geometry.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * LayeredPane - Figure capable of holding any number of layers.

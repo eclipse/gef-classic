@@ -6,15 +6,15 @@ package org.eclipse.draw2d;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import java.beans.*;
 import java.beans.PropertyChangeEvent;
-
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.*;
-import org.eclipse.swt.widgets.*;
-import org.eclipse.swt.widgets.ScrollBar;
+import java.beans.PropertyChangeListener;
 
 import org.eclipse.draw2d.geometry.*;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.widgets.Canvas;
+import org.eclipse.swt.widgets.Composite;
 
 /**
  * A Canvas that contains {@link Figure Figures}.

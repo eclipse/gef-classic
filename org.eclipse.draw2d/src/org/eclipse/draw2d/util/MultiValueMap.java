@@ -7,9 +7,7 @@ package org.eclipse.draw2d.util;
  */
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.HashMap;
-import java.util.Map;
 
 public class MultiValueMap {
 	private HashMap map = new HashMap();

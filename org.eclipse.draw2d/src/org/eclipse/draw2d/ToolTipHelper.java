@@ -6,14 +6,10 @@ package org.eclipse.draw2d;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.*;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.events.*;
-
-import org.eclipse.draw2d.geometry.*;
+import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.util.UITimer;
+import org.eclipse.swt.events.MouseTrackAdapter;
+import org.eclipse.swt.graphics.Point;
 
 /**
  * This class is used by SWTEventDispatcher as support to 

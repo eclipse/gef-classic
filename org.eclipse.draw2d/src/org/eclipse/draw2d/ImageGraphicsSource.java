@@ -6,12 +6,6 @@ package org.eclipse.draw2d;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.draw2d.geometry.*;
-import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.events.*;
-
 class ImageGraphicsSource
 //	implements GraphicsSource
 {

@@ -6,8 +6,7 @@ package org.eclipse.draw2d;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.draw2d.geometry.*;
-import org.eclipse.swt.graphics.Color;
+import org.eclipse.draw2d.geometry.Insets;
 
 /**
  * Provides for a simple border with all sides

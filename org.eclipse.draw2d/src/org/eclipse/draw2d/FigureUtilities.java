@@ -6,15 +6,11 @@ package org.eclipse.draw2d;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.RGB;
-import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.FontMetrics;
-import org.eclipse.swt.widgets.Shell;
+import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.widgets.Display;
-
-import org.eclipse.draw2d.geometry.*;
+import org.eclipse.swt.widgets.Shell;
 
 /**
  * Provides miscellaneous Figure operations.

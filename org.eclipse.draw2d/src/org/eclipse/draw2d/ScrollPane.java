@@ -6,9 +6,7 @@ package org.eclipse.draw2d;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.draw2d.geometry.*;
-import java.util.*;
-import java.beans.*;
+import org.eclipse.draw2d.geometry.Point;
 
 /**
  * A class which implements automatic horizontal and/or

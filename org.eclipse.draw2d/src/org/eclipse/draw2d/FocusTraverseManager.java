@@ -8,8 +8,6 @@ package org.eclipse.draw2d;
 
 import java.util.List;
 
-import org.eclipse.swt.widgets.Control;
-
 /**
  * This class is a helper to the {@link SWTEventDispatcher}. 
  * It handles the task of determining which Figure will gain 

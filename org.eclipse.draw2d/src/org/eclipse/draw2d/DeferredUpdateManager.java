@@ -7,9 +7,9 @@ package org.eclipse.draw2d;
  */
 
 import java.util.*;
-import org.eclipse.swt.graphics.GC;
+
+import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.draw2d.geometry.*;
 
 public class DeferredUpdateManager
 	extends UpdateManager

@@ -6,9 +6,6 @@ package org.eclipse.draw2d.parts;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Font;
-
 import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.*;
 

@@ -6,8 +6,7 @@ package org.eclipse.draw2d;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import java.util.List;
-import org.eclipse.draw2d.geometry.*;
+import org.eclipse.draw2d.geometry.Rectangle;
 
 public class FreeformLayeredPane
 	extends LayeredPane

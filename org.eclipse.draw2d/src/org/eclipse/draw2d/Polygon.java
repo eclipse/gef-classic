@@ -8,8 +8,6 @@ package org.eclipse.draw2d;
 
 import java.util.List;
 
-import org.eclipse.draw2d.geometry.*;
-
 /**
  * Draws a polygon which encloses all of its {@link Point Points}.
  */

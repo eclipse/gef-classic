@@ -6,9 +6,7 @@ package org.eclipse.draw2d.parts;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.geometry.*;
-import java.util.*;
+import java.util.Date;
 
 /**
  * Holds the count information, and notifies

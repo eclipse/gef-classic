@@ -6,12 +6,7 @@ package org.eclipse.draw2d;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import java.util.*;
-
-import org.eclipse.draw2d.geometry.Rectangle;
-
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Color;
 
 /**
  * Button - that which has a border (usually) and appears to move up and down

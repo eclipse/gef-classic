@@ -6,8 +6,7 @@ package org.eclipse.draw2d;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.draw2d.geometry.*;
-import org.eclipse.swt.graphics.Image;
+import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
  * LabelAnchors must have an owner of type {@link Label Label}.

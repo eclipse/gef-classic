@@ -6,8 +6,8 @@ package org.eclipse.draw2d.parts;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.SubordinateUpdateManager;
 
 class ThumbnailUpdateManager 
 extends SubordinateUpdateManager 

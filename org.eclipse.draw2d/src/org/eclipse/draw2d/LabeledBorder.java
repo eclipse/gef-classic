@@ -8,8 +8,6 @@ package org.eclipse.draw2d;
 
 import org.eclipse.swt.graphics.Font;
 
-import org.eclipse.draw2d.geometry.Dimension;
-
 /**
  * Labeled Borders have a text message somewhere on them.
  * The font for the text can be set.

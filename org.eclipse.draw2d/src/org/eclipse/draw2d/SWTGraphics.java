@@ -14,7 +14,6 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.draw2d.geometry.*;
 
 /**

@@ -7,12 +7,9 @@ package org.eclipse.draw2d;
  */
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.graphics.Color;
-
-import org.eclipse.draw2d.geometry.*;
-import org.eclipse.draw2d.util.UITimer;
 
 /**
  * Provides abstract support for classes that manage popups.
