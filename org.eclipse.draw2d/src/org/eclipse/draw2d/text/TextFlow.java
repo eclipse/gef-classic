@@ -36,12 +36,8 @@ public class TextFlow extends InlineFlow {
 
 static final String ELLIPSIS = "..."; //$NON-NLS-1$
 
-static final char LRO = '\u202d';
-static final char RLO = '\u202e';
-
 static final int SELECT_ALL = 1;
 static final int SELECT_PARTIAL = 2;
-static final String ZWJ = "\u200d";
 private BidiInfo bidiInfo;
 
 private int selectionEnd = -1;
@@ -86,10 +82,10 @@ boolean addLeadingWordWidth(String text, int[] width) {
 	if (Character.isWhitespace(text.charAt(0)))
 		return true;
 
-	BreakIterator lineBreaker = BreakIterator.getLineInstance();
+	BreakIterator wordBreaker = FlowUtilities.WORD_BREAK;
 	text = 'a' + text + 'a';
-	lineBreaker.setText(text);
-	int index = lineBreaker.next();
+	wordBreaker.setText(text);
+	int index = wordBreaker.next();
 	boolean result = index < text.length() - 1;
 
 	// An optimization to prevent unnecessary invocation of String.substring and 
@@ -97,7 +93,9 @@ boolean addLeadingWordWidth(String text, int[] width) {
 	if (index == 0)
 		return result;
 	
-	text = text.substring(0, index);
+	while (text.charAt(index - 1) == ' ')
+		index--;
+	text = text.substring(1, index);
 	
 	if (bidiInfo == null)
 		width[0] += FlowUtilities.getStringExtents(text, getFont()).width;
@@ -200,13 +198,17 @@ public BidiInfo getBidiInfo() {
  * @since 3.1
  */
 private String getBidiSubstring(TextFragmentBox box, int index) {
-	if (bidiInfo == null)
+	if (bidiInfo == null || box.bidiLevel < 1)
 		return text.substring(box.offset, box.offset + box.length);
 	
-	return (box.isRightToLeft() ? RLO : LRO) 
-			+ ((index == 0 && bidiInfo.leadingJoiner) ? ZWJ : "")
-			+ text.substring(box.offset, box.offset + box.length)
-			+ ((index == fragments.size() - 1 && bidiInfo.trailingJoiner) ? ZWJ : "");
+	StringBuffer buffer = new StringBuffer(box.length + 3);
+	buffer.append(box.isRightToLeft() ? BidiChars.RLO : BidiChars.LRO);
+	if (index == 0 && bidiInfo.leadingJoiner)
+		buffer.append(BidiChars.ZWJ);
+	buffer.append(text.substring(box.offset, box.offset + box.length));
+	if (index == fragments.size() - 1 && bidiInfo.trailingJoiner)
+		buffer.append(BidiChars.ZWJ);
+	return buffer.toString();
 }
 
 /**
@@ -242,15 +244,9 @@ public Rectangle getCaretPlacement(int offset, boolean trailing) {
 	TextLayout layout = FlowUtilities.getTextLayout();
 	layout.setFont(getFont());
 
-	String fragString;
-	if (bidiInfo == null)
-		fragString = text.substring(box.offset, box.offset + box.length);
-	else {
-		offset++;
-		if (i == 0 && bidiInfo.leadingJoiner)
-			offset++;
-		fragString = getBidiSubstring(box, i);
-	}
+	String fragString = getBidiSubstring(box, i);
+	if (bidiInfo != null)
+		offset += getBidiPrefixLength(box, i);
 
 	layout.setText(fragString);
 	Point where = new Point(layout.getLocation(offset, trailing));
@@ -353,18 +349,11 @@ public int getOffset(Point p, int trailing[]) {
 		if (!box.containsPoint(p.x, p.y))
 			continue;
 		
-		String substring = text.substring(box.offset, box.offset + box.length);
+		String substring = getBidiSubstring(box, i);
 		int bidiCorrection = 0;
-		if (bidiInfo != null) {
-			if (i == 0 && bidiInfo.leadingJoiner)
-				bidiCorrection = -2;
-			else
-				bidiCorrection = -1;
-			substring = (box.isRightToLeft() ? RLO : LRO)
-				+ (bidiCorrection == -2 ? ZWJ : "")
-				+ substring
-				+ ((i == fragments.size() - 1 && bidiInfo.trailingJoiner) ? ZWJ : "");
-		}
+		if (bidiInfo != null)
+			bidiCorrection = -getBidiPrefixLength(box, i);
+		
 		
 		TextLayout layout = FlowUtilities.getTextLayout();
 		layout.setFont(getFont());
@@ -376,6 +365,18 @@ public int getOffset(Point p, int trailing[]) {
 	return -1;
 }
 
+
+/**
+ * @return
+ * @since 3.1
+ */
+private int getBidiPrefixLength(TextFragmentBox box, int index) {
+	if (box.bidiLevel < 1)
+		return 0;
+	if (index > 0 || !bidiInfo.leadingJoiner)
+		return 1;
+	return 2;
+}
 
 /**
  * Returns the previous offset which is visible in at least one fragment or -1 if there
@@ -471,18 +472,8 @@ protected void paintSelection(Graphics graphics) {
 		if (selectionStart <= frag.offset && selectionEnd >= frag.offset + frag.length)
 			graphics.fillRectangle(frag.x, frag.y, frag.getWidth(), frag.getHeight());
 		else if (selectionEnd > frag.offset && selectionStart < frag.offset + frag.length) {
-			int prefixCorrection = 0;
-			String text = getText().substring(frag.offset, frag.offset + frag.length);
-			if (frag.bidiLevel != -1) {
-				if (i == 0 && bidiInfo.leadingJoiner)
-					prefixCorrection = 2;
-				else
-					prefixCorrection = 1;
-				text = (frag.bidiLevel % 2 == 0 ? LRO : RLO)
-						+ (prefixCorrection == 1 ? "" : ZWJ)
-						+ text
-						+ (i == fragments.size() - 1 && bidiInfo.trailingJoiner ? ZWJ : "");
-			}
+			int prefixCorrection = getBidiPrefixLength(frag, i);
+			String text = getBidiSubstring(frag, i);
 
 			TextLayout layout = FlowUtilities.getTextLayout();
 			layout.setFont(graphics.getFont());
@@ -501,13 +492,9 @@ protected void paintSelection(Graphics graphics) {
 }
 
 private void paintText(Graphics g, String draw, int x, int y, int bidiLevel) {
-	if (bidiLevel == -1) {
+	if (bidiLevel < 1) {
 		g.drawString(draw, x, y);
 	} else {
-		if ((bidiLevel % 2) == 1)
-			draw = LRO + draw;
-		else
-			draw = RLO + draw;
 		TextLayout tl = FlowUtilities.getTextLayout();
 		tl.setFont(g.getFont());
 		tl.setText(draw);
