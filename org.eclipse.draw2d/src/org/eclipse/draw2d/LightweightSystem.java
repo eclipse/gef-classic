@@ -473,12 +473,12 @@ protected class EventHandler
 	
 	/** @see TraverseListener#keyTraversed(TraverseEvent) */
 	public void keyTraversed(TraverseEvent e) {
-		// Only dispatch the tab next and previous events for now
-		if (e.detail == SWT.TRAVERSE_TAB_NEXT || e.detail == SWT.TRAVERSE_TAB_PREVIOUS) {
-			// SWT : For some reason, this is false by default on a Canvas for TAB_NEXT
-		   	e.doit = true; 
-			getEventDispatcher().dispatchKeyTraversed(e);
-		}
+		/*
+		 * Doit is almost always false by default for Canvases with KeyListeners. Set to
+		 * true to allow normal behavior.  For example, in Dialogs ESC should close.
+		 */
+	   	e.doit = true; 
+		getEventDispatcher().dispatchKeyTraversed(e);
 	}
 	
 	/** @see org.eclipse.swt.events.MouseListener#mouseDoubleClick(MouseEvent) */
