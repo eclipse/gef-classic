@@ -18,7 +18,6 @@ import org.eclipse.swt.widgets.Composite;
 
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.ui.palette.PaletteViewer;
-import org.eclipse.gef.ui.palette.PaletteViewer;
 
 public abstract class GraphicalEditorWithPalette 
 	extends GraphicalEditor 
