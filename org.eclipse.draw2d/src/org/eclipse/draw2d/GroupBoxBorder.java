@@ -50,14 +50,6 @@ public Dimension getPreferredSize( IFigure fig ){
 	return textSize.getCopy().expand(textSize.height * 2, 0);
 }
 
-/*
- * Returns false, making the Figure
- * for which this is the border clip the non-
- * border region and fill it up itself. An 
- * optimization for drawing borders.
- */
-public boolean isOpaque(){return false;}
-
 public void paint(IFigure figure, Graphics g, Insets insets){
 	tempRect.setBounds(getPaintRectangle(figure, insets));
 	Rectangle r = tempRect;
