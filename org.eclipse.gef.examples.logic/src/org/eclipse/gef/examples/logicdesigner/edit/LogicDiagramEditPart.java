@@ -17,6 +17,8 @@ import java.util.List;
 import org.eclipse.swt.accessibility.AccessibleEvent;
 
 import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2d.geometry.Point;
 
 import org.eclipse.gef.*;
 import org.eclipse.gef.editpolicies.RootComponentEditPolicy;
@@ -39,8 +41,11 @@ public class LogicDiagramEditPart
 	extends LogicContainerEditPart
 	implements LayerConstants
 {
-
-final private List fEmptyHandles = new ArrayList();
+	
+public void activate() {
+	super.activate();
+	getViewer().addPropertyChangeListener(this);
+}
 
 protected AccessibleEditPart createAccessible() {
 	return new AccessibleGraphicalEditPart(){
@@ -68,7 +73,18 @@ protected void createEditPolicies(){
  * @return  Figure.
  */
 protected IFigure createFigure() {
-	Figure f = new FreeformLayer();
+	Figure f = new FreeformLayer() {
+		protected void paintFigure(Graphics graphics) {
+			super.paintFigure(graphics);
+			graphics.setForegroundColor(ColorConstants.lightGray);
+			Boolean val = (Boolean)getViewer().getProperty(SnapToGrid.PROPERTY_GRID_ENABLED);
+			if (val != null && val.booleanValue()) {
+				Dimension spacing = (Dimension)getViewer().getProperty(SnapToGrid.GRID_SPACING);
+				Point origin = (Point)getViewer().getProperty(SnapToGrid.GRID_ORIGIN);
+				FigureUtilities.paintGrid(graphics, this, origin, spacing.width, spacing.height);
+			}
+		}
+	};
 //	f.setBorder(new GroupBoxBorder("Diagram"));
 	f.setLayoutManager(new FreeformLayout());
 	f.setBorder(new MarginBorder(5));
@@ -77,18 +93,23 @@ protected IFigure createFigure() {
 	return f;
 }
 
+public void deactivate() {
+	getViewer().removePropertyListener(this);
+	super.deactivate();
+}
+
 /**
  * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
  */
 public Object getAdapter(Class adapter) {
 	if (adapter == SnapToStrategy.class) {
 		List snapStrategies = new ArrayList();
-		Boolean val = (Boolean)getViewer().getProperty(SnapToGeometry.PROPERTY_SNAP_ENABLED);
-		if (val != null && val.booleanValue())
-			snapStrategies.add(new SnapToGeometry(this));
-		val = (Boolean)getViewer().getProperty(RulerProvider.RULER_VISIBILITY);
+		Boolean val = (Boolean)getViewer().getProperty(RulerProvider.RULER_VISIBILITY);
 		if (val != null && val.booleanValue())
 			snapStrategies.add(new SnapToGuides(this));
+		val = (Boolean)getViewer().getProperty(SnapToGeometry.PROPERTY_SNAP_ENABLED);
+		if (val != null && val.booleanValue())
+			snapStrategies.add(new SnapToGeometry(this));
 		val = (Boolean)getViewer().getProperty(SnapToGrid.PROPERTY_GRID_ENABLED);
 		if (val != null && val.booleanValue())
 			snapStrategies.add(new SnapToGrid(this));
@@ -150,7 +171,12 @@ public ConnectionAnchor getTargetConnectionAnchor(int x, int y) {
 }
 
 public void propertyChange(PropertyChangeEvent evt){
-	if (LogicDiagram.ID_ROUTER.equals(evt.getPropertyName()))
+	String property = evt.getPropertyName();
+	if (property.equals(SnapToGrid.PROPERTY_GRID_ENABLED)
+			|| property.equals(SnapToGrid.GRID_ORIGIN) 
+			|| property.equals(SnapToGrid.GRID_SPACING))
+		getFigure().repaint();
+	else if (LogicDiagram.ID_ROUTER.equals(property))
 		refreshVisuals();
 	else
 		super.propertyChange(evt);
