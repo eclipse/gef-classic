@@ -45,6 +45,7 @@ import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.rulers.RulerProvider;
 import org.eclipse.gef.ui.actions.*;
 import org.eclipse.gef.ui.palette.*;
+import org.eclipse.gef.ui.palette.FlyoutPaletteComposite.Preferences;
 import org.eclipse.gef.ui.parts.*;
 import org.eclipse.gef.ui.rulers.RulerComposite;
 import org.eclipse.gef.ui.stackview.CommandStackInspectorPage;
@@ -468,37 +469,6 @@ protected Control getGraphicalControl() {
 	return rulerComp;
 }
 
-protected int getInitialDockLocation() {
-	return LogicPlugin.getDefault().getPreferenceStore().getInt(PALETTE_DOCK_LOCATION);
-}
-
-/**
- * @see org.eclipse.gef.ui.parts.GraphicalEditorWithPalette#getInitialPaletteSize()
- */
-protected int getInitialPaletteSize() {
-	return LogicPlugin.getDefault().getPreferenceStore().getInt(PALETTE_SIZE);
-}
-
-protected int getInitialPaletteState() {
-	return LogicPlugin.getDefault().getPreferenceStore().getInt(PALETTE_STATE);
-}
-
-protected void handleDockLocationChanged(int newDockLocation) {
-	LogicPlugin.getDefault().getPreferenceStore()
-			.setValue(PALETTE_DOCK_LOCATION, newDockLocation);
-}
-
-protected void handlePaletteDefaultStateChanged(int newState) {
-	LogicPlugin.getDefault().getPreferenceStore().setValue(PALETTE_STATE, newState);
-}
-
-/**
- * @see org.eclipse.gef.ui.parts.GraphicalEditorWithPalette#handlePaletteResized(int)
- */
-protected void handlePaletteResized(int newSize) {
-	LogicPlugin.getDefault().getPreferenceStore().setValue(PALETTE_SIZE, newSize);
-}
-
 /**
  * Returns the KeyHandler with common bindings for both the Outline and Graphical Views.
  * For example, delete is a common action.
@@ -518,6 +488,33 @@ protected KeyHandler getCommonKeyHandler(){
 
 protected LogicDiagram getLogicDiagram() {
 	return logicDiagram;
+}
+
+protected Preferences getPalettePreferences() {
+	return new Preferences() {
+		public int getDockLocation() {
+			return LogicPlugin.getDefault().getPreferenceStore()
+					.getInt(PALETTE_DOCK_LOCATION);
+		}
+		public int getPaletteState() {
+			return LogicPlugin.getDefault().getPreferenceStore().getInt(PALETTE_STATE);
+		}
+		public int getPaletteWidth() {
+			return LogicPlugin.getDefault().getPreferenceStore().getInt(PALETTE_SIZE);
+		}
+		public void setDockLocation(int location) {
+			LogicPlugin.getDefault().getPreferenceStore()
+					.setValue(PALETTE_DOCK_LOCATION, location);
+		}
+		public void setPaletteState(int state) {
+			LogicPlugin.getDefault().getPreferenceStore()
+					.setValue(PALETTE_DOCK_LOCATION, state);
+		}
+		public void setPaletteWidth(int width) {
+			LogicPlugin.getDefault().getPreferenceStore()
+					.setValue(PALETTE_DOCK_LOCATION, width);
+		}
+	};
 }
 
 protected PaletteRoot getPaletteRoot() {
