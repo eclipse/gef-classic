@@ -46,6 +46,7 @@ public abstract class AbstractTransferDropTargetListener
 private DropTargetEvent currentEvent;
 private AutoexposeHelper exposeHelper;
 private boolean hovering = false;
+private boolean askForCommand;
 private long hoverStartTime = -1;
 private Point prevMouseLoc;
 private Request request;
@@ -328,7 +329,7 @@ protected void handleEnteredEditPart() { }
  * to erase feedback.
  */
 protected void handleExitingEditPart() {
-	eraseTargetFeedback(); 
+	eraseTargetFeedback();
 }
 
 /**
@@ -363,12 +364,33 @@ public boolean isEnabled(DropTargetEvent event) {
 			setCurrentEvent(event);
 			event.currentDataType = event.dataTypes[i];
 			updateTargetRequest();
-			boolean result = calculateTargetEditPart() != null;
+			EditPart oldTarget = target;
+			updateTargetEditPart();
+			boolean result;
+			if (target == null)
+				result = false;
+			else if (askForCommand) {
+				Command command = getCommand();
+				result = command != null && command.canExecute();
+			} else
+				result = true;
 			request = null;
+			target = oldTarget;
 			return result;
 		}
 	}
 	return false;
+}
+
+/**
+ * Returns <code>true</code> if {@link #isEnabled(DropTargetEvent)} is
+ * determined by asking the potential target for a Command.
+ * @return <code>true</code> if the target will be queried for a
+ * <code>Command</code>
+ * @since 3.1
+ */
+protected boolean isEnablementDeterminedByCommand() {
+	return askForCommand;
 }
 
 private void resetHover() {
@@ -386,6 +408,19 @@ private void resetHover() {
  */
 protected void setAutoexposeHelper(AutoexposeHelper helper) {
 	exposeHelper = helper;
+}
+
+/**
+ * Determines if the target editpart should be asked for a Command during {@link
+ * #isEnabled(DropTargetEvent)}.  For most DND operations, the data is not
+ * available, thus asking for a command would not make sense.  The default value
+ * is <code>false</code>.
+ * 
+ * @param value <code>true</code> if a 
+ * @since 3.1
+ */
+protected void setEnablementDeterminedByCommand(boolean value) {
+	askForCommand = value;
 }
 
 /**
