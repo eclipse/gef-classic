@@ -51,6 +51,10 @@ public void execute() {
 	 */
 	boolean wasPropertySet = getTarget().isPropertySet(propertyName);
 	undoValue = getTarget().getPropertyValue(propertyName);
+	if (undoValue instanceof IPropertySource)
+		undoValue = ((IPropertySource)undoValue).getEditableValue();
+	if (propertyValue instanceof IPropertySource)
+		propertyValue = ((IPropertySource)propertyValue).getEditableValue();
 	getTarget().setPropertyValue(propertyName, propertyValue);
 	resetOnUndo = wasPropertySet != getTarget().isPropertySet(propertyName);
 	if (resetOnUndo)
