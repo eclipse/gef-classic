@@ -1,7 +1,8 @@
 package org.eclipse.gef.internal.ui.palette.editparts;
 
-import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Figure;
+import org.eclipse.draw2d.FigureUtilities;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Dimension;
@@ -54,7 +55,7 @@ static class SeparatorFigure extends Figure {
 		return new Dimension(wHint, getSize().height);
 	}
 	
-	static final Insets CROP = new Insets(0, 4, 0, 5);
+	private static final Insets CROP = new Insets(1, 4, 2, 5);
 
 	/**
 	 * 
@@ -62,15 +63,20 @@ static class SeparatorFigure extends Figure {
 	 */
 	protected void paintFigure(Graphics g) {
 		Rectangle r = getBounds().getCropped(CROP);
-		g.setBackgroundColor(ColorConstants.button);
-		g.fillRectangle(r);
-		r.resize(-2,-2);
-		g.setForegroundColor(ColorConstants.buttonLightest);
-		g.drawLine(r.x + 1, r.y + 1, r.right(), r.y + 1);
-		g.drawLine(r.x + 1, r.y + 1, r.x + 1, r.bottom());
-		g.setForegroundColor(ColorConstants.buttonDarker);
-		g.drawLine(r.right(), r.y + 1, r.right(), r.bottom());
-		g.drawLine(r.x + 1, r.bottom(), r.right(), r.bottom());
+		if (getBackgroundColor() == ColorConstants.listBackground) {
+			g.setForegroundColor(ColorConstants.button);
+			g.drawLine(r.getTopLeft(), r.getTopRight());
+			g.drawLine(r.getBottomLeft(), r.getBottomRight());
+		} else {
+			g.setForegroundColor(FigureUtilities.mixColors(
+						ColorConstants.buttonLightest, ColorConstants.button));
+			g.drawLine(r.getBottomLeft(), r.getTopLeft());
+			g.drawLine(r.getTopLeft(), r.getTopRight());
+			g.setForegroundColor(FigureUtilities.mixColors(
+						ColorConstants.button, ColorConstants.buttonDarker));
+			g.drawLine(r.getBottomLeft(), r.getBottomRight());
+			g.drawLine(r.getBottomRight(), r.getTopRight());
+		}
 	}
 }
 
