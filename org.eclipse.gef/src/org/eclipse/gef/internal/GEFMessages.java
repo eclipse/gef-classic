@@ -66,6 +66,14 @@ public String PrintAction_ActionToolTipText=Helper.getString("%PrintAction.Actio
 public String PrintAction_ActionLabelText=Helper.getString("%PrintAction.ActionLabelText_UI_");		//$NON-NLS-1$
 public String PrintAction_ActionDeleteCommandName=Helper.getString("%PrintAction.ActionDeleteCommandName_UI_");//$NON-NLS-1$
 
+public String CopyAction_ActionToolTipText=Helper.getString("%CopyAction.ActionToolTipText_UI_");	//$NON-NLS-1$
+public String CopyAction_ActionLabelText=Helper.getString("%CopyAction.ActionLabelText_UI_");		//$NON-NLS-1$
+public String CopyAction_ActionDeleteCommandName=Helper.getString("%CopyAction.ActionDeleteCommandName_UI_");//$NON-NLS-1$
+
+public String PasteAction_ActionToolTipText=Helper.getString("%PasteAction.ActionToolTipText_UI_");	//$NON-NLS-1$
+public String PasteAction_ActionLabelText=Helper.getString("%PasteAction.ActionLabelText_UI_");		//$NON-NLS-1$
+public String PasteAction_ActionDeleteCommandName=Helper.getString("%PasteAction.ActionDeleteCommandName_UI_");//$NON-NLS-1$
+
 public String RedoAction_ActionToolTipText=Helper.getString("%RedoAction.ActionToolTipText_UI_");		//$NON-NLS-1$
 public String RedoAction_ActionLabelText=Helper.getString("%RedoAction.ActionLabelText_UI_");			//$NON-NLS-1$
 public String RedoAction_ActionShortcutText=Helper.getString("%RedoAction.ActionShortcutText_UI_");		//$NON-NLS-1$
