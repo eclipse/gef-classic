@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.gef;
 
+import java.util.Map;
+
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.KeyEvent;
@@ -210,5 +212,19 @@ void viewerEntered(MouseEvent mouseEvent, EditPartViewer viewer);
  * @param viewer the Viewer which received a mouse exit
  */
 void viewerExited(MouseEvent mouseEvent, EditPartViewer viewer);
+
+/**
+ * This method can be invoked to set any properties of this tool.  This allows clients
+ * who do not have direct access to a Tool to still be able to configure that tool.  
+ * The given Map should have the property's key and value.  This method will ignore 
+ * unrecognized keys and values that are not of the expected type.
+ * <p>
+ * This method should only be invoked once when the tool is first constructed and is 
+ * being initialized.  Invoking this method at other times may have undesired effects. 
+ * @param properties a mapping of the properties to be set and their new values; can be
+ * <code>null</code>
+ * @since 3.1
+ */
+void setProperties(Map properties);
 
 }
