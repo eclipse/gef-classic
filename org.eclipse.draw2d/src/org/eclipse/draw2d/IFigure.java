@@ -10,15 +10,15 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
-import java.util.List;
+import java.beans.PropertyChangeListener;
 import java.util.Collection;
-import java.beans.*;
+import java.util.List;
 
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.Cursor;
+import org.eclipse.swt.graphics.*;
 
 import org.eclipse.draw2d.geometry.*;
+import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
  * A lightweight graphical representation.  Figures are rendered to a {@link Graphics} 
@@ -41,11 +41,6 @@ class NoInsets
 }
 
 /**
- * Empty Insets.
- */
-Insets NO_INSETS = new NoInsets();
-
-/**
  * The maximum allowable dimension. ({@link Integer#MAX_VALUE},{@link Integer#MAX_VALUE})
  */
 public static final Dimension MAX_DIMENSION = new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
@@ -53,6 +48,11 @@ public static final Dimension MAX_DIMENSION = new Dimension(Integer.MAX_VALUE, I
  * The minimum allowable dimension. (5,5)
  */
 public static final Dimension MIN_DIMENSION = new Dimension(5, 5);
+
+/**
+ * Empty Insets.
+ */
+Insets NO_INSETS = new NoInsets();
 
 /**
  * Adds the given IFigure as a child of this IFigure.
@@ -219,6 +219,12 @@ Border getBorder();
 Rectangle getBounds();
 
 /**
+ * Returns an unmodifiable list of children by reference.
+ * @return An unmodifiable list of children by reference
+ */
+List getChildren();
+
+/**
  * Returns the rectangular area within this Figure's bounds in which children will be
  * placed (via {@link LayoutManager LayoutManagers}) and the painting of children will be
  * clipped.
@@ -233,12 +239,6 @@ Rectangle getClientArea();
  * @return The same instance that was passed in, modified to contain the client area
  */
 Rectangle getClientArea(Rectangle rect);
-
-/**
- * Returns an unmodifiable list of children by reference.
- * @return An unmodifiable list of children by reference
- */
-List getChildren();
 
 /**
  * Returns the Cursor used when the mouse is over this IFigure.
@@ -372,7 +372,8 @@ void handleFocusLost(FocusEvent event);
  * <p><b>NOTE</b>: You should not override this method. If you are interested in receiving
  * notification of this type of event, you should register a {@link KeyListener} with
  * this IFigure.
- * @param event The key event */
+ * @param event The key event
+ */
 void handleKeyPressed(KeyEvent event);
 
 /**
@@ -513,8 +514,16 @@ boolean isOpaque();
 boolean isRequestFocusEnabled();
 
 /**
- * Returns <code>true</code> if this IFigure is visible.
- * @return <code>true</code> if this IFigure is visible
+ * Returns <code>true</code> if this IFigure is showing. This figure is only showing if
+ * it is visible and its parent is showing, or it has no parent.
+ * @return <code>true</code> if this IFigure is showing
+ */
+boolean isShowing();
+
+/**
+ * returns <code>true</code> if this figure's visibility flag is set to true. Does not
+ * walk up the parent chain.
+ * @return <code>true</code> if the figure's visibility flag is set
  */
 boolean isVisible();
 
@@ -566,6 +575,11 @@ void removeMouseListener(MouseListener listener);
 void removeMouseMotionListener(MouseMotionListener listener);
 
 /**
+ * Called before this IFigure is removed from its parent.
+ */
+void removeNotify();
+
+/**
  * Unregisters the given listener, so that it will no longer receive notification of any
  * property changes.
  * @param listener The listener to remove
@@ -581,11 +595,6 @@ void removePropertyChangeListener(PropertyChangeListener listener);
  * @param listener The listener no longer interested in the property
  */
 void removePropertyChangeListener(String property, PropertyChangeListener listener);
-
-/**
- * Called before this IFigure is removed from its parent.
- */
-void removeNotify();
 
 /**
  * Repaints this IFigure.
