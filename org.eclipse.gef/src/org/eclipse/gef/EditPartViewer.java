@@ -15,6 +15,8 @@ import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
+import org.eclipse.jface.action.MenuManager;
+
 /**
  * An adapter on an SWT {@link org.eclipse.swt.widgets.Control} that manages EditParts,
  * the conceptual objects with which the User interacts. The Viewer is responsible
@@ -155,11 +157,11 @@ void flush();
 EditPart getContents();
 
 /**
- * Returns the <code>ContextMenuProvider</code> for this viewer or <code>null</code> if 
- * no provider exists.
- * @return the ContextMenuProvider
+ * Returns the <code>MenuManager</code> for this viewer or <code>null</code> if  no
+ * provider exists.
+ * @return the MenuManager
  */
-ContextMenuProvider getContextMenuProvider();
+MenuManager getContextMenu();
 
 /**
  * Returns the SWT <code>Control</code> for this viewer.
@@ -274,14 +276,12 @@ void setContents(EditPart editpart);
 void setContents(Object contents);
 
 /**
- * Sets the <code>ContextMenuProvider</code> for this viewer.  The first time this is
- * called, a {@link org.eclipse.jface.action.MenuManager MenuManager} is created, and a
- * {@link org.eclipse.swt.widgets.Menu Menu} is created and made the context menu for this
- * viewer's <code>Control</code>.
+ * Sets the <code>MenuManager</code> for this viewer's context menu. This MenuManager
+ * creates the SWT Menu for this viewer's control.
  * @see #getControl()
  * @param contextMenu the <code>ContextMenuProvider</code>
  */
-void setContextMenuProvider(ContextMenuProvider contextMenu);
+void setContextMenu(MenuManager contextMenu);
 
 /**
  * Optionally sets the <code>Control</code> for this viewer.  The viewer's control is also
