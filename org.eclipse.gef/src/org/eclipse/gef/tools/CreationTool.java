@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.gef.tools;
 
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2d.PositionConstants;
+import org.eclipse.draw2d.geometry.*;
 
 import org.eclipse.gef.*;
 import org.eclipse.gef.requests.CreateRequest;
@@ -28,6 +28,8 @@ public class CreationTool
 {
 
 private CreationFactory factory;
+private SnapToHelper helper;
+
 
 /**
  * Default constructor.  Sets the default and disabled cursors.
@@ -54,6 +56,11 @@ protected Request createTargetRequest() {
 	CreateRequest request = new CreateRequest();
 	request.setFactory(getFactory());
 	return request;
+}
+
+public void deactivate() {
+	super.deactivate();
+	helper = null;
 }
 
 /**
@@ -104,6 +111,8 @@ protected boolean handleButtonDown(int button) {
 	if (stateTransition(STATE_INITIAL, STATE_DRAG)) {
 		getCreateRequest().setLocation(getLocation());
 		lockTargetEditPart(getTargetEditPart());
+		// Snap only when size on drop is employed
+		helper = (SnapToHelper)getTargetEditPart().getAdapter(SnapToHelper.class);
 	}
 	return true;
 }
@@ -227,15 +236,21 @@ public void setFactory(CreationFactory factory) {
  * @see org.eclipse.gef.tools.TargetingTool#updateTargetRequest()
  */
 protected void updateTargetRequest() {
+	CreateRequest req = getCreateRequest();
 	if (isInState(STATE_DRAG_IN_PROGRESS)) {
 		Point loq = getStartLocation();
 		Rectangle bounds = new Rectangle(loq, loq);
 		bounds.union(loq.getTranslated(getDragMoveDelta()));
-		getCreateRequest().setSize(bounds.getSize());
-		getCreateRequest().setLocation(bounds.getLocation());
+		req.setSize(bounds.getSize());
+		req.setLocation(bounds.getLocation());
+		req.getExtendedData().clear();
+		// Snap only when size on drop is employed
+		if (!getCurrentInput().isAltKeyDown() && helper != null)
+			helper.snapCreateRequest(getCreateRequest(), new PrecisionRectangle(bounds),
+					PositionConstants.NORTH_SOUTH | PositionConstants.EAST_WEST);
 	} else {
-		getCreateRequest().setSize(null);
-		getCreateRequest().setLocation(getLocation());
+		req.setSize(null);
+		req.setLocation(getLocation());
 	}
 }
 
