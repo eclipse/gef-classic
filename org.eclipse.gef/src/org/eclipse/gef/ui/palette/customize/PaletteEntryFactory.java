@@ -36,8 +36,8 @@ import org.eclipse.swt.widgets.Shell;
 public abstract class PaletteEntryFactory {
 	
 private String label;
-private ImageDescriptor enabled;
-	
+private ImageDescriptor imageDescriptor;
+
 /**
  * This method is called when a new palette entry of the type supported by this
  * <code>PaletteEntryFactory</code> is to be created.  
@@ -117,7 +117,7 @@ protected int determineIndexForNewEntry(PaletteContainer c, PaletteEntry selecte
  * @return <code>ImageDescriptor</code> used to create the image to represent this factory
  */
 public ImageDescriptor getImageDescriptor() {
-	return enabled;
+	return imageDescriptor;
 }
 
 /**
@@ -136,7 +136,7 @@ public String getLabel() {
 public void setImageDescriptor(ImageDescriptor imgDesc) {
 //@TODO:Pratik
 // Should I put in a check to ensure that these are never null?
-	enabled = imgDesc;
+	imageDescriptor = imgDesc;
 }
 
 /**

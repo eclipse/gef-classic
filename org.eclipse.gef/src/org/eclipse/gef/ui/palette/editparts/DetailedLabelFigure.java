@@ -183,6 +183,8 @@ public void setSelected(int state) {
  * @return A new ImageData that can be used to create an Image.
  */	
 public static ImageData createShadedImage(Image fromImage, Color shade) {
+	Image colorImage = new Image(null, fromImage, SWT.IMAGE_COPY);
+	fromImage = colorImage;
 	org.eclipse.swt.graphics.Rectangle r = fromImage.getBounds();
 	ImageData data = fromImage.getImageData();
 	PaletteData palette = data.palette;
@@ -228,6 +230,7 @@ public static ImageData createShadedImage(Image fromImage, Color shade) {
 			data.setPixels(0, y, r.width, scanline, 0);
 		}
 	}
+	fromImage.dispose();
 	return data;
 }
 

@@ -58,14 +58,10 @@ protected void refreshVisuals() {
 	PaletteEntry entry = getPaletteEntry();
 	fig.setName(entry.getLabel());
 	fig.setDescription(entry.getDescription());
-	boolean large = getPreferenceSource().useLargeIconsCurrently();
-	Image icon;
-	if (large) {
-		icon = entry.getLargeIcon();
-	} else {
-		icon = entry.getSmallIcon();
-	}
-	fig.setImage(icon);
+	if (getPreferenceSource().useLargeIcons())
+		setImageDescriptor(entry.getLargeIcon());
+	else
+		setImageDescriptor(entry.getSmallIcon());
 	fig.setLayoutMode(getPreferenceSource().getLayoutSetting());
 	super.refreshVisuals();
 }
@@ -77,6 +73,14 @@ public void setFocus(boolean value) {
 		label.setSelected(DetailedLabelFigure.SELECTED_WITH_FOCUS);
 	else
 		label.setSelected(DetailedLabelFigure.SELECTED_WITHOUT_FOCUS);
+}
+
+/**
+ * @see org.eclipse.gef.ui.palette.editparts.PaletteEditPart#setImageInFigure(Image)
+ */
+protected void setImageInFigure(Image image) {
+	DetailedLabelFigure fig = (DetailedLabelFigure)getFigure();
+	fig.setImage(image);
 }
 
 public void setSelected(int value) {

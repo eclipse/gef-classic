@@ -10,6 +10,7 @@ package org.eclipse.gef.ui.palette.editparts;
 import org.eclipse.swt.accessibility.ACC;
 import org.eclipse.swt.accessibility.AccessibleControlEvent;
 import org.eclipse.swt.accessibility.AccessibleEvent;
+import org.eclipse.swt.graphics.Image;
 
 import org.eclipse.draw2d.ButtonModel;
 import org.eclipse.draw2d.ChangeEvent;
@@ -163,7 +164,7 @@ protected void refreshVisuals() {
 	// That will update the Tooltip for the CategoryFigure.  But CategoryFigure has its
 	// own tooltip that is displayed when the text in the header is truncated.
 	getCategoryFigure().setTitle(getPaletteEntry().getLabel());
-	getCategoryFigure().setTitleIcon(getPaletteEntry().getSmallIcon());
+	setImageDescriptor(getPaletteEntry().getSmallIcon());
 	getCategoryFigure().setLayoutMode(getPreferenceSource().getLayoutSetting());
 }
 
@@ -183,6 +184,13 @@ protected void register() {
  */
 public void setExpanded(boolean expanded) {
 	getCategoryFigure().setExpanded(expanded);
+}
+
+/**
+ * @see org.eclipse.gef.ui.palette.editparts.PaletteEditPart#setImageInFigure(Image)
+ */
+protected void setImageInFigure(Image image) {
+	getCategoryFigure().setTitleIcon(image);
 }
 
 /**

@@ -5,8 +5,6 @@ import org.eclipse.gef.palette.PaletteSeparator;
 import org.eclipse.gef.ui.palette.PaletteMessages;
 
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.internal.IWorkbenchGraphicConstants;
-import org.eclipse.ui.internal.WorkbenchImages;
 
 /**
  * Factory to create {@link org.eclipse.gef.palette.PaletteSeparator PaletteSeparators}.
@@ -21,11 +19,7 @@ public class PaletteSeparatorFactory
  * Constructor
  */
 public PaletteSeparatorFactory() {
-//@TODO:Pratik
-// Take care of the strings and image descriptors in this class
 	setLabel(PaletteMessages.MODEL_TYPE_SEPARATOR);
-	setImageDescriptor(WorkbenchImages.getImageDescriptor(
-			IWorkbenchGraphicConstants.IMG_CTOOL_BUILD_EXEC_HOVER));
 }
 
 /**

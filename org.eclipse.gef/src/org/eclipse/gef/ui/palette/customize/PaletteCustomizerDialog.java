@@ -80,6 +80,7 @@ private EntryPage activePage, noSelectionPage;
 private CLabel title, errorTitle;
 private Image titleImage;
 private TreeViewer treeviewer;
+private ILabelProvider treeViewerLabelProvider;
 private PaletteEntry activeEntry;
 private PaletteEntry initialSelection;
 private PaletteRoot root;
@@ -504,8 +505,7 @@ protected Control createOutlineToolBar(Composite parent) {
 protected TreeViewer createOutlineTreeViewer(Composite composite) {
 	Tree treeForViewer = new Tree (composite, SWT.BORDER);
 	treeForViewer.setFont(composite.getFont());
-	GridData data = new GridData(GridData.FILL_VERTICAL
-	                            | GridData.HORIZONTAL_ALIGN_FILL);
+	GridData data = new GridData(GridData.FILL_VERTICAL | GridData.HORIZONTAL_ALIGN_FILL);
 	data.widthHint = 185;
 	// Make the tree this tall even when there is nothing in it.  This will keep the
 	// dialog from shrinking to an unusually small size.
@@ -513,7 +513,8 @@ protected TreeViewer createOutlineTreeViewer(Composite composite) {
 	treeForViewer.setLayoutData(data);
 	TreeViewer viewer = new TreeViewer(treeForViewer);
 	viewer.setContentProvider(new PaletteTreeProvider(viewer));
-	viewer.setLabelProvider(new PaletteLabelProvider(viewer));
+	treeViewerLabelProvider = new PaletteLabelProvider(viewer);
+	viewer.setLabelProvider(treeViewerLabelProvider);
 	viewer.setAutoExpandLevel(TreeViewer.ALL_LEVELS);
 	viewer.setInput(getPaletteRoot());
 	viewer.addSelectionChangedListener(new ISelectionChangedListener() {
@@ -893,7 +894,7 @@ protected void setActiveEntry(PaletteEntry entry) {
 	
 	if (entry != null) {
 		title.setText(entry.getLabel());
-		Image img = entry.getSmallIcon();
+		Image img = treeViewerLabelProvider.getImage(entry);
 		if (img == null) {
 			img = getSelectedTreeItem().getImage();
 		}

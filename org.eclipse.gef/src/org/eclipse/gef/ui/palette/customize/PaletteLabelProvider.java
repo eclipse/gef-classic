@@ -1,13 +1,17 @@
 package org.eclipse.gef.ui.palette.customize;
 
-import org.eclipse.gef.palette.PaletteContainer;
-import org.eclipse.gef.palette.PaletteEntry;
+import java.util.*;
+
+import org.eclipse.swt.graphics.Image;
+
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.ui.internal.IWorkbenchGraphicConstants;
-import org.eclipse.ui.internal.WorkbenchImages;
+
+import org.eclipse.gef.internal.InternalImages;
+import org.eclipse.gef.palette.PaletteContainer;
+import org.eclipse.gef.palette.PaletteEntry;
 
 /**
  * This class is the ILabelProvider for the {@link org.eclipse.jface.viewers.TreeViewer}
@@ -18,8 +22,8 @@ import org.eclipse.ui.internal.WorkbenchImages;
 class PaletteLabelProvider implements ILabelProvider {
 
 private TreeViewer treeviewer;
-private Image extraImg;
-	
+private Map imageCache = new HashMap();
+
 /**
  * Constructor
  * 
@@ -27,12 +31,15 @@ private Image extraImg;
  */
 public PaletteLabelProvider(TreeViewer viewer) {
 	treeviewer = viewer;
-	//@TODO:Pratik
-	// Change this to the folder icon from the workbench
-	extraImg = new Image(treeviewer.getTree().getDisplay(),
-	                     WorkbenchImages.getImageDescriptor(
-	                         IWorkbenchGraphicConstants.IMG_CTOOL_DEF_PERSPECTIVE_HOVER)
-	                         .getImageData());
+}
+
+private Image getCachedImage(ImageDescriptor descriptor) {
+	Image image = (Image)imageCache.get(descriptor);
+	if (image == null) {
+		image = descriptor.createImage();
+		imageCache.put(descriptor, image);
+	}
+	return image;
 }
 
 /**
@@ -40,12 +47,13 @@ public PaletteLabelProvider(TreeViewer viewer) {
  */
 public Image getImage(Object element) {
 	PaletteEntry entry = (PaletteEntry)element;
-	Image img = entry.getSmallIcon();
-	if (img == null && (entry instanceof PaletteContainer)) {
-		img = extraImg;
+	ImageDescriptor descriptor = entry.getSmallIcon();
+	if (descriptor == null && (entry instanceof PaletteContainer)) {
+		descriptor = InternalImages.DESC_FOLDER_OPEN;
 	}
-	
-	return img;
+	if (descriptor == null)
+		return null;
+	return getCachedImage(descriptor);
 }
 
 /**
@@ -72,9 +80,10 @@ public void addListener(ILabelProviderListener listener) {
  * @see org.eclipse.jface.viewers.IBaseLabelProvider#dispose()
  */
 public void dispose() {
-	if (extraImg != null && !extraImg.isDisposed()) {
-		extraImg.dispose();
-	}
+	Iterator images = imageCache.values().iterator();
+	while (images.hasNext())
+		((Image)images.next()).dispose();
+	imageCache = null;
 }
 
 /**

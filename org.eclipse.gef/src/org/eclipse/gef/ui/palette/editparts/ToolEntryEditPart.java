@@ -16,16 +16,17 @@ import org.eclipse.gef.AccessibleEditPart;
 import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.eclipse.gef.palette.PaletteEntry;
 
-public class EntryEditPart
+public class ToolEntryEditPart
 	extends PaletteEditPart
 {
+
 private static final Color COLOR_ENTRY_SELECTED = ColorConstants.button;
 
 private static final Border BORDER_LABEL_MARGIN = new MarginBorder(new Insets(1,1,1,2));
 
 private ToggleButton toolTipButton;
 
-public EntryEditPart(PaletteEntry paletteEntry) {
+public ToolEntryEditPart(PaletteEntry paletteEntry) {
 	super(paletteEntry);
 }
 
@@ -56,7 +57,7 @@ public void activate() {
 //	});
 	button.addFocusListener(new FocusListener.Stub() {
 		public void focusGained(FocusEvent fe) {
-			getRoot().getViewer().select(EntryEditPart.this);
+			getRoot().getViewer().select(ToolEntryEditPart.this);
 		}
 	});
 }
@@ -149,20 +150,11 @@ protected void refreshVisuals() {
 	DetailedLabelFigure fig = (DetailedLabelFigure)(button.getChildren().get(0));
 	fig.setName(entry.getLabel());
 	fig.setDescription(entry.getDescription());
-	boolean large = getPreferenceSource().useLargeIconsCurrently();
-	Image icon;
-	if (large) {
-		icon = entry.getLargeIcon();
-	} else {
-		icon = entry.getSmallIcon();
-	}
-	fig.setImage(icon);
-	fig.setLayoutMode(getPreferenceSource().getLayoutSetting());
-	
-//	Label toolTipButtonLabel = (Label)(getToolTipButton().getChildren().get(0));
-//	toolTipButtonLabel.setText(entryModel.getLabel());
-//	toolTipButtonLabel.setIcon(entryModel.getSmallIcon());
-
+	if (getPreferenceSource().useLargeIcons())
+		setImageDescriptor(entry.getLargeIcon());
+	else
+		setImageDescriptor(entry.getSmallIcon());
+	fig.setLayoutMode(getPreferenceSource().getLayoutSetting());	
 	super.refreshVisuals();	
 }
 
@@ -177,6 +169,15 @@ public void select() {
 	getButtonModel().setSelected(true);
 }
 
+/**
+ * @see org.eclipse.gef.ui.palette.editparts.PaletteEditPart#setImageInFigure(Image)
+ */
+protected void setImageInFigure(Image image) {
+	DetailedLabelFigure fig = (DetailedLabelFigure)(getFigure().getChildren().get(0));
+	fig.setImage(image);
+}
+
+/** * @see org.eclipse.gef.EditPart#setSelected(int) */
 public void setSelected(int value) {
 	super.setSelected(value);
 	if (value == SELECTED_PRIMARY)

@@ -25,19 +25,13 @@ public PaletteGroupFactory() {
 	//@TODO:Pratik
 	// Take care of image descriptors in this class
 	setLabel(PaletteMessages.MODEL_TYPE_GROUP);
-	setImageDescriptor(WorkbenchImages.getImageDescriptor(
-			IWorkbenchGraphicConstants.IMG_CTOOL_SAVEALL_EDIT_HOVER));
 }
 
 /**
  * @see org.eclipse.gef.ui.palette.customize.PaletteEntryFactory#createNewEntry(Shell)
  */
 protected PaletteEntry createNewEntry(Shell shell) {
-	// @TODO:Pratik
-	// A new image is created here everytime.  Should this image be static?
-	Image img = new Image(shell.getDisplay(), getImageDescriptor().getImageData());
 	PaletteGroup group = new PaletteGroup(PaletteMessages.NEW_GROUP_LABEL);
-	group.setSmallIcon(img);
 	return group;
 }
 
