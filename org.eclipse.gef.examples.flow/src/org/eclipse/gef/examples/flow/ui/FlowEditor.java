@@ -1,28 +1,33 @@
 package org.eclipse.gef.examples.flow.ui;
 
-import org.eclipse.core.resources.IMarker;
-import org.eclipse.core.runtime.IProgressMonitor;
+import java.io.*;
+import java.util.EventObject;
+
+import org.eclipse.swt.SWT;
+
+import org.eclipse.core.resources.*;
+import org.eclipse.core.runtime.*;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
+import org.eclipse.ui.*;
+import org.eclipse.ui.actions.WorkspaceModifyOperation;
+import org.eclipse.ui.dialogs.SaveAsDialog;
+import org.eclipse.ui.part.FileEditorInput;
+
 import org.eclipse.gef.*;
-import org.eclipse.gef.DefaultEditDomain;
-import org.eclipse.gef.KeyHandler;
 import org.eclipse.gef.dnd.TemplateTransferDragSourceListener;
 import org.eclipse.gef.editparts.ScalableRootEditPart;
-import org.eclipse.gef.examples.flow.FlowContextMenuProvider;
-import org.eclipse.gef.examples.flow.FlowPlugin;
-import org.eclipse.gef.examples.flow.dnd.FlowTemplateTransferDropTargetListener;
-import org.eclipse.gef.examples.flow.model.*;
-import org.eclipse.gef.examples.flow.parts.ActivityPartFactory;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.tools.ConnectionCreationTool;
 import org.eclipse.gef.ui.actions.*;
-import org.eclipse.gef.ui.actions.ActionRegistry;
-import org.eclipse.gef.ui.actions.GEFActionConstants;
 import org.eclipse.gef.ui.parts.GraphicalEditorWithPalette;
 import org.eclipse.gef.ui.parts.GraphicalViewerKeyHandler;
-import org.eclipse.jface.action.IAction;
-import org.eclipse.swt.SWT;
-import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IWorkbenchPart;
+
+import org.eclipse.gef.examples.flow.FlowContextMenuProvider;
+import org.eclipse.gef.examples.flow.FlowPlugin;
+import org.eclipse.gef.examples.flow.dnd.FlowTemplateTransferDropTargetListener;
+import org.eclipse.gef.examples.flow.model.ActivityDiagram;
+import org.eclipse.gef.examples.flow.parts.ActivityPartFactory;
 
 /**
  * 
@@ -34,11 +39,26 @@ public class FlowEditor extends GraphicalEditorWithPalette {
 ActivityDiagram diagram;
 private PaletteRoot root;
 private KeyHandler sharedKeyHandler;
+private boolean savePreviouslyNeeded = false;
 
 public FlowEditor() {
 	DefaultEditDomain defaultEditDomain = new DefaultEditDomain(this);
 	defaultEditDomain.setActiveTool(new ConnectionCreationTool());
 	setEditDomain(defaultEditDomain);
+}
+
+public void commandStackChanged(EventObject event) {
+	if (isDirty()){
+		if (!savePreviouslyNeeded()) {
+			setSavePreviouslyNeeded(true);
+			firePropertyChange(IEditorPart.PROP_DIRTY);
+		}
+	}
+	else {
+		setSavePreviouslyNeeded(false);
+		firePropertyChange(IEditorPart.PROP_DIRTY);
+	}
+	super.commandStackChanged(event);
 }
 
 /**
@@ -55,6 +75,12 @@ protected void createActions() {
 }
 
 
+protected void createOutputStream(OutputStream os)throws IOException {
+	ObjectOutputStream out = new ObjectOutputStream(os);
+	out.writeObject(diagram);
+	out.close();	
+}
+
 /**
  * @see org.eclipse.gef.ui.parts.GraphicalEditor#configureGraphicalViewer()
  */
@@ -69,7 +95,7 @@ protected void configureGraphicalViewer() {
 		new FlowContextMenuProvider(getGraphicalViewer(), getActionRegistry());
 	getGraphicalViewer().setContextMenu(provider);
 	getSite().registerContextMenu(
-		"org.eclipse.gef.examples.flow.editor.contextmenu",
+		"org.eclipse.gef.examples.flow.editor.contextmenu", //$NON-NLS-1$
 		provider,
 		getGraphicalViewer());
 	
@@ -95,11 +121,54 @@ protected void initializePaletteViewer() {
 }
 
 public void doSave(IProgressMonitor monitor) {
-	//$TODO
+	try {
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		createOutputStream(out);
+		IFile file = ((IFileEditorInput)getEditorInput()).getFile();
+		file.setContents(new ByteArrayInputStream(out.toByteArray()), 
+						true, false, monitor);
+		out.close();
+		getCommandStack().markSaveLocation();
+	} 
+	catch (Exception e) {
+		e.printStackTrace();
+	}
 }
 
 public void doSaveAs() {
-	//$TODO
+	SaveAsDialog dialog= new SaveAsDialog(getSite().getWorkbenchWindow().getShell());
+	dialog.setOriginalFile(((IFileEditorInput)getEditorInput()).getFile());
+	dialog.open();
+	IPath path= dialog.getResult();
+	
+	if (path == null)
+		return;
+	
+	IWorkspace workspace= ResourcesPlugin.getWorkspace();
+	final IFile file= workspace.getRoot().getFile(path);
+	
+	WorkspaceModifyOperation op= new WorkspaceModifyOperation() {
+		public void execute(final IProgressMonitor monitor) throws CoreException {
+			try {
+				ByteArrayOutputStream out = new ByteArrayOutputStream();
+				createOutputStream(out);
+				file.create(new ByteArrayInputStream(out.toByteArray()), true, monitor);
+				out.close();
+			} 
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	};
+	
+	try {
+		new ProgressMonitorDialog(getSite().getWorkbenchWindow().getShell()).run(false, true, op);
+		setInput(new FileEditorInput((IFile)file));
+		getCommandStack().markSaveLocation();
+	} 
+	catch (Exception e) {
+		e.printStackTrace();
+	} 
 }
 
 protected KeyHandler getCommonKeyHandler(){
@@ -122,18 +191,22 @@ protected PaletteRoot getPaletteRoot() {
 	return root;
 }
 
-public void gotoMarker(IMarker marker) {
-	//$TODO
-}
+public void gotoMarker(IMarker marker) { }
 
 public boolean isDirty() {
-	//$TODO
-	return false;
+	return isSaveOnCloseNeeded();
 }
 
 public boolean isSaveAsAllowed() {
-	//$TODO
-	return false;
+	return true;
+}
+
+public boolean isSaveOnCloseNeeded() {
+	return getCommandStack().isDirty();
+}
+
+private boolean savePreviouslyNeeded() {
+	return savePreviouslyNeeded;
 }
 
 /**
@@ -141,48 +214,22 @@ public boolean isSaveAsAllowed() {
  */
 protected void setInput(IEditorInput input) {
 	super.setInput(input);
-	diagram = new ActivityDiagram();
-	Activity a1, a2, a3, a4, a5, a6, a7, a8, a9, a10;
 
-	a1 = new Activity();
-	a1.setName("a1");
-	a2 = new Activity();
-	a2.setName("a2");
-	a3 = new Activity();
-	a3.setName("a3");
-	a4 = new Activity();
-	a4.setName("a4");
-	a5 = new Activity();
-	a5.setName("a5");
-	a6 = new Activity();
-	a6.setName("a6");
-	a7 = new Activity();
-	a7.setName("a7");
-	a8 = new Activity();
-	a8.setName("a8");
-	a9 = new Activity();
-	a9.setName("a9");
-	a10 = new Activity();
-	a10.setName("a10");
-	
-	diagram.addChild(a1);
-	diagram.addChild(a2);
-	diagram.addChild(a3);
-	diagram.addChild(a4);
-	diagram.addChild(a5);
-	diagram.addChild(a6);
-	diagram.addChild(a7);
-	diagram.addChild(a8);
-	
-	new Transition(a1, a2);
-	new Transition(a1, a3);
-	new Transition(a2, a4);
-	new Transition(a2, a5);
-	new Transition(a3, a5);	
-	new Transition(a2, a6);
-	new Transition(a3, a7);
-	new Transition(a3, a8);
+	IFile file = ((IFileEditorInput)input).getFile();
+	try {
+		InputStream is = file.getContents(false);
+		ObjectInputStream ois = new ObjectInputStream(is);
+		diagram = (ActivityDiagram)ois.readObject();
+		ois.close();
+	}
+	catch (Exception e) {
+		//This is just an example.  All exceptions caught here.
+		e.printStackTrace();
+	}
+}
 
+private void setSavePreviouslyNeeded(boolean value) {
+	savePreviouslyNeeded = value;
 }
 
 }
