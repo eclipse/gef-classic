@@ -24,6 +24,7 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.UnexecutableCommand;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.editparts.ZoomManager;
+import org.eclipse.gef.requests.SelectionRequest;
 import org.eclipse.gef.tools.SimpleDragTracker;
 import org.eclipse.gef.ui.parts.RulerChangeListener;
 import org.eclipse.gef.ui.parts.RulerProvider;
@@ -95,6 +96,10 @@ public void deactivate() {
  * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#getDragTracker(org.eclipse.gef.Request)
  */
 public DragTracker getDragTracker(Request request) {
+	if (request.getType().equals(REQ_SELECTION) 
+			&& ((SelectionRequest)request).getLastButtonPressed() != 1) {
+		return null;
+	}
 	return new SimpleDragTracker() {
 		private DragTracker guideTracker;
 		private int position = Integer.MAX_VALUE;
@@ -107,9 +112,6 @@ public DragTracker getDragTracker(Request request) {
 			if (getCurrentCommand().canExecute()) {
 				executeCurrentCommand();							
 			} else {
-				setState(STATE_INVALID);
-			}
-			if (button != 1) {
 				setState(STATE_INVALID);
 			}
 			return true;
