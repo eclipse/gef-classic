@@ -15,6 +15,7 @@ import java.util.*;
 import org.eclipse.swt.accessibility.AccessibleControlEvent;
 import org.eclipse.swt.accessibility.AccessibleEvent;
 
+import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.UnexecutableCommand;
 import org.eclipse.gef.internal.GEFMessages;
@@ -100,6 +101,34 @@ public void getAccGuideName(AccessibleEvent e, Object guide) {
  */
 public void getAccGuideValue(AccessibleControlEvent e, Object guide) {
 	e.result = "" + getGuidePosition(guide); //$NON-NLS-1$
+}
+
+/**
+ * Returns a List of model objects that are attached to the given guide. 
+ * 
+ * @param guide the guide to which the model parts are attached.
+ * @return list of attached model objects
+ */
+public List getAttachedModelObjects(Object guide) {
+	return Collections.EMPTY_LIST;
+}
+
+/**
+ * Returns a List of EditParts that are attached to the given guide.
+ * 
+ * @param guide the guide to which the EditParts are attached.
+ * @param viewer the GraphicalViewer in which these EditParts are shown.
+ * @return list of attached edit parts
+ */
+public List getAttachedEditParts(Object guide, GraphicalViewer viewer) {
+	List attachedModelObjects = getAttachedModelObjects(guide);
+	List attachedEditParts = new ArrayList(attachedModelObjects.size());
+	Iterator i = attachedModelObjects.iterator();
+	
+	while (i.hasNext())
+		attachedEditParts.add(viewer.getEditPartRegistry().get(i.next()));
+	
+	return attachedEditParts;
 }
 
 /**

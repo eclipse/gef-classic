@@ -10,11 +10,11 @@
  *******************************************************************************/
 package org.eclipse.gef.internal.ui.rulers;
 
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.*;
@@ -31,7 +31,7 @@ public class DragGuidePolicy
 	extends GraphicalEditPolicy 
 {
 
-protected GraphicalViewer diagramViewer;
+private List attachedEditParts = null;
 private IFigure dummyGuideFigure, dummyLineFigure;
 private boolean dragInProgress = false;
 
@@ -43,7 +43,20 @@ protected GuideFigure createDummyGuideFigure() {
 	return new GuidePlaceHolder(getGuideEditPart().isHorizontal());
 }
 
-public void eraseSourceFeedback(Request request) {	
+private void eraseAttachedPartsFeedback(Request request) {
+	if (attachedEditParts != null) {
+		ChangeBoundsRequest req = new ChangeBoundsRequest(request.getType());
+		req.setEditParts(attachedEditParts);
+		
+		Iterator i = attachedEditParts.iterator();
+		
+		while (i.hasNext())
+			((EditPart)i.next()).eraseSourceFeedback(req);
+		attachedEditParts = null;
+	}
+}
+
+public void eraseSourceFeedback(Request request) {
 	getGuideEditPart().updateLocationOfFigures(getGuideEditPart().getZoomedPosition());
 	if (getDummyGuideFigure().getParent() != null) {
 		getDummyGuideFigure().getParent().remove(getDummyGuideFigure());			
@@ -53,6 +66,16 @@ public void eraseSourceFeedback(Request request) {
 	}
 	getGuideEditPart().setCurrentCursor(null);
 	dragInProgress = false;
+	
+	eraseAttachedPartsFeedback(request);
+}
+
+private List getAttachedEditParts() {
+	if (attachedEditParts == null)
+		attachedEditParts = getGuideEditPart().getRulerProvider()
+				.getAttachedEditParts(getHost().getModel(), 
+				((RulerEditPart)getHost().getParent()).getDiagramViewer());
+	return attachedEditParts;
 }
 
 public Command getCommand(Request request) {
@@ -136,7 +159,23 @@ protected boolean isMoveValid(int zoomedPosition) {
 			}			
 		}
 	}
+	
 	return result;
+}
+
+private void showAttachedPartsFeedback(ChangeBoundsRequest request) {
+	ChangeBoundsRequest req = new ChangeBoundsRequest(request.getType());
+	req.setEditParts(getAttachedEditParts());
+	
+	if (getGuideEditPart().isHorizontal()) 
+		req.setMoveDelta(new Point(0, request.getMoveDelta().y));
+	else
+		req.setMoveDelta(new Point(request.getMoveDelta().x, 0));
+	
+	Iterator i = getAttachedEditParts().iterator();
+	
+	while (i.hasNext())
+		((EditPart)i.next()).showSourceFeedback(req);
 }
 
 public void showSourceFeedback(Request request) {
@@ -165,6 +204,7 @@ public void showSourceFeedback(Request request) {
 		getHostFigure().setVisible(false);
 		getGuideEditPart().getGuideLineFigure().setVisible(false);
 		getGuideEditPart().setCurrentCursor(SharedCursors.ARROW);
+		eraseAttachedPartsFeedback(request);
 	} else {
 		int newPosition;
 		if (getGuideEditPart().isHorizontal()) {
@@ -182,7 +222,9 @@ public void showSourceFeedback(Request request) {
 			getGuideEditPart().updateLocationOfFigures(
 					getGuideEditPart().getZoomedPosition());
 		}
+		showAttachedPartsFeedback(req);
 	}
+	
 }
 
 public boolean understandsRequest(Request req) {

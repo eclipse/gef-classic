@@ -12,6 +12,7 @@ package org.eclipse.gef.examples.logicdesigner.rulers;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.gef.commands.Command;
@@ -28,7 +29,7 @@ import org.eclipse.gef.examples.logicdesigner.model.commands.*;
 public class LogicRulerProvider
 	extends RulerProvider
 {
-	
+
 private LogicRuler ruler;
 /*
  * @TODO:Pratik   when can you remove these two listeners?  right now, they are never
@@ -79,6 +80,10 @@ public LogicRulerProvider(LogicRuler ruler) {
 	for (int i = 0; i < guides.size(); i++) {
 		((LogicGuide)guides.get(i)).addPropertyChangeListener(guideListener);
 	}
+}
+
+public List getAttachedModelObjects(Object guide) {
+	return new ArrayList(((LogicGuide)guide).getParts());
 }
 
 public Command getCreateGuideCommand(int position) {
