@@ -734,7 +734,8 @@ protected void refreshChildren() {
 
 /**
  * Refreshes this EditPart's <i>visuals</i>. This method is called by {@link #refresh()},
- * and may also be called in response to notifications from the model.
+ * and may also be called in response to notifications from the model.  This method does
+ * nothing by default.  Subclasses may override.
  */
 protected void refreshVisuals() {
 }
