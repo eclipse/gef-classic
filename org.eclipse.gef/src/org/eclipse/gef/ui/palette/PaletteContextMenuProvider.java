@@ -1,11 +1,13 @@
 package org.eclipse.gef.ui.palette;
 
-import org.eclipse.gef.ui.parts.ContextMenuProvider;
-import org.eclipse.gef.ui.parts.GraphicalEditor;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.ui.IWorkbenchActionConstants;
+
+import org.eclipse.gef.ui.actions.ActionRegistry;
+import org.eclipse.gef.ui.parts.ContextMenuProvider;
+import org.eclipse.gef.ui.parts.GraphicalEditor;
 
 /**
  * Provides the context menu for a palette
@@ -39,8 +41,10 @@ protected PaletteViewerImpl getPaletteViewer() {
  */
 public void buildContextMenu(IMenuManager menu) {
 	Object selectedPart = getPaletteViewer().getSelectedEditParts().get(0);
-	if (selectedPart instanceof TemplateEditPart)
-		menu.add(getGraphicalEditor().getAction(IWorkbenchActionConstants.COPY));
+	if (selectedPart instanceof TemplateEditPart) {
+		ActionRegistry registry = (ActionRegistry)getEditor().getAdapter(ActionRegistry.class);
+		menu.add(registry.getAction(IWorkbenchActionConstants.COPY));
+	}
 	if (getPaletteViewer().getCustomizer() != null)
 		menu.add(new LayoutAction(getPaletteViewer().getPaletteViewerPreferencesSource()));
 		menu.add(new IconSizeChangeAction(getPaletteViewer().getPaletteViewerPreferencesSource()));
