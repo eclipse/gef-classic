@@ -37,9 +37,6 @@ public class TextFlow
 {
 
 static final String ELLIPSIS = "..."; //$NON-NLS-1$
-static final int SELECT_ALL = 1;
-static final int SELECT_PARTIAL = 2;
-
 private BidiInfo bidiInfo;
 private int selectionEnd = -1;
 private String text;
@@ -90,7 +87,7 @@ boolean addLeadingWordWidth(String text, int[] width) {
 	while (Character.isWhitespace(text.charAt(index)))
 		index--;
 	boolean result = index < text.length() - 1;
-	// index should point to the end of the actual text (not incluing the 'a' that was 
+	// index should point to the end of the actual text (not including the 'a' that was 
 	// appended), if there were no breaks
 	if (index == text.length() - 1)
 		index--;
@@ -316,7 +313,7 @@ public int getLastOffsetForLine(int baseline) {
  * @param down <code>true</code> if the search is down
  * @return the next offset or <code>-1</code>
  */
-public int getNextOffset(Point p, boolean down) {
+public int getNextOffset(Point p, boolean down, int trailing[]) {
 	if (down)
 		return findNextLineOffset(p);
 	return findPreviousLineOffset(p);

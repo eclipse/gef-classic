@@ -53,6 +53,7 @@ protected void layout() {
 		fragment = getFragment(i++, fragments);
 		fragment.length = result - offset;
 		fragment.offset = offset;
+		fragment.setWidth(-1);
 		FlowUtilities.setupFragment(fragment, font, text);
 		getContext().addToCurrentLine(fragment);
 		getContext().endLine();
