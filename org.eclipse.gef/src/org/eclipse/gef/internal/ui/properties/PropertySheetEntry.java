@@ -104,7 +104,11 @@ public void addPropertySheetEntryListener(IPropertySheetEntryListener listener) 
  * Method declared on IPropertySheetEntry.
  */
 public void applyEditorValue() {
-	if (editor == null) 
+	//Sometimes PropertySheetViewer sends extra apply calls even after the apply has happened.
+	if (editor == null
+			|| editor.getControl() == null
+			|| editor.getControl().isDisposed()
+			|| editor.getControl().getVisible() == false)
 		return;
 		
 	// Check if editor has a valid value
