@@ -63,7 +63,8 @@ public void performScale(double factor) {
 public void performTranslate(int dx, int dy) {
 	preciseX += dx;
 	preciseY += dy;
-	updateInts();
+	x += dx;
+	y += dy;
 }
 
 /**
@@ -124,9 +125,9 @@ public Rectangle translate(Point p) {
 
 private void updateInts() {
 	x = (int)Math.floor(preciseX + 0.000000001);
-	y = (int)Math.floor(preciseY + 0.000000001);	
-	width = (int)Math.floor(preciseWidth + 0.000000001);
-	height = (int)Math.floor(preciseHeight + 0.000000001);	
+	y = (int)Math.floor(preciseY + 0.000000001);
+	width = (int)Math.floor(preciseWidth + preciseX + 0.000000001) - x;
+	height = (int)Math.floor(preciseHeight + preciseY + 0.000000001) - y;
 }
 
 }
