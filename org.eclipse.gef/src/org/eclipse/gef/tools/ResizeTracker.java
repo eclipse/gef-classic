@@ -33,10 +33,11 @@ import org.eclipse.gef.requests.ChangeBoundsRequest;
  */
 public class ResizeTracker
 	extends SimpleDragTracker
-{
+{	
 
-private static final int FLAG_TARGET_FEEDBACK = AbstractTool.MAX_FLAG << 2;
-	
+private static int FLAG_TARGET_FEEDBACK = SimpleDragTracker.MAX_FLAG << 1;
+protected static final int MAX_FLAG = FLAG_TARGET_FEEDBACK;
+
 private int direction;
 private GraphicalEditPart owner;
 private PrecisionRectangle sourceRect;
