@@ -92,11 +92,27 @@ protected IWorkbenchPart getBootstrapPart() {
  * @see	PageBookView#isImportant(org.eclipse.ui.IWorkbenchPart)
  */
 protected boolean isImportant(IWorkbenchPart part) {
-	// Fix for Bug# 69098
+	// Workaround for Bug# 69098 -- This should be removed when/if Bug# 70510 is fixed
 	// We only want a palette page to be created when this view is visible in the current
 	// perspective, i.e., when both this view and the given editor are on the same page.
 	return part.getSite().getPage().findViewReference(ID) != null 
 			&& part instanceof IEditorPart;
+}
+
+/**
+ * @see org.eclipse.ui.IPartListener#partActivated(org.eclipse.ui.IWorkbenchPart)
+ */
+public void partActivated(IWorkbenchPart part) {
+	if (isImportant(part))
+		super.partActivated(part);
+	/*
+	 * Workaround for Bug# 69098 -- This should be removed when/if Bug# 70510 is fixed
+	 * As a result of the fix in isImportant(), a palette page is not created for an 
+	 * editor if a view is the active part when the perspective changes.  If that is the 
+	 * case, we fake a partActivated for the bootstrap part. 
+	 */
+	else if (getBootstrapPart() != null)
+		super.partActivated(getBootstrapPart());
 }
 
 }
