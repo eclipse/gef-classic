@@ -80,6 +80,10 @@ protected IFigure createSizeOnDropFeedback(CreateRequest createRequest) {
  * Overrides deactivate to remove the EditPartListener.
  * @see org.eclipse.gef.EditPolicy#deactivate() */
 public void deactivate() {
+	if (sizeOnDropFeedback != null) {
+		removeFeedback(sizeOnDropFeedback);
+		sizeOnDropFeedback  = null;
+	}
 	setListener(null);
 	super.deactivate();
 }

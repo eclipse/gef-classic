@@ -32,14 +32,6 @@ public abstract class XYLayoutEditPolicy
 private static final Dimension DEFAULT_SIZE = new Dimension(-1, -1);
 
 /**
- * @see org.eclipse.gef.EditPolicy#deactivate()
- */
-public void deactivate() {
-	eraseSizeOnDropFeedback(null);
-	super.deactivate();
-}
-
-/**
  * Returns a new Rectangle equivalent to the passed Rectangle.
  * @param r the input Rectangle
  * @return a copy of the input Rectangle
