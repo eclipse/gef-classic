@@ -70,21 +70,6 @@ public void testRotatingImagesWithDifferentDepths() {
 		result2 = ImageUtilities.createRotatedImage(img2);
 		result3 = ImageUtilities.createRotatedImage(img3);
 		result4 = ImageUtilities.createRotatedImage(img4);
-		
-//		Shell shell = new Shell(Display.getCurrent());
-//		shell.setSize(700, 700);
-//		shell.open();
-//		GC gc = new GC(shell);
-//		gc.drawImage(result1, 0, 0);
-//		Thread.sleep(5000);
-//		gc.drawImage(result3, 0, 0);
-//		Thread.sleep(5000);
-//		gc.drawImage(result2, 0, 0);
-//		Thread.sleep(5000);
-//		gc.drawImage(result4, 0, 0);
-//		Thread.sleep(5000);
-//		gc.dispose();
-//		shell.dispose();
 	} catch (Throwable error) {
 		fail(error.toString() + "\n" + error.getStackTrace()[0]); //$NON-NLS-1$
 	} finally {
