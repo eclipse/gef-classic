@@ -79,7 +79,9 @@ protected void addRetargetAction(RetargetAction action) {
 protected abstract void buildActions();
 
 /**
- * Subclasses must implement to declare the set of global action keys.
+ * Subclasses must implement to declare additional global actions IDs. Only IDs which were
+ * not already added directly or indirectly using {@link #addGlobalActionKey(String)} need
+ * to be added.
  * @see #addGlobalActionKey(String)
  */
 protected abstract void declareGlobalActionKeys();
