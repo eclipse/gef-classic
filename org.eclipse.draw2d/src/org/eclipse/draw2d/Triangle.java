@@ -46,7 +46,6 @@ protected void fillShape(Graphics g) {
  * @see Shape#outlineShape(Graphics)
  */
 protected void outlineShape(Graphics g) {
-	g.setForegroundColor(g.getBackgroundColor());
 	g.drawPolygon(triangle);
 }
 
