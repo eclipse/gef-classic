@@ -507,6 +507,16 @@ private PointList getPointList(int[] points) {
 }
 
 /**
+ * Returns the current absolute scaling which will be applied to the underlying Device
+ * when painting to this Graphics.  The default value is 1.0.
+ * @since 3.0
+ * @return the effective absolute scaling factor
+ */
+public double getAbsoluteScale() {
+	return 1.0;
+}
+
+/**
  * Returns <code>true</code> if this graphics object should use XOR mode with painting.
  * @return whether XOR mode is turned on
  */

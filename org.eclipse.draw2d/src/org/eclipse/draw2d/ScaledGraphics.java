@@ -388,7 +388,14 @@ private Font getLocalFont() {
 
 private int getLocalLineWidth() {
 	return localLineWidth;
-}	
+}
+
+/**
+ * @see org.eclipse.draw2d.Graphics#getAbsoluteScale()
+ */
+public double getAbsoluteScale() {
+	return zoom * graphics.getAbsoluteScale();
+}
 
 /** @see Graphics#getXORMode() */
 public boolean getXORMode() {
