@@ -15,6 +15,7 @@ import org.eclipse.swt.accessibility.*;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
 import org.eclipse.draw2d.*;
@@ -32,6 +33,7 @@ import org.eclipse.draw2d.text.TextFlow;
 public final class MultiLineLabel extends FigureCanvas {
 
 private TextFlow textFlow;
+private ImageFigure img;
 
 class FocusableViewport extends Viewport {
 	FocusableViewport() {
@@ -70,10 +72,24 @@ class FocusableViewport extends Viewport {
 public MultiLineLabel(Composite parent) {
 	super(parent);
 	setViewport(new FocusableViewport());
+	
+	Figure root = new Figure();
+	BorderLayout layout = new BorderLayout();
+	layout.setHorizontalSpacing(5);
+	root.setLayoutManager(layout);
+	
+	img = new ImageFigure();
+	img.setAlignment(PositionConstants.NORTH);
+	root.add(img);
+	root.setConstraint(img, BorderLayout.LEFT);
+	
 	FlowPage page = new FlowPage();
 	textFlow = new TextFlow();
 	page.add(textFlow);
-	setContents(page);
+	root.add(page);
+	root.setConstraint(page, BorderLayout.CENTER);
+
+	setContents(root);
 	getViewport().setContentsTracksWidth(true);
 	addAccessibility();
 }
@@ -123,6 +139,10 @@ private void addAccessibility() {
 	});
 }
 
+public Image getImage() {
+	return img.getImage();
+}
+
 /**
  * Returns the text in this label.
  * @return the text
@@ -137,6 +157,10 @@ public String getText() {
 public void setFont(Font font) {
 	super.setFont(font);
 	textFlow.revalidate();
+}
+
+public void setImage(Image image) {
+	img.setImage(image);
 }
 
 /**
