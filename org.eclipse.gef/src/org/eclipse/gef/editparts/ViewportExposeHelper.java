@@ -17,8 +17,8 @@ import org.eclipse.draw2d.geometry.*;
 import org.eclipse.gef.*;
 
 /**
- * An implementation of <code>ExposeHelper</code> for use with {@link
- * org.eclipse.draw2d.Viewport} figures.
+ * An implementation of <code>ExposeHelper</code> for use with editparts using a
+ * <code>Viewport</code>.
  * @author hudsonr
  * @since 2.0 */
 public class ViewportExposeHelper
@@ -109,6 +109,11 @@ public int getMinimumFrameCount() {
 	return minimumFrameCount;
 }
 
+/**
+ * Sets the amount of margin to be left around the descendant being exposed.  There is no
+ * margin by default.
+ * @param margin the margin in pixels
+ */
 public void setMargin(Insets margin) {
 	exposeMargin = margin;
 }

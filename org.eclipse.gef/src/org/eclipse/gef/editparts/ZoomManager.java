@@ -23,9 +23,19 @@ import org.eclipse.draw2d.Viewport;
 import org.eclipse.draw2d.geometry.*;
 
 /**
- * This class will manage the zoom for a GraphicalEditor.  Objects interested in zoom
- * changes should register as a ZoomListener with this class.
- * 
+ * Manage the primary zoom function in a graphical viewer.  This class is used by the zoom
+ * contribution items, including:
+ * <UL>
+ *   <LI>{@link org.eclipse.gef.ui.actions.ZoomInAction}
+ *   <LI>{@link org.eclipse.gef.ui.actions.ZoomOutAction}
+ *   <LI> and {@link org.eclipse.gef.ui.actions.ZoomComboContributionItem}
+ * </UL>
+ * <P>
+ * A ZoomManager controls how zoom in and zoom out are performed.  It also determines the
+ * list of choices the user sees in the drop-down Combo on the toolbar.  The zoom manager
+ * controls a <code>ScalableFigure</code>, which performs the actual zoom, and also a
+ * <code>Viewport</code>.  The viewport is needed so that the scrolled location is
+ * preserved as the zoom level changes.
  * @author Dan Lee
  * @author Eric Bordeau
  */
@@ -170,6 +180,10 @@ public double getPreviousZoomLevel() {
 	return getMinZoom();
 }
 
+/**
+ * Returns the figure which performs the actual zooming.
+ * @return the scalable figure
+ */
 public ScalableFigure getScalableFigure() {
 	return pane;
 }
@@ -253,7 +267,6 @@ public void setViewLocation(Point p) {
 /**
  * Sets the zoom level to the given value.
  * @param zoom the new zoom level
- * @return true if the zoom was applied, false if not
  */
 public void setZoom(double zoom) {
 	zoom = Math.min(getMaxZoom(), zoom);
@@ -316,7 +329,11 @@ public void zoomIn() {
 	setZoom(getNextZoomLevel());
 }
 
-public void zoomTo(Rectangle rect) {}
+/**
+ * Currently does nothing.
+ * @param rect a rectangle
+ */
+public void zoomTo(Rectangle rect) { }
 
 private void performAnimatedZoom(Rectangle rect, boolean zoomIn, int iterationCount) {
 	double finalRatio;
