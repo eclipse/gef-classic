@@ -23,6 +23,9 @@ import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.gef.*;
 import org.eclipse.gef.requests.*;
 
+/**
+ * A DragTracker that moves the endpoint of a connection to another location.
+ */
 public class ConnectionEndpointTracker
 	extends TargetingTool
 	implements DragTracker
@@ -37,35 +40,60 @@ private List exclusionSet;
 
 private ConnectionEditPart connectionEditPart;
 
+/**
+ * Constructs a new ConnectionEndpointTracker for the given ConnectionEditPart.
+ * @param cep the ConnectionEditPart
+ */
 public ConnectionEndpointTracker(ConnectionEditPart cep) {
 	setConnectionEditPart(cep);
 	setDisabledCursor(SharedCursors.NO);
 }
 
+/**
+ * Returns a custom "plug" cursor if this tool is in the initial, drag or accessible drag
+ * state.  Otherwise defers to <code>super</code>.
+ * @return the cursor
+ */
 protected Cursor calculateCursor() {
 	if (isInState(STATE_INITIAL | STATE_DRAG | STATE_ACCESSIBLE_DRAG))
 		return getDefaultCursor();
 	return super.calculateCursor();
 }
 
+/**
+ * Erases source and target feedback and executes the current command.
+ * @see DragTracker#commitDrag()
+ */
 public void commitDrag() {
 	eraseSourceFeedback();
 	eraseTargetFeedback();
 	executeCurrentCommand();
 }
 
+/**
+ * Creates the target request, a {@link ReconnectRequest}.
+ * @return the target request
+ */
 protected Request createTargetRequest() {
 	ReconnectRequest request = new ReconnectRequest(getCommandName());
 	request.setConnectionEditPart(getConnectionEditPart());
 	return request;
 }
 
+/**
+ * Erases feedback and sets the viewer's focus to <code>null</code>.  This will remove
+ * any focus rectangles that were painted to show the new target or source edit part.
+ * @see Tool#deactivate()
+ */
 public void deactivate() {
 	eraseSourceFeedback();
 	getCurrentViewer().setFocus(null);
 	super.deactivate();
 }
 
+/**
+ * Erases the source feedback.
+ */
 protected void eraseSourceFeedback() {
 	if (getFlag(FLAG_SOURCE_FEEBBACK) != true)
 		return;
@@ -73,22 +101,39 @@ protected void eraseSourceFeedback() {
 	getConnectionEditPart().eraseSourceFeedback(getTargetRequest());
 }
 
+/**
+ * @see AbstractTool#getCommandName()
+ */
 protected String getCommandName() {
 	return commandName;
 }
 
+/**
+ * Returns the ConnectionEditPart's figure.
+ * @return the connection
+ */
 protected Connection getConnection() {
 	return (Connection)getConnectionEditPart().getFigure();
 }
 
+/**
+ * Returns the ConnectionEditPart.
+ * @return the ConnectionEditPart
+ */
 protected ConnectionEditPart getConnectionEditPart() {
 	return connectionEditPart;
 }
 
+/**
+ * @see AbstractTool#getDebugName()
+ */
 protected String getDebugName() {
 	return "Connection Endpoint Tool";//$NON-NLS-1$
 }
 
+/**
+ * @see org.eclipse.gef.tools.TargetingTool#getExclusionSet()
+ */
 protected Collection getExclusionSet() {
 	if (exclusionSet == null) {
 		exclusionSet = new ArrayList();
@@ -97,6 +142,11 @@ protected Collection getExclusionSet() {
 	return exclusionSet;
 }
 
+/**
+ * If currently in the drag-in-progress state, it goes into the terminal state erases 
+ * feedback and executes the current command.
+ * @see org.eclipse.gef.tools.AbstractTool#handleButtonUp(int)
+ */
 protected boolean handleButtonUp(int button) {
 	if (stateTransition(STATE_DRAG_IN_PROGRESS, STATE_TERMINAL)) {
 		eraseSourceFeedback();
@@ -106,6 +156,11 @@ protected boolean handleButtonUp(int button) {
 	return true;
 }
 
+/**
+ * Updates the request and the mouse target, asks to show feedback, and gets the current
+ * command.
+ * @return <code>true</code>
+ */
 protected boolean handleDragInProgress() {
 	updateTargetRequest();
 	updateTargetUnderMouse();
@@ -115,6 +170,9 @@ protected boolean handleDragInProgress() {
 	return true;
 }
 
+/**
+ * @see org.eclipse.gef.tools.AbstractTool#handleDragStarted()
+ */
 protected boolean handleDragStarted() {
 	stateTransition(STATE_INITIAL, STATE_DRAG_IN_PROGRESS);
 	return false;
@@ -129,6 +187,11 @@ protected boolean handleHover() {
 	return true;
 }
 
+/**
+ * Processes the arrow keys (to choose a different source or target edit part) and 
+ * forwardslash and backslash keys (to try to connect to another connection). 
+ * @see org.eclipse.gef.tools.AbstractTool#handleKeyDown(org.eclipse.swt.events.KeyEvent)
+ */
 protected boolean handleKeyDown(KeyEvent e) {
 	if (acceptArrowKey(e)) {
 		if (stateTransition(STATE_INITIAL, STATE_ACCESSIBLE_DRAG_IN_PROGRESS)) {
@@ -222,19 +285,34 @@ boolean navigateNextAnchor(int direction) {
 	return false;	
 }
 
+/**
+ * Sets the command name.
+ * @param newCommandName the new command name
+ */
 public void setCommandName(String newCommandName) {
 	commandName = newCommandName;
 }
 
+/**
+ * Sets the connection edit part that is being reconnected.
+ * @param cep the connection edit part
+ */
 public void setConnectionEditPart(ConnectionEditPart cep) {
 	this.connectionEditPart = cep;
 }
 
+/**
+ * Asks the ConnectionEditPart to show source feedback.
+ */
 protected void showSourceFeedback() {
 	getConnectionEditPart().showSourceFeedback(getTargetRequest());
 	setFlag(FLAG_SOURCE_FEEBBACK, true);
 }
 
+/**
+ * Updates the request location.
+ * @see org.eclipse.gef.tools.TargetingTool#updateTargetRequest()
+ */
 protected void updateTargetRequest() {
 	ReconnectRequest request = (ReconnectRequest)getTargetRequest();
 	Point p = getLocation();

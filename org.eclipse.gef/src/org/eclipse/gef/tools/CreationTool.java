@@ -12,48 +12,89 @@ package org.eclipse.gef.tools;
 
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.gef.*;
-import org.eclipse.gef.requests.*;
-import org.eclipse.gef.requests.CreateRequest;
 
+import org.eclipse.gef.*;
+import org.eclipse.gef.requests.CreateRequest;
+import org.eclipse.gef.requests.CreationFactory;
+
+/**
+ * The CreationTool creates new {@link EditPart EditParts} via a {@link CreationFactory}.
+ * If the user simply clicks on the viewer, the default sized EditPart will be created at
+ * that point.  If the user clicks and drags, the created EditPart will be sized based on
+ * where the user clicked and dragged.
+ */
 public class CreationTool
 	extends TargetingTool
 {
 
 private CreationFactory factory;
 
+/**
+ * Default constructor.  Sets the default and disabled cursors.
+ */
 public CreationTool() {
 	setDefaultCursor(SharedCursors.CURSOR_TREE_ADD);
 	setDisabledCursor(SharedCursors.NO);
 }
 
+/**
+ * Constructs a new CreationTool with the given factory.
+ * @param aFactory the creation factory
+ */
 public CreationTool(CreationFactory aFactory) {
 	this();
 	setFactory(aFactory);
 }
 
+/**
+ * Creates a {@link CreateRequest} and sets this tool's factory on the request.
+ * @see org.eclipse.gef.tools.TargetingTool#createTargetRequest()
+ */
 protected Request createTargetRequest() {
 	CreateRequest request = new CreateRequest();
 	request.setFactory(getFactory());
 	return request;
 }
 
+/**
+ * @see org.eclipse.gef.tools.AbstractTool#getCommandName()
+ */
 protected String getCommandName() {
 	return REQ_CREATE;
 }
 
+/**
+ * Cast the target request to a CreateRequest and returns it.
+ * @see TargetingTool#getTargetRequest()
+ */
 protected CreateRequest getCreateRequest() {
 	return (CreateRequest)getTargetRequest();
 }
 
+/**
+ * @see org.eclipse.gef.tools.AbstractTool#getDebugName()
+ */
 protected String getDebugName() {
 	return "Creation Tool";//$NON-NLS-1$
 }
 
+/**
+ * Returns the creation factory used to create the new EditParts.
+ * @return the creation factory
+ */
 protected CreationFactory getFactory() {
 	return factory;
 }
 
+/**
+ * The creation tool only works by clicking mouse button 1 (the left mouse button in a
+ * right-handed world).  If any other button is pressed, the tool goes into an invalid
+ * state.  Otherwise, it goes into the drag state, updates the request's location and 
+ * calls {@link TargetingTool#lockTargetEditPart(EditPart)} with the edit part that was
+ * just clicked on.
+ * 
+ * @see org.eclipse.gef.tools.AbstractTool#handleButtonDown(int)
+ */
 protected boolean handleButtonDown(int button) {
 	if (button != 1) {
 		setState(STATE_INVALID);
@@ -67,6 +108,13 @@ protected boolean handleButtonDown(int button) {
 	return true;
 }
 
+/**
+ * If the tool is currently in a drag or drag-in-progress state, it goes into the 
+ * terminal state, performs some cleanup (erasing feedback, unlocking target edit part), 
+ * and then calls {@link #performCreation(int)}.
+ * 
+ * @see org.eclipse.gef.tools.AbstractTool#handleButtonUp(int)
+ */
 protected boolean handleButtonUp(int button) {
 	if (stateTransition(STATE_DRAG | STATE_DRAG_IN_PROGRESS, STATE_TERMINAL)) {
 		eraseTargetFeedback();
@@ -80,6 +128,10 @@ protected boolean handleButtonUp(int button) {
 	return true;
 }
 
+/**
+ * Updates the request, sets the current command, and asks to show feedback.
+ * @see org.eclipse.gef.tools.AbstractTool#handleDragInProgress()
+ */
 protected boolean handleDragInProgress() {
 	if (isInState(STATE_DRAG_IN_PROGRESS)) {
 		updateTargetRequest();
@@ -89,10 +141,18 @@ protected boolean handleDragInProgress() {
 	return true;
 }
 
+/**
+ * @see org.eclipse.gef.tools.AbstractTool#handleDragStarted()
+ */
 protected boolean handleDragStarted() {
 	return stateTransition(STATE_DRAG, STATE_DRAG_IN_PROGRESS);
 }
 
+/**
+ * If the user is in the middle of creating a new edit part, the tool erases feedback and 
+ * goes into the invalid state when focus is lost.
+ * @see org.eclipse.gef.tools.AbstractTool#handleFocusLost()
+ */
 protected boolean handleFocusLost() {
 	if (isInState(STATE_DRAG | STATE_DRAG_IN_PROGRESS)) {
 		eraseTargetFeedback();
@@ -112,6 +172,11 @@ protected boolean handleHover() {
 	return true;
 }
 
+/**
+ * Updates the request and mouse target, gets the current command and asks to show
+ * feedback.
+ * @see org.eclipse.gef.tools.AbstractTool#handleMove()
+ */
 protected boolean handleMove() {
 	updateTargetRequest();
 	updateTargetUnderMouse();
@@ -121,14 +186,21 @@ protected boolean handleMove() {
 }
 
 
+/**
+ * Executes the current command and selects the newly created object.  The button that was
+ * released to cause this creation is passed in, but since {@link #handleButtonDown(int)}
+ * goes into the invalid state if the button pressed is not button 1, this will always be 
+ * button 1.  
+ * 
+ * @param button the button that was pressed
+ */
 protected void performCreation(int button) {
 	executeCurrentCommand();
 	selectAddedObject();
 }
 
-/**
- * Add the newly created object to the viewer's
- * selected objects.
+/*
+ * Add the newly created object to the viewer's selected objects.
  */
 private void selectAddedObject() {
 	final Object model = getCreateRequest().getNewObject();
@@ -142,10 +214,18 @@ private void selectAddedObject() {
 	}
 }
 
+/**
+ * Sets the creation factory used to create the new edit parts.
+ * @param factory the factory
+ */
 public void setFactory(CreationFactory factory) {
 	this.factory = factory;
 }
 
+/**
+ * Sets the location (and size if the user is performing size-on-drop) of the request.
+ * @see org.eclipse.gef.tools.TargetingTool#updateTargetRequest()
+ */
 protected void updateTargetRequest() {
 	if (isInState(STATE_DRAG_IN_PROGRESS)) {
 		Point loq = getStartLocation();
