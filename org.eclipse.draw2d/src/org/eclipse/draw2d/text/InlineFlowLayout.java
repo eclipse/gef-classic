@@ -39,17 +39,6 @@ public void addLine(CompositeBox box) {
 }
 
 /**
- * Adds the given FlowBox to the current line of this InlineFlowLayout.
- * @param block the FlowBox to add to the current line
- */
-public void addToCurrentLine(FlowBox block) {
-	super.addToCurrentLine(block);
-	List frags = ((InlineFlow)getFlowFigure()).getFragments();
-	if (!frags.contains(currentLine))
-		frags.add(currentLine);
-}
-
-/**
  * @see FlowContainerLayout#createNewLine()
  */
 protected void createNewLine() {
@@ -61,23 +50,20 @@ protected void createNewLine() {
  * @see FlowContext#endLine()
  */
 public void endLine() {
-	if (currentLine == null)
-		return;
-	//If nothing was ever placed in the line, ignore it.
-	if (currentLine.isOccupied())
-		getContext().addToCurrentLine(currentLine);
+	flush();
 	getContext().endLine();
-	currentLine = null;
 }
 
 /**
  * @see FlowContainerLayout#flush()
  */
 protected void flush() {
-	if (currentLine != null) {
+	if (currentLine != null && currentLine.isOccupied()) {
 		// We want to preserve the state when a linebox is being added
 		boolean sameLine = getContext().getContinueOnSameLine();
 		getContext().addToCurrentLine(currentLine);
+		((InlineFlow)getFlowFigure()).getFragments().add(currentLine);
+		currentLine = null;
 		getContext().setContinueOnSameLine(sameLine);
 	}
 }
