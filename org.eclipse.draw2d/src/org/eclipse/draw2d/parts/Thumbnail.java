@@ -1,5 +1,7 @@
 package org.eclipse.draw2d.parts;
 
+import java.util.*;
+
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
@@ -319,6 +321,10 @@ protected float getScaleY() {
 	return scaleY;
 }
 
+protected IFigure getSource() {
+	return sourceFigure;
+}
+
 /**
  * Returns the scaled Image of the source Figure.  If the Image needs to be 
  * updated, the ThumbnailUpdater will notified.
@@ -352,9 +358,25 @@ protected boolean isDirty() {
 /**
  * @see org.eclipse.draw2d.UpdateListener#notifyPainting(Rectangle)
  */
-public void notifyPainting(Rectangle damage) {
-	setDirty(true);
-	repaint();
+public void notifyPainting(Rectangle damage, Map dirtyRegions) {
+	Iterator keys = dirtyRegions.keySet().iterator();
+	List affectedFigures = new ArrayList();
+	while (keys.hasNext()) {
+		IFigure current = (IFigure)keys.next();
+		while (current != null) {
+			if (affectedFigures.contains(current)) {
+				current = null;
+				continue;
+			}
+			if (current == getSource()) {
+				setDirty(true);
+				repaint();
+				return;
+			}
+			affectedFigures.add(current);
+			current = current.getParent();
+		}
+	}
 }
 
 /**

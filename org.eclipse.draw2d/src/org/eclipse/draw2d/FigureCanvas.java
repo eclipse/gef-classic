@@ -134,7 +134,7 @@ public Viewport getViewport() {
  */
 private void hook() {
 	getLightweightSystem().getUpdateManager().addUpdateListener(new UpdateListener() {
-		public void notifyPainting(Rectangle damage) { }
+		public void notifyPainting(Rectangle damage, java.util.Map dirtyRegions) { }
 		public void notifyValidating() {
 			if (!isDisposed())
 				layoutViewport();

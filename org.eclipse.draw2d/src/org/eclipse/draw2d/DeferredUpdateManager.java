@@ -125,14 +125,18 @@ protected void repairDamage(){
 			damage = new Rectangle(contribution);
 		else
 			damage.union(contribution);
-		keys.remove();
+//		keys.remove();
 	}
 
-	if (damage != null && !damage.isEmpty()){
+	if (!dirtyRegions.isEmpty()) {
+		firePainting(damage, dirtyRegions);
+		dirtyRegions.clear();
+	}
+	
+	if (damage != null && !damage.isEmpty()) {
 		//System.out.println(damage);
 		Graphics graphics = getGraphics(damage);
-		if (graphics != null){
-			firePainting(damage);
+		if (graphics != null) {
 			root.paint(graphics);
 			releaseGraphics(graphics);
 		}

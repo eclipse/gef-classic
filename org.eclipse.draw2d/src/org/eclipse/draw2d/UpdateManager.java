@@ -8,6 +8,7 @@ package org.eclipse.draw2d;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.draw2d.geometry.Rectangle;
 
@@ -55,10 +56,10 @@ public void dispose() {
 	disposed = true;
 }
 
-protected void firePainting(Rectangle damage) {
+protected void firePainting(Rectangle damage, Map dirtyRegions) {
 	for (int i=0; i<listeners.size(); i++) {
 		UpdateListener listener = (UpdateListener)listeners.get(i);
-		listener.notifyPainting(damage);
+		listener.notifyPainting(damage, dirtyRegions);
 	}
 }
 
