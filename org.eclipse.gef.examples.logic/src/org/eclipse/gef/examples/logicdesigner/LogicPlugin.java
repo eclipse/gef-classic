@@ -14,6 +14,7 @@ import org.eclipse.swt.graphics.Image;
 
 import org.eclipse.gef.*;
 import org.eclipse.gef.palette.*;
+import org.eclipse.gef.requests.CreateRequest;
 import org.eclipse.gef.tools.*;
 
 import org.eclipse.gef.examples.logicdesigner.model.*;
@@ -311,8 +312,18 @@ static private PaletteContainer createControlGroup(){
 			new ConnectionCreationTool(),
 			LogicMessages.LogicPlugin_Tool_ConnectionCreationTool_ConnectionCreationTool_Label,
 			LogicMessages.LogicPlugin_Tool_ConnectionCreationTool_ConnectionCreationTool_Description,
+			//@RESOURCE_LEAK The Image below is never disposed
 			new Image(null,Circuit.class.getResourceAsStream("icons/connection16.gif")),//$NON-NLS-1$
 			new Image(null,Circuit.class.getResourceAsStream("icons/connection32.gif"))//$NON-NLS-1$
+		);
+	entries.add(tool);
+
+	tool = new DefaultPaletteToolEntry(
+			new CreationTool(new CreateRequest.SimpleFactory(AndGate.class)),
+			LogicMessages.LogicPlugin_Tool_CreationTool_ANDGate_Label,
+			LogicMessages.LogicPlugin_Tool_CreationTool_ANDGate_Description,
+			new Image(null,Circuit.class.getResourceAsStream("icons/and.gif")),//$NON-NLS-1$
+			new Image(null,Circuit.class.getResourceAsStream("icons/and.gif"))//$NON-NLS-1$
 		);
 	entries.add(tool);
 
