@@ -48,8 +48,9 @@ private void swapNodes(Node current, Node next, Rank rank) {
 	int index = rank.indexOf(current);
 	rank.set(index + 1, current);
 	rank.set(index, next);
-	current.index++;
-	next.index--;
+	index = current.index;
+	current.index = next.index;
+	next.index = index;
 }
 
 /**
@@ -61,7 +62,7 @@ public void visit(DirectedGraph g) {
 		flag = false;
 		for (int r = 0; r < g.ranks.size(); r++) {
 			Rank rank = g.ranks.getRank(r);
-			for (int n = 0; n < rank.size() - 1; n++) {
+			for (int n = 0; n < rank.count() - 1; n++) {
 				Node currentNode = rank.getNode(n);
 				Node nextNode = rank.getNode(n + 1);
 				if (shouldSwap(currentNode, nextNode)) {
