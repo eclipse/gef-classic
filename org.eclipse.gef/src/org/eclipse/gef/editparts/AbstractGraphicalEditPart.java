@@ -173,6 +173,20 @@ public void addNodeListener(NodeListener listener) {
 }
 
 /**
+ * @see org.eclipse.gef.EditPart#addNotify()
+ */
+public void addNotify() {
+	super.addNotify();
+	List conns;
+	conns = getSourceConnections();
+	for (int i = 0; i < conns.size(); i++)
+		((ConnectionEditPart)conns.get(i)).setSource(this);
+	conns = getTargetConnections();
+	for (int i = 0; i < conns.size(); i++)
+		((ConnectionEditPart)conns.get(i)).setTarget(this);
+}
+
+/**
  * Adds a <i>source</i> ConnectionEditPart at the specified index. This method is called
  * from {@link #refreshSourceConnections()}. There should be no reason to call or override
  * this method. Source connection are created as a result of overriding {@link

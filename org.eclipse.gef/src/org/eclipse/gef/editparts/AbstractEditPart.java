@@ -212,6 +212,10 @@ public void addEditPartListener(EditPartListener listener) {
 public void addNotify() {
 	register();
 	createEditPolicies();
+	List children = getChildren();
+	for (int i = 0; i < children.size(); i++)
+		((EditPart)children.get(i))
+			.addNotify();
 	refresh();
 }
 
