@@ -24,9 +24,8 @@ private Point newPos;
 private Dimension newSize;
 private Point oldPos;
 private Dimension oldSize;
-private int oldVAlignment = -2, oldHAlignment = -2, 
-            newHAlignment = -2, newVAlignment = -2;
-private LogicGuide oldVGuide, oldHGuide, newVGuide, newHGuide;
+private GuideChange hGuideChange = new GuideChange();
+private GuideChange vGuideChange = new GuideChange();
 private LogicSubpart part;
 
 protected void changeGuide(LogicGuide oldGuide, LogicGuide newGuide, int newAlignment) {
@@ -38,22 +37,40 @@ protected void changeGuide(LogicGuide oldGuide, LogicGuide newGuide, int newAlig
 	}
 }
 
+public void clearHorizontalGuide() {
+	hGuideChange.changeGuide = true;
+}
+
+public void clearVerticalGuide() {
+	vGuideChange.changeGuide = true;
+}
+
 public void execute() {
 	oldSize = part.getSize();
 	oldPos  = part.getLocation();
-	oldVGuide = part.getVerticalGuide();
-	oldHGuide = part.getHorizontalGuide();
-	if (oldVGuide != null) {
-		oldVAlignment = ((Integer)oldVGuide.getMap().get(part)).intValue();
-	}
-	if (oldHGuide != null) {
-		oldHAlignment = ((Integer)oldHGuide.getMap().get(part)).intValue();
-	}
-
 	part.setLocation(newPos);
 	part.setSize(newSize);
-	changeGuide(oldHGuide, newHGuide, newHAlignment);
-	changeGuide(oldVGuide, newVGuide, newVAlignment);
+	
+	vGuideChange.oldGuide = part.getVerticalGuide();
+	hGuideChange.oldGuide = part.getHorizontalGuide();
+	
+	if (hGuideChange.oldGuide != null)
+		hGuideChange.oldAlign = ((Integer)hGuideChange.oldGuide.getMap().get(part)).intValue();
+	
+	if (vGuideChange.oldGuide != null) {
+		vGuideChange.oldAlign = ((Integer)vGuideChange.oldGuide.getMap().get(part)).intValue();
+	}
+	
+	if (vGuideChange.changeGuide) {
+		changeGuide(vGuideChange.oldGuide, vGuideChange.newGuide, vGuideChange.newAlign);
+		vGuideChange.changeGuide = false;
+	}
+	
+	if (hGuideChange.changeGuide) { 
+		changeGuide(hGuideChange.oldGuide, hGuideChange.newGuide, hGuideChange.newAlign);
+		hGuideChange.changeGuide = false;
+	}
+	
 }
 
 public String getLabel() {
@@ -65,11 +82,14 @@ public String getLabel() {
 public void redo() {
 	part.setSize(newSize);
 	part.setLocation(newPos);
+	changeGuide(vGuideChange.oldGuide, vGuideChange.newGuide, vGuideChange.newAlign);
+	changeGuide(hGuideChange.oldGuide, hGuideChange.newGuide, hGuideChange.newAlign);
 }
 
 public void setHorizontalGuide(LogicGuide guide, int alignment) {
-	newHGuide = guide;
-	newHAlignment = alignment;
+	hGuideChange.newGuide = guide;
+	hGuideChange.newAlign = alignment;
+	hGuideChange.changeGuide = true;
 }
 
 public void setLocation(Rectangle r) {
@@ -90,15 +110,22 @@ public void setSize(Dimension p) {
 }
 
 public void setVerticalGuide(LogicGuide guide, int alignment) {
-	newVGuide = guide;
-	newVAlignment = alignment;
+	vGuideChange.newGuide = guide;
+	vGuideChange.newAlign = alignment;
+	vGuideChange.changeGuide = true;
 }
 
 public void undo() {
 	part.setSize(oldSize);
 	part.setLocation(oldPos);
-	changeGuide(newVGuide, oldVGuide, oldVAlignment);
-	changeGuide(newHGuide, oldHGuide, oldHAlignment);
+	changeGuide(vGuideChange.newGuide, vGuideChange.oldGuide, vGuideChange.oldAlign);
+	changeGuide(hGuideChange.newGuide, hGuideChange.oldGuide, hGuideChange.oldAlign);
+}
+
+class GuideChange {
+	protected LogicGuide oldGuide, newGuide;
+	protected int oldAlign, newAlign;	
+	protected boolean changeGuide;
 }
 
 }
