@@ -41,17 +41,8 @@ private RulerChangeListener listener = new RulerChangeListener.Stub() {
 	}
 };
 
-public RulerEditPart(Object model, GraphicalViewer primaryViewer) {
+public RulerEditPart(Object model) {
 	setModel(model);
-	diagramViewer = primaryViewer;
-	RulerProvider hProvider = (RulerProvider)diagramViewer
-			.getProperty(RulerProvider.HORIZONTAL);
-	if (hProvider != null && hProvider.getRuler() == getModel()) {
-		rulerProvider = hProvider;
-		horizontal = true;
-	} else {
-		rulerProvider = (RulerProvider)diagramViewer.getProperty(RulerProvider.VERTICAL);
-	}
 }
 
 /* (non-Javadoc)
@@ -153,6 +144,22 @@ public void handleUnitsChanged(int newUnit) {
 
 public boolean isHorizontal() {
 	return horizontal;
+}
+
+public void setParent(EditPart parent) {
+	super.setParent(parent);
+	if (getParent() != null && diagramViewer == null) {
+		diagramViewer = (GraphicalViewer)getViewer()
+				.getProperty(GraphicalViewer.class.toString());
+		RulerProvider hProvider = (RulerProvider)diagramViewer
+				.getProperty(RulerProvider.HORIZONTAL);
+		if (hProvider != null && hProvider.getRuler() == getModel()) {
+			rulerProvider = hProvider;
+			horizontal = true;
+		} else {
+			rulerProvider = (RulerProvider)diagramViewer.getProperty(RulerProvider.VERTICAL);
+		}
+	}
 }
 
 }

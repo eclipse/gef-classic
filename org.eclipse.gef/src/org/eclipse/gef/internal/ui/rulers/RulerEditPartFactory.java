@@ -41,11 +41,11 @@ public EditPart createEditPart(EditPart parentEditPart, Object model) {
 }
 
 protected EditPart createGuideEditPart(EditPart parentEditPart, Object model) {
-	return new GuideEditPart(model, diagramViewer);
+	return new GuideEditPart(model);
 }
 
 protected EditPart createRulerEditPart(EditPart parentEditPart, Object model) {
-	return new RulerEditPart(model, diagramViewer);
+	return new RulerEditPart(model);
 }
 
 protected Object getHorizontalRuler() {

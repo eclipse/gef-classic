@@ -32,7 +32,6 @@ public class GuideEditPart
 public static final int MIN_DISTANCE_BW_GUIDES = 5;
 public static final int DELETE_THRESHOLD = 15;
 	
-protected GraphicalViewer diagramViewer;
 private GuideLineFigure guideLineFig;
 private Cursor cursor = null;
 private ZoomListener zoomListener = new ZoomListener() {
@@ -53,9 +52,8 @@ private RulerChangeListener listener = new RulerChangeListener.Stub() {
 	}
 };
 
-public GuideEditPart(Object model, GraphicalViewer primaryViewer) {
+public GuideEditPart(Object model) {
 	setModel(model);
-	diagramViewer = primaryViewer;
 }
 
 /* (non-Javadoc)
@@ -64,9 +62,8 @@ public GuideEditPart(Object model, GraphicalViewer primaryViewer) {
 public void activate() {
 	super.activate();
 	getRulerProvider().addRulerChangeListener(listener);
-	if (getZoomManager() != null) {
+	if (getZoomManager() != null)
 		getZoomManager().addZoomListener(zoomListener);		
-	}
 }
 
 /* (non-Javadoc)
@@ -96,13 +93,11 @@ protected GuideLineFigure createGuideLineFigure() {
  * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#deactivate()
  */
 public void deactivate() {
-	if (getZoomManager() != null) {
+	if (getZoomManager() != null)
 		getZoomManager().removeZoomListener(zoomListener);		
-	}
 	getRulerProvider().removeRulerChangeListener(listener);
-	if (getGuideLineFigure().getParent() != null) {
+	if (getGuideLineFigure().getParent() != null)
 		getGuideLineFigure().getParent().remove(getGuideLineFigure());
-	}
 	super.deactivate();
 }
 
@@ -132,8 +127,7 @@ public DragTracker getDragTracker(Request request) {
 }
 
 public IFigure getGuideLayer() {
-	return ((FreeformGraphicalRootEditPart)diagramViewer.getRootEditPart()).getLayer(
-			LayerConstants.GUIDE_LAYER);
+	return getRulerEditPart().getGuideLayer();
 }
 
 public IFigure getGuideLineFigure() {
