@@ -75,8 +75,10 @@ class ConnectionFocus
 	public void validate() {
 		if (isValid())
 			return;
-		PointList points = getConnection().getPoints();
+		PointList points = getConnection().getPoints().getCopy();
+		getConnection().translateToAbsolute(points);
 		points = StrokePointList.strokeList(points, 5);
+		translateToRelative(points);
 		setPoints(points);
 		second = new PointList(points.size() + 2);
 		int minY = Integer.MAX_VALUE;
