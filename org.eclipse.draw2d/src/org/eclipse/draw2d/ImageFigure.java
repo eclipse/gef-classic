@@ -18,7 +18,8 @@ import org.eclipse.draw2d.geometry.Rectangle;
 /**
  * A Figure that simply contains an Image.  Use this Figure, instead of a Label, when
  * displaying Images without any accompanying text.  Using Labels for displaying Images
- * can stress your resources.
+ * can stress your resources.  Note that it is the client's responsibility to dispose
+ * the given image.
  * 
  * @author Pratik Shah
  */
@@ -136,6 +137,8 @@ public void setAlignment(int flag) {
 
 /**
  * Sets the Image that this ImageFigure displays.
+ * <p>
+ * IMPORTANT: Note that it is the client's responsibility to dispose the given image.
  * 
  * @param image	The Image to be displayed.  It can be <code>null</code>.
  */
