@@ -47,18 +47,18 @@ protected IFigure createFigure() {
 }
 
 protected void createLayers(LayeredPane layeredPane) {
-	printableLayers = createPrintableLayers();
-	layeredPane.add(printableLayers, PRINTABLE_LAYERS);
+	layeredPane.add(getPrintableLayers(), PRINTABLE_LAYERS);
 	layeredPane.add(new FreeformLayer(), HANDLE_LAYER);
 	layeredPane.add(new FeedbackLayer(), FEEDBACK_LAYER);
 }
+
 
 protected LayeredPane createPrintableLayers() {
 	FreeformLayeredPane layeredPane = new FreeformLayeredPane();
 	layeredPane.add(new FreeformLayer(), PRIMARY_LAYER);
 	layeredPane.add(new ConnectionLayer(), CONNECTION_LAYER);
 	return layeredPane;
-}	
+}
 
 /** 
  * Doesnt provide any command support, returns an
@@ -108,6 +108,12 @@ public IFigure getLayer(Object key){
  */
 public Object getModel(){
 	return LayerManager.ID;
+}
+
+protected LayeredPane getPrintableLayers() {
+	if (printableLayers == null)
+		printableLayers = createPrintableLayers();
+	return printableLayers;
 }
 
 /*

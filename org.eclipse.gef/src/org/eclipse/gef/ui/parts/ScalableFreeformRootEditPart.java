@@ -10,20 +10,21 @@ public class ScalableFreeformRootEditPart
 	extends FreeformGraphicalRootEditPart
 {
 
-private ScalableFreeformLayeredPane scaledLayers = new ScalableFreeformLayeredPane();
+private ScalableFreeformLayeredPane scaledLayers;
 
 /**
  * @see org.eclipse.gef.ui.parts.FreeformGraphicalRootEditPart#createLayers(LayeredPane)
  */
 protected void createLayers(LayeredPane layeredPane) {
-	createScaledLayers(scaledLayers);
-	layeredPane.add(scaledLayers, "$Scaled Layers");//$NON-NLS-1$
+	layeredPane.add(getScaledLayers(), "$Scaled Layers");//$NON-NLS-1$
 	layeredPane.add(new FreeformLayer(), HANDLE_LAYER);
 	layeredPane.add(new FeedbackLayer(), FEEDBACK_LAYER);
 }
 
-protected void createScaledLayers(LayeredPane layeredPane) {
-	scaledLayers.add(createPrintableLayers(), PRINTABLE_LAYERS);
+protected ScalableFreeformLayeredPane createScaledLayers() {
+	ScalableFreeformLayeredPane layers = new ScalableFreeformLayeredPane();
+	layers.add(getPrintableLayers(), PRINTABLE_LAYERS);
+	return layers;
 }
 
 /**
@@ -34,6 +35,12 @@ public IFigure getLayer(Object key) {
 	if (layer != null)
 		return layer;
 	return super.getLayer(key);
+}
+
+protected LayeredPane getScaledLayers() {
+	if (scaledLayers == null)
+		scaledLayers = createScaledLayers();
+	return scaledLayers;
 }
 
 }
