@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
+import org.eclipse.swt.SWTError;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Control;
@@ -31,12 +32,20 @@ public BufferedGraphicsSource(Control c) {
 public void flushGraphics(Rectangle region) {
 	if (inUse.isEmpty())
 		return;
-	controlGC.drawImage(getImage(),
-		0, 0, inUse.width, inUse.height,
-		inUse.x, inUse.y, inUse.width, inUse.height);
+	/*
+	 * The imageBuffer may be null if double-buffering was not successful.
+	 */
+	if (imageBuffer != null) {
+		controlGC.drawImage(getImage(),
+				0, 0, inUse.width, inUse.height,
+				inUse.x, inUse.y, inUse.width, inUse.height);
+		imageGC.dispose();
+		imageBuffer.dispose();
+		imageBuffer = null;
+		imageGC = null;
+	}
 	controlGC.dispose();
-	imageGC.dispose();
-	imageBuffer.dispose();
+	controlGC = null;
 }
 
 public Graphics getGraphics(Rectangle region) {
@@ -48,23 +57,38 @@ public Graphics getGraphics(Rectangle region) {
 	inUse.intersect(region);
 	if (inUse.isEmpty())
 		return null;
-	imageBuffer = new Image(null, inUse.width, inUse.height);
+	
+	/**
+	 * Bugzilla 53632 - Attempts to create large images on some platforms will fail.
+	 * When this happens, do not use double-buffering for painting.
+	 */
+	try {
+		imageBuffer = new Image(null, inUse.width, inUse.height);
+	} catch (SWTError noMoreHandles) {
+		imageBuffer = null;
+	} catch (IllegalArgumentException tooBig) {
+		imageBuffer = null;
+	}
 
-	imageGC = new GC(imageBuffer);
 	controlGC = new GC(control);
-	imageGC.setBackground(controlGC.getBackground());
-	imageGC.setForeground(controlGC.getForeground());
-	imageGC.setFont(controlGC.getFont());
-	imageGC.setLineStyle(controlGC.getLineStyle());
-	imageGC.setLineWidth(controlGC.getLineWidth());
-	imageGC.setXORMode(controlGC.getXORMode());
+	Graphics graphics;
+	if (imageBuffer != null) {
+		imageGC = new GC(imageBuffer);
+		imageGC.setBackground(controlGC.getBackground());
+		imageGC.setForeground(controlGC.getForeground());
+		imageGC.setFont(controlGC.getFont());
+		imageGC.setLineStyle(controlGC.getLineStyle());
+		imageGC.setLineWidth(controlGC.getLineWidth());
+		imageGC.setXORMode(controlGC.getXORMode());
+		graphics = new SWTGraphics(imageGC);
+		graphics.translate(inUse.getLocation().negate());
+	} else {
+		graphics = new SWTGraphics(controlGC);
+	}
 
-	Graphics g = new SWTGraphics(imageGC);
-	g.translate(inUse.getLocation().negate());
-	g.setClip(region);
-
-	g.clipRect(new Rectangle(0, 0, ptSWT.x, ptSWT.y));
-	return g;
+	graphics.setClip(region);
+	graphics.clipRect(new Rectangle(0, 0, ptSWT.x, ptSWT.y));
+	return graphics;
 }
 
 protected Image getImage() {
