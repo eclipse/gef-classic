@@ -39,7 +39,7 @@ public class DetailedLabelFigure
 {
 
 public static final String SELECTED_PROPERTY = "selected"; //$NON-NLS-1$
-private static final Border PAGE_BORDER = new MarginBorder(0, 2, 0, 2);
+private static final Border PAGE_BORDER = new MarginBorder(0, 1, 0, 1);
 
 private Image shadedIcon;
 private ImageFigure image;
@@ -66,7 +66,7 @@ public DetailedLabelFigure() {
 	add(page);
 	BorderLayout layout = new BorderLayout();
 	layout.setHorizontalSpacing(2);
-	layout.setVerticalSpacing(2);
+	layout.setVerticalSpacing(0);
 	setLayoutManager(layout);
 }
 
@@ -283,19 +283,19 @@ private class FocusableFlowPage extends FlowPage {
 			List children = getChildren();
 			for (int i = 0; i < children.size(); i++) {
 				Figure child = (Figure) children.get(i);
-				if (i == 0) {
-					childBounds = new Rectangle(child.getBounds());
-				} else {
+				if (i == 0)
+					childBounds = child.getBounds().getCopy();
+				else
 					childBounds.union(child.getBounds());
-				}
 			}
-			childBounds.crop(new Insets(0, -2, 1, -1)); // Right is -1 and not -2 to not leave
-					                                    // too much space on the right
+			childBounds.expand(new Insets(2,2,0,0));
 			translateToParent(childBounds);
+			childBounds.intersect(getBounds());
 			g.fillRectangle(childBounds);
-			super.paintFigure(g);
+//			super.paintFigure(g);
 			if (DetailedLabelFigure.this.hasFocus()) {
-				g.setForegroundColor(ColorConstants.black);
+				g.setXORMode(true);
+				g.setForegroundColor(ColorConstants.menuBackgroundSelected);
 				g.setBackgroundColor(ColorConstants.white);
 				g.drawFocus(childBounds.resize(-1, -1));
 			}

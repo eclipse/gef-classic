@@ -33,8 +33,8 @@ public class DrawerFigure
 {
 
 protected static final Border TOGGLE_BUTTON_BORDER = new RaisedBorder();
-protected static final Border TITLE_MARGIN_BORDER = new MarginBorder(1, 1, 1, 1);
-protected static final Border SCROLL_PANE_BORDER = new MarginBorder(3);
+protected static final Border TITLE_MARGIN_BORDER = new MarginBorder(1, 1, 1, 0);
+protected static final Border SCROLL_PANE_BORDER = new MarginBorder(2);
 protected static final Border TOOLTIP_BORDER = new DrawerToolTipBorder();
 protected static final Border BUTTON_BORDER = new ButtonBorder(
 					ButtonBorder.SCHEMES.TOOLBAR);
@@ -221,6 +221,10 @@ private void createScrollpane() {
  */
 public IFigure getContentPane() {
 	return scrollpane.getView();
+}
+
+public ScrollPane getScrollpane() {
+	return scrollpane;
 }
 
 /**

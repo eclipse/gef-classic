@@ -10,26 +10,80 @@
  *******************************************************************************/
 package org.eclipse.gef.internal.ui.palette.editparts;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+import org.eclipse.swt.graphics.*;
+import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Insets;
+import org.eclipse.draw2d.geometry.*;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 public final class PaletteScrollBar 
 	extends ScrollBar 
 {
 
-protected Label upLabel;
-protected Label downLabel;
+private static final ButtonBorder BORDER =
+	new ButtonBorder(new ButtonBorder.ButtonScheme(
+		new Color[] {ColorConstants.buttonLightest},
+		new Color[] {ColorConstants.buttonDarker},
+		new Color[] {ColorConstants.buttonDarker},
+		new Color[] {ColorConstants.buttonDarker}
+	));
+
+private static final Border CONTRAST = new CompoundBorder(
+	new MarginBorder(1,0,0,0) {
+		public void paint(IFigure figure, Graphics graphics, Insets insets) {
+			if (!((Clickable)figure).getModel().isMouseOver())
+				return;
+			Rectangle r = getPaintRectangle(figure, insets);
+			graphics.setForegroundColor(ColorConstants.button);
+			graphics.drawLine(r.x, r.y, r.right(), r.y);
+		}
+	}, BORDER
+);
+
+static {
+	Display display = Display.getCurrent();
+	PaletteData pData = new PaletteData(0xFF, 0xFF00, 0xFF0000);
+	RGB rgb = ColorConstants.button.getRGB();
+	int fillColor = pData.getPixel(rgb);
+	ImageData iData = new ImageData(1, 1, 24, pData);
+	iData.setPixel(0, 0, fillColor);
+	iData.setAlpha(0, 0, 200);
+	TRANSPARENCY = new Image(display, iData);
+}
 
 private static final int BUTTON_HEIGHT = 12;
 private static final int SCROLL_TIME = 200;
 
+private static final Image TRANSPARENCY;
+protected Label downLabel;
+
+protected Label upLabel;
+
 public PaletteScrollBar() {
 	super();
+}
+
+protected Clickable createDefaultDownButton() {
+	return createTransparentArrowButton();
+}
+
+protected Clickable createDefaultUpButton() {
+	return createTransparentArrowButton();
+}
+
+private ArrowButton createTransparentArrowButton() {
+	ArrowButton button = new ArrowButton() {
+		protected void paintFigure(Graphics g) {
+			if (!getModel().isMouseOver())
+				g.drawImage(TRANSPARENCY, new Rectangle(0,0,1,1), getBounds());
+			else
+				super.paintFigure(g);
+		}
+	};
+	button.setRolloverEnabled(true);
+	button.setBorder(BORDER);
+	return button;
 }
 
 /**
@@ -40,41 +94,6 @@ public IFigure findFigureAt(int x, int y, TreeSearch search) {
 	if (result != this)
 		return result;
 	return null;
-}
-
-
-protected Clickable createDefaultDownButton() {
-	downLabel = new Label(ImageConstants.down);
-	downLabel.setIcon(ImageConstants.down);
-	addPropertyChangeListener(new PropertyChangeListener(){
-		public void propertyChange(PropertyChangeEvent event) {
-			updateDownLabel();
-		}
-	});
-	Clickable button = new Clickable(downLabel);
-	button.setRequestFocusEnabled(false);
-
-	button.setFiringMethod(Clickable.REPEAT_FIRING);
-	button.setBorder(ButtonBorder.TOOLBAR);
-	button.setOpaque(true);
-	return button;
-}
-
-protected Clickable createDefaultUpButton() {
-	upLabel = new Label(ImageConstants.up);
-	upLabel.setIcon(ImageConstants.up);
-	addPropertyChangeListener(new PropertyChangeListener(){
-		public void propertyChange(PropertyChangeEvent event) {
-			updateUpLabel();
-		}
-	});
-	Clickable button = new Clickable(upLabel);
-	button.setRequestFocusEnabled(false);
-
-	button.setFiringMethod(Clickable.REPEAT_FIRING);
-	button.setBorder(ButtonBorder.TOOLBAR);
-	button.setOpaque(true);
-	return button;
 }
 
 /**
@@ -91,20 +110,21 @@ protected void initialize() {
 			Rectangle bounds = transposer.t(scrollBar.getClientArea());
 			Dimension buttonSize = new Dimension(bounds.width, BUTTON_HEIGHT);
 		
-			if (getButtonUp() != null)
-				getButtonUp().setBounds(transposer.t(
-					new Rectangle(bounds.getTopLeft(), buttonSize)));
-			if (getButtonDown() != null) {
-				Rectangle r = new Rectangle (
-					bounds.x, bounds.bottom() - buttonSize.height,
-					buttonSize.width, buttonSize.height);
-				getButtonDown().setBounds(transposer.t(r));
-			}
-		
+			getButtonUp().setBounds(transposer.t(
+				new Rectangle(bounds.getTopLeft(), buttonSize)));
+			Rectangle r = new Rectangle (
+				bounds.x, bounds.bottom() - buttonSize.height,
+				buttonSize.width, buttonSize.height);
+			getButtonDown().setBounds(transposer.t(r));
+			if (scrollBar.getBackgroundColor() == ColorConstants.listBackground
+			  && getButtonDown().getBorder() != CONTRAST)
+			  	getButtonDown().setBorder(CONTRAST);
 			Rectangle trackBounds = bounds.getCropped(
-				new Insets(
-					(getButtonUp()   == null) ? 0 : buttonSize.height, 0,
-					(getButtonDown() == null) ? 0 : buttonSize.height, 0));
+				new Insets(buttonSize.height, 0, buttonSize.height, 0));
+			RangeModel model = scrollBar.getRangeModel();
+			getButtonUp().setVisible(model.getValue() != model.getMinimum());
+			getButtonDown().setVisible(
+				model.getValue() != model.getMaximum() - model.getExtent());
 			return trackBounds;
 		}
 	});

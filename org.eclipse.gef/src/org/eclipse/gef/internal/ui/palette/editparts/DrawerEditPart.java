@@ -206,7 +206,7 @@ protected void refreshVisuals() {
 
 	Color background = getDrawer().getDrawerType().equals(
 		PaletteTemplateEntry.PALETTE_TYPE_TEMPLATE) ? ColorConstants.listBackground : null;
-	getDrawerFigure().getContentPane().setBackgroundColor(background);
+	getDrawerFigure().getScrollpane().setBackgroundColor(background);
 }
 
 /**

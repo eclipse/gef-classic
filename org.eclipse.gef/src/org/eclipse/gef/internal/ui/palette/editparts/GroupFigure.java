@@ -18,7 +18,7 @@ import org.eclipse.draw2d.Figure;
  */
 public class GroupFigure extends Figure {
 
-private static final Border BORDER = new RaisedBorder(3, 3, 3, 3);
+private static final Border BORDER = new RaisedBorder(2,2,2,2);
 
 {
 	setBorder(BORDER);
