@@ -33,9 +33,15 @@ public PrecisionPoint() {
  * @param copy Point from which the initial values are taken
  */
 public PrecisionPoint(Point copy) {
-	super(copy);
-	preciseX = copy.x;
-	preciseY = copy.y;
+	if (copy instanceof PrecisionPoint) {
+		PrecisionPoint precPt = (PrecisionPoint)copy;
+		preciseX = precPt.preciseX;
+		preciseY = precPt.preciseY;
+		updateInts();
+	} else {
+		preciseX = x = copy.x;
+		preciseY = y = copy.y;
+	}
 }
 
 /**
