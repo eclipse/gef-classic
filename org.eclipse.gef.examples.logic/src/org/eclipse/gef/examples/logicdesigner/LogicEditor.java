@@ -15,6 +15,7 @@ import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.gef.*;
 import org.eclipse.gef.commands.CommandStackListener;
 import org.eclipse.gef.dnd.TemplateTransferDragSourceListener;
+
 import org.eclipse.gef.examples.logicdesigner.edit.GraphicalPartFactory;
 import org.eclipse.gef.examples.logicdesigner.edit.TreePartFactory;
 import org.eclipse.gef.examples.logicdesigner.model.LogicDiagram;
@@ -51,6 +52,8 @@ class OutlinePage
 		getViewer().setEditPartFactory(new TreePartFactory());
 		getViewer().setContextMenuProvider(getContextMenuProvider());
 		getViewer().setKeyHandler(getCommonKeyHandler());
+		getViewer().addDropTargetListener(
+			new LogicTemplateTransferDropTargetListener(getViewer()));
 	}
 
 	public void createControl(Composite parent){
