@@ -104,12 +104,9 @@ static int getBorderDescentWithMargin(InlineFlow owner) {
 }
 
 /**
- * Provides a TextLayout that can be used by the Draw2d text package for Bidi.  Note that
- * orientation of the provided TextLayout could be LTR or RTL.  Clients should set the
- * orientation as desired before using the TextLayout.  This TextLayout should not
- * be disposed by clients.  To prevent Strings from sticking around in memory, clients
- * should also set the text for the provided TextLayout to be an empty String once they
- * are done using it.
+ * Provides a TextLayout that can be used by the Draw2d text package for Bidi.  If clients
+ * modify the TextLayout's orientation, they should restore it to LTR before returning.
+ * This TextLayout should not be disposed by clients.
  * 
  * @return an SWT TextLayout that can be used for Bidi
  * @since 3.1
@@ -326,6 +323,7 @@ public static int wrapFragmentInContext(TextFragmentBox frag, String string,
 			frag.length--;
 		frag.setWidth(-1);
 	}
+
 	
 	setupFragment(frag, font, string);
 	return result;
