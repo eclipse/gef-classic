@@ -25,7 +25,7 @@ public class TitleBarBorder
 private static Color defaultColor = ColorConstants.menuBackgroundSelected;
 
 private int textAlignment = PositionConstants.LEFT;
-private Insets padding = new Insets(0);
+private Insets padding = new Insets(1,3,2,2);
 private Color fillColor = defaultColor;
 
 /**
@@ -117,7 +117,7 @@ public void paint(IFigure figure, Graphics g, Insets insets) {
 	g.setBackgroundColor(fillColor);
 	g.fillRectangle(rec);
 	
-	int x = rec.x;
+	int x = rec.x + padding.left;
 	int y = rec.y + padding.top;
 
 	int textWidth = getTextExtents(figure).width;
