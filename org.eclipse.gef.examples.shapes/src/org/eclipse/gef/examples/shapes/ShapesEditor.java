@@ -107,6 +107,7 @@ protected void configureGraphicalViewer() {
  */
 public void commandStackChanged(EventObject event) {
 	firePropertyChange(IEditorPart.PROP_DIRTY);
+	super.commandStackChanged(event);
 }
 
 private void createOutputStream(OutputStream os) throws IOException {
