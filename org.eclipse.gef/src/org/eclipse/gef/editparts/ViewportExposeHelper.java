@@ -55,7 +55,7 @@ public void exposeDescendant(EditPart part) {
  */
 	Rectangle exposeRegion = target.getBounds().getCopy();
 	target.translateToAbsolute(exposeRegion);
-	if (exposeRegion != null)
+	if (exposeMargin != null)
 		exposeRegion.expand(exposeMargin);
 	port.getContents().translateToRelative(exposeRegion);
 
