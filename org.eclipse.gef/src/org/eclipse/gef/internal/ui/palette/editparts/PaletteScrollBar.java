@@ -15,13 +15,14 @@ import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 public final class PaletteScrollBar 
-	extends ScrollBar {
+	extends ScrollBar 
+{
 
 protected Label upLabel;
 protected Label downLabel;
 
 private static final int BUTTON_HEIGHT = 12;
-private static final int SCROLL_TIME = 400;
+private static final int SCROLL_TIME = 250;
 private static final Border SCROLL_BAR_BORDER = new RaisedBorder();
 
 public PaletteScrollBar() {
@@ -85,14 +86,14 @@ public Dimension getPreferredSize(int wHint, int hHint) {
 protected void initialize() {
 	super.initialize();
 	setLayoutManager(new ScrollBarLayout(transposer) {
-		protected Rectangle layoutButtons(ScrollBar scrollBar){
+		protected Rectangle layoutButtons(ScrollBar scrollBar) {
 			Rectangle bounds = transposer.t(scrollBar.getClientArea());
 			Dimension buttonSize = new Dimension(bounds.width, BUTTON_HEIGHT);
 		
 			if (getButtonUp() != null)
 				getButtonUp().setBounds(transposer.t(
 					new Rectangle(bounds.getTopLeft(), buttonSize)));
-			if (getButtonDown() != null){
+			if (getButtonDown() != null) {
 				Rectangle r = new Rectangle (
 					bounds.x, bounds.bottom() - buttonSize.height,
 					buttonSize.width, buttonSize.height);
@@ -127,14 +128,14 @@ protected void stepUp() {
 }
 
 protected void timedStep(boolean up) {
-	int increment = getStepIncrement();
+	int increment = Math.max(getExtent() * 3 / 4, getStepIncrement());
 	int value = getValue();
 	long startTime = System.currentTimeMillis();
 	long elapsedTime = System.currentTimeMillis() - startTime;
-	while( elapsedTime < SCROLL_TIME ) {
+	while (elapsedTime < SCROLL_TIME) {
 		int step = (int)(increment * elapsedTime / SCROLL_TIME);
-		int newValue = up ? value - step : value + step;
-		setValue(newValue);
+		step = up ? value - step : value + step;
+		setValue(step);
 		getUpdateManager().performUpdate();
 		elapsedTime = System.currentTimeMillis() - startTime;
 	}	
