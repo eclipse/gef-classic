@@ -140,10 +140,11 @@ protected String getDebugName(){
 private IFigure getMarqueeFeedbackFigure() {		
 	if (marqueeRectangleFigure == null){
 		marqueeRectangleFigure = new RectangleFigure();
-		FigureUtilities.makeGhostShape(marqueeRectangleFigure);
 		marqueeRectangleFigure.setFill(false);
 		marqueeRectangleFigure.setLineStyle(Graphics.LINE_DASHDOT);
 		marqueeRectangleFigure.setForegroundColor(ColorConstants.white);
+		marqueeRectangleFigure.setBackgroundColor(ColorConstants.black);
+		marqueeRectangleFigure.setOutlineXOR(true);
 		addFeedback(marqueeRectangleFigure);
 	}
 	return marqueeRectangleFigure;
