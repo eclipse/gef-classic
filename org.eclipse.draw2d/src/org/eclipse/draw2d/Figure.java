@@ -150,18 +150,13 @@ public void add(IFigure figure, Object constraint, int index) {
 		children.add(figure);
 	else
 		children.add(index, figure);
+	figure.setParent(this);
 
-	//Add to layout manager
 	if (layoutManager != null)
 		layoutManager.setConstraint(figure, constraint);
-	// The updates in the UpdateManager *have* to be
-	// done asynchronously, else will result in 
-	// incorrect dirty region corrections.
-	revalidate();
-	repaint(figure.getBounds());
 
-	//Parent the figure
-	figure.setParent(this);
+	revalidate();
+
 	if (getFlag(FLAG_REALIZED))
 		figure.addNotify();
 	figure.repaint();
@@ -1753,7 +1748,7 @@ protected static final class IdentitySearch implements TreeSearch {
 	}
 }
 
-static final class LayoutNotifier implements LayoutManager {
+final class LayoutNotifier implements LayoutManager {
 	
 	LayoutManager realLayout;
 	List listeners = new ArrayList(1);
@@ -1783,7 +1778,7 @@ static final class LayoutNotifier implements LayoutManager {
 
 	public void invalidate() {
 		for (int i = 0; i < listeners.size(); i++)
-			((LayoutListener)listeners.get(i)).invalidate();
+			((LayoutListener)listeners.get(i)).invalidate(Figure.this);
 		
 		if (realLayout != null)
 			realLayout.invalidate();
