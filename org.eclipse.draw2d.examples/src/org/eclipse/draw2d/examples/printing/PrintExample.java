@@ -4,12 +4,12 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.printing.Printer;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.draw2d.ChopboxAnchor;
@@ -18,6 +18,7 @@ import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.FigureCanvas;
 import org.eclipse.draw2d.FlowLayout;
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.LightweightSystem;
 import org.eclipse.draw2d.LineBorder;
 import org.eclipse.draw2d.PolylineConnection;
@@ -42,15 +43,12 @@ public static void main(String[] args) {
 	Display d = Display.getDefault();
 	Shell shell = new Shell(d);
 	
-	shell.setLayout(new GridLayout(2,false)); 
+	shell.setLayout(new GridLayout(1,false)); 
 	
 	Button printButton = new Button(shell,SWT.PUSH);
 	printButton.setText("Print it");
 	printButton.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
 
-	Label dummyLabel = new Label(shell,SWT.NONE);
-	dummyLabel.setData(new GridData(GridData.FILL_BOTH));
-	
 	GridData canvasData = new GridData(GridData.FILL_BOTH);
 	canvasData.horizontalSpan =2;
 	canvas = new FigureCanvas(shell);
@@ -60,7 +58,7 @@ public static void main(String[] args) {
 
 	final Figure printFigure = new Figure ();
 	printFigure.setMinimumSize(new Dimension(5,5));
-	addAllFigure(printFigure);	
+	addAllFigures(printFigure);	
 	lws.setContents(printFigure);
 	
 	printButton.addMouseListener(new MouseListener() {
@@ -82,7 +80,7 @@ public static void main(String[] args) {
 		
 }
 
-static void addAllFigure(IFigure parent){
+static void addAllFigures(IFigure parent){
 	Font fonts[] = {
 					new Font(null,"Helvetica",16,SWT.NONE),
 					new Font(null,"Times New Roman",24,SWT.BOLD),
@@ -114,12 +112,15 @@ static void addAllFigure(IFigure parent){
 	c.setSourceAnchor(chop);
 	c.setTargetAnchor(new ChopboxAnchor(rect2));
 	
+	Label icon = new Label(new Image(null, PrintExample.class.getResourceAsStream("brazil.ico")));
+	
 	parent.add(rf);
 	parent.add(e);
 	parent.add(rr);
 	parent.add(button);
 	parent.add(rect1);
 	parent.add(rect2);
+	parent.add(icon);
 	parent.add(c);
 }
 
