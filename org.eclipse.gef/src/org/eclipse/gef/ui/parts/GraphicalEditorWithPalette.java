@@ -16,6 +16,7 @@ import java.beans.PropertyChangeListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
+import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.ui.palette.PaletteViewer;
 
@@ -114,7 +115,6 @@ protected void hookPaletteViewer() {
  * Called to populate the palette viewer.
  */
 protected void initializePaletteViewer() {
-	getEditDomain().setPaletteRoot(getPaletteRoot());
 }
 
 /**
@@ -123,6 +123,11 @@ protected void initializePaletteViewer() {
  */
 protected void setPaletteViewer(PaletteViewer paletteViewer) {
 	this.paletteViewer = paletteViewer;
+}
+
+protected void setEditDomain(DefaultEditDomain ed) {
+	super.setEditDomain(ed);
+	getEditDomain().setPaletteRoot(getPaletteRoot());
 }
 
 }
