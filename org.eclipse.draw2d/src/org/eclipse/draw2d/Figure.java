@@ -54,7 +54,6 @@ protected int flags = FLAG_VISIBLE | FLAG_ENABLED;
 
 private IFigure parent;
 private Cursor cursor;
-private UpdateManager updateManager;
 
 private PropertyChangeSupport propertyListeners;
 private EventListenerList eventListeners = new EventListenerList();
@@ -557,14 +556,19 @@ public Dimension getMaximumSize() {
 /**
  * @see org.eclipse.draw2d.IFigure#getMinimumSize()
  */
-public Dimension getMinimumSize() {
+public final Dimension getMinimumSize() {
+	return getMinimumSize(-1, -1);
+}
+
+public Dimension getMinimumSize(int wHint, int hHint) {
 	if (minSize != null)
 		return minSize;
 	if (getLayoutManager() != null) {
-		Dimension d = getLayoutManager().getMinimumSize(this);
-		if (d != null) return d;
+		Dimension d = getLayoutManager().getMinimumSize(this, wHint, hHint);
+		if (d != null)
+			return d;
 	}
-	return getPreferredSize(-1, -1);
+	return getPreferredSize(wHint, hHint);
 }
 
 /**
@@ -613,8 +617,6 @@ public IFigure getToolTip() {
  * @see org.eclipse.draw2d.IFigure#getUpdateManager()
  */
 public UpdateManager getUpdateManager() {
-	if (updateManager != null) 
-		return updateManager;
 	if (getParent() != null) 
 		return getParent().getUpdateManager();
 	// Only happens when the figure has not been realized
@@ -1407,15 +1409,6 @@ public void setToolTip(IFigure f) {
 	if (toolTip == f)
 		return;
 	toolTip = f;
-}
-
-/**
- * @see org.eclipse.draw2d.IFigure#setUpdateManager(UpdateManager)
- */
-public final void setUpdateManager(UpdateManager updateManager) {
-	this.updateManager = updateManager;
-	revalidate();
-	repaint();
 }
 
 /**
