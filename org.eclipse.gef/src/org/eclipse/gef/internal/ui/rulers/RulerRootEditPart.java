@@ -26,9 +26,6 @@ public class RulerRootEditPart
 	implements RootEditPart
 {
 	
-private static final Insets H_INSETS = new Insets(0, 1, 0, 0);
-private static final Insets V_INSETS = new Insets(1, 0, 0, 0);
-
 private boolean horizontal;	
 private EditPart contents;
 private EditPartViewer viewer;
@@ -47,26 +44,7 @@ protected void addChildVisual(EditPart childEditPart, int index) {
  * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
  */
 protected IFigure createFigure() {
-	IFigure fig = new RulerViewport(horizontal);
-	fig.setBorder(new AbstractBorder() {
-		public Insets getInsets(IFigure figure) {
-			return horizontal ? H_INSETS : V_INSETS;
-		}
-		public void paint(IFigure figure, Graphics graphics, Insets insets) {
-			graphics.setForegroundColor(ColorConstants.buttonDarker);
-			Point reduction = null;
-			if (horizontal) {
-				reduction = new Point(0, -3);
-				graphics.drawLine(figure.getBounds().getTopLeft(), 
-						figure.getBounds().getBottomLeft().translate(reduction));
-			} else {
-				reduction = new Point(-3, 0);
-				graphics.drawLine(figure.getBounds().getTopLeft(), 
-						figure.getBounds().getTopRight().translate(reduction));
-			}
-		}
-	});
-	return fig;
+	return new RulerViewport(horizontal);
 }
 
 /* (non-Javadoc)
@@ -130,7 +108,7 @@ public class RulerViewport extends Viewport {
 		setLayoutManager(null);
 	}
 	public Dimension getPreferredSize(int wHint, int hHint) {
-		if (this.getContents() == null) {
+		if (getContents() == null) {
 			return new Dimension();
 		}
 		Dimension prefSize = this.getContents().getPreferredSize(wHint, hHint);
