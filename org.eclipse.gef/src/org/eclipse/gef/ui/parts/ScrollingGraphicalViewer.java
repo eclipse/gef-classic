@@ -89,7 +89,7 @@ public void reveal(EditPart part) {
 		target.translateToParent(exposeRegion);
 		target = target.getParent();
 	}
-	exposeRegion.getExpanded(5, 5);
+	exposeRegion.expand(5, 5);
 	
 	Dimension viewportSize = port.getClientArea().getSize();
 
