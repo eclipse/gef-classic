@@ -46,8 +46,8 @@ public void eraseSourceFeedback(Request request) {
 	if (getDummyGuideFigure().getParent() != null) {
 		getDummyGuideFigure().getParent().remove(getDummyGuideFigure());			
 	}
-	if (getDummyFeedbackFigure().getParent() != null) {
-		getDummyFeedbackFigure().getParent().remove(getDummyFeedbackFigure());
+	if (getDummyLineFigure().getParent() != null) {
+		getDummyLineFigure().getParent().remove(getDummyLineFigure());
 	}
 	getGuideEditPart().setCurrentCursor(null);
 	dragInProgress = false;
@@ -77,18 +77,18 @@ public Command getCommand(Request request) {
 	return cmd;
 }
 
-protected IFigure getDummyFeedbackFigure() {
-	if (dummyLineFigure == null) {
-		dummyLineFigure = createDummyLineFigure();
-	}
-	return dummyLineFigure;
-}
-
 protected IFigure getDummyGuideFigure() {
 	if (dummyGuideFigure == null) {
 		dummyGuideFigure = createDummyGuideFigure();
 	}
 	return dummyGuideFigure;
+}
+
+protected IFigure getDummyLineFigure() {
+	if (dummyLineFigure == null) {
+		dummyLineFigure = createDummyLineFigure();
+	}
+	return dummyLineFigure;
 }
 
 protected GuideEditPart getGuideEditPart() {
@@ -121,8 +121,10 @@ public void showSourceFeedback(Request request) {
 				new Integer(getGuideEditPart().getZoomedPosition()));
 		getDummyGuideFigure().setBounds(getHostFigure().getBounds());
 		// add the placeholder feedback figure to the primary viewer
-		getGuideEditPart().getGuideLayer().add(getDummyFeedbackFigure(), 0);
-		getDummyFeedbackFigure().setBounds(getGuideEditPart().getGuideLineFigure()
+		getGuideEditPart().getGuideLayer().add(getDummyLineFigure(), 0);
+		getGuideEditPart().getGuideLayer().setConstraint(getDummyGuideFigure(), 
+				new Boolean(getGuideEditPart().isHorizontal()));
+		getDummyLineFigure().setBounds(getGuideEditPart().getGuideLineFigure()
 				.getBounds());
 		// move the guide being dragged to the last index so that it's drawn on
 		// top of other guides
