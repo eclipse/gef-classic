@@ -266,7 +266,7 @@ public Dimension getMinimumSize(int w, int h){
 		return minSize;
 	Dimension size = new Dimension();
 	if (getLayoutManager() != null)
-		size.copyFrom(getLayoutManager().getMinimumSize(this, w, h));
+		size.setSize(getLayoutManager().getMinimumSize(this, w, h));
 	
 	Dimension labelSize = calculateLabelSize(FigureUtilities.getTextExtents(ELLIPSIS,getFont()));
 	Insets insets = getInsets();
@@ -278,7 +278,7 @@ public Dimension getMinimumSize(int w, int h){
 public Dimension getPreferredSize(int wHint, int hHint){
 	Dimension size = new Dimension();
 	if (getLayoutManager() != null)
-		size.copyFrom(getLayoutManager().getPreferredSize(this, wHint, hHint));
+		size.setSize(getLayoutManager().getPreferredSize(this, wHint, hHint));
 
 	Dimension labelSize = calculateLabelSize(getTextSize());
 	if (wHint >= 0) {
