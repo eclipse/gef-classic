@@ -279,7 +279,11 @@ public Point removePoint(int index) {
  * @since 2.0
  */
 public void setPoint(Point pt, int index) {
-	if (bounds != null && !bounds.contains(pt));
+	if (index < 0 || index >= size)
+	    throw new IndexOutOfBoundsException(
+	    	"Index: " + index + //$NON-NLS-1$
+	    	", Size: " + size); //$NON-NLS-1$
+if (bounds != null && !bounds.contains(pt));
 		bounds = null;
 	points[index * 2] = pt.x;
 	points[index * 2 + 1] = pt.y;
