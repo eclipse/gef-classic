@@ -286,6 +286,14 @@ private boolean isGraphicalViewer() {
 	return getCurrentViewer() instanceof GraphicalViewer;
 }
 
+/**
+ * MarqueeSelectionTool is only interested in GraphicalViewers, not TreeViewers.
+ * @see org.eclipse.gef.tools.AbstractTool#isViewerImportant(org.eclipse.gef.EditPartViewer)
+ */
+protected boolean isViewerImportant(EditPartViewer viewer) {
+	return viewer instanceof GraphicalViewer;
+}
+
 private void performMarqueeSelect() {
 	EditPartViewer viewer = getCurrentViewer();
 
