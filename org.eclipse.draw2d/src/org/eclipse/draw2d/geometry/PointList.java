@@ -260,7 +260,7 @@ public int[] toIntArray() {
  * @see #translate(int,int)
  * @since 2.0
  */
-public void translate(Point pt) {
+public final void translate(Point pt) {
 	translate(pt.x, pt.y);
 }
 
@@ -275,6 +275,8 @@ public void translate(Point pt) {
  * @since 2.0
  */
 public void translate(int x, int y) {
+	if (x == 0 && y == 0)
+		return;
 	if (bounds != null)
 		bounds.translate(x, y);
 	for (int i = 0; i < size * 2; i += 2) {
