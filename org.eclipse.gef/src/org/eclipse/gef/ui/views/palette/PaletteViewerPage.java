@@ -27,7 +27,7 @@ import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.ui.palette.*;
 
 /**
- * A PalettePage which uses the PaletteViewer do display a palette.
+ * A PalettePage which uses the PaletteViewer to display a palette.
  * @author Pratik Shah
  */
 public class PaletteViewerPage 
