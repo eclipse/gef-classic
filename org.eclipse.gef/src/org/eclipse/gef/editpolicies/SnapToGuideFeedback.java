@@ -22,7 +22,7 @@ import org.eclipse.gef.requests.ChangeBoundsRequest;
 /**
  * @author Pratik Shah
  */
-public class SnapToGuideFeedbackEditPolicy 
+public class SnapToGuideFeedback 
 	extends GraphicalEditPolicy 
 {
 	
