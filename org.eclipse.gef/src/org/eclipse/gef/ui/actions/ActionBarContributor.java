@@ -6,27 +6,20 @@ package org.eclipse.gef.ui.actions;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import java.text.MessageFormat;
 import java.util.*;
 
-import org.eclipse.gef.internal.GEFMessages;
-import org.eclipse.gef.ui.parts.GraphicalEditor;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.ui.IActionBars;
-import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IWorkbenchActionConstants;
-import org.eclipse.ui.actions.LabelRetargetAction;
+import org.eclipse.ui.*;
 import org.eclipse.ui.actions.RetargetAction;
-import org.eclipse.ui.internal.IWorkbenchGraphicConstants;
-import org.eclipse.ui.internal.WorkbenchImages;
+import org.eclipse.ui.part.EditorActionBarContributor;
 
 /**
  * Contributes actions to the workbench.
  * !!Warning:  This class is subject to change.
  */
 public class ActionBarContributor 
-	extends org.eclipse.ui.part.EditorActionBarContributor
+	extends EditorActionBarContributor
 {
 
 public static final String SEPARATOR = "$separator";  //$NON-NLS-1$
@@ -54,7 +47,7 @@ protected Map retargetActions = new HashMap();
 /**
  * The active editor.
  */
-private GraphicalEditor activeEditor;
+private IEditorPart activeEditor;
 
 /**
  * @see org.eclipse.ui.part.EditorActionBarContributor#contributeToToolBar(org.eclipse.jface.action.IToolBarManager)
@@ -72,85 +65,40 @@ public void contributeToToolBar(IToolBarManager tbm) {
 }
 
 /**
- * Creates and initializes the {@link RetargetAction}s.
+ * Creates and initializes the {@link RetargetAction RetargetActions}.
  */
 protected void createActions() {
 	RetargetAction action;
 
 	// Create undo action	
-	action = new LabelRetargetAction(IWorkbenchActionConstants.UNDO, 
-						MessageFormat.format(GEFMessages.UndoAction_ActionLabelText, 
-												new Object[] {""}).trim()); //$NON-NLS-1$
-	action.setImageDescriptor(WorkbenchImages.getImageDescriptor(
-								IWorkbenchGraphicConstants.IMG_CTOOL_UNDO_EDIT));
-	action.setHoverImageDescriptor(WorkbenchImages.getImageDescriptor(
-								IWorkbenchGraphicConstants.IMG_CTOOL_UNDO_EDIT_HOVER));
-	action.setDisabledImageDescriptor(WorkbenchImages.getImageDescriptor(
-								IWorkbenchGraphicConstants.IMG_CTOOL_UNDO_EDIT_DISABLED));
+	action = new UndoRetargetAction();
 	getPage().addPartListener(action);
-	retargetActions.put(IWorkbenchActionConstants.UNDO, action);
+	retargetActions.put(action.getId(), action);
 	
 	// Create redo action
-	action = new LabelRetargetAction(IWorkbenchActionConstants.REDO, 
-						MessageFormat.format(GEFMessages.RedoAction_ActionLabelText, 
-												new Object[] {""}).trim()); //$NON-NLS-1$
-	action.setImageDescriptor(WorkbenchImages.getImageDescriptor(
-								IWorkbenchGraphicConstants.IMG_CTOOL_REDO_EDIT));
-	action.setHoverImageDescriptor(WorkbenchImages.getImageDescriptor(
-								IWorkbenchGraphicConstants.IMG_CTOOL_REDO_EDIT_HOVER));
-	action.setDisabledImageDescriptor(WorkbenchImages.getImageDescriptor(
-								IWorkbenchGraphicConstants.IMG_CTOOL_REDO_EDIT_DISABLED));
+	action = new RedoRetargetAction();
 	getPage().addPartListener(action);
-	retargetActions.put(IWorkbenchActionConstants.REDO, action);
+	retargetActions.put(action.getId(), action);
 	
 	// Create delete action
-	action = new LabelRetargetAction(IWorkbenchActionConstants.DELETE, 
-						MessageFormat.format(GEFMessages.DeleteAction_ActionLabelText, 
-												new Object[] {""}).trim()); //$NON-NLS-1$
-	action.setImageDescriptor(WorkbenchImages.getImageDescriptor(
-								IWorkbenchGraphicConstants.IMG_CTOOL_DELETE_EDIT));
-	action.setHoverImageDescriptor(WorkbenchImages.getImageDescriptor(
-								IWorkbenchGraphicConstants.IMG_CTOOL_DELETE_EDIT_HOVER));
-	action.setDisabledImageDescriptor(WorkbenchImages.getImageDescriptor(
-								IWorkbenchGraphicConstants.IMG_CTOOL_DELETE_EDIT_DISABLED));
+	action = new DeleteRetargetAction();
 	getPage().addPartListener(action);
-	retargetActions.put(IWorkbenchActionConstants.DELETE, action);
+	retargetActions.put(action.getId(), action);
 	
 	// Create print action
-	action = new RetargetAction(IWorkbenchActionConstants.PRINT, 
-								GEFMessages.PrintAction_ActionLabelText);
-	action.setImageDescriptor(WorkbenchImages.getImageDescriptor(
-								IWorkbenchGraphicConstants.IMG_CTOOL_PRINT_EDIT));
-	action.setHoverImageDescriptor(WorkbenchImages.getImageDescriptor(
-								IWorkbenchGraphicConstants.IMG_CTOOL_PRINT_EDIT_HOVER));
-	action.setDisabledImageDescriptor(WorkbenchImages.getImageDescriptor(
-								IWorkbenchGraphicConstants.IMG_CTOOL_PRINT_EDIT_DISABLED));
+	action = new PrintRetargetAction();
 	getPage().addPartListener(action);
-	retargetActions.put(IWorkbenchActionConstants.PRINT, action);
+	retargetActions.put(action.getId(), action);
 
 	// Create copy action
-	action = new RetargetAction(IWorkbenchActionConstants.COPY, 
-								GEFMessages.CopyAction_ActionLabelText);
-	action.setImageDescriptor(WorkbenchImages.getImageDescriptor(
-								IWorkbenchGraphicConstants.IMG_CTOOL_COPY_EDIT));
-	action.setHoverImageDescriptor(WorkbenchImages.getImageDescriptor(
-								IWorkbenchGraphicConstants.IMG_CTOOL_COPY_EDIT_HOVER));
-	action.setDisabledImageDescriptor(WorkbenchImages.getImageDescriptor(
-								IWorkbenchGraphicConstants.IMG_CTOOL_COPY_EDIT_DISABLED));
+	action = new CopyRetargetAction();
 	getPage().addPartListener(action);
-	retargetActions.put(IWorkbenchActionConstants.COPY, action);
+	retargetActions.put(action.getId(), action);
 
 	// Create paste action
-	action = new RetargetAction(IWorkbenchActionConstants.PASTE, 
-								GEFMessages.PasteAction_ActionLabelText);
-	action.setImageDescriptor(WorkbenchImages.getImageDescriptor(
-								IWorkbenchGraphicConstants.IMG_CTOOL_PASTE_EDIT));
-	action.setHoverImageDescriptor(WorkbenchImages.getImageDescriptor(
-								IWorkbenchGraphicConstants.IMG_CTOOL_PASTE_EDIT_HOVER));
-	action.setDisabledImageDescriptor(WorkbenchImages.getImageDescriptor(
-								IWorkbenchGraphicConstants.IMG_CTOOL_PASTE_EDIT_DISABLED));
+	action = new PasteRetargetAction();
 	getPage().addPartListener(action);
-	retargetActions.put(IWorkbenchActionConstants.PASTE, action);
+	retargetActions.put(action.getId(), action);
 }
 
 /**
@@ -192,7 +140,7 @@ public void dispose() {
 /**
  * Returns the active editor.
  */
-protected GraphicalEditor getActiveEditor() {
+protected IEditorPart getActiveEditor() {
 	return activeEditor;
 }
 
@@ -219,16 +167,16 @@ public void init(IActionBars bars) {
 /**
  * Sets the active editor and updates the global actions.
  */
-public void setActiveEditor(IEditorPart editorPart) {
-	GraphicalEditor editor = (GraphicalEditor)editorPart;
+public void setActiveEditor(IEditorPart editor) {
 	activeEditor = editor;
+	ActionRegistry registry = (ActionRegistry)editor.getAdapter(ActionRegistry.class);
 	IActionBars bars = getActionBars();
-	String id;
 
 	for (int i = 0; i < globalActions.size(); i++) {
-		id = (String)globalActions.get(i);
-		bars.setGlobalActionHandler(id, editor.getAction(id));
+		String id = (String)globalActions.get(i);
+		bars.setGlobalActionHandler(id, registry.getAction(id));
 	}
+	
 	getActionBars().updateActionBars();
 }
 
