@@ -387,8 +387,8 @@ public void setZoomAsText(String zoomString) {
 
 /**
  * Sets the list of zoom level contributions (as strings). If you contribute something
- * <b>other than</b> {@link #FIT_DOCUMENT_HEIGHT}, {@link #FIT_DOCUMENT_WIDTH} and
- * {@link #FIT_WHOLE_DOCUMENT} you must subclass this class and override this method to
+ * <b>other than</b> {@link #FIT_HEIGHT}, {@link #FIT_WIDTH} and
+ * {@link #FIT_ALL} you must subclass this class and override this method to
  * implement your contributed zoom function.
  * @param contributions the list of contributed zoom levels
  */
