@@ -9,7 +9,7 @@
 <target name="generateJavadoc">
     <property name="optionsFile" value="draw2dOptions.txt" />
 
-	<replace file="${basedir}/${optionsFile}" token="@version@" value="2.1.1"/>
+	<replace file="${basedir}/${optionsFile}" token="@version@" value="2.1.2"/>
 	<replace file="${basedir}/${optionsFile}" token="@stamp@" value="${buildid}" />
 	<replace file="${basedir}/${optionsFile}" token="@rt@" value="${rt}" />
 

@@ -2,7 +2,7 @@
 <plugin
    id="org.eclipse.draw2d.test"
    name="Draw2d JUnit Tests"
-   version="2.1.1"
+   version="2.1.2"
    provider-name="Eclipse.org"
    class="org.eclipse.draw2d.test.Draw2dTestPlugin">
 

@@ -2,7 +2,7 @@
 <plugin
    id="org.eclipse.gef.test"
    name="GEF JUnit Tests"
-   version="2.1.1"
+   version="2.1.2"
    provider-name="Eclipse.org"
    class="org.eclipse.gef.test.GEFTestPlugin">
 
