@@ -56,7 +56,8 @@ private void eraseAttachedPartsFeedback(Request request) {
 	}
 }
 
-public void eraseSourceFeedback(Request request) {	
+public void eraseSourceFeedback(Request request) {
+	getGuideEditPart().updateLocationOfFigures(getGuideEditPart().getZoomedPosition());
 	if (getDummyGuideFigure().getParent() != null) {
 		getDummyGuideFigure().getParent().remove(getDummyGuideFigure());			
 	}
