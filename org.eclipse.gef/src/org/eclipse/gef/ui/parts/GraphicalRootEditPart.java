@@ -128,10 +128,8 @@ protected void refreshChildren(){}
  * Sets the contents.  The root contains a single child, called it's contents.
  */
 public void setContents(EditPart editpart){
-	if (contents != null) {
-		contents.dispose();
+	if (contents != null)
 		removeChild(contents);
-	}
 	contents = editpart;
 	if (contents != null)
 		addChild(contents,0);
