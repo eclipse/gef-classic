@@ -32,9 +32,9 @@ public GuideFigure(boolean isHorizontal) {
 	horizontal = isHorizontal;
 	setBackgroundColor(ColorConstants.button);
 	if (horizontal) {
-		setCursor(SharedCursors.SIZEN);		
+		setCursor(SharedCursors.SIZENS);		
 	} else {
-		setCursor(SharedCursors.SIZEW);
+		setCursor(SharedCursors.SIZEWE);
 	}
 }
 	
