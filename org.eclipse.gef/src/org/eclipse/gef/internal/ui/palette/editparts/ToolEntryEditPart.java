@@ -130,9 +130,9 @@ protected AccessibleEditPart createAccessible() {
 		}
 
 		public void getState(AccessibleControlEvent e) {
-			e.detail = getButtonModel().isSelected()
-				? ACC.STATE_SELECTED
-				: ACC.STATE_SELECTABLE;
+			super.getState(e);
+			if (getButtonModel().isSelected())
+				e.detail |= ACC.STATE_CHECKED;
 		}
 	};
 }

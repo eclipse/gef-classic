@@ -175,7 +175,8 @@ protected AccessibleEditPart createAccessible() {
 		}
 
 		public void getState(AccessibleControlEvent e) {
-			e.detail = isExpanded() ? ACC.STATE_EXPANDED : ACC.STATE_COLLAPSED;
+			super.getState(e);
+			e.detail |= isExpanded() ? ACC.STATE_EXPANDED : ACC.STATE_COLLAPSED;
 		}
 	};
 }
