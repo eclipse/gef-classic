@@ -163,6 +163,14 @@ public ToolEntry getActiveTool() {
 }
 
 /**
+ * Returns the palette's root model.
+ * @return the palette root
+ */
+public PaletteRoot getPaletteRoot() {
+	return paletteRoot;
+}
+
+/**
  * @return	The PaletteViewerPreferences that this palette is using to store its
  * 			preferences (if none has been set, it returns the default one, which uses
  * 			the GEF preference store)
