@@ -110,9 +110,12 @@ public static int getTextForSpace(TextFragmentBox frag, String string, Font font
 						&& getStringExtents(string.substring(0, max), font).width 
 						<= availableWidth)
 				result = max;
-			else if (breakItr.isBoundary(Math.min(max, string.length() - 1)))
-				result = max;
-			else
+			else if (breakItr.isBoundary(Math.min(min, string.length() - 1))) {
+				if (min < string.length() && Character.isWhitespace(string.charAt(min)))
+					result = max;
+				else
+					result = min;
+			} else
 				result = Math.max(MIN, breakItr.preceding(Math.min(max, 
 																string.length() - 1)));
 			frag.length = result;
@@ -125,9 +128,12 @@ public static int getTextForSpace(TextFragmentBox frag, String string, Font font
 						&& getStringExtents(string.substring(0, max), font).width 
 						<= availableWidth)
 				result = max;
-			else if (breakItr.isBoundary(Math.min(max, string.length() - 1)))
-				result = max;
-			else 
+			else if (breakItr.isBoundary(Math.min(min, string.length() - 1))) {
+				if (min < string.length() && Character.isWhitespace(string.charAt(min)))
+					result = max;
+				else
+					result = min;
+			} else 
 				result = breakItr.preceding(Math.min(max, string.length() - 1));
 			if (result <= 0)
 				result = min;
@@ -146,10 +152,12 @@ public static int getTextForSpace(TextFragmentBox frag, String string, Font font
 				result = frag.length = max;
 				setupFragment(frag, font, string);
 				return result;
-			}
-			else if (breakItr.isBoundary(Math.min(max, string.length() - 1)))
-				result = max;
-			else
+			} else if (breakItr.isBoundary(Math.min(min, string.length() - 1))) {
+				if (min < string.length() && Character.isWhitespace(string.charAt(min)))
+					result = max;
+				else
+					result = min;
+			} else
 				result = breakItr.preceding(Math.min(max, string.length() - 1));
 			if (result <= 0) {
 				ELLIPSIS_SIZE = FigureUtilities.getStringExtents(TextFlow.ELLIPSIS, font);
