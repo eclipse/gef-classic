@@ -11,12 +11,16 @@
 package org.eclipse.gef.tools;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Set;
 
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.widgets.Display;
 
+import org.eclipse.jface.util.Assert;
 import org.eclipse.jface.viewers.StructuredSelection;
 
 import org.eclipse.draw2d.ColorConstants;
@@ -33,6 +37,7 @@ import org.eclipse.gef.KeyHandler;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.SharedCursors;
+import org.eclipse.gef.palette.MarqueeToolEntry;
 
 /**
  * A Tool which selects multiple objects inside a rectangular area of a Graphical Viewer. 
@@ -53,31 +58,42 @@ static final int APPEND_MODE = 2;
 private int mode;
 
 private Figure marqueeRectangleFigure;
-private List allChildren = new ArrayList();
+private Set allChildren = new HashSet();
 private List selectedEditParts;
 private Request targetRequest;
+private int selectionType;
 
 private static final Request MARQUEE_REQUEST =
 	new Request(RequestConstants.REQ_SELECTION); 
 
 /**
- * Creates a new MarqueeSelectionTool.
+ * Creates a new MarqueeSelectionTool of default type 
+ * {@link org.eclipse.gef.palette.MarqueeToolEntry#SELECT_NODES SELECT_NODES}.
  */
 public MarqueeSelectionTool() {
+	this(MarqueeToolEntry.SELECT_NODES);
+}
+
+/**
+ * Creates a new MarqueeSelectionTool that can select nodes and/or connections based on
+ * the given type.
+ * @param type MarqueeToolEntry#SELECT_NODES and/or MarqueeToolEntry#SELECT_CONNECTIONS
+ * @since 3.1
+ */
+public MarqueeSelectionTool(int type) {
+	selectionType = type & 3;
+	Assert.isTrue(selectionType != 0);
 	setDefaultCursor(SharedCursors.CROSS); 
 	setUnloadWhenFinished(false);
 }
 
 private List calculateNewSelection() {
-
 	List newSelections = new ArrayList();
-	List children = getAllChildren();
-
 	// Calculate new selections based on which children fall
 	// inside the marquee selection rectangle.  Do not select
-	// children who are not visible
-	for (int i = 0; i < children.size(); i++) {
-		EditPart child = (EditPart) children.get(i);
+	// children that are not visible.
+	for (Iterator itr = getAllChildren().iterator(); itr.hasNext();) {
+		EditPart child = (EditPart)itr.next();
 		if (!child.isSelectable())
 			continue;
 		IFigure figure = ((GraphicalEditPart)child).getFigure();
@@ -107,7 +123,7 @@ public void deactivate() {
 		eraseTargetFeedback();
 	}
 	super.deactivate();
-	allChildren = new ArrayList();
+	allChildren.clear();
 	setState(STATE_TERMINAL);
 }
 
@@ -129,28 +145,28 @@ private void eraseTargetFeedback() {
 }
 
 /**
- * Returns a list including all of the children
- * of the edit part passed in.
+ * Adds all the children of the given editpart to the given set
  */
-private List getAllChildren(EditPart editPart, List allChildren) {
+private void getAllChildren(EditPart editPart, Set allChildren) {
 	List children = editPart.getChildren();
 	for (int i = 0; i < children.size(); i++) {
 		GraphicalEditPart child = (GraphicalEditPart) children.get(i);
-		allChildren.add(child);
+		if ((selectionType & MarqueeToolEntry.SELECT_NODES) != 0)
+			allChildren.add(child);
+		if ((selectionType & MarqueeToolEntry.SELECT_CONNECTIONS) != 0) {
+			allChildren.addAll(child.getSourceConnections());
+			allChildren.addAll(child.getTargetConnections());
+		}
 		getAllChildren(child, allChildren);
 	}
-	return allChildren;
 }
 
 /**
- * Return a vector including all of the children
- * of the root editpart
+ * Return a set including all of the children of the root editpart
  */
-private List getAllChildren() {
+private Set getAllChildren() {
 	if (allChildren.isEmpty())
-		allChildren = getAllChildren(
-			getCurrentViewer().getRootEditPart(),
-			new ArrayList());
+		getAllChildren(getCurrentViewer().getRootEditPart(), allChildren);
 	return allChildren;
 }
 
@@ -165,10 +181,10 @@ protected String getCommandName() {
  * @see org.eclipse.gef.tools.AbstractTool#getDebugName()
  */
 protected String getDebugName() {
-	return "Marquee Tool";//$NON-NLS-1$
+	return "Marquee Tool: " + selectionType;//$NON-NLS-1$
 }
 
-private IFigure getMarqueeFeedbackFigure() {		
+private IFigure getMarqueeFeedbackFigure() {
 	if (marqueeRectangleFigure == null) {
 		marqueeRectangleFigure = new MarqueeRectangleFigure();
 		addFeedback(marqueeRectangleFigure);
@@ -352,62 +368,62 @@ private void showTargetFeedback() {
 }
 
 class MarqueeRectangleFigure 
-extends Figure {
-
-private int offset = 0;
-private boolean schedulePaint = true;
-private static final int DELAY = 110; //animation delay in millisecond
-/**
- * @see org.eclipse.draw2d.Figure#paintFigure(org.eclipse.draw2d.Graphics)
- */
-protected void paintFigure(Graphics graphics) {	
-	Rectangle bounds = getBounds().getCopy();
-	graphics.translate(getLocation());
+	extends Figure {
 	
-	graphics.setXORMode(true);
-	graphics.setForegroundColor(ColorConstants.white);
-	graphics.setBackgroundColor(ColorConstants.black);
-	
-	graphics.setLineStyle(Graphics.LINE_DOT);
-	
-	int[] points = new int[6];
-	
-	points[0] = 0 + offset;
-	points[1] = 0;
-	points[2] = bounds.width - 1;
-	points[3] = 0;
-	points[4] = bounds.width - 1;
-	points[5] = bounds.height - 1;
-	
-	graphics.drawPolyline(points);
-	
-	points[0] = 0;
-	points[1] = 0 + offset;
-	points[2] = 0;
-	points[3] = bounds.height - 1;
-	points[4] = bounds.width - 1;
-	points[5] = bounds.height - 1;
-	
-	graphics.drawPolyline(points);
-	
-	graphics.translate(getLocation().getNegated());
-	
-	if (schedulePaint) {
-		Display.getCurrent().timerExec(DELAY, new Runnable() {
-			public void run() {
-				offset++;
-				if (offset > 5)
-					offset = 0;	
-				
-				schedulePaint = true;
-				repaint();
-			}
-		});
+	private int offset = 0;
+	private boolean schedulePaint = true;
+	private static final int DELAY = 110; //animation delay in millisecond
+	/**
+	 * @see org.eclipse.draw2d.Figure#paintFigure(org.eclipse.draw2d.Graphics)
+	 */
+	protected void paintFigure(Graphics graphics) {	
+		Rectangle bounds = getBounds().getCopy();
+		graphics.translate(getLocation());
+		
+		graphics.setXORMode(true);
+		graphics.setForegroundColor(ColorConstants.white);
+		graphics.setBackgroundColor(ColorConstants.black);
+		
+		graphics.setLineStyle(Graphics.LINE_DOT);
+		
+		int[] points = new int[6];
+		
+		points[0] = 0 + offset;
+		points[1] = 0;
+		points[2] = bounds.width - 1;
+		points[3] = 0;
+		points[4] = bounds.width - 1;
+		points[5] = bounds.height - 1;
+		
+		graphics.drawPolyline(points);
+		
+		points[0] = 0;
+		points[1] = 0 + offset;
+		points[2] = 0;
+		points[3] = bounds.height - 1;
+		points[4] = bounds.width - 1;
+		points[5] = bounds.height - 1;
+		
+		graphics.drawPolyline(points);
+		
+		graphics.translate(getLocation().getNegated());
+		
+		if (schedulePaint) {
+			Display.getCurrent().timerExec(DELAY, new Runnable() {
+				public void run() {
+					offset++;
+					if (offset > 5)
+						offset = 0;	
+					
+					schedulePaint = true;
+					repaint();
+				}
+			});
+		}
+		
+		schedulePaint = false;
 	}
-	
-	schedulePaint = false;
-}
-	
+		
 }
 
 }
