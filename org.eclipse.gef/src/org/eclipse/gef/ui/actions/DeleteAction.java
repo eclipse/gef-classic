@@ -15,6 +15,7 @@ import java.util.List;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.internal.WorkbenchImages;
 
 import org.eclipse.gef.EditPart;
@@ -58,10 +59,7 @@ protected void init() {
 	super.init();
 	setText(GEFMessages.DeleteAction_Label);
 	setToolTipText(GEFMessages.DeleteAction_Tooltip);
-	setId(GEFActionConstants.DELETE);
-	setHoverImageDescriptor(
-		WorkbenchImages.getImageDescriptor(
-			ISharedImages.IMG_TOOL_DELETE_HOVER));
+	setId(ActionFactory.DELETE.getId());
 	setImageDescriptor(
 		WorkbenchImages.getImageDescriptor(
 			ISharedImages.IMG_TOOL_DELETE));

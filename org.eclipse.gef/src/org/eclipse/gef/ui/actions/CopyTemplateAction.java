@@ -15,6 +15,7 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.actions.ActionFactory;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.internal.GEFMessages;
@@ -43,7 +44,7 @@ private Object template;
  */
 public CopyTemplateAction(IEditorPart editor) {
 	super(editor);
-	setId(GEFActionConstants.COPY);
+	setId(ActionFactory.COPY.getId());
 	setText(GEFMessages.CopyAction_Label);
 }
 
