@@ -137,7 +137,7 @@ protected boolean handleDrag() {
 }
 
 protected boolean handleDragInProgress() {
-	if (isInState(STATE_CONNECTION_STARTED | STATE_ACCESSIBLE_DRAG_IN_PROGRESS))
+	if (isInState(STATE_ACCESSIBLE_DRAG_IN_PROGRESS))
 		return handleMove();
 	return false;
 }
