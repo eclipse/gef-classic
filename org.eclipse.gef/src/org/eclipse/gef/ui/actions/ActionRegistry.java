@@ -9,9 +9,9 @@ package org.eclipse.gef.ui.actions;
 import java.util.*;
 
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.util.Assert;
 
 import org.eclipse.gef.Disposable;
-import org.eclipse.gef.internal.Assert;
 
 /**
  * A container for editor actions.  You must register

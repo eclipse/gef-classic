@@ -18,7 +18,7 @@ import org.eclipse.swt.dnd.*;
 import org.eclipse.swt.dnd.DragSource;
 
 import org.eclipse.gef.dnd.*;
-import org.eclipse.gef.internal.Assert;
+import org.eclipse.jface.util.Assert;
 
 import org.eclipse.gef.*;
 
