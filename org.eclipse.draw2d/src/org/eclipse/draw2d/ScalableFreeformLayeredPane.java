@@ -36,17 +36,19 @@ public Rectangle getFreeformExtent() {
 protected void paintClientArea(Graphics graphics) {
 	if (getChildren().isEmpty())
 		return;
-
-	ScaledGraphics g = new ScaledGraphics(graphics);
-
-	boolean optimizeClip = getBorder() == null || getBorder().isOpaque();
-	if (!optimizeClip)
-		g.clipRect(getBounds().getCropped(getInsets()));
-	g.scale(zoom);
-	g.pushState();
-	paintChildren(g);
-	g.dispose();
-	graphics.restoreState();
+	if (zoom == 1.0) {
+		super.paintClientArea(graphics);
+	} else {
+		ScaledGraphics g = new ScaledGraphics(graphics);
+		boolean optimizeClip = getBorder() == null || getBorder().isOpaque();
+		if (!optimizeClip)
+			g.clipRect(getBounds().getCropped(getInsets()));
+		g.scale(zoom);
+		g.pushState();
+		paintChildren(g);
+		g.dispose();
+		graphics.restoreState();
+	}
 }
 
 /**

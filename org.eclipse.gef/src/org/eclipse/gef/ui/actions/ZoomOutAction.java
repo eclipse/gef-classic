@@ -6,9 +6,9 @@ import org.eclipse.gef.internal.GEFMessages;
 import org.eclipse.gef.internal.InternalImages;
 
 import org.eclipse.gef.GraphicalViewer;
-import org.eclipse.gef.ui.parts.ScalableFreeformRootEditPart;
+import org.eclipse.gef.editparts.ScalableFreeformRootEditPart;
+import org.eclipse.gef.editparts.ZoomManager;
 
-import org.eclipse.draw2d.ZoomManager;
 
 /**
  * @author danlee

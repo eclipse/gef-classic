@@ -1,4 +1,4 @@
-package org.eclipse.draw2d;
+package org.eclipse.gef.editparts;
 
 /**
  * Listens to zoom level changes.

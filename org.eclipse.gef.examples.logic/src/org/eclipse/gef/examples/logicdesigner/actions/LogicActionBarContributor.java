@@ -16,15 +16,12 @@ import org.eclipse.draw2d.PositionConstants;
 
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.ui.actions.*;
-import org.eclipse.gef.ui.parts.ScalableFreeformRootEditPart;
-import org.eclipse.gef.ui.parts.ZoomComboContributionItem;
+import org.eclipse.gef.editparts.ScalableFreeformRootEditPart;
 
 
 public class LogicActionBarContributor
 	extends org.eclipse.gef.ui.actions.ActionBarContributor
 {
-
-private ZoomComboContributionItem zoomCombo;
 
 /**
  * @see org.eclipse.gef.ui.actions.ActionBarContributor#createActions()
@@ -47,7 +44,7 @@ protected void buildActions() {
 	addRetargetAction(new ZoomInRetargetAction());
 	addRetargetAction(new ZoomOutRetargetAction());
 	
-	addRetargetAction(new DirectEditRetargetAction());
+//	addRetargetAction(new DirectEditRetargetAction());
 }
 
 /**
@@ -78,7 +75,7 @@ public void contributeToToolBar(IToolBarManager tbm) {
 	tbm.add(getAction(GEFActionConstants.ALIGN_BOTTOM));
 	
 	tbm.add(new Separator());
-	tbm.add(zoomCombo);
+	tbm.add(new ZoomComboContributionItem(getPage()));
 }
 
 /**
@@ -86,26 +83,10 @@ public void contributeToToolBar(IToolBarManager tbm) {
  */
 public void contributeToMenu(IMenuManager menubar) {
 	super.contributeToMenu(menubar);
-	MenuManager viewMenu = new MenuManager("View");
+	MenuManager viewMenu = new MenuManager("$View");
 	viewMenu.add(getAction(GEFActionConstants.ZOOM_IN));
 	viewMenu.add(getAction(GEFActionConstants.ZOOM_OUT));
 	menubar.insertAfter(IWorkbenchActionConstants.M_EDIT, viewMenu);
-}
-
-/**
- * @see org.eclipse.gef.ui.actions.ActionBarContributor#dispose()
- */
-public void dispose() {
-	super.dispose();
-	zoomCombo = null;
-}
-
-/**
- * @see org.eclipse.gef.ui.actions.ActionBarContributor#init(IActionBars)
- */
-public void init(IActionBars bars) {
-	zoomCombo = new ZoomComboContributionItem(getPage());
-	super.init(bars);
 }
 
 }

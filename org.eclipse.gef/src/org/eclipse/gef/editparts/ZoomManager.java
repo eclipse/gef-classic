@@ -1,4 +1,4 @@
-package org.eclipse.draw2d;
+package org.eclipse.gef.editparts;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -8,6 +8,8 @@ import java.util.List;
 
 import org.eclipse.swt.widgets.Display;
 
+import org.eclipse.draw2d.ScalableFreeformLayeredPane;
+import org.eclipse.draw2d.Viewport;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 

@@ -1,23 +1,19 @@
-package org.eclipse.gef.ui.parts;
-
-import java.util.List;
+package org.eclipse.gef.ui.actions;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.*;
 
+import org.eclipse.jface.action.ContributionItem;
+import org.eclipse.jface.util.Assert;
 import org.eclipse.ui.IPartListener;
 import org.eclipse.ui.IPartService;
 import org.eclipse.ui.IWorkbenchPart;
 
-import org.eclipse.jface.action.ContributionItem;
-import org.eclipse.jface.util.Assert;
+import org.eclipse.gef.editparts.ZoomListener;
+import org.eclipse.gef.editparts.ZoomManager;
 
-import org.eclipse.draw2d.ZoomListener;
-import org.eclipse.draw2d.ZoomManager;
-
-import org.eclipse.gef.ui.actions.GEFActionConstants;
 
 /**
  * A ControlContribution that uses a {@link org.eclipse.swt.widgets.Combo} as its control
@@ -63,7 +59,12 @@ void refresh() {
 		getCombo().removeAll();
 	} else {
 		getCombo().setItems(getZoomManager().getZoomLevelsAsText());
-		getCombo().setText(getZoomManager().getZoomAsText());
+		String zoom = getZoomManager().getZoomAsText();
+		int index = getCombo().indexOf(zoom);
+		if (index != -1)
+			getCombo().select(index);
+		else
+			getCombo().setText(zoom);
 		getCombo().setEnabled(true);
 	}
 }
