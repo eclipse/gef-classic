@@ -8,25 +8,19 @@ package org.eclipse.gef.ui.parts;
 
 import java.util.*;
 
-import org.eclipse.swt.graphics.Cursor;
+import org.eclipse.gef.*;
+import org.eclipse.gef.dnd.*;
+import org.eclipse.jface.util.Assert;
+import org.eclipse.jface.viewers.*;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DragSource;
 import org.eclipse.swt.dnd.DropTarget;
+import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Menu;
-
-import org.eclipse.jface.util.Assert;
-import org.eclipse.jface.action.IMenuListener;
-import org.eclipse.jface.action.IMenuManager;
-import org.eclipse.jface.action.MenuManager;
-import org.eclipse.jface.viewers.*;
-
-import org.eclipse.gef.*;
-import org.eclipse.gef.dnd.*;
 
 abstract public class AbstractEditPartViewer
-	implements EditPartViewer, IMenuListener
+	implements EditPartViewer
 {
 
 protected final List
@@ -211,11 +205,6 @@ public Map getVisualPartMap(){
 protected void hookControl(){
 	if (getControl() == null)
 		return;
-	MenuManager manager = new MenuManager();
-	manager.addMenuListener(this);
-	manager.setRemoveAllWhenShown(true);
-	Menu menu = manager.createContextMenu(control);
-	control.setMenu(menu);
 	if (getRootEditPart() != null)
 		getRootEditPart().activate();
 	refreshDragSourceAdapter();
@@ -231,14 +220,6 @@ protected void hookDropTarget(){
 }
 
 protected void init(){}
-
-/**
- * Called just before the context menu is shown.
- */
-public void menuAboutToShow(IMenuManager menu) {
-	if (getContextMenuProvider() != null)
-		getContextMenuProvider().buildContextMenu(menu, this);
-}
 
 private void primDeselectAll(){
 	EditPart part;
@@ -303,7 +284,7 @@ public void select(EditPart editpart){
 	appendSelection(editpart);  // fireSelectionChanged() is called here
 }
 
-public void setContextMenuProvider(ContextMenuProvider provider){
+public void setContextMenuProvider(ContextMenuProvider provider) {
 	contextMenuProvider = provider;
 }
 

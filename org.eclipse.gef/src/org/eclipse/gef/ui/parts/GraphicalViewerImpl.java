@@ -9,13 +9,13 @@ package org.eclipse.gef.ui.parts;
 import java.util.*;
 import java.util.List;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.*;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.widgets.*;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.util.Assert;
-import org.eclipse.jface.action.IMenuManager;
 
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.LightweightSystem;
@@ -37,7 +37,7 @@ public GraphicalViewerImpl() {
 }
 
 public Control createControl(Composite composite){
-	setControl(new Canvas(composite, 0));
+	setControl(new Canvas(composite, SWT.NONE));
 	return getControl();
 }
 
@@ -148,11 +148,6 @@ protected void hookDropTarget() {
 			flush();
 		}
 	});
-}
-
-public void menuAboutToShow(IMenuManager menu) {
-	flush(); //Any async paints won't be dispatched while the menu is visible.
-	super.menuAboutToShow(menu);
 }
 
 protected void hookControl(){
