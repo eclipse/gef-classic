@@ -7,30 +7,30 @@ package org.eclipse.gef.internal;
  */
 
 import java.util.*;
+import org.eclipse.core.runtime.*;
 
+/**
+ * Internal Messages
+ * @author hudsonr
+ * @since 2.0 */
 public interface GEFMessages {
 
-static class Helper{
-	public static String getString(String key){
-		org.eclipse.core.runtime.IPluginDescriptor desc = org.eclipse.core.runtime.Platform.getPluginRegistry().getPluginDescriptor("org.eclipse.gef");//$NON-NLS-1$
-		try{
+/** */
+static class Helper {
+	private static IPluginDescriptor desc = Platform.getPluginRegistry()
+			.getPluginDescriptor("org.eclipse.gef");//$NON-NLS-1$
+
+
+	public static String getString(String key) {
+		try {
 			return desc.getResourceString(key);
-		}catch(MissingResourceException e){
+		} catch (MissingResourceException e) {
 			return key;
 		}
 	}
-	
-	public static String[] getStrings(String[] keys){
-		Assert.isNotNull(keys);
-		int length = keys.length;
-		String[] result = new String[length];
-		for(int i=0;i<length;i++)
-			result[i] = getString(keys[i]);
-		return result;
-	}
 }
 
-public String AlignLeftAction_ActionToolTipText=Helper.getString("%AlignLeftAction.ActionToolTipText_UI_");		//$NON-NLS-1$
+public String AlignLeftAction_ActionToolTipText = Helper.getString("%AlignLeftAction.ActionToolTipText_UI_");//$NON-NLS-1$
 public String AlignLeftAction_ActionLabelText=Helper.getString("%AlignLeftAction.ActionLabelText_UI_");			//$NON-NLS-1$
 
 public String AlignRightAction_ActionToolTipText=Helper.getString("%AlignRightAction.ActionToolTipText_UI_");		//$NON-NLS-1$
@@ -79,6 +79,5 @@ public String GraphicalEditor_CLOSE_BUTTON_UI=Helper.getString("%GraphicalEditor
 public String GraphicalRootEditPart_Overview_Title=Helper.getString("%GraphicalRootEditPart.Overview.Title_UI_"); //$NON-NLS-1$
 
 public String SetPropertyValueCommand_Label=Helper.getString("%SetPropertyValueCommand.Label_UI_");		//$NON-NLS-1$
-
 
 }
