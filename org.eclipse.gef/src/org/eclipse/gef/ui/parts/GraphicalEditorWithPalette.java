@@ -39,6 +39,7 @@ public void createPartControl(Composite parent) {
 	createGraphicalViewer(splitter);
 	createPaletteViewer(splitter);
 	splitter.setWeights(new int [] {6, 1});
+	initializeActions();
 }
 
 public void dispose(){
