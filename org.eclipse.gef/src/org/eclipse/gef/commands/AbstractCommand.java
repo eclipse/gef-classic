@@ -6,90 +6,107 @@ package org.eclipse.gef.commands;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import java.util.*;
-
-
-abstract public class AbstractCommand
+/**
+ * An Abstract implementation of {@link Command}.
+ * @author hudsonr
+ * @since 2.0 */
+public abstract class AbstractCommand
 	implements Command
 {
 
 private String label;
-private String description = null;
 
 private String debugLabel;
 
-public AbstractCommand (){}
+/**
+ * Constructs a Command with no label.
+ */
+public AbstractCommand () { }
 
-public AbstractCommand (String label){
+/**
+ * Constructs a Command with the specified label.
+ * @param label the Command's label */
+public AbstractCommand (String label) {
 	setLabel(label);
 }
 
-public Collection getAffectedObjects(){
-	return Collections.EMPTY_LIST;
+/**
+ * @see org.eclipse.gef.commands.Command#canExecute() */
+public boolean canExecute() {
+	return true;
 }
-
-public String getDebugLabel(){
-	return debugLabel + ' ' + getLabel();
-}
-
-public String getDescription(){
-	return description;
-}
-
-public String getLabel(){
-	return label;
-}
-
-final public Collection getResult(){
-	return Collections.EMPTY_LIST;
-}
-
-public boolean canExecute(){
+/** * @see org.eclipse.gef.commands.Command#canUndo() */
+public boolean canUndo() {
 	return true;
 }
 
-public boolean canUndo(){
-	return true;
-}
-
-public Command chain(Command command){
+/** * @see org.eclipse.gef.commands.Command#chain(Command) */
+public Command chain(Command command) {
 	if (command == null)
 		return this;
 	class ChainedCompoundCommand
 		extends CompoundCommand
 	{
-		public Command chain(Command c){
+		public Command chain(Command c) {
 			add(c);
 			return this;
 		}
 	}
 	CompoundCommand result = new ChainedCompoundCommand();
-	result.setDebugLabel("chained commands"); //$NON-NLS-1$
+	result.setDebugLabel("Chained Commands"); //$NON-NLS-1$
 	result.add(this);
 	result.add(command);
 	return result;
 }
 
-public void dispose(){}
+/**
+ * Does nothing by default.
+ * @see org.eclipse.gef.commands.Command#dispose() */
+public void dispose() { }
 
-public void execute(){}
+/** * Does nothing by default.
+ * @see org.eclipse.gef.commands.Command#execute()
+ */
+public void execute() { }
 
+/**
+ * @return an untranslated String used for debug purposes only
+ */
+public String getDebugLabel() {
+	return debugLabel + ' ' + getLabel();
+}
+
+/**
+ * @see org.eclipse.gef.commands.Command#getLabel()
+ */
+public String getLabel() {
+	return label;
+}
+
+/**
+ * Calls <code>execute()</code> by default.
+ * @see org.eclipse.gef.commands.Command#redo() */
 public void redo() {
 	execute();
 }
 
-public void setDebugLabel(String label){
+/**
+ * Sets the debug label for this command
+ * @param label a description used for debugging only */
+public void setDebugLabel(String label) {
 	debugLabel = label;
 }
 
-public void setDescription(String label) {
-	this.label = label;
-}
-
+/**
+ * Sets the label for this Command.
+ * @param label the label */
 public void setLabel(String label) {
 	this.label = label;
 }
 
-public void undo(){}
+/**
+ * Does nothing by default.
+ * @see org.eclipse.gef.commands.Command#undo() */
+public void undo() { }
 
 }

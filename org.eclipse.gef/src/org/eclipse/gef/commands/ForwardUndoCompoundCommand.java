@@ -9,22 +9,28 @@ package org.eclipse.gef.commands;
 import java.util.ListIterator;
 
 /**
- *  This command will undo its commands in the same order applied.
- *
- *  However any Chained commands will undo in reverse order since
- *  that can't be controlled.
+ *  A CompoundCommand that performs undo on its contained Commands in the same order in
+ *  which they were executed.
  */
 public class ForwardUndoCompoundCommand
 	extends CompoundCommand
 {
-	
-public ForwardUndoCompoundCommand() {}
+
+/** * Constructs a ForwardUndoCompoundCommand with no label
+ */
+public ForwardUndoCompoundCommand() { }
+
+/**
+ * Constructs a ForwardUndoCompoundCommand with the specified label
+ * @param label the label
+ */
 public ForwardUndoCompoundCommand(String label) {
 	super(label);
 }
 
-public String getDebugLabel(){
-	return "PropertySheet:" + getLabel();//$NON-NLS-1$
+/** * @see org.eclipse.gef.commands.AbstractCommand#getDebugLabel() */
+public String getDebugLabel() {
+	return "ForwardUndoCommand: " + super.getDebugLabel();//$NON-NLS-1$
 }
 
 /**
@@ -32,8 +38,8 @@ public String getDebugLabel(){
  * means undoing all of the commands that it contains.
  * Do it in the same order as applied.
  */
-public void undo(){
-	ListIterator itr = commandList.listIterator();
+public void undo() {
+	ListIterator itr = getCommands().listIterator();
 	try {
 		while (itr.hasNext()) {
 			((Command) itr.next()).undo();

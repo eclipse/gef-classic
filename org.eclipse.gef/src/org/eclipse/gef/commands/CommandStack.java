@@ -1,75 +1,73 @@
-/**
- * <copyright> 
- *
- * (C) COPYRIGHT International Business Machines Corporation 2000-2002.
- *
- * </copyright>
- */
 package org.eclipse.gef.commands;
 
-
+/**
+ * An Undo/Redo Stack containing {@link Command Commands}. A CommandStack is used to
+ * manage the set of Commands that have been executed and redone. A CommandStack consists
+ * of two stacks.  The <i>undo</i> stack contains Commands which have been either
+ * executed or redone.  The <i>redo</i> stack contains the Commands which have been
+ * undone.
+ * 
+ */
+public interface CommandStack {
 
 /**
- * This is a simple and obvious interface for an undoable stack of commands with a listener.
- * See {@link Command} for more details about the command methods that this implementation uses
- * and {@link CommandStackListener} for details about the listener.
+ * Adds the specified listener. Multiple adds will result in multiple notifications.
+ * @param listener the listener
  */
-public interface CommandStack 
-{
-  public static final String copyright = "(c) Copyright IBM Corporation 2002.";  //$NON-NLS-1$
+void addCommandStackListener(CommandStackListener listener);
 
-  /**
-   * This will clear any redoable commands not yet redone, add the command, and then execute the command.
-   */
-  void execute(Command command); 
+/**
+ * @return <code>true</code> if it is appropriate to call {@link #redo()}.
+ */
+boolean canRedo(); 
 
-  /**
-   * This returns whether the top command on the stack can be undone.
-   */
-  boolean canUndo();
+/**
+ * @return <code>true</code> if {@link #undo()} can be called
+ */
+boolean canUndo();
 
-  /**
-   * This moves the top of the stack down, undoing what was formerly the top command.
-   */
-  void undo();
+/**
+ * Executes the specified Command if it is executable. Flushes the redo stack.
+ * @param command the Command to execute
+ */
+void execute(Command command); 
 
-  /**
-   * This returns whether there are commands past the top of the stack that can be redone.
-   */
-  boolean canRedo(); 
+/**
+ * This will dispose all the commands in both the undo and redo stack.
+ */
+void flush();
 
-  /**
-   * This returns the command that will be undone if {@link #undo} is called.
-   */
-  public Command getUndoCommand();
-  
-  /**
-   * This returns the command that will be redone if {@link #redo} is called.
-   */
-  public Command getRedoCommand();
-  
-  /**
-   * This returns the command most recently executed, undone, or redone.
-   */
-  public Command getMostRecentCommand();
+/**
+ * Peeks at the top of the <i>redo</i> stack. This is useful for describing to the User
+ * what will be redone. The returned <code>Command</code> has a label describing it.
+ * @return the top of the <i>redo</i> stack, which may be <code>null</code>
+ */
+Command getRedoCommand();
 
-  /**
-   * This moves the top of the stack up, redoing the new top command.
-   */
-  void redo();
+/**
+ * Peeks at the top of the <i>undo</i> stack. This is useful for describing to the User
+ * what will be undone. The returned <code>Command</code> has a label describing it.
+ * @return the top of the <i>undo</i> stack, which may be <code>null</code>
+ */
+Command getUndoCommand();
 
-  /**
-   * This will dispose all the commands in the stack.
-   */
-  void flush();
+/**
+ * Calls redo on the Command at the top of the <i>redo</i> stack, and pushes that Command
+ * onto the <i>undo</i> stack.
+ */
+void redo();
 
-  /**
-   * This adds a listener to the command stack, which will be notified whenever a command has been processed on the stack.
-   */
-  void addCommandStackListener(CommandStackListener listener);
+/**
+ * Removes the first occurance of the specified listener.
+ * @param listener the listener
+ */
+void removeCommandStackListener(CommandStackListener listener);
 
-  /**
-   * This removes a previously added listener.
-   */
-  void removeCommandStackListener(CommandStackListener listener);
+/**
+ * Undoes the most recently executed (or redone) Command. The Command is popped from the
+ * undo stack to and pushed onto the redo stack. This method should only be called if
+ * {@link #canUndo()} returns <code>true</code>.
+ */
+void undo();
+
 }

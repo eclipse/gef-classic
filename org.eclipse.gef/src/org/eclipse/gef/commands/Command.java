@@ -7,115 +7,62 @@
  */
 package org.eclipse.gef.commands;
 
-
-import java.util.Collection;
-
+/**
+ * Encapsulates execute, undo, and redo of an operation. A Command has a <i>label</i>
+ * which is displayed in the UI.
+ */
+public interface Command {
 
 /**
- * This interface represents basic behaviour that every command is expected to support.
- * A command can be tested for executability, 
- * it can be executed, 
- * it can be tested for undoability, 
- * it can be undone, 
- * and can then be redone.
- * A comand also provides access to a result collection, an affected-objects collection,
- * a label, and a description.
- *
- * <p>
- * There are important constraints on the valid order in which the various methods may be invoked,
- * e.g., you cannot ask for the result before you've executed the command.
- * These constraints are documented with the various methods.
+ * @return <code>true</code> if the command can be executed
  */
-public interface Command 
-{
-  public static final String copyright = "(c) Copyright IBM Corporation 2002.";  //$NON-NLS-1$
+boolean canExecute();
 
-  /**
-   * This indicates whether the comamad is valid to execute.
-   * The {@link UnexecutableCommand#INSTANCE}.canExecute() always returns false.
-   * This <bf>must</bf> be called before calling execute.
-   */
-  boolean canExecute();
+/**
+ * @return <code>true</code> if the command can be undone. This method should only be
+ * called after <code>execute()</code> or <code>redo()</code> has been called.
+ */
+boolean canUndo();
 
-  /**
-   * This will perform the command activity required for the effect.
-   * The effect of calling execute when canExecute returns false, or when canExecute hasn't been called, is undefined.
-   */
-  void execute();
+/**
+ * Returns a Command that represents the chaining of a specified Command to this
+ * Command. The Command being chained will <code>execute()</code> after this command has
+ * executed, and it will <code>undo()</code> before this Command is undone.
+ * @param command <code>null</code> or the Command being chained
+ * @return a Command representing the union
+ */
+Command chain(Command command);
 
-  /**
-   * This returns whether the command can be undone.
-   * The result of calling this before execute is well defined,
-   * but the result of calling this before calling canExecute is undefined, i.e.,
-   * a command that retuns false for canExecute may return true for canUndo, 
-   * even though that is a contradiction.
-   */
-  boolean canUndo();
+/**
+ * This is called to indicate that the <code>Command</code> will not be used again. The
+ * Command may be in any state (executed, undone or redone) when dispose is called. The
+ * Command should not be referenced in any way after it has been disposed.
+ */
+void dispose();
 
-  /**
-   * This will perform the command activity required to undo the effects of a preceding execute (or redo).
-   * The effect, if any, of calling undo before execute or redo have been called, or when canUndo returns false, is undefined.
-   */
-  void undo();
+/**
+ * executes the Command. This method should not be called if the Command is not
+ * executable.
+ */
+void execute();
 
-  /**
-   * This will again perform the command activity required to redo the effect after undoing the effect.
-   * The effect, if any, of calling redo before undo is called is undefined.
-   * Note that if you implement redo to call execute then any derived class will be restricted to by that decision also.
-   */
-  void redo();
+/**
+ * @return a String used to describe this command to the Eser
+ */
+String getLabel();
 
-  /**
-   * This returns collection of things which this command wishes to present as it's result.
-   * The result of calling this before an execute or redo, or after an undo, is undefined.
-   */
-  Collection getResult();
+/**
+ * re-executes the Command. This method should only be called after <code>undo()</code>
+ * has been called.
+ */
+void redo();
 
-  /**
-   * This returns the collection of things which this command wishes to present as the objects affected by the command.
-   * Typically should could be used as the selection that should be highlighted to best illustrate the effect of the command.
-   * The result of calling this before an execute, redo, or undo is undefined.
-   * The result may be different after an undo than it is after an execute or redo,
-   * but the result should be the same (equivalent) after either an execute or redo.
-   */
-  Collection getAffectedObjects();
+/**
+ * Undoes the changes performed during <code>execute()</code>. This method should only be
+ * called after <code>execute</code> has been called, and iff <code>canUndo()</code>
+ * returns <code>true</code>.
+ * @see #canUndo()
+ */
+void undo();
 
-  /**
-   * This returns a string suitable to represent the label that identifies this command.
-   */
-  String getLabel();
-
-  /**
-   * This returns a string suitable to help describe the effect of this command.
-   */
-  String getDescription();
-
-  /**
-   * This is called to indicate that the command will never be used again.
-   * Calling any other method after this one has undefined results.
-   * 
-   */
-  void dispose();
-
-  /**
-   * This logically chains the given command to this command, by returning a command that represents the composition.
-   * The resulting command may just be this, if this command is capabable of composition.
-   * Otherwise, it will be a new command created to compose the two.
-   * <p>
-   * Instead of the following pattern of usage
-   * <pre>
-   *   Command result = x;
-   *   if (condition) result = result.chain(y);
-   * </pre>
-   * you should consider using a {@link org.eclipse.gef.commands.CompoundCommand} 
-   * and using {@link org.eclipse.gef.commands.CompoundCommand#unwrap()} to optimize the result:
-   * <pre>
-   *   CompoundCommand subcommands = new CompoundCommand();
-   *   subcommands.append(x);
-   *   if (condition) subcommands.append(y);
-   *   Command result = subcommands.unwrap();
-   * </pre>
-   * This gives you more control over how the compound command composes it's result and affected objects.
-   */
-  Command chain(Command command);
 }

@@ -10,47 +10,63 @@ import java.util.*;
 
 
 /**
- * A command that can be used to combine multple commands
- * into a single undoable action.
+ * An aggregation of multiple <code>Commands</code>. A <code>CompoundCommand</code> is
+ * executable if all of its contained Commands are executable, and it has at least one
+ * contained Command. The same is true for undo. When undo is called, the contained
+ * Commands are undone in the reverse order in which they were executed.
+ * <P>
+ * An empty CompoundCommand is <em>not</em> executable.
+ * <P>
+ * A CompoundCommand can be {@link #unwrap() unwrapped}. Unwrapping returns the simplest
+ * equivalent form of the CompoundCommand. So, if a CompoundCommand contains just one
+ * Command, that Command is returned.
  */
 public class CompoundCommand
 	extends AbstractCommand
 {
 
-protected List commandList = new ArrayList();
+private List commandList = new ArrayList();
 
-public CompoundCommand(){}
+/**
+ * Constructs an empty CompoundCommand
+ * @since 2.0 */
+public CompoundCommand() { }
 
-public CompoundCommand(String desc){
-	super(desc);
+/**
+ * Constructs an empty CompoundCommand with the specified label.
+ * @param label the label for the Command
+ */
+public CompoundCommand(String label) {
+	super(label);
 }
 
-public void add(Command command){
+/**
+ * Adds the specified command if it is not <code>null</code>.
+ * @param command <code>null</code> or a Command */
+public void add(Command command) {
 	if (command != null)
 		commandList.add(command);
 }
 
-/**
- * canExecute method comment.
- */
+/** * @see org.eclipse.gef.commands.Command#canExecute() */
 public boolean canExecute() {
-	if (commandList.size() == 0) return false;
-	for (int i = 0; i < commandList.size(); i++){
+	if (commandList.size() == 0)
+		return false;
+	for (int i = 0; i < commandList.size(); i++) {
 		Command cmd = (Command) commandList.get(i);
 		if (cmd == null)
 			return false;
 		if (!cmd.canExecute())
 			return false;
 	}
-	return super.canExecute();
+	return true;
 }
 
-/**
- * canExecute method comment.
- */
+/** * @see org.eclipse.gef.commands.Command#canUndo() */
 public boolean canUndo() {
-	if (commandList.size() == 0) return false;
-	for (int i = 0; i < commandList.size(); i++){
+	if (commandList.size() == 0)
+		return false;
+	for (int i = 0; i < commandList.size(); i++) {
 		Command cmd = (Command) commandList.get(i);
 		if (cmd == null)
 			return false;
@@ -61,47 +77,44 @@ public boolean canUndo() {
 }
 
 /**
- * cancels the command.  For a compound command this
- * means cancelling all of the commands that it contains.
- */
+ * Disposes all contained Commands.
+ * @see org.eclipse.gef.commands.Command#dispose() */
 public void dispose() {
-	for (int i = 0; i < commandList.size(); i++){
-		Command c = (Command) commandList.get(i);
-		if (c != null) c.dispose();
-	}
+	for (int i = 0; i < commandList.size(); i++)
+		((Command)getCommands().get(i))
+			.dispose();
 }
 
 /**
- * Execute the command.  For a compound command this
+ * Execute the command.For a compound command this
  * means executing all of the commands that it contains.
  */
 public void execute() {
-	for (int i = 0; i < commandList.size(); i++){
+	for (int i = 0; i < commandList.size(); i++) {
 		Command cmd = (Command) commandList.get(i);
 		cmd.execute();
 	}
 }
 
-public Collection getAffectedObjects(){
-	List list = new ArrayList();
-	for (int i=0; i<commandList.size(); i++)
-		list.addAll(((Command)commandList.get(i)).getAffectedObjects());
-	return list;
-}
-
-public Object [] getChildren(){
+/**
+ * This is useful when implementing {@link
+ * org.eclipse.jface.viewers.ITreeContentProvider#getChildren(Object)} to display the
+ * Command's nested structure.
+ * @return returns the Commands as an array of Objects.
+ */
+public Object [] getChildren() {
 	return commandList.toArray();
 }
 
 /**
- * Return a vector of child commands
- * @return java.util.List  The child commands
+ * @return the List of contained Commands
  */
 public List getCommands() {
 	return commandList;
 }
 
-public String getLabel(){
+/** * @see org.eclipse.gef.commands.Command#getLabel() */
+public String getLabel() {
 	String label = super.getLabel();
 	if (label == null)
 		if (commandList.isEmpty())
@@ -111,66 +124,44 @@ public String getLabel(){
 	return ((Command)commandList.get(0)).getLabel();
 }
 
-public boolean isEmpty(){
+/** * @return <code>true</code> if the CompoundCommand is empty */
+public boolean isEmpty() {
 	return commandList.isEmpty();
 }
 
-/**
- * redo the command.  For a compound command this
- * means redoing all of the commands that it contains.
- */
+/** * @see org.eclipse.gef.commands.Command#redo() */
 public void redo() {
 	for (int i = 0; i < commandList.size(); i++)
 		((Command) commandList.get(i)).redo();
 }
 
-public int size(){
+/** * @return the number of contained Commands */
+public int size() {
 	return commandList.size();
 }
 
 /**
- * Undo the command.  For a compound command this
- * means undoing all of the commands that it contains.
- */
+ * @see org.eclipse.gef.commands.Command#undo() */
 public void undo() {
-	for (int i = commandList.size()-1; i >= 0; i--)
-		((Command) commandList.get(i)).undo();
+	for (int i = commandList.size() - 1; i >= 0; i--)
+		((Command) commandList.get(i))
+			.undo();
 }
 
-  /**
-   * This returns one of three things: 
-   * {@link org.eclipse.gef.commands.UnexecutableCommand#INSTANCE}, if there are no commands,
-   * the one command, if there is exactly one command,
-   * or <tt>this</tt>, if there are multiple commands;
-   * this command is {@link #dispose}d in the first two cases.
-   * You should only unwrap a compound command if you created it for that purpose, e.g.,
-   * <pre>
-   *   CompoundCommand subcommands = new CompoundCommand();
-   *   subcommands.append(x);
-   *   if (condition) subcommands.append(y);
-   *   Command result = subcommands.unwrap();
-   * </pre>
-   * is a good way to create an efficient accumulated result.
-   */
-  public Command unwrap()
-  {
-    switch (commandList.size())
-    {
-      case 0:
-      {
-        dispose();
-        return UnexecutableCommand.INSTANCE;
-      }
-      case 1:
-      {
-        Command result = (Command)commandList.remove(0);
-        dispose();
-        return result;
-      }
-      default:
-      {
-        return this;
-      }
-    }
-  }
+/**
+ * Returns the simplest form of this Command that is equivalent.  This is useful for
+ * removing unnecessary nesting of Commands.
+ * @return the simplest form of this Command that is equivalent
+ */
+public Command unwrap() {
+	switch (commandList.size()) {
+		case 0 :
+			return UnexecutableCommand.INSTANCE;
+		case 1 :
+			return (Command) commandList.get(0);
+		default :
+			return this;
+	}
+}
+
 }

@@ -1,27 +1,30 @@
 package org.eclipse.gef.commands;
 
-
-
 /**
- * This class provides a singleton {@link UnexecutableCommand#INSTANCE} that cannot execute.
+ * A Command which can never be executed
  */
 public class UnexecutableCommand
-	extends AbstractCommand {
+	extends AbstractCommand
+{
 
+/**
+ * The singleton instance
+ */
 public static final UnexecutableCommand INSTANCE = new UnexecutableCommand();
 
-private UnexecutableCommand() {}
+private UnexecutableCommand() { }
 
+/** * @return <code>false</code>
+ */
 public boolean canExecute() {
 	return false;
 }
 
+/**
+ * @return <code>false</code>
+ */
 public boolean canUndo() {
 	return false;
 }
-
-public void execute() {}
-
-public void redo() {}
 
 }
