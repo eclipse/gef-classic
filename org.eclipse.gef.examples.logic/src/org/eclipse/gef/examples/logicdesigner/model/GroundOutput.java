@@ -14,7 +14,7 @@ public class GroundOutput
 	extends SimpleOutput
 {
 
-private static Image GROUND_ICON = new Image(null, GroundOutput.class.getResourceAsStream("icons/ground.gif")); //$NON-NLS-1$
+private static Image GROUND_ICON = new Image(null, GroundOutput.class.getResourceAsStream("icons/ground16.gif")); //$NON-NLS-1$
 static final long serialVersionUID = 1;
 
 public Image getIconImage() {

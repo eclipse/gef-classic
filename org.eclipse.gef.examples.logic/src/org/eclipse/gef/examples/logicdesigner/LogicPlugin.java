@@ -62,7 +62,7 @@ static private PaletteContainer createComplexPartsCategory(){
 			LogicMessages.LogicPlugin_Tool_CreationTool_HalfAdder_Label,
 			LogicMessages.LogicPlugin_Tool_CreationTool_HalfAdder_Description,
 			new Image(null,Circuit.class.getResourceAsStream("icons/halfadder16.gif")), //$NON-NLS-1$
-			new Image(null,Circuit.class.getResourceAsStream("icons/halfadder.gif"))//$NON-NLS-1$
+			new Image(null,Circuit.class.getResourceAsStream("icons/halfadder24.gif"))//$NON-NLS-1$
 		);
 	entries.add(template);
 
@@ -71,7 +71,7 @@ static private PaletteContainer createComplexPartsCategory(){
 			LogicMessages.LogicPlugin_Tool_CreationTool_FullAdder_Label,
 			LogicMessages.LogicPlugin_Tool_CreationTool_FullAdder_Description,
 			new Image(null,Circuit.class.getResourceAsStream("icons/fulladder16.gif")),//$NON-NLS-1$
-			new Image(null,Circuit.class.getResourceAsStream("icons/fulladder.gif"))//$NON-NLS-1$
+			new Image(null,Circuit.class.getResourceAsStream("icons/fulladder24.gif"))//$NON-NLS-1$
 		);
 	entries.add(template);
 
@@ -82,7 +82,7 @@ static private PaletteContainer createComplexPartsCategory(){
 			LogicMessages.LogicPlugin_Tool_CreationTool_HalfAdder_Label,
 			LogicMessages.LogicPlugin_Tool_CreationTool_HalfAdder_Description,
 			new Image(null,Circuit.class.getResourceAsStream("icons/halfadder16.gif")), //$NON-NLS-1$
-			new Image(null,Circuit.class.getResourceAsStream("icons/halfadder.gif")))//$NON-NLS-1$
+			new Image(null,Circuit.class.getResourceAsStream("icons/halfadder24.gif")))//$NON-NLS-1$
 		);
 	entries.add(
 		new PaletteToolEntry(
@@ -90,7 +90,7 @@ static private PaletteContainer createComplexPartsCategory(){
 			LogicMessages.LogicPlugin_Tool_CreationTool_FullAdder_Label,
 			LogicMessages.LogicPlugin_Tool_CreationTool_FullAdder_Description,
 			new Image(null,Circuit.class.getResourceAsStream("icons/fulladder16.gif")),//$NON-NLS-1$
-			new Image(null,Circuit.class.getResourceAsStream("icons/fulladder.gif")))//$NON-NLS-1$
+			new Image(null,Circuit.class.getResourceAsStream("icons/fulladder24.gif")))//$NON-NLS-1$
 		);
 */
 	category.addAll(entries);
@@ -111,7 +111,7 @@ static private PaletteContainer createComponentsCategory(){
 			LogicMessages.LogicPlugin_Tool_CreationTool_LogicLabel,
 			LogicMessages.LogicPlugin_Tool_CreationTool_LogicLabel,
 			new Image(null,Circuit.class.getResourceAsStream("icons/label16.gif")), //$NON-NLS-1$
-			new Image(null,Circuit.class.getResourceAsStream("icons/label.gif"))//$NON-NLS-1$
+			new Image(null,Circuit.class.getResourceAsStream("icons/label24.gif"))//$NON-NLS-1$
 		);
 	entries.add(template);
 
@@ -120,7 +120,7 @@ static private PaletteContainer createComponentsCategory(){
 			LogicMessages.LogicPlugin_Tool_CreationTool_FlowContainer_Label,
 			LogicMessages.LogicPlugin_Tool_CreationTool_FlowContainer_Description,
 			new Image(null,Circuit.class.getResourceAsStream("icons/logicflow16.gif")), //$NON-NLS-1$
-			new Image(null,Circuit.class.getResourceAsStream("icons/logicflow.gif"))//$NON-NLS-1$
+			new Image(null,Circuit.class.getResourceAsStream("icons/logicflow24.gif"))//$NON-NLS-1$
 		);
 	entries.add(template);
 
@@ -131,7 +131,7 @@ static private PaletteContainer createComponentsCategory(){
 			LogicMessages.LogicPlugin_Tool_CreationTool_LED_Label,
 			LogicMessages.LogicPlugin_Tool_CreationTool_LED_Description,
 			new Image(null,Circuit.class.getResourceAsStream("icons/ledicon16.gif")), //$NON-NLS-1$
-			new Image(null,Circuit.class.getResourceAsStream("icons/ledicon.gif"))//$NON-NLS-1$
+			new Image(null,Circuit.class.getResourceAsStream("icons/ledicon24.gif"))//$NON-NLS-1$
 		);
 	entries.add(template);
 
@@ -140,7 +140,7 @@ static private PaletteContainer createComponentsCategory(){
 			LogicMessages.LogicPlugin_Tool_CreationTool_Circuit_Label,
 			LogicMessages.LogicPlugin_Tool_CreationTool_Circuit_Description,
 			new Image(null,LogicLabel.class.getResourceAsStream("icons/circuit16.gif")),//$NON-NLS-1$
-			new Image(null,LogicLabel.class.getResourceAsStream("icons/circuit.gif"))//$NON-NLS-1$
+			new Image(null,LogicLabel.class.getResourceAsStream("icons/circuit24.gif"))//$NON-NLS-1$
 		);
 	entries.add(template);
 
@@ -149,7 +149,7 @@ static private PaletteContainer createComponentsCategory(){
 			LogicMessages.LogicPlugin_Tool_CreationTool_ORGate_Label,
 			LogicMessages.LogicPlugin_Tool_CreationTool_ORGate_Description,
 			new Image(null,Circuit.class.getResourceAsStream("icons/or16.gif")),//$NON-NLS-1$
-			new Image(null,Circuit.class.getResourceAsStream("icons/or.gif"))//$NON-NLS-1$
+			new Image(null,Circuit.class.getResourceAsStream("icons/or24.gif"))//$NON-NLS-1$
 		);
 	entries.add(template);
 
@@ -158,7 +158,7 @@ static private PaletteContainer createComponentsCategory(){
 			LogicMessages.LogicPlugin_Tool_CreationTool_XORGate_Label,
 			LogicMessages.LogicPlugin_Tool_CreationTool_XORGate_Description,
 			new Image(null,Circuit.class.getResourceAsStream("icons/xor16.gif")),//$NON-NLS-1$
-			new Image(null,Circuit.class.getResourceAsStream("icons/xor.gif"))//$NON-NLS-1$
+			new Image(null,Circuit.class.getResourceAsStream("icons/xor24.gif"))//$NON-NLS-1$
 		);
 	entries.add(template);
 
@@ -167,7 +167,7 @@ static private PaletteContainer createComponentsCategory(){
 			LogicMessages.LogicPlugin_Tool_CreationTool_ANDGate_Label,
 			LogicMessages.LogicPlugin_Tool_CreationTool_ANDGate_Description,
 			new Image(null,Circuit.class.getResourceAsStream("icons/and16.gif")),//$NON-NLS-1$
-			new Image(null,Circuit.class.getResourceAsStream("icons/and.gif"))//$NON-NLS-1$
+			new Image(null,Circuit.class.getResourceAsStream("icons/and24.gif"))//$NON-NLS-1$
 		);
 	entries.add(template);
 
@@ -176,7 +176,7 @@ static private PaletteContainer createComponentsCategory(){
 			LogicMessages.LogicPlugin_Tool_CreationTool_LiveOutput_Label,
 			LogicMessages.LogicPlugin_Tool_CreationTool_LiveOutput_Description,
 			new Image(null,Circuit.class.getResourceAsStream("icons/live16.gif")),//$NON-NLS-1$
-			new Image(null,Circuit.class.getResourceAsStream("icons/live.gif"))//$NON-NLS-1$
+			new Image(null,Circuit.class.getResourceAsStream("icons/live24.gif"))//$NON-NLS-1$
 		);
 	entries.add(template);
 
@@ -185,7 +185,7 @@ static private PaletteContainer createComponentsCategory(){
 			LogicMessages.LogicPlugin_Tool_CreationTool_Ground_Label,
 			LogicMessages.LogicPlugin_Tool_CreationTool_Ground_Description,
 			new Image(null,Circuit.class.getResourceAsStream("icons/ground16.gif")),//$NON-NLS-1$
-			new Image(null,Circuit.class.getResourceAsStream("icons/ground.gif"))//$NON-NLS-1$
+			new Image(null,Circuit.class.getResourceAsStream("icons/ground24.gif"))//$NON-NLS-1$
 		);
 	entries.add(template);
 
@@ -194,8 +194,8 @@ static private PaletteContainer createComponentsCategory(){
 			new CreationTool(new CreateRequest.SimpleFactory(LogicLabel.class)),
 			LogicMessages.LogicPlugin_Tool_CreationTool_LogicLabel,
 			LogicMessages.LogicPlugin_Tool_CreationTool_LogicLabel,
-			new Image(null,Circuit.class.getResourceAsStream("icons/label.gif")), //$NON-NLS-1$
-			new Image(null,Circuit.class.getResourceAsStream("icons/label.gif"))//$NON-NLS-1$
+			new Image(null,Circuit.class.getResourceAsStream("icons/label24.gif")), //$NON-NLS-1$
+			new Image(null,Circuit.class.getResourceAsStream("icons/label24.gif"))//$NON-NLS-1$
 		);
 	entries.add(tool);
 
@@ -204,7 +204,7 @@ static private PaletteContainer createComponentsCategory(){
 			LogicMessages.LogicPlugin_Tool_CreationTool_FlowContainer_Label,
 			LogicMessages.LogicPlugin_Tool_CreationTool_FlowContainer_Description,
 			new Image(null,Circuit.class.getResourceAsStream("icons/logicflow16.gif")), //$NON-NLS-1$
-			new Image(null,Circuit.class.getResourceAsStream("icons/logicflow.gif"))//$NON-NLS-1$
+			new Image(null,Circuit.class.getResourceAsStream("icons/logicflow24.gif"))//$NON-NLS-1$
 		);
 	entries.add(tool);
 	
@@ -213,7 +213,7 @@ static private PaletteContainer createComponentsCategory(){
 			LogicMessages.LogicPlugin_Tool_CreationTool_LED_Label,
 			LogicMessages.LogicPlugin_Tool_CreationTool_LED_Description,
 			new Image(null,Circuit.class.getResourceAsStream("icons/ledicon16.gif")), //$NON-NLS-1$
-			new Image(null,Circuit.class.getResourceAsStream("icons/ledicon.gif"))//$NON-NLS-1$
+			new Image(null,Circuit.class.getResourceAsStream("icons/ledicon24.gif"))//$NON-NLS-1$
 		);
 	entries.add(tool);
 
@@ -222,7 +222,7 @@ static private PaletteContainer createComponentsCategory(){
 			LogicMessages.LogicPlugin_Tool_CreationTool_Circuit_Label,
 			LogicMessages.LogicPlugin_Tool_CreationTool_Circuit_Description,
 			new Image(null,Circuit.class.getResourceAsStream("icons/circuit16.gif")),//$NON-NLS-1$
-			new Image(null,Circuit.class.getResourceAsStream("icons/circuit.gif"))//$NON-NLS-1$
+			new Image(null,Circuit.class.getResourceAsStream("icons/circuit24.gif"))//$NON-NLS-1$
 		);
 	entries.add(tool);
 
@@ -231,7 +231,7 @@ static private PaletteContainer createComponentsCategory(){
 			LogicMessages.LogicPlugin_Tool_CreationTool_ORGate_Label,
 			LogicMessages.LogicPlugin_Tool_CreationTool_ORGate_Description,
 			new Image(null,Circuit.class.getResourceAsStream("icons/or16.gif")),//$NON-NLS-1$
-			new Image(null,Circuit.class.getResourceAsStream("icons/or.gif"))//$NON-NLS-1$
+			new Image(null,Circuit.class.getResourceAsStream("icons/or24.gif"))//$NON-NLS-1$
 		);
 	entries.add(tool);
 	
@@ -240,7 +240,7 @@ static private PaletteContainer createComponentsCategory(){
 			LogicMessages.LogicPlugin_Tool_CreationTool_XORGate_Label,
 			LogicMessages.LogicPlugin_Tool_CreationTool_XORGate_Description,
 			new Image(null,Circuit.class.getResourceAsStream("icons/xor16.gif")),//$NON-NLS-1$
-			new Image(null,Circuit.class.getResourceAsStream("icons/xor.gif"))//$NON-NLS-1$
+			new Image(null,Circuit.class.getResourceAsStream("icons/xor24.gif"))//$NON-NLS-1$
 		);
 	entries.add(tool);
 
@@ -249,7 +249,7 @@ static private PaletteContainer createComponentsCategory(){
 			LogicMessages.LogicPlugin_Tool_CreationTool_ANDGate_Label,
 			LogicMessages.LogicPlugin_Tool_CreationTool_ANDGate_Description,
 			new Image(null,Circuit.class.getResourceAsStream("icons/and16.gif")),//$NON-NLS-1$
-			new Image(null,Circuit.class.getResourceAsStream("icons/and.gif"))//$NON-NLS-1$
+			new Image(null,Circuit.class.getResourceAsStream("icons/and24.gif"))//$NON-NLS-1$
 		);
 	entries.add(tool);
 
@@ -257,7 +257,7 @@ static private PaletteContainer createComponentsCategory(){
 			new CreationTool(new CreateRequest.SimpleFactory(LiveOutput.class)),
 			LogicMessages.LogicPlugin_Tool_CreationTool_LiveOutput_Label,
 			LogicMessages.LogicPlugin_Tool_CreationTool_LiveOutput_Description,
-			new Image(null,Circuit.class.getResourceAsStream("icons/live.gif")),//$NON-NLS-1$
+			new Image(null,Circuit.class.getResourceAsStream("icons/live24.gif")),//$NON-NLS-1$
 			null
 		);
 	entries.add(tool);
@@ -266,7 +266,7 @@ static private PaletteContainer createComponentsCategory(){
 			new CreationTool(new CreateRequest.SimpleFactory(GroundOutput.class)),
 			LogicMessages.LogicPlugin_Tool_CreationTool_Ground_Label,
 			LogicMessages.LogicPlugin_Tool_CreationTool_Ground_Description,
-			new Image(null,Circuit.class.getResourceAsStream("icons/ground.gif")),//$NON-NLS-1$
+			new Image(null,Circuit.class.getResourceAsStream("icons/ground24.gif")),//$NON-NLS-1$
 			null
 		);
 	entries.add(tool);
@@ -299,7 +299,7 @@ static private PaletteContainer createControlGroup(){
 			LogicMessages.LogicPlugin_Tool_MarqueeSelectionTool_MarqueeSelectionTool_Description,
 //			GEFPlugin.getImage(SharedImageConstants.ICON_TOOL_MARQUEE_16),
 			new Image(null,Circuit.class.getResourceAsStream("icons/marquee16.gif")), //$NON-NLS-1$
-			new Image(null,Circuit.class.getResourceAsStream("icons/marquee.gif")) //$NON-NLS-1$
+			new Image(null,Circuit.class.getResourceAsStream("icons/marquee24.gif")) //$NON-NLS-1$
 		);
 	entries.add(tool);
 	
@@ -311,18 +311,9 @@ static private PaletteContainer createControlGroup(){
 			LogicMessages.LogicPlugin_Tool_ConnectionCreationTool_ConnectionCreationTool_Description,
 			//@RESOURCE_LEAK The Image below is never disposed
 			new Image(null,Circuit.class.getResourceAsStream("icons/connection16.gif")),//$NON-NLS-1$
-			new Image(null,Circuit.class.getResourceAsStream("icons/connection32.gif"))//$NON-NLS-1$
+			new Image(null,Circuit.class.getResourceAsStream("icons/connection24.gif"))//$NON-NLS-1$
 		);
 	entries.add(tool);
-
-//	tool = new PaletteToolEntry(
-//			new ZoomTool(),
-//			"Zoom",
-//			"Zoom Tool",
-//			new Image(null,Circuit.class.getResourceAsStream("icons/connection16.gif")),//$NON-NLS-1$
-//			new Image(null,Circuit.class.getResourceAsStream("icons/connection32.gif"))//$NON-NLS-1$
-//		);
-//	entries.add(tool);
 
 	controlGroup.addAll(entries);
 	return controlGroup;
