@@ -118,7 +118,7 @@ protected final void checkFill() {
 }
 
 /**
- * If the XOR or the clip region has change, these changes will be pushed to the GC.
+ * If the XOR or the clip region has changed, these changes will be pushed to the GC.
  */
 protected final void checkGC() {
 	if (appliedState.xor != currentState.xor)
