@@ -16,10 +16,11 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Point;
 
 import org.eclipse.gef.EditPart;
-import org.eclipse.gef.ui.palette.PaletteViewer;
+import org.eclipse.gef.internal.ui.palette.editparts.*;
 import org.eclipse.gef.internal.ui.palette.editparts.DrawerEditPart;
 import org.eclipse.gef.internal.ui.palette.editparts.TemplateEditPart;
 import org.eclipse.gef.internal.ui.palette.editparts.ToolEntryEditPart;
+import org.eclipse.gef.ui.palette.PaletteViewer;
 
 /**
  * KeyHandler for the {@link org.eclipse.gef.ui.palette.PaletteViewerImpl Palette}.
@@ -48,8 +49,12 @@ private boolean acceptIntoExpandedDrawer(KeyEvent event){
 		&& isExpandedDrawer(getFocus());
 }
 
-private boolean acceptSetFocusOnDrawer(KeyEvent event){
-	return event.keyCode == SWT.ARROW_LEFT;
+private boolean acceptSetFocusOnDrawer(KeyEvent event) {
+	return event.keyCode == SWT.ARROW_LEFT	|| event.keyCode == SWT.ARROW_UP;
+}		
+
+private boolean acceptSetFocusOnNextDrawer(KeyEvent event) {
+	return event.keyCode == SWT.ARROW_DOWN;
 }		
 
 private void buildNavigationList(EditPart palettePart, EditPart exclusion, ArrayList navList) {
@@ -81,7 +86,7 @@ private void expandDrawer(){
 }
 
 Point getInterestingPoint(IFigure figure) {
-	return figure.getBounds().getTop();
+	return figure.getBounds().getTopLeft();
 }
 
 /**
@@ -90,7 +95,7 @@ Point getInterestingPoint(IFigure figure) {
  */
 List getNavigationSiblings(){
 	ArrayList siblingsList = new ArrayList();
-	buildNavigationList(getViewer().getContents(), null, siblingsList);
+	buildNavigationList(getFocus().getParent(), getFocus().getParent(), siblingsList);
 	return siblingsList;
 }
 
@@ -116,24 +121,29 @@ boolean isExpandedDrawer(EditPart part){
 }
 
 public boolean keyPressed(KeyEvent event) {
-	if (acceptIntoExpandedDrawer(event)){
-		
-		if (navigateIntoExpandedDrawer(event))
-			return true;
-	}
-	if (acceptCollapseDrawer(event)){
-		collapseDrawer();
-		return true;
-	}
-	if (acceptExpandDrawer(event)){
+	if (acceptExpandDrawer(event)) {
 		expandDrawer();
 		return true;
 	}	
-	if (acceptSetFocusOnDrawer(event)){
+	if (acceptCollapseDrawer(event)) {
+		collapseDrawer();
+		return true;
+	}
+	if (super.keyPressed(event))
+		return true;
+	if (acceptIntoExpandedDrawer(event)) {
+		if (navigateIntoExpandedDrawer(event))
+			return true;
+	}
+	if (acceptSetFocusOnDrawer(event)) {
 		if (navigateToDrawer(event))
 			return true;
-	}	
-	return super.keyPressed(event);
+	}
+	if (acceptSetFocusOnNextDrawer(event)) {
+		if (navigateToNextDrawer(event))
+			return true;
+	}
+	return false;
 }
 
 private boolean navigateIntoExpandedDrawer(KeyEvent event){
@@ -150,6 +160,7 @@ void navigateTo(EditPart part, KeyEvent event) {
 	if (part == null)
 		return;
 	getViewer().select(part);
+	getViewer().reveal(part);
 }
 
 private boolean navigateToDrawer(KeyEvent event){
@@ -161,6 +172,24 @@ private boolean navigateToDrawer(KeyEvent event){
 			found = true;
 		}
 		parent = parent.getParent();
+	}
+	return false;
+}
+
+private boolean navigateToNextDrawer(KeyEvent event) {
+	EditPart current = getFocus();
+	while (current != null) {
+		if (current instanceof DrawerEditPart	|| current instanceof GroupEditPart) {
+			List siblings = current.getParent().getChildren();
+			int index = siblings.indexOf(current);
+			if (index != -1 && siblings.size() > index + 1) {
+				EditPart part = (EditPart)siblings.get(index + 1);
+				navigateTo(part, event);
+				return true;
+			}
+			return false;
+		}
+		current = current.getParent();
 	}
 	return false;
 }
