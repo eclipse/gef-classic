@@ -153,7 +153,7 @@ protected Dimension calculatePreferredSize(
 		child = (IFigure)children.get(i);
 		childSize = transposer.t(child.getPreferredSize(wHint,hHint));
 		if (i == 0){
-			row_width = childSize.width + minorSpacing;
+			row_width = childSize.width;
 			row_height = childSize.height;
 		} else if (row_width + childSize.width + minorSpacing > max_row_width) {
 			// The current row is full, start a new row.
