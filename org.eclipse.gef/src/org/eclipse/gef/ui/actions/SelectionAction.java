@@ -14,9 +14,6 @@ import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.jface.viewers.*;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.IEditorPart;
 
 /**

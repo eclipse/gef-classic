@@ -15,7 +15,6 @@ import org.eclipse.ui.IEditorPart;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.internal.GEFMessages;
-import org.eclipse.gef.palette.*;
 import org.eclipse.gef.palette.CombinedTemplateCreationEntry;
 import org.eclipse.gef.palette.PaletteTemplateEntry;
 

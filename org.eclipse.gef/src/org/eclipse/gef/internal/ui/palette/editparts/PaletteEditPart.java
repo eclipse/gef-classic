@@ -22,17 +22,12 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
 
-import org.eclipse.gef.AccessibleEditPart;
-import org.eclipse.gef.DragTracker;
-import org.eclipse.gef.Request;
+import org.eclipse.gef.*;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.palette.PaletteContainer;
 import org.eclipse.gef.palette.PaletteEntry;
 import org.eclipse.gef.tools.SelectEditPartTracker;
-import org.eclipse.gef.ui.palette.PaletteMessages;
-import org.eclipse.gef.ui.palette.PaletteViewer;
-import org.eclipse.gef.ui.palette.PaletteViewer;
-import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
+import org.eclipse.gef.ui.palette.*;
 
 abstract class PaletteEditPart 
 	extends AbstractGraphicalEditPart

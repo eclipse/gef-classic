@@ -10,17 +10,12 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner.actions;
 
-import org.eclipse.ui.*;
-import org.eclipse.ui.IPartListener;
-import org.eclipse.ui.IWorkbenchActionConstants;
-import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.jface.action.*;
+import org.eclipse.ui.IWorkbenchActionConstants;
 
 import org.eclipse.draw2d.PositionConstants;
 
-import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.ui.actions.*;
-import org.eclipse.gef.editparts.ScalableFreeformRootEditPart;
 
 public class LogicActionBarContributor
 	extends org.eclipse.gef.ui.actions.ActionBarContributor

@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.gef.internal.ui.palette.editparts;
 
-import org.eclipse.swt.graphics.Color;
-
 import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.*;
 
