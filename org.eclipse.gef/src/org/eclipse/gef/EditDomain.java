@@ -10,7 +10,8 @@
  *******************************************************************************/
 package org.eclipse.gef;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.events.FocusEvent;

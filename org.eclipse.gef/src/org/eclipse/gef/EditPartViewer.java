@@ -10,16 +10,20 @@
  *******************************************************************************/
 package org.eclipse.gef;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.gef.dnd.TransferDragSourceListener;
-import org.eclipse.gef.dnd.TransferDropTargetListener;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import org.eclipse.jface.action.MenuManager;
+
+import org.eclipse.draw2d.geometry.Point;
+
+import org.eclipse.gef.dnd.TransferDragSourceListener;
+import org.eclipse.gef.dnd.TransferDropTargetListener;
 
 /**
  * An adapter on an SWT {@link org.eclipse.swt.widgets.Control} that manages EditParts,

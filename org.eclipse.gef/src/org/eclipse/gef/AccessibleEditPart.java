@@ -10,7 +10,8 @@
  *******************************************************************************/
 package org.eclipse.gef;
 
-import org.eclipse.swt.accessibility.*;
+import org.eclipse.swt.accessibility.AccessibleControlEvent;
+import org.eclipse.swt.accessibility.AccessibleEvent;
 
 import org.eclipse.draw2d.AccessibleBase;
 

@@ -10,10 +10,12 @@
  *******************************************************************************/
 package org.eclipse.gef.handles;
 
+import org.eclipse.swt.graphics.Color;
+
 import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.*;
+
 import org.eclipse.gef.GraphicalEditPart;
-import org.eclipse.swt.graphics.Color;
 
 /**
  * A {@link Border} with a triangle in each corner.

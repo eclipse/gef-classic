@@ -13,6 +13,7 @@ package org.eclipse.gef.editpolicies;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.XYLayout;
 import org.eclipse.draw2d.geometry.*;
+
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.requests.ChangeBoundsRequest;

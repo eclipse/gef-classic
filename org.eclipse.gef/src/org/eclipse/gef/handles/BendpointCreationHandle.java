@@ -13,6 +13,7 @@ package org.eclipse.gef.handles;
 import org.eclipse.draw2d.Locator;
 import org.eclipse.draw2d.MidpointLocator;
 import org.eclipse.draw2d.geometry.Dimension;
+
 import org.eclipse.gef.*;
 import org.eclipse.gef.tools.ConnectionBendpointTracker;
 

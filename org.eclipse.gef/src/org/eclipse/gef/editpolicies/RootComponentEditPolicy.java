@@ -10,7 +10,8 @@
  *******************************************************************************/
 package org.eclipse.gef.editpolicies;
 
-import org.eclipse.gef.commands.*;
+import org.eclipse.gef.commands.Command;
+import org.eclipse.gef.commands.UnexecutableCommand;
 import org.eclipse.gef.requests.GroupRequest;
 
 /**

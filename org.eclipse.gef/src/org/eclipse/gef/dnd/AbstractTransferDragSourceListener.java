@@ -10,8 +10,10 @@
  *******************************************************************************/
 package org.eclipse.gef.dnd;
 
-import org.eclipse.swt.dnd.*;
-import org.eclipse.gef.*;
+import org.eclipse.swt.dnd.DragSourceEvent;
+import org.eclipse.swt.dnd.Transfer;
+
+import org.eclipse.gef.EditPartViewer;
 
 /**
  * An abstract implementation of <code>TransferDragSourceListener</code>

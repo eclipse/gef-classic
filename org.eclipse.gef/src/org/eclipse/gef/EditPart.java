@@ -13,6 +13,7 @@ package org.eclipse.gef;
 import java.util.List;
 
 import org.eclipse.core.runtime.IAdaptable;
+
 import org.eclipse.gef.commands.Command;
 
 /**

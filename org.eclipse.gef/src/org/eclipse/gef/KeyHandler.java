@@ -10,10 +10,12 @@
  *******************************************************************************/
 package org.eclipse.gef;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.eclipse.swt.events.KeyEvent;
 
 import org.eclipse.jface.action.IAction;
-import org.eclipse.swt.events.KeyEvent;
 
 /**
  * The KeyHandler should handle all normal keystrokes on an <code>EditPartViewer</code>. 

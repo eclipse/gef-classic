@@ -10,10 +10,11 @@
  *******************************************************************************/
 package org.eclipse.gef.dnd;
 
-import org.eclipse.gef.*;
-import org.eclipse.gef.requests.*;
-import org.eclipse.gef.requests.CreateRequest;
 import org.eclipse.swt.dnd.DND;
+
+import org.eclipse.gef.*;
+import org.eclipse.gef.requests.CreateRequest;
+import org.eclipse.gef.requests.CreationFactory;
 
 /**
  * Performs a native Drop using the {@link TemplateTransfer}. The Drop is performed by

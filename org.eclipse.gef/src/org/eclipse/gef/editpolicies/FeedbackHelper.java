@@ -11,7 +11,7 @@
 package org.eclipse.gef.editpolicies;
 
 import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.geometry.*;
+import org.eclipse.draw2d.geometry.Point;
 
 public class FeedbackHelper
 {

@@ -10,9 +10,11 @@
  *******************************************************************************/
 package org.eclipse.gef.editpolicies;
 
-import org.eclipse.draw2d.*;
-import org.eclipse.gef.editparts.*;
-import org.eclipse.gef.*;
+import org.eclipse.draw2d.IFigure;
+
+import org.eclipse.gef.GraphicalEditPart;
+import org.eclipse.gef.LayerConstants;
+import org.eclipse.gef.editparts.LayerManager;
 
 /**
  * A <code>GraphicalEditPolicy</code> is used with a {@link GraphicalEditPart}. All

@@ -13,6 +13,7 @@ package org.eclipse.gef.editpolicies;
 import java.util.List;
 
 import org.eclipse.draw2d.*;
+
 import org.eclipse.gef.*;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.requests.CreateRequest;

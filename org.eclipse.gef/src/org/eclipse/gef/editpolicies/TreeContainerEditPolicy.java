@@ -10,15 +10,13 @@
  *******************************************************************************/
 package org.eclipse.gef.editpolicies;
 
-import org.eclipse.swt.widgets.Tree;
-import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.widgets.Widget;
 import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.*;
 
 import org.eclipse.gef.*;
-import org.eclipse.gef.requests.*;
 import org.eclipse.gef.commands.Command;
+import org.eclipse.gef.requests.*;
 
 /**
  * An EditPolicy for handling ADDS, MOVES, and CREATES on a {@link TreeEditPart}.

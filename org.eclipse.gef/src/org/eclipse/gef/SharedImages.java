@@ -10,8 +10,9 @@
  *******************************************************************************/
 package org.eclipse.gef;
 
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
+
+import org.eclipse.jface.resource.ImageDescriptor;
 
 import org.eclipse.gef.internal.Internal;
 

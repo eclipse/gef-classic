@@ -11,7 +11,9 @@
 package org.eclipse.gef;
 
 import org.eclipse.swt.dnd.DragSourceEvent;
-import org.eclipse.swt.events.*;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.MouseEvent;
 
 /**
  * A <code>Tool</code> interprets Mouse and Keyboard input from an {@link EditDomain} and

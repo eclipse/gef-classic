@@ -13,10 +13,12 @@ package org.eclipse.gef.dnd;
 import java.util.Collection;
 import java.util.Collections;
 
+import org.eclipse.swt.dnd.*;
+
 import org.eclipse.draw2d.geometry.Point;
+
 import org.eclipse.gef.*;
 import org.eclipse.gef.commands.Command;
-import org.eclipse.swt.dnd.*;
 
 /**
  * An abstract implementation of TransferDropTargetListener for use with {@link

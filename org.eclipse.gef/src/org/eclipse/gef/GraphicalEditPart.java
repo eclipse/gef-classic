@@ -11,7 +11,8 @@
 package org.eclipse.gef;
 
 import java.util.List;
-import org.eclipse.draw2d.*;
+
+import org.eclipse.draw2d.IFigure;
 
 /**
  * A Specialization of {@link EditPart} for use with {@link GraphicalViewer

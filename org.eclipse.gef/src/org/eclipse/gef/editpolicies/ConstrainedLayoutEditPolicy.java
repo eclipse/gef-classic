@@ -12,8 +12,7 @@ package org.eclipse.gef.editpolicies;
 
 import java.util.List;
 
-
-import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.*;
 
 import org.eclipse.gef.*;

@@ -14,9 +14,11 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Cursor;
 
 import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.geometry.*;
+import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2d.geometry.Rectangle;
 
-import org.eclipse.gef.*;
+import org.eclipse.gef.EditPart;
+import org.eclipse.gef.GraphicalEditPart;
 
 /**
  * A square handle.

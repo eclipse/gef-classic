@@ -12,9 +12,10 @@ package org.eclipse.gef.dnd;
 
 import java.util.*;
 
-import org.eclipse.jface.util.SafeRunnable;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.swt.dnd.*;
+
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.jface.util.SafeRunnable;
 
 import org.eclipse.gef.GEF;
 

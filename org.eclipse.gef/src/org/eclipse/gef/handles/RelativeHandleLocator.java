@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.gef.handles;
 
-import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.geometry.Rectangle;
 
 public class RelativeHandleLocator
 	extends org.eclipse.draw2d.RelativeLocator

@@ -10,11 +10,13 @@
  *******************************************************************************/
 package org.eclipse.gef.handles;
 
+import org.eclipse.swt.graphics.Cursor;
+
 import org.eclipse.draw2d.Cursors;
 import org.eclipse.draw2d.Locator;
+
 import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.GraphicalEditPart;
-import org.eclipse.swt.graphics.Cursor;
 
 /**
  * A Handle used to resize a GraphicalEditPart.

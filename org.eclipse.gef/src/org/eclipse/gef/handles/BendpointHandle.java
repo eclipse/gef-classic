@@ -10,10 +10,12 @@
  *******************************************************************************/
 package org.eclipse.gef.handles;
 
-import java.beans.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
-import org.eclipse.gef.*;
-import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.Connection;
+
+import org.eclipse.gef.DragTracker;
 
 /**
  * A handle used for bendpoints.

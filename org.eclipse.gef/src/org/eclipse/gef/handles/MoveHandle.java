@@ -13,6 +13,7 @@ package org.eclipse.gef.handles;
 import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
+
 import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.tools.DragEditPartsTracker;

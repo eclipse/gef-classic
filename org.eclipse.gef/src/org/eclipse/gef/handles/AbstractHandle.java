@@ -10,10 +10,12 @@
  *******************************************************************************/
 package org.eclipse.gef.handles;
 
+import org.eclipse.swt.graphics.Cursor;
+
 import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.Point;
+
 import org.eclipse.gef.*;
-import org.eclipse.swt.graphics.Cursor;
 
 /**
  * Base class for handles.

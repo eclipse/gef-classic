@@ -10,16 +10,18 @@
  *******************************************************************************/
 package org.eclipse.gef.editpolicies;
 
-import java.util.*;
-import java.beans.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.*;
 
 import org.eclipse.gef.*;
-import org.eclipse.gef.handles.*;
-import org.eclipse.gef.requests.*;
 import org.eclipse.gef.commands.Command;
+import org.eclipse.gef.handles.*;
+import org.eclipse.gef.requests.BendpointRequest;
 
 /**
  * Used to add bendpoint handles on a {@link ConnectionEditPart}.

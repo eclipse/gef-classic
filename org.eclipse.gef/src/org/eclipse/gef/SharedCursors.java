@@ -10,10 +10,12 @@
  *******************************************************************************/
 package org.eclipse.gef;
 
-import org.eclipse.draw2d.Cursors;
-import org.eclipse.gef.internal.Internal;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.ImageData;
+
+import org.eclipse.draw2d.Cursors;
+
+import org.eclipse.gef.internal.Internal;
 
 /**
  * A shared collection of Cursors.

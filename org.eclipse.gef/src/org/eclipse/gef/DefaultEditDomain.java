@@ -12,12 +12,6 @@ package org.eclipse.gef;
 
 import org.eclipse.ui.IEditorPart;
 
-import org.eclipse.gef.palette.PaletteListener;
-import org.eclipse.gef.palette.PaletteRoot;
-import org.eclipse.gef.palette.ToolEntry;
-import org.eclipse.gef.tools.SelectionTool;
-import org.eclipse.gef.ui.palette.PaletteViewer;
-
 /**
  * A default implementation of {@link EditDomain}. A {@link
  * org.eclipse.gef.commands.DefaultCommandStack} is used by default. An {@link

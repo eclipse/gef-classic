@@ -10,11 +10,12 @@
  *******************************************************************************/
 package org.eclipse.gef.editpolicies;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.core.runtime.IAdaptable;
 
-import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Point;
 
 import org.eclipse.gef.*;
