@@ -43,8 +43,15 @@ protected Dimension calculatePreferredSize(IFigure f, int wHint, int hHint) {
 		Rectangle r = (Rectangle)constraints.get(child);
 		if (r == null)
 			continue;
-		if (r.width == -1 && r.height == -1)
-			r = r.getResized(child.getPreferredSize());
+		
+		if (r.width == -1 || r.height == -1) {
+			Dimension preferredSize = child.getPreferredSize(r.width, r.height);
+			r = r.getCopy();
+			if (r.width == -1)
+				r.width = preferredSize.width;
+			if (r.height == -1)
+				r.height = preferredSize.height;
+		}
 		rect.union(r);
 	}
 	Dimension d = rect.getSize();
@@ -84,15 +91,16 @@ public void layout(IFigure parent) {
 		f = (IFigure)children.next();
 		Rectangle bounds = (Rectangle)getConstraint(f);
 		if (bounds == null) continue;
-		bounds = bounds.getTranslated(offset);
+
 		if (bounds.width == -1 || bounds.height == -1) {
-			Dimension preferredSize = f.getPreferredSize();
+			Dimension preferredSize = f.getPreferredSize(bounds.width, bounds.height);
 			bounds = bounds.getCopy();
 			if (bounds.width == -1)
 				bounds.width = preferredSize.width;
 			if (bounds.height == -1)
 				bounds.height = preferredSize.height;
 		}
+		bounds = bounds.getTranslated(offset);
 		f.setBounds(bounds);
 	}
 }
