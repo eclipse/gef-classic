@@ -84,14 +84,11 @@ private void selectAddedObject() {
 		return;
 	EditPartViewer viewer = getViewer();
 	viewer.getControl().forceFocus();
-	Object obj = viewer.getEditPartRegistry().get(model);
-	if (obj instanceof EditPart) {
-		EditPart editpart = (EditPart)obj;
-		if (!editpart.isSelectable())
-			return;
+	Object editpart = viewer.getEditPartRegistry().get(model);
+	if (editpart instanceof EditPart) {
 		//Force a layout first.
 		getViewer().flush();
-		viewer.select(editpart);
+		viewer.select((EditPart)editpart);
 	}
 }
 
