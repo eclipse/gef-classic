@@ -28,6 +28,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.EditPart;
+import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CommandStackListener;
@@ -487,6 +488,10 @@ private boolean handleTextEdit(TextRequest edit) {
 	}
 
 	return true;
+}
+
+protected boolean isViewerImportant(EditPartViewer viewer) {
+	return viewer instanceof GraphicalTextViewer;
 }
 
 /**
