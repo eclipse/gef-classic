@@ -26,6 +26,10 @@ import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
  * A Canvas that contains {@link Figure Figures}.
+ * 
+ * <p>
+ * Note: Only one of the styles RIGHT_TO_LEFT, LEFT_TO_RIGHT may be specified.
+ * </p>
  */
 public class FigureCanvas
 	extends Canvas
@@ -82,7 +86,17 @@ private final LightweightSystem lws;
  * @param parent the parent
  */
 public FigureCanvas(Composite parent) {
-	this(parent, new LightweightSystem());
+	this(parent, SWT.NONE, new LightweightSystem());
+}
+
+/**
+ * Constructor
+ * @param parent the parent composite
+ * @param style look at class javadoc for valid styles
+ * @since 3.1
+ */
+public FigureCanvas(Composite parent, int style) {
+	this(parent, style, new LightweightSystem());
 }
 
 /**
@@ -91,10 +105,30 @@ public FigureCanvas(Composite parent) {
  * @param lws the LightweightSystem
  */
 public FigureCanvas(Composite parent, LightweightSystem lws) {
-	super(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.NO_REDRAW_RESIZE | SWT.NO_BACKGROUND);
+	this(parent, SWT.NONE, lws);
+}
+
+/**
+ * Constructor
+ * @param parent the parent composite
+ * @param style look at class javadoc for valid styles
+ * @param lws the lightweight system
+ * @since 3.1
+ */
+public FigureCanvas(Composite parent, int style, LightweightSystem lws) {
+	super(parent, checkStyle(style | SWT.NO_REDRAW_RESIZE | SWT.NO_BACKGROUND
+			| SWT.V_SCROLL | SWT.H_SCROLL));
 	this.lws = lws;
 	lws.setControl(this);
 	hook();
+}
+
+private static int checkStyle(int style) {
+	int validStyles = SWT.RIGHT_TO_LEFT | SWT.LEFT_TO_RIGHT | SWT.V_SCROLL | SWT.H_SCROLL
+			| SWT.NO_BACKGROUND | SWT.NO_REDRAW_RESIZE;
+	if ((style & ~validStyles) != 0)
+		throw new IllegalArgumentException("Invalid style being set on FigureCanvas"); //$NON-NLS-1$
+	return style;
 }
 
 /**
