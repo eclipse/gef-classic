@@ -8,8 +8,10 @@ package org.eclipse.gef.internal;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.internal.WorkbenchImages;
 
-public class SharedImages {
+public class InternalImages {
 
 public static final ImageDescriptor DESC_ZOOM_IN;
 public static final ImageDescriptor DESC_ZOOM_OUT;
@@ -25,6 +27,10 @@ public static final ImageDescriptor DESC_VERT_ALIGN_BOTTOM;
 public static final ImageDescriptor ICON_MATCH_WIDTH;
 public static final ImageDescriptor ICON_MATCH_HEIGHT;
 
+public static final ImageDescriptor DESC_SEPARATOR;
+public static final ImageDescriptor DESC_FOLDER_OPEN;
+public static final ImageDescriptor DESC_FOLDER_CLOSED;
+
 static {
 	DESC_ZOOM_IN = createDescriptor("icons/zoomplus.gif"); //$NON-NLS-1$
 	DESC_ZOOM_OUT = createDescriptor("icons/zoomminus.gif"); //$NON-NLS-1$
@@ -36,18 +42,22 @@ static {
 	DESC_HORZ_ALIGN_RIGHT = createDescriptor("icons/aright.gif"); //$NON-NLS-1$
 	DESC_VERT_ALIGN_TOP = createDescriptor("icons/atop.gif"); //$NON-NLS-1$
 
+	DESC_SEPARATOR = createDescriptor("icons/separator.gif"); //$NON-NLS-1$
+	DESC_FOLDER_OPEN = WorkbenchImages.getImageDescriptor(ISharedImages.IMG_OBJ_FOLDER);
+	DESC_FOLDER_CLOSED = createDescriptor("icons/folder_closed.gif"); //$NON-NLS-1$
+
 	ICON_MATCH_WIDTH = createDescriptor("icons/sizehz.gif"); //$NON-NLS-1$
 	ICON_MATCH_HEIGHT = createDescriptor("icons/sizevt.gif"); //$NON-NLS-1$
 }
 
 static private Image create(String filename){
 	return ImageDescriptor.createFromFile(
-		SharedImages.class,
+		InternalImages.class,
 		filename).createImage();
 }
 
 static private ImageDescriptor createDescriptor(String filename){
-	return ImageDescriptor.createFromFile(SharedImages.class,filename);
+	return ImageDescriptor.createFromFile(InternalImages.class,filename);
 }
 
 } 	
