@@ -10,21 +10,18 @@
  *******************************************************************************/
 package org.eclipse.gef.ui.parts;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import org.eclipse.draw2d.PositionConstants;
-
 import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.gef.palette.PaletteRoot;
-import org.eclipse.gef.ui.palette.*;
 import org.eclipse.gef.ui.palette.FlyoutPaletteComposite;
-import org.eclipse.gef.ui.views.palette.PaletteViewerPage;
+import org.eclipse.gef.ui.palette.PaletteViewer;
+import org.eclipse.gef.ui.palette.PaletteViewerProvider;
+import org.eclipse.gef.ui.palette.FlyoutPaletteComposite.Preferences;
 import org.eclipse.gef.ui.views.palette.PalettePage;
+import org.eclipse.gef.ui.views.palette.PaletteViewerPage;
 
 /**
  * <EM>IMPORTANT</EM>This class should only be used as a reference for creating your own
@@ -51,31 +48,13 @@ protected PaletteViewerProvider createPaletteViewerProvider() {
 
 public void createPartControl(Composite parent) {
 	splitter = new FlyoutPaletteComposite(parent, SWT.NONE, getSite().getPage(),
-			getPaletteViewerProvider());
-	splitter.setDefaultState(getInitialPaletteState());
+			getPaletteViewerProvider(), getPalettePreferences());
 	super.createPartControl(splitter);
 	splitter.setGraphicalControl(getGraphicalControl());
 	if (page != null) {
 		splitter.setExternalViewer(page.getPaletteViewer());
 		page = null;
 	}
-	splitter.setFixedSize(getInitialPaletteSize());
-	splitter.setDockLocation(getInitialDockLocation());
-	splitter.addPropertyChangeListener(new PropertyChangeListener() {
-		public void propertyChange(PropertyChangeEvent evt) {
-			String property = evt.getPropertyName();
-			if (property.equals(FlyoutPaletteComposite.PROPERTY_STATE)) {
-				if (!splitter.isInState(FlyoutPaletteComposite.FLYOUT_EXPANDED 
-						| FlyoutPaletteComposite.IN_VIEW)) {
-					handlePaletteDefaultStateChanged(
-							((Integer)evt.getNewValue()).intValue());
-				}
-			} else if (property.equals(FlyoutPaletteComposite.PROPERTY_FIXEDSIZE))
-				handlePaletteResized(((Integer)evt.getNewValue()).intValue());
-			else if (property.equals(FlyoutPaletteComposite.PROPERTY_DOCK_LOCATION))
-				handleDockLocationChanged(((Integer)evt.getNewValue()).intValue());
-		}
-	});
 }
 
 public Object getAdapter(Class type) {
@@ -93,6 +72,8 @@ protected Control getGraphicalControl() {
 	return getGraphicalViewer().getControl();
 }
 
+protected abstract Preferences getPalettePreferences();
+	
 /**
  * Returns the PaletteRoot for the palette viewer.
  * @return the palette root
@@ -105,34 +86,9 @@ protected final PaletteViewerProvider getPaletteViewerProvider() {
 	return provider;
 }
 
-protected int getInitialDockLocation() {
-	return PositionConstants.EAST;
-}
-
-/**
- * Returns the initial palette size in pixels. Subclasses may override this method to
- * return a persisted value.
- * @see #handlePaletteResized(int)
- * @return the initial size of the palette in pixels.
- */
-protected int getInitialPaletteSize() {
-	return FlyoutPaletteComposite.DEFAULT_PALETTE_SIZE;
-}
-
 protected int getInitialPaletteState() {
-	return FlyoutPaletteComposite.FLYOUT_COLLAPSED;
+	return FlyoutPaletteComposite.STATE_COLLAPSED;
 }
-
-protected abstract void handleDockLocationChanged(int newDockLocation);
-
-protected abstract void handlePaletteDefaultStateChanged(int newState);
-
-/**
- * Called whenever the user resizes the palette.  Sub-classes can store the new palette
- * size.
- * @param newSize the new size in pixels
- */
-protected abstract void handlePaletteResized(int newSize);
 
 protected void setEditDomain(DefaultEditDomain ed) {
 	super.setEditDomain(ed);
