@@ -40,14 +40,16 @@ protected void createEditPolicies(){}
 protected IFigure createFigure() {
 	FreeformViewport viewport = new FreeformViewport();
 	innerLayers = new FreeformLayeredPane();
-
-	innerLayers.add(new FreeformLayer(), PRIMARY_LAYER);
-	innerLayers.add(new ConnectionLayer(), CONNECTION_LAYER);
-	innerLayers.add(new FreeformLayer(), HANDLE_LAYER);
-	innerLayers.add(new FeedbackLayer(), FEEDBACK_LAYER);
-
+	createLayers(innerLayers);
 	viewport.setContents(innerLayers);
 	return viewport;
+}
+
+protected void createLayers(LayeredPane layeredPane) {
+	layeredPane.add(new FreeformLayer(), PRIMARY_LAYER);
+	layeredPane.add(new ConnectionLayer(), CONNECTION_LAYER);
+	layeredPane.add(new FreeformLayer(), HANDLE_LAYER);
+	layeredPane.add(new FeedbackLayer(), FEEDBACK_LAYER);
 }
 
 /** 

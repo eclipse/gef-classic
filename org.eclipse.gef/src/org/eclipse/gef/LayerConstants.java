@@ -34,4 +34,9 @@ String HANDLE_LAYER = "Handle Layer"; //$NON-NLS-1$
  */
 String FEEDBACK_LAYER = "Feedback Layer"; //$NON-NLS-1$
 
+/**
+ * The layer that contains all printable layers.
+ */
+String PRINTABLE_LAYERS = "Printable Layers"; //$NON-NLS-1$
+
 }
