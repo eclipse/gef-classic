@@ -1103,10 +1103,10 @@ private class NewAction
 		}
 		
 		setText(PaletteMessages.NEW_LABEL);
-		setImageDescriptor(WorkbenchImages
-			.getImageDescriptor(IWorkbenchGraphicConstants.IMG_CTOOL_NEW_WIZ_HOVER));
-		setDisabledImageDescriptor(WorkbenchImages
-			.getImageDescriptor(IWorkbenchGraphicConstants.IMG_CTOOL_NEW_WIZ_DISABLED));
+		setImageDescriptor(ImageDescriptor.createFromFile(
+						Internal.class, "icons/add.gif")); //$NON-NLS-1$
+		setDisabledImageDescriptor(ImageDescriptor.createFromFile(
+						Internal.class, "icons/add-disabled.gif")); //$NON-NLS-1$
 	}
 	
 	private void addActionToMenu(Menu parent, IAction action) {
