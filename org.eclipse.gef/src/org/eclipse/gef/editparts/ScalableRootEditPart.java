@@ -31,25 +31,43 @@ public class ScalableRootEditPart
 	implements RootEditPart, LayerConstants, LayerManager
 {
 
-private ScalableLayeredPane scaledLayers;
-private ZoomManager zoomManager;
+class FeedbackLayer
+	extends Layer
+{
+	FeedbackLayer() {
+		setEnabled(false);
+	}
+	/* (non-Javadoc)
+	 * @see org.eclipse.draw2d.Figure#getPreferredSize(int, int)
+	 */
+	public Dimension getPreferredSize(int wHint, int hHint) {
+		Rectangle rect = new Rectangle();
+		for (int i = 0; i < getChildren().size(); i++)
+			rect.union(((IFigure)getChildren().get(i)).getBounds());
+		return rect.getSize();
+	}
+
+}
+protected EditPart contents;
 private LayeredPane innerLayers;
 private LayeredPane printableLayers;
-protected EditPart contents;
+
+private ScalableLayeredPane scaledLayers;
 protected EditPartViewer viewer;
+private ZoomManager zoomManager;
 
 /**
  * Constructor for ScalableFreeformRootEditPart
  */
 public ScalableRootEditPart() {
-	zoomManager = new ZoomManager((ScalableLayeredPane)getScaledLayers(),
-									((Viewport)getFigure()));
+	zoomManager =
+		new ZoomManager((ScalableLayeredPane)getScaledLayers(), ((Viewport)getFigure()));
 }
 
 protected void createEditPolicies() {}
 
 protected IFigure createFigure() {
-	Viewport viewport = new Viewport(true);
+	Viewport viewport = createViewport();
 
 	innerLayers = new LayeredPane();
 	createLayers(innerLayers);
@@ -95,6 +113,10 @@ protected ScalableLayeredPane createScaledLayers() {
 	ScalableLayeredPane layers = new ScalableLayeredPane();
 	layers.add(getPrintableLayers(), PRINTABLE_LAYERS);
 	return layers;
+}
+
+protected Viewport createViewport() {
+	return new Viewport(true);
 }
 
 /** 
@@ -214,24 +236,6 @@ public void setViewer(EditPartViewer newViewer) {
 	viewer = newViewer;
 	if (viewer != null)
 		register();
-}
-
-class FeedbackLayer
-	extends Layer
-{
-	FeedbackLayer() {
-		setEnabled(false);
-	}
-	/* (non-Javadoc)
-	 * @see org.eclipse.draw2d.Figure#getPreferredSize(int, int)
-	 */
-	public Dimension getPreferredSize(int wHint, int hHint) {
-		Rectangle rect = new Rectangle();
-		for (int i = 0; i < getChildren().size(); i++)
-			rect.union(((IFigure)getChildren().get(i)).getBounds());
-		return rect.getSize();
-	}
-
 }
 
 }
