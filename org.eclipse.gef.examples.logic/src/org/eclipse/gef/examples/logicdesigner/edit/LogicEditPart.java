@@ -15,16 +15,14 @@ import java.beans.PropertyChangeListener;
 import java.util.List;
 
 import org.eclipse.draw2d.ConnectionAnchor;
-import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2d.geometry.*;
+
 import org.eclipse.gef.*;
+import org.eclipse.gef.requests.DropRequest;
+
 import org.eclipse.gef.examples.logicdesigner.figures.NodeFigure;
 import org.eclipse.gef.examples.logicdesigner.model.LogicSubpart;
 import org.eclipse.gef.examples.logicdesigner.model.Wire;
-
-import org.eclipse.gef.editpolicies.SnapToGuideFeedback;
-import org.eclipse.gef.requests.DropRequest;
 
 /**
  * Porvides support for 
@@ -46,7 +44,6 @@ public void activate(){
 protected void createEditPolicies(){
 	installEditPolicy(EditPolicy.COMPONENT_ROLE, new LogicElementEditPolicy());
 	installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE, new LogicNodeEditPolicy());
-	installEditPolicy("Guide Feedback", new SnapToGuideFeedback()); //$NON-NLS-1$
 }
 
 abstract protected AccessibleEditPart createAccessible();

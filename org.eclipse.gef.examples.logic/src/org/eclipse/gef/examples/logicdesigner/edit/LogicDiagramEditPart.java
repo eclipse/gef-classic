@@ -20,6 +20,7 @@ import org.eclipse.draw2d.*;
 
 import org.eclipse.gef.*;
 import org.eclipse.gef.editpolicies.RootComponentEditPolicy;
+import org.eclipse.gef.editpolicies.SnapFeedbackPolicy;
 import org.eclipse.gef.requests.SelectionRequest;
 import org.eclipse.gef.tools.DeselectAllTracker;
 import org.eclipse.gef.tools.MarqueeDragTracker;
@@ -57,6 +58,7 @@ protected void createEditPolicies(){
 	installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE, null);
 	installEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE, null);
 	installEditPolicy(EditPolicy.COMPONENT_ROLE, new RootComponentEditPolicy());
+	installEditPolicy("Snap Feedback", new SnapFeedbackPolicy()); //$NON-NLS-1$
 }
 
 /**
