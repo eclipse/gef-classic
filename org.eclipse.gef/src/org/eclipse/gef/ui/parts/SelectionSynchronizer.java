@@ -65,16 +65,16 @@ public void selectionChanged(SelectionChangedEvent event){
 	isDispatching = false;
 }
 
-private void setViewerSelection(EditPartViewer viewer, ISelection selection){
+private void setViewerSelection(EditPartViewer viewer, ISelection selection) {
 	ArrayList result = new ArrayList();
 	Iterator iter = ((IStructuredSelection)selection).iterator();
-	while(iter.hasNext()){
+	while (iter.hasNext()) {
 		EditPart part = convert(viewer, (EditPart)iter.next());
-		if(part != null){
+		if (part != null)
 			result.add(part);
-		}
 	}
 	viewer.setSelection(new StructuredSelection(result));
+	viewer.reveal((EditPart)result.get(result.size()-1));
 }
 
 }
