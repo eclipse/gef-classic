@@ -20,6 +20,7 @@ import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.TraverseEvent;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Control;
@@ -68,109 +69,14 @@ public abstract class AbstractTool
 {
 
 /**
- * The final state for a tool to be in.  Once a tool reaches this state, it will not
- * change states until it is activated() again.
- */
-protected static final int STATE_TERMINAL = 1 << 30;
-
-/**
- * The first state that a tool is in.  The tool will generally be in this state
- * immediately following {@link #activate()}.
- */
-protected static final int STATE_INITIAL  = 1;
-
-/**
- * The state indicating that one or more buttons is pressed, but the user has not moved
- * past the drag threshold.  Many tools will do nothing during this state but wait
- * until {@link #STATE_DRAG_IN_PROGRESS} is entered.
- */
-protected static final int STATE_DRAG = 2;
-
-/**
- * The state indicating that the drag detection theshold has been passed, and a drag is in
- * progress.
- */
-protected static final int STATE_DRAG_IN_PROGRESS = 4;
-
-/**
- * The state indicating that an input event has invalidated the interaction.  For example,
- * during a mouse drag, pressing additional mouse button might invalidate the drag.
- */
-protected static final int STATE_INVALID = 8;
-
-/**
- * The state indicating that the keyboard is being used to perform a drag that is normally
- * done using the mouse.
- */
-protected static final int STATE_ACCESSIBLE_DRAG = 16;
-
-/**
- * The state indicating that a keyboard drag is in progress.  The threshold for keyboard
- * drags is non-existent, so this state would be entered very quickly.
- */
-protected static final int STATE_ACCESSIBLE_DRAG_IN_PROGRESS = 32;
-
-/**
- * The maximum state flag defined by this class
- */
-protected static final int MAX_STATE = 32;
-
-/**
- * constant used for mouse button 1.
- */
-protected static final int MOUSE_BUTTON1 = SWT.BUTTON1;
-/**
- * constant used for mouse button 2.
- */
-protected static final int MOUSE_BUTTON2 = SWT.BUTTON2;
-/**
- * constant used for mouse button 3.
- */
-protected static final int MOUSE_BUTTON3 = SWT.BUTTON3;
-
-/**
- * constant used to indicate any of the 3 mouse buttons.
- */
-protected static final int MOUSE_BUTTON_ANY =
-	MOUSE_BUTTON1 | MOUSE_BUTTON2 | MOUSE_BUTTON3;
-
-private static final int DRAG_THRESHOLD = 5;
-private static final int FLAG_PAST_THRESHOLD = 1;
-private static final int FLAG_HOVER = 2;
-private static final int FLAG_UNLOAD = 4;
-{
-	setFlag(FLAG_UNLOAD, true);
-}
-private static final int FLAG_ACTIVE = 8;
-
-/**
- * The highest-bit flag being used.
- */
-protected static final int MAX_FLAG = 8;
-
-private EditDomain     domain;
-private int            state;
-private Command        command;
-private EditPartViewer currentViewer;
-private List           operationSet;
-private int            startX;
-private int            startY;
-private Input          current;
-private Cursor   defaultCursor;
-private Cursor   disabledCursor;
-
-private int accessibleStep;
-private long accessibleBegin;
-
-/**
  * Allows the user to access mouse and keyboard input.
  */
 public static class Input
 	extends org.eclipse.gef.util.FlagSupport
 {
 	int modifiers;
-	boolean verifyMouseButtons;
 	Point mouse = new Point();
+	boolean verifyMouseButtons;
 
 	/**
 	 * Returns the event modifiers. Modifiers are defined in {@link MouseEvent#stateMask},
@@ -231,19 +137,6 @@ public static class Input
 	}
 	
 	/**
-	 * Sets mouse button # <code>which</code> to be pressed if <code>state</code> is true.
-	 * @param which which button
-	 * @param state <code>true</code> if button down
-	 */
-	public void setMouseButton(int which, boolean state) {
-		setFlag(1 << which, state);
-	}
-	
-	void setMouseLocation(int x, int y) {
-		mouse.setLocation(x, y);
-	}
-	
-	/**
 	 * Sets the keyboard input based on the KeyEvent.
 	 * @param ke the key event providing the input
 	 */
@@ -265,13 +158,121 @@ public static class Input
 			verifyMouseButtons = false;
 		}
 	}
+	
+	/**
+	 * Sets mouse button # <code>which</code> to be pressed if <code>state</code> is true.
+	 * @param which which button
+	 * @param state <code>true</code> if button down
+	 */
+	public void setMouseButton(int which, boolean state) {
+		setFlag(1 << which, state);
+	}
+	
+	void setMouseLocation(int x, int y) {
+		mouse.setLocation(x, y);
+	}
 }
+
+private static final int DRAG_THRESHOLD = 5;
+private static final int FLAG_ACTIVE = 8;
+private static final int FLAG_HOVER = 2;
+private static final int FLAG_PAST_THRESHOLD = 1;
+private static final int FLAG_UNLOAD = 4;
+
+/**
+ * The highest-bit flag being used.
+ */
+protected static final int MAX_FLAG = 8;
+
+/**
+ * The maximum state flag defined by this class
+ */
+protected static final int MAX_STATE = 32;
+
+/**
+ * constant used for mouse button 1.
+ */
+protected static final int MOUSE_BUTTON1 = SWT.BUTTON1;
+/**
+ * constant used for mouse button 2.
+ */
+protected static final int MOUSE_BUTTON2 = SWT.BUTTON2;
+/**
+ * constant used for mouse button 3.
+ */
+protected static final int MOUSE_BUTTON3 = SWT.BUTTON3;
+
+/**
+ * constant used to indicate any of the 3 mouse buttons.
+ */
+protected static final int MOUSE_BUTTON_ANY =
+	MOUSE_BUTTON1 | MOUSE_BUTTON2 | MOUSE_BUTTON3;
+
+/**
+ * The state indicating that the keyboard is being used to perform a drag that is normally
+ * done using the mouse.
+ */
+protected static final int STATE_ACCESSIBLE_DRAG = 16;
+
+/**
+ * The state indicating that a keyboard drag is in progress.  The threshold for keyboard
+ * drags is non-existent, so this state would be entered very quickly.
+ */
+protected static final int STATE_ACCESSIBLE_DRAG_IN_PROGRESS = 32;
+
+/**
+ * The state indicating that one or more buttons is pressed, but the user has not moved
+ * past the drag threshold.  Many tools will do nothing during this state but wait
+ * until {@link #STATE_DRAG_IN_PROGRESS} is entered.
+ */
+protected static final int STATE_DRAG = 2;
+
+/**
+ * The state indicating that the drag detection theshold has been passed, and a drag is in
+ * progress.
+ */
+protected static final int STATE_DRAG_IN_PROGRESS = 4;
+
+/**
+ * The first state that a tool is in.  The tool will generally be in this state
+ * immediately following {@link #activate()}.
+ */
+protected static final int STATE_INITIAL  = 1;
+
+/**
+ * The state indicating that an input event has invalidated the interaction.  For example,
+ * during a mouse drag, pressing additional mouse button might invalidate the drag.
+ */
+protected static final int STATE_INVALID = 8;
+
+/**
+ * The final state for a tool to be in.  Once a tool reaches this state, it will not
+ * change states until it is activated() again.
+ */
+protected static final int STATE_TERMINAL = 1 << 30;
+{
+	setFlag(FLAG_UNLOAD, true);
+}
+private long accessibleBegin;
+
+private int accessibleStep;
+private Command        command;
 
 private CommandStackListener commandStackListener = new CommandStackListener() {
 	public void commandStackChanged(EventObject event) {
 		handleCommandStackChanged();
 	}
 };
+private Input          current;
+private EditPartViewer currentViewer;
+private Cursor   defaultCursor;
+private Cursor   disabledCursor;
+
+private EditDomain     domain;
+private List           operationSet;
+private int            startX;
+private int            startY;
+private int            state;
 
 boolean acceptAbort(KeyEvent e) {
 	return e.character == SWT.ESC;
@@ -394,6 +395,7 @@ public void deactivate() {
 	setFlag(FLAG_ACTIVE, false);
 	setViewer(null);
 	setCurrentCommand(null);
+	setState(STATE_TERMINAL);
 	operationSet = null;
 	current = null;
 	getDomain().getCommandStack().removeCommandStackListener(commandStackListener);
@@ -408,6 +410,31 @@ protected void debug(String message) {
 		GEF.debug("TOOL:\t" + getDebugName() + //$NON-NLS-1$
 			":\t" + message); //$NON-NLS-1$
 	}
+}
+
+/**
+ * Executes the given command on the command stack.
+ * @since 3.1
+ * @param command the command to execute
+ */
+protected void executeCommand(Command command) {
+	getDomain().getCommandStack().removeCommandStackListener(commandStackListener);
+	try {
+		getDomain().getCommandStack()
+			.execute(command);
+	} finally {
+		getDomain().getCommandStack().addCommandStackListener(commandStackListener);
+	}
+}
+
+/**
+ * Execute the currently active command.
+ */
+protected void executeCurrentCommand() {
+	Command curCommand = getCurrentCommand();
+	if (curCommand != null && curCommand.canExecute())
+		executeCommand(curCommand);
+	setCurrentCommand(null);
 }
 
 /**
@@ -430,22 +457,6 @@ public void focusGained(FocusEvent event, EditPartViewer viewer) {
 public void focusLost(FocusEvent event, EditPartViewer viewer) {
 	setViewer(viewer);
 	handleFocusLost();
-}
-
-/**
- * Execute the currently active command.
- */
-protected void executeCurrentCommand() {
-	getDomain().getCommandStack().removeCommandStackListener(commandStackListener);
-	try {
-		Command curCommand = getCurrentCommand();
-		if (curCommand != null && curCommand.canExecute()) {
-			getDomain().getCommandStack().execute(curCommand);
-			setCurrentCommand(null);
-		}
-	} finally {
-		getDomain().getCommandStack().addCommandStackListener(commandStackListener);
-	}
 }
 
 /**
@@ -499,7 +510,9 @@ protected EditPartViewer getCurrentViewer() {
  * Returns the debug name for this tool.
  * @return the debug name
  */
-protected abstract String getDebugName();
+protected String getDebugName() {
+	return getClass().getName();
+}
 
 /**
  * Returns a String representation of the given state for debug purposes.
@@ -778,6 +791,16 @@ protected boolean handleKeyDown(KeyEvent e) {
 }
 
 /**
+ * Override to process a traverse event.  If the event's {@link KeyEvent#doit doit} field
+ * is set to <code>false</code>, the traversal will be prevented from occurring. 
+ * Otherwise, a traverse will occur.
+ * @param event the SWT traverse event
+ * @since 3.1
+ */
+protected void handleKeyTraversed(TraverseEvent event) {
+}
+
+/**
  * Handles high-level processing of a key up event.  By default, does nothing and returns
  * <code>false</code>.  Subclasses may extend this method to process key up events. 
  * Returns <code>true</code> if the key up was processed in some way.
@@ -859,6 +882,10 @@ protected boolean isHoverActive() {
 	return getFlag(FLAG_HOVER);
 }
 
+boolean isInDragInProgress() {
+	return isInState(STATE_DRAG_IN_PROGRESS | STATE_ACCESSIBLE_DRAG_IN_PROGRESS);
+}
+
 /*
  * Returns <code>true</code> if the current {@link Input} is
  * synchronized with the current MouseEvent.
@@ -874,10 +901,6 @@ private boolean isInputSynched(MouseEvent event) {
 	return (button1ok && button2ok && button3ok);
 }
 
-boolean isInDragInProgress() {
-	return isInState(STATE_DRAG_IN_PROGRESS | STATE_ACCESSIBLE_DRAG_IN_PROGRESS);
-}
-
 /**
  * Returns <code>true</code> if the tool is in the given state.
  * @param state the state being queried
@@ -891,7 +914,7 @@ protected boolean isInState(int state) {
  * Receives a KeyDown event for the given viewer.  Subclasses wanting to handle this
  * event should override {@link #handleKeyDown(KeyEvent)}.
  * @param evt the key event
- * @param viewer the origininating viewer
+ * @param viewer the originating viewer
  */
 public void keyDown(KeyEvent evt, EditPartViewer viewer) {
 	setViewer(viewer);
@@ -900,48 +923,27 @@ public void keyDown(KeyEvent evt, EditPartViewer viewer) {
 }
 
 /**
+ * Receives a traversal event for the given viewer.  Subclasses wanting to handle this
+ * event should override {@link #handleKeyTraversed(TraverseEvent)}.
+ * @param event the traverse event
+ * @param viewer the originating viewer
+ */
+public void keyTraversed(TraverseEvent event, EditPartViewer viewer) {
+	setViewer(viewer);
+	getCurrentInput().setInput(event);
+	handleKeyTraversed(event);
+}
+
+/**
  * Receives a KeyUp event for the given viewer.  Subclasses wanting to handle this event
  * should override {@link #handleKeyUp(KeyEvent)}.
  * @param evt the key event
- * @param viewer the origininating viewer
+ * @param viewer the originating viewer
  */
 public void keyUp(KeyEvent evt, EditPartViewer viewer) {
 	setViewer(viewer);
 	getCurrentInput().setInput(evt);
 	handleKeyUp(evt);
-}
-
-/**
- * Returns <code>true</code> if the threshold has been exceeded during a mouse drag.
- * @return <code>true</code> if the threshold has been exceeded
- */
-protected boolean movedPastThreshold() {
-	if (getFlag(FLAG_PAST_THRESHOLD))
-		return true;
-	Point start = getStartLocation(),
-		  end = getLocation();
-	if (Math.abs(start.x - end.x) > DRAG_THRESHOLD
-	  || Math.abs(start.y - end.y) > DRAG_THRESHOLD) {
-		setFlag(FLAG_PAST_THRESHOLD, true);
-		return true;
-	}
-	return false;
-}
-
-/**
- * @see org.eclipse.gef.Tool#nativeDragFinished(DragSourceEvent, EditPartViewer)
- */
-public void nativeDragFinished(DragSourceEvent event, EditPartViewer viewer) {
-	setViewer(viewer);
-	handleNativeDragFinished(event);
-}
-
-/**
- * @see org.eclipse.gef.Tool#nativeDragStarted(DragSourceEvent, EditPartViewer)
- */
-public void nativeDragStarted(DragSourceEvent event, EditPartViewer viewer) {
-	setViewer(viewer);
-	handleNativeDragStarted(event);
 }
 
 /**
@@ -1052,6 +1054,39 @@ public void mouseUp(MouseEvent me, EditPartViewer viewer) {
 	getCurrentInput().setInput(me);
 	getCurrentInput().setMouseButton(me.button, false);
 	handleButtonUp(me.button);
+}
+
+/**
+ * Returns <code>true</code> if the threshold has been exceeded during a mouse drag.
+ * @return <code>true</code> if the threshold has been exceeded
+ */
+protected boolean movedPastThreshold() {
+	if (getFlag(FLAG_PAST_THRESHOLD))
+		return true;
+	Point start = getStartLocation(),
+		  end = getLocation();
+	if (Math.abs(start.x - end.x) > DRAG_THRESHOLD
+	  || Math.abs(start.y - end.y) > DRAG_THRESHOLD) {
+		setFlag(FLAG_PAST_THRESHOLD, true);
+		return true;
+	}
+	return false;
+}
+
+/**
+ * @see org.eclipse.gef.Tool#nativeDragFinished(DragSourceEvent, EditPartViewer)
+ */
+public void nativeDragFinished(DragSourceEvent event, EditPartViewer viewer) {
+	setViewer(viewer);
+	handleNativeDragFinished(event);
+}
+
+/**
+ * @see org.eclipse.gef.Tool#nativeDragStarted(DragSourceEvent, EditPartViewer)
+ */
+public void nativeDragStarted(DragSourceEvent event, EditPartViewer viewer) {
+	setViewer(viewer);
+	handleNativeDragStarted(event);
 }
 
 void placeMouseInViewer(Point p) {
