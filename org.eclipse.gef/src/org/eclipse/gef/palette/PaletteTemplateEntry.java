@@ -26,6 +26,11 @@ public static final String PALETTE_TYPE_TEMPLATE = "$Palette Template";  //$NON-
 
 /**
  * Creates a new PaletteTemplateEntry with the given template.
+ * @param label the entry's name
+ * @param shortDesc the entry's description
+ * @param template the template for this entry
+ * @param iconSmall an ImageDescriptor for the entry's small icon
+ * @param iconLarge an ImageDescriptor for the entry's large icon
  * @see PaletteEntry#PaletteEntry(String, String, ImageDescriptor, ImageDescriptor, Object)
  */
 public PaletteTemplateEntry(

@@ -248,6 +248,7 @@ protected boolean handleInvalidInput() {
  * Handles high-level processing of a key down event. 
  * KeyEvents are forwarded to the current viewer's {@link KeyHandler}, 
  * via {@link KeyHandler#keyPressed(KeyEvent)}.
+ * @see AbstractTool#handleKeyDown(KeyEvent)
  */
 protected boolean handleKeyDown(KeyEvent e) {
 	if (super.handleKeyDown(e))

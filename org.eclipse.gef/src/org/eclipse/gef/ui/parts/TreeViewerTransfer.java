@@ -16,7 +16,7 @@ import org.eclipse.gef.dnd.SimpleObjectTransfer;
 /**
  * Used to move EditParts around in a single viewer.  
  */
-class TreeViewerTransfer extends SimpleObjectTransfer {
+final class TreeViewerTransfer extends SimpleObjectTransfer {
 
 private static final TreeViewerTransfer INSTANCE = new TreeViewerTransfer();
 private static final String TYPE_NAME = "Local Transfer"//$NON-NLS-1$
@@ -36,14 +36,14 @@ public static TreeViewerTransfer getInstance() {
 private TreeViewerTransfer() { }
 
 /**
- * @see Transfer#getTypeIds()
+ * @see org.eclipse.swt.dnd.Transfer#getTypeIds()
  */
 protected int[] getTypeIds() {
 	return new int[] {TYPEID};
 }
 
 /**
- * @see Transfer#getTypeNames()
+ * @see org.eclipse.swt.dnd.Transfer#getTypeNames()
  */
 protected String[] getTypeNames() {
 	return new String[] {TYPE_NAME};

@@ -186,8 +186,8 @@ public PaletteEntry(String label,
  * </p>
  * @param label 			The entry's name
  * @param shortDescription	The entry's description
- * @param iconSmall 		The small icon to represent this entry
- * @param iconLarge 		The large icon to represent this entry
+ * @param smallIcon 		The small icon to represent this entry
+ * @param largeIcon 		The large icon to represent this entry
  * @param type 				The entry's type
  * @param id				The entry's id (preferrably unique)
  */
@@ -203,7 +203,7 @@ public PaletteEntry(String label, String shortDescription, ImageDescriptor small
 
 /**
  * A listener can only be added once.  Adding it more than once will do nothing.
- * 
+ * @param listener the PropertyChangeListener that is to be notified of changes
  * @see java.beans.PropertyChangeSupport#addPropertyChangeListener(
  * 														java.beans.PropertyChangeListener)
  */
@@ -291,6 +291,7 @@ public boolean isVisible() {
 }
 
 /**
+ * @param listener	the PropertyChangeListener that is not to be notified anymore
  * @see java.beans.PropertyChangeSupport#removePropertyChangeListener(
  * 														java.beans.PropertyChangeListener)
  */

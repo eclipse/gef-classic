@@ -310,10 +310,11 @@ RootEditPart getRootEditPart();
 List getSelectedEditParts();
 
 /**
- * This method is inherited from {@link ISelectionProvider}.  This method should return a
- * {@link org.eclipse.jface.viewers.StructuredSelection} containing one or more of the
- * viewer's EditParts.  Whenever the user has deselected all editparts, the contents
- * editpart should be returned.
+ * This method is inherited from {@link org.eclipse.jface.viewers.ISelectionProvider
+ * ISelectionProvider}. This method should return a {@link
+ * org.eclipse.jface.viewers.StructuredSelection} containing one or more of the viewer's
+ * EditParts.  Whenever the user has deselected all editparts, the contents editpart
+ * should be returned.
  * 
  * @see org.eclipse.jface.viewers.ISelectionProvider#getSelection()
  */
@@ -391,6 +392,7 @@ void select(EditPart editpart);
 /**
  * Sets the contents for this Viewer. The contents can also be set using {@link
  * #setContents(Object)}.
+ * @param editpart the contents
  * @see #getRootEditPart()
  */
 void setContents(EditPart editpart);

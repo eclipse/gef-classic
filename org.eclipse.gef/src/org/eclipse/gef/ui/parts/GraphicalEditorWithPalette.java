@@ -125,6 +125,10 @@ protected void setPaletteViewer(PaletteViewer paletteViewer) {
 	this.paletteViewer = paletteViewer;
 }
 
+/**
+ * Sets the {@link #getPaletteRoot() palette root} of the edit domain
+ * @see org.eclipse.gef.ui.parts.GraphicalEditor#setEditDomain(org.eclipse.gef.DefaultEditDomain)
+ */
 protected void setEditDomain(DefaultEditDomain ed) {
 	super.setEditDomain(ed);
 	getEditDomain().setPaletteRoot(getPaletteRoot());

@@ -25,7 +25,7 @@ import org.eclipse.jface.viewers.Viewer;
 
 /**
  * This is the {@link org.eclipse.jface.viewers.IContentProvider} for the {@link
- * org.eclipse.jface.viewers.TreeViewer used in {@link
+ * org.eclipse.jface.viewers.TreeViewer} used in {@link
  * org.eclipse.gef.ui.palette.customize.PaletteCustomizerDialog}.
  * 
  * @author Pratik Shah

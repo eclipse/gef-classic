@@ -135,6 +135,7 @@ String PREFERENCE_DETAILS_ICON_SIZE = "Use Large Icons - Details"; //$NON-NLS-1$
 String PREFERENCE_FONT = "Palette Font"; //$NON-NLS-1$ 
 
 /**
+ * @param listener the PropertyChangeListener to be notified of changes
  * @see java.beans.PropertyChangeSupport#addPropertyChangeListener(
  * java.beans.PropertyChangeListener)
  */
@@ -190,6 +191,7 @@ int[] getSupportedLayoutModes();
 boolean isSupportedLayoutMode(int layout);
 
 /**
+ * @param listener the PropertyChangeListener that should not be notified hereafter
  * @see java.beans.PropertyChangeSupport#removePropertyChangeListener(
  * 														java.beans.PropertyChangeListener)
  */

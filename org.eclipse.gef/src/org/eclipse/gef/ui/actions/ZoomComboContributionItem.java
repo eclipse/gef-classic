@@ -114,13 +114,17 @@ protected int computeWidth(Control control) {
 	int width = control.computeSize(SWT.DEFAULT, SWT.DEFAULT, true).x;
 	// $TODO: Windows workaround - Fixed in Eclipse 3.0 
 	// Combo is not wide enough to show all text - add enough space for another character
-	if (SWT.getPlatform().equals("win32"))
-		width += FigureUtilities.getTextWidth("8", control.getFont());
+	if (SWT.getPlatform().equals("win32")) //$NON-NLS-1$
+		width += FigureUtilities.getTextWidth("8", control.getFont()); //$NON-NLS-1$
 	return width;
 }
 
 /**
- * @see org.eclipse.jface.action.ControlContribution#createControl(Composite)
+ * Creates and returns the control for this contribution item
+ * under the given parent composite.
+ *
+ * @param parent the parent composite
+ * @return the new control
  */
 protected Control createControl(Composite parent) {
 	combo = new Combo(parent, SWT.DROP_DOWN);

@@ -174,7 +174,7 @@ public void setMoveDelta(Point p) {
 
 /**
  * Sets the direction the figure is being resized.
- * 
+ * @param dir the direction of the resize
  * @see #getResizeDirection()
  */
 public void setResizeDirection(int dir) {

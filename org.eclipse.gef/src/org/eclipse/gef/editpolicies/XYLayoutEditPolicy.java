@@ -113,6 +113,10 @@ protected Dimension getMinimumSizeFor(GraphicalEditPart child) {
 	return new Dimension(8, 8);
 }
 
+/**
+ * @return the XYLayout layout manager set on the {@link
+ * LayoutEditPolicy#getLayoutContainer() container}
+ */
 protected XYLayout getXYLayout() {
 	if (xyLayout == null) {
 		IFigure container = getLayoutContainer();

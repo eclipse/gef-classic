@@ -25,8 +25,11 @@ public abstract class ToolEntry
 public static final Object PALETTE_TYPE_TOOL = "$Palette Tool";//$NON-NLS-1$
 
 /** 
- * Creates a new ToolEntry.
- * @see PaletteEntry#PaletteEntry(String, String, ImageDescriptor, ImageDescriptor, Object)
+ * Creates a new ToolEntry.  Any parameter can be <code>null</code>.
+ * @param label the entry's name
+ * @param shortDesc the entry's description
+ * @param iconSmall the entry's small icon
+ * @param iconLarge the entry's large icon
  */
 public ToolEntry(
 	String label,

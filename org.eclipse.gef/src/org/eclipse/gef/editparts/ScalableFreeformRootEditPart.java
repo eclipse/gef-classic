@@ -123,7 +123,7 @@ public ZoomManager getZoomManager() {
 	return zoomManager;
 }
 
-/* (non-Javadoc)
+/**
  * @see org.eclipse.gef.editparts.AbstractEditPart#register()
  */
 protected void register() {
@@ -131,7 +131,7 @@ protected void register() {
 	getViewer().setProperty(ZoomManager.class.toString(), getZoomManager());
 }
 
-/* (non-Javadoc)
+/**
  * @see org.eclipse.gef.editparts.AbstractEditPart#unregister()
  */
 protected void unregister() {

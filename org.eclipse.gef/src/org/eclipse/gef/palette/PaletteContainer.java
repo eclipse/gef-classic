@@ -36,10 +36,14 @@ public static final String
 protected List children = new ArrayList();
 
 /**
- * Constructor that sets the container's label and small icon
- * 
- * @see org.eclipse.gef.palette.PaletteEntry#PaletteEntry(String, String, 
- *      ImageDescriptor, ImageDescriptor, Object)
+ * Constructor
+ * <p>
+ * Any parameter can be <code>null</code>.
+ * </p>
+ * @param label 	The container's name
+ * @param desc		The container's description
+ * @param icon		The small icon to represent this container
+ * @param type		The container's type
  */
 protected PaletteContainer(String label, String desc, ImageDescriptor icon, Object type) {
 	super(label, desc, icon, null, type);
@@ -70,7 +74,9 @@ public void add(PaletteEntry entry) {
  */
 public void add(int index, PaletteEntry entry) {
 	if (!acceptsType(entry.getType()))
-		throw new IllegalArgumentException("This container can not contain this type of child: " + entry.getType()); //$NON-NLS-1$
+		throw new IllegalArgumentException(
+				"This container can not contain this type of child: " //$NON-NLS-1$
+				+ entry.getType());
 			
 	List oldChildren = new ArrayList(getChildren());
 
@@ -89,7 +95,9 @@ public void addAll(List list) {
 	for (int i = 0; i < list.size(); i++) {
 		PaletteEntry child = (PaletteEntry) list.get(i);
 			if (!acceptsType(child.getType()))
-				throw new IllegalArgumentException("This container can not contain this type of child: " + child.getType()); //$NON-NLS-1$
+				throw new IllegalArgumentException(
+						"This container can not contain this type of child: " //$NON-NLS-1$
+						+ child.getType());
 			getChildren().add(child);
 			child.setParent(this);
 	}
@@ -139,10 +147,12 @@ private boolean move(PaletteEntry entry, boolean up) {
 		return false;
 	}
 	if (getChildren().get(index) instanceof PaletteContainer 
-			&& getUserModificationPermission() == PaletteEntry.PERMISSION_FULL_MODIFICATION) {
+			&& getUserModificationPermission() 
+			== PaletteEntry.PERMISSION_FULL_MODIFICATION) {
 		// move it into a container if we have full permission
 		PaletteContainer container = (PaletteContainer)getChildren().get(index);
-		if (container.acceptsType(entry.getType()) && container.getUserModificationPermission()
+		if (container.acceptsType(entry.getType()) 
+				&& container.getUserModificationPermission()
 				== PaletteEntry.PERMISSION_FULL_MODIFICATION) {
 			remove(entry);
 			if (up)

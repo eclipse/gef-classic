@@ -39,8 +39,6 @@ import org.eclipse.ui.views.properties.*;
  * change. As a result we are forced to refresh the entire entry tree
  * when a property changes value.
  * </p>
- * 
- * @since 3.0 (was previously internal)
  */
 public class PropertySheetEntry implements IPropertySheetEntry {
 

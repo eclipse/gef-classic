@@ -435,7 +435,7 @@ protected AccessibleEditPart getAccessibleEditPart() {
  * <P>
  * Additional adapter types may be added in the future. Subclasses should extend this
  * method.
- * @see IAdaptable
+ * @see IAdaptable#getAdapter(java.lang.Class)
  */
 public Object getAdapter(Class key) {
 	if (IPropertySource.class == key) {

@@ -60,8 +60,22 @@ private Viewport viewport;
 private double zoom = 1.0;
 private int zoomAnimationStyle = ANIMATE_NEVER;
 private double[] zoomLevels = {.5, .75, 1.0, 1.5, 2.0, 2.5, 3, 4};
+/**
+ * String constant for the "Height" zoom level.  At this zoom level, the zoom manager will
+ * adopt a zoom setting such that the entire height of the diagram will be visible on the
+ * screen.
+ */
 public static final String FIT_HEIGHT = SharedMessages.FitHeightAction_Label;
+/**
+ * String constant for the "Width" zoom level.  At this zoom level, the zoom manager will
+ * adopt a zoom setting such that the entire width of the diagram will be visible on the
+ * screen.
+ */
 public static final String FIT_WIDTH = SharedMessages.FitWidthAction_Label;
+/**
+ * String constant for the "Page" zoom level.  At this zoom level, the zoom manager will
+ * adopt a zoom setting such that the entire diagram will be visible on the screen.
+ */
 public static final String FIT_ALL = SharedMessages.FitAllAction_Label;
 private List zoomLevelContributions = Collections.EMPTY_LIST;
 
@@ -159,14 +173,33 @@ private double getFitXZoomLevel(int which) {
 	return Math.min(scaleX, scaleY);
 }
 
+/**
+ * Calculates and returns the zoom percent required so that the entire height of the
+ * {@link #getScalableFigure() scalable figure} is visible on the screen.  This is the
+ * zoom level associated with {@link #FIT_HEIGHT}.
+ * @return zoom setting required to fit the scalable figure vertically on the screen
+ */
 protected double getFitHeightZoomLevel() {
 	return getFitXZoomLevel(1);
 }
 
+/**
+ * Calculates and returns the zoom percentage required to fit the entire {@link
+ * #getScalableFigure() scalable figure} on the screen.  This is the zoom setting
+ * associated with {@link #FIT_ALL}.  It is the minimum of {@link
+ * #getFitHeightZoomLevel()} and {@link #getFitWidthZoomLevel()}.
+ * @return zoom setting required to fit the entire scalable figure on the screen
+ */
 protected double getFitPageZoomLevel() {
 	return getFitXZoomLevel(2);
 }
 
+/**
+ * Calculates and returns the zoom percentage required so that the entire width of the
+ * {@link #getScalableFigure() scalable figure} is visible on the screen.  This is the
+ * zoom setting associated with {@link #FIT_WIDTH}.
+ * @return zoom setting required to fit the scalable figure horizontally on the screen
+ */
 protected double getFitWidthZoomLevel() {
 	return getFitXZoomLevel(0);
 }

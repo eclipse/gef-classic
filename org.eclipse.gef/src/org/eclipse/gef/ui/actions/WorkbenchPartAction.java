@@ -43,6 +43,9 @@ public WorkbenchPartAction(IWorkbenchPart part) {
 /**
  * Constructs a WorkbenchPartAction for the given part and style.
  * @param part the workbench part
+ * @param style one of <code>AS_PUSH_BUTTON</code>, <code>AS_CHECK_BOX</code>,
+ * 		<code>AS_DROP_DOWN_MENU</code>, <code>AS_RADIO_BUTTON</code>, and
+ * 		<code>AS_UNSPECIFIED</code>.
  */
 public WorkbenchPartAction(IWorkbenchPart part, int style) {
 	super(null, style);

@@ -48,9 +48,10 @@ void apply();
 void createControl(Composite parent, PaletteEntry entry);
 
 /**
- * Returns the Panel (Control) that has the properties of the entry. This is the same
+ * Returns the Panel (Control) that displays the properties of the entry. This is the same
  * Control that was created in {@link #createControl(Composite,PaletteEntry)}.
  * 
+ * @return the Control that displays the properties of the entry
  * @see	#createControl(Composite, PaletteEntry) 
  */
 Control getControl();

@@ -20,9 +20,9 @@ import org.eclipse.gef.requests.ChangeBoundsRequest;
 /**
  * A LayoutEditPolicy for use with <code>LayoutManagers</code> that take no constraints.
  * Such layout managers typically position children in <x,y> coordinates based on their
- * order in {@link IFigure#getChildren()}. Therefore, this EditPolicy must perform the
- * inverse mapping. Given a mouse location from the User, the policy must determine the
- * index at which the child[ren] should be added/created.
+ * order in {@link org.eclipse.draw2d.IFigure#getChildren() getChildren()}. Therefore,
+ * this EditPolicy must perform the inverse mapping. Given a mouse location from the User,
+ * the policy must determine the index at which the child[ren] should be added/created.
  * @author hudsonr
  * @since 2.0 */
 public abstract class OrderedLayoutEditPolicy

@@ -35,7 +35,7 @@ public PrintAction(IWorkbenchPart part) {
 }
 
 /**
- * @see org.eclipse.gef.ui.actions.EditorPartAction#calculateEnabled()
+ * @see org.eclipse.gef.ui.actions.WorkbenchPartAction#calculateEnabled()
  */
 protected boolean calculateEnabled() {
 	PrinterData[] printers = Printer.getPrinterList();

@@ -115,9 +115,10 @@ protected IFigure createFigure() {
 
 /**
  * Creates a {@link GridLayer grid}.  Sub-classes can override this method to
- * customize the appearance of the grid.
- * 
- * The grid should be the first layer, i.e., it should be beneath the primary layer.
+ * customize the appearance of the grid.  The grid layer should be the first layer (i.e.,
+ * beneath the primary layer) if it is not to cover up parts on the primary layer.  In
+ * that case, the primary layer should be transparent so that the grid is visible.
+ * @return the newly created GridLayer
  */
 protected GridLayer createGridLayer() {
 	return new GridLayer();
@@ -249,6 +250,14 @@ public EditPartViewer getViewer() {
  */
 protected void refreshChildren() { }
 
+/**
+ * Updates the {@link GridLayer grid} based on properties set on the {@link #getViewer()
+ * graphical viewer}: {@link SnapToGrid#PROPERTY_GRID_VISIBLE}, {@link
+ * SnapToGrid#PROPERTY_GRID_SPACING}, and {@link SnapToGrid#PROPERTY_GRID_ORIGIN}.
+ * <p>
+ * This method is invoked initially when the GridLayer is created, and when any of the
+ * above-mentioned properties are changed on the viewer.
+ */
 protected void refreshGridLayer() {
 	boolean visible = false;
 	GridLayer grid = (GridLayer)getLayer(GRID_LAYER);
@@ -260,6 +269,9 @@ protected void refreshGridLayer() {
 	grid.setVisible(visible);
 }
 
+/**
+ * @see org.eclipse.gef.editparts.AbstractEditPart#register()
+ */
 protected void register() {
 	super.register();
 	if (getLayer(GRID_LAYER) != null) {
@@ -294,7 +306,7 @@ public void setViewer(EditPartViewer newViewer) {
 }
 
 /**
- *  @see AbstractEditPart#unregister();
+ *  @see AbstractEditPart#unregister()
  */
 protected void unregister() {
 	getViewer().removePropertyChangeListener(gridListener);

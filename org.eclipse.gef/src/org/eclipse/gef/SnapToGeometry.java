@@ -21,11 +21,12 @@ import org.eclipse.gef.requests.GroupRequest;
 
 /**
  * A temporary helper used to perform snapping to existing elements. This helper can be
- * used in conjunction with the {@link DragEditPartsTracker} when dragging editparts
- * within a graphical viewer. Snapping is based on the existing children of a
- * <I>container</I>.  When snapping a rectangle, the edges of the rectangle will snap to
- * edges of other rectangles generated from the children of the given container. 
- * Similarly, the centers and middles of rectangles will snap to each other.
+ * used in conjunction with the {@link org.eclipse.gef.tools.DragEditPartsTracker
+ * DragEditPartsTracker} when dragging editparts within a graphical viewer. Snapping is
+ * based on the existing children of a <I>container</I>.  When snapping a rectangle, the
+ * edges of the rectangle will snap to edges of other rectangles generated from the
+ * children of the given container.  Similarly, the centers and middles of rectangles will
+ * snap to each other.
  * <P>
  * If the snap request is being made during a Move, Reparent or Resize, then the figures
  * of the participants of that request will not be used for snapping.  If the request is a

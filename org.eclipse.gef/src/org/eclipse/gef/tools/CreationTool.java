@@ -93,6 +93,7 @@ protected String getCommandName() {
 
 /**
  * Cast the target request to a CreateRequest and returns it.
+ * @return the target request as a CreateRequest
  * @see TargetingTool#getTargetRequest()
  */
 protected CreateRequest getCreateRequest() {

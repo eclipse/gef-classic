@@ -622,9 +622,9 @@ protected boolean handleButtonUp(int button) {
  * Called when the command stack has changed, for instance, when a delete or undo command
  * has been executed. By default, state is set to <code>STATE_INVALID</code> and 
  * handleInvalidInput is called.  Subclasses may override this method to change what 
- * is happened when the command stack changes. Returning <code>true</code> indicates
- * that the change was handled in some way.
- * @return
+ * happens when the command stack changes. Returning <code>true</code> indicates that the
+ * change was handled in some way.
+ * @return <code>true</code> if the change was handled in some way
  */
 protected boolean handleCommandStackChanged() {
 	if (!isInState(STATE_INITIAL)) {
@@ -917,7 +917,7 @@ protected boolean movedPastThreshold() {
 }
 
 /**
- * @see org.eclipse.gef.Tool#nativeDragStarted(DragSourceEvent, EditPartViewer)
+ * @see org.eclipse.gef.Tool#nativeDragFinished(DragSourceEvent, EditPartViewer)
  */
 public void nativeDragFinished(DragSourceEvent event, EditPartViewer viewer) {
 	setViewer(viewer);

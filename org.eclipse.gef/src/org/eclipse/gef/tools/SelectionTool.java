@@ -361,7 +361,7 @@ protected boolean handleMove() {
 /**
  * If there's a drag tracker, calls handleNativeDragFinished() on the drag tracker and 
  * then sets the drag tracker to <code>null</code>.
- * @see org.eclipse.gef.Tool#nativeDragFinished(DragSourceEvent, EditPartViewer)
+ * @see AbstractTool#handleNativeDragFinished(DragSourceEvent)
  */
 public boolean handleNativeDragFinished(DragSourceEvent event) {
 	if (getDragTracker() != null)
@@ -373,7 +373,7 @@ public boolean handleNativeDragFinished(DragSourceEvent event) {
 
 /**
  * If there's a drag tracker, calls nativeDragStarted() on the drag tracker.
- * @see org.eclipse.gef.Tool#nativeDragStarted(DragSourceEvent, EditPartViewer)
+ * @see AbstractTool#handleNativeDragStarted(DragSourceEvent)
  */
 public boolean handleNativeDragStarted(DragSourceEvent event) {
 	if (getDragTracker() != null)

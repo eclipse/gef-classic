@@ -21,9 +21,7 @@ import org.eclipse.gef.internal.InternalImages;
 public class ZoomOutRetargetAction extends RetargetAction {
 	
 /**
- * Constructor for ZoomInRetargetAction.
- * @param actionID
- * @param label
+ * Constructor for ZoomInRetargetAction
  */
 public ZoomOutRetargetAction() {
 	super(null, null);

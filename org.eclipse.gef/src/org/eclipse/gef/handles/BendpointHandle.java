@@ -22,6 +22,10 @@ public class BendpointHandle
 	extends ConnectionHandle
 	implements PropertyChangeListener
 {
+	
+/*
+ * @TODO:Pratik  No need to implement PropertyChangeListener or override propertyChange()
+ */
 
 private int index;
 
@@ -56,7 +60,7 @@ public void propertyChange(PropertyChangeEvent event) {
 
 /**
  * Sets the index.
- *
+ * @param i the new index
  * @see #getIndex()
  */
 protected void setIndex(int i) {

@@ -32,6 +32,8 @@ public class NonResizableHandleKit {
  * figure.
  * @param part the handles' GraphicalEditPart
  * @param handles the List to add the four corner handles to
+ * @param tracker the handles' DragTracker
+ * @param cursor the handles' Cursor
  */
 public static void addCornerHandles(GraphicalEditPart part, List handles, 
 									DragTracker tracker, Cursor cursor) {
@@ -95,6 +97,8 @@ public static void addHandles(GraphicalEditPart part, List handles) {
  * Fills the given List with handles at each corner.
  * @param part the handles' GraphicalEditPart
  * @param handles the List to add the handles to
+ * @param tracker the handles' DragTracker
+ * @param cursor the handles' Cursor
  */
 public static void addHandles(GraphicalEditPart part, List handles, DragTracker tracker,
 							  Cursor cursor) {

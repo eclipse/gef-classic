@@ -136,7 +136,7 @@ public boolean step(Point where) {
     return true;
 }
 
-/* (non-Javadoc)
+/**
  * @see java.lang.Object#toString()
  */
 public String toString() {

@@ -84,7 +84,7 @@ class FeedbackLayer
 	FeedbackLayer() {
 		setEnabled(false);
 	}
-	/* (non-Javadoc)
+	/**
 	 * @see org.eclipse.draw2d.Figure#getPreferredSize(int, int)
 	 */
 	public Dimension getPreferredSize(int wHint, int hHint) {
@@ -147,12 +147,20 @@ protected IFigure createFigure() {
 	return viewport;
 }
 
+/**
+ * Creates a {@link GridLayer grid}.  Sub-classes can override this method to
+ * customize the appearance of the grid.  The grid layer should be the first layer (i.e.,
+ * beneath the primary layer) if it is not to cover up parts on the primary layer.  In
+ * that case, the primary layer should be transparent so that the grid is visible.
+ * @return the newly created GridLayer
+ */
 protected GridLayer createGridLayer() {
 	return new GridLayer();
 }
 
 /**
- * @see FreeformGraphicalRootEditPart#createLayers(LayeredPane)
+ * Creates the top-most set of layers on the given layered pane
+ * @param layeredPane the parent for the created layers
  */
 protected void createLayers(LayeredPane layeredPane) {
 	layeredPane.add(getScaledLayers(), SCALABLE_LAYERS);
@@ -315,6 +323,14 @@ public ZoomManager getZoomManager() {
  */
 protected void refreshChildren() { }
 
+/**
+ * Updates the {@link GridLayer grid} based on properties set on the {@link #getViewer()
+ * graphical viewer}: {@link SnapToGrid#PROPERTY_GRID_VISIBLE}, {@link
+ * SnapToGrid#PROPERTY_GRID_SPACING}, and {@link SnapToGrid#PROPERTY_GRID_ORIGIN}.
+ * <p>
+ * This method is invoked initially when the GridLayer is created, and when any of the
+ * above-mentioned properties are changed on the viewer.
+ */
 protected void refreshGridLayer() {
 	boolean visible = false;
 	GridLayer grid = (GridLayer)getLayer(GRID_LAYER);
@@ -363,7 +379,7 @@ public void setViewer(EditPartViewer newViewer) {
 		register();
 }
 
-/* (non-Javadoc)
+/**
  * @see org.eclipse.gef.editparts.AbstractEditPart#unregister()
  */
 protected void unregister() {

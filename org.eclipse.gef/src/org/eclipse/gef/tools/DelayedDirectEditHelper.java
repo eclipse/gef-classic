@@ -35,6 +35,9 @@ private static DelayedDirectEditHelper activeHelper;
 /**
  * Constructs a new helper and starts it immediately.  If another helper is active, it is
  * aborted and neither helper will run.
+ * @param viewer the viewer on which the direct-edit is supposed to happen
+ * @param request the request that triggered the direct-edit
+ * @param receiver the EditPart that received the request
  */
 public DelayedDirectEditHelper(
   EditPartViewer viewer,

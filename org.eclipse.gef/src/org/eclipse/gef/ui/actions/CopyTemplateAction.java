@@ -35,6 +35,7 @@ private Object template;
  * viewer's list of selection listeners.  Otherwise, this action's enabled state won't be
  * updated properly.
  * 
+ * @param editor the workbench part
  * @see org.eclipse.gef.ui.actions.EditorPartAction#EditorPartAction(IEditorPart)
  */
 public CopyTemplateAction(IEditorPart editor) {

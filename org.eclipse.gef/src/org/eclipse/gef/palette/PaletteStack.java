@@ -34,9 +34,12 @@ private PaletteEntry activeEntry;
 
 /**
  * Creates a new PaletteStack with the given name, description, and icon. These will 
- * be shown only in the customize menu.
- * 
- * @see PaletteEntry#PaletteEntry(String, String, ImageDescriptor, String)
+ * be shown only in the customize menu.  Any of the given parameter can be
+ * <code>null</code>.
+ * @param name the stack's name
+ * @param desc the stack's description
+ * @param icon an ImageDescriptor for the stack's small icon
+ * @see PaletteContainer#PaletteContainer(String, String, ImageDescriptor, Object)
  */
 public PaletteStack(String name, String desc, ImageDescriptor icon) {
 	super(name, desc, icon, PALETTE_TYPE_STACK);
