@@ -24,6 +24,8 @@ public static final int
 
 public abstract void clipRect(Rectangle r);
 
+public abstract void dispose();
+
 public final void drawArc(Rectangle r, int offset, int length){
 	drawArc(r.x, r.y, r.width, r.height, offset, length);
 }
@@ -119,7 +121,7 @@ public abstract void popState();
 public abstract void pushState();
 public abstract void restoreState();
 
-public abstract void scale(float amount);
+public abstract void scale(double amount);
 public abstract void setBackgroundColor(Color rgb);
 public abstract void setClip(Rectangle r);
 public abstract void setFont(Font f);
