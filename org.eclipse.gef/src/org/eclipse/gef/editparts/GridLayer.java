@@ -65,8 +65,8 @@ public void setOrigin(Point p) {
 
 public void setSpacing(Dimension spacing) {
 	if (spacing != null && !spacing.equals(gapX, gapY)) {
-		gapX = spacing.width > 0 ? spacing.width : gapX;
-		gapY = spacing.height > 0 ? spacing.height : gapY;
+		gapX = spacing.width != 0 ? spacing.width : gapX;
+		gapY = spacing.height != 0 ? spacing.height : gapY;
 		repaint();
 	}
 }

@@ -58,9 +58,9 @@ public int snapMoveRequest(ChangeBoundsRequest request, PrecisionRectangle baseR
 	fig.translateToRelative(move);
 
 	double xCorrection = 0.0, yCorrection = 0.0;
-	if ((snapOrientation & SNAP_VERTICAL) != 0)
+	if ((snapOrientation & SNAP_VERTICAL) != 0 && gridX > 0)
 		xCorrection = Math.IEEEremainder(baseRect.preciseX - origin.x, gridX);
-	if ((snapOrientation & SNAP_HORIZONTAL) != 0)
+	if ((snapOrientation & SNAP_HORIZONTAL) != 0 && gridY > 0)
 		yCorrection = Math.IEEEremainder(baseRect.preciseY - origin.y, gridY);
 	
 	move.preciseX -= xCorrection;
@@ -85,7 +85,7 @@ public int snapResizeRequest(ChangeBoundsRequest request, PrecisionRectangle bas
 	fig.translateToRelative(resize);
 	fig.translateToRelative(move);
 
-	if ((snapOrientation & SNAP_VERTICAL) != 0)
+	if ((snapOrientation & SNAP_VERTICAL) != 0 && gridX > 0)
 		if ((dir & PositionConstants.EAST) != 0) {
 			double rightCorrection = Math.IEEEremainder(
 					baseRect.preciseRight() - origin.x, gridX);
@@ -97,7 +97,7 @@ public int snapResizeRequest(ChangeBoundsRequest request, PrecisionRectangle bas
 			move.preciseX -= leftCorrection;
 		}
 	
-	if ((snapOrientation & SNAP_HORIZONTAL) != 0)
+	if ((snapOrientation & SNAP_HORIZONTAL) != 0 && gridY > 0)
 		if ((dir & PositionConstants.SOUTH) != 0) {
 			double bottom = Math.IEEEremainder(baseRect.preciseBottom() - origin.y, gridY);
 			resize.preciseHeight -= bottom;
