@@ -44,7 +44,8 @@ public boolean canExecute(){
 		while (i.hasNext()) {
 			Wire conn = (Wire)i.next();
 			if (targetTerminal != null && conn.getTargetTerminal() != null)
-				if (conn.getTargetTerminal().equals(targetTerminal))
+				if (conn.getTargetTerminal().equals(targetTerminal) 
+						&& conn.getTarget().equals(target))
 					return false;
 		}
 	}
