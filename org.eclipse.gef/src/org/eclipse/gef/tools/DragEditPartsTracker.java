@@ -413,7 +413,14 @@ protected boolean isCloneActive() {
  * @return <code>true</code> if the source edit part is not being reparented
  */
 protected boolean isMove() {
-	return getSourceEditPart().getParent() == getTargetEditPart();
+	EditPart part = getSourceEditPart();
+	while (part != getTargetEditPart() && part != null) {
+		if (part.getParent() == getTargetEditPart() 
+				&& part.getSelected() != EditPart.SELECTED_NONE)
+				return true;
+		part = part.getParent();
+	}
+	return false;
 }
 
 /**
