@@ -1,8 +1,8 @@
 package org.eclipse.gef.ui.palette;
 
-import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.ui.parts.ContextMenuProvider;
 import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 
 /**
@@ -11,10 +11,8 @@ import org.eclipse.jface.action.Separator;
  * @author Pratik Shah
  */
 public class PaletteContextMenuProvider
-	implements ContextMenuProvider
+	extends ContextMenuProvider
 {
-
-private PaletteViewerImpl paletteViewer;
 
 /**
  * Constructor
@@ -22,7 +20,11 @@ private PaletteViewerImpl paletteViewer;
  * @param palette The palette for which the context menu has to be created
  */
 public PaletteContextMenuProvider(PaletteViewerImpl palette) {
-	this.paletteViewer = palette;
+	super(palette);
+}
+
+protected PaletteViewerImpl getPaletteViewer() {
+	return (PaletteViewerImpl)getViewer();
 }
 
 /**
@@ -30,16 +32,20 @@ public PaletteContextMenuProvider(PaletteViewerImpl palette) {
  * 
  * @param	menu	The IMenuManager to which actions for the palette's context
  * 					menu can be added
- * @param	viewer	This parameter is ignored
- * 
- * @see org.eclipse.gef.ui.parts.ContextMenuProvider#buildContextMenu(IMenuManager, EditPartViewer)
+ * @see org.eclipse.gef.ui.parts.ContextMenuProvider#buildContextMenu(org.eclipse.jface.
+ * action.IMenuManager)
  */
-public void buildContextMenu(IMenuManager menu, EditPartViewer viewer) {
-	if (paletteViewer.getCustomizer() != null)
-		menu.add(new LayoutAction(paletteViewer.getPaletteViewerPreferencesSource()));
-		menu.add(new IconSizeChangeAction(paletteViewer.getPaletteViewerPreferencesSource()));
+public void buildContextMenu(IMenuManager menu) {
+	if (getPaletteViewer().getCustomizer() != null)
+		menu.add(new LayoutAction(getPaletteViewer().getPaletteViewerPreferencesSource()));
+		menu.add(new IconSizeChangeAction(getPaletteViewer().getPaletteViewerPreferencesSource()));
 		menu.add(new Separator());
-		menu.add(new CustomizeAction(paletteViewer));
+		menu.add(new CustomizeAction(getPaletteViewer()));
 }
+
+/**
+ * @see org.eclipse.gef.ui.parts.ContextMenuProvider#registerContextMenu(org.eclipse.jface.action.MenuManager)
+ */
+protected void registerContextMenu(MenuManager manager) {}
 
 }

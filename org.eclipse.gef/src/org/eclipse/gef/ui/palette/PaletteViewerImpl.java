@@ -52,7 +52,6 @@ private PropertyChangeListener prefListener = new PropertyChangeListener() {
 public PaletteViewerImpl() {
 	setEditDomain(new DefaultEditDomain(null));
 	setKeyHandler(new PaletteViewerKeyHandler(this));
-	setContextMenuProvider(new PaletteContextMenuProvider(this));
 	setPaletteViewerPreferencesSource(
 		new DefaultPaletteViewerPreferences(
 			GEFPlugin.getDefault().getPreferenceStore()));
