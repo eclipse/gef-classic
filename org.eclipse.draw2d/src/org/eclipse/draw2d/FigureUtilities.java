@@ -122,7 +122,7 @@ static int getLargestSubstringConfinedTo(String s, Font f, int availableWidth){
  * @since 2.0
  */
 public static Dimension getTextExtents(String text, Font f){
-	return new Dimension(getTextDimension(text,f));
+	return new Dimension(getTextDimension(text,f)).expand(1,0);
 }
 
 /**
@@ -131,7 +131,7 @@ public static Dimension getTextExtents(String text, Font f){
  * @since 2.0
  */
 public static Dimension getStringExtents(String s, Font f){
-	return new Dimension(getStringDimension(s,f));
+	return new Dimension(getStringDimension(s,f)).expand(1,0);
 }
 
 public static void getTextExtents(String s, Font f, Dimension result){
