@@ -22,13 +22,6 @@ public abstract class EditorPartAction
 	implements Disposable
 {
 
-/**
- * The default style.  Uses {@link Action#isEnabled()} to 
- * determine an action's enabled state.  If an action is not 
- * dynamic, {@link #calculateEnabled()} is used.
- */
-public static final int DYNAMIC = 1;
-
 /*
  * The editor associated with this action.
  */
@@ -52,23 +45,18 @@ public EditorPartAction(IEditorPart editor, int style){
 }
 
 /**
- * Creates a new EditorPartAction and sets the editor.  Sets the
- * style to {@link #DYNAMIC}.
+ * Creates a new EditorPartAction and sets the editor.
  *
  * @param editor The editor to be associated with this action.
  */
 public EditorPartAction(IEditorPart editor) {
-	this(editor, DYNAMIC);
+	this(editor, 0);
 }
 
 /**
  * Calculates and returns the enabled state of this action.  
- * Subclasses that don't use the default {@link #DYNAMIC} style 
- * should override this method. 
  */
-protected boolean calculateEnabled() {
-	return false;
-}
+protected abstract boolean calculateEnabled();
 
 /**
  * Checks the given style to ensure it is not invalid.
@@ -83,8 +71,7 @@ protected int checkStyle(int style){
  * method to perform any final clean-up.
  */
 public void dispose(){
-	if (isDynamic())
-		unhookEditorPart();
+	unhookEditorPart();
 }
 
 /**
@@ -120,21 +107,11 @@ protected void hookEditorPart() {}
  */
 protected void init(){}
 
-protected boolean isDynamic(){
-	return (style & DYNAMIC) != 0;
-}
-
 /**
- * If this action uses the default {@link #DYNAMIC} style, 
- * {@link Action#isEnabled()} is called.  Otherwise, 
- * {@link #calculateEnabled()} is used to determine the 
- * enabled state of this action.
+ * Calls {@link #calculateEnabled()} to determine the enabled state of this action.
  */
 public boolean isEnabled() {
-	if (isDynamic())
-		return super.isEnabled();
-	else
-		return calculateEnabled();
+	return calculateEnabled();
 }
 
 /**
@@ -149,7 +126,7 @@ protected void refresh(){
  */
 protected void setEditorPart(IEditorPart part) {
 	editorPart = part;
-	if (editorPart != null && (style & DYNAMIC) != 0)
+	if (editorPart != null)
 		hookEditorPart();
 }
 
