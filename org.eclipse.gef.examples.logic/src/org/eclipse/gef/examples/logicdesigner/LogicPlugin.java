@@ -33,14 +33,14 @@ static private List createCategories(PaletteRoot root){
 	List categories = new ArrayList();
 	
 	categories.add(createControlGroup(root));
-	categories.add(createComponentsCategory());
-	categories.add(createComplexPartsCategory());
+	categories.add(createComponentsDrawer());
+	categories.add(createComplexPartsDrawer());
 
 	return categories;
 }
 
-static private PaletteContainer createComplexPartsCategory(){
-	PaletteDrawer category = new PaletteDrawer(LogicMessages.LogicPlugin_Category_ComplexParts_Label, ImageDescriptor.createFromFile(Circuit.class, "icons/can.gif")); //$NON-NLS-1$
+static private PaletteContainer createComplexPartsDrawer(){
+	PaletteDrawer drawer = new PaletteDrawer(LogicMessages.LogicPlugin_Category_ComplexParts_Label, ImageDescriptor.createFromFile(Circuit.class, "icons/can.gif")); //$NON-NLS-1$
 
 	List entries = new ArrayList();
 
@@ -64,13 +64,13 @@ static private PaletteContainer createComplexPartsCategory(){
 	);
 	entries.add(combined);
 
-	category.addAll(entries);
-	return category;
+	drawer.addAll(entries);
+	return drawer;
 }
 
-static private PaletteContainer createComponentsCategory(){
+static private PaletteContainer createComponentsDrawer(){
 
-	PaletteDrawer category = new PaletteDrawer(
+	PaletteDrawer drawer = new PaletteDrawer(
 		LogicMessages.LogicPlugin_Category_Components_Label,
 		ImageDescriptor.createFromFile(Circuit.class, "icons/comp.gif"));//$NON-NLS-1$
 
@@ -168,8 +168,8 @@ static private PaletteContainer createComponentsCategory(){
 	);
 	entries.add(combined);
 
-	category.addAll(entries);
-	return category;
+	drawer.addAll(entries);
+	return drawer;
 }
 
 static private PaletteContainer createControlGroup(PaletteRoot root){
