@@ -11,6 +11,9 @@ import java.util.List;
 public class PaletteGroup 
 	extends PaletteContainer {
 
+public static final String
+	PALETTE_TYPE_GROUP = "Palette_Group";//$NON-NLS-1$
+
 public PaletteGroup(String label){
 	super(label, null, null, PALETTE_TYPE_GROUP);
 }

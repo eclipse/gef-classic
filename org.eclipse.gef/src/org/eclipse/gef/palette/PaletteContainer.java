@@ -26,9 +26,6 @@ public class PaletteContainer
 public static final String
 	PROPERTY_CHILDREN = "Children Changed"; //$NON-NLS-1$
 
-public static final String
-	PALETTE_TYPE_GROUP = "Palette_Group";//$NON-NLS-1$
-
 /**
  * This container's contents
  */
@@ -48,19 +45,19 @@ public void add(PaletteEntry entry) {
 }
 
 public void add(int index, PaletteEntry entry) {
-	List oldChildren = new ArrayList(children);
+	List oldChildren = new ArrayList(getChildren());
 
-	int actualIndex = index < 0 ? children.size() : index;
-	children.add(actualIndex, entry);
+	int actualIndex = index < 0 ? getChildren().size() : index;
+	getChildren().add(actualIndex, entry);
 	entry.setParent(this);
 	listeners.firePropertyChange(PROPERTY_CHILDREN,	oldChildren, getChildren());
 }
 
 public void addAll(List list) {
-	ArrayList oldChildren = new ArrayList(children);
+	ArrayList oldChildren = new ArrayList(getChildren());
 	for (int i = 0; i < list.size(); i++) {
 		PaletteEntry child = (PaletteEntry) list.get(i);
-		children.add(child);
+		getChildren().add(child);
 		child.setParent(this);
 	}
 	listeners.firePropertyChange(PROPERTY_CHILDREN,	oldChildren, getChildren());
@@ -74,19 +71,19 @@ public List getChildren() {
 }
 
 private boolean move(PaletteEntry entry, boolean up) {
-	int index = children.indexOf(entry);
+	int index = getChildren().indexOf(entry);
 	if (index < 0) {
 		// This container does not contain the given palette entry
 		return false;
 	}
 	index = up ? index - 1 : index + 1;
-	if (index < 0 || index >= children.size()) {
+	if (index < 0 || index >= getChildren().size()) {
 		// Performing the move operation will give the child an invalid index
 		return false;
 	}
-	List oldChildren = new ArrayList(children);
-	children.remove(entry);
-	children.add(index, entry);
+	List oldChildren = new ArrayList(getChildren());
+	getChildren().remove(entry);
+	getChildren().add(index, entry);
 	listeners.firePropertyChange(PROPERTY_CHILDREN,	oldChildren, getChildren());
 	return true;
 }
@@ -114,8 +111,8 @@ public boolean moveUp(PaletteEntry entry) {
 }
 
 public void remove(PaletteEntry entry) {
-	List oldChildren = new ArrayList(children);
-	if (children.remove(entry)) {
+	List oldChildren = new ArrayList(getChildren());
+	if (getChildren().remove(entry)) {
 		entry.setParent(null);
 		listeners.firePropertyChange(PROPERTY_CHILDREN,	oldChildren, getChildren());
 	}
