@@ -57,7 +57,7 @@ protected void doDestroyPage(IWorkbenchPart part, PageRec rec) {
  * @see PageBookView#getBootstrapPart()
  */
 protected IWorkbenchPart getBootstrapPart() {
-	IWorkbenchPage persp = getSite().getWorkbenchWindow().getActivePage();
+	IWorkbenchPage persp = getSite().getPage();
 	if (persp != null)
 		return persp.getActiveEditor();
 	return null;
