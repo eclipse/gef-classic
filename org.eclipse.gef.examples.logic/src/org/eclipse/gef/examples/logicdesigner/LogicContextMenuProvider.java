@@ -6,9 +6,7 @@ package org.eclipse.gef.examples.logicdesigner;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.action.IMenuManager;
-import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.*;
 import org.eclipse.ui.IWorkbenchActionConstants;
 
 import org.eclipse.gef.EditPartViewer;
@@ -21,33 +19,50 @@ public class LogicContextMenuProvider
 	extends org.eclipse.gef.ContextMenuProvider
 {
 
+private ActionRegistry actionRegistry;
+
 public LogicContextMenuProvider(EditPartViewer viewer, ActionRegistry registry) {
-	super(viewer, registry);
+	super(viewer);
+	setActionRegistry(registry);
 }
 
-public void buildContextMenu(IMenuManager menu) {
+/* (non-Javadoc)
+ * @see org.eclipse.gef.ContextMenuProvider#menuAboutToShow(org.eclipse.jface.action.IMenuManager)
+ */
+public void buildContextMenu(IMenuManager manager) {
+	manager.add(new Separator(GEFActionConstants.GROUP_UNDO));
+	manager.add(new Separator(GEFActionConstants.GROUP_EDIT));
+	manager.add(new Separator(GEFActionConstants.GROUP_REST));
+	manager.add(new Separator(GEFActionConstants.MB_ADDITIONS));
+	manager.add(new Separator(GEFActionConstants.GROUP_SAVE));
+
 	IAction action;
 
-	menu.appendToGroup(GEFActionConstants.GROUP_UNDO, 
-						getActionRegistry().getAction(GEFActionConstants.UNDO));
-	menu.appendToGroup(GEFActionConstants.GROUP_UNDO, 
-						getActionRegistry().getAction(GEFActionConstants.REDO));
-	
+	action = getActionRegistry().getAction(GEFActionConstants.UNDO);
+	manager.appendToGroup(GEFActionConstants.GROUP_UNDO, action);
+
+	action = getActionRegistry().getAction(GEFActionConstants.REDO);
+	manager.appendToGroup(GEFActionConstants.GROUP_UNDO, action);
+
 	action = getActionRegistry().getAction(IWorkbenchActionConstants.PASTE);
 	if (action.isEnabled())
-		menu.appendToGroup(GEFActionConstants.GROUP_EDIT, action);
+		manager.appendToGroup(GEFActionConstants.GROUP_EDIT, action);
+
 	action = getActionRegistry().getAction(IWorkbenchActionConstants.DELETE);
 	if (action.isEnabled())
-		menu.appendToGroup(GEFActionConstants.GROUP_EDIT, action);
+		manager.appendToGroup(GEFActionConstants.GROUP_EDIT, action);
+
 	action = getActionRegistry().getAction(GEFActionConstants.DIRECT_EDIT);
 	if (action.isEnabled())
-		menu.appendToGroup(GEFActionConstants.GROUP_EDIT, action);
+		manager.appendToGroup(GEFActionConstants.GROUP_EDIT, action);
+
 	action = getActionRegistry().getAction(IncrementDecrementAction.INCREMENT);
 	if (action.isEnabled())
-		menu.appendToGroup(GEFActionConstants.GROUP_REST, action);
+		manager.appendToGroup(GEFActionConstants.GROUP_REST, action);
+
 	action = getActionRegistry().getAction(IncrementDecrementAction.DECREMENT);
 	if (action.isEnabled())
-		menu.appendToGroup(GEFActionConstants.GROUP_REST, action);
+		manager.appendToGroup(GEFActionConstants.GROUP_REST, action);
 	
 	// Alignment Actions
 	MenuManager submenu = new MenuManager(LogicMessages.AlignmentAction_AlignSubmenu_ActionLabelText);
@@ -55,27 +70,41 @@ public void buildContextMenu(IMenuManager menu) {
 	action = getActionRegistry().getAction(GEFActionConstants.ALIGN_LEFT);
 	if (action.isEnabled())
 		submenu.add(action);
+
 	action = getActionRegistry().getAction(GEFActionConstants.ALIGN_CENTER);
 	if (action.isEnabled())
 		submenu.add(action);
+
 	action = getActionRegistry().getAction(GEFActionConstants.ALIGN_RIGHT);
 	if (action.isEnabled())
 		submenu.add(action);
+
 	action = getActionRegistry().getAction(GEFActionConstants.ALIGN_TOP);
 	if (action.isEnabled())
 		submenu.add(action);
+
 	action = getActionRegistry().getAction(GEFActionConstants.ALIGN_MIDDLE);
 	if (action.isEnabled())
 		submenu.add(action);
+
 	action = getActionRegistry().getAction(GEFActionConstants.ALIGN_BOTTOM);
 	if (action.isEnabled())
 		submenu.add(action);
 
 	if (!submenu.isEmpty())
-		menu.appendToGroup(GEFActionConstants.GROUP_REST, submenu);
+		manager.appendToGroup(GEFActionConstants.GROUP_REST, submenu);
 
-	menu.appendToGroup(GEFActionConstants.GROUP_SAVE, 
-						getActionRegistry().getAction(IWorkbenchActionConstants.SAVE));
+	action = getActionRegistry().getAction(IWorkbenchActionConstants.SAVE);
+	manager.appendToGroup(GEFActionConstants.GROUP_SAVE, action);
+
+}
+
+private ActionRegistry getActionRegistry() {
+	return actionRegistry;
+}
+
+private void setActionRegistry(ActionRegistry registry) {
+	actionRegistry = registry;
 }
 
 }
