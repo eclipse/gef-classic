@@ -10,20 +10,21 @@
  *******************************************************************************/
 package org.eclipse.gef.ui.views.palette;
 
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-
-import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.ui.part.Page;
-
 import org.eclipse.gef.ContextMenuProvider;
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.dnd.TemplateTransferDragSourceListener;
 import org.eclipse.gef.dnd.TransferDragSourceListener;
 import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.palette.PaletteRoot;
-import org.eclipse.gef.ui.palette.PaletteContextMenuProvider;
-import org.eclipse.gef.ui.palette.PaletteViewer;
+import org.eclipse.gef.ui.palette.*;
+import org.eclipse.gef.ui.palette.customize.ToolbarDropdownContributionItem;
+
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.ui.part.IPageSite;
+import org.eclipse.ui.part.Page;
 
 /**
  * @author Pratik Shah
@@ -66,17 +67,14 @@ public void createControl(Composite parent) {
 }
 
 public void dispose() {
-	paletteViewer.removeDragSourceListener(listener);
+	//$TODO uncomment when NPE bug is fixed (50022)
+	//paletteViewer.removeDragSourceListener(listener);
 }
 
 public Object getAdapter(Class type) {
 	if (type == ZoomManager.class)
 		return diagramViewer.getProperty(ZoomManager.class.toString());
 	return null;
-}
-
-protected void setPaletteViewer(PaletteViewer viewer) {
-	paletteViewer = viewer;
 }
 
 public Control getControl() {
@@ -95,8 +93,14 @@ protected void hookPaletteViewer() {
 	diagramViewer.getEditDomain().setPaletteViewer(paletteViewer);
 }
 
-public void setFocus() {
-	getControl().setFocus();
+/**
+ * @see org.eclipse.ui.part.IPageBookViewPage#init(org.eclipse.ui.part.IPageSite)
+ */
+public void init(IPageSite pageSite) { 
+System.out.println( "init");
+	super.init(pageSite);
+	pageSite.getActionBars().getToolBarManager().add(new ToolbarDropdownContributionItem(
+			new LayoutAction(getPaletteViewer().getPaletteViewerPreferences(), true)));
 }
 
 /**
@@ -106,6 +110,14 @@ protected void initializePaletteViewer() {
 	diagramViewer.getEditDomain().setPaletteRoot(root);
 	paletteViewer.addDragSourceListener(
 			listener = new TemplateTransferDragSourceListener(paletteViewer));
+}
+
+public void setFocus() {
+	getControl().setFocus();
+}
+
+protected void setPaletteViewer(PaletteViewer viewer) {
+	paletteViewer = viewer;
 }
 
 }
