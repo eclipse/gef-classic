@@ -102,7 +102,6 @@ public int snapCreateRequest(CreateRequest request, PrecisionRectangle baseRect,
 	IFigure fig = container.getContentPane();
 	fig.translateToRelative(baseRect);
 	boolean change = false;
-	System.out.println(baseRect);
 	
 	if ((snapOrientation & WEST) != 0) {
 		// west
@@ -152,7 +151,6 @@ public int snapCreateRequest(CreateRequest request, PrecisionRectangle baseRect,
 	if (!change)
 		return snapOrientation;
 	baseRect.updateInts();
-	System.out.println(baseRect);
 	fig.translateToAbsolute(baseRect);
 	baseRect.updateInts();
 	request.setSize(baseRect.getSize());
