@@ -129,7 +129,7 @@ public void enableVerticalScrollbar(boolean value) {
  * @return	the DrawerEditPart that has the given part; part, if part is a drawer; null, if
  * 			part is not in a drawer
  */
-protected DrawerEditPart findContainingDrawer(EditPart part) {
+private DrawerEditPart findContainingDrawer(EditPart part) {
 	if (part == null)
 		return null;
 	if (part instanceof DrawerEditPart)
