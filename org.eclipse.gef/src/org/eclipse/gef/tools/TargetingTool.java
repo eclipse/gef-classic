@@ -179,7 +179,7 @@ protected boolean updateTargetUnderMouse(){
 		EditPart editPart = getCurrentViewer().findObjectAtExcluding(
 			getLocation(),
 			exclude,
-			getTargetingConditional());
+			getTargetConditional());
 		if (editPart != null)
 			editPart = editPart.getTargetEditPart(getTargetRequest());
 		boolean changed = getTargetEditPart() != editPart;
