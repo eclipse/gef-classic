@@ -173,9 +173,14 @@ public void setConstraint(Connection connection, Object constraint) {
  * Sets the start and end points for the given connection.
  * @param conn The connection */
 protected void setEndPoints(Connection conn) {
-	PointList points = new PointList();
-	points.addPoint(getStartPoint(conn));
-	points.addPoint(getEndPoint(conn));
+	PointList points = conn.getPoints();
+	points.removeAllPoints();
+	Point start = getStartPoint(conn);
+	Point end = getEndPoint(conn);
+	conn.translateToRelative(start);
+	conn.translateToRelative(end);
+	points.addPoint(start);
+	points.addPoint(end);
 	conn.setPoints(points);
 }
 
