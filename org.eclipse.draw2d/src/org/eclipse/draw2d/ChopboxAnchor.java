@@ -37,30 +37,6 @@ public ChopboxAnchor(IFigure owner) {
 	super(owner);
 }
 
-
-/**
- * @see java.lang.Object#equals(java.lang.Object)
- */
-public boolean equals(Object obj) {
-	if (obj instanceof ChopboxAnchor) {
-		ChopboxAnchor other = (ChopboxAnchor)obj;
-		return other.getOwner() == getOwner();
-	}
-	return false;
-}
-
-/**
- * Returns the bounds of this ChopboxAnchor's owner.  Subclasses can override this method
- * to adjust the box the anchor can be placed on.  For instance, the owner figure may have
- * a drop shadow that should not be included in the box. 
- *  
- * @return The bounds of this ChopboxAnchor's owner
- * @since 2.0
- */
-protected Rectangle getBox() {
-	return getOwner().getBounds();
-}
-
 /**
  * Gets a Rectangle from {@link #getBox()} and returns the Point where a line from the
  * center of the Rectangle to the Point <i>reference</i> intersects the Rectangle.
@@ -96,6 +72,18 @@ public Point getLocation(Point reference) {
 }
 
 /**
+ * Returns the bounds of this ChopboxAnchor's owner.  Subclasses can override this method
+ * to adjust the box the anchor can be placed on.  For instance, the owner figure may have
+ * a drop shadow that should not be included in the box. 
+ *  
+ * @return The bounds of this ChopboxAnchor's owner
+ * @since 2.0
+ */
+protected Rectangle getBox() {
+	return getOwner().getBounds();
+}
+
+/**
  * Returns the anchor's reference point. In the case of the ChopboxAnchor, this is the
  * center of the anchor's owner.
  * 
@@ -107,9 +95,18 @@ public Point getReferencePoint() {
 	return ref;
 }
 
+
 /**
- * @see java.lang.Object#hashCode()
+ * @see java.lang.Object#equals(java.lang.Object)
  */
+public boolean equals(Object obj) {
+	if (obj instanceof ChopboxAnchor) {
+		ChopboxAnchor other = (ChopboxAnchor)obj;
+		return other.getOwner() == getOwner() && other.getBox().equals(getBox());
+	}
+	return false;
+}
+
 public int hashCode() {
 	if (getOwner() != null)
 		return getOwner().hashCode();
