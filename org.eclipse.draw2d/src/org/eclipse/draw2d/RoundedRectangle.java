@@ -24,18 +24,6 @@ protected Dimension corner = new Dimension(8,8);
 public RoundedRectangle(){}
 
 /**
- * Draw the outline of the RoundedRectangle.
- * 
- * @since 2.0
- */
-protected void outlineShape(Graphics graphics){
-	Rectangle r = new Rectangle(getBounds());
-	r.width--;
-	r.height--;
-	graphics.drawRoundRectangle(r, corner.width, corner.height);
-}
-
-/**
  * Fill the RoundedRectangle with the background color
  * set by <i>graphics</i>.
  * 
@@ -43,6 +31,21 @@ protected void outlineShape(Graphics graphics){
  */
 protected void fillShape(Graphics graphics){
 	graphics.fillRoundRectangle(getBounds(), corner.width, corner.height);
+}
+
+/**
+ * Draw the outline of the RoundedRectangle.
+ * 
+ * @since 2.0
+ */
+protected void outlineShape(Graphics graphics){
+	Rectangle f = Rectangle.SINGLETON;
+	Rectangle r = getBounds();
+	f.x = r.x + lineWidth/2;
+	f.y = r.y + lineWidth/2;
+	f.width = r.width - lineWidth;
+	f.height = r.height - lineWidth;
+	graphics.drawRoundRectangle(f, corner.width, corner.height);
 }
 
 /**
