@@ -14,13 +14,23 @@ import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.geometry.PrecisionRectangle;
 import org.eclipse.draw2d.geometry.Rectangle;
 
+/**
+ * A request to align multiple objects.
+ */
 public class AlignmentRequest extends ChangeBoundsRequest {
 
 private int alignment;
 private Rectangle alignmentRect;
 
-public AlignmentRequest() {}
+/**
+ * Default constructor.
+ */
+public AlignmentRequest() { }
 
+/**
+ * Constructs a new AlignmentRequest with the new type.
+ * @param type the type
+ */
 public AlignmentRequest(Object type) {
 	super(type);
 }
@@ -95,14 +105,27 @@ private void doPrecisionAlignment(
 	
 }
 
+/**
+ * Returns the alignment.  Possible values are {@link PositionConstants#LEFT},
+ * {@link PositionConstants#RIGHT}, {@link PositionConstants#TOP} and 
+ * {@link PositionConstants#BOTTOM}.
+ * @return the alignment
+ */
 public int getAlignment() {
 	return alignment;
 }
 
+/**
+ * Returns the rectangle used to align the edit part with.
+ * @return the alignment rectangle
+ */
 public Rectangle getAlignmentRectangle() {
 	return alignmentRect;
 }
 
+/**
+ * @see ChangeBoundsRequest#getTransformedRectangle(Rectangle)
+ */
 public Rectangle getTransformedRectangle(Rectangle rect) {
 	Rectangle result = rect.getCopy();
 	Rectangle reference = getAlignmentRectangle();
@@ -121,10 +144,20 @@ public Rectangle getTransformedRectangle(Rectangle rect) {
 	return result;
 }
 
+/**
+ * Sets the alignment.
+ * @param align the alignment
+ * @see #getAlignment()
+ */
 public void setAlignment(int align) {
 	alignment = align;
 }
 
+/**
+ * Sets the alignment rectangle.
+ * @param rect the alignment rectangle
+ * @see #getAlignmentRectangle()
+ */
 public void setAlignmentRectangle(Rectangle rect) {
 	alignmentRect = rect;
 }

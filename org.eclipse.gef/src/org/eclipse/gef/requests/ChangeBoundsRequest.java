@@ -13,7 +13,7 @@ package org.eclipse.gef.requests;
 import org.eclipse.draw2d.geometry.*;
 
 /**
- * A Request to change the bounds the EditPart(s).
+ * A Request to change the bounds of the EditPart(s).
  */
 public class ChangeBoundsRequest
 	extends GroupRequest
@@ -28,14 +28,14 @@ private Point mouseLocation;
 /**
  * Default constructor.
  */
-public ChangeBoundsRequest(){}
+public ChangeBoundsRequest() { }
 
 /**
  * Creates a ChangeBoundsRequest with the given type.
  *
  * @param type The type of Request.
  */
-public ChangeBoundsRequest(Object type){
+public ChangeBoundsRequest(Object type) {
 	setType(type);
 }
 
@@ -44,12 +44,12 @@ public ChangeBoundsRequest(Object type){
  *
  * @return The location of the mouse pointer.
  */
-public Point getLocation(){
+public Point getLocation() {
 	return mouseLocation;
 }
 
-/**@deprecated*/
-public Point getMouseLocation(){
+/** @deprecated @see {@link #getLocation()} */
+public Point getMouseLocation() {
 	return getLocation();
 }
 
@@ -58,13 +58,24 @@ public Point getMouseLocation(){
  *
  * @return A Point representing the distance the EditPart has moved.
  */
-public Point getMoveDelta(){
+public Point getMoveDelta() {
 	return moveDelta;
 }
 
 /**
- * Returns the direction the figure is being resized.  Possible values
- * can be found in PositionConstants.
+ * Returns the direction the figure is being resized.  Possible values are
+ * <ul>
+ * 		<li>{@link PositionConstants#EAST}
+ * 		<li>{@link PositionConstants#WEST}
+ * 		<li>{@link PositionConstants#NORTH}
+ * 		<li>{@link PositionConstants#SOUTH} 
+ * 		<li>{@link PositionConstants#NORTH_EAST}
+ * 		<li>{@link PositionConstants#NORTH_WEST}
+ * 		<li>{@link PositionConstants#SOUTH_EAST}
+ * 		<li>{@link PositionConstants#SOUTH_WEST} 
+ * </ul>
+ * 
+ * @return the resize direction
  */
 public int getResizeDirection() {
 	return resizeDirection;
@@ -75,15 +86,18 @@ public int getResizeDirection() {
  *
  * @return A Dimension representing how much the EditPart has been resized.
  */
-public Dimension getSizeDelta(){
+public Dimension getSizeDelta() {
 	return resizeDelta;
 }
 
 /**
- * Returns a Rectangle representing the new bounds.
- * @return A Rectangle representing the new bounds.
+ * Transforms a copy of the passed in rectangle to account for the move and/or resize 
+ * deltas and returns this copy.
+ * 
+ * @param rect the rectangle to transform
+ * @return a copy of the passed in rectangle representing the new bounds
  */
-public Rectangle getTransformedRectangle(Rectangle rect){
+public Rectangle getTransformedRectangle(Rectangle rect) {
 	return rect.getCopy()
 		.translate(moveDelta)
 		.resize(resizeDelta);
@@ -92,22 +106,23 @@ public Rectangle getTransformedRectangle(Rectangle rect){
 /**
  * Sets the move delta.
  *
- * @param p The Point representing the move delta.
+ * @param p The Point representing the move delta
  */
-public void setMoveDelta(Point p){
+public void setMoveDelta(Point p) {
 	moveDelta = p;
 }
 
 /**
- * Sets the direction the figure is being resized.  Possible values
- * can be found in PositionConstants.
+ * Sets the direction the figure is being resized.
+ * 
+ * @see #getResizeDirection()
  */
 public void setResizeDirection(int dir) {
 	resizeDirection = dir;
 }
 
-/** @deprecated */
-public void setMouseLocation(Point p){
+/** @deprecated @see #setLocation(Point) */
+public void setMouseLocation(Point p) {
 	setLocation(p);
 }
 
@@ -116,7 +131,7 @@ public void setMouseLocation(Point p){
  *
  * @param p The location of the mouse pointer.
  */
-public void setLocation(Point p){
+public void setLocation(Point p) {
 	mouseLocation = p;
 }
 
@@ -125,7 +140,7 @@ public void setLocation(Point p){
  *
  * @param d The Dimension representing the size delta.
  */
-public void setSizeDelta(Dimension d){
+public void setSizeDelta(Dimension d) {
 	resizeDelta = d;
 }
 

@@ -26,28 +26,37 @@ private EditPart target;
 /**
  * Default constructor.
  */
-public ReconnectRequest(){}
+public ReconnectRequest() { }
 
 /**
  * Creates a ReconnectRequest with the given type.
+ * @param type the type
  */
-public ReconnectRequest(Object type){
+public ReconnectRequest(Object type) {
 	setType(type);
 }
 
 /**
  * Returns the ConnectionEditPart to be reconnected.
  *
- * @return The ConnectionEditPart to be reconnected.S
+ * @return The ConnectionEditPart to be reconnected.
  */
-public ConnectionEditPart getConnectionEditPart(){
+public ConnectionEditPart getConnectionEditPart() {
 	return connection;
 }
 
-public EditPart getTarget(){
+/**
+ * Returns the target edit part that the connection should be connected to.
+ * @return the target edit part
+ */
+public EditPart getTarget() {
 	return target;
 }
 
+/**
+ * Returns <code>true</code> if the start (source) anchor is the anchor being moved.
+ * @return whether the start anchor is being moved
+ */
 public boolean isMovingStartAnchor() {
 	return RequestConstants.REQ_RECONNECT_SOURCE.equals(getType());
 }
@@ -57,11 +66,15 @@ public boolean isMovingStartAnchor() {
  *
  * @param conn The ConnectionEditPart.
  */
-public void setConnectionEditPart(ConnectionEditPart conn){
+public void setConnectionEditPart(ConnectionEditPart conn) {
 	connection = conn;
 }
 
-public void setTargetEditPart(EditPart ep){
+/**
+ * Sets the target edit part that the connection should be connected to.
+ * @param ep the target edit part
+ */
+public void setTargetEditPart(EditPart ep) {
 	target = ep;
 }
 

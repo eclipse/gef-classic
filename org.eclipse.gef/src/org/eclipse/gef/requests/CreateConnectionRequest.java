@@ -27,47 +27,59 @@ private EditPart targetEditPart;
 private EditPart sourceEditPart;
 
 /**
- * Returns the source EditPart.
+ * Returns the EditPart that the source end of the connection should be connected to.
  *
- * @return The source EditPart.
+ * @return the source EditPart
  */
-public EditPart getSourceEditPart(){
+public EditPart getSourceEditPart() {
 	return sourceEditPart;
 }
 
-public EditPart getTargetEditPart(){
+/**
+ * Returns the EditPart that the target end of the connection should be connected to.
+ * 
+ * @return the target EditPart
+ */
+public EditPart getTargetEditPart() {
 	return targetEditPart;
 }
 
 /**
- * Returns the Command.
+ * Returns the start command.  This command is only used to pass on information to the 
+ * target EditPart so it can create the final command.
  *
- * @return The Command.
+ * @return the command
  */
-public Command getStartCommand(){
+public Command getStartCommand() {
 	return startCommand;
 }
 
 /**
  * Sets the source of the Connection to the given EditPart.
  *
- * @param part The source EditPart.
+ * @param part the source EditPart
  */
-public void setSourceEditPart(EditPart part){
+public void setSourceEditPart(EditPart part) {
 	sourceEditPart = part;
 }
 
-public void setTargetEditPart(EditPart part){
+/**
+ * Sets the target of the Connection to the given EditPart.
+ *
+ * @param part the target EditPart
+ */
+public void setTargetEditPart(EditPart part) {
 	targetEditPart = part;
 }
 
 
 /**
- * Sets the Command to be executed.
+ * Sets the start command.  This command is only used to pass on information to the 
+ * target EditPart so it can create the final command.
  *
- * @param c The Command.
+ * @param c the command
  */
-public void setStartCommand(Command c){
+public void setStartCommand(Command c) {
 	startCommand = c;
 }
 

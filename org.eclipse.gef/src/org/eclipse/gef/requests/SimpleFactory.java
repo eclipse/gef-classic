@@ -11,6 +11,8 @@
 package org.eclipse.gef.requests;
 
 /**
+ * A simple CreationFactory that takes a Class in the constructor and creates a new 
+ * instance of this Class in {@link #getNewObject()}.
  * @author hudsonr
  * @since 2.1
  */
@@ -24,11 +26,11 @@ private Class type;
  * @param aClass The class to be instantiated using this factory.
  */
 public SimpleFactory(Class aClass) {
-	type= aClass;
+	type = aClass;
 }
 
 /**
- * Create the new object
+ * Create the new object.
  *
  * @return The newly created object.
  */

@@ -24,9 +24,9 @@ private EditPart sender;
 /**
  * Creates a ForwardRequest with the given type.
  *
- * @param type The type of Request.
+ * @param type The type of Request
  */
-public ForwardedRequest(Object type){
+public ForwardedRequest(Object type) {
 	setType(type);
 }
 
@@ -34,10 +34,10 @@ public ForwardedRequest(Object type){
  * Creates a ForwardRequest with the given type and
  * sets the sender.
  *
- * @param type   The type of Request.
- * @param sender The EditPart that forwarded this Request.
+ * @param type The type of Request
+ * @param sender The EditPart that forwarded this Request
  */
-public ForwardedRequest(Object type, EditPart sender){
+public ForwardedRequest(Object type, EditPart sender) {
 	setType(type);
 	this.sender = sender;
 }
@@ -45,9 +45,9 @@ public ForwardedRequest(Object type, EditPart sender){
 /**
  * Returns the EditPart that forwarded this Request.
  *
- * @return The EditPart that forwarded this Request.
+ * @return The EditPart that forwarded this Request
  */
-public EditPart getSender(){
+public EditPart getSender() {
 	return sender;
 }
 

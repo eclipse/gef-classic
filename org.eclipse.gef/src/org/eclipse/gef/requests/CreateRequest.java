@@ -32,7 +32,7 @@ private CreationFactory creationFactory;
 /**
  * Creates a CreateRequest with the default type.
  */
-public CreateRequest(){
+public CreateRequest() {
 	setType(RequestConstants.REQ_CREATE);
 }
 
@@ -41,60 +41,80 @@ public CreateRequest(){
  *
  * @param type The type of request.
  */
-public CreateRequest(Object type){
+public CreateRequest(Object type) {
 	setType(type);
 }
 
-protected CreationFactory getFactory(){
+/**
+ * Returns the CreationFactory for this request.
+ * @return the CreationFactory
+ */
+protected CreationFactory getFactory() {
 	return creationFactory;
 }
 
 /**
  * Returns the location of the object to be created.
+ * 
+ * @return the location
  */
-public Point getLocation(){
+public Point getLocation() {
 	return location;
 }
 
-public Object getNewObject(){
+/**
+ * Gets the new object from the factory and returns that object.
+ * 
+ * @return the new object
+ */
+public Object getNewObject() {
 	if (newObject == null)
 		newObject = getFactory().getNewObject();
 	return newObject;
 }
 
-public Object getNewObjectType(){
+/**
+ * Returns the type of the new object.
+ * 
+ * @return the type of the new object
+ */
+public Object getNewObjectType() {
 	return getFactory().getObjectType();
 }
 
 /**
  * Returns the size of the object to be created.
+ * 
+ * @return the size
  */
-public Dimension getSize(){
+public Dimension getSize() {
 	return size;
 }
 
 /**
  * Sets the factory to be used when creating the new object.
+ * 
+ * @param factory the factory
  */
-public void setFactory(CreationFactory factory){
+public void setFactory(CreationFactory factory) {
 	creationFactory = factory;
 }
 
 /**
  * Sets the location where the new object will be placed.
  *
- * @param location The location.
+ * @param location the location
  */
-public void setLocation(Point location){
+public void setLocation(Point location) {
 	this.location = location;
 }
 
 /**
  * Sets the size of the new object.
  *
- * @param size The size.
+ * @param size the size
  */
-public void setSize(Dimension size){
+public void setSize(Dimension size) {
 	this.size = size;
 }
 

@@ -14,6 +14,7 @@ package org.eclipse.gef;
  * An Object used to communicate with EditParts. Request encapsulates the information
  * EditParts need to perform various functions. Requests are used for obtaining commands,
  * showing feedback, and performing generic operations.
+ * TODO: This should probably go into the org.eclipse.gef.requests package.
  */
 public class Request {
 

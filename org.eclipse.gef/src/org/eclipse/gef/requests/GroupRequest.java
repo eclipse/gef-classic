@@ -28,21 +28,21 @@ List parts;
  *
  * @param type The type of Request.
  */
-public GroupRequest(Object type){
+public GroupRequest(Object type) {
 	setType(type);
 }
 
 /**
  * Default constructor.
  */
-public GroupRequest(){}
+public GroupRequest() { }
 
 /**
  * Returns a List containing the EditParts making this Request.
  *
  * @return A List containing the EditParts making this Request.
  */
-public List getEditParts(){
+public List getEditParts() {
 	return parts;
 }
 
@@ -51,7 +51,7 @@ public List getEditParts(){
  *
  * @param list The List of EditParts.
  */
-public void setEditParts(List list){
+public void setEditParts(List list) {
 	parts = list;
 }
 
@@ -60,7 +60,7 @@ public void setEditParts(List list){
  *
  * @param part The EditPart making the request.
  */
-public void setEditParts(EditPart part){
+public void setEditParts(EditPart part) {
 	parts = new ArrayList();
 	parts.add(part);
 }

@@ -12,8 +12,15 @@ package org.eclipse.gef.requests;
 
 import org.eclipse.gef.EditPart;
 
+/**
+ * A request that involves a target EditPart.
+ */
 public interface TargetRequest {
 
+/**
+ * Sets the target EditPart.
+ * @param part the target EditPart
+ */
 void setTargetEditPart(EditPart part);
 
 }

@@ -31,7 +31,7 @@ public DirectEditRequest() {
 
 /**
  * Constructor for DirectEditRequest.
- * @param type
+ * @param type the type
  */
 public DirectEditRequest(Object type) {
 	super(type);
@@ -40,20 +40,34 @@ public DirectEditRequest(Object type) {
 /**
  * If the EditPart supports direct editing of multiple features, this parameter can be
  * used to discriminate among them.
+ * @return the direct edit feature
  */
-public Object getDirectEditFeature(){
+public Object getDirectEditFeature() {
 	return feature;
 }
 
-public CellEditor getCellEditor(){
+/**
+ * Returns the cell editor used to perform the direct edit.
+ * @return the cell editor
+ */
+public CellEditor getCellEditor() {
 	return celleditor;
 }
 
+/**
+ * Sets the cell editor to be used when direct editing.
+ * @param celleditor the cell editor
+ */
 public void setCellEditor(CellEditor celleditor) {
 	this.celleditor = celleditor;
 }
 
-public void setDirectEditFeature(Object feature){
+/**
+ * Sets the direct edit feature.
+ * @param feature the direct edit feature
+ * @see #getDirectEditFeature()
+ */
+public void setDirectEditFeature(Object feature) {
 	this.feature = feature;
 }
 
