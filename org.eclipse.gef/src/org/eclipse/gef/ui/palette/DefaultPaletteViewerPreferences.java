@@ -36,6 +36,8 @@ private IPropertyChangeListener fontListener;
 private FontData fontData;
 private PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 private IPreferenceStore store;
+private int[] supportedModes = {LAYOUT_FOLDER, LAYOUT_LIST, 
+								LAYOUT_ICONS, LAYOUT_DETAILS};
 
 /**
  * Default Constructor
@@ -188,6 +190,13 @@ public int getLayoutSetting() {
 }
 
 /**
+ * @see org.eclipse.gef.ui.palette.PaletteViewerPreferences#getSupportedLayoutModes()
+ */
+public int[] getSupportedLayoutModes() {
+	return supportedModes;
+}
+
+/**
  * This method is invoked when the preference store fires a property change.
  *  * @param property	The property String used for the change fired by the preference store. */
 protected void handlePreferenceStorePropertyChanged(String property) {
@@ -206,6 +215,18 @@ protected void handlePreferenceStorePropertyChanged(String property) {
 /** * @return The IPreferenceStore used by this class to store the preferences. */
 protected IPreferenceStore getPreferenceStore() {
 	return store;
+}
+
+/**
+ * @see org.eclipse.gef.ui.palette.PaletteViewerPreferences#isSupportedLayoutMode(int)
+ */
+public boolean isSupportedLayoutMode(int layout) {
+	for (int i = 0; i < supportedModes.length; i++) {
+		if (supportedModes[i] == layout) {
+			return true;
+		}
+	}
+	return false;
 }
 
 /**
@@ -242,6 +263,24 @@ public void setLayoutSetting(int newVal) {
  */
 public void setCurrentUseLargeIcons(boolean newVal) {
 	setUseLargeIcons(getLayoutSetting(), newVal);
+}
+
+/**
+ * NOTE: Restricting the layout modes here does not in any way restrict those values from
+ * being stored in the preference store.  Instead, it is the responsibility of all clients
+ * manipulating the layout settings to check to see if a particular layout mode is
+ * supported before manipulating it, or allowing the end user to manipulate it.
+ * 
+ * @see org.eclipse.gef.ui.palette.PaletteViewerPreferences#setSupportedLayoutModes(int[])
+ */
+public void setSupportedLayoutModes(int[] modes) {
+	supportedModes = modes;
+	if (!isSupportedLayoutMode(getPreferenceStore().getDefaultInt(PREFERENCE_LAYOUT))) {
+		getPreferenceStore().setDefault(PREFERENCE_LAYOUT, supportedModes[0]);
+	}
+	if (!isSupportedLayoutMode(getPreferenceStore().getInt(PREFERENCE_LAYOUT))) {
+		setLayoutSetting(supportedModes[0]);
+	}
 }
 
 /**

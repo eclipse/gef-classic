@@ -155,6 +155,19 @@ public FontData getFontData();
 public int getLayoutSetting();
 
 /**
+ * Returns the layout modes that are supported.  All four layout modes --
+ * LAYOUT_FOLDER, LAYOUT_LIST, LAYOUT_ICONS, LAYOUT_DETAILS -- are supported by default. 
+ * 
+ * @return int[] * @see #setSupportedLayoutModes(int[])
+ */
+public int[] getSupportedLayoutModes();
+
+/**
+ * @param layout	LAYOUT_FOLDER, LAYOUT_LIST, LAYOUT_ICONS, or LAYOUT_DETAILS
+ * @return <code>true</code> if the given layout is a supported mode */
+public boolean isSupportedLayoutMode(int layout);
+
+/**
  * @see java.beans.PropertyChangeSupport#removePropertyChangeListener(java.beans.PropertyChangeListener)
  */
 public void removePropertyChangeListener(PropertyChangeListener listener);
@@ -197,6 +210,21 @@ public void setLayoutSetting(int newVal);
  * Sets the "Use Large Icons" option for the currently active layout.
  *  * @param newVal <code>true</code> if large icons are to be used */
 public void setCurrentUseLargeIcons(boolean newVal);
+
+/**
+ * The client can restrict the modes that the palette supports using this method.  By
+ * default, the palette will support all layout modes: LAYOUT_ICONS, LAYOUT_DETAILS,
+ * LAYOUT_FOLDER, LAYOUT_LIST.  Should the client wish to not support all these modes,
+ * they can call this method with an array of the desired modes.  This method should be
+ * called during set-up as soon as the preferences are created, and not later.
+ * <p>
+ * If the default layout mode and/or the current layout mode are not in the given array,
+ * they will be updated to be the first mode in the given array.
+ *  * @param modes	An array of layout modes desired.  The array must have at least one, and
+ * 					is recommended to have at least two, of the recognized layout
+ * 					modes.
+ */
+public void setSupportedLayoutModes(int[] modes);
 
 /**
  * Sets the "Use Large Icons" option for the given layout.
