@@ -44,6 +44,20 @@ public BendpointMoveHandle(ConnectionEditPart owner, int index) {
 }
 
 /**
+ * Creates a new BendpointMoveHandle, sets its owner to <code>owner</code>
+ * and its index to <code>index</code>, and sets its locator to a new
+ * {@link BendpointLocator} with the given <code>locatorIndex</code>.
+ * @param owner the ConnectionEditPart owner
+ * @param index the index
+ * @param locatorIndex the index to use for the locator
+ */
+public BendpointMoveHandle(ConnectionEditPart owner, int index, int locatorIndex) {
+	setOwner(owner);
+	setIndex(index);
+	setLocator(new BendpointLocator(getConnection(), locatorIndex));
+}
+
+/**
  * Creates a new BendpointMoveHandle and sets its owner to <code>owner</code>,
  * sets its index to <code>index</code>, and sets its locator to 
  * <code>locator</code>.
