@@ -10,11 +10,11 @@
  *******************************************************************************/
 package org.eclipse.gef.editpolicies;
 
-import java.util.*;
-
-import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.*;
+import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.geometry.*;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 
@@ -27,67 +27,146 @@ import org.eclipse.gef.requests.ChangeBoundsRequest;
 public class SnapFeedbackPolicy 
 	extends GraphicalEditPolicy
 {
-	
-protected List figures = new ArrayList();
-	
+
+IFigure guide[] = new IFigure[4];
+Integer location[] = new Integer[4];
+
 public void eraseTargetFeedback(Request request) {
-	for (Iterator iter = figures.iterator(); iter.hasNext();) {
-		IFigure fig = (IFigure)iter.next();
-		if (fig.getParent() != null) {
-			fig.getParent().remove(fig);
-		}
+	for (int i = 0; i < guide.length; i++) {
+		if (guide[i] != null)
+			removeFeedback(guide[i]);
+		guide[i] = null;
+		location[i] = null;
 	}
-	figures.clear();		
 }
 
-protected void highlightGuide(Integer pos, Color color, boolean horizontal) {
+static class FadeIn extends Figure {
+	int opacity = 0;
+	static final int FRAMES = 6;
+	Image image;
+	static int count;
+	FadeIn(Color bg) {
+		setBackgroundColor(bg);
+		super.setOpaque(true);
+	}
+	
+	/**
+	 * @see org.eclipse.draw2d.Figure#getBackgroundColor()
+	 */
+	public Color getLocalBackgroundColor() {
+		return FigureUtilities.mixColors(
+				super.getLocalBackgroundColor(),
+				getParent().getBackgroundColor(),
+				(double)opacity / FRAMES);
+	}
+	
+	/**
+	 * @see org.eclipse.draw2d.Figure#paintFigure(org.eclipse.draw2d.Graphics)
+	 */
+	protected void paintFigure(Graphics graphics) {
+		if (opacity != FRAMES) {
+			if (image != null) {
+				image.dispose();
+				count--;
+				image = null;
+			}
+			if (opacity != FRAMES - 1) {
+				Display display = Display.getCurrent();
+				PaletteData pData = new PaletteData(0xFF, 0xFF00, 0xFF0000);
+				int fillColor = pData.getPixel(getLocalBackgroundColor().getRGB());
+				ImageData iData = new ImageData(1, 1, 24, pData);
+				iData.setPixel(0, 0, fillColor);
+				iData.setAlpha(0, 0, 255 * opacity / FRAMES);
+				image = new Image(display, iData);
+				count++;
+			}
+			Display.getCurrent().timerExec(100, new Runnable() {
+				public void run() {
+					opacity = Math.min(FRAMES, opacity + 1);
+					repaint();
+				}
+			});
+		}
+		Rectangle r = getBounds();
+		if (image != null)
+			graphics.drawImage(image, 0, 0, 1, 1, r.x, r.y, r.width, r.height);
+		else
+			super.paintFigure(graphics);
+	}
+	/**
+	 * @see org.eclipse.draw2d.Figure#removeNotify()
+	 */
+	public void removeNotify() {
+		if (image != null) {
+			image.dispose();
+			count--;
+			image = null;
+		}
+	}
+}
+
+protected void highlightGuide(Integer pos, Color color, int offset) {
 	if (pos == null) {
+		if (guide[offset] != null) {
+			removeFeedback(guide[offset]);
+			guide[offset] = null;
+		}
+		location[offset] = pos;
 		return;
 	}
 	
 	//pos is an integer relative to target's client area.
 	//translate pos to absolute, and then make it relative to fig.
 	int position = pos.intValue();
-	Point loc = new Point(position, position);
+	Point loc = new PrecisionPoint(position, position);
 	IFigure contentPane = ((GraphicalEditPart)getHost()).getContentPane();
 	contentPane.translateToParent(loc);
 	contentPane.translateToAbsolute(loc);
 	
-	IFigure fig = new Figure();
-	fig.setOpaque(true);
-	fig.setBackgroundColor(color);
-	addFeedback(fig);
-	fig.translateToRelative(loc);
-	position = horizontal ? loc.y : loc.x;
+	if (location[offset] == null || !location[offset].equals(pos)) {
+		location[offset] = pos;		
+		if (guide[offset] != null) {
+			removeFeedback(guide[offset]);
+			guide[offset] = null;
+		}
+
+		IFigure fig = new FadeIn(color);
+		guide[offset] = fig;
+		addFeedback(fig);
+		fig.translateToRelative(loc);
+		position = offset == 0 ? loc.x : loc.y;
 	
-	Rectangle diagramBounds = getLayer(LayerConstants.FEEDBACK_LAYER).getBounds();
-	Rectangle figBounds = new Rectangle();
-	figBounds.setBounds(diagramBounds);
-	if (horizontal) {
-		figBounds.height = 1;
-		figBounds.y = position;
-	} else {
-		figBounds.x = position;
-		figBounds.width = 1;
+		Rectangle figBounds = getLayer(LayerConstants.FEEDBACK_LAYER)
+			.getBounds().getCopy();
+		if ((offset % 2) == 1) {
+			figBounds.height = 1;
+			figBounds.y = position;
+		} else {
+			figBounds.x = position;
+			figBounds.width = 1;
+		}
+		fig.setBounds(figBounds);
 	}
-	fig.setBounds(figBounds);
-	figures.add(fig);
 }
 
 public void showTargetFeedback(Request request) {
 	if (request.getType().equals(REQ_MOVE)
 			|| request.getType().equals(REQ_RESIZE)
 			|| request.getType().equals(REQ_CLONE)) {
-		eraseTargetFeedback(request);
+//		eraseTargetFeedback(request);
 		ChangeBoundsRequest req = (ChangeBoundsRequest)request;
-		highlightGuide((Integer)req.getExtendedData().get(SnapToGeometry.PROPERTY_VERTICAL_ANCHOR), 
-				ColorConstants.blue, false);
-		highlightGuide((Integer)req.getExtendedData().get(SnapToGeometry.PROPERTY_HORIZONTAL_ANCHOR), 
-				ColorConstants.blue, true);
-		highlightGuide((Integer)req.getExtendedData().get(SnapToGuides.PROPERTY_VERTICAL_GUIDE), 
-				ColorConstants.red, false);
-		highlightGuide((Integer)req.getExtendedData().get(SnapToGuides.PROPERTY_HORIZONTAL_GUIDE), 
-				ColorConstants.red, true);
+		Integer value;
+		value = (Integer)req.getExtendedData().get(SnapToGeometry.PROPERTY_VERTICAL_ANCHOR);
+		highlightGuide(value, ColorConstants.blue, 0);
+		
+		value = (Integer)req.getExtendedData().get(SnapToGeometry.PROPERTY_HORIZONTAL_ANCHOR);
+		highlightGuide(value, ColorConstants.blue, 1);
+		
+		value = (Integer)req.getExtendedData().get(SnapToGuides.PROPERTY_VERTICAL_GUIDE);
+		highlightGuide(value, ColorConstants.red, 2);
+		
+		value = (Integer)req.getExtendedData().get(SnapToGuides.PROPERTY_HORIZONTAL_GUIDE);
+		highlightGuide(value, ColorConstants.red, 3);
 	}
 }
 
