@@ -13,6 +13,7 @@ package org.eclipse.gef.editpolicies;
 import java.util.List;
 
 import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.geometry.Insets;
 
 import org.eclipse.gef.*;
 import org.eclipse.gef.commands.Command;
@@ -36,7 +37,7 @@ public abstract class LayoutEditPolicy
 	extends GraphicalEditPolicy
 {
 
-private Shape sizeOnDropFeedback;
+private IFigure sizeOnDropFeedback;
 
 private EditPartListener listener;
 
@@ -64,6 +65,15 @@ protected EditPartListener createListener() {
 			decorateChild(child);
 		}
 	};
+}
+
+/**
+ * Override to provide custom feedback figure for the given create request.
+ * @param createRequest the create request
+ * @return custom feedback figure
+ */
+protected IFigure createSizeOnDropFeedback(CreateRequest createRequest) {
+	return null;
 }
 
 /**
@@ -187,6 +197,15 @@ public Command getCommand(Request request) {
 protected abstract Command getCreateCommand(CreateRequest request);
 
 /**
+ * Returns any insets that need to be applied to the creation feedback's bounds.
+ * @param request the create request
+ * @return insets, if necessary
+ */
+protected Insets getCreationFeedbackOffset(CreateRequest request) {
+	return new Insets();
+}
+
+/**
  * Returns the <code>Command</code> to delete a child.
  * @param request the Request
  * @return the Command to delete the child
@@ -224,17 +243,28 @@ protected Command getOrphanChildrenCommand(Request request) {
 
 /**
  * Lazily creates and returns the Figure to use for size-on-drop feedback.
+ * @param createRequest the createRequest
+ * @return the size-on-drop feedback figure
+ */
+protected IFigure getSizeOnDropFeedback(CreateRequest createRequest) {
+	if (sizeOnDropFeedback == null)
+		sizeOnDropFeedback = createSizeOnDropFeedback(createRequest);
+		
+	return getSizeOnDropFeedback();
+}
+
+/**
+ * Lazily creates and returns the Figure to use for size-on-drop feedback.
  * @return the size-on-drop feedback figure */
 protected IFigure getSizeOnDropFeedback() {
 	if (sizeOnDropFeedback == null) {
-		sizeOnDropFeedback  = new RectangleFigure();
-		FigureUtilities.makeGhostShape(sizeOnDropFeedback);
-		sizeOnDropFeedback.setLineStyle(Graphics.LINE_DASHDOT);
+		sizeOnDropFeedback = new RectangleFigure();
+		FigureUtilities.makeGhostShape((Shape)sizeOnDropFeedback);
+		((Shape)sizeOnDropFeedback).setLineStyle(Graphics.LINE_DASHDOT);
 		sizeOnDropFeedback.setForegroundColor(ColorConstants.white);
 		addFeedback(sizeOnDropFeedback);
 	}
 	return sizeOnDropFeedback;
-
 }
 
 /**

@@ -119,9 +119,10 @@ protected Dimension getMinimumSizeFor(GraphicalEditPart child) {
  * @see LayoutEditPolicy#showSizeOnDropFeedback(CreateRequest) */
 protected void showSizeOnDropFeedback(CreateRequest request) {	
 	Point p = new Point(request.getLocation());
-	IFigure feedback = getSizeOnDropFeedback();
+	IFigure feedback = getSizeOnDropFeedback(request);
 	feedback.translateToRelative(p);
 	feedback.setBounds(new Rectangle(p, request.getSize()));
+	feedback.getBounds().expand(getCreationFeedbackOffset(request));
 }
 
 }
