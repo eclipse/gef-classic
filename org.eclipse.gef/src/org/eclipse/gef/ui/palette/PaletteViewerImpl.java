@@ -6,42 +6,78 @@ package org.eclipse.gef.ui.palette;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.beans.*;
+import java.util.*;
 
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.widgets.Display;
 
+import org.eclipse.draw2d.FigureCanvas;
 import org.eclipse.draw2d.IFigure;
 
 import org.eclipse.gef.*;
-import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
+import org.eclipse.gef.internal.ui.palette.editparts.PaletteRootEditPart;
+import org.eclipse.gef.internal.ui.palette.editparts.ToolEntryEditPart;
 import org.eclipse.gef.palette.*;
 import org.eclipse.gef.ui.palette.customize.PaletteCustomizerDialog;
-import org.eclipse.gef.internal.ui.palette.editparts.*;
 import org.eclipse.gef.ui.parts.PaletteViewerKeyHandler;
+import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 
 public class PaletteViewerImpl
-	extends org.eclipse.gef.ui.parts.GraphicalViewerImpl
+	extends ScrollingGraphicalViewer
 	implements PaletteViewer 
 {
 
-private PaletteCustomizer customizer = null;
-private PaletteCustomizerDialog customizerDialog = null;
-private List paletteListeners = new ArrayList();
-private ToolEntry activeEntry = null;
-private PaletteRoot paletteRoot = null;
-private PaletteViewerPreferences prefs = null;
-private PreferenceListener prefListener = new PreferenceListener();
-private boolean controlHooked = false;
+private class PreferenceListener
+	implements PropertyChangeListener
+{
+	private Font font = null;
+	void disposeFont() {
+		if (font != null) {
+			font.dispose();
+			font = null;
+		}		
+	}
+	public void propertyChange(PropertyChangeEvent evt) {
+		String property = evt.getPropertyName();
+		EditPart root = getRootEditPart().getContents();
+		if (property.equals(PaletteViewerPreferences.PREFERENCE_FONT)) {
+			disposeFont();
+			font = new Font(Display.getCurrent(), 
+					getPaletteViewerPreferencesSource().getFontData());
+			IFigure fig = ((GraphicalEditPart)root).getFigure();
+			fig.setFont(font);
+			fig.invalidateTree();
+		} else if (property.equals(PaletteViewerPreferences.PREFERENCE_LAYOUT) 
+				|| property.equals(PaletteViewerPreferences.PREFERENCE_AUTO_COLLAPSE)
+				|| property.equals(DefaultPaletteViewerPreferences
+					.convertLayoutToPreferenceName(getPaletteViewerPreferencesSource()
+					.getLayoutSetting()))) {
+			refreshAllEditParts(root);
+		}
+	}
+	private void refreshAllEditParts(EditPart part) {
+		part.refresh();
+		List children = part.getChildren();
+		for (Iterator iter = children.iterator(); iter.hasNext();) {
+			EditPart child = (EditPart) iter.next();
+			refreshAllEditParts(child);
+		}
+	}
+}
 
 private static final PaletteViewerPreferences PREFERENCE_STORE = 
 				new DefaultPaletteViewerPreferences();
+private ToolEntry activeEntry = null;
 
+private PaletteCustomizer customizer = null;
+private PaletteCustomizerDialog customizerDialog = null;
+private boolean globalScrollbar = false;
+private List paletteListeners = new ArrayList();
+private PaletteRoot paletteRoot = null;
+private PreferenceListener prefListener = new PreferenceListener();
+private PaletteViewerPreferences prefs = PREFERENCE_STORE;
 
 public PaletteViewerImpl() {
 	setEditDomain(new DefaultEditDomain(null));
@@ -58,11 +94,18 @@ protected void createDefaultRoot() {
 }
 
 /**
- * @see org.eclipse.gef.EditPartViewer#dispose()
+ * Indicates that the palette should scroll using a native vertical scrollbar as opposed
+ * to individual lightweight buttons that appear dynamically on each drawer. The default
+ * settings is <code>false</code>. Enabling this setting requires additional horizontal
+ * screen space for the scrollbar. Therefore, its use is discouraged.
+ * 
+ * <P> This setting must be changed prior to calling {@link
+ * ScrollingGraphicalViewer#createControl(Composite)}.  After the control is created,
+ * changing this setting will have no effect.
+ * @param value <code>true</code> if a vertical scrollbar should be displayed
  */
-public void handleDispose(DisposeEvent e) {
-	super.handleDispose(e);
-	prefListener.disposeFont();
+public void enableVerticalScrollbar(boolean value) {
+	this.globalScrollbar = true;
 }
 
 protected void fireModeChanged() {
@@ -95,17 +138,16 @@ public EditPartFactory getEditPartFactory() {
 	return super.getEditPartFactory();
 }
 
-/** * @return The PaletteViewerPreferences that this palette is using to store its
+public ToolEntry getMode() {
+	return activeEntry;
+}
+
+/**
+ * @return The PaletteViewerPreferences that this palette is using to store its
  * 			preferences.  If none has been set, it returns the default one (which
  * 			uses the GEF preference store).
  */
 public PaletteViewerPreferences getPaletteViewerPreferencesSource() {
-	if (prefs == null) {
-		prefs = PREFERENCE_STORE;
-		if (controlHooked) {
-			prefs.addPropertyChangeListener(prefListener);
-		}
-	}
 	return prefs;
 }
 
@@ -114,18 +156,26 @@ private ToolEntryEditPart getToolEntryEditPart(ToolEntry entry) {
 }
 
 /**
+ * @see org.eclipse.gef.EditPartViewer#dispose()
+ */
+public void handleDispose(DisposeEvent e) {
+	super.handleDispose(e);
+	prefListener.disposeFont();
+}
+
+/**
  * @see org.eclipse.gef.ui.parts.GraphicalViewerImpl#hookControl()
  */
 protected void hookControl() {
 	super.hookControl();
-	if (prefs != null) {
+	FigureCanvas canvas = getFigureCanvas();
+	canvas.getViewport().setContentsTracksWidth(true);
+	canvas.getViewport().setContentsTracksHeight(!globalScrollbar);
+	canvas.setHorizontalScrollBarVisibility(FigureCanvas.NEVER);
+	canvas.setVerticalScrollBarVisibility(
+		globalScrollbar ? FigureCanvas.ALWAYS : FigureCanvas.NEVER);
+	if (prefs != null)
 		prefs.addPropertyChangeListener(prefListener);
-	}
-	controlHooked = true;
-}
-
-public ToolEntry getMode() {
-	return activeEntry;
 }
 
 public void removePaletteListener(PaletteListener paletteListener) {
@@ -139,6 +189,21 @@ public void removePaletteListener(PaletteListener paletteListener) {
 public void setCustomizer(PaletteCustomizer customizer) {
 	this.customizer = customizer;
 }
+
+public void setMode(ToolEntry newMode) {
+	if (newMode == null)
+		newMode = paletteRoot.getDefaultEntry();
+	if (activeEntry != null) {
+		getToolEntryEditPart(activeEntry).setToolSelected(false);
+	}
+	activeEntry = newMode;
+	if (activeEntry != null) {
+		ToolEntryEditPart editpart = getToolEntryEditPart(activeEntry);
+		editpart.setToolSelected(true);
+		select(editpart);
+		}
+	fireModeChanged();
+	}
 
 public void setPaletteRoot(PaletteRoot root) {
 	paletteRoot = root;
@@ -161,82 +226,20 @@ public void setPaletteRoot(PaletteRoot root) {
  * 					preferences for this palette.
  */
 public void setPaletteViewerPreferencesSource(PaletteViewerPreferences prefs) {
-	if (prefs == null) {
-		return;
-	}
-
-	if (this.prefs != null) {
+	if (this.prefs != null)
 		this.prefs.removePropertyChangeListener(prefListener);
-	}
-
 	this.prefs = prefs;
-	if (controlHooked) {
+	if (getControl() != null && !getControl().isDisposed())
 		this.prefs.addPropertyChangeListener(prefListener);
-	}
 }
-
-public void setMode(ToolEntry newMode) {
-	if (newMode == null)
-		newMode = paletteRoot.getDefaultEntry();
-	if (activeEntry != null) {
-		getToolEntryEditPart(activeEntry).setToolSelected(false);
-	}
-	activeEntry = newMode;
-	if (activeEntry != null) {
-		ToolEntryEditPart editpart = getToolEntryEditPart(activeEntry);
-		editpart.setToolSelected(true);
-		select(editpart);
-		}
-	fireModeChanged();
-	}
 
 /**
  * @see org.eclipse.gef.ui.parts.AbstractEditPartViewer#unhookControl()
  */
 protected void unhookControl() {
 	super.unhookControl();
-	if (prefs != null) {
+	if (prefs != null)
 		prefs.removePropertyChangeListener(prefListener);
-	}
-	controlHooked = false;
-}
-
-private class PreferenceListener
-	implements PropertyChangeListener
-{
-	private Font font = null;
-	public void propertyChange(PropertyChangeEvent evt) {
-		String property = evt.getPropertyName();
-		EditPart root = getRootEditPart().getContents();
-		if (property.equals(PaletteViewerPreferences.PREFERENCE_FONT)) {
-			disposeFont();
-			font = new Font(Display.getCurrent(), 
-					getPaletteViewerPreferencesSource().getFontData());
-			IFigure fig = ((AbstractGraphicalEditPart)root).getFigure();
-			fig.setFont(font);
-			fig.invalidateTree();
-		} else if (property.equals(PaletteViewerPreferences.PREFERENCE_LAYOUT) 
-				|| property.equals(PaletteViewerPreferences.PREFERENCE_AUTO_COLLAPSE)
-				|| property.equals(DefaultPaletteViewerPreferences
-					.convertLayoutToPreferenceName(getPaletteViewerPreferencesSource()
-					.getLayoutSetting()))) {
-			refreshAllEditParts(root);
-		}
-	}
-	void disposeFont() {
-		if (font != null) {
-			font.dispose();
-			font = null;
-		}		
-	}
-	private void refreshAllEditParts(EditPart part) {
-		part.refresh();
-		List children = part.getChildren();
-		for (Iterator iter = children.iterator(); iter.hasNext();) {
-			EditPart child = (EditPart) iter.next();
-			refreshAllEditParts(child);
-		}
-	}
 }
 
 }
