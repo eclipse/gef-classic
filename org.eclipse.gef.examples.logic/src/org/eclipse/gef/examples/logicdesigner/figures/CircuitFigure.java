@@ -29,7 +29,7 @@ public CircuitFigure() {
 	scrollpane.setView(pane);
 
 	createConnectionAnchors();
-	setBackgroundColor(ColorConstants.buttonLightest);
+	setBackgroundColor(ColorConstants.listBackground);
 	setOpaque(true);
 }
 
@@ -79,8 +79,8 @@ protected void layoutConnectionAnchors() {
 	int x;
 	for (int i = 0; i < 4; i++){
 		x = (2*i+1) * getSize().width / 8;
-		getOutputConnectionAnchor(i+4).offsetH = x-2;
-		getInputConnectionAnchor(i).offsetH = x-2;
+		getOutputConnectionAnchor(i+4).offsetH = x-1;
+		getInputConnectionAnchor(i).offsetH = x-1;
 		getInputConnectionAnchor(i+4).offsetH = x;
 		getOutputConnectionAnchor(i).offsetH = x;
 	}
