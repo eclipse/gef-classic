@@ -111,6 +111,10 @@ public void visit(DirectedGraph dg) {
 			Insets padding = dg.getPadding(s);
 			s.head = new SubgraphBoundary(s, padding, 0);
 			s.tail = new SubgraphBoundary(s, padding, 2);
+			Edge headToTail = new Edge(s.head, s.tail);
+			headToTail.weight = 10;
+			graph.edges.add(headToTail);
+			graph.containment.add(headToTail);
 			
 			graph.subgraphs.add(s);
 			if (s.getParent() == null)
