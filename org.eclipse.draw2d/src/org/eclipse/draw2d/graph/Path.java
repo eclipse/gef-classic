@@ -29,9 +29,13 @@ public class Path {
 private static final double OVAL_CONSTANT = 1.13;
 private static final double EPSILON = .08;
 
-PointList points;
-List bendPoints, grownSegments, segments, excludedObstacles;
-boolean isDirty = true;
+PointList points, bendpoints;
+List grownSegments, segments, excludedObstacles;
+/**
+ * this field is for internal use only.  It is true whenever a property has been changed
+ * which requires the solver to reroute this path.
+ */
+public boolean isDirty = true;
 boolean isInverted = false;
 boolean isMarked = false;
 Vertex start, end;
@@ -43,9 +47,35 @@ private SegmentStack stack;
 private Path subPath;
 private Set visibleObstacles;
 private Set visibleVertices;
+public Object data;
+
 
 /**
- * Creates a new path with the given end and start point.
+ * Constructs a new path.
+ * @since 3.0
+ */
+public Path() {
+	segments = new ArrayList();
+	grownSegments = new ArrayList();
+	points = new PointList();
+	visibleVertices = new HashSet();
+	stack = new SegmentStack();
+	visibleObstacles = new HashSet();
+	excludedObstacles = new ArrayList();
+}
+
+/**
+ * Constructs a new path with the given data.
+ * @since 3.0
+ * @param data an arbitrary data field
+ */
+public Path(Object data) {
+	this();
+	this.data = data;
+}
+
+/**
+ * Constructs a new path with the given data, start and end point.
  * 
  * @param start the start point for this path
  * @param end the end point for this path
@@ -61,15 +91,9 @@ public Path(Point start, Point end) {
  * @param end end vertex
  */
 Path(Vertex start, Vertex end) {
+	this();
 	this.start = start;
 	this.end = end;
-	segments = new ArrayList();
-	grownSegments = new ArrayList();
-	points = new PointList();
-	visibleVertices = new HashSet();
-	stack = new SegmentStack();
-	visibleObstacles = new HashSet();
-	excludedObstacles = new ArrayList();
 }
 
 /**
@@ -331,8 +355,8 @@ boolean generateShortestPath(List allObstacles) {
  * Returns the list of bend points assigned to this path.
  * @return list of bend points.
  */
-public List getBendPoints() {
-	return bendPoints;
+public PointList getBendPoints() {
+	return bendpoints;
 }
 
 /**
@@ -527,8 +551,8 @@ void resetVertices(Segment currentSegment) {
  * Sets the list of bend points to the given list and dirties the path.
  * @param bendPoints the list of bend points
  */
-public void setBendPoints(List bendPoints) {
-	this.bendPoints = bendPoints;
+public void setBendPoints(PointList bendPoints) {
+	this.bendpoints = bendPoints;
 	isDirty = true;
 }
 
@@ -537,7 +561,7 @@ public void setBendPoints(List bendPoints) {
  * @param end the new end point for this path
  */
 public void setEndPoint(Point end) {
-	if (this.end.equals(end))
+	if (end.equals(this.end))
 		return;
 	this.end = new Vertex(end, null);
 	isDirty = true;
@@ -548,7 +572,7 @@ public void setEndPoint(Point end) {
  * @param start the new start point for this path
  */
 public void setStartPoint(Point start) {
-	if (this.start.equals(start))
+	if (start.equals(this.start))
 		return;
 	this.start = new Vertex(start, null);
 	isDirty = true;
