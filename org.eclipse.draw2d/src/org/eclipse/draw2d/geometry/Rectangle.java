@@ -638,8 +638,8 @@ public Rectangle scale(double scaleX, double scaleY) {
 	int oldY = y;
 	x = (int)(Math.floor(x * scaleX));
 	y = (int)(Math.floor(y * scaleY));
-	width = (int)(Math.floor((oldX + width) * scaleX)) - x;
-	height = (int)(Math.floor((oldY + height) * scaleY)) - y;
+	width = (int)(Math.ceil((oldX + width) * scaleX)) - x;
+	height = (int)(Math.ceil((oldY + height) * scaleY)) - y;
 	return this;
 }
 
