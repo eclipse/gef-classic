@@ -3,9 +3,9 @@ package org.eclipse.gef.ui.actions;
 import org.eclipse.jface.viewers.*;
 import org.eclipse.ui.IEditorPart;
 
+import org.eclipse.gef.EditPart;
 import org.eclipse.gef.internal.GEFMessages;
-import org.eclipse.gef.palette.PaletteTemplateEntry;
-import org.eclipse.gef.ui.palette.editparts.TemplateEditPart;
+import org.eclipse.gef.palette.CombinedTemplateCreationEntry;
 
 /**
  * Copies the currently selected template in the palatte to the default GEF 
@@ -17,7 +17,7 @@ public class CopyTemplateAction
 	implements ISelectionChangedListener
 {
 
-private TemplateEditPart selectedPart;
+private CombinedTemplateCreationEntry selectedEntry;
 
 /**
  * Constructs a new CopyTemplateAction.  You must manually add this action to the palette
@@ -35,14 +35,14 @@ public CopyTemplateAction(IEditorPart editor) {
  * @return whether the selected EditPart is a TemplateEditPart
  */
 protected boolean calculateEnabled() {
-	return selectedPart != null;
+	return selectedEntry != null;
 }
 
 /**
  * @see org.eclipse.gef.ui.actions.EditorPartAction#dispose()
  */
 public void dispose() {
-	selectedPart = null;
+	selectedEntry = null;
 }
 
 /**
@@ -58,8 +58,7 @@ protected void init() {
  * template.
  */
 public void run() {
-	PaletteTemplateEntry entry = (PaletteTemplateEntry)selectedPart.getModel();
-	Clipboard.getDefault().setContents(entry.getTemplate());
+	Clipboard.getDefault().setContents(selectedEntry.getTemplate());
 }
 
 /**
@@ -72,11 +71,14 @@ public void selectionChanged(SelectionChangedEvent event) {
 	if (!(s instanceof IStructuredSelection))
 		return;
 	IStructuredSelection selection = (IStructuredSelection)s;
-	selectedPart = null;
+	selectedEntry = null;
 	if (selection != null && selection.size() == 1) {
 		Object obj = selection.getFirstElement();
-		if (obj instanceof TemplateEditPart)
-			selectedPart = (TemplateEditPart)obj;
+		if (obj instanceof EditPart) {
+			Object model = ((EditPart)obj).getModel();
+			if (model instanceof CombinedTemplateCreationEntry)
+				selectedEntry = (CombinedTemplateCreationEntry)model;
+		}
 	}
 	refresh();
 }
