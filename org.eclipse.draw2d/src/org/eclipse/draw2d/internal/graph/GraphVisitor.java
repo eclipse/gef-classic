@@ -25,4 +25,11 @@ public abstract class GraphVisitor {
  */
 public abstract void visit(DirectedGraph g);
 
+/**
+ * Called in reverse order of visit.
+ * @since 3.1
+ * @param g the graph to act upon
+ */
+public void revisit(DirectedGraph g) { }
+
 }

@@ -10,27 +10,75 @@
  *******************************************************************************/
 package org.eclipse.draw2d.internal.graph;
 
+import java.util.Iterator;
+
+import org.eclipse.draw2d.graph.CompoundDirectedGraph;
+import org.eclipse.draw2d.graph.DirectedGraph;
 import org.eclipse.draw2d.graph.Edge;
+import org.eclipse.draw2d.graph.Node;
+import org.eclipse.draw2d.graph.NodeList;
 import org.eclipse.draw2d.graph.Subgraph;
-import org.eclipse.draw2d.graph.VirtualNode;
 
 /**
- * @author hudsonr
+ * Places nodes into ranks for a compound directed graph.  If a subgraph spans a rank
+ * without any nodes which belong to that rank, a bridge node is inserted to prevent nodes
+ * from violating the subgraph boundary.
+ * @author Randy Hudson
+ * @since 2.1.2
  */
 public class CompoundPopulateRanks extends PopulateRanks {
 
-/**
- * @see org.eclipse.graph.PopulateRanks#createVirtualNode(org.eclipse.graph.Edge, int)
- */
-VirtualNode createVirtualNode(Edge e, int i) {
-	VirtualNode n = super.createVirtualNode(e, i);
-	Subgraph s = GraphUtilities.getCommonAncestor(e.source, e.target);
-	if (s != null) {
-		n.setParent(s);
-		s.members.add(n);
-		n.nestingIndex = s.nestingIndex;
+public void visit(DirectedGraph g) {
+	CompoundDirectedGraph graph = (CompoundDirectedGraph)g;
+	
+	/**
+	 * Remove long containment edges at this point so they don't affect MinCross.
+	 */
+	Iterator containment = graph.containment.iterator();
+	while (containment.hasNext()) {
+		Edge e = (Edge)containment.next();
+		if (e.getSlack() > 0) {
+			graph.removeEdge(e);
+			containment.remove();
+		}
 	}
-	return n;
+
+	super.visit(g);
+	NodeList subgraphs = graph.subgraphs;
+	for (int i = 0; i < subgraphs.size(); i++) {
+		Subgraph subgraph = (Subgraph)subgraphs.get(i);
+		bridgeSubgraph(subgraph, graph);
+	}
+}
+
+/**
+ * @param subgraph
+ */
+private void bridgeSubgraph(Subgraph subgraph, CompoundDirectedGraph g) {
+	int offset = subgraph.head.rank;
+	boolean occupied[] = new boolean[subgraph.tail.rank - subgraph.head.rank + 1];
+	Node bridge[] = new Node[occupied.length];
+	
+	for (int i = 0; i < subgraph.members.size(); i++) {
+		Node n = (Node)subgraph.members.get(i);
+		if (n instanceof Subgraph) {
+			Subgraph s = (Subgraph)n;
+			for (int r = s.head.rank; r <= s.tail.rank; r++)
+				occupied[r -offset] = true;
+		} else
+			occupied[n.rank - offset] = true;
+	}
+	
+	for (int i = 0; i < bridge.length; i++) {
+		if (!occupied[i]) {
+			Node br = bridge[i] = new Node("bridge", subgraph); //$NON-NLS-1$
+			br.rank = i + offset;
+			br.height = br.width = 0;
+			br.nestingIndex = subgraph.nestingIndex;
+			g.ranks.getRank(br.rank).add(br);
+			g.nodes.add(br);
+		}
+	}
 }
 
 }

@@ -25,11 +25,11 @@ import org.eclipse.draw2d.graph.Node;
 import org.eclipse.draw2d.graph.NodeList;
 import org.eclipse.draw2d.graph.Rank;
 import org.eclipse.draw2d.graph.RankList;
-import org.eclipse.draw2d.graph.VirtualNode;
 
 /**
- * @author hudsonr
- * @since 2.1
+ * Assigns the X and width values for nodes in a directed graph.
+ * @author Randy Hudson
+ * @since 2.1.2
  */
 public class HorizontalPlacement extends SpanningTreeVisitor {
 
@@ -144,62 +144,47 @@ public DirectedGraph graph;
 Map map = new HashMap();
 public DirectedGraph prime;
 
-void addEdges(Node n, Node nPrime) {
-	if (n instanceof VirtualNode) {
-		addEdges ((VirtualNode)n, nPrime);
-		return;
-	}
+/**
+ * Adds all of the incoming edges to the graph.
+ * @param n the original node
+ * @param nPrime its corresponding node in the auxilary graph
+ */
+void addEdges(Node n) {
 	for (int i = 0; i < n.incoming.size(); i++) {
 		Edge e = n.incoming.getEdge(i);
-		if (e.vNodes != null) {
-			Node nSource = e.vNodes.getNode(e.vNodes.size() - 1);
-			Node nPrimeSource = get(nSource);
-			Node ne = new Node (new NodePair(n, nSource));//$NON-NLS-1$
-			ne.y = (n.y + n.height + nSource.y) / 2;
-			prime.nodes.add(ne);
-			Edge eu = new Edge(ne, nPrimeSource);
-			Edge ev = new Edge(ne, nPrime);
-			eu.delta = e.getTargetOffset();
-			ev.delta = 0;
-			eu.weight = ev.weight = e.weight * 2;
-			prime.edges.add(eu);
-			prime.edges.add(ev);
-		} else {
-			Node nSource = e.source;
-			Node nPrimeSource = get(e.source);
-			Node ne = new Node(new NodePair(n, nSource));//$NON-NLS-1$
-			ne.y = (n.y + n.height + nSource.y) / 2;
-			prime.nodes.add(ne);
-			Edge eu = new Edge(ne, nPrimeSource);
-			int dw = e.getSourceOffset() - e.getTargetOffset();
-			eu.delta = 0;
-			eu.weight = e.weight;
-			Edge ev = new Edge(ne, nPrime);
-			ev.delta = 0;
-			if (dw < 0)
-				eu.delta = -dw;
-			else
-				ev.delta = dw;
-			ev.weight = e.weight;
-			prime.edges.add(eu);
-			prime.edges.add(ev);
-		}
+		addEdge(e.source, n, e, 1);
 	}
 }
 
-void addEdges(VirtualNode vn, Node nPrime) {
-	Node prevPrime = get(vn.prev);
-	Node vnSource = vn.prev;
-	Node ne = new Node(new NodePair(vn, vnSource));
-	ne.y = (vn.y + vn.height + vnSource.y) / 2;
-
+/**
+ * Inset the corresponding parts for the given 2 nodes along an edge E.  The weight value
+ * is a value by which to scale the edges specified weighting factor.
+ * @param u the source
+ * @param v the target
+ * @param e the edge along which u and v exist
+ * @param weight a scaling for the weight
+ */
+void addEdge(Node u, Node v, Edge e, int weight) {
+	Node ne = new Node(new NodePair(u, v));
 	prime.nodes.add(ne);
-	Edge eu = new Edge(ne, prevPrime);
-	eu.delta = 0;
-	eu.weight = vn.omega();
-	Edge ev = new Edge(ne, nPrime, 0, eu.weight);
-	if (!(vn.prev instanceof VirtualNode))
-		ev.delta = ((Edge)vn.data).getSourceOffset();
+
+	ne.y = (u.y + u.height + v.y) / 2;
+	Node uPrime = get(u);
+	Node vPrime = get(v);
+
+	int uOffset = e.getSourceOffset();
+	
+	int vOffset = e.getTargetOffset();
+	
+	Edge eu = new Edge(ne, uPrime, 0, e.weight * weight);
+	Edge ev = new Edge(ne, vPrime, 0, e.weight * weight);
+	
+	int dw = uOffset - vOffset;
+	if (dw < 0)
+		eu.delta = -dw;
+	else
+		ev.delta = dw;
+	
 	prime.edges.add(eu);
 	prime.edges.add(ev);
 }
@@ -338,13 +323,12 @@ void buildGPrime() {
 	buildRankSeparators(ranks);
 
 	Rank rank;
-	Node n, nPrime;
+	Node n;
 	for (int r = 1; r < ranks.size(); r++) {
 		rank = ranks.getRank(r);
 		for (int i = 0; i < rank.count(); i++) {
 			n = rank.getNode(i);
-			nPrime = get(n);
-			addEdges(n, nPrime);
+			addEdges(n);
 		}
 	}
 }

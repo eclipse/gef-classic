@@ -11,15 +11,20 @@
 package org.eclipse.draw2d.internal.graph;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
+import org.eclipse.draw2d.graph.CompoundDirectedGraph;
 import org.eclipse.draw2d.graph.DirectedGraph;
+import org.eclipse.draw2d.graph.Edge;
 import org.eclipse.draw2d.graph.Node;
 import org.eclipse.draw2d.graph.Rank;
 import org.eclipse.draw2d.graph.Subgraph;
 
 /**
- * @author hudsonr
+ * Sorts nodes in a compound directed graph.
+ * @author Randy Hudson
+ * @since 2.1.2
  */
 public class CompoundRankSorter extends RankSorter {
 
@@ -68,12 +73,19 @@ protected void assignIncomingSortValues() {
 	pullTogetherSubgraphs();
 }
 
-/**
- * @see org.eclipse.draw2d.internal.graph.RankSorter#assignOutgoingSortValues()
- */
 protected void assignOutgoingSortValues() {
 	super.assignOutgoingSortValues();
 	pullTogetherSubgraphs();
+}
+
+void optimize(DirectedGraph g) {
+	CompoundDirectedGraph graph = (CompoundDirectedGraph)g;
+	Iterator containment = graph.containment.iterator();
+	while (containment.hasNext())
+		graph.removeEdge((Edge)containment.next());
+	graph.containment.clear();
+	new LocalOptimizer()
+		.visit(graph);
 }
 
 private void pullTogetherSubgraphs() {
@@ -151,11 +163,33 @@ RowEntry getRowEntry(Subgraph s, int row) {
 	return (RowEntry)map.get(key);
 }
 
+void copyConstraints(NestingTree tree) {
+	if (tree.subgraph != null)
+		tree.sortValue = tree.subgraph.rowOrder;
+	for (int i = 0; i < tree.contents.size(); i++) {
+		Object child = tree.contents.get(i);
+		if (child instanceof Node) {
+			Node n = (Node)child;
+			n.sortValue = n.rowOrder;
+		} else {
+			copyConstraints((NestingTree)child);
+		}
+	}
+}
+
 public void init(DirectedGraph g) {
 	super.init(g);
 	init = true;
+	
 	for (int row = 0; row < g.ranks.size(); row++) {
 		Rank rank = g.ranks.getRank(row);
+		
+		NestingTree tree = NestingTree.buildNestingTreeForRank(rank);
+		copyConstraints(tree);
+		tree.recursiveSort(true);
+		rank.clear();
+		tree.repopulateRank(rank);
+		
 		for (int j = 0; j < rank.count(); j++) {
 			Node n = rank.getNode(j);
 			Subgraph s = n.getParent();
@@ -169,7 +203,8 @@ public void init(DirectedGraph g) {
 
 protected void postSort() {
 	super.postSort();
-	updateRank(rank);
+	if (init == true)
+		updateRank(rank);
 }
 
 void updateRank(Rank rank) {
@@ -194,9 +229,3 @@ void updateRank(Rank rank) {
 }
 
 }
-
-
-
-
-
-

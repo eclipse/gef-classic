@@ -14,8 +14,9 @@ import org.eclipse.draw2d.graph.DirectedGraph;
 import org.eclipse.draw2d.graph.Rank;
 
 /**
- * @author hudsonr
- * @since 2.1
+ * Sweeps up and down the ranks rearranging them so as to reduce edge crossings.
+ * @author Randy Hudson
+ * @since 2.1.2
  */
 public class MinCross extends GraphVisitor {
 
@@ -23,6 +24,15 @@ static final int MAX = 45;
 
 private DirectedGraph g;
 private RankSorter sorter = new RankSorter();
+
+public MinCross() { }
+
+/**
+ * @since 3.1
+ */
+public MinCross(RankSorter sorter) {
+	setRankSorter(sorter);
+}
 
 public void setRankSorter(RankSorter sorter) {
 	this.sorter = sorter;
@@ -51,6 +61,7 @@ public void visit(DirectedGraph g) {
 	sorter.init(g);
 	this.g = g;
 	solve();
+	sorter.optimize(g);
 }
 
 }

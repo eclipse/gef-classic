@@ -16,8 +16,10 @@ import org.eclipse.draw2d.graph.Node;
 import org.eclipse.draw2d.graph.NodeList;
 
 /**
- * @author hudsonr
- * @since 2.1
+ * Assigns a valid rank assignment to all nodes based on their edges.  The assignment is
+ * not optimal in that it does not provide the minimum global length of edge lengths.
+ * @author Randy Hudson
+ * @since 2.1.2
  */
 public class InitialRankSolver extends GraphVisitor {
 
@@ -32,6 +34,9 @@ public void visit(DirectedGraph graph) {
 	solve();
 }
 
+/**
+ * 
+ */
 protected void solve() {
 
 	NodeList unranked = new NodeList(graph.nodes);
@@ -48,6 +53,8 @@ protected void solve() {
 			} else
 				i++;
 		}
+		if (rankMe.size() == 0)
+			throw new RuntimeException("Cycle detected in graph"); //$NON-NLS-1$
 		for (i = 0; i < rankMe.size(); i++) {
 			node = rankMe.getNode(i);
 			node.rank = node.incoming.calculateRank();

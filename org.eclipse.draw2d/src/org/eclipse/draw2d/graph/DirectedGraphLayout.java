@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.draw2d.graph;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.draw2d.internal.graph.BreakCycles;
 import org.eclipse.draw2d.internal.graph.GraphVisitor;
 import org.eclipse.draw2d.internal.graph.HorizontalPlacement;
@@ -68,37 +71,42 @@ import org.eclipse.draw2d.internal.graph.VerticalPlacement;
  * and if it has virtual nodes, they will be in reverse order (bottom-up).
  * </UL>
  * <P>This class is not guaranteed to produce the same results for each invocation.
- * @author hudsonr
+ * @author Randy Hudson
  * @since 2.1.2
  */
 public class DirectedGraphLayout extends GraphVisitor {
 
+List steps = new ArrayList();
+
+/**
+ * @since 3.1
+ */
+public DirectedGraphLayout() {
+	steps.add(new BreakCycles());
+	steps.add(new InitialRankSolver());
+	steps.add(new TightSpanningTreeSolver());
+	steps.add(new RankAssigmentSolver());
+	steps.add(new PopulateRanks());
+	steps.add(new VerticalPlacement());
+	steps.add(new MinCross());
+	steps.add(new LocalOptimizer());
+	steps.add(new HorizontalPlacement());
+	steps.add(new PlaceEndpoints());
+	steps.add(new InvertEdges());
+}
+	
 /**
  * @see org.eclipse.draw2d.internal.graph.GraphVisitor#visit(org.eclipse.draw2d.graph.DirectedGraph)
  */
 public void visit(DirectedGraph graph) {
-	new BreakCycles()
-		.visit(graph);
-	new InitialRankSolver()
-		.visit(graph);
-	new TightSpanningTreeSolver()
-		.visit(graph);
-	new RankAssigmentSolver()
-		.visit(graph);
-	new PopulateRanks()
-		.visit(graph);
-	new VerticalPlacement()
-		.visit(graph);
-	new MinCross()
-		.visit(graph);
-	new LocalOptimizer()
-		.visit(graph);
-	new HorizontalPlacement()
-		.visit(graph);
-	new PlaceEndpoints()
-		.visit(graph);
-	new InvertEdges()
-		.visit(graph);
+	for (int i = 0; i < steps.size(); i++) {
+		GraphVisitor visitor = (GraphVisitor)steps.get(i);
+		visitor.visit(graph);
+	}
+	for (int i = steps.size() - 1; i >= 0; i--) {
+		GraphVisitor visitor = (GraphVisitor)steps.get(i);
+		visitor.revisit(graph);
+	}
 }
 
 }

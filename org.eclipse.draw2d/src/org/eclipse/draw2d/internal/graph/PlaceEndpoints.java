@@ -16,7 +16,7 @@ import org.eclipse.draw2d.graph.Edge;
 import org.eclipse.draw2d.graph.SubgraphBoundary;
 
 /**
- * @author hudsonr
+ * @author Randy Hudson
  */
 public class PlaceEndpoints extends GraphVisitor {
 

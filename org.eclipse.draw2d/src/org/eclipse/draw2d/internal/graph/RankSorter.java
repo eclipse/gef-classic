@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.draw2d.internal.graph;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Random;
 
 import org.eclipse.draw2d.graph.DirectedGraph;
@@ -17,8 +19,12 @@ import org.eclipse.draw2d.graph.Edge;
 import org.eclipse.draw2d.graph.EdgeList;
 import org.eclipse.draw2d.graph.Node;
 import org.eclipse.draw2d.graph.Rank;
-import org.eclipse.draw2d.graph.VirtualNode;
 
+/**
+ * Sorts Ranks during the up and down sweeps of the MinCross visitor.
+ * @author Randy Hudson
+ * @since 2.1.2
+ */
 class RankSorter {
 
 Random flipflop = new Random(3);
@@ -36,7 +42,7 @@ protected void assignIncomingSortValues() {
 		nextRankSize = g.ranks.getRank(currentRow + 1).total;
 	for (int n = 0; n < rank.count(); n++) {
 		node = rank.getNode(n);
-		sortValueIncoming(g, currentRow, progress);
+		sortValueIncoming();
 	}
 }
 
@@ -48,7 +54,7 @@ protected void assignOutgoingSortValues() {
 	
 	for (int n = 0; n < rank.count(); n++) {
 		node = rank.getNode(n);
-		sortValueOutgoing(currentRow, progress);
+		sortValueOutgoing();
 	}
 }
 
@@ -76,7 +82,7 @@ double evaluateNodeIncoming() {
 
 	int l = incoming.getSourceIndex(n / 2 - 1);
 	int r = incoming.getSourceIndex(n / 2);
-	if (progress >= 0.8) {
+	if (progress >= 0.8 && n > 2) {
 		int dl = l - incoming.getSourceIndex(0);
 		int dr = incoming.getSourceIndex(n - 1) - r;
 		if (dl < dr)
@@ -115,7 +121,7 @@ double evaluateNodeOutgoing() {
 		return outgoing.getTargetIndex(n / 2);
 	int l = outgoing.getTargetIndex(n / 2 - 1);
 	int r = outgoing.getTargetIndex(n / 2);
-	if (progress >= 0.8) {
+	if (progress >= 0.8 && n > 2) {
 		int dl = l - outgoing.getTargetIndex(0);
 		int dr = outgoing.getTargetIndex(n - 1) - r;
 		if (dl < dr)
@@ -137,16 +143,59 @@ public void sortRankIncoming(DirectedGraph g, Rank rank, int row, double progres
 	this.rank = rank;
 	this.progress = progress;
 	assignIncomingSortValues();
-	rank.sort();
+	sort();
 	postSort();
 }
 
 public void init(DirectedGraph g) {
 	this.g = g;
+	for (int i = 0; i < g.ranks.size(); i++) {
+		rank = g.ranks.getRank(i);
+		
+		//Sort the ranks based on their constraints. Constraints are preserved throughout.
+		Collections.sort(rank, new Comparator() {
+			public int compare(Object left, Object right) {
+				return ((Node)left).rowOrder - ((Node)right).rowOrder;
+			}
+			public boolean equals(Object obj) {
+				return false;
+			}
+		});
+		postSort();
+	}
+}
+
+void optimize(DirectedGraph g) {
 }
 
 protected void postSort() {
 	rank.assignIndices();
+}
+
+void sort() {
+	boolean change;
+	do {
+		change = false;
+		for (int i = 0; i < rank.size() - 1; i++)
+			change |= swap(i);
+		if (change == false)
+			break;
+		change = false;
+		for (int i = rank.size() - 2; i >= 0; i--)
+			change |= swap(i);
+	} while (change);
+}
+
+boolean swap(int i) {
+	Node left = rank.getNode(i);
+	Node right = rank.getNode(i + 1);
+	if (GraphUtilities.isConstrained(left, right))
+		return false;
+	if (left.sortValue <= right.sortValue)
+		return false;
+	rank.set(i, right);
+	rank.set(i + 1, left);
+	return true;
 }
 
 public void sortRankOutgoing(DirectedGraph g, Rank rank, int row, double progress) {
@@ -154,28 +203,34 @@ public void sortRankOutgoing(DirectedGraph g, Rank rank, int row, double progres
 	this.rank = rank;
 	this.progress = progress;
 	assignOutgoingSortValues();
-	rank.sort();
+	sort();
 	postSort();
 }
 
-void sortValueIncoming(DirectedGraph g, int row, double progress) {
+void sortValueIncoming() {
 	node.sortValue = evaluateNodeIncoming();
-	if (progress == 0.0 && !(node instanceof VirtualNode))
-		node.sortValue = -1;
+	//$TODO restore this optimization
+//	if (progress == 0.0 && !(node instanceof VirtualNode))
+//		node.sortValue = -1;
 	double value = evaluateNodeOutgoing();
 	if (value < 0)
 		value = node.index * nextRankSize / rankSize;
 	node.sortValue += value * progress;
+//	if (progress < 0.7 && node.sortValue != -1)
+//		node.sortValue += Math.random() * rankSize / (5 + 8 * progress);
 }
 
-void sortValueOutgoing(int row, double progress) {
+void sortValueOutgoing() {
 	node.sortValue = evaluateNodeOutgoing();
-	if (progress == 0.0 && !(node instanceof VirtualNode))
-		node.sortValue = -1;
+	//$TODO restore this optimization
+//	if (progress == 0.0 && !(node instanceof VirtualNode))
+//		node.sortValue = -1;
 	double value = evaluateNodeIncoming();
 	if (value < 0)
 		value = node.index * nextRankSize / rankSize;
 	node.sortValue += value * progress;
+//	if (progress < 0.7 && node.sortValue != -1)
+//		node.sortValue += Math.random() * rankSize / (5 + 8 * progress);
 }
 
 }

@@ -16,15 +16,17 @@ import org.eclipse.draw2d.graph.EdgeList;
 import org.eclipse.draw2d.graph.Node;
 import org.eclipse.draw2d.graph.Rank;
 
-
 /**
  * This graph visitor examines all adjacent pairs of nodes and determines if 
  * swapping the two nodes provides improved graph aesthetics.
  * @author Daniel Lee
+ * @since 2.1.2
  */
 public class LocalOptimizer extends GraphVisitor {
 
-private boolean shouldSwap(Node current, Node next) {
+boolean shouldSwap(Node current, Node next) {
+	if (GraphUtilities.isConstrained(current, next))
+		return false;
 	int crossCount = 0;
 	int invertedCrossCount = 0;
 	

@@ -422,6 +422,14 @@ private void restoreSinks(Node node, NodeList sR) {
 	}
 }
 
+public void revisit(DirectedGraph g) {
+	for (int i = 0; i < g.edges.size(); i++) {
+		Edge e = g.edges.getEdge(i);
+		if (e.isFeedback)
+			e.invert();
+	}
+}
+
 private void setChildCount(Node n, int count) {
 	n.workingInts[3] = count;
 }

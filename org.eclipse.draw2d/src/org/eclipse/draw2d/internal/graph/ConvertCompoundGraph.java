@@ -125,6 +125,20 @@ private void replaceSubgraphsWithBoundaries(CompoundDirectedGraph graph) {
 	}
 }
 
+public void revisit(DirectedGraph g) {
+	for (int i = 0; i < g.edges.size(); i++) {
+		Edge e = g.edges.getEdge(i);
+		if (e.source instanceof SubgraphBoundary) {
+			e.source.outgoing.remove(e);
+			e.source = e.source.getParent();
+		}
+		if (e.target instanceof SubgraphBoundary) {
+			e.target.incoming.remove(e);
+			e.target= e.target.getParent();
+		}
+	}
+}
+
 /**
  * @see GraphVisitor#visit(org.eclipse.draw2d.graph.DirectedGraph)
  */

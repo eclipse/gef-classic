@@ -11,11 +11,9 @@
 package org.eclipse.draw2d.internal.graph;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.draw2d.graph.CompoundDirectedGraph;
@@ -27,123 +25,20 @@ import org.eclipse.draw2d.graph.RankList;
 import org.eclipse.draw2d.graph.Subgraph;
 
 /**
- * @author hudsonr
+ * Performs a topological sort from left to right of the subgraphs in a compound directed
+ * graph.  This ensures that subgraphs do not intertwine.
+ * @author Randy Hudson
+ * @since 2.1.2
  */
 public class SortSubgraphs extends GraphVisitor {
 
-static class NestingTreeEntry {
-	List contents = new ArrayList();
-	boolean isLeaf = true;
-	int size;
-	double sortValue;
-	Node subgraph;
-	
-	public void calculateSortValues() {
-		int total = 0;
-		for (int i = 0; i < contents.size(); i++) {
-			Object o = contents.get(i);
-			if (o instanceof NestingTreeEntry) {
-				isLeaf = false;
-				NestingTreeEntry e = (NestingTreeEntry)o;
-				e.calculateSortValues();
-				total += (int)(e.sortValue * e.size);
-				size += e.size;
-			} else {
-				Node n = (Node)o;
-				n.sortValue = n.index;
-				total += n.index;
-				size++;
-			}
-		}
-		sortValue = (double)total / size;
-	}
-	
-	public void getSortValueFromSubgraph() {
-		if (subgraph != null)
-			sortValue = subgraph.sortValue;
-		for (int i = 0; i < contents.size(); i++) {
-			Object o = contents.get(i);
-			if (o instanceof NestingTreeEntry)
-				((NestingTreeEntry)o).getSortValueFromSubgraph();
-		}
-	}
-
-	public void recursiveSort() {
-		if (isLeaf)
-			return;
-		boolean change = false;
-		//Use modified bubble sort for almost-sorted lists.
-		do {
-			change = false;
-			for (int i = 0; i < contents.size() - 1; i++)
-				change |= swap(i);
-			if (change == false)
-				break;
-			change = false;
-			for (int i = contents.size() - 2; i >= 0; i--)
-				change |= swap(i);
-		} while (change);
-		for (int i = 0; i < contents.size(); i++) {
-			Object o = contents.get(i);
-			if (o instanceof NestingTreeEntry)
-				((NestingTreeEntry)o).recursiveSort();
-		}
-	}
-	
-	boolean swap(int index) {
-		Object left = contents.get(index);
-		Object right = contents.get(index + 1);
-		double iL = (left instanceof Node)
-			? ((Node)left).sortValue
-			: ((NestingTreeEntry)left).sortValue;
-		double iR = (right instanceof Node)
-			? ((Node)right).sortValue
-			: ((NestingTreeEntry)right).sortValue;
-		if (iL <= iR)
-			return false;
-		contents.set(index, right);
-		contents.set(index + 1, left);
-		return true;
-	}
-	public String toString() {
-		return "Nesting:" + subgraph; //$NON-NLS-1$
-	}
-}
-
 CompoundDirectedGraph g;
 
-Map nestingTreeMap = new HashMap();
-NestingTreeEntry nestingTrees[];
+NestingTree nestingTrees[];
 
 Set OGedges = new HashSet();
 Set OGmembers = new HashSet();
 NodePair pair = new NodePair();
-
-private void addToNestingTree(NestingTreeEntry branch) {
-	Subgraph subgraph = branch.subgraph.getParent();
-	NestingTreeEntry parent = (NestingTreeEntry)nestingTreeMap.get(subgraph);
-	if (parent == null) {
-		parent = new NestingTreeEntry();
-		parent.subgraph = subgraph;
-		nestingTreeMap.put(subgraph, parent);
-		if (subgraph != null)
-			addToNestingTree(parent);
-	}
-	parent.contents.add(branch);
-}
-
-private void addToNestingTree(Node child) {
-	Subgraph subgraph = child.getParent();
-	NestingTreeEntry parent = (NestingTreeEntry)nestingTreeMap.get(subgraph);
-	if (parent == null) {
-		parent = new NestingTreeEntry();
-		parent.subgraph = subgraph;
-		nestingTreeMap.put(subgraph, parent);
-		if (subgraph != null)
-			addToNestingTree(parent);
-	}
-	parent.contents.add(child);
-}
 
 private void breakSubgraphCycles() {
 	//The stack of nodes which have no unmarked incoming edges
@@ -197,27 +92,21 @@ private void breakSubgraphCycles() {
 
 private void buildSubgraphOrderingGraph() {
 	RankList ranks = g.ranks;
-	nestingTrees = new NestingTreeEntry[ranks.size()];
+	nestingTrees = new NestingTree[ranks.size()];
 	for (int r = 0; r < ranks.size(); r++) {
-		Rank rank = ranks.getRank(r);
-		nestingTreeMap.clear();
-		for (int j = 0; j < rank.count(); j++) {
-			Node node = rank.getNode(j);
-			addToNestingTree(node);
-		}
-		NestingTreeEntry entry = (NestingTreeEntry)nestingTreeMap.get(null);
+		NestingTree entry = NestingTree.buildNestingTreeForRank(ranks.getRank(r));
 		nestingTrees[r] = entry;
 		entry.calculateSortValues();
-		entry.recursiveSort();
+		entry.recursiveSort(false);
 	}
 
 	for (int i = 0; i < nestingTrees.length; i++) {
-		NestingTreeEntry entry = nestingTrees[i];
+		NestingTree entry = nestingTrees[i];
 		buildSubgraphOrderingGraph(entry);
 	}
 }
 
-private void buildSubgraphOrderingGraph(NestingTreeEntry entry) {
+private void buildSubgraphOrderingGraph(NestingTree entry) {
 	NodePair pair = new NodePair();
 	if (entry.isLeaf)
 		return;
@@ -226,8 +115,8 @@ private void buildSubgraphOrderingGraph(NestingTreeEntry entry) {
 		if (right instanceof Node)
 			pair.n2 = (Node)right;
 		else {
-			pair.n2 = ((NestingTreeEntry)right).subgraph;
-			buildSubgraphOrderingGraph((NestingTreeEntry)right);
+			pair.n2 = ((NestingTree)right).subgraph;
+			buildSubgraphOrderingGraph((NestingTree)right);
 		}
 		if (pair.n1 != null && !OGedges.contains(pair)) {
 			OGedges.add(pair);
@@ -283,21 +172,11 @@ private void calculateSortValues() {
 	}
 }
 
-private void repopulateRank(Rank r, NestingTreeEntry entry) {
-	for (int i = 0; i < entry.contents.size(); i++) {
-		Object o = entry.contents.get(i);
-		if (o instanceof Node)
-			r.add(o);
-		else
-			repopulateRank(r, (NestingTreeEntry)o);
-	}
-}
-
 private void repopulateRanks() {
 	for (int i = 0; i < nestingTrees.length; i++) {
 		Rank rank = g.ranks.getRank(i);
 		rank.clear();
-		repopulateRank(rank, nestingTrees[i]);
+		nestingTrees[i].repopulateRank(rank);
 	}
 }
 
@@ -320,7 +199,7 @@ void sortedInsert(List list, Node node) {
 private void topologicalSort() {
 	for (int i = 0; i < nestingTrees.length; i++) {
 		nestingTrees[i].getSortValueFromSubgraph();
-		nestingTrees[i].recursiveSort();
+		nestingTrees[i].recursiveSort(false);
 	}
 }
 

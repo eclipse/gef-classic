@@ -13,7 +13,8 @@ package org.eclipse.draw2d.graph;
 import org.eclipse.draw2d.geometry.Insets;
 
 /**
- * @author hudsonr
+ * @deprecated As of 3.1, This class is for internal use only
+ * @author Randy Hudson
  * @since 2.1.2
  */
 public class VirtualNode extends Node {
@@ -27,8 +28,13 @@ public Node prev;
  */
 public Node next;
 
+public VirtualNode(Object o, Subgraph parent) {
+	super(o, parent);
+}
+
 /**
  * Constructs a virtual node.
+ * @deprecated This class is for internal use only.
  * @param e the edge
  * @param i the row
  */
