@@ -15,7 +15,7 @@ public class LogicLabel
 	extends LogicSubpart
 {
 
-private String filename = 
+private String text = 
 	LogicMessages.LogicPlugin_Tool_CreationTool_LogicLabel; 
 
 private static Image LOGIC_LABEL_ICON = new Image(null,
@@ -28,7 +28,7 @@ public LogicLabel() {
 }
 
 public String getLabelContents(){
-	return filename;
+	return text;
 }
 
 public Image getIconImage() {
@@ -44,8 +44,8 @@ public Dimension getSize(){
 }
 
 public void setLabelContents(String s){
-	filename = s;
-	firePropertyChange("labelContents", "", filename); //$NON-NLS-2$//$NON-NLS-1$
+	text = s;
+	firePropertyChange("labelContents", "", text); //$NON-NLS-2$//$NON-NLS-1$
 }
 
 public String toString() {
