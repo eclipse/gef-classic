@@ -20,6 +20,7 @@ import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.views.properties.PropertySheetPage;
 
 import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.*;
 import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.gef.commands.CommandStackListener;
@@ -173,6 +174,11 @@ public Object getAdapter(Class type) {
 		return getCommandStack();
 	if (type == ActionRegistry.class)
 		return getActionRegistry();
+	if (type == EditPart.class && getGraphicalViewer() != null)
+		return getGraphicalViewer().getRootEditPart();
+	if (type == IFigure.class && getGraphicalViewer() != null)
+		if (getGraphicalViewer().getRootEditPart() instanceof GraphicalEditPart)
+			return ((GraphicalEditPart)getGraphicalViewer().getRootEditPart()).getFigure();
 	return super.getAdapter(type);
 }
 

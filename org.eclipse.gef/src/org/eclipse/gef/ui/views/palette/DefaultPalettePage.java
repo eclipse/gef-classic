@@ -12,8 +12,12 @@ package org.eclipse.gef.ui.views.palette;
 
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.util.Assert;
 import org.eclipse.ui.part.Page;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.gef.EditPart;
+import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.eclipse.gef.ui.palette.PaletteViewerProvider;
 
@@ -22,7 +26,7 @@ import org.eclipse.gef.ui.palette.PaletteViewerProvider;
  */
 public class DefaultPalettePage 
 	extends Page
-	implements PalettePage {
+	implements PalettePage, IAdaptable {
 	
 protected PaletteViewerProvider provider;
 protected PaletteViewer viewer;
@@ -41,6 +45,17 @@ public void dispose() {
 		provider.getEditDomain().setPaletteViewer(null);
 	super.dispose();
 	viewer = null;
+}
+
+public Object getAdapter(Class adapter) {
+	if (adapter == EditPart.class && viewer != null)
+		return viewer.getEditPartRegistry().get(viewer.getPaletteRoot());
+	if (adapter == IFigure.class && viewer != null) {
+		Object obj = viewer.getEditPartRegistry().get(viewer.getPaletteRoot());
+		if (obj instanceof GraphicalEditPart)
+			return ((GraphicalEditPart)obj).getFigure();
+	}
+	return null;
 }
 
 public Control getControl() {
