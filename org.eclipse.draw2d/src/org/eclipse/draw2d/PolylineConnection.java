@@ -52,7 +52,7 @@ public void anchorMoved(ConnectionAnchor anchor){
  * bounds, else calculates by unioning all the children's
  * dimensions.
  */
-public Rectangle getBounds(){
+public Rectangle getBounds() {
 	if (bounds == null){
 		super.getBounds();
 		for(int i=0; i<getChildren().size(); i++) {
@@ -119,9 +119,8 @@ private void hookTargetAnchor(){
  * laid out. It also fires a moved method.
  */
 public void layout() {
-	if (getSourceAnchor() != null && getTargetAnchor() != null) {
+	if (getSourceAnchor() != null && getTargetAnchor() != null)
 		getConnectionRouter().route(this);
-	}//$RANDY:ERASE
 	super.layout();
 	bounds = null;
 	repaint();
