@@ -40,6 +40,8 @@ public class TextFlowPart
 	
 private Font localFont;
 
+private Font localFont;
+
 public TextFlowPart(Object model) {
 	setModel(model);
 }
@@ -144,13 +146,18 @@ public TextLocation getNextLocation(CaretSearch search) {
 		case CaretSearch.WORD_BOUNDARY:
 			String text = getTextFlow().getText();
 			int referenceOffset = (search.where == null) ? 0 : search.where.offset; 
-			if (referenceOffset < getLength()) {
+			if (referenceOffset <= getLength()) {
 				BreakIterator iter = BreakIterator.getWordInstance();
 				iter.setText(text);
-				if (search.isForward)
+				if (search.isForward) {
 					offset = iter.following(referenceOffset);
-				else
-					offset = iter.preceding(referenceOffset);
+				} else {
+					if (referenceOffset == text.length()) {
+						iter.last();
+						offset = iter.previous();
+					} else
+						offset = iter.preceding(referenceOffset);
+				}
 				if (offset != BreakIterator.DONE)
 					return new TextLocation(this, offset);
 			}
