@@ -19,7 +19,6 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.*;
-import org.eclipse.gef.requests.ChangeBoundsRequest;
 
 /**
  * @author Pratik Shah
@@ -28,8 +27,8 @@ public class SnapFeedbackPolicy
 	extends GraphicalEditPolicy
 {
 
-IFigure guide[] = new IFigure[4];
-Integer location[] = new Integer[4];
+IFigure guide[] = new IFigure[6];
+Integer location[] = new Integer[6];
 
 public void eraseTargetFeedback(Request request) {
 	for (int i = 0; i < guide.length; i++) {
@@ -105,7 +104,7 @@ static class FadeIn extends Figure {
 	}
 }
 
-protected void highlightGuide(Integer pos, Color color, int offset) {
+void highlightGuide(Integer pos, Color color, int offset) {
 	if (pos == null) {
 		if (guide[offset] != null) {
 			removeFeedback(guide[offset]);
@@ -149,24 +148,30 @@ protected void highlightGuide(Integer pos, Color color, int offset) {
 	}
 }
 
-public void showTargetFeedback(Request request) {
-	if (request.getType().equals(REQ_MOVE)
-			|| request.getType().equals(REQ_RESIZE)
-			|| request.getType().equals(REQ_CLONE)) {
-//		eraseTargetFeedback(request);
-		ChangeBoundsRequest req = (ChangeBoundsRequest)request;
+public void showTargetFeedback(Request req) {
+	if (req.getType().equals(REQ_MOVE)
+			|| req.getType().equals(REQ_RESIZE)
+			|| req.getType().equals(REQ_CLONE)
+			|| req.getType().equals(REQ_CREATE)) {
+//		eraseTargetFeedback(req);
 		Integer value;
-		value = (Integer)req.getExtendedData().get(SnapToGeometry.PROPERTY_VERTICAL_ANCHOR);
+		value = (Integer)req.getExtendedData().get(SnapToGeometry.PROPERTY_WEST_ANCHOR);
 		highlightGuide(value, ColorConstants.blue, 0);
 		
-		value = (Integer)req.getExtendedData().get(SnapToGeometry.PROPERTY_HORIZONTAL_ANCHOR);
+		value = (Integer)req.getExtendedData().get(SnapToGeometry.PROPERTY_NORTH_ANCHOR);
 		highlightGuide(value, ColorConstants.blue, 1);
 		
+		value = (Integer)req.getExtendedData().get(SnapToGeometry.PROPERTY_EAST_ANCHOR);
+		highlightGuide(value, ColorConstants.blue, 2);
+		
+		value = (Integer)req.getExtendedData().get(SnapToGeometry.PROPERTY_SOUTH_ANCHOR);
+		highlightGuide(value, ColorConstants.blue, 3);
+
 		value = (Integer)req.getExtendedData().get(SnapToGuides.PROPERTY_VERTICAL_GUIDE);
-		highlightGuide(value, ColorConstants.red, 2);
+		highlightGuide(value, ColorConstants.red, 4);
 		
 		value = (Integer)req.getExtendedData().get(SnapToGuides.PROPERTY_HORIZONTAL_GUIDE);
-		highlightGuide(value, ColorConstants.red, 3);
+		highlightGuide(value, ColorConstants.red, 5);
 	}
 }
 
