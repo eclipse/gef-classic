@@ -50,7 +50,7 @@
             name="Flow Diagram"
             icon="view.gif"
             category="org.eclipse.ui.Examples/org.eclipse.gef.examples"
-            class="org.eclipse.gef.examples.flow.FlowCreationWizard"
+            class="org.eclipse.gef.examples.flow.ui.FlowCreationWizard"
             id="org.eclipse.gef.examples.flow.wizard.new.file">
          <selection
                class="org.eclipse.core.resources.IResource">

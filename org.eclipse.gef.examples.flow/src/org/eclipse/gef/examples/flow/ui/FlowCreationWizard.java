@@ -1,9 +1,11 @@
-package org.eclipse.gef.examples.flow;
+package org.eclipse.gef.examples.flow.ui;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
+
+import org.eclipse.gef.examples.flow.ui.*;
 
 /**
  * FlowCreationWizard

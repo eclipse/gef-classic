@@ -3,10 +3,12 @@ package org.eclipse.gef.examples.flow;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.gef.examples.flow.model.*;
+import org.eclipse.jface.resource.ImageDescriptor;
+
 import org.eclipse.gef.palette.*;
 import org.eclipse.gef.requests.SimpleFactory;
-import org.eclipse.jface.resource.ImageDescriptor;
+
+import org.eclipse.gef.examples.flow.model.*;
 
 /**
  * Handles the creation of the palette for the Flow Editor.
