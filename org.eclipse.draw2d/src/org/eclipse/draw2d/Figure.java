@@ -1624,7 +1624,7 @@ public static class FigureIterator {
 	public boolean hasNext() {
 		return index > 0;
 	}
-};
+}
 
 /**
  * An UpdateManager that does nothing.

@@ -34,7 +34,7 @@ private static class ColorVector {
 	}
 
 	protected void normalize(double length) { }
-};
+}
 
 private static final float RGB_VALUE_MULTIPLIER = 0.6f;
 private static GC gc;

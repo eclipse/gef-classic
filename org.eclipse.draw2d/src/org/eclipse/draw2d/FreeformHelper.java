@@ -22,7 +22,7 @@ class ChildTracker implements FigureListener {
 	public void figureMoved(IFigure source) {
 		invalidate();
 	}
-};
+}
 
 private FreeformFigure host;
 private Rectangle freeformExtent;
