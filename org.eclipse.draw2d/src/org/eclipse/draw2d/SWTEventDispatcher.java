@@ -243,13 +243,6 @@ public void dispatchMouseReleased(org.eclipse.swt.events.MouseEvent me) {
 }
 
 /**
- * Mouse-wheel scrolls are ignored by default.
- * @see org.eclipse.draw2d.EventDispatcher#dispatchMouseWheelScrolled(org.eclipse.swt.widgets.Event)
- */
-public void dispatchMouseWheelScrolled(Event evt) {
-}
-
-/**
  * @see EventDispatcher#getAccessibilityDispatcher()
  */
 protected AccessibilityDispatcher getAccessibilityDispatcher() {

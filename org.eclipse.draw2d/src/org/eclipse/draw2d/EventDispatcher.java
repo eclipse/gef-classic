@@ -110,8 +110,8 @@ public abstract void dispatchMousePressed(MouseEvent me);
 public abstract void dispatchMouseReleased(MouseEvent me);
 
 /**
- * Dispatches a mouse-wheel scroll event.
- * @param event the SWT.MouseWheel event
+ * Dispatches a MouseWheel event. Does nothing by default.
+ * @param event the SWT event
  * @since 3.1
  */
 public void dispatchMouseWheelScrolled(Event event) { }
