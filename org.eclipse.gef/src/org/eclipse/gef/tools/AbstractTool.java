@@ -731,6 +731,8 @@ public void mouseMove(MouseEvent me, EditPartViewer viewer) {
 		if (b1) handleButtonUp(1);
 		if (b2) handleButtonUp(2);
 		if (b3) handleButtonUp(3);
+		if (getDomain().getActiveTool() != this)
+			return;
 	}
 	else
 		getCurrentInput().setInput(me);
