@@ -52,6 +52,16 @@ protected abstract Command createChangeConstraintCommand(
 	Object constraint);
 
 /**
+ * A {@link NonResizableEditPolicy} is used by default for children. Subclasses may 
+ * override this method to supply a different EditPolicy.
+ * 
+ * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#createChildEditPolicy(EditPart)
+ */
+protected EditPolicy createChildEditPolicy(EditPart child) {
+	return new ResizableEditPolicy();
+}
+
+/**
  * Overrides <code>getAddCommand()</code> to generate the proper constraint for each child
  * being added. Once the constraint is calculated, {@link
  * #createAddCommand(EditPart,Object)} is called. Subclasses must implement this method.
