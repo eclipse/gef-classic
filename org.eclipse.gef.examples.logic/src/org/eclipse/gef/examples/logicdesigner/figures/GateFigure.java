@@ -6,7 +6,6 @@ package org.eclipse.gef.examples.logicdesigner.figures;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.draw2d.Graphics;
 import org.eclipse.gef.examples.logicdesigner.model.Gate;
 
 public class GateFigure  

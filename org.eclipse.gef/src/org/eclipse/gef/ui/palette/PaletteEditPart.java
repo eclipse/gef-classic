@@ -13,9 +13,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.Border;
-import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.Triangle;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.gef.AccessibleEditPart;
 import org.eclipse.gef.DragTracker;
@@ -24,8 +21,6 @@ import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.palette.PaletteContainer;
 import org.eclipse.gef.palette.PaletteEntry;
 import org.eclipse.gef.tools.SelectEditPartTracker;
-
-import org.eclipse.swt.graphics.Color;
 
 abstract class PaletteEditPart 
 	extends AbstractGraphicalEditPart

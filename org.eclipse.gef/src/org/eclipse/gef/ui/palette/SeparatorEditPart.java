@@ -1,11 +1,8 @@
 package org.eclipse.gef.ui.palette;
 
-import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Rectangle;
-
 import org.eclipse.gef.palette.PaletteSeparator;
 
 /**

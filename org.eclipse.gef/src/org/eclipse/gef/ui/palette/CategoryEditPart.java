@@ -7,19 +7,21 @@ package org.eclipse.gef.ui.palette;
  */
 
 import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.*;
-import org.eclipse.gef.*;
+import org.eclipse.draw2d.geometry.Rectangle;
+
+import org.eclipse.gef.AccessibleEditPart;
+import org.eclipse.gef.EditPart;
+import org.eclipse.gef.ExposeHelper;
 import org.eclipse.gef.editparts.ViewportExposeHelper;
+import org.eclipse.gef.internal.Internal;
 import org.eclipse.gef.palette.PaletteContainer;
 
-import org.eclipse.gef.internal.Internal;
-
 import org.eclipse.jface.resource.ImageDescriptor;
-
-import org.eclipse.swt.accessibility.*;
-import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.accessibility.ACC;
+import org.eclipse.swt.accessibility.AccessibleControlEvent;
+import org.eclipse.swt.accessibility.AccessibleEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
