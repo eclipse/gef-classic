@@ -42,6 +42,10 @@ public abstract class PaletteCustomizer {
 public boolean canDelete(PaletteEntry entry) {
 	if (entry instanceof PaletteStack) 
 		return false;
+	if (entry.getParent() instanceof PaletteStack) {
+		if (entry.getParent().getUserModificationPermission() != PaletteEntry.PERMISSION_FULL_MODIFICATION)
+			return false;
+	}
 	return entry.getUserModificationPermission() 
 											== PaletteEntry.PERMISSION_FULL_MODIFICATION;
 }
@@ -189,7 +193,11 @@ public EntryPage getPropertiesPage(PaletteEntry entry) {
  * @see #canDelete(PaletteEntry)
  */
 public void performDelete(PaletteEntry entry) {
+	PaletteContainer parent = entry.getParent();
 	entry.getParent().remove(entry);
+	// if a stack runs out of children, delete it
+	if (parent instanceof PaletteStack && parent.getChildren().size() == 0)
+		parent.getParent().remove(parent);
 }
 
 /**

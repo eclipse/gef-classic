@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.gef.palette;
 
+import java.util.List;
 import org.eclipse.jface.resource.ImageDescriptor;
 
 /**
@@ -56,6 +57,54 @@ public boolean acceptsType(Object type) {
 }
 
 /**
+ * @see org.eclipse.gef.palette.PaletteContainer#add(int, org.eclipse.gef.palette.PaletteEntry)
+ */
+public void add(int index, PaletteEntry entry) {
+	super.add(index, entry);
+	checkActiveEntry();
+}
+
+/**
+ * @see org.eclipse.gef.palette.PaletteContainer#addAll(java.util.List)
+ */
+public void addAll(List list) {
+	super.addAll(list);
+	checkActiveEntry();
+}
+
+/**
+ * Checks to make sure the active entry is up-to-date and sets it to the first
+ * child if its null
+ */
+private void checkActiveEntry() {
+	PaletteEntry currEntry = activeEntry;
+	if (!getChildren().contains(activeEntry))
+		activeEntry = null;
+	if (activeEntry == null && getChildren().size() > 0)
+		activeEntry = (PaletteEntry)getChildren().get(0);
+	listeners.firePropertyChange(PROPERTY_ACTIVE_ENTRY, currEntry, activeEntry);
+}
+
+/**
+ * Returns the PaletteEntry referring to the active entry that should be shown in the
+ * palette.
+ * 
+ * @return active entry to be shown in the palette.
+ */
+public PaletteEntry getActiveEntry() {
+	checkActiveEntry();
+	return activeEntry;
+}
+
+/**
+ * @see org.eclipse.gef.palette.PaletteContainer#remove(org.eclipse.gef.palette.PaletteEntry)
+ */
+public void remove(PaletteEntry entry) {
+	super.remove(entry);
+	checkActiveEntry();
+}
+
+/**
  * Sets the "active" child entry to the given PaletteEntry. This entry will be shown on
  * the palette and will be checked in the menu.
  * 
@@ -68,31 +117,6 @@ public void setActiveEntry(PaletteEntry entry) {
 		return;
 	activeEntry = entry;
 	listeners.firePropertyChange(PROPERTY_ACTIVE_ENTRY, oldEntry, activeEntry);
-}
-
-/**
- * Returns the PaletteEntry referring to the active entry that should be shown in the
- * palette.
- * 
- * @return active entry to be shown in the palette.
- */
-public PaletteEntry getActiveEntry() {
-	PaletteEntry currEntry = activeEntry;
-	if (!getChildren().contains(activeEntry))
-		activeEntry = null;
-	if (activeEntry == null && getChildren().size() > 0)
-		activeEntry = (PaletteEntry)getChildren().get(0);
-	listeners.firePropertyChange(PROPERTY_ACTIVE_ENTRY, currEntry, activeEntry);
-	return activeEntry;
-}
-
-/**
- * @see org.eclipse.gef.palette.PaletteContainer#remove(org.eclipse.gef.palette.PaletteEntry)
- */
-public void remove(PaletteEntry entry) {
-	super.remove(entry);
-	if (getChildren().isEmpty())
-		getParent().remove(this);
 }
 
 }

@@ -41,6 +41,7 @@ public class PaletteStackEditPart
 	extends PaletteEditPart
 {
 	
+// listen to changes in palette layout.
 private PropertyChangeListener paletteLayoutListener = new PropertyChangeListener() {
 	public void propertyChange(PropertyChangeEvent event) {
 		if (event.getPropertyName().equals(PaletteViewerPreferences.PREFERENCE_LAYOUT)) {
@@ -64,60 +65,33 @@ private PropertyChangeListener paletteLayoutListener = new PropertyChangeListene
 	}
 };
 
+// listen to changes in stack
 private PropertyChangeListener stackListener = new PropertyChangeListener() {
-	
 	public void propertyChange(PropertyChangeEvent event) {
-		if (event.getPropertyName().equals(PaletteStack.PROPERTY_ACTIVE_ENTRY)) {
-			GraphicalEditPart part = null;
-			Clickable clickable = null;
-			
-			part = (GraphicalEditPart)getViewer().getEditPartRegistry().get(event.getNewValue());
-			clickable = (Clickable)part.getFigure();
-			clickable.setVisible(true);
-			clickable.addChangeListener(clickableListener);
-			activeFigure = clickable;
-			
-			if (event.getOldValue() != null) {
-				part = (GraphicalEditPart)getViewer().getEditPartRegistry().get(event.getOldValue());
-				clickable = (Clickable)part.getFigure();
-				clickable.setVisible(false);
-				clickable.removeChangeListener(clickableListener);
-			} else {
-				Iterator children = getChildren().iterator();
-				while (children.hasNext()) {
-					PaletteEditPart editPart = (PaletteEditPart)children.next();
-					
-					if (!editPart.equals(part))
-						editPart.getFigure().setVisible(false);
-				}
-			}
-			
-		}
+		if (event.getPropertyName().equals(PaletteStack.PROPERTY_ACTIVE_ENTRY))
+			activeEntryChanged(event.getOldValue(), event.getNewValue());
 	}
 };
 
+// listen to changes of clickable tool figure
 private ChangeListener clickableListener = new ChangeListener() {
 	public void handleStateChanged(ChangeEvent event) {
-		if (event.getPropertyName().equals("mouseover"))
+		if (event.getPropertyName().equals(ButtonModel.MOUSEOVER_PROPERTY))
 			arrowFigure.getModel().setMouseOver(activeFigure.getModel().isMouseOver());
-		else if (event.getPropertyName().equals("armed"))
+		else if (event.getPropertyName().equals(ButtonModel.ARMED_PROPERTY))
 			arrowFigure.getModel().setArmed(activeFigure.getModel().isArmed());
 	}
 };
 
+// listen to see if arrow is pressed
 private ActionListener actionListener = new ActionListener() {
 	public void actionPerformed(ActionEvent event) {
 		openMenu();		
 	}
 };
 
-private Clickable activeFigure;
-private RolloverArrow arrowFigure;
-private Figure contentsFigure;
-private Menu menu;
-
+// listen to see if active tool is changed in palette
 private PaletteListener paletteListener = new PaletteListener() {
-	
 	public void activeToolChanged(PaletteViewer palette, ToolEntry tool) {
 		if (getStack().getChildren().contains(tool)) {
 			if (!arrowFigure.getModel().isSelected())
@@ -128,6 +102,11 @@ private PaletteListener paletteListener = new PaletteListener() {
 			arrowFigure.getModel().setSelected(false);
 	}	
 };
+
+private Clickable activeFigure;
+private RolloverArrow arrowFigure;
+private Figure contentsFigure;
+private Menu menu;
 
 /**
  * Creates a new PaletteStackEditPart with the given PaletteStack as its model.
@@ -143,10 +122,45 @@ public PaletteStackEditPart(PaletteStack model) {
  * @see org.eclipse.gef.EditPart#activate()
  */
 public void activate() {
-	getStack().getActiveEntry();
+	// in case the model is out of sync
+	checkActiveEntrySync();
 	getPaletteViewer().addPaletteListener(paletteListener);
 	getPaletteViewer().getPaletteViewerPreferences().addPropertyChangeListener(paletteLayoutListener);
 	super.activate();
+}
+
+/**
+ * Called when the active entry has changed.
+ * 
+ * @param oldValue the old model value (can be null)
+ * @param newValue the new model value (can be null)
+ */
+private void activeEntryChanged(Object oldValue, Object newValue) {
+	GraphicalEditPart part = null;
+	Clickable clickable = null;
+
+	if (newValue != null) {
+		part = (GraphicalEditPart)getViewer().getEditPartRegistry().get(newValue);
+		clickable = (Clickable)part.getFigure();
+		clickable.setVisible(true);
+		clickable.addChangeListener(clickableListener);
+		activeFigure = clickable;
+	}
+
+	if (oldValue != null) {
+		part = (GraphicalEditPart)getViewer().getEditPartRegistry().get(oldValue);
+		// if part is null, its no longer a child.
+		if (part != null) {
+			clickable = (Clickable)part.getFigure();
+			clickable.setVisible(false);
+			clickable.removeChangeListener(clickableListener);
+		}
+	}
+}
+
+private void checkActiveEntrySync() {
+	if (activeFigure == null)
+		activeEntryChanged(null, getStack().getActiveEntry());
 }
 
 /**
@@ -207,7 +221,8 @@ public IFigure createFigure() {
  * @see org.eclipse.gef.EditPart#deactivate()
  */
 public void deactivate() {
-	// remove active figure listner?
+	if (activeFigure != null) 
+		activeFigure.removeChangeListener(clickableListener);
 	arrowFigure.removeActionListener(actionListener);
 	getStack().removePropertyChangeListener(stackListener);
 	getPaletteViewer().removePaletteListener(paletteListener);
@@ -280,7 +295,15 @@ public void openMenu() {
  */
 protected void refreshChildren() {
 	super.refreshChildren();
-	refreshVisuals();
+
+	Iterator children = getChildren().iterator();
+	while (children.hasNext()) {
+		PaletteEditPart editPart = (PaletteEditPart)children.next();
+		
+		if (!editPart.getFigure().equals(activeFigure))
+			editPart.getFigure().setVisible(false);
+	}
+
 }
 
 /**
