@@ -16,6 +16,7 @@ import org.eclipse.draw2d.StackLayout;
 
 import org.eclipse.gef.editparts.GraphicalRootEditPart;
 
+//$TODO change superclass to plain root
 public class PaletteRootEditPart extends GraphicalRootEditPart {
 	
 public IFigure createFigure() {
