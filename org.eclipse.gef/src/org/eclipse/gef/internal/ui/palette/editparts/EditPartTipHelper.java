@@ -31,7 +31,8 @@ public EditPartTipHelper(Control c) {
 /**
  * Sets the LightWeightSystem object's contents  
  * to the passed tooltip, and displays the tip at 
- * the coordianates specified by tipPosX and tipPosY.
+ * the coordianates specified by tipPosX and tipPosY.  The given coordinates will be
+ * adjusted if the tip cannot be completely visible on the screen.
  *
  * @param tip  The tool tip to be displayed.
  * @param tipPosX X coordiante of tooltip to be displayed
