@@ -591,9 +591,10 @@ public interface FlyoutPreferences {
 	 */
 	int getDockLocation();
 	/**
-	 * When there is no saved state, this method can return any non-positive int.  
-	 * Undesired behaviour is possible if a positve int that coincides with one of the
-	 * state constants is returned.
+	 * When there is no saved state, this method can return any non-positive int.  This
+	 * will result in the palette using the default state (collapsed).  Undesired 
+	 * behaviour is possible if a positve int that coincides with one of the state 
+	 * constants is returned.
 	 * @return	the saved state of the palette (collapsed or pinned open)
 	 */
 	int getPaletteState();
