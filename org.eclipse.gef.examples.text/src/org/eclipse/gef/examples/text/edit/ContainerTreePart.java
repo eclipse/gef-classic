@@ -68,7 +68,7 @@ protected void refreshVisuals() {
 				label = "ITALIC";
 			else if (getContainer().getStyle().isSet(GEFActionConstants.STYLE_UNDERLINE))
 				label ="UNDERLINE";
-			else if (getContainer().getStyle().isSet(GEFActionConstants.STYLE_FONT_FAMILY))
+			else if (getContainer().getStyle().isSet(GEFActionConstants.STYLE_FONT_NAME))
 				label ="FONT";
 			else
 				label = "nested";

@@ -56,7 +56,7 @@ public void apply() {
 			container.getStyle().setItalic(((Boolean)values[i]).booleanValue());
 		else if (key.equals(GEFActionConstants.STYLE_UNDERLINE))
 			container.getStyle().setUnderline(((Boolean)values[i]).booleanValue());
-		else if (key.equals(GEFActionConstants.STYLE_FONT_FAMILY))
+		else if (key.equals(GEFActionConstants.STYLE_FONT_NAME))
 			container.getStyle().setFontFamily((String)values[i]);
 	}
 	container.add(middle);

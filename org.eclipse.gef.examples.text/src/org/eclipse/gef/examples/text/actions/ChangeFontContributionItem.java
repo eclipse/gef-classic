@@ -55,7 +55,7 @@ protected String[] getItems() {
 }
 
 protected String getStyleID() {
-	return GEFActionConstants.STYLE_FONT_FAMILY;
+	return GEFActionConstants.STYLE_FONT_NAME;
 }
 
 protected void handleWidgetSelected(SelectionEvent e) {
