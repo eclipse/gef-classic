@@ -11,29 +11,16 @@
 package org.eclipse.gef.internal.ui.palette.editparts;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.accessibility.ACC;
-import org.eclipse.swt.accessibility.AccessibleControlEvent;
-import org.eclipse.swt.accessibility.AccessibleEvent;
+import org.eclipse.swt.accessibility.*;
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
 
 import org.eclipse.ui.IMemento;
 
-import org.eclipse.draw2d.ActionEvent;
-import org.eclipse.draw2d.ActionListener;
-import org.eclipse.draw2d.Border;
-import org.eclipse.draw2d.ButtonBorder;
-import org.eclipse.draw2d.ButtonModel;
-import org.eclipse.draw2d.Clickable;
-import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.MarginBorder;
-import org.eclipse.draw2d.ToggleButton;
+import org.eclipse.draw2d.*;
 
-import org.eclipse.gef.AccessibleEditPart;
-import org.eclipse.gef.DragTracker;
-import org.eclipse.gef.Request;
-import org.eclipse.gef.RequestConstants;
+import org.eclipse.gef.*;
 import org.eclipse.gef.palette.PaletteEntry;
 import org.eclipse.gef.palette.ToolEntry;
 import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
@@ -42,8 +29,28 @@ public class ToolEntryEditPart
 	extends PaletteEditPart
 {
 
+class MenuTimer implements Runnable{
+	public static final int MENU_TIMER_DELAY = 400;
+	
+	private boolean enabled = true;
+	
+	public void disable() {
+		enabled = false;
+	}
+	
+	public void run() {
+		if (enabled) {
+			getButtonModel().setArmed(false);
+			getButtonModel().setPressed(false);
+			((PaletteStackEditPart)getParent()).openMenu();
+		}
+	}
+}
+
 class GTKToggleButtonTracker extends SingleSelectionTracker {
 	int gtkState = 0;
+	MenuTimer currTimer = null;
+	
 	public void deactivate() {
 		if (gtkState != 2) {
 			getButtonModel().setArmed(false);
@@ -53,6 +60,11 @@ class GTKToggleButtonTracker extends SingleSelectionTracker {
 		super.deactivate();
 	}
 	protected boolean handleButtonDown(int button) {
+		if (getParent() instanceof PaletteStackEditPart) {
+			currTimer = new MenuTimer();
+			getViewer().getControl().getDisplay().timerExec(MenuTimer.MENU_TIMER_DELAY, 
+					currTimer);
+		}
 		if (button == 2 && isInState(STATE_INITIAL))
 			performConditionalSelection();
 		super.handleButtonDown(button);
@@ -76,6 +88,9 @@ class GTKToggleButtonTracker extends SingleSelectionTracker {
 		return true;
 	}
 	protected boolean handleNativeDragStarted(DragSourceEvent event) {
+		if (currTimer != null)
+			currTimer.disable();
+		
 		gtkState = 1;
 		getButtonModel().setPressed(false);
 		getButtonModel().setArmed(false);
@@ -88,28 +103,75 @@ class GTKToggleButtonTracker extends SingleSelectionTracker {
 }
 
 class ToggleButtonTracker extends SingleSelectionTracker {
+	
+	private static final int WIN_THRESHOLD = 3;
+	
+	private Point mouseDownLoc = null;
+	private MenuTimer currTimer = null;
+	private boolean menuShown = false;
+	
 	protected boolean handleButtonDown(int button) {
-		if (button == 2 && isInState(STATE_INITIAL))
-			performConditionalSelection();
-		super.handleButtonDown(button);
-		if (button == 1) {
-			getFigure().internalGetEventDispatcher().requestRemoveFocus(getFigure());
-			getButtonModel().setArmed(true);
-			getButtonModel().setPressed(true);
+		if (!menuShown) {
+			if (getParent() instanceof PaletteStackEditPart) {
+				currTimer = new MenuTimer();
+				getViewer().getControl().getDisplay().timerExec(MenuTimer.MENU_TIMER_DELAY, 
+						currTimer);
+			}
+			mouseDownLoc = new Point(getLocation().x, getLocation().y);
+			
+			if (button == 2 && isInState(STATE_INITIAL))
+				performConditionalSelection();
+			super.handleButtonDown(button);
+			if (button == 1) {
+				getFigure().internalGetEventDispatcher().requestRemoveFocus(getFigure());
+				getButtonModel().setArmed(true);
+				getButtonModel().setPressed(true);
+			}
 		}
+	
 		return true;
+			
 	}
 	protected boolean handleButtonUp(int button) {
-		if (button == 1) {
+		if (currTimer != null) 
+			currTimer.disable();
+		
+		if (button == 1 && !menuShown) {
 			getButtonModel().setPressed(false);
 			getButtonModel().setArmed(false);
+			menuShown = false;
 		}
 		return super.handleButtonUp(button);
 	}
 	protected boolean handleDrag() {
+		org.eclipse.draw2d.geometry.Point point = getLocation().getCopy();
+		getFigure().translateToRelative(point);
+		if (!getFigure().containsPoint(point)) {
+			getButtonModel().setArmed(false);
+			if (currTimer != null)
+				currTimer.disable();
+		} else
+			getButtonModel().setArmed(true);
 		return true;
 	}
 	protected boolean handleNativeDragStarted(DragSourceEvent event) {
+		// cancel timer
+		if (currTimer != null) 
+			currTimer.disable();
+		
+		if (getParent() instanceof PaletteStackEditPart && SWT.getPlatform().equals("win32")) { //$NON-NLS-1$
+			Point nds = getPaletteViewer().getControl().toControl(event.display.getCursorLocation());
+			if (mouseDownLoc != null && (Math.abs(nds.x - mouseDownLoc.x) 
+					+ Math.abs(nds.y - mouseDownLoc.y)) < WIN_THRESHOLD) {
+				getButtonModel().setArmed(false);
+				getButtonModel().setPressed(false);
+				((PaletteStackEditPart)getParent()).openMenu();
+				event.doit = false; 
+				menuShown = true;
+				return false;
+			}
+		}
+
 		getButtonModel().setPressed(false);
 		getButtonModel().setArmed(false);
 		return true;
