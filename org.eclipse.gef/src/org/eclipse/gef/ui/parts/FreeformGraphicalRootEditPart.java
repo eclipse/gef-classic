@@ -6,9 +6,8 @@ package org.eclipse.gef.ui.parts;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import java.util.Collection;
-
 import org.eclipse.draw2d.*;
+
 import org.eclipse.gef.*;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.UnexecutableCommand;

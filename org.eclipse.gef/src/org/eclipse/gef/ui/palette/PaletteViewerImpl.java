@@ -13,11 +13,11 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.draw2d.ButtonGroup;
+
 import org.eclipse.gef.*;
 import org.eclipse.gef.palette.*;
-import org.eclipse.gef.ui.palette.customize.*;
+import org.eclipse.gef.ui.palette.customize.PaletteCustomizerDialog;
 import org.eclipse.gef.ui.parts.PaletteViewerKeyHandler;
-import org.eclipse.jface.viewers.*;
 
 public class PaletteViewerImpl
 	extends org.eclipse.gef.ui.parts.GraphicalViewerImpl
