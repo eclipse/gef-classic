@@ -9,9 +9,9 @@ package org.eclipse.draw2d;
 import org.eclipse.swt.graphics.Font;
 
 /**
- * Labeled Borders have a text message somewhere on them. The font for the text can be
- * set. Labeled borders should not change their Insets when the label changes, Therefore,
- * figures using this border should repaint() when updating the label, and revalidate()
+ * LabeledBorders have a text message somewhere on them. The Font for the text can be set.
+ * LabeledBorders should not change their Insets when the label changes, therefore,
+ * Figures using this Border should repaint() when updating the label, and revalidate()
  * when changing the Font.
  */
 public interface LabeledBorder 
@@ -19,19 +19,19 @@ public interface LabeledBorder
 {
 
 /**
- * Returns the label for this border.
- * @return The label for this border
+ * Returns the label for this Border.
+ * @return The label for this Border
  */
 String getLabel();
 
 /**
- * Sets the font for the label.
- * @param f The font to be set
+ * Sets the Font for the label.
+ * @param f The Font to be set
  */
 void setFont(Font f);
 
 /**
- * Sets the text to be displayed as the label for this border.
+ * Sets the text to be displayed as the label for this Border.
  * @param l The text
  */
 void setLabel(String l);

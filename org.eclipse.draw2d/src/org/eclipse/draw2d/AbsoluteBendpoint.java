@@ -9,7 +9,8 @@ package org.eclipse.draw2d;
 import org.eclipse.draw2d.geometry.Point;
 
 /**
- * A Point that implements Bendpoint, used by bendable {@link Connection Connections}.
+ * AbsoluteBendpoint is a Bendpoint that defines its location simply as its X and Y
+ * coordinates. It is used by bendable {@link Connection Connections}. 
  */
 public class AbsoluteBendpoint 
 	extends Point 
@@ -27,8 +28,8 @@ public AbsoluteBendpoint(Point p) {
 
 /**
  * Creates a new AbsoluteBendpoint at the Point (x,y).
- * @param x x coordinate
- * @param y y coordinate
+ * @param x The X coordinate
+ * @param y The Y coordinate
  * @since 2.0
  */
 public AbsoluteBendpoint(int x, int y) {
@@ -36,9 +37,7 @@ public AbsoluteBendpoint(int x, int y) {
 }
 
 /**
- * Returns the location.
- * @since 2.0
- * @return Returns the location
+ * @see org.eclipse.draw2d.Bendpoint#getLocation()
  */
 public Point getLocation() {
 	return this;

@@ -8,15 +8,21 @@ package org.eclipse.draw2d;
 
 import org.eclipse.draw2d.geometry.Rectangle;
 
+/**
+ * Provides a {@link org.eclipse.draw2d.Graphics} object for painting.
+ */
 public interface GraphicsSource {
 
 /**
- * returns an IGraphics for the Rectangular region requested
+ * Returns a Graphics for the rectangular region requested. May return <code>null</code>.
+ * @param region The rectangular region
+ * @return A new Graphics object for the given region
  */
 Graphics getGraphics(Rectangle region);
 
 /**
- * tells the GraphicsSource that you have finished using that region.
+ * Tells the GraphicsSource that you have finished using that region.
+ * @param region The rectangular region that that no longer needs the Graphics
  */
 void flushGraphics(Rectangle region);
 

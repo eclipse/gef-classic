@@ -9,7 +9,8 @@ package org.eclipse.draw2d;
 import org.eclipse.draw2d.geometry.*;
 
 /**
- * 
+ * A Border is a graphical decoration that is painted just inside the outer edge of a
+ * Figure. 
  */
 public interface Border {
 
@@ -41,7 +42,7 @@ boolean isOpaque();
  * own insets.  More specifically, Border <i>b</i> should paint inside the rectangle:
  * figure.getBounds().getCropped(insets) and outside of the rectangle:
  * figure.getBounds().getCropped(insets).getCropped(getInsets()) where <i>inside</i> is
- * defined as rectangle.contains(x,y).
+ * defined as {@link Rectangle#contains(int, int)}.
  * 
  * @param figure The figure this border belongs to
  * @param graphics The graphics object used for painting
