@@ -2,14 +2,40 @@ package org.eclipse.graph;
 
 import java.util.Random;
 
-
 class RankSorter {
 
-Random flipflop = new Random(314159);
+Random flipflop = new Random(3);
 Node node;
 double rankSize, prevRankSize, nextRankSize;
+int currentRow;
+Rank rank;
+double progress;
+DirectedGraph g;
 
-double evaluateIncoming(double progress) {
+protected void assignIncomingSortValues() {
+	rankSize = rank.total;
+	prevRankSize = g.ranks.getRank(currentRow - 1).total;
+	if (currentRow < g.ranks.size() - 1)
+		nextRankSize = g.ranks.getRank(currentRow + 1).total;
+	for (int n = 0; n<rank.count(); n++) {
+		node = rank.getNode(n);
+		sortValueIncoming(g, currentRow, progress);
+	}
+}
+
+protected void assignOutgoingSortValues() {
+	rankSize = rank.total;
+	prevRankSize = g.ranks.getRank(currentRow + 1).total;
+	if (currentRow > 1)
+		nextRankSize = g.ranks.getRank(currentRow - 1).total;
+	
+	for (int n = 0; n < rank.count(); n++) {
+		node = rank.getNode(n);
+		sortValueOutgoing(currentRow, progress);
+	}
+}
+
+double evaluateNodeIncoming() {
 	boolean change = false;
 	EdgeList incoming = node.incoming;
 	do {
@@ -41,7 +67,7 @@ double evaluateIncoming(double progress) {
 		if (dl > dr)
 			return r;
 	}
-	if (progress > 0.24 && progress < 0.75) {
+	if (progress > 0.25 && progress < 0.75) {
 		if (flipflop.nextBoolean())
 			return (l + l + r)/3.0;
 		else
@@ -50,7 +76,7 @@ double evaluateIncoming(double progress) {
 	return (l + r) / 2.0;
 }
 
-double evaluateOutgoing(double progress) {
+double evaluateNodeOutgoing() {
 	boolean change = false;
 	EdgeList outgoing = node.outgoing;
 	do {
@@ -80,7 +106,7 @@ double evaluateOutgoing(double progress) {
 		if (dl > dr)
 			return r;
 	}
-	if (progress > 0.24 && progress < 0.75) {
+	if (progress > 0.25 && progress < 0.75) {
 		if (flipflop.nextBoolean())
 			return (l + l + r)/3.0;
 		else
@@ -89,49 +115,47 @@ double evaluateOutgoing(double progress) {
 	return (l + r) / 2.0;
 }
 
-public void sortRankOutgoing(DirectedGraph g, Rank rank, int row, double progress) {
-	//Update rank sizes
-	rankSize = rank.total;
-	prevRankSize = g.ranks.getRank(row + 1).total;
-	if (row > 1)
-		nextRankSize = g.ranks.getRank(row - 1).total;
-	
-	for (int n = 0; n < rank.count(); n++) {
-		node = rank.getNode(n);
-		sortValueOutgoing(row, progress);
-	}
+public void sortRankIncoming(DirectedGraph g, Rank rank, int row, double progress) {
+	this.currentRow = row;
+	this.rank = rank;
+	this.progress = progress;
+	assignIncomingSortValues();
 	rank.sort();
+	postSort();
+}
+
+public void init(DirectedGraph g) {
+	this.g = g;
+}
+
+protected void postSort() {
 	rank.assignIndices();
 }
 
-public void sortRankIncoming(DirectedGraph g, Rank rank, int row, double progress) {
-	rankSize = rank.total;
-	prevRankSize = g.ranks.getRank(row - 1).total;
-	if (row < g.ranks.size() - 1)
-		nextRankSize = g.ranks.getRank(row + 1).total;
-	for (int n = 0; n<rank.count(); n++) {
-		node = rank.getNode(n);
-		sortValueIncoming(g, row, progress);
-	}
+public void sortRankOutgoing(DirectedGraph g, Rank rank, int row, double progress) {
+	this.currentRow = row;
+	this.rank = rank;
+	this.progress = progress;
+	assignOutgoingSortValues();
 	rank.sort();
-	rank.assignIndices();
+	postSort();
 }
 
 void sortValueIncoming(DirectedGraph g, int row, double progress) {
-	node.sortValue = evaluateIncoming(progress);
+	node.sortValue = evaluateNodeIncoming();
 	if (progress == 0.0 && !(node instanceof VirtualNode))
 		node.sortValue = -1;
-	double value = evaluateOutgoing(progress);
+	double value = evaluateNodeOutgoing();
 	if (value < 0)
 		value = node.index * nextRankSize / rankSize;
 	node.sortValue += value * progress;
 }
 
 void sortValueOutgoing(int row, double progress) {
-	node.sortValue = evaluateOutgoing(progress);
+	node.sortValue = evaluateNodeOutgoing();
 	if (progress == 0.0 && !(node instanceof VirtualNode))
 		node.sortValue = -1;
-	double value = evaluateIncoming(progress);
+	double value = evaluateNodeIncoming();
 	if (value < 0)
 		value = node.index * nextRankSize / rankSize;
 	node.sortValue += value * progress;
