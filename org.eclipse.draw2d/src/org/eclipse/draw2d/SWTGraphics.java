@@ -8,10 +8,10 @@ package org.eclipse.draw2d;
 
 import java.util.*;
 
+import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.draw2d.geometry.*;
@@ -229,18 +229,8 @@ public void fillText(String s, int x, int y) {
 	gc.drawText(s, x + translateX, y + translateY, false);
 }
 
-public int getAdvanceWidth(char c){
-	checkText();
-	return gc.getAdvanceWidth(c);
-}
-
 public Color getBackgroundColor(){
 	return currentState.bgColor;
-}
-
-public int getCharWidth(char c){
-	checkText();
-	return gc.getCharWidth(c);
 }
 
 public Rectangle getClip(Rectangle rect){
@@ -267,18 +257,6 @@ public int getLineStyle(){
 
 public int getLineWidth(){
 	return currentState.lineWidth;
-}
-
-public Dimension getStringExtent(String text){
-	checkText();
-	org.eclipse.swt.graphics.Point p = gc.stringExtent(text);
-	return new Dimension (p.x, p.y);
-}
-
-public Dimension getTextExtent(String text){
-	checkText();
-	org.eclipse.swt.graphics.Point p = gc.textExtent(text);
-	return new Dimension(p.x,p.y);
 }
 
 public boolean getXORMode(){

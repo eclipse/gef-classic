@@ -85,9 +85,11 @@ public abstract void fillRoundRectangle(Rectangle r, int arcWidth, int arcHeight
 
 public abstract void drawText(String s, int x, int y);
 public abstract void drawString(String s, int x, int y);
+
 public final void drawString(String s, Point p){
 	drawString(s, p.x, p.y);
 }
+
 public final void drawText(String s, Point p){
 	drawText(s, p.x, p.y);
 }
@@ -95,23 +97,26 @@ public final void drawText(String s, Point p){
 public final void fillString(String s, Point p){
 	fillString(s, p.x, p.y);
 }
+
 public abstract void fillString(String s, int x, int y);
+
 public final void fillText(String s, Point p){
 	fillText(s, p.x, p.y);
 }
+
 public abstract void fillText(String s, int x, int y);
 
-public abstract int getAdvanceWidth(char c);
+public final void getAdvanceWidth(char c) {}
 public abstract Color getBackgroundColor();
-public abstract int getCharWidth(char c);
+public final void getCharWidth(char c){}
 public abstract Rectangle getClip(Rectangle rect);
 public abstract Font getFont();
 public abstract FontMetrics getFontMetrics();
 public abstract Color getForegroundColor();
 public abstract int getLineStyle();
 public abstract int getLineWidth();
-public abstract Dimension getStringExtent(String s);
-public abstract Dimension getTextExtent(String s);
+public final void getStringExtent(String s){}
+public final void getTextExtent(String s){}
 public abstract boolean getXORMode();
 
 public abstract void popState();
