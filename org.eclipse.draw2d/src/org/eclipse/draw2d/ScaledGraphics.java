@@ -214,12 +214,16 @@ public int getLineStyle() {
 }
 
 public int getLineWidth() {
-	return graphics.getLineWidth();
+	return getLocalLineWidth();
 }
 
 private Font getLocalFont(){
 	return localFont;
 }
+
+private int getLocalLineWidth() {
+	return localLineWidth;
+}	
 
 public boolean getXORMode() {
 	return graphics.getXORMode();
@@ -310,6 +314,10 @@ private void setLocalFont(Font f){
 	localFont = f;
 	graphics.setFont(zoomFont(f));
 }
+
+private void setLocalLineWidth(int width) {
+	localLineWidth = width;
+}	
 
 public void setXORMode(boolean b) {
 	graphics.setXORMode(b);
