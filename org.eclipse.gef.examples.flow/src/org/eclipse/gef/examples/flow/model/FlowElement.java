@@ -54,7 +54,7 @@ public Object getPropertyValue(Object propName){
 }
 
 public boolean isPropertySet(Object propName){
-	return isPropertySet((String)propName);
+	return true;
 }
 
 private void readObject(ObjectInputStream in)throws IOException, ClassNotFoundException {

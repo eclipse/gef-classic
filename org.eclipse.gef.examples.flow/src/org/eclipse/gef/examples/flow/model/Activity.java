@@ -99,10 +99,6 @@ public int getSortIndex() {
 	return sortIndex;
 }
 
-public boolean isPropertySet() {
-	return true;	
-}
-
 public void removeInput(Transition transition) {
 	inputs.remove(transition);
 	fireStructureChange(INPUTS,transition);
