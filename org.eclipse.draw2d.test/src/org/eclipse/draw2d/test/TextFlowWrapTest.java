@@ -10,13 +10,8 @@
  *******************************************************************************/
 package org.eclipse.draw2d.test;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Iterator;
-
-import junit.framework.TestCase;
-
-import org.eclipse.swt.graphics.Font;
 
 import org.eclipse.draw2d.FigureUtilities;
 import org.eclipse.draw2d.text.FlowPage;
@@ -28,8 +23,7 @@ import org.eclipse.draw2d.text.TextFragmentBox;
 public class TextFlowWrapTest
 	extends BaseTestCase 
 {
-
-static final Font TAHOMA = new Font(null, "Tahoma", 8, 0);//$NON-NLS-1$
+	
 // used to ensure that there are no extra fragments
 static final String TERMINATE = "#@terminate@#!";
 // used to ensure that two consecutive fragments are on the same line
@@ -67,6 +61,12 @@ protected void doTest2(String string1, String string2, String widthString, Strin
 	for (; index < answers.length; index++) {
 		String answer = answers[index];
 		if (answer == TERMINATE) {
+			if (frags.hasNext()) {
+				TextFragmentBox box = (TextFragmentBox)frags.next();
+				assertTrue("Failed on: " + string1 + string2 + " Found extra fragment: -" 
+						+ string1.substring(box.offset, box.offset + box.length) + "-\n",
+						false);
+			}
 			return;
 		} else if (answer == TRUNCATED) {
 			assertTrue("Failed on: " + string1 + string2 + "Fragment is not truncated\n",
@@ -100,13 +100,13 @@ protected void doTest2(String string1, String string2, String widthString, Strin
 			assertEquals("Failed on: \"" + string1 +"\" + \"" + string2
 					+ "\" Fragment expected: \"" + answer + "\" Got: \""
 					+ string1.substring(frag.offset, frag.offset + frag.length) + "\"\n",
-					string1.substring(frag.offset, frag.offset + frag.length), answer);
+					answer, string1.substring(frag.offset, frag.offset + frag.length));
 			return;
 		} else {
 			assertEquals("Failed on: \"" + string1 +"\" + \"" + string2
 					+ "\" Fragment expected: \"" + answer + "\" Got: \""
 					+ string2.substring(frag.offset, frag.offset + frag.length) + "\"\n",
-					string2.substring(frag.offset, frag.offset + frag.length), answer);
+					answer, string2.substring(frag.offset, frag.offset + frag.length));
 			return;
 		}
 	}
@@ -117,49 +117,52 @@ protected void doTest2(String string1, String string2, String widthString, Strin
 }
 
 protected void runGenericTests() {
-	doTest( "tester abc", "tester", new String[] {"tester", "abc"});
-	doTest( "tester abc", "tester a", new String[] {"tester", "abc"});
-	doTest( "tester abc", "tester ab", new String[] {"tester", "abc"});
+	doTest( "tester abc", "tester", new String[] {"tester", "abc", TERMINATE});
+	doTest( "tester abc", "tester a", new String[] {"tester", "abc", TERMINATE});
+	doTest( "tester abc", "tester ab", new String[] {"tester", "abc", TERMINATE});
 	doTest( "tester ab", "tester", new String[] {"tester", "ab"} );
 	doTest( "tester ab c", "tester", new String[] {"tester", "ab c"} );			
 	doTest( "test\r ab c", "test ab c", new String[] {"test"," ab c"} );
 	doTest( "test\n ab c", "test ab c", new String[] {"test"," ab c"} );
-	doTest( "test\r\n abc def", "test abc def", new String[] {"test", " abc def"});
+	doTest( "test\r\n abc def", "test abc def", new String[] {"test", " abc def", TERMINATE});
 	doTest( "\rtester abc def", "tester", new String[] {"", "tester" });
 	doTest( "\r\ntester abc def", "tester", new String[] {"", "tester" });
 	doTest( "\ntester abc def", "tester", new String[] {"", "tester"} );
-	doTest( "tester abc\n def", "tester", new String[] {"tester", "abc", " def"});
-	doTest( "tester abc\r\n def", "tester", new String[] {"tester", "abc", " def"});
-	doTest( "tester abc\r def", "tester", new String[] {"tester", "abc", " def"});
-	doTest( "tester abc def\r\n", "tester", new String[] {"tester", "abc", "def"} );
-	doTest( "tester abc def\r", "tester", new String[] {"tester", "abc", "def"});
-	doTest( "tester abc def\n", "tester", new String[] {"tester", "abc", "def"} );
-	doTest( "blah blah blah", "blah blah", new String[] {"blah blah", "blah"});
+	doTest( "tester abc\n def", "tester", new String[] {"tester", "abc", " def", TERMINATE });
+	doTest( "tester abc\r\n def", "tester", new String[] {"tester", "abc", " def", TERMINATE });
+	doTest( "tester abc\r def", "tester", new String[] {"tester", "abc", " def", TERMINATE });
+	doTest( "tester abc def\r\n", "tester", new String[] {"tester", "abc", "def", TERMINATE} );
+	doTest( "tester abc def\r", "tester", new String[] {"tester", "abc", "def", TERMINATE });
+	doTest( "tester abc def\n", "tester", new String[] {"tester", "abc", "def", TERMINATE} );
+	doTest( "blah blah blah", "blah blah", new String[] {"blah blah", "blah", TERMINATE});
 	doTest( "blah blah blah", "blah", new String[] {"blah", "blah"});
-	doTest( "h hh h", "h hh", new String[] {"h hh", "h", });
+	doTest( "h hh h", "h hh", new String[] {"h hh", "h", TERMINATE});
 	doTest( "h hh h", "h hh ", new String[] {"h hh", "h"} );
-	doTest( "x x x  x ", "x x x ", new String[] {"x x x ", "x "});
-	doTest( "x x x  x", "x x x", new String[] {"x x x", " x"});
+	doTest( "x x x  x ", "x x x ", new String[] {"x x x ", "x ", TERMINATE});
+	doTest( "x x x  x", "x x x", new String[] {"x x x", " x", TERMINATE});
 	doTest( "\n\nbreak", "break", new String[] {"", ""});
 	doTest( "\r\rbreak", "break", new String[] {"", ""});
-	doTest( "\r\n\r\nbreak", "break", new String[] {"", "", "break"});
-	doTest("crow ", "crow", new String[] {"crow"});
+	doTest( "\r\n\r\nbreak", "break", new String[] {"", "", "break", TERMINATE});
+	doTest("crow ", "crow", new String[] {"crow", TERMINATE});
 	
 	doTest("abc - -moreango", "abc", new String[] {"abc", NEWLINE, "- -", NEWLINE});
-	doTest("abc def ghi", "abc def g", new String[] {"abc def", "ghi"});
-	doTest("blah blah ", "blah blah", new String[] {"blah blah"});
-	doTest("testers testers testers ab c", "testers testers test", new String[] {"testers testers", "testers ab c"});
-	doTest("testers\r ab c", "testers", new String[] {"testers", " ab c"});
-//	doTest("ab\tcd", "ab", new String[] {"ab", "cd"});
-	doTest("trailingSpace  \n  ", "trailingSpace", new String[] {"trailingSpace", " ", "  "});
-	doTest("test \r b", "test", new String[] {"test", "", " b"});
-	doTest("   \n   \n   \n   ", "wwwwww", new String[] {"   ", "   ", "   ", "   "});
-	doTest("   \n  \n   ", " ", new String[] {" ", " ", " ", "", " ", " "});
-	doTest("\r\r\n", "wwwwwww", new String[] {"", ""});
-	doTest("", "www", new String[] {TERMINATE});
+	doTest("abc def ghi", "abc def g", new String[] {"abc def", "ghi", TERMINATE});
+	doTest("blah blah ", "blah blah", new String[] {"blah blah", TERMINATE});
+	doTest("testers testers testers ab c", "testers testers test", new String[] {"testers testers", "testers ab c", TERMINATE});
+	doTest("testers\r ab c", "testers", new String[] {"testers", " ab c", TERMINATE});
+	doTest("trailingSpace  \n  ", "trailingSpace", new String[] {"trailingSpace", " ", "  ", TERMINATE});
+	doTest("test \r b", "test", new String[] {"test", "", " b", TERMINATE});
+	doTest("   \n   \n   \n   ", "wwwwww", new String[] {"   ", "   ", "   ", "   ", TERMINATE});
+	doTest("   \n  \n   ", " ", new String[] {" ", " ", " ", "", " ", " ", TERMINATE});
+	doTest("\r\r\n", "wwwwwww", new String[] {"", "", TERMINATE});
+	doTest("", "www", new String[] {"", TERMINATE});
 	// empty string means availableWidth == 1
-	doTest("", "", new String[] {TERMINATE});
+	doTest("", "", new String[] {"", TERMINATE});
 	doTest("a cow\naha", "a cow", new String[] {"a cow", "aha", TERMINATE});
+//	doTest(".  a", ". ", new String[] {".", NEWLINE, "a"});
+	doTest("more.  Fun", "more.", new String[] {"more.", NEWLINE, "Fun", TERMINATE});
+	doTest("a one. two", "a one", new String[] {"a", NEWLINE, "one.", NEWLINE, "two"});
+	doTest("a one-two", "a one", new String[] {"a", NEWLINE, "one-", NEWLINE, "two"});
 	// chinese characters
 	doTest("\u7325\u7334\u7329", "\u7325\u7334", new String[]{"\u7325\u7334", "\u7329", TERMINATE});
 	doTest("\u7325\u7334\u7329", "\u7325", new String[]{"\u7325", "\u7334", "\u7329", TERMINATE});
@@ -182,14 +185,13 @@ protected void runGenericTests() {
 	doTest2("foo  bar", "abc", "foo  barab", new String[] {"foo ", NEWLINE, "bar", SAMELINE, "abc", TERMINATE});
 	doTest2("abd", "\u7325", "abd", new String[] {"abd", NEWLINE, "\u7325"});
 
-	doTest("a one. two", "a one", new String[] {"a", NEWLINE, "one.", NEWLINE, "two"});
-	doTest("a one-two", "a one", new String[] {"a", NEWLINE, "one-", NEWLINE, "two"});
 	doTest2("a abc", "-def", "a abc", new String[] {"a", NEWLINE, "abc", SAMELINE, "-", NEWLINE, "def", TERMINATE});
 	
 	doTest2("alpha\n", "bravo", null, new String[] {"alpha", NEWLINE, "", SAMELINE, "bravo", TERMINATE});
 }
 
 protected void runHardWrappingTests() {
+	doTest("ab\tcd", "ab", new String[] {"ab", NEWLINE, "cd", TERMINATE});
 	doTest("ahahahah", "aha", new String[] {"ahahahah", TERMINATE});
 	doTest("Flow    Container  ", " ", new String[] {"Flow", " ", "", "Container", " ", TERMINATE});
 	doTest("aha \nb \r c ", "", new String[] {"aha", "", "b", "", "", "c", TERMINATE});
@@ -203,6 +205,7 @@ protected void runHardWrappingTests() {
 }
 
 protected void runSoftWrappingTests() {
+	doTest("ab\tcd", "ab", new String[] {"ab", NEWLINE, "cd", TERMINATE});
 	doTest( "tester ab", "teste", new String[] {"teste", NEWLINE, "r ab", TERMINATE} );
 	doTest("aha \nb \r c ", "", new String[] {"a", "h", "a", "", "b", "", "", "c", TERMINATE});
 	doTest("\u0634abcd", "\u0634abc", new String[] {"\u0634", SAMELINE, "abc", NEWLINE, "d", TERMINATE});
@@ -211,6 +214,7 @@ protected void runSoftWrappingTests() {
 }
 
 protected void runTruncatedWrappingTests() {
+	doTest("ab\tcd", "ab", new String[] {"", TRUNCATED, NEWLINE, "", TRUNCATED, TERMINATE});
 	doTest("Flowing  Container", "Flo...", new String[] {"Flo", "", "Co", TERMINATE});
 	doTest("Flowing C", "Flo...", new String[] {"Flo", "C", TERMINATE});
 	doTest("Fooooooo", "...", new String[] {"", TRUNCATED, TERMINATE});
