@@ -92,17 +92,16 @@ public DeferredUpdateManager(GraphicsSource gs) {
  * @param h the height of the dirty region
  */
 public synchronized void addDirtyRegion(IFigure figure, int x, int y, int w, int h) {
-	if (!figure.isShowing())
+	if (w == 0 || h == 0 || !figure.isShowing())
 		return;
-	if (w == 0 || h == 0)
-		return;
-	Rectangle rect;
-	rect = (Rectangle)dirtyRegions.get(figure);
+
+	Rectangle rect = (Rectangle)dirtyRegions.get(figure);
 	if (rect == null) {
 		rect = new Rectangle(x, y, w, h);
 		dirtyRegions.put(figure, rect);
 	} else
 		rect.union(x, y, w, h);
+	
 	queueWork();
 }
 
@@ -215,11 +214,11 @@ protected void repairDamage() {
 
 	if (!dirtyRegions.isEmpty()) {
 		firePainting(damage, dirtyRegions);
-		dirtyRegions.clear();
+		dirtyRegions = new HashMap();
 	}
 	
 	if (damage != null && !damage.isEmpty()) {
-		//System.out.println(damage);
+		//ystem.out.println(damage);
 		Graphics graphics = getGraphics(damage);
 		if (graphics != null) {
 			root.paint(graphics);
