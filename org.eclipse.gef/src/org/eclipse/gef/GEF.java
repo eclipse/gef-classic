@@ -37,39 +37,38 @@ public static boolean
 	DebugToolStates = false,
 	DebugDND = false;
 
-static public void clearConsole(){
+public static void clearConsole() {
 	if (text == null) return;
 	text.setText("");//$NON-NLS-1$
 }
 
-static public void setConsole(Text textBox){
-	msgCount=0;
+public static void setConsole(Text textBox) {
+	msgCount = 0;
 	formatter.setMinimumIntegerDigits(2);
 	formatter.setMaximumFractionDigits(0);
 	text = textBox;
 }
 
-static public void debugPop(){
+public static void debugPop() {
 	tab--;
 }
 
-static public void debugPush(String heading){
+public static void debugPush(String heading) {
 	debug(heading);
 	tab++;
 }
 
-static public void debug(String message){
+public static void debug(String message) {
 	String lineNumber = formatter.format(new Long(msgCount++));
 	msgCount %= 100;
 	String indent = "";//$NON-NLS-1$
-	for (int i=0; i<tab; i++)
+	for (int i = 0; i < tab; i++)
 		indent += TAB;
-	if(text!=null)text.append(
-		'\n' + lineNumber + '\t' + indent + message);
+	if (text != null)
+		text.append('\n' + lineNumber + '\t' + indent + message);
 }
 
-static public void hack(){}
-static public void optimize(){}
-static public void ToDo(){}
+public static void hack() { }
+public static void optimize() { }
 
 }
