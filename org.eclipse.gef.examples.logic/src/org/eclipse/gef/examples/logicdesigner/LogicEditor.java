@@ -541,10 +541,6 @@ protected void createActions() {
 	registry.registerAction(action);
 	getSelectionActions().add(action.getId());
 	
-	action = new MatchSizeAction(this);
-	registry.registerAction(action);
-	getSelectionActions().add(action.getId());
-	
 	action = new MatchHeightAction(this);
 	registry.registerAction(action);
 	getSelectionActions().add(action.getId());
