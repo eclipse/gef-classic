@@ -28,6 +28,7 @@ protected PolylineConnection getConnectionFigure(){
 
 protected void removeSelectionHandles(){
 	super.removeSelectionHandles();
+	getConnectionFigure().setLineWidth(0);
 }
 
 }
