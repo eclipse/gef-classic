@@ -113,21 +113,17 @@ protected Point getNavigationPoint(IFigure figure) {
 }
 
 /**
- * Returns a list of {@link org.eclipse.gef.EditPart EditParts}
- * eligible for selection.
+ * @return a list of {@link org.eclipse.gef.EditPart EditParts} eligible for selection.
  */
 protected List getNavigationSiblings() {
 	ArrayList siblingsList = new ArrayList();
-	if (getFocusEditPart().getParent() instanceof GroupEditPart
-			|| getFocusEditPart().getParent() instanceof PaletteStackEditPart)		
-		buildNavigationList(
-			getFocusEditPart().getParent().getParent(),
-			getFocusEditPart().getParent().getParent(),
-			siblingsList,
-			getFocusEditPart().getParent().getParent());
-	else
-		buildNavigationList(getFocusEditPart().getParent(), getFocusEditPart().getParent(), siblingsList, 
-				getFocusEditPart().getParent());
+	EditPart focusPart = getFocusEditPart();
+	EditPart parent = focusPart.getParent();
+	if (parent instanceof GroupEditPart || parent instanceof PaletteStackEditPart) {	
+		EditPart grandParent = parent.getParent();
+		buildNavigationList(grandParent, grandParent, siblingsList, grandParent);
+	} else
+		buildNavigationList(parent, parent, siblingsList, parent); 
 	return siblingsList;
 }
 
@@ -229,15 +225,12 @@ private boolean navigateToNextContainer(KeyEvent event) {
 	EditPart current = getFocusEditPart();
 	while (current != null) {
 		if (current instanceof DrawerEditPart 
-				|| current instanceof GroupEditPart
-				|| current instanceof PaletteStackEditPart ) {
+				|| current instanceof GroupEditPart) {
 			List siblings = current.getParent().getChildren();
 			int index = siblings.indexOf(current);
 			if (index != -1 && siblings.size() > index + 1) {
 				EditPart part = (EditPart)siblings.get(index + 1);
-				if ((part instanceof GroupEditPart 
-						|| part instanceof PaletteStackEditPart)
-						&& part.getChildren().size() > 0) {					
+				if (part instanceof GroupEditPart && part.getChildren().size() > 0) {					
 					EditPart child = (EditPart)part.getChildren().get(0);
 					navigateTo(child, event);
 				} else
