@@ -89,7 +89,7 @@ protected Cursor getDefaultCursor() {
 /**
  * @see org.eclipse.gef.tools.SelectionTool#handleButtonDown(int)
  */
-public boolean handleButtonDown(int which) {
+protected boolean handleButtonDown(int which) {
 	if (which == 1
 	  && getCurrentViewer().getControl() instanceof FigureCanvas
 	  && stateTransition(PAN, PAN_IN_PROGRESS)) {
@@ -103,7 +103,7 @@ public boolean handleButtonDown(int which) {
 /**
  * @see org.eclipse.gef.tools.SelectionTool#handleButtonUp(int)
  */
-public boolean handleButtonUp(int which) {
+protected boolean handleButtonUp(int which) {
 	if (which == 1 && isSpaceBarDown && stateTransition(PAN_IN_PROGRESS, PAN))
 		return true;
 	else if (which == 1 && stateTransition(PAN_IN_PROGRESS, STATE_INITIAL)) {
