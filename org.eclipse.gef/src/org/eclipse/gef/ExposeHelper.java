@@ -12,7 +12,7 @@ package org.eclipse.gef;
 
 /**
  * An <i>adapter</i> on an <code>EditPart</code> used to expose a descendant contained in
- * that EditPart. <code>EditPartViewer<code> uses this interface to reveal a given
+ * that EditPart. <code>EditPartViewer</code> uses this interface to reveal a given
  * EditPart.
  * <P>An expose helper is obtained by calling {@link EditPart#getAdapter(Class)}. The
  * returned helper is responsible for modifying *only* that EditPart's visuals such that

@@ -35,7 +35,7 @@ import org.eclipse.gef.commands.Command;
  * pick and choose the editing behavior for an EditPart without being bound to its class
  * hierarchy. Code reuse is increased, and code management is easier.
  * <p>
- * IMPORTANT: This interface is <EM>not<EM> intended to be implemented by clients. 
+ * IMPORTANT: This interface is <EM>not</EM> intended to be implemented by clients. 
  * Clients should inherit from {@link org.eclipse.gef.editpolicies.AbstractEditPolicy}.  
  * New methods may be added in the future.
  */
@@ -181,7 +181,7 @@ Command getCommand(Request request);
 EditPart getHost();
 
 /**
- * Returns <code>null</code> or the appropriate <code>EditPart<code> for the specified
+ * Returns <code>null</code> or the appropriate <code>EditPart</code> for the specified
  * <code>Request</code>. In general, this EditPolicy will return its <i>host</i> EditPart
  * if it understands the Request. Otherwise, it will return <code>null</code>.
  * <P>
@@ -201,7 +201,7 @@ EditPart getTargetEditPart(Request request);
 void setHost(EditPart editpart);
 
 /**
- * Shows or updates <i>source feedback<i> for the specified <code>Request</code>. This
+ * Shows or updates <i>source feedback</i> for the specified <code>Request</code>. This
  * method may be called repeatedly for the purpose of updating feedback based on changes
  * to the Request.
  * <P>
