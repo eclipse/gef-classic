@@ -12,8 +12,6 @@ import org.eclipse.jface.util.SafeRunnable;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.swt.dnd.*;
 
-import org.eclipse.draw2d.geometry.Point;
-
 import org.eclipse.gef.GEF;
 
 /**
@@ -39,9 +37,6 @@ public class DelegatingDropAdapter
 private List listeners = new ArrayList();
 private TransferDropTargetListener currentListener;
 private int origDropType;
-private Point prevMouseLoc = new Point();
-private long hoverStart = -1;
-private boolean hovering = false;
 
 /**
  * Adds the given TransferDropTargetListener.
@@ -63,12 +58,8 @@ public void dragEnter(final DropTargetEvent event) {
 	Platform.run(new SafeRunnable(){
 		public void run() throws Exception {
 			updateCurrentListener(event);
-			if (getCurrentListener() != null)
-				getCurrentListener().dragEnter(event);
 		}
 	});
-	prevMouseLoc.x = event.x;
-	prevMouseLoc.y = event.y;
 }
 
 /**
@@ -80,14 +71,7 @@ public void dragEnter(final DropTargetEvent event) {
 public void dragLeave(final DropTargetEvent event) {
 	if (GEF.DebugDND)
 		GEF.debug("Drag Leave: " + toString()); //$NON-NLS-1$
-	if (getCurrentListener() != null)
-		Platform.run(new SafeRunnable(){
-			public void run() throws Exception {
-				getCurrentListener().dragLeave(event);
-			}
-		});
-	setCurrentListener(null);
-	prevMouseLoc = null;
+	setCurrentListener(null, event);
 }
 
 /**
@@ -122,31 +106,14 @@ public void dragOperationChanged(final DropTargetEvent event) {
  */
 public void dragOver(final DropTargetEvent event) {
 	updateCurrentListener(event);
-	if (isMouseMoving(event)) {
-		hovering = false;
-		hoverStart = -1;
-		if (getCurrentListener() != null) {
-			Platform.run(new SafeRunnable() {
-				public void run() throws Exception {
-					getCurrentListener().dragOver(event);
-				}
-			});
-		} else {
-			event.detail = DND.DROP_NONE;
-		}
-	} else {
-		if (hovering)
-			return;
-		long currentTime = System.currentTimeMillis();
-		if (hoverStart == -1) {
-			hoverStart = currentTime;
-		} else if (currentTime - hoverStart > 400) {
-			getCurrentListener().dragHover(event);
-			hovering = true;
-		}
-	}
-	prevMouseLoc.x = event.x;
-	prevMouseLoc.y = event.y;
+	if (getCurrentListener() != null)
+		Platform.run(new SafeRunnable() {
+			public void run() throws Exception {
+				getCurrentListener().dragOver(event);
+			}
+		});
+	else
+		event.detail = DND.DROP_NONE;
 }
 
 /**
@@ -163,7 +130,7 @@ public void drop(final DropTargetEvent event) {
 			updateCurrentListener(event);
 			if (getCurrentListener() != null) 
 				getCurrentListener().drop(event);
-			setCurrentListener(null);
+			setCurrentListener(null, event);
 		}
 	});
 }
@@ -220,33 +187,29 @@ public boolean isEmpty() {
 	return listeners.isEmpty();
 }
 
-private boolean isMouseMoving(DropTargetEvent event) {
-	return prevMouseLoc.x != event.x || prevMouseLoc.y != event.y;
-}
-
 /**
  * Removes the given <code>TransferDropTargetListener</code>.
  * @param listener the listener
  */
 public void removeDropTargetListener(TransferDropTargetListener listener) {
 	if (currentListener == listener)
-		setCurrentListener(null);
+		currentListener = null;
 	listeners.remove(listener);
 }
 
 /**
  * Returns <code>true</code> if the new listener is different than the previous
  */
-private boolean setCurrentListener(TransferDropTargetListener listener) {
+private boolean setCurrentListener(TransferDropTargetListener listener, DropTargetEvent event) {
 	if (currentListener == listener)
 		return false;
 	if (currentListener != null)
-		currentListener.deactivate();
+		currentListener.dragLeave(event);
 	currentListener = listener;
 	if (GEF.DebugDND)
 		GEF.debug("Current listener " + listener); //$NON-NLS-1$
 	if (currentListener != null)
-		currentListener.activate();
+		currentListener.dragEnter(event);
 	return true;
 }
 
@@ -260,10 +223,11 @@ private void setOriginalDropType(int type) {
 	origDropType = type;
 }
 
-/**
- * Updates the current listener to one that can handle the drop.  There can be many listeners 
- * and each listener may be able to handle many TransferData types.  The first listener found 
- * that can handle a drop of one of the given TransferData types will be selected.
+/*
+ * Updates the current listener to one that can handle the drop. There can be many
+ * listeners and each listener may be able to handle many TransferData types. The first
+ * listener found that can handle a drop of one of the given TransferData types will be
+ * selected.
  */
 private void updateCurrentListener(DropTargetEvent event) {
 	int temp = event.detail;
@@ -276,14 +240,14 @@ private void updateCurrentListener(DropTargetEvent event) {
 	while (iter.hasNext()) {
 		TransferDropTargetListener listener = (TransferDropTargetListener)iter.next();
 		if (listener.isEnabled(event)) {
-			//If the listener stays the same, undo the reverted detail that was done
-			//At the beginning of this method
-			if (!setCurrentListener(listener))
+			// If the listener stays the same, undo the reverted detail that was done
+			// at the beginning of this method.
+			if (!setCurrentListener(listener, event))
 				event.detail = temp;
 			return;
 		}
 	}
-	setCurrentListener(null);
+	setCurrentListener(null, event);
 	event.detail = DND.DROP_NONE;
 }
 
