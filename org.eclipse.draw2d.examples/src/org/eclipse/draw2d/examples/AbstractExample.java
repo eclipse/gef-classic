@@ -34,6 +34,8 @@ protected void run(){
 	shell.setLayout(new GridLayout(2, false));
 	setFigureCanvas(new FigureCanvas(shell));
 	getFigureCanvas().setContents(contents = getContents());
+	getFigureCanvas().getViewport().setContentsTracksHeight(true);
+	getFigureCanvas().getViewport().setContentsTracksWidth(true);
 	getFigureCanvas().setLayoutData(new GridData(GridData.FILL_BOTH));	
 	hookShell();
 	shell.pack();

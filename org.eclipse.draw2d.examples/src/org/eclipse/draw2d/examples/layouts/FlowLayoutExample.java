@@ -1,15 +1,14 @@
-package org.eclipse.draw2d.examples;
+package org.eclipse.draw2d.examples.layouts;
 
+import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.examples.AbstractExample;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.*;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.widgets.Button;
-
-import org.eclipse.draw2d.*;
+import org.eclipse.swt.widgets.Label;
 
 /**
  * @author hudsonr
@@ -57,6 +56,36 @@ protected IFigure getContents() {
 	shape.setSize(50,50);
 	container.add(shape);
 	
+	shape = new Triangle();
+	shape.setBackgroundColor(ColorConstants.black);
+	shape.setSize(50,50);
+	container.add(shape);
+
+	shape = new RoundedRectangle();
+	shape.setBackgroundColor(ColorConstants.cyan);
+	shape.setSize(50,50);
+	container.add(shape);
+
+	shape = new RectangleFigure();
+	shape.setBackgroundColor(ColorConstants.darkGreen);
+	shape.setSize(50,50);
+	container.add(shape);
+
+	shape = new Triangle();
+	shape.setBackgroundColor(ColorConstants.orange);
+	shape.setSize(50,50);
+	container.add(shape);
+	
+	shape = new Ellipse();
+	shape.setBackgroundColor(ColorConstants.red);
+	shape.setSize(50,50);
+	container.add(shape);
+
+	shape = new RoundedRectangle();
+	shape.setBackgroundColor(ColorConstants.yellow);
+	shape.setSize(50,50);
+	container.add(shape);
+
 	return container;
 }
 
@@ -122,6 +151,8 @@ protected void hookShell() {
 				contents.revalidate();
 			}
 		});
+		Label spacingLabel = new Label(major, SWT.CENTER);
+		spacingLabel.setText("Spacing");
 	}
 
 	{
@@ -168,6 +199,8 @@ protected void hookShell() {
 				contents.revalidate();
 			}
 		});	
+		Label spacingLabel = new Label(minor, SWT.CENTER);
+		spacingLabel.setText("Spacing");
 	}
 }
 

@@ -1,6 +1,7 @@
-package org.eclipse.draw2d.examples;
+package org.eclipse.draw2d.examples.scrollpane;
 
 import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.examples.*;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
@@ -40,7 +41,7 @@ private InternalFrame newScrollingFrame(String title, IFigure contents){
 	scrollpane.setBorder(new GroupBoxBorder("scrollpane"));
 //	scrollpane.setScrollBarVisibility(scrollpane.ALWAYS);
 	scrollpane.getViewport().setContentsTracksWidth(true);
-	scrollpane.setView(contents);
+	scrollpane.setContents(contents);
 	frame.add(scrollpane);
 	frame.setBounds(new Rectangle(count*20, count*20, 200,140));
 	return frame;

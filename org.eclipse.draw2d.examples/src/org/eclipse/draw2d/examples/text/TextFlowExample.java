@@ -1,4 +1,4 @@
-package org.eclipse.draw2d.examples;
+package org.eclipse.draw2d.examples.text;
 
 import org.eclipse.swt.graphics.Font;
 
@@ -6,6 +6,7 @@ import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.FigureCanvas;
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.examples.AbstractExample;
 import org.eclipse.draw2d.text.*;
 
 /**

@@ -1,4 +1,4 @@
-package org.eclipse.draw2d.examples;
+package org.eclipse.draw2d.examples.text;
 
 import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.text.*;

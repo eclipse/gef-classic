@@ -1,4 +1,4 @@
-package org.eclipse.draw2d.examples;
+package org.eclipse.draw2d.examples.scrollpane;
 
 import org.eclipse.swt.graphics.Cursor;
 

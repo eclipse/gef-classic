@@ -1,4 +1,4 @@
-package org.eclipse.draw2d.examples;
+package org.eclipse.draw2d.examples.printing;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;

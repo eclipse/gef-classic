@@ -1,4 +1,4 @@
-package org.eclipse.draw2d.examples;
+package org.eclipse.draw2d.examples.thumbnail;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
@@ -29,7 +29,7 @@ public static void main(String[] args) {
 	FigureCanvas mainCanvas = new FigureCanvas(mainShell);
 	mainCanvas.setContents(getContents());
 	
-	overviewShell = new Shell(display, SWT.TITLE| SWT.RESIZE | SWT.NO_REDRAW_RESIZE | SWT.NO_BACKGROUND);
+	overviewShell = new Shell(mainShell, SWT.TITLE| SWT.RESIZE | SWT.NO_REDRAW_RESIZE | SWT.NO_BACKGROUND);
 	overviewShell.setText("Overview Shell");
 	overviewShell.setLayout(new FillLayout());
 	LightweightSystem overviewLWS = new LightweightSystem(overviewShell);
