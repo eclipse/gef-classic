@@ -168,7 +168,6 @@ private void invertEdges(DirectedGraph g) {
 	for (int i = 0; i < g.edges.size(); i++) {
 		Edge e = g.edges.getEdge(i);
 		if (getOrderIndex(e.source) > getOrderIndex(e.target)) {
-			System.out.println("We must invert: " + e);
 			e.invert();
 			e.isBackward = true;
 		}	
