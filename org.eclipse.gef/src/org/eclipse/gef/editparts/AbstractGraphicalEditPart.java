@@ -92,9 +92,9 @@ protected abstract class AccessibleGraphicalEditPart
 	/**	 * @see AccessibleEditPart#getState(AccessibleControlEvent)	 */
 	public void getState(AccessibleControlEvent e) {
 		if (getSelected() != EditPart.SELECTED_NONE)
-			e.detail = ACC.STATE_SELECTED;
+			e.detail = ACC.STATE_SELECTED | ACC.STATE_FOCUSED;
 		else
-			e.detail = ACC.STATE_NORMAL;
+			e.detail = ACC.STATE_SELECTABLE | ACC.STATE_FOCUSABLE;
 	}
 }
 
