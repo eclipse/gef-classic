@@ -33,7 +33,6 @@ import org.eclipse.draw2d.PositionConstants;
 
 import org.eclipse.gef.*;
 import org.eclipse.gef.dnd.TemplateTransferDragSourceListener;
-import org.eclipse.gef.internal.GEFMessages;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.ui.actions.*;
 import org.eclipse.gef.ui.palette.PaletteContextMenuProvider;
@@ -167,10 +166,10 @@ private IPartListener partListener = new IPartListener() {
 			return;
 		if (!((FileEditorInput)getEditorInput()).getFile().exists()) {
 			Shell shell = getSite().getShell();
-			String title = GEFMessages.GraphicalEditor_FILE_DELETED_TITLE_UI;
-			String message = GEFMessages.GraphicalEditor_FILE_DELETED_WITHOUT_SAVE_INFO;
-			String[] buttons = { 	GEFMessages.GraphicalEditor_SAVE_BUTTON_UI, 
-						   			GEFMessages.GraphicalEditor_CLOSE_BUTTON_UI };
+			String title = LogicMessages.GraphicalEditor_FILE_DELETED_TITLE_UI;
+			String message = LogicMessages.GraphicalEditor_FILE_DELETED_WITHOUT_SAVE_INFO;
+			String[] buttons = { 	LogicMessages.GraphicalEditor_SAVE_BUTTON_UI, 
+						   			LogicMessages.GraphicalEditor_CLOSE_BUTTON_UI };
 			MessageDialog dialog = new MessageDialog(shell, title, null, message, MessageDialog.QUESTION, buttons, 0);			
 			if (dialog.open() == 0) {
 				if (!performSaveAs())

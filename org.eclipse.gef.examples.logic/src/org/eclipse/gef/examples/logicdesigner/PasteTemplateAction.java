@@ -6,7 +6,6 @@ import org.eclipse.draw2d.geometry.Point;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.commands.Command;
-import org.eclipse.gef.internal.GEFMessages;
 import org.eclipse.gef.requests.CreateRequest;
 import org.eclipse.gef.ui.actions.Clipboard;
 import org.eclipse.gef.ui.actions.GEFActionConstants;
@@ -76,7 +75,7 @@ protected abstract CreateRequest.Factory getFactory(Object template);
  */
 protected void init() {
 	setId(GEFActionConstants.PASTE);
-	setText(GEFMessages.PasteAction_ActionLabelText);
+	setText(LogicMessages.PasteAction_ActionLabelText);
 }
 
 /**
