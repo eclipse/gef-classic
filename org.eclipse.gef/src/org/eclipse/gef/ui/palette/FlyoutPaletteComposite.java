@@ -42,6 +42,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Tracker;
 
 import org.eclipse.jface.action.Action;
@@ -665,9 +666,8 @@ private class DockAction
 	}
 	public void dispose() {
 		// Menu should already be disposed, but this is a precaution
-		if (menu != null  && !menu.isDisposed()) {
+		if (menu != null  && !menu.isDisposed())
 			menu.dispose();
-		}
 		menu = null;
 	}
 	public Menu getMenu(Control parent) {
@@ -683,6 +683,15 @@ private class DockAction
 		}
 		return menu;
 	}
+	protected void update() {
+		if (menu != null && !menu.isDisposed()) {
+			MenuItem[] items = menu.getItems();
+			for (int i = 0; i < items.length; i++) {
+				ActionContributionItem item = (ActionContributionItem)items[i].getData();
+				item.update();
+			}
+		}
+	}
 	private class ChangeDockAction extends Action {
 		private int position;
 		public ChangeDockAction(String text, int position) {
@@ -694,7 +703,6 @@ private class DockAction
 		}
 		public void run() {
 			setDockLocation(position);
-			setChecked(false);
 		}
 	}
 }
@@ -1165,27 +1173,31 @@ private class TitleCanvas extends Canvas {
 			}
 		};
 		JFaceResources.getFontRegistry().addListener(fontListener);
-		addDisposeListener(new DisposeListener() {
-			public void widgetDisposed(DisposeEvent e) {
-				JFaceResources.getFontRegistry().removeListener(fontListener);
-			}
-		});
 		
 		lws = new LightweightSystem();
 		lws.setControl(this);
 		lws.setContents(contents);
 		setCursor(SharedCursors.SIZEALL);
 		new TitleDragManager(this);
-		MenuManager manager = new MenuManager();
+		final MenuManager manager = new MenuManager();
 		final IAction resizeAction = new ResizeAction(); 
+		final DockAction dockAction = new DockAction();
 		manager.add(resizeAction);
-		manager.add(new DockAction());
+		manager.add(dockAction);
 		setMenu(manager.createContextMenu(this));
 		manager.addMenuListener(new IMenuListener() {
 			public void menuAboutToShow(IMenuManager mgr) {
 				resizeAction.setEnabled(resizeAction.isEnabled());
+				dockAction.update();
 			}
 		});
+		
+		addDisposeListener(new DisposeListener() {
+			public void widgetDisposed(DisposeEvent e) {
+				JFaceResources.getFontRegistry().removeListener(fontListener);
+				manager.dispose();
+			}
+		});		
 	}
 	private void provideAccSupport() {
 		getAccessible().addAccessibleListener(new AccessibleAdapter() {
