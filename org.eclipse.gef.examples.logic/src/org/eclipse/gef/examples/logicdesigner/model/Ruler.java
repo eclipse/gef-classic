@@ -12,8 +12,10 @@ import java.util.List;
 public class Ruler
 	implements Serializable
 {
+	
+static final long serialVersionUID = 1;
 
-// could mean that a guide was added or removed
+// means that a guide was added or removed
 public static final String PROPERTY_CHILDREN = "children"; //$NON-NLS-1$
 public static final String PROPERTY_UNIT = "unit"; //$NON-NLS-1$
 
