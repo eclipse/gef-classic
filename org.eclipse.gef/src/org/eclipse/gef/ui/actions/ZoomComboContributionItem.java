@@ -240,6 +240,7 @@ public void setZoomManager(ZoomManager zm) {
  * @see org.eclipse.swt.events.SelectionListener#widgetDefaultSelected(SelectionEvent)
  */
 private void handleWidgetDefaultSelected(SelectionEvent event) {
+	handleWidgetSelected(event);
 }
 
 /**
@@ -248,7 +249,10 @@ private void handleWidgetDefaultSelected(SelectionEvent event) {
 private void handleWidgetSelected(SelectionEvent event) {
 	// TODO: GTK Workaround (fixed in 3.0) - see SWT bug #44345
 	if (zoomManager != null)
-		zoomManager.setZoomAsText(combo.getText());
+		if (combo.getSelectionIndex() >= 0)
+			zoomManager.setZoomAsText(combo.getItem(combo.getSelectionIndex()));
+		else
+			zoomManager.setZoomAsText(combo.getText());
 	refresh();
 }
 
