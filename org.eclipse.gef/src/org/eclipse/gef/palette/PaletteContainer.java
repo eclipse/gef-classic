@@ -46,6 +46,16 @@ protected PaletteContainer(String label, String desc, ImageDescriptor icon, Obje
 }
 
 /**
+ * Returns true if this type can be a child of this container, also checks permissions.
+ * 
+ * @param type the type being requested
+ * @return true if this can be a child of this container
+ */
+public boolean acceptsType(Object type) {
+	return getUserModificationPermission() == PERMISSION_FULL_MODIFICATION;
+}
+
+/**
  * Adds the given entry to the end of this PaletteContainer
  * @param entry the PaletteEntry to add
  */
@@ -75,8 +85,8 @@ public void addAll(List list) {
 	ArrayList oldChildren = new ArrayList(getChildren());
 	for (int i = 0; i < list.size(); i++) {
 		PaletteEntry child = (PaletteEntry) list.get(i);
-		getChildren().add(child);
-		child.setParent(this);
+			getChildren().add(child);
+			child.setParent(this);
 	}
 	listeners.firePropertyChange(PROPERTY_CHILDREN,	oldChildren, getChildren());
 }
@@ -98,6 +108,19 @@ private boolean move(PaletteEntry entry, boolean up) {
 	if (index < 0 || index >= getChildren().size()) {
 		// Performing the move operation will give the child an invalid index
 		return false;
+	}
+	if (getChildren().get(index) instanceof PaletteContainer 
+			&& getUserModificationPermission() == PaletteEntry.PERMISSION_FULL_MODIFICATION) {
+		// move it into a container if we have full permission
+		PaletteContainer container = (PaletteContainer)getChildren().get(index);
+		if (container.acceptsType(entry.getType())) {
+			remove(entry);
+			if (up)
+				container.add(entry);
+			else 
+				container.add(0, entry);
+			return true;
+		}
 	}
 	List oldChildren = new ArrayList(getChildren());
 	getChildren().remove(entry);

@@ -77,6 +77,18 @@ public PaletteDrawer(String label, ImageDescriptor icon) {
 }
 
 /**
+ * Returns true if this type can be a child of this container
+ * 
+ * @param type the type being requested
+ * @return true if this can be a child of this container
+ */
+public boolean acceptsType(Object type) {
+	if (type.equals(PALETTE_TYPE_DRAWER) || type.equals(PaletteGroup.PALETTE_TYPE_GROUP))
+		return false;
+	return super.acceptsType(type);
+}
+
+/**
  * @return	<code>ToolEntry.PALETTE_TYPE_TOOL</code> or 
  * 			<code>PaletteTemplateEntry.PALETTE_TYPE_TEMPLATE</code> or (if the drawer
  * 			is empty and a drawerType has not been explicitly set)

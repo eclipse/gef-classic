@@ -30,6 +30,15 @@ public PaletteRoot() {
 }
 
 /**
+ * @see org.eclipse.gef.palette.PaletteContainer#acceptsType(java.lang.Object)
+ */
+public boolean acceptsType(Object type) {
+	if (type.equals(ToolEntry.PALETTE_TYPE_TOOL) || type.equals(PaletteStack.PALETTE_TYPE_STACK))
+		return false;
+	return super.acceptsType(type);
+}
+
+/**
  * @return the default ToolEntry
  */
 public ToolEntry getDefaultEntry() {
@@ -51,5 +60,6 @@ public void setDefaultEntry(ToolEntry entry) {
 public String toString() {
 	return "Palette Root"; //$NON-NLS-1$
 }
+
 
 }
