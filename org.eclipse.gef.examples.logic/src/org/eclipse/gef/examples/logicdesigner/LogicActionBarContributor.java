@@ -9,7 +9,9 @@ package org.eclipse.gef.examples.logicdesigner;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.actions.RetargetAction;
 
+import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.gef.ui.actions.AlignmentAction;
+import org.eclipse.gef.ui.actions.AlignmentRetargetAction;
 
 public class LogicActionBarContributor
 	extends org.eclipse.gef.ui.actions.ActionBarContributor
@@ -24,62 +26,48 @@ protected void createActions() {
 	RetargetAction action;
 
 	// Create increment action	
-	action = new RetargetAction(IncrementDecrementAction.INCREMENT, 
-						LogicMessages.IncrementDecrementAction_Increment_ActionLabelText);
+	action = new RetargetAction(IncrementDecrementAction.INCREMENT, ""); //$NON-NLS-1$
 	action.setImageDescriptor(ImageDescriptor.createFromFile(LogicPlugin.class, 
 														"icons/plus.gif")); //$NON-NLS-1$
 	getPage().addPartListener(action);
 	retargetActions.put(IncrementDecrementAction.INCREMENT, action);
 	
 	// Create decrement action	
-	action = new RetargetAction(IncrementDecrementAction.DECREMENT, 
-						LogicMessages.IncrementDecrementAction_Decrement_ActionLabelText);
+	action = new RetargetAction(IncrementDecrementAction.DECREMENT, ""); //$NON-NLS-1$
 	action.setImageDescriptor(ImageDescriptor.createFromFile(LogicPlugin.class, 
 														"icons/minus.gif")); //$NON-NLS-1$
 	getPage().addPartListener(action);
 	retargetActions.put(IncrementDecrementAction.DECREMENT, action);
 	
 	// Create align left action	
-	action = new RetargetAction(AlignmentAction.ID_ALIGN_LEFT, 
-								LogicMessages.AlignLeftAction_ActionLabelText);
-	action.setImageDescriptor(SharedImages.DESC_HORZ_ALIGN_LEFT);
+	action = new AlignmentRetargetAction(PositionConstants.LEFT);
 	getPage().addPartListener(action);
-	retargetActions.put(AlignmentAction.ID_ALIGN_LEFT, action);
+	retargetActions.put(action.getId(), action);
 	
 	// Create align center action	
-	action = new RetargetAction(AlignmentAction.ID_ALIGN_CENTER, 
-								LogicMessages.AlignCenterAction_ActionLabelText);
-	action.setImageDescriptor(SharedImages.DESC_HORZ_ALIGN_CENTER);
+	action = new AlignmentRetargetAction(PositionConstants.CENTER);
 	getPage().addPartListener(action);
-	retargetActions.put(AlignmentAction.ID_ALIGN_CENTER, action);
+	retargetActions.put(action.getId(), action);
 	
 	// Create align right action	
-	action = new RetargetAction(AlignmentAction.ID_ALIGN_RIGHT, 
-								LogicMessages.AlignRightAction_ActionLabelText);
-	action.setImageDescriptor(SharedImages.DESC_HORZ_ALIGN_RIGHT);
+	action = new AlignmentRetargetAction(PositionConstants.RIGHT);
 	getPage().addPartListener(action);
-	retargetActions.put(AlignmentAction.ID_ALIGN_RIGHT, action);
+	retargetActions.put(action.getId(), action);
 	
 	// Create align top action	
-	action = new RetargetAction(AlignmentAction.ID_ALIGN_TOP, 
-								LogicMessages.AlignTopAction_ActionLabelText);
-	action.setImageDescriptor(SharedImages.DESC_VERT_ALIGN_TOP);
+	action = new AlignmentRetargetAction(PositionConstants.TOP);
 	getPage().addPartListener(action);
-	retargetActions.put(AlignmentAction.ID_ALIGN_TOP, action);
+	retargetActions.put(action.getId(), action);
 	
 	// Create align middle action	
-	action = new RetargetAction(AlignmentAction.ID_ALIGN_MIDDLE, 
-								LogicMessages.AlignMiddleAction_ActionLabelText);
-	action.setImageDescriptor(SharedImages.DESC_VERT_ALIGN_MIDDLE);
+	action = new AlignmentRetargetAction(PositionConstants.MIDDLE);
 	getPage().addPartListener(action);
-	retargetActions.put(AlignmentAction.ID_ALIGN_MIDDLE, action);
+	retargetActions.put(action.getId(), action);
 	
 	// Create align bottom action	
-	action = new RetargetAction(AlignmentAction.ID_ALIGN_BOTTOM, 
-								LogicMessages.AlignBottomAction_ActionLabelText);
-	action.setImageDescriptor(SharedImages.DESC_VERT_ALIGN_BOTTOM);
+	action = new AlignmentRetargetAction(PositionConstants.BOTTOM);
 	getPage().addPartListener(action);
-	retargetActions.put(AlignmentAction.ID_ALIGN_BOTTOM, action);
+	retargetActions.put(action.getId(), action);
 
 //	// Create copy action
 //	action = new RetargetAction(IWorkbenchActionConstants.COPY, 
