@@ -3,7 +3,7 @@
 <plugin
    id="org.eclipse.gef.doc.isv"
    name="%Plugin.name"
-   version="3.0.0"
+   version="3.0.1"
    provider-name="Eclipse.org">
 
    <runtime>
