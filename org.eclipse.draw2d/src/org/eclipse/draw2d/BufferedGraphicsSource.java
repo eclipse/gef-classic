@@ -15,16 +15,13 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Control;
 
 import org.eclipse.draw2d.geometry.*;
-import org.eclipse.draw2d.internal.ImageCache;
 
-class BufferedGraphicsSource
-	implements GraphicsSource
-{
+class BufferedGraphicsSource implements GraphicsSource {
 
 private Image imageBuffer;
-private GC        imageGC;
-private GC      controlGC;
-private Control   control;
+private GC imageGC;
+private GC controlGC;
+private Control control;
 private Rectangle inUse;
 
 public BufferedGraphicsSource(Control c) {
@@ -39,7 +36,7 @@ public void flushGraphics(Rectangle region) {
 		inUse.x, inUse.y, inUse.width, inUse.height);
 	controlGC.dispose();
 	imageGC.dispose();
-	ImageCache.checkin(imageBuffer);
+	imageBuffer.dispose();
 }
 
 public Graphics getGraphics(Rectangle region) {
@@ -51,9 +48,9 @@ public Graphics getGraphics(Rectangle region) {
 	inUse.intersect(region);
 	if (inUse.isEmpty())
 		return null;
- 	imageBuffer = ImageCache.checkout(inUse.getSize(), this);
+	imageBuffer = new Image(null, inUse.width, inUse.height);
 
-	imageGC = new GC(getImage());
+	imageGC = new GC(imageBuffer);
 	controlGC = new GC(control);
 	imageGC.setBackground(controlGC.getBackground());
 	imageGC.setForeground(controlGC.getForeground());
