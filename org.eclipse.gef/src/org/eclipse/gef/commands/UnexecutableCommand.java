@@ -4,7 +4,7 @@ package org.eclipse.gef.commands;
  * A Command which can never be executed
  */
 public class UnexecutableCommand
-	extends AbstractCommand
+	extends Command
 {
 
 /**

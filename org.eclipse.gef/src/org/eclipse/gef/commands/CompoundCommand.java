@@ -22,7 +22,7 @@ import java.util.*;
  * Command, that Command is returned.
  */
 public class CompoundCommand
-	extends AbstractCommand
+	extends Command
 {
 
 private List commandList = new ArrayList();

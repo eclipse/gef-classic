@@ -28,7 +28,7 @@ public ForwardUndoCompoundCommand(String label) {
 	super(label);
 }
 
-/** * @see org.eclipse.gef.commands.AbstractCommand#getDebugLabel() */
+/** * @see org.eclipse.gef.commands.Command#getDebugLabel() */
 public String getDebugLabel() {
 	return "ForwardUndoCommand: " + super.getDebugLabel();//$NON-NLS-1$
 }
