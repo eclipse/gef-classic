@@ -202,15 +202,18 @@ releases used a different package name, and are not compatible.<h2>
 <p>
  The clip region of an SWT GC in GTK gets lost whenever an Image is drawn.&nbsp; 
  As a result, figures which expect paint calls to get clipped will not see them 
- clipped on GTK following and drawImage calls.</p>
+ clipped on GTK following and drawImage calls.&nbsp; This problem is 
+ reproducible in the palette.&nbsp; When every drawer is closed, the last 
+ drawer's icons will leave a trail of icons on the screen.</p>
 </blockquote>
 <h4>
+ Win32 -
  Printing</h4>
 <blockquote>
 <p>
  Some fonts scale differently on the printer than they do on the screen.&nbsp; 
  This may result in printed text appearing wider than the same text on the 
- screen.</p>
+ screen.&nbsp; This is only a problem with certain vector fonts.</p>
 <p>
  Images with transparency masks may print incorrectly.&nbsp; This is a 
  limitation in SWT, which GEF uses for printing.</p>
