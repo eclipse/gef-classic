@@ -24,7 +24,6 @@
       <import plugin="org.eclipse.osgi"/>
    </requires>
 
-
    <extension
          point="org.eclipse.ui.commands">
       <category
@@ -59,13 +58,23 @@
    </extension>
    <extension
          point="org.eclipse.ui.views">
-      <view
-            name="%Palette.Label"
+		<view 
+			name="%Palette.Label"
             icon="icons\debugGEF.gif"
             category="org.eclipse.ui"
-            class="org.eclipse.gef.ui.views.palette.PaletteView"
+			class="org.eclipse.gef.ui.views.palette.PaletteView"
             id="org.eclipse.gef.ui.palette_view">
       </view>
-   </extension>
+	</extension>
 
-</plugin>
+    <extension point="org.eclipse.ui.perspectiveExtensions"> 
+        <perspectiveExtension 
+            targetID="org.eclipse.ui.resourcePerspective"> 
+            <view id="org.eclipse.gef.ui.palette_view" 
+                relative="org.eclipse.ui.editorss"
+                relationship="left"
+                ratio="0.16"
+                visible="false"/>
+        </perspectiveExtension> 
+    </extension> 
+   </plugin>
