@@ -1,18 +1,28 @@
-<?xml version="1.0"?>
-
+<?xml version="1.0" encoding="UTF-8"?>
 <plugin
-   name          = "Draw2d Documentation"
-   id            = "org.eclipse.draw2d.doc.isv"
-   version       = "2.0.0"
-   provider-name = "Eclipse.org">
+   id="org.eclipse.draw2d.doc.isv"
+   name="Draw2d Documentation"
+   version="2.0.1"
+   provider-name="Eclipse.org">
 
-   <extension point="org.eclipse.help.toc">
-       <toc file="toc.xml" primary="true" />
+   <runtime>
+   </runtime>
+
+   <extension
+         point="org.eclipse.help.toc">
+      <toc
+            file="toc.xml"
+            primary="true">
+      </toc>
    </extension>
-   
-   <extension point="org.eclipse.help.toc">
-       <toc file="topics_Guide.xml" />
-       <toc file="topics_Reference.xml" />
+   <extension
+         point="org.eclipse.help.toc">
+      <toc
+            file="topics_Guide.xml">
+      </toc>
+      <toc
+            file="topics_Reference.xml">
+      </toc>
    </extension>
 
 </plugin>

@@ -1,23 +1,22 @@
-<?xml version="1.0"?>
-
+<?xml version="1.0" encoding="UTF-8"?>
 <plugin
-   name = "Draw2d"
-   id = "org.eclipse.draw2d"
-   version = "2.0.0"
+   id="org.eclipse.draw2d"
+   name="Draw2d"
+   version="2.0.1"
    provider-name="Eclipse.org">
 
-   <requires>
-	<import plugin="org.eclipse.swt" export="true"/>
-	<import plugin="org.eclipse.ui" export="true"/>
-   </requires>
-
    <runtime>
-     <library name="runtime/draw2d.jar">
+      <library name="runtime/draw2d.jar">
          <export name="org.eclipse.draw2d.*"/>
          <export name="org.eclipse.draw2d.resource.*"/>
          <export name="org.eclipse.draw2d.parts.*"/>
          <export name="org.eclipse.draw2d.geometry.*"/>
-     </library>
+      </library>
    </runtime>
+   <requires>
+      <import plugin="org.eclipse.swt" export="true"/>
+      <import plugin="org.eclipse.ui" export="true"/>
+   </requires>
+
 
 </plugin>

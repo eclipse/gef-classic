@@ -1,45 +1,53 @@
-<?xml version="1.0"?>
-
+<?xml version="1.0" encoding="UTF-8"?>
 <plugin
-   name          = "GEF Documentation"
-   id            = "org.eclipse.gef.doc.isv"
-   version       = "2.0.0"
-   provider-name = "Eclipse.org">
+   id="org.eclipse.gef.doc.isv"
+   name="GEF Documentation"
+   version="2.0.1"
+   provider-name="Eclipse.org">
 
-	<requires>
-		<import plugin="org.eclipse.gef" version="2.0.0"/>
-	</requires>
+   <runtime>
+   </runtime>
+   <requires>
+      <import plugin="org.eclipse.gef" version="2.0.0"/>
+   </requires>
 
-	<extension point="org.eclipse.help.toc">
-    	<toc file="toc.xml" primary="true" />
-   	</extension>
-   
-	<extension point="org.eclipse.help.toc">
-    	<toc file="topics_Guide.xml" />
-   		<toc file="topics_Reference.xml" />
-   	</extension>
-   
-   <extension point="org.eclipse.ui.views">
-		<category 
-			id="org.eclipse.gef"
-			name="%GEF_Developer_views_category_name">
-		</category>
 
-		<view
-			id="GEF Debug console"
-			name="%GEF_Debug_view_name"
-			category="org.eclipse.gef"
-			class="org.eclipse.gef.ui.console.DebugGEF"
-			icon="icons/debugGEF.gif">
-		</view>
-
-		<view
-	       id="GEF CommandStack View"
-		   name="%GEF_stackviewer_view_name"
-		   category="org.eclipse.gef"
-		   class="org.eclipse.gef.ui.stackview.CommandStackInspector"
-		   icon="icons/debugGEF.gif">
-		</view>
-	</extension>
+   <extension
+         point="org.eclipse.help.toc">
+      <toc
+            file="toc.xml"
+            primary="true">
+      </toc>
+   </extension>
+   <extension
+         point="org.eclipse.help.toc">
+      <toc
+            file="topics_Guide.xml">
+      </toc>
+      <toc
+            file="topics_Reference.xml">
+      </toc>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            name="%GEF_Developer_views_category_name"
+            id="org.eclipse.gef">
+      </category>
+      <view
+            name="%GEF_Debug_view_name"
+            icon="icons/debugGEF.gif"
+            category="org.eclipse.gef"
+            class="org.eclipse.gef.ui.console.DebugGEF"
+            id="GEF Debug console">
+      </view>
+      <view
+            name="%GEF_stackviewer_view_name"
+            icon="icons/debugGEF.gif"
+            category="org.eclipse.gef"
+            class="org.eclipse.gef.ui.stackview.CommandStackInspector"
+            id="GEF CommandStack View">
+      </view>
+   </extension>
 
 </plugin>

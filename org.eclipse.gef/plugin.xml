@@ -1,20 +1,12 @@
-<?xml version="1.0"?>
-
+<?xml version="1.0" encoding="UTF-8"?>
 <plugin
-   name = "Graphical Editor Framework"
-   id = "org.eclipse.gef"
-   version = "2.0.0"
+   id="org.eclipse.gef"
+   name="Graphical Editor Framework"
+   version="2.0.1"
    provider-name="Eclipse.org">
 
-   <requires>
-	<import plugin="org.eclipse.draw2d" version="2.0.0" export="true"/>
-	<import plugin="org.eclipse.core.runtime" export="true"/>
-	<import plugin="org.eclipse.core.resources" export="true"/>
-	<import plugin="org.eclipse.ui" export="true"/>
-   </requires>
-
    <runtime>
-     <library name="runtime/gef.jar">
+      <library name="runtime/gef.jar">
          <export name="org.eclipse.gef.*"/>
          <export name="org.eclipse.gef.dnd.*"/>
          <export name="org.eclipse.gef.commands.*"/>
@@ -30,6 +22,14 @@
          <export name="org.eclipse.gef.ui.properties.*"/>
          <export name="org.eclipse.gef.ui.console.*"/>
          <export name="org.eclipse.gef.ui.stackview.*"/>
-     </library>
+      </library>
    </runtime>
+   <requires>
+      <import plugin="org.eclipse.draw2d" export="true" version="2.0.0"/>
+      <import plugin="org.eclipse.core.runtime" export="true"/>
+      <import plugin="org.eclipse.core.resources" export="true"/>
+      <import plugin="org.eclipse.ui" export="true"/>
+   </requires>
+
+
 </plugin>

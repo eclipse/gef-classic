@@ -1,49 +1,53 @@
-<?xml version="1.0"?>
-
+<?xml version="1.0" encoding="UTF-8"?>
 <plugin
-	name = "Logic GEF Example"
-	id = "org.eclipse.gef.examples.logicdesigner"
-	version = "2.0.0"
-	provider-name="Eclipse.org"
-	class="org.eclipse.gef.examples.logicdesigner.LogicPlugin">
+   id="org.eclipse.gef.examples.logicdesigner"
+   name="Logic GEF Example"
+   version="2.0.1"
+   provider-name="Eclipse.org"
+   class="org.eclipse.gef.examples.logicdesigner.LogicPlugin">
 
-	<requires>
-		<import plugin="org.eclipse.gef" version="2.0.0"/>
-		<import plugin="org.eclipse.core.resources"/>
-	</requires>
+   <runtime>
+      <library name="runtime/logic.jar"/>
+   </runtime>
+   <requires>
+      <import plugin="org.eclipse.gef" version="2.0.0"/>
+      <import plugin="org.eclipse.core.resources"/>
+   </requires>
 
-	<runtime>
-		<library name="runtime/logic.jar"/>
-	</runtime>
 
-	<extension point = "org.eclipse.ui.editors">
-		<editor
-			id = "Logic Graphical Editor"
-			name = "%Logic_example_graphical_editor_name"
-			icon = "logic.gif"
-			extensions = "logic"
-			class = "org.eclipse.gef.examples.logicdesigner.LogicEditor"
-			default = "true"
-			contributorClass="org.eclipse.gef.examples.logicdesigner.LogicActionBarContributor">
-		</editor>
-	</extension>
-
-	<extension point = "org.eclipse.ui.newWizards">
-		<category
-			id="org.eclipse.gef.examples"
-			name="%GEF_example_wizard_category_name"
-			parentCategory="org.eclipse.ui.Examples">
-		</category>
-		<wizard
-			id = "org.eclipse.gef.examples.logic.wizard.new.file"
-			name = "%Logic_example_wizard_name"
-			availableAsShortcut="true"
-			class="org.eclipse.gef.examples.logicdesigner.LogicCreationWizard"
-			category="org.eclipse.ui.Examples/org.eclipse.gef.examples"
-			icon="logic.gif">
-				<description>%Logic_example_wizard_description</description>
-				<selection class="org.eclipse.core.resources.IResource"/>
-		</wizard>
-	</extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            name="%Logic_example_graphical_editor_name"
+            default="true"
+            icon="logic.gif"
+            extensions="logic"
+            contributorClass="org.eclipse.gef.examples.logicdesigner.LogicActionBarContributor"
+            class="org.eclipse.gef.examples.logicdesigner.LogicEditor"
+            id="Logic Graphical Editor">
+      </editor>
+   </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            name="%GEF_example_wizard_category_name"
+            parentCategory="org.eclipse.ui.Examples"
+            id="org.eclipse.gef.examples">
+      </category>
+      <wizard
+            availableAsShortcut="true"
+            name="%Logic_example_wizard_name"
+            icon="logic.gif"
+            category="org.eclipse.ui.Examples/org.eclipse.gef.examples"
+            class="org.eclipse.gef.examples.logicdesigner.LogicCreationWizard"
+            id="org.eclipse.gef.examples.logic.wizard.new.file">
+         <description>
+            %Logic_example_wizard_description
+         </description>
+         <selection
+               class="org.eclipse.core.resources.IResource">
+         </selection>
+      </wizard>
+   </extension>
 
 </plugin>
