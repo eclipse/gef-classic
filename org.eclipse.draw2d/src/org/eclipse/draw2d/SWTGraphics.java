@@ -96,7 +96,6 @@ private int translateY = 0;
  * @param gc the GC
  */
 public SWTGraphics(GC gc) {
-	gc.setLineWidth(1);
 	this.gc = gc;
 	//No translation necessary because translation is <0,0> at construction.
 	relativeClip = new Rectangle(gc.getClipping());
