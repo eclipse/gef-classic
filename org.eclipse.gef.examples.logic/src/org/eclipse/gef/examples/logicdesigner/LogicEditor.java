@@ -76,7 +76,7 @@ class OutlinePage
 		getViewer().setEditPartFactory(new TreePartFactory());
 		ContextMenuProvider provider = new LogicContextMenuProvider(getViewer(), getActionRegistry());
 		getViewer().setContextMenuProvider(provider);
-		getSite().registerContextMenu(GEFActionConstants.CONTEXT_MENU_OUTLINE, 
+		getSite().registerContextMenu("org.eclipse.gef.examples.logic.outline.contextmenu", //$NON-NLS-1$
 										provider.getMenuManager(), 
 										getSite().getSelectionProvider());
 		getViewer().setKeyHandler(getCommonKeyHandler());
@@ -216,9 +216,6 @@ protected void configurePaletteViewer() {
 	PaletteViewerImpl viewer = (PaletteViewerImpl)getPaletteViewer();
 	ContextMenuProvider provider = new PaletteContextMenuProvider(viewer, getActionRegistry());
 	getPaletteViewer().setContextMenuProvider(provider);
-	getSite().registerContextMenu(GEFActionConstants.CONTEXT_MENU_PALETTE, 
-									provider.getMenuManager(), 
-									getSite().getSelectionProvider());
 	viewer.setCustomizer(new LogicPaletteCustomizer());
 }
 
@@ -230,7 +227,7 @@ protected void configureGraphicalViewer() {
 	viewer.setEditPartFactory(new GraphicalPartFactory());
 	ContextMenuProvider provider = new LogicContextMenuProvider(viewer, getActionRegistry());
 	viewer.setContextMenuProvider(provider);
-	getSite().registerContextMenu(GEFActionConstants.CONTEXT_MENU_EDITOR, 
+	getSite().registerContextMenu("org.eclipse.gef.examples.logic.editor.contextmenu", //$NON-NLS-1$
 									provider.getMenuManager(), 
 									getSite().getSelectionProvider());
 	viewer.setKeyHandler(new GraphicalViewerKeyHandler(viewer)
