@@ -59,6 +59,14 @@ public void activate() {
 	IFigure figure = owner.getFigure();
 	sourceRect = new PrecisionRectangle(figure.getBounds());
 	figure.translateToAbsolute(sourceRect);	
+}	
+	
+/**
+ * @see org.eclipse.gef.tools.AbstractTool#commitDrag()
+ */
+public void commitDrag() {
+	eraseTargetFeedback();
+	super.commitDrag();
 }
 
 /**
@@ -79,6 +87,22 @@ protected Request createSourceRequest() {
 	request = new ChangeBoundsRequest(REQ_RESIZE);
 	request.setResizeDirection(getResizeDirection());
 	return request;
+}
+
+/**
+ * @see org.eclipse.gef.tools.AbstractTool#deactivate()
+ */
+public void deactivate() {
+	sourceRect = null;
+	super.deactivate();
+}
+
+/**
+ * This method is invoked when the resize operation is complete.  It notifies the
+ * {@link #getTargetEditPart() target} to erase target feedback.
+ */
+protected void eraseTargetFeedback() {
+	getTargetEditPart().eraseTargetFeedback(getSourceRequest());
 }
 
 /**
@@ -124,6 +148,52 @@ protected String getDebugName() {
  */
 protected int getResizeDirection() {
 	return direction;
+}
+
+/**
+ * The TargetEditPart is the parent of the EditPart being resized.
+ * 
+ * @return	The target EditPart
+ */
+protected GraphicalEditPart getTargetEditPart() {
+	return (GraphicalEditPart)owner.getParent();
+}
+
+/**
+ * If dragging is in progress, cleans up feedback and calls performDrag().
+ * 
+ * @see org.eclipse.gef.tools.SimpleDragTracker#handleButtonUp(int)
+ */
+protected boolean handleButtonUp(int button) {
+	if (stateTransition(STATE_DRAG_IN_PROGRESS, STATE_TERMINAL)) {
+		eraseSourceFeedback();
+		eraseTargetFeedback();
+		performDrag();
+	}
+	return true;
+}
+
+/**
+ * Updates the command and the source request, and shows feedback.
+ * 
+ * @see org.eclipse.gef.tools.SimpleDragTracker#handleDragInProgress()
+ */
+protected boolean handleDragInProgress() {
+	if (isInDragInProgress()) {
+		updateSourceRequest();
+		showSourceFeedback();
+		showTargetFeedback();
+		setCurrentCommand(getCommand());
+	}
+	return true;
+}
+
+/**
+ * This method is invoked as the drag is happening.  It notifies the 
+ * {@link #getTargetEditPart() target} to show target feedback.
+ */
+protected void showTargetFeedback() {
+	getTargetEditPart().showTargetFeedback(getSourceRequest());
 }
 
 /**
@@ -210,9 +280,8 @@ protected void updateSourceRequest() {
 
 	request.getExtendedData().clear();
 	
-	SnapToStrategy strategy =
-		(SnapToStrategy) owner.getViewer().getContents().getAdapter(
-			SnapToStrategy.class);
+	SnapToStrategy strategy = (SnapToStrategy)getTargetEditPart()
+			.getAdapter(SnapToStrategy.class);
 	
 	if (!getCurrentInput().isAltKeyDown() && strategy != null)
 		strategy.snapResizeRequest(request, sourceRect.getPreciseCopy());
