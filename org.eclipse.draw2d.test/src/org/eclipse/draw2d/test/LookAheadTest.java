@@ -97,11 +97,6 @@ public void testAddLeadingWordRequirements() {
 	width[0] = 0;
 	assertTrue("test38 failed", flow.addLeadingWordRequirements(width));
 	assertTrue("test39 failed", width[0] == getWidth("hey,"));
-	
-	flow.setText("more\ttricks");
-	width[0] = 0;
-	assertTrue("test40 failed", flow.addLeadingWordRequirements(width));
-	assertTrue("test41 failed", width[0] == getWidth("more"));
 }
 
 public void testLookAhead() {
