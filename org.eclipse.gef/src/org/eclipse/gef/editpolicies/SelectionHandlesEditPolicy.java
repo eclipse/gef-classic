@@ -55,7 +55,7 @@ protected void addSelectionHandles() {
 
 /**
  * Subclasses must implement to provide the list of handles.
- * @return List */
+ * @return List of handles; cannot be <code>null</code> */
 protected abstract List createSelectionHandles();
 
 /**
@@ -65,14 +65,14 @@ public Object getAdapter(Class key) {
 		return new AccessibleHandleProvider() {
 			public List getAccessibleHandleLocations() {
 				List result = new ArrayList();
-				for (int i = 0; i < handles.size(); i++) {
-					Point p = ((Handle)handles.get(i))
-						.getAccessibleLocation();
-					if (p != null)
-						result.add(p);
+				if (handles != null) {
+					for (int i = 0; i < handles.size(); i++) {
+						Point p = ((Handle)handles.get(i))
+							.getAccessibleLocation();
+						if (p != null)
+							result.add(p);
+					}
 				}
-				if (result.isEmpty())
-					return null;
 				return result;
 			}
 		};
