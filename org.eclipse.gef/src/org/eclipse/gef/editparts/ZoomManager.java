@@ -20,7 +20,7 @@ import org.eclipse.jface.util.Assert;
 import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.*;
 
-import org.eclipse.gef.internal.GEFMessages;
+import org.eclipse.gef.SharedMessages;
 
 /**
  * Manage the primary zoom function in a graphical viewer.  This class is used by the zoom
@@ -54,9 +54,9 @@ private Viewport viewport;
 private double zoom = 1.0;
 private int zoomAnimationStyle = ANIMATE_NEVER;
 private double[] zoomLevels = { .5, .75, 1.0, 1.5, 2.0, 2.5, 3, 4 };
-public static final String FIT_HEIGHT = GEFMessages.FitHeightAction_Label;
-public static final String FIT_WIDTH = GEFMessages.FitWidthAction_Label;
-public static final String FIT_ALL = GEFMessages.FitAllAction_Label;
+public static final String FIT_HEIGHT = SharedMessages.FitHeightAction_Label;
+public static final String FIT_WIDTH = SharedMessages.FitWidthAction_Label;
+public static final String FIT_ALL = SharedMessages.FitAllAction_Label;
 private List zoomLevelContributions = Collections.EMPTY_LIST;
 
 DecimalFormat format = new DecimalFormat("####%"); //$NON-NLS-1$
