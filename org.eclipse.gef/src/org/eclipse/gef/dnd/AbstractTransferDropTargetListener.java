@@ -6,12 +6,10 @@ package org.eclipse.gef.dnd;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.swt.dnd.*;
-import org.eclipse.swt.widgets.Widget;
-
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.gef.*;
 import org.eclipse.gef.commands.Command;
+import org.eclipse.swt.dnd.*;
 
 /**
  * An abstract implementation of TransferDropTargetListener that adds a reference to 
@@ -215,6 +213,7 @@ protected void handleDragOperationChanged() {
 protected void handleDragOver() {
 	updateTargetRequest();
 	updateTargetEditPart();
+	showTargetFeedback();
 }
 
 /**
