@@ -85,6 +85,17 @@ protected void handleDispose(DisposeEvent e) {
 	getLightweightSystem().getUpdateManager().dispose();
 }
 
+protected void handleFocusGained(FocusEvent fe) {
+	// @TODO:Pratik   Should the focus edit part be revealed?
+	if (getFocusEditPart() != null)
+		getFocusEditPart().setFocus(true);
+}
+
+protected void handleFocusLost(FocusEvent fe) {
+	if (getFocusEditPart() != null)
+		getFocusEditPart().setFocus(false);
+}
+
 /**
  * @see GraphicalViewer#findHandleAt(org.eclipse.draw2d.geometry.Point)
  */
@@ -212,13 +223,10 @@ protected void hookControl() {
 	getLightweightSystem().setControl((Canvas)getControl());
 	getControl().addFocusListener(lFocus = new FocusListener() {
 		public void focusGained(FocusEvent e) {
-			if (focusPart != null)
-				focusPart.setFocus(true);
+			handleFocusGained(e);
 		}
-
 		public void focusLost(FocusEvent e) {
-			if (focusPart != null)
-				focusPart.setFocus(false);
+			handleFocusLost(e);
 		}
 	});
 }
