@@ -8,7 +8,7 @@ import org.eclipse.gef.GraphicalEditPart;
 /**
  * @author hudsonr
  */
-public abstract class ViewportHelper {
+abstract class ViewportHelper {
 
 protected ViewportHelper(GraphicalEditPart owner) {
 	this.owner = owner;
