@@ -28,6 +28,10 @@ public class SharedCursors
  *  */
 public static final Cursor CURSOR_PLUG;
 /**
+ * 
+ */
+public static final Cursor CURSOR_PLUG_NOT;
+/**
  *  */
 public static final Cursor CURSOR_TREE_ADD;
 /**
@@ -40,6 +44,12 @@ static {
 			Internal.class.getResourceAsStream("icons/plugmask.gif")), //$NON-NLS-1$
 		new ImageData(
 			Internal.class.getResourceAsStream("icons/plug.bmp")), //$NON-NLS-1$
+		0, 0);
+	CURSOR_PLUG_NOT = new Cursor(null,
+		new ImageData(
+			Internal.class.getResourceAsStream("icons/plugmasknot.gif")), //$NON-NLS-1$
+		new ImageData(
+			Internal.class.getResourceAsStream("icons/plugnot.bmp")), //$NON-NLS-1$
 		0, 0);
 
 	CURSOR_TREE_ADD = new Cursor(null,

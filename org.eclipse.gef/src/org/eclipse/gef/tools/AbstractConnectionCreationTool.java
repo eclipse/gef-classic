@@ -40,7 +40,7 @@ private EditPartListener.Stub deactivationListener = new EditPartListener.Stub()
 
 public AbstractConnectionCreationTool() {
 	setDefaultCursor(SharedCursors.CURSOR_PLUG);
-	setDisabledCursor(SharedCursors.NO);
+	setDisabledCursor(SharedCursors.CURSOR_PLUG_NOT);
 }
 
 public AbstractConnectionCreationTool(CreationFactory factory) {
