@@ -113,10 +113,6 @@ protected Layer getLayer(int index) {
 public boolean isOpaque() {
 	if (super.isOpaque())
 		return true;
-	for (int i = 0; i < getChildren().size(); i++) {
-		if (((IFigure)getChildren().get(i)).isOpaque())
-			return true;
-	}
 	return false;
 }
 
