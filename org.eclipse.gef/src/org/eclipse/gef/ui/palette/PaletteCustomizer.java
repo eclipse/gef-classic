@@ -111,7 +111,7 @@ public List getNewEntryFactories() {
 	List list = new ArrayList(3);
 	list.add(new PaletteSeparatorFactory());
 	list.add(new PaletteCategoryFactory());
-	list.add(new PaletteGroupFactory());
+//	list.add(new PaletteGroupFactory());
 	return list;
 }
 

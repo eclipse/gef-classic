@@ -1,6 +1,7 @@
 package org.eclipse.gef.ui.palette.customize;
 
 import org.eclipse.gef.palette.PaletteEntry;
+import org.eclipse.gef.palette.PaletteGroup;
 import org.eclipse.gef.palette.PaletteSeparator;
 import org.eclipse.gef.ui.palette.PaletteMessages;
 
@@ -20,6 +21,16 @@ public class PaletteSeparatorFactory
  */
 public PaletteSeparatorFactory() {
 	setLabel(PaletteMessages.MODEL_TYPE_SEPARATOR);
+}
+
+/**
+ * Separators cannot be inside groups.
+ * 
+ * @see org.eclipse.gef.ui.palette.customize.PaletteEntryFactory#canCreate(PaletteEntry)
+ */
+public boolean canCreate(PaletteEntry selected) {
+	return super.canCreate(selected) && !(selected instanceof PaletteGroup) &&
+			!(selected.getParent() instanceof PaletteGroup);
 }
 
 /**
