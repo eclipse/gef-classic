@@ -9,14 +9,30 @@ package org.eclipse.gef.examples.logicdesigner;
 import java.io.*;
 import java.util.EventObject;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.dnd.TextTransfer;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
+
 import org.eclipse.core.resources.*;
-import org.eclipse.core.runtime.*;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
+import org.eclipse.ui.*;
+import org.eclipse.ui.actions.WorkspaceModifyOperation;
+import org.eclipse.ui.dialogs.SaveAsDialog;
+import org.eclipse.ui.part.FileEditorInput;
+import org.eclipse.ui.part.IPageSite;
+import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
+
 import org.eclipse.draw2d.PositionConstants;
+
 import org.eclipse.gef.*;
 import org.eclipse.gef.dnd.TemplateTransferDragSourceListener;
-import org.eclipse.gef.examples.logicdesigner.edit.GraphicalPartFactory;
-import org.eclipse.gef.examples.logicdesigner.edit.TreePartFactory;
-import org.eclipse.gef.examples.logicdesigner.model.LogicDiagram;
 import org.eclipse.gef.internal.GEFMessages;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.ui.actions.*;
@@ -24,18 +40,10 @@ import org.eclipse.gef.ui.palette.PaletteContextMenuProvider;
 import org.eclipse.gef.ui.palette.PaletteViewerImpl;
 import org.eclipse.gef.ui.parts.*;
 import org.eclipse.gef.ui.stackview.CommandStackInspectorPage;
-import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.dialogs.ProgressMonitorDialog;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.dnd.TextTransfer;
-import org.eclipse.swt.widgets.*;
-import org.eclipse.ui.*;
-import org.eclipse.ui.actions.WorkspaceModifyOperation;
-import org.eclipse.ui.dialogs.SaveAsDialog;
-import org.eclipse.ui.part.FileEditorInput;
-import org.eclipse.ui.part.IPageSite;
-import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
+
+import org.eclipse.gef.examples.logicdesigner.edit.GraphicalPartFactory;
+import org.eclipse.gef.examples.logicdesigner.edit.TreePartFactory;
+import org.eclipse.gef.examples.logicdesigner.model.LogicDiagram;
 
 public class LogicEditor 
 	extends GraphicalEditorWithPalette 
@@ -237,6 +245,8 @@ protected void createOutputStream(OutputStream os)throws IOException {
 }
 
 public void dispose() {
+	CopyTemplateAction copy = (CopyTemplateAction)getActionRegistry().getAction(GEFActionConstants.COPY);
+	getPaletteViewer().removeSelectionChangedListener(copy);
 	getSite().getWorkbenchWindow().getPartService().removePartListener(partListener);
 	partListener = null;
 	((FileEditorInput)getEditorInput()).getFile().getWorkspace().removeResourceChangeListener(resourceListener);
@@ -300,6 +310,12 @@ protected PaletteRoot getPaletteRoot() {
 
 public void gotoMarker(IMarker marker) {}
 
+protected void hookPaletteViewer() {
+	super.hookPaletteViewer();
+	CopyTemplateAction copy = (CopyTemplateAction)getActionRegistry().getAction(GEFActionConstants.COPY);
+	getPaletteViewer().addSelectionChangedListener(copy);
+}
+
 protected void initializeGraphicalViewer() {
 	getGraphicalViewer().setContents(getLogicDiagram());
 	getGraphicalViewer().addDropTargetListener(
@@ -319,6 +335,9 @@ protected void createActions() {
 	ActionRegistry registry = getActionRegistry();
 	IAction action;
 	
+	action = new CopyTemplateAction(this);
+	registry.registerAction(action);
+
 	action = new LogicPasteTemplateAction(this);
 	registry.registerAction(action);
 	getSelectionActions().add(action.getId());
