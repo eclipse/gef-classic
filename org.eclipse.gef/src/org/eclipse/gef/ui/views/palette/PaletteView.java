@@ -92,7 +92,11 @@ protected IWorkbenchPart getBootstrapPart() {
  * @see	PageBookView#isImportant(org.eclipse.ui.IWorkbenchPart)
  */
 protected boolean isImportant(IWorkbenchPart part) {
-	return part instanceof IEditorPart;
+	// Fix for Bug# 69098
+	// We only want a palette page to be created when this view is visible in the current
+	// perspective, i.e., when both this view and the given editor are on the same page.
+	return getSite().getPage() == part.getSite().getPage() 
+			&& part instanceof IEditorPart;
 }
 
 }
