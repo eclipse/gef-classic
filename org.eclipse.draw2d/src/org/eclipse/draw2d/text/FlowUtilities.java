@@ -247,8 +247,8 @@ static void setupFragment(TextFragmentBox frag, Font f, String s) {
 	} else
 		width = getStringExtents(s.substring(0, frag.length), f).width - 1;
 	FontMetrics fm = getFontMetrics(f);
-	frag.setHeight(fm.getHeight() + fm.getLeading());
-	frag.setAscent(fm.getAscent() + fm.getLeading());
+	frag.setHeight(fm.getHeight());
+	frag.setAscent(frag.getHeight() - fm.getDescent());
 	if (frag.truncated)
 		width += ELLIPSIS_SIZE;
 	frag.setWidth(width);
