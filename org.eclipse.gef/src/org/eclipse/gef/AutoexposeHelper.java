@@ -42,7 +42,7 @@ public interface AutoexposeHelper {
 
 /**
  * Returns <code>true</code> if the specified location is interesting to the helper. This
- * method get's called as part of the search for an AutoexposeHelper.  The helper should
+ * method gets called as part of the search for an AutoexposeHelper.  The helper should
  * do something if it returns <code>true</code>, or it may wait for {@link #step(Point)}
  * to be called later.
  * @param where the mouse's current location in the viewer
@@ -51,7 +51,7 @@ public interface AutoexposeHelper {
 boolean detect(Point where);
 
 /**
- * Performs the autoexpose and return a hint indicating that the helper would like to
+ * Performs the autoexpose and returns a hint indicating that the helper would like to
  * remain active. The client will continue to call step() for as long as it
  * previously returned <code>true</code>, and the conditions are deemed appropriate to
  * continue the autoexpose process.
