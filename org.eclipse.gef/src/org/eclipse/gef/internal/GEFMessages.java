@@ -83,6 +83,9 @@ public static String SaveAction_Label = Helper.getString("%SaveAction.Label");//
 public static String SaveAction_Tooltip = Helper.getString("%SaveAction.Tooltip");//$NON-NLS-1$
 public static String SetPropertyValueCommand_Label = Helper.getString("%SetPropertyValueCommand.Label_UI_");//$NON-NLS-1$
 
+public static String SelectAllAction_Label = Helper.getString("%SelectAllAction.Label");//$NON-NLS-1$
+public static String SelectAllAction_Tooltip = Helper.getString("%SelectAllAction.Tooltip");//$NON-NLS-1$
+
 public static String SelectionTool_Label = Helper.getString("%SelectionTool.Label");//$NON-NLS-1$
 public static String MarqueeTool_Label = Helper.getString("%MarqueeTool.Label");//$NON-NLS-1$
 public static String UndoAction_Label = Helper.getString("%UndoAction.Label");//$NON-NLS-1$

@@ -59,6 +59,7 @@ protected void buildActions() {
  */
 protected void declareGlobalActionKeys() {
 	addGlobalActionKey(IWorkbenchActionConstants.PRINT);
+	addGlobalActionKey(IWorkbenchActionConstants.SELECT_ALL);
 }
 
 /**
