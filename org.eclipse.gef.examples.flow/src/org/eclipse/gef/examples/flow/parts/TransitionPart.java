@@ -35,7 +35,7 @@ protected void applyGraphResults(CompoundDirectedGraph graph, Map map) {
 			Node vn = nodes.getNode(i);
 			int x = vn.x;
 			int y = vn.y;
-			if (e.isBackward) {
+			if (e.isFeedback) {
 				bends.add(new AbsoluteBendpoint(x, y + vn.height));
 				bends.add(new AbsoluteBendpoint(x, y));
 

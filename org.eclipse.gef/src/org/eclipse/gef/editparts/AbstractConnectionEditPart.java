@@ -154,9 +154,13 @@ public EditPart getTarget() {
  * @return ConnectionAnchor for the source end of the Connection
  */
 protected ConnectionAnchor getSourceConnectionAnchor() {
-	if (getSource() != null && getSource() instanceof NodeEditPart) {
-		NodeEditPart editPart = (NodeEditPart) getSource();
-		return editPart.getSourceConnectionAnchor(this);
+	if (getSource() != null) {
+		if (getSource() instanceof NodeEditPart) {
+			NodeEditPart editPart = (NodeEditPart) getSource();
+			return editPart.getSourceConnectionAnchor(this);
+		}
+		IFigure f = ((GraphicalEditPart)getSource()).getFigure();
+		return new ChopboxAnchor(f);
 	}
 	return DEFAULT_SOURCE_ANCHOR;
 }
@@ -171,9 +175,13 @@ protected ConnectionAnchor getSourceConnectionAnchor() {
  * @return ConnectionAnchor for the target end of the Connection
  */
 protected ConnectionAnchor getTargetConnectionAnchor() {
-	if (getTarget() != null && getTarget() instanceof NodeEditPart) {
-		NodeEditPart editPart = (NodeEditPart) getTarget();
-		return editPart.getTargetConnectionAnchor(this);
+	if (getTarget() != null) {
+		if (getTarget() instanceof NodeEditPart) {
+			NodeEditPart editPart = (NodeEditPart) getTarget();
+			return editPart.getTargetConnectionAnchor(this);
+		}
+		IFigure f = ((GraphicalEditPart)getTarget()).getFigure();
+		return new ChopboxAnchor(f);
 	}
 	return DEFAULT_TARGET_ANCHOR;
 }
