@@ -19,6 +19,7 @@ public static final int INITIAL_STATE_CLOSED = 1;
 public static final int INITIAL_STATUS_PINNED_OPEN = 2;
 
 private int initialState;
+private Object drawerType;
 
 public PaletteDrawer(String label) {
 	this(label, (ImageDescriptor)null);
@@ -29,6 +30,9 @@ public PaletteDrawer(String label, ImageDescriptor icon) {
 }
 
 public Object getDrawerType() {
+	if (drawerType != null) {
+		return drawerType;
+	}
 	for (int i = 0; i < children.size(); i++) {
 		PaletteEntry child = (PaletteEntry)children.get(i);
 		Object type = child.getType();
@@ -49,6 +53,15 @@ public boolean isInitiallyOpen() {
 
 public boolean isInitiallyPinned() {
 	return (getInitialState() == INITIAL_STATUS_PINNED_OPEN);
+}
+
+/**
+ * This method does not fire a property change.
+ * 
+ * @param	s	PALETTE_TYPE_TOOL or PALETTE_TYPE_TEMPLATE
+ */
+public void setDrawerType(Object obj) {
+	drawerType = obj;
 }
 
 public void setInitialState(int state) {
