@@ -134,6 +134,16 @@ void mouseMove(MouseEvent mouseEvent, EditPartViewer viewer);
 void mouseUp(MouseEvent mouseEvent, EditPartViewer viewer);
 
 /**
+ * Called when a native drag ends on a Viewer.  This event is important to Tools
+ * because {@link #mouseUp(MouseEvent, EditPartViewer) mouseUp(..)} will not occur
+ * once a native drag has started.  The Tool should correct its state to handle this
+ * lost Event.
+ * @param event the SWT DragSourceEvent
+ * @param viewer the Viewer on which a native drag started
+ */
+void nativeDragFinished(DragSourceEvent event, EditPartViewer viewer);
+
+/**
  * Called when a native drag begins on a Viewer.  This event is important to Tools
  * because {@link #mouseUp(MouseEvent, EditPartViewer) mouseUp(..)} will not occur
  * once a native drag has started.  The Tool should correct its state to handle this

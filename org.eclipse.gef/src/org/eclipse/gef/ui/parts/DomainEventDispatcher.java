@@ -246,6 +246,10 @@ public void dispatchMouseReleased(org.eclipse.swt.events.MouseEvent me){
 	}
 }
 
+public void dispatchNativeDragFinished(DragSourceEvent event, AbstractEditPartViewer viewer) {
+	domain.nativeDragFinished(event, viewer);
+}
+
 public void dispatchNativeDragStarted(DragSourceEvent event, AbstractEditPartViewer viewer) {
 	setRouteEventsToEditor(false);
 	domain.nativeDragStarted(event, viewer);

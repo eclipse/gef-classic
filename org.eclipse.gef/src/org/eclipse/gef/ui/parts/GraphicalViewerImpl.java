@@ -174,6 +174,9 @@ protected void setDragSource(DragSource source) {
 				flush(); //deferred events are not processed during native Drag-and-Drop.
 			}
 		}
+		public void dragFinished(DragSourceEvent event) {
+			getEventDispatcher().dispatchNativeDragFinished(event, GraphicalViewerImpl.this);
+		}
 	}
 	// The DragSource may be set to null if there are no listeners.  If there are listeners,
 	// this should be *the* last listener because all other listeners are hooked in super().

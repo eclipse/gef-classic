@@ -6,9 +6,12 @@ package org.eclipse.gef;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.swt.dnd.DragSourceEvent;
-import org.eclipse.swt.events.*;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.MouseEvent;
+
+import org.eclipse.gef.commands.CommandStack;
 
 
 /**
@@ -115,6 +118,13 @@ void mouseMove(MouseEvent mouseEvent, EditPartViewer viewer);
  * @param viewer The source of the event.
  */
 void mouseUp(MouseEvent mouseEvent, EditPartViewer viewer);
+
+/**
+ * Called when a native drag has finished on a Viewer.
+ * @param event The DragSourceEvent
+ * @param viewer The viewer where the drag finished
+ */
+void nativeDragFinished(DragSourceEvent event, EditPartViewer viewer);
 
 /**
  * Called when a native drag has started on a Viewer.
