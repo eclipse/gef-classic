@@ -20,15 +20,16 @@ import java.util.Set;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.widgets.Display;
 
-import org.eclipse.jface.util.Assert;
 import org.eclipse.jface.viewers.StructuredSelection;
 
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.PolylineConnection;
 import org.eclipse.draw2d.geometry.Rectangle;
 
+import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.GraphicalEditPart;
@@ -68,6 +69,11 @@ public static final int BEHAVIOR_NODES_CONTAINED = new Integer(1).intValue();
  * @since 3.1
  */
 public static final int BEHAVIOR_CONNECTIONS_TOUCHED = new Integer(2).intValue();
+/**
+ * For marquee tools that should select both nodes and connections.
+ * @since 3.1
+ */
+public static final int BEHAVIOR_NODES_AND_CONNECTIONS = new Integer(3).intValue();
 
 
 static final int TOGGLE_MODE = 1;
@@ -112,16 +118,21 @@ private List calculateNewSelection() {
 	Rectangle marqueeRect = getMarqueeSelectionRectangle();
 	for (Iterator itr = getAllChildren().iterator(); itr.hasNext();) {
 		EditPart child = (EditPart)itr.next();
-		if (!child.isSelectable())
-			continue;
 		IFigure figure = ((GraphicalEditPart)child).getFigure();
+		if (!child.isSelectable() 
+				|| child.getTargetEditPart(MARQUEE_REQUEST) != child
+				|| !isFigureVisible(figure)
+				|| !figure.isShowing())
+			continue;
 		Rectangle r = figure.getBounds().getCopy();
 		figure.translateToAbsolute(r);
-
-		if (marqueeRect.contains(r)
-		  && figure.isShowing()
-		  && child.getTargetEditPart(MARQUEE_REQUEST) == child
-		  && isFigureVisible(figure))
+		boolean included = false;
+		if (child instanceof ConnectionEditPart && marqueeRect.intersects(r)) {
+			figure.translateToRelative(r.setBounds(marqueeRect));
+			included = ((PolylineConnection)figure).getPoints().intersects(r);
+		} else
+			included = marqueeRect.contains(r);
+		if (included)
 			newSelections.add(child);
 	}
 	return newSelections;
@@ -168,9 +179,13 @@ private void getAllChildren(EditPart editPart, Set allChildren) {
 	List children = editPart.getChildren();
 	for (int i = 0; i < children.size(); i++) {
 		GraphicalEditPart child = (GraphicalEditPart) children.get(i);
-		if ((marqueeBehavior & BEHAVIOR_NODES_CONTAINED) != 0)
+		if (marqueeBehavior == BEHAVIOR_NODES_CONTAINED)
 			allChildren.add(child);
-		if ((marqueeBehavior & BEHAVIOR_CONNECTIONS_TOUCHED) != 0) {
+		else if (marqueeBehavior == BEHAVIOR_CONNECTIONS_TOUCHED) {
+			allChildren.addAll(child.getSourceConnections());
+			allChildren.addAll(child.getTargetConnections());
+		} else if (marqueeBehavior == BEHAVIOR_NODES_AND_CONNECTIONS) {
+			allChildren.add(child);
 			allChildren.addAll(child.getSourceConnections());
 			allChildren.addAll(child.getTargetConnections());
 		}
@@ -371,9 +386,17 @@ private void setSelectionMode(int mode) {
 	this.mode = mode;
 }
 
+/**
+ * Sets the type of parts that this tool will select.
+ * @param type {@link #BEHAVIOR_CONNECTIONS_TOUCHED} or {@link #BEHAVIOR_NODES_CONTAINED}
+ *        or {@link #BEHAVIOR_NODES_AND_CONNECTIONS}
+ * @since 3.1
+ */
 public void setMarqueeBehavior(int type) {
-	marqueeBehavior = type & 3;
-	Assert.isTrue(marqueeBehavior != 0);
+	if (type != BEHAVIOR_CONNECTIONS_TOUCHED && type != BEHAVIOR_NODES_CONTAINED
+			&& type != BEHAVIOR_NODES_AND_CONNECTIONS)
+		throw new IllegalArgumentException("Invalid marquee behaviour specified."); //$NON-NLS-1$
+	marqueeBehavior = type;
 }
 
 private void showMarqueeFeedback() {
