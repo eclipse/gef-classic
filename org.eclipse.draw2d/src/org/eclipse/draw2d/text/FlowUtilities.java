@@ -15,14 +15,14 @@ class FlowUtilities
 {
 
 private static int getNextBreakpoint(String s, int offset) {
-	int index = s.indexOf(" ", offset);
+	int index = s.indexOf(" ", offset); //$NON-NLS-1$
 	if (index == -1) return s.length();
 	return index;
 }
 
 private static int getPreviousBreakpoint(String s, int offset) {
 	if (offset == s.length()) return offset;
-	int index = s.lastIndexOf(" ", offset - 1);
+	int index = s.lastIndexOf(" ", offset - 1); //$NON-NLS-1$
 	return Math.max(0, index + 1);
 }
 
