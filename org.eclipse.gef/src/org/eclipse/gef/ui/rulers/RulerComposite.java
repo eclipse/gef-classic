@@ -132,7 +132,7 @@ private GraphicalViewer createRulerContainer(int orientation) {
 	if (font == null) {
 		FontData[] data = canvas.getFont().getFontData();
 		for (int i = 0; i < data.length; i++) {
-			data[i].height -= 1;
+			data[i].setHeight(data[i].getHeight() - 1);
 		}
 		font = new Font(Display.getCurrent(), data);
 	}
