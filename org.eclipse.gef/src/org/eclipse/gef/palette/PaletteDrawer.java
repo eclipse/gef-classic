@@ -49,7 +49,7 @@ public static final int INITIAL_STATE_OPEN = 0,
                         INITIAL_STATUS_PINNED_OPEN = 2;
 
 private int initialState;
-private Object drawerType = ToolEntry.PALETTE_TYPE_TOOL;
+private Object drawerType;
 
 /**
  * Constructor
@@ -73,7 +73,9 @@ public PaletteDrawer(String label, ImageDescriptor icon) {
 
 /**
  * @return	<code>ToolEntry.PALETTE_TYPE_TOOL</code> or 
- * 			<code>PaletteTemplateEntry.PALETTE_TYPE_TEMPLATE</code>
+ * 			<code>PaletteTemplateEntry.PALETTE_TYPE_TEMPLATE</code> or (if the drawer
+ * 			is empty and a drawerType has not been explicitly set)
+ * 			<code>PALETTE_TYPE_UNKNOWN</code>
  * 			
  * 	@see	#setDrawerType(Object)
  */
@@ -115,8 +117,7 @@ public boolean isInitiallyPinned() {
 /**
  * DrawerType indicates whether a drawer will contain ToolEntries of
  * PaletteTemplateEntries.  A drawer should not contain entries of both these types. 
- * However, there are no checks/restrictions that will prevent you from doing so.  By
- * default, a drawer is of type <code>ToolEntry.PALETTE_TYPE_TOOL</code> 
+ * However, there are no checks/restrictions that will prevent you from doing so.
  * 
  * @param	obj		<code>ToolEntry.PALETTE_TYPE_TOOL</code> or 
  * 					<code>PaletteTemplateEntry.PALETTE_TYPE_TEMPLATE</code>
