@@ -700,7 +700,7 @@ protected void reorderChild(EditPart child, int index) {
 		constraint = layout.getConstraint(childFigure);
 
 	super.reorderChild(child, index);
-	getContentPane().setConstraint(childFigure, constraint);
+	setLayoutConstraint(child, childFigure, constraint);
 }
 
 /**
