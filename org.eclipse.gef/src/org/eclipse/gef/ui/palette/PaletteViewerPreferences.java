@@ -111,12 +111,6 @@ public static final String
 public static final String
 	PREFERENCE_DETAILS_ICON_SIZE  = "Use Large Icons - Details"; //$NON-NLS-1$
 /**
- * Property name for the palette size setting.  If the PropertyChangeEvent fired
- * has this property name, it means that the palette size was changed.
- */
-public static final String
-	PREFERENCE_PALETTE_SIZE       = "Palette Size"; //$NON-NLS-1$ 
-/**
  * Property name for the palette font setting.  If the PropertyChangeEvent fired
  * has this property name, it means that the palette font was changed.
  */
@@ -160,9 +154,6 @@ public FontData getFontData();
  */
 public int getLayoutSetting();
 
-/** * @return the size (width) of the palette */
-public int getPaletteSize();
-
 /**
  * @see java.beans.PropertyChangeSupport#removePropertyChangeListener(java.beans.PropertyChangeListener)
  */
@@ -201,13 +192,6 @@ public void setFontData(FontData data);
  * @param newVal	One of the above-mentioned flags
  */
 public void setLayoutSetting(int newVal);
-
-/**
- * Saves the size (width) of the palette.
- * 
- * @param newSize	The new width of the palette
- */
-public void setPaletteSize(int newSize);
 
 /**
  * Sets the "Use Large Icons" option for the currently active layout.

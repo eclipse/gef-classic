@@ -36,7 +36,6 @@ private IPropertyChangeListener fontListener;
 private FontData fontData;
 private PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 private IPreferenceStore store;
-private static final int DEFAULT_PALETTE_SIZE = 150;
 
 /**
  * Default Constructor
@@ -55,7 +54,6 @@ public DefaultPaletteViewerPreferences() {
  */
 public DefaultPaletteViewerPreferences(final IPreferenceStore store) {
 	this.store = store;
-	store.setDefault(PREFERENCE_PALETTE_SIZE, DEFAULT_PALETTE_SIZE);
 	store.setDefault(PREFERENCE_DETAILS_ICON_SIZE, false);
 	store.setDefault(PREFERENCE_FOLDER_ICON_SIZE, true);
 	store.setDefault(PREFERENCE_ICONS_ICON_SIZE, true);
@@ -189,9 +187,20 @@ public int getLayoutSetting() {
 	return store.getInt(PREFERENCE_LAYOUT);
 }
 
-/** * @see org.eclipse.gef.ui.palette.PaletteViewerPreferences#getPaletteSize() */
-public int getPaletteSize() {
-	return store.getInt(PREFERENCE_PALETTE_SIZE);
+/**
+ * This method is invoked when the preference store fires a property change.
+ *  * @param property	The property String used for the change fired by the preference store. */
+protected void handlePreferenceStorePropertyChanged(String property) {
+	if (property.equals(PREFERENCE_LAYOUT)) {
+		firePropertyChanged(property, new Integer(getLayoutSetting()));
+	} else if (property.equals(PREFERENCE_AUTO_COLLAPSE)) {
+		firePropertyChanged(property, new Integer(getAutoCollapseSetting()));
+	} else if (property.equals(PREFERENCE_FONT)) {
+		firePropertyChanged(property, getFontData());
+	} else {
+		firePropertyChanged(property, new Boolean(
+				useLargeIcons(convertPreferenceNameToLayout(property))));
+	}
 }
 
 /** * @return The IPreferenceStore used by this class to store the preferences. */
@@ -229,13 +238,6 @@ public void setLayoutSetting(int newVal) {
 }
 
 /**
- * @see org.eclipse.gef.ui.palette.PaletteViewerPreferences#setPaletteSize(int)
- */
-public void setPaletteSize(int newSize) {
-	store.setValue(PREFERENCE_PALETTE_SIZE, newSize);
-}
-
-/**
  * @see org.eclipse.gef.ui.palette.PaletteViewerPreferences#setCurrentUseLargeIcons(boolean)
  */
 public void setCurrentUseLargeIcons(boolean newVal) {
@@ -268,19 +270,7 @@ private class PreferenceStoreListener implements IPropertyChangeListener {
 	 * @see org.eclipse.jface.util.IPropertyChangeListener#propertyChange(PropertyChangeEvent)
 	 */
 	public void propertyChange(PropertyChangeEvent evt) {
-		String property = evt.getProperty();
-		if (property.equals(PREFERENCE_LAYOUT)) {
-			firePropertyChanged(property, new Integer(getLayoutSetting()));
-		} else if (property.equals(PREFERENCE_AUTO_COLLAPSE)) {
-			firePropertyChanged(property, new Integer(getAutoCollapseSetting()));
-		} else if (property.equals(PREFERENCE_PALETTE_SIZE)) {
-			firePropertyChanged(property, new Integer(getPaletteSize()));
-		} else if (property.equals(PREFERENCE_FONT)) {
-			firePropertyChanged(property, getFontData());
-		} else {
-			firePropertyChanged(property, new Boolean(
-					useLargeIcons(convertPreferenceNameToLayout(property))));
-		}
+		handlePreferenceStorePropertyChanged(evt.getProperty());
 	}
 }
 

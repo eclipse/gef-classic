@@ -25,8 +25,17 @@ public class LogicPlugin
 	extends org.eclipse.ui.plugin.AbstractUIPlugin
 {
 
+private static LogicPlugin singleton;
+
 public LogicPlugin(IPluginDescriptor desc){
 	super(desc);
+	if( singleton == null ){
+		singleton = this;
+	}
+}
+
+public static LogicPlugin getDefault(){
+	return singleton;
 }
 
 static private List createCategories(PaletteRoot root){
@@ -35,6 +44,8 @@ static private List createCategories(PaletteRoot root){
 	categories.add(createControlGroup(root));
 	categories.add(createComponentsDrawer());
 	categories.add(createComplexPartsDrawer());
+//	categories.add(createTemplateComponentsDrawer());
+//	categories.add(createComplexTemplatePartsDrawer());
 
 	return categories;
 }
@@ -68,6 +79,33 @@ static private PaletteContainer createComplexPartsDrawer(){
 	return drawer;
 }
 
+static private PaletteContainer createComplexTemplatePartsDrawer(){
+	PaletteDrawer drawer = new PaletteDrawer("Canned Templates", ImageDescriptor.createFromFile(Circuit.class, "icons/can.gif")); //$NON-NLS-2$
+
+	List entries = new ArrayList();
+
+	PaletteTemplateEntry combined = new PaletteTemplateEntry(
+		LogicMessages.LogicPlugin_Tool_CreationTool_HalfAdder_Label,
+		LogicMessages.LogicPlugin_Tool_CreationTool_HalfAdder_Description,
+		TemplateConstants.TEMPLATE_HALF_ADDER,
+		ImageDescriptor.createFromFile(Circuit.class, "icons/halfadder16.gif"), //$NON-NLS-1$
+		ImageDescriptor.createFromFile(Circuit.class, "icons/halfadder24.gif") //$NON-NLS-1$
+	);
+	entries.add(combined);
+
+	combined = new PaletteTemplateEntry(
+		LogicMessages.LogicPlugin_Tool_CreationTool_FullAdder_Label,
+		LogicMessages.LogicPlugin_Tool_CreationTool_FullAdder_Description,
+		TemplateConstants.TEMPLATE_FULL_ADDER,
+		ImageDescriptor.createFromFile(Circuit.class, "icons/fulladder16.gif"), //$NON-NLS-1$
+		ImageDescriptor.createFromFile(Circuit.class, "icons/fulladder24.gif") //$NON-NLS-1$
+	);
+	entries.add(combined);
+
+	drawer.addAll(entries);
+	return drawer;
+}
+
 static private PaletteContainer createComponentsDrawer(){
 
 	PaletteDrawer drawer = new PaletteDrawer(
@@ -77,34 +115,12 @@ static private PaletteContainer createComponentsDrawer(){
 	List entries = new ArrayList();
 	
 	CombinedTemplateCreationEntry combined = new CombinedTemplateCreationEntry(
-		LogicMessages.LogicPlugin_Tool_CreationTool_Label_Label,
-		LogicMessages.LogicPlugin_Tool_CreationTool_Label_Description,
-		TemplateConstants.TEMPLATE_LOGIC_LABEL,
-		new SimpleFactory(LogicLabel.class),
-		ImageDescriptor.createFromFile(Circuit.class, "icons/label16.gif"), //$NON-NLS-1$
-		ImageDescriptor.createFromFile(Circuit.class, "icons/label24.gif")//$NON-NLS-1$
-	);
-	entries.add(combined);
-
-	combined = new CombinedTemplateCreationEntry(
 		LogicMessages.LogicPlugin_Tool_CreationTool_FlowContainer_Label,
 		LogicMessages.LogicPlugin_Tool_CreationTool_FlowContainer_Description,
 		TemplateConstants.TEMPLATE_FLOW_CONTAINER,
 		new SimpleFactory(LogicFlowContainer.class),
 		ImageDescriptor.createFromFile(Circuit.class, "icons/logicflow16.gif"), //$NON-NLS-1$
 		ImageDescriptor.createFromFile(Circuit.class, "icons/logicflow24.gif")//$NON-NLS-1$
-	);
-	entries.add(combined);
-
-	entries.add(new PaletteSeparator());
-
-	combined = new CombinedTemplateCreationEntry(
-		LogicMessages.LogicPlugin_Tool_CreationTool_LED_Label,
-		LogicMessages.LogicPlugin_Tool_CreationTool_LED_Description,
-		TemplateConstants.TEMPLATE_LED,
-		new SimpleFactory(LED.class),
-		ImageDescriptor.createFromFile(Circuit.class, "icons/ledicon16.gif"), //$NON-NLS-1$
-		ImageDescriptor.createFromFile(Circuit.class, "icons/ledicon24.gif")//$NON-NLS-1$
 	);
 	entries.add(combined);
 
@@ -115,6 +131,28 @@ static private PaletteContainer createComponentsDrawer(){
 		new SimpleFactory(Circuit.class),
 		ImageDescriptor.createFromFile(Circuit.class, "icons/circuit16.gif"),//$NON-NLS-1$
 		ImageDescriptor.createFromFile(Circuit.class, "icons/circuit24.gif")//$NON-NLS-1$
+	);
+	entries.add(combined);
+
+	entries.add(new PaletteSeparator());
+
+	combined = new CombinedTemplateCreationEntry(
+		LogicMessages.LogicPlugin_Tool_CreationTool_Label_Label,
+		LogicMessages.LogicPlugin_Tool_CreationTool_Label_Description,
+		TemplateConstants.TEMPLATE_LOGIC_LABEL,
+		new SimpleFactory(LogicLabel.class),
+		ImageDescriptor.createFromFile(Circuit.class, "icons/label16.gif"), //$NON-NLS-1$
+		ImageDescriptor.createFromFile(Circuit.class, "icons/label24.gif")//$NON-NLS-1$
+	);
+	entries.add(combined);
+
+	combined = new CombinedTemplateCreationEntry(
+		LogicMessages.LogicPlugin_Tool_CreationTool_LED_Label,
+		LogicMessages.LogicPlugin_Tool_CreationTool_LED_Description,
+		TemplateConstants.TEMPLATE_LED,
+		new SimpleFactory(LED.class),
+		ImageDescriptor.createFromFile(Circuit.class, "icons/ledicon16.gif"), //$NON-NLS-1$
+		ImageDescriptor.createFromFile(Circuit.class, "icons/ledicon24.gif")//$NON-NLS-1$
 	);
 	entries.add(combined);
 
@@ -163,6 +201,100 @@ static private PaletteContainer createComponentsDrawer(){
 		LogicMessages.LogicPlugin_Tool_CreationTool_Ground_Description,
 		TemplateConstants.TEMPLATE_GROUND,
 		new SimpleFactory(GroundOutput.class),
+		ImageDescriptor.createFromFile(Circuit.class, "icons/ground16.gif"),//$NON-NLS-1$
+		ImageDescriptor.createFromFile(Circuit.class, "icons/ground24.gif")//$NON-NLS-1$
+	);
+	entries.add(combined);
+
+	drawer.addAll(entries);
+	return drawer;
+}
+
+static private PaletteContainer createTemplateComponentsDrawer(){
+
+	PaletteDrawer drawer = new PaletteDrawer("Template Components",
+		ImageDescriptor.createFromFile(Circuit.class, "icons/comp.gif"));//$NON-NLS-1$
+
+	List entries = new ArrayList();
+	
+	PaletteTemplateEntry combined = new PaletteTemplateEntry(
+		LogicMessages.LogicPlugin_Tool_CreationTool_FlowContainer_Label,
+		LogicMessages.LogicPlugin_Tool_CreationTool_FlowContainer_Description,
+		TemplateConstants.TEMPLATE_FLOW_CONTAINER,
+		ImageDescriptor.createFromFile(Circuit.class, "icons/logicflow16.gif"), //$NON-NLS-1$
+		ImageDescriptor.createFromFile(Circuit.class, "icons/logicflow24.gif")//$NON-NLS-1$
+	);
+	entries.add(combined);
+
+	combined = new PaletteTemplateEntry(
+		LogicMessages.LogicPlugin_Tool_CreationTool_Circuit_Label,
+		LogicMessages.LogicPlugin_Tool_CreationTool_Circuit_Description,
+		TemplateConstants.TEMPLATE_CIRCUIT,
+		ImageDescriptor.createFromFile(Circuit.class, "icons/circuit16.gif"),//$NON-NLS-1$
+		ImageDescriptor.createFromFile(Circuit.class, "icons/circuit24.gif")//$NON-NLS-1$
+	);
+	entries.add(combined);
+
+	entries.add(new PaletteSeparator());
+
+	combined = new PaletteTemplateEntry(
+		LogicMessages.LogicPlugin_Tool_CreationTool_Label_Label,
+		LogicMessages.LogicPlugin_Tool_CreationTool_Label_Description,
+		TemplateConstants.TEMPLATE_LOGIC_LABEL,
+		ImageDescriptor.createFromFile(Circuit.class, "icons/label16.gif"), //$NON-NLS-1$
+		ImageDescriptor.createFromFile(Circuit.class, "icons/label24.gif")//$NON-NLS-1$
+	);
+	entries.add(combined);
+
+	combined = new PaletteTemplateEntry(
+		LogicMessages.LogicPlugin_Tool_CreationTool_LED_Label,
+		LogicMessages.LogicPlugin_Tool_CreationTool_LED_Description,
+		TemplateConstants.TEMPLATE_LED,
+		ImageDescriptor.createFromFile(Circuit.class, "icons/ledicon16.gif"), //$NON-NLS-1$
+		ImageDescriptor.createFromFile(Circuit.class, "icons/ledicon24.gif")//$NON-NLS-1$
+	);
+	entries.add(combined);
+
+	combined = new PaletteTemplateEntry(
+		LogicMessages.LogicPlugin_Tool_CreationTool_ORGate_Label,
+		LogicMessages.LogicPlugin_Tool_CreationTool_ORGate_Description,
+		TemplateConstants.TEMPLATE_OR_GATE,
+		ImageDescriptor.createFromFile(Circuit.class, "icons/or16.gif"),//$NON-NLS-1$
+		ImageDescriptor.createFromFile(Circuit.class, "icons/or24.gif")//$NON-NLS-1$
+	);
+	entries.add(combined);
+
+	combined = new PaletteTemplateEntry(
+		LogicMessages.LogicPlugin_Tool_CreationTool_XORGate_Label,
+		LogicMessages.LogicPlugin_Tool_CreationTool_XORGate_Description,
+		TemplateConstants.TEMPLATE_XOR_GATE,
+		ImageDescriptor.createFromFile(Circuit.class, "icons/xor16.gif"),//$NON-NLS-1$
+		ImageDescriptor.createFromFile(Circuit.class, "icons/xor24.gif")//$NON-NLS-1$
+	);
+	entries.add(combined);
+
+	combined = new PaletteTemplateEntry(
+		LogicMessages.LogicPlugin_Tool_CreationTool_ANDGate_Label,
+		LogicMessages.LogicPlugin_Tool_CreationTool_ANDGate_Description,
+		TemplateConstants.TEMPLATE_AND_GATE,
+		ImageDescriptor.createFromFile(Circuit.class, "icons/and16.gif"),//$NON-NLS-1$
+		ImageDescriptor.createFromFile(Circuit.class, "icons/and24.gif")//$NON-NLS-1$
+	);
+	entries.add(combined);
+
+	combined = new PaletteTemplateEntry(
+		LogicMessages.LogicPlugin_Tool_CreationTool_LiveOutput_Label,
+		LogicMessages.LogicPlugin_Tool_CreationTool_LiveOutput_Description,
+		TemplateConstants.TEMPLATE_LIVE_OUTPUT,
+		ImageDescriptor.createFromFile(Circuit.class, "icons/live16.gif"),//$NON-NLS-1$
+		ImageDescriptor.createFromFile(Circuit.class, "icons/live24.gif")//$NON-NLS-1$
+	);
+	entries.add(combined);
+
+	combined = new PaletteTemplateEntry(
+		LogicMessages.LogicPlugin_Tool_CreationTool_Ground_Label,
+		LogicMessages.LogicPlugin_Tool_CreationTool_Ground_Description,
+		TemplateConstants.TEMPLATE_GROUND,
 		ImageDescriptor.createFromFile(Circuit.class, "icons/ground16.gif"),//$NON-NLS-1$
 		ImageDescriptor.createFromFile(Circuit.class, "icons/ground24.gif")//$NON-NLS-1$
 	);

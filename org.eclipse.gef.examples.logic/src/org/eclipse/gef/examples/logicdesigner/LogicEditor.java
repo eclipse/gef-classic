@@ -291,6 +291,7 @@ protected void configurePaletteViewer() {
 	ContextMenuProvider provider = new PaletteContextMenuProvider(viewer);
 	getPaletteViewer().setContextMenu(provider);
 	viewer.setCustomizer(new LogicPaletteCustomizer());
+	viewer.setPaletteViewerPreferencesSource(new LogicPaletteViewerPreferences());
 }
 
 
@@ -358,6 +359,22 @@ public Object getAdapter(Class type){
 			.getZoomManager();
 
 	return super.getAdapter(type);
+}
+
+/**
+ * @see org.eclipse.gef.ui.parts.GraphicalEditorWithPalette#getInitialPaletteSize()
+ */
+protected int getInitialPaletteSize() {
+	return ((LogicPaletteViewerPreferences)((PaletteViewerImpl)getPaletteViewer()).
+			getPaletteViewerPreferencesSource()).getPaletteSize();
+}
+
+/**
+ * @see org.eclipse.gef.ui.parts.GraphicalEditorWithPalette#handlePaletteResized(int)
+ */
+protected void handlePaletteResized(int newSize) {
+	((LogicPaletteViewerPreferences)((PaletteViewerImpl)getPaletteViewer()).
+			getPaletteViewerPreferencesSource()).setPaletteSize(newSize);
 }
 
 /**

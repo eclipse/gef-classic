@@ -15,11 +15,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.eclipse.gef.ui.palette.PaletteViewerImpl;
-import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
 
 public abstract class GraphicalEditorWithPalette 
 	extends GraphicalEditor 
 {
+
+private static final int PALETTE_SIZE = 125;
 
 private PaletteViewer paletteViewer;
 
@@ -35,16 +36,14 @@ private void createPaletteViewer(Composite parent) {
 }
 
 public void createPartControl(Composite parent) {
-	final Splitter splitter = new Splitter(parent, SWT.HORIZONTAL);
+	Splitter splitter = new Splitter(parent, SWT.HORIZONTAL);
 	createGraphicalViewer(splitter);
 	createPaletteViewer(splitter);
 	splitter.maintainSize(getPaletteViewer().getControl());
-	final PaletteViewerPreferences prefs = ((PaletteViewerImpl)getPaletteViewer()).
-	                                            getPaletteViewerPreferences();
-	splitter.setFixedSize(prefs.getPaletteSize());
+	splitter.setFixedSize(getInitialPaletteSize());
 	splitter.addFixedSizeChangeListener(new PropertyChangeListener() {
 		public void propertyChange(PropertyChangeEvent evt) {
-			prefs.setPaletteSize(splitter.getFixedSize());
+			handlePaletteResized(((Splitter)evt.getSource()).getFixedSize());
 		}
 	});
 }
@@ -54,11 +53,18 @@ public void createPartControl(Composite parent) {
  */
 protected abstract PaletteRoot getPaletteRoot();
 
+protected int getInitialPaletteSize() {
+	return PALETTE_SIZE;
+}
+
 /**
  * Returns the PaletteViewer.
  */
 protected PaletteViewer getPaletteViewer() {
 	return paletteViewer;
+}
+
+protected void handlePaletteResized(int newSize) {
 }
 
 protected void hookPaletteViewer() {
