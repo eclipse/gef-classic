@@ -22,7 +22,7 @@ import org.eclipse.gef.requests.CreateRequest;
 /**
  * @author Daniel Lee
  */
-public class StructuredActivityLayoutEditPolicy extends FlowLayoutEditPolicy {
+public class SequentialActivityLayoutEditPolicy extends FlowLayoutEditPolicy {
 
 /**
  * @see OrderedLayoutEditPolicy#createAddCommand(org.eclipse.gef.EditPart, 

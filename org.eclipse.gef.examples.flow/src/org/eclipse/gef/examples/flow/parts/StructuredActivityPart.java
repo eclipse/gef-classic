@@ -8,8 +8,6 @@ import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
 import org.eclipse.gef.examples.flow.model.StructuredActivity;
 import org.eclipse.gef.examples.flow.policies.*;
-import org.eclipse.gef.examples.flow.policies.ActivityNodeEditPolicy;
-import org.eclipse.gef.examples.flow.policies.StructuredActivityLayoutEditPolicy;
 import org.eclipse.graph.CompoundDirectedGraph;
 import org.eclipse.graph.Subgraph;
 
@@ -41,11 +39,11 @@ protected void applyOwnResults(CompoundDirectedGraph graph, Map map) {
 protected void createEditPolicies() {
 	installEditPolicy(EditPolicy.PRIMARY_DRAG_ROLE, new NonResizableEditPolicy());
 	installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE, new ActivityNodeEditPolicy());
-	installEditPolicy(EditPolicy.LAYOUT_ROLE, new StructuredActivityLayoutEditPolicy());
 	installEditPolicy(EditPolicy.COMPONENT_ROLE, new ActivityEditPolicy());
 	installEditPolicy(
 		EditPolicy.SELECTION_FEEDBACK_ROLE,
 		new ActivityContainerHighlightEditPolicy());
+	installEditPolicy(EditPolicy.CONTAINER_ROLE, new ActivityContainerEditPolicy());	
 }
 
 public void contributeNodesToGraph(CompoundDirectedGraph graph, Subgraph s, Map map) {
@@ -61,6 +59,7 @@ public void contributeNodesToGraph(CompoundDirectedGraph graph, Subgraph s, Map 
 protected IFigure createFigure() {
 	Figure f = new Figure();
 	f.setBorder(new LineBorder());
+	f.setOpaque(true);
 	return f;
 }
 
