@@ -254,6 +254,7 @@ private void restoreLocalState(State state) {
 	this.fractionalY = state.appliedY;
 	setScale(state.zoom);
 	setLocalFont(state.font);
+	setLocalLineWidth(state.lineWidth);
 }
 
 public void restoreState() {
@@ -307,7 +308,7 @@ public void setLineStyle(int style) {
 }
 
 public void setLineWidth(int width) {
-	graphics.setLineWidth(zoomLineWidth(width));
+	setLocalLineWidth(width);
 }
 
 private void setLocalFont(Font f){
@@ -317,6 +318,7 @@ private void setLocalFont(Font f){
 
 private void setLocalLineWidth(int width) {
 	localLineWidth = width;
+	graphics.setLineWidth(zoomLineWidth(width));
 }	
 
 public void setXORMode(boolean b) {
@@ -330,7 +332,7 @@ public void translate(int dx, int dy){
 	double dyFloat = dy * zoom + fractionalY;
 	fractionalX = dxFloat - Math.floor(dxFloat);
 	fractionalY = dyFloat - Math.floor(dyFloat);
-	graphics.translate((int)dxFloat, (int)dyFloat);
+	graphics.translate((int)Math.floor(dxFloat), (int)Math.floor(dyFloat));
 }
 
 private Point zoomTextPoint(int x, int y){
