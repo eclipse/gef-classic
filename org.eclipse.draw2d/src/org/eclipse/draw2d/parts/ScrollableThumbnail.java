@@ -12,6 +12,7 @@ package org.eclipse.draw2d.parts;
 
 import java.beans.*;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.PaletteData;
@@ -44,6 +45,22 @@ private PropertyChangeListener propListener = new PropertyChangeListener() {
 		reconfigureSelectorBounds();
 	}
 };
+private KeyListener keyListener = new KeyListener.Stub() {
+	public void keyPressed(KeyEvent ke) {
+		int moveX = (int)(viewport.getClientArea().width * .25); 
+		int moveY = (int)(viewport.getClientArea().height * .25);
+		if (ke.keycode == SWT.ARROW_LEFT)
+			viewport.setViewLocation(viewport.getViewLocation().translate(-moveX, 0));
+		else if (ke.keycode == SWT.ARROW_RIGHT)
+			viewport.setViewLocation(viewport.getViewLocation().translate(moveX, 0));
+		else if (ke.keycode == SWT.ARROW_UP || ke.keycode == SWT.PAGE_UP 
+				 || ke.keycode == SWT.HOME)
+			viewport.setViewLocation(viewport.getViewLocation().translate(0, -moveY));
+		else if (ke.keycode == SWT.ARROW_DOWN  || ke.keycode == SWT.PAGE_DOWN
+				 || ke.keycode == SWT.END)
+			viewport.setViewLocation(viewport.getViewLocation().translate(0, moveY));
+		}
+	};
 
 /**
  * Creates a new ScrollableThumbnail. */
@@ -74,6 +91,8 @@ private void initialize() {
 	selector = new SelectorFigure();
 	selector.addMouseListener(syncher = new ScrollSynchronizer());
 	selector.addMouseMotionListener(syncher);
+	selector.setFocusTraversable(true);
+	selector.addKeyListener(keyListener);
 	add(selector);
 	ClickScrollerAndDragTransferrer transferrer = 
 				new ClickScrollerAndDragTransferrer();
