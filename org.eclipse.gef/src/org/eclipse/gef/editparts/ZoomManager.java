@@ -125,7 +125,7 @@ protected void fireZoomChanged() {
 protected double getFitHeightZoomLevel() {
 	Dimension viewportSize = getViewport().getSize();
 	Rectangle figureBounds = getScalableFigure().getBounds();
-	return Math.min((double)viewportSize.height / (double)figureBounds.height * zoom, 1.0);
+	return Math.min((double)viewportSize.height / (double)figureBounds.height * zoom, multiplier);
 }
 
 protected double getFitPageZoomLevel() {
@@ -133,13 +133,13 @@ protected double getFitPageZoomLevel() {
 	Rectangle figureBounds = getScalableFigure().getBounds();
 	double widthScale = (double)viewportSize.width / (double)figureBounds.width * zoom;
 	double heightScale = (double)viewportSize.height / (double)figureBounds.height * zoom;
-	return Math.min(Math.min(widthScale, heightScale), 1.0);
+	return Math.min(Math.min(widthScale, heightScale), multiplier);
 }
 
 protected double getFitWidthZoomLevel() {
 	Dimension viewportSize = getViewport().getSize();
 	Rectangle figureBounds = getScalableFigure().getBounds();
-	return Math.min((double)viewportSize.width / (double)figureBounds.width * zoom, 1.0);
+	return Math.min((double)viewportSize.width / (double)figureBounds.width * zoom, multiplier);
 }
 
 /**
@@ -357,18 +357,21 @@ public void setZoomAsText(String zoomString) {
 		getViewport().getUpdateManager().performUpdate();
 		setZoom(1.0 / multiplier);
 		setZoom(getFitHeightZoomLevel() / multiplier);
+		fireZoomChanged();
 	} else if (zoomString.equals(FIT_ALL)) {
 		setZoom(1.0 / multiplier);
 		setZoom(getFitPageZoomLevel() / multiplier);
 		getViewport().getUpdateManager().performUpdate();
 		setZoom(1.0 / multiplier);
 		setZoom(getFitPageZoomLevel() / multiplier);
+		fireZoomChanged();
 	} else if (zoomString.equals(FIT_WIDTH)) {
 		setZoom(1.0 / multiplier);
 		setZoom(getFitWidthZoomLevel() / multiplier);
 		getViewport().getUpdateManager().performUpdate();
 		setZoom(1.0 / multiplier);
 		setZoom(getFitWidthZoomLevel() / multiplier);
+		fireZoomChanged();
 	} else {	
 		try {
 			//Trim off the '%'
