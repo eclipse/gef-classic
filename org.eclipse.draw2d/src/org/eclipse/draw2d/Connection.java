@@ -36,21 +36,6 @@ ConnectionRouter getConnectionRouter();
 void setConnectionRouter(ConnectionRouter router);
 
 /**
- * Returns the ConnectionAnchor at the start of this Connection.
- * @return The ConnectionAnchor at the start of this Connection
- * @deprecated Use {@link #getSourceAnchor()} instead. 
- */
-ConnectionAnchor getStartAnchor();
-
-/**
- * Returns the ConnectionAnchor at the end of this Connection.
- * @return The ConnectionAnchor at the end of this Connection
- * @deprecated Use {@link #getTargetAnchor()} instead.
- */
-ConnectionAnchor getEndAnchor();
-
-
-/**
  * Returns the ConnectionAnchor at the <b>source</b> end of this Connection.
  * @return The ConnectionAnchor at the <b>source</b> end of this Connection
  */
@@ -85,20 +70,6 @@ void setSourceAnchor(ConnectionAnchor anchor);
  * @param anchor The target anchor
  */
 void setTargetAnchor(ConnectionAnchor anchor);
-
-/**
- * Sets the ConnectionAnchor to be used at the <i>source</i> end of this Connection.
- * @param anchor The source anchor
- * @deprecated Use {@link #setSourceAnchor(ConnectionAnchor)} instead.
- */
-void setStartAnchor(ConnectionAnchor anchor);
-
-/**
- * Sets the ConnectionAnchor to be used at the <i>target</i> end of this Connection.
- * @param anchor The target anchor
- * @deprecated Use {@link #setTargetAnchor(ConnectionAnchor)} instead.
- */
-void setEndAnchor(ConnectionAnchor anchor);
 
 /**
  * Returns the PointList containing the Points that make up this Connection.  This may be
