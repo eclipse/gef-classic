@@ -281,6 +281,7 @@ void navigateTo(EditPart part, KeyEvent event){
 		getViewer().setFocus(part);
 	else
 		getViewer().select(part);
+	getViewer().reveal(part);
 }
 
 private void processSelect(KeyEvent event){

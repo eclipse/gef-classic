@@ -63,6 +63,7 @@ protected boolean handleButtonDown(int button) {
 protected boolean handleButtonUp(int button) {
 	if (isInState(STATE_DRAG)) {
 		performSelection();
+		getCurrentViewer().reveal(getSourceEditPart());
 		setState(STATE_TERMINAL);
 		return true;
 	}

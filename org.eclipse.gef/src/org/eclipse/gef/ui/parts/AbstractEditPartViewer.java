@@ -80,7 +80,6 @@ public void appendSelection(EditPart editpart){
 	
 	//This order was intentionally changed so that synchronizing with the Outline would not affect Accessibility clients.
 	fireSelectionChanged();
-	expose(editpart);
 }
 
 /**
@@ -121,10 +120,6 @@ public void dispose(){
 		getControl().dispose();
 	setControl(null);
 }
-
-protected void expose(EditPart part){
-}
-
 
 /**
  * Returns the <code>Data</code> of the TreeItem at the given point.
@@ -376,7 +371,6 @@ public void setFocus(EditPart part){
 	focusPart = part;
 	if (focusPart != null){
 		focusPart.setFocus(true);
-		expose(focusPart);
 	}
 }
 
