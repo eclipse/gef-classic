@@ -34,6 +34,10 @@ void endLine();
  * @return the current line */
 LineBox getCurrentLine();
 
+/**
+ * Returns the current Y value.
+ * @return the current Y value
+ */
 int getCurrentY();
 
 /**

@@ -31,10 +31,18 @@ Rectangle toRectangle() {
 	return new Rectangle(x, y, Math.max(width, recommendedWidth), height);
 }
 
+/**
+ * Sets the height.
+ * @param h The height
+ */
 public void setHeight(int h) {
 	height = h;
 }
 
+/**
+ * Unions the dimensions of this with the dimensions of the passed FlowBox.
+ * @param box The FlowBox to union this with
+ */
 protected void unionInfo(FlowBox box) {
 	width = Math.max(width, box.width);
 	height = Math.max(height, box.y + box.height);

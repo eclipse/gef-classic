@@ -56,6 +56,10 @@ public List getFragments() {
 	return fragments;
 }
 
+/**
+ * Returns the recommended width for this CompositeBox.
+ * @return the recommended width
+ */
 public int getRecommendedWidth() {
 	return recommendedWidth;
 }

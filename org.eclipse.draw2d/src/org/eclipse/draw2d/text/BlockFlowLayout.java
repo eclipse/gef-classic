@@ -29,24 +29,41 @@ private LineBox
 
 BlockBox blockBox;
 
+/**
+ * Creates a new BlockFlowLayout with the given BlockFlow.
+ * @param blockFlow the BlockFlow
+ */
 public BlockFlowLayout(BlockFlow blockFlow) {
 	super(blockFlow);
 }
 
+/**
+ * @see FlowContainerLayout#cleanup()
+ */
 protected void cleanup() {
 	currentLine = previousLine = null;
 }
 
+/**
+ * @see FlowContainerLayout#createNewLine()
+ */
 protected void createNewLine() {
 	currentLine = new LineBox();
 	setupLine(currentLine);
 }
 
+/**
+ * Called by flush(), adds the BlockBox associated with this BlockFlowLayout
+ * to the current line and then ends the line.
+ */
 protected void endBlock() {
 	context.addToCurrentLine(blockBox);
 	context.endLine();
 }
 
+/**
+ * @see FlowContext#endLine()
+ */
 public void endLine() {
 	//If there is no current line, state is equivalent to new line
 	if (currentLine == null)
@@ -85,6 +102,10 @@ public int getCurrentY() {
 	return getCurrentLine().y;
 }
 
+/**
+ * Returns the BlockFlow associated with this BlockFlowLayout
+ * @return the BlockFlow
+ */
 protected final BlockFlow getBlockFlow() {
 	return (BlockFlow)getFlowFigure();
 }
@@ -107,12 +128,18 @@ protected void layoutLine() {
 	blockBox.add(currentLine);
 }
 
+/**
+ * @see FlowContainerLayout#flush()
+ */
 protected void flush() {
 	if (currentLine != null)
 		layoutLine();
 	endBlock();
 }
 
+/**
+ * @see FlowContainerLayout#preLayout()
+ */
 protected void preLayout() {
 	blockBox = getBlockFlow().getBlockBox();
 	setupBlock();

@@ -41,14 +41,24 @@ public boolean containsPoint(int x, int y) {
 	return false;
 }
 
+/**
+ * @see FlowFigure#createDefaultFlowLayout()
+ */
 protected FlowFigureLayout createDefaultFlowLayout() {
 	return new InlineFlowLayout(this);
 }
 
+/**
+ * Returns the <code>LineBox</code> fragments contained in this InlineFlow
+ * @return The fragments
+ */
 public List getFragments() {
 	return fragments;
 }
 
+/**
+ * @see FlowFigure#postValidate()
+ */
 public void postValidate() {
 	List list = getFragments();
 	FlowBox box;

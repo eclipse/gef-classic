@@ -52,6 +52,10 @@ protected FlowFigureLayout createDefaultFlowLayout() {
 	return new BlockFlowLayout(this);
 }
 
+/**
+ * Returns the BlockBox associated with this.
+ * @return This BlockFlow's BlockBox
+ */
 protected BlockBox getBlockBox() {
 	return blockBox;
 }

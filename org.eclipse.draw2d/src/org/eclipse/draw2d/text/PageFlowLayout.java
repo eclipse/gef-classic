@@ -20,12 +20,22 @@ public class PageFlowLayout
 	extends BlockFlowLayout
 {
 
+/**
+ * Creates a new PageFlowLayout with the given FlowPage
+ * @param page the FlowPage
+ */
 public PageFlowLayout(FlowPage page) {
 	super(page);
 }
 
+/**
+ * @see BlockFlowLayout#endBlock()
+ */
 protected void endBlock() { }
 
+/**
+ * $TODO This method is not being called.
+ */
 public void postValidate() { }
 
 /**

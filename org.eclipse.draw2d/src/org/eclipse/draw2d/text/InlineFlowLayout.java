@@ -20,29 +20,49 @@ public class InlineFlowLayout
 	extends FlowContainerLayout
 {
 
+/**
+ * Creates a new InlineFlowLayout with the given FlowFigure.
+ * @param flow The FlowFigure
+ */
 public InlineFlowLayout(FlowFigure flow) {
 	super(flow);
 }
 
+/**
+ * Adds the given FlowBox to the current line of this InlineFlowLayout.
+ * @param block the FlowBox to add to the current line
+ */
 public void addToCurrentLine(FlowBox block) {
 	getCurrentLine().add(block);
 	((InlineFlow)getFlowFigure()).getFragments().add(currentLine);
 }
 
+/**
+ * @see FlowContainerLayout#createNewLine()
+ */
 protected void createNewLine() {
 	currentLine = new LineBox();
 	setupLine(currentLine);
 }
 
+/**
+ * @see FlowContainerLayout#cleanup()
+ */
 protected void cleanup() {
 	currentLine = null;
 }
 
+/**
+ * @see FlowContainerLayout#flush()
+ */
 protected void flush() {
 	if (currentLine != null)
 		context.addToCurrentLine(currentLine);
 }
 
+/**
+ * @see FlowContext#endLine()
+ */
 public void endLine() {
 	if (currentLine == null)
 		return;
@@ -68,10 +88,17 @@ public boolean isCurrentLineOccupied() {
 		|| context.isCurrentLineOccupied();
 }
 
+/**
+ * Clears out all fragments prior to the call to layoutChildren().
+ */
 public void preLayout() {
 	((InlineFlow)getFlowFigure()).getFragments().clear();
 }
 
+/**
+ * Initializes the given LineBox. Called by createNewLine().
+ * @param line The LineBox to initialize.
+ */
 protected void setupLine(LineBox line) {
 	LineBox parent = context.getCurrentLine();
 	line.x = 0;

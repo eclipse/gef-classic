@@ -64,6 +64,11 @@ public ParagraphTextLayout(TextFlow flow, int style) {
 	wrappingStyle = style;
 }
 
+/**
+ * Returns the average character width of given TextFragmentbox
+ * @param fragment the TextFragmentBox
+ * @return the average character width 
+ */
 protected float getAverageCharWidth(TextFragmentBox fragment) {
 	if (fragment.width != 0 && fragment.length != 0)
 		return fragment.width / (float)fragment.length;

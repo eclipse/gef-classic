@@ -19,6 +19,14 @@ import java.util.List;
 public abstract class TextLayout extends FlowFigureLayout {
 
 /**
+ * Creates a new TextLayout with the given TextFlow
+ * @param flow The TextFlow
+ */
+public TextLayout(TextFlow flow) {
+	super(flow);
+}
+
+/**
  * Reuses an existing <code>TextFragmentBox</code>, or creates a new one.
  * @param i the index
  * @param fragments the original list of fragments
@@ -30,9 +38,5 @@ protected TextFragmentBox getFragment(int i, List fragments) {
 	fragments.add(box);
 	return box;
 }
-
-public TextLayout(TextFlow flow) {
-	super(flow);
-}	
 
 }

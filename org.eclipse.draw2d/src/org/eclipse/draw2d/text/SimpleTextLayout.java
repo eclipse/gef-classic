@@ -28,6 +28,10 @@ private static final String[] DELIMITERS = {
 private static int result;
 private static int delimeterLength;
 
+/**
+ * Creates a new SimpleTextLayout with the given TextFlow
+ * @param flow the TextFlow
+ */
 public SimpleTextLayout(TextFlow flow) {
 	super (flow);
 }

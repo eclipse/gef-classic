@@ -55,6 +55,9 @@ public void invalidate() {
 	super.invalidate();
 }
 
+/**
+ * @see Figure#getPreferredSize(int, int)
+ */
 public Dimension getPreferredSize(int width, int h) {
 	if (width >= 0)
 		width = Math.max(0, width - getInsets().getWidth());
@@ -91,7 +94,9 @@ int getRecommendedWidth() {
 	return recommendedWidth;
 }
 
-
+/**
+ * @see BlockFlow#postValidate()
+ */
 public void postValidate() {
 	Rectangle r = getBlockBox().toRectangle();
 	pageSize.width = r.width;
@@ -123,6 +128,9 @@ private void setRecommendedWidth(int width) {
 	super.invalidate();
 }
 
+/**
+ * @see Figure#validate()
+ */
 public void validate() {
 	if (isValid())
 		return;

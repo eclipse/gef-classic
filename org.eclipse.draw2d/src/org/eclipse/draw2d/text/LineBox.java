@@ -55,20 +55,33 @@ public int getAvailableWidth() {
 	return recommendedWidth - width;
 }
 
+/**
+ * Returns the baseline of this LineBox, which is the y value plus the ascent.
+ * @return the baseline value.
+ */
 public int getBaseline() {
 	return y + getAscent();
 }
 
+/**
+ * @see FlowBox#makeBaseline(int)
+ */
 public void makeBaseline(int value) {
 	super.makeBaseline(value);
 	commit();
 }
 
+/**
+ * @see CompositeBox#resetInfo()
+ */
 protected void resetInfo() {
 	super.resetInfo();
 	ascent = 0;
 }
 
+/**
+ * @see CompositeBox#unionInfo(FlowBox)
+ */
 protected void unionInfo(FlowBox blockInfo) {
 	int descent = height - ascent;
 	ascent = Math.max(ascent, blockInfo.getAscent());

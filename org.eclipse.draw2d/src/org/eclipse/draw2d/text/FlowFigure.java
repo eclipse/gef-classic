@@ -52,6 +52,9 @@ public void add(IFigure child, Object constraint, int index) {
  * @return The default layout */
 protected abstract FlowFigureLayout createDefaultFlowLayout();
 
+/**
+ * @see Figure#paintFigure(Graphics)
+ */
 protected void paintFigure(Graphics g) {
 	super.paintFigure(g);
 // 	g.drawRectangle(getBounds().getResized(-1,-1));
