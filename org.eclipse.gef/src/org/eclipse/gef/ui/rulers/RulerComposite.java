@@ -22,7 +22,9 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
@@ -105,6 +107,17 @@ public RulerComposite(Composite parent, int style) {
 	});
 }
 
+private static Rectangle calculateTrim(Canvas canvas) {
+	Rectangle trim = canvas.computeTrim(0, 0, 0, 0);
+	// computeTrim() doesn't take the scrollbars' visibility into
+	// account, so we have to shrink it if the scrollbars are not visible.
+	if (!canvas.getVerticalBar().getVisible())
+		trim.width -= canvas.getVerticalBar().getSize().x;
+	if (!canvas.getHorizontalBar().getVisible())
+		trim.height -= canvas.getHorizontalBar().getSize().y;
+	return trim;
+}
+
 private GraphicalViewer createRulerContainer(int orientation) {
 	ScrollingGraphicalViewer viewer = new RulerViewer();
 	final boolean isHorizontal = orientation == PositionConstants.NORTH 
@@ -180,44 +193,39 @@ private void doLayout() {
 		return;
 	}
 	
-	int leftWidth, rightWidth, topHeight, bottomHeight;
+	int leftWidth, topHeight;
 	leftWidth = left == null ? 0 
 			: left.getControl().computeSize(SWT.DEFAULT, SWT.DEFAULT).x;
-	rightWidth = 0; 
 	topHeight = top == null ? 0 
 			: top.getControl().computeSize(SWT.DEFAULT, SWT.DEFAULT).y;
-	bottomHeight = 0; 
 
-	Point size = getSize();
-	Point editorSize = new Point(size.x - (leftWidth + rightWidth), 
-			   size.y - (topHeight + bottomHeight));
+	Rectangle size = getClientArea();
+	Point editorSize = new Point(size.width - leftWidth, size.height - topHeight);
 	if (!editor.getSize().equals(editorSize))
-		editor.setSize(editorSize);		
+		editor.setSize(editorSize);
 	Point editorLocation = new Point(leftWidth, topHeight);
 	if (!editor.getLocation().equals(editorLocation))
 		editor.setLocation(editorLocation);
 
-	int vBarWidth = 0, hBarHeight = 0;
-	Rectangle trim = editor.computeTrim(0, 0, 0, 0);
 	/*
 	 * Fix for Bug# 67554
-	 * Motif leaves a few pixels of space around the Canvas which
-	 * can cause the rulers to be misaligned.
+	 * Take trim into account.  Some platforms (such as MacOS and Motif) leave some trimming
+	 * around the canvas.  The trimming could be around the ruler controls and/or the editor
+	 * control.
 	 */
-	if (editor.getVerticalBar().getVisible())
-		vBarWidth = trim.width + ("motif".equals(SWT.getPlatform()) ? trim.x * 2 : 0); //$NON-NLS-1$
-	if (editor.getHorizontalBar().getVisible())
-		hBarHeight = trim.height + ("motif".equals(SWT.getPlatform()) ? trim.y * 2 : 0); //$NON-NLS-1$
-	
+	Rectangle trim = calculateTrim(editor);
 	if (left != null) {
-		Rectangle leftBounds = new Rectangle(
-				0, topHeight - 1, leftWidth, editorSize.y - hBarHeight);
+		Rectangle leftTrim = calculateTrim((Canvas)left.getControl());
+		// The - 1 and + 1 are to compensate for the RulerBorder
+		Rectangle leftBounds = new Rectangle(0, topHeight - trim.x + leftTrim.x - 1, 
+				leftWidth, editorSize.y - trim.height + leftTrim.height + 1);
 		if (!left.getControl().getBounds().equals(leftBounds))
 			left.getControl().setBounds(leftBounds);
 	}
 	if (top != null) {
-		Rectangle topBounds = new Rectangle(
-				leftWidth - 1, 0, editorSize.x - vBarWidth, topHeight);
+		Rectangle topTrim = calculateTrim((Canvas)top.getControl());
+		Rectangle topBounds = new Rectangle(leftWidth - trim.y + topTrim.y - 1, 0, 
+				editorSize.x - trim.width + topTrim.width + 1, topHeight);
 		if (!top.getControl().getBounds().equals(topBounds))
 			top.getControl().setBounds(topBounds);
 	}
