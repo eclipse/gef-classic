@@ -13,9 +13,11 @@ package org.eclipse.draw2d.text;
 public class TextFragmentBox
 	extends FlowBox
 {
+
 public int offset;
 public int length;
 private int ascent;
+boolean truncated;
 
 public TextFragmentBox(){}
 

@@ -23,10 +23,45 @@ public class ParagraphTextLayout
 {
 
 /**
+ * Wrapping will ONLY occur at valid line breaks
+ */
+public static final int WORD_WRAP_HARD = 0;
+
+/**
+ * Wrapping will always occur at the end of the available space, breaking in the middle of
+ * a word.
+ */
+public static final int WORD_WRAP_SOFT = 1;
+
+/**
+ * Wrapping will always occur at the end of available space, truncating a word if it
+ * doesn't fit.
+ */
+public static final int WORD_WRAP_TRUNCATE = 2;
+
+private int wrappingStyle = WORD_WRAP_HARD;
+
+/**
  * Consturcts a new ParagraphTextLayout on the specified TextFlow.
  * @param flow the TextFlow */
 public ParagraphTextLayout(TextFlow flow) {
 	super(flow);
+}
+
+/**
+ * Constructs the layout with the specified TextFlow and wrapping style.  The wrapping
+ * style must be one of:
+ * <UL>
+ * 	<LI>{@link #WORD_WRAP_HARD}</LI>
+ * 	<LI>{@link #WORD_WRAP_SOFT}</LI>
+ * 	<LI>{@link #WORD_WRAP_TRUNCATE}</LI>
+ * </UL>
+ * @param flow the textflow
+ * @param style the style of wrapping
+ */
+public ParagraphTextLayout(TextFlow flow, int style) {
+	this(flow);
+	wrappingStyle = style;
 }
 
 protected float getAverageCharWidth(TextFragmentBox fragment){
@@ -40,10 +75,11 @@ protected void layout() {
 	TextFlow flowFigure = (TextFlow)getFlowFigure();
 	
 	   List fragments = flowFigure.getFragments();//Reuse the previous List of fragments
-	 String s         = flowFigure.getText();
-	   Font f         = flowFigure.getFont();
+	 String string    = flowFigure.getText();
+	   Font font      = flowFigure.getFont();
 	    int i         = 0; //The index of the current fragment;
 	    int offset    = 0; //The current offset in the ORIGINAL text, not s
+	    int length    = 0; //The length of the current fragment
 	  float prevAvgCharWidth;
 	LineBox currentLine;
 	TextFragmentBox fragment;
@@ -60,13 +96,15 @@ protected void layout() {
 		//was requested, and the loop will break.
 		while (true) {
 			currentLine = context.getCurrentLine();
-			fragment.length	= FlowUtilities.getTextForSpace(
-				s,
-				f,
+			length = FlowUtilities.getTextForSpace(
+				fragment,
+				string,
+				font,
 				currentLine.getAvailableWidth(),
-				prevAvgCharWidth);
+				prevAvgCharWidth,
+				wrappingStyle);
 			
-			FlowUtilities.setupFragment(fragment, f, s);
+//			FlowUtilities.setupFragment(fragment, font, string);
 			if (fragment.width < currentLine.getAvailableWidth()
 			  || !context.isCurrentLineOccupied())
 				break;
@@ -74,12 +112,12 @@ protected void layout() {
 		}
 		//fragment.x = context.getCurrentX();
 		context.addToCurrentLine(fragment);
-		s = s.substring(fragment.length);
-		offset += fragment.length;
-		if (s.length() > 0)
+		string = string.substring(length);
+		offset += length;
+		if (string.length() > 0)
 			context.endLine();
 		i++;
-	} while (s.length() > 0 && fragment.length != 0);
+	} while (string.length() > 0 && fragment.length != 0);
 
 	//Remove the remaining unused fragments.
 	while (i < fragments.size())

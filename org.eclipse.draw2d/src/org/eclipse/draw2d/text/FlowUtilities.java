@@ -26,23 +26,29 @@ class FlowUtilities
 	extends FigureUtilities
 {
 
+private static Dimension ELLIPSIS_SIZE = new Dimension();
+
 /**
  * Returns the number of characters from the specified String that will fit in the
  * available amount of space. An average character width can be provided as a hint for
  * faster calculation.
  * @param s the String * @param f the Font used for measuring * @param availableWidth the available width in pixels * @param avg 0.0, or an avg character width to use during calculation * @return int */
-public static int getTextForSpace(String s, Font f, int availableWidth, float avg) {
-	if (s.equals("")) //$NON-NLS-1$
-		return 0;
+public static int getTextForSpace(TextFragmentBox frag, String string, Font font, int availableWidth, float avg, int WRAPPING) {
+	if (string.length() == 0)
+		throw new IllegalArgumentException(
+			"String must have length greater than 0"); //$NON-NLS-1$
+	frag.truncated = false;
 	
-	FontMetrics metrics = getFontMetrics(f);
+	FontMetrics metrics = getFontMetrics(font);
 	BreakIterator breakItr = BreakIterator.getLineInstance();
-	breakItr.setText(s);
+	breakItr.setText(string);
 	int MIN, min, max;
 	if (avg == 0.0)
 		avg = metrics.getAverageCharWidth();
-	MIN = min = breakItr.next();
-	max = s.length() + 1;
+
+	int firstBreak = breakItr.next();
+	MIN = min = (WRAPPING != ParagraphTextLayout.WORD_WRAP_SOFT) ?  firstBreak : 1;
+	max = string.length() + 1;
 
 	//The size of the current guess
 	int guess = 0,
@@ -58,7 +64,7 @@ public static int getTextForSpace(String s, Font f, int availableWidth, float av
 		if (guess <= min) guess = min + 1;
 
 		//Measure the current guess
-		guessSize = getTextExtents(s.substring(0, guess), f).width;
+		guessSize = getTextExtents(string.substring(0, guess), font).width;
 
 		if (guessSize < availableWidth)
 			//We did not use the available width
@@ -68,11 +74,55 @@ public static int getTextForSpace(String s, Font f, int availableWidth, float av
 			max = guess;
 	}
 	
-	if (min == s.length()) {
-		return min;
-	} else {
-		return Math.max(MIN, breakItr.preceding(min - 1));
+	int result = string.length();
+	switch (WRAPPING) {
+		case ParagraphTextLayout.WORD_WRAP_HARD :
+			if (min == string.length())
+				result = min;
+			else
+				result = Math.max(MIN, breakItr.preceding(min - 1));
+			frag.length = result;
+			break;
+
+		case ParagraphTextLayout.WORD_WRAP_SOFT :
+			if (min == string.length())
+				result = min;
+			else
+				result = breakItr.preceding(min - 1);
+			if (result <= 0)
+				result = min;
+			frag.length = result;
+			break;
+		case ParagraphTextLayout.WORD_WRAP_TRUNCATE :
+			if (min == string.length()) {
+				result = frag.length = min;
+				setupFragment(frag, font, string);
+				if (frag.getWidth() <= availableWidth)
+					return result;
+			}
+			result = breakItr.preceding(min - 1);
+			if (result <= 0) {
+				String ELLIPSIS = "..."; //$NON-NLS-1$
+				ELLIPSIS_SIZE = FigureUtilities.getStringExtents(ELLIPSIS, font);
+				getTextForSpace(
+					frag,
+					string,
+					font,
+					availableWidth - ELLIPSIS_SIZE.width,
+					avg,
+					ParagraphTextLayout.WORD_WRAP_SOFT);
+				//frag.length = min;
+				frag.truncated = true;
+				result = breakItr.following(min - 1);
+				if (result == BreakIterator.DONE)
+					result = string.length();
+			} else {
+				frag.length = result;
+			}
 	}
+
+	setupFragment(frag, font, string);
+	return result;
 }
 
 static void setupFragment(TextFragmentBox frag, Font f, String s) {
@@ -80,6 +130,8 @@ static void setupFragment(TextFragmentBox frag, Font f, String s) {
 	FontMetrics fm = getFontMetrics(f);
 	frag.setHeight(fm.getHeight() + fm.getLeading());
 	frag.setAscent(fm.getAscent() + fm.getLeading());
+	if (frag.truncated)
+		d.width += ELLIPSIS_SIZE.width;
 	frag.setWidth (d.width);
 }
 

@@ -52,6 +52,18 @@ public String getText() {
 	return text;
 }
 
+/**
+ * Returns <code>true</code> if a portion if the text is truncated using ellipses ("...").
+ * @return <code>true</code> if the text is truncated with ellipses
+ */
+public boolean isTextTruncated() {
+	for (int i = 0; i < fragments.size(); i++) {
+		if (((TextFragmentBox)fragments.get(i)).truncated)
+			return true;
+	}
+	return false;
+}
+
 /** * @see org.eclipse.draw2d.Figure#paintFigure(Graphics) */
 protected void paintFigure(Graphics g) {
 //	super.paintFigure(g);
@@ -60,9 +72,14 @@ protected void paintFigure(Graphics g) {
 		frag = (TextFragmentBox)fragments.get(i);
 //		if (!g.getClip(Rectangle.SINGLETON).intersects(frag))
 //			continue;
-		g.drawString(
-			text.substring(frag.offset, frag.offset + frag.length),
-			frag.x, frag.y);
+		if (!frag.truncated)
+			g.drawString(
+				text.substring(frag.offset, frag.offset + frag.length),
+				frag.x, frag.y);
+		else
+			g.drawString(
+				text.substring(frag.offset, frag.offset + frag.length) + "...",
+				frag.x, frag.y);
 //		g.drawRectangle(frag);
 	}
 //	g.drawRectangle(getBounds().getResized(-1, -1));
