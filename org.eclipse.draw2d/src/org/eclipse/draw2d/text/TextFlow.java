@@ -41,7 +41,7 @@ static final char RLO = '\u202e';
 
 static final int SELECT_ALL = 1;
 static final int SELECT_PARTIAL = 2;
-static final String ZWJ = "\u200d"; //$NON-NLS-1$
+static final String ZWJ = "\u200d";
 private BidiInfo bidiInfo;
 
 private int selectionEnd = -1;
@@ -79,26 +79,28 @@ public boolean addLeadingWordRequirements(int[] width) {
  * @since 3.1
  */
 boolean addLeadingWordWidth(String text, int[] width) {
-	// Changes to this algorithm should be verified with LookAheadTest
-	BreakIterator spaceFinder = BreakIterator.getLineInstance();
-	text = "a" + text + "a"; //$NON-NLS-1$ //$NON-NLS-2$
-	spaceFinder.setText(text);
-	int index = FlowUtilities.findPreviousNonWS(text, spaceFinder.next());
+
+	if (text.length() == 0)
+		return false;
+
+	if (Character.isWhitespace(text.charAt(0)))
+		return true;
+
+	BreakIterator lineBreaker = BreakIterator.getLineInstance();
+	text = 'a' + text + 'a';
+	lineBreaker.setText(text);
+	int index = lineBreaker.next();
 	boolean result = index < text.length() - 1;
-	// index should point to the end of the actual text (not incluing the 'a' that was 
-	// appended), if there were no breaks
-	if (index == text.length() - 1)
-		index--;
+
 	// An optimization to prevent unnecessary invocation of String.substring and 
 	// getStringExtents()
 	if (index == 0)
-		// this means that the first character in the actual text is a whitespace
 		return result;
 	
-	text = text.substring(1, index + 1);
+	text = text.substring(0, index);
 	
 	if (bidiInfo == null)
-		width[0] += FlowUtilities.getStringExtents(text, getFont()).width - 1;
+		width[0] += FlowUtilities.getStringExtents(text, getFont()).width;
 	else {
 		org.eclipse.swt.graphics.TextLayout textLayout = FlowUtilities.getTextLayout();
 		textLayout.setFont(getFont());
@@ -310,6 +312,16 @@ public int getNextOffset(Point p, boolean down) {
 	return findPreviousLineOffset(p);
 }
 
+/**
+ * Returns the next offset which is visible in at least one fragment or -1 if there is
+ * not one. A visible offset means that the character or the one preceding it is
+ * displayed, which implies that a caret can be positioned at such an offset.  This is
+ * useful for advancing a caret past characters which resulted in a line wrap.
+ * 
+ * @param offset the reference offset
+ * @return the next offset which is visible
+ * @since 3.1
+ */
 public int getNextVisibleOffset(int offset) {
 	TextFragmentBox box;
 	for (int i = 0; i < fragments.size(); i++) {
@@ -364,9 +376,19 @@ public int getOffset(Point p, int trailing[]) {
 	return -1;
 }
 
+
+/**
+ * Returns the previous offset which is visible in at least one fragment or -1 if there
+ * is not one. See {@link #getNextVisibleOffset(int)} for more. 
+ * 
+ * @param offset a reference offset
+ * @return -1 or the previous offset which is visible
+ * @since 3.1
+ */
+
 public int getPreviousVisibleOffset(int offset) {
 	TextFragmentBox box;
-	if (offset == - 1)
+	if (offset == -1)
 		offset = Integer.MAX_VALUE;
 	for (int i = fragments.size() - 1; i >= 0; i--) {
 		box = (TextFragmentBox)fragments.get(i);
@@ -469,7 +491,7 @@ protected void paintSelection(Graphics graphics) {
 			rect.setLocation(layout.getLocation(
 					Math.max(selectionStart - frag.offset, 0) + prefixCorrection, false).x, 0);
 			rect.union(layout.getLocation(Math.min(selectionEnd - frag.offset,
-					frag.offset + frag.length) - 1 + prefixCorrection, true).x, 0);
+					frag.length) - 1 + prefixCorrection, true).x, 0);
 			rect.width--;
 			rect.height = frag.getHeight();
 			rect.translate(frag.x, frag.y);
@@ -495,7 +517,7 @@ private void paintText(Graphics g, String draw, int x, int y, int bidiLevel) {
 }
 
 /**
- * @see org.eclipse.draw2d.text.FlowFigure#setBidiInfo(BidiInfo)
+ * @see org.eclipse.draw2d.text.FlowFigure#setBidiValues(int[])
  */
 public void setBidiInfo(BidiInfo info) {
 	this.bidiInfo = info;
