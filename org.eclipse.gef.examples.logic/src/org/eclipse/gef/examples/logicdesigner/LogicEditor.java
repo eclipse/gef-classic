@@ -31,6 +31,8 @@ import org.eclipse.ui.part.*;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.parts.ScrollableThumbnail;
 import org.eclipse.draw2d.parts.Thumbnail;
 
@@ -40,10 +42,10 @@ import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.internal.ui.rulers.ToggleRulerVisibilityAction;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.ui.actions.*;
-import org.eclipse.gef.ui.views.palette.DefaultPalettePage;
-import org.eclipse.gef.ui.views.palette.IPalettePage;
 import org.eclipse.gef.ui.parts.*;
 import org.eclipse.gef.ui.stackview.CommandStackInspectorPage;
+import org.eclipse.gef.ui.views.palette.DefaultPalettePage;
+import org.eclipse.gef.ui.views.palette.IPalettePage;
 
 import org.eclipse.gef.examples.logicdesigner.actions.IncrementDecrementAction;
 import org.eclipse.gef.examples.logicdesigner.actions.LogicPasteTemplateAction;
@@ -345,20 +347,18 @@ protected void configureGraphicalViewer() {
 		provider, viewer);
 	viewer.setKeyHandler(new GraphicalViewerKeyHandler(viewer)
 		.setParent(getCommonKeyHandler()));
+	
+	loadProperties();
 
-	loadRulers();
+	// Actions
 	IAction showRulers = new ToggleRulerVisibilityAction(getGraphicalViewer());
 	getActionRegistry().registerAction(showRulers);
 	getSite().getKeyBindingService().registerAction(showRulers);
 	
-	viewer.setProperty(SnapToGeometry.PROPERTY_SNAP_ENABLED, 
-			new Boolean(getLogicDiagram().isSnapToGeometryEnabled()));
 	IAction snapAction = new ToggleSnapToGeometryAction(getGraphicalViewer());
 	getActionRegistry().registerAction(snapAction);
 	getSite().getKeyBindingService().registerAction(snapAction);
 
-	viewer.setProperty(SnapToGrid.PROPERTY_GRID_ENABLED, 
-			new Boolean(getLogicDiagram().isGridEnabled()));
 	IAction showGrid = new ToggleGridAction(getGraphicalViewer());
 	getActionRegistry().registerAction(showGrid);
 	getSite().getKeyBindingService().registerAction(showGrid);
@@ -370,7 +370,8 @@ protected void createOutputStream(OutputStream os)throws IOException {
 	out.close();	
 }
 
-protected void loadRulers(){
+protected void loadProperties() {
+	// Ruler properties
 	LogicRuler ruler = getLogicDiagram().getRuler(PositionConstants.WEST);
 	RulerProvider provider = null;
 	if (ruler != null) {
@@ -385,6 +386,22 @@ protected void loadRulers(){
 	getGraphicalViewer().setProperty(RulerProvider.HORIZONTAL, provider);
 	getGraphicalViewer().setProperty(RulerProvider.RULER_VISIBILITY, 
 			new Boolean(getLogicDiagram().getRulerVisibility()));
+	
+	// Snap to Geometry property
+	getGraphicalViewer().setProperty(SnapToGeometry.PROPERTY_SNAP_ENABLED, 
+			new Boolean(getLogicDiagram().isSnapToGeometryEnabled()));
+	
+	// Grid properties
+	getGraphicalViewer().setProperty(SnapToGrid.PROPERTY_GRID_ENABLED, 
+			new Boolean(getLogicDiagram().isGridEnabled()));
+	Dimension spacing = getLogicDiagram().getGridSpacing();
+	if (spacing == null)
+		spacing = new Dimension(SnapToGrid.DEFAULT_GAP, SnapToGrid.DEFAULT_GAP);
+	getGraphicalViewer().setProperty(SnapToGrid.GRID_SPACING, spacing);
+	Point origin = getLogicDiagram().getGridOrigin();
+	if (origin == null)
+		origin = new Point();
+	getGraphicalViewer().setProperty(SnapToGrid.GRID_ORIGIN, origin);
 }
 
 public void dispose() {
@@ -397,8 +414,7 @@ public void dispose() {
 public void doSave(IProgressMonitor progressMonitor) {
 	try {
 		editorSaving = true;
-		getLogicDiagram().setRulerVisibility(((Boolean)getGraphicalViewer()
-				.getProperty(RulerProvider.RULER_VISIBILITY)).booleanValue());
+		saveProperties();
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		createOutputStream(out);
 		IFile file = ((IFileEditorInput)getEditorInput()).getFile();
@@ -588,9 +604,8 @@ protected boolean performSaveAs() {
 	if (!file.exists()) {
 		WorkspaceModifyOperation op= new WorkspaceModifyOperation() {
 			public void execute(final IProgressMonitor monitor) {
+				saveProperties();
 				try {
-					getLogicDiagram().setRulerVisibility(((Boolean)getGraphicalViewer()
-							.getProperty(RulerProvider.RULER_VISIBILITY)).booleanValue());
 					ByteArrayOutputStream out = new ByteArrayOutputStream();
 					createOutputStream(out);
 					file.create(new ByteArrayInputStream(out.toByteArray()), true, monitor);
@@ -623,6 +638,19 @@ private boolean savePreviouslyNeeded() {
 	return savePreviouslyNeeded;
 }
 
+protected void saveProperties() {
+	getLogicDiagram().setRulerVisibility(((Boolean)getGraphicalViewer()
+			.getProperty(RulerProvider.RULER_VISIBILITY)).booleanValue());
+	getLogicDiagram().setGridEnabled(((Boolean)getGraphicalViewer()
+			.getProperty(SnapToGrid.PROPERTY_GRID_ENABLED)).booleanValue());
+	getLogicDiagram().setSnapToGeometry(((Boolean)getGraphicalViewer()
+			.getProperty(SnapToGeometry.PROPERTY_SNAP_ENABLED)).booleanValue());
+	getLogicDiagram().setGridOrigin((Point)getGraphicalViewer()
+			.getProperty(SnapToGrid.GRID_ORIGIN));
+	getLogicDiagram().setGridSpacing((Dimension)getGraphicalViewer()
+			.getProperty(SnapToGrid.GRID_SPACING));
+}
+
 public void setInput(IEditorInput input) {
 	superSetInput(input);
 
@@ -641,7 +669,7 @@ public void setInput(IEditorInput input) {
 	if (!editorSaving) {
 		if (getGraphicalViewer() != null) {
 			getGraphicalViewer().setContents(getLogicDiagram());
-			loadRulers();
+			loadProperties();
 		}
 		if (outlinePage != null) {
 			outlinePage.setContents(getLogicDiagram());
