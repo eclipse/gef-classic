@@ -34,6 +34,7 @@ class TreeViewerTransferDropListener
 
 public TreeViewerTransferDropListener(EditPartViewer viewer) {
 	super(viewer, TreeViewerTransfer.getInstance());
+	setEnablementDeterminedByCommand(true);
 }
 
 protected Request createTargetRequest() {
