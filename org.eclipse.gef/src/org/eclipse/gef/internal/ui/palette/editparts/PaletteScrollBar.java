@@ -65,6 +65,10 @@ public PaletteScrollBar() {
 	super();
 }
 
+public boolean containsPoint(int x, int y) {
+	return findDescendantAtExcluding(x, y, IdentitySearch.INSTANCE) != null;
+}
+
 protected Clickable createDefaultDownButton() {
 	return createTransparentArrowButton();
 }
