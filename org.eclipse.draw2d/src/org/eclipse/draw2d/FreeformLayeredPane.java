@@ -38,9 +38,11 @@ public void fireExtentChanged() {
 
 protected void fireMoved() {}
 
+protected FreeformHelper getFreeformHelper() {
+	return helper;
+}	
+
 public Rectangle getFreeformExtent(){
-	//Invalidate the extent always because the layers will never fire figure moved.
-	//We need some listening mechanism for the layers.
 	return helper.getFreeformExtent();
 }
 
