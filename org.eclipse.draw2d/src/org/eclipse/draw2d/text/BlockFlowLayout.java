@@ -23,7 +23,6 @@ public class BlockFlowLayout
 	extends FlowContainerLayout
 {
 
-private int previousRecommendedWidth = -1;
 private LineBox
 	previousLine = null;
 
@@ -85,7 +84,7 @@ public void endLine() {
 protected void layoutChildren() {
 //	boolean invalidate = invalid
 //		|| blockBox.getRecommendedWidth() != previousRecommendedWidth;
-	previousRecommendedWidth = blockBox.getRecommendedWidth();
+//	previousRecommendedWidth = blockBox.getRecommendedWidth();
 	List children = getFlowFigure().getChildren();
 	for (int i = 0; i < children.size(); i++) {
 		Figure f = (Figure)children.get(i);
