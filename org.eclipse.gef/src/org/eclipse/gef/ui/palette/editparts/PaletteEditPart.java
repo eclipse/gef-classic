@@ -30,9 +30,9 @@ import org.eclipse.gef.palette.PaletteEntry;
 import org.eclipse.gef.tools.SelectEditPartTracker;
 import org.eclipse.gef.ui.palette.*;
 
-abstract class PaletteEditPart 
+abstract class PaletteEditPart
 	extends AbstractGraphicalEditPart
-	implements PropertyChangeListener
+	implements PropertyChangeListener, MementoOriginator
 {
 
 private static final Border TOOLTIP_BORDER = new MarginBorder(0, 2, 1, 0);
@@ -71,6 +71,10 @@ protected AccessibleEditPart createAccessible() {
 }
 
 public void createEditPolicies() { }
+
+public Memento createMemento() {
+	return new DefaultPaletteMemento().storeState(this);
+}
 
 protected IFigure createToolTip() {
 	String message = getToolTipText();
@@ -256,6 +260,10 @@ protected void setImageDescriptor(ImageDescriptor desc) {
 
 protected void setImageInFigure(Image image) { }
 
+public void setMemento(Memento memento) {
+	((DefaultPaletteMemento)memento).restoreState(this);
+}
+
 private void traverseChildren(PaletteEntry parent, boolean add) {
 	if (!(parent instanceof PaletteContainer)) {
 		return;
@@ -304,6 +312,23 @@ protected static class ImageCache {
 			img.dispose();
 		}
 		images.clear();
+	}
+}
+
+protected static class DefaultPaletteMemento implements Memento {
+	private List childMementos = new ArrayList();
+	protected Memento restoreState(PaletteEditPart part) {
+		Iterator iter = part.getChildren().iterator();
+		Iterator iter2 = childMementos.iterator();
+		while (iter.hasNext())
+			((PaletteEditPart)iter.next()).setMemento((Memento)iter2.next());
+		return this;
+	}
+	protected Memento storeState(PaletteEditPart part) {
+		Iterator iter = part.getChildren().iterator();
+		while (iter.hasNext())
+			childMementos.add(((PaletteEditPart)iter.next()).createMemento());
+		return this;
 	}
 }
 

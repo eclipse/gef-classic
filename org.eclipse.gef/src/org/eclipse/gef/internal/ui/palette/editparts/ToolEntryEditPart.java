@@ -23,6 +23,8 @@ import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.palette.PaletteEntry;
 import org.eclipse.gef.palette.ToolEntry;
+import org.eclipse.gef.ui.palette.Memento;
+import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
 
 public class ToolEntryEditPart
@@ -143,15 +145,26 @@ public IFigure createFigure() {
 	class InactiveToggleButton extends ToggleButton {
 		InactiveToggleButton(IFigure contents) {
 			super(contents);
-			setRolloverEnabled(true);
-			setBorder(BORDER_TOGGLE);
 			setOpaque(false);
+			setEnabled(true);
 		}
 		public IFigure findMouseEventTargetAt(int x, int y) {
 			return null;
 		}
 		public IFigure getToolTip() {
 			return createToolTip();
+		}
+		public void setEnabled(boolean value) {
+			super.setEnabled(value);
+			if (isEnabled()) {
+				setRolloverEnabled(true);
+				setBorder(BORDER_TOGGLE);
+				setForegroundColor(null);
+			} else {
+				setBorder(null);
+				setRolloverEnabled(false);
+				setForegroundColor(ColorConstants.gray);
+			}
 		}
 	}
 	
@@ -162,7 +175,12 @@ public IFigure createFigure() {
 			getPaletteViewer().setActiveTool(getToolEntry());
 		}
 	});
+
 	return button;
+}
+
+public Memento createMemento() {
+	return new ToolMemento().storeState(this);
 }
 
 /**
@@ -286,6 +304,20 @@ public void showTargetFeedback(Request request) {
 	if (RequestConstants.REQ_SELECTION.equals(request.getType()))
 		getButtonModel().setMouseOver(true);
 	super.showTargetFeedback(request);
+}
+
+protected static class ToolMemento extends DefaultPaletteMemento {
+	private boolean active;
+	protected Memento restoreState(PaletteEditPart part) {
+		super.restoreState(part);
+		if (active)
+			((PaletteViewer)part.getViewer()).setActiveTool((ToolEntry)part.getModel());
+		return this;
+	}
+	protected Memento storeState(PaletteEditPart part) {
+		active = ((PaletteViewer)part.getViewer()).getActiveTool() == part.getModel();
+		return super.storeState(part);
+	}
 }
 
 }

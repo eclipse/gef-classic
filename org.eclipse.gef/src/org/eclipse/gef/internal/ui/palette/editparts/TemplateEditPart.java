@@ -24,6 +24,7 @@ import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.palette.PaletteEntry;
 import org.eclipse.gef.palette.PaletteTemplateEntry;
+import org.eclipse.gef.ui.palette.Memento;
 import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
 
 /**
@@ -70,6 +71,10 @@ public IFigure createFigure() {
 	};
 	fig.setRequestFocusEnabled(true);
 	return fig;
+}
+
+public Memento createMemento() {
+	return new TemplateMemento().storeState(this);
 }
 
 /**
@@ -156,6 +161,19 @@ public void setSelected(int value) {
 	} else {
 		label.setSelected(false);
 	}		
+}
+
+protected static class TemplateMemento extends DefaultPaletteMemento {
+	private int selection;
+	protected Memento restoreState(PaletteEditPart part) {
+		super.restoreState(part);
+		part.setSelected(selection);
+		return this;
+	}
+	protected Memento storeState(PaletteEditPart part) {
+		selection = part.getSelected();
+		return super.storeState(part);
+	}
 }
 
 }
