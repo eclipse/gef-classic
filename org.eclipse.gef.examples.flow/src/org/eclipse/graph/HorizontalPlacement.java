@@ -72,11 +72,9 @@ class NodeCluster extends NodeList {
 	void union(NodeCluster other) {
 		addAll(other);
 		incoming.addAll(other.incoming);
-		incoming.removeAll(other.outgoing);
-		incoming.removeAll(outgoing);
-		
 		outgoing.addAll(other.outgoing);
-		outgoing.removeAll(other.incoming);
+
+		incoming.removeAll(outgoing);
 		outgoing.removeAll(incoming);
 	}
 
@@ -223,7 +221,6 @@ private void balanceClusters() {
 }
 
 private boolean balanceClusterSets() {
-	//$TODO creating cluster sets from clusters needs to be much more efficient.
 	NodeCluster cluster, seed;
 	for (int i = 0; i < allClusters.size(); i++) {
 		seed = (NodeCluster)allClusters.get(i);
@@ -303,7 +300,7 @@ void buildGPrime() {
 	Node n, nPrime;
 	for (int r = 1; r<ranks.size(); r++){
 		rank = ranks.getRank(r);
-		for (int i = 0; i < rank.size(); i++) {
+		for (int i = 0; i < rank.count(); i++) {
 			n = rank.getNode(i);
 			nPrime = get(n);
 			addEdges(n, nPrime);
@@ -317,7 +314,7 @@ void buildRankSeparators(RankList ranks) {
 	for (int r = 0; r<ranks.size(); r++){
 		rank = ranks.getRank(r);
 		prevNPrime = null;
-		for (int i = 0; i < rank.size(); i++) {
+		for (int i = 0; i < rank.count(); i++) {
 			n = rank.getNode(i);
 			nPrime = new Node(n);
 			if (prevNPrime != null) {
