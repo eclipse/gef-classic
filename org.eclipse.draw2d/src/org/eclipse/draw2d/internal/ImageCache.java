@@ -64,14 +64,8 @@ public static boolean checkin(Image img) {
  */
 public static Image checkout(Dimension d, Object o) {
 	d = d.getCopy();
-	int powerOf2 = 128;
-	while (powerOf2 < d.height)
-		powerOf2 *= 2;
-	d.height = powerOf2;
-	powerOf2 = 128;
-	while (powerOf2 < d.width)
-		powerOf2 *= 2;
-	d.width = powerOf2;
+	d.width = ((d.width - 1) / 256 + 1) * 256;
+	d.height = ((d.height - 1) / 256 + 1) * 256;
 	Image result = null;
 	for (int i = 0; i < checkedIn.size(); i++) {
 		ImageInfo info = (ImageInfo)checkedIn.get(i);
