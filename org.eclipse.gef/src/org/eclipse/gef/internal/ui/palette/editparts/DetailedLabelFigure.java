@@ -271,9 +271,11 @@ static private class SelectableImageFigure extends ImageFigure {
 	private Image shadedImage;
 	protected void useShadedImage() {
 		disposeShadedImage();
-		ImageData data = ImageUtilities.createShadedImage(super.getImage(), 
-				ColorConstants.menuBackgroundSelected);
-		shadedImage = new Image(null, data, data.getTransparencyMask());
+		if (super.getImage() != null) {
+			ImageData data = ImageUtilities.createShadedImage(super.getImage(), 
+					ColorConstants.menuBackgroundSelected);
+			shadedImage = new Image(null, data, data.getTransparencyMask());
+		}
 	}
 	protected void disposeShadedImage() {
 		if (shadedImage != null) {
