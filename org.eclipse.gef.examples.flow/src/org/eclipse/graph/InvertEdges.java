@@ -14,7 +14,7 @@ public class InvertEdges extends GraphVisitor {
 public void visit(DirectedGraph g) {
 	for (int i = 0; i < g.edges.size(); i++) {
 		Edge e = g.edges.getEdge(i);
-		if (e.inverted)
+		if (e.isBackward)
 			e.invert();
 	}
 }

@@ -27,7 +27,7 @@ public boolean flag;
 /**
  * Internal field, used to determine if edge source and target should be swapped.
  */
-public boolean inverted = false;
+public boolean isBackward = false;
 
 public int offsetSource = -1;
 public int offsetTarget = -1;

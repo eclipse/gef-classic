@@ -170,7 +170,7 @@ private void invertEdges(DirectedGraph g) {
 		if (getOrderIndex(e.source) > getOrderIndex(e.target)) {
 			System.out.println("We must invert: " + e);
 			e.invert();
-			e.inverted = true;
+			e.isBackward = true;
 		}	
 	}
 }
