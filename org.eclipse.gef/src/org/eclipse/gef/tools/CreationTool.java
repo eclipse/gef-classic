@@ -91,6 +91,16 @@ protected boolean handleDragStarted(){
 	return stateTransition(STATE_DRAG, STATE_DRAG_IN_PROGRESS);
 }
 
+protected boolean handleFocusLost() {
+	if (isInState(STATE_DRAG | STATE_DRAG_IN_PROGRESS)) {
+		eraseTargetFeedback();
+		setState(STATE_INVALID);
+		handleFinished();
+		return true;
+	}
+	return false;
+}
+
 protected boolean handleMove() {
 	updateTargetRequest();
 	updateTargetUnderMouse();

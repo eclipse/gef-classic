@@ -212,6 +212,14 @@ protected boolean handleDragInProgress() {
 	return true;
 }
 
+protected boolean handleFocusLost() {
+	if (isInState(STATE_DRAG | STATE_DRAG_IN_PROGRESS)) {
+		handleFinished();
+		return true;
+	}
+	return false;
+}
+
 /**
  * This method is called when mouse or keyboard input is
  * invalid and erases the feedback.
