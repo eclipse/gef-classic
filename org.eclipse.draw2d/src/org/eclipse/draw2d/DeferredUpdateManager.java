@@ -152,6 +152,8 @@ public void setRoot(IFigure figure){
 }
 
 protected void validateFigures(){
+	if (invalidFigures.isEmpty())
+		return;
 	try {
 		IFigure fig;
 		fireValidating();
