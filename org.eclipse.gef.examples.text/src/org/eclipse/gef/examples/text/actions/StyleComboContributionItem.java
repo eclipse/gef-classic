@@ -126,6 +126,14 @@ public void fill(ToolBar parent, int index) {
 	toolItem.setControl(control);	
 }
 
+protected int findIndexOf(String text) {
+	for (int i = 0; i < getItems().length; i++) {
+		if (getItems()[i].equalsIgnoreCase(text))
+			return i;
+	}
+	return -1;
+}
+
 protected abstract String[] getItems();
 
 protected abstract String getStyleID();
@@ -148,7 +156,7 @@ protected void refresh() {
 		String value = style.toString();
 		if (StyleService.UNDEFINED.equals(style))
 			value = "";
-		int index = combo.indexOf(value);
+		int index = findIndexOf(value);
 		if (index >= 0)
 			combo.select(index);
 		else

@@ -45,14 +45,6 @@ public ChangeFontContributionItem(IPartService service) {
 	super(service);
 }
 
-protected int findIndexOf(String fontName) {
-	for (int i = 0; i < getItems().length; i++) {
-		if (getItems()[i].equalsIgnoreCase(fontName))
-			return i;
-	}
-	return -1;
-}
-
 protected String[] getItems() {
 	return FONT_NAMES;
 }
