@@ -20,7 +20,6 @@ import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.FigureUtilities;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.PrecisionPoint;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.GraphicalEditPart;
@@ -158,12 +157,16 @@ void highlightGuide(Integer pos, Color color, int offset) {
 		// The feedback layer could have grown (if auto-scrolling), so resize the fade-in
 		// line.
 		IFigure fig = guide[offset];
-		Dimension size = fig.getSize();
-		if ((offset % 2) == 1)
-			size.width = getLayer(LayerConstants.FEEDBACK_LAYER).getBounds().width;
-		else
-			size.height = getLayer(LayerConstants.FEEDBACK_LAYER).getBounds().height;
-		fig.setSize(size);
+		Rectangle figBounds = fig.getBounds().getCopy();
+		Rectangle feedbackBounds = getLayer(LayerConstants.FEEDBACK_LAYER).getBounds();
+		if ((offset % 2) == 1) {
+			figBounds.x = feedbackBounds.x;
+			figBounds.width = feedbackBounds.width;
+		} else {
+			figBounds.y = feedbackBounds.y;
+			figBounds.height = feedbackBounds.height;
+		}
+		fig.setBounds(figBounds);
 	}
 }
 
