@@ -20,7 +20,8 @@ import org.eclipse.gef.*;
 public class ToolUtilities {
 
 /**
- * Returns a list containing the top level selected edit parts.
+ * Returns a list containing the top level selected edit parts based on the viewer's
+ * selection.
  * @param viewer the viewer
  * @return the selection excluding dependants
  */
@@ -35,6 +36,12 @@ public static List getSelectionWithoutDependants(EditPartViewer viewer) {
 	return result;
 }
 
+/**
+ * Returns a list containing the top level selected edit parts based on the passed in
+ * list of selection.
+ * @param selectedParts the complete selection
+ * @return the selection excluding dependants
+ */
 public static List getSelectionWithoutDependants(List selectedParts) {
 	List result = new ArrayList();
 	for (int i = 0; i < selectedParts.size(); i++) {
@@ -45,6 +52,13 @@ public static List getSelectionWithoutDependants(List selectedParts) {
 	return result;
 }
 
+/**
+ * Filters the given list of EditParts so that the list only contains the EditParts that 
+ * understand the given request (i.e. return <code>true</code> from 
+ * {@link EditPart#understandsRequest(Request)} when passed the given request).
+ * @param list the list of edit parts to filter
+ * @param request the request 
+ */
 public static void filterEditPartsUnderstanding(List list, Request request) {
 	Iterator iter = list.iterator();
 	while (iter.hasNext()) {
