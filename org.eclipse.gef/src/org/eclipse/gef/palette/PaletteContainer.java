@@ -38,7 +38,8 @@ protected List children = new ArrayList();
 /**
  * Constructor that sets the container's label and small icon
  * 
- * @see org.eclipse.gef.palette.PaletteEntry#PaletteEntry(String)
+ * @see org.eclipse.gef.palette.PaletteEntry#PaletteEntry(String, String, 
+ *      ImageDescriptor, ImageDescriptor, Object)
  */
 protected PaletteContainer(String label, String desc, ImageDescriptor icon, Object type) {
 	super(label, desc, icon, null, type);

@@ -34,7 +34,9 @@ int height;
 
 /**
  * This method must be called on a block that is completely positioned and committed.
- * @param x X * @param y Y * @return <code>true</code> if the FlowBox contains the point */
+ * @param x X
+ * @param y Y
+ * @return <code>true</code> if the FlowBox contains the point */
 public boolean containsPoint(int x, int y) {
 	return x >= this.x
 		&& y >= this.y

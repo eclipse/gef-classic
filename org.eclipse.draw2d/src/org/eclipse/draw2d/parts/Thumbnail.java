@@ -371,7 +371,7 @@ protected boolean isDirty() {
 }
 
 /**
- * @see org.eclipse.draw2d.UpdateListener#notifyPainting(Rectangle)
+ * @see org.eclipse.draw2d.UpdateListener#notifyPainting(Rectangle, Map)
  */
 public void notifyPainting(Rectangle damage, Map dirtyRegions) {
 	Iterator dirtyFigures = dirtyRegions.keySet().iterator();

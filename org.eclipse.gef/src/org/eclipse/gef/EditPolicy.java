@@ -36,7 +36,7 @@ import org.eclipse.gef.commands.Command;
  * hierarchy. Code reuse is increased, and code management is easier.
  * <p>
  * IMPORTANT: This interface is <EM>not<EM> intended to be implemented by clients. 
- * Clients should inherit from {@link org.eclipse.gef.editparts.AbstractEditPolicy}.  New
+ * Clients should inherit from {@link org.eclipse.gef.editpolicies.AbstractEditPolicy}.  New
  * methods may be added in the future.
  */
 

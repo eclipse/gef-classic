@@ -13,8 +13,9 @@ package org.eclipse.gef;
 import org.eclipse.swt.widgets.Widget;
 
 /**
- * A Specialization of {@link EditPart} for use with {@link TreeViewer}.  The <i>visual
- * part</i> of a TreeEditPart is a {@link TreeItem}.
+ * A Specialization of {@link EditPart} for use with 
+ * {@link org.eclipse.gef.ui.parts.TreeViewer}.  The <i>visualpart</i> of a TreeEditPart 
+ * is a {@link org.eclipse.swt.widgets.TreeItem}.
  * <p>
  * IMPORTANT: This interface is not intended to be implemented by clients.  Clients should
  * inherit from {@link org.eclipse.gef.editparts.AbstractGraphicalEditPart}.  New methods
@@ -26,7 +27,8 @@ public interface TreeEditPart
 {
 
 /**
- * Returns either a {@link Tree} or {@link TreeItem}.
+ * Returns either a {@link org.eclipse.swt.widgets.Tree} or 
+ * {@link org.eclipse.swt.widgets.TreeItem}.
  * @return the Widget */
 Widget getWidget();
 

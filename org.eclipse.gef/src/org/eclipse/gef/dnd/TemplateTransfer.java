@@ -42,14 +42,14 @@ public Object getTemplate() {
 }
 
 /**
- * @see Transfer#getTypeIds()
+ * @see org.eclipse.swt.dnd.Transfer#getTypeIds()
  */
 protected int[] getTypeIds() {
 	return new int[] {TYPEID};
 }
 
 /**
- * @see Transfer#getTypeNames()
+ * @see org.eclipse.swt.dnd.Transfer#getTypeNames()
  */
 protected String[] getTypeNames() {
 	return new String[] {TYPE_NAME};

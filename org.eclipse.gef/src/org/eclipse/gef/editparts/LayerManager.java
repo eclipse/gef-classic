@@ -17,7 +17,7 @@ import org.eclipse.gef.EditPart;
 
 /**
  * Responsible for locating <i>layers</i> in a <code>GraphicalViewer</code>.  Layers are
- * just transparent {@link Figure figures}.
+ * just transparent {@link org.eclipse.draw2d.Figure figures}.
  * <P>
  * Typically, the <code>RootEditPart</code> will register() itself as the LayerManager for
  * the GraphicalViewer. All other EditParts/EditPolicies looking for a layer use the

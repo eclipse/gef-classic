@@ -23,7 +23,7 @@ import org.eclipse.gef.requests.GroupRequest;
  * to the model.
  * <P>ORPHAN is forwarded to the <i>parent</i> EditPart for it to handle.
  * <P>DELETE is also forwarded to the <i>parent</i> EditPart, but subclasses may also
- * contribute to the delete by overriding {@link #createDeleteCommand(DeleteRequest)}.
+ * contribute to the delete by overriding {@link #createDeleteCommand(GroupRequest)}.
  * <P>
  * This EditPolicy is not a {@link org.eclipse.gef.editpolicies.GraphicalEditPolicy}, and
  * should not be used to show feedback or interact with the host's visuals in any way.
@@ -56,9 +56,10 @@ public Command getCommand(Request request) {
 
 /**
  * Combines the DELETE contribution from this class and the parent. This classes
- * contribution is obtained by calling {@link #createDeleteCommand(DeleteRequest)}. The
- * parent is sent {@link RequestConstants#REQ_DELETE_DEPENDANT REQ_DELETE_DEPENDANT}. The
- * parent's contribution is combined with the local contribution and returned.
+ * contribution is obtained by calling {@link #createDeleteCommand(GroupRequest)}. The
+ * parent is sent 
+ * {@link org.eclipse.gef.RequestConstants#REQ_DELETE_DEPENDANT REQ_DELETE_DEPENDANT}. 
+ * The parent's contribution is combined with the local contribution and returned.
  * @param request the DeleteRequest * @return the combined contributions from this EditPolicy and the parent EditPart */
 protected Command getDeleteCommand(GroupRequest request) {
 	return createDeleteCommand(request);

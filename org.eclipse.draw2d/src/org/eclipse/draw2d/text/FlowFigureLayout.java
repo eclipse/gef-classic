@@ -74,7 +74,7 @@ public final void layout(IFigure figure) {
 }
 
 /**
- * Called during {@link #layout(IFigure). The {@link  #invalid} flag is reset after this
+ * Called during {@link #layout(IFigure)}. The {@link  #invalid} flag is reset after this
  * method is called.
  */
 protected abstract void layout();

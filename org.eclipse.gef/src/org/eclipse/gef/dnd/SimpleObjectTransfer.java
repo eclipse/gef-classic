@@ -37,7 +37,7 @@ public Object getObject() {
  * The data object is not converted to bytes. It is held onto in a field. Instead, a
  * checksum is written out to prevent unwanted drags across mulitple running copies of
  * Eclipse.
- * @see Transfer#javaToNative(Object, TransferData)
+ * @see org.eclipse.swt.dnd.Transfer#javaToNative(Object, TransferData)
  */
 public void javaToNative(Object object, TransferData transferData) {
 	startTime = System.currentTimeMillis();
@@ -49,7 +49,7 @@ public void javaToNative(Object object, TransferData transferData) {
  * The data object is not converted to bytes. It is held onto in a field. Instead, a
  * checksum is written out to prevent unwanted drags across mulitple running. copies of
  * Eclipse.
- * @see Transfer#nativeToJava(TransferData)
+ * @see org.eclipse.swt.dnd.Transfer#nativeToJava(TransferData)
  */
 public Object nativeToJava(TransferData transferData) {
 	byte bytes[] = (byte[])super.nativeToJava(transferData);

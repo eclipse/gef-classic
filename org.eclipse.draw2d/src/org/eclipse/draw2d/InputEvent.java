@@ -24,17 +24,17 @@ private EventDispatcher dispatcher;
 
 private boolean consumed = false;
 
-/** @see {@link SWT#ALT} */
+/** @see SWT#ALT */
 public static final int ALT = SWT.ALT;
-/** @see {@link SWT#CONTROL} */
+/** @see SWT#CONTROL */
 public static final int CONTROL = SWT.CONTROL;
-/** @see {@link SWT#SHIFT} */
+/** @see SWT#SHIFT */
 public static final int SHIFT = SWT.SHIFT;
-/** @see {@link SWT#BUTTON1} */
+/** @see SWT#BUTTON1 */
 public static final int BUTTON1 = SWT.BUTTON1;
-/** @see {@link SWT#BUTTON2} */
+/** @see SWT#BUTTON2 */
 public static final int BUTTON2 = SWT.BUTTON2;
-/** @see {@link SWT#BUTTON3} */
+/** @see SWT#BUTTON3 */
 public static final int BUTTON3 = SWT.BUTTON3;
 /** A bitwise OR'ing of {@link #BUTTON1}, {@link #BUTTON2} and {@link #BUTTON3} */
 public static final int ANY_BUTTON = BUTTON1 | BUTTON2 | BUTTON3;

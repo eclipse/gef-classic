@@ -78,7 +78,8 @@ public void postValidate() {
  * Sets the horitontal aligment of the block. Valid values are:
  * <UL>
  *   <LI>{@link org.eclipse.draw2d.PositionConstants#LEFT}
- *   <LI>{@link org.eclip
+ *   <LI>{@link org.eclipse.draw2d.PositionConstants#RIGHT}
+ *   <LI>{@link org.eclipse.draw2d.PositionConstants#CENTER}
  * @param value the aligment */
 public void setHorizontalAligment(int value) {
 	if (!(value == PositionConstants.LEFT

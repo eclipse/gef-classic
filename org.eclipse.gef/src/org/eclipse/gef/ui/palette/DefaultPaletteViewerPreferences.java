@@ -309,7 +309,7 @@ public void setSupportedLayoutModes(int[] modes) {
 }
 
 /**
- * @see org.eclipse.gef.ui.palette.PaletteViewerPreferences#setUseLargeIcons(boolean)
+ * @see org.eclipse.gef.ui.palette.PaletteViewerPreferences#setUseLargeIcons(int, boolean)
  */
 public void setUseLargeIcons(int layout, boolean newVal) {
 	getPreferenceStore().setValue(convertLayoutToPreferenceName(layout), newVal);
@@ -323,7 +323,7 @@ public boolean useLargeIcons(int layout) {
 }
 
 /**
- * @see org.eclipse.gef.ui.palette.PaletteViewerPreferences#useLargeIconsCurrently()
+ * @see org.eclipse.gef.ui.palette.PaletteViewerPreferences#useLargeIcons()
  */
 public boolean useLargeIcons() {
 	return useLargeIcons(getLayoutSetting());

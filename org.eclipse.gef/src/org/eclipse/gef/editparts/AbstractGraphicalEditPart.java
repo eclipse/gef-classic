@@ -148,7 +148,7 @@ static class MergedAccessibleHandles
 }
 
 /**
- * Extends {@link AbstractEditPart#activate() to also activate all <i>source</i>
+ * Extends {@link AbstractEditPart#activate()} to also activate all <i>source</i>
  * ConnectionEditParts.
  * @see org.eclipse.gef.EditPart#activate() */
 public void activate() {

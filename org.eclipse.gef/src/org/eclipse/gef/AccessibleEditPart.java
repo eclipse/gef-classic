@@ -31,67 +31,75 @@ public abstract class AccessibleEditPart
 {
 
 /**
- * @see AccessibleControlAdapter#getChildCount(AccessibleControlEvent)
+ * @see org.eclipse.swt.accessibility.AccessibleControlAdapter#getChildCount(
+ *      AccessibleControlEvent)
  * @param e AccessibleControlEvent
  */
 public abstract void getChildCount(AccessibleControlEvent e);
 
 /**
- * @see AccessibleControlAdapter#getChildren(AccessibleControlEvent)
+ * @see org.eclipse.swt.accessibility.AccessibleControlAdapter#getChildren(
+ *      	AccessibleControlEvent)
  * @param e AccessibleControlEvent
  */
 public abstract void getChildren(AccessibleControlEvent e);
 
 /**
- * @see AccessibleControlAdapter#getDefaultAction(AccessibleControlEvent)
+ * @see org.eclipse.swt.accessibility.AccessibleControlAdapter#getDefaultAction(
+ *      	AccessibleControlEvent)
  * @param e AccessibleControlEvent
  */
 public void getDefaultAction(AccessibleControlEvent e) { }
 
 /**
- * @see AccessibleAdapter#getDescription(AccessibleEvent)
+ * @see org.eclipse.swt.accessibility.AccessibleAdapter#getDescription(AccessibleEvent)
  * @param e AccessibleEvent
  */
 public void getDescription(AccessibleEvent e) { }
 
 /**
- * @see AccessibleAdapter#getKeyboardShortcut(AccessibleEvent)
+ * @see org.eclipse.swt.accessibility.AccessibleAdapter#getKeyboardShortcut(
+ *      	AccessibleEvent)
  * @param e AccessibleEvent
  */
 public void getKeyboardShortcut(AccessibleEvent e) { }
 
 /**
- * @see AccessibleAdapter#getHelp(AccessibleEvent)
+ * @see org.eclipse.swt.accessibility.AccessibleAdapter#getHelp(AccessibleEvent)
  * @param e AccessibleEvent
  */
 public void getHelp(AccessibleEvent e) { }
 
 /**
- * @see AccessibleAdapter#getName(AccessibleEvent)
+ * @see org.eclipse.swt.accessibility.AccessibleAdapter#getName(AccessibleEvent)
  * @param e AccessibleEvent
  */
 public abstract void getName(AccessibleEvent e);
 
 /**
- * @see AccessibleControlAdapter#getLocation(AccessibleControlEvent)
+ * @see org.eclipse.swt.accessibility.AccessibleControlAdapter#getLocation(
+ *      	AccessibleControlEvent)
  * @param e AccessibleControlEvent
  */
 public abstract void getLocation(AccessibleControlEvent e);
 
 /**
- * @see AccessibleControlAdapter#getRole(AccessibleControlEvent)
+ * @see org.eclipse.swt.accessibility.AccessibleControlAdapter#getRole(
+ *      	AccessibleControlEvent)
  * @param e AccessibleControlEvent
  */
 public void getRole(AccessibleControlEvent e) { }
 
 /**
- * @see AccessibleControlAdapter#getState(AccessibleControlEvent)
+ * @see org.eclipse.swt.accessibility.AccessibleControlAdapter#getState(
+ *      	AccessibleControlEvent)
  * @param e AccessibleControlEvent
  */
 public abstract void getState(AccessibleControlEvent e);
 
 /**
- * @see AccessibleControlAdapter#getValue(AccessibleControlEvent)
+ * @see org.eclipse.swt.accessibility.AccessibleControlAdapter#getValue(
+ *      	AccessibleControlEvent)
  * @param e AccessibleControlEvent
  */
 public void getValue(AccessibleControlEvent e) { }

@@ -107,7 +107,7 @@ private EditPart getLastHandleProvider(){
 }
 
 /**
- * @see org.eclipse.gef.tools.TargetingTool#getTargetConditional()
+ * @see org.eclipse.gef.tools.TargetingTool#getTargetingConditional()
  */
 protected EditPartViewer.Conditional getTargetingConditional() {
 	return new EditPartViewer.Conditional() {

@@ -30,7 +30,8 @@ public ChangeEvent(Object source) {
 
 /**
  * Constructs a new ChangeEvent with the given source object and property name.
- * @param source The source of the event * @param property The property name */
+ * @param source The source of the event
+ * @param property The property name */
 public ChangeEvent(Object source, String property) {
 	super(source);
 	setPropertyName(property);

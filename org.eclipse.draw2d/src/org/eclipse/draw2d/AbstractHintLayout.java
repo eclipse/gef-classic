@@ -41,13 +41,18 @@ private Dimension cachedMinimumHint = new Dimension(-1, -1);
  * <P>
  * By default, this method just calls {@link #getPreferredSize(IFigure, int, int)},
  * meaning minimum and preferres sizes will be the same unless this method is overridden.
- * @param container the Figure on which this layout is installed * @param wHint the width hint * @param hHint the height hint * @return the layout's minimum size */
+ * 
+ * @param container the Figure on which this layout is installed
+ * @param wHint the width hint
+ * @param hHint the height hint
+ * 
+ * @return the layout's minimum size */
 protected Dimension calculateMinimumSize(IFigure container, int wHint, int hHint) {
 	return getPreferredSize(container, wHint, hHint);
 }
 
 /**
- *  * @see org.eclipse.draw2d.LayoutManager#getMinimumSize(IFigure, int, int) */
+ * @see org.eclipse.draw2d.LayoutManager#getMinimumSize(IFigure, int, int) */
 public Dimension getMinimumSize(IFigure container, int w, int h) {
 	boolean flush = cachedMinimumHint.width != w
 		&& isSensitiveHorizontally(container);

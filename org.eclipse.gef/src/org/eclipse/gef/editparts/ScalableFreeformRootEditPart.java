@@ -75,7 +75,7 @@ public ScalableFreeformRootEditPart() {
 }
 
 /**
- * @see org.eclipse.gef.ui.parts.FreeformGraphicalRootEditPart#createLayers(LayeredPane)
+ * @see FreeformGraphicalRootEditPart#createLayers(LayeredPane)
  */
 protected void createLayers(LayeredPane layeredPane) {
 	layeredPane.add(getScaledLayers(), SCALABLE_LAYERS);
@@ -94,7 +94,7 @@ protected ScalableFreeformLayeredPane createScaledLayers() {
 }
 
 /**
- * @see org.eclipse.gef.ui.parts.FreeformGraphicalRootEditPart#getLayer(Object)
+ * @see FreeformGraphicalRootEditPart#getLayer(Object)
  */
 public IFigure getLayer(Object key) {
 	IFigure layer = scaledLayers.getLayer(key);

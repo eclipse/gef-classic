@@ -40,8 +40,7 @@ public void commit() {
 	}
 }
 
-/**
- *  * @see org.eclipse.draw2d.text.FlowBox#getAscent() */
+/** * @see org.eclipse.draw2d.text.FlowBox#getAscent() */
 public int getAscent() {
 	return ascent;
 }

@@ -42,7 +42,7 @@ public CopyTemplateAction(IEditorPart editor) {
 }
 
 /**
- * Returns whether the selected EditPart is a {@link TemplateEditPart}.
+ * Returns whether the selected EditPart is a TemplateEditPart.
  * @return whether the selected EditPart is a TemplateEditPart
  */
 protected boolean calculateEnabled() {

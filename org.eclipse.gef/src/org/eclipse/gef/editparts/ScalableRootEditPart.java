@@ -140,7 +140,7 @@ protected IFigure createFigure() {
 }
 
 /**
- * @see org.eclipse.gef.ui.parts.FreeformGraphicalRootEditPart#createLayers(LayeredPane)
+ * @see FreeformGraphicalRootEditPart#createLayers(LayeredPane)
  */
 protected void createLayers(LayeredPane layeredPane) {
 	layeredPane.add(getScaledLayers(), SCALABLE_LAYERS);

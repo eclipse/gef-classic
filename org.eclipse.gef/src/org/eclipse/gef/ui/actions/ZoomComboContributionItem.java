@@ -234,7 +234,7 @@ private void handleWidgetSelected(SelectionEvent event) {
 }
 
 /**
- * @see org.eclipse.draw2d.ZoomListener#zoomChanged(double)
+ * @see ZoomListener#zoomChanged(double)
  */
 public void zoomChanged(double zoom) {
 	refresh();

@@ -111,7 +111,8 @@ public Control createControl(Composite parent) {
 }
 
 /**
- * @see EditPartViewer#findObjectAtExcluding(Point, Collection, EditPartViewer.Conditional)
+ * @see org.eclipse.gef.EditPartViewer#findObjectAtExcluding(Point, Collection, 
+ *      	EditPartViewer.Conditional)
  */
 public EditPart findObjectAtExcluding(
 	Point pt,

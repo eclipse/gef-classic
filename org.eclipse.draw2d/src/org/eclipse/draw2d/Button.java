@@ -31,7 +31,7 @@ public Button() {
 }
 
 /** 
- * Contructs a Button containing the icon <i>image<i>.
+ * Contructs a Button containing the icon <i>image</i>.
  *
  * @param image  Image to be used by the Button as its icon.
  * @since 2.0

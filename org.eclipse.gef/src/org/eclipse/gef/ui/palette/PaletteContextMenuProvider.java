@@ -44,9 +44,9 @@ protected PaletteViewer getPaletteViewer() {
 /**
  * This is the method that builds the context menu.
  * 
- * @param	menu	The IMenuManager to which actions for the palette's context menu can be
- * 					added
- * @see org.eclipse.gef.ui.parts.ContextMenuProvider#buildContextMenu(org.eclipse.jface.action.IMenuManager)
+ * @param	menu	The IMenuManager to which actions for the palette's context menu can 
+ *                  be added.
+ * @see ContextMenuProvider#buildContextMenu(org.eclipse.jface.action.IMenuManager)
  */
 public void buildContextMenu(IMenuManager menu) {
 	GEFActionConstants.addStandardActionGroups(menu);

@@ -23,7 +23,7 @@ import org.eclipse.gef.GEF;
  * <P>
  * When a native Drag is started, a subset of all <code>TransferDragSourceListeners</code>
  * is generated and stored in a list of <i>active</i> listeners. This subset is calculated
- * by forwarding {@link DragSourceListener#dragStart(DragSourceEvent) to every listener,
+ * by forwarding {@link DragSourceListener#dragStart(DragSourceEvent)} to every listener,
  * and inspecting changes to the {@link DragSourceEvent#doit doit} field. The
  * <code>DragSource</code>'s set of supported Transfer types ({@link
  * DragSource#setTransfer(Transfer[])}) is updated to reflect the Transfer types

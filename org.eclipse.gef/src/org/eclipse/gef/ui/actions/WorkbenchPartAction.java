@@ -65,7 +65,8 @@ protected void execute(Command command) {
 
 /**
  * Returns the editor's command stack. This is done by asking the workbench part for its
- * CommandStack via {@link IAdaptable#getAdapter(java.lang.Class)}.
+ * CommandStack via 
+ * {@link org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)}.
  * @return the command stack
  */
 protected CommandStack getCommandStack() {
@@ -136,7 +137,7 @@ protected void setWorkbenchPart(IWorkbenchPart part) {
 }
 
 /**
- * @see org.eclipse.gef.UpdateAction#update()
+ * @see UpdateAction#update()
  */
 public void update() {
 	refresh();

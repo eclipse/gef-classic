@@ -158,13 +158,13 @@ protected void activateEditPolicies() {
  * <OL>
  *   <LI>The child is added to the {@link #children} List, and its parent is set to
  *   <code>this</code>
- *   <LI>{@link #addChildVisual(EditPart)} is called to add the child's visual
+ *   <LI>{@link #addChildVisual(EditPart, int)} is called to add the child's visual
  *   <LI>{@link EditPart#addNotify()} is called on the child.
  *   <LI><code>activate()</code> is called if this part is active
  *   <LI><code>EditPartListeners</code> are notified that the child has been added.
  * </OL>
  * <P>
- * Subclasses should implement {@link #addChildVisual(EditPart)}.
+ * Subclasses should implement {@link #addChildVisual(EditPart, int)}.
  * @param child The <code>EditPart</code> to add
  * @param index The index
  * @see  #addChildVisual(EditPart, int)
@@ -240,7 +240,6 @@ protected EditPart createChild(Object model) {
  * implemented to install the inital EditPolicies based on the model's initial state.
  * <code>null</code> can be used to reserve a "slot", should there be some desire to
  * guarantee the ordering of EditPolcies.
- * @see #doInitialize()
  * @see EditPart#installEditPolicy(Object, EditPolicy)
  */
 protected abstract void createEditPolicies();

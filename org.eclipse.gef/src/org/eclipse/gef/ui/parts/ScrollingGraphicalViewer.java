@@ -40,7 +40,7 @@ public class ScrollingGraphicalViewer
 public ScrollingGraphicalViewer() { }
 
 /**
- * @see EditPartViewer#createControl(org.eclipse.swt.widgets.Composite)
+ * @see org.eclipse.gef.EditPartViewer#createControl(org.eclipse.swt.widgets.Composite)
  */
 public final Control createControl(Composite parent) {
 	FigureCanvas canvas = new FigureCanvas(parent, getLightweightSystem());

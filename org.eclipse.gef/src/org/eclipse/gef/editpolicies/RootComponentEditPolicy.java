@@ -25,7 +25,7 @@ public class RootComponentEditPolicy
 
 /**
  * Overridden to prevent the host from being deleted.
- * @see org.eclipse.gef.editpolicies.ComponentEditPolicy#createDeleteCommand(DeleteRequest) */
+ * @see org.eclipse.gef.editpolicies.ComponentEditPolicy#createDeleteCommand(GroupRequest) */
 protected Command createDeleteCommand(GroupRequest request) {
 	return UnexecutableCommand.INSTANCE;
 }

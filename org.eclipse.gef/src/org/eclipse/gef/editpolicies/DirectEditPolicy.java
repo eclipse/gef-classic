@@ -61,7 +61,9 @@ protected abstract Command getDirectEditCommand(DirectEditRequest request);
 /**
  * Helps erase feedback by reverting the original edit value. The rule when using GEF is
  * that all feedback is removed before changes to the model are made. By default, the host
- * is sent {@link EditPart#refresh()}, which should cause it to refresh all properties.
+ * is sent {@link org.eclipse.gef.EditPart#refresh()}, which should cause it to 
+ * refresh all properties.
+ * 
  * Subclasses can override this method to perform a more specific revert.
  * @see #storeOldEditValue(DirectEditRequest)
  * @param request the DirectEditRequest */

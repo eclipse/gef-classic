@@ -77,8 +77,10 @@ public Object getConstraint(Connection connection) {
 /**
  * Handles collisions between 2 or more Connections. Collisions are currently defined as 2
  * connections with no bendpoints and whose start and end points coincide.  In other
- * words, the 2 connections are the exact same line. 
- * @param list The PointList of a connection that collides with another connection * @param index The index of the current connection in the list of colliding connections */
+ * words, the 2 connections are the exact same line.
+ *  
+ * @param list The PointList of a connection that collides with another connection
+ * @param index The index of the current connection in the list of colliding connections */
 protected abstract void handleCollision(PointList list, int index);
 
 /** * @see org.eclipse.draw2d.ConnectionRouter#invalidate(Connection) */

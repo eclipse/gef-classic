@@ -46,12 +46,12 @@ public AbstractTransferDragSourceListener(EditPartViewer viewer, Transfer xfer) 
 }
 
 /** 
- * @see DragSourceListener#dragFinished(DragSourceEvent)
+ * @see org.eclipse.swt.dnd.DragSourceListener#dragFinished(DragSourceEvent)
  */
 public void dragFinished(DragSourceEvent event) { }
 
 /**
- * @see DragSourceListener#dragStart(DragSourceEvent)
+ * @see org.eclipse.swt.dnd.DragSourceListener#dragStart(DragSourceEvent)
  */
 public void dragStart(DragSourceEvent event) { }
 

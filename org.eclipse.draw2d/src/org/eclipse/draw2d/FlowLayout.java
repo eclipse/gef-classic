@@ -243,14 +243,14 @@ public boolean isHorizontal() {
 }
 
 /**
- * @see org.eclipse.draw2d.AbstractHintLayout#isSensitiveHorizontally()
+ * @see org.eclipse.draw2d.AbstractHintLayout#isSensitiveHorizontally(IFigure)
  */
 protected boolean isSensitiveHorizontally(IFigure parent) {
 	return isHorizontal();
 }
 
 /**
- * @see org.eclipse.draw2d.AbstractHintLayout#isSensitiveVertically()
+ * @see org.eclipse.draw2d.AbstractHintLayout#isSensitiveVertically(IFigure)
  */
 protected boolean isSensitiveVertically(IFigure parent) {
 	return !isHorizontal();

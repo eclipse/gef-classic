@@ -177,7 +177,8 @@ public void addKeyListener(KeyListener listener) {
 
 /**
  * Adds a listener of type <i>clazz</i> to this Figure's list of event listeners.
- * @param clazz The listener type * @param listener The listener */
+ * @param clazz The listener type
+ * @param listener The listener */
 protected void addListener(Class clazz, Object listener) {
 	eventListeners.addListener(clazz, listener);
 }
@@ -344,8 +345,10 @@ public IFigure findMouseEventTargetAt(int x, int y) {
  * Searches this Figure's children for the deepest descendant for which 
  * {@link #isMouseEventTarget()} returns <code>true</code> and returns that descendant or
  * <code>null</code> if none found.
- * @see {@link #findMouseEventTargetAt(int, int)}
- * @param x The X coordinate * @param y The Y coordinate * @return The deepest descendant for which isMouseEventTarget() returns true */
+ * @see #findMouseEventTargetAt(int, int)
+ * @param x The X coordinate
+ * @param y The Y coordiante
+ * @return The deepest descendant for which isMouseEventTarget() returns true */
 protected IFigure findMouseEventTargetInDescendantsAt(int x, int y) {
 	PRIVATE_POINT.setLocation(x, y);
 	translateFromParent(PRIVATE_POINT);
@@ -489,7 +492,8 @@ public Cursor getCursor() {
 
 /**
  * Returns the value of the given flag.
- * @param flag The flag to get * @return The value of the given flag */
+ * @param flag The flag to get
+ * @return The value of the given flag */
 protected boolean getFlag(int flag) {
 	return (flags & flag) != 0;
 }

@@ -25,8 +25,7 @@ import org.eclipse.gef.ui.palette.PaletteViewer;
 
 /**
  * KeyHandler for the {@link org.eclipse.gef.ui.palette.PaletteViewer Palette}.
- * Handles se;ection traversal of Palette entries and collapse/expand of {@link
- * org.eclipse.gef.ui.palette.DrawerEditPart categories}.
+ * Handles selection traversal of Palette entries and collapse/expand of categories.
  */
 public class PaletteViewerKeyHandler
 	extends GraphicalViewerKeyHandler

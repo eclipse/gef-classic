@@ -352,7 +352,7 @@ protected void handleHoverStop() {
  * Returns <code>true</code> if this TransferDropTargetListener is enabled for the
  * specified <code>DropTargetEvent</code>.  By default, this is calculated by comparing
  * the event's {@link DropTargetEvent#dataTypes dataTypes} with the <code>Transfer's</code>
- * supported types ({@link Transfer#isSupportedType(TransferData}). If a dataType is
+ * supported types ({@link Transfer#isSupportedType(TransferData)}). If a dataType is
  * supported, an attempt is made to find a <i>target</i> <code>EditPart</code> at the
  * current drop location. If a target <code>EditPart</code> is found, <code>true</code> is
  * returned, and the DropTargetEvent's {@link DropTargetEvent#currentDataType} is set to

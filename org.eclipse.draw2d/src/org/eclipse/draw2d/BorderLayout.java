@@ -304,14 +304,17 @@ public void setConstraint(IFigure child, Object constraint) {
 
 /**
  * Sets the horizontal spacing to be used between the children.  Default is 0.
- *  * @param gap	The horizontal spacing */
+ * 
+ * @param gap The horizonal spacing */
 public void setHorizontalSpacing(int gap) {
 	hGap = gap;
 }
 
 /**
  * Sets the vertical spacing ot be used between the children.  Default is 0.
- *  * @param gap	The vertical spacing */
+ * 
+ * @param gap The vertical spacing
+ */
 public void setVerticalSpacing(int gap) {
 	vGap = gap;
 }

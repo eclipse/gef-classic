@@ -61,7 +61,7 @@ public int getCurrentY() {
 }
 
 /**
- * @see org.eclipse.draw2d.sandbox.text.FlowContainerLayout#isCurrentLineOccupied()
+ * @see org.eclipse.draw2d.text.FlowContainerLayout#isCurrentLineOccupied()
  */
 public boolean isCurrentLineOccupied() {
 	return !currentLine.getFragments().isEmpty()

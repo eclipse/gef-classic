@@ -17,11 +17,7 @@ import org.eclipse.ui.views.properties.IPropertySheetEntry;
 import org.eclipse.gef.commands.CommandStack;
 
 /**
-  Provides shared {@link org.eclipse.swt.graphics.Image}s
-  and {@link org.eclipse.jface.resource.ImageDescriptor}s.
- * @see SharedImageConstants
- * @see #getImage(String)
- * @see #getImageDescriptor(String)
+ * 
  */
 public final class GEFPlugin
 	extends AbstractUIPlugin

@@ -241,8 +241,8 @@ boolean isActive();
 
 /**
  * Returns <code>true</code> if the EditPart is selectable. A selectable EditPart may be
- * selected as a result of the {@link SelectionTool} receiving a mouse down, or as a
- * result of the User pressing a key to change selection.
+ * selected as a result of the {@link org.eclipse.gef.tools.SelectionTool} receiving a 
+ * mouse down, or as a result of the User pressing a key to change selection.
  * @return <code>true</code> if the receiver can be selected */
 boolean isSelectable();
 

@@ -175,7 +175,8 @@ private ToolEntryEditPart getToolEntryEditPart(ToolEntry entry) {
 }
 
 /**
- * @see org.eclipse.gef.EditPartViewer#dispose()
+ * @see org.eclipse.gef.ui.parts.GraphicalViewerImpl#handleDispose(
+ *      	org.eclipse.swt.events.DisposeEvent)
  */
 protected void handleDispose(DisposeEvent e) {
 	super.handleDispose(e);
@@ -266,7 +267,7 @@ public void setPaletteRoot(PaletteRoot root) {
  * This palette will use the given PaletteViewerPreferences to store all its preferences.
  * <p>
  * NOTE: This method should be invoked by a client only once (before the first time 
- * {@link #getPaletteViewerPreferencesSource()} is invoked).  Trying to invoke this method
+ * {@link #getPaletteViewerPreferences()} is invoked).  Trying to invoke this method
  * after that could lead to problems where some preferences would still be stored in the
  * old preference store.
  * </p>

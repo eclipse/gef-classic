@@ -63,8 +63,9 @@ boolean step(Point where);
 
 /**
  * Used with EditPartViewers to find the AutoexposeHelper at a Point. Clients can
- * instantiate the search, call {@link EditPartViewer#findObjectAtExcluding(Point,
- * Collection, Conditional)}, and then check the {@link #result} field.
+ * instantiate the search, call 
+ * {@link EditPartViewer#findObjectAtExcluding(Point,Collection, EditPartViewer.Conditional)}, 
+ * and then check the {@link #result} field.
  */
 class Search implements EditPartViewer.Conditional {
 	/**

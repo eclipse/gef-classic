@@ -23,7 +23,7 @@ public class ViewportLayout
 /**
  * Returns the minimum size required by the input viewport figure. Since viewport is
  * flexible, the minimum size required would be the just the size of the borders.
- * @see AbstractHintLayout#calculateMinimumSize(IFigure)
+ * @see AbstractHintLayout#calculateMinimumSize(IFigure, int, int)
  */
 public Dimension calculateMinimumSize(IFigure figure, int wHint, int hHint) {
 	Viewport viewport = (Viewport)figure;

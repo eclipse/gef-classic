@@ -69,7 +69,7 @@ public void dragSetData(DragSourceEvent event) {
 
 /**
  * Cancels the drag if the selected item does not represent a PaletteTemplateEntry.
- * @see DragSourceListener#dragStart(DragSourceEvent)
+ * @see org.eclipse.swt.dnd.DragSourceListener#dragStart(DragSourceEvent)
  */
 public void dragStart(DragSourceEvent event) {
 	Object template = getTemplate();

@@ -74,11 +74,12 @@ void removeNodeListener(NodeListener listener);
 /**
  * Sets the specified constraint for a child's Figure on the {@link #getContentPane()
  * content pane} figure for this GraphicalEditPart. The constraint will be applied to the
- * content pane's {@link LayoutManager}. <code>revalidate()</code> is called on the
- * content pane, which will cuase it to layout during the next update.
+ * content pane's {@link org.eclipse.draw2d.LayoutManager}. <code>revalidate()</code> is 
+ * called on the content pane, which will cuase it to layout during the next update.
  * @param child the <i>child</i> GraphicalEditPart whose constraint is being set
  * @param figure the Figure whose constraint is being set
- * @param constraint the constraint for the draw2d {@link LayoutManager}
+ * @param constraint the constraint for the draw2d 
+ * {@link org.eclipse.draw2d.LayoutManager}
  */
 void setLayoutConstraint(EditPart child, IFigure figure, Object constraint);
 
