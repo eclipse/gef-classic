@@ -29,7 +29,8 @@ public PaletteSeparator() {
  * @param	id	This Separator's unique ID
  */
 public PaletteSeparator(String id) {
-	super(PaletteMessages.NEW_SEPARATOR_LABEL, PaletteMessages.NEW_SEPARATOR_DESC);
+	super(PaletteMessages.NEW_SEPARATOR_LABEL, PaletteMessages.NEW_SEPARATOR_DESC,
+			PALETTE_TYPE_SEPARATOR);
 	setId(id);
 }
 
