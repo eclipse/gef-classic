@@ -148,27 +148,27 @@ protected void updateSourceRequest() {
 		
 		if (getResizeDirection() == PositionConstants.SOUTH_EAST) {
 			if (d.height > (d.width * ratio)) {
-				d.width = (int)((float)d.height / ratio);
+				d.width = (int)(d.height / ratio);
 			} else {
-				d.height = (int)((float)d.width * ratio);
+				d.height = (int)(d.width * ratio);
 			}
 		} else if (getResizeDirection() == PositionConstants.NORTH_WEST) {
 			if (d.height < (d.width * ratio)) {
-				d.width = (int)((float)d.height / ratio);
+				d.width = (int)(d.height / ratio);
 			} else {
-				d.height = (int)((float)d.width * ratio);
+				d.height = (int)(d.width * ratio);
 			}
 		} else if (getResizeDirection() == PositionConstants.NORTH_EAST) {
 			if (-(d.height) > (d.width * ratio)) {
-				d.width = -(int)((float)d.height / ratio);
+				d.width = -(int)(d.height / ratio);
 			} else {
-				d.height = -(int)((float)d.width * ratio);
+				d.height = -(int)(d.width * ratio);
 			}
 		} else if (getResizeDirection() == PositionConstants.SOUTH_WEST) {
 			if (-(d.height) < (d.width * ratio)) {
-				d.width = -(int)((float)d.height / ratio);
+				d.width = -(int)(d.height / ratio);
 			} else {
-				d.height = -(int)((float)d.width * ratio);
+				d.height = -(int)(d.width * ratio);
 			}
 		}
 	}
