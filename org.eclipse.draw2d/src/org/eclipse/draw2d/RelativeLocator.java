@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
+import org.eclipse.draw2d.geometry.*;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 
@@ -107,7 +108,7 @@ protected IFigure getReferenceFigure(){
 
 public void relocate(IFigure target) {
 	IFigure reference = getReferenceFigure();
-	Rectangle targetBounds = getReferenceBox().getResized(-1, -1);
+	Rectangle targetBounds = new PrecisionRectangle(getReferenceBox().getResized(-1, -1));
 	reference.translateToAbsolute(targetBounds);
 	target.translateToRelative(targetBounds);
 	targetBounds.resize(1, 1);
@@ -118,7 +119,7 @@ public void relocate(IFigure target) {
 		+= (int) (targetBounds.width * relativeX - ((targetSize.width + 1) / 2));
 	targetBounds.y
 		+= (int) (targetBounds.height * relativeY - ((targetSize.height + 1) / 2));
-	targetBounds.setSize(targetSize );
+	targetBounds.setSize(targetSize);
 	target.setBounds(targetBounds);
 }
 
