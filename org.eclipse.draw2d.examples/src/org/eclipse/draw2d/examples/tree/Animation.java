@@ -1,15 +1,10 @@
 package org.eclipse.draw2d.examples.tree;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Viewport;
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2d.geometry.*;
 
 /**
  * @author hudsonr
@@ -29,7 +24,6 @@ static IFigure showMe;
 static Point trackLocation;
 
 static boolean PLAYBACK;
-static boolean IN_PROGRESS;
 static boolean RECORDING;
 
 static Map initialStates;
@@ -39,7 +33,6 @@ static void end() {
 	Iterator iter = initialStates.keySet().iterator();
 	while (iter.hasNext())
 		((IFigure)iter.next()).revalidate();
-	IN_PROGRESS = false;
 	initialStates = null;
 	finalStates = null;
 	PLAYBACK = false;
@@ -54,8 +47,7 @@ static void mark(IFigure figure) {
 	while (!(figure instanceof Viewport))
 		figure = figure.getParent();
 	viewport = (Viewport)figure;
-	
-	IN_PROGRESS = true;
+
 	initialStates = new HashMap();
 	finalStates = new HashMap();
 	start = System.currentTimeMillis();

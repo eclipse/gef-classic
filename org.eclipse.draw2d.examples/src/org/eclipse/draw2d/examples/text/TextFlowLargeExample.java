@@ -1,23 +1,16 @@
 package org.eclipse.draw2d.examples.text;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.KeyAdapter;
-import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.text.*;
+
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-
-import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.FigureCanvas;
-import org.eclipse.draw2d.Label;
-import org.eclipse.draw2d.PositionConstants;
-import org.eclipse.draw2d.text.BlockFlow;
-import org.eclipse.draw2d.text.FlowFigure;
-import org.eclipse.draw2d.text.FlowPage;
-import org.eclipse.draw2d.text.InlineFlow;
-import org.eclipse.draw2d.text.TextFlow;
+import org.eclipse.swt.SWT;
 
 /**
  * The example is used to build large draw2d.text flow documents to benchmark the layout
@@ -43,7 +36,7 @@ public static void main(String[] args) {
 
 	canvas = new FigureCanvas(shell);
 	canvas.setLayoutData(new GridData(GridData.FILL_BOTH));
-	canvas.setScrollBarVisibility(canvas.ALWAYS);
+	canvas.setVerticalScrollBarVisibility(canvas.ALWAYS);
 	canvas.getViewport().setContentsTracksWidth(true);
 	shell.open();
 
@@ -83,23 +76,23 @@ static public void populatePage(){
 	page.setOpaque(true);
 	page.setBackgroundColor(ColorConstants.white);
 
-	for (int i=0; i<11; i++){
+	for (int i=0; i< 31; i++){
 		BlockFlow bf = new BlockFlow();
 		page.add(bf);
+		if (i == 0)
+			bf.add(target);
 		
 		FlowFigure ff = new InlineFlow();
-		ff.add(new TextFlow("A light blue flow"));
-		ff.setBackgroundColor(ColorConstants.lightBlue);
+		ff.add(new TextFlow("This is the first small sentence. "));
 		bf.add(ff);
 		
 		FlowFigure inline = new InlineFlow();
-		inline.setBackgroundColor(ColorConstants.yellow);
 		TextFlowFactory.addSentences(inline,4);
 		ff.add(inline);
 		
 		BlockFlow block = new BlockFlow();
 		block.setHorizontalAligment(PositionConstants.CENTER);
-		TextFlowFactory.addFontSizes(block, 7,16);
+		TextFlowFactory.addFontSizes(block, 8,16);
 		page.add(block);
 	}
 }

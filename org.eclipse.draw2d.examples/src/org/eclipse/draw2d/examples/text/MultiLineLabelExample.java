@@ -24,17 +24,21 @@ public static void main(String[] args) {
 	Shell shell = new Shell(d);
 	shell.setLayout(new GridLayout());
 	label = new MultiLineLabel(shell);
-	Text text = new Text(shell, SWT.MULTI | SWT.WRAP | SWT.V_SCROLL | SWT.H_SCROLL | SWT.READ_ONLY);
-	label.setText("This is a  oijeoi aeif jaoiewjf oaiew jfoaiew jfoiawjjoiajofije woifjafoiewjfo  oaiej foaijew foaiew foijewaf oiaewoif jaoiew jaijewoafijewfoaiew jfoaiew foaiew jfpwaoekf pwaoe foiewa fpaoew foahg oewajg oiwae gfpowaegpawepmulti-line label.");
+	Text text = new Text(shell, SWT.MULTI | SWT.WRAP | SWT.H_SCROLL | SWT.READ_ONLY);
+	label.setText("This is a  oijeoi aeif jaoiewjf oaiew jfoaiew" +
+			"apijewpfk apoewkf paokwe pfokawpehfaowephf hawoiejf oaweijf paowkefp aoewkfpa " +
+			"pawkfe paoewkf paowekf pawokefoaiwjefo iajewoifja oewijf poerk pgaokew faewfpokew f" +
+			"f oaewkfp aewpofk apwejfoiuajweo foiwajef poawkefpawkje pfoakewpf aewpfkpaowke fpawf" +
+			"gfpowaegpawepmulti-line label.");
 	text.setText(label.getText());
 
 	GridData data = new GridData(GridData.FILL_HORIZONTAL);
 	data.widthHint = 170;
-	data.heightHint = 100;
+	data.heightHint = - 1;
 	text.setLayoutData(data);
 	data = new GridData(GridData.FILL_HORIZONTAL);
 	data.widthHint = 170;
-	data.heightHint = 100;
+	data.heightHint = - 1;
 	label.setLayoutData(data);
 	shell.open();
 	shell.setSize(600,500);
