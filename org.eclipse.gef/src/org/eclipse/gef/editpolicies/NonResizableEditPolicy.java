@@ -52,7 +52,7 @@ protected IFigure createDragSourceFeedbackFigure() {
 	// Use a ghost rectangle for feedback
 	RectangleFigure r = new RectangleFigure();
 	FigureUtilities.makeGhostShape(r);
-	r.setLineStyle(Graphics.LINE_DASHDOT);
+	r.setLineStyle(Graphics.LINE_DOT);
 	r.setForegroundColor(ColorConstants.white);
 	r.setBounds(getBounds());
 	addFeedback(r);
