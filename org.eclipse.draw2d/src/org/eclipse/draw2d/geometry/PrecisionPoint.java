@@ -34,8 +34,8 @@ public PrecisionPoint() {
  */
 public PrecisionPoint(Point copy) {
 	super(copy);
-	preciseX = (double)copy.x;
-	preciseY = (double)copy.y;
+	preciseX = copy.x;
+	preciseY = copy.y;
 }
 
 /**
@@ -45,8 +45,8 @@ public PrecisionPoint(Point copy) {
  */
 public PrecisionPoint(int x, int y) {
 	super(x, y);
-	preciseX = (double)x;
-	preciseY = (double)y;
+	preciseX = x;
+	preciseY = y;
 }
 
 /**

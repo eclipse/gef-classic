@@ -78,7 +78,7 @@ public int calculateRank() {
  */
 public boolean isCompletelyFlagged() {
 	for (int i = 0; i < size(); i++) {
-		if (getEdge(i).flag == false)
+		if (!getEdge(i).flag)
 			return false;
 	}
 	return true;

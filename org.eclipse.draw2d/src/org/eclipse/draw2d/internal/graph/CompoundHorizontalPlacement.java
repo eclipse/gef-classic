@@ -59,7 +59,7 @@ void buildRankSeparators(RankList ranks) {
 			if (prev == null) {
 				addSeparatorsLeft(n, null);
 			} else {
-				Subgraph s = GraphUtilities.getCommonAncestor((Node)prev, (Node)n);
+				Subgraph s = GraphUtilities.getCommonAncestor(prev, n);
 				Node left = addSeparatorsRight(prev, s);
 				Node right = addSeparatorsLeft(n, s);
 				createEdge(left, right);

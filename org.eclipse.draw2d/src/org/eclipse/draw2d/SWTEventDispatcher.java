@@ -546,7 +546,7 @@ protected void updateHoverSource(org.eclipse.swt.events.MouseEvent me) {
 	if (cursorTarget != null) {
 		boolean sourceFound = false;
 		Figure source = (Figure)cursorTarget;
-		while (sourceFound == false && source.getParent() != null) {
+		while (!sourceFound && source.getParent() != null) {
 			if (source.getToolTip() != null)
 				sourceFound = true;
 			else

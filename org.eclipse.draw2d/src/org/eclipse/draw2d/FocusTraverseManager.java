@@ -86,8 +86,8 @@ public IFigure getNextFocusableFigure(IFigure root, IFigure focusOwner) {
 		} else {
 			boolean untraversedSiblingFound = false;			
 			while (!untraversedSiblingFound) {
-				IFigure p = (IFigure)nextFocusOwner.getParent();	
-				IFigure gp = (IFigure)p.getParent();
+				IFigure p = nextFocusOwner.getParent();	
+				IFigure gp = p.getParent();
 				
 				if (gp != null) {
 					int parentSiblingCount = gp.getChildren().size();

@@ -124,7 +124,7 @@ double mergeConnectivity(Subgraph s, int row, double result, double scaleFactor)
 		s = s.getParent();
 	if (s != null) {
 		RowEntry entry = getRowEntry(s, row);
-		double connectivity = ((double)entry.contribution) / entry.count;
+		double connectivity = entry.contribution / entry.count;
 		result = connectivity * 0.3 + (0.7) * result;
 		s = s.getParent();
 	}

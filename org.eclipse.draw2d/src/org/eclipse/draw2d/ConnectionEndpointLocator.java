@@ -238,8 +238,8 @@ public void relocate(IFigure figure) {
 	int yShift = calculateYShift(figureWidth, figureHeight);
 	
 	Point figurePoint = 
-		new Point((int)(startPoint.x + (uDistance * cos) + figureWidth * ((cos - 1) / 2)),
-				   (int)(startPoint.y + cos * uDistance * tan + vDistance + yShift));
+		new Point(startPoint.x + (uDistance * cos) + figureWidth * ((cos - 1) / 2),
+				(int)(startPoint.y + cos * uDistance * tan + vDistance + yShift));
 
 	figureBounds.setSize(transposer.t(figureSize));
 	figureBounds.setLocation(transposer.t(figurePoint));

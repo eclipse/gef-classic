@@ -240,7 +240,7 @@ private boolean balanceClusterSets() {
 					Edge e = (Edge) iter.next();
 					if (e.getSlack() == 0) {
 						condition = true;
-						set.add((NodeCluster)clusterMap.get(e.source));
+						set.add(clusterMap.get(e.source));
 					}
 				}
 				cluster = getCachedClusterSet(set);
@@ -263,7 +263,7 @@ private boolean balanceClusterSets() {
 					Edge e = (Edge) iter.next();
 					if (e.getSlack() == 0) {
 						condition = true;
-						set.add((NodeCluster)clusterMap.get(e.target));
+						set.add(clusterMap.get(e.target));
 					}
 				}
 				cluster = getCachedClusterSet(set);

@@ -50,14 +50,14 @@ public Point getLocation(Point reference) {
 	r.resize(1, 1);
 
 	getOwner().translateToAbsolute(r);
-	float centerX = (float)r.x + 0.5f * (float)r.width;
-	float centerY = (float)r.y + 0.5f * (float)r.height;
+	float centerX = r.x + 0.5f * r.width;
+	float centerY = r.y + 0.5f * r.height;
 	
 	if (r.isEmpty() || (reference.x == (int)centerX && reference.y == (int)centerY))
 		return new Point((int)centerX, (int)centerY);  //This avoids divide-by-zero
 
-	float dx = (float)reference.x - centerX;
-	float dy = (float)reference.y - centerY;
+	float dx = reference.x - centerX;
+	float dy = reference.y - centerY;
 	
 	//r.width, r.height, dx, and dy are guaranteed to be non-zero. 
 	float scale = 0.5f / Math.max(Math.abs(dx) / r.width, Math.abs(dy) / r.height);

@@ -12,7 +12,7 @@ public class ConvertCompoundGraph extends GraphVisitor {
 private void addContainmentEdges(CompoundDirectedGraph graph) {
 	//For all nested nodes, connect to head and/or tail of containing subgraph if present
 	for (int i = 0; i < graph.nodes.size(); i++) {
-		Node node = (Node)graph.nodes.getNode(i);
+		Node node = graph.nodes.getNode(i);
 		Subgraph parent = node.getParent();
 		if (parent == null)
 			continue;
@@ -43,7 +43,7 @@ int buildNestingTreeIndices(NodeList nodes, int base) {
 private void connectHead(CompoundDirectedGraph graph, Node node, Subgraph parent) {
 	boolean connectHead = true;
 	for (int j = 0; connectHead && j < node.incoming.size(); j++) {
-		Node ancestor = (Node)node.incoming.getEdge(j).source;
+		Node ancestor = node.incoming.getEdge(j).source;
 		if (parent.isNested(ancestor))
 			connectHead = false;
 	}
@@ -58,7 +58,7 @@ private void connectHead(CompoundDirectedGraph graph, Node node, Subgraph parent
 private void connectTail(CompoundDirectedGraph graph, Node node, Subgraph parent) {
 	boolean connectTail = true;
 	for (int j = 0; connectTail && j < node.outgoing.size(); j++) {
-		Node ancestor = (Node)node.outgoing.getEdge(j).target;
+		Node ancestor = node.outgoing.getEdge(j).target;
 		if (parent.isNested(ancestor))
 			connectTail = false;
 	}
