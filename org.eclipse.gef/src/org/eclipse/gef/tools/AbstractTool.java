@@ -419,7 +419,7 @@ protected void executeCurrentCommand() {
 }
 
 /**
- * Returns a new, updated command based on the tools current properties.  The default
+ * Returns a new, updated command based on the tool's current properties.  The default
  * implementation returns an unexecutable command.  Some tools do not work commands and
  * the model, but simply change the viewer's state in some way.
  * @return a newly obtained command

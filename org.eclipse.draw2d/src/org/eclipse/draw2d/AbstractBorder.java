@@ -27,7 +27,7 @@ protected static Rectangle tempRect = new Rectangle();
 
 /**
  * Returns a temporary rectangle representing the figure's bounds cropped by the specified
- * inserts.  This method exists for convenience and performance; the method does not new
+ * insets.  This method exists for convenience and performance; the method does not new
  * any Objects and returns a rectangle which the caller can manipulate.
  * @since 2.0
  * @param figure  Figure for which the paintable rectangle is needed
