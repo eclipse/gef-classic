@@ -37,10 +37,10 @@ public void dispose(){}
 public Image getImage(Object o){
 	if(o instanceof Command){
 		Command command = (Command)o;
-		if(((DefaultCommandStack)stack).canUndoCommand(command)) 
-			return yesIcon;
-		if(((DefaultCommandStack)stack).canRedoCommand(command)) 
-			return noIcon;
+//		if(((DefaultCommandStack)stack).canUndoCommand(command)) 
+//			return yesIcon;
+//		if(((DefaultCommandStack)stack).canRedoCommand(command)) 
+//			return noIcon;
 		if(command.canUndo())
 			return yesIcon;
 		else
