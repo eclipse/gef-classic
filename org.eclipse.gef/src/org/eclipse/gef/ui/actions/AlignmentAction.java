@@ -119,9 +119,10 @@ protected List getOperationSet(Request request) {
 	List editparts = new ArrayList(getSelectedObjects());
 	if (editparts.isEmpty() || !(editparts.get(0) instanceof GraphicalEditPart))
 		return Collections.EMPTY_LIST;
+	Object primary = editparts.get(editparts.size() - 1);
 	editparts = ToolUtilities.getSelectionWithoutDependants(editparts);
 	ToolUtilities.filterEditPartsUnderstanding(editparts, request);
-	if (editparts.size() < 2)
+	if (editparts.size() < 2 || !editparts.contains(primary))
 		return Collections.EMPTY_LIST;
 	EditPart parent = ((EditPart)editparts.get(0)).getParent();
 	for (int i=1; i<editparts.size(); i++) {
