@@ -15,7 +15,7 @@ import org.eclipse.draw2d.geometry.*;
 /**
  * A Button containing an arrow in it, and providing directional support for the arrow.
  */
-public final class ArrowButton
+public class ArrowButton
 	extends Button
 	implements Orientable
 {

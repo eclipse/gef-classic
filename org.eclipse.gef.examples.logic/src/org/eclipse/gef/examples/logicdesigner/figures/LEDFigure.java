@@ -10,21 +10,23 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner.figures;
 
-import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.Graphics;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.PointList;
-import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.gef.examples.logicdesigner.model.LED;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
+
+import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.geometry.*;
+
+import org.eclipse.gef.handles.HandleBounds;
+
+import org.eclipse.gef.examples.logicdesigner.model.LED;
 
 /**
  * @author danlee
  */
-public class LEDFigure extends NodeFigure {
+public class LEDFigure
+	extends NodeFigure
+	implements HandleBounds
+{
 private static final Dimension SIZE = new Dimension(61, 47); 
 
 /**
@@ -126,6 +128,13 @@ public LEDFigure() {
 	connectionAnchors.put(LED.TERMINAL_4_OUT, c);
 	outputConnectionAnchors.addElement(c);
 
+}
+
+/**
+ * @see org.eclipse.gef.handles.HandleBounds#getHandleBounds()
+ */
+public Rectangle getHandleBounds() {
+	return getBounds().getCropped(new Insets(2,0,2,0));
 }
 
 /**
