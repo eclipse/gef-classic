@@ -12,12 +12,14 @@ package org.eclipse.gef.examples.logicdesigner.actions;
 
 import org.eclipse.jface.action.*;
 import org.eclipse.ui.IWorkbenchActionConstants;
+import org.eclipse.ui.actions.LabelRetargetAction;
 import org.eclipse.ui.actions.RetargetAction;
 
 import org.eclipse.draw2d.PositionConstants;
 
 import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.internal.GEFMessages;
+import org.eclipse.gef.internal.InternalImages;
 import org.eclipse.gef.ui.actions.*;
 
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
@@ -46,12 +48,15 @@ protected void buildActions() {
 	
 	addRetargetAction(new ZoomInRetargetAction());
 	addRetargetAction(new ZoomOutRetargetAction());
-	addRetargetAction(new RetargetAction(GEFActionConstants.MATCH_WIDTH, 
-			GEFMessages.MatchWidthAction_Label));
-	addRetargetAction(new RetargetAction(GEFActionConstants.MATCH_HEIGHT,
-			GEFMessages.MatchHeightAction_Label));
-	addRetargetAction(new RetargetAction(GEFActionConstants.MATCH_SIZE,
-			GEFMessages.MatchSizeAction_Label));
+	LabelRetargetAction matchWidth = new LabelRetargetAction(GEFActionConstants.MATCH_WIDTH, 
+			GEFMessages.MatchWidthAction_Label);
+	matchWidth.setImageDescriptor(InternalImages.DESC_MATCH_WIDTH);
+	addRetargetAction(matchWidth);
+	
+	LabelRetargetAction matchHeight = new LabelRetargetAction(GEFActionConstants.MATCH_HEIGHT,
+			GEFMessages.MatchHeightAction_Label);
+	matchHeight.setImageDescriptor(InternalImages.DESC_MATCH_HEIGHT);
+	addRetargetAction(matchHeight);
 	
 	addRetargetAction(new RetargetAction(
 			GEFActionConstants.TOGGLE_RULER_VISIBILITY, 
@@ -96,7 +101,11 @@ public void contributeToToolBar(IToolBarManager tbm) {
 	tbm.add(getAction(GEFActionConstants.ALIGN_MIDDLE));
 	tbm.add(getAction(GEFActionConstants.ALIGN_BOTTOM));
 	
-	tbm.add(new Separator());
+	tbm.add(new Separator());	
+	tbm.add(getAction(GEFActionConstants.MATCH_WIDTH));
+	tbm.add(getAction(GEFActionConstants.MATCH_HEIGHT));
+	
+	tbm.add(new Separator());	
 	String[] zoomStrings = new String[] {	ZoomManager.FIT_ALL, 
 											ZoomManager.FIT_HEIGHT, 
 											ZoomManager.FIT_WIDTH	};
@@ -116,7 +125,6 @@ public void contributeToMenu(IMenuManager menubar) {
 	viewMenu.add(getAction(GEFActionConstants.TOGGLE_GRID_VISIBILITY));
 	viewMenu.add(getAction(GEFActionConstants.TOGGLE_SNAP_TO_GEOMETRY));
 	viewMenu.add(new Separator());
-	viewMenu.add(getAction(GEFActionConstants.MATCH_SIZE));
 	viewMenu.add(getAction(GEFActionConstants.MATCH_WIDTH));
 	viewMenu.add(getAction(GEFActionConstants.MATCH_HEIGHT));
 	menubar.insertAfter(IWorkbenchActionConstants.M_EDIT, viewMenu);
