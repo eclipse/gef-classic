@@ -383,7 +383,7 @@ protected void configureGraphicalViewer() {
 	IAction snapAction = new ToggleSnapToGeometryAction(getGraphicalViewer());
 	getActionRegistry().registerAction(snapAction);
 
-	IAction showGrid = new ToggleGridVisibilityAction(getGraphicalViewer());
+	IAction showGrid = new ToggleGridAction(getGraphicalViewer());
 	getActionRegistry().registerAction(showGrid);
 }
 
@@ -644,6 +644,9 @@ protected void loadProperties() {
 	
 	// Grid properties
 	getGraphicalViewer().setProperty(SnapToGrid.PROPERTY_GRID_ENABLED, 
+			new Boolean(getLogicDiagram().isGridEnabled()));
+	// We keep grid visibility and enablement in sync
+	getGraphicalViewer().setProperty(SnapToGrid.PROPERTY_GRID_VISIBLE, 
 			new Boolean(getLogicDiagram().isGridEnabled()));
 	Dimension spacing = getLogicDiagram().getGridSpacing();
 	if (spacing == null)
