@@ -27,7 +27,7 @@ import org.eclipse.gef.requests.TargetRequest;
  * the <code>Command</code> that performs the given request.  The target is also asked to
  * show target feedback.
  * <P>
- * TargetingTool also provides support for auto-expose (a.k.a. autoscrolling). Subclasses
+ * TargetingTool also provides support for auto-expose (a.k.a. auto-scrolling). Subclasses
  * that wish to commence auto-expose can do so by calling {@link
  * #updateAutoexposeHelper()}.  An an AutoExposeHelper is found, auto-scrolling begins.
  * Whenever that helper scrolls the diagram of performs any other change,
