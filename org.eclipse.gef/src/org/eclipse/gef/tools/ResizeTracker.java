@@ -21,6 +21,7 @@ import org.eclipse.draw2d.geometry.*;
 import org.eclipse.gef.*;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CompoundCommand;
+import org.eclipse.gef.handles.HandleBounds;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
 
 /**
@@ -57,7 +58,10 @@ public ResizeTracker(GraphicalEditPart owner, int direction) {
 public void activate() {
 	super.activate();
 	IFigure figure = owner.getFigure();
-	sourceRect = new PrecisionRectangle(figure.getBounds());
+	if (figure instanceof HandleBounds)
+		sourceRect = new PrecisionRectangle(((HandleBounds)figure).getHandleBounds());
+	else
+		sourceRect = new PrecisionRectangle(figure.getBounds());
 	figure.translateToAbsolute(sourceRect);	
 }	
 	
