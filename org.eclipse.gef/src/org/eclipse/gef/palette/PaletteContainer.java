@@ -45,10 +45,19 @@ protected PaletteContainer(String label, String desc, ImageDescriptor icon, Obje
 	super(label, desc, icon, null, type);
 }
 
+/**
+ * Adds the given entry to the end of this PaletteContainer
+ * @param entry the PaletteEntry to add
+ */
 public void add(PaletteEntry entry) {
 	add(-1, entry);
 }
 
+/**
+ * Adds the given PaletteEntry at position <code>index</code>.
+ * @param index position to add the PaletteEntry
+ * @param entry the PaletteEntry to add
+ */
 public void add(int index, PaletteEntry entry) {
 	List oldChildren = new ArrayList(getChildren());
 
@@ -58,6 +67,10 @@ public void add(int index, PaletteEntry entry) {
 	listeners.firePropertyChange(PROPERTY_CHILDREN,	oldChildren, getChildren());
 }
 
+/**
+ * Adds the list of {@link PaletteEntry} objects to this PaletteContainer.
+ * @param list a list of PaletteEntry objects to add to this PaletteContainer
+ */
 public void addAll(List list) {
 	ArrayList oldChildren = new ArrayList(getChildren());
 	for (int i = 0; i < list.size(); i++) {
@@ -115,6 +128,10 @@ public boolean moveUp(PaletteEntry entry) {
 	return move(entry, true);
 }
 
+/**
+ * Removes the given PaletteEntry from this PaletteContainer
+ * @param entry the PaletteEntry to remove
+ */
 public void remove(PaletteEntry entry) {
 	List oldChildren = new ArrayList(getChildren());
 	if (getChildren().remove(entry)) {
@@ -123,6 +140,11 @@ public void remove(PaletteEntry entry) {
 	}
 }
 
+/**
+ * Sets the children of this PaletteContainer to the given list of
+ * {@link PaletteEntry} objects.
+ * @param list the list of children
+ */
 public void setChildren(List list) {
 	List oldChildren = children;
 	children = list;
@@ -133,7 +155,9 @@ public void setChildren(List list) {
  * @see java.lang.Object#toString()
  */
 public String toString() {
-	return "Palette Container (" + (getLabel() != null ? getLabel() : "") + ")"; //$NON-NLS-3$//$NON-NLS-2$//$NON-NLS-1$
+	return "Palette Container (" //$NON-NLS-1$
+				+ (getLabel() != null ? getLabel() : "") //$NON-NLS-1$
+				+ ")"; //$NON-NLS-1$
 }
 
 }

@@ -29,6 +29,7 @@ private Object template;
  * @param label the label
  * @param shortDesc the descriptoin
  * @param factory the CreationFactory
+ * @param template the template object
  * @param iconSmall the small icon
  * @param iconLarge the large icon
  */

@@ -14,6 +14,9 @@ import java.util.*;
 
 import org.eclipse.gef.ui.palette.PaletteViewer;
 
+/**
+ * Listens to changes in the palette.
+ */
 public interface PaletteListener
 	extends EventListener
 {

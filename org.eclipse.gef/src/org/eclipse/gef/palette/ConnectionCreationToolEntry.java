@@ -17,6 +17,7 @@ import org.eclipse.gef.requests.CreationFactory;
 import org.eclipse.gef.tools.ConnectionCreationTool;
 
 /**
+ * A palette ToolEntry for a {@link org.eclipse.gef.tools.ConnectionCreationTool}.
  * @author hudsonr
  * @since 2.1
  */

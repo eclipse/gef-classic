@@ -17,11 +17,15 @@ import org.eclipse.gef.internal.GEFMessages;
 import org.eclipse.gef.tools.MarqueeSelectionTool;
 
 /**
+ * A palette ToolEntry for a {@link org.eclipse.gef.tools.MarqueeSelectionTool}.
  * @author hudsonr
  * @since 2.1
  */
 public class MarqueeToolEntry extends ToolEntry {
 
+/**
+ * Creates a new MarqueeToolEntry.
+ */
 public MarqueeToolEntry() {
 	this(GEFMessages.MarqueeTool_Label);
 }

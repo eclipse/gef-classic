@@ -27,8 +27,12 @@ public class PaletteSeparator extends PaletteEntry {
 
 private String id;
 
+/** Type identifier **/
 public static final Object PALETTE_TYPE_SEPARATOR = "$Palette Separator";//$NON-NLS-1$
 
+/**
+ * Creates a new PaletteSeparator with an empty string as its identifier.
+ */
 public PaletteSeparator() {
 	this ("");  //$NON-NLS-1$
 }

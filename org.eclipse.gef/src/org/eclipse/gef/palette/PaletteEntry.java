@@ -186,7 +186,8 @@ public PaletteEntry(String label,
 /**
  * A listener can only be added once.  Adding it more than once will do nothing.
  * 
- * @see java.beans.PropertyChangeSupport#addPropertyChangeListener(java.beans.PropertyChangeListener)
+ * @see java.beans.PropertyChangeSupport#addPropertyChangeListener(
+ * 														java.beans.PropertyChangeListener)
  */
 public void addPropertyChangeListener(PropertyChangeListener listener) {
 	listeners.removePropertyChangeListener(listener);
@@ -261,7 +262,8 @@ public boolean isVisible() {
 }
 
 /**
- * @see java.beans.PropertyChangeSupport#removePropertyChangeListener(java.beans.PropertyChangeListener)
+ * @see java.beans.PropertyChangeSupport#removePropertyChangeListener(
+ * 														java.beans.PropertyChangeListener)
  */
 public void removePropertyChangeListener(PropertyChangeListener listener) {
 	listeners.removePropertyChangeListener(listener);
@@ -279,7 +281,8 @@ public void setDescription(String s) {
 	if (s == null || !s.equals(shortDescription)) {
 		String oldDescrption = shortDescription;
 		shortDescription = s;
-		listeners.firePropertyChange(PROPERTY_DESCRIPTION, oldDescrption, shortDescription);
+		listeners.firePropertyChange(PROPERTY_DESCRIPTION, oldDescrption, 
+										shortDescription);
 	}
 }
 
@@ -387,7 +390,8 @@ public void setVisible(boolean newVal) {
  * @see java.lang.Object#toString()
  */
 public String toString() {
-	return "Palette Entry (" + (label != null ? label : "") + ")"; //$NON-NLS-3$//$NON-NLS-2$//$NON-NLS-1$
+	return "Palette Entry (" + (label != null ? label : "") //$NON-NLS-2$//$NON-NLS-1$
+								+ ")"; //$NON-NLS-1$
 }
 
 }

@@ -16,11 +16,15 @@ import org.eclipse.gef.internal.GEFMessages;
 import org.eclipse.gef.tools.SelectionTool;
 
 /**
+ * A ToolEntry for a {@link SelectionTool}.
  * @author hudsonr
  * @since 2.1
  */
 public class SelectionToolEntry extends ToolEntry {
 
+/**
+ * Creates a new SelectionToolEntry.
+ */
 public SelectionToolEntry() {
 	this(GEFMessages.SelectionTool_Label);
 }

@@ -21,17 +21,25 @@ public abstract class ToolEntry
 	extends PaletteEntry
 {
 
+/** Type Identifier **/
 public static final Object PALETTE_TYPE_TOOL = "$Palette Tool";//$NON-NLS-1$
 
+/** 
+ * Creates a new ToolEntry.
+ * @see PaletteEntry#PaletteEntry(String, String, ImageDescriptor, ImageDescriptor, Object)
+ */
 public ToolEntry(
 	String label,
 	String shortDesc,
 	ImageDescriptor iconSmall,
-	ImageDescriptor iconLarge)
-{
-	super(label,shortDesc, iconSmall, iconLarge, PALETTE_TYPE_TOOL);
+	ImageDescriptor iconLarge) {
+	super(label, shortDesc, iconSmall, iconLarge, PALETTE_TYPE_TOOL);
 }
 
+/**
+ * Handles the creation of a new Tool. Subclasses must implement.
+ * @return the new Tool
+ */
 public abstract Tool createTool();
 
 }

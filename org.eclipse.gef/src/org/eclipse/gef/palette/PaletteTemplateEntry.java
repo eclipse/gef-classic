@@ -13,8 +13,6 @@ package org.eclipse.gef.palette;
 import org.eclipse.jface.resource.ImageDescriptor;
 
 /**
- * @see org.eclipse.gef.palette.PaletteTemplateEntry
- * 
  * @author Eric Bordeau
  */
 public class PaletteTemplateEntry 
@@ -22,8 +20,14 @@ public class PaletteTemplateEntry
 {
 
 private Object template;
+
+/** Type identifier **/
 public static final String PALETTE_TYPE_TEMPLATE = "$Palette Template";  //$NON-NLS-1$
 
+/**
+ * Creates a new PaletteTemplateEntry with the given template.
+ * @see PaletteEntry#PaletteEntry(String, String, ImageDescriptor, ImageDescriptor, Object)
+ */
 public PaletteTemplateEntry(
   String label,
   String shortDesc,
@@ -34,10 +38,17 @@ public PaletteTemplateEntry(
 	setTemplate(template);
 }
 
+/**
+ * @return the user-defined template object
+ */
 public Object getTemplate() {
 	return template;
 }
 
+/**
+ * Sets the template object to the given value
+ * @param template the template object
+ */
 public void setTemplate(Object template) {
 	this.template = template;
 }
