@@ -1,3 +1,4 @@
+
 /*******************************************************************************
  * Copyright (c) 2000, 2003 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials 
@@ -52,17 +53,27 @@ protected Command createAddCommand(EditPart childEditPart, Object constraint) {
 	return add.chain(setConstraint);
 }
 
+/**
+ * @see org.eclipse.gef.editpolicies.ConstrainedLayoutEditPolicy#createChangeConstraintCommand(org.eclipse.gef.EditPart, java.lang.Object)
+ */
 protected Command createChangeConstraintCommand(EditPart child, Object constraint) {
-	SetConstraintCommand locationCommand = new SetConstraintCommand();
-	locationCommand.setPart((LogicSubpart)child.getModel());
-	locationCommand.setLocation((Rectangle)constraint);
-	return locationCommand;
+	return null;
 }
 
 protected Command createChangeConstraintCommand(ChangeBoundsRequest request, 
 		EditPart child, Object constraint) {
-	SetConstraintCommand cmd = (SetConstraintCommand)createChangeConstraintCommand(
-			child, constraint);
+	
+	SetConstraintCommand cmd = new SetConstraintCommand();
+	cmd.setPart((LogicSubpart)child.getModel());
+	cmd.setLocation((Rectangle)constraint);
+	
+	if (request.getResizeDirection() != PositionConstants.SOUTH 
+			&& request.getResizeDirection() != PositionConstants.NORTH) 
+		cmd.clearVerticalGuide();
+	if (request.getResizeDirection() != PositionConstants.EAST 
+			&& request.getResizeDirection() != PositionConstants.WEST) 
+		cmd.clearHorizontalGuide();
+	
 	Integer guidePos = (Integer)request.getExtendedData()
 			.get(SnapToGuides.PROPERTY_HORIZONTAL_GUIDE);
 	if (guidePos != null) {
@@ -98,6 +109,7 @@ protected LogicGuide findGuideAt(int pos, boolean horizontal) {
 	List guides = ((RulerProvider)getHost().getViewer().getProperty(
 			horizontal ? RulerProvider.PROPERTY_VERTICAL_RULER : RulerProvider.PROPERTY_HORIZONTAL_RULER)).getGuides();
 	for (int i = 0; i < guides.size(); i++) {
+		
 		LogicGuide guide = (LogicGuide)guides.get(i);
 		if (pos == guide.getPosition()) {
 			return guide;
