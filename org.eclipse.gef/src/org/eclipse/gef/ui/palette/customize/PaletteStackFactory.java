@@ -56,6 +56,7 @@ public PaletteEntry createNewEntry(Shell shell, PaletteEntry selected) {
 	parent.remove(selected);
 	parent.add(index - 1, entry);
 	((PaletteStack)entry).add(selected);
+	entry.setUserModificationPermission(PaletteEntry.PERMISSION_FULL_MODIFICATION);
 	return entry;
 }
 
