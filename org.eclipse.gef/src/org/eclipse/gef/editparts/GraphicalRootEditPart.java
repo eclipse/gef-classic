@@ -19,14 +19,13 @@ import org.eclipse.gef.commands.UnexecutableCommand;
 import org.eclipse.gef.tools.MarqueeDragTracker;
 
 /**
- * Provides support for representation of any other graphical
- * EditPart. It contains Layers which are used to represent
- * specific type of visual information. The Layers are
- * (1) Primary - Used to hold the main EditPart's Figures.
- * (2) Connection - Used to hold the connections between EditParts.
- * (3) Handle - Takes care of holding handles for EditParts.
- * (4) Feedback - Shows feedback information for the EditParts.
- * 
+ * Provides support for representation of any other graphical EditPart. It contains Layers
+ * which are used to represent specific type of visual information. The Layers are (1)
+ * Primary - Used to hold the main EditPart's Figures. (2) Connection - Used to hold the
+ * connections between EditParts. (3) Handle - Takes care of holding handles for
+ * EditParts. (4) Feedback - Shows feedback information for the EditParts.
+ * @deprecated this class will be deleted, use ScrollingGraphicalViewer with
+ * ScalableRootEditPart instead
  */
 public class GraphicalRootEditPart
 	extends AbstractGraphicalEditPart
