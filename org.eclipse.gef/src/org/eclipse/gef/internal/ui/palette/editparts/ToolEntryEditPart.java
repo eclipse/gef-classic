@@ -30,6 +30,8 @@ public class ToolEntryEditPart
 
 class ToggleButtonTracker extends SingleSelectionTracker {
 	protected boolean handleButtonDown(int button) {
+		if (button == 2 && isInState(STATE_INITIAL))
+			performConditionalSelection();
 		super.handleButtonDown(button);
 		if (button == 1) {
 			getFigure().internalGetEventDispatcher().requestRemoveFocus(getFigure());
