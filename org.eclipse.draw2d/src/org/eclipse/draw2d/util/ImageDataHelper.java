@@ -9,11 +9,11 @@ package org.eclipse.draw2d.util;
 import org.eclipse.swt.graphics.*;
 
 /**
- * This class provides some static helper methods for
- * manipulating the SWT ImageData in special ways that
- * are not provided by the image data itself.
+ * This class provides some static helper methods formanipulating the SWT ImageData in 
+ * special ways that are not provided by the image data itself.
  */
 public class ImageDataHelper {
+
 /**
  * Answer the nearest color index to the RGB color passed in from
  * the color array.
