@@ -117,8 +117,14 @@ public void setY(double value) {
  * @see org.eclipse.draw2d.geometry.Rectangle#translate(org.eclipse.draw2d.geometry.Point)
  */
 public Rectangle translate(Point p) {
-	preciseX += p.x;
-	preciseY += p.y;
+	if (p instanceof PrecisionPoint) {
+		PrecisionPoint pp = (PrecisionPoint)p;
+		preciseX += pp.preciseX;
+		preciseY += pp.preciseY;
+	} else {
+		preciseX += p.x;
+		preciseY += p.y;
+	}
 	updateInts();
 	return this;
 }
