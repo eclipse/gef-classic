@@ -5,6 +5,7 @@ import java.beans.PropertyChangeListener;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.GraphicalEditPart;
@@ -129,6 +130,14 @@ public void propertyChange(PropertyChangeEvent evt) {
 	
 	// Causes Graph to re-layout	
 	((GraphicalEditPart)(getViewer().getContents())).getFigure().revalidate();
+}
+
+/**
+ * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#setFigure(org.eclipse.draw2d.IFigure)
+ */
+protected void setFigure(IFigure figure) {
+	figure.getBounds().setSize(0,0);
+	super.setFigure(figure);
 }
 
 /**

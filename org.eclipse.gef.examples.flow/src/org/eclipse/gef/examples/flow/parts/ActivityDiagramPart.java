@@ -3,6 +3,7 @@ package org.eclipse.gef.examples.flow.parts;
 import java.util.*;
 
 import org.eclipse.gef.EditPolicy;
+import org.eclipse.gef.commands.CommandStackListener;
 import org.eclipse.gef.editpolicies.RootComponentEditPolicy;
 import org.eclipse.gef.examples.flow.policies.ActivityContainerEditPolicy;
 import org.eclipse.draw2d.graph.*;
@@ -17,28 +18,25 @@ import org.eclipse.draw2d.geometry.Rectangle;
  */
 public class ActivityDiagramPart extends StructuredActivityPart {
 
-class GraphLayoutManager extends AbstractLayout {
-	protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHint) {
-		container.validate();
-		List children = container.getChildren();
-		Rectangle result =
-			new Rectangle().setLocation(container.getClientArea().getLocation());
-		for (int i = 0; i < children.size(); i++)
-			result.union(((IFigure)children.get(i)).getBounds());
-		result.resize(container.getInsets().getWidth(), container.getInsets().getHeight());
-		return result.getSize();
+CommandStackListener stackListener = new CommandStackListener() {
+	public void commandStackChanged(EventObject event) {
+		if (!GraphAnimation.captureLayout(getFigure()))
+			return;
+		while(GraphAnimation.step())
+			getFigure().getUpdateManager().performUpdate();
+		GraphAnimation.end();
 	}
-	public void layout(IFigure container) {
-		CompoundDirectedGraph graph = new CompoundDirectedGraph();
-		Map partsToNodes = new HashMap();
-		contributeNodesToGraph(graph, null, partsToNodes);
-		contributeEdgesToGraph(graph, partsToNodes);
-		new CompoundDirectedGraphLayout().visit(graph);
-		applyGraphResults(graph, partsToNodes);
-	}
-}
+};
 
 protected void applyOwnResults(CompoundDirectedGraph graph, Map map) { }
+
+/**
+ * @see org.eclipse.gef.examples.flow.parts.ActivityPart#activate()
+ */
+public void activate() {
+	super.activate();
+	getViewer().getEditDomain().getCommandStack().addCommandStackListener(stackListener);
+}
 
 /**
  * @see org.eclipse.gef.examples.flow.parts.ActivityPart#createEditPolicies()
@@ -50,7 +48,6 @@ protected void createEditPolicies() {
 	installEditPolicy(EditPolicy.COMPONENT_ROLE, new RootComponentEditPolicy());
 	installEditPolicy(EditPolicy.CONTAINER_ROLE, new ActivityContainerEditPolicy());
 }
-
 
 protected IFigure createFigure() {
 	Figure f = new Figure() {
@@ -76,8 +73,16 @@ protected IFigure createFigure() {
 			}
 		}
 	};
-	f.setLayoutManager(new GraphLayoutManager());
+	f.setLayoutManager(new GraphLayoutManager(this));
 	return f;
+}
+
+/**
+ * @see org.eclipse.gef.examples.flow.parts.ActivityPart#deactivate()
+ */
+public void deactivate() {
+	getViewer().getEditDomain().getCommandStack().removeCommandStackListener(stackListener);
+	super.deactivate();
 }
 
 /**

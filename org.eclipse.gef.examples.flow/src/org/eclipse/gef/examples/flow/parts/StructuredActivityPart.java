@@ -56,6 +56,7 @@ protected void createEditPolicies() {
 }
 
 public void contributeNodesToGraph(CompoundDirectedGraph graph, Subgraph s, Map map) {
+	GraphAnimation.recordInitialState(getContentPane());
 	Subgraph me = new Subgraph(this, s);
 	me.outgoingOffset = 5;
 	me.incomingOffset = 5;

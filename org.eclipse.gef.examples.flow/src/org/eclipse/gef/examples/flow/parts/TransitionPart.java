@@ -28,12 +28,10 @@ protected void applyGraphResults(CompoundDirectedGraph graph, Map map) {
 	NodeList nodes = e.vNodes;
 	PolylineConnection conn = (PolylineConnection)getConnectionFigure();
 	conn.setTargetDecoration(new PolygonDecoration());
-	conn.setConnectionRouter(null);
 	conn.setSourceAnchor(new XYAnchor(e.start));
 	conn.setTargetAnchor(new XYAnchor(e.end));
 	if (nodes != null) {
 		List bends = new ArrayList();
-		conn.setConnectionRouter(new BendpointConnectionRouter());
 		for (int i = 0; i < nodes.size(); i++) {
 			Node vn = nodes.getNode(i);
 			int x = vn.x;
@@ -48,6 +46,8 @@ protected void applyGraphResults(CompoundDirectedGraph graph, Map map) {
 			}
 		}
 		conn.setRoutingConstraint(bends);
+	} else {
+		conn.setRoutingConstraint(Collections.EMPTY_LIST);
 	}
 }
 
@@ -65,6 +65,14 @@ protected void createEditPolicies() {
  */
 protected IFigure createFigure() {
 	PolylineConnection conn =(PolylineConnection)super.createFigure();
+	conn.setConnectionRouter(new BendpointConnectionRouter(){
+		public void route(Connection conn) {
+			GraphAnimation.recordInitialState(conn);
+			if (!GraphAnimation.playbackState(conn))
+				super.route(conn);
+		}
+	});
+
 	conn.setTargetDecoration(new PolygonDecoration());
 	return conn;
 }
@@ -81,6 +89,7 @@ public void setSelected(int value) {
 }
 
 public void contributeToGraph(CompoundDirectedGraph graph, Map map) {
+	GraphAnimation.recordInitialState(getConnectionFigure());
 	Node source = (Node)map.get(getSource());
 	Node target = (Node)map.get(getTarget());
 	Edge e = new Edge(this, source, target);
