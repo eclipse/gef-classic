@@ -225,8 +225,8 @@ protected void layout() {
 					if (lookAheadWidth > availableWidth) {
 						fragment.length--;
 						FlowUtilities.setupFragment(fragment, font, segment);
+						endLine = true;
 					}
-					endLine = true;
 				}
 
 				context.addToCurrentLine(fragment);
