@@ -12,6 +12,14 @@ public Edge getEdge(int index) {
 	return (Edge)super.get(index);
 }
 
+public int getSourceIndex(int i) {
+	return getEdge(i).source.index;
+}
+
+public int getTargetIndex(int i) {
+	return getEdge(i).target.index;
+}
+
 public int getSlack() {
 	int slack = Integer.MAX_VALUE;
 	for (int i = 0; i < this.size(); i++)

@@ -10,6 +10,7 @@ import java.util.Comparator;
 public class Rank extends NodeList {
 
 private Comparator comparator = new MedianComparator();
+public int total;
 
 static class MedianComparator implements Comparator {
 	public int compare(Object o1, Object o2) {
@@ -27,23 +28,39 @@ public boolean add(Node n) {
 	return super.add(n);
 }
 
+public int count() {
+	return super.size();
+}
+
+/**
+ * @deprecated
+ */
+public int size() {
+	return super.size();
+}
+
 void sort() {
 	Collections.sort(this,comparator);
 }
 
 void assignIndices() {
-	int mag, n = 0;
+	total = 0;
 	Node node;
+//	for (int i=0; i<size(); i++) {
+//		node = getNode(i);
+//		node.index = i;
+//	}
+//	total = size() - 1;
+
+	int mag;
 	for (int i=0; i<size(); i++) {
 		node = getNode(i);
-		if (node instanceof VirtualNode)
-			mag = 1;
-		else
-			mag = node.incoming.size() + node.outgoing.size();
-		n += mag;
-		node.index = i;
-//		node.index = n;
-		n += mag;
+		mag = node.incoming.size() + node.outgoing.size();
+//		if (node instanceof SubgraphBoundary)
+//			mag = 4;
+		total += mag;
+		node.index = total;
+		total += mag;
 	}
 }
 
