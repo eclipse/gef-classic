@@ -123,6 +123,20 @@ public boolean contains(Point pt) {
 }
 
 /**
+ * Returns <code>true</code> if the given rectangle is contained within the
+ * boundaries of this Rectangle.
+ * 
+ * @param rect the Rectangle to test
+ * @return true if the Rectangle is within this Rectangle
+ */
+public boolean contains(Rectangle rect) {
+	return x <= rect.x
+	  && y <= rect.y
+	  && right() >= rect.right()
+	  && bottom() >= rect.bottom();
+}
+
+/**
  * Returns whether the given coordinates are within the boundaries of this 
  * Rectangle.  The boundaries are inclusive of the top and left edges, but 
  * exclusive of the bottom and right edges.
