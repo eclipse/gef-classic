@@ -187,26 +187,25 @@ public List getModelChildren() {
 	else
 		return Collections.EMPTY_LIST;
 	
-	PaletteEntry prevEntry = null;
+	PaletteEntry prevVisibleEntry = null;
 	for (Iterator iter = modelChildren.iterator(); iter.hasNext();) {
 		PaletteEntry entry = (PaletteEntry) iter.next();
-		if (entry instanceof PaletteSeparator) {
-			if (prevEntry == null) 
-				// first item in a group is a separator, don't need it
-				iter.remove();
-			else if (prevEntry instanceof PaletteSeparator)
-				// previous entry was a separator, don't need it
-				iter.remove();
-			else if (!iter.hasNext())
-				// last item in a group is a separator, don't need it
-				iter.remove();
-			else if (!entry.isVisible())
-				// or if separator is not visible
-				iter.remove();
-		} else if (!entry.isVisible())
+		if (!entry.isVisible())
+			// not visible
 			iter.remove();
-		prevEntry = entry;
+		else if (entry instanceof PaletteSeparator && prevVisibleEntry == null) 
+			// first visible item in a group is a separator, don't need it
+			iter.remove();
+		else if (entry instanceof PaletteSeparator && prevVisibleEntry instanceof PaletteSeparator)
+			// previous visible entry was a separator, don't need it
+			iter.remove();
+		else
+			prevVisibleEntry = entry;
 	}
+	// check to see if last visible entry was a separator, and thus should be hidden
+	if (prevVisibleEntry instanceof PaletteSeparator) 
+		modelChildren.remove(prevVisibleEntry);
+	
 	
 	return modelChildren;
 }
