@@ -44,12 +44,6 @@ private RulerChangeListener listener = new RulerChangeListener.Stub() {
 public RulerEditPart(Object model, GraphicalViewer primaryViewer) {
 	setModel(model);
 	diagramViewer = primaryViewer;
-}
-
-/* (non-Javadoc)
-* @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#activate()
-*/
-public void activate() {
 	RulerProvider hProvider = (RulerProvider)diagramViewer
 			.getProperty(RulerProvider.HORIZONTAL);
 	if (hProvider != null && hProvider.getRuler() == getModel()) {
@@ -58,6 +52,12 @@ public void activate() {
 	} else {
 		rulerProvider = (RulerProvider)diagramViewer.getProperty(RulerProvider.VERTICAL);
 	}
+}
+
+/* (non-Javadoc)
+* @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#activate()
+*/
+public void activate() {
 	getRulerProvider().addRulerChangeListener(listener);
 	getRulerFigure().setZoomManager(getZoomManager());
 	super.activate();
