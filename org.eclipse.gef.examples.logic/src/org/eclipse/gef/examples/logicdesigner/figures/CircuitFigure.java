@@ -68,11 +68,8 @@ protected FixedConnectionAnchor getOutputConnectionAnchor(int i) {
 	return (FixedConnectionAnchor) connectionAnchors.get(Circuit.TERMINALS_OUT[i]);
 }
 
-public Dimension getPreferredSize() {
+public Dimension getPreferredSize(int w, int h) {
 	Dimension prefSize = super.getPreferredSize();
-	int connBuffer = 10;
-	//add a buffer to each side to account for connections being drawn
-	prefSize = new Dimension(prefSize.width + connBuffer, prefSize.height + connBuffer);
 	Dimension defaultSize = new Dimension(100,100);
 	prefSize.union(defaultSize);
 	return prefSize;

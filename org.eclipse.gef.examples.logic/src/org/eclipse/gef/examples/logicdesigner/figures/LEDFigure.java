@@ -94,7 +94,7 @@ protected Image getBackgroundImage() {
 	return LED_BG;
 }
 
-public Dimension getPreferredSize() {
+public Dimension getPreferredSize(int w, int h) {
 	return new Dimension(60,48);
 }
 
