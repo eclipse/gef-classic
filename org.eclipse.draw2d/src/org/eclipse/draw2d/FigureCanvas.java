@@ -19,6 +19,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 
@@ -39,6 +40,7 @@ public static int ALWAYS = 2;
 private int vBarVisibility = AUTOMATIC;
 private int hBarVisibility = AUTOMATIC;
 private Viewport viewport;
+private Font font;
 private int hBarOffset;
 private int vBarOffset;
 private PropertyChangeListener horizontalChangeListener = new PropertyChangeListener()
@@ -116,6 +118,16 @@ public org.eclipse.swt.graphics.Point computeSize(int wHint, int hHint, boolean 
  */
 public IFigure getContents() {
 	return getViewport().getContents();
+}
+
+/**
+ * @see org.eclipse.swt.widgets.Control#getFont()
+ */
+public Font getFont() {
+	if (font == null)
+		return super.getFont();
+	else
+		return font;
 }
 
 /**
@@ -347,6 +359,14 @@ public void setBorder(Border border) {
  */
 public void setContents(IFigure figure) {
 	getViewport().setContents(figure);
+}
+
+/**
+ * @see org.eclipse.swt.widgets.Control#setFont(org.eclipse.swt.graphics.Font)
+ */
+public void setFont(Font font) {
+	this.font = font;
+	super.setFont(font);
 }
 
 /**
