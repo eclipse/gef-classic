@@ -7,13 +7,13 @@ package org.eclipse.draw2d;
  */
 
 /**
- * A listener interface for receiving notification
- * that an IFigure has moved.
+ * A listener interface for receiving notification that an IFigure has moved.
  */
 public interface FigureListener {
 
 /**
  * Called when the given IFigure has moved.
+ * @param source The IFigure that has moved.
  */
 void figureMoved(IFigure source);
 

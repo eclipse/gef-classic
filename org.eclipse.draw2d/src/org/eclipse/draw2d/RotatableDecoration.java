@@ -16,13 +16,15 @@ public interface RotatableDecoration
 {
 
 /**
- * Sets the location.
+ * Sets the location of this figure.
+ * @param p The location
  */
-public void setLocation(Point p);
+void setLocation(Point p);
 
 /**
- * Sets the reference point.
+ * Sets the reference point used to determine the rotation angle.
+ * @param p The reference point
  */
-public void setReferencePoint(Point p);
+void setReferencePoint(Point p);
 
 }

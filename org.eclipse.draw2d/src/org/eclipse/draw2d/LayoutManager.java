@@ -15,49 +15,62 @@ public interface LayoutManager {
 
 /**
  * Returns the constraint for the given figure.
+ * @param figure The figure
+ * @return The constraint
  */
 Object getConstraint(IFigure figure);
 
 /**
  * Returns the minimum size of the given figure.
+ * @param figure The Figure
+ * @return The minimum size
  */
-Dimension getMinimumSize(IFigure parent);
+Dimension getMinimumSize(IFigure figure);
 
 /**
  * Returns the preferred size of the given figure.
+ * @param figure The figure
+ * @return The preferred size
  */
-Dimension getPreferredSize(IFigure parent);
+Dimension getPreferredSize(IFigure figure);
 
 /**
- * Returns the preferred size of the given figure, using
- * width and height hints.
+ * Returns the preferred size of the given figure, using width and height hints.
+ * @param figure The figure
+ * @param wHint The width hint
+ * @param hHint The height hint
+ * @return The preferred size
  */
-Dimension getPreferredSize(IFigure parent, int wHint, int hHint);
+Dimension getPreferredSize(IFigure figure, int wHint, int hHint);
 
 /**
- * Tells the LayoutManager to throw away all cached information
- * about the figures it is resposible for.
+ * Tells the LayoutManager to throw away all cached information about the figures it is
+ * resposible for.
  */
 void invalidate();
 
 /**
- * Tells the LayoutManager to throw away any cached information
- * about the given figure.
+ * Tells the LayoutManager to throw away any cached information about the given figure.
+ * @param figure The figure
  */
-void invalidate(IFigure child);
+void invalidate(IFigure figure);
 
 /**
  * Lays out the given figure.
+ * @param figure The figure
  */
-void layout(IFigure parent);
+void layout(IFigure figure);
 
 /**
  * Removes the given figure from this LayoutManager.
+ * @param figure The figure
  */
 void remove(IFigure figure);
 
 /**
  * Sets the constraint for the given figure.
+ * @param figure The figure
+ * @param constraint The constraint
  */
 void setConstraint(IFigure figure, Object constraint);
 

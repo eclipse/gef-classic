@@ -21,7 +21,8 @@ import java.beans.PropertyChangeSupport;
  * </pre>
  */
 public class DefaultRangeModel 
-	implements RangeModel {
+	implements RangeModel 
+{
 
 protected PropertyChangeSupport propertyListeners = new PropertyChangeSupport(this);
 private int minimum = 0;
@@ -34,7 +35,7 @@ private int value = 0;
  * 
  * @since 2.0
  */
-public void addPropertyChangeListener(PropertyChangeListener listener){
+public void addPropertyChangeListener(PropertyChangeListener listener) {
 	propertyListeners.addPropertyChangeListener(listener);
 }
 
@@ -44,80 +45,80 @@ public void addPropertyChangeListener(PropertyChangeListener listener){
  * 
  * @since 2.0
  */
-protected void firePropertyChange(String string, int oldValue, int newValue){
+protected void firePropertyChange(String string, int oldValue, int newValue) {
 	propertyListeners.firePropertyChange(string,oldValue,newValue);
 }
 
-public int getExtent(){
+public int getExtent() {
 	return extent;
 }
 
-public int getMaximum(){
+public int getMaximum() {
 	return maximum;
 }
 
-public int getMinimum(){
+public int getMinimum() {
 	return minimum;
 }
 
-public int getValue(){
+public int getValue() {
 	return value;
 }
 
-public boolean isEnabled(){
+public boolean isEnabled() {
 	return (getMaximum() - getMinimum()) > getExtent();
 }
 
-public void removePropertyChangeListener(PropertyChangeListener listener){
+public void removePropertyChangeListener(PropertyChangeListener listener) {
 	propertyListeners.removePropertyChangeListener(listener);
 }
 
 /*
  * Sets this RangeModel's extent and fires a property change.
  */
-public void setExtent(int extent){
+public void setExtent(int extent) {
 	if(this.extent == extent)
 		return;
 	int oldValue = this.extent;
 	this.extent = extent;
-	firePropertyChange(PROPERTY_EXTENT,oldValue,extent);
+	firePropertyChange(PROPERTY_EXTENT, oldValue, extent);
 	setValue(getValue());
 }
 
 /*
  * Sets this RangeModel's maximum value and fires a property change.
  */
-public void setMaximum(int maximum){
+public void setMaximum(int maximum) {
 	if(this.maximum == maximum)
 		return;
 	int oldValue = this.maximum;
 	this.maximum = maximum;
-	firePropertyChange(PROPERTY_MAXIMUM,oldValue,maximum);
+	firePropertyChange(PROPERTY_MAXIMUM, oldValue, maximum);
 	setValue(getValue());
 }
 
 /*
  * Sets this RangeModel's minimum value and fires a property change.
  */
-public void setMinimum(int minimum){
+public void setMinimum(int minimum) {
 	if(this.minimum == minimum)
 		return;
 	int oldValue = this.minimum;
 	this.minimum = minimum;
-	firePropertyChange(PROPERTY_MINIMUM,oldValue,minimum);
+	firePropertyChange(PROPERTY_MINIMUM, oldValue, minimum);
 	setValue(getValue());
 }
 
 /*
  * Sets this RangeModel's current value and fires a property change.
  */
-public void setValue(int value){
+public void setValue(int value) {
 	value = Math.max(getMinimum(), Math.min(getMaximum() - getExtent(), value));
-	if(this.value==value)
+	if (this.value == value)
 		return;
 	int oldValue = this.value;
 	this.value = value;
-	firePropertyChange(PROPERTY_VALUE,oldValue,value);
+	firePropertyChange(PROPERTY_VALUE, oldValue, value);
 }
 
 }

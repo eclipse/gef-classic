@@ -7,38 +7,40 @@ package org.eclipse.draw2d;
  */
 
 /**
- * A listener interface for receiving mouse button
- * events.
+ * A listener interface for receiving mouse button events.
  */
 public interface MouseListener {
 
 /**
- * Called when a mouse button has been pressed while 
- * over the listened to object.
+ * Called when a mouse button has been pressed while over the listened to object.
+ * @param me The MouseEvent object
  */
 void mousePressed(MouseEvent me);
 
 /**
- * Called when a pressed mouse button has been
- * released.
+ * Called when a pressed mouse button has been released.
+ * @param me The MouseEvent object
  */
 void mouseReleased(MouseEvent me);
 
 /**
- * Called when a mouse button has been double
- * clicked over the listened to object.
+ * Called when a mouse button has been double clicked over the listened to object.
+ * @param me The MouseEvent object
  */
 void mouseDoubleClicked(MouseEvent me);
 
+/**
+ * An empty implementation of MouseListener for convenience.
+ */
 public class Stub
 	implements MouseListener
 {
-	final protected void mousePress(MouseEvent me){}
-	         public void mousePressed(MouseEvent me){}
-	final protected void mouseRelease(MouseEvent me){}
-	         public void mouseReleased(MouseEvent me){}
-	final protected void mouseDoubleClick(MouseEvent me){}
-	         public void mouseDoubleClicked(MouseEvent me){}
+	/**	 * @see org.eclipse.draw2d.MouseListener#mousePressed(MouseEvent)	 */
+	public void mousePressed(MouseEvent me) { }
+	/**	 * @see org.eclipse.draw2d.MouseListener#mouseReleased(MouseEvent)	 */
+	public void mouseReleased(MouseEvent me) { }
+	/**	 * @see org.eclipse.draw2d.MouseListener#mouseDoubleClicked(MouseEvent)	 */
+	public void mouseDoubleClicked(MouseEvent me) { }
 }
 
 }

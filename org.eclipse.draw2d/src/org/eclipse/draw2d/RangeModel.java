@@ -9,70 +9,90 @@ package org.eclipse.draw2d;
 import java.beans.*;
 
 /**
- * 
+ * This interface represents a range of possible values as well as the current values. 
+ * There is a minumum and maximum value, a current value, and the extent.  One use for a
+ * RangeModel is a scrollbar.  There is a minimum value (the top of the scrollbar), a
+ * maximum value (the bottom of the scrollbar), a current value (the top of the thumb),
+ * and an extent (the length of the thumb).
  */
 public interface RangeModel {
 
-public static String PROPERTY_VALUE="value";//$NON-NLS-1$
-public static String PROPERTY_EXTENT="extent";//$NON-NLS-1$
-public static String PROPERTY_MINIMUM="minimum";//$NON-NLS-1$
-public static String PROPERTY_MAXIMUM="maximum";//$NON-NLS-1$
+/** Value property name */
+static String PROPERTY_VALUE = "value"; //$NON-NLS-1$
+/** Extent property name */
+static String PROPERTY_EXTENT = "extent"; //$NON-NLS-1$
+/** Minimum property name */
+static String PROPERTY_MINIMUM = "minimum"; //$NON-NLS-1$
+/** Maximum property name */
+static String PROPERTY_MAXIMUM = "maximum"; //$NON-NLS-1$
 
 /**
- * Registers listener as a PropertyChangeListener of this
- * RangeModel.
+ * Registers listener as a PropertyChangeListener of this RangeModel.  Listeners will be
+ * notified of changes to {@link #PROPERTY_VALUE value}, {@link #PROPERTY_EXTENT extent}, 
+ * {@link #PROPERTY_MINIMUM minimum} and {@link #PROPERTY_MAXIMUM maximum} properties.
+ * 
+ * @param listener The listener to add
  */
-public void addPropertyChangeListener(PropertyChangeListener listener);
+void addPropertyChangeListener(PropertyChangeListener listener);
 
 /**
  * Returns the extent.
+ * @return The extent
  */
-public int getExtent();
+int getExtent();
 
 /**
  * Returns the maximum value in the range.
+ * @return The maximum value
  */
-public int getMaximum();
+int getMaximum();
 
 /**
  * Returns the minimum value in the range.
+ * @return The minimum value
  */
-public int getMinimum();
+int getMinimum();
 
 /**
  * Returns the current value.
+ * @return The current value
  */
-public int getValue();
+int getValue();
 
 /**
- * Returns true if this RangeModel is enabled.
+ * Returns <code>true</code> if this RangeModel is enabled.
+ * @return <code>true</code> if this Rangel Model is enabled
  */
-public boolean isEnabled();
+boolean isEnabled();
 
 /**
- * Removes the given listener from this RangeModel's list
- * of PropertyChangeListeners.
+ * Removes the given listener from this RangeModel's list of PropertyChangeListeners.
+ * @param listener The listener to remove
  */
-public void removePropertyChangeListener(PropertyChangeListener listener);
+void removePropertyChangeListener(PropertyChangeListener listener);
 
 /**
  * Sets the extent.
+ * @param extent The extent
  */
-public void setExtent(int extent);
+void setExtent(int extent);
 
 /**
  * Sets the maximum value of the range.
+ * @param max The maximum value
  */
-public void setMaximum(int max);
+void setMaximum(int max);
 
 /**
  * Sets the minimum value of the range.
+ * @param min The minimum value
  */
-public void setMinimum(int min);
+void setMinimum(int min);
 
 /**
  * Sets the current value.
+ * @param value The current value
  */
-public void setValue(int value);
+void setValue(int value);
 
 }

@@ -15,18 +15,17 @@ public class DebugLightweightSystem
 	extends LightweightSystem
 {
 
-class TitleBarBorder extends org.eclipse.draw2d.TitleBarBorder{
-
+class TitleBarBorder extends org.eclipse.draw2d.TitleBarBorder {
 	public void paint(IFigure figure, Graphics g, Insets insets) {
 		g.setXORMode(true);
-		super.paint(figure,g,insets);
+		super.paint(figure, g, insets);
 	}
 }
 
 LayeredPane layers = new LayeredPane();
 Layer primary = new Layer();
-Layer debug = new Layer(){
-	public boolean containsPoint(int x, int y){
+Layer debug = new Layer() {
+	public boolean containsPoint(int x, int y) {
 		return false;
 	}
 };
@@ -47,14 +46,14 @@ LabeledContainer mouseHighlight;
 	debug.add(mouseHighlight);
 }
 
-public DebugLightweightSystem(){
+public DebugLightweightSystem() {
 }
 
-public DebugLightweightSystem(Canvas c){
+public DebugLightweightSystem(Canvas c) {
 	super(c);
 }
 
-LabeledContainer createHighlight(){
+LabeledContainer createHighlight() {
 	TitleBarBorder titleBarBorder = new TitleBarBorder();
 	titleBarBorder.setBackgroundColor(ColorConstants.orange);
 	LabeledContainer c = new LabeledContainer(
@@ -68,7 +67,7 @@ LabeledContainer createHighlight(){
 	return c;
 }
 
-void followCursorTarget(){
+void followCursorTarget() {
 	IFigure f = getEventDispatcher().getCursorTarget();
 	cursorHighlight.setLabel("Cursor: " + f);//$NON-NLS-1$
 	if (f == getEventDispatcher().getMouseTarget())
@@ -76,20 +75,20 @@ void followCursorTarget(){
 	highlight(f, cursorHighlight);
 }
 
-void followMouseTarget(){
+void followMouseTarget() {
 	IFigure f = getEventDispatcher().getMouseTarget();
 	mouseHighlight.setLabel("Mouse: " + f);//$NON-NLS-1$
 	highlight(f, mouseHighlight);
 }
 
-EventHandler internalCreateEventHandler(){
+EventHandler internalCreateEventHandler() {
 	return new DebugEventHandler();
 }
 
-void highlight(IFigure f, LabeledContainer c){
+void highlight(IFigure f, LabeledContainer c) {
 	if (f == null || f.getParent() == null)
 		c.setVisible(false);
-	else{
+	else {
 		c.setVisible(true);
 		Rectangle r = f.getBounds().getExpanded(c.getInsets());
 		f.translateToAbsolute(r);
@@ -98,7 +97,7 @@ void highlight(IFigure f, LabeledContainer c){
 }
 
 
-public void setContents(IFigure figure){
+public void setContents(IFigure figure) {
 	if (contents != null)
 		primary.remove(contents);
 	contents = figure;
@@ -106,14 +105,19 @@ public void setContents(IFigure figure){
 }
 
 protected class DebugEventHandler
-	extends EventHandler {
-		public void keyPressed(KeyEvent e){
+	extends EventHandler 
+{
+		/**
+		 * @see org.eclipse.swt.events.KeyListener#keyPressed(KeyEvent)
+		 */
+		public void keyPressed(KeyEvent e) {
 			super.keyPressed(e);
 			if (e.character == ' ')
 				debug.setVisible(!debug.isVisible());
 		}
 		
-		public void mouseMove(MouseEvent e){
+		/**		 * @see org.eclipse.swt.events.MouseMoveListener#mouseMove(MouseEvent)		 */
+		public void mouseMove(MouseEvent e) {
 			super.mouseMove(e);
 			followCursorTarget();
 			followMouseTarget();
