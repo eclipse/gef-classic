@@ -63,8 +63,10 @@ protected Command createPasteCommand() {
 	CreateRequest request = new CreateRequest();
 	request.setFactory(getFactory(getClipboardContents()));
 	request.setLocation(getPasteLocation());
-	EditPart ep = (EditPart)getSelectedObjects().get(0);
-	return ep.getCommand(request);
+	Object obj = getSelectedObjects().get(0);
+	if (obj instanceof EditPart)
+		return ((EditPart)obj).getCommand(request);
+	return null;
 }
 
 /**
