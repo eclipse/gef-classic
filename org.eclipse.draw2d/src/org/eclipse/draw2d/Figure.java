@@ -1305,7 +1305,7 @@ protected void setChildrenOrientation(int orientation) {
  * @see org.eclipse.draw2d.IFigure#setConstraint(IFigure, Object)
  */
 public void setConstraint(IFigure child, Object constraint) {
-	if (!getChildren().contains(child))
+	if (child.getParent() != this)
 		throw new IllegalArgumentException(
 			Draw2dMessages.ERR_Figure_SetConstraint_Exception_IllegalArgument);
 	
