@@ -157,9 +157,16 @@ protected Command getResizeCommand(ChangeBoundsRequest request) {
 }
 
 /**
- * Sets the handle directions that are resizable to the given integer. 
+ * Sets the directions in which handles should allow resizing. Valid values are bit-wise
+ * combinations of:
+ * <UL>
+ *   <LI>{@link PositionConstants#NORTH}
+ *   <LI>{@link PositionConstants#SOUTH}
+ *   <LI>{@link PositionConstants#EAST}
+ *   <LI>{@link PositionConstants#WEST}
+ * </UL>
  * 
- * @param newDirections the new resizable directions integer
+ * @param newDirections the direction in which resizing is allowed
  */
 public void setResizeDirections(int newDirections) {
 	directions = newDirections;
