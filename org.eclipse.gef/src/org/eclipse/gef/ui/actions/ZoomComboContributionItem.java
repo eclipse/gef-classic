@@ -132,7 +132,7 @@ protected Control createControl(Composite parent) {
 	
 	// Initialize width of combo
 	combo.setText(initString);
-	if (SWT.getPlatform().equals("gtk"))
+	if (SWT.getPlatform().equals("gtk")) //$NON-NLS-1$
 		combo.setItems(new String[] {initString});
 	toolitem.setWidth(computeWidth(combo));
 	refresh();
