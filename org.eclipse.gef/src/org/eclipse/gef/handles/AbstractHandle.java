@@ -14,7 +14,6 @@ import org.eclipse.swt.graphics.Cursor;
 
 import org.eclipse.draw2d.AncestorListener;
 import org.eclipse.draw2d.Figure;
-import org.eclipse.draw2d.FigureListener;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Locator;
 import org.eclipse.draw2d.geometry.Point;
@@ -69,7 +68,7 @@ public AbstractHandle(GraphicalEditPart owner, Locator loc, Cursor c) {
 }
 
 /**
- * Adds this as a {@link FigureListener} to the owner's {@link Figure}.
+ * Adds this as an {@link AncestorListener} to the owner's {@link Figure}.
  */
 public void addNotify() {
 	super.addNotify();
