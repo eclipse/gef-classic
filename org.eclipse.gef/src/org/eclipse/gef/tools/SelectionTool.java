@@ -33,6 +33,7 @@ public class SelectionTool
 {
 
 private static final int FLAG_HOVER_FEEDBACK = TargetingTool.MAX_FLAG << 1;
+/** Max flag **/
 protected static final int MAX_FLAG = FLAG_HOVER_FEEDBACK;
 
 protected static final int STATE_TRAVERSE_HANDLE = TargetingTool.MAX_STATE << 1;
@@ -44,6 +45,9 @@ private LocationRequest hoverRequest;
 
 private WeakReference cachedHandlePart;
 
+/**
+ * Creates a new SelectionTool.
+ */
 public SelectionTool() { }
 
 private boolean acceptTraverseHandle(KeyEvent e) {
@@ -54,11 +58,18 @@ private boolean acceptTraverseHandle(KeyEvent e) {
 			&& ((e.stateMask & (SWT.ALT | SWT.CONTROL)) == 0);
 }
 
+/**
+ * Creates a new {@link LocationRequest} and sets its type to
+ * {@link RequestConstants#REQ_SELECTION_HOVER}.
+ */
 protected void createHoverRequest() {
 	hoverRequest = new LocationRequest();
 	hoverRequest.setType(RequestConstants.REQ_SELECTION_HOVER);
 }
 
+/**
+ * @see TargetingTool#createTargetRequest()
+ */
 protected Request createTargetRequest() {
 	SelectionRequest request = new SelectionRequest();
 	request.setType(getCommandName());
@@ -75,6 +86,10 @@ public void deactivate() {
 	super.deactivate();
 }
 
+/**
+ * Called from {@link #handleHoverStop()}. Erases target feedback for the current target
+ * hover request if such a request exists.
+ */
 protected void eraseHoverFeedback() {
 	if (getTargetEditPart() == null)
 		return;
@@ -83,14 +98,25 @@ protected void eraseHoverFeedback() {
 	getTargetEditPart().eraseTargetFeedback(getTargetHoverRequest());
 }
 
+/**
+ * Returns {@link RequestConstants#REQ_SELECTION}.
+ * @see org.eclipse.gef.tools.AbstractTool#getCommandName()
+ */
 protected String getCommandName() {
 	return REQ_SELECTION;
 }
 
+/**
+ * @see org.eclipse.gef.tools.AbstractTool#getDebugName()
+ */
 protected String getDebugName() {
 	return "Selection Tool";//$NON-NLS-1$
 }
 
+/**
+ * Returns the current DragTracker.
+ * @return the DragTracker
+ */
 protected DragTracker getDragTracker() {
 	return dragTracker;
 }
@@ -115,6 +141,11 @@ protected EditPartViewer.Conditional getTargetingConditional() {
 	};
 }
 
+/**
+ * Lazily creates and returns the request used when communicating with the target
+ * editpart.
+ * @return the target hover request
+ */
 protected Request getTargetHoverRequest() {
 	if (hoverRequest == null)
 		createHoverRequest();
@@ -162,6 +193,9 @@ protected boolean handleButtonUp(int button) {
 	return true;
 }
 
+/**
+ * @see org.eclipse.gef.tools.AbstractTool#handleFocusLost()
+ */
 protected boolean handleFocusLost() {
 	if (isInState(STATE_ACCESSIBLE_DRAG | STATE_ACCESSIBLE_DRAG_IN_PROGRESS
 					| STATE_DRAG | STATE_DRAG_IN_PROGRESS)) {
@@ -173,13 +207,20 @@ protected boolean handleFocusLost() {
 	return false;
 }
 
-
+/**
+ * Sets FLAG_HOVER to <code>true</code>, calls {@link #showHoverFeedback()}.
+ * @see org.eclipse.gef.tools.AbstractTool#handleHover()
+ */
 protected boolean handleHover() {
 	setHoverActive(true);
 	showHoverFeedback();
 	return true;
 }
 
+/**
+ * Calls {@link #eraseHoverFeedback()}.
+ * @see org.eclipse.gef.tools.TargetingTool#handleHoverStop()
+ */
 protected boolean handleHoverStop() {
 	eraseHoverFeedback();
 	return true;
@@ -333,9 +374,9 @@ protected boolean handleViewerExited() {
 	return super.handleViewerExited();
 }
 
-
-/*
- * defined on interface
+/**
+ * @see org.eclipse.gef.Tool#keyDown(org.eclipse.swt.events.KeyEvent, 
+ * 										org.eclipse.gef.EditPartViewer)
  */
 public void keyDown(KeyEvent evt, EditPartViewer viewer) {
 	if (getDragTracker() != null)
@@ -343,8 +384,9 @@ public void keyDown(KeyEvent evt, EditPartViewer viewer) {
 	super.keyDown(evt, viewer);
 }
 
-/*
- * defined on interface
+/**
+ * @see org.eclipse.gef.Tool#keyUp(org.eclipse.swt.events.KeyEvent, 
+ * 										org.eclipse.gef.EditPartViewer)
  */
 public void keyUp(KeyEvent evt, EditPartViewer viewer) {
 	if (getDragTracker() != null)
@@ -352,12 +394,24 @@ public void keyUp(KeyEvent evt, EditPartViewer viewer) {
 	super.keyUp(evt, viewer);
 }
 
+/**
+ * Calls {@link AbstractTool#mouseDown(MouseEvent, EditPartViewer)} and then
+ * passes control of handling the event to the {@link DragTracker}.
+ * @param e mouseDown Event
+ * @param viewer current EditPartViewer
+ */
 public void mouseDown(MouseEvent e, EditPartViewer viewer) {
 	super.mouseDown(e, viewer);
 	if (getDragTracker() != null)
 		getDragTracker().mouseDown(e, viewer);
 }
 
+/**
+ * Calls {@link AbstractTool#mouseDoubleClick(MouseEvent, EditPartViewer)} and then
+ * passes control of handling the event to the {@link DragTracker}.
+ * @param e mouseDoubleClick event
+ * @param viewer current EditPartViewer
+ */
 public void mouseDoubleClick(MouseEvent e, EditPartViewer viewer) {
 	super.mouseDoubleClick(e, viewer);
 	if (getDragTracker() != null)
@@ -428,6 +482,9 @@ private void setLastHandleProvider(EditPart part) {
 		cachedHandlePart = new WeakReference(part);
 }
 
+/**
+ * Called by {@link #handleHover()}, displays target feedback on the target EditPart.
+ */
 protected void showHoverFeedback() {
 	if (getTargetEditPart() == null)
 		return;
@@ -449,6 +506,9 @@ protected void updateTargetRequest() {
 	updateHoverRequest();
 }
 
+/**
+ * @see AbstractTool#getDebugNameForState(int)
+ */
 protected String getDebugNameForState(int state) {
 	if (state == STATE_TRAVERSE_HANDLE)
 		return "Traverse Handle";  //$NON-NLS-1$

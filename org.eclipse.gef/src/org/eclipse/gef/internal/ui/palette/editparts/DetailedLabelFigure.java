@@ -116,8 +116,10 @@ public boolean isSelected() {
  */
 public void setDescription(String s) {
 	String str = ""; //$NON-NLS-1$
-	if (s != null && !s.trim().equals("")  && !s.trim().equals(nameText.getText().trim())) { //$NON-NLS-1$
-		str = " " + PaletteMessages.NAME_DESCRIPTION_SEPARATOR + " " + s; //$NON-NLS-1$ //$NON-NLS-2$
+	if (s != null && !s.trim().equals("")  
+				  && !s.trim().equals(nameText.getText().trim())) { //$NON-NLS-1$
+		str = " " + PaletteMessages.NAME_DESCRIPTION_SEPARATOR //$NON-NLS-1$
+				  + " " + s; //$NON-NLS-1$
 	}
 	if (descText.getText().equals(str)) {
 		return;

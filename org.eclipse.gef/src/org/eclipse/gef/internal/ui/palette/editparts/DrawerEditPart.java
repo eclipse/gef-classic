@@ -218,7 +218,8 @@ public void setExpanded(boolean expanded) {
 }
 
 /**
- * @see org.eclipse.gef.internal.ui.palette.editparts.PaletteEditPart#setImageInFigure(Image)
+ * @see org.eclipse.gef.internal.ui.palette.editparts.PaletteEditPart#setImageInFigure(
+ * 																					Image)
  */
 protected void setImageInFigure(Image image) {
 	getDrawerFigure().setTitleIcon(image);

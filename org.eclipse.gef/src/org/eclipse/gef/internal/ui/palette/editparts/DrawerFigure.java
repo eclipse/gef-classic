@@ -32,22 +32,30 @@ import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
 public class DrawerFigure
 	extends Figure
 {
+
+/** Border constant, toolbar scheme **/
 protected static final Border BUTTON_BORDER = new ButtonBorder(
 					ButtonBorder.SCHEMES.TOOLBAR);
 
+/** Foreground color constant **/
 protected static final Color FG_COLOR = FigureUtilities.mixColors(
 		ColorConstants.buttonDarker, ColorConstants.button);
 
 /*
  * @TODO:Pratik
  * This image needs to go in GEFSharedImages
- */ 
+ */
+/** Pin image **/
 protected static final Image PIN = new Image(null, ImageDescriptor.createFromFile(
 		Internal.class, "icons/pin_view.gif").getImageData()); //$NON-NLS-1$
-protected static final Border SCROLL_PANE_BORDER = new MarginBorder(2);
-protected static final Border TITLE_MARGIN_BORDER = new MarginBorder(1, 1, 1, 0);
 
+/** Scrollpane border constant **/
+protected static final Border SCROLL_PANE_BORDER = new MarginBorder(2);
+/** Title margin border constant **/
+protected static final Border TITLE_MARGIN_BORDER = new MarginBorder(1, 1, 1, 0);
+/** Toggle button border constant**/
 protected static final Border TOGGLE_BUTTON_BORDER = new RaisedBorder();
+/** Tooltip border constant **/
 protected static final Border TOOLTIP_BORDER = new DrawerToolTipBorder();
 private Toggle collapseToggle;
 private DrawerAnimationController controller;
@@ -87,7 +95,8 @@ public DrawerFigure(final Control control) {
 //	drawerLabel.addMouseListener(new MouseListener.Stub() {
 //		public void mousePressed(MouseEvent me) {
 //			if (me.button == 1) {
-////				collapseToggle.internalGetEventDispatcher().requestRemoveFocus(collapseToggle);
+////				collapseToggle.internalGetEventDispatcher().requestRemoveFocus(
+//																		collapseToggle);
 //				if (tipHelper != null) {
 //					tipHelper.hide();
 //				}
@@ -258,6 +267,9 @@ public IFigure getContentPane() {
 	return scrollpane.getContents();
 }
 
+/**
+ * @see Figure#getMinimumSize()
+ */
 public Dimension getMinimumSize(int wHint, int hHint) {
 	/*
 	 * Fix related to Bug #35176
@@ -289,6 +301,10 @@ public Dimension getPreferredSize(int w, int h) {
 		return getMinimumSize();
 }
 
+/**
+ * Returns the ScrollPane associated with this DrawerFigure
+ * @return the ScrollPane
+ */
 public ScrollPane getScrollpane() {
 	return scrollpane;
 }
@@ -308,6 +324,9 @@ public boolean isPinnedOpen() {
 	return isExpanded() && pinFigure.isVisible() && pinFigure.isSelected();
 }
 
+/**
+ * @return <code>true</code> if the drawer is expanded and its pin is showing
+ */
 public boolean isPinShowing() {
 	return isExpanded() && showPin;
 }
