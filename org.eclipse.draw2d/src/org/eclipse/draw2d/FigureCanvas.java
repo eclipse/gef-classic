@@ -24,7 +24,6 @@ import org.eclipse.swt.widgets.Composite;
 
 /**
  * A Canvas that contains {@link Figure Figures}.
- * TODO: Scrollbar visibility variables should be changed to constants.
  */
 public class FigureCanvas
 	extends Canvas
@@ -330,6 +329,15 @@ public void scrollToY(int vOffset) {
 	getViewport().setVerticalLocation(vOffset);
 	getViewport().setIgnoreScroll(false);
 	redraw(expose.x, expose.y, expose.width, expose.height, true);
+}
+
+/**
+ * Sets the given border on the LightweightSystem's root figure.
+ * 
+ * @param	border	The new border
+ */
+public void setBorder(Border border) {
+	getLightweightSystem().getRootFigure().setBorder(border);
 }
 
 /**
