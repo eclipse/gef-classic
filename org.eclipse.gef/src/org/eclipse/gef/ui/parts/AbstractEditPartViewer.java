@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.gef.ui.parts;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.*;
 
 import org.eclipse.swt.dnd.DND;
@@ -57,6 +59,7 @@ protected List selectionListeners = new ArrayList(1);
 private EditPartFactory factory;
 private Map mapIDToEditPart = new HashMap();
 private Map mapVisualToEditPart = new HashMap();
+private Map properties;
 private Control control;
 private EditDomain domain;
 private RootEditPart rootEditPart;
@@ -73,19 +76,13 @@ private DragSource dragSource;
 private DelegatingDropAdapter dropAdapter = new DelegatingDropAdapter();
 private DropTarget dropTarget;
 private KeyHandler keyHandler;
+private PropertyChangeSupport changeSupport;
 
 /**
  * Constructs the viewer and calls {@link #init()}.
  */
 public AbstractEditPartViewer() {
 	init();
-}
-
-/**
- * @see ISelectionProvider#addSelectionChangedListener(ISelectionChangedListener)
- */
-public void addSelectionChangedListener(ISelectionChangedListener listener) {
-	selectionListeners.add(listener);
 }
 
 /**
@@ -102,6 +99,22 @@ public void addDragSourceListener(TransferDragSourceListener listener) {
 public void addDropTargetListener(TransferDropTargetListener listener) {
 	getDelegatingDropAdapter().addDropTargetListener(listener);
 	refreshDropTargetAdapter();
+}
+
+/**
+ * @see org.eclipse.gef.EditPartViewer#addPropertyChangeListener(java.beans.PropertyChangeListener)
+ */
+public void addPropertyChangeListener(PropertyChangeListener listener) {
+	if (changeSupport == null)
+		changeSupport = new PropertyChangeSupport(this);
+	changeSupport.addPropertyChangeListener(listener);
+}
+
+/**
+ * @see ISelectionProvider#addSelectionChangedListener(ISelectionChangedListener)
+ */
+public void addSelectionChangedListener(ISelectionChangedListener listener) {
+	selectionListeners.add(listener);
 }
 
 /**
@@ -297,6 +310,15 @@ public KeyHandler getKeyHandler() {
 }
 
 /**
+ * @see org.eclipse.gef.EditPartViewer#getProperty(java.lang.String)
+ */
+public Object getProperty(String key) {
+	if (properties != null)
+		return properties.get(key);
+	return null;
+}
+
+/**
  * @see EditPartViewer#getRootEditPart()
  */
 public RootEditPart getRootEditPart() {
@@ -448,6 +470,17 @@ public void removeDropTargetListener(TransferDropTargetListener listener) {
 }
 
 /**
+ * @see org.eclipse.gef.EditPartViewer#removePropertyListener(java.beans.PropertyChangeListener)
+ */
+public void removePropertyListener(PropertyChangeListener listener) {
+	if (changeSupport != null) {
+		changeSupport.removePropertyChangeListener(listener);
+		if (changeSupport.getPropertyChangeListeners().length == 0)
+			changeSupport = null;
+	}
+}
+
+/**
  * @see ISelectionProvider#removeSelectionChangedListener(ISelectionChangedListener)
  */
 public void removeSelectionChangedListener(ISelectionChangedListener l) {
@@ -577,6 +610,22 @@ public void setFocus(EditPart part) {
  */
 public void setKeyHandler(KeyHandler handler) {
 	keyHandler = handler;
+}
+
+/**
+ * @see org.eclipse.gef.EditPartViewer#setProperty(java.lang.String, java.lang.Object)
+ */
+public void setProperty(String key, Object value) {
+	if (properties == null)
+		properties = new HashMap();
+	Object old;
+	if (value == null)
+		old = properties.remove(key);
+	else
+		old = properties.put(key, value);
+		
+	if (changeSupport != null)
+		changeSupport.firePropertyChange(key, old, value);
 }
 
 /**

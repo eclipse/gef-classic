@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.gef;
 
+import java.beans.PropertyChangeListener;
 import java.util.*;
 
 import org.eclipse.swt.graphics.Cursor;
@@ -58,6 +59,14 @@ import org.eclipse.gef.dnd.TransferDropTargetListener;
  * viewer's control is disposed, all editparts are similarly deactivated by decativating
  * the root.
  * 
+ * <P>
+ * A Viewer has an arbitrary collection of keyed properties that can be set and queried. A
+ * value of <code>null</code> is used to remove a key from the property map. A viewer will
+ * fire property change notification whenever these values are updated.
+ * 
+ * <P>
+ * WARNING: This interface is not intended to be implemented.  Clients should extend
+ * {@link org.eclipse.gef.ui.parts.AbstractEditPartViewer}.
  */
 public interface EditPartViewer
 	extends org.eclipse.jface.viewers.ISelectionProvider
@@ -94,6 +103,12 @@ void addDragSourceListener(TransferDragSourceListener listener);
  * @param listener the listener
  */
 void addDropTargetListener(TransferDropTargetListener listener);
+
+/**
+ * Adds a listener to be notified of viewer property changes.
+ * @param listener the listener
+ */
+void addPropertyChangeListener(PropertyChangeListener listener);
 
 /**
  * Appends the specified <code>EditPart</code> to the viewer's <i>selection</i>. The
@@ -243,6 +258,15 @@ EditPart getFocusEditPart();
  * @return <code>null</code> or a KeyHandler */
 KeyHandler getKeyHandler();
 
+
+/**
+ * Returns the value of the given property.  Returns <code>null</code> if the property has
+ * not been set, or has been set to null.
+ * @param key the property's key
+ * @return the given properties value or <code>null</code>.
+ */
+Object getProperty(String key);
+
 /**
  * Returns the <code>RootEditPart</code>.  The RootEditPart is a special EditPart that
  * serves as the parent to the contents editpart. The <i>root</i> is never selected. The
@@ -312,6 +336,12 @@ void removeDragSourceListener(TransferDragSourceListener listener);
  * @param listener
  */
 void removeDropTargetListener(TransferDropTargetListener listener);
+
+/**
+ * removes the first instance of the specified property listener.
+ * @param listener the listener to remove
+ */
+void removePropertyListener(PropertyChangeListener listener);
 
 /**
  * Reveals the given EditPart if it is not visible.  
@@ -392,6 +422,13 @@ void setFocus(EditPart focus);
  * @see #getKeyHandler()
  */
 void setKeyHandler(KeyHandler keyHandler);
+
+/**
+ * Sets a viewer property to the given value.
+ * @param propertyName
+ * @param value
+ */
+void setProperty(String propertyName, Object value);
 
 /**
  * Sets the <i>root</i> of this viewer.  The root should not be confused with the
