@@ -184,7 +184,8 @@ protected void layout() {
 					|| fragment.length < advance)
 					|| fragment.isTruncated())
 				context.endLine();
-		} while (segment.length() > 0 || fragment.length < advance);
+		} while (segment.length() > 0 
+				|| (!fragment.isTruncated() && fragment.length < advance));
 	}
 	
 	if (border != null) {
