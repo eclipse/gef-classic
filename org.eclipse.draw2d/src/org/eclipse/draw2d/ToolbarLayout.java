@@ -50,7 +50,7 @@ protected Transposer transposer; {
  * 
  * @since 2.0
  */		
-public ToolbarLayout() {
+public ToolbarLayout(){
 	spacing = 0;
 	matchWidth = true;
 	minorAlignment = ALIGN_TOPLEFT;
@@ -69,7 +69,7 @@ public ToolbarLayout() {
  *				        horizontally.
  * @since 2.0
  */
-public ToolbarLayout(boolean isHorizontal) {
+public ToolbarLayout(boolean isHorizontal){
 		horizontal = isHorizontal; 
 		transposer.setEnabled(horizontal);
 		spacing = 0;
@@ -225,36 +225,22 @@ public void layout(IFigure parent) {
 	 * calculate how much each child will shrink). 
 	 */
 	IFigure child; 
-	int totalHeight = 0;
-	int totalMinHeight = 0;
-	int prefMinSumHeight = 0;
-	int widestMinSize = 0;
+	int totalHeight=0;
+	int totalMinHeight=0;
+	int prefMinSumHeight=0;
 
 	for (int i = 0; i < numChildren; i++) {
 		child = (IFigure)children.get(i);
-		minSizes[i] = transposer.t(child.getMinimumSize(wHint, hHint));
-		widestMinSize = Math.max(widestMinSize, minSizes[i].width);
-		totalMinHeight += minSizes[i].height;
-	}
-
-	if (isHorizontal())
-		hHint = Math.max(widestMinSize, hHint);
-	else
-		wHint = Math.max(widestMinSize, wHint);
-	
-	for (int i = 0; i < numChildren; i++) {
-		child = (IFigure)children.get(i);
-		prefSizes[i] = transposer.t(child.getPreferredSize(wHint, hHint));
+		
+		prefSizes[i]=transposer.t(child.getPreferredSize(wHint,hHint));
+		minSizes[i]=transposer.t(child.getMinimumSize(wHint, hHint));		
+		
 		totalHeight += prefSizes[i].height;
-		prefMinSumHeight += prefSizes[i].height - minSizes[i].height;		
-		if (minSizes[i].height > prefSizes[i].height) {
-			totalMinHeight -= (minSizes[i].height - prefSizes[i].height);
-			minSizes[i].height = prefSizes[i].height;
-		}
+		totalMinHeight += minSizes[i].height;
+		prefMinSumHeight+=prefSizes[i].height-minSizes[i].height;		
 	}
-	
-	totalHeight += (numChildren - 1) * spacing;
-	totalMinHeight += (numChildren - 1) * spacing;
+	totalHeight += (numChildren-1)*spacing;
+	totalMinHeight += (numChildren-1)*spacing;
     /* 
 	 * The total amount that the children must be shrunk is the 
 	 * sum of the preferred Heights of the children minus  
@@ -263,29 +249,25 @@ public void layout(IFigure parent) {
 	 * amntShrinkHeight is the combined amount that the children must shrink
 	 * amntShrinkCurrentHeight is the amount each child will shrink respectively  
 	 */	
-	int amntShrinkHeight =
-		totalHeight - Math.max(availableHeight, totalMinHeight);
-
-	if (amntShrinkHeight < 0) {
+	int amntShrinkHeight = totalHeight - Math.max(availableHeight,totalMinHeight);
+	
+	if (amntShrinkHeight < 0){
 		amntShrinkHeight = 0;
 	}
 
-	for (int i = 0; i < numChildren; i++) {
-		int amntShrinkCurrentHeight = 0;
+	for(int i=0; i < numChildren; i++){
+		int amntShrinkCurrentHeight=0;
 		int prefHeight = prefSizes[i].height;
 		int minHeight = minSizes[i].height;
 		int prefWidth = prefSizes[i].width;
 		int minWidth = minSizes[i].width;
 		Rectangle newBounds = new Rectangle(x, y, prefWidth, prefHeight);
 
-		child = (IFigure) children.get(i);
-		if (prefMinSumHeight != 0)
-			amntShrinkCurrentHeight =
-				(prefHeight - minHeight)
-					* amntShrinkHeight
-					/ (prefMinSumHeight);
+		child = (IFigure)children.get(i);
+	    if (prefMinSumHeight != 0)
+			amntShrinkCurrentHeight = (prefHeight - minHeight) * amntShrinkHeight / (prefMinSumHeight);
 
-		int width = Math.min(prefWidth, child.getMaximumSize().width);
+		int width = Math.min(prefWidth,child.getMaximumSize().width);
 		if (matchWidth)
 			width = transposer.t(child.getMaximumSize()).width;
 		width = Math.max(minWidth, Math.min(clientArea.width, width));
@@ -319,7 +301,7 @@ public void layout(IFigure parent) {
  *		       2 (ALIGN_BOTTOMRIGHT)
  * @since 2.0
  */
-public void setMinorAlignment(int align) {
+public void setMinorAlignment(int align){
 	minorAlignment = align;
 }
 
@@ -329,7 +311,7 @@ public void setMinorAlignment(int align) {
  * @param   space The amount of space between children.
  * @since 2.0
  */
-public void setSpacing(int space) {
+public void setSpacing(int space){
 	spacing = space;
 }
 
@@ -342,7 +324,7 @@ public void setSpacing(int space) {
  *           <code>false</code> will not
  * @since 2.0
  */
-public void setMatchWidth(boolean match) {
+public void setMatchWidth(boolean match){
 	matchWidth = match;
 }
 
@@ -352,7 +334,7 @@ public void setMatchWidth(boolean match) {
  * @param  stretch whether to stretch children
  * @since 2.0
  */
-public void setStretchMinorAxis(boolean stretch) {
+public void setStretchMinorAxis(boolean stretch){
 	matchWidth = stretch;
 }
 
@@ -364,7 +346,7 @@ public void setStretchMinorAxis(boolean stretch) {
  *              <code>false</code> sets oreintation to horizontal
  * @since 2.0
  */
-public void setVertical(boolean flag) {
+public void setVertical(boolean flag){
 	if (horizontal != flag) return;
 	invalidate();
 	horizontal = !flag;
