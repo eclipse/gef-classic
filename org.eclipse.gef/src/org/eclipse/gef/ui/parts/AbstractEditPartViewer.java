@@ -215,8 +215,9 @@ public EditPart getFocusEditPart(){
 	if (focusPart != null)
 		return focusPart;
 	if (getSelectedEditParts().isEmpty() && getContents() != null)
-		return getContents();	
-	return (EditPart)getSelectedEditParts().get(0);
+		return getContents();
+	List selection = getSelectedEditParts();
+	return (EditPart)selection.get(selection.size() - 1);
 }
 
 public KeyHandler getKeyHandler(){
