@@ -37,8 +37,6 @@ import org.eclipse.gef.examples.shapes.model.RectangularShape;
  * @author Elias Volanakis
  */
 final class ShapesEditorPaletteFactory {
-/** Default palette size. */
-private static final int DEFAULT_PALETTE_SIZE = 125;
 
 /** Preference ID used to persist the palette location. */
 private static final String PALETTE_DOCK_LOCATION = "ShapesEditorPaletteFactory.Location";
@@ -88,12 +86,6 @@ static PaletteRoot createPalette() {
  * Return a FlyoutPreferences instance used to save/load the preferences of a flyout palette.
  */
 static FlyoutPreferences createPalettePreferences() {
-	// set default flyout palette preference values, in case the preference store
-	// does not hold stored values for the given preferences
-    getPreferenceStore().setDefault(PALETTE_DOCK_LOCATION, -1);
-	getPreferenceStore().setDefault(PALETTE_STATE, -1);
-	getPreferenceStore().setDefault(PALETTE_SIZE, DEFAULT_PALETTE_SIZE);
-	
 	return new FlyoutPreferences() {
 		public int getDockLocation() {
 			return getPreferenceStore().getInt(PALETTE_DOCK_LOCATION);
