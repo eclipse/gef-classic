@@ -178,7 +178,7 @@ public void process() {
 				System.arraycopy(levels, 0, newLevels, 0, j);
 				levels = newLevels;
 			}
-			System.out.println(Arrays.toString(levels));
+
 			assignResults(levels);
 		}
 	}
