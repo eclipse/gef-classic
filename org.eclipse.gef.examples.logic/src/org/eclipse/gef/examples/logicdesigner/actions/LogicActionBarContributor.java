@@ -15,7 +15,6 @@ import org.eclipse.ui.IWorkbenchActionConstants;
 
 import org.eclipse.draw2d.PositionConstants;
 
-import org.eclipse.gef.SharedMessages;
 import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.ui.actions.*;
 
