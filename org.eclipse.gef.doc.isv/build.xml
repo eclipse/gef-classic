@@ -23,8 +23,12 @@
 
 	<target name="gather.bin.parts" depends="init" if="destination.temp.folder">
 		<mkdir dir="${destination.temp.folder}/${full.name}"/>
+		<zip zipfile="${destination.temp.folder}/${full.name}/doc.zip"
+			basedir="${basedir}"
+			includes="reference/**"
+		/>
 		<copy todir="${destination.temp.folder}/${full.name}">
-			<fileset dir="${basedir}" includes="*.properties,*.xml,*.zip,icons/" excludes="build.properties,build.xml,buildAll.xml,javadoc*.xml" />
+			<fileset dir="${basedir}" includes="*.properties,*.xml,*.zip,icons/" excludes="build.properties,build*.xml" />
 		</copy>
 
 	</target>

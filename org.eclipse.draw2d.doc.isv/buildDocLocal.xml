@@ -1,0 +1,40 @@
+<project name="Draw2d Doc Isv Build" default="all"  basedir="." >
+
+<property name="install" value="${basedir}/../../" />
+
+<target name="all">
+	<antcall target="generateJavadoc" />	
+</target>
+
+<target name="generateJavadoc">
+    <property name="optionsFile" value="draw2dOptions.txt" />
+
+	<replace file="${basedir}/${optionsFile}" token="@version@" value="2.0"/>
+	<replace file="${basedir}/${optionsFile}" token="@stamp@" value="${buildid}" />
+	<replace file="${basedir}/${optionsFile}" token="@rt@" value="${rt}" />
+
+		
+	<!--scrub isv plugin directories of any preexisting api doc content-->
+	<delete dir="${install}/plugins/org.eclipse.draw2d.doc.isv/reference/api"/>
+	<mkdir dir="${install}/plugins/org.eclipse.draw2d.doc.isv/reference/api"/>
+
+	<exec dir="." executable="c:/jdk1.4.1/bin/javadoc" output="doc.bin.log">
+		<arg line="@${basedir}/${optionsFile} -J-Xmx180m" />
+	</exec>
+</target>
+
+</project>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
