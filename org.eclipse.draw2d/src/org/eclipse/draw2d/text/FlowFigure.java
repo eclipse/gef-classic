@@ -31,7 +31,6 @@ public abstract class FlowFigure
 {
 
 private int[] bidiLevels;
-private boolean prependJoiner, appendJoiner;
 
 /**
  * Constructs a new FlowFigure. */
@@ -40,7 +39,8 @@ public FlowFigure() {
 }
 
 /**
- * If the child is a <code>FlowFigure</code>, its FlowContext is passed to it.
+ * Only <code>FlowFigure</code>s should be added to a FlowFigure.  The child figure's
+ * context is set to the layout manager of this figure.
  * @see org.eclipse.draw2d.IFigure#add(IFigure, Object, int) */
 public void add(IFigure child, Object constraint, int index) {
 	super.add(child, constraint, index);
@@ -50,29 +50,18 @@ public void add(IFigure child, Object constraint, int index) {
 }
 
 /**
- * Same as invoking {@link #prependJoiner(String)} and {@link #appendJoiner(String)} with
- * the given text.
- * @param text the text to be formatted for shaping
- * @return the given text with shaping characters appended as needed
- * @since 3.1
- */
-public String addJoiners(String text) {
-	text = prependJoiner(text);
-	return appendJoiner(text);
-}
-
-/**
- * Appends the Zero-Width Joiner character at the end of the given String if required.
+ * Calculates the width of text before the next line-break is encountered.
+ * <p>
+ * Default implementation treats each FlowFigure as a line-break.  It adds no width and
+ * returns <code>true</code>.  Sub-classes should override as needed.
  * 
- * @param text the String to be formatted for shaping
- * @return the given text with the shaping character appended if needed
- * @see #setAppendJoiner(boolean)
+ * @param width the width before the next line-break (if one's found; all the width,
+ * otherwise) will be added on to the first int in the given array
+ * @return boolean indicating whether or not a line-break was found
  * @since 3.1
  */
-public String appendJoiner(String text) {
-	if (appendJoiner)
-		text += "\u200d"; //$NON-NLS-1$
-	return text;
+public boolean addLeadingWordRequirements(int[] width) {
+	return true;
 }
 
 /**
@@ -114,8 +103,6 @@ public int[] getBidiValues() {
  */
 protected void invalidateBidi() {
 	bidiLevels = null;
-	prependJoiner = false;
-	appendJoiner = false;
 	for (Iterator iter = getChildren().iterator(); iter.hasNext();) {
 		FlowFigure flowFig = (FlowFigure) iter.next();
 		flowFig.invalidateBidi();
@@ -127,21 +114,6 @@ protected void invalidateBidi() {
  * to encompass its new flow boxed created during validate.
  */
 public abstract void postValidate();
-
-/**
- * Prepends the Zero-Width Joiner character to the beginning of the given text if 
- * required.
- * 
- * @param text the String that needs to be formatted for shaping
- * @return the given text with shaping character prepended if needed
- * @see #setPrependJoiner(boolean)
- * @since 3.1
- */
-public String prependJoiner(String text) {
-	if (prependJoiner)
-		text = "\u200d" + text; //$NON-NLS-1$
-	return text;
-}
 
 /**
  * Overridden to revalidateBidi when fragments are removed.
@@ -174,13 +146,13 @@ protected void revalidateBidi(IFigure origin) {
  * This method is invoked by the BidiProcessor if it determines that a shaping character 
  * needs to be appended to the text contributed by this Figure for it to appear properly 
  * on the screen.
+ * <p>
+ * This method does nothing by default.  Sub-classes should override as needed.
  * 
  * @param append the ZWJ will be appended if <code>true</code>
- * @see #appendJoiner(String)
  * @since 3.1
  */
 public void setAppendJoiner(boolean append) {
-	appendJoiner = append;
 }
 
 /**
@@ -225,13 +197,13 @@ public void setFlowContext(FlowContext flowContext) {
  * This method is invoked by the BidiProcessor if it determines that a shaping character
  * needs to be prepended to the text contributed by this Figure for it to appear properly
  * on the screen.
+ * <p>
+ * This method does nothing by default.  Sub-classes should override as needed.
  * 
  * @param prepend the ZWJ will be prepended if <code>true</code>
- * @see #prependJoiner(String) 
  * @since 3.1
  */
 public void setPrependJoiner(boolean prepend) {
-	prependJoiner = prepend;
 }
 
 }
