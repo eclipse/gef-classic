@@ -103,10 +103,10 @@ public void remove(IFigure figure) {
 
 /**
  * This method should be invoked whenever a change that can potentially affect the
- * Bidi evaluation is made (eg., adding or removing children, setting text, etc.).
+ * Bidi evaluation is made (eg., adding or removing children, changing text, etc.).
  * <p>
- * The default implementation delegates the revaliation task to the parent.  Only
- * {@link BlockFlow#revalidateBidi(IFigure) blocks} perform the actual revaliation. 
+ * The default implementation delegates the revalidation task to the parent.  Only
+ * {@link BlockFlow#revalidateBidi(IFigure) blocks} perform the actual revalidation. 
  * <p>
  * The given IFigure is the one that triggered the revalidation.  This can be used to
  * optimize bidi evaluation.
