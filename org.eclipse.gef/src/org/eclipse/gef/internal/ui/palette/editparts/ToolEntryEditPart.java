@@ -166,6 +166,14 @@ public IFigure createFigure() {
 }
 
 /**
+ * @see org.eclipse.gef.internal.ui.palette.editparts.PaletteEditPart#deactivate()
+ */
+public void deactivate() {
+	customLabel.dispose();
+	super.deactivate();
+}
+
+/**
  * @see org.eclipse.gef.EditPart#eraseTargetFeedback(Request)
  */
 public void eraseTargetFeedback(Request request) {

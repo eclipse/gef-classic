@@ -20,8 +20,6 @@ import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.draw2d.text.*;
-import org.eclipse.draw2d.text.FlowPage;
-import org.eclipse.draw2d.text.TextFlow;
 
 import org.eclipse.gef.ui.palette.PaletteMessages;
 import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
@@ -73,11 +71,16 @@ public DetailedLabelFigure() {
 }
 
 /**
- * @see java.lang.Object#finalize()
+ * Releases any OS resources used by the figure.
  */
-protected void finalize() throws Throwable {
+protected void dispose() {
 	if (boldFont != null) {
+		nameText.setFont(null);
 		FONTCACHE.checkIn(boldFont);
+		boldFont = null;
+	}
+	if (image != null) {
+		image.disposeShadedImage();
 	}
 }
 
@@ -321,22 +324,19 @@ private class FocusableFlowPage extends FlowPage {
 	}
 }
 
-private class SelectableImageFigure extends ImageFigure {
+static private class SelectableImageFigure extends ImageFigure {
 	private Image shadedImage;
-	public void useShadedImage() {
+	protected void useShadedImage() {
 		disposeShadedImage();
 		ImageData data = createShadedImage(super.getImage(), 
 				ColorConstants.menuBackgroundSelected);
 		shadedImage = new Image(null, data, data.getTransparencyMask());
 	}
-	private void disposeShadedImage() {
+	protected void disposeShadedImage() {
 		if (shadedImage != null) {
 			shadedImage.dispose();
 			shadedImage = null;
 		}
-	}
-	protected void finalize() throws Throwable {
-		disposeShadedImage();
 	}
 	public Image getImage() {
 		if (shadedImage != null)

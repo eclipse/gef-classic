@@ -73,6 +73,14 @@ public IFigure createFigure() {
 }
 
 /**
+ * @see org.eclipse.gef.internal.ui.palette.editparts.PaletteEditPart#deactivate()
+ */
+public void deactivate() {
+	((DetailedLabelFigure)getFigure()).dispose();
+	super.deactivate();
+}
+
+/**
  * @see org.eclipse.gef.internal.ui.palette.editparts.PaletteEditPart#getDragTracker(Request)
  */
 public DragTracker getDragTracker(Request request) {
