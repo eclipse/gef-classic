@@ -33,8 +33,19 @@ public class DrawerEntryPage
 	
 private Button openDrawerOption, pinDrawerOption;
 
-/** * @see org.eclipse.gef.ui.palette.customize.EntryPage#createControl(Composite, 
- * 																		PaletteEntry) */
+private boolean contains(Object[] array, Object obj) {
+	for (int i = array.length - 1; i >= 0; i--) {
+		if (obj == array[i]) {
+			return true;
+		}
+	}
+	return false;
+}
+
+/**
+ * @see org.eclipse.gef.ui.palette.customize.EntryPage#createControl(Composite, 
+ * 																		PaletteEntry)
+ */
 public void createControl(Composite parent, PaletteEntry entry) {
 	super.createControl(parent, entry);
 
@@ -51,15 +62,6 @@ public void createControl(Composite parent, PaletteEntry entry) {
 		newTablist[newTablist.length - 1] = pinDrawerOption;
 		getComposite().setTabList(newTablist);
 	}
-}
-
-private boolean contains(Object[] array, Object obj) {
-	for (int i = array.length - 1; i >= 0; i--) {
-		if (obj == array[i]) {
-			return true;
-		}
-	}
-	return false;
 }
 
 /**
@@ -118,9 +120,26 @@ private Composite getComposite() {
 /**
  * Convenience method that provides access to the PaletteDrawer.
  * 
- * @return the entry as a PaletteDrawer */
+ * @return the entry as a PaletteDrawer
+ */
 protected PaletteDrawer getDrawer() {
 	return (PaletteDrawer)getEntry();
+}
+
+/**
+ * Returns the checkbox button which controls whether the drawer is initially open.
+ * @return the checkbox button which controls the initially open setting.
+ */
+protected Button getOpenDrawerInitiallyButton() {
+	return openDrawerOption;
+}
+
+/**
+ * Returns the checkbox button which controls whether the drawer is initially pinned.
+ * @return the checkbox button which controls the initially pinned setting.
+ */
+protected Button getPinDrawerInitiallyButton() {
+	return pinDrawerOption;
 }
 
 /**
@@ -129,7 +148,8 @@ protected PaletteDrawer getDrawer() {
  * <p>
  * It sets the initial state of the drawer accordingly.
  * 
- * @param selection	<code>true</code> if that option is now selected */
+ * @param selection	<code>true</code> if that option is now selected
+ */
 protected void handleOpenSelected(boolean selection) {
 	int status = selection ? PaletteDrawer.INITIAL_STATE_OPEN
 	                       : PaletteDrawer.INITIAL_STATE_CLOSED;

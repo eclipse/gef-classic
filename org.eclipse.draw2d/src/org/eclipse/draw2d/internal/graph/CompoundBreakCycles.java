@@ -340,7 +340,7 @@ private void removeSource(Node n, NodeList allSources) {
  * @return <code>true</code> if the edge was restored
  */
 private boolean restoreEdge(Edge e) {
-	if (!e.flag || !e.source.flag || !e.target.flag)
+	if (!e.flag || e.source.flag || e.target.flag)
 		return false;
 	e.flag = false;
 	changeOutDegree(e.source, 1);
