@@ -124,6 +124,12 @@ private List stack = new ArrayList();
 private int stackPointer = 0;
 private FontKey fontKey = new FontKey();
 private boolean allowText = true;
+private static int[][] intArrayCache = new int[8][];
+
+static {
+	for (int i = 0; i < intArrayCache.length; i++)
+		intArrayCache[i] = new int[i + 1];
+}
 
 /**
  * Constructs a new ScaledGraphics based on the given Graphics object.
@@ -520,12 +526,34 @@ private Point zoomTextPoint(int x, int y) {
 }
 
 private int[] zoomPointList(int[] points) {
-	int[] newArray = new int[points.length];
-	for (int i = 0; (i + 1) < points.length; i+= 2) {
-		newArray[i] = (int)(Math.floor((points[i] * zoom + fractionalX)));
-		newArray[i + 1] = (int)(Math.floor((points[i + 1] * zoom + fractionalY)));
+	int[] scaled = null;
+
+	// Look in cache for a integer array with the same length as 'points'
+	for (int i = 0; i < intArrayCache.length; i++) {
+		if (intArrayCache[i].length == points.length) {
+			scaled = intArrayCache[i];
+			
+			// Move this integer array up one notch in the array
+			if (i != 0) {
+				int[] temp = intArrayCache[i - 1];
+				intArrayCache[i - 1] = scaled;
+				intArrayCache[i] = temp;	
+			}
+		}
 	}
-	return newArray;
+	
+	// If no match is found, take the one that is last and resize it.
+	if (scaled == null) {
+		intArrayCache[intArrayCache.length - 1] = new int[points.length];
+		scaled = intArrayCache[intArrayCache.length - 1];
+	}
+	
+	// Scale the points
+	for (int i = 0; (i + 1) < points.length; i+= 2) {
+		scaled[i] = (int)(Math.floor((points[i] * zoom + fractionalX)));
+		scaled[i + 1] = (int)(Math.floor((points[i + 1] * zoom + fractionalY)));
+	}
+	return scaled;
 }
 
 private Rectangle zoomFillRect(int x, int y, int w, int h) {
