@@ -45,7 +45,8 @@ protected void highlightGuide(Integer pos, boolean horizontal) {
 	}
 	int position = pos.intValue();
 	if (zoomManager != null) {
-		position *= (zoomManager.getZoom() / zoomManager.getUIMultiplier());
+		position = (int)Math.round(
+				position * (zoomManager.getZoom() / zoomManager.getUIMultiplier()));
 	}
 	Rectangle diagramBounds = getLayer(LayerConstants.FEEDBACK_LAYER).getBounds();
 	Rectangle figBounds = Rectangle.SINGLETON;
