@@ -16,6 +16,7 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.printing.Printer;
+import org.eclipse.swt.widgets.Display;
 
 /**
  * @author danlee
@@ -59,7 +60,9 @@ public void drawImage(Image srcImage,
 }
 
 int zoomFontHeight(int height) {
-	return height;
+	return (int)
+		(height * zoom * Display.getCurrent().getDPI().y / printer.getDPI().y
+			+ 0.0000001);
 }
 
 int zoomLineWidth(int w) {
