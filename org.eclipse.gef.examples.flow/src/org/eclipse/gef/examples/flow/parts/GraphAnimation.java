@@ -90,12 +90,13 @@ static boolean playbackState(Connection conn) {
 	if (list1.size() == list2.size()) {
 		Point pt1 = new Point(), pt2 = new Point();
 		PointList points = conn.getPoints();
-		for (int i = 0; i < points.size(); i++) {
+		points.removeAllPoints();
+		for (int i = 0; i < list1.size(); i++) {
 			list1.getPoint(pt2, i);
 			list2.getPoint(pt1, i);
 			pt1.x = (int)Math.round(pt1.x * progress + (1-progress) * pt2.x);
 			pt1.y = (int)Math.round(pt1.y * progress + (1-progress) * pt2.y);
-			points.setPoint(pt1, i);
+			points.addPoint(pt1);
 		}
 		conn.setPoints(points);
 	}
@@ -127,8 +128,71 @@ static boolean playbackState(IFigure container) {
 
 static void recordFinalState(Connection conn) {
 	//$TODO
-	PointList points = conn.getPoints().getCopy();
-	finalStates.put(conn, points);
+	PointList points1 = (PointList)initialStates.get(conn);
+	PointList points2 = conn.getPoints().getCopy();
+	
+	if (points1 != null && points1.size() != points2.size()) {
+		Point p = new Point(), q = new Point();
+
+		int size1 = points1.size() - 1;
+		int size2 = points2.size() - 1;
+
+		int i1 = size1;
+		int i2 = size2;
+
+		double current1 = 1.0;
+		double current2 = 1.0;
+
+		double prev1 = 1.0;
+		double prev2 = 1.0;
+
+		while (i1 > 0 || i2 > 0) {
+			if (Math.abs(current1 - current2) < 0.1) {
+				//Both points are the same, use them and go on;
+				prev1 = current1;
+				prev2 = current2;
+				i1--;
+				i2--;
+				current1 = (double)i1 / size1;
+				current2 = (double)i2 / size2;
+			} else if (current1 < current2) {
+				//2 needs to catch up
+				// current1 < current2 < prev1
+				points1.getPoint(p, i1);
+				points1.getPoint(q, i1 + 1);
+				
+				p.x = (int)(((q.x * (current2 - current1) + p.x * (prev1 - current2))
+					/ (prev1 - current1)));
+				p.y = (int)(((q.y * (current2 - current1) + p.y * (prev1 - current2))
+					/ (prev1 - current1)));
+				
+				points1.insertPoint(p, i1 + 1);
+
+				prev1 = prev2 = current2;
+				i2--;
+				current2 = (double)i2 / size2;
+				
+			} else {
+				//1 needs to catch up
+				// current2< current1 < prev2
+				
+				points2.getPoint(p, i2);
+				points2.getPoint(q, i2 + 1);
+				
+				p.x = (int)(((q.x * (current1 - current2) + p.x * (prev2 - current1))
+					/ (prev2 - current2)));
+				p.y = (int)(((q.y * (current1 - current2) + p.y * (prev2 - current1))
+					/ (prev2 - current2)));
+				
+				points2.insertPoint(p, i2 + 1);
+
+				prev2 = prev1 = current1;
+				i1--;
+				current1 = (double)i1 / size1;
+			}
+		}
+	}
+	finalStates.put(conn, points2);
 }
 
 static void recordFinalState(IFigure child) {
@@ -138,8 +202,11 @@ static void recordFinalState(IFigure child) {
 	}
 	Rectangle rect2 = child.getBounds().getCopy();
 	Rectangle rect1 = (Rectangle)initialStates.get(child);
-	if (rect1.isEmpty())
-			rect1.setLocation(rect2.getLocation());
+	if (rect1.isEmpty()) {
+			rect1.x = rect2.x;
+			rect1.y = rect2.y;
+			rect1.width = rect2.width;
+	}
 	finalStates.put(child, rect2);
 }
 
