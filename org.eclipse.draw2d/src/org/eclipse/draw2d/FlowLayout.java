@@ -59,11 +59,10 @@ class WorkingData {
 
 /**
  * Constructs a FlowLayout with horizontal orientation.
- * 
  * @see #FlowLayout(boolean)
  * @since 2.0
  */
-public FlowLayout(){}
+public FlowLayout() { }
 
 /**
  * Constructs a FlowLayout whose orientation is
@@ -71,130 +70,92 @@ public FlowLayout(){}
  * @param isHorizontal  Whether the layout should be horizontal.
  * @since 2.0
  */
-public FlowLayout(boolean isHorizontal){
+public FlowLayout(boolean isHorizontal) {
 	setHorizontal(isHorizontal);
 }
 
-/**
- * Minimum size is not well defined for FlowLayout.
- * For now, it just returns the the size required to display the first child, if it exists.
- * @param	parent	The IFigure whose minimum size has to be calculated.
- * @return	The minimum size for the layout.
- */
-public Dimension calculateMinimumSize(IFigure parent){
-	Dimension minSize = new Dimension(0, 0);
-	List children = parent.getChildren();
-	for (int i = 0; i < children.size(); i++) {
-		minSize.union(((IFigure)children.get(i)).getMinimumSize());		
-	}
-	minSize.width += parent.getInsets().getWidth();
-	minSize.height += parent.getInsets().getHeight();
-	return minSize;
-}
-
-/**
- * Calculates the preferred size of the figure constrainted to the 
- * given hints.  Based on the orientation of this flow layout, one of the
- * given hints will be ignored (wHint in vertical flow layout; hHint in 
- * horizontal flow layout).  If the interesting hint is less than or equal to
- * zero, the hints are ignored, and calculatePreferredSize(IFigure) is called.
- * 
- * @param   parent  The IFigure whose preferred size has to be calculated.  
- * @param   arg_wHint   The width-hint
- * @param   arg_hHint   The height-hint
- * @return  The preferred size given the constraints
- * @see     #getPreferredSize(IFigure, int, int)
- * @since   2.0
- */
-protected Dimension calculatePreferredSize(
-	IFigure parent,
-	int arg_wHint,
-	int arg_hHint)
-{
-	// Remove insets
-	int wHint = -1;
-	if (arg_wHint > -1)
-		wHint = Math.max(0, arg_wHint - parent.getInsets().getWidth());
-	int hHint = -1;
-	if (arg_hHint > -1)
-		hHint = Math.max(0, arg_hHint - parent.getInsets().getHeight());
+/** * @see org.eclipse.draw2d.AbstractLayout#calculatePreferredSize(IFigure, int, int) */
+protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHint) {
+	// Subtract out the insets from the hints
+	if (wHint > -1)
+		wHint = Math.max(0, wHint - container.getInsets().getWidth());
+	if (hHint > -1)
+		hHint = Math.max(0, hHint - container.getInsets().getHeight());
 	
-	// Figure out the new hint that we are interested in based on the orientation
-	// Ignore the other hint (by setting it to -1).  NOTE: The children of the
-	// parent figure will then be asked to ignore that hint as well.  
-	int max_row_width;
-	if (isHorizontal()){
-		max_row_width = wHint;
+	/*
+	 * Figure out the new hint that we are interested in based on the orientation. Ignore
+	 * the other hint (by setting it to -1).
+	 */
+	int maxWidth;
+	if (isHorizontal()) {
+		maxWidth = wHint;
 		hHint = -1;
 	} else {
-		max_row_width = hHint;
+		maxWidth = hHint;
 		wHint = -1;
 	}
-	if (max_row_width == -1)
-		max_row_width = Integer.MAX_VALUE;
-	
-	// If the hint that we are intersted in (wHint in case of horizontal layout;
-	// hHint in case of vertical) is zero or less, ignore all hints
-	if (max_row_width <= 0){
-		return calculatePreferredSize(parent);
-	}
+	if (maxWidth == -1)
+		maxWidth = Integer.MAX_VALUE;
 
 	// The preferred dimension that is to be calculated and returned
-	Dimension prefSize = new Dimension(0,0);
+	Dimension prefSize = new Dimension();
 
-	List children = parent.getChildren();
-	int row_width = 0;
-	int row_height = 0;
+	List children = container.getChildren();
+	int width = 0;
+	int height = 0;
 	IFigure child;
 	Dimension childSize;
 	
 	//Build the sizes for each row, and update prefSize accordingly
-	for(int i = 0; i < children.size(); i++){
+	for (int i = 0; i < children.size(); i++) {
 		child = (IFigure)children.get(i);
-		childSize = transposer.t(child.getPreferredSize(wHint,hHint));
-		if (i == 0){
-			row_width = childSize.width;
-			row_height = childSize.height;
-		} else if (row_width + childSize.width + minorSpacing > max_row_width) {
+		childSize = transposer.t(child.getPreferredSize(wHint, hHint));
+		if (i == 0) {
+			width = childSize.width;
+			height = childSize.height;
+		} else if (width + childSize.width + minorSpacing > maxWidth) {
 			// The current row is full, start a new row.
-			prefSize.height += row_height + majorSpacing;
-			prefSize.width = Math.max(prefSize.width, row_width);
-			row_width = childSize.width;
-			row_height = childSize.height;
+			prefSize.height += height + majorSpacing;
+			prefSize.width = Math.max(prefSize.width, width);
+			width = childSize.width;
+			height = childSize.height;
 		} else {
 			// The current row can fit another child.
-			row_width += childSize.width + minorSpacing;
-			row_height = Math.max(row_height, childSize.height);
+			width += childSize.width + minorSpacing;
+			height = Math.max(height, childSize.height);
 		}
 	}
 
 	// Flush out the last row's data
-	prefSize.height += row_height;
-	prefSize.width = Math.max(prefSize.width, row_width);
+	prefSize.height += height;
+	prefSize.width = Math.max(prefSize.width, width);
 
 	// Transpose the dimension back, and compensate for the border.
 	prefSize = transposer.t(prefSize);
-	prefSize.width += parent.getInsets().getWidth();
-	prefSize.height += parent.getInsets().getHeight();
-	prefSize.union(getBorderPreferredSize(parent));
+	prefSize.width += container.getInsets().getWidth();
+	prefSize.height += container.getInsets().getHeight();
+	prefSize.union(getBorderPreferredSize(container));
 
 	return prefSize;
 }
 
 /**
  * Returns the alignment used for an entire row/column.
- * Possible values are :
+ * <P>
+ * Possible values are:
  * <ul>
- *		<li>ALIGN_CENTER = 0;
- * 	<li>ALIGN_LEFTTOP = 1;
- * 	<li>ALIGN_RIGHTBOTTOM = 2;
+ *   <li>{@link #ALIGN_CENTER}
+ * 	 <li>{@link #ALIGN_CENTER}
+ * 	 <li>{@link #ALIGN_CENTER}
  * </ul>
- *
- * @return  Major alignment of the children.
- * @see  #setMajorAlignment(int)
+ * 
+ * @return the Major alignment of the children.
+ * @see #setMajorAlignment(int)
  * @since 2.0
  */
-public int getMajorAlignment() {return majorAlignment;}
+public int getMajorAlignment() {
+	return majorAlignment;
+}
 
 /** 
  * Returns the alignment used for children within a row/column.
@@ -209,13 +170,15 @@ public int getMajorAlignment() {return majorAlignment;}
  * @see  #setMinorAlignment(int)
  * @since 2.0
  */
-public int getMinorAlignment() {return minorAlignment;}
+public int getMinorAlignment() {
+	return minorAlignment;
+}
 
 /**
  * Initializes the state of row data, which is internal
  * to the layout process. 
  */
-private void initRow(){
+private void initRow() {
 	data.rowX = 0;
 	data.rowHeight = 0;
 	data.rowWidth = 0;
@@ -230,9 +193,9 @@ private void initRow(){
  *                 be arranged.
  * @since 2.0 
  */
-private void initVariables(IFigure parent){
+private void initVariables(IFigure parent) {
 	data.row = new IFigure[parent.getChildren().size()] ;
-	data.bounds=new Rectangle[data.row.length];
+	data.bounds = new Rectangle[data.row.length];
 	data.maxWidth = data.area.width;
 }
 
@@ -243,20 +206,32 @@ private void initVariables(IFigure parent){
  * @return  Orientation of the layout.
  * @since 2.0
  */
-public boolean isHorizontal() {return horizontal;}
+public boolean isHorizontal() {
+	return horizontal;
+}
 
-/*
- * Arranges the children for the Figure given in as input,
- * based on the orientation set, and the flow layout
- * algorithm.
+/**
+ * @see org.eclipse.draw2d.AbstractHintLayout#isSensitiveHorizontally()
  */
+protected boolean isSensitiveHorizontally(IFigure parent) {
+	return isHorizontal();
+}
+
+/**
+ * @see org.eclipse.draw2d.AbstractHintLayout#isSensitiveVertically()
+ */
+protected boolean isSensitiveVertically(IFigure parent) {
+	return !isHorizontal();
+}
+
+/** * @see org.eclipse.draw2d.LayoutManager#layout(IFigure) */
 public void layout(IFigure parent) {
 	data = new WorkingData();
 	Rectangle relativeArea = parent.getClientArea();
 	data.area = transposer.t(relativeArea);
 	data.spacing = new Dimension (minorSpacing, majorSpacing);
 
-	Iterator iterator= parent.getChildren().iterator();
+	Iterator iterator = parent.getChildren().iterator();
 	int dx;
 
 	//Calculate the hints to be passed to children
@@ -272,10 +247,10 @@ public void layout(IFigure parent) {
 	int i = 0; 
 	while (iterator.hasNext()) {
 		IFigure f = (IFigure)iterator.next();
-		Dimension pref = transposer.t(f.getPreferredSize(wHint,hHint));
-		Rectangle r = new Rectangle(0,0,pref.width,pref.height);
+		Dimension pref = transposer.t(f.getPreferredSize(wHint, hHint));
+		Rectangle r = new Rectangle(0, 0, pref.width, pref.height);
 
-		if (data.rowCount > 0){
+		if (data.rowCount > 0) {
 			if (data.rowWidth + pref.width > data.maxWidth)
 				layoutRow(parent);
 		}
@@ -309,9 +284,9 @@ protected void layoutRow(IFigure parent) {
 	int correctMinorAlignment = minorAlignment;
 
 	majorAdjustment = data.area.width - data.rowWidth;
-	if(!isHorizontal()){
-		correctMajorAlignment=minorAlignment;
-		correctMinorAlignment=majorAlignment;
+	if (!isHorizontal()) {
+		correctMajorAlignment = minorAlignment;
+		correctMinorAlignment = majorAlignment;
 	}
 	switch (correctMajorAlignment) {
 		case ALIGN_LEFTTOP: 
@@ -324,7 +299,7 @@ protected void layoutRow(IFigure parent) {
 			break;
 	}
 
-	for (int j = 0; j < data.rowCount; j++){
+	for (int j = 0; j < data.rowCount; j++) {
 		if (fill) {
 			data.bounds[ j ].height = data.rowHeight;	
 		} else {
@@ -368,10 +343,10 @@ protected void setBoundsOfChild(IFigure parent, IFigure child, Rectangle bounds)
  * If in Horizontal orientation, all Figures will have the same height.
  * If in vertical orientation, all Figures will have the same width.
  *
- * @param value  Fill state desired.
+ * @param value Fill state desired.
  * @since 2.0
  */
-public void setFill(boolean value) {
+public void setStretchMinorAxis(boolean value) {
 	fill = value;
 }
 
@@ -381,7 +356,7 @@ public void setFill(boolean value) {
  * @param flag  Orientation of the layout.
  * @since 2.0
  */
-public void setHorizontal(boolean flag){
+public void setHorizontal(boolean flag) {
 	if (horizontal == flag) return;
 	invalidate();
 	horizontal = flag;
@@ -390,19 +365,19 @@ public void setHorizontal(boolean flag){
 
 /**
  * Sets the alignment for an entire row/column within the parent figure.
- *
- * Possible values are :
+ * Possible values
+ * are :
  * <ul>
- *		<li>ALIGN_CENTER = 0;
+ *	<li>ALIGN_CENTER = 0;
  * 	<li>ALIGN_LEFTTOP = 1;
  * 	<li>ALIGN_RIGHTBOTTOM = 2;
  * </ul>
- *
+ * 
  * @param align  Major alignment required.
- * @see  #getMajorAlignment()
+ * @see #getMajorAlignment()
  * @since 2.0
  */
-public void setMajorAlignment(int align){
+public void setMajorAlignment(int align) {
 	majorAlignment = align;
 }
 
@@ -414,7 +389,7 @@ public void setMajorAlignment(int align){
  * @see  #setMinorSpacing(int)
  * @since 2.0
  */
-public void setMajorSpacing(int n){
+public void setMajorSpacing(int n) {
 	majorSpacing = n;
 }
 
@@ -431,7 +406,7 @@ public void setMajorSpacing(int n){
  * @see  #getMinorAlignment()
  * @since 2.0
  */
-public void setMinorAlignment(int align){
+public void setMinorAlignment(int align) {
 	minorAlignment = align;
 }
 
@@ -442,7 +417,7 @@ public void setMinorAlignment(int align){
  * @see  #setMajorSpacing(int)
  * @since 2.0
  */
-public void setMinorSpacing(int n){
+public void setMinorSpacing(int n) {
 	minorSpacing = n;
 }
 

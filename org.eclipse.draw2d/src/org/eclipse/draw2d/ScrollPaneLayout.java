@@ -23,21 +23,12 @@ protected static final int
 	AUTO  = ScrollPane.AUTOMATIC,
 	ALWAYS= ScrollPane.ALWAYS;
 
-/**
- * Calculates and returns the minimum size of the container 
- * given as input. In the case of the ScrollPaneLayout
- * this is the minimum size of the passed Figure's 
- * {@link Viewport Viewport} plus its {@link Insets Insets}.
- * 
- * @param figure  Figure whose preferred size is required.
- * @return  The minimum size of the Figure input.
- * @since 2.0
- */
-public Dimension calculateMinimumSize(IFigure figure){
+/** * @see AbstractHintLayout#calculateMinimumSize(IFigure, int, int) */
+public Dimension calculateMinimumSize(IFigure figure, int w, int h) {
 	ScrollPane scrollpane = (ScrollPane)figure;
 	Insets insets = scrollpane.getInsets();
-	Dimension d = scrollpane.getViewport().getMinimumSize();
-	return d.getExpanded(insets.getWidth(),insets.getHeight());
+	Dimension d = scrollpane.getViewport().getMinimumSize(w, h);
+	return d.getExpanded(insets.getWidth(), insets.getHeight());
 }
 
 /**
@@ -79,6 +70,7 @@ protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHi
 		.getExpanded(reservedWidth, reservedHeight);
 }
 
+/** * @see org.eclipse.draw2d.LayoutManager#layout(IFigure) */
 public void layout(IFigure parent) {
 	ScrollPane scrollpane = (ScrollPane)parent;
 	Viewport viewport = scrollpane.getViewport();
@@ -93,21 +85,19 @@ public void layout(IFigure parent) {
 					vBar.getPreferredSize().width, 
 					hBar.getPreferredSize().height);
 	
-	if (result.showV){
-		Rectangle bounds = new Rectangle(result.viewportArea.right(), 
-		                                  result.viewportArea.y,
-		                                  result.insets.right, 
-		                                  result.viewportArea.height);
-		vBar.setBounds(bounds);
-		//vBar.setMaximum(preferred.height);
+	if (result.showV) {
+		vBar.setBounds(new Rectangle(
+			result.viewportArea.right(),
+			result.viewportArea.y,
+			result.insets.right,
+			result.viewportArea.height));
 	}
-	if (result.showH){
-		Rectangle bounds = new Rectangle(result.viewportArea.x, 
-		                                  result.viewportArea.bottom(),
-		                                  result.viewportArea.width, 
-		                                  result.insets.bottom);
-		hBar.setBounds(bounds);
-		//hBar.setMaximum(preferred.width);
+	if (result.showH) {
+		hBar.setBounds(new Rectangle(
+			result.viewportArea.x,
+			result.viewportArea.bottom(),
+			result.viewportArea.width,
+			result.insets.bottom));
 	}
 	vBar.setVisible(result.showV);
 	hBar.setVisible(result.showH);

@@ -19,24 +19,29 @@ public class StackLayout
 	extends AbstractHintLayout
 {
 
-public StackLayout(){}
-
 /*
  * Returns the minimum size required by the input container.
  * This is the size of the largest child of the container, as all
  * other children fit into this size.
  */
-protected Dimension calculateMinimumSize(IFigure figure){
+protected Dimension calculateMinimumSize(IFigure figure, int wHint, int hHint) {
+	if (wHint > -1)
+		wHint = Math.max(0, wHint - figure.getInsets().getWidth());
+	if (hHint > -1)
+		hHint = Math.max(0, hHint - figure.getInsets().getHeight());
 	Dimension d = new Dimension();
 	List children = figure.getChildren();
 	IFigure child;
-	for (int i=0; i < children.size(); i++){
+	for (int i = 0; i < children.size(); i++) {
 		child = (IFigure)children.get(i);
-		d.union(child.getMinimumSize());
+		d.union(child.getMinimumSize(wHint, hHint));
 	}
+	
 	d.expand(figure.getInsets().getWidth(),
 	         figure.getInsets().getHeight());
+	d.union(getBorderPreferredSize(figure));
 	return d;
+
 }
 
 /**
@@ -51,7 +56,7 @@ protected Dimension calculateMinimumSize(IFigure figure){
  * @see	#getPreferredSize(IFigure, int, int)
  * @since 2.0
  */
-protected Dimension calculatePreferredSize(IFigure figure, int wHint, int hHint){
+protected Dimension calculatePreferredSize(IFigure figure, int wHint, int hHint) {
 	if (wHint > -1)
 		wHint = Math.max(0, wHint - figure.getInsets().getWidth());
 	if (hHint > -1)
@@ -59,7 +64,7 @@ protected Dimension calculatePreferredSize(IFigure figure, int wHint, int hHint)
 	Dimension d = new Dimension();
 	List children = figure.getChildren();
 	IFigure child;
-	for (int i=0; i < children.size(); i++){
+	for (int i = 0; i < children.size(); i++) {
 		child = (IFigure)children.get(i);
 		d.union(child.getPreferredSize(wHint, hHint));
 	}
@@ -70,20 +75,12 @@ protected Dimension calculatePreferredSize(IFigure figure, int wHint, int hHint)
 	return d;
 }
 
-public Dimension getPreferredSize(IFigure figure){
-	return calculatePreferredSize(figure);
-}
-
-/*
- * Lays out the children on top of each other with
- * their sizes equal to that of the available
- * paintable area of the input container figure.
- */
-public void layout(IFigure figure){
+/** * @see org.eclipse.draw2d.LayoutManager#layout(IFigure) */
+public void layout(IFigure figure) {
 	Rectangle r = figure.getClientArea();
 	List children = figure.getChildren();
 	IFigure child;
-	for (int i=0; i < children.size(); i++){
+	for (int i = 0; i < children.size(); i++) {
 		child = (IFigure)children.get(i);
 		child.setBounds(r);
 	}

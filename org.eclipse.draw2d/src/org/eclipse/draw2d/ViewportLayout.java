@@ -16,12 +16,12 @@ public class ViewportLayout
 	extends AbstractHintLayout
 {
 
-/* 
- * Returns the minimum size required by the input viewport
- * figure. Since viewport is flexible, the minimum size
- * required would be the just the size of the borders.
+/**
+ * Returns the minimum size required by the input viewport figure. Since viewport is
+ * flexible, the minimum size required would be the just the size of the borders.
+ * @see AbstractHintLayout#calculateMinimumSize(IFigure)
  */
-public Dimension calculateMinimumSize(IFigure figure){
+public Dimension calculateMinimumSize(IFigure figure, int wHint, int hHint) {
 	Viewport viewport = (Viewport)figure;
 	Dimension min = new Dimension();
 	Insets insets = viewport.getInsets();
@@ -29,17 +29,16 @@ public Dimension calculateMinimumSize(IFigure figure){
 }
 
 /**
- * Calculates and returns the preferred size of the figure based on the 
- * given hints.  The given wHint is ignored unless the viewport (parent) is
- * tracking width.  The same is true for the height hint.
- * 
- * @param	parent	The Viewport whose preferred size is to be calculated
- * @param	wHint	The width hint
- * @param	hHint	The height hint
- * @return	Preferred size of the given Viewport
+ * Calculates and returns the preferred size of the figure based on the given hints. The
+ * given wHint is ignored unless the viewport (parent) is tracking width. The same is true
+ * for the height hint.
+ * @param parent the Viewport whose preferred size is to be calculated
+ * @param wHint the width hint
+ * @param hHint the height hint
+ * @return the Preferred size of the given viewport
  * @since	2.0
  */
-protected Dimension calculatePreferredSize(IFigure parent, int wHint, int hHint){
+protected Dimension calculatePreferredSize(IFigure parent, int wHint, int hHint) {
 	Viewport viewport = (Viewport)parent;
 	Insets insets = viewport.getInsets();
 	IFigure contents = viewport.getContents();
@@ -51,7 +50,7 @@ protected Dimension calculatePreferredSize(IFigure parent, int wHint, int hHint)
 	if (viewport.getContentsTracksHeight() && hHint > -1)
 		heightHint = Math.max(0, hHint - insets.getHeight());
 	
-	if (contents == null){
+	if (contents == null) {
 		return new Dimension(insets.getWidth(), insets.getHeight());
 	} else {
 		return contents
@@ -62,7 +61,22 @@ protected Dimension calculatePreferredSize(IFigure parent, int wHint, int hHint)
 	//Layout currently does not union border's preferred size.
 }	
 
-public void layout(IFigure figure){
+/**
+ * @see org.eclipse.draw2d.AbstractHintLayout#isSensitiveHorizontally(IFigure)
+ */
+protected boolean isSensitiveHorizontally(IFigure parent) {
+	return ((Viewport)parent).getContentsTracksWidth();
+}
+
+/**
+ * @see org.eclipse.draw2d.AbstractHintLayout#isSensitiveHorizontally(IFigure)
+ */
+protected boolean isSensitiveVertically(IFigure parent) {
+	return ((Viewport)parent).getContentsTracksHeight();
+}
+
+/** * @see org.eclipse.draw2d.LayoutManager#layout(IFigure) */
+public void layout(IFigure figure) {
 	Viewport viewport = (Viewport)figure;
 	IFigure contents = viewport.getContents();
 	
@@ -77,15 +91,15 @@ public void layout(IFigure figure){
 	int hHint = viewport.getContentsTracksHeight() ? hints.height : -1;
 	
 	Dimension avail = viewport.getClientArea().getSize();
-	Dimension size = avail.getUnioned(contents.getPreferredSize(wHint,hHint));
-	Dimension min = contents.getMinimumSize();
+	Dimension size = avail.getUnioned(contents.getPreferredSize(wHint, hHint));
+	Dimension min = contents.getMinimumSize(wHint, hHint);
 	
 	if (viewport.getContentsTracksHeight())
 		size.height = Math.max(min.height, avail.height);
 	if (viewport.getContentsTracksWidth())
 		size.width = Math.max(min.width, avail.width);
 
-	contents.setBounds(new Rectangle(p,size));
+	contents.setBounds(new Rectangle(p, size));
 }
 
 }

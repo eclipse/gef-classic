@@ -91,24 +91,33 @@ public ToolbarLayout(boolean isHorizontal){
  * @return  The minimum size of the figure input.
  * @since 2.0
  */
-public Dimension calculateMinimumSize(IFigure parent){
-	Insets insets = transposer.t(parent.getInsets());
-	int height = 0, width = 0;
-	Dimension childSize;
-	
-	List children = parent.getChildren();
-	IFigure child;
-	for (int i=0; i < children.size(); i++){
-		child = (IFigure)children.get(i);
-		childSize = transposer.t(child.getMinimumSize());
-		height += childSize.height;
-		width = Math.max (width,childSize.width);
+public Dimension calculateMinimumSize(IFigure container, int wHint, int hHint) {
+	Insets insets = container.getInsets();
+	if (isHorizontal()) {
+		wHint = -1;
+		if (hHint >= 0)
+			hHint = Math.max(0, hHint - insets.getHeight());
+	} else {
+		hHint = -1;
+		if (wHint >= 0)
+			wHint = Math.max(0, wHint - insets.getWidth());
 	}
-
-	Dimension d = new Dimension(width, height);
-	d.height += insets.getHeight() + (children.size()-1)*spacing;
-	d.width  += insets.getWidth();
-	return transposer.t(d);
+	
+	List children = container.getChildren();
+	Dimension childSize;
+	IFigure child;
+	int height = 0, width = 0;
+	for (int i = 0; i < children.size(); i++) {
+		child = (IFigure)children.get(i);
+		childSize = transposer.t(child.getMinimumSize(wHint, hHint));
+		height += childSize.height;
+		width = Math.max(width, childSize.width);
+	}
+	height += Math.max(0, children.size() - 1) * spacing;
+	return transposer.t(
+		new Dimension(width, height))
+			.expand(insets.getWidth(), insets.getHeight())
+			.union(getBorderPreferredSize(container));
 }
 
 /** 
@@ -127,45 +136,65 @@ public Dimension calculateMinimumSize(IFigure parent){
  * @see	#getPreferredSize(IFigure, int, int)
  * @since	2.0
  */
-protected Dimension calculatePreferredSize(IFigure container, 
-                                             int wHint, int hHint){
+protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHint) {
 	Insets insets = container.getInsets();
-	int max_row_width = isHorizontal() ? hHint - insets.getHeight() :
-	                                     wHint - insets.getWidth();
+	if (isHorizontal()) {
+		wHint = -1;
+		if (hHint >= 0)
+			hHint = Math.max(0, hHint - insets.getHeight());
+	} else {
+		hHint = -1;
+		if (wHint >= 0)
+			wHint = Math.max(0, wHint - insets.getWidth());
+	}
 	
 	List children = container.getChildren();
-	Dimension childSize, preferred;
+	Dimension childSize;
 	IFigure child;
 	int height = 0, width = 0;
-	for (int i = 0; i < children.size(); i++){
+	for (int i = 0; i < children.size(); i++) {
 		child = (IFigure)children.get(i);
-		childSize = transposer.t(child.getPreferredSize(max_row_width, -1));
+		childSize = transposer.t(child.getPreferredSize(wHint, hHint));
 		height += childSize.height;
 		width = Math.max(width, childSize.width);
 	}
-	height += (children.size()-1) * spacing;
-	preferred = transposer.t(new Dimension(width, height)).
-					expand(insets.getWidth(), insets.getHeight()).
-					union(getBorderPreferredSize(container));
-	
-	return preferred;
+	height += Math.max(0, children.size() - 1) * spacing;
+	return transposer.t(
+		new Dimension(width, height))
+			.expand(insets.getWidth(), insets.getHeight())
+			.union(getBorderPreferredSize(container));
 }
 
 /**
- * Returns whether the orientation of the layout is
- * horizontal or not.
- *
- * @return  Orientation of the layout.
+ * Returns whether the orientation of the layout is horizontal.
+ * @return <code>true</code> if the orientation is horizontal
  * @since 2.0
  */
-public boolean isHorizontal() {return horizontal;}
-	
+public boolean isHorizontal() {
+	return horizontal;
+}
+
+/**
+ * @see org.eclipse.draw2d.AbstractHintLayout#isSensitiveHorizontally()
+ */
+protected boolean isSensitiveHorizontally(IFigure parent) {
+	return !isHorizontal();
+}
+
+/**
+ * @see org.eclipse.draw2d.AbstractHintLayout#isSensitiveVertically()
+ */
+protected boolean isSensitiveVertically(IFigure parent) {
+	return isHorizontal();
+}
+
+/** * @see org.eclipse.draw2d.LayoutManager#layout(IFigure) */
 public void layout(IFigure parent) {
 	List children = parent.getChildren();
 	int numChildren = children.size();
 	Rectangle clientArea = transposer.t(parent.getClientArea());
-	int x=clientArea.x;
-	int y=clientArea.y;
+	int x = clientArea.x;
+	int y = clientArea.y;
 	int availableHeight = clientArea.height;
 
 	Dimension prefSizes [] = new Dimension[numChildren];

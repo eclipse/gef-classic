@@ -40,7 +40,7 @@ public static Result solve(
 		    	(hVis == NEVER ? 0 : result.insets.bottom));
 	int wHint = guaranteed.width;
 	int hHint = guaranteed.height;
-	//@TODO only pass hints if tracksDimension is true
+
 	Dimension preferred  = viewport.getPreferredSize(wHint, hHint).getCopy();
 	
 	//This was calling viewport.getMinimumSize(), but viewports minimum size was really small,
@@ -49,7 +49,7 @@ public static Result solve(
 		viewport.getInsets().getWidth(),
 		viewport.getInsets().getHeight());
 	if (viewport.getContents() != null)
-		viewportMinSize.expand(viewport.getContents().getMinimumSize());
+		viewportMinSize.expand(viewport.getContents().getMinimumSize(wHint, hHint));
 
 	//Adjust preferred size if tracking flags set.  Basically, tracking == "compress view until
 	// its minimum size is reached".

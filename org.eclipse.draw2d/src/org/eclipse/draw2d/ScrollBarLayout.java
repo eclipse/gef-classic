@@ -66,9 +66,9 @@ public void setConstraint(IFigure figure, Object constraint) {
  * 
  * @since 2.0
  */
-protected Dimension calculatePreferredSize(IFigure parent) {
+protected Dimension calculatePreferredSize(IFigure parent, int w, int h) {
 	Insets insets = transposer.t(parent.getInsets());
-	Dimension d = new Dimension(16,16 * 4);
+	Dimension d = new Dimension(16, 16 * 4);
 	d.expand(insets.getWidth(), insets.getHeight());
 	return transposer.t(d);
 }
