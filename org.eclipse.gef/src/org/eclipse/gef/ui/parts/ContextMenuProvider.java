@@ -6,10 +6,12 @@ package org.eclipse.gef.ui.parts;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.gef.EditPartViewer;
 import org.eclipse.jface.action.*;
 import org.eclipse.swt.widgets.Menu;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchActionConstants;
+
+import org.eclipse.gef.EditPartViewer;
 
 public abstract class ContextMenuProvider 
 	implements IMenuListener 
@@ -19,19 +21,12 @@ public static final String GROUP_DOMAIN_CONTRIBUTIONS = "$domain menu group"; //
 public static final String GROUP_EDITOR_CONTRIBUTIONS = "$editor menu group"; //$NON-NLS-1$
 public static final String GROUP_VIEWER_CONTRIBUTIONS = "$viewer menu group"; //$NON-NLS-1$
 
-private GraphicalEditor editor;
+private IEditorPart editor;
 private EditPartViewer viewer;
 
-public ContextMenuProvider() {}
-
-public ContextMenuProvider(EditPartViewer viewer) {
+public ContextMenuProvider(IEditorPart editor, EditPartViewer viewer) {
 	setViewer(viewer);
-	createContextMenu();
-}
-
-public ContextMenuProvider(GraphicalEditor editor, EditPartViewer viewer) {
-	setGraphicalEditor(editor);
-	setViewer(viewer);
+	setEditor(editor);
 	createContextMenu();
 }
 
@@ -48,7 +43,7 @@ public Menu createContextMenu() {
 	return menu;
 }
 
-protected GraphicalEditor getGraphicalEditor() {
+protected IEditorPart getEditor() {
 	return editor;
 }
 
@@ -69,7 +64,7 @@ public void menuAboutToShow(IMenuManager menu) {
 
 protected abstract void registerContextMenu(MenuManager manager);
 
-protected void setGraphicalEditor(GraphicalEditor editor) {
+protected void setEditor(IEditorPart editor) {
 	this.editor = editor;
 }
 
