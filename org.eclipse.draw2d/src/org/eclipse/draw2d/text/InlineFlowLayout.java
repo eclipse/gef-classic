@@ -44,7 +44,9 @@ public void addLine(CompositeBox box) {
  */
 public void addToCurrentLine(FlowBox block) {
 	super.addToCurrentLine(block);
-	((InlineFlow)getFlowFigure()).getFragments().add(currentLine);
+	List frags = ((InlineFlow)getFlowFigure()).getFragments();
+	if (!frags.contains(currentLine))
+		frags.add(currentLine);
 }
 
 /**
