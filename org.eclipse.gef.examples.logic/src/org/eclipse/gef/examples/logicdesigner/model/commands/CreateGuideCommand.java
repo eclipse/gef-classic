@@ -34,11 +34,14 @@ public CreateGuideCommand(LogicRuler parent, int position) {
 public boolean canUndo() {
 	return true;
 }
+
 public void execute() {
-	guide = new LogicGuide(!parent.isHorizontal());
+	if (guide == null)
+		guide = new LogicGuide(!parent.isHorizontal());
 	guide.setPosition(position);
 	parent.addGuide(guide);
 }
+
 public void undo() {
 	parent.removeGuide(guide);
 }
