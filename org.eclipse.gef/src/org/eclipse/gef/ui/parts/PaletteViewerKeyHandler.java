@@ -21,9 +21,6 @@ import org.eclipse.draw2d.geometry.Point;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.internal.ui.palette.editparts.*;
-import org.eclipse.gef.internal.ui.palette.editparts.DrawerEditPart;
-import org.eclipse.gef.internal.ui.palette.editparts.TemplateEditPart;
-import org.eclipse.gef.internal.ui.palette.editparts.ToolEntryEditPart;
 import org.eclipse.gef.ui.palette.PaletteViewer;
 
 /**
@@ -67,11 +64,12 @@ private void buildNavigationList(EditPart palettePart, EditPart exclusion, Array
 		if (isCollapsedDrawer(palettePart)) {
 			navList.add(palettePart);
 			return;
-		} 
+		}
 		else if (palettePart instanceof ToolEntryEditPart 
 				|| palettePart instanceof DrawerEditPart
-				|| palettePart instanceof TemplateEditPart)
+				|| palettePart instanceof TemplateEditPart) {
 			navList.add(palettePart);
+		}
 	}
 
 	for (int k=0; k<palettePart.getChildren().size(); k++) {
@@ -137,12 +135,12 @@ public boolean keyPressed(KeyEvent event) {
 		collapseDrawer();
 		return true;
 	}
-	if (super.keyPressed(event))
-		return true;
 	if (acceptIntoExpandedDrawer(event)) {
 		if (navigateIntoExpandedDrawer(event))
 			return true;
 	}
+	if (super.keyPressed(event))
+		return true;
 	if (acceptSetFocusOnDrawer(event)) {
 		if (navigateToDrawer(event))
 			return true;
