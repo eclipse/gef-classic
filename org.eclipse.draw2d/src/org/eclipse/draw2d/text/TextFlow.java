@@ -563,8 +563,8 @@ public void setSelection(int start, int end) {
 }
 
 /**
- * Sets the string being displayed. Causes a <code>revalidate()</code> to occur.
- * @param s The new String.  It cannot be <code>null</code>.
+ * Sets the text being displayed. The string may not be <code>null</code>.
+ * @param s The new text
  */
 public void setText(String s) {
 	if (s != null && !s.equals(text)) {
