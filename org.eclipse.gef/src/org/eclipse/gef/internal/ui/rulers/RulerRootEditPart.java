@@ -13,6 +13,7 @@ package org.eclipse.gef.internal.ui.rulers;
 import java.beans.PropertyChangeEvent;
 
 import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.geometry.*;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 
@@ -28,6 +29,9 @@ public class RulerRootEditPart
 	implements RootEditPart
 {
 	
+private static final Insets VERTICAL_THRESHOLD = new Insets(18, 0, 18, 0);
+private static final Insets HORIZONTAL_THRESHOLD = new Insets(0, 18, 0, 18);
+
 private boolean horizontal;	
 private EditPart contents;
 private EditPartViewer viewer;
@@ -60,7 +64,14 @@ protected IFigure createFigure() {
  */
 public Object getAdapter(Class adapter) {
 	if (adapter == AutoexposeHelper.class)
-		return new ViewportAutoexposeHelper(this);
+		return new ViewportAutoexposeHelper(this) {
+			protected Insets getThreshold() {
+				if (((RulerEditPart)getContents()).isHorizontal())
+					return HORIZONTAL_THRESHOLD;
+				else
+					return VERTICAL_THRESHOLD;
+			}
+		};
 	return super.getAdapter(adapter);
 }
 
@@ -80,6 +91,10 @@ public RootEditPart getRoot() {
 
 public EditPartViewer getViewer() {
 	return viewer;
+}
+
+protected Viewport getViewport() {
+	return (Viewport)getFigure();
 }
 
 protected void removeChildVisual(EditPart childEditPart) {
@@ -103,12 +118,14 @@ public void setContents(EditPart editpart) {
 /* (non-Javadoc)
  * @see org.eclipse.gef.RootEditPart#setViewer(org.eclipse.gef.EditPartViewer)
  */
-public void setViewer(EditPartViewer editPartViewer) {
-	viewer = editPartViewer;
-}
-
-protected Viewport getViewport() {
-	return (Viewport)getFigure();
+public void setViewer(EditPartViewer newViewer) {
+	if (viewer == newViewer)
+		return;
+	if (viewer != null)
+		unregister();
+	viewer = newViewer;
+	if (viewer != null)
+		register();
 }
 
 public class RulerViewport extends Viewport {
@@ -166,7 +183,7 @@ public class RulerViewport extends Viewport {
 	}
 	protected void paintBorder(Graphics graphics) {
 		super.paintBorder(graphics);
-		if (((RulerFigure)this.getContents()).getDrawFocus()) {
+		if (this.getContents() != null && ((RulerFigure)this.getContents()).getDrawFocus()) {
 			Rectangle focusBounds = getBounds().getCopy();
 			if (((RulerFigure)this.getContents()).isHorizontal()) {
 				focusBounds.resize(-2, -4);
