@@ -656,7 +656,7 @@ public void installEditPolicy(Object key, EditPolicy editPolicy) {
 /**
  * @return <code>true</code> if this EditPart is active.
  */
-protected boolean isActive() {
+public boolean isActive() {
 	return getFlag(FLAG_ACTIVE);
 }
 
