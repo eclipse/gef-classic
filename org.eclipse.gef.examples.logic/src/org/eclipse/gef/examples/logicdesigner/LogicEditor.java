@@ -313,9 +313,9 @@ protected void configureGraphicalViewer() {
 	ScalableFreeformRootEditPart root = new ScalableFreeformRootEditPart();
 
 	List zoomLevels = new ArrayList(3);
-	zoomLevels.add(ZoomManager.FIT_WHOLE_DOCUMENT);
-	zoomLevels.add(ZoomManager.FIT_DOCUMENT_WIDTH);
-	zoomLevels.add(ZoomManager.FIT_DOCUMENT_HEIGHT);
+	zoomLevels.add(ZoomManager.FIT_ALL);
+	zoomLevels.add(ZoomManager.FIT_WIDTH);
+	zoomLevels.add(ZoomManager.FIT_HEIGHT);
 	root.getZoomManager().setZoomLevelContributions(zoomLevels);
 
 	IAction zoomIn = new ZoomInAction(root.getZoomManager());
