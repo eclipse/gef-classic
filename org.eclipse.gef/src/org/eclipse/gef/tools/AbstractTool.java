@@ -741,6 +741,12 @@ public void mouseMove(MouseEvent me, EditPartViewer viewer) {
 		if (b3) handleButtonUp(3);
 		if (getDomain().getActiveTool() != this)
 			return;
+		/* 
+		 * processing one of the buttonUps may have caused the tool to reactivate itself,
+		 * which causes the viewer to get nulled-out.  If we are going to call another
+		 * handleXxx method below, we must set the viewer again to be paranoid.
+		 */
+		setViewer(viewer);
 	}
 	else
 		getCurrentInput().setInput(me);
