@@ -19,6 +19,8 @@ import org.eclipse.draw2d.examples.AbstractExample;
  */
 public class TreeExample extends AbstractExample {
 
+boolean animate;
+
 public static void main(String[] args) {
 	new TreeExample().run();
 }
@@ -30,7 +32,7 @@ PageNode selected;
 IFigure createPageNode(String title) {
 	final PageNode node = new PageNode(title);
 	node.addMouseListener(new MouseListener.Stub() {
-		public void mouseReleased(MouseEvent me) {
+		public void mousePressed(MouseEvent me) {
 			setSelected(node);
 		}
 		public void mouseDoubleClicked(MouseEvent me) {
@@ -76,9 +78,15 @@ void doExpandCollapse() {
 	if (selected == null)
 		return;
 	TreeBranch parent = (TreeBranch)selected.getParent();
-	if (parent.isExpanded())
-		parent.collapse();
-	else parent.expand();
+	if (parent.getContentsPane().getChildren().isEmpty())
+		return;
+	if (animate) {
+		if (parent.isExpanded())
+			parent.collapse();
+		else
+			parent.expand();
+	} else
+		parent.setExpanded(!parent.isExpanded());
 }
 
 void doStyleHanging() {
@@ -104,16 +112,21 @@ protected IFigure getContents() {
 
 	TreeBranch branch, subbranch;
 	root.getContentsPane().add(branch = new TreeBranch(createPageNode("Normal Style")));
+	root.getContentsPane().add(new TreeBranch(createPageNode("Child")));
 	branch.getContentsPane().add(new TreeBranch(createPageNode("Child 1")));
 	branch.getContentsPane().add(new TreeBranch(createPageNode("Child 2")));
 	branch.getContentsPane().add(subbranch = new TreeBranch(createPageNode("Child 3")));
 
 	subbranch.getContentsPane().add(new TreeBranch(createPageNode("child")));
 	subbranch.getContentsPane().add(new TreeBranch(createPageNode("child")));
+	subbranch.getContentsPane().add(new TreeBranch(createPageNode("child")));
 
-	root.getContentsPane().add(branch = new TreeBranch(createPageNode("Hanging Style"), TreeBranch.STYLE_HANGING));
+	root.getContentsPane().add(branch = new TreeBranch(createPageNode("Normal Style"), TreeBranch.STYLE_NORMAL));
+	root.getContentsPane().add(new TreeBranch(createPageNode("Child")));
 	branch.getContentsPane().add(new TreeBranch(createPageNode("Child 1"), TreeBranch.STYLE_HANGING));
-	branch.getContentsPane().add(new TreeBranch(createPageNode("Child 2"), TreeBranch.STYLE_HANGING));
+	branch.getContentsPane().add(subbranch = new TreeBranch(createPageNode("Child 2"), TreeBranch.STYLE_HANGING));
+	subbranch.getContentsPane().add(new TreeBranch(createPageNode("child")));
+	subbranch.getContentsPane().add(new TreeBranch(createPageNode("child")));
 
 	root.getContentsPane().add(branch = new TreeBranch(createPageNode("Normal Style")));
 	branch.getContentsPane().add(new TreeBranch(createPageNode("Child 1")));
@@ -145,6 +158,28 @@ protected void hookShell() {
 			root.setHorizontal(orientation.getSelection());
 		}
 	});
+
+	final Button useAnimation = new Button(rootGroup, SWT.CHECK);
+	useAnimation.setText("Use Animation");
+	useAnimation.setSelection(false);
+	useAnimation.addSelectionListener(new SelectionAdapter() {
+		public void widgetSelected(SelectionEvent e) {
+			animate = useAnimation.getSelection();
+		}
+	});
+
+	final Button compress = new Button(rootGroup, SWT.CHECK);
+	compress.setText("Compress Tree");
+	compress.setSelection(false);
+	compress.addSelectionListener(new SelectionAdapter() {
+		public void widgetSelected(SelectionEvent e) {
+			root.setCompression(compress.getSelection());
+			root.invalidateTree();
+			root.revalidate();
+		}
+	});
+
+
 
 	final Label majorLabel = new Label(rootGroup, 0);
 	majorLabel.setText("Major Spacing: 10");

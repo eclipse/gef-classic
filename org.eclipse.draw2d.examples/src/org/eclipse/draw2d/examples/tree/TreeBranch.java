@@ -158,7 +158,7 @@ public int[] getContourRight() {
 }
 
 
-final int getDepth() {
+public int getDepth() {
 	return getBranchLayout().getDepth();
 }
 
@@ -239,7 +239,7 @@ public void setNode(IFigure node) {
 	add(this.node, 0);
 }
 
-final void setRowHeights(int heights[], int offset) {
+public void setRowHeights(int heights[], int offset) {
 	getBranchLayout().setRowHeights(heights, offset);
 }
 
@@ -266,7 +266,7 @@ public String toString() {
 	return toString(0);
 }
 
-String toString(int level) {
+public String toString(int level) {
 	String result = "";
 	for (int i=0; i<level; i++)
 		result += "  ";

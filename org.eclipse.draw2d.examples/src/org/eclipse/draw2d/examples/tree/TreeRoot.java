@@ -13,6 +13,7 @@ public class TreeRoot extends TreeBranch {
 private int major = 10;
 private int minor = 10;
 private Transposer transposer = new Transposer();
+private boolean compression;
 
 /**
  * @param title
@@ -84,6 +85,20 @@ public void validate() {
 		return;
 	setRowHeights(getPreferredRowHeights(), 0);
 	super.validate();
+}
+
+/**
+ * @return
+ */
+public boolean isCompressed() {
+	return compression;
+}
+
+/**
+ * @param b
+ */
+public void setCompression(boolean b) {
+	compression = b;
 }
 
 }

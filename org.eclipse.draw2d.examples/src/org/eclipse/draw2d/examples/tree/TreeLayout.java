@@ -53,6 +53,8 @@ private int calculateOverlap(int leftSubtree[], int rightSubtree[]) {
 	int result = Integer.MAX_VALUE;
 	for (int i=0; i<min; i++) {
 		int current = leftSubtree[i] + rightSubtree[i];
+		if (i > 0)
+			current -= 5;
 		if (current < result) {
 			result = current;
 			pointOfContact = i + 1;
