@@ -12,7 +12,6 @@
 package org.eclipse.gef.examples.logicdesigner.edit;
 
 import java.util.Iterator;
-import java.util.List;
 
 import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -106,16 +105,10 @@ protected EditPolicy createChildEditPolicy(EditPart child) {
 }
 
 protected LogicGuide findGuideAt(int pos, boolean horizontal) {
-	List guides = ((RulerProvider)getHost().getViewer().getProperty(
-			horizontal ? RulerProvider.PROPERTY_VERTICAL_RULER : RulerProvider.PROPERTY_HORIZONTAL_RULER)).getGuides();
-	for (int i = 0; i < guides.size(); i++) {
-		
-		LogicGuide guide = (LogicGuide)guides.get(i);
-		if (pos == guide.getPosition()) {
-			return guide;
-		}
-	}
-	throw new RuntimeException("LogicXYLayoutEditPolicy.findGuideAt(): Guide not found at position " + pos); //$NON-NLS-1$
+	RulerProvider provider = ((RulerProvider)getHost().getViewer().getProperty(
+			horizontal ? RulerProvider.PROPERTY_VERTICAL_RULER 
+			: RulerProvider.PROPERTY_HORIZONTAL_RULER));
+	return (LogicGuide)provider.getGuideAt(pos);
 }
 
 /**
