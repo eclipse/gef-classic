@@ -55,8 +55,6 @@ protected void bringDown() {
 }
 
 protected void initCellEditor() {
-	getEditPart().getViewer().getEditDomain().disablePaletteActionsOnEditor();
-	
 	Text text = (Text)getCellEditor().getControl();
 
 	StickyNoteFigure stickyNote = (StickyNoteFigure)getEditPart().getFigure();
