@@ -200,9 +200,9 @@ public void setActiveTool(ToolEntry newMode) {
 	if (activeEntry != null) {
 		ToolEntryEditPart editpart = getToolEntryEditPart(activeEntry);
 		editpart.setToolSelected(true);
-		}
-	fireModeChanged();
 	}
+	fireModeChanged();
+}
 
 public void setPaletteRoot(PaletteRoot root) {
 	paletteRoot = root;
