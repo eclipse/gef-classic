@@ -34,11 +34,13 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.util.Assert;
 import org.eclipse.jface.util.TransferDropTargetListener;
+import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IPerspectiveDescriptor;
 import org.eclipse.ui.IPerspectiveListener;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.XMLMemento;
 import org.eclipse.ui.internal.Workbench;
 
 import org.eclipse.draw2d.ActionEvent;
@@ -290,8 +292,9 @@ public void removePropertyChangeListener(PropertyChangeListener listener) {
 
 public void setExternalViewer(PaletteViewer viewer) {
 	externalViewer = viewer;
-	if (externalViewer != null && pViewer != null)
-		externalViewer.applyState(pViewer.captureState());
+	if (externalViewer != null && pViewer != null) {
+		transferState(pViewer, externalViewer);
+	}
 }
 
 public void setDefaultState(int state) {
@@ -391,23 +394,13 @@ protected void setState(int newState) {
 		setDefaultState(newState);
 	switch (paletteState) {
 		case FLYOVER_EXPANDED:
-//			Display.getCurrent().timerExec(250, new Runnable() {
-//				public void run() {
-//					if (!isInState(FLYOVER_EXPANDED))
-//						return;
-//					if (isDescendantOf(graphicalControl, 
-//							Display.getCurrent().getCursorControl()))
-//						setState(FLYOVER_COLLAPSED);
-//					else
-//						Display.getCurrent().timerExec(250, this);
-//				}
-//			});
 		case FLYOVER_COLLAPSED:
 		case FLYOVER_PINNED_OPEN:
 			if (pViewer == null) {
 				pViewer = provider.createPaletteViewer(this);
-				if (externalViewer != null)
-					pViewer.applyState(externalViewer.captureState());
+				if (externalViewer != null) {
+					transferState(externalViewer, pViewer);
+				}
 			}
 			break;
 		case IN_VIEW:
@@ -415,7 +408,7 @@ protected void setState(int newState) {
 				break;
 			if (externalViewer != null) {
 				provider.getEditDomain().setPaletteViewer(externalViewer);
-				externalViewer.applyState(pViewer.captureState());
+				transferState(pViewer, externalViewer);
 			}
 			if (provider.getEditDomain().getPaletteViewer() == pViewer)
 				provider.getEditDomain().setPaletteViewer(null);
@@ -425,6 +418,12 @@ protected void setState(int newState) {
 	}
 	sash.updateState();
 	layout();
+}
+
+protected void transferState(PaletteViewer src, PaletteViewer dest) {
+	IMemento memento = XMLMemento.createWriteRoot("paletteState"); //$NON-NLS-1$
+	src.saveState(memento);
+	dest.restoreState(memento);
 }
 
 protected class Sash extends Composite {
