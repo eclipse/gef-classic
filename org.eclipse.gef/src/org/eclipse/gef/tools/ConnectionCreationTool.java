@@ -14,12 +14,14 @@ import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.widgets.Event;
 
 import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.geometry.Point;
 
 import org.eclipse.gef.AccessibleAnchorProvider;
 import org.eclipse.gef.EditPart;
+import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.requests.CreateConnectionRequest;
 import org.eclipse.gef.requests.CreationFactory;
@@ -168,6 +170,17 @@ protected boolean handleKeyDown(KeyEvent event) {
 	}
 	
 	return super.handleKeyDown(event);
+}
+
+/**
+ * Scrolling can happen either in the {@link AbstractTool#STATE_INITIAL initial} state or
+ * once the source of the connection has been 
+ * {@link AbstractConnectionCreationTool#STATE_CONNECTION_STARTED identified}.
+ * @see org.eclipse.gef.Tool#mouseWheelScrolled(org.eclipse.swt.widgets.Event, org.eclipse.gef.EditPartViewer)
+ */
+public void mouseWheelScrolled(Event event, EditPartViewer viewer) {
+	if (isInState(STATE_INITIAL | STATE_CONNECTION_STARTED))
+		performViewerMouseWheel(event, viewer);
 }
 
 boolean navigateNextAnchor(int direction) {

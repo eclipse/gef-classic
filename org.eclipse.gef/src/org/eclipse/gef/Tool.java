@@ -16,6 +16,7 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.events.TraverseEvent;
+import org.eclipse.swt.widgets.Event;
 
 /**
  * A <code>Tool</code> interprets Mouse and Keyboard input from an {@link EditDomain} and
@@ -153,6 +154,13 @@ void mouseMove(MouseEvent mouseEvent, EditPartViewer viewer);
  * @param viewer the Viewer which received a mouse up
  */
 void mouseUp(MouseEvent mouseEvent, EditPartViewer viewer);
+
+/**
+ * Called when the mouse wheel has been scrolled.
+ * @param event The SWT event 
+ * @param viewer The source of the event
+ */
+void mouseWheelScrolled(Event event, EditPartViewer viewer);
 
 /**
  * Called when a native drag ends on a Viewer.  This event is important to Tools

@@ -23,8 +23,10 @@ import org.eclipse.gef.AccessibleAnchorProvider;
 import org.eclipse.gef.AutoexposeHelper;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.ExposeHelper;
+import org.eclipse.gef.MouseWheelHelper;
 import org.eclipse.gef.editparts.ViewportAutoexposeHelper;
 import org.eclipse.gef.editparts.ViewportExposeHelper;
+import org.eclipse.gef.editparts.ViewportMouseWheelHelper;
 
 import org.eclipse.gef.examples.logicdesigner.figures.CircuitFigure;
 import org.eclipse.gef.examples.logicdesigner.figures.FigureFactory;
@@ -75,6 +77,8 @@ public Object getAdapter(Class key) {
 				return getSourceAnchorLocations();
 			}
 		};
+	if (key == MouseWheelHelper.class)
+		return new ViewportMouseWheelHelper(this);
 	return super.getAdapter(key);
 }
 

@@ -18,6 +18,7 @@ import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 
 import org.eclipse.draw2d.geometry.Point;
 
@@ -543,6 +544,19 @@ public void mouseUp(MouseEvent e, EditPartViewer viewer) {
 	if (getDragTracker() != null)
 		getDragTracker().mouseUp(e, viewer);
 	super.mouseUp(e, viewer);
+}
+
+/**
+ * Delegates the scrolling to the DragTracker (if there is one).  If not, invokes
+ * the super method.  
+ * @see org.eclipse.gef.Tool#mouseWheelScrolled(org.eclipse.swt.widgets.Event, org.eclipse.gef.EditPartViewer)
+ */
+public void mouseWheelScrolled(Event event, EditPartViewer viewer) {
+	if (getDragTracker() != null) {
+		getDragTracker().mouseWheelScrolled(event, viewer);
+		event.doit = false;
+	} else
+		super.mouseWheelScrolled(event, viewer);
 }
 
 /**

@@ -31,7 +31,9 @@ import org.eclipse.draw2d.geometry.Insets;
 
 import org.eclipse.gef.AccessibleEditPart;
 import org.eclipse.gef.ExposeHelper;
+import org.eclipse.gef.MouseWheelHelper;
 import org.eclipse.gef.editparts.ViewportExposeHelper;
+import org.eclipse.gef.editparts.ViewportMouseWheelHelper;
 import org.eclipse.gef.internal.InternalImages;
 import org.eclipse.gef.palette.PaletteDrawer;
 import org.eclipse.gef.palette.PaletteTemplateEntry;
@@ -92,6 +94,8 @@ public Object getAdapter(Class key) {
 				PaletteScrollBar.BUTTON_HEIGHT, 0));
 		return helper;
 	}
+	if (key == MouseWheelHelper.class)
+		return new ViewportMouseWheelHelper(this);
 	return super.getAdapter(key);
 }
 

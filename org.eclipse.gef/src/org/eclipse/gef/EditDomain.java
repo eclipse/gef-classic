@@ -18,6 +18,7 @@ import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.TraverseEvent;
+import org.eclipse.swt.widgets.Event;
 
 import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.gef.palette.PaletteListener;
@@ -256,6 +257,17 @@ public void mouseUp(MouseEvent mouseEvent, EditPartViewer viewer) {
 	Tool tool = getActiveTool();
 	if (tool != null)	
 		tool.mouseUp(mouseEvent, viewer);	
+}
+
+/**
+ * Called by the DomainEventDispatcher when the mouse wheel has been scrolled.
+ * @param event The SWT event 
+ * @param viewer The source of the event
+ */
+public void mouseWheelScrolled(Event event, EditPartViewer viewer) {
+	Tool tool = getActiveTool();
+	if (tool != null)
+		tool.mouseWheelScrolled(event, viewer);
 }
 
 /**

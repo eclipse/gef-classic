@@ -27,6 +27,7 @@ import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
 
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
@@ -47,6 +48,8 @@ import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.Handle;
 import org.eclipse.gef.LayerConstants;
+import org.eclipse.gef.MouseWheelHandler;
+import org.eclipse.gef.MouseWheelHelper;
 import org.eclipse.gef.RootEditPart;
 import org.eclipse.gef.editparts.LayerManager;
 import org.eclipse.gef.editparts.ScalableRootEditPart;
@@ -70,6 +73,8 @@ private FocusListener lFocus;
  */
 public GraphicalViewerImpl() {
 	createDefaultRoot();
+	setProperty(MouseWheelHandler.KeyGenerator.getKey(SWT.NONE), 
+			MouseWheelDelegateHandler.SINGLETON); //$NON-NLS-1$
 }
 
 /**
@@ -403,6 +408,27 @@ protected void unhookControl() {
 public void unregisterAccessibleEditPart(AccessibleEditPart acc) {
 	Assert.isNotNull(acc);
 	getEventDispatcher().removeAccessible(acc);
+}
+
+private static class MouseWheelDelegateHandler
+	implements MouseWheelHandler
+{
+	private static final MouseWheelHandler SINGLETON = new MouseWheelDelegateHandler();
+	private MouseWheelDelegateHandler() { }
+	/**
+	 * Delegates handling to the selected editpart's MouseWheelHelper.
+	 * @see org.eclipse.gef.MouseWheelHandler#handleMouseWheel(org.eclipse.swt.widgets.Event, org.eclipse.gef.EditPartViewer)
+	 */
+	public void handleMouseWheel(Event event, EditPartViewer viewer) {
+		EditPart part = viewer.getFocusEditPart();
+		do {
+			MouseWheelHelper helper = (MouseWheelHelper)part
+					.getAdapter(MouseWheelHelper.class);
+			if (helper != null)
+				helper.handleMouseWheelScrolled(event);
+			part = part.getParent();
+		} while (event.doit && part != null);
+	}
 }
 
 }

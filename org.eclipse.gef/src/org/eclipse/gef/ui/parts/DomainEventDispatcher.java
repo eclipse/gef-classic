@@ -22,6 +22,7 @@ import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.TraverseEvent;
 import org.eclipse.swt.graphics.Cursor;
+import org.eclipse.swt.widgets.Event;
 
 import org.eclipse.draw2d.EventDispatcher;
 import org.eclipse.draw2d.IFigure;
@@ -238,6 +239,7 @@ public void dispatchFocusLost(FocusEvent event) {
 public void dispatchKeyPressed(org.eclipse.swt.events.KeyEvent e) { 
 	if (!editorCaptured) {
 		super.dispatchKeyPressed(e);
+		// @TODO:Pratik draw2dBusy() checks mouse event, not key event.  why is this here?
 		if (draw2dBusy())
 			return;
 	}
@@ -397,6 +399,15 @@ public void dispatchNativeDragStarted(
 	//$TODO delete the viewer parameter from the method
 	setRouteEventsToEditor(false);
 	domain.nativeDragStarted(event, viewer);
+}
+
+/**
+ * Forwards the event to the EditDomain.
+ * @see org.eclipse.draw2d.EventDispatcher#dispatchMouseWheelScrolled(org.eclipse.swt.widgets.Event)
+ */
+public void dispatchMouseWheelScrolled(Event evt) {
+	if (okToDispatch())
+		domain.mouseWheelScrolled(evt, viewer);
 }
 
 private boolean draw2dBusy() {

@@ -18,6 +18,7 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.TraverseEvent;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
 
 /**
  * Listens to various SWT events and dispatches these events to interested Draw2d objects. 
@@ -107,6 +108,13 @@ public abstract void dispatchMousePressed(MouseEvent me);
  * @param me the event
  */
 public abstract void dispatchMouseReleased(MouseEvent me);
+
+/**
+ * Dispatches a mouse-wheel scroll event.
+ * @param event the SWT.MouseWheel event
+ * @since 3.1
+ */
+public abstract void dispatchMouseWheelScrolled(Event event);
 
 /**
  * Returns the AccessibilityDispatcher.
