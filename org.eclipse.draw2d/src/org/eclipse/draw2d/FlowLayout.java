@@ -315,18 +315,15 @@ protected void layoutRow(IFigure parent) {
 	int correctMajorAlignment = majorAlignment;
 	int correctMinorAlignment = minorAlignment;
 
-	majorAdjustment = data.area.width - data.rowWidth;
-//	if(!isHorizontal()){
-//		correctMajorAlignment=minorAlignment;
-//		correctMinorAlignment=majorAlignment;
-//	}
+	majorAdjustment = data.area.width - data.rowWidth + getMinorSpacing();
+	
 	switch (correctMajorAlignment) {
 		case ALIGN_LEFTTOP: 
 			majorAdjustment = 0;
 			break;
 		case ALIGN_CENTER:
 			majorAdjustment /= 2;
-		break;
+			break;
 		case ALIGN_RIGHTBOTTOM:
 			break;
 	}
