@@ -23,9 +23,9 @@ public abstract class PaletteCustomizer {
 /**
  * Indicates whether the given entry can be deleted from the model or not.
  * <p>
- * This default implementation returns <code>true</code> for all entries.  If the given
- * entry is a <code>PaletteContainer</code>, it returns <code>true</code> IFF all its
- * children can be deleted as well.
+ * This default implementation returns <code>true</code> for all leaf (non-container)
+ * entries. If the given entry is a <code>PaletteContainer</code>, it returns
+ * <code>true</code> IFF all its children can be deleted as well.
  * </p>
  * <p>
  * This method will be invoked by <code>PaletteCustomizerDialog</code> to determine
@@ -51,9 +51,11 @@ public boolean canDelete(PaletteEntry entry) {
 }
 
 /**
- * Returns whether the given entry can be moved down or not.
- * Will be called by PaletteCustomizerDialog to determine whether or not to
- * enable the "Move Down" action.
+ * Indicates whether the given entry can be moved down or not.
+ * <p> 
+ * Will be called by PaletteCustomizerDialog to determine whether or not to enable the
+ * "Move Down" action.
+ * </p>
  * 
  * @param	entry	The selected palette entry.  It'll never be <code>null</code>.
  * @return	<code>true</code> if the given entry can be moved down
@@ -77,9 +79,11 @@ public boolean canMoveDown(PaletteEntry entry) {
 }
 
 /**
- * Returns whether the given entry can be moved up or not.
- * Will be called by PaletteCustomizerDialog to determine whether or not to
- * enable the "Move Up" action.
+ * Indicates whether the given entry can be moved up or not.
+ * <p> 
+ * Will be called by PaletteCustomizerDialog to determine whether or not to enable the
+ * "Move Up" action.
+ * </p>
  * 
  * @param	entry	The selected palette entry.  It'll never be <code>null</code>.
  * @return	<code>true</code> if the given entry can be moved up
