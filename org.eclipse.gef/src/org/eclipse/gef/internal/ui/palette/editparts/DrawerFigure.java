@@ -259,9 +259,7 @@ public Dimension getMinimumSize(int wHint, int hHint) {
 			Dimension result = collapseToggle.getPreferredSize(wHint, hHint).getCopy();
 			result.height += getContentPane().getInsets().getHeight();
 			IFigure child = (IFigure)children.get(0);
-			int childHint = getContentPane().getClientArea(Rectangle.SINGLETON).width;
-			result.height
-				+= Math.min(90, 3 * child.getPreferredSize(childHint, -1).height);
+			result.height += Math.min(80, child.getSize().height + 9);
 			return result.intersect(getPreferredSize(wHint, hHint));
 		}
 	}
