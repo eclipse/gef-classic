@@ -27,6 +27,10 @@ import org.eclipse.gef.ui.palette.customize.PaletteCustomizerDialog;
 import org.eclipse.gef.ui.parts.PaletteViewerKeyHandler;
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 
+/**
+ * Graphical viewer for the GEF palette.
+ * 
+ * @author Pratik Shah, Randy Hudson */
 public class PaletteViewer
 	extends ScrollingGraphicalViewer
 {
@@ -71,17 +75,26 @@ private PreferenceListener prefListener = new PreferenceListener();
 private PaletteViewerPreferences prefs = PREFERENCE_STORE;
 private Font font = null;
 
+/**
+ * Constructor */
 public PaletteViewer() {
 	setEditDomain(new EditDomain());
 	setKeyHandler(new PaletteViewerKeyHandler(this));
 	setEditPartFactory(new PaletteEditPartFactory());
 }
 
+/**
+ * Adds the given PaletteListener as the one to be notified when the active tool on the
+ * palette changes.
+ *  * @param paletteListener	The listener that needs to be notified of active tool changes on
+ * the palette
+ */
 public void addPaletteListener(PaletteListener paletteListener) {
 	if (paletteListeners != null)
 		paletteListeners.add(paletteListener);
 }
 
+/** * @see org.eclipse.gef.ui.parts.GraphicalViewerImpl#createDefaultRoot() */
 protected void createDefaultRoot() {
 	setRootEditPart(new PaletteRootEditPart());
 }
@@ -108,6 +121,9 @@ public void enableVerticalScrollbar(boolean value) {
 	this.globalScrollbar = true;
 }
 
+/**
+ * Notifies registered listeners of change in the active tool on the palette
+ */
 protected void fireModeChanged() {
 	if (paletteListeners == null)
 		return;
@@ -124,6 +140,11 @@ public PaletteCustomizer getCustomizer() {
 	return customizer;
 }
 
+/**
+ * NOTE: A PaletteCustomizer must be set for this viewer using the 
+ * {@link #setCustomizer(PaletteCustomizer)} method before this method is invoked.
+ * 
+ * @return The dialog that can be used to customizer entries on the palette. */
 public PaletteCustomizerDialog getCustomizerDialog() {
 	if (customizerDialog == null) {
 		customizerDialog = new PaletteCustomizerDialog(getControl().getShell(),
@@ -133,6 +154,7 @@ public PaletteCustomizerDialog getCustomizerDialog() {
 	return customizerDialog;
 }
 
+/** * @return the entry for the currently active tool. */
 public ToolEntry getActiveTool() {
 	return activeEntry;
 }
@@ -174,6 +196,11 @@ protected void hookControl() {
 	updateFont();
 }
 
+/**
+ * The given PaletteListener will not be notified of active tool changes in the palette.
+ *  * @param paletteListener	The PaletteListener which doesn't want to be notified of active
+ * tool changes in the palette anymore.
+ */
 public void removePaletteListener(PaletteListener paletteListener) {
 	paletteListeners.remove(paletteListener);
 }
@@ -186,6 +213,12 @@ public void setCustomizer(PaletteCustomizer customizer) {
 	this.customizer = customizer;
 }
 
+/**
+ * Sets the active entry for this palette.  The Editpart for the given entry will be
+ * activated (selected).
+ *  * @param newMode	ToolEntry whose EditPart has to be set as the active tool in this
+ * palette.
+ */
 public void setActiveTool(ToolEntry newMode) {
 	if (newMode == null)
 		newMode = paletteRoot.getDefaultEntry();
@@ -200,6 +233,9 @@ public void setActiveTool(ToolEntry newMode) {
 	fireModeChanged();
 }
 
+/**
+ * Sets the root for this palette.
+ *  * @param root The PaletteRoot for this palette. */
 public void setPaletteRoot(PaletteRoot root) {
 	paletteRoot = root;
 	if (paletteRoot != null) {
