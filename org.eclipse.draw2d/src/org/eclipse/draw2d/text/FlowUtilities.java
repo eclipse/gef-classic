@@ -28,15 +28,22 @@ class FlowUtilities
 	extends FigureUtilities
 {
 
-static final BreakIterator LINE_BREAK = BreakIterator.getLineInstance();
-static final BreakIterator WORD_BREAK = BreakIterator.getWordInstance();
-
-interface LookAhead {
-	int getWidth();
-}
-
+private static final BreakIterator LINE_BREAK = BreakIterator.getLineInstance();
 private static int ELLIPSIS_SIZE;
 private static TextLayout layout;
+
+static boolean canBreakAfter(char c) {
+	boolean result = Character.isWhitespace(c) || c == '-';
+	if (!result) {
+		if (c <= 'z' && c >= 'a')
+			return false;
+		// chinese characters and such would be caught in here
+		BreakIterator breakItr = BreakIterator.getLineInstance();
+		breakItr.setText(c + "a"); //$NON-NLS-1$
+		result = breakItr.isBoundary(1);
+	}
+	return result;
+}
 
 private static int findFirstDelimeter(String string) {
 	int macNL = string.indexOf('\r');
@@ -48,6 +55,85 @@ private static int findFirstDelimeter(String string) {
 		unixNL = Integer.MAX_VALUE;
 
 	return Math.min(macNL, unixNL);
+}
+
+/**
+ * @param frag
+ * @param font
+ * @return
+ * @since 3.1
+ */
+private static float getAverageCharWidth(TextFragmentBox fragment, Font font) {
+	if (fragment.width != 0 && fragment.length != 0)
+		return fragment.width / (float)fragment.length;
+	return getFontMetrics(font).getAverageCharWidth();
+}
+
+/**
+ * Provides a TextLayout that can be used by the Draw2d text package for Bidi.  Note that
+ * orientation of the provided TextLayout could be LTR or RTL.  Clients should set the
+ * orientation as desired before using the TextLayout.  This TextLayout should not
+ * be disposed by clients.  To prevent Strings from sticking around in memory, clients
+ * should also set the text for the provided TextLayout to be an empty String once they
+ * are done using it.
+ * 
+ * @return an SWT TextLayout that can be used for Bidi
+ * @since 3.1
+ */
+static TextLayout getTextLayout() {
+	if (layout == null)
+		layout = new TextLayout(Display.getDefault());
+	return layout;
+}
+
+/**
+ * @param frag
+ * @param string
+ * @param font
+ * @since 3.1
+ */
+private static void initBidi(TextFragmentBox frag, String string, Font font) {
+	if (frag.requiresBidi()) {
+		TextLayout textLayout = getTextLayout();
+		textLayout.setFont(font);
+		//$TODO need to insert overrides in front of string.
+		textLayout.setText(string);
+	}
+}
+
+/**
+ * @param string
+ * @param guess
+ * @param font
+ * @return
+ * @since 3.1
+ */
+private static int measureString(TextFragmentBox frag, String string, int guess, Font font) {
+	if (frag.requiresBidi())
+		return getTextLayout().getBounds(0, guess - 1).width;
+	else
+		return getStringDimension(string.substring(0, guess), font).x;
+}
+
+static void setupFragment(TextFragmentBox frag, Font f, String s) {
+	if (frag.width == -1 || frag.truncated) {
+		int width;
+		if (s.length() == 0 || frag.length == 0)
+			width = 0;
+		else if (frag.requiresBidi()) {
+			TextLayout textLayout = getTextLayout();
+			textLayout.setFont(f);
+			textLayout.setText(s);
+			width = textLayout.getBounds(0, frag.length - 1).width;
+		} else
+			width = getStringDimension(s.substring(0, frag.length), f).x;
+		if (frag.truncated)
+			width += ELLIPSIS_SIZE;
+		frag.setWidth(width);
+	}
+	FontMetrics fm = getFontMetrics(f);
+	frag.setHeight(fm.getHeight());
+	frag.setAscent(frag.getHeight() - fm.getDescent());
 }
 
 /**
@@ -214,96 +300,8 @@ public static int wrapFragmentInContext(TextFragmentBox frag, String string,
 	return result;
 }
 
-/**
- * @param string
- * @param guess
- * @param font
- * @return
- * @since 3.1
- */
-private static int measureString(TextFragmentBox frag, String string, int guess, Font font) {
-	if (frag.requiresBidi())
-		return getTextLayout().getBounds(0, guess - 1).width;
-	else
-		return getStringDimension(string.substring(0, guess), font).x;
-}
-
-/**
- * @param frag
- * @param string
- * @param font
- * @since 3.1
- */
-private static void initBidi(TextFragmentBox frag, String string, Font font) {
-	if (frag.requiresBidi()) {
-		TextLayout textLayout = getTextLayout();
-		textLayout.setFont(font);
-		//$TODO need to insert overrides in front of string.
-		textLayout.setText(string);
-	}
-}
-
-/**
- * @param frag
- * @param font
- * @return
- * @since 3.1
- */
-private static float getAverageCharWidth(TextFragmentBox fragment, Font font) {
-	if (fragment.width != 0 && fragment.length != 0)
-		return fragment.width / (float)fragment.length;
-	return getFontMetrics(font).getAverageCharWidth();
-}
-
-/**
- * Provides a TextLayout that can be used by the Draw2d text package for Bidi.  Note that
- * orientation of the provided TextLayout could be LTR or RTL.  Clients should set the
- * orientation as desired before using the TextLayout.  This TextLayout should not
- * be disposed by clients.  To prevent Strings from sticking around in memory, clients
- * should also set the text for the provided TextLayout to be an empty String once they
- * are done using it.
- * 
- * @return an SWT TextLayout that can be used for Bidi
- * @since 3.1
- */
-static TextLayout getTextLayout() {
-	if (layout == null)
-		layout = new TextLayout(Display.getDefault());
-	return layout;
-}
-
-static boolean canBreakAfter(char c) {
-	boolean result = Character.isWhitespace(c) || c == '-';
-	if (!result) {
-		if (c <= 'z' && c >= 'a')
-			return false;
-		// chinese characters and such would be caught in here
-		BreakIterator breakItr = BreakIterator.getLineInstance();
-		breakItr.setText(c + "a"); //$NON-NLS-1$
-		result = breakItr.isBoundary(1);
-	}
-	return result;
-}
-
-static void setupFragment(TextFragmentBox frag, Font f, String s) {
-	if (frag.width == -1 || frag.truncated) {
-		int width;
-		if (s.length() == 0 || frag.length == 0)
-			width = 0;
-		else if (frag.requiresBidi()) {
-			TextLayout textLayout = getTextLayout();
-			textLayout.setFont(f);
-			textLayout.setText(s);
-			width = textLayout.getBounds(0, frag.length - 1).width;
-		} else
-			width = getStringDimension(s.substring(0, frag.length), f).x;
-		if (frag.truncated)
-			width += ELLIPSIS_SIZE;
-		frag.setWidth(width);
-	}
-	FontMetrics fm = getFontMetrics(f);
-	frag.setHeight(fm.getHeight());
-	frag.setAscent(frag.getHeight() - fm.getDescent());
+interface LookAhead {
+	int getWidth();
 }
 
 }
