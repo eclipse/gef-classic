@@ -43,7 +43,7 @@ class ToolbarDropdownContributionItem extends ContributionItem {
 	
 	/**
 	 * Nested class handles notification from SWT widget and from Action,
-	 * to avoid polluting GEFActionContributionItem with public listener methods.
+	 * to avoid polluting ToolbarDropdownContributionItem with public listener methods.
 	 */
 	private class ActionListener implements Listener, IPropertyChangeListener {
 		public void handleEvent(Event event) {
@@ -180,7 +180,7 @@ public boolean equals(Object o) {
 	return action.equals(((ToolbarDropdownContributionItem) o).action);
 }
 /**
- * The <code>GEFActionContributionItem</code> implementation of this <code>IContributionItem</code>
+ * The <code>ToolbarDropdownContributionItem</code> implementation of this <code>IContributionItem</code>
  * method creates a SWT Button for the action. 
  * If the action's checked property has been set, a toggle button is created 
  * and primed to the value of the checked property.
@@ -210,7 +210,7 @@ public void fill(Composite parent) {
 	}
 }
 /**
- * The <code>GEFActionContributionItem</code> implementation of this <code>IContributionItem</code>
+ * The <code>ToolbarDropdownContributionItem</code> implementation of this <code>IContributionItem</code>
  * method creates a SWT MenuItem for the action. 
  * If the action's checked property has been set, a toggle button is created 
  * and primed to the value of the checked property.
@@ -256,7 +256,7 @@ public void fill(Menu parent, int index) {
 	}
 }
 /**
- * The <code>GEFActionContributionItem</code> implementation of this <code>IContributionItem</code>
+ * The <code>ToolbarDropdownContributionItem</code> implementation of this <code>IContributionItem</code>
  * method creates a SWT ToolItem for the action. 
  * If the action's checked property has been set, a toggle button is created 
  * and primed to the value of the checked property.
@@ -383,28 +383,31 @@ private void handleWidgetSelection(Event e) {
 			}
 			
 		} else if ((style & SWT.DROP_DOWN) != 0) {
-//			if (e.detail == 4) {	// on drop-down button
-				if (action.getStyle() == IAction.AS_DROP_DOWN_MENU) {
-					IMenuCreator mc = action.getMenuCreator();
-					ToolItem ti = (ToolItem) item;
-					// we create the menu as a sub-menu of "dummy" so that we can use
-					// it in a cascading menu too.
-					// If created on a SWT control we would get an SWT error...
-					//Menu dummy= new Menu(ti.getParent());
-					//Menu m= mc.getMenu(dummy);
-					//dummy.dispose();
-					
-					Menu m= mc.getMenu(ti.getParent());
-					if (m != null) {
-						// position the menu below the drop down item
-						Rectangle b = ti.getBounds();
-						Point p = ti.getParent().toDisplay(new Point(b.x, b.y+b.height));
-						m.setLocation(p.x, p.y);	// waiting for SWT 0.42
-						m.setVisible(true);
-						return;	// we don't fire the action
-					}
+			/*
+			 * Added by Pratik Shah
+			 * Do this regardless of whether the down arrow button on the side was
+			 * clicked, or the main button itself
+			 */
+			if (action.getStyle() == IAction.AS_DROP_DOWN_MENU) {
+				IMenuCreator mc = action.getMenuCreator();
+				ToolItem ti = (ToolItem) item;
+				// we create the menu as a sub-menu of "dummy" so that we can use
+				// it in a cascading menu too.
+				// If created on a SWT control we would get an SWT error...
+				//Menu dummy= new Menu(ti.getParent());
+				//Menu m= mc.getMenu(dummy);
+				//dummy.dispose();
+				
+				Menu m= mc.getMenu(ti.getParent());
+				if (m != null) {
+					// position the menu below the drop down item
+					Rectangle b = ti.getBounds();
+					Point p = ti.getParent().toDisplay(new Point(b.x, b.y+b.height));
+					m.setLocation(p.x, p.y);	// waiting for SWT 0.42
+					m.setVisible(true);
+					return;	// we don't fire the action
 				}
-//			}
+			}
 		}
 
 		// Ensure action is enabled first.
