@@ -160,7 +160,6 @@ protected boolean handleInvalidInput() {
  * @see org.eclipse.gef.tools.AbstractTool#handleKeyDown(org.eclipse.swt.events.KeyEvent)
  */
 protected boolean handleKeyDown(KeyEvent e) {
-	setAutoexposeHelper(null);
 	if (acceptArrowKey(e)) {
 		accStepIncrement();
 		if (stateTransition(STATE_INITIAL, STATE_ACCESSIBLE_DRAG_IN_PROGRESS))

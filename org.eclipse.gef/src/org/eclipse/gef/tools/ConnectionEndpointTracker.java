@@ -193,7 +193,6 @@ protected boolean handleHover() {
  * @see org.eclipse.gef.tools.AbstractTool#handleKeyDown(org.eclipse.swt.events.KeyEvent)
  */
 protected boolean handleKeyDown(KeyEvent e) {
-	setAutoexposeHelper(null);
 	if (acceptArrowKey(e)) {
 		if (stateTransition(STATE_INITIAL, STATE_ACCESSIBLE_DRAG_IN_PROGRESS)) {
 		// When the drag first starts, set the focus Part to be one end of the connection

@@ -255,7 +255,6 @@ protected boolean handleHoverStop() {
  */
 protected boolean handleKeyDown(KeyEvent e) {
 	resetHover();
-	setAutoexposeHelper(null);
 	
 	if (acceptArrowKey(e))
 		if (stateTransition(STATE_ACCESSIBLE_DRAG, STATE_ACCESSIBLE_DRAG_IN_PROGRESS))

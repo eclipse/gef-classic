@@ -98,7 +98,6 @@ protected boolean handleFocusLost() {
  * @return <code>true</code> if this key down event was processed
  */
 protected boolean handleKeyDown(KeyEvent event) {
-	setAutoexposeHelper(null);
 	if (acceptArrowKey(event)) {
 		int direction = 0;
 		switch (event.keyCode) {
