@@ -14,7 +14,6 @@ import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
 import org.eclipse.gef.requests.CreateRequest;
-import org.eclipse.gef.requests.CreationFactory;
 import org.eclipse.gef.requests.GroupRequest;
 
 /**
@@ -25,13 +24,6 @@ import org.eclipse.gef.requests.GroupRequest;
 public abstract class ContainerEditPolicy
 	extends AbstractEditPolicy
 {
-
-/**
- * @deprecated this is an archaic method left behind to force compile errors on old code.
- * @param parent the parent object
- * @param factory the factory
- */
-protected final void createCreateCommand(Object parent, CreationFactory factory) { }
 
 /**
  * Override to contribute to add requests.
