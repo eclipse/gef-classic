@@ -62,7 +62,7 @@ import org.eclipse.gef.ui.views.palette.PaletteView;
 /**
  * @author Pratik Shah
  */
-public class FlyoverPaletteAutomaton 
+public class FlyoutPaletteComposite 
 	extends Composite
 {
 	
@@ -105,7 +105,7 @@ protected IPerspectiveListener perspectiveListener = new IPerspectiveListener() 
 /*
  * @TODO:Pratik  break up this class into a two-class (maybe more?) hierarchy.  one would 
  * simply provide the flyover in the editor.  the other one would hook up to work with
- * the palette view.  AutoHidingPalette and FlyoverPaletteAutomaton.  Also, maybe you can
+ * the palette view.  AutoHidingPalette and FlyoutPaletteComposite.  Also, maybe you can
  * have a CollapsiblePalette (no flyover), and as the root of the hierarchy, a generic
  * CollapsibleControl (where you can have any control in place of the palette viewer).
  */
@@ -115,7 +115,7 @@ protected IPerspectiveListener perspectiveListener = new IPerspectiveListener() 
  */
 protected PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 
-public FlyoverPaletteAutomaton(Composite parent, int style, IWorkbenchPage page,
+public FlyoutPaletteComposite(Composite parent, int style, IWorkbenchPage page,
 		PaletteViewerProvider pvProvider) {
 	super(parent, style & SWT.BORDER);
 	Assert.isNotNull(pvProvider);
@@ -128,6 +128,7 @@ public FlyoverPaletteAutomaton(Composite parent, int style, IWorkbenchPage page,
 		private boolean editorMaximized = false;
 		public void handleEvent(Event event) {
 			Rectangle area = getClientArea();
+			System.out.println(area);
 			/*
 			 * @TODO:Pratik   Currently, there is no notification mechanism for when a
 			 * part in the workbench is maximized/minimized.  However, when the editor
@@ -137,7 +138,7 @@ public FlyoverPaletteAutomaton(Composite parent, int style, IWorkbenchPage page,
 			 * notification for maximize/minimize actions, you can change to using that
 			 * instead of what you have now.  
 			 */
-			if (area.width == 0 && area.height == 0) {
+			if (isMaximizeOrMinimizeTrigger(area)) {
 				if (skipNextEvent)
 					skipNextEvent = false;
 				else if (editorMaximized) {
@@ -153,6 +154,12 @@ public FlyoverPaletteAutomaton(Composite parent, int style, IWorkbenchPage page,
 				setFixedSize(getClientArea().width / 2);
 			}
 			layout();
+		}
+		private boolean isMaximizeOrMinimizeTrigger(Rectangle area) {
+			if (SWT.getPlatform().equals("gtk")) //$NON-NLS-1$
+				return area.height == 1 && area.width == 1;
+			else
+				return area.height == 0 && area.width == 0;
 		}
 	});
 

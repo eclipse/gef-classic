@@ -20,7 +20,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.ui.palette.*;
-import org.eclipse.gef.ui.palette.FlyoverPaletteAutomaton;
+import org.eclipse.gef.ui.palette.FlyoutPaletteComposite;
 import org.eclipse.gef.ui.views.palette.DefaultPalettePage;
 import org.eclipse.gef.ui.views.palette.PalettePage;
 
@@ -36,7 +36,7 @@ public abstract class GraphicalEditorWithMovablePalette
 {
 	
 private PaletteViewerProvider provider;
-private FlyoverPaletteAutomaton splitter;
+private FlyoutPaletteComposite splitter;
 private CustomPalettePage page;
 
 protected void initializeGraphicalViewer() {
@@ -48,7 +48,7 @@ protected PaletteViewerProvider createPaletteViewerProvider() {
 }
 
 public void createPartControl(Composite parent) {
-	splitter = new FlyoverPaletteAutomaton(parent, SWT.NONE, getSite().getPage(),
+	splitter = new FlyoutPaletteComposite(parent, SWT.NONE, getSite().getPage(),
 			getPaletteViewerProvider());
 	splitter.setInitialState(getInitialPaletteState());
 	super.createPartControl(splitter);
@@ -60,7 +60,7 @@ public void createPartControl(Composite parent) {
 	splitter.setFixedSize(getInitialPaletteSize());
 	splitter.addPropertyChangeListener(new PropertyChangeListener() {
 		public void propertyChange(PropertyChangeEvent evt) {
-			if (evt.getPropertyName().equals(FlyoverPaletteAutomaton.PROPERTY_DEFAULT_STATE))
+			if (evt.getPropertyName().equals(FlyoutPaletteComposite.PROPERTY_DEFAULT_STATE))
 				handlePaletteDefaultStateChanged(((Integer)evt.getNewValue()).intValue());
 			else
 				handlePaletteResized(((Integer)evt.getNewValue()).intValue());
@@ -102,11 +102,11 @@ protected final PaletteViewerProvider getPaletteViewerProvider() {
  * @return the initial size of the palette in pixels.
  */
 protected int getInitialPaletteSize() {
-	return FlyoverPaletteAutomaton.DEFAULT_PALETTE_SIZE;
+	return FlyoutPaletteComposite.DEFAULT_PALETTE_SIZE;
 }
 
 protected int getInitialPaletteState() {
-	return FlyoverPaletteAutomaton.FLYOVER_COLLAPSED;
+	return FlyoutPaletteComposite.FLYOVER_COLLAPSED;
 }
 
 protected abstract void handlePaletteDefaultStateChanged(int newState);
