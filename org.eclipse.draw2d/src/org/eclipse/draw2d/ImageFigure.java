@@ -6,6 +6,10 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
+ * A Figure that simply contains an Image.  Use this Figure, instead of a Label, when
+ * displaying Images without any accompanying text.  Using Labels for displaying Images
+ * can stress your resources.
+ * 
  * @author Pratik Shah
  */
 public class ImageFigure 
@@ -16,25 +20,39 @@ private Image img;
 private Dimension size;
 private int alignment;
 
-public ImageFigure(){
+/**
+ * Constructor
+ */
+public ImageFigure() {
 	setAlignment(PositionConstants.CENTER);
 }
 
-public ImageFigure(Image image){
+/**
+ * Constructor
+ * 
+ * @param image	The Image to be displayed
+ */
+public ImageFigure(Image image) {
 	this();
 	setImage(image);
 }
 
-public Image getImage(){
+/**
+ * @return The Image that this Figure displays
+ */
+public Image getImage() {
 	return img;
 }
 
 /**
+ * Returns the size of the Image that this Figure displays; or (0,0) if no Image has been
+ * set yet.
+ * 			
  * @see org.eclipse.draw2d.Figure#getPreferredSize(int, int)
  */
 public Dimension getPreferredSize(int wHint, int hHint) {
 	Dimension size = new Dimension();
-	if( getImage() != null ){
+	if (getImage() != null) {
 		org.eclipse.swt.graphics.Rectangle imgSize = getImage().getBounds();
 		size.width = imgSize.width;
 		size.height = imgSize.height;
@@ -73,11 +91,31 @@ protected void paintFigure(Graphics graphics) {
 	graphics.drawImage(getImage(), x, y);
 }
 
+/**
+ * Sets the alignment of the Image within this Figure.  The alignment comes into play
+ * when the ImageFigure is larger than the Image.  The alignment could be any valid
+ * combination of the following:
+ * 
+ * <UL>
+ * 		<LI>PositionConstants.NORTH</LI>
+ * 		<LI>PositionConstants.SOUTH</LI>
+ * 		<LI>PositionConstants.EAST</LI>
+ * 		<LI>PositionConstants.WEST</LI>
+ * 		<LI>PositionConstants.CENTER or PositionConstants.NONE</LI>
+ * </UL>
+ * 
+ * @param flag A constant indicating the alignment
+ */
 public void setAlignment(int flag) {
 	alignment = flag;
 }
 
-public void setImage(Image image){
+/**
+ * Sets the Image that this ImageFigure displays.
+ * 
+ * @param image	The Image to be displayed.
+ */
+public void setImage(Image image) {
 	img = image;
 	size = new Rectangle(image.getBounds()).getSize();
 	revalidate();
