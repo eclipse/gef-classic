@@ -223,6 +223,8 @@ public void runGenericTests() {
 	doTest("a one. two", "a one", new String[] {"a", NEWLINE, "one.", NEWLINE, "two"});
 	doTest("a one-two", "a one", new String[] {"a", NEWLINE, "one-", NEWLINE, "two"});
 	doTest2("a abc", "-def", "a abc", new String[] {"a", NEWLINE, "abc", SAMELINE, "-", NEWLINE, "def", TERMINATE});
+	
+	doTest2("alpha\n", "bravo", null, new String[] {"alpha", NEWLINE, "bravo", TERMINATE});
 }
 
 public void testHardWrapping() {
