@@ -11,6 +11,8 @@
 package org.eclipse.gef.examples.text.actions;
 
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.FontData;
+import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.ui.IPartService;
 
@@ -20,34 +22,42 @@ import org.eclipse.gef.ui.actions.GEFActionConstants;
  * @author Pratik Shah
  * @since 3.1
  */
-public class ResizeFontContributionItem 
+public class ChangeFontContributionItem 
 	extends StyleComboContributionItem
 {
+	
+private static final String[] FONT_NAMES;
+static {
+	FontData[] fonts = Display.getCurrent().getFontList(null, true);
+	FONT_NAMES = new String[fonts.length];
+	for (int i = 0; i < fonts.length; i++)
+		FONT_NAMES[i] = fonts[i].getName();
+}
 
-private static final String[] INIT_SIZES = new String[] {"8", "9", "10", "11",
-		"12", "14", "16", "18", "20", "22", "24", "26", "28", "36", "48", "72"};
-
-public ResizeFontContributionItem(IPartService service) {
+public ChangeFontContributionItem(IPartService service) {
 	super(service);
 }
 
+protected int findIndexOf(String fontName) {
+	for (int i = 0; i < getItems().length; i++) {
+		if (getItems()[i].equalsIgnoreCase(fontName))
+			return i;
+	}
+	return -1;
+}
+
 protected String[] getItems() {
-	return INIT_SIZES;
+	return FONT_NAMES;
 }
 
 protected String getStyleID() {
-	return GEFActionConstants.STYLE_FONT_SIZE;
+	return GEFActionConstants.STYLE_FONT_FAMILY;
 }
 
 protected void handleWidgetSelected(SelectionEvent e) {
-	Integer fontSize = null;
-	try {
-		fontSize = new Integer(combo.getText());
-	} catch (NumberFormatException nfe) {
-	}
-	if (fontSize != null && !fontSize.equals(styleService.getStyle(getStyleID())))
-		// No refresh required
-		styleService.setStyle(getStyleID(), fontSize);
+	int index = findIndexOf(combo.getText());
+	if (index >= 0 && !getItems()[index].equals(styleService.getStyle(getStyleID())))
+		styleService.setStyle(getStyleID(), getItems()[index]);
 	else
 		refresh();
 }
