@@ -360,7 +360,6 @@ protected void paintFigure(Graphics graphics) {
 	graphics.translate(getLocation().getNegated());
 	
 	if (schedulePaint) {
-		Display display = Display.getCurrent();
 		Display.getCurrent().timerExec(DELAY, new Runnable() {
 			public void run() {
 				offset++;

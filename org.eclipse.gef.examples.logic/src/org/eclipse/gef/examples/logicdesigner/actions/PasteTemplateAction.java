@@ -30,8 +30,6 @@ import org.eclipse.gef.examples.logicdesigner.LogicMessages;
  */
 public abstract class PasteTemplateAction extends SelectionAction {
 
-private CreateRequest request;
-
 /**
  * Constructor for PasteTemplateAction.
  * @param editor

@@ -51,7 +51,6 @@ private static final int FLAG_SOURCE_FEEDBACK = TargetingTool.MAX_FLAG << 1;
 protected static final int MAX_FLAG = FLAG_SOURCE_FEEDBACK;
 
 private EditPart connectionSource;
-private Request sourceRequest;
 private CreationFactory factory;
 private EditPartViewer viewer;
 

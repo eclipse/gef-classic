@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.draw2d.text;
 
-import java.util.*;
 import org.eclipse.draw2d.*;
 
 /**

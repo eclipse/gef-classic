@@ -12,14 +12,12 @@ package org.eclipse.gef.examples.logicdesigner.actions;
 
 import org.eclipse.jface.action.*;
 import org.eclipse.ui.IWorkbenchActionConstants;
-import org.eclipse.ui.actions.LabelRetargetAction;
 import org.eclipse.ui.actions.RetargetAction;
 
 import org.eclipse.draw2d.PositionConstants;
 
 import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.internal.GEFMessages;
-import org.eclipse.gef.internal.InternalImages;
 import org.eclipse.gef.ui.actions.*;
 
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
