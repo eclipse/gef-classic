@@ -10,32 +10,37 @@ import org.eclipse.draw2d.geometry.*;
 
 /**
  * Provides generic support for borders.
+ * @author hudsonr
  */
 public abstract class AbstractBorder
 	implements Border
 {
 
+/**
+ */
 private static final Dimension EMPTY = new Dimension();
 
 /** A temporary Rectangle*/
 protected static Rectangle tempRect = new Rectangle();
 
 /**
- * Returns the region of f with its border removed, 
- * I.E. the paintable region of f. 
- *
- * @param f  Figure for which the paintable rectangle is needed.
- * @param insets  f's Insets.
- * @return  The paintable region of f.
+ * Returns a temporary rectangle representing the figure's bounds cropped by the specified
+ * inserts.  This method exists for convenience and performance; the method does not new
+ * any Objects and returns a rectangle which the caller can manipulate.
  * @since 2.0
+ * @param figure  Figure for which the paintable rectangle is needed. 
+ * @param insets The insets.
+ * @return The paintable region on the Figure f.
  */
-static protected final Rectangle getPaintRectangle(IFigure f, Insets insets) {
-	tempRect.setBounds(f.getBounds());
+protected static final Rectangle getPaintRectangle(IFigure figure, Insets insets) {
+	tempRect.setBounds(figure.getBounds());
 	return tempRect.crop(insets);
 }
 
-/*
- * From Interface
+/**
+ * @param f IFigure
+ * @return Dimension
+ * @see org.eclipse.draw2d.Border#getPreferredSize(IFigure)
  */
 public Dimension getPreferredSize(IFigure f) {
 	return EMPTY;

@@ -19,7 +19,7 @@ public class AbsoluteBendpoint
 
 /**
  * Creates a new AbsoluteBendpoint at the Point p.
- * 
+ * @param p The absolute location of the bendpoint.
  * @since 2.0
  */
 public AbsoluteBendpoint(Point p) {
@@ -28,7 +28,8 @@ public AbsoluteBendpoint(Point p) {
 
 /**
  * Creates a new AbsoluteBendpoint at the Point (x,y).
- * 
+ * @param x x coordinate.
+ * @param y y coordinate.
  * @since 2.0
  */
 public AbsoluteBendpoint(int x, int y) {
@@ -36,9 +37,9 @@ public AbsoluteBendpoint(int x, int y) {
 }
 
 /**
- * Returns this Point as its location.
- * 
+ * Returns the location.
  * @since 2.0
+ * @return Returns the location.
  */
 public Point getLocation() {
 	return this;

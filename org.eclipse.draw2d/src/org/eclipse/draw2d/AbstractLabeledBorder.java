@@ -31,9 +31,9 @@ private Font font;
  * 
  * @since 2.0
  */
-public AbstractLabeledBorder(){
+public AbstractLabeledBorder() {
 	String className = getClass().getName();
-	setLabel(className.substring(className.lastIndexOf('.')+1,className.length()));
+	setLabel(className.substring(className.lastIndexOf('.') + 1, className.length()));
 }
 
 /**
@@ -43,16 +43,21 @@ public AbstractLabeledBorder(){
  * @param s  Label to be set on the border.
  * @since 2.0
  */
-public AbstractLabeledBorder(String s){
+public AbstractLabeledBorder(String s) {
 	setLabel(s);
 }
 
+/**
+ * Calculates insets based on the current font and other attributes.
+ * This value will be cached until {@link #invalidate()} is called.
+ * @param figure The figure to which the border is being applied.
+ */
 protected abstract Insets calculateInsets(IFigure figure);
 
-/*
- * Returns the font associated with this border. Returns
- * a previously set Font if present, else returns the 
- * font associated with the input Figure.
+/**
+ * Returns the font that this border will use. If no Font has been specified, the 
+ * font associated with the input Figure will be used.
+ * @return The font for this border
  */
 protected Font getFont(IFigure f) {
 	if (font == null)
@@ -60,13 +65,13 @@ protected Font getFont(IFigure f) {
 	return font;
 }
 
-/* 
+/**
  * Returns the insets, or space associated for this
  * border. Returns any previously set value if present,
  * else calculates it from the Figure provided in as 
  * input.
  */
-public Insets getInsets(IFigure fig){
+public Insets getInsets(IFigure fig) {
 	if (insets == null)
 		insets = calculateInsets(fig);
 	return insets;
@@ -76,8 +81,8 @@ public String getLabel(){
 	return label;
 }
 
-public Dimension getPreferredSize( IFigure fig ){
-	return new Dimension( getTextExtents(fig) );
+public Dimension getPreferredSize(IFigure fig) {
+	return new Dimension(getTextExtents(fig));
 }
 
 /**
