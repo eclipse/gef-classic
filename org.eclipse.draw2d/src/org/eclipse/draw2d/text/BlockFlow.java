@@ -2,8 +2,6 @@ package org.eclipse.draw2d.text;
 
 import java.util.List;
 
-import org.eclipse.jface.util.Assert;
-
 import org.eclipse.draw2d.PositionConstants;
 
 /**
@@ -71,10 +69,11 @@ public void postValidate() {
  *   <LI>{@link org.eclip
  * @param value the aligment */
 public void setHorizontalAligment(int value) {
-	Assert.isTrue(value == PositionConstants.LEFT
+	if (!(value == PositionConstants.LEFT
 		|| value == PositionConstants.RIGHT
-		|| value == PositionConstants.CENTER,
-		"Legal values are: LEFT, CENTER, RIGHT");//$NON-NLS-1$
+		|| value == PositionConstants.CENTER))
+		throw new IllegalArgumentException(
+			"Horizontal Aligment must be one of: LEFT, CENTER, RIGHT");//$NON-NLS-1$
 	this.aligment &= ~PositionConstants.LEFT_CENTER_RIGHT;
 	this.aligment |= value;
 }
