@@ -145,15 +145,6 @@ protected Command getAlignCommand(AlignmentRequest request) {
 }
 
 /**
- * Returns true if this EditPolicy allows its EditPart to be dragged.
- * 
- * @return true if the EditPart can be dragged.
- */
-public boolean getIsDraggable() {
-	return isDraggable;
-}
-
-/**
  * Returns the command contribution to a change bounds request. The implementation
  * actually redispatches the request to the host's parent editpart as a {@link
  * RequestConstants#REQ_MOVE_CHILDREN} request.  The parent's contribution is returned.
@@ -208,12 +199,21 @@ protected Rectangle initialFeedbackRectangle() {
 }
 
 /**
+ * Returns true if this EditPolicy allows its EditPart to be dragged.
+ * 
+ * @return true if the EditPart can be dragged.
+ */
+public boolean isDraggable() {
+	return isDraggable;
+}
+
+/**
  * Sets the dragability of the EditPolicy to the given value. If the value is 
  * false, the EditPolicy should not allow its EditPart to be dragged.
  * 
  * @param isDraggable whether or not the EditPolicy can be dragged.
  */
-public void setIsDragable(boolean isDraggable) {
+public void setDraggable(boolean isDraggable) {
 	if (isDraggable == this.isDraggable)
 		return;
 	this.isDraggable = isDraggable;
