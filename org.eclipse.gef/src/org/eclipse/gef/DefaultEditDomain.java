@@ -15,18 +15,6 @@ import org.eclipse.ui.IEditorPart;
 /**
  * A default implementation of {@link EditDomain}. An {@link IEditorPart} is required 
  * in the constructor, but it can be <code>null</code>.
- * <P>
- * A {@link org.eclipse.gef.tools.SelectionTool} will be the active Tool until:
- * <UL>
- *   <LI>A {@link org.eclipse.gef.palette.PaletteRoot} is provided which contains a
- *   default entry which is a {@link org.eclipse.gef.palette.ToolEntry}. In which
- *   case that entry's tool is made the active Tool.
- * </UL>
- * <P>
- * DefaultEditDomain can be configured with a 
- * {@link org.eclipse.gef.ui.palette.PaletteViewer}. When provided, the
- * DefaultEditDomain will listen for PaletteEvents, and will switch the 
- * active Tool automatically in response.
  */
 public class DefaultEditDomain
 	extends EditDomain
