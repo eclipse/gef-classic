@@ -136,6 +136,7 @@ public String SetLocationCommand_Label_Resize = Helper.getString("%SetLocationCo
 public String CreateGuideCommand_Label = Helper.getString("%CreateGuideCommand_Label"); //$NON-NLS-1$
 public String DeleteGuideCommand_Label = Helper.getString("%DeleteGuideCommand_Label"); //$NON-NLS-1$
 public String MoveGuideCommand_Label = Helper.getString("%MoveGuideCommand_Label"); //$NON-NLS-1$
+public String CloneCommand_Label = Helper.getString("%CloneCommand.Label"); //$NON-NLS-1$
 
 public String ViewMenu_LabelText = Helper.getString("%ViewMenu.LabelText_UI_"); //$NON-NLS-1$
 

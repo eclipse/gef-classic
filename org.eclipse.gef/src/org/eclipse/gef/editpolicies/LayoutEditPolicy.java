@@ -16,6 +16,7 @@ import org.eclipse.draw2d.*;
 
 import org.eclipse.gef.*;
 import org.eclipse.gef.commands.Command;
+import org.eclipse.gef.requests.ChangeBoundsRequest;
 import org.eclipse.gef.requests.CreateRequest;
 
 /**
@@ -122,7 +123,8 @@ protected void eraseSizeOnDropFeedback(Request request) {
 public void eraseTargetFeedback(Request request) {
 	if (REQ_ADD.equals(request.getType())
 		|| REQ_MOVE.equals(request.getType())
-		|| REQ_CREATE.equals(request.getType()))
+		|| REQ_CREATE.equals(request.getType())
+		|| REQ_CLONE.equals(request.getType()))
 		eraseLayoutTargetFeedback(request);
 
 	if (REQ_CREATE.equals(request.getType()))
@@ -135,6 +137,15 @@ public void eraseTargetFeedback(Request request) {
  * @param request the ADD Request
  * @return A command to perform the ADD. */
 protected Command getAddCommand(Request request) {
+	return null;
+}
+
+/**
+ * Override to contribute to clone requests.
+ * @param request the clone request
+ * @return the command contribution to the clone
+ */
+protected Command getCloneCommand(ChangeBoundsRequest request) {
 	return null;
 }
 
@@ -160,6 +171,9 @@ public Command getCommand(Request request) {
 	if (REQ_MOVE_CHILDREN.equals(request.getType()))
 		return getMoveChildrenCommand(request);
 
+	if (REQ_CLONE.equals(request.getType()))
+		return getCloneCommand((ChangeBoundsRequest)request);
+	
 	if (REQ_CREATE.equals(request.getType()))
 		return getCreateCommand((CreateRequest)request);
 
@@ -229,7 +243,8 @@ protected IFigure getSizeOnDropFeedback() {
 public EditPart getTargetEditPart(Request request) {
 	if (REQ_ADD.equals(request.getType())
 		|| REQ_MOVE.equals(request.getType())
-		|| REQ_CREATE.equals(request.getType()))
+		|| REQ_CREATE.equals(request.getType())
+		|| REQ_CLONE.equals(request.getType()))
 		return getHost();
 	return null;
 }
@@ -278,6 +293,7 @@ protected void showSizeOnDropFeedback(CreateRequest request) {
  * @see org.eclipse.gef.EditPolicy#showTargetFeedback(Request) */
 public void showTargetFeedback(Request request) {
 	if (REQ_ADD.equals(request.getType())
+		|| REQ_CLONE.equals(request.getType())
 		|| REQ_MOVE.equals(request.getType())
 		|| REQ_RESIZE_CHILDREN.equals(request.getType())
 		|| REQ_CREATE.equals(request.getType())) {

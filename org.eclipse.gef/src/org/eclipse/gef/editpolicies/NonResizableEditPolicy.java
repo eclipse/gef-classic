@@ -94,6 +94,7 @@ protected void eraseChangeBoundsFeedback(ChangeBoundsRequest request) {
  */
 public void eraseSourceFeedback(Request request) {
 	if (REQ_MOVE.equals(request.getType())
+	    || REQ_CLONE.equals(request.getType())
 		|| REQ_ADD.equals(request.getType()))
 		eraseChangeBoundsFeedback((ChangeBoundsRequest) request);
 }
@@ -242,7 +243,8 @@ protected void showFocus() {
  */
 public void showSourceFeedback(Request request) {
 	if (REQ_MOVE.equals(request.getType())
-		|| REQ_ADD.equals(request.getType()))
+		|| REQ_ADD.equals(request.getType())
+		|| REQ_CLONE.equals(request.getType())) 
 		showChangeBoundsFeedback((ChangeBoundsRequest) request);
 }
 
@@ -253,6 +255,7 @@ public void showSourceFeedback(Request request) {
  */
 public boolean understandsRequest(Request request) {
 	if (REQ_MOVE.equals(request.getType())
+		|| REQ_CLONE.equals(request.getType())
 		|| REQ_ADD.equals(request.getType())
 		|| REQ_ORPHAN.equals(request.getType())
 		|| REQ_ALIGN.equals(request.getType()))

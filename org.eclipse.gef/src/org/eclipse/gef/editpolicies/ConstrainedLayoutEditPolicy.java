@@ -22,7 +22,7 @@ import org.eclipse.gef.requests.*;
 
 /**
  * For use with <code>LayoutManager</code> that require a <i>constraint</i>.
- * ConstraintedLayoutEditPolicy understands {@link RequestConstants#REQ_ALIGN_CHILDREN}
+ * ConstrainedLayoutEditPolicy understands {@link RequestConstants#REQ_ALIGN_CHILDREN}
  * in addition to the Requests handled in the superclass.
  * @author hudsonr
  * @since 2.0 */
@@ -181,7 +181,27 @@ protected Object getConstraintFor(CreateRequest request) {
 		figure.translateToRelative(size);
 		figure.translateFromParent(size);	
 		return getConstraintFor(new Rectangle(where, size));
+	}
 }
+
+/**
+ * Returns the correct rectangle bounds for the new clone's location.
+ * 
+ * @param part the graphical edit part representing the object to be cloned.
+ * @param request the changeboundsrequest that knows where to place the new
+ * object.
+ * @return the bounds that will be used for the new object.
+ */
+protected Object getConstraintForClone(GraphicalEditPart part, ChangeBoundsRequest request) {
+	IFigure figure = part.getFigure();
+	Rectangle bounds = new PrecisionRectangle(figure.getBounds());
+
+	figure.translateToAbsolute(bounds);
+	bounds = request.getTransformedRectangle(bounds);
+
+	((GraphicalEditPart)getHost()).getContentPane().translateToRelative(bounds);
+	bounds.translate(getLayoutOrigin().getNegated());
+	return getConstraintFor(bounds);
 }
 
 /**

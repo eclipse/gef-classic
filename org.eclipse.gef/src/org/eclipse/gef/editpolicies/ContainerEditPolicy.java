@@ -40,6 +40,15 @@ protected Command getAddCommand(GroupRequest request) {
 }
 
 /**
+ * Override to contribute to clone requests.
+ * @param request the clone request
+ * @return the command contribution to the clone
+ */
+protected Command getCloneCommand(ChangeBoundsRequest request) {
+	return null;
+}
+
+/**
  * Overridden to check for add, create, and orphan.
  * @see org.eclipse.gef.EditPolicy#getCommand(org.eclipse.gef.Request)
  */
@@ -48,6 +57,8 @@ public Command getCommand(Request request) {
 		return getCreateCommand((CreateRequest)request);
 	if (REQ_ADD.equals(request.getType()))
 		return getAddCommand((GroupRequest)request);
+	if (REQ_CLONE.equals(request.getType()))
+		return getCloneCommand((ChangeBoundsRequest)request);
 	if (REQ_ORPHAN_CHILDREN.equals(request.getType()))
 		return getOrphanChildrenCommand((GroupRequest)request);
 	return null;

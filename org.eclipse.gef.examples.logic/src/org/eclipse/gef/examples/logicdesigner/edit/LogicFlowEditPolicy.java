@@ -11,17 +11,50 @@
 package org.eclipse.gef.examples.logicdesigner.edit;
 
 
+import java.util.Iterator;
+
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.geometry.PrecisionRectangle;
+import org.eclipse.draw2d.geometry.Rectangle;
+
 import org.eclipse.gef.*;
 import org.eclipse.gef.commands.Command;
+import org.eclipse.gef.requests.ChangeBoundsRequest;
+import org.eclipse.gef.requests.CreateRequest;
+
 import org.eclipse.gef.examples.logicdesigner.model.*;
 import org.eclipse.gef.examples.logicdesigner.model.commands.*;
-
-import org.eclipse.gef.requests.CreateRequest;
 
 public class LogicFlowEditPolicy
 	extends org.eclipse.gef.editpolicies.FlowLayoutEditPolicy
 {
 
+/**
+ * Override to return the <code>Command</code> to perform an {@link
+ * RequestConstants#REQ_CLONE CLONE}. By default, <code>null</code> is
+ * returned.
+ * @param request the Clone Request
+ * @return A command to perform the Clone.
+ */
+protected Command getCloneCommand(ChangeBoundsRequest request) {
+	CloneCommand clone = new CloneCommand();
+	clone.setParent((LogicDiagram)getHost().getModel());
+	
+	EditPart after = getInsertionReference(request);
+	int index = getHost().getChildren().indexOf(after);
+	
+	Iterator i = request.getEditParts().iterator();
+	GraphicalEditPart currPart = null;
+	
+	while (i.hasNext()) {
+		currPart = (GraphicalEditPart)i.next();
+		IFigure figure = currPart.getFigure();
+		clone.addPart((LogicSubpart)currPart.getModel(), index++);
+	}
+	
+	return clone;
+}
+	
 protected Command createAddCommand(EditPart child, EditPart after) {
 	AddCommand command = new AddCommand();
 	command.setChild((LogicSubpart)child.getModel());

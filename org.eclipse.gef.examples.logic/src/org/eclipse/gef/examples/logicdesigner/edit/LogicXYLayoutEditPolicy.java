@@ -10,8 +10,11 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner.edit;
 
+import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.geometry.PrecisionRectangle;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.*;
@@ -97,6 +100,30 @@ protected LogicGuide findGuideAt(int pos, boolean horizontal) {
 	}
 	throw new RuntimeException("LogicXYLayoutEditPolicy: Guide not found at position " + pos); //$NON-NLS-1$
 }
+
+/**
+ * Override to return the <code>Command</code> to perform an {@link
+ * RequestConstants#REQ_CLONE CLONE}. By default, <code>null</code> is
+ * returned.
+ * @param request the Clone Request
+ * @return A command to perform the Clone.
+ */
+protected Command getCloneCommand(ChangeBoundsRequest request) {
+	CloneCommand clone = new CloneCommand();
+	
+	clone.setParent((LogicDiagram)getHost().getModel());
+	
+	Iterator i = request.getEditParts().iterator();
+	GraphicalEditPart currPart = null;
+	
+	while (i.hasNext()) {
+		currPart = (GraphicalEditPart)i.next();
+		clone.addPart((LogicSubpart)currPart.getModel(), (Rectangle)getConstraintForClone(currPart, request));
+	}
+	
+	return clone;
+}
+
 
 protected Command getCreateCommand(CreateRequest request) {
 	CreateCommand create = new CreateCommand();

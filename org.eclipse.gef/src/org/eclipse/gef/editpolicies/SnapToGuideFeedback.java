@@ -73,7 +73,9 @@ public void setHost(EditPart host) {
 
 public void showSourceFeedback(Request request) {
 	eraseSourceFeedback(request);
-	if (request.getType().equals(REQ_MOVE) || request.getType().equals(REQ_RESIZE)) {
+	if (request.getType().equals(REQ_MOVE)
+	  || request.getType().equals(REQ_RESIZE)
+	  || request.getType().equals(REQ_CLONE)) {
 		ChangeBoundsRequest req = (ChangeBoundsRequest)request;
 		highlightGuide(
 				(Integer)req.getExtendedData().get(SnapToGuides.VERTICAL_GUIDE), false);
