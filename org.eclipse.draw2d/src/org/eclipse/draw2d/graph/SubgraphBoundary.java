@@ -60,6 +60,7 @@ public SubgraphBoundary(Subgraph s, Insets p, int side) {
 			//$TODO width of head/tail should be 0
 			width = 5;
 			padding.bottom = s.innerPadding.top;
+			padding.left = padding.right = 0;
 			data = "top(" + s + ")"; //$NON-NLS-1$ //$NON-NLS-2$
 			break;
 		case BOTTOM :
@@ -67,6 +68,7 @@ public SubgraphBoundary(Subgraph s, Insets p, int side) {
 			//$TODO width of head/tail should be 0
 			width = 5;
 			padding.top = s.innerPadding.bottom;
+			padding.left = padding.right = 0;
 			data = "bottom(" + s + ")"; //$NON-NLS-1$ //$NON-NLS-2$
 			break;
 	}

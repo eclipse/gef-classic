@@ -11,7 +11,8 @@ import org.eclipse.draw2d.graph.*;
  */
 public class CompoundHorizontalPlacement extends HorizontalPlacement {
 
-class LeftRight {//$TODO Delete and use NodePair class, equivalent
+class LeftRight {
+	//$TODO Delete and use NodePair class, equivalent
 	Object left, right;
 	LeftRight(Object l, Object r) {
 		left = l; right = r;
@@ -112,11 +113,11 @@ Node getLeft(Subgraph s) {
 		Node tail = getPrime(s.tail);
 		Node left = getPrime(s.left);
 		Node right = getPrime(getRight(s));
-		prime.edges.add(new Edge(left, right,s.width,1));
-		prime.edges.add(new Edge(left, head,0,100));
-//		prime.edges.add(new Edge(head, right,0,1));
-		prime.edges.add(new Edge(left, tail,0,100));
-//		prime.edges.add(new Edge(tail, right,0,1));
+		prime.edges.add(new Edge(left, right,s.width,0));
+		prime.edges.add(new Edge(left, head,0,1));
+		prime.edges.add(new Edge(head, right,0,1));
+		prime.edges.add(new Edge(left, tail,0,1));
+		prime.edges.add(new Edge(tail, right,0,1));
 	}
 	return s.left;
 }

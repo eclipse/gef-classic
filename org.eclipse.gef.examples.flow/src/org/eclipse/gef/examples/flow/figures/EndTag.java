@@ -11,35 +11,32 @@ import org.eclipse.gef.examples.flow.FlowImages;
  * @author hudsonr
  * Created on Jul 21, 2003
  */
-public class StartTag extends Label {
+public class EndTag extends Label {
 
-static final Border BORDER = new MarginBorder(2,0,2,9);
+static final Border BORDER = new MarginBorder(2,0,2,2);
 
 /**
  * Creates a new StartTag
  * @param name the text to display in this StartTag
  */
-public StartTag(String name) {
-	setIconTextGap(4);
+public EndTag(String name) {
+	setIconTextGap(8);
 	setText(name);
 	setIcon(FlowImages.gear);
-	setBorder(new MarginBorder(2,0,2,9));
+	setBorder(BORDER);
 }
 
 protected void paintFigure(Graphics g) {
 	super.paintFigure(g);
 	Rectangle r = getTextBounds();
 
-	r.resize(-1, -1);
-	r.expand(1, 1);
-	r.width -= 1;
-	r.x -= 2;
+	r.resize(0, -1).expand(1, 1);
 	g.drawLine(r.x, r.y, r.right(), r.y); //Top line
 	g.drawLine(r.x, r.bottom(), r.right(), r.bottom()); //Bottom line
-	g.drawLine(r.x, r.bottom(), r.x, r.y); //left line
+	g.drawLine(r.right(), r.bottom(), r.right(), r.y); //Right line
 
-	g.drawLine(r.right() + 7, r.y + r.height / 2, r.right(), r.y);
-	g.drawLine(r.right()+7, r.y + r.height / 2, r.right(), r.bottom());
+	g.drawLine(r.x-7, r.y + r.height / 2, r.x, r.y);
+	g.drawLine(r.x-7, r.y + r.height / 2, r.x, r.bottom());
 }
 
 }

@@ -40,7 +40,7 @@ public void relocate(CellEditor celleditor) {
 	Point pref = text.computeSize(-1, -1);
 	Rectangle rect = label.getTextBounds().getCopy();
 	label.translateToAbsolute(rect);
-	text.setBounds(rect.x - 4, rect.y - 1, pref.x + 1, pref.y + 1);	
+	text.setBounds(rect.x - 1, rect.y - 1, pref.x + 1, pref.y + 1);	
 }
 
 /**
