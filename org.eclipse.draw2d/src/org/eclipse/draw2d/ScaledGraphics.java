@@ -164,17 +164,16 @@ public void dispose() {
 
 /** @see Graphics#drawArc(int, int, int, int, int, int) */
 public void drawArc(int x, int y, int w, int h, int offset, int sweep) {
-	if (offset == 0 || sweep == 0)
-		return;
 	Rectangle z = zoomRect(x, y, w, h);
-	if (!z.isEmpty())
-		graphics.drawArc(z, offset, sweep);
+	if (z.isEmpty() || sweep == 0)
+		return;
+	graphics.drawArc(z, offset, sweep);
 }
 
 /** @see Graphics#fillArc(int, int, int, int, int, int) */
 public void fillArc(int x, int y, int w, int h, int offset, int sweep) {
 	Rectangle z = zoomFillRect(x, y, w, h);
-	if (offset == 0 || sweep == 0 || z.isEmpty())
+	if (z.isEmpty() || sweep == 0)
 		return;
 	graphics.fillArc(z, offset, sweep);
 }
@@ -231,11 +230,6 @@ public void fillOval(int x, int y, int w, int h) {
 /** @see Graphics#drawPolygon(PointList) */
 public void drawPolygon(PointList points) {
 	graphics.drawPolygon(zoomPointList(points));
-}
-
-/** @see Graphics#drawPoint(int, int) */
-public void drawPoint(int x, int y) {
-	graphics.drawPoint((int)Math.floor(x * zoom + fractionalX),(int)Math.floor(y * zoom + fractionalY));
 }
 
 /** @see Graphics#fillPolygon(PointList) */
