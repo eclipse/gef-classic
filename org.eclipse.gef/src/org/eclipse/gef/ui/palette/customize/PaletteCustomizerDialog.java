@@ -30,12 +30,12 @@ import org.eclipse.jface.util.Assert;
 import org.eclipse.jface.viewers.*;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.internal.WorkbenchImages;
-import org.eclipse.ui.internal.ide.IDEInternalWorkbenchImages;
 import org.eclipse.ui.part.PageBook;
 
 import org.eclipse.draw2d.ColorConstants;
 
 import org.eclipse.gef.internal.Internal;
+import org.eclipse.gef.internal.ui.palette.ToolbarDropdownContributionItem;
 import org.eclipse.gef.palette.PaletteEntry;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.ui.palette.PaletteCustomizer;

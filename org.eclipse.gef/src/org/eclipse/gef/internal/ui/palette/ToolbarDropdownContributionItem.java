@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.gef.ui.palette.customize;
+package org.eclipse.gef.internal.ui.palette;
 
 import java.util.HashMap;
 import java.util.Iterator;

@@ -10,21 +10,21 @@
  *******************************************************************************/
 package org.eclipse.gef.ui.views.palette;
 
-import org.eclipse.gef.ContextMenuProvider;
-import org.eclipse.gef.GraphicalViewer;
-import org.eclipse.gef.dnd.TemplateTransferDragSourceListener;
-import org.eclipse.gef.dnd.TransferDragSourceListener;
-import org.eclipse.gef.editparts.ZoomManager;
-import org.eclipse.gef.palette.PaletteRoot;
-import org.eclipse.gef.ui.palette.*;
-import org.eclipse.gef.ui.palette.customize.ToolbarDropdownContributionItem;
-
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.part.Page;
+
+import org.eclipse.gef.ContextMenuProvider;
+import org.eclipse.gef.GraphicalViewer;
+import org.eclipse.gef.dnd.TemplateTransferDragSourceListener;
+import org.eclipse.gef.dnd.TransferDragSourceListener;
+import org.eclipse.gef.editparts.ZoomManager;
+import org.eclipse.gef.internal.ui.palette.ToolbarDropdownContributionItem;
+import org.eclipse.gef.palette.PaletteRoot;
+import org.eclipse.gef.ui.palette.*;
 
 /**
  * @author Pratik Shah
@@ -42,6 +42,7 @@ private TransferDragSourceListener listener;
 public DefaultPalettePage(PaletteRoot model, GraphicalViewer primaryViewer) {
 	super();
 	root = model;
+	
 	diagramViewer = primaryViewer;
 }
 
