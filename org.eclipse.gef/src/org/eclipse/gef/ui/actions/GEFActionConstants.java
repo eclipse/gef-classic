@@ -134,10 +134,11 @@ public static final String ZOOM_IN = "org.eclipse.gef.zoom_in"; //$NON-NLS-1$
 public static final String ZOOM_OUT = "org.eclipse.gef.zoom_out"; //$NON-NLS-1$
 
 /** 
- * Toggle grid enablement contribution id<br>
- * Value: <code>"org.eclipse.gef.snap.grid"</code>
+ * Toggle grid visibility contribution id<br> Value:
+ * <code>"org.eclipse.gef.snap.grid.visibility"</code>
  */
-public static final String TOGGLE_GRID = "org.eclipse.gef.snap.grid"; //$NON-NLS-1$
+public static final String TOGGLE_GRID_VISIBILITY 
+		= "org.eclipse.gef.snap.grid.visibility"; //$NON-NLS-1$
 
 /** 
  * Toggle ruler visibility contribution id<br>
