@@ -50,7 +50,7 @@ protected PaletteViewerProvider createPaletteViewerProvider() {
 public void createPartControl(Composite parent) {
 	splitter = new FlyoutPaletteComposite(parent, SWT.NONE, getSite().getPage(),
 			getPaletteViewerProvider());
-	splitter.setInitialState(getInitialPaletteState());
+	splitter.setDefaultState(getInitialPaletteState());
 	super.createPartControl(splitter);
 	splitter.setGraphicalControl(getGraphicalControl());
 	if (page != null) {
