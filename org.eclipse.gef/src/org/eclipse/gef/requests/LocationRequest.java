@@ -18,11 +18,22 @@ public class LocationRequest
 private Point location;
 
 /**
- * Returns the current location.
- *
- * @return The current location.
+ * Constructs a LocationRequest with no type.
  */
-public Point getLocation(){
+public LocationRequest() { }
+
+/** * Constructs a LocationRequest with the given type.
+ * @param type the type
+ */
+public LocationRequest(Object type) {
+	super(type);
+}
+
+/**
+ * Returns the current location.
+ * @return The current location
+ */
+public Point getLocation() {
 	return location;
 }
 
@@ -31,7 +42,7 @@ public Point getLocation(){
  *
  * @param p The current location.
  */
-public void setLocation(Point p){
+public void setLocation(Point p) {
 	location = p;
 }
 
