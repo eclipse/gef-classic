@@ -211,10 +211,6 @@ public void fillRoundRectangle(Rectangle r, int arcWidth, int arcHeight){
 	gc.fillRoundRectangle(r.x + translateX, r.y + translateY, r.width, r.height, arcWidth, arcHeight);
 }
 
-/** 
- * @deprecated use {@link Graphics#drawString(String, int, int)} and 
- * {@link Graphics#fillString(String, int, int)}
- */
 public void drawString(String s, int x, int y){
 	checkText();
 	gc.drawString(s, x + translateX, y + translateY, true);
