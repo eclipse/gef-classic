@@ -182,9 +182,10 @@ protected void setDragSource(DragSource source) {
 			}
 		}
 	}
-
-	//This should be *the* last listener because all other listeners are hooked in super().
-	getDragSource().addDragListener(new TheLastListener());
+	// The DragSource may be set to null if there are no listeners.  If there are listeners,
+	// this should be *the* last listener because all other listeners are hooked in super().
+	if (source != null)
+		getDragSource().addDragListener(new TheLastListener());
 }
 
 public void setEditDomain(EditDomain domain){
