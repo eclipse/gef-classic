@@ -22,7 +22,6 @@
 	</target>
 
 	<target name="gather.bin.parts" depends="init" if="destination.temp.folder">
-		<ant antfile="javadoc.xml" />
 		<mkdir dir="${destination.temp.folder}/${full.name}"/>
 		<copy todir="${destination.temp.folder}/${full.name}">
 			<fileset dir="${basedir}" includes="*.properties,*.xml,*.zip,icons/" excludes="build.properties,build.xml,buildAll.xml,javadoc*.xml" />
@@ -30,7 +29,9 @@
 
 	</target>
 
-	<target name="build.jars" depends="init" />
+	<target name="build.jars" depends="init">
+		<ant antfile="buildDoc.xml" />
+	</target>
 	
 	<target name="gather.sources" depends="init" if="destination.temp.folder">
 	</target>

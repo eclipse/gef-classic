@@ -1,0 +1,45 @@
+<project name="GEF Doc Isv Build" default="all"  basedir="." >
+
+<property name="install" value="${basedir}/../../" />
+
+<target name="all">
+	<antcall target="generateJavadoc" />	
+</target>
+
+<target name="generateJavadoc" if="JAVADOC14_HOME">
+	<condition property="optionsFile" value="gefOptions">
+	      <os family="unix" />
+    </condition>
+    <condition property="optionsFile" value="gefOptions.txt">
+	      <os family="windows" />
+    </condition>
+
+	<replace file="${basedir}/${optionsFile}" token="@version@" value="2.0"/>
+	<replace file="${basedir}/${optionsFile}" token="@stamp@" value="${buildid}" />
+	<replace file="${basedir}/${optionsFile}" token="@rt@" value="${rt}" />
+
+		
+	<!--scrub isv plugin directories of any preexisting api doc content-->
+	<delete dir="${install}/plugins/org.eclipse.gef.doc.isv/reference/api"/>
+	<mkdir dir="${install}/plugins/org.eclipse.gef.doc.isv/reference/api"/>
+
+	<exec dir="." executable="${JAVADOC14_HOME}/javadoc" output="doc.bin.log">
+		<arg line="@${basedir}/${optionsFile} -J-Xmx180m" />
+	</exec>
+</target>
+
+</project>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
