@@ -752,14 +752,14 @@ protected void setFigure(IFigure figure) {
 	this.figure = figure;
 }
 
-/** * @see org.eclipse.gef.GraphicalEditPart#setLayoutConstraint(EditPart, IFigure, Object) */
+/** * @see GraphicalEditPart#setLayoutConstraint(EditPart, IFigure, Object) */
 public void setLayoutConstraint(EditPart child, IFigure childFigure, Object constraint) {
-	getContentPane().setConstraint(childFigure, constraint);
+	childFigure.getParent().setConstraint(childFigure, constraint);
 }
 
 /**
  * Implemented to remove the Figure from the Viewer's registry.
- * @see org.eclipse.gef.editparts.AbstractEditPart#unregisterVisuals() */
+ * @see AbstractEditPart#unregisterVisuals() */
 protected void unregisterVisuals() {
 	getViewer().getVisualPartMap().remove(getFigure());
 }
