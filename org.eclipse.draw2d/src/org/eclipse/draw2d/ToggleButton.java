@@ -25,6 +25,7 @@ public class ToggleButton
 protected Label label = null;
 
 public ToggleButton() {
+	setStyle(STYLE_BUTTON | STYLE_TOGGLE);
 }
 
 /**
@@ -34,7 +35,7 @@ public ToggleButton() {
  * @since 2.0
  */
 public ToggleButton(IFigure contents) {
-	super(contents);
+	super(contents, STYLE_BUTTON | STYLE_TOGGLE);
 }
 
 /**
@@ -54,18 +55,7 @@ public ToggleButton(String text) {
  * @since 2.0
  */
 public ToggleButton(String text, Image normalIcon) {
-	super(text, normalIcon);
-}
-
-/**
- * Initializes this Clickable by setting a default model
- * and adding a clickable event handler for that model.
- * 
- * @since 2.0
- */
-protected void init() {
-	setStyle(STYLE_BUTTON);
-	super.init();
+	super(new Label(text, normalIcon), STYLE_BUTTON | STYLE_TOGGLE);
 }
 
 /**

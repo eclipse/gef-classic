@@ -50,4 +50,8 @@ public Toggle(IFigure contents){
 	super(contents, STYLE_TOGGLE);
 }
 
+public Toggle(IFigure contents, int style) {
+	super(contents, style);
+}
+
 }

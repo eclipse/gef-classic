@@ -44,7 +44,7 @@ public static final int STYLE_BUTTON = STYLE_BUTTON_FLAG;
  * when the mouse is clicked on the button. 
  */
 public static final int STYLE_TOGGLE = STYLE_TOGGLE_FLAG;
-	
+
 /**
  * An action is performed every time the mouse is released.
  */
@@ -447,14 +447,18 @@ public void setSelected(boolean value) {
  * @since 2.0
  */
 public void setStyle(int style) {
-	if (style == STYLE_BUTTON) {
-		setFlag(STYLE_BUTTON_FLAG, ((style & STYLE_BUTTON) == STYLE_BUTTON));
+	if ((style & STYLE_BUTTON) != 0) {
+		setFlag(STYLE_BUTTON_FLAG, true);
 		if (!(getBorder() instanceof ButtonBorder))
 			setBorder(new ButtonBorder());
 		setOpaque(true);
+	} else {
+		setFlag(STYLE_BUTTON_FLAG, false);
+		setOpaque(false);
 	}
-	if (style == STYLE_TOGGLE) {
-		setFlag(STYLE_TOGGLE_FLAG, ((style & STYLE_TOGGLE) == STYLE_TOGGLE));
+
+	if ((style & STYLE_TOGGLE) != 0) {
+		setFlag(STYLE_TOGGLE_FLAG, true);
 		setModel(createDefaultModel());
 	}
 }
