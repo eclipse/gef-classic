@@ -10,9 +10,19 @@ import java.io.*;
 import java.util.EventObject;
 
 import org.eclipse.core.resources.*;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.*;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
+import org.eclipse.swt.dnd.TextTransfer;
+import org.eclipse.swt.widgets.*;
+import org.eclipse.ui.*;
+import org.eclipse.ui.actions.WorkspaceModifyOperation;
+import org.eclipse.ui.dialogs.SaveAsDialog;
+import org.eclipse.ui.part.FileEditorInput;
+import org.eclipse.ui.part.IPageSite;
+import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
+
 import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.gef.*;
 import org.eclipse.gef.dnd.TemplateTransferDragSourceListener;
@@ -26,18 +36,6 @@ import org.eclipse.gef.ui.palette.PaletteContextMenuProvider;
 import org.eclipse.gef.ui.palette.PaletteViewerImpl;
 import org.eclipse.gef.ui.parts.*;
 import org.eclipse.gef.ui.stackview.CommandStackInspectorPage;
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.dialogs.ProgressMonitorDialog;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.dnd.TextTransfer;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.*;
-import org.eclipse.ui.actions.WorkspaceModifyOperation;
-import org.eclipse.ui.dialogs.SaveAsDialog;
-import org.eclipse.ui.part.FileEditorInput;
-import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 public class LogicEditor 
 	extends GraphicalEditorWithPalette 
@@ -49,7 +47,23 @@ class OutlinePage
 	public OutlinePage(EditPartViewer viewer){
 		super(viewer);
 	}
-	
+	public void init(IPageSite pageSite) {
+		super.init(pageSite);
+		ActionRegistry registry = getActionRegistry();
+		IActionBars bars = pageSite.getActionBars();
+		String id = IWorkbenchActionConstants.UNDO;
+		bars.setGlobalActionHandler(id, registry.getAction(id));
+		id = IWorkbenchActionConstants.REDO;
+		bars.setGlobalActionHandler(id, registry.getAction(id));
+		id = IWorkbenchActionConstants.DELETE;
+		bars.setGlobalActionHandler(id, registry.getAction(id));
+		id = IncrementDecrementAction.INCREMENT;
+		bars.setGlobalActionHandler(id, registry.getAction(id));
+		id = IncrementDecrementAction.DECREMENT;
+		bars.setGlobalActionHandler(id, registry.getAction(id));
+		bars.updateActionBars();
+	}
+
 	protected void configureOutlineViewer(){
 		getViewer().setEditDomain(getEditDomain());
 		getViewer().setEditPartFactory(new TreePartFactory());
@@ -291,39 +305,48 @@ protected void initializePaletteViewer() {
 
 protected void createActions() {
 	super.createActions();
+	ActionRegistry registry = getActionRegistry();
+	IAction action;
 	
-	setAction(IWorkbenchActionConstants.PASTE, new LogicPasteTemplateAction(this));
-	markAsSelectionDependentAction(IWorkbenchActionConstants.PASTE, true);
-	
-//	setAction(ZoomAction.ZOOM_IN, new ZoomAction(this, true));
-//	setAction(ZoomAction.ZOOM_OUT, new ZoomAction(this, false));
+	action = new LogicPasteTemplateAction(this);
+	registry.registerAction(action);
+	markAsSelectionDependentAction(action.getId(), true);
 
-	setAction(IncrementDecrementAction.INCREMENT, 
-				new IncrementDecrementAction(this, true));
-	markAsSelectionDependentAction(IncrementDecrementAction.INCREMENT, true);
-	setAction(IncrementDecrementAction.DECREMENT, 
-				new IncrementDecrementAction(this, false));
-	markAsSelectionDependentAction(IncrementDecrementAction.DECREMENT, true);
-	setAction(DirectEditAction.ID, new DirectEditAction(this));
-	markAsSelectionDependentAction(DirectEditAction.ID, true);
-	setAction(AlignmentAction.ID_ALIGN_LEFT, 
-				new AlignmentAction(this, PositionConstants.LEFT));
-	markAsSelectionDependentAction(AlignmentAction.ID_ALIGN_LEFT, true);
-	setAction(AlignmentAction.ID_ALIGN_RIGHT, 
-				new AlignmentAction(this, PositionConstants.RIGHT));
-	markAsSelectionDependentAction(AlignmentAction.ID_ALIGN_RIGHT, true);
-	setAction(AlignmentAction.ID_ALIGN_TOP, 
-				new AlignmentAction(this, PositionConstants.TOP));
-	markAsSelectionDependentAction(AlignmentAction.ID_ALIGN_TOP, true);
-	setAction(AlignmentAction.ID_ALIGN_BOTTOM, 
-				new AlignmentAction(this, PositionConstants.BOTTOM));
-	markAsSelectionDependentAction(AlignmentAction.ID_ALIGN_BOTTOM, true);
-	setAction(AlignmentAction.ID_ALIGN_CENTER, 
-				new AlignmentAction(this, PositionConstants.CENTER));
-	markAsSelectionDependentAction(AlignmentAction.ID_ALIGN_CENTER, true);
-	setAction(AlignmentAction.ID_ALIGN_MIDDLE, 
-				new AlignmentAction(this, PositionConstants.MIDDLE));
-	markAsSelectionDependentAction(AlignmentAction.ID_ALIGN_MIDDLE, true);
+	action = new IncrementDecrementAction(this, true);
+	registry.registerAction(action);
+	markAsSelectionDependentAction(action.getId(), true);
+
+	action = new IncrementDecrementAction(this, false);
+	registry.registerAction(action);
+	markAsSelectionDependentAction(action.getId(), true);
+
+	action = new DirectEditAction(this);
+	registry.registerAction(action);
+	markAsSelectionDependentAction(action.getId(), true);
+
+	action = new AlignmentAction(this, PositionConstants.LEFT);
+	registry.registerAction(action);
+	markAsSelectionDependentAction(action.getId(), true);
+
+	action = new AlignmentAction(this, PositionConstants.RIGHT);
+	registry.registerAction(action);
+	markAsSelectionDependentAction(action.getId(), true);
+
+	action = new AlignmentAction(this, PositionConstants.TOP);
+	registry.registerAction(action);
+	markAsSelectionDependentAction(action.getId(), true);
+
+	action = new AlignmentAction(this, PositionConstants.BOTTOM);
+	registry.registerAction(action);
+	markAsSelectionDependentAction(action.getId(), true);
+
+	action = new AlignmentAction(this, PositionConstants.CENTER);
+	registry.registerAction(action);
+	markAsSelectionDependentAction(action.getId(), true);
+
+	action = new AlignmentAction(this, PositionConstants.MIDDLE);
+	registry.registerAction(action);
+	markAsSelectionDependentAction(action.getId(), true);
 }
 
 public boolean isDirty() {
