@@ -892,10 +892,10 @@ protected void layout() {
  * @see #paintBorder(Graphics)
  */
 public void paint(Graphics graphics) {
-	if (bgColor != null)
-		graphics.setBackgroundColor(bgColor);
-	if (fgColor != null)
-		graphics.setForegroundColor(fgColor);
+	if (getLocalBackgroundColor() != null)
+		graphics.setBackgroundColor(getLocalBackgroundColor());
+	if (getLocalForegroundColor() != null)
+		graphics.setForegroundColor(getLocalForegroundColor());
 	if (font != null)
 		graphics.setFont(font);
 
