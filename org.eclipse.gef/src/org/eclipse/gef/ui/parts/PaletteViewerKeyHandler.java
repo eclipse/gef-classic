@@ -55,7 +55,8 @@ private void buildNavigationList(EditPart palettePart, EditPart exclusion, Array
 			return;
 		} 
 		else if (palettePart instanceof EntryEditPart 
-				|| palettePart instanceof CategoryEditPart)
+				|| palettePart instanceof CategoryEditPart
+				|| palettePart instanceof TemplateEditPart)
 			navList.add(palettePart);
 	}
 
@@ -140,6 +141,13 @@ private boolean navigateIntoExpandedCategory(KeyEvent event){
 		return true;
 	}	
 	return false;
+}
+
+void navigateTo(EditPart part, KeyEvent event) {
+	if (part == null)
+		return;
+	getViewer().select(part);
+	getViewer().setFocus(part);
 }
 
 private boolean navigateToCategory(KeyEvent event){
