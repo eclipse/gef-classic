@@ -48,7 +48,7 @@ private boolean snapToGeometry = false;
 private boolean gridEnabled = false;
 private Dimension gridSpacing = new Dimension(SnapToGrid.DEFAULT_GAP, SnapToGrid.DEFAULT_GAP);
 private Point gridOrigin = new Point();
-private double zoom;
+private double zoom = 1.0;
 
 public LogicDiagram() {
 	size.width = 100;
