@@ -15,5 +15,4 @@
       <import plugin="org.eclipse.swt" export="true"/>
    </requires>
 
-
 </plugin>
