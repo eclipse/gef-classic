@@ -12,7 +12,6 @@ import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
@@ -25,7 +24,6 @@ import org.eclipse.swt.widgets.FontDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Widget;
 import org.eclipse.ui.part.PageBook;
 
@@ -330,42 +328,42 @@ protected Control createFolderOptions(Composite parent) {
 	getButton(LAYOUT_FOLDER_ICON_SIZE_ID).setSelection(
 			prefs.useLargeIcons(PaletteViewerPreferences.LAYOUT_FOLDER));
 	
-	final Button button = createButton(contents, -1,
-			PaletteMessages.SETTINGS_LAYOUT_FOLDER_OVERRIDE_WIDTH, SWT.CHECK, null);
-	((GridData)button.getLayoutData()).horizontalSpan = 2;
-	
-	Composite container = new Composite(contents, SWT.NONE);
-	container.setFont(contents.getFont());
-	GridLayout layout = new GridLayout(2, false);
-	container.setLayout(layout);
-	GridData data = new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_FILL);
-	data.horizontalSpan = 2;
-	container.setLayoutData(data);
-	
-	final Label label = new Label(container, SWT.NONE);
-	label.setFont(container.getFont());
-	label.setText(PaletteMessages.SETTINGS_LAYOUT_FOLDER_WIDTH);
-	data = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING 
-			| GridData.VERTICAL_ALIGN_BEGINNING);
-	label.setLayoutData(data);
-	label.setEnabled(false);
-	
-	final Text box = new Text(container, SWT.SINGLE | SWT.BORDER);
-	box.setFont(container.getFont());
-//	box.setText("30");
-	box.setEnabled(false);
-	data = new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING);
-	data.widthHint = 50;
-	box.setLayoutData(data);
-	
-	button.addSelectionListener(new SelectionListener() {
-		public void widgetSelected(SelectionEvent e) {
-			label.setEnabled(!label.isEnabled());
-			box.setEnabled(!box.isEnabled());
-		}
-		public void widgetDefaultSelected(SelectionEvent e) {
-		}
-	});
+//	final Button button = createButton(contents, -1,
+//			PaletteMessages.SETTINGS_LAYOUT_FOLDER_OVERRIDE_WIDTH, SWT.CHECK, null);
+//	((GridData)button.getLayoutData()).horizontalSpan = 2;
+//	
+//	Composite container = new Composite(contents, SWT.NONE);
+//	container.setFont(contents.getFont());
+//	GridLayout layout = new GridLayout(2, false);
+//	container.setLayout(layout);
+//	GridData data = new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_FILL);
+//	data.horizontalSpan = 2;
+//	container.setLayoutData(data);
+//	
+//	final Label label = new Label(container, SWT.NONE);
+//	label.setFont(container.getFont());
+//	label.setText(PaletteMessages.SETTINGS_LAYOUT_FOLDER_WIDTH);
+//	data = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING 
+//			| GridData.VERTICAL_ALIGN_BEGINNING);
+//	label.setLayoutData(data);
+//	label.setEnabled(false);
+//	
+//	final Text box = new Text(container, SWT.SINGLE | SWT.BORDER);
+//	box.setFont(container.getFont());
+////	box.setText("30");
+//	box.setEnabled(false);
+//	data = new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING);
+//	data.widthHint = 50;
+//	box.setLayoutData(data);
+//	
+//	button.addSelectionListener(new SelectionListener() {
+//		public void widgetSelected(SelectionEvent e) {
+//			label.setEnabled(!label.isEnabled());
+//			box.setEnabled(!box.isEnabled());
+//		}
+//		public void widgetDefaultSelected(SelectionEvent e) {
+//		}
+//	});
 	
 	return contents;
 }
@@ -415,21 +413,32 @@ protected Control createLayoutOptions(Composite container) {
 	GridData data = new GridData();
 	label.setLayoutData(data);
 	
-	Button b = createButton(composite, LAYOUT_FOLDER_VIEW_ID, 
-			PaletteMessages.SETTINGS_FOLDER_VIEW_LABEL, SWT.RADIO, null);
-	((GridData)b.getLayoutData()).horizontalIndent = 5;
-
-	b = createButton(composite, LAYOUT_LIST_VIEW_ID, 
-			PaletteMessages.SETTINGS_LIST_VIEW_LABEL, SWT.RADIO, null);
-	((GridData)b.getLayoutData()).horizontalIndent = 5;
-	
-	b = createButton(composite, LAYOUT_ICONS_VIEW_ID, 
-			PaletteMessages.SETTINGS_ICONS_VIEW_LABEL, SWT.RADIO, null);
-	((GridData)b.getLayoutData()).horizontalIndent = 5;
-	
-	b = createButton(composite, LAYOUT_DETAILS_VIEW_ID, 
-			PaletteMessages.SETTINGS_DETAILS_VIEW_LABEL, SWT.RADIO, null);
-	((GridData)b.getLayoutData()).horizontalIndent = 5;
+	Button b = null;
+	int[] modes = prefs.getSupportedLayoutModes();
+	for (int i = 0; i < modes.length; i++) {
+		switch(modes[i]) {
+			case PaletteViewerPreferences.LAYOUT_FOLDER:
+				b = createButton(composite, LAYOUT_FOLDER_VIEW_ID, 
+						PaletteMessages.SETTINGS_FOLDER_VIEW_LABEL, SWT.RADIO, null);
+				((GridData)b.getLayoutData()).horizontalIndent = 5;
+				break;
+			case PaletteViewerPreferences.LAYOUT_LIST:
+				b = createButton(composite, LAYOUT_LIST_VIEW_ID, 
+						PaletteMessages.SETTINGS_LIST_VIEW_LABEL, SWT.RADIO, null);
+				((GridData)b.getLayoutData()).horizontalIndent = 5;
+				break;
+			case PaletteViewerPreferences.LAYOUT_ICONS:	
+				b = createButton(composite, LAYOUT_ICONS_VIEW_ID, 
+						PaletteMessages.SETTINGS_ICONS_VIEW_LABEL, SWT.RADIO, null);
+				((GridData)b.getLayoutData()).horizontalIndent = 5;
+				break;
+			case PaletteViewerPreferences.LAYOUT_DETAILS:	
+				b = createButton(composite, LAYOUT_DETAILS_VIEW_ID, 
+						PaletteMessages.SETTINGS_DETAILS_VIEW_LABEL, SWT.RADIO, null);
+				((GridData)b.getLayoutData()).horizontalIndent = 5;
+				break;
+		}
+	}
 	
 	// Load layout settings
 	int layoutSetting = prefs.getLayoutSetting();
