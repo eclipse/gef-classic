@@ -17,6 +17,10 @@ import org.eclipse.swt.graphics.FontData;
 /**
  * <code>PaletteViewerPreferences</code> is used to store/persist the various settings of
  * a GEF palette.
+ * <p>
+ * <EM>IMPORTANT</EM>: This interface is <EM>not</EM> intended to be implemented by
+ * clients. Clients should inherit from {@link DefaultPaletteViewerPreferences}.  New
+ * methods may be added in the future.
  * 
  * @author Pratik Shah
  */
