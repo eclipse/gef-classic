@@ -13,7 +13,6 @@ package org.eclipse.draw2d.text;
 import java.util.Iterator;
 
 import org.eclipse.draw2d.Figure;
-import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Rectangle;
 
@@ -73,6 +72,9 @@ public boolean addLeadingWordRequirements(int[] width) {
  * which will process the contributions to determine Bidi levels and shaping requirements.
  * <p>
  * This method is invoked as part of validating Bidi.
+ * <p>
+ * Sub-classes that cache the BidiInfo and/or the bidi level in ContentBoxes should clear
+ * the cached values when this method is invoked.
  * 
  * @param proc the BidiProcessor to which contributions should be made
  * @see BidiProcessor#add(FlowFigure, String)
