@@ -13,8 +13,10 @@ package org.eclipse.gef.internal.ui.rulers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.accessibility.AccessibleControlEvent;
 import org.eclipse.swt.accessibility.AccessibleEvent;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.graphics.Cursor;
 
 import org.eclipse.draw2d.*;
@@ -156,6 +158,13 @@ public DragTracker getDragTracker(Request request) {
 		protected boolean isMove() {
 			return true;
 		}
+		protected boolean handleKeyDown(KeyEvent e) {
+			if (e.character == SWT.ESC) {
+				updateLocationOfFigures(getZoomedPosition());
+				return true;
+			}
+			return super.handleKeyDown(e);
+		}
 	};
 }
 
@@ -243,8 +252,9 @@ public void setCurrentCursor(Cursor c) {
 }
 
 public void updateLocationOfFigures(int position) {
-	((GraphicalEditPart)getParent()).setLayoutConstraint(this, getFigure(), 
-			new Integer(position));
+	getRulerEditPart().setLayoutConstraint(this, getFigure(), new Integer(position));
+	// Fix for Bug# 50999
+	getRulerEditPart().getFigure().getUpdateManager().performUpdate();
 	Point guideFeedbackLocation = getGuideLineFigure().getBounds().getLocation();
 	if (isHorizontal()) {
 		guideFeedbackLocation.y = position;
