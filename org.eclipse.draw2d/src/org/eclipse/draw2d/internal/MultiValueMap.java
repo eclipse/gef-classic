@@ -10,8 +10,7 @@
  *******************************************************************************/
 package org.eclipse.draw2d.internal;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 
 public class MultiValueMap {
 	private HashMap map = new HashMap();
@@ -28,6 +27,8 @@ public class MultiValueMap {
 		v.add(value);
 		return v;
 	}
+	
+	
 	
 	public void put(Object key, Object value) {
 		Object existingValues = map.get(key);
@@ -49,18 +50,43 @@ public class MultiValueMap {
 		}
 	}
 	
-	public void remove(Object key, Object value) {
+	public int remove(Object key, Object value) {
 		Object existingValues = map.get(key);
 		if (existingValues != null) {
 			if (existingValues instanceof ArrayList) {
 				ArrayList v = (ArrayList) existingValues;
-				v.remove(value);
+				int result = v.indexOf(value);
+				if (result == -1)
+					return -1;
+				v.remove(result);
 				if (v.isEmpty())
 					map.remove(key);
-				return;
+				return result;
 			}
-			map.remove(key);
+			if (map.remove(key) != null)
+				return 0;
 		}
+		return -1;
+	}
+	
+	public Object removeValue(Object value) {
+		Iterator iter = map.values().iterator();
+		Object current;
+		while (iter.hasNext()) {
+			current = iter.next();
+			if (value.equals(current)) {
+				iter.remove();
+				return value;
+			}
+			else if (current instanceof List) {
+				if (((List)current).remove(value)) {
+					if (((List)current).isEmpty())
+						iter.remove();
+					return value;
+				}
+			}
+		}
+		return null;
 	}
 	
 	public int size() {

@@ -89,14 +89,13 @@ public void invalidate(Connection conn) {
 		return;
 	HashKey connectionKey = new HashKey(conn);
 	ArrayList connectionList = connections.get(connectionKey);
-	if (connectionList != null) {
-		int index = connectionList.indexOf(conn);
-		if (index == -1)
-			return;
-		connections.remove(connectionKey, conn);
-		for (int i = index; i < connectionList.size(); i++)
+	int affected = connections.remove(connectionKey, conn); 
+	if (affected != -1) {
+		for (int i = affected; i < connectionList.size(); i++)
 			((Connection)connectionList.get(i)).revalidate();
-	}
+	} else
+		connections.removeValue(conn);
+	
 }
 
 /**
@@ -115,8 +114,7 @@ public void remove(Connection conn) {
 	HashKey connectionKey = new HashKey(conn);
 	ArrayList connectionList = connections.get(connectionKey);
 	if (connectionList != null) {
-		int index = connectionList.indexOf(conn);
-		connections.remove(connectionKey, conn);
+		int index = connections.remove(connectionKey, conn);		
 		for (int i = index + 1; i < connectionList.size(); i++)
 			((Connection)connectionList.get(i)).revalidate();
 	}
