@@ -256,8 +256,23 @@ public Point removePoint(int index) {
  * @since 2.0
  */
 public void setPoint(Point pt, int index) {
-	removePoint(index);
-	insertPoint(pt, index);
+	points[index * 2] = pt.x;
+	points[index * 2 + 1] = pt.y;
+}
+
+public void setSize(int newSize) {
+	if (points.length > newSize*2) {
+		size = newSize;
+		return;
+	}
+	
+	int newArrayLength = newSize * 2;
+	int oldArrayLength = points.length;
+	
+	int[] newArray = new int[newArrayLength];
+	points = newArray;
+	System.arraycopy(points,0,newArray,0,oldArrayLength);
+	size = newSize;
 }
 
 /** 
