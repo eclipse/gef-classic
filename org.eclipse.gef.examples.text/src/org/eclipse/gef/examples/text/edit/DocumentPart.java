@@ -9,6 +9,8 @@
 
 package org.eclipse.gef.examples.text.edit;
 
+import java.util.Iterator;
+
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 
@@ -18,7 +20,6 @@ import org.eclipse.gef.ui.actions.GEFActionConstants;
 import org.eclipse.gef.examples.text.SelectionRange;
 import org.eclipse.gef.examples.text.TextLocation;
 import org.eclipse.gef.examples.text.actions.StyleService;
-import org.eclipse.gef.examples.text.model.Container;
 import org.eclipse.gef.examples.text.model.TextRun;
 
 /**
@@ -66,20 +67,24 @@ public Object getStyleState(String styleID, SelectionRange range) {
 
 public Object getStyleValue(String styleID, SelectionRange range) {
 	if (styleID.equals(GEFActionConstants.STYLE_BOLD)) {
-		TextRun run = (TextRun)range.begin.part.getModel();
-		Container container = run.getContainer();
-		while (container != null) {
-			if (container.getStyle().isBold())
-				return Boolean.TRUE;
-			container = container.getContainer();
+		for (Iterator iter = range.getLeafParts().iterator(); iter.hasNext();) {
+			TextRun run = (TextRun)((TextualEditPart)iter.next()).getModel();
+			if (!run.getContainer().getStyle().isBold())
+				return Boolean.FALSE;
 		}
-		return Boolean.FALSE;
+		return Boolean.TRUE;
 	} else if (styleID.equals(GEFActionConstants.STYLE_FONT_SIZE)) {
-		TextRun run = (TextRun)range.begin.part.getModel();
-		Container container = run.getContainer();
-		return new Integer(container.getStyle().getFontHeight());
+		int fontHeight = -1;
+		for (Iterator iter = range.getLeafParts().iterator(); iter.hasNext();) {
+			TextRun run = (TextRun)((TextualEditPart)iter.next()).getModel();
+			if (fontHeight == -1)
+				fontHeight = run.getContainer().getStyle().getFontHeight();
+			else if (fontHeight != run.getContainer().getStyle().getFontHeight())
+				return StyleService.UNDEFINED;
+		}
+		return new Integer(fontHeight);
 	}
-	return Boolean.FALSE;
+	return StyleService.UNDEFINED;
 }
 
 }
