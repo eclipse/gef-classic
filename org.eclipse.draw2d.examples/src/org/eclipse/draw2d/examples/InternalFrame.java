@@ -1,7 +1,5 @@
 package org.eclipse.draw2d.examples;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.graphics.Cursor;
 
 import org.eclipse.draw2d.*;
