@@ -7,8 +7,9 @@ package org.eclipse.gef.examples.logicdesigner.figures;
  */
 
 import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.geometry.*;
-import org.eclipse.swt.graphics.Color;
+import org.eclipse.draw2d.geometry.Insets;
+import org.eclipse.draw2d.geometry.PointList;
+import org.eclipse.draw2d.geometry.Rectangle;
 
 public class CircuitBorder  
 	extends AbstractBorder
