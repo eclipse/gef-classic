@@ -155,6 +155,27 @@ public int snapMoveRequest(ChangeBoundsRequest request,	PrecisionRectangle baseR
  */
 public int snapResizeRequest(ChangeBoundsRequest request, PrecisionRectangle baseRect,
                              int snapOrientation) {
+	/*
+	 * @TODO:Pratik
+	 * Known issues that still need to be tackled:
+	 * (1) This method snaps in both directions, irrespective of what the specified
+	 * snapOrientation is.  This is not causing any problems at the moment because it
+	 * always gets SNAP_HORIZONTAL | SNAP_VERTICAL.  However, it still needs to be fixed.
+	 * (2) Attach a circuit to a horizontal and vertical guide (so that the circuit is
+	 * in the 4th quadrant of the two axes).  Resize the top that is attached to the
+	 * horizontal guide, and the circuit will detach from both guides.
+	 * (3) Attach a circuit's vertical center to a guide.  Now resize the top.  The part
+	 * is detached from the vertical guide.
+	 * (4) If the left edge of a figure is attached to a guide, resizing the right
+	 * edge will not snap it to a new guide.  This is because the algorithm below snaps
+	 * to the first guide it finds (which is the one on the left), and hence never goes
+	 * to the one on the right.  But in this case, because just the right side is being
+	 * resized, the vertical left and center guides should be ignored.
+	 * (5) There are some other issues with when to show feedback as well.  For instance,
+	 * when a part is being resized in the horizontal direction, attachments to 
+	 * horizontal guides should not be highlighted, but still be preserved.
+	 */
+	
 	if (request.getEditParts().size() != 1)
 		return snapOrientation;
 	
