@@ -422,20 +422,6 @@ protected void hookControl(){
 	super.hookControl();
 }
 
-protected void hookDragSource() {
-	getDragSource().addDragListener(new DragSourceAdapter() {
-		public void dragStart(DragSourceEvent event) {
-			Tree tree = (Tree)getControl();
-			TreeItem[] items = tree.getSelection();
-			List newSelection = new ArrayList();
-			for(int i=0; i<items.length; i++)
-				newSelection.add(items[i].getData());
-			setSelection(new StructuredSelection(newSelection));
-		}
-	});
-	super.hookDragSource();
-}
-
 private void showSelectionInTree() {
 	if (ignore || getControl()==null || getControl().isDisposed())
 		return;
