@@ -443,6 +443,8 @@ protected void setCloneActive(boolean cloneActive) {
 	if (this.cloneActive == cloneActive)
 		return;
 	this.cloneActive = cloneActive;
+	eraseSourceFeedback();
+	eraseTargetFeedback();
 	doDragInProgress();
 }
 
