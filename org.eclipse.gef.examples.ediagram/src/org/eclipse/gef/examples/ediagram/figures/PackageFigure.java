@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.ediagram.figures;
 
+import org.eclipse.swt.graphics.Color;
+
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.Graphics;
@@ -28,7 +30,11 @@ public class PackageFigure
 	extends Figure
 	implements HandleBounds
 {
-	
+
+private static Color
+	brown      = new Color(null, 205, 133,  63),
+	darkBrown  = new Color(null, 139,  69,  19),
+	lightBrown = new Color(null, 244, 164,  96);
 protected Box fPackage;
 protected SelectableLabel label;
 
@@ -58,10 +64,10 @@ public void setText(String s) {
 protected static class Box extends Figure {
 	public Box() {
 		setSize(51, 51);
-		setBackgroundColor(ColorConstants.lightBrown);
-		setForegroundColor(ColorConstants.darkBrown);
+		setBackgroundColor(lightBrown);
+		setForegroundColor(darkBrown);
 		setOpaque(true);
-		setBorder(new LineBorder(ColorConstants.brown));
+		setBorder(new LineBorder(brown));
 	}
 	protected void paintFigure(Graphics graphics) {
 		super.paintFigure(graphics);
