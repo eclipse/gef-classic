@@ -63,7 +63,7 @@ public void setSize(Dimension d) {
 
 public void setLabelContents(String s){
 	text = s;
-	firePropertyChange("labelContents", "", text); //$NON-NLS-2$//$NON-NLS-1$
+	firePropertyChange("labelContents", null, text); //$NON-NLS-2$//$NON-NLS-1$
 }
 
 public String toString() {
