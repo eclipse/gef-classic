@@ -14,10 +14,10 @@ import org.eclipse.draw2d.graph.DirectedGraph;
 import org.eclipse.draw2d.graph.Edge;
 
 /**
- * Graph visitors run prior to this visitor may have inverted edges to remove cycles
- * in the graph. This visitor flips all such edges back to their original orientation.
+ * Inverts any edges which are marked as backwards or "feedback" edges.
  * 
  * @author Daniel Lee
+ * @since 2.1.2
  */
 public class InvertEdges extends GraphVisitor {
 
