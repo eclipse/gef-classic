@@ -19,14 +19,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
 public class PaletteEntry
 {
 
-private PaletteContainer parent;
-private String label;
-private String shortDescription;
-private ImageDescriptor iconSmall;
-private ImageDescriptor iconLarge;
-private boolean visible = true;
-private Object type = PaletteEntry.PALETTE_TYPE_UNKNOWN;
-
 /**
  * Property name for the entry's small icon 
  */
@@ -80,10 +72,24 @@ public static final String
  */
 public static final String PALETTE_TYPE_UNKNOWN = "Palette_type_Unknown";//$NON-NLS-1$
 
+public static final int PERMISSION_NO_MODIFICATION = 0;
+public static final int PERMISSION_HIDE_ONLY = 1;
+public static final int PERMISSION_NO_DELETION = 3;
+public static final int PERMISSION_FULL_MODIFICATION = 7;
+
 /**
  * PropertyChangeSupport
  */
 protected PropertyChangeSupport listeners = new PropertyChangeSupport(this);
+
+private PaletteContainer parent;
+private String label;
+private String shortDescription;
+private ImageDescriptor iconSmall;
+private ImageDescriptor iconLarge;
+private boolean visible = true;
+private int permission = PERMISSION_FULL_MODIFICATION;
+private Object type = PaletteEntry.PALETTE_TYPE_UNKNOWN;
 
 /**
  * Constructor
@@ -91,7 +97,7 @@ protected PropertyChangeSupport listeners = new PropertyChangeSupport(this);
  * Any parameter can be <code>null</code>
  * </p>
  * 
- * @param label	The entry's name
+ * @param label			The entry's name
  * @param shortDescription	The entry's description
  */
 public PaletteEntry(String label, String shortDescription) {
@@ -104,13 +110,13 @@ public PaletteEntry(String label, String shortDescription) {
  * Any parameter can be <code>null</code>
  * </p>
  * 
- * @param label				Tbe entry's name
+ * @param label				The entry's name
  * @param shortDescription		The entry's description
- * @param type					Tbe entry's name
+ * @param type					The entry's type
  */
 public PaletteEntry(String label,
-							String shortDescription,
-							Object type) {
+					String shortDescription,
+					Object type) {
 	this(label, shortDescription, null, null, type);
 }
 
@@ -120,15 +126,15 @@ public PaletteEntry(String label,
  * Any parameter can be <code>null</code>
  * </p>
  * 
- * @param label				Tbe entry's name
+ * @param label				The entry's name
  * @param shortDescription		The entry's description
  * @param iconSmall			The small icon to represent this entry
  * @param iconLarge			The large icon to represent this entry
  */
 public PaletteEntry(String label,
-							String shortDescription,
-							ImageDescriptor iconSmall,
-							ImageDescriptor iconLarge) {
+					String shortDescription,
+					ImageDescriptor iconSmall,
+					ImageDescriptor iconLarge) {
 	this(label, shortDescription, iconSmall, iconLarge, null);
 }
 
@@ -137,18 +143,17 @@ public PaletteEntry(String label,
  * <p>
  * Any parameter can be <code>null</code>
  * </p>
- * @param label The entry's name
- * @param shortDescription The entry's description
- * @param iconSmall The small icon to represent this entry
- * @param iconLarge The large icon to represent this entry
- * @param type The entry's type
+ * @param label 			The entry's name
+ * @param shortDescription	The entry's description
+ * @param iconSmall 		The small icon to represent this entry
+ * @param iconLarge 		The large icon to represent this entry
+ * @param type 			The entry's type
  */
-public PaletteEntry(
-	String label,
-	String shortDescription,
-	ImageDescriptor iconSmall,
-	ImageDescriptor iconLarge,
-	Object type) {
+public PaletteEntry(String label, 
+					String shortDescription,	
+					ImageDescriptor iconSmall,
+					ImageDescriptor iconLarge, 
+					Object type) {
 	setLabel(label);
 	setDescription(shortDescription);
 	setSmallIcon(iconSmall);
@@ -207,6 +212,11 @@ public ImageDescriptor getSmallIcon() {
  */
 public Object getType() {
 	return type;
+}
+
+/** * @return */
+public int getUserModificationPermission() {
+	return permission;
 }
 
 /**
@@ -279,6 +289,22 @@ public void setParent(PaletteContainer newParent) {
 		parent = newParent;
 		listeners.firePropertyChange(PROPERTY_PARENT, oldParent, parent);
 	}
+}
+
+/**
+ * Permissions are not checked before making modifications.  Clients should check the
+ * permission before invoking a modification.  Sub-classes may extend the set of
+ * permissions.  Current set has:
+ * <UL>
+ * 		<LI>PERMISSION_NO_MODIFICATION</LI>
+ * 		<LI>PERMISSION_HIDE_ONLY</LI>
+ * 		<LI>PERMISSION_NO_DELETION</LI>
+ * 		<LI>PERMISSION_FULL_MODIFICATION</LI>
+ * </UL>
+ * Default is <code>PERMISSION_FULL_MODIFICATION</code>
+ *  * @param permission */
+public void setUserModificationPermission(int permission) {
+	this.permission = permission;
 }
 
 /**
