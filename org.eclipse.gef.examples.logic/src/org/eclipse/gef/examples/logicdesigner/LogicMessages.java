@@ -9,7 +9,7 @@ public interface LogicMessages {
 
 static class Helper {
 	public static String getString(String key) {
-		IPluginDescriptor desc = Platform.getPluginRegistry().getPluginDescriptor("org.eclipse.gef.examples.logicdesigner");  //$NON-NLS-1$
+		IPluginDescriptor desc = Platform.getPluginRegistry().getPluginDescriptor("org.eclipse.gef.examples.logic");  //$NON-NLS-1$
 		try {
 			return desc.getResourceString(key);
 		}

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin
-   id="org.eclipse.gef.examples.logicdesigner"
+   id="org.eclipse.gef.examples.logic"
    name="Logic GEF Example"
    version="2.0.1"
    provider-name="Eclipse.org"
