@@ -26,8 +26,8 @@ public class RulerFigure
 public int smallMarkWidth = 2;
 public int mediumMarkWidth = 4;
 public int textMargin = 3;
-public int minPixelsBetweenMarks = 5;
-public int minPixelsBetweenMajorMarks = 47;
+public int minPixelsBetweenMarks = 4;
+public int minPixelsBetweenMajorMarks = 35;
 
 protected Transposer transposer = new Transposer();
 protected ZoomManager zoom;
@@ -220,6 +220,7 @@ protected void paintFigure(Graphics graphics) {
 	switch (divsPerMajorMark) {
 		case 20:
 		case 10:
+		case 5:
 			mediumMarkerDivNum = 5;
 			break;
 		case 16:
@@ -302,17 +303,6 @@ protected void paintFigure(Graphics graphics) {
 			}
 		}
 	}
-
-	// draw the lines on the right of the ruler
-//	clippedBounds.width += BORDER_WIDTH;
-//	graphics.setForegroundColor(ColorConstants.button);
-//	Point reduction = transposer.t(new Point(-1, 0));
-//	Point topRight = transposer.t(clippedBounds.getTopRight()).translate(reduction);
-//	Point bottomRight = transposer.t(clippedBounds.getBottomRight()).translate(reduction);
-//	graphics.drawLine(topRight, bottomRight);
-//	topRight.translate(reduction);
-//	bottomRight.translate(reduction);
-//	graphics.drawLine(topRight, bottomRight);
 }
 
 public void setHorizontal(boolean isHorizontal) {
