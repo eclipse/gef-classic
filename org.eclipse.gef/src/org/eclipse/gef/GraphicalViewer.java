@@ -10,17 +10,21 @@ import org.eclipse.draw2d.geometry.Point;
 
 
 /**
- * Specializes EditPartViewer adding the ability to hit-test {@link Handle}s.
+ * Specializes {@link EditPartViewer} adding the ability to hit-test {@link Handle
+ * Handles}.
+ * @see org.eclipse.gef.ui.parts.GraphicalViewerImpl
  */
 public interface GraphicalViewer
 	extends EditPartViewer
 {
 
 /**
- * Finds the view handle at the point specified by x,y.  If
- * there is not a handle at this position, null is returned.
- * @return Handle The handle at the point or null if no handle is found
- * @param p Point the location on the View
+ * Returns the <code>Handle</code> at the specified Point. Returns <code>null</code> if no
+ * handle exists at the given Point. The specified point should be relative to the
+ * {@link org.eclipse.swt.widgets.Scrollable#getClientArea() client area} for this
+ * Viewer's <code>Control</code>.
+ * @param p the location relative to the Control's client area
+ * @return Handle <code>null</code> or a Handle
  */
 Handle findHandleAt(Point p);
 
