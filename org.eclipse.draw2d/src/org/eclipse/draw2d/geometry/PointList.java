@@ -92,7 +92,7 @@ public PointList getCopy() {
 	try {
 		return (PointList)clone();
 	} catch (CloneNotSupportedException e) {
-		throw new RuntimeException(e);
+		throw new RuntimeException(e.getMessage());
 	}
 }
 
