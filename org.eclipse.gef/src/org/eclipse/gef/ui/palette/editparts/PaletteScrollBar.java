@@ -9,8 +9,6 @@ package org.eclipse.gef.ui.palette.editparts;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import org.eclipse.swt.graphics.Image;
-
 import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Insets;
@@ -22,18 +20,29 @@ public final class PaletteScrollBar
 protected Label upLabel;
 protected Label downLabel;
 
-private static final int BUTTON_HEIGHT = 15;
-private static final Border dropshadow = new DropShadowButtonBorder();
-private static final Border margin = new MarginBorder(2, 0, 2, 2);
+private static final int BUTTON_HEIGHT = 12;
+private static final int SCROLL_TIME = 400;
+private static final Border SCROLL_BAR_BORDER = new RaisedBorder();
 
 public PaletteScrollBar() {
 	super();
 }
 
+/**
+ * @see org.eclipse.draw2d.Figure#findFigureAt(int, int, TreeSearch)
+ */
+public IFigure findFigureAt(int x, int y, TreeSearch search) {
+	IFigure result = super.findFigureAt(x, y, search);
+	if (result != this)
+		return result;
+	return null;
+}
+
+
 protected Clickable createDefaultDownButton() {
 	downLabel = new Label(ImageConstants.down);
 	downLabel.setOpaque(true);
-	downLabel.setIconAlignment(PositionConstants.BOTTOM);
+	downLabel.setIcon(ImageConstants.down);
 	addPropertyChangeListener(new PropertyChangeListener(){
 		public void propertyChange(PropertyChangeEvent event) {
 			updateDownLabel();
@@ -41,15 +50,9 @@ protected Clickable createDefaultDownButton() {
 	});
 	Clickable button = new Clickable(downLabel);
 	button.setRequestFocusEnabled(false);
-	button.getModel().addChangeListener(new ChangeListener(){
-		public void handleStateChanged(ChangeEvent event) {
-			updateDownLabel();
-		}
-	});
 
 	button.setFiringMethod(Clickable.REPEAT_FIRING);
-	button.setRolloverEnabled(true);
-	button.setBorder(dropshadow);
+	button.setBorder(SCROLL_BAR_BORDER);
 	button.setOpaque(false);
 	return button;
 }
@@ -57,7 +60,7 @@ protected Clickable createDefaultDownButton() {
 protected Clickable createDefaultUpButton() {
 	upLabel = new Label(ImageConstants.up);
 	upLabel.setOpaque(true);
-	upLabel.setIconAlignment(PositionConstants.BOTTOM);
+	upLabel.setIcon(ImageConstants.up);
 	addPropertyChangeListener(new PropertyChangeListener(){
 		public void propertyChange(PropertyChangeEvent event) {
 			updateUpLabel();
@@ -65,15 +68,9 @@ protected Clickable createDefaultUpButton() {
 	});
 	Clickable button = new Clickable(upLabel);
 	button.setRequestFocusEnabled(false);
-	button.getModel().addChangeListener(new ChangeListener(){
-		public void handleStateChanged(ChangeEvent event) {
-			updateUpLabel();
-		}
-	});
 
 	button.setFiringMethod(Clickable.REPEAT_FIRING);
-	button.setRolloverEnabled(true);
-	button.setBorder(dropshadow);
+	button.setBorder(SCROLL_BAR_BORDER);
 	button.setOpaque(false);
 	return button;
 }
@@ -106,7 +103,6 @@ protected void initialize() {
 				new Insets(
 					(getButtonUp()   == null) ? 0 : buttonSize.height, 0,
 					(getButtonDown() == null) ? 0 : buttonSize.height, 0));
-		
 			return trackBounds;
 		}
 	});
@@ -114,65 +110,42 @@ protected void initialize() {
 	setPageDown(null);
 	setThumb(null);
 	setOpaque(false);
-	setBorder(margin);	
 }
 
 /**
  * @see org.eclipse.draw2d.ScrollBar#stepDown()
  */
 protected void stepDown() {
-	super.stepDown();
-	getUpdateManager().performUpdate();
-	super.stepDown();
-	getUpdateManager().performUpdate();
-	super.stepDown();
+	timedStep(false);
 }
 
 /**
  * @see org.eclipse.draw2d.ScrollBar#stepUp()
  */
 protected void stepUp() {
-	super.stepUp();
-	getUpdateManager().performUpdate();
-	super.stepUp();
-	getUpdateManager().performUpdate();
-	super.stepUp();
+	timedStep(true);
+}
+
+protected void timedStep(boolean up) {
+	int increment = getStepIncrement();
+	int value = getValue();
+	long startTime = System.currentTimeMillis();
+	long elapsedTime = System.currentTimeMillis() - startTime;
+	while( elapsedTime < SCROLL_TIME ) {
+		int step = (int)(increment * elapsedTime / SCROLL_TIME);
+		int newValue = up ? value - step : value + step;
+		setValue(newValue);
+		getUpdateManager().performUpdate();
+		elapsedTime = System.currentTimeMillis() - startTime;
+	}	
 }
 
 protected void updateDownLabel() {
-	Image icon = null;
-	if (((Clickable) getButtonDown()).getModel().isPressed() ||
-	   !((Clickable)getButtonDown()).getModel().isMouseOver())
-		icon = ImageConstants.downPressed;
-	if (getValue() >= (getMaximum() - getExtent())) {
-		icon = ImageConstants.downGrayed;
-		getButtonDown().setVisible(false);
-		getButtonDown().setEnabled(false);
-	} else {
-		getButtonDown().setEnabled(true);
-		getButtonDown().setVisible(true);
-		if (icon == null)
-			icon = ImageConstants.down;
-	}
-	downLabel.setIcon(icon);
+	getButtonDown().setVisible(getValue() < (getMaximum() - getExtent()));
 }
 
 protected void updateUpLabel() {
-	Image icon = null;
-	if (((Clickable) getButtonUp()).getModel().isPressed() ||
-	   !((Clickable)getButtonUp()).getModel().isMouseOver())
-		icon = ImageConstants.upPressed;
-	if (getValue() <= getMinimum()) {
-		icon = ImageConstants.upGrayed;
-		getButtonUp().setVisible(false);
-		getButtonUp().setEnabled(false);
-	} else {
-		getButtonUp().setEnabled(true);
-		getButtonUp().setVisible(true);
-		if (icon == null)
-			icon = ImageConstants.up;
-	}
-	upLabel.setIcon(icon);
+	getButtonUp().setVisible(getValue() > getMinimum());
 }
 
 }
