@@ -138,7 +138,7 @@ protected AccessibleEditPart createAccessible() {
 }
 
 static final Border BORDER_TOGGLE = new ButtonBorder(ButtonBorder.SCHEMES.TOOLBAR);
-static final Border COLUMNS_BORDER = new MarginBorder(2,0,1,0);
+static final Border COLUMNS_BORDER = new MarginBorder(2, 0, 1, 0);
 public IFigure createFigure() {
 	class InactiveToggleButton extends ToggleButton {
 		InactiveToggleButton(IFigure contents) {
@@ -180,7 +180,7 @@ private ButtonModel getButtonModel() {
 }
 
 /**
- * @see org.eclipse.gef.internal.ui.palette.editparts.PaletteEditPart#getDragTracker(Request)
+ * @see PaletteEditPart#getDragTracker(Request)
  */
 public DragTracker getDragTracker(Request request) {
 	if (SWT.getPlatform().equals("gtk"))  //$NON-NLS-1$
@@ -252,7 +252,7 @@ public void setToolSelected(boolean value) {
 }
 
 /**
- * @see org.eclipse.gef.internal.ui.palette.editparts.PaletteEditPart#setImageInFigure(Image)
+ * @see PaletteEditPart#setImageInFigure(Image)
  */
 protected void setImageInFigure(Image image) {
 	DetailedLabelFigure fig = (DetailedLabelFigure)(getFigure().getChildren().get(0));

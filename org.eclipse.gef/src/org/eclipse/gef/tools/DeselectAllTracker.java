@@ -20,7 +20,7 @@ public DeselectAllTracker(EditPart ep) {
 	super(ep);
 }
 
-protected boolean handleButtonDown(int button){
+protected boolean handleButtonDown(int button) {
 	getCurrentViewer().deselectAll();
 	return true;
 }

@@ -44,16 +44,14 @@ private LocationRequest hoverRequest;
 
 private WeakReference cachedHandlePart;
 
-public SelectionTool() {}
+public SelectionTool() { }
 
-private boolean acceptTraverseHandle(KeyEvent e){
-	return (e.character == '.' || e.character == '>') &&
-		isInState(
-			STATE_INITIAL |
-			STATE_ACCESSIBLE_DRAG |
-			STATE_ACCESSIBLE_DRAG_IN_PROGRESS
-		) &&
-		((e.stateMask & (SWT.ALT | SWT.CONTROL)) == 0);
+private boolean acceptTraverseHandle(KeyEvent e) {
+	return (e.character == '.' || e.character == '>') 
+			&& isInState(STATE_INITIAL 
+						| STATE_ACCESSIBLE_DRAG 
+						| STATE_ACCESSIBLE_DRAG_IN_PROGRESS) 
+			&& ((e.stateMask & (SWT.ALT | SWT.CONTROL)) == 0);
 }
 
 protected void createHoverRequest() {
@@ -61,7 +59,7 @@ protected void createHoverRequest() {
 	hoverRequest.setType(RequestConstants.REQ_SELECTION_HOVER);
 }
 
-protected Request createTargetRequest(){
+protected Request createTargetRequest() {
 	SelectionRequest request = new SelectionRequest();
 	request.setType(getCommandName());
 	return request;
@@ -77,7 +75,7 @@ public void deactivate() {
 	super.deactivate();
 }
 
-protected void eraseHoverFeedback(){
+protected void eraseHoverFeedback() {
 	if (getTargetEditPart() == null)
 		return;
 	if (getTargetHoverRequest() == null)
@@ -85,11 +83,11 @@ protected void eraseHoverFeedback(){
 	getTargetEditPart().eraseTargetFeedback(getTargetHoverRequest());
 }
 
-protected String getCommandName(){
+protected String getCommandName() {
 	return REQ_SELECTION;
 }
 
-protected String getDebugName(){
+protected String getDebugName() {
 	return "Selection Tool";//$NON-NLS-1$
 }
 
@@ -97,7 +95,7 @@ protected DragTracker getDragTracker() {
 	return dragTracker;
 }
 
-private EditPart getLastHandleProvider(){
+private EditPart getLastHandleProvider() {
 	if (cachedHandlePart == null)
 		return null;
 	EditPart part = (EditPart)cachedHandlePart.get();
@@ -146,7 +144,7 @@ protected boolean handleButtonDown(int button) {
 	((SelectionRequest)getTargetRequest()).setLastButtonPressed(button);
 	updateTargetUnderMouse();
 	EditPart editpart = getTargetEditPart();
-	if(editpart != null){
+	if (editpart != null) {
 		setDragTracker(editpart.getDragTracker(getTargetRequest()));
 		lockTargetEditPart(editpart);
 		return true;
@@ -176,13 +174,13 @@ protected boolean handleFocusLost() {
 }
 
 
-protected boolean handleHover(){
+protected boolean handleHover() {
 	setHoverActive(true);
 	showHoverFeedback();
 	return true;
 }
 
-protected boolean handleHoverStop(){
+protected boolean handleHoverStop() {
 	eraseHoverFeedback();
 	return true;
 }
@@ -194,10 +192,12 @@ protected boolean handleKeyDown(KeyEvent e) {
 		if (stateTransition(STATE_ACCESSIBLE_DRAG, STATE_ACCESSIBLE_DRAG_IN_PROGRESS))
 			return true;
 	
-	if (acceptAbort(e)){
+	if (acceptAbort(e)) {
 		if (getDragTracker() != null)
 			setDragTracker(null);
-		if (isInState(STATE_TRAVERSE_HANDLE | STATE_ACCESSIBLE_DRAG | STATE_ACCESSIBLE_DRAG_IN_PROGRESS))
+		if (isInState(STATE_TRAVERSE_HANDLE 
+						| STATE_ACCESSIBLE_DRAG 
+						| STATE_ACCESSIBLE_DRAG_IN_PROGRESS))
 			placeMouseInViewer(getStartLocation().getTranslated(6, 6));
 		setState(STATE_INITIAL);
 		setLastHandleProvider(null);
@@ -208,7 +208,7 @@ protected boolean handleKeyDown(KeyEvent e) {
 		if (isInState(STATE_ACCESSIBLE_DRAG_IN_PROGRESS))
 			if (getDragTracker() != null)
 				getDragTracker().commitDrag();
-		if (isInState(STATE_ACCESSIBLE_DRAG | STATE_ACCESSIBLE_DRAG_IN_PROGRESS)){
+		if (isInState(STATE_ACCESSIBLE_DRAG | STATE_ACCESSIBLE_DRAG_IN_PROGRESS)) {
 			setDragTracker(null);
 			getCurrentViewer().flush();
 		}
@@ -217,7 +217,7 @@ protected boolean handleKeyDown(KeyEvent e) {
 		return true;
 	}
 	
-	if (acceptDragCommit(e)){
+	if (acceptDragCommit(e)) {
 		if (getDragTracker() != null)
 			getDragTracker().commitDrag();
 		setDragTracker(null);
@@ -227,16 +227,16 @@ protected boolean handleKeyDown(KeyEvent e) {
 		return true;
 	}
 	
-	if (isInState(STATE_INITIAL)){
-		if (getCurrentViewer().getKeyHandler() != null &&
-			getCurrentViewer().getKeyHandler().keyPressed(e))
+	if (isInState(STATE_INITIAL)) {
+		if (getCurrentViewer().getKeyHandler() != null 
+			&& getCurrentViewer().getKeyHandler().keyPressed(e))
 				return true;
 	}
 
 	return false;
 }
 
-protected boolean handleKeyUp(KeyEvent e){
+protected boolean handleKeyUp(KeyEvent e) {
 	if (isInState(STATE_INITIAL)
 		&& getCurrentViewer().getKeyHandler() != null
 		&& getCurrentViewer().getKeyHandler().keyReleased(e))
@@ -248,12 +248,12 @@ protected boolean handleKeyUp(KeyEvent e){
 protected boolean handleMove() {
 	if (stateTransition(STATE_ACCESSIBLE_DRAG, STATE_INITIAL))
 		setDragTracker(null);
-	if (isInState(STATE_INITIAL)){
+	if (isInState(STATE_INITIAL)) {
 		updateTargetRequest();
 		updateTargetUnderMouse();
 		showTargetFeedback();
 		return true;
-	} else if (isInState(STATE_TRAVERSE_HANDLE)){
+	} else if (isInState(STATE_TRAVERSE_HANDLE)) {
 		EditPartViewer viewer = getCurrentViewer();
 		if (viewer instanceof GraphicalViewer) {
 			Handle handle = ((GraphicalViewer) viewer).findHandleAt(getLocation());
@@ -291,7 +291,7 @@ public boolean handleNativeDragStarted(DragSourceEvent event) {
 	return true;
 }
 
-private boolean handleTraverseHandle(KeyEvent e){
+private boolean handleTraverseHandle(KeyEvent e) {
 	EditPart focus = getCurrentViewer().getFocusEditPart();
 	if (focus.getSelected() == EditPart.SELECTED_NONE)
 		return false;
@@ -311,7 +311,7 @@ private boolean handleTraverseHandle(KeyEvent e){
 		handleIndex = (++handleIndex) % locations.size();
 	else
 		handleIndex = (--handleIndex + locations.size()) % locations.size();
-	if (getLastHandleProvider() != focus){
+	if (getLastHandleProvider() != focus) {
 		handleIndex = 0;
 		setLastHandleProvider(focus);
 	}
@@ -322,10 +322,10 @@ private boolean handleTraverseHandle(KeyEvent e){
 }
 
 protected boolean handleViewerExited() {
-	if (isInState(STATE_ACCESSIBLE_DRAG | 
-					STATE_ACCESSIBLE_DRAG_IN_PROGRESS | 
-					STATE_TRAVERSE_HANDLE |
-					STATE_DRAG | STATE_DRAG_IN_PROGRESS)) {
+	if (isInState(STATE_ACCESSIBLE_DRAG 
+					| STATE_ACCESSIBLE_DRAG_IN_PROGRESS 
+					| STATE_TRAVERSE_HANDLE 
+					| STATE_DRAG | STATE_DRAG_IN_PROGRESS)) {
 		if (getDragTracker() != null)
 			setDragTracker(null);
 		setState(STATE_INITIAL);
@@ -337,29 +337,29 @@ protected boolean handleViewerExited() {
 /*
  * defined on interface
  */
-public void keyDown(KeyEvent evt, EditPartViewer viewer){
+public void keyDown(KeyEvent evt, EditPartViewer viewer) {
 	if (getDragTracker() != null)
 		getDragTracker().keyDown(evt, viewer);
-	super.keyDown(evt,viewer);
+	super.keyDown(evt, viewer);
 }
 
 /*
  * defined on interface
  */
-public void keyUp(KeyEvent evt, EditPartViewer viewer){
+public void keyUp(KeyEvent evt, EditPartViewer viewer) {
 	if (getDragTracker() != null)
 		getDragTracker().keyUp(evt, viewer);
-	super.keyUp(evt,viewer);
+	super.keyUp(evt, viewer);
 }
 
 public void mouseDown(MouseEvent e, EditPartViewer viewer) {
-	super.mouseDown(e,viewer);
+	super.mouseDown(e, viewer);
 	if (getDragTracker() != null)
 		getDragTracker().mouseDown(e, viewer);
 }
 
 public void mouseDoubleClick(MouseEvent e, EditPartViewer viewer) {
-	super.mouseDoubleClick(e,viewer);
+	super.mouseDoubleClick(e, viewer);
 	if (getDragTracker() != null)
 		getDragTracker().mouseDoubleClick(e, viewer);
 }
@@ -383,7 +383,7 @@ public void mouseHover(MouseEvent me, EditPartViewer viewer) {
 	super.mouseHover(me, viewer);
 }
 
-public void mouseMove(MouseEvent me, EditPartViewer viewer){
+public void mouseMove(MouseEvent me, EditPartViewer viewer) {
 	if (getDragTracker() != null)
 		getDragTracker().mouseMove(me, viewer);
 	super.mouseMove(me, viewer);
@@ -399,7 +399,7 @@ public void mouseUp(MouseEvent e, EditPartViewer viewer) {
 	super.mouseUp(e, viewer);
 }
 
-protected void refreshCursor(){
+protected void refreshCursor() {
 	//If we have a DragTracker, let it control the Cursor
 	if (getDragTracker() == null)
 		super.refreshCursor();
@@ -414,21 +414,21 @@ public void setDragTracker(DragTracker newDragTracker) {
 	refreshCursor();
 //	if (!getCurrentInput().isMouseButtonDown(3))
 //		setMouseCapture(dragTracker != null);
-	if (newDragTracker != null){
+	if (newDragTracker != null) {
 		newDragTracker.setEditDomain(getDomain());
 		newDragTracker.activate();
 		newDragTracker.setViewer(getCurrentViewer());
 	}
 }
 
-private void setLastHandleProvider(EditPart part){
+private void setLastHandleProvider(EditPart part) {
 	if (part == null)
 		cachedHandlePart = null;
 	else
 		cachedHandlePart = new WeakReference(part);
 }
 
-protected void showHoverFeedback(){
+protected void showHoverFeedback() {
 	if (getTargetEditPart() == null)
 		return;
 	if (getTargetHoverRequest() == null)
@@ -441,7 +441,7 @@ protected void updateHoverRequest() {
 	request.setLocation(getLocation());
 }
 
-protected void updateTargetRequest(){
+protected void updateTargetRequest() {
 	SelectionRequest request = (SelectionRequest)getTargetRequest();
 	request.setModifiers(getCurrentInput().getModifiers());
 	request.setType(getCommandName());

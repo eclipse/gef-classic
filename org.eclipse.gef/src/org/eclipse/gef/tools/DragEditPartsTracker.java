@@ -42,7 +42,7 @@ public DragEditPartsTracker(EditPart sourceEditPart) {
 	setDisabledCursor(SharedCursors.NO);
 }
 
-public void commitDrag(){
+public void commitDrag() {
 	eraseSourceFeedback();
 	eraseTargetFeedback();
 	performDrag();
@@ -56,7 +56,7 @@ protected List createOperationSet() {
 	return list;
 }
 
-protected Request createTargetRequest(){
+protected Request createTargetRequest() {
 	ChangeBoundsRequest request = new ChangeBoundsRequest(REQ_MOVE);
 	return request;
 }
@@ -70,7 +70,7 @@ public void deactivate() {
 	sourceFigureOffset = null;
 }
 
-protected void eraseSourceFeedback(){
+protected void eraseSourceFeedback() {
 	if (!getFlag(FLAG_SOURCE_FEEDBACK))
 		return;
 	setFlag(FLAG_SOURCE_FEEDBACK, false);
@@ -81,7 +81,7 @@ protected void eraseSourceFeedback(){
 	}
 }
 
-protected Command getCommand(){
+protected Command getCommand() {
 	CompoundCommand command = new CompoundCommand();
 	command.setDebugLabel("Drag Object Tracker");//$NON-NLS-1$
 
@@ -90,37 +90,37 @@ protected Command getCommand(){
 	Request  request = getTargetRequest();
 	request.setType(isMove() ? REQ_MOVE : REQ_ORPHAN);
 
-	while (iter.hasNext()){
+	while (iter.hasNext()) {
 		EditPart editPart = (EditPart)iter.next();
 		command.add(editPart.getCommand(request));
 	}
 
 	//If reparenting, add all editparts to target editpart.
-	if (!isMove()){
+	if (!isMove()) {
 		request.setType(REQ_ADD);
-		if( getTargetEditPart() == null )
-			command.add( UnexecutableCommand.INSTANCE );
+		if (getTargetEditPart() == null)
+			command.add(UnexecutableCommand.INSTANCE);
 		else
 			command.add(getTargetEditPart().getCommand(getTargetRequest()));
 	}
 	return command;
 }
 
-protected String getCommandName(){
+protected String getCommandName() {
 	if (isMove())
 		return REQ_MOVE;
 	return REQ_ADD;
 }
 
-protected String getDebugName(){
+protected String getDebugName() {
 	return "DragEditPartsTracker:" + getCommandName();//$NON-NLS-1$
 }
 
 protected Collection getExclusionSet() {
 	if (exclusionSet == null) {
 		List set = getOperationSet();
-		exclusionSet = new ArrayList(set.size()+1);
-		for (int i=0; i<set.size(); i++) {
+		exclusionSet = new ArrayList(set.size() + 1);
+		for (int i = 0; i < set.size(); i++) {
 			GraphicalEditPart editpart = (GraphicalEditPart)set.get(i);
 			exclusionSet.add(editpart.getFigure());
 		}
@@ -135,8 +135,7 @@ protected Collection getExclusionSet() {
  * @see org.eclipse.gef.tools.TargetingTool#handleAutoexpose()
  */
 protected void handleAutoexpose() {
-	if (isInDragInProgress()){
-
+	if (isInDragInProgress()) {
 		if (sourceFigureOffset == null) {
 			Point offset;
 			IFigure figure = ((GraphicalEditPart)getSourceEditPart()).getFigure();
@@ -146,7 +145,6 @@ protected void handleAutoexpose() {
 			sourceFigureOffset.preciseX -= offset.x;
 			sourceFigureOffset.preciseY -= offset.y;
 		}
-
 		updateTargetRequest();
 		updateTargetUnderMouse();
 		showTargetFeedback();
@@ -155,8 +153,8 @@ protected void handleAutoexpose() {
 	}
 }
 
-protected boolean handleButtonUp(int button){
-	if (stateTransition(STATE_DRAG_IN_PROGRESS, STATE_TERMINAL)){
+protected boolean handleButtonUp(int button) {
+	if (stateTransition(STATE_DRAG_IN_PROGRESS, STATE_TERMINAL)) {
 		eraseSourceFeedback();
 		eraseTargetFeedback();
 		performDrag();
@@ -165,8 +163,8 @@ protected boolean handleButtonUp(int button){
 	return super.handleButtonUp(button);
 }
 
-protected boolean handleDragInProgress(){
-	if (isInDragInProgress()){
+protected boolean handleDragInProgress() {
+	if (isInDragInProgress()) {
 		updateTargetRequest();
 		updateTargetUnderMouse();
 		showTargetFeedback();
@@ -185,13 +183,13 @@ protected boolean handleHover() {
 	return true;
 }
 
-protected boolean handleInvalidInput(){
+protected boolean handleInvalidInput() {
 	super.handleInvalidInput();
 	eraseSourceFeedback();
 	return true;
 }
 
-protected boolean handleKeyDown(KeyEvent e){
+protected boolean handleKeyDown(KeyEvent e) {
 	if (acceptArrowKey(e)) {
 		accStepIncrement();
 		if (stateTransition(STATE_INITIAL, STATE_ACCESSIBLE_DRAG_IN_PROGRESS))
@@ -215,19 +213,19 @@ protected boolean handleKeyDown(KeyEvent e){
 	return false;	
 }
 
-protected boolean handleKeyUp(KeyEvent e){
-	if (acceptArrowKey(e)){
+protected boolean handleKeyUp(KeyEvent e) {
+	if (acceptArrowKey(e)) {
 		accStepReset();
 		return true;
 	}
 	return false;
 }
 
-protected boolean isMove(){
+protected boolean isMove() {
 	return getSourceEditPart().getParent() == getTargetEditPart();
 }
 
-protected void performDrag(){
+protected void performDrag() {
 	executeCurrentCommand();
 }
 
@@ -243,7 +241,7 @@ protected void repairStartLocation() {
 	setStartLocation(newStart);
 }
 
-protected void showSourceFeedback(){
+protected void showSourceFeedback() {
 	List editParts = getOperationSet();
 	for (int i = 0; i < editParts.size(); i++) {
 		EditPart editPart = (EditPart) editParts.get(i);
@@ -252,12 +250,12 @@ protected void showSourceFeedback(){
 	setFlag(FLAG_SOURCE_FEEDBACK, true);
 }
 
-protected void updateTargetRequest(){
+protected void updateTargetRequest() {
 	repairStartLocation();
 	ChangeBoundsRequest request = (ChangeBoundsRequest)getTargetRequest();
 	request.setEditParts(getOperationSet());
 	Dimension d = getDragMoveDelta();
-	request.setMoveDelta(new Point(d.width,d.height));
+	request.setMoveDelta(new Point(d.width, d.height));
 	request.setLocation(getLocation());
 	request.setType(getCommandName());
 }

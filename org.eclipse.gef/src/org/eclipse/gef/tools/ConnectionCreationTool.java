@@ -24,14 +24,28 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.requests.CreateConnectionRequest;
 import org.eclipse.gef.requests.CreationFactory;
 
+/**
+ * The default creation tool for connections.  With this tool, the user must click and 
+ * release the left mouse button on the source edit part and then click and release the
+ * left mouse button on the target edit part.  By default, this tool will remain active
+ * after connections are created.  The user must select a different tool to deactivate
+ * this tool.
+ */
 public class ConnectionCreationTool
 	extends AbstractConnectionCreationTool
 {
 
+/**
+ * Default Constructor.  
+ */
 public ConnectionCreationTool() {
 	setUnloadWhenFinished(false);
 }
 
+/**
+ * Constructs a new ConnectionCreationTool with the given factory.
+ * @param factory the creation factory
+ */
 public ConnectionCreationTool(CreationFactory factory) {
 	setFactory(factory);
 	setUnloadWhenFinished(false);
@@ -45,6 +59,13 @@ boolean acceptConnectionStart(KeyEvent event) {
 	return isInState(STATE_INITIAL) && event.character == 13;
 }
 
+/**
+ * If the connections is already started, the second button down will call
+ * {@link AbstractConnectionCreationTool#handleCreateConnection()}.  Otherwise, it 
+ * attempts to start the connection.
+ * @param button the button that was pressed
+ * @return <code>true</code> if the button down was processed
+ */
 protected boolean handleButtonDown(int button) {
 	if (button == 1 && stateTransition(STATE_CONNECTION_STARTED, STATE_TERMINAL))
 		return handleCreateConnection();
@@ -56,6 +77,10 @@ protected boolean handleButtonDown(int button) {
 	return true;
 }
 
+/**
+ * Cleans up feedback and resets the tool when focus is lost.
+ * @return <code>true</code> if this focus lost event was processed
+ */
 protected boolean handleFocusLost() {
 	if (isInState(STATE_CONNECTION_STARTED | STATE_ACCESSIBLE_DRAG_IN_PROGRESS)) {
 		eraseSourceFeedback();
@@ -66,6 +91,12 @@ protected boolean handleFocusLost() {
 	return super.handleFocusLost();
 }
 
+/**
+ * Processes the arrow keys (to move the cursor to nearby anchor locations) and the 
+ * enter key (to start or complete a connections).
+ * @param event the key event
+ * @return <code>true</code> if this key down event was processed
+ */
 protected boolean handleKeyDown(KeyEvent event) {
 	if (acceptArrowKey(event)) {
 		int direction = 0;
@@ -105,7 +136,8 @@ protected boolean handleKeyDown(KeyEvent event) {
 	if (acceptConnectionStart(event)) {
 		updateTargetUnderMouse();
 		setConnectionSource(getTargetEditPart());
-		((CreateConnectionRequest)getTargetRequest()).setSourceEditPart(getTargetEditPart());
+		((CreateConnectionRequest)getTargetRequest())
+			.setSourceEditPart(getTargetEditPart());
 		setState(STATE_ACCESSIBLE_DRAG_IN_PROGRESS);
 		placeMouseInViewer(getLocation().getTranslated(6, 6));
 		return true;

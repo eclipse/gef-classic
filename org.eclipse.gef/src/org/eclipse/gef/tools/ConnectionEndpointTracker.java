@@ -29,6 +29,7 @@ public class ConnectionEndpointTracker
 {
 
 private static final int FLAG_SOURCE_FEEBBACK = TargetingTool.MAX_FLAG << 1;
+/** The max flag */
 protected static final int MAX_FLAG = FLAG_SOURCE_FEEBBACK;
 
 private String commandName;
@@ -131,7 +132,7 @@ protected boolean handleHover() {
 protected boolean handleKeyDown(KeyEvent e) {
 	if (acceptArrowKey(e)) {
 		if (stateTransition(STATE_INITIAL, STATE_ACCESSIBLE_DRAG_IN_PROGRESS)) {
-			//When the drag first starts, set the focus Part to be one end of the connection
+		// When the drag first starts, set the focus Part to be one end of the connection
 			if (isTarget()) {
 				getCurrentViewer().setFocus(getConnectionEditPart().getTarget());
 				getCurrentViewer().reveal(getConnectionEditPart().getTarget());

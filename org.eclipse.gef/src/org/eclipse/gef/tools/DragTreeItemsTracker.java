@@ -20,11 +20,11 @@ public class DragTreeItemsTracker
 	extends SelectEditPartTracker
 {
 
-public DragTreeItemsTracker(EditPart sourceEditPart){
+public DragTreeItemsTracker(EditPart sourceEditPart) {
 	super(sourceEditPart);
 }
 
-protected String getDebugName(){
+protected String getDebugName() {
 	return "Tree Tracker: " + getCommandName();//$NON-NLS-1$
 }
 

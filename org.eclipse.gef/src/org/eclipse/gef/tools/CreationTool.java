@@ -32,35 +32,35 @@ public CreationTool(CreationFactory aFactory) {
 	setFactory(aFactory);
 }
 
-protected Request createTargetRequest(){
+protected Request createTargetRequest() {
 	CreateRequest request = new CreateRequest();
 	request.setFactory(getFactory());
 	return request;
 }
 
-protected String getCommandName(){
+protected String getCommandName() {
 	return REQ_CREATE;
 }
 
-protected CreateRequest getCreateRequest(){
+protected CreateRequest getCreateRequest() {
 	return (CreateRequest)getTargetRequest();
 }
 
-protected String getDebugName(){
+protected String getDebugName() {
 	return "Creation Tool";//$NON-NLS-1$
 }
 
-protected CreationFactory getFactory(){
+protected CreationFactory getFactory() {
 	return factory;
 }
 
 protected boolean handleButtonDown(int button) {
-	if (button != 1){
+	if (button != 1) {
 		setState(STATE_INVALID);
 		handleInvalidInput();
 		return true;
 	}
-	if (stateTransition(STATE_INITIAL, STATE_DRAG)){
+	if (stateTransition(STATE_INITIAL, STATE_DRAG)) {
 		getCreateRequest().setLocation(getLocation());
 		lockTargetEditPart(getTargetEditPart());
 	}
@@ -68,9 +68,7 @@ protected boolean handleButtonDown(int button) {
 }
 
 protected boolean handleButtonUp(int button) {
-	if (stateTransition(STATE_DRAG | STATE_DRAG_IN_PROGRESS,
-		STATE_TERMINAL))
-	{
+	if (stateTransition(STATE_DRAG | STATE_DRAG_IN_PROGRESS, STATE_TERMINAL)) {
 		eraseTargetFeedback();
 		unlockTargetEditPart();
 		performCreation(button);
@@ -83,7 +81,7 @@ protected boolean handleButtonUp(int button) {
 }
 
 protected boolean handleDragInProgress() {
-	if (isInState(STATE_DRAG_IN_PROGRESS)){
+	if (isInState(STATE_DRAG_IN_PROGRESS)) {
 		updateTargetRequest();
 		setCurrentCommand(getCommand());
 		showTargetFeedback();
@@ -91,7 +89,7 @@ protected boolean handleDragInProgress() {
 	return true;
 }
 
-protected boolean handleDragStarted(){
+protected boolean handleDragStarted() {
 	return stateTransition(STATE_DRAG, STATE_DRAG_IN_PROGRESS);
 }
 
@@ -138,18 +136,18 @@ private void selectAddedObject() {
 		return;
 	EditPartViewer viewer = getCurrentViewer();
 	Object editpart = viewer.getEditPartRegistry().get(model);
-	if (editpart instanceof EditPart){
+	if (editpart instanceof EditPart) {
 		viewer.flush();
 		viewer.select((EditPart)editpart);
 	}
 }
 
-public void setFactory(CreationFactory factory){
+public void setFactory(CreationFactory factory) {
 	this.factory = factory;
 }
 
-protected void updateTargetRequest(){
-	if (isInState(STATE_DRAG_IN_PROGRESS)){
+protected void updateTargetRequest() {
+	if (isInState(STATE_DRAG_IN_PROGRESS)) {
 		Point loq = getStartLocation();
 		Rectangle bounds = new Rectangle(loq, loq);
 		bounds.union(loq.getTranslated(getDragMoveDelta()));

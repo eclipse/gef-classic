@@ -94,8 +94,9 @@ protected boolean hasSelectionOccurred() {
 }
 
 /**
- * Calls performSelection if the source is not selected.  If the source is selected, it may be
- * part of a larger selection which the user is trying to drag or operate on, so do nothing.
+ * Calls performSelection if the source is not selected.  If the source is selected, it 
+ * may be part of a larger selection which the user is trying to drag or operate on, so do
+ * nothing.
  */
 protected void performConditionalSelection() {
 	if (getSourceEditPart().getSelected() == EditPart.SELECTED_NONE)

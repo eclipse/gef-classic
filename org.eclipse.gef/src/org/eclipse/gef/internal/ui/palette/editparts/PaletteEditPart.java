@@ -224,7 +224,8 @@ protected String getToolTipText() {
 }
 
 protected boolean nameNeededInToolTip() {
-	return getPreferenceSource().getLayoutSetting() == PaletteViewerPreferences.LAYOUT_ICONS;
+	return getPreferenceSource().getLayoutSetting() 
+				== PaletteViewerPreferences.LAYOUT_ICONS;
 }
 
 /**
