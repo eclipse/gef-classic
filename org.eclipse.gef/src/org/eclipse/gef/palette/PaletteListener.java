@@ -8,14 +8,17 @@ package org.eclipse.gef.palette;
 
 import java.util.*;
 
+import org.eclipse.gef.ui.palette.PaletteViewer;
+
 public interface PaletteListener
 	extends EventListener
 {
 
 /**
- * A palette entry was selected.
- * @param event org.eclipse.gef.palette.PaletteEvent
+ * A new tool was activated in the palette.
+ * @param palette the source of the change
+ * @param tool the new tool that was activated
  */
-void modeChanged();
+void activeToolChanged(PaletteViewer palette, ToolEntry tool);
 
 }

@@ -16,9 +16,11 @@ public interface PaletteViewer
 
 void addPaletteListener(PaletteListener listener);
 
-ToolEntry getMode();
+ToolEntry getActiveTool();
 
-void setMode(ToolEntry entry);
+void removePaletteListener(PaletteListener paletteListener);
+
+void setActiveTool(ToolEntry entry);
 
 void setPaletteRoot(PaletteRoot root);
 

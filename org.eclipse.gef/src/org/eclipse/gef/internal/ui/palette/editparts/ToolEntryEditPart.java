@@ -51,7 +51,7 @@ class ToggleButtonTracker extends SingleSelectionTracker {
 	}
 
 	protected boolean handleNativeDragFinished(DragSourceEvent event) {
-		getPaletteViewer().setMode(null);
+		getPaletteViewer().setActiveTool(null);
 		return true;
 	}
 }
@@ -104,7 +104,7 @@ public IFigure createFigure() {
 	Clickable button = new InactiveToggleButton(customLabel);
 	button.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent event) {
-			getPaletteViewer().setMode(getToolEntry());
+			getPaletteViewer().setActiveTool(getToolEntry());
 		}
 	});
 	return button;
@@ -156,7 +156,7 @@ protected void refreshVisuals() {
  */
 public void removeNotify() {
 	if (getButtonModel().isSelected())
-		getPaletteViewer().setMode(null);
+		getPaletteViewer().setActiveTool(null);
 	super.removeNotify();
 }
 

@@ -12,6 +12,7 @@ import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.*;
+import org.eclipse.gef.editparts.ViewportAutoexposeHelper;
 import org.eclipse.gef.editparts.ViewportExposeHelper;
 
 import org.eclipse.gef.examples.logicdesigner.figures.*;
@@ -40,6 +41,8 @@ protected IFigure createFigure() {
 }
 
 public Object getAdapter(Class key) {
+	if (key == AutoexposeHelper.class)
+		return new ViewportAutoexposeHelper(this);
 	if (key == ExposeHelper.class)
 		return new ViewportExposeHelper(this);
 	if (key == AccessibleAnchorProvider.class)

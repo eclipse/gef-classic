@@ -57,7 +57,7 @@ private IEditorPart editorPart;
  * accordingly.
  */
 private PaletteListener paletteListener = new PaletteListener() {
-	public void modeChanged() {
+	public void activeToolChanged(PaletteViewer viewer, ToolEntry tool) {
 		handlePaletteModeChanged();
 	}
 };
@@ -151,7 +151,7 @@ public void keyUp(KeyEvent keyEvent, EditPartViewer viewer) {
 }
 
 private void handlePaletteModeChanged() {
-	ToolEntry entry = paletteViewer.getMode();
+	ToolEntry entry = paletteViewer.getActiveTool();
 	if (entry != null)
 		setTool(entry.createTool());
 	else
@@ -167,10 +167,10 @@ public void loadDefaultTool() {
 	setTool(null);
 	if (paletteRoot != null) {
 		if (paletteRoot.getDefaultEntry() != null) {
-			paletteViewer.setMode(paletteRoot.getDefaultEntry());
+			paletteViewer.setActiveTool(paletteRoot.getDefaultEntry());
 			return;
 		} else
-			paletteViewer.setMode(null);
+			paletteViewer.setActiveTool(null);
 	}
 	setTool(getDefaultTool());
 }

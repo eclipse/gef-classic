@@ -112,7 +112,8 @@ protected void fireModeChanged() {
 	if (paletteListeners == null)
 		return;
 	for (int listener = 0; listener < paletteListeners.size(); listener++)
-		((PaletteListener) paletteListeners.get(listener)).modeChanged();
+		((PaletteListener) paletteListeners.get(listener))
+			.activeToolChanged(this, activeEntry);
 }
 
 /**
@@ -138,7 +139,7 @@ public EditPartFactory getEditPartFactory() {
 	return super.getEditPartFactory();
 }
 
-public ToolEntry getMode() {
+public ToolEntry getActiveTool() {
 	return activeEntry;
 }
 
@@ -190,7 +191,7 @@ public void setCustomizer(PaletteCustomizer customizer) {
 	this.customizer = customizer;
 }
 
-public void setMode(ToolEntry newMode) {
+public void setActiveTool(ToolEntry newMode) {
 	if (newMode == null)
 		newMode = paletteRoot.getDefaultEntry();
 	if (activeEntry != null) {
