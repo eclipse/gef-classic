@@ -74,7 +74,7 @@ public static final String PROPERTY_FIXEDSIZE
 public static final String PROPERTY_DEFAULT_STATE
 		= "org.eclipse.gef.ui.palette.fpa.initState"; //$NON-NLS-1$
 
-protected static final int MIN_PALETTE_SIZE = 60;
+protected static final int MIN_PALETTE_SIZE = 20;
 protected static final int MAX_PALETTE_SIZE = 500;
 protected static final int FLYOVER_EXPANDED = 1;
 public static final int FLYOVER_COLLAPSED = 2;
@@ -89,6 +89,7 @@ protected int dock = PositionConstants.EAST;
 protected int paletteState = -1;
 protected int defaultState = FLYOVER_COLLAPSED;
 private int fixedSize = DEFAULT_PALETTE_SIZE;
+private int minWidth = MIN_PALETTE_SIZE;
 
 /*
  * @TODO:Pratik    perhaps you can make Sash a Composite
@@ -334,10 +335,10 @@ public void setDockLocation(int position) {
 
 public final void setFixedSize(int newSize) {
 	int width = getClientArea().width / 2;
-	if (width > MIN_PALETTE_SIZE && newSize > width)
+	if (width > minWidth && newSize > width)
 		newSize = width;
-	if (newSize < MIN_PALETTE_SIZE)
-		newSize = MIN_PALETTE_SIZE;
+	if (newSize < minWidth)
+		newSize = minWidth;
 	if (newSize > MAX_PALETTE_SIZE)
 		newSize = MAX_PALETTE_SIZE;
 	if (fixedSize != newSize) {
@@ -415,6 +416,9 @@ protected void setState(int newState) {
 				if (externalViewer != null) {
 					transferState(externalViewer, pViewer);
 				}
+				minWidth = Math.max(pViewer.getControl().computeSize(0, 0).x, 
+						MIN_PALETTE_SIZE);
+				setFixedSize(getFixedSize());
 			}
 			break;
 		case IN_VIEW:
