@@ -59,11 +59,24 @@ public void createPartControl(Composite comp) {
 		IPluginDescriptor desc = plugins[i];
 		if (ignoreDescriptor(desc))
 			continue;
-		IPluginPrerequisite prereqs[] = desc.getPluginPrerequisites();
-		for (int j = 0; j < prereqs.length; j++) {
-			Node target = get(desc);
-			Node source = get(prereqs[j].getUniqueIdentifier());
-			g.edges.add(new PluginEdge(source, target, prereqs[j].isExported()));
+		IPluginPrerequisite prereqs[] = null;
+		try {
+			prereqs = desc.getPluginPrerequisites();
+		} catch (Exception e) {
+			String id = desc.getUniqueIdentifier();
+			System.out.println("Error getting pre-requisties of " + id);
+			e.printStackTrace();
+		}
+		if (prereqs != null) {
+			for (int j = 0; j < prereqs.length; j++) {
+				if (prereqs[j] != null) {
+					Node target = get(desc);
+					Node source = get(prereqs[j].getUniqueIdentifier());
+					if (target != null && source != null) {
+						g.edges.add(new PluginEdge(source, target, prereqs[j].isExported()));
+					}
+				}
+			}
 		}
 	}
 	
@@ -113,7 +126,7 @@ public void createPartControl(Composite comp) {
 	new VerticalPlacement().visit(g);
 
 	for (int i = 0; i < subgraphRoots.size(); i++) {
-		Edge e = (Edge)subgraphRoots.getEdge(i);
+		Edge e = subgraphRoots.getEdge(i);
 		g.removeEdge(e);
 	}
 	g.removeNode(ECLIPSE);
