@@ -36,6 +36,12 @@ public Dimension getPreferredSize(int wHint, int hHint) {
  * @see org.eclipse.draw2d.Figure#paintClientArea(Graphics)
  */
 protected void paintChildren(Graphics graphics) {
+	/**
+	 * This isn't working.  The client-area is the available area *AFTER* zooming, and
+	 * paintClientArea is clipping to this region *BEFORE* the zoom gets appled here in
+	 * this method, resulting in too much clipping.  Need to override paintClientArea
+	 * instead.
+	 */
 	ZoomGraphics g = new ZoomGraphics(graphics);
 	g.scale(zoom);
 	super.paintChildren(g);
