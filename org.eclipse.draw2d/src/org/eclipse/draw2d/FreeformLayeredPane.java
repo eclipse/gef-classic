@@ -62,6 +62,10 @@ public void setFreeformBounds(Rectangle bounds){
 	helper.setFreeformBounds(bounds);
 }
 
+protected void superFireMoved() {
+	super.fireMoved();
+}
+
 public void validate(){
 	if (isValid())
 		return;
