@@ -2,7 +2,6 @@ package org.eclipse.draw2d.text;
 
 import java.util.List;
 
-import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.geometry.*;
 
 public class FlowPage
