@@ -242,7 +242,7 @@ public void layout(boolean change) {
  * 
  * @param	primaryViewer	The GraphicalViewer for which the rulers have to be created.
  */
-public void setGraphicalViewer(GraphicalViewer primaryViewer) {
+public void setGraphicalViewer(ScrollingGraphicalViewer primaryViewer) {
 	// pre-conditions
 	Assert.isNotNull(primaryViewer);
 	Assert.isNotNull(primaryViewer.getControl());
@@ -334,11 +334,11 @@ static class RulerBorder
 		if (horizontal) {
 			graphics.drawLine(figure.getBounds().getTopLeft(), 
 					figure.getBounds().getBottomLeft()
-					.translate(new org.eclipse.draw2d.geometry.Point(0, -3)));
+					.translate(new org.eclipse.draw2d.geometry.Point(0, -4)));
 		} else {
 			graphics.drawLine(figure.getBounds().getTopLeft(), 
 					figure.getBounds().getTopRight()
-					.translate(new org.eclipse.draw2d.geometry.Point(-3, 0)));
+					.translate(new org.eclipse.draw2d.geometry.Point(-4, 0)));
 		}
 	}
 }
