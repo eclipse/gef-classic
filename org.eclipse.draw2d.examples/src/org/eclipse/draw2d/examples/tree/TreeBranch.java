@@ -10,14 +10,39 @@ import org.eclipse.draw2d.geometry.Rectangle;
  */
 public class TreeBranch extends Figure {
 
+class AnimatingLayer extends Layer {
+
+public Dimension getPreferredSize(int wHint, int hHint) {
+	Dimension size = super.getPreferredSize(wHint, hHint);
+	if (animation >= 0) {
+		size = size.getCopy().scale((double)animation / DURATION);
+	}
+	return size;
+}
+
+}
+
+private static final int DURATION = 280;
+private static final int JUMP = 70;
+
 public static final int STYLE_HANGING = 1;
 public static final int STYLE_NORMAL = 2;
 
 int aligment = PositionConstants.CENTER;
+long animation = -1;
 
-IFigure contents = new Layer();
+/*
+ * A layer is being used simply because it is the only "transparent" figure in draw2d. See
+ * the implementation of Layer.containsPoint(...) for what is meant by "transparent". If a
+ * layer is not used, then overlapping branches will cause hit-test problems.
+ */
+AnimatingLayer contents = new AnimatingLayer();
+boolean expanded = true;
+
+int left[];
 
 IFigure node;
+int right[];
 int style;
 
 TreeBranch(IFigure title) {
@@ -41,6 +66,30 @@ public boolean containsPoint(int x, int y) {
 		|| contents.containsPoint(x, y);
 }
 
+public void expand() {
+	if (expanded)
+		return;
+	setExpanded(true);
+
+	revalidate();
+	getParent().validate();
+	right = getContourRight();
+	left = getContourLeft();
+
+	long start = System.currentTimeMillis();
+	long current = start;
+	do {
+		animation = current - start + JUMP;
+		revalidate();
+		getUpdateManager().performUpdate();
+		current = System.currentTimeMillis();
+	} while ((current - start) < (DURATION - JUMP));
+	right = null;
+	left = null;
+	animation = -1;
+	revalidate();
+}
+
 public int getAlignment() {
 	return aligment;
 }
@@ -54,10 +103,15 @@ public IFigure getContentsPane() {
 }
 
 public int[] getContourLeft() {
+	if (animation != -1) {
+		return scaledContour (left, getBranchLayout().getContourLeft());
+	}
 	return getBranchLayout().getContourLeft();
 }
 
 public int[] getContourRight() {
+	if (animation != -1)
+		return scaledContour(right, getBranchLayout().getContourRight());
 	return getBranchLayout().getContourRight();
 }
 
@@ -85,6 +139,7 @@ public Rectangle getNodeBounds() {
 public int[] getPreferredRowHeights() {
 	return getBranchLayout().getPreferredRowHeights();
 }
+
 /**
  * @see org.eclipse.draw2d.Figure#getPreferredSize(int, int)
  */
@@ -102,15 +157,42 @@ public int getStyle() {
 }
 
 /**
+ * @return
+ */
+public boolean isExpanded() {
+	return expanded;
+}
+
+/**
  * @see org.eclipse.draw2d.Figure#paintFigure(org.eclipse.draw2d.Graphics)
  */
 protected void paintFigure(Graphics graphics) {
 	super.paintFigure(graphics);
-	getBranchLayout().paintLines(graphics);
+	if (animation == -1 && isExpanded())
+		getBranchLayout().paintLines(graphics);
+}
+
+int[] scaledContour(int [] source, int[] actual) {
+	int result[] = new int[source.length];
+	result[0] = Math.min(source[0], actual[0]);
+	for (int i=1; i<source.length; i++)
+		result[i] = (int)(source[i] + 50 - 50 * animation / DURATION);
+	return result;
 }
 
 public void setAlignment(int value) {
 	aligment = value;
+	revalidate();
+}
+
+/**
+ * @param b
+ */
+public void setExpanded(boolean b) {
+	if (expanded == b)
+		return;
+	expanded = b;
+	contents.setVisible(b);
 	revalidate();
 }
 
@@ -148,11 +230,7 @@ String toString(int level) {
 	String result = "";
 	for (int i=0; i<level; i++)
 		result += "  ";
-	try {
-		result += ((Label)getChildren().get(0)).getText() + "\n";
-	} catch (ClassCastException e) {
-		result += getChildren().get(0) + "\n";
-	}
+	result += getChildren().get(0) + "\n";
 	for (int i=0; i<contents.getChildren().size(); i++)
 		result += ((TreeBranch)contents.getChildren().get(i)).toString(level + 1);
 	return result;

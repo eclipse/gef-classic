@@ -28,13 +28,15 @@ void calculateDepth() {
 void setRowHeights(int[] heights, int offset) {
 	super.setRowHeights(heights, offset);
 	offset++;
-	List subtrees = branch.contents.getChildren();
-	TreeBranch subtree;
-
-	for (int i = 0; i < subtrees.size(); i++) {
-		subtree = (TreeBranch)subtrees.get(i);
-		subtree.setRowHeights(heights, offset);
-		offset += subtree.getDepth();
+	if (branch.isExpanded()) {
+		List subtrees = branch.contents.getChildren();
+		TreeBranch subtree;
+	
+		for (int i = 0; i < subtrees.size(); i++) {
+			subtree = (TreeBranch)subtrees.get(i);
+			subtree.setRowHeights(heights, offset);
+			offset += subtree.getDepth();
+		}
 	}
 }
 
@@ -46,6 +48,8 @@ void updateRowHeights() {
 	preferredRowHeights = new int[getDepth()];
 	preferredRowHeights[0] =
 		transposer.t(branch.getNode().getPreferredSize()).height + getMajorSpacing();
+	if (!branch.isExpanded())
+		return;
 
 	List subtrees = getSubtrees();
 	TreeBranch subtree;
@@ -68,7 +72,8 @@ protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHi
 	Transposer transposer = branch.getRoot().getTransposer();
 	Dimension result = transposer.t(branch.getNode().getPreferredSize().getCopy());
 	result.height = rowHeight;
-	if (branch.getContentsPane().getChildren().isEmpty())
+	IFigure pane = branch.getContentsPane();
+	if (!pane.isVisible() || pane.getChildren().isEmpty())
 		return transposer.t(result);
 	Dimension d = transposer.t(branch.getContentsPane().getPreferredSize());
 	result.width = Math.max(result.width, d.width + getGap() * 2);
@@ -148,6 +153,9 @@ void updateContours() {
 
 	cachedContourLeft[0] = nodeBounds.x - clientArea.x;
 	cachedContourRight[0] = rightEdge - nodeBounds.right();
+
+	if (!branch.isExpanded())
+		return;
 
 	List subtrees = branch.contents.getChildren();
 	TreeBranch subtree;

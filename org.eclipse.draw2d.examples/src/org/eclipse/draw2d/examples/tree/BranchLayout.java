@@ -42,6 +42,8 @@ public int[] getContourRight() {
 }
 
 public int getDepth() {
+	if (!branch.isExpanded())
+		return 1;
 	if (depth == -1)
 		calculateDepth();
 	return depth;

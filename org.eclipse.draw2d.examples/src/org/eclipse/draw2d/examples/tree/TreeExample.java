@@ -67,6 +67,15 @@ void doDeleteChild() {
 	selected = null;
 }
 
+void doExpandCollapse() {
+	if (selected == null)
+		return;
+	TreeBranch parent = (TreeBranch)selected.getParent();
+	if (parent.isExpanded())
+		parent.setExpanded(false);
+	else parent.expand();
+}
+
 void doStyleHanging() {
 	if (selected == null)
 		return;
@@ -198,7 +207,15 @@ protected void run() {
 			doStyleHanging();
 		}
 	});
-	
+
+	Button expandCollapse = new Button(selectedGroup, 0);
+	expandCollapse.setText("expand/collapse");
+	expandCollapse.addSelectionListener(new SelectionAdapter() {
+		public void widgetSelected(SelectionEvent e) {
+			doExpandCollapse();
+		}
+	});
+
 	localShell.pack();
 	localShell.setLocation(400,100);
 	localShell.open();

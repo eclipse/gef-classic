@@ -36,6 +36,8 @@ protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHi
 private int[] calculateNewRightContour(int old[], int add[], int shift) {
 	if (old == null)
 		return add;
+	if (shift < 0)
+		shift = 0;
 	int result[] = new int[Math.max(old.length, add.length)];
 	System.arraycopy(add, 0, result, 0, add.length);
 	for (int i = add.length; i < result.length; i++)

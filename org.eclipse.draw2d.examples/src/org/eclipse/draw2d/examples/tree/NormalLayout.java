@@ -30,7 +30,8 @@ void calculateDepth() {
 
 protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHint) {
 	Rectangle union = branch.getNodeBounds().getCopy();
-	union.union(branch.getContentsPane().getBounds());
+	if (branch.isExpanded())
+		union.union(branch.getContentsPane().getBounds());
 	return union.getSize();
 }
 
@@ -44,7 +45,7 @@ public void layout(IFigure f) {
 	Rectangle nodeLocation = new Rectangle(topLeft, transposer.t(node.getPreferredSize()));
 	nodeLocation.height = rowHeight - getMajorSpacing();
 	
-	if (contents.getChildren().isEmpty()) {
+	if (!contents.isVisible() || contents.getChildren().isEmpty()) {
 		node.setBounds(transposer.t(nodeLocation));
 		contents.setBounds(
 			transposer.t(nodeLocation.getTranslated(0, rowHeight).setSize(0, 0)));
@@ -67,6 +68,8 @@ public void layout(IFigure f) {
 		lastChild.getContourRight()[0]
 			- transposer.t(lastChild.getBounds()).right()
 			+ transposer.t(contents.getBounds()).right();
+	rightInset = Math.max(rightInset, 0);
+	leftInset = Math.max(leftInset, 0);
 	int childrenSpan = contentsLocation.width - leftInset - rightInset;
 
 	switch (branch.getAlignment()) {
@@ -150,6 +153,8 @@ void updateContours() {
 	
 	cachedContourLeft[0] = nodeBounds.x - clientArea.x;
 	cachedContourRight[0] = clientArea.right() - nodeBounds.right();
+	if (!branch.isExpanded())
+		return;
 
 	List subtrees = getSubtrees();
 	TreeBranch subtree;
@@ -184,9 +189,14 @@ void updateContours() {
 void updateRowHeights() {
 	Transposer transposer = getTransposer();
 	preferredRowHeights = new int[getDepth()];
-	List subtrees = getSubtrees();
+
 	preferredRowHeights[0] =
 		transposer.t(branch.getNode().getPreferredSize()).height + getMajorSpacing();
+
+	if (!branch.isExpanded())
+		return;
+
+	List subtrees = getSubtrees();
 	TreeBranch subtree;
 	
 	for (int i = 0; i < subtrees.size(); i++) {
@@ -203,10 +213,12 @@ void updateRowHeights() {
  */
 void setRowHeights(int[] heights, int offset) {
 	super.setRowHeights(heights, offset);
-	List subtrees = getSubtrees();
-	offset++;
-	for (int i=0; i<subtrees.size(); i++)
-		((TreeBranch)subtrees.get(i)).setRowHeights(heights, offset);
+	if (branch.isExpanded()) {
+		List subtrees = getSubtrees();
+		offset++;
+		for (int i=0; i<subtrees.size(); i++)
+			((TreeBranch)subtrees.get(i)).setRowHeights(heights, offset);
+	}
 }
 
 }
