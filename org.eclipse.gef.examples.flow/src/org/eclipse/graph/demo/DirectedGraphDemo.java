@@ -43,10 +43,10 @@ static public void buildPrimeGraph(DirectedGraph graph, Figure panel) {
 		if (e.tree) {
 			PolygonDecoration dec = new PolygonDecoration();
 			dec.setLineWidth(2);
-			if (e.head() == e.target)
-				line.setSourceDecoration(dec);
-			else
-				line.setTargetDecoration(dec);
+//			if (e.head() == e.target)
+//				line.setSourceDecoration(dec);
+//			else
+//				line.setTargetDecoration(dec);
 
 			line.setLineWidth(3);
 			Label l = new Label (e.cut+","+e.getSlack());

@@ -1,6 +1,7 @@
 package org.eclipse.gef.examples.flow.figures;
 
 import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
@@ -14,8 +15,15 @@ IFigure contents;
 IFigure footer;
 IFigure header;
 
-public SubgraphFigure() {
+public SubgraphFigure(IFigure header, IFigure footer) {
 	contents = new Figure();
+	add(contents);
+	add(this.header = header);
+	add(this.footer = footer);
+}
+
+public IFigure getContents() {
+	return contents;
 }
 
 public IFigure getFooter() {
@@ -29,14 +37,13 @@ public IFigure getHeader() {
 public void setBounds(Rectangle rect) {
 	super.setBounds(rect);
 	contents.setBounds(bounds);
-}
-
-public void setFooter(IFigure figure) {
-	footer = figure;
-}
-
-public void setHeader(IFigure figure) {
-	header = figure;
+	Dimension size = footer.getPreferredSize();
+	footer.setLocation(rect.getBottomLeft().translate(0, -size.height));
+	footer.setSize(size);
+	
+	size = header.getPreferredSize();
+	header.setSize(size);
+	header.setLocation(rect.getLocation());
 }
 
 }

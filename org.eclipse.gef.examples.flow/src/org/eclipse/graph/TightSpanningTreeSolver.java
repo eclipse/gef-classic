@@ -7,7 +7,7 @@ import java.util.List;
  * @author hudsonr
  * @since 2.1
  */
-public class TightSpanningTreeSolver extends GraphVisitor {
+public class TightSpanningTreeSolver extends SpanningTreeVisitor {
 
 protected DirectedGraph graph;
 protected EdgeList candidates = new EdgeList();
@@ -15,6 +15,7 @@ protected NodeList members = new NodeList();
 
 public void visit(DirectedGraph graph) {
 	this.graph = graph;
+	init();
 	solve();
 }
 
@@ -25,12 +26,12 @@ Node addEdge(Edge edge) {
 	if (edge.target.flag) {
 		delta = -delta;
 		node = edge.source;
-		node.spanTreeParent = edge;
-		edge.target.spanTreeChildren.add(edge);
+		setParentEdge(node, edge);
+		getSpanningTreeChildren(edge.target).add(edge);
 	} else {
 		node = edge.target;
-		node.spanTreeParent = edge;
-		edge.source.spanTreeChildren.add(edge);
+		setParentEdge(node, edge);
+		getSpanningTreeChildren(edge.source).add(edge);
 	}
 	members.adjustRank(delta);
 	addNode(node);
@@ -62,12 +63,18 @@ void addNode(Node node) {
 	members.add(node);
 }
 
-protected void solve() {
+void init() {
 	graph.edges.resetFlags();
 	graph.nodes.resetFlags();
-	
+	for (int i = 0; i < graph.nodes.size(); i++) {
+		Node node = (Node)graph.nodes.get(i);
+		node.workingData[0] = new EdgeList();
+	}
+}
+
+protected void solve() {
 	Node root = graph.nodes.getNode(0);
-	root.spanTreeParent = null;
+	setParentEdge(root, null);
 	addNode(root);
 	List nonMembers = new ArrayList(graph.nodes);
 	while (members.size() < graph.nodes.size()) {

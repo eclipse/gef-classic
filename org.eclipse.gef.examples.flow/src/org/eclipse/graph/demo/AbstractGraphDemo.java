@@ -128,10 +128,6 @@ static PolylineConnection buildPrimeEdge(Edge e) {
 	if (e.tree) {
 		PolygonDecoration dec = new PolygonDecoration();
 		dec.setLineWidth(2);
-		if (e.head() == e.target)
-			line.setSourceDecoration(dec);
-		else
-			line.setTargetDecoration(dec);
 	
 		line.setLineWidth(3);
 		Label l = new Label (e.cut + "");

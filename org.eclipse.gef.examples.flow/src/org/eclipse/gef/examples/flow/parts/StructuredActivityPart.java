@@ -4,8 +4,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.draw2d.*;
+
 import org.eclipse.gef.*;
 import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
+
+import org.eclipse.gef.examples.flow.figures.StartTag;
+import org.eclipse.gef.examples.flow.figures.SubgraphFigure;
 import org.eclipse.gef.examples.flow.model.StructuredActivity;
 import org.eclipse.gef.examples.flow.policies.*;
 import org.eclipse.graph.CompoundDirectedGraph;
@@ -49,6 +53,8 @@ protected void createEditPolicies() {
 
 public void contributeNodesToGraph(CompoundDirectedGraph graph, Subgraph s, Map map) {
 	Subgraph me = new Subgraph(this, s);
+	me.outgoingOffset = 5;
+	me.incomingOffset = 5;
 	map.put(this, me);
 	graph.nodes.add(me);
 	for (int i = 0; i < getChildren().size(); i++) {
@@ -58,10 +64,19 @@ public void contributeNodesToGraph(CompoundDirectedGraph graph, Subgraph s, Map 
 }
 
 protected IFigure createFigure() {
-	Figure f = new Figure();
-	f.setBorder(new LineBorder());
+	Figure f = new SubgraphFigure(new StartTag(), new StartTag());
 	f.setOpaque(true);
+	f.setBorder(new LineBorder());
 	return f;
+}
+
+/**
+ * @see org.eclipse.gef.GraphicalEditPart#getContentPane()
+ */
+public IFigure getContentPane() {
+	if (getFigure() instanceof SubgraphFigure)
+		return ((SubgraphFigure)getFigure()).getContents();
+	return getFigure();
 }
 
 protected List getModelChildren() {

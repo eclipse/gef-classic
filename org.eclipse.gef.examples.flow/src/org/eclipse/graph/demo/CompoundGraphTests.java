@@ -127,6 +127,7 @@ public static CompoundDirectedGraph pull() {
 	return graph;
 }
 
+
 public static CompoundDirectedGraph test1() {
 	Subgraph s1, s2;
 	Node n1, n2, n3, n4, n5, n6, n7;
@@ -212,7 +213,76 @@ public static CompoundDirectedGraph tangledSubgraphs() {
 	return graph;
 }
 
-public static CompoundDirectedGraph test2() {
+public static CompoundDirectedGraph flowEditor() {
+	Subgraph diagram, flow, subflow1, subflow2;
+	Node a1, a2, a3;
+	NodeList nodes = new NodeList();
+	EdgeList edges = new EdgeList();
+
+
+	nodes.add(diagram = new Subgraph("Editor"));
+	nodes.add(flow = new Subgraph("Flow", diagram));
+	nodes.add(subflow1 = new Subgraph("Sub1", flow));
+	nodes.add(subflow2 = new Subgraph("Sub2", flow));
+	
+	nodes.add(a1 = new Node("a1", diagram));
+	nodes.add(a2 = new Node("a2", subflow1));
+	nodes.add(a3 = new Node("a3", subflow2));
+
+	a1.width = a2.width = a3.width = 200;
+
+	edges.add(new Edge(a1, flow));
+	edges.add(new Edge(a1, a2));
+	edges.add(new Edge(a2, a3));
+
+	CompoundDirectedGraph graph = new CompoundDirectedGraph();
+	graph.nodes = nodes;
+	graph.edges = edges;
+	
+	new CompoundDirectedGraphLayout()
+		.visit(graph);
+	return graph;
+}
+
+
+static CompoundDirectedGraph flowEditor1() {
+	Subgraph diagram, flow;
+	Node a1, a2, a4, a5, a6, a7, a8, x, y;
+	NodeList nodes = new NodeList();
+	EdgeList edges = new EdgeList();
+
+
+	nodes.add(diagram = new Subgraph("Editor"));
+	nodes.add(flow = new Subgraph("Flow", diagram));
+
+	nodes.add(a1 = new Node("a1", diagram));
+	nodes.add(a2 = new Node("a2", diagram));
+	nodes.add(a4 = new Node("a4", diagram));
+	nodes.add(a5 = new Node("a5", diagram));
+	nodes.add(a6 = new Node("a6", diagram));
+	nodes.add(a7 = new Node("a7", diagram));
+	nodes.add(a8 = new Node("a8", diagram));
+
+	edges.add(new Edge(a1, a2));
+	edges.add(new Edge(a2, a4));
+	edges.add(new Edge(a2, a5));
+	edges.add(new Edge(a2, a6));
+
+	edges.add(new Edge(a6, flow));
+	nodes.add(x = new Node("x", flow));
+	nodes.add(y = new Node("y", flow));
+	edges.add(new Edge(x, y));
+
+	CompoundDirectedGraph graph = new CompoundDirectedGraph();
+	graph.nodes = nodes;
+	graph.edges = edges;
+	
+	new CompoundDirectedGraphLayout()
+		.visit(graph);
+	return graph;
+}
+
+static CompoundDirectedGraph test2() {
 	Subgraph s1, s2, s1_1;
 	Node n1, n2, n3, n4, n5, n6, n7, n8;
 	NodeList nodes = new NodeList();
