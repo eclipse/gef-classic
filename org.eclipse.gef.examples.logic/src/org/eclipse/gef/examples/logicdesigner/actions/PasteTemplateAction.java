@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner.actions;
 
-import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IWorkbenchPart;
 
 import org.eclipse.draw2d.geometry.Point;
 
@@ -18,9 +18,7 @@ import org.eclipse.gef.EditPart;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.requests.CreateRequest;
 import org.eclipse.gef.requests.CreationFactory;
-import org.eclipse.gef.ui.actions.Clipboard;
-import org.eclipse.gef.ui.actions.GEFActionConstants;
-import org.eclipse.gef.ui.actions.SelectionAction;
+import org.eclipse.gef.ui.actions.*;
 
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
 
@@ -38,7 +36,7 @@ private CreateRequest request;
  * Constructor for PasteTemplateAction.
  * @param editor
  */
-public PasteTemplateAction(IEditorPart editor) {
+public PasteTemplateAction(IWorkbenchPart editor) {
 	super(editor);
 }
 

@@ -37,8 +37,6 @@ public static int AUTOMATIC = 1;
 /** Always show scrollbar */
 public static int ALWAYS = 2;
 
-private static int DEFAULT_INCREMENT = 10;
-
 private int vBarVisibility = AUTOMATIC;
 private int hBarVisibility = AUTOMATIC;
 private Viewport viewport;

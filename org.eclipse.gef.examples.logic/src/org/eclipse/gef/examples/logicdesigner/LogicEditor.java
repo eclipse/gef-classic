@@ -476,31 +476,31 @@ protected void createActions() {
 	registry.registerAction(action);
 	getSelectionActions().add(action.getId());
 
-	action = new DirectEditAction(this);
+	action = new DirectEditAction((IWorkbenchPart)this);
 	registry.registerAction(action);
 	getSelectionActions().add(action.getId());
 
-	action = new AlignmentAction(this, PositionConstants.LEFT);
+	action = new AlignmentAction((IWorkbenchPart)this, PositionConstants.LEFT);
 	registry.registerAction(action);
 	getSelectionActions().add(action.getId());
 
-	action = new AlignmentAction(this, PositionConstants.RIGHT);
+	action = new AlignmentAction((IWorkbenchPart)this, PositionConstants.RIGHT);
 	registry.registerAction(action);
 	getSelectionActions().add(action.getId());
 
-	action = new AlignmentAction(this, PositionConstants.TOP);
+	action = new AlignmentAction((IWorkbenchPart)this, PositionConstants.TOP);
 	registry.registerAction(action);
 	getSelectionActions().add(action.getId());
 
-	action = new AlignmentAction(this, PositionConstants.BOTTOM);
+	action = new AlignmentAction((IWorkbenchPart)this, PositionConstants.BOTTOM);
 	registry.registerAction(action);
 	getSelectionActions().add(action.getId());
 
-	action = new AlignmentAction(this, PositionConstants.CENTER);
+	action = new AlignmentAction((IWorkbenchPart)this, PositionConstants.CENTER);
 	registry.registerAction(action);
 	getSelectionActions().add(action.getId());
 
-	action = new AlignmentAction(this, PositionConstants.MIDDLE);
+	action = new AlignmentAction((IWorkbenchPart)this, PositionConstants.MIDDLE);
 	registry.registerAction(action);
 	getSelectionActions().add(action.getId());
 }
