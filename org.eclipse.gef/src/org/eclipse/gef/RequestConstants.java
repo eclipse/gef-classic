@@ -97,16 +97,6 @@ String REQ_CREATE = "create child"; //$NON-NLS-1$
 String REQ_ADD = "add children"; //$NON-NLS-1$
 
 /**
- * Constant used to indicate that a connection's source node is being deleted.
- */
-String REQ_SOURCE_DELETED = "source deleted"; //$NON-NLS-1$
-
-/**
- * Constant used to indicate that a connection's target node is being deleted.
- */
-String REQ_TARGET_DELETED = "target deleted"; //$NON-NLS-1$
-
-/**
  * Constant used to indicate that the receiver of the Request is being deleted.
  */
 String REQ_DELETE = "delete"; //$NON-NLS-1$
@@ -115,12 +105,6 @@ String REQ_DELETE = "delete"; //$NON-NLS-1$
  * Constant used to indicate that a child of the receiver the Request is to be deleted.
  */
 String REQ_DELETE_DEPENDANT = "delete dependant"; //$NON-NLS-1$
-
-/**
- * Constant used to identify that an ancestor of the receiver of the Request is being
- * deleted.
- */
-String REQ_ANCESTOR_DELETED = "ancestor deleted"; //$NON-NLS-1$
 
 /**
  * Constant used to indicate that alignment is being performed.
