@@ -8,21 +8,26 @@ package org.eclipse.gef.tools;
 
 import java.lang.reflect.Constructor;
 
+import org.eclipse.swt.events.*;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
+
+import org.eclipse.jface.viewers.CellEditor;
+import org.eclipse.jface.viewers.ICellEditorListener;
+
+import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.geometry.Insets;
+import org.eclipse.draw2d.geometry.Rectangle;
+
 import org.eclipse.gef.*;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.gef.editparts.LayerManager;
-import org.eclipse.gef.requests.*;
-import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.geometry.*;
-
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.events.*;
-import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.FocusListener;
-import org.eclipse.swt.widgets.*;
-import org.eclipse.jface.viewers.CellEditor;
-import org.eclipse.jface.viewers.ICellEditorListener;
+import org.eclipse.gef.requests.DirectEditRequest;
 
 abstract public class DirectEditManager {
 
@@ -35,10 +40,6 @@ private static class DirectEditBorder
 	private static final Insets insets = new Insets(1,2,2,2);
 	public Insets getInsets(IFigure figure) {
 		return insets;
-	}
-
-	public boolean isOpaque() {
-		return false;
 	}
 
 	public void paint(IFigure figure, Graphics graphics, Insets insets) {
