@@ -17,6 +17,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.draw2d.geometry.Point;
 
@@ -399,9 +400,11 @@ private boolean handleTraverseHandle(KeyEvent e) {
 	}
 
 	Point loc = (Point)locations.get(handleIndex);
-	org.eclipse.swt.graphics.Point swt = getCurrentViewer().getControl().toDisplay(
-			new org.eclipse.swt.graphics.Point(loc.x, loc.y));
-	if (getCurrentViewer().getControl().getDisplay().getCursorLocation().equals(swt)) {
+	Point current = new Point(
+			getCurrentViewer().getControl().toControl(
+				Display.getCurrent().getCursorLocation()));
+
+	if (current.equals(loc)) {
 		// The cursor is already at the location that it is to be moved to.  So, we
 		// move to the next handle instead.  If there are no more handles, then we
 		// cancel the drag.
