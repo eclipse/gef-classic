@@ -170,7 +170,7 @@ protected void updateSourceRequest() {
 		.getAdapter(SnapToStrategy.class);
 
 	if (!getCurrentInput().isShiftKeyDown() && strategy != null)
-		strategy.snapResizeRequest(request, sourceRect);
+		strategy.snapResizeRequest(request, sourceRect.getPreciseCopy());
 }
 
 }

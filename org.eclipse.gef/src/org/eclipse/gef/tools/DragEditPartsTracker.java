@@ -21,6 +21,7 @@ import org.eclipse.draw2d.geometry.*;
 import org.eclipse.gef.*;
 import org.eclipse.gef.commands.*;
 import org.eclipse.gef.editparts.LayerManager;
+import org.eclipse.gef.handles.HandleBounds;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
 
 
@@ -56,7 +57,11 @@ public DragEditPartsTracker(EditPart sourceEditPart) {
 public void activate() {
 	super.activate();
 	IFigure figure = ((GraphicalEditPart)getSourceEditPart()).getFigure();
-	sourceRectangle = new PrecisionRectangle(figure.getBounds());
+	if (figure instanceof HandleBounds)
+		sourceRectangle = new PrecisionRectangle(((HandleBounds)figure).getHandleBounds());
+	else
+		sourceRectangle = new PrecisionRectangle(figure.getBounds());
+
 	figure.translateToAbsolute(sourceRectangle);
 }
 
@@ -380,7 +385,7 @@ protected void updateTargetRequest() {
 	request.setMoveDelta(new Point(delta.width, delta.height));
 
 	if (helper != null && !getCurrentInput().isShiftKeyDown())
-		helper.snapMoveRequest(request, (PrecisionRectangle)sourceRectangle.getCopy());
+		helper.snapMoveRequest(request, sourceRectangle.getPreciseCopy());
 
 	request.setLocation(getLocation());
 	request.setType(getCommandName());

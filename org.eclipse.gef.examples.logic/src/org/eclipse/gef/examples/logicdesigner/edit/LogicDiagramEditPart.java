@@ -17,8 +17,6 @@ import java.util.List;
 import org.eclipse.swt.accessibility.AccessibleEvent;
 
 import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.*;
 import org.eclipse.gef.editpolicies.RootComponentEditPolicy;
@@ -80,8 +78,13 @@ protected IFigure createFigure() {
  * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
  */
 public Object getAdapter(Class adapter) {
-	if (adapter == SnapToStrategy.class)
-		return new SnapToGrid(this);
+	if (adapter == SnapToStrategy.class) {
+		SnapToStrategy ss[] = new SnapToStrategy[3];
+		ss[0] = new SnapToGuides(this);
+		ss[1] = new SnapToGeometry(this);
+		ss[2] = new SnapToGrid(this);
+		return new CompoundSnapToStrategy(ss);
+	}
 	return super.getAdapter(adapter);
 }
 

@@ -23,9 +23,27 @@ public SnapToGrid(GraphicalEditPart container) {
 	this.container = container;
 }
 
-public void snapResizeRequest(ChangeBoundsRequest request, PrecisionRectangle baseRec) {
+public boolean snapMoveRequest(ChangeBoundsRequest request, PrecisionRectangle baseRect) {
+	PrecisionPoint move = new PrecisionPoint(request.getMoveDelta());
+	
+	IFigure fig = container.getContentPane();
+	baseRect.translate(move);
+	fig.translateToRelative(baseRect);
+	fig.translateToRelative(move);
+
+	double xCorrection = Math.IEEEremainder(baseRect.preciseX, gridX);
+	double yCorrection = Math.IEEEremainder(baseRect.preciseY, gridY);
+	
+	move.preciseX -= xCorrection;
+	move.preciseY -= yCorrection;
+	move.updateInts();
+	fig.translateToAbsolute(move);
+	request.setMoveDelta(move);
+	return true;
+}
+
+public boolean snapResizeRequest(ChangeBoundsRequest request, PrecisionRectangle baseRec) {
 	int dir = request.getResizeDirection();
-	baseRec = (PrecisionRectangle)baseRec.getCopy();
 	PrecisionDimension resize = new PrecisionDimension(request.getSizeDelta());
 	PrecisionPoint move = new PrecisionPoint(request.getMoveDelta());
 	
@@ -62,24 +80,7 @@ public void snapResizeRequest(ChangeBoundsRequest request, PrecisionRectangle ba
 
 	request.setSizeDelta(resize);
 	request.setMoveDelta(move);
-}
-
-public void snapMoveRequest(ChangeBoundsRequest req, PrecisionRectangle baseRect) {
-	PrecisionPoint raw = new PrecisionPoint(req.getMoveDelta());
-	
-	IFigure fig = container.getContentPane();
-	baseRect.translate(raw);
-	fig.translateToRelative(baseRect);
-	fig.translateToRelative(raw);
-
-	double xCorrection = Math.IEEEremainder(baseRect.preciseX, gridX);
-	double yCorrection = Math.IEEEremainder(baseRect.preciseY, gridY);
-	
-	raw.preciseX -= xCorrection;
-	raw.preciseY -= yCorrection;
-	raw.performTranslate(0, 0);
-	fig.translateToAbsolute(raw);
-	req.setMoveDelta(raw);
+	return true;
 }
 
 }
