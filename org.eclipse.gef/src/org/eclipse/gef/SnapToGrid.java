@@ -23,7 +23,7 @@ private Point origin;
 
 /**
  * Constructs a snap-to-grid strategy on the given editpart.  The editpart should be the
- * graphical editpart who's content-pane figure is used as the reference for the grid.
+ * graphical editpart whose content-pane figure is used as the reference for the grid.
  * @param container the editpart which owns the grid
  */
 public SnapToGrid(GraphicalEditPart gep) {
