@@ -87,7 +87,7 @@ protected List getModelChildren() {
  * @see NodeEditPart#getSourceConnectionAnchor(org.eclipse.gef.ConnectionEditPart)
  */
 public ConnectionAnchor getSourceConnectionAnchor(ConnectionEditPart connection) {
-	return new ChopboxAnchor(getFigure());
+	return new SimpleActivityPart.BottomAnchor(getFigure());
 }
 
 /**
@@ -105,7 +105,7 @@ StructuredActivity getStructuredActivity() {
  * @see NodeEditPart#getTargetConnectionAnchor(org.eclipse.gef.ConnectionEditPart)
  */
 public ConnectionAnchor getTargetConnectionAnchor(ConnectionEditPart connection) {
-	return new ChopboxAnchor(getFigure());
+	return new SimpleActivityPart.TopAnchor(getFigure());
 }
 
 /**
