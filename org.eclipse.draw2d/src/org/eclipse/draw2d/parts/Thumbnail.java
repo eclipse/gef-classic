@@ -12,7 +12,10 @@ import org.eclipse.swt.widgets.Display;
  * Figure.
  * 
  * @author Eric Bordeau */
-public class Thumbnail extends Figure {
+public class Thumbnail 
+	extends Figure 
+	implements UpdateListener
+{
 
 private IFigure sourceFigure;
 private boolean isDirty;
@@ -277,6 +280,7 @@ private Dimension adjustToAspectRatio(Dimension size, boolean adjustToMaxDimensi
  * Deactivates this Thumbnail. */
 public void deactivate() {
 	updater.deactivate();
+	sourceFigure.getUpdateManager().removeUpdateListener(this);
 }
 
 /**
@@ -343,6 +347,22 @@ protected boolean isDirty() {
 }
 
 /**
+ * @see org.eclipse.draw2d.UpdateListener#notifyPainting(Rectangle)
+ */
+public void notifyPainting(Rectangle damage) {
+	setDirty(true);
+	repaint();
+}
+
+/**
+ * @see org.eclipse.draw2d.UpdateListener#notifyValidating()
+ */
+public void notifyValidating() {
+	setDirty(true);
+	revalidate();
+}
+
+/**
  * @see org.eclipse.draw2d.Figure#paintFigure(Graphics) */
 protected void paintFigure(Graphics graphics) {
 	Image thumbnail = getThumbnailImage();
@@ -371,16 +391,17 @@ protected void setScales(float x, float y) {
  * update manager.
  *  * @param fig The source figure */
 public void setSource(IFigure fig) {
-	sourceFigure = fig; 
-	setScales((float)getSize().width / (float)sourceFigure.getSize().width,
-			(float)getSize().height / (float)sourceFigure.getSize().height);
-	new ThumbnailUpdateManager(sourceFigure, this);
-	sourceFigure.addFigureListener(new FigureListener() {
-		public void figureMoved(IFigure fig) {
-			setDirty(true);
-			revalidate();
-		}
-	});
+	if (sourceFigure == fig)
+		return;
+	if (sourceFigure != null)
+		sourceFigure.getUpdateManager().removeUpdateListener(this);
+	sourceFigure = fig;
+	if (sourceFigure != null) {
+		setScales((float)getSize().width / (float)sourceFigure.getSize().width,
+				(float)getSize().height / (float)sourceFigure.getSize().height);
+		sourceFigure.getUpdateManager().addUpdateListener(this);
+		repaint();
+	}
 }
 
 }
