@@ -16,9 +16,7 @@ import org.eclipse.swt.events.*;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.*;
 
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ICellEditorListener;
@@ -33,6 +31,11 @@ import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.gef.editparts.LayerManager;
 import org.eclipse.gef.requests.DirectEditRequest;
 
+/**
+ * Manages the direct edit operation by creating and maintaining the 
+ * {@link org.eclipse.jface.viewers.CellEditor} and executing the resulting command if 
+ * the cell editor value has changed.
+ */
 public abstract class DirectEditManager {
 
 private static final Color BLUE = ColorConstants.menuBackgroundSelected;
@@ -78,6 +81,15 @@ private CellEditor ce;
 private Class editorType;
 private boolean committing = false;
 
+/**
+ * Constructs a new DirectEdtiManager for the given source edit part. The cell editor 
+ * will be created by instantiating the type <i>editorType</i>. The cell editor will be 
+ * placed using the given CellEditorLocator.
+ * 
+ * @param source the source edit part
+ * @param editorType the cell editor type
+ * @param locator the locator
+ */
 public DirectEditManager(GraphicalEditPart source, 
 							Class editorType, 
 							CellEditorLocator locator) {
@@ -88,6 +100,11 @@ public DirectEditManager(GraphicalEditPart source,
 	this.editorType = editorType;
 }
 
+/**
+ * Cleanup is done here.  Any feedback is erased and listeners unhooked.  If the cell
+ * editor is not <code>null</code>, it will be {@link CellEditor#deactivate() deativated},
+ * {@link CellEditor#dispose() disposed}, and set to <code>null</code>.
+ */
 protected void bringDown() {
 	eraseFeedback();
 	unhookListeners();
@@ -100,6 +117,11 @@ protected void bringDown() {
 	dirty = false;
 }
 
+/**
+ * Commits the current value of the cell editor by getting a {@link Command} from the 
+ * source edit part and executing it via the {@link CommandStack}.  Finally, 
+ * {@link #bringDown()} is called to perform and necessary cleanup.
+ */
 protected void commit() {
 	if (committing)
 		return;
@@ -119,6 +141,12 @@ protected void commit() {
 	}
 }
 
+/**
+ * Creates the cell editor on the given composite.  The cell editor is created by 
+ * instantiating the cell editor type passed into this DirectEditManager's constuctor.
+ * @param composite the composite to create the cell editor on
+ * @return the newly created cell editor
+ */
 protected CellEditor createCellEditorOn(Composite composite) {
 	try {
 		Constructor constructor = editorType.getConstructor(new Class[]{Composite.class});
@@ -128,12 +156,19 @@ protected CellEditor createCellEditorOn(Composite composite) {
 	}
 }
 
+/**
+ * Creates and returns the DirectEditRequest.
+ * @return the direct edit request
+ */
 protected DirectEditRequest createDirectEditRequest() {
 	DirectEditRequest req = new DirectEditRequest();
 	req.setCellEditor(getCellEditor());
 	return req;
 }
 
+/**
+ * Asks the source edit part to erase source feedback.
+ */
 protected void eraseFeedback() {
 	if (showingFeedback) {
 		LayerManager.Helper.find(getEditPart()).
@@ -145,6 +180,10 @@ protected void eraseFeedback() {
 	}
 }
 
+/**
+ * Returns the cell editor.
+ * @return the cell editor
+ */
 protected CellEditor getCellEditor() {
 	return ce;
 }
@@ -161,12 +200,20 @@ private Control getControl() {
 	return ce.getControl();
 }
 
+/**
+ * Returns the direct edit request, creating it if needed.
+ * @return the direct edit request
+ */
 protected DirectEditRequest getDirectEditRequest() {
 	if (request == null)
 		request = createDirectEditRequest();
 	return request;
 }
 
+/**
+ * Returns the source edit part.
+ * @return the source edit part
+ */
 protected GraphicalEditPart getEditPart() {
 	return source;
 }
@@ -240,8 +287,16 @@ private void hookListeners() {
 	getEditPart().addEditPartListener(editPartListener);
 }
 
+/**
+ * Initialized the cell editor.  Subclass should implement this to set the initial text 
+ * and add things such as {@link VerifyListener VerifyListeners}, if needed.
+ */
 protected abstract void initCellEditor();
 
+/**
+ * Returns <code>true</code> if the cell editor's value has been changed.
+ * @return <code>true</code> if the cell editor is dirty
+ */
 protected boolean isDirty() {
 	return dirty;
 }
@@ -260,6 +315,10 @@ private void placeCellEditor() {
 	getLocator().relocate(getCellEditor());
 }
 
+/**
+ * Sets the cell editor to the given editor.
+ * @param editor the cell editor
+ */
 protected void setCellEditor(CellEditor editor) {
 	ce = editor;
 	if (ce == null)
@@ -267,23 +326,35 @@ protected void setCellEditor(CellEditor editor) {
 	hookListeners();
 }
 
+/**
+ * Sets the dirty property.
+ * @param value the dirty property
+ */
 protected void setDirty(boolean value) {
 	dirty = value;
 }
 
+/**
+ * Sets the source edit part.
+ * @param source the source edit part
+ */
 protected void setEditPart(GraphicalEditPart source) {
 	this.source = source;
 //	source.addEditPartListener();
 }
 
 /**
- * Sets the locator.
- * @param locator The locator to set
+ * Sets the CellEditorLocator used to place the cell editor in the correct location.
+ * @param locator the locator
  */
 public void setLocator(CellEditorLocator locator) {
 	this.locator = locator;
 }
 
+/**
+ * Shows the cell editor when direct edit is started.  Calls {@link #initCellEditor()},
+ * {@link CellEditor#activate()}, and {@link #showFeedback()}.
+ */
 public void show() {
 	if (getCellEditor() != null)
 		return;
@@ -306,6 +377,9 @@ private void showCellEditorFrame() {
 	placeBorder();
 }
 
+/**
+ * Asks the source edit part to show source feedback.
+ */
 public void showFeedback() {
 	if (showingFeedback == false)
 		showCellEditorFrame();
@@ -314,6 +388,10 @@ public void showFeedback() {
 	getEditPart().showSourceFeedback(getDirectEditRequest());
 }
 
+/**
+ * Unhooks listeners.  Called from {@link #bringDown()}.
+ * TODO: hookListeners() and unhookListeners() should have the same visibility.
+ */
 protected void unhookListeners() {
 	getEditPart().getFigure().removeAncestorListener(ancestorListener);
 	getEditPart().removeEditPartListener(editPartListener);

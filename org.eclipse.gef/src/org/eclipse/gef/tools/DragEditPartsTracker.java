@@ -19,29 +19,39 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.*;
 
 import org.eclipse.gef.*;
-import org.eclipse.gef.commands.Command;
-import org.eclipse.gef.commands.CompoundCommand;
-import org.eclipse.gef.commands.UnexecutableCommand;
+import org.eclipse.gef.commands.*;
 import org.eclipse.gef.editparts.LayerManager;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
 
 
+/**
+ * A DragTracker that moves {@link org.eclipse.gef.EditPart EditParts}.
+ */
 public class DragEditPartsTracker
 	extends SelectEditPartTracker
 {
 
 private static final int FLAG_SOURCE_FEEDBACK = SelectEditPartTracker.MAX_FLAG << 1;
+/** Max flag */
 protected static final int MAX_FLAG = FLAG_SOURCE_FEEDBACK;
 private List operationSet, exclusionSet;
 private PrecisionPoint sourceFigureOffset;
 
 private Request sourceRequest;
 
+/**
+ * Constructs a new DragEditPartsTracker with the given source edit part.
+ * @param sourceEditPart the source edit part
+ */
 public DragEditPartsTracker(EditPart sourceEditPart) {
 	super(sourceEditPart);
 	setDisabledCursor(SharedCursors.NO);
 }
 
+/**
+ * Erases feedback and calls {@link #performDrag()}.  Sets the state to terminal.
+ * @see org.eclipse.gef.tools.AbstractTool#commitDrag()
+ */
 public void commitDrag() {
 	eraseSourceFeedback();
 	eraseTargetFeedback();
@@ -49,6 +59,14 @@ public void commitDrag() {
 	setState(STATE_TERMINAL);
 }
 
+/**
+ * Returns a List of top-level edit parts excluding dependants (by calling
+ * {@link ToolUtilities#getSelectionWithoutDependants(EditPartViewer)} that understand the
+ * current target request (by calling 
+ * {@link ToolUtilities#filterEditPartsUnderstanding(List, Request)}.
+ * 
+ * @see org.eclipse.gef.tools.AbstractTool#createOperationSet()
+ */
 protected List createOperationSet() {
 	List list = ToolUtilities.getSelectionWithoutDependants(
 		getCurrentViewer());
@@ -56,11 +74,24 @@ protected List createOperationSet() {
 	return list;
 }
 
+/**
+ * Creates a {@link ChangeBoundsRequest}.  By default, the type is
+ * {@link RequestConstants#REQ_MOVE}.  Later on when the edit parts are asked to
+ * contribute to the overall command, the request type will be either 
+ * {@link RequestConstants#REQ_MOVE} or {@link RequestConstants#REQ_ORPHAN}, depending on
+ * the result of {@link #isMove()}.
+ * 
+ * @see org.eclipse.gef.tools.TargetingTool#createTargetRequest()
+ */
 protected Request createTargetRequest() {
 	ChangeBoundsRequest request = new ChangeBoundsRequest(REQ_MOVE);
 	return request;
 }
 
+/**
+ * Erases source feedback and sets the autoexpose helper to <code>null</code>.
+ * @see org.eclipse.gef.Tool#deactivate()
+ */
 public void deactivate() {
 	eraseSourceFeedback();
 	super.deactivate();
@@ -70,6 +101,10 @@ public void deactivate() {
 	sourceFigureOffset = null;
 }
 
+/**
+ * Asks the edit parts in the {@link AbstractTool#getOperationSet() operation set} to 
+ * erase their source feedback.
+ */
 protected void eraseSourceFeedback() {
 	if (!getFlag(FLAG_SOURCE_FEEDBACK))
 		return;
@@ -81,6 +116,14 @@ protected void eraseSourceFeedback() {
 	}
 }
 
+/**
+ * Asks each edit part in the {@link AbstractTool#getOperationSet() operation set} to 
+ * contribute to a {@link CompoundCommand} after first setting the request type to either
+ * {@link RequestConstants#REQ_MOVE} or {@link RequestConstants#REQ_ORPHAN}, depending on
+ * the result of {@link #isMove()}.
+ * 
+ * @see org.eclipse.gef.tools.AbstractTool#getCommand()
+ */
 protected Command getCommand() {
 	CompoundCommand command = new CompoundCommand();
 	command.setDebugLabel("Drag Object Tracker");//$NON-NLS-1$
@@ -106,16 +149,27 @@ protected Command getCommand() {
 	return command;
 }
 
+/**
+ * @see org.eclipse.gef.tools.AbstractTool#getCommandName()
+ */
 protected String getCommandName() {
 	if (isMove())
 		return REQ_MOVE;
 	return REQ_ADD;
 }
 
+/**
+ * @see org.eclipse.gef.tools.AbstractTool#getDebugName()
+ */
 protected String getDebugName() {
 	return "DragEditPartsTracker:" + getCommandName();//$NON-NLS-1$
 }
 
+/**
+ * Returns a list of all the edit parts in the {@link AbstractTool#getOperationSet() 
+ * operation set}, plus the {@link org.eclipse.draw2d.ConnectionLayer}.
+ * @see org.eclipse.gef.tools.TargetingTool#getExclusionSet()
+ */
 protected Collection getExclusionSet() {
 	if (exclusionSet == null) {
 		List set = getOperationSet();
@@ -153,6 +207,10 @@ protected void handleAutoexpose() {
 	}
 }
 
+/**
+ * Erases feedback and calls {@link #performDrag()}.
+ * @see org.eclipse.gef.tools.AbstractTool#handleButtonUp(int)
+ */
 protected boolean handleButtonUp(int button) {
 	if (stateTransition(STATE_DRAG_IN_PROGRESS, STATE_TERMINAL)) {
 		eraseSourceFeedback();
@@ -163,6 +221,11 @@ protected boolean handleButtonUp(int button) {
 	return super.handleButtonUp(button);
 }
 
+/**
+ * Updates the target request and mouse target, asks to show feedback, and sets the 
+ * current command.
+ * @see org.eclipse.gef.tools.AbstractTool#handleDragInProgress()
+ */
 protected boolean handleDragInProgress() {
 	if (isInDragInProgress()) {
 		updateTargetRequest();
@@ -175,6 +238,7 @@ protected boolean handleDragInProgress() {
 }
 
 /**
+ * Calls {@link TargetingTool#updateAutoexposeHelper()} if a drag is in progress.
  * @see org.eclipse.gef.tools.TargetingTool#handleHover()
  */
 protected boolean handleHover() {
@@ -183,12 +247,20 @@ protected boolean handleHover() {
 	return true;
 }
 
+/**
+ * Erases source feedback.
+ * @see org.eclipse.gef.tools.TargetingTool#handleInvalidInput()
+ */
 protected boolean handleInvalidInput() {
 	super.handleInvalidInput();
 	eraseSourceFeedback();
 	return true;
 }
 
+/**
+ * Processes arrow keys used to move edit parts.
+ * @see org.eclipse.gef.tools.AbstractTool#handleKeyDown(org.eclipse.swt.events.KeyEvent)
+ */
 protected boolean handleKeyDown(KeyEvent e) {
 	if (acceptArrowKey(e)) {
 		accStepIncrement();
@@ -213,6 +285,9 @@ protected boolean handleKeyDown(KeyEvent e) {
 	return false;	
 }
 
+/**
+ * @see org.eclipse.gef.tools.AbstractTool#handleKeyUp(org.eclipse.swt.events.KeyEvent)
+ */
 protected boolean handleKeyUp(KeyEvent e) {
 	if (acceptArrowKey(e)) {
 		accStepReset();
@@ -221,14 +296,26 @@ protected boolean handleKeyUp(KeyEvent e) {
 	return false;
 }
 
+/**
+ * Returns <code>true</code> if the source edit part is being moved within its parent. If 
+ * the source edit part is being moved to another parent, this returns <code>false</code>.
+ * @return <code>true</code> if the source edit part is not being reparented
+ */
 protected boolean isMove() {
 	return getSourceEditPart().getParent() == getTargetEditPart();
 }
 
+/**
+ * Calls {@link AbstractTool#executeCurrentCommand()}.
+ */
 protected void performDrag() {
 	executeCurrentCommand();
 }
 
+/**
+ * If auto scroll (also called auto expose) is being performed, the start location moves 
+ * during the scroll. This method updates that location.
+ */
 protected void repairStartLocation() {
 	if (sourceFigureOffset == null)
 		return;
@@ -241,6 +328,10 @@ protected void repairStartLocation() {
 	setStartLocation(newStart);
 }
 
+/**
+ * Asks the edit parts in the {@link AbstractTool#getOperationSet() operation set} to 
+ * show source feedback.
+ */
 protected void showSourceFeedback() {
 	List editParts = getOperationSet();
 	for (int i = 0; i < editParts.size(); i++) {
@@ -250,6 +341,12 @@ protected void showSourceFeedback() {
 	setFlag(FLAG_SOURCE_FEEDBACK, true);
 }
 
+/**
+ * Calls {@link #repairStartLocation()} in case auto scroll is being performed.  Updates
+ * the request with the current {@link AbstractTool#getOperationSet() operation set}, 
+ * move delta, location and type.
+ * @see org.eclipse.gef.tools.TargetingTool#updateTargetRequest()
+ */
 protected void updateTargetRequest() {
 	repairStartLocation();
 	ChangeBoundsRequest request = (ChangeBoundsRequest)getTargetRequest();
