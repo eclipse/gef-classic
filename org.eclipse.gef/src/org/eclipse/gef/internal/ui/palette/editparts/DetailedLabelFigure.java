@@ -120,7 +120,7 @@ public boolean isSelected() {
 public void setDescription(String s) {
 	String str = ""; //$NON-NLS-1$
 	if (s != null && !s.trim().equals("")  //$NON-NLS-1$
-				  && !s.trim().equals(nameText.getText().trim())) { //$NON-NLS-1$
+	              && !s.trim().equals(nameText.getText().trim())) { //$NON-NLS-1$
 		str = " " + PaletteMessages.NAME_DESCRIPTION_SEPARATOR //$NON-NLS-1$
 				  + " " + s; //$NON-NLS-1$
 	}
@@ -152,7 +152,7 @@ public void setLayoutMode(int layoutMode) {
 	this.layoutMode = layoutMode;
 
 	add(page);
-	if (page.getChildren().contains(descText))
+	if (descText.getParent() == page)
 		page.remove(descText);
 	
 	BorderLayout layout = (BorderLayout) getLayoutManager();
@@ -168,9 +168,16 @@ public void setLayoutMode(int layoutMode) {
 		layout.setConstraint(image, BorderLayout.LEFT);
 		layout.setConstraint(page, BorderLayout.CENTER);
 	} else if (layoutMode == PaletteViewerPreferences.LAYOUT_DETAILS) {
-		if (!descText.getText().equals("")) { //$NON-NLS-1$
-			page.add(descText);
-		}
+		/*
+		 * Fix for Bug# 39130
+		 * Earlier, descText was only being added to the page if the description was
+		 * not an empty String.  Now, it's always added.  This fixes the case mentioned
+		 * in 39130.  The undesirable side-effect is that the descText will be added to
+		 * the page even when it's empty.  However, that shouldn't affect anything because
+		 * the descText will be empty (even in the case where the description is not
+		 * empty, but is equal to the name -- see setDescription()).
+		 */
+		page.add(descText);
 		page.setHorizontalAligment(PositionConstants.LEFT);
 		layout.setConstraint(image, BorderLayout.LEFT);
 		layout.setConstraint(page, BorderLayout.CENTER);
@@ -213,66 +220,6 @@ private void updateColors() {
 	}
 }
 
-/**
- * Creates an ImageData representing the given <code>Image</code> shaded with the given
- * <code>Color</code>.
- * 
- * @param fromImage	Image that has to be shaded
- * @param shade		The Color to be used for shading
- * @return A new ImageData that can be used to create an Image.
- */	
-protected static ImageData createShadedImage(Image fromImage, Color shade) {
-	org.eclipse.swt.graphics.Rectangle r = fromImage.getBounds();
-	ImageData data = fromImage.getImageData();
-	PaletteData palette = data.palette;
-	if (!palette.isDirect) {
-		/* Convert the palette entries */
-		RGB [] rgbs = palette.getRGBs();
-		for (int i = 0; i < rgbs.length; i++) {
-			if (data.transparentPixel != i) {
-				RGB color = rgbs [i];
-				color.red = determineShading(color.red, shade.getRed());
-				color.blue = determineShading(color.blue, shade.getBlue());
-				color.green = determineShading(color.green, shade.getGreen());
-			}
-		}
-		data.palette = new PaletteData(rgbs);
-	} else {
-		/* Convert the pixels. */
-		int[] scanline = new int[r.width];
-		int redMask = palette.redMask;
-		int greenMask = palette.greenMask;
-		int blueMask = palette.blueMask;
-		int redShift = palette.redShift;
-		int greenShift = palette.greenShift;
-		int blueShift = palette.blueShift;
-		for (int y = 0; y < r.height; y++) {
-			data.getPixels(0, y, r.width, scanline, 0);
-			for (int x = 0; x < r.width; x++) {
-				int pixel = scanline[x];
-				int red = pixel & redMask;
-				red = (redShift < 0) ? red >>> -redShift : red << redShift;
-				int green = pixel & greenMask;
-				green = (greenShift < 0) ? green >>> -greenShift : green << greenShift;
-				int blue = pixel & blueMask;
-				blue = (blueShift < 0) ? blue >>> -blueShift : blue << blueShift;
-				red = determineShading(red, shade.getRed());
-				blue = determineShading(blue, shade.getBlue());
-				green = determineShading(green, shade.getGreen());
-				red = (redShift < 0) ? red << -redShift : red >> redShift;
-				red &= redMask;
-				green = (greenShift < 0) ? green << -greenShift : green >> greenShift;
-				green &= greenMask;
-				blue = (blueShift < 0) ? blue << -blueShift : blue >> blueShift;
-				blue &= blueMask;
-				scanline[x] = red | blue | green;
-			}
-			data.setPixels(0, y, r.width, scanline, 0);
-		}
-	}
-	return data;
-}
-
 private void updateFont(int layout) {
 	boolean layoutChanged = (layoutMode != layout);
 	boolean fontChanged = (cachedFont == null || cachedFont != getFont());
@@ -288,10 +235,6 @@ private void updateFont(int layout) {
 		}
 		nameText.setFont(boldFont);
 	}
-}
-
-private static int determineShading(int origColor, int shadeColor) {
-	return (origColor + shadeColor) / 2;
 }
 
 private class FocusableFlowPage extends FlowPage {
@@ -328,7 +271,7 @@ static private class SelectableImageFigure extends ImageFigure {
 	private Image shadedImage;
 	protected void useShadedImage() {
 		disposeShadedImage();
-		ImageData data = createShadedImage(super.getImage(), 
+		ImageData data = ImageUtilities.createShadedImage(super.getImage(), 
 				ColorConstants.menuBackgroundSelected);
 		shadedImage = new Image(null, data, data.getTransparencyMask());
 	}
