@@ -16,6 +16,9 @@ import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.widgets.*;
 
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.jface.action.IMenuListener;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.util.Assert;
 
 import org.eclipse.draw2d.ExclusionSearch;
@@ -168,6 +171,20 @@ public void reveal(EditPart part) {
 	AccessibleEditPart acc = (AccessibleEditPart)part.getAdapter(AccessibleEditPart.class);
 	if (acc != null)
 		getControl().getAccessible().setFocus(acc.getAccessibleID());
+}
+
+/**
+ * Extended implementation to flush asynchronous paints in draw2d.
+ * @see org.eclipse.gef.EditPartViewer#setContextMenu(org.eclipse.jface.action.MenuManager)
+ */
+public void setContextMenu(MenuManager contextMenu) {
+	super.setContextMenu(contextMenu);
+	if (contextMenu != null)
+		contextMenu.addMenuListener(new IMenuListener() {
+			public void menuAboutToShow(IMenuManager manager) {
+				flush();
+			}
+		});
 }
 
 public void setCursor(Cursor newCursor){
