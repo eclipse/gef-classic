@@ -76,7 +76,9 @@ public Image getImage() {
  * @see org.eclipse.draw2d.Figure#getPreferredSize(int, int)
  */
 public Dimension getPreferredSize(int wHint, int hHint) {
-	return size;
+	if (getInsets() == NO_INSETS)
+		return size;
+	return size.getExpanded(getBorder().getPreferredSize(this));
 }
 
 /**
