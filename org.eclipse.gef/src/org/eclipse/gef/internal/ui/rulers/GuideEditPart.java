@@ -23,6 +23,7 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.gef.*;
 import org.eclipse.gef.editparts.*;
 import org.eclipse.gef.editpolicies.SelectionEditPolicy;
+import org.eclipse.gef.internal.GEFMessages;
 import org.eclipse.gef.tools.DragEditPartsTracker;
 import org.eclipse.gef.ui.parts.RulerChangeListener;
 import org.eclipse.gef.ui.parts.RulerProvider;
@@ -74,15 +75,12 @@ public void activate() {
 
 protected AccessibleEditPart createAccessibleEditPart() {
 	return new AccessibleGraphicalEditPart(){
-
 		public void getName(AccessibleEvent e) {
-			e.result = "Drag Guide";
+			e.result = GEFMessages.Guide_Label;
 		}
-		
 		public void getValue(AccessibleControlEvent e) {
 			e.result = "" + getRulerProvider().getGuidePosition(getModel()); //$NON-NLS-1$
 		}
-
 	};
 }
 
