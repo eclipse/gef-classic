@@ -8,18 +8,18 @@ package org.eclipse.draw2d;
 
 class ButtonStateTransitionListener {
 
-final protected void cancel() throws Exception{}
-public void canceled(){}
-final void cancelled() throws Exception{}
+protected final void cancel() throws Exception { }
+public void canceled() { }
+final void cancelled() throws Exception { }
 
-final protected void press() throws Exception{}
-public void pressed(){}
+protected final void press() throws Exception { }
+public void pressed() { }
 
-final protected void release() throws Exception{}
-public void released(){}
+protected final void release() throws Exception { }
+public void released() { }
 
-public void resume(){}
+public void resume() { }
 
-public void suspend(){}
+public void suspend() { }
 
 }
