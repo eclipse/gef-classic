@@ -98,6 +98,13 @@ public void handleFocusLost(FocusEvent event) {
 }
 
 /**
+ * @return whether the name is truncated
+ */
+public boolean isNameTruncated() {
+	return nameText.isTextTruncated();
+}
+
+/**
  * @return whether this figure is selected or not
  */
 public boolean isSelected() {
