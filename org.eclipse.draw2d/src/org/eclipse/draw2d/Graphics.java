@@ -37,6 +37,13 @@ public final void fillArc(Rectangle r, int offset, int length){
 	fillArc(r.x, r.y, r.width, r.height, offset, length);
 }
 
+
+public final void fillGradient(Rectangle r, boolean vertical) {
+	fillGradient(r.x, r.y, r.width, r.height, vertical);
+}
+
+public abstract void fillGradient(int x, int y, int w, int h, boolean vertical);
+
 public final void drawFocus(Rectangle r){
 	drawFocus(r.x, r.y, r.width, r.height);
 }
