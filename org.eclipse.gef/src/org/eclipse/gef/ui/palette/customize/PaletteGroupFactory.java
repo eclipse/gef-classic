@@ -27,6 +27,7 @@ public PaletteGroupFactory() {
  */
 protected PaletteEntry createNewEntry(Shell shell) {
 	PaletteGroup group = new PaletteGroup(PaletteMessages.NEW_GROUP_LABEL);
+	group.setUserModificationPermission(group.PERMISSION_FULL_MODIFICATION);
 	return group;
 }
 

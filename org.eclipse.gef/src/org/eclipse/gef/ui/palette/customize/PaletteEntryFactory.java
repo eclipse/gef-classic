@@ -68,15 +68,23 @@ protected abstract PaletteEntry createNewEntry(Shell shell);
  * This method is called by the <code>PaletteCustomizerDialog</code> to determine
  * whether to enable or disable this action on the toolbar and the context menu.
  * <P>
- * This default implementation allows the creation of a new entry so long as the selected
- * entry is not the <code>PaletteRoot</code>.
+ * This default implementation allows the creation of a new entry only in
+ * <code>PaletteContainer</code>s with the following user permission:
+ * <code>PERMISSION_FULL_MODIFICATION</code>
  * 
  * @param selected	The selected <code>PaletteEntry</code> (Will never be <code>null</code>)
  * @return <code>true</code> if, given the current selection, this
  * <code>PaletteEntryFactory</code> can create a new <code>PaletteEntry</code>
  */
 public boolean canCreate(PaletteEntry selected) {
-	return !(selected instanceof PaletteRoot);
+	if (selected instanceof PaletteRoot) {
+		return false;
+	}
+	PaletteContainer parent = selected.getParent();
+	if (selected instanceof PaletteContainer) {
+		parent = (PaletteContainer)selected;
+	}
+	return parent.getUserModificationPermission() == parent.PERMISSION_FULL_MODIFICATION;
 }
 
 /**

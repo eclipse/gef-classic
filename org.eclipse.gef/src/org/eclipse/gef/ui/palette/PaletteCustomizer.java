@@ -1,15 +1,16 @@
 package org.eclipse.gef.ui.palette;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.gef.palette.PaletteContainer;
+import org.eclipse.gef.palette.PaletteDrawer;
 import org.eclipse.gef.palette.PaletteEntry;
+import org.eclipse.gef.ui.palette.customize.DefaultEntryPage;
+import org.eclipse.gef.ui.palette.customize.DrawerEntryPage;
 import org.eclipse.gef.ui.palette.customize.EntryPage;
 import org.eclipse.gef.ui.palette.customize.PaletteDrawerFactory;
 import org.eclipse.gef.ui.palette.customize.PaletteSeparatorFactory;
-import org.eclipse.gef.ui.palette.customize.ReadOnlyEntryPage;
 
 /**
  * <code>PaletteCustomizer</code> is the <code>PaletteCustomizerDialog</code>'s interface
@@ -38,16 +39,7 @@ public abstract class PaletteCustomizer {
  * @see #performDelete(PaletteEntry)
  */
 public boolean canDelete(PaletteEntry entry) {
-	if (entry instanceof PaletteContainer) {
-		List children = ((PaletteContainer) entry).getChildren();
-		for (Iterator iter = children.iterator(); iter.hasNext();) {
-			PaletteEntry child = (PaletteEntry) iter.next();
-			if (!canDelete(child)) {
-				return false;
-			}
-		}
-	}
-	return true;
+	return entry.getUserModificationPermission() == entry.PERMISSION_FULL_MODIFICATION;
 }
 
 /**
@@ -64,17 +56,31 @@ public boolean canDelete(PaletteEntry entry) {
  */
 public boolean canMoveDown(PaletteEntry entry) {
 	PaletteContainer parent = entry.getParent();
+	int parentPermission = parent.getUserModificationPermission();
+	if (parentPermission < parent.PERMISSION_LIMITED_MODIFICATION) {
+		return false;
+	}
+	
 	List children = parent.getChildren();
 	if (children.indexOf(entry) + 1 != children.size()) {
 		return true;
 	} else {
-		// if the given entry's parent is not the last child of its parent,
-		// you can still move down
-		if (entry instanceof PaletteContainer)
+		// The given entry is the last child in its parent.
+		if (entry instanceof PaletteContainer 
+					|| parentPermission != parent.PERMISSION_FULL_MODIFICATION) {
 			return false;
+		}
 
 		children = parent.getParent().getChildren();
-		return (children.indexOf(parent) + 1 != children.size());
+		int parentIndex = children.indexOf(parent);
+		for (int i = parentIndex + 1; i < children.size(); i++) {
+			PaletteContainer parentSibling = (PaletteContainer)children.get(i);
+			if (parentSibling.getUserModificationPermission()
+						== entry.PERMISSION_FULL_MODIFICATION) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
 
@@ -92,12 +98,31 @@ public boolean canMoveDown(PaletteEntry entry) {
  */
 public boolean canMoveUp(PaletteEntry entry) {
 	PaletteContainer parent = entry.getParent();
-	if (parent.getChildren().indexOf(entry) != 0) {
+	int parentPermission = parent.getUserModificationPermission();
+	if (parentPermission < parent.PERMISSION_LIMITED_MODIFICATION) {
+		return false;
+	}
+	
+	List children = parent.getChildren();
+	if (children.indexOf(entry) != 0) {
 		return true;
 	} else {
-		if (entry instanceof PaletteContainer)
+		// The given entry is the first child in its parent.
+		if (entry instanceof PaletteContainer 
+					|| parentPermission != parent.PERMISSION_FULL_MODIFICATION) {
 			return false;
-		return (parent.getParent().getChildren().indexOf(parent) != 0);
+		}
+
+		children = parent.getParent().getChildren();
+		int parentIndex = children.indexOf(parent);
+		for (int i = parentIndex - 1; i >= 0; i--) {
+			PaletteContainer parentSibling = (PaletteContainer)children.get(i);
+			if (parentSibling.getUserModificationPermission()
+						== entry.PERMISSION_FULL_MODIFICATION) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
 
@@ -114,7 +139,6 @@ public List getNewEntryFactories() {
 	List list = new ArrayList(3);
 	list.add(new PaletteSeparatorFactory());
 	list.add(new PaletteDrawerFactory());
-//	list.add(new PaletteGroupFactory());
 	return list;
 }
 
@@ -126,7 +150,10 @@ public List getNewEntryFactories() {
  * @return	The EntryPage to represent the given entry
  */
 public EntryPage getPropertiesPage(PaletteEntry entry) {
-	return new ReadOnlyEntryPage();
+	if (entry instanceof PaletteDrawer) {
+		return new DrawerEntryPage();
+	}
+	return new DefaultEntryPage();
 }
 
 /**
@@ -157,8 +184,15 @@ public void performMoveDown(PaletteEntry entry) {
 		PaletteContainer grandparent = (PaletteContainer)parent.getParent();
 		List parents = grandparent.getChildren();
 		int index = parents.indexOf(parent);
-		PaletteContainer sibling = (PaletteContainer) parents.get(index + 1);
-		sibling.add(0, entry);
+		PaletteContainer parentSibling = null;
+		for (int i = index + 1; i < parents.size(); i++) {
+			parentSibling = (PaletteContainer) parents.get(i);
+			if (parentSibling.getUserModificationPermission()
+						== parentSibling.PERMISSION_FULL_MODIFICATION) {
+				break;
+			}
+		}
+		parentSibling.add(0, entry);
 	}
 }
 
@@ -178,8 +212,15 @@ public void performMoveUp(PaletteEntry entry) {
 		PaletteContainer grandparent = (PaletteContainer)parent.getParent();
 		List parents = grandparent.getChildren();
 		int index = parents.indexOf(parent);
-		PaletteContainer sibling = (PaletteContainer) parents.get(index - 1);
-		sibling.add(entry);
+		PaletteContainer parentSibling = null;
+		for (int i = index - 1; i >= 0; i--) {
+			parentSibling = (PaletteContainer) parents.get(i);
+			if (parentSibling.getUserModificationPermission()
+						== parentSibling.PERMISSION_FULL_MODIFICATION) {
+				break;
+			}
+		}
+		parentSibling.add(entry);
 	}
 }
 

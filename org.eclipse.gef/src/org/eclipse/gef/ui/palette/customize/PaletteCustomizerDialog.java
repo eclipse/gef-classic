@@ -689,7 +689,7 @@ protected PaletteCustomizer getCustomizer() {
  * Returns the <code>EntryPage</code> for the given <code>PaletteEntry</code>.  The 
  * <code>EntryPage</code> is retrieved from the customizer.  If the given entry is 
  * <code>null</code>, <code>null</code> will be returned.  If the customizer returns 
- * <code>null</code> for the valid entry, a default read - only page will be returned.
+ * <code>null</code> for the valid entry, a default page will be created and returned.
  * 
  * @param entry		The PaletteEntry whose properties need to be displayed
  * @return The EntryPage with the properties of the given PaletteEntry
@@ -705,7 +705,7 @@ protected EntryPage getEntryPage(PaletteEntry entry) {
 	
 	EntryPage page = getCustomizer().getPropertiesPage(entry);
 	if (page == null) {
-		page = new ReadOnlyEntryPage();
+		page = new DefaultEntryPage();
 	} 
 	page.createControl(propertiesPanelContainer, entry);
 	page.setPageContainer(this);

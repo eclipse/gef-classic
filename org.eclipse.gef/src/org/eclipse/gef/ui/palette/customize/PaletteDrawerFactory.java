@@ -24,7 +24,9 @@ public PaletteDrawerFactory() {
  * @see org.eclipse.gef.ui.palette.customize.PaletteEntryFactory#createNewEntry(Shell)
  */
 protected PaletteEntry createNewEntry(Shell shell) {
-	return new PaletteDrawer(PaletteMessages.NEW_DRAWER_LABEL);
+	PaletteEntry entry = new PaletteDrawer(PaletteMessages.NEW_DRAWER_LABEL);
+	entry.setUserModificationPermission(entry.PERMISSION_FULL_MODIFICATION);
+	return entry;
 }
 
 }

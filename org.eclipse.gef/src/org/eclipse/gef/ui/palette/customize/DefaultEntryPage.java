@@ -23,7 +23,7 @@ import org.eclipse.swt.widgets.Text;
  * 
  * @author Pratik Shah
  */
-public abstract class DefaultEntryPage 
+public class DefaultEntryPage 
 	implements EntryPage 
 {
 
@@ -88,12 +88,14 @@ protected Text createDescText(Composite panel) {
 	data.widthHint = 200;
 	data.heightHint = 52;
 	description.setLayoutData(data);
-	description.addKeyListener(new KeyAdapter() {
-		public void keyPressed(KeyEvent e) {
-			String newVal = ((Text)e.getSource()).getText();
-			handleDescriptionChanged(newVal);
-		}
-	});
+	if (!isReadOnly()) {
+		description.addKeyListener(new KeyAdapter() {
+			public void keyPressed(KeyEvent e) {
+				String newVal = ((Text)e.getSource()).getText();
+				handleDescriptionChanged(newVal);
+			}
+		});
+	}
 	return description;
 }
 
@@ -146,12 +148,14 @@ protected Label createLabel(Composite panel, int style, String text) {
  */
 protected Text createNameText(Composite panel) {
 	Text name = createText(panel, SWT.SINGLE | SWT.BORDER, entry.getLabel());
-	name.addKeyListener(new KeyAdapter() {
-		public void keyPressed(KeyEvent e) {
-			String newVal = ((Text)e.getSource()).getText();
-			handleNameChanged(newVal);
-		}
-	});
+	if (!isReadOnly()) {
+		name.addKeyListener(new KeyAdapter() {
+			public void keyPressed(KeyEvent e) {
+				String newVal = ((Text)e.getSource()).getText();
+				handleNameChanged(newVal);
+			}
+		});
+	}
 	name.setVisible(true);
 	return name;
 }
@@ -223,7 +227,9 @@ protected EntryPageContainer getPageContainer() {
  * 
  * @param text	The new description
  */
-protected abstract void handleDescriptionChanged(String text);
+protected void handleDescriptionChanged(String text) {
+	getEntry().setDescription(text);
+}
 
 /**
  * <p>
@@ -236,7 +242,9 @@ protected abstract void handleDescriptionChanged(String text);
  * 
  * @param isChecked	The new selection value
  */
-protected abstract void handleHiddenSelected(boolean isChecked);
+protected void handleHiddenSelected(boolean isChecked) {
+	getEntry().setVisible(!isChecked);
+}
 
 /**
  * <p>
@@ -250,11 +258,14 @@ protected abstract void handleHiddenSelected(boolean isChecked);
  * 
  * @param text	The new name
  */
-protected abstract void handleNameChanged(String text);
+protected void handleNameChanged(String text) {
+	getEntry().setLabel(text);
+}
 
 /** * @return <code>true</code> if this page is not editable */
 protected boolean isReadOnly() {
-	return false;
+	return getEntry().getUserModificationPermission() 
+				< PaletteEntry.PERMISSION_LIMITED_MODIFICATION;
 }
 
 /**
