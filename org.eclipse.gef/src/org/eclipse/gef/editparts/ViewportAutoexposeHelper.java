@@ -55,7 +55,15 @@ public boolean detect(Point where) {
 	port.translateToParent(rect);
 	port.translateToAbsolute(rect);
 	return rect.contains(where)
-	  && !rect.crop(EXPOSE_THRESHOLD).contains(where);
+	  && !rect.crop(getThreshold()).contains(where);
+}
+
+/**
+ * @return the insets that indicate the area around the viewport that triggers 
+ * auto-scrolling.
+ */
+protected Insets getThreshold() {
+	return EXPOSE_THRESHOLD;
 }
 
 /**
@@ -70,9 +78,9 @@ public boolean step(Point where) {
 	port.translateToParent(rect);
 	port.translateToAbsolute(rect);
 	if (!rect.contains(where)
-	  || rect.crop(EXPOSE_THRESHOLD).contains(where))
+	  || rect.crop(getThreshold()).contains(where))
 		return false;
-	rect.crop(EXPOSE_THRESHOLD);
+	rect.crop(getThreshold());
 	
 	int region = rect.getPosition(where);
 	Point loc = port.getViewLocation();
