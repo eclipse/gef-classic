@@ -83,17 +83,17 @@ protected void createActions() {
 	getPage().addPartListener(action);
 	retargetActions.put(AlignmentAction.ID_ALIGN_BOTTOM, action);
 
-	// Create copy action
-	action = new RetargetAction(IWorkbenchActionConstants.COPY, 
-								LogicMessages.CopyAction_ActionLabelText);
-	action.setImageDescriptor(WorkbenchImages.getImageDescriptor(
-								IWorkbenchGraphicConstants.IMG_CTOOL_COPY_EDIT));
-	action.setHoverImageDescriptor(WorkbenchImages.getImageDescriptor(
-								IWorkbenchGraphicConstants.IMG_CTOOL_COPY_EDIT_HOVER));
-	action.setDisabledImageDescriptor(WorkbenchImages.getImageDescriptor(
-								IWorkbenchGraphicConstants.IMG_CTOOL_COPY_EDIT_DISABLED));
-	getPage().addPartListener(action);
-	retargetActions.put(IWorkbenchActionConstants.COPY, action);
+//	// Create copy action
+//	action = new RetargetAction(IWorkbenchActionConstants.COPY, 
+//								LogicMessages.CopyAction_ActionLabelText);
+//	action.setImageDescriptor(WorkbenchImages.getImageDescriptor(
+//								IWorkbenchGraphicConstants.IMG_CTOOL_COPY_EDIT));
+//	action.setHoverImageDescriptor(WorkbenchImages.getImageDescriptor(
+//								IWorkbenchGraphicConstants.IMG_CTOOL_COPY_EDIT_HOVER));
+//	action.setDisabledImageDescriptor(WorkbenchImages.getImageDescriptor(
+//								IWorkbenchGraphicConstants.IMG_CTOOL_COPY_EDIT_DISABLED));
+//	getPage().addPartListener(action);
+//	retargetActions.put(IWorkbenchActionConstants.COPY, action);
 
 	// Create zoom in action
 //	action = new RetargetAction(ZoomAction.ZOOM_OUT, 
@@ -116,9 +116,6 @@ protected void createActions() {
 protected void declareActions() {
 	super.declareActions();
 
-	globalActions.add(IWorkbenchActionConstants.COPY);
-//	globalActions.add(ZoomAction.ZOOM_IN);
-//	globalActions.add(ZoomAction.ZOOM_OUT);
 	globalActions.add(IncrementDecrementAction.INCREMENT);
 	globalActions.add(IncrementDecrementAction.DECREMENT);
 	globalActions.add(AlignmentAction.ID_ALIGN_LEFT);
@@ -128,9 +125,6 @@ protected void declareActions() {
 	globalActions.add(AlignmentAction.ID_ALIGN_MIDDLE);
 	globalActions.add(AlignmentAction.ID_ALIGN_BOTTOM);
 
-	toolbarActions.add(IWorkbenchActionConstants.COPY);
-//	toolbarActions.add(ZoomAction.ZOOM_OUT);
-//	toolbarActions.add(ZoomAction.ZOOM_IN);
 	toolbarActions.add(SEPARATOR);
 	toolbarActions.add(IncrementDecrementAction.INCREMENT);
 	toolbarActions.add(IncrementDecrementAction.DECREMENT);

@@ -82,7 +82,7 @@ protected void createGraphicalViewer(Composite parent) {
  */
 public void createPartControl(Composite parent) {
 	createGraphicalViewer(parent);
-	initializeActions();
+//	initializeActions();
 }
 
 public void dispose() {
@@ -172,6 +172,7 @@ public void init(IEditorSite site, IEditorInput input) throws PartInitException 
 	setInput(input);
 	getCommandStack().addCommandStackListener(this);
 	getSite().getWorkbenchWindow().getSelectionService().addSelectionListener(this);
+	initializeActions();
 }
 
 protected void initializeActions() {

@@ -172,6 +172,9 @@ protected void declareActions() {
 	toolbarActions.add(IWorkbenchActionConstants.REDO);
 	toolbarActions.add(IWorkbenchActionConstants.DELETE);
 	toolbarActions.add(SEPARATOR);
+	toolbarActions.add(IWorkbenchActionConstants.COPY);
+	toolbarActions.add(IWorkbenchActionConstants.PASTE);
+	toolbarActions.add(SEPARATOR);
 }
 
 /**

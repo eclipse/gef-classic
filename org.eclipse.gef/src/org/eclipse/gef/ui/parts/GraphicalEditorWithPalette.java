@@ -27,13 +27,14 @@ protected void configurePaletteViewer() {
 
 protected void createActions() {
 	super.createActions();
-	setAction(IWorkbenchActionConstants.COPY, new CopyTemplateAction(this, getPaletteViewer()));
+	setAction(IWorkbenchActionConstants.COPY, new CopyTemplateAction(this));
 }
 
 private void createPaletteViewer(Composite parent) {
 	PaletteViewer viewer = new PaletteViewerImpl();
 	viewer.createControl(parent);
 	setPaletteViewer(viewer);
+	viewer.addPaletteListener((CopyTemplateAction)getAction(IWorkbenchActionConstants.COPY));
 	configurePaletteViewer();
 	hookPaletteViewer();
 	initializePaletteViewer();
@@ -44,7 +45,7 @@ public void createPartControl(Composite parent) {
 	createGraphicalViewer(splitter);
 	createPaletteViewer(splitter);
 	splitter.setWeights(new int[] {6, 1});
-	initializeActions();
+//	initializeActions();
 }
 
 public void dispose() {

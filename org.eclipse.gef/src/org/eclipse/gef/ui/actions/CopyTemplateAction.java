@@ -24,12 +24,25 @@ public class CopyTemplateAction
 private PaletteTemplateEntry selectedEntry;
 
 /**
- * Constructor for CopyTemplateAction.
- * @param editor
+ * CopyTemplateAction constructor.  Adds this action as a palette listener to the palette
+ * veiwer that was passed in.
+ * @param editor the editor
+ * @param viewer the palette viewer
  */
 public CopyTemplateAction(IEditorPart editor, PaletteViewer viewer) {
 	super(editor);
 	viewer.addPaletteListener(this);
+}
+
+/**
+ * If you use this constructor, you must manually add this action to the palette viewer's
+ * list of palette listeners.  Otherwise, this action's enabled state won't be updated
+ * properly. 
+ * 
+ * @see org.eclipse.gef.ui.actions.EditorPartAction#EditorPartAction(IEditorPart)
+ */
+public CopyTemplateAction(IEditorPart editor) {
+	super(editor);
 }
 
 /**
