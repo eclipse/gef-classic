@@ -11,7 +11,6 @@ import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.graphics.Image;
 
 import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.geometry.Insets;
 
 import org.eclipse.gef.*;
 import org.eclipse.gef.AccessibleEditPart;
@@ -19,6 +18,7 @@ import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.palette.PaletteEntry;
 import org.eclipse.gef.palette.ToolEntry;
+import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
 
 public class ToolEntryEditPart
 	extends PaletteEditPart
@@ -133,6 +133,18 @@ public DragTracker getDragTracker(Request request) {
 
 private ToolEntry getToolEntry() {
 	return (ToolEntry)getPaletteEntry();
+}
+
+/**
+ * @see org.eclipse.gef.internal.ui.palette.editparts.PaletteEditPart#getToolTipText()
+ */
+protected String getToolTipText() {
+	String result = null;
+	if (getPreferenceSource().getLayoutSetting()
+				!= PaletteViewerPreferences.LAYOUT_DETAILS) {
+		result = super.getToolTipText();
+	}
+	return result;
 }
 
 /**

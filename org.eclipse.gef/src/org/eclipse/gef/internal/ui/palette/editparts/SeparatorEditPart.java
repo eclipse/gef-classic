@@ -36,6 +36,13 @@ protected IFigure createFigure() {
 }
 
 /**
+ * @see org.eclipse.gef.internal.ui.palette.editparts.PaletteEditPart#getToolTipText()
+ */
+protected String getToolTipText() {
+	return null;
+}
+
+/**
  * Figure for the separator
  * 
  * @author Pratik Shah

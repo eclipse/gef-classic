@@ -14,6 +14,7 @@ import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.palette.PaletteEntry;
 import org.eclipse.gef.palette.PaletteTemplateEntry;
+import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
 
 /**
  * @author Eric Bordeau, Pratik Shah
@@ -71,6 +72,18 @@ public DragTracker getDragTracker(Request request) {
 
 private PaletteTemplateEntry getTemplateEntry() {
 	return (PaletteTemplateEntry)getModel();
+}
+
+/**
+ * @see org.eclipse.gef.internal.ui.palette.editparts.PaletteEditPart#getToolTipText()
+ */
+protected String getToolTipText() {
+	String result = null;
+	if (getPreferenceSource().getLayoutSetting()
+				!= PaletteViewerPreferences.LAYOUT_DETAILS) {
+		result = super.getToolTipText();
+	}
+	return result;
 }
 
 /** * @see org.eclipse.gef.editparts.AbstractEditPart#refreshVisuals() */

@@ -104,6 +104,11 @@ public IFigure getContentPane() {
 	return getDrawerFigure().getContentPane();
 }
 
+/** * @see org.eclipse.gef.internal.ui.palette.editparts.PaletteEditPart#getToolTipFigure() */
+protected IFigure getToolTipFigure() {
+	return getDrawerFigure().getCollapseToggle();
+}
+
 private DrawerAnimationController getAnimationController() {
 	DrawerAnimationController controller;
 	controller = (DrawerAnimationController)getViewer()
@@ -167,11 +172,8 @@ protected AccessibleEditPart createAccessible() {
  * @see org.eclipse.gef.editparts.AbstractEditPart#refreshVisuals()
  */
 protected void refreshVisuals() {
-	// Do not call super.refreshVisuals()
-	// That will update the Tooltip for the entire DrawerFigure.  But DrawerFigure has its
-	// own tooltip that is displayed only on the toggle and the pop-up that shows up when
-	// the text in  the header is truncated.
-
+	super.refreshVisuals();
+	
 	getDrawerFigure().setToolTipText(getToolTipText());
 
 	ImageDescriptor img = getPaletteEntry().getSmallIcon();
