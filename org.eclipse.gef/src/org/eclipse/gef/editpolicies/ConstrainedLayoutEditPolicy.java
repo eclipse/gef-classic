@@ -17,18 +17,42 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CompoundCommand;
 import org.eclipse.gef.requests.*;
 
-abstract public class ConstrainedLayoutEditPolicy
+/**
+ * For use with <code>LayoutManager</code> that require a <i>constraint</i>.
+ * ConstraintedLayoutEditPolicy understands {@link RequestConstants#REQ_ALIGN_CHILDREN}
+ * in addition to the Requests handled in the superclass.
+ * @author hudsonr
+ * @since 2.0 */
+public abstract class ConstrainedLayoutEditPolicy
 	extends LayoutEditPolicy
 {
 
-abstract protected Command createAddCommand(
+/**
+ * Returns the <code>Command</code> to perform an Add with the specified child and
+ * constraint. The constraint has been converted from a draw2d constraint to an object
+ * suitable for the model by calling {@link #translateToModelConstraint(Object)}.
+ * @param child the EditPart of the child being added * @param constraint the model constraint, after being {@link
+ * #translateToModelConstraint(Object) translated}
+ * @return the Command to add the child */
+protected abstract Command createAddCommand(
 	EditPart child,
 	Object constraint);
 
-abstract protected Command createChangeConstraintCommand(
+/**
+ * Returns the <code>Command</code> to change the specified child's constraint. The
+ * constraint has been converted from a draw2d constraint to an object suitable for the
+ * model
+ * @param child the EditPart of the child being changed * @param constraint the new constraint, after being {@link
+ * #translateToModelConstraint(Object) translated} * @return Command */
+protected abstract Command createChangeConstraintCommand(
 	EditPart child,
 	Object constraint);
 
+/**
+ * Overrides <code>getAddCommand()</code> to generate the proper constraint for each child
+ * being added. Once the constraint is calculated, {@link
+ * #createAddCommand(EditPart,Object)} is called. Subclasses must implement this method.
+ * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#getAddCommand(Request) */
 protected Command getAddCommand(Request generic) {
 	ChangeBoundsRequest request = (ChangeBoundsRequest)generic;
 	List editParts = request.getEditParts();
@@ -55,10 +79,17 @@ protected Command getAddCommand(Request generic) {
 	return command.unwrap();
 }
 
+/**
+ * Returns the command to align a group of children. By default, this is treated the same
+ * as a resize, and {@link #getResizeChildrenCommand(ChangeBoundsRequest)} is returned.
+ * @param request the AligmentRequest * @return the command to perform aligment */
 protected Command getAlignChildrenCommand(AlignmentRequest request) {
 	return getResizeChildrenCommand(request);
 }
 
+/**
+ * Factors out RESIZE and ALIGN requests, otherwise calls <code>super</code>.
+ * @see org.eclipse.gef.EditPolicy#getCommand(Request) */
 public Command getCommand(Request request) {
 	if (REQ_RESIZE_CHILDREN.equals(request.getType()))
 		return getResizeChildrenCommand((ChangeBoundsRequest)request);
@@ -69,10 +100,12 @@ public Command getCommand(Request request) {
 }
 
 /**
- * Returns a draw2d constraint object for the given request.
- * The returned object can be translated to the model using
- * translateToModelConstraint(Object)
- * @see #translateToModelConstraint(Object)
+ * Generates a draw2d constraint object derived from the specified child EditPart using
+ * the provided Request. The returned constraint will be translated to the application's
+ * model later using {@link #translateToModelConstraint(Object)}.
+ * @param request the ChangeBoundsRequest
+ * @param child the child EditPart for which the constraint should be generated
+ * @return the draw2d constraint
  */
 protected Object getConstraintFor (ChangeBoundsRequest request, GraphicalEditPart child) {
 	Rectangle rect = child.getFigure().getBounds();
@@ -82,17 +115,30 @@ protected Object getConstraintFor (ChangeBoundsRequest request, GraphicalEditPar
 }
 
 /**
- * The point here is relative to the client area of the figure.
- * It is not absolute.
+ * Generates a draw2d constraint given a <code>Point</code>. This method is called during
+ * creation, when only a mouse location is available.
+ * @param point the Point relative to the {@link #getLayoutOrigin() layout origin}
+ * @return the constraint
  */
-abstract protected Object getConstraintFor (Point point);
+protected abstract Object getConstraintFor (Point point);
 
 /**
- * The rectangle here is relative to the client area of the figure.
- * It is not absolute.
+ * Generates a draw2d constraint given a <code>Rectangle</code>. This method is called
+ * during most operations.
+ * @param rect the Rectangle relative to the {@link #getLayoutOrigin() layout origin}
+ * @return the constraint
  */
-abstract protected Object getConstraintFor (Rectangle rect);
+protected abstract Object getConstraintFor (Rectangle rect);
 
+/**
+ * Generates a draw2d constraint for the given <code>CreateRequest</code>. If the
+ * CreateRequest has a size, {@link #getConstraintFor(Rectangle)} is called with a
+ * Rectangle of that size and the result is returned. This is used during size-on-drop
+ * creation. Otherwise, {@link #getConstraintFor(Point)} is returned.
+ * <P>
+ * The CreateRequest's location is relative the Viewer. The location is made
+ * layout-relative before calling one of the methods mentioned above.
+ * @param request the CreateRequest * @return a draw2d constraint */
 protected Object getConstraintFor(CreateRequest request) {
 	IFigure figure = getLayoutContainer();
 
@@ -109,25 +155,19 @@ protected Object getConstraintFor(CreateRequest request) {
 		return getConstraintFor(new Rectangle(where, size));
 }
 
-abstract protected Command getCreateCommand(CreateRequest request);
-
-/**
- * Converts a constraint from the way it is stored in the model to the
- * form used by the LayoutManager
- * @deprecated This is never used.
- */
-protected Object translateToFigureConstraint(Object modelConstraint) {
-	return modelConstraint;
-}
-
 /**
  * Converts a constraint from the format used by LayoutManagers,
  * to the form stored in the model.
+ * @param figureConstraint the draw2d constraint
+ * @return the model constraint
  */
 protected Object translateToModelConstraint(Object figureConstraint) {
 	return figureConstraint;
 }
 
+/**
+ * Returns the <code>Command</code> to resize a group of children.
+ * @param request the ChangeBoundsRequest * @return the Command */
 protected Command getResizeChildrenCommand(ChangeBoundsRequest request) {
 	CompoundCommand resize = new CompoundCommand();
 	Command c;
@@ -144,11 +184,26 @@ protected Command getResizeChildrenCommand(ChangeBoundsRequest request) {
 	return resize.unwrap();
 }
 
+/**
+ * Returns the <code>Command</code> to move a group of children. By default, move is
+ * treated the same as a resize.
+ * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#getMoveChildrenCommand(Request) */
 protected Command getMoveChildrenCommand(Request request) {
 	//By default, move and resize are treated the same for constrained layouts.
 	return getResizeChildrenCommand((ChangeBoundsRequest)request);
 }
 
+/**
+ * Returns the layout's origin relative to the {@link
+ * LayoutEditPolicy#getLayoutContainer()}. In other words, what Point on the parent Figure
+ * does the LayoutManager use a reference when generating the child figure's bounds from
+ * the child's constraint.
+ * <P>
+ * By default, it is assumed that the layout manager positions children relative to the
+ * client area of the layout container. Thus, when processing Viewer-relative Points or
+ * Rectangles, the clientArea's location (top-left corner) will be subtracted from the
+ * Point/Rectangle, resulting in an offset from the LayoutOrigin.
+ * @return Point */
 protected Point getLayoutOrigin() {
 	return getLayoutContainer().getClientArea().getLocation();
 }
