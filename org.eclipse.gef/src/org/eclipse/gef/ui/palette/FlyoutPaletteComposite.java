@@ -222,7 +222,7 @@ public void layout(boolean changed) {
 	setRedraw(false);
 	int sashWidth = 15; //sash.getBounds().width;
 	if (isInState(IN_VIEW)) {
-		graphicalControl.moveAbove(sash);
+		sash.setVisible(false);
 		graphicalControl.setBounds(area);
 	} else if (dock == PositionConstants.EAST)
 		layoutComponentsEast(area, sashWidth);
@@ -232,12 +232,19 @@ public void layout(boolean changed) {
 	update();
 }
 
+/*
+ * @TODO:Pratik  Perhaps also separate this class out.  not have this as a composite?
+ */
+
 protected final void layoutComponentsEast(Rectangle area, int sashWidth) {
 	if (isInState(FLYOVER_COLLAPSED)) {
-		graphicalControl.moveAbove(sash);
+		sash.setVisible(true);
+		pViewer.getControl().setVisible(false);
 		sash.setBounds(area.x + area.width - sashWidth, area.y, sashWidth, area.height);
 		graphicalControl.setBounds(area.x, area.y, area.width - sashWidth, area.height);
 	} else if (isInState(FLYOVER_EXPANDED)) {
+		sash.setVisible(true);
+		pViewer.getControl().setVisible(true);
 		pViewer.getControl().moveAbove(graphicalControl);
 		sash.moveAbove(pViewer.getControl());
 		pViewer.getControl().setBounds(area.x + area.width - fixedSize, area.y, fixedSize, 
@@ -246,6 +253,8 @@ protected final void layoutComponentsEast(Rectangle area, int sashWidth) {
 				area.height);
 		graphicalControl.setBounds(area.x, area.y, area.width - sashWidth, area.height);
 	} else if (isInState(FLYOVER_PINNED_OPEN)) {
+		sash.setVisible(true);
+		pViewer.getControl().setVisible(true);
 		pViewer.getControl().setBounds(area.x + area.width - fixedSize, area.y, fixedSize, 
 				area.height);
 		sash.setBounds(area.x + area.width - fixedSize - sashWidth, area.y, sashWidth, 
@@ -257,11 +266,14 @@ protected final void layoutComponentsEast(Rectangle area, int sashWidth) {
 
 protected final void layoutComponentsWest(Rectangle area, int sashWidth) {
 	if (isInState(FLYOVER_COLLAPSED)) {
-		graphicalControl.moveAbove(sash);
+		sash.setVisible(true);
+		pViewer.getControl().setVisible(false);
 		sash.setBounds(area.x, area.y, sashWidth, area.height);
 		graphicalControl.setBounds(area.x + sashWidth, area.y,
 				area.width - sashWidth, area.height);
 	} else if (isInState(FLYOVER_EXPANDED)) {
+		sash.setVisible(true);
+		pViewer.getControl().setVisible(true);
 		pViewer.getControl().moveAbove(graphicalControl);
 		sash.moveAbove(pViewer.getControl());
 		pViewer.getControl().setBounds(area.x, area.y, fixedSize, area.height);
@@ -269,6 +281,8 @@ protected final void layoutComponentsWest(Rectangle area, int sashWidth) {
 		graphicalControl.setBounds(area.x + sashWidth, area.y, 
 				area.width - sashWidth, area.height);
 	} else if (isInState(FLYOVER_PINNED_OPEN)) {
+		sash.setVisible(true);
+		pViewer.getControl().setVisible(true);
 		pViewer.getControl().setBounds(area.x, area.y, fixedSize, area.height);
 		sash.setBounds(area.x + fixedSize, area.y, sashWidth, area.height);
 		graphicalControl.setBounds(area.x + fixedSize + sashWidth, area.y,
@@ -416,8 +430,8 @@ protected void setState(int newState) {
 				pViewer.getControl().dispose();
 			pViewer = null;
 	}
-	sash.updateState();
 	layout();
+	sash.updateState();
 }
 
 protected void transferState(PaletteViewer src, PaletteViewer dest) {
