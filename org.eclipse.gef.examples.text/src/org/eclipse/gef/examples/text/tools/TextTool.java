@@ -425,11 +425,10 @@ private TextualEditPart getTextTarget(GraphicalTextViewer viewer, Request reques
 	EditPart target, candidate = ToolUtilities.findCommonAncestor(range.begin.part,
 			range.end.part);
 
-	target = candidate.getTargetEditPart(request);
-	while (target == null && candidate.getParent() != null) {
-		candidate = candidate.getParent();
+	do {
 		target = candidate.getTargetEditPart(request);
-	}
+		candidate = candidate.getParent();
+	} while (target == null && candidate != null);
 	return (TextualEditPart)target;
 }
 
