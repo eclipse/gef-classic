@@ -33,7 +33,7 @@ public class DrawerFigure
 {
 
 protected static final Border TOGGLE_BUTTON_BORDER = new RaisedBorder();
-protected static final Border TITLE_MARGIN_BORDER = new MarginBorder(1, 0, 1, 0);
+protected static final Border TITLE_MARGIN_BORDER = new MarginBorder(1, 1, 1, 1);
 protected static final Border SCROLL_PANE_BORDER = new MarginBorder(3);
 protected static final Border TOOLTIP_BORDER = new DrawerToolTipBorder();
 protected static final Border BUTTON_BORDER = new ButtonBorder(
@@ -308,8 +308,8 @@ public void setLayoutMode(int layoutMode) {
 	this.layoutMode = layoutMode;
 	
 	LayoutManager manager;
-	if (layoutMode == PaletteViewerPreferences.LAYOUT_FOLDER) {
-		manager = new FolderLayout();
+	if (layoutMode == PaletteViewerPreferences.LAYOUT_COLUMNS) {
+		manager = new ColumnsLayout();
 	} else if (layoutMode == PaletteViewerPreferences.LAYOUT_ICONS) {
 		FlowLayout fl = new FlowLayout();
 		fl.setMinorSpacing(0);

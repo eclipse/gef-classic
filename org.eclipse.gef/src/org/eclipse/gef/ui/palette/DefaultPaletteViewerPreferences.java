@@ -46,7 +46,7 @@ private IPropertyChangeListener fontListener;
 private FontData fontData;
 private PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 private IPreferenceStore store;
-private int[] supportedModes = {LAYOUT_FOLDER, LAYOUT_LIST, 
+private int[] supportedModes = {LAYOUT_COLUMNS, LAYOUT_LIST, 
 								LAYOUT_ICONS, LAYOUT_DETAILS};
 
 /**
@@ -67,7 +67,7 @@ public DefaultPaletteViewerPreferences() {
 public DefaultPaletteViewerPreferences(final IPreferenceStore store) {
 	this.store = store;
 	store.setDefault(PREFERENCE_DETAILS_ICON_SIZE, false);
-	store.setDefault(PREFERENCE_FOLDER_ICON_SIZE, true);
+	store.setDefault(PREFERENCE_COLUMNS_ICON_SIZE, true);
 	store.setDefault(PREFERENCE_ICONS_ICON_SIZE, true);
 	store.setDefault(PREFERENCE_LIST_ICON_SIZE, false);
 	store.setDefault(PREFERENCE_LAYOUT, LAYOUT_LIST);
@@ -110,19 +110,19 @@ public void addPropertyChangeListener(PropertyChangeListener listener) {
  * <UL>
  * <LI> int <-> String </LI>
  * <LI> LAYOUT_LIST <-> PREFERENCE_LIST_ICON_SIZE </LI>
- * <LI> LAYOUT_FOLDER <-> PREFERENCE_FOLDER_ICON_SIZE </LI>
+ * <LI> LAYOUT_COLUMNS <-> PREFERENCE_COLUMNS_ICON_SIZE </LI>
  * <LI> LAYOUT_ICONS <-> PREFERENCE_ICONS_ICON_SIZE </LI>
  * <LI> LAYOUT_DETAILS <-> PREFERENCE_DETAILS_ICON_SIZE </LI>
  * </UL>
  * 
- * @param layout	LAYOUT_LIST, LAYOUT_DETAILS, LAYOUT_FOLDER, or LAYOUT_ICONS
+ * @param layout	LAYOUT_LIST, LAYOUT_DETAILS, LAYOUT_COLUMNS, or LAYOUT_ICONS
  * @return	The corresponding preference String
  */
 public static String convertLayoutToPreferenceName(int layout) {
 	String key = ""; //$NON-NLS-1$
 	switch (layout) {
-		case LAYOUT_FOLDER :
-			key = PREFERENCE_FOLDER_ICON_SIZE;
+		case LAYOUT_COLUMNS :
+			key = PREFERENCE_COLUMNS_ICON_SIZE;
 			break;
 		case LAYOUT_LIST :
 			key = PREFERENCE_LIST_ICON_SIZE;
@@ -143,12 +143,12 @@ public static String convertLayoutToPreferenceName(int layout) {
  * <UL>
  * <LI> int <-> String </LI>
  * <LI> LAYOUT_LIST <-> PREFERENCE_LIST_ICON_SIZE </LI>
- * <LI> LAYOUT_FOLDER <-> PREFERENCE_FOLDER_ICON_SIZE </LI>
+ * <LI> LAYOUT_COLUMNS <-> PREFERENCE_COLUMNS_ICON_SIZE </LI>
  * <LI> LAYOUT_ICONS <-> PREFERENCE_ICONS_ICON_SIZE </LI>
  * <LI> LAYOUT_DETAILS <-> PREFERENCE_DETAILS_ICON_SIZE </LI>
  * </UL>
  * 
- * @param preference	PREFERENCE_DETAILS_ICON_SIZE, PREFERENCE_FOLDER_ICON_SIZE,
+ * @param preference	PREFERENCE_DETAILS_ICON_SIZE, PREFERENCE_COLUMNS_ICON_SIZE,
  * 						PREFERENCE_ICONS_ICON_SIZE or PREFERENCE_LIST_ICON_SIZE
  * @return	The corresponding layout code
  */
@@ -156,8 +156,8 @@ public static int convertPreferenceNameToLayout(String preference) {
 	int layout = -1;
 	if (preference.equals(PREFERENCE_DETAILS_ICON_SIZE)) {
 		layout = LAYOUT_DETAILS;
-	} else if (preference.equals(PREFERENCE_FOLDER_ICON_SIZE)) {
-		layout = LAYOUT_FOLDER;
+	} else if (preference.equals(PREFERENCE_COLUMNS_ICON_SIZE)) {
+		layout = LAYOUT_COLUMNS;
 	} else if (preference.equals(PREFERENCE_ICONS_ICON_SIZE)) {
 		layout = LAYOUT_ICONS;
 	} else if (preference.equals(PREFERENCE_LIST_ICON_SIZE)) {

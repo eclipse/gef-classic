@@ -50,14 +50,14 @@ public class PaletteSettingsDialog
 private PaletteViewerPreferences prefs;
 private Label fontName;
 private PageBook book;
-private Control folderPanel, detailsPanel, iconsPanel, listPanel;
+private Control columnsPanel, detailsPanel, iconsPanel, listPanel;
 private HashMap widgets = new HashMap();
 
 protected HashMap settings = new HashMap();
 
 protected static final String
 	CACHE_LAYOUT = "layout setting", //$NON-NLS-1$
-	CACHE_FOLDER_ICON_SIZE = "folder - use large icons", //$NON-NLS-1$
+	CACHE_COLUMNS_ICON_SIZE = "columns - use large icons", //$NON-NLS-1$
 	CACHE_LIST_ICON_SIZE = "list - use large icons", //$NON-NLS-1$
 	CACHE_ICONS_ICON_SIZE = "icons only - use large icons", //$NON-NLS-1$
 	CACHE_DETAILS_ICON_SIZE = "details - use large icons", //$NON-NLS-1$
@@ -70,10 +70,10 @@ protected static final String
  * widgets in {@link #buttonPressed(int)}.
  */
 protected static final int
-	LAYOUT_FOLDER_VIEW_ID        = IDialogConstants.CLIENT_ID + 1,
+	LAYOUT_COLUMNS_VIEW_ID        = IDialogConstants.CLIENT_ID + 1,
 	LAYOUT_LIST_VIEW_ID          = IDialogConstants.CLIENT_ID + 2,
 	LAYOUT_ICONS_VIEW_ID         = IDialogConstants.CLIENT_ID + 3,
-	LAYOUT_FOLDER_ICON_SIZE_ID   = IDialogConstants.CLIENT_ID + 4,
+	LAYOUT_COLUMNS_ICON_SIZE_ID   = IDialogConstants.CLIENT_ID + 4,
 	LAYOUT_LIST_ICON_SIZE_ID     = IDialogConstants.CLIENT_ID + 5,
 	LAYOUT_ICONS_ICON_SIZE_ID    = IDialogConstants.CLIENT_ID + 6,
 	LAYOUT_DETAILS_ICON_SIZE_ID  = IDialogConstants.CLIENT_ID + 7,
@@ -124,8 +124,8 @@ protected void buttonPressed(int buttonId) {
 		handleAutoCollapseSettingChanged(PaletteViewerPreferences.COLLAPSE_NEVER);
 	} else if (COLLAPSE_NEEDED_ID == buttonId) {
 		handleAutoCollapseSettingChanged(PaletteViewerPreferences.COLLAPSE_AS_NEEDED);
-	} else if (LAYOUT_FOLDER_VIEW_ID == buttonId) {
-		handleLayoutSettingChanged(PaletteViewerPreferences.LAYOUT_FOLDER);
+	} else if (LAYOUT_COLUMNS_VIEW_ID == buttonId) {
+		handleLayoutSettingChanged(PaletteViewerPreferences.LAYOUT_COLUMNS);
 	} else if (LAYOUT_ICONS_VIEW_ID == buttonId) {
 		handleLayoutSettingChanged(PaletteViewerPreferences.LAYOUT_ICONS);
 	} else if (LAYOUT_LIST_VIEW_ID == buttonId) {
@@ -134,7 +134,7 @@ protected void buttonPressed(int buttonId) {
 		handleLayoutSettingChanged(PaletteViewerPreferences.LAYOUT_DETAILS);
 	} else if (LAYOUT_DETAILS_ICON_SIZE_ID == buttonId) {
 		handleIconSizeChanged(b.getSelection());
-	} else if (LAYOUT_FOLDER_ICON_SIZE_ID == buttonId) {
+	} else if (LAYOUT_COLUMNS_ICON_SIZE_ID == buttonId) {
 		handleIconSizeChanged(b.getSelection());
 	} else if (LAYOUT_ICONS_ICON_SIZE_ID == buttonId) {
 		handleIconSizeChanged(b.getSelection());
@@ -155,8 +155,8 @@ protected void cacheSettings() {
 			new Boolean(prefs.useLargeIcons(PaletteViewerPreferences.LAYOUT_DETAILS)));
 	settings.put(CACHE_ICONS_ICON_SIZE, 
 			new Boolean(prefs.useLargeIcons(PaletteViewerPreferences.LAYOUT_ICONS)));
-	settings.put(CACHE_FOLDER_ICON_SIZE, 
-			new Boolean(prefs.useLargeIcons(PaletteViewerPreferences.LAYOUT_FOLDER)));
+	settings.put(CACHE_COLUMNS_ICON_SIZE, 
+			new Boolean(prefs.useLargeIcons(PaletteViewerPreferences.LAYOUT_COLUMNS)));
 	settings.put(CACHE_LIST_ICON_SIZE, 
 			new Boolean(prefs.useLargeIcons(PaletteViewerPreferences.LAYOUT_LIST)));
 }
@@ -332,14 +332,14 @@ protected Control createDialogArea(Composite parent) {
 	return composite;
 }
 
-protected Control createFolderOptions(Composite parent) {
+protected Control createColumnsOptions(Composite parent) {
 	Composite contents = (Composite)createOptionsPage(parent, 
-			PaletteMessages.SETTINGS_OPTIONS_FOLDER, LAYOUT_FOLDER_ICON_SIZE_ID);
-	getButton(LAYOUT_FOLDER_ICON_SIZE_ID).setSelection(
-			prefs.useLargeIcons(PaletteViewerPreferences.LAYOUT_FOLDER));
+			PaletteMessages.SETTINGS_OPTIONS_COLUMNS, LAYOUT_COLUMNS_ICON_SIZE_ID);
+	getButton(LAYOUT_COLUMNS_ICON_SIZE_ID).setSelection(
+			prefs.useLargeIcons(PaletteViewerPreferences.LAYOUT_COLUMNS));
 	
 //	final Button button = createButton(contents, -1,
-//			PaletteMessages.SETTINGS_LAYOUT_FOLDER_OVERRIDE_WIDTH, SWT.CHECK, null);
+//			PaletteMessages.SETTINGS_LAYOUT_COLUMNS_OVERRIDE_WIDTH, SWT.CHECK, null);
 //	((GridData)button.getLayoutData()).horizontalSpan = 2;
 //	
 //	Composite container = new Composite(contents, SWT.NONE);
@@ -352,7 +352,7 @@ protected Control createFolderOptions(Composite parent) {
 //	
 //	final Label label = new Label(container, SWT.NONE);
 //	label.setFont(container.getFont());
-//	label.setText(PaletteMessages.SETTINGS_LAYOUT_FOLDER_WIDTH);
+//	label.setText(PaletteMessages.SETTINGS_LAYOUT_COLUMNS_WIDTH);
 //	data = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING 
 //			| GridData.VERTICAL_ALIGN_BEGINNING);
 //	label.setLayoutData(data);
@@ -427,9 +427,9 @@ protected Control createLayoutOptions(Composite container) {
 	int[] modes = prefs.getSupportedLayoutModes();
 	for (int i = 0; i < modes.length; i++) {
 		switch(modes[i]) {
-			case PaletteViewerPreferences.LAYOUT_FOLDER:
-				b = createButton(composite, LAYOUT_FOLDER_VIEW_ID, 
-						PaletteMessages.SETTINGS_FOLDER_VIEW_LABEL, SWT.RADIO, null);
+			case PaletteViewerPreferences.LAYOUT_COLUMNS:
+				b = createButton(composite, LAYOUT_COLUMNS_VIEW_ID, 
+						PaletteMessages.SETTINGS_COLUMNS_VIEW_LABEL, SWT.RADIO, null);
 				((GridData)b.getLayoutData()).horizontalIndent = 5;
 				break;
 			case PaletteViewerPreferences.LAYOUT_LIST:
@@ -453,8 +453,8 @@ protected Control createLayoutOptions(Composite container) {
 	// Load layout settings
 	int layoutSetting = prefs.getLayoutSetting();
 	switch (layoutSetting) {
-		case PaletteViewerPreferences.LAYOUT_FOLDER:
-			b = getButton(LAYOUT_FOLDER_VIEW_ID);
+		case PaletteViewerPreferences.LAYOUT_COLUMNS:
+			b = getButton(LAYOUT_COLUMNS_VIEW_ID);
 			break;
 		case PaletteViewerPreferences.LAYOUT_ICONS:
 			b = getButton(LAYOUT_ICONS_VIEW_ID);
@@ -487,7 +487,7 @@ protected Control createLayoutSettings(Composite parent) {
 	data = new GridData(GridData.FILL_BOTH);
 	book.setLayoutData(data);
 	
-	folderPanel = createFolderOptions(book);
+	columnsPanel = createColumnsOptions(book);
 	listPanel = createListOptions(book);
 	iconsPanel = createIconsOnlyOptions(book);
 	detailsPanel = createDetailsOptions(book);
@@ -600,8 +600,8 @@ protected void handleIconSizeChanged(boolean selection) {
 protected void handleLayoutSettingChanged(int newSetting) {
 	prefs.setLayoutSetting(newSetting);
 	switch (newSetting) {
-		case PaletteViewerPreferences.LAYOUT_FOLDER :
-			showLayoutOptionsPage(folderPanel);
+		case PaletteViewerPreferences.LAYOUT_COLUMNS :
+			showLayoutOptionsPage(columnsPanel);
 			break;
 		case PaletteViewerPreferences.LAYOUT_LIST :
 			showLayoutOptionsPage(listPanel);
@@ -627,8 +627,8 @@ protected void restoreSettings() {
 			((Boolean)settings.get(CACHE_ICONS_ICON_SIZE)).booleanValue());
 	prefs.setUseLargeIcons(PaletteViewerPreferences.LAYOUT_LIST, 
 			((Boolean)settings.get(CACHE_LIST_ICON_SIZE)).booleanValue());
-	prefs.setUseLargeIcons(PaletteViewerPreferences.LAYOUT_FOLDER, 
-			((Boolean)settings.get(CACHE_FOLDER_ICON_SIZE)).booleanValue());
+	prefs.setUseLargeIcons(PaletteViewerPreferences.LAYOUT_COLUMNS, 
+			((Boolean)settings.get(CACHE_COLUMNS_ICON_SIZE)).booleanValue());
 }
 
 protected void showLayoutOptionsPage(Control page) {

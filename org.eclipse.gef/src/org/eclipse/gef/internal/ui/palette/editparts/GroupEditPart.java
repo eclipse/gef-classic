@@ -38,8 +38,8 @@ protected void refreshVisuals() {
 		return;
 	cachedLayout = layout;
 	LayoutManager manager;
-	if (layout == PaletteViewerPreferences.LAYOUT_FOLDER) {
-		manager = new FolderLayout();
+	if (layout == PaletteViewerPreferences.LAYOUT_COLUMNS) {
+		manager = new ColumnsLayout();
 	} else if (layout == PaletteViewerPreferences.LAYOUT_ICONS) {
 		FlowLayout flow = new FlowLayout();
 		flow.setMajorSpacing(0);

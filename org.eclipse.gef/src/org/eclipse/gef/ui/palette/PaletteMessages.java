@@ -50,9 +50,9 @@ public static final String DELETE_LABEL;
  */
 public static final String NEW_LABEL;
 /**
- * The String "&Folder"
+ * The String "&Columns"
  */
-public static final String SETTINGS_FOLDER_VIEW_LABEL;
+public static final String SETTINGS_COLUMNS_VIEW_LABEL;
 /**
  * The String "&List"
  */
@@ -170,7 +170,7 @@ public static final String SETTINGS_DETAILS_VIEW_LABEL;
  */
 public static final String SETTINGS_FONT_TITLE;
 /**
- * The String "&Change..."
+ * The String "C&hange..."
  */
 public static final String SETTINGS_FONT_CHANGE;
 /**
@@ -190,9 +190,9 @@ public static final String SETTINGS_DRAWER_OPTIONS_TITLE;
  */
 public static final String EXPAND_DRAWER_AT_STARTUP_LABEL;
 /**
- * The String "Folder layout options"
+ * The String "Columns layout options"
  */
-public static final String SETTINGS_OPTIONS_FOLDER;
+public static final String SETTINGS_OPTIONS_COLUMNS;
 /**
  * The String "List layout options"
  */
@@ -208,11 +208,11 @@ public static final String SETTINGS_OPTIONS_DETAILS;
 /**
  * The String "&Override default column width settings"
  */
-public static final String SETTINGS_LAYOUT_FOLDER_OVERRIDE_WIDTH;
+public static final String SETTINGS_LAYOUT_COLUMNS_OVERRIDE_WIDTH;
 /**
  * The String "Colu&mn width (in pixels):  "
  */
-public static final String SETTINGS_LAYOUT_FOLDER_WIDTH;
+public static final String SETTINGS_LAYOUT_COLUMNS_WIDTH;
 /**
  * The String "&Pin drawer open at start-up"
  */
@@ -249,7 +249,7 @@ static {
 	MOVE_DOWN_LABEL = bundle.getString("MOVE_DOWN_LABEL"); //$NON-NLS-1$
 	DELETE_LABEL = bundle.getString("DELETE_LABEL"); //$NON-NLS-1$
 	NEW_LABEL = bundle.getString("NEW_LABEL"); //$NON-NLS-1$
-	SETTINGS_FOLDER_VIEW_LABEL = bundle.getString("SETTINGS_FOLDER_VIEW_LABEL"); //$NON-NLS-1$
+	SETTINGS_COLUMNS_VIEW_LABEL = bundle.getString("SETTINGS_COLUMNS_VIEW_LABEL"); //$NON-NLS-1$
 	SETTINGS_LIST_VIEW_LABEL = bundle.getString("SETTINGS_LIST_VIEW_LABEL"); //$NON-NLS-1$
 	SETTINGS_USE_LARGE_ICONS_LABEL = bundle.getString("SETTINGS_USE_LARGE_ICONS_LABEL"); //$NON-NLS-1$
 	SETTINGS_ICONS_VIEW_LABEL = bundle.getString("SETTINGS_ICONS_VIEW_LABEL"); //$NON-NLS-1$
@@ -283,12 +283,12 @@ static {
 	SETTINGS_LAYOUT_TITLE = bundle.getString("SETTINGS_LAYOUT_TITLE"); //$NON-NLS-1$	
 	SETTINGS_DRAWER_OPTIONS_TITLE = bundle.getString("SETTINGS_DRAWER_OPTIONS_TITLE"); //$NON-NLS-1$	
 	EXPAND_DRAWER_AT_STARTUP_LABEL = bundle.getString("EXPAND_DRAWER_AT_STARTUP_LABEL"); //$NON-NLS-1$	
-	SETTINGS_OPTIONS_FOLDER = bundle.getString("SETTINGS_OPTIONS_FOLDER"); //$NON-NLS-1$	
+	SETTINGS_OPTIONS_COLUMNS = bundle.getString("SETTINGS_OPTIONS_COLUMNS"); //$NON-NLS-1$	
 	SETTINGS_OPTIONS_LIST = bundle.getString("SETTINGS_OPTIONS_LIST"); //$NON-NLS-1$	
 	SETTINGS_OPTIONS_ICONS_ONLY = bundle.getString("SETTINGS_OPTIONS_ICONS_ONLY"); //$NON-NLS-1$	
 	SETTINGS_OPTIONS_DETAILS = bundle.getString("SETTINGS_OPTIONS_DETAILS"); //$NON-NLS-1$	
-	SETTINGS_LAYOUT_FOLDER_OVERRIDE_WIDTH = bundle.getString("SETTINGS_LAYOUT_FOLDER_OVERRIDE_WIDTH"); //$NON-NLS-1$	
-	SETTINGS_LAYOUT_FOLDER_WIDTH = bundle.getString("SETTINGS_LAYOUT_FOLDER_WIDTH"); //$NON-NLS-1$	
+	SETTINGS_LAYOUT_COLUMNS_OVERRIDE_WIDTH = bundle.getString("SETTINGS_LAYOUT_COLUMNS_OVERRIDE_WIDTH"); //$NON-NLS-1$	
+	SETTINGS_LAYOUT_COLUMNS_WIDTH = bundle.getString("SETTINGS_LAYOUT_COLUMNS_WIDTH"); //$NON-NLS-1$	
 	DRAWER_PIN_AT_STARTUP = bundle.getString("DRAWER_PIN_AT_STARTUP"); //$NON-NLS-1$	
 	SETTINGS_DEFAULT_FONT = bundle.getString("SETTINGS_DEFAULT_FONT"); //$NON-NLS-1$	
 	SETTINGS_WORKBENCH_FONT_LABEL = bundle.getString("SETTINGS_WORKBENCH_FONT_LABEL"); //$NON-NLS-1$	

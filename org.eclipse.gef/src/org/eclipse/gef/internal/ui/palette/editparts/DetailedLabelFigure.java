@@ -139,7 +139,7 @@ public void setLayoutMode(int layoutMode) {
 	}
 	
 	BorderLayout layout = (BorderLayout) getLayoutManager();
-	if (layoutMode == PaletteViewerPreferences.LAYOUT_FOLDER) {
+	if (layoutMode == PaletteViewerPreferences.LAYOUT_COLUMNS) {
 		page.setHorizontalAligment(PositionConstants.CENTER);
 		layout.setConstraint(image, BorderLayout.TOP);
 		layout.setConstraint(page, BorderLayout.CENTER);

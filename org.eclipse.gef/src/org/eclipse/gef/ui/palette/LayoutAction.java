@@ -64,9 +64,9 @@ protected List createActions() {
 	Action action;
 	for (int i = 0; i < modes.length; i++) {
 		switch(modes[i]) {
-			case PaletteViewerPreferences.LAYOUT_FOLDER:
-				action = new LayoutChangeAction(PaletteViewerPreferences.LAYOUT_FOLDER);
-				action.setText(PaletteMessages.SETTINGS_FOLDER_VIEW_LABEL);
+			case PaletteViewerPreferences.LAYOUT_COLUMNS:
+				action = new LayoutChangeAction(PaletteViewerPreferences.LAYOUT_COLUMNS);
+				action.setText(PaletteMessages.SETTINGS_COLUMNS_VIEW_LABEL);
 				list.add(action);
 				break;
 			case PaletteViewerPreferences.LAYOUT_LIST:

@@ -15,7 +15,7 @@ import org.eclipse.jface.action.Action;
 /**
  * @author Pratik Shah
  */
-public class FolderLayoutAction 
+public class ColumnsLayoutAction 
 	extends Action 
 {
 
@@ -26,10 +26,10 @@ private PaletteViewerPreferences prefs;
  * 
  * @param	prefs	The PaletteViewerPreferences where the preference is stored
  */
-public FolderLayoutAction(PaletteViewerPreferences prefs) {
-	super(PaletteMessages.SETTINGS_FOLDER_VIEW_LABEL);
+public ColumnsLayoutAction(PaletteViewerPreferences prefs) {
+	super(PaletteMessages.SETTINGS_COLUMNS_VIEW_LABEL);
 	this.prefs = prefs;
-	if (prefs.getLayoutSetting() == PaletteViewerPreferences.LAYOUT_FOLDER) {
+	if (prefs.getLayoutSetting() == PaletteViewerPreferences.LAYOUT_COLUMNS) {
 		setChecked(true);
 	}	
 }
@@ -38,7 +38,7 @@ public FolderLayoutAction(PaletteViewerPreferences prefs) {
  * @see org.eclipse.jface.action.Action#run()
  */
 public void run() {
-	prefs.setLayoutSetting(PaletteViewerPreferences.LAYOUT_FOLDER);
+	prefs.setLayoutSetting(PaletteViewerPreferences.LAYOUT_COLUMNS);
 }
 
 }

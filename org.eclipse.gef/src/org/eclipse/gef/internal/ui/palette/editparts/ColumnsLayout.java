@@ -19,7 +19,7 @@ import org.eclipse.draw2d.geometry.Dimension;
 
 
 /**
- * Special FlowLayout to display the palette in the folder view.
+ * Special FlowLayout to display the palette in the columns view.
  * 
  * <p>
  * This layout is not for external use.
@@ -27,7 +27,7 @@ import org.eclipse.draw2d.geometry.Dimension;
  * 
  * @author Pratik Shah
  */
-public class FolderLayout 
+public class ColumnsLayout 
 	extends FlowLayout 
 {
 	
@@ -37,7 +37,7 @@ private Dimension cachedConstraint = null;
 /**
  * Constructor
  */
-public FolderLayout() {
+public ColumnsLayout() {
 	this(true);
 }
 
@@ -46,7 +46,7 @@ public FolderLayout() {
  * 
  * @param isHorizontal	<code>true</code> if this layout is in a horizontal orientation
  */
-public FolderLayout(boolean isHorizontal) {
+public ColumnsLayout(boolean isHorizontal) {
 	super(isHorizontal);
 	setMinorSpacing(0);
 	setMajorSpacing(0);

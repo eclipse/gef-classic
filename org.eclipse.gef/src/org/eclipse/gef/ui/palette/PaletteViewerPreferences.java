@@ -49,11 +49,16 @@ public static final int
 /**
  * Constant for a Layout Option
  * <p>
- * Indicates that the palette should be displayed in the folder mode.
+ * Indicates that the palette should be displayed in the columns mode.
  * </p>
  */
 public static final int
-	LAYOUT_FOLDER   = 1;
+	LAYOUT_COLUMNS   = 1;
+/**
+ * @deprecated	Use LAYOUT_COLUMNS instead.
+ */
+public static final int
+	LAYOUT_FOLDER    = LAYOUT_COLUMNS;
 /**
  * Constant for a Layout Option
  * <p>
@@ -93,12 +98,17 @@ public static final String
 public static final String
 	PREFERENCE_AUTO_COLLAPSE      = "Auto-Collapse Setting"; //$NON-NLS-1$
 /**
- * Property name for the large icon setting for folder layout.  If the PropertyChangeEvent
+ * Property name for the large icon setting for columns layout.  If the PropertyChangeEvent
  * fired has this property name, it means that the large icon setting was changed for
- * folder layout.  Large icons are default.
+ * columns layout.  Large icons are default.
  */
 public static final String
-	PREFERENCE_FOLDER_ICON_SIZE   = "Use Large Icons - Folder"; //$NON-NLS-1$
+	PREFERENCE_COLUMNS_ICON_SIZE  = "Use Large Icons - Columns"; //$NON-NLS-1$
+/**
+ * @deprecated	Use PREFERENCE_COLUMN_ICON_SIZE instead.
+ */
+public static final String
+	PREFERENCE_FOLDER_ICON_SIZE   = PREFERENCE_COLUMNS_ICON_SIZE;
 /**
  * Property name for the large icon setting for list layout.  If the PropertyChangeEvent
  * fired has this property name, it means that the large icon setting was changed for
@@ -154,7 +164,7 @@ public FontData getFontData();
  * <p> 
  * Possible values returned:
  * <ul>
- * 		<li>LAYOUT_FOLDER (Folder View)</li>
+ * 		<li>LAYOUT_COLUMNS (columns View)</li>
  * 		<li>LAYOUT_LIST (List View)</li> 
  * 		<li>LAYOUT_ICONS (Icons Only View)</li>
  * 		<li>LAYOUT_DETAILS (Details View)</li>
@@ -166,14 +176,14 @@ public int getLayoutSetting();
 
 /**
  * Returns the layout modes that are supported.  All four layout modes --
- * LAYOUT_FOLDER, LAYOUT_LIST, LAYOUT_ICONS, LAYOUT_DETAILS -- are supported by default. 
+ * LAYOUT_COLUMNS, LAYOUT_LIST, LAYOUT_ICONS, LAYOUT_DETAILS -- are supported by default. 
  * 
  * @return int[] * @see #setSupportedLayoutModes(int[])
  */
 public int[] getSupportedLayoutModes();
 
 /**
- * @param layout	LAYOUT_FOLDER, LAYOUT_LIST, LAYOUT_ICONS, or LAYOUT_DETAILS
+ * @param layout	LAYOUT_COLUMNS, LAYOUT_LIST, LAYOUT_ICONS, or LAYOUT_DETAILS
  * @return <code>true</code> if the given layout is a supported mode */
 public boolean isSupportedLayoutMode(int layout);
 
@@ -206,7 +216,7 @@ public void setFontData(FontData data);
  * <p> 
  * Possible values:
  * <ul>
- * 		<li>LAYOUT_FOLDER (Folder View)</li>
+ * 		<li>LAYOUT_COLUMNS (columns View)</li>
  * 		<li>LAYOUT_LIST (List View)</li> 
  * 		<li>LAYOUT_ICONS (Icons Only View)</li>
  * 		<li>LAYOUT_DETAILS (Details View)</li>
@@ -224,7 +234,7 @@ public void setCurrentUseLargeIcons(boolean newVal);
 /**
  * The client can restrict the modes that the palette supports using this method.  By
  * default, the palette will support all layout modes: LAYOUT_ICONS, LAYOUT_DETAILS,
- * LAYOUT_FOLDER, LAYOUT_LIST.  Should the client wish to not support all these modes,
+ * LAYOUT_COLUMNS, LAYOUT_LIST.  Should the client wish to not support all these modes,
  * they can call this method with an array of the desired modes.  This method should be
  * called during set-up as soon as the preferences are created, and not later.
  * <p>
@@ -243,7 +253,7 @@ public void setSupportedLayoutModes(int[] modes);
  * </p>
  * 
  * @param	layout	Indicates to change the icon setting associated with the given layout,
- * 					which could be any of LAYOUT_FOLDER, LAYOUT_LIST, LAYOUT_ICONS, and
+ * 					which could be any of LAYOUT_COLUMNS, LAYOUT_LIST, LAYOUT_ICONS, and
  * 					LAYOUT_DETAILS.
  * @param newVal	<code>true</code> if large icons are to be used with the given layout
  */
@@ -252,14 +262,14 @@ public void setUseLargeIcons(int layout, boolean newVal);
 /**
  * The defaults are as follows:
  * <ul>
- * 	<li>LAYOUT_FOLDER  - <code>true</code><li>
+ * 	<li>LAYOUT_COLUMNS  - <code>true</code><li>
  * 	<li>LAYOUT_LIST    - <code>false</code><li>
  * 	<li>LAYOUT_ICONS   - <code>true</code><li>
  * 	<li>LAYOUT_DETAILS - <code>false</code><li>
  * </ul>
  * 
  * @param	layout	Indicates to get the icon setting associated with the given layout, 
- * 					which could be any of LAYOUT_FOLDER, LAYOUT_LIST, LAYOUT_ICONS, and
+ * 					which could be any of LAYOUT_COLUMNS, LAYOUT_LIST, LAYOUT_ICONS, and
  * 					LAYOUT_DETAILS.
  * @return <code>true</code> if large icons are to be used with the given layout
  */
