@@ -336,12 +336,13 @@ static private PaletteContainer createControlGroup(PaletteRoot root){
 	PaletteStack marqueeStack = new PaletteStack("Marquee Tools", "", null);
 	marqueeStack.add(new MarqueeToolEntry());
 	MarqueeToolEntry marquee = new MarqueeToolEntry();
-	marquee.setToolProperty(MarqueeSelectionTool.PROPERTY_SELECTION_TYPE, 
-			new Integer(MarqueeSelectionTool.SELECT_CONNECTIONS));
+	marquee.setToolProperty(MarqueeSelectionTool.PROPERTY_MARQUEE_BEHAVIOR, 
+			new Integer(MarqueeSelectionTool.BEHAVIOR_CONNECTIONS_TOUCHED));
 	marqueeStack.add(marquee);
 	marquee = new MarqueeToolEntry();
-	marquee.setToolProperty(MarqueeSelectionTool.PROPERTY_SELECTION_TYPE, new Integer(
-			MarqueeSelectionTool.SELECT_CONNECTIONS | MarqueeSelectionTool.SELECT_NODES));
+	marquee.setToolProperty(MarqueeSelectionTool.PROPERTY_MARQUEE_BEHAVIOR, 
+			new Integer(MarqueeSelectionTool.BEHAVIOR_CONNECTIONS_TOUCHED 
+			| MarqueeSelectionTool.BEHAVIOR_NODES_CONTAINED));
 	marqueeStack.add(marquee);
 	marqueeStack.setUserModificationPermission(PaletteEntry.PERMISSION_NO_MODIFICATION);
 	entries.add(marqueeStack);
