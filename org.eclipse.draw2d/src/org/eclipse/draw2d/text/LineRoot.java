@@ -12,7 +12,6 @@
 package org.eclipse.draw2d.text;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -20,7 +19,155 @@ import org.eclipse.draw2d.geometry.Rectangle;
 /**
  * @since 3.1
  */
-public class LineRoot extends LineBox {
+public class LineRoot 
+	extends LineBox 
+{
+
+private int baseline;
+
+public void add(FlowBox child) {
+	super.add(child);
+	child.setLineRoot(this);
+}
+
+private void bidiCommit() {
+	int xLocation = getX();
+	BidiLevelNode root = new BidiLevelNode();
+	List branches = new ArrayList();
+	// branches does not include this LineRoot; all the non-leaf child fragments of a 
+	// parent will be listed before the parent itself in this list
+	buildBidiTree(this, root, branches);
+	List result = new ArrayList();
+	root.emit(result);
+	for (int i = 0; i < result.size(); i++) {
+		FlowBox box = (FlowBox)result.get(i);
+		box.setX(xLocation);
+		xLocation += box.getWidth();
+	}
+	// set the bounds of the composite boxes, and break overlapping ones into two
+	layoutNestedLines(branches);
+}
+
+private void buildBidiTree(FlowBox box, BidiLevelNode node, List branches) {
+	if (box instanceof LineBox) {
+		List children = ((LineBox)box).getFragments();
+		for (int i = 0; i < children.size(); i++)
+			buildBidiTree((FlowBox)children.get(i), node, branches);
+		if (!(box instanceof LineRoot))
+			branches.add(box);
+	} else {
+		ContentBox leafBox = (ContentBox)box;
+		while (leafBox.getBidiLevel() < node.level)
+			node = node.pop();
+		while (leafBox.getBidiLevel() > node.level)
+			node = node.push();
+		node.add(leafBox);
+	}
+}
+
+/**
+ * Committing a LineRoot will position its children correctly. All children boxes are made
+ * to have the same baseline, and are laid out according to the Unicode BiDi Algorithm,
+ * or left-to-right if Bidi is not necessary.
+ */
+public void commit() {
+	if (requiresBidi())
+		bidiCommit();
+	else
+		contiguousCommit(this, getX());
+}
+
+public boolean containsPoint(int x, int y) {
+	return false;
+}
+
+/*
+ * Simply lays out all fragments from left-to-right in the order in which they're 
+ * contained. 
+ */
+private void contiguousCommit(FlowBox box, int x) {
+	box.setX(x);
+	if (box instanceof LineBox) {
+		List fragments = ((LineBox)box).getFragments();
+		for (int i = 0; i < fragments.size(); i++) {
+			FlowBox child = (FlowBox)fragments.get(i);
+			contiguousCommit(child, x);
+			x += child.getWidth();
+		}
+	}
+}
+
+private Result findParent(NestedLine line, List branches, int afterIndex) {
+	for (int i = afterIndex + 1; i < branches.size(); i++) {
+		NestedLine box = (NestedLine)branches.get(i);
+		int index = box.getFragments().indexOf(line);
+		if (index >= 0)
+			return new Result(box, index);
+	}
+	return new Result(this, getFragments().indexOf(line));
+}
+
+public int getBaseline() {
+	return baseline;
+}
+
+LineRoot getLineRoot() {
+	return this;
+}
+
+int getVisibleBottom() {
+	return baseline + contentDescent;
+}
+
+int getVisibleTop() {
+	return baseline - contentAscent;
+}
+
+private void layoutNestedLines(List branches) {
+	for (int i = 0; i < branches.size(); i++) {
+		NestedLine parent = (NestedLine)branches.get(i);
+		FlowBox prevChild = null;
+		Rectangle bounds = null;
+		List frags = parent.getFragments();
+		for (int j = 0; j < frags.size(); j++) {
+			FlowBox child = (FlowBox) frags.get(j);
+			if (prevChild != null && prevChild.getX() + prevChild.width != child.getX()
+					&& child.getX() + child.width != prevChild.getX()) {
+				// the boxes are not adjacent, and hence the parent box needs to
+				// be broken up
+				InlineFlow parentFig = parent.owner;
+				// Create and initialize a new line box
+				NestedLine newBox = new NestedLine(parentFig);
+				newBox.setLineRoot(this);
+				// Add all remaining fragments from the current line box to the new one
+				for (int k = j; k < frags.size();)
+					newBox.fragments.add(frags.remove(k));
+				// Add the new line box to the parent box's list of fragments
+				Result result = findParent(parent, branches, i);
+				result.parent.getFragments().add(result.index + 1, newBox);
+				// Add the new line box to the flow figure's list of fragments 
+				parentFig.fragments.add(parentFig.fragments.indexOf(parent) + 1, newBox);
+				branches.add(i + 1, newBox);
+				break;
+			}
+			if (bounds == null)
+				bounds = new Rectangle(child.getX(), 1, child.getWidth(), 1);
+			else
+				bounds.union(child.getX(), 1, child.getWidth(), 1);
+			prevChild = child;
+		}
+		parent.setX(bounds.x);
+		parent.setWidth(bounds.width);
+	}
+}
+
+public void setBaseline(int baseline) {
+	this.baseline = baseline;
+}
+
+public void setLineTop(int top) {
+	this.baseline = top + getAscent();
+}
 
 private static class BidiLevelNode extends ArrayList
 {
@@ -40,19 +187,17 @@ private static class BidiLevelNode extends ArrayList
 		if (level % 2 == 1) {
 			for (int i = size() - 1; i >= 0; i--) {
 				Object child = get(i);
-				if (child instanceof BidiLevelNode) {
-					BidiLevelNode node = (BidiLevelNode) child;
-					node.emit(list);
-				} else
+				if (child instanceof BidiLevelNode)
+					((BidiLevelNode)child).emit(list);
+				else
 					list.add(child);
 			}
 		} else {
 			for (int i = 0; i < size(); i++) {
 				Object child = get(i);
-				if (child instanceof BidiLevelNode) {
-					BidiLevelNode node = (BidiLevelNode) child;
-					node.emit(list);
-				} else
+				if (child instanceof BidiLevelNode)
+					((BidiLevelNode)child).emit(list);
+				else
 					list.add(child);
 			}
 		}
@@ -74,111 +219,13 @@ private static class BidiLevelNode extends ArrayList
 	}
 }
 
-/*
- * Simply lays out all fragments from left-to-right in the order in which they're 
- * contained. 
- */
-private static void contiguousCommit(FlowBox box, int x, int baseline) {
-	box.setX(x);
-	// Don't lay out the children of any blocks.  If there is a BlockBox, it will be the 
-	// first and only child (i.e., on a line by itself).
-	if (box instanceof LineBox) {
-		List fragments = ((LineBox)box).getFragments();
-		for (int i = 0; i < fragments.size(); i++) {
-			FlowBox child = (FlowBox)fragments.get(i);
-			contiguousCommit(child, x, baseline);
-			x += child.getWidth();
-		}
+private static class Result {
+	private int index;
+	private LineBox parent;
+	private Result(LineBox box, int i) {
+		parent = box;
+		index = i;
 	}
-}
-
-private int baseline;
-
-public void add(FlowBox child) {
-	super.add(child);
-	child.setLineRoot(this);
-}
-
-private void buildBidiTree(FlowBox box, BidiLevelNode node, List branches) {
-	if (box instanceof LineBox) {
-		List children = ((LineBox)box).getFragments();
-		for (int i = 0; i < children.size(); i++)
-			buildBidiTree((FlowBox)children.get(i), node, branches);
-		if (box != this)
-			branches.add(box);
-	} else {
-		ContentBox leafBox = (ContentBox)box;
-		while (leafBox.getBidiLevel() < node.level)
-			node = node.pop();
-		while (leafBox.getBidiLevel() > node.level)
-			node = node.push();
-		node.add(leafBox);
-	}
-}
-
-/**
- * Committing a LineBox will position its children correctly. All children boxes are made
- * to have the same baseline, and are laid out according to the Unicode BiDi Algorithm,
- * or left-to-right if Bidi is not necessary.
- */
-public void commit() {
-	int baseline = getBaseline();
-	if (requiresBidi()) {
-		int xLocation = getX();
-		BidiLevelNode root = new BidiLevelNode();
-		List branches = new ArrayList();
-		// branches does not include this LineBox
-		buildBidiTree(this, root, branches);
-		List result = new ArrayList();
-		root.emit(result);
-		for (int i = 0; i < result.size(); i++) {
-			FlowBox box = (FlowBox)result.get(i);
-			box.setX(xLocation);
-			xLocation += box.getWidth();
-		}
-		// change each composite box's bounds to encompass all its children.  the
-		// following algorithm works because all the children (including non-leaves)
-		// of a parent will be listed before the parent is.
-		for (int i = 0; i < branches.size(); i++) {
-			LineBox parent = (LineBox)branches.get(i);
-			Rectangle bounds = new Rectangle();
-			for (Iterator iter = parent.getFragments().iterator(); iter.hasNext();) {
-				FlowBox child = (FlowBox) iter.next();
-				bounds.union(child.getX(), 0, child.getWidth(), 0);
-			}
-			parent.setX(bounds.x);
-			parent.setWidth(bounds.width);
-		}
-	} else
-		contiguousCommit(this, getX(), baseline);
-}
-
-public boolean containsPoint(int x, int y) {
-	return false;
-}
-
-public int getBaseline() {
-	return baseline;
-}
-
-LineRoot getLineRoot() {
-	return this;
-}
-
-int getVisibleBottom() {
-	return baseline + contentDescent;
-}
-
-int getVisibleTop() {
-	return baseline - contentAscent;
-}
-
-public void setBaseline(int baseline) {
-	this.baseline = baseline;
-}
-
-public void setLineTop(int top) {
-	this.baseline = top + getAscent();
 }
 
 }
