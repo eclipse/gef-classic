@@ -1,7 +1,6 @@
 package org.eclipse.draw2d.text;
 
 import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.geometry.*;
 
 /**
  * An inline flow that renders a sting of text across one or more lines. A TextFlow must
