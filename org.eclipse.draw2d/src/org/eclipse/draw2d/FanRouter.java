@@ -48,7 +48,12 @@ protected void handleCollision(PointList points, int index) {
 		return;
 	
 	Point midPoint = new Point((end.x + start.x) / 2, (end.y + start.y) / 2);
-	Ray ray = new Ray(start, end);
+	int position = end.getPosition(start);
+	Ray ray;
+	if (position == PositionConstants.SOUTH || position == PositionConstants.EAST)
+		ray = new Ray(start, end);
+	else
+		ray = new Ray(end, start);
 	double length = ray.length();
 
 	double xSeparation = separation * ray.x / length;
