@@ -114,7 +114,7 @@ public static void getPixels(ImageData imageData, int x, int y,
 		return;
 	}
 	if (depth == 8) {
-		int index = (y * bytesPerLine) + x ;
+		int index = (y * bytesPerLine) + x;
 		for (int i = 0; i < width; i++) {
 			pixelRow[i] = data[index++] & 0xFF;
 		}
@@ -429,7 +429,7 @@ public static void setPixels(ImageData dest, int x, int y, int putWidth,
 		return;
 	}
 	if (depth == 8) {
-		index = (y * bytesPerLine) + x ;
+		index = (y * bytesPerLine) + x;
 		i = startIndex;
 		for (int j = 0; j < putWidth; j++) {
 			data[index] = (byte)(pixels[i] & 0xFF);
