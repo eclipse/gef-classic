@@ -55,9 +55,7 @@ class EventDispatcher
 		getEditDomain().viewerEntered(me, TreeViewer.this);
 	}
 	public void mouseExit(MouseEvent me) {
-		//me.x = -1;
 		getEditDomain().viewerExited(me, TreeViewer.this);
-		mouseMove(me);
 	}
 	public void mouseHover(MouseEvent me) {
 		getEditDomain().mouseHover(me, TreeViewer.this);
