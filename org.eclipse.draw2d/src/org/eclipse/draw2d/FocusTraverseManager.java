@@ -60,8 +60,6 @@ public IFigure getNextFocusableFigure(IFigure root, IFigure focusOwner) {
 			return null;
 	}
 	while (!found) {
-		IFigure parent = nextFocusOwner.getParent();
-		
 		/*
 		 * Figure traversal is implemented using the pre-order left to right
 		 * tree traversal algorithm.
@@ -72,42 +70,45 @@ public IFigure getNextFocusableFigure(IFigure root, IFigure focusOwner) {
 		 * If there is no sibling to the right, go up the tree until a node
 		 * with untraversed siblings is found.
 		 */
-		List siblings = parent.getChildren();
-		int siblingPos = siblings.indexOf(nextFocusOwner);		
 
 		if (nextFocusOwner.getChildren().size() != 0) {
 			nextFocusOwner = ((IFigure)(nextFocusOwner.getChildren().get(0)));		
 			if (isFocusEligible(nextFocusOwner))				
-				found = true;	
-		} else if (siblingPos < siblings.size() - 1) {
-			nextFocusOwner = ((IFigure)(siblings.get(siblingPos + 1)));
-			if (isFocusEligible(nextFocusOwner))
 				found = true;
 		} else {
-			boolean untraversedSiblingFound = false;			
-			while (!untraversedSiblingFound) {
-				IFigure p = nextFocusOwner.getParent();	
-				IFigure gp = p.getParent();
-				
-				if (gp != null) {
-					int parentSiblingCount = gp.getChildren().size();
-					int parentIndex = gp.getChildren().indexOf(p);
-					if (parentIndex < parentSiblingCount - 1) {
-						nextFocusOwner = ((IFigure)p.getParent()
-													.getChildren()
-													.get(parentIndex + 1));
-						untraversedSiblingFound = true;
-						if (isFocusEligible(nextFocusOwner))		
-							found = true;
-					} else
-						nextFocusOwner = p;
-				} else {
-					nextFocusOwner = null;
-					untraversedSiblingFound = true;
+			IFigure parent = nextFocusOwner.getParent();
+			List siblings = parent.getChildren();
+			int siblingPos = siblings.indexOf(nextFocusOwner);		
+			if (siblingPos < siblings.size() - 1) {
+				nextFocusOwner = ((IFigure)(siblings.get(siblingPos + 1)));
+				if (isFocusEligible(nextFocusOwner))
 					found = true;
+			} else {
+				boolean untraversedSiblingFound = false;			
+				while (!untraversedSiblingFound) {
+					IFigure p = nextFocusOwner.getParent();	
+					IFigure gp = p.getParent();
+					
+					if (gp != null) {
+						int parentSiblingCount = gp.getChildren().size();
+						int parentIndex = gp.getChildren().indexOf(p);
+						if (parentIndex < parentSiblingCount - 1) {
+							nextFocusOwner = ((IFigure)p.getParent()
+														.getChildren()
+														.get(parentIndex + 1));
+							untraversedSiblingFound = true;
+							if (isFocusEligible(nextFocusOwner))		
+								found = true;
+						} else
+							nextFocusOwner = p;
+					} else {
+						nextFocusOwner = null;
+						untraversedSiblingFound = true;
+						found = true;
+					}
 				}
-			}
-		}		
+			}		
+		}
 	}
 	return nextFocusOwner;
 }
@@ -175,9 +176,7 @@ public IFigure getCurrentFocusOwner() {
 }	
 
 private boolean isFocusEligible(IFigure fig) {
-	if (fig == null || !fig.isFocusTraversable() || !fig.isShowing())
-		return false;
-	return true;
+	return (fig != null && fig.isFocusTraversable() && fig.isShowing());
 }
 
 /**
