@@ -17,6 +17,8 @@ import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.widgets.Display;
 
+import org.eclipse.ui.XMLMemento;
+
 import org.eclipse.draw2d.FigureCanvas;
 
 import org.eclipse.gef.*;
@@ -94,6 +96,24 @@ public PaletteViewer() {
 public void addPaletteListener(PaletteListener paletteListener) {
 	if (paletteListeners != null)
 		paletteListeners.add(paletteListener);
+}
+
+// Fails silently
+public boolean applyState(XMLMemento memento) {
+	try {
+		((PaletteEditPart)getEditPartRegistry().get(getPaletteRoot()))
+				.restoreState(memento);
+	} catch (RuntimeException re) {
+		return false;
+	}
+	return true;
+}
+
+public XMLMemento captureState() {
+	PaletteEditPart root = (PaletteEditPart)getEditPartRegistry().get(getPaletteRoot());
+	XMLMemento memento = XMLMemento.createWriteRoot(PaletteEditPart.XML_NAME);
+	root.saveState(memento);
+	return memento;
 }
 
 /** * @see org.eclipse.gef.ui.parts.GraphicalViewerImpl#createDefaultRoot() */
@@ -300,6 +320,8 @@ public void setActiveTool(ToolEntry newMode) {
  * Sets the root for this palette.
  * @param	root	the PaletteRoot for this palette */
 public void setPaletteRoot(PaletteRoot root) {
+	if (root == paletteRoot)
+		return;
 	paletteRoot = root;
 	if (paletteRoot != null) {
 		EditPart palette =
