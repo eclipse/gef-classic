@@ -19,50 +19,56 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.graphics.Cursor;
 
 /**
- * A tool that interacts with one or more sources only.
- * For example, bending a connection involves only that connection.
+ * A simple drag tracker implementation that does not perform targeting. For example,
+ * resizing a shape or bendpoint does not involve any target editpart.
  */
-abstract public class SimpleDragTracker
+public abstract class SimpleDragTracker
 	extends AbstractTool
 	implements DragTracker
 {
 
 private static final int FLAG_SOURCE_FEEDBACK = AbstractTool.MAX_FLAG << 1;
+
+/**
+ * The maximum bit-mask used as a flag constant.  Subclasses should start using the next
+ * highest bitmask.
+ */
 protected static final int MAX_FLAG = FLAG_SOURCE_FEEDBACK;
 private Request sourceRequest;
 
 /**
  * Null constructor.
  */
-protected SimpleDragTracker(){}
+protected SimpleDragTracker() { }
 
 /**
- * Calculates and returns the current cursor based on the
- * tool's current state.
+ * @see org.eclipse.gef.tools.AbstractTool#calculateCursor()
  */
-protected Cursor calculateCursor(){
+protected Cursor calculateCursor() {
 	if (isInState(STATE_DRAG | STATE_ACCESSIBLE_DRAG))
 		return getDefaultCursor();
 	return super.calculateCursor();
 }
 
-public void commitDrag(){
+/**
+ * @see DragTracker#commitDrag()
+ */
+public void commitDrag() {
 	eraseSourceFeedback();
 	performDrag();
 	setState(STATE_TERMINAL);
 }
 
 /**
- * Creates and returns a new Request.
+ * Creates and returns a new Request that is used during the drag.
+ * @return a new source request
  */
-protected Request createSourceRequest(){
+protected Request createSourceRequest() {
 	return new Request();
 }
 
 /**
- * Deactivates the tool. This method is called whenever the user
- * switches to another tool. Use this method to do some clean-up
- * when the tool is switched. 
+ * @see org.eclipse.gef.Tool#deactivate()
  */
 public void deactivate() {
 	eraseSourceFeedback();
@@ -71,8 +77,7 @@ public void deactivate() {
 }
 
 /**
- * Show the source drag feedback for the drag occurring
- * within the viewer.
+ * Show the source drag feedback for the drag occurring within the viewer.
  */
 protected void eraseSourceFeedback() {
 	if (!isShowingFeedback())
@@ -86,21 +91,21 @@ protected void eraseSourceFeedback() {
 }
 
 /**
- * Returns the request for the source of the drag, creating it
- * if necessary.
+ * Returns the request for the source of the drag, creating it if necessary.
+ * @return the source request
  */
-protected Request getSourceRequest(){
+protected Request getSourceRequest() {
 	if (sourceRequest == null)
 		sourceRequest = createSourceRequest();
 	return sourceRequest;
 }
 
 /**
- * Handles the button down event.  Transitions the tool into
- * the drag state.
+ * Looks for button 1, and goes into the drag state.  Any other button is invalid input.
+ * @see org.eclipse.gef.tools.AbstractTool#handleButtonDown(int)
  */
 protected boolean handleButtonDown(int button) {
-	if (button != 1){
+	if (button != 1) {
 		setState(STATE_INVALID);
 		handleInvalidInput();
 	} else
@@ -109,8 +114,8 @@ protected boolean handleButtonDown(int button) {
 }
 
 /**
- * Handles the button up event.  Gets the current command
- * and executes it.
+ * If dragging is in progress, cleans up feedback and calls performDrag().
+ * @see org.eclipse.gef.tools.AbstractTool#handleButtonUp(int)
  */
 protected boolean handleButtonUp(int button) {
 	if (stateTransition(STATE_DRAG_IN_PROGRESS, STATE_TERMINAL)) {
@@ -121,12 +126,10 @@ protected boolean handleButtonUp(int button) {
 }
 
 /**
- * Called after the mouse has been dragged past the
- * threshold.  Updates the request and sets the 
- * current command.
+ * @see org.eclipse.gef.tools.AbstractTool#handleDragInProgress()
  */
 protected boolean handleDragInProgress() {
-	if (isInDragInProgress()){
+	if (isInDragInProgress()) {
 		updateSourceRequest();
 		showSourceFeedback();
 		setCurrentCommand(getCommand());
@@ -135,23 +138,28 @@ protected boolean handleDragInProgress() {
 }
 
 /**
- * Called once when the drag starts.  Transistions the tool
- * into the drag-in-progress state.
+ * Transitions Drag to Drag in progress state.
+ * @see org.eclipse.gef.tools.AbstractTool#handleDragStarted()
  */
-protected boolean handleDragStarted(){
+protected boolean handleDragStarted() {
 	return stateTransition(STATE_DRAG, STATE_DRAG_IN_PROGRESS);
 }
 
 /**
  * Called when the mouse and/or keyboard input is invalid.
+ * @return <code>true</code>
  */
-protected boolean handleInvalidInput(){
+protected boolean handleInvalidInput() {
 	eraseSourceFeedback();
 	setCurrentCommand(UnexecutableCommand.INSTANCE);
 	return true;
 }
 
-protected boolean handleKeyDown(KeyEvent e){
+/**
+ * Looks for keys which are used during accessible drags.
+ * @see org.eclipse.gef.tools.AbstractTool#handleKeyDown(org.eclipse.swt.events.KeyEvent)
+ */
+protected boolean handleKeyDown(KeyEvent e) {
 	if (acceptArrowKey(e)) {
 		accStepIncrement();
 		if (stateTransition(STATE_INITIAL, STATE_ACCESSIBLE_DRAG_IN_PROGRESS))
@@ -175,8 +183,11 @@ protected boolean handleKeyDown(KeyEvent e){
 	return false;
 }
 
-protected boolean handleKeyUp(KeyEvent e){
-	if (acceptArrowKey(e)){
+/**
+ * @see org.eclipse.gef.tools.AbstractTool#handleKeyUp(org.eclipse.swt.events.KeyEvent)
+ */
+protected boolean handleKeyUp(KeyEvent e) {
+	if (acceptArrowKey(e)) {
 		accStepReset();
 		return true;
 	}
@@ -185,18 +196,22 @@ protected boolean handleKeyUp(KeyEvent e){
 
 /**
  * Returns <code>true</code> if feedback is being shown.
+ * @return <code>true</code> if feedback is showing
  */
-protected boolean isShowingFeedback(){
+protected boolean isShowingFeedback() {
 	return getFlag(FLAG_SOURCE_FEEDBACK);
 }
 
-protected void performDrag(){
+/**
+ * Called once the drag has been interpreted.  This is where the real work of the drag is
+ * carried out.  By default, the current command is executed.
+ */
+protected void performDrag() {
 	executeCurrentCommand();
 }
 
 /**
- * Show the source drag feedback for the drag occurring
- * within the viewer.
+ * Show the source drag feedback for the drag occurring within the viewer.
  */
 protected void showSourceFeedback() {
 	List editParts = getOperationSet();
@@ -210,7 +225,7 @@ protected void showSourceFeedback() {
 /**
  * Updates the source request.
  */
-protected void updateSourceRequest(){
+protected void updateSourceRequest() {
 	getSourceRequest().setType(getCommandName());
 }
 

@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.gef.tools;
 
-
 import java.util.*;
 
 import org.eclipse.swt.SWT;
@@ -31,36 +30,110 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editparts.LayerManager;
 
 /**
- * Default implementation support for {@link Tool}s.
+ * The base implementation for {@link Tool}s.  The base implementation provides a
+ * framework for a <EM>state machine</EM> which processes mouse and keyboard input.  The
+ * state machine consists of a series of states identified by <code>int</code>s. Each
+ * mouse or keyboard event results in a transition, sometimes to the same state in which
+ * the input was received.  The interesting transitions have corresponding actions
+ * assigned to them, such as {@link #handleDragStarted()}.
+ * <P>
+ * The base implementation performs <EM>no</em? state transitions by default, but does
+ * route events to different method handlers based on state.  It is up to subclasses to
+ * set the appropriate states.
+ * <P>
+ * There are two broad "categories" of methods on AbstractTool.  There are the methods
+ * defined on the {@link Tool} interface which handle the job of receiving raw user input.
+ *  For example, {@link #mouseDrag(MouseEvent, EditPartViewer)}.  Then, there are the
+ * methods which correspond to higher-level interpretation of these events, such as {@link
+ * #handleDragInProgress()}, which is called from <code>mouseMove(...)</code>, but
+ * <em>only</em> when the drag threshold has been passed. These methods are generally
+ * more subclass-friendly. Subclasses should <em>not</em> override the methods which
+ * receive raw input.
  */
-abstract public class AbstractTool
+public abstract class AbstractTool
 	extends org.eclipse.gef.util.FlagSupport
 	implements Tool, RequestConstants
 {
 
-static protected final int STATE_TERMINAL = 1 << 30;
-static protected final int STATE_INITIAL  = 1;
-static protected final int STATE_DRAG = 2;
-static protected final int STATE_DRAG_IN_PROGRESS = 4;
-static protected final int STATE_INVALID = 8;
-static protected final int STATE_ACCESSIBLE_DRAG = 16;
-static protected final int STATE_ACCESSIBLE_DRAG_IN_PROGRESS = 32;
-static protected final int MAX_STATE = 32;
+/**
+ * The final state for a tool to be in.  Once a tool reaches this state, it will not
+ * change states until it is activated() again.
+ */
+protected static final int STATE_TERMINAL = 1 << 30;
 
-static protected final int MOUSE_BUTTON1 = SWT.BUTTON1;
-static protected final int MOUSE_BUTTON2 = SWT.BUTTON2;
-static protected final int MOUSE_BUTTON3 = SWT.BUTTON3;
-static protected final int MOUSE_BUTTON_ANY =
+/**
+ * The first state that a tool is in.  The tool will generally be in this state
+ * immediately following {@link #activate()}.
+ */
+protected static final int STATE_INITIAL  = 1;
+
+/**
+ * The state indicating that one or more buttons is pressed, but the user has not moved
+ * past the drag threshold.  Many tools will do nothing during this state but wait
+ * until {@link #STATE_DRAG_IN_PROGRESS} is entered.
+ */
+protected static final int STATE_DRAG = 2;
+
+/**
+ * The state indicating that the drag detection theshold has been passed, and a drag is in
+ * progress.
+ */
+protected static final int STATE_DRAG_IN_PROGRESS = 4;
+
+/**
+ * The state indicating that an input event has invalidated the interaction.  For example,
+ * during a mouse drag, pressing additional mouse button might invalidate the drag.
+ */
+protected static final int STATE_INVALID = 8;
+
+/**
+ * The state indicating that the keyboard is being used to perform a drag that is normally
+ * done using the mouse.
+ */
+protected static final int STATE_ACCESSIBLE_DRAG = 16;
+
+/**
+ * The state indicating that a keyboard drag is in progress.  The threshold for keyboard
+ * drags is non-existent, so this state would be entered very quickly.
+ */
+protected static final int STATE_ACCESSIBLE_DRAG_IN_PROGRESS = 32;
+
+/**
+ * The maximum state flag defined by this class
+ */
+protected static final int MAX_STATE = 32;
+
+/**
+ * constant used for mouse button 1.
+ */
+protected static final int MOUSE_BUTTON1 = SWT.BUTTON1;
+/**
+ * constant used for mouse button 2.
+ */
+protected static final int MOUSE_BUTTON2 = SWT.BUTTON2;
+/**
+ * constant used for mouse button 3.
+ */
+protected static final int MOUSE_BUTTON3 = SWT.BUTTON3;
+
+/**
+ * constant used to indicate any of the 3 mouse buttons.
+ */
+protected static final int MOUSE_BUTTON_ANY =
 	MOUSE_BUTTON1 | MOUSE_BUTTON2 | MOUSE_BUTTON3;
 
-static private final int DRAG_THRESHOLD = 5;
-static private final int FLAG_PAST_THRESHOLD = 1;
-static private final int FLAG_HOVER = 2;
-static private final int FLAG_UNLOAD = 4;{
+private static final int DRAG_THRESHOLD = 5;
+private static final int FLAG_PAST_THRESHOLD = 1;
+private static final int FLAG_HOVER = 2;
+private static final int FLAG_UNLOAD = 4;{
 	setFlag(FLAG_UNLOAD, true);
 }
-static private final int FLAG_ACTIVE = 8;
-static protected final int MAX_FLAG = 8;
+private static final int FLAG_ACTIVE = 8;
+
+/**
+ * The highest-bit flag being used.
+ */
+protected static final int MAX_FLAG = 8;
 
 private EditDomain     domain;
 private int            state;
@@ -86,72 +159,85 @@ public static class Input
 	boolean verifyMouseButtons;
 	Point mouse = new Point();
 
+	/**
+	 * Returns the event modifiers. Modifiers are defined in {@link MouseEvent#stateMask},
+	 * and include things like the mouse buttons and keyboard modifier keys.
+	 * @return the event modifiers
+	 */
 	protected int getModifiers() {
 		return modifiers;
 	}
 	
 	/**
 	 * Returns the current location of the mouse.
+	 * @return the mouse location
 	 */
-	public Point getMouseLocation(){
+	public Point getMouseLocation() {
 		return mouse;
 	}
 
 	/**
 	 * Returns <code>true</code> if the ALT key is pressed.
+	 * @return <code>true</code> if the ALT key is pressed
 	 */
-	public boolean isAltKeyDown(){
+	public boolean isAltKeyDown() {
 		return (modifiers & SWT.ALT) > 0;
 	}
 	
 	/**
 	 * Returns <code>true</code> if any of the 3 mouse buttons are pressed.
+	 * @return <code>true</code> if any of the 3 mouse buttons are pressed
 	 */
-	public boolean isAnyButtonDown(){
-		return getFlag(2|4|8);
+	public boolean isAnyButtonDown() {
+		return getFlag(2 | 4 | 8);
 	}
 	
 	/**
 	 * Returns <code>true</code> if the CTRL key is pressed.
+	 * @return <code>true</code> of CTRL pressed
 	 */
-	public boolean isControlKeyDown(){
+	public boolean isControlKeyDown() {
 		return (modifiers & SWT.CONTROL) > 0;
 	}
 	
 	/**
-	 * Returns <code>true</code> if button # <code>which</code> (1, 2, or 3)
-	 * is pressed.
+	 * Returns <code>true</code> if the specified button is down.
+	 * @param which which button
+	 * @return <code>true</code> if the button is down
 	 */
-	public boolean isMouseButtonDown(int which){
+	public boolean isMouseButtonDown(int which) {
 		return getFlag(1 << which);
 	}
 	
 	/**
 	 * Returns <code>true</code> if the SHIFT key is pressed.
+	 * @return <code>true</code> if SHIFT pressed
 	 */
-	public boolean isShiftKeyDown(){
+	public boolean isShiftKeyDown() {
 		return (modifiers & SWT.SHIFT) > 0;
 	}
 	
 	/**
-	 * Sets mouse button # <code>which</code> to be pressed if
-	 * <code>state</code> is true.
+	 * Sets mouse button # <code>which</code> to be pressed if <code>state</code> is true.
+	 * @param which which button
+	 * @param state <code>true</code> if button down
 	 */
-	public void setMouseButton(int which, boolean state){
+	public void setMouseButton(int which, boolean state) {
 		setFlag(1 << which, state);
 	}
 	
-	void setMouseLocation(int x, int y){
-		mouse.setLocation(x,y);
+	void setMouseLocation(int x, int y) {
+		mouse.setLocation(x, y);
 	}
 
 	/**
 	 * Sets the mouse and keyboard input based on the MouseEvent.
+	 * @param me the mouse event providing the input
 	 */
-	public void setInput(MouseEvent me){
+	public void setInput(MouseEvent me) {
 		setMouseLocation(me.x, me.y);
 		modifiers = me.stateMask;
-		if (verifyMouseButtons){
+		if (verifyMouseButtons) {
 			setMouseButton(1, (modifiers & MOUSE_BUTTON1) != 0);
 			setMouseButton(2, (modifiers & MOUSE_BUTTON2) != 0);
 			setMouseButton(3, (modifiers & MOUSE_BUTTON3) != 0);
@@ -160,44 +246,44 @@ public static class Input
 	}
 }
 
-boolean acceptAbort(KeyEvent e){
+boolean acceptAbort(KeyEvent e) {
 	return e.character == SWT.ESC;
 }
 
-boolean acceptArrowKey(KeyEvent e){
+boolean acceptArrowKey(KeyEvent e) {
 	int key = e.keyCode;
-	if (!(isInState(STATE_INITIAL |
-				STATE_ACCESSIBLE_DRAG |
-				STATE_ACCESSIBLE_DRAG_IN_PROGRESS)))
+	if (!(isInState(STATE_INITIAL
+	  | STATE_ACCESSIBLE_DRAG
+	  | STATE_ACCESSIBLE_DRAG_IN_PROGRESS)))
 		return false;
-	return (key == SWT.ARROW_UP) ||
-		(key == SWT.ARROW_RIGHT) ||
-		(key == SWT.ARROW_DOWN) ||
-		(key == SWT.ARROW_LEFT);
+	return (key == SWT.ARROW_UP)
+		|| (key == SWT.ARROW_RIGHT)
+		|| (key == SWT.ARROW_DOWN)
+		|| (key == SWT.ARROW_LEFT);
 }
 
-boolean acceptDragCommit(KeyEvent e){
-	return isInState(STATE_ACCESSIBLE_DRAG_IN_PROGRESS)&&
-		e.character == 13;
+boolean acceptDragCommit(KeyEvent e) {
+	return isInState(STATE_ACCESSIBLE_DRAG_IN_PROGRESS)
+		&& e.character == 13;
 }
 
-int accGetStep(){
+int accGetStep() {
 	return accessibleStep;
 }
 
-void accStepIncrement(){
-	if (accessibleBegin == -1){
+void accStepIncrement() {
+	if (accessibleBegin == -1) {
 		accessibleBegin = new Date().getTime();
 		accessibleStep = 1;
 	} else {
 		accessibleStep = 4;
 		long elapsed = new Date().getTime() - accessibleBegin;
 		if (elapsed > 1000)
-			accessibleStep = Math.min(16, (int)(elapsed/150));
+			accessibleStep = Math.min(16, (int) (elapsed / 150));
 	}
 }
 
-void accStepReset(){
+void accStepReset() {
 	accessibleBegin = -1;
 }
 
@@ -217,7 +303,8 @@ public void activate() {
 }
 
 /**
- * Adds the given figure to the feedback layer.
+ * Convenience method to add the given figure to the feedback layer.
+ * @param figure the feedback being added
  */
 protected void addFeedback(IFigure figure) {
 	LayerManager lm = (LayerManager)getCurrentViewer().
@@ -228,9 +315,19 @@ protected void addFeedback(IFigure figure) {
 }
 
 /**
- * Determines (and returns) the appropriate cursur.
+ * Returns the appropriate cursor for the tools current state.  If the tool is in its
+ * terminal state, <code>null</code> is returned.  Otherwise, either the default or
+ * disabled cursor is returned, based on the existence of a current command, and whether
+ * that current command is executable.
+ * <P>
+ * Subclasses may override or extend this method to calculate the appropriate cursor based
+ * on other conditions.
+ * @see #getDefaultCursor()
+ * @see #getDisabledCursor()
+ * @see #getCurrentCommand()
+ * @return <code>null</code> or a cursor to be displayed.
  */
-protected Cursor calculateCursor(){
+protected Cursor calculateCursor() {
 	if (isInState(STATE_TERMINAL))
 		return null;
 	Command command = getCurrentCommand();
@@ -239,23 +336,31 @@ protected Cursor calculateCursor(){
 	return getDefaultCursor();
 }
 
-public void commitDrag(){}
+/**
+ * Added for compatibility.  {@link DragTracker#commitDrag()} was added for accessibility
+ * reasons.  Since all tool implementations must inherit from this base class, then
+ * implementing this method here avoids breaking subclasses that implemented the {@link
+ * DragTracker} interface.
+ */
+public void commitDrag() { }
 
 /**
- * Creates and returns a List of {@link EditPart}s that the tool
- * will be working with.
+ * Returns a new List of editparts that this tool is operating on.  This method is called
+ * once during {@link #getOperationSet()}, and its result is cached.
+ * <P>
+ * By default, the operations set is the current viewer's entire selection.  Subclasses
+ * may override this method to filter or alter the operation set as necessary.
+ * @return a list of editparts being operated on
  */
-protected List createOperationSet(){
+protected List createOperationSet() {
 	return new ArrayList(getCurrentViewer().getSelectedEditParts());
 }
 
 /**
- * Deactivates the tool. This method is called whenever the user
- * switches to another tool. Use this method to do some clean-up
- * when the tool is switched. The abstract tool allows cursors for 
- * viewers to be changed. When the tool is deactivated it must 
- * revert to normal the cursor of the last tool it changed.
- * 
+ * Deactivates the tool. This method is called whenever the user switches to another tool.
+ * Use this method to do some clean-up when the tool is switched. The abstract tool allows
+ * cursors for  viewers to be changed. When the tool is deactivated it must  revert to
+ * normal the cursor of the last tool it changed.
  * @see #activate()
  */
 public void deactivate() {
@@ -268,11 +373,11 @@ public void deactivate() {
 }
 
 /**
- * Prints a string in the GEF Debug console if the Tools
- * debug option is selected.
+ * Prints a string in the GEF Debug console if the Tools debug option is selected.
+ * @param message a message for the debug trace tool
  */
-protected void debug(String message){
-	if (GEF.DebugTools){
+protected void debug(String message) {
+	if (GEF.DebugTools) {
 		GEF.debug("TOOL:\t" + getDebugName() + //$NON-NLS-1$
 			":\t" + message); //$NON-NLS-1$
 	}
@@ -314,37 +419,47 @@ protected void executeCurrentCommand() {
 }
 
 /**
- * Re-queries the target viewer object for a command
+ * Returns a new, updated command based on the tools current properties.  The default
+ * implementation returns an unexecutable command.  Some tools do not work commands and
+ * the model, but simply change the viewer's state in some way.
+ * @return a newly obtained command
  */
-protected Command getCommand(){
+protected Command getCommand() {
 	return org.eclipse.gef.commands.UnexecutableCommand.INSTANCE;
 }
 
 /**
- * Returns the name identifier of the command that the tool
- * is currently looking for.
+ * Returns the identifier of the command that is being sought.  This name is also the 
+ * named that will be logged in the debug view.
+ * @return the identifier for the command
  */
-abstract protected String getCommandName();
+protected abstract String getCommandName();
 
 /**
- * Returns the currently active command.
+ * Returns the currently cached command.
+ * @return the current command
+ * @see #setCurrentCommand(Command)
  */
 protected Command getCurrentCommand() {
 	return command;
 }
 
 /**
- * Returns the current mouse and keyboard input.
+ * Returns the input object encapsulating the current mouse and keyboard state.
+ * @return the current input
  */
-protected Input getCurrentInput(){
+protected Input getCurrentInput() {
 	if (current == null)
 		current = new Input();
 	return current;
 }
 
 /**
- * Return the viewer that the tool is currently operating
- * on.
+ * Return the viewer that the tool is currently receiving input from, or
+ * <code>null</code>.  The last viewer to dispatch an event is defined as the current
+ * viewer.  Current viewer is automatically updated as events are received, and is set to
+ * <code>null</code> on <code>deactivate()</code>.
+ * @return the current viewer
  */
 protected EditPartViewer getCurrentViewer() {
 	return currentViewer;
@@ -352,15 +467,17 @@ protected EditPartViewer getCurrentViewer() {
 
 /**
  * Returns the debug name for this tool.
+ * @return the debug name
  */
-abstract protected String getDebugName();
+protected abstract String getDebugName();
 
 /**
- * Returns a String representation of the given state for 
- * debug purposes.
+ * Returns a String representation of the given state for debug purposes.
+ * @param state the state
+ * @return the string for the given state
  */
-protected String getDebugNameForState(int state){
-	switch (state){
+protected String getDebugNameForState(int state) {
+	switch (state) {
 		case STATE_INITIAL:
 			return "Initial State";//$NON-NLS-1$
 		case STATE_DRAG:
@@ -380,46 +497,59 @@ protected String getDebugNameForState(int state){
 }
 
 /**
- * Returns the default {@link Cursor}.
+ * Returns the cursor used under normal conditions.
+ * @see #setDefaultCursor(Cursor)
+ * @return the default cursor
  */
-protected Cursor getDefaultCursor(){
+protected Cursor getDefaultCursor() {
 	return defaultCursor;
 }
 
 /**
- * Returns the disabled {@link Cursor}.
+ * Returns the cursor used under abnormal conditions.
+ * @see #calculateCursor()
+ * @see #setDisabledCursor(Cursor)
+ * @return the disabled cursor
  */
-protected Cursor getDisabledCursor(){
+protected Cursor getDisabledCursor() {
 	if (disabledCursor != null)
 		return disabledCursor;
 	return getDefaultCursor();
 }
 
 /**
- * Returns the EditDomain.
+ * Returns the EditDomain.  A tool is told its EditDomain when it becomes active.  A tool
+ * may need to know its edit domain prior to receiving any events from any of that
+ * domain's viewers.
+ * @return the editdomain
  */
-protected EditDomain getDomain(){
+protected EditDomain getDomain() {
 	return domain;
 }
 
 /**
- * Return the number of pixels that the mouse has been moved
- * since that drag was started.
+ * Return the number of pixels that the mouse has been moved since that drag was started.
+ * The drag start is determined by where the mouse button was first pressed.
+ * @see #getStartLocation()
+ * @return the drag delta
  */
 protected Dimension getDragMoveDelta() {
 	return getLocation().getDifference(getStartLocation());
 }
 
 /**
- * Return the current x, y position of the cursor.
+ * Returns the current x, y position of the mouse cursor.
+ * @return the mouse location
  */
-protected Point getLocation(){
+protected Point getLocation() {
 	return new Point(getCurrentInput().getMouseLocation());
 }
 
 /**
- * Returns the collection of editparts that the drag is
- * operating on.
+ * Lazily creates and returns the list of editparts on which the tool operates.  The list
+ * is initially <code>null</code>, in which case {@link #createOperationSet()} is called,
+ * and its results cached until the tool is deactivated.
+ * @return the operation set.
  */
 protected List getOperationSet() {
 	if (operationSet == null)
@@ -428,68 +558,112 @@ protected List getOperationSet() {
 }
 
 /**
- * Returns the starting location for the current tool operation.
+ * Returns the starting mouse location for the current tool operation.  This is typically
+ * the mouse location where the user first pressed a mouse button.  This is important for
+ * tools that interpret mouse drags.
+ * @return the start location
  */
 protected Point getStartLocation() {
 	return new Point(startX, startY);
 }
 
 /**
- * Returns the current state.
+ * Returns the tool's current state.
+ * @return the current state
  */
-protected int getState(){
+protected int getState() {
 	return state;
 }
 
 /**
- * Called when the mouse button has been pressed.
- * Should be implemented to process the users input correctly.
- * Boolean should be used to indicate to your subclasses if
- * you processed the event (true) or you didn't process it (false)
- * and the subclass might process it.
- * Key presses are a good example of this type of behavior.
+ * Called when the mouse button has been pressed. By default, nothing happens
+ * and <code>false</code> is returned. Subclasses may override this method to interpret
+ * the meaning of a mouse down. Returning <code>true</code> indicates that the button down
+ * was handled in some way.
+ * @param button which button went down
+ * @return <code>true</code> if the buttonDown was handled
  */
-protected boolean handleButtonDown(int button){return false;}
-
-/**
- * Handles the high-level processing of a mouse release.
- * @see #mouseUp(MouseEvent, EditPartViewer)
- */
-protected boolean handleButtonUp(int button){return false;}
-
-/**
- * Handles high-level processing of a double click.
- * @see #mouseDoubleClick(MouseEvent, EditPartViewer)
- */
-protected boolean handleDoubleClick(int button){
+protected boolean handleButtonDown(int button) {
 	return false;
 }
 
 /**
- * Handles high-level processing of a mouse drag.
- * @see #mouseDrag(MouseEvent, EditPartViewer)
+ * Called when the mouse button has been released.  By default, nothing happens and
+ * <code>false</code> is returned. Subclasses may override this method to interpret the
+ * mouse up.  Returning <code>true</code> indicates that the mouse up was handled in some
+ * way.
+ * @see #mouseUp(MouseEvent, EditPartViewer)
+ * @param button the button being released
+ * @return <code>true</code> if the button up was handled
  */
-protected boolean handleDrag(){return false;}
+protected boolean handleButtonUp(int button) {
+	return false;
+}
 
 /**
- * Handles high-level processing of a mouse drag once the
- * threshold has been passed.
+ * Called when a mouse double-click occurs.  By default, nothing happens and
+ * <code>false</code> is returned.  Subclasses may override this method to interpret
+ * double-clicks.  Returning <code>true</code> indicates that the event was handled in
+ * some way.
+ * @param button which button was double-clicked
+ * @return <code>true</code> if the event was handled
+ * @see #mouseDoubleClick(MouseEvent, EditPartViewer)
+ */
+protected boolean handleDoubleClick(int button) {
+	return false;
+}
+
+/**
+ * Called whenever the mouse is being dragged.  This method continues to be called
+ * even once {@link #handleDragInProgress()} starts getting called. By default, nothing
+ * happens, and <code>false</code> is returned.  Subclasses may override this method to
+ * interpret a drag.  Returning <code>true</code> indicates that the drag was handled in
+ * some way.
+ * @return <code>true</code> if the drag is handled 
+ * @see #mouseDrag(MouseEvent, EditPartViewer)
+ */
+protected boolean handleDrag() {
+	return false;
+}
+
+/**
+ * Called whenever a mouse is being dragged and the drag threshold has been exceeded.
+ * Prior to the drag threshold being exceeded, only {@link #handleDrag()} is called.  This
+ * method gets called repeatedly for every mouse move during the drag. By default, nothing
+ * happens and <code>false</code> is returned.  Subclasses may override this method to
+ * interpret the drag.  Returning <code>true</code> indicates that the drag was handled.
  * @see #movedPastThreshold()
  * @see #mouseDrag(MouseEvent, EditPartViewer)
+ * @return <code>true</code> if the drag was handled
  */
-protected boolean handleDragInProgress(){return false;}
+protected boolean handleDragInProgress() {
+	return false;
+}
 
 /**
- * Called once when the drag threshold has been passed.
+ * Called only one time during a drag when the drag threshold has been exceeded.  By
+ * default, nothing happens and <code>false</code> is returned.  Subclasses may override
+ * to interpret the drag starting.  Returning <code>true</code> indicates that the event
+ * was handled.
  * @see #movedPastThreshold()
  * @see #mouseDrag(MouseEvent, EditPartViewer)
+ * @return true if the drag starting was handled
  */
-protected boolean handleDragStarted(){return false;}
+protected boolean handleDragStarted() {
+	return false;
+}
 
 /**
- * Called when the current tool operation is complete.
+ * Called when the current tool operation is to be completed.  In other words, the "state
+ * machine" and has accepted the sequence of input (i.e. the mouse gesture).  By default,
+ * the tool will either reactivate itself, or ask the edit domain to load the default
+ * tool.
+ * <P>
+ * Subclasses should extend this method to first do whatever it is that the tool does, and
+ * then call <code>super</code>.
+ * @see #unloadWhenFinished()
  */
-protected void handleFinished(){
+protected void handleFinished() {
 	if (unloadWhenFinished())
 		getDomain().loadDefaultTool();
 	else
@@ -497,34 +671,49 @@ protected void handleFinished(){
 }
 
 /**
- * Handles high-level processing of a focus gained event.
+ * Handles high-level processing of a focus gained event.  By default, nothing happens and
+ * <code>false</code> is returned.  Subclasses may override this method to interpret the
+ * focus gained event.  Return <code>true</code> to indicate that the event was processed.
  * @see #focusGained(FocusEvent, EditPartViewer)
+ * @return <code>true</code> if the event was handled
  */
 protected boolean handleFocusGained() {
 	return false;
 }
 
 /**
- * Handles high-level processing of a focus lost event.
+ * Handles high-level processing of a focus lost event.  By default, nothing happens and
+ * <code>false</code> is returned.  Subclasses may override this method to interpret the
+ * focus lost event.  Return <code>true</code> to indicate that the event was processed.
  * @see #focusLost(FocusEvent, EditPartViewer)
+ * @return <code>true</code> if the event was handled
  */
 protected boolean handleFocusLost() {
 	return false;
 }
 
 /**
- * Handles high-level processing of a mouse hover event.
+ * Handles high-level processing of a mouse hover event.  By default, nothing happens and
+ * <code>false</code> is returned.  Subclasses may override this method to interpret the
+ * hover.  Return <code>true</code> to indicate that the hover was handled.
  * @see #mouseHover(MouseEvent, EditPartViewer)
+ * @return <code>true</code> if the hover was handled
  */
-protected boolean handleHover(){
+protected boolean handleHover() {
 	return false;
 }
 
 /**
- * Handles high-level processing of a key down event.
+ * Handles high-level processing of a key down event.  By default, the KeyEvent is
+ * checked to see if it is the ESCAPE key.  If so, the domain's default tool is reloaded,
+ * and <code>true</code> is returned. Subclasses may extend this method to interpret
+ * additional key down events. Returns <code>true</code> if the given key down was
+ * handled.
  * @see #keyDown(KeyEvent, EditPartViewer)
+ * @param e the key event
+ * @return <code>true</code> if the key down was handled.
  */
-protected boolean handleKeyDown(KeyEvent e){
+protected boolean handleKeyDown(KeyEvent e) {
 	if (acceptAbort(e)) {
 		getDomain().loadDefaultTool();
 		return true;
@@ -533,36 +722,66 @@ protected boolean handleKeyDown(KeyEvent e){
 }
 
 /**
- * Handles high-level processing of a key up event.
+ * Handles high-level processing of a key up event.  By default, does nothing and returns
+ * <code>false</code>.  Subclasses may extend this method to process key up events. 
+ * Returns <code>true</code> if the key up was processed in some way.
  * @see #keyUp(KeyEvent, EditPartViewer)
+ * @param e the key event
+ * @return <code>true</code> if the event was handled
  */
 protected boolean handleKeyUp(KeyEvent e) {
 	return false;
 }
 
 /**
- * Handles high-level processing of a mouse move.
+ * Handles high-level processing of a mouse move.  By default, does nothing and returns
+ * <code>false</code>.  Subclasses may extend this method to process mouse moves. 
+ * Returns <code>true</code> if the mouse move was processed.
  * @see #mouseMove(MouseEvent, EditPartViewer)
+ * @return <code>true</code> if the mouse move was handled
  */
-protected boolean handleMove(){return false;}
-
-protected boolean handleNativeDragFinished(DragSourceEvent event){
-	return false;
-}
-
-protected boolean handleNativeDragStarted(DragSourceEvent event){
+protected boolean handleMove() {
 	return false;
 }
 
 /**
- * Called when the mouse enters an EditPartViewer.
+ * Handles when a native drag has ended.  By default, does nothing and returns
+ * <code>false</code>. Subclasses may extend this method to process native drags ending.
+ * @param event the drag event
+ * @return <code>true</code> if the native drag finished was handled
+ */
+protected boolean handleNativeDragFinished(DragSourceEvent event) {
+	return false;
+}
+
+/**
+ * Handles when a native drag has started.  By default, does nothing and returns
+ * <code>false</code>. Subclasses may extend this method to process native drag starts.
+ * <P>
+ * When a native drag starts, all subsequent mouse events will not be received, including
+ * the mouseUp event.  The only event that will be received is the drag finished event.
+ * @param event the drag event
+ * @return <code>true</code> if the native drag start was handled
+ */
+protected boolean handleNativeDragStarted(DragSourceEvent event) {
+	return false;
+}
+
+/**
+ * Called when the mouse enters an EditPartViewer. By default, does nothing and returns
+ * <code>false</code>. Subclasses may extend this method to process the viewer enter.
+ * Returns <code>true</code> to indicate if the viewer entered was process in some way.
+ * @return <code>true</code> if the viewer entered was handled
  */
 protected boolean handleViewerEntered() {
 	return false;
 }
 
 /**
- * Called when the mouse exits an EditPartViewer.
+ * Called when the mouse exits an EditPartViewer. By default, does nothing and returns
+ * <code>false</code>. Subclasses may extend this method to process viewer exits. Returns
+ * <code>true</code> to indicate if the viewer exited was process in some way.
+ * @return <code>true</code> if the viewer exited was handled
  */
 protected boolean handleViewerExited() {
 	return false;
@@ -570,15 +789,17 @@ protected boolean handleViewerExited() {
 
 /**
  * Returns <code>true</code> if the tool is active.
+ * @return <code>true</code> if active
  */
-protected boolean isActive(){
+protected boolean isActive() {
 	return getFlag(FLAG_ACTIVE);
 }
 
 /**
  * Returns <code>true</code> if the tool is hovering.
+ * @return <code>true</code> if hovering
  */
-protected boolean isHoverActive(){
+protected boolean isHoverActive() {
 	return getFlag(FLAG_HOVER);
 }
 
@@ -588,58 +809,65 @@ protected boolean isHoverActive(){
  */
 private boolean isInputSynched(MouseEvent event) {
 	Input input = getCurrentInput();
-	boolean button1ok = input.isMouseButtonDown(1) == 
-					((event.stateMask & SWT.BUTTON1) != 0);
-	boolean button2ok = input.isMouseButtonDown(2) == 
-					((event.stateMask & SWT.BUTTON2) != 0);
-	boolean button3ok = input.isMouseButtonDown(3) == 
-					((event.stateMask & SWT.BUTTON3) != 0);
+	boolean button1ok =
+		input.isMouseButtonDown(1) == ((event.stateMask & SWT.BUTTON1) != 0);
+	boolean button2ok =
+		input.isMouseButtonDown(2) == ((event.stateMask & SWT.BUTTON2) != 0);
+	boolean button3ok =
+		input.isMouseButtonDown(3) == ((event.stateMask & SWT.BUTTON3) != 0);
 	return (button1ok && button2ok && button3ok);
 }
 
-boolean isInDragInProgress(){
+boolean isInDragInProgress() {
 	return isInState(STATE_DRAG_IN_PROGRESS | STATE_ACCESSIBLE_DRAG_IN_PROGRESS);
 }
 
 /**
  * Returns <code>true</code> if the tool is in the given state.
+ * @param state the state being queried
+ * @return <code>true</code> if the tool is in the given state
  */
 protected boolean isInState(int state) {
 	return ((getState() & state) != 0);
 }
 
 /**
- * Processes a KeyDown event for the given viewer.  Subclasses wanting
- * to handle this event should override {@link #handleKeyDown(KeyEvent)}.
+ * Receives a KeyDown event for the given viewer.  Subclasses wanting to handle this
+ * event should override {@link #handleKeyDown(KeyEvent)}.
+ * @param evt the key event
+ * @param viewer the origininating viewer
  */
 public void keyDown(KeyEvent evt, EditPartViewer viewer) {
 	setViewer(viewer);
-	debug("Key (" + evt.character + ',' + evt.keyCode+ ") down:\t");//$NON-NLS-2$//$NON-NLS-1$
+	debug("Key (" + evt.character + ','//$NON-NLS-1$
+		+ evt.keyCode + ") down:\t"); //$NON-NLS-1$
 	handleKeyDown(evt);
 }
 
 /**
- * Processes a KeyUp event for the given viewer.  Subclasses wanting
- * to handle this event should override {@link #handleKeyUp(KeyEvent)}.
+ * Receives a KeyUp event for the given viewer.  Subclasses wanting to handle this event
+ * should override {@link #handleKeyUp(KeyEvent)}.
+ * @param evt the key event
+ * @param viewer the origininating viewer
  */
 public void keyUp(KeyEvent evt, EditPartViewer viewer) {
 	setViewer(viewer);
-	debug("Key (" + evt.character + ',' + evt.keyCode+ ") up:\t");//$NON-NLS-2$//$NON-NLS-1$
+	debug("Key (" + evt.character + ','//$NON-NLS-1$
+		+ evt.keyCode + ") up:\t");//$NON-NLS-1$
 	handleKeyUp(evt);
 }
 
 /**
- * Returns <code>true</code> if the mouse has been dragged past
- * the drag threshold.
+ * Returns <code>true</code> if the threshold has been exceeded during a mouse drag.
+ * @return <code>true</code> if the threshold has been exceeded
  */
 protected boolean movedPastThreshold() {
 	if (getFlag(FLAG_PAST_THRESHOLD))
 		return true;
 	Point start = getStartLocation(),
 		  end = getLocation();
-	if (Math.abs(start.x - end.x) > DRAG_THRESHOLD ||
-	    Math.abs(start.y - end.y) > DRAG_THRESHOLD)
-	{
+	if (Math.abs(start.x - end.x) > DRAG_THRESHOLD
+	  || Math.abs(start.y - end.y) > DRAG_THRESHOLD) {
 		setFlag(FLAG_PAST_THRESHOLD, true);
 		return true;
 	}
@@ -665,8 +893,10 @@ public void nativeDragStarted(DragSourceEvent event, EditPartViewer viewer) {
 }
 
 /**
- * Handles mouse double click events within a viewer.  Subclasses wanting
- * to handle this event should override {@link #handleDoubleClick(int)}.
+ * Handles mouse double click events within a viewer.  Subclasses wanting to handle this
+ * event should override {@link #handleDoubleClick(int)}.
+ * @param me the mouse event
+ * @param viewer the originating viewer
  */
 public void mouseDoubleClick(MouseEvent me, EditPartViewer viewer) {
 	if (me.button > 5)
@@ -679,8 +909,10 @@ public void mouseDoubleClick(MouseEvent me, EditPartViewer viewer) {
 }
 
 /**
- * Handles mouse down events within a viewer.  Subclasses wanting
- * to handle this event should override {@link #handleButtonDown(int)}.
+ * Handles mouse down events within a viewer.  Subclasses wanting to handle this event
+ * should override {@link #handleButtonDown(int)}.
+ * @param me the mouse event
+ * @param viewer the originating viewer
  */
 public void mouseDown(MouseEvent me, EditPartViewer viewer) {
 	setViewer(viewer);
@@ -696,16 +928,17 @@ public void mouseDown(MouseEvent me, EditPartViewer viewer) {
 }
 
 /**
- * Handles mouse drag events within a viewer.  Subclasses wanting
- * to handle this event should override {@link #handleDrag()} and/or
- * {@link #handleDragInProgress()}.
+ * Handles mouse drag events within a viewer.  Subclasses wanting to handle this event
+ * should override {@link #handleDrag()} and/or {@link #handleDragInProgress()}.
+ * @param me the mouse event
+ * @param viewer the originating viewer
  */
 public void mouseDrag(MouseEvent me, EditPartViewer viewer) {
 	setViewer(viewer);
 	boolean wasDragging = movedPastThreshold();
 	getCurrentInput().setInput(me);
 	handleDrag();
-	if (movedPastThreshold()){
+	if (movedPastThreshold()) {
 		if (!wasDragging)
 			handleDragStarted();
 		handleDragInProgress();
@@ -713,8 +946,11 @@ public void mouseDrag(MouseEvent me, EditPartViewer viewer) {
 }
 
 /**
- * Handles mouse hover event. within a viewer.  Subclasses wanting
- * to handle this event should override {@link #handleHover()}.
+ * Handles mouse hover event. within a viewer.  Subclasses wanting to handle this event
+ * should override {@link #handleHover()}.
+ * @param me the mouse event
+ * @param viewer the originating viewer
+ * 
  */
 public void mouseHover(MouseEvent me, EditPartViewer viewer) {
 	setViewer(viewer);
@@ -724,9 +960,10 @@ public void mouseHover(MouseEvent me, EditPartViewer viewer) {
 }
 
 /**
- * Handles mouse moves (if the mouse button is up) within a viewer.
- * Subclasses wanting to handle this event should override 
- * {@link #handleMove()}.
+ * Handles mouse moves (if the mouse button is up) within a viewer. Subclasses wanting to
+ * handle this event should override  {@link #handleMove()}.
+ * @param me the mouse event
+ * @param viewer the originating viewer
  */
 public void mouseMove(MouseEvent me, EditPartViewer viewer) {
 	setViewer(viewer);
@@ -747,8 +984,7 @@ public void mouseMove(MouseEvent me, EditPartViewer viewer) {
 		 * handleXxx method below, we must set the viewer again to be paranoid.
 		 */
 		setViewer(viewer);
-	}
-	else
+	} else
 		getCurrentInput().setInput(me);
 	if (isInState(STATE_ACCESSIBLE_DRAG_IN_PROGRESS))
 		handleDragInProgress();
@@ -757,8 +993,10 @@ public void mouseMove(MouseEvent me, EditPartViewer viewer) {
 }
 
 /**
- * Handles mouse up within a viewer.  Subclasses wanting to 
- * handle this event should override {@link #handleButtonUp(int)}.
+ * Handles mouse up within a viewer.  Subclasses wanting to handle this event should
+ * override {@link #handleButtonUp(int)}.
+ * @param me the mouse event
+ * @param viewer the originating viewer
  */
 public void mouseUp(MouseEvent me, EditPartViewer viewer) {
 	setViewer(viewer);
@@ -768,7 +1006,7 @@ public void mouseUp(MouseEvent me, EditPartViewer viewer) {
 	handleButtonUp(me.button);
 }
 
-void placeMouseInViewer(Point p){
+void placeMouseInViewer(Point p) {
 	if (getCurrentViewer() == null)
 		return;
 	Control c = getCurrentViewer().getControl();
@@ -791,26 +1029,24 @@ void placeMouseInViewer(Point p){
 }
 
 /**
- * {@link #deactivate() Deactivates} and then {@link #activate() activates}
- * this tool.
+ * Calls <code>deactivate()</code> and then <code>activate()</code>.
  */
-protected void reactivate(){
+protected void reactivate() {
 	deactivate();
 	activate();
 }
 
 /**
- * Selects the appropriate cursor.
- * 
- * @see #calculateCursor()
+ * Sets the cursor being displayed to the appropriate cursor.  If the tool is active, the
+ * current cursor being displayed is updates by calling {@link #calculateCursor()}.
  */
-protected void refreshCursor(){
+protected void refreshCursor() {
 	if (isActive())
 		setCursor(calculateCursor());
 }
 
 /**
- * Releases capture.
+ * Releases tool capture.
  * @see #setToolCapture()
  */
 protected void releaseToolCapture() {
@@ -818,7 +1054,8 @@ protected void releaseToolCapture() {
 }
 
 /**
- * Removes the given figure from the feedback layer.
+ * Convenience method to removes a figure from the feedback layer.
+ * @param figure the figure being removed
  */
 protected void removeFeedback(IFigure figure) {
 	LayerManager lm = (LayerManager)getCurrentViewer().
@@ -829,34 +1066,38 @@ protected void removeFeedback(IFigure figure) {
 }
 
 /**
- * Resets the flags.
+ * Resets all flags to their initial values.  Subclasses should extend this method to
+ * reset their own custom flags.
  */
-protected void resetFlags(){
+protected void resetFlags() {
 	setFlag(FLAG_PAST_THRESHOLD, false);
 }
 
 /**
- * Sets the current command.
+ * Used to cache a command obtained from {@link #getCommand()}.
+ * @param c the command
+ * @see #getCurrentCommand()
  */
-protected void setCurrentCommand(Command c){
+protected void setCurrentCommand(Command c) {
 	command = c;
 	refreshCursor();
 }
 
 /**
- * Set the cursor on the argument to the not cursor Record the
- * fact we have altered the cursor of this viewer so that when
- * we are deactivated we can go back and set it to normal
+ * Shows the given cursor on the current viewer.
+ * @param cursor the cursor to display
  */
-protected void setCursor(Cursor cursor){
+protected void setCursor(Cursor cursor) {
 	if (getCurrentViewer() != null)
 		getCurrentViewer().setCursor(cursor);
 }
 
 /**
  * Sets the default cursor.
+ * @param cursor the cursor
+ * @see #getDefaultCursor()
  */
-public void setDefaultCursor(Cursor cursor){
+public void setDefaultCursor(Cursor cursor) {
 	if (defaultCursor == cursor)
 		return;
 	defaultCursor = cursor;
@@ -865,8 +1106,10 @@ public void setDefaultCursor(Cursor cursor){
 
 /**
  * Sets the disabled cursor.
+ * @param cursor the cursor
+ * @see #getDisabledCursor()
  */
-public void setDisabledCursor(Cursor cursor){
+public void setDisabledCursor(Cursor cursor) {
 	if (disabledCursor == cursor)
 		return;
 	disabledCursor = cursor;
@@ -875,34 +1118,43 @@ public void setDisabledCursor(Cursor cursor){
 
 /**
  * Sets the EditDomain.
+ * @param domain the edit domain
+ * @see #getDomain()
  */
-public void setEditDomain(EditDomain domain){
+public void setEditDomain(EditDomain domain) {
 	this.domain = domain;
 }
 
 /**
- * Sets the hover flag to true.
+ * Sets whether the hover flag is true or false.  Subclasses which do something on hover
+ * can use this flag to track whether they have received a hover or not.
+ * @param value whether hover is active
  */
-protected void setHoverActive(boolean value){
+protected void setHoverActive(boolean value) {
 	setFlag(FLAG_HOVER, value);
 }
 
-void setMouseCapture(boolean value){
+void setMouseCapture(boolean value) {
 	if (getCurrentViewer() != null
 		&& getCurrentViewer().getControl() != null
 		&& !getCurrentViewer().getControl().isDisposed())
 		getCurrentViewer().getControl().setCapture(value);
 }
 
-protected void setStartLocation(Point p){
+/**
+ * Sets the start mouse location, typically for a drag operation.
+ * @param p the start location
+ */
+protected void setStartLocation(Point p) {
 	startX = p.x;
 	startY = p.y;
 }
 
 /**
- * Sets the tool state.
+ * Sets the tools state.
+ * @param state the new state
  */
-protected void setState(int state){
+protected void setState(int state) {
 	this.state = state;
 	if (GEF.DebugToolStates)
 		GEF.debug("STATE CHANGE:\t" + getDebugName() + //$NON-NLS-1$
@@ -911,31 +1163,36 @@ protected void setState(int state){
 }
 
 /**
- * By setting capture on mouseDown, a tool can prevent native Drag operations from occuring. 
- * {@link #releaseToolCapture()} must be called when capture is no longer needed.
+ * Sets tool capture.  When a tool has capture, viewers will make every effort to send
+ * events through the editdomain to the tool.  Therefore, the default handling of some
+ * events is bypassed.
  */
 protected void setToolCapture() {
 	getCurrentViewer().setRouteEventsToEditDomain(true);
 }
 
 /**
- * Setting this to <code>true</code> will cause the tool
- * to be unloaded after one operation has completed.
+ * Setting this to <code>true</code> will cause the tool to be unloaded after one
+ * operation has completed.  The default value is <code>true</code>.  The tool is
+ * unloaded, and the edit domains default tool will be activated.
+ * @param value whether the tool should be unloaded on completion
  */
-public void setUnloadWhenFinished(boolean value){
+public void setUnloadWhenFinished(boolean value) {
 	setFlag(FLAG_UNLOAD, value);
 }
 
 /**
- * Sets the active EditPartViewer.
+ * Sets the active EditPartViewer.  The active viewer is the viewer from which the last
+ * event was received.
+ * @param viewer the viewer
  */
-public void setViewer(EditPartViewer viewer){
+public void setViewer(EditPartViewer viewer) {
 	if (viewer == currentViewer)
 		return;
 
 	setCursor(null);
 	currentViewer = viewer;
-	if (currentViewer != null){
+	if (currentViewer != null) {
 		org.eclipse.swt.graphics.Point p = currentViewer.getControl().toControl(
 			Display.getCurrent().getCursorLocation());
 		getCurrentInput().setMouseLocation(p.x, p.y);
@@ -944,38 +1201,40 @@ public void setViewer(EditPartViewer viewer){
 }
 
 /**
- * This method attempts to transistion the tool from state 
- * <code>start</code> to state <code>end</code> and returns 
- * <code>true</code> if successful.  If the tool is not in
- * state <code>start</code>, the tool remains in its current
- * state and <code>false</code> is returned to indicate
- * the failure.
+ * Returns <code>true</code> if the give state transition succeeds. This is a "test and
+ * set" operation, where the tool is tested to be in the specified start state, and if so,
+ * is set to the given end state.  The method returns the result of the first test.
+ * @param start the start state being tested
+ * @param end the end state
+ * @return <code>true</code> if the state transition is successful
  */
-protected boolean stateTransition(int start, int end){
-	if ((getState() & start) != 0){
+protected boolean stateTransition(int start, int end) {
+	if ((getState() & start) != 0) {
 		setState(end);
 		return true;
-	}
-	else
+	} else
 		return false;
 }
 
 /**
- * Returns <code>true</code> if the tool is set to unload when 
- * its current operation is complete.
+ * Returns <code>true</code> if the tool is set to unload when its current operation is
+ * complete.
+ * @return <code>true</code> if the tool should be unloaded when finished
  */
-final protected boolean unloadWhenFinished(){
+protected final boolean unloadWhenFinished() {
 	return getFlag(FLAG_UNLOAD);
 }
 
 /**
- * Handles the mouse entering a viewer.  Subclasses wanting to handle this event should 
+ * Receives the mouse entered event.  Subclasses wanting to handle this event should 
  * override {@link #handleViewerEntered()}.
  * <p>
- * FEATURE in SWT: mouseExit comes after mouseEntered. Therefore, if the current viewer is
- * not <code>null</code>, it means the exit has not been sent yet by SWT. To maintain
- * proper ordering, GEF fakes the exit and calls {@link #handleViewerExited()}. The real
- * exit will then be ignored.
+ * FEATURE in SWT: mouseExit comes after mouseEntered on the new . Therefore, if the
+ * current viewer is not <code>null</code>, it means the exit has not been sent yet by
+ * SWT. To maintain proper ordering, GEF fakes the exit and calls {@link
+ * #handleViewerExited()}. The real exit will then be ignored.
+ * @param me the mouse event
+ * @param viewer the originating viewer
  */
 public void viewerEntered(MouseEvent me, EditPartViewer viewer) {
 	getCurrentInput().setInput(me);
@@ -989,8 +1248,10 @@ public void viewerEntered(MouseEvent me, EditPartViewer viewer) {
 }
 
 /**
- * Handles the mouse exiting a viewer.  Subclasses wanting to 
- * handle this event should override {@link #handleViewerExited()}.
+ * Handles the mouse exited event.  Subclasses wanting to handle this event should
+ * override {@link #handleViewerExited()}.
+ * @param me the mouse event
+ * @param viewer the originating viewer
  */
 public void viewerExited(MouseEvent me, EditPartViewer viewer) {
 	/*

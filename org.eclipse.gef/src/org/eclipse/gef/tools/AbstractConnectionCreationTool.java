@@ -48,21 +48,21 @@ public AbstractConnectionCreationTool(CreationFactory factory) {
 	setFactory(factory);
 }
 
-protected Cursor calculateCursor(){
-	if (isInState(STATE_INITIAL)){
+protected Cursor calculateCursor() {
+	if (isInState(STATE_INITIAL)) {
 		if (getCurrentCommand() != null)
 			return getDefaultCursor();
 	}
 	return super.calculateCursor();
 }
 
-protected Request createTargetRequest(){
+protected Request createTargetRequest() {
 	CreateRequest req = new CreateConnectionRequest();
 	req.setFactory(getFactory());
 	return req;
 }
 
-public void deactivate(){
+public void deactivate() {
 	eraseSourceFeedback();
 	setConnectionSource(null);
 	super.deactivate();
@@ -74,7 +74,7 @@ protected void eraseSourceFeedback() {
 	if (!isShowingSourceFeedback())
 		return;
 	setFlag(FLAG_SOURCE_FEEDBACK, false);
-	if (connectionSource != null){
+	if (connectionSource != null) {
 		connectionSource.eraseSourceFeedback(getSourceRequest());
 	}
 }
@@ -86,7 +86,7 @@ protected String getCommandName() {
 		return REQ_CONNECTION_START;
 }
 
-protected String getDebugName(){
+protected String getDebugName() {
 	return "Connection Creation Tool";//$NON-NLS-1$
 }
 
@@ -96,11 +96,11 @@ protected String getDebugNameForState(int s) {
 	return super.getDebugNameForState(s);
 }
 
-protected CreationFactory getFactory(){
+protected CreationFactory getFactory() {
 	return factory;
 }
 
-protected Request getSourceRequest(){
+protected Request getSourceRequest() {
 	return getTargetRequest();
 }
 
@@ -118,14 +118,14 @@ protected boolean handleButtonDown(int button) {
 		}
 	}
 
-	if (isInState(STATE_INITIAL) && button != 1){
+	if (isInState(STATE_INITIAL) && button != 1) {
 		setState(STATE_INVALID);
 		handleInvalidInput();
 	}
 	return true;
 }
 
-protected boolean handleButtonUp(int button){
+protected boolean handleButtonUp(int button) {
 	if (isInState(STATE_TERMINAL | STATE_INVALID))
 		handleFinished();
 	return true;
@@ -171,7 +171,7 @@ protected boolean handleHover() {
 	return true;
 }
 
-protected boolean handleInvalidInput(){
+protected boolean handleInvalidInput() {
 	eraseSourceFeedback();
 	setConnectionSource(null);
 	return super.handleInvalidInput();
@@ -197,7 +197,7 @@ protected void handleSourceDeactivated() {
 	handleFinished();
 }
 
-protected boolean isShowingSourceFeedback(){
+protected boolean isShowingSourceFeedback() {
 	return getFlag(FLAG_SOURCE_FEEDBACK);
 }
 
@@ -209,18 +209,18 @@ protected void setConnectionSource(EditPart source) {
 		connectionSource.addEditPartListener(deactivationListener);
 }
 
-public void setFactory(CreationFactory factory){
+public void setFactory(CreationFactory factory) {
 	this.factory = factory;
 }
 
 protected void showSourceFeedback() {
-	if (connectionSource != null){
+	if (connectionSource != null) {
 		connectionSource.showSourceFeedback(getSourceRequest());
 	}
 	setFlag(FLAG_SOURCE_FEEDBACK, true);
 }
 
-protected void updateTargetRequest(){
+protected void updateTargetRequest() {
  	CreateConnectionRequest request = (CreateConnectionRequest)getTargetRequest();
 	request.setType(getCommandName());
 	request.setLocation(getLocation());

@@ -41,19 +41,19 @@ public ConnectionEndpointTracker(ConnectionEditPart cep) {
 	setDisabledCursor(SharedCursors.NO);
 }
 
-protected Cursor calculateCursor(){
+protected Cursor calculateCursor() {
 	if (isInState(STATE_INITIAL | STATE_DRAG | STATE_ACCESSIBLE_DRAG))
 		return getDefaultCursor();
 	return super.calculateCursor();
 }
 
-public void commitDrag(){
+public void commitDrag() {
 	eraseSourceFeedback();
 	eraseTargetFeedback();
 	executeCurrentCommand();
 }
 
-protected Request createTargetRequest(){
+protected Request createTargetRequest() {
 	ReconnectRequest request = new ReconnectRequest(getCommandName());
 	request.setConnectionEditPart(getConnectionEditPart());
 	return request;
@@ -72,7 +72,7 @@ protected void eraseSourceFeedback() {
 	getConnectionEditPart().eraseSourceFeedback(getTargetRequest());
 }
 
-protected String getCommandName(){
+protected String getCommandName() {
 	return commandName;
 }
 
@@ -80,11 +80,11 @@ protected Connection getConnection() {
 	return (Connection)getConnectionEditPart().getFigure();
 }
 
-protected ConnectionEditPart getConnectionEditPart(){
+protected ConnectionEditPart getConnectionEditPart() {
 	return connectionEditPart;
 }
 
-protected String getDebugName(){
+protected String getDebugName() {
 	return "Connection Endpoint Tool";//$NON-NLS-1$
 }
 
@@ -96,8 +96,8 @@ protected Collection getExclusionSet() {
 	return exclusionSet;
 }
 
-protected boolean handleButtonUp(int button){
-	if (stateTransition(STATE_DRAG_IN_PROGRESS, STATE_TERMINAL)){
+protected boolean handleButtonUp(int button) {
+	if (stateTransition(STATE_DRAG_IN_PROGRESS, STATE_TERMINAL)) {
 		eraseSourceFeedback();
 		eraseTargetFeedback();
 		executeCurrentCommand();
@@ -105,7 +105,7 @@ protected boolean handleButtonUp(int button){
 	return true;
 }
 
-protected boolean handleDragInProgress(){
+protected boolean handleDragInProgress() {
 	updateTargetRequest();
 	updateTargetUnderMouse();
 	showSourceFeedback();
@@ -114,7 +114,7 @@ protected boolean handleDragInProgress(){
 	return true;
 }
 
-protected boolean handleDragStarted(){
+protected boolean handleDragStarted() {
 	stateTransition(STATE_INITIAL, STATE_DRAG_IN_PROGRESS);
 	return false;
 }
@@ -128,9 +128,9 @@ protected boolean handleHover() {
 	return true;
 }
 
-protected boolean handleKeyDown(KeyEvent e){
+protected boolean handleKeyDown(KeyEvent e) {
 	if (acceptArrowKey(e)) {
-		if (stateTransition(STATE_INITIAL, STATE_ACCESSIBLE_DRAG_IN_PROGRESS)){
+		if (stateTransition(STATE_INITIAL, STATE_ACCESSIBLE_DRAG_IN_PROGRESS)) {
 			//When the drag first starts, set the focus Part to be one end of the connection
 			if (isTarget()) {
 				getCurrentViewer().setFocus(getConnectionEditPart().getTarget());
@@ -159,18 +159,18 @@ protected boolean handleKeyDown(KeyEvent e){
 		boolean consumed = false;
 		if (direction != 0 && e.stateMask == 0)
 			consumed = navigateNextAnchor(direction);
-		if (!consumed){
+		if (!consumed) {
 			e.stateMask |= SWT.CONTROL;
 			e.stateMask &= ~SWT.SHIFT;
-			if (getCurrentViewer().getKeyHandler().keyPressed(e)){
+			if (getCurrentViewer().getKeyHandler().keyPressed(e)) {
 				navigateNextAnchor(0);
 				return true;
 			}
 		}
 	}
-	if (e.character == '/' || e.character == '\\'){
+	if (e.character == '/' || e.character == '\\') {
 			e.stateMask |= SWT.CONTROL;
-			if (getCurrentViewer().getKeyHandler().keyPressed(e)){
+			if (getCurrentViewer().getKeyHandler().keyPressed(e)) {
 				//Do not try to connect to the same connection being dragged.
 				if (getCurrentViewer().getFocusEditPart() != getConnectionEditPart())
 					navigateNextAnchor(0);
@@ -181,11 +181,11 @@ protected boolean handleKeyDown(KeyEvent e){
 	return false;
 }
 
-private boolean isTarget(){
+private boolean isTarget() {
 	return getCommandName() == RequestConstants.REQ_RECONNECT_TARGET;
 }
 
-boolean navigateNextAnchor(int direction){
+boolean navigateNextAnchor(int direction) {
 	EditPart focus = getCurrentViewer().getFocusEditPart();
 	AccessibleAnchorProvider provider;
 	provider = (AccessibleAnchorProvider)focus.getAdapter(AccessibleAnchorProvider.class);
@@ -208,13 +208,13 @@ boolean navigateNextAnchor(int direction){
 				&& (start.getPosition(p) != direction)))
 			continue;
 		int d = p.getDistanceOrthogonal(start);
-		if (d < distance){
+		if (d < distance) {
 			distance = d;
 			next = p;
 		}
 	}
 
-	if (next != null){
+	if (next != null) {
 		placeMouseInViewer(next);
 		return true;
 	}
@@ -225,7 +225,7 @@ public void setCommandName(String newCommandName) {
 	commandName = newCommandName;
 }
 
-public void setConnectionEditPart(ConnectionEditPart cep){
+public void setConnectionEditPart(ConnectionEditPart cep) {
 	this.connectionEditPart = cep;
 }
 
@@ -234,7 +234,7 @@ protected void showSourceFeedback() {
 	setFlag(FLAG_SOURCE_FEEBBACK, true);
 }
 
-protected void updateTargetRequest(){
+protected void updateTargetRequest() {
 	ReconnectRequest request = (ReconnectRequest)getTargetRequest();
 	Point p = getLocation();
 	request.setLocation(p);

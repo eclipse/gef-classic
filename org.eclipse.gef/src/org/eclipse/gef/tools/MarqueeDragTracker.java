@@ -21,8 +21,9 @@ public class MarqueeDragTracker
 {
 
 /**
- * Called when the mouse button is released.
+ * Called when the mouse button is released.  Overridden to do nothing, since a drag
+ * tracker does not need to unload when finished.
  */
-protected void handleFinished(){}
+protected void handleFinished() { }
 
 }
