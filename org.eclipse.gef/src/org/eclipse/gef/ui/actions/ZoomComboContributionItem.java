@@ -227,14 +227,16 @@ public void setZoomManager(ZoomManager zm) {
  * @see org.eclipse.swt.events.SelectionListener#widgetDefaultSelected(SelectionEvent)
  */
 private void handleWidgetDefaultSelected(SelectionEvent event) {
-	zoomManager.setZoomAsText(combo.getText());
+	if (zoomManager != null)
+		zoomManager.setZoomAsText(combo.getText());
 }
 
 /**
  * @see org.eclipse.swt.events.SelectionListener#widgetSelected(SelectionEvent)
  */
 private void handleWidgetSelected(SelectionEvent event) {
-	zoomManager.setZoomAsText(combo.getText());
+	if (zoomManager != null)
+		zoomManager.setZoomAsText(combo.getText());
 }
 
 /**
