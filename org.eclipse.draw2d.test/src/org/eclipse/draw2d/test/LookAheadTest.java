@@ -89,7 +89,7 @@ protected void setUp() throws Exception {
 	paragraph2.add(p2text2 = new TextFlow("lo"));
 }
 
-public void textContainerLeadingWord() {
+public void testContainerLeadingWord() {
 	p1inline.addLeadingWordRequirements(width);
 	assertLookaheadMatchesString(width, "brown");
 }
