@@ -315,7 +315,7 @@ public Dimension intersect(Dimension d) {
 /**
  * Returns <code>true</code> if the Dimension has width or height greater than 0.
  *
- * @return <code>true<code> if this Dimension is empty
+ * @return <code>true</code> if this Dimension is empty
  * @since 2.0
  */
 public boolean isEmpty() {
