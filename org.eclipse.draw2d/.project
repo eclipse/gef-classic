@@ -9,7 +9,7 @@
 	</projects>
 	<buildSpec>
 		<buildCommand>
-			<name>com.telesynthesis.tools.eclipse.checkstyle.CheckStyleBuilder</name>
+			<name>com.atlassw.tools.eclipse.checkstyle.CheckstyleBuilder</name>
 			<arguments>
 			</arguments>
 		</buildCommand>
@@ -22,6 +22,6 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.eclipse.team.cvs.core.cvsnature</nature>
-		<nature>com.telesynthesis.tools.eclipse.checkstyle.CheckStyleNature</nature>
+		<nature>com.atlassw.tools.eclipse.checkstyle.CheckstyleNature</nature>
 	</natures>
 </projectDescription>

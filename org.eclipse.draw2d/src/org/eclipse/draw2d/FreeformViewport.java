@@ -13,6 +13,10 @@ package org.eclipse.draw2d;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 
+/**
+ * A viewport for {@link org.eclipse.draw2d.FreeformFigure FreeformFigures}.  
+ * FreeformFigures can only reside in this type of viewport.
+ */
 public class FreeformViewport
 	extends Viewport
 {
@@ -46,11 +50,22 @@ class FreeformViewportLayout
 	}
 }
 
+/**
+ * Constructs a new FreeformViewport.  This viewport must use graphics translation to 
+ * scroll the FreeformFigures inside of it.
+ */
 public FreeformViewport() {
 	super(true); //Must use graphics translate to scroll freeforms.
 	setLayoutManager(new FreeformViewportLayout());
 }
 
+/**
+ * Readjusts the scrollbars.  In doing so, it gets the freeform extent of the contents and
+ * unions this rectangle with this viewport's client area, then sets the contents freeform
+ * bounds to be this unioned rectangle.  Then procedes to set the scrollbar values based
+ * on this new information.
+ * @see Viewport#readjustScrollBars()
+ */
 protected void readjustScrollBars() {
 	if (getContents() == null)
 		return;
@@ -66,6 +81,10 @@ protected void readjustScrollBars() {
 	getHorizontalRangeModel().setAll(bounds.x, clientArea.width, bounds.right());
 }
 
+/**
+ * Returns <code>true</code>.
+ * @see Figure#useLocalCoordinates()
+ */
 protected boolean useLocalCoordinates() {
 	return true;
 }

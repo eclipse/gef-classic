@@ -14,25 +14,40 @@ import java.util.Iterator;
 
 import org.eclipse.draw2d.geometry.Rectangle;
 
+/**
+ * A LayeredPane that contains {@link org.eclipse.draw2d.FreeformLayer FreeformLayers}.
+ */
 public class FreeformLayeredPane
 	extends LayeredPane
 	implements FreeformFigure
 {
 private FreeformHelper helper = new FreeformHelper(this);
 
+/**
+ * Constructs a new FreeformLayeredPane.
+ */
 public FreeformLayeredPane() {
 	setLayoutManager(null);
 }
 
+/**
+ * @see IFigure#add(IFigure, Object, int)
+ */
 public void add(IFigure child, Object constraint, int index) {
 	super.add(child, constraint, index);
 	helper.hookChild(child);
 }
 
+/**
+ * @see FreeformFigure#addFreeformListener(FreeformListener)
+ */
 public void addFreeformListener(FreeformListener listener) {
 	addListener(FreeformListener.class, listener);
 }
 
+/**
+ * @see FreeformFigure#fireExtentChanged()
+ */
 public void fireExtentChanged() {
 	Iterator iter = getListeners(FreeformListener.class);
 	while (iter.hasNext())
@@ -40,38 +55,67 @@ public void fireExtentChanged() {
 			.notifyFreeformExtentChanged();
 }
 
+/**
+ * Overrides to do nothing.
+ * @see Figure#fireMoved()
+ */
 protected void fireMoved() { }
 
+/**
+ * Returns the FreeformHelper.
+ * @return the FreeformHelper
+ */
 protected FreeformHelper getFreeformHelper() {
 	return helper;
 }	
 
+/**
+ * @see FreeformFigure#getFreeformExtent()
+ */
 public Rectangle getFreeformExtent() {
 	return helper.getFreeformExtent();
 }
 
+/**
+ * @see Figure#primTranslate(int, int)
+ */
 protected void primTranslate(int dx, int dy) {
 	bounds.x += dx;
 	bounds.y += dy;
 }
 
+/**
+ * @see IFigure#remove(IFigure)
+ */
 public void remove(IFigure child) {
 	helper.unhookChild(child);
 	super.remove(child);
 }
 
+/**
+ * @see FreeformFigure#removeFreeformListener(FreeformListener)
+ */
 public void removeFreeformListener(FreeformListener listener) {
 	removeListener(FreeformListener.class, listener);
 }
 
+/**
+ * @see FreeformFigure#setFreeformBounds(Rectangle)
+ */
 public void setFreeformBounds(Rectangle bounds) {
 	helper.setFreeformBounds(bounds);
 }
 
+/**
+ * Calls {@link Figure#fireMoved() super.fireMoved()}.
+ */
 protected void superFireMoved() {
 	super.fireMoved();
 }
 
+/**
+ * @see IFigure#validate()
+ */
 public void validate() {
 	if (isValid())
 		return;

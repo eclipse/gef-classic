@@ -12,10 +12,17 @@ package org.eclipse.draw2d;
 
 import org.eclipse.draw2d.geometry.Point;
 
+/**
+ * A layout for {@link org.eclipse.draw2d.FreeformFigure FreeformFigures}.
+ */
 public class FreeformLayout
 	extends XYLayout
 {
 
+/**
+ * Returns the point (0,0) as the origin.
+ * @see XYLayout#getOrigin(IFigure)
+ */
 public Point getOrigin(IFigure figure) {
 	return new Point();
 }
