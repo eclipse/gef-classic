@@ -67,8 +67,10 @@ class OutlinePage
 	protected void configureOutlineViewer(){
 		getViewer().setEditDomain(getEditDomain());
 		getViewer().setEditPartFactory(new TreePartFactory());
-		getViewer().setContextMenuProvider(
-				new LogicContextMenuProvider(LogicEditor.this, getViewer()));
+		ContextMenuProvider provider = new LogicContextMenuProvider(getViewer(), getActionRegistry());
+		getViewer().setContextMenuProvider(provider);
+		getSite().registerContextMenu("org.eclipse.gef.outline", provider.getMenuManager(), 
+										getSite().getSelectionProvider());
 		getViewer().setKeyHandler(getCommonKeyHandler());
 		getViewer().addDropTargetListener(
 			new LogicTemplateTransferDropTargetListener(getViewer()));
@@ -204,7 +206,7 @@ public void commandStackChanged(EventObject event) {
 protected void configurePaletteViewer() {
 	super.configurePaletteViewer();
 	PaletteViewerImpl viewer = (PaletteViewerImpl)getPaletteViewer();
-	getPaletteViewer().setContextMenuProvider(new PaletteContextMenuProvider(this, viewer));
+	getPaletteViewer().setContextMenuProvider(new PaletteContextMenuProvider(viewer, getActionRegistry()));
 	viewer.setCustomizer(new LogicPaletteCustomizer());
 }
 
@@ -214,7 +216,10 @@ protected void configureGraphicalViewer() {
 	ScrollingGraphicalViewer viewer = (ScrollingGraphicalViewer)getGraphicalViewer();
 	viewer.setRootEditPart(new ScalableFreeformRootEditPart());
 	viewer.setEditPartFactory(new GraphicalPartFactory());
-	viewer.setContextMenuProvider(new LogicContextMenuProvider(this, viewer));
+	ContextMenuProvider provider = new LogicContextMenuProvider(viewer, getActionRegistry());
+	viewer.setContextMenuProvider(provider);
+	getSite().registerContextMenu("org.eclipse.gef.editor", provider.getMenuManager(), 
+									getSite().getSelectionProvider());
 	viewer.setKeyHandler(new GraphicalViewerKeyHandler(viewer)
 		.setParent(getCommonKeyHandler()));
 }
@@ -268,10 +273,10 @@ protected KeyHandler getCommonKeyHandler(){
 		sharedKeyHandler = new KeyHandler();
 		sharedKeyHandler.put(
 			KeyStroke.getPressed(SWT.DEL, 127, 0),
-			getActionRegistry().getAction(DeleteAction.ID));
+			getActionRegistry().getAction(GEFActionConstants.DELETE));
 		sharedKeyHandler.put(
 			KeyStroke.getPressed(SWT.F2, 0),
-			getActionRegistry().getAction(DirectEditAction.ID));
+			getActionRegistry().getAction(GEFActionConstants.DIRECT_EDIT));
 	}
 	return sharedKeyHandler;
 }

@@ -6,94 +6,71 @@ package org.eclipse.gef.examples.logicdesigner;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
+import org.eclipse.gef.EditPartViewer;
+import org.eclipse.gef.ui.actions.ActionRegistry;
+import org.eclipse.gef.ui.actions.GEFActionConstants;
 import org.eclipse.jface.action.*;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchActionConstants;
 
-import org.eclipse.gef.EditPartViewer;
-import org.eclipse.gef.ui.actions.*;
-import org.eclipse.gef.ui.actions.AlignmentAction;
-import org.eclipse.gef.ui.actions.DirectEditAction;
-
 public class LogicContextMenuProvider
-	extends org.eclipse.gef.ui.parts.ContextMenuProvider
+	extends org.eclipse.gef.ContextMenuProvider
 {
 
-public LogicContextMenuProvider(IEditorPart editor, EditPartViewer viewer) {
-	super(editor, viewer);
+public LogicContextMenuProvider(EditPartViewer viewer, ActionRegistry registry) {
+	super(viewer, registry);
 }
 
-protected void addEditDomainContributions(IMenuManager menu) {
-	ActionRegistry registry = (ActionRegistry)getEditor().getAdapter(ActionRegistry.class);
-	menu.appendToGroup(GROUP_DOMAIN_CONTRIBUTIONS, 
-						registry.getAction(IWorkbenchActionConstants.UNDO));
-	menu.appendToGroup(GROUP_DOMAIN_CONTRIBUTIONS, 
-						registry.getAction(IWorkbenchActionConstants.REDO));
-}
-
-protected void addEditorPartContributions(IMenuManager menu) {
-	ActionRegistry registry = (ActionRegistry)getEditor().getAdapter(ActionRegistry.class);
-	menu.appendToGroup(GROUP_EDITOR_CONTRIBUTIONS, 
-						registry.getAction(IWorkbenchActionConstants.SAVE));
-}
-
-protected void addEditPartViewerContributions(IMenuManager menu) {
-	ActionRegistry registry = (ActionRegistry)getEditor().getAdapter(ActionRegistry.class);
+public void buildContextMenu(IMenuManager menu) {
 	IAction action;
-	action = registry.getAction(IWorkbenchActionConstants.PASTE);
+
+	menu.appendToGroup(GEFActionConstants.GROUP_UNDO, 
+						getActionRegistry().getAction(GEFActionConstants.UNDO));
+	menu.appendToGroup(GEFActionConstants.GROUP_UNDO, 
+						getActionRegistry().getAction(GEFActionConstants.REDO));
+	
+	action = getActionRegistry().getAction(IWorkbenchActionConstants.PASTE);
 	if (action.isEnabled())
-		menu.appendToGroup(GROUP_VIEWER_CONTRIBUTIONS, action);
-	action = registry.getAction(IWorkbenchActionConstants.DELETE);
+		menu.appendToGroup(GEFActionConstants.GROUP_EDIT, action);
+	action = getActionRegistry().getAction(IWorkbenchActionConstants.DELETE);
 	if (action.isEnabled())
-		menu.appendToGroup(GROUP_VIEWER_CONTRIBUTIONS, action);
-	action = registry.getAction(DirectEditAction.ID);
+		menu.appendToGroup(GEFActionConstants.GROUP_EDIT, action);
+	action = getActionRegistry().getAction(GEFActionConstants.DIRECT_EDIT);
 	if (action.isEnabled())
-		menu.appendToGroup(GROUP_VIEWER_CONTRIBUTIONS, action);
-	action = registry.getAction(IncrementDecrementAction.INCREMENT);
+		menu.appendToGroup(GEFActionConstants.GROUP_EDIT, action);
+	action = getActionRegistry().getAction(IncrementDecrementAction.INCREMENT);
 	if (action.isEnabled())
-		menu.appendToGroup(GROUP_VIEWER_CONTRIBUTIONS, action);
-	action = registry.getAction(IncrementDecrementAction.DECREMENT);
+		menu.appendToGroup(GEFActionConstants.GROUP_REST, action);
+	action = getActionRegistry().getAction(IncrementDecrementAction.DECREMENT);
 	if (action.isEnabled())
-		menu.appendToGroup(GROUP_VIEWER_CONTRIBUTIONS, action);
+		menu.appendToGroup(GEFActionConstants.GROUP_REST, action);
 	
 	// Alignment Actions
 	MenuManager submenu = new MenuManager(LogicMessages.AlignmentAction_AlignSubmenu_ActionLabelText);
 
-	action = registry.getAction(AlignmentAction.ID_ALIGN_LEFT);
+	action = getActionRegistry().getAction(GEFActionConstants.ALIGN_LEFT);
 	if (action.isEnabled())
 		submenu.add(action);
-	action = registry.getAction(AlignmentAction.ID_ALIGN_CENTER);
+	action = getActionRegistry().getAction(GEFActionConstants.ALIGN_CENTER);
 	if (action.isEnabled())
 		submenu.add(action);
-	action = registry.getAction(AlignmentAction.ID_ALIGN_RIGHT);
+	action = getActionRegistry().getAction(GEFActionConstants.ALIGN_RIGHT);
 	if (action.isEnabled())
 		submenu.add(action);
-	action = registry.getAction(AlignmentAction.ID_ALIGN_TOP);
+	action = getActionRegistry().getAction(GEFActionConstants.ALIGN_TOP);
 	if (action.isEnabled())
 		submenu.add(action);
-	action = registry.getAction(AlignmentAction.ID_ALIGN_MIDDLE);
+	action = getActionRegistry().getAction(GEFActionConstants.ALIGN_MIDDLE);
 	if (action.isEnabled())
 		submenu.add(action);
-	action = registry.getAction(AlignmentAction.ID_ALIGN_BOTTOM);
+	action = getActionRegistry().getAction(GEFActionConstants.ALIGN_BOTTOM);
 	if (action.isEnabled())
 		submenu.add(action);
 
 	if (!submenu.isEmpty())
-		menu.appendToGroup(GROUP_VIEWER_CONTRIBUTIONS, submenu);
-}
+		menu.appendToGroup(GEFActionConstants.GROUP_REST, submenu);
 
-public void buildContextMenu(IMenuManager menu) {
-	addEditDomainContributions(menu);
-	addEditPartViewerContributions(menu);
-	addEditorPartContributions(menu);
-}
-
-/**
- * @see org.eclipse.gef.ui.parts.ContextMenuProvider#registerContextMenu(MenuManager)
- */
-protected void registerContextMenu(MenuManager manager) {
-	getEditor().getSite().registerContextMenu("org.eclipse.gef.editor", //$NON-NLS-1$
-								manager, getEditor().getSite().getSelectionProvider()); 
+	menu.appendToGroup(GEFActionConstants.GROUP_SAVE, 
+						getActionRegistry().getAction(IWorkbenchActionConstants.SAVE));
 }
 
 }

@@ -1,4 +1,4 @@
-package org.eclipse.gef.ui.parts;
+package org.eclipse.gef;
 /*
  * Licensed Material - Property of IBM
  * (C) Copyright IBM Corp. 2001, 2002 - All Rights Reserved.
@@ -6,7 +6,6 @@ package org.eclipse.gef.ui.parts;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.gef.ui.actions.GEFActionConstants;
 import org.eclipse.jface.action.*;
@@ -29,7 +28,7 @@ public ContextMenuProvider(EditPartViewer viewer, ActionRegistry registry) {
 public abstract void buildContextMenu(IMenuManager menu);
 
 public Menu createContextMenu() {
-	menuManager = new MenuManager(); 
+	menuManager = new MenuManager();
 	menuManager.addMenuListener(this);
 	menuManager.setRemoveAllWhenShown(true);
 

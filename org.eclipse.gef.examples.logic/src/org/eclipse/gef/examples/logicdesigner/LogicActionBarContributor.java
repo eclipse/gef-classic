@@ -6,12 +6,11 @@ package org.eclipse.gef.examples.logicdesigner;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
+import org.eclipse.draw2d.PositionConstants;
+import org.eclipse.gef.ui.actions.AlignmentRetargetAction;
+import org.eclipse.gef.ui.actions.GEFActionConstants;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.actions.RetargetAction;
-
-import org.eclipse.draw2d.PositionConstants;
-import org.eclipse.gef.ui.actions.AlignmentAction;
-import org.eclipse.gef.ui.actions.AlignmentRetargetAction;
 
 public class LogicActionBarContributor
 	extends org.eclipse.gef.ui.actions.ActionBarContributor
@@ -104,24 +103,24 @@ protected void declareActions() {
 
 	globalActions.add(IncrementDecrementAction.INCREMENT);
 	globalActions.add(IncrementDecrementAction.DECREMENT);
-	globalActions.add(AlignmentAction.ID_ALIGN_LEFT);
-	globalActions.add(AlignmentAction.ID_ALIGN_CENTER);
-	globalActions.add(AlignmentAction.ID_ALIGN_RIGHT);
-	globalActions.add(AlignmentAction.ID_ALIGN_TOP);
-	globalActions.add(AlignmentAction.ID_ALIGN_MIDDLE);
-	globalActions.add(AlignmentAction.ID_ALIGN_BOTTOM);
+	globalActions.add(GEFActionConstants.ALIGN_LEFT);
+	globalActions.add(GEFActionConstants.ALIGN_CENTER);
+	globalActions.add(GEFActionConstants.ALIGN_RIGHT);
+	globalActions.add(GEFActionConstants.ALIGN_TOP);
+	globalActions.add(GEFActionConstants.ALIGN_MIDDLE);
+	globalActions.add(GEFActionConstants.ALIGN_BOTTOM);
 
 	toolbarActions.add(SEPARATOR);
 	toolbarActions.add(IncrementDecrementAction.INCREMENT);
 	toolbarActions.add(IncrementDecrementAction.DECREMENT);
 	toolbarActions.add(SEPARATOR);
-	toolbarActions.add(AlignmentAction.ID_ALIGN_LEFT);
-	toolbarActions.add(AlignmentAction.ID_ALIGN_CENTER);
-	toolbarActions.add(AlignmentAction.ID_ALIGN_RIGHT);
+	toolbarActions.add(GEFActionConstants.ALIGN_LEFT);
+	toolbarActions.add(GEFActionConstants.ALIGN_CENTER);
+	toolbarActions.add(GEFActionConstants.ALIGN_RIGHT);
 	toolbarActions.add(SEPARATOR);
-	toolbarActions.add(AlignmentAction.ID_ALIGN_TOP);
-	toolbarActions.add(AlignmentAction.ID_ALIGN_MIDDLE);
-	toolbarActions.add(AlignmentAction.ID_ALIGN_BOTTOM);
+	toolbarActions.add(GEFActionConstants.ALIGN_TOP);
+	toolbarActions.add(GEFActionConstants.ALIGN_MIDDLE);
+	toolbarActions.add(GEFActionConstants.ALIGN_BOTTOM);
 }
 
 }

@@ -1,7 +1,7 @@
 package org.eclipse.gef.ui.palette;
 
+import org.eclipse.gef.ContextMenuProvider;
 import org.eclipse.gef.ui.actions.ActionRegistry;
-import org.eclipse.gef.ui.parts.ContextMenuProvider;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.ui.IWorkbenchActionConstants;
@@ -18,12 +18,17 @@ public class PaletteContextMenuProvider
 /**
  * Constructor
  * 
- * @param palette The palette for which the context menu has to be created
+ * @param palette the palette viewer for which the context menu has to be created
+ * @param registry the action registry
  */
 public PaletteContextMenuProvider(PaletteViewerImpl palette, ActionRegistry registry) {
 	super(palette, registry);
 }
 
+/**
+ * Returns the palette viewer.
+ * @return the palette viewer
+ */
 protected PaletteViewerImpl getPaletteViewer() {
 	return (PaletteViewerImpl)getViewer();
 }
@@ -31,10 +36,9 @@ protected PaletteViewerImpl getPaletteViewer() {
 /**
  * This is the actual method that builds the context menu.
  * 
- * @param	menu	The IMenuManager to which actions for the palette's context
- * 					menu can be added
- * @see org.eclipse.gef.ui.parts.ContextMenuProvider#buildContextMenu(org.eclipse.jface.
- * action.IMenuManager)
+ * @param menu The IMenuManager to which actions for the palette's context menu can be
+ * 				added
+ * @see org.eclipse.gef.ui.parts.ContextMenuProvider#buildContextMenu(org.eclipse.jface.action.IMenuManager)
  */
 public void buildContextMenu(IMenuManager menu) {
 	Object selectedPart = getPaletteViewer().getSelectedEditParts().get(0);
