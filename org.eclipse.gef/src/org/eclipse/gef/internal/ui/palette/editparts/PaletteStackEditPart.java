@@ -46,19 +46,12 @@ private PropertyChangeListener paletteLayoutListener = new PropertyChangeListene
 	public void propertyChange(PropertyChangeEvent event) {
 		if (event.getPropertyName().equals(PaletteViewerPreferences.PREFERENCE_LAYOUT)) {
 			int newLayoutMode = ((Integer)event.getNewValue()).intValue();
-			int oldLayoutMode = -1;
-			if (event.getOldValue() != null) 
-				oldLayoutMode = ((Integer)event.getOldValue()).intValue();
 			if (newLayoutMode == PaletteViewerPreferences.LAYOUT_LIST
 					|| newLayoutMode == PaletteViewerPreferences.LAYOUT_DETAILS) {
-				if (oldLayoutMode == -1 
-						|| oldLayoutMode == PaletteViewerPreferences.LAYOUT_COLUMNS
-						|| oldLayoutMode == PaletteViewerPreferences.LAYOUT_ICONS)
+				if (!getFigure().getChildren().contains(arrowFigure))
 					getFigure().add(arrowFigure, BorderLayout.RIGHT);
 			} else {
-				if (oldLayoutMode == -1
-						|| oldLayoutMode == PaletteViewerPreferences.LAYOUT_LIST
-						|| oldLayoutMode == PaletteViewerPreferences.LAYOUT_DETAILS)
+				if (getFigure().getChildren().contains(arrowFigure))
 					getFigure().remove(arrowFigure);
 			}
 		}
