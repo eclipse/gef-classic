@@ -186,6 +186,7 @@ protected final EventHandler createEventHandler() {
  */
 protected RootFigure createRootFigure() {
 	RootFigure f = new RootFigure();
+	f.addNotify();
 	f.setOpaque(true);
 	f.setLayoutManager(new StackLayout());
 	return f;
