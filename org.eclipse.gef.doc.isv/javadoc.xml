@@ -11,6 +11,7 @@
 </target>
 
 <target name="start" depends="init">
+	<echo message="${basedir}" />
 	<javadoc	destdir="${docDir}"
 				sourcepath="${basedir}/org.eclipse.gef/src"
 				packagenames="org.eclipse.gef,
@@ -45,9 +46,9 @@
 				Doctitle="GEF API Specification"
 				Header="GEF v2.0"
 				Overview="${basedir}/org.eclipse.gef/src/overview.html">
-		<link href="${basedir}/org.eclipse.platform.doc.isv/reference/api" />
-		<link href="${basedir}/org.eclipse.draw2d.doc.isv/reference/api" />
-		<link offline="true" href="http://java.sun.com/j2se/1.3/docs/api/" packagelistLoc="${plugindir}" />
+		<link offline="true" href="../../../org.eclipse.platform.doc.isv/reference/api" packagelistLoc="${basedir}/org.eclipse.platform.doc.isv/reference/api"/>
+		<link offline="true" href="../../../org.eclipse.draw2d.doc.isv/reference/api" packagelistLoc="${basedir}/org.eclipse.draw2d.doc.isv/reference/api"/>
+		<link href="http://java.sun.com/j2se/1.3/docs/api/" />
 	</javadoc>
 	<delete file="${pluginDir}/doc.zip" />
 	<zip basedir="${pluginDir}" zipfile="${pluginDir}/doc.zip" excludes="*,bin/,icons/" />
