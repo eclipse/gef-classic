@@ -34,7 +34,7 @@ public void clear() {
 }
 
 /**
- * Overridden to unsure that the CompositeBox is valid.
+ * Overridden to ensure that the CompositeBox is valid.
  * @see FlowBox#getBounds() */
 //public Rectangle getBounds() {
 //	validate();

@@ -44,7 +44,7 @@ protected void paintFigure(Graphics g){
 	super.paintFigure(g);
 //	FlowBox block;
 //	Rectangle r;
-	Color bgColor = g.getBackgroundColor();
+//	Color bgColor = g.getBackgroundColor();
 //	for (int i=0; i< fragments.size(); i++){
 //		block = (FlowBox)fragments.get(i);
 //		r = block.getBounds();

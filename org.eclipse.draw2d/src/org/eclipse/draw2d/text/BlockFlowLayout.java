@@ -130,7 +130,6 @@ protected void setupBlock() {
  */
 protected void setupLine(LineBox line) {
 	line.clear();
-	line.x = 0;
 	line.setRecommendedWidth(blockBox.getRecommendedWidth());
 	if (previousLine == null) {
 		line.y = 0;

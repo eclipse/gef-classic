@@ -76,6 +76,7 @@ public void setHorizontalAligment(int value) {
 			"Horizontal Aligment must be one of: LEFT, CENTER, RIGHT");//$NON-NLS-1$
 	this.aligment &= ~PositionConstants.LEFT_CENTER_RIGHT;
 	this.aligment |= value;
+	revalidate();
 }
 
 /**

@@ -18,15 +18,7 @@ public void add(FlowBox box) {
 }
 
 Rectangle toRectangle() {
-	return new Rectangle(x, y, width, height);
-}
-
-/**
- * @see org.eclipse.draw2d.text.CompositeBox#unionInfo(FlowBox)
- */
-protected void unionInfo(FlowBox box) {
-	width = Math.max(width, box.x + box.width);
-	height = Math.max(height, box.y + box.height);
+	return new Rectangle(x, y, Math.max(width,recommendedWidth), height);
 }
 
 }
