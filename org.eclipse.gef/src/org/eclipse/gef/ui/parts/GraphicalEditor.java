@@ -77,6 +77,8 @@ public Object getAdapter(Class type) {
 		page.setRootEntry(GEFPlugin.createUndoablePropertySheetEntry(getCommandStack()));
 		return page;
 	}
+	if (type == GraphicalViewer.class)
+		return getGraphicalViewer();
 	if (type == CommandStack.class)
 		return getCommandStack();
 	if (type == ActionRegistry.class)
