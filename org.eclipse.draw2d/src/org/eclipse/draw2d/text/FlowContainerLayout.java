@@ -50,8 +50,6 @@ public void addToCurrentLine(FlowBox block) {
  */
 protected void cleanup() {
 	currentLine = null;
-	setConsumeSpaceOnNewLine(false);
-	setContinueOnSameLine(false);
 }
 
 /**
