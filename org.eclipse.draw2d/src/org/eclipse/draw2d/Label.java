@@ -276,17 +276,23 @@ public Dimension getMinimumSize(int w, int h){
 }
 
 public Dimension getPreferredSize(int wHint, int hHint){
-	if (prefSize != null)
-		return prefSize;
 	Dimension size = new Dimension();
 	if (getLayoutManager() != null)
 		size.copyFrom(getLayoutManager().getPreferredSize(this, wHint, hHint));
 
 	Dimension labelSize = calculateLabelSize(getTextSize());
+	if (wHint >= 0) {
+		Dimension minLabelSize = getMinimumSize();
+		// The label will try and fit in the given wHint using the ellipsis, if it can.
+		if (wHint >= minLabelSize.width && wHint <= labelSize.width) {
+			labelSize.width = wHint;
+		} else if (wHint < minSize.width) {
+			labelSize.width = minSize.width;
+		} 
+	}
 	Insets insets = getInsets();
-	labelSize.expand(insets.getWidth(),insets.getHeight());
-	prefSize = size.getUnioned(labelSize);
-	return prefSize;
+	labelSize.expand(insets.getWidth(), insets.getHeight());
+	return size.union(labelSize);
 }
 
 /**
