@@ -10,8 +10,10 @@
  *******************************************************************************/
 package org.eclipse.gef.ui.actions;
 
-import org.eclipse.gef.internal.GEFMessages;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IWorkbenchPart;
+
+import org.eclipse.gef.internal.GEFMessages;
 
 /**
  * An action to save the editor's current state.
@@ -26,6 +28,7 @@ public class SaveAction
  */
 public SaveAction(IEditorPart editor) {
 	super(editor);
+	setLazyEnablementCalculation(false);
 }
 
 /**

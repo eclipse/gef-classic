@@ -10,99 +10,48 @@
  *******************************************************************************/
 package org.eclipse.gef.ui.actions;
 
-import org.eclipse.gef.Disposable;
-import org.eclipse.gef.commands.Command;
-import org.eclipse.gef.commands.CommandStack;
-import org.eclipse.jface.action.Action;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IWorkbenchPart;
+
+import org.eclipse.gef.Disposable;
 
 /**
- * Base class for actions used by GEF editors.
+ * @author hudsonr
  */
 public abstract class EditorPartAction
-	extends Action
+	extends WorkbenchPartAction
 	implements Disposable, UpdateAction
 {
 
-/*
- * The editor associated with this action.
- */
-private IEditorPart editorPart;
-
 /**
- * Creates a new EditorPartAction and sets the editor.
- *
  * @param editor The editor to be associated with this action.
  */
 public EditorPartAction(IEditorPart editor) {
-	setEditorPart(editor);
-	init();
+	super(editor);
 }
 
 /**
- * Calculates and returns the enabled state of this action.  
+ * Used internally to avoid deprecation warnings in GEF subclasses.
+ * @param part the part
  */
-protected abstract boolean calculateEnabled();
-
-/**
- * Called when the action is about to be disposed.
- */
-public void dispose() {}
-
-/**
- * Executes the given {@link Command}.
- */
-protected void execute(Command command) {
-	if (command == null || !command.canExecute())
-		return;
-	getCommandStack().execute(command);
-}
-
-/**
- * Returns the editor's command stack.
- */
-protected CommandStack getCommandStack() {
-	return (CommandStack)getEditorPart().getAdapter(CommandStack.class);
+EditorPartAction(IWorkbenchPart part) {
+	super(part);
 }
 
 /**
  * Returns the editor associated with this action.
+ * @return the Editor part
  */
 protected IEditorPart getEditorPart() {
-	return editorPart;
-}
-
-/**
- * Initializes this action.
- */
-protected void init(){}
-
-/**
- * Calls {@link #calculateEnabled()} to determine the enabled state of this action.
- */
-public boolean isEnabled() {
-	return calculateEnabled();
-}
-
-/**
- * Refreshes the properties of this action.
- */
-protected void refresh() {
-	setEnabled(calculateEnabled());
+	return (IEditorPart)getWorkbenchPart();
 }
 
 /**
  * Sets the editor.
+ * @param part the editorpart
  */
 protected void setEditorPart(IEditorPart part) {
-	editorPart = part;
-}
-
-/**
- * @see org.eclipse.gef.UpdateAction#update()
- */
-public void update() {
-	refresh();
+	setWorkbenchPart(part);
 }
 
 }

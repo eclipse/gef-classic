@@ -13,6 +13,7 @@ package org.eclipse.gef.ui.actions;
 import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IWorkbenchPart;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.Request;
@@ -28,8 +29,16 @@ public static final String ID = GEFActionConstants.DIRECT_EDIT;
 
 private Request directEditRequest = new Request(RequestConstants.REQ_DIRECT_EDIT);
 
+/**
+ * @deprecated use DirectEditAction(IWorkbenchPart part)
+ * @param editor
+ */
 public DirectEditAction(IEditorPart editor){
-	super(editor);
+	this((IWorkbenchPart)editor);
+}
+
+public DirectEditAction(IWorkbenchPart part) {
+	super(part);
 }
 
 /**

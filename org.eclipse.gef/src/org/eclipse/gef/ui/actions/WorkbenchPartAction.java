@@ -1,0 +1,129 @@
+/*******************************************************************************
+ * Copyright (c) 2000, 2003 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials 
+ * are made available under the terms of the Common Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/cpl-v10.html
+ * 
+ * Contributors:
+ *     IBM Corporation - initial API and implementation
+ *******************************************************************************/
+package org.eclipse.gef.ui.actions;
+
+import org.eclipse.jface.action.Action;
+import org.eclipse.ui.IWorkbenchPart;
+
+import org.eclipse.gef.Disposable;
+import org.eclipse.gef.commands.Command;
+import org.eclipse.gef.commands.CommandStack;
+
+/**
+ * Base class for actions involving a WorkbenchPart. The workbench part is useful for
+ * obtaining data needed by the action. For example, selection can be obtained using the
+ * part's site. Anything can potentially be obtained using
+ * {@link org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)}.
+ */
+public abstract class WorkbenchPartAction
+	extends Action
+	implements Disposable
+{
+
+private IWorkbenchPart workbenchPart;
+private boolean lazyEnablement = true;
+
+public WorkbenchPartAction(IWorkbenchPart part) {
+	setWorkbenchPart(part);
+	init();
+}
+
+/**
+ * Calculates and returns the enabled state of this action.  
+ */
+protected abstract boolean calculateEnabled();
+
+/**
+ * Called when the action is about to be disposed.
+ */
+public void dispose() {}
+
+/**
+ * Executes the given {@link Command}.
+ */
+protected void execute(Command command) {
+	if (command == null || !command.canExecute())
+		return;
+	getCommandStack().execute(command);
+}
+
+/**
+ * Returns the editor's command stack.
+ */
+protected CommandStack getCommandStack() {
+	return (CommandStack)getWorkbenchPart().getAdapter(CommandStack.class);
+}
+
+/**
+ * @return
+ */
+protected IWorkbenchPart getWorkbenchPart() {
+	return workbenchPart;
+}
+
+/**
+ * Initializes this action.
+ */
+protected void init(){}
+
+/**
+ * Calls {@link #calculateEnabled()} to determine the enabled state of this action.
+ */
+public boolean isEnabled() {
+	if (lazyEnablement)
+		return calculateEnabled();
+	else
+		return super.isEnabled();
+}
+
+/**
+ * Refreshes the properties of this action.
+ */
+protected void refresh() {
+	setEnabled(calculateEnabled());
+}
+
+/**
+ * Sets lazy calculation of the isEnabled property.  If this value is set to
+ * <code>true</code>, then the action will always use {@link #calculateEnabled()} whenever
+ * {@link #isEnabled()} is called.
+ * <P>Sometimes a value of <code>false</code> can be used to improve performance and
+ * reduce the number of times {@link #calculateEnabled()} is called. However, the client
+ * must then call the {@link #update()} method at the proper times to force the update of
+ * enablement.
+ * <P>
+ * Sometimes a value of <code>true</code> can be used to improve performance. If an
+ * <code>Action</code> only appears in a dynamic context menu, then there is no reason to
+ * agressively update its enablement status because the user cannot see the Action. 
+ * Instead, its enablement only needs to be determined when asked for, or <i>lazily</i>.
+ * <P>
+ * The default value for this setting is <code>true</code>.
+ * @param value <code>true</code> if the enablement should be lazy
+ */
+public void setLazyEnablementCalculation(boolean value) {
+	lazyEnablement = value;
+}
+
+/**
+ * @param part
+ */
+public void setWorkbenchPart(IWorkbenchPart part) {
+	workbenchPart = part;
+}
+
+/**
+ * @see org.eclipse.gef.UpdateAction#update()
+ */
+public void update() {
+	refresh();
+}
+
+}

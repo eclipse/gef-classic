@@ -14,6 +14,7 @@ import java.util.*;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IWorkbenchPart;
 
 import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.geometry.PrecisionRectangle;
@@ -29,26 +30,43 @@ import org.eclipse.gef.tools.ToolUtilities;
 
 final public class AlignmentAction extends SelectionAction {
 
-/** @deprecated */
 public static final String ID_ALIGN_LEFT   = GEFActionConstants.ALIGN_LEFT;
-/** @deprecated */
 public static final String ID_ALIGN_RIGHT  = GEFActionConstants.ALIGN_RIGHT;
-/** @deprecated */
 public static final String ID_ALIGN_TOP    = GEFActionConstants.ALIGN_TOP;
-/** @deprecated */
 public static final String ID_ALIGN_BOTTOM = GEFActionConstants.ALIGN_BOTTOM;
-/** @deprecated */
 public static final String ID_ALIGN_CENTER = GEFActionConstants.ALIGN_CENTER;
-/** @deprecated */
 public static final String ID_ALIGN_MIDDLE = GEFActionConstants.ALIGN_MIDDLE;
 
 private List operationSet;
 private int alignment;
 
+/**
+ * @deprecated use AlignmentAction(IWorkbenchPart, int align)
+ * @param editor the editor
+ * @param align the alignment ID
+ */
 public AlignmentAction(IEditorPart editor, int align) {
-	super(editor);
+	this((IWorkbenchPart)editor, align);
+}
+
+/**
+ * Constructs an AlignmentAction with the given part and alignment ID.  The alignment ID
+ * must by one of:
+ * <UL>
+ *   <LI>GEFActionConstants.ALIGN_LEFT
+ *   <LI>GEFActionConstants.ALIGN_RIGHT
+ *   <LI>GEFActionConstants.ALIGN_CENTER
+ *   <LI>GEFActionConstants.ALIGN_TOP
+ *   <LI>GEFActionConstants.ALIGN_BOTTOM
+ *   <LI>GEFActionConstants.ALIGN_MIDDLE
+ * </UL>  
+ * @param part the workbench part used to obtain context
+ * @param align the aligment ID.
+ */
+public AlignmentAction(IWorkbenchPart part, int align) {
+	super(part);
 	alignment = align;
-	init();
+	initUI();
 }
 
 protected boolean calculateEnabled() {
@@ -114,8 +132,7 @@ protected List getOperationSet(Request request) {
 	return editparts;
 }
 
-protected void init() {
-	super.init();
+protected void initUI() {
 	switch (alignment) {
 		case PositionConstants.LEFT: {
 			setId(GEFActionConstants.ALIGN_LEFT);

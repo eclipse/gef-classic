@@ -12,16 +12,15 @@ package org.eclipse.gef.ui.actions;
 
 import java.util.List;
 
-import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.*;
 import org.eclipse.ui.internal.WorkbenchImages;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CompoundCommand;
-import org.eclipse.gef.requests.GroupRequest;
 import org.eclipse.gef.internal.GEFMessages;
+import org.eclipse.gef.requests.GroupRequest;
 
 /**
  * An action to delete selected objects.
@@ -34,12 +33,20 @@ final public class DeleteAction
 public static final String ID = GEFActionConstants.DELETE;
 
 /**
- * Creates a <code>DeleteAction</code> with a default label.
- *
+ * @deprecated use DeleteAction(IWorkbenchPart part)
  * @param editor The editor this action will be associated with.
  */
 public DeleteAction(IEditorPart editor) {
-	super(editor);
+	this((IWorkbenchPart)editor);
+}
+
+/**
+ * Constructs a <code>DeleteAction</code> using the specified part.
+ * @param part The part for this action
+ */
+public DeleteAction(IWorkbenchPart part) {
+	super(part);
+	setLazyEnablementCalculation(false);
 }
 
 /**
@@ -64,7 +71,7 @@ protected void init() {
 
 /**
  * Creates a <code>DeleteAction</code> with the given label.
- *
+ * @deprecated use DeleteAction(IWorkbenchPart)
  * @param editor The editor this action will be associated with.
  * @param label  The label to be displayed for this action.
  */
@@ -80,7 +87,7 @@ public DeleteAction(IEditorPart editor, String label) {
  *
  * @return The command to remove the selected objects.
  */
-public static Command createDeleteCommand(List objects) {
+protected Command createDeleteCommand(List objects) {
 	if (objects.isEmpty())
 		return null;
 	if (!(objects.get(0) instanceof EditPart))
@@ -105,6 +112,7 @@ public static Command createDeleteCommand(List objects) {
  * be deleted.  Returns <code>false</code> if there are
  * no objects selected or the selected objects are not
  * {@link EditPart}s.
+ * @return <code>true</code> if the command should be enabled
  */
 protected boolean calculateEnabled() {
 	Command cmd = createDeleteCommand(getSelectedObjects());

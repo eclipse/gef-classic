@@ -75,7 +75,7 @@ public void run() {
 /**
  * Sets the selected EditPart and refreshes the enabled state of this action.
  * 
- * @see org.eclipse.jface.viewers.ISelectionChangedListener#selectionChanged(org.eclipse.jface.viewers.SelectionChangedEvent)
+ * @see ISelectionChangedListener#selectionChanged(SelectionChangedEvent)
  */
 public void selectionChanged(SelectionChangedEvent event) {
 	ISelection s = event.getSelection();
