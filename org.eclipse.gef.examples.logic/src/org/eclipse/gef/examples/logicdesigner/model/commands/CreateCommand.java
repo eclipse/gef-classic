@@ -43,10 +43,7 @@ public void execute() {
 		if (!rect.isEmpty())
 			child.setSize(rect.getSize());
 	}
-	if( index < 0 )
-		parent.addChild(child);
-	else
-		parent.addChild(child,index);
+	redo();
 }
 
 private Insets getInsets() {
@@ -60,7 +57,7 @@ public LogicDiagram getParent() {
 }
 
 public void redo() {
-	execute();
+	parent.addChild(child,index);
 }
 
 public void setChild(LogicSubpart subpart) {
