@@ -14,6 +14,8 @@ package org.eclipse.gef.examples.text.edit;
 import java.beans.PropertyChangeEvent;
 import java.text.BreakIterator;
 
+import org.eclipse.swt.graphics.Font;
+
 import org.eclipse.jface.util.Assert;
 
 import org.eclipse.draw2d.IFigure;
@@ -25,13 +27,18 @@ import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.Request;
 
 import org.eclipse.gef.examples.text.TextLocation;
+import org.eclipse.gef.examples.text.model.Style;
 import org.eclipse.gef.examples.text.model.TextRun;
 import org.eclipse.gef.examples.text.tools.SelectionRangeDragTracker;
 
 /**
  * @since 3.1
  */
-public class TextFlowPart extends AbstractTextualPart {
+public class TextFlowPart 
+	extends AbstractTextualPart 
+{
+	
+private Font localFont;
 
 public TextFlowPart(Object model) {
 	setModel(model);
@@ -46,6 +53,12 @@ public boolean acceptsCaret() {
 protected IFigure createFigure() {
 	TextFlow flow = new TextFlow();
 	return flow;
+}
+
+public void deactivate() {
+	super.deactivate();
+	if (localFont != null)
+		FontCache.checkIn(localFont);
 }
 
 public Rectangle getCaretPlacement(int offset, boolean trailing) {
@@ -156,7 +169,18 @@ public void propertyChange(PropertyChangeEvent evt) {
 }
 
 protected void refreshVisuals() {
-	getTextFlow().setText(((TextRun)getModel()).getText());
+	TextRun textRun = (TextRun)getModel();
+	Style style = textRun.getContainer().getStyle();
+	Font font = FontCache.checkOut(style.getFontFamily(), style.getFontHeight(), 
+			style.isBold(), style.isItalic());
+	if (font != localFont) {
+		if (localFont != null)
+			FontCache.checkIn(localFont);
+		localFont = font;
+		getFigure().setFont(font);
+	} else
+		FontCache.checkIn(font);
+	getTextFlow().setText(textRun.getText());
 }
 
 public void setSelection(int start, int end) {

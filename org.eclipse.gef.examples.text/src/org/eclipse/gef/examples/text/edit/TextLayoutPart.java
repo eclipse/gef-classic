@@ -11,6 +11,7 @@ package org.eclipse.gef.examples.text.edit;
 
 import java.beans.PropertyChangeEvent;
 
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.TextLayout;
 import org.eclipse.swt.widgets.Display;
 
@@ -32,15 +33,19 @@ import org.eclipse.gef.examples.text.figures.Images;
 import org.eclipse.gef.examples.text.figures.ListItemBorder;
 import org.eclipse.gef.examples.text.figures.TextLayoutFigure;
 import org.eclipse.gef.examples.text.figures.TreeItemBorder;
+import org.eclipse.gef.examples.text.model.Style;
 import org.eclipse.gef.examples.text.model.TextRun;
 import org.eclipse.gef.examples.text.tools.SelectionRangeDragTracker;
 
 /**
  * @since 3.1
  */
-public class TextLayoutPart extends AbstractTextualPart {
+public class TextLayoutPart 
+	extends AbstractTextualPart 
+{
 
 private TextLayout textLayout = new TextLayout(Display.getCurrent());
+private Font localFont;
 
 /**
  * @since 3.1
@@ -74,6 +79,12 @@ protected IFigure createFigure() {
 			f.setBorder(new LineBorder(ColorConstants.lightGray));
 	}
 	return f;
+}
+
+public void deactivate() {
+	super.deactivate();
+	if (localFont != null)
+		FontCache.checkIn(localFont);
 }
 
 /**
@@ -195,7 +206,18 @@ public void propertyChange(PropertyChangeEvent evt) {
  * @see org.eclipse.gef.editparts.AbstractEditPart#refreshVisuals()
  */
 protected void refreshVisuals() {
-	textLayout.setText(((TextRun)getModel()).getText());
+	TextRun textRun = (TextRun)getModel();
+	Style style = textRun.getContainer().getStyle();
+	Font font = FontCache.checkOut(style.getFontFamily(), style.getFontHeight(), 
+			style.isBold(), style.isItalic());
+	if (font != localFont) {
+		if (localFont != null)
+			FontCache.checkIn(localFont);
+		localFont = font;
+		textLayout.setFont(font);
+	} else
+		FontCache.checkIn(font);
+	textLayout.setText(textRun.getText());
 	getFigure().repaint();
 	getFigure().revalidate();
 }
