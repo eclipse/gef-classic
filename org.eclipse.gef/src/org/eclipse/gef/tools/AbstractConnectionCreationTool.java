@@ -133,6 +133,16 @@ protected boolean handleDrag() {
 	return false;
 }
 
+protected boolean handleFocusLost() {
+	if (isInState(STATE_CONNECTION_STARTED)) {
+		eraseSourceFeedback();
+		eraseTargetFeedback();
+		setState(STATE_INVALID);
+		handleFinished();
+	}
+	return super.handleFocusLost();
+}
+
 protected boolean handleInvalidInput(){
 	eraseSourceFeedback();
 	return super.handleInvalidInput();
