@@ -112,7 +112,7 @@ protected EditPart getInsertionReference(Request request) {
 
 	int index = getFeedbackIndexFor(request);
 	if (index != -1) {
-		List selection = getHost().getRoot().getViewer().getSelectedEditParts();
+		List selection = getHost().getViewer().getSelectedEditParts();
 		do {
 			EditPart editpart = (EditPart) children.get(index);
 			if (!selection.contains(editpart))

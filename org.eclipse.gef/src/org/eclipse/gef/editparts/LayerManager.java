@@ -41,7 +41,7 @@ class Helper {
 	 * Finds the LayerManager given any EditPart in the Viewer.
 	 * @param part any EditPart in a GraphicalViewer	 * @return the <code>LayerManager</code>	 */
 	public static LayerManager find(EditPart part) {
-		return (LayerManager)part.getRoot().getViewer().getEditPartRegistry().get(ID);
+		return (LayerManager)part.getViewer().getEditPartRegistry().get(ID);
 	}
 }
 
