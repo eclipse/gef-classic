@@ -19,11 +19,10 @@ import org.eclipse.swt.widgets.*;
 
 import org.eclipse.jface.util.Assert;
 
-import org.eclipse.draw2d.FigureCanvas;
-import org.eclipse.draw2d.PositionConstants;
+import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.geometry.Insets;
 
-import org.eclipse.gef.EditPart;
-import org.eclipse.gef.GraphicalViewer;
+import org.eclipse.gef.*;
 import org.eclipse.gef.internal.ui.rulers.RulerEditPartFactory;
 import org.eclipse.gef.internal.ui.rulers.RulerRootEditPart;
 
@@ -192,6 +191,8 @@ public void setGraphicalViewer(GraphicalViewer primaryViewer) {
 	
 	diagramViewer = primaryViewer;
 	editor = (FigureCanvas)diagramViewer.getControl();
+	((GraphicalEditPart)diagramViewer.getRootEditPart()).getFigure()
+			.setBorder(new EditorBorder());
 
 	if (left != null) {
 		left.setEditPartFactory(new RulerEditPartFactory(diagramViewer));
@@ -233,12 +234,53 @@ public void setGraphicalViewer(GraphicalViewer primaryViewer) {
 			PositionConstants.NORTH);
 	setRuler((RulerProvider)diagramViewer.getProperty(RulerProvider.VERTICAL), 
 			PositionConstants.WEST);
-	/*
-	 * @TODO:Pratik   is each viewer guaranteed to have an edit domain, or do i need to
-	 * add a check in the pre-conditions
-	 */
+	((GraphicalEditPart)getRulerContainer(PositionConstants.NORTH).getRootEditPart())
+			.getFigure().setBorder(new RulerBorder(true));
+	((GraphicalEditPart)getRulerContainer(PositionConstants.WEST).getRootEditPart())
+			.getFigure().setBorder(new RulerBorder(false));
 	diagramViewer.getEditDomain().addViewer(getRulerContainer(PositionConstants.NORTH));
 	diagramViewer.getEditDomain().addViewer(getRulerContainer(PositionConstants.WEST));
+}
+
+public static class EditorBorder
+	extends AbstractBorder
+{
+	public Insets getInsets(IFigure figure) {
+		return new Insets(1, 1, 0, 0);
+	}
+	public void paint(IFigure figure, Graphics graphics, Insets insets) {
+		graphics.setForegroundColor(ColorConstants.buttonDarker);
+		graphics.drawLine(
+				figure.getBounds().getTopLeft(), figure.getBounds().getTopRight());
+		graphics.drawLine(
+				figure.getBounds().getTopLeft(), figure.getBounds().getBottomLeft());
+	}
+}
+
+public static class RulerBorder
+	extends AbstractBorder
+{
+	private static final Insets H_INSETS = new Insets(0, 1, 0, 0);
+	private static final Insets V_INSETS = new Insets(1, 0, 0, 0);
+	private boolean horizontal;
+	public RulerBorder(boolean isHorizontal) {
+		horizontal = isHorizontal;
+	}
+	public Insets getInsets(IFigure figure) {
+		return horizontal ? H_INSETS : V_INSETS;
+	}
+	public void paint(IFigure figure, Graphics graphics, Insets insets) {
+		graphics.setForegroundColor(ColorConstants.buttonDarker);
+		if (horizontal) {
+			graphics.drawLine(figure.getBounds().getTopLeft(), 
+					figure.getBounds().getBottomLeft()
+					.translate(new org.eclipse.draw2d.geometry.Point(0, -3)));
+		} else {
+			graphics.drawLine(figure.getBounds().getTopLeft(), 
+					figure.getBounds().getTopRight()
+					.translate(new org.eclipse.draw2d.geometry.Point(-3, 0)));
+		}
+	}
 }
 
 }
