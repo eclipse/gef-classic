@@ -123,7 +123,7 @@ protected void createEditPolicies() {
 protected IFigure createFigure() {
 	IFigure f = createFigureForModel();
 	f.setOpaque(true); // non-transparent figure
-	f.setBackgroundColor(ColorConstants.lightBlue);
+	f.setBackgroundColor(ColorConstants.green);
 	return f;
 }
 
