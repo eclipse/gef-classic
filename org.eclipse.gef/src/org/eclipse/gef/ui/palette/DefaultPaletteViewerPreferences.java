@@ -8,6 +8,8 @@ import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 
+import org.eclipse.gef.GEFPlugin;
+
 import org.eclipse.swt.graphics.FontData;
 
 /**
@@ -27,8 +29,12 @@ private PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 private IPreferenceStore store;
 private static final int DEFAULT_PALETTE_SIZE = 150;
 
+public DefaultPaletteViewerPreferences() {
+	this(GEFPlugin.getDefault().getPreferenceStore());
+}
+
 /**
- * Constructor for DefaultPaletteViewerPreferences.
+ * Constructor
  * 
  * @param	store	The IPreferenceStore where the settings are stored.
  */
@@ -41,7 +47,7 @@ public DefaultPaletteViewerPreferences(final IPreferenceStore store) {
 	store.setDefault(PREFERENCE_LIST_ICON_SIZE, false);
 	store.setDefault(PREFERENCE_LAYOUT, LAYOUT_LIST);
 	store.setDefault(PREFERENCE_AUTO_COLLAPSE, COLLAPSE_AS_NEEDED);
-	store.setDefault(PREFERENCE_FONT, JFaceResources.getTextFont().
+	store.setDefault(PREFERENCE_FONT, JFaceResources.getDialogFont().
 			getFontData()[0].toString());
 
 	listener = new PreferenceStoreListener();
@@ -49,8 +55,8 @@ public DefaultPaletteViewerPreferences(final IPreferenceStore store) {
 	
 	fontListener = new IPropertyChangeListener() {
 		public void propertyChange(PropertyChangeEvent event) {
-			if (JFaceResources.TEXT_FONT.equals(event.getProperty())) {
-				FontData data = JFaceResources.getTextFont().getFontData()[0];
+			if (JFaceResources.DIALOG_FONT.equals(event.getProperty())) {
+				FontData data = JFaceResources.getDialogFont().getFontData()[0];
 				// We need to set the font data first because that will cause a property 
 				// change event to be fired.
 				if (getFontData().toString().equals(store.getDefaultString(PREFERENCE_FONT))) {
@@ -179,6 +185,11 @@ public int getLayoutSetting() {
 /** * @see org.eclipse.gef.ui.palette.PaletteViewerPreferences#getPaletteSize() */
 public int getPaletteSize() {
 	return store.getInt(PREFERENCE_PALETTE_SIZE);
+}
+
+/** * @return The IPreferenceStore used by this class to store the preferences. */
+protected IPreferenceStore getPreferenceStore() {
+	return store;
 }
 
 /**

@@ -204,7 +204,7 @@ public static final String CATEGORY_PIN;
  */
 public static final String SETTINGS_DEFAULT_FONT;
 /**
- * The String "<Using Workbench Text Font>"
+ * The String "<Using Workbench Dialog Font>"
  */
 public static final String SETTINGS_WORKBENCH_FONT_LABEL;
 

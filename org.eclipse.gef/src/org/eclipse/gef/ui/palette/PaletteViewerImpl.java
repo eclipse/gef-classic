@@ -124,8 +124,7 @@ public EditPartFactory getEditPartFactory() {
 
 public PaletteViewerPreferences getPaletteViewerPreferencesSource() {
 	if (prefs == null) {
-		prefs = new DefaultPaletteViewerPreferences(
-						GEFPlugin.getDefault().getPreferenceStore());
+		prefs = new DefaultPaletteViewerPreferences();
 		if (controlHooked) {
 			prefs.addPropertyChangeListener(prefListener);
 		}

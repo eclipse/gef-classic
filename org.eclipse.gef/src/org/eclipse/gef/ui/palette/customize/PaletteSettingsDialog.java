@@ -688,8 +688,8 @@ protected void showLayoutOptionsPage(Control page) {
 protected void updateFontName() {
 	String name;
 //	System.out.println(prefs.getFontData().toString());
-//	System.out.println(JFaceResources.getTextFont().getFontData()[0].toString());
-	if (prefs.getFontData().equals((JFaceResources.getTextFont().getFontData()[0]))) {
+//	System.out.println(JFaceResources.getDialgoFont().getFontData()[0].toString());
+	if (prefs.getFontData().equals((JFaceResources.getDialogFont().getFontData()[0]))) {
 		name = PaletteMessages.SETTINGS_WORKBENCH_FONT_LABEL;
 	} else {
 		name = StringConverter.asString(prefs.getFontData());
