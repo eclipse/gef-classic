@@ -43,10 +43,10 @@ protected static final Color FG_COLOR = FigureUtilities.mixColors(
 
 /*
  * @TODO:Pratik
- * This image needs to go in GEFSharedImages
+ * This image needs to go in SharedImages or InternalImages
  */
 /** Pin image **/
-protected static final Image PIN = new Image(null, ImageDescriptor.createFromFile(
+public static final Image PIN = new Image(null, ImageDescriptor.createFromFile(
 		Internal.class, "icons/pin_view.gif").getImageData()); //$NON-NLS-1$
 
 /** Scrollpane border constant **/
