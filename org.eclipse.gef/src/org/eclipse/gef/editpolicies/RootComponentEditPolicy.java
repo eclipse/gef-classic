@@ -10,13 +10,17 @@ import org.eclipse.gef.commands.*;
 import org.eclipse.gef.requests.DeleteRequest;
 
 /**
- * The root component is not deletable.  It represents the highest-level
- * object in the users model.
+ * The <i>root</i> component cannot be removed from its parent. This EditPolicy is
+ * typically installed on the Viewer's {@link org.eclipse.gef.EditPartViewer#getContents()
+ * contents}.
  */
 public class RootComponentEditPolicy
 	extends ComponentEditPolicy
 {
 
+/**
+ * Overridden to prevent the host from being deleted.
+ * @see org.eclipse.gef.editpolicies.ComponentEditPolicy#createDeleteCommand(DeleteRequest) */
 protected Command createDeleteCommand(DeleteRequest request) {
 	return UnexecutableCommand.INSTANCE;
 }

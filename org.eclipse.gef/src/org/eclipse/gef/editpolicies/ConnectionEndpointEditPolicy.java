@@ -23,7 +23,14 @@ import org.eclipse.gef.handles.ConnectionEndHandle;
 import org.eclipse.gef.handles.ConnectionStartHandle;
 import org.eclipse.gef.requests.ReconnectRequest;
 
-
+/**
+ * A selection handle policy for placing handles at the two ends of a ConnectionEditPart.
+ * All ConnectionEditParts should have one of these, even if the ends of the connection
+ * aren't draggable, because this is the primary SelectionEditPolicy for showing focus.
+ * <P>
+ * A connection can receive focus but not selection by pressing <code>Control+/</code> on
+ * the keyboard.
+ * @since 2.0 */
 public class ConnectionEndpointEditPolicy
 	extends SelectionHandlesEditPolicy
 {
@@ -32,7 +39,7 @@ private ConnectionAnchor originalAnchor;
 private FeedbackHelper feedbackHelper;
 private ConnectionFocus focus;
 
-static Color xorFocusColor = new Color(null, 255, 255, 255);
+static final Color XORFocusColor = new Color(null, 255, 255, 255);
 
 class ConnectionFocus
 	extends Polygon
@@ -40,7 +47,7 @@ class ConnectionFocus
 {
 	PointList second;
 	ConnectionFocus() {
-		setForegroundColor(xorFocusColor);
+		setForegroundColor(XORFocusColor);
 		setBackgroundColor(ColorConstants.black);
 		setXOR(true);
 		setLineStyle(Graphics.LINE_DOT);
@@ -91,6 +98,7 @@ class ConnectionFocus
 	}
 }
 
+/** * @see org.eclipse.gef.editpolicies.SelectionHandlesEditPolicy#createSelectionHandles() */
 protected List createSelectionHandles() {
 	List list = new ArrayList();
 	list.add(new ConnectionEndHandle((ConnectionEditPart)getHost()));
@@ -110,14 +118,13 @@ protected void eraseConnectionMoveFeedback(ReconnectRequest request) {
 }
 
 /**
- * Erase feedback indicating that the receiver object is 
- * being dragged.  This method is called when a drag is
- * completed or cancelled on the receiver object.
+ * Erase feedback indicating that the receiver object is being dragged.  This method is
+ * called when a drag is completed or cancelled on the receiver object.
  * @param dragTracker DragTracker The drag tracker of the tool performing the drag.
  */
 public void eraseSourceFeedback(Request request) {
 	if (REQ_RECONNECT_TARGET.equals(request.getType())
-		|| REQ_RECONNECT_SOURCE.equals(request.getType())) {
+	  || REQ_RECONNECT_SOURCE.equals(request.getType())) {
 		eraseConnectionMoveFeedback((ReconnectRequest)request);
 		debugFeedback("Request to erase \"" + request.getType() + "\" source feedback");//$NON-NLS-2$//$NON-NLS-1$
 	}
@@ -127,6 +134,10 @@ public Command getCommand(Request request) {
 	return null;
 }
 
+/**
+ * Convenience method for obtaining the host's <code>Connection</code> figure.
+ * @return the Connection figure
+ */
 protected Connection getConnection() {
 	return (Connection)((GraphicalEditPart)getHost()).getFigure();
 }

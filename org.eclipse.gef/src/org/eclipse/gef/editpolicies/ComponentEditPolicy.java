@@ -6,31 +6,43 @@ package org.eclipse.gef.editpolicies;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.gef.GEF;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CompoundCommand;
 import org.eclipse.gef.requests.*;
 
+/**
+ * A model-based EditPolicy for <i>components within a </i>container</i>. A model-based
+ * EditPolicy only knows about the host's model and the basic operations it supports. A
+ * <i>component</i> is anything that is inside a container. By default,
+ * ComponentEditPolicy understands being DELETEd from its container, and being ORPHANed
+ * from its container. Subclasses can add support to handle additional behavior specific
+ * to the model.
+ * <P>ORPHAN is forwarded to the <i>parent</i> EditPart for it to handle.
+ * <P>DELETE is also forwarded to the <i>parent</i> EditPart, but subclasses may also
+ * contribute to the delete by overriding {@link #createDeleteCommand(DeleteRequest)}.
+ * <P>
+ * This EditPolicy is not a {@link org.eclipse.gef.editpolicies.GraphicalEditPolicy}, and
+ * should not be used to show feedback or interact with the host's visuals in any way.
+ * <P>
+ * This EditPolicy should not be used with {@link org.eclipse.gef.ConnectionEditPart}.
+ * Connections do not really have a parent; use {@link ConnectionEditPolicy}.
+ * @since 2.0 */
 public abstract class ComponentEditPolicy
 	extends AbstractEditPolicy
 {
 
-protected abstract Command createDeleteCommand(DeleteRequest req);
+/**
+ * Override to contribute to the component's being deleted. DELETE will also be sent to
+ * the parent. DELETE must be handled by either the child or the parent, or both.
+ * @param deleteRequest the DeleteRequest * @return Command <code>null</code> or a contribution to the delete */
+protected Command createDeleteCommand(DeleteRequest deleteRequest) {
+	return null;
+}
 
 /**
- * Get the command that performs an operation
- * of the type indicated by @commandString on the
- * receiver.  Data needed to create the command is
- * contained in @tool
- *
- * Possible values for the commandString depend on
- * the tool.  Default tools send "create" and "move".
- *
- * @return org.eclipse.gef.commands.ICommand  The command that performs the operation
- * @param commandString java.lang.String The type of command to create
- * @param commandData org.eclipse.gef.ICommandData Data needed to create the command
- */
+ * Factors the incoming Request into ORPHANs and DELETEs.
+ * @see org.eclipse.gef.EditPolicy#getCommand(Request) */
 public Command getCommand(Request request) {
 	if (REQ_ORPHAN.equals(request.getType()))
 		return getOrphanCommand();
@@ -40,8 +52,11 @@ public Command getCommand(Request request) {
 }
 
 /**
- * Create a delete command to delete the receiver from the composition
- */
+ * Combines the DELETE contribution from this class and the parent. This classes
+ * contribution is obtained by calling {@link #createDeleteCommand(DeleteRequest)}. The
+ * parent is sent {@link RequestConstants#REQ_DELETE_DEPENDANT REQ_DELETE_DEPENDANT}. The
+ * parent's contribution is combined with the local contribution and returned.
+ * @param request the DeleteRequest * @return the combined contributions from this EditPolicy and the parent EditPart */
 protected Command getDeleteCommand(DeleteRequest request) {
 	CompoundCommand cc = new CompoundCommand();
 	cc.setDebugLabel("Delete in ComponentEditPolicy");//$NON-NLS-1$
@@ -56,13 +71,11 @@ protected Command getDeleteCommand(DeleteRequest request) {
 }
 
 /**
- * Returns any contribution to orphaning this component from its container.
- * It is unusual that a child would have any additional orphaning requirements.
- * The orphan is typically handled by the parent's ContainerEditPolicy.
- * @see ContainerEditPolicy
+ * Returns any contribution to ORPHANing this component from its container. By default,
+ * ORPHAN is sent to the parent as an ORPHAN_CHILDREN Request.
+ * @return the Command obtained from the host's parent.
  */
 protected Command getOrphanCommand() {
-	GEF.hack();
 	GroupRequest req = new GroupRequest(REQ_ORPHAN_CHILDREN);
 	req.setEditParts(getHost());
 	return getHost().getParent().getCommand(req);

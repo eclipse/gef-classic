@@ -10,10 +10,20 @@ import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.requests.DeleteRequest;
 
+/**
+ * A model-based EditPolicy for connections. A model-based EditPolicy only knows about
+ * the host's model and the basic operations it supports. By default, ConnectionEditPolicy
+ * understands only DELETE. Subclasses can add support to handle additional behavior
+ * specific to the model.
+ * <P>
+ * This EditPolicy is not a {@link org.eclipse.gef.editpolicies.GraphicalEditPolicy}, and
+ * should not be used to show feedback or interact with the host's visuals in any way.
+ * @since 2.0 */
 public abstract class ConnectionEditPolicy
 	extends AbstractEditPolicy
 {
 
+/** * @see org.eclipse.gef.EditPolicy#getCommand(Request) */
 public Command getCommand(Request request) {
 	if (REQ_SOURCE_DELETED.equals(request.getType()))
 		return getSourceDeletedCommand((DeleteRequest)request);
@@ -24,12 +34,23 @@ public Command getCommand(Request request) {
 	return null;
 }
 
-abstract protected Command getDeleteCommand(DeleteRequest request);
+/**
+ * Subclasses should implement to return the Command to delete the connection.
+ * @param request the DeleteRequest * @return the Command to delete the connection */
+protected abstract Command getDeleteCommand(DeleteRequest request);
 
+/**
+ * Calls {@link #getDeleteCommand(DeleteRequest)}.
+ * @param request the request * @return a Command */
 protected Command getSourceDeletedCommand(DeleteRequest request) {
 	return getDeleteCommand(request);
 }
 
+/**
+ * Calls {@link #getDeleteCommand(DeleteRequest)}.
+ * @param request the request
+ * @return a Command
+ */
 protected Command getTargetDeletedCommand(DeleteRequest request) {
 	return getDeleteCommand(request);
 }

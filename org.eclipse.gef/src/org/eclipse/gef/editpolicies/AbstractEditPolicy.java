@@ -9,89 +9,114 @@ package org.eclipse.gef.editpolicies;
 import org.eclipse.gef.*;
 import org.eclipse.gef.commands.Command;
 
-
 /**
- * The base implementation for the EditPolicy interface.
- <P>Since this is the default implementation of an interface, this document
- deals with proper sub-classing of this implementation.  This class is not
- the API.  For documentation on proper usage of the public API, see the
- documentation for the interface itself: {@link EditPolicy}.
- <P><Table>
- 	<tr><TD><img src="../doc-files/green.gif"/>
- 		<TD>Indicates methods that are commonly overridden or even abstract
- 	</tr><tr><TD><img src="../doc-files/blue.gif"/>
- 		<TD>These methods might be overridden.  Especially if you were
- 			extending this class directly.
- 	</tr><tr><TD><img src="../doc-files/black.gif"/>
- 		<TD>Should rarely be overridden.
- 	</tr><tr><TD><img src="../doc-files/dblack.gif"/>
- 		<TD>Essentially "internal" and should never be overridden.
-</tr></table>
+ * The default implementation of {@link EditPolicy}.
+ * <P>
+ * Since this is the default implementation of an interface, this document deals with
+ * proper sub-classing.  This class is not the API.  For documentation on proper usage of
+ * the public API, see the documentation for the interface itself: {@link EditPolicy}.
+ * <P>
+ * <Table>
+ * 	 <tr>
+ * 	   <TD><img src="../doc-files/green.gif"/>
+ * 	   <TD>Indicates methods that are commonly overridden.
+ *   </tr>
+ *   <tr>
+ *     <TD><img src="../doc-files/blue.gif"/>
+ *     <TD>These methods might be overridden.
+ * 	 </tr>
+ * 	 <tr>
+ * 	   <TD><img src="../doc-files/black.gif"/>
+ * 	   <TD>Should rarely be overridden.
+ * 	 </tr>
+ *   <tr>
+ * 	   <TD><img src="../doc-files/dblack.gif"/>
+ * 	   <TD>Essentially "internal" and should never be overridden.
+ *   </tr>
+ * </table>
+ * <P>
  */
-abstract public class AbstractEditPolicy
+public abstract class AbstractEditPolicy
 	implements EditPolicy, RequestConstants
 {
 
 private EditPart host;
 
 /**
- Called to activate this EditPolicy.
- When activated, this edit policy may wish to add listeners to its host,
- its host's model, or some other Object.  These listeners should be freed
- in {@link #deactivate()}.  {@link #initialize()} is called to do any setup
- work that does not need to be undone.  There is a current bug that initialize()
- is called every time activate is called.  It will only be called once in
- the future
-*/
-public void activate() {
-	initialize();
-}
+ * Does nothing by default.
+ * @see org.eclipse.gef.EditPolicy#activate() */
+public void activate() { }
 
-public void deactivate() {}
+/**
+ * Does nothing by default.
+ * @see org.eclipse.gef.EditPolicy#deactivate() */
+public void deactivate() { }
 
-protected void debugFeedback(String message) {
+/**
+ * This method will log the message to GEF's trace/debug system if the corrseponding flag
+ * for FEEDBACK is set to true.
+ * @param message the String to log */
+protected final void debugFeedback(String message) {
 	if (!GEF.DebugFeedback)
 		return;
 	GEF.debug("\tFEEDBACK:\t" + toString() + ":\t" + message);//$NON-NLS-2$//$NON-NLS-1$
 }
 
+/**
+ * Does nothing by default.
+ * @see org.eclipse.gef.EditPolicy#eraseSourceFeedback(Request) */
 public void eraseSourceFeedback(Request request) { }
 
+/**
+ * Does nothing by default.
+ * @see org.eclipse.gef.EditPolicy#eraseTargetFeedback(Request) */
 public void eraseTargetFeedback(Request request) { }
 
-public Command getCommand(Request request) {return null;}
+/**
+ * Returns <code>null</code> by default. <code>null</code> is used to indicate that the
+ * EditPolicy does not contribute to the specified <code>Request</code>.
+ * @see org.eclipse.gef.EditPolicy#getCommand(Request) */
+public Command getCommand(Request request) {
+	return null;
+}
 
+/** * @see org.eclipse.gef.EditPolicy#getHost() */
 public EditPart getHost() {
 	return host;
 }
-
+/**
+ * Returns <code>null</code> by default. <code>null</code> indicates that this policy is
+ * unable to determine the target for the specified <code>Request</code>.
+ * @see org.eclipse.gef.EditPolicy#getTargetEditPart(Request) */
 public EditPart getTargetEditPart(Request request) {
 	return null;
 }
 
-/**
- * Initialize is called by activate().
- * There is no implied inverse to initialize().
- * Subclasses should override to perform one-time setup.
- */
-protected void initialize() {}
-
+/** * @see org.eclipse.gef.EditPolicy#setHost(EditPart) */
 public void setHost(EditPart host) {
-	if (this.host == host)
-		return;
 	this.host = host;
 }
 
-public void showSourceFeedback(Request request) {}
+/**
+ * Does nothing by default.
+ * @see org.eclipse.gef.EditPolicy#showSourceFeedback(Request) */
+public void showSourceFeedback(Request request) { }
 
-public void showTargetFeedback(Request request) {}
+/** * Does nothing by default.
+ * @see org.eclipse.gef.EditPolicy#showTargetFeedback(Request)
+ */
+public void showTargetFeedback(Request request) { }
 
+/** * @see java.lang.Object#toString() */
 public String toString() {
 	String c = getClass().getName();
 	c = c.substring(c.lastIndexOf('.') + 1);
 	return getHost().toString() + "." + c;//$NON-NLS-1$
 }
 
+/**
+ * Returns <code>false</code> by default.
+ * @see org.eclipse.gef.EditPolicy#understandsRequest(Request) */
 public boolean understandsRequest(Request req) {
 	return false;
 }

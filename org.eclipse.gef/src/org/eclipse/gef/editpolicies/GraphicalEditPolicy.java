@@ -11,32 +11,46 @@ import org.eclipse.gef.editparts.*;
 import org.eclipse.gef.*;
 
 /**
- A Graphical edit policy knows about the EditPart's view as a
- {@link org.eclipse.draw2d.Figure Figure}.  This class provides convenience methods for
- accessing the EditPart's figure, and for adding graphical feedback to the viewer.
+ * A <code>GraphicalEditPolicy</code> is used with a {@link GraphicalEditPart}. All
+ * GraphicalEditPolicies are involved with the Figure in some way. They might use the
+ * Figure to interpret Requests, or they might simply decorate the Figure with graphical
+ * Feedback, such as selection handles.
+ * <P>
+ * This class provides convenience methods for accessing the host's Figure, and for adding
+ * <i>feedback</i> to the GraphicalViewer. This class does not handle any Request types
+ * directly.
  */
-abstract public class GraphicalEditPolicy
+public abstract class GraphicalEditPolicy
 	extends AbstractEditPolicy
 {
 
-protected void addFeedback(IFigure f) {
+/**
+ * Adds the specified <code>Figure</code> to the {@link LayerConstants#FEEDBACK_LAYER}.
+ * @param figure the feedback to add */
+protected void addFeedback(IFigure figure) {
 	getLayer(LayerConstants.FEEDBACK_LAYER).
-		add(f);
+		add(figure);
 }
 
+/**
+ * Convenience method to return the host's Figure.
+ * @return The host GraphicalEditPart's Figure */
 protected IFigure getHostFigure() {
 	return ((GraphicalEditPart)getHost()).getFigure();
 }
 
+/**
+ * Obtains the specified layer.
+ * @param layer the key identifying the layer * @return the requested layer */
 protected IFigure getLayer(Object layer) {
-	LayerManager manager = (LayerManager)getHost().getRoot().getViewer().
-		getEditPartRegistry().
-		get(LayerManager.ID);
-	return manager.getLayer(layer);
+	return LayerManager.Helper.find(getHost()).getLayer(layer);
 }
 
-protected void removeFeedback(IFigure f) {
-	getLayer(LayerConstants.FEEDBACK_LAYER).remove(f);
+/** * Removes the specified <code>Figure</code> from the {@link
+ * LayerConstants#FEEDBACK_LAYER}.
+ * @param figure the feedback to remove */
+protected void removeFeedback(IFigure figure) {
+	getLayer(LayerConstants.FEEDBACK_LAYER).remove(figure);
 }
 
 }
