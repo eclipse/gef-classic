@@ -12,29 +12,44 @@ package org.eclipse.gef.internal.ui.palette.editparts;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.ui.IMemento;
 
-import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.Border;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.text.*;
+import org.eclipse.draw2d.text.BlockFlow;
+import org.eclipse.draw2d.text.FlowPage;
+import org.eclipse.draw2d.text.TextFlow;
 
-import org.eclipse.gef.*;
+import org.eclipse.gef.AccessibleEditPart;
+import org.eclipse.gef.DragTracker;
+import org.eclipse.gef.Request;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.palette.PaletteContainer;
 import org.eclipse.gef.palette.PaletteEntry;
 import org.eclipse.gef.tools.SelectEditPartTracker;
-import org.eclipse.gef.ui.palette.*;
+import org.eclipse.gef.ui.palette.PaletteMessages;
+import org.eclipse.gef.ui.palette.PaletteViewer;
+import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
 
-abstract class PaletteEditPart
+public abstract class PaletteEditPart
 	extends AbstractGraphicalEditPart
-	implements PropertyChangeListener, MementoOriginator
+	implements PropertyChangeListener
 {
-
+	
+public static final String XML_NAME = "entry"; //$NON-NLS-1$
 private static final Border TOOLTIP_BORDER = new MarginBorder(0, 2, 1, 0);
 private static ImageCache globalImageCache;
 private AccessibleEditPart acc;
@@ -71,10 +86,6 @@ protected AccessibleEditPart createAccessible() {
 }
 
 public void createEditPolicies() { }
-
-public Memento createMemento() {
-	return new DefaultPaletteMemento().storeState(this);
-}
 
 protected IFigure createToolTip() {
 	String message = getToolTipText();
@@ -250,6 +261,22 @@ public void propertyChange(PropertyChangeEvent evt) {
 	}
 }
 
+public void restoreState(IMemento memento) {
+	Iterator iter = getChildren().iterator();
+	IMemento[] childMementos = memento.getChildren(XML_NAME);
+	int index = 0;
+	while (iter.hasNext()) {
+		((PaletteEditPart)iter.next()).restoreState(childMementos[index++]);
+	}
+}
+
+public void saveState(IMemento memento) {
+	Iterator iter = getChildren().iterator();
+	while (iter.hasNext()) {
+		((PaletteEditPart)iter.next()).saveState(memento.createChild(XML_NAME));
+	}
+}
+
 protected void setImageDescriptor(ImageDescriptor desc) {
 	if (desc == imgDescriptor) {
 		return;
@@ -259,10 +286,6 @@ protected void setImageDescriptor(ImageDescriptor desc) {
 }
 
 protected void setImageInFigure(Image image) { }
-
-public void setMemento(Memento memento) {
-	((DefaultPaletteMemento)memento).restoreState(this);
-}
 
 private void traverseChildren(PaletteEntry parent, boolean add) {
 	if (!(parent instanceof PaletteContainer)) {
@@ -312,23 +335,6 @@ protected static class ImageCache {
 			img.dispose();
 		}
 		images.clear();
-	}
-}
-
-protected static class DefaultPaletteMemento implements Memento {
-	private List childMementos = new ArrayList();
-	protected Memento restoreState(PaletteEditPart part) {
-		Iterator iter = part.getChildren().iterator();
-		Iterator iter2 = childMementos.iterator();
-		while (iter.hasNext())
-			((PaletteEditPart)iter.next()).setMemento((Memento)iter2.next());
-		return this;
-	}
-	protected Memento storeState(PaletteEditPart part) {
-		Iterator iter = part.getChildren().iterator();
-		while (iter.hasNext())
-			childMementos.add(((PaletteEditPart)iter.next()).createMemento());
-		return this;
 	}
 }
 

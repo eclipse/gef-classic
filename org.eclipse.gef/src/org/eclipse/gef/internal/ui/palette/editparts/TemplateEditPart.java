@@ -15,6 +15,8 @@ import org.eclipse.swt.accessibility.AccessibleControlEvent;
 import org.eclipse.swt.accessibility.AccessibleEvent;
 import org.eclipse.swt.graphics.Image;
 
+import org.eclipse.ui.IMemento;
+
 import org.eclipse.draw2d.Border;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.MarginBorder;
@@ -24,7 +26,6 @@ import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.palette.PaletteEntry;
 import org.eclipse.gef.palette.PaletteTemplateEntry;
-import org.eclipse.gef.ui.palette.Memento;
 import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
 
 /**
@@ -34,6 +35,7 @@ public class TemplateEditPart
 	extends PaletteEditPart
 {
 
+private static final String SELECTION_STATE = "selection"; //$NON-NLS-1$
 private static final Border BORDER = new MarginBorder(1, 1, 1, 2);
 private static final Border COLUMNS_BORDER = new MarginBorder(2, 1, 3, 2);
 
@@ -71,10 +73,6 @@ public IFigure createFigure() {
 	};
 	fig.setRequestFocusEnabled(true);
 	return fig;
-}
-
-public Memento createMemento() {
-	return new TemplateMemento().storeState(this);
 }
 
 /**
@@ -143,6 +141,16 @@ protected void refreshVisuals() {
 	super.refreshVisuals();
 }
 
+public void restoreState(IMemento memento) {
+	setSelected(memento.getInteger(SELECTION_STATE).intValue());
+	super.restoreState(memento);
+}
+
+public void saveState(IMemento memento) {
+	memento.putInteger(SELECTION_STATE, getSelected());
+	super.saveState(memento);
+}
+
 /**
  * @see org.eclipse.gef.internal.ui.palette.editparts.PaletteEditPart#setImageInFigure(Image)
  */
@@ -161,19 +169,6 @@ public void setSelected(int value) {
 	} else {
 		label.setSelected(false);
 	}		
-}
-
-protected static class TemplateMemento extends DefaultPaletteMemento {
-	private int selection;
-	protected Memento restoreState(PaletteEditPart part) {
-		super.restoreState(part);
-		part.setSelected(selection);
-		return this;
-	}
-	protected Memento storeState(PaletteEditPart part) {
-		selection = part.getSelected();
-		return super.storeState(part);
-	}
 }
 
 }

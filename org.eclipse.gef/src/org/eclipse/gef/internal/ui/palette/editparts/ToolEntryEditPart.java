@@ -11,20 +11,31 @@
 package org.eclipse.gef.internal.ui.palette.editparts;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.accessibility.*;
+import org.eclipse.swt.accessibility.ACC;
+import org.eclipse.swt.accessibility.AccessibleControlEvent;
+import org.eclipse.swt.accessibility.AccessibleEvent;
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.graphics.Image;
 
-import org.eclipse.draw2d.*;
+import org.eclipse.ui.IMemento;
 
-import org.eclipse.gef.*;
+import org.eclipse.draw2d.ActionEvent;
+import org.eclipse.draw2d.ActionListener;
+import org.eclipse.draw2d.Border;
+import org.eclipse.draw2d.ButtonBorder;
+import org.eclipse.draw2d.ButtonModel;
+import org.eclipse.draw2d.Clickable;
+import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.MarginBorder;
+import org.eclipse.draw2d.ToggleButton;
+
 import org.eclipse.gef.AccessibleEditPart;
+import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.palette.PaletteEntry;
 import org.eclipse.gef.palette.ToolEntry;
-import org.eclipse.gef.ui.palette.Memento;
-import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
 
 public class ToolEntryEditPart
@@ -110,6 +121,7 @@ class ToggleButtonTracker extends SingleSelectionTracker {
 	}
 }
 
+private static final String ACTIVE_STATE = "active"; //$NON-NLS-1$
 private DetailedLabelFigure customLabel;
 
 public ToolEntryEditPart(PaletteEntry paletteEntry) {
@@ -177,10 +189,6 @@ public IFigure createFigure() {
 	});
 
 	return button;
-}
-
-public Memento createMemento() {
-	return new ToolMemento().storeState(this);
 }
 
 /**
@@ -277,6 +285,18 @@ public void setToolSelected(boolean value) {
 	getFigure().setOpaque(value);
 }
 
+public void restoreState(IMemento memento) {
+	if (new Boolean(memento.getString(ACTIVE_STATE)).booleanValue())
+		getPaletteViewer().setActiveTool(getToolEntry());
+	super.restoreState(memento);
+}
+
+public void saveState(IMemento memento) {
+	memento.putString(ACTIVE_STATE, new Boolean(
+			getPaletteViewer().getActiveTool() == getToolEntry()).toString());
+	super.saveState(memento);
+}
+
 /**
  * @see PaletteEditPart#setImageInFigure(Image)
  */
@@ -304,20 +324,6 @@ public void showTargetFeedback(Request request) {
 	if (RequestConstants.REQ_SELECTION.equals(request.getType()))
 		getButtonModel().setMouseOver(true);
 	super.showTargetFeedback(request);
-}
-
-protected static class ToolMemento extends DefaultPaletteMemento {
-	private boolean active;
-	protected Memento restoreState(PaletteEditPart part) {
-		super.restoreState(part);
-		if (active)
-			((PaletteViewer)part.getViewer()).setActiveTool((ToolEntry)part.getModel());
-		return this;
-	}
-	protected Memento storeState(PaletteEditPart part) {
-		active = ((PaletteViewer)part.getViewer()).getActiveTool() == part.getModel();
-		return super.storeState(part);
-	}
 }
 
 }
