@@ -112,6 +112,10 @@ public EditPartFactory getEditPartFactory() {
 	return super.getEditPartFactory();
 }
 
+/** * @return The PaletteViewerPreferences that this palette is using to store its
+ * 			preferences.  If none has been set, it returns the default one (which
+ * 			uses the GEF preference store).
+ */
 public PaletteViewerPreferences getPaletteViewerPreferencesSource() {
 	if (prefs == null) {
 		prefs = new DefaultPaletteViewerPreferences();
@@ -162,11 +166,16 @@ public void setPaletteRoot(PaletteRoot root) {
 	}
 }
 
-/*
- * @TODO:Pratik
- * Looks like we don't really need this method.  It can only be called once anyways
- * (before getPaletteViewerPreferencesSource() is called the first time), and probably
- * right after construction.  Discuss this with Randy.
+/**
+ * This palette will use the given PaletteViewerPreferences to store all its preferences.
+ * <p>
+ * NOTE: This method should be invoked by a client only once (before the first time 
+ * {@link #getPaletteViewerPreferencesSource()} is invoked).  Trying to invoke this method
+ * after that could lead to problems where some preferences would still be stored in the
+ * old preference store.
+ * 
+ * @param	prefs	The PaletteViewerPreferences that is to be used to store all the
+ * 					preferences for this palette.
  */
 public void setPaletteViewerPreferencesSource(PaletteViewerPreferences prefs) {
 	if (prefs == null) {
@@ -194,9 +203,9 @@ public void setMode(ToolEntry newMode) {
 		ToolEntryEditPart editpart = getToolEntryEditPart(activeEntry);
 		editpart.setActive(true);
 		select(editpart);
-	}
+		}
 	fireModeChanged();
-}
+	}
 
 /**
  * @see org.eclipse.gef.ui.parts.AbstractEditPartViewer#unhookControl()
