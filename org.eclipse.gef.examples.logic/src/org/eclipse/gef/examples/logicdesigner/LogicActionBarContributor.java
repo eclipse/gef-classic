@@ -6,11 +6,13 @@ package org.eclipse.gef.examples.logicdesigner;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.draw2d.PositionConstants;
-import org.eclipse.gef.ui.actions.AlignmentRetargetAction;
-import org.eclipse.gef.ui.actions.GEFActionConstants;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.actions.RetargetAction;
+
+import org.eclipse.draw2d.PositionConstants;
+
+import org.eclipse.gef.ui.actions.AlignmentRetargetAction;
+import org.eclipse.gef.ui.actions.GEFActionConstants;
 
 public class LogicActionBarContributor
 	extends org.eclipse.gef.ui.actions.ActionBarContributor
