@@ -39,20 +39,6 @@ int getRecommendedWidth() {
 	return recommendedWidth;
 }
 
-///**
-// * @see org.eclipse.draw2d.Figure#paintChildren(Graphics)
-// */
-//protected void paintChildren(Graphics graphics) {
-//	//Displacement must be a function of the current vertical aligment.
-//	int displacement = (getClientArea(Rectangle.SINGLETON).height - pageSize.height) / 2;
-//	//If displacement is 0, just call super.paintChidlren() and return
-//	graphics.translate(0, displacement);
-//	graphics.pushState();
-//	super.paintChildren(graphics);
-//	graphics.popState();
-//	graphics.restoreState();
-//}
-
 public void postValidate(){
 	Rectangle r = getBlockBox().toRectangle();
 	pageSize.width = r.width;
