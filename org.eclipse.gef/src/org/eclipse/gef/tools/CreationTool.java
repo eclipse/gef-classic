@@ -113,14 +113,11 @@ private void selectAddedObject() {
 	final Object model = getCreateRequest().getNewObject();
 	if (model == null)
 		return;
-	final EditPartViewer viewer = getCurrentViewer();
-	final Object editpart = viewer.getEditPartRegistry().get(model);
+	EditPartViewer viewer = getCurrentViewer();
+	Object editpart = viewer.getEditPartRegistry().get(model);
 	if (editpart instanceof EditPart){
-		Display.getCurrent().asyncExec(new Runnable() {
-			public void run() {
-				viewer.select((EditPart)editpart);
-			}
-		});
+		viewer.flush();
+		viewer.select((EditPart)editpart);
 	}
 }
 
