@@ -58,8 +58,7 @@ public BlockFlow() {
  * @see org.eclipse.draw2d.text.FlowFigure#contributeBidi(org.eclipse.draw2d.text.BidiProcessor)
  */
 protected void contributeBidi(BidiProcessor proc) {
-	// the paragraph separator
-	proc.addControlText("\u2029"); //$NON-NLS-1$
+	proc.addControlChar(BidiChars.P_SEP);
 }
 
 BlockBox createBlockBox() {
