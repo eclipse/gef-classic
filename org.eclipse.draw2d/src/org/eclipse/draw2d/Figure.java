@@ -298,7 +298,7 @@ public IFigure findFigureAt(int x, int y, TreeSearch search) {
 	if (child != null)
 		return child;
 	if (search.accept(this))
-	return this;
+		return this;
 	return null;
 }
 
@@ -800,7 +800,7 @@ public void invalidate() {
 	setValid(false);
 }
 
-/** * @see org.eclipse.draw2d.IFigure#invalidateAll() */
+/** * @see org.eclipse.draw2d.IFigure#invalidateTree() */
 public void invalidateTree() {
 	invalidate();
 	for (Iterator iter = children.iterator(); iter.hasNext();) {

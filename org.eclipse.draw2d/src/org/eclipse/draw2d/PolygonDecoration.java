@@ -6,6 +6,8 @@ package org.eclipse.draw2d;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
+import org.eclipse.swt.graphics.Color;
+
 import org.eclipse.draw2d.geometry.*;
 
 public class PolygonDecoration
@@ -40,8 +42,16 @@ private Transform transform = new Transform();
  */
 public PolygonDecoration(){
 	setFill(true);
-	setBackgroundColor(ColorConstants.black);
 	setScale(7,3);
+}
+
+/**
+ * @see org.eclipse.draw2d.IFigure#getBackgroundColor()
+ */
+public Color getBackgroundColor() {
+	if (getLocalBackgroundColor() == null)
+		return getForegroundColor();
+	return super.getBackgroundColor();
 }
 
 /**

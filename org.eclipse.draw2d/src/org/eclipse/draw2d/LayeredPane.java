@@ -104,19 +104,6 @@ protected Layer getLayer(int index) {
 }
 
 /**
- * Returns the opaque state of this pane containing layers.
- * 
- * @return  Returns <code>true</code> if any of the child layers
- *          is opaque, else returns <code>false</code>.
- * @since 2.0
- */
-public boolean isOpaque() {
-	if (super.isOpaque())
-		return true;
-	return false;
-}
-
-/**
  * Removes the layer identified by the given key from this 
  * layerepane.
  *

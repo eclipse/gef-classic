@@ -76,13 +76,14 @@ public void performTranslate(int dx, int dy) {
 public Point setLocation(Point pt) {
 	if (pt instanceof PrecisionPoint) {
 		preciseX = ((PrecisionPoint)pt).preciseX;
-		preciseY = ((PrecisionPoint)pt).preciseY;	
-		x = (int)Math.floor(preciseX + 0.000000001);
-		y = (int)Math.floor(preciseY + 0.000000001);
-		return this;
+		preciseY = ((PrecisionPoint)pt).preciseY;
 	} else {
-		return super.setLocation(pt);
+		preciseX = pt.x;
+		preciseY = pt.y;
 	}
+	x = (int)Math.floor(preciseX + 0.000000001);
+	y = (int)Math.floor(preciseY + 0.000000001);
+	return this;
 }
 
 }

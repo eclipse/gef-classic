@@ -18,7 +18,7 @@ public class Polyline
 {
 
 PointList points = new PointList();
-private static final int TOLERANCE = 1;
+private static final int TOLERANCE = 2;
 private static final Rectangle LINEBOUNDS = Rectangle.SINGLETON;
 
 {
