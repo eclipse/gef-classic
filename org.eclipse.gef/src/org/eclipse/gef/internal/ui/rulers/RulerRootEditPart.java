@@ -63,15 +63,12 @@ protected IFigure createFigure() {
  * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
  */
 public Object getAdapter(Class adapter) {
-	if (adapter == AutoexposeHelper.class)
-		return new ViewportAutoexposeHelper(this) {
-			protected Insets getThreshold() {
-				if (((RulerEditPart)getContents()).isHorizontal())
-					return HORIZONTAL_THRESHOLD;
-				else
-					return VERTICAL_THRESHOLD;
-			}
-		};
+	if (adapter == AutoexposeHelper.class) {
+		if (((RulerEditPart)getContents()).isHorizontal())
+			return new ViewportAutoexposeHelper(this, HORIZONTAL_THRESHOLD);
+		else
+			return new ViewportAutoexposeHelper(this, VERTICAL_THRESHOLD);
+	}
 	return super.getAdapter(adapter);
 }
 
