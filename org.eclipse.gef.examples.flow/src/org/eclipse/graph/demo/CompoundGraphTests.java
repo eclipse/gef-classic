@@ -403,7 +403,7 @@ public static CompoundDirectedGraph test1() {
 	return graph;
 }
 
-static CompoundDirectedGraph test2() {
+public static CompoundDirectedGraph test2() {
 	Subgraph s1, s2, s1_1;
 	Node n1, n2, n3, n4, n5, n6, n7, n8;
 	NodeList nodes = new NodeList();
