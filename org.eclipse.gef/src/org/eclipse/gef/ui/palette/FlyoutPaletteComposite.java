@@ -94,10 +94,8 @@ import org.eclipse.gef.ui.views.palette.PaletteView;
 
 /**
  * The FlyoutPaletteComposite is used to show a flyout palette alongside another control.
- * The flyout palette will only be visible when the PaletteView is not.  This class is
- * intended to be used in conjunction with 
+ * The flyout palette will only be visible when the PaletteView is not.
  * 
- * {@link  org.eclipse.gef.ui.parts.GraphicalEditorWithFlyoutPalette}.
  * @author Pratik Shah
  * @since 3.0
  */
@@ -209,7 +207,7 @@ public FlyoutPaletteComposite(Composite parent, int style, IWorkbenchPage page,
 	});
 }
 
-private final void addListenerToCtrlHierarchy(Control parent, int eventType, 
+private void addListenerToCtrlHierarchy(Control parent, int eventType, 
 		Listener listener) {
 	parent.addListener(eventType, listener);
 	if (!(parent instanceof Composite))
@@ -273,8 +271,13 @@ private void handlePerspectiveChanged(IWorkbenchPage page,
 		handlePerspectiveActivated(page, perspective);
 }
 
-// Will return false if ancestor or descendant is null, and true if both are null
-private final boolean isDescendantOf(Control ancestor, Control descendant) {
+
+/*
+ * @TODO:Pratik   Need to redo this method.  It should return false if ancestor is
+ * null.
+ */
+// Will return false if descendant is null
+private boolean isDescendantOf(Control ancestor, Control descendant) {
 	if (descendant == null)
 		return false;
 	if (ancestor == descendant)
@@ -282,7 +285,7 @@ private final boolean isDescendantOf(Control ancestor, Control descendant) {
 	return isDescendantOf(ancestor, descendant.getParent());
 }
 
-public boolean isInState(int state) {
+private boolean isInState(int state) {
 	return (paletteState & state) != 0;
 }
 
@@ -316,7 +319,7 @@ public void layout(boolean changed) {
 	update();
 }
 
-private final void layoutComponentsEast(Rectangle area, int sashWidth, int pWidth) {
+private void layoutComponentsEast(Rectangle area, int sashWidth, int pWidth) {
 	if (isInState(STATE_COLLAPSED)) {
 		paletteContainer.setVisible(false);
 		sash.setBounds(area.x + area.width - sashWidth, area.y, sashWidth, area.height);
@@ -344,7 +347,7 @@ private final void layoutComponentsEast(Rectangle area, int sashWidth, int pWidt
 	}
 }
 
-private final void layoutComponentsWest(Rectangle area, int sashWidth, int pWidth) {
+private void layoutComponentsWest(Rectangle area, int sashWidth, int pWidth) {
 	if (isInState(STATE_COLLAPSED)) {
 		sash.setVisible(true);
 		paletteContainer.setVisible(false);
@@ -386,7 +389,7 @@ private void hookIntoWorkbench(final IWorkbenchWindow window) {
  * switching between the two viewers.  Providing an external viewer, although
  * recommended, is optional.
  * 
- * @param	viewer	The external palette viewer used in the PaletteView
+ * @param	viewer	The palette viewer used in the PaletteView
  */
 public void setExternalViewer(PaletteViewer viewer) {
 	if (viewer == null && externalViewer != null)
@@ -408,7 +411,7 @@ private void setDockLocation(int position) {
 	}
 }
 
-private final void setPaletteWidth(int newSize) {
+private void setPaletteWidth(int newSize) {
 	if (paletteWidth != newSize) {
 		int oldValue = paletteWidth;
 		paletteWidth = newSize;
@@ -419,8 +422,12 @@ private final void setPaletteWidth(int newSize) {
 }
 
 /**
- * Sets the graphical control along the side of which the palette is to be displayed.
- * This method should only be invoked once.
+ * Sets the graphical control along the side of which the palette is to be displayed.  The
+ * given Control should be a child of this Composite.  This method should only be invoked
+ * once.
+ * 
+ * @param	graphicalViewer		the control of the graphical viewer; cannot be
+ * 								<code>null</code>
  */
 public void setGraphicalControl(Control graphicalViewer) {
 	Assert.isTrue(graphicalViewer.getParent() == this);
@@ -444,8 +451,13 @@ public void setGraphicalControl(Control graphicalViewer) {
 }
 
 /**
- * If the auto-hide feature of the palette is to work properly, this method should be
- * called before any other drop target listeners are added to the graphical viewer.
+ * This method hooks a DropTargetListener that collapses the flyout patette when the user
+ * drags something from  the palette and moves the cursor to the graphical viewer's
+ * control.  If the auto-hide feature of the palette is to work properly, this method
+ * should be called before any other drop target listeners are added to the graphical
+ * viewer.
+ * 
+ * @param	viewer	the primary graphical viewer
  */
 public void hookDropTargetListener(GraphicalViewer viewer) {
 	viewer.addDropTargetListener(new TransferDropTargetListener() {
@@ -525,13 +537,41 @@ private void transferState(PaletteViewer src, PaletteViewer dest) {
 	dest.restoreState(capturePaletteState(src));
 }
 
+/**
+ * FlyoutPreferences is used to save/load the preferences for the flyout palette. 
+ * 
+ * @author Pratik Shah
+ * @since 3.0
+ */
 public interface FlyoutPreferences {
-	public int getDockLocation();
-	public int getPaletteState();
-	public int getPaletteWidth();
-	public void setDockLocation(int location);
-	public void setPaletteState(int state);
-	public void setPaletteWidth(int width);
+	/**
+	 * @return the saved dock location of the Palette: {@link PositionConstants#EAST east}
+	 * or {@link PositionConstants#WEST west}
+	 */
+	int getDockLocation();
+	/**
+	 * @return	the saved state of the palette (collapsed or pinned open)
+	 */
+	int getPaletteState();
+	/**
+	 * @return	the saved width of the flyout palette
+	 */
+	int getPaletteWidth();
+	/**
+	 * This method is invoked when the flyout palette's dock location is changed.
+	 * @param	location	PositionConstants.EAST or PositionConstants.WEST
+	 */
+	void setDockLocation(int location);
+	/**
+	 * This method is invoked when the flyout palette is pinned open or collapsed.
+	 * @param	state		the state of the flyout palette
+	 */
+	void setPaletteState(int state);
+	/**
+	 * This method is invoked when the flyout palette is resized.
+	 * @param	width	the new size of the flyout palette
+	 */
+	void setPaletteWidth(int width);
 }
 
 private class Sash extends Composite {
@@ -568,6 +608,9 @@ private class Sash extends Composite {
 			}
 		});
 	}
+	/**
+	 * @see org.eclipse.swt.widgets.Control#computeSize(int, int, boolean)
+	 */
 	public Point computeSize(int wHint, int hHint, boolean changed) {
 		if (isInState(STATE_PINNED_OPEN))
 			return new Point(6, 1);
@@ -577,10 +620,13 @@ private class Sash extends Composite {
 				buttonSize.y + titleSize.y + 7);
 	}
 	private void handleSashDragged(int shiftAmount) {
-		int newSize = paletteContainer.getBounds().width + 
-				(dock == PositionConstants.EAST ? -shiftAmount : shiftAmount);
+		int newSize = paletteContainer.getBounds().width 
+				+ (dock == PositionConstants.EAST ? -shiftAmount : shiftAmount);
 		setPaletteWidth(newSize);
 	}
+	/**
+	 * @see org.eclipse.swt.widgets.Composite#layout(boolean)
+	 */
 	public void layout(boolean changed) {
 		if (isInState(STATE_PINNED_OPEN)) {
 			title.setVisible(false);
@@ -1057,7 +1103,6 @@ private class ButtonCanvas extends Canvas {
 				if (evt.getPropertyName().equals(PROPERTY_STATE)) {
 					b.setImage(getButtonImage());
 					setToolTipText(getButtonTooltipText());
-					// @TODO:Pratik  also need to toggle accessibility listeners
 				} else if (evt.getPropertyName().equals(PROPERTY_DOCK_LOCATION))
 					b.setImage(getButtonImage());
 			}
@@ -1100,6 +1145,9 @@ private class TitleCanvas extends Canvas {
 		init(horizontal);
 		provideAccSupport();
 	}
+	/**
+	 * @see org.eclipse.swt.widgets.Control#computeSize(int, int, boolean)
+	 */
 	public Point computeSize(int wHint, int hHint, boolean changed) {
 		Dimension size = lws.getRootFigure().getPreferredSize(wHint, hHint);
 		size.union(new Dimension(wHint, hHint));
@@ -1193,13 +1241,28 @@ private class TitleCanvas extends Canvas {
 
 private class ChangeDockAction extends Action {
 	private int position;
+	/**
+	 * Constructor
+	 * @param	text		this action's text
+	 * @param	position	the dock side that this action represents: 
+	 * 						PositionConstants.EAST or PositionConstants.WEST 
+	 */
 	public ChangeDockAction(String text, int position) {
 		super(text, IAction.AS_RADIO_BUTTON);
 		this.position = position;
 	}
+	/**
+	 * This Action is checked when the palette is docked on the side this action
+	 * represents
+	 * @see org.eclipse.jface.action.IAction#isChecked()
+	 */
 	public boolean isChecked() {
 		return dock == position;
 	}
+	/**
+	 * Changes the palette's dock location to the side this action represents
+	 * @see org.eclipse.jface.action.IAction#run()
+	 */
 	public void run() {
 		setDockLocation(position);
 	}
