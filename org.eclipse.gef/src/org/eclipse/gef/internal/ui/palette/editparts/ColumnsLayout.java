@@ -60,14 +60,6 @@ protected Dimension getChildSize (IFigure child, int wHint, int hHint) {
 	return super.getChildSize(child, wHint, hHint);
 }
 
-/**
- * @see org.eclipse.draw2d.AbstractLayout#getMinimumSize(IFigure, int, int)
- */
-public Dimension getMinimumSize(IFigure container, int wHint, int hHint) {
-	return super.getMinimumSize(container, wHint, hHint);
-}
-
-
 /*
  * Returns a dimension which has a width that is the greater of the following two: the
  * default width (set on defaultConstraint), and the minimum width of the widest child.
