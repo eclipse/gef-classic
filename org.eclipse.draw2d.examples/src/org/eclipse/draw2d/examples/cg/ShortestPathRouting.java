@@ -14,6 +14,7 @@ package org.eclipse.draw2d.examples.cg;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.geometry.*;
 
 /**
@@ -102,6 +103,45 @@ private void addSegment(Point start, Point end) {
 			return;
 	}
 	segments.add(s);
+}
+
+public void setGoals(Point source, Point target) {
+	for (int i = 0; i < boxes.length; i++) {
+		Rectangle rect = boxes[i];
+		addSegments(rect, source);
+		addSegments(rect, target);
+	}
+}
+
+private void addSegments(Rectangle rect, Point point) {
+	switch (rect.getPosition(point)) {
+		case PositionConstants.SOUTH_WEST:
+		case PositionConstants.NORTH_EAST:
+			addSegment(point, rect.getTopLeft());
+			addSegment(point, rect.getBottomRight());
+			break;
+		case PositionConstants.SOUTH_EAST:
+		case PositionConstants.NORTH_WEST:
+			addSegment(point, rect.getTopRight());
+			addSegment(point, rect.getBottomLeft());
+			break;
+		case PositionConstants.NORTH:
+			addSegment(point, rect.getTopLeft());
+			addSegment(point, rect.getTopRight());
+			break;
+		case PositionConstants.EAST:
+			addSegment(point, rect.getBottomRight());
+			addSegment(point, rect.getTopRight());
+			break;
+		case PositionConstants.SOUTH:
+			addSegment(point, rect.getBottomRight());
+			addSegment(point, rect.getBottomLeft());
+			break;
+		case PositionConstants.WEST:
+			addSegment(point, rect.getTopLeft());
+			addSegment(point, rect.getBottomLeft());
+			break;
+	}
 }
 
 public void setObstacles(Rectangle[] boxes) {

@@ -16,6 +16,7 @@ import java.util.Random;
 
 import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.examples.AbstractExample;
+import org.eclipse.draw2d.geometry.*;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 
@@ -52,15 +53,20 @@ static class DragFigure extends RectangleFigure {
 }
 
 class TestFigure extends Figure {
+	
+	Point source, target;
+	
 	{
+		source = new Point(15, 111);
+		target = new Point(800, 300);
 		DragFigure f;
 		Random r = new Random(0);
-		int COUNT = 49;
+		int COUNT = 30;
 		int rowSize = (int)Math.sqrt(COUNT);
 		for (int i = 0; i < COUNT; i++) {
 			add(f = new DragFigure());
 			f.setBounds(new Rectangle(
-					(i / rowSize) * 101 + (i) % 3 * 10, i % rowSize * 101 + (i % 5) * 6,
+					(i / rowSize) * 101 + (i) % 3 * 10 + 100, i % rowSize * 101 + (i % 7) * 6,
 					50, 50 + (int)(r.nextDouble() * 10)));
 		}
 /*		add(f = new DragFigure());
@@ -80,6 +86,7 @@ class TestFigure extends Figure {
 		for (int i = 0; i < obstacles.length; i++)
 			obstacles[i] = ((IFigure)children.get(i)).getBounds();
 		routing.setObstacles(obstacles);
+		routing.setGoals(source, target);
 		
 		g.setForegroundColor(ColorConstants.blue);
 		g.setLineWidth(2);
@@ -98,6 +105,10 @@ class TestFigure extends Figure {
 			ShortestPathRouting.Segment seg = (ShortestPathRouting.Segment)segs.get(i);
 			g.drawLine(seg.x1, seg.y1, seg.x2, seg.y2);
 		}
+		
+		g.setBackgroundColor(ColorConstants.darkBlue);
+		g.fillOval(source.x - 10, source.y - 5, 20, 20);
+		g.fillOval(target.x - 10, target.y - 5, 20, 20);
 /*		Rectangle clip = new Rectangle();
 		g.getClip(clip);
 		ShortestPathRouting.Segment seg = new ShortestPathRouting.Segment();
@@ -119,7 +130,7 @@ class TestFigure extends Figure {
  */
 protected IFigure getContents() {
 	Figure f = new TestFigure();
-	f.setPreferredSize(700, 450);
+	f.setPreferredSize(900, 700);
 	return f;
 }
 
