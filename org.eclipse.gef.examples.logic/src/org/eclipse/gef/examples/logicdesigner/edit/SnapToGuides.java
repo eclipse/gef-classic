@@ -1,6 +1,7 @@
 package org.eclipse.gef.examples.logicdesigner.edit;
 
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.PositionConstants;
@@ -16,7 +17,6 @@ import org.eclipse.gef.examples.logicdesigner.rulers.Guide;
  */
 public class SnapToGuides implements SnapToStrategy {
 
-
 private static final double THRESHOLD = 5.01;
 private LogicDiagramEditPart diagramEditPart;
 
@@ -24,52 +24,44 @@ public SnapToGuides(LogicDiagramEditPart diagramEditPart) {
 	this.diagramEditPart = diagramEditPart;
 }
 
-int[] getHorizontalGuides() {
+Guide[] getHorizontalGuides() {
 	List guides = diagramEditPart.getLogicDiagram()
-		.getRuler(PositionConstants.WEST).getGuides();
-
-	int result[] = new int[guides.size()];
-	
-	for (int i = 0; i < guides.size(); i++) {
-		Guide g = (Guide)guides.get(i);
-		result[i] = g.getPosition();
-	}
-	return result;
+			.getRuler(PositionConstants.WEST).getGuides();
+	return (Guide[])guides.toArray(new Guide[guides.size()]);
 }
 
-int[] getVerticalGuides() {
+Guide[] getVerticalGuides() {
 	List guides = diagramEditPart.getLogicDiagram()
-		.getRuler(PositionConstants.NORTH).getGuides();
-
-	int result[] = new int[guides.size()];
-	
-	for (int i = 0; i < guides.size(); i++) {
-		Guide g = (Guide)guides.get(i);
-		result[i] = g.getPosition();
-	}
-	return result;
+			.getRuler(PositionConstants.NORTH).getGuides();
+	return (Guide[])guides.toArray(new Guide[guides.size()]);
 }
 
 
-private double getCorrectionFor(int[] guides, double near, double far) {
-	double result = getCorrectionFor(guides, near);
+private double getCorrectionFor(Guide[] guides, double near, double far, Map extendedData, 
+                                boolean isVertical) {
+	double result = getCorrectionFor(guides, near, extendedData, isVertical, -1);
 	if (result == THRESHOLD)
-		result = getCorrectionFor(guides, (near + far) / 2);
+		result = getCorrectionFor(guides, (near + far) / 2, extendedData, isVertical, 0); 
 	if (result == THRESHOLD)
-		result = getCorrectionFor(guides, far);
+		result = getCorrectionFor(guides, far, extendedData, isVertical, 1);
 	return result;
 }
 
-private double getCorrectionFor(int[] guides, double value) {
+private double getCorrectionFor(Guide[] guides, double value, Map extendedData, 
+                                boolean vert, int side) {
 	double resultMag = THRESHOLD;
 	double result = THRESHOLD;
 	
 	for (int i = 0; i < guides.length; i++) {
-		int offset = guides[i];
+		int offset = guides[i].getPosition();
 		double magnitude;
 		
 		magnitude = Math.abs(value - offset);
 		if (magnitude < resultMag) {
+			extendedData.put(vert ? ChangeBoundsRequest.VERTICAL_GUIDE 
+			                      : ChangeBoundsRequest.HORIZONTAL_GUIDE, guides[i]);
+			extendedData.put(vert ? ChangeBoundsRequest.VERTICAL_ANCHOR 
+			                : ChangeBoundsRequest.HORIZONTAL_ANCHOR, new Integer(side));
 			resultMag = magnitude;
 			result = offset - value;
 		}
@@ -89,9 +81,9 @@ public boolean snapMoveRequest(ChangeBoundsRequest request,	PrecisionRectangle b
 	fig.translateToRelative(move);
 
 	double xcorrect = getCorrectionFor(getVerticalGuides(), baseRect.preciseX,
-			baseRect.preciseRight());
+			baseRect.preciseRight(), request.getExtendedData(), true);
 	double ycorrect = getCorrectionFor(getHorizontalGuides(), baseRect.preciseY,
-			baseRect.preciseBottom());
+			baseRect.preciseBottom(), request.getExtendedData(), false);
 
 	//If neither value is being corrected, return false
 	if (xcorrect == THRESHOLD && ycorrect == THRESHOLD)
@@ -107,6 +99,9 @@ public boolean snapMoveRequest(ChangeBoundsRequest request,	PrecisionRectangle b
 	move.updateInts();
 	fig.translateToAbsolute(move);
 	request.setMoveDelta(move);
+	if (request.getEditParts().size() > 1) {
+		request.getExtendedData().clear();
+	}
 	return true;
 
 }
@@ -129,34 +124,40 @@ public boolean snapResizeRequest(ChangeBoundsRequest request, PrecisionRectangle
 	fig.translateToRelative(move);
 
 	boolean change = false;
-	if ((dir & PositionConstants.EAST) != 0) {
-		double rightCorrection = getCorrectionFor(getVerticalGuides(), baseRec.preciseRight());
-		if (rightCorrection != THRESHOLD) {
-			change = true;
-			resize.preciseWidth += rightCorrection;
-		}
-	} else if ((dir & PositionConstants.WEST) != 0) {
-		double leftCorrection = getCorrectionFor(getVerticalGuides(), baseRec.preciseX);
-		if (leftCorrection != THRESHOLD) {
-			change = true;
-			resize.preciseWidth -= leftCorrection;
-			move.preciseX += leftCorrection;
-		}
+	/*
+	 * In order to preserve connections to guides, there can be no optimizations.
+	 * getCorrectionFor(...) must be invoked for all directions, not just along the ones
+	 * that are being resized.
+	 */
+	// east
+	double rightCorrection = getCorrectionFor(getVerticalGuides(), 
+			baseRec.preciseRight(), request.getExtendedData(), true, 1);
+	if (rightCorrection != THRESHOLD) {
+		change = true;
+		resize.preciseWidth += rightCorrection;
 	}
-	
-	if ((dir & PositionConstants.SOUTH) != 0) {
-		double bottom = getCorrectionFor(getHorizontalGuides(), baseRec.preciseBottom());
-		if (bottom != THRESHOLD) {
-			change = true;
-			resize.preciseHeight += bottom;
-		}
-	} else if ((dir & PositionConstants.NORTH) != 0) {
-		double topCorrection = getCorrectionFor(getHorizontalGuides(), baseRec.preciseY);
-		if (topCorrection != THRESHOLD) {
-			change = true;
-			resize.preciseHeight -= topCorrection;
-			move.preciseY += topCorrection;
-		}
+	// west
+	double leftCorrection = getCorrectionFor(getVerticalGuides(), baseRec.preciseX, 
+			request.getExtendedData(), true, -1);
+	if (leftCorrection != THRESHOLD) {
+		change = true;
+		resize.preciseWidth -= leftCorrection;
+		move.preciseX += leftCorrection;
+	}
+	// south
+	double bottom = getCorrectionFor(getHorizontalGuides(), baseRec.preciseBottom(),
+			request.getExtendedData(), false, 1);
+	if (bottom != THRESHOLD) {
+		change = true;
+		resize.preciseHeight += bottom;
+	}
+	// north
+	double topCorrection = getCorrectionFor(getHorizontalGuides(), baseRec.preciseY,
+			request.getExtendedData(), false, -1);
+	if (topCorrection != THRESHOLD) {
+		change = true;
+		resize.preciseHeight -= topCorrection;
+		move.preciseY += topCorrection;
 	}
 
 	if (!change)
@@ -168,8 +169,10 @@ public boolean snapResizeRequest(ChangeBoundsRequest request, PrecisionRectangle
 
 	request.setSizeDelta(resize);
 	request.setMoveDelta(move);
+	if (request.getEditParts().size() > 1) {
+		request.getExtendedData().clear();
+	}
 	return true;
-
 }
 
 }
