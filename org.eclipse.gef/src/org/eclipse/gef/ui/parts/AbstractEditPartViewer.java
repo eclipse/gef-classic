@@ -217,13 +217,15 @@ public Map getVisualPartMap(){
 	return mapVisualToEditPart;
 }
 
-protected void hookControl(){
+protected void hookControl() {
 	if (getControl() == null)
 		return;
 	if (getRootEditPart() != null)
 		getRootEditPart().activate();
 	refreshDragSourceAdapter();
 	refreshDropTargetAdapter();
+	if (contextMenuProvider != null)
+		contextMenuProvider.createMenu();
 }
 
 protected void hookDragSource(){
