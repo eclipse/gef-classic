@@ -16,10 +16,8 @@ import java.util.List;
  * identify them.
  */
 public class LayeredPane
-	extends TransparentFigure
+	extends Layer
 {
-
-//public static final Object PRIMARY_LAYER = new Object();
 
 private List layerKeys = new ArrayList();
 
