@@ -52,6 +52,7 @@ private class PreferenceListener
 			IFigure fig = ((GraphicalEditPart)root).getFigure();
 			fig.setFont(font);
 			fig.invalidateTree();
+			refreshAllEditParts(root);
 		} else if (property.equals(PaletteViewerPreferences.PREFERENCE_LAYOUT) 
 				|| property.equals(PaletteViewerPreferences.PREFERENCE_AUTO_COLLAPSE)
 				|| property.equals(DefaultPaletteViewerPreferences
