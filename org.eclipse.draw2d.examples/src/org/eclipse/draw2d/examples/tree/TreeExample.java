@@ -66,6 +66,8 @@ void doDeleteChild() {
 		return;
 	TreeBranch parent = (TreeBranch)selected.getParent();
 	IFigure contents = parent.getContentsPane();
+	if (contents.getChildren().isEmpty())
+		return;
 	contents.remove(
 		(IFigure)contents.getChildren().get(contents.getChildren().size() - 1));
 }
