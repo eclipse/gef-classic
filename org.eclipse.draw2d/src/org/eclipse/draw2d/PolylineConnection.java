@@ -218,6 +218,8 @@ public void setRoutingConstraint(Object cons) {
  * @param anchor the new source anchor
  */
 public void setSourceAnchor(ConnectionAnchor anchor) {
+	if (anchor == startAnchor)
+		return;
 	unhookSourceAnchor();
 	//No longer needed, revalidate does this.
 	//getConnectionRouter().invalidate(this);
@@ -233,11 +235,13 @@ public void setSourceAnchor(ConnectionAnchor anchor) {
  * @since 2.0
  */
 public void setSourceDecoration(RotatableDecoration dec) {
-	if (getSourceDecoration() != null)
-		remove(getSourceDecoration());
+	if (startArrow == dec)
+		return;
+	if (startArrow != null)
+		remove(startArrow);
 	startArrow = dec;
-	if (dec != null)
-		add(dec, new ArrowLocator(this, ConnectionLocator.SOURCE));
+	if (startArrow != null)
+		add(startArrow, new ArrowLocator(this, ConnectionLocator.SOURCE));
 }
 
 /**
@@ -246,6 +250,8 @@ public void setSourceDecoration(RotatableDecoration dec) {
  * @param anchor the new target anchor
  */
 public void setTargetAnchor(ConnectionAnchor anchor) {
+	if (anchor == endAnchor)
+		return;
 	unhookTargetAnchor();
 	//No longer needed, revalidate does this.
 	//getConnectionRouter().invalidate(this);
@@ -260,11 +266,13 @@ public void setTargetAnchor(ConnectionAnchor anchor) {
  * @param dec the new target decoration
  */
 public void setTargetDecoration(RotatableDecoration dec) {
-	if (getTargetDecoration() != null)
-		remove(getTargetDecoration());
+	if (endArrow == dec)
+		return;
+	if (endArrow != null)
+		remove(endArrow);
 	endArrow = dec;
-	if (dec != null)
-		add(dec, new ArrowLocator(this, ConnectionLocator.TARGET));
+	if (endArrow != null)
+		add(endArrow, new ArrowLocator(this, ConnectionLocator.TARGET));
 }
 
 private void unhookSourceAnchor() {
