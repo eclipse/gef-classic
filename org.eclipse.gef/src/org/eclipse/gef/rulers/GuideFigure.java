@@ -6,17 +6,25 @@ package org.eclipse.gef.rulers;
 import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.*;
 
+import org.eclipse.gef.SharedCursors;
+
 /**
  * @author Pratik Shah
  */
 public class GuideFigure 
-	extends Figure 
+	extends Figure
 {
 	
 private boolean horizontal;
 	
 public GuideFigure(boolean isHorizontal) {
 	horizontal = isHorizontal;
+	setBackgroundColor(ColorConstants.button);
+	if (horizontal) {
+		setCursor(SharedCursors.SIZEN);		
+	} else {
+		setCursor(SharedCursors.SIZEW);
+	}
 }
 	
 /* (non-Javadoc)
@@ -51,11 +59,6 @@ protected void paintFigure(Graphics graphics) {
 		clientArea.x = clientArea.getTopRight().x - 8;
 		clientArea.width = 8;
 		
-		if (hasFocus()) {
-			graphics.setBackgroundColor(ColorConstants.red);
-		} else {
-			graphics.setBackgroundColor(ColorConstants.button);			
-		}
 		graphics.fillRectangle(clientArea.getCropped(new Insets(2, 2, 2, 1)));
 
 		graphics.setForegroundColor(ColorConstants.buttonLightest);
@@ -100,7 +103,6 @@ protected void paintFigure(Graphics graphics) {
 		clientArea.y = clientArea.getBottomLeft().y - 8;
 		clientArea.height = 8;
 		
-		graphics.setBackgroundColor(ColorConstants.button);
 		graphics.fillRectangle(clientArea.getCropped(new Insets(2, 2, 1, 2)));
 
 		graphics.setForegroundColor(ColorConstants.buttonLightest);
