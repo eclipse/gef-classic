@@ -166,6 +166,8 @@ void erase();
  */
 IFigure findFigureAt(int x, int y);
 
+IFigure findFigureAt(int x, int y, TreeSearch search);
+
 /**
  * Returns the IFigure at the specified location. May return <code>this</code> or
  * <code>null</code>.

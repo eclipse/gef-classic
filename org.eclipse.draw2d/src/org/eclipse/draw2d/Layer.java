@@ -1,7 +1,5 @@
 package org.eclipse.draw2d;
 
-import java.util.Collection;
-
 /*
  * Licensed Material - Property of IBM
  * (C) Copyright IBM Corp. 2001, 2002 - All Rights Reserved.
@@ -26,27 +24,29 @@ public class Layer
  * @since 2.0
  * 
  */
-public boolean containsPoint(int x, int y){
+public boolean containsPoint(int x, int y) {
 	if (isOpaque())
 		return super.containsPoint(x, y);
-	for(int i=0;i<getChildren().size();i++){
+	for (int i = 0; i < getChildren().size(); i++) {
 		IFigure child = (IFigure)getChildren().get(i);
-		if(child.containsPoint(x,y))
+		if (child.containsPoint(x, y))
 			return true;
 	}
 	return false;
 }
 
 /**
- * Overridden to implement transparent behavior.
- * @since 2.0
+ * Overridden to implement transparency.
+ * @see org.eclipse.draw2d.IFigure#findFigureAt(int, int, TreeSearch)
  */
-public IFigure findFigureAtExcluding(int x, int y, Collection collection){
+public IFigure findFigureAt(int x, int y, TreeSearch search){
+	if (!isEnabled())
+		return null;
 	if (isOpaque())
-		return super.findFigureAtExcluding(x, y, collection);
+		return super.findFigureAt(x, y, search);
 
-	IFigure f = super.findFigureAtExcluding(x,y,collection);
-	if (f == this) 
+	IFigure f = super.findFigureAt(x, y, search);
+	if (f == this)
 		return null;
 	return f;
 }
