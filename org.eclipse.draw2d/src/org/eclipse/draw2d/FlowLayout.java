@@ -56,9 +56,7 @@ private WorkingData data = null;
 class WorkingData {
 	int rowHeight, rowWidth, rowCount, rowX, rowY, maxWidth;
 	Rectangle bounds[], area;
-//	Insets insets;
 	IFigure row[];
-	Dimension spacing;
 }
 
 /**
@@ -119,15 +117,15 @@ protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHi
 		if (i == 0){
 			width = childSize.width;
 			height = childSize.height;
-		} else if (width + childSize.width + minorSpacing > maxWidth) {
+		} else if (width + childSize.width + getMinorSpacing() > maxWidth) {
 			// The current row is full, start a new row.
-			prefSize.height += height + majorSpacing;
+			prefSize.height += height + getMajorSpacing();
 			prefSize.width = Math.max(prefSize.width, width);
 			width = childSize.width;
 			height = childSize.height;
 		} else {
 			// The current row can fit another child.
-			width += childSize.width + minorSpacing;
+			width += childSize.width + getMinorSpacing();
 			height = Math.max(height, childSize.height);
 		}
 	}
@@ -181,7 +179,7 @@ public int getMajorAlignment() {
  * the layout's orientation.
  * @return major spacing */
 public int getMajorSpacing() {
-	return minorSpacing;
+	return majorSpacing;
 }
 
 /** 
@@ -263,7 +261,7 @@ public void layout(IFigure parent) {
 	data = new WorkingData();
 	Rectangle relativeArea = parent.getClientArea();
 	data.area = transposer.t(relativeArea);
-	data.spacing = new Dimension (minorSpacing, majorSpacing);
+//	data.spacing = new Dimension (getMinorSpacing(), getMajorSpacing());
 
 	Iterator iterator= parent.getChildren().iterator();
 	int dx;
@@ -290,7 +288,7 @@ public void layout(IFigure parent) {
 		}
 		r.x = data.rowX;
 		r.y = data.rowY;
-		dx = r.width + data.spacing.width;
+		dx = r.width + getMinorSpacing();
 		data.rowX += dx;
 		data.rowWidth += dx;
 		data.rowHeight = Math.max(data.rowHeight, r.height);
@@ -318,10 +316,10 @@ protected void layoutRow(IFigure parent) {
 	int correctMinorAlignment = minorAlignment;
 
 	majorAdjustment = data.area.width - data.rowWidth;
-	if(!isHorizontal()){
-		correctMajorAlignment=minorAlignment;
-		correctMinorAlignment=majorAlignment;
-	}
+//	if(!isHorizontal()){
+//		correctMajorAlignment=minorAlignment;
+//		correctMinorAlignment=majorAlignment;
+//	}
 	switch (correctMajorAlignment) {
 		case ALIGN_LEFTTOP: 
 			majorAdjustment = 0;
@@ -354,7 +352,7 @@ protected void layoutRow(IFigure parent) {
 		
 		setBoundsOfChild(parent, data.row[j], transposer.t(data.bounds[j]));
 	}
-	data.rowY += data.spacing.height + data.rowHeight;
+	data.rowY += getMajorSpacing() + data.rowHeight;
 	initRow();
 }
 
