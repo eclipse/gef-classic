@@ -106,6 +106,10 @@ protected Command getAddCommand(Request generic) {
 		getLayoutContainer().translateFromParent(r);
 		r.translate(getLayoutOrigin().getNegated());
 		constraint = getConstraintFor(r);
+		/*
+		 * @TODO:Pratik Should create a new createAddCommand(...) which is given the
+		 * request so that attaching to/detaching from guides can be taken care of.  
+		 */
 		command.add(createAddCommand(childPart,
 			translateToModelConstraint(constraint)));
 	}
