@@ -15,6 +15,15 @@ import org.eclipse.swt.graphics.FontData;
 /**
  * This is the default implementation for PaletteViewerPreferences.  It uses
  * a single IPreferenceStore to load and save the palette viewer settings.
+ * <p>
+ * It is recommended that the default constructor be used as that will cause the
+ * preferences to be shared across different types of editors.  Sub-classes can add newer
+ * preferences to the store by using {@link #getPreferenceStore()}.  If the client wishes
+ * to restrict one of the existing preferences to their editor (say the auto-collapse
+ * setting), sub-classes may override the necessary methods (in this case, 
+ * {@link #getAutoCollapseSetting()} and {@link #setAutoCollapseSetting(int)}) and save
+ * that preference in some other preference store.
+ * </p>
  * 
  * @author Pratik Shah
  */
@@ -29,6 +38,12 @@ private PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 private IPreferenceStore store;
 private static final int DEFAULT_PALETTE_SIZE = 150;
 
+/**
+ * Default Constructor
+ * <p>
+ * Uses the GEF Plugin's IPreferenceStore to store the preferences.
+ * </p>
+ */
 public DefaultPaletteViewerPreferences() {
 	this(GEFPlugin.getDefault().getPreferenceStore());
 }
