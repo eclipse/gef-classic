@@ -29,7 +29,8 @@ Printer printer;
 
 /**
  * Creates a new PrinterGraphics with Graphics g, using Printer p
- * @param g Graphics object to draw with * @param p Printer to print to */
+ * @param g Graphics object to draw with
+ * @param p Printer to print to */
 public PrinterGraphics(Graphics g, Printer p) {
 	super(g);
 	printer = p;
@@ -57,8 +58,8 @@ public void drawImage(Image srcImage, int x, int y) {
  * @see Graphics#drawImage(Image, int, int, int, int, int, int, int, int)
  */
 public void drawImage(Image srcImage,
-	int sx, int sy, int sw, int sh,
-	int tx, int ty, int tw, int th) {
+	int sx, int sy, int sw,int sh,
+	int tx, int ty, int tw,int th) {
 	super.drawImage(printerImage(srcImage), sx, sy, sw, sh, tx, ty, tw, th);
 }
 

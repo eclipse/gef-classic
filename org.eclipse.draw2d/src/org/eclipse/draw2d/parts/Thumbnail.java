@@ -272,7 +272,7 @@ public Thumbnail() {
 
 /**
  * Creates a new Thumbnail with the given IFigure as its source figure.
- *  * @param fig The source figure */
+ * @param fig The source figure */
 public Thumbnail(IFigure fig) {
 	this();
 	setSource(fig);
@@ -330,7 +330,8 @@ public Dimension getPreferredSize(int wHint, int hHint) {
 }
 
 /**
- * Returns the scale factor on the X-axis. * @return X scale */
+ * Returns the scale factor on the X-axis.
+ * @return X scale */
 protected float getScaleX() {
 	return scaleX;
 }
@@ -374,9 +375,9 @@ protected Image getThumbnailImage() {
 	return thumbnailImage;
 }
 
-	/**
+/**
  * Returns <code>true</code> if the source figure has changed.
- *  * @return <code>true</code> if the source figure has changed */
+ * @return <code>true</code> if the source figure has changed */
 protected boolean isDirty() {
 	return isDirty;
 }
@@ -418,14 +419,16 @@ protected void paintFigure(Graphics graphics) {
 
 /**
  * Sets the dirty flag.
- *  * @param value The dirty value */
+ * @param value The dirty value */
 public void setDirty(boolean value) {
 	isDirty = value;
 }
 
 /**
  * Sets the X and Y scales for the Thumbnail.  These scales represent the ratio
- * between the source figure and the Thumbnail.   * @param x The X scale * @param y The Y scale */
+ * between the source figure and the Thumbnail.
+ * @param x The X scale
+ * @param y The Y scale */
 protected void setScales(float x, float y) {
 	scaleX = x;
 	scaleY = y;
@@ -434,7 +437,7 @@ protected void setScales(float x, float y) {
 /**
  * Sets the source Figure.  Also sets the scales and creates the necessary
  * update manager.
- *  * @param fig The source figure */
+ * @param fig The source figure */
 public void setSource(IFigure fig) {
 	if (sourceFigure == fig)
 		return;

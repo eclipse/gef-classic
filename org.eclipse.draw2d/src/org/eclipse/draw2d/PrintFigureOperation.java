@@ -28,7 +28,7 @@ private Color oldBGColor;
  * Constructor for PrintFigureOperation. 
  * Note: Descendants must call setPrintSource(IFigure) to set
  *       the IFigure that is to be printed.
- *  * @see org.eclipse.draw2d.PrintOperation#PrintOperation(Printer) */
+ * @see org.eclipse.draw2d.PrintOperation#PrintOperation(Printer) */
 protected PrintFigureOperation(Printer p) {
 	super(p);
 }
@@ -61,8 +61,7 @@ protected void restorePrintSource() {
 	oldBGColor = null;
 }
 
-/**
- *  * @see org.eclipse.draw2d.PrintOperation#printPages() */
+/** * @see org.eclipse.draw2d.PrintOperation#printPages() */
 protected void printPages() {
 	getPrinter().startPage();
 
@@ -77,8 +76,8 @@ protected void printPages() {
 
 /**
  * Sets up Graphics object g for IFigure f.
- * 
- * @param g The Graphics to setup * @param f The IFigure used to setup g */
+ * @param g The Graphics to setup
+ * @param f The IFigure used to setup g */
 protected void setupPrinterGraphicsFor(Graphics g, IFigure f) {
 	g.setForegroundColor(f.getForegroundColor());
 	g.setBackgroundColor(f.getBackgroundColor());

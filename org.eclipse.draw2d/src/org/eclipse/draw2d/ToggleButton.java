@@ -75,7 +75,7 @@ protected void paintFigure(Graphics graphics) {
 
 /**
  * Draws a checkered pattern to emulate a toggle button that is in the selected state.
- *  * @param graphics	The Graphics object used to paint */
+ * @param graphics	The Graphics object used to paint */
 protected void fillCheckeredRectangle(Graphics graphics) {
 	graphics.setBackgroundColor(ColorConstants.button);
 	graphics.setForegroundColor(ColorConstants.buttonLightest);

@@ -54,7 +54,7 @@ public ScrollableThumbnail() {
 
 /**
  * Creates a new ScrollableThumbnail that synchs with the given Viewport.
- *  * @param port The Viewport */
+ * @param port The Viewport */
 public ScrollableThumbnail(Viewport port) {
 	super();
 	setViewport(port);
@@ -103,8 +103,8 @@ private double getViewportScaleY() {
 
 /**
  * Reconfigures the SelectorFigure's bounds if the scales have changed.
- * 
- * @param scaleX The X scale * @param scaleY The Y scale
+ * @param scaleX The X scale
+ * @param scaleY The Y scale
  * @see org.eclipse.draw2d.parts.Thumbnail#setScales(float, float) */
 protected void setScales(float scaleX, float scaleY) {
 	if (scaleX == getScaleX() && scaleY == getScaleY())
@@ -117,7 +117,7 @@ protected void setScales(float scaleX, float scaleY) {
 
 /**
  * Sets the Viewport that this ScrollableThumbnail will synch with.
- *  * @param port The Viewport */
+ * @param port The Viewport */
 public void setViewport(Viewport port) {
 	port.addPropertyChangeListener(Viewport.PROPERTY_VIEW_LOCATION, propListener);
 	port.addFigureListener(figureListener);
