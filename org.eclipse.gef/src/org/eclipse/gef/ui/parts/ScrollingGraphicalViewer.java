@@ -28,7 +28,7 @@ public final Control createControl(Composite parent){
 	return canvas;
 }
 
-private FigureCanvas getFigureCanvas(){
+protected FigureCanvas getFigureCanvas(){
 	return (FigureCanvas)getControl();
 }
 
