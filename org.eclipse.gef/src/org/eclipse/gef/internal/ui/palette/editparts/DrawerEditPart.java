@@ -26,6 +26,10 @@ import org.eclipse.gef.palette.PaletteDrawer;
 import org.eclipse.gef.palette.PaletteTemplateEntry;
 import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
 
+import org.eclipse.gef.internal.InternalImages;
+
+import org.eclipse.jface.resource.ImageDescriptor;
+
 /**
  * EditPart for a PaletteDrawer
  * 
@@ -183,12 +187,19 @@ protected void refreshVisuals() {
 	// Do not call super.refreshVisuals()
 	// That will update the Tooltip for the DrawerFigure.  But DrawerFigure has its
 	// own tooltip that is displayed when the text in the header is truncated.
+	ImageDescriptor img = getPaletteEntry().getSmallIcon();
+	if (img == null) {
+		img = InternalImages.DESC_FOLDER_OPEN;
+	}
+	setImageDescriptor(img);
+
 	getDrawerFigure().setTitle(getPaletteEntry().getLabel());
-	setImageDescriptor(getPaletteEntry().getSmallIcon());
 	getDrawerFigure().setLayoutMode(getPreferenceSource().getLayoutSetting());
+
 	boolean showPin = getPreferenceSource().getAutoCollapseSetting()
 					== PaletteViewerPreferences.COLLAPSE_AS_NEEDED;
 	getDrawerFigure().showPin(showPin);
+
 	Color background = getDrawer().getDrawerType().equals(
 		PaletteTemplateEntry.PALETTE_TYPE_TEMPLATE) ? ColorConstants.listBackground : null;
 	getDrawerFigure().getContentPane().setBackgroundColor(background);
