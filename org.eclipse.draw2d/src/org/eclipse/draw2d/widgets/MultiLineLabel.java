@@ -71,18 +71,11 @@ public MultiLineLabel(Composite parent) {
 	super(parent);
 	setViewport(new FocusableViewport());
 	
-	Figure root = new Figure();
-	BorderLayout layout = new BorderLayout();
-	layout.setHorizontalSpacing(5);
-	root.setLayoutManager(layout);
-	
 	FlowPage page = new FlowPage();
 	textFlow = new TextFlow();
 	page.add(textFlow);
-	root.add(page);
-	root.setConstraint(page, BorderLayout.CENTER);
 
-	setContents(root);
+	setContents(page);
 	getViewport().setContentsTracksWidth(true);
 	addAccessibility();
 }
@@ -130,6 +123,11 @@ private void addAccessibility() {
 			}
 		}
 	});
+}
+
+public void setEnabled(boolean enabled) {
+	super.setEnabled(enabled);
+	textFlow.setEnabled(getEnabled());
 }
 
 public Image getImage() {
