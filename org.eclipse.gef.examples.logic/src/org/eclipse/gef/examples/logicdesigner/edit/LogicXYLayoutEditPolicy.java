@@ -13,8 +13,6 @@ package org.eclipse.gef.examples.logicdesigner.edit;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.geometry.PrecisionRectangle;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.*;
@@ -22,7 +20,7 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
 import org.eclipse.gef.requests.CreateRequest;
-import org.eclipse.gef.ui.parts.RulerProvider;
+import org.eclipse.gef.rulers.*;
 
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
 import org.eclipse.gef.examples.logicdesigner.model.*;
@@ -64,17 +62,16 @@ protected Command createChangeConstraintCommand(ChangeBoundsRequest request,
 	SetConstraintCommand cmd = (SetConstraintCommand)createChangeConstraintCommand(
 			child, constraint);
 	Integer guidePos = (Integer)request.getExtendedData()
-			.get(SnapToGuides.HORIZONTAL_GUIDE);
+			.get(SnapToGuides.PROPERTY_HORIZONTAL_GUIDE);
 	if (guidePos != null) {
 		int hAlignment = ((Integer)request.getExtendedData()
-				.get(SnapToGuides.HORIZONTAL_ANCHOR)).intValue();
+				.get(SnapToGuides.PROPERTY_HORIZONTAL_ANCHOR)).intValue();
 		cmd.setHorizontalGuide(findGuideAt(guidePos.intValue(), true), hAlignment);
 	}
-	guidePos = (Integer)request.getExtendedData()
-			.get(SnapToGuides.VERTICAL_GUIDE);
+	guidePos = (Integer)request.getExtendedData().get(SnapToGuides.PROPERTY_VERTICAL_GUIDE);
 	if (guidePos != null) {
 		int vAlignment = ((Integer)request.getExtendedData()
-				.get(SnapToGuides.VERTICAL_ANCHOR)).intValue();
+				.get(SnapToGuides.PROPERTY_VERTICAL_ANCHOR)).intValue();
 		cmd.setVerticalGuide(findGuideAt(guidePos.intValue(), false), vAlignment);
 	}
 	return cmd;
@@ -91,14 +88,14 @@ protected EditPolicy createChildEditPolicy(EditPart child) {
 
 protected LogicGuide findGuideAt(int pos, boolean horizontal) {
 	List guides = ((RulerProvider)getHost().getViewer().getProperty(
-			horizontal ? RulerProvider.VERTICAL : RulerProvider.HORIZONTAL)).getGuides();
+			horizontal ? RulerProvider.PROPERTY_VERTICAL_RULER : RulerProvider.PROPERTY_HORIZONTAL_RULER)).getGuides();
 	for (int i = 0; i < guides.size(); i++) {
 		LogicGuide guide = (LogicGuide)guides.get(i);
 		if (pos == guide.getPosition()) {
 			return guide;
 		}
 	}
-	throw new RuntimeException("LogicXYLayoutEditPolicy: Guide not found at position " + pos); //$NON-NLS-1$
+	throw new RuntimeException("LogicXYLayoutEditPolicy.findGuideAt(): Guide not found at position " + pos); //$NON-NLS-1$
 }
 
 /**

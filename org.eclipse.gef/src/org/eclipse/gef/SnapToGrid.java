@@ -12,8 +12,8 @@ import org.eclipse.gef.requests.ChangeBoundsRequest;
 public class SnapToGrid implements SnapToStrategy {
 	
 public static final String PROPERTY_GRID_ENABLED = "SnapToGrid + $Property"; //$NON-NLS-1$
-public static final String GRID_SPACING = "SnapToGrid - Grid Spacing"; //$NON-NLS-1$
-public static final String GRID_ORIGIN = "SnapToGrid - $Grid Origin"; //$NON-NLS-1$
+public static final String PROPERTY_GRID_SPACING = "SnapToGrid - Grid Spacing"; //$NON-NLS-1$
+public static final String PROPERTY_GRID_ORIGIN = "SnapToGrid - $Grid Origin"; //$NON-NLS-1$
 public static final int DEFAULT_GAP = 20;
 	
 private GraphicalEditPart container;
@@ -27,7 +27,7 @@ private Point origin;
  */
 public SnapToGrid(GraphicalEditPart gep) {
 	container = gep;
-	Dimension spacing = (Dimension)container.getViewer().getProperty(GRID_SPACING);
+	Dimension spacing = (Dimension)container.getViewer().getProperty(PROPERTY_GRID_SPACING);
 	if (spacing != null) {
 		gridX = spacing.width;
 		gridY = spacing.height;
@@ -35,7 +35,7 @@ public SnapToGrid(GraphicalEditPart gep) {
 		gridX = DEFAULT_GAP;
 		gridY = DEFAULT_GAP;
 	}
-	Point loc = (Point)container.getViewer().getProperty(GRID_ORIGIN);
+	Point loc = (Point)container.getViewer().getProperty(PROPERTY_GRID_ORIGIN);
 	if (loc != null)
 		origin = loc;
 	else

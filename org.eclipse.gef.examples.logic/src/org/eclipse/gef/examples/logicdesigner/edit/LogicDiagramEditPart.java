@@ -22,9 +22,9 @@ import org.eclipse.gef.*;
 import org.eclipse.gef.editpolicies.RootComponentEditPolicy;
 import org.eclipse.gef.editpolicies.SnapFeedbackPolicy;
 import org.eclipse.gef.requests.SelectionRequest;
+import org.eclipse.gef.rulers.*;
 import org.eclipse.gef.tools.DeselectAllTracker;
 import org.eclipse.gef.tools.MarqueeDragTracker;
-import org.eclipse.gef.ui.parts.RulerProvider;
 
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
 import org.eclipse.gef.examples.logicdesigner.model.LogicDiagram;
@@ -79,7 +79,7 @@ protected IFigure createFigure() {
 public Object getAdapter(Class adapter) {
 	if (adapter == SnapToStrategy.class) {
 		List snapStrategies = new ArrayList();
-		Boolean val = (Boolean)getViewer().getProperty(RulerProvider.RULER_VISIBILITY);
+		Boolean val = (Boolean)getViewer().getProperty(RulerProvider.PROPERTY_RULER_VISIBILITY);
 		if (val != null && val.booleanValue())
 			snapStrategies.add(new SnapToGuides(this));
 		val = (Boolean)getViewer().getProperty(SnapToGeometry.PROPERTY_SNAP_ENABLED);

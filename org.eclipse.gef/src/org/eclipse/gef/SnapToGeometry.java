@@ -17,8 +17,8 @@ public class SnapToGeometry implements SnapToStrategy {
 	
 public static final String PROPERTY_SNAP_ENABLED = "SnapToGeometry - $Property"; //$NON-NLS-1$
 	
-public static final String HORIZONTAL_ANCHOR = "SnapToGeometry - $H Anchor"; //$NON-NLS-1$
-public static final String VERTICAL_ANCHOR = "SnapToGeometry - $V Anchor"; //$NON-NLS-1$
+public static final String PROPERTY_HORIZONTAL_ANCHOR = "SnapToGeometry - $H Anchor"; //$NON-NLS-1$
+public static final String PROPERTY_VERTICAL_ANCHOR = "SnapToGeometry - $V Anchor"; //$NON-NLS-1$
 
 private GraphicalEditPart container;
 private static final double THRESHOLD = 5.0001;
@@ -96,7 +96,7 @@ private double getCorrectionFor(Entry entries[], Map extendedData, boolean vert,
 			if (magnitude < resultMag) {
 				resultMag = magnitude;
 				result = entry.offset - value;
-				extendedData.put(vert ? VERTICAL_ANCHOR : HORIZONTAL_ANCHOR, 
+				extendedData.put(vert ? PROPERTY_VERTICAL_ANCHOR : PROPERTY_HORIZONTAL_ANCHOR, 
 						new Integer(entry.offset));
 			}
 		} else if (entry.side == 0 && side == 0) {
@@ -104,7 +104,7 @@ private double getCorrectionFor(Entry entries[], Map extendedData, boolean vert,
 			if (magnitude < resultMag) {
 				resultMag = magnitude;
 				result = entry.offset - value;
-				extendedData.put(vert ? VERTICAL_ANCHOR : HORIZONTAL_ANCHOR, 
+				extendedData.put(vert ? PROPERTY_VERTICAL_ANCHOR : PROPERTY_HORIZONTAL_ANCHOR, 
 									  new Integer(entry.offset));
 			}
 		} else if (entry.side == 1 && side != 0) {
@@ -112,7 +112,7 @@ private double getCorrectionFor(Entry entries[], Map extendedData, boolean vert,
 			if (magnitude < resultMag) {
 				resultMag = magnitude;
 				result = entry.offset - value;
-				extendedData.put(vert ? VERTICAL_ANCHOR : HORIZONTAL_ANCHOR, 
+				extendedData.put(vert ? PROPERTY_VERTICAL_ANCHOR : PROPERTY_HORIZONTAL_ANCHOR, 
 									  new Integer(entry.offset));
 			}
 		}

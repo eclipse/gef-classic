@@ -80,13 +80,13 @@ public void showTargetFeedback(Request request) {
 			|| request.getType().equals(REQ_CLONE)) {
 		eraseTargetFeedback(request);
 		ChangeBoundsRequest req = (ChangeBoundsRequest)request;
-		highlightGuide((Integer)req.getExtendedData().get(SnapToGeometry.VERTICAL_ANCHOR), 
+		highlightGuide((Integer)req.getExtendedData().get(SnapToGeometry.PROPERTY_VERTICAL_ANCHOR), 
 				ColorConstants.blue, false);
-		highlightGuide((Integer)req.getExtendedData().get(SnapToGeometry.HORIZONTAL_ANCHOR), 
+		highlightGuide((Integer)req.getExtendedData().get(SnapToGeometry.PROPERTY_HORIZONTAL_ANCHOR), 
 				ColorConstants.blue, true);
-		highlightGuide((Integer)req.getExtendedData().get(SnapToGuides.VERTICAL_GUIDE), 
+		highlightGuide((Integer)req.getExtendedData().get(SnapToGuides.PROPERTY_VERTICAL_GUIDE), 
 				ColorConstants.red, false);
-		highlightGuide((Integer)req.getExtendedData().get(SnapToGuides.HORIZONTAL_GUIDE), 
+		highlightGuide((Integer)req.getExtendedData().get(SnapToGuides.PROPERTY_HORIZONTAL_GUIDE), 
 				ColorConstants.red, true);
 	}
 }

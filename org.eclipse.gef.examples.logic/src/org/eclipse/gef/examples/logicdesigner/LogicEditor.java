@@ -39,10 +39,11 @@ import org.eclipse.draw2d.parts.Thumbnail;
 import org.eclipse.gef.*;
 import org.eclipse.gef.editparts.ScalableFreeformRootEditPart;
 import org.eclipse.gef.editparts.ZoomManager;
-import org.eclipse.gef.internal.ui.rulers.ToggleRulerVisibilityAction;
 import org.eclipse.gef.palette.PaletteRoot;
+import org.eclipse.gef.rulers.*;
 import org.eclipse.gef.ui.actions.*;
 import org.eclipse.gef.ui.parts.*;
+import org.eclipse.gef.ui.rulers.*;
 import org.eclipse.gef.ui.stackview.CommandStackInspectorPage;
 import org.eclipse.gef.ui.views.palette.DefaultPalettePage;
 import org.eclipse.gef.ui.views.palette.IPalettePage;
@@ -377,14 +378,14 @@ protected void loadProperties() {
 	if (ruler != null) {
 		provider = new LogicRulerProvider(ruler);
 	}
-	getGraphicalViewer().setProperty(RulerProvider.VERTICAL, provider);
+	getGraphicalViewer().setProperty(RulerProvider.PROPERTY_VERTICAL_RULER, provider);
 	ruler = getLogicDiagram().getRuler(PositionConstants.NORTH);
 	provider = null;
 	if (ruler != null) {
 		provider = new LogicRulerProvider(ruler);
 	}
-	getGraphicalViewer().setProperty(RulerProvider.HORIZONTAL, provider);
-	getGraphicalViewer().setProperty(RulerProvider.RULER_VISIBILITY, 
+	getGraphicalViewer().setProperty(RulerProvider.PROPERTY_HORIZONTAL_RULER, provider);
+	getGraphicalViewer().setProperty(RulerProvider.PROPERTY_RULER_VISIBILITY, 
 			new Boolean(getLogicDiagram().getRulerVisibility()));
 	
 	// Snap to Geometry property
@@ -397,11 +398,11 @@ protected void loadProperties() {
 	Dimension spacing = getLogicDiagram().getGridSpacing();
 	if (spacing == null)
 		spacing = new Dimension(SnapToGrid.DEFAULT_GAP, SnapToGrid.DEFAULT_GAP);
-	getGraphicalViewer().setProperty(SnapToGrid.GRID_SPACING, spacing);
+	getGraphicalViewer().setProperty(SnapToGrid.PROPERTY_GRID_SPACING, spacing);
 	Point origin = getLogicDiagram().getGridOrigin();
 	if (origin == null)
 		origin = new Point();
-	getGraphicalViewer().setProperty(SnapToGrid.GRID_ORIGIN, origin);
+	getGraphicalViewer().setProperty(SnapToGrid.PROPERTY_GRID_ORIGIN, origin);
 	
 	// Zoom
 	ZoomManager manager = (ZoomManager)getGraphicalViewer()
@@ -646,15 +647,15 @@ private boolean savePreviouslyNeeded() {
 
 protected void saveProperties() {
 	getLogicDiagram().setRulerVisibility(((Boolean)getGraphicalViewer()
-			.getProperty(RulerProvider.RULER_VISIBILITY)).booleanValue());
+			.getProperty(RulerProvider.PROPERTY_RULER_VISIBILITY)).booleanValue());
 	getLogicDiagram().setGridEnabled(((Boolean)getGraphicalViewer()
 			.getProperty(SnapToGrid.PROPERTY_GRID_ENABLED)).booleanValue());
 	getLogicDiagram().setSnapToGeometry(((Boolean)getGraphicalViewer()
 			.getProperty(SnapToGeometry.PROPERTY_SNAP_ENABLED)).booleanValue());
 	getLogicDiagram().setGridOrigin((Point)getGraphicalViewer()
-			.getProperty(SnapToGrid.GRID_ORIGIN));
+			.getProperty(SnapToGrid.PROPERTY_GRID_ORIGIN));
 	getLogicDiagram().setGridSpacing((Dimension)getGraphicalViewer()
-			.getProperty(SnapToGrid.GRID_SPACING));
+			.getProperty(SnapToGrid.PROPERTY_GRID_SPACING));
 	ZoomManager manager = (ZoomManager)getGraphicalViewer()
 			.getProperty(ZoomManager.class.toString());
 	if (manager != null)

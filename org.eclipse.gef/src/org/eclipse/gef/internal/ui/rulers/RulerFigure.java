@@ -19,7 +19,7 @@ import org.eclipse.draw2d.geometry.*;
 
 import org.eclipse.gef.editparts.ZoomListener;
 import org.eclipse.gef.editparts.ZoomManager;
-import org.eclipse.gef.ui.parts.RulerProvider;
+import org.eclipse.gef.rulers.RulerProvider;
 
 /**
  * @author Pratik Shah

@@ -11,7 +11,7 @@
 package org.eclipse.gef.internal.ui.rulers;
 
 import org.eclipse.gef.*;
-import org.eclipse.gef.ui.parts.RulerProvider;
+import org.eclipse.gef.rulers.*;
 
 /**
  * @author Pratik Shah
@@ -51,7 +51,7 @@ protected EditPart createRulerEditPart(EditPart parentEditPart, Object model) {
 protected Object getHorizontalRuler() {
 	Object ruler = null;
 	RulerProvider provider = 
-			(RulerProvider)diagramViewer.getProperty(RulerProvider.HORIZONTAL);
+			(RulerProvider)diagramViewer.getProperty(RulerProvider.PROPERTY_HORIZONTAL_RULER);
 	if (provider != null) {
 		ruler = provider.getRuler();
 	}
@@ -61,7 +61,7 @@ protected Object getHorizontalRuler() {
 protected Object getVerticalRuler() {
 	Object ruler = null;
 	RulerProvider provider = 
-			(RulerProvider)diagramViewer.getProperty(RulerProvider.VERTICAL);
+			(RulerProvider)diagramViewer.getProperty(RulerProvider.PROPERTY_VERTICAL_RULER);
 	if (provider != null) {
 		ruler = provider.getRuler();
 	}

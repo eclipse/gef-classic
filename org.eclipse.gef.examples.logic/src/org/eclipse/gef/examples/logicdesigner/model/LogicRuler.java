@@ -16,7 +16,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.gef.ui.parts.RulerProvider;
+import org.eclipse.gef.rulers.RulerProvider;
 
 /**
  * @author Pratik Shah

@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.gef.ui.parts;
+package org.eclipse.gef.rulers;
 
 /**
  * @author Pratik Shah

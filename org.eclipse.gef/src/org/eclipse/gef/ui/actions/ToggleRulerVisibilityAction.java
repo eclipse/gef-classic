@@ -8,22 +8,21 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.gef.internal.ui.rulers;
+package org.eclipse.gef.ui.actions;
 
 import org.eclipse.jface.action.Action;
 
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.internal.GEFMessages;
-import org.eclipse.gef.ui.actions.GEFActionConstants;
-import org.eclipse.gef.ui.parts.RulerProvider;
+import org.eclipse.gef.rulers.RulerProvider;
 
 /**
  * This action requires that the given graphical viewer have the ruler visibility
- * property (with RulerProvider.RULER_VISIBILITY as the boolean). 
+ * property (with RulerProvider.PROPERTY_RULER_VISIBILITY as the boolean). 
  * 
  * @author Pratik Shah
  */
-public class ToggleRulerVisibilityAction 
+public class ToggleRulerVisibilityAction
 	extends Action 
 {
 
@@ -42,14 +41,14 @@ public ToggleRulerVisibilityAction(GraphicalViewer diagramViewer) {
 }
 
 public boolean isChecked() {
-	Boolean val = ((Boolean)diagramViewer.getProperty(RulerProvider.RULER_VISIBILITY));
+	Boolean val = ((Boolean)diagramViewer.getProperty(RulerProvider.PROPERTY_RULER_VISIBILITY));
 	if (val != null)
 		return val.booleanValue();
 	return false;
 }
 
 public void run() {
-	diagramViewer.setProperty(RulerProvider.RULER_VISIBILITY, new Boolean(!isChecked()));
+	diagramViewer.setProperty(RulerProvider.PROPERTY_RULER_VISIBILITY, new Boolean(!isChecked()));
 }
 
 }

@@ -16,7 +16,7 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.*;
 
 import org.eclipse.gef.requests.ChangeBoundsRequest;
-import org.eclipse.gef.ui.parts.RulerProvider;
+import org.eclipse.gef.rulers.*;
 
 /**
  * @author Randy Hudson
@@ -24,10 +24,10 @@ import org.eclipse.gef.ui.parts.RulerProvider;
 public class SnapToGuides implements SnapToStrategy {
 
 	
-public static final String VERTICAL_GUIDE = "vertical guide"; //$NON-NLS-1$
-public static final String HORIZONTAL_GUIDE = "horizontal guide"; //$NON-NLS-1$
-public static final String VERTICAL_ANCHOR = "vertical attachment"; //$NON-NLS-1$
-public static final String HORIZONTAL_ANCHOR = "horizontal attachment"; //$NON-NLS-1$
+public static final String PROPERTY_VERTICAL_GUIDE = "vertical guide"; //$NON-NLS-1$
+public static final String PROPERTY_HORIZONTAL_GUIDE = "horizontal guide"; //$NON-NLS-1$
+public static final String PROPERTY_VERTICAL_ANCHOR = "vertical attachment"; //$NON-NLS-1$
+public static final String PROPERTY_HORIZONTAL_ANCHOR = "horizontal attachment"; //$NON-NLS-1$
 
 private static final double THRESHOLD = 7.01;
 private GraphicalEditPart container;
@@ -43,7 +43,7 @@ public SnapToGuides(GraphicalEditPart container) {
 int[] getHorizontalGuides() {
 	if (horizontalGuides == null) {
 		RulerProvider rProvider = ((RulerProvider)container.getViewer()
-				.getProperty(RulerProvider.VERTICAL));
+				.getProperty(RulerProvider.PROPERTY_VERTICAL_RULER));
 		if (rProvider != null)
 			horizontalGuides = rProvider.getGuidePositions();	
 		else
@@ -55,7 +55,7 @@ int[] getHorizontalGuides() {
 int[] getVerticalGuides() {
 	if (verticalGuides == null) {
 		RulerProvider rProvider = ((RulerProvider)container.getViewer()
-				.getProperty(RulerProvider.HORIZONTAL));
+				.getProperty(RulerProvider.PROPERTY_HORIZONTAL_RULER));
 		if (rProvider != null)
 			verticalGuides = rProvider.getGuidePositions();	
 		else
@@ -86,9 +86,9 @@ private double getCorrectionFor(int[] guides, double value, Map extendedData,
 		
 		magnitude = Math.abs(value - offset);
 		if (magnitude < resultMag) {
-			extendedData.put(vert ? VERTICAL_GUIDE : HORIZONTAL_GUIDE, 
+			extendedData.put(vert ? PROPERTY_VERTICAL_GUIDE : PROPERTY_HORIZONTAL_GUIDE, 
 					new Integer(guides[i]));
-			extendedData.put(vert ? VERTICAL_ANCHOR : HORIZONTAL_ANCHOR, 
+			extendedData.put(vert ? PROPERTY_VERTICAL_ANCHOR : PROPERTY_HORIZONTAL_ANCHOR, 
 					new Integer(side));
 			resultMag = magnitude;
 			result = offset - value;
@@ -115,10 +115,10 @@ public boolean snapMoveRequest(ChangeBoundsRequest request,	PrecisionRectangle b
 
 	// If there are more than one edit parts being moved, detach them from all guides.
 	if (request.getEditParts().size() > 1) {
-		request.getExtendedData().remove(HORIZONTAL_GUIDE);
-		request.getExtendedData().remove(HORIZONTAL_ANCHOR);
-		request.getExtendedData().remove(VERTICAL_GUIDE);
-		request.getExtendedData().remove(VERTICAL_ANCHOR);
+		request.getExtendedData().remove(PROPERTY_HORIZONTAL_GUIDE);
+		request.getExtendedData().remove(PROPERTY_HORIZONTAL_ANCHOR);
+		request.getExtendedData().remove(PROPERTY_VERTICAL_GUIDE);
+		request.getExtendedData().remove(PROPERTY_VERTICAL_ANCHOR);
 	}
 	
 	//If neither value is being corrected, return false
@@ -193,10 +193,10 @@ public boolean snapResizeRequest(ChangeBoundsRequest request, PrecisionRectangle
 
 	// If there are more than one edit parts being resized, detach them from all guides.
 	if (request.getEditParts().size() > 1) {
-		request.getExtendedData().remove(HORIZONTAL_GUIDE);
-		request.getExtendedData().remove(HORIZONTAL_ANCHOR);
-		request.getExtendedData().remove(VERTICAL_GUIDE);
-		request.getExtendedData().remove(VERTICAL_ANCHOR);
+		request.getExtendedData().remove(PROPERTY_HORIZONTAL_GUIDE);
+		request.getExtendedData().remove(PROPERTY_HORIZONTAL_ANCHOR);
+		request.getExtendedData().remove(PROPERTY_VERTICAL_GUIDE);
+		request.getExtendedData().remove(PROPERTY_VERTICAL_ANCHOR);
 	}
 
 	if (!change)

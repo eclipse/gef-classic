@@ -24,9 +24,8 @@ import org.eclipse.gef.*;
 import org.eclipse.gef.editparts.*;
 import org.eclipse.gef.editpolicies.SelectionEditPolicy;
 import org.eclipse.gef.internal.GEFMessages;
+import org.eclipse.gef.rulers.*;
 import org.eclipse.gef.tools.DragEditPartsTracker;
-import org.eclipse.gef.ui.parts.RulerChangeListener;
-import org.eclipse.gef.ui.parts.RulerProvider;
 
 /**
  * @author Pratik Shah

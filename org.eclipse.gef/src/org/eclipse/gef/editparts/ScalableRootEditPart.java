@@ -107,8 +107,8 @@ private ScalableLayeredPane scaledLayers;
 private PropertyChangeListener gridListener = new PropertyChangeListener() {
 	public void propertyChange(PropertyChangeEvent evt) {
 		String property = evt.getPropertyName();
-		if (property.equals(SnapToGrid.GRID_ORIGIN)
-				|| property.equals(SnapToGrid.GRID_SPACING)
+		if (property.equals(SnapToGrid.PROPERTY_GRID_ORIGIN)
+				|| property.equals(SnapToGrid.PROPERTY_GRID_SPACING)
 				|| property.equals(SnapToGrid.PROPERTY_GRID_ENABLED))
 			updateGridProperties();
 	}
@@ -368,8 +368,8 @@ protected void updateGridProperties() {
 	if (val != null)
 		visible = val.booleanValue();
 	grid.setVisible(visible);
-	grid.setOrigin((Point)getViewer().getProperty(SnapToGrid.GRID_ORIGIN));
-	grid.setSpacing((Dimension)getViewer().getProperty(SnapToGrid.GRID_SPACING));
+	grid.setOrigin((Point)getViewer().getProperty(SnapToGrid.PROPERTY_GRID_ORIGIN));
+	grid.setSpacing((Dimension)getViewer().getProperty(SnapToGrid.PROPERTY_GRID_SPACING));
 }
 
 }

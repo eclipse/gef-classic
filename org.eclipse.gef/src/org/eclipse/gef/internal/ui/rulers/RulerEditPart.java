@@ -18,8 +18,7 @@ import org.eclipse.gef.*;
 import org.eclipse.gef.editparts.*;
 import org.eclipse.gef.editpolicies.SelectionEditPolicy;
 import org.eclipse.gef.requests.SelectionRequest;
-import org.eclipse.gef.ui.parts.RulerChangeListener;
-import org.eclipse.gef.ui.parts.RulerProvider;
+import org.eclipse.gef.rulers.*;
 
 /**
 * @author Pratik Shah
@@ -152,12 +151,12 @@ public void setParent(EditPart parent) {
 		diagramViewer = (GraphicalViewer)getViewer()
 				.getProperty(GraphicalViewer.class.toString());
 		RulerProvider hProvider = (RulerProvider)diagramViewer
-				.getProperty(RulerProvider.HORIZONTAL);
+				.getProperty(RulerProvider.PROPERTY_HORIZONTAL_RULER);
 		if (hProvider != null && hProvider.getRuler() == getModel()) {
 			rulerProvider = hProvider;
 			horizontal = true;
 		} else {
-			rulerProvider = (RulerProvider)diagramViewer.getProperty(RulerProvider.VERTICAL);
+			rulerProvider = (RulerProvider)diagramViewer.getProperty(RulerProvider.PROPERTY_VERTICAL_RULER);
 		}
 	}
 }

@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.gef.ui.parts;
+package org.eclipse.gef.ui.rulers;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -26,6 +26,9 @@ import org.eclipse.draw2d.geometry.Insets;
 
 import org.eclipse.gef.*;
 import org.eclipse.gef.internal.ui.rulers.*;
+import org.eclipse.gef.rulers.*;
+import org.eclipse.gef.ui.parts.GraphicalViewerKeyHandler;
+import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 
 /**
  * @author Pratik Shah
@@ -94,11 +97,11 @@ private GraphicalViewer createRulerContainer(int orientation) {
 			 * performStroke() will take care of it.  just like in the logic editor.
 			 */
 			if (event.keyCode == SWT.DEL) {
-				if (getFocus() instanceof GuideEditPart) {
-					RulerEditPart parent = (RulerEditPart)getFocus().getParent();
+				if (getFocusEditPart() instanceof GuideEditPart) {
+					RulerEditPart parent = (RulerEditPart)getFocusEditPart().getParent();
 					getViewer().getEditDomain().getCommandStack().execute(
 							parent.getRulerProvider().getDeleteGuideCommand(
-							getFocus().getModel()));
+							getFocusEditPart().getModel()));
 					return true;
 				} else {
 					return false;
@@ -106,9 +109,9 @@ private GraphicalViewer createRulerContainer(int orientation) {
 			} else if (((event.stateMask & SWT.ALT) != 0) 
 					&& (event.keyCode == SWT.ARROW_UP)) {
 				// ALT + UP_ARROW pressed
-				EditPart parent = getFocus().getParent();
+				EditPart parent = getFocusEditPart().getParent();
 				if (parent instanceof RulerEditPart)
-					navigateTo(getFocus().getParent(), event);
+					navigateTo(getFocusEditPart().getParent(), event);
 				return true;
 			}
 			return super.keyPressed(event);
@@ -233,7 +236,7 @@ private FigureCanvas getFigureCanvas(GraphicalViewer viewer) {
  * only be invoked once.
  * <p>
  * To create ruler(s), simply add the RulerProvider(s) (with the right key: 
- * RulerProvider.HORIZONTAL or RulerProvider.VERTICAL) as a property on the viewer (it
+ * RulerProvider.PROPERTY_HORIZONTAL_RULER or RulerProvider.PROPERTY_VERTICAL_RULER) as a property on the viewer (it
  * can be done after this method is invoked).
  * 
  * @param	primaryViewer	The GraphicalViewer for which the rulers have to be created.
@@ -263,25 +266,25 @@ public void setGraphicalViewer(GraphicalViewer primaryViewer) {
 	propertyListener = new PropertyChangeListener() {
 		public void propertyChange(PropertyChangeEvent evt) {
 			String property = evt.getPropertyName();
-			if (RulerProvider.HORIZONTAL.equals(property)) {
-				setRuler((RulerProvider)diagramViewer.getProperty(RulerProvider.HORIZONTAL), 
+			if (RulerProvider.PROPERTY_HORIZONTAL_RULER.equals(property)) {
+				setRuler((RulerProvider)diagramViewer.getProperty(RulerProvider.PROPERTY_HORIZONTAL_RULER), 
 					PositionConstants.NORTH);
-			} else if (RulerProvider.VERTICAL.equals(property)) {
-				setRuler((RulerProvider)diagramViewer.getProperty(RulerProvider.VERTICAL),
+			} else if (RulerProvider.PROPERTY_VERTICAL_RULER.equals(property)) {
+				setRuler((RulerProvider)diagramViewer.getProperty(RulerProvider.PROPERTY_VERTICAL_RULER),
 					PositionConstants.WEST);
-			} else if (RulerProvider.RULER_VISIBILITY.equals(property))
+			} else if (RulerProvider.PROPERTY_RULER_VISIBILITY.equals(property))
 				setRulerVisibility(((Boolean)diagramViewer
-						.getProperty(RulerProvider.RULER_VISIBILITY)).booleanValue());
+						.getProperty(RulerProvider.PROPERTY_RULER_VISIBILITY)).booleanValue());
 		}
 	};
 	diagramViewer.addPropertyChangeListener(propertyListener);
 	Boolean rulerVisibility = (Boolean)diagramViewer
-			.getProperty(RulerProvider.RULER_VISIBILITY);
+			.getProperty(RulerProvider.PROPERTY_RULER_VISIBILITY);
 	if (rulerVisibility != null)
 		setRulerVisibility(rulerVisibility.booleanValue());
-	setRuler((RulerProvider)diagramViewer.getProperty(RulerProvider.HORIZONTAL), 
+	setRuler((RulerProvider)diagramViewer.getProperty(RulerProvider.PROPERTY_HORIZONTAL_RULER), 
 			PositionConstants.NORTH);
-	setRuler((RulerProvider)diagramViewer.getProperty(RulerProvider.VERTICAL), 
+	setRuler((RulerProvider)diagramViewer.getProperty(RulerProvider.PROPERTY_VERTICAL_RULER), 
 			PositionConstants.WEST);
 }
 
@@ -306,9 +309,9 @@ private void setRulerVisibility(boolean isVisible) {
 		isRulerVisible = isVisible;
 		if (diagramViewer != null) {
 			setRuler((RulerProvider)diagramViewer.getProperty(
-					RulerProvider.HORIZONTAL), PositionConstants.NORTH);
+					RulerProvider.PROPERTY_HORIZONTAL_RULER), PositionConstants.NORTH);
 			setRuler((RulerProvider)diagramViewer.getProperty(
-					RulerProvider.VERTICAL), PositionConstants.WEST);
+					RulerProvider.PROPERTY_VERTICAL_RULER), PositionConstants.WEST);
 		}
 	}
 }

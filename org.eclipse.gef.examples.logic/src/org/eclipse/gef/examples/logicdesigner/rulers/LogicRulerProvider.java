@@ -16,8 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.gef.commands.Command;
-import org.eclipse.gef.ui.parts.RulerChangeListener;
-import org.eclipse.gef.ui.parts.RulerProvider;
+import org.eclipse.gef.rulers.RulerChangeListener;
+import org.eclipse.gef.rulers.RulerProvider;
 
 import org.eclipse.gef.examples.logicdesigner.model.LogicGuide;
 import org.eclipse.gef.examples.logicdesigner.model.LogicRuler;
