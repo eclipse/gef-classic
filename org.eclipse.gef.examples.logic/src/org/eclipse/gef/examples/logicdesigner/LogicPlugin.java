@@ -15,13 +15,24 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.gef.*;
 import org.eclipse.gef.palette.*;
 import org.eclipse.gef.tools.*;
-import org.eclipse.gef.requests.CreateRequest;
 
 import org.eclipse.gef.examples.logicdesigner.model.*;
 
 public class LogicPlugin
 	extends org.eclipse.ui.plugin.AbstractUIPlugin
 {
+
+public static final String TEMPLATE_AND_GATE       = "and gate template";  //$NON-NLS-1$
+public static final String TEMPLATE_CIRCUIT        = "circuit template";  //$NON-NLS-1$
+public static final String TEMPLATE_FULL_ADDER     = "full adder template";  //$NON-NLS-1$
+public static final String TEMPLATE_GROUND         = "ground template";  //$NON-NLS-1$
+public static final String TEMPLATE_HALF_ADDER     = "half adder template";  //$NON-NLS-1$
+public static final String TEMPLATE_LED            = "led template";  //$NON-NLS-1$
+public static final String TEMPLATE_LIVE_OUTPUT    = "live output template";  //$NON-NLS-1$
+public static final String TEMPLATE_FLOW_CONTAINER = "flow container template";  //$NON-NLS-1$
+public static final String TEMPLATE_LOGIC_LABEL    = "logic label template";  //$NON-NLS-1$
+public static final String TEMPLATE_OR_GATE        = "or gate template";  //$NON-NLS-1$
+public static final String TEMPLATE_XOR_GATE       = "xor gate template";  //$NON-NLS-1$
 
 public LogicPlugin(IPluginDescriptor desc){
 	super(desc);
@@ -48,6 +59,26 @@ static private PaletteContainer createComplexPartsCategory(){
 	category.setChildren(groups);
 
 	List entries = new ArrayList();
+	
+	TemplateEntry template = new DefaultTemplateEntry(
+			TEMPLATE_HALF_ADDER,
+			LogicMessages.LogicPlugin_Tool_CreationTool_HalfAdder_Label,
+			LogicMessages.LogicPlugin_Tool_CreationTool_HalfAdder_Description,
+			new Image(null,Circuit.class.getResourceAsStream("icons/halfadder16.gif")), //$NON-NLS-1$
+			new Image(null,Circuit.class.getResourceAsStream("icons/halfadder.gif"))//$NON-NLS-1$
+		);
+	entries.add(template);
+
+	template = new DefaultTemplateEntry(
+			TEMPLATE_FULL_ADDER,
+			LogicMessages.LogicPlugin_Tool_CreationTool_FullAdder_Label,
+			LogicMessages.LogicPlugin_Tool_CreationTool_FullAdder_Description,
+			new Image(null,Circuit.class.getResourceAsStream("icons/fulladder16.gif")),//$NON-NLS-1$
+			new Image(null,Circuit.class.getResourceAsStream("icons/fulladder.gif"))//$NON-NLS-1$
+		);
+	entries.add(template);
+
+/*
 	entries.add(
 		new DefaultPaletteToolEntry(
 			new CreationTool(LogicDiagramFactory.getHalfAdderFactory()),
@@ -64,6 +95,7 @@ static private PaletteContainer createComplexPartsCategory(){
 			new Image(null,Circuit.class.getResourceAsStream("icons/fulladder16.gif")),//$NON-NLS-1$
 			new Image(null,Circuit.class.getResourceAsStream("icons/fulladder.gif")))//$NON-NLS-1$
 		);
+*/
 	group.setChildren(entries);
 
 	return category;
@@ -81,6 +113,88 @@ static private PaletteContainer createComponentsCategory(){
 
 	List entries = new ArrayList();
 	
+	TemplateEntry template = new DefaultTemplateEntry(
+			TEMPLATE_LOGIC_LABEL,
+			LogicMessages.LogicPlugin_Tool_CreationTool_LogicLabel,
+			LogicMessages.LogicPlugin_Tool_CreationTool_LogicLabel,
+			new Image(null,Circuit.class.getResourceAsStream("icons/label.gif")), //$NON-NLS-1$
+			new Image(null,Circuit.class.getResourceAsStream("icons/label.gif"))//$NON-NLS-1$
+		);
+	entries.add(template);
+
+	template = new DefaultTemplateEntry(
+			TEMPLATE_FLOW_CONTAINER,
+			LogicMessages.LogicPlugin_Tool_CreationTool_FlowContainer_Label,
+			LogicMessages.LogicPlugin_Tool_CreationTool_FlowContainer_Description,
+			new Image(null,Circuit.class.getResourceAsStream("icons/logicflow16.gif")), //$NON-NLS-1$
+			new Image(null,Circuit.class.getResourceAsStream("icons/logicflow.gif"))//$NON-NLS-1$
+		);
+	entries.add(template);
+
+	template = new DefaultTemplateEntry(
+			TEMPLATE_LED,
+			LogicMessages.LogicPlugin_Tool_CreationTool_LED_Label,
+			LogicMessages.LogicPlugin_Tool_CreationTool_LED_Description,
+			new Image(null,Circuit.class.getResourceAsStream("icons/ledicon16.gif")), //$NON-NLS-1$
+			new Image(null,Circuit.class.getResourceAsStream("icons/ledicon.gif"))//$NON-NLS-1$
+		);
+	entries.add(template);
+
+	template = new DefaultTemplateEntry(
+			TEMPLATE_CIRCUIT,
+			LogicMessages.LogicPlugin_Tool_CreationTool_Circuit_Label,
+			LogicMessages.LogicPlugin_Tool_CreationTool_Circuit_Description,
+			new Image(null,LogicLabel.class.getResourceAsStream("icons/circuit16.gif")),//$NON-NLS-1$
+			new Image(null,LogicLabel.class.getResourceAsStream("icons/circuit.gif"))//$NON-NLS-1$
+		);
+	entries.add(template);
+
+	template = new DefaultTemplateEntry(
+			TEMPLATE_OR_GATE,
+			LogicMessages.LogicPlugin_Tool_CreationTool_ORGate_Label,
+			LogicMessages.LogicPlugin_Tool_CreationTool_ORGate_Description,
+			new Image(null,Circuit.class.getResourceAsStream("icons/or16.gif")),//$NON-NLS-1$
+			new Image(null,Circuit.class.getResourceAsStream("icons/or.gif"))//$NON-NLS-1$
+		);
+	entries.add(template);
+
+	template = new DefaultTemplateEntry(
+			TEMPLATE_XOR_GATE,
+			LogicMessages.LogicPlugin_Tool_CreationTool_XORGate_Label,
+			LogicMessages.LogicPlugin_Tool_CreationTool_XORGate_Description,
+			new Image(null,Circuit.class.getResourceAsStream("icons/xor16.gif")),//$NON-NLS-1$
+			new Image(null,Circuit.class.getResourceAsStream("icons/xor.gif"))//$NON-NLS-1$
+		);
+	entries.add(template);
+
+	template = new DefaultTemplateEntry(
+			TEMPLATE_AND_GATE,
+			LogicMessages.LogicPlugin_Tool_CreationTool_ANDGate_Label,
+			LogicMessages.LogicPlugin_Tool_CreationTool_ANDGate_Description,
+			new Image(null,Circuit.class.getResourceAsStream("icons/and16.gif")),//$NON-NLS-1$
+			new Image(null,Circuit.class.getResourceAsStream("icons/and.gif"))//$NON-NLS-1$
+		);
+	entries.add(template);
+
+	template = new DefaultTemplateEntry(
+			TEMPLATE_LIVE_OUTPUT,
+			LogicMessages.LogicPlugin_Tool_CreationTool_LiveOutput_Label,
+			LogicMessages.LogicPlugin_Tool_CreationTool_LiveOutput_Description,
+			new Image(null,Circuit.class.getResourceAsStream("icons/live.gif")),//$NON-NLS-1$
+			null
+		);
+	entries.add(template);
+
+	template = new DefaultTemplateEntry(
+			TEMPLATE_GROUND,
+			LogicMessages.LogicPlugin_Tool_CreationTool_Ground_Label,
+			LogicMessages.LogicPlugin_Tool_CreationTool_Ground_Description,
+			new Image(null,Circuit.class.getResourceAsStream("icons/ground.gif")),//$NON-NLS-1$
+			null
+		);
+	entries.add(template);
+
+/*
 	PaletteToolEntry tool = new DefaultPaletteToolEntry(
 			new CreationTool(new CreateRequest.SimpleFactory(LogicLabel.class)),
 			LogicMessages.LogicPlugin_Tool_CreationTool_LogicLabel,
@@ -161,7 +275,7 @@ static private PaletteContainer createComponentsCategory(){
 			null
 		);
 	entries.add(tool);
-	
+*/
 	group.setChildren(entries);
 	return category;
 }
