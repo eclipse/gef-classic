@@ -37,7 +37,7 @@ private List propertyActions = new ArrayList();
 public GraphicalEditor() {}
 
 public void commandStackChanged(EventObject event) {
-	updateStackDependentActions();
+	updateActions(stackActions);
 }
 
 protected void configureGraphicalViewer() {
@@ -54,19 +54,19 @@ protected void createActions() {
 	
 	action = new UndoAction(this);
 	registry.registerAction(action);
-	markAsStackDependentAction(action.getId(), true);
+	getStackActions().add(action.getId());
 	
 	action = new RedoAction(this);
 	registry.registerAction(action);
-	markAsStackDependentAction(action.getId(), true);
+	getStackActions().add(action.getId());
 	
 	action = new DeleteAction(this);
 	registry.registerAction(action);
-	markAsSelectionDependentAction(action.getId(), true);
+	getSelectionActions().add(action.getId());
 	
 	action = new SaveAction(this);
 	registry.registerAction(action);
-	markAsPropertyDependentAction(action.getId(), true);
+	getPropertyActions().add(action.getId());
 	
 	action = new PrintAction(this);
 	registry.registerAction(action);
@@ -104,7 +104,7 @@ public void dispose() {
  */
 protected void firePropertyChange(int property) {
 	super.firePropertyChange(property);
-	updatePropertyDependentActions();
+	updateActions(propertyActions);
 }
 
 protected ActionRegistry getActionRegistry() {
@@ -146,10 +146,22 @@ protected GraphicalViewer getGraphicalViewer() {
 	return graphicalViewer;
 }
 
+protected List getPropertyActions() {
+	return propertyActions;
+}
+
+protected List getSelectionActions() {
+	return selectionActions;
+}
+
 protected SelectionSynchronizer getSelectionSynchronizer() {
 	if (synchronizer == null)
 		synchronizer = new SelectionSynchronizer();
 	return synchronizer;
+}
+
+protected List getStackActions() {
+	return stackActions;
 }
 
 /**
@@ -186,8 +198,8 @@ public void init(IEditorSite site, IEditorInput input) throws PartInitException 
  */
 protected void initializeActionRegistry() {
 	createActions();
-	updatePropertyDependentActions();
-	updateStackDependentActions();
+	updateActions(propertyActions);
+	updateActions(stackActions);
 } 
 
 /** 
@@ -197,55 +209,10 @@ protected void initializeActionRegistry() {
 abstract protected void initializeGraphicalViewer();
 
 /**
- * Marks or unmarks the given action to be updated on property changes.
- *
- * @param id the action id
- * @param mark <code>true</code> if the action is property dependent
- */
-protected void markAsPropertyDependentAction(String id, boolean mark) {
-	if (mark) {
-		if (!propertyActions.contains(id))
-			propertyActions.add(id);
-	}
-	else
-		propertyActions.remove(id);
-}
-
-/**
- * Marks or unmarks the given action to be updated on selection changes.
- *
- * @param id the action id
- * @param mark <code>true</code> if the action is selection dependent
- */
-protected void markAsSelectionDependentAction(String id, boolean mark) {
-	if (mark) {
-		if (!selectionActions.contains(id))
-			selectionActions.add(id);
-	}
-	else
-		selectionActions.remove(id);
-}
-
-/**
- * Marks or unmarks the given action to be updated on stack changes.
- *
- * @param id the action id
- * @param mark <code>true</code> if the action is stack dependent
- */
-protected void markAsStackDependentAction(String id, boolean mark) {
-	if (mark) {
-		if (!stackActions.contains(id))
-			stackActions.add(id);
-	}
-	else
-		stackActions.remove(id);
-}
-
-/**
  * @see org.eclipse.ui.ISelectionListener#selectionChanged(IWorkbenchPart, ISelection)
  */
 public void selectionChanged(IWorkbenchPart part, ISelection selection) {
-	updateSelectionDependentActions();
+	updateActions(selectionActions);
 }
 
 /**
@@ -274,31 +241,14 @@ protected void setGraphicalViewer(GraphicalViewer viewer) {
 	this.graphicalViewer = viewer;
 }
 
-private void updateAction(String id) {
-	if (id == null)
-		return;
+protected void updateActions(List actionIds) {
 	ActionRegistry registry = getActionRegistry();
-	IAction action = registry.getAction(id);
-	if (action instanceof Updatable)
-		((Updatable)action).update();
-}
-
-protected void updatePropertyDependentActions() {
-	Iterator iter = propertyActions.iterator();
-	while (iter.hasNext())
-		updateAction((String)iter.next());
-}
-
-protected void updateSelectionDependentActions() {
-	Iterator iter = selectionActions.iterator();
-	while (iter.hasNext())
-		updateAction((String)iter.next());
-}
-
-protected void updateStackDependentActions() {
-	Iterator iter = stackActions.iterator();
-	while (iter.hasNext())
-		updateAction((String)iter.next());
+	Iterator iter = actionIds.iterator();
+	while (iter.hasNext()) {
+		IAction action = registry.getAction((String)iter.next());
+		if (action instanceof UpdateAction)
+			((UpdateAction)action).update();
+	}
 }
 
 }
