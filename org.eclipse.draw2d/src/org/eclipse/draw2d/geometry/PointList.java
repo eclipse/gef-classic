@@ -32,6 +32,11 @@ static final long serialVersionUID = 1;
  */
 public PointList() { }
 
+public PointList(int points[]) {
+	this.points = points;
+	this.size = points.length / 2;
+}
+
 /** 
  * Constructs a PointList with initial capacity <i>size</i>, but no points.
  * 
@@ -192,7 +197,8 @@ public Point getPoint(Point p, int index) {
  * @since 2.0
  */
 public void insertPoint(Point p, int index) {
-	bounds = null;
+	if (bounds != null && !bounds.contains(p))
+		bounds = null;
 	if (index > size || index < 0)
 	    throw new IndexOutOfBoundsException(
 	    	"Index: " + index + //$NON-NLS-1$
