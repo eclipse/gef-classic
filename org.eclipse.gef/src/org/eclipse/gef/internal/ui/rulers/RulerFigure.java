@@ -267,8 +267,9 @@ protected void paintFigure(Graphics graphics) {
 		// the startMark back by a whole major mark.
 		startMark -= divsPerMajorMark;
 	}
-	// endMark is the last visible mark (doesn't have to be a major mark) that is to be painted
-	int endMark = (int)(((clippedBounds.y + clippedBounds.height) / dotsPerDivision));
+	// endMark is the first non-visible mark (doesn't have to be a major mark) that is
+	// beyond the end of the clip region
+	int endMark = (int)(((clippedBounds.y + clippedBounds.height) / dotsPerDivision)) + 1;
 	int leading = FigureUtilities.getFontMetrics(getFont()).getLeading();
 	Rectangle forbiddenZone = new Rectangle();
 	for (int div = startMark; div <= endMark; div++) {
@@ -359,8 +360,7 @@ public void setHorizontal(boolean isHorizontal) {
  * Allows the client to set the number of units to be displayed per major mark, and the
  * number of divisions to be shown per major mark.
  * 
- * A major mark is a mark on the ruler that goes all the way across and whose
- * corresponding number is displayed on the ruler.
+ * A number on the ruler is considered to be a major mark.
  * 
  * @param	unitsPerMajorMark	if less than 1, it will be ignored; if there is not enough
  * space to display that many units per major mark, its smallest multiple that leaves
