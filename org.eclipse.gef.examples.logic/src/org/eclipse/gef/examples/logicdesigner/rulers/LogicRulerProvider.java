@@ -31,11 +31,6 @@ public class LogicRulerProvider
 {
 
 private LogicRuler ruler;
-/*
- * @TODO:Pratik   when can you remove these two listeners?  right now, they are never
- * removed.  but that might be okay since you want to listen to them for as long as they
- * exist.
- */
 private PropertyChangeListener rulerListener = new PropertyChangeListener() {
 	public void propertyChange(PropertyChangeEvent evt) {
 		if (evt.getPropertyName().equals(LogicRuler.PROPERTY_CHILDREN)) {
