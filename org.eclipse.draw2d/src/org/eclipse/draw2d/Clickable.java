@@ -288,9 +288,11 @@ protected void paintBorder(Graphics graphics) {
 		graphics.setForegroundColor(ColorConstants.black);
 		graphics.setBackgroundColor(ColorConstants.white);
 
-		Rectangle borderBounds = getClientArea();
-		graphics.drawFocus(borderBounds.x, borderBounds.y,
-							borderBounds.width - 1, borderBounds.height - 1);
+		Rectangle area = getClientArea();
+		if (isStyle(STYLE_BUTTON))
+			graphics.drawFocus(area.x, area.y, area.width, area.height);
+		else
+			graphics.drawFocus(area.x, area.y, area.width - 1, area.height - 1);
 	}
 }
 
