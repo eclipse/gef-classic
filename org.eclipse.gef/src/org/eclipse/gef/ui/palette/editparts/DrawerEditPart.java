@@ -19,6 +19,7 @@ import org.eclipse.gef.AccessibleEditPart;
 import org.eclipse.gef.ExposeHelper;
 import org.eclipse.gef.editparts.ViewportExposeHelper;
 import org.eclipse.gef.palette.PaletteDrawer;
+import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
 
 /**
  * EditPart for a PaletteDrawer
@@ -162,9 +163,12 @@ protected void refreshVisuals() {
 	// Do not call super.refreshVisuals()
 	// That will update the Tooltip for the DrawerFigure.  But DrawerFigure has its
 	// own tooltip that is displayed when the text in the header is truncated.
+	boolean showPin = getPreferenceSource().getAutoCollapseSetting() == 
+					PaletteViewerPreferences.COLLAPSE_AS_NEEDED;
 	getDrawerFigure().setTitle(getPaletteEntry().getLabel());
 	setImageDescriptor(getPaletteEntry().getSmallIcon());
 	getDrawerFigure().setLayoutMode(getPreferenceSource().getLayoutSetting());
+	getDrawerFigure().showPin(showPin);
 }
 
 /**
@@ -196,6 +200,14 @@ protected void setImageInFigure(Image image) {
  * @param pinned <code>true</code> if the drawer should be pinned when opened */
 public void setPinnedOpen(boolean pinned) {
 	getDrawerFigure().setPinned(pinned);
+}
+
+/**
+ * @see org.eclipse.gef.EditPart#setSelected(int)
+ */
+public void setSelected(int value) {
+	super.setSelected(value);
+	getDrawerFigure().getCollapseToggle().requestFocus();
 }
 
 /**
