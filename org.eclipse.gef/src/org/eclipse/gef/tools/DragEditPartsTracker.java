@@ -103,7 +103,7 @@ public void commitDrag() {
  * being dragged.  These bounds are used for snapping by the snap strategies in 
  * <code>updateTargetRequest()</code>.
  */
-protected void captureSourceDimensions() {
+private void captureSourceDimensions() {
 	List editparts = getOperationSet();
 	for (int i = 0; i < editparts.size(); i++) {
 		GraphicalEditPart child = (GraphicalEditPart)editparts.get(i);
@@ -120,7 +120,7 @@ protected void captureSourceDimensions() {
 		else
 			compoundSrcRect = new PrecisionRectangle(compoundSrcRect.union(bounds));
 		if (child == getSourceEditPart())
-			sourceRectangle = bounds;
+			sourceRectangle = new PrecisionRectangle(bounds);
 	}
 	if (sourceRectangle == null) {
 		/*
@@ -432,13 +432,21 @@ protected void repairStartLocation() {
 	IFigure figure = ((GraphicalEditPart)getSourceEditPart()).getFigure();
 	PrecisionPoint newStart = (PrecisionPoint)sourceRelativeStartPoint.getCopy();
 	figure.translateToAbsolute(newStart);
+	Dimension delta = new Dimension(newStart.x - getStartLocation().x,
+									newStart.y - getStartLocation().y);
 	setStartLocation(newStart);
+	// sourceRectangle and compoundSrcRect need to be updated as well when auto-scrolling
 	if (sourceRectangle != null) {
-		// sourceRectangle and compoundSrcRect could have changed (when auto-scrolling, 
-		// for instance), and hence they need to be updated as well
-		compoundSrcRect = null;
-		sourceRectangle = null;
-		captureSourceDimensions();
+		// Can't call setLocation(...) because sourceRectangle is a PrecisionRectangle
+		Point newLocation = sourceRectangle.getLocation().getTranslated(delta);
+		sourceRectangle.setX(newLocation.x);
+		sourceRectangle.setY(newLocation.y);
+	}
+	if (compoundSrcRect != null) {
+		// Can't call setLocation(...) because compoundSrcRect is a PrecisionRectangle
+		Point newLocation = compoundSrcRect.getLocation().getTranslated(delta);
+		compoundSrcRect.setX(newLocation.x);
+		compoundSrcRect.setY(newLocation.y);
 	}
 }
 
