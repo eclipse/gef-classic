@@ -33,9 +33,11 @@ protected IPage createDefaultPage(PageBook book) {
 protected PageRec doCreatePage(IWorkbenchPart part) {
 	// Try to get a custom palette page
 	Object obj = part.getAdapter(IPalettePage.class);
+
 	if (obj != null && obj instanceof IPage) {
 		IPage page = (IPage) obj;
 		page.createControl(getPageBook());
+		initPage((IPageBookViewPage) page);
 		return new PageRec(part, page);
 	}
 	// Use the default page by returning null
