@@ -31,22 +31,13 @@ private FlowContext context;
 private FigureBox box = new FigureBox();
 
 /**
- * @see IFigure#add(IFigure, java.lang.Object, int)
- */
-public void add(IFigure child,Object constraint,int index) {
-	try {
-		super.add(child, constraint, index);
-	} catch (ClassCastException e) {}
-}
-
-/**
  * This FlowFigure contributes an Object Replacement Character.
  * @see org.eclipse.draw2d.text.FlowFigure#contributeBidi(org.eclipse.draw2d.text.BidiProcessor)
  */
 protected void contributeBidi(BidiProcessor proc) {
 	box.setBidiLevel(-1);
 	// contributes the object replacement character
-	proc.add(this, "\ufffc"); //$NON-NLS-1$
+	proc.add(this, BidiChars.OBJ);
 }
 
 /**
@@ -71,14 +62,14 @@ protected void layout() {
 }
 
 /**
- * Updates the bounds of this figure to match that of its content box, and then lays out
- * all children figures.
+ * Updates the bounds of this figure to match that of its content box, and then
+ * calls validate in case the size of the figure changed.
  * @see org.eclipse.draw2d.text.FlowFigure#postValidate()
  */
 public void postValidate() {
-	setBounds(new Rectangle(box.getX(), box.getBaseline() - box.getAscent(),
-			box.width, box.getAscent()));
-	super.layout();
+	setBounds(new Rectangle(box.getX(), box.getBaseline() - box.ascent,
+			box.width, box.ascent));
+	super.validate();
 }
 
 /**
