@@ -47,14 +47,16 @@ public FlowEditor() {
 	setEditDomain(defaultEditDomain);
 }
 
+/**
+ * @see org.eclipse.gef.commands.CommandStackListener#commandStackChanged(java.util.EventObject)
+ */
 public void commandStackChanged(EventObject event) {
-	if (isDirty()){
+	if (isDirty()) {
 		if (!savePreviouslyNeeded()) {
 			setSavePreviouslyNeeded(true);
 			firePropertyChange(IEditorPart.PROP_DIRTY);
 		}
-	}
-	else {
+	} else {
 		setSavePreviouslyNeeded(false);
 		firePropertyChange(IEditorPart.PROP_DIRTY);
 	}
@@ -74,8 +76,12 @@ protected void createActions() {
 	getSelectionActions().add(action.getId());
 }
 
-
-protected void createOutputStream(OutputStream os)throws IOException {
+/**
+ * Creates an appropriate output stream and writes the activity diagram out to this stream.
+ * @param os the base output stream
+ * @throws IOException
+ */
+protected void createOutputStream(OutputStream os) throws IOException {
 	ObjectOutputStream out = new ObjectOutputStream(os);
 	out.writeObject(diagram);
 	out.close();	
@@ -120,6 +126,9 @@ protected void initializePaletteViewer() {
 		new TemplateTransferDragSourceListener(getPaletteViewer()));
 }
 
+/**
+ * @see org.eclipse.ui.ISaveablePart#doSave(org.eclipse.core.runtime.IProgressMonitor)
+ */
 public void doSave(IProgressMonitor monitor) {
 	try {
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -135,6 +144,9 @@ public void doSave(IProgressMonitor monitor) {
 	}
 }
 
+/**
+ * @see org.eclipse.ui.ISaveablePart#doSaveAs()
+ */
 public void doSaveAs() {
 	SaveAsDialog dialog= new SaveAsDialog(getSite().getWorkbenchWindow().getShell());
 	dialog.setOriginalFile(((IFileEditorInput)getEditorInput()).getFile());
@@ -171,8 +183,8 @@ public void doSaveAs() {
 	} 
 }
 
-protected KeyHandler getCommonKeyHandler(){
-	if (sharedKeyHandler == null){
+protected KeyHandler getCommonKeyHandler() {
+	if (sharedKeyHandler == null) {
 		sharedKeyHandler = new KeyHandler();
 		sharedKeyHandler.put(
 			KeyStroke.getPressed(SWT.DEL, 127, 0),
@@ -184,23 +196,34 @@ protected KeyHandler getCommonKeyHandler(){
 	return sharedKeyHandler;
 }
 
+/**
+ * @see org.eclipse.gef.ui.parts.GraphicalEditorWithPalette#getPaletteRoot()
+ */
 protected PaletteRoot getPaletteRoot() {
-	if( root == null ){
+	if (root == null)
 		root = FlowPlugin.createPalette();
-	}
 	return root;
 }
 
 public void gotoMarker(IMarker marker) { }
 
+/**
+ * @see org.eclipse.ui.ISaveablePart#isDirty()
+ */
 public boolean isDirty() {
 	return isSaveOnCloseNeeded();
 }
 
+/**
+ * @see org.eclipse.ui.ISaveablePart#isSaveAsAllowed()
+ */
 public boolean isSaveAsAllowed() {
 	return true;
 }
 
+/**
+ * @see org.eclipse.ui.ISaveablePart#isSaveOnCloseNeeded()
+ */
 public boolean isSaveOnCloseNeeded() {
 	return getCommandStack().isDirty();
 }
@@ -221,8 +244,7 @@ protected void setInput(IEditorInput input) {
 		ObjectInputStream ois = new ObjectInputStream(is);
 		diagram = (ActivityDiagram)ois.readObject();
 		ois.close();
-	}
-	catch (Exception e) {
+	} catch (Exception e) {
 		//This is just an example.  All exceptions caught here.
 		e.printStackTrace();
 	}
