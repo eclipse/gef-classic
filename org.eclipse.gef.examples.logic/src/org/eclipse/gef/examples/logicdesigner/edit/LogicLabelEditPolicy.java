@@ -10,7 +10,7 @@ import org.eclipse.gef.EditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.examples.logicdesigner.model.LogicLabel;
-import org.eclipse.gef.examples.logicdesigner.model.LogicLabelCommand;
+import org.eclipse.gef.examples.logicdesigner.model.commands.LogicLabelCommand;
 
 public class LogicLabelEditPolicy 
 	extends LogicElementEditPolicy 

@@ -25,9 +25,10 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 
+import org.eclipse.gef.examples.logicdesigner.model.*;
 import org.eclipse.gef.examples.logicdesigner.model.LogicDiagram;
 
-public class CreateLogicPage1 
+public class LogicWizardPage1 
 	extends WizardNewFileCreationPage 
 	implements MouseListener
 {
@@ -38,7 +39,7 @@ private Button model1 = null;
 private Button model2 = null;
 private int modelSelected = 1;
 
-public CreateLogicPage1(IWorkbench aWorkbench, IStructuredSelection selection) {
+public LogicWizardPage1(IWorkbench aWorkbench, IStructuredSelection selection) {
 	super("sampleLogicPage1", selection);  //$NON-NLS-1$
 	this.setTitle(LogicMessages.CreateLogicPage1_Title);
 	this.setDescription(LogicMessages.CreateLogicPage1_Description);

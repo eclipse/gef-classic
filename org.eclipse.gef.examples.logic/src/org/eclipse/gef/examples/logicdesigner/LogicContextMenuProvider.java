@@ -9,6 +9,9 @@ package org.eclipse.gef.examples.logicdesigner;
 import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.gef.ui.actions.GEFActionConstants;
+
+import org.eclipse.gef.examples.logicdesigner.actions.*;
+
 import org.eclipse.jface.action.*;
 import org.eclipse.ui.IWorkbenchActionConstants;
 

@@ -8,8 +8,6 @@ package org.eclipse.gef.examples.logicdesigner.figures;
 
 import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.*;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.gef.examples.logicdesigner.LogicColorConstants;
 
 public class LogicFlowBorder 
 	extends org.eclipse.draw2d.LineBorder 
@@ -17,19 +15,12 @@ public class LogicFlowBorder
 
 private int grabBarWidth = 20;
 private Dimension grabBarSize = new Dimension(grabBarWidth, 18);
-private Color grabBarColor = LogicColorConstants.logicGreen;
 
 public LogicFlowBorder() {}
 
 public LogicFlowBorder(int width) {
 	setGrabBarWidth(width);
 	grabBarSize = new Dimension(width, 18);
-}
-
-public LogicFlowBorder(int width, Color color) {
-	this(width);
-	setGrabBarColor(color);
-	setColor(ColorConstants.listForeground);
 }
 
 public Insets getInsets(IFigure figure){
@@ -43,13 +34,9 @@ public Dimension getPreferredSize() {
 public void paint(IFigure figure, Graphics graphics, Insets insets) {
 	Rectangle bounds = figure.getBounds();
 	tempRect.setBounds(new Rectangle(bounds.x, bounds.y, grabBarWidth, bounds.height));
-	graphics.setBackgroundColor(grabBarColor);
+	graphics.setBackgroundColor(LogicColorConstants.logicGreen);
 	graphics.fillRectangle(tempRect);
 	super.paint(figure, graphics, insets);
-}
-
-public void setGrabBarColor(Color color) {
-	grabBarColor = color;
 }
 
 public void setGrabBarWidth(int width) {

@@ -1,4 +1,4 @@
-package org.eclipse.gef.examples.logicdesigner;
+package org.eclipse.gef.examples.logicdesigner.palette;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ import org.eclipse.gef.ui.palette.customize.ReadOnlyEntryPage;
 public class LogicPaletteCustomizer 
 	extends PaletteCustomizer 
 {
-	
+
 /**
  * Tools cannot be deleted
  * 
@@ -45,7 +45,6 @@ public boolean canMoveDown(PaletteEntry entry) {
 			return false;
 		}
 	}
-	
 	return super.canMoveDown(entry);
 }
 

@@ -1,15 +1,17 @@
-package org.eclipse.gef.examples.logicdesigner;
+package org.eclipse.gef.examples.logicdesigner.model;
 
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.gef.examples.logicdesigner.model.*;
+
+import org.eclipse.gef.examples.logicdesigner.TemplateConstants;
+
 import org.eclipse.gef.requests.CreateRequest;
 
-class LogicTemplateFactory implements CreateRequest.Factory {
+public class LogicElementFactory implements CreateRequest.Factory {
 	
 	private String template;
 	
-	public LogicTemplateFactory(String str) {
+	public LogicElementFactory(String str) {
 		template = str;
 	}
 	
@@ -79,27 +81,27 @@ class LogicTemplateFactory implements CreateRequest.Factory {
 	}
 	
 	public Object getNewObject() {
-		if (LogicPlugin.TEMPLATE_AND_GATE.equals(template))
+		if (TemplateConstants.TEMPLATE_AND_GATE.equals(template))
 			return new AndGate();
-		if (LogicPlugin.TEMPLATE_CIRCUIT.equals(template))
+		if (TemplateConstants.TEMPLATE_CIRCUIT.equals(template))
 			return new Circuit();
-		if (LogicPlugin.TEMPLATE_FLOW_CONTAINER.equals(template))
+		if (TemplateConstants.TEMPLATE_FLOW_CONTAINER.equals(template))
 			return new LogicFlowContainer();
-		if (LogicPlugin.TEMPLATE_FULL_ADDER.equals(template))
+		if (TemplateConstants.TEMPLATE_FULL_ADDER.equals(template))
 			return createFullAdder();
-		if (LogicPlugin.TEMPLATE_GROUND.equals(template))
+		if (TemplateConstants.TEMPLATE_GROUND.equals(template))
 			return new GroundOutput();
-		if (LogicPlugin.TEMPLATE_HALF_ADDER.equals(template))
+		if (TemplateConstants.TEMPLATE_HALF_ADDER.equals(template))
 			return createHalfAdder();
-		if (LogicPlugin.TEMPLATE_LED.equals(template))
+		if (TemplateConstants.TEMPLATE_LED.equals(template))
 			return new LED();
-		if (LogicPlugin.TEMPLATE_LIVE_OUTPUT.equals(template))
+		if (TemplateConstants.TEMPLATE_LIVE_OUTPUT.equals(template))
 			return new LiveOutput();
-		if (LogicPlugin.TEMPLATE_LOGIC_LABEL.equals(template))
+		if (TemplateConstants.TEMPLATE_LOGIC_LABEL.equals(template))
 			return new LogicLabel();
-		if (LogicPlugin.TEMPLATE_OR_GATE.equals(template))
+		if (TemplateConstants.TEMPLATE_OR_GATE.equals(template))
 			return new OrGate();
-		if (LogicPlugin.TEMPLATE_XOR_GATE.equals(template))
+		if (TemplateConstants.TEMPLATE_XOR_GATE.equals(template))
 			return new XORGate();
 		
 		return null;

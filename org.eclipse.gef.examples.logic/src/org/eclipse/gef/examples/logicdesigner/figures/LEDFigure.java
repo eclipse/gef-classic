@@ -7,7 +7,6 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.gef.examples.logicdesigner.LogicColorConstants;
 import org.eclipse.gef.examples.logicdesigner.model.LED;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;

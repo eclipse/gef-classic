@@ -1,4 +1,4 @@
-package org.eclipse.gef.examples.logicdesigner;
+package org.eclipse.gef.examples.logicdesigner.model;
 /*
  * Licensed Material - Property of IBM
  * (C) Copyright IBM Corp. 2001, 2002 - All Rights Reserved.
@@ -80,7 +80,7 @@ public static Circuit createHalfAdder() {
 	return circuit;
 }
 
-protected static Object createLargeModel() {
+public static Object createLargeModel() {
 	LogicDiagram root = new LogicDiagram();
 
 	final Circuit circuit1, circuit2, circuit3, circuit4;

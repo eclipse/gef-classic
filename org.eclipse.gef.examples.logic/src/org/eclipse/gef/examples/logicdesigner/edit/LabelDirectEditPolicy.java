@@ -10,7 +10,8 @@ import org.eclipse.draw2d.Label;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.DirectEditPolicy;
 import org.eclipse.gef.examples.logicdesigner.model.LogicLabel;
-import org.eclipse.gef.examples.logicdesigner.model.LogicLabelCommand;
+import org.eclipse.gef.examples.logicdesigner.model.commands.LogicLabelCommand;
+
 import org.eclipse.gef.requests.DirectEditRequest;
 
 public class LabelDirectEditPolicy 

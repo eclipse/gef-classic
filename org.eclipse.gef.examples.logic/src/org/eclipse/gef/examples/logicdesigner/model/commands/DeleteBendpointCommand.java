@@ -1,4 +1,4 @@
-package org.eclipse.gef.examples.logicdesigner.model;
+package org.eclipse.gef.examples.logicdesigner.model.commands;
 /*
  * Licensed Material - Property of IBM
  * (C) Copyright IBM Corp. 2001, 2002 - All Rights Reserved.
@@ -6,23 +6,23 @@ package org.eclipse.gef.examples.logicdesigner.model;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
+import org.eclipse.draw2d.*;
 
-
-public class CreateBendpointCommand 
+public class DeleteBendpointCommand 
 	extends BendpointCommand 
 {
 
+private Bendpoint bendpoint;
+
 public void execute() {
-	WireBendpoint wbp = new WireBendpoint();
-	wbp.setRelativeDimensions(getFirstRelativeDimension(), 
-					getSecondRelativeDimension());
-	getWire().insertBendpoint(getIndex(), wbp);
+	bendpoint = (Bendpoint)getWire().getBendpoints().get(getIndex());
+	getWire().removeBendpoint(getIndex());
 	super.execute();
 }
 
 public void undo() {
 	super.undo();
-	getWire().removeBendpoint(getIndex());
+	getWire().insertBendpoint(getIndex(), bendpoint);
 }
 
 }

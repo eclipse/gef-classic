@@ -8,14 +8,12 @@ package org.eclipse.gef.examples.logicdesigner.figures;
 
 import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.*;
-import org.eclipse.gef.examples.logicdesigner.LogicColorConstants;
 import org.eclipse.swt.graphics.Color;
 
 public class CircuitBorder  
 	extends AbstractBorder
 {
 
-private Color borderColor = ColorConstants.button;
 private static Insets insets = new Insets(8,6,8,6);
 private static PointList connector = new PointList();
 private static PointList bottomConnector = new PointList();
@@ -68,10 +66,6 @@ public Insets getInsets(IFigure figure) {
 	return insets;
 }
 
-Color getBorderColor(){
-	return borderColor;
-}
-
 public boolean isOpaque() {
 	return false;
 }
@@ -79,8 +73,8 @@ public boolean isOpaque() {
 public void paint(IFigure figure, Graphics g, Insets in) {
 	Rectangle r = figure.getBounds().getCropped(in);
 	
-	g.setForegroundColor(borderColor);
-	g.setBackgroundColor(borderColor);
+	g.setForegroundColor(LogicColorConstants.logicGreen);
+	g.setBackgroundColor(LogicColorConstants.logicGreen);
 	
 	//Draw the sides of the border
 	g.fillRectangle(r.x, r.y + 2, r.width, 6);
@@ -99,10 +93,6 @@ public void paint(IFigure figure, Graphics g, Insets in) {
 	r.expand(1, 1);
 	r.crop(getInsets(figure));
 	drawConnectors(g, figure.getBounds().getCropped(in));
-}
-
-void setBorderColor(Color c){
-	borderColor = c;
 }
 
 }

@@ -1,4 +1,4 @@
-package org.eclipse.gef.examples.logicdesigner.edit;
+package org.eclipse.gef.examples.logicdesigner.figures;
 /*
  * Licensed Material - Property of IBM
  * (C) Copyright IBM Corp. 2001, 2002 - All Rights Reserved.
@@ -15,8 +15,8 @@ public class FigureFactory {
 
 public static PolylineConnection createNewBendableWire(Wire wire){
 	PolylineConnection conn = new PolylineConnection();
-	conn.setSourceDecoration(null);
-	conn.setTargetDecoration(null);
+	conn.setSourceDecoration(new PolygonDecoration());
+	conn.setTargetDecoration(new PolylineDecoration());
 	return conn;
 }
 

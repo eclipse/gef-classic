@@ -1,4 +1,4 @@
-package org.eclipse.gef.examples.logicdesigner.model;
+package org.eclipse.gef.examples.logicdesigner.model.commands;
 /*
  * Licensed Material - Property of IBM
  * (C) Copyright IBM Corp. 2001, 2002 - All Rights Reserved.
@@ -10,6 +10,7 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
+import org.eclipse.gef.examples.logicdesigner.model.LogicSubpart;
 
 public class SetConstraintCommand
 	extends org.eclipse.gef.commands.Command

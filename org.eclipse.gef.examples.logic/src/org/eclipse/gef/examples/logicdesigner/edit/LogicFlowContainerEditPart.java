@@ -8,7 +8,6 @@ package org.eclipse.gef.examples.logicdesigner.edit;
 
 import org.eclipse.draw2d.*;
 import org.eclipse.gef.EditPolicy;
-import org.eclipse.gef.examples.logicdesigner.LogicColorConstants;
 
 import org.eclipse.gef.examples.logicdesigner.figures.LogicFlowBorder;
 
@@ -31,32 +30,5 @@ protected IFigure createFigure() {
 	figure.setOpaque(true);
 	return figure;
 }  
-
-protected LogicFlowBorder getLogicFlowBorder(){
-	if(getFigure()!=null)
-		return (LogicFlowBorder)getFigure().getBorder();
-	return null;
-}
-
-public void setSelected(int i){
-	super.setSelected(i);
-	refreshVisuals();
-}
-
-protected void refreshVisuals(){
-	super.refreshVisuals();
-	int i = getSelected();
-	if (getLogicFlowBorder()!=null){
-		if (i == SELECTED_NONE)
-			getLogicFlowBorder().setGrabBarColor(
-				LogicColorConstants.logicGreen);
-		if (i == SELECTED_PRIMARY)
-			getLogicFlowBorder().setGrabBarColor(
-				LogicColorConstants.logicPrimarySelectedColor);
-		if (i == SELECTED)
-			getLogicFlowBorder().setGrabBarColor(
-				LogicColorConstants.logicSecondarySelectedColor);
-	}
-}
 
 }

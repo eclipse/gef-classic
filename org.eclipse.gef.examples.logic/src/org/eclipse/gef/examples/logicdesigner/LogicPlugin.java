@@ -24,18 +24,6 @@ public class LogicPlugin
 	extends org.eclipse.ui.plugin.AbstractUIPlugin
 {
 
-public static final String TEMPLATE_AND_GATE       = "and gate template";  //$NON-NLS-1$
-public static final String TEMPLATE_CIRCUIT        = "circuit template";  //$NON-NLS-1$
-public static final String TEMPLATE_FULL_ADDER     = "full adder template";  //$NON-NLS-1$
-public static final String TEMPLATE_GROUND         = "ground template";  //$NON-NLS-1$
-public static final String TEMPLATE_HALF_ADDER     = "half adder template";  //$NON-NLS-1$
-public static final String TEMPLATE_LED            = "led template";  //$NON-NLS-1$
-public static final String TEMPLATE_LIVE_OUTPUT    = "live output template";  //$NON-NLS-1$
-public static final String TEMPLATE_FLOW_CONTAINER = "flow container template";  //$NON-NLS-1$
-public static final String TEMPLATE_LOGIC_LABEL    = "logic label template";  //$NON-NLS-1$
-public static final String TEMPLATE_OR_GATE        = "or gate template";  //$NON-NLS-1$
-public static final String TEMPLATE_XOR_GATE       = "xor gate template";  //$NON-NLS-1$
-
 public LogicPlugin(IPluginDescriptor desc){
 	super(desc);
 }
@@ -58,7 +46,7 @@ static private PaletteContainer createComplexPartsCategory(){
 	List entries = new ArrayList();
 	
 	PaletteTemplateEntry template = new PaletteTemplateEntry(
-			TEMPLATE_HALF_ADDER,
+			TemplateConstants.TEMPLATE_HALF_ADDER,
 			LogicMessages.LogicPlugin_Tool_CreationTool_HalfAdder_Label,
 			LogicMessages.LogicPlugin_Tool_CreationTool_HalfAdder_Description,
 			new Image(null,Circuit.class.getResourceAsStream("icons/halfadder16.gif")), //$NON-NLS-1$
@@ -67,7 +55,7 @@ static private PaletteContainer createComplexPartsCategory(){
 	entries.add(template);
 
 	template = new PaletteTemplateEntry(
-			TEMPLATE_FULL_ADDER,
+			TemplateConstants.TEMPLATE_FULL_ADDER,
 			LogicMessages.LogicPlugin_Tool_CreationTool_FullAdder_Label,
 			LogicMessages.LogicPlugin_Tool_CreationTool_FullAdder_Description,
 			new Image(null,Circuit.class.getResourceAsStream("icons/fulladder16.gif")),//$NON-NLS-1$
@@ -107,7 +95,7 @@ static private PaletteContainer createComponentsCategory(){
 	List entries = new ArrayList();
 	
 	PaletteTemplateEntry template = new PaletteTemplateEntry(
-			TEMPLATE_LOGIC_LABEL,
+			TemplateConstants.TEMPLATE_LOGIC_LABEL,
 			LogicMessages.LogicPlugin_Tool_CreationTool_LogicLabel,
 			LogicMessages.LogicPlugin_Tool_CreationTool_LogicLabel,
 			new Image(null,Circuit.class.getResourceAsStream("icons/label16.gif")), //$NON-NLS-1$
@@ -116,7 +104,7 @@ static private PaletteContainer createComponentsCategory(){
 	entries.add(template);
 
 	template = new PaletteTemplateEntry(
-			TEMPLATE_FLOW_CONTAINER,
+			TemplateConstants.TEMPLATE_FLOW_CONTAINER,
 			LogicMessages.LogicPlugin_Tool_CreationTool_FlowContainer_Label,
 			LogicMessages.LogicPlugin_Tool_CreationTool_FlowContainer_Description,
 			new Image(null,Circuit.class.getResourceAsStream("icons/logicflow16.gif")), //$NON-NLS-1$
@@ -127,7 +115,7 @@ static private PaletteContainer createComponentsCategory(){
 //	entries.add( new PaletteSeparator(PaletteSeparator.NOT_A_MARKER) );
 	
 	template = new PaletteTemplateEntry(
-			TEMPLATE_LED,
+			TemplateConstants.TEMPLATE_LED,
 			LogicMessages.LogicPlugin_Tool_CreationTool_LED_Label,
 			LogicMessages.LogicPlugin_Tool_CreationTool_LED_Description,
 			new Image(null,Circuit.class.getResourceAsStream("icons/ledicon16.gif")), //$NON-NLS-1$
@@ -136,7 +124,7 @@ static private PaletteContainer createComponentsCategory(){
 	entries.add(template);
 
 	template = new PaletteTemplateEntry(
-			TEMPLATE_CIRCUIT,
+			TemplateConstants.TEMPLATE_CIRCUIT,
 			LogicMessages.LogicPlugin_Tool_CreationTool_Circuit_Label,
 			LogicMessages.LogicPlugin_Tool_CreationTool_Circuit_Description,
 			new Image(null,LogicLabel.class.getResourceAsStream("icons/circuit16.gif")),//$NON-NLS-1$
@@ -145,7 +133,7 @@ static private PaletteContainer createComponentsCategory(){
 	entries.add(template);
 
 	template = new PaletteTemplateEntry(
-			TEMPLATE_OR_GATE,
+			TemplateConstants.TEMPLATE_OR_GATE,
 			LogicMessages.LogicPlugin_Tool_CreationTool_ORGate_Label,
 			LogicMessages.LogicPlugin_Tool_CreationTool_ORGate_Description,
 			new Image(null,Circuit.class.getResourceAsStream("icons/or16.gif")),//$NON-NLS-1$
@@ -154,7 +142,7 @@ static private PaletteContainer createComponentsCategory(){
 	entries.add(template);
 
 	template = new PaletteTemplateEntry(
-			TEMPLATE_XOR_GATE,
+			TemplateConstants.TEMPLATE_XOR_GATE,
 			LogicMessages.LogicPlugin_Tool_CreationTool_XORGate_Label,
 			LogicMessages.LogicPlugin_Tool_CreationTool_XORGate_Description,
 			new Image(null,Circuit.class.getResourceAsStream("icons/xor16.gif")),//$NON-NLS-1$
@@ -163,7 +151,7 @@ static private PaletteContainer createComponentsCategory(){
 	entries.add(template);
 
 	template = new PaletteTemplateEntry(
-			TEMPLATE_AND_GATE,
+			TemplateConstants.TEMPLATE_AND_GATE,
 			LogicMessages.LogicPlugin_Tool_CreationTool_ANDGate_Label,
 			LogicMessages.LogicPlugin_Tool_CreationTool_ANDGate_Description,
 			new Image(null,Circuit.class.getResourceAsStream("icons/and16.gif")),//$NON-NLS-1$
@@ -172,7 +160,7 @@ static private PaletteContainer createComponentsCategory(){
 	entries.add(template);
 
 	template = new PaletteTemplateEntry(
-			TEMPLATE_LIVE_OUTPUT,
+			TemplateConstants.TEMPLATE_LIVE_OUTPUT,
 			LogicMessages.LogicPlugin_Tool_CreationTool_LiveOutput_Label,
 			LogicMessages.LogicPlugin_Tool_CreationTool_LiveOutput_Description,
 			new Image(null,Circuit.class.getResourceAsStream("icons/live16.gif")),//$NON-NLS-1$
@@ -181,7 +169,7 @@ static private PaletteContainer createComponentsCategory(){
 	entries.add(template);
 
 	template = new PaletteTemplateEntry(
-			TEMPLATE_GROUND,
+			TemplateConstants.TEMPLATE_GROUND,
 			LogicMessages.LogicPlugin_Tool_CreationTool_Ground_Label,
 			LogicMessages.LogicPlugin_Tool_CreationTool_Ground_Description,
 			new Image(null,Circuit.class.getResourceAsStream("icons/ground16.gif")),//$NON-NLS-1$
@@ -291,7 +279,7 @@ static private PaletteContainer createControlGroup(){
 			GEFPlugin.getImage(SharedImageConstants.ICON_TOOL_ARROW_32)
 		);
 	((PaletteEntry)tool).setDefault(true);
-//	entries.add(tool);
+	entries.add(tool);
 
 	tool = new PaletteToolEntry(
 			new MarqueeSelectionTool(),

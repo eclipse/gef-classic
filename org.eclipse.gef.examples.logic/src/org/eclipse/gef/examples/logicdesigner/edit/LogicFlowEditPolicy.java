@@ -10,6 +10,8 @@ package org.eclipse.gef.examples.logicdesigner.edit;
 import org.eclipse.gef.*;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.examples.logicdesigner.model.*;
+import org.eclipse.gef.examples.logicdesigner.model.commands.*;
+
 import org.eclipse.gef.requests.CreateRequest;
 
 public class LogicFlowEditPolicy

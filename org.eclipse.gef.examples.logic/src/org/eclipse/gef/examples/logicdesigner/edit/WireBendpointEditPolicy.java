@@ -9,6 +9,8 @@ package org.eclipse.gef.examples.logicdesigner.edit;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.examples.logicdesigner.model.*;
+import org.eclipse.gef.examples.logicdesigner.model.commands.*;
+
 import org.eclipse.gef.requests.BendpointRequest;
 
 public class WireBendpointEditPolicy 

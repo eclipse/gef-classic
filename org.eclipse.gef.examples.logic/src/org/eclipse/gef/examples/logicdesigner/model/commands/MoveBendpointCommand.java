@@ -1,4 +1,4 @@
-package org.eclipse.gef.examples.logicdesigner.model;
+package org.eclipse.gef.examples.logicdesigner.model.commands;
 /*
  * Licensed Material - Property of IBM
  * (C) Copyright IBM Corp. 2001, 2002 - All Rights Reserved.
@@ -7,6 +7,8 @@ package org.eclipse.gef.examples.logicdesigner.model;
  */
 
 import org.eclipse.draw2d.*;
+
+import org.eclipse.gef.examples.logicdesigner.model.WireBendpoint;
 
 public class MoveBendpointCommand
 	extends BendpointCommand 

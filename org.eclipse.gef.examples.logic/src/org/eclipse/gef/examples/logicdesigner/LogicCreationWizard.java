@@ -12,12 +12,12 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 
 public class LogicCreationWizard extends Wizard implements INewWizard {
-	private CreateLogicPage1 logicPage = null;
+	private LogicWizardPage1 logicPage = null;
 	private IStructuredSelection selection;
 	private IWorkbench workbench;
 
 public void addPages(){
-	logicPage = new CreateLogicPage1(workbench,selection);
+	logicPage = new LogicWizardPage1(workbench,selection);
 	addPage(logicPage);
 }
 

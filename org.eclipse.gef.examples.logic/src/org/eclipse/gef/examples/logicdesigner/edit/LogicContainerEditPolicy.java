@@ -17,6 +17,7 @@ import org.eclipse.gef.requests.GroupRequest;
 
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
 import org.eclipse.gef.examples.logicdesigner.model.*;
+import org.eclipse.gef.examples.logicdesigner.model.commands.*;
 
 public class LogicContainerEditPolicy
 	extends ContainerEditPolicy

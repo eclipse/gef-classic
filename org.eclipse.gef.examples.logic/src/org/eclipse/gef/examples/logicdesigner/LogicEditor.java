@@ -40,9 +40,12 @@ import org.eclipse.gef.ui.palette.PaletteViewerImpl;
 import org.eclipse.gef.ui.parts.*;
 import org.eclipse.gef.ui.stackview.CommandStackInspectorPage;
 
+import org.eclipse.gef.examples.logicdesigner.actions.*;
+import org.eclipse.gef.examples.logicdesigner.dnd.*;
 import org.eclipse.gef.examples.logicdesigner.edit.GraphicalPartFactory;
 import org.eclipse.gef.examples.logicdesigner.edit.TreePartFactory;
 import org.eclipse.gef.examples.logicdesigner.model.LogicDiagram;
+import org.eclipse.gef.examples.logicdesigner.palette.*;
 
 public class LogicEditor 
 	extends GraphicalEditorWithPalette 

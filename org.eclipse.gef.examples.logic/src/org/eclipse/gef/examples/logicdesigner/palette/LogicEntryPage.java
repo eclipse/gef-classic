@@ -1,4 +1,4 @@
-package org.eclipse.gef.examples.logicdesigner;
+package org.eclipse.gef.examples.logicdesigner.palette;
 
 import org.eclipse.gef.palette.PaletteEntry;
 import org.eclipse.gef.ui.palette.customize.DefaultEntryPage;

@@ -8,7 +8,9 @@ package org.eclipse.gef.examples.logicdesigner.edit;
 
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.*;
-import org.eclipse.gef.examples.logicdesigner.LogicColorConstants;
+
+import org.eclipse.gef.examples.logicdesigner.figures.LogicColorConstants;
+
 import org.eclipse.swt.graphics.Color;
 
 /**
