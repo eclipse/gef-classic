@@ -5,8 +5,6 @@ import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
- * Border that draws a single white lines on top and left, and a dark line on bottom.
- * 
  * @author Pratik Shah
  */
 public class RaisedBorder extends MarginBorder {
