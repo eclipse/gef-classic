@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner.figures;
 
-import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.RectangleFigure;
 
 public class CircuitFeedbackFigure
 	extends RectangleFigure

@@ -12,7 +12,9 @@ package org.eclipse.draw2d;
 
 import java.util.List;
 
-import org.eclipse.draw2d.geometry.*;
+import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.PointList;
+import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
  * Renders a {@link PointList} as a series of line segments.  A Polyline figure should be

@@ -10,7 +10,9 @@
  *******************************************************************************/
 package org.eclipse.gef.requests;
 
-import org.eclipse.gef.*;
+import org.eclipse.gef.ConnectionEditPart;
+import org.eclipse.gef.EditPart;
+import org.eclipse.gef.RequestConstants;
 
 /**
  * A Request to reconnect a connection.

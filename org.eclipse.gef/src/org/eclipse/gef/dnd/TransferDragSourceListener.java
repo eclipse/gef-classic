@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.gef.dnd;
 
+import org.eclipse.swt.dnd.Transfer;
+
 /**
  * A DragSourceListener that can handle one type of SWT {@link Transfer}. The purpose of a
  * TransferDragSourceListener is to:

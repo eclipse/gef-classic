@@ -10,7 +10,9 @@
  *******************************************************************************/
 package org.eclipse.gef.internal.ui.palette.editparts;
 
-import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.Figure;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.StackLayout;
 
 import org.eclipse.gef.editparts.GraphicalRootEditPart;
 

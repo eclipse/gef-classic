@@ -10,7 +10,9 @@
  *******************************************************************************/
 package org.eclipse.gef.ui.actions;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.util.Assert;

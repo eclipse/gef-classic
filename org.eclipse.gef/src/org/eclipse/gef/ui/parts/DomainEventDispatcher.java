@@ -13,13 +13,25 @@ package org.eclipse.gef.ui.parts;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.gef.*;
-import org.eclipse.swt.accessibility.*;
+import org.eclipse.swt.accessibility.ACC;
+import org.eclipse.swt.accessibility.AccessibleControlEvent;
+import org.eclipse.swt.accessibility.AccessibleControlListener;
+import org.eclipse.swt.accessibility.AccessibleEvent;
+import org.eclipse.swt.accessibility.AccessibleListener;
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.graphics.Cursor;
+
+import org.eclipse.draw2d.EventDispatcher;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.InputEvent;
+import org.eclipse.draw2d.SWTEventDispatcher;
+import org.eclipse.draw2d.geometry.Point;
+
+import org.eclipse.gef.AccessibleEditPart;
+import org.eclipse.gef.EditDomain;
+import org.eclipse.gef.EditPart;
+import org.eclipse.gef.EditPartViewer;
 
 /**
  * A special event dispatcher that will route events to the {@link EditDomain} when

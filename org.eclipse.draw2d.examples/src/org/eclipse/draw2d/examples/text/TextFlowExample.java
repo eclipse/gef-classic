@@ -2,12 +2,16 @@ package org.eclipse.draw2d.examples.text;
 
 import org.eclipse.swt.graphics.Font;
 
-import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.FigureCanvas;
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.examples.AbstractExample;
-import org.eclipse.draw2d.text.*;
+import org.eclipse.draw2d.text.BlockFlow;
+import org.eclipse.draw2d.text.FlowPage;
+import org.eclipse.draw2d.text.InlineFlow;
+import org.eclipse.draw2d.text.SimpleTextLayout;
+import org.eclipse.draw2d.text.TextFlow;
 
 /**
  * This example shows the basic ways that the draw2d.text figures can be used.

@@ -13,13 +13,22 @@ package org.eclipse.gef.examples.logicdesigner.edit;
 
 import java.util.Iterator;
 
-import org.eclipse.gef.*;
+import org.eclipse.gef.EditPart;
+import org.eclipse.gef.EditPolicy;
+import org.eclipse.gef.GraphicalEditPart;
+import org.eclipse.gef.Request;
+import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
 import org.eclipse.gef.requests.CreateRequest;
 
-import org.eclipse.gef.examples.logicdesigner.model.*;
-import org.eclipse.gef.examples.logicdesigner.model.commands.*;
+import org.eclipse.gef.examples.logicdesigner.model.LogicDiagram;
+import org.eclipse.gef.examples.logicdesigner.model.LogicFlowContainer;
+import org.eclipse.gef.examples.logicdesigner.model.LogicSubpart;
+import org.eclipse.gef.examples.logicdesigner.model.commands.AddCommand;
+import org.eclipse.gef.examples.logicdesigner.model.commands.CloneCommand;
+import org.eclipse.gef.examples.logicdesigner.model.commands.CreateCommand;
+import org.eclipse.gef.examples.logicdesigner.model.commands.ReorderPartCommand;
 
 public class LogicFlowEditPolicy
 	extends org.eclipse.gef.editpolicies.FlowLayoutEditPolicy

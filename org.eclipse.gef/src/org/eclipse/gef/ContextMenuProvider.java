@@ -10,7 +10,9 @@
  *******************************************************************************/
 package org.eclipse.gef;
 
-import org.eclipse.jface.action.*;
+import org.eclipse.jface.action.IMenuListener;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.MenuManager;
 
 /**
  * Extends MenuManager to allow populating the menu directly from the manager itself.

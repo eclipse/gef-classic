@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
-import org.eclipse.draw2d.geometry.*;
+import org.eclipse.draw2d.geometry.PointList;
 
 /**
  * Repositions a {@link RotatableDecoration} attached to a {@link Connection} when the

@@ -12,7 +12,9 @@ package org.eclipse.gef.dnd;
 
 import org.eclipse.swt.dnd.DND;
 
-import org.eclipse.gef.*;
+import org.eclipse.gef.EditPart;
+import org.eclipse.gef.EditPartViewer;
+import org.eclipse.gef.Request;
 import org.eclipse.gef.requests.CreateRequest;
 import org.eclipse.gef.requests.CreationFactory;
 

@@ -10,9 +10,13 @@
  *******************************************************************************/
 package org.eclipse.draw2d.internal.graph;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
-import org.eclipse.draw2d.graph.*;
+import org.eclipse.draw2d.graph.DirectedGraph;
+import org.eclipse.draw2d.graph.Node;
+import org.eclipse.draw2d.graph.Rank;
+import org.eclipse.draw2d.graph.Subgraph;
 
 /**
  * @author hudsonr

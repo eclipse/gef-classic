@@ -11,6 +11,7 @@
 package org.eclipse.gef.palette;
 
 import java.util.List;
+
 import org.eclipse.jface.resource.ImageDescriptor;
 
 /**

@@ -10,12 +10,11 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner.actions;
 
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.actions.RetargetAction;
 
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
 import org.eclipse.gef.examples.logicdesigner.LogicPlugin;
-
-import org.eclipse.jface.resource.ImageDescriptor;
 
 /**
  * @author hudsonr

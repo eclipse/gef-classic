@@ -10,8 +10,9 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner.model;
 
-import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.geometry.*;
+import org.eclipse.draw2d.Bendpoint;
+import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2d.geometry.Point;
 
 public class WireBendpoint 
 	implements java.io.Serializable, Bendpoint

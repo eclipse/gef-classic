@@ -20,8 +20,9 @@ import org.eclipse.gef.requests.CreateRequest;
 import org.eclipse.gef.requests.GroupRequest;
 
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
-import org.eclipse.gef.examples.logicdesigner.model.*;
-import org.eclipse.gef.examples.logicdesigner.model.commands.*;
+import org.eclipse.gef.examples.logicdesigner.model.LogicDiagram;
+import org.eclipse.gef.examples.logicdesigner.model.LogicSubpart;
+import org.eclipse.gef.examples.logicdesigner.model.commands.OrphanChildCommand;
 
 public class LogicContainerEditPolicy
 	extends ContainerEditPolicy

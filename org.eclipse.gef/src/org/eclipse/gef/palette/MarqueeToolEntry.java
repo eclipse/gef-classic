@@ -12,7 +12,6 @@ package org.eclipse.gef.palette;
 
 import org.eclipse.gef.SharedImages;
 import org.eclipse.gef.Tool;
-
 import org.eclipse.gef.internal.GEFMessages;
 import org.eclipse.gef.tools.MarqueeSelectionTool;
 

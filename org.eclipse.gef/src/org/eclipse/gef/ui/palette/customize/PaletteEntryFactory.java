@@ -10,12 +10,13 @@
  *******************************************************************************/
 package org.eclipse.gef.ui.palette.customize;
 
+import org.eclipse.swt.widgets.Shell;
+
+import org.eclipse.jface.resource.ImageDescriptor;
+
 import org.eclipse.gef.palette.PaletteContainer;
 import org.eclipse.gef.palette.PaletteEntry;
 import org.eclipse.gef.palette.PaletteRoot;
-
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.swt.widgets.Shell;
 
 /**
  * A PaletteEntryFactory creates certain type of {@link

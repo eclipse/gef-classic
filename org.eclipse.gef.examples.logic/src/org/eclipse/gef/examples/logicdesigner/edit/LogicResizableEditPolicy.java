@@ -12,15 +12,34 @@ package org.eclipse.gef.examples.logicdesigner.edit;
 
 import java.util.Iterator;
 
-import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.RectangleFigure;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.LayerConstants;
 import org.eclipse.gef.editpolicies.ResizableEditPolicy;
 
-import org.eclipse.gef.examples.logicdesigner.figures.*;
-import org.eclipse.gef.examples.logicdesigner.model.*;
+import org.eclipse.gef.examples.logicdesigner.figures.AndGateFeedbackFigure;
+import org.eclipse.gef.examples.logicdesigner.figures.CircuitFeedbackFigure;
+import org.eclipse.gef.examples.logicdesigner.figures.GroundFeedbackFigure;
+import org.eclipse.gef.examples.logicdesigner.figures.LEDFeedbackFigure;
+import org.eclipse.gef.examples.logicdesigner.figures.LabelFeedbackFigure;
+import org.eclipse.gef.examples.logicdesigner.figures.LiveOutputFeedbackFigure;
+import org.eclipse.gef.examples.logicdesigner.figures.LogicColorConstants;
+import org.eclipse.gef.examples.logicdesigner.figures.LogicFlowFeedbackFigure;
+import org.eclipse.gef.examples.logicdesigner.figures.OrGateFeedbackFigure;
+import org.eclipse.gef.examples.logicdesigner.figures.XOrGateFeedbackFigure;
+import org.eclipse.gef.examples.logicdesigner.model.AndGate;
+import org.eclipse.gef.examples.logicdesigner.model.Circuit;
+import org.eclipse.gef.examples.logicdesigner.model.GroundOutput;
+import org.eclipse.gef.examples.logicdesigner.model.LED;
+import org.eclipse.gef.examples.logicdesigner.model.LiveOutput;
+import org.eclipse.gef.examples.logicdesigner.model.LogicFlowContainer;
+import org.eclipse.gef.examples.logicdesigner.model.LogicLabel;
+import org.eclipse.gef.examples.logicdesigner.model.OrGate;
+import org.eclipse.gef.examples.logicdesigner.model.XORGate;
 
 
 /**

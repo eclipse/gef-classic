@@ -12,7 +12,7 @@ package org.eclipse.gef.ui.palette;
 
 import org.eclipse.jface.action.Action;
 
-import org.eclipse.gef.internal.ui.palette.editparts.*;
+import org.eclipse.gef.internal.ui.palette.editparts.DrawerEditPart;
 
 /**
  * An action that can be used to pin the given drawer open.

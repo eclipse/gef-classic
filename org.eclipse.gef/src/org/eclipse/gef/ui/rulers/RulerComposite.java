@@ -15,20 +15,44 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.*;
+import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.graphics.*;
-import org.eclipse.swt.widgets.*;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 
 import org.eclipse.jface.util.Assert;
 
-import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.AbstractBorder;
+import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.DefaultRangeModel;
+import org.eclipse.draw2d.FigureCanvas;
+import org.eclipse.draw2d.Graphics;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.PositionConstants;
+import org.eclipse.draw2d.RangeModel;
+import org.eclipse.draw2d.Viewport;
 import org.eclipse.draw2d.geometry.Insets;
 
-import org.eclipse.gef.*;
-import org.eclipse.gef.internal.ui.rulers.*;
-import org.eclipse.gef.rulers.*;
+import org.eclipse.gef.DragTracker;
+import org.eclipse.gef.EditDomain;
+import org.eclipse.gef.EditPart;
+import org.eclipse.gef.GraphicalEditPart;
+import org.eclipse.gef.GraphicalViewer;
+import org.eclipse.gef.Handle;
+import org.eclipse.gef.RootEditPart;
+import org.eclipse.gef.internal.ui.rulers.GuideEditPart;
+import org.eclipse.gef.internal.ui.rulers.RulerContextMenuProvider;
+import org.eclipse.gef.internal.ui.rulers.RulerEditPart;
+import org.eclipse.gef.internal.ui.rulers.RulerEditPartFactory;
+import org.eclipse.gef.internal.ui.rulers.RulerRootEditPart;
+import org.eclipse.gef.rulers.RulerProvider;
 import org.eclipse.gef.ui.parts.GraphicalViewerKeyHandler;
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 

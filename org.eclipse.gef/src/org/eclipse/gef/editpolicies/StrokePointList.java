@@ -11,7 +11,9 @@
 package org.eclipse.gef.editpolicies;
 import java.awt.BasicStroke;
 import java.awt.Shape;
-import java.awt.geom.*;
+import java.awt.geom.Area;
+import java.awt.geom.GeneralPath;
+import java.awt.geom.PathIterator;
 
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;

@@ -10,15 +10,21 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner.edit;
 
-import java.util.*;
-import java.beans.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.Collections;
+import java.util.List;
 
-import org.eclipse.swt.widgets.TreeItem;
-import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.TreeItem;
 
-import org.eclipse.gef.*;
-import org.eclipse.gef.examples.logicdesigner.model.*;
+import org.eclipse.gef.EditPart;
+import org.eclipse.gef.EditPolicy;
+
+import org.eclipse.gef.examples.logicdesigner.model.LED;
+import org.eclipse.gef.examples.logicdesigner.model.LogicDiagram;
+import org.eclipse.gef.examples.logicdesigner.model.LogicSubpart;
 
 /**
  * EditPart for Logic components in the Tree.

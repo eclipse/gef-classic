@@ -12,7 +12,9 @@ package org.eclipse.gef.handles;
 
 import org.eclipse.draw2d.ConnectionLocator;
 
-import org.eclipse.gef.*;
+import org.eclipse.gef.ConnectionEditPart;
+import org.eclipse.gef.DragTracker;
+import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.tools.ConnectionEndpointTracker;
 
 /**

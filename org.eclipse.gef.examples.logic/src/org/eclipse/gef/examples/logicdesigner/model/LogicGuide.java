@@ -13,7 +13,12 @@ package org.eclipse.gef.examples.logicdesigner.model;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
-import java.util.*;
+import java.util.Hashtable;
+import java.util.Map;
+import java.util.Set;
+
+import org.eclipse.gef.EditPart;
+import org.eclipse.gef.requests.ChangeBoundsRequest;
 
 /**
  * Model object representing a guide.  

@@ -12,7 +12,9 @@ package org.eclipse.gef.ui.actions;
 
 import java.util.List;
 
-import org.eclipse.ui.*;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.internal.WorkbenchImages;
 
 import org.eclipse.gef.EditPart;

@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner.model.commands;
 
-import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.Bendpoint;
 
 import org.eclipse.gef.examples.logicdesigner.model.WireBendpoint;
 

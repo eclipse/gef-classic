@@ -10,11 +10,13 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner.dnd;
 
+import org.eclipse.swt.dnd.Transfer;
+
 import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.dnd.AbstractTransferDropTargetListener;
+
 import org.eclipse.gef.examples.logicdesigner.edit.NativeDropRequest;
-import org.eclipse.swt.dnd.Transfer;
 
 public class TextTransferDropTargetListener 
 	extends AbstractTransferDropTargetListener 

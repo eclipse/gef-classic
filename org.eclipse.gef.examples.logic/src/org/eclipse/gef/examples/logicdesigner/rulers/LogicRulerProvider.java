@@ -21,7 +21,9 @@ import org.eclipse.gef.rulers.RulerProvider;
 
 import org.eclipse.gef.examples.logicdesigner.model.LogicGuide;
 import org.eclipse.gef.examples.logicdesigner.model.LogicRuler;
-import org.eclipse.gef.examples.logicdesigner.model.commands.*;
+import org.eclipse.gef.examples.logicdesigner.model.commands.CreateGuideCommand;
+import org.eclipse.gef.examples.logicdesigner.model.commands.DeleteGuideCommand;
+import org.eclipse.gef.examples.logicdesigner.model.commands.MoveGuideCommand;
 
 /**
  * @author Pratik Shah

@@ -12,8 +12,21 @@ package org.eclipse.gef.ui.palette;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartFactory;
-import org.eclipse.gef.palette.*;
-import org.eclipse.gef.internal.ui.palette.editparts.*;
+import org.eclipse.gef.internal.ui.palette.editparts.DrawerEditPart;
+import org.eclipse.gef.internal.ui.palette.editparts.GroupEditPart;
+import org.eclipse.gef.internal.ui.palette.editparts.PaletteStackEditPart;
+import org.eclipse.gef.internal.ui.palette.editparts.SeparatorEditPart;
+import org.eclipse.gef.internal.ui.palette.editparts.SliderPaletteEditPart;
+import org.eclipse.gef.internal.ui.palette.editparts.TemplateEditPart;
+import org.eclipse.gef.internal.ui.palette.editparts.ToolEntryEditPart;
+import org.eclipse.gef.palette.PaletteContainer;
+import org.eclipse.gef.palette.PaletteDrawer;
+import org.eclipse.gef.palette.PaletteEntry;
+import org.eclipse.gef.palette.PaletteGroup;
+import org.eclipse.gef.palette.PaletteRoot;
+import org.eclipse.gef.palette.PaletteSeparator;
+import org.eclipse.gef.palette.PaletteStack;
+import org.eclipse.gef.palette.PaletteTemplateEntry;
 
 /**
  * Factory to create EditParts for different PaletteEntries.

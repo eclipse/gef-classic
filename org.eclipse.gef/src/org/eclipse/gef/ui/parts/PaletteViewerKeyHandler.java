@@ -20,7 +20,11 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Point;
 
 import org.eclipse.gef.EditPart;
-import org.eclipse.gef.internal.ui.palette.editparts.*;
+import org.eclipse.gef.internal.ui.palette.editparts.DrawerEditPart;
+import org.eclipse.gef.internal.ui.palette.editparts.GroupEditPart;
+import org.eclipse.gef.internal.ui.palette.editparts.PaletteStackEditPart;
+import org.eclipse.gef.internal.ui.palette.editparts.TemplateEditPart;
+import org.eclipse.gef.internal.ui.palette.editparts.ToolEntryEditPart;
 import org.eclipse.gef.palette.PaletteStack;
 import org.eclipse.gef.ui.palette.PaletteViewer;
 

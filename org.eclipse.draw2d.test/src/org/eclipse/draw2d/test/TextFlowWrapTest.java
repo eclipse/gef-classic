@@ -10,14 +10,17 @@
  *******************************************************************************/
 package org.eclipse.draw2d.test;
 
-import org.eclipse.draw2d.FigureUtilities;
-import org.eclipse.draw2d.text.*;
-
-import org.eclipse.swt.graphics.Font;
-
 import java.util.Iterator;
 
 import junit.framework.TestCase;
+
+import org.eclipse.swt.graphics.Font;
+
+import org.eclipse.draw2d.FigureUtilities;
+import org.eclipse.draw2d.text.FlowPage;
+import org.eclipse.draw2d.text.ParagraphTextLayout;
+import org.eclipse.draw2d.text.TextFlow;
+import org.eclipse.draw2d.text.TextFragmentBox;
 
 public class TextFlowWrapTest extends TestCase {
 

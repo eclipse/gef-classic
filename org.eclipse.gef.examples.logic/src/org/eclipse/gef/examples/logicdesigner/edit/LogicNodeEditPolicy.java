@@ -10,7 +10,10 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner.edit;
 
-import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.Connection;
+import org.eclipse.draw2d.ConnectionAnchor;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.PolylineConnection;
 
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.LayerConstants;
@@ -21,7 +24,10 @@ import org.eclipse.gef.requests.ReconnectRequest;
 
 import org.eclipse.gef.examples.logicdesigner.figures.FigureFactory;
 import org.eclipse.gef.examples.logicdesigner.figures.NodeFigure;
-import org.eclipse.gef.examples.logicdesigner.model.*;
+import org.eclipse.gef.examples.logicdesigner.model.GroundOutput;
+import org.eclipse.gef.examples.logicdesigner.model.LiveOutput;
+import org.eclipse.gef.examples.logicdesigner.model.LogicSubpart;
+import org.eclipse.gef.examples.logicdesigner.model.Wire;
 import org.eclipse.gef.examples.logicdesigner.model.commands.ConnectionCommand;
 
 public class LogicNodeEditPolicy

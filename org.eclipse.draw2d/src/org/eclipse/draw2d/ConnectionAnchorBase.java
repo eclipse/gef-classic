@@ -10,7 +10,9 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Provides support for a ConnectionAnchor. A ConnectionAnchor is one of the end points

@@ -10,8 +10,9 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner.model;
 
-import org.eclipse.gef.examples.logicdesigner.LogicMessages;
 import org.eclipse.jface.viewers.ICellEditorValidator;
+
+import org.eclipse.gef.examples.logicdesigner.LogicMessages;
 
 public class LogicNumberCellEditorValidator
 	implements ICellEditorValidator {

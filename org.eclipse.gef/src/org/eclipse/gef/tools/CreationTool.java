@@ -13,9 +13,15 @@ package org.eclipse.gef.tools;
 import org.eclipse.swt.graphics.Cursor;
 
 import org.eclipse.draw2d.PositionConstants;
-import org.eclipse.draw2d.geometry.*;
+import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.PrecisionRectangle;
+import org.eclipse.draw2d.geometry.Rectangle;
 
-import org.eclipse.gef.*;
+import org.eclipse.gef.EditPart;
+import org.eclipse.gef.EditPartViewer;
+import org.eclipse.gef.Request;
+import org.eclipse.gef.SharedCursors;
+import org.eclipse.gef.SnapToHelper;
 import org.eclipse.gef.requests.CreateRequest;
 import org.eclipse.gef.requests.CreationFactory;
 

@@ -2,13 +2,25 @@ package org.eclipse.draw2d.examples.graph;
 
 import java.lang.reflect.Method;
 
-import org.eclipse.draw2d.*;
+import org.eclipse.swt.graphics.Font;
+
+import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.ConnectionAnchor;
+import org.eclipse.draw2d.Figure;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.LineBorder;
+import org.eclipse.draw2d.Panel;
+import org.eclipse.draw2d.PolylineConnection;
+import org.eclipse.draw2d.XYAnchor;
+import org.eclipse.draw2d.XYLayout;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.draw2d.graph.*;
-import org.eclipse.draw2d.internal.graph.*;
-
-import org.eclipse.swt.graphics.Font;
+import org.eclipse.draw2d.graph.CompoundDirectedGraph;
+import org.eclipse.draw2d.graph.DirectedGraph;
+import org.eclipse.draw2d.graph.Edge;
+import org.eclipse.draw2d.graph.Node;
+import org.eclipse.draw2d.graph.Subgraph;
+import org.eclipse.draw2d.internal.graph.NodePair;
 
 /**
  * @author hudsonr

@@ -1,10 +1,25 @@
 package org.eclipse.draw2d.examples.connections;
 
-import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.ChopboxAnchor;
+import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.ConnectionEndpointLocator;
+import org.eclipse.draw2d.Figure;
+import org.eclipse.draw2d.GroupBoxBorder;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.Label;
+import org.eclipse.draw2d.LineBorder;
+import org.eclipse.draw2d.MidpointLocator;
+import org.eclipse.draw2d.MouseEvent;
+import org.eclipse.draw2d.MouseListener;
+import org.eclipse.draw2d.MouseMotionListener;
+import org.eclipse.draw2d.PolygonDecoration;
+import org.eclipse.draw2d.PolylineConnection;
+import org.eclipse.draw2d.RectangleFigure;
+import org.eclipse.draw2d.Shape;
 import org.eclipse.draw2d.examples.AbstractExample;
-import org.eclipse.draw2d.geometry.*;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
  * This class demonstrates the use of connections, anchors, and locators in draw2d.

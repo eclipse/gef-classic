@@ -12,7 +12,8 @@ package org.eclipse.draw2d;
 
 import java.util.List;
 
-import org.eclipse.draw2d.geometry.*;
+import org.eclipse.draw2d.geometry.Insets;
+import org.eclipse.draw2d.geometry.Rectangle;
 
 class FreeformHelper
 	implements FreeformListener

@@ -10,12 +10,14 @@
  *******************************************************************************/
 package org.eclipse.gef.tools;
 
-import java.util.*;
-
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.draw2d.Connection;
 
-import org.eclipse.gef.*;
+import org.eclipse.gef.ConnectionEditPart;
+import org.eclipse.gef.Request;
+import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.requests.BendpointRequest;
 

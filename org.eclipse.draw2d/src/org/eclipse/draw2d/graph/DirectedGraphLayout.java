@@ -10,7 +10,18 @@
  *******************************************************************************/
 package org.eclipse.draw2d.graph;
 
-import org.eclipse.draw2d.internal.graph.*;
+import org.eclipse.draw2d.internal.graph.BreakCycles;
+import org.eclipse.draw2d.internal.graph.GraphVisitor;
+import org.eclipse.draw2d.internal.graph.HorizontalPlacement;
+import org.eclipse.draw2d.internal.graph.InitialRankSolver;
+import org.eclipse.draw2d.internal.graph.InvertEdges;
+import org.eclipse.draw2d.internal.graph.LocalOptimizer;
+import org.eclipse.draw2d.internal.graph.MinCross;
+import org.eclipse.draw2d.internal.graph.PlaceEndpoints;
+import org.eclipse.draw2d.internal.graph.PopulateRanks;
+import org.eclipse.draw2d.internal.graph.RankAssigmentSolver;
+import org.eclipse.draw2d.internal.graph.TightSpanningTreeSolver;
+import org.eclipse.draw2d.internal.graph.VerticalPlacement;
 
 /**
  * Performs a graph layout of a <code>DirectedGraph</code>.  The directed graph must meet

@@ -10,7 +10,10 @@
  *******************************************************************************/
 package org.eclipse.gef.internal.ui.palette.editparts;
 
-import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.FlowLayout;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.LayoutManager;
+import org.eclipse.draw2d.ToolbarLayout;
 
 import org.eclipse.gef.palette.PaletteContainer;
 import org.eclipse.gef.ui.palette.PaletteViewerPreferences;

@@ -10,8 +10,9 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
-import org.eclipse.draw2d.geometry.*;
 import org.eclipse.swt.graphics.Color;
+
+import org.eclipse.draw2d.geometry.Insets;
 
 /**
  * Provides for a line border with sides of equal widths.

@@ -10,10 +10,21 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.flow.parts;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
-import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.graph.*;
+import org.eclipse.draw2d.AbsoluteBendpoint;
+import org.eclipse.draw2d.BendpointConnectionRouter;
+import org.eclipse.draw2d.Connection;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.PolygonDecoration;
+import org.eclipse.draw2d.PolylineConnection;
+import org.eclipse.draw2d.graph.CompoundDirectedGraph;
+import org.eclipse.draw2d.graph.Edge;
+import org.eclipse.draw2d.graph.Node;
+import org.eclipse.draw2d.graph.NodeList;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;

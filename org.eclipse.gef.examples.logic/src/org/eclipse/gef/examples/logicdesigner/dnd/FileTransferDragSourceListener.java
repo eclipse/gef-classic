@@ -10,9 +10,12 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner.dnd;
 
-import org.eclipse.swt.dnd.*;
+import org.eclipse.swt.dnd.DragSourceEvent;
+import org.eclipse.swt.dnd.TextTransfer;
+import org.eclipse.swt.dnd.Transfer;
 
 import org.eclipse.gef.EditPartViewer;
+
 import org.eclipse.gef.examples.logicdesigner.edit.LogicLabelEditPart;
 
 public class FileTransferDragSourceListener

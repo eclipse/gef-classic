@@ -10,11 +10,12 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner.model.commands;
 
+import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2d.geometry.Point;
+
 import org.eclipse.gef.commands.Command;
 
 import org.eclipse.gef.examples.logicdesigner.model.Wire;
-
-import org.eclipse.draw2d.geometry.*;
 
 public class BendpointCommand 
 	extends Command 

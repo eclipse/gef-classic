@@ -11,7 +11,9 @@
 package org.eclipse.draw2d;
 
 import java.util.List;
-import org.eclipse.draw2d.geometry.*;
+
+import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
  * An implementation of {@link Connection} based on Polyline.  PolylineConnection adds

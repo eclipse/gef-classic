@@ -15,13 +15,28 @@ import java.util.Map;
 
 import org.eclipse.swt.widgets.Composite;
 
-import org.eclipse.core.runtime.*;
+import org.eclipse.core.runtime.IPluginDescriptor;
+import org.eclipse.core.runtime.IPluginPrerequisite;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.ui.part.ViewPart;
 
-import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.FigureCanvas;
+import org.eclipse.draw2d.Label;
+import org.eclipse.draw2d.MarginBorder;
+import org.eclipse.draw2d.ToggleButton;
 import org.eclipse.draw2d.geometry.Insets;
-import org.eclipse.draw2d.graph.*;
-import org.eclipse.draw2d.internal.graph.*;
+import org.eclipse.draw2d.graph.DirectedGraph;
+import org.eclipse.draw2d.graph.Edge;
+import org.eclipse.draw2d.graph.EdgeList;
+import org.eclipse.draw2d.graph.Node;
+import org.eclipse.draw2d.internal.graph.HorizontalPlacement;
+import org.eclipse.draw2d.internal.graph.InitialRankSolver;
+import org.eclipse.draw2d.internal.graph.LocalOptimizer;
+import org.eclipse.draw2d.internal.graph.MinCross;
+import org.eclipse.draw2d.internal.graph.PopulateRanks;
+import org.eclipse.draw2d.internal.graph.RankAssigmentSolver;
+import org.eclipse.draw2d.internal.graph.TightSpanningTreeSolver;
+import org.eclipse.draw2d.internal.graph.VerticalPlacement;
 
 /**
  * @author hudsonr

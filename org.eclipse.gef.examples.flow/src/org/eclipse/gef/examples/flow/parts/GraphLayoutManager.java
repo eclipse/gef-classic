@@ -10,7 +10,9 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.flow.parts;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.eclipse.draw2d.AbstractLayout;
 import org.eclipse.draw2d.IFigure;

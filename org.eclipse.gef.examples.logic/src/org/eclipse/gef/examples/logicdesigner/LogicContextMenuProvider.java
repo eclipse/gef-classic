@@ -10,7 +10,10 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner;
 
-import org.eclipse.jface.action.*;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.ui.IWorkbenchActionConstants;
 
 import org.eclipse.gef.EditPartViewer;

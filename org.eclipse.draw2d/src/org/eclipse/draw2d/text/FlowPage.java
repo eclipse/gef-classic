@@ -12,7 +12,8 @@ package org.eclipse.draw2d.text;
 
 import java.util.List;
 
-import org.eclipse.draw2d.geometry.*;
+import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
  * The root of a Flow hierarchy. A flow page can be treated as a normal figure, but

@@ -10,14 +10,14 @@
  *******************************************************************************/
 package org.eclipse.gef.tools;
 
-import org.eclipse.gef.SharedCursors;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.graphics.Cursor;
 
 import org.eclipse.draw2d.FigureCanvas;
 import org.eclipse.draw2d.geometry.Point;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.graphics.Cursor;
+import org.eclipse.gef.SharedCursors;
 
 /**
  * A subclass of the SelectionTool that allows panning 

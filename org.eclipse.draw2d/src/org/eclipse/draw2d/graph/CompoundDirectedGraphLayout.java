@@ -12,7 +12,22 @@ package org.eclipse.draw2d.graph;
 
 import java.util.Iterator;
 
-import org.eclipse.draw2d.internal.graph.*;
+import org.eclipse.draw2d.internal.graph.CompoundBreakCycles;
+import org.eclipse.draw2d.internal.graph.CompoundHorizontalPlacement;
+import org.eclipse.draw2d.internal.graph.CompoundPopulateRanks;
+import org.eclipse.draw2d.internal.graph.CompoundRankSorter;
+import org.eclipse.draw2d.internal.graph.CompoundVerticalPlacement;
+import org.eclipse.draw2d.internal.graph.ConvertCompoundGraph;
+import org.eclipse.draw2d.internal.graph.GraphVisitor;
+import org.eclipse.draw2d.internal.graph.InitialRankSolver;
+import org.eclipse.draw2d.internal.graph.InvertEdges;
+import org.eclipse.draw2d.internal.graph.LocalOptimizer;
+import org.eclipse.draw2d.internal.graph.MinCross;
+import org.eclipse.draw2d.internal.graph.PlaceEndpoints;
+import org.eclipse.draw2d.internal.graph.RankAssigmentSolver;
+import org.eclipse.draw2d.internal.graph.RestoreCompoundGraph;
+import org.eclipse.draw2d.internal.graph.SortSubgraphs;
+import org.eclipse.draw2d.internal.graph.TightSpanningTreeSolver;
 
 /**
  * Performs a graph layout on a <code>CompoundDirectedGraph</code>.  The input format is

@@ -1,6 +1,8 @@
 package org.eclipse.draw2d.examples.zoom;
-import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.AbstractBorder;
 import org.eclipse.draw2d.Figure;
+import org.eclipse.draw2d.Graphics;
+import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.ToolbarLayout;
 import org.eclipse.draw2d.geometry.Insets;
 

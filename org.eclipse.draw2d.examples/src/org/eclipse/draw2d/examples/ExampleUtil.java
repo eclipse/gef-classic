@@ -1,8 +1,14 @@
 package org.eclipse.draw2d.examples;
 
-import org.eclipse.draw2d.*;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
+
+import org.eclipse.draw2d.Figure;
+import org.eclipse.draw2d.FlowLayout;
+import org.eclipse.draw2d.GroupBoxBorder;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.Label;
+import org.eclipse.draw2d.ToolbarLayout;
 
 /**
  * A factory for figures.

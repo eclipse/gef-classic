@@ -11,6 +11,7 @@
 package org.eclipse.gef.examples.logicdesigner.edit;
 
 import org.eclipse.draw2d.PolylineConnection;
+
 import org.eclipse.gef.GraphicalEditPart;
 
 public class WireEndpointEditPolicy

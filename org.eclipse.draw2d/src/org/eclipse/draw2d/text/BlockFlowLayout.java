@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.draw2d.text;
 
-import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.PositionConstants;
 
 /**
  * The layout for {@link BlockFlow} figures.

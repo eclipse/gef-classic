@@ -11,10 +11,10 @@
 package org.eclipse.gef.examples.logicdesigner.edit;
 
 import org.eclipse.gef.commands.Command;
+import org.eclipse.gef.requests.GroupRequest;
+
 import org.eclipse.gef.examples.logicdesigner.model.Wire;
 import org.eclipse.gef.examples.logicdesigner.model.commands.ConnectionCommand;
-
-import org.eclipse.gef.requests.GroupRequest;
 
 public class WireEditPolicy
 	extends org.eclipse.gef.editpolicies.ConnectionEditPolicy

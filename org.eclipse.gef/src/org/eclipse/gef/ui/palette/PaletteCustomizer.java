@@ -13,8 +13,15 @@ package org.eclipse.gef.ui.palette;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.gef.palette.*;
-import org.eclipse.gef.ui.palette.customize.*;
+import org.eclipse.gef.palette.PaletteContainer;
+import org.eclipse.gef.palette.PaletteDrawer;
+import org.eclipse.gef.palette.PaletteEntry;
+import org.eclipse.gef.ui.palette.customize.DefaultEntryPage;
+import org.eclipse.gef.ui.palette.customize.DrawerEntryPage;
+import org.eclipse.gef.ui.palette.customize.EntryPage;
+import org.eclipse.gef.ui.palette.customize.PaletteDrawerFactory;
+import org.eclipse.gef.ui.palette.customize.PaletteSeparatorFactory;
+import org.eclipse.gef.ui.palette.customize.PaletteStackFactory;
 
 /**
  * <code>PaletteCustomizer</code> is the <code>PaletteCustomizerDialog</code>'s interface

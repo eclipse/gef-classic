@@ -10,7 +10,10 @@
  *******************************************************************************/
 package org.eclipse.gef.editpolicies;
 
-import org.eclipse.gef.*;
+import org.eclipse.gef.EditPart;
+import org.eclipse.gef.EditPartListener;
+import org.eclipse.gef.Request;
+import org.eclipse.gef.RequestConstants;
 
 /**
  * A GraphicalEditPolicy that is sensitive to the host's selection. The overall selection

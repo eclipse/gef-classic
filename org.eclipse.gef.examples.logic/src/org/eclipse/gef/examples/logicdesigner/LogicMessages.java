@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner;
 
-import java.util.*;
+import java.util.MissingResourceException;
 
 import org.eclipse.core.runtime.IPluginDescriptor;
 import org.eclipse.core.runtime.Platform;

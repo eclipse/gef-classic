@@ -15,8 +15,6 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 
-import org.eclipse.gef.examples.flow.ui.*;
-
 /**
  * FlowCreationWizard
  * @author Daniel Lee

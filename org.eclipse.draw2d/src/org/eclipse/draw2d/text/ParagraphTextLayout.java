@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.draw2d.text;
 
-import java.util.*;
+import java.util.List;
 
 import org.eclipse.swt.graphics.Font;
 

@@ -10,7 +10,9 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * This class is intended for internal use only.

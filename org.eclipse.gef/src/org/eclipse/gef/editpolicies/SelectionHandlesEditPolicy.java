@@ -18,7 +18,9 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Point;
 
-import org.eclipse.gef.*;
+import org.eclipse.gef.AccessibleHandleProvider;
+import org.eclipse.gef.Handle;
+import org.eclipse.gef.LayerConstants;
 
 /**
  * A SelectionEditPolicy which manages a List of handles provided by the subclass. Handles

@@ -10,8 +10,12 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
-import java.util.*;
-import org.eclipse.draw2d.geometry.*;
+import java.util.List;
+
+import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2d.geometry.Insets;
+import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2d.geometry.Transposer;
 
 /**
  * Arranges figures in a single row or column.  Orientation can be set to produce either

@@ -12,9 +12,14 @@ package org.eclipse.gef.editparts;
 
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Viewport;
-import org.eclipse.draw2d.geometry.*;
+import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2d.geometry.Insets;
+import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.Rectangle;
 
-import org.eclipse.gef.*;
+import org.eclipse.gef.EditPart;
+import org.eclipse.gef.ExposeHelper;
+import org.eclipse.gef.GraphicalEditPart;
 
 /**
  * An implementation of <code>ExposeHelper</code> for use with editparts using a

@@ -10,9 +10,13 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
-import org.eclipse.draw2d.geometry.*;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
+
+import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2d.geometry.Insets;
+import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
  * A figure that can display text and/or an image.

@@ -10,7 +10,11 @@
  *******************************************************************************/
 package org.eclipse.gef.internal.ui.palette.editparts;
 
-import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.ScrollBar;
+import org.eclipse.draw2d.ScrollPane;
+import org.eclipse.draw2d.ScrollPaneLayout;
+import org.eclipse.draw2d.Viewport;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Rectangle;

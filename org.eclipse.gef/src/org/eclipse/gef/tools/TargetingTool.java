@@ -10,11 +10,17 @@
  *******************************************************************************/
 package org.eclipse.gef.tools;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
 
 import org.eclipse.swt.widgets.Display;
 
-import org.eclipse.gef.*;
+import org.eclipse.draw2d.geometry.Point;
+
+import org.eclipse.gef.AutoexposeHelper;
+import org.eclipse.gef.EditPart;
+import org.eclipse.gef.EditPartViewer;
+import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.UnexecutableCommand;
 import org.eclipse.gef.requests.TargetRequest;

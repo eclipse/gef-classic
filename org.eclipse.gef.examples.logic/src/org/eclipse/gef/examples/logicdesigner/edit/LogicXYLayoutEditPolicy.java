@@ -13,11 +13,21 @@ package org.eclipse.gef.examples.logicdesigner.edit;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.geometry.*;
+import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.PositionConstants;
+import org.eclipse.draw2d.RectangleFigure;
+import org.eclipse.draw2d.XYLayout;
+import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Rectangle;
 
-import org.eclipse.gef.*;
+import org.eclipse.gef.EditPart;
+import org.eclipse.gef.EditPolicy;
+import org.eclipse.gef.GraphicalEditPart;
+import org.eclipse.gef.LayerConstants;
+import org.eclipse.gef.Request;
+import org.eclipse.gef.RequestConstants;
+import org.eclipse.gef.SnapToGuides;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CompoundCommand;
 import org.eclipse.gef.editpolicies.ResizableEditPolicy;
@@ -26,9 +36,22 @@ import org.eclipse.gef.requests.CreateRequest;
 import org.eclipse.gef.rulers.RulerProvider;
 
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
-import org.eclipse.gef.examples.logicdesigner.figures.*;
-import org.eclipse.gef.examples.logicdesigner.model.*;
-import org.eclipse.gef.examples.logicdesigner.model.commands.*;
+import org.eclipse.gef.examples.logicdesigner.figures.CircuitFeedbackFigure;
+import org.eclipse.gef.examples.logicdesigner.figures.LabelFeedbackFigure;
+import org.eclipse.gef.examples.logicdesigner.figures.LogicColorConstants;
+import org.eclipse.gef.examples.logicdesigner.figures.LogicFlowFeedbackFigure;
+import org.eclipse.gef.examples.logicdesigner.model.Circuit;
+import org.eclipse.gef.examples.logicdesigner.model.LED;
+import org.eclipse.gef.examples.logicdesigner.model.LogicDiagram;
+import org.eclipse.gef.examples.logicdesigner.model.LogicFlowContainer;
+import org.eclipse.gef.examples.logicdesigner.model.LogicGuide;
+import org.eclipse.gef.examples.logicdesigner.model.LogicLabel;
+import org.eclipse.gef.examples.logicdesigner.model.LogicSubpart;
+import org.eclipse.gef.examples.logicdesigner.model.commands.AddCommand;
+import org.eclipse.gef.examples.logicdesigner.model.commands.ChangeGuideCommand;
+import org.eclipse.gef.examples.logicdesigner.model.commands.CloneCommand;
+import org.eclipse.gef.examples.logicdesigner.model.commands.CreateCommand;
+import org.eclipse.gef.examples.logicdesigner.model.commands.SetConstraintCommand;
 
 public class LogicXYLayoutEditPolicy
 	extends org.eclipse.gef.editpolicies.XYLayoutEditPolicy

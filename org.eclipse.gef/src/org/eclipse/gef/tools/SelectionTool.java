@@ -21,7 +21,16 @@ import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.draw2d.geometry.Point;
 
-import org.eclipse.gef.*;
+import org.eclipse.gef.AccessibleHandleProvider;
+import org.eclipse.gef.DragTracker;
+import org.eclipse.gef.EditDomain;
+import org.eclipse.gef.EditPart;
+import org.eclipse.gef.EditPartViewer;
+import org.eclipse.gef.GraphicalViewer;
+import org.eclipse.gef.Handle;
+import org.eclipse.gef.KeyHandler;
+import org.eclipse.gef.Request;
+import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.requests.LocationRequest;
 import org.eclipse.gef.requests.SelectionRequest;
 

@@ -1,6 +1,11 @@
 package org.eclipse.draw2d.examples.zoom;
-import org.eclipse.draw2d.*;
-import org.eclipse.swt.graphics.*;
+import org.eclipse.swt.graphics.Color;
+
+import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.Figure;
+import org.eclipse.draw2d.Label;
+import org.eclipse.draw2d.LineBorder;
+import org.eclipse.draw2d.ToolbarLayout;
 
 /**
  * A simple Figure that represents a UML Class Diagram.

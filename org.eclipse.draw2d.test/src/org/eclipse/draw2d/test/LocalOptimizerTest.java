@@ -11,13 +11,15 @@
 
 package org.eclipse.draw2d.test;
 
-import org.eclipse.draw2d.graph.*;
+import junit.framework.TestCase;
+
 import org.eclipse.draw2d.graph.DirectedGraph;
+import org.eclipse.draw2d.graph.Edge;
 import org.eclipse.draw2d.graph.Node;
+import org.eclipse.draw2d.graph.NodeList;
+import org.eclipse.draw2d.graph.Rank;
 import org.eclipse.draw2d.internal.graph.LocalOptimizer;
 import org.eclipse.draw2d.internal.graph.PopulateRanks;
-
-import junit.framework.TestCase;
 
 /**
  * Tests the swapping of adjacent nodes in a directed graph.

@@ -1,9 +1,12 @@
-import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+
+import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.Figure;
+import org.eclipse.draw2d.FlowLayout;
+import org.eclipse.draw2d.Label;
+import org.eclipse.draw2d.LightweightSystem;
 
 public class Bug23147 {
 

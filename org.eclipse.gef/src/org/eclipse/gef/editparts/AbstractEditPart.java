@@ -10,7 +10,12 @@
  *******************************************************************************/
 package org.eclipse.gef.editparts;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.util.Assert;
@@ -18,7 +23,16 @@ import org.eclipse.ui.views.properties.IPropertySource;
 
 import org.eclipse.draw2d.EventListenerList;
 
-import org.eclipse.gef.*;
+import org.eclipse.gef.AccessibleEditPart;
+import org.eclipse.gef.EditPart;
+import org.eclipse.gef.EditPartFactory;
+import org.eclipse.gef.EditPartListener;
+import org.eclipse.gef.EditPartViewer;
+import org.eclipse.gef.EditPolicy;
+import org.eclipse.gef.GEF;
+import org.eclipse.gef.Request;
+import org.eclipse.gef.RequestConstants;
+import org.eclipse.gef.RootEditPart;
 import org.eclipse.gef.commands.Command;
 
 /**

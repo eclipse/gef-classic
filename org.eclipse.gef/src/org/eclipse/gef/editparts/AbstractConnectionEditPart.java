@@ -13,10 +13,22 @@ package org.eclipse.gef.editparts;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.ChopboxAnchor;
+import org.eclipse.draw2d.Connection;
+import org.eclipse.draw2d.ConnectionAnchor;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.PolylineConnection;
+import org.eclipse.draw2d.XYAnchor;
 import org.eclipse.draw2d.geometry.Point;
 
-import org.eclipse.gef.*;
+import org.eclipse.gef.AccessibleAnchorProvider;
+import org.eclipse.gef.ConnectionEditPart;
+import org.eclipse.gef.DragTracker;
+import org.eclipse.gef.EditPart;
+import org.eclipse.gef.GraphicalEditPart;
+import org.eclipse.gef.LayerConstants;
+import org.eclipse.gef.NodeEditPart;
+import org.eclipse.gef.Request;
 import org.eclipse.gef.tools.SelectEditPartTracker;
 
 /**

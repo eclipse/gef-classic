@@ -10,7 +10,12 @@
  *******************************************************************************/
 package org.eclipse.gef.editparts;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import org.eclipse.swt.accessibility.ACC;
 import org.eclipse.swt.accessibility.AccessibleControlEvent;
@@ -22,7 +27,18 @@ import org.eclipse.draw2d.LayoutManager;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 
-import org.eclipse.gef.*;
+import org.eclipse.gef.AccessibleAnchorProvider;
+import org.eclipse.gef.AccessibleEditPart;
+import org.eclipse.gef.AccessibleHandleProvider;
+import org.eclipse.gef.ConnectionEditPart;
+import org.eclipse.gef.DragTracker;
+import org.eclipse.gef.EditPart;
+import org.eclipse.gef.EditPartFactory;
+import org.eclipse.gef.EditPartViewer;
+import org.eclipse.gef.EditPolicy;
+import org.eclipse.gef.GraphicalEditPart;
+import org.eclipse.gef.NodeListener;
+import org.eclipse.gef.Request;
 
 /**
  * Default implementation for {@link org.eclipse.gef.GraphicalEditPart}.

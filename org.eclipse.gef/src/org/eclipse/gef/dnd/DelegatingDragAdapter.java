@@ -10,7 +10,11 @@
  *******************************************************************************/
 package org.eclipse.gef.dnd;
 
-import org.eclipse.swt.dnd.*;
+import org.eclipse.swt.dnd.DragSource;
+import org.eclipse.swt.dnd.DragSourceEvent;
+import org.eclipse.swt.dnd.DragSourceListener;
+import org.eclipse.swt.dnd.Transfer;
+import org.eclipse.swt.dnd.TransferData;
 
 /**
  * A DragSourceListener that maintains and delegates to a set of {@link

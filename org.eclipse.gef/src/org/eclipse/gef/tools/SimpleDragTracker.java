@@ -12,11 +12,14 @@ package org.eclipse.gef.tools;
 
 import java.util.List;
 
-import org.eclipse.gef.*;
-import org.eclipse.gef.commands.UnexecutableCommand;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.graphics.Cursor;
+
+import org.eclipse.gef.DragTracker;
+import org.eclipse.gef.EditPart;
+import org.eclipse.gef.Request;
+import org.eclipse.gef.commands.UnexecutableCommand;
 
 /**
  * A simple drag tracker implementation that does not perform targeting. For example,

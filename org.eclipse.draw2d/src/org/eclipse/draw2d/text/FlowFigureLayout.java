@@ -10,8 +10,9 @@
  *******************************************************************************/
 package org.eclipse.draw2d.text;
 
-import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.geometry.*;
+import org.eclipse.draw2d.AbstractLayout;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.geometry.Dimension;
 
 /**
  * A LayoutManager for use with FlowFigure.

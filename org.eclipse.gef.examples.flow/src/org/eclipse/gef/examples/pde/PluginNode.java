@@ -13,7 +13,9 @@ package org.eclipse.gef.examples.pde;
 import java.util.Collections;
 import java.util.Comparator;
 
-import org.eclipse.draw2d.graph.*;
+import org.eclipse.draw2d.graph.DirectedGraph;
+import org.eclipse.draw2d.graph.Node;
+import org.eclipse.draw2d.graph.NodeList;
 
 
 /**

@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
-import org.eclipse.draw2d.geometry.*;
+import org.eclipse.draw2d.geometry.Point;
 
 /**
  * An event caused by the user interacting with the mouse.

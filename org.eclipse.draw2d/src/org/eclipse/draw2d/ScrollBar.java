@@ -13,8 +13,12 @@ package org.eclipse.draw2d;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import org.eclipse.draw2d.geometry.*;
 import org.eclipse.swt.graphics.Color;
+
+import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2d.geometry.Transposer;
 
 /**
  * Provides for the scrollbars used by the {@link ScrollPane}. A ScrollBar is made up of 

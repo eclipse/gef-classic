@@ -10,7 +10,12 @@
  *******************************************************************************/
 package org.eclipse.draw2d.internal.graph;
 
-import org.eclipse.draw2d.graph.*;
+import org.eclipse.draw2d.graph.DirectedGraph;
+import org.eclipse.draw2d.graph.Edge;
+import org.eclipse.draw2d.graph.Node;
+import org.eclipse.draw2d.graph.NodeList;
+import org.eclipse.draw2d.graph.RankList;
+import org.eclipse.draw2d.graph.VirtualNode;
 
 /**
  * This class takes a DirectedGraph with an optimal rank assigment and a spanning tree,

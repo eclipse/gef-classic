@@ -10,12 +10,15 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner.model;
 
-import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.gef.examples.logicdesigner.LogicMessages;
 import org.eclipse.swt.graphics.Image;
+
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
+
+import org.eclipse.draw2d.geometry.Dimension;
+
+import org.eclipse.gef.examples.logicdesigner.LogicMessages;
 
 public class LED
 	extends LogicSubpart

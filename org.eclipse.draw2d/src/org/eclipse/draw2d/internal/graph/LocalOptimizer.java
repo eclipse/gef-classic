@@ -10,7 +10,11 @@
  *******************************************************************************/
 package org.eclipse.draw2d.internal.graph;
 
-import org.eclipse.draw2d.graph.*;
+import org.eclipse.draw2d.graph.DirectedGraph;
+import org.eclipse.draw2d.graph.Edge;
+import org.eclipse.draw2d.graph.EdgeList;
+import org.eclipse.draw2d.graph.Node;
+import org.eclipse.draw2d.graph.Rank;
 
 
 /**

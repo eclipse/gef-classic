@@ -12,11 +12,12 @@ package org.eclipse.gef.ui.palette;
 
 import java.util.List;
 
+import org.eclipse.jface.action.Action;
+
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.palette.PaletteEntry;
 import org.eclipse.gef.palette.PaletteRoot;
-import org.eclipse.gef.ui.palette.customize.*;
-import org.eclipse.jface.action.Action;
+import org.eclipse.gef.ui.palette.customize.PaletteCustomizerDialog;
 
 /**
  * This action launches the PaletteCustomizerDialog for the given palette.

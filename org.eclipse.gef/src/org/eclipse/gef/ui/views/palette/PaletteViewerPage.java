@@ -12,10 +12,13 @@ package org.eclipse.gef.ui.views.palette;
 
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.util.Assert;
 import org.eclipse.ui.part.Page;
+
 import org.eclipse.draw2d.IFigure;
+
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.ui.palette.PaletteViewer;

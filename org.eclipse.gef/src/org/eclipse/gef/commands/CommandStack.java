@@ -10,7 +10,10 @@
  *******************************************************************************/
 package org.eclipse.gef.commands;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.EventObject;
+import java.util.List;
+import java.util.Stack;
 
 /**
  * An implementation of a command stack.  A command stack manages the executing, undoing,

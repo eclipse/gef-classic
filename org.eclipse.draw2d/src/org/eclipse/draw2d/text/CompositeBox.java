@@ -10,7 +10,8 @@
  *******************************************************************************/
 package org.eclipse.draw2d.text;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A FlowBox that can contain other BlockInfos. The contained BlockInfos are called

@@ -12,10 +12,16 @@ package org.eclipse.gef.handles;
 
 import org.eclipse.swt.graphics.Cursor;
 
-import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.AncestorListener;
+import org.eclipse.draw2d.Figure;
+import org.eclipse.draw2d.FigureListener;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.Locator;
 import org.eclipse.draw2d.geometry.Point;
 
-import org.eclipse.gef.*;
+import org.eclipse.gef.DragTracker;
+import org.eclipse.gef.GraphicalEditPart;
+import org.eclipse.gef.Handle;
 
 /**
  * Base implementation for handles.  This class keeps track of the typical data needed by

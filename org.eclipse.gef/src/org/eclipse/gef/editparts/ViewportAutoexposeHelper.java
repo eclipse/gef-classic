@@ -13,7 +13,9 @@ package org.eclipse.gef.editparts;
 
 import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.Viewport;
-import org.eclipse.draw2d.geometry.*;
+import org.eclipse.draw2d.geometry.Insets;
+import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.AutoexposeHelper;
 import org.eclipse.gef.GraphicalEditPart;

@@ -14,7 +14,10 @@ import java.util.EventObject;
 
 import org.eclipse.ui.views.properties.IPropertySource;
 
-import org.eclipse.gef.commands.*;
+import org.eclipse.gef.commands.CommandStack;
+import org.eclipse.gef.commands.CommandStackListener;
+import org.eclipse.gef.commands.CompoundCommand;
+import org.eclipse.gef.commands.ForwardUndoCompoundCommand;
 /**
  * <code>PropertySheetEntry</code> is an implementation of
  * <code>IPropertySheetEntry</code> which uses <code>IPropertySource</code>

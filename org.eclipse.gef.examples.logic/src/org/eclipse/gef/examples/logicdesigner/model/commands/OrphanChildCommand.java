@@ -15,6 +15,7 @@ import java.util.List;
 import org.eclipse.draw2d.geometry.Point;
 
 import org.eclipse.gef.commands.Command;
+
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
 import org.eclipse.gef.examples.logicdesigner.model.LogicDiagram;
 import org.eclipse.gef.examples.logicdesigner.model.LogicSubpart;
