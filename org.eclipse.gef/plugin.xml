@@ -8,8 +8,8 @@
 
    <runtime>
       <library name="runtime/gef.jar">
-        <export name = "*"/>
-        <packages prefixes="org.eclipse.gef"/>
+         <export name="*"/>
+         <packages prefixes="org.eclipse.gef"/>
       </library>
    </runtime>
    <requires>
@@ -20,32 +20,36 @@
    </requires>
 
    <extension
-         point="org.eclipse.ui.actionDefinitions">
-      <actionDefinition
+         point="org.eclipse.ui.commands">
+      <category
+            name="%ViewCategory.Label"
+            description="%ViewCategory.Label"
+            id="org.eclipse.gef.category.view">
+      </category>
+      <command
             name="%ZoomIn.Tooltip"
             description="%ZoomIn.Tooltip"
+            category="org.eclipse.gef.category.view"
             id="org.eclipse.gef.zoom_in">
-      </actionDefinition>
-      <actionDefinition
+      </command>
+      <keyBinding
+            string="Ctrl+="
+            scope="org.eclipse.ui.globalScope"
+            command="org.eclipse.gef.zoom_in"
+            configuration="org.eclipse.ui.defaultAcceleratorConfiguration">
+      </keyBinding>
+      <command
             name="%ZoomOut.Tooltip"
             description="%ZoomOut.Tooltip"
+            category="org.eclipse.gef.category.view"
             id="org.eclipse.gef.zoom_out">
-      </actionDefinition>
-   </extension>
-   <extension
-         point="org.eclipse.ui.acceleratorSets">
-      <acceleratorSet
-            scopeId="org.eclipse.ui.globalScope"
-            configurationId="org.eclipse.ui.defaultAcceleratorConfiguration">
-         <accelerator
-               key="Ctrl+="
-               id="org.eclipse.gef.zoom_in">
-         </accelerator>
-         <accelerator
-               key="Ctrl+-"
-               id="org.eclipse.gef.zoom_out">
-         </accelerator>
-      </acceleratorSet>
+      </command>
+      <keyBinding
+            string="Ctrl+-"
+            scope="org.eclipse.ui.globalScope"
+            command="org.eclipse.gef.zoom_out"
+            configuration="org.eclipse.ui.defaultAcceleratorConfiguration">
+      </keyBinding>
    </extension>
 
 </plugin>
