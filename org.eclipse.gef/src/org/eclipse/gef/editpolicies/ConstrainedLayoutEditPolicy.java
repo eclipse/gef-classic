@@ -38,13 +38,23 @@ public abstract class ConstrainedLayoutEditPolicy
  * @param constraint the model constraint, after being {@link 
  * #translateToModelConstraint(Object) translated}
  * @return the Command to add the child */
-protected abstract Command createAddCommand(
-	EditPart child,
-	Object constraint);
+protected abstract Command createAddCommand(EditPart child, Object constraint);
 
+/**
+ * The request is now made available when creating the change constraint command.  By
+ * default, this method invokes the old 
+ * {@link ConstrainedLayoutEditPolicy#createChangeConstraintCommand(EditPart, Object) method}.
+ * 
+ * @param	child		the EditPart of the child being changed
+ * @param	constraint	the new constraint, after being {@link
+ * 						#translateToModelConstraint(Object) translated}
+ * @return	A Command to change the constraints of the given child as specified in the 
+ * 			given request
+ * @see	ConstrainedLayoutEditPolicy#createChangeConstraintCommand(EditPart, Object)
+ * @since 3.0
+ */
 protected Command createChangeConstraintCommand(ChangeBoundsRequest request, 
-												EditPart child, 
-                                                Object constraint) {
+												EditPart child, Object constraint) {
 	return createChangeConstraintCommand(child, constraint);
 }
 
