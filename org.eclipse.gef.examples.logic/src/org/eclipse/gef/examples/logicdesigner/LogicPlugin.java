@@ -284,9 +284,8 @@ static private PaletteContainer createControlGroup(){
 			new MarqueeSelectionTool(),
 			LogicMessages.LogicPlugin_Tool_MarqueeSelectionTool_MarqueeSelectionTool_Label,
 			LogicMessages.LogicPlugin_Tool_MarqueeSelectionTool_MarqueeSelectionTool_Description,
-//			GEFPlugin.getImage(SharedImageConstants.ICON_TOOL_MARQUEE_16),
-			ImageDescriptor.createFromFile(Circuit.class, "icons/marquee16.gif"), //$NON-NLS-1$
-			ImageDescriptor.createFromFile(Circuit.class, "icons/marquee24.gif") //$NON-NLS-1$
+			SharedImages.DESC_MARQUEE_TOOL_16,
+			SharedImages.DESC_MARQUEE_TOOL_24
 		);
 	entries.add(tool);
 	
