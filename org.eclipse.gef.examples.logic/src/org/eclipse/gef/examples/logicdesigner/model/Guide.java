@@ -1,6 +1,3 @@
-/*
- * Created on Oct 24, 2003
- */
 package org.eclipse.gef.examples.logicdesigner.model;
 
 import java.beans.PropertyChangeListener;
@@ -16,6 +13,8 @@ public class Guide
 	implements Serializable
 {
 
+static final long serialVersionUID = 1;
+	
 public static final String PROPERTY_POSITION = "position"; //$NON-NLS-1$
 // could mean that a part was added, removed, or its alignment was changed
 public static final String PROPERTY_CHILDREN = "children"; //$NON-NLS-1$
@@ -33,6 +32,9 @@ public Guide(boolean isHorizontal) {
 	setHorizontal(isHorizontal);
 }
 
+/*
+ * @TODO:Pratik   use PositionConstants here
+ */
 // -1 is left; 0, center; 1, right (same thing for top, middle, bottom, respectively)
 public void addPart(LogicSubpart part, int alignment) {
 	if (getMap().containsKey(part)) {
