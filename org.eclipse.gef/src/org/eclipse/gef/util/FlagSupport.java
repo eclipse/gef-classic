@@ -1,4 +1,4 @@
-package org.eclipse.gef.internal;
+package org.eclipse.gef.util;
 /*
  * Licensed Material - Property of IBM
  * (C) Copyright IBM Corp. 2001, 2002 - All Rights Reserved.

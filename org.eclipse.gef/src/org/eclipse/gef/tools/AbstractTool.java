@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.Display;
  * Default implementation support for {@link Tool}s.
  */
 abstract public class AbstractTool
-	extends org.eclipse.gef.internal.FlagSupport
+	extends org.eclipse.gef.util.FlagSupport
 	implements Tool, RequestConstants
 {
 
@@ -72,7 +72,7 @@ private long accessibleBegin;
  * Allows the user to access mouse and keyboard input.
  */
 public static class Input
-	extends org.eclipse.gef.internal.FlagSupport
+	extends org.eclipse.gef.util.FlagSupport
 {
 	int modifiers;
 	boolean verifyMouseButtons;

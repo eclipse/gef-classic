@@ -17,6 +17,7 @@
          <export name="org.eclipse.gef.handles.*"/>
          <export name="org.eclipse.gef.palette.*"/>
          <export name="org.eclipse.gef.tools.*"/>
+         <export name="org.eclipse.gef.util.*"/>
          <export name="org.eclipse.gef.ui.actions.*"/>
          <export name="org.eclipse.gef.ui.palette.*"/>
          <export name="org.eclipse.gef.ui.palette.customize.*"/>
