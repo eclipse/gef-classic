@@ -90,12 +90,6 @@ public int getSlack() {
 	return (target.rank - source.rank) - delta;
 }
 
-public Node head() {
-	if (source.spanTreeParent == this)
-		return target;
-	return source;
-}
-
 public int getSourceOffset() {
 	if (offsetSource != -1)
 		return offsetSource;
@@ -116,12 +110,6 @@ public Node opposite(Node end){
 
 int span() {
 	return target.rank - source.rank;
-}
-
-public Node tail() {
-	if (source.spanTreeParent == this)
-		return source;
-	return target;
 }
 
 /**
