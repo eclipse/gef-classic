@@ -8,7 +8,7 @@
 -windowtitle "Eclipse Draw2d API Specification"
 -doctitle "Eclipse Draw2d API Specification"
 -header "<b>Eclipse Draw2d</b><br>2.1"
--bottom "Copyright (c) IBM Corp. and others 2000, 2002.  All Rights Reserved."
+-bottom "Copyright (c) IBM Corp. and others 2000, 2003.  All Rights Reserved."
 -overview ../org.eclipse.draw2d/src/overview.html
 -link http://java.sun.com/j2se/1.3/docs/api
 -linkoffline ./../../../org.eclipse.platform.doc.isv/reference/api ../org.eclipse.platform.doc.isv/reference/api
@@ -17,4 +17,4 @@ org.eclipse.draw2d
 org.eclipse.draw2d.geometry
 org.eclipse.draw2d.parts
 org.eclipse.draw2d.text
-org.eclipse.draw2d.util
+org.eclipse.draw2d.widgets
