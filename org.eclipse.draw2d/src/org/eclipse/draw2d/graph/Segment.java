@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.draw2d.graph;
 
+import org.eclipse.draw2d.geometry.Geometry;
 import org.eclipse.draw2d.geometry.Point;
 
 /**
@@ -51,10 +52,6 @@ double cosine(Segment otherSegment) {
 	return -(1 + cos);
 }
 
-private long cross(int x1, int y1, int x2, int y2) {
-	return x1 * y2 - x2 * y1;
-}
-
 /**
  * Returns the cross product of this segment and the given segment
  * @param otherSegment the other segment
@@ -89,29 +86,7 @@ double getSlope() {
  * @return true if the segments intersect
  */
 boolean intersects(int sx, int sy, int tx, int ty) {
-	/*
-	 * Given the segments: u-------v. s-------t. If s->t is inside the
-	 * triangle uvs, then check whether the line uv splits the line st.
-	 */
-	int su_x = start.x - sx;
-	int su_y = start.y - sy;
-	int sv_x = end.x - sx;
-	int sv_y = end.y - sy;
-	int st_x = sx - tx;
-	int st_y = sy - ty;
-	long product = cross(sv_x, sv_y, st_x, st_y)
-			* cross(st_x, st_y, su_x, su_y);
-	if (product >= 0) {
-		int uvx = end.x - start.x;
-		int uvy = end.y - start.y;
-		int tux = start.x - tx;
-		int tuy = start.y - ty;
-		product = cross(-su_x, -su_y, uvx, uvy)
-				* cross(uvx, uvy, tux, tuy);
-		boolean intersects = product <= 0;
-		return intersects;
-	}
-	return false;
+	return Geometry.linesIntersect(start.x, start.y, end.x, end.y, sx, sy, tx, ty);
 }
 
 /**
