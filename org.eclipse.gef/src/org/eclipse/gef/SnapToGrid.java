@@ -51,7 +51,7 @@ public int snapCreateRequest(CreateRequest request, PrecisionRectangle baseRect,
 	
 	IFigure fig = container.getContentPane();
 	fig.translateToRelative(baseRect);
-	System.out.println(baseRect);
+//	System.out.println(baseRect);
 	if ((snapOrientation & WEST) != 0 && gridX > 0) {
 		double xCorrection = Math.IEEEremainder(baseRect.preciseX - origin.x, gridX);
 		baseRect.preciseX -= xCorrection;
