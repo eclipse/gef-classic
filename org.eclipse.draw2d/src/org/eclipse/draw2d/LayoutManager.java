@@ -13,7 +13,8 @@ package org.eclipse.draw2d;
 import org.eclipse.draw2d.geometry.Dimension;
 
 /**
- * Lays out figures, using a constraint if necessary.
+ * A helper for positioning child figures and determining the ideal size for a figure
+ * with children.
  */
 public interface LayoutManager {
 
