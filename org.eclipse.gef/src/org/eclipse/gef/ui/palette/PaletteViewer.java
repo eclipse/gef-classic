@@ -17,7 +17,7 @@ import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.widgets.Display;
 
-import org.eclipse.ui.XMLMemento;
+import org.eclipse.ui.IMemento;
 
 import org.eclipse.draw2d.FigureCanvas;
 
@@ -96,24 +96,6 @@ public PaletteViewer() {
 public void addPaletteListener(PaletteListener paletteListener) {
 	if (paletteListeners != null)
 		paletteListeners.add(paletteListener);
-}
-
-// Fails silently
-public boolean applyState(XMLMemento memento) {
-	try {
-		((PaletteEditPart)getEditPartRegistry().get(getPaletteRoot()))
-				.restoreState(memento);
-	} catch (RuntimeException re) {
-		return false;
-	}
-	return true;
-}
-
-public XMLMemento captureState() {
-	PaletteEditPart root = (PaletteEditPart)getEditPartRegistry().get(getPaletteRoot());
-	XMLMemento memento = XMLMemento.createWriteRoot(PaletteEditPart.XML_NAME);
-	root.saveState(memento);
-	return memento;
 }
 
 /** * @see org.eclipse.gef.ui.parts.GraphicalViewerImpl#createDefaultRoot() */
@@ -274,6 +256,20 @@ public void removePaletteListener(PaletteListener paletteListener) {
 	paletteListeners.remove(paletteListener);
 }
 
+// Fails silently
+public boolean restoreState(IMemento memento) {
+	try {
+		((PaletteEditPart)getEditPartRegistry().get(getPaletteRoot()))
+				.restoreState(memento);
+	} catch (RuntimeException re) {
+		/*
+		 * @TODO:Pratik   Perhaps you should log this exception.  Or not catch it at all. 
+		 */
+		return false;
+	}
+	return true;
+}
+
 /**
  * @see	ScrollingGraphicalViewer#reveal(EditPart)
  */
@@ -284,6 +280,10 @@ public void reveal(EditPart part) {
 	if (drawer != null && !drawer.isExpanded())
 		drawer.setExpanded(true);
 	super.reveal(part);
+}
+
+public void saveState(IMemento memento) {
+	((PaletteEditPart)getEditPartRegistry().get(getPaletteRoot())).saveState(memento);
 }
 
 /**
