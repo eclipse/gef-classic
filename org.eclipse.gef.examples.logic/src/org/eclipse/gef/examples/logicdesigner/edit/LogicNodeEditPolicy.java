@@ -13,6 +13,7 @@ package org.eclipse.gef.examples.logicdesigner.edit;
 import org.eclipse.draw2d.*;
 
 import org.eclipse.gef.GraphicalEditPart;
+import org.eclipse.gef.LayerConstants;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.requests.CreateConnectionRequest;
@@ -51,6 +52,20 @@ protected Command getConnectionCreateCommand(CreateConnectionRequest request) {
 	request.setStartCommand(command);
 	return command;
 }
+
+/**
+ * Feedback should be added to the scaled feedback layer.
+ * @see org.eclipse.gef.editpolicies.GraphicalEditPolicy#getFeedbackLayer()
+ */
+protected IFigure getFeedbackLayer() {
+	/*
+	 * Fix for Bug# 66590
+	 * Feedback needs to be added to the scaled feedback layer
+	 */
+	return getLayer(LayerConstants.SCALED_FEEDBACK_LAYER);
+}
+
+
 
 protected LogicEditPart getLogicEditPart() {
 	return (LogicEditPart) getHost();
