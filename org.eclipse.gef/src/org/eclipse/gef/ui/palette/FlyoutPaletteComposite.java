@@ -15,6 +15,11 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.accessibility.ACC;
+import org.eclipse.swt.accessibility.AccessibleAdapter;
+import org.eclipse.swt.accessibility.AccessibleControlAdapter;
+import org.eclipse.swt.accessibility.AccessibleControlEvent;
+import org.eclipse.swt.accessibility.AccessibleEvent;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.DisposeEvent;
@@ -89,10 +94,15 @@ import org.eclipse.gef.internal.Internal;
 import org.eclipse.gef.ui.views.palette.PaletteView;
 
 /**
+ * The FlyoutPaletteComposite is used to show a flyout palette alongside another control.
+ * The flyout palette will only be visible when the PaletteView is not.  This class is
+ * intended to be used in conjunction with 
+ * 
+ * {@link  org.eclipse.gef.ui.parts.GraphicalEditorWithFlyoutPalette}.
  * @author Pratik Shah
  * @since 3.0
  */
-public class FlyoutPaletteComposite 
+public class FlyoutPaletteComposite
 	extends Composite
 {
 	
@@ -117,6 +127,7 @@ private static final Image LEFT_ARROW = new Image(null, ImageDescriptor.createFr
 private static final Image RIGHT_ARROW = new Image(null, ImageDescriptor.createFromFile(
 		Internal.class, "icons/palette_right.gif").getImageData()); //$NON-NLS-1$
 
+private PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 private Composite paletteContainer;
 private PaletteViewer pViewer, externalViewer;
 private Control graphicalControl, sash;
@@ -139,10 +150,14 @@ private IPerspectiveListener perspectiveListener = new IPerspectiveListener() {
 };
 
 /**
- * PropertyChangeSupport
+ * Constructor
+ * 
+ * @param	parent		The parent Composite
+ * @param	style		The style of the widget to construct
+ * @param	page		The current workbench page
+ * @param	pvProvider	The provider that is to be used to create the flyout palette
+ * @param	preferences	To save/retrieve the preferences for the flyout
  */
-private PropertyChangeSupport listeners = new PropertyChangeSupport(this);
-
 public FlyoutPaletteComposite(Composite parent, int style, IWorkbenchPage page,
 		PaletteViewerProvider pvProvider, FlyoutPreferences preferences) {
 	super(parent, style & SWT.BORDER);
@@ -265,6 +280,9 @@ public boolean isInState(int state) {
 	return (paletteState & state) != 0;
 }
 
+/**
+ * @see	Composite#layout(boolean)
+ */
 public void layout(boolean changed) {
 	if (graphicalControl == null || graphicalControl.isDisposed())
 		return;
@@ -356,6 +374,14 @@ private void hookIntoWorkbench(final IWorkbenchWindow window) {
 	});
 }
 
+/**
+ * If an external palette viewer is provided, palette settings (the ones that are
+ * captured in {@link PaletteViewer#saveState(IMemento)}) will be maintained when
+ * switching between the two viewers.  Providing an external viewer, although
+ * recommended, is optional.
+ * 
+ * @param	viewer	The external palette viewer used in the PaletteView
+ */
 public void setExternalViewer(PaletteViewer viewer) {
 	externalViewer = viewer;
 	if (externalViewer != null && pViewer != null) {
@@ -385,7 +411,10 @@ private final void setPaletteWidth(int newSize) {
 	}
 }
 
-// should only be invoked once
+/**
+ * Sets the graphical control along the side of which the palette is to be displayed.
+ * This method should only be invoked once.
+ */
 public void setGraphicalControl(Control graphicalViewer) {
 	Assert.isTrue(graphicalViewer.getParent() == this);
 	Assert.isTrue(graphicalControl == null);
@@ -526,7 +555,6 @@ private class Sash extends Composite {
 		Point titleSize = title.computeSize(wHint, hHint);
 		return new Point(Math.max(buttonSize.x, titleSize.x) + 2, 
 				buttonSize.y + titleSize.y + 7);
-		
 	}
 	private void handleSashDragged(int shiftAmount) {
 		int newSize = paletteContainer.getBounds().width + 
@@ -923,12 +951,12 @@ private class DragFigure
 }
 
 private static class TitleLabel extends Label {
+	protected static final Border BORDER = new MarginBorder(0, 3, 0, 3);
+	protected static final Border TOOL_TIP_BORDER = new MarginBorder(0, 2, 0, 2);
 	private static final int H_GAP = 4;
 	private static final int LINE_LENGTH = 20;
 	private static final int MIN_LINE_LENGTH = 6;
 	private boolean horizontal;
-	protected static final Border BORDER = new MarginBorder(0, 3, 0, 3);
-	protected static final Border TOOL_TIP_BORDER = new MarginBorder(0, 2, 0, 2);
 	public TitleLabel(boolean isHorizontal) {
 		super(GEFMessages.Palette_Label);
 		horizontal = isHorizontal;
@@ -1015,6 +1043,7 @@ private class ButtonCanvas extends Canvas {
 	public ButtonCanvas(Composite parent) {
 		super(parent, SWT.NO_REDRAW_RESIZE | SWT.NO_BACKGROUND);
 		init();
+		provideAccSupport();
 	}
 	public Point computeSize(int wHint, int hHint, boolean changed) {
 		Dimension size = lws.getRootFigure().getPreferredSize(wHint, hHint);
@@ -1058,6 +1087,24 @@ private class ButtonCanvas extends Canvas {
 		});
 		lws.setContents(b);
 	}
+	private void provideAccSupport() {
+		getAccessible().addAccessibleListener(new AccessibleAdapter() {
+			public void getDescription(AccessibleEvent e) {
+				e.result = PaletteMessages.ACC_DESC_PALETTE_BUTTON;
+			}
+			public void getHelp(AccessibleEvent e) {
+				getDescription(e);
+			}
+			public void getName(AccessibleEvent e) {
+				e.result = getToolTipText();
+			}
+		});
+		getAccessible().addAccessibleControlListener(new AccessibleControlAdapter() {
+			public void getRole(AccessibleControlEvent e) {
+				e.detail = ACC.ROLE_PUSHBUTTON;
+			}
+		});
+	}
 	private class ImageButton extends Button {
 		public ImageButton(Image img) {
 			super();
@@ -1074,6 +1121,7 @@ private class TitleCanvas extends Canvas {
 	public TitleCanvas(Composite parent, boolean horizontal) {
 		super(parent, SWT.NO_REDRAW_RESIZE | SWT.NO_BACKGROUND);
 		init(horizontal);
+		provideAccSupport();
 	}
 	public Point computeSize(int wHint, int hHint, boolean changed) {
 		Dimension size = lws.getRootFigure().getPreferredSize(wHint, hHint);
@@ -1136,6 +1184,24 @@ private class TitleCanvas extends Canvas {
 		manager.addMenuListener(new IMenuListener() {
 			public void menuAboutToShow(IMenuManager mgr) {
 				resizeAction.setEnabled(resizeAction.isEnabled());
+			}
+		});
+	}
+	private void provideAccSupport() {
+		getAccessible().addAccessibleListener(new AccessibleAdapter() {
+			public void getDescription(AccessibleEvent e) {
+				e.result = PaletteMessages.ACC_DESC_PALETTE_TITLE;
+			}
+			public void getHelp(AccessibleEvent e) {
+				getDescription(e);
+			}
+			public void getName(AccessibleEvent e) {
+				e.result = GEFMessages.Palette_Label;
+			}
+		});
+		getAccessible().addAccessibleControlListener(new AccessibleControlAdapter() {
+			public void getRole(AccessibleControlEvent e) {
+				e.detail = ACC.ROLE_SLIDER;
 			}
 		});
 	}
