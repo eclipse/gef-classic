@@ -40,17 +40,19 @@ public boolean canExecute() {
 }
 
 public void execute() {
-	resetOnUndo = !getTarget().isPropertySet(propertyName);
-	if (!resetOnUndo) {
-		undoValue = getTarget().getPropertyValue(propertyName);
-		
-//		org.eclipse.gef.GEF.hack();
-		// Temporary until the PropertySheetEntry is fixed to call getEditableValue()
-//		if (undoValue instanceof IPropertySource)
-//			undoValue = ((IPropertySource) undoValue).getEditableValue();
-	} else
-		undoValue = null;
+	/*
+	 * Fix for Bug# 54250
+	 * IPropertySource.isPropertySet(String) returns false both when there is no default 
+	 * value, and when there is a default value and the property is set to that value.
+	 * To correctly determine if a reset should be done during undo, we compare the
+	 * return value of isPropertySet(String) before and after setPropertyValue(...) is
+	 * invoked.  If they are different (it must have been false before and true after --
+	 * it cannot be the other way around), then that means we need to reset.
+	 */
+	boolean isPropertySet = getTarget().isPropertySet(propertyName);
+	undoValue = getTarget().getPropertyValue(propertyName);
 	getTarget().setPropertyValue(propertyName, propertyValue);
+	resetOnUndo = isPropertySet != getTarget().isPropertySet(propertyName);
 }
 
 public IPropertySource getTarget() {
