@@ -16,14 +16,26 @@ import org.eclipse.ui.part.*;
 import org.eclipse.gef.internal.GEFMessages;
 
 /**
+ * The GEF palette view
+ * 
  * @author Pratik Shah
+ * @since 3.0
  */
 public class PaletteView
 	extends PageBookView
 {
-	
+
+/**
+ * The ID for this view.  This is the same as the String used to register this view
+ * with the platform's extension point. 
+ */
 public static final String ID = "org.eclipse.gef.ui.palette_view"; //$NON-NLS-1$
 
+/**
+ * Creates a default page saying that a palette is not available.
+ * 
+ * @see org.eclipse.ui.part.PageBookView#createDefaultPage(org.eclipse.ui.part.PageBook)
+ */
 protected IPage createDefaultPage(PageBook book) {
 	MessagePage page = new MessagePage();
 	initPage(page);
@@ -31,7 +43,10 @@ protected IPage createDefaultPage(PageBook book) {
 	page.setMessage(GEFMessages.Palette_Not_Available);
 	return page;
 }
-	
+
+/**
+ * @see org.eclipse.ui.part.PageBookView#doCreatePage(org.eclipse.ui.IWorkbenchPart)
+ */
 protected PageRec doCreatePage(IWorkbenchPart part) {
 	// Try to get a custom palette page
 	Object obj = part.getAdapter(PalettePage.class);
@@ -47,25 +62,31 @@ protected PageRec doCreatePage(IWorkbenchPart part) {
 }
 
 /**
- * @see PageBookView#doDestroyPage(IWorkbenchPart, PageBookView.PageRec)
+ * @see	PageBookView#doDestroyPage(org.eclipse.ui.IWorkbenchPart, org.eclipse.ui.part.PageBookView.PageRec)
  */
 protected void doDestroyPage(IWorkbenchPart part, PageRec rec) {
 	rec.page.dispose();
 }
 
 /**
- * @see PageBookView#getBootstrapPart()
+ * The view shows the palette associated with the active editor.
+ * 
+ * @see	PageBookView#getBootstrapPart()
  */
 protected IWorkbenchPart getBootstrapPart() {
-	IWorkbenchPage persp = getSite().getPage();
-	if (persp != null)
-		return persp.getActiveEditor();
+	IWorkbenchPage page = getSite().getPage();
+	if (page != null)
+		return page.getActiveEditor();
 	return null;
 }
 
+/**
+ * Only editors are important.
+ * 
+ * @see	PageBookView#isImportant(org.eclipse.ui.IWorkbenchPart)
+ */
 protected boolean isImportant(IWorkbenchPart part) {
-	return part instanceof IEditorPart
-		|| part.getAdapter(PalettePage.class) != null;
+	return part instanceof IEditorPart;
 }
 
 }
