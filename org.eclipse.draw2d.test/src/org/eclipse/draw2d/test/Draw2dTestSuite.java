@@ -31,7 +31,8 @@ public Draw2dTestSuite() {
 	addTest(new TestSuite(XYLayoutTest.class));
 	addTest(new TestSuite(TextFlowWrapTest.class));
 	addTest(new TestSuite(LocalOptimizerTest.class));
-	addTest(new TestSuite(ScaledGraphicsTest.class));
+//	addTest(new TestSuite(CaretTests.class));
+	addTest(new TestSuite(FlowBorderTests.class));
 	addTest(new TestSuite(PaintDamageEraseTest.class));
 	addTest(new TestSuite(LayeredPaneTest.class));
 	addTest(new TestSuite(ConnectionEndPointMoveTest.class));
