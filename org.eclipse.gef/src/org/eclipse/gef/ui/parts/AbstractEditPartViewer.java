@@ -128,12 +128,7 @@ public void appendSelection(EditPart editpart) {
 		EditPart primary = (EditPart)list.get(list.size() - 1);
 		primary.setSelected(EditPart.SELECTED);
 	}
-	/*
-	 * @TODO:Pratik    Randy, is there a reason why this is first removing the editpart
-	 * and then adding it?  Shouldn't it be:
-	 * 		if (!contains)
-	 * 			add
-	 */
+	// if the editpart is already in the list, re-order it to be the last one
 	list.remove(editpart);
 	list.add(editpart);
 	editpart.setSelected(EditPart.SELECTED_PRIMARY);
