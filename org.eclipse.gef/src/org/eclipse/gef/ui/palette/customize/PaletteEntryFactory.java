@@ -134,8 +134,6 @@ public String getLabel() {
  * @param imgDesc	The new ImageDescriptor
  */
 public void setImageDescriptor(ImageDescriptor imgDesc) {
-//@TODO:Pratik
-// Should I put in a check to ensure that these are never null?
 	imageDescriptor = imgDesc;
 }
 

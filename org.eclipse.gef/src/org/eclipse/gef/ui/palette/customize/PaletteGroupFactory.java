@@ -19,8 +19,6 @@ public class PaletteGroupFactory
  * Constructor
  */
 public PaletteGroupFactory() {
-	//@TODO:Pratik
-	// Take care of image descriptors in this class
 	setLabel(PaletteMessages.MODEL_TYPE_GROUP);
 }
 
