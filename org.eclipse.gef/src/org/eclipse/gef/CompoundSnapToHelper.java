@@ -2,7 +2,6 @@ package org.eclipse.gef;
 
 import org.eclipse.jface.util.Assert;
 
-import org.eclipse.draw2d.geometry.PrecisionPoint;
 import org.eclipse.draw2d.geometry.PrecisionRectangle;
 
 /**

@@ -3,10 +3,6 @@ package org.eclipse.gef;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.geometry.*;
-import org.eclipse.draw2d.geometry.PrecisionPoint;
-import org.eclipse.draw2d.geometry.PrecisionRectangle;
-import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.draw2d.geometry.Translatable;
 
 /**
  * Tools use SnapToHelpers on a per-operation basis. For example, for a move operation,
