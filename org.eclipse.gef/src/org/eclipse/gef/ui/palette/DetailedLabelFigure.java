@@ -1,5 +1,9 @@
 package org.eclipse.gef.ui.palette;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
@@ -33,12 +37,15 @@ public static final int SELECTED_WITH_FOCUS = 1;
  */
 public static final int SELECTED_WITHOUT_FOCUS = 2;
 
+public static final String SELECTED_PROPERTY = "selected"; //$NON-NLS-1$
+
 private Image shadedIcon;
 private ImageFigure image;
 private FlowPage page;
 private TextFlow text;
 private boolean useLargeIcons;
 private int selectionState, layoutMode = -1;
+private List listeners = new ArrayList();
 
 /**
  * Constructor
@@ -58,10 +65,26 @@ public DetailedLabelFigure() {
 	setLayoutManager(layout);
 }
 
+public void addChangeListener(ChangeListener listener) {
+	listeners.add(listener);
+}
+
+protected void fireStateChanged(String property) {
+	Iterator iter = listeners.iterator();
+	ChangeEvent change = new ChangeEvent(this, property);
+	while (iter.hasNext())
+		((ChangeListener)iter.next()).
+			handleStateChanged(change);
+}
+
 /** * @return whether this figure is selected or not */
 public boolean isSelected() {
 	return selectionState == SELECTED_WITH_FOCUS 
 	     || selectionState == SELECTED_WITHOUT_FOCUS;
+}
+
+public void removeChangeListener(ChangeListener listener) {
+	listeners.remove(listener);
 }
 
 /**
@@ -105,9 +128,11 @@ public void setSelected(int state) {
 	if (selectionState == SELECTED_WITH_FOCUS) {
 		setForegroundColor(ColorConstants.menuForegroundSelected);
 		setBackgroundColor(ColorConstants.menuBackgroundSelected);
+		fireStateChanged(SELECTED_PROPERTY);
 	} else if (selectionState == SELECTED_WITHOUT_FOCUS) {
 		setForegroundColor(null);
 		setBackgroundColor(ColorConstants.button);
+		fireStateChanged(SELECTED_PROPERTY);
 	} else {
 		setForegroundColor(null);
 		setBackgroundColor(null);
