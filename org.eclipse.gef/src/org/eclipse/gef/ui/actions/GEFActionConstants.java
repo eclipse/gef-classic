@@ -46,24 +46,6 @@ static final String ALIGN_RIGHT = "org.eclipse.gef.align_right";//$NON-NLS-1$
  */
 static final String ALIGN_TOP = "org.eclipse.gef.align_top";//$NON-NLS-1$
 
-/** 
- * Context menu for an editor. 
- * Value: <code>"org.eclipse.gef.contextmenu.editor"</code>
- */
-static final String CONTEXT_MENU_EDITOR = "org.eclipse.gef.contextmenu.editor"; //$NON-NLS-1$
-
-/** 
- * Context menu for an outline. 
- * Value: <code>"org.eclipse.gef.contextmenu.outline"</code>
- */
-static final String CONTEXT_MENU_OUTLINE = "org.eclipse.gef.contextmenu.outline"; //$NON-NLS-1$
-
-/** 
- * Context menu for a palette. 
- * Value: <code>"org.eclipse.gef.contextmenu.palette"</code>
- */
-static final String CONTEXT_MENU_PALETTE = "org.eclipse.gef.contextmenu.palette"; //$NON-NLS-1$
-
 /**
  * Direct edit action id. 
  * Value: <code>"org.eclipse.gef.direct_edit"</code>
