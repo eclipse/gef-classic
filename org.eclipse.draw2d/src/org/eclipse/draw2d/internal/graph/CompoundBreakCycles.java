@@ -18,10 +18,14 @@ import org.eclipse.draw2d.graph.Subgraph;
 
 /**
  * This visitor eliminates cycles in the graph via a modified implementation of the 
- * Greedy-Cycle-Removal algorithm. The algorithm has been modified to handle the 
- * presence of Subgraphs. This algorithm determines which edges cause cycles in the 
- * graph and then inverts these edges. 
+ * greedy cycle removal algorithm for directed graphs. The algorithm has been modified to
+ * handle the presence of Subgraphs and compound cycles which may result. This algorithm
+ * determines a set of edges which can be inverted and result in a graph without compound
+ * cycles.
+ * 
  * @author Daniel Lee
+ * @author Randy Hudson
+ * @since 2.1.2
  */
 public class CompoundBreakCycles extends GraphVisitor {
 

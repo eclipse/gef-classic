@@ -35,7 +35,7 @@ import org.eclipse.draw2d.geometry.Point;
  * </UL>
  * 
  * @author hudsonr
- * @since 2.1
+ * @since 2.1.2
  */
 public class Edge {
 

@@ -19,11 +19,15 @@ import org.eclipse.draw2d.graph.Node;
 import org.eclipse.draw2d.graph.NodeList;
 
 /**
- * This visitor eliminates cycles in the graph via an implementation of the 
- * Greedy-Cycle-Removal algorithm. This algorithm determines which edges cause
- * the cycles and then inverts these edges. 
+ * This visitor eliminates cycles in the graph using a "greedy" heuristic.  Nodes which
+ * are sources and sinks are marked and placed in a source and sink list, leaving only
+ * nodes involved in cycles. A remaining node with the highest (outgoing-incoming) edges
+ * score is then chosen greedily as if it were a source. The process is repeated until all
+ * nodes have been marked and placed in a list.  The lists are then concatenated, and any
+ * edges which go backwards in this list will be inverted during the layout procedure.
  * 
  * @author Daniel Lee
+ * @since 2.1.2
  */
 public class BreakCycles extends GraphVisitor {
 

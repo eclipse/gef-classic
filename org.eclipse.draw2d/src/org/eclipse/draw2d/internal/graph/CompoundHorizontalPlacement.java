@@ -24,8 +24,9 @@ import org.eclipse.draw2d.graph.Subgraph;
 import org.eclipse.draw2d.graph.SubgraphBoundary;
 
 /**
- * @author hudsonr
- * Created on Jul 3, 2003
+ * Calculates the X-coordinates for nodes in a compound directed graph. 
+ * @author Randy Hudson
+ * @since 2.1.2
  */
 public class CompoundHorizontalPlacement extends HorizontalPlacement {
 
@@ -101,6 +102,29 @@ void createEdge(Node left, Node right) {
 		getPrime(left), getPrime(right), separation, 0
 	));
 }
+
+//void addEdge(Node u, Node v, Edge e, int weight) {
+//	Node uLeft = u, uRight = u, vLeft = v, vRight = v;
+//	boolean special = false;
+//	// If U is a boundary
+//	if (u instanceof SubgraphBoundary && u.getParent().tail == u) {
+//		uLeft = u.getParent().left;
+//		uRight = u.getParent().right;
+//		special = true;
+//	}
+//	
+//	if (v instanceof SubgraphBoundary && v.getParent().head == v) {
+//		vLeft = v.getParent().left;
+//		vRight = v.getParent().right;
+//		special = true;
+//	}
+//	
+//	if (special) {
+//		super.addEdge(uLeft, vLeft, e, weight);
+//		super.addEdge(uRight, vRight, e, weight);
+//	} else
+//		super.addEdge(u, v, e, weight);
+//}
 
 Node addSeparatorsLeft(Node n, Subgraph graph) {
 	Subgraph parent = n.getParent();
