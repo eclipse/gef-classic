@@ -47,7 +47,8 @@ protected void declareActions() {
 	globalActions.add(IWorkbenchActionConstants.UNDO);
 	globalActions.add(IWorkbenchActionConstants.REDO);
 	globalActions.add(IWorkbenchActionConstants.DELETE);
-
+	globalActions.add(IWorkbenchActionConstants.PRINT);
+	
 	toolbarActions.add(IWorkbenchActionConstants.UNDO);
 	toolbarActions.add(IWorkbenchActionConstants.REDO);
 	toolbarActions.add(IWorkbenchActionConstants.DELETE);
