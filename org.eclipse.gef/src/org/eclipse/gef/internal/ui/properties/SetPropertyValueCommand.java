@@ -49,10 +49,12 @@ public void execute() {
 	 * invoked.  If they are different (it must have been false before and true after --
 	 * it cannot be the other way around), then that means we need to reset.
 	 */
-	boolean isPropertySet = getTarget().isPropertySet(propertyName);
+	boolean wasPropertySet = getTarget().isPropertySet(propertyName);
 	undoValue = getTarget().getPropertyValue(propertyName);
 	getTarget().setPropertyValue(propertyName, propertyValue);
-	resetOnUndo = isPropertySet != getTarget().isPropertySet(propertyName);
+	resetOnUndo = wasPropertySet != getTarget().isPropertySet(propertyName);
+	if (resetOnUndo)
+		undoValue = null;
 }
 
 public IPropertySource getTarget() {
