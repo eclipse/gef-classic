@@ -42,7 +42,8 @@ protected abstract Command createAddCommand(
 	EditPart child,
 	Object constraint);
 
-protected Command createChangeConstraintCommand(Request request, EditPart child, 
+protected Command createChangeConstraintCommand(ChangeBoundsRequest request, 
+												EditPart child, 
                                                 Object constraint) {
 	return createChangeConstraintCommand(child, constraint);
 }
