@@ -33,7 +33,11 @@ import org.eclipse.gef.ui.parts.GraphicalViewerKeyHandler;
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 
 /**
+ * A RulerComposite is used to show rulers to the north and west of the control of a
+ * given {@link #setGraphicalViewer(ScrollingGraphicalViewer) graphical viewer}.
+ * 
  * @author Pratik Shah
+ * @since 3.0
  */
 public class RulerComposite
 	extends Composite
@@ -55,6 +59,13 @@ private Runnable runnable = new Runnable() {
 	}
 };
 
+/**
+ * Constructor
+ * 
+ * @param parent	a widget which will be the parent of the new instance (cannot be null)
+ * @param style		the style of widget to construct
+ * @see	Composite#Composite(org.eclipse.swt.widgets.Composite, int)
+ */
 public RulerComposite(Composite parent, int style) {
 	super(parent, style);
 	addDisposeListener(new DisposeListener() {
@@ -188,7 +199,7 @@ private GraphicalViewer getRulerContainer(int orientation) {
 	return result;
 }
 
-/* (non-Javadoc)
+/**
  * @see org.eclipse.swt.widgets.Composite#layout(boolean)
  */
 public void layout(boolean change) {
@@ -204,15 +215,17 @@ public void layout(boolean change) {
 }
 
 /**
+ * Creates rulers for the given graphical viewer.
+ * <p>
  * The primaryViewer or its Control cannot be <code>null</code>.  The primaryViewer's
  * Control should be a FigureCanvas and a child of this Composite.  This method should
  * only be invoked once.
  * <p>
  * To create ruler(s), simply add the RulerProvider(s) (with the right key: 
  * RulerProvider.PROPERTY_HORIZONTAL_RULER or RulerProvider.PROPERTY_VERTICAL_RULER) 
- * as a property on the viewer (it can be done after this method is invoked).
+ * as a property on the given viewer (it can be done after this method is invoked).
  * 
- * @param	primaryViewer	The GraphicalViewer for which the rulers have to be created.
+ * @param	primaryViewer	The graphical viewer for which the rulers have to be created
  */
 public void setGraphicalViewer(ScrollingGraphicalViewer primaryViewer) {
 	// pre-conditions
@@ -229,7 +242,7 @@ public void setGraphicalViewer(ScrollingGraphicalViewer primaryViewer) {
 		public void handleEvent(Event event) {
 			// @TODO:Pratik  If you use Display.asyncExec(runnable) here, some flashing
 			// occurs.  You can see it when the palette is in the editor, and you hit
-			// the button to expand/collapse it.
+			// the button to show/hide it.
 			layout(true);
 		}
 	};
@@ -324,12 +337,23 @@ private static class RulerBorder
 	private static final Insets H_INSETS = new Insets(0, 1, 0, 0);
 	private static final Insets V_INSETS = new Insets(1, 0, 0, 0);
 	private boolean horizontal;
+	/**
+	 * Constructor
+	 * 
+	 * @param isHorizontal	whether or not the ruler being bordered is horizontal or not
+	 */
 	public RulerBorder(boolean isHorizontal) {
 		horizontal = isHorizontal;
 	}
+	/**
+	 * @see org.eclipse.draw2d.Border#getInsets(org.eclipse.draw2d.IFigure)
+	 */
 	public Insets getInsets(IFigure figure) {
 		return horizontal ? H_INSETS : V_INSETS;
 	}
+	/**
+	 * @see org.eclipse.draw2d.Border#paint(org.eclipse.draw2d.IFigure, org.eclipse.draw2d.Graphics, org.eclipse.draw2d.geometry.Insets)
+	 */
 	public void paint(IFigure figure, Graphics graphics, Insets insets) {
 		graphics.setForegroundColor(ColorConstants.buttonDarker);
 		if (horizontal) {
@@ -344,19 +368,34 @@ private static class RulerBorder
 	}
 }
 
+/**
+ * Custom graphical viewer intended to be used for rulers.
+ * 
+ * @author Pratik Shah
+ * @since 3.0
+ */
 private static class RulerViewer
 	extends ScrollingGraphicalViewer
 {
+	/**
+	 * Constructor
+	 */
 	public RulerViewer() {
 		super();
 		init();
 	}
+	/**
+	 * @see org.eclipse.gef.EditPartViewer#appendSelection(org.eclipse.gef.EditPart)
+	 */
 	public void appendSelection(EditPart editpart) {
 		if (editpart instanceof RootEditPart)
 			editpart = ((RootEditPart)editpart).getContents();
 		setFocus(editpart);
 		super.appendSelection(editpart);
 	}
+	/**
+	 * @see org.eclipse.gef.GraphicalViewer#findHandleAt(org.eclipse.draw2d.geometry.Point)
+	 */
 	public Handle findHandleAt(org.eclipse.draw2d.geometry.Point p) {
 		final GraphicalEditPart gep = 
 				(GraphicalEditPart)findObjectAtExcluding(p, new ArrayList());
@@ -371,26 +410,51 @@ private static class RulerViewer
 			}
 		};
 	}
+	/**
+	 * @see org.eclipse.gef.ui.parts.AbstractEditPartViewer#init()
+	 */
 	protected void init() {
 		setContextMenu(new RulerContextMenuProvider(this));
 		setKeyHandler(new RulerKeyHandler(this));
 	}
+	/**
+	 * Requests to reveal a ruler are ignored since that causes undesired scrolling to
+	 * the origin of the ruler
+	 * 
+	 * @see org.eclipse.gef.EditPartViewer#reveal(org.eclipse.gef.EditPart)
+	 */
 	public void reveal(EditPart part) {
-		// there's no need to reveal rulers (that causes undesired scrolling to
-		// the origin of the ruler)
 		if (part != getContents())
 			super.reveal(part);
 	}
+	/**
+	 * @see org.eclipse.gef.EditPartViewer#setContents(org.eclipse.gef.EditPart)
+	 */
 	public void setContents(EditPart editpart) {
 		super.setContents(editpart);
 		setFocus(getContents());
 	}
+	/**
+	 * Custom KeyHandler intended to be used with a RulerViewer
+	 * 
+	 * @author Pratik Shah
+	 * @since 3.0
+	 */
 	protected static class RulerKeyHandler extends GraphicalViewerKeyHandler {
+		/**
+		 * Constructor
+		 * 
+		 * @param viewer	The viewer for which this handler processes keyboard input
+		 */
 		public RulerKeyHandler(GraphicalViewer viewer) {
 			super(viewer);
 		}
+		/**
+		 * @see org.eclipse.gef.KeyHandler#keyPressed(org.eclipse.swt.events.KeyEvent)
+		 */
 		public boolean keyPressed(KeyEvent event) {
 			if (event.keyCode == SWT.DEL) {
+				// If a guide has focus, delete it
 				if (getFocusEditPart() instanceof GuideEditPart) {
 					RulerEditPart parent = 
 							(RulerEditPart)getFocusEditPart().getParent();
@@ -404,6 +468,7 @@ private static class RulerViewer
 			} else if (((event.stateMask & SWT.ALT) != 0)
 					&& (event.keyCode == SWT.ARROW_UP)) {
 				// ALT + UP_ARROW pressed
+				// If a guide has focus, give focus to the ruler
 				EditPart parent = getFocusEditPart().getParent();
 				if (parent instanceof RulerEditPart)
 					navigateTo(getFocusEditPart().getParent(), event);
