@@ -797,6 +797,8 @@ public boolean intersects(Rectangle rect) {
 public void invalidate() {
 	if (!isValid()) 
 		return;
+	if (getLayoutManager() != null)
+		getLayoutManager().invalidate();
 	setValid(false);
 }
 
@@ -1162,8 +1164,6 @@ public final void requestFocus() {
  */
 public void revalidate() {
 	invalidate();
-	if (getLayoutManager() != null)
-		getLayoutManager().invalidate();
 	if (getParent() == null || isValidationRoot())
 		getUpdateManager().addInvalidFigure(this);
 	else
