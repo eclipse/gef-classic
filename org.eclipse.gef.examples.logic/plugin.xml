@@ -2,7 +2,7 @@
 <plugin
    id="org.eclipse.gef.examples.logic"
    name="GEF Logic Editor Example"
-   version="2.1.2"
+   version="3.0.0"
    provider-name="Eclipse.org"
    class="org.eclipse.gef.examples.logicdesigner.LogicPlugin">
 
@@ -10,7 +10,7 @@
       <library name="logic.jar"/>
    </runtime>
    <requires>
-      <import plugin="org.eclipse.gef" version="2.1.2"/>
+      <import plugin="org.eclipse.gef" version="3.0.0"/>
       <import plugin="org.eclipse.core.resources"/>
    </requires>
 
