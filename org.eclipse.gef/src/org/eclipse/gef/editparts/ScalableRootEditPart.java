@@ -150,6 +150,7 @@ protected void createLayers(LayeredPane layeredPane) {
 		}
 	}, HANDLE_LAYER);
 	layeredPane.add(new FeedbackLayer(), FEEDBACK_LAYER);
+	layeredPane.add(new GuideLayer(), GUIDE_LAYER);
 }
 
 /**
