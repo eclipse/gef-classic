@@ -78,6 +78,16 @@ private ChangeListener clickableListener = new ChangeListener() {
 	}
 };
 
+// listen to changes of arrow figure
+private ChangeListener clickableArrowListener = new ChangeListener() {
+	public void handleStateChanged(ChangeEvent event) {
+		if (event.getPropertyName().equals(ButtonModel.MOUSEOVER_PROPERTY))
+			activeFigure.getModel().setMouseOver(arrowFigure.getModel().isMouseOver());
+		if (event.getPropertyName().equals(ButtonModel.ARMED_PROPERTY))
+			activeFigure.getModel().setArmed(arrowFigure.getModel().isArmed());
+	}
+};
+
 // listen to see if arrow is pressed
 private ActionListener actionListener = new ActionListener() {
 	public void actionPerformed(ActionEvent event) {
@@ -209,6 +219,8 @@ public IFigure createFigure() {
 	
 	arrowFigure = new RolloverArrow();
 	
+	arrowFigure.addChangeListener(clickableArrowListener);
+	
 	arrowFigure.addActionListener(actionListener);
 
 	int layoutMode = getPreferenceSource().getLayoutSetting();
@@ -225,6 +237,7 @@ public void deactivate() {
 	if (activeFigure != null) 
 		activeFigure.removeChangeListener(clickableListener);
 	arrowFigure.removeActionListener(actionListener);
+	arrowFigure.removeChangeListener(clickableArrowListener);
 	getStack().removePropertyChangeListener(stackListener);
 	getPaletteViewer().removePaletteListener(paletteListener);
 	getPaletteViewer().getPaletteViewerPreferences().removePropertyChangeListener(paletteLayoutListener);
