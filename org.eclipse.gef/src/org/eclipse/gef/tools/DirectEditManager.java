@@ -12,14 +12,10 @@ package org.eclipse.gef.tools;
 
 import java.lang.reflect.Constructor;
 
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.*;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
@@ -73,7 +69,6 @@ private ControlListener controlListener;
 private IFigure cellEditorFrame;
 private FocusListener focusListener;
 private ICellEditorListener cellEditorListener;
-private VerifyListener verifyListener;
 private boolean showingFeedback;
 private boolean dirty;
 private DirectEditRequest request;
@@ -239,23 +234,6 @@ private void hookListeners() {
 		}
 	};
 	getEditPart().addEditPartListener(editPartListener);
-
-	verifyListener = new VerifyListener() {
-		public void verifyText(VerifyEvent e) {
-			Text text = (Text)getControl();
-			String oldText = text.getText();
-			String leftText = oldText.substring(0, e.start);
-			String rightText = oldText.substring(e.end, oldText	.length());
-			GC gc = new GC(text);
-			String s = leftText + e.text + rightText;
-			Point size = gc.textExtent(leftText + e.text + rightText);
-			gc.dispose();
-			if (size.x != 0)
-				size = text.computeSize(size.x, SWT.DEFAULT);
-			getCellEditor().getControl().setSize(size.x, size.y);
-		}
-	};
-	((Text)getControl()).addVerifyListener(verifyListener);
 }
 
 protected abstract void initCellEditor();
@@ -343,15 +321,13 @@ protected void unhookListeners() {
 	getCellEditor().removeListener(cellEditorListener);
 	cellEditorListener = null;
 
-	Text text = (Text)getCellEditor().getControl();
-	if (text == null || text.isDisposed())
+	Control control = getCellEditor().getControl();
+	if (control == null || control.isDisposed())
 		return;
-	text.removeFocusListener(focusListener);
-	text.removeControlListener(controlListener);
-	text.removeVerifyListener(verifyListener);
+	control.removeFocusListener(focusListener);
+	control.removeControlListener(controlListener);
 	focusListener = null;
 	controlListener = null;
-	verifyListener = null;	
 }
 
 }
