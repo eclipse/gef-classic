@@ -224,6 +224,23 @@ public static Shape makeGhostShape(Shape s) {
  * 
  * @param c1 the first color
  * @param c2 the second color
+ * @param weight the first color's weight from 0-1
+ * @return the new color
+ * @since 2.0
+ */
+public static Color mixColors(Color c1, Color c2, double weight) {
+	return new Color(null,
+			(int)(c1.getRed() * weight + c2.getRed() * (1 - weight)),
+			(int)(c1.getGreen() * weight + c2.getGreen() *(1 - weight)),
+			(int)(c1.getBlue() * weight + c2.getBlue() * (1 - weight)));
+}
+
+
+/**
+ * Mixes the passed Colors and returns the resulting Color.
+ * 
+ * @param c1 the first color
+ * @param c2 the second color
  * @return the new color
  * @since 2.0
  */
