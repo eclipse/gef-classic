@@ -13,16 +13,12 @@ public class AddCommand extends Command {
 
 private Activity child;
 private StructuredActivity parent;
-private int index = -1;
 
 /**
  * @see org.eclipse.gef.commands.Command#execute()
  */
 public void execute() {
-	if( index < 0 )
-		parent.addChild(child);
-	else
-		parent.addChild(child,index);
+	parent.addChild(child);
 }
 
 /**
@@ -39,14 +35,6 @@ public StructuredActivity getParent() {
  */
 public void setChild(Activity newChild) {
 	child = newChild;
-}
-
-/**
- * Sets the index of the child
- * @param i the child index
- */
-public void setIndex(int i){
-	index = i;
 }
 
 /**
