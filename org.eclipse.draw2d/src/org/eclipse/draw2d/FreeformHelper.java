@@ -76,6 +76,8 @@ public void notifyFreeformExtentChanged() {
 
 public void setFreeformBounds(Rectangle bounds) {
 	host.setBounds(bounds);
+	bounds = bounds.getCopy();
+	host.translateFromParent(bounds);
 	List children = host.getChildren();
 	for (int i = 0; i < children.size(); i++) {
 		IFigure child = (IFigure)children.get(i);
