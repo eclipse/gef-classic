@@ -106,17 +106,13 @@ public final void fillText(String s, Point p){
 
 public abstract void fillText(String s, int x, int y);
 
-public final void getAdvanceWidth(char c) {}
 public abstract Color getBackgroundColor();
-public final void getCharWidth(char c){}
 public abstract Rectangle getClip(Rectangle rect);
 public abstract Font getFont();
 public abstract FontMetrics getFontMetrics();
 public abstract Color getForegroundColor();
 public abstract int getLineStyle();
 public abstract int getLineWidth();
-public final void getStringExtent(String s){}
-public final void getTextExtent(String s){}
 public abstract boolean getXORMode();
 
 public abstract void popState();
