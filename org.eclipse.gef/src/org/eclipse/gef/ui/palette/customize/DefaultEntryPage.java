@@ -63,7 +63,8 @@ public final void apply() {
 }
 
 /**
- * @see org.eclipse.gef.ui.palette.customize.EntryPage#createControl(Composite, PaletteEntry)
+ * @see org.eclipse.gef.ui.palette.customize.EntryPage#createControl(Composite, 
+ * 																		PaletteEntry)
  */
 public void createControl(Composite parent, PaletteEntry entry) {
 	this.entry = entry;

@@ -82,7 +82,8 @@ protected abstract PaletteEntry createNewEntry(Shell shell);
  * <code>PaletteContainer</code>s with the following user permission:
  * <code>PERMISSION_FULL_MODIFICATION</code>
  * 
- * @param selected	The selected <code>PaletteEntry</code> (Will never be <code>null</code>)
+ * @param selected	The selected <code>PaletteEntry</code> 
+ * 					(Will never be <code>null</code>)
  * @return <code>true</code> if, given the current selection, this
  * <code>PaletteEntryFactory</code> can create a new <code>PaletteEntry</code>
  */
@@ -94,7 +95,8 @@ public boolean canCreate(PaletteEntry selected) {
 	if (selected instanceof PaletteContainer) {
 		parent = (PaletteContainer)selected;
 	}
-	return parent.getUserModificationPermission() == PaletteEntry.PERMISSION_FULL_MODIFICATION;
+	return parent.getUserModificationPermission() 
+					== PaletteEntry.PERMISSION_FULL_MODIFICATION;
 }
 
 /**

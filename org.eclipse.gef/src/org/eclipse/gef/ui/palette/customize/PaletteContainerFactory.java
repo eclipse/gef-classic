@@ -32,7 +32,7 @@ public abstract class PaletteContainerFactory
 {
 
 /**
- * @see org.eclipse.gef.ui.palette.customize.PaletteEntryFactory#determineContainerForNewEntry(PaletteEntry)
+ * @see PaletteEntryFactory#determineContainerForNewEntry(PaletteEntry)
  */
 protected PaletteContainer determineContainerForNewEntry(PaletteEntry selected) {
 	if (selected instanceof PaletteRoot)
@@ -44,7 +44,7 @@ protected PaletteContainer determineContainerForNewEntry(PaletteEntry selected) 
 }
 
 /**
- * @see org.eclipse.gef.ui.palette.customize.PaletteEntryFactory#determineIndexForNewEntry(PaletteContainer, PaletteEntry)
+ * @see PaletteEntryFactory#determineIndexForNewEntry(PaletteContainer, PaletteEntry)
  */
 protected int determineIndexForNewEntry(PaletteContainer parent,
                                          PaletteEntry selected) {

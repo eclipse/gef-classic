@@ -189,8 +189,8 @@ public boolean equals(Object o) {
 	return action.equals(((ToolbarDropdownContributionItem) o).action);
 }
 /**
- * The <code>ToolbarDropdownContributionItem</code> implementation of this <code>IContributionItem</code>
- * method creates a SWT Button for the action. 
+ * The <code>ToolbarDropdownContributionItem</code> implementation of this 
+ * <code>IContributionItem</code> method creates a SWT Button for the action. 
  * If the action's checked property has been set, a toggle button is created 
  * and primed to the value of the checked property.
  */
@@ -219,8 +219,8 @@ public void fill(Composite parent) {
 	}
 }
 /**
- * The <code>ToolbarDropdownContributionItem</code> implementation of this <code>IContributionItem</code>
- * method creates a SWT MenuItem for the action. 
+ * The <code>ToolbarDropdownContributionItem</code> implementation of this 
+ * <code>IContributionItem</code> method creates a SWT MenuItem for the action. 
  * If the action's checked property has been set, a toggle button is created 
  * and primed to the value of the checked property.
  * If the action's menu creator property has been set, a cascading submenu is created.
@@ -265,8 +265,8 @@ public void fill(Menu parent, int index) {
 	}
 }
 /**
- * The <code>ToolbarDropdownContributionItem</code> implementation of this <code>IContributionItem</code>
- * method creates a SWT ToolItem for the action. 
+ * The <code>ToolbarDropdownContributionItem</code> implementation of this 
+ * <code>IContributionItem</code> method creates a SWT ToolItem for the action. 
  * If the action's checked property has been set, a toggle button is created 
  * and primed to the value of the checked property.
  * If the action's menu creator property has been set, a drop-down
@@ -312,9 +312,9 @@ public IAction getAction() {
 /**
  * Returns the image cache.
  * The cache is global, and is shared by all action contribution items.
- * This has the disadvantage that once an image is allocated, it is never freed until the display
- * is disposed.  However, it has the advantage that the same image in different contribution managers
- * is only ever created once.
+ * This has the disadvantage that once an image is allocated, it is never freed 
+ * until the display is disposed.  However, it has the advantage that the same image 
+ * in different contribution managers is only ever created once.
  */
 private ImageCache getImageCache() {
 	ImageCache cache = globalImageCache;
@@ -420,7 +420,8 @@ private void handleWidgetSelection(Event e) {
 		}
 
 		// Ensure action is enabled first.
-		// See 1GAN3M6: ITPUI:WINNT - Any IAction in the workbench can be executed while disabled.
+		// See 1GAN3M6: ITPUI:WINNT - Any IAction in the workbench can be executed 
+		// while disabled.
 		if (action.isEnabled()) {
 			action.runWithEvent(e);
 		}
@@ -447,7 +448,8 @@ public boolean isDynamic() {
 	if (widget instanceof MenuItem) {
 		//Optimization. Only recreate the item is the check style has changed. 
 		boolean itemIsCheck = (widget.getStyle() & SWT.CHECK) != 0;
-		boolean actionIsCheck = getAction() != null && getAction().getStyle() == IAction.AS_CHECK_BOX;
+		boolean actionIsCheck = getAction() != null && getAction().getStyle() 
+															== IAction.AS_CHECK_BOX;
 		return itemIsCheck != actionIsCheck;
 	}
 	return false;
@@ -476,8 +478,8 @@ public final void update() {
 /**
  * Synchronizes the UI with the given property.
  *
- * @param propertyName the name of the property, or <code>null</code> meaning all applicable
- *   properties 
+ * @param propertyName the name of the property, or <code>null</code> meaning all 
+ * 					   applicable properties 
  */
 public void update(String propertyName) {
 	if (widget != null) {
@@ -485,7 +487,8 @@ public void update(String propertyName) {
 		// determine what to do			
 		boolean textChanged = propertyName == null || propertyName.equals(Action.TEXT);
 		boolean imageChanged = propertyName == null || propertyName.equals(Action.IMAGE);
-		boolean tooltipTextChanged = propertyName == null || propertyName.equals(Action.TOOL_TIP_TEXT);
+		boolean tooltipTextChanged = propertyName == null 
+				|| propertyName.equals(Action.TOOL_TIP_TEXT);
 		boolean enableStateChanged = propertyName == null 
 				|| propertyName.equals(Action.ENABLED) 
 				|| propertyName.equals(IContributionManagerOverrides.P_ENABLED);
@@ -639,7 +642,8 @@ private boolean updateImages(boolean forceImage) {
 			image = cache.getMissingImage();
 		}
 			
-		// performance: more efficient in SWT to set disabled and hot image before regular image
+		// performance: more efficient in SWT to set disabled and hot image before 
+		//              regular image
 		if (disabledImage != null) {
 			// Set the disabled image if we were able to create one.
 			// Assumes that SWT.ToolItem will use platform's default

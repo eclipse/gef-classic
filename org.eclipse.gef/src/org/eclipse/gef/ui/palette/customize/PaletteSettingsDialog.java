@@ -581,7 +581,8 @@ protected Control createListOptions(Composite parent) {
  * 
  * @param parent	the parent composite
  * @param	title	The title for the group to be created.
- * @param	buttonId	The ID for the "Use Large Icons" checkbox to be created in the group.
+ * @param	buttonId	The ID for the "Use Large Icons" checkbox to be created in the 
+ * 						group.
  * @return the newly created Group
  */
 protected Control createOptionsPage(Composite parent, String title, int buttonId) {

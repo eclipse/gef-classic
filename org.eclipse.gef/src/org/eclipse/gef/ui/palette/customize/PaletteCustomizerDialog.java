@@ -117,7 +117,8 @@ private boolean isSetup = true;
  * @param customizer the customizer
  * @param root the palette root
  */
-public PaletteCustomizerDialog(Shell shell, PaletteCustomizer customizer, PaletteRoot root) {
+public PaletteCustomizerDialog(Shell shell, PaletteCustomizer customizer, 
+								PaletteRoot root) {
 	super(shell);
 	this.customizer = customizer;
 	this.root = root;
@@ -843,7 +844,8 @@ protected void handleOutlineSelectionChanged() {
 		MessageDialog dialog = new MessageDialog(getShell(),
 				PaletteMessages.ERROR,
 				null, 
-				PaletteMessages.ABORT_PAGE_FLIPPING_MESSAGE + "\n" + errorMessage, //$NON-NLS-1$
+				PaletteMessages.ABORT_PAGE_FLIPPING_MESSAGE 
+					+  "\n" + errorMessage, //$NON-NLS-1$
 				MessageDialog.ERROR, 
 				new String[] { IDialogConstants.OK_LABEL }, 0);
 		dialog.open();
@@ -940,7 +942,8 @@ protected void setActiveEntryPage(EntryPage page) {
 		// No page available to display, so hide the panel container
 		propertiesPanelContainer.setVisible(false);
 	} else {
-		// Show the page and grow the shell, if necessary, so that the page is completely visible
+		// Show the page and grow the shell, if necessary, so that the page is
+		// completely visible
 		Point oldSize = getShell().getSize();
 		propertiesPanelContainer.showPage(page.getControl());
 
