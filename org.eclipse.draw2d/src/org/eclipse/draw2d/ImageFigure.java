@@ -31,20 +31,35 @@ private Dimension size;
 private int alignment;
 
 /**
- * Constructor
+ * Constructor<br>
+ * The default alignment is <code>PositionConstants.CENTER</code>.
  */
 public ImageFigure() {
-	setAlignment(PositionConstants.CENTER);
+	this(null, PositionConstants.CENTER);
+}
+
+/**
+ * Constructor<br>
+ * The default alignment is <code>PositionConstants.CENTER</code>.
+ * 
+ * @param	image	The Image to be displayed
+ */
+public ImageFigure(Image image) {
+	this(image, PositionConstants.CENTER);
 }
 
 /**
  * Constructor
  * 
- * @param image	The Image to be displayed
+ * @param	image		The Image to be displayed
+ * @param	alignment	A PositionConstant indicating the alignment
+ * 
+ * @see ImageFigure#setImage(Image)
+ * @see ImageFigure#setAlignment(int)
  */
-public ImageFigure(Image image) {
-	this();
+public ImageFigure(Image image, int alignment) {
 	setImage(image);
+	setAlignment(alignment);
 }
 
 /**
@@ -56,7 +71,7 @@ public Image getImage() {
 
 /**
  * Returns the size of the Image that this Figure displays; or (0,0) if no Image has been
- * set yet.
+ * set.
  * 			
  * @see org.eclipse.draw2d.Figure#getPreferredSize(int, int)
  */
@@ -68,6 +83,11 @@ public Dimension getPreferredSize(int wHint, int hHint) {
  * @see org.eclipse.draw2d.Figure#paintFigure(Graphics)
  */
 protected void paintFigure(Graphics graphics) {
+	super.paintFigure(graphics);
+	
+	if (getImage() == null)
+		return;
+
 	int x, y;
 	Rectangle area = getClientArea();
 	switch (alignment & PositionConstants.NORTH_SOUTH) {
@@ -117,11 +137,16 @@ public void setAlignment(int flag) {
 /**
  * Sets the Image that this ImageFigure displays.
  * 
- * @param image	The Image to be displayed.
+ * @param image	The Image to be displayed.  It can be <code>null</code>.
  */
 public void setImage(Image image) {
+	if (img == image)
+		return;
 	img = image;
-	size = new Rectangle(image.getBounds()).getSize();
+	if (img != null)
+		size = new Rectangle(image.getBounds()).getSize();
+	else
+		size = new Dimension();
 	revalidate();
 	repaint();
 }
