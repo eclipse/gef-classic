@@ -20,11 +20,11 @@ import org.eclipse.gef.GraphicalEditPart;
  */
 abstract class ViewportHelper {
 
+protected GraphicalEditPart owner;
+
 protected ViewportHelper(GraphicalEditPart owner) {
 	this.owner = owner;
 }
-
-protected GraphicalEditPart owner;
 
 protected Viewport findViewport(GraphicalEditPart part) {
 	IFigure figure = null;
