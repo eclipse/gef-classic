@@ -16,6 +16,8 @@ import org.eclipse.gef.ui.palette.customize.DefaultEntryPage;
 import org.eclipse.gef.ui.palette.customize.DrawerEntryPage;
 import org.eclipse.gef.ui.palette.customize.EntryPage;
 
+import org.eclipse.gef.examples.logicdesigner.LogicMessages;
+
 /**
  * PaletteCustomizer for the logic example.
  * 
@@ -25,7 +27,8 @@ public class LogicPaletteCustomizer
 	extends PaletteCustomizer 
 {
 	
-protected static final String ERROR_MESSAGE = "Name contains invalid character: *";
+protected static final String ERROR_MESSAGE 
+									= LogicMessages.PaletteCustomizer_InvalidCharMessage;
 	
 /**
  * @see org.eclipse.gef.ui.palette.PaletteCustomizer#getPropertiesPage(PaletteEntry)

@@ -17,6 +17,8 @@ import org.eclipse.draw2d.PositionConstants;
 
 import org.eclipse.gef.ui.actions.*;
 
+import org.eclipse.gef.examples.logicdesigner.LogicMessages;
+
 public class LogicActionBarContributor
 	extends org.eclipse.gef.ui.actions.ActionBarContributor
 {
@@ -81,7 +83,7 @@ public void contributeToToolBar(IToolBarManager tbm) {
  */
 public void contributeToMenu(IMenuManager menubar) {
 	super.contributeToMenu(menubar);
-	MenuManager viewMenu = new MenuManager("&View");
+	MenuManager viewMenu = new MenuManager(LogicMessages.ViewMenu_LabelText);
 	viewMenu.add(getAction(GEFActionConstants.ZOOM_IN));
 	viewMenu.add(getAction(GEFActionConstants.ZOOM_OUT));
 	menubar.insertAfter(IWorkbenchActionConstants.M_EDIT, viewMenu);

@@ -136,7 +136,7 @@ public String SetLocationCommand_Label_Resize = Helper.getString("%SetLocationCo
 
 public String ViewMenu_LabelText = Helper.getString("%ViewMenu.LabelText_UI_"); //$NON-NLS-1$
 
-public String PaletteCustomizer_InvalidCharMessage = Helper.getString("%PaletteCustomizer.InvalidCharMessage");
+public String PaletteCustomizer_InvalidCharMessage = Helper.getString("%PaletteCustomizer.InvalidCharMessage"); //$NON-NLS-1$
 
 public String XORGate_LabelText = Helper.getString("%XORGate.LabelText");  //$NON-NLS-1$
 public String Wire_LabelText = Helper.getString("%Wire.LabelText");  //$NON-NLS-1$
