@@ -134,18 +134,11 @@ public static final String ZOOM_IN = "org.eclipse.gef.zoom_in"; //$NON-NLS-1$
 public static final String ZOOM_OUT = "org.eclipse.gef.zoom_out"; //$NON-NLS-1$
 
 /** 
- * Toggle horizontal ruler visibility contribution id<br>
- * Value: <code>"org.eclipse.gef.rulers.horizontal.visibility"</code>
+ * Toggle ruler visibility contribution id<br>
+ * Value: <code>"org.eclipse.gef.rulers.visibility"</code>
  */
-public static final String TOGGLE_HORIZONTAL_RULER_VISIBILITY 
-		= "org.eclipse.gef.rulers.horizontal.visibility"; //$NON-NLS-1$
-
-/** 
- * Toggle vertical ruler visibility contribution id<br>
- * Value: <code>"org.eclipse.gef.rulers.vertical.visibility"</code>
- */
-public static final String TOGGLE_VERTICAL_RULER_VISIBILITY 
-		= "org.eclipse.gef.rulers.vertical.visibility"; //$NON-NLS-1$
+public static final String TOGGLE_RULER_VISIBILITY 
+		= "org.eclipse.gef.rulers.visibility"; //$NON-NLS-1$
 
 /**
  * Adds standard group separators to the given MenuManager.

@@ -48,11 +48,8 @@ protected void buildActions() {
 	addRetargetAction(new ZoomOutRetargetAction());
 	
 	addRetargetAction(new RetargetAction(
-			GEFActionConstants.TOGGLE_HORIZONTAL_RULER_VISIBILITY, 
-			GEFMessages.ToggleHRulerVisibility_Label));
-	addRetargetAction(new RetargetAction(
-			GEFActionConstants.TOGGLE_VERTICAL_RULER_VISIBILITY, 
-			GEFMessages.ToggleVRulerVisibility_Label));
+			GEFActionConstants.TOGGLE_RULER_VISIBILITY, 
+			GEFMessages.ToggleRulerVisibility_Label, IAction.AS_CHECK_BOX));
 	
 //	addRetargetAction(new DirectEditRetargetAction());
 }
@@ -99,8 +96,7 @@ public void contributeToMenu(IMenuManager menubar) {
 	MenuManager viewMenu = new MenuManager(LogicMessages.ViewMenu_LabelText);
 	viewMenu.add(getAction(GEFActionConstants.ZOOM_IN));
 	viewMenu.add(getAction(GEFActionConstants.ZOOM_OUT));
-	viewMenu.add(getAction(GEFActionConstants.TOGGLE_HORIZONTAL_RULER_VISIBILITY));
-	viewMenu.add(getAction(GEFActionConstants.TOGGLE_VERTICAL_RULER_VISIBILITY));
+	viewMenu.add(getAction(GEFActionConstants.TOGGLE_RULER_VISIBILITY));
 	menubar.insertAfter(IWorkbenchActionConstants.M_EDIT, viewMenu);
 }
 

@@ -21,6 +21,7 @@ public interface RulerProvider {
 	
 public static final String HORIZONTAL = "horizontal ruler"; //$NON-NLS-1$
 public static final String VERTICAL = "vertical ruler"; //$NON-NLS-1$
+public static final String RULER_VISIBILITY = "ruler$visibility"; //$NON-NLS-1$
 	
 public static final int UNIT_INCHES = 0;
 public static final int UNIT_CENTIMETERS = 1;

@@ -12,64 +12,42 @@ package org.eclipse.gef.internal.ui.rulers;
 
 import org.eclipse.jface.action.Action;
 
-import org.eclipse.draw2d.PositionConstants;
-
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.internal.GEFMessages;
 import org.eclipse.gef.ui.actions.GEFActionConstants;
-import org.eclipse.gef.ui.parts.RulerComposite;
 import org.eclipse.gef.ui.parts.RulerProvider;
 
 /**
+ * This action requires that the given graphical viewer have the ruler visibility
+ * property (with RulerProvider.RULER_VISIBILITY as the boolean). 
+ * 
  * @author Pratik Shah
  */
 public class ToggleRulerVisibilityAction 
 	extends Action 
 {
 
-protected int orientation;
-protected RulerComposite rulerComp;
 protected GraphicalViewer diagramViewer;
 	
 /**
  * Constructor
- * 
- * @param text
  */
-public ToggleRulerVisibilityAction(RulerComposite rulerComp, int orientation, 
-                                   GraphicalViewer diagramViewer) {
-	super();
-	this.rulerComp = rulerComp;
-	this.orientation = orientation;
+public ToggleRulerVisibilityAction(GraphicalViewer diagramViewer) {
+	super(GEFMessages.ToggleRulerVisibility_Label, AS_CHECK_BOX);
 	this.diagramViewer = diagramViewer;
-	String id = null;
-	if (isHorizontalRuler()) {
-		id = GEFActionConstants.TOGGLE_HORIZONTAL_RULER_VISIBILITY;
-		setText(GEFMessages.ToggleHRulerVisibility_Label);
-		setToolTipText(GEFMessages.ToggleHRulerVisibility_Tooltip);
-	} else {
-		id = GEFActionConstants.TOGGLE_VERTICAL_RULER_VISIBILITY;
-		setText(GEFMessages.ToggleVRulerVisibility_Label);
-		setToolTipText(GEFMessages.ToggleVRulerVisibility_Tooltip);
-	}
-	setId(id);
-	setActionDefinitionId(id);
+	setToolTipText(GEFMessages.ToggleRulerVisibility_Tooltip);
+	setId(GEFActionConstants.TOGGLE_RULER_VISIBILITY);
+	setActionDefinitionId(GEFActionConstants.TOGGLE_RULER_VISIBILITY);
+	setChecked(isChecked());
 }
 
 public void run() {
-	rulerComp.setRulerVisibility(orientation, !rulerComp.isRulerVisible(orientation));
+	diagramViewer.setProperty(RulerProvider.RULER_VISIBILITY, new Boolean(!isChecked()));
 }
 
-public boolean isEnabled() {
-	if (isHorizontalRuler()) {
-		return diagramViewer.getProperty(RulerProvider.HORIZONTAL) != null;
-	} else {
-		return diagramViewer.getProperty(RulerProvider.VERTICAL) != null;
-	}
-}
-
-protected boolean isHorizontalRuler() {
-	return orientation == PositionConstants.NORTH;
+public boolean isChecked() {
+	return ((Boolean)diagramViewer.getProperty(RulerProvider.RULER_VISIBILITY))
+			.booleanValue();
 }
 
 }
