@@ -22,7 +22,10 @@ import org.eclipse.gef.internal.ui.rulers.RulerEditPart;
 import org.eclipse.gef.rulers.RulerProvider;
 
 /**
+ * An Action that creates a guide on a ruler and reveals it.
+ * 
  * @author Pratik Shah
+ * @since 3.0
  */
 public class CreateGuideAction 
 	extends Action 
@@ -30,12 +33,19 @@ public class CreateGuideAction
 	
 private EditPartViewer viewer;
 	
+/**
+ * Constructor
+ * @param	ruler	the viewer for the ruler on which the guide is to be created 
+ */
 public CreateGuideAction(EditPartViewer ruler) {
 	super(GEFMessages.Create_Guide_Label);
 	viewer = ruler;
 	setToolTipText(GEFMessages.Create_Guide_Tooltip);
 }
 
+/**
+ * @see org.eclipse.jface.action.IAction#run()
+ */
 public void run() {
 	RulerProvider provider = ((RulerEditPart)viewer.getRootEditPart().getChildren()
 			.get(0)).getRulerProvider();

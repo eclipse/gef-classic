@@ -17,7 +17,11 @@ import org.eclipse.gef.SnapToGrid;
 import org.eclipse.gef.internal.GEFMessages;
 
 /**
+ * An action that toggles the grid.  This action keeps the visibility and enablement
+ * properties in sync, i.e., it toggles both at the same time.
+ * 
  * @author Pratik Shah
+ * @since 3.0
  */
 public class ToggleGridAction
 	extends Action 
@@ -25,6 +29,10 @@ public class ToggleGridAction
 	
 private GraphicalViewer diagramViewer;
 
+/**
+ * Constructor
+ * @param	diagramViewer	the GraphicalViewer on which the grid enablement is set
+ */
 public ToggleGridAction(GraphicalViewer diagramViewer) {
 	super(GEFMessages.ToggleGrid_Label, AS_CHECK_BOX);
 	this.diagramViewer = diagramViewer;
@@ -34,6 +42,9 @@ public ToggleGridAction(GraphicalViewer diagramViewer) {
 	setChecked(isChecked());
 }
 
+/**
+ * @see org.eclipse.jface.action.IAction#isChecked()
+ */
 public boolean isChecked() {
 	Boolean val = (Boolean)diagramViewer.getProperty(SnapToGrid.PROPERTY_GRID_ENABLED);
 	if (val != null)
@@ -41,6 +52,9 @@ public boolean isChecked() {
 	return false;
 }
 
+/**
+ * @see org.eclipse.jface.action.IAction#run()
+ */
 public void run() {
 	boolean val = !isChecked();
 	diagramViewer.setProperty(SnapToGrid.PROPERTY_GRID_VISIBLE, new Boolean(val));
