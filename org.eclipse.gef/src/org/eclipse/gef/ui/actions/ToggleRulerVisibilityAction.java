@@ -36,8 +36,7 @@ protected GraphicalViewer diagramViewer;
 	
 /**
  * Constructor
- * @param	diagramViewer	the viewer on which the ruler visibility property is to be
- * 							set
+ * @param	diagramViewer	the viewer whose ruler visibility property is to be toggled
  */
 public ToggleRulerVisibilityAction(GraphicalViewer diagramViewer) {
 	super(GEFMessages.ToggleRulerVisibility_Label, AS_CHECK_BOX);

@@ -34,8 +34,8 @@ private GraphicalViewer diagramViewer;
 
 /**
  * Constructor
- * @param	diagramViewer	the GraphicalViewer on which the grid enablement and 
- * 							visibility properties are to be set
+ * @param	diagramViewer	the GraphicalViewer whose grid enablement and 
+ * 							visibility properties are to be toggled
  */
 public ToggleGridAction(GraphicalViewer diagramViewer) {
 	super(GEFMessages.ToggleGrid_Label, AS_CHECK_BOX);

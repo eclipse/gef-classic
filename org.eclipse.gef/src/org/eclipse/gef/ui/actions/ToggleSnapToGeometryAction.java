@@ -17,7 +17,12 @@ import org.eclipse.gef.SnapToGeometry;
 import org.eclipse.gef.internal.GEFMessages;
 
 /**
+ * An action that toggles the {@link org.eclipse.gef.SnapToGeometry#PROPERTY_SNAP_ENABLED
+ * snap to geometry} property on the given viewer.  This action can handle the case where
+ * that property is not set on the viewer initially.
+ * 
  * @author Pratik Shah
+ * @since 3.0
  */
 public class ToggleSnapToGeometryAction 
 	extends Action 
@@ -25,6 +30,11 @@ public class ToggleSnapToGeometryAction
 	
 private GraphicalViewer diagramViewer;
 
+/**
+ * Constructor
+ * @param	diagramViewer	the GraphicalViewer whose snap to geometry property is to be
+ * 							toggled
+ */
 public ToggleSnapToGeometryAction(GraphicalViewer diagramViewer) {
 	super(GEFMessages.ToggleSnapToGeometry_Label, AS_CHECK_BOX);
 	this.diagramViewer = diagramViewer;
@@ -34,6 +44,9 @@ public ToggleSnapToGeometryAction(GraphicalViewer diagramViewer) {
 	setChecked(isChecked());
 }
 
+/**
+ * @see org.eclipse.jface.action.IAction#isChecked()
+ */
 public boolean isChecked() {
 	Boolean val = (Boolean)diagramViewer.getProperty(SnapToGeometry.PROPERTY_SNAP_ENABLED);
 	if (val != null)
@@ -41,6 +54,9 @@ public boolean isChecked() {
 	return false;
 }
 
+/**
+ * @see org.eclipse.jface.action.IAction#run()
+ */
 public void run() {
 	diagramViewer.setProperty(SnapToGeometry.PROPERTY_SNAP_ENABLED, 
 			new Boolean(!isChecked()));
