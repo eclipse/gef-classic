@@ -17,6 +17,7 @@ import org.eclipse.jface.action.Separator;
 import org.eclipse.gef.ui.actions.ActionBarContributor;
 import org.eclipse.gef.ui.actions.GEFActionConstants;
 
+import org.eclipse.gef.examples.text.actions.ChangeFontContributionItem;
 import org.eclipse.gef.examples.text.actions.ResizeFontContributionItem;
 import org.eclipse.gef.examples.text.actions.StyleRetargetAction;
 
@@ -40,6 +41,9 @@ protected void buildActions() {
 }
 
 public void contributeToToolBar(IToolBarManager toolbar) {
+	toolbar.add(new ChangeFontContributionItem(getPage()));
+	toolbar.add(new ResizeFontContributionItem(getPage()));
+	toolbar.add(new Separator());
 	toolbar.add(getAction(GEFActionConstants.STYLE_BOLD));
 	toolbar.add(getAction(GEFActionConstants.STYLE_ITALIC));
 	toolbar.add(getAction(GEFActionConstants.STYLE_UNDERLINE));
@@ -50,8 +54,6 @@ public void contributeToToolBar(IToolBarManager toolbar) {
 	toolbar.add(new Separator());
 	toolbar.add(getAction(GEFActionConstants.BLOCK_LTR));
 	toolbar.add(getAction(GEFActionConstants.BLOCK_RTL));
-	toolbar.add(new Separator());
-	toolbar.add(new ResizeFontContributionItem(getPage()));
 }
 
 /**
