@@ -1,10 +1,13 @@
-package org.eclipse.gef;
+package org.eclipse.gef.print;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.PrintFigureOperation;
+
+import org.eclipse.gef.GraphicalViewer;
+import org.eclipse.gef.LayerConstants;
 import org.eclipse.gef.editparts.LayerManager;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.printing.Printer;

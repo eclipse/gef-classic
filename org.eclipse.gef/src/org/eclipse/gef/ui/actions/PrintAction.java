@@ -8,7 +8,7 @@ import org.eclipse.swt.printing.PrinterData;
 import org.eclipse.ui.IEditorPart;
 
 import org.eclipse.gef.GraphicalViewer;
-import org.eclipse.gef.PrintGraphicalViewerOperation;
+import org.eclipse.gef.print.PrintGraphicalViewerOperation;
 
 /**
  * @author hudsonr
