@@ -47,6 +47,7 @@ public static int getTextForSpace(TextFragmentBox frag, String string, Font font
 		avg = metrics.getAverageCharWidth();
 
 	int firstBreak = breakItr.next();
+	firstBreak = Math.min(string.length()-1, firstBreak);
 	MIN = min = (WRAPPING != ParagraphTextLayout.WORD_WRAP_SOFT) ?  firstBreak : 1;
 	max = string.length() + 1;
 
@@ -80,7 +81,7 @@ public static int getTextForSpace(TextFragmentBox frag, String string, Font font
 			if (min == string.length())
 				result = min;
 			else
-				result = Math.max(MIN, breakItr.preceding(min - 1));
+				result = Math.max(MIN, breakItr.preceding(min));
 			frag.length = result;
 			break;
 
@@ -88,7 +89,7 @@ public static int getTextForSpace(TextFragmentBox frag, String string, Font font
 			if (min == string.length())
 				result = min;
 			else
-				result = breakItr.preceding(min - 1);
+				result = breakItr.preceding(min);
 			if (result <= 0)
 				result = min;
 			frag.length = result;
@@ -99,8 +100,8 @@ public static int getTextForSpace(TextFragmentBox frag, String string, Font font
 				setupFragment(frag, font, string);
 				if (frag.getWidth() <= availableWidth)
 					return result;
-			}
-			result = breakItr.preceding(min - 1);
+			} else
+				result = breakItr.preceding(min);
 			if (result <= 0) {
 				String ELLIPSIS = "..."; //$NON-NLS-1$
 				ELLIPSIS_SIZE = FigureUtilities.getStringExtents(ELLIPSIS, font);
@@ -113,7 +114,7 @@ public static int getTextForSpace(TextFragmentBox frag, String string, Font font
 					ParagraphTextLayout.WORD_WRAP_SOFT);
 				//frag.length = min;
 				frag.truncated = true;
-				result = breakItr.following(min - 1);
+				result = breakItr.following(min);
 				if (result == BreakIterator.DONE)
 					result = string.length();
 			} else {
