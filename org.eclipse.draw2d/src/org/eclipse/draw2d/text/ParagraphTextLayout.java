@@ -94,25 +94,6 @@ protected void layout() {
 		prevAvgCharWidth = 0f;
 		fragment = getFragment(i, fragments);
 		prevAvgCharWidth = getAverageCharWidth(fragment);
-
-		//Check for newline, if it exists, call context.endLine and skip over the newline
-		//Exccept for first time through, don't do this.
-		if (i != 0) {
-			boolean changed = false;
-			if (string.charAt(0) == '\r') {
-				string = string.substring(1);
-				changed = true;
-				offset += 1;
-			}
-			if (string.length() != 0 && string.charAt(0) == '\n') {
-				string = string.substring(1);
-				changed = true;
-				offset += 1;
-			}
-			if (changed) {
-				context.endLine();
-			}
-		}				
 		
 		fragment.offset = offset;
 		
@@ -138,7 +119,7 @@ protected void layout() {
 		context.addToCurrentLine(fragment);
 		string = string.substring(length);
 		offset += length;
-		if (string.length() > 0)
+		if (string.length() > 0 || fragment.truncated)
 			context.endLine();
 		i++;
 	} while (string.length() > 0);
