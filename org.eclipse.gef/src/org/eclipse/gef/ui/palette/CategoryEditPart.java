@@ -49,13 +49,13 @@ public void activate(){
 			Rectangle labelBounds = categoryLabel.getBounds();
 			if(categoryLabel.isTextTruncated() && labelBounds.contains(e.x,e.y)){
 				if(tipHelper == null){
-					tipHelper = new EditPartTipHelper(ctrl);	
+					tipHelper = new EditPartTipHelper(ctrl);
 					Point labelLoc = categoryLabel.getLocation();
 					org.eclipse.swt.graphics.Point absolute;
-					absolute = ctrl.toDisplay(new org.eclipse.swt.graphics.Point(labelLoc.x, 
-														    labelLoc.y));
-					// Adjust position to give "raised" appearance
-					tipHelper.displayToolTipAt(tipLabel, absolute.x-2, absolute.y-5);
+					absolute = ctrl.toDisplay(
+						new org.eclipse.swt.graphics.Point(labelLoc.x, labelLoc.y));
+					// Correct for the border on the tipLabel
+					tipHelper.displayToolTipAt(tipLabel, absolute.x-4, absolute.y-4);
 				}
 				else
 					tipHelper = null;	
@@ -132,8 +132,11 @@ public IFigure createFigure(){
 }
 
 public Object getAdapter(Class key) {
-	if (key == ExposeHelper.class)
-		return new ViewportExposeHelper(this);
+	if (key == ExposeHelper.class){
+		ViewportExposeHelper helper = new ViewportExposeHelper(this);
+		helper.setMinimumFrameCount(6);
+		return helper;
+	}
 	return super.getAdapter(key);
 }
 
