@@ -170,6 +170,8 @@ public static int convertPreferenceNameToLayout(String preference) {
 /**
  * The oldValue of the PropertyChangeEvent that is fired will always be <code>null</code>.
  * 
+ * @param property  The programmatic name of the property that was changed
+ * @param newVal  The new value of the property
  * @see java.beans.PropertyChangeSupport#firePropertyChange(java.lang.String, 
  * 															java.lang.Object, 
  * 															java.lang.Object)
@@ -321,7 +323,7 @@ public void setUseLargeIcons(int layout, boolean newVal) {
 }
 
 /**
- * @see org.eclipse.gef.ui.palette.PaletteViewerPreferences#useLargeIcons()
+ * @see org.eclipse.gef.ui.palette.PaletteViewerPreferences#useLargeIcons(int)
  */
 public boolean useLargeIcons(int layout) {
 	return getPreferenceStore().getBoolean(convertLayoutToPreferenceName(layout));
@@ -335,6 +337,9 @@ public boolean useLargeIcons() {
 }
 
 private class PreferenceStoreListener implements IPropertyChangeListener {
+	/**
+	 * @see org.eclipse.jface.util.IPropertyChangeListener#propertyChange(org.eclipse.jface.util.PropertyChangeEvent)
+	 */
 	public void propertyChange(PropertyChangeEvent evt) {
 		handlePreferenceStorePropertyChanged(evt.getProperty());
 	}
