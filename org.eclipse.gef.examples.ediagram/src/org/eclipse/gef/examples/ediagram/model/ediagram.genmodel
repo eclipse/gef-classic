@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" copyrightText=""
+    modelDirectory="/org.eclipse.gef.examples.ediagram/src" editDirectory="/org.eclipse.gef.examples.ediagram/src"
+    editorDirectory="/org.eclipse.gef.examples.ediagram.editor/src" modelPluginID="org.eclipse.gef.examples.ediagram"
+    runtimeJar="true" modelName="ediagram" modelPluginClass="org.eclipse.gef.examples.ediagram.EDiagramPlugin"
+    editPluginClass="org.eclipse.gef.examples.ediagram.EDiagramPlugin" editorPluginClass="org.eclipse.gef.examples.ediagram.model.presentation.ediagramEditorPlugin"
+    nonNLSMarkers="true" runtimeCompatibility="false" usedGenPackages="../../../../../../../../org.eclipse.emf.ecore/src-ecore/model/Ecore.genmodel#//ecore">
+  <foreignModel>@model</foreignModel>
+  <genPackages prefix="Model" basePackage="org.eclipse.gef.examples.ediagram" ecorePackage="ediagram.ecore#/">
+    <genDataTypes ecoreDataType="ediagram.ecore#//Point"/>
+    <genDataTypes ecoreDataType="ediagram.ecore#//Dimension"/>
+    <genDataTypes ecoreDataType="ediagram.ecore#//AbsoluteBendpoint"/>
+    <genClasses ecoreClass="ediagram.ecore#//Diagram">
+      <genFeatures notify="false" createChild="false" ecoreFeature="ecore:EReference ediagram.ecore#//Diagram/imports"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ediagram.ecore#//Diagram/contents"/>
+    </genClasses>
+    <genClasses ecoreClass="ediagram.ecore#//ReferenceView">
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference ediagram.ecore#//ReferenceView/eReference"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ediagram.ecore#//ReferenceView/oppositeShown"/>
+    </genClasses>
+    <genClasses ecoreClass="ediagram.ecore#//Link">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference ediagram.ecore#//Link/source"/>
+      <genFeatures notify="false" createChild="false" ecoreFeature="ecore:EReference ediagram.ecore#//Link/target"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ediagram.ecore#//Link/bendpoints"/>
+    </genClasses>
+    <genClasses ecoreClass="ediagram.ecore#//NamedElementView">
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference ediagram.ecore#//NamedElementView/eNamedElement"/>
+    </genClasses>
+    <genClasses ecoreClass="ediagram.ecore#//Node">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ediagram.ecore#//Node/location"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference ediagram.ecore#//Node/diagram"/>
+      <genFeatures notify="false" createChild="false" ecoreFeature="ecore:EReference ediagram.ecore#//Node/incomingConnections"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ediagram.ecore#//Node/outgoingConnections"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ediagram.ecore#//Node/width"/>
+    </genClasses>
+    <genClasses ecoreClass="ediagram.ecore#//StickyNote">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ediagram.ecore#//StickyNote/text"/>
+    </genClasses>
+    <genClasses ecoreClass="ediagram.ecore#//InheritanceView"/>
+  </genPackages>
+</genmodel:GenModel>

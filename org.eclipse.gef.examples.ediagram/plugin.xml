@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin
+   id="org.eclipse.gef.examples.ediagram"
+   name="GEF Example EDiagram Plug-in"
+   version="1.0.0"
+   provider-name="Eclipse.org"
+   class="org.eclipse.gef.examples.ediagram.EDiagramPlugin$Implementation">
+
+   <runtime>
+      <library name="ediagram.jar">
+         <export name="*"/>
+      </library>
+   </runtime>
+
+   <requires>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.ui.ide"/>
+      <import plugin="org.eclipse.gef"/>
+      <import plugin="org.eclipse.emf.ecore"/>
+      <import plugin="org.eclipse.ui.views"/>
+      <import plugin="org.eclipse.emf.ecore.xmi"/>
+      <import plugin="org.eclipse.emf.edit"/>
+      <import plugin="org.eclipse.emf.edit.ui"/>
+   </requires>
+
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="org.eclipse.gef.examples.ediagram.editor.EDiagramEditor"
+            icon="icons/sample.gif"
+            default="true"
+            name="GEF EDiagram Editor"
+            id="org.eclipse.gef.examples.ediagram.editor.EDiagramEditor"
+            contributorClass="org.eclipse.gef.examples.ediagram.actions.EDiagramActionBarContributor"
+            extensions="ediagram">
+      </editor>
+   </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            name="GEF Examples"
+            parentCategory="org.eclipse.ui.Examples"
+            id="org.eclipse.gef.examples">
+      </category>
+      <wizard
+            name="EDiagram"
+            icon="icons/sample.gif"
+            category="org.eclipse.ui.Examples/org.eclipse.gef.examples"
+            class="org.eclipse.gef.examples.ediagram.wizard.NewEDiagramWizard"
+            id="org.eclipse.gef.examples.ediagram.wizard.NewEDiagramWizard">
+      </wizard>
+   </extension>
+   <extension point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension targetID="org.eclipse.ui.resourcePerspective">
+         <newWizardShortcut
+               id="org.eclipse.gef.examples.ediagram.wizard.NewEDiagramWizard">
+         </newWizardShortcut>
+      </perspectiveExtension>
+   </extension>
+   <extension point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            objectClass="org.eclipse.core.resources.IFile"
+            nameFilter="*.diagram"
+            id="org.eclipse.gef.examples.ediagram.contribution1">
+         <menu
+               label="EDiagram"
+               path="additions"
+               id="org.eclipse.gef.examples.ediagram.menu">
+            <separator
+                  name="group">
+            </separator>
+         </menu>
+         <action
+               label="Change Associated ECore Files..."
+               class="org.eclipse.gef.examples.ediagram.actions.ChangeEcoresAction"
+               menubarPath="org.eclipse.gef.examples.ediagram.menu/group"
+               enablesFor="1"
+               id="org.eclipse.gef.examples.ediagram.actions.ChangeEcores">
+         </action>
+      </objectContribution>
+   </extension>
+   <extension
+         point="org.eclipse.emf.ecore.generated_package">
+      <package
+            uri="http:///gef.eDiagram"
+            class="org.eclipse.gef.examples.ediagram.model.ModelPackage">
+      </package>
+   </extension>
+</plugin>
