@@ -24,7 +24,7 @@ public class CommandStackInspector
  * @see PageBookView#createDefaultPage(org.eclipse.ui.part.PageBook)
  */
 protected IPage createDefaultPage(PageBook book) {
-	Page page = new Page() {
+	Page page = new Page(){
 		Control control;
 		public void createControl(Composite parent) {
 			control = new Canvas(parent, SWT.NONE);
@@ -66,8 +66,7 @@ protected PageRec doCreatePage(IWorkbenchPart part) {
  * @param rec a page record for the part
  */
 protected void doDestroyPage(IWorkbenchPart part, PageRec rec) {
-	IPage page = rec.page;
-	page.dispose();
+	rec.page.dispose();
 }
 
 /**
