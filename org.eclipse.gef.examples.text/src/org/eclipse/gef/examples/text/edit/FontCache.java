@@ -72,7 +72,7 @@ private static class Key {
 		boolean result = obj == this;
 		if (!result && (obj instanceof Key)) {
 			Key key = (Key)obj;
-			result = fontName.equals(key.fontName)
+			result = fontName.equalsIgnoreCase(key.fontName)
 					&& height == key.height
 					&& isBold == key.isBold
 					&& isItalic == key.isItalic;
@@ -80,7 +80,7 @@ private static class Key {
 		return result;
 	}
 	public int hashCode() {
-		return fontName.hashCode() + height;
+		return fontName.toLowerCase().hashCode() + height;
 	}
 }
 
