@@ -12,7 +12,9 @@ package org.eclipse.gef.examples.logicdesigner.figures;
 
 import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.StackLayout;
-import org.eclipse.draw2d.text.*;
+import org.eclipse.draw2d.text.FlowPage;
+import org.eclipse.draw2d.text.ParagraphTextLayout;
+import org.eclipse.draw2d.text.TextFlow;
 
 /**
  * A Figure with a bent corner and an embedded TextFlow within a FlowPage that contains

@@ -10,7 +10,9 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
-import org.eclipse.draw2d.geometry.*;
+import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.PointList;
+import org.eclipse.draw2d.geometry.Transform;
 
 /**
  * A decorative Figure intended to be placed on a {@link Polyline}. It has the default 

@@ -10,10 +10,15 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.swt.widgets.Display;
 
 /**
  * An UpdateManager that asynchronously updates the affected figures.  

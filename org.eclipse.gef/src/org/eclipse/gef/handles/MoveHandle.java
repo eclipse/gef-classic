@@ -10,7 +10,9 @@
  *******************************************************************************/
 package org.eclipse.gef.handles;
 
-import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.Cursors;
+import org.eclipse.draw2d.LineBorder;
+import org.eclipse.draw2d.Locator;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 

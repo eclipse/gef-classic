@@ -12,7 +12,10 @@ package org.eclipse.gef.editpolicies;
 
 import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
-import org.eclipse.gef.requests.*;
+import org.eclipse.gef.requests.ChangeBoundsRequest;
+import org.eclipse.gef.requests.CreateRequest;
+import org.eclipse.gef.requests.CreationFactory;
+import org.eclipse.gef.requests.GroupRequest;
 
 /**
  * An EditPolicy for use with container editparts.  This policy can be used to contribute

@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.gef.palette;
 
-import java.util.*;
+import java.util.EventListener;
 
 import org.eclipse.gef.ui.palette.PaletteViewer;
 

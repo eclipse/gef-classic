@@ -11,6 +11,7 @@
 package org.eclipse.gef.requests;
 
 import org.eclipse.jface.viewers.CellEditor;
+
 import org.eclipse.gef.RequestConstants;
 
 /**

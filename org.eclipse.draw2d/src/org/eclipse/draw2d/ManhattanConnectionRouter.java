@@ -10,12 +10,15 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
-import java.util.List;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import org.eclipse.draw2d.geometry.*;
+import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.PointList;
+import org.eclipse.draw2d.geometry.Ray;
+import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
  * Provides a {@link Connection} with an orthogonal route between the Connection's source 

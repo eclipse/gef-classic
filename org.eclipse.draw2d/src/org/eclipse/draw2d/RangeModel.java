@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
-import java.beans.*;
+import java.beans.PropertyChangeListener;
 
 /**
  * This interface represents a range of possible values as well as the current values. 

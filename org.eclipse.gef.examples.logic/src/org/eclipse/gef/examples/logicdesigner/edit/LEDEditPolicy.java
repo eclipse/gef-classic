@@ -12,6 +12,7 @@ package org.eclipse.gef.examples.logicdesigner.edit;
 
 import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
+
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
 import org.eclipse.gef.examples.logicdesigner.model.LED;
 import org.eclipse.gef.examples.logicdesigner.model.LogicSubpart;

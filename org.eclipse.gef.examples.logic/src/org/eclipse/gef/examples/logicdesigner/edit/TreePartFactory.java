@@ -12,6 +12,7 @@ package org.eclipse.gef.examples.logicdesigner.edit;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartFactory;
+
 import org.eclipse.gef.examples.logicdesigner.model.LED;
 import org.eclipse.gef.examples.logicdesigner.model.LogicDiagram;
 

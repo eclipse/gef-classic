@@ -10,7 +10,8 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
-import org.eclipse.draw2d.geometry.*;
+import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2d.geometry.Insets;
 
 /**
  * CompoundBorder allows for the nesting of two borders. The nested borders are referred

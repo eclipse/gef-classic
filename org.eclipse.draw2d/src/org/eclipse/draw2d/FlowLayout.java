@@ -10,8 +10,12 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
-import java.util.*;
-import org.eclipse.draw2d.geometry.*;
+import java.util.Iterator;
+import java.util.List;
+
+import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2d.geometry.Transposer;
 
 /**
  * Lays out children in rows or columns, wrapping when the current row/column is filled.

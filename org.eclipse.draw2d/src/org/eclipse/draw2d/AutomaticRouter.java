@@ -11,8 +11,10 @@
 package org.eclipse.draw2d;
 
 import java.util.ArrayList;
-import org.eclipse.draw2d.geometry.*;
-import org.eclipse.draw2d.internal.*;
+
+import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.PointList;
+import org.eclipse.draw2d.internal.MultiValueMap;
 
 /**
  * The AutomaticRouter provides the facility to prevent {@link Connection Connections}

@@ -10,7 +10,9 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
-import org.eclipse.draw2d.geometry.*;
+import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.PointList;
+import org.eclipse.draw2d.geometry.Ray;
 
 /**
  * Automatic router that spreads its {@link Connection Connections} in a fan-like fashion 

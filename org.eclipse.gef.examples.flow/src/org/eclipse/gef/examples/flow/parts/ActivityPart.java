@@ -18,15 +18,25 @@ import java.util.Map;
 import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.draw2d.graph.*;
+import org.eclipse.draw2d.graph.CompoundDirectedGraph;
+import org.eclipse.draw2d.graph.Node;
+import org.eclipse.draw2d.graph.Subgraph;
 
-import org.eclipse.gef.*;
+import org.eclipse.gef.ConnectionEditPart;
+import org.eclipse.gef.EditPolicy;
+import org.eclipse.gef.GraphicalEditPart;
+import org.eclipse.gef.NodeEditPart;
+import org.eclipse.gef.Request;
+import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.tools.DirectEditManager;
 
 import org.eclipse.gef.examples.flow.model.Activity;
 import org.eclipse.gef.examples.flow.model.FlowElement;
-import org.eclipse.gef.examples.flow.policies.*;
+import org.eclipse.gef.examples.flow.policies.ActivityDirectEditPolicy;
+import org.eclipse.gef.examples.flow.policies.ActivityEditPolicy;
+import org.eclipse.gef.examples.flow.policies.ActivityNodeEditPolicy;
+import org.eclipse.gef.examples.flow.policies.ActivitySourceEditPolicy;
 
 /**
  * @author hudsonr

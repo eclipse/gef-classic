@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.gef.tools;
 
-import org.eclipse.gef.*;
+import org.eclipse.gef.EditPart;
 
 /**
  * Specializes selection to do nothing, the native Tree provides selection for free.

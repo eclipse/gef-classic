@@ -12,9 +12,16 @@ package org.eclipse.gef.tools;
 
 import org.eclipse.swt.graphics.Cursor;
 
-import org.eclipse.gef.*;
+import org.eclipse.gef.EditPart;
+import org.eclipse.gef.EditPartListener;
+import org.eclipse.gef.EditPartViewer;
+import org.eclipse.gef.Request;
+import org.eclipse.gef.RequestConstants;
+import org.eclipse.gef.SharedCursors;
 import org.eclipse.gef.commands.Command;
-import org.eclipse.gef.requests.*;
+import org.eclipse.gef.requests.CreateConnectionRequest;
+import org.eclipse.gef.requests.CreateRequest;
+import org.eclipse.gef.requests.CreationFactory;
 
 /**
  * The base implementation for tools which create a connection.  A connection is a link

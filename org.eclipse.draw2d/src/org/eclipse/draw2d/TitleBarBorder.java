@@ -11,7 +11,9 @@
 package org.eclipse.draw2d;
 
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.draw2d.geometry.*;
+
+import org.eclipse.draw2d.geometry.Insets;
+import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
  * Border provides a title bar on the Figure for which this is the border of. Generally 

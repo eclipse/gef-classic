@@ -11,14 +11,23 @@
 package org.eclipse.gef.editparts;
 
 import java.text.DecimalFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.jface.util.Assert;
 
-import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.geometry.*;
+import org.eclipse.draw2d.FreeformFigure;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.ScalableFigure;
+import org.eclipse.draw2d.ScalableFreeformLayeredPane;
+import org.eclipse.draw2d.Viewport;
+import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.SharedMessages;
 

@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.gef;
 
+import java.util.Collection;
+
 import org.eclipse.draw2d.geometry.Point;
 
 /**

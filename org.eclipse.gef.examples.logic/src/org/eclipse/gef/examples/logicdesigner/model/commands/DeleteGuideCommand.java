@@ -10,15 +10,15 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner.model.commands;
 
-import java.util.*;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.gef.commands.Command;
 
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
-import org.eclipse.gef.examples.logicdesigner.model.*;
 import org.eclipse.gef.examples.logicdesigner.model.LogicGuide;
+import org.eclipse.gef.examples.logicdesigner.model.LogicRuler;
 import org.eclipse.gef.examples.logicdesigner.model.LogicSubpart;
 
 /**

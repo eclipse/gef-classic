@@ -10,7 +10,9 @@
  *******************************************************************************/
 package org.eclipse.gef.editparts;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import org.eclipse.draw2d.FreeformLayer;
 import org.eclipse.draw2d.IFigure;

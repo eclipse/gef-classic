@@ -16,12 +16,21 @@ import org.eclipse.swt.accessibility.AccessibleEvent;
 
 import org.eclipse.draw2d.IFigure;
 
-import org.eclipse.gef.*;
-import org.eclipse.gef.editparts.*;
+import org.eclipse.gef.AccessibleEditPart;
+import org.eclipse.gef.DragTracker;
+import org.eclipse.gef.EditPart;
+import org.eclipse.gef.EditPolicy;
+import org.eclipse.gef.GraphicalViewer;
+import org.eclipse.gef.LayerConstants;
+import org.eclipse.gef.Request;
+import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
+import org.eclipse.gef.editparts.LayerManager;
+import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.editpolicies.SelectionEditPolicy;
 import org.eclipse.gef.internal.GEFMessages;
 import org.eclipse.gef.requests.SelectionRequest;
-import org.eclipse.gef.rulers.*;
+import org.eclipse.gef.rulers.RulerChangeListener;
+import org.eclipse.gef.rulers.RulerProvider;
 
 /**
 * @author Pratik Shah

@@ -10,7 +10,8 @@
  *******************************************************************************/
 package org.eclipse.gef.dnd;
 
-import org.eclipse.swt.dnd.*;
+import org.eclipse.swt.dnd.DropTargetEvent;
+import org.eclipse.swt.dnd.Transfer;
 
 /**
  * A <code>DropTargetListener</code> that manages and delegates to a set of {@link

@@ -14,7 +14,9 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.printing.*;
+import org.eclipse.swt.printing.PrintDialog;
+import org.eclipse.swt.printing.Printer;
+import org.eclipse.swt.printing.PrinterData;
 import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.core.resources.IFile;

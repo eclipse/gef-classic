@@ -10,8 +10,10 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
-import java.util.*;
-import org.eclipse.draw2d.geometry.*;
+import java.util.List;
+
+import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
  * Figures using the StackLayout as their layout manager have their children placed on top 

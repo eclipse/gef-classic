@@ -10,7 +10,9 @@
  *******************************************************************************/
 package org.eclipse.draw2d.internal.graph;
 
-import org.eclipse.draw2d.graph.*;
+import org.eclipse.draw2d.graph.Edge;
+import org.eclipse.draw2d.graph.Subgraph;
+import org.eclipse.draw2d.graph.VirtualNode;
 
 /**
  * @author hudsonr

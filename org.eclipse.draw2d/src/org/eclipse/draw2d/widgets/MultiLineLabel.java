@@ -11,14 +11,24 @@
 package org.eclipse.draw2d.widgets;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.accessibility.*;
+import org.eclipse.swt.accessibility.ACC;
+import org.eclipse.swt.accessibility.AccessibleAdapter;
+import org.eclipse.swt.accessibility.AccessibleControlAdapter;
+import org.eclipse.swt.accessibility.AccessibleControlEvent;
+import org.eclipse.swt.accessibility.AccessibleEvent;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
-import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.Border;
+import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.FigureCanvas;
+import org.eclipse.draw2d.FocusEvent;
+import org.eclipse.draw2d.Graphics;
+import org.eclipse.draw2d.MarginBorder;
+import org.eclipse.draw2d.Viewport;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.text.FlowPage;
 import org.eclipse.draw2d.text.TextFlow;

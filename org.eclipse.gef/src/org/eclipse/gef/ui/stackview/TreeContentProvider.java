@@ -14,7 +14,9 @@ import java.util.EventObject;
 
 import org.eclipse.jface.viewers.Viewer;
 
-import org.eclipse.gef.commands.*;
+import org.eclipse.gef.commands.CommandStack;
+import org.eclipse.gef.commands.CommandStackListener;
+import org.eclipse.gef.commands.CompoundCommand;
 
 public class TreeContentProvider
 	implements org.eclipse.jface.viewers.ITreeContentProvider,

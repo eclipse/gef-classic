@@ -18,7 +18,30 @@ import org.eclipse.swt.widgets.Control;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 
-import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.Border;
+import org.eclipse.draw2d.BorderLayout;
+import org.eclipse.draw2d.ButtonBorder;
+import org.eclipse.draw2d.ButtonModel;
+import org.eclipse.draw2d.ChangeEvent;
+import org.eclipse.draw2d.ChangeListener;
+import org.eclipse.draw2d.Clickable;
+import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.Figure;
+import org.eclipse.draw2d.FigureUtilities;
+import org.eclipse.draw2d.FlowLayout;
+import org.eclipse.draw2d.Graphics;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.ImageFigure;
+import org.eclipse.draw2d.Label;
+import org.eclipse.draw2d.LayoutManager;
+import org.eclipse.draw2d.MarginBorder;
+import org.eclipse.draw2d.MouseEvent;
+import org.eclipse.draw2d.MouseListener;
+import org.eclipse.draw2d.MouseMotionListener;
+import org.eclipse.draw2d.ScrollPane;
+import org.eclipse.draw2d.Toggle;
+import org.eclipse.draw2d.ToggleButton;
+import org.eclipse.draw2d.ToolbarLayout;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 

@@ -12,7 +12,15 @@ package org.eclipse.gef.examples.logicdesigner.edit;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartFactory;
-import org.eclipse.gef.examples.logicdesigner.model.*;
+
+import org.eclipse.gef.examples.logicdesigner.model.Circuit;
+import org.eclipse.gef.examples.logicdesigner.model.Gate;
+import org.eclipse.gef.examples.logicdesigner.model.LED;
+import org.eclipse.gef.examples.logicdesigner.model.LogicDiagram;
+import org.eclipse.gef.examples.logicdesigner.model.LogicFlowContainer;
+import org.eclipse.gef.examples.logicdesigner.model.LogicLabel;
+import org.eclipse.gef.examples.logicdesigner.model.SimpleOutput;
+import org.eclipse.gef.examples.logicdesigner.model.Wire;
 
 public class GraphicalPartFactory
 	implements EditPartFactory

@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.draw2d.graph;
 
-import java.util.*;
+import java.util.ArrayList;
 
 /**
  * For internal use only.  A list of lists.

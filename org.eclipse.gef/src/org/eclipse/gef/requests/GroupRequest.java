@@ -10,7 +10,8 @@
  *******************************************************************************/
 package org.eclipse.gef.requests;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.gef.EditPart;
 

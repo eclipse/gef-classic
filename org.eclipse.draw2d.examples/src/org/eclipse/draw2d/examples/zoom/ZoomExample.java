@@ -3,15 +3,24 @@ package org.eclipse.draw2d.examples.zoom;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.draw2d.parts.Thumbnail;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+
+import org.eclipse.draw2d.ButtonBorder;
+import org.eclipse.draw2d.Figure;
+import org.eclipse.draw2d.GroupBoxBorder;
+import org.eclipse.draw2d.Label;
+import org.eclipse.draw2d.LightweightSystem;
+import org.eclipse.draw2d.SchemeBorder;
+import org.eclipse.draw2d.ScrollBar;
+import org.eclipse.draw2d.ToolbarLayout;
+import org.eclipse.draw2d.XYLayout;
+import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2d.parts.Thumbnail;
 
 /**
  * This class demonstrates Draw2d's zoom capabilities.

@@ -11,10 +11,11 @@
 package org.eclipse.gef.examples.logicdesigner.edit;
 
 import org.eclipse.gef.commands.Command;
-import org.eclipse.gef.examples.logicdesigner.model.*;
-import org.eclipse.gef.examples.logicdesigner.model.commands.*;
-
 import org.eclipse.gef.requests.GroupRequest;
+
+import org.eclipse.gef.examples.logicdesigner.model.LogicDiagram;
+import org.eclipse.gef.examples.logicdesigner.model.LogicSubpart;
+import org.eclipse.gef.examples.logicdesigner.model.commands.DeleteCommand;
 
 public class LogicElementEditPolicy
 	extends org.eclipse.gef.editpolicies.ComponentEditPolicy

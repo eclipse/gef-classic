@@ -12,9 +12,15 @@ package org.eclipse.gef.test;
 
 import junit.framework.TestCase;
 
-import org.eclipse.gef.palette.*;
+import org.eclipse.gef.palette.CombinedTemplateCreationEntry;
+import org.eclipse.gef.palette.PaletteDrawer;
+import org.eclipse.gef.palette.PaletteEntry;
+import org.eclipse.gef.palette.PaletteRoot;
+import org.eclipse.gef.palette.PaletteStack;
 import org.eclipse.gef.ui.palette.PaletteCustomizer;
-import org.eclipse.gef.ui.palette.customize.*;
+import org.eclipse.gef.ui.palette.customize.PaletteDrawerFactory;
+import org.eclipse.gef.ui.palette.customize.PaletteSeparatorFactory;
+import org.eclipse.gef.ui.palette.customize.PaletteStackFactory;
 
 public class PaletteCustomizerTest extends TestCase {
 

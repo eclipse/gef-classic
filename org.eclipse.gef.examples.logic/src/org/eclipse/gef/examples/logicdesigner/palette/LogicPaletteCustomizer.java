@@ -10,7 +10,8 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner.palette;
 
-import org.eclipse.gef.palette.*;
+import org.eclipse.gef.palette.PaletteDrawer;
+import org.eclipse.gef.palette.PaletteEntry;
 import org.eclipse.gef.ui.palette.PaletteCustomizer;
 import org.eclipse.gef.ui.palette.customize.DefaultEntryPage;
 import org.eclipse.gef.ui.palette.customize.DrawerEntryPage;

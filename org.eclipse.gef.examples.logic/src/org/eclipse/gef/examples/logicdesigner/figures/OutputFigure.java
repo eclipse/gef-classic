@@ -11,6 +11,7 @@
 package org.eclipse.gef.examples.logicdesigner.figures;
 
 import org.eclipse.draw2d.StackLayout;
+
 import org.eclipse.gef.examples.logicdesigner.model.SimpleOutput;
 
 public class OutputFigure 

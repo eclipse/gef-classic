@@ -2,8 +2,23 @@ package org.eclipse.draw2d.examples.scrollpane;
 
 import org.eclipse.swt.graphics.Cursor;
 
-import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.geometry.*;
+import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.CompoundBorder;
+import org.eclipse.draw2d.Cursors;
+import org.eclipse.draw2d.FigureUtilities;
+import org.eclipse.draw2d.LabeledBorder;
+import org.eclipse.draw2d.LabeledContainer;
+import org.eclipse.draw2d.LineBorder;
+import org.eclipse.draw2d.MouseEvent;
+import org.eclipse.draw2d.MouseListener;
+import org.eclipse.draw2d.MouseMotionListener;
+import org.eclipse.draw2d.PositionConstants;
+import org.eclipse.draw2d.SchemeBorder;
+import org.eclipse.draw2d.StackLayout;
+import org.eclipse.draw2d.TitleBarBorder;
+import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.Rectangle;
 
 public class InternalFrame 
 	extends LabeledContainer 

@@ -13,7 +13,15 @@ package org.eclipse.draw2d.internal.graph;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.eclipse.draw2d.graph.*;
+import org.eclipse.draw2d.graph.CompoundDirectedGraph;
+import org.eclipse.draw2d.graph.DirectedGraph;
+import org.eclipse.draw2d.graph.Edge;
+import org.eclipse.draw2d.graph.Node;
+import org.eclipse.draw2d.graph.NodeList;
+import org.eclipse.draw2d.graph.Rank;
+import org.eclipse.draw2d.graph.RankList;
+import org.eclipse.draw2d.graph.Subgraph;
+import org.eclipse.draw2d.graph.SubgraphBoundary;
 
 /**
  * @author hudsonr

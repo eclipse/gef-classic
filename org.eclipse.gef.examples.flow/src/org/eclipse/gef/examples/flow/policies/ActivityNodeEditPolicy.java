@@ -17,7 +17,9 @@ import org.eclipse.gef.requests.ReconnectRequest;
 
 import org.eclipse.gef.examples.flow.model.Activity;
 import org.eclipse.gef.examples.flow.model.Transition;
-import org.eclipse.gef.examples.flow.model.commands.*;
+import org.eclipse.gef.examples.flow.model.commands.ConnectionCreateCommand;
+import org.eclipse.gef.examples.flow.model.commands.ReconnectSourceCommand;
+import org.eclipse.gef.examples.flow.model.commands.ReconnectTargetCommand;
 import org.eclipse.gef.examples.flow.parts.ActivityPart;
 
 /**

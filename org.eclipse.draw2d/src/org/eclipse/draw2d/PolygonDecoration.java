@@ -12,7 +12,9 @@ package org.eclipse.draw2d;
 
 import org.eclipse.swt.graphics.Color;
 
-import org.eclipse.draw2d.geometry.*;
+import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.PointList;
+import org.eclipse.draw2d.geometry.Transform;
 
 /**
  * A rotatable, polygon shaped decoration most commonly used for decorating the ends of

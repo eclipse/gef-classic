@@ -12,7 +12,9 @@ package org.eclipse.gef.examples.flow.model.commands;
 
 import org.eclipse.gef.commands.Command;
 
-import org.eclipse.gef.examples.flow.model.*;
+import org.eclipse.gef.examples.flow.model.Activity;
+import org.eclipse.gef.examples.flow.model.StructuredActivity;
+import org.eclipse.gef.examples.flow.model.Transition;
 
 /**
  * SplitTransitionCommand

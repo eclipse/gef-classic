@@ -15,7 +15,7 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Control;
 
-import org.eclipse.draw2d.geometry.*;
+import org.eclipse.draw2d.geometry.Rectangle;
 
 class BufferedGraphicsSource implements GraphicsSource {
 

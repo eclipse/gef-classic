@@ -17,7 +17,10 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.requests.BendpointRequest;
 
 import org.eclipse.gef.examples.logicdesigner.model.Wire;
-import org.eclipse.gef.examples.logicdesigner.model.commands.*;
+import org.eclipse.gef.examples.logicdesigner.model.commands.BendpointCommand;
+import org.eclipse.gef.examples.logicdesigner.model.commands.CreateBendpointCommand;
+import org.eclipse.gef.examples.logicdesigner.model.commands.DeleteBendpointCommand;
+import org.eclipse.gef.examples.logicdesigner.model.commands.MoveBendpointCommand;
 
 public class WireBendpointEditPolicy 
 	extends org.eclipse.gef.editpolicies.BendpointEditPolicy

@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
-import org.eclipse.draw2d.geometry.*;
+import org.eclipse.draw2d.geometry.Point;
 
 /**
  * An object to which a {@link Connection} will be anchored.  If the ConnectionAnchor

@@ -10,8 +10,10 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
-import org.eclipse.draw2d.geometry.*;
 import org.eclipse.swt.graphics.Color;
+
+import org.eclipse.draw2d.geometry.Insets;
+import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
  * SchemeBorder allows the creation of borders based on

@@ -10,9 +10,13 @@
  *******************************************************************************/
 package org.eclipse.draw2d.internal.graph;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.eclipse.draw2d.graph.*;
+import org.eclipse.draw2d.graph.DirectedGraph;
+import org.eclipse.draw2d.graph.Edge;
+import org.eclipse.draw2d.graph.Node;
+import org.eclipse.draw2d.graph.NodeList;
 
 /**
  * This visitor eliminates cycles in the graph via an implementation of the 

@@ -1,6 +1,9 @@
 package zoom.test;
 
-import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.Figure;
+import org.eclipse.draw2d.Graphics;
+import org.eclipse.draw2d.ScaledGraphics;
 
 public class ComposedZooms extends Figure {
 

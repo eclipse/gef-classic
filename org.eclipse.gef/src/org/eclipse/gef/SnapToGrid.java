@@ -10,7 +10,9 @@
  *******************************************************************************/
 package org.eclipse.gef;
 
-import org.eclipse.draw2d.geometry.*;
+import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.PrecisionRectangle;
 
 /**
  * @author Randy Hudson

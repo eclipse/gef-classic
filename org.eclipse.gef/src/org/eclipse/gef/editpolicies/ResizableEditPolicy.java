@@ -10,17 +10,17 @@
  *******************************************************************************/
 package org.eclipse.gef.editpolicies;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.eclipse.draw2d.PositionConstants;
+
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.handles.NonResizableHandleKit;
 import org.eclipse.gef.handles.ResizableHandleKit;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
-
-import org.eclipse.draw2d.PositionConstants;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Provides support for selecting, positioning, and resizing an editpart.  Selection is

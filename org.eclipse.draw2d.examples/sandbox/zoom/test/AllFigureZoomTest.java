@@ -6,7 +6,18 @@ import java.beans.PropertyChangeListener;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.Button;
+import org.eclipse.draw2d.ButtonBorder;
+import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.Figure;
+import org.eclipse.draw2d.FlowLayout;
+import org.eclipse.draw2d.GroupBoxBorder;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.Label;
+import org.eclipse.draw2d.LightweightSystem;
+import org.eclipse.draw2d.SchemeBorder;
+import org.eclipse.draw2d.ScrollBar;
+import org.eclipse.draw2d.ToolbarLayout;
 import org.eclipse.draw2d.geometry.Dimension;
 
 public class AllFigureZoomTest {

@@ -12,8 +12,8 @@ package org.eclipse.gef.ui.actions;
 
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchActionConstants;
-import org.eclipse.ui.internal.WorkbenchImages;
 import org.eclipse.ui.actions.RetargetAction;
+import org.eclipse.ui.internal.WorkbenchImages;
 
 import org.eclipse.gef.internal.GEFMessages;
 

@@ -10,8 +10,9 @@
  *******************************************************************************/
 package org.eclipse.gef.ui.actions;
 
-import org.eclipse.gef.commands.Command;
 import org.eclipse.ui.IWorkbenchPart;
+
+import org.eclipse.gef.commands.Command;
 
 /**
  * Superclass for actions needing access to the stack.

@@ -19,7 +19,10 @@ import org.eclipse.jface.viewers.TextCellEditor;
 
 import org.eclipse.draw2d.IFigure;
 
-import org.eclipse.gef.*;
+import org.eclipse.gef.AccessibleEditPart;
+import org.eclipse.gef.EditPolicy;
+import org.eclipse.gef.Request;
+import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.tools.DirectEditManager;
 
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;

@@ -1,7 +1,9 @@
-import org.eclipse.draw2d.*;
-import org.eclipse.swt.events.*;
-import org.eclipse.swt.widgets.*
-;
+import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.events.PaintListener;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
+
+import org.eclipse.draw2d.ColorConstants;
 public class SWTEllipse {
 
 static int W = 55;

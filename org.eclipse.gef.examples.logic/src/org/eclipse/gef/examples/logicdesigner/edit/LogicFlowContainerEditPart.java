@@ -10,7 +10,10 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner.edit;
 
-import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.Figure;
+import org.eclipse.draw2d.FlowLayout;
+import org.eclipse.draw2d.IFigure;
+
 import org.eclipse.gef.EditPolicy;
 
 import org.eclipse.gef.examples.logicdesigner.figures.LogicFlowBorder;

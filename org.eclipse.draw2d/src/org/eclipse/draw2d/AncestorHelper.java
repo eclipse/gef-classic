@@ -10,8 +10,10 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
-import java.beans.*;
-import java.util.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.List;
 
 class AncestorHelper
 	implements PropertyChangeListener, FigureListener 

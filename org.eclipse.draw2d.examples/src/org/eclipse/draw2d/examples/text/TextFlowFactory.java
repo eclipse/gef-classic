@@ -1,7 +1,10 @@
 package org.eclipse.draw2d.examples.text;
 
-import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.text.*;
+import org.eclipse.draw2d.Figure;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.text.BlockFlow;
+import org.eclipse.draw2d.text.FlowFigure;
+import org.eclipse.draw2d.text.TextFlow;
 
 /**
  * Used by TextFlowLargeExample to build paragraphs.

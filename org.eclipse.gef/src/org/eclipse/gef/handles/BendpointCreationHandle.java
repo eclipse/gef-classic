@@ -14,7 +14,10 @@ import org.eclipse.draw2d.Locator;
 import org.eclipse.draw2d.MidpointLocator;
 import org.eclipse.draw2d.geometry.Dimension;
 
-import org.eclipse.gef.*;
+import org.eclipse.gef.ConnectionEditPart;
+import org.eclipse.gef.DragTracker;
+import org.eclipse.gef.RequestConstants;
+import org.eclipse.gef.SharedCursors;
 import org.eclipse.gef.tools.ConnectionBendpointTracker;
 
 /**

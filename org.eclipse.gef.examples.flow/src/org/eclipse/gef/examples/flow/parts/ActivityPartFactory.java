@@ -13,7 +13,11 @@ package org.eclipse.gef.examples.flow.parts;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartFactory;
 
-import org.eclipse.gef.examples.flow.model.*;
+import org.eclipse.gef.examples.flow.model.Activity;
+import org.eclipse.gef.examples.flow.model.ActivityDiagram;
+import org.eclipse.gef.examples.flow.model.ParallelActivity;
+import org.eclipse.gef.examples.flow.model.SequentialActivity;
+import org.eclipse.gef.examples.flow.model.Transition;
 
 /**
  * @author hudsonr

@@ -10,8 +10,12 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner.figures;
 
-import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.geometry.*;
+import org.eclipse.draw2d.AbstractConnectionAnchor;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.ScalableFigure;
+import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.PrecisionPoint;
+import org.eclipse.draw2d.geometry.Rectangle;
 
 public class FixedConnectionAnchor 
 	extends AbstractConnectionAnchor

@@ -10,8 +10,9 @@
  *******************************************************************************/
 package org.eclipse.draw2d.text;
 
-import java.util.*;
-import org.eclipse.draw2d.*;
+import java.util.List;
+
+import org.eclipse.draw2d.Figure;
 
 /**
  * A layout for FlowFigures with children.

@@ -1,7 +1,12 @@
 package org.eclipse.draw2d.examples.scrollpane;
 
-import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.examples.*;
+import org.eclipse.draw2d.Figure;
+import org.eclipse.draw2d.GroupBoxBorder;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.LineBorder;
+import org.eclipse.draw2d.ScrollPane;
+import org.eclipse.draw2d.examples.AbstractExample;
+import org.eclipse.draw2d.examples.ExampleUtil;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 /**

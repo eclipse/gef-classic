@@ -10,12 +10,12 @@
  *******************************************************************************/
 package org.eclipse.draw2d.test;
 
+import junit.framework.TestCase;
+
 import org.eclipse.draw2d.RectangleFigure;
 import org.eclipse.draw2d.XYLayout;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
-
-import junit.framework.TestCase;
 
 public class XYLayoutTest extends TestCase {
 

@@ -10,8 +10,9 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
-import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.swt.graphics.Color;
+
+import org.eclipse.draw2d.geometry.Insets;
 
 /**
  * Creates a border for a clickable type of figure, which works in conjunction with the

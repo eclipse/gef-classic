@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
-import org.eclipse.swt.graphics.*;
+import org.eclipse.swt.graphics.Image;
 
 /**
  * A Checkbox is a toggle figure which toggles between the checked and unchecked figures

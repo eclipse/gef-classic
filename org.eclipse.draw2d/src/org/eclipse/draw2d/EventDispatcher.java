@@ -10,11 +10,13 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
-import org.eclipse.swt.accessibility.*;
+import org.eclipse.swt.accessibility.AccessibleControlEvent;
+import org.eclipse.swt.accessibility.AccessibleControlListener;
+import org.eclipse.swt.accessibility.AccessibleListener;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.TraverseEvent;
-import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.widgets.Control;
 
 /**

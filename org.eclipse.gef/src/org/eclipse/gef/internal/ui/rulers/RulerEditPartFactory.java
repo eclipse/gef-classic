@@ -10,8 +10,10 @@
  *******************************************************************************/
 package org.eclipse.gef.internal.ui.rulers;
 
-import org.eclipse.gef.*;
-import org.eclipse.gef.rulers.*;
+import org.eclipse.gef.EditPart;
+import org.eclipse.gef.EditPartFactory;
+import org.eclipse.gef.GraphicalViewer;
+import org.eclipse.gef.rulers.RulerProvider;
 
 /**
  * @author Pratik Shah

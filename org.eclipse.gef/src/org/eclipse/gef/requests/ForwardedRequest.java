@@ -10,7 +10,8 @@
  *******************************************************************************/
 package org.eclipse.gef.requests;
 
-import org.eclipse.gef.*;
+import org.eclipse.gef.EditPart;
+import org.eclipse.gef.Request;
 
 /**
  * A Request to be forwarded to another EditPart.

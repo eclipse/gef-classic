@@ -12,7 +12,9 @@ package org.eclipse.draw2d.test;
 
 import junit.framework.TestCase;
 
-import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.Figure;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.LayeredPane;
 
 public class LayeredPaneTest extends TestCase {
 

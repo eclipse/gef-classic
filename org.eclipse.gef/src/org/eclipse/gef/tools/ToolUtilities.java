@@ -10,9 +10,15 @@
  *******************************************************************************/
 package org.eclipse.gef.tools;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
-import org.eclipse.gef.*;
+import org.eclipse.gef.EditPart;
+import org.eclipse.gef.EditPartViewer;
+import org.eclipse.gef.GraphicalEditPart;
+import org.eclipse.gef.Request;
 
 /**
  * Utilities for {@link org.eclipse.gef.Tool Tools}.

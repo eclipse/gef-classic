@@ -10,7 +10,9 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.Timer;
+import java.util.TimerTask;
 
 //import org.eclipse.draw2d.internal.Timer;
 

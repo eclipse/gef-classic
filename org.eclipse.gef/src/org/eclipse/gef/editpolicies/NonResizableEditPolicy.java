@@ -10,19 +10,31 @@
  *******************************************************************************/
 package org.eclipse.gef.editpolicies;
 
-import org.eclipse.gef.*;
-import org.eclipse.gef.commands.Command;
-import org.eclipse.gef.handles.*;
-import org.eclipse.gef.requests.AlignmentRequest;
-import org.eclipse.gef.requests.ChangeBoundsRequest;
-import org.eclipse.gef.tools.SelectEditPartTracker;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.FigureUtilities;
+import org.eclipse.draw2d.FocusBorder;
+import org.eclipse.draw2d.Graphics;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.Locator;
+import org.eclipse.draw2d.RectangleFigure;
 import org.eclipse.draw2d.geometry.PrecisionRectangle;
 import org.eclipse.draw2d.geometry.Rectangle;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.eclipse.gef.DragTracker;
+import org.eclipse.gef.GraphicalEditPart;
+import org.eclipse.gef.Request;
+import org.eclipse.gef.RequestConstants;
+import org.eclipse.gef.SharedCursors;
+import org.eclipse.gef.commands.Command;
+import org.eclipse.gef.handles.AbstractHandle;
+import org.eclipse.gef.handles.HandleBounds;
+import org.eclipse.gef.handles.NonResizableHandleKit;
+import org.eclipse.gef.requests.AlignmentRequest;
+import org.eclipse.gef.requests.ChangeBoundsRequest;
+import org.eclipse.gef.tools.SelectEditPartTracker;
 
 /**
  * Provide support for selecting and positioning a non-resizable editpart.  Selection is

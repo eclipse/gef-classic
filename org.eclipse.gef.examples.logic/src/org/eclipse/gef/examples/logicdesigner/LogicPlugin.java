@@ -14,16 +14,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.runtime.IPluginDescriptor;
+import org.eclipse.jface.resource.ImageDescriptor;
 
-import org.eclipse.gef.examples.logicdesigner.model.*;
-import org.eclipse.gef.examples.logicdesigner.model.Circuit;
-import org.eclipse.gef.examples.logicdesigner.model.LogicFlowContainer;
-import org.eclipse.gef.examples.logicdesigner.model.LogicLabel;
-
-import org.eclipse.gef.palette.*;
+import org.eclipse.gef.palette.CombinedTemplateCreationEntry;
+import org.eclipse.gef.palette.ConnectionCreationToolEntry;
+import org.eclipse.gef.palette.MarqueeToolEntry;
+import org.eclipse.gef.palette.PaletteContainer;
+import org.eclipse.gef.palette.PaletteDrawer;
+import org.eclipse.gef.palette.PaletteEntry;
+import org.eclipse.gef.palette.PaletteGroup;
+import org.eclipse.gef.palette.PaletteRoot;
+import org.eclipse.gef.palette.PaletteSeparator;
+import org.eclipse.gef.palette.PaletteStack;
+import org.eclipse.gef.palette.PaletteTemplateEntry;
+import org.eclipse.gef.palette.PanningSelectionToolEntry;
+import org.eclipse.gef.palette.ToolEntry;
 import org.eclipse.gef.requests.SimpleFactory;
 
-import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.gef.examples.logicdesigner.model.AndGate;
+import org.eclipse.gef.examples.logicdesigner.model.Circuit;
+import org.eclipse.gef.examples.logicdesigner.model.GroundOutput;
+import org.eclipse.gef.examples.logicdesigner.model.LED;
+import org.eclipse.gef.examples.logicdesigner.model.LiveOutput;
+import org.eclipse.gef.examples.logicdesigner.model.LogicDiagramFactory;
+import org.eclipse.gef.examples.logicdesigner.model.LogicFlowContainer;
+import org.eclipse.gef.examples.logicdesigner.model.LogicLabel;
+import org.eclipse.gef.examples.logicdesigner.model.OrGate;
+import org.eclipse.gef.examples.logicdesigner.model.XORGate;
 
 public class LogicPlugin
 	extends org.eclipse.ui.plugin.AbstractUIPlugin

@@ -10,14 +10,17 @@
  *******************************************************************************/
 package org.eclipse.gef.handles;
 
-import org.eclipse.gef.*;
-import org.eclipse.gef.tools.DragEditPartsTracker;
-
-import org.eclipse.draw2d.PositionConstants;
+import java.util.List;
 
 import org.eclipse.swt.graphics.Cursor;
 
-import java.util.List;
+import org.eclipse.draw2d.PositionConstants;
+
+import org.eclipse.gef.DragTracker;
+import org.eclipse.gef.GraphicalEditPart;
+import org.eclipse.gef.Handle;
+import org.eclipse.gef.SharedCursors;
+import org.eclipse.gef.tools.DragEditPartsTracker;
 
 /**
  * A set of utility methods to create Handles for 

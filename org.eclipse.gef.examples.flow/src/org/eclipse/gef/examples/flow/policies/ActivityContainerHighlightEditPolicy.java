@@ -14,7 +14,10 @@ import org.eclipse.swt.graphics.Color;
 
 import org.eclipse.draw2d.IFigure;
 
-import org.eclipse.gef.*;
+import org.eclipse.gef.EditPart;
+import org.eclipse.gef.GraphicalEditPart;
+import org.eclipse.gef.Request;
+import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.editpolicies.GraphicalEditPolicy;
 
 /**

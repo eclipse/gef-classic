@@ -19,7 +19,9 @@ import org.eclipse.gef.editpolicies.ConnectionEditPolicy;
 import org.eclipse.gef.requests.CreateRequest;
 import org.eclipse.gef.requests.GroupRequest;
 
-import org.eclipse.gef.examples.flow.model.*;
+import org.eclipse.gef.examples.flow.model.Activity;
+import org.eclipse.gef.examples.flow.model.StructuredActivity;
+import org.eclipse.gef.examples.flow.model.Transition;
 import org.eclipse.gef.examples.flow.model.commands.DeleteConnectionCommand;
 import org.eclipse.gef.examples.flow.model.commands.SplitTransitionCommand;
 import org.eclipse.gef.examples.flow.parts.TransitionPart;

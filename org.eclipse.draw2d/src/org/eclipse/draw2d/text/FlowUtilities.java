@@ -15,8 +15,8 @@ import java.text.BreakIterator;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontMetrics;
 
-import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.geometry.*;
+import org.eclipse.draw2d.FigureUtilities;
+import org.eclipse.draw2d.geometry.Dimension;
 
 /**
  * Utility class for FlowFigures.

@@ -10,8 +10,11 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
-import java.util.*;
-import org.eclipse.draw2d.geometry.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.eclipse.draw2d.geometry.Dimension;
 
 /**
  * Figures using a DelegatingLayout as their layout manager give 

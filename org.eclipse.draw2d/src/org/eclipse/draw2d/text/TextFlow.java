@@ -10,7 +10,8 @@
  *******************************************************************************/
 package org.eclipse.draw2d.text;
 
-import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.Graphics;
 
 /**
  * An inline flow that renders a sting of text across one or more lines. A TextFlow must
