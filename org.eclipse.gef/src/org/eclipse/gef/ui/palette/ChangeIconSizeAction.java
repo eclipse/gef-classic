@@ -10,7 +10,6 @@ public class ChangeIconSizeAction
 {
 
 private PaletteViewerPreferences prefs;
-private boolean currentSetting;
 
 /**
  * Constructor
@@ -27,7 +26,7 @@ public ChangeIconSizeAction(PaletteViewerPreferences prefs) {
  * @see org.eclipse.jface.action.Action#run()
  */
 public void run() {
-	prefs.setCurrentUseLargeIcons(!currentSetting);
+	prefs.setCurrentUseLargeIcons(!prefs.useLargeIconsCurrently());
 }
 
 }

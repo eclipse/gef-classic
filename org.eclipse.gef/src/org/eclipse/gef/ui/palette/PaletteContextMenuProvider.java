@@ -60,7 +60,15 @@ public void buildContextMenu(IMenuManager menu) {
 				((CategoryEditPart)selectedPart).getCategoryFigure()));
 		menu.add(new Separator());
 	}
-	menu.add(new LayoutAction(getPaletteViewer().getPaletteViewerPreferencesSource()));
+	menu.add(new FolderLayoutAction(
+			getPaletteViewer().getPaletteViewerPreferencesSource()));
+	menu.add(new ListLayoutAction(
+			getPaletteViewer().getPaletteViewerPreferencesSource()));
+	menu.add(new IconsLayoutAction(
+			getPaletteViewer().getPaletteViewerPreferencesSource()));
+	menu.add(new DetailsLayoutAction(
+			getPaletteViewer().getPaletteViewerPreferencesSource()));
+	menu.add(new Separator());
 	menu.add(new ChangeIconSizeAction(
 			getPaletteViewer().getPaletteViewerPreferencesSource()));
 	menu.add(new Separator());
