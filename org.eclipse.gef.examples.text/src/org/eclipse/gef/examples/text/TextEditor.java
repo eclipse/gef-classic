@@ -9,12 +9,22 @@
 
 package org.eclipse.gef.examples.text;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.EOFException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.EventObject;
+
 import org.eclipse.swt.widgets.Composite;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
+import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IKeyBindingService;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.actions.ActionFactory;
@@ -81,6 +91,11 @@ class TextOutlinePage extends ContentOutlinePage {
 		super.createControl(parent);
 		getViewer().setContents(doc);
 	}
+}
+
+public void commandStackChanged(EventObject event) {
+	firePropertyChange(PROP_DIRTY);
+	super.commandStackChanged(event);
 }
 
 /**
@@ -192,31 +207,27 @@ protected void initializeGraphicalViewer() {
 		}
 	});
 
-	doc = new Block(Container.TYPE_ROOT);
-
-	Container block = new Block(Container.TYPE_COMMENT);
-	
-	block.add(new TextRun("Copyright (c) 2004 IBM Corporation and others. All rights reserved. This program and " +
-			"the accompanying materials are made available under the terms of the Common Public " +
-			"License v1.0 which accompanies this distribution, and is available at " +
-			"http://www.eclipse.org/legal/cpl-v10.html\r\n" + 
-			"Contributors: IBM Corporation - initial API and implementation"));
-	
-	Container inline = new InlineContainer(Container.TYPE_INLINE);
-	inline.getStyle().setBold(true);
-	inline.add(new TextRun("ABC def GHI jkl MNO pqr STU vwxyz"));
-	block.add(inline);
-	
-	doc.add(block);
-	doc.add(new TextRun("Paragraph 1"));
-
 	getGraphicalViewer().setContents(doc);
 }
 
 /**
  * @see org.eclipse.ui.ISaveablePart#doSave(org.eclipse.core.runtime.IProgressMonitor)
  */
-public void doSave(IProgressMonitor monitor) {}
+public void doSave(IProgressMonitor monitor) {
+	try {
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		ObjectOutputStream objStream = new ObjectOutputStream(outputStream);
+		objStream.writeObject(doc);
+		objStream.close();	
+		IFile file = ((IFileEditorInput)getEditorInput()).getFile();
+		file.setContents(new ByteArrayInputStream(outputStream.toByteArray()), 
+						true, false, monitor);
+		outputStream.close();
+		getCommandStack().markSaveLocation();
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+}
 
 /**
  * @see org.eclipse.ui.ISaveablePart#doSaveAs()
@@ -242,7 +253,6 @@ public void init(IEditorSite site, IEditorInput input) throws PartInitException 
 				else if (event.getDetail() == CommandStack.POST_UNDO)
 						textViewer.setSelectionRange(command
 								.getUndoSelectionRange(textViewer));
-				
 			}
 		}
 	}); 
@@ -261,7 +271,7 @@ public void init(IEditorSite site, IEditorInput input) throws PartInitException 
  * @see org.eclipse.ui.ISaveablePart#isDirty()
  */
 public boolean isDirty() {
-	return false;
+	return getCommandStack().isDirty();
 }
 
 /**
@@ -269,6 +279,40 @@ public boolean isDirty() {
  */
 public boolean isSaveAsAllowed() {
 	return false;
+}
+
+protected void setInput(IEditorInput input) {
+	super.setInput(input);
+	
+	IFile file = ((IFileEditorInput)input).getFile();
+	try {
+		InputStream is = file.getContents(false);
+		ObjectInputStream ois = new ObjectInputStream(is);
+		doc = (Container)ois.readObject();
+		ois.close();
+	} catch (EOFException eofe) {
+		// file was empty (as in the case of a new file); do nothing
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+	
+	if (doc == null) {
+		doc = new Block(Container.TYPE_ROOT);
+		Container block = new Block(Container.TYPE_COMMENT);
+		block.add(new TextRun("Copyright (c) 2004 IBM Corporation and others. All rights reserved. This program and " +
+				"the accompanying materials are made available under the terms of the Common Public " +
+				"License v1.0 which accompanies this distribution, and is available at " +
+				"http://www.eclipse.org/legal/cpl-v10.html\r\n" + 
+				"Contributors: IBM Corporation - initial API and implementation"));
+		Container inline = new InlineContainer(Container.TYPE_INLINE);
+		inline.getStyle().setBold(true);
+		inline.add(new TextRun("ABC def GHI jkl MNO pqr STU vwxyz"));
+		block.add(inline);
+		doc.add(block);
+		doc.add(new TextRun("Paragraph 1"));
+	}
+	
+	setPartName(file.getName());
 }
 
 }
