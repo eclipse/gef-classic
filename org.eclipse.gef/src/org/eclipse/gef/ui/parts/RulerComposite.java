@@ -36,9 +36,11 @@ public class RulerComposite
 private GraphicalViewer left, top;
 private FigureCanvas editor;
 private GraphicalViewer diagramViewer;
-private boolean layingOut = false;
-private boolean hVisible = true, vVisible = true;
 private Font font;
+private Listener layoutListener;
+private PropertyChangeListener propertyListener;
+private boolean layingOut = false;
+private boolean isRulerVisible = true;
 
 public RulerComposite(Composite parent, int style) {
 	super(parent, style);
@@ -88,6 +90,13 @@ private GraphicalViewer createRulerContainer(int orientation) {
 }
 
 public void dispose() {
+	if (diagramViewer != null) {
+		diagramViewer.removePropertyListener(propertyListener);
+		editor.getHorizontalBar().removeListener(SWT.Show, layoutListener);
+		editor.getHorizontalBar().removeListener(SWT.Hide, layoutListener);
+		editor.getVerticalBar().removeListener(SWT.Show, layoutListener);
+		editor.getVerticalBar().removeListener(SWT.Hide, layoutListener);
+	}
 	super.dispose();
 	if (font != null) {
 		font.dispose();
@@ -148,10 +157,6 @@ private GraphicalViewer getRulerContainer(int orientation) {
 	return result;
 }
 
-public boolean isRulerVisible(int orientation) {
-	return (orientation == PositionConstants.WEST) ? vVisible : hVisible;
-}
-
 /* (non-Javadoc)
  * @see org.eclipse.swt.widgets.Composite#layout(boolean)
  */
@@ -191,7 +196,7 @@ public void setGraphicalViewer(GraphicalViewer primaryViewer) {
 
 	// layout whenever the scrollbars are shown or hidden, and whenever the RulerComposite
 	// is resized
-	Listener layoutListener = new Listener() {
+	layoutListener = new Listener() {
 		public void handleEvent(Event event) {
 			layout(true);
 		}
@@ -201,19 +206,26 @@ public void setGraphicalViewer(GraphicalViewer primaryViewer) {
 	editor.getHorizontalBar().addListener(SWT.Hide, layoutListener);
 	editor.getVerticalBar().addListener(SWT.Show, layoutListener);
 	editor.getVerticalBar().addListener(SWT.Hide, layoutListener);
-	
-	diagramViewer.addPropertyChangeListener(new PropertyChangeListener() {
+
+	propertyListener = new PropertyChangeListener() {
 		public void propertyChange(PropertyChangeEvent evt) {
 			String property = evt.getPropertyName();
 			if (RulerProvider.HORIZONTAL.equals(property)) {
 				setRuler((RulerProvider)diagramViewer.getProperty(RulerProvider.HORIZONTAL), 
-						PositionConstants.NORTH);
+					PositionConstants.NORTH);
 			} else if (RulerProvider.VERTICAL.equals(property)) {
 				setRuler((RulerProvider)diagramViewer.getProperty(RulerProvider.VERTICAL),
-						PositionConstants.WEST);
-			}
+					PositionConstants.WEST);
+			} else if (RulerProvider.RULER_VISIBILITY.equals(property))
+				setRulerVisibility(((Boolean)diagramViewer
+						.getProperty(RulerProvider.RULER_VISIBILITY)).booleanValue());
 		}
-	});
+	};
+	diagramViewer.addPropertyChangeListener(propertyListener);
+	Boolean rulerVisibility = (Boolean)diagramViewer
+			.getProperty(RulerProvider.RULER_VISIBILITY);
+	if (rulerVisibility != null)
+		setRulerVisibility(rulerVisibility.booleanValue());
 	setRuler((RulerProvider)diagramViewer.getProperty(RulerProvider.HORIZONTAL), 
 			PositionConstants.NORTH);
 	setRuler((RulerProvider)diagramViewer.getProperty(RulerProvider.VERTICAL), 
@@ -221,38 +233,26 @@ public void setGraphicalViewer(GraphicalViewer primaryViewer) {
 }
 
 private void setRuler(RulerProvider provider, int orientation) {
-	if (!isDisposed()) {
-		Object ruler = null;
-		if (isRulerVisible(orientation) && provider != null) {
-			ruler = provider.getRuler();
-		}
-		GraphicalViewer container = getRulerContainer(orientation);
-		if (container.getContents() != ruler) {
-			container.setContents(ruler);
-			layout(true);			
-		}
+	Object ruler = null;
+	if (isRulerVisible && provider != null) {
+		ruler = provider.getRuler();
+	}
+	GraphicalViewer container = getRulerContainer(orientation);
+	if (container.getContents() != ruler) {
+		container.setContents(ruler);
+		layout(true);			
 	}
 }
 
-public void setRulerVisibility(int orientation, boolean isVisible) {
-	switch (orientation) {
-		case PositionConstants.NORTH:
-			if (hVisible != isVisible) {
-				hVisible = isVisible;
-				if (diagramViewer != null) {
-					setRuler((RulerProvider)diagramViewer.getProperty(
-							RulerProvider.HORIZONTAL), PositionConstants.NORTH);
-				}
-			}
-			break;
-		case PositionConstants.WEST:
-			if (vVisible != isVisible) {
-				vVisible = isVisible;
-				if (diagramViewer != null) {
-					setRuler((RulerProvider)diagramViewer.getProperty(
-							RulerProvider.VERTICAL), PositionConstants.WEST);
-				}
-			}
+private void setRulerVisibility(boolean isVisible) {
+	if (isRulerVisible != isVisible) {
+		isRulerVisible = isVisible;
+		if (diagramViewer != null) {
+			setRuler((RulerProvider)diagramViewer.getProperty(
+					RulerProvider.HORIZONTAL), PositionConstants.NORTH);
+			setRuler((RulerProvider)diagramViewer.getProperty(
+					RulerProvider.VERTICAL), PositionConstants.WEST);
+		}
 	}
 }
 
