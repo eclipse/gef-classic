@@ -52,8 +52,10 @@ import org.eclipse.gef.examples.logicdesigner.dnd.TextTransferDropTargetListener
 import org.eclipse.gef.examples.logicdesigner.edit.GraphicalPartFactory;
 import org.eclipse.gef.examples.logicdesigner.edit.TreePartFactory;
 import org.eclipse.gef.examples.logicdesigner.model.LogicDiagram;
+import org.eclipse.gef.examples.logicdesigner.model.Ruler;
 import org.eclipse.gef.examples.logicdesigner.palette.LogicPaletteCustomizer;
-import org.eclipse.gef.examples.logicdesigner.rulers.*;
+import org.eclipse.gef.examples.logicdesigner.rulers.LogicRootEditPart;
+import org.eclipse.gef.examples.logicdesigner.rulers.RulerComposite;
 
 public class LogicEditor 
 	extends GraphicalEditorWithPalette 
@@ -156,7 +158,7 @@ class OutlinePage
 	}
 
 	protected void initializeOutlineViewer(){
-		getViewer().setContents(getLogicDiagram());
+		setContents(getLogicDiagram());
 	}
 	
 	protected void initializeOverview() {
@@ -169,6 +171,10 @@ class OutlinePage
 			thumbnail.setSource(root.getLayer(LayerConstants.PRINTABLE_LAYERS));
 			lws.setContents(thumbnail);
 		}
+	}
+	
+	public void setContents(Object contents) {
+		getViewer().setContents(contents);
 	}
 	
 	protected void showPage(int id) {
@@ -631,7 +637,7 @@ public void setInput(IEditorInput input) {
 		getGraphicalViewer().setContents(getLogicDiagram());
 	}
 	if (outlinePage != null) {
-		outlinePage.initializeOutlineViewer();
+		outlinePage.setContents(getLogicDiagram());
 	}
 }
 
