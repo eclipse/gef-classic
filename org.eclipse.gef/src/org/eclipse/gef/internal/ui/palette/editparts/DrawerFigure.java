@@ -76,13 +76,9 @@ private EditPartTipHelper tipHelper;
  * 						(the tip won't be displayed).
  */
 public DrawerFigure(final Control control) {
-	setLayoutManager(new PaletteToolbarLayout(null) {
-		protected boolean isChildGrowing(IFigure child) {
-			int wHint = child.getBounds().width;
-			return child.getPreferredSize(wHint, -1).height 
-					!= child.getMinimumSize(wHint, -1).height;
-		}
-	});
+	ToolbarLayout layout = new ToolbarLayout(false);
+	layout.setStretchMinorAxis(true);
+	setLayoutManager(layout);
 
 	Figure title = new Figure();	
 	title.setBorder(TITLE_MARGIN_BORDER);
