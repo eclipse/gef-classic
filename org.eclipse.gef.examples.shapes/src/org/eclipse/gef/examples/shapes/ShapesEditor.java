@@ -73,7 +73,9 @@ import org.eclipse.gef.examples.shapes.parts.ShapesTreeEditPartFactory;
  * The binding between the .shapes file extension and this editor is done in plugin.xml
  * @author Elias Volanakis
  */
-public class ShapesEditor extends GraphicalEditorWithFlyoutPalette {
+public class ShapesEditor 
+	extends GraphicalEditorWithFlyoutPalette 
+{
 
 /** This is the root of the editor's model. */
 private ShapesDiagram diagram;
@@ -222,7 +224,7 @@ public void doSaveAs() {
 
 public Object getAdapter(Class type) {
 	if (type == IContentOutlinePage.class)
-		return new ShapesEditorOutlinePage(new TreeViewer());
+		return new ShapesOutlinePage(new TreeViewer());
 	return super.getAdapter(type);
 }
 
@@ -310,13 +312,13 @@ protected void setInput(IEditorInput input) {
 /**
  * Creates an outline pagebook for this editor.
  */
-public class ShapesEditorOutlinePage extends ContentOutlinePage {	
+public class ShapesOutlinePage extends ContentOutlinePage {	
 	/**
 	 * Create a new outline page for the shapes editor.
 	 * @param viewer a viewer (TreeViewer instance) used for this outline page
 	 * @throws IllegalArgumentException if editor is null
 	 */
-	public ShapesEditorOutlinePage(EditPartViewer viewer) {
+	public ShapesOutlinePage(EditPartViewer viewer) {
 		super(viewer);
 	}
 
