@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003 IBM Corporation and others.
+ * Copyright (c) 2004 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -29,7 +29,12 @@ import org.eclipse.gef.SnapToGeometry;
 import org.eclipse.gef.SnapToGuides;
 
 /**
+ * An EditPolicy that is used to show snap feedback for guides (red lines) and geometry
+ * (blue lines)
+ * 
+ * @author Randy Hudson
  * @author Pratik Shah
+ * @since 3.0
  */
 public class SnapFeedbackPolicy 
 	extends GraphicalEditPolicy
@@ -38,6 +43,9 @@ public class SnapFeedbackPolicy
 IFigure guide[] = new IFigure[6];
 Integer location[] = new Integer[6];
 
+/**
+ * @see org.eclipse.gef.EditPolicy#eraseTargetFeedback(org.eclipse.gef.Request)
+ */
 public void eraseTargetFeedback(Request request) {
 	for (int i = 0; i < guide.length; i++) {
 		if (guide[i] != null)
@@ -58,7 +66,7 @@ static class FadeIn extends Figure {
 	}
 	
 	/**
-	 * @see org.eclipse.draw2d.Figure#getBackgroundColor()
+	 * @see org.eclipse.draw2d.IFigure#getLocalBackgroundColor()
 	 */
 	public Color getLocalBackgroundColor() {
 		return FigureUtilities.mixColors(
@@ -112,6 +120,7 @@ static class FadeIn extends Figure {
 	}
 }
 
+// Even offset indicates a vertical feedback line; odd, horizontal.
 void highlightGuide(Integer pos, Color color, int offset) {
 	if (pos == null) {
 		if (guide[offset] != null) {
@@ -170,6 +179,9 @@ void highlightGuide(Integer pos, Color color, int offset) {
 	}
 }
 
+/**
+ * @see org.eclipse.gef.EditPolicy#showTargetFeedback(org.eclipse.gef.Request)
+ */
 public void showTargetFeedback(Request req) {
 	if (req.getType().equals(REQ_MOVE)
 			|| req.getType().equals(REQ_RESIZE)

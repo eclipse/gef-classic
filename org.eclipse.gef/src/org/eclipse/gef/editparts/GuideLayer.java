@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003 IBM Corporation and others.
+ * Copyright (c) 2004 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,25 +18,38 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
+ * A layer where the guide lines are displayed
+ * 
  * @author Pratik Shah
+ * @since 3.0
  */
 public class GuideLayer
 	extends FreeformLayer
 {
 	
 private Map constraints;
-	
+
+/**
+ * @param	child	the figure whose constraint is to be found
+ * @return the constraint set for the given IFigure; <code>null</code> if none exists
+ */
 public Object getConstraint(IFigure child) {
 	return getConstraints().get(child);
 }
 
+/**
+ * @return the Map of IFigures to their constraints 
+ */
 public Map getConstraints() {
 	if (constraints == null) {
 		constraints = new HashMap();
 	}
 	return constraints;
 }
-	
+
+/**
+ * @see org.eclipse.draw2d.FreeformFigure#getFreeformExtent()
+ */
 public Rectangle getFreeformExtent() {
 	/*
 	 * These ints are initialized to 5 so that when the final extent is expanded by 5,
@@ -70,20 +83,32 @@ public Rectangle getFreeformExtent() {
 	return r;
 }
 
+/**
+ * @see org.eclipse.draw2d.IFigure#getPreferredSize(int, int)
+ */
 public Dimension getPreferredSize(int wHint, int hHint) {
 	Rectangle extents = getFreeformExtent();
 	return new Dimension(extents.getRight().x, extents.getBottom().y);
 }
 
+/**
+ * @see org.eclipse.draw2d.IFigure#remove(org.eclipse.draw2d.IFigure)
+ */
 public void remove(IFigure child) {
 	getConstraints().remove(child);
 	super.remove(child);
 }
 
+/**
+ * @see org.eclipse.draw2d.IFigure#setConstraint(org.eclipse.draw2d.IFigure, java.lang.Object)
+ */
 public void setConstraint(IFigure child, Object constraint) {
 	getConstraints().put(child, constraint);
 }
 
+/**
+ * @see org.eclipse.draw2d.FreeformFigure#setFreeformBounds(org.eclipse.draw2d.geometry.Rectangle)
+ */
 public void setFreeformBounds(Rectangle bounds) {
 	super.setFreeformBounds(bounds);
 	Iterator children = getChildren().iterator();

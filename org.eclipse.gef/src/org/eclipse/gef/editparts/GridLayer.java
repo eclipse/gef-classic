@@ -17,22 +17,37 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.gef.SnapToGrid;
 
 /**
+ * A layer that displays the grid
+ * 
  * @author Pratik Shah
+ * @since 3.0
  */
 public class GridLayer 
 	extends FreeformLayer 
 {
 
+/**
+ * Field indicating the horizontal grid spacing
+ */
 protected int gridX = SnapToGrid.DEFAULT_GRID_SIZE;
+/**
+ * Field for the vertical grid spacing
+ */
 protected int gridY = SnapToGrid.DEFAULT_GRID_SIZE;
 
+/**
+ * Field indicating what the grid origin is.  This is used simply to determine the
+ * offset from 0,0.
+ */
 protected Point origin = new Point();
 
+/**
+ * Constructor
+ */
 public GridLayer() {
 	super();
 	setForegroundColor(ColorConstants.lightGray);
 }
-
 
 /**
  * Overridden to indicate on preferred size.  The grid layer should not affect the size of
@@ -43,6 +58,9 @@ public Dimension getPreferredSize(int wHint, int hHint) {
 	return new Dimension();
 }
 
+/**
+ * @see org.eclipse.draw2d.Figure#paintFigure(org.eclipse.draw2d.Graphics)
+ */
 protected void paintFigure(Graphics graphics) {
 	super.paintFigure(graphics);
 	paintGrid(graphics);
@@ -58,6 +76,10 @@ protected void paintGrid(Graphics g) {
 	FigureUtilities.paintGrid(g, this, origin, gridX, gridY);
 }
 
+/**
+ * Sets the origin of the grid.  The origin is used only to determine the offset from 0,0.
+ * @param	p	the origin
+ */
 public void setOrigin(Point p) {
 	if (p == null)
 		p = new Point();
@@ -67,6 +89,13 @@ public void setOrigin(Point p) {
 	}
 }
 
+/**
+ * Sets the horizontal and vertical spacing of the grid.  A grid spacing of 0 will be
+ * replaced with the {@link SnapToGrid#DEFAULT_GRID_SIZE default} spacing.  A negative
+ * spacing will cause no grid lines to be drawn for that dimension.
+ * 
+ * @param	spacing		A dimension representing the horizontal and vertical gaps
+ */
 public void setSpacing(Dimension spacing) {
 	if (spacing == null)
 		spacing = new Dimension(SnapToGrid.DEFAULT_GRID_SIZE,
