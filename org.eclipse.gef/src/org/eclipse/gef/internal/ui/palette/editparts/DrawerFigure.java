@@ -291,16 +291,6 @@ public Dimension getMinimumSize(int wHint, int hHint) {
 }
 
 /**
- * @see org.eclipse.draw2d.Figure#getPreferredSize(int, int)
- */
-public Dimension getPreferredSize(int w, int h) {
-	if (isExpanded())
-		return super.getPreferredSize(w, h);
-	else
-		return getMinimumSize(w, h);
-}
-
-/**
  * Returns the ScrollPane associated with this DrawerFigure
  * @return the ScrollPane
  */
