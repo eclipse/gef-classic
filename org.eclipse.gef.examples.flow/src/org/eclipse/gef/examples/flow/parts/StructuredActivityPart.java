@@ -6,6 +6,7 @@ import java.util.Map;
 import org.eclipse.jface.viewers.TextCellEditor;
 
 import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.graph.CompoundDirectedGraph;
 import org.eclipse.draw2d.graph.Subgraph;
 
@@ -59,8 +60,13 @@ public void contributeNodesToGraph(CompoundDirectedGraph graph, Subgraph s, Map 
 	me.outgoingOffset = 5;
 	me.incomingOffset = 5;
 	IFigure fig = getFigure();
-	if (fig instanceof SubgraphFigure)
+	if (fig instanceof SubgraphFigure) {
 		me.width = fig.getPreferredSize(me.width, me.height).width;
+		int tagHeight = ((SubgraphFigure)fig).getHeader().getPreferredSize().height;
+		me.insets.top = tagHeight;
+		me.insets.bottom = tagHeight;
+	}
+	me.setPadding(new Insets(12,8,12,8));
 	map.put(this, me);
 	graph.nodes.add(me);
 	for (int i = 0; i < getChildren().size(); i++) {
