@@ -771,14 +771,14 @@ void placeMouseInViewer(Point p){
 		rect = ((Scrollable)c).getClientArea();
 	else
 		rect = c.getBounds();
-	if (p.x > rect.x + rect.width - 2)
-		p.x = rect.x + rect.width - 2;
-	else if (p.x < rect.x + 2)
-		p.x = rect.x + 2;
-	if (p.y > rect.y + rect.height - 2)
-		p.y = rect.y + rect.height - 2;
-	else if (p.y < rect.y + 2)
-		p.y = rect.y + 2;
+	if (p.x >= rect.x + rect.width - 1)
+		p.x = rect.x + rect.width - 1;
+	else if (p.x < rect.x)
+		p.x = rect.x;
+	if (p.y >= rect.y + rect.height - 1)
+		p.y = rect.y + rect.height - 1;
+	else if (p.y < rect.y)
+		p.y = rect.y;
 	org.eclipse.swt.graphics.Point swt = new org.eclipse.swt.graphics.Point(p.x, p.y);
 	swt = c.toDisplay(swt);
 	c.getDisplay().setCursorLocation(swt);
