@@ -17,14 +17,21 @@ import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.text.FlowPage;
 
-public class CommentPage extends FlowPage {
+public class CommentPage 
+	extends FlowPage 
+{
+	
+private static final Color COLOR = new Color(null, 255, 255, 170);
 
+public CommentPage() {
+	setBackgroundColor(COLOR);
+}
+	
 public Insets getInsets() {
 	return new Insets(7, 11, 7, 11);
 }
 
 protected void paintFigure(Graphics g) {
-	g.setBackgroundColor(new Color(null, 255, 255, 170));
 	g.fillRoundRectangle(getBounds().getCropped(new Insets(5)), 12, 12);
 }
 
