@@ -40,11 +40,6 @@ public void createControl(Composite parent){
 	control = getViewer().createControl(parent);
 }
 
-public void dispose(){
-	getViewer().dispose();
-	super.dispose();
-}
-
 /**
  * Returns the control of the GEFgetViewer()
  */

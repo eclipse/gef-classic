@@ -49,11 +49,6 @@ public void createPartControl(Composite parent) {
 	});
 }
 
-public void dispose() {
-	getPaletteViewer().dispose();
-	super.dispose();
-}
-
 /**
  * Returns the model that is used in the PaletteViewer.
  */
