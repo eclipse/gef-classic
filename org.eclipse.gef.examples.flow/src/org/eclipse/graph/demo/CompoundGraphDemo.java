@@ -195,7 +195,7 @@ private static PolylineConnection buildPrimeEdge(Edge e) {
 
 private static void buildSubgraphFigure(Figure contents, Subgraph s) {
 	Figure figure = new Figure();	
-	figure.setBorder(new PaintedMarginBorder(s.insets, ColorConstants.blue));
+	figure.setBorder(new LineBorder(ColorConstants.blue, s.insets.left));
 	contents.add(figure, new Rectangle(s.x, s.y, s.width, s.height));
 }
 
