@@ -13,7 +13,11 @@ import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CompoundCommand;
 
+import org.eclipse.gef.examples.logicdesigner.LogicMessages;
+import org.eclipse.gef.examples.logicdesigner.LogicPlugin;
 import org.eclipse.gef.examples.logicdesigner.model.LED;
+import org.eclipse.jface.resource.ImageDescriptor;
+
 import org.eclipse.ui.IEditorPart;
 
 public class IncrementDecrementAction
@@ -34,10 +38,18 @@ public IncrementDecrementAction(IEditorPart editor, boolean increment) {
 	super(editor);
 	if (increment) {
 		request = new Request(INCREMENT_REQUEST);
+		setText(LogicMessages.IncrementDecrementAction_Increment_ActionLabelText);
 		setId(INCREMENT);
+		setToolTipText(LogicMessages.IncrementDecrementAction_Increment_ActionToolTipText);
+		setImageDescriptor(
+		ImageDescriptor.createFromFile(LogicPlugin.class,"icons/plus.gif")); //$NON-NLS-1$
 	} else {
 		request = new Request(DECREMENT_REQUEST);
+		setText(LogicMessages.IncrementDecrementAction_Decrement_ActionLabelText);
 		setId(DECREMENT);
+		setToolTipText(LogicMessages.IncrementDecrementAction_Decrement_ActionToolTipText);
+		setImageDescriptor(
+			ImageDescriptor.createFromFile(LogicPlugin.class,"icons/minus.gif")); //$NON-NLS-1$
 	}
 	setHoverImageDescriptor(getImageDescriptor());
 }
