@@ -265,10 +265,10 @@ protected IFigure findDescendantAtExcluding(int x, int y, TreeSearch search) {
 	if (!getClientArea(Rectangle.SINGLETON).contains(PRIVATE_POINT))
 		return null;
 
-	FigureIterator iter = new FigureIterator(this);
 	IFigure fig;
-	while (iter.hasNext()) {
-		fig = iter.nextFigure();
+	for (int i = children.size(); i > 0;) {
+		i--;
+		fig = (IFigure)children.get(i);
 		if (fig.isVisible()) {
 			fig = fig.findFigureAt(PRIVATE_POINT.x, PRIVATE_POINT.y, search);
 			if (fig != null)
@@ -349,10 +349,10 @@ protected IFigure findMouseEventTargetInDescendantsAt(int x, int y) {
 	if (!getClientArea(Rectangle.SINGLETON).contains(PRIVATE_POINT))
 		return null;
 
-	FigureIterator iter = new FigureIterator(this);
 	IFigure fig;
-	while (iter.hasNext()) {
-		fig = iter.nextFigure();
+	for (int i = children.size(); i > 0;) {
+		i--;
+		fig = (IFigure)children.get(i);
 		if (fig.isVisible() && fig.isEnabled()) {
 			if (fig.containsPoint(PRIVATE_POINT.x, PRIVATE_POINT.y)) {
 				fig = fig.findMouseEventTargetAt(PRIVATE_POINT.x, PRIVATE_POINT.y);
