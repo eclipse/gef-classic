@@ -398,6 +398,10 @@ protected void loadProperties() {
 	Dimension spacing = getLogicDiagram().getGridSpacing();
 	if (spacing == null)
 		spacing = new Dimension(SnapToGrid.DEFAULT_GAP, SnapToGrid.DEFAULT_GAP);
+	if (spacing.width == 0)
+		spacing.width = SnapToGrid.DEFAULT_GAP;
+	if (spacing.height == 0)
+		spacing.height = SnapToGrid.DEFAULT_GAP;
 	getGraphicalViewer().setProperty(SnapToGrid.PROPERTY_GRID_SPACING, spacing);
 	Point origin = getLogicDiagram().getGridOrigin();
 	if (origin == null)

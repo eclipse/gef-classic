@@ -32,10 +32,11 @@ public SnapToGrid(GraphicalEditPart gep) {
 	if (spacing != null) {
 		gridX = spacing.width;
 		gridY = spacing.height;
-	} else {
-		gridX = DEFAULT_GAP;
-		gridY = DEFAULT_GAP;
 	}
+	if (gridX == 0)
+		gridX = DEFAULT_GAP;
+	if (gridY == 0)
+		gridY = DEFAULT_GAP;
 	Point loc = (Point)container.getViewer().getProperty(PROPERTY_GRID_ORIGIN);
 	if (loc != null)
 		origin = loc;
