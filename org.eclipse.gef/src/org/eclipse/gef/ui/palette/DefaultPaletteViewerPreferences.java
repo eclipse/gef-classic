@@ -38,17 +38,19 @@ import org.eclipse.gef.GEFPlugin;
  * 
  * @author Pratik Shah
  */
-public class DefaultPaletteViewerPreferences
-	implements PaletteViewerPreferences
+public class DefaultPaletteViewerPreferences 
+	implements PaletteViewerPreferences 
 {
+
+private static final String DEFAULT_FONT = "Default"; //$NON-NLS-1$
 
 private PreferenceStoreListener listener;
 private IPropertyChangeListener fontListener;
 private FontData fontData;
 private PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 private IPreferenceStore store;
-private int[] supportedModes = {LAYOUT_COLUMNS, LAYOUT_LIST, 
-								LAYOUT_ICONS, LAYOUT_DETAILS};
+private int[] supportedModes =
+	{ LAYOUT_COLUMNS, LAYOUT_LIST, LAYOUT_ICONS, LAYOUT_DETAILS };
 
 /**
  * Default Constructor
@@ -73,22 +75,18 @@ public DefaultPaletteViewerPreferences(final IPreferenceStore store) {
 	store.setDefault(PREFERENCE_LIST_ICON_SIZE, false);
 	store.setDefault(PREFERENCE_LAYOUT, LAYOUT_LIST);
 	store.setDefault(PREFERENCE_AUTO_COLLAPSE, COLLAPSE_AS_NEEDED);
-	store.setDefault(PREFERENCE_FONT, JFaceResources.getDialogFont().
-			getFontData()[0].toString());
+	store.setDefault(PREFERENCE_FONT, DEFAULT_FONT);
 
 	listener = new PreferenceStoreListener();
 	store.addPropertyChangeListener(listener);
-	
+
 	fontListener = new IPropertyChangeListener() {
 		public void propertyChange(PropertyChangeEvent event) {
 			if (JFaceResources.DIALOG_FONT.equals(event.getProperty())) {
-				FontData data = JFaceResources.getDialogFont().getFontData()[0];
-				// We need to set the font data first because that will cause a property 
-				// change event to be fired.
-				if (getFontData().toString().equals(store.getDefaultString(PREFERENCE_FONT))) {
-					setFontData(data);
+				if (getPreferenceStore().getString(PREFERENCE_FONT).equals(DEFAULT_FONT)) {
+					setFontData(JFaceResources.getDialogFont().getFontData()[0]);
+					handlePreferenceStorePropertyChanged(PREFERENCE_FONT);
 				}
-				store.setDefault(PREFERENCE_FONT, data.toString());
 			}
 		}
 	};
@@ -136,7 +134,7 @@ public static String convertLayoutToPreferenceName(int layout) {
 			key = PREFERENCE_DETAILS_ICON_SIZE;
 			break;
 	}
-	return key;	
+	return key;
 }
 
 /**
@@ -181,7 +179,7 @@ protected void firePropertyChanged(String property, Object newVal) {
  * @see org.eclipse.gef.ui.palette.PaletteViewerPreferences#getAutoCollapseSetting()
  */
 public int getAutoCollapseSetting() {
-	return store.getInt(PREFERENCE_AUTO_COLLAPSE);
+	return getPreferenceStore().getInt(PREFERENCE_AUTO_COLLAPSE);
 }
 
 /**
@@ -189,7 +187,12 @@ public int getAutoCollapseSetting() {
  */
 public FontData getFontData() {
 	if (fontData == null) {
-		fontData = new FontData(store.getString(PREFERENCE_FONT));
+		String value = getPreferenceStore().getString(PREFERENCE_FONT);
+		if (value.equals(DEFAULT_FONT)) {
+			fontData = JFaceResources.getDialogFont().getFontData()[0];
+		} else {
+			fontData = new FontData(value);
+		}
 	}
 	return fontData;
 }
@@ -198,7 +201,7 @@ public FontData getFontData() {
  * @see org.eclipse.gef.ui.palette.PaletteViewerPreferences#getLayoutSetting()
  */
 public int getLayoutSetting() {
-	return store.getInt(PREFERENCE_LAYOUT);
+	return getPreferenceStore().getInt(PREFERENCE_LAYOUT);
 }
 
 /**
@@ -222,8 +225,8 @@ protected void handlePreferenceStorePropertyChanged(String property) {
 	} else if (property.equals(PREFERENCE_FONT)) {
 		firePropertyChanged(property, getFontData());
 	} else {
-		firePropertyChanged(property, new Boolean(
-				useLargeIcons(convertPreferenceNameToLayout(property))));
+		firePropertyChanged(property,
+			new Boolean(useLargeIcons(convertPreferenceNameToLayout(property))));
 	}
 }
 
@@ -257,7 +260,7 @@ public void removePropertyChangeListener(PropertyChangeListener listener) {
  * @see org.eclipse.gef.ui.palette.PaletteViewerPreferences#setAutoCollapseSetting(int)
  */
 public void setAutoCollapseSetting(int newVal) {
-	store.setValue(PREFERENCE_AUTO_COLLAPSE, newVal);
+	getPreferenceStore().setValue(PREFERENCE_AUTO_COLLAPSE, newVal);
 }
 
 /**
@@ -265,14 +268,18 @@ public void setAutoCollapseSetting(int newVal) {
  */
 public void setFontData(FontData data) {
 	fontData = data;
-	store.setValue(PREFERENCE_FONT, data.toString());
+	String value = data.toString();
+	if (fontData.equals(JFaceResources.getDialogFont().getFontData()[0])) {
+		value = DEFAULT_FONT;
+	}
+	getPreferenceStore().setValue(PREFERENCE_FONT, value);
 }
 
 /**
  * @see org.eclipse.gef.ui.palette.PaletteViewerPreferences#setLayoutSetting(int)
  */
 public void setLayoutSetting(int newVal) {
-	store.setValue(PREFERENCE_LAYOUT, newVal);
+	getPreferenceStore().setValue(PREFERENCE_LAYOUT, newVal);
 }
 
 /**
@@ -292,7 +299,8 @@ public void setCurrentUseLargeIcons(boolean newVal) {
  */
 public void setSupportedLayoutModes(int[] modes) {
 	supportedModes = modes;
-	if (!isSupportedLayoutMode(getPreferenceStore().getDefaultInt(PREFERENCE_LAYOUT))) {
+	if (!isSupportedLayoutMode(getPreferenceStore()
+				.getDefaultInt(PREFERENCE_LAYOUT))) {
 		getPreferenceStore().setDefault(PREFERENCE_LAYOUT, supportedModes[0]);
 	}
 	if (!isSupportedLayoutMode(getPreferenceStore().getInt(PREFERENCE_LAYOUT))) {
@@ -304,14 +312,14 @@ public void setSupportedLayoutModes(int[] modes) {
  * @see org.eclipse.gef.ui.palette.PaletteViewerPreferences#setUseLargeIcons(boolean)
  */
 public void setUseLargeIcons(int layout, boolean newVal) {
-	store.setValue(convertLayoutToPreferenceName(layout), newVal);
+	getPreferenceStore().setValue(convertLayoutToPreferenceName(layout), newVal);
 }
 
 /**
  * @see org.eclipse.gef.ui.palette.PaletteViewerPreferences#useLargeIcons()
  */
 public boolean useLargeIcons(int layout) {
-	return store.getBoolean(convertLayoutToPreferenceName(layout));
+	return getPreferenceStore().getBoolean(convertLayoutToPreferenceName(layout));
 }
 
 /**
