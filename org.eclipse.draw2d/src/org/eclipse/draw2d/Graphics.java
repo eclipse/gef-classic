@@ -204,6 +204,22 @@ public final void drawOval(Rectangle r) {
  */
 public abstract void drawOval(int x, int y, int w, int h);
 
+/** 
+ * Draws a pixel, using the foreground color, at the specified
+ * point (<code>x</code>, <code>y</code>).
+ * <p>
+ * Note that the receiver's line attributes do not affect this
+ * operation.
+ * </p>
+ *
+ * @param x the point's x coordinate
+ * @param y the point's y coordinate 
+ * 
+ */
+public void drawPoint(int x, int y) {
+	drawLine(x, y, x, y);
+}
+
 /**
  * @see #fillOval(int, int, int, int)
  */

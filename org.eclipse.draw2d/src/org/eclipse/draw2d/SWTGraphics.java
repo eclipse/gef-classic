@@ -228,6 +228,14 @@ public void drawOval(int x, int y, int width, int height) {
 }
 
 /**
+ * @see Graphics#drawPoint(int, int)
+ */
+public void drawPoint(int x, int y) {
+	checkPaint();
+	gc.drawPoint(x + translateX, y + translateY);
+}
+
+/**
  * @see Graphics#drawPolygon(PointList)
  */
 public void drawPolygon(PointList points) {

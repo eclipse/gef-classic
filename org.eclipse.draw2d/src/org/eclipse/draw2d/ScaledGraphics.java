@@ -233,6 +233,11 @@ public void drawPolygon(PointList points) {
 	graphics.drawPolygon(zoomPointList(points));
 }
 
+/** @see Graphics#drawPoint(int, int) */
+public void drawPoint(int x, int y) {
+	graphics.drawPoint((int)Math.floor(x * zoom + fractionalX),(int)Math.floor(y * zoom + fractionalY));
+}
+
 /** @see Graphics#fillPolygon(PointList) */
 public void fillPolygon(PointList points) {
 	graphics.fillPolygon(zoomPointList(points));
