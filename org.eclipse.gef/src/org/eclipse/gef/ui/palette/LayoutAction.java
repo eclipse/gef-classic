@@ -10,16 +10,15 @@
  *******************************************************************************/
 package org.eclipse.gef.ui.palette;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
-import org.eclipse.jface.action.*;
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.action.IMenuCreator;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
+
+import org.eclipse.jface.action.*;
+import org.eclipse.jface.resource.ImageDescriptor;
+
+import org.eclipse.gef.internal.Internal;
 
 /**
  * This action allows to switch between the various supported layout modes for the given
@@ -41,10 +40,26 @@ private List actions;
  * @param	prefs	PaletteViewerPreferences object where the settings can be saved
  */
 public LayoutAction(PaletteViewerPreferences prefs) {
+	this(prefs, false);
+}
+
+/**
+ * Constructor
+ * 
+ * @param 	hasIcon True if this action should associate an icon with itself
+ * @param	prefs	PaletteViewerPreferences object where the settings can be saved
+ */
+public LayoutAction(PaletteViewerPreferences prefs, boolean hasIcon) {
 	super(PaletteMessages.LAYOUT_MENU_LABEL);
 	this.prefs = prefs;
 	actions = createActions();
 	setMenuCreator(this);
+
+	if (hasIcon)
+		setImageDescriptor(ImageDescriptor.createFromFile(
+			Internal.class, "icons/palette_layout.gif")); //$NON-NLS-1$
+	
+	setToolTipText(PaletteMessages.LAYOUT_MENU_LABEL);
 }
 
 /**
@@ -101,21 +116,7 @@ protected List createActions() {
 public void dispose() {
 }
 
-/**
- * Empty method
- * 
- * @see org.eclipse.jface.action.IMenuCreator#getMenu(Control)
- */
-public Menu getMenu(Control parent) {
-	return null;
-}
-
-/**
- * @see org.eclipse.jface.action.IMenuCreator#getMenu(Menu)
- */
-public Menu getMenu(Menu parent) {
-	Menu menu = new Menu(parent);
-
+private Menu fillMenu(Menu menu) {
 	for (Iterator iter = actions.iterator(); iter.hasNext();) {
 		LayoutChangeAction action = (LayoutChangeAction) iter.next();
 		action.setChecked(prefs.getLayoutSetting() == action.getLayoutSetting());
@@ -123,7 +124,22 @@ public Menu getMenu(Menu parent) {
 	}	
 	
 	setEnabled(!actions.isEmpty());
+	
 	return menu;
+}
+
+/**
+ * @see org.eclipse.jface.action.IMenuCreator#getMenu(Control)
+ */
+public Menu getMenu(Control parent) {
+	return fillMenu(new Menu(parent));	
+}
+
+/**
+ * @see org.eclipse.jface.action.IMenuCreator#getMenu(Menu)
+ */
+public Menu getMenu(Menu parent) {
+	return fillMenu(new Menu(parent));
 }
 
 private class LayoutChangeAction extends Action {
