@@ -125,8 +125,12 @@ public DragTracker getDragTracker(Request request) {
 }
 
 public IFigure getGuideLayer() {
-	return ((FreeformGraphicalRootEditPart)diagramViewer.getRootEditPart())
-			.getLayer(LayerConstants.GUIDE_LAYER);
+	RootEditPart root = diagramViewer.getRootEditPart();
+	if (root instanceof FreeformGraphicalRootEditPart)
+		return ((FreeformGraphicalRootEditPart)root).getLayer(LayerConstants.GUIDE_LAYER);
+	else if (root instanceof ScalableRootEditPart)
+		return ((ScalableRootEditPart)root).getLayer(LayerConstants.GUIDE_LAYER);
+	return null;
 }
 
 /* (non-Javadoc)
