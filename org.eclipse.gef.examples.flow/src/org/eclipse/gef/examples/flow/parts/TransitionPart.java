@@ -7,9 +7,9 @@ import java.util.Map;
 import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.AbsoluteBendpoint;
 import org.eclipse.draw2d.PolylineConnection;
-import org.eclipse.graph.*;
-import org.eclipse.graph.CompoundDirectedGraph;
-import org.eclipse.graph.Node;
+import org.eclipse.draw2d.graph.*;
+import org.eclipse.draw2d.graph.CompoundDirectedGraph;
+import org.eclipse.draw2d.graph.Node;
 
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.editparts.AbstractConnectionEditPart;

@@ -13,7 +13,7 @@ import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
 import org.eclipse.gef.examples.flow.model.Activity;
 import org.eclipse.gef.examples.flow.model.FlowElement;
 import org.eclipse.gef.examples.flow.policies.*;
-import org.eclipse.graph.*;
+import org.eclipse.draw2d.graph.*;
 
 /**
  * @author hudsonr

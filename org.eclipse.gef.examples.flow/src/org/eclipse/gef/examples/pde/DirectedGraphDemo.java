@@ -1,10 +1,9 @@
-package org.eclipse.graph.demo;
-
-import java.lang.reflect.Method;
+package org.eclipse.gef.examples.pde;
 
 import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.graph.*;
+import org.eclipse.draw2d.graph.*;
+import org.eclipse.draw2d.internal.graph.NodePair;
 
 /**
  * @author hudsonr
@@ -86,46 +85,6 @@ static public void buildPrimeGraph(DirectedGraph graph, Figure panel) {
 		line.setSourceAnchor(sa);
 		line.setTargetAnchor(ta);
 	}
-}
-
-public static void main(String[] args) {
-	new DirectedGraphDemo().run();
-}
-
-/**
- * @see org.eclipse.graph.demo.GraphDemo#getGraphMethods()
- */
-protected String[] getGraphMethods() {
-	Method[] methods = GraphTests.class.getMethods();
-	String[] methodNames = new String[methods.length];
-	
-	int nameIndex = 0;
-	for (int i = 0; i < methods.length; i++) {
-		if (methods[i].getReturnType().equals(DirectedGraph.class)) {
-			methodNames[nameIndex] = methods[i].getName();
-			nameIndex++;
-		}
-	}
-	return methodNames;
-}
-
-/**
- * @see org.eclipse.draw2d.examples.AbstractExample#getContents()
- */
-protected IFigure getContents() {
-	DirectedGraph graph = null;
-	try {
-		graph =
-			(DirectedGraph) (GraphTests
-				.class
-				.getMethod(graphMethod, null)
-				.invoke(null, null));
-	} catch (Exception e) {
-		System.out.println("Could not build graph");
-		e.printStackTrace();
-	}
-	Figure contents = buildGraph(graph);
-	return contents;
 }
 
 }

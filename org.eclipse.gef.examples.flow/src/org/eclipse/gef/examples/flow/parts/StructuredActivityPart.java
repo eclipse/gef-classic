@@ -12,8 +12,8 @@ import org.eclipse.gef.examples.flow.figures.StartTag;
 import org.eclipse.gef.examples.flow.figures.SubgraphFigure;
 import org.eclipse.gef.examples.flow.model.StructuredActivity;
 import org.eclipse.gef.examples.flow.policies.*;
-import org.eclipse.graph.CompoundDirectedGraph;
-import org.eclipse.graph.Subgraph;
+import org.eclipse.draw2d.graph.CompoundDirectedGraph;
+import org.eclipse.draw2d.graph.Subgraph;
 
 /**
  * @author hudsonr

@@ -1,25 +1,18 @@
-package org.eclipse.graph.demo;
+package org.eclipse.gef.examples.pde;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.graph.*;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.layout.*;
-import org.eclipse.swt.widgets.*;
-import org.eclipse.swt.widgets.Button;
+import org.eclipse.draw2d.graph.*;
 
 /**
  * @author Daniel Lee
  */
-public abstract class AbstractGraphDemo extends AbstractExample {
-	
+public abstract class AbstractGraphDemo {
+
 static boolean buildPrime = false;
 
 static String graphMethod;
@@ -163,74 +156,6 @@ static PolylineConnection connection(Edge e) {
 	}
 	conn.setRoutingConstraint(bends);
 	return conn;
-}
-
-/**
- * @see org.eclipse.graph.AbstractExample#getContents()
- */
-protected IFigure getContents() {
-	return null;
-}
-
-/**
- * Returns an array of strings that represent the names of the methods which build
- * graphs for this graph demo
- * @return array of graph building method names 
- */
-protected abstract String[] getGraphMethods();
-
-/**
- * @see org.eclipse.graph.AbstractExample#hookShell()
- */
-protected void hookShell() {
-	Composite composite = new Composite(shell, 0);
-	composite.setLayoutData(new GridData(GridData.FILL_VERTICAL));
-	
-	composite.setLayout(new GridLayout());	
-	final org.eclipse.swt.widgets.Label nodesLabel 
-			= new org.eclipse.swt.widgets.Label(composite, SWT.NONE);
-	nodesLabel.setText("Graph");
-	final Combo graphList = new Combo(composite, SWT.DROP_DOWN);
-	
-	String[] graphMethods = getGraphMethods();
-	for (int i = 0; i < graphMethods.length; i++) {
-		if (graphMethods[i] != null)
-			graphList.add(graphMethods[i]);
-	}
-	setGraphMethod(graphMethods[0]);
-	graphList.setText(graphMethod);
-	graphList.addSelectionListener(new SelectionListener() {
-		public void widgetSelected(SelectionEvent e) {
-			setGraphMethod(graphList.getItem(graphList.getSelectionIndex()));
-			getFigureCanvas().setContents(getContents());
-		}
-		public void widgetDefaultSelected(SelectionEvent e) {
-			graphList.setText(graphMethod);
-		}
-	});
-	
-	final org.eclipse.swt.widgets.Label seedLabel 
-			= new org.eclipse.swt.widgets.Label(composite, SWT.NONE);
-	seedLabel.setText("Build Prime Graph");
-	final Button primeGraphButton = new Button(composite, SWT.CHECK);
-	
-	primeGraphButton.addSelectionListener(new SelectionListener() {
-		public void widgetSelected(SelectionEvent e) {
-			buildPrime = !buildPrime;
-			getFigureCanvas().setContents(getContents());
-		}
-		public void widgetDefaultSelected(SelectionEvent e) {
-		}
-	});
-}
-
-
-/**
- * Sets the name of the method to call to build the graph
- * @param method name of the method used to build the graph
- */
-public static void setGraphMethod(String method) {
-	graphMethod = method;
 }
 
 }

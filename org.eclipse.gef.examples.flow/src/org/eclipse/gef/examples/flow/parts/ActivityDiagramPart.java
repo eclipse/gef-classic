@@ -5,7 +5,7 @@ import java.util.*;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.editpolicies.RootComponentEditPolicy;
 import org.eclipse.gef.examples.flow.policies.ActivityContainerEditPolicy;
-import org.eclipse.graph.*;
+import org.eclipse.draw2d.graph.*;
 
 import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.Dimension;

@@ -1,12 +1,12 @@
-package org.eclipse.graph.pde;
+package org.eclipse.gef.examples.pde;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.core.runtime.*;
 import org.eclipse.draw2d.*;
-import org.eclipse.graph.*;
-import org.eclipse.graph.demo.DirectedGraphDemo;
+import org.eclipse.draw2d.graph.*;
+import org.eclipse.draw2d.internal.graph.*;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
 
@@ -98,11 +98,6 @@ public void createPartControl(Composite comp) {
 	}
 	System.out.println("Pruned graph contains " + g.edges.size() + " edges.");
 	
-	for (int i=0; i<g.nodes.size(); i++) {
-		Node n = g.nodes.getNode(i);
-//		n.width = Math.max(n.width, n.outgoing.size() * 60);
-	}
-
 	new TightSpanningTreeSolver().visit(g);
 	new RankAssigmentSolver().visit(g);
 	new PopulateRanks().visit(g);

@@ -2,7 +2,7 @@ package org.eclipse.gef.examples.flow.parts;
 
 import java.util.Map;
 
-import org.eclipse.graph.*;
+import org.eclipse.draw2d.graph.*;
 
 import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.Point;

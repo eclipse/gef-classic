@@ -7,7 +7,7 @@ import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
 import org.eclipse.gef.examples.flow.policies.*;
-import org.eclipse.graph.*;
+import org.eclipse.draw2d.graph.*;
 
 /**
  * @author hudsonr

@@ -1,6 +1,6 @@
-package org.eclipse.graph.pde;
+package org.eclipse.gef.examples.pde;
 
-import org.eclipse.graph.*;
+import org.eclipse.draw2d.graph.*;
 
 /**
  * @author hudsonr
