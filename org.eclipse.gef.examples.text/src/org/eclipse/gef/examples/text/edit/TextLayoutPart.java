@@ -22,6 +22,7 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.LineBorder;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2d.text.CaretInfo;
 
 import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.Request;
@@ -90,12 +91,12 @@ public void deactivate() {
 /**
  * @see TextualEditPart#getCaretPlacement(int)
  */
-public Rectangle getCaretPlacement(int offset, boolean trailing) {
+public CaretInfo getCaretPlacement(int offset, boolean trailing) {
 	Point pt = new Point(textLayout.getLocation(offset, trailing));
 	pt.translate(getFigure().getClientArea().getLocation());
 	Rectangle result = new Rectangle(pt.x, pt.y, 1, 12);
 	getFigure().translateToAbsolute(result);
-	return result;
+	return new CaretInfo(result.x, result.y, 10, 2);
 }
 
 /**
@@ -149,11 +150,11 @@ public TextLocation getNextLocation(CaretSearch search) {
 			if (search.where != null && search.where.part == this)
 				offset = findNextLineOffset(search.where.offset, search.isForward);
 			else {
-				Point caretBottom = new Point(0, search.y); //was Top or Bottom of caret
-				getFigure().translateToRelative(caretBottom);
+				Point baseline = new Point(0, search.baseline); //was Top or Bottom of caret
+				getFigure().translateToRelative(baseline);
 				Rectangle clientArea = getFigure().getClientArea();
-				caretBottom.translate(-clientArea.x, -clientArea.y);
-				offset = findOffsetForPoint(caretBottom);
+				baseline.translate(-clientArea.x, -clientArea.y);
+				offset = findOffsetForPoint(baseline);
 			}
 			if (offset > - 1)
 				return new TextLocation(this, offset);
