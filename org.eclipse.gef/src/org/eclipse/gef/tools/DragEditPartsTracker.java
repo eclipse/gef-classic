@@ -37,7 +37,7 @@ private static final int FLAG_SOURCE_FEEDBACK = SelectEditPartTracker.MAX_FLAG <
 /** Max flag */
 protected static final int MAX_FLAG = FLAG_SOURCE_FEEDBACK;
 private List exclusionSet;
-private PrecisionPoint sourceFigureOffset;
+private PrecisionPoint sourceRelativeStartPoint;
 private SnapToStrategy helper;
 
 private PrecisionRectangle sourceRectangle;
@@ -148,7 +148,7 @@ public void deactivate() {
 	eraseSourceFeedback();
 	super.deactivate();
 	exclusionSet = null;
-	sourceFigureOffset = null;
+	sourceRelativeStartPoint = null;
 	sourceRectangle = null;
 }
 
@@ -270,22 +270,11 @@ protected Collection getExclusionSet() {
  * @see org.eclipse.gef.tools.TargetingTool#handleAutoexpose()
  */
 protected void handleAutoexpose() {
-	if (isInDragInProgress()) {
-		if (sourceFigureOffset == null) {
-			Point offset;
-			IFigure figure = ((GraphicalEditPart)getSourceEditPart()).getFigure();
-			sourceFigureOffset = new PrecisionPoint(getStartLocation());
-			figure.translateToRelative(sourceFigureOffset);
-			offset = figure.getBounds().getLocation();
-			sourceFigureOffset.preciseX -= offset.x;
-			sourceFigureOffset.preciseY -= offset.y;
-		}
-		updateTargetRequest();
-		updateTargetUnderMouse();
-		showTargetFeedback();
-		showSourceFeedback();
-		setCurrentCommand(getCommand());
-	}
+	updateTargetRequest();
+	updateTargetUnderMouse();
+	showTargetFeedback();
+	showSourceFeedback();
+	setCurrentCommand(getCommand());
 }
 
 /**
@@ -422,15 +411,23 @@ protected void performDrag() {
  * during the scroll. This method updates that location.
  */
 protected void repairStartLocation() {
-	if (sourceFigureOffset == null)
+	if (sourceRelativeStartPoint == null)
 		return;
 	IFigure figure = ((GraphicalEditPart)getSourceEditPart()).getFigure();
-	PrecisionPoint newStart = (PrecisionPoint)sourceFigureOffset.getCopy();
-	Point offset = figure.getBounds().getLocation();
-	newStart.preciseX += offset.x;
-	newStart.preciseY += offset.y;
+	PrecisionPoint newStart = (PrecisionPoint)sourceRelativeStartPoint.getCopy();
 	figure.translateToAbsolute(newStart);
 	setStartLocation(newStart);
+}
+
+protected void setAutoexposeHelper(AutoexposeHelper helper) {
+	super.setAutoexposeHelper(helper);
+	if (helper != null && sourceRelativeStartPoint == null && isInDragInProgress()) {
+		if (sourceRelativeStartPoint == null) {
+			IFigure figure = ((GraphicalEditPart)getSourceEditPart()).getFigure();
+			sourceRelativeStartPoint = new PrecisionPoint(getStartLocation());
+			figure.translateToRelative(sourceRelativeStartPoint);
+		}
+	}
 }
 
 /**
