@@ -78,7 +78,7 @@ protected void paintFigure(Graphics g) {
 				frag.x, frag.y);
 		else
 			g.drawString(
-				text.substring(frag.offset, frag.offset + frag.length) + "...",
+				text.substring(frag.offset, frag.offset + frag.length) + "...", //$NON-NLS-1$
 				frag.x, frag.y);
 //		g.drawRectangle(frag);
 	}
