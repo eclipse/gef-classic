@@ -38,8 +38,6 @@ public abstract class BendpointEditPolicy
 private static final List NULL_CONSTRAINT = new ArrayList();
 
 private List originalConstraint;
-private Point ref1 = new Point(); 
-private Point ref2 = new Point();
 private boolean isDeleting = false;
 
 /**
@@ -55,11 +53,9 @@ private List createHandlesForAutomaticBendpoints() {
 	List list = new ArrayList();
 	ConnectionEditPart connEP = (ConnectionEditPart)getHost();
 	PointList points = getConnection().getPoints();
-	for (int i = 0; i < points.size() - 2; i++) {
-		BendpointHandle handle = new BendpointCreationHandle(connEP, 0, 
-			new BendpointLocator(getConnection(), i + 1));
-		list.add(handle);
-	}
+	for (int i = 0; i < points.size() - 1; i++)
+		list.add(new BendpointCreationHandle(connEP, 0, i));
+	
 	return list;
 }
 
@@ -67,11 +63,31 @@ private List createHandlesForUserBendpoints() {
 	List list = new ArrayList();
 	ConnectionEditPart connEP = (ConnectionEditPart)getHost();
 	PointList points = getConnection().getPoints();
-	for (int i = 0; i < points.size() - 2; i++) {
-		list.add(new BendpointCreationHandle(connEP, i));
-		list.add(new BendpointMoveHandle(connEP, i));
+	List bendPoints = (List)getConnection().getRoutingConstraint();
+	
+	int bendPointIndex = 0;
+	Point currBendPoint = null;
+	
+	if (!bendPoints.isEmpty())
+		currBendPoint = ((Bendpoint)bendPoints.get(0)).getLocation();
+	
+	for (int i = 0; i < points.size() - 1; i++) {
+		//Put a create handle on the middle of every segment
+		list.add(new BendpointCreationHandle(connEP, bendPointIndex, i));
+		
+		//If the current user bendpoint matches a bend location, show a move handle
+		if (i < points.size() - 1
+				&& bendPointIndex < bendPoints.size()
+				&& currBendPoint.equals(points.getPoint(i + 1))) {
+			list.add(new BendpointMoveHandle(connEP, bendPointIndex, i + 1));
+			
+			//Go to the next user bendpoint
+			bendPointIndex++;
+			if (bendPointIndex < bendPoints.size())
+				currBendPoint = ((Bendpoint)bendPoints.get(bendPointIndex)).getLocation();
+		}
 	}
-	list.add(new BendpointCreationHandle(connEP, points.size() - 2));
+
 	return list;
 }
 
@@ -140,14 +156,6 @@ protected Connection getConnection() {
 	return (Connection)((ConnectionEditPart)getHost()).getFigure();
 }
 
-private Point getFirstReferencePoint() {
-	return ref1;
-}
-
-private Point getSecondReferencePoint() {
-	return ref2;
-}
-
 /**
  * Implement this method to return a Command that will create a bendpoint.
  * @param request the BendpointRequest
@@ -212,12 +220,9 @@ private boolean lineContainsPoint(Point p1, Point p2, Point p) {
  * If the number of bendpoints changes, handles are updated.
  * @see java.beans.PropertyChangeListener#propertyChange(PropertyChangeEvent) */
 public void propertyChange(PropertyChangeEvent evt) {
-	if (getHost().getSelected() != EditPart.SELECTED_NONE) {
-		int count = handles.size();
-		int points = getConnection().getPoints().size();
-		if (count != points * 2 - 3)
-			addSelectionHandles();
-	}
+	//$TODO optimize so that handles aren't added constantly.
+	if (getHost().getSelected() != EditPart.SELECTED_NONE)
+		addSelectionHandles();	
 }
 
 /**
@@ -244,11 +249,29 @@ protected void saveOriginalConstraint() {
 	getConnection().setRoutingConstraint(new ArrayList(originalConstraint));
 }
 
-private void setReferencePoints(BendpointRequest request) {
+private void setReferencePoints(BendpointRequest request, Point ref1, Point ref2) {
 	PointList points = getConnection().getPoints();
-	points.getPoint(ref1, request.getIndex());
+	
+	int bpIndex = -1;
+	
+	List bendPoints = (List)getConnection().getRoutingConstraint();
+	Point bp = ((Bendpoint)bendPoints.get(request.getIndex())).getLocation();
+	
+	int smallestDistance = -1;
+	
+	for (int i = 0; i < points.size(); i++) {
+		if (smallestDistance == -1
+				|| points.getPoint(i).getDistance2(bp) < smallestDistance) {
+			bpIndex = i;
+			smallestDistance = points.getPoint(i).getDistance2(bp);
+			if (smallestDistance == 0)
+				break;
+		}
+	}
+	
+	points.getPoint(ref1, bpIndex - 1);
 	getConnection().translateToAbsolute(ref1);
-	points.getPoint(ref2, request.getIndex() + 2);
+	points.getPoint(ref2, bpIndex + 1);
 	getConnection().translateToAbsolute(ref2);
 }
 
@@ -299,10 +322,11 @@ protected void showDeleteBendpointFeedback(BendpointRequest request) {
  */
 protected void showMoveBendpointFeedback(BendpointRequest request) {
 	Point p = new Point(request.getLocation());
-	if (!isDeleting) {
-		setReferencePoints(request);
-	}
-	if (lineContainsPoint(getFirstReferencePoint(), getSecondReferencePoint(), p)) {
+	Point ref1 = new Point();
+	Point ref2 = new Point();
+	if (!isDeleting)
+		setReferencePoints(request, ref1, ref2);
+	if (lineContainsPoint(ref1, ref2, p)) {
 		if (!isDeleting) {
 			isDeleting = true;
 			eraseSourceFeedback(request);
@@ -339,5 +363,3 @@ public void showSourceFeedback(Request request) {
 }
 
 }
-
-
