@@ -3,7 +3,7 @@
 <plugin
    id="org.eclipse.draw2d"
    name="Draw2d"
-   version="3.0.0"
+   version="3.0.1"
    provider-name="Eclipse.org">
 
    <runtime>
