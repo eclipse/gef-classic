@@ -197,8 +197,7 @@ private void hookListeners(){
 		}
 
 		public void controlResized(ControlEvent e) {
-			if (showingFeedback)
-				placeBorder();
+			placeBorder();
 		}
 
 	});
