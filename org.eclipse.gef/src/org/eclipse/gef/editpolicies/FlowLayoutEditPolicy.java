@@ -231,11 +231,11 @@ protected void showLayoutTargetFeedback(Request request) {
 			x = rRight + (pRight - rRight) / 2;
 	}
 	Point p1 = new Point(x, r.y - 4);
-	fb.translateToRelative(p1);
 	p1 = transposer.t(p1);
+	fb.translateToRelative(p1);
 	Point p2 = new Point(x, r.y + r.height + 4);
-	fb.translateToRelative(p2);
 	p2 = transposer.t(p2);
+	fb.translateToRelative(p2);
 	fb.setPoint(p1, 0);
 	fb.setPoint(p2, 1);
 }
