@@ -6,7 +6,10 @@ import org.eclipse.draw2d.geometry.*;
  * @author hudsonr
  * @since 2.1
  */
-public class ScalableFreeformLayeredPane extends FreeformLayeredPane {
+public class ScalableFreeformLayeredPane 
+	extends FreeformLayeredPane 
+	implements ZoomListener
+{
 
 private double zoom = 1.0;
 
@@ -37,6 +40,13 @@ protected void paintClientArea(Graphics graphics) {
 	graphics.restoreState();
 }
 
+public void setZoom(double newZoom) {
+	zoom = newZoom;
+	superFireMoved();
+	revalidate();
+	repaint();
+}
+
 /**
  * @see org.eclipse.draw2d.Figure#translateToParent(Translatable)
  */
@@ -58,5 +68,11 @@ protected final boolean useLocalCoordinates() {
 	return false;
 }
 
+/**
+ * @see org.eclipse.draw2d.ZoomListener#zoomChanged(double)
+ */
+public void zoomChanged(double zoom) {
+	setZoom(zoom);
+}
 
 }
