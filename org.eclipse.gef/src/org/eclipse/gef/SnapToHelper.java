@@ -16,7 +16,7 @@ import org.eclipse.draw2d.geometry.*;
 
 /**
  * A helper used temporarily by Tools for snapping certain mouse interactions.
- * SnapToHelpers helpers should not be reused by tools or by the editparts which provide
+ * SnapToHelpers should not be reused by tools or by the editparts which provide
  * them to the tools. For example, for a move operation, the life-cycle of a SnapToHelper
  * begins when a drag is initiated, and ends when the drag is over. If another drag is
  * initiated right after the first one is completed, new SnapToHelpers are employed. This
@@ -58,6 +58,9 @@ protected void makeRelative(IFigure figure, Translatable t) {
  * The returned value should be a subset of the given snapDirections based on what
  * correction was applied to the result.  e.g., if the <b>x</b> value was adjusted, the
  * returned value should not contain WEST, EAST, or HORIZONTAL.
+ * <P>
+ * All coordinate information received and returned by this method should be in absolute 
+ * coordinates.
  * 
  * @param request a request or <code>null</code>
  * @param snapDirections the directions in which snapping should occur.
@@ -91,6 +94,9 @@ public int snapPoint(Request request, int snapDirections,
  * The returned value should be a subset of the given snapDirections based on what
  * correction was applied to the result.  e.g., if the <b>x</b> value was adjusted, the
  * returned value should not contain WEST, EAST, or HORIZONTAL.
+ * <P>
+ * All coordinate information received and returned by this method should be in absolute 
+ * coordinates.
  * 
  * @param request the request or <code>null</code>
  * @param snapLocations the types of snapping to perform
@@ -115,6 +121,9 @@ public int snapPoint(Request request, int snapLocations,
  * method will call {@link #snapRectangle(Request, int, PrecisionRectangle,
  * PrecisionRectangle)} for each rectangle in the array or until no more snap locations
  * remain.
+ * <P>
+ * All coordinate information received and returned by this method should be in absolute 
+ * coordinates.
  * 
  * @param request the request or <code>null</code>
  * @param baseRects the prioritized rectangles to snap to
@@ -137,9 +146,13 @@ public int snapRectangle(Request request, int snapOrientation,
  * performed are indicated by the snapOrientation parameter. The correction is applied to
  * the result field.
  * <P>
- * The baseRect is not modified. The correction is applied to the result. The requests
+ * The baseRect is not modified. The correction is applied to the result. The request's
  * {@link Request#getExtendedData() extended data} may contain additional information
  * about the snapping which was performed.
+ * <P>
+ * All coordinate information received and returned by this method should be in absolute 
+ * coordinates.
+ * 
  * @since 3.0
  * @param request the request or <code>null</code>
  * @param baseRect the input rectangle
