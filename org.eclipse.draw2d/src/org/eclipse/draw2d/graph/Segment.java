@@ -125,13 +125,10 @@ boolean intersects(Point s, Point t) {
 }
 
 /**
- * Returns true if this segment intersects the given segment.
- * @param otherSegment the other segment
- * @return true if the segments intersect
+ * @see java.lang.Object#toString()
  */
-boolean intersects(Segment otherSegment) {
-	return intersects(otherSegment.start.x, otherSegment.start.y, 
-			otherSegment.end.x, otherSegment.end.y);
+public String toString() {
+	return start + "---" + end; //$NON-NLS-1$
 }
 
 }
