@@ -153,6 +153,24 @@ public Command getDeleteGuideCommand(Object guide) {
 }
 
 /**
+ * In most cases, there should be no need for clients to override this method.
+ * 
+ * @param	position	The position of the guide that is to be found
+ * @return	The guide object at the given position; <code>null</code> if no guide exists
+ * 			at the given position
+ */
+public Object getGuideAt(int position) {
+	List guides = getGuides();
+	for (int i = 0; i < guides.size(); i++) {
+		Object guide = guides.get(i);
+		if (position == getGuidePosition(guide)) {
+			return guide;
+		}
+	}
+	return null;
+}
+
+/**
  * Clients should override this method to return a Command to move the given guide by
  * the given amount.
  * 
