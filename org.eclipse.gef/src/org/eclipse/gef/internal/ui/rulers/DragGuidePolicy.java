@@ -43,6 +43,19 @@ protected GuideFigure createDummyGuideFigure() {
 	return new GuidePlaceHolder(getGuideEditPart().isHorizontal());
 }
 
+/*
+ * Fix for Bug# 65885
+ * If you undo guide creation while dragging that guide, it was leaving behind drag
+ * feedback.  This was because by the time eraseSourceFeedback() was being called,
+ * the guide edit part had been deactivated (and hence eraseSourceFeedback is never
+ * called on this policy).  So we make sure that this policy cleans up when it is
+ * deactivated.
+ */
+public void deactivate() {
+	removeFeedback();	
+	super.deactivate();
+}
+
 private void eraseAttachedPartsFeedback(Request request) {
 	if (attachedEditParts != null) {
 		ChangeBoundsRequest req = new ChangeBoundsRequest(request.getType());
@@ -60,12 +73,7 @@ public void eraseSourceFeedback(Request request) {
 	getGuideEditPart().updateLocationOfFigures(getGuideEditPart().getZoomedPosition());
 	getHostFigure().setVisible(true);
 	getGuideEditPart().getGuideLineFigure().setVisible(true);
-	if (getDummyGuideFigure().getParent() != null) {
-		getDummyGuideFigure().getParent().remove(getDummyGuideFigure());			
-	}
-	if (getDummyLineFigure().getParent() != null) {
-		getDummyLineFigure().getParent().remove(getDummyLineFigure());
-	}
+	removeFeedback();
 	getGuideEditPart().setCurrentCursor(null);
 	dragInProgress = false;
 	
@@ -163,6 +171,15 @@ protected boolean isMoveValid(int zoomedPosition) {
 	}
 	
 	return result;
+}
+
+private void removeFeedback() {
+	if (getDummyGuideFigure().getParent() != null) {
+		getDummyGuideFigure().getParent().remove(getDummyGuideFigure());			
+	}
+	if (getDummyLineFigure().getParent() != null) {
+		getDummyLineFigure().getParent().remove(getDummyLineFigure());
+	}
 }
 
 private void showAttachedPartsFeedback(ChangeBoundsRequest request) {
