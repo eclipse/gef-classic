@@ -31,7 +31,7 @@ import org.eclipse.gef.ui.views.palette.PalettePage;
  * 
  * @author Pratik Shah
  */
-public abstract class GraphicalEditorWithMovablePalette
+public abstract class GraphicalEditorWithFlyoutPalette
 	extends GraphicalEditor
 {
 	

@@ -61,7 +61,7 @@ import org.eclipse.gef.examples.logicdesigner.palette.LogicPaletteCustomizer;
 import org.eclipse.gef.examples.logicdesigner.rulers.LogicRulerProvider;
 
 public class LogicEditor
-	extends GraphicalEditorWithMovablePalette
+	extends GraphicalEditorWithFlyoutPalette
 {
 
 class OutlinePage
