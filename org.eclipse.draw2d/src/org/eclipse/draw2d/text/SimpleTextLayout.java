@@ -54,7 +54,7 @@ protected void layout() {
 		fragment.length = result - offset;
 		fragment.offset = offset;
 		FlowUtilities.setupFragment(fragment, font, text);
-		context.getCurrentLine().add(fragment);
+		context.addToCurrentLine(fragment);
 		context.endLine();
 		offset = result + delimeterLength;
 	}

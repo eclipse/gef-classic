@@ -28,10 +28,9 @@ import org.eclipse.draw2d.geometry.Rectangle;
 public class ImageFlow 
 	extends FlowFigure
 {
-
-private Image img;
 private ContentBox box;
 private FlowContext context;
+private Image img;
 
 /**
  * Default Constructor
@@ -82,7 +81,7 @@ protected void layout() {
 		box.height = bounds.height;
 	} else
 		box.width = box.height = 0;
-	context.getCurrentLine().add(box);
+	context.addToCurrentLine(box);
 }
 
 /**
