@@ -140,11 +140,6 @@ protected Control createControl(Composite parent) {
 			refresh(false);
 		}
 	});
-	combo.addDisposeListener(new DisposeListener() {
-		public void widgetDisposed(DisposeEvent e) {
-			dispose();
-		}
-	});
 	
 	// Initialize width of combo
 	combo.setItems(initStrings);
