@@ -264,11 +264,11 @@ void removeEditPolicy(Object role);
 /**
  * Called when the EditPart is being permanently removed from its {@link EditPartViewer}.
  * This indicates that the EditPart will no longer be in the Viewer, and therefore should
- * remove itself from the Viewer.  This method is <EM>not</EM> guaranteed to be called.
- * This method is the inverse of {@link #addNotify()}
+ * remove itself from the Viewer.  This method is <EM>not</EM> called when a Viewer is
+ * disposed. It is only called when the EditPart is removed from its parent. This method
+ * is the inverse of {@link #addNotify()}
  */
 void removeNotify();
-
 
 /**
  * <img src="doc-files/black.gif"/>Set the <i>focus<i> property to reflect the value in
