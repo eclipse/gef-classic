@@ -77,7 +77,7 @@ class ThumbnailUpdater implements Runnable {
 	}
 	
 	public void run() {
-		if (!isActive())
+		if (!isActive() || !isRunning())
 			return;
 		int v = getCurrentVTile();
 		int sy1 = v * tileSize.height;
@@ -136,8 +136,9 @@ class ThumbnailUpdater implements Runnable {
 	}
 	
 	public void start() {
-		if (!isActive())
+		if (!isActive() || isRunning())
 			return;
+		
 		isRunning = true;
 		setDirty(false);		
 		resetTileValues();
@@ -172,6 +173,7 @@ class ThumbnailUpdater implements Runnable {
 	}
 	
 	public void stop() {
+		isRunning = false;
 		if (sourceGC != null) {
 			sourceGC.dispose();
 			sourceGC = null;
@@ -188,7 +190,6 @@ class ThumbnailUpdater implements Runnable {
 		sourceBufferSize = null;
 		// Don't dispose of the thumbnail image since it is needed to paint the 
 		// figure when the source is not dirty (i.e. showing/hiding the dock).
-		isRunning = false;
 	}
 }
 
