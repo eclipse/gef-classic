@@ -179,7 +179,7 @@ public List getModelChildren() {
 			childrenToBeRemoved.add(entry);
 		}
 	}
-	modelChildren.removeAll(childrenToBeRemoved)	;
+	modelChildren.removeAll(childrenToBeRemoved);
 	
 	return modelChildren;
 }

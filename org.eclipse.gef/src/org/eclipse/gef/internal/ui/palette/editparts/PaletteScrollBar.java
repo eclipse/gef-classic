@@ -30,7 +30,7 @@ private static final ButtonBorder BORDER =
 	));
 
 private static final Border CONTRAST = new CompoundBorder(
-	new MarginBorder(1,0,0,0) {
+	new MarginBorder(1, 0, 0, 0) {
 		public void paint(IFigure figure, Graphics graphics, Insets insets) {
 			if (!((Clickable)figure).getModel().isMouseOver())
 				return;
@@ -77,7 +77,7 @@ private ArrowButton createTransparentArrowButton() {
 	ArrowButton button = new ArrowButton() {
 		protected void paintFigure(Graphics g) {
 			if (!getModel().isMouseOver())
-				g.drawImage(TRANSPARENCY, new Rectangle(0,0,1,1), getBounds());
+				g.drawImage(TRANSPARENCY, new Rectangle(0, 0, 1, 1), getBounds());
 			else
 				super.paintFigure(g);
 		}

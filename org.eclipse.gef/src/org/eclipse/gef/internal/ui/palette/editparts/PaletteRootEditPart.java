@@ -16,13 +16,13 @@ import org.eclipse.gef.editparts.GraphicalRootEditPart;
 
 public class PaletteRootEditPart extends GraphicalRootEditPart {
 	
-public IFigure createFigure(){
+public IFigure createFigure() {
 	Figure figure = new Figure();
 	figure.setLayoutManager(new StackLayout());
 	return figure;
 }
 
-public IFigure getContentPane(){
+public IFigure getContentPane() {
 	return getFigure();
 }
 

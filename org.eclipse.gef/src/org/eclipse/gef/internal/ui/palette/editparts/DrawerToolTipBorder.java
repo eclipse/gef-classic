@@ -21,7 +21,7 @@ class DrawerToolTipBorder
  * Constructs a default black lined border of one
  * pixel width.
  */
-public DrawerToolTipBorder(){
+public DrawerToolTipBorder() {
 }
 
 /**
@@ -32,8 +32,8 @@ public DrawerToolTipBorder(){
  * @param figure  Figure for which this is the border.
  * @return  Insets for this border.
  */
-public Insets getInsets(IFigure figure){
-	return new Insets(1,3,5,3);
+public Insets getInsets(IFigure figure) {
+	return new Insets(1, 3, 5, 3);
 }
 
 /**
@@ -43,7 +43,7 @@ public Insets getInsets(IFigure figure){
  * 
  * @return  Opaque state of this border.
  */
-public boolean isOpaque(){
+public boolean isOpaque() {
 	return true;
 }
 
@@ -54,7 +54,7 @@ public boolean isOpaque(){
  * @param graphics  Graphics handle for drawing the border.
  * @param insets  Space to be taken up by this border.
  */
-public void paint(IFigure figure, Graphics graphics, Insets insets){
+public void paint(IFigure figure, Graphics graphics, Insets insets) {
 	Rectangle r = getPaintRectangle(figure, insets);
 	graphics.setLineWidth(1);
 
@@ -64,7 +64,7 @@ public void paint(IFigure figure, Graphics graphics, Insets insets){
 	graphics.setForegroundColor(ColorConstants.black);
 	graphics.drawRectangle(r);
 
-	r.translate(1,1);
+	r.translate(1, 1);
 	graphics.drawLine(r.x      , r.bottom(), r.right(), r.bottom());
 	graphics.drawLine(r.right(), r.y       , r.right(), r.bottom());
 }
