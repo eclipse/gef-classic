@@ -49,7 +49,7 @@ public ArrowButton(int direction) {
  */
 protected void createTriangle() {
 	Triangle tri = new Triangle();
-	tri.setOutline(false);
+	tri.setOutline(true);
 	tri.setBackgroundColor(ColorConstants.black);
 	tri.setBorder(new MarginBorder(new Insets(2)));
 	setContents(tri);
