@@ -7,6 +7,7 @@ package org.eclipse.gef.requests;
  */
 
 import org.eclipse.draw2d.geometry.*;
+
 import org.eclipse.gef.RequestConstants;
 
 /**
@@ -19,60 +20,10 @@ public class CreateRequest
 
 private Object newObject;
 
-/**
- * A simple interface for instantiating an object
- */
-public interface Factory {
-	Object getNewObject();
-	Object getObjectType();
-}
-
-/**
- * A simple implementation of a Factory that knows how to
- * call the default constructor for a given Java class.
- */
-static final public class SimpleFactory
-	implements Factory
-{
-
-private Class type;
-
-/**
- * Creates a SimpleFactory.
- *
- * @param aClass The class to be instantiated using this factory.
- */
-public SimpleFactory(Class aClass) {
-	type= aClass;
-}
-
-/**
- * Create the new object
- *
- * @return The newly created object.
- */
-public Object getNewObject() {
-	try {
-		return type.newInstance();
-	} catch ( Exception exc )
-	{ return null; }
-}
-
-/**
- * Returns the type of object this factory creates.
- *
- * @return The type of object this factory creates.
- */
-public Object getObjectType(){
-	return type;
-}
-
-}
-
 private Dimension size;
 private Point location;
 
-private Factory creationFactory;
+private CreationFactory creationFactory;
 
 /**
  * Creates a CreateRequest with the default type.
@@ -90,7 +41,7 @@ public CreateRequest(Object type){
 	setType(type);
 }
 
-protected Factory getFactory(){
+protected CreationFactory getFactory(){
 	return creationFactory;
 }
 
@@ -121,7 +72,7 @@ public Dimension getSize(){
 /**
  * Sets the factory to be used when creating the new object.
  */
-public void setFactory(Factory factory){
+public void setFactory(CreationFactory factory){
 	creationFactory = factory;
 }
 
