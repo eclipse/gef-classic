@@ -33,7 +33,6 @@ import org.eclipse.ui.internal.WorkbenchImages;
 import org.eclipse.ui.part.PageBook;
 
 import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.widgets.MultiLineLabel;
 
 import org.eclipse.gef.internal.Internal;
