@@ -507,6 +507,13 @@ public Rectangle getUnion(Rectangle rect) {
 }
 
 /**
+ * @see java.lang.Object#hashCode()
+ */
+public int hashCode() {
+	return (x + height + 1) * (y + width + 1) ^ x ^ y;
+}
+
+/**
  * Sets the size of this Rectangle to the intersection region with the Rectangle 
  * supplied as input, and returns this for convenience. The location and 
  * dimensions are set to zero if there is no intersection with the input 

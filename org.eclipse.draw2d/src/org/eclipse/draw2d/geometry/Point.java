@@ -221,6 +221,13 @@ public Point getTransposed() {
 }
 
 /**
+ * @see java.lang.Object#hashCode()
+ */
+public int hashCode() {
+	return (x * y) ^ (x + y);
+}
+
+/**
  * Creates a new Point representing the MAX of two provided Points.
  * @param p1 first point
  * @param p2 second point

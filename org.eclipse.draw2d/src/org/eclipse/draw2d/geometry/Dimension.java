@@ -299,6 +299,14 @@ public Dimension getUnioned(Dimension d) {
 }
 
 /**
+ * @see java.lang.Object#hashCode()
+ */
+public int hashCode() {
+	return (width * height) ^ (width + height);
+}
+
+
+/**
  * This Dimension is intersected with the one specified. Intersection is performed by 
  * taking the min() of the values from each dimension.
  * 

@@ -139,6 +139,13 @@ public Ray getScaled(int s) {
 }
 
 /**
+ * @see java.lang.Object#hashCode()
+ */
+public int hashCode() {
+	return (x * y) ^ (x + y);
+}
+
+/**
  * Returns true if this Ray has a non-zero horizontal comonent.
  * @return  true if this Ray has a non-zero horizontal comonent
  * @since 2.0

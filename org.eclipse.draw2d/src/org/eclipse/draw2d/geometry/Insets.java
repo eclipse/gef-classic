@@ -143,6 +143,14 @@ public int getWidth() {
 }
 
 /**
+ * @see java.lang.Object#hashCode()
+ */
+public int hashCode() {
+	return top * 7 + left * 2 + bottom * 31 + right * 37;
+}
+
+
+/**
  * Returns true if all values are 0.
  * @return true if all values are 0
  * @since 2.0
