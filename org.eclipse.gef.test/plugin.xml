@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin
+   id="org.eclipse.gef.test"
+   name="GEF JUnit Tests"
+   version="2.1.1"
+   provider-name="Eclipse.org"
+   class="org.eclipse.gef.test.GEFTestPlugin">
+
+   <runtime>
+      <library name="geftests.jar"/>
+   </runtime>
+   <requires>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.draw2d"/>
+      <import plugin="org.eclipse.gef"/>
+      <import plugin="org.junit"/>
+   </requires>
+
+</plugin>
