@@ -330,6 +330,9 @@ protected void setDragSource(DragSource source) {
  */
 public void setEditDomain(EditDomain domain) {
 	super.setEditDomain(domain);
+	/*
+	 * @TODO:Pratik    what if the new edit domain is null?  skip the following step?
+	 */
 	getLightweightSystem()
 		.setEventDispatcher(eventDispatcher = new DomainEventDispatcher(domain, this));
 }
