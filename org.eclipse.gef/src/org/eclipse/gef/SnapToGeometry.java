@@ -182,11 +182,18 @@ protected List generateSnapPartsList(List exclusions) {
  */
 protected double getCorrectionFor(Entry entries[], Map extendedData, boolean vert, 
                                 double near, double far) {
-	double result = getCorrectionFor(entries, extendedData, vert, (near + far - 1) / 2, 0);
+	far -= 1.0;
+	double total = near + far;
+	// If the width is even (i.e., odd right now because we have reduced one pixel from 
+	// far) there is no middle pixel so favor the left-most/top-most pixel (which is what
+	// populateRowsAndCols() does by using int precision).
+	if ((int)(near - far) % 2 != 0)
+		total -= 1.0;
+	double result = getCorrectionFor(entries, extendedData, vert, total / 2, 0);
 	if (result == THRESHOLD)
 		result = getCorrectionFor(entries, extendedData, vert, near, -1);
 	if (result == THRESHOLD)
-		result = getCorrectionFor(entries, extendedData, vert, far - 1, 1);
+		result = getCorrectionFor(entries, extendedData, vert, far, 1);
 	return result;
 }
 
