@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTError;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
@@ -27,6 +28,11 @@ private GC controlGC;
 private Control control;
 private Rectangle inUse;
 
+/**
+ * Constructs a new buffered graphics source using the given control.
+ * @since 2.1
+ * @param c the control
+ */
 public BufferedGraphicsSource(Control c) {
 	control = c;
 }
@@ -86,7 +92,8 @@ public Graphics getGraphics(Rectangle region) {
 		imageBuffer = null;
 	}
 
-	controlGC = new GC(control);
+	controlGC = new GC(control,
+			control.getStyle() & (SWT.RIGHT_TO_LEFT | SWT.LEFT_TO_RIGHT));
 	Graphics graphics;
 	if (imageBuffer != null) {
 		imageGC = new GC(imageBuffer);
@@ -107,10 +114,20 @@ public Graphics getGraphics(Rectangle region) {
 	return graphics;
 }
 
+/**
+ * Returns the current image buffer or <code>null</code>.
+ * @since 2.1
+ * @return the current image buffer
+ */
 protected Image getImage() {
 	return imageBuffer;
 }
 
+/**
+ * Returns the current GC used on the buffer or <code>null</code>.
+ * @since 2.1
+ * @return the GC for the image buffer
+ */
 protected GC getImageGC() {
 	return imageGC;
 }
