@@ -14,16 +14,20 @@ import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.swt.accessibility.AccessibleEvent;
+
 import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.Rectangle;
+
 import org.eclipse.gef.*;
 import org.eclipse.gef.editpolicies.RootComponentEditPolicy;
-import org.eclipse.gef.examples.logicdesigner.LogicMessages;
-import org.eclipse.gef.examples.logicdesigner.model.LogicDiagram;
-
 import org.eclipse.gef.requests.SelectionRequest;
 import org.eclipse.gef.tools.DeselectAllTracker;
 import org.eclipse.gef.tools.MarqueeDragTracker;
-import org.eclipse.swt.accessibility.AccessibleEvent;
+
+import org.eclipse.gef.examples.logicdesigner.LogicMessages;
+import org.eclipse.gef.examples.logicdesigner.model.LogicDiagram;
 
 /**
  * Holds all other LogicEditParts under this. It is 
@@ -70,6 +74,15 @@ protected IFigure createFigure() {
 	f.setBackgroundColor(ColorConstants.listBackground);
 	f.setOpaque(true);
 	return f;
+}
+
+/**
+ * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
+ */
+public Object getAdapter(Class adapter) {
+	if (adapter == SnapToStrategy.class)
+		return new SnapToGrid(this);
+	return super.getAdapter(adapter);
 }
 
 public DragTracker getDragTracker(Request req){
