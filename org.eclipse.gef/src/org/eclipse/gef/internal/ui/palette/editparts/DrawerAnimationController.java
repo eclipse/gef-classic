@@ -45,6 +45,7 @@ public void addDrawer(DrawerEditPart drawer) {
 }
 
 public void animate(DrawerEditPart drawer) {
+	inProgress = true;
 	if (drawer.getDrawerFigure().isExpanded()) {
 		List categoriesToCollapse = getDrawersToCollapse(drawer);
 		animate = new DrawerFigure[categoriesToCollapse.size() + 1];
