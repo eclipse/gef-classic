@@ -118,7 +118,7 @@ protected Dimension getMinimumSizeFor(GraphicalEditPart child) {
  * Places the feedback rectangle where the User indicated.
  * @see LayoutEditPolicy#showSizeOnDropFeedback(CreateRequest) */
 protected void showSizeOnDropFeedback(CreateRequest request) {	
-	Point p = new Point(request.getLocation());
+	Point p = new Point(request.getLocation().getCopy());
 	IFigure feedback = getSizeOnDropFeedback(request);
 	feedback.translateToRelative(p);
 	Dimension size = request.getSize().getCopy();
