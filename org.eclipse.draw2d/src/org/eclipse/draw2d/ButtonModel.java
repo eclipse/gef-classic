@@ -10,9 +10,9 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
-import java.util.Iterator;
+import java.util.*;
 
-import org.eclipse.draw2d.internal.Timer;
+//import org.eclipse.draw2d.internal.Timer;
 
 /**
  * A model for buttons containing several properties, including enabled, pressed,
@@ -498,24 +498,15 @@ class RepeatFiringBehavior
 	
 	protected Timer timer;
 	
-	private Runnable runAction = new Runnable() {
-		public void run() {
-			org.eclipse.swt.widgets.Display.getDefault().syncExec(new Runnable() {
-				public void run() {
-					if (!isEnabled())
-						timer.cancel();
-					fireActionPerformed();
-				}
-			});
-		}
-	};
-
 	public void pressed() {
 		fireActionPerformed();
 		if (!isEnabled())
 			return;
+		
 		timer = new Timer();
-		timer.scheduleRepeatedly(runAction, INITIAL_DELAY, STEP_DELAY);
+		TimerTask runAction = new Task(timer);
+
+		timer.scheduleAtFixedRate(runAction, INITIAL_DELAY, STEP_DELAY);
 	}
 
 	public void canceled() {
@@ -527,7 +518,10 @@ class RepeatFiringBehavior
 	
 	public void resume() {
 		timer = new Timer();
-		timer.scheduleRepeatedly(runAction, STEP_DELAY, STEP_DELAY);
+		
+		TimerTask runAction = new Task(timer);
+		
+		timer.scheduleAtFixedRate(runAction, STEP_DELAY, STEP_DELAY);
 	}
 	
 	public void suspend() {
@@ -535,6 +529,26 @@ class RepeatFiringBehavior
 		timer.cancel();
 		timer = null;
 	}
-} 
+}
+
+class Task 
+	extends TimerTask {
+	
+	private Timer timer;
+	
+	public Task(Timer timer) {
+		this.timer = timer;
+	}
+	
+	public void run() {
+		org.eclipse.swt.widgets.Display.getDefault().syncExec(new Runnable() {
+			public void run() {
+				if (!isEnabled())
+					timer.cancel();
+				fireActionPerformed();
+			}
+		});
+	}
+}
 
 }

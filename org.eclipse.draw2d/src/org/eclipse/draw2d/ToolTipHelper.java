@@ -10,11 +10,14 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
-import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.internal.UITimer;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.eclipse.swt.events.MouseTrackAdapter;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.widgets.Display;
+
+import org.eclipse.draw2d.geometry.Dimension;
 
 /**
  * This class is used by SWTEventDispatcher as support to display Figure tooltips on a 
@@ -28,7 +31,7 @@ public class ToolTipHelper
 	extends PopUpHelper
 {
 
-private UITimer timer;
+private Timer timer;
 private IFigure currentTipSource;
 
 /**
@@ -87,13 +90,17 @@ public void displayToolTipNear(IFigure hoverSource, IFigure tip, int eventX, int
 		setShellBounds(displayPoint.x, displayPoint.y, tipSize.width, tipSize.height);
 		show();
 		currentTipSource = hoverSource;
-		timer = new UITimer();
-		timer.scheduleRepeatedly(new Runnable() {
+		timer = new Timer(true);
+		timer.schedule(new TimerTask() {
 			public void run() {
-				hide();
-				timer.cancel();
+				Display.getDefault().syncExec(new Runnable() {
+					public void run() {
+						hide();
+						timer.cancel();
+					}
+				});
 			}
-		}, 5000, 5000);
+		}, 5000);
 	}
 }
 
