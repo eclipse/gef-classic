@@ -28,7 +28,7 @@ public static final Color DISPLAY_SHADOW = new Color(null, 57, 117, 90);
  */
 public static final Color DISPLAY_TEXT = new Color(null, 255, 199, 16);
 
-private static final Font DISPLAY_FONT = new Font(null, "", 19, 0);
+private static final Font DISPLAY_FONT = new Font(null, "", 19, 0); //$NON-NLS-1$
 private static PointList connector = new PointList();
 private static PointList bottomConnector = new PointList();
 private static Rectangle displayRectangle = new Rectangle(15, 11, 31, 25);
