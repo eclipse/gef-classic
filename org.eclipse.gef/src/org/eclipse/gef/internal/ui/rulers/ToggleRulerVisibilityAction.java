@@ -41,13 +41,15 @@ public ToggleRulerVisibilityAction(GraphicalViewer diagramViewer) {
 	setChecked(isChecked());
 }
 
-public void run() {
-	diagramViewer.setProperty(RulerProvider.RULER_VISIBILITY, new Boolean(!isChecked()));
+public boolean isChecked() {
+	Boolean val = ((Boolean)diagramViewer.getProperty(RulerProvider.RULER_VISIBILITY));
+	if (val != null)
+		return val.booleanValue();
+	return false;
 }
 
-public boolean isChecked() {
-	return ((Boolean)diagramViewer.getProperty(RulerProvider.RULER_VISIBILITY))
-			.booleanValue();
+public void run() {
+	diagramViewer.setProperty(RulerProvider.RULER_VISIBILITY, new Boolean(!isChecked()));
 }
 
 }
