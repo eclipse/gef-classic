@@ -5,6 +5,7 @@ package org.eclipse.gef.examples.logicdesigner.rulers;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.*;
 
 import org.eclipse.swt.graphics.Cursor;
 
@@ -18,6 +19,8 @@ import org.eclipse.gef.editpolicies.SelectionEditPolicy;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
 import org.eclipse.gef.rulers.GuideFigure;
 import org.eclipse.gef.tools.DragEditPartsTracker;
+
+import org.eclipse.gef.examples.logicdesigner.model.LogicSubpart;
 
 /**
  * @author Pratik Shah
@@ -188,32 +191,67 @@ public Command getCommand(final Request request) {
 			 * deactivated?  this command is holding on to a lot of unnecessary objects.
 			 */
 			cmd = new Command("Delete Guide") {
-				Ruler parent = (Ruler)getParent().getModel();
+				private Ruler parent = (Ruler)getParent().getModel();
+				private Map oldParts;
 				public void execute() {
+					oldParts = new HashMap(getGuide().getMap());
+					Iterator iter = oldParts.keySet().iterator();
+					while (iter.hasNext()) {
+						getGuide().removePart((LogicSubpart)iter.next());
+					}
 					parent.removeGuide(getGuide());
 				}
 				public void undo() {
 					parent.addGuide(getGuide());
+					Iterator iter = oldParts.keySet().iterator();
+					while (iter.hasNext()) {
+						LogicSubpart part = (LogicSubpart)iter.next();
+						getGuide().addPart(part, ((Integer)oldParts.get(part)).intValue());
+					}
 				}
+				
 			};
 		} else {
 			cmd = new Command("Move Guide") {
-				private int oldPosition;
+				private int pDelta = Integer.MIN_VALUE;
 				public void execute() {
-					int positionDelta;
-					if (getGuide().isHorizontal()) {
-						positionDelta = req.getMoveDelta().y;
-					} else {
-						positionDelta = req.getMoveDelta().x;
+					if (pDelta == Integer.MIN_VALUE) {
+						if (getGuide().isHorizontal()) {
+							pDelta = req.getMoveDelta().y;
+						} else {
+							pDelta = req.getMoveDelta().x;
+						}
+						if (zoomManager != null) {
+							pDelta *= (zoomManager.getUIMultiplier() 
+									/ zoomManager.getZoom());				
+						}						
 					}
-					if (zoomManager != null) {
-						positionDelta *= (zoomManager.getUIMultiplier() / zoomManager.getZoom());					
+					getGuide().setPosition(getGuide().getPosition() + pDelta);
+					Iterator iter = getGuide().getParts().iterator();
+					while (iter.hasNext()) {
+						LogicSubpart part = (LogicSubpart)iter.next();
+						Point location = part.getLocation().getCopy();
+						if (getGuide().isHorizontal()) {
+							location.y += pDelta;
+						} else {
+							location.x += pDelta;
+						}
+						part.setLocation(location);
 					}
-					oldPosition = getGuide().getPosition();
-					getGuide().setPosition(getGuide().getPosition() + positionDelta);
 				}
 				public void undo() {
-					getGuide().setPosition(oldPosition);
+					getGuide().setPosition(getGuide().getPosition() - pDelta);
+					Iterator iter = getGuide().getParts().iterator();
+					while (iter.hasNext()) {
+						LogicSubpart part = (LogicSubpart)iter.next();
+						Point location = part.getLocation().getCopy();
+						if (getGuide().isHorizontal()) {
+							location.y -= pDelta;
+						} else {
+							location.x -= pDelta;
+						}
+						part.setLocation(location);
+					}
 				}
 			};
 		}
@@ -307,6 +345,15 @@ protected boolean isDeleteRequest(ChangeBoundsRequest req) {
  * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
  */
 public void propertyChange(PropertyChangeEvent evt) {
+	if (evt.getPropertyName().equals(Guide.PROPERTY_CHILDREN)) {
+		Object val = getGuide().getMap().get(evt.getNewValue());
+		if (val == null) {
+			System.out.println(evt.getNewValue() + " un-attached from " + (getGuide().isHorizontal() ? "horizontal" : "vertical") + " guide");
+		} else {
+			int value = ((Integer)val).intValue();
+			System.out.println(evt.getNewValue() + " attached to " + (getGuide().isHorizontal() ? "horizontal" : "vertical") + " guide at " + value);
+		}
+	}
 	refreshVisuals();
 }
 
