@@ -40,6 +40,8 @@ protected EditPart createDrawerEditPart(EditPart parentEditPart, Object model) {
 public EditPart createEditPart(EditPart parentEditPart, Object model) {
 	if (model instanceof PaletteRoot)
 		return createMainPaletteEditPart(parentEditPart, model);
+	if (model instanceof PaletteStack)
+		return createStackEditPart(parentEditPart, model);
 	if (model instanceof PaletteContainer)
 		if (PaletteDrawer.PALETTE_TYPE_DRAWER.equals(((PaletteContainer)model).getType()))
 			return createDrawerEditPart(parentEditPart, model);
@@ -66,6 +68,17 @@ public EditPart createEditPart(EditPart parentEditPart, Object model) {
  */
 protected EditPart createSeparatorEditPart(EditPart parentEditPart,	Object model) {
 	return new SeparatorEditPart((PaletteSeparator)model);
+}
+
+/**
+ * Create PaletteStackEditPart - edit part for PaletteStack
+ * 
+ * @param	parentEditPart	the parent of the new editpart to be created
+ * @param	model			the PaletteStack
+ * @return the newly created EditPart
+ */
+protected EditPart createStackEditPart(EditPart parentEditPart,	Object model) {
+	return new PaletteStackEditPart((PaletteStack)model);
 }
 
 /**
