@@ -109,5 +109,10 @@ public static String ToggleGrid_Tooltip = Helper.getString("%ToggleGrid.Tooltip"
 public static String Palette_Label = Helper.getString("%Palette.Label"); //$NON-NLS-1$
 public static String Palette_Not_Available = Helper.getString("%Palette_Not_Available"); //$NON-NLS-1$
 
+// Rulers and guides
+public static String Ruler_Horizontal_Label = Helper.getString("%Ruler.Horizontal"); //$NON-NLS-1$
+public static String Ruler_Vertical_Label = Helper.getString("%Ruler.Vertical"); //$NON-NLS-1$
+public static String Ruler_Desc = Helper.getString("%Ruler.Desc"); //$NON-NLS-1$
 public static String Guide_Label = Helper.getString("%Guide.Label"); //$NON-NLS-1$
+public static String Guide_Desc = Helper.getString("%Guide.Desc"); //$NON-NLS-1$
 }
