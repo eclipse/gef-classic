@@ -67,6 +67,12 @@ public void attachPart(LogicSubpart part, int alignment) {
 public void addPropertyChangeListener(PropertyChangeListener listener) {
 	listeners.addPropertyChangeListener(listener);
 }
+
+public int getAlignment(LogicSubpart part) {
+	if (getMap().get(part) != null)
+		return ((Integer)getMap().get(part)).intValue();
+	return 0;
+}
 	
 public Map getMap() {
 	if (map == null) {
