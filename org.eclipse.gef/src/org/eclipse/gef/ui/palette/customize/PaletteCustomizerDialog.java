@@ -37,7 +37,6 @@ import org.eclipse.ui.part.PageBook;
 import org.eclipse.draw2d.ColorConstants;
 
 import org.eclipse.gef.internal.Internal;
-import org.eclipse.gef.palette.*;
 import org.eclipse.gef.palette.PaletteEntry;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.ui.palette.PaletteCustomizer;
@@ -803,17 +802,8 @@ protected final void handleApplyPressed() {
  * menu or the toolbar).  It deletes the selected palette entry.
  */
 protected void handleDelete() {
-	PaletteEntry entry = getSelectedPaletteEntry();
-	PaletteContainer parent = entry.getParent();
-	// Get the index of the previous sibling
-	int index = parent.getChildren().indexOf(entry) - 1;
-	if (index < 0) // There is no previous sibling
-		index = 0;
-	getCustomizer().performDelete(entry);
-	tree.setFocus();
-	PaletteEntry newSelection = (PaletteEntry)parent.getChildren().get(index);
-	// Set selection to the previous sibling
-	treeviewer.setSelection(new StructuredSelection(newSelection));
+	getCustomizer().performDelete(getSelectedPaletteEntry());
+	handleOutlineSelectionChanged();
 }
 
 /**
@@ -825,7 +815,6 @@ protected void handleMoveDown() {
 	getCustomizer().performMoveDown(entry);
 	treeviewer.setSelection(new StructuredSelection(entry), true);
 	updateActions();
-	tree.setFocus();
 }
 
 /**
@@ -837,7 +826,6 @@ protected void handleMoveUp() {
 	getCustomizer().performMoveUp(entry);
 	treeviewer.setSelection(new StructuredSelection(entry), true);
 	updateActions();
-	tree.setFocus();
 }
 
 /**
@@ -1233,7 +1221,6 @@ private class FactoryWrapperAction extends Action {
 		PaletteEntry newEntry = factory.createNewEntry(getShell(), selected);
 		treeviewer.setSelection(new StructuredSelection(newEntry), true);
 		updateActions();
-		tree.setFocus();
 	}
 }
 
