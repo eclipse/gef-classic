@@ -34,10 +34,12 @@ private static Dimension ELLIPSIS_SIZE = new Dimension();
  * faster calculation.
  * @param s the String * @param f the Font used for measuring * @param availableWidth the available width in pixels * @param avg 0.0, or an avg character width to use during calculation * @return int */
 public static int getTextForSpace(TextFragmentBox frag, String string, Font font, int availableWidth, float avg, int WRAPPING) {
-	if (string.length() == 0)
-		throw new IllegalArgumentException(
-			"String must have length greater than 0"); //$NON-NLS-1$
 	frag.truncated = false;
+	if (string.length() == 0) {
+		frag.length = 0;
+		setupFragment(frag, font, string);
+		return 0;
+	}
 	
 	FontMetrics metrics = getFontMetrics(font);
 	BreakIterator breakItr = BreakIterator.getLineInstance();
@@ -47,7 +49,6 @@ public static int getTextForSpace(TextFragmentBox frag, String string, Font font
 		avg = metrics.getAverageCharWidth();
 
 	int firstBreak = breakItr.next();
-	firstBreak = Math.min(string.length()-1, firstBreak);
 	MIN = min = (WRAPPING != ParagraphTextLayout.WORD_WRAP_SOFT) ?  firstBreak : 1;
 	max = string.length() + 1;
 
@@ -100,8 +101,9 @@ public static int getTextForSpace(TextFragmentBox frag, String string, Font font
 				setupFragment(frag, font, string);
 				if (frag.getWidth() <= availableWidth)
 					return result;
-			} else
-				result = breakItr.preceding(min);
+				min -= 1;
+			}
+			result = breakItr.preceding(min);
 			if (result <= 0) {
 				String ELLIPSIS = "..."; //$NON-NLS-1$
 				ELLIPSIS_SIZE = FigureUtilities.getStringExtents(ELLIPSIS, font);
