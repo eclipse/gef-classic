@@ -12,6 +12,9 @@ package org.eclipse.gef.ui.palette.customize;
 
 import org.eclipse.gef.palette.PaletteEntry;
 import org.eclipse.gef.ui.palette.PaletteMessages;
+
+import org.eclipse.draw2d.FigureUtilities;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
@@ -94,9 +97,10 @@ protected Text createDescText(Composite panel) {
 	if (desc == null) desc = PaletteMessages.NO_DESCRIPTION_AVAILABLE;
 	Text description = createText(panel, 
 				SWT.MULTI | SWT.WRAP | SWT.BORDER | SWT.V_SCROLL, desc);
-	GridData data = new GridData(GridData.FILL_BOTH);
-	data.widthHint = 200;
-	data.heightHint = 52;
+	GridData data = new GridData(GridData.FILL_HORIZONTAL);
+	data.widthHint = 150;
+	data.heightHint = description.computeTrim(0, 0, 10, 
+			FigureUtilities.getFontMetrics(description.getFont()).getHeight() * 2).height;
 	description.setLayoutData(data);
 	if (getPermission() >= getEntry().PERMISSION_LIMITED_MODIFICATION) {
 		description.addKeyListener(new KeyAdapter() {
