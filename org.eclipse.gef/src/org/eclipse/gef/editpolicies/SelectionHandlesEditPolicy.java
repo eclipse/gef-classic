@@ -55,7 +55,7 @@ protected void addSelectionHandles() {
 
 /**
  * Subclasses must implement to provide the list of handles.
- * @return List */
+ * @return List of handles; cannot be <code>null</code> */
 protected abstract List createSelectionHandles();
 
 /**
@@ -71,8 +71,6 @@ public Object getAdapter(Class key) {
 					if (p != null)
 						result.add(p);
 				}
-				if (result.isEmpty())
-					return null;
 				return result;
 			}
 		};
