@@ -1,21 +1,72 @@
-<project name="BuildPlugin" default="build" basedir=".">
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="org.eclipse.gef.doc.isv" default="build.jars" basedir=".">
 
-<property name="pluginName" value="org.eclipse.gef.doc.isv"/>
-<property name="version" value="2.0.1"/>
+	<target name="init">
+		<property name="plugin" value="org.eclipse.gef.doc.isv"/>
+		<property name="version.suffix" value="_2.0.1"/>
+		<property name="full.name" value="${plugin}${version.suffix}"/>
+		<property name="temp.folder" value="${basedir}/temp.folder"/>
+		<property name="plugin.destination" value="${basedir}"/>
+		<property name="build.result.folder" value="${basedir}"/>
+	</target>
 
-<target name="init">    
-    <echo message="Building ${pluginName}..." />
-	<property name="tempDir" value="\builds\antbuilds"/>
-	<property name="pluginName.temp.path"	value="${tempDir}/plugins/${pluginName}_${version}"/>
-	<tstamp>
-	    <format property="creation.time" pattern="MMdd_HHmm"/>
-	</tstamp>
-</target>
+	<target name="build.update.jar" depends="init">
+		<delete dir="${temp.folder}"/>
+		<mkdir dir="${temp.folder}"/>
+		<antcall target="build.jars"/>
+		<antcall target="gather.bin.parts">
+			<param name="destination.temp.folder" value="${temp.folder}/"/>
+		</antcall>
+		<zip zipfile="${plugin.destination}/${full.name}.jar" basedir="${temp.folder}/${full.name}" filesonly="false"/>
+		<delete dir="${temp.folder}"/>
+	</target>
 
-<target name="build" depends="init">
-	<copyResources project="${pluginName}" toDir="${pluginName.temp.path}" exclude="reference\,javadoc.xml,javadocAll.xml"/>
-	<echo message="${pluginName} complete." />
-</target>
+	<target name="gather.bin.parts" depends="init" if="destination.temp.folder">
+		<ant antfile="javadoc.xml" />
+		<mkdir dir="${destination.temp.folder}/${full.name}"/>
+		<copy todir="${destination.temp.folder}/${full.name}">
+			<fileset dir="${basedir}" includes="*.properties,*.xml,*.zip,icons/" excludes="build.properties,build.xml,buildAll.xml,javadoc*.xml" />
+		</copy>
+
+	</target>
+
+	<target name="build.jars" depends="init" />
+	
+	<target name="gather.sources" depends="init" if="destination.temp.folder">
+	</target>
+
+	<target name="build.sources" depends="init">
+	</target>
+
+	<target name="gather.logs" depends="init" if="destination.temp.folder">
+	</target>
+
+	<target name="clean" depends="init">
+		<delete file="${plugin.destination}/${full.name}.jar"/>
+		<delete file="${plugin.destination}/${full.name}.zip"/>
+		<delete dir="${temp.folder}"/>
+	</target>
+
+	<target name="refresh" depends="init" if="eclipse.running">
+		<eclipse.refreshLocal resource="${plugin}" depth="infinite"/>
+	</target>
+
+	<target name="zip.plugin" depends="init">
+		<delete dir="${temp.folder}"/>
+		<mkdir dir="${temp.folder}"/>
+		<antcall target="build.jars"/>
+		<antcall target="build.sources"/>
+		<antcall target="gather.bin.parts">
+			<param name="destination.temp.folder" value="${temp.folder}/"/>
+		</antcall>
+		<antcall target="gather.sources">
+			<param name="destination.temp.folder" value="${temp.folder}/"/>
+		</antcall>
+		<delete>
+			<fileset dir="${temp.folder}" includes="**/*.bin.log"/>
+		</delete>
+		<zip zipfile="${plugin.destination}/${full.name}.zip" basedir="${temp.folder}" filesonly="true"/>
+		<delete dir="${temp.folder}"/>
+	</target>
 
 </project>
-

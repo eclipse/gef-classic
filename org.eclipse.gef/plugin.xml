@@ -25,7 +25,7 @@
       </library>
    </runtime>
    <requires>
-      <import plugin="org.eclipse.draw2d" export="true" version="2.0.0"/>
+      <import plugin="org.eclipse.draw2d" export="true" />
       <import plugin="org.eclipse.core.runtime" export="true"/>
       <import plugin="org.eclipse.core.resources" export="true"/>
       <import plugin="org.eclipse.ui" export="true"/>
