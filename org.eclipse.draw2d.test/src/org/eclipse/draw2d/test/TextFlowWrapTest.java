@@ -243,6 +243,8 @@ public void testHardWrapping() {
 	doTest("Flowing", "flow", new String[] {"Flowing", TERMINATE});
 	doTest2("foobar", "foobar", "foo", new String[] {"foobar", SAMELINE, "foobar"});
 	doTest2("home ", "alone", "home al", new String[] {"home", NEWLINE, "alone", TERMINATE});
+	doTest2("more willing in t", "hemorning", "more willing in themorni", 
+			new String[] {"more willing in", NEWLINE, "t", SAMELINE, "hemorning", TERMINATE});
 	
 	assertFalse(failMsg, failed);
 }
