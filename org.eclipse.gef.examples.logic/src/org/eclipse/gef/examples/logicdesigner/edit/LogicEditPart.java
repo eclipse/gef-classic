@@ -22,6 +22,8 @@ import org.eclipse.gef.*;
 import org.eclipse.gef.examples.logicdesigner.figures.NodeFigure;
 import org.eclipse.gef.examples.logicdesigner.model.LogicSubpart;
 import org.eclipse.gef.examples.logicdesigner.model.Wire;
+
+import org.eclipse.gef.editpolicies.SnapToGuideFeedbackEditPolicy;
 import org.eclipse.gef.requests.DropRequest;
 
 /**
@@ -42,8 +44,9 @@ public void activate(){
 }
 
 protected void createEditPolicies(){
-	installEditPolicy(EditPolicy.COMPONENT_ROLE,new LogicElementEditPolicy());
+	installEditPolicy(EditPolicy.COMPONENT_ROLE, new LogicElementEditPolicy());
 	installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE, new LogicNodeEditPolicy());
+	installEditPolicy(EditPolicy.NODE_ROLE, new SnapToGuideFeedbackEditPolicy());
 }
 
 abstract protected AccessibleEditPart createAccessible();
