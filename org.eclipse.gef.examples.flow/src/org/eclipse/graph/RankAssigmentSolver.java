@@ -7,15 +7,15 @@ package org.eclipse.graph;
  * @author hudsonr
  * @since 2.1
  */
-public class RankAssigmentSolver extends GraphVisitor {
-
-boolean searchDirection;
+public class RankAssigmentSolver extends SpanningTreeVisitor {
 protected DirectedGraph graph;
 int maxcount = 200;
 
+boolean searchDirection;
+
 int depthFirstCutValue(Edge edge, int count) {
-	Node n = edge.tail();
-	n.spanTreeMin = count;
+	Node n = getTreeTail(edge);
+	setTreeMin(n, count);
 	int cutvalue = 0;
 	int multiplier = (edge.target == n) ? 1 : -1;
 	EdgeList list;
@@ -45,28 +45,72 @@ int depthFirstCutValue(Edge edge, int count) {
 	edge.cut = cutvalue;
 	if (cutvalue < 0)
 		graph.cutEdges.add(edge);
-	n.spanTreeMax = count;
+	setTreeMax(n, count);
 	return count + 1;
+}
+
+/**
+ * returns the Edge which should be entered.
+ * @param branch
+ * @return Edge
+ */
+Edge enter(Node branch) {
+	Node n;
+	Edge result = null;
+	int minSlack = Integer.MAX_VALUE;
+	boolean incoming = getParentEdge(branch).target != branch;
+//	searchDirection = !searchDirection;
+	for (int i = 0; i < graph.nodes.size(); i++) {
+		if (searchDirection)
+			n = graph.nodes.getNode(i);
+		else
+			n = graph.nodes.getNode(graph.nodes.size() - 1 - i);
+		if (subtreeContains(branch,n)) {
+			EdgeList edges;
+			if (incoming)
+				edges = n.incoming;
+			else
+				edges = n.outgoing;
+			for (int j = 0; j < edges.size(); j++) {
+				Edge e = edges.getEdge(j);
+				if (!subtreeContains(branch, e.opposite(n))
+				  && !e.tree
+				  && e.getSlack() < minSlack) {
+					result = e;
+					minSlack = e.getSlack();
+				}
+			}
+		}
+	}
+	return result;
+}
+
+int getTreeMax(Node n) {
+	return n.workingInts[1];
+}
+
+int getTreeMin(Node n) {
+	return n.workingInts[0];
 }
 
 void initCutValues() {
 	Node root = graph.nodes.getNode(0);
 	graph.cutEdges = new EdgeList();
 	Edge e;
-	root.spanTreeMin = 1;
-	root.spanTreeMax = 1;
+	setTreeMin(root, 1);
+	setTreeMax(root, 1);
 
 	for (int i=0; i<root.outgoing.size(); i++) {
 		e = root.outgoing.getEdge(i);
-		if (!root.spanTreeChildren.contains(e))
+		if (!getSpanningTreeChildren(root).contains(e))
 			continue;
-		root.spanTreeMax = depthFirstCutValue(e, root.spanTreeMax);
+		setTreeMax(root, depthFirstCutValue(e, getTreeMax(root)));
 	}
 	for (int i=0; i<root.incoming.size(); i++) {
 		e = root.incoming.getEdge(i);
-		if (!root.spanTreeChildren.contains(e))
+		if (!getSpanningTreeChildren(root).contains(e))
 			continue;
-		root.spanTreeMax = depthFirstCutValue(e, root.spanTreeMax);
+		setTreeMax(root, depthFirstCutValue(e, getTreeMax(root)));
 	}
 }
 
@@ -89,47 +133,6 @@ Edge leave() {
 	return result;
 }
 
-/**
- * returns the Edge which should be entered.
- * @param branch * @return Edge */
-Edge enter(Node branch) {
-	Node n;
-	Edge result = null;
-	int minSlack = Integer.MAX_VALUE;
-	boolean incoming = branch.spanTreeParent.target != branch;
-//	searchDirection = !searchDirection;
-	for (int i = 0; i < graph.nodes.size(); i++) {
-		if (searchDirection)
-			n = graph.nodes.getNode(i);
-		else
-			n = graph.nodes.getNode(graph.nodes.size() - 1 - i);
-		if (branch.spanTreeContains(n)) {
-			EdgeList edges;
-			if (incoming)
-				edges = n.incoming;
-			else
-				edges = n.outgoing;
-			for (int j = 0; j < edges.size(); j++) {
-				Edge e = edges.getEdge(j);
-				if (!branch.spanTreeContains(e.opposite(n))
-				  && !e.tree
-				  && e.getSlack() < minSlack) {
-					result = e;
-					minSlack = e.getSlack();
-				}
-			}
-		}
-	}
-	return result;
-}
-
-public void visit(DirectedGraph graph) {
-	this.graph = graph;
-	initCutValues();
-	networkSimplexLoop();
-	graph.nodes.normalizeRanks();
-}
-
 void networkSimplexLoop() {
 	Edge leave, enter;
 	int count = 0;
@@ -141,21 +144,21 @@ void networkSimplexLoop() {
 		}
 		count++;
 		
-		Node leaveTail = leave.tail();
-		Node leaveHead = leave.head();
+		Node leaveTail = getTreeTail(leave);
+		Node leaveHead = getTreeHead(leave);
 
 		enter = enter(leaveTail);
 		if (enter == null)
 			break;
 		
 		//Break the "leave" edge from the spanning tree
-		leaveHead.spanTreeChildren.remove(leave);
-		leaveTail.spanTreeParent = null;
+		getSpanningTreeChildren(leaveHead).remove(leave);
+		setParentEdge(leaveTail, null);
 		leave.tree = false;
 		graph.cutEdges.remove(leave);
 		
 		Node enterTail = enter.source;
-		if (!leaveTail.spanTreeContains(enterTail))
+		if (!subtreeContains(leaveTail, enterTail))
 			//Oops, wrong end of the edge
 			enterTail = enter.target;
 		Node enterHead = enter.opposite(enterTail);
@@ -164,64 +167,30 @@ void networkSimplexLoop() {
 		updateSubgraph(enterTail);
 
 		//Add "enter" edge to the spanning tree
-		enterHead.spanTreeChildren.add(enter);
-		enterTail.spanTreeParent = enter;
+		getSpanningTreeChildren(enterHead).add(enter);
+		setParentEdge(enterTail, enter);
 		enter.tree = true;
 
 		repairCutValues(enter);
 
 		Node commonAncestor = enterHead;
 
-		while (!commonAncestor.spanTreeContains(leaveHead)) {
-			repairCutValues(commonAncestor.spanTreeParent);
-			commonAncestor = commonAncestor.getSpanTreeParent();
+		while (!subtreeContains(commonAncestor, leaveHead)) {
+			repairCutValues(getParentEdge(commonAncestor));
+			commonAncestor = getTreeParent(commonAncestor);
 		}
 		while (leaveHead != commonAncestor) {
-			repairCutValues(leaveHead.spanTreeParent);
-			leaveHead = leaveHead.getSpanTreeParent();
+			repairCutValues(getParentEdge(leaveHead));
+			leaveHead = getTreeParent(leaveHead);
 		}
-		updateMinMax(commonAncestor, commonAncestor.spanTreeMin);
+		updateMinMax(commonAncestor, getTreeMin(commonAncestor));
 		tightenEdge(enter);
-	}
-}
-
-void tightenEdge(Edge edge) {
-	Node tail = edge.tail();
-	int delta = edge.getSlack();
-	if (tail == edge.target)
-		delta = -delta;
-	Node n;
-	for (int i=0; i<graph.nodes.size(); i++){
-		n = graph.nodes.getNode(i);
-		if (tail.spanTreeContains(n))
-			n.rank += delta;
-	}
-}
-
-int updateMinMax(Node root, int count) {
-	root.spanTreeMin = count;
-	for (int i=0; i<root.spanTreeChildren.size(); i++)
-		count = updateMinMax(root.spanTreeChildren.getEdge(i).tail(), count);
-	root.spanTreeMax = count;
-	return count+1;
-}
-
-void updateSubgraph(Node root) {
-	Edge flip = root.spanTreeParent;
-	if (flip != null) {
-		Node rootParent = root.getSpanTreeParent();
-		rootParent.spanTreeChildren.remove(flip);
-		updateSubgraph(rootParent);
-		root.spanTreeParent = null;
-		rootParent.spanTreeParent = flip;
-		repairCutValues(flip);
-		root.spanTreeChildren.add(flip);
 	}
 }
 
 void repairCutValues(Edge edge) {
 	graph.cutEdges.remove(edge);
-	Node n = edge.tail();
+	Node n = getTreeTail(edge);
 	int cutvalue = 0;
 	int multiplier = (edge.target == n) ? 1 : -1;
 	EdgeList list;
@@ -247,6 +216,61 @@ void repairCutValues(Edge edge) {
 	edge.cut = cutvalue;
 	if (cutvalue < 0)
 		graph.cutEdges.add(edge);
+}
+
+void setTreeMax(Node n, int value) {
+	n.workingInts[1] = value;
+}
+
+void setTreeMin(Node n, int value) {
+	n.workingInts[0] = value;
+}
+
+boolean subtreeContains(Node parent, Node child) {
+	return parent.workingInts[0] <= child.workingInts[1]
+	  && child.workingInts[1] <= parent.workingInts[1];
+}
+
+void tightenEdge(Edge edge) {
+	Node tail = getTreeTail(edge);
+	int delta = edge.getSlack();
+	if (tail == edge.target)
+		delta = -delta;
+	Node n;
+	for (int i=0; i<graph.nodes.size(); i++){
+		n = graph.nodes.getNode(i);
+		if (subtreeContains(tail, n))
+			n.rank += delta;
+	}
+}
+
+int updateMinMax(Node root, int count) {
+	setTreeMin(root, count);
+	EdgeList edges = getSpanningTreeChildren(root);
+	for (int i = 0; i < edges.size(); i++)
+		count = updateMinMax(getTreeTail(edges.getEdge(i)), count);
+	setTreeMax(root, count);
+	return count+1;
+}
+
+void updateSubgraph(Node root) {
+	Edge flip = getParentEdge(root);
+	if (flip != null) {
+		Node rootParent = getTreeParent(root);
+		getSpanningTreeChildren(rootParent).remove(flip);
+		updateSubgraph(rootParent);
+		setParentEdge(root, null);
+		setParentEdge(rootParent, flip);
+		repairCutValues(flip);
+		getSpanningTreeChildren(root).add(flip);
+	}
+}
+
+public void visit(DirectedGraph graph) {
+	this.graph = graph;
+	initCutValues();
+	networkSimplexLoop();
+	graph.nodes.normalizeRanks();
 }
 
 }

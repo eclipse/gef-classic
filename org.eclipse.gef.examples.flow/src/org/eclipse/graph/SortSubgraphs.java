@@ -140,10 +140,12 @@ private void breakSubgraphCycles() {
 			Node node = (Node)noLefts.remove(noLefts.size() - 1);
 			node.sortValue = index++;
 			OGmembers.remove(node);
-			if (node.toRight == null)
+//			System.out.println("removed:" + node);
+			NodeList rightOf = rightOf(node);
+			if (rightOf == null)
 				continue;
-			for (int i = 0; i < node.toRight.size(); i++) {
-				Node right = node.toRight.getNode(i);
+			for (int i = 0; i < rightOf.size(); i++) {
+				Node right = rightOf.getNode(i);
 				right.x--;
 				if (right.x == 0)
 					sortedInsert(noLefts, right);
@@ -163,6 +165,7 @@ private void breakSubgraphCycles() {
 		if (cycleRoot != null) {
 			//break the cycle;
 			sortedInsert(noLefts, cycleRoot);
+//			System.out.println("breaking cycle with:" + cycleRoot);
 			cycleRoot.x = -1; //prevent x from ever reaching 0
 		} else if (OGmembers.size() > 0)
 			System.out.println("FAILED TO FIND CYCLE ROOT");
@@ -205,7 +208,7 @@ private void buildSubgraphOrderingGraph(NestingTreeEntry entry) {
 		}
 		if (pair.n1 != null && !OGedges.contains(pair)) {
 			OGedges.add(pair);
-			pair.n1.leftOf(pair.n2);
+			leftToRight(pair.n1, pair.n2);
 			OGmembers.add(pair.n1);
 			OGmembers.add(pair.n2);
 			pair.n2.x++; //Using x field to count predecessors.
@@ -237,8 +240,7 @@ private void calculateSortValues() {
 		Rank rank = ranks.getRank(r);
 		for (int j = 0; j < rank.size(); j++) {
 			Node node = rank.getNode(j);
-			node.sortValue =
-				(double)(node.index * 2 + 1) / (ranks.getRank(node.rank).size() * 2);
+			node.sortValue = node.index;
 			Subgraph parent = node.getParent();
 			while (parent != null) {
 				parent.sortValue += node.sortValue;
@@ -276,6 +278,14 @@ private void repopulateRanks() {
 	}
 }
 
+private NodeList rightOf(Node left) {
+	return (NodeList)left.workingData[0];
+}
+
+private void leftToRight(Node left, Node right) {
+	rightOf(left).add(right);
+}
+
 void sortedInsert(List list, Node node) {
 	int insert = 0;
 	while (insert < list.size()
@@ -291,9 +301,24 @@ private void topologicalSort() {
 	}
 }
 
+void init() {
+	for (int r = 0; r < g.ranks.size(); r++) {
+		Rank rank = g.ranks.getRank(r);
+		for (int i = 0; i < rank.size(); i++) {
+			Node n = (Node)rank.get(i);
+			n.workingData[0] = new NodeList();
+		}
+	}
+	for (int i = 0; i < g.subgraphs.size(); i++) {
+		Subgraph s = (Subgraph)g.subgraphs.get(i);
+		s.workingData[0] = new NodeList();
+	}
+}
+
 public void visit(DirectedGraph dg) {
 	g = (CompoundDirectedGraph)dg;
 	
+	init();
 	buildSubgraphOrderingGraph();
 	calculateSortValues();
 	breakSubgraphCycles();
