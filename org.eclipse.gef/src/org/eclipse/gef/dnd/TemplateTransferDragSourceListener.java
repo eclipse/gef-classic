@@ -5,7 +5,6 @@ import java.util.List;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.palette.TemplateEntry;
-import org.eclipse.gef.ui.palette.EntryEditPart;
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.Transfer;
 

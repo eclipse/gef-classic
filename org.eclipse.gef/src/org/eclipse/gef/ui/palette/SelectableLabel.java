@@ -1,8 +1,6 @@
 package org.eclipse.gef.ui.palette;
 
 import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.swt.graphics.Image;
 
 /**
  * A label that can be selected and focused similar to a

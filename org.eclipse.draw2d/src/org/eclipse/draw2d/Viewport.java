@@ -6,9 +6,10 @@ package org.eclipse.draw2d;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import java.util.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 import org.eclipse.draw2d.geometry.*;
-import java.beans.*;
 
 /**
  * A Viewport is a flexible window onto a {@link ScrollPane} and
