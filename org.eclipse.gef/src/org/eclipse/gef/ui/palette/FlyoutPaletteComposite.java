@@ -500,9 +500,9 @@ public void hookDropTargetListener(GraphicalViewer viewer) {
 }
 
 /*
- * If the state is invalid (as could be the case when the 
- * FlyoutPreferences.getPaletteState() is invoked), it will be defaulted to 
- * STATE_COLLAPSED
+ * If the given state is invalid (as could be the case when 
+ * FlyoutPreferences.getPaletteState() is invoked for the first time), it will be 
+ * defaulted to STATE_COLLAPSED.
  */
 private void setState(int newState) {
 	/*
@@ -589,7 +589,9 @@ public interface FlyoutPreferences {
 	int getPaletteState();
 	/**
 	 * When there is no saved width, this method can return any int (preferrably a
-	 * non-positive int).
+	 * non-positive int).  Returning a non-positive int will cause the palette to be
+	 * sized to the default size, whereas returning a postive int will find the
+	 * closest match in the valid range (>= minimum and <= maximum)
 	 * @return	the saved width of the flyout palette
 	 */
 	int getPaletteWidth();
