@@ -22,6 +22,7 @@ package org.eclipse.draw2d.text;
  * @since 2.1
  */
 public abstract class FlowBox {
+
 int height;
 int width;
 
@@ -88,6 +89,14 @@ public int getWidth() {
 }
 
 /**
+ * Used to set the baseline of this FlowBox to the specified value.
+ * @param value the new baseline
+ */
+public void makeBaseline(int value) {
+	y = (value - getAscent());
+}
+
+/**
  * Returns true if any of the children are bi-directional.  Default implementation
  * always returns false.
  * 
@@ -99,11 +108,12 @@ public boolean requiresBidi() {
 }
 
 /**
- * Used to set the baseline of this FlowBox to the specified value.
- * @param value the new baseline
+ * Sets the width of the box.
+ * @param width the new width
+ * @since 3.1
  */
-public void makeBaseline(int value) {
-	y = (value - getAscent());
+public void setWidth(int width) {
+	this.width = width;
 }
 
 }
