@@ -187,7 +187,7 @@ public int snapResizeRequest(ChangeBoundsRequest request, PrecisionRectangle bas
 		// west
 		// if we have a match on the right and we are resizing that way, use that match
 		if (rightCorrection == THRESHOLD 
-				|| request.getResizeDirection() != PositionConstants.EAST) {
+				|| (request.getResizeDirection() & PositionConstants.EAST) == 0) {
 			double leftCorrection = getCorrectionFor(getVerticalGuides(), 
 					baseRect.preciseX, request.getExtendedData(), true, -1);
 			if (leftCorrection != THRESHOLD) {
@@ -209,7 +209,8 @@ public int snapResizeRequest(ChangeBoundsRequest request, PrecisionRectangle bas
 		}
 		// north
 		// if we have a match on the bottom and we are resizing south, keep this.
-		if (bottom == THRESHOLD || request.getResizeDirection() != PositionConstants.SOUTH) {	
+		if (bottom == THRESHOLD 
+				|| (request.getResizeDirection() & PositionConstants.SOUTH) == 0) {	
 			double topCorrection = getCorrectionFor(getHorizontalGuides(), 
 					baseRect.preciseY, request.getExtendedData(), false, -1);
 			if (topCorrection != THRESHOLD) {
