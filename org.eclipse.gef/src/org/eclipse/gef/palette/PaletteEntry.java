@@ -119,7 +119,7 @@ private Object type = PaletteEntry.PALETTE_TYPE_UNKNOWN;
  * Any parameter can be <code>null</code>
  * </p>
  * 
- * @param label			The entry's name
+ * @param label				The entry's name
  * @param shortDescription	The entry's description
  */
 public PaletteEntry(String label, String shortDescription) {
@@ -132,7 +132,7 @@ public PaletteEntry(String label, String shortDescription) {
  * Any parameter can be <code>null</code>
  * </p>
  * 
- * @param label				The entry's name
+ * @param label					The entry's name
  * @param shortDescription		The entry's description
  * @param type					The entry's type
  */
@@ -149,7 +149,7 @@ public PaletteEntry(String label,
  * </p>
  * 
  * @param label				The entry's name
- * @param shortDescription		The entry's description
+ * @param shortDescription	The entry's description
  * @param iconSmall			The small icon to represent this entry
  * @param iconLarge			The large icon to represent this entry
  */
@@ -169,7 +169,7 @@ public PaletteEntry(String label,
  * @param shortDescription	The entry's description
  * @param iconSmall 		The small icon to represent this entry
  * @param iconLarge 		The large icon to represent this entry
- * @param type 			The entry's type
+ * @param type 				The entry's type
  */
 public PaletteEntry(String label, 
 					String shortDescription,	
@@ -179,12 +179,24 @@ public PaletteEntry(String label,
 	this(label, shortDescription, iconSmall, iconLarge, type, null);
 }
 
+/**
+ * Constructor
+ * <p>
+ * Any parameter can be <code>null</code>
+ * </p>
+ * @param label 			The entry's name
+ * @param shortDescription	The entry's description
+ * @param iconSmall 		The small icon to represent this entry
+ * @param iconLarge 		The large icon to represent this entry
+ * @param type 				The entry's type
+ * @param id				The entry's id (preferrably unique)
+ */
 public PaletteEntry(String label, String shortDescription, ImageDescriptor smallIcon,
 		ImageDescriptor largeIcon, Object type, String id) {
 	setLabel(label);
 	setDescription(shortDescription);
-	setSmallIcon(iconSmall);
-	setLargeIcon(iconLarge);
+	setSmallIcon(smallIcon);
+	setLargeIcon(largeIcon);
 	setType(type);
 	setId(id);
 }
