@@ -8,52 +8,94 @@ package org.eclipse.gef.editparts;
 
 import java.util.*;
 
+import org.eclipse.swt.accessibility.ACC;
+import org.eclipse.swt.accessibility.AccessibleControlEvent;
+
 import org.eclipse.core.runtime.IAdaptable;
+
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.LayoutManager;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
+
 import org.eclipse.gef.*;
-import org.eclipse.swt.accessibility.ACC;
-import org.eclipse.swt.accessibility.AccessibleControlEvent;
 
 /**
- * Abstract class which uses IFigures for visuals.
+ * Default implementation for {@link org.eclipse.gef.GraphicalEditPart}.
+ * <P>
+ * This is an implementation class, and the documentation here is targeted at subclassing
+ * this class. Callers of public API should refer to the interface's documentation.
+ * <Table>
+ * 	 <tr>
+ * 	   <TD><img src="../doc-files/green.gif"/>
+ * 	   <TD>Indicates methods that subclasses <em>should</em> override.
+ *   </tr>
+ *   <tr>
+ *     <TD><img src="../doc-files/blue.gif"/>
+ *     <TD>These methods might be overridden.
+ * 	 </tr>
+ * 	 <tr>
+ * 	   <TD><img src="../doc-files/black.gif"/>
+ * 	   <TD>Should rarely be overridden.
+ * 	 </tr>
+ *   <tr>
+ * 	   <TD><img src="../doc-files/dblack.gif"/>
+ * 	   <TD>Essentially "internal" and should never be overridden.
+ *   </tr>
+ * </table>
  */
-abstract public class AbstractGraphicalEditPart
+public abstract class AbstractGraphicalEditPart
 	extends AbstractEditPart
 	implements GraphicalEditPart
 {
 
+/**
+ * The Figure
+ */
 protected IFigure figure;
-protected List handles = new ArrayList(8);
+
+/**
+ * List of <i>source</i> ConnectionEditParts
+ */
 protected List sourceConnections;
+
+/**
+ * List of <i>source</i> ConnectionEditParts
+ */
 protected List targetConnections;
 
-abstract protected class AccessibleGraphicalEditPart
+/**
+ * A default implementation of {@link AccessibleEditPart}. Subclasses can extend this
+ * implementation to get base accessibility for free.
+ * @since 2.0 */
+protected abstract class AccessibleGraphicalEditPart
 	extends AccessibleEditPart
 {
+	/**	 * @see AccessibleEditPart#getChildCount(AccessibleControlEvent)	 */
 	public void getChildCount(AccessibleControlEvent e) {
 		e.detail  = AbstractGraphicalEditPart.this.getChildren().size();
 	}
 	
+	/**	 * @see AccessibleEditPart#getChildren(AccessibleControlEvent)	 */
 	public void getChildren(AccessibleControlEvent e) {
 		List list = AbstractGraphicalEditPart.this.getChildren();
 		Object children[] = new Object[list.size()];
 		for (int i = 0; i < list.size(); i++) {
 			EditPart part = (EditPart)list.get(i);
-			AccessibleEditPart access = (AccessibleEditPart)part.getAdapter(AccessibleEditPart.class);
+			AccessibleEditPart access =
+				(AccessibleEditPart) part.getAdapter(AccessibleEditPart.class);
 			if (access == null)
-				return; //fail if any children aren't accessible.  Not sure if SWT allows NULL in the array.
+				return; //fail if any children aren't accessible.
 			children[i] = new Integer(access.getAccessibleID());
 		}
 		e.children = children;
 	}
-
+	
+	/**	 * @see AccessibleEditPart#getLocation(AccessibleControlEvent)	 */
 	public void getLocation(AccessibleControlEvent e) {
 		Rectangle bounds = getFigure().getBounds().getCopy();
 		getFigure().translateToAbsolute(bounds);
-		org.eclipse.swt.graphics.Point p = new org.eclipse.swt.graphics.Point(0,0);
+		org.eclipse.swt.graphics.Point p = new org.eclipse.swt.graphics.Point(0, 0);
 		p = getViewer().getControl().toDisplay(p);
 		e.x = bounds.x + p.x;
 		e.y = bounds.y + p.y;
@@ -61,30 +103,37 @@ abstract protected class AccessibleGraphicalEditPart
 		e.height = bounds.height;
 	}
 
-		public void getState(AccessibleControlEvent e) {
-			if (getSelected() != EditPart.SELECTED_NONE)
-				e.detail = ACC.STATE_SELECTED;
-			else
-				e.detail = ACC.STATE_NORMAL;
-		}
+	/**	 * @see AccessibleEditPart#getState(AccessibleControlEvent)	 */
+	public void getState(AccessibleControlEvent e) {
+		if (getSelected() != EditPart.SELECTED_NONE)
+			e.detail = ACC.STATE_SELECTED;
+		else
+			e.detail = ACC.STATE_NORMAL;
+	}
 }
 
+/**
+ * The default implementation of {@link AccessibleAnchorProvider} returned in {@link
+ * #getAdapter(Class)}. This implementation creates an accessible location located along
+ * the right edge of the EditPart's Figure.
+ * @since 2.0 */
 protected class DefaultAccessibleAnchorProvider
 	implements AccessibleAnchorProvider
 {
-	private List getDefaultLocations(){
+	private List getDefaultLocations() {
 		List list = new ArrayList();
 		Rectangle r = getFigure().getBounds();
-		Point p = r.getTopRight().translate(-1, r.height/3);
+		Point p = r.getTopRight().translate(-1, r.height / 3);
 		getFigure().translateToAbsolute(p);
 		list.add(p);
 		return list;
 	}
-
-	public List getSourceAnchorLocations(){
+	/**	 * @see AccessibleAnchorProvider#getSourceAnchorLocations()	 */
+	public List getSourceAnchorLocations() {
 		return getDefaultLocations();
 	}
-	public List getTargetAnchorLocations(){
+	/**	 * @see AccessibleAnchorProvider#getTargetAnchorLocations()	 */
+	public List getTargetAnchorLocations() {
 		return getDefaultLocations();
 	}
 }
@@ -93,24 +142,29 @@ static class MergedAccessibleHandles
 	implements AccessibleHandleProvider
 {
 	List locations = new ArrayList();
-	MergedAccessibleHandles(EditPolicyIterator iter){
-		while (iter.hasNext()){
+	MergedAccessibleHandles(EditPolicyIterator iter) {
+		while (iter.hasNext()) {
 			EditPolicy policy = iter.next();
 			if (!(policy instanceof IAdaptable))
 				continue;
 			IAdaptable adaptable = (IAdaptable) policy;
 			AccessibleHandleProvider adapter =
-				(AccessibleHandleProvider)adaptable.getAdapter(AccessibleHandleProvider.class);
+				(AccessibleHandleProvider) adaptable.getAdapter(
+					AccessibleHandleProvider.class);
 			if (adapter != null)
 				locations.addAll(adapter.getAccessibleHandleLocations());
 		}
 	}
-	public List getAccessibleHandleLocations(){
+	public List getAccessibleHandleLocations() {
 		return locations;
 	}
 }
 
-public void activate(){
+/**
+ * Extends {@link AbstractEditPart#activate() to also activate all <i>source</i>
+ * ConnectionEditParts.
+ * @see org.eclipse.gef.EditPart#activate() */
+public void activate() {
 	super.activate();
 	List l = getSourceConnections();
 	for (int i = 0; i < l.size(); i++)
@@ -118,33 +172,29 @@ public void activate(){
 }
 
 /**
- * Before performing the addition of the child EditPart to
- * the model structure in super, its Figure is added to the 
- * graphical model.
- *
- * @param childEditPart  EditPart being added to the structure
- * @param index   Psotion the EditPart is being added into.
- */
-protected void addChildVisual(EditPart childEditPart, int index){
+ * Adds the child's Figure to the {@link #getContentPane() contentPane}.
+ * @see org.eclipse.gef.editparts.AbstractEditPart#addChildVisual(EditPart, int) */
+protected void addChildVisual(EditPart childEditPart, int index) {
 	IFigure child = ((GraphicalEditPart)childEditPart).getFigure();
 	getContentPane().add(child, index);
 }
 
 /**
  * <img src="../doc-files/black.gif"/>
- * Adds a connection to this EditPart, the source.
- * The connection will have its source set to this EditPart,
- *
- * The connection will be conditionally activated.
- * primAddSourceConnection(ConnectionEditPart, int) is called
- * to separate the act of adding the connection from the activation
- * and firing of notification.  Subclasses should generally override
- * primAddSourceConnection(ConnectionEditPart, int);
- *
+ * Adds a <i>source</i> ConnectionEditPart at the specified index. This method is called
+ * from {@link #refreshSourceConnections()}. There should be no reason to call or override
+ * this method. Source connection are created as a result of overriding {@link
+ * #getModelSourceConnections()}.
+ * <P>
+ * {@link #primAddSourceConnection(ConnectionEditPart, int)} is called to perform the
+ * actual update of the {@link #sourceConnections} <code>List</code>. The connection will
+ * have its source set to <code>this</code>.
+ * <P>
+ * If active, this EditPart will activate the ConnectionEditPart.
+ * <P>
+ * Finally, all {@link NodeListener}s are notified of the new connection.
  * @param connection  Connection being added
- * @param index   Index where it is being added
- * @see #primAddSourceConnection(ConnectionEditPart, int)
- * @see #removeSourceConnection
+ * @param index Index where it is being added
  */
 protected void addSourceConnection(ConnectionEditPart connection, int index) {
 	primAddSourceConnection(connection, index);
@@ -156,11 +206,17 @@ protected void addSourceConnection(ConnectionEditPart connection, int index) {
 
 /**
  * <img src="../doc-files/black.gif"/>
- * Adds a connection to this EditPart, the target.
+ * Adds a <i>target</i> ConnectionEditPart at the specified index. This method is called
+ * from {@link #refreshTargetConnections()}. There should be no reason to call or override
+ * this method. Target connection are created as a result of overriding {@link
+ * #getModelTargetConnections()}.
+ * <P>
+ * {@link #primAddTargetConnection(ConnectionEditPart, int)} is called to perform the
+ * actual update of the {@link #targetConnections} <code>List</code>. The connection will
+ * have its target set to <code>this</code>.
+ * <P> Finally, all {@link NodeListener}s are notified of the new connection.
  * @param connection  Connection being added
- * @param index   Index where it is being added
- * @see  #removeTargetConnection(ConnectionEditPart)
- * @see  #addSourceConnection(ConnectionEditPart,int)
+ * @param index Index where it is being added
  */
 protected void addTargetConnection(ConnectionEditPart connection, int index) {
 	primAddTargetConnection(connection, index);
@@ -169,22 +225,39 @@ protected void addTargetConnection(ConnectionEditPart connection, int index) {
 }
 
 /**
- * <img src="../doc-files/green.gif"/> Creates a {@link ConnectionEditPart}
- * for the given model.  Similar to {@link AbstractEditPart#createChild(Object)}.
- * This method is called from {@link #refreshSourceConnections()}, and 
- * {@link #refreshTargetConnections()}.
- * 
+ * <img src="../doc-files/black.gif"/> Creates a {@link ConnectionEditPart} for the given
+ * model. Similar to {@link AbstractEditPart#createChild(Object)}. This method is called
+ * indirectly during {@link #refreshSourceConnections()}, and {@link
+ * #refreshTargetConnections()}.
+ * <P>
+ * The default implementation goes to the EditPartViewer's {@link EditPartFactory} to
+ * create the connection. This method should not be overridden unless factories are not
+ * being used.
  * @param model the connection model object
+ * @return the new ConnectionEditPart
  */
 protected ConnectionEditPart createConnection(Object model) {
-	return (ConnectionEditPart)getViewer().getEditPartFactory().createEditPart(this, model);
+	return (ConnectionEditPart)getViewer()
+		.getEditPartFactory()
+		.createEditPart(this, model);
 }
 
 /**
- * Searches for an existing ConnectionEditPart in the EditPart registry and 
- * returns it if one is found.  Otherwise, {@link #createConnection(Object)} 
- * is called to create a new ConnectionEditPart.  Override this method if you 
- * need to find an existing connection some other way.
+ * Creates the <code>Figure</code> to be used as this part's <i>visuals</i>. This is
+ * called from {@link #getFigure()} if the figure has not been created.
+ * @return a Figure
+ */
+protected abstract IFigure createFigure();
+
+/**
+ * <img src="../doc-files/black.gif"/> Searches for an existing
+ * <code>ConnectionEditPart</code> in the Viewer's {@link
+ * EditPartViewer#getEditPartRegistry() EditPart registry} and returns it if one is found.
+ * Otherwise, {@link #createConnection(Object)} is called to create a new
+ * ConnectionEditPart.  Override this method only if you need to find an existing
+ * connection some other way.
+ * @param model the Connection's model
+ * @return the ConnectionEditPart
  */
 protected ConnectionEditPart createOrFindConnection(Object model) {
 	ConnectionEditPart conx = (ConnectionEditPart)getViewer().getEditPartRegistry().get(model);
@@ -194,11 +267,11 @@ protected ConnectionEditPart createOrFindConnection(Object model) {
 }
 
 /**
- * Returns the figure to be used as this part's visuals.
- */
-abstract protected IFigure createFigure();
-
-public void deactivate(){
+ * <img src="../doc-files/green.gif"/> Extends {@link AbstractEditPart#deactivate()} to
+ * also deactivate the source ConnectionEditParts. Subclasses should <em>extend</em> this
+ * method to remove any listeners added in {@link #activate}.
+ * @see org.eclipse.gef.EditPart#deactivate() */
+public void deactivate() {
 	List l = getSourceConnections();
 	for (int i = 0; i < l.size(); i++)
 		((EditPart)l.get(i)).deactivate();
@@ -206,86 +279,86 @@ public void deactivate(){
 	super.deactivate();
 }
 
-public void dispose(){
-	List conns;
-	conns = getSourceConnections();
-	for (int i=0; i < conns.size(); i++)
-		((ConnectionEditPart)conns.get(i)).setSource(null);
-	conns = getTargetConnections();
-	for (int i=0; i < conns.size(); i++)
-		((ConnectionEditPart)conns.get(i)).setTarget(null);
-	super.dispose();
-}
-
 /**
- * Notifies listeners that a source connection has been added.
- *
+ * <img src="../doc-files/dblack.gif"/> Notifies listeners that a source connection has
+ * been removed. Called from {@link #removeSourceConnection(ConnectionEditPart)}. There is
+ * no reason for subclasses to call or override this method.
  * @param connection  <code>ConnectionEditPart</code> being added as child.
  * @param index  Position child is being added into.
  */
-protected void fireRemovingSourceConnection(ConnectionEditPart connection, int index){
+protected void fireRemovingSourceConnection(ConnectionEditPart connection, int index) {
 	if (eventListeners == null)
 		return;
 	Iterator listeners = eventListeners.getListeners(NodeListener.class);
 	NodeListener listener = null;
-	while(listeners.hasNext()){
+	while (listeners.hasNext()) {
 		listener = (NodeListener)listeners.next();
 		listener.removingSourceConnection(connection, index);
 	}
 }
 
 /**
- * Notifies listeners that a source connection has been added.
- *
+ * <img src="../doc-files/dblack.gif"/> Notifies listeners that a target connection has
+ * been removed. Called from {@link #removeTargetConnection(ConnectionEditPart)}. There is
+ * no reason for subclasses to call or override this method.
  * @param connection  <code>ConnectionEditPart</code> being added as child.
  * @param index  Position child is being added into.
  */
-protected void fireRemovingTargetConnection(ConnectionEditPart connection, int index){
+protected void fireRemovingTargetConnection(ConnectionEditPart connection, int index) {
 	if (eventListeners == null)
 		return;
 	Iterator listeners = eventListeners.getListeners(NodeListener.class);
 	NodeListener listener = null;
-	while(listeners.hasNext()){
+	while (listeners.hasNext()) {
 		listener = (NodeListener)listeners.next();
 		listener.removingTargetConnection(connection, index);
 	}
 }
 
 /**
- * Notifies listeners that a source connection has been added.
- *
+ * <img src="../doc-files/dblack.gif"/> Notifies listeners that a source connection has
+ * been added. Called from {@link #addSourceConnection(ConnectionEditPart, int)}. There is
+ * no reason for subclasses to call or override this method.
+ * 
  * @param connection  <code>ConnectionEditPart</code> being added as child.
  * @param index  Position child is being added into.
  */
-protected void fireSourceConnectionAdded(ConnectionEditPart connection, int index){
+protected void fireSourceConnectionAdded(ConnectionEditPart connection, int index) {
 	if (eventListeners == null)
 		return;
 	Iterator listeners = eventListeners.getListeners(NodeListener.class);
 	NodeListener listener = null;
-	while(listeners.hasNext()){
+	while (listeners.hasNext()) {
 		listener = (NodeListener)listeners.next();
 		listener.sourceConnectionAdded(connection, index);
 	}
 }
 
 /**
- * Notifies listeners that a source connection has been added.
- *
+ * <img src="../doc-files/dblack.gif"/> Notifies listeners that a target connection has
+ * been added. Called from {@link #addTargetConnection(ConnectionEditPart, int)}. There is
+ * no reason for subclasses to call or override this method.
  * @param connection  <code>ConnectionEditPart</code> being added as child.
  * @param index  Position child is being added into.
  */
-protected void fireTargetConnectionAdded(ConnectionEditPart connection, int index){
+protected void fireTargetConnectionAdded(ConnectionEditPart connection, int index) {
 	if (eventListeners == null)
 		return;
 	Iterator listeners = eventListeners.getListeners(NodeListener.class);
 	NodeListener listener = null;
-	while(listeners.hasNext()){
+	while (listeners.hasNext()) {
 		listener = (NodeListener)listeners.next();
 		listener.targetConnectionAdded(connection, index);
 	}
 }
 
-public Object getAdapter(Class key){
+/**
+ * Extends {@link AbstractEditPart#getAdapter(Class)} to handle additional adapter types.
+ * Currently, these types include {@link AccessibleHandleProvider} and {@link
+ * AccessibleAnchorProvider}. Subclasses should <em>extend</em> this method to support
+ * additional adapter types, or to replace the default provided adapaters.
+ * @see org.eclipse.core.runtime.IAdaptable#getAdapter(Class) */
+public Object getAdapter(Class key) {
 	if (key == AccessibleHandleProvider.class)
 		return new MergedAccessibleHandles(getEditPolicyIterator());
 
@@ -295,85 +368,74 @@ public Object getAdapter(Class key){
 	return super.getAdapter(key);
 }
 
-/*
- * defined in interface
- */
-public IFigure getContentPane(){
+/**
+ * <img src="../doc-files/green.gif"/> If the children's Figures should be  * @see GraphicalEditPart#getContentPane() */
+public IFigure getContentPane() {
 	return getFigure();
 }
 
 /**
- * Returns a DragTrack for the given Request.
- * The Request object will indicate the context of the drag.
- *
- * @param Request A Request describing the type of drag.
- */
-public DragTracker getDragTracker(Request request){
+ * <img src="../doc-files/blue.gif"/> Overridden to return a default
+ * <code>DragTracker</code> for GraphicalEditParts.
+ * @see org.eclipse.gef.EditPart#getDragTracker(Request) */
+public DragTracker getDragTracker(Request request) {
 	return new org.eclipse.gef.tools.DragEditPartsTracker(this);
 }
 
 /**
- * Returns the graphical object of this.
- *
- * @return  The graphical part as a <code>IFigure</code>
- */
-final public IFigure getFigure(){
+ * The default implementation calls {@link #createFigure()} if the figure is currently
+ * <code>null</code>.
+ * @see org.eclipse.gef.GraphicalEditPart#getFigure() */
+public IFigure getFigure() {
 	if (figure == null)
 		setFigure(createFigure());
 	return figure;
 }
 
 /**
- * Returns the layer with the input name from the 
- * <code>LayerManager</code> from
- *
- * @param layer  Name of the Layer to be returned
- * @return  The layer with the given name.
+ * A convenience method for obtaining the specified layer from the
+ * <code>LayerManager</code>.
+ * @param layer ID of the Layer
+ * @return The requested layer or <code>null</code> if it doesn't exist
  */
-protected IFigure getLayer(Object layer){
+protected IFigure getLayer(Object layer) {
 	LayerManager manager = (LayerManager)getViewer().getEditPartRegistry().get(LayerManager.ID);
 	return manager.getLayer(layer);
 }
 
 /**
- * <img src="../doc-files/blue.gif"/>
- * Returns a <code>List</code> of the connection model objects
- * for which this EditPart's model is the <b>source</b>.
- * {@link #refreshSourceConnections()} requires that this List be
- * non-<code>null</code>.  For each connection model object,
- * {@link #createConnection(Object)} will be called to obtain a corresponding
- * {@link ConnectionEditPart}.
+ * <img src="../doc-files/green.gif"/> Returns the <code>List</code> of the connection
+ * model objects for which this EditPart's model is the <b>source</b>. {@link
+ * #refreshSourceConnections()} calls this method.  For each connection model object,
+ * {@link #createConnection(Object)} will be called automatically to obtain a
+ * corresponding {@link ConnectionEditPart}.
+ * @return the List of model source connections
  */
-protected List getModelSourceConnections() {return Collections.EMPTY_LIST;}
-
-/**
- * <img src="../doc-files/blue.gif"/>
- * Returns a <code>List</code> of the connection model objects
- * for which this EditPart's model is the <b>target</b>.
- * {@link #refreshTargetConnections()} requires that this List be
- * non-<code>null</code>.  For each connection model object,
- * {@link #createConnection(Object)} will be called to obtain a corresponding
- * {@link ConnectionEditPart}.
- */
-protected List getModelTargetConnections() {return Collections.EMPTY_LIST;}
-
-final protected IFigure getParentingFigure()throws Exception{
-	return null;
+protected List getModelSourceConnections() {
+	return Collections.EMPTY_LIST;
 }
 
-/*
- * defined by interface
+/**
+ * <img src="../doc-files/green.gif"/> Returns the <code>List</code> of the connection
+ * model objects for which this EditPart's model is the <b>target</b>. {@link
+ * #refreshTargetConnections()} calls this method.  For each connection model object,
+ * {@link #createConnection(Object)} will be called automatically to obtain a
+ * corresponding {@link ConnectionEditPart}.
+ * @return the List of model target connections
  */
-public List getSourceConnections(){
+protected List getModelTargetConnections() {
+	return Collections.EMPTY_LIST;
+}
+
+/** * @see org.eclipse.gef.GraphicalEditPart#getSourceConnections() */
+public List getSourceConnections() {
 	if (sourceConnections == null)
 		return Collections.EMPTY_LIST;
 	return sourceConnections;
 }
 
-/*
- * defined by interface
- */
-public List getTargetConnections(){
+/** * @see org.eclipse.gef.GraphicalEditPart#getTargetConnections() */
+public List getTargetConnections() {
 	if (targetConnections == null)
 		return Collections.EMPTY_LIST;
 	return targetConnections;
@@ -381,10 +443,12 @@ public List getTargetConnections(){
 
 /**
  * <img src="../doc-files/black.gif"/>
- * Performs the actual addition of a source connection.
- * @param connection  The connection to add.
- * @param index  Position connection is being added.
- * @see  #addSourceConnection(ConnectionEditPart,int)
+ * Adds the specified source <code>ConnectionEditPart</code> at an index. This method is
+ * used to update the {@link #sourceConnections} List. This method is called from {@link
+ * #addSourceConnection(ConnectionEditPart, int)}. Subclasses should not call or override
+ * this method.
+ * @param connection the ConnectionEditPart
+ * @param index the index of the add
  */
 protected void primAddSourceConnection(ConnectionEditPart connection, int index) {
 	if (sourceConnections == null)
@@ -394,12 +458,12 @@ protected void primAddSourceConnection(ConnectionEditPart connection, int index)
 
 /**
  * <img src="../doc-files/black.gif"/>
- * Performs the actual addition of a target connection.
- * A target connection is a connection whose target is this EditPart.
- *
- * @param connection  The connection being added.
- * @param index  Position connection is being added.
- * @see  #addTargetConnection(ConnectionEditPart,int)
+ * Adds the specified target <code>ConnectionEditPart</code> at an index. This method is
+ * used to update the {@link #targetConnections} List. This method is called from {@link
+ * #addTargetConnection(ConnectionEditPart, int)}. Subclasses should not call or override
+ * this method.
+ * @param connection the ConnectionEditPart
+ * @param index the index of the add
  */
 protected void primAddTargetConnection(ConnectionEditPart connection, int index) {
 	if (targetConnections == null)
@@ -408,44 +472,65 @@ protected void primAddTargetConnection(ConnectionEditPart connection, int index)
 }
 
 /**
- * Performs the actual removal of a source connection.
+ * <img src="../doc-files/black.gif"/>
+ * Removes the specified source <code>ConnectionEditPart</code> from the {@link
+ * #sourceConnections} List. This method is called from {@link
+ * #removeSourceConnection(ConnectionEditPart)}. Subclasses should not call or override
+ * this method.
  * @param connection  Connection to remove.
- * @see  #removeSourceConnection(ConnectionEditPart)
  */
 protected void primRemoveSourceConnection(ConnectionEditPart connection) {
 	sourceConnections.remove(connection);
 }
 
 /**
- * Performs the actual removal of a target connection.
+ * <img src="../doc-files/black.gif"/>
+ * Removes the specified target <code>ConnectionEditPart</code> from the {@link
+ * #targetConnections} List. This method is called from {@link
+ * #removeTargetConnection(ConnectionEditPart)}. Subclasses should not call or override
+ * this method.
  * @param connection  Connection to remove.
- * @see  #removeTargetConnection(ConnectionEditPart)
  */
-protected void primRemoveTargetConnection(ConnectionEditPart editPart) {
-	targetConnections.remove(editPart);
+protected void primRemoveTargetConnection(ConnectionEditPart connection) {
+	targetConnections.remove(connection);
 }
 
-public void refresh(){
+/**
+ * <img src="../doc-files/blue.gif"/>
+ * Extends {@link AbstractEditPart#refresh()} to refresh two additional structural
+ * features: <i>source</i> and <i>target</i> connections. Subclasses should probably
+ * override {@link AbstractEditPart#refreshVisuals()} instead of this method.
+ * @see org.eclipse.gef.EditPart#refresh() */
+public void refresh() {
 	super.refresh();
 	refreshSourceConnections();
 	refreshTargetConnections();
 }
 
 /**
- * <img src="../doc-files/black.gif"/>
- * Refreshes the set of Source Connections.
- * This method should not be overridden. {@link #createConnection(Object)}
- * and {@link #getModelSourceConnections()} should be overridden together.
+ * <img src="../doc-files/black.gif"/> Updates the set of <i>source</i>
+ * ConnectionEditParts so that it is in sync with the model source connections. This
+ * method is called from {@link #refresh()}, and may also be called in response to
+ * notification from the model.
+ * <P>
+ * The update is performed by comparing the exising source ConnectionEditParts with the
+ * set of model source connections returned from {@link #getModelSourceConnections()}.
+ * EditParts whose model no longer exists are {@link
+ * #removeSourceConnection(ConnectionEditPart) removed}. New models have their
+ * ConnectionEditParts {@link #createConnection(Object) created}. Subclasses should
+ * override <code>getModelSourceChildren()</code>.
+ * <P>
+ * This method should <em>not</em> be overridden.
  */
-protected void refreshSourceConnections(){
+protected void refreshSourceConnections() {
 	int i;
 	ConnectionEditPart editPart;
 	Object model;
 
-	Hashtable modelToEditPart = new Hashtable ();
+	Map modelToEditPart = new HashMap();
 	List editParts = getSourceConnections();
 
-	for (i=0; i < editParts.size(); i++){
+	for (i = 0; i < editParts.size(); i++) {
 		editPart = (ConnectionEditPart)editParts.get(i);
 		modelToEditPart.put(editPart.getModel(), editPart);
 	}
@@ -455,9 +540,10 @@ protected void refreshSourceConnections(){
 
 	for (i = 0; i < modelObjects.size(); i++) {
 		model = modelObjects.get(i);
-
-//		editPart = i < fSourceConnections.size() ? (ConnectionEditPart) fSourceConnections.get(i) : null;
-//		if (editPart != null && editPart.getModel() == model) continue;
+		
+		if (i < editParts.size()
+			&& ((EditPart) editParts.get(i)).getModel() == model)
+				continue;
 		
 		editPart = (ConnectionEditPart) modelToEditPart.get(model);
 		if (editPart != null)
@@ -470,27 +556,36 @@ protected void refreshSourceConnections(){
 
 	//Remove the remaining EditParts
 	List trash = new ArrayList ();
-	for (; i<editParts.size(); i++)
+	for (; i < editParts.size(); i++)
 		trash.add(editParts.get(i));
-	for (i=0; i<trash.size(); i++)
+	for (i = 0; i < trash.size(); i++)
 		removeSourceConnection((ConnectionEditPart)trash.get(i));
 }
 
 /**
- * <img src="../doc-files/black.gif"/>
- * Refreshes the set of Target Connections.
- * This method should not be overridden. {@link #createConnection(Object)}
- * and {@link #getModelTargetConnections()} should be overridden together.
+ * <img src="../doc-files/black.gif"/> Updates the set of <i>target</i>
+ * ConnectionEditParts so that it is in sync with the model target connections. This
+ * method is called from {@link #refresh()}, and may also be called in response to
+ * notification from the model.
+ * <P>
+ * The update is performed by comparing the exising source ConnectionEditParts with the
+ * set of model source connections returned from {@link #getModelTargetConnections()}.
+ * EditParts whose model no longer exists are {@link
+ * #removeTargetConnection(ConnectionEditPart) removed}. New models have their
+ * ConnectionEditParts {@link #createConnection(Object) created}. Subclasses should
+ * override <code>getModelTargetChildren()</code>.
+ * <P>
+ * This method should <em>not</em> be overridden.
  */
-protected void refreshTargetConnections(){
+protected void refreshTargetConnections() {
 	int i;
 	ConnectionEditPart editPart;
 	Object model;
 
-	Hashtable mapModelToEditPart = new Hashtable ();
+	Map mapModelToEditPart = new HashMap();
 	List connections = getTargetConnections();
 
-	for (i=0; i < connections.size(); i++){
+	for (i = 0; i < connections.size(); i++) {
 		editPart = (ConnectionEditPart)connections.get(i);
 		mapModelToEditPart.put(editPart.getModel(), editPart);
 	}
@@ -500,8 +595,10 @@ protected void refreshTargetConnections(){
 
 	for (i = 0; i < modelObjects.size(); i++) {
 		model = modelObjects.get(i);
-		editPart = i < connections.size() ? (ConnectionEditPart) connections.get(i) : null;
-		if (editPart != null && editPart.getModel() == model) continue;
+		
+		if (i < connections.size()
+			&& ((EditPart) connections.get(i)).getModel() == model)
+				continue;
 
 		editPart = (ConnectionEditPart)mapModelToEditPart.get(model);
 		if (editPart != null)
@@ -514,25 +611,40 @@ protected void refreshTargetConnections(){
 
 	//Remove the remaining Connection EditParts
 	List trash = new ArrayList ();
-	for (; i<connections.size(); i++)
+	for (; i < connections.size(); i++)
 		trash.add(connections.get(i));
-	for (i=0; i<trash.size(); i++)
+	for (i = 0; i < trash.size(); i++)
 		removeTargetConnection((ConnectionEditPart)trash.get(i));
 }
 
-protected void registerVisuals(){
+/**
+ * Registers the EditPart's Figure in the Viewer. This is what makes it possible for the
+ * Viewer to map a mouse location to an EditPart.
+ * @see org.eclipse.gef.editparts.AbstractEditPart#registerVisuals() */
+protected void registerVisuals() {
 	getViewer().getVisualPartMap().put(getFigure(), this);
 }
 
 /**
- * Before removing the child EditPart from the model structure 
- * in super, its Figure is removed from the graphical model.
- *
- * @param childEditPart  EditPart being removed from the structure
- */
-protected void removeChildVisual(EditPart childEditPart){
+ * Adds the child's Figure to the {@link #getContentPane() contentPane}. * @see AbstractEditPart#removeChildVisual(EditPart) */
+protected void removeChildVisual(EditPart childEditPart) {
 	IFigure child = ((GraphicalEditPart)childEditPart).getFigure();
 	getContentPane().remove(child);
+}
+
+/**
+ * Extends {@link AbstractEditPart#removeNotify()} to cleanup
+ * <code>ConnectionEditParts</code>.
+ * @see EditPart#removeNotify() */
+public void removeNotify() {
+	List conns;
+	conns = getSourceConnections();
+	for (int i = 0; i < conns.size(); i++)
+		((ConnectionEditPart)conns.get(i)).setSource(null);
+	conns = getTargetConnections();
+	for (int i = 0; i < conns.size(); i++)
+		((ConnectionEditPart)conns.get(i)).setTarget(null);
+	super.removeNotify();
 }
 
 /**
@@ -563,14 +675,8 @@ protected void removeTargetConnection(ConnectionEditPart connection) {
 }
 
 /**
- * Reorders the child to be at the specified new position.
- * The child's contraints are saved, it is removed from the
- * structure, and added back at the index given. Its constraints
- * are then set back to it.
- *
- * @param child  EditPart being reordered.
- * @param index  PosPosition being reordered to.
- */
+ * This method is extended to preserve a LayoutManager constraint if one exists.
+ * @see org.eclipse.gef.editparts.AbstractEditPart#reorderChild(EditPart, int) */
 protected void reorderChild(EditPart child, int index) {
 	// Save the constraint of the child so that it does not
 	// get lost during the remove and re-add.
@@ -586,56 +692,45 @@ protected void reorderChild(EditPart child, int index) {
 
 /**
  * <img src="../doc-files/black.gif"/>
- * Bubbles the given source ConnectionEditPart into a lower index than it
- * previously occupied.
- *
- * @param connection  Connection being reordered
- * @param index the new Position into which the connection is being placed.
+ * Moves a source <code>ConnectionEditPart</code> into a lower index than it currently
+ * occupies. This method is called from {@link #refreshSourceConnections()}.
+ * @param connection the ConnectionEditPart
+ * @param index the new index
  */
-protected void reorderSourceConnection(ConnectionEditPart editPart, int index) {
-	primRemoveSourceConnection(editPart);
-	primAddSourceConnection(editPart, index);
+protected void reorderSourceConnection(ConnectionEditPart connection, int index) {
+	primRemoveSourceConnection(connection);
+	primAddSourceConnection(connection, index);
 }
 
 /**
- * <img src="../doc-files/blue.gif"/>
- * Bubbles the given target ConnectionEditPart into a lower index than it
- * previously occupied.
- *
- * @param connection  Connection being reordered
- * @param index the new Position into which the connection is being placed.
-
+ * <img src="../doc-files/black.gif"/>
+ * Moves a target <code>ConnectionEditPart</code> into a lower index than it currently
+ * occupies. This method is called from {@link #refreshTargetConnections()}.
+ * @param connection the ConnectionEditPart
+ * @param index the new index
  */
-protected void reorderTargetConnection(ConnectionEditPart editPart, int index) {
-	primRemoveTargetConnection(editPart);
-	primAddTargetConnection(editPart, index);
+protected void reorderTargetConnection(ConnectionEditPart connection, int index) {
+	primRemoveTargetConnection(connection);
+	primAddTargetConnection(connection, index);
 }
 
 /**
- * Sets the Figure representing the graphical content of this.
- *
- * @param figure  Figure being set.
+ * Sets the Figure
+ * @param figure the Figure
  */
-protected void setFigure(IFigure figure){
+protected void setFigure(IFigure figure) {
 	this.figure = figure;
 }
 
-public void setLayoutConstraint(EditPart child, IFigure childFigure, Object constraint){
+/** * @see org.eclipse.gef.GraphicalEditPart#setLayoutConstraint(EditPart, IFigure, Object) */
+public void setLayoutConstraint(EditPart child, IFigure childFigure, Object constraint) {
 	getContentPane().setConstraint(childFigure, constraint);
 }
 
 /**
- * Updates this EditPart. Update is done only in the
- * presence of a set Figure. 
- *
- */
-protected boolean shouldInitialize(){
-	return super.shouldInitialize() &&
-		getFigure() != null;
-}
-
-protected void unregister(){
-	super.unregister();
+ * Implemented to remove the Figure from the Viewer's registry.
+ * @see org.eclipse.gef.editparts.AbstractEditPart#unregisterVisuals() */
+protected void unregisterVisuals() {
 	getViewer().getVisualPartMap().remove(getFigure());
 }
 

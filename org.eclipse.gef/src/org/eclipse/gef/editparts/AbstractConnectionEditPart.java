@@ -19,20 +19,33 @@ import org.eclipse.gef.tools.SelectEditPartTracker;
  * EditParts.
  *
  */
-abstract public class AbstractConnectionEditPart
+public abstract class AbstractConnectionEditPart
 	extends AbstractGraphicalEditPart
 	implements ConnectionEditPart, LayerConstants
 {
 
-private static final ConnectionAnchor DEFAULT_SOURCE_ANCHOR = new XYAnchor(new Point(10,10));
-private static final ConnectionAnchor DEFAULT_TARGET_ANCHOR = new XYAnchor(new Point(100,100));
+private static final ConnectionAnchor DEFAULT_SOURCE_ANCHOR =
+	new XYAnchor(new Point(10, 10));
+private static final ConnectionAnchor DEFAULT_TARGET_ANCHOR =
+	new XYAnchor(new Point(100, 100));
 
-class DefaultAccessibleAnchorProvider
+/**
+ * Provides accessibility support for when connections are also themselves nodes. If a
+ * connection is the source or target of another connection, then its midpoint is used as
+ * the accessible anchor location.
+ * @author hudsonr
+ * @since 2.0 */
+protected final class DefaultAccessibleAnchorProvider
 	implements AccessibleAnchorProvider
 {
-	public List getSourceAnchorLocations(){
+	/**
+	 * This class is internal, but is made protected so that JavaDoc will see it.
+	 */
+	DefaultAccessibleAnchorProvider() { }
+	/**	 * @see AccessibleAnchorProvider#getSourceAnchorLocations()	 */
+	public List getSourceAnchorLocations() {
 		List list = new ArrayList();
-		if (getFigure() instanceof Connection){
+		if (getFigure() instanceof Connection) {
 			Point p = ((Connection)getFigure())
 					.getPoints()
 					.getMidpoint();
@@ -41,7 +54,8 @@ class DefaultAccessibleAnchorProvider
 		}
 		return list;
 	}
-	public List getTargetAnchorLocations(){
+	/**	 * @see AccessibleAnchorProvider#getTargetAnchorLocations()	 */
+	public List getTargetAnchorLocations() {
 		return getSourceAnchorLocations();
 	}
 }
@@ -57,17 +71,15 @@ private EditPart
  * 
  * @see #deactivate()
  */
-protected void activateFigure(){
-	refreshTargetAnchor();
-	refreshSourceAnchor();
+protected void activateFigure() {
 	getLayer(CONNECTION_LAYER).add(getFigure());
 }
 
-/*
- * Override this method to add EditPolicies. The connection 
- * needs additional Edit policies.
- */
-protected void createEditPolicies() { }
+/** * @see org.eclipse.gef.EditPart#addNotify() */
+public void addNotify() {
+	activateFigure();
+	super.addNotify();
+}
 
 /**
  * Returns a newly created Figure to represent these type of
@@ -75,7 +87,7 @@ protected void createEditPolicies() { }
  *
  * @return  The created Figure.
  */
-protected IFigure createFigure(){
+protected IFigure createFigure() {
 	return new PolylineConnection();
 }
 
@@ -90,71 +102,70 @@ protected void deactivateFigure() {
 	getConnectionFigure().setTargetAnchor(null);
 }
 
-public void dispose(){
-	deactivateFigure();
-	super.dispose();
-}
-
-protected void doInitialize(){
-	activateFigure();
-	super.doInitialize();
-}
-
-public Object getAdapter(Class adapter){
+/**
+ * <code>AbstractConnectionEditPart</code> extends getAdapter() to overrides the {@link
+ * AccessibleAnchorProvider} adapter returned by the superclass.  When treating a
+ * connection as a node for other connections, it makes sense to target its midpoint, and
+ * not the edge of its bounds.
+ * @see AbstractConnectionEditPart.DefaultAccessibleAnchorProvider
+ * @see AbstractGraphicalEditPart#getAdapter(Class)
+ * @param adapter the adapter Class
+ * @return the adapter
+ */
+public Object getAdapter(Class adapter) {
 	if (adapter == AccessibleAnchorProvider.class)
 		return new DefaultAccessibleAnchorProvider();
 	return super.getAdapter(adapter);
 }
 
 /**
- * Returns the Figure representing the connection.
- *
- * @return  Figure as an IConnection.
+ * Convenience method for casting this GraphicalEditPart's Figure to a {@link Connection}
+ * @return the Figure as a Connection
  */
-public Connection getConnectionFigure(){
+public Connection getConnectionFigure() {
 	return (Connection)getFigure();
 }
 
-public DragTracker getDragTracker(Request req){
+/** * @see org.eclipse.gef.EditPart#getDragTracker(Request) */
+public DragTracker getDragTracker(Request req) {
 	return new SelectEditPartTracker(this);
 }
 
-/**
- * Returns the source EditPart
- *
- * @return  EditPart representing the source of this.
- */
-public EditPart getSource(){return sourceEditPart;}
+/** * @see org.eclipse.gef.ConnectionEditPart#getSource() */
+public EditPart getSource() {
+	return sourceEditPart;
+}
+
+/** * @see org.eclipse.gef.ConnectionEditPart#getTarget() */
+public EditPart getTarget() {
+	return targetEditPart;
+}
 
 /**
- * Returns the target EditPart
- *
- * @return  EditPart representing the target of this.
- */
-public EditPart getTarget(){return targetEditPart;}
-
-
-/**
- * If the source is an instance of GraphicalNodeEditPart, it
- * returns the anchor associated with it, else it returns 
- * <code>null</code>
- *
- * @return  Connection anchor of the source.
+ * Returns the <code>ConnectionAnchor</code> for the <i>source</i> end of the connection. 
+ * If the source is an instance of {@link NodeEditPart}, that interface will be used to
+ * determine the proper ConnectionAnchor. If the source is not an instance of
+ * <code>NodeEditPart</code>, this method should be overridden to return the correct
+ * ConnectionAnchor. Failure to do this will cause a default anchor to be used so that the
+ * connection figure will be made visible to the developer.
+ * @return ConnectionAnchor for the source end of the Connection
  */
 protected ConnectionAnchor getSourceConnectionAnchor() {
 	if (getSource() != null && getSource() instanceof NodeEditPart) {
 		NodeEditPart editPart = (NodeEditPart) getSource();
 		return editPart.getSourceConnectionAnchor(this);
 	}
-	return DEFAULT_TARGET_ANCHOR;
+	return DEFAULT_SOURCE_ANCHOR;
 }
 
 /**
- * If the target is an instance of NodeEditPart, it
- * returns the anchor associated with it, else it returns 
- * <code>null</code>
- *
- * @return  Connection anchor of the target.
+ * Returns the <code>ConnectionAnchor</code> for the <i>target</i> end of the connection. 
+ * If the target is an instance of {@link NodeEditPart}, that interface will be used to
+ * determine the proper ConnectionAnchor. If the target is not an instance of
+ * <code>NodeEditPart</code>, this method should be overridden to return the correct
+ * ConnectionAnchor. Failure to do this will cause a default anchor to be used so that the
+ * connection figure will be made visible to the developer.
+ * @return ConnectionAnchor for the target end of the Connection
  */
 protected ConnectionAnchor getTargetConnectionAnchor() {
 	if (getTarget() != null && getTarget() instanceof NodeEditPart) {
@@ -164,24 +175,51 @@ protected ConnectionAnchor getTargetConnectionAnchor() {
 	return DEFAULT_TARGET_ANCHOR;
 }
 
-public void refresh(){
+/**
+ * Extended here to also refresh the ConnectionAnchors.
+ * @see org.eclipse.gef.EditPart#refresh() */
+public void refresh() {
 	refreshSourceAnchor();
 	refreshTargetAnchor();
 	super.refresh();
 }
 
-protected void refreshSourceAnchor(){
+/**
+ * Updates the source ConnectionAnchor. Subclasses should override {@link
+ * #getSourceConnectionAnchor()} if necessary, and not this method.
+ */
+protected void refreshSourceAnchor() {
 	getConnectionFigure().setSourceAnchor(getSourceConnectionAnchor());
 }
 
-protected void refreshTargetAnchor(){
+/**
+ * Updates the target ConnectionAnchor. Subclasses should override {@link
+ * #getTargetConnectionAnchor()} if necessary, and not this method.
+ */
+protected void refreshTargetAnchor() {
 	getConnectionFigure().setTargetAnchor(getTargetConnectionAnchor());
 }
 
-public void setParent(EditPart parent){
-	if (parent == null && getParent() != null)
-		dispose();
+/**
+ * Extended here to remove the ConnectionEditPart's connection figure from the connection
+ * layer.
+ * @see org.eclipse.gef.EditPart#removeNotify() */
+public void removeNotify() {
+	deactivateFigure();
+	super.removeNotify();
+}
+
+/**
+ * Extended to implement automatic addNotify and removeNotify handling.
+ * @see org.eclipse.gef.EditPart#setParent(EditPart) */
+public void setParent(EditPart parent) {
+	boolean wasNull = getParent() == null;
+	boolean becomingNull = parent == null;
+	if (becomingNull && !wasNull)
+		removeNotify();
 	super.setParent(parent);
+	if (wasNull && !becomingNull)
+		addNotify();
 }
 
 /**
@@ -189,16 +227,13 @@ public void setParent(EditPart parent){
  *
  * @param editPart  EditPart which is the source.
  */
-public void setSource(EditPart editPart){
+public void setSource(EditPart editPart) {
 	sourceEditPart = editPart;
 	if (sourceEditPart != null)
 		setParent(sourceEditPart.getRoot());
 	else if (getTarget() == null)
 		setParent(null);
-	if (shouldInitialize())
-		initialize();
-	else
-		refresh();
+	refresh();
 }
 
 /**
@@ -206,22 +241,13 @@ public void setSource(EditPart editPart){
  *
  * @param editPart  EditPart which is the target.
  */
-public void setTarget(EditPart editPart){
+public void setTarget(EditPart editPart) {
 	targetEditPart = editPart;
 	if (editPart != null)
 		setParent(editPart.getRoot());
 	else if (getSource() == null)
 		setParent(null);
-	if (shouldInitialize())
-		initialize();
-	else
-		refresh();
-}
-
-protected boolean shouldInitialize(){
-	return super.shouldInitialize()
-		&& getSource() != null
-		&& getTarget() != null;
+	refresh();
 }
 
 }

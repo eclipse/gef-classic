@@ -16,41 +16,60 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.*;
 
 /**
- * Provides support for EditParts which belong to the
- * Tree.
+ * Default implementation for {@link TreeEditPart}s used in GEF {@link
+ * org.eclipse.gef.ui.parts.TreeViewer}s.
+ * <P>
+ * This is an implementation class, and the documentation here is targeted at
+ * <em>subclassing</em> this class. Callers of public API should refer to the interface's
+ * documentation.
+ * <Table>
+ * 	 <tr>
+ * 	   <TD><img src="../doc-files/green.gif"/>
+ * 	   <TD>Indicates methods that subclasses <em>should</em> override.
+ *   </tr>
+ *   <tr>
+ *     <TD><img src="../doc-files/blue.gif"/>
+ *     <TD>These methods might be overridden.
+ * 	 </tr>
+ * 	 <tr>
+ * 	   <TD><img src="../doc-files/black.gif"/>
+ * 	   <TD>Should rarely be overridden.
+ * 	 </tr>
+ *   <tr>
+ * 	   <TD><img src="../doc-files/dblack.gif"/>
+ * 	   <TD>Essentially "internal" and should never be overridden.
+ *   </tr>
+ * </table>
  */
-abstract public class AbstractTreeEditPart
+public abstract class AbstractTreeEditPart
 	extends AbstractEditPart
 	implements TreeEditPart
 {
 
+/**
+ * Either a Tree or TreeItem
+ */
 protected Widget widget;
+
 private boolean expanded;
 
 /**
- * Constructor, which sets the model of this.
- *
- * @param model  Model which this Tree EditPart should
- *               represent.
+ * Constructs a new EditPart with the specified model.
+ * @param model the model
  */
 public AbstractTreeEditPart(Object model) {
 	setModel(model);
 }
 
-public AbstractTreeEditPart(){}
-
-public void activate(){
-	super.activate();
-}
+/** * Default constructor */
+public AbstractTreeEditPart() { }
 
 /**
- * This is where the child gets added, and its widget
- * created and set.
- *
- * @param childEditPart  EditPart of child to be added.
- * @param index  Position where it is to be added.
- */
-protected void addChildVisual(EditPart childEditPart, int index){
+ * <img src="../doc-files/black.gif"/> Implemented to assign the child its {@link
+ * TreeEditPart#setWidget(Widget) widget}. Subclasses should not call or override this
+ * method.
+ * @see org.eclipse.gef.editparts.AbstractEditPart#addChildVisual(EditPart, int) */
+protected void addChildVisual(EditPart childEditPart, int index) {
 	Widget widget = getWidget();
 	TreeItem item;
 	if (widget instanceof Tree)
@@ -60,122 +79,133 @@ protected void addChildVisual(EditPart childEditPart, int index){
 	((TreeEditPart)childEditPart).setWidget(item);
 }
 
-protected boolean checkTreeItem(){
+/**
+ * Convenience method that returns <code>true</code> if the widget is a TreeItem and is
+ * safe to use.
+ * @return <code>true</code> if the widget is a <code>TreeItem</code> and is not disposed */
+protected final boolean checkTreeItem() {
 	return !(widget == null || widget.isDisposed() || widget instanceof Tree);
 }
 
-protected void createEditPolicies(){}
-
 /**
- * Returns a drag tracker suitable for dragging the receiver.
- *
- * @return  Returns a DragTracker
- */
-public DragTracker getDragTracker(Request req){
+ * <img src="../doc-files/green.gif"/> Override this method to install the EditPolicies
+ * for your EditPart.
+ * @see org.eclipse.gef.editparts.AbstractEditPart#createEditPolicies() */
+protected void createEditPolicies() { }
+
+/** * @see org.eclipse.gef.EditPart#getDragTracker(Request) */
+public DragTracker getDragTracker(Request req) {
 	return new org.eclipse.gef.tools.DragTreeItemsTracker(this);
 }
 
-protected Image getImage(){
+/**
+ * <img src="../doc-files/green.gif"/> Override this method to return the
+ * <code>Image</code> for this EditPart's {@link #widget}. This method is called from
+ * {@link #refreshVisuals()}.
+ * @return the Image to be displayed in the TreeItem */
+protected Image getImage() {
 	return null;
 }
 
-protected String getText(){
+/**
+ * <img src="../doc-files/green.gif"/> Override this method to return the String to be
+ * used in this EditPart's {@link #widget}. This method is called from {@link
+ * #refreshVisuals()}.
+ * @return the String to be displayed by the TreeItem
+ */
+protected String getText() {
 	return getClass().getName();
 }
 
-/**
- * Returns the Widget which represents this.
- *
- * @return  Widget
- */
+/** * @see org.eclipse.gef.TreeEditPart#getWidget() */
 public Widget getWidget() {
 	return widget;
 }
 
+/**
+ * <img src="../doc-files/black.gif"/> By default, this method will apply an
+ * <code>Image</code> and <code>String</code> to the widget if it is a
+ * <code>TreeItem</code>. Subclasses should override {@link #getImage()} and {@link
+ * #getText()} to provide the <code>Image</code> and <code>String</code> used.
+ * <P>
+ * Subclasses might extend this method if they also want to change the TreeItem's
+ * foreground or background color.
+ * @see org.eclipse.gef.editparts.AbstractEditPart#refreshVisuals() */
 protected void refreshVisuals() {
 	setWidgetImage(getImage());
 	setWidgetText(getText());
 }
 
 /**
- * The child is finally removed through this method.
- * Its Widget is first removed and disposed, after
- * which it removes the EditPart.
- *
- * @param childEditPart  EditPart of the child to be removed.
- */
-protected void removeChildVisual(EditPart childEditPart){
+ * Disposes the child's <code>widget</code> and sets it to <code>null</code>.
+ * @see org.eclipse.gef.editparts.AbstractEditPart#removeChildVisual(EditPart) */
+protected void removeChildVisual(EditPart childEditPart) {
 	TreeEditPart treeEditPart = (TreeEditPart)childEditPart;
 	treeEditPart.getWidget().dispose();
 	treeEditPart.setWidget(null);
 }
 
 /**
- * Sets the Widget of this, after which the entire EditPart
- * is updated.
- *
- * @param newWidget  The new Widget of this.
+ * @see org.eclipse.gef.editparts.AbstractEditPart#reorderChild(EditPart, int)
  */
+protected void reorderChild(EditPart editpart, int index) {
+	super.reorderChild(editpart, index);
+	//Reordering assigns a new Widget to the child. Call refresh() to update widget.
+	editpart.refresh();
+}
+
+
+/**
+ * Sets the {@link #widget}.
+ * @see org.eclipse.gef.TreeEditPart#setWidget(Widget) */
 public void setWidget(Widget widget) {
 	List children = getChildren();
-	if (widget != null){
+	if (widget != null) {
 		widget.setData(this);
-		if (widget instanceof TreeItem){
+		if (widget instanceof TreeItem) {
 			final TreeItem item = (TreeItem) widget;
-			item.addDisposeListener(new DisposeListener(){
-				public void widgetDisposed(DisposeEvent e){
+			item.addDisposeListener(new DisposeListener() {
+				public void widgetDisposed(DisposeEvent e) {
 					expanded = item.getExpanded();
 				}
 			});
 		}
-		for (int i=0; i<children.size(); i++){
+		for (int i = 0; i < children.size(); i++) {
 			TreeEditPart tep = (TreeEditPart)children.get(i);
 			if (widget instanceof TreeItem)
 				tep.setWidget(new TreeItem((TreeItem)widget, 0));
 			else
-				tep.setWidget(new TreeItem((Tree)widget,0));
+				tep.setWidget(new TreeItem((Tree)widget, 0));
+
+			//We have just assigned a new TreeItem to the EditPart
+			tep.refresh();
 		}
 		if (widget instanceof TreeItem)
 			((TreeItem)widget).setExpanded(expanded);
 	} else {
-		setFlag(FLAG_INITIALIZED, false);
 		Iterator iter = getChildren().iterator();
 		while (iter.hasNext())
 			((TreeEditPart)iter.next()).setWidget(null);
 	}
 	this.widget = widget;
-	initialize();
 }
 
 /**
- * Sets the image of a TreeItem (Widget) of this
- * with the one given as input.
- *
- * @param image  Image to be used.
+ * Sets a specified <code>Image</code> into the widget iff it is a <code>TreeItem</code>.
+ * @param image the Image
  */
-protected void setWidgetImage(Image image){
+protected final void setWidgetImage(Image image) {
 	if (checkTreeItem())
 		((TreeItem)getWidget()).setImage(image);
 }
 
 /**
- * Sets the test of a TreeItem (Widget) of this
- * with the text given as input.
- *
- * @param text  Text to be set.
+ * Sets a specified <code>String</code> into the widget iff it is a <code>TreeItem</code>.
+ * @param text the String
  */
-protected void setWidgetText(String text){
+protected final void setWidgetText(String text) {
 	if (checkTreeItem())
 		((TreeItem)getWidget()).setText(text);
-}
-
-/**
- * Determines if the Editpart has the necessary information to initialize
- */
-protected boolean shouldInitialize(){
-	return super.shouldInitialize() &&
-		getWidget() != null &&
-		!getWidget().isDisposed();
 }
 
 }

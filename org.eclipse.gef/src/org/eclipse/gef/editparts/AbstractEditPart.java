@@ -10,6 +10,7 @@ import java.util.*;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.ui.views.properties.IPropertySource;
+import org.eclipse.jface.util.Assert;
 
 import org.eclipse.draw2d.EventListenerList;
 
@@ -17,55 +18,59 @@ import org.eclipse.gef.*;
 import org.eclipse.gef.commands.Command;
 
 /**
- The baseline implementation for the {@link EditPart} interface.
- <P>Since this is the default implementation of an interface, this document
- deals with proper sub-classing of this implementation.  This class is not
- the API.  For documentation on proper usage of the public API, see the
- * documentation for the interface itself: {@link EditPart}.
- <P><Table>
- 	<tr><TD><img src="../doc-files/green.gif"/>
- 		<TD>Indicates methods that are commonly overridden or even abstract
- 	</tr><tr><TD><img src="../doc-files/blue.gif"/>
- 		<TD>These methods might be overridden.  Especially if you were
- 			extending this class directly.
- 	</tr><tr><TD><img src="../doc-files/black.gif"/>
- 		<TD>Should rarely be overridden.
- 	</tr><tr><TD><img src="../doc-files/dblack.gif"/>
- 		<TD>Essentially "internal" and should never be overridden.
-</tr></table>
- <P>This class assumes no visual representation.
- Subclasses {@link AbstractGraphicalEditPart} and {@link AbstractTreeEditPart}
- add support for {@link org.eclipse.draw2d.IFigure Figures} and
- {@link org.eclipse.swt.widgets.TreeItem TreeItems} respectively.
- <P>AbstractEditPart provides support for, but does not require the usage of:
- <UL>
-   <LI> A Children relationship
-   <LI> A Source connections relationship. i.e., connections which originate from this part.
-   <LI> A Target connection relationship. i.e., connections which terminate at this part
- </UL>
+ * The baseline implementation for the {@link EditPart} interface.
+ * <P>
+ * Since this is the default implementation of an interface, this document deals with
+ * proper sub-classing of this implementation.  This class is not the API.  For
+ * documentation on proper usage of the public API, see the documentation for the
+ * interface itself: {@link EditPart}.
+ * <P>
+ * <Table>
+ * 	 <tr>
+ * 	   <TD><img src="../doc-files/green.gif"/>
+ * 	   <TD>Indicates methods that are commonly overridden or even abstract
+ *   </tr>
+ *   <tr>
+ *     <TD><img src="../doc-files/blue.gif"/>
+ *     <TD>These methods might be overridden.  Especially if you were extending this class
+ *     directly.
+ * 	 </tr>
+ * 	 <tr>
+ * 	   <TD><img src="../doc-files/black.gif"/>
+ * 	   <TD>Should rarely be overridden.
+ * 	 </tr>
+ *   <tr>
+ * 	   <TD><img src="../doc-files/dblack.gif"/>
+ * 	   <TD>Essentially "internal" and should never be overridden.
+ *   </tr>
+ * </table>
+ * <P>
+ * This class assumes no visual representation. Subclasses {@link
+ * AbstractGraphicalEditPart} and {@link AbstractTreeEditPart} add support for {@link
+ * org.eclipse.draw2d.IFigure Figures} and {@link org.eclipse.swt.widgets.TreeItem
+ * TreeItems} respectively.
+ * <P>
+ * AbstractEditPart provides support for children. All AbstractEditPart's can potentially
+ * be containers for other EditParts.
  */
 public abstract class AbstractEditPart
 	implements EditPart, RequestConstants, IAdaptable
 {
 
-static class Assert
-	extends org.eclipse.gef.internal.Assert{}
-
-protected static final int
-	FLAG_INITIALIZED = 1,
-	FLAG_FOCUS = 4,
-	FLAG_ACTIVE   = 2;
+/**
+ * This flag is set during {@link #activate()}, and reset on {@link #deactivate()}
+ */
+protected static final int FLAG_ACTIVE   = 1;
+/**
+ * This flag indicates that the EditPart has focus.
+ */
+protected static final int FLAG_FOCUS = 2;
 
 /**
- The highest bit used as a bitmask in this class.
- A single integer field is used to store up to 32 boolean values.
- Subclasses may call {@link #setFlag(int, boolean)} and
- {@link #getFlag(int)} methods
- with additional bitmasks iff those masks are greater than MAX_FLAG.
- Example: <P><code> static final int MY_FLAG = super.MAX_FLAG << 1</code>;
+ * The left-most bit that is reserved by this class for setting flags. Subclasses may
+ * define additional flags starting at <code>(MAX_FLAG << 1)</code>.
  */
-protected static final int
-		MAX_FLAG = FLAG_FOCUS;
+protected static final int MAX_FLAG = FLAG_FOCUS;
 
 private   	Object model;
 private	int flags;
@@ -74,35 +79,35 @@ private	int selected;
 
 private 	List editPolicies = new ArrayList(2);
 private   	List editPolicyKeys = new ArrayList(2);
+/**
+ * The List of children EditParts
+ */
 protected 	List children;
 
 /**
- * @deprecated do not reference, call getEventListeners(Class) instead.
+ * call getEventListeners(Class) instead.
  */
-protected	EventListenerList eventListeners = new EventListenerList();
+EventListenerList eventListeners = new EventListenerList();
 
 /**
- * Iterates over a <code>List</code> of EditPolcies, skipping
- * any <code>null</code> values encountered.
+ * Iterates over a <code>List</code> of EditPolcies, skipping any <code>null</code> values
+ * encountered.
  */
-protected static class EditPolicyIterator {
-	protected Iterator iter;
-	protected Object next;
+static class EditPolicyIterator {
+	private Iterator iter;
+	private Object next;
 
 	/**
 	 * Constructs an Iterator for the given <code>List</code>.
 	 */
-	public EditPolicyIterator(List list){
+	public EditPolicyIterator(List list) {
 		iter = list.iterator();
 	}
 
 	/**
-	 * Returns the next <code>EditPolicy</code>
 	 * 
-	 * @return  Next <code>EditPolicy</code> if available,
-	 *          else returns <code>null</code>
 	 */
-	public EditPolicy next(){
+	public EditPolicy next() {
 		Object temp = next;
 		next = null;
 		return (EditPolicy)temp;
@@ -115,7 +120,7 @@ protected static class EditPolicyIterator {
 	 * @return  <code>boolean</code> representing availability
 	 *          of the next <code>EditPolicy</code>
 	 */
-	public boolean hasNext(){
+	public boolean hasNext() {
 		if (next != null)
 			return true;
 		if (iter.hasNext())
@@ -127,21 +132,12 @@ protected static class EditPolicyIterator {
 }
 
 /**
- * <img src="../doc-files/green.gif"/> Initializes or reactivates
- * this part and hooks any needed listeners.
- * This method is commonly overridden to add listeners to the model.
- * Subclasses should always call <code>super.activate()</code>.
- * Activation indicates that the EditPart is realized in an EditPartViewer.
- * <code>deactivate()</code> is guaranteed to be called.  Both may be called
- * multiple times.
- * <P>During activation, and EditPart will generally:
- * <OL>
- *   <LI> Register itself as an observer to its model
- *   <LI> Activate its editpolicies (implemented here)
- *   <LI> Activate all associated EditParts managed by it (implemented here)
- * </OL>
- * An EditPart is generally activated by the part that manages it,
- * usually a parent.
+ * <img src="../doc-files/green.gif"/> Activates this EditPart, which in turn activates
+ * its children and EditPolicies. Subclasses should <em>extend</em> this method to add
+ * listeners to the model. Activation indicates that the EditPart is realized in an
+ * EditPartViewer. <code>deactivate()</code> is the inverse, and is eventually called on
+ * all EditParts.
+ * @see EditPart#activate()
  * @see #deactivate()
  */
 public void activate() {
@@ -159,25 +155,30 @@ public void activate() {
 }
 
 /**
- * <img src="../doc-files/dblack.gif"/>
- * Activates all EditPolicies.  There is little reason to override this method.
+ * <img src="../doc-files/dblack.gif"/> Activates all EditPolicies installed on this part.
+ * There is no reason to override this method.
  * @see #activate()
  */
-protected void activateEditPolicies(){
+protected void activateEditPolicies() {
 	EditPolicyIterator i = getEditPolicyIterator();
 	while (i.hasNext())
 		i.next().activate();
 }
 
 /**
- * <img src="../doc-files/black.gif"/> Adds a child <code>EditPart</code>
- * to this EditPart. If activated, this editpart will activate the child.
- * <P>Notifies listeners that a child has been added. {@link #addChildVisual(EditPart, int)}
- * is called to separate the act of performing the add from the act of activation and
- * the firing of notification to listeners.
- * Subclasses should generally override {@link #addChildVisual(EditPart, int)} instead
- * of this method.
- *
+ * <img src="../doc-files/black.gif"/> Adds a child <code>EditPart</code> to this
+ * EditPart. This method is called from {@link #refreshChildren()}. The following events
+ * occur in the order listed:
+ * <OL>
+ *   <LI>The child is added to the {@link #children} List, and its parent is set to
+ *   <code>this</code>
+ *   <LI>{@link #addChildVisual(EditPart)} is called to add the child's visual
+ *   <LI>{@link EditPart#addNotify()} is called on the child.
+ *   <LI><code>activate()</code> is called if this part is active
+ *   <LI><code>EditPartListeners</code> are notified that the child has been added.
+ * </OL>
+ * <P>
+ * Subclasses should implement {@link #addChildVisual(EditPart)}.
  * @param child The <code>EditPart</code> to add
  * @param index The index
  * @see  #addChildVisual(EditPart, int)
@@ -185,15 +186,16 @@ protected void activateEditPolicies(){
  * @see  #reorderChild(EditPart,int)
  */
 protected void addChild(EditPart child, int index) {
+	Assert.isNotNull(child);
 	if (index == -1)
 		index = getChildren().size();
 	if (children == null)
 		children = new ArrayList(2);
 
-	Assert.isNotNull(child);
 	children.add(index, child);
-	addChildVisual(child, index);
 	child.setParent(this);
+	addChildVisual(child, index);
+	child.addNotify();
 
 	if (isActive())
 		child.activate();
@@ -201,12 +203,10 @@ protected void addChild(EditPart child, int index) {
 }
 
 /**
- * <img src="../doc-files/blue.gif"/>
- * Performs the actual addition of the child to this EditPart.
- * Subclasses must supply additional code to update the visuals being used.
- * The provided subclasses {@link AbstractGraphicalEditPart} and
- * {@link AbstractTreeEditPart} already implement this method correctly,
- * so it is unlikely that this method should be overridden.
+ * <img src="../doc-files/blue.gif"/> Performs the addition of the child's <i>visual</i>
+ * to this EditPart's Visual. The provided subclasses {@link AbstractGraphicalEditPart}
+ * and {@link AbstractTreeEditPart} already implement this method correctly, so it is
+ * unlikely that this method should be overridden.
  * @param child  The EditPart being added.
  * @param index  The child's position.
  * @see #addChild(EditPart, int)
@@ -215,48 +215,51 @@ protected void addChild(EditPart child, int index) {
 protected abstract void addChildVisual(EditPart child, int index);
 
 /**
- * <img src="../doc-files/dblack.gif"/>
- * Adds an editpart listener.
+ * <img src="../doc-files/dblack.gif"/> Adds an EditPartListener.
+ * @param listener the listener
  */
-public void addEditPartListener(EditPartListener listener){
+public void addEditPartListener(EditPartListener listener) {
 	eventListeners.addListener(EditPartListener.class, listener);
 }
 
 /**
- * <img src="../doc-files/green.gif"/> Override to create the child
- * <code>EditPart</code> for the given model object.
- * This method is called from {@link #refreshChildren()}
- * Subclasses may implement this method in place, or have it call
- * out to some type of EditPart factory associated with their application.
- * This method should be overriden together with {@link #getModelChildren()}.
- *
+ * @see EditPart#addNotify()
+ */
+public void addNotify() {
+	register();
+	createEditPolicies();
+	refresh();
+}
+
+/**
+ * <img src="../doc-files/black.gif"/> Create the child <code>EditPart</code>
+ * for the given model object. This method is called from {@link #refreshChildren()}.
+ * <P>
+ * By default, the implementation will delegate to the <code>EditPartViewer</code>'s
+ * {@link EditPartFactory}. Subclasses may override this method instead of using a
+ * Factory.
  * @param model the Child model object
  * @return The child EditPart
- * @see #getModelChildren()
  */
 protected EditPart createChild(Object model) {
 	return getViewer().getEditPartFactory().createEditPart(this, model);
 }
 
 /**
- * <img src="../doc-files/green.gif"/>Creates
- * the initial EditPolicies and reserves slots for dynamic ones.
- * Should be overridden to install the inital edit policies based on the
- * model's initial state.
- * <code>null</code> can be used to reserve a "slot", should there be
- * some desire to guarantee the ordering of EditPolcies.
- *
+ * <img src="../doc-files/green.gif"/>Creates the initial EditPolicies and/or reserves
+ * slots for dynamic ones. Should be implemented to install the inital EditPolicies based
+ * on the model's initial state. <code>null</code> can be used to reserve a "slot", should
+ * there be some desire to guarantee the ordering of EditPolcies.
  * @see #doInitialize()
- * @see #installEditPolicy(Object, EditPolicy)
+ * @see EditPart#installEditPolicy(Object, EditPolicy)
  */
-abstract protected void createEditPolicies();
+protected abstract void createEditPolicies();
 
 /**
- * <img src="../doc-files/green.gif"/> Override this
- * method to remove any listeners established in {@link #activate()},
- * and <EM>ALWAYS</EM> call <code>super.deactivate()</code> to ensure
- * that children, etc., are also deactivated.  activate() may be called
- * again afterwards.
+ * <img src="../doc-files/green.gif"/> Deactivates this EditPart, and in turn deactivates
+ * its children and EditPolicies. Subclasses should <em>extend</em> this method to remove
+ * any listeners established in {@link #activate()}
+ * @see  EditPart#deactivate()
  * @see  #activate()
  */
 public void deactivate() {
@@ -273,10 +276,9 @@ public void deactivate() {
 }
 
 /**
- * <img src="../doc-files/dblack.gif"/>
- * Deactivates all installed EditPolicies.
+ * <img src="../doc-files/dblack.gif"/> Deactivates all installed EditPolicies.
  */
-protected void deactivateEditPolicies(){
+protected void deactivateEditPolicies() {
 	debug("Deactivating EditPolicies");//$NON-NLS-1$
 	EditPolicyIterator i = getEditPolicyIterator();
 	while (i.hasNext())
@@ -284,106 +286,95 @@ protected void deactivateEditPolicies(){
 }
 
 /**
- * This method will log the message to GEF's debug system if the
- * corresponding flag for EditParts is set to true.
- *
- * @param message  Message to be passed
+ * This method will log a message to GEF's trace/debug system if the corresponding flag
+ * for EditParts is set to true.
+ * @param message a debug message
  */
-protected void debug(String message){
+protected final void debug(String message) {
 	if (!GEF.DebugEditParts)
 		return;
 	GEF.debug("EDITPART:\t" + toString() + ":\t" + message);//$NON-NLS-2$//$NON-NLS-1$
 }
 
-/**
- * package private method.
- */
-void debugPop(){
+void debugPop() {
 	if (!GEF.DebugEditParts)
 		return;
 	GEF.debugPop();
 }
 
-/** 
- * package private method.
- */
-void debugPush(String heading){
+void debugPush(String heading) {
 	if (GEF.DebugEditParts)
-		GEF.debugPush("EDITPART:\t" + toString() + ": " + heading);//$NON-NLS-2$//$NON-NLS-1$
+		GEF.debugPush("EDITPART:\t" + toString()//$NON-NLS-1$
+			+ ": " + heading);//$NON-NLS-1$
 }
 
 /**
- * This method will log the message to GEF's debug system if the
- * corrseponding flag for FEEDBACK is set to true.
- *
+ * This method will log the message to GEF's trace/debug system if the corrseponding flag
+ * for FEEDBACK is set to true.
  * @param message  Message to be passed
  */
-protected void debugFeedback(String message){
+protected final void debugFeedback(String message) {
 	if (GEF.DebugFeedback)
 		GEF.debug("FEEDBACK:\t" + toString() + ":\t" + message);//$NON-NLS-2$//$NON-NLS-1$
 }
 
-public void dispose(){
-	debugPush("disposing"); //$NON-NLS-1$
-	if (getSelected() != SELECTED_NONE)
-		getViewer().deselect(this);
-	if (hasFocus())
-		getViewer().setFocus(null);
-
-	List children = getChildren();
-	for (int i=0; i<children.size(); i++)
-		((EditPart)children.get(i)).dispose();
-	unregister();
-	GEF.debugPop();
-}
-
 /**
- * Initializes the entire state of the EditPart.
- */
-protected void doInitialize(){
-	createEditPolicies();
-	refresh();
-}
-
-/**
- * <img src="../doc-files/black.gif"/>
- * Erases source feedback for the given Request.
- * By default, this responsibility is delegated to this
- * part's EditPolicies.  This method should not be overridden.
- *
+ * <img src="../doc-files/black.gif"/> Erases source feedback for the given
+ * <code>Request</code>. By default, this responsibility is delegated to this part's
+ * <code>EditPolicies</code>. Subclasses should rarely extend this method.
+ * <P>
+ * <table>
+ *   <tr>
+ *     <td><img src="../doc-files/important.gif"/>
+ *     <td>It is recommended that feedback be handled by EditPolicies, and not directly by
+ *     the EditPart.
+ *   </tr>
+ * </table>
  * @param request identifies the type of feedback to erase.
- * @see  #showSourceFeedback(Request)
+ * @see #showSourceFeedback(Request)
  */
 public void eraseSourceFeedback(Request request) {
-	if (isActive()){
+	if (isActive()) {
 		EditPolicyIterator iter = getEditPolicyIterator();
 		while (iter.hasNext())
 			iter.next().
 				eraseSourceFeedback(request);
 	}
-	debugFeedback("Request to erase \"" + request.getType() + "\" SOURCE feedback");//$NON-NLS-2$//$NON-NLS-1$
+	debugFeedback("Request to erase \"" + request.getType()//$NON-NLS-1$
+		+ "\" SOURCE feedback");//$NON-NLS-1$
 }
 
 /**
- * <img src="../doc-files/black.gif"/>
- * Erases target feedback for the given Request.
- * By default, this responsibility is delegated to this
- * part's EditPolicies.  This method should not be overridden.
- *
+ * <img src="../doc-files/black.gif"/> Erases target feedback for the given
+ * <code>Request</code>. By default, this responsibility is delegated to this part's
+ * EditPolicies.  Subclasses should rarely extend this method.
+ * <P>
+ * <table>
+ *   <tr>
+ *     <td><img src="../doc-files/important.gif"/>
+ *     <td>It is recommended that feedback be handled by EditPolicies, and not directly by
+ *     the EditPart.
+ *   </tr>
+ * </table>
  * @param request  Command requesting the erase.
  * @see  #showTargetFeedback(Request)
  */
 public void eraseTargetFeedback(Request request) {
-	if (isActive()){
+	if (isActive()) {
 		EditPolicyIterator iter = getEditPolicyIterator();
 		while (iter.hasNext())
 			iter.next().
 				eraseTargetFeedback(request);
 	}
-	debugFeedback("Request to erase \"" + request.getType() + "\" TARGET feedback");//$NON-NLS-2$//$NON-NLS-1$
+	debugFeedback("Request to erase \"" + request.getType()//$NON-NLS-1$
+		+ "\" TARGET feedback");//$NON-NLS-1$
 }
 
-protected void fireActivated(){
+/**
+ * <img src="../doc-files/dblack.gif"/> Notifies <code>EditPartListeners</code> that this
+ * EditPart has been activated.
+ */
+protected void fireActivated() {
 	Iterator listeners = getEventListeners(EditPartListener.class);
 	while (listeners.hasNext())
 		((EditPartListener)listeners.next()).
@@ -391,19 +382,23 @@ protected void fireActivated(){
 }
 
 /**
- * Notifies listeners that a child has been added.
- *
+ * <img src="../doc-files/dblack.gif"/> Notifies <code>EditPartListeners</code> that a
+ * child has been added.
  * @param child  <code>EditPart</code> being added as child.
  * @param index  Position child is being added into.
  */
-protected void fireChildAdded(EditPart child, int index){
+protected void fireChildAdded(EditPart child, int index) {
 	Iterator listeners = getEventListeners(EditPartListener.class);
 	while (listeners.hasNext())
 		((EditPartListener)listeners.next()).
 			childAdded(child, index);
 }
 
-protected void fireDeactivated(){
+/**
+ * <img src="../doc-files/dblack.gif"/> Notifies <code>EditPartListeners </code> that this
+ * EditPart has been deactivated.
+ */
+protected void fireDeactivated() {
 	Iterator listeners = getEventListeners(EditPartListener.class);
 	while (listeners.hasNext())
 		((EditPartListener)listeners.next()).
@@ -411,37 +406,53 @@ protected void fireDeactivated(){
 }
 
 /**
- * Notifies listeners prior to removing a child.
- *
+ * <img src="../doc-files/dblack.gif"/> Notifies <code>EditPartListeners</code> that a
+ * child is being removed.
  * @param child  <code>EditPart</code> being removed.
  * @param index  Position of the child in children list.
  */
-protected void fireRemovingChild(EditPart child, int index){
+protected void fireRemovingChild(EditPart child, int index) {
 	Iterator listeners = getEventListeners(EditPartListener.class);
-	while(listeners.hasNext())
+	while (listeners.hasNext())
 		((EditPartListener)listeners.next()).
 			removingChild(child, index);
 }
 
 /**
- * Called when the selected state for this EditPart changes.
- * Notifies to all listeners
+ * <img src="../doc-files/dblack.gif"/> Notifies <code>EditPartListeners</code> that the
+ * selection has changed.
  */
-protected void fireSelectionChanged(){
+protected void fireSelectionChanged() {
 	Iterator listeners = getEventListeners(EditPartListener.class);
-	while(listeners.hasNext())
+	while (listeners.hasNext())
 		((EditPartListener)listeners.next()).
 			selectedStateChanged(this);
 }
 
 /**
- * <img src="../doc-files/blue.gif"/>
- * Returns the adapter of the given type, for example: {@link IPropertySource}.
- * If your model implements IPropertySource, or if it is IAdaptable then there
- * is no reason to override this method.  Or, if you do not need propertysheet
- * support.
- * EditParts are the objects sent out as selection to other viewers.  If you have
- * viewers that require additional adapter types, return them here.
+ * <img src="../doc-files/green.gif"/> Returns the <code>AccessibleEditPart</code> adapter
+ * for this EditPart. Returns <code>null</code> if this EditPart is not accessible.
+ * @return <code>null</code> or an AccessibleEditPart adapter
+ */
+protected AccessibleEditPart getAccessibleEditPart() {
+	return null;
+}
+
+/**
+ * <img src="../doc-files/blue.gif"/> Returns the specified adapter if recognized, for
+ * example: {@link IPropertySource}. Otherwise returns <code>null</code>.
+ * <P>
+ * By default, the following adapter types are handled:
+ * <UL>
+ *   <LI>{@link IPropertySource} - If getModel() is an <code>IPropertySource</code> it
+ *   will be returned. If getModel() is IAdaptable, it will be asked for its
+ *   <code>IPropertySource</code> adapter, and the result is returned.
+ *   <LI>{@link AccessibleEditPart} - If the adapter key is
+ *   <code>AccessibleEditPart</code>, then {@link #getAccessibleEditPart()} is returned.
+ * </UL>
+ * <P>
+ * Additional adapter types may be added in the future. Subclasses should extend this
+ * method.
  * @see IAdaptable
  */
 public Object getAdapter(Class key) {
@@ -456,16 +467,7 @@ public Object getAdapter(Class key) {
 	return null;
 }
 
-protected AccessibleEditPart getAccessibleEditPart(){
-	return null;
-}
-
-/**
- * <img src="../doc-files/black.gif"/>
- * Returns a non-<code>null</code> List containing the children EditParts.
- *
- * @return children <code>EditParts</code>
- */
+/** * @see org.eclipse.gef.EditPart#getChildren() */
 public List getChildren() {
 	if (children == null)
 		return Collections.EMPTY_LIST;
@@ -473,20 +475,26 @@ public List getChildren() {
 }
 
 /**
- * <img src="../doc-files/black.gif"/>
- * Returns <code>null</code> or a command that performs the operation
- * specified by the Request.  This method should not be overridden.
- * By default, each installed EditPolicy will be given the opportunity
- * to return its contribution, and all contributions will be chained together
- * and returned. 
- *
- * @param Request A request describing the command to be created.
+ * <img src="../doc-files/black.gif"/> Subclasses should rarely extend this method.
+ * The default implementation combines the contributions from each installed
+ * <code>EditPolicy</code>. This method is implemented indirectly using EditPolicies.
+ * <P>
+ * <table>
+ *   <tr>
+ *     <td><img src="../doc-files/important.gif"/>
+ *     <td>It is recommended that Command creation be handled by EditPolicies, and not
+ *     directly by the EditPart.
+ *   </tr>
+ * </table>
+ * @see EditPart#getCommand(Request)
  * @see EditPolicy#getCommand(Request)
+ * @param request the Request
+ * @return a Command
  */
 public Command getCommand(Request request) {
 	Command command = null;
 	EditPolicyIterator i = getEditPolicyIterator();
-	while (i.hasNext()){
+	while (i.hasNext()) {
 		if (command != null)
 			command = command.chain(i.next().
 				getCommand(request));
@@ -497,21 +505,25 @@ public Command getCommand(Request request) {
 	return command;
 }
 
-private List getEditPolicies(){
+private List getEditPolicies() {
 	return editPolicies;
 }
 
-private List getEditPolicyKeys(){
+private List getEditPolicyKeys() {
 	return editPolicyKeys;
 }
 
-protected Iterator getEventListeners(Class clazz){
+/**
+ * Returns an iterator for the specified type of listener
+ * @param clazz the Listener type over which to iterate * @return Iterator */
+protected final Iterator getEventListeners(Class clazz) {
 	if (eventListeners == null)
 		return Collections.EMPTY_LIST.iterator();
 	return eventListeners.getListeners(clazz);
 }
 
-public EditPolicy getEditPolicy(Object key){
+/** * @see org.eclipse.gef.EditPart#getEditPolicy(Object) */
+public EditPolicy getEditPolicy(Object key) {
 	int index = getEditPolicyKeys().indexOf(key);
 	if (index == -1)
 		return null;
@@ -519,88 +531,88 @@ public EditPolicy getEditPolicy(Object key){
 }
 
 /**
- * Used internally to iterate over the installed EditPolicies.
- * While EditPolicy slots may be reserved with <code>null</code>, the iterator
- * only returns the non-null ones.
+ * Used internally to iterate over the installed EditPolicies. While EditPolicy slots may
+ * be reserved with <code>null</code>, the iterator only returns the non-null ones.
+ * @return an EditPolicyIterator
  */
-protected EditPolicyIterator getEditPolicyIterator() {
+protected final EditPolicyIterator getEditPolicyIterator() {
 	return new EditPolicyIterator(editPolicies);
 }
 
 /**
- * Returns the boolean value of the given flag.
- * Specifically, returns <code>true</code> if the bitwise AND of the bitmask
- * and the internal flags field is non-zero.
+ * Returns the boolean value of the given flag. Specifically, returns <code>true</code> if
+ * the bitwise AND of the specified flag and the internal flags field is non-zero.
  * 
  * @param flag Bitmask indicating which flag to return
+ * @return the requested flag's value
  * @see  #setFlag(int,boolean)
  */
-protected boolean getFlag(int flag){
+protected final boolean getFlag(int flag) {
 	return (flags & flag) != 0;
 }
 
-/**
- * <img src="../doc-files/black.gif"/> Returns the primary model object for
- * this EditPart.
- */
-public Object getModel(){return model;}
+/** * @see org.eclipse.gef.EditPart#getModel() */
+public Object getModel() {
+	return model;
+}
 
 /**
- * <img src="../doc-files/green.gif"/>
- * Returns a <code>List</code> containing the children model objects.
- * Iff this EditPart's model is a composite, this method should be overridden
- * to returns its children.
- * {@link #refreshChildren()} requires that this List be non-<code>null</code>.
+ * <img src="../doc-files/green.gif"/> Returns a <code>List</code> containing the children
+ * model objects. If this EditPart's model is a container, this method should be
+ * overridden to returns its children. This is what causes children EditParts to be
+ * created.
+ * <P>
+ * Called by {@link #refreshChildren()}. Must not return <code>null</code>.
+ * @return the List of children
  */
- protected List getModelChildren() {return Collections.EMPTY_LIST;}
+protected List getModelChildren() {
+	return Collections.EMPTY_LIST;
+}
 
-/*
- * defined by interface
- */
+/** * @see org.eclipse.gef.EditPart#getParent() */
 public EditPart getParent() {
 	return parent;
 }
 
-/*
- * defined by interface
- */
+/** * @see org.eclipse.gef.EditPart#getRoot() */
 public RootEditPart getRoot() {
 	return getParent().getRoot();
 }
 
-/*
- * defined by interface
- */
-public int getSelected(){
+/** * @see org.eclipse.gef.EditPart#getSelected() */
+public int getSelected() {
 	return selected;
 }
 
 /**
- * <img src="../doc-files/black.gif"/>
- * Returns the <code>EditPart</code> which is the
- * target of the Request.  This implementation determines
- * the target by delegating to its EditPolicies.  An EditPart should not
- * understand any editing requests, instead, editing behavior is added by
- * installing EditPolicies.
- * The first non-<code>null</code> result returned by an
- * EditPolicy is returned.  If no EditPolicy understand the request
- * (all EditPolicies return null),
- * this EditPart is not the target, and the request is forwarded
- * to the parent EditPart.
- *
+ * <img src="../doc-files/black.gif"/> Returns the <code>EditPart</code> which is the
+ * target of the <code>Request</code>.  The default implementation delegates this method
+ * to the installed EditPolicies. The first non-<code>null</code> result returned by an
+ * EditPolicy is returned. Subclasses should rarely extend this method.
+ * <P>
+ * <table>
+ *   <tr>
+ *     <td><img src="../doc-files/important.gif"/>
+ *     <td>It is recommended that targeting be handled by EditPolicies, and not directly
+ *     by the EditPart.
+ *   </tr>
+ * </table>
  * @param request Describes the type of target desired.
+ * @return <code>null</code> or the <i>target</i> <code>EditPart</code>
+ * @see EditPart#getTargetEditPart(Request)
+ * @see EditPolicy#getTargetEditPart(Request)
  */
-public EditPart getTargetEditPart(Request request){
+public EditPart getTargetEditPart(Request request) {
 	EditPolicyIterator i = getEditPolicyIterator();
 	EditPart editPart;
-	while (i.hasNext()){
-		editPart = i.next().
-			getTargetEditPart(request);
+	while (i.hasNext()) {
+		editPart = i.next()
+			.getTargetEditPart(request);
 		if (editPart != null)
 			return editPart;
 	}
 
-	if (RequestConstants.REQ_SELECTION == request.getType()){
+	if (RequestConstants.REQ_SELECTION == request.getType()) {
 		if (isSelectable())
 			return this;
 	}
@@ -619,51 +631,32 @@ public EditPart getTargetEditPart(Request request){
 }
 
 /**
- * A convenience method which uses the Root to obtain the Viewer.
+ * A convenience method which uses the Root to obtain the EditPartViewer.
+ * @throws NullPointerException if the root is not found
+ * @return the EditPartViewer
  */
 protected EditPartViewer getViewer() {
-	if (getRoot() == null)
-		return null;
 	return getRoot().getViewer();
 }
-
-public boolean hasFocus(){
+/** * @see org.eclipse.gef.EditPart#hasFocus() */
+public boolean hasFocus() {
 	return getFlag(FLAG_FOCUS);
 }
 
-/**
- * Calls {@link #doInitialize()} if {@link #shouldInitialize()} returns true.
- * Sets a flag indicating that initialization has occurred.
- */
-protected void initialize(){
-	if (!shouldInitialize())
-		return;
-	doInitialize();
-	setFlag(FLAG_INITIALIZED, true);
-}
-
-/**
- * Installs the given EditPolicy using the given key or ID.
- * Previously installed polciies for the same key are deactivated
- * and overwritten.
- * @param key Identifier for the type of EditPolicy.
- * @param editPolicy the EditPolicy being added.
- * @see #removeEditPolicy(Object)
- */
-public void installEditPolicy(Object key, EditPolicy editPolicy){
+/** * @see org.eclipse.gef.EditPart#installEditPolicy(Object, EditPolicy) */
+public void installEditPolicy(Object key, EditPolicy editPolicy) {
 	Assert.isNotNull(key, "Edit Policies must be installed with keys");//$NON-NLS-1$
 	int index = editPolicyKeys.indexOf(key);
-	if (index > -1){
+	if (index > -1) {
 		EditPolicy old = (EditPolicy)editPolicies.get(index);
 		if (old != null && isActive())
 			old.deactivate();
 		editPolicies.set(index, editPolicy);
-	}
-	else {
+	} else {
 		editPolicyKeys.add(key);
 		editPolicies.add(editPolicy);
 	}
-	if (editPolicy != null){
+	if (editPolicy != null) {
 		editPolicy.setHost(this);
 		if (isActive())
 			editPolicy.activate();
@@ -671,39 +664,54 @@ public void installEditPolicy(Object key, EditPolicy editPolicy){
 }
 
 /**
- * Returns true if this EditPart is active.
+ * @return <code>true</code> if this EditPart is active.
  */
 protected boolean isActive() {
 	return getFlag(FLAG_ACTIVE);
 }
 
-protected boolean isSelectable() {
+/**
+ * Reserved for future use
+ * @return boolean */
+public final boolean isSelectable() {
 	return true;
 }
 
-public void performRequest(Request req){
+/**
+ * Subclasses should extend this method to handle Requests. For now, the default
+ * implementation does not handle any requests.
+ * @see org.eclipse.gef.EditPart#performRequest(Request) */
+public void performRequest(Request req) {
 }
 
 /**
- * <img src="../doc-files/blue.gif"/> Refreshes all properties visually
- * displayed by this EditPart.  The default implementation will call
- * {@link #refreshChildren()} to update its structural features.
- * It also calls {@link #refreshVisuals()} to update its own displayed properties.
- * This method should only be overridden if the previous four methods are not
- * sufficient.
+ * <img src="../doc-files/blue.gif"/> Refreshes all properties visually displayed by this
+ * EditPart.  The default implementation will call {@link #refreshChildren()} to update
+ * its structural features. It also calls {@link #refreshVisuals()} to update its own
+ * displayed properties. Subclasses should extend this method to handle additional types
+ * of structural refreshing.
  */
-public void refresh(){
+public void refresh() {
 	debug("Refresh");//$NON-NLS-1$
 	refreshVisuals();
 	refreshChildren();
 }
 
 /**
- * <img src="../doc-files/black.gif"/> Refreshes the set of Children.
- * This method should not be overridden. {@link #createChild(Object)}
- * and {@link #getModelChildren()} should be overridden together.
+ * <img src="../doc-files/black.gif"/> Updates the set of children EditParts so that it
+ * is in sync with the model children. This method is called from {@link #refresh()}, and
+ * may also be called in response to notification from the model.
+ * <P>
+ * The update is performed by comparing the exising EditParts with the set of
+ * model children returned from {@link #getModelChildren()}. EditParts whose
+ * model no longer exists are {@link #removeChild(EditPart) removed}. New models have
+ * their EditParts {@link #createChild(Object) created}. Subclasses should override
+ * <code>getModelChildren()</code>.
+ * <P>
+ * This method should <em>not</em> be overridden.
+ * @see #getModelChildren()
  */
-protected void refreshChildren(){
+protected void refreshChildren() {
 	int i;
 	EditPart editPart;
 	Object model;
@@ -711,7 +719,7 @@ protected void refreshChildren(){
 	Map modelToEditPart = new HashMap();
 	List children = getChildren();
 
-	for (i=0; i < children.size(); i++){
+	for (i = 0; i < children.size(); i++) {
 		editPart = (EditPart)children.get(i);
 		modelToEditPart.put(editPart.getModel(), editPart);
 	}
@@ -722,9 +730,9 @@ protected void refreshChildren(){
 		model = modelObjects.get(i);
 
 		//Do a quick check to see if editPart[i] == model[i]
-		editPart = (i < children.size()) ? (EditPart)children.get(i) : null;
-		if (editPart != null && editPart.getModel() == model)
-			continue;
+		if (i < children.size()
+			&& ((EditPart) children.get(i)).getModel() == model)
+				continue;
 
 		//Look to see if the EditPart is already around but in the wrong location
 		editPart = (EditPart)modelToEditPart.get(model);
@@ -738,30 +746,27 @@ protected void refreshChildren(){
 		}
 	}
 	List trash = new ArrayList();
-	for (; i<children.size(); i++)
+	for (; i < children.size(); i++)
 		trash.add(children.get(i));
-	for (i=0; i<trash.size(); i++) {
+	for (i = 0; i < trash.size(); i++) {
 		EditPart ep = (EditPart)trash.get(i);
-		ep.dispose();
 		removeChild(ep);
 	}
 }
 
 /**
  * <img src="../doc-files/green.gif"/>
- * Refreshes this part's visuals.  After creating the visuals, they should be
- * initialized and the updated in response to model changes by implementing
- * this method.
+ * Refreshes this EditPart's <i>visuals</i>. This method is called by {@link #refresh()},
+ * and may also be called in response to notifications from the model.
  */
-protected void refreshVisuals(){
+protected void refreshVisuals() {
 }
 
 /**
  * <img src="../doc-files/blue.gif"/>
- * Registers itself in the viewer's various registries.
- * If your EditPart has a 1-to-1 relationship with a visual object and a
- * 1-to-1 relationship with a model object, the default implementation should
- * be sufficent.
+ * Registers itself in the viewer's various registries. If your EditPart has a 1-to-1
+ * relationship with a visual object and a 1-to-1 relationship with a model object, the
+ * default implementation should be sufficent.
  *
  * @see #unregister()
  * @see EditPartViewer#getVisualPartMap()
@@ -773,30 +778,48 @@ protected void register() {
 	registerAccessibility();
 }
 
-protected void registerAccessibility(){
+/**
+ * Registers the <code>AccessibleEditPart</code> adapter.
+ * @see #getAccessibleEditPart()
+ */
+protected final void registerAccessibility() {
 	if (getAccessibleEditPart() != null)
 		getViewer().registerAccessibleEditPart(getAccessibleEditPart());
 }
 
-protected void registerModel(){
+/**
+ * <img src="../doc-files/black.gif"/>
+ * Registers the <i>model</i> in the {@link EditPartViewer#getEditPartRegistry()}.
+ * Subclasses should only extend this method if they need to register this EditPart in
+ * additional ways.
+ */
+protected void registerModel() {
 	getViewer().getEditPartRegistry().put(getModel(), this);	
 }
 
-protected void registerVisuals(){}
+/**
+ * <img src="../doc-files/black.gif"/>
+ * Registers the <i>visuals</i> in the {@link EditPartViewer#getVisualPartMap()}.
+ * Subclasses should override this method for the visual part they support. {@link
+ * AbstractGraphicalEditPart} and {@link AbstractTreeEditPart} already do this.
+ */
+protected void registerVisuals() { }
 
 /**
  * <img src="../doc-files/black.gif"/>
- * Removes a child EditPart.
- * Calls {@link #removeChildVisual(EditPart)} to separate the act of removal 
- * from the process of deactivation and notification. {@link #dispose()} is
- * called in {@link #refreshChildren()} instead of here, since this method
- * could be used when reordering children.
- * Subclasses would generally override removeChildVisual(EditPart)
- * instead of this method.
- * <BR>Deactivates child.
- * <BR>Fires notification.
- * <BR>Inverse of addChild(EditPart, int)
- * @param child  EditPart being removed
+ * Removes a child <code>EditPart</code>. This method is called from {@link
+ * #refreshChildren()}. The following events occur in the order listed:
+ * <OL>
+ *   <LI><code>EditPartListeners</code> are notified that the child is being removed
+ *   <LI><code>deactivate()</code> is called if the child is active
+ *   <LI>{@link EditPart#removeNotify()} is called on the child.
+ *   <LI>{@link #removeChildVisual(EditPart)} is called to remove the child's visual
+ *   object.
+ *   <LI>The child's parent is set to <code>null</code>
+ * </OL>
+ * <P>
+ * Subclasses should implement {@link #removeChildVisual(EditPart)}.
+ * @param child EditPart being removed
  * @see  #addChild(EditPart,int)
  */
 protected void removeChild(EditPart child) {
@@ -807,44 +830,76 @@ protected void removeChild(EditPart child) {
 	fireRemovingChild(child, index);
 	if (isActive())
 		child.deactivate();
+	child.removeNotify();
 	removeChildVisual(child);
 	child.setParent(null);
 	getChildren().remove(child);
 }
 
+/**
+ * Removes the childs visual from this EditPart's visual. Subclasses should implement this
+ * method to support the visual type they introduce, such as Figures or TreeItems.
+ * @param child the child EditPart
+ */
 protected abstract void removeChildVisual(EditPart child);
 
-/**
- * <img src="../doc-files/dblack.gif"/>
- * Removes a listener.
- */
-public void removeEditPartListener(EditPartListener listener){
+/** * <img src="../doc-files/dblack.gif"/> No reason to override
+ * @see org.eclipse.gef.EditPart#removeEditPartListener(EditPartListener) */
+public void removeEditPartListener(EditPartListener listener) {
 	eventListeners.removeListener(EditPartListener.class, listener);
 }
 
 /**
- * <img src="../doc-files/dblack.gif"/>
- * Uninstalls the edit policy if present.
+ * <img src="../doc-files/dblack.gif"/> No reason to override
+ * @see EditPart#removeEditPolicy(Object)
  */
-public void removeEditPolicy(Object key){
+public void removeEditPolicy(Object key) {
 	int i = editPolicyKeys.indexOf(key);
-	if (i == -1) return;
+	if (i == -1)
+		return;
 	EditPolicy policy = (EditPolicy)editPolicies.get(i);
 	if (isActive() && policy != null)
 		policy.deactivate();
-	editPolicies.set(i,null);
+	editPolicies.set(i, null);
 }
 
 /**
- * <img src="../doc-files/black.gif"/>
- * Bubbles and EditPart forward into a lower index than it
- * previously occupied.
- * This method is correctly implemented in the provided base classes.
- * This method is called from {@link #refreshChildren()}.
- * @param child  EditPart being reordered
- * @param index  Position into which it is being shifted
+ * <img src="../doc-files/black.gif"/> Removes all references from the
+ * <code>EditPartViewer</code> to this EditPart. This includes:
+ * <UL>
+ *   <LI>deselecting this EditPart if selected
+ *   <LI>setting the Viewer's focus to <code>null</code> if this EditPart has <i>focus</i>
+ *   <LI>{@link #unregister()} this EditPart
+ * </UL>
+ * <P>
+ * In addition, <code>removeNotify()</code> is called recusively on all children
+ * EditParts. Subclasses should <em>extend</em> this method to perform any additional
+ * cleanup.
+ * @see org.eclipse.gef.EditPart#removeNotify()
  */
-protected void reorderChild(EditPart editpart, int index){
+public void removeNotify() {
+	debugPush("removeNotify"); //$NON-NLS-1$
+	if (getSelected() != SELECTED_NONE)
+		getViewer().deselect(this);
+	if (hasFocus())
+		getViewer().setFocus(null);
+
+	List children = getChildren();
+	for (int i = 0; i < children.size(); i++)
+		((EditPart)children.get(i))
+			.removeNotify();
+	unregister();
+	GEF.debugPop();
+}
+
+/**
+ * <img src="../doc-files/dblack.gif"/>
+ * Moves a child <code>EditPart</code> into a lower index than it currently occupies. This
+ * method is called from {@link #refreshChildren()}.
+ * @param editpart the child being reordered
+ * @param index new index for the child
+ */
+protected void reorderChild(EditPart editpart, int index) {
 	removeChildVisual(editpart);
 	List children = getChildren();
 	children.remove(editpart);
@@ -853,19 +908,19 @@ protected void reorderChild(EditPart editpart, int index){
 }
 
 /**
- * Sets the value of the given flag to the appropriate
- * value.
- *
- * @param flag  Flag being set
- * @param value  Value of the flag to be set
+ * Sets the value of the specified flag. Flag values are decalared as static constants.
+ * Subclasses may define additional constants above {@link #MAX_FLAG}.
+ * @param flag Flag being set
+ * @param value Value of the flag to be set
  * @see  #getFlag(int)
  */
-final protected void setFlag(int flag, boolean value){
+protected final void setFlag(int flag, boolean value) {
 	if (value) flags |= flag;
 	else flags &= ~flag;
 }
 
-public void setFocus(boolean value){
+/** * @see org.eclipse.gef.EditPart#setFocus(boolean) */
+public void setFocus(boolean value) {
 	if (hasFocus() == value)
 		return;
 	setFlag(FLAG_FOCUS, value);
@@ -873,37 +928,36 @@ public void setFocus(boolean value){
 }
 
 /**
- * <img src="../doc-files/black.gif"/>
- * Set the primary model object that this EditPart represents.
- * Listeners to the model should be added in {#activate()}, not here.
- * activate() and deactivate() may be called multiple times on an EditPart.
+ * <img src="../doc-files/black.gif"/> Set the primary model object that this EditPart
+ * represents. This method is used by an <code>EditPartFactory</code> when creating an
+ * EditPart.
+ * @see EditPart#setModel(Object)
  */
-public void setModel(Object model){
+public void setModel(Object model) {
 	if (getModel() == model)
 		return;
 	this.model = model;
-	initialize();
 }
 
 /**
- * <img src="../doc-files/dblack.gif"/> Sets the parent EditPart.
+ * <img src="../doc-files/dblack.gif"/> Sets the parent EditPart. There is no reason to
+ * override this method.
+ * @see EditPart#setParent(EditPart)
  */
 public void setParent(EditPart parent) {
 	if (this.parent == parent)
 		return;
 	this.parent = parent;
-	if (parent != null)
-		register();
-	initialize();
 }
 
 /**
- * <img src="../doc-files/blue.gif"/>
- * sets the selected state of this EditPart.
- * This method should rarely be overridden.
- * Instead, EditPolicies that are selection-aware will listen for notification
- * of this property changing.
- * @see org.eclipse.gef.editpolicies.SelectionHandlesEditPolicy
+ * <img src="../doc-files/blue.gif"/> sets the selected state for this EditPart. This
+ * method should rarely be overridden. Instead, EditPolicies that are selection-aware will
+ * listen for notification of this property changing.
+ * @see org.eclipse.gef.editpolicies.SelectionEditPolicy
+ * @see EditPartListener#selectedStateChanged(EditPart)
+ * @see EditPart#setSelected(int)
+ * @param value the selected value
  */
 public void setSelected(int value) {
 	if (selected == value)
@@ -913,32 +967,24 @@ public void setSelected(int value) {
 }
 
 /**
- * <img src="../doc-files/blue.gif"/>
- * determines whether {@link #doInitialize()} should be called.
- * The provided abstract base classes correctly override this method to ensure
- * that the visuals exists prior to doInitialize().
- */
-protected boolean shouldInitialize(){
-	if (getModel() == null)
-		return false;
-	if (getParent() == null)
-		return false;
-	if (getFlag(FLAG_INITIALIZED))
-		return false;
-	return true;
-}
-
-/**
- * <img src="../doc-files/black.gif"/>
- * Shows source feedback for the given Request.
- * By default, this responsibility is delegated to this
- * part's EditPolicies.  This method should not be overridden.
- *
- * @param request identifies the type of feedback to erase.
- * @see  #eraseSourceFeedback(Request)
+ * <img src="../doc-files/black.gif"/> Shows or updates source feedback for the given
+ * <code>Request</code>. By default, this responsibility is delegated to this part's
+ * EditPolicies.  Subclasses should rarely extend this method.
+ * <P>
+ * <table>
+ *   <tr>
+ *     <td><img src="../doc-files/important.gif"/>
+ *     <td>It is recommended that feedback be handled by EditPolicies, and not directly by
+ *     the EditPart.
+ *   </tr>
+ * </table>
+ * @see EditPolicy#showSourceFeedback(Request)
+ * @see EditPart#showSourceFeedback(Request)
+ * @param request the Request
  */
 public void showSourceFeedback(Request request) {
-	debugFeedback("Request to show \"" + request.getType() + "\" SOURCE feedback");//$NON-NLS-2$//$NON-NLS-1$
+	debugFeedback("Request to show \"" + request.getType()//$NON-NLS-1$
+		+ "\" SOURCE feedback");//$NON-NLS-1$
 	if (!isActive())
 		return;
 	EditPolicyIterator i = getEditPolicyIterator();
@@ -948,16 +994,24 @@ public void showSourceFeedback(Request request) {
 }
 
 /**
- * <img src="../doc-files/black.gif"/>
- * Shows target feedback for the given Request.
- * By default, this responsibility is delegated to this
- * part's EditPolicies.  This method should not be overridden.
- *
- * @param request identifies the type of feedback to erase.
- * @see  #eraseTargetFeedback(Request)
+ * <img src="../doc-files/black.gif"/> Shows or updates target feedback for the given
+ * <code>Request</code>. By default, this responsibility is delegated to this part's
+ * EditPolicies.  Subclasses should rarely extend this method.
+ * <P>
+ * <table>
+ *   <tr>
+ *     <td><img src="../doc-files/important.gif"/>
+ *     <td>It is recommended that feedback be handled by EditPolicies, and not directly by
+ *     the EditPart.
+ *   </tr>
+ * </table>
+ * @see EditPolicy#showTargetFeedback(Request)
+ * @see EditPart#showTargetFeedback(Request)
+ * @param request the Request
  */
 public void showTargetFeedback(Request request) {
-	debugFeedback("Request to show \"" + request.getType() + "\" TARGET feedback");//$NON-NLS-2$//$NON-NLS-1$
+	debugFeedback("Request to show \"" + request.getType()//$NON-NLS-1$
+		+ "\" TARGET feedback");//$NON-NLS-1$
 	if (!isActive())
 		return;
 	EditPolicyIterator i = getEditPolicyIterator();
@@ -967,29 +1021,32 @@ public void showTargetFeedback(Request request) {
 }
 
 /**
- * <img src="../doc-files/blue.gif"/>
- * Describes this EditPart for developmental debugging purposes.
+ * <img src="../doc-files/blue.gif"/> Describes this EditPart for developmental debugging
+ * purposes.
+ * @return a description
  */
-public String toString(){
+public String toString() {
 	String c = getClass().getName();
-	c = c.substring(c.lastIndexOf('.')+1);
+	c = c.substring(c.lastIndexOf('.') + 1);
 	return c + "( " + getModel() + " )";//$NON-NLS-2$//$NON-NLS-1$
 }
 
 /**
- * <img src="../doc-files/black.gif"/>
- * Returns true if this EditPart understand the given Request.
- * By default, this is determined by the installed EditPolicies.
- * <table><tr><td><img src="../doc-files/important.gif"/><td>
- *    EditParts should not understand any requests directly.
- *    ALL editing behavior is to be added by installing one or more
- *    EditPolicies into the EditPart.</tr></table>
- * @param request identifies the type of feedback to erase.
- * @see  #eraseTargetFeedback(Request)
+ * <img src="../doc-files/black.gif"/> Returns <code>true</code> if this
+ * <code>EditPart</code> understand the given <code>Request</code>. By default, this
+ * responsibility is delegated to this part's installed EditPolicies.
+ * <P>
+ * <table>
+ *   <tr>
+ *     <td><img src="../doc-files/important.gif"/>
+ *     <td>It is recommended that EditPolicies implement <code>understandsRequest()</code>
+ *   </tr>
+ * </table>
+ * @see EditPart#understandsRequest(Request)
  */
-public boolean understandsRequest(Request req){
+public boolean understandsRequest(Request req) {
 	EditPolicyIterator iter = getEditPolicyIterator();
-	while (iter.hasNext()){
+	while (iter.hasNext()) {
 		if (iter.next().understandsRequest(req))
 			return true;
 	}
@@ -1001,21 +1058,39 @@ public boolean understandsRequest(Request req){
  * Undoes any registration performed by {@link #register()}.
  * The provided base classes will correctly unregister their visuals.
  */
-protected void unregister(){
+protected void unregister() {
 	unregisterAccessibility();
+	unregisterVisuals();
 	unregisterModel();
 	debug("Unregister");//$NON-NLS-1$
 }
 
-protected void unregisterAccessibility(){
+/**
+ * Unregisters the {@link #getAccessibleEditPart() AccessibleEditPart} adapter.
+ */
+protected final void unregisterAccessibility() {
 	if (getAccessibleEditPart() != null)
 		getViewer().unregisterAccessibleEditPart(getAccessibleEditPart());
 }
 
-protected void unregisterModel(){
+/**
+ * <img src="../doc-files/black.gif"/>
+ * Unregisters the <i>model</i> in the {@link EditPartViewer#getEditPartRegistry()}.
+ * Subclasses should only extend this method if they need to unregister this EditPart in
+ * additional ways.
+ */
+protected void unregisterModel() {
 	Map registry = getViewer().getEditPartRegistry();
 	if (registry.get(getModel()) == this)
 		registry.remove(getModel());
 }
+
+/**
+ * <img src="../doc-files/black.gif"/>
+ * Unregisters the <i>visuals</i> in the {@link EditPartViewer#getVisualPartMap()}.
+ * Subclasses should override this method for the visual part they support. {@link
+ * AbstractGraphicalEditPart} and {@link AbstractTreeEditPart} already do this.
+ */
+protected void unregisterVisuals() { }
 
 }
