@@ -10,10 +10,9 @@
  *******************************************************************************/
 package org.eclipse.gef.internal;
 
-import java.util.MissingResourceException;
-
-import org.eclipse.core.runtime.IPluginDescriptor;
 import org.eclipse.core.runtime.Platform;
+
+import org.osgi.framework.Bundle;
 
 /**
  * Internal Messages
@@ -24,18 +23,13 @@ public class GEFMessages {
 
 /** */
 static class Helper {
-	private static IPluginDescriptor desc = Platform.getPluginRegistry()
-			.getPluginDescriptor("org.eclipse.gef");//$NON-NLS-1$
-
+	private static Bundle bundle = Platform.getBundle("org.eclipse.gef");//$NON-NLS-1$
 
 	public static String getString(String key) {
-		try {
-			return desc.getResourceString(key);
-		} catch (MissingResourceException e) {
-			return key;
-		}
+		return Platform.getResourceString(bundle, key);
 	}
 }
+
 public static String AlignBottomAction_Label = Helper.getString("%AlignBottomAction.Label");//$NON-NLS-1$
 public static String AlignBottomAction_Tooltip = Helper.getString("%AlignBottomAction.Tooltip");//$NON-NLS-1$
 public static String AlignCenterAction_Label = Helper.getString("%AlignCenterAction.Label");//$NON-NLS-1$
