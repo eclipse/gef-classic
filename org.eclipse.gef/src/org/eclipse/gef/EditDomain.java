@@ -17,6 +17,7 @@ import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.TraverseEvent;
 
 import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.gef.palette.PaletteListener;
@@ -142,7 +143,7 @@ private void handlePaletteToolChanged() {
 
 /**
  * Called when a key is <B>pressed</B> on a Viewer.
- * @param keyEvent The SWT keyboard event 
+ * @param keyEvent The SWT key event 
  * @param viewer The source of the event.
  */
 public void keyDown(KeyEvent keyEvent, EditPartViewer viewer) {
@@ -152,8 +153,20 @@ public void keyDown(KeyEvent keyEvent, EditPartViewer viewer) {
 }
 
 /**
+ * Called when a traversal occurs on a viewer.
+ * @since 3.1
+ * @param keyEvent the SWT traverse event
+ * @param viewer the source of the event
+ */
+public void keyTraversed(TraverseEvent traverseEvent, EditPartViewer viewer) {
+	Tool tool = getActiveTool();
+	if (tool != null)
+		tool.keyTraversed(traverseEvent, viewer);
+}
+
+/**
  * Called when a key is <B>released</b> on a Viewer.
- * @param keyEvent The SWT keyboard event 
+ * @param keyEvent The SWT key event 
  * @param viewer the source of the event.
  */
 public void keyUp(KeyEvent keyEvent, EditPartViewer viewer) {

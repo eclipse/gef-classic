@@ -15,6 +15,7 @@ import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseTrackListener;
+import org.eclipse.swt.events.TraverseEvent;
 
 /**
  * A <code>Tool</code> interprets Mouse and Keyboard input from an {@link EditDomain} and
@@ -38,18 +39,22 @@ import org.eclipse.swt.events.MouseTrackListener;
  * <table>
  * 	<tr>
  * 		<td valign=top><img src="doc-files/important.gif"/>
- * 		<td>All feedback should be erased and temporary changes reverted prior to
- * 			executing any command.
+ * 	    <td>All feedback should be erased and temporary changes reverted prior to
+ *        executing any command.
  * 	</tr>
  * 	<tr>
- * 		<td valign=top><img src="doc-files/important.gif"/>
- * 		<td>Tools should process most keystrokes.  For example, the DELETE key should
- * 			<EM>not</EM> be handled by adding a KeyListener to the Viewer's Control.
- * 			Doing so would mean that pressing DELETE would not be sensitive to which
- * 			Tool is currently active, and the state of the Tool.  See {@link
- * 			org.eclipse.gef.KeyHandler} for how keystrokes are generally processed.
+ * 	    <td valign=top><img src="doc-files/important.gif"/>
+ *      <td>Tools should process most keystrokes. For example, the DELETE key should
+ *        <EM>not</EM> be handled by adding a KeyListener to the Viewer's Control. Doing
+ *        so would mean that pressing DELETE would <EM>not</EM> be sensitive to which Tool
+ *        is currently active, and the state of the Tool.  See {@link
+ *        org.eclipse.gef.KeyHandler} for how keystrokes are generally processed.
  * 	</tr>
  * </table>
+ * <p>
+ * IMPORTANT: This interface is <EM>not</EM> intended to be implemented by clients. 
+ * Clients should inherit from {@link org.eclipse.gef.tools.AbstractTool}. New methods may
+ * be added in the future.
  */
 public interface Tool {
 
@@ -86,6 +91,15 @@ void focusLost(FocusEvent event, EditPartViewer viewer);
  * @param viewer the Viewer which received a key press
  */
 void keyDown(KeyEvent keyEvent, EditPartViewer viewer);
+
+/**
+ * Called when a viewer receives a key traversal.  A tool can prevent the
+ * traversal from occuring by setting the doit field to <code>false</code>.
+ * @param event the SWT event
+ * @param viewer the viewer which received the traversal
+ * @since 3.1
+ */
+void keyTraversed(TraverseEvent event, EditPartViewer viewer);
 
 /**
  * Called when a Viewer receives a key up.
