@@ -21,9 +21,7 @@ public abstract class GraphicalEditorWithPalette
 
 private PaletteViewer paletteViewer;
 
-protected void configurePaletteViewer() {
-	getPaletteViewer().getControl().setBackground(ColorConstants.buttonLightest);
-}
+protected void configurePaletteViewer() { }
 
 protected void createActions() {
 	super.createActions();
