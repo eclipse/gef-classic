@@ -51,9 +51,10 @@ protected Object getConstraintFor(ChangeBoundsRequest request, GraphicalEditPart
 	child.getFigure().translateToRelative(rect);
 	rect.translate(getLayoutOrigin().getNegated());
 
-	if (request.getSizeDelta().width == 0 && request.getSizeDelta().height == 0) { // move
+	if (request.getSizeDelta().width == 0 && request.getSizeDelta().height == 0) {
 		Rectangle cons = getCurrentConstraintFor(child);
-		rect.setSize(cons.width, cons.height);
+		if (cons != null) //Bug 86473 allows for unintended use of this method
+			rect.setSize(cons.width, cons.height);
 	} else { // resize
 		Dimension minSize = getMinimumSizeFor(child);
 		if (rect.width < minSize.width) {
