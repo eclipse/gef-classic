@@ -132,6 +132,7 @@ protected boolean handleDrag() {
  * org.eclipse.gef.tools.SelectionTool#handleKeyDown(org.eclipse.swt.events.KeyEvent)
  */
 protected boolean handleKeyDown(KeyEvent e) {
+	setAutoexposeHelper(null);
 	if (acceptSpaceBar(e)) {
 		isSpaceBarDown = true;
 		if (stateTransition(STATE_INITIAL, PAN))
