@@ -3,6 +3,7 @@ package org.eclipse.draw2d.examples.graph;
 import org.eclipse.draw2d.graph.*;
 
 /**
+ * A collection of compound graph tests.
  * @author hudsonr
  * @since 2.1
  */

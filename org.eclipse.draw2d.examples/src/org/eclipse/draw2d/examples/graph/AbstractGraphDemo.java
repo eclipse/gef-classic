@@ -11,18 +11,26 @@ import org.eclipse.draw2d.graph.*;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.layout.*;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.widgets.Button;
 
 /**
  * @author Daniel Lee
  */
-public abstract class AbstractGraphDemo extends AbstractExample {
-	
-static boolean buildPrime = false;
+public abstract class AbstractGraphDemo {
 
-static String graphMethod;
+/** Indicates whether the prime graph should be built */
+protected static boolean buildPrime = false;
+/** Contents of the demo */
+protected IFigure contents;
+/** Name of graph test method to run */
+protected static String graphMethod;
+/** Demo shell */
+protected Shell shell;
+
+private FigureCanvas fc;
 
 static class TopOrBottomAnchor extends ChopboxAnchor {
 	public TopOrBottomAnchor(IFigure owner) {
@@ -173,11 +181,20 @@ protected IFigure getContents() {
 }
 
 /**
+ * Returns the FigureCanvas
+ * @return this demo's FigureCanvas
+ */
+protected FigureCanvas getFigureCanvas() {
+	return fc;
+}
+
+/**
  * Returns an array of strings that represent the names of the methods which build
  * graphs for this graph demo
  * @return array of graph building method names 
  */
 protected abstract String[] getGraphMethods();
+
 
 /**
  * @see org.eclipse.graph.AbstractExample#hookShell()
@@ -224,6 +241,36 @@ protected void hookShell() {
 	});
 }
 
+/**
+ * Runs the demo.
+ */
+protected void run() {
+	Display d = Display.getDefault();
+	shell = new Shell(d);
+	String appName = getClass().getName();
+	appName = appName.substring(appName.lastIndexOf('.') + 1);
+	hookShell();
+	shell.setText(appName);
+	shell.setLayout(new GridLayout(2, false));
+	setFigureCanvas(new FigureCanvas(shell));
+	getFigureCanvas().setContents(contents = getContents());
+	getFigureCanvas().getViewport().setContentsTracksHeight(true);
+	getFigureCanvas().getViewport().setContentsTracksWidth(true);
+	getFigureCanvas().setLayoutData(new GridData(GridData.FILL_BOTH));
+	shell.setSize(1100, 700);
+	shell.open();
+	while (!shell.isDisposed())
+		while (!d.readAndDispatch())
+			d.sleep();
+}
+
+/**
+ * Sets this demo's FigureCanvas
+ * @param canvas this demo's FigureCanvas
+ */
+protected void setFigureCanvas(FigureCanvas canvas) {
+	this.fc = canvas;
+}
 
 /**
  * Sets the name of the method to call to build the graph

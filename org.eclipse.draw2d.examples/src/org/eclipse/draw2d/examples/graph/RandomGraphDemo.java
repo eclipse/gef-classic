@@ -1,194 +1,114 @@
 package org.eclipse.draw2d.examples.graph;
 
-import java.util.*;
-import java.util.List;
+import java.util.Random;
 
-import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.Label;
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2d.Figure;
+import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.graph.*;
-import org.eclipse.draw2d.internal.graph.*;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Text;
 
 /**
  * @author delee
  */
-public class RandomGraphDemo extends AbstractExample {
+public class RandomGraphDemo extends DirectedGraphDemo {
 
-static int HEIGHT = 100;
+/** Random seed */
 public Random random = new Random(0);
+/** Maximum number of rows that will appear in the random graph */
 public int numberOfRows = 10;
+/** Number of nodes in the graph */
 public int numberOfNodes = 10;
 
+/**
+ * @see org.eclipse.draw2d.examples.graph.DirectedGraphDemo#main(java.lang.String[])
+ */
 public static void main(String[] args) {
-	final RandomGraphDemo demo = new RandomGraphDemo();
-	Shell choiceShell = new Shell();
-	choiceShell.setSize(200,200);
-	choiceShell.setLayoutData(new GridData(GridData.FILL_VERTICAL));
+	new RandomGraphDemo().run();
+}
+
+/**
+ * @see org.eclipse.draw2d.examples.graph.AbstractGraphDemo#hookShell()
+ */
+protected void hookShell() {
+	Composite composite = new Composite(shell, 0);
+	composite.setLayoutData(new GridData(GridData.FILL_VERTICAL));
 	
-	choiceShell.setLayout(new GridLayout());
-	
+	composite.setLayout(new GridLayout());	
 	
 	final org.eclipse.swt.widgets.Label rowLabel 
-			= new org.eclipse.swt.widgets.Label(choiceShell, SWT.NONE);
+				= new org.eclipse.swt.widgets.Label(composite, SWT.NONE);
 	rowLabel.setText("Maximum Rank");
-	final Text rowsText = new Text(choiceShell, SWT.BORDER);
-	
+	final Text rowsText = new Text(composite, SWT.BORDER);
+
 	final org.eclipse.swt.widgets.Label nodesLabel 
-			= new org.eclipse.swt.widgets.Label(choiceShell, SWT.NONE);
+			= new org.eclipse.swt.widgets.Label(composite, SWT.NONE);
 	nodesLabel.setText("Number of Nodes");
-	final Text nodesText = new Text(choiceShell, SWT.BORDER);
-	
+	final Text nodesText = new Text(composite, SWT.BORDER);
+
 	final org.eclipse.swt.widgets.Label seedLabel 
-			= new org.eclipse.swt.widgets.Label(choiceShell, SWT.NONE);
+			= new org.eclipse.swt.widgets.Label(composite, SWT.NONE);
 	seedLabel.setText("Random seed");
-	final Text seedText = new Text(choiceShell, SWT.BORDER);
-	seedText.setSize(50,50);
+	final Text seedText = new Text(composite, SWT.BORDER);
 	
-	Button button = new Button(choiceShell,SWT.PUSH);
+	Button button = new Button(composite, SWT.PUSH);
 	button.setText("Generate");
 	button.addSelectionListener(new SelectionListener() {
 		public void widgetSelected(SelectionEvent e) {
 			try {
 				int rows = Integer.parseInt(rowsText.getText());
 				if (rows > 1)
-					demo.numberOfRows = rows;
+					numberOfRows = rows;
 				else
-					rowsText.setText(Integer.toString(demo.numberOfRows));
-				
+					rowsText.setText(Integer.toString(numberOfRows));
+			
 				int nodes = Integer.parseInt(nodesText.getText());
 				if (nodes > 0)
-					demo.numberOfNodes = nodes;
+					numberOfNodes = nodes;
 				else
-					nodesText.setText(Integer.toString(demo.numberOfNodes));
-				demo.random = new Random(Integer.parseInt(seedText.getText()));
-				demo.getFigureCanvas().setContents(demo.getContents());
+					nodesText.setText(Integer.toString(numberOfNodes));
+					random = new Random(Integer.parseInt(seedText.getText()));
+					getFigureCanvas().setContents(getContents());
+				} catch (NumberFormatException exception) {
+					Display.getCurrent().beep();
 				}
-			catch (NumberFormatException exception) {
+		}
+		public void widgetDefaultSelected(SelectionEvent e) {
+		}
+	});
+	
+	final org.eclipse.swt.widgets.Label primeLabel 
+			= new org.eclipse.swt.widgets.Label(composite, SWT.NONE);
+	primeLabel.setText("Build Prime Graph");
+	final Button primeGraphButton = new Button(composite, SWT.CHECK);
+	
+	primeGraphButton.addSelectionListener(new SelectionListener() {
+		public void widgetSelected(SelectionEvent e) {
+			try {
+				buildPrime = !buildPrime;
+				random = new Random(Integer.parseInt(seedText.getText()));
+				getFigureCanvas().setContents(getContents());
+			} catch (NumberFormatException exception) {
+				Display.getCurrent().beep();
 			}
 		}
 		public void widgetDefaultSelected(SelectionEvent e) {
 		}
 	});
-	choiceShell.setVisible(true);
-	choiceShell.pack();
+	
 	rowsText.setText("10");
 	nodesText.setText("10");
 	seedText.setText("0");
-	demo.run();
-}
-
-static public Figure buildGraph(DirectedGraph graph) {
-	Figure contents = new Panel();
-	contents.setFont(new Font(null, "Tahoma", 10, 0));
-	contents.setBackgroundColor(ColorConstants.white);
-	contents.setLayoutManager(new XYLayout());
-	
-	Label label;
-	
-//	for (int r = 0; r<graph.ranks.ranks.size(); r++) {
-//		int x = 0;
-//		Rank rank = graph.ranks.getRank(r);
-//		for (int i = 0; i < rank.size(); i++) {
-//			Node n = rank.getNode(i);
-//			n.x = x;
-//			x += n.width + 8;
-//		}
-//	}
-	
-	for (int i=0; i<graph.nodes.size(); i++) {
-		Node node = graph.nodes.getNode(i);
-		label = new Label();
-		label.setBackgroundColor(ColorConstants.lightGray);
-		label.setOpaque(true);
-		label.setBorder(new LineBorder());
-		if (node.incoming.isEmpty())
-			label.setBorder(new LineBorder(2));
-		String text = node.data.toString();// + "(" + node.min + ", " + node.max + ")";
-		label.setText(text +" "+ node.sortValue);
-		if (text.indexOf("Java") >= 0 || text.indexOf("JDI") >= 0)
-			label.setBackgroundColor(ColorConstants.lightGreen);
-		if (text.indexOf("Graph") >= 0
-			|| text.indexOf("2d") >= 0
-			|| text.indexOf("Dependen") >= 0
-			|| text.indexOf("GEF")>= 0)
-			label.setBackgroundColor(ColorConstants.cyan);
-		node.data = label;
-		contents.add(label,
-			new Rectangle(node.x, node.rank * HEIGHT, node.width, 40));
-	}
-	
-	for (int i=0; i<graph.edges.size(); i++) {
-		Edge edge = graph.edges.getEdge(i);
-		PolylineConnection conn = connection(edge);
-		conn.setForegroundColor(ColorConstants.gray);
-		conn.setLineWidth(2);
-		if (edge.tree) {
-			Label l = new Label ("(" + edge.cut + ")");
-			l.setOpaque(true);
-			//conn.add(l, new ConnectionLocator(conn));
-			conn.setLineWidth(1);
-//			PolygonDecoration dec = new PolygonDecoration();
-//			dec.setLineWidth(3);
-//			if (edge.head() == edge.target)
-//				conn.setSourceDecoration(dec);
-//			else
-//				conn.setTargetDecoration(dec);
-		} else {
-//			conn.setLineStyle(Graphics.LINE_DASHDOT);
-//			Label l = new Label (Integer.toString(edge.getSlack()));
-//			l.setOpaque(true);
-//			conn.add(l, new ConnectionEndpointLocator(conn, false));
-		}
-		Figure s = (Figure)edge.source.data;
-		Figure t = (Figure)edge.target.data;
-		conn.setSourceAnchor(new TopOrBottomAnchor(s));
-		conn.setTargetAnchor(new TopOrBottomAnchor(t));
-		contents.add(conn);
-	}
-//	buildPrimeGraph(graph.gPrime, contents);
-	return contents;
-}
-
-static PolylineConnection connection(Edge e) {
-	PolylineConnection conn = new PolylineConnection();
-	conn.setConnectionRouter(new BendpointConnectionRouter());
-	List bends = new ArrayList();
-	NodeList nodes = e.vNodes;
-	if (nodes != null) {
-		for (int i=0; i<nodes.size(); i++){
-			Node n = nodes.getNode(i);
-			int x = n.x;
-			int y = n.rank * HEIGHT;
-			bends.add(new AbsoluteBendpoint(x+70, y));
-			bends.add(new AbsoluteBendpoint(x+70, y+40));
-		}
-	}
-	conn.setRoutingConstraint(bends);
-	return conn;
 }
 
 private DirectedGraph generateRandomGraph() {
 	DirectedGraph randomGraph = new DirectedGraph();
-	
-	// Randomly select number of nodes. 
-	// This is a number between 10 and 50.
-	//int numberOfNodes = random.nextInt(50);
-	//numberOfNodes += 10;
-	
-	// Randomly select number of rows.
-	// This is a number between 3 and 10
-//	int numberOfRows = random.nextInt(10);
-//	numberOfRows += 7;
 	
 	// Create the nodes
 	for (int i = 0; i < numberOfNodes; i++) {
@@ -210,14 +130,20 @@ private DirectedGraph generateRandomGraph() {
 	
 	// Connect the graph
 	while (unreachableNodes.size() > 0) {
-		Node unreachableNode = unreachableNodes.getNode(random.nextInt(unreachableNodes.size()));
+		Node unreachableNode =
+			unreachableNodes.getNode(random.nextInt(unreachableNodes.size()));
 			if (reachableNodes.size() > 0) {
-				Node randomNode = reachableNodes.getNode(random.nextInt(reachableNodes.size()));
-
+				Node randomNode =
+					reachableNodes.getNode(
+						random.nextInt(reachableNodes.size()));
 				// If ranks are the same, re-pick to prohibit cycles
-				while(randomNode.rank == unreachableNode.rank) {
-					randomNode = reachableNodes.getNode(random.nextInt(reachableNodes.size()));
-					unreachableNode = unreachableNodes.getNode(random.nextInt(unreachableNodes.size()));
+				while (randomNode.rank == unreachableNode.rank) {
+					randomNode =
+						reachableNodes.getNode(
+							random.nextInt(reachableNodes.size()));
+					unreachableNode =
+						unreachableNodes.getNode(
+							random.nextInt(unreachableNodes.size()));
 				}
 				
 				Edge newEdge;
@@ -233,19 +159,7 @@ private DirectedGraph generateRandomGraph() {
 	randomGraph.nodes = reachableNodes;
 	randomGraph.edges = allEdges;
 
-	new InitialRankSolver()
-		.visit(randomGraph);
-	new TightSpanningTreeSolver()
-		.visit(randomGraph);
-	new RankAssigmentSolver()
-		.visit(randomGraph);
-	new PopulateRanks()
-		.visit(randomGraph);
-	new MinCross()
-		.visit(randomGraph);
-	new HorizontalPlacement()
-		.visit(randomGraph);
-		
+	new DirectedGraphLayout().visit(randomGraph);
 	return randomGraph;
 }
 
@@ -255,13 +169,13 @@ private void findAllReachableNodesFrom(Node root, NodeList reached, NodeList unr
 	EdgeList incoming = root.incoming;
 	EdgeList outgoing = root.outgoing;
 	
-	for(int i = 0; i < incoming.size(); i++) {
+	for (int i = 0; i < incoming.size(); i++) {
 		Node incomingNode = incoming.getEdge(i).source;
 		if (!reached.contains(incomingNode))
 			findAllReachableNodesFrom(incomingNode, reached, unreached);
 	}
 	
-	for(int i = 0; i < outgoing.size(); i++) {
+	for (int i = 0; i < outgoing.size(); i++) {
 			Node outgoingNode = outgoing.getEdge(i).source;
 			if (!reached.contains(outgoingNode))
 				findAllReachableNodesFrom(outgoingNode, reached, unreached);
@@ -279,27 +193,24 @@ protected IFigure getContents() {
 	return contents;
 }
 
-private static void printGraphVisNodes(EdgeList edges) {
-	for (int i=0; i < edges.size(); i++) {
-		System.out.println("\"" + edges.getEdge(i).source.data + "\" -> \"" + 
-												edges.getEdge(i).target.data + "\"");
-	}
+/**
+ * @see org.eclipse.draw2d.examples.graph.AbstractGraphDemo#getGraphMethods()
+ */
+protected String[] getGraphMethods() {
+	String[] graphMethods = new String[1];
+	graphMethods[0] = "Random";
+	return graphMethods;
 }
 
-static class TopOrBottomAnchor extends ChopboxAnchor {
-	public TopOrBottomAnchor(IFigure owner) {
-		super(owner);
-	}
-	public Point getLocation(Point reference) {
-		Point p;
-		p = getOwner().getBounds().getCenter();
-		getOwner().translateToAbsolute(p);
-		if (reference.y < p.y)
-			p = getOwner().getBounds().getTop();
-		else
-			p =getOwner().getBounds().getBottom();
-		getOwner().translateToAbsolute(p);
-		return p;
+
+private static void printGraphVisNodes(EdgeList edges) {
+	for (int i = 0; i < edges.size(); i++) {
+		System.out.println(
+			"\""
+				+ edges.getEdge(i).source.data
+				+ "\" -> \""
+				+ edges.getEdge(i).target.data
+				+ "\"");
 	}
 }
 
