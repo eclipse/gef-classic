@@ -251,6 +251,7 @@ class ResourceTracker
 				display.asyncExec(new Runnable() {
 					public void run() {
 						setInput(new FileEditorInput(newFile));
+						getCommandStack().flush();
 					}
 				});
 			}
@@ -365,9 +366,11 @@ protected void createOutputStream(OutputStream os)throws IOException {
 	out.close();	
 }
 
-protected void createRulers(){
+protected void loadRulers(){
 	createGraphicalRuler(PositionConstants.WEST);
 	createGraphicalRuler(PositionConstants.NORTH);
+	createGraphicalRuler(PositionConstants.EAST);
+	createGraphicalRuler(PositionConstants.SOUTH);
 }
 
 public void dispose() {
@@ -551,7 +554,7 @@ protected void createGraphicalViewer(Composite parent) {
 	rulerComp = new RulerComposite(parent, SWT.NONE);
 	super.createGraphicalViewer(rulerComp);
 	rulerComp.setGraphicalViewer(getGraphicalViewer());
-	createRulers();
+	loadRulers();
 }
 
 protected FigureCanvas getEditor(){
@@ -638,6 +641,9 @@ public void setInput(IEditorInput input) {
 	}
 	if (outlinePage != null) {
 		outlinePage.setContents(getLogicDiagram());
+	}
+	if (rulerComp != null) {
+		loadRulers();		
 	}
 }
 
