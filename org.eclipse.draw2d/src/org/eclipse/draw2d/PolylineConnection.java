@@ -67,20 +67,6 @@ public ConnectionRouter getConnectionRouter(){
 	return connectionRouter;
 }
 
-/**
- * @deprecated
- */
-public ConnectionAnchor getEndAnchor(){
-	return getTargetAnchor();
-}
-
-/**
- * @deprecated Use getTargetDecoration().
- */
-protected RotatableDecoration getEndDecoration(){
-	return getTargetDecoration();
-}
-
 public Object getRoutingConstraint() {
 	if (getConnectionRouter() != null)
 		return (List)getConnectionRouter().getConstraint(this);
@@ -94,20 +80,6 @@ public ConnectionAnchor getSourceAnchor(){
 
 protected RotatableDecoration getSourceDecoration(){
 	return startArrow;
-}
-
-/**
- * @deprecated
- */
-public ConnectionAnchor getStartAnchor(){
-	return getSourceAnchor();
-}
-
-/**
- * @deprecated
- */
- protected RotatableDecoration getStartDecoration() {
-	return getSourceDecoration();
 }
 
 /*
@@ -182,31 +154,10 @@ public void setConnectionRouter(ConnectionRouter cr) {
 	}
 }
 
-/**
- * @deprecated
- */
- public void setEndAnchor(ConnectionAnchor anchor){
-	setTargetAnchor(anchor);
-}
-
-/**
- * @deprecated
- */
- public void setEndDecoration(RotatableDecoration dec){
-	setTargetDecoration(dec);
-}
-
 public void setRoutingConstraint(Object cons) {
 	if (getConnectionRouter() != null)
 		getConnectionRouter().setConstraint(this, cons);
 	revalidate();
-}
-
-/**
- * @deprecated
- */
- public void setStartDecoration(RotatableDecoration dec){
-	setSourceDecoration(dec);
 }
 
 /*
@@ -234,13 +185,6 @@ public void setSourceDecoration(RotatableDecoration dec){
 	startArrow = dec;
 	if (dec != null)
 		add(dec, new ArrowLocator(this, ConnectionLocator.SOURCE));
-}
-
-/**
- * @deprecated
- */
- public void setStartAnchor(ConnectionAnchor anchor){
-	setSourceAnchor(anchor);
 }
 
 /*
