@@ -29,24 +29,6 @@ public String ZoomAction_ZoomIn_ActionLabelText=Helper.getString("%ZoomAction.Zo
 public String ZoomAction_ZoomOut_ActionToolTipText = Helper.getString("%ZoomAction.ZoomOut.ActionToolTipText_UI_");//$NON-NLS-1$
 public String ZoomAction_ZoomOut_ActionLabelText=Helper.getString("%ZoomAction.ZoomOut.ActionLabelText_UI_");			//$NON-NLS-1$
 
-public String AlignLeftAction_ActionToolTipText = Helper.getString("%AlignLeftAction.ActionToolTipText_UI_");//$NON-NLS-1$
-public String AlignLeftAction_ActionLabelText=Helper.getString("%AlignLeftAction.ActionLabelText_UI_");			//$NON-NLS-1$
-
-public String AlignRightAction_ActionToolTipText=Helper.getString("%AlignRightAction.ActionToolTipText_UI_");		//$NON-NLS-1$
-public String AlignRightAction_ActionLabelText=Helper.getString("%AlignRightAction.ActionLabelText_UI_");			//$NON-NLS-1$
-
-public String AlignTopAction_ActionToolTipText=Helper.getString("%AlignTopAction.ActionToolTipText_UI_");		//$NON-NLS-1$
-public String AlignTopAction_ActionLabelText=Helper.getString("%AlignTopAction.ActionLabelText_UI_");			//$NON-NLS-1$
-
-public String AlignBottomAction_ActionToolTipText=Helper.getString("%AlignBottomAction.ActionToolTipText_UI_");		//$NON-NLS-1$
-public String AlignBottomAction_ActionLabelText=Helper.getString("%AlignBottomAction.ActionLabelText_UI_");			//$NON-NLS-1$
-
-public String AlignCenterAction_ActionToolTipText=Helper.getString("%AlignCenterAction.ActionToolTipText_UI_");		//$NON-NLS-1$
-public String AlignCenterAction_ActionLabelText=Helper.getString("%AlignCenterAction.ActionLabelText_UI_");			//$NON-NLS-1$
-
-public String AlignMiddleAction_ActionToolTipText=Helper.getString("%AlignMiddleAction.ActionToolTipText_UI_");		//$NON-NLS-1$
-public String AlignMiddleAction_ActionLabelText=Helper.getString("%AlignMiddleAction.ActionLabelText_UI_");			//$NON-NLS-1$
-
 public String CreateLogicPage1_Title = Helper.getString("%CreateLogicPage1.Title");  //$NON-NLS-1$
 public String CreateLogicPage1_Description = Helper.getString("%CreateLogicPage1.Description");  //$NON-NLS-1$
 public String CreateLogicPage1_ModelNames_GroupName = Helper.getString("%CreateLogicPage1.ModelNames.GroupName");  //$NON-NLS-1$
