@@ -23,6 +23,12 @@ public interface GraphicalEditPart
 {
 
 /**
+ * Adds a NodeListener to the EditPart. Duplicate calls result in duplicate notification.
+ * @param listener the Listener
+ */
+void addNodeListener(NodeListener listener);
+
+/**
  * Returns the primary Figure representing this GraphicalEditPart. The parent will add
  * this Figure to its <i>content pane</i>.  The Figure may be a composition of several
  * Figures.
@@ -52,6 +58,13 @@ List getTargetConnections();
  * @return the <i>content pane</i> Figure
  */
 IFigure getContentPane();
+
+/**
+ * Removes the first occurance of the specified listener from the list of listeners. Does
+ * nothing if the listener was not present.
+ * @param listener the listener being removed
+ */
+void removeNodeListener(NodeListener listener);
 
 /**
  * Sets the specified constraint for a child's Figure on the {@link #getContentPane()

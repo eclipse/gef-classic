@@ -180,6 +180,13 @@ protected void addChildVisual(EditPart childEditPart, int index) {
 }
 
 /**
+ * @see org.eclipse.gef.GraphicalEditPart#addNodeListener(org.eclipse.gef.NodeListener)
+ */
+public void addNodeListener(NodeListener listener) {
+	eventListeners.addListener(NodeListener.class, listener);
+}
+
+/**
  * <img src="../doc-files/black.gif"/>
  * Adds a <i>source</i> ConnectionEditPart at the specified index. This method is called
  * from {@link #refreshSourceConnections()}. There should be no reason to call or override
@@ -632,6 +639,13 @@ protected void registerVisuals() {
 protected void removeChildVisual(EditPart childEditPart) {
 	IFigure child = ((GraphicalEditPart)childEditPart).getFigure();
 	getContentPane().remove(child);
+}
+
+/**
+ * @see org.eclipse.gef.GraphicalEditPart#removeNodeListener(org.eclipse.gef.NodeListener)
+ */
+public void removeNodeListener(NodeListener listener) {
+	eventListeners.removeListener(NodeListener.class, listener);
 }
 
 /**
