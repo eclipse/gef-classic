@@ -12,7 +12,6 @@ package org.eclipse.draw2d.text;
 
 import java.text.Bidi;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
