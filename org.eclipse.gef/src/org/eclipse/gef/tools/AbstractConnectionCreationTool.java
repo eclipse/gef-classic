@@ -1,17 +1,12 @@
-/*******************************************************************************
- * Copyright (c) 2000, 2003 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- *******************************************************************************/
 package org.eclipse.gef.tools;
+/*
+ * Licensed Material - Property of IBM
+ * (C) Copyright IBM Corp. 2001, 2002 - All Rights Reserved.
+ * US Government Users Restricted Rights - Use, duplication or disclosure
+ * restricted by GSA ADP Schedule Contract with IBM Corp.
+ */
 
 import org.eclipse.swt.graphics.Cursor;
-
 
 import org.eclipse.gef.*;
 import org.eclipse.gef.commands.Command;
@@ -72,7 +67,7 @@ protected void eraseSourceFeedback() {
 }
 
 protected String getCommandName() {
-	if (isInState(STATE_CONNECTION_STARTED))
+	if (isInState(STATE_CONNECTION_STARTED | STATE_ACCESSIBLE_DRAG_IN_PROGRESS))
 		return REQ_CONNECTION_END;
 	else
 		return REQ_CONNECTION_START;
@@ -83,7 +78,7 @@ protected String getDebugName(){
 }
 
 protected String getDebugNameForState(int s) {
-	if (s == STATE_CONNECTION_STARTED)
+	if (s == STATE_CONNECTION_STARTED || s == STATE_ACCESSIBLE_DRAG_IN_PROGRESS)
 		return "Connection Started";//$NON-NLS-1$
 	return super.getDebugNameForState(s);
 }
@@ -100,7 +95,7 @@ protected boolean handleButtonDown(int button) {
 	if (isInState(STATE_INITIAL) && button == 1) {
 		updateTargetRequest();
 		updateTargetUnderMouse();
-		connectionSource = getTargetEditPart();
+		setConnectionSource(getTargetEditPart());
 		command = getCommand();
 		((CreateConnectionRequest)getTargetRequest()).setSourceEditPart(getTargetEditPart());
 		if (command != null) {
@@ -153,7 +148,8 @@ protected boolean handleInvalidInput(){
 }
 
 protected boolean handleMove() {
-	if (isInState(STATE_CONNECTION_STARTED | STATE_INITIAL)){
+	if (isInState(STATE_CONNECTION_STARTED | STATE_INITIAL 
+					| STATE_ACCESSIBLE_DRAG_IN_PROGRESS)) {
 		updateTargetRequest();
 		updateTargetUnderMouse();
 		showSourceFeedback();
@@ -165,6 +161,10 @@ protected boolean handleMove() {
 
 protected boolean isShowingSourceFeedback(){
 	return getFlag(FLAG_SOURCE_FEEDBACK);
+}
+
+protected void setConnectionSource(EditPart source) {
+	connectionSource = source;
 }
 
 public void setFactory(CreationFactory factory){
