@@ -49,6 +49,13 @@ public void addDirtyRegion(IFigure figure, Rectangle rect) {
 }
 
 /**
+ * Causes an update to occur at some itme, and the given runnable to be executed upon completion.
+ * @since 3.1
+ * @param run the runnable
+ */
+public void runWithUpdate(Runnable run) { }
+
+/**
  * The receiver should call validate() on the IFigure <i>figure</i> in a timely fashion.
  * 
  * @param figure the invalid figure

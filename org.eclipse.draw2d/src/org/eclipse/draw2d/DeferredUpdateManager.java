@@ -27,28 +27,6 @@ public class DeferredUpdateManager
 	extends UpdateManager
 {
 
-private boolean updating;
-
-private GraphicsSource graphicsSource;
-private IFigure root;
-private boolean updateQueued = false;
-private List invalidFigures = new ArrayList();
-private Map dirtyRegions = new HashMap();
-private Rectangle damage;
-
-/**
- * Constructs a new DererredUpdateManager with the given GraphicsSource.
- * @param gs the graphics source
- */
-public DeferredUpdateManager(GraphicsSource gs) {
-	setGraphicsSource(gs);
-}
-
-/**
- * Empty constructor.
- */
-public DeferredUpdateManager() { }
-
 /**
  * Calls {@link DeferredUpdateManager#performUpdate()}.
  */
@@ -61,6 +39,45 @@ protected class UpdateRequest
 	public void run() {
 		performUpdate();
 	}
+}
+private Rectangle damage;
+private Map dirtyRegions = new HashMap();
+
+private GraphicsSource graphicsSource;
+private List invalidFigures = new ArrayList();
+private IFigure root;
+private boolean updateQueued = false;
+
+private boolean updating;
+private RunnableChain afterUpdate;
+
+private static class RunnableChain {
+	RunnableChain next;
+	Runnable run;
+
+	RunnableChain(Runnable run, RunnableChain next) {
+		this.run = run;
+		this.next = next;
+	}
+	
+	void run() {
+		if (next != null)
+			next.run();
+		run.run();
+	}
+}
+
+/**
+ * Empty constructor.
+ */
+public DeferredUpdateManager() { }
+
+/**
+ * Constructs a new DererredUpdateManager with the given GraphicsSource.
+ * @param gs the graphics source
+ */
+public DeferredUpdateManager(GraphicsSource gs) {
+	setGraphicsSource(gs);
 }
 
 /**
@@ -114,16 +131,6 @@ protected Graphics getGraphics(Rectangle region) {
 }
 
 /**
- * Adds the given exposed region to the update queue and then performs the update.
- * 
- * @param exposed the exposed region
- */
-public synchronized void performUpdate(Rectangle exposed) {
-	addDirtyRegion(root, exposed);
-	performUpdate();
-}
-
-/**
  * Performs the update.  Validates the invalid figures and then repaints the dirty
  * regions.
  * @see #validateFigures()
@@ -137,9 +144,26 @@ public synchronized void performUpdate() {
 		validateFigures();
 		updateQueued = false;
 		repairDamage();
+		if (afterUpdate != null) {
+			RunnableChain chain = afterUpdate;
+			afterUpdate = null;
+			chain.run(); //chain may queue additional Runnable.
+			if (afterUpdate != null)
+				queueWork();
+		}
 	} finally {
 		updating = false;
 	}
+}
+
+/**
+ * Adds the given exposed region to the update queue and then performs the update.
+ * 
+ * @param exposed the exposed region
+ */
+public synchronized void performUpdate(Rectangle exposed) {
+	addDirtyRegion(root, exposed);
+	performUpdate();
 }
 
 /**
@@ -203,6 +227,16 @@ protected void repairDamage() {
 		}
 	}
 	damage = null;
+}
+
+/**
+ * Adds the given runnable and queues an update if an update is not under progress.
+ * @param runnable the runnable
+ */
+public synchronized void runWithUpdate(Runnable runnable) {
+	afterUpdate = new RunnableChain(runnable, afterUpdate);
+	if (!updating)
+		queueWork();
 }
 
 /**
