@@ -78,7 +78,7 @@ public void execute(Command command) {
 	command.execute();
 	if (getUndoLimit() > 0) {
 		while (undo.size() >= getUndoLimit()) {
-			undo.remove(0);
+			((Command)undo.remove(0)).dispose();
 			if (saveLocation > -1)
 				saveLocation--;
 		}
