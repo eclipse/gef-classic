@@ -116,15 +116,6 @@ public static DirectedGraph anotherTour() {
 		1,1,2,2,3,3,4,4,5,5,1,2,4,3,5,4
 	});
 
-	for (int i = 0; i < nodes.size(); i++) {
-		Node node = nodes.getNode(i);
-		node.index = i;
-	}
-	for (int i = 0; i < edges.size(); i++) {
-		Edge edge = edges.getEdge(i);
-		System.out.println("  " + edge.source.index + " -> "+ edge.target.index + ";");
-	}
-
 	DirectedGraph graph = new DirectedGraph();
 	graph.nodes = nodes;
 	graph.edges = edges;
@@ -302,23 +293,7 @@ public static DirectedGraph fourLevelBinaryTree() {
 	DirectedGraph graph = new DirectedGraph();
 	graph.nodes = nodes;
 	graph.edges = edges;
-	
-	for (int i = 0; i < nodes.size(); i++) {
-			Node node = nodes.getNode(i);
-			node.index = i;
-		}
-	for (int i = 0; i < edges.size(); i++) {
-		Edge edge = edges.getEdge(i);
-//		if (edge.source.index == 0)
-//			edge.weight = 1;
-//		else if (edge.source.index == 1 || edge.source.index == 2)
-//			edge.weight = 2;
-//		else
-//			edge.weight = 4;
 		
-		System.out.println("  " + edge.source.index + " -> "+ edge.target.index + ";");
-	}
-	
 	new DirectedGraphLayout()
 		.visit(graph);
 	
@@ -421,15 +396,6 @@ public static DirectedGraph graph2() {
 		2,1
 	});
 
-	for (int i = 0; i < nodes.size(); i++) {
-		Node node = nodes.getNode(i);
-		node.index = i;
-	}
-//	for (int i = 0; i < edges.size(); i++) {
-//		Edge edge = edges.getEdge(i);
-//		System.out.println("  " + edge.source.index + " -> "+ edge.target.index + ";");
-//	}
-
 	DirectedGraph graph = new DirectedGraph();
 	graph.nodes = nodes;
 	graph.edges = edges;
@@ -477,15 +443,6 @@ public static DirectedGraph graph3() {
 		1,2,4,3,
 		5,4
 	});
-
-	for (int i = 0; i < nodes.size(); i++) {
-		Node node = nodes.getNode(i);
-		node.index = i;
-	}
-//	for (int i = 0; i < edges.size(); i++) {
-//		Edge edge = edges.getEdge(i);
-//		System.out.println("  " + edge.source.index + " -> "+ edge.target.index + ";");
-//	}
 
 	DirectedGraph graph = new DirectedGraph();
 	graph.nodes = nodes;
