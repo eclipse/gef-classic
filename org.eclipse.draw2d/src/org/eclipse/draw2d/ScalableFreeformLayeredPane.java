@@ -10,17 +10,17 @@ public class ScalableFreeformLayeredPane
 	extends FreeformLayeredPane 
 {
 
-private double zoom = 1.0;
+private double scale = 1.0;
 
 /**
  * @see org.eclipse.draw2d.Figure#getClientArea()
  */
 public Rectangle getClientArea(Rectangle rect) {
 	super.getClientArea(rect);
-	rect.width /= zoom;
-	rect.height /= zoom;
-	rect.x /= zoom;
-	rect.y /= zoom;
+	rect.width /= scale;
+	rect.height /= scale;
+	rect.x /= scale;
+	rect.y /= scale;
 	return rect;
 }
 
@@ -36,14 +36,14 @@ public Rectangle getFreeformExtent() {
 protected void paintClientArea(Graphics graphics) {
 	if (getChildren().isEmpty())
 		return;
-	if (zoom == 1.0) {
+	if (scale == 1.0) {
 		super.paintClientArea(graphics);
 	} else {
 		ScaledGraphics g = new ScaledGraphics(graphics);
 		boolean optimizeClip = getBorder() == null || getBorder().isOpaque();
 		if (!optimizeClip)
 			g.clipRect(getBounds().getCropped(getInsets()));
-		g.scale(zoom);
+		g.scale(scale);
 		g.pushState();
 		paintChildren(g);
 		g.dispose();
@@ -61,8 +61,8 @@ public void setFreeformBounds(Rectangle bounds) {
 /**
  * Sets the zoom level
  * @param newZoom The new zoom level */
-public void setZoom(double newZoom) {
-	zoom = newZoom;
+public void setScale(double newZoom) {
+	scale = newZoom;
 	superFireMoved();
 	getFreeformHelper().invalidate();
 }
@@ -71,14 +71,14 @@ public void setZoom(double newZoom) {
  * @see org.eclipse.draw2d.Figure#translateToParent(Translatable)
  */
 public void translateToParent(Translatable t) {
-	t.performScale(zoom);
+	t.performScale(scale);
 }
 
 /**
  * @see org.eclipse.draw2d.Figure#translateFromParent(Translatable)
  */
 public void translateFromParent(Translatable t) {
-	t.performScale(1 / zoom);
+	t.performScale(1 / scale);
 }
 
 /**
