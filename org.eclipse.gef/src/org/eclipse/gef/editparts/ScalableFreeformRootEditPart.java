@@ -81,6 +81,7 @@ protected void createLayers(LayeredPane layeredPane) {
 	layeredPane.add(getScaledLayers(), SCALABLE_LAYERS);
 	layeredPane.add(new FreeformLayer(), HANDLE_LAYER);
 	layeredPane.add(new FeedbackLayer(), FEEDBACK_LAYER);
+	layeredPane.add(new GuideLayer(), GUIDE_LAYER);
 }
 
 /**

@@ -10,11 +10,17 @@
  *******************************************************************************/
 package org.eclipse.gef.editparts;
 
+import java.util.Iterator;
+import java.util.ListIterator;
+
 import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.geometry.Insets;
+import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.*;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.UnexecutableCommand;
+import org.eclipse.gef.internal.ui.rulers.GuideEditPart;
 import org.eclipse.gef.tools.MarqueeDragTracker;
 
 /**
@@ -96,6 +102,7 @@ protected IFigure createFigure() {
 	innerLayers = new FreeformLayeredPane();
 	createLayers(innerLayers);
 	viewport.setContents(innerLayers);
+	viewport.setBorder(new EditorBorder());
 	return viewport;
 }
 
@@ -107,6 +114,7 @@ protected void createLayers(LayeredPane layeredPane) {
 	layeredPane.add(getPrintableLayers(), PRINTABLE_LAYERS);
 	layeredPane.add(new FreeformLayer(), HANDLE_LAYER);
 	layeredPane.add(new FeedbackLayer(), FEEDBACK_LAYER);
+	layeredPane.add(new GuideLayer(), GUIDE_LAYER);
 }
 
 /**
@@ -253,6 +261,70 @@ class FeedbackLayer
 {
 	FeedbackLayer() {
 		setEnabled(false);
+	}
+}
+
+class GuideLayer
+	extends FreeformLayer
+{
+	public Rectangle getFreeformExtent() {
+		int maxX = 5, minX = 5, maxY = 5, minY = 5;
+		Iterator children = getChildren().iterator();
+		while (children.hasNext()) {
+			GuideEditPart.GuideFeedbackFigure child = 
+					(GuideEditPart.GuideFeedbackFigure)children.next();
+			if (child.isHorizontal()) {
+				int position = child.getBounds().y;
+				minY = Math.min(minY, position);
+				maxY = Math.max(maxY, position);
+			} else {
+				int position = child.getBounds().x;
+				minX = Math.min(minX, position);
+				maxX = Math.max(maxX, position);
+			}
+		}
+		Rectangle r = new Rectangle(
+				minX, minY, maxX - minX + 1, maxY - minY + 1);
+		if (r.width > 1) {
+			r.expand(5, 0);
+		}
+		if (r.height > 1) {
+			r.expand(0, 5);
+		}
+		return r;
+	}
+	public void setFreeformBounds(Rectangle bounds) {
+		super.setFreeformBounds(bounds);
+		ListIterator children = getChildren().listIterator();
+		while (children.hasNext()) {
+			GuideEditPart.GuideFeedbackFigure child = 
+					(GuideEditPart.GuideFeedbackFigure)children.next();
+			if (child.isHorizontal()) {
+				Rectangle.SINGLETON.setLocation(
+						getBounds().x, child.getBounds().y);
+				Rectangle.SINGLETON.setSize(getBounds().width, 1);
+			} else {
+				Rectangle.SINGLETON.setLocation(
+						child.getBounds().x, getBounds().y);
+				Rectangle.SINGLETON.setSize(1, getBounds().height);
+			}
+			child.setBounds(Rectangle.SINGLETON);
+		}				
+	}
+}
+
+public static class EditorBorder
+	extends AbstractBorder
+{
+	public Insets getInsets(IFigure figure) {
+		return new Insets(1, 1, 0, 0);
+	}
+	public void paint(IFigure figure, Graphics graphics, Insets insets) {
+		graphics.setForegroundColor(ColorConstants.buttonDarker);
+		graphics.drawLine(
+				figure.getBounds().getTopLeft(), figure.getBounds().getTopRight());
+		graphics.drawLine(
+				figure.getBounds().getTopLeft(), figure.getBounds().getBottomLeft());
 	}
 }
 
