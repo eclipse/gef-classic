@@ -90,6 +90,7 @@ public Command createDeleteCommand(List objects) {
 
 	GroupRequest deleteReq =
 		new GroupRequest(RequestConstants.REQ_DELETE);
+	deleteReq.setEditParts(objects);
 
 	CompoundCommand compoundCmd = new CompoundCommand(
 		GEFMessages.DeleteAction_ActionDeleteCommandName);
