@@ -22,7 +22,7 @@ import org.eclipse.gef.*;
 
 /**
  * A SelectionEditPolicy which manages a List of handles provided by the subclass. Handles
- * are Figures which are added to the HANDLE layer, and generually return a DragTracker
+ * are Figures which are added to the HANDLE layer, and generally return a DragTracker
  * for dragging them. Handles are accessible for keyboard use if they return an accessible
  * location.
  * <P>
