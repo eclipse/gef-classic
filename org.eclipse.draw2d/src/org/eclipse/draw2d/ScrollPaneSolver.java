@@ -51,7 +51,7 @@ public static Result solve(
 	if (viewport.getContents() != null)
 		viewportMinSize.expand(viewport.getContents().getMinimumSize());
 
-	//Adjust preferred size if tracking flags set.  Basically, tracking == "compress view untill
+	//Adjust preferred size if tracking flags set.  Basically, tracking == "compress view until
 	// its minimum size is reached".
 	if (viewport.getContentsTracksHeight())
 		preferred.height = viewportMinSize.height;
