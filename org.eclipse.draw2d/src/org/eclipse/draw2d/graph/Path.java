@@ -710,6 +710,7 @@ void refreshExcludedObstacles(List allObstacles) {
 	
 	for (int i = 0; i < allObstacles.size(); i++) {
 		Obstacle o = (Obstacle)allObstacles.get(i);
+		o.exclude = false;
 		
 		if (o.contains(start)) {
 			if (o.containsProper(start))
