@@ -43,10 +43,15 @@ String GUIDE_LAYER = "Guide Layer"; //$NON-NLS-1$
 String HANDLE_LAYER = "Handle Layer"; //$NON-NLS-1$
 
 /**
- * The layer containing feedback, which generally temporary visuals that
+ * The layer containing feedback, which are generally temporary visuals that
  * appear on top of all other visuals.
  */
 String FEEDBACK_LAYER = "Feedback Layer"; //$NON-NLS-1$
+
+/**
+ * The layer containing scaled feedback.
+ */
+String SCALED_FEEDBACK_LAYER = "Scaled Feedback Layer"; //$NON-NLS-1$
 
 /**
  * The layer that contains all printable layers.
