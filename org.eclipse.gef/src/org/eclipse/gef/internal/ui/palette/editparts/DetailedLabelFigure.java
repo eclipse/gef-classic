@@ -10,18 +10,10 @@
  *******************************************************************************/
 package org.eclipse.gef.internal.ui.palette.editparts;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.*;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.ImageData;
-import org.eclipse.swt.graphics.PaletteData;
 import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.draw2d.*;
@@ -46,13 +38,11 @@ public static final String SELECTED_PROPERTY = "selected"; //$NON-NLS-1$
 protected static final FontCache FONTCACHE = new FontCache();
 private static final Border PAGE_BORDER = new MarginBorder(0, 1, 0, 1);
 
-private Image shadedIcon;
-private ImageFigure image;
+private SelectableImageFigure image;
 private FlowPage page;
 private TextFlow nameText, descText;
 private Font boldFont;
-private FontData currentData;
-private boolean selectionState, useLargeIcons;
+private boolean selectionState;
 private int layoutMode = -1;
 private List listeners = new ArrayList();
 private Font cachedFont;
@@ -132,16 +122,14 @@ public void setImage(Image icon) {
 public void setLayoutMode(int layoutMode) {
 	updateFont(layoutMode);
 	
-	if (layoutMode == this.layoutMode) {
+	if (layoutMode == this.layoutMode)
 		return;
-	}
 	
 	this.layoutMode = layoutMode;
 
 	add(page);
-	if (page.getChildren().contains(descText)) {
+	if (page.getChildren().contains(descText))
 		page.remove(descText);
-	}
 	
 	BorderLayout layout = (BorderLayout) getLayoutManager();
 	if (layoutMode == PaletteViewerPreferences.LAYOUT_COLUMNS) {
@@ -180,13 +168,16 @@ public void setSelected(boolean state) {
 protected void updateColors() {
 	if (isSelected()) {
 		if (hasFocus()) {
+			image.useShadedImage();
 			setForegroundColor(ColorConstants.menuForegroundSelected);
 			setBackgroundColor(ColorConstants.menuBackgroundSelected);
 		} else {
+			image.disposeShadedImage();
 			setForegroundColor(null);
 			setBackgroundColor(ColorConstants.button);
 		}
 	} else {
+		image.disposeShadedImage();
 		setForegroundColor(null);
 		setBackgroundColor(null);
 	}
@@ -200,7 +191,7 @@ protected void updateColors() {
  * @param shade		The Color to be used for shading
  * @return A new ImageData that can be used to create an Image.
  */	
-public static ImageData createShadedImage(Image fromImage, Color shade) {
+protected static ImageData createShadedImage(Image fromImage, Color shade) {
 	org.eclipse.swt.graphics.Rectangle r = fromImage.getBounds();
 	ImageData data = fromImage.getImageData();
 	PaletteData palette = data.palette;
@@ -210,7 +201,7 @@ public static ImageData createShadedImage(Image fromImage, Color shade) {
 		for (int i = 0; i < rgbs.length; i++) {
 			if (data.transparentPixel != i) {
 				RGB color = rgbs [i];
-				color.red = determineShading(color.red, shade.getRed());				
+				color.red = determineShading(color.red, shade.getRed());
 				color.blue = determineShading(color.blue, shade.getBlue());
 				color.green = determineShading(color.green, shade.getGreen());
 			}
@@ -305,6 +296,12 @@ private class FocusableFlowPage extends FlowPage {
 
 private class SelectableImageFigure extends ImageFigure {
 	private Image shadedImage;
+	public void useShadedImage() {
+		disposeShadedImage();
+		ImageData data = createShadedImage(super.getImage(), 
+				ColorConstants.menuBackgroundSelected);
+		shadedImage = new Image(null, data, data.getTransparencyMask());
+	}
 	private void disposeShadedImage() {
 		if (shadedImage != null) {
 			shadedImage.dispose();
@@ -315,21 +312,18 @@ private class SelectableImageFigure extends ImageFigure {
 		disposeShadedImage();
 	}
 	public Image getImage() {
-		if (isSelected() && DetailedLabelFigure.this.hasFocus()) {
-			if (shadedImage == null) {
-				ImageData data = createShadedImage(super.getImage(), 
-						ColorConstants.menuBackgroundSelected);
-				shadedImage = new Image(null, data, data.getTransparencyMask());
-			}
+		if (shadedImage != null)
 			return shadedImage;
-		}
 		return super.getImage();
 	}
 	public void setImage(Image image) {
-		if (image != super.getImage()) {
-			disposeShadedImage();
-		}
+		if (image == super.getImage())
+			return;
+		boolean wasShaded = shadedImage != null;
+		disposeShadedImage();
 		super.setImage(image);
+		if (wasShaded)
+			useShadedImage();
 	}
 }
 

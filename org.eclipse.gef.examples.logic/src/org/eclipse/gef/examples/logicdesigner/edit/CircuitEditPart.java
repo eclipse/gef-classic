@@ -82,10 +82,4 @@ public IFigure getContentPane() {
 	return getCircuitBoardFigure().getContentsPane();
 }
 
-
-public void setSelected(int i){
-	super.setSelected(i);
-	refreshVisuals();
-}
-
 }
