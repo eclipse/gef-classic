@@ -374,6 +374,7 @@ private boolean handleTraverseHandle(KeyEvent e) {
 	EditPart focus = getCurrentViewer().getFocusEditPart();
 	if (focus.getSelected() == EditPart.SELECTED_NONE)
 		return false;
+	getCurrentViewer().reveal(focus);
 
 	AccessibleHandleProvider provider;
 	provider = (AccessibleHandleProvider)focus.getAdapter(AccessibleHandleProvider.class);
@@ -395,8 +396,7 @@ private boolean handleTraverseHandle(KeyEvent e) {
 		setLastHandleProvider(focus);
 	}
 
-	Point loc = (Point)locations.get(handleIndex);
-	placeMouseInViewer(loc);
+	placeMouseInViewer((Point)locations.get(handleIndex));
 	return true;
 }
 
