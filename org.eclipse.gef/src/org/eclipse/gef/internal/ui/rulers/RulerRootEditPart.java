@@ -107,6 +107,34 @@ public class RulerViewport extends Viewport {
 		horizontal = isHorizontal;
 		setLayoutManager(null);
 	}
+	protected void doLayout(boolean force) {
+		repaint();
+		if (force) {
+			RangeModel rModel;
+			if (horizontal) {
+				rModel = getHorizontalRangeModel();
+			} else {
+				rModel = getVerticalRangeModel();
+			}
+			Rectangle contentBounds = Rectangle.SINGLETON;
+			if (horizontal) {
+				contentBounds.y = 0;
+				contentBounds.x = rModel.getMinimum();
+				contentBounds.height = this.getContents().getPreferredSize().height;
+				contentBounds.width = rModel.getMaximum() - rModel.getMinimum();
+			} else {
+				contentBounds.y = rModel.getMinimum();
+				contentBounds.x = 0;
+				contentBounds.height = rModel.getMaximum() - rModel.getMinimum();
+				contentBounds.width = this.getContents().getPreferredSize().width;
+			}
+			if (!this.getContents().getBounds().equals(contentBounds)) {
+				this.getContents().setBounds(contentBounds);
+				this.getContents().revalidate();
+			}						
+		}
+		getUpdateManager().performUpdate();
+	}
 	public Dimension getPreferredSize(int wHint, int hHint) {
 		if (this.getContents() == null) {
 			return new Dimension();
@@ -127,45 +155,16 @@ public class RulerViewport extends Viewport {
 	}
 	public void propertyChange(PropertyChangeEvent event) {
 		if (this.getContents() != null && event.getSource() instanceof RangeModel) {
-			repaint();
 			String property = event.getPropertyName();
-			if (property.equals(RangeModel.PROPERTY_MAXIMUM) 
-					|| property.equals(RangeModel.PROPERTY_MINIMUM)
-					|| property.equals(RangeModel.PROPERTY_VALUE)) {
-				RangeModel rModel = (RangeModel)event.getSource();
-				Rectangle contentBounds = Rectangle.SINGLETON;
-				if (horizontal) {
-					contentBounds.y = 0;
-					contentBounds.x = rModel.getMinimum();
-					contentBounds.height = this.getContents().getPreferredSize().height;
-					contentBounds.width = rModel.getMaximum() - rModel.getMinimum();
-				} else {
-					contentBounds.y = rModel.getMinimum();
-					contentBounds.x = 0;
-					contentBounds.height = rModel.getMaximum() - rModel.getMinimum();
-					contentBounds.width = this.getContents().getPreferredSize().width;
-				}
-				if (!this.getContents().getBounds().equals(contentBounds)) {
-					this.getContents().setBounds(contentBounds);
-					this.getContents().revalidate();
-				}						
-			}
-			getUpdateManager().performUpdate();
+			doLayout(RangeModel.PROPERTY_MAXIMUM.equals(property)
+					|| RangeModel.PROPERTY_MINIMUM.equals(property)
+					|| RangeModel.PROPERTY_VALUE.equals(property));
 		}
 	}
 	public void setContents(IFigure figure) {
 		super.setContents(figure);
-		// Need to layout when contents change.  But the layout is done in the
-		// propertyChange() method.  So, we fake a propertyChange.
-		RangeModel rModel;
-		if (horizontal) {
-			rModel = getHorizontalRangeModel();
-		} else {
-			rModel = getVerticalRangeModel();
-		}
-		PropertyChangeEvent event = new PropertyChangeEvent(rModel, 
-				RangeModel.PROPERTY_MINIMUM, null, new Integer(rModel.getValue()));
-		propertyChange(event);
+		// Need to layout when contents change
+		doLayout(true);
 	}
 	protected boolean useLocalCoordinates() {
 		return true;
