@@ -87,6 +87,8 @@ protected abstract void handleCollision(PointList list, int index);
 
 /** * @see org.eclipse.draw2d.ConnectionRouter#invalidate(Connection) */
 public void invalidate(Connection conn) {
+	if (next() != null)
+		next().invalidate(conn);
 	if (conn.getSourceAnchor() == null || conn.getTargetAnchor() == null)
 		return;
 	HashKey connectionKey = new HashKey(conn);
@@ -109,6 +111,8 @@ protected ConnectionRouter next() {
 	return nextRouter;
 }
 
+
+
 /** * @see org.eclipse.draw2d.ConnectionRouter#remove(Connection) */
 public void remove(Connection conn) {
 	if (conn.getSourceAnchor() == null || conn.getTargetAnchor() == null)
@@ -130,11 +134,12 @@ public void remove(Connection conn) {
  * {@link #handleCollision(PointList, int)}.
  * @param conn The connection to route */
 public void route(Connection conn) {
-	conn.getPoints().removeAllPoints();
 	if (next() != null) 
 		next().route(conn);
-	else
+	else {
+		conn.getPoints().removeAllPoints();
 		setEndPoints(conn);
+	}
 
 	if (conn.getPoints().size() == 2) {
 		PointList points = conn.getPoints();
