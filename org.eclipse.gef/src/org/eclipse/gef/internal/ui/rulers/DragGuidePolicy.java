@@ -57,7 +57,6 @@ private void eraseAttachedPartsFeedback(Request request) {
 }
 
 public void eraseSourceFeedback(Request request) {
-	getGuideEditPart().updateLocationOfFigures(getGuideEditPart().getZoomedPosition());
 	if (getDummyGuideFigure().getParent() != null) {
 		getDummyGuideFigure().getParent().remove(getDummyGuideFigure());			
 	}
@@ -187,7 +186,7 @@ public void showSourceFeedback(Request request) {
 				getHost(), getDummyGuideFigure(), 
 				new Integer(getGuideEditPart().getZoomedPosition()));
 		getDummyGuideFigure().setBounds(getHostFigure().getBounds());
-		// add the placeholder line figure to the primary viewer
+		// add the invisible placeholder line figure to the primary viewer
 		getGuideEditPart().getGuideLayer().add(getDummyLineFigure(), 0);
 		getGuideEditPart().getGuideLayer().setConstraint(getDummyLineFigure(), 
 				new Boolean(getGuideEditPart().isHorizontal()));
