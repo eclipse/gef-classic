@@ -19,14 +19,13 @@ import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.MouseTrackAdapter;
 import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.graphics.Cursor;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
@@ -50,6 +49,7 @@ import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.util.Assert;
+import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.TransferDropTargetListener;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IPerspectiveDescriptor;
@@ -117,9 +117,9 @@ private static final Image LEFT_ARROW = new Image(null, ImageDescriptor.createFr
 private static final Image RIGHT_ARROW = new Image(null, ImageDescriptor.createFromFile(
 		Internal.class, "icons/palette_right.gif").getImageData()); //$NON-NLS-1$
 
-private Composite sash, paletteContainer;
+private Composite paletteContainer;
 private PaletteViewer pViewer, externalViewer;
-private Control graphicalControl;
+private Control graphicalControl, sash;
 private PaletteViewerProvider provider;
 private FlyoutPreferences prefs;
 private int dock = PositionConstants.EAST;
@@ -147,14 +147,23 @@ public FlyoutPaletteComposite(Composite parent, int style, IWorkbenchPage page,
 		PaletteViewerProvider pvProvider, FlyoutPreferences preferences) {
 	super(parent, style & SWT.BORDER);
 	provider = pvProvider;
+	prefs = preferences;
 	sash = createSash();
 	paletteContainer = createPaletteContainer();
 	hookIntoWorkbench(page.getWorkbenchWindow());
 
-	prefs = preferences;
+	// Initialize the state properly
 	int defaultState = prefs.getPaletteState();
 	setPaletteWidth(prefs.getPaletteWidth());
 	setDockLocation(prefs.getDockLocation());
+	IViewPart part = page.findView(PaletteView.ID);
+	if (part == null) {
+		if (defaultState == STATE_COLLAPSED || defaultState == STATE_PINNED_OPEN)
+			setState(defaultState);
+		else
+			setState(STATE_COLLAPSED);
+	} else
+		setState(STATE_HIDDEN);
 
 	addListener(SWT.Resize, new Listener() {
 		public void handleEvent(Event event) {
@@ -167,7 +176,7 @@ public FlyoutPaletteComposite(Composite parent, int style, IWorkbenchPage page,
 			 */
 			if (area.width < minWidth)
 				return;
-			layout();
+			layout(true);
 		}
 	});
 
@@ -183,15 +192,6 @@ public FlyoutPaletteComposite(Composite parent, int style, IWorkbenchPage page,
 					prefs.setPaletteState(paletteState);
 		}
 	});
-
-	IViewPart part = page.findView(PaletteView.ID);
-	if (part == null) {
-		if (defaultState == STATE_COLLAPSED || defaultState == STATE_PINNED_OPEN)
-			setState(defaultState);
-		else
-			setState(STATE_COLLAPSED);
-	} else
-		setState(STATE_HIDDEN);
 }
 
 private final void addListenerToCtrlHierarchy(Control parent, int eventType, 
@@ -213,7 +213,7 @@ private Composite createPaletteContainer() {
 	return new PaletteContainer(this, SWT.NONE);
 }
 
-private Composite createSash() {
+private Control createSash() {
 	return new Sash(this);
 }
 
@@ -371,7 +371,7 @@ private void setDockLocation(int position) {
 		dock = position;
 		listeners.firePropertyChange(PROPERTY_DOCK_LOCATION, oldPosition, dock);
 		if (pViewer != null)
-			layout();
+			layout(true);
 	}
 }
 
@@ -381,7 +381,7 @@ private final void setPaletteWidth(int newSize) {
 		paletteWidth = newSize;
 		listeners.firePropertyChange(PROPERTY_PALETTE_WIDTH, oldValue, paletteWidth);
 		if (pViewer != null)
-			layout();
+			layout(true);
 	}
 }
 
@@ -466,7 +466,7 @@ private void setState(int newState) {
 				pViewer.getControl().dispose();
 			pViewer = null;
 	}
-	layout();
+	layout(true);
 	listeners.firePropertyChange(PROPERTY_STATE, oldState, newState);
 }
 
@@ -508,7 +508,7 @@ private class Sash extends Composite {
 		
 		addListener(SWT.Resize, new Listener() {
 			public void handleEvent(Event event) {
-				layout();
+				layout(true);
 			}
 		});
 		
@@ -579,43 +579,39 @@ private class Sash extends Composite {
 				? SharedCursors.SIZEW : null);
 	}
 	
-	/*
-	 * @TODO:Pratik   ALT+TAB while dragging puts this drag manager in an invalid state
-	 */
 	private class SashDragManager 
 			extends MouseAdapter 
-			implements MouseMoveListener, Listener, KeyListener {
+			implements MouseMoveListener, Listener {
 		protected boolean dragging = false;
 		protected boolean correctState = false;
 		protected int origX;
+		protected Listener keyListener = new Listener() {
+			public void handleEvent(Event event) {
+				if (event.keyCode == SWT.ALT || event.keyCode == SWT.ESC) {
+					dragging = false;
+					Display.getCurrent().removeFilter(SWT.KeyDown, this);
+				}
+				event.doit = false;
+				event.type = SWT.None;
+			}
+		};
 		public SashDragManager() {
 			Sash.this.addListener(SWT.DragDetect, this);
 			Sash.this.addMouseMoveListener(this);
 			Sash.this.addMouseListener(this);
-			Sash.this.addKeyListener(this);
 		}
 		public void handleEvent(Event event) {
 			dragging = true;
 			correctState = isInState(STATE_EXPANDED | STATE_PINNED_OPEN);
 			origX = event.x;
-		}
-		public void keyPressed(KeyEvent e) {
-			/*
-			 * @TODO:Pratik  This code is never invoked for some reason.  Look into it.
-			 */
-			if (e.keyCode == SWT.ALT || e.keyCode == SWT.ESC) {
-				MouseEvent me = new MouseEvent(new Event());
-				me.button = 2;
-				mouseUp(me);
-			}
-		}
-		public void keyReleased(KeyEvent e) {
+			Display.getCurrent().addFilter(SWT.KeyDown, keyListener);
 		}
 		public void mouseMove(MouseEvent e) {
 			if (dragging && correctState)
 				handleSashDragged(e.x - origX);
 		}
 		public void mouseUp(MouseEvent me) {
+			Display.getCurrent().removeFilter(SWT.KeyDown, keyListener);
 			if (!dragging && me.button == 1)
 				if (isInState(STATE_COLLAPSED))
 					setState(STATE_EXPANDED);
@@ -790,7 +786,7 @@ private class TitleDragManager
 	public void mouseHover(MouseEvent e) {
 		/*
 		 * @TODO:Pratik   Mouse hover events are received if the hover occurs just before 
-		 * you finish or cancel the drag.  Open a bugzilla about it. 
+		 * you finish or cancel the drag.  Open a bugzilla about it?
 		 */
 		if (isInState(STATE_COLLAPSED))
 			setState(STATE_EXPANDED);
@@ -817,13 +813,13 @@ private class PaletteContainer extends Composite {
 					updateState();
 				else if (evt.getPropertyName().equals(PROPERTY_DOCK_LOCATION))
 					if (getVisible())
-						layout();
+						layout(true);
 			}
 		});
 		
 		addListener(SWT.Resize, new Listener() {
 			public void handleEvent(Event event) {
-				layout();
+				layout(true);
 			}
 		});
 		
@@ -870,25 +866,32 @@ private class PaletteContainer extends Composite {
 			title.setVisible(false);
 			button.setVisible(false);
 		}
-		layout();
+		layout(true);
 	}
 }
 
 private class DragFigure 
 		extends ImageFigure {
 	public DragFigure() {
-		setFont(JFaceResources.getBannerFont());
-		updateImage();
 		FlyoutPaletteComposite.this.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
-				getImage().dispose();
+				if (getImage() != null)
+					getImage().dispose();
 			}
 		});
-	}	
+	}
 	protected void paintFigure(Graphics graphics) {
+		if (getImage() == null)
+			updateImage();
 		super.paintFigure(graphics);
 		if (hasFocus())
 			graphics.drawFocus(0, 0, bounds.width - 1, bounds.height - 1);
+	}
+	public void setFont(Font f) {
+		if (f != font) {
+			super.setFont(f);
+			updateImage();
+		}
 	}
 	protected void updateImage() {
 		if (getImage() != null)
@@ -898,7 +901,8 @@ private class DragFigure
 		 * FigureUtilities?
 		 */
 		Image img = null;
-		IFigure fig = new TitleLabel();
+		IFigure fig = new TitleLabel(false);
+		fig.setFont(getFont());
 		fig.setOpaque(true);
 		fig.setBackgroundColor(ColorConstants.button);
 		// This is a hack.  TitleLabel does not return a proper preferred size, since
@@ -922,14 +926,16 @@ private static class TitleLabel extends Label {
 	private static final int H_GAP = 4;
 	private static final int LINE_LENGTH = 20;
 	private static final int MIN_LINE_LENGTH = 6;
+	private boolean horizontal;
 	protected static final Border BORDER = new MarginBorder(0, 3, 0, 3);
-	public TitleLabel() {
+	protected static final Border TOOL_TIP_BORDER = new MarginBorder(0, 2, 0, 2);
+	public TitleLabel(boolean isHorizontal) {
 		super(GEFMessages.Palette_Label);
-		setFont(JFaceResources.getBannerFont());
+		horizontal = isHorizontal;
 		setLabelAlignment(PositionConstants.LEFT);
 		setBorder(BORDER);
 		Label tooltip = new Label(getText());
-		tooltip.setBorder(BORDER);
+		tooltip.setBorder(TOOL_TIP_BORDER);
 		setToolTip(tooltip);
 	}
 	public Insets getInsets() {
@@ -960,8 +966,8 @@ private static class TitleLabel extends Label {
 		int lineWidth = Math.min((area.width - textBounds.width - H_GAP * 2) / 2, 
 				LINE_LENGTH); 
 		if (lineWidth >= MIN_LINE_LENGTH) {
-			graphics.setForegroundColor(ColorConstants.buttonLightest);
 			int centerY = area.height / 2;
+			graphics.setForegroundColor(ColorConstants.buttonLightest);
 			graphics.drawLine(textBounds.x - H_GAP - lineWidth, centerY - 3, 
 					textBounds.x - H_GAP, centerY - 3);
 			graphics.drawLine(textBounds.x - H_GAP - lineWidth, centerY + 2, 
@@ -979,6 +985,27 @@ private static class TitleLabel extends Label {
 					textBounds.right() + H_GAP + lineWidth, centerY - 2);
 			graphics.drawLine(textBounds.right() + H_GAP, centerY + 3, 
 					textBounds.right() + H_GAP + lineWidth, centerY + 3);
+			if (horizontal) {
+				graphics.drawPoint(textBounds.x - H_GAP, centerY + 2);
+				graphics.drawPoint(textBounds.x - H_GAP, centerY - 3);
+				graphics.drawPoint(textBounds.right() + H_GAP + lineWidth, centerY - 3);
+				graphics.drawPoint(textBounds.right() + H_GAP + lineWidth, centerY + 2);
+				graphics.setForegroundColor(ColorConstants.buttonLightest);
+				graphics.drawPoint(textBounds.x - H_GAP - lineWidth, centerY - 2);
+				graphics.drawPoint(textBounds.x - H_GAP - lineWidth, centerY + 3);
+				graphics.drawPoint(textBounds.right() + H_GAP, centerY - 2);
+				graphics.drawPoint(textBounds.right() + H_GAP, centerY + 3);
+			} else {
+				graphics.drawPoint(textBounds.x - H_GAP - lineWidth, centerY + 2);
+				graphics.drawPoint(textBounds.x - H_GAP - lineWidth, centerY - 3);
+				graphics.drawPoint(textBounds.right() + H_GAP, centerY - 3);
+				graphics.drawPoint(textBounds.right() + H_GAP, centerY + 2);
+				graphics.setForegroundColor(ColorConstants.buttonLightest);
+				graphics.drawPoint(textBounds.x - H_GAP, centerY - 2);
+				graphics.drawPoint(textBounds.x - H_GAP, centerY + 3);
+				graphics.drawPoint(textBounds.right() + H_GAP + lineWidth, centerY - 2);
+				graphics.drawPoint(textBounds.right() + H_GAP + lineWidth, centerY + 3);
+			}
 		}
 	}
 }
@@ -1054,11 +1081,13 @@ private class TitleCanvas extends Canvas {
 		return new org.eclipse.swt.graphics.Point(size.width, size.height);
 	}
 	private void init(boolean isHorizontal) {
-		IFigure contents;
+		IFigure fig;
 		if (isHorizontal)
-			contents = new TitleLabel();
+			fig = new TitleLabel(true);
 		else
-			contents = new DragFigure();
+			fig = new DragFigure();
+		final IFigure contents = fig;
+		contents.setFont(JFaceResources.getBannerFont());
 		contents.setRequestFocusEnabled(true);
 		contents.setFocusTraversable(true);
 		contents.addFocusListener(new FocusListener() {
@@ -1067,6 +1096,30 @@ private class TitleCanvas extends Canvas {
 			}
 			public void focusLost(FocusEvent fe) {
 				fe.loser.repaint();
+			}
+		});
+		final IPropertyChangeListener fontListener = new IPropertyChangeListener() {
+			public void propertyChange(org.eclipse.jface.util.PropertyChangeEvent event) {
+				if (JFaceResources.BANNER_FONT.equals(event.getProperty()))
+					contents.setFont(JFaceResources.getBannerFont());
+				if (isVisible()) {
+					redraw();
+					/*
+					 * If this canvas is in the sash, we want the FlyoutPaletteComposite
+					 * to layout (which will cause the sash to be resized and laid out).  
+					 * However, if this canvas is in the paletteContainer, the 
+					 * paletteContainer's bounds won't change, and hence it won't layout.
+					 * Thus, we also invoke getParent().layout().
+					 */
+					FlyoutPaletteComposite.this.layout(true);
+					getParent().layout(true);
+				}
+			}
+		};
+		JFaceResources.getFontRegistry().addListener(fontListener);
+		addDisposeListener(new DisposeListener() {
+			public void widgetDisposed(DisposeEvent e) {
+				JFaceResources.getFontRegistry().removeListener(fontListener);
 			}
 		});
 		
