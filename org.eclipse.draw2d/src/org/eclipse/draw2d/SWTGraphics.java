@@ -19,8 +19,11 @@ import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
- * Implementation of providing the drawing capabilities of SWT's GC class
- * in draw2d.
+ * Implementation of providing the drawing capabilities of SWT's GC class in Draw2d.
+ * There are 2 states contained in this graphics class -- the applied state which is the
+ * actual state of the GC and the current state which is the current state of this
+ * graphics object.  Certain properties can be changed multiple times and the GC won't be
+ * updated until it's actually used.
  */
 public class SWTGraphics
 	extends Graphics
@@ -97,12 +100,19 @@ public SWTGraphics(GC gc) {
 	init();
 }
 
+/**
+ * If the background color has changed, this change will be pushed to the GC.  Also calls
+ * {@link #checkGC()}.
+ */
 protected final void checkFill() {
 	if (!appliedState.bgColor.equals(currentState.bgColor))
 		gc.setBackground(appliedState.bgColor = currentState.bgColor);
 	checkGC();
 }
 
+/**
+ * If the XOR or the clip region has change, these changes will be pushed to the GC.
+ */
 protected final void checkGC() {
 	if (appliedState.xor != currentState.xor)
 		gc.setXORMode(appliedState.xor = currentState.xor);
@@ -117,6 +127,10 @@ protected final void checkGC() {
 	}
 }
 
+/**
+ * If the line width, line style, foreground or background colors have changed, these
+ * changes will be pushed to the GC.  Also calls {@link #checkGC()}.
+ */
 protected final void checkPaint() {
 	checkGC();
 	if (!appliedState.fgColor.equals(currentState.fgColor))
@@ -129,6 +143,10 @@ protected final void checkPaint() {
 		gc.setBackground(appliedState.bgColor = currentState.bgColor);
 }
 
+/**
+ * If the font has changed, this change will be pushed to the GC.  Also calls
+ * {@link #checkPaint()} and {@link #checkFill()}.
+ */
 protected final void checkText() {
 	checkPaint();
 	checkFill();

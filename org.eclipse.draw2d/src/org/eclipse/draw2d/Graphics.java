@@ -54,8 +54,32 @@ public final void drawArc(Rectangle r, int offset, int length) {
 	drawArc(r.x, r.y, r.width, r.height, offset, length);
 }
 
+/**
+ * Draws the outline of an arc located at (x,y) with width <i>w</i> and height <i>h</i>. 
+ * The starting angle of the arc (specified in degrees) is <i>offset</i> and <i>length</i>
+ * is the arc's angle (specified in degrees).
+ * 
+ * @param x the x coordinate
+ * @param y the y coordinate
+ * @param w the width
+ * @param h the height
+ * @param offset the start angle
+ * @param length the length of the arc
+ */
 public abstract void drawArc(int x, int y, int w, int h, int offset, int length);
 
+/**
+ * Fills the interior of an arc located at (<i>x</i>,<i>y</i>) with width <i>w</i> and 
+ * height <i>h</i>. The starting angle of the arc (specified in degrees) is <i>offset</i>
+ * and <i>length</i> is the arc's angle (specified in degrees).
+ * 
+ * @param x the x coordinate
+ * @param y the y coordinate
+ * @param w the width
+ * @param h the height
+ * @param offset the start angle
+ * @param length the length of the arc
+ */
 public abstract void fillArc(int x, int y, int w, int h, int offset, int length);
 
 /**
@@ -110,6 +134,12 @@ public final void drawImage(Image srcImage, Point p) {
 	drawImage(srcImage, p.x, p.y);
 }
 
+/**
+ * Draws the given Image at the location (x,y).
+ * @param srcImage the Image
+ * @param x the x coordinate
+ * @param y the y coordinate
+ */
 public abstract void drawImage(Image srcImage, int x, int y);
 
 /**
@@ -120,6 +150,22 @@ public final void drawImage(Image srcImage, Rectangle src, Rectangle dest) {
 						dest.x, dest.y, dest.width, dest.height);
 }
 
+/**
+ * Draws a rectangular section of the given Image to the specified rectangular reagion on
+ * the canvas.  The section of the image bounded by the rectangle (x1,y1,w1,h1) is copied
+ * to the section of the canvas bounded by the rectangle (x2,y2,w2,h2).  If these two 
+ * sizes are different, scaling will occur.
+ * 
+ * @param srcImage the image
+ * @param x1 the x coordinate of the source
+ * @param y1 the y coordinate of the source
+ * @param w1 the width of the source
+ * @param h1 the height of the source
+ * @param x2 the x coordinate of the destination
+ * @param y2 the y coordinate of the destination
+ * @param w2 the width of the destination
+ * @param h2 the height of the destination
+ */
 public abstract void drawImage(Image srcImage, int x1, int y1, int w1, int h1, 
 													int x2, int y2, int w2, int h2);
 
@@ -233,12 +279,46 @@ public final void fillRectangle(Rectangle r) {
  */
 public abstract void fillRectangle(int x, int y, int width, int height);
 
+/**
+ * Draws a rectangle with rounded corners using the foreground color.  <i>arcWidth</i> and
+ * <i>arcHeight</i> represent the horizontal and vertical diameter of the corners.
+ * 
+ * @param r the rectangle
+ * @param arcWidth the arc width
+ * @param arcHeight the arc height
+ */
 public abstract void drawRoundRectangle(Rectangle r, int arcWidth, int arcHeight);
 
+/**
+ * Fills a rectangle with rounded corners using the background color.  <i>arcWidth</i> and
+ * <i>arcHeight</i> represent the horizontal and vertical diameter of the corners.
+ * 
+ * @param r the rectangle
+ * @param arcWidth the arc width
+ * @param arcHeight the arc height
+ */
 public abstract void fillRoundRectangle(Rectangle r, int arcWidth, int arcHeight);
 
+/**
+ * Draws the given string using the current font and foreground color. Tab expansion and 
+ * carriage return processing are performed. The background of the text will be
+ * transparent.
+ * 
+ * @param s the text
+ * @param x the x coordinate
+ * @param y the y coordinate
+ */
 public abstract void drawText(String s, int x, int y);
 
+/**
+ * Draws the given string using the current font and foreground color. No tab expansion or 
+ * carriage return processing will be performed. The background of the string will be
+ * transparent.
+ * 
+ * @param s the string
+ * @param x the x coordinate
+ * @param y the y coordinate
+ */
 public abstract void drawString(String s, int x, int y);
 
 /**
@@ -262,6 +342,15 @@ public final void fillString(String s, Point p) {
 	fillString(s, p.x, p.y);
 }
 
+/**
+ * Draws the given string using the current font and foreground color. No tab expansion or 
+ * carriage return processing will be performed. The background of the string will be
+ * filled with the current background color.
+ * 
+ * @param s the string
+ * @param x the x coordinate
+ * @param y the y coordinate
+ */
 public abstract void fillString(String s, int x, int y);
 
 /**
@@ -271,6 +360,15 @@ public final void fillText(String s, Point p) {
 	fillText(s, p.x, p.y);
 }
 
+/**
+ * Draws the given string using the current font and foreground color. Tab expansion and 
+ * carriage return processing are performed. The background of the text will be filled
+ * with the current background color.
+ * 
+ * @param s the text
+ * @param x the x coordinate
+ * @param y the y coordinate
+ */
 public abstract void fillText(String s, int x, int y);
 
 /**

@@ -16,12 +16,15 @@ import org.eclipse.draw2d.geometry.*;
  * This class handles the calculation of solving for the area of a 
  * {@link org.eclipse.draw2d.ScrollPane}'s viewport and insets. Also determines if
  * the horizonal and vertical scrollbars should be visible.
+ * TODO: Make scrollbar visibility constants final.
  */
 public class ScrollPaneSolver {
 
-/** Scrollbar visiblity constants **/
+/** Scrollbar visiblity constants -- never show scrollbars **/
 public static int NEVER = 0;
+/** Scrollbar visiblity constants -- show scrollbars automatically **/
 public static int AUTOMATIC = 1;
+/** Scrollbar visiblity constants -- always show scrollbars **/
 public static int ALWAYS = 2;
 
 /**
