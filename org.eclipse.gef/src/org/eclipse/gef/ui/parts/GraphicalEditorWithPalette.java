@@ -29,10 +29,10 @@ private PaletteViewer paletteViewer;
 
 protected void configurePaletteViewer() { }
 
-private void createPaletteViewer(Composite parent) {
+protected void createPaletteViewer(Composite parent) {
 	PaletteViewer viewer = new PaletteViewer();
-	viewer.createControl(parent);
 	setPaletteViewer(viewer);
+	viewer.createControl(parent);
 	configurePaletteViewer();
 	hookPaletteViewer();
 	initializePaletteViewer();
