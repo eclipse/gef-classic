@@ -380,9 +380,6 @@ protected boolean handleKeyDown(KeyEvent e) {
 	return false;	
 }
 
-/**
- * @see org.eclipse.gef.tools.AbstractTool#handleKeyUp(org.eclipse.swt.events.KeyEvent)
- */
 protected boolean handleKeyUp(KeyEvent e) {
 	if (acceptArrowKey(e)) {
 		accStepReset();
@@ -558,23 +555,21 @@ protected void updateTargetRequest() {
 	} else
 		request.setConstrainedMove(false);
 	
-	request.setMoveDelta(new Point(delta.width, delta.height));
+	Point moveDelta = new Point(delta.width, delta.height);
 	request.getExtendedData().clear();
+	request.setMoveDelta(moveDelta);
 		
 	if (snapToHelper != null && !getCurrentInput().isAltKeyDown()) {
 		PrecisionRectangle baseRect = sourceRectangle.getPreciseCopy();
-		PrecisionRectangle result = new PrecisionRectangle(
-				new Rectangle(request.getMoveDelta(), new Dimension()));
+		PrecisionRectangle jointRect = compoundSrcRect.getPreciseCopy();
 		baseRect.translate(request.getMoveDelta());
-		int snapOrientation = snapToHelper.snapRectangle(request, baseRect, result, false, 
-				PositionConstants.NORTH_SOUTH | PositionConstants.EAST_WEST);
-		if (snapOrientation != PositionConstants.NONE) {
-			PrecisionRectangle selectionRect = compoundSrcRect.getPreciseCopy();
-			selectionRect.translate(request.getMoveDelta());
-			snapToHelper.snapRectangle(request, selectionRect, result, false, 
-					snapOrientation);
-		}
-		request.setMoveDelta(result.getLocation());
+		jointRect.translate(request.getMoveDelta());
+		
+		PrecisionPoint preciseDelta = new PrecisionPoint(moveDelta);
+		snapToHelper.snapPoint(request,
+				PositionConstants.HORIZONTAL | PositionConstants.VERTICAL, 
+				new PrecisionRectangle[] {baseRect, jointRect}, preciseDelta);
+		request.setMoveDelta(preciseDelta);
 	}
 
 	request.setLocation(getLocation());

@@ -258,8 +258,8 @@ protected void updateTargetRequest() {
 		if (!getCurrentInput().isAltKeyDown() && helper != null) {
 			PrecisionRectangle baseRect = new PrecisionRectangle(bounds);
 			PrecisionRectangle result = baseRect.getPreciseCopy();
-			helper.snapRectangle(req, baseRect, result, 
-					true, PositionConstants.NORTH_SOUTH | PositionConstants.EAST_WEST);
+			helper.snapRectangle(req, PositionConstants.NSEW, 
+				baseRect, result);
 			req.setLocation(result.getLocation());
 			req.setSize(result.getSize());
 		}

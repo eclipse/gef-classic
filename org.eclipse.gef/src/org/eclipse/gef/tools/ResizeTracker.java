@@ -241,8 +241,8 @@ protected void updateSourceRequest() {
 	Dimension d = getDragMoveDelta();
 
 	Point location = new Point(getLocation());
-	Point corner = new Point(0, 0);
-	Dimension resize = new Dimension(0, 0);	
+	Point moveDelta = new Point(0, 0);
+	Dimension resizeDelta = new Dimension(0, 0);	
 
 	if (getCurrentInput().isShiftKeyDown() && owner != null) {
 		request.setConstrainedResize(true);
@@ -251,34 +251,29 @@ protected void updateSourceRequest() {
 		int origWidth = owner.getFigure().getBounds().width;
 		float ratio = 1;
 		
-		if (origWidth != 0 && origHeight != 0) {
+		if (origWidth != 0 && origHeight != 0)
 			ratio = ((float)origHeight / (float)origWidth);
-		}
 		
 		if (getResizeDirection() == PositionConstants.SOUTH_EAST) {
-			if (d.height > (d.width * ratio)) {
+			if (d.height > (d.width * ratio))
 				d.width = (int)(d.height / ratio);
-			} else {
+			else
 				d.height = (int)(d.width * ratio);
-			}
 		} else if (getResizeDirection() == PositionConstants.NORTH_WEST) {
-			if (d.height < (d.width * ratio)) {
+			if (d.height < (d.width * ratio))
 				d.width = (int)(d.height / ratio);
-			} else {
+			else
 				d.height = (int)(d.width * ratio);
-			}
 		} else if (getResizeDirection() == PositionConstants.NORTH_EAST) {
-			if (-(d.height) > (d.width * ratio)) {
+			if (-(d.height) > (d.width * ratio))
 				d.width = -(int)(d.height / ratio);
-			} else {
+			else
 				d.height = -(int)(d.width * ratio);
-			}
 		} else if (getResizeDirection() == PositionConstants.SOUTH_WEST) {
-			if (-(d.height) < (d.width * ratio)) {
+			if (-(d.height) < (d.width * ratio))
 				d.width = -(int)(d.height / ratio);
-			} else {
+			else
 				d.height = -(int)(d.width * ratio);
-			}
 		}
 	} else
 		request.setConstrainedResize(false);
@@ -288,35 +283,35 @@ protected void updateSourceRequest() {
 	
 	if ((getResizeDirection() & PositionConstants.NORTH) != 0) {
 		if (getCurrentInput().isControlKeyDown()) {
-			resize.height -= d.height;
+			resizeDelta.height -= d.height;
 		}
-		corner.y += d.height;
-		resize.height -= d.height;
+		moveDelta.y += d.height;
+		resizeDelta.height -= d.height;
 	}
 	if ((getResizeDirection() & PositionConstants.SOUTH) != 0) {
 		if (getCurrentInput().isControlKeyDown()) {
-			corner.y -= d.height;
-			resize.height += d.height;
+			moveDelta.y -= d.height;
+			resizeDelta.height += d.height;
 		}
-		resize.height += d.height;
+		resizeDelta.height += d.height;
 	}
 	if ((getResizeDirection() & PositionConstants.WEST) != 0) {
 		if (getCurrentInput().isControlKeyDown()) {
-			resize.width -= d.width;
+			resizeDelta.width -= d.width;
 		}
-		corner.x += d.width;
-		resize.width -= d.width;
+		moveDelta.x += d.width;
+		resizeDelta.width -= d.width;
 	}
 	if ((getResizeDirection() & PositionConstants.EAST) != 0) {
 		if (getCurrentInput().isControlKeyDown()) {
-			corner.x -= d.width;
-			resize.width += d.width;
+			moveDelta.x -= d.width;
+			resizeDelta.width += d.width;
 		}
-		resize.width += d.width;
+		resizeDelta.width += d.width;
 	}
 	
-	request.setMoveDelta(corner);
-	request.setSizeDelta(resize);
+	request.setMoveDelta(moveDelta);
+	request.setSizeDelta(resizeDelta);
 	request.setLocation(location);
 	request.setEditParts(getOperationSet());
 
@@ -324,18 +319,38 @@ protected void updateSourceRequest() {
 	
 	if (!getCurrentInput().isAltKeyDown() && snapToHelper != null) {
 		PrecisionRectangle rect = sourceRect.getPreciseCopy();
-		Rectangle addendum = new Rectangle(
-				request.getMoveDelta(), request.getSizeDelta());
-		PrecisionRectangle result = new PrecisionRectangle(addendum);
-		rect.preciseX += addendum.x;
-		rect.preciseY += addendum.y;
-		rect.preciseWidth += addendum.width;
-		rect.preciseHeight += addendum.height;
-		rect.updateInts();
-		snapToHelper.snapRectangle(request, rect, 
-				result, true, request.getResizeDirection());
-		request.setMoveDelta(result.getLocation());
-		request.setSizeDelta(result.getSize());
+		rect.translate(moveDelta);
+		rect.resize(resizeDelta);
+		PrecisionRectangle result = new PrecisionRectangle();
+		
+		snapToHelper.snapRectangle(request, request.getResizeDirection(), rect, result);
+		if (request.isCenteredResize()) {
+			if (result.preciseX != 0.0)
+				result.preciseWidth += -result.preciseX;
+			else if (result.preciseWidth != 0.0) {
+				result.preciseX = -result.preciseWidth;
+				result.preciseWidth *= 2.0;
+			}
+			
+			if (result.preciseY != 0.0)
+				result.preciseHeight += -result.preciseY;
+			else if (result.preciseHeight != 0.0) {
+				result.preciseY = -result.preciseHeight;
+				result.preciseHeight *= 2.0;
+			}
+			result.updateInts();
+		}
+
+		PrecisionPoint preciseMove = new PrecisionPoint(
+				result.x + moveDelta.x,
+				result.y + moveDelta.y);
+		
+		PrecisionDimension preciseResize = new PrecisionDimension(
+				result.width + resizeDelta.width,
+				result.height + resizeDelta.height);
+		
+		request.setMoveDelta(preciseMove);
+		request.setSizeDelta(preciseResize);
 	}
 }
 
