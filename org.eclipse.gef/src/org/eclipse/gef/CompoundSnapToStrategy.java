@@ -3,6 +3,7 @@ package org.eclipse.gef;
 import org.eclipse.jface.util.Assert;
 
 import org.eclipse.draw2d.geometry.PrecisionRectangle;
+import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.requests.ChangeBoundsRequest;
 import org.eclipse.gef.requests.CreateRequest;
@@ -23,9 +24,14 @@ public int snapCreateRequest(CreateRequest request, PrecisionRectangle baseRect,
 		int snapOrientation) {
 	int i = 0;
 	while (snapOrientation != 0 && i < delegates.length) {
+		if (baseRect == null) {
+			baseRect = new PrecisionRectangle(
+					new Rectangle(request.getLocation(), request.getSize()));
+		}	
 		if (delegates[i] != null)
 			snapOrientation = delegates[i].snapCreateRequest(request, 
-					baseRect.getPreciseCopy(), snapOrientation);
+					baseRect, snapOrientation);
+		baseRect = null;
 		i++;
 	}
 		
