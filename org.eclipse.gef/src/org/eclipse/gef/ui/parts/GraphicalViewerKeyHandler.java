@@ -429,6 +429,7 @@ protected void navigateTo(EditPart part, KeyEvent event) {
 /**
  * This method is invoked when the user presses the space bar.  It toggles the selection
  * of the EditPart that currently has focus.
+ * @param event the key event received
  */
 protected void processSelect(KeyEvent event) {
 	EditPart part = getViewer().getFocusEditPart();

@@ -109,7 +109,7 @@ private void expandDrawer() {
 }
 
 /**
- * @see org.eclipse.gef.ui.parts.GraphicalViewerKeyHandler#getNavigationPoint(org.eclipse.draw2d.IFigure)
+ * @see GraphicalViewerKeyHandler#getNavigationPoint(IFigure)
  */
 protected Point getNavigationPoint(IFigure figure) {
 	return figure.getBounds().getTopLeft();
@@ -206,7 +206,7 @@ private boolean navigateIntoExpandedDrawer(KeyEvent event) {
 }
 
 /**
- * @see org.eclipse.gef.ui.parts.GraphicalViewerKeyHandler#navigateTo(org.eclipse.gef.EditPart, org.eclipse.swt.events.KeyEvent)
+ * @see GraphicalViewerKeyHandler#navigateTo(EditPart, KeyEvent)
  */
 protected void navigateTo(EditPart part, KeyEvent event) {
 	if (part == null)
