@@ -83,6 +83,8 @@ public ScrollableThumbnail(Viewport port) {
 public void deactivate() {
 	viewport.removePropertyChangeListener(Viewport.PROPERTY_VIEW_LOCATION, propListener);
 	viewport.removeFigureListener(figureListener);
+	remove(selector);
+	selector.dispose();
 	super.deactivate();
 }
 
@@ -215,7 +217,7 @@ private class SelectorFigure
 		image = new Image(display, iData);
 	}
 	
-	protected void finalize() {
+	protected void dispose() {
 		image.dispose();
 	}
 
