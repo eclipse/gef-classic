@@ -25,6 +25,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 public abstract class UpdateManager {
 
 private List listeners = new ArrayList();
+private boolean disposed;
 
 /**
  * Adds the dirty region defined by the coordinates on the IFigure
@@ -50,6 +51,10 @@ public void addUpdateListener(UpdateListener listener) {
 	listeners.add(listener);
 }
 
+public void dispose() {
+	disposed = true;
+}
+
 protected void firePainting(Rectangle damage) {
 	for (int i=0; i<listeners.size(); i++) {
 		UpdateListener listener = (UpdateListener)listeners.get(i);
@@ -62,6 +67,10 @@ protected void fireValidating() {
 		UpdateListener listener = (UpdateListener)listeners.get(i);
 		listener.notifyValidating();
 	}
+}
+
+protected boolean isDisposed() {
+	return disposed;
 }
 
 public abstract void performUpdate();
