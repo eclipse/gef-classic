@@ -38,7 +38,6 @@ private static final float RGB_VALUE_MULTIPLIER = 0.6f;
 private static GC gc;
 private static Font appliedFont;
 private static FontMetrics metrics;
-private static Object LOCK = new Object();
 private static Color ghostFillColor = new Color(null,31,31,31);
 
 /**
@@ -65,24 +64,19 @@ public static FontMetrics getFontMetrics(Font f){
 }
 
 protected static GC getGC(){
-	if (gc == null){
-		//Synchonize to prevent creating more than one GC
-		synchronized(LOCK){
-			if (gc == null){
-				Display.getDefault().syncExec( new Runnable(){
-					public void run(){
-						gc = new GC(new Shell());
-					}
-				});
-			}
-		}
-	}
+	if (gc == null)
+		gc = new GC(new Shell());
 	return gc;
 }
 
 protected static org.eclipse.swt.graphics.Point getTextDimension(String s, Font f){
 	setFont(f);
 	return getGC().textExtent(s);
+}
+
+protected static org.eclipse.swt.graphics.Point getStringDimension(String s, Font f){
+	setFont(f);
+	return getGC().stringExtent(s);
 }
 
 /**
@@ -124,12 +118,21 @@ static int getLargestSubstringConfinedTo(String s, Font f, int availableWidth){
 }
 
 /**
+ * Returns the Dimensions of the given text, converting newlines and tabs appropriately.
+ * 
+ * @since 2.0
+ */
+public static Dimension getTextExtents(String text, Font f){
+	return new Dimension(getTextDimension(text,f));
+}
+
+/**
  * Returns the Dimensions of <i>s</i> in Font <i>f</i>.
  * 
  * @since 2.0
  */
-public static Dimension getTextExtents(String s, Font f){
-	return new Dimension(getTextDimension(s,f));
+public static Dimension getStringExtents(String s, Font f){
+	return new Dimension(getStringDimension(s,f));
 }
 
 public static void getTextExtents(String s, Font f, Dimension result){
