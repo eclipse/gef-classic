@@ -70,7 +70,10 @@ public void hookChild(IFigure child) {
 void invalidate() {
 	freeformExtent = null;
 	host.fireExtentChanged();
-	host.revalidate();
+	if (host.getParent() != null)
+		host.getParent().revalidate();
+	else
+		host.revalidate();
 }
 
 public void notifyFreeformExtentChanged() {
