@@ -88,8 +88,14 @@ public double preciseRight() {
  * @see org.eclipse.draw2d.geometry.Rectangle#resize(org.eclipse.draw2d.geometry.Dimension)
  */
 public Rectangle resize(Dimension sizeDelta) {
-	preciseWidth += sizeDelta.width;
-	preciseHeight += sizeDelta.height;
+	if (sizeDelta instanceof PrecisionDimension) {
+		PrecisionDimension pd = (PrecisionDimension)sizeDelta;
+		preciseWidth += pd.preciseWidth;
+		preciseHeight += pd.preciseHeight;
+	} else {
+		preciseWidth += sizeDelta.width;
+		preciseHeight += sizeDelta.height;
+	}
 	updateInts();
 	return this;
 }
