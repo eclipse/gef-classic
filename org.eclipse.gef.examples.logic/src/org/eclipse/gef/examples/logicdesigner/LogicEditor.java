@@ -170,6 +170,7 @@ class OutlinePage
 		if (rep instanceof ScalableFreeformRootEditPart) {
 			ScalableFreeformRootEditPart root = (ScalableFreeformRootEditPart)rep;
 			thumbnail = new ScrollableThumbnail((Viewport)root.getFigure());
+			thumbnail.setBorder(new MarginBorder(3));
 			thumbnail.setSource(root.getLayer(LayerConstants.PRINTABLE_LAYERS));
 			lws.setContents(thumbnail);
 		}
