@@ -49,7 +49,7 @@ public static int getTextForSpace(TextFragmentBox frag, String string, Font font
 		avg = metrics.getAverageCharWidth();
 
 	int firstBreak = breakItr.next();
-	MIN = min = (WRAPPING != ParagraphTextLayout.WORD_WRAP_SOFT) ?  firstBreak : 1;
+	MIN = min = (WRAPPING == ParagraphTextLayout.WORD_WRAP_HARD) ?  firstBreak : 1;
 	max = string.length() + 1;
 
 	//The size of the current guess
@@ -82,7 +82,7 @@ public static int getTextForSpace(TextFragmentBox frag, String string, Font font
 			if (min == string.length())
 				result = min;
 			else
-				result = Math.max(MIN, breakItr.preceding(min));
+				result = Math.max(MIN, breakItr.preceding(Math.min(max + 1, string.length()-1)));
 			frag.length = result;
 			break;
 
@@ -90,7 +90,7 @@ public static int getTextForSpace(TextFragmentBox frag, String string, Font font
 			if (min == string.length())
 				result = min;
 			else
-				result = breakItr.preceding(min);
+				result = breakItr.preceding(Math.min(max + 1, string.length()-1));
 			if (result <= 0)
 				result = min;
 			frag.length = result;
@@ -103,7 +103,7 @@ public static int getTextForSpace(TextFragmentBox frag, String string, Font font
 					return result;
 				min -= 1;
 			}
-			result = breakItr.preceding(min);
+			result = breakItr.preceding(Math.min(max + 1, string.length()-1));
 			if (result <= 0) {
 				String ELLIPSIS = "..."; //$NON-NLS-1$
 				ELLIPSIS_SIZE = FigureUtilities.getStringExtents(ELLIPSIS, font);
@@ -129,6 +129,8 @@ public static int getTextForSpace(TextFragmentBox frag, String string, Font font
 }
 
 static void setupFragment(TextFragmentBox frag, Font f, String s) {
+	while (s.charAt(frag.length - 1) == ' ')
+		frag.length--;
 	Dimension d = getStringExtents(s.substring(0, frag.length), f);
 	FontMetrics fm = getFontMetrics(f);
 	frag.setHeight(fm.getHeight() + fm.getLeading());

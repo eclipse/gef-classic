@@ -29,6 +29,8 @@ public class FlowPage
 
 private Dimension pageSize = new Dimension();
 private int recommendedWidth;
+private int pageSizeCacheKeys[] = new int[3];
+private Dimension pageSizeCacheValues[] = new Dimension[3];
 
 /**
  * @see org.eclipse.draw2d.text.BlockFlow#createDefaultFlowLayout()
@@ -44,36 +46,57 @@ public Dimension getMinimumSize(int w, int h) {
 	return getPreferredSize(w, h);
 }
 
-public Dimension getPreferredSize(int w, int h) {
-	int width = w;
-	if (w >= 0) {
-		width = Math.max(0, w - getInsets().getWidth());
-	}
+/**
+ * @see org.eclipse.draw2d.Figure#invalidate()
+ */
+public void invalidate() {
+	pageSizeCacheValues = new Dimension[3];
+	super.invalidate();
+}
+
+public Dimension getPreferredSize(int width, int h) {
+	if (width >= 0)
+		width = Math.max(0, width - getInsets().getWidth());
 	
+	for (int i = 0; i < 3; i++) {
+		if (pageSizeCacheKeys[i] == width && pageSizeCacheValues[i] != null)
+			return pageSizeCacheValues[i];
+	}
+
+	pageSizeCacheKeys[2] = pageSizeCacheKeys[1];
+	pageSizeCacheKeys[1] = pageSizeCacheKeys[0];
+	pageSizeCacheKeys[0] = width;
+	
+	pageSizeCacheValues[2] = pageSizeCacheValues[1];
+	pageSizeCacheValues[1] = pageSizeCacheValues[0];	
+
 	//Flowpage must temporarily layout to determine its preferred size
 	int oldWidth = getRecommendedWidth();
 	setRecommendedWidth(width);
 	validate();
-	Dimension result = pageSize.getExpanded(getInsets().getWidth(), getInsets().getHeight());
+	pageSizeCacheValues[0] = 
+		pageSize.getExpanded(
+			getInsets().getWidth(),
+			getInsets().getHeight());
 	
-	//Undo the temporary layout by restoring the old recommended width, and laying out if needed
-	if (getRecommendedWidth() != oldWidth) {
+	if (width != oldWidth) {
 		setRecommendedWidth(oldWidth);
 		getUpdateManager().addInvalidFigure(this);
 	}
-	return result;
+	return pageSizeCacheValues[0];
 }
 
 int getRecommendedWidth() {
 	return recommendedWidth;
 }
 
-public void postValidate(){
+
+public void postValidate() {
 	Rectangle r = getBlockBox().toRectangle();
 	pageSize.width = r.width;
 	pageSize.height = r.height;
 	List v = getChildren();
-	for (int i=0; i<v.size(); i++)
+	for (int i = 0; i < v.size(); i++)
 		((FlowFigure)v.get(i)).postValidate();
 }
 
@@ -81,9 +104,12 @@ public void postValidate(){
  * @see org.eclipse.draw2d.text.FlowFigure#setBounds(Rectangle)
  */
 public void setBounds(Rectangle r) {
+	if (getBounds().equals(r))
+		return;
+	boolean invalidate = getBounds().width != r.width || getBounds().height != r.height;
 	super.setBounds(r);
 	int newWidth = r.width - getInsets().getWidth();
-	if (getRecommendedWidth() != newWidth) {
+	if (invalidate || getRecommendedWidth() != newWidth) {
 		setRecommendedWidth(newWidth);
 		getUpdateManager().addInvalidFigure(this);
 	}
@@ -93,7 +119,7 @@ private void setRecommendedWidth(int width) {
 	if (recommendedWidth == width)
 		return;
 	recommendedWidth = width;
-	invalidate();
+	super.invalidate();
 }
 
 public void validate() {
