@@ -260,7 +260,8 @@ public Dimension getMinimumSize(int wHint, int hHint) {
 			result.height += getContentPane().getInsets().getHeight();
 			IFigure child = (IFigure)children.get(0);
 			int childHint = getContentPane().getClientArea(Rectangle.SINGLETON).width;
-			result.height += 3 * child.getPreferredSize(childHint, -1).height;
+			result.height
+				+= Math.min(90, 3 * child.getPreferredSize(childHint, -1).height);
 			return result.intersect(getPreferredSize(wHint, hHint));
 		}
 	}
