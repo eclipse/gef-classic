@@ -309,7 +309,8 @@ public Dimension getMinimumSize(int w, int h) {
 		minSize.setSize(getLayoutManager().getMinimumSize(this, w, h));
 	
 	Dimension labelSize = 
-		calculateLabelSize(FigureUtilities.getTextExtents(ELLIPSIS, getFont()));
+		calculateLabelSize(FigureUtilities.getTextExtents(ELLIPSIS, getFont())
+				.intersect(FigureUtilities.getTextExtents(getText(), getFont())));
 	Insets insets = getInsets();
 	labelSize.expand(insets.getWidth(), insets.getHeight());
 	minSize.union(labelSize);
