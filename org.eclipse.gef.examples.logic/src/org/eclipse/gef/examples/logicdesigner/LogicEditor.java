@@ -35,14 +35,13 @@ import org.eclipse.draw2d.parts.ScrollableThumbnail;
 import org.eclipse.draw2d.parts.Thumbnail;
 
 import org.eclipse.gef.*;
-import org.eclipse.gef.dnd.TemplateTransferDragSourceListener;
 import org.eclipse.gef.editparts.ScalableFreeformRootEditPart;
 import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.internal.ui.rulers.ToggleRulerVisibilityAction;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.ui.actions.*;
-import org.eclipse.gef.ui.palette.PaletteContextMenuProvider;
-import org.eclipse.gef.ui.palette.PaletteViewer;
+import org.eclipse.gef.ui.paletteview.DefaultPalettePage;
+import org.eclipse.gef.ui.paletteview.IPalettePage;
 import org.eclipse.gef.ui.parts.*;
 import org.eclipse.gef.ui.stackview.CommandStackInspectorPage;
 
@@ -58,7 +57,7 @@ import org.eclipse.gef.examples.logicdesigner.palette.LogicPaletteCustomizer;
 import org.eclipse.gef.examples.logicdesigner.rulers.LogicRulerProvider;
 
 public class LogicEditor 
-	extends GraphicalEditorWithPalette 
+	extends GraphicalEditor
 {
 
 class OutlinePage
@@ -321,18 +320,6 @@ public void commandStackChanged(EventObject event) {
 	super.commandStackChanged(event);
 }
 
-/**
- * @see org.eclipse.gef.ui.parts.GraphicalEditorWithPalette#configurePaletteViewer()
- */
-protected void configurePaletteViewer() {
-	super.configurePaletteViewer();
-	PaletteViewer viewer = getPaletteViewer();
-	ContextMenuProvider provider = new PaletteContextMenuProvider(viewer);
-	getPaletteViewer().setContextMenu(provider);
-	viewer.setCustomizer(new LogicPaletteCustomizer());
-}
-
-
 protected void configureGraphicalViewer() {
 	super.configureGraphicalViewer();
 	ScrollingGraphicalViewer viewer = (ScrollingGraphicalViewer)getGraphicalViewer();
@@ -392,8 +379,6 @@ protected void loadRulers(){
 }
 
 public void dispose() {
-	CopyTemplateAction copy = (CopyTemplateAction)getActionRegistry().getAction(GEFActionConstants.COPY);
-	getPaletteViewer().removeSelectionChangedListener(copy);
 	getSite().getWorkbenchWindow().getPartService().removePartListener(partListener);
 	partListener = null;
 	((FileEditorInput)getEditorInput()).getFile().getWorkspace().removeResourceChangeListener(resourceListener);
@@ -431,24 +416,36 @@ public Object getAdapter(Class type){
 		outlinePage = new OutlinePage(new TreeViewer());
 		return outlinePage;
 	}
-//	if (type == DefaultPalettePage.class) {
-//		return new DefaultPalettePage() {
-//			public void createControl(Composite parent) {
-//				createPaletteViewer(parent);
-//			}
-//			public Object getAdapter(Class type) {
-//				if (type == ZoomManager.class)
-//					return getGraphicalViewer().getProperty(ZoomManager.class.toString());
-//				return null;
-//			}
-//			public Control getControl() {
-//				return getPaletteViewer().getControl();
-//			}
-//			public void setFocus() {
-//				getControl().setFocus();
-//			}
-//		};
-//	}
+	if (type == IPalettePage.class) {
+		return new DefaultPalettePage(getPaletteRoot(), getGraphicalViewer()) {
+			protected void configurePaletteViewer() {
+				super.configurePaletteViewer();
+				getPaletteViewer().setCustomizer(new LogicPaletteCustomizer());
+			}
+			public void dispose() {
+				CopyTemplateAction copy = (CopyTemplateAction)getActionRegistry()
+						.getAction(GEFActionConstants.COPY);
+				getPaletteViewer().removeSelectionChangedListener(copy);
+				super.dispose();
+			}
+			protected void hookPaletteViewer() {
+				super.hookPaletteViewer();
+				final CopyTemplateAction copy = 
+				(CopyTemplateAction)getActionRegistry().getAction(GEFActionConstants.COPY);
+				getPaletteViewer().addSelectionChangedListener(copy);
+				getPaletteViewer().getContextMenu().addMenuListener(new IMenuListener() {
+					public void menuAboutToShow(IMenuManager manager) {
+						manager.appendToGroup(GEFActionConstants.GROUP_COPY, copy);
+					}
+				});
+			}
+			protected void initializePaletteViewer() {
+				super.initializePaletteViewer();
+				LogicPlugin.getDefault().getPreferenceStore().setDefault(
+						PALETTE_SIZE, DEFAULT_PALETTE_SIZE);
+			}
+		};
+	}
 	if (type == ZoomManager.class)
 		return getGraphicalViewer().getProperty(ZoomManager.class.toString());
 
@@ -499,18 +496,6 @@ protected PaletteRoot getPaletteRoot() {
 
 public void gotoMarker(IMarker marker) {}
 
-protected void hookPaletteViewer() {
-	super.hookPaletteViewer();
-	final CopyTemplateAction copy = 
-			(CopyTemplateAction)getActionRegistry().getAction(GEFActionConstants.COPY);
-	getPaletteViewer().addSelectionChangedListener(copy);
-	getPaletteViewer().getContextMenu().addMenuListener(new IMenuListener() {
-		public void menuAboutToShow(IMenuManager manager) {
-			manager.appendToGroup(GEFActionConstants.GROUP_COPY, copy);
-		}
-	});
-}
-
 protected void initializeGraphicalViewer() {
 	getGraphicalViewer().setContents(getLogicDiagram());
 	
@@ -518,14 +503,6 @@ protected void initializeGraphicalViewer() {
 		new LogicTemplateTransferDropTargetListener(getGraphicalViewer()));
 	getGraphicalViewer().addDropTargetListener(
 		new TextTransferDropTargetListener(getGraphicalViewer(), TextTransfer.getInstance()));
-}
-
-protected void initializePaletteViewer() {
-	super.initializePaletteViewer();
-	getPaletteViewer().addDragSourceListener(
-		new TemplateTransferDragSourceListener(getPaletteViewer()));
-	LogicPlugin.getDefault().getPreferenceStore().setDefault(
-				PALETTE_SIZE, DEFAULT_PALETTE_SIZE);
 }
 
 protected void createActions() {
@@ -577,9 +554,9 @@ protected void createActions() {
 	getSelectionActions().add(action.getId());
 }
 
-//public void createPartControl(Composite parent) {
-//	createGraphicalViewer(parent);
-//}
+public void createPartControl(Composite parent) {
+	createGraphicalViewer(parent);
+}
 
 /* (non-Javadoc)
  * @see org.eclipse.gef.ui.parts.GraphicalEditor#createGraphicalViewer(org.eclipse.swt.widgets.Composite)

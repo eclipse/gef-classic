@@ -56,4 +56,13 @@
       </keyBinding>
    </extension>
 
+	<extension point="org.eclipse.ui.views">
+		<view 
+			id="org.eclipse.gef.ui.palette_view"
+			name="%Palette.Label"
+			class="org.eclipse.gef.ui.paletteview.PaletteView"
+			category="org.eclipse.ui"
+			icon="icons\debugGEF.gif"/>
+	</extension>
+
 </plugin>
