@@ -429,12 +429,15 @@ public void focusLost(FocusEvent event, EditPartViewer viewer) {
  */
 protected void executeCurrentCommand() {
 	getDomain().getCommandStack().removeCommandStackListener(commandStackListener);
-	Command curCommand = getCurrentCommand();
-	if (curCommand != null && curCommand.canExecute()) {
-		getDomain().getCommandStack().execute(curCommand);
-		setCurrentCommand(null);
+	try {
+		Command curCommand = getCurrentCommand();
+		if (curCommand != null && curCommand.canExecute()) {
+			getDomain().getCommandStack().execute(curCommand);
+			setCurrentCommand(null);
+		}
+	} finally {
+		getDomain().getCommandStack().addCommandStackListener(commandStackListener);
 	}
-	getDomain().getCommandStack().addCommandStackListener(commandStackListener);
 }
 
 /**
