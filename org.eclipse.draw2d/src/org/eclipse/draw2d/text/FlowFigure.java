@@ -1,31 +1,44 @@
 package org.eclipse.draw2d.text;
 
-import java.util.*;
-
 import org.eclipse.swt.graphics.Color;
 
 import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.*;
 
+/**
+ * The base implementation for text flow figures. A flow figure is used to render a
+ * document in which elements are layed out horizontally within a "line" until that line
+ * is filled. Layout continues on the next line.
+ * @author hudsonr
+ * @since 2.1 */
 public abstract class FlowFigure
 	extends Figure
 {
 
-static final boolean SHOW_BASELINE = true;
+//static final boolean SHOW_BASELINE = true;
 
+/**
+ * Constructs a new FlowFigure. */
 public FlowFigure() {
 	setLayoutManager(createDefaultFlowLayout());
 }
 
-public void add(IFigure figure, Object constraint, int index){
-	super.add(figure, constraint, index);
-	if (figure instanceof FlowFigure){
-		FlowFigure ff = (FlowFigure) figure;
+/**
+ * If the child is a <code>FlowFigure</code>, its FlowContext is passed to it.
+ * @see org.eclipse.draw2d.IFigure#add(IFigure, Object, int) */
+public void add(IFigure child, Object constraint, int index) {
+	super.add(child, constraint, index);
+	if (child instanceof FlowFigure) {
+		FlowFigure ff = (FlowFigure) child;
 		ff.setFlowContext((FlowContext)getLayoutManager());
 	}
 }
 
-protected abstract TextFlowLayout createDefaultFlowLayout();
+/**
+ * 
+ * Creates the default layout manager
+ * @return The default layout */
+protected abstract FlowFigureLayout createDefaultFlowLayout();
 
 protected void paintFigure(Graphics g){
 //	FlowBox block;
@@ -46,12 +59,17 @@ protected void paintFigure(Graphics g){
 //// 	g.drawRectangle(getBounds().getResized(-1,-1));
 }
 
+/**
+ * Called after validate has occurred. This is used to update the bounds of the FlowFigure
+ * to encompass its new flow boxed created during validate.
+ */
 public abstract void postValidate();
 
 /**
  * FlowFigures override setBounds() to prevent translation of children. "bounds" is a
  * derived property for FlowFigures, calculated from the fragments that make up the
  * FlowFigure.
+ * @see Figure#setBounds(Rectangle)
  */
 public void setBounds(Rectangle r) {
 	if (getBounds().equals(r))
@@ -60,12 +78,15 @@ public void setBounds(Rectangle r) {
 	bounds.x = r.x;
 	bounds.y = r.y;
 	bounds.width = r.width;
-	bounds.height= r.height;
+	bounds.height = r.height;
 	repaint();
 }
 
-public void setFlowContext(FlowContext flowContext){
-	((TextFlowLayout)getLayoutManager()).setFlowContext(flowContext);
+/**
+ * Sets the flow context.
+ * @param flowContext the flow context for this flow figure */
+public void setFlowContext(FlowContext flowContext) {
+	((FlowFigureLayout)getLayoutManager()).setFlowContext(flowContext);
 }
 
 }

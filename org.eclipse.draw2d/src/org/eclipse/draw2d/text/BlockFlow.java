@@ -38,7 +38,7 @@ BlockBox createBlockBox() {
 /**
  * @see org.eclipse.draw2d.text.FlowFigure#createDefaultFlowLayout()
  */
-protected TextFlowLayout createDefaultFlowLayout() {
+protected FlowFigureLayout createDefaultFlowLayout() {
 	return new BlockFlowLayout(this);
 }
 

@@ -10,12 +10,21 @@ public class BlockBox
 	extends CompositeBox
 {
 
+/**
+ * @see org.eclipse.draw2d.text.CompositeBox#add(FlowBox)
+ */
+public void add(FlowBox box) {
+	unionInfo(box);
+}
+
+/**
+ * Returns the available width
+ * @see org.eclipse.draw2d.text.CompositeBox#getAvailableWidth() */
 public int getAvailableWidth() {
 	return recommendedWidth;
 }
 
 Rectangle toRectangle() {
-	validate();
 	return new Rectangle(x, y, width, height);
 }
 

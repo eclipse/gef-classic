@@ -12,7 +12,7 @@ private int pageWidth;
 /**
  * @see org.eclipse.draw2d.text.BlockFlow#createDefaultFlowLayout()
  */
-protected TextFlowLayout createDefaultFlowLayout() {
+protected FlowFigureLayout createDefaultFlowLayout() {
 	return new PageFlowLayout(this);
 }
 

@@ -7,8 +7,8 @@ import org.eclipse.draw2d.*;
  * A layout for FlowFigures with children.
  * @author hudsonr
  * @since 2.1 */
-public abstract class AbstractFlowContainerLayout
-	extends TextFlowLayout
+public abstract class FlowContainerLayout
+	extends FlowFigureLayout
 	implements FlowContext
 {
 
@@ -17,8 +17,8 @@ public abstract class AbstractFlowContainerLayout
  */
 protected LineBox currentLine;
 
-/** * @see org.eclipse.draw2d.text.TextFlowLayout#TextFlowLayout(FlowFigure) */
-protected AbstractFlowContainerLayout(FlowFigure flowFigure) {
+/** * @see org.eclipse.draw2d.text.FlowFigureLayout#FlowFigureLayout(FlowFigure) */
+protected FlowContainerLayout(FlowFigure flowFigure) {
 	super(flowFigure);
 }
 
@@ -57,7 +57,7 @@ public boolean isCurrentLineOccupied() {
 	return false;
 }
 
-/** * @see org.eclipse.draw2d.text.TextFlowLayout#layout() */
+/** * @see org.eclipse.draw2d.text.FlowFigureLayout#layout() */
 protected void layout() {
 	preLayout();
 	layoutChildren();

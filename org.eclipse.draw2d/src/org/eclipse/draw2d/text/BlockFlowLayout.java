@@ -8,7 +8,7 @@ import org.eclipse.draw2d.*;
  * @author hudsonr
  * @since 2.1 */
 public class BlockFlowLayout
-	extends AbstractFlowContainerLayout
+	extends FlowContainerLayout
 {
 
 private int previousRecommendedWidth = -1;
@@ -19,12 +19,6 @@ BlockBox blockBox;
 
 public BlockFlowLayout(BlockFlow blockFlow) {
 	super(blockFlow);
-}
-
-public void addToCurrentLine(FlowBox block) {
-	super.addToCurrentLine(block);
-	//Also add the block to this block, since lines are temporary.
-	blockBox.add(block);
 }
 
 protected void cleanup() {
@@ -57,7 +51,7 @@ public void endLine() {
 }
 
 /**
- * @see org.eclipse.draw2d.text.AbstractFlowContainerLayout#layoutChildren()
+ * @see org.eclipse.draw2d.text.FlowContainerLayout#layoutChildren()
  */
 protected void layoutChildren() {
 	boolean invalidate = invalid
@@ -98,6 +92,7 @@ protected void layoutLine() {
 			break;
 	}
 	currentLine.commit();
+	blockBox.add(currentLine);
 }
 
 protected void flush() {

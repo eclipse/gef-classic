@@ -7,7 +7,7 @@ import org.eclipse.draw2d.geometry.*;
  * A LayoutManager for use with FlowFigure.
  * @author hudsonr
  * @since 2.1 */
-public abstract class TextFlowLayout
+public abstract class FlowFigureLayout
 	extends AbstractLayout
 {
 
@@ -27,9 +27,9 @@ protected FlowContext context;
 private final FlowFigure flowFigure;
 
 /**
- * Constructs a new TextFlowLayout with the given FlowFigure.
+ * Constructs a new FlowFigureLayout with the given FlowFigure.
  * @param flowfigure the FlowFigure */
-protected TextFlowLayout(FlowFigure flowfigure) {
+protected FlowFigureLayout(FlowFigure flowfigure) {
 	this.flowFigure = flowfigure;
 }
 

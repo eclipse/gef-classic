@@ -1,7 +1,5 @@
 package org.eclipse.draw2d.text;
 
-import org.eclipse.draw2d.geometry.Rectangle;
-
 /**
  * A Geometric object for representing a region on a line of Text. This class adds the
  * notion of a baseline to {@link org.eclipse.draw2d.geometry.Rectangle}. <i>Ascent</i> is
@@ -13,14 +11,16 @@ import org.eclipse.draw2d.geometry.Rectangle;
  */
 public class FlowBox {
 
+/**
+ * The x location
+ */
 public int x;
+/**
+ * The y location
+ */
 public int y;
 int width;
 int height;
-
-public Rectangle calculateBoundingBox() {
-	return new Rectangle (x, y, width, height);
-}
 
 /**
  * This method must be called on a block that is completely positioned and committed.
@@ -49,22 +49,19 @@ public final int getDescent() {
 }
 
 /**
- * @return the total height of the FlowBox
+ * Returns the height
+ * @return height
  */
 public int getHeight() {
 	return height;
 }
 
+/**
+ * Returns the width
+ * @return width */
 public int getWidth() {
 	return width;
 }
-
-///**
-// * @return the Rectangle encompassing the FlowBox
-// */
-//public Rectangle getBounds() {
-//	return this;
-//}
 
 /**
  * Used to set the baseline of this FlowBox to the specified value.

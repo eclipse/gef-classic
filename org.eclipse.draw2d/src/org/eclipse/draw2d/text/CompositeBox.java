@@ -15,7 +15,6 @@ public abstract class CompositeBox
  * The contained fragments.
  */
 protected List fragments = new ArrayList();
-boolean invalid = true;
 int recommendedWidth;
 
 /**
@@ -31,7 +30,7 @@ public void add(FlowBox block) {
  */
 public void clear() {
 	fragments.clear();
-	invalidate();
+	resetInfo();
 }
 
 /**
@@ -52,24 +51,10 @@ public List getFragments() {
 	return fragments;
 }
 
-/** * @see FlowBox#getHeight() */
-public int getHeight() {
-	validate();
-	return height;
-}
-
 //public int getInnerTop() {
 //	validate();
 //	return y;
 //}
-
-/**
- * Marks this composite as needing validation.
- * @see #validate()
- */
-protected void invalidate() {
-	invalid = true;
-}
 
 /** * @see org.eclipse.draw2d.geometry.Rectangle#isEmpty() */
 public boolean isOccupied() {
@@ -92,7 +77,7 @@ public void setRecommendedWidth(int w) {
 
 /**
  * unions the fragment's width, height, and ascent into this composite.
- * @param blockInfo the fragment */
+ * @param box the fragment */
 protected void unionInfo(FlowBox box) {
 	int right = Math.max(x + width, box.x + box.width);
 	int bottom = Math.max(y + height, box.y + box.height);
@@ -100,18 +85,6 @@ protected void unionInfo(FlowBox box) {
 	y = Math.min(y, box.y);
 	width = right - x;
 	height = bottom - y;
-}
-
-/**
- * updates the overall width, height, and ascent for this CompositeBox.
- */
-public void validate() {
-	if (!invalid)
-		return;
-	invalid = false;
-	resetInfo();
-	for (int i = 0; i < fragments.size(); i++)
-		unionInfo((FlowBox)fragments.get(i));
 }
 
 }

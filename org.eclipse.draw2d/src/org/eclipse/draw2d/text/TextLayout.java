@@ -9,7 +9,7 @@ import org.eclipse.swt.graphics.Font;
  * @author hudsonr
  * @since 2.1 */
 public class TextLayout
-	extends TextFlowLayout
+	extends FlowFigureLayout
 {
 
 /**

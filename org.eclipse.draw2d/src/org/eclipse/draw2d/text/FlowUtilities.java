@@ -10,7 +10,7 @@ import org.eclipse.draw2d.geometry.*;
  * Utility class for FlowFigures
  * @author hudsonr
  * @since 2.1 */
-public class FlowUtilities
+class FlowUtilities
 	extends FigureUtilities
 {
 

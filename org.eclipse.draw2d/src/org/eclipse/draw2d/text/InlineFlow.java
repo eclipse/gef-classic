@@ -29,7 +29,7 @@ public boolean containsPoint(int x, int y) {
 	return false;
 }
 
-protected TextFlowLayout createDefaultFlowLayout(){
+protected FlowFigureLayout createDefaultFlowLayout(){
 	return new InlineFlowLayout(this);
 }
 

@@ -5,7 +5,7 @@ package org.eclipse.draw2d.text;
  * @author hudsonr
  * @since 2.1 */
 public class InlineFlowLayout
-	extends AbstractFlowContainerLayout
+	extends FlowContainerLayout
 {
 
 public InlineFlowLayout(FlowFigure flow) {
@@ -49,7 +49,7 @@ public int getCurrentY() {
 }
 
 /**
- * @see org.eclipse.draw2d.sandbox.text.AbstractFlowContainerLayout#isCurrentLineOccupied()
+ * @see org.eclipse.draw2d.sandbox.text.FlowContainerLayout#isCurrentLineOccupied()
  */
 public boolean isCurrentLineOccupied() {
 	return !currentLine.getFragments().isEmpty()
