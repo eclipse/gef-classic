@@ -48,8 +48,8 @@ public class KeyGenerator {
 	 * The returned String is guaranteed to be equal for two different invocations with
 	 * the same stateMask.
 	 * <p>
-	 * Valid stateMasks are SWT.NONE, SWT.CTRL, SWT.COMMAND, SWT.ALT, SWT.BUTTON* or any
-	 * combination thereof.
+	 * Valid stateMasks are SWT.NONE, SWT.CTRL, SWT.COMMAND, SWT.ALT, SWT.SHIFT, 
+	 * SWT.BUTTON* or any combination thereof.
 	 * 
 	 * @param stateMask the state indicating which buttons/modifiers are active
 	 * @return key for the given stateMask
