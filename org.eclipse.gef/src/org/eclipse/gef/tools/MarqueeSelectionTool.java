@@ -75,7 +75,8 @@ private List calculateNewSelection() {
 		if (getMarqueeSelectionRectangle().contains(r.getTopLeft())
 		  && getMarqueeSelectionRectangle().contains(r.getBottomRight())
 		  && figure.isShowing()
-		  && child.getTargetEditPart(MARQUEE_REQUEST) == child)
+		  && child.getTargetEditPart(MARQUEE_REQUEST) == child
+		  && isFigureVisible(figure))
 			newSelections.add(child);
 	}
 	return newSelections;
@@ -255,6 +256,17 @@ protected boolean handleKeyDown(KeyEvent e) {
 		&& getCurrentViewer().getKeyHandler().keyPressed(e))
 		return true;
 	return false;		
+}
+
+private boolean isFigureVisible(IFigure fig) {
+	Rectangle figBounds = fig.getBounds().getCopy();
+	IFigure walker = fig.getParent();
+	while (!figBounds.isEmpty() && walker != null) {
+		walker.translateToParent(figBounds);
+		figBounds.intersect(walker.getBounds());
+		walker = walker.getParent();
+	}
+	return !figBounds.isEmpty();
 }
 
 private boolean isGraphicalViewer() {
