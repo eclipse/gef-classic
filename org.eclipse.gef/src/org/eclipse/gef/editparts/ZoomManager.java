@@ -23,8 +23,6 @@ public class ZoomManager {
 
 private List listeners = new ArrayList();
 
-//private double maxZoom = 4.0;
-//private double minZoom = .5;
 private double multiplier = 1.0;
 private ScalableFreeformLayeredPane pane;
 private Viewport viewport;
@@ -56,7 +54,23 @@ private Point calculateViewLocation(Rectangle zoomRect, double ratio) {
 	viewLocation.x = (int)(zoomRect.x / ratio);
 	viewLocation.y = (int)(zoomRect.y / ratio);
 	return viewLocation;
-}	
+}
+
+/**
+ * returns <code>true</code> if the zoommanager can perform <code>zoomIn()</code>.
+ * @return boolean true if zoomIn can be called
+ */
+public boolean canZoomIn() {
+	return getZoom() < getMaxZoom();
+}
+
+/**
+ * returns <code>true</code> if the zoommanager can perform <code>zoomOut()</code>.
+ * @return boolean true if zoomOut can be called
+ */
+public boolean canZoomOut() {
+	return getZoom() > getMinZoom();
+}
 
 /**
  * Notifies listeners that the zoom level has changed.
@@ -89,7 +103,7 @@ public double getMinZoom() {
  * of 2.0, the zoom level 1.0 will be displayed as "200%".
  * @return double The multiplier
  */
-public double getMultiplier() {
+public double getUIMultiplier() {
 	return multiplier;
 }
 
@@ -100,15 +114,10 @@ public double getMultiplier() {
  * @return double The next zoom level
  */
 public double getNextZoomLevel() {
-	double nextZoom = zoom;
-	boolean found = false;
-	for (int i = 0; !found; i++) {
-		if (zoomLevels[i] > zoom || i == zoomLevels.length - 1) {
-			found = true;
-			nextZoom = zoomLevels[i];
-		}	
-	}
-	return nextZoom;
+	for (int i = 0; i < zoomLevels.length; i++)
+		if (zoomLevels[i] > zoom)
+			return zoomLevels[i];
+	return getMaxZoom();
 }
 
 /**
@@ -126,15 +135,10 @@ public ScalableFreeformLayeredPane getPane() {
  * @return double The previous zoom level
  */
 public double getPreviousZoomLevel() {
-	double prevZoom = zoom;
-	boolean found = false;
-	for (int i = zoomLevels.length - 1; !found; i--) {
-		if (zoomLevels[i] < zoom || i == 0) {
-			found = true;
-			prevZoom = zoomLevels[i];
-		}	
-	}
-	return prevZoom;
+	for (int i = 1; i < zoomLevels.length; i++)
+		if (zoomLevels[i] >= zoom)
+			return zoomLevels[i - 1];
+	return getMinZoom();
 }
 
 /**
@@ -293,13 +297,12 @@ private void performAnimatedZoom(Rectangle rect, boolean zoomIn, int iterationCo
 	Point originalViewLocation = getViewport().getViewLocation();
 	Point finalViewLocation = calculateViewLocation(rect, finalRatio);
 	
-	double xIncrement = (double)(finalViewLocation.x - originalViewLocation.x) 
-									/ iterationCount;
-	double yIncrement = (double)(finalViewLocation.y - originalViewLocation.y) 
-									/ iterationCount;
+	double xIncrement =
+		(double) (finalViewLocation.x - originalViewLocation.x) / iterationCount;
+	double yIncrement =
+		(double) (finalViewLocation.y - originalViewLocation.y) / iterationCount;
 	
 	double originalZoom = zoom;
-	double currentRatio;
 	Point currentViewLocation = new Point();
 	for (int i = 1; i < iterationCount; i++) {
 		currentViewLocation.x = (int)((double)originalViewLocation.x 
@@ -309,7 +312,6 @@ private void performAnimatedZoom(Rectangle rect, boolean zoomIn, int iterationCo
 		setZoom(originalZoom + zoomIncrement * i);
 		getViewport().validate();
 		setViewLocation(currentViewLocation);
-		currentRatio = originalZoom / (originalZoom + zoomIncrement * i);
 		getViewport().getUpdateManager().performUpdate();
 	}
 	

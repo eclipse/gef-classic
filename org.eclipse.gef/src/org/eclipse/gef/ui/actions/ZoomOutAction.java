@@ -1,52 +1,37 @@
 package org.eclipse.gef.ui.actions;
 
-import org.eclipse.ui.IEditorPart;
-
+import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.internal.GEFMessages;
 import org.eclipse.gef.internal.InternalImages;
-
-import org.eclipse.gef.GraphicalViewer;
-import org.eclipse.gef.editparts.ScalableFreeformRootEditPart;
-import org.eclipse.gef.editparts.ZoomManager;
-
 
 /**
  * @author danlee
  */
-public class ZoomOutAction extends EditorPartAction {
+public class ZoomOutAction extends ZoomAction {
 
 /**
  * Constructor for ZoomOutAction.
  * @param editor
  */
-public ZoomOutAction(IEditorPart editor) {
-	super(editor);
-	setText(GEFMessages.ZoomOut_Label);
+public ZoomOutAction(ZoomManager zoomManager) {
+	super(GEFMessages.ZoomOut_Label, InternalImages.DESC_ZOOM_OUT, zoomManager);
 	setId(GEFActionConstants.ZOOM_OUT);
 	setToolTipText(GEFMessages.ZoomOut_Tooltip);
-	setImageDescriptor(InternalImages.DESC_ZOOM_OUT);
-	setHoverImageDescriptor(getImageDescriptor());
-	setActionDefinitionId(GEFActionConstants.ZOOM_OUT);
-}
-
-/**
- * @see org.eclipse.gef.ui.actions.EditorPartAction#calculateEnabled()
- */
-protected boolean calculateEnabled() {
-	return true;
 }
 
 /**
  * @see org.eclipse.jface.action.IAction#run()
  */
 public void run() {
-	GraphicalViewer viewer = (GraphicalViewer)
-								getEditorPart().getAdapter(GraphicalViewer.class);
-	if (viewer == null)
-		return;
-	ZoomManager manager = ((ScalableFreeformRootEditPart)
-							viewer.getRootEditPart()).getZoomManager();
-	manager.zoomOut();
+	zoomManager.zoomOut();
 }
+
+/**
+ * @see org.eclipse.gef.editparts.ZoomListener#zoomChanged(double)
+ */
+public void zoomChanged(double zoom) {
+	setEnabled(zoomManager.canZoomOut());
+}
+
 
 }

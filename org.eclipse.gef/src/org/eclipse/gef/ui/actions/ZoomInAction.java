@@ -1,51 +1,37 @@
 package org.eclipse.gef.ui.actions;
 
-import org.eclipse.ui.IEditorPart;
-
-
-import org.eclipse.gef.GraphicalViewer;
+import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.internal.GEFMessages;
 import org.eclipse.gef.internal.InternalImages;
-import org.eclipse.gef.editparts.ScalableFreeformRootEditPart;
-import org.eclipse.gef.editparts.ZoomManager;
 
 /**
  * @author danlee
  */
-public class ZoomInAction extends EditorPartAction {
+public class ZoomInAction extends ZoomAction {
 
 /**
  * Constructor for ZoomInAction.
- * @param editor
+ * @param zoomManager the zoom manager
  */
-public ZoomInAction(IEditorPart editor) {
-	super(editor);
-	setText(GEFMessages.ZoomIn_Label);
-	setId(GEFActionConstants.ZOOM_IN);
+public ZoomInAction(ZoomManager zoomManager) {
+	super(GEFMessages.ZoomIn_Label, InternalImages.DESC_ZOOM_IN, zoomManager);
 	setToolTipText(GEFMessages.ZoomIn_Tooltip);
-	setImageDescriptor(InternalImages.DESC_ZOOM_IN);
-	setHoverImageDescriptor(getImageDescriptor());
-	setActionDefinitionId(GEFActionConstants.ZOOM_IN);
-}
-
-/**
- * @see org.eclipse.gef.ui.actions.EditorPartAction#calculateEnabled()
- */
-protected boolean calculateEnabled() {
-	return true;
+	setId(GEFActionConstants.ZOOM_IN);
 }
 
 /**
  * @see org.eclipse.jface.action.IAction#run()
  */
 public void run() {
-	GraphicalViewer viewer = (GraphicalViewer)
-								getEditorPart().getAdapter(GraphicalViewer.class);
-	if (viewer == null)
-		return;
-	ZoomManager manager = ((ScalableFreeformRootEditPart)
-							viewer.getRootEditPart()).getZoomManager();
-	manager.zoomIn();
+	zoomManager.zoomIn();
 }
+
+/**
+ * @see org.eclipse.gef.editparts.ZoomListener#zoomChanged(double)
+ */
+public void zoomChanged(double zoom) {
+	setEnabled(zoomManager.canZoomIn());
+}
+
 
 }
