@@ -49,6 +49,13 @@ protected Dimension calculatePreferredSize(IFigure parent, int wHint, int hHint)
 }
 
 /**
+ * @see org.eclipse.draw2d.LayoutManager#getConstraint(org.eclipse.draw2d.IFigure)
+ */
+public Object getConstraint(IFigure child) {
+	return constraints.get(child);
+}
+
+/**
  * Lays out the given figure's children based on their {@link Locator} constraint.
  * @param parent the figure whose children should be layed out
  */
