@@ -1208,7 +1208,7 @@ public void setViewer(EditPartViewer viewer) {
 			Display.getCurrent().getCursorLocation());
 		getCurrentInput().setMouseLocation(p.x, p.y);
 	}
-	refreshCursor();
+	//refreshCursor();
 }
 
 /**
