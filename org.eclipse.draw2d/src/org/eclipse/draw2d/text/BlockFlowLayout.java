@@ -41,13 +41,6 @@ public BlockFlowLayout(BlockFlow blockFlow) {
 }
 
 /**
- * @see FlowContainerLayout#addToCurrentLine(FlowBox)
- */
-public void addToCurrentLine(FlowBox block) {
-	super.addToCurrentLine(block);
-}
-
-/**
  * Marks the blocks contents as changed.  This means that children will be invalidated
  * during validation.
  * @since 3.1
