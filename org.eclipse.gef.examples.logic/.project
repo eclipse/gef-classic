@@ -3,8 +3,6 @@
 	<name>org.eclipse.gef.examples.logic</name>
 	<comment></comment>
 	<projects>
-		<project>com.ibm.etools.common.command</project>
-		<project>com.ibm.etools.draw2d</project>
 		<project>org.eclipse.core.boot</project>
 		<project>org.eclipse.core.resources</project>
 		<project>org.eclipse.core.runtime</project>
