@@ -110,6 +110,7 @@ private ISelectionChangedListener pageFlippingPreventer = new ISelectionChangedL
 		treeviewer.setSelection(new StructuredSelection(activeEntry));
 	}
 };
+private boolean isSetup = true;
 
 /**
  * Used to cache the "Use Large Icons" setting
@@ -212,6 +213,7 @@ public boolean close() {
 	activeEntry = null;
 	title = null;
 	errorMessage = null;
+	isSetup = true;
 		
 	return returnVal;
 }
@@ -334,6 +336,7 @@ protected Control createDialogArea(Composite parent) {
 	} else {
 		setActiveEntry(null);
 	}
+	isSetup = false;
 	tree.setFocus();
 
 	return composite;
@@ -951,13 +954,23 @@ protected void setActiveEntryPage(EntryPage page) {
 		// Show the page and grow the shell, if necessary, so that the page is completely visible
 		Point oldSize = getShell().getSize();
 		propertiesPanelContainer.showPage(page.getControl());
-		Point newSize = getShell().computeSize(SWT.DEFAULT, SWT.DEFAULT, true);
-		int x = newSize.x - oldSize.x;
-		x = (x < 0) ? 0 : x;
-		int y = newSize.y - oldSize.y;
-		y = (y < 0) ? 0 : y;
-		if (x > 0 || y > 0) {
-			getShell().setSize(oldSize.x + x, oldSize.y + y);
+
+		/*
+		 * Fix for bug #34748
+		 * There's no need to resize the Shell if initializeBounds() hasn't been called
+		 * yet.  It will automatically resize the Shell so that everything fits in the
+		 * Dialog.  After that, we can resize the Shell whenever there's an entry page
+		 * that cannot fit in the dialog.
+		 */
+		if (!isSetup) {
+			Point newSize = getShell().computeSize(SWT.DEFAULT, SWT.DEFAULT, true);
+			int x = newSize.x - oldSize.x;
+			x = (x < 0) ? 0 : x;
+			int y = newSize.y - oldSize.y;
+			y = (y < 0) ? 0 : y;
+			if (x > 0 || y > 0) {
+				getShell().setSize(oldSize.x + x, oldSize.y + y);
+			}
 		}
 		
 		// Show the property panel container if it was hidden
