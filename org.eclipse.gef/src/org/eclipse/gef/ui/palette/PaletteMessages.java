@@ -246,6 +246,26 @@ public static final String PINNED;
  */
 public static final String TOOLTIP_PIN_FIGURE;
 
+/**
+ * The String "&Dock On"
+ */
+public static final String DOCK_LABEL;
+
+/**
+ * The String "&Left"
+ */
+public static final String LEFT_LABEL;
+
+/**
+ * The String "&Right"
+ */
+public static final String RIGHT_LABEL;
+
+/**
+ * The String "&Resize"
+ */
+public static final String RESIZE_LABEL;
+
 static {
 	ResourceBundle bundle =
 		ResourceBundle.getBundle("org.eclipse.gef.ui.palette.messages"); //$NON-NLS-1$
@@ -282,7 +302,7 @@ static {
 	NEW_SEPARATOR_DESC = bundle.getString("NEW_SEPARATOR_DESC"); //$NON-NLS-1$
 	NEW_DRAWER_LABEL = bundle.getString("NEW_DRAWER_LABEL"); //$NON-NLS-1$
 	NEW_SEPARATOR_LABEL = bundle.getString("NEW_SEPARATOR_LABEL"); //$NON-NLS-1$
-	NEW_STACK_LABEL = bundle.getString("NEW_STACK_LABEL");  //$NON-NLS-1
+	NEW_STACK_LABEL = bundle.getString("NEW_STACK_LABEL");  //$NON-NLS-1$
 	APPLY_LABEL = bundle.getString("APPLY_LABEL"); //$NON-NLS-1$
 	MODEL_TYPE_GROUP = bundle.getString("MODEL_TYPE_GROUP"); //$NON-NLS-1$
 	NEW_GROUP_LABEL = bundle.getString("NEW_GROUP_LABEL"); //$NON-NLS-1$
@@ -323,7 +343,11 @@ static {
 	SETTINGS_USE_LARGE_ICONS_LABEL_CAPS 
 				= bundle.getString("SETTINGS_USE_LARGE_ICONS_LABEL_CAPS"); //$NON-NLS-1$
 	PINNED = bundle.getString("PINNED"); //$NON-NLS-1$	
-	TOOLTIP_PIN_FIGURE = bundle.getString("TOOLTIP_PIN_FIGURE"); //$NON-NLS-1$	
+	TOOLTIP_PIN_FIGURE = bundle.getString("TOOLTIP_PIN_FIGURE"); //$NON-NLS-1$
+	DOCK_LABEL = bundle.getString("DOCK_LABEL"); //$NON-NLS-1$
+	LEFT_LABEL = bundle.getString("LEFT_LABEL"); //$NON-NLS-1$
+	RIGHT_LABEL = bundle.getString("RIGHT_LABEL"); //$NON-NLS-1$
+	RESIZE_LABEL = bundle.getString("RESIZE_LABEL"); //$NON-NLS-1$
 }
 
 }

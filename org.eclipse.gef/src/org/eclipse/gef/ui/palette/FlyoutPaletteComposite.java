@@ -18,20 +18,29 @@ import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.MouseTrackAdapter;
 import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.layout.RowData;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.Tracker;
 
-import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.ActionContributionItem;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.IMenuCreator;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.util.Assert;
 import org.eclipse.jface.util.TransferDropTargetListener;
 import org.eclipse.ui.IMemento;
@@ -49,16 +58,13 @@ import org.eclipse.draw2d.ButtonBorder;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.FigureCanvas;
 import org.eclipse.draw2d.ImageFigure;
-import org.eclipse.draw2d.ImageUtilities;
 import org.eclipse.draw2d.PositionConstants;
-import org.eclipse.draw2d.SWTGraphics;
 import org.eclipse.draw2d.StackLayout;
 import org.eclipse.draw2d.ToggleButton;
 
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.SharedCursors;
 import org.eclipse.gef.dnd.TemplateTransfer;
-import org.eclipse.gef.internal.GEFMessages;
 import org.eclipse.gef.internal.ui.palette.editparts.DrawerFigure;
 import org.eclipse.gef.ui.views.palette.PaletteView;
 
@@ -335,6 +341,7 @@ public void setDefaultState(int state) {
 }
 
 public void setDockLocation(int position) {
+	// @TODO:Pratik   persist the dock location.  fire notification for it.
 	if (position != PositionConstants.EAST && position != PositionConstants.WEST)
 		return;
 	if (position != dock) {
@@ -447,17 +454,23 @@ protected void transferState(PaletteViewer src, PaletteViewer dest) {
 }
 
 protected class Sash extends Composite {
-	protected Image img;
 	protected ToggleButton b;
+	protected MenuManager manager;
+	protected IAction resizeAction;
 	public Sash(Composite parent) {
 		super(parent, SWT.NONE);
-		/*
-		 * @TODO:Pratik   should update when the banner font changes
-		 */
-		setFont(JFaceResources.getBannerFont());
 
+		RowLayout layout = new RowLayout(SWT.VERTICAL);
+		layout.wrap = false;
+		layout.marginBottom = 0;
+		layout.marginTop = 0;
+		layout.marginLeft = 1;
+		layout.marginRight = 1;
+		layout.spacing = 5;
+		setLayout(layout);
 		createButton();
-		new DragManager();
+		createTitle();
+		new SashDragManager();
 		
 		addMouseTrackListener(new MouseTrackAdapter() {
 			public void mouseHover(MouseEvent e) {
@@ -474,9 +487,11 @@ protected class Sash extends Composite {
 	}
 	protected void createButton() {
 		FigureCanvas figCanvas = new FigureCanvas(this);
+		figCanvas.setCursor(SharedCursors.ARROW);
+		figCanvas.setScrollBarVisibility(FigureCanvas.NEVER);
+		figCanvas.setLayoutData(new RowData());
 		ImageFigure fig = new ImageFigure(DrawerFigure.PIN);
 		fig.setAlignment(PositionConstants.NORTH_WEST);
-		figCanvas.setCursor(SharedCursors.ARROW);
 		b = new ToggleButton(fig);
 		b.setRolloverEnabled(true);
 		b.setBorder(new ButtonBorder(ButtonBorder.SCHEMES.TOOLBAR));
@@ -494,27 +509,35 @@ protected class Sash extends Composite {
 		figCanvas.setContents(b);
 		figCanvas.setBounds(1, 1, 13, 13);
 	}
+	protected void createTitle() {
+		FigureCanvas figCanvas = new FigureCanvas(this);
+		figCanvas.setCursor(SharedCursors.SIZEALL);
+		figCanvas.setScrollBarVisibility(FigureCanvas.NEVER);
+		figCanvas.setLayoutData(new RowData());
+		figCanvas.setContents(new DragFigure(SWT.VERTICAL));
+		new TitleDragManager(figCanvas);
+		manager = new MenuManager();
+		manager.add(resizeAction = new ResizeAction());
+		manager.add(new DockAction());
+		figCanvas.setMenu(manager.createContextMenu(figCanvas));
+	}
 	protected void handleSashDragged(int shiftAmount) {
 		int newSize = pViewer.getControl().getBounds().width + 
 				(dock == PositionConstants.EAST ? -shiftAmount : shiftAmount);
 		setFixedSize(newSize);
 	}
 	protected void paintSash(GC gc) {
-		SWTGraphics graphics = new SWTGraphics(gc);
 		Rectangle bounds = getBounds();
-		if (img == null) {
-			img = ImageUtilities.createRotatedImageOfString(
-					GEFMessages.Palette_Label, graphics.getFont(),
-					graphics.getForegroundColor(), graphics.getBackgroundColor());
+		gc.setForeground(ColorConstants.buttonLightest);
+		gc.drawRectangle(bounds);
+		gc.setForeground(ColorConstants.buttonDarker);
+		if (dock == PositionConstants.EAST) {
+			gc.drawLine(bounds.width - 1, 0, bounds.width - 1, bounds.height - 1);
+			gc.drawLine(0, bounds.height - 1, bounds.width - 1, bounds.height - 1);
+		} else {
+			gc.drawLine(0, 0, 0, bounds.height - 1);
+			gc.drawLine(0, 0, bounds.width - 1, 0);
 		}
-		graphics.setForegroundColor(ColorConstants.buttonLightest);
-		graphics.drawImage(img, 3, bounds.height / 2 - img.getBounds().height / 2);
-		graphics.drawLine(0, 0, bounds.width - 1, 0);
-		graphics.drawLine(0, 0, 0, bounds.height - 1);
-		graphics.setForegroundColor(ColorConstants.buttonDarker);
-		graphics.drawLine(bounds.width - 1, 0, bounds.width - 1, bounds.height - 1);
-		graphics.drawLine(0, bounds.height - 1, bounds.width - 1, bounds.height - 1);
-		graphics.dispose();
 	}
 	protected void updateState() {
 		setCursor(isInState(FLYOVER_EXPANDED | FLYOVER_PINNED_OPEN) 
@@ -523,29 +546,203 @@ protected class Sash extends Composite {
 			b.setSelected(false);
 		if (isInState(FLYOVER_PINNED_OPEN))
 			b.setSelected(true);
+		resizeAction.setEnabled(resizeAction.isEnabled());
 	}
-	protected class DragManager 
+	
+	protected class SashDragManager 
 			extends MouseAdapter 
 			implements MouseMoveListener, Listener {
-		private boolean dragging = false;
-		private int origX;
-		public DragManager() {
+		protected boolean dragging = false;
+		protected boolean correctState = false;
+		protected int origX;
+		public SashDragManager() {
 			Sash.this.addListener(SWT.DragDetect, this);
 			Sash.this.addMouseMoveListener(this);
 			Sash.this.addMouseListener(this);
 		}
 		public void handleEvent(Event event) {
-			dragging = isInState(FLYOVER_EXPANDED | FLYOVER_PINNED_OPEN);
+			dragging = true;
+			correctState = isInState(FLYOVER_EXPANDED | FLYOVER_PINNED_OPEN);
 			origX = event.x;
 		}
 		public void mouseMove(MouseEvent e) {
-			if (dragging)
+			if (dragging && correctState)
 				handleSashDragged(e.x - origX);
 		}
 		public void mouseUp(MouseEvent me) {
+			if (!dragging && me.button == 1)
+				if (isInState(FLYOVER_COLLAPSED))
+					setState(FLYOVER_EXPANDED);
+				else if (isInState(FLYOVER_EXPANDED))
+					setState(FLYOVER_COLLAPSED);
 			dragging = false;
-			if (isInState(FLYOVER_COLLAPSED))
+			correctState = false;
+		}
+	}
+	
+	/*
+	 * @TODO:Pratik   with these drag managers, if you lose drag without
+	 * receiving mouse up, everything will break.  it can happen when debugging
+	 * if it comes across a breakpoint.  talk to randy and find out what valid end
+	 * user scenarios are there.
+	 */
+	
+	protected class TitleDragManager 
+			extends MouseAdapter 
+			implements MouseMoveListener, Listener, KeyListener {
+		protected boolean dragging = false;
+		protected boolean dragCancelled = false;
+		protected boolean switchDock = false;
+		protected Rectangle origBounds;
+		public TitleDragManager(Control ctrl) {
+			ctrl.addListener(SWT.DragDetect, this);
+			ctrl.addMouseMoveListener(this);
+			ctrl.addMouseListener(this);
+			ctrl.addKeyListener(this);
+		}
+		public void handleEvent(Event event) {
+			dragging = true;
+			dragCancelled = false;
+			switchDock = false;
+			origBounds = Sash.this.getBounds();
+			if (pViewer != null && pViewer.getControl().isVisible())
+				origBounds = origBounds.union(pViewer.getControl().getBounds());
+		}
+		public void keyPressed(KeyEvent e) {
+			if (e.keyCode == SWT.ESC)
+				dragCancelled = true;
+		}
+		public void keyReleased(KeyEvent e) {}
+		public void mouseMove(MouseEvent e) {
+			if (!dragging)
+				return;
+			Control ctrl = Display.getCurrent().getCursorControl();
+			switchDock = !isDescendantOf(Sash.this, ctrl);
+			if (pViewer != null && pViewer.getControl().isVisible()) {
+				switchDock &= isDescendantOf(pViewer.getControl(), ctrl);
+			}
+			Rectangle placeHolder = origBounds;
+			if (switchDock) {
+				if (dock == PositionConstants.EAST) {
+					placeHolder = new Rectangle(0, 0,
+							origBounds.width, origBounds.height);
+				} else {
+					placeHolder = new Rectangle(
+							FlyoutPaletteComposite.this.getBounds().width 
+							- origBounds.width, 0, origBounds.width, origBounds.height);
+				}
+			}
+			// @TODO:Pratik  need to draw an outline at placeholder
+		}
+		public void mouseUp(MouseEvent me) {
+			if (dragging) {
+				if (!dragCancelled && switchDock)
+					if (dock == PositionConstants.EAST)
+						setDockLocation(PositionConstants.WEST);
+					else
+						setDockLocation(PositionConstants.EAST);
+			} else if (isInState(FLYOVER_COLLAPSED) && me.button == 1)
+				// if this was just a simple click (no dragging) and the palette's 
+				// collapsed, expand it
 				setState(FLYOVER_EXPANDED);
+			else if (isInState(FLYOVER_EXPANDED) && me.button == 1)
+				// if this was just a simple click (no dragging) and the palette's
+				// expanded, collapse it
+				setState(FLYOVER_COLLAPSED);
+			dragging = false;
+			dragCancelled = false;
+			switchDock = false;
+			origBounds = null;
+		}
+	}
+	
+	protected class DockAction 
+		extends Action 
+		implements IMenuCreator
+	{
+		private Menu menu;
+		public DockAction() {
+			setMenuCreator(this);
+			setText(PaletteMessages.DOCK_LABEL);
+		}		
+		private void addActionToMenu(Menu parent, IAction action) {
+			ActionContributionItem item = new ActionContributionItem(action);
+			item.fill(parent, -1);
+		}
+		public void dispose() {
+			// Menu should already be disposed, but this is a precaution
+			if (menu != null  && !menu.isDisposed()) {
+				menu.dispose();
+			}
+			menu = null;
+		}
+		public Menu getMenu(Control parent) {
+			return null;
+		}
+		public Menu getMenu(Menu parent) {
+			if (menu == null) {
+				menu = new Menu(parent);
+				addActionToMenu(menu, new ChangeDockAction(
+						PaletteMessages.LEFT_LABEL, PositionConstants.WEST));
+				addActionToMenu(menu, new ChangeDockAction(
+						PaletteMessages.RIGHT_LABEL, PositionConstants.EAST));
+			}
+			return menu;
+		}
+		private class ChangeDockAction extends Action {
+			private int position;
+			public ChangeDockAction(String text, int position) {
+				super(text, IAction.AS_RADIO_BUTTON);
+				this.position = position;
+			}
+			public boolean isChecked() {
+				return dock == position;
+			}
+			public void run() {
+				setDockLocation(position);
+				setChecked(false);
+			}
+		}
+	}
+	
+	protected class ResizeAction extends Action {
+		public ResizeAction() {
+			super(PaletteMessages.RESIZE_LABEL);
+		}
+		public boolean isEnabled() {
+			return !isInState(FLYOVER_COLLAPSED);
+		}
+		public void run() {
+			final Tracker tracker = 
+					new Tracker(FlyoutPaletteComposite.this, SWT.LEFT | SWT.RIGHT);
+			Rectangle[] rects = new Rectangle[1];
+			rects[0] = Sash.this.getBounds();
+//			System.out.println("original bounds: " + rects[0]);
+			tracker.setCursor(SharedCursors.SIZEE);
+			tracker.setRectangles(rects);
+			tracker.setStippled(true);
+//			tracker.addControlListener(new ControlListener() {
+//				public void controlMoved(ControlEvent e) {
+//					Rectangle[] rects2 = tracker.getRectangles();
+//					System.out.println("sash bounds: " + Sash.this.getBounds()); //$NON-NLS-1$
+//					System.out.println("tracker bounds: " + tracker.getRectangles()[0]);
+//					int deltaX = Sash.this.getBounds().x - tracker.getRectangles()[0].x;
+//					if (dock == PositionConstants.WEST)
+//						deltaX = -deltaX;
+//					System.out.println("deltaX: " + deltaX);
+//					setFixedSize(pViewer.getControl().getBounds().width + deltaX);
+//					System.out.println("==========");
+//				}
+//				public void controlResized(ControlEvent e) {
+//				}
+//			});
+			if (tracker.open()) {
+				int deltaX = Sash.this.getBounds().x - tracker.getRectangles()[0].x;
+				if (dock == PositionConstants.WEST)
+					deltaX = -deltaX;
+				setFixedSize(pViewer.getControl().getBounds().width + deltaX);
+			}
+			tracker.dispose();
 		}
 	}
 }
