@@ -30,6 +30,7 @@ public RulerEditPartFactory(GraphicalViewer primaryViewer) {
  * @see org.eclipse.gef.EditPartFactory#createEditPart(org.eclipse.gef.EditPart, java.lang.Object)
  */
 public EditPart createEditPart(EditPart parentEditPart, Object model) {
+	// the model can be null when the contents of the root edit part are set to null
 	EditPart part = null;
 	if (isRuler(model)) {
 		part = createRulerEditPart(parentEditPart, model);
