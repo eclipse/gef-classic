@@ -97,7 +97,7 @@ public void layout(IFigure figure) {
 	p.translate(viewport.getViewLocation().getNegated());
 	
 	// Calculate the hints
-	Rectangle hints = viewport.getClientArea().getCropped(viewport.getInsets());
+	Rectangle hints = viewport.getClientArea();
 	int wHint = viewport.getContentsTracksWidth() ? hints.width : -1;
 	int hHint = viewport.getContentsTracksHeight() ? hints.height : -1;
 	
