@@ -244,12 +244,13 @@ protected void unhookControl() {
 private void updateFont() {
 	disposeFont();
 
-	if (getControl() == null || getControl().isDisposed()) {
+	if (getControl() == null || getControl().isDisposed())
 		return;
-	}
 	
 	font = new Font(Display.getCurrent(), getPaletteViewerPreferences().getFontData());
 	getControl().setFont(font);
+	getFigureCanvas().getViewport().invalidateTree();
+	getFigureCanvas().getViewport().revalidate();
 }
 
 }
