@@ -240,9 +240,11 @@ public Clickable getCollapseToggle() {
  * @see org.eclipse.draw2d.Figure#getMinimumSize(int, int)
  */
 public Dimension getMinimumSize(int wHint, int hHint) {
-	if (animatingAlone) {
-		return getPreferredSize(wHint, hHint);
-	}
+//	if (animatingAlone) {
+//		return getPreferredSize(wHint, hHint);
+//	}
+
+	Dimension size = super.getMinimumSize(wHint, hHint);
 	
 	/*
 	 * @TODO:Pratik
@@ -257,20 +259,22 @@ public Dimension getMinimumSize(int wHint, int hHint) {
 		List children = getContentPane().getChildren();
 		if (!children.isEmpty()) {
 			Dimension headerSize = collapseToggle.getMinimumSize(wHint, hHint).getCopy();
+			headerSize.height += getContentPane().getInsets().getHeight();
 			Figure child = (Figure)children.get(0);
-//			hHint -= headerSize.height;
 			int childHeight = child.getMinimumSize(wHint, -1).height;
 			int multiplier = Math.min(3, children.size());
-			headerSize.height += (multiplier * childHeight);
-			headerSize.height = Math.max(headerSize.height, 40);
-			headerSize.height = Math.min(headerSize.height, 90);
+			childHeight = Math.max((multiplier * childHeight), 40);			
+			childHeight = Math.min(childHeight, 80);
+			headerSize.height += childHeight;
+			headerSize.height = Math.min(headerSize.height, 
+			                             super.getPreferredSize(wHint, hHint).height);
+			headerSize.width = size.width;
 			return headerSize;
 		}
 	}
 	
-	return super.getMinimumSize(wHint, hHint);
+	return size;
 }
-
 
 /**
  * @see org.eclipse.draw2d.Figure#getPreferredSize(int, int)
