@@ -276,6 +276,16 @@ public static final String PALETTE_SHOW;
  */
 public static final String PALETTE_HIDE;
 
+/**
+ * This button is used to show or hide the palette.
+ */
+public static final String ACC_DESC_PALETTE_BUTTON;
+
+/**
+ * The palette can be moved or resized through the context menu for this control.
+ */
+public static final String ACC_DESC_PALETTE_TITLE;
+
 static {
 	ResourceBundle bundle =
 		ResourceBundle.getBundle("org.eclipse.gef.ui.palette.messages"); //$NON-NLS-1$
@@ -360,6 +370,8 @@ static {
 	RESIZE_LABEL = bundle.getString("RESIZE_LABEL"); //$NON-NLS-1$
 	PALETTE_SHOW = bundle.getString("PALETTE_SHOW"); //$NON-NLS-1$
 	PALETTE_HIDE = bundle.getString("PALETTE_HIDE"); //$NON-NLS-1$
+	ACC_DESC_PALETTE_BUTTON = bundle.getString("ACC_DESC_PALETTE_BUTTON"); //$NON-NLS-1$
+	ACC_DESC_PALETTE_TITLE = bundle.getString("ACC_DESC_PALETTE_TITLE"); //$NON-NLS-1$
 }
 
 }
