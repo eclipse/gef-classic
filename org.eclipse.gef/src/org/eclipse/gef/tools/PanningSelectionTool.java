@@ -130,6 +130,18 @@ protected boolean handleDrag() {
 }
 
 /**
+ * @see org.eclipse.gef.tools.SelectionTool#handleFocusLost()
+ */
+protected boolean handleFocusLost() {
+	if (isInState(PAN | PAN_IN_PROGRESS)) {
+		setState(STATE_INITIAL);
+		refreshCursor();
+		return true;
+	}
+	return super.handleFocusLost();
+}
+
+/**
  * @see
  * org.eclipse.gef.tools.SelectionTool#handleKeyDown(org.eclipse.swt.events.KeyEvent)
  */
@@ -139,6 +151,13 @@ protected boolean handleKeyDown(KeyEvent e) {
 		if (stateTransition(STATE_INITIAL, PAN))
 			refreshCursor();
 		return true;
+	} else {
+		if (stateTransition(PAN, STATE_INITIAL)) {
+			refreshCursor();
+			isSpaceBarDown = false;
+			return true;
+		} else if (isInState(PAN_IN_PROGRESS)) 
+			isSpaceBarDown = false;
 	}
 	
 	return super.handleKeyDown(e);	
