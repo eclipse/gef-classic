@@ -49,17 +49,12 @@ public static int getTextForSpace(TextFragmentBox frag, String string, Font font
 		return 0;
 	}
 	
-	// Remove any offset the given String might have.  This is because 
-	// BreakIterator.isBoundary() has a bug where it doesn't take the offset into account.
-	string = new String(string.toString());
-	
 	FontMetrics metrics = getFontMetrics(font);
 	BreakIterator breakItr = BreakIterator.getLineInstance();
 	breakItr.setText(string);
-	// min is the max. no. of characters that can fit in the available width.  To get to 
-	// that last character that fits you'd do string.charAt(min - 1).  max is the least
-	// number of characters of the given string that will not fit in
-	// the available space.
+	// min is the maximum no. of characters that can fit in the available width.  To get
+	// to that last character that fits you'd do string.charAt(min - 1).  max is the 
+	// smallest possible number of characters that will not fit in the available space.
 	int MIN, min, max;
 
 	MIN = min = (wrapping == ParagraphTextLayout.WORD_WRAP_HARD) ?  breakItr.next() : 1;
@@ -70,8 +65,10 @@ public static int getTextForSpace(TextFragmentBox frag, String string, Font font
 	int winNL = string.indexOf("\r\n"); //$NON-NLS-1$
 	int macNL = string.indexOf('\r');
 	int unixNL = string.indexOf('\n');
+	//	 If the Mac newline is just the prefix to the win NL, ignore it	
 	if (macNL == winNL)
-		macNL = -1; //If the Mac newline is just the prefix to the win NL, ignore it
+		macNL = -1;
+	// max points to the character after the first instance of a NL character
 	if (winNL != -1) {
 		winNL += 2;
 		max = Math.min(max, winNL + 1);
@@ -85,7 +82,6 @@ public static int getTextForSpace(TextFragmentBox frag, String string, Font font
 		max = Math.min(max, macNL + 1);
 	}
 
-
 	//The size of the current guess
 	int guess = 0, guessSize = 0;
 	while ((max - min) > 1) {
@@ -98,7 +94,7 @@ public static int getTextForSpace(TextFragmentBox frag, String string, Font font
 		if (guess <= min) guess = min + 1;
 
 		//Measure the current guess
-		guessSize = getTextExtents(string.substring(0, guess), font).width;
+		guessSize = getStringExtents(string.substring(0, guess), font).width;
 
 		if (guessSize <= availableWidth)
 			//We did not use the available width
@@ -108,14 +104,22 @@ public static int getTextForSpace(TextFragmentBox frag, String string, Font font
 			max = guess;
 	}
 		
-	// Skip forward until max is a non-white space character
-	if (min != winNL && min != macNL && min != unixNL) {
-		while (max <= string.length() && Character.isWhitespace(string.charAt(max - 1)))
-			max++;
-		// If the first character 
-		min = max - 1;
+	// Skip forward (thus consuming all whitespace) until max is a non-whitespace 
+	// character (or end of the given string), unless we have encountered a newline
+	while (max <= string.length() && Character.isWhitespace(string.charAt(max - 1))
+			&& min != winNL && min != macNL && min != unixNL) {
+		max++;
+		min++;
 	}
 
+	/*
+	 * @TODO:Pratik
+	 * Remove any offset the given String might have.  This is because 
+	 * BreakIterator.isBoundary() has a bug where it doesn't take the offset into account.
+	 * This workaround should be removed once BreakIterator is fixed.
+	 */
+	string = new String(string.toString());
+	
 	int result;
 	boolean needToSetLength = true;
 	if (min == string.length() || min == winNL || min == unixNL || min == macNL
@@ -123,10 +127,10 @@ public static int getTextForSpace(TextFragmentBox frag, String string, Font font
 		// min = last letter in the given string, max = past the last letter OR
 		// min = NewLine OR
 		// max = boundary (includes the cases of japanese characters
-		//                 and min = white space, max = non-white character
+		//                 and min = whitespace, max = non-whitespace character
 		result = min;
 	else {
-		// min = non-white character, max = non-white character
+		// min = non-whitespace character, max = non-whitespace character
 		result = breakItr.preceding(max - 1);
 		if (result == 0) {
 			switch (wrapping) {
@@ -137,8 +141,11 @@ public static int getTextForSpace(TextFragmentBox frag, String string, Font font
 					result = min;
 					break;
 				case ParagraphTextLayout.WORD_WRAP_TRUNCATE :
+					// FigureUtilities increases the necessary width by 1 pixel, but that
+					// causes boundary problems where there is just enough space to show
+					// a letter and the ellipsis.  So, we reduce that one pixel here.
 					ELLIPSIS_SIZE = FigureUtilities
-							.getStringExtents(TextFlow.ELLIPSIS, font);
+							.getStringExtents(TextFlow.ELLIPSIS, font).shrink(1, 0);
 					// This recursive invocation will set the fragment's length appropriately
 					getTextForSpace(frag, 
 							string, 
