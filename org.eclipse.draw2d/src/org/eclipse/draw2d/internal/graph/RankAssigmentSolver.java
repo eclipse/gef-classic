@@ -24,7 +24,7 @@ int depthFirstCutValue(Edge edge, int count) {
 	
 	list = n.outgoing;
 	Edge e;
-	for (int i=0; i<list.size(); i++) {
+	for (int i = 0; i < list.size(); i++) {
 		e = list.getEdge(i);
 		if (e.tree && e != edge) {
 			count = depthFirstCutValue(e, count);
@@ -34,7 +34,7 @@ int depthFirstCutValue(Edge edge, int count) {
 		}
 	}
 	list = n.incoming;
-	for (int i=0; i<list.size(); i++) {
+	for (int i = 0; i < list.size(); i++) {
 		e = list.getEdge(i);
 		if (e.tree && e != edge) {
 			count = depthFirstCutValue(e, count);
@@ -67,7 +67,7 @@ Edge enter(Node branch) {
 			n = graph.nodes.getNode(i);
 		else
 			n = graph.nodes.getNode(graph.nodes.size() - 1 - i);
-		if (subtreeContains(branch,n)) {
+		if (subtreeContains(branch, n)) {
 			EdgeList edges;
 			if (incoming)
 				edges = n.incoming;
@@ -102,13 +102,13 @@ void initCutValues() {
 	setTreeMin(root, 1);
 	setTreeMax(root, 1);
 
-	for (int i=0; i<root.outgoing.size(); i++) {
+	for (int i = 0; i < root.outgoing.size(); i++) {
 		e = root.outgoing.getEdge(i);
 		if (!getSpanningTreeChildren(root).contains(e))
 			continue;
 		setTreeMax(root, depthFirstCutValue(e, getTreeMax(root)));
 	}
-	for (int i=0; i<root.incoming.size(); i++) {
+	for (int i = 0; i < root.incoming.size(); i++) {
 		e = root.incoming.getEdge(i);
 		if (!getSpanningTreeChildren(root).contains(e))
 			continue;
@@ -121,7 +121,7 @@ Edge leave() {
 	Edge e;
 	int minCut = 0;
 	int weight = -1;
-	for (int i=0; i<graph.spanningTree.size(); i++) {
+	for (int i = 0; i < graph.spanningTree.size(); i++) {
 		e = graph.spanningTree.getEdge(i);
 		if (e.cut < minCut) {
 			result = e;
@@ -195,7 +195,7 @@ void repairCutValues(Edge edge) {
 	
 	list = n.outgoing;
 	Edge e;
-	for (int i=0; i<list.size(); i++) {
+	for (int i = 0; i < list.size(); i++) {
 		e = list.getEdge(i);
 		if (e.tree && e != edge)
 			cutvalue += (e.cut - e.weight) * multiplier;
@@ -203,7 +203,7 @@ void repairCutValues(Edge edge) {
 			cutvalue -= e.weight * multiplier;
 	}
 	list = n.incoming;
-	for (int i=0; i<list.size(); i++) {
+	for (int i = 0; i < list.size(); i++) {
 		e = list.getEdge(i);
 		if (e.tree && e != edge)
 			cutvalue -= (e.cut - e.weight) * multiplier;
@@ -235,7 +235,7 @@ void tightenEdge(Edge edge) {
 	if (tail == edge.target)
 		delta = -delta;
 	Node n;
-	for (int i=0; i<graph.nodes.size(); i++){
+	for (int i = 0; i < graph.nodes.size(); i++) {
 		n = graph.nodes.getNode(i);
 		if (subtreeContains(tail, n))
 			n.rank += delta;
@@ -248,7 +248,7 @@ int updateMinMax(Node root, int count) {
 	for (int i = 0; i < edges.size(); i++)
 		count = updateMinMax(getTreeTail(edges.getEdge(i)), count);
 	setTreeMax(root, count);
-	return count+1;
+	return count + 1;
 }
 
 void updateSubgraph(Node root) {

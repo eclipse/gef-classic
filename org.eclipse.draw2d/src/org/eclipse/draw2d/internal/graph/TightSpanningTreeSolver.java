@@ -84,7 +84,7 @@ protected void solve() {
 			throw new RuntimeException("graph is not fully connected");//$NON-NLS-1$
 		int minSlack = Integer.MAX_VALUE, slack;
 		Edge minEdge = null, edge;
-		for (int i=0; i<candidates.size() && minSlack > 0; i++) {
+		for (int i = 0; i < candidates.size() && minSlack > 0; i++) {
 			edge = candidates.getEdge(i);
 			slack = edge.getSlack();
 			if (slack < minSlack) {

@@ -59,7 +59,7 @@ void buildRankSeparators(RankList ranks) {
 			if (prev == null) {
 				addSeparatorsLeft(n, null);
 			} else {
-				Subgraph s = GraphUtilities.getCommonAncestor((Node)prev,(Node) n);
+				Subgraph s = GraphUtilities.getCommonAncestor((Node)prev, (Node)n);
 				Node left = addSeparatorsRight(prev, s);
 				Node right = addSeparatorsLeft(n, s);
 				createEdge(left, right);
@@ -107,17 +107,17 @@ Node addSeparatorsRight(Node n, Subgraph graph) {
 Node getLeft(Subgraph s) {
 	if (s.left == null) {
 		s.left = new SubgraphBoundary(s, graph.getPadding(s), 1);
-		s.left.rank = (s.head.rank + s.tail.rank)/2;
+		s.left.rank = (s.head.rank + s.tail.rank) / 2;
 
 		Node head = getPrime(s.head);
 		Node tail = getPrime(s.tail);
 		Node left = getPrime(s.left);
 		Node right = getPrime(getRight(s));
-		prime.edges.add(new Edge(left, right,s.width,0));
-		prime.edges.add(new Edge(left, head,0,1));
-		prime.edges.add(new Edge(head, right,0,1));
-		prime.edges.add(new Edge(left, tail,0,1));
-		prime.edges.add(new Edge(tail, right,0,1));
+		prime.edges.add(new Edge(left, right, s.width, 0));
+		prime.edges.add(new Edge(left, head, 0, 1));
+		prime.edges.add(new Edge(head, right, 0, 1));
+		prime.edges.add(new Edge(left, tail, 0, 1));
+		prime.edges.add(new Edge(tail, right, 0, 1));
 	}
 	return s.left;
 }
@@ -125,7 +125,7 @@ Node getLeft(Subgraph s) {
 Node getRight(Subgraph s) {
 	if (s.right == null) {
 		s.right = new SubgraphBoundary(s, graph.getPadding(s), 3);
-		s.right.rank = (s.head.rank + s.tail.rank)/2;
+		s.right.rank = (s.head.rank + s.tail.rank) / 2;
 	}
 	return s.right;
 }
