@@ -35,7 +35,9 @@ public LogicPasteTemplateAction(IEditorPart editor) {
  * @see org.eclipse.gef.ui.actions.PasteTemplateAction#getFactory(java.lang.Object)
  */
 protected CreationFactory getFactory(Object template) {
-	return new LogicElementFactory((String)template);
+	if (template instanceof String)
+		return new LogicElementFactory((String)template);
+	return null;
 }
 
 /**
