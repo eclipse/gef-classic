@@ -102,6 +102,7 @@ private void normalLayout(IFigure parent) {
 	int x = clientArea.x;
 	int y = clientArea.y;
 	int availableHeight = clientArea.height;
+	boolean stretching;
 	Dimension prefSizes [] = new Dimension[numChildren];
 	Dimension minSizes [] = new Dimension[numChildren];
 	int totalHeight = 0, totalMinHeight = 0, heightOfNonGrowingChildren = 0, 
@@ -139,14 +140,18 @@ private void normalLayout(IFigure parent) {
 	 * This is the algorithm that determines which figures need to be compressed/stretched
 	 * and by how much.
 	 */
-	// We don't want any stretching to happen, so if we have enough space available,
-	// emtpy childrenGrabbingVertical.  This will give each child its preferred height
-	// and thus not cause any stretching.
-	if (totalHeight - Math.max(availableHeight, totalMinHeight) < 0)
-		childrenGrabbingVertical.clear();
+	stretching = totalHeight - Math.max(availableHeight, totalMinHeight) < 0;
 	// So long as there is at least one child that can be grown, figure out how much
 	// height should be given to each growing child.  
 	if (!childrenGrabbingVertical.isEmpty()) {
+		 // We only want the last child to stretch.  So, we remove all but the last
+		 // growing child.
+		if (stretching) {
+			Object last = childrenGrabbingVertical.get(childrenGrabbingVertical.size() - 1);
+			childrenGrabbingVertical.clear();
+			childrenGrabbingVertical.add(last);
+		}
+		
 		boolean childrenDiscarded;
 		// spaceToConsume is the space height available on the palette that is to be
 		// shared by the growing children.
@@ -161,9 +166,17 @@ private void normalLayout(IFigure parent) {
 			for (Iterator iter = childrenGrabbingVertical.iterator(); iter.hasNext();) {
 				IFigure childFig = (IFigure) iter.next();
 				int i = childFig.getParent().getChildren().indexOf(childFig);
-				// In case of shrinking, if the child's height is smaller than
-				// heightPerChild, mark that child as non-growing
-				if (prefSizes[i].height < heightPerChild) {
+				boolean discardChild = false;
+				if (stretching) {
+					// In case of stretching, if the child's height is greater than
+					// heightPerChild, mark that child as non-growing
+					discardChild = prefSizes[i].height > heightPerChild;
+				} else {
+					// In case of shrinking, if the child's height is smaller than
+					// heightPerChild, mark that child as non-growing
+					discardChild = prefSizes[i].height < heightPerChild;
+				}
+				if (discardChild) {
 					spaceToConsume -= prefSizes[i].height;
 					heightOfNonGrowingChildren += prefSizes[i].height;
 					childrenGrabbingVertical.remove(childFig);
