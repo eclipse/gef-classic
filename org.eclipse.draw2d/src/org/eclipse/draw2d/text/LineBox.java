@@ -98,7 +98,6 @@ private void contiguousCommit(FlowBox box, int x, int baseline) {
 	box.makeBaseline(baseline);
 	// Don't lay out the children of any blocks.  If there is a BlockBox, it will be the 
 	// first and only child (i.e., on a line by itself).
-	// @TODO:Pratik  what about a block inside a line inside a line?
 	if (box instanceof BlockBox)
 		return;
 	if (box instanceof CompositeBox) {
