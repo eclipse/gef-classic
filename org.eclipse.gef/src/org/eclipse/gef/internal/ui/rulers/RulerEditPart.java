@@ -25,12 +25,14 @@ import org.eclipse.gef.rulers.*;
 
 /**
 * @author Pratik Shah
+* @since 3.0
 */
 public class RulerEditPart
 	extends AbstractGraphicalEditPart
 {
 
 protected GraphicalViewer diagramViewer;
+private AccessibleEditPart accPart;
 private RulerProvider rulerProvider;
 private boolean horizontal;
 private RulerChangeListener listener = new RulerChangeListener.Stub() {
@@ -89,19 +91,18 @@ public void deactivate() {
 	getRulerFigure().setZoomManager(null);
 }
 
-/*
- * @TODO:Pratik    Need to test this with JAWS 
- */
 protected AccessibleEditPart getAccessibleEditPart() {
-	return new AccessibleGraphicalEditPart() {
-		public void getName(AccessibleEvent e) {
-			e.result = isHorizontal() ? GEFMessages.Ruler_Horizontal_Label
-									  : GEFMessages.Ruler_Vertical_Label;
-		}
-		public void getDescription(AccessibleEvent e) {
-			e.result = GEFMessages.Ruler_Desc;
-		}
-	};
+	if (accPart == null)
+		accPart = new AccessibleGraphicalEditPart() {
+			public void getName(AccessibleEvent e) {
+				e.result = isHorizontal() ? GEFMessages.Ruler_Horizontal_Label
+										  : GEFMessages.Ruler_Vertical_Label;
+			}
+			public void getDescription(AccessibleEvent e) {
+				e.result = GEFMessages.Ruler_Desc;
+			}
+		};
+	return accPart;
 }
 
 /**
