@@ -187,9 +187,9 @@ private void layoutViewport(){
 		getVerticalScrollBarVisibility(),
 		computeTrim(0,0,0,0).width,
 		computeTrim(0,0,0,0).height);
-	if (getHorizontalBar().isVisible() != result.showH)
+	if (getHorizontalBar().getVisible() != result.showH)
 		getHorizontalBar().setVisible(result.showH);
-	if (getVerticalBar().isVisible() != result.showV)
+	if (getVerticalBar().getVisible() != result.showV)
 		getVerticalBar().setVisible(result.showV);
 }
 

@@ -28,10 +28,10 @@ public class ToolbarLayout
 	extends AbstractHintLayout
 {
 
-private int spacing;
-private boolean matchWidth;
-private boolean horizontal = false;
-private int minorAlignment;
+protected int spacing;
+protected boolean matchWidth;
+protected boolean horizontal = false;
+protected int minorAlignment;
 
 public static final int
 	ALIGN_CENTER = 0,
@@ -178,39 +178,12 @@ protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHi
 }
 
 /**
- * Provides sub-classes with access to the minor alignment
- * 
- * @return	minorAlignment
- */
-protected int getMinorAlignment() {
-	return minorAlignment;
-}
-
-/**
- * Provides sub-classes with access to the spacing
- * 
- * @return	spacing
- */
-protected int getSpacing() {
-	return spacing;
-}
-
-/**
  * Returns whether the orientation of the layout is horizontal.
  * @return <code>true</code> if the orientation is horizontal
  * @since 2.0
  */
 public boolean isHorizontal() {
 	return horizontal;
-}
-
-/**
- * Provides sub-classes with access to the matchWidth field
- * 
- * @return	<code>true</code> if matchWidth has been set
- */
-protected boolean isMatchingWidth() {
-	return matchWidth;
 }
 
 /**
