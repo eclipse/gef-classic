@@ -98,7 +98,8 @@ public void add(IFigure figure, Object constraint, int index) {
 	if (children == Collections.EMPTY_LIST)
 		children = new ArrayList(2);
 	if (index < -1 || index > children.size())
-		throw new IndexOutOfBoundsException(Draw2dMessages.ERR_Figure_Add_Exception_OutOfBounds);
+		throw new IndexOutOfBoundsException(
+			Draw2dMessages.ERR_Figure_Add_Exception_OutOfBounds);
 
 	//Check for Cycle in heirarchy
 	for (IFigure f = this; f != null; f = f.getParent())
@@ -294,13 +295,7 @@ public final IFigure findFigureAt(int x, int y) {
 }
 
 /**
- * Returns the IFigure at the given location provided it is accepted by the given
- * TreeSearch.  Returns <code>null</code> if none found.
- * 
- * @param x the x coordinate
- * @param y the y coordinate
- * @param search the TreeSearch
- * @return the figure at the given location
+ * @see org.eclipse.draw2d.IFigure#findFigureAt(int, int, org.eclipse.draw2d.TreeSearch)
  */
 public IFigure findFigureAt(int x, int y, TreeSearch search) {
 	if (!containsPoint(x, y))
@@ -987,7 +982,9 @@ protected void paintClientArea(Graphics graphics) {
 	boolean optimizeClip = getBorder() == null || getBorder().isOpaque();
 
 	if (useLocalCoordinates()) {
-		graphics.translate(getBounds().x + getInsets().left, getBounds().y + getInsets().top);
+		graphics.translate(
+			getBounds().x + getInsets().left,
+			getBounds().y + getInsets().top);
 		if (!optimizeClip)
 			graphics.clipRect(getClientArea(PRIVATE_RECT));
 		graphics.pushState();
@@ -1150,9 +1147,11 @@ public void removePropertyChangeListener(PropertyChangeListener listener) {
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#removePropertyChangeListener(String, PropertyChangeListener)
+ * @see IFigure#removePropertyChangeListener(String, PropertyChangeListener)
  */
-public void removePropertyChangeListener(String property, PropertyChangeListener listener) {
+public void removePropertyChangeListener(
+	String property,
+	PropertyChangeListener listener) {
 	if (propertyListeners == null) return;
 	propertyListeners.removePropertyChangeListener(property, listener);
 }
@@ -1528,7 +1527,9 @@ public final void translate(int x, int y) {
  */
 public void translateFromParent(Translatable t) {
 	if (useLocalCoordinates())
-		t.performTranslate(-getBounds().x - getInsets().left, -getBounds().y - getInsets().top);
+		t.performTranslate(
+			-getBounds().x - getInsets().left,
+			-getBounds().y - getInsets().top);
 }
 
 /**
@@ -1546,7 +1547,9 @@ public final void translateToAbsolute(Translatable t) {
  */
 public void translateToParent(Translatable t) {
 	if (useLocalCoordinates())
-		t.performTranslate(getBounds().x + getInsets().left, getBounds().y + getInsets().top);
+		t.performTranslate(
+			getBounds().x + getInsets().left,
+			getBounds().y + getInsets().top);
 }
 
 /**

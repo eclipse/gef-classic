@@ -15,15 +15,14 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
- * A locator that specfies a point that is relative to the bounds
- * of a {@link Figure}.  There are two <code>double</code> values that
- * determine where the target Figure will be placed.  These amounts 
- * represent the percentage of the reference Figure's bounds the 
- * target Figure should be displaced from the reference Figure's 
- * top-left corner.  The values 0.0 and 0.0 will result in the target 
- * Figure being located at the reference Figure's top-left corner.
- * The values 1.0 and 1.0 will result in the target Figure being 
- * located at the reference Figure's bottom-right corner.
+ * Places a handle relative to a figure's bounds. The placement is determined by
+ * indicating the figure to which the placement is relative, and two floating-point value
+ * indicating the horizontal and vertical offset from that figure's top-left corner.  The
+ * values (0.0, 0.0) would indicate the figure's top-left corner, while the values (1.0,
+ * 1.0) would indicate the figure's bottom-right corner.
+ * <P>
+ * Constants such as {@link PositionConstants#NORTH NORTH} and {@link
+ * PositionConstants#SOUTH SOUTH} can be used to set the placement.
  */
 public class RelativeLocator
 	implements Locator
@@ -34,10 +33,8 @@ private double  relativeY;
 private IFigure reference;
 
 /**
- * Creates a new RelativeLocator which will locate its
- * target Figure in the top-left corner of the reference
- * Figure (which must be set separately).
- * 
+ * Null constructor. The reference figure must be set before use.  The relative locations
+ * will default to (0.0, 0.0).
  * @since 2.0
  */
 public RelativeLocator() {
@@ -46,16 +43,16 @@ public RelativeLocator() {
 }
 
 /**
- * Creates a new RelativeLocator with the given reference
- * Figure, that will locate its target figure based on
- * <code>location</code>, which is one of the compass
- * directions defined in {@link PositionConstants}.
- * 
+ * Constructs a RelativeLocator with the given reference figure and relative location. The
+ * location is a constant from {@link PositionConstants} used as a convenient and readable
+ * way to set both the relativeX and relativeY values.
+ * @param reference the reference figure
+ * @param location one of NORTH, NORTH_EAST, etc.
  * @since 2.0
  */
-public RelativeLocator(IFigure reference, int location){
+public RelativeLocator(IFigure reference, int location) {
 	setReferenceFigure(reference);
-	switch (location & PositionConstants.NORTH_SOUTH){
+	switch (location & PositionConstants.NORTH_SOUTH) {
 		case PositionConstants.NORTH:
 			relativeY = 0; break;
 		case PositionConstants.SOUTH:
@@ -64,7 +61,7 @@ public RelativeLocator(IFigure reference, int location){
 			relativeY = 0.5;
 	}
 
-	switch (location & PositionConstants.EAST_WEST){
+	switch (location & PositionConstants.EAST_WEST) {
 		case PositionConstants.WEST:
 			relativeX = 0; break;
 		case PositionConstants.EAST:
@@ -75,37 +72,41 @@ public RelativeLocator(IFigure reference, int location){
 }
 
 /**
- * Creates a new RelativeLocator with the given reference Figure
- * that locates its target Figure based on <code>_relativeX</code>
- * and <code>_relativeY</code>.
- * 
+ * Constructs a RelativeLocator with the given reference Figure and offset ratios.
+ * @param reference the reference figure
+ * @param relativeX the relative X offset
+ * @param relativeY the relative Y offset
  * @since 2.0
  */
-public RelativeLocator(IFigure reference, double _relativeX, double _relativeY) {
+public RelativeLocator(IFigure reference, double relativeX, double relativeY) {
 	setReferenceFigure(reference);
-	relativeX = _relativeX;
-	relativeY = _relativeY;
+	this.relativeX = relativeX;
+	this.relativeY = relativeY;
 }
 
 /**
  * Returns the Reference Box in the Reference Figure's coordinate system.
  * The returned Rectangle may be by reference, and should <b>not</b> be modified.
- * 
+ * @return the reference box
  * @since 2.0
  */
-protected Rectangle getReferenceBox(){
+protected Rectangle getReferenceBox() {
 	return getReferenceFigure().getBounds();
 }
 
 /**
  * Returns the Figure this locator is relative to.
- * 
+ * @return the reference figure
  * @since 2.0
  */
-protected IFigure getReferenceFigure(){
+protected IFigure getReferenceFigure() {
 	return reference;
 }
 
+/**
+ * Relocates the target using the relative offset locations.
+ * @see org.eclipse.draw2d.Locator#relocate(org.eclipse.draw2d.IFigure)
+ */
 public void relocate(IFigure target) {
 	IFigure reference = getReferenceFigure();
 	Rectangle targetBounds = new PrecisionRectangle(getReferenceBox().getResized(-1, -1));
@@ -124,11 +125,11 @@ public void relocate(IFigure target) {
 }
 
 /**
- * Sets the Figure this locator should be relative to.
- * 
+ * Sets the reference figure this locator uses to place the target figure.
+ * @param reference the reference figure
  * @since 2.0
  */
-public void setReferenceFigure(IFigure reference){
+public void setReferenceFigure(IFigure reference) {
 	this.reference = reference;
 }
 
