@@ -156,6 +156,9 @@ protected void handlePropertyChanged(Notification msg) {
 			// Need to refresh this class' children here because the EAttributes list 
 			// keeps changing
 			refreshChildren();
+			// Need to do this because in the case where the last attribute is removed,
+			// the returned list is the same.
+			((EditPart)getChildren().get(0)).refresh();
 			return;
 		case EcorePackage.ECLASS__EOPERATIONS:
 			((EditPart)getChildren().get(1)).refresh();
