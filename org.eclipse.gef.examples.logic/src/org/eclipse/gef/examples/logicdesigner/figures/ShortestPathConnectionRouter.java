@@ -72,10 +72,12 @@ private Set staleConnections = new HashSet();
 private FigureListener figureListener = new FigureListener() {
 	public void figureMoved(IFigure source) {
 		Rectangle newBounds = source.getBounds().getCopy();
-		algorithm.updateObstacle((Rectangle)figuresToBounds.get(source), newBounds);
+		if (algorithm.updateObstacle((Rectangle)figuresToBounds.get(source), newBounds)) {
+			queueSomeRouting();
+			isDirty = true;
+		}
+			
 		figuresToBounds.put(source, newBounds);
-		queueSomeRouting();
-		isDirty = true;
 	}
 };
 private boolean ignoreInvalidate;
@@ -120,11 +122,13 @@ void removeChild(IFigure child) {
 	if (connectionToPaths == null)
 		return;
 	Rectangle bounds = child.getBounds().getCopy();
-	algorithm.removeObstacle(bounds);
+	boolean change = algorithm.removeObstacle(bounds);
 	figuresToBounds.remove(child);
 	child.removeFigureListener(figureListener);
-	isDirty = true;
-	queueSomeRouting();
+	if (change) {
+		isDirty = true;
+		queueSomeRouting();
+	}
 }
 
 private void hookAll() {
