@@ -173,12 +173,6 @@ public Command getCommand(Request request) {
 	if (REQ_DELETE_DEPENDANT.equals(request.getType()))
 		return getDeleteDependantCommand(request);
 
-//	if (REQ_DELETE.equals(request.getType()))
-//		return getDeleteCommand((DeleteRequest)request);
-
-//	if (REQ_ANCESTOR_DELETED.equals(request.getType()))
-//		return getAncestorDeletedCommand(request);
-
 	if (REQ_ADD.equals(request.getType()))
 		return getAddCommand(request);
 
