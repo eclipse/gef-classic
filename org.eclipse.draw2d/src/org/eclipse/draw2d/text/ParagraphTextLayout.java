@@ -92,32 +92,6 @@ private String[] getSegments(String text, int levelInfo[]) {
 	return result;
 }
 
-class SegmentLookahead implements FlowUtilities.LookAhead {
-	private String segs[];
-	private int seg;
-	SegmentLookahead(String segs[]) {
-		this.segs = segs;
-	}
-	public void setIndex(int value) {
-		this.seg = value;
-	}
-	public int getWidth() {
-		int[] width = new int[1];
-		int startingIndex = seg + 1;
-		TextFlow textFlow = (TextFlow)getFlowFigure();
-		if (startingIndex == segs.length)
-			getContext().getWordWidthFollowing(textFlow, width);
-		else {
-			String rest = segs[startingIndex];
-			for (int k = startingIndex + 1; k < segs.length; k++)
-				rest += segs[k];
-			if (!textFlow.addLeadingWordWidth(rest, width))
-				getContext().getWordWidthFollowing(textFlow, width);
-		}
-		return width[0];
-	}
-}
-
 /** * @see org.eclipse.draw2d.text.FlowFigureLayout#layout() */
 protected void layout() {
 	TextFlow textFlow = (TextFlow)getFlowFigure();
@@ -161,6 +135,36 @@ protected void layout() {
 	//Remove the remaining unused fragments.
 	while (fragIndex < fragments.size())
 		fragments.remove(fragments.size() - 1);
+}
+
+class SegmentLookahead implements FlowUtilities.LookAhead {
+	private int seg;
+	private String segs[];
+	private int[] width;
+	SegmentLookahead(String segs[]) {
+		this.segs = segs;
+	}
+	public int getWidth() {
+		if (width == null) {
+			width = new int[1];
+			int startingIndex = seg + 1;
+			TextFlow textFlow = (TextFlow)getFlowFigure();
+			if (startingIndex == segs.length)
+				getContext().getWordWidthFollowing(textFlow, width);
+			else {
+				String rest = segs[startingIndex];
+				for (int k = startingIndex + 1; k < segs.length; k++)
+					rest += segs[k];
+				if (!textFlow.addLeadingWordWidth(rest, width))
+					getContext().getWordWidthFollowing(textFlow, width);
+			}
+		}
+		return width[0];
+	}
+	public void setIndex(int value) {
+		this.seg = value;
+		width = null;
+	}
 }
 
 }
