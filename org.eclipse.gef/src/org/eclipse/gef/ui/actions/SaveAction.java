@@ -6,18 +6,15 @@ package org.eclipse.gef.ui.actions;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IPropertyListener;
-import org.eclipse.ui.IWorkbenchActionConstants;
-
 import org.eclipse.gef.internal.GEFMessages;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IWorkbenchActionConstants;
 
 /**
  * An action to save the editor's current state.
  */
 public class SaveAction
 	extends EditorPartAction
-	implements IPropertyListener
 {
 
 /**
@@ -36,14 +33,6 @@ protected boolean calculateEnabled() {
 }
 
 /**
- * Adds this action to the editor's list of 
- * {@link IPropertyListener}s.
- */
-protected void hookEditorPart(){
-	getEditorPart().addPropertyListener(this);
-}
-
-/**
  * Initializes this action's text.
  */
 protected void init(){
@@ -54,30 +43,10 @@ protected void init(){
 }
 
 /**
- * Updates this action when the editor's state
- * becomes dirty.
- *
- * @param o The object whose property has changed.
- * @param i The property that has changed.
- */
-public void propertyChanged(Object o, int i) {
-	if (i == IEditorPart.PROP_DIRTY)
-		refresh();
-}
-
-/**
  * Saves the state of the associated editor.
  */
 public void run() {
 	getEditorPart().getSite().getPage().saveEditor(getEditorPart(), false);
-}
-
-/**
- * Removes this action from the editor's list of 
- * {@link IPropertyListener}s.
- */
-public void unhookEditorPart() {
-	getEditorPart().removePropertyListener(this);
 }
 
 }

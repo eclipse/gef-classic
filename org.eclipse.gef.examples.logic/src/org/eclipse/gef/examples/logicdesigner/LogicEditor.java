@@ -10,10 +10,12 @@ import java.io.*;
 import java.util.EventObject;
 
 import org.eclipse.core.resources.*;
-import org.eclipse.core.runtime.*;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.draw2d.PositionConstants;
+import org.eclipse.draw2d.ZoomManager;
 import org.eclipse.gef.*;
-import org.eclipse.gef.commands.CommandStackListener;
 import org.eclipse.gef.dnd.TemplateTransferDragSourceListener;
 import org.eclipse.gef.examples.logicdesigner.edit.GraphicalPartFactory;
 import org.eclipse.gef.examples.logicdesigner.edit.TreePartFactory;
@@ -21,6 +23,7 @@ import org.eclipse.gef.examples.logicdesigner.model.LogicDiagram;
 import org.eclipse.gef.internal.GEFMessages;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.ui.actions.*;
+import org.eclipse.gef.ui.palette.PaletteContextMenuProvider;
 import org.eclipse.gef.ui.palette.PaletteViewerImpl;
 import org.eclipse.gef.ui.parts.*;
 import org.eclipse.gef.ui.stackview.CommandStackInspectorPage;
@@ -28,7 +31,9 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.TextTransfer;
-import org.eclipse.swt.widgets.*;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.*;
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
 import org.eclipse.ui.dialogs.SaveAsDialog;
@@ -37,7 +42,6 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 public class LogicEditor 
 	extends GraphicalEditorWithPalette 
-	implements CommandStackListener
 {
 
 class OutlinePage
@@ -50,7 +54,8 @@ class OutlinePage
 	protected void configureOutlineViewer(){
 		getViewer().setEditDomain(getEditDomain());
 		getViewer().setEditPartFactory(new TreePartFactory());
-		getViewer().setContextMenuProvider(getContextMenuProvider());
+		getViewer().setContextMenuProvider(
+				new LogicContextMenuProvider(LogicEditor.this, getViewer()));
 		getViewer().setKeyHandler(getCommonKeyHandler());
 		getViewer().addDropTargetListener(
 			new LogicTemplateTransferDropTargetListener(getViewer()));
@@ -81,9 +86,9 @@ class OutlinePage
 	}
 }
 
-private ContextMenuProvider contextMenuProvider;
 private KeyHandler sharedKeyHandler;
 private PaletteRoot root;
+private ZoomManager zoomManager = new ZoomManager();
 
 // This class listens to changes to the file system in the workspace, and 
 // makes changes accordingly.
@@ -172,7 +177,7 @@ protected void closeEditor(final boolean save) {
 //	});
 }
 
-public void commandStackChanged(EventObject e) {
+public void commandStackChanged(EventObject event) {
 	if (isDirty()){
 		if (!savePreviouslyNeeded()) {
 			setSavePreviouslyNeeded(true);
@@ -183,6 +188,7 @@ public void commandStackChanged(EventObject e) {
 		setSavePreviouslyNeeded(false);
 		firePropertyChange(IEditorPart.PROP_DIRTY);
 	}
+	super.commandStackChanged(event);
 }
 
 /**
@@ -190,17 +196,18 @@ public void commandStackChanged(EventObject e) {
  */
 protected void configurePaletteViewer() {
 	super.configurePaletteViewer();
-	((PaletteViewerImpl)getPaletteViewer()).setCustomizer( 
-				new LogicPaletteCustomizer() );
+	PaletteViewerImpl viewer = (PaletteViewerImpl)getPaletteViewer();
+	getPaletteViewer().setContextMenuProvider(new PaletteContextMenuProvider(viewer));
+	viewer.setCustomizer(new LogicPaletteCustomizer());
 }
+
 
 protected void configureGraphicalViewer() {
 	super.configureGraphicalViewer();
 	ScrollingGraphicalViewer viewer = (ScrollingGraphicalViewer)getGraphicalViewer();
-	viewer.setRootEditPart(new ScalableFreeformRootEditPart());
+	viewer.setRootEditPart(new ScalableFreeformRootEditPart(getZoomManager()));
 	viewer.setEditPartFactory(new GraphicalPartFactory());
-//	((FigureCanvas)viewer.getControl()).setScrollBarVisibility(FigureCanvas.ALWAYS);
-	viewer.setContextMenuProvider(getContextMenuProvider());
+	viewer.setContextMenuProvider(new LogicContextMenuProvider(this, viewer));
 	viewer.setKeyHandler(new GraphicalViewerKeyHandler(viewer)
 		.setParent(getCommonKeyHandler()));
 }
@@ -242,6 +249,8 @@ public Object getAdapter(Class type){
 		return new CommandStackInspectorPage(getCommandStack());
 	if (type == IContentOutlinePage.class)
 		return new OutlinePage(new TreeViewer());
+	if (type == ZoomManager.class)
+		return getZoomManager();
 	return super.getAdapter(type);
 }
 
@@ -254,18 +263,12 @@ protected KeyHandler getCommonKeyHandler(){
 		sharedKeyHandler = new KeyHandler();
 		sharedKeyHandler.put(
 			KeyStroke.getPressed(SWT.DEL, 127, 0),
-			getActionRegistry().getAction(DeleteAction.ID));
+			getAction(DeleteAction.ID));
 		sharedKeyHandler.put(
 			KeyStroke.getPressed(SWT.F2, 0),
-			getActionRegistry().getAction(DirectEditAction.ID));
+			getAction(DirectEditAction.ID));
 	}
 	return sharedKeyHandler;
-}
-
-protected ContextMenuProvider getContextMenuProvider(){
-	if (contextMenuProvider == null)
-		contextMenuProvider = new LogicContextMenuProvider(this);
-	return contextMenuProvider;
 }
 
 protected LogicDiagram getLogicDiagram() {
@@ -277,6 +280,10 @@ protected PaletteRoot getPaletteRoot() {
 		root = LogicPlugin.createPalette();
 	}
 	return root;
+}
+
+protected ZoomManager getZoomManager() {
+	return zoomManager;
 }
 
 public void gotoMarker(IMarker marker) {}
@@ -295,25 +302,38 @@ protected void initializePaletteViewer() {
 		new TemplateTransferDragSourceListener(getPaletteViewer()));
 }
 
-public void init(IEditorSite site, IEditorInput input) throws PartInitException {
-	setSite(site);
-	setInput(input);
-	getCommandStack().addCommandStackListener(this);
-}
+protected void createActions() {
+	super.createActions();
+	
+	setAction(ZoomAction.ZOOM_IN, new ZoomAction(this, true));
+	setAction(ZoomAction.ZOOM_OUT, new ZoomAction(this, false));
 
-protected void initializeActionRegistry() {
-	super.initializeActionRegistry();
-	ActionRegistry registry = getActionRegistry();
-	registry.registerAction(new IncrementDecrementAction(this, true));
-	registry.registerAction(new IncrementDecrementAction(this, false));
-	registry.registerAction(new DirectEditAction(this));
-	registry.registerAction(new AlignmentAction(this, PositionConstants.LEFT));
-	registry.registerAction(new AlignmentAction(this, PositionConstants.RIGHT));
-	registry.registerAction(new AlignmentAction(this, PositionConstants.TOP));
-	registry.registerAction(new AlignmentAction(this, PositionConstants.BOTTOM));
-	registry.registerAction(new AlignmentAction(this, PositionConstants.CENTER));
-	registry.registerAction(new AlignmentAction(this, PositionConstants.MIDDLE));
-	registry.registerAction(new PrintAction(this));
+	setAction(IncrementDecrementAction.INCREMENT, 
+				new IncrementDecrementAction(this, true));
+	markAsSelectionDependentAction(IncrementDecrementAction.INCREMENT, true);
+	setAction(IncrementDecrementAction.DECREMENT, 
+				new IncrementDecrementAction(this, false));
+	markAsSelectionDependentAction(IncrementDecrementAction.DECREMENT, true);
+	setAction(DirectEditAction.ID, new DirectEditAction(this));
+	markAsSelectionDependentAction(DirectEditAction.ID, true);
+	setAction(AlignmentAction.ID_ALIGN_LEFT, 
+				new AlignmentAction(this, PositionConstants.LEFT));
+	markAsSelectionDependentAction(AlignmentAction.ID_ALIGN_LEFT, true);
+	setAction(AlignmentAction.ID_ALIGN_RIGHT, 
+				new AlignmentAction(this, PositionConstants.RIGHT));
+	markAsSelectionDependentAction(AlignmentAction.ID_ALIGN_RIGHT, true);
+	setAction(AlignmentAction.ID_ALIGN_TOP, 
+				new AlignmentAction(this, PositionConstants.TOP));
+	markAsSelectionDependentAction(AlignmentAction.ID_ALIGN_TOP, true);
+	setAction(AlignmentAction.ID_ALIGN_BOTTOM, 
+				new AlignmentAction(this, PositionConstants.BOTTOM));
+	markAsSelectionDependentAction(AlignmentAction.ID_ALIGN_BOTTOM, true);
+	setAction(AlignmentAction.ID_ALIGN_CENTER, 
+				new AlignmentAction(this, PositionConstants.CENTER));
+	markAsSelectionDependentAction(AlignmentAction.ID_ALIGN_CENTER, true);
+	setAction(AlignmentAction.ID_ALIGN_MIDDLE, 
+				new AlignmentAction(this, PositionConstants.MIDDLE));
+	markAsSelectionDependentAction(AlignmentAction.ID_ALIGN_MIDDLE, true);
 }
 
 public boolean isDirty() {

@@ -9,16 +9,16 @@ package org.eclipse.gef.ui.actions;
 import java.util.Collections;
 import java.util.List;
 
-import org.eclipse.jface.viewers.*;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IWorkbenchPart;
 
 /**
  * Superclass for an action needing the current selection.
  */
 public abstract class SelectionAction
 	extends EditorPartAction
-	implements org.eclipse.ui.ISelectionListener
 {
 
 /*
@@ -36,7 +36,7 @@ public SelectionAction(IEditorPart editor) {
 	super(editor);
 }
 
-public void dispose(){
+public void dispose() {
 	this.selection = StructuredSelection.EMPTY;
 	super.dispose();
 }
@@ -62,29 +62,8 @@ protected List getSelectedObjects() {
 	return ((IStructuredSelection)getSelection()).toList();
 }
 
-protected void handleSelectionChanged(){
+protected void handleSelectionChanged() {
 	refresh();
-}
-
-/**
- * Add this action as a {@link org.eclipse.ui.ISelectionListener} to
- * the selection service.
- */
-protected void hookEditorPart() {
-	getEditorPart().getSite().getWorkbenchWindow().getSelectionService()
-		.addSelectionListener(this);
-}
-
-/**
- * Updates the enable state depending on the current selection.
- * The default is to enable of one item is selected.  Override
- * this in subclass if needed.
- * 
- * @param part The workbench.
- * @param selection The new selection.
- */
-public void selectionChanged(IWorkbenchPart part, ISelection selection) {
-	setSelection(selection);
 }
 
 /**
@@ -99,11 +78,10 @@ protected void setSelection(ISelection selection) {
 }
 
 /**
- * Removes this selection listener from the selection service.
+ * @see org.eclipse.gef.ui.actions.EditorPartAction#update()
  */
-protected void unhookEditorPart() {
-	getEditorPart().getSite().getWorkbenchWindow().getSelectionService()
-		.removeSelectionListener(this);
+public void update() {
+	setSelection(getEditorPart().getSite().getSelectionProvider().getSelection());
 }
 
 }

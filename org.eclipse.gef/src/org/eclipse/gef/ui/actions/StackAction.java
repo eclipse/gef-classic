@@ -6,7 +6,7 @@ package org.eclipse.gef.ui.actions;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import org.eclipse.gef.commands.*;
+import org.eclipse.gef.commands.Command;
 import org.eclipse.ui.IEditorPart;
 
 /**
@@ -14,7 +14,6 @@ import org.eclipse.ui.IEditorPart;
  */
 public abstract class StackAction
 	extends EditorPartAction
-	implements CommandStackListener
 {
 
 /**
@@ -38,25 +37,6 @@ protected String getLabelForCommand(Command command){
 		return "";                  //$NON-NLS-1$
 	else
 		return command.getLabel();
-}
-
-/**
- * Adds this action as a {@link CommandStackListener} to
- * the {@link CommandStack}.
- */
-protected void hookEditorPart() {
-	if (getCommandStack() != null){
-		getCommandStack().addCommandStackListener(this);
-		refresh();
-	}
-}
-
-/**
- * Removes this {@link CommandStackListener} from the 
- * {@link CommandStack}.
- */
-public void unhookEditorPart() {
-	getCommandStack().removeCommandStackListener(this);
 }
 
 }

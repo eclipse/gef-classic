@@ -8,11 +8,11 @@ package org.eclipse.gef.ui.actions;
 
 import java.text.MessageFormat;
 
-import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.internal.*;
-
-import org.eclipse.gef.commands.*;
+import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.internal.GEFMessages;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.internal.IWorkbenchGraphicConstants;
+import org.eclipse.ui.internal.WorkbenchImages;
 
 /**
  * An action to redo the last command.
@@ -29,15 +29,6 @@ public class RedoAction
  */
 public RedoAction(IEditorPart editor) {
 	super(editor);
-}
-
-/**
- * Updates the labels and enabled state when the command stack is altered.
- *
- * @param e The <code>EventObject</code>.
- */
-public void commandStackChanged(java.util.EventObject e) {
-	refresh();
 }
 
 /**
