@@ -12,7 +12,6 @@ package org.eclipse.gef.palette;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 
-import org.eclipse.gef.Tool;
 import org.eclipse.gef.requests.CreationFactory;
 import org.eclipse.gef.tools.CreationTool;
 
@@ -25,6 +24,9 @@ public class CreationToolEntry extends ToolEntry {
 
 /**
  * The creation factory used with the returned creation tool.
+ * @deprecated  in 3.1.  This field will be removed in future releases.  The factory is 
+ * being provided to the tool via the {@link ToolEntry#setToolProperty(Object, Object)} 
+ * method.
  */
 protected final CreationFactory factory;
 
@@ -36,22 +38,11 @@ protected final CreationFactory factory;
  * @param iconSmall the small icon
  * @param iconLarge the large icon
  */
-public CreationToolEntry(
-	String label,
-	String shortDesc,
-	CreationFactory factory,
-	ImageDescriptor iconSmall,
-	ImageDescriptor iconLarge) {
-
-	super(label, shortDesc, iconSmall, iconLarge);
+public CreationToolEntry(String label, String shortDesc, CreationFactory factory,
+		ImageDescriptor iconSmall, ImageDescriptor iconLarge) {
+	super(label, shortDesc, iconSmall, iconLarge, CreationTool.class);
 	this.factory = factory;
-}
-
-/**
- * @see org.eclipse.gef.palette.ToolEntry#createTool()
- */
-public Tool createTool() {
-	return new CreationTool(factory);
+	setToolProperty(CreationTool.PROPERTY_CREATION_FACTORY, factory);
 }
 
 }

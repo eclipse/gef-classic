@@ -12,7 +12,6 @@ package org.eclipse.gef.palette;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 
-import org.eclipse.gef.Tool;
 import org.eclipse.gef.requests.CreationFactory;
 import org.eclipse.gef.tools.ConnectionCreationTool;
 
@@ -31,21 +30,11 @@ public class ConnectionCreationToolEntry extends CreationToolEntry {
  * @param iconSmall the small icon
  * @param iconLarge the large icon
  */
-public ConnectionCreationToolEntry(
-	String label,
-	String shortDesc,
-	CreationFactory factory,
-	ImageDescriptor iconSmall,
-	ImageDescriptor iconLarge) {
+public ConnectionCreationToolEntry(String label, String shortDesc, CreationFactory factory,
+		ImageDescriptor iconSmall, ImageDescriptor iconLarge) {
 	super(label, shortDesc, factory, iconSmall, iconLarge);
+	setToolClass(ConnectionCreationTool.class);
 	setUserModificationPermission(PERMISSION_NO_MODIFICATION);
-}
-
-/**
- * @see org.eclipse.gef.palette.CreationToolEntry#createTool()
- */
-public Tool createTool() {
-	return new ConnectionCreationTool(factory);
 }
 
 }

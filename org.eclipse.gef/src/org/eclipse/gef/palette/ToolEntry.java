@@ -10,7 +10,11 @@
  *******************************************************************************/
 package org.eclipse.gef.palette;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.util.Assert;
 
 import org.eclipse.gef.Tool;
 
@@ -24,6 +28,9 @@ public abstract class ToolEntry
 /** Type Identifier **/
 public static final Object PALETTE_TYPE_TOOL = "$Palette Tool";//$NON-NLS-1$
 
+private Map map;
+private Class toolClass;
+
 /** 
  * Creates a new ToolEntry.  Any parameter can be <code>null</code>.
  * @param label the entry's name
@@ -31,18 +38,80 @@ public static final Object PALETTE_TYPE_TOOL = "$Palette Tool";//$NON-NLS-1$
  * @param iconSmall the entry's small icon
  * @param iconLarge the entry's large icon
  */
-public ToolEntry(
-	String label,
-	String shortDesc,
-	ImageDescriptor iconSmall,
-	ImageDescriptor iconLarge) {
-	super(label, shortDesc, iconSmall, iconLarge, PALETTE_TYPE_TOOL);
+public ToolEntry(String label, String shortDesc, ImageDescriptor iconSmall, 
+		ImageDescriptor iconLarge) {
+	this(label, shortDesc, iconSmall, iconLarge, null);
 }
 
 /**
- * Handles the creation of a new Tool. Subclasses must implement.
- * @return the new Tool
+ * Constructor to create a new ToolEntry.  Any parameter can be <code>null</code>.
+ * @param label the entry's name
+ * @param description the entry's description
+ * @param iconSmall the entry's small icon
+ * @param iconLarge the entry's large icon
+ * @param tool the type of tool that this entry uses
+ * @since 3.1
  */
-public abstract Tool createTool();
+public ToolEntry (String label, String description, ImageDescriptor iconSmall, 
+		ImageDescriptor iconLarge, Class tool) {
+	super(label, description, iconSmall, iconLarge, PALETTE_TYPE_TOOL);
+	setToolClass(tool);
+}
+
+/**
+ * Creates the tool of the type specified by {@link #setToolClass(Class)} for this 
+ * ToolEntry.  The tool is also configured with the properties set in 
+ * {@link #setToolProperty(Object, Object)}.  Sub-classes overriding this method should
+ * ensure that their tools are also configured with those properties.
+ * @return the tool for this entry
+ */
+public Tool createTool() {
+	if (toolClass != null) {
+		Tool tool = null;
+		try {
+			tool = (Tool)toolClass.newInstance();
+		} catch (IllegalAccessException iae) {
+		} catch (InstantiationException ie) {}
+		if (tool != null)
+			tool.setProperties(getToolProperties());
+		return tool;
+	}
+	return null;
+}
+
+/**
+ * @return the properties set in {@link #setToolProperty(Object, Object)}
+ * @since 3.1
+ */
+protected Map getToolProperties() {
+	return map;
+}
+
+/**
+ * Sets the type of tool to be created.  This provides clients with a method of specifying
+ * a different type of tool to be created without having to sub-class.  The provided class
+ * should have a default constructor for this to work successfully.
+ * @param toolClass the type of tool to be created by this entry
+ * @since 3.1
+ */
+public void setToolClass(Class toolClass) {
+	if (toolClass != null)
+		Assert.isTrue(toolClass.isInstance(Tool.class));
+	this.toolClass = toolClass;
+}
+
+/**
+ * Clients can use this method to configure the associated tool without having to 
+ * sub-class.
+ * @param key the property name
+ * @param value a value of type associated with the given property
+ * @since 3.1
+ * @see Tool#setProperties(Map)
+ */
+public void setToolProperty(Object key, Object value) {
+	if (map == null)
+		map = new HashMap();
+	map.put(key, value);
+}
 
 }

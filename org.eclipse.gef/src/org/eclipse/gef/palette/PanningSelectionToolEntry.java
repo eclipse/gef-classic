@@ -10,9 +10,6 @@
  *******************************************************************************/
 package org.eclipse.gef.palette;
 
-import org.eclipse.gef.SharedImages;
-import org.eclipse.gef.Tool;
-import org.eclipse.gef.internal.GEFMessages;
 import org.eclipse.gef.tools.PanningSelectionTool;
 
 /**
@@ -20,13 +17,13 @@ import org.eclipse.gef.tools.PanningSelectionTool;
  * @author msorens
  * @since 3.0
  */
-public class PanningSelectionToolEntry extends ToolEntry {
+public class PanningSelectionToolEntry extends SelectionToolEntry {
 
 /**
  * Creates a new PanningSelectionToolEntry.
  */
 public PanningSelectionToolEntry() {
-	this(GEFMessages.SelectionTool_Label);
+	this(null);
 }
 
 /**
@@ -43,19 +40,8 @@ public PanningSelectionToolEntry(String label) {
  * @param shortDesc the description
  */
 public PanningSelectionToolEntry(String label, String shortDesc) {
-	super(
-		label,
-		shortDesc,
-		SharedImages.DESC_SELECTION_TOOL_16,
-		SharedImages.DESC_SELECTION_TOOL_24);
-	setUserModificationPermission(PERMISSION_NO_MODIFICATION);
-}
-
-/**
- * @see org.eclipse.gef.palette.ToolEntry#createTool()
- */
-public Tool createTool() {
-	return new PanningSelectionTool();
+	super(label, shortDesc);
+	setToolClass(PanningSelectionTool.class);
 }
 
 }

@@ -11,7 +11,6 @@
 package org.eclipse.gef.palette;
 
 import org.eclipse.gef.SharedImages;
-import org.eclipse.gef.Tool;
 import org.eclipse.gef.internal.GEFMessages;
 import org.eclipse.gef.tools.SelectionTool;
 
@@ -26,7 +25,7 @@ public class SelectionToolEntry extends ToolEntry {
  * Creates a new SelectionToolEntry.
  */
 public SelectionToolEntry() {
-	this(GEFMessages.SelectionTool_Label);
+	this(null);
 }
 
 /**
@@ -43,19 +42,11 @@ public SelectionToolEntry(String label) {
  * @param shortDesc the description
  */
 public SelectionToolEntry(String label, String shortDesc) {
-	super(
-		label,
-		shortDesc,
-		SharedImages.DESC_SELECTION_TOOL_16,
-		SharedImages.DESC_SELECTION_TOOL_24);
+	super(label, shortDesc, SharedImages.DESC_SELECTION_TOOL_16,
+			SharedImages.DESC_SELECTION_TOOL_24, SelectionTool.class);
+	if (label == null || label.length() == 0)
+		setLabel(GEFMessages.SelectionTool_Label);
 	setUserModificationPermission(PERMISSION_NO_MODIFICATION);
-}
-
-/**
- * @see org.eclipse.gef.palette.ToolEntry#createTool()
- */
-public Tool createTool() {
-	return new SelectionTool();
 }
 
 }

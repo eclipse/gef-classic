@@ -10,10 +10,9 @@
  *******************************************************************************/
 package org.eclipse.gef.palette;
 
-import org.eclipse.jface.util.Assert;
+import java.util.Map;
 
 import org.eclipse.gef.SharedImages;
-import org.eclipse.gef.Tool;
 import org.eclipse.gef.internal.GEFMessages;
 import org.eclipse.gef.tools.MarqueeSelectionTool;
 
@@ -27,33 +26,10 @@ public class MarqueeToolEntry
 {
 	
 /**
- * For marquee tools that should select nodes.  This is the default type for this
- * tool.
- * @since 3.1
- */
-public static final int SELECT_NODES = 1;
-/**
- * For marquee tools that should select connections
- * @since 3.1
- */
-public static final int SELECT_CONNECTIONS = 2;
-
-private int selectionType;
-
-/**
  * Creates a new MarqueeToolEntry that can select nodes
  */
 public MarqueeToolEntry() {
-	this(GEFMessages.MarqueeTool_Label, null, SELECT_NODES);
-}
-
-/**
- * Creates a new MarqueeToolEntry of the given type
- * @param type {@link #SELECT_NODES} and/or {@link #SELECT_CONNECTIONS}
- * @since 3.1
- */
-public MarqueeToolEntry(int type) {
-	this(null, null, type);
+	this(null, null);
 }
 
 /**
@@ -61,48 +37,44 @@ public MarqueeToolEntry(int type) {
  * @param label the label
  */
 public MarqueeToolEntry(String label) {
-	this(label, null, SELECT_NODES);
+	this(label, null);
 }
 
 /**
  * Constructor for MarqueeToolEntry.
- * @param label the label
- * @param shortDesc the description (can be <code>null</code>)
+ * @param label the label; can be <code>null</code>
+ * @param description the description (can be <code>null</code>)
  */
-public MarqueeToolEntry(String label, String shortDesc) {
-	this(label, shortDesc, SELECT_NODES);
-}
-
-/**
- * Constructor
- * @param label the label (can be <code>null</code>)
- * @param shortDesc the description (can be <code>null</code>)
- * @param type SELECT_NODES and/or SELECT_CONNECTIONS
- * @since 3.1
- */
-public MarqueeToolEntry(String label, String shortDesc, int type) {
-	super(label, shortDesc, SharedImages.DESC_MARQUEE_TOOL_16, 
-			SharedImages.DESC_MARQUEE_TOOL_24);
-	selectionType = type & 3;
-	Assert.isTrue(selectionType != 0);
+public MarqueeToolEntry(String label, String description) {
+	super(label, description, SharedImages.DESC_MARQUEE_TOOL_16, 
+			SharedImages.DESC_MARQUEE_TOOL_24, MarqueeSelectionTool.class);
 	if (label == null || label.length() == 0)
 		setLabel(GEFMessages.MarqueeTool_Label);
-	if (shortDesc == null || shortDesc.length() == 0) {
-		if (selectionType == SELECT_CONNECTIONS)
-			setDescription(GEFMessages.MarqueeTool_Connections_Desc);
-		else if (selectionType == SELECT_NODES)
-			setDescription(GEFMessages.MarqueeTool_Nodes_Desc);
-		else
-			setDescription(GEFMessages.MarqueeTool_Desc);
-	}
 	setUserModificationPermission(PERMISSION_NO_MODIFICATION);
 }
 
 /**
- * @see org.eclipse.gef.palette.ToolEntry#createTool()
+ * @see org.eclipse.gef.palette.PaletteEntry#getDescription()
  */
-public Tool createTool() {
-	return new MarqueeSelectionTool(selectionType);
+public String getDescription() {
+	String desc = super.getDescription();
+	if (desc == null) {
+		desc = GEFMessages.MarqueeTool_Nodes_Desc;
+		Map properties = getToolProperties();
+		if (properties != null) {
+			Object value = properties.get(MarqueeSelectionTool.PROPERTY_SELECTION_TYPE);
+			if (value instanceof Integer) {
+				int selectionType = ((Integer)value).intValue() 
+						& (MarqueeSelectionTool.SELECT_CONNECTIONS 
+						| MarqueeSelectionTool.SELECT_NODES);
+				if (selectionType == MarqueeSelectionTool.SELECT_CONNECTIONS)
+					desc = GEFMessages.MarqueeTool_Connections_Desc;
+				else if (selectionType != MarqueeSelectionTool.SELECT_NODES)
+					desc = GEFMessages.MarqueeTool_Desc;
+			}
+		}
+	}
+	return desc;
 }
 
 }
