@@ -22,9 +22,8 @@ protected Object undoValue;
 protected boolean resetOnUndo;
 protected IPropertySource target;
 
-public RestoreDefaultPropertyValueCommand(){
-	super("Restore Default Property Value");//$NON-NLS-1$
-}
+public RestoreDefaultPropertyValueCommand() { }
+
 public boolean canExecute() {
 	return true;
 }
