@@ -46,10 +46,16 @@ protected PageRec doCreatePage(IWorkbenchPart part) {
 	return null;
 }
 
+/**
+ * @see PageBookView#doDestroyPage(IWorkbenchPart, PageBookView.PageRec)
+ */
 protected void doDestroyPage(IWorkbenchPart part, PageRec rec) {
 	rec.page.dispose();
 }
 
+/**
+ * @see PageBookView#getBootstrapPart()
+ */
 protected IWorkbenchPart getBootstrapPart() {
 	IWorkbenchPage persp = getSite().getWorkbenchWindow().getActivePage();
 	if (persp != null)
@@ -58,7 +64,8 @@ protected IWorkbenchPart getBootstrapPart() {
 }
 
 protected boolean isImportant(IWorkbenchPart part) {
-	return part instanceof IEditorPart;
+	return part instanceof IEditorPart
+		|| part.getAdapter(PalettePage.class) != null;
 }
 
 }
