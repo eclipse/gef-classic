@@ -17,9 +17,10 @@ import org.eclipse.draw2d.geometry.*;
 /**
  * The root of a Flow hierarchy. A flow page can be treated as a normal figure, but
  * contains FlowFigures.
- * 
- * <P>A FlowPage will not have a defined width unless it is inside a figure whose layout
- * provides width hints when calling {@link org.eclipse.draw2d.IFigure#getPreferredSize(int, int)}.
+ * <P>
+ * A FlowPage will not have a defined width unless it is inside a figure whose layout
+ * provides width hints when calling 
+ * {@link org.eclipse.draw2d.IFigure#getPreferredSize(int, int)}.
  * 
  * <P>WARNING: This class is not intended to be subclassed by clients.
  */
