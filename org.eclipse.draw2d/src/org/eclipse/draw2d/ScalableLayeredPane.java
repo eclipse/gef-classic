@@ -56,6 +56,10 @@ public double getScale() {
 	return scale;
 }
 
+public Rectangle getUnzoomedPreferredBounds() {
+	return new Rectangle(getLocation(), super.getPreferredSize());
+}
+
 /**
  * @see org.eclipse.draw2d.Figure#paintClientArea(Graphics)
  */

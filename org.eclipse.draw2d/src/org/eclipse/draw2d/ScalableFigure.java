@@ -1,5 +1,7 @@
 package org.eclipse.draw2d;
 
+import org.eclipse.draw2d.geometry.Rectangle;
+
 /**
  * A figure that can be scaled.
  * @author Eric Bordeau
@@ -18,5 +20,10 @@ double getScale();
  * @param scale the scale
  */
 void setScale(double scale);
+
+/**
+ * @return	the preferred bounds without taking the zoom factor into account
+ */
+Rectangle getUnzoomedPreferredBounds();
 
 }

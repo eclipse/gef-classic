@@ -121,22 +121,6 @@ public class RulerViewport extends Viewport {
 		}
 		return prefSize.expand(getInsets().getWidth(), getInsets().getHeight());
 	}
-	protected void layout() {
-		/*
-		 * Actual layout is done in the propertyChange() method when the range model
-		 * changes.  But we also need to layout when say the contents change or something.
-		 * So, to cause a layout, we fake a change in the value of the range model.
-		 */
-		RangeModel rModel;
-		if (horizontal) {
-			rModel = getHorizontalRangeModel();
-		} else {
-			rModel = getVerticalRangeModel();
-		}
-		PropertyChangeEvent event = new PropertyChangeEvent(rModel, 
-				RangeModel.PROPERTY_VALUE, null, new Integer(rModel.getValue()));
-		propertyChange(event);
-	}
 	protected void readjustScrollBars() {
 		// since the range model is shared with the editor, the ruler viewports should
 		// not touch it
@@ -149,7 +133,6 @@ public class RulerViewport extends Viewport {
 					|| property.equals(RangeModel.PROPERTY_MINIMUM)
 					|| property.equals(RangeModel.PROPERTY_VALUE)) {
 				RangeModel rModel = (RangeModel)event.getSource();
-				Rectangle clientArea = getClientArea();
 				Rectangle contentBounds = Rectangle.SINGLETON;
 				if (horizontal) {
 					contentBounds.y = 0;
@@ -162,7 +145,6 @@ public class RulerViewport extends Viewport {
 					contentBounds.height = rModel.getMaximum() - rModel.getMinimum();
 					contentBounds.width = this.getContents().getPreferredSize().width;
 				}
-				contentBounds.translate(clientArea.x, clientArea.y);
 				if (!this.getContents().getBounds().equals(contentBounds)) {
 					this.getContents().setBounds(contentBounds);
 					this.getContents().revalidate();
@@ -170,6 +152,20 @@ public class RulerViewport extends Viewport {
 			}
 			getUpdateManager().performUpdate();
 		}
+	}
+	public void setContents(IFigure figure) {
+		super.setContents(figure);
+		// Need to layout when contents change.  But the layout is done in the
+		// propertyChange() method.  So, we fake a propertyChange.
+		RangeModel rModel;
+		if (horizontal) {
+			rModel = getHorizontalRangeModel();
+		} else {
+			rModel = getVerticalRangeModel();
+		}
+		PropertyChangeEvent event = new PropertyChangeEvent(rModel, 
+				RangeModel.PROPERTY_MINIMUM, null, new Integer(rModel.getValue()));
+		propertyChange(event);
 	}
 	protected boolean useLocalCoordinates() {
 		return true;

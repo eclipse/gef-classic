@@ -36,6 +36,12 @@ import org.eclipse.gef.SharedMessages;
  * controls a <code>ScalableFigure</code>, which performs the actual zoom, and also a
  * <code>Viewport</code>.  The viewport is needed so that the scrolled location is
  * preserved as the zoom level changes.
+ * <p>
+ * <b>NOTE:</b> For the settings of {@link #FIT_ALL Page}, {@link #FIT_WIDTH Width} and 
+ * {@link #FIT_HEIGHT Height} to work properly, the given <code>Viewport</code> should 
+ * have its scrollbars always visible or never visible.  Otherwise, these settings may 
+ * cause undesired effects.
+ * 
  * @author Dan Lee
  * @author Eric Bordeau
  */
@@ -123,27 +129,23 @@ protected void fireZoomChanged() {
 }
 
 protected double getFitHeightZoomLevel() {
-	Dimension viewportSize = getViewport().getSize();
-	Rectangle figureBounds = getScalableFigure().getBounds();
-	return Math.min(
-		(double)viewportSize.height / (double)figureBounds.height * zoom,
-		getUIMultiplier());
+	Insets insets = getScalableFigure().getInsets();
+	double viewportHeight = getViewport().getSize().height - insets.getHeight();
+	Rectangle figureBounds = getScalableFigure().getUnzoomedPreferredBounds()
+			.getCropped(insets).union(0, 0);
+	return Math.min(viewportHeight / figureBounds.height * zoom * multiplier, multiplier);
 }
 
 protected double getFitPageZoomLevel() {
-	Dimension viewportSize = getViewport().getSize();
-	Rectangle figureBounds = getScalableFigure().getBounds();
-	double widthScale = (double)viewportSize.width / (double)figureBounds.width * zoom;
-	double heightScale = (double)viewportSize.height / (double)figureBounds.height * zoom;
-	return Math.min(Math.min(widthScale, heightScale), getUIMultiplier());
+	return Math.min(getFitWidthZoomLevel(), getFitHeightZoomLevel());
 }
 
 protected double getFitWidthZoomLevel() {
-	Dimension viewportSize = getViewport().getSize();
-	Rectangle figureBounds = getScalableFigure().getBounds();
-	return Math.min(
-		(double)viewportSize.width / (double)figureBounds.width * zoom,
-		getUIMultiplier());
+	Insets insets = getScalableFigure().getInsets();
+	double viewportWidth = getViewport().getSize().width - insets.getWidth();
+	Rectangle figureBounds = getScalableFigure().getUnzoomedPreferredBounds()
+			.getCropped(insets).union(0, 0);
+	return Math.min(viewportWidth / figureBounds.width * zoom * multiplier, multiplier);
 }
 
 /**
@@ -356,31 +358,20 @@ public void setZoomAnimationStyle(int style) {
  * appropriate zoom implementation for the new zoom levels.
  * @param zoomString The new zoom level */
 public void setZoomAsText(String zoomString) {
-	/* If the viewport's contents' bounds are smaller than the viewport's bounds, the
-	 * contents figure will stretch to fit the viewport, which throws the new zoom
-	 * calculations off.  To correct this, I'm setting the zoom to 1.0. 
-	 */
 	if (zoomString.equals(FIT_HEIGHT)) {
-		primSetZoom(1.0 / multiplier);
 		primSetZoom(getFitHeightZoomLevel() / multiplier);
-		getViewport().getUpdateManager().performUpdate();
-		primSetZoom(1.0 / multiplier);
-		primSetZoom(getFitHeightZoomLevel() / multiplier);
-		fireZoomChanged();
+		viewport.getVerticalRangeModel().setValue(
+				viewport.getVerticalRangeModel().getMinimum());
 	} else if (zoomString.equals(FIT_ALL)) {
-		primSetZoom(1.0 / multiplier);
 		primSetZoom(getFitPageZoomLevel() / multiplier);
-		getViewport().getUpdateManager().performUpdate();
-		primSetZoom(1.0 / multiplier);
-		primSetZoom(getFitPageZoomLevel() / multiplier);
-		fireZoomChanged();
+		viewport.getHorizontalRangeModel().setValue(
+				viewport.getHorizontalRangeModel().getMinimum());
+		viewport.getVerticalRangeModel().setValue(
+				viewport.getVerticalRangeModel().getMinimum());
 	} else if (zoomString.equals(FIT_WIDTH)) {
-		primSetZoom(1.0 / multiplier);
 		primSetZoom(getFitWidthZoomLevel() / multiplier);
-		getViewport().getUpdateManager().performUpdate();
-		primSetZoom(1.0 / multiplier);
-		primSetZoom(getFitWidthZoomLevel() / multiplier);
-		fireZoomChanged();
+		viewport.getHorizontalRangeModel().setValue(
+				viewport.getHorizontalRangeModel().getMinimum());
 	} else {
 		try {
 			//Trim off the '%'
