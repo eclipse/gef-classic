@@ -2,7 +2,7 @@
 <plugin
    id="org.eclipse.draw2d"
    name="Draw2d"
-   version="2.1.0"
+   version="2.1.1"
    provider-name="Eclipse.org">
 
    <runtime>
