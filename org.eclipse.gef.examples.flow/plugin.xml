@@ -39,5 +39,23 @@
             id="plugindependencies">
       </view>
    </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            name="GEF (Graphical Editing Framework)"
+            parentCategory="org.eclipse.ui.Examples"
+            id="org.eclipse.gef.examples">
+      </category>
+      <wizard
+            name="Flow Diagram"
+            icon="view.gif"
+            category="org.eclipse.ui.Examples/org.eclipse.gef.examples"
+            class="org.eclipse.gef.examples.flow.FlowCreationWizard"
+            id="org.eclipse.gef.examples.flow.wizard.new.file">
+         <selection
+               class="org.eclipse.core.resources.IResource">
+         </selection>
+      </wizard>
+   </extension>
 
 </plugin>
