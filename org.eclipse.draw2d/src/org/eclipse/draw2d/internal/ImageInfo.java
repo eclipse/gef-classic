@@ -43,7 +43,8 @@ private static final double STAT_THRESHOLD = 0.46;
 private Image img;
 private boolean checkedIn = true;
 private int timesCheckedOut = 0;
-private Date checkinTime = new Date();
+private double stat3;
+private long checkinTime = System.currentTimeMillis();
 private Dimension iSize;
 private Object source;
 
@@ -66,29 +67,33 @@ public ImageInfo(Dimension d) {
 public ImageInfo(int width, int height) {
 	img = new Image(Display.getDefault(), width, height);
 	iSize = new Dimension(width, height);
+
+	/*
+	 * This statistic is used in the calculateStatistic() method.  Since, it doesn't vary,
+	 * it is calculated here once.
+	 * Area of 1.31 million pixels (1280 x 1024) = 0 pts.
+	 */
+	stat3 = iSize.width * iSize.height * 15.0 / 1310720;
+	stat3 = 15 - stat3;
+	stat3 = stat3 < 0 ? 0 : stat3;
 }
 
 // Things taken into consideration --
 // (1) Number of times the image has been checked out - 45%
 // (2) Time elapsed since last use - 40%
 // (3) Size of the image (and thus the resources it consumes) - 15%
-// NOTE: It will return 1 if the image is currently checkedout
+// NOTE: It will return 1 if the image is currently checked out
 private double calculateStatistic() {
 	// 15 checkouts = 45 pts.
-	double step1 = timesCheckedOut * 3;
-	step1 = step1 > 45 ? 45 : step1;
+	double stat1 = timesCheckedOut * 3;
+	stat1 = stat1 > 45 ? 45 : stat1;
 	
 	// 4 minutes elapsed w/o any checkouts = 0 pts.
-	double step2 = timeSinceLastUse() * 3.0 / 16;
-	step2 = 45 - step2;
-	step2 = step2 < 0 ? 0 : step2;
+	double stat2 = timeSinceLastUse() / 6.0;
+	stat2 = 40 - stat2;
+	stat2 = stat2 < 0 ? 0 : stat2;
 	
-	// Area of 1.31 million pixels (1280 x 1024) = 0 pts.
-	double step3 = iSize.width * iSize.height * 15.0 / 1310720;
-	step3 = 15 - step3;
-	step3 = step3 < 0 ? 0 : step3;
-
-	return (step1 + step2 + step3) / 100;
+	return (stat1 + stat2 + stat3) / 100;
 }
 
 /**
@@ -98,7 +103,7 @@ private double calculateStatistic() {
 public boolean checkin(Image i) {
 	if (i != img)
 		return false;
-	checkinTime = new Date();
+	checkinTime = System.currentTimeMillis();
 	checkedIn = true;
 	source = null;
 	return true;
@@ -109,7 +114,7 @@ public boolean checkin(Image i) {
  * 
  * @param d The desired size * @param holder The object requesting the Image * @return This ImageInfo's Image if it is of adequate size and checked in. */
 public Image checkout(Dimension d, Object holder) {
-	if (!checkedIn || !fits(d, img))
+	if (!checkedIn || !fits(d))
 		return null;
 	timesCheckedOut++;
 	checkedIn = false;
@@ -124,14 +129,14 @@ public void dispose() {
 }	
 
 /**
- * Returns <code>true</code> if the given Image is equal to or bigger than the desired 
- * size <i>d</i>.
- * @param d The desired size * @param i The Image to test * @return <code>true</code> if the given Image is an adequate size */
-public static boolean fits(Dimension d, Image i) {
-	Dimension imageSize = new Dimension(i.getBounds().width, i.getBounds().height);
-	if (imageSize.equals(d))
+ * Returns <code>true</code> if this Image is equal to or bigger than the desired 
+ * size <i>d</i>, but not too big (less than 4 times the size of d).
+ * 
+ * @param d The desired size * @return <code>true</code> if this Image is an adequate size */
+public boolean fits(Dimension d) {
+	if (iSize.equals(d))
 		return true;
-	if (imageSize.contains(d) && imageSize.getArea() < d.getArea() * 4)
+	if (iSize.contains(d) && iSize.getArea() < d.getArea() * 2)
 		return true;
 	return false;
 }
@@ -147,7 +152,7 @@ public int getStatistic() {
 }
 
 /**
- * Returns <code>true</code> if the Image is checked in. * @return <code>true</code> if the Image is checked in */
+ * @return <code>true</code> if the Image is checked in */
 public boolean isCheckedIn() {
 	return checkedIn;
 }
@@ -161,7 +166,7 @@ public boolean merge(ImageInfo info) {
 	if (isCheckedIn() && info.isCheckedIn() && info.iSize.equals(iSize) && info != this) {
 		timesCheckedOut += info.timesCheckedOut;
 		source = info.source;
-		checkinTime = checkinTime.before(info.checkinTime) ? info.checkinTime : checkinTime;
+		checkinTime = checkinTime < info.checkinTime ? info.checkinTime : checkinTime;
 		info.dispose();
 		return true;
 	}
@@ -169,13 +174,13 @@ public boolean merge(ImageInfo info) {
 }
 
 /**
- * Returns the number of milliseconds since this ImageInfo was last used.
- *  * @return long The number of milliseconds since this ImageInfo was last used
+ * Returns the number of seconds since this ImageInfo was last used.
+ *  * @return long The number of seconds since this ImageInfo was last used
  */
 public long timeSinceLastUse() {
 	if (!checkedIn)
 		return 0;
-	return (new Date().getTime() - checkinTime.getTime()) / 1000;
+	return (new Date().getTime() - checkinTime) / 1000;
 }
 
 /** * @see java.lang.Object#toString() */

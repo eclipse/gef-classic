@@ -38,23 +38,11 @@ public static boolean checkin(Image img) {
 		ImageInfo info = (ImageInfo)checkedOut.get(i);
 		if (info.checkin(img)) {
 			checkedOut.remove(info);
-			checkedIn.add(info);
+			checkedIn.add(0, info);
 			return true;
 		}	
 	}
 	return false;
-}
-
-/**
- * If the given {@link Image} is an adequate size (for Dimension <i>d</i>), this same 
- * Image is simply returned.  Otherwise, the given Image is checked in and a new Image is 
- * checked out that is an adequate size.
- *  * @param i The Image to check in * @param d The desired Dimension for the return Image * @param o The object requesting the Image * @return Image An Image that is big enough for the desired Dimension */
-public static Image checkinCheckout(Image i, Dimension d, Object o) {
-	if (i != null && ImageInfo.fits(d, i))
-		return i;
-	checkin(i);
-	return checkout(d, o);
 }
 
 /**
@@ -106,13 +94,12 @@ public static Image checkout(Dimension d, Object o) {
 	if (result != null)
 		return result;
 	
-	// Create a new image that is 15% larger than requested in each dimension 
-	Dimension newD = d.getExpanded((int)(d.width * 0.15), (int)(d.height * 0.15));
-	totalNumberOfImagesCreated++;	
+	// Create a new image
 	try {
-		ImageInfo newInfo = new ImageInfo(newD);
+		ImageInfo newInfo = new ImageInfo(d);
 		checkedOut.add(newInfo);
-		return newInfo.checkout(newD, o);	
+		totalNumberOfImagesCreated++;
+		return newInfo.checkout(d, o);	
 	} catch (IllegalArgumentException e) {
 		return null;
 	}
