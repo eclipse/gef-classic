@@ -111,12 +111,12 @@ protected Dimension calculateMinimumSize(IFigure container, int wHint, int hHint
  */
 protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHint) {
 	int minWHint = 0, minHHint = 0;
-	if (wHint < 0) {
+	if (wHint < 0)
 		minWHint = -1;
-	}
-	if (hHint < 0) {
+	
+	if (hHint < 0)
 		minHHint = -1;
-	}
+	
 	Insets border = container.getInsets();
 	wHint = Math.max(minWHint, wHint - border.getWidth());
 	hHint = Math.max(minHHint, hHint - border.getHeight());
@@ -173,60 +173,52 @@ protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHi
 public void layout(IFigure container) {
 	Rectangle area = container.getClientArea();
 	Rectangle rect = new Rectangle();
-	int wHint = area.width;
-	int hHint = area.height;
-	int centerXLoc = 0, centerYLoc = 0;
+
+	Dimension childSize;
+	
 	if (top != null && top.isVisible()) {
-		Dimension childSize = top.getPreferredSize(wHint, hHint);
+		childSize = top.getPreferredSize(area.width, -1);
 		rect.setLocation(area.x, area.y);
 		rect.setSize(childSize);
 		rect.width = area.width;
 		top.setBounds(rect);
-		centerYLoc = rect.height + vGap;
-		hHint = Math.max(0, hHint - centerYLoc);
+		area.y += rect.height + vGap;
+		area.height -= rect.height + vGap;
 	}
 	if (bottom != null && bottom.isVisible()) {
-		Dimension childSize = bottom.getPreferredSize(wHint, hHint);
+		childSize = bottom.getPreferredSize(Math.max(area.width, 0), -1);
 		rect.setSize(childSize);
 		rect.width = area.width;
 		rect.setLocation(area.x, area.y + area.height - rect.height);
 		bottom.setBounds(rect);
-		hHint = Math.max(0, hHint - (rect.height + vGap));
+		area.height -= rect.height + vGap;
 	}
 	if (left != null && left.isVisible()) {
-		Dimension childSize = left.getPreferredSize(wHint, hHint);
-		rect.setLocation(area.x, area.y + centerYLoc);
+		childSize = left.getPreferredSize(-1, Math.max(0, area.height));
+		rect.setLocation(area.x, area.y);
 		rect.width = childSize.width;
-		rect.height = hHint > 0 ? hHint : childSize.height;
+		rect.height = Math.max(0, area.height);
 		left.setBounds(rect);
-		centerXLoc = rect.width + hGap;
-		wHint = Math.max(0, wHint - centerXLoc);
+		area.x += rect.width + hGap;
+		area.width -= rect.width + hGap;
 	}
 	if (right != null && right.isVisible()) {
-		Dimension childSize = right.getPreferredSize(wHint, hHint);
+		childSize = right.getPreferredSize(-1, Math.max(0, area.height));
 		rect.width = childSize.width;
-		rect.height = hHint > 0 ? hHint : childSize.height;
-		rect.setLocation(area.x + area.width - rect.width, area.y + centerYLoc);
+		rect.height = Math.max(0, area.height);
+		rect.setLocation(area.x + area.width - rect.width, area.y);
 		right.setBounds(rect);
-		wHint = Math.max(0, wHint - (rect.width + hGap));
+		area.width -= rect.width + hGap;
 	}
 	if (center != null && center.isVisible()) {
-		rect.setLocation(area.x + centerXLoc, area.y + centerYLoc);
-		if (wHint > 0 && hHint > 0) {
-			rect.width = wHint;
-			rect.height = hHint;
-		} else {
-			Dimension childSize = center.getPreferredSize(wHint, hHint);
-			rect.setSize(childSize);
-			// All extra space goes to the center figure
-			if (rect.width < wHint) {
-				rect.width = wHint;
-			}
-			if (rect.height < hHint) {
-				rect.height = hHint;
-			}
+		childSize = center.getPreferredSize(
+				Math.max(0, area.width),
+				Math.max(0, area.height));
+		if (childSize.height < area.height) {
+			area.y += (area.height - childSize.height) / 2;
+			area.height = childSize.height;
 		}
-		center.setBounds(rect);
+		center.setBounds(area);
 	}
 }
 
