@@ -96,11 +96,10 @@ private GraphicalViewer createRulerContainer(int orientation) {
 		public boolean keyPressed(KeyEvent event) {
 			if (event.keyCode == SWT.DEL) {
 				if (getFocus() instanceof GuideEditPart) {
-					RulerEditPart parent = (RulerEditPart)getFocus().getParent();					
+					RulerEditPart parent = (RulerEditPart)getFocus().getParent();
 					getViewer().getEditDomain().getCommandStack().execute(
 							parent.getRulerProvider().getDeleteGuideCommand(
 							getFocus().getModel()));
-					navigateTo(parent, event);
 					return true;
 				} else {
 					return false;
