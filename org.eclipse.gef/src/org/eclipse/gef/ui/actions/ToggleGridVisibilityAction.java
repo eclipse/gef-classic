@@ -12,6 +12,8 @@ package org.eclipse.gef.ui.actions;
 
 import org.eclipse.jface.action.Action;
 
+import org.eclipse.draw2d.geometry.Dimension;
+
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.SnapToGrid;
 import org.eclipse.gef.internal.GEFMessages;
@@ -39,6 +41,15 @@ public boolean isChecked() {
 	if (val != null)
 		return val.booleanValue();
 	return false;
+}
+
+public boolean isEnabled() {
+	boolean enabled = true;
+	Dimension spacing = (Dimension)diagramViewer.getProperty(
+			SnapToGrid.PROPERTY_GRID_SPACING);
+	if (spacing != null)
+		enabled = spacing.width >= 0 || spacing.height >= 0;
+	return enabled;
 }
 
 public void run() {
