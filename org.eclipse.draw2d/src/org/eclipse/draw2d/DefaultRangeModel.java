@@ -185,4 +185,9 @@ public void setValue(int value) {
 	firePropertyChange(PROPERTY_VALUE, oldValue, value);
 }
 
+public String toString() {
+	return super.toString() + " (" + minimum + ", " + maximum //$NON-NLS-2$ //$NON-NLS-1$
+			+ ", " + extent + ", " + value + ")"; //$NON-NLS-3$ //$NON-NLS-2$ //$NON-NLS-1$
+}
+
 }
