@@ -854,6 +854,15 @@ public boolean isRequestFocusEnabled() {
 }
 
 /**
+ * @see org.eclipse.draw2d.IFigure#isShowing()
+ */
+public boolean isShowing() {
+	return isVisible()
+	  && (getParent() == null
+		|| getParent().isShowing());
+}
+
+/**
  * Returns <code>true</code> if this Figure is valid.
  * @return <code>true</code> if this Figure is valid
  * @since 2.0
@@ -877,7 +886,7 @@ protected boolean isValidationRoot() {
  * @see org.eclipse.draw2d.IFigure#isVisible()
  */
 public boolean isVisible() {
-	return (flags & FLAG_VISIBLE) != 0;
+	return getFlag(FLAG_VISIBLE);
 }
 
 /**
