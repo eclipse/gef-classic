@@ -334,11 +334,6 @@ protected void paintFigure(Graphics graphics) {
 		}
 	}
 	// paint the border
-	/*
-	 * @TODO:Pratik    should i be drawing the two button pixels here?  the parent's
-	 * background is of button, and hence those two pixel lines are already of the desired
-	 * color.
-	 */
 	clippedBounds.expand(BORDER_WIDTH, 0);
 	graphics.setForegroundColor(ColorConstants.buttonDarker);
 	graphics.drawLine(transposer.t(clippedBounds.getTopRight().translate(-1, -1)),
