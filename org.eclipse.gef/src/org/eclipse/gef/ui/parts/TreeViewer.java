@@ -20,8 +20,6 @@ import org.eclipse.draw2d.geometry.Point;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.TreeEditPart;
-import org.eclipse.gef.dnd.LocalTransferDragListener;
-import org.eclipse.gef.dnd.LocalTransferDropListener;
 
 public class TreeViewer
 	extends AbstractEditPartViewer
@@ -88,8 +86,8 @@ public TreeViewer() {
 	dispatcher = new EventDispatcher();
 	RootTreeEditPart rep = new RootTreeEditPart();
 	setRootEditPart(rep);
-	addDragSourceListener(new LocalTransferDragListener(this));
-	addDropTargetListener(new LocalTransferDropListener(this));
+	addDragSourceListener(new TreeViewerTransferDragListener(this));
+	addDropTargetListener(new TreeViewerTransferDropListener(this));
 }
 
 /**
@@ -111,7 +109,7 @@ public Control createControl(Composite parent) {
  *
  * @param	pt		The location at which to look for a TreeItem
  * @param	exclude	The collection of EditParts to be excluded.
- */
+ */ 
 public EditPart findObjectAtExcluding(Point pt, Collection exclude, Conditional condition) {
 	if (getControl() == null)
 		return null;
