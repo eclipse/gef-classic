@@ -3,11 +3,19 @@
 	<name>org.eclipse.gef.doc.isv</name>
 	<comment></comment>
 	<projects>
+		<project>org.eclipse.core.resources</project>
 		<project>org.eclipse.draw2d</project>
-		<project>org.eclipse.gef</project>
+		<project>org.eclipse.swt</project>
+		<project>org.eclipse.ui</project>
 	</projects>
 	<buildSpec>
+		<buildCommand>
+			<name>org.eclipse.jdt.core.javabuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
 	</buildSpec>
 	<natures>
+		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
 </projectDescription>
