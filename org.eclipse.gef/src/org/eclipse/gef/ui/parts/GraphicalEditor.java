@@ -252,7 +252,7 @@ protected void hookGraphicalViewer() {
 
 /**
  * Sets the site and input for this editor then creates and initializes the actions.
- * Subclasses may override this method, but must call <code>super.init(site, input)
+ * Subclasses may extend this method, but should always call <code>super.init(site, input)
  * </code>.
  * @see org.eclipse.ui.IEditorPart#init(IEditorSite, IEditorInput)
  */
