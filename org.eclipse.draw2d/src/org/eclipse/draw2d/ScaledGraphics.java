@@ -321,11 +321,11 @@ public void drawText(String s, int x, int y, int style) {
  * @see Graphics#drawTextLayout(TextLayout, int, int)
  */
 public void drawTextLayout(TextLayout layout, int x, int y) {
-//	TextLayout scaled = zoomTextLayout(layout);
-//	graphics.drawTextLayout(scaled,
-//			(int)Math.floor(x * zoom + fractionalX),
-//			(int)Math.floor(y * zoom + fractionalY));
-//	scaled.dispose();
+	TextLayout scaled = zoomTextLayout(layout);
+	graphics.drawTextLayout(scaled,
+			(int)Math.floor(x * zoom + fractionalX),
+			(int)Math.floor(y * zoom + fractionalY));
+	scaled.dispose();
 }
 
 /** @see Graphics#fillText(String, int, int) */
@@ -525,30 +525,49 @@ public void translate(int dx, int dy) {
 	graphics.translate((int)Math.floor(dxFloat), (int)Math.floor(dyFloat));
 }
 
-//private TextLayout zoomTextLayout(TextLayout layout) {
-//	TextLayout zoomed = new TextLayout(Display.getCurrent());
-//	zoomed.setText(layout.getText());
-//	
-//	zoomed.setWidth((int)(layout.getWidth() * zoom));
-//	int length = layout.getText().length();
-//	if (length > 0) {
-//		int start = 0, offset = 1;
-//		TextStyle style = null, lastStyle = layout.getStyle(0);
-//		for (; offset <= length; offset++) {
-//			if (offset != length
-//					&& (style = layout.getStyle(offset)) == lastStyle)
-//				continue;
-//			int end = offset;
-//			
-//			TextStyle zoomedStyle = new TextStyle(zoomFont(lastStyle.font),
-//					lastStyle.foreground, lastStyle.background);
-//			zoomed.setStyle(zoomedStyle, start, end);
-//			lastStyle = style;
-//			start = offset;
-//		}
-//	}
-//	return zoomed;
-//}
+private TextLayout zoomTextLayout(TextLayout layout) {
+	TextLayout zoomed = new TextLayout(Display.getCurrent());
+	zoomed.setText(layout.getText());
+	
+	int zoomWidth = -1;
+	
+	if (layout.getWidth() != -1)
+		zoomWidth = ((int)(layout.getWidth() * zoom));
+		
+	if (zoomWidth < -1 || zoomWidth == 0)
+		return null;
+	
+	zoomed.setFont(zoomFont(layout.getFont()));
+	zoomed.setAlignment(layout.getAlignment());
+	zoomed.setAscent(layout.getAscent());
+	zoomed.setDescent(layout.getDescent());
+	zoomed.setOrientation(layout.getOrientation());
+	zoomed.setSegments(layout.getSegments());
+	zoomed.setSpacing(layout.getSpacing());
+	zoomed.setTabs(layout.getTabs());
+	
+	zoomed.setWidth(zoomWidth);
+	int length = layout.getText().length();
+	if (length > 0) {
+		int start = 0, offset = 1;
+		TextStyle style = null, lastStyle = layout.getStyle(0);
+		for (; offset <= length; offset++) {
+			if (offset != length
+					&& (style = layout.getStyle(offset)) == lastStyle)
+				continue;
+			int end = offset - 1;
+			
+			if (lastStyle != null) {
+				TextStyle zoomedStyle = new TextStyle(zoomFont(lastStyle.font),
+						lastStyle.foreground, lastStyle.background);
+				zoomed.setStyle(zoomedStyle, start, end);
+			}
+			lastStyle = style;
+			start = offset;
+		}
+	}
+	return zoomed;
+}
 
 private Point zoomTextPoint(int x, int y) {
 	if (localCache.font != localFont) {
@@ -607,6 +626,8 @@ private Rectangle zoomFillRect(int x, int y, int w, int h) {
 }
 
 Font zoomFont(Font f) {
+	if (f == null)
+		f = Display.getCurrent().getSystemFont();
 	FontData data = getCachedFontData(f);
 	int zoomedFontHeight = zoomFontHeight(data.getHeight());
 	allowText = zoomedFontHeight > 0;
