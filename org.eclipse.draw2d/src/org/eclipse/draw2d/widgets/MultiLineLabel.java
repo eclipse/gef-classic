@@ -33,7 +33,7 @@ import org.eclipse.draw2d.text.TextFlow;
 public final class MultiLineLabel extends FigureCanvas {
 
 private TextFlow textFlow;
-private ImageFigure img;
+private ImageFigure imgFig;
 
 class FocusableViewport extends Viewport {
 	FocusableViewport() {
@@ -77,11 +77,6 @@ public MultiLineLabel(Composite parent) {
 	BorderLayout layout = new BorderLayout();
 	layout.setHorizontalSpacing(5);
 	root.setLayoutManager(layout);
-	
-	img = new ImageFigure();
-	img.setAlignment(PositionConstants.NORTH);
-	root.add(img);
-	root.setConstraint(img, BorderLayout.LEFT);
 	
 	FlowPage page = new FlowPage();
 	textFlow = new TextFlow();
@@ -140,7 +135,7 @@ private void addAccessibility() {
 }
 
 public Image getImage() {
-	return img.getImage();
+	return imgFig.getImage();
 }
 
 /**
@@ -159,8 +154,26 @@ public void setFont(Font font) {
 	textFlow.revalidate();
 }
 
+/**
+ * @param	image	The <code>Image</code> to be used for this label.  It can be 
+ * 					<code>null</code>.
+ */
 public void setImage(Image image) {
-	img.setImage(image);
+	if (image != null) {
+		if (imgFig == null) {
+			imgFig = new ImageFigure();
+			imgFig.setAlignment(PositionConstants.NORTH);
+			getContents().add(imgFig);
+			getContents().setConstraint(imgFig, BorderLayout.LEFT);		
+		}
+		if (imgFig.getImage() != image)
+			imgFig.setImage(image);
+	} else {
+		if (imgFig != null) {
+			getContents().remove(imgFig);
+			imgFig = null;
+		}
+	}
 }
 
 /**
