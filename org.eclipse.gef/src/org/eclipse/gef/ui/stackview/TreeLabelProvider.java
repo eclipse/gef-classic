@@ -22,29 +22,52 @@ public class TreeLabelProvider
 	implements org.eclipse.jface.viewers.ILabelProvider
 {
 
+/** The CommandStack **/
 protected CommandStack stack = null;
+/** Icons associated with a TreeLabelProvider **/
 protected static Image 
-	yesIcon = ImageDescriptor.createFromFile(TreeLabelProvider.class, "icons/YESGRN.gif").createImage(),//$NON-NLS-1$
-	noIcon  = ImageDescriptor.createFromFile(TreeLabelProvider.class, "icons/NORED.gif").createImage();//$NON-NLS-1$
+	yesIcon = ImageDescriptor.createFromFile(
+										TreeLabelProvider.class, 
+										"icons/YESGRN.gif").createImage(), //$NON-NLS-1$
+	noIcon  = ImageDescriptor.createFromFile(TreeLabelProvider.class, 
+										"icons/NORED.gif").createImage(); //$NON-NLS-1$
+/** Label style constants **/
 public static byte NORMAL_LABEL_STYLE = 2,
 			  	   DEBUG_LABEL_STYLE = 3;
-protected byte labelStyle=NORMAL_LABEL_STYLE;
-	
-public TreeLabelProvider(CommandStack stack){
+
+/** Label style, NORMAL_LABEL_STYLE by default **/
+protected byte labelStyle = NORMAL_LABEL_STYLE;
+
+/**
+ * Creates a new TreeLabelProvider with the given CommandStack
+ * @param stack the CommandStack
+ */
+public TreeLabelProvider(CommandStack stack) {
 	this.stack = stack;	
 }
 
-public void addListener(ILabelProviderListener l){}
-public void dispose(){}
+/**
+ * @see org.eclipse.jface.viewers.IBaseLabelProvider#addListener(
+ * 										org.eclipse.jface.viewers.ILabelProviderListener)
+ */
+public void addListener(ILabelProviderListener l) { }
 
-public Image getImage(Object o){
-	if(o instanceof Command){
+/**
+ * @see org.eclipse.jface.viewers.IBaseLabelProvider#dispose()
+ */
+public void dispose() { }
+
+/**
+ * @see org.eclipse.jface.viewers.ILabelProvider#getImage(java.lang.Object)
+ */
+public Image getImage(Object o) {
+	if (o instanceof Command) {
 		Command command = (Command)o;
 //		if(((DefaultCommandStack)stack).canUndoCommand(command)) 
 //			return yesIcon;
 //		if(((DefaultCommandStack)stack).canRedoCommand(command)) 
 //			return noIcon;
-		if(command.canUndo())
+		if (command.canUndo())
 			return yesIcon;
 		else
 			return noIcon;
@@ -52,21 +75,28 @@ public Image getImage(Object o){
 	return null;
 }
 
-public byte getLabelStyle(){
+/**
+ * Returns the label style of this TreeLabelProvider.
+ * @return the label style
+ */
+public byte getLabelStyle() {
 	return labelStyle;
 }
- 
-public String getText(Object o){
+
+/**
+ * @see ILabelProvider#getText(java.lang.Object)
+ */
+public String getText(Object o) {
 	if (o instanceof CommandStack)
 		return "Command Stack";//$NON-NLS-1$
-	if (o instanceof Command){
-		if(getLabelStyle()==NORMAL_LABEL_STYLE)
-			if(((Command)o).getLabel()==null)
+	if (o instanceof Command) {
+		if (getLabelStyle() == NORMAL_LABEL_STYLE)
+			if (((Command)o).getLabel() == null)
 				return "";//$NON-NLS-1$
 			else
 				return ((Command)o).getLabel();
-		if(getLabelStyle()==DEBUG_LABEL_STYLE)
-			if(((Command)o).getDebugLabel()==null)
+		if (getLabelStyle() == DEBUG_LABEL_STYLE)
+			if (((Command)o).getDebugLabel() == null)
 				return "";//$NON-NLS-1$
 			else
 				return ((Command)o).getDebugLabel();
@@ -76,11 +106,24 @@ public String getText(Object o){
 	return "???";//$NON-NLS-1$
 }
 
-public boolean isLabelProperty(Object element, String property){return false;}
-public void removeListener(ILabelProviderListener l){}
+/**
+ * @see org.eclipse.jface.viewers.IBaseLabelProvider#isLabelProperty(
+ * 													java.lang.Object, java.lang.String)
+ */
+public boolean isLabelProperty(Object element, String property) { return false; }
 
-public void setLabelStyle(byte labelStyle){
-	this.labelStyle=labelStyle;
+/**
+ * @see org.eclipse.jface.viewers.IBaseLabelProvider#removeListener(
+ * 										org.eclipse.jface.viewers.ILabelProviderListener)
+ */
+public void removeListener(ILabelProviderListener l) { }
+
+/**
+ * Sets the labelStyle to the passed value
+ * @param labelStyle the label style
+ */
+public void setLabelStyle(byte labelStyle) {
+	this.labelStyle = labelStyle;
 }
 
 }

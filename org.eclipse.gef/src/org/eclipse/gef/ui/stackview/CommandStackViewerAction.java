@@ -15,25 +15,36 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.TreeViewer;
 
 public class CommandStackViewerAction 
-	extends Action {
+	extends Action 
+{
 
+/** The TreeViewer associated with this CommandStackViewerAction **/
 protected TreeViewer viewer;
 
-public CommandStackViewerAction(TreeViewer viewer){
+/**
+ * Creates a new CommandStackViewerAction with the given TreeViewer
+ * @param viewer the TreeViewer
+ */
+public CommandStackViewerAction(TreeViewer viewer) {
 	super("Toggle Debug Labels", //$NON-NLS-1$
-		ImageDescriptor.createFromFile(CommandStackInspector.class,"icons/stackDebug.gif"));//$NON-NLS-1$
+		ImageDescriptor.createFromFile(CommandStackInspector.class,
+											"icons/stackDebug.gif"));//$NON-NLS-1$
 
-	this.viewer=viewer;
-	setChecked(((TreeLabelProvider)viewer.getLabelProvider()).getLabelStyle()==TreeLabelProvider.DEBUG_LABEL_STYLE);
+	this.viewer = viewer;
+	setChecked(((TreeLabelProvider)viewer.getLabelProvider()).getLabelStyle() 
+					== TreeLabelProvider.DEBUG_LABEL_STYLE);
 }
 
-public void run(){
-	if(viewer==null)
+/**
+ * @see Action#run()
+ */
+public void run() {
+	if (viewer == null)
 		return;
 	TreeLabelProvider labelProvider = (TreeLabelProvider)viewer.getLabelProvider();
-	if(!isChecked()){
+	if (!isChecked()) {
 		labelProvider.setLabelStyle(TreeLabelProvider.NORMAL_LABEL_STYLE);
-	}else{
+	} else {
 		labelProvider.setLabelStyle(TreeLabelProvider.DEBUG_LABEL_STYLE);
 	}
 	viewer.refresh();

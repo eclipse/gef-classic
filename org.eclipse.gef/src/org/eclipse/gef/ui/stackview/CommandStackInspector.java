@@ -16,29 +16,23 @@ import org.eclipse.swt.widgets.*;
 import org.eclipse.ui.*;
 import org.eclipse.ui.part.*;
 
-//import org.eclipse.jface.*;
-//import org.eclipse.jface.action.*;
-//import org.eclipse.jface.viewers.*;
-
 public class CommandStackInspector
 	extends PageBookView
 {
 
 /**
- * Returns the default page.
- *
- * @return the default property sheet page.
+ * @see PageBookView#createDefaultPage(org.eclipse.ui.part.PageBook)
  */
 protected IPage createDefaultPage(PageBook book) {
 	Page page = new Page(){
 		Control control;
-		public void createControl(Composite parent){
+		public void createControl(Composite parent) {
 			control = new Canvas(parent, SWT.NONE);
 		}
-		public Control getControl(){
+		public Control getControl() {
 			return control;
 		}
-		public void setFocus(){}
+		public void setFocus() { }
 	};
 
 	page.createControl(book);
@@ -46,13 +40,13 @@ protected IPage createDefaultPage(PageBook book) {
 }
 
 /**
- * Answer a page for the part.
+ * @see PageBookView#doCreatePage(org.eclipse.ui.IWorkbenchPart)
  */
 protected PageRec doCreatePage(IWorkbenchPart part) {
 	// Try to get a custom command stack page.
-	Object obj= part.getAdapter(CommandStackInspectorPage.class);
+	Object obj = part.getAdapter(CommandStackInspectorPage.class);
 	if (obj instanceof IPage) {
-		IPage page= (IPage) obj;
+		IPage page = (IPage) obj;
 		page.createControl(getPageBook());
 		return new PageRec(part, page);
 	}
@@ -72,12 +66,12 @@ protected PageRec doCreatePage(IWorkbenchPart part) {
  * @param rec a page record for the part
  */
 protected void doDestroyPage(IWorkbenchPart part, PageRec rec) {
-	IPage page= (IPage) rec.page;
+	IPage page = (IPage) rec.page;
 	page.dispose();
 }
 
 /**
- * Answer the active workbench part.
+ * @see PageBookView#getBootstrapPart()
  */
 protected IWorkbenchPart getBootstrapPart() {
 	IWorkbenchPage persp = getSite().getWorkbenchWindow().getActivePage();
@@ -87,6 +81,9 @@ protected IWorkbenchPart getBootstrapPart() {
 		return null;
 }
 
+/**
+ * @see PageBookView#isImportant(org.eclipse.ui.IWorkbenchPart)
+ */
 protected boolean isImportant(IWorkbenchPart part) {
 	return part instanceof IEditorPart;
 }

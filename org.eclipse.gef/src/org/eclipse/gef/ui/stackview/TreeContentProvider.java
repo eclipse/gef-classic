@@ -23,43 +23,75 @@ public class TreeContentProvider
 
 Viewer viewer;
 
-public TreeContentProvider(CommandStack stack){
+/**
+ * Creates a new TreeContentProvider with the given CommandStack
+ * @param stack The CommandStack
+ */
+public TreeContentProvider(CommandStack stack) {
 	stack.addCommandStackListener(this);
 
 }
 
-public void dispose(){
+/**
+ * @see org.eclipse.jface.viewers.IContentProvider#dispose()
+ */
+public void dispose() {
 }
 
-public void commandStackChanged(EventObject event){
+/**
+ * @see CommandStackListener#commandStackChanged(EventObject)
+ */
+public void commandStackChanged(EventObject event) {
 	viewer.refresh();
 }
 
-public Object[] getChildren(Object o){
-	if (o instanceof CompoundCommand){
+/**
+ * @see org.eclipse.jface.viewers.ITreeContentProvider#getChildren(java.lang.Object)
+ */
+public Object[] getChildren(Object o) {
+	if (o instanceof CompoundCommand) {
 		return ((CompoundCommand)o).getChildren();
 	}
 	return null;
 }
 
-public Object[] getElements(Object o){
-	if (o instanceof CommandStack){
+/**
+ * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)
+ */
+public Object[] getElements(Object o) {
+	if (o instanceof CommandStack) {
 		return ((CommandStack)o).getCommands();
 	}
-	if (o instanceof CompoundCommand){
+	if (o instanceof CompoundCommand) {
 	}
 	return null;
 }
 
-public Object getParent(Object child){return null;}
+/**
+ * @see TreeContentProvider#getParent(Object)
+ */
+public Object getParent(Object child) { return null; }
 
-public boolean hasChildren(Object o){
+/**
+ * @see org.eclipse.jface.viewers.ITreeContentProvider#hasChildren(java.lang.Object)
+ */
+public boolean hasChildren(Object o) {
 	return o instanceof CompoundCommand;
 }
 
-public boolean isDeleted(Object o){return false;}
+/**
+ * 
+ * @param o
+ * @return
+ */
+public boolean isDeleted(Object o) { return false; }
 
-public void inputChanged(Viewer v, Object o, Object n){
+/**
+ * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(
+ * 									org.eclipse.jface.viewers.Viewer, 
+ * 									java.lang.Object, java.lang.Object)
+ */
+public void inputChanged(Viewer v, Object o, Object n) {
 	viewer = v;
 }
 

@@ -25,21 +25,37 @@ public class CommandStackInspectorPage
 CommandStack input;
 TreeViewer treeViewer;
 
-public CommandStackInspectorPage(CommandStack input){
+/**
+ * Creates a new CommandStackInspectorPage with the given CommandStack
+ * @param input the CommandStack
+ */
+public CommandStackInspectorPage(CommandStack input) {
 	this.input = input;
 }
 
-public void createControl(Composite composite){
+/**
+ * @see org.eclipse.ui.part.Page#createControl(org.eclipse.swt.widgets.Composite)
+ */
+public void createControl(Composite composite) {
 	treeViewer = new TreeViewer(composite);
 	treeViewer.setContentProvider(new TreeContentProvider(input));
 	treeViewer.setLabelProvider(new TreeLabelProvider(input));
 	treeViewer.setInput(input);
 }
 
-public Control getControl(){
+/**
+ * @see org.eclipse.ui.part.Page#getControl()
+ */
+public Control getControl() {
 	return treeViewer.getControl();
 }
 
+/**
+ * @see org.eclipse.ui.part.Page#makeContributions(
+ * 						org.eclipse.jface.action.IMenuManager,
+ *  					org.eclipse.jface.action.IToolBarManager, 
+ *  					org.eclipse.jface.action.IStatusLineManager)
+ */
 public void makeContributions(
 	IMenuManager menuManager, 
 	IToolBarManager toolBarManager, 
@@ -48,8 +64,10 @@ public void makeContributions(
 	toolBarManager.add(new CommandStackViewerAction(treeViewer));
 }
 
-
-public void setFocus(){
+/**
+ * @see org.eclipse.ui.part.Page#setFocus()
+ */
+public void setFocus() {
 	getControl().setFocus();
 }
 
