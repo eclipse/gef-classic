@@ -620,8 +620,7 @@ protected PageBook createPropertiesPanelTitle(Composite parent) {
 	layout.verticalSpacing = 0;
 	errorPage.setLayout(layout);
 	errorTitle = new MultiLineLabel(errorPage);
-	errorTitle.setImage(JFaceResources.getImage(DLG_IMG_MESSAGE_ERROR),
-			PositionConstants.WEST);
+	errorTitle.setImage(JFaceResources.getImage(DLG_IMG_MESSAGE_ERROR));
 	errorTitle.setFont(errorPage.getFont());
 	errorTitle.setLayoutData(new GridData(GridData.FILL_HORIZONTAL 
 	                            | GridData.VERTICAL_ALIGN_FILL));
