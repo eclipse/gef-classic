@@ -13,12 +13,11 @@ package org.eclipse.gef.examples.text;
 
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.ui.IActionBars;
-import org.eclipse.ui.IWorkbenchPage;
 
 import org.eclipse.gef.ui.actions.ActionBarContributor;
 import org.eclipse.gef.ui.actions.GEFActionConstants;
 
+import org.eclipse.gef.examples.text.actions.ResizeFontContributionItem;
 import org.eclipse.gef.examples.text.actions.StyleRetargetAction;
 
 /**
@@ -51,6 +50,8 @@ public void contributeToToolBar(IToolBarManager toolbar) {
 	toolbar.add(new Separator());
 	toolbar.add(getAction(GEFActionConstants.BLOCK_LTR));
 	toolbar.add(getAction(GEFActionConstants.BLOCK_RTL));
+	toolbar.add(new Separator());
+	toolbar.add(new ResizeFontContributionItem(getPage()));
 }
 
 /**

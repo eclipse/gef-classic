@@ -1,0 +1,186 @@
+/*******************************************************************************
+ * Copyright (c) 2004 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials 
+ * are made available under the terms of the Common Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/cpl-v10.html
+ * 
+ * Contributors:
+ *     IBM Corporation - initial API and implementation
+ *******************************************************************************/
+package org.eclipse.gef.examples.text.actions;
+
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.ToolBar;
+import org.eclipse.swt.widgets.ToolItem;
+
+import org.eclipse.jface.action.ContributionItem;
+import org.eclipse.ui.IPartListener2;
+import org.eclipse.ui.IPartService;
+import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.IWorkbenchPartReference;
+
+import org.eclipse.gef.ui.actions.GEFActionConstants;
+
+import org.eclipse.gef.examples.text.TextEditor;
+
+/**
+ * @author Pratik Shah
+ * @since 3.1
+ */
+public class ResizeFontContributionItem 
+	extends ContributionItem
+{
+
+private static final String[] INIT_SIZES = new String[] {"8", "9", "10", "11", "12", 
+		"14", "16", "18", "20", "22", "24", "26", "28", "36", "48", "72"};
+private Combo combo;
+private ToolItem toolItem;
+private StyleService styleService;
+private IPartService partService;
+private StyleListener styleListener = new StyleListener() {
+	public void styleChanged(String styleID) {
+		if (styleID == null || styleID.equals(GEFActionConstants.STYLE_FONT_SIZE))
+			refresh();
+	}
+};
+private IPartListener2 partListener = new IPartListener2() {
+	public void partActivated(IWorkbenchPartReference partRef) {
+		IWorkbenchPart part = partRef.getPart(false);
+		if (part instanceof TextEditor) {
+			setStyleService((StyleService)part.getAdapter(StyleService.class));
+		}
+	}
+	public void partBroughtToTop(IWorkbenchPartReference partRef) { }
+	public void partClosed(IWorkbenchPartReference partRef) { }
+	public void partDeactivated(IWorkbenchPartReference partRef) { }
+	public void partOpened(IWorkbenchPartReference partRef) { }
+	public void partHidden(IWorkbenchPartReference partRef) { }
+	public void partVisible(IWorkbenchPartReference partRef) { }
+	public void partInputChanged(IWorkbenchPartReference partRef) { }
+};
+
+public ResizeFontContributionItem(IPartService service) {
+	super();
+	partService = service;
+	partService.addPartListener(partListener);
+}
+
+/**
+ * Creates and returns the combo for this contribution item
+ * under the given parent composite.
+ *
+ * @param parent the parent composite
+ * @return the new control
+ */
+protected Control createControl(Composite parent) {
+	combo = new Combo(parent, SWT.DROP_DOWN);
+	combo.addSelectionListener(new SelectionListener() {
+		public void widgetDefaultSelected(SelectionEvent e) {
+			handleWidgetSelected(e);
+		}
+		public void widgetSelected(SelectionEvent e) {
+			handleWidgetSelected(e);
+		}
+	});
+	combo.addFocusListener(new FocusListener() {
+		public void focusGained(FocusEvent e) {
+			// do nothing
+		}
+		public void focusLost(FocusEvent e) {
+			refresh();
+		}
+	});
+	
+	// Initialize width of combo
+	combo.setItems(INIT_SIZES);
+	combo.setEnabled(false);
+	toolItem.setWidth(combo.computeSize(SWT.DEFAULT, SWT.DEFAULT, true).x);
+	refresh();
+	return combo;
+}
+
+/**
+ * Removes the listeners from the StyleService and the IPartService.
+ * @see org.eclipse.jface.action.IContributionItem#dispose()
+ */
+public void dispose() {
+	if (styleService != null)
+		styleService.removeStyleListener(styleListener);
+	partService.removePartListener(partListener);
+}
+
+/**
+ * The control item implementation of this <code>IContributionItem</code>
+ * method calls the <code>createControl</code> framework method to
+ * create a control under the given parent, and then creates
+ * a new tool item to hold it.
+ * 
+ * @param parent The ToolBar to add the new control to
+ * @param index Index
+ */
+public void fill(ToolBar parent, int index) {
+	toolItem = new ToolItem(parent, SWT.SEPARATOR, index);
+	Control control = createControl(parent);
+	toolItem.setControl(control);	
+}
+
+protected void handleWidgetSelected(SelectionEvent e) {
+	Integer fontSize = null;
+	try {
+		fontSize = new Integer(combo.getText());
+	} catch (NumberFormatException nfe) {
+	}
+	if (fontSize != null)
+		// No refresh required
+		styleService.setStyle(GEFActionConstants.STYLE_FONT_SIZE, fontSize);
+	else
+		refresh();
+}
+
+protected void refresh() {
+	if (combo == null || styleService == null)
+		return;
+	
+	boolean enablement = true;
+	if (!styleService.getStyleState(GEFActionConstants.STYLE_FONT_SIZE)
+			.equals(StyleService.STATE_EDITABLE)) {
+		// we want the combo disabled, but still want to update the font size
+		enablement = false;
+	}
+	Object style = styleService.getStyle(GEFActionConstants.STYLE_FONT_SIZE);
+	if (StyleService.UNDEFINED.equals(style)) {
+		combo.setText("");
+		enablement = false;
+	} else {
+		String size = style.toString();
+		if (StyleService.UNDEFINED.equals(style))
+			size = "";
+		int index = combo.indexOf(size);
+		if (index >= 0)
+			combo.select(index);
+		else
+			combo.setText(size);
+	}
+	combo.setEnabled(enablement);
+}
+
+protected void setStyleService(StyleService service) {
+	if (styleService == service)
+		return;
+	if (styleService != null)
+		styleService.removeStyleListener(styleListener);
+	styleService = service;
+	if (styleService != null)
+		styleService.addStyleListener(styleListener);
+	refresh();
+}
+
+}

@@ -11,11 +11,14 @@
 
 package org.eclipse.gef.examples.text.model;
 
+import org.eclipse.gef.ui.actions.GEFActionConstants;
+
 /**
  * @since 3.1
  */
 public class Style extends Notifier {
 
+private static final int DEFAULT_FONT_SIZE = 10;
 private boolean bold;
 private String fontFamily;
 private int fontHeight = - 1;
@@ -30,8 +33,12 @@ public String getFontFamily() {
 }
 
 public int getFontHeight() {
-	if (fontHeight == - 1 && parentStyle != null)
-		return parentStyle.getFontHeight();
+	if (fontHeight == - 1) {
+		if (parentStyle != null)
+			return parentStyle.getFontHeight();
+		else
+			return DEFAULT_FONT_SIZE;
+	}
 	return fontHeight;
 }
 
@@ -41,6 +48,18 @@ public boolean isBold() {
 
 public boolean isItalic() {
 	return italic || (parentStyle != null && parentStyle.isItalic());
+}
+
+public boolean isSet(String styleID) {
+	if (GEFActionConstants.STYLE_BOLD.equals(styleID))
+		return bold;
+	if (GEFActionConstants.STYLE_FONT_SIZE.equals(styleID))
+		return fontHeight != -1;
+	if (GEFActionConstants.STYLE_ITALIC.equals(styleID))
+		return italic;
+	if (GEFActionConstants.STYLE_UNDERLINE.equals(styleID))
+		return underline;
+	return false;
 }
 
 public boolean isUnderline() {

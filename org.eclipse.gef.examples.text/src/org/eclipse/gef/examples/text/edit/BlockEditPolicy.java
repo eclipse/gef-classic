@@ -23,7 +23,7 @@ import org.eclipse.gef.examples.text.model.Container;
 import org.eclipse.gef.examples.text.model.InlineContainer;
 import org.eclipse.gef.examples.text.model.ModelLocation;
 import org.eclipse.gef.examples.text.model.TextRun;
-import org.eclipse.gef.examples.text.model.commands.ApplyBooleanStyle;
+import org.eclipse.gef.examples.text.model.commands.ApplyStyle;
 import org.eclipse.gef.examples.text.model.commands.CompoundEditCommand;
 import org.eclipse.gef.examples.text.model.commands.ConvertElementCommand;
 import org.eclipse.gef.examples.text.model.commands.InsertString;
@@ -140,7 +140,7 @@ private Command getTextStyleApplication(TextRequest request) {
 	
 	ModelLocation start = new ModelLocation((TextRun)range.begin.part.getModel(), range.begin.offset);
 	ModelLocation end = new ModelLocation((TextRun)range.end.part.getModel(), range.end.offset);
-	ApplyBooleanStyle style = new ApplyBooleanStyle(start, end,
+	ApplyStyle style = new ApplyStyle(start, end,
 			request.getStyleKeys(), request.getStyleValues());
 	
 	return new SingleEditCommand(style, start, end);

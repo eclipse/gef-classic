@@ -58,7 +58,8 @@ public TextLocation getNextLocation(int movement, TextLocation current, Rectangl
 }
 
 public Object getStyleState(String styleID, SelectionRange range) {
-	if (styleID.equals(GEFActionConstants.STYLE_BOLD))
+	if (styleID.equals(GEFActionConstants.STYLE_BOLD) 
+			|| styleID.equals(GEFActionConstants.STYLE_FONT_SIZE))
 		return StyleService.STATE_EDITABLE;
 	return StyleService.STATE_READ_ONLY;
 }
@@ -73,6 +74,10 @@ public Object getStyleValue(String styleID, SelectionRange range) {
 			container = container.getContainer();
 		}
 		return Boolean.FALSE;
+	} else if (styleID.equals(GEFActionConstants.STYLE_FONT_SIZE)) {
+		TextRun run = (TextRun)range.begin.part.getModel();
+		Container container = run.getContainer();
+		return new Integer(container.getStyle().getFontHeight());
 	}
 	return Boolean.FALSE;
 }

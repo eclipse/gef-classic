@@ -15,6 +15,8 @@ import java.util.List;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.swt.widgets.Widget;
 
+import org.eclipse.gef.ui.actions.GEFActionConstants;
+
 import org.eclipse.gef.examples.text.model.Container;
 
 /**
@@ -58,11 +60,13 @@ protected void refreshVisuals() {
 			break;
 
 		case Container.TYPE_INLINE:
-			if (getContainer().getStyle().isBold())
+			if (getContainer().getStyle().isSet(GEFActionConstants.STYLE_FONT_SIZE))
+				label = "FONT";
+			else if (getContainer().getStyle().isSet(GEFActionConstants.STYLE_BOLD))
 				label ="BOLD";
-			else if (getContainer().getStyle().isItalic())
+			else if (getContainer().getStyle().isSet(GEFActionConstants.STYLE_ITALIC))
 				label = "ITALIC";
-			else if (getContainer().getStyle().isUnderline())
+			else if (getContainer().getStyle().isSet(GEFActionConstants.STYLE_UNDERLINE))
 				label ="UNDERLINE";
 			else {
 				label = "nested";
