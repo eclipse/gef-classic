@@ -78,6 +78,7 @@ public void setBounds(Rectangle r) {
 	bounds.y = r.y;
 	bounds.width = r.width;
 	bounds.height = r.height;
+	fireMoved();
 	repaint();
 }
 
