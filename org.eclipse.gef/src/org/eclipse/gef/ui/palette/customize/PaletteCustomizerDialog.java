@@ -27,6 +27,7 @@ import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.gef.internal.Internal;
 import org.eclipse.gef.palette.PaletteEntry;
 import org.eclipse.gef.palette.PaletteRoot;
+import org.eclipse.gef.ui.palette.GEFActionContributionItem;
 import org.eclipse.gef.ui.palette.PaletteCustomizer;
 import org.eclipse.gef.ui.palette.PaletteMessages;
 
@@ -480,7 +481,7 @@ protected Control createOutlineToolBar(Composite parent) {
 	ToolBarManager tbMgr = new ToolBarManager(SWT.FLAT | SWT.HORIZONTAL);
 	List actions = getOutlineActions();
 	for (int i = 0; i < actions.size(); i++) {
-		tbMgr.add((IAction)actions.get(i));
+		tbMgr.add(new GEFActionContributionItem(((IAction)actions.get(i))));
 	}
 	tbMgr.createControl(composite);
 	tbMgr.getControl().setFont(composite.getFont());
