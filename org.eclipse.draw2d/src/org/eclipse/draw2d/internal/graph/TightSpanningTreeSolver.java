@@ -82,7 +82,7 @@ void addNode(Node node) {
 }
 
 void init() {
-	graph.edges.resetFlags();
+	graph.edges.resetFlags(true);
 	graph.nodes.resetFlags();
 	for (int i = 0; i < graph.nodes.size(); i++) {
 		Node node = (Node)graph.nodes.get(i);

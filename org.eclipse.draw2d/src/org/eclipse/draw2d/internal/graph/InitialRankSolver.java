@@ -29,16 +29,12 @@ protected NodeList members = new NodeList();
 
 public void visit(DirectedGraph graph) {
 	this.graph = graph;
-	graph.edges.resetFlags();
+	graph.edges.resetFlags(false);
 	graph.nodes.resetFlags();
 	solve();
 }
 
-/**
- * 
- */
 protected void solve() {
-
 	NodeList unranked = new NodeList(graph.nodes);
 	NodeList rankMe = new NodeList();
 	Node node;

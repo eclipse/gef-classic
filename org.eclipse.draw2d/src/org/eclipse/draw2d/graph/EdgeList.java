@@ -97,9 +97,11 @@ public boolean isCompletelyFlagged() {
 /**
  * For internal use only.  Resets all flags.
  */
-public void resetFlags() {
+public void resetFlags(boolean resetTree) {
 	for (int i = 0; i < size(); i++) {
 		getEdge(i).flag = false;
+		if (resetTree)
+			getEdge(i).tree = false;
 	}
 }
 

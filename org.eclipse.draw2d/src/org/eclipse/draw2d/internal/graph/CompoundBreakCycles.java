@@ -230,7 +230,7 @@ private int getOutDegree(Node n) {
 
 private void initializeDegrees(DirectedGraph g) {
 	g.nodes.resetFlags();
-	g.edges.resetFlags();
+	g.edges.resetFlags(false);
 	for (int i = 0; i < g.nodes.size(); i++) {
 		Node n = g.nodes.getNode(i);
 		setInDegree(n, n.incoming.size());
