@@ -392,7 +392,7 @@ protected void createOutputStream(OutputStream os)throws IOException {
 }
 
 protected PaletteViewerProvider createPaletteViewerProvider() {
-	return new PaletteViewerProvider(getGraphicalViewer().getEditDomain()) {
+	return new PaletteViewerProvider(getEditDomain()) {
 		private IMenuListener menuListener;
 		protected void configurePaletteViewer() {
 			super.configurePaletteViewer();
