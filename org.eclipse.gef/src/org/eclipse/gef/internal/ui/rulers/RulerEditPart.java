@@ -30,6 +30,7 @@ public class RulerEditPart
 {
 
 private RulerProvider rulerProvider;
+private boolean horizontal = false;
 protected GraphicalViewer diagramViewer;
 private RulerChangeListener listener = new RulerChangeListener.Stub() {
 	public void notifyGuideReparented(Object guide) {
@@ -49,10 +50,17 @@ public RulerEditPart(Object model, GraphicalViewer primaryViewer) {
 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#activate()
 */
 public void activate() {
-	super.activate();
+	RulerProvider hProvider = (RulerProvider)diagramViewer
+			.getProperty(RulerProvider.HORIZONTAL);
+	if (hProvider != null && hProvider.getRuler() == getModel()) {
+		rulerProvider = hProvider;
+		horizontal = true;
+	} else {
+		rulerProvider = (RulerProvider)diagramViewer.getProperty(RulerProvider.VERTICAL);
+	}
 	getRulerProvider().addRulerChangeListener(listener);
-	getRulerFigure().setZoomManager(
-			(ZoomManager)diagramViewer.getProperty(ZoomManager.class.toString()));
+	getRulerFigure().setZoomManager(getZoomManager());
+	super.activate();
 }
 
 /* (non-Javadoc)
@@ -79,10 +87,10 @@ protected IFigure createFigure() {
 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#deactivate()
 */
 public void deactivate() {
+	super.deactivate();
 	getRulerProvider().removeRulerChangeListener(listener);
 	rulerProvider = null;
 	getRulerFigure().setZoomManager(null);
-	super.deactivate();
 }
 
 /* (non-Javadoc)
@@ -113,11 +121,6 @@ protected RulerFigure getRulerFigure() {
 }
 
 public RulerProvider getRulerProvider() {
-	if (rulerProvider == null) {
-		rulerProvider = isHorizontal()
-				? (RulerProvider)diagramViewer.getProperty(RulerProvider.HORIZONTAL)
-				: (RulerProvider)diagramViewer.getProperty(RulerProvider.VERTICAL);
-	}
 	return rulerProvider;
 }
 
@@ -149,8 +152,7 @@ public void handleUnitsChanged(int newUnit) {
 }
 
 public boolean isHorizontal() {
-	return getModel() == ((RulerProvider)diagramViewer
-			.getProperty(RulerProvider.HORIZONTAL)).getRuler();
+	return horizontal;
 }
 
 }

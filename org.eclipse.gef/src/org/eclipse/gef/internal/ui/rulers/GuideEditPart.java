@@ -33,7 +33,6 @@ public static final int MIN_DISTANCE_BW_GUIDES = 5;
 public static final int DELETE_THRESHOLD = 15;
 	
 protected GraphicalViewer diagramViewer;
-protected RulerProvider rulerProvider;
 private GuideLineFigure guideLineFig;
 private Cursor cursor = null;
 private ZoomListener zoomListener = new ZoomListener() {
@@ -101,7 +100,6 @@ public void deactivate() {
 		getZoomManager().removeZoomListener(zoomListener);		
 	}
 	getRulerProvider().removeRulerChangeListener(listener);
-	rulerProvider = null;
 	if (getGuideLineFigure().getParent() != null) {
 		getGuideLineFigure().getParent().remove(getGuideLineFigure());
 	}
