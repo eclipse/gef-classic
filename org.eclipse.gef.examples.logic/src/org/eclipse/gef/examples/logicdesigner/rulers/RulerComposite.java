@@ -1,6 +1,3 @@
-/*
- * Created on Oct 3, 2003
- */
 package org.eclipse.gef.examples.logicdesigner.rulers;
 
 import org.eclipse.swt.SWT;
@@ -132,6 +129,11 @@ private void invalidateChild(GraphicalViewer child, boolean validateFirst) {
 	}
 }
 
+/*
+ * @TODO:Pratik    see if you can do away with this method.  is there a way to turn
+ * off caching for cached layouts?  or better yet, to clear the cache when necessary?
+ * or does SWT.DEFAULT hint cause it to not use the cache?
+ */
 private void invalidateChildren(boolean validateFirst) {
 	invalidateChild(left, validateFirst);
 	invalidateChild(right, validateFirst);

@@ -1,6 +1,3 @@
-/*
- * Created on Nov 6, 2003
- */
 package org.eclipse.gef.examples.logicdesigner.rulers;
 
 import java.util.ListIterator;

@@ -1,6 +1,3 @@
-/*
- * Created on Oct 26, 2003
- */
 package org.eclipse.gef.examples.logicdesigner.rulers;
 
 import org.eclipse.swt.widgets.Composite;

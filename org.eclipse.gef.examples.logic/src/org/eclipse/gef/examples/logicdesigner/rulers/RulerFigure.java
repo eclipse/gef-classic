@@ -1,6 +1,3 @@
-/*
- * Created on Oct 3, 2003
- */
 package org.eclipse.gef.examples.logicdesigner.rulers;
 
 
@@ -21,7 +18,7 @@ import org.eclipse.gef.examples.logicdesigner.model.Ruler;
 public class RulerFigure
 	extends Figure
 {
-
+	
 /**
  * These fields allow the client to customize the look of the ruler.
  */

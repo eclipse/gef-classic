@@ -1,6 +1,3 @@
-/*
- * Created on Oct 24, 2003
- */
 package org.eclipse.gef.examples.logicdesigner.rulers;
 
 import java.beans.PropertyChangeEvent;
@@ -346,15 +343,6 @@ protected boolean isDeleteRequest(ChangeBoundsRequest req) {
  * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
  */
 public void propertyChange(PropertyChangeEvent evt) {
-	if (evt.getPropertyName().equals(Guide.PROPERTY_CHILDREN)) {
-		Object val = getGuide().getMap().get(evt.getNewValue());
-		if (val == null) {
-			System.out.println(evt.getNewValue() + " un-attached from " + (getGuide().isHorizontal() ? "horizontal" : "vertical") + " guide");
-		} else {
-			int value = ((Integer)val).intValue();
-			System.out.println(evt.getNewValue() + " attached to " + (getGuide().isHorizontal() ? "horizontal" : "vertical") + " guide at " + value);
-		}
-	}
 	refreshVisuals();
 }
 
