@@ -28,22 +28,25 @@ public class LogicDiagram
 {
 static final long serialVersionUID = 1;
 
+public static String ID_ROUTER = "router";	//$NON-NLS-1$
+public static Integer ROUTER_MANUAL = new Integer(0);
+public static Integer ROUTER_MANHATTAN = new Integer(1);
 private static int count;
 private static Image LOGIC_ICON = new Image (null,
 	LogicDiagram.class.getResourceAsStream("icons/circuit16.gif")); //$NON-NLS-1$
 
+
 protected List children = new ArrayList();
 protected LogicRuler leftRuler, topRuler;
-public static String ID_ROUTER = "router";	//$NON-NLS-1$
-public static Integer ROUTER_MANUAL = new Integer(0);
-public static Integer ROUTER_MANHATTAN = new Integer(1);
 protected Integer connectionRouter = null;
+private boolean rulersVisibility = true;
 
 public LogicDiagram() {
 	size.width = 100;
 	size.height= 100;
 	location.x = 20;
 	location.y = 20;
+	createRulers();
 }
 
 public void addChild(LogicElement child){
@@ -56,6 +59,11 @@ public void addChild(LogicElement child, int index){
 	else
 		children.add(child);
 	fireStructureChange(CHILDREN, child);
+}
+
+protected void createRulers() {
+	leftRuler = new LogicRuler(false);
+	topRuler = new LogicRuler(true);
 }
 
 public List getChildren(){
@@ -106,19 +114,17 @@ public LogicRuler getRuler(int orientation) {
 	LogicRuler result = null;
 	switch (orientation) {
 		case PositionConstants.NORTH :
-			if (topRuler == null) {
-				topRuler = new LogicRuler(true);
-			}
 			result = topRuler;
 			break;
 		case PositionConstants.WEST :
-			if (leftRuler == null) {
-				leftRuler = new LogicRuler(false);
-			}
 			result = leftRuler;
 			break;
 	}
 	return result;
+}
+
+public boolean getRulerVisibility() {
+	return rulersVisibility;
 }
 
 private void readObject(java.io.ObjectInputStream s)
@@ -142,6 +148,10 @@ public void setPropertyValue(Object id, Object value){
 	else super.setPropertyValue(id,value);
 }
 
+public void setRulerVisibility(boolean newValue) {
+	rulersVisibility = newValue;
+}
+
 public String toString(){
 	return LogicMessages.LogicDiagram_LabelText;
 }
@@ -162,7 +172,6 @@ private class ConnectionRouterLabelProvider
 		}
 		return super.getText(element);
 	}
-
 }
 
 }
