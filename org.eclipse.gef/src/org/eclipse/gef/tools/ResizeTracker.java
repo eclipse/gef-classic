@@ -44,6 +44,17 @@ private SnapToStrategy snapToStrategy;
  * Constructs a resize tracker that resizes in the specified direction.  The direction is
  * specified using {@link PositionConstants#NORTH}, {@link PositionConstants#NORTH_EAST},
  * etc.
+ * @deprecated use ResizeTracker(GraphicalEditPart, int) instead
+ * @param direction the direction
+ */
+public ResizeTracker(int direction) {
+	this(null, direction);
+}
+
+/**
+ * Constructs a resize tracker that resizes in the specified direction.  The direction is
+ * specified using {@link PositionConstants#NORTH}, {@link PositionConstants#NORTH_EAST},
+ * etc.
  * @param owner of the resize handle which returned this tracker
  * @param direction the direction
  */
@@ -58,14 +69,16 @@ public ResizeTracker(GraphicalEditPart owner, int direction) {
  */
 public void activate() {
 	super.activate();
-	snapToStrategy = (SnapToStrategy)getTargetEditPart().getAdapter(SnapToStrategy.class);
+	if (owner != null) {
+		snapToStrategy = (SnapToStrategy)getTargetEditPart().getAdapter(SnapToStrategy.class);
 	
-	IFigure figure = owner.getFigure();
-	if (figure instanceof HandleBounds)
-		sourceRect = new PrecisionRectangle(((HandleBounds)figure).getHandleBounds());
-	else
-		sourceRect = new PrecisionRectangle(figure.getBounds());
-	figure.translateToAbsolute(sourceRect);
+		IFigure figure = owner.getFigure();
+		if (figure instanceof HandleBounds)
+			sourceRect = new PrecisionRectangle(((HandleBounds)figure).getHandleBounds());
+		else
+			sourceRect = new PrecisionRectangle(figure.getBounds());
+		figure.translateToAbsolute(sourceRect);
+	}
 }
 
 /**
@@ -164,7 +177,9 @@ protected int getResizeDirection() {
  * @return	The target EditPart
  */
 protected GraphicalEditPart getTargetEditPart() {
-	return (GraphicalEditPart)owner.getParent();
+	if (owner != null)
+		return (GraphicalEditPart)owner.getParent();
+	return null;
 }
 
 /**
