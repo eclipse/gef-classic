@@ -81,18 +81,18 @@ private ActivityDiagram createWakeupModel() {
 	diagram.addChild(no = new Activity("NO"));
 	diagram.addChild(drive = new Activity("Drive to work"));
 	
-	sleep.addOutput(new Transition(sleep, alarm));
-	alarm.addOutput(new Transition(alarm, wakeup));
-	backToSleep.addOutput(new Transition(backToSleep,alarm2));
-	alarm2.addOutput(new Transition(alarm2,turnOff));
-	wakeup.addOutput(new Transition(wakeup, bathroom));
-	bathroom.addOutput(new Transition(bathroom, clothes));
-	clothes.addOutput(new Transition(clothes, spare));
-	spare.addOutput(new Transition(spare, yes));
-	spare.addOutput(new Transition(spare, no));
-	yes.addOutput(new Transition(yes, relaxation));
-	no.addOutput(new Transition(no, drive));
-	relaxation.addOutput(new Transition(relaxation, drive));
+	new Transition(sleep, alarm);
+	new Transition(alarm, wakeup);
+	new Transition(backToSleep,alarm2);
+	new Transition(alarm2,turnOff);
+	new Transition(wakeup, bathroom);
+	new Transition(bathroom, clothes);
+	new Transition(clothes, spare);
+	new Transition(spare, yes);
+	new Transition(spare, no);
+	new Transition(yes, relaxation);
+	new Transition(no, drive);
+	new Transition(relaxation, drive);
 	return diagram;
 }
 
