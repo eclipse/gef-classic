@@ -83,7 +83,7 @@ public Color getForeground(Object element) {
 public Image getImage(Object element) {
 	PaletteEntry entry = (PaletteEntry)element;
 	ImageDescriptor descriptor = entry.getSmallIcon();
-	if (descriptor == null ){
+	if (descriptor == null) {
 		if (entry instanceof PaletteContainer) {
 			descriptor = InternalImages.DESC_FOLDER_OPEN;
 		} else if (entry instanceof PaletteSeparator) {

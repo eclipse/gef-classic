@@ -72,8 +72,8 @@ class ToolbarDropdownContributionItem extends ContributionItem {
 		private Image missingImage;
 		
 		private class Entry {
-			Image image;
-			Image grayImage;
+			protected Image image;
+			protected Image grayImage;
 
 			void dispose() {
 				if (image != null) {
@@ -156,8 +156,7 @@ private void actionPropertyChange(final PropertyChangeEvent e) {
 		Display display = widget.getDisplay();
 		if (display.getThread() == Thread.currentThread()) {
 			update(e.getProperty());
-		}
-		else {
+		} else {
 			display.asyncExec(new Runnable() {
 				public void run() {
 					update(e.getProperty());
@@ -229,12 +228,12 @@ public void fill(Composite parent) {
 public void fill(Menu parent, int index) {
 	if (widget == null && parent != null) {
 		int flags = SWT.PUSH;
-		Menu subMenu= null;
+		Menu subMenu = null;
 		
 		if (action != null) {
 			int style = action.getStyle();
 			if (style == IAction.AS_CHECK_BOX)
-				flags= SWT.CHECK;
+				flags = SWT.CHECK;
 			else if (style == IAction.AS_DROP_DOWN_MENU) {
 				IMenuCreator mc = action.getMenuCreator();
 				subMenu = mc.getMenu(parent);
@@ -382,7 +381,7 @@ private void handleWidgetEvent(Event e) {
  * Handles a widget selection event.
  */
 private void handleWidgetSelection(Event e) {
-	Widget item= e.widget;
+	Widget item = e.widget;
 	if (item != null) {
 		
 		int style = item.getStyle();
@@ -408,11 +407,11 @@ private void handleWidgetSelection(Event e) {
 				//Menu m= mc.getMenu(dummy);
 				//dummy.dispose();
 				
-				Menu m= mc.getMenu(ti.getParent());
+				Menu m = mc.getMenu(ti.getParent());
 				if (m != null) {
 					// position the menu below the drop down item
 					Rectangle b = ti.getBounds();
-					Point p = ti.getParent().toDisplay(new Point(b.x, b.y+b.height));
+					Point p = ti.getParent().toDisplay(new Point(b.x, b.y + b.height));
 					m.setLocation(p.x, p.y);	// waiting for SWT 0.42
 					m.setVisible(true);
 					return;	// we don't fire the action
@@ -445,7 +444,7 @@ public boolean isEnabled() {
  * for everything else.
  */
 public boolean isDynamic() {
-	if(widget instanceof MenuItem) {
+	if (widget instanceof MenuItem) {
 		//Optimization. Only recreate the item is the check style has changed. 
 		boolean itemIsCheck = (widget.getStyle() & SWT.CHECK) != 0;
 		boolean actionIsCheck = getAction() != null && getAction().getStyle() == IAction.AS_CHECK_BOX;
@@ -487,10 +486,11 @@ public void update(String propertyName) {
 		boolean textChanged = propertyName == null || propertyName.equals(Action.TEXT);
 		boolean imageChanged = propertyName == null || propertyName.equals(Action.IMAGE);
 		boolean tooltipTextChanged = propertyName == null || propertyName.equals(Action.TOOL_TIP_TEXT);
-		boolean enableStateChanged = propertyName == null || propertyName.equals(Action.ENABLED) || 
-			propertyName.equals(IContributionManagerOverrides.P_ENABLED);
-		boolean checkChanged = (action.getStyle() == IAction.AS_CHECK_BOX) &&
-			(propertyName == null || propertyName.equals(Action.CHECKED));
+		boolean enableStateChanged = propertyName == null 
+				|| propertyName.equals(Action.ENABLED) 
+				|| propertyName.equals(IContributionManagerOverrides.P_ENABLED);
+		boolean checkChanged = (action.getStyle() == IAction.AS_CHECK_BOX) 
+				&& (propertyName == null || propertyName.equals(Action.CHECKED));
 					
 		if (widget instanceof ToolItem) {
 			ToolItem ti = (ToolItem) widget;
@@ -521,7 +521,7 @@ public void update(String propertyName) {
 			// We only install an accelerator if the menu item doesn't
 			// belong to a context menu (right mouse button menu).
 			if (textChanged) {
-				if(isContextMenu) {
+				if (isContextMenu) {
 					String text = action.getText();
 					if (text != null) {
 						text = Action.removeAcceleratorText(text);
@@ -530,27 +530,27 @@ public void update(String propertyName) {
 				} else {
 					String text = null;
 					IContributionManagerOverrides overrides = null;
-					if(getParent() != null)
+					if (getParent() != null)
 						overrides = getParent().getOverrides();
-					if(overrides != null)
+					if (overrides != null)
 						text = getParent().getOverrides().getText(this);
-					if(text == null)
+					if (text == null)
 						text = action.getText();
 					if (text != null) {
 						String label = Action.removeAcceleratorText(text);
 						String accText = null;
 						Integer acc = null;
-						if(overrides != null) {
+						if (overrides != null) {
 						 	accText = overrides.getAcceleratorText(this);
 						 	acc = overrides.getAccelerator(this);
 						}
-						if((accText == null) && (label.length() + 1 < text.length()))
+						if ((accText == null) && (label.length() + 1 < text.length()))
 							accText = text.substring(label.length() + 1);
-						if(acc == null)
+						if (acc == null)
 							acc = new Integer(action.getAccelerator());
 						if (acc.intValue() >= 0)
 							mi.setAccelerator(acc.intValue());
-						if(accText == null)
+						if (accText == null)
 							mi.setText(label);
 						else
 							mi.setText(label + '\t' + accText);
@@ -575,7 +575,7 @@ public void update(String propertyName) {
 		}
 
 		if (widget instanceof Button) {
-			Button button= (Button) widget;
+			Button button = (Button) widget;
 			if (imageChanged) {
 				if (updateImages(false)) {
 					// don't update text if it has an image
@@ -625,8 +625,7 @@ private boolean updateImages(boolean forceImage) {
 		// convert the hover image to gray and use it as the regular image.
 		if (image == null && hoverImage != null) { 
 			image = cache.getGrayImage(action.getHoverImageDescriptor());
-		}
-		else {
+		} else {
 			// If there is no hover image, use the regular image as the hover image,
 			// and convert the regular image to gray
 			if (hoverImage == null && image != null) {
@@ -652,8 +651,7 @@ private boolean updateImages(boolean forceImage) {
 		((ToolItem) widget).setImage(image);
 		
 		return image != null;
-	}
-	else if (widget instanceof Item || widget instanceof Button) {
+	} else if (widget instanceof Item || widget instanceof Button) {
 		// Use hover image if there is one, otherwise use regular image.
 		Image image = cache.getImage(action.getHoverImageDescriptor());
 		if (image == null) {
@@ -665,8 +663,7 @@ private boolean updateImages(boolean forceImage) {
 		}
 		if (widget instanceof Item) {
 			((Item) widget).setImage(image);
-		}
-		else if (widget instanceof Button) {
+		} else if (widget instanceof Button) {
 			((Button) widget).setImage(image);
 		}
 		return image != null;

@@ -53,8 +53,14 @@ private PageBook book;
 private Control columnsPanel, detailsPanel, iconsPanel, listPanel;
 private HashMap widgets = new HashMap();
 
+/**
+ * A HashMap to cache the various settings displayed in this dialog
+ */
 protected HashMap settings = new HashMap();
 
+/**
+ * HashMap keys used for caching the various settings displayed in this dialog.
+ */
 protected static final String
 	CACHE_LAYOUT = "layout setting", //$NON-NLS-1$
 	CACHE_COLUMNS_ICON_SIZE = "columns - use large icons", //$NON-NLS-1$
@@ -71,19 +77,19 @@ protected static final String
  */
 protected static final int
 	LAYOUT_COLUMNS_VIEW_ID        = IDialogConstants.CLIENT_ID + 1,
-	LAYOUT_LIST_VIEW_ID          = IDialogConstants.CLIENT_ID + 2,
-	LAYOUT_ICONS_VIEW_ID         = IDialogConstants.CLIENT_ID + 3,
+	LAYOUT_LIST_VIEW_ID           = IDialogConstants.CLIENT_ID + 2,
+	LAYOUT_ICONS_VIEW_ID          = IDialogConstants.CLIENT_ID + 3,
 	LAYOUT_COLUMNS_ICON_SIZE_ID   = IDialogConstants.CLIENT_ID + 4,
-	LAYOUT_LIST_ICON_SIZE_ID     = IDialogConstants.CLIENT_ID + 5,
-	LAYOUT_ICONS_ICON_SIZE_ID    = IDialogConstants.CLIENT_ID + 6,
-	LAYOUT_DETAILS_ICON_SIZE_ID  = IDialogConstants.CLIENT_ID + 7,
-	COLLAPSE_NEVER_ID            = IDialogConstants.CLIENT_ID + 8,
-	COLLAPSE_ALWAYS_ID           = IDialogConstants.CLIENT_ID + 9,
-	COLLAPSE_NEEDED_ID           = IDialogConstants.CLIENT_ID + 10,
-	APPLY_ID                     = IDialogConstants.CLIENT_ID + 11,
-	LAYOUT_DETAILS_VIEW_ID       = IDialogConstants.CLIENT_ID + 12,
-	FONT_CHANGE_ID               = IDialogConstants.CLIENT_ID + 13,
-	DEFAULT_FONT_ID				 = IDialogConstants.CLIENT_ID + 14;
+	LAYOUT_LIST_ICON_SIZE_ID      = IDialogConstants.CLIENT_ID + 5,
+	LAYOUT_ICONS_ICON_SIZE_ID     = IDialogConstants.CLIENT_ID + 6,
+	LAYOUT_DETAILS_ICON_SIZE_ID   = IDialogConstants.CLIENT_ID + 7,
+	COLLAPSE_NEVER_ID             = IDialogConstants.CLIENT_ID + 8,
+	COLLAPSE_ALWAYS_ID            = IDialogConstants.CLIENT_ID + 9,
+	COLLAPSE_NEEDED_ID            = IDialogConstants.CLIENT_ID + 10,
+	APPLY_ID                      = IDialogConstants.CLIENT_ID + 11,
+	LAYOUT_DETAILS_VIEW_ID        = IDialogConstants.CLIENT_ID + 12,
+	FONT_CHANGE_ID                = IDialogConstants.CLIENT_ID + 13,
+	DEFAULT_FONT_ID				  = IDialogConstants.CLIENT_ID + 14;
 
 /**
  * Sub - classes that need to create their own unique IDs should do so by adding
@@ -147,6 +153,12 @@ protected void buttonPressed(int buttonId) {
 	}
 }
 
+/**
+ * This method saves the various settings in this dialog, so that they can be restored
+ * later on if "Cancel" is pressed.
+ * 
+ * @see	#restoreSettings()
+ */
 protected void cacheSettings() {
 	settings.put(CACHE_LAYOUT, new Integer(prefs.getLayoutSetting()));
 	settings.put(CACHE_COLLAPSE, new Integer(prefs.getAutoCollapseSetting()));
@@ -235,6 +247,14 @@ protected Button createButton(Composite parent, int id, String label,
 	return button;
 }
 
+/**
+ * Creates and initializes (i.e., loads the current value from the
+ * PaletteViewerPreferences) the part of the dialog where the options to close drawers
+ * will be displayed.
+ * 
+ * @param container		The parent composite
+ * @return	The newly created Control which has the drawer collapse options
+ */
 protected Control createDrawerCollapseOptions(Composite container) {
 	Composite composite = new Composite(container, SWT.NONE);
 	composite.setFont(container.getFont());
@@ -277,6 +297,13 @@ protected Control createDrawerCollapseOptions(Composite container) {
 	return composite;
 }
 
+/**
+ * Creates and initializes (i.e. loads the current settings from PaletteViewerPreferences)
+ * the options for details layout.
+ * 
+ * @param parent	the parent composite
+ * @return the newly created Control
+ */
 protected Control createDetailsOptions(Composite parent) {
 	Control contents = createOptionsPage(parent, PaletteMessages.SETTINGS_OPTIONS_DETAILS,
 	                                     LAYOUT_DETAILS_ICON_SIZE_ID);
@@ -332,6 +359,13 @@ protected Control createDialogArea(Composite parent) {
 	return composite;
 }
 
+/**
+ * Creates and initializes (i.e. loads the current settings from PaletteViewerPreferences)
+ * the options for columns layout.
+ * 
+ * @param parent	the parent composite
+ * @return the newly created Control
+ */
 protected Control createColumnsOptions(Composite parent) {
 	Composite contents = (Composite)createOptionsPage(parent, 
 			PaletteMessages.SETTINGS_OPTIONS_COLUMNS, LAYOUT_COLUMNS_ICON_SIZE_ID);
@@ -378,6 +412,13 @@ protected Control createColumnsOptions(Composite parent) {
 	return contents;
 }
 
+/**
+ * Creates and initializes (i.e. loads the current settings from PaletteViewerPreferences)
+ * the part of the dialog that displays the font settings.
+ * 
+ * @param parent	the parent composite
+ * @return the newly created Control
+ */
 protected Control createFontSettings(Composite parent) {
 	Composite container = new Composite(parent, SWT.NONE);
 	container.setFont(parent.getFont());
@@ -401,6 +442,13 @@ protected Control createFontSettings(Composite parent) {
 	return container;
 }
 
+/**
+ * Creates and initializes (i.e. loads the current settings from PaletteViewerPreferences)
+ * the options for icons layout.
+ * 
+ * @param parent	the parent composite
+ * @return the newly created Control
+ */
 protected Control createIconsOnlyOptions(Composite parent) {
 	Control contents = createOptionsPage(parent, 
 			PaletteMessages.SETTINGS_OPTIONS_ICONS_ONLY, LAYOUT_ICONS_ICON_SIZE_ID);
@@ -409,9 +457,16 @@ protected Control createIconsOnlyOptions(Composite parent) {
 	return contents;
 }
 
-protected Control createLayoutOptions(Composite container) {
-	Composite composite = new Composite(container, SWT.NONE);
-	composite.setFont(container.getFont());
+/**
+ * Creates the part of the dialog that displays the various options for the selected
+ * layout.
+ * 
+ * @param parent	the parent composite
+ * @return the newly created Control
+ */
+protected Control createLayoutOptions(Composite parent) {
+	Composite composite = new Composite(parent, SWT.NONE);
+	composite.setFont(parent.getFont());
 	GridLayout layout = new GridLayout(1, false);
 	layout.marginWidth = 0;
 	layout.marginHeight = 0;
@@ -472,6 +527,12 @@ protected Control createLayoutOptions(Composite container) {
 	return composite;
 }
 
+/**
+ * Creates the part of the dialog that displays the lists the available layout modes.
+ * 
+ * @param parent	the parent composite
+ * @return the newly created Control
+ */
 protected Control createLayoutSettings(Composite parent) {
 	Composite composite = new Composite(parent, SWT.NONE);
 	composite.setFont(parent.getFont());
@@ -498,6 +559,13 @@ protected Control createLayoutSettings(Composite parent) {
 	return composite;
 }
 
+/**
+ * Creates and initializes (i.e. loads the current settings from PaletteViewerPreferences)
+ * the options for list layout.
+ * 
+ * @param parent	the parent composite
+ * @return the newly created Control
+ */
 protected Control createListOptions(Composite parent) {
 	Control composite = createOptionsPage(parent, PaletteMessages.SETTINGS_OPTIONS_LIST,
 			LAYOUT_LIST_ICON_SIZE_ID);
@@ -506,6 +574,16 @@ protected Control createListOptions(Composite parent) {
 	return composite;
 }
 
+/**
+ * This helper method is a result of code-factoring.  It creates a Group displaying the
+ * given title and creates a "Use Large Icons" checkbox with the given buttonId in it. 
+ * This method is used to create the options for the different layout modes.
+ * 
+ * @param parent	the parent composite
+ * @param	title	The title for the group to be created.
+ * @param	buttonId	The ID for the "Use Large Icons" checkbox to be created in the group.
+ * @return the newly created Group
+ */
 protected Control createOptionsPage(Composite parent, String title, int buttonId) {
 	Group contents = new Group(parent, SWT.NONE);
 	contents.setFont(parent.getFont());
@@ -566,10 +644,18 @@ protected void handleAutoCollapseSettingChanged(int newSetting) {
 	prefs.setAutoCollapseSetting(newSetting);
 }
 
+/**
+ * This method is invoked when "Cancel" is invoked on the dialog.  It simply restores the
+ * settings, thus undoing any changes made in this Dialog.
+ */
 protected void handleCancelPressed() {
 	restoreSettings();
 }
 
+/**
+ * This method is invoked when the user selects the "Change" font button.  It opens the
+ * FontDialog to allow the user to change the font.
+ */
 protected void handleChangeFontPressed() {
 	FontDialog dialog = new FontDialog(getShell());
 	FontData data = prefs.getFontData();
@@ -581,11 +667,22 @@ protected void handleChangeFontPressed() {
 	updateFontName();
 }
 
+/**
+ * This method is invoked when the user selects the "Restore Default" font button.  It
+ * changes the font, in case it was different, to the default one, which is the Workbench
+ * Dialog font.
+ */
 protected void handleDefaultFontRequested() {
 	prefs.setFontData(JFaceResources.getDialogFont().getFontData()[0]);
 	updateFontName();
 }
 
+/**
+ * This method is invoked when the "Use Large Icons" checkbox is selected/deselected for
+ * the currently active layout mode.
+ * 
+ * @param selection	indicates whether large icons are to be used or not.
+ */
 protected void handleIconSizeChanged(boolean selection) {
 	prefs.setCurrentUseLargeIcons(selection);
 }
@@ -617,6 +714,12 @@ protected void handleLayoutSettingChanged(int newSetting) {
 	}
 }
 
+/**
+ * Restores the cached settings, thus undoing any changes made since the last caching of
+ * settings.
+ * 
+ * @see	#cacheSettings()
+ */
 protected void restoreSettings() {
 	prefs.setFontData((FontData)settings.get(CACHE_FONT));
 	prefs.setAutoCollapseSetting(((Integer)settings.get(CACHE_COLLAPSE)).intValue());
@@ -631,8 +734,17 @@ protected void restoreSettings() {
 			((Boolean)settings.get(CACHE_COLUMNS_ICON_SIZE)).booleanValue());
 }
 
+/**
+ * This helper method is mainly a result of code-factoring.  It shows the given page
+ * (which should be one of the controls showing the layout options) in the PageBook and
+ * grows the dialog if necessary.
+ * 
+ * @param	page	One of the controls showing the layout options that already belongs to 
+ * 					the PageBook book.
+ */
 protected void showLayoutOptionsPage(Control page) {
-	// Show the page and grow the shell (if necessary) so that the page is completely visible
+	// Show the page and grow the shell (if necessary) so that the page is completely 
+	// visible
 	Point oldSize = getShell().getSize();
 	book.showPage(page);
 	Point newSize = getShell().computeSize(SWT.DEFAULT, SWT.DEFAULT, true);
@@ -645,10 +757,11 @@ protected void showLayoutOptionsPage(Control page) {
 	}
 }
 
+/**
+ * Updates the label showing the font's name to show the name of the current font.
+ */
 protected void updateFontName() {
 	String name;
-//	System.out.println(prefs.getFontData().toString());
-//	System.out.println(JFaceResources.getDialgoFont().getFontData()[0].toString());
 	if (prefs.getFontData().equals((JFaceResources.getDialogFont().getFontData()[0]))) {
 		name = PaletteMessages.SETTINGS_WORKBENCH_FONT_LABEL;
 	} else {

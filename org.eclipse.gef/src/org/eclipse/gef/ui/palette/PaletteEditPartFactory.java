@@ -15,14 +15,28 @@ import org.eclipse.gef.EditPartFactory;
 import org.eclipse.gef.palette.*;
 import org.eclipse.gef.internal.ui.palette.editparts.*;
 
+/**
+ * Factory to create EditParts for different PaletteEntries.
+ * 
+ * @author Pratik Shah */
 public class PaletteEditPartFactory
 	implements EditPartFactory
 {
 
-protected EditPart createDrawerEditPart(EditPart parentEditPart, Object model){
+/**
+ * Create DrawerEditPart - edit part for PaletteDrawer
+ * 
+ * @param parentEditPart	the parent of the new editpart to be created
+ * @param model				the PaletteDrawer
+ * @return the newly created EditPart
+ */
+protected EditPart createDrawerEditPart(EditPart parentEditPart, Object model) {
 	return new DrawerEditPart((PaletteDrawer)model);
 }
 
+/**
+ * @see org.eclipse.gef.EditPartFactory#createEditPart(EditPart, Object)
+ */
 public EditPart createEditPart(EditPart parentEditPart, Object model) {
 	if (model instanceof PaletteRoot)
 		return createMainPaletteEditPart(parentEditPart, model);
@@ -31,7 +45,8 @@ public EditPart createEditPart(EditPart parentEditPart, Object model) {
 			return createDrawerEditPart(parentEditPart, model);
 	if (model instanceof PaletteContainer)
 		if (PaletteGroup.PALETTE_TYPE_GROUP.equals(((PaletteContainer) model).getType())
-				|| PaletteContainer.PALETTE_TYPE_UNKNOWN.equals(((PaletteContainer)model).getType()))
+				|| PaletteContainer.PALETTE_TYPE_UNKNOWN.equals(
+				((PaletteContainer)model).getType()))
 			return createGroupEditPart(parentEditPart, model);
 	if (model instanceof PaletteTemplateEntry)
 		return createTemplateEditPart(parentEditPart, model);
@@ -43,30 +58,56 @@ public EditPart createEditPart(EditPart parentEditPart, Object model) {
 }
 
 /**
- * Method createSeparatorEditPart.
- * @param parentEditPart
- * @param model
- * @return EditPart
+ * Create SeparatorEditPart - edit part for PaletteSeparator
+ * 
+ * @param parentEditPart	the parent of the new editpart to be created
+ * @param model				the PaletteSeparator
+ * @return the newly created EditPart
  */
-private EditPart createSeparatorEditPart(
-	EditPart parentEditPart,
-	Object model) {
+protected EditPart createSeparatorEditPart(EditPart parentEditPart,	Object model) {
 	return new SeparatorEditPart((PaletteSeparator)model);
 }
 
-
-protected EditPart createEntryEditPart(EditPart parentEditPart, Object model){
+/**
+ * Create ToolEntryEditPart - edit part for ToolEntry
+ * 
+ * @param parentEditPart	the parent of the new editpart to be created
+ * @param model				the ToolEntry
+ * @return the newly created EditPart
+ */
+protected EditPart createEntryEditPart(EditPart parentEditPart, Object model) {
 	return new ToolEntryEditPart((PaletteEntry)model);
 }
 
-protected EditPart createGroupEditPart(EditPart parentEditPart, Object model){
+/**
+ * Create GroupEditPart - edit part for PaletteGroup
+ * 
+ * @param parentEditPart	the parent of the new editpart to be created
+ * @param model				the PaletteGroup
+ * @return the newly created EditPart
+ */
+protected EditPart createGroupEditPart(EditPart parentEditPart, Object model) {
 	return new GroupEditPart((PaletteContainer)model);
 }
 
-protected EditPart createMainPaletteEditPart(EditPart parentEditPart, Object model){
+/**
+ * Create SliderPaletteEditPart - edit part for PaletteRoot
+ * 
+ * @param parentEditPart	the parent of the new editpart to be created
+ * @param model				the PaletteRoot
+ * @return the newly created EditPart
+ */
+protected EditPart createMainPaletteEditPart(EditPart parentEditPart, Object model) {
 	return new SliderPaletteEditPart((PaletteRoot)model);
 }
 
+/**
+ * Create TemplateEditPart - edit part for PaletteTemplateEntry
+ * 
+ * @param parentEditPart	the parent of the new editpart to be created
+ * @param model				the PaletteTemplateEntry
+ * @return the newly created EditPart
+ */
 protected EditPart createTemplateEditPart(EditPart parentEditPart, Object model) {
 	return new TemplateEditPart((PaletteTemplateEntry)model);
 }

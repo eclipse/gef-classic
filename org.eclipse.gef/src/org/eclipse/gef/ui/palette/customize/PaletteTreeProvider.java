@@ -120,7 +120,7 @@ protected void handlePropertyChanged(PropertyChangeEvent evt) {
 	if (property.equals(PaletteEntry.PROPERTY_LABEL)
 	  || property.equals(PaletteEntry.PROPERTY_SMALL_ICON)) {
 		viewer.update(entry, null);
-	} else if(property.equals(PaletteEntry.PROPERTY_VISIBLE)){
+	} else if (property.equals(PaletteEntry.PROPERTY_VISIBLE)) {
 		viewer.refresh(entry);
 	} else if (property.equals(PaletteContainer.PROPERTY_CHILDREN)) {
 		viewer.refresh(entry);
