@@ -32,6 +32,8 @@ protected void changeGuide(LogicGuide oldGuide, LogicGuide newGuide, int newAlig
 	if (oldGuide != null && oldGuide != newGuide) {
 		oldGuide.detachPart(part);
 	}
+	// You need to re-attach the part even if the oldGuide and the newGuide are the same
+	// because the alignment could have changed
 	if (newGuide != null) {
 		newGuide.attachPart(part, newAlignment);
 	}
@@ -55,10 +57,10 @@ public void execute() {
 	hGuideChange.oldGuide = part.getHorizontalGuide();
 	
 	if (hGuideChange.oldGuide != null)
-		hGuideChange.oldAlign = ((Integer)hGuideChange.oldGuide.getMap().get(part)).intValue();
+		hGuideChange.oldAlign = hGuideChange.oldGuide.getAlignment(part);
 	
 	if (vGuideChange.oldGuide != null) {
-		vGuideChange.oldAlign = ((Integer)vGuideChange.oldGuide.getMap().get(part)).intValue();
+		vGuideChange.oldAlign = vGuideChange.oldGuide.getAlignment(part);
 	}
 	
 	if (vGuideChange.changeGuide) {
@@ -124,7 +126,7 @@ public void undo() {
 
 class GuideChange {
 	protected LogicGuide oldGuide, newGuide;
-	protected int oldAlign, newAlign;	
+	protected int oldAlign, newAlign;
 	protected boolean changeGuide;
 }
 
