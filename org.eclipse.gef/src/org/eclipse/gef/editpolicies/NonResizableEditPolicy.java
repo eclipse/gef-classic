@@ -31,8 +31,7 @@ protected IFigure createDragSourceFeedbackFigure() {
 	if (useRealtimeFeedback) {
 		// Use the actual figure for feedback
 		return ((GraphicalEditPart) getHost()).getFigure();
-	}
-	else {
+	} else {
 		// Use a ghost rectangle for feedback
 		RectangleFigure r = new RectangleFigure();
 		FigureUtilities.makeGhostShape(r);
@@ -50,8 +49,8 @@ protected List createSelectionHandles() {
  	return list;
 }
 
-public void deactivate(){
-	if (feedback != null){
+public void deactivate() {
+	if (feedback != null) {
 		removeFeedback(feedback);
 		feedback = null;
 	}
@@ -70,8 +69,7 @@ protected void eraseChangeBoundsFeedback(ChangeBoundsRequest request) {
 		if (useRealtimeFeedback) {
 			feedback.setBounds(originalLocation);
 			feedback.revalidate();
-		}
-		else removeFeedback(feedback);
+		} else removeFeedback(feedback);
 	}
 	feedback = null;
 	originalLocation = null;
@@ -84,13 +82,12 @@ protected void eraseChangeBoundsFeedback(ChangeBoundsRequest request) {
  * @param dragTracker org.eclipse.gef.tools.DragTracker The drag tracker of the tool performing the drag.
  */
 public void eraseSourceFeedback(Request request) {
-	if (	REQ_MOVE.equals(request.getType()) ||
-		REQ_ADD.equals(request.getType())
-	)
+	if (REQ_MOVE.equals(request.getType())
+		|| REQ_ADD.equals(request.getType()))
 		eraseChangeBoundsFeedback((ChangeBoundsRequest) request);
 }
 
-private Rectangle getBounds(){
+private Rectangle getBounds() {
 	return ((GraphicalEditPart)getHost()).getFigure().getBounds();
 }
 
@@ -138,11 +135,11 @@ protected Command getMoveCommand(ChangeBoundsRequest request) {
 	return getHost().getParent().getCommand(req);
 }
 
-protected Command getOrphanCommand(Request req){
+protected Command getOrphanCommand(Request req) {
 	return null;
 }
 
-protected void hideFocus(){
+protected void hideFocus() {
 	if (focusRect != null)
 		removeFeedback(focusRect);
 	focusRect = null;
@@ -152,14 +149,13 @@ protected void hideFocus(){
  * Display feedback to indicate that the receiver object
  * is being dragged.  The default feedback is a rectangle
  * the same size as the figure.
- * @param dragTracker org.eclipse.gef.tools.DragTracker The drag tracker of the tool performing the drag.
  */
-protected void showChangeBoundsFeedback(ChangeBoundsRequest request){
+protected void showChangeBoundsFeedback(ChangeBoundsRequest request) {
 	IFigure p = getDragSourceFeedbackFigure();
 	Rectangle r = originalLocation.getTranslated(request.getMoveDelta());
 	Dimension resize = request.getSizeDelta();
 	r.width += resize.width;
-	r.height+= resize.height;
+	r.height += resize.height;
 
 	((GraphicalEditPart)getHost()).getFigure().translateToAbsolute(r);
 	p.translateToRelative(r);
@@ -168,7 +164,7 @@ protected void showChangeBoundsFeedback(ChangeBoundsRequest request){
 		p.validate();
 }
 
-protected void showFocus(){
+protected void showFocus() {
 	focusRect = new AbstractHandle(
 		(GraphicalEditPart)getHost(),
 		new Locator() {
@@ -183,24 +179,24 @@ protected void showFocus(){
 			{
 				setBorder(new FocusBorder());
 			}
-			protected DragTracker createDragTracker(){
+			protected DragTracker createDragTracker() {
 				return null;
 			}
 		};
 	addFeedback(focusRect);
 }
 
-public void showSourceFeedback(Request request){
-	if (REQ_MOVE.equals(request.getType()) ||
-		REQ_ADD.equals(request.getType()))
-		showChangeBoundsFeedback((ChangeBoundsRequest)request);
+public void showSourceFeedback(Request request) {
+	if (REQ_MOVE.equals(request.getType())
+		|| REQ_ADD.equals(request.getType()))
+		showChangeBoundsFeedback((ChangeBoundsRequest) request);
 }
 
-public boolean understandsRequest(Request request){
-	if (REQ_MOVE.equals(request.getType()) ||
-	    REQ_ADD.equals(request.getType()) ||
-	    REQ_ORPHAN.equals(request.getType()) ||
-	    REQ_ALIGN.equals(request.getType()))
+public boolean understandsRequest(Request request) {
+	if (REQ_MOVE.equals(request.getType())
+		|| REQ_ADD.equals(request.getType())
+		|| REQ_ORPHAN.equals(request.getType())
+		|| REQ_ALIGN.equals(request.getType()))
 		return true;
 	return super.understandsRequest(request);
 }

@@ -16,8 +16,8 @@ import org.eclipse.gef.requests.CreateRequest;
 /**
  * EditPolicy handles creating commands; providing target feedback; building/converting
  * model and layout constraints; and refreshing layout constraints based on model changes.
- * The EditPolicy handles the relationship between a EditPart (which wraps the actual visual
- * figure) and underlying model object.
+ * The EditPolicy handles the relationship between a EditPart (which wraps the actual
+ * visual figure) and underlying model object.
  */
 public abstract class LayoutEditPolicy
 	extends GraphicalEditPolicy
@@ -27,7 +27,7 @@ private Shape sizeOnDropFeedback;
 
 private EditPartListener listener;
 
-public void activate(){
+public void activate() {
 	setListener(createListener());
 	decorateChildren();
 	super.activate();
@@ -35,35 +35,35 @@ public void activate(){
 
 abstract protected EditPolicy createChildEditPolicy(EditPart child);
 
-protected EditPartListener createListener(){
-	return new EditPartListener.Stub(){
-		public void childAdded(EditPart child, int index){
+protected EditPartListener createListener() {
+	return new EditPartListener.Stub() {
+		public void childAdded(EditPart child, int index) {
 			decorateChild(child);
 		}
-		public void removingChild(EditPart child, int index){
+		public void removingChild(EditPart child, int index) {
 			undecorateChild(child);
 		}
 	};
 }
 
-public void deactivate(){
+public void deactivate() {
 	undecorateChildren();
 	setListener(null);
 	super.deactivate();
 }
 
-protected void decorateChild(EditPart child){
+protected void decorateChild(EditPart child) {
 	EditPolicy policy = createChildEditPolicy(child);
 	child.installEditPolicy(EditPolicy.PRIMARY_DRAG_ROLE, policy);
 }
 
-protected void decorateChildren(){
+protected void decorateChildren() {
 	List children = getHost().getChildren();
-	for (int i=0; i<children.size(); i++)
+	for (int i = 0; i < children.size(); i++)
 		decorateChild((EditPart)children.get(i));
 }
 
-protected void eraseDragTargetFeedback(Request request) {}
+protected void eraseDragTargetFeedback(Request request) { }
 
 protected void eraseSizeOnDropFeedback(Request request) {
 	if (sizeOnDropFeedback != null) {
@@ -73,18 +73,20 @@ protected void eraseSizeOnDropFeedback(Request request) {
 }
 
 public void eraseTargetFeedback(Request request) {
-	if (REQ_ADD.equals(request.getType()) ||
-		REQ_MOVE.equals(request.getType())||
-		REQ_CREATE.equals(request.getType()))
+	if (REQ_ADD.equals(request.getType())
+		|| REQ_MOVE.equals(request.getType())
+		|| REQ_CREATE.equals(request.getType()))
 		eraseDragTargetFeedback(request);
 
 	if (REQ_CREATE.equals(request.getType()))
 		eraseSizeOnDropFeedback(request);
 }
 
-protected Command getAddCommand(Request request){return null;}
+protected Command getAddCommand(Request request) {
+	return null;
+}
 
-public Command getCommand(Request request){
+public Command getCommand(Request request) {
 	if (REQ_DELETE_DEPENDANT.equals(request.getType()))
 		return getDeleteDependantCommand(request);
 
@@ -118,11 +120,11 @@ abstract protected Command getCreateCommand(CreateRequest request);
 abstract protected Command getDeleteDependantCommand(Request request);
 
 /**@deprecated call getHostFigure*/
-protected IFigure getFigure(){
+protected IFigure getFigure() {
 	return ((GraphicalEditPart)getHost()).getFigure();
 }
 
-protected IFigure getLayoutContainer(){
+protected IFigure getLayoutContainer() {
 	return ((GraphicalEditPart)getHost()).getContentPane();
 }
 
@@ -132,12 +134,12 @@ abstract protected Command getMoveChildrenCommand(Request request);
  * do any resulting operations on the layout.
  * The child will be re-added to another container.
  */
-protected Command getOrphanChildrenCommand(Request request){
+protected Command getOrphanChildrenCommand(Request request) {
 	return null;
 }
 
 protected IFigure getSizeOnDropFeedback() {
-	if (sizeOnDropFeedback == null){
+	if (sizeOnDropFeedback == null) {
 		sizeOnDropFeedback  = new RectangleFigure();
 		FigureUtilities.makeGhostShape(sizeOnDropFeedback );
 		sizeOnDropFeedback.setLineStyle(Graphics.LINE_DASHDOT);
@@ -148,17 +150,16 @@ protected IFigure getSizeOnDropFeedback() {
 
 }
 
-public EditPart getTargetEditPart(Request request){
-	if (REQ_ADD.equals(request.getType()) ||
-	    REQ_MOVE.equals(request.getType()) ||
-	    REQ_CREATE.equals(request.getType())
-	)
+public EditPart getTargetEditPart(Request request) {
+	if (REQ_ADD.equals(request.getType())
+		|| REQ_MOVE.equals(request.getType())
+		|| REQ_CREATE.equals(request.getType()))
 		return getHost();
 
 	return null;
 }
 
-protected void setListener(EditPartListener listener){
+protected void setListener(EditPartListener listener) {
 	if (this.listener != null)
 		getHost().removeEditPartListener(this.listener);
 	this.listener = listener;
@@ -171,27 +172,28 @@ protected void showDragTargetFeedback(Request request) {}
 protected void showSizeOnDropFeedback(CreateRequest request) {
 }
 
-public void showTargetFeedback(Request request){
-	if (REQ_ADD.equals(request.getType()) ||
-		REQ_MOVE.equals(request.getType()) ||
-		REQ_RESIZE_CHILDREN.equals(request.getType()) ||
-		REQ_CREATE.equals(request.getType())){
-		debugFeedback("Request to show \"" + request.getType() + "\" target feedback");//$NON-NLS-2$//$NON-NLS-1$
+public void showTargetFeedback(Request request) {
+	if (REQ_ADD.equals(request.getType())
+		|| REQ_MOVE.equals(request.getType())
+		|| REQ_RESIZE_CHILDREN.equals(request.getType())
+		|| REQ_CREATE.equals(request.getType())) {
+		debugFeedback("Request to show \"" + request.getType()//$NON-NLS-1$
+			+ "\" target feedback"); //$NON-NLS-1$
 		showDragTargetFeedback(request);
 	}
 
-	if (REQ_CREATE.equals(request.getType())){
+	if (REQ_CREATE.equals(request.getType())) {
 		CreateRequest createReq = (CreateRequest)request;
 		if (createReq.getSize() != null)
 			showSizeOnDropFeedback(createReq);
 	}
 }
 
-protected void undecorateChild(EditPart child){
+protected void undecorateChild(EditPart child) {
 	child.removeEditPolicy(EditPolicy.PRIMARY_DRAG_ROLE);
 }
 
-protected void undecorateChildren(){
+protected void undecorateChildren() {
 	List children = getHost().getChildren();
 	for (int i=0; i<children.size(); i++)
 		undecorateChild((EditPart)children.get(i));

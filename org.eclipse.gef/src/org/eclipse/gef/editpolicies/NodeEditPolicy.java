@@ -45,7 +45,7 @@ protected Command getDeleteCommand(DeleteRequest delRequest) {
 	DeleteRequest fwdRequest = new DeleteRequest(REQ_SOURCE_DELETED);
 	fwdRequest.setContributions(delRequest.getContributions());
 
-	for (int i=0; i<connections.size(); i++) {
+	for (int i = 0; i < connections.size(); i++) {
 		EditPart connection = (EditPart)connections.get(i);
 		//If the EditPart has already been asked to delete, skip it.
 		if (fwdRequest.containsContribution(connection))
@@ -58,7 +58,7 @@ protected Command getDeleteCommand(DeleteRequest delRequest) {
 	connections = getHostNode().getTargetConnections();
 	fwdRequest.setType(REQ_TARGET_DELETED);
 
-	for (int i=0; i<connections.size(); i++) {
+	for (int i = 0; i < connections.size(); i++) {
 		EditPart connection = (EditPart)connections.get(i);
 		if (fwdRequest.containsContribution(connection))
 			continue;
@@ -70,7 +70,7 @@ protected Command getDeleteCommand(DeleteRequest delRequest) {
 	return cc.isEmpty() ? null : cc;
 }
 
-private GraphicalEditPart getHostNode(){
+private GraphicalEditPart getHostNode() {
 	return (GraphicalEditPart)getHost();
 }
 

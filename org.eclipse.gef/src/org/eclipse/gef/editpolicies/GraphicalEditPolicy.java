@@ -24,11 +24,11 @@ protected void addFeedback(IFigure f) {
 		add(f);
 }
 
-protected IFigure getHostFigure(){
+protected IFigure getHostFigure() {
 	return ((GraphicalEditPart)getHost()).getFigure();
 }
 
-protected IFigure getLayer(Object layer){
+protected IFigure getLayer(Object layer) {
 	LayerManager manager = (LayerManager)getHost().getRoot().getViewer().
 		getEditPartRegistry().
 		get(LayerManager.ID);

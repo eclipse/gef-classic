@@ -69,14 +69,14 @@ protected Command getResizeCommand(ChangeBoundsRequest request) {
 	return getHost().getParent().getCommand(req);
 }
 
-public void showSourceFeedback(Request request){
+public void showSourceFeedback(Request request) {
 	if (REQ_RESIZE.equals(request.getType()))
 		showChangeBoundsFeedback((ChangeBoundsRequest)request);
 	else
 		super.showSourceFeedback(request);
 }
 
-public boolean understandsRequest(Request request){
+public boolean understandsRequest(Request request) {
 	if (REQ_RESIZE.equals(request.getType()))
 		return true;
 	return super.understandsRequest(request);

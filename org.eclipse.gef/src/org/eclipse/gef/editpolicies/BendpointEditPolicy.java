@@ -48,9 +48,9 @@ private List createAutomaticHandles() {
 	List list = new ArrayList();
 	ConnectionEditPart connEP = (ConnectionEditPart)getHost();
 	PointList points = getConnection().getPoints();
-	for (int i=0; i<points.size()-2; i++) {
+	for (int i = 0; i < points.size() - 2; i++) {
 		BendpointHandle handle = new BendpointCreationHandle(connEP, 0, 
-					new BendpointLocator(getConnection(), i+1));
+					new BendpointLocator(getConnection(), i + 1));
 		list.add(handle);
 	}
 	return list;
@@ -60,11 +60,11 @@ private List createManualHandles() {
 	List list = new ArrayList();
 	ConnectionEditPart connEP = (ConnectionEditPart)getHost();
 	PointList points = getConnection().getPoints();
-	for (int i=0; i<points.size()-2; i++) {
+	for (int i = 0; i < points.size() - 2; i++) {
 		list.add(new BendpointCreationHandle(connEP, i));
 		list.add(new BendpointMoveHandle(connEP, i));
 	}
-	list.add(new BendpointCreationHandle(connEP, points.size()-2));
+	list.add(new BendpointCreationHandle(connEP, points.size() - 2));
 	return list;
 }
 
@@ -111,10 +111,10 @@ protected void eraseConnectionFeedback(BendpointRequest request) {
  * @see #eraseConnectionFeedback(BendpointRequest)
  */
 public void eraseSourceFeedback(Request request) {
-	if (REQ_MOVE_BENDPOINT.equals(request.getType()) ||
-	    REQ_CREATE_BENDPOINT.equals(request.getType()) ||
-	    REQ_DELETE_BENDPOINT.equals(request.getType()))
-		eraseConnectionFeedback((BendpointRequest)request);
+	if (REQ_MOVE_BENDPOINT.equals(request.getType())
+		|| REQ_CREATE_BENDPOINT.equals(request.getType())
+		|| REQ_DELETE_BENDPOINT.equals(request.getType()))
+		eraseConnectionFeedback((BendpointRequest) request);
 }
 
 /**
@@ -188,7 +188,7 @@ private boolean lineContainsPoint(Point p1, Point p2, Point p) {
 	int numerator, denominator;
 	double result = 0.0;
 
-	if(p1.x != p2.x && p1.y != p2.y) {
+	if (p1.x != p2.x && p1.y != p2.y) {
 		
 		v1x = p2.x - p1.x;
 		v1y = p2.y - p1.y;
@@ -212,10 +212,10 @@ private boolean lineContainsPoint(Point p1, Point p2, Point p) {
  * this method is only called when the points of the Connection have changed.
  */
 public void propertyChange(PropertyChangeEvent evt) {
-	if (getHost().getSelected() != EditPart.SELECTED_NONE){
+	if (getHost().getSelected() != EditPart.SELECTED_NONE) {
 		int count = handles.size();
 		int points = getConnection().getPoints().size();
-		if (count != points*2-3)
+		if (count != points * 2 - 3)
 			addSelectionHandles();
 	}
 }
@@ -245,7 +245,7 @@ private void setReferencePoints(BendpointRequest request) {
 	PointList points = getConnection().getPoints();
 	points.getPoint(ref1, request.getIndex());
 	getConnection().translateToAbsolute(ref1);
-	points.getPoint(ref2, request.getIndex()+2);
+	points.getPoint(ref2, request.getIndex() + 2);
 	getConnection().translateToAbsolute(ref2);
 }
 

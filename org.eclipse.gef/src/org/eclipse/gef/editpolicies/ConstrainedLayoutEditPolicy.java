@@ -29,7 +29,7 @@ abstract protected Command createChangeConstraintCommand(
 	EditPart child,
 	Object constraint);
 
-protected Command getAddCommand(Request generic){
+protected Command getAddCommand(Request generic) {
 	ChangeBoundsRequest request = (ChangeBoundsRequest)generic;
 	List editParts = request.getEditParts();
 	CompoundCommand command = new CompoundCommand();
@@ -38,7 +38,7 @@ protected Command getAddCommand(Request generic){
 	Rectangle r;
 	Object constraint;
 
-	for (int i=0; i < editParts.size(); i++){
+	for (int i = 0; i < editParts.size(); i++) {
 		childPart = (GraphicalEditPart)editParts.get(i);
 		r = childPart.getFigure().getBounds().getCopy();
 		//convert r to absolute from childpart figure
@@ -59,7 +59,7 @@ protected Command getAlignChildrenCommand(AlignmentRequest request) {
 	return getResizeChildrenCommand(request);
 }
 
-public Command getCommand(Request request){
+public Command getCommand(Request request) {
 	if (REQ_RESIZE_CHILDREN.equals(request.getType()))
 		return getResizeChildrenCommand((ChangeBoundsRequest)request);
 	if (REQ_ALIGN_CHILDREN.equals(request.getType()))
@@ -74,7 +74,7 @@ public Command getCommand(Request request){
  * translateToModelConstraint(Object)
  * @see #translateToModelConstraint(Object)
  */
-protected Object getConstraintFor (ChangeBoundsRequest request, GraphicalEditPart child){
+protected Object getConstraintFor (ChangeBoundsRequest request, GraphicalEditPart child) {
 	Rectangle rect = child.getFigure().getBounds();
 	rect = request.getTransformedRectangle(rect);
 	rect.translate(getLayoutOrigin().getNegated());
@@ -93,7 +93,7 @@ abstract protected Object getConstraintFor (Point point);
  */
 abstract protected Object getConstraintFor (Rectangle rect);
 
-protected Object getConstraintFor(CreateRequest request){
+protected Object getConstraintFor(CreateRequest request) {
 	IFigure figure = getLayoutContainer();
 
 	Point where = request.getLocation().getCopy();
@@ -116,7 +116,7 @@ abstract protected Command getCreateCommand(CreateRequest request);
  * form used by the LayoutManager
  * @deprecated This is never used.
  */
-protected Object translateToFigureConstraint(Object modelConstraint){
+protected Object translateToFigureConstraint(Object modelConstraint) {
 	return modelConstraint;
 }
 
@@ -124,17 +124,17 @@ protected Object translateToFigureConstraint(Object modelConstraint){
  * Converts a constraint from the format used by LayoutManagers,
  * to the form stored in the model.
  */
-protected Object translateToModelConstraint(Object figureConstraint){
+protected Object translateToModelConstraint(Object figureConstraint) {
 	return figureConstraint;
 }
 
-protected Command getResizeChildrenCommand(ChangeBoundsRequest request){
+protected Command getResizeChildrenCommand(ChangeBoundsRequest request) {
 	CompoundCommand resize = new CompoundCommand();
 	Command c;
 	GraphicalEditPart child;
 	List children = request.getEditParts();
 
-	for (int i=0; i < children.size(); i++){
+	for (int i = 0; i < children.size(); i++) {
 		child = (GraphicalEditPart)children.get(i);
 		c = createChangeConstraintCommand(child,
 			translateToModelConstraint(
@@ -149,7 +149,7 @@ protected Command getMoveChildrenCommand(Request request) {
 	return getResizeChildrenCommand((ChangeBoundsRequest)request);
 }
 
-protected Point getLayoutOrigin(){
+protected Point getLayoutOrigin() {
 	return getLayoutContainer().getClientArea().getLocation();
 }
 

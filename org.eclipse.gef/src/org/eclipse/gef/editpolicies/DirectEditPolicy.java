@@ -22,8 +22,8 @@ public void eraseSourceFeedback(Request request) {
 		eraseDirectEditFeedback((DirectEditRequest)request);
 }
 
-protected void eraseDirectEditFeedback(DirectEditRequest request){
-	if (showing){
+protected void eraseDirectEditFeedback(DirectEditRequest request) {
+	if (showing) {
 		revertOldEditValue(request);
 		showing = false;
 	}
@@ -37,7 +37,7 @@ public Command getCommand(Request request) {
 
 abstract protected Command getDirectEditCommand(DirectEditRequest edit);
 
-protected void revertOldEditValue(DirectEditRequest request){
+protected void revertOldEditValue(DirectEditRequest request) {
 	getHost().refresh();
 }
 
@@ -46,8 +46,8 @@ public void showSourceFeedback(Request request) {
 		showDirectEditFeedback((DirectEditRequest)request);
 }
 
-protected void showDirectEditFeedback(DirectEditRequest request){
-	if (!showing){
+protected void showDirectEditFeedback(DirectEditRequest request) {
+	if (!showing) {
 		storeOldEditValue(request);
 		showing = true;
 	}

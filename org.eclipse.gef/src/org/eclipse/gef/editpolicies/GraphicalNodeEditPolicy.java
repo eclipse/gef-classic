@@ -19,12 +19,12 @@ abstract public class GraphicalNodeEditPolicy
 protected FeedbackHelper feedbackHelper;
 protected Connection connectionFeedback;
 
-protected Connection createDummyConnection(Request req){
+protected Connection createDummyConnection(Request req) {
 	return new PolylineConnection();
 }
 
-protected void eraseCreationFeedback(CreateConnectionRequest request){
-	if (connectionFeedback != null){
+protected void eraseCreationFeedback(CreateConnectionRequest request) {
+	if (connectionFeedback != null) {
 		removeFeedback(connectionFeedback);
 		feedbackHelper = null;
 		connectionFeedback = null;
@@ -38,8 +38,7 @@ protected void eraseCreationFeedback(CreateConnectionRequest request){
  * @param dragTracker org.eclipse.gef.tools.DragTracker The drag tracker of the tool performing the drag.
  */
 public void eraseSourceFeedback(Request request) {
-	if (REQ_CONNECTION_END.equals(request.getType()))
-	{
+	if (REQ_CONNECTION_END.equals(request.getType())) {
 		eraseCreationFeedback((CreateConnectionRequest)request);
 		debugFeedback("Request to erase \"" + request.getType() + "\" source feedback");//$NON-NLS-2$//$NON-NLS-1$
 	}
@@ -49,16 +48,16 @@ public void eraseSourceFeedback(Request request) {
  * Erase feedback indicating that the edit part is no longer 
  * the target of a drag.
  */
-protected void eraseTargetConnectionFeedback(DropRequest request) {}
+protected void eraseTargetConnectionFeedback(DropRequest request) { }
 
 public void eraseTargetFeedback(Request request) {
-	if (REQ_CONNECTION_START.equals(request.getType()) ||
-		REQ_CONNECTION_END.equals(request.getType()) ||
-		REQ_RECONNECT_SOURCE.equals(request.getType()) ||
-		REQ_RECONNECT_TARGET.equals(request.getType()))
-	{
-		eraseTargetConnectionFeedback((DropRequest)request);
-		debugFeedback("Request to erase \"" + request.getType() + "\" target feedback");//$NON-NLS-2$//$NON-NLS-1$
+	if (REQ_CONNECTION_START.equals(request.getType())
+		|| REQ_CONNECTION_END.equals(request.getType())
+		|| REQ_RECONNECT_SOURCE.equals(request.getType())
+		|| REQ_RECONNECT_TARGET.equals(request.getType())) {
+		eraseTargetConnectionFeedback((DropRequest) request);
+		debugFeedback("Request to erase \"" + request.getType() //$NON-NLS-1$
+			+ "\" target feedback"); //$NON-NLS-1$
 	}
 }
 
@@ -88,9 +87,9 @@ public Command getCommand(Request request) {
 	return null;
 }
 
-abstract protected Command getConnectionCompleteCommand(CreateConnectionRequest request);
+protected abstract Command getConnectionCompleteCommand(CreateConnectionRequest request);
 
-abstract protected Command getConnectionCreateCommand(CreateConnectionRequest request);
+protected abstract Command getConnectionCreateCommand(CreateConnectionRequest request);
 
 protected FeedbackHelper getFeedbackHelper(CreateConnectionRequest request) {
 	if (feedbackHelper == null) {
@@ -107,8 +106,8 @@ protected FeedbackHelper getFeedbackHelper(CreateConnectionRequest request) {
 	return feedbackHelper;
 }
 
-abstract protected Command getReconnectTargetCommand(ReconnectRequest request);
-abstract protected Command getReconnectSourceCommand(ReconnectRequest request);
+protected abstract Command getReconnectTargetCommand(ReconnectRequest request);
+protected abstract Command getReconnectSourceCommand(ReconnectRequest request);
 
 protected ConnectionAnchor getSourceConnectionAnchor(CreateConnectionRequest request) {
 	EditPart source = request.getSourceEditPart();
@@ -124,38 +123,38 @@ protected ConnectionAnchor getTargetConnectionAnchor(CreateConnectionRequest req
 		: null;
 }
 
-public EditPart getTargetEditPart(Request request){
-	if (REQ_CONNECTION_START.equals(request.getType()) ||
-		REQ_CONNECTION_END.equals(request.getType()) ||
-		REQ_RECONNECT_SOURCE.equals(request.getType()) ||
-		REQ_RECONNECT_TARGET.equals(request.getType()))
+public EditPart getTargetEditPart(Request request) {
+	if (REQ_CONNECTION_START.equals(request.getType())
+		|| REQ_CONNECTION_END.equals(request.getType())
+		|| REQ_RECONNECT_SOURCE.equals(request.getType())
+		|| REQ_RECONNECT_TARGET.equals(request.getType()))
 		return getHost();
 	return null;
 }
 
-protected void showCreationFeedback(CreateConnectionRequest request){
+protected void showCreationFeedback(CreateConnectionRequest request) {
 	FeedbackHelper helper = getFeedbackHelper(request);
 	Point p = new Point(request.getLocation());
 	helper.update(getTargetConnectionAnchor(request), p);
 }
 
-public void showSourceFeedback(Request request){
-	if (REQ_CONNECTION_END.equals(request.getType())){
+public void showSourceFeedback(Request request) {
+	if (REQ_CONNECTION_END.equals(request.getType())) {
 		showCreationFeedback((CreateConnectionRequest)request);
 		debugFeedback("Request to show \"" + request.getType() + "\" SOURCE feeback");//$NON-NLS-2$//$NON-NLS-1$
 	}
 }
 
-protected void showTargetConnectionFeedback(DropRequest request) {}
+protected void showTargetConnectionFeedback(DropRequest request) { }
 
 public void showTargetFeedback(Request request) {
-	if (REQ_CONNECTION_START.equals(request.getType()) ||
-		REQ_CONNECTION_END.equals(request.getType()) ||
-		REQ_RECONNECT_SOURCE.equals(request.getType()) ||
-		REQ_RECONNECT_TARGET.equals(request.getType()))
-	{
-		showTargetConnectionFeedback((DropRequest)request);
-		debugFeedback("Request to show \"" + request.getType() + "\" TARGET feeback");//$NON-NLS-2$//$NON-NLS-1$
+	if (REQ_CONNECTION_START.equals(request.getType())
+		|| REQ_CONNECTION_END.equals(request.getType())
+		|| REQ_RECONNECT_SOURCE.equals(request.getType())
+		|| REQ_RECONNECT_TARGET.equals(request.getType())) {
+		showTargetConnectionFeedback((DropRequest) request);
+		debugFeedback("Request to show \"" + request.getType()//$NON-NLS-1$
+			+ "\" TARGET feeback"); //$NON-NLS-1$
 	}
 }
 

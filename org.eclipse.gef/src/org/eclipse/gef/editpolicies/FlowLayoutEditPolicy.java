@@ -19,9 +19,9 @@ public abstract class FlowLayoutEditPolicy
 {
 protected Polyline insertionLine;
 
-protected void eraseDragTargetFeedback(Request request){
+protected void eraseDragTargetFeedback(Request request) {
 	super.eraseDragTargetFeedback(request);
-	if (insertionLine != null){
+	if (insertionLine != null) {
 		removeFeedback(insertionLine);
 		insertionLine = null;
 	}
@@ -50,7 +50,7 @@ protected EditPart getInsertionReference(Request request) {
 			EditPart editpart = (EditPart) children.get(index);
 			if (!selection.contains(editpart))
 				return editpart;
-		}while (++index  < children.size());
+		} while (++index  < children.size());
 	}
 	return null; //Not found, add at the end.
 }
@@ -62,7 +62,7 @@ protected int getFeedbackIndexFor(Request request) {
 		return -1;
 		
 	Transposer transposer = new Transposer();
-	transposer.setEnabled( !layoutManager.isHorizontal() );
+	transposer.setEnabled (!layoutManager.isHorizontal());
 	
 	Point p = transposer.t(getLocationFromRequest(request));
 
@@ -111,16 +111,16 @@ protected Polyline getLineFeedback() {
 	if (insertionLine == null) {
 		insertionLine = new Polyline();
 		insertionLine.setLineWidth(2);
-		insertionLine.addPoint(new Point(0,0));
-		insertionLine.addPoint(new Point(10,10));
+		insertionLine.addPoint(new Point(0, 0));
+		insertionLine.addPoint(new Point(10, 10));
 		addFeedback(insertionLine);
 	}
 	return insertionLine;
 }
 
-protected Point getLocationFromRequest(Request request){
+protected Point getLocationFromRequest(Request request) {
 	// add, move, create and resize
-	if( request instanceof DropRequest)
+	if (request instanceof DropRequest)
 		return ((DropRequest)request).getLocation();
 	return null;
 }
@@ -141,8 +141,7 @@ protected void showDragTargetFeedback(Request request) {
 		epIndex = getHost().getChildren().size() - 1;
 		EditPart editPart = (EditPart) getHost().getChildren().get(epIndex);
 		r = transposer.t(getAbsoluteBounds((GraphicalEditPart)editPart));
-	} 
-	else {
+	} else {
 		EditPart editPart = (EditPart) getHost().getChildren().get(epIndex);
 		r = transposer.t(getAbsoluteBounds((GraphicalEditPart)editPart));
 		Point p = transposer.t(getLocationFromRequest(request));
@@ -171,8 +170,7 @@ protected void showDragTargetFeedback(Request request) {
 			if (prevRight < r.x) {
 				// Not a line break
 				x = prevRight + (r.x - prevRight) / 2;
-			}
-			else if( prevRight == r.x ) {
+			} else if (prevRight == r.x) {
 				x = prevRight + 1;	
 			}
 		}
@@ -183,8 +181,7 @@ protected void showDragTargetFeedback(Request request) {
 			if (x < parentBox.x)
 				x = parentBox.x + (r.x - parentBox.x) / 2;
 		}
-	} 
-	else {
+	} else {
 		// We only have before==false if we are at the end of a line, so go halfway between the
 		// right edge and the right edge of the parent, but no more than 4 pixels.
 		Rectangle parentBox = transposer.t(getAbsoluteBounds((GraphicalEditPart)getHost()));
@@ -200,8 +197,8 @@ protected void showDragTargetFeedback(Request request) {
 	Point p2 = new Point(x, r.y + r.height + 6);
 	fb.translateToRelative(p2);
 	p2 = transposer.t(p2);
-	fb.setPoint(p1,0);
-	fb.setPoint(p2,1);
+	fb.setPoint(p1, 0);
+	fb.setPoint(p2, 1);
 }
 }
 

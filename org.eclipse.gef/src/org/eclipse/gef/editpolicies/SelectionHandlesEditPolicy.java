@@ -11,9 +11,12 @@ import java.util.*;
 import org.eclipse.core.runtime.IAdaptable;
 
 import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.geometry.Point;
 
 import org.eclipse.gef.*;
 
+/**
+ * @since 2.0 */
 public abstract class SelectionHandlesEditPolicy
 	extends SelectionEditPolicy
 	implements IAdaptable
@@ -21,6 +24,8 @@ public abstract class SelectionHandlesEditPolicy
 
 protected List handles;
 
+/**
+ *  * @param handle */
 void addHandle(IFigure handle){
 	getLayer(LayerConstants.HANDLE_LAYER).add(handle);
 }
@@ -40,8 +45,14 @@ public Object getAdapter(Class key){
 		return new AccessibleHandleProvider() {
 			public List getAccessibleHandleLocations() {
 				List result = new ArrayList();
-				for (int i=0; i<handles.size(); i++)
-					result.add(((Handle)handles.get(i)).getAccessibleLocation());
+				for (int i = 0; i < handles.size(); i++) {
+					Point p = ((Handle)handles.get(i))
+						.getAccessibleLocation();
+					if (p != null)
+						result.add(p);
+				}
+				if (result.isEmpty())
+					return null;
 				return result;
 			}
 		};

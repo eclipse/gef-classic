@@ -14,21 +14,21 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CompoundCommand;
 import org.eclipse.gef.requests.*;
 
-abstract public class ContainerEditPolicy
+public abstract class ContainerEditPolicy
 	extends AbstractEditPolicy
 {
 
-final protected void createCreateCommand(Object parent, CreateRequest.Factory factory){}
+protected final void createCreateCommand(Object parent, CreateRequest.Factory factory) { }
 
-protected Command getAddCommand(GroupRequest request){
+protected Command getAddCommand(GroupRequest request) {
 	return null;
 }
 
-protected Command getAncestorDeletedCommand(DeleteRequest request){
+protected Command getAncestorDeletedCommand(DeleteRequest request) {
 	return getDeleteCommand(request);
 }
 
-public Command getCommand(Request request){
+public Command getCommand(Request request) {
 	if (REQ_ANCESTOR_DELETED.equals(request.getType()))
 		return getAncestorDeletedCommand((DeleteRequest)request);
 	if (REQ_DELETE.equals(request.getType()))
@@ -46,9 +46,9 @@ public Command getCommand(Request request){
 	return null;
 }
 
-abstract protected Command getCreateCommand(CreateRequest request);
+protected abstract Command getCreateCommand(CreateRequest request);
 
-abstract protected Command getDeleteDependantCommand(Request request);
+protected abstract Command getDeleteDependantCommand(Request request);
 
 /**
  * This policy's host is being deleted.
@@ -60,7 +60,7 @@ protected Command getDeleteCommand(DeleteRequest delete) {
 	DeleteRequest ancestorDeletedReq = new DeleteRequest(REQ_ANCESTOR_DELETED);
 	ancestorDeletedReq.setContributions(delete.getContributions());
 
-	for (int i=0; i<children.size(); i++) {
+	for (int i = 0; i < children.size(); i++) {
 		EditPart child = (EditPart)children.get(i);
 		compound.add(child.getCommand(ancestorDeletedReq));
 	}
@@ -68,7 +68,7 @@ protected Command getDeleteCommand(DeleteRequest delete) {
 	return compound.isEmpty() ? null : compound;
 }
 
-protected Command getOrphanChildrenCommand(GroupRequest request){
+protected Command getOrphanChildrenCommand(GroupRequest request) {
 	return null;
 }
 

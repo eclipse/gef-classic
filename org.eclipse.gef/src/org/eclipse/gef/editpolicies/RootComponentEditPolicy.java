@@ -17,7 +17,7 @@ public class RootComponentEditPolicy
 	extends ComponentEditPolicy
 {
 
-protected Command createDeleteCommand(DeleteRequest request){
+protected Command createDeleteCommand(DeleteRequest request) {
 	return UnexecutableCommand.INSTANCE;
 }
 

@@ -12,7 +12,7 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CompoundCommand;
 import org.eclipse.gef.requests.*;
 
-abstract public class ComponentEditPolicy
+public abstract class ComponentEditPolicy
 	extends AbstractEditPolicy
 {
 
@@ -42,7 +42,7 @@ public Command getCommand(Request request) {
 /**
  * Create a delete command to delete the receiver from the composition
  */
-protected Command getDeleteCommand(DeleteRequest request){
+protected Command getDeleteCommand(DeleteRequest request) {
 	CompoundCommand cc = new CompoundCommand();
 	cc.setDebugLabel("Delete in ComponentEditPolicy");//$NON-NLS-1$
 
@@ -61,7 +61,7 @@ protected Command getDeleteCommand(DeleteRequest request){
  * The orphan is typically handled by the parent's ContainerEditPolicy.
  * @see ContainerEditPolicy
  */
-protected Command getOrphanCommand(){
+protected Command getOrphanCommand() {
 	GEF.hack();
 	GroupRequest req = new GroupRequest(REQ_ORPHAN_CHILDREN);
 	req.setEditParts(getHost());

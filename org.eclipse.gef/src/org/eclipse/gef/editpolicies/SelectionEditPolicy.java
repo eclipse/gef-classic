@@ -16,18 +16,18 @@ private EditPartListener selectionListener;
 private int state = -1;
 boolean focus;
 
-public SelectionEditPolicy(){}
+public SelectionEditPolicy() { }
 
-public void activate(){
+public void activate() {
 	super.activate();
 	addSelectionListener();
 	setSelectedState(getHost().getSelected());
 	setFocus(getHost().hasFocus());
 }
 
-protected void addSelectionListener(){
-	selectionListener = new EditPartListener.Stub(){
-		public void selectedStateChanged(EditPart part){
+protected void addSelectionListener() {
+	selectionListener = new EditPartListener.Stub() {
+		public void selectedStateChanged(EditPart part) {
 			setSelectedState(part.getSelected());
 			setFocus(part.hasFocus());
 		}
@@ -35,28 +35,28 @@ protected void addSelectionListener(){
 	getHost().addEditPartListener(selectionListener);
 }
 
-public void deactivate(){
+public void deactivate() {
 	removeSelectionListener();
 	setSelectedState(EditPart.SELECTED_NONE);
 	setFocus(false);
 	super.deactivate();
 }
 
-public EditPart getTargetEditPart(Request request){
+public EditPart getTargetEditPart(Request request) {
 	if (RequestConstants.REQ_SELECTION.equals(request.getType()))
 		return getHost();
 	return null;
 }
 
-protected void hideFocus(){}
+protected void hideFocus() {}
 
 protected abstract void hideSelection();
 
-protected void removeSelectionListener(){
+protected void removeSelectionListener() {
 	getHost().removeEditPartListener(selectionListener);
 }
 
-protected void setFocus(boolean value){
+protected void setFocus(boolean value) {
 	if (focus == value)
 		return;
 	focus = value;
@@ -66,7 +66,7 @@ protected void setFocus(boolean value){
 		hideFocus();
 }
 
-protected void setSelectedState(int type){
+protected void setSelectedState(int type) {
 	if (state == type)
 		return;
 	state = type;
@@ -78,9 +78,9 @@ protected void setSelectedState(int type){
 		hideSelection();
 }
 
-protected void showFocus(){}
+protected void showFocus() {}
 
-protected void showPrimarySelection(){
+protected void showPrimarySelection() {
 	showSelection();
 }
 

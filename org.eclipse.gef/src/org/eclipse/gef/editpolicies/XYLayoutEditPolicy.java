@@ -25,7 +25,7 @@ public Object getConstraintFor(Rectangle r) {
 }
 
 public Object getConstraintFor(Point p) {
-	return new Rectangle(p,DEFAULT_SIZE);
+	return new Rectangle(p, DEFAULT_SIZE);
 }
 
 protected Object getConstraintFor(ChangeBoundsRequest request, GraphicalEditPart child) {
@@ -47,16 +47,16 @@ protected Object getConstraintFor(ChangeBoundsRequest request, GraphicalEditPart
 	return getConstraintFor(rect);
 }
 
-protected Rectangle getCurrentConstraintFor(GraphicalEditPart child){
+protected Rectangle getCurrentConstraintFor(GraphicalEditPart child) {
 	IFigure fig = child.getFigure();
 	return (Rectangle)fig.getParent().getLayoutManager().getConstraint(fig);
 }
 
 public Object getDefaultConstraint() {
-	return new Rectangle(new Point(10,10), DEFAULT_SIZE);
+	return new Rectangle(new Point(10, 10), DEFAULT_SIZE);
 }
 
-protected Point getLayoutOrigin(){
+protected Point getLayoutOrigin() {
 	IFigure container = getLayoutContainer();
 	XYLayout layout = (XYLayout)container.getLayoutManager();
 	return layout.getOrigin(container);

@@ -43,25 +43,25 @@ private EditPart host;
  is called every time activate is called.  It will only be called once in
  the future
 */
-public void activate(){
+public void activate() {
 	initialize();
 }
 
-public void deactivate(){}
+public void deactivate() {}
 
-protected void debugFeedback(String message){
+protected void debugFeedback(String message) {
 	if (!GEF.DebugFeedback)
 		return;
 	GEF.debug("\tFEEDBACK:\t" + toString() + ":\t" + message);//$NON-NLS-2$//$NON-NLS-1$
 }
 
-public void eraseSourceFeedback(Request request){}
+public void eraseSourceFeedback(Request request) { }
 
-public void eraseTargetFeedback(Request request){}
+public void eraseTargetFeedback(Request request) { }
 
-public Command getCommand(Request request){return null;}
+public Command getCommand(Request request) {return null;}
 
-public EditPart getHost(){
+public EditPart getHost() {
 	return host;
 }
 
@@ -74,25 +74,25 @@ public EditPart getTargetEditPart(Request request) {
  * There is no implied inverse to initialize().
  * Subclasses should override to perform one-time setup.
  */
-protected void initialize(){}
+protected void initialize() {}
 
-public void setHost(EditPart host){
+public void setHost(EditPart host) {
 	if (this.host == host)
 		return;
 	this.host = host;
 }
 
-public void showSourceFeedback(Request request){}
+public void showSourceFeedback(Request request) {}
 
-public void showTargetFeedback(Request request){}
+public void showTargetFeedback(Request request) {}
 
-public String toString(){
+public String toString() {
 	String c = getClass().getName();
-	c = c.substring(c.lastIndexOf('.')+1);
-	return getHost().toString()+"."+c;//$NON-NLS-1$
+	c = c.substring(c.lastIndexOf('.') + 1);
+	return getHost().toString() + "." + c;//$NON-NLS-1$
 }
 
-public boolean understandsRequest(Request req){
+public boolean understandsRequest(Request req) {
 	return false;
 }
 
