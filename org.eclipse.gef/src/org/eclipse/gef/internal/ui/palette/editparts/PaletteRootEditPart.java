@@ -7,7 +7,8 @@ package org.eclipse.gef.internal.ui.palette.editparts;
  */
 
 import org.eclipse.draw2d.*;
-import org.eclipse.gef.ui.parts.GraphicalRootEditPart;
+
+import org.eclipse.gef.editparts.GraphicalRootEditPart;
 
 public class PaletteRootEditPart extends GraphicalRootEditPart {
 	

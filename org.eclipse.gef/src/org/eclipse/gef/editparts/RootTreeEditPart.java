@@ -1,4 +1,4 @@
-package org.eclipse.gef.ui.parts;
+package org.eclipse.gef.editparts;
 /*
  * Licensed Material - Property of IBM
  * (C) Copyright IBM Corp. 2001, 2002 - All Rights Reserved.

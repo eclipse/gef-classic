@@ -23,6 +23,7 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.LightweightSystem;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.gef.*;
+import org.eclipse.gef.editparts.*;
 import org.eclipse.gef.editparts.LayerManager;
 
 public class GraphicalViewerImpl

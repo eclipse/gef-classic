@@ -1,4 +1,4 @@
-package org.eclipse.gef.ui.parts;
+package org.eclipse.gef.editparts;
 /*
  * Licensed Material - Property of IBM
  * (C) Copyright IBM Corp. 2001, 2002 - All Rights Reserved.
@@ -12,8 +12,6 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.gef.*;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.UnexecutableCommand;
-import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
-import org.eclipse.gef.editparts.LayerManager;
 import org.eclipse.gef.tools.MarqueeDragTracker;
 
 /**
