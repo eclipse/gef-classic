@@ -79,21 +79,19 @@ public boolean addLeadingWordRequirements(int[] width) {
  * @since 3.1
  */
 boolean addLeadingWordWidth(String text, int[] width) {
-
 	// Changes to this algorithm should be verified with LookAheadTest
-	BreakIterator lineBreaker = BreakIterator.getLineInstance();
-	lineBreaker.setText(text);
-	if (Character.isWhitespace(text.charAt(0)))
-		return true;
-	int index = FlowUtilities.findPreviousNonWS(text, lineBreaker.next());
+	BreakIterator spaceFinder = BreakIterator.getLineInstance();
+	text = "a" + text + "a"; //$NON-NLS-1$ //$NON-NLS-2$
+	spaceFinder.setText(text);
+	int index = FlowUtilities.findPreviousNonWS(text, spaceFinder.next());
 	boolean result = index < text.length() - 1;
-
+	if (index == text.length() - 1)
+		index--;
 	// An optimization to prevent unnecessary invocation of String.substring and 
 	// getStringExtents()
-	if (index == 0)
+	if (index + 1 == 1)
 		return result;
-	
-	text = text.substring(0, index);
+	text = text.substring(1, index + 1);
 	
 	if (bidiInfo == null)
 		width[0] += FlowUtilities.getStringExtents(text, getFont()).width - 1;
