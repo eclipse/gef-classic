@@ -147,7 +147,7 @@ protected void fireSelectionChanged() {
 
 public void flush(){}
 
-protected ContextMenuProvider getContextMenuProvider(){
+public ContextMenuProvider getContextMenuProvider() {
 	return contextMenuProvider;
 }
 
