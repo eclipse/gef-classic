@@ -84,6 +84,7 @@ abstract class ToggleButtonTracker extends SingleSelectionTracker {
 		getFigure().translateToRelative(point);
 		if (!getFigure().containsPoint(point)) {
 			getButtonModel().setArmed(false);
+			getButtonModel().setMouseOver(false);
 			disableTimer();
 		} else
 			getButtonModel().setArmed(true);
@@ -100,7 +101,6 @@ class GTKToggleButtonTracker extends ToggleButtonTracker {
 		if (gtkState != 2) {
 			getButtonModel().setArmed(false);
 			getButtonModel().setPressed(false);
-			getPaletteViewer().setActiveTool(null);
 		}
 		super.deactivate();
 	}
@@ -140,6 +140,8 @@ class OtherToggleButtonTracker extends ToggleButtonTracker {
 	
 	public void deactivate() {
 		disableTimer();
+		getButtonModel().setPressed(false);
+		getButtonModel().setArmed(false);
 		super.deactivate();
 	}
 	
