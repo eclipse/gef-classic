@@ -288,15 +288,12 @@ protected void paintFigure(Graphics graphics) {
 			if (isHorizontal()) {
 				Dimension numSize = FigureUtilities.getStringExtents(num, getFont());
 				/*
-				 * FigureUtilities is increasing the width reported by GC by 1, so we
-				 * remove it here.  Also, if the actual width (the one reported
-				 * by the GC) is even, we want to increase it by 1.  This will ensure
-				 * that when marks marks are erased because they are too close to the
+				 * If the width is even, we want to increase it by 1.  This will ensure
+				 * that when marks are erased because they are too close to the
 				 * number, they are erased from both sides of that number.
 				 */
-				if (numSize.width % 2 == 0) {
-					numSize.width--;					
-				}
+				if (numSize.width % 2 == 0)
+					numSize.width++;					
 				Point textLocation = new Point(y - (numSize.width / 2), 
 						clippedBounds.x + textMargin - leading); 
 				forbiddenZone.setLocation(textLocation);

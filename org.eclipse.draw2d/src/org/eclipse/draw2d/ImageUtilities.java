@@ -48,9 +48,6 @@ public static Image createRotatedImageOfString(String string, Font font,
 	
 	FontMetrics metrics = FigureUtilities.getFontMetrics(font);
 	Dimension strSize = FigureUtilities.getStringExtents(string, font);
-	// the width is being reduced by 1 because FigureUtilties, for some reason, increases
-	// it by 1
-	strSize.width--;		
 	Image srcImage = new Image(display, strSize.width, metrics.getAscent());
 	GC gc = new GC(srcImage);
 	gc.setFont(font);
