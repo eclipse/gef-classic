@@ -24,6 +24,22 @@ public static final ImageDescriptor DESC_VERT_ALIGN_MIDDLE;
 public static final ImageDescriptor DESC_VERT_ALIGN_TOP;
 public static final ImageDescriptor DESC_VERT_ALIGN_BOTTOM;
 
+public static final ImageDescriptor DESC_HORZ_ALIGN_CENTER_BW;
+public static final ImageDescriptor DESC_HORZ_ALIGN_LEFT_BW;
+public static final ImageDescriptor DESC_HORZ_ALIGN_RIGHT_BW;
+
+public static final ImageDescriptor DESC_VERT_ALIGN_MIDDLE_BW;
+public static final ImageDescriptor DESC_VERT_ALIGN_TOP_BW;
+public static final ImageDescriptor DESC_VERT_ALIGN_BOTTOM_BW;
+
+public static final ImageDescriptor DESC_HORZ_ALIGN_CENTER_DIS;
+public static final ImageDescriptor DESC_HORZ_ALIGN_LEFT_DIS;
+public static final ImageDescriptor DESC_HORZ_ALIGN_RIGHT_DIS;
+
+public static final ImageDescriptor DESC_VERT_ALIGN_MIDDLE_DIS;
+public static final ImageDescriptor DESC_VERT_ALIGN_TOP_DIS;
+public static final ImageDescriptor DESC_VERT_ALIGN_BOTTOM_DIS;
+
 public static final ImageDescriptor ICON_MATCH_WIDTH;
 public static final ImageDescriptor ICON_MATCH_HEIGHT;
 
@@ -35,12 +51,26 @@ static {
 	DESC_ZOOM_IN = createDescriptor("icons/zoomplus.gif"); //$NON-NLS-1$
 	DESC_ZOOM_OUT = createDescriptor("icons/zoomminus.gif"); //$NON-NLS-1$
 
-	DESC_VERT_ALIGN_BOTTOM = createDescriptor("icons/abottom.gif"); //$NON-NLS-1$
-	DESC_HORZ_ALIGN_CENTER = createDescriptor("icons/acenter.gif"); //$NON-NLS-1$
-	DESC_HORZ_ALIGN_LEFT = createDescriptor("icons/aleft.gif"); //$NON-NLS-1$
-	DESC_VERT_ALIGN_MIDDLE = createDescriptor("icons/amiddle.gif"); //$NON-NLS-1$
-	DESC_HORZ_ALIGN_RIGHT = createDescriptor("icons/aright.gif"); //$NON-NLS-1$
-	DESC_VERT_ALIGN_TOP = createDescriptor("icons/atop.gif"); //$NON-NLS-1$
+	DESC_VERT_ALIGN_BOTTOM = createDescriptor("icons/alignbottom.gif"); //$NON-NLS-1$
+	DESC_HORZ_ALIGN_CENTER = createDescriptor("icons/aligncenter.gif"); //$NON-NLS-1$
+	DESC_HORZ_ALIGN_LEFT = createDescriptor("icons/alignleft.gif"); //$NON-NLS-1$
+	DESC_VERT_ALIGN_MIDDLE = createDescriptor("icons/alignmid.gif"); //$NON-NLS-1$
+	DESC_HORZ_ALIGN_RIGHT = createDescriptor("icons/alignright.gif"); //$NON-NLS-1$
+	DESC_VERT_ALIGN_TOP = createDescriptor("icons/aligntop.gif"); //$NON-NLS-1$
+
+	DESC_VERT_ALIGN_BOTTOM_BW = createDescriptor("icons/alignbottom_bw.gif"); //$NON-NLS-1$
+	DESC_HORZ_ALIGN_CENTER_BW = createDescriptor("icons/aligncenter_bw.gif"); //$NON-NLS-1$
+	DESC_HORZ_ALIGN_LEFT_BW = createDescriptor("icons/alignleft_bw.gif"); //$NON-NLS-1$
+	DESC_VERT_ALIGN_MIDDLE_BW = createDescriptor("icons/alignmid_bw.gif"); //$NON-NLS-1$
+	DESC_HORZ_ALIGN_RIGHT_BW = createDescriptor("icons/alignright_bw.gif"); //$NON-NLS-1$
+	DESC_VERT_ALIGN_TOP_BW = createDescriptor("icons/aligntop_bw.gif"); //$NON-NLS-1$
+
+	DESC_VERT_ALIGN_BOTTOM_DIS = createDescriptor("icons/alignbottom_d.gif"); //$NON-NLS-1$
+	DESC_HORZ_ALIGN_CENTER_DIS = createDescriptor("icons/aligncenter_d.gif"); //$NON-NLS-1$
+	DESC_HORZ_ALIGN_LEFT_DIS = createDescriptor("icons/alignleft_d.gif"); //$NON-NLS-1$
+	DESC_VERT_ALIGN_MIDDLE_DIS = createDescriptor("icons/alignmid_d.gif"); //$NON-NLS-1$
+	DESC_HORZ_ALIGN_RIGHT_DIS = createDescriptor("icons/alignright_d.gif"); //$NON-NLS-1$
+	DESC_VERT_ALIGN_TOP_DIS = createDescriptor("icons/aligntop_d.gif"); //$NON-NLS-1$
 
 	DESC_SEPARATOR = createDescriptor("icons/separator.gif"); //$NON-NLS-1$
 	DESC_FOLDER_OPEN = WorkbenchImages.getImageDescriptor(ISharedImages.IMG_OBJ_FOLDER);

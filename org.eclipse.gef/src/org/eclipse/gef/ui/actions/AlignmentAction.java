@@ -115,42 +115,54 @@ protected void init() {
 			setId(GEFActionConstants.ALIGN_LEFT);
 			setText(GEFMessages.AlignLeftAction_Label);
 			setToolTipText(GEFMessages.AlignLeftAction_Tooltip);
-			setImageDescriptor(InternalImages.DESC_HORZ_ALIGN_LEFT);
+			setHoverImageDescriptor(InternalImages.DESC_HORZ_ALIGN_LEFT);
+			setImageDescriptor(InternalImages.DESC_HORZ_ALIGN_LEFT_BW);
+			setDisabledImageDescriptor(InternalImages.DESC_HORZ_ALIGN_LEFT_DIS);
 			break;
 		}
 		case PositionConstants.RIGHT: {
 			setId(GEFActionConstants.ALIGN_RIGHT);
 			setText(GEFMessages.AlignRightAction_Label);
 			setToolTipText(GEFMessages.AlignRightAction_Tooltip);
-			setImageDescriptor(InternalImages.DESC_HORZ_ALIGN_RIGHT);
+			setHoverImageDescriptor(InternalImages.DESC_HORZ_ALIGN_RIGHT);
+			setImageDescriptor(InternalImages.DESC_HORZ_ALIGN_RIGHT_BW);
+			setDisabledImageDescriptor(InternalImages.DESC_HORZ_ALIGN_RIGHT_DIS);
 			break;
 		}
 		case PositionConstants.TOP: {
 			setId(GEFActionConstants.ALIGN_TOP);
 			setText(GEFMessages.AlignTopAction_Label);
 			setToolTipText(GEFMessages.AlignTopAction_Tooltip);
-			setImageDescriptor(InternalImages.DESC_VERT_ALIGN_TOP);
+			setHoverImageDescriptor(InternalImages.DESC_VERT_ALIGN_TOP);
+			setImageDescriptor(InternalImages.DESC_VERT_ALIGN_TOP_BW);
+			setDisabledImageDescriptor(InternalImages.DESC_VERT_ALIGN_TOP_DIS);
 			break;
 		}
 		case PositionConstants.BOTTOM: {
 			setId(GEFActionConstants.ALIGN_BOTTOM);
 			setText(GEFMessages.AlignBottomAction_Label);
 			setToolTipText(GEFMessages.AlignBottomAction_Tooltip);
-			setImageDescriptor(InternalImages.DESC_VERT_ALIGN_BOTTOM);
+			setHoverImageDescriptor(InternalImages.DESC_VERT_ALIGN_BOTTOM);
+			setImageDescriptor(InternalImages.DESC_VERT_ALIGN_BOTTOM_BW);
+			setDisabledImageDescriptor(InternalImages.DESC_VERT_ALIGN_BOTTOM_DIS);
 			break;
 		}
 		case PositionConstants.CENTER: {
 			setId(GEFActionConstants.ALIGN_CENTER);
 			setText(GEFMessages.AlignCenterAction_Label);
 			setToolTipText(GEFMessages.AlignCenterAction_Tooltip);
-			setImageDescriptor(InternalImages.DESC_HORZ_ALIGN_CENTER);
+			setHoverImageDescriptor(InternalImages.DESC_HORZ_ALIGN_CENTER);
+			setImageDescriptor(InternalImages.DESC_HORZ_ALIGN_CENTER_BW);
+			setDisabledImageDescriptor(InternalImages.DESC_HORZ_ALIGN_CENTER_DIS);
 			break;
 		}
 		case PositionConstants.MIDDLE: {
 			setId(GEFActionConstants.ALIGN_MIDDLE);
 			setText(GEFMessages.AlignMiddleAction_Label);
 			setToolTipText(GEFMessages.AlignMiddleAction_Tooltip);
-			setImageDescriptor(InternalImages.DESC_VERT_ALIGN_MIDDLE);
+			setHoverImageDescriptor(InternalImages.DESC_VERT_ALIGN_MIDDLE);
+			setImageDescriptor(InternalImages.DESC_VERT_ALIGN_MIDDLE_BW);
+			setDisabledImageDescriptor(InternalImages.DESC_VERT_ALIGN_MIDDLE_DIS);
 			break;
 		}
 	}
