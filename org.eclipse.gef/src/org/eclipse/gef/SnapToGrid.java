@@ -39,6 +39,11 @@ public static final String PROPERTY_GRID_ORIGIN = "SnapToGrid.GridOrigin"; //$NO
 public static final int DEFAULT_GRID_SIZE = 12;
 
 /**
+ * @deprecated use DEFAULT_GRID_SIZE
+ */
+public static final int DEFAULT_GAP = DEFAULT_GRID_SIZE;
+
+/**
  * The graphical part whose content's figure defines the grid.
  */
 protected GraphicalEditPart container;
