@@ -62,12 +62,8 @@ protected void readjustScrollBars(){
 	bounds.union(0, 0, clientArea.width, clientArea.height);
 	ff.setFreeformBounds(bounds);
 
-	getVerticalRangeModel().setExtent(clientArea.height);
-	getVerticalRangeModel().setMinimum(bounds.y);
-	getVerticalRangeModel().setMaximum(bounds.bottom());		
-	getHorizontalRangeModel().setExtent(clientArea.width);
-	getHorizontalRangeModel().setMinimum(bounds.x);
-	getHorizontalRangeModel().setMaximum(bounds.right());
+	getVerticalRangeModel().setAll(bounds.y, clientArea.height, bounds.bottom());
+	getHorizontalRangeModel().setAll(bounds.x, clientArea.width, bounds.right());
 }
 
 protected boolean useLocalCoordinates(){
