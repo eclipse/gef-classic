@@ -23,6 +23,7 @@ import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.FocusEvent;
 import org.eclipse.draw2d.FocusListener;
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.geometry.Insets;
 
 import org.eclipse.gef.AccessibleEditPart;
 import org.eclipse.gef.ExposeHelper;
@@ -79,6 +80,7 @@ public Object getAdapter(Class key) {
 	if (key == ExposeHelper.class) {
 		ViewportExposeHelper helper = new ViewportExposeHelper(this);
 		helper.setMinimumFrameCount(6);
+		helper.setMargin(new Insets(PaletteScrollBar.BUTTON_HEIGHT, 0, PaletteScrollBar.BUTTON_HEIGHT, 0));
 		return helper;
 	}
 	return super.getAdapter(key);

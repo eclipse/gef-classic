@@ -26,6 +26,7 @@ public class ViewportExposeHelper
 	implements ExposeHelper
 {
 
+private Insets exposeMargin;
 private int minimumFrameCount = 3;
 private int maximumFrameCount = 8;
 
@@ -54,7 +55,8 @@ public void exposeDescendant(EditPart part) {
  */
 	Rectangle exposeRegion = target.getBounds().getCopy();
 	target.translateToAbsolute(exposeRegion);
-//	exposeRegion.expand(5,5);
+	if (exposeRegion != null)
+		exposeRegion.expand(exposeMargin);
 	port.getContents().translateToRelative(exposeRegion);
 
 	Point offset = port.getContents().getBounds().getLocation();
@@ -105,6 +107,10 @@ public int getMaximumFrameCount() {
  */
 public int getMinimumFrameCount() {
 	return minimumFrameCount;
+}
+
+public void setMargin(Insets margin) {
+	exposeMargin = margin;
 }
 
 /**
