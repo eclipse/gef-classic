@@ -91,7 +91,7 @@ public ShapesEditor() {
 /**
  * Configure the graphical viewer before it receives contents.
  * <p>This is the place to choose an appropriate RootEditPart and EditPartFactory
- * for your editor. The RootEditPart determines the behavior of the editors "work-area".
+ * for your editor. The RootEditPart determines the behavior of the editor's "work-area".
  * For example, GEF includes zoomable and scrollable root edit parts. The EditPartFactory
  * maps model elements to edit parts (controllers).</p>
  * @see org.eclipse.gef.ui.parts.GraphicalEditor#configureGraphicalViewer()
