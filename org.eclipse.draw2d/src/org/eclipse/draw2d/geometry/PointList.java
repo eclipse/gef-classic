@@ -242,12 +242,12 @@ public boolean intersects(Rectangle r) {
 	}
 	int diagonal1x1 = r.x,
 		diagonal1y1 = r.y,
-		diagonal1x2 = r.x + r.width,
-		diagonal1y2 = r.y + r.height,
-		diagonal2x1 = r.x + r.width,
+		diagonal1x2 = r.x + r.width - 1,
+		diagonal1y2 = r.y + r.height - 1,
+		diagonal2x1 = r.x + r.width - 1,
 		diagonal2y1 = r.y,
 		diagonal2x2 = r.x,
-		diagonal2y2 = r.y + r.height;
+		diagonal2y2 = r.y + r.height - 1;
 	for (int i = 0; i < (size - 1) * 2; i += 2) {
 		if (Geometry.linesIntersect(diagonal1x1, diagonal1y1, diagonal1x2, 
 				diagonal1y2, points[i], points[i + 1], points[i + 2], points[i + 3])
