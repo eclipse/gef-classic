@@ -1,5 +1,6 @@
 package org.eclipse.gef;
 
+import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.geometry.PrecisionRectangle;
 
 import org.eclipse.gef.requests.ChangeBoundsRequest;
@@ -12,11 +13,14 @@ import org.eclipse.gef.requests.CreateRequest;
  * new SnapToHelpers are employed.  The same applies for creation and resize operations.
  * 
  * @author Randy Hudson
+ * @author Pratik Shah
  */
-public interface SnapToHelper {
+public interface SnapToHelper 
+	extends PositionConstants
+{
 
-public static final int SNAP_HORIZONTAL = 1;
-public static final int SNAP_VERTICAL = 2;
+public static final String CTRL_KEY = "org.eclipse.gef.SnapToHelper.ctrl"; //$NON-NLS-1$
+public static final String SHIFT_KEY = "org.eclipse.gef.SnapToHelper.shift"; //$NON-NLS-1$
 
 int snapCreateRequest(CreateRequest request, PrecisionRectangle baseRect, 
                       int snapOrientation);
@@ -31,10 +35,10 @@ int snapCreateRequest(CreateRequest request, PrecisionRectangle baseRect,
  * 							initiated the drag
  * @param	compoundRect	The unioned bounds of all the figures being dragged
  * @param	snapOrientation	Indicates the direction in which snapping should occur:
- * 							<code>SNAP_HORIZONTAL</code> or <code>SNAP_VERTICAL</code>
+ * 							<code>EAST_WEST</code> or <code>NORTH_SOUTH</code>
  * 							or both.
  * @return	The direction in which snapping still needs to occur 
- * 			(<code>SNAP_HORIZONTAL</code> or <code>SNAP_VERTICAL</code> or both or none)
+ * 			(<code>EAST_WEST</code> or <code>NORTH_SOUTH</code> or both or none)
  */
 int snapMoveRequest(ChangeBoundsRequest request, PrecisionRectangle baseRect,
                     PrecisionRectangle compoundRect, int snapOrientation);
