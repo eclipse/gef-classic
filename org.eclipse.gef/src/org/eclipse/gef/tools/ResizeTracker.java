@@ -12,14 +12,16 @@ package org.eclipse.gef.tools;
 
 import java.util.List;
 
+import org.eclipse.swt.graphics.Cursor;
+
+import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.PositionConstants;
-import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.*;
+
 import org.eclipse.gef.*;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CompoundCommand;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
-import org.eclipse.swt.graphics.Cursor;
 
 /**
  * A Tracker for dragging a resize handle.  The ResizeTracker will resize all of the
@@ -33,16 +35,30 @@ public class ResizeTracker
 {
 
 private int direction;
+private GraphicalEditPart owner;
+private PrecisionRectangle sourceRect;
 
 /**
  * Constructs a resize tracker that resizes in the specified direction.  The direction is
  * specified using {@link PositionConstants#NORTH}, {@link PositionConstants#NORTH_EAST},
  * etc.
+ * @param owner of the resize handle which returned this tracker
  * @param direction the direction
  */
-public ResizeTracker(int direction) {
+public ResizeTracker(GraphicalEditPart owner, int direction) {
+	this.owner = owner;
 	this.direction = direction;
 	setDisabledCursor(SharedCursors.NO);
+}
+
+/**
+ * @see org.eclipse.gef.Tool#activate()
+ */
+public void activate() {
+	super.activate();
+	IFigure figure = owner.getFigure();
+	sourceRect = new PrecisionRectangle(figure.getBounds());
+	figure.translateToAbsolute(sourceRect);	
 }
 
 /**
@@ -149,6 +165,12 @@ protected void updateSourceRequest() {
 	request.setSizeDelta(resize);
 	request.setLocation(location);
 	request.setEditParts(getOperationSet());
+	
+	SnapToStrategy strategy = (SnapToStrategy)owner.getViewer().getContents()
+		.getAdapter(SnapToStrategy.class);
+
+	if (!getCurrentInput().isShiftKeyDown() && strategy != null)
+		strategy.snapResizeRequest(request, sourceRect);
 }
 
 }

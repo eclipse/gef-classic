@@ -36,8 +36,10 @@ private static final int FLAG_SOURCE_FEEDBACK = SelectEditPartTracker.MAX_FLAG <
 protected static final int MAX_FLAG = FLAG_SOURCE_FEEDBACK;
 private List operationSet, exclusionSet;
 private PrecisionPoint sourceFigureOffset;
+private SnapToStrategy helper;
 
 private Request sourceRequest;
+private PrecisionRectangle sourceRectangle;
 
 /**
  * Constructs a new DragEditPartsTracker with the given source edit part.
@@ -46,6 +48,16 @@ private Request sourceRequest;
 public DragEditPartsTracker(EditPart sourceEditPart) {
 	super(sourceEditPart);
 	setDisabledCursor(SharedCursors.NO);
+}
+
+/**
+ * @see org.eclipse.gef.tools.AbstractTool#activate()
+ */
+public void activate() {
+	super.activate();
+	IFigure figure = ((GraphicalEditPart)getSourceEditPart()).getFigure();
+	sourceRectangle = new PrecisionRectangle(figure.getBounds());
+	figure.translateToAbsolute(sourceRectangle);
 }
 
 /**
@@ -98,6 +110,7 @@ public void deactivate() {
 	operationSet = null;
 	exclusionSet = null;
 	sourceFigureOffset = null;
+	sourceRectangle = null;
 }
 
 /**
@@ -328,6 +341,19 @@ protected void repairStartLocation() {
 }
 
 /**
+ * Extended to update the current snap-to strategy.
+ * @see org.eclipse.gef.tools.TargetingTool#setTargetEditPart(org.eclipse.gef.EditPart)
+ */
+protected void setTargetEditPart(EditPart editpart) {
+	if (getTargetEditPart() == editpart)
+		return;
+	super.setTargetEditPart(editpart);
+	helper = null;
+	if (getTargetEditPart() != null)
+		 helper = (SnapToStrategy)getTargetEditPart().getAdapter(SnapToStrategy.class);
+}
+
+/**
  * Asks the edit parts in the {@link AbstractTool#getOperationSet() operation set} to 
  * show source feedback.
  */
@@ -350,8 +376,12 @@ protected void updateTargetRequest() {
 	repairStartLocation();
 	ChangeBoundsRequest request = (ChangeBoundsRequest)getTargetRequest();
 	request.setEditParts(getOperationSet());
-	Dimension d = getDragMoveDelta();
-	request.setMoveDelta(new Point(d.width, d.height));
+	Dimension delta = getDragMoveDelta();
+	request.setMoveDelta(new Point(delta.width, delta.height));
+
+	if (helper != null && !getCurrentInput().isShiftKeyDown())
+		helper.snapMoveRequest(request, (PrecisionRectangle)sourceRectangle.getCopy());
+
 	request.setLocation(getLocation());
 	request.setType(getCommandName());
 }

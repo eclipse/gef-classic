@@ -57,7 +57,7 @@ static Handle createHandle(GraphicalEditPart owner, int direction) {
 	ResizeHandle handle = new ResizeHandle(
 		owner,
 		direction);
-	handle.setDragTracker(new ResizeTracker(direction));
+//	handle.setDragTracker(new ResizeTracker(direction));
 	return handle;
 }
 

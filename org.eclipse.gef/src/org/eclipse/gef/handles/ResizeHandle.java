@@ -17,6 +17,7 @@ import org.eclipse.draw2d.Locator;
 
 import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.GraphicalEditPart;
+import org.eclipse.gef.tools.ResizeTracker;
 
 /**
  * A Handle used to resize a GraphicalEditPart.
@@ -58,7 +59,7 @@ public ResizeHandle(GraphicalEditPart owner, Locator loc, Cursor c) {
  * @return returns <code>null</code>
  */
 protected DragTracker createDragTracker() {
-	return null;
+	return new ResizeTracker(getOwner(), cursorDirection);
 }
 
 }
