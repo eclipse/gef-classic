@@ -1,6 +1,7 @@
 package org.eclipse.draw2d.examples.tree;
 
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.geometry.Transposer;
 
 /**
  * 
@@ -11,13 +12,13 @@ public class TreeRoot extends TreeBranch {
 
 private int major = 10;
 private int minor = 10;
+private Transposer transposer = new Transposer();
 
 /**
  * @param title
  */
 public TreeRoot(IFigure title) {
 	super(title);
-	// TODO Auto-generated constructor stub
 }
 
 /**
@@ -35,12 +36,20 @@ public int getMajorSpacing() {
 /**
  * @return
  */
-public int getMinor() {
+public int getMinorSpacing() {
 	return minor;
 }
 
 public TreeRoot getRoot() {
 	return this;
+}
+
+public Transposer getTransposer() {
+	return transposer;
+}
+
+public boolean isHorizontal() {
+	return !transposer.isEnabled();
 }
 
 /**
@@ -52,10 +61,16 @@ public void setMajorSpacing(int value) {
 	revalidate();
 }
 
+public void setHorizontal(boolean value) {
+	transposer.setEnabled(!value);
+	invalidateTree();
+	revalidate();
+}
+
 /**
  * @param i
  */
-public void setMinor(int i) {
+public void setMinorSpacing(int i) {
 	minor = i;
 	invalidateTree();
 	revalidate();

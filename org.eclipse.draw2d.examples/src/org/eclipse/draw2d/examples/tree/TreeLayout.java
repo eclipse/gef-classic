@@ -18,7 +18,6 @@ import org.eclipse.draw2d.geometry.Point;
 public class TreeLayout extends AbstractLayout {
 
 private int pointOfContact;
-private int gap = 10;
 
 /**
  * @see org.eclipse.draw2d.AbstractLayout#calculatePreferredSize(org.eclipse.draw2d.IFigure, int, int)
@@ -26,8 +25,9 @@ private int gap = 10;
 protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHint) {
 	container.validate();
 	List children = container.getChildren();
-	Rectangle result = new Rectangle(container.getClientArea().getLocation(), new Dimension());
-	for (int i=0; i<children.size(); i++)
+	Rectangle result =
+		new Rectangle().setLocation(container.getClientArea().getLocation());
+	for (int i = 0; i < children.size(); i++)
 		result.union(((IFigure)children.get(i)).getBounds());
 	result.resize(container.getInsets().getWidth(), container.getInsets().getHeight());
 	return result.getSize();
@@ -63,6 +63,9 @@ private int calculateOverlap(int leftSubtree[], int rightSubtree[]) {
  * @see org.eclipse.draw2d.LayoutManager#layout(org.eclipse.draw2d.IFigure)
  */
 public void layout(IFigure container) {
+	TreeRoot root = ((TreeBranch)container.getParent()).getRoot();
+	Transposer transposer = root.getTransposer();
+	int gap = root.getMinorSpacing();
 	List subtrees = container.getChildren();
 	TreeBranch subtree;
 	int previousSubtreeDepth = 0;
@@ -70,20 +73,25 @@ public void layout(IFigure container) {
 	int leftContour[];
 	int contactDepth;
 	
-	Point reference = container.getClientArea().getLocation();
+	Point reference = transposer.t(container.getBounds().getLocation());
 	Point currentXY = reference.getCopy();
 	
 	for (int i = 0; i < subtrees.size(); i++) {
 		subtree = (TreeBranch)subtrees.get(i);
 		subtree.toString();
-		subtree.setSize(subtree.getPreferredSize());
+		
+		//Give the subtree its preferred size before asking for contours
+		Dimension subtreeSize = subtree.getPreferredSize();
+		subtree.setSize(subtreeSize);
+		subtreeSize = transposer.t(subtreeSize);
+
 		leftContour = subtree.getContourLeft();
 		int overlap = calculateOverlap(rightContour, leftContour);
 		contactDepth = pointOfContact;
-		subtree.setLocation(currentXY.getTranslated(-overlap, 0));
+		subtree.setLocation(transposer.t(currentXY.getTranslated(-overlap, 0)));
 
 		//Setup value for next sibling
-		int advance = gap + subtree.getSize().width - overlap;
+		int advance = gap + subtreeSize.width - overlap;
 		rightContour = calculateNewRightContour(
 			rightContour,
 			subtree.getContourRight(),
@@ -95,11 +103,12 @@ public void layout(IFigure container) {
 		 * container because of the way it overlaps with the previous child. When this
 		 * happens, shift all children right. 
 		 */
-		int shiftRight = reference.x - subtree.getBounds().x;
+		int shiftRight = reference.x - transposer.t(subtree.getBounds()).x;
 		if (shiftRight > 0) {
 			currentXY.x += shiftRight;
+			Point correction = transposer.t(new Point(shiftRight, 0));
 			for (int j=0; j<=i; j++)
-				((IFigure)subtrees.get(j)).translate(shiftRight, 0);
+				((IFigure)subtrees.get(j)).translate(correction.x, correction.y);
 		}
 		
 		/*
@@ -110,8 +119,11 @@ public void layout(IFigure container) {
 
 		if (contactDepth > previousSubtreeDepth) {
 			TreeBranch branch = (TreeBranch)subtrees.get(i-1);
-			int slack = subtree.getBounds().x - branch.getBounds().right() - gap
-				+ calculateOverlap(branch.getContourRight(), subtree.getContourLeft());
+			int slack =
+				transposer.t(subtree.getBounds()).x
+					- transposer.t(branch.getBounds()).right()
+					- gap
+					+ calculateOverlap(branch.getContourRight(), subtree.getContourLeft());
 			int end = i;
 			int begin = end - 1;
 			while (begin > 0
@@ -120,8 +132,9 @@ public void layout(IFigure container) {
 			
 			for (int j = begin + 1; j < end; j++) {
 				branch = (TreeBranch)subtrees.get(j);
-				int shift = slack * (j - begin) / (end - begin);
-				branch.translate(shift, 0);
+				Point shift =
+					transposer.t(new Point(slack * (j - begin) / (end - begin), 0));
+				branch.translate(shift.x, shift.y);
 			}
 		}
 		 

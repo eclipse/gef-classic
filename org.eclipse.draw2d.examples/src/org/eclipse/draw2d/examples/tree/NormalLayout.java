@@ -8,7 +8,6 @@ import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.geometry.*;
 
 /**
- * 
  * @author hudsonr
  * Created on Apr 22, 2003
  */
@@ -36,21 +35,24 @@ protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHi
 }
 
 public void layout(IFigure f) {
+	Transposer transposer = getTransposer();
 	IFigure contents = branch.getContentsPane();
 	IFigure node = branch.getNode();
 	contents.validate();
 
-	Point topLeft = branch.getBounds().getTopLeft();
-	Rectangle nodeLocation = new Rectangle(topLeft, node.getPreferredSize());
+	Point topLeft = transposer.t(branch.getBounds().getTopLeft());
+	Rectangle nodeLocation = new Rectangle(topLeft, transposer.t(node.getPreferredSize()));
 	nodeLocation.height = rowHeight - getMajorSpacing();
 	
 	if (contents.getChildren().isEmpty()) {
-		node.setBounds(nodeLocation);
-		contents.setBounds(nodeLocation.getTranslated(0, rowHeight).setSize(0, 0));
+		node.setBounds(transposer.t(nodeLocation));
+		contents.setBounds(
+			transposer.t(nodeLocation.getTranslated(0, rowHeight).setSize(0, 0)));
 		return;
 	}
 
-	Rectangle contentsLocation = new Rectangle(topLeft, contents.getPreferredSize());
+	Rectangle contentsLocation =
+		new Rectangle(topLeft, transposer.t(contents.getPreferredSize()));
 	contents.setSize(contents.getPreferredSize());
 	contentsLocation.y += rowHeight;
 
@@ -59,11 +61,12 @@ public void layout(IFigure f) {
 		(TreeBranch)contents.getChildren().get(contents.getChildren().size() - 1);
 	int leftInset =
 		firstChild.getContourLeft()[0]
-			+ firstChild.getBounds().x
-			- contents.getBounds().x;
+			+ transposer.t(firstChild.getBounds()).x
+			- transposer.t(contents.getBounds()).x;
 	int rightInset =
 		lastChild.getContourRight()[0]
-			+ (lastChild.getBounds().right() - contents.getBounds().right());
+			- transposer.t(lastChild.getBounds()).right()
+			+ transposer.t(contents.getBounds()).right();
 	int childrenSpan = contentsLocation.width - leftInset - rightInset;
 
 	switch (branch.getAlignment()) {
@@ -75,8 +78,8 @@ public void layout(IFigure f) {
 		nodeLocation.x += leftInset;
 	else
 		contentsLocation.x -= leftInset;
-	node.setBounds(nodeLocation);
-	contents.setBounds(contentsLocation);
+	node.setBounds(transposer.t(nodeLocation));
+	contents.setBounds(transposer.t(contentsLocation));
 }
 
 void mergeContour(int[] destination, int[] source, int startdepth, int offset) {
@@ -88,40 +91,65 @@ void mergeContour(int[] destination, int[] source, int startdepth, int offset) {
  * @see org.eclipse.draw2d.examples.tree.BranchLayout#paintLines(org.eclipse.draw2d.Graphics)
  */
 void paintLines(Graphics g) {
-	IFigure node = branch.getNode();
-	int xMid = node.getBounds().getCenter().x;
-	int top = node.getBounds().bottom();
-	int bottom = branch.getContentsPane().getBounds().y - 1;
-	int yMid = (top + bottom) / 2;
-	List children = getSubtrees();
-	if (children.size() == 0)
-		return;
-	g.drawLine(xMid, top, xMid, yMid);
-	int xMin = xMid;
-	int xMax = xMid;
-	for (int i=0; i<children.size(); i++){
-		int x = ((TreeBranch)children.get(i)).getNodeBounds().getCenter().x;
-		g.drawLine(x, yMid, x, bottom);
-		xMin = Math.min(xMin, x);
-		xMax = Math.max(xMax, x);
-	}
-	g.drawLine(xMin, yMid, xMax, yMid);
-}
+	if (getTransposer().isEnabled()) {
+		IFigure node = branch.getNode();
+		int left = node.getBounds().right();
+		int right = branch.getContentsPane().getBounds().x - 1;
+		int yMid = node.getBounds().getCenter().y;
+		int xMid = (left + right) / 2;
+		List children = getSubtrees();
+		if (children.size() == 0)
+			return;
+		g.drawLine(left, yMid, xMid, yMid);
+		int yMin = yMid;
+		int yMax = yMid;
+		for (int i=0; i<children.size(); i++){
+			int y = ((TreeBranch)children.get(i)).getNodeBounds().getCenter().y;
+			g.drawLine(xMid, y, right, y);
+			yMin = Math.min(yMin, y);
+			yMax = Math.max(yMax, y);
+		}
+		g.drawLine(xMid, yMin, xMid, yMax);
 
+	} else {
+		IFigure node = branch.getNode();
+		int xMid = node.getBounds().getCenter().x;
+		int top = node.getBounds().bottom();
+		int bottom = branch.getContentsPane().getBounds().y - 1;
+		int yMid = (top + bottom) / 2;
+		List children = getSubtrees();
+		if (children.size() == 0)
+			return;
+		g.drawLine(xMid, top, xMid, yMid);
+		int xMin = xMid;
+		int xMax = xMid;
+		for (int i=0; i<children.size(); i++){
+			int x = ((TreeBranch)children.get(i)).getNodeBounds().getCenter().x;
+			g.drawLine(x, yMid, x, bottom);
+			xMin = Math.min(xMin, x);
+			xMax = Math.max(xMax, x);
+		}
+		g.drawLine(xMin, yMid, xMax, yMid);
+	}
+}
 
 /**
  * @see org.eclipse.draw2d.examples.tree.BranchLayout#updateContours()
  */
 void updateContours() {
+	Transposer transposer = getTransposer();
 	//Make sure we layout first
 	branch.validate();
 
 	cachedContourLeft = new int[getDepth()];
 	cachedContourRight = new int[getDepth()];
 
-	Rectangle clientArea = branch.getClientArea(Rectangle.SINGLETON);
-	cachedContourLeft[0] = branch.getNodeBounds().x - clientArea.x;
-	cachedContourRight[0] = clientArea.right() - branch.getNodeBounds().right();
+	Rectangle clientArea = transposer.t(branch.getClientArea(Rectangle.SINGLETON));
+	Rectangle nodeBounds = transposer.t(branch.getNodeBounds());
+	Rectangle contentsBounds = transposer.t(branch.getContentsPane().getBounds());
+	
+	cachedContourLeft[0] = nodeBounds.x - clientArea.x;
+	cachedContourRight[0] = clientArea.right() - nodeBounds.right();
 
 	List subtrees = getSubtrees();
 	TreeBranch subtree;
@@ -131,9 +159,9 @@ void updateContours() {
 		subtree = (TreeBranch)subtrees.get(i);
 		if (subtree.getDepth() > currentDepth) {
 			int leftContour[] = subtree.getContourLeft();
-			int leftOffset = subtree.getBounds().x - branch.contents.getClientArea().x;
+			int leftOffset = transposer.t(subtree.getBounds()).x - contentsBounds.x;
 			mergeContour(cachedContourLeft, leftContour, currentDepth, leftOffset);
-			currentDepth = subtree.getDepth() + 1;
+			currentDepth = subtree.getDepth();
 		}
 	}
 
@@ -142,9 +170,10 @@ void updateContours() {
 		subtree = (TreeBranch)subtrees.get(i);
 		if (subtree.getDepth() > currentDepth) {
 			int rightContour[] = subtree.getContourRight();
-			int rightOffset = branch.contents.getClientArea().right() - subtree.getBounds().right();
+			int rightOffset =
+				contentsBounds.right() - transposer.t(subtree.getBounds()).right();
 			mergeContour(cachedContourRight, rightContour, currentDepth, rightOffset);
-			currentDepth = subtree.getDepth() + 1;
+			currentDepth = subtree.getDepth();
 		}
 	}
 }
@@ -153,9 +182,11 @@ void updateContours() {
  * @see org.eclipse.draw2d.examples.tree.BranchLayout#updateRowHeights()
  */
 void updateRowHeights() {
+	Transposer transposer = getTransposer();
 	preferredRowHeights = new int[getDepth()];
 	List subtrees = getSubtrees();
-	preferredRowHeights[0] = branch.getNode().getPreferredSize().height + getMajorSpacing();
+	preferredRowHeights[0] =
+		transposer.t(branch.getNode().getPreferredSize()).height + getMajorSpacing();
 	TreeBranch subtree;
 	
 	for (int i = 0; i < subtrees.size(); i++) {

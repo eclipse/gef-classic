@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.eclipse.draw2d.AbstractLayout;
 import org.eclipse.draw2d.Graphics;
+import org.eclipse.draw2d.geometry.Transposer;
 
 /**
  * 
@@ -12,6 +13,7 @@ import org.eclipse.draw2d.Graphics;
  */
 public abstract class BranchLayout extends AbstractLayout {
 
+private Transposer transposer;
 final TreeBranch branch;
 int[] cachedContourLeft;
 int[] cachedContourRight;
@@ -53,6 +55,12 @@ public int[] getPreferredRowHeights() {
 
 List getSubtrees() {
 	return branch.getContentsPane().getChildren();
+}
+
+Transposer getTransposer() {
+	if (transposer == null)
+		transposer = branch.getRoot().getTransposer();
+	return transposer;
 }
 
 int getMajorSpacing() {

@@ -14,10 +14,16 @@ public static final int STYLE_HANGING = 1;
 public static final int STYLE_NORMAL = 2;
 
 int aligment = PositionConstants.CENTER;
-int style;
 
-IFigure contents = new Figure();
+/*
+ * A layer is being used simply because it is the only "transparent" figure in draw2d. See
+ * the implementation of Layer.containsPoint(...) for what is meant by "transparent". If a
+ * layer is not used, then overlapping branches will cause hit-test problems.
+ */
+IFigure contents = new Layer();
+
 IFigure node;
+int style;
 
 TreeBranch(IFigure title) {
 	this(title, STYLE_NORMAL);
@@ -30,6 +36,14 @@ TreeBranch(IFigure title, int style) {
 	this.node = title;
 	add(title);
 	add(contents);
+}
+
+/**
+ * @see org.eclipse.draw2d.Figure#containsPoint(int, int)
+ */
+public boolean containsPoint(int x, int y) {
+	return node.containsPoint(x, y)
+		|| contents.containsPoint(x, y);
 }
 
 public int getAlignment() {
@@ -55,14 +69,6 @@ public int[] getContourRight() {
 
 final int getDepth() {
 	return getBranchLayout().getDepth();
-}
-
-public int getStyle() {
-	return style;
-}
-
-public TreeRoot getRoot() {
-	return ((TreeBranch)getParent().getParent()).getRoot();
 }
 
 /**
@@ -92,6 +98,14 @@ public Dimension getPreferredSize(int wHint, int hHint) {
 	return super.getPreferredSize(wHint, hHint);
 }
 
+public TreeRoot getRoot() {
+	return ((TreeBranch)getParent().getParent()).getRoot();
+}
+
+public int getStyle() {
+	return style;
+}
+
 /**
  * @see org.eclipse.draw2d.Figure#paintFigure(org.eclipse.draw2d.Graphics)
  */
@@ -102,6 +116,7 @@ protected void paintFigure(Graphics graphics) {
 
 public void setAlignment(int value) {
 	aligment = value;
+	revalidate();
 }
 
 public void setNode(IFigure node) {
@@ -114,13 +129,10 @@ final void setRowHeights(int heights[], int offset) {
 }
 
 public void setStyle(int style) {
+	this.style = style;
 	switch (style) {
 		case STYLE_HANGING :
 			setLayoutManager(new HangingLayout(this));
-			ToolbarLayout layout = new ToolbarLayout();
-			layout.setMinorAlignment(ToolbarLayout.ALIGN_TOPLEFT);
-			layout.setStretchMinorAxis(false);
-			contents.setLayoutManager(layout);
 			break;
 
 		default :
@@ -144,7 +156,7 @@ String toString(int level) {
 	try {
 		result += ((Label)getChildren().get(0)).getText() + "\n";
 	} catch (ClassCastException e) {
-		result += getChildren().get(0);
+		result += getChildren().get(0) + "\n";
 	}
 	for (int i=0; i<contents.getChildren().size(); i++)
 		result += ((TreeBranch)contents.getChildren().get(i)).toString(level + 1);
@@ -157,6 +169,12 @@ String toString(int level) {
 public void validate() {
 	if (isValid())
 		return;
+	if (style == STYLE_HANGING) {
+		ToolbarLayout layout = new ToolbarLayout(!getRoot().isHorizontal());
+		layout.setMinorAlignment(ToolbarLayout.ALIGN_TOPLEFT);
+		layout.setStretchMinorAxis(false);
+		contents.setLayoutManager(layout);
+	}
 	repaint();
 	super.validate();
 }

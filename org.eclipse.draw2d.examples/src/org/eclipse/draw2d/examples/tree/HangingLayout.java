@@ -42,8 +42,10 @@ void setRowHeights(int[] heights, int offset) {
  * @see org.eclipse.draw2d.examples.tree.BranchLayout#updateRowHeights()
  */
 void updateRowHeights() {
+	Transposer transposer = branch.getRoot().getTransposer();
 	preferredRowHeights = new int[getDepth()];
-	preferredRowHeights[0] = branch.getNode().getPreferredSize().height + getMajorSpacing();
+	preferredRowHeights[0] =
+		transposer.t(branch.getNode().getPreferredSize()).height + getMajorSpacing();
 
 	List subtrees = getSubtrees();
 	TreeBranch subtree;
@@ -58,74 +60,99 @@ void updateRowHeights() {
 	}
 }
 
+int getGap() {
+	return branch.getRoot().getMinorSpacing();
+}
 
 protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHint) {
-	TreeBranch branch = (TreeBranch)container;
-	Dimension result = branch.getNode().getPreferredSize().getCopy();
+	Transposer transposer = branch.getRoot().getTransposer();
+	Dimension result = transposer.t(branch.getNode().getPreferredSize().getCopy());
 	result.height = rowHeight;
 	if (branch.getContentsPane().getChildren().isEmpty())
-		return result;
-	Dimension d = branch.getContentsPane().getPreferredSize();
-	result.width = Math.max(result.width, d.width + result.width / 2 + 10);
+		return transposer.t(result);
+	Dimension d = transposer.t(branch.getContentsPane().getPreferredSize());
+	result.width = Math.max(result.width, d.width + getGap() * 2);
 	result.height += d.height;
-	return result;
+	return transposer.t(result);
 }
 
 public void layout(IFigure f) {
-	TreeBranch branch = (TreeBranch)f;
+	Transposer transposer = getTransposer();
 	Rectangle clientArea = new Rectangle();
 	branch.getClientArea(clientArea);
+	clientArea = transposer.t(clientArea);
 	Rectangle nodeBounds = new Rectangle();
-	nodeBounds.setSize(branch.getNode().getPreferredSize());
+	nodeBounds.setSize(transposer.t(branch.getNode().getPreferredSize()));
 	nodeBounds.height = rowHeight - getMajorSpacing();
 	nodeBounds.setLocation(clientArea.x, clientArea.y);
-	branch.getNode().setBounds(nodeBounds);
+	branch.getNode().setBounds(transposer.t(nodeBounds));
 
 	IFigure contents = branch.getContentsPane();
 	Rectangle contentsBounds = new Rectangle(
-		clientArea.getLocation().translate(nodeBounds.width / 2 + 10, rowHeight),
-		contents.getPreferredSize()
+		clientArea.getLocation().translate(getGap() * 2, rowHeight),
+		transposer.t(contents.getPreferredSize())
 	);
-	contents.setBounds(contentsBounds);
+	contents.setBounds(transposer.t(contentsBounds));
 }
 
 /**
  * @see org.eclipse.draw2d.examples.tree.BranchLayout#paintLines(org.eclipse.draw2d.Graphics)
  */
 void paintLines(Graphics g) {
-	IFigure node = branch.getNode();
-	IFigure contents = branch.getContentsPane();
-	int x = node.getBounds().getCenter().x;
-	int y = node.getBounds().bottom();
-	List children = contents.getChildren();
-	if (children.size() == 0)
-		return;
-	int bottom = y;
-	for (int i=0; i<children.size(); i++){
-		Point pt = ((TreeBranch)children.get(i)).getNodeBounds().getLeft();
-		g.drawLine(x, pt.y, pt.x, pt.y);
-		bottom = Math.max(bottom, pt.y);
+	int gap = getGap();
+	if (getTransposer().isEnabled()) {
+		IFigure node = branch.getNode();
+		IFigure contents = branch.getContentsPane();
+		int x = node.getBounds().right();
+		int y = node.getBounds().y + gap;
+		List children = contents.getChildren();
+		if (children.size() == 0)
+			return;
+		int right = x;
+		for (int i=0; i<children.size(); i++){
+			Point pt = ((TreeBranch)children.get(i)).getNodeBounds().getTop();
+			g.drawLine(pt.x, y, pt.x, pt.y);
+			right = Math.max(right, pt.x);
+		}
+		g.drawLine(x, y, right, y);
+
+	} else {
+		IFigure node = branch.getNode();
+		IFigure contents = branch.getContentsPane();
+		int x = node.getBounds().x + gap;
+		int y = node.getBounds().bottom();
+		List children = contents.getChildren();
+		if (children.size() == 0)
+			return;
+		int bottom = y;
+		for (int i=0; i<children.size(); i++){
+			Point pt = ((TreeBranch)children.get(i)).getNodeBounds().getLeft();
+			g.drawLine(x, pt.y, pt.x, pt.y);
+			bottom = Math.max(bottom, pt.y);
+		}
+		g.drawLine(x, y, x, bottom);
 	}
-	g.drawLine(x, y, x, bottom);
 }
 
 void updateContours() {
 	//Make sure we layout first
+	Transposer transposer = getTransposer();
 	branch.validate();
 
 	cachedContourLeft = new int[getDepth()];
 	cachedContourRight = new int[getDepth()];
 
-	Rectangle clientArea = branch.getClientArea(Rectangle.SINGLETON);
+	Rectangle clientArea = transposer.t(branch.getClientArea(Rectangle.SINGLETON));
+	Rectangle nodeBounds = transposer.t(branch.getNodeBounds());
 	int rightEdge = clientArea.right();
 
-	cachedContourLeft[0] = branch.getNodeBounds().x - clientArea.x;
-	cachedContourRight[0] = rightEdge - branch.getNodeBounds().right();
+	cachedContourLeft[0] = nodeBounds.x - clientArea.x;
+	cachedContourRight[0] = rightEdge - nodeBounds.right();
 
 	List subtrees = branch.contents.getChildren();
 	TreeBranch subtree;
 
-	int leftSide = branch.getNodeBounds().width / 2;
+	int leftSide = getGap();
 	for (int i = 1; i < getDepth(); i++)
 		cachedContourLeft[i] = leftSide;
 
@@ -133,7 +160,7 @@ void updateContours() {
 	int offset = 1;
 	for (int i = 0; i < subtrees.size(); i++) {
 		subtree = (TreeBranch)subtrees.get(i);
-		rightMargin = rightEdge - subtree.getBounds().right();
+		rightMargin = rightEdge - transposer.t(subtree.getBounds()).right();
 		int rightContour[] = subtree.getContourRight();
 		for (int j = 0; j < rightContour.length; j++)
 			cachedContourRight[j + offset] = rightContour[j] + rightMargin;

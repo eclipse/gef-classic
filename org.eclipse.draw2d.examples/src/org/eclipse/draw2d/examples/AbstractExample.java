@@ -20,16 +20,18 @@ protected static final Font ITALICS = new Font(null, "Helvetica", 10, SWT.ITALIC
 protected static final Font HEADING_1 = new Font(null, "Helvetica", 15, SWT.BOLD);//$NON-NLS-1$
 private FigureCanvas fc;
 
+protected Shell shell;
+
 protected void run(){
 	Display d = Display.getDefault();
-	Shell shell = new Shell(d);
+	shell = new Shell(d);
 	String appName = getClass().getName();
 	appName = appName.substring(appName.lastIndexOf('.')+1);
 	shell.setText(appName);
 	shell.setLayout(new FillLayout());
 	setFigureCanvas(new FigureCanvas(shell));
 	getFigureCanvas().setContents(getContents());
-	shell.setSize(600,500);
+	shell.pack();
 	shell.open();
 	while (!shell.isDisposed())
 		while (!d.readAndDispatch())
