@@ -24,8 +24,8 @@ public class ToolbarLayout
 	extends AbstractHintLayout
 {
 
-private int spacing;
-private boolean matchWidth;
+protected int spacing;
+protected boolean matchWidth;
 protected boolean horizontal = false;
 protected int minorAlignment;
 

@@ -25,7 +25,7 @@ public IFigure createFigure() {
 	figure.setForegroundColor(ColorConstants.listForeground);
 	figure.setBackgroundColor(ColorConstants.button);
 	figure.setFont(new Font(Display.getCurrent(), getPreferenceSource().getFontData()));
-	ToolbarLayout layout = new ToolbarLayout();
+	ToolbarLayout layout = new PaletteToolbarLayout();
 	figure.setLayoutManager(layout);
 	return figure;
 }

@@ -13,8 +13,8 @@ class DrawerAnimationController {
 
 
 private long startTime = System.currentTimeMillis();
-private long endTime = 0;
-private static int numberOfMilliSeconds = 150;
+private long endTime = 0, presentTime = 1;
+private static final int NUM_OF_MILLISECONDS = 150;
 private boolean inProgress;
 private List drawers = new ArrayList();
 private DrawerFigure[] animate;
@@ -37,6 +37,7 @@ public void addDrawer(DrawerEditPart drawer) {
 
 public void animate(DrawerEditPart drawer) {
 	inProgress = true;
+	int num = getNumberOfOpenDrawers();
 	if (drawer.getDrawerFigure().isExpanded()) {
 		List categoriesToCollapse = getDrawersToCollapse(drawer);
 		animate = new DrawerFigure[categoriesToCollapse.size() + 1];
@@ -47,16 +48,23 @@ public void animate(DrawerEditPart drawer) {
 			animate[count++] = drwr.getDrawerFigure();
 		}
 		animate[0] = drawer.getDrawerFigure();
+		num = num < 2 ? -1 : 0;
 	} else {
 		animate = new DrawerFigure[] {drawer.getDrawerFigure()};
+		num = num < 1 ? -1 : 0;
 	}
-
-	for (int i = 0; i < animate.length; i++)
+	for (int i = 0; i < animate.length; i++) {
 		animate[i].setAnimating(true);
+		if (num < 0) {
+			animate[i].setAnimatingAlone(true);
+		}
+	}
 	start();
 	runAnimation();
-	for (int i = 0; i < animate.length; i++)
+	for (int i = 0; i < animate.length; i++) {
 		animate[i].setAnimating(false);
+		animate[i].setAnimatingAlone(false);
+	}
 	animate = null;
 }
 
@@ -70,8 +78,9 @@ void step() {
 	for (int i = 0; i < animate.length; i++) {
 		animate[i].revalidate();
 	}
+	presentTime = System.currentTimeMillis();
 	animate[0].getUpdateManager().performUpdate();
-	if (System.currentTimeMillis() > endTime)
+	if (presentTime > endTime)
 		inProgress = false;
 }
 
@@ -79,12 +88,22 @@ void step() {
  * Returns value of current position (between 0.0 and 1.0).
  */
 public float getAnimationProgress() {
-	long presentTime = System.currentTimeMillis();
 	if (presentTime > endTime)
 		return (float)1.0;
 	long timePassed = (presentTime - startTime);
-	float progress = ((float)timePassed) / ((float)numberOfMilliSeconds);
+	float progress = ((float)timePassed) / ((float)NUM_OF_MILLISECONDS);
 	return progress;
+}
+
+public int getNumberOfOpenDrawers() {
+	int count = 0;
+	for (Iterator iter = drawers.iterator(); iter.hasNext();) {
+		DrawerEditPart part = (DrawerEditPart) iter.next();
+		if (part.isExpanded()) {
+			count++;
+		}
+	}
+	return count;
 }
 
 public boolean isAnimationInProgress() {
@@ -98,8 +117,9 @@ public void removeDrawer(DrawerEditPart drawer) {
 
 public void start() {
 	inProgress = true;
-	startTime = new Date().getTime();
-	endTime = startTime + numberOfMilliSeconds;
+	startTime = System.currentTimeMillis();
+	presentTime = startTime;
+	endTime = startTime + NUM_OF_MILLISECONDS;
 }
 
 protected List getDrawersToCollapse(DrawerEditPart drawer) {
