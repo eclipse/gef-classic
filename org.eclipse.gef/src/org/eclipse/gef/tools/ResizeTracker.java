@@ -35,6 +35,8 @@ public class ResizeTracker
 	extends SimpleDragTracker
 {
 
+private static final int FLAG_TARGET_FEEDBACK = AbstractTool.MAX_FLAG << 2;
+	
 private int direction;
 private GraphicalEditPart owner;
 private PrecisionRectangle sourceRect;
@@ -114,6 +116,9 @@ protected Request createSourceRequest() {
  * @see org.eclipse.gef.tools.AbstractTool#deactivate()
  */
 public void deactivate() {
+	// For the case where ESC key was hit while resizing
+	eraseTargetFeedback();
+	
 	sourceRect = null;
 	snapToHelper = null;
 	super.deactivate();
@@ -124,8 +129,11 @@ public void deactivate() {
  * {@link #getTargetEditPart() target} to erase target feedback.
  */
 protected void eraseTargetFeedback() {
+	if (!getFlag(FLAG_TARGET_FEEDBACK))
+		return;
 	if (getTargetEditPart() != null)
 		getTargetEditPart().eraseTargetFeedback(getSourceRequest());
+	setFlag(FLAG_TARGET_FEEDBACK, false);
 }
 
 /**
@@ -220,7 +228,8 @@ protected boolean handleDragInProgress() {
  */
 protected void showTargetFeedback() {
 	if (getTargetEditPart() != null)
-		getTargetEditPart().showTargetFeedback(getSourceRequest());
+		setFlag(FLAG_TARGET_FEEDBACK, true);
+	getTargetEditPart().showTargetFeedback(getSourceRequest());
 }
 
 /**
@@ -314,7 +323,7 @@ protected void updateSourceRequest() {
 	
 	if (!getCurrentInput().isAltKeyDown() && snapToHelper != null)
 		snapToHelper.snapResizeRequest(request, sourceRect.getPreciseCopy(),
-				PositionConstants.NORTH_SOUTH | PositionConstants.EAST_WEST);
+				request.getResizeDirection());
 }
 
 }
