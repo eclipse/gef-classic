@@ -27,8 +27,10 @@ public class ButtonBorder
 	extends SchemeBorder
 {
 
-public static final Border TOOLBAR = new ButtonBorder(SCHEMES.TOOLBAR);
 public static final Border BUTTON = new ButtonBorder(SCHEMES.BUTTON);
+public static final Border BUTTON_CONTRAST = new ButtonBorder(SCHEMES.BUTTON_CONTRAST);
+public static final Border BUTTON_SCROLLBAR = new ButtonBorder(SCHEMES.BUTTON_SCROLLBAR);
+public static final Border TOOLBAR = new ButtonBorder(SCHEMES.TOOLBAR);
 
 /**
  * Provides for a scheme to represent the borders of clickable figures like buttons.
