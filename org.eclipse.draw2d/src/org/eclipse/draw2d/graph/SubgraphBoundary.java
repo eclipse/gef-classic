@@ -37,9 +37,7 @@ public static final int RIGHT = 3;
  */
 public SubgraphBoundary(Subgraph s, Insets p, int side) {
 	super(null, s);
-	// TODO Auto-generated constructor stub
 	this.width = s.width;
-	//$TODO width of head/tail should be 0
 	this.height = s.height;
 	this.padding = new Insets(p);
 	switch (side) {
@@ -59,13 +57,15 @@ public SubgraphBoundary(Subgraph s, Insets p, int side) {
 			break;
 		case TOP :
 			height = s.insets.top;
-			width = 20;
+			//$TODO width of head/tail should be 0
+			width = 5;
 			padding.bottom = s.innerPadding.top;
 			data = "top(" + s + ")"; //$NON-NLS-1$ //$NON-NLS-2$
 			break;
 		case BOTTOM :
 			height = s.insets.bottom;
-			width = 20;
+			//$TODO width of head/tail should be 0
+			width = 5;
 			padding.top = s.innerPadding.bottom;
 			data = "bottom(" + s + ")"; //$NON-NLS-1$ //$NON-NLS-2$
 			break;

@@ -10,17 +10,17 @@ import org.eclipse.draw2d.geometry.Point;
  * <UL>
  *   <LI>{@link #source} - the source Node
  *   <LI>{@link #target} - the target Node
- *   <LI>{@link #delta} - the minimum number of rows the edge should span.
- *   <LI>{@link #weight} - a hint indicating this edge's importance.
- *   <LI>{@link #width} - the edge's width.
+ *   <LI>{@link #delta} - the minimum number of rows the edge should span
+ *   <LI>{@link #weight} - a hint indicating this edge's importance
+ *   <LI>{@link #width} - the edge's width
  *   <LI>[{@link #offsetSource}] - the edge's attachment point at the source node
- *   <LI>[{@link #offsetTarget}] - the edge's attachment point at the target node.
+ *   <LI>[{@link #offsetTarget}] - the edge's attachment point at the target node
  * </UL>
- * <P>The output of a layout consists of beding longer edges, and potentially inverting
+ * <P>The output of a layout consists of bending longer edges, and potentially inverting
  * edges to remove cycles in the graph.  The output consists of:
  * <UL>
- *   <LI>$TODO document bendpoints
- *   <LI>{@link #isFeedback} - <code>true</code> if the edge points backwards.
+ *   <LI>{@link #vNodes} - the virtual nodes (if any) which make up the bendpoints
+ *   <LI>{@link #isFeedback} - <code>true</code> if the edge points backwards
  * </UL>
  * 
  * @author hudsonr
@@ -85,7 +85,11 @@ public Point end;
 public boolean tree;
 
 /**
- * The virtual nodes used to bend edges which go across one or more ranks.
+ * The virtual nodes used to bend edges which go across one or more ranks.  Each virtual
+ * node is just a regular node which occupies some small amount of space on a row. It's
+ * width is equivalent to the edge's width.  Clients should use each virtual node's
+ * location (x, y, width, and height) as the way to position an edge which spans 1 or more
+ * rows.
  */
 public NodeList vNodes;
 
