@@ -65,9 +65,10 @@ protected Command getDeleteCommand(GroupRequest request) {
 }
 
 /**
- * Returns any contribution to ORPHANing this component from its container. By default,
- * ORPHAN is sent to the parent as an ORPHAN_CHILDREN Request.
- * @return the Command obtained from the host's parent.
+ * Returns the command contribution for orphaning this component from its container. By
+ * default, ORPHAN is redispatched to the host's parent as an ORPHAN_CHILDREN Request. The
+ * parents contribution is then returned.
+ * @return the contribution obtained from the host's parent.
  */
 protected Command getOrphanCommand() {
 	GroupRequest req = new GroupRequest(REQ_ORPHAN_CHILDREN);

@@ -21,12 +21,14 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.gef.*;
 
 /**
- * A SelectionEditPolicy which maintains a List of handles. Handles are figures which are
- * added to the HANDLE layer, and optionally return a DragTracker for dragging them.
- * Subclasses must provide the actual set of handles to add.
+ * A SelectionEditPolicy which manages a List of handles provided by the subclass. Handles
+ * are Figures which are added to the HANDLE layer, and generually return a DragTracker
+ * for dragging them. Handles are accessible for keyboard use if they return an accessible
+ * location.
  * <P>
  * SelectionHandlesEditPolicy implements {@link org.eclipse.core.runtime.IAdaptable} for
- * accessibility support.
+ * accessibility support. If any of the managed Handles provide accesible locations, then
+ * a {@link org.eclipse.gef.AccessibleHandleProvider} is automatically created.
  * @since 2.0 */
 public abstract class SelectionHandlesEditPolicy
 	extends SelectionEditPolicy

@@ -44,6 +44,9 @@ protected Connection createDummyConnection(Request req) {
 	return new PolylineConnection();
 }
 
+/**
+ * @see org.eclipse.gef.EditPolicy#deactivate()
+ */
 public void deactivate() {
 	if (connectionFeedback != null) {
 		removeFeedback(connectionFeedback);

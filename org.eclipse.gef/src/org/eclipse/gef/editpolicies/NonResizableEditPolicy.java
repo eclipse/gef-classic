@@ -25,6 +25,17 @@ import org.eclipse.gef.handles.NonResizableHandleKit;
 import org.eclipse.gef.requests.AlignmentRequest;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
 
+/**
+ * Provide support for selecting and positioning a non-resizable editpart.  Selection is
+ * indicated via four square handles at each corner of the editpart's figure, and a
+ * rectangular handle that outlines the editpart with a 1-pixel black line.  All of these
+ * handles return {@link org.eclipse.gef.tools.DragEditPartsTracker}s, which allows the
+ * current selection to be dragged.
+ * <P>
+ * During feedback, a rectangle filled using XOR and outlined with dashes is drawn. 
+ * Subclasses can tailor the feedback.
+ * @author hudsonr
+ */
 public class NonResizableEditPolicy
 	extends SelectionHandlesEditPolicy
 {
@@ -32,6 +43,10 @@ public class NonResizableEditPolicy
 private IFigure focusRect;
 private IFigure feedback;
 
+/**
+ * Creates the figure used for feedback.
+ * @return the new feedback figure
+ */
 protected IFigure createDragSourceFeedbackFigure() {
 	// Use a ghost rectangle for feedback
 	RectangleFigure r = new RectangleFigure();
@@ -43,12 +58,18 @@ protected IFigure createDragSourceFeedbackFigure() {
 	return r;
 }
 
+/**
+ * @see org.eclipse.gef.editpolicies.SelectionHandlesEditPolicy#createSelectionHandles()
+ */
 protected List createSelectionHandles() {
  	List list = new ArrayList();
  	NonResizableHandleKit.addHandles((GraphicalEditPart)getHost(), list);
  	return list;
 }
 
+/**
+ * @see org.eclipse.gef.EditPolicy#deactivate()
+ */
 public void deactivate() {
 	if (feedback != null) {
 		removeFeedback(feedback);
@@ -59,10 +80,9 @@ public void deactivate() {
 }
 
 /**
- * Erase feedback indicating that the receiver object is 
- * being dragged.  This method is called when a drag is
- * completed or cancelled on the receiver object.
- * @param dragTracker org.eclipse.gef.tools.DragTracker The drag tracker of the tool performing the drag.
+ * Erases drag feedback.  This method called whenever an erase feedback request is
+ * received of the appropriate type.
+ * @param request the request
  */
 protected void eraseChangeBoundsFeedback(ChangeBoundsRequest request) {
 	if (feedback != null) {
@@ -72,10 +92,7 @@ protected void eraseChangeBoundsFeedback(ChangeBoundsRequest request) {
 }
 
 /**
- * Erase feedback indicating that the receiver object is 
- * being dragged.  This method is called when a drag is
- * completed or cancelled on the receiver object.
- * @param dragTracker org.eclipse.gef.tools.DragTracker The drag tracker of the tool performing the drag.
+ * @see org.eclipse.gef.EditPolicy#eraseSourceFeedback(org.eclipse.gef.Request)
  */
 public void eraseSourceFeedback(Request request) {
 	if (REQ_MOVE.equals(request.getType())
@@ -83,10 +100,18 @@ public void eraseSourceFeedback(Request request) {
 		eraseChangeBoundsFeedback((ChangeBoundsRequest) request);
 }
 
+/**
+ * Returns the bounds of the host's figure by reference.  The returned Rectangle should
+ * not be modified.
+ * @return the host figure's bounding Rectangle
+ */
 private Rectangle getBounds() {
 	return ((GraphicalEditPart)getHost()).getFigure().getBounds();
 }
 
+/**
+ * @see org.eclipse.gef.EditPolicy#getCommand(org.eclipse.gef.Request)
+ */
 public Command getCommand(Request request) {
 	Object type = request.getType();
 
@@ -101,8 +126,8 @@ public Command getCommand(Request request) {
 }
 
 /**
- * Return the Figure to be used to paint the drag source
- * feedback.
+ * Lazily creates and returns the feedback figure used during drags.
+ * @return the feedback figure
  */
 protected IFigure getDragSourceFeedbackFigure() {
 	if (feedback == null)
@@ -110,6 +135,11 @@ protected IFigure getDragSourceFeedbackFigure() {
 	return feedback;
 }
 
+/**
+ * Returns the command contribution to an alignment request
+ * @param request the alignment request
+ * @return the contribution to the alignment
+ */
 protected Command getAlignCommand(AlignmentRequest request) {
 	AlignmentRequest req = new AlignmentRequest(REQ_ALIGN_CHILDREN);
 	req.setEditParts(getHost());
@@ -118,6 +148,13 @@ protected Command getAlignCommand(AlignmentRequest request) {
 	return getHost().getParent().getCommand(req);
 }
 
+/**
+ * Returns the command contribution to a change bounds request. The implementation
+ * actually redispatches the request to the host's parent editpart as a {@link
+ * RequestConstants#REQ_MOVE_CHILDREN} request.  The parent's contribution is returned.
+ * @param request the change bounds requesgt
+ * @return the command contribution to the request
+ */
 protected Command getMoveCommand(ChangeBoundsRequest request) {
 	ChangeBoundsRequest req = new ChangeBoundsRequest(REQ_MOVE_CHILDREN);
 	req.setEditParts(getHost());
@@ -128,10 +165,24 @@ protected Command getMoveCommand(ChangeBoundsRequest request) {
 	return getHost().getParent().getCommand(req);
 }
 
+/**
+ * Subclasses may override to contribute to the orphan request.  By default,
+ * <code>null</code> is returned to indicate no participation.  Orphan requests are not
+ * forwarded to the host's parent here.  That is done in {@link ComponentEditPolicy}. So,
+ * if the host has a component editpolicy, then the parent will already have a chance to
+ * contribute.
+ * @param req the orphan request
+ * @return <code>null</code> by default
+ */
 protected Command getOrphanCommand(Request req) {
 	return null;
 }
 
+/**
+ * Hides the focus rectangle displayed in <code>showFocus()</code>.
+ * @see #showFocus()
+ * @see org.eclipse.gef.editpolicies.SelectionEditPolicy#hideFocus()
+ */
 protected void hideFocus() {
 	if (focusRect != null)
 		removeFeedback(focusRect);
@@ -139,9 +190,8 @@ protected void hideFocus() {
 }
 
 /**
- * Display feedback to indicate that the receiver object
- * is being dragged.  The default feedback is a rectangle
- * the same size as the figure.
+ * Shows or updates feedback for a change bounds request.
+ * @param request the request
  */
 protected void showChangeBoundsFeedback(ChangeBoundsRequest request) {
 	IFigure p = getDragSourceFeedbackFigure();
@@ -157,6 +207,11 @@ protected void showChangeBoundsFeedback(ChangeBoundsRequest request) {
 	p.setBounds(r);
 }
 
+/**
+ * Shows a focus rectangle around the host's figure. The focus rectangle is expanded by 5
+ * pixels from the figure's bounds.
+ * @see org.eclipse.gef.editpolicies.SelectionEditPolicy#showFocus()
+ */
 protected void showFocus() {
 	focusRect = new AbstractHandle(
 		(GraphicalEditPart)getHost(),
@@ -184,12 +239,21 @@ protected void showFocus() {
 	addFeedback(focusRect);
 }
 
+/**
+ * Calls other methods as appropriate.
+ * @see org.eclipse.gef.EditPolicy#showSourceFeedback(org.eclipse.gef.Request)
+ */
 public void showSourceFeedback(Request request) {
 	if (REQ_MOVE.equals(request.getType())
 		|| REQ_ADD.equals(request.getType()))
 		showChangeBoundsFeedback((ChangeBoundsRequest) request);
 }
 
+/**
+ * Returns <code>true</code> for move, align, add, and orphan request types.  This method
+ * is never called for some of these types, but they are included for possible future use.
+ * @see org.eclipse.gef.EditPolicy#understandsRequest(org.eclipse.gef.Request)
+ */
 public boolean understandsRequest(Request request) {
 	if (REQ_MOVE.equals(request.getType())
 		|| REQ_ADD.equals(request.getType())

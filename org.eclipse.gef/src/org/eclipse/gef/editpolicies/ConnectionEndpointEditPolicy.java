@@ -112,6 +112,11 @@ protected List createSelectionHandles() {
  	return list;
 }
 
+/**
+ * Erases connection move feedback. This method is called when a ReconnectRequest is
+ * received.
+ * @param request the reconnect request.
+ */
 protected void eraseConnectionMoveFeedback(ReconnectRequest request) {
 	if (originalAnchor == null)
 		return;
@@ -124,18 +129,20 @@ protected void eraseConnectionMoveFeedback(ReconnectRequest request) {
 }
 
 /**
- * Erase feedback indicating that the receiver object is being dragged.  This method is
- * called when a drag is completed or cancelled on the receiver object.
- * @param dragTracker DragTracker The drag tracker of the tool performing the drag.
+ * @see org.eclipse.gef.EditPolicy#eraseSourceFeedback(org.eclipse.gef.Request)
  */
 public void eraseSourceFeedback(Request request) {
 	if (REQ_RECONNECT_TARGET.equals(request.getType())
 	  || REQ_RECONNECT_SOURCE.equals(request.getType())) {
 		eraseConnectionMoveFeedback((ReconnectRequest)request);
-		debugFeedback("Request to erase \"" + request.getType() + "\" source feedback");//$NON-NLS-2$//$NON-NLS-1$
+		debugFeedback("Request to erase \"" + request.getType() //$NON-NLS-1$
+			+ "\" source feedback"); //$NON-NLS-1$
 	}
 }
 
+/**
+ * @see org.eclipse.gef.EditPolicy#getCommand(org.eclipse.gef.Request)
+ */
 public Command getCommand(Request request) {
 	return null;
 }
@@ -148,6 +155,12 @@ protected Connection getConnection() {
 	return (Connection)((GraphicalEditPart)getHost()).getFigure();
 }
 
+/**
+ * Lazily creates and returns the feedback helper for the given request. The helper will
+ * be configured as either moving the source or target end of the connection.
+ * @param request the reconnect request
+ * @return the feedback helper
+ */
 protected FeedbackHelper getFeedbackHelper(ReconnectRequest request) {
 	if (feedbackHelper == null) {
 		feedbackHelper = new FeedbackHelper();
@@ -157,6 +170,12 @@ protected FeedbackHelper getFeedbackHelper(ReconnectRequest request) {
 	return feedbackHelper;
 }
 
+/**
+ * Hides the focus indicator. The focus indicator is a dotted outline around the
+ * connection.
+ * @see #showFocus()
+ * @see org.eclipse.gef.editpolicies.SelectionEditPolicy#hideFocus()
+ */
 protected void hideFocus() {
 	if (focus != null) {
 		removeFeedback(focus);
@@ -164,6 +183,11 @@ protected void hideFocus() {
 	}
 }
 
+/**
+ * Shows or updates connection move feedback.  Called whenever a show feedback request is
+ * received for reconnection.
+ * @param request the reconnect request
+ */
 protected void showConnectionMoveFeedback(ReconnectRequest request) {
 	NodeEditPart node = null;
 	if (request.getTarget() instanceof NodeEditPart)
@@ -185,6 +209,10 @@ protected void showConnectionMoveFeedback(ReconnectRequest request) {
 	helper.update(anchor, request.getLocation());
 }
 
+/**
+ * Shows focus around the connection.
+ * @see org.eclipse.gef.editpolicies.SelectionEditPolicy#showFocus()
+ */
 protected void showFocus() {
 	if (focus == null) {
 		focus = new ConnectionFocus();
@@ -192,6 +220,9 @@ protected void showFocus() {
 	}
 }
 
+/**
+ * @see org.eclipse.gef.EditPolicy#showSourceFeedback(org.eclipse.gef.Request)
+ */
 public void showSourceFeedback(Request request) {
 	if (REQ_RECONNECT_SOURCE.equals(request.getType())
 	  || REQ_RECONNECT_TARGET.equals(request.getType()))

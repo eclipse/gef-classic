@@ -15,7 +15,6 @@ import org.eclipse.draw2d.XYLayout;
 import org.eclipse.draw2d.geometry.*;
 
 import org.eclipse.gef.GraphicalEditPart;
-import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
 import org.eclipse.gef.requests.CreateRequest;
 
@@ -57,6 +56,8 @@ public Object getConstraintFor(Point p) {
  * from getting lost. If the Request is a MOVE, the existing width and height are
  * preserved. During RESIZE, the new width and height have a lower bound determined by
  * {@link #getMinimumSizeFor(GraphicalEditPart)}.
+ * @see ConstrainedLayoutEditPolicy#getConstraintFor(ChangeBoundsRequest,
+ * 	GraphicalEditPart)
  */
 protected Object getConstraintFor(ChangeBoundsRequest request, GraphicalEditPart child) {
 	Rectangle rect = new PrecisionRectangle(child.getFigure().getBounds());

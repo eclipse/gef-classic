@@ -19,10 +19,26 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.handles.ResizableHandleKit;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
 
+/**
+ * Provides support for selecting, positioning, and resizing an editpart.  Selection is
+ * indicated via eight square handles along the editpart's figure, and a rectangular
+ * handle that outlines the editpart with a 1-pixel black line. The eight square handles
+ * will resize the current selection in the eight primary directions. The rectangular
+ * handle will drag the current selection using a {@link
+ * org.eclipse.gef.tools.DragEditPartsTracker}.
+ * <P>
+ * During feedback, a rectangle filled using XOR and outlined with dashes is drawn. 
+ * Subclasses may tailor the feedback.
+ * 
+ * @author hudsonr
+ */
 public class ResizableEditPolicy
 	extends NonResizableEditPolicy
 {
 
+/**
+ * @see org.eclipse.gef.editpolicies.SelectionHandlesEditPolicy#createSelectionHandles()
+ */
 protected List createSelectionHandles() {
 	List list = new ArrayList();
  	ResizableHandleKit.addHandles((GraphicalEditPart)getHost(), list);
@@ -30,10 +46,8 @@ protected List createSelectionHandles() {
 }
 
 /**
- * Erase feedback indicating that the receiver object is 
- * being dragged.  This method is called when a drag is
- * completed or cancelled on the receiver object.
- * @param dragTracker org.eclipse.gef.tools.DragTracker The drag tracker of the tool performing the drag.
+ * Dispatches erase requests to more specific methods.
+ * @see org.eclipse.gef.EditPolicy#eraseSourceFeedback(org.eclipse.gef.Request)
  */
 public void eraseSourceFeedback(Request request) {
 	if (REQ_RESIZE.equals(request.getType()))
@@ -43,17 +57,7 @@ public void eraseSourceFeedback(Request request) {
 }
 
 /**
- * Get the command that performs an operation
- * of the type indicated by @commandString on the
- * receiver.  Data needed to create the command is
- * contained in @tool
- *
- * Possible values for the commandString depend on
- * the tool.  Default tools send "create" and "move".
- *
- * @return org.eclipse.gef.commands.ICommand  The command that performs the operation
- * @param commandString java.lang.String The type of command to create
- * @param commandData org.eclipse.gef.ICommandData Data needed to create the command
+ * @see org.eclipse.gef.EditPolicy#getCommand(org.eclipse.gef.Request)
  */
 public Command getCommand(Request request) {
 	if (REQ_RESIZE.equals(request.getType()))
@@ -62,6 +66,14 @@ public Command getCommand(Request request) {
 	return super.getCommand(request);
 }
 
+/**
+ * Returns the command contribution for the given resize request. By default, the request
+ * is redispatched to the host's parent as a {@link
+ * org.eclipse.gef.RequestConstants#REQ_RESIZE_CHILDREN}.  The parent's editpolicies
+ * determine how to perform the resize based on the layout manager in use.
+ * @param request the resize request
+ * @return the command contribution obtained from the parent
+ */
 protected Command getResizeCommand(ChangeBoundsRequest request) {
 	ChangeBoundsRequest req = new ChangeBoundsRequest(REQ_RESIZE_CHILDREN);
 	req.setEditParts(getHost());
@@ -73,6 +85,9 @@ protected Command getResizeCommand(ChangeBoundsRequest request) {
 	return getHost().getParent().getCommand(req);
 }
 
+/**
+ * @see org.eclipse.gef.EditPolicy#showSourceFeedback(org.eclipse.gef.Request)
+ */
 public void showSourceFeedback(Request request) {
 	if (REQ_RESIZE.equals(request.getType()))
 		showChangeBoundsFeedback((ChangeBoundsRequest)request);
@@ -80,6 +95,9 @@ public void showSourceFeedback(Request request) {
 		super.showSourceFeedback(request);
 }
 
+/**
+ * @see org.eclipse.gef.EditPolicy#understandsRequest(org.eclipse.gef.Request)
+ */
 public boolean understandsRequest(Request request) {
 	if (REQ_RESIZE.equals(request.getType()))
 		return true;
