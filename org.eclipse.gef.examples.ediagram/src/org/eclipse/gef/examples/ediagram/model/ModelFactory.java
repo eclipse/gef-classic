@@ -12,7 +12,7 @@
  *******************************************************************************
  * </copyright>
  *
- * $Id: ModelFactory.java,v 1.2 2004/12/07 19:07:09 pshah Exp $
+ * $Id: ModelFactory.java,v 1.3 2005/01/17 22:22:51 pshah Exp $
  */
 package org.eclipse.gef.examples.ediagram.model;
 
@@ -27,13 +27,6 @@ import org.eclipse.emf.ecore.EFactory;
  * @generated
  */
 public interface ModelFactory extends EFactory{
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	String copyright = ""; //$NON-NLS-1$
 
 	/**
 	 * The singleton instance of the factory.

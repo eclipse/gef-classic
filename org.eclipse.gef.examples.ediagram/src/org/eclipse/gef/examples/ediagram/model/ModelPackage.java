@@ -12,7 +12,7 @@
  *******************************************************************************
  * </copyright>
  *
- * $Id: ModelPackage.java,v 1.2 2004/12/07 19:07:09 pshah Exp $
+ * $Id: ModelPackage.java,v 1.3 2005/01/17 22:23:16 pshah Exp $
  */
 package org.eclipse.gef.examples.ediagram.model;
 
@@ -37,13 +37,6 @@ import org.eclipse.emf.ecore.EReference;
  * @generated
  */
 public interface ModelPackage extends EPackage{
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	String copyright = ""; //$NON-NLS-1$
-
 	/**
 	 * The package name.
 	 * <!-- begin-user-doc -->

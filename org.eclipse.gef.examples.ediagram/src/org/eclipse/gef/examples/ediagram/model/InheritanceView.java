@@ -17,11 +17,4 @@ package org.eclipse.gef.examples.ediagram.model;
  */
 public interface InheritanceView extends Link{
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	String copyright = ""; //$NON-NLS-1$
-
 }

@@ -20,13 +20,6 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface Diagram extends EObject{
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	String copyright = ""; //$NON-NLS-1$
-
 /**
  * @model type="org.eclipse.emf.ecore.EPackage"
  */

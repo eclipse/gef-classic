@@ -24,13 +24,6 @@ public interface Node
 	extends EObject{
 	
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	String copyright = ""; //$NON-NLS-1$
-
-	/**
 	 * @model
 	 */
 	Point getLocation();
