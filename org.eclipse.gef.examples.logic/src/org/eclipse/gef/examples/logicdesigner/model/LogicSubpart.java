@@ -21,12 +21,14 @@ import org.eclipse.ui.views.properties.PropertyDescriptor;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
+import org.eclipse.gef.examples.logicdesigner.rulers.Guide;
 
 abstract public class LogicSubpart
 	extends LogicElement
 {
 
 private String id;
+private Guide verticalGuide, horizontalGuide;
 protected Hashtable inputs = new Hashtable (7);
 protected Point location = new Point(0,0);
 protected Vector  outputs  = new Vector (4,4);
@@ -78,6 +80,10 @@ public Vector getConnections() {
 	while (ins.hasMoreElements())
 		v.addElement(ins.nextElement());
 	return v;
+}
+
+public Guide getHorizontalGuide() {
+	return horizontalGuide;
 }
 
 public Image getIcon() {
@@ -145,11 +151,22 @@ public Vector getTargetConnections() {
 	return v;
 }
 
+public Guide getVerticalGuide() {
+	return verticalGuide;
+}
+
 /**
  * 
  */
 public boolean isPropertySet(){
 	return true;	
+}
+
+public void setHorizontalGuide(Guide hGuide) {
+	horizontalGuide = hGuide;
+	/*
+	 * @TODO:Pratik   firePropertyChanged?
+	 */
 }
 
 /*
@@ -206,6 +223,10 @@ public void setSize(Dimension d) {
 	if (size.equals(d)) return;
 	size = d;
 	firePropertyChange("size", null, size);  //$NON-NLS-1$
+}
+
+public void setVerticalGuide(Guide vGuide) {
+	verticalGuide = vGuide;
 }
 
 }
