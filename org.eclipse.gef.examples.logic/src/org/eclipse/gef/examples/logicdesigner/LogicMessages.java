@@ -124,7 +124,7 @@ public String LocationPropertySource_Property_Y_Label = Helper.getString("%Locat
 public String PropertyDescriptor_LogicDiagram_ConnectionRouter = Helper.getString("%PropertyDescriptor.LogicDiagram.ConnectionRouter");  //$NON-NLS-1$
 public String PropertyDescriptor_LogicDiagram_Manual = Helper.getString("%PropertyDescriptor.LogicDiagram.Manual");  //$NON-NLS-1$
 public String PropertyDescriptor_LogicDiagram_Manhattan = Helper.getString("%PropertyDescriptor.LogicDiagram.Manhattan");  //$NON-NLS-1$
-
+public String PropertyDescriptor_LogicDiagram_ShortestPath = Helper.getString("%PropertyDescriptor.LogicDiagram.ShortestPath");  //$NON-NLS-1$
 public String LogicDiagram_LabelText = Helper.getString("%LogicDiagram.LabelText");  //$NON-NLS-1$
 public String PropertyDescriptor_Label_Text = Helper.getString("%PropertyDescriptor.Label.Text");  //$NON-NLS-1$
 public String PropertyDescriptor_LogicSubPart_Size = Helper.getString("%PropertyDescriptor.LogicSubPart.Size");  //$NON-NLS-1$
