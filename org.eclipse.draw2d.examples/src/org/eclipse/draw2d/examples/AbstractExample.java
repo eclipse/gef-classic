@@ -11,6 +11,8 @@ import org.eclipse.swt.widgets.Shell;
  */
 public abstract class AbstractExample {
 
+private FigureCanvas fc;
+
 protected void run(){
 	Display d = new Display();
 	Shell shell = new Shell(d);
@@ -18,8 +20,8 @@ protected void run(){
 	appName = appName.substring(appName.lastIndexOf('.')+1);
 	shell.setText(appName);
 	shell.setLayout(new FillLayout());
-	FigureCanvas canvas = new FigureCanvas(shell);
-	canvas.setContents(getContents());
+	setFigureCanvas(new FigureCanvas(shell));
+	getFigureCanvas().setContents(getContents());
 	shell.setSize(300,260);
 	shell.open();
 	while (!shell.isDisposed())
@@ -28,5 +30,13 @@ protected void run(){
 }
 
 protected abstract IFigure getContents();
+
+protected FigureCanvas getFigureCanvas(){
+	return fc;
+}
+
+protected void setFigureCanvas(FigureCanvas canvas){
+	this.fc = canvas;
+}
 
 }
