@@ -19,7 +19,7 @@ import org.eclipse.gef.requests.SelectionRequest;
 import org.eclipse.swt.graphics.Cursor;
 
 /**
- * DragTracker used to select {@link org.eclipse.gef.EditPart EditParts}.
+ * DragTracker used to select, edit, and open {@link org.eclipse.gef.EditPart EditParts}.
  */
 public class SelectEditPartTracker
 	extends TargetingTool

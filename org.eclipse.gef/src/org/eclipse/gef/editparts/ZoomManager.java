@@ -125,7 +125,7 @@ protected void fireZoomChanged() {
 protected double getFitHeightZoomLevel() {
 	Dimension viewportSize = getViewport().getSize();
 	Rectangle figureBounds = getScalableFigure().getBounds();
-	return Math.min((double)viewportSize.height / (double)figureBounds.height * zoom, multiplier);
+	return Math.min((double)viewportSize.height / (double)figureBounds.height * zoom, getUIMultiplier());
 }
 
 protected double getFitPageZoomLevel() {
@@ -133,13 +133,13 @@ protected double getFitPageZoomLevel() {
 	Rectangle figureBounds = getScalableFigure().getBounds();
 	double widthScale = (double)viewportSize.width / (double)figureBounds.width * zoom;
 	double heightScale = (double)viewportSize.height / (double)figureBounds.height * zoom;
-	return Math.min(Math.min(widthScale, heightScale), multiplier);
+	return Math.min(Math.min(widthScale, heightScale), getUIMultiplier());
 }
 
 protected double getFitWidthZoomLevel() {
 	Dimension viewportSize = getViewport().getSize();
 	Rectangle figureBounds = getScalableFigure().getBounds();
-	return Math.min((double)viewportSize.width / (double)figureBounds.width * zoom, multiplier);
+	return Math.min((double)viewportSize.width / (double)figureBounds.width * zoom, getUIMultiplier());
 }
 
 /**
