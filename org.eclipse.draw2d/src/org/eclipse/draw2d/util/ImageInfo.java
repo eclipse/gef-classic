@@ -82,7 +82,7 @@ public class ImageInfo {
 		Dimension imageSize = new Dimension( i.getBounds().width, i.getBounds().height );
 		if( imageSize.equals(d) )
 			return true;
-		if( imageSize.greaterThan(d) && imageSize.getArea() < d.getArea() * 3 )
+		if( imageSize.contains(d) && imageSize.getArea() < d.getArea() * 3 )
 			return true;
 		return false;
 	}

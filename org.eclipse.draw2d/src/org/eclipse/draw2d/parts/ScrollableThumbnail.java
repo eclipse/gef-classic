@@ -166,8 +166,8 @@ private class SelectorFigure
 		// Don't paint the selector figure if the entire source is visible.
 		Dimension thumbnailSize = ScrollableThumbnail.this.getClientArea().getSize();
 		Dimension size = getSize().getExpanded(1, 1); // expand to compensate for rounding errors in calculating bounds
-		if(size.greaterThan(thumbnailSize) || size.equals(thumbnailSize))
-			return;	
+		if(size.contains(thumbnailSize))
+			return;
 
 		bounds.height--;
 		bounds.width--;

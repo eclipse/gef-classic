@@ -233,7 +233,7 @@ public Dimension getPreferredSize(int wHint, int hHint) {
 		return preferredSize;
 	
 	Dimension maximumSize = adjustToAspectRatio(maxSize.getCopy(), true);
-	if (preferredSize.greaterThan(maximumSize))
+	if (preferredSize.contains(maximumSize))
 		return maximumSize;
 	else
 		return preferredSize;
