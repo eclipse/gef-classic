@@ -79,11 +79,10 @@ public ShortestPathRouter() {
  * Adds an obstacle with the given bounds to the obstacles. 
  * 
  * @param rect the bounds of this obstacle
+ * @return <code>true</code> if the added obstacle has dirtied one or more paths
  */
-public void addObstacle(Rectangle rect) {
-	Obstacle obs = new Obstacle(rect);
-	userObstacles.add(obs);
-	testPaths(obs);
+public boolean addObstacle(Rectangle rect) {
+	return internalAddObstacle(new Obstacle(rect));
 }
 
 /**
@@ -205,12 +204,14 @@ private void countVertices() {
  * Dirties the paths that are on the given vertex
  * @param vertex the vertex that has the paths
  */
-private void dirtyPathsOn(Vertex vertex) {
+private boolean dirtyPathsOn(Vertex vertex) {
 	List paths = vertex.paths;
-	if (paths != null) {
+	if (paths != null && paths.size() != 0) {
 		for (int i = 0; i < paths.size(); i++)
 			((Path)paths.get(i)).isDirty = true;
+		return true;
 	}
+	return false;
 }
 
 /**
@@ -292,9 +293,9 @@ private void growObstaclesPass() {
  * Adds an obstacle to the routing
  * @param obs the obstacle
  */
-private void internalAddObstacle(Obstacle obs) {
+private boolean internalAddObstacle(Obstacle obs) {
 	userObstacles.add(obs);
-	testPaths(obs);
+	return testPaths(obs);
 }
 
 /**
@@ -302,7 +303,7 @@ private void internalAddObstacle(Obstacle obs) {
  * @param rect the bounds of the obstacle
  * @return the obstacle removed
  */
-private Obstacle internalRemoveObstacle(Rectangle rect) {
+private boolean internalRemoveObstacle(Rectangle rect) {
 	Obstacle obs = null;
 	int index = -1;
 	for (int i = 0; i < userObstacles.size(); i++) {
@@ -315,20 +316,21 @@ private Obstacle internalRemoveObstacle(Rectangle rect) {
 		
 	userObstacles.remove(index);
 	
-	dirtyPathsOn(obs.bottomLeft);
-	dirtyPathsOn(obs.topLeft);
-	dirtyPathsOn(obs.bottomRight);
-	dirtyPathsOn(obs.topRight);
+	boolean result = false;
+	result |= dirtyPathsOn(obs.bottomLeft);
+	result |= dirtyPathsOn(obs.topLeft);
+	result |= dirtyPathsOn(obs.bottomRight);
+	result |= dirtyPathsOn(obs.topRight);
 
 	for (int p = 0; p < userPaths.size(); p++) {
 		Path path = (Path)userPaths.get(p);
 		if (path.isDirty)
 			continue;
-		if (path.isObstacleVisible(obs)) 
-			path.isDirty = true;
+		if (path.isObstacleVisible(obs))
+			path.isDirty = result = true;
 	}
 	
-	return obs;
+	return result;
 }
 
 /**
@@ -525,18 +527,21 @@ private void recombineSubpaths() {
  * Removes the obstacle with the rectangle's bounds from the routing.
  * 
  * @param rect the bounds of the obstacle to remove
+ * @return <code>true</code> if the removal has dirtied one or more paths
  */
-public void removeObstacle(Rectangle rect) {
-	internalRemoveObstacle(rect);
+public boolean removeObstacle(Rectangle rect) {
+	return internalRemoveObstacle(rect);
 }
 
 /**
  * Removes the given path from the routing.
  * 
  * @param path the path to remove.
+ * @returns <code>true</code> if the removal may have affected one of the remaining paths
  */
-public void removePath(Path path) {
+public boolean removePath(Path path) {
 	userPaths.remove(path);
+	return true;
 }
 
 /**
@@ -727,25 +732,28 @@ private int testBentSegment(Segment segment, int index, Path path) {
  * @param path the path
  * @param obs the obstacle
  */
-private void testPath(Path path, Obstacle obs) {
+private boolean testPath(Path path, Obstacle obs) {
 	for (int s = 0; s < path.segments.size(); s++) {
 		Segment segment = (Segment)path.segments.get(s);
 		if (testSegment(segment, obs, path)) {
 			path.isDirty = true;
-			return;
+			return true;
 		}
 	}
+	return false;
 }
 
 /**
  * Tests all paths against the given obstacle
  * @param obs the obstacle
  */
-private void testPaths(Obstacle obs) {
+private boolean testPaths(Obstacle obs) {
+	boolean result = false;
 	for (int i = 0; i < userPaths.size(); i++) {
 		Path path = (Path)userPaths.get(i);
-		testPath(path, obs);
+		result |= testPath(path, obs);
 	}
+	return result;
 }
 
 /**
@@ -823,13 +831,12 @@ private void generateChildPaths() {
  * Updates the position of an existing obstacle. 
  * @param oldBounds the old bounds(used to find the obstacle)
  * @param newBounds the new bounds
+ * @return <code>true</code> if the change the current results to become stale
  */
-public void updateObstacle(Rectangle oldBounds, Rectangle newBounds) {
-	Obstacle obs = internalRemoveObstacle(oldBounds);
-	
-	obs.init(newBounds);
-	
-	internalAddObstacle(obs);
+public boolean updateObstacle(Rectangle oldBounds, Rectangle newBounds) {
+	boolean result = internalRemoveObstacle(oldBounds);
+	result |= addObstacle(newBounds);
+	return result;
 }
 
 }
