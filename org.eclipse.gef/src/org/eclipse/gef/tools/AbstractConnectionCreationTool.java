@@ -50,7 +50,6 @@ private static final int FLAG_SOURCE_FEEDBACK = TargetingTool.MAX_FLAG << 1;
  */
 protected static final int MAX_FLAG = FLAG_SOURCE_FEEDBACK;
 
-private Command command;
 private EditPart connectionSource;
 private Request sourceRequest;
 private CreationFactory factory;
@@ -180,7 +179,7 @@ protected boolean handleButtonDown(int button) {
 		updateTargetRequest();
 		updateTargetUnderMouse();
 		setConnectionSource(getTargetEditPart());
-		command = getCommand();
+		Command command = getCommand();
 		((CreateConnectionRequest)getTargetRequest()).setSourceEditPart(
 			getTargetEditPart());
 		if (command != null) {
