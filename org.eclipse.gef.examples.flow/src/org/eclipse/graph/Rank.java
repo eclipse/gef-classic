@@ -10,6 +10,7 @@ import java.util.Comparator;
 public class Rank extends NodeList {
 
 private Comparator comparator = new MedianComparator();
+final int hash = new Object().hashCode();
 public int total;
 
 static class MedianComparator implements Comparator {
@@ -30,6 +31,17 @@ public boolean add(Node n) {
 
 public int count() {
 	return super.size();
+}
+
+public boolean equals(Object o) {
+	return o == this;
+}
+
+/**
+ * @see java.util.AbstractList#hashCode()
+ */
+public int hashCode() {
+	return hash;
 }
 
 /**
