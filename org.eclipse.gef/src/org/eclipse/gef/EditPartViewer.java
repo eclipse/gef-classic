@@ -105,15 +105,6 @@ void deselect(EditPart editpart);
 void deselectAll();
 
 /**
- * Disposes the Viewer. The Viewer will release appropriate resources and remove any
- * listeners. The Viewer will {@link EditPart#deactivate() deactivate} the
- * {@link #getRootEditPart() RootEditPart}, which will deactivate all EditParts in the
- * viewer.
- * @see EditPart#deactivate()
- */
-void dispose();
-
-/**
  * Returns <code>null</code> or the <code>EditPart</code> associated with the specified
  * location. The location is relative to the client area of the Viewer's
  * <code>Control</code>.  An EditPart is not directly visible.  It is targeted using its
