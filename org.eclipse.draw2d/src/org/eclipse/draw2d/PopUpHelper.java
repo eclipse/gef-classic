@@ -61,6 +61,8 @@ protected Shell createShell(){
  * @since 2.0
  */
 public void dispose(){
+	if (isShowing())
+		hide();
 	if (shell != null && !shell.isDisposed())
 		shell.dispose();
 }
