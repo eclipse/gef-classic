@@ -55,6 +55,7 @@ public void createControl(Composite parent, PaletteEntry entry) {
 	this.entry = entry;
 	
 	panel = new Composite(parent, SWT.NONE);
+	panel.setFont(parent.getFont());
 	GridLayout gridLayout = new GridLayout(1, false);
 	gridLayout.marginWidth = 0;
 	panel.setLayout(gridLayout);
@@ -103,7 +104,8 @@ protected Text createDescText(Composite panel) {
  * @return 		The newly created Button
  */
 protected Button createHiddenCheckBox(Composite panel) {
-	Button hidden = new Button(panel, SWT.CHECK | SWT.NO_FOCUS);
+	Button hidden = new Button(panel, SWT.CHECK);
+	hidden.setFont(panel.getFont());
 	hidden.setText(PaletteMessages.HIDDEN_LABEL);
 	hidden.setSelection(!entry.isVisible());
 	
@@ -130,6 +132,7 @@ protected Button createHiddenCheckBox(Composite panel) {
  */
 protected Label createLabel(Composite panel, int style, String text) {
 	Label label = new Label(panel, style);
+	label.setFont(panel.getFont());
 	label.setText(text);
 	return label;
 }
@@ -166,6 +169,7 @@ protected Text createText(Composite panel, int style, String text) {
 	}
 
 	Text textBox = new Text(panel, style);
+	textBox.setFont(panel.getFont());
 	textBox.setText(text);
 	GridData data = new GridData(GridData.FILL_HORIZONTAL);
 	data.widthHint = 200;

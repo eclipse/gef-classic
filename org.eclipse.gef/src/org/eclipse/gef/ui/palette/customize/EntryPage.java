@@ -29,7 +29,8 @@ void apply();
 
 /**
  * Creates the Control that displays the properties of the given entry.  This method will
- * only be called once.
+ * only be called once.  The parent Composite's Font is set to the Workbench Dialog Font.
+ * The page's Controls should use the Workbench Dialog Font where appropriate.
  * 
  * @param parent	The Composite in which the Control has to be created
  * @param entry	The entry whose properties have to be displayed
