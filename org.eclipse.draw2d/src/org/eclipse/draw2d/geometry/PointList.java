@@ -12,7 +12,7 @@ package org.eclipse.draw2d.geometry;
  * SWT uses integer arrays when painting polylines and polygons.
  */
 public class PointList
-	implements java.io.Serializable
+	implements java.io.Serializable, Translatable
 {
 
 private int[] points = new int[0];
@@ -38,6 +38,14 @@ public PointList(int size) {
 	points = new int[size * 2];
 }
 
+/**
+ * Constructs a PointList consisting of copies of the Points in list
+ * @param list The PointList providing the points  */
+public PointList(PointList list) {
+	for (int i = 0; i < list.size(); i++)
+		addPoint(list.getPoint(i));
+}
+		
 /** 
  * Adds Point <i>p</i> to this PointList.
  * @see  #removePoint(int)
@@ -82,6 +90,13 @@ public Rectangle getBounds() {
 			bounds.union(getPoint(i));
 	}
 	return bounds;
+}
+
+/**
+ * Creates a copy
+ * @return PointList A copy of this PointList */
+public PointList getCopy() {
+	return new PointList(this);
 }
 
 /** 
@@ -179,6 +194,24 @@ public void insertPoint(Point p, int index) {
 	points[index] = p.x;
 	points[index + 1] = p.y;
 	size++;
+}
+
+/**
+ * @see org.eclipse.draw2d.geometry.Translatable#performScale(double)
+ */
+public void performScale(double factor) {
+	for (int i = 0; i < points.length; i++)
+		points[i] = (int)Math.floor(points[i] * factor);
+}
+
+/**
+ * @see org.eclipse.draw2d.geometry.Translatable#performTranslate(int, int)
+ */
+public void performTranslate(int dx, int dy) {
+	for (int i = 0; i < size * 2; i += 2) {
+		points[i] += dx;
+		points[i + 1] += dy;
+	}
 }
 
 /** 
