@@ -10,6 +10,11 @@
  *******************************************************************************/
 package org.eclipse.gef.internal.ui.rulers;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.eclipse.swt.accessibility.AccessibleControlEvent;
+import org.eclipse.swt.accessibility.AccessibleEvent;
 import org.eclipse.swt.graphics.Cursor;
 
 import org.eclipse.draw2d.*;
@@ -30,8 +35,9 @@ public class GuideEditPart
 {
 
 public static final int MIN_DISTANCE_BW_GUIDES = 5;
-public static final int DELETE_THRESHOLD = 15;
-	
+public static final int DELETE_THRESHOLD = 20;
+
+private AccessibleEditPart accPart;
 private GuideLineFigure guideLineFig;
 private Cursor cursor = null;
 private ZoomListener zoomListener = new ZoomListener() {
@@ -63,7 +69,21 @@ public void activate() {
 	super.activate();
 	getRulerProvider().addRulerChangeListener(listener);
 	if (getZoomManager() != null)
-		getZoomManager().addZoomListener(zoomListener);		
+		getZoomManager().addZoomListener(zoomListener);
+}
+
+protected AccessibleEditPart createAccessibleEditPart() {
+	return new AccessibleGraphicalEditPart(){
+
+		public void getName(AccessibleEvent e) {
+			e.result = "Drag Guide";
+		}
+		
+		public void getValue(AccessibleControlEvent e) {
+			e.result = "" + getRulerProvider().getGuidePosition(getModel()); //$NON-NLS-1$
+		}
+
+	};
 }
 
 /* (non-Javadoc)
@@ -101,6 +121,27 @@ public void deactivate() {
 	super.deactivate();
 }
 
+protected AccessibleEditPart getAccessibleEditPart() {
+	if (accPart == null)
+		accPart = createAccessibleEditPart();
+	return accPart;
+}
+
+public Object getAdapter(Class key) {
+	if (key == AccessibleHandleProvider.class) {
+		return new AccessibleHandleProvider() {
+			public List getAccessibleHandleLocations() {
+				List result = new ArrayList();
+				Point pt = getFigure().getBounds().getCenter();
+				getFigure().translateToAbsolute(pt);
+				result.add(pt);
+				return result;
+			}
+		};
+	}
+	return super.getAdapter(key);
+}
+
 public Cursor getCurrentCursor() {
 	if (cursor == null) {
 		return getFigure().getCursor();
@@ -112,10 +153,6 @@ public Cursor getCurrentCursor() {
  * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#getDragTracker(org.eclipse.gef.Request)
  */
 public DragTracker getDragTracker(Request request) {
-	/*
-	 * @TODO:Pratik   maybe you shouldn't use a drag edit parts tracker here.  try a
-	 * simpler drag tracker.
-	 */
 	return new DragEditPartsTracker(this) {
 		protected Cursor calculateCursor() {
 			return getCurrentCursor();
@@ -146,7 +183,7 @@ public int getZoomedPosition() {
 	double position = getRulerProvider().getGuidePosition(getModel());
 	if (getZoomManager() != null) {
 		position = Math.round(position * getZoomManager().getZoom());
-	}	
+	}
 	return (int)position;
 }
 
@@ -214,16 +251,16 @@ public static class GuideLineFigure extends Figure {
 
 public static class GuideSelectionPolicy extends SelectionEditPolicy {
 	protected void hideFocus() {
-		getHostFigure().setBackgroundColor(ColorConstants.button);
+		((GuideFigure)getHostFigure()).setDrawFocus(false);
 	}
 	protected void hideSelection() {
-		// do nothing
+		((GuideFigure)getHostFigure()).setDrawFocus(false);
 	}
 	protected void showFocus() {
-		getHostFigure().setBackgroundColor(ColorConstants.blue);
+		((GuideFigure)getHostFigure()).setDrawFocus(true);
 	}
 	protected void showSelection() {
-		// do nothing
+		((GuideFigure)getHostFigure()).setDrawFocus(true);
 	}
 }
 

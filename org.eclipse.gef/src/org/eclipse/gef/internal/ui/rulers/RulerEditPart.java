@@ -16,8 +16,7 @@ import org.eclipse.draw2d.IFigure;
 
 import org.eclipse.gef.*;
 import org.eclipse.gef.editparts.*;
-import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
-import org.eclipse.gef.editparts.ZoomManager;
+import org.eclipse.gef.editpolicies.SelectionEditPolicy;
 import org.eclipse.gef.requests.SelectionRequest;
 import org.eclipse.gef.ui.parts.RulerChangeListener;
 import org.eclipse.gef.ui.parts.RulerProvider;
@@ -65,6 +64,7 @@ protected void createEditPolicies() {
 	 * return true all the time?
 	 */
 //	installEditPolicy(EditPolicy.CONTAINER_ROLE, );
+	installEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE, new RulerSelectionPolicy());
 }
 
 /* (non-Javadoc)
@@ -159,6 +159,21 @@ public void setParent(EditPart parent) {
 		} else {
 			rulerProvider = (RulerProvider)diagramViewer.getProperty(RulerProvider.VERTICAL);
 		}
+	}
+}
+
+public static class RulerSelectionPolicy extends SelectionEditPolicy {
+	protected void hideFocus() {
+		((RulerFigure)getHostFigure()).setDrawFocus(false);
+	}
+	protected void hideSelection() {
+		((RulerFigure)getHostFigure()).setDrawFocus(false);
+	}
+	protected void showFocus() {
+		((RulerFigure)getHostFigure()).setDrawFocus(true);
+	}
+	protected void showSelection() {
+		((RulerFigure)getHostFigure()).setDrawFocus(true);
 	}
 }
 
