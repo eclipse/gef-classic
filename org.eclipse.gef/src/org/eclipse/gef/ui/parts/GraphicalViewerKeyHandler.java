@@ -21,7 +21,6 @@ import org.eclipse.gef.*;
 import org.eclipse.draw2d.FigureCanvas;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.PositionConstants;
-import org.eclipse.draw2d.Viewport;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 
@@ -57,12 +56,6 @@ private GraphicalViewer viewer;
  */
 public GraphicalViewerKeyHandler(GraphicalViewer viewer) {
 	this.viewer = viewer;
-}
-
-boolean acceptScroll(KeyEvent event) {
-	return ((event.stateMask & SWT.CTRL) != 0 && (event.stateMask & SWT.SHIFT) != 0 
-			&& (event.keyCode == SWT.ARROW_DOWN || event.keyCode == SWT.ARROW_LEFT
-			|| event.keyCode == SWT.ARROW_RIGHT || event.keyCode == SWT.ARROW_UP));
 }
 
 /**
@@ -117,6 +110,12 @@ boolean acceptLeaveContents(KeyEvent event) {
  */
 boolean acceptOutOf(KeyEvent event) {
 	return ((event.stateMask & SWT.ALT) != 0) && (event.keyCode == SWT.ARROW_UP);
+}
+
+boolean acceptScroll(KeyEvent event) {
+	return ((event.stateMask & SWT.CTRL) != 0 && (event.stateMask & SWT.SHIFT) != 0 
+			&& (event.keyCode == SWT.ARROW_DOWN || event.keyCode == SWT.ARROW_LEFT
+			|| event.keyCode == SWT.ARROW_RIGHT || event.keyCode == SWT.ARROW_UP));
 }
 
 /**
@@ -245,14 +244,14 @@ public boolean keyPressed(KeyEvent event) {
 	} else if (acceptConnection(event)) {
 		navigateConnections(event);
 		return true;
+	} else if (acceptScroll(event)) {
+		scrollViewer(event);
+		return true;
 	} else if (acceptLeaveConnection(event)) {
 		navigateOutOfConnection(event);
 		return true;
 	} else if (acceptLeaveContents(event)) {
 		navigateIntoContainer(event);
-		return true;
-	} else if (acceptScroll(event)) {
-		scrollViewer(event);
 		return true;
 	}
 
@@ -443,21 +442,23 @@ protected void processSelect(KeyEvent event) {
 }
 
 void scrollViewer(KeyEvent event) {
-	Viewport port = ((FigureCanvas)getViewer().getControl()).getViewport();
-	Point loc = port.getViewLocation();
-	Rectangle area = port.getClientArea(Rectangle.SINGLETON).scale(.1); 
+	if (!(getViewer().getControl() instanceof FigureCanvas))
+		return;
+	FigureCanvas figCanvas = (FigureCanvas)getViewer().getControl();
+	Point loc = figCanvas.getViewport().getViewLocation();
+	Rectangle area = figCanvas.getViewport().getClientArea(Rectangle.SINGLETON).scale(.1); 
 	switch (event.keyCode) {
 		case SWT.ARROW_DOWN:
-			port.setVerticalLocation(loc.y + area.height);
+			figCanvas.scrollToY(loc.y + area.height);
 			break;
 		case SWT.ARROW_UP:
-			port.setVerticalLocation(loc.y - area.height);
+			figCanvas.scrollToY(loc.y - area.height);
 			break;
 		case SWT.ARROW_LEFT:
-			port.setHorizontalLocation(loc.x - area.width);
+			figCanvas.scrollToX(loc.x - area.width);
 			break;
 		case SWT.ARROW_RIGHT:
-			port.setHorizontalLocation(loc.x + area.width);
+			figCanvas.scrollToX(loc.x + area.width);
 	}
 }
 
