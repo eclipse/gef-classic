@@ -42,8 +42,8 @@ public int getGap() {
 }
 
 /**
- * Returns a reference point used to calculate the location.
- * @return The reference point
+ * Returns the reference point in absolute coordinates used to calculate the location.
+ * @return The reference point in absolute coordinates
  * @since 2.0
  */
 protected abstract Point getReferencePoint();
