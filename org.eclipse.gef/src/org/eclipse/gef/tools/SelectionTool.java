@@ -256,6 +256,19 @@ protected boolean handleMove() {
 	return false;
 }
 
+/**
+ * @see org.eclipse.gef.Tool#nativeDragStarted(DragSourceEvent, EditPartViewer)
+ */
+public boolean handleNativeDragStarted(DragSourceEvent event, EditPartViewer viewer) {
+	if (getDragTracker() != null)
+		getDragTracker().nativeDragStarted(event, viewer);
+	debug("Native drag started on " + viewer);//$NON-NLS-1$
+	setDragTracker(null);
+	unlockTargetEditPart();
+	setState(STATE_INITIAL);
+	return true;
+}
+
 private boolean handleTraverseHandle(KeyEvent e){
 	EditPart focus = getCurrentViewer().getFocusEditPart();
 	if (focus.getSelected() == EditPart.SELECTED_NONE)
@@ -361,18 +374,6 @@ public void mouseUp(MouseEvent e, EditPartViewer viewer) {
 	if (getDragTracker() != null)
 		getDragTracker().mouseUp(e, viewer);
 	super.mouseUp(e, viewer);
-}
-
-/**
- * @see org.eclipse.gef.Tool#nativeDragStarted(DragSourceEvent, EditPartViewer)
- */
-public void nativeDragStarted(DragSourceEvent event, EditPartViewer viewer) {
-	if (getDragTracker() != null)
-		getDragTracker().nativeDragStarted(event, viewer);
-	debug("Native drag started on " + viewer);
-	setDragTracker(null);
-	unlockTargetEditPart();
-	setState(STATE_INITIAL);
 }
 
 protected void refreshCursor(){
