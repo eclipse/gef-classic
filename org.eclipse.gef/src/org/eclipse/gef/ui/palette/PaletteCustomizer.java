@@ -140,65 +140,44 @@ public void performDelete(PaletteEntry entry) {
 
 /**
  * Updates the model by moving the entry down.
- * Called when the "Move Down" ToolItem in the PaletteCustomizerDialog is 
- * clicked.
- * 
- * <p>
- * NOTE: It is recommended that sub-classes override this method and optimize it.  The way
- * it is implemented right now, it causes two changes to be fired (one for removing the
- * entry from its parent, and one for re-inserting it at the new index).  This causes the 
- * TreeViewer in the PaletteCustomizerDialog to refresh twice, which produces an effect
- * similar to flickering.
- * </p>
+ * Called when the "Move Down" action in the PaletteCustomizerDialog is invoked.
  * 
  * @param	entry	The selected palette entry.  It'll never be <code>null</code>.
  * 
  * @see #canMoveDown(PaletteEntry)
  */
 public void performMoveDown(PaletteEntry entry) {
-	PaletteContainer parent = entry.getParent();
-	List children = parent.getChildren();
-	int index = children.indexOf(entry) + 1;
-	parent.remove(entry);
-	
-	if (index == children.size()) {
-		PaletteContainer grandparent = parent.getParent();
-		int parentIndex = grandparent.getChildren().indexOf(parent) + 1;
-		parent = (PaletteContainer)grandparent.getChildren().get(parentIndex);
-		index = 0;
+	PaletteContainer parent = (PaletteContainer)entry.getParent();
+	if (!parent.moveDown(entry)) {
+		// This is the case of a PaletteEntry that is its parent's last child
+		parent.remove(entry);
+		PaletteContainer grandparent = (PaletteContainer)parent.getParent();
+		List parents = grandparent.getChildren();
+		int index = parents.indexOf(parent);
+		PaletteContainer sibling = (PaletteContainer) parents.get(index + 1);
+		sibling.add(0, entry);
 	}
-	parent.add(index, entry);
 }
 
 /**
  * Updates the model by moving the entry up.
- * Called when the "Move Up" ToolItem in the PaletteCustomizerDialog is clicked.
- * 
- * <p>
- * NOTE: It is recommended that sub-classes override this method and optimize it.  The way
- * it is implemented right now, it causes two changes to be fired (one for removing the
- * entry from its parent, and one for re-inserting it at the new index). This causes the
- * TreeViewer in the PaletteCustomizerDialog to refresh twice, which produces an effect
- * similar to flickering.
- * </p>
+ * Called when the "Move Up" action in the PaletteCustomizerDialog is invoked.
  * 
  * @param	entry	The selected palette entry.  It'll never be <code>null</code>.
  * 
  * @see #canMoveUp(PaletteEntry)
  */
 public void performMoveUp(PaletteEntry entry) {
-	PaletteContainer parent = entry.getParent();
-	List children = parent.getChildren();
-	int index = children.indexOf(entry) - 1;
-	parent.remove(entry);
-	
-	if (index < 0) {
-		PaletteContainer grandparent = parent.getParent();
-		int parentIndex = grandparent.getChildren().indexOf(parent) - 1;
-		parent = (PaletteContainer)grandparent.getChildren().get(parentIndex);
-		index = -1;
+	PaletteContainer parent = (PaletteContainer)entry.getParent();
+	if (!parent.moveUp(entry)) {
+		//This is the case of a PaletteEntry that is its parent's first child
+		parent.remove(entry);
+		PaletteContainer grandparent = (PaletteContainer)parent.getParent();
+		List parents = grandparent.getChildren();
+		int index = parents.indexOf(parent);
+		PaletteContainer sibling = (PaletteContainer) parents.get(index - 1);
+		sibling.add(entry);
 	}
-	parent.add(index, entry);
 }
 
 /**
