@@ -98,17 +98,13 @@ private GraphicalViewer createRulerContainer(int orientation) {
 	viewer.createControl(this);
 	viewer.setKeyHandler(new GraphicalViewerKeyHandler(viewer) {
 		public boolean keyPressed(KeyEvent event) {
-			/*
-			 * @TODO:Pratik     the correct way to handle this is by having a "Delete
-			 * Guide" action and having the DEL key associated with it.  then, 
-			 * performStroke() will take care of it.  just like in the logic editor.
-			 */
 			if (event.keyCode == SWT.DEL) {
 				if (getFocusEditPart() instanceof GuideEditPart) {
 					RulerEditPart parent = (RulerEditPart)getFocusEditPart().getParent();
 					getViewer().getEditDomain().getCommandStack().execute(
 							parent.getRulerProvider().getDeleteGuideCommand(
 							getFocusEditPart().getModel()));
+					event.doit = false;
 					return true;
 				} else {
 					return false;
