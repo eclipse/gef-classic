@@ -38,7 +38,7 @@ protected Dimension calculateMinimumSize(IFigure figure, int wHint, int hHint) {
 	IFigure child;
 	for (int i = 0; i < children.size(); i++) {
 		child = (IFigure)children.get(i);
-		if (!getObservingVisibility() || child.isVisible())
+		if (!isObservingVisibility() || child.isVisible())
 			d.union(child.getMinimumSize(wHint, hHint));
 	}
 	
@@ -65,7 +65,7 @@ protected Dimension calculatePreferredSize(IFigure figure, int wHint, int hHint)
 	IFigure child;
 	for (int i = 0; i < children.size(); i++) {
 		child = (IFigure)children.get(i);
-		if (!getObservingVisibility() || child.isVisible())
+		if (!isObservingVisibility() || child.isVisible())
 			d.union(child.getPreferredSize(wHint, hHint));
 	}
 	

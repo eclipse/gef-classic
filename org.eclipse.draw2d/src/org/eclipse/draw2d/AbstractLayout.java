@@ -28,7 +28,7 @@ protected Dimension preferredSize;
  * Whether or not this layout pays attention to visiblity of figures when 
  * calculating its bounds. By default, false.
  */
-protected boolean observingVisibility = false;
+protected boolean isObservingVisibility = false;
 
 /**
  * This method is now {@link #calculatePreferredSize(IFigure, int, int)}.
@@ -78,15 +78,6 @@ public Dimension getMinimumSize(IFigure container, int wHint, int hHint) {
 }
 
 /**
- * Returns whether or not this layout pays attention to visiblity when calculating its
- * bounds.
- * @return true if invisible figures should not contribute to this layout's bounds.
- */
-public boolean getObservingVisibility() {
-	return observingVisibility;
-}
-
-/**
  * Returns the preferred size of the given figure, using width and height hints.  If the
  * preferred size is cached, that size  is returned.  Otherwise, {@link
  * #calculatePreferredSize(IFigure, int, int)} is called.
@@ -122,6 +113,15 @@ protected void invalidate(IFigure child) {
 }
 
 /**
+ * Returns whether or not this layout pays attention to visiblity when calculating its
+ * bounds.
+ * @return true if invisible figures should not contribute to this layout's bounds.
+ */
+public boolean isObservingVisibility() {
+	return isObservingVisibility;
+}
+
+/**
  * Removes the given figure from this LayoutManager's list of figures.
  * @param child The figure to remove
  */
@@ -139,14 +139,14 @@ public void setConstraint(IFigure child, Object constraint) {
 }
 
 /**
- * Sets observingVisibility to the given value.
+ * Sets isObservingVisibility to the given value.
  * @param newValue the newValue for whether or not to this layout pays attention to
  * visiblity when calculating its bounds.
  */
 public void setObserveVisibility(boolean newValue) {
-	if (observingVisibility == newValue)
+	if (isObservingVisibility == newValue)
 		return;
-	observingVisibility = newValue;
+	isObservingVisibility = newValue;
 }
 
 }
