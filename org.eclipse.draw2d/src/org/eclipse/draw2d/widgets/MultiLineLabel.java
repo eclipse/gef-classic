@@ -33,13 +33,14 @@ import org.eclipse.draw2d.text.TextFlow;
 public final class MultiLineLabel extends FigureCanvas {
 
 private TextFlow textFlow;
-private ImageBorder imgBorder = new ImageBorder(2);
+static final Border MARGIN = new MarginBorder(2);
+private Image image;
 
 class FocusableViewport extends Viewport {
 	FocusableViewport() {
 		super(true);
 		setFocusTraversable(true);
-		setBorder(imgBorder);
+		setBorder(MARGIN);
 	}
 	
 	public void handleFocusGained(FocusEvent event) {
@@ -131,17 +132,8 @@ private void addAccessibility() {
 	});
 }
 
-public org.eclipse.swt.graphics.Point computeSize(int wHint, int hHint, boolean changed) {
-	org.eclipse.swt.graphics.Point size = super.computeSize(wHint, hHint, changed);
-	if (getImage() != null) {
-		size.y = Math.max(size.y, 
-				getImage().getBounds().height + imgBorder.getInsets(null).getHeight());
-	}
-	return size;
-}
-
 public Image getImage() {
-	return imgBorder.getImage();
+	return image;
 }
 
 /**
@@ -167,8 +159,12 @@ public void setFont(Font font) {
  * 						or WEST
  * @see	ImageBorder#setImage(Image, int)
  */
-public void setImage(Image image, int position) {
-	imgBorder.setImage(image, position);
+public void setImage(Image image) {
+	this.image = image;
+	if (image != null)
+		setBorder(new ImageBorder(image));
+	else
+		setBorder(null);
 }
 
 /**
