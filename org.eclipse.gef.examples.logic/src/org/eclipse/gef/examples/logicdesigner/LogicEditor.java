@@ -367,14 +367,7 @@ protected void configureGraphicalViewer() {
 	
 	loadProperties();
 
-	// Actions
-	IAction matchWidthAction = new MatchWidthAction(this);
-	getActionRegistry().registerAction(matchWidthAction);
-	IAction matchSizeAction = new MatchSizeAction(this);
-	getActionRegistry().registerAction(matchSizeAction);
-	IAction matchHeightAction = new MatchHeightAction(this);
-	getActionRegistry().registerAction(matchHeightAction);
-	
+	// Actions	
 	IAction showRulers = new ToggleRulerVisibilityAction(getGraphicalViewer());
 	getActionRegistry().registerAction(showRulers);
 	getSite().getKeyBindingService().registerAction(showRulers);
@@ -550,6 +543,18 @@ protected void createActions() {
 	super.createActions();
 	ActionRegistry registry = getActionRegistry();
 	IAction action;
+	
+	action = new MatchWidthAction(this);
+	registry.registerAction(action);
+	getSelectionActions().add(action.getId());
+	
+	action = new MatchSizeAction(this);
+	registry.registerAction(action);
+	getSelectionActions().add(action.getId());
+	
+	action = new MatchHeightAction(this);
+	registry.registerAction(action);
+	getSelectionActions().add(action.getId());
 	
 	action = new CopyTemplateAction(this);
 	registry.registerAction(action);
