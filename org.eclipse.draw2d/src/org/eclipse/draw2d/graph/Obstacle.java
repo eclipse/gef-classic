@@ -11,6 +11,7 @@
 package org.eclipse.draw2d.graph;
 
 import org.eclipse.draw2d.PositionConstants;
+import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
@@ -33,6 +34,18 @@ Vertex topLeft, topRight, bottomLeft, bottomRight, center;
  */
 Obstacle(Rectangle rect) {
 	init(rect);
+}
+
+/**
+ * Returns <code>true</code> if the given point is contained but not on the boundary of
+ * this obstacle.
+ * @return <code>true</code> if properly contained
+ */
+public boolean containsProper(Point p) {
+	return p.x > this.x
+		&& p.x < this.x + this.width - 1
+		&& p.y > this.y
+		&& p.y < this.y + this.height - 1;
 }
 
 private void growVertex(Vertex vertex) {
@@ -97,6 +110,14 @@ void shrinkVertices() {
 	shrinkVertex(topRight);
 	shrinkVertex(bottomLeft);
 	shrinkVertex(bottomRight);
+}
+
+/**
+ * @see org.eclipse.draw2d.geometry.Rectangle#toString()
+ */
+public String toString() {
+	return "Obstacle(" + x + ", " + y + ", " + //$NON-NLS-3$//$NON-NLS-2$//$NON-NLS-1$
+		width + ", " + height + ")";//$NON-NLS-2$//$NON-NLS-1$
 }
 
 }
