@@ -39,7 +39,6 @@ public PrecisionRectangle() { }
  * @param rect the base rectangle
  */
 public PrecisionRectangle(Rectangle rect) {
-	super(rect);
 	if (rect instanceof PrecisionRectangle) {
 		PrecisionRectangle rectangle = (PrecisionRectangle)rect;
 		preciseX = rectangle.preciseX;
