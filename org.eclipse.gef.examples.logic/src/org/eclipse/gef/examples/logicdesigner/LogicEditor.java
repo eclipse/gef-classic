@@ -164,17 +164,12 @@ private IPartListener partListener = new IPartListener() {
 	public void partOpened(IWorkbenchPart part) {}
 };
 
-public LogicEditor(){
+public LogicEditor() {
 	setEditDomain(new DefaultEditDomain(this));
 }
 
-protected void closeEditor(final boolean save) {
-//	Display display = getSite().getShell().getDisplay();
-//	display.asyncExec(new Runnable() {
-//		public void run() {
-			getSite().getPage().closeEditor(LogicEditor.this, save);
-//		}
-//	});
+protected void closeEditor(boolean save) {
+	getSite().getPage().closeEditor(LogicEditor.this, save);
 }
 
 public void commandStackChanged(EventObject event) {
