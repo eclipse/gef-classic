@@ -39,7 +39,7 @@ public IFigure getHeader() {
  */
 public Dimension getPreferredSize(int wHint, int hHint) {
 	Dimension dim = new Dimension();
-	dim.width = Math.max(wHint, header.getPreferredSize().width);
+	dim.width = Math.max(wHint, getFooter().getPreferredSize().width);
 	dim.height = hHint;
 	return dim;
 }
