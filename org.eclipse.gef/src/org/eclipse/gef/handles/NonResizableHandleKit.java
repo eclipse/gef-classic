@@ -11,10 +11,8 @@ import java.util.List;
 import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.Handle;
+import org.eclipse.gef.SharedCursors;
 import org.eclipse.gef.tools.DragEditPartsTracker;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Cursor;
-import org.eclipse.swt.widgets.Display;
 
 /**
  * A set of utility methods to create Handles for 
@@ -23,8 +21,6 @@ import org.eclipse.swt.widgets.Display;
  * @see Handle
  */
 public class NonResizableHandleKit {
-
-protected final static Cursor SIZEALL_CURSOR = new Cursor(Display.getDefault(), SWT.CURSOR_SIZEALL);
 
 /**
  * Fills the given List with handles at each corner of a
@@ -55,7 +51,7 @@ static public void addMoveHandle(GraphicalEditPart f, List handles) {
 
 static Handle createHandle(GraphicalEditPart owner, int direction) {
 	ResizeHandle handle = new ResizeHandle(owner,direction);
-	handle.setCursor(SIZEALL_CURSOR);
+	handle.setCursor(SharedCursors.SIZEALL);
 	handle.setDragTracker(new DragEditPartsTracker(owner));
 	return handle;
 }
