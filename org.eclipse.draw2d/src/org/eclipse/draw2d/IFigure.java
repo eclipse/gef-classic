@@ -43,13 +43,12 @@ class NoInsets
 /**
  * The maximum allowable dimension. ({@link Integer#MAX_VALUE},{@link Integer#MAX_VALUE})
  */
-public static final Dimension MAX_DIMENSION = 
-									new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
+Dimension MAX_DIMENSION = new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
 
 /**
  * The minimum allowable dimension. (5,5)
  */
-public static final Dimension MIN_DIMENSION = new Dimension(5, 5);
+Dimension MIN_DIMENSION = new Dimension(5, 5);
 
 /**
  * Empty Insets.

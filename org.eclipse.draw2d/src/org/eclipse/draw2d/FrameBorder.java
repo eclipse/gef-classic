@@ -40,7 +40,9 @@ protected static final SchemeBorder.Scheme
 					 }
 	);
 
-{createBorders();}
+{
+	createBorders();
+}
 
 /**
  * Constructs a FrameBorder with its label set to the name of the {@link TitleBarBorder}

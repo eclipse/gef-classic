@@ -20,11 +20,11 @@ public interface Orientable
 /**
  * A constant representing a horizontal orientation.
  */
-static int HORIZONTAL = 0;
+int HORIZONTAL = 0;
 /**
  * A constant representing a vertical orientation.
  */
-static int VERTICAL = 1;
+int VERTICAL = 1;
 
 /**
  * Sets the orientation. Can be either {@link #HORIZONTAL} or {@link #VERTICAL}.
