@@ -116,11 +116,11 @@ public void dragOperationChanged(DropTargetEvent event) {
  */
 public void dragOver(DropTargetEvent event) {
 	setCurrentEvent(event);
+	if (GEF.DebugDND)
+		GEF.debug("Drag Over: " + toString()); //$NON-NLS-1$
+	handleDragOver();
 	if (testAndSet(event)) {
 		resetHover();
-		if (GEF.DebugDND)
-			GEF.debug("Drag Over: " + toString()); //$NON-NLS-1$
-		handleDragOver();
 	} else {
 		if (hovering)
 			return;
@@ -146,6 +146,7 @@ public void drop(DropTargetEvent event) {
 	if (GEF.DebugDND)
 		GEF.debug("Drop: " + toString()); //$NON-NLS-1$
 	setCurrentEvent(event);
+	eraseTargetFeedback();
 	handleDrop();
 	unload();
 }
