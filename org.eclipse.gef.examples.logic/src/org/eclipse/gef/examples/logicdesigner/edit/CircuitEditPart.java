@@ -18,7 +18,6 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.*;
 import org.eclipse.gef.editparts.ViewportAutoexposeHelper;
 import org.eclipse.gef.editparts.ViewportExposeHelper;
-import org.eclipse.gef.editpolicies.SnapFeedbackPolicy;
 
 import org.eclipse.gef.examples.logicdesigner.figures.*;
 import org.eclipse.gef.examples.logicdesigner.figures.CircuitFigure;
@@ -34,7 +33,6 @@ public class CircuitEditPart
 protected void createEditPolicies(){
 	super.createEditPolicies();
 	installEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE, new ContainerHighlightEditPolicy());
-	installEditPolicy("Snap Feedback", new SnapFeedbackPolicy()); //$NON-NLS-1$
 }
 
 /**
@@ -68,12 +66,6 @@ public Object getAdapter(Class key) {
 				return getSourceAnchorLocations();
 			}
 		};
-	if (key == SnapToStrategy.class) {
-		Boolean val = (Boolean)getViewer().getProperty(SnapToGeometry.PROPERTY_SNAP_ENABLED);
-		if (val != null && val.booleanValue())
-			return new SnapToGeometry(this);
-		return null;
-	}
 	return super.getAdapter(key);
 }
 
