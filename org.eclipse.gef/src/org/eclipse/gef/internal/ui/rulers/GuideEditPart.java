@@ -244,8 +244,6 @@ public void setCurrentCursor(Cursor c) {
 
 public void updateLocationOfFigures(int position) {
 	getRulerEditPart().setLayoutConstraint(this, getFigure(), new Integer(position));
-	// Fix for Bug# 50999
-	getRulerEditPart().getFigure().getUpdateManager().performUpdate();
 	Point guideFeedbackLocation = getGuideLineFigure().getBounds().getLocation();
 	if (isHorizontal()) {
 		guideFeedbackLocation.y = position;
