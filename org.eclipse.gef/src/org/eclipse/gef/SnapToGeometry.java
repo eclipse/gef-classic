@@ -21,10 +21,10 @@ public class SnapToGeometry
 {
 	
 public static final String PROPERTY_SNAP_ENABLED = "SnapToGeometry.isEnabled"; //$NON-NLS-1$	
-public static final String PROPERTY_NORTH_ANCHOR = "SnapToGeometry.NorthAnchor"; //$NON-NLS-1$
-public static final String PROPERTY_SOUTH_ANCHOR = "SnapToGeometry.SouthAnchor"; //$NON-NLS-1$
-public static final String PROPERTY_WEST_ANCHOR = "SnapToGeometry.WestAnchor"; //$NON-NLS-1$
-public static final String PROPERTY_EAST_ANCHOR = "SnapToGeometry.EastAnchor"; //$NON-NLS-1$
+public static final String KEY_NORTH_ANCHOR = "SnapToGeometry.NorthAnchor"; //$NON-NLS-1$
+public static final String KEY_SOUTH_ANCHOR = "SnapToGeometry.SouthAnchor"; //$NON-NLS-1$
+public static final String KEY_WEST_ANCHOR = "SnapToGeometry.WestAnchor"; //$NON-NLS-1$
+public static final String KEY_EAST_ANCHOR = "SnapToGeometry.EastAnchor"; //$NON-NLS-1$
 
 protected static class Entry {
 	int side;
@@ -96,9 +96,9 @@ protected double getCorrectionFor(Entry entries[], Map extendedData, boolean ver
 	
 	String property;
 	if (side == -1)
-		property = vert ? PROPERTY_WEST_ANCHOR : PROPERTY_NORTH_ANCHOR;
+		property = vert ? KEY_WEST_ANCHOR : KEY_NORTH_ANCHOR;
 	else
-		property = vert ? PROPERTY_EAST_ANCHOR : PROPERTY_SOUTH_ANCHOR;
+		property = vert ? KEY_EAST_ANCHOR : KEY_SOUTH_ANCHOR;
 	
 	for (int i = 0; i < entries.length; i++) {
 		Entry entry = entries[i];

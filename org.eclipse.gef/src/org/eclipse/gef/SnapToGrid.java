@@ -4,8 +4,6 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PrecisionRectangle;
 
-import org.eclipse.gef.requests.ChangeBoundsRequest;
-
 /**
  * @author Randy Hudson
  * @author Pratik Shah

@@ -35,14 +35,14 @@ public ToggleSnapToGeometryAction(GraphicalViewer diagramViewer) {
 }
 
 public boolean isChecked() {
-	Boolean val = (Boolean)diagramViewer.getProperty(SnapToGeometry.PROPERTY_SNAP_TO_GEOM_ENABLED);
+	Boolean val = (Boolean)diagramViewer.getProperty(SnapToGeometry.PROPERTY_SNAP_ENABLED);
 	if (val != null)
 		return val.booleanValue();
 	return false;
 }
 
 public void run() {
-	diagramViewer.setProperty(SnapToGeometry.PROPERTY_SNAP_TO_GEOM_ENABLED, 
+	diagramViewer.setProperty(SnapToGeometry.PROPERTY_SNAP_ENABLED, 
 			new Boolean(!isChecked()));
 }
 
