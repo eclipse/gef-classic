@@ -130,9 +130,9 @@ public EditPart findObjectAtExcluding(
 		result = (EditPart)tree.getData();
 	}
 	while (result != null) {
-		if (!exclude.contains(result)
-			&& (condition == null
-				|| condition.evaluate(result)))
+		if ((condition == null
+				|| condition.evaluate(result))
+				&&  !exclude.contains(result))
 			return result;
 		result = result.getParent();
 	}

@@ -74,8 +74,7 @@ public boolean isHorizontal() {
 }
 
 public void removeGuide(LogicGuide guide) {
-	if (guides.contains(guide)) {
-		guides.remove(guide);
+	if (guides.remove(guide)) {
 		listeners.firePropertyChange(PROPERTY_CHILDREN, null, guide);
 	}
 }

@@ -143,11 +143,9 @@ public void route(Connection conn) {
 		
 		if (connectionList != null) {
 			
-			int index;
+			int index = connectionList.indexOf(conn) + 1;
 			
-			if (connectionList.contains(conn)) {
-				index = connectionList.indexOf(conn) + 1;	
-			} else {
+			if (index == 0) {
 				index = connectionList.size() + 1;
 				connections.put(connectionKey, conn);
 			}

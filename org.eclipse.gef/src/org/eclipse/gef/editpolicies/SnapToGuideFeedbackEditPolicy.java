@@ -32,7 +32,7 @@ private ZoomManager zoomManager;
 public void eraseSourceFeedback(Request request) {
 	for (Iterator iter = figures.iterator(); iter.hasNext();) {
 		IFigure fig = (IFigure)iter.next();
-		if (getLayer(LayerConstants.FEEDBACK_LAYER).getChildren().contains(fig)) {
+		if (fig.getParent() != null) {
 			fig.getParent().remove(fig);
 		}
 	}

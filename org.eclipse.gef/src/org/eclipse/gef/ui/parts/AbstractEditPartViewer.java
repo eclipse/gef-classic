@@ -128,8 +128,13 @@ public void appendSelection(EditPart editpart) {
 		EditPart primary = (EditPart)list.get(list.size() - 1);
 		primary.setSelected(EditPart.SELECTED);
 	}
-	if (list.contains(editpart))
-		list.remove(editpart);
+	/*
+	 * @TODO:Pratik    Randy, is there a reason why this is first removing the editpart
+	 * and then adding it?  Shouldn't it be:
+	 * 		if (!contains)
+	 * 			add
+	 */
+	list.remove(editpart);
 	list.add(editpart);
 	editpart.setSelected(EditPart.SELECTED_PRIMARY);
 	

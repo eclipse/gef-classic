@@ -154,8 +154,7 @@ public void removeDragSourceListener(TransferDragSourceListener listener) {
 	listeners.remove(listener);
 	if (currentListener == listener)
 		currentListener = null;
-	if (activeListeners.contains(listener))
-		activeListeners.remove(listener);
+	activeListeners.remove(listener);
 }
 
 /**
