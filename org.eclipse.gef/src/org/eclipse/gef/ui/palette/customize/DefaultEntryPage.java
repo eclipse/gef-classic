@@ -33,12 +33,12 @@ private EntryPageContainer container;
  * This is the panel that is created by {@link #createControl(Composite, PaletteEntry)}. 
  * It will be <code>null</code> if that method hasn't been invoked yet.
  */
-protected Composite panel;
+private Composite panel;
 /**
  * This is the <code>PaletteEntry</code> that this page represents.  It will be
  * <code>null</code> until {@link #createControl(Composite, PaletteEntry)} is invoked.
  */
-protected PaletteEntry entry;
+private PaletteEntry entry;
 
 /**
  * Being live, this method is completely ignored.  Model is updated with
@@ -88,7 +88,7 @@ protected Text createDescText(Composite panel) {
 	data.widthHint = 200;
 	data.heightHint = 52;
 	description.setLayoutData(data);
-	if (!isReadOnly()) {
+	if (getPermission() >= getEntry().PERMISSION_LIMITED_MODIFICATION) {
 		description.addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
 				String newVal = ((Text)e.getSource()).getText();
@@ -112,7 +112,7 @@ protected Button createHiddenCheckBox(Composite panel) {
 	hidden.setText(PaletteMessages.HIDDEN_LABEL);
 	hidden.setSelection(!entry.isVisible());
 	
-	if (isReadOnly()) {
+	if (getPermission() == getEntry().PERMISSION_NO_MODIFICATION) {
 		hidden.setEnabled(false);
 	} else {
 		hidden.addSelectionListener(new SelectionAdapter() {
@@ -148,7 +148,7 @@ protected Label createLabel(Composite panel, int style, String text) {
  */
 protected Text createNameText(Composite panel) {
 	Text name = createText(panel, SWT.SINGLE | SWT.BORDER, entry.getLabel());
-	if (!isReadOnly()) {
+	if (getPermission() >= getEntry().PERMISSION_LIMITED_MODIFICATION) {
 		name.addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
 				String newVal = ((Text)e.getSource()).getText();
@@ -169,7 +169,7 @@ protected Text createNameText(Composite panel) {
  * @return 		The newly created Text
  */
 protected Text createText(Composite panel, int style, String text) {
-	if (isReadOnly()) {
+	if (getPermission() < getEntry().PERMISSION_LIMITED_MODIFICATION) {
 		style = style | SWT.READ_ONLY;
 	}
 
@@ -228,7 +228,7 @@ protected EntryPageContainer getPageContainer() {
  * @param text	The new description
  */
 protected void handleDescriptionChanged(String text) {
-	getEntry().setDescription(text);
+	getEntry().setDescription(text.trim());
 }
 
 /**
@@ -259,13 +259,12 @@ protected void handleHiddenSelected(boolean isChecked) {
  * @param text	The new name
  */
 protected void handleNameChanged(String text) {
-	getEntry().setLabel(text);
+	getEntry().setLabel(text.trim());
 }
 
-/** * @return <code>true</code> if this page is not editable */
-protected boolean isReadOnly() {
-	return getEntry().getUserModificationPermission() 
-				< PaletteEntry.PERMISSION_LIMITED_MODIFICATION;
+/** * @return the user permission on the entry */
+protected int getPermission() {
+	return getEntry().getUserModificationPermission();
 }
 
 /**
