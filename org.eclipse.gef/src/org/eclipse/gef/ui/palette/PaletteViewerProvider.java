@@ -32,7 +32,7 @@ protected void configurePaletteViewer(PaletteViewer viewer) {
 	viewer.setContextMenu(new PaletteContextMenuProvider(viewer));
 }
 
-public final PaletteViewer createPaletteViewer(Composite parent) {
+public PaletteViewer createPaletteViewer(Composite parent) {
 	PaletteViewer pViewer = new PaletteViewer();
 	pViewer.createControl(parent);
 	configurePaletteViewer(pViewer);
