@@ -6,12 +6,16 @@ package org.eclipse.gef.ui.parts;
  * restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.eclipse.gef.ui.palette.PaletteViewerImpl;
+import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
 
 public abstract class GraphicalEditorWithPalette 
 	extends GraphicalEditor 
@@ -31,10 +35,18 @@ private void createPaletteViewer(Composite parent) {
 }
 
 public void createPartControl(Composite parent) {
-	Splitter splitter = new Splitter(parent, SWT.HORIZONTAL);
+	final Splitter splitter = new Splitter(parent, SWT.HORIZONTAL);
 	createGraphicalViewer(splitter);
 	createPaletteViewer(splitter);
-	splitter.setWeights(new int[] {6, 1});
+	splitter.maintainSize(getPaletteViewer().getControl());
+	final PaletteViewerPreferences prefs = ((PaletteViewerImpl)getPaletteViewer()).
+	                                            getPaletteViewerPreferencesSource();
+	splitter.setFixedSize(prefs.getPaletteSize());
+	splitter.addFixedSizeChangeListener(new PropertyChangeListener() {
+		public void propertyChange(PropertyChangeEvent evt) {
+			prefs.setPaletteSize(splitter.getFixedSize());
+		}
+	});
 }
 
 public void dispose() {
@@ -45,7 +57,7 @@ public void dispose() {
 /**
  * Returns the model that is used in the PaletteViewer.
  */
-abstract protected PaletteRoot getPaletteRoot();
+protected abstract PaletteRoot getPaletteRoot();
 
 /**
  * Returns the PaletteViewer.
