@@ -85,7 +85,7 @@ private void cycleRemove(NodeList children) {
 }
 
 private void findInitialSinks(NodeList children, NodeList sinks) {
-	for(int i = 0; i < children.size(); i++) {
+	for (int i = 0; i < children.size(); i++) {
 		Node node = children.getNode(i);
 		if (node.flag)
 			continue;
@@ -99,7 +99,7 @@ private void findInitialSinks(NodeList children, NodeList sinks) {
 }
 
 private void findInitialSources(NodeList children, NodeList sources) {
-	for(int i = 0; i < children.size(); i++) {
+	for (int i = 0; i < children.size(); i++) {
 		Node node = children.getNode(i);
 		if (isSource(node) && canBeRemoved(node)) {
 			sources.add(node);
@@ -144,7 +144,7 @@ private void findSinks(NodeList children, NodeList rightList) {
 		if (sink.getParent() != null) {
 			Node parent = sink.getParent();
 			setChildCount(parent, getChildCount(parent) - 1);
-			if (isSink(parent)&& canBeRemoved(parent)) {
+			if (isSink(parent) && canBeRemoved(parent)) {
 				sinks.add(parent);
 				parent.flag = true;
 			}
@@ -188,7 +188,7 @@ private int getNestedInDegree(Node n) {
 	int result = getInDegree(n);
 	if (n instanceof Subgraph) {
 		Subgraph s = (Subgraph)n;
-		for (int i=0; i<s.members.size(); i++)
+		for (int i = 0; i < s.members.size(); i++)
 			if (!s.members.getNode(i).flag)
 				result += getInDegree(s.members.getNode(i));
 	}
@@ -199,7 +199,7 @@ private int getNestedOutDegree(Node n) {
 	int result = getOutDegree(n);
 	if (n instanceof Subgraph) {
 		Subgraph s = (Subgraph)n;
-		for (int i=0; i<s.members.size(); i++)
+		for (int i = 0; i < s.members.size(); i++)
 			if (!s.members.getNode(i).flag)
 				result += getOutDegree(s.members.getNode(i));
 	}
@@ -304,7 +304,7 @@ private boolean removeEdge(Edge e) {
 }
 
 private void removeSink(Node sink, NodeList allSinks) {
-	for(int i = 0; i < sink.incoming.size(); i++) {
+	for (int i = 0; i < sink.incoming.size(); i++) {
 		Edge e = sink.incoming.getEdge(i);
 		if (!e.flag) {
 			removeEdge(e);
@@ -431,7 +431,7 @@ public void visit(DirectedGraph g) {
 	
 	NodeList roots = new NodeList();
 	for (int i = 0; i < graphNodes.size(); i++) {
-		if(graphNodes.getNode(i).getParent() == null)
+		if (graphNodes.getNode(i).getParent() == null)
 			roots.add(graphNodes.getNode(i));
 	}
 	buildNestingTreeIndices(roots, 0);
