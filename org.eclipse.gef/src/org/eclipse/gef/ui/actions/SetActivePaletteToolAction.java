@@ -27,19 +27,6 @@ private PaletteViewer viewer;
 private ToolEntry entry;
 
 /**
- * Creates a new SetActivePaletteToolAction with the given viewer/entry.
- * 
- * @param entry the tool entry to switch to
- * @param viewer the palette viewer
- */
-public SetActivePaletteToolAction(PaletteViewer viewer, ToolEntry entry) {
-	this.entry = entry;
-	this.viewer = viewer;
-	setActionDefinitionId(entry.getCommandID());
-	setId(entry.getCommandID());
-}
-
-/**
  * Creates a new SetActivePaletteToolAction with the given entry to set, as well as a 
  * label, icon, and isChecked to be used in a menu.
  * 
