@@ -133,7 +133,7 @@ void highlightGuide(Integer pos, Color color, int offset) {
 		guide[offset] = fig;
 		addFeedback(fig);
 		fig.translateToRelative(loc);
-		position = offset == 0 ? loc.x : loc.y;
+		position = offset % 2 == 0 ? loc.x : loc.y;
 	
 		Rectangle figBounds = getLayer(LayerConstants.FEEDBACK_LAYER)
 			.getBounds().getCopy();
@@ -154,7 +154,7 @@ public void showTargetFeedback(Request req) {
 			|| req.getType().equals(REQ_CLONE)
 			|| req.getType().equals(REQ_ADD)
 			|| req.getType().equals(REQ_CREATE)) {
-//		eraseTargetFeedback(req);
+
 		Integer value;
 		value = (Integer)req.getExtendedData().get(SnapToGeometry.PROPERTY_WEST_ANCHOR);
 		highlightGuide(value, ColorConstants.blue, 0);
