@@ -117,9 +117,8 @@ protected void createActions() {
 	retargetActions.put(IWorkbenchActionConstants.DELETE, action);
 	
 	// Create print action
-	action = new LabelRetargetAction(IWorkbenchActionConstants.PRINT, 
-						MessageFormat.format(GEFMessages.PrintAction_ActionLabelText, 
-												new Object[] {""}).trim()); //$NON-NLS-1$
+	action = new RetargetAction(IWorkbenchActionConstants.PRINT, 
+								GEFMessages.PrintAction_ActionLabelText);
 	action.setImageDescriptor(WorkbenchImages.getImageDescriptor(
 								IWorkbenchGraphicConstants.IMG_CTOOL_PRINT_EDIT));
 	action.setHoverImageDescriptor(WorkbenchImages.getImageDescriptor(
@@ -128,6 +127,30 @@ protected void createActions() {
 								IWorkbenchGraphicConstants.IMG_CTOOL_PRINT_EDIT_DISABLED));
 	getPage().addPartListener(action);
 	retargetActions.put(IWorkbenchActionConstants.PRINT, action);
+
+	// Create copy action
+	action = new RetargetAction(IWorkbenchActionConstants.COPY, 
+								GEFMessages.CopyAction_ActionLabelText);
+	action.setImageDescriptor(WorkbenchImages.getImageDescriptor(
+								IWorkbenchGraphicConstants.IMG_CTOOL_COPY_EDIT));
+	action.setHoverImageDescriptor(WorkbenchImages.getImageDescriptor(
+								IWorkbenchGraphicConstants.IMG_CTOOL_COPY_EDIT_HOVER));
+	action.setDisabledImageDescriptor(WorkbenchImages.getImageDescriptor(
+								IWorkbenchGraphicConstants.IMG_CTOOL_COPY_EDIT_DISABLED));
+	getPage().addPartListener(action);
+	retargetActions.put(IWorkbenchActionConstants.COPY, action);
+
+	// Create paste action
+	action = new RetargetAction(IWorkbenchActionConstants.PASTE, 
+								GEFMessages.PasteAction_ActionLabelText);
+	action.setImageDescriptor(WorkbenchImages.getImageDescriptor(
+								IWorkbenchGraphicConstants.IMG_CTOOL_PASTE_EDIT));
+	action.setHoverImageDescriptor(WorkbenchImages.getImageDescriptor(
+								IWorkbenchGraphicConstants.IMG_CTOOL_PASTE_EDIT_HOVER));
+	action.setDisabledImageDescriptor(WorkbenchImages.getImageDescriptor(
+								IWorkbenchGraphicConstants.IMG_CTOOL_PASTE_EDIT_DISABLED));
+	getPage().addPartListener(action);
+	retargetActions.put(IWorkbenchActionConstants.PASTE, action);
 }
 
 /**
@@ -142,6 +165,8 @@ protected void declareActions() {
 	globalActions.add(IWorkbenchActionConstants.REDO);
 	globalActions.add(IWorkbenchActionConstants.DELETE);
 	globalActions.add(IWorkbenchActionConstants.PRINT);
+	globalActions.add(IWorkbenchActionConstants.COPY);
+	globalActions.add(IWorkbenchActionConstants.PASTE);
 	
 	toolbarActions.add(IWorkbenchActionConstants.UNDO);
 	toolbarActions.add(IWorkbenchActionConstants.REDO);
