@@ -49,5 +49,20 @@
          </selection>
       </wizard>
    </extension>
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            objectClass="org.eclipse.core.resources.IFile"
+            nameFilter="*.logic"
+            id="org.eclipse.gef.examples.logic">
+         <action
+               label="Print"
+               class="org.eclipse.gef.examples.logicdesigner.actions.LogicPrintAction"
+               menubarPath="additions"
+               enablesFor="1"
+               id="org.eclipse.gef.examples.logic.print">
+         </action>
+      </objectContribution>
+   </extension>
 
 </plugin>
