@@ -6,8 +6,6 @@ package org.eclipse.gef.examples.logicdesigner.rulers;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import org.eclipse.swt.graphics.Color;
-
 import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -239,12 +237,12 @@ public void showSourceFeedback(Request request) {
 		if (!dragInProgress) {
 			dragInProgress = true;
 			// add the placeholder guide figure to the ruler
-			getGuideFigure().getParent().add(getDummyGuideFigure());
+			getGuideFigure().getParent().add(getDummyGuideFigure(), 0);
 			((GraphicalEditPart)getParent()).setLayoutConstraint(
 					this, getDummyGuideFigure(), new Integer(getZoomedPosition()));
 			getDummyGuideFigure().setBounds(getGuideFigure().getBounds());
 			// add the placeholder feedback figure to the primary viewer
-			getGuideContributionLayer().add(getDummyFeedbackFigure());
+			getGuideContributionLayer().add(getDummyFeedbackFigure(), 0);
 			getDummyFeedbackFigure().setBounds(getGuideFeedbackFigure().getBounds());
 		}
 		ChangeBoundsRequest req = (ChangeBoundsRequest)request;
@@ -285,7 +283,6 @@ protected void updateLocationOfFigures(int position) {
 
 public static class GuideFeedbackFigure extends Figure {
 	private boolean horizontal;
-	protected int lineWidth = 5;
 	public GuideFeedbackFigure(boolean isHorizontal) {
 		horizontal = isHorizontal;
 		setPreferredSize(1, 1);
@@ -300,7 +297,7 @@ public static class GuideFeedbackFigure extends Figure {
 		Rectangle bounds = getBounds();
 		g.setLineStyle(Graphics.LINE_DOT);
 		g.setXORMode(true);
-		g.setForegroundColor(ColorConstants.darkGreen);
+		g.setForegroundColor(ColorConstants.darkGray);
 		if (isHorizontal()) {
 			g.drawLine(bounds.x, bounds.y, bounds.right(), bounds.y);
 			g.drawLine(bounds.x + 2, bounds.y, bounds.right(), bounds.y);
