@@ -13,7 +13,6 @@ import org.eclipse.gef.palette.PaletteEntry;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.ui.palette.PaletteCustomizer;
 import org.eclipse.gef.ui.palette.PaletteMessages;
-import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
@@ -63,7 +62,7 @@ import org.eclipse.ui.part.PageBook;
  * order to allow clients to further customize the appearance of the dialog,
  * if so desired.
  * 
- * This dialog can be re - used, i.e., it can be re - opened once closed.  There is no need to
+ * This dialog can be re-used, i.e., it can be re-opened once closed.  There is no need to
  * create a new <code>PaletteCustomizerDialog</code> everytime a palette needs to be
  * customized.
  * 
@@ -78,22 +77,13 @@ public class PaletteCustomizerDialog
 
 /**
  * The unique IDs for the various widgets.  These IDs can be used to retrieve
- * these widgets from the internal map (using {@link #getWidget(int)}), or to identify
- * widgets in {@link #buttonPressed(int)}.
+ * these widgets from the internal map (using {@link #getWidget(int)} or
+ * {@link #getButton(int)}), or to identify widgets in {@link #buttonPressed(int)}.
  */
-protected static final int
-	LAYOUT_FOLDER_VIEW_ID        = IDialogConstants.CLIENT_ID + 1,
-	LAYOUT_LIST_VIEW_ID          = IDialogConstants.CLIENT_ID + 2,
-	LAYOUT_ICONS_VIEW_ID         = IDialogConstants.CLIENT_ID + 3,
-	USE_LARGE_ICONS_ID           = IDialogConstants.CLIENT_ID + 4,
-	COLLAPSE_NEVER_ID            = IDialogConstants.CLIENT_ID + 5,
-	COLLAPSE_ALWAYS_ID           = IDialogConstants.CLIENT_ID + 6,
-	COLLAPSE_NEEDED_ID           = IDialogConstants.CLIENT_ID + 7,
-	APPLY_ID                     = IDialogConstants.CLIENT_ID + 8;
+protected static final int APPLY_ID = IDialogConstants.CLIENT_ID + 1;
 
 /**
- * Sub - classes that need to create their own unique IDs should do so by adding
- * to this ID.
+ * Sub-classes that need to create their own unique IDs should do so by adding to this ID.
  */
 protected static final int CLIENT_ID = 16;
 
@@ -115,7 +105,6 @@ private CLabel title, errorTitle;
 private Image titleImage;
 private TreeViewer treeviewer;
 private PaletteEntry activeEntry;
-private PaletteViewerPreferences prefs;
 private PaletteEntry initialSelection;
 private PaletteRoot root;
 private PropertyChangeListener titleUpdater = new PropertyChangeListener() {
@@ -158,19 +147,15 @@ protected int initialCollapse;
  * @param customizer	The provided customizer that will be called to handle
  * 						the various customization tasks (such as deleting 
  * 						palette entries).  It cannot be <code>null</code>.
- * @param prefs		The PaletteViewerPreferences object that can provide
- * 						access to and allow modification of the palette's
- * 						settings.  It cannot be <code>null</code>.
- * @param root			The PaletteRoot which has the model that this dialog
- * 						is customizing.  It cannot be <code>null</code>.
+ * @param root			The PaletteRoot which has the model that this dialog is customizing.  
+ * 						It cannot be <code>null</code>.
  */
 public PaletteCustomizerDialog(Shell parentShell, PaletteCustomizer customizer,
-                                PaletteViewerPreferences prefs, PaletteRoot root) {
+                                PaletteRoot root) {
 	super(parentShell);
 	this.customizer = customizer;
-	this.prefs = prefs;
 	this.root = root;
-	setShellStyle(getShellStyle() | SWT.RESIZE);
+	setShellStyle(getShellStyle() | SWT.RESIZE | SWT.MAX);
 }
 
 /**
@@ -183,36 +168,9 @@ public PaletteCustomizerDialog(Shell parentShell, PaletteCustomizer customizer,
 protected void buttonPressed(int buttonId) {
 	if (APPLY_ID == buttonId) {
 		handleApplyPressed();
-	} else if (COLLAPSE_ALWAYS_ID == buttonId) {
-		handleAutoCollapseSettingChanged(
-					PaletteViewerPreferences.COLLAPSE_ALWAYS);
-	} else if (COLLAPSE_NEVER_ID == buttonId) {
-		handleAutoCollapseSettingChanged(
-					PaletteViewerPreferences.COLLAPSE_NEVER);
-	} else if (COLLAPSE_NEEDED_ID == buttonId) {
-		handleAutoCollapseSettingChanged(
-					PaletteViewerPreferences.COLLAPSE_AS_NEEDED);
-	} else if (LAYOUT_FOLDER_VIEW_ID == buttonId) {
-		handleLayoutSettingChanged(PaletteViewerPreferences.LAYOUT_FOLDER);
-	} else if (LAYOUT_ICONS_VIEW_ID == buttonId) {
-		handleLayoutSettingChanged(PaletteViewerPreferences.LAYOUT_ICONS);
-	} else if (LAYOUT_LIST_VIEW_ID == buttonId) {
-		handleLayoutSettingChanged(PaletteViewerPreferences.LAYOUT_LIST);
-	} else if (USE_LARGE_ICONS_ID == buttonId) {
-		handleLargeIconsSettingChanged(getButton(buttonId).getSelection());
 	} else {
 		super.buttonPressed(buttonId);
 	}
-}
-
-/**
- * This method is invoked when the latest settings stored in
- * <code>PaletteViewerPreferences</code> need to be saved (eg., when apply is pressed).
- */
-protected void cacheViewerSettings() {
-	initialCollapse = getPaletteViewerPreferencesSource().getAutoCollapseSetting();
-	initialLayout = getPaletteViewerPreferencesSource().getLayoutSetting();
-	initialUseLargeIcons = getPaletteViewerPreferencesSource().useLargeIcons();
 }
 
 /**
@@ -257,6 +215,8 @@ public boolean close() {
 	// Reset variables
 	entriesToPages.clear();
 	widgets.clear();
+	actions.clear();
+	actions = null;
 	activePage = null;
 	tree = null;
 	propertiesPanelContainer = null;
@@ -271,8 +231,7 @@ public boolean close() {
 	activeEntry = null;
 	title = null;
 	isError = false;
-	actions = null;
-	
+		
 	return returnVal;
 }
 
@@ -340,8 +299,7 @@ protected Button createButton(Composite parent, int id, String label,
  */
 protected void createButtonsForButtonBar(Composite parent) {
 	super.createButtonsForButtonBar(parent);
-	createButton(parent, APPLY_ID, 
-			PaletteMessages.APPLY_LABEL, false);
+	createButton(parent, APPLY_ID, PaletteMessages.APPLY_LABEL, false);
 }
 
 /**
@@ -349,7 +307,6 @@ protected void createButtonsForButtonBar(Composite parent) {
  * <UL>
  * 		<LI>Outline ({@link #createOutline(Composite)})</LI>
  * 		<LI>Properties Panel ({@link #createPropertiesPanel(Composite)})</LI>
- * 		<LI>Palette Settings ({@link #createViewerSettings(Composite)})</LI>
  * </UL>
  * 
  * <p>
@@ -376,11 +333,6 @@ protected Control createDialogArea(Composite parent) {
 	child = createPropertiesPanel(composite);
 	child.setLayoutData(new GridData(GridData.FILL_BOTH));
 	
-	// Create the general panel with the palette viewing options
-	child = createViewerSettings(composite);
-	data = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
-	child.setLayoutData(data);
-	
 	// Create the separator b/w the dialog area and the button bar
 	Label label = new Label(composite, SWT.SEPARATOR | SWT.HORIZONTAL);
 	data = new GridData(GridData.FILL_HORIZONTAL);
@@ -389,6 +341,8 @@ protected Control createDialogArea(Composite parent) {
 
 	// Select an element in the outline and set focus on the outline.
 	if (initialSelection == null) {
+		// We have to manually select the first item in the tree, because otherwise the
+		// will scroll to show the last item, and then will select the first visible item.
 		List children = getPaletteRoot().getChildren();
 		if (!children.isEmpty()) {
 			initialSelection = (PaletteEntry) children.get(0);
@@ -423,6 +377,7 @@ protected Control createDialogArea(Composite parent) {
 protected Control createOutline(Composite container) {
 	// Create the Composite that will contain the outline
 	Composite composite = new Composite(container, SWT.NONE);
+	composite.setFont(container.getFont());
 	GridLayout layout = new GridLayout();
 	layout.horizontalSpacing = 0;
 	layout.verticalSpacing = 0;
@@ -522,6 +477,7 @@ protected Control createOutlineToolBar(Composite parent) {
 			return size;
 		}
 	};
+	composite.setFont(parent.getFont());
 	composite.setLayout(new FillLayout());
 	
 	// A paint listener that draws an etched border around the toolbar
@@ -550,6 +506,7 @@ protected Control createOutlineToolBar(Composite parent) {
 		tbMgr.add((IAction)actions.get(i));
 	}
 	tbMgr.createControl(composite);
+	tbMgr.getControl().setFont(composite.getFont());
 	
 	// By default, the ToolBarManager does not set text on ToolItems.  Since,
 	// we want to display the text, we will have to do it manually.
@@ -570,12 +527,13 @@ protected Control createOutlineToolBar(Composite parent) {
  */
 protected TreeViewer createOutlineTreeViewer(Composite composite) {
 	Tree treeForViewer = new Tree (composite, SWT.BORDER);
+	treeForViewer.setFont(composite.getFont());
 	GridData data = new GridData(GridData.FILL_VERTICAL
 	                            | GridData.HORIZONTAL_ALIGN_FILL);
 	data.widthHint = 185;
 	// Make the tree this tall even when there is nothing in it.  This will keep the
 	// dialog from shrinking to an unusually small size.
-	data.heightHint = 250;
+	data.heightHint = 200;
 	treeForViewer.setLayoutData(data);
 	TreeViewer viewer = new TreeViewer(treeForViewer);
 	viewer.setContentProvider(new PaletteTreeProvider(viewer));
@@ -608,6 +566,7 @@ protected TreeViewer createOutlineTreeViewer(Composite composite) {
  */
 protected Control createPropertiesPanel(Composite container) {
 	Composite composite = new Composite(container, SWT.NONE);
+	composite.setFont(container.getFont());
 	GridLayout layout = new GridLayout(1, false);
 	layout.horizontalSpacing = 0;
 	layout.marginWidth = 0;
@@ -618,6 +577,7 @@ protected Control createPropertiesPanel(Composite container) {
 	titleSwitcher = createPropertiesPanelTitle(composite);
 
 	propertiesPanelContainer = new PageBook(composite, SWT.NONE);
+	propertiesPanelContainer.setFont(composite.getFont());
 	GridData data = new GridData(GridData.HORIZONTAL_ALIGN_FILL 
 	                            | GridData.FILL_VERTICAL);
 	data.horizontalSpan = 2;
@@ -644,10 +604,12 @@ protected Control createPropertiesPanel(Composite container) {
 protected PageBook createPropertiesPanelTitle(Composite parent) {
 	GridLayout layout;
 	PageBook book = new PageBook(parent, SWT.NONE);
+	book.setFont(parent.getFont());
 	book.setLayoutData(new GridData(GridData.FILL_HORIZONTAL 
 	                              | GridData.VERTICAL_ALIGN_FILL));
 	
 	titlePage = new Composite(book, SWT.NONE);
+	titlePage.setFont(book.getFont());
 	layout = new GridLayout(2, false);
 	layout.horizontalSpacing = 0;
 	layout.marginWidth = 0;
@@ -658,6 +620,7 @@ protected PageBook createPropertiesPanelTitle(Composite parent) {
 	                           PaletteMessages.NO_SELECTION_TITLE);
 	
 	errorPage = new Composite(book, SWT.NONE);
+	errorPage.setFont(book.getFont());
 	layout = new GridLayout(1, false);
 	layout.horizontalSpacing = 0;
 	layout.marginWidth = 0;
@@ -665,6 +628,7 @@ protected PageBook createPropertiesPanelTitle(Composite parent) {
 	layout.verticalSpacing = 0;
 	errorPage.setLayout(layout);
 	errorTitle = new CLabel(errorPage, SWT.LEFT);
+	errorTitle.setFont(errorPage.getFont());
 	errorTitle.setLayoutData(new GridData(GridData.FILL_HORIZONTAL 
 	                            | GridData.VERTICAL_ALIGN_FILL));
 	Label separator = new Label(errorPage, SWT.SEPARATOR | SWT.HORIZONTAL);
@@ -679,7 +643,8 @@ protected PageBook createPropertiesPanelTitle(Composite parent) {
  * A convenient method to create CLabel titles (like the ones used in the
  * Preferences dialog in the Eclipse workbench) throughout the dialog.
  * 
- * @param composite	The composite in which the title is to be created
+ * @param composite	The composite in which the title is to be created (it must have a
+ * 						GridLayout with two columns).
  * @param text			The title to be displayed
  * @return 			The newly created CLabel for convenience
  */
@@ -720,193 +685,6 @@ protected CLabel createSectionTitle(Composite composite, String text) {
 }
 
 /**
- * Creates the "Use Large Icons" checkbox, and initializes it with the correct value.
- * 
- * <p>
- * Sub - classes that override this method might also need to override 
- * {@link #cacheViewerSettings()}.
- * </p>
- * 
- * @param 	composite	The Composite within which to create the checkbox
- * @return 			The newly created checkbox
- */
-protected Button createViewerLargeIconsUsageOption(Composite composite) {
-	// The "Use Large Icons" checkbox
-	Button b = createButton(composite, USE_LARGE_ICONS_ID, 
-	                        PaletteMessages.USE_LARGE_ICONS_LABEL, SWT.CHECK, null);
-	                        
-	// Load large icon usage setting
-	boolean largeIcons = getPaletteViewerPreferencesSource().useLargeIcons();
-	b.setSelection(largeIcons);
-	
-	return b;
-}
-
-/**
- * Creates the part of the dialog that has the palette settings.
- * 
- * <p>
- * The palette settings panel contains the following:
- * <UL>
- * 		<LI>Title ({@link #createSectionTitle(Composite, String)})</LI>
- * 		<LI>Layout Settings ({@link #createViewerSettingsLayoutOptions(Composite)})</LI>
- * 		<LI>Auto - Collapse Settings ({@link #createViewerSettingsCollapseOptions(Composite)})</LI>
- * 		<LI>Use Large Icons Checkbox ({@link #createViewerLargeIconsUsageOption(Composite)})</LI>
- * </UL> 
- * </p> 
- * 
- * @param container	The composite to which the palette settings have to be added
- * @return 			The newly created Control within which the palette settings were
- * 						created
- */
-protected Control createViewerSettings(Composite container) {
-	Composite composite = new Composite(container, SWT.NONE);
-	GridLayout layout = new GridLayout(2, false);
-	layout.horizontalSpacing = 0;
-	layout.marginHeight = 0;
-	layout.marginWidth = 0;
-	layout.verticalSpacing = 0;
-	composite.setLayout(layout);
-	Control[] tablist = new Control[3];
-
-	createSectionTitle(composite, PaletteMessages.PALETTE_SETTINGS_TITLE);
-
-	Composite innerComposite = new Composite(composite, SWT.NONE);
-	innerComposite.setLayout(new GridLayout(2, false));
-	((GridLayout)innerComposite.getLayout()).marginWidth = 0;
-	GridData data = new GridData();
-	data.horizontalSpan = 2;
-	innerComposite.setLayoutData(data);
-
-	tablist[0] = createViewerSettingsLayoutOptions(innerComposite);
-	tablist[2] = createViewerSettingsCollapseOptions(innerComposite);
-
-	// A blank label to put some space b/w the first row (layout options)
-	// and the check box for using large icons
-	Label label = new Label(innerComposite, SWT.NONE);
-	data = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
-	data.horizontalSpan = 2;
-	data.heightHint = 0;
-	label.setLayoutData(data);
-
-	tablist[1] = createViewerLargeIconsUsageOption(innerComposite);
-	
-	cacheViewerSettings();
-	innerComposite.setTabList(tablist);
-	return composite;
-}
-
-/**
- * Creates the composite that has the auto - collapse options under Palette
- * Settings, and selects the current setting.
- * 
- * <p>
- * Sub - classes that override this method might also need to override 
- * {@link #cacheViewerSettings()}.
- * </p>
- * 
- * @param container	The composite within which the new composite should
- * 						be created
- * @return		The newly created composite for convenience
- */
-protected Control createViewerSettingsCollapseOptions(Composite container) {
-	Composite composite = new Composite(container, SWT.NONE);
-	GridLayout layout = new GridLayout(2, false);
-	layout.marginHeight = 0;
-	composite.setLayout(layout);
-	
-	Label label = new Label(composite, SWT.NONE);
-	label.setText(PaletteMessages.COLLAPSE_OPTIONS_TITLE);
-	GridData data = new GridData();
-	data.horizontalSpan = 2;
-	label.setLayoutData(data);
-	
-	label = new Label(composite, SWT.NONE);
-	createButton(composite, COLLAPSE_NEVER_ID, 
-			PaletteMessages.COLLAPSE_NEVER_LABEL, SWT.RADIO, null);
-	
-	label = new Label(composite, SWT.NONE);
-	createButton(composite, COLLAPSE_NEEDED_ID, 
-			PaletteMessages.COLLAPSE_AS_NEEDED_LABEL, SWT.RADIO, null);
-		
-	label = new Label(composite, SWT.NONE);
-	createButton(composite, COLLAPSE_ALWAYS_ID, 
-			PaletteMessages.COLLAPSE_ALWAYS_LABEL, SWT.RADIO, null);
-	
-	// Load auto - collapse settings
-	Button b = null;
-	int collapse = getPaletteViewerPreferencesSource().getAutoCollapseSetting();
-	switch (collapse) {
-		case PaletteViewerPreferences.COLLAPSE_ALWAYS:
-			b = getButton(COLLAPSE_ALWAYS_ID);
-			break;
-		case PaletteViewerPreferences.COLLAPSE_AS_NEEDED:
-			b = getButton(COLLAPSE_NEEDED_ID);
-			break;
-		case PaletteViewerPreferences.COLLAPSE_NEVER:
-			b = getButton(COLLAPSE_NEVER_ID);
-	}
-	b.setSelection(true);
-
-	return composite;
-}
-
-/**
- * Creates the "Layout Options" under "Palette Settings" and selects the button for the
- * current setting.
- * 
- * <p>
- * Sub - classes that override this method might also need to override 
- * {@link #cacheViewerSettings()}.
- * </p>
- * 
- * @param container	The Composite in which the layout options have to be created
- * @return				The Control with the layout  options
- */
-protected Control createViewerSettingsLayoutOptions(Composite container) {
-	Composite composite = new Composite(container, SWT.NONE);
-	GridLayout layout = new GridLayout(2, false);
-	layout.marginWidth = 0;
-	layout.marginHeight = 0;
-	composite.setLayout(layout);
-	
-	Label label = new Label(composite, SWT.NONE);
-	label.setText(PaletteMessages.SETTINGS_LAYOUT_OPTIONS_TITLE);
-	GridData data = new GridData();
-	data.horizontalSpan = 2;
-	label.setLayoutData(data);
-	
-	label = new Label(composite, SWT.NONE);
-	createButton(composite, LAYOUT_FOLDER_VIEW_ID, 
-			PaletteMessages.SETTINGS_FOLDER_VIEW_LABEL, SWT.RADIO, null);
-
-	label = new Label(composite, SWT.NONE);
-	createButton(composite, LAYOUT_LIST_VIEW_ID, 
-			PaletteMessages.SETTINGS_LIST_VIEW_LABEL, SWT.RADIO, null);
-	
-	label = new Label(composite, SWT.NONE);
-	createButton(composite, LAYOUT_ICONS_VIEW_ID, 
-			PaletteMessages.SETTINGS_ICONS_VIEW_LABEL, SWT.RADIO, null);
-	
-	// Load layout settings
-	Button b = null;
-	int layoutSetting = getPaletteViewerPreferencesSource().getLayoutSetting();
-	switch (layoutSetting) {
-		case PaletteViewerPreferences.LAYOUT_FOLDER:
-			b = getButton(LAYOUT_FOLDER_VIEW_ID);
-			break;
-		case PaletteViewerPreferences.LAYOUT_ICONS:
-			b = getButton(LAYOUT_ICONS_VIEW_ID);
-			break;
-		case PaletteViewerPreferences.LAYOUT_LIST:
-			b = getButton(LAYOUT_LIST_VIEW_ID);
-	}
-	b.setSelection(true);
-
-	return composite;
-}
-
-/**
  * Returns the Button with the given id; or <code>null</code> if none was found.
  * 
  * @see org.eclipse.jface.dialogs.Dialog#getButton(int)
@@ -930,7 +708,7 @@ protected PaletteCustomizer getCustomizer() {
 }
 
 /**
-// * Returns the <code>EntryPage</code> for the given <code>PaletteEntry</code>.  The 
+ * Returns the <code>EntryPage</code> for the given <code>PaletteEntry</code>.  The 
  * <code>EntryPage</code> is retrieved from the customizer.  If the given entry is 
  * <code>null</code>, <code>null</code> will be returned.  If the customizer returns 
  * <code>null</code> for the valid entry, a default read - only page will be returned.
@@ -982,18 +760,6 @@ protected PaletteRoot getPaletteRoot() {
 }
 
 /**
- * Provides sub - classes with access to the 
- * {@link org.eclipse.gef.ui.palette.PaletteViewerPreferences} used by this dialog to
- * store the palette viewer settings.
- * 
- * @return The PaletteViewerPrefereces where the preferences for the
- * 			palette this object is customizing can be stored
- */
-protected PaletteViewerPreferences getPaletteViewerPreferencesSource() {
-	return prefs;
-}
-
-/**
  * @return		The PaletteEntry that is currently selected in the Outline Tree;
  * 				<code>null</code> if none is selected.
  */
@@ -1017,7 +783,6 @@ protected TreeItem getSelectedTreeItem() {
 	}
 	return null;
 }
-
 
 /**
  * The <code>Widget</code>s that were created with a unique ID and added to this class'
@@ -1052,45 +817,12 @@ protected final void handleApplyPressed() {
 }
 
 /**
- * Called when any one of the "Auto - Collapse" radio buttons is clicked.  It 
- * changes the setting in the {@link org.eclipse.gef.ui.palette.PaletteViewerPreferences} 
- * object.
- * 
- * @param newSetting The flag for the new setting
- */
-protected void handleAutoCollapseSettingChanged(int newSetting) {
-	getPaletteViewerPreferencesSource().setAutoCollapseSetting(newSetting);
-}
-
-/**
  * This method is called when the "Delete" action is run (either through the context
  * menu or the toolbar).  It deletes the selected palette entry.
  */
 protected void handleDelete() {
 	getCustomizer().performDelete(getSelectedPaletteEntry());
 	tree.setFocus();
-}
-
-/**
- * This method is called when the "Use Large Icons" checkbox is clicked.  It
- * changes the setting in the {@link org.eclipse.gef.ui.palette.PaletteViewerPreferences} 
- * object.
- * 
- * @param	newVal	The new setting
- */
-protected void handleLargeIconsSettingChanged(boolean newVal) {
-	getPaletteViewerPreferencesSource().setUseLargeIcons(newVal);
-}
-
-/**
- * This method is called when any one of the "Layout" radio buttons is clicked.  It
- * changes the setting in the  {@link org.eclipse.gef.ui.palette.PaletteViewerPreferences}
- * object.
- * 
- * @param newSetting The flag for the new setting
- */
-protected void handleLayoutSettingChanged(int newSetting) {
-	getPaletteViewerPreferencesSource().setLayoutSetting(newSetting);
 }
 
 /**
@@ -1150,23 +882,11 @@ protected void initializeBounds() {
 	getShell().setBounds(location.x, location.y, size.x, size.y);
 }
 
-/** 
- * Updates the Palette Settings Panel with the latest values from
- * the PaletteViewerPreferences object.  It also saves these loaded
- * values, in case any changes made later need to be cancelled.
- */
-protected void loadPaletteSettings() {
-	
-}
-
 /**
  * This method is invoked when the changes made since the last save need to be cancelled.
  */
 protected void revertToSaved() {
 	getCustomizer().revertToSaved();
-	handleAutoCollapseSettingChanged(initialCollapse);
-	handleLayoutSettingChanged(initialLayout);
-	handleLargeIconsSettingChanged(initialUseLargeIcons);
 }
 
 /**
@@ -1177,9 +897,6 @@ protected void save() {
 		activePage.apply();
 	}
 	getCustomizer().save();
-	
-	// This will reset initialCollapse, initialLayout, and initialUseLargeIcons
-	cacheViewerSettings();
 }
 
 /**
@@ -1219,6 +936,7 @@ protected void setActiveEntry(PaletteEntry entry) {
 				}
 				public void createControl(Composite parent, PaletteEntry entry) {
 					text = new Text(parent, SWT.READ_ONLY);
+					text.setFont(parent.getFont());
 					text.setText(PaletteMessages.NO_SELECTION_MADE);
 				}
 				public Control getControl() {
@@ -1250,7 +968,7 @@ protected void setActiveEntryPage(EntryPage page) {
 		// No page available to display, so hide the panel container
 		propertiesPanelContainer.setVisible(false);
 	} else {
-		// Show the page and grow the shell so that the page is completely visible (if necessary)
+		// Show the page and grow the shell, if necessary, so that the page is completely visible
 		Point oldSize = getShell().getSize();
 		propertiesPanelContainer.showPage(page.getControl());
 		Point newSize = getShell().computeSize(SWT.DEFAULT, SWT.DEFAULT, true);

@@ -33,12 +33,10 @@ public PaletteGroupFactory() {
  * @see org.eclipse.gef.ui.palette.customize.PaletteEntryFactory#createNewEntry(Shell)
  */
 protected PaletteEntry createNewEntry(Shell shell) {
-	Image img = new Image(shell.getDisplay(), 
-	                      getImageDescriptor().getImageData());
-	PaletteGroup group =
-				new PaletteGroup(PaletteMessages.NEW_GROUP_LABEL);
-	//@TODO:Pratik
-	// You also need to set the large icons in all the factories
+	// @TODO:Pratik
+	// A new image is created here everytime.  Should this image be static?
+	Image img = new Image(shell.getDisplay(), getImageDescriptor().getImageData());
+	PaletteGroup group = new PaletteGroup(PaletteMessages.NEW_GROUP_LABEL);
 	group.setSmallIcon(img);
 	return group;
 }
