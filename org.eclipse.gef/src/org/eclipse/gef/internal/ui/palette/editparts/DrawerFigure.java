@@ -28,7 +28,7 @@ import org.eclipse.gef.ui.palette.*;
  * @author Pratik Shah
  */
 public class DrawerFigure
-	extends Figure 
+	extends Figure
 {
 
 protected static final Border TOGGLE_BUTTON_BORDER = new RaisedBorder();
@@ -51,9 +51,10 @@ private Label drawerLabel, tipLabel;
 private ScrollPane scrollpane;
 private ToggleButton pinFigure;
 private Toggle collapseToggle;
-private boolean isAnimating, showPin, animatingAlone, skipNextEvent;
+private boolean isAnimating, showPin, skipNextEvent;
 private DrawerAnimationController controller;
 private EditPartTipHelper tipHelper;
+private Dimension source, destination;
 
 /**
  * Constructor
@@ -234,38 +235,39 @@ public Clickable getCollapseToggle() {
 	return collapseToggle;
 }
 
-/**
- * @see org.eclipse.draw2d.Figure#getMinimumSize(int, int)
+/*
+ * @TODO:Pratik
+ * The minimum size fix related to bug #35176 can now be put in again, if so desired.  
  */
-public Dimension getMinimumSize(int wHint, int hHint) {
-	if (animatingAlone) {
-		return getPreferredSize(wHint, hHint);
-	}
-
-	return super.getMinimumSize(wHint, hHint);
-}
 
 /**
  * @see org.eclipse.draw2d.Figure#getPreferredSize(int, int)
  */
 public Dimension getPreferredSize(int w, int h) {
-	if (!isAnimating) {
+	if (!isAnimating || !isAnimationDestinationKnown()) {
 		if (isExpanded())
 			return super.getPreferredSize(w, h);
 		else
 			return getMinimumSize();
 	}
-	Dimension pref = super.getPreferredSize(w, h);
-	Dimension min = super.getMinimumSize(w, h);
 	float scale = controller.getAnimationProgress();
-	if (!isExpanded()) {
+	if (!isExpanded() && destination.height > source.height) {
 		scale = 1.0f - scale;
 	}
-	return pref.getScaled(scale).expand(min.getScaled(1.0f - scale));
+	Dimension d = destination.getScaled(scale).expand(source.getScaled(1.0f - scale));
+	return d;
 }
 
 public boolean isAnimating() {
 	return isAnimating;
+}
+
+public boolean isAnimationDestinationKnown() {
+	return destination != null;
+}
+
+public Dimension getAnimationDestination(){
+	return destination;
 }
 
 /**
@@ -291,14 +293,26 @@ public void setAnimating(boolean value) {
 	if (isAnimating == value)
 		return;
 	isAnimating = value;
-	if (isAnimating)
+	if (isAnimating) {
+		source = getBounds().getSize();
+		if( !isExpanded() ){
+			// i'm collapsing
+			destination = getMinimumSize(-1, -1);
+		}
 		scrollpane.setVerticalScrollBarVisibility(ScrollPane.NEVER);
-	else
+	} else {
+		source = null;
+		destination = null;
 		scrollpane.setVerticalScrollBarVisibility(ScrollPane.AUTOMATIC);
+	}
 }
 
 public void setController(DrawerAnimationController controller) {
 	this.controller = controller;
+}
+
+public void setAnimationDestination(Dimension size) {
+	destination = size;
 }
 
 public void setExpanded(boolean value) {
@@ -338,10 +352,6 @@ public void setPinned(boolean pinned) {
 	}
 	
 	pinFigure.setSelected(pinned);
-}
-
-void setAnimatingAlone(boolean newValue) {
-	animatingAlone = newValue;
 }
 
 /**
