@@ -76,7 +76,7 @@ static public void populatePage(){
 	page.setOpaque(true);
 	page.setBackgroundColor(ColorConstants.white);
 
-	for (int i=0; i< 31; i++){
+	for (int i=0; i< 20; i++){
 		BlockFlow bf = new BlockFlow();
 		page.add(bf);
 		if (i == 0)
@@ -92,7 +92,7 @@ static public void populatePage(){
 		
 		BlockFlow block = new BlockFlow();
 		block.setHorizontalAligment(PositionConstants.CENTER);
-		TextFlowFactory.addFontSizes(block, 8,16);
+		TextFlowFactory.addFontSizes(block, 5, 25);
 		page.add(block);
 	}
 }
