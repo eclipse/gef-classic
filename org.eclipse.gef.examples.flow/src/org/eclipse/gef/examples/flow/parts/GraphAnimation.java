@@ -149,8 +149,6 @@ static void recordFinalState(Connection conn) {
 		while (i1 > 0 || i2 > 0) {
 			if (Math.abs(current1 - current2) < 0.1
 			  && i1 > 0 && i2 > 0) {
-				if (current1 != current2)
-					System.out.println("approximate match");
 				//Both points are the same, use them and go on;
 				prev1 = current1;
 				prev2 = current2;
