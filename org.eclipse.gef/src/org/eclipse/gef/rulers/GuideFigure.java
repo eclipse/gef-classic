@@ -15,6 +15,9 @@ public class GuideFigure
 	extends Figure
 {
 	
+private static final Dimension H_PREFSIZE = new Dimension(8, 9);
+private static final Dimension V_PREFSIZE = new Dimension(9, 8);
+	
 private boolean horizontal;
 	
 public GuideFigure(boolean isHorizontal) {
@@ -33,13 +36,12 @@ public GuideFigure(boolean isHorizontal) {
 public Dimension getPreferredSize(int wHint, int hHint) {
 	Dimension prefSize;
 	if (isHorizontal()) {
-		prefSize = new Dimension(8, 9);
+		prefSize = H_PREFSIZE;
 	} else {
-		prefSize = new Dimension(9, 8);
+		prefSize = V_PREFSIZE;
 	}
 	if (getBorder() != null) {
-		prefSize.expand(getBorder().getInsets(this).getWidth(), 
-				getBorder().getInsets(this).getHeight());
+		prefSize = prefSize.getExpanded(getInsets().getWidth(),	getInsets().getHeight());
 	}
 	return prefSize;
 }
@@ -55,9 +57,9 @@ protected void paintFigure(Graphics graphics) {
 	// Since painting can occur a lot, using a transposer is not good for performance.
 	// Hence, this method does not use it.
 	if (isHorizontal()) {
-		Rectangle clientArea = getClientArea().getCopy();
+		Rectangle clientArea = getClientArea();
 		clientArea.x = clientArea.getTopRight().x - 8;
-		clientArea.width = 8;
+//		clientArea.width = 8;
 		
 		graphics.fillRectangle(clientArea.getCropped(new Insets(2, 2, 2, 1)));
 
@@ -99,9 +101,9 @@ protected void paintFigure(Graphics graphics) {
 		graphics.drawLine(clientArea.x + 7, clientArea.y + 4, clientArea.x + 7, 
 				clientArea.y + 4);
 	} else {
-		Rectangle clientArea = getClientArea().getCopy();
+		Rectangle clientArea = getClientArea();
 		clientArea.y = clientArea.getBottomLeft().y - 8;
-		clientArea.height = 8;
+//		clientArea.height = 8;
 		
 		graphics.fillRectangle(clientArea.getCropped(new Insets(2, 2, 1, 2)));
 
