@@ -232,7 +232,7 @@ public void layout(IFigure parent) {
 		child = (IFigure)children.get(i);
 		
 		prefSizes[i]=transposer.t(child.getPreferredSize(wHint,hHint));
-		minSizes[i]=transposer.t(child.getMinimumSize());		
+		minSizes[i]=transposer.t(child.getMinimumSize(wHint, hHint));		
 		
 		totalHeight += prefSizes[i].height;
 		totalMinHeight += minSizes[i].height;
