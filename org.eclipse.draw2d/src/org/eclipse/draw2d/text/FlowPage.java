@@ -76,7 +76,7 @@ public Dimension getPreferredSize(int width, int h) {
 	int oldWidth = getPageWidth();
 	setPageWidth(width);
 	validate();
-	pageSizeCacheValues[0] = pageSize;
+	pageSizeCacheValues[0] = pageSize.getCopy();
 	
 	if (width != oldWidth) {
 		setPageWidth(oldWidth);
