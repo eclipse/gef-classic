@@ -95,10 +95,10 @@ public boolean isSelected() {
 }
 
 public void setDescription(String s) {
-	if (s == null) {
-		s = PaletteMessages.NO_DESCRIPTION_AVAILABLE;
+	String str = ""; //$NON-NLS-1$
+	if (s != null && !s.trim().equals("")  && !s.trim().equals(nameText.getText().trim())) { //$NON-NLS-1$
+		str = " " + PaletteMessages.NAME_DESCRIPTION_SEPARATOR + " " + s; //$NON-NLS-1$ //$NON-NLS-2$
 	}
-	String str = " " + PaletteMessages.NAME_DESCRIPTION_SEPARATOR + " " + s; //$NON-NLS-1$ //$NON-NLS-2$
 	if (descText.getText().equals(str)) {
 		return;
 	}
@@ -141,7 +141,9 @@ public void setLayoutMode(int layoutMode) {
 		layout.setConstraint(image, BorderLayout.LEFT);
 		layout.setConstraint(page, BorderLayout.CENTER);
 	} else if (layoutMode == PaletteViewerPreferences.LAYOUT_DETAILS) {
-		page.add(descText);
+		if (!descText.getText().equals("")) { //$NON-NLS-1$
+			page.add(descText);
+		}
 		page.setHorizontalAligment(PositionConstants.LEFT);
 		layout.setConstraint(image, BorderLayout.LEFT);
 		layout.setConstraint(page, BorderLayout.CENTER);
