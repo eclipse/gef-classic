@@ -38,7 +38,7 @@ private static final int FLAG_SOURCE_FEEDBACK = SelectEditPartTracker.MAX_FLAG <
 protected static final int MAX_FLAG = FLAG_SOURCE_FEEDBACK;
 private List exclusionSet;
 private PrecisionPoint sourceRelativeStartPoint;
-private SnapToStrategy helper;
+private SnapToStrategy snapToStrategy;
 private PrecisionRectangle sourceRectangle, compoundSrcRect;
 private boolean cloneActive;
 
@@ -75,6 +75,15 @@ private boolean acceptSHIFT(KeyEvent e) {
 	return isInState(STATE_INITIAL | STATE_DRAG | STATE_DRAG_IN_PROGRESS
 		| STATE_ACCESSIBLE_DRAG | STATE_ACCESSIBLE_DRAG_IN_PROGRESS)
 		&& e.keyCode == SWT.SHIFT;
+}
+
+/**
+ * @see org.eclipse.gef.Tool#activate()
+ */
+public void activate() {
+	super.activate();
+	if (getTargetEditPart() != null)
+		snapToStrategy = (SnapToStrategy)getTargetEditPart().getAdapter(SnapToStrategy.class);
 }
 
 /**
@@ -141,6 +150,7 @@ public void deactivate() {
 	sourceRelativeStartPoint = null;
 	sourceRectangle = null;
 	compoundSrcRect = null;
+	snapToStrategy = null;
 }
 
 /**
@@ -449,9 +459,9 @@ protected void setTargetEditPart(EditPart editpart) {
 	if (getTargetEditPart() == editpart)
 		return;
 	super.setTargetEditPart(editpart);
-	helper = null;
+	snapToStrategy = null;
 	if (getTargetEditPart() != null)
-		 helper = (SnapToStrategy)getTargetEditPart().getAdapter(SnapToStrategy.class);
+		snapToStrategy = (SnapToStrategy)getTargetEditPart().getAdapter(SnapToStrategy.class);
 }
 
 /**
@@ -470,7 +480,8 @@ protected void showSourceFeedback() {
 protected void setState(int state) {
 	boolean check = isInState(STATE_INITIAL);
 	super.setState(state);
-	if (check && isInState(STATE_DRAG | STATE_ACCESSIBLE_DRAG)) {
+	if (check && isInState(STATE_DRAG | STATE_ACCESSIBLE_DRAG 
+			| STATE_ACCESSIBLE_DRAG_IN_PROGRESS)) {
 		List editparts = getOperationSet();
 		for (int i = 0; i < editparts.size(); i++) {
 			GraphicalEditPart child = (GraphicalEditPart)editparts.get(i);
@@ -548,8 +559,8 @@ protected void updateTargetRequest() {
 	request.setMoveDelta(new Point(delta.width, delta.height));
 	request.getExtendedData().clear();
 		
-	if (helper != null && !getCurrentInput().isAltKeyDown())
-		helper.snapMoveRequest(request, sourceRectangle.getPreciseCopy(), 
+	if (snapToStrategy != null && !getCurrentInput().isAltKeyDown())
+		snapToStrategy.snapMoveRequest(request, sourceRectangle.getPreciseCopy(), 
 				compoundSrcRect.getPreciseCopy(), 
 				SnapToStrategy.SNAP_HORIZONTAL | SnapToStrategy.SNAP_VERTICAL);
 
