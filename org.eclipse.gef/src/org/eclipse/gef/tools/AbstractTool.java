@@ -25,6 +25,7 @@ import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Scrollable;
 
 import org.eclipse.draw2d.IFigure;
@@ -34,9 +35,9 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.EditDomain;
 import org.eclipse.gef.EditPartViewer;
-import org.eclipse.gef.GEF;
 import org.eclipse.gef.LayerConstants;
 import org.eclipse.gef.RequestConstants;
+import org.eclipse.gef.MouseWheelHandler;
 import org.eclipse.gef.Tool;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CommandStackListener;
@@ -404,12 +405,9 @@ public void deactivate() {
 /**
  * Prints a string in the GEF Debug console if the Tools debug option is selected.
  * @param message a message for the debug trace tool
+ * @deprecated
  */
 protected void debug(String message) {
-	if (GEF.DebugTools) {
-		GEF.debug("TOOL:\t" + getDebugName() + //$NON-NLS-1$
-			":\t" + message); //$NON-NLS-1$
-	}
 }
 
 /**
@@ -1084,6 +1082,20 @@ public void mouseUp(MouseEvent me, EditPartViewer viewer) {
 }
 
 /**
+ * Handles mouse-wheel scrolling for a viewer.  Sub-classes may override as needed.  The
+ * default implementation delegates to 
+ * {@link #performViewerMouseWheel(Event, EditPartViewer)} IFF the tool is in the initial
+ * state.  Mouse-wheel events generated at other times are ignored.
+ * @param event the SWT scroll event
+ * @param viewer the originating viewer
+ * @see #performViewerMouseWheel(Event, EditPartViewer)
+ */
+public void mouseWheelScrolled(Event event, EditPartViewer viewer) {
+	if (isInState(STATE_INITIAL))
+		performViewerMouseWheel(event, viewer);
+}
+
+/**
  * Returns <code>true</code> if the threshold has been exceeded during a mouse drag.
  * @return <code>true</code> if the threshold has been exceeded
  */
@@ -1118,6 +1130,22 @@ public void nativeDragStarted(DragSourceEvent event, EditPartViewer viewer) {
 		return;
 	setViewer(viewer);
 	handleNativeDragStarted(event);
+}
+
+/**
+ * Delegates mouse-wheel event handling to registered 
+ * {@link MouseWheelHandler MouseWheelHandlers} based on the given Event's statemask.  
+ * Does nothing if there are no matching handlers found.
+ * 
+ * @param event the SWT scroll event
+ * @param viewer the originating viewer
+ * @since 3.1
+ */
+protected void performViewerMouseWheel(Event event, EditPartViewer viewer) {
+	MouseWheelHandler handler = (MouseWheelHandler)viewer
+			.getProperty(MouseWheelHandler.KeyGenerator.getKey(event.stateMask));
+	if (handler != null)
+		handler.handleMouseWheel(event, viewer);
 }
 
 void placeMouseInViewer(Point p) {
