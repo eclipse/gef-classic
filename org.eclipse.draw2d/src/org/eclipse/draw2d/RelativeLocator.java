@@ -105,16 +105,19 @@ protected IFigure getReferenceFigure(){
 	return reference;
 }
 
-public void relocate(IFigure target){
+public void relocate(IFigure target) {
 	IFigure reference = getReferenceFigure();
-	Rectangle targetBounds = getReferenceBox().getCopy();
+	Rectangle targetBounds = getReferenceBox().getResized(-1, -1);
 	reference.translateToAbsolute(targetBounds);
 	target.translateToRelative(targetBounds);
+	targetBounds.resize(1, 1);
 
 	Dimension targetSize = target.getPreferredSize();
 
-	targetBounds.x += (int)(targetBounds.width*relativeX - ((targetSize .width+1)/2));
-	targetBounds.y += (int)(targetBounds.height*relativeY - ((targetSize .height+1)/2));
+	targetBounds.x
+		+= (int) (targetBounds.width * relativeX - ((targetSize.width + 1) / 2));
+	targetBounds.y
+		+= (int) (targetBounds.height * relativeY - ((targetSize.height + 1) / 2));
 	targetBounds.setSize(targetSize );
 	target.setBounds(targetBounds);
 }
