@@ -19,7 +19,6 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.draw2d.text.FlowPage;
 import org.eclipse.draw2d.text.InlineFlow;
 import org.eclipse.draw2d.text.TextFlow;
-import org.eclipse.draw2d.text.TextFragmentBox;
 
 /**
  * @since 3.1
