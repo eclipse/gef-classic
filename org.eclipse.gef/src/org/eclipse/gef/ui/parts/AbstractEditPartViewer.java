@@ -632,6 +632,9 @@ public void setProperty(String key, Object value) {
  * @see EditPartViewer#setRootEditPart(org.eclipse.gef.RootEditPart)
  */
 public void setRootEditPart(RootEditPart editpart) {
+	if (rootEditPart != null) {
+		rootEditPart.setViewer(null);
+	}
 	rootEditPart = editpart;
 	rootEditPart.setViewer(this);
 	if (getControl() != null)
