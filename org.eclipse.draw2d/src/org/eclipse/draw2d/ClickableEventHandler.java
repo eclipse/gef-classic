@@ -21,8 +21,8 @@ private MouseEvent lastEvent;
 public void focusLost(FocusEvent fe) {
 	Clickable loser = (Clickable)fe.loser;
 	loser.repaint();
-	loser.getModel().setPressed(false);
 	loser.getModel().setArmed(false);
+	loser.getModel().setPressed(false);
 }
 
 public void focusGained(FocusEvent fe) {
