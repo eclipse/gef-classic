@@ -523,6 +523,7 @@ protected void updateTargetRequest() {
 	
 	// constrains the move to dx=0, dy=0, or dx=dy if shift is depressed
 	if (getCurrentInput().isShiftKeyDown()) {
+		request.setConstrainedMove(true);
 		float ratio = 0;
 		
 		if (delta.width != 0)
@@ -547,14 +548,11 @@ protected void updateTargetRequest() {
 			else
 				delta.width = 0;
 		}
-	}
+	} else
+		request.setConstrainedMove(false);
 	
 	request.setMoveDelta(new Point(delta.width, delta.height));
 	request.getExtendedData().clear();
-	request.getExtendedData().put(SnapToHelper.CTRL_KEY, 
-			new Boolean(getCurrentInput().isControlKeyDown()));
-	request.getExtendedData().put(SnapToHelper.SHIFT_KEY, 
-			new Boolean(getCurrentInput().isShiftKeyDown()));
 		
 	if (snapToHelper != null && !getCurrentInput().isAltKeyDown())
 		snapToHelper.snapMoveRequest(request, sourceRectangle.getPreciseCopy(), 

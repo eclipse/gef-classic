@@ -19,9 +19,6 @@ public interface SnapToHelper
 	extends PositionConstants
 {
 
-public static final String CTRL_KEY = "org.eclipse.gef.SnapToHelper.ctrl"; //$NON-NLS-1$
-public static final String SHIFT_KEY = "org.eclipse.gef.SnapToHelper.shift"; //$NON-NLS-1$
-
 int snapCreateRequest(CreateRequest request, PrecisionRectangle baseRect, 
                       int snapOrientation);
 

@@ -231,6 +231,8 @@ protected void updateSourceRequest() {
 	Dimension resize = new Dimension(0, 0);	
 
 	if (getCurrentInput().isShiftKeyDown() && owner != null) {
+		request.setConstrainedResize(true);
+		
 		int origHeight = owner.getFigure().getBounds().height;
 		int origWidth = owner.getFigure().getBounds().width;
 		float ratio = 1;
@@ -264,7 +266,10 @@ protected void updateSourceRequest() {
 				d.height = -(int)(d.width * ratio);
 			}
 		}
-	}
+	} else
+		request.setConstrainedResize(false);
+	
+	request.setCenteredResize(getCurrentInput().isControlKeyDown());
 	
 	
 	if ((getResizeDirection() & PositionConstants.NORTH) != 0) {
@@ -302,10 +307,6 @@ protected void updateSourceRequest() {
 	request.setEditParts(getOperationSet());
 
 	request.getExtendedData().clear();
-	request.getExtendedData().put(SnapToHelper.CTRL_KEY, 
-			new Boolean(getCurrentInput().isControlKeyDown()));
-	request.getExtendedData().put(SnapToHelper.SHIFT_KEY, 
-			new Boolean(getCurrentInput().isShiftKeyDown()));
 	
 	if (!getCurrentInput().isAltKeyDown() && snapToHelper != null)
 		snapToHelper.snapResizeRequest(request, sourceRect.getPreciseCopy(),

@@ -10,9 +10,6 @@
  *******************************************************************************/
 package org.eclipse.gef.requests;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.eclipse.draw2d.geometry.*;
 
 /**
@@ -27,6 +24,8 @@ private Point moveDelta = new Point();
 private Dimension resizeDelta = new Dimension();
 private int resizeDirection;
 private Point mouseLocation;
+private int flags = 0;
+private int CONSTRAINED_RESIZE = 1, CENTERED_RESIZE = 2, CONSTRAINED_MOVE = 4;
 
 /**
  * Default constructor.
@@ -106,6 +105,30 @@ public Rectangle getTransformedRectangle(Rectangle rect) {
 	return rect.getCopy()
 		.translate(moveDelta)
 		.resize(resizeDelta);
+}
+
+public boolean isCenteredResize() {
+	return (flags & CENTERED_RESIZE) != 0;
+}
+
+public boolean isConstrainedMove() {
+	return (flags & CONSTRAINED_MOVE) != 0;
+}
+
+public boolean isConstrainedResize() {
+	return (flags & CONSTRAINED_RESIZE) == CONSTRAINED_RESIZE;
+}
+
+public void setCenteredResize(boolean value) {
+	flags = value ? (flags | CENTERED_RESIZE) : (flags & ~CENTERED_RESIZE); 
+}
+
+public void setConstrainedMove(boolean value) {
+	flags = value ? (flags | CONSTRAINED_MOVE) : (flags & ~CONSTRAINED_MOVE);
+}
+
+public void setConstrainedResize(boolean value) {
+	flags = value ? (flags | CONSTRAINED_RESIZE) : (flags & ~CONSTRAINED_RESIZE); 
 }
 
 /**
