@@ -60,6 +60,8 @@ public String LogicPlugin_Category_ComplexParts_Label = Helper.getString("%Logic
 public String LogicPlugin_Category_Components_Label = Helper.getString("%LogicPlugin.Category.Components.Label");  //$NON-NLS-1$
 public String LogicPlugin_Category_ControlGroup_Label = Helper.getString("%LogicPlugin.Category.ControlGroup.Label");  //$NON-NLS-1$
 
+public String LogicPlugin_Tool_CreationTool_LiveGroundStack_Label = Helper.getString("%LogicPlugin.Tool.CreationTool.LiveGroundStack.Label");  //$NON-NLS-1$
+public String LogicPlugin_Tool_CreationTool_LiveGroundStack_Description = Helper.getString("%LogicPlugin.Tool.CreationTool.LiveGroundStack.Description");  //$NON-NLS-1$
 public String LogicPlugin_Tool_CreationTool_HalfAdder_Label = Helper.getString("%LogicPlugin.Tool.CreationTool.HalfAdder.Label");  //$NON-NLS-1$
 public String LogicPlugin_Tool_CreationTool_HalfAdder_Description = Helper.getString("%LogicPlugin.Tool.CreationTool.HalfAdder.Description");  //$NON-NLS-1$
 public String LogicPlugin_Tool_CreationTool_FullAdder_Label = Helper.getString("%LogicPlugin.Tool.CreationTool.FullAdder.Label");  //$NON-NLS-1$
@@ -122,6 +124,7 @@ public String LocationPropertySource_Property_Y_Label = Helper.getString("%Locat
 public String PropertyDescriptor_LogicDiagram_ConnectionRouter = Helper.getString("%PropertyDescriptor.LogicDiagram.ConnectionRouter");  //$NON-NLS-1$
 public String PropertyDescriptor_LogicDiagram_Manual = Helper.getString("%PropertyDescriptor.LogicDiagram.Manual");  //$NON-NLS-1$
 public String PropertyDescriptor_LogicDiagram_Manhattan = Helper.getString("%PropertyDescriptor.LogicDiagram.Manhattan");  //$NON-NLS-1$
+
 public String LogicDiagram_LabelText = Helper.getString("%LogicDiagram.LabelText");  //$NON-NLS-1$
 public String PropertyDescriptor_Label_Text = Helper.getString("%PropertyDescriptor.Label.Text");  //$NON-NLS-1$
 public String PropertyDescriptor_LogicSubPart_Size = Helper.getString("%PropertyDescriptor.LogicSubPart.Size");  //$NON-NLS-1$

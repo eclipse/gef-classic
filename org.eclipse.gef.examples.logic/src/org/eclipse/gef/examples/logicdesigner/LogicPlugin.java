@@ -138,7 +138,7 @@ static private PaletteContainer createComponentsDrawer(){
 		ImageDescriptor.createFromFile(Circuit.class, "icons/circuit24.gif")//$NON-NLS-1$
 	);
 	entries.add(combined);
-
+	
 	entries.add(new PaletteSeparator());
 
 	combined = new CombinedTemplateCreationEntry(
@@ -191,6 +191,10 @@ static private PaletteContainer createComponentsDrawer(){
 	);
 	entries.add(combined);
 
+	PaletteStack liveGroundStack = new PaletteStack(
+			LogicMessages.LogicPlugin_Tool_CreationTool_LiveGroundStack_Label,
+			LogicMessages.LogicPlugin_Tool_CreationTool_LiveGroundStack_Description, null);
+	
 	combined = new CombinedTemplateCreationEntry(
 		LogicMessages.LogicPlugin_Tool_CreationTool_LiveOutput_Label,
 		LogicMessages.LogicPlugin_Tool_CreationTool_LiveOutput_Description,
@@ -199,7 +203,7 @@ static private PaletteContainer createComponentsDrawer(){
 		ImageDescriptor.createFromFile(Circuit.class, "icons/live16.gif"),//$NON-NLS-1$
 		ImageDescriptor.createFromFile(Circuit.class, "icons/live24.gif")//$NON-NLS-1$
 	);
-	entries.add(combined);
+	liveGroundStack.add(combined);
 
 	combined = new CombinedTemplateCreationEntry(
 		LogicMessages.LogicPlugin_Tool_CreationTool_Ground_Label,
@@ -209,8 +213,10 @@ static private PaletteContainer createComponentsDrawer(){
 		ImageDescriptor.createFromFile(Circuit.class, "icons/ground16.gif"),//$NON-NLS-1$
 		ImageDescriptor.createFromFile(Circuit.class, "icons/ground24.gif")//$NON-NLS-1$
 	);
-	entries.add(combined);
+	liveGroundStack.add(combined);
 
+	entries.add(liveGroundStack);
+	
 	drawer.addAll(entries);
 	return drawer;
 }
