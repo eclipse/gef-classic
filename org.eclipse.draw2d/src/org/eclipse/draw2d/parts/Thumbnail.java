@@ -26,7 +26,7 @@ private IFigure sourceFigure;
 private boolean isDirty;
 private float scaleX;
 private float scaleY;
-private Dimension targetSize = new Dimension(0, 0);
+Dimension targetSize = new Dimension(0, 0);
 private Image thumbnailImage;
 private Dimension thumbnailImageSize;
 private ThumbnailUpdater updater = new ThumbnailUpdater();
@@ -337,7 +337,6 @@ protected Image getThumbnailImage() {
 	targetSize.expand(new Dimension(getInsets().getWidth(), getInsets().getHeight()).negate());
 	setScales(targetSize.width / (float)sourceFigure.getSize().width,
 		     targetSize.height / (float)sourceFigure.getSize().height);
-	
 	if ((isDirty()) && !updater.isRunning())
 		updater.start();
 	else if (oldSize != null && !targetSize.equals(oldSize)) {
