@@ -290,13 +290,17 @@ public void setDefaultTool(Tool tool) {
  * Sets the PalatteRoot for this EditDomain. If the EditDomain already knows about a
  * PaletteViewer, this root will be set into the palette viewer also. Loads the default
  * Tool after the root has been set.
+ * <p>
+ * It is recommended that the palette root not be set multiple times.  Some components
+ * (such as the PaletteCustomizerDialog for the PaletteViewer) might still hold on to the
+ * old root.  If the input has changed or needs to be refreshed, just remove all the 
+ * children from the root and add the new ones.
+ * 
  * @param root the palette's root
  */
 public void setPaletteRoot(PaletteRoot root) {
 	if (paletteRoot == root)
 		return;
-	Assert.isTrue(paletteRoot == null, 
-			"You can only set an EditDomain's palette root once."); //$NON-NLS-1$
 	paletteRoot = root;
 	if (getPaletteViewer() != null) {
 		getPaletteViewer().setPaletteRoot(paletteRoot);
