@@ -71,6 +71,8 @@ protected int[] getVerticalGuides() {
 
 protected double getCorrectionFor(int[] guides, double near, double far, Map extendedData, 
                                   boolean isVertical) {
+	if ((int)(near - far) % 2 == 0)
+		far -= 1.0;
 	double result = getCorrectionFor(guides, (near + far - 1) / 2, extendedData, isVertical, 0);
 	if (result == THRESHOLD)
 		result = getCorrectionFor(guides, near, extendedData, isVertical, -1); 
@@ -146,7 +148,7 @@ public int snapRectangle(Request request, int snapOrientation,
 
 	if (!snapped && (snapOrientation & EAST) != 0) {
 		double rightCorrection = getCorrectionFor(getVerticalGuides(), 
-				baseRect.preciseRight(), request.getExtendedData(), true, 1);
+				baseRect.preciseRight() - 1, request.getExtendedData(), true, 1);
 		if (rightCorrection != THRESHOLD) {
 			snapped = true;
 			snapOrientation &= ~EAST;
@@ -167,7 +169,7 @@ public int snapRectangle(Request request, int snapOrientation,
 
 	if (!snapped && (snapOrientation & SOUTH) != 0) {
 		double bottom = getCorrectionFor(getHorizontalGuides(), 
-				baseRect.preciseBottom(), request.getExtendedData(), false, 1);
+				baseRect.preciseBottom() - 1, request.getExtendedData(), false, 1);
 		if (bottom != THRESHOLD) {
 			snapped = true;
 			snapOrientation &= ~SOUTH;
