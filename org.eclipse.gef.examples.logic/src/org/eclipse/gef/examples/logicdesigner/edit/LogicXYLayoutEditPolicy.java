@@ -18,6 +18,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.*;
 import org.eclipse.gef.commands.Command;
+import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
 import org.eclipse.gef.requests.CreateRequest;
@@ -119,6 +120,9 @@ protected void showLayoutTargetFeedback(Request request) {
 	eraseLayoutTargetFeedback(request);
 	if (request.getType().equals(REQ_MOVE) || request.getType().equals(REQ_RESIZE)) {
 		ChangeBoundsRequest req = (ChangeBoundsRequest)request;
+		ZoomManager zoomManager = (ZoomManager)getHost().getViewer()
+				.getProperty(ZoomManager.class.toString());
+		double zoom = zoomManager.getZoom() / zoomManager.getUIMultiplier();
 		Guide vGuide = (Guide)req.getExtendedData()
 				.get(SnapToGuides.VERTICAL_GUIDE);
 		if (vGuide != null) {
@@ -129,17 +133,19 @@ protected void showLayoutTargetFeedback(Request request) {
 			Rectangle figBounds = part.getBounds();
 			switch (alignment) {
 				case -1:
-					start = figBounds.getTopLeft().translate(req.getMoveDelta());
-					end = figBounds.getBottomLeft().translate(req.getMoveDelta());
+					start = figBounds.getTopLeft();
+					end = figBounds.getBottomLeft();
 					break;
 				case 0:
-					start = figBounds.getTop().translate(req.getMoveDelta());
-					end = figBounds.getBottom().translate(req.getMoveDelta());
+					start = figBounds.getTop();
+					end = figBounds.getBottom();
 					break;
 				case 1:
-					start = figBounds.getTopRight().translate(req.getMoveDelta());
-					end = figBounds.getBottomRight().translate(req.getMoveDelta());
+					start = figBounds.getTopRight();
+					end = figBounds.getBottomRight();
 			}
+			start.scale(zoom).translate(req.getMoveDelta());
+			end.scale(zoom).translate(req.getMoveDelta());
 			Figure fig = new Figure();
 			fig.setOpaque(true);
 			fig.setBackgroundColor(ColorConstants.red);
@@ -157,17 +163,19 @@ protected void showLayoutTargetFeedback(Request request) {
 			Rectangle figBounds = part.getBounds();
 			switch (alignment) {
 				case -1:
-					start = figBounds.getTopLeft().translate(req.getMoveDelta());
-					end = figBounds.getTopRight().translate(req.getMoveDelta());
+					start = figBounds.getTopLeft();
+					end = figBounds.getTopRight();
 					break;
 				case 0:
-					start = figBounds.getLeft().translate(req.getMoveDelta());
-					end = figBounds.getRight().translate(req.getMoveDelta());
+					start = figBounds.getLeft();
+					end = figBounds.getRight();
 					break;
 				case 1:
-					start = figBounds.getBottomLeft().translate(req.getMoveDelta());
-					end = figBounds.getBottomRight().translate(req.getMoveDelta());
+					start = figBounds.getBottomLeft();
+					end = figBounds.getBottomRight();
 			}
+			start.scale(zoom).translate(req.getMoveDelta());
+			end.scale(zoom).translate(req.getMoveDelta());
 			Figure fig = new Figure();
 			fig.setOpaque(true);
 			fig.setBackgroundColor(ColorConstants.red);
