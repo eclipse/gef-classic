@@ -37,7 +37,7 @@ public static final int
 public static final boolean
 	HORIZONTAL = true,
 	VERTICAL = false;
-	
+
 protected Transposer transposer; {
 	transposer = new Transposer();
 	transposer.setEnabled(horizontal);
@@ -147,7 +147,6 @@ public Dimension calculateMinimumSize(IFigure container, int wHint, int hHint) {
  * @since 2.0
  */
 protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHint) {
-//	System.out.println(this + " : " + wHint + "," + hHint);
 	Insets insets = container.getInsets();
 	if (isHorizontal()) {
 		wHint = -1;
