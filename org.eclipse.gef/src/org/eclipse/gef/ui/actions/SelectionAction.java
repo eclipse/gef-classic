@@ -34,8 +34,6 @@ private ISelection selection;
 
 /**
  * Creates a <code>SelectionAction</code> and associates it with the given editor.
- * @deprecated use IWorkbenchPart constructor, SelectionAction will be changed to inherit
- * from WorkbenchPartAction in next release
  * @param part The workbench part associated with this action
  * @param style the style for this action
  */
