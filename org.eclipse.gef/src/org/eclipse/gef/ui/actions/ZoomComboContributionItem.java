@@ -47,19 +47,7 @@ private IPartListener partListener;
  * @param partService used to add a PartListener
  */
 public ZoomComboContributionItem(IPartService partService) {
-	super(GEFActionConstants.ZOOM_TOOLBAR_WIDGET);
-	service = partService;
-	initStrings = new String[] {"8888%"};
-	Assert.isNotNull(partService);
-	partService.addPartListener(partListener = new IPartListener() {
-		public void partActivated(IWorkbenchPart part) {
-			setZoomManager((ZoomManager) part.getAdapter(ZoomManager.class));
-		}
-		public void partBroughtToTop(IWorkbenchPart p) { }
-		public void partClosed(IWorkbenchPart p) { }
-		public void partDeactivated(IWorkbenchPart p) { }
-		public void partOpened(IWorkbenchPart p) { }
-	});
+	this(partService, "8888%");//$NON-NLS-1$
 }
 
 /**
@@ -68,29 +56,17 @@ public ZoomComboContributionItem(IPartService partService) {
  * @param initString the initial string displayed in the combo
  */
 public ZoomComboContributionItem(IPartService partService, String initString) {
-	super(GEFActionConstants.ZOOM_TOOLBAR_WIDGET);
-	initStrings = new String[] {initString};
-	service = partService;
-	Assert.isNotNull(partService);
-	partService.addPartListener(partListener = new IPartListener() {
-		public void partActivated(IWorkbenchPart part) {
-			setZoomManager((ZoomManager) part.getAdapter(ZoomManager.class));
-		}
-		public void partBroughtToTop(IWorkbenchPart p) { }
-		public void partClosed(IWorkbenchPart p) { }
-		public void partDeactivated(IWorkbenchPart p) { }
-		public void partOpened(IWorkbenchPart p) { }
-	});
+	this(partService, new String[] {initString});
 }
 
 /**
  * Constructor for ComboToolItem.
  * @param partService used to add a PartListener
- * @param initString the initial string displayed in the combo
+ * @param initStrings the initial string displayed in the combo
  */
-public ZoomComboContributionItem(IPartService partService, String[] strings) {
+public ZoomComboContributionItem(IPartService partService, String[] initStrings) {
 	super(GEFActionConstants.ZOOM_TOOLBAR_WIDGET);
-	initStrings = strings;
+	this.initStrings = initStrings;
 	service = partService;
 	Assert.isNotNull(partService);
 	partService.addPartListener(partListener = new IPartListener() {
