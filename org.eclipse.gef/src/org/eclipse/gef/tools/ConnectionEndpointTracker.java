@@ -48,9 +48,9 @@ protected Cursor calculateCursor(){
 }
 
 public void commitDrag(){
-		eraseSourceFeedback();
-		eraseTargetFeedback();
-		executeCurrentCommand();
+	eraseSourceFeedback();
+	eraseTargetFeedback();
+	executeCurrentCommand();
 }
 
 protected Request createTargetRequest(){
@@ -61,6 +61,7 @@ protected Request createTargetRequest(){
 
 public void deactivate() {
 	eraseSourceFeedback();
+	getCurrentViewer().setFocus(null);
 	super.deactivate();
 }
 
