@@ -94,7 +94,7 @@ private void expandDrawer() {
 	drawer.setExpanded(true);
 }
 
-protected Point getInterestingPoint(IFigure figure) {
+protected Point getNavigationPoint(IFigure figure) {
 	return figure.getBounds().getTopLeft();
 }
 
