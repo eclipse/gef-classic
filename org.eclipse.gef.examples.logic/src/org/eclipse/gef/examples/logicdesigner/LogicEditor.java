@@ -43,6 +43,7 @@ import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.ui.actions.*;
 import org.eclipse.gef.ui.palette.PaletteContextMenuProvider;
 import org.eclipse.gef.ui.palette.PaletteViewer;
+import org.eclipse.gef.ui.paletteview.PaletteViewPage;
 import org.eclipse.gef.ui.parts.*;
 import org.eclipse.gef.ui.stackview.CommandStackInspectorPage;
 
@@ -326,7 +327,7 @@ public void commandStackChanged(EventObject event) {
  */
 protected void configurePaletteViewer() {
 	super.configurePaletteViewer();
-	PaletteViewer viewer = (PaletteViewer)getPaletteViewer();
+	PaletteViewer viewer = getPaletteViewer();
 	ContextMenuProvider provider = new PaletteContextMenuProvider(viewer);
 	getPaletteViewer().setContextMenu(provider);
 	viewer.setCustomizer(new LogicPaletteCustomizer());
@@ -363,14 +364,9 @@ protected void configureGraphicalViewer() {
 		.setParent(getCommonKeyHandler()));
 
 	loadRulers();
-	IAction showHRuler = new ToggleRulerVisibilityAction(
-			rulerComp, PositionConstants.NORTH, getGraphicalViewer());
-	IAction showVRuler = new ToggleRulerVisibilityAction(
-			rulerComp,	PositionConstants.WEST, getGraphicalViewer());
-	getActionRegistry().registerAction(showHRuler);
-	getActionRegistry().registerAction(showVRuler);
-	getSite().getKeyBindingService().registerAction(showHRuler);
-	getSite().getKeyBindingService().registerAction(showVRuler);
+	IAction showRulers = new ToggleRulerVisibilityAction(getGraphicalViewer());
+	getActionRegistry().registerAction(showRulers);
+	getSite().getKeyBindingService().registerAction(showRulers);
 }
 
 protected void createOutputStream(OutputStream os)throws IOException {
@@ -392,6 +388,8 @@ protected void loadRulers(){
 		provider = new LogicRulerProvider(ruler);
 	}
 	getGraphicalViewer().setProperty(RulerProvider.HORIZONTAL, provider);
+	getGraphicalViewer().setProperty(RulerProvider.RULER_VISIBILITY, 
+			new Boolean(getLogicDiagram().getRulerVisibility()));
 }
 
 public void dispose() {
@@ -406,6 +404,8 @@ public void dispose() {
 public void doSave(IProgressMonitor progressMonitor) {
 	try {
 		editorSaving = true;
+		getLogicDiagram().setRulerVisibility(((Boolean)getGraphicalViewer()
+				.getProperty(RulerProvider.RULER_VISIBILITY)).booleanValue());
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		createOutputStream(out);
 		IFile file = ((IFileEditorInput)getEditorInput()).getFile();
@@ -431,6 +431,24 @@ public Object getAdapter(Class type){
 	if (type == IContentOutlinePage.class) {
 		outlinePage = new OutlinePage(new TreeViewer());
 		return outlinePage;
+	}
+	if (type == PaletteViewPage.class) {
+		return new PaletteViewPage() {
+			public void createControl(Composite parent) {
+				createPaletteViewer(parent);
+			}
+			public Object getAdapter(Class type) {
+				if (type == ZoomManager.class)
+					return getGraphicalViewer().getProperty(ZoomManager.class.toString());
+				return null;
+			}
+			public Control getControl() {
+				return getPaletteViewer().getControl();
+			}
+			public void setFocus() {
+				getControl().setFocus();
+			}
+		};
 	}
 	if (type == ZoomManager.class)
 		return getGraphicalViewer().getProperty(ZoomManager.class.toString());
@@ -560,6 +578,10 @@ protected void createActions() {
 	getSelectionActions().add(action.getId());
 }
 
+public void createPartControl(Composite parent) {
+	createGraphicalViewer(parent);
+}
+
 /* (non-Javadoc)
  * @see org.eclipse.gef.ui.parts.GraphicalEditor#createGraphicalViewer(org.eclipse.swt.widgets.Composite)
  */
@@ -586,7 +608,7 @@ public boolean isSaveOnCloseNeeded() {
 }
 
 protected boolean performSaveAs() {
-	SaveAsDialog dialog= new SaveAsDialog(getSite().getWorkbenchWindow().getShell());
+	SaveAsDialog dialog = new SaveAsDialog(getSite().getWorkbenchWindow().getShell());
 	dialog.setOriginalFile(((IFileEditorInput)getEditorInput()).getFile());
 	dialog.open();
 	IPath path= dialog.getResult();
@@ -594,13 +616,15 @@ protected boolean performSaveAs() {
 	if (path == null)
 		return false;
 	
-	IWorkspace workspace= ResourcesPlugin.getWorkspace();
+	IWorkspace workspace = ResourcesPlugin.getWorkspace();
 	final IFile file= workspace.getRoot().getFile(path);
 	
 	if (!file.exists()) {
 		WorkspaceModifyOperation op= new WorkspaceModifyOperation() {
-			public void execute(final IProgressMonitor monitor) throws CoreException {
+			public void execute(final IProgressMonitor monitor) {
 				try {
+					getLogicDiagram().setRulerVisibility(((Boolean)getGraphicalViewer()
+							.getProperty(RulerProvider.RULER_VISIBILITY)).booleanValue());
 					ByteArrayOutputStream out = new ByteArrayOutputStream();
 					createOutputStream(out);
 					file.create(new ByteArrayInputStream(out.toByteArray()), true, monitor);
@@ -620,7 +644,7 @@ protected boolean performSaveAs() {
 	}
 	
 	try {
-		superSetInput(new FileEditorInput((IFile)file));
+		superSetInput(new FileEditorInput(file));
 		getCommandStack().markSaveLocation();
 	} 
 	catch (Exception e) {
