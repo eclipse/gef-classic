@@ -19,12 +19,11 @@ import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.MouseTrackAdapter;
+import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
@@ -48,6 +47,7 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.util.Assert;
+import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.TransferDropTargetListener;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IPerspectiveDescriptor;
@@ -56,6 +56,7 @@ import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.XMLMemento;
+import org.eclipse.ui.internal.DragCursors;
 import org.eclipse.ui.internal.Workbench;
 
 import org.eclipse.draw2d.ActionEvent;
@@ -255,6 +256,7 @@ public final int getFixedSize() {
 /*
  * @TODO:Pratik  handleEditorMaximized and handleEditorMinimized are never invoked
  * because currently there's no mechanism in the platform to detect these actions.
+ * See Bug# 58190
  */
 protected void handleEditorMaximized() {
 	if (isInState(IN_VIEW))
@@ -677,8 +679,9 @@ protected class ResizeAction extends Action {
 	}
 	public void run() {
 		/*
-		 * @TODO:Pratik   the tracker is off if you are using the mouse and move it
-		 * too quickly
+		 * @TODO:Pratik   The tracker is off if you are using the mouse and move it
+		 * vertically while dragging it horizontally
+		 * See bug# 62528
 		 */
 		final Tracker tracker = 
 				new Tracker(FlyoutPaletteComposite.this, SWT.LEFT | SWT.RIGHT);
@@ -716,70 +719,74 @@ protected class ResizeAction extends Action {
 /*
  * @TODO:Pratik   ALT+TAB while dragging puts these drag managers in invalid state
  */
-protected class TitleDragManager 
-		extends MouseAdapter 
-		implements MouseMoveListener, Listener, KeyListener {
-	protected boolean dragging = false;
-	protected boolean dragCancelled = false;
+protected class TitleDragManager
+		extends MouseAdapter
+		implements Listener {
 	protected boolean switchDock = false;
-	protected Control control;
-	protected Rectangle origBounds;
+	protected boolean dragging = false;
 	public TitleDragManager(Control ctrl) {
 		ctrl.addListener(SWT.DragDetect, this);
-		ctrl.addMouseMoveListener(this);
 		ctrl.addMouseListener(this);
-		ctrl.addKeyListener(this);
-		control = ctrl;
 	}
 	public void handleEvent(Event event) {
 		dragging = true;
-		dragCancelled = false;
 		switchDock = false;
-		origBounds = sash.getBounds().union(paletteContainer.getBounds());
-	}
-	public void keyPressed(KeyEvent e) {
-		if (e.keyCode == SWT.ESC)
-			dragCancelled = true;
-	}
-	public void keyReleased(KeyEvent e) {}
-	public void mouseMove(MouseEvent e) {
-		if (!dragging)
-			return;
-		Control ctrl = Display.getCurrent().getCursorControl();
-		switchDock = !isDescendantOf(sash, ctrl) 
-				&& !isDescendantOf(paletteContainer, ctrl);
-		Rectangle placeHolder = origBounds;
-		if (switchDock) {
-			if (dock == PositionConstants.EAST) {
-				placeHolder = new Rectangle(0, 0,
-						origBounds.width, origBounds.height);
-			} else {
-				placeHolder = new Rectangle(
-						FlyoutPaletteComposite.this.getBounds().width 
-						- origBounds.width, 0, origBounds.width, origBounds.height);
+		Rectangle bounds = sash.getBounds();
+		if (paletteContainer.getVisible())
+			bounds = bounds.union(paletteContainer.getBounds());
+		final Rectangle origBounds = bounds;
+		final Tracker tracker = new Tracker(FlyoutPaletteComposite.this, SWT.NULL);
+		tracker.setRectangles(new Rectangle[] {origBounds});
+		tracker.setStippled(true);
+		tracker.addListener(SWT.Move, new Listener() {
+			public void handleEvent(Event event) {
+				Display.getCurrent().syncExec(new Runnable() {
+					public void run() {
+						Control ctrl = Display.getCurrent().getCursorControl();
+						switchDock = !isDescendantOf(sash, ctrl) 
+								&& !isDescendantOf(paletteContainer, ctrl);
+						Rectangle placeHolder = origBounds;
+						if (switchDock) {
+							if (dock == PositionConstants.EAST) {
+								placeHolder = new Rectangle(0, 0,
+										origBounds.width, origBounds.height);
+							} else {
+								placeHolder = new Rectangle(
+										FlyoutPaletteComposite.this.getBounds().width 
+										- origBounds.width, 0, origBounds.width, 
+										origBounds.height);
+							}
+						}
+						// update the cursor
+						int dock = getDockLocation();
+						if (switchDock)
+							dock = PositionConstants.EAST_WEST & ~dock;
+						Cursor cursor;
+						if (dock == PositionConstants.EAST)
+							cursor = DragCursors.getCursor(
+									DragCursors.positionToDragCursor(SWT.RIGHT));
+						else
+							cursor = DragCursors.getCursor(
+									DragCursors.positionToDragCursor(SWT.LEFT));
+						tracker.setCursor(cursor);
+						// update the rectangle only if it has changed
+						if (!tracker.getRectangles()[0].equals(placeHolder))
+							tracker.setRectangles(new Rectangle[] {placeHolder});
+					}
+				});
 			}
-		}
-		// @TODO:Pratik  need to draw an outline at placeholder
+		});
+		if (tracker.open() && switchDock)
+			setDockLocation(PositionConstants.EAST_WEST & ~getDockLocation());
+		tracker.dispose();
 	}
 	public void mouseUp(MouseEvent me) {
-		if (dragging) {
-			if (!dragCancelled && switchDock)
-				if (dock == PositionConstants.EAST)
-					setDockLocation(PositionConstants.WEST);
-				else
-					setDockLocation(PositionConstants.EAST);
-		} else if (isInState(FLYOUT_COLLAPSED) && me.button == 1)
-			// if this was just a simple click (no dragging) and the palette's 
-			// collapsed, expand it
-			setState(FLYOUT_EXPANDED);
-		else if (isInState(FLYOUT_EXPANDED) && me.button == 1)
-			// if this was just a simple click (no dragging) and the palette's
-			// expanded, collapse it
-			setState(FLYOUT_COLLAPSED);
+		if (!dragging && me.button == 1)
+			if (isInState(FLYOUT_COLLAPSED))
+				setState(FLYOUT_EXPANDED);
+			else if (isInState(FLYOUT_EXPANDED))
+				setState(FLYOUT_COLLAPSED);
 		dragging = false;
-		dragCancelled = false;
-		switchDock = false;
-		origBounds = null;
 	}
 }
 
@@ -818,7 +825,8 @@ protected class PaletteContainer extends Composite {
 			Point titleSize = title.computeSize(-1, -1);
 			Point buttonSize = button.computeSize(-1, -1);
 			int height = Math.max(titleSize.y, buttonSize.y);
-			button.setBounds(area.width - buttonSize.x - 1, 0, buttonSize.x, height);
+			button.setBounds(area.width - buttonSize.x - 1, 0, 
+					buttonSize.x, buttonSize.y);
 			int remainingWidth = button.getBounds().x - 2;
 			int x = 0;
 			if (remainingWidth < titleSize.x)
@@ -841,16 +849,26 @@ protected class PaletteContainer extends Composite {
 	}
 }
 
-protected static class DragFigure 
-	extends ImageFigure 
-{
+protected class DragFigure 
+	extends ImageFigure {
 	protected static final int MARGIN_SPACE = 0;
 	protected static final int H_GAP = 4;
 	protected static final int LINE_LENGTH = 30;
 	
-	public DragFigure(boolean isHorizontal) {
-		// @TODO:Pratik  what if the banner font changes.  update?  or ignore?
+	public DragFigure(final boolean isHorizontal) {
 		setFont(JFaceResources.getBannerFont());
+		JFaceResources.getFontRegistry().addListener(new IPropertyChangeListener() {
+			public void propertyChange(org.eclipse.jface.util.PropertyChangeEvent event) {
+				if (event.getProperty().equals(JFaceResources.BANNER_FONT)) {
+					setFont(JFaceResources.getBannerFont());
+					updateImage(isHorizontal);
+					if (paletteContainer.getVisible() && isHorizontal)
+						paletteContainer.layout();
+					else if (sash.getChildren()[0].getVisible() && !isHorizontal)
+						FlyoutPaletteComposite.this.layout();
+				}
+			}
+		});
 		setRequestFocusEnabled(true);
 		setFocusTraversable(true);
 		addFocusListener(new FocusListener() {
@@ -862,11 +880,22 @@ protected static class DragFigure
 			}
 		});
 		
+		updateImage(isHorizontal);
+		
+		FlyoutPaletteComposite.this.addDisposeListener(new DisposeListener() {
+			public void widgetDisposed(DisposeEvent e) {
+				getImage().dispose();
+			}
+		});
+	}	
+	protected void updateImage(final boolean isHorizontal) {
+		if (getImage() != null)
+			getImage().dispose();
 		Image image = createImage();
 		if (!isHorizontal)
 			image = ImageUtilities.createRotatedImage(image);
 		setImage(image);
-	}	
+	}
 	protected Image createImage() {
 		Image img = null;
 		Dimension imageSize = FigureUtilities.getStringExtents(
@@ -898,15 +927,11 @@ protected static class DragFigure
 		gc.dispose();
 		return img;
 	}	
-	//@TODO:Pratik   is this okay?
-	protected void finalize() throws Throwable {
-		getImage().dispose();
-	}
 	protected void paintFigure(Graphics graphics) {
 		super.paintFigure(graphics);
 		if (hasFocus())
 			graphics.drawFocus(0, 0, bounds.width - 1, bounds.height - 1);
-	}	
+	}
 }
 
 }
