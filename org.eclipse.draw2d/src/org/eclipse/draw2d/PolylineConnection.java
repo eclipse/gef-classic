@@ -217,7 +217,8 @@ public void setSourceAnchor(ConnectionAnchor anchor){
 	unhookSourceAnchor();
 	getConnectionRouter().invalidate(this);
 	startAnchor = anchor;
-	hookSourceAnchor();
+	if (getParent() != null)
+		hookSourceAnchor();
 	revalidate(); 
 }
 
@@ -251,7 +252,8 @@ public void setTargetAnchor(ConnectionAnchor anchor){
 	unhookTargetAnchor();
 	getConnectionRouter().invalidate(this);
 	endAnchor = anchor;
-	hookTargetAnchor();
+	if (getParent() != null)
+		hookTargetAnchor();
 	revalidate();
 }
 
