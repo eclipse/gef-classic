@@ -52,16 +52,16 @@ public void buildContextMenu(IMenuManager menu) {
 							new PinDrawerAction((DrawerEditPart)selectedPart));
 	}
 	menu.appendToGroup(GEFActionConstants.GROUP_VIEW, new FolderLayoutAction(
-			getPaletteViewer().getPaletteViewerPreferencesSource()));
+			getPaletteViewer().getPaletteViewerPreferences()));
 	menu.appendToGroup(GEFActionConstants.GROUP_VIEW, new ListLayoutAction(
-			getPaletteViewer().getPaletteViewerPreferencesSource()));
+			getPaletteViewer().getPaletteViewerPreferences()));
 	menu.appendToGroup(GEFActionConstants.GROUP_VIEW, new IconsLayoutAction(
-			getPaletteViewer().getPaletteViewerPreferencesSource()));
+			getPaletteViewer().getPaletteViewerPreferences()));
 	menu.appendToGroup(GEFActionConstants.GROUP_VIEW, new DetailsLayoutAction(
-			getPaletteViewer().getPaletteViewerPreferencesSource()));
+			getPaletteViewer().getPaletteViewerPreferences()));
 	menu.appendToGroup(GEFActionConstants.GROUP_VIEW, new Separator());
 	menu.appendToGroup(GEFActionConstants.GROUP_VIEW, new ChangeIconSizeAction(
-			getPaletteViewer().getPaletteViewerPreferencesSource()));
+			getPaletteViewer().getPaletteViewerPreferences()));
 	if (getPaletteViewer().getCustomizer() != null) {
 		menu.appendToGroup(GEFActionConstants.GROUP_REST, 
 							new CustomizeAction(getPaletteViewer()));

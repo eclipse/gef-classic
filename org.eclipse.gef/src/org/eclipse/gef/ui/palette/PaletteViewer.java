@@ -22,6 +22,4 @@ void setMode(ToolEntry entry);
 
 void setPaletteRoot(PaletteRoot root);
 
-void setPaletteViewerPreferencesSource(PaletteViewerPreferences prefs);
-
 }

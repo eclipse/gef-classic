@@ -40,7 +40,7 @@ public void createPartControl(Composite parent) {
 	createPaletteViewer(splitter);
 	splitter.maintainSize(getPaletteViewer().getControl());
 	final PaletteViewerPreferences prefs = ((PaletteViewerImpl)getPaletteViewer()).
-	                                            getPaletteViewerPreferencesSource();
+	                                            getPaletteViewerPreferences();
 	splitter.setFixedSize(prefs.getPaletteSize());
 	splitter.addFixedSizeChangeListener(new PropertyChangeListener() {
 		public void propertyChange(PropertyChangeEvent evt) {

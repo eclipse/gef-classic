@@ -37,7 +37,7 @@ private class PreferenceListener
 		if (font != null) {
 			font.dispose();
 			font = null;
-		}		
+		}
 	}
 	public void propertyChange(PropertyChangeEvent evt) {
 		String property = evt.getPropertyName();
@@ -45,14 +45,14 @@ private class PreferenceListener
 		if (property.equals(PaletteViewerPreferences.PREFERENCE_FONT)) {
 			disposeFont();
 			font = new Font(Display.getCurrent(), 
-					getPaletteViewerPreferencesSource().getFontData());
+					getPaletteViewerPreferences().getFontData());
 			IFigure fig = ((GraphicalEditPart)root).getFigure();
 			fig.setFont(font);
 			fig.invalidateTree();
 		} else if (property.equals(PaletteViewerPreferences.PREFERENCE_LAYOUT) 
 				|| property.equals(PaletteViewerPreferences.PREFERENCE_AUTO_COLLAPSE)
 				|| property.equals(DefaultPaletteViewerPreferences
-					.convertLayoutToPreferenceName(getPaletteViewerPreferencesSource()
+					.convertLayoutToPreferenceName(getPaletteViewerPreferences()
 					.getLayoutSetting()))) {
 			refreshAllEditParts(root);
 		}
@@ -147,7 +147,7 @@ public ToolEntry getMode() {
  * 			preferences.  If none has been set, it returns the default one (which
  * 			uses the GEF preference store).
  */
-public PaletteViewerPreferences getPaletteViewerPreferencesSource() {
+public PaletteViewerPreferences getPaletteViewerPreferences() {
 	return prefs;
 }
 
@@ -225,7 +225,7 @@ public void setPaletteRoot(PaletteRoot root) {
  * @param	prefs	The PaletteViewerPreferences that is to be used to store all the
  * 					preferences for this palette.
  */
-public void setPaletteViewerPreferencesSource(PaletteViewerPreferences prefs) {
+public void setPaletteViewerPreferences(PaletteViewerPreferences prefs) {
 	if (this.prefs != null)
 		this.prefs.removePropertyChangeListener(prefListener);
 	this.prefs = prefs;

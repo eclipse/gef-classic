@@ -140,7 +140,7 @@ PaletteViewer getPaletteViewer() {
 }
 
 protected PaletteViewerPreferences getPreferenceSource() {
-	return ((PaletteViewerImpl)getViewer()).getPaletteViewerPreferencesSource();
+	return ((PaletteViewerImpl)getViewer()).getPaletteViewerPreferences();
 }
 
 /**

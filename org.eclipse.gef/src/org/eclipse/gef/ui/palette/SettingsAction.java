@@ -30,7 +30,7 @@ public SettingsAction(PaletteViewer palette) {
  */
 public void run() {
 	Dialog settings = new PaletteSettingsDialog(paletteViewer.getControl().getShell(), 
-			((PaletteViewerImpl)paletteViewer).getPaletteViewerPreferencesSource());
+			((PaletteViewerImpl)paletteViewer).getPaletteViewerPreferences());
 	settings.open();
 }
 
