@@ -12,6 +12,7 @@ package org.eclipse.gef.examples.text.edit;
 import java.beans.PropertyChangeListener;
 
 import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.text.FlowFigure;
 
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 
@@ -52,6 +53,11 @@ public TextLocation getLocation(Point absolute, int trailing[]) {
 
 protected TextualEditPart getTextParent() {
 	return (TextualEditPart)getParent();
+}
+
+public void setSelection(int start, int end) {
+	FlowFigure ff = (FlowFigure)getFigure();
+	ff.setSelection(start, end);
 }
 
 }
