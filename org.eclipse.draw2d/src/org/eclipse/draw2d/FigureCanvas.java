@@ -237,11 +237,11 @@ public void scrollToX(int hOffset) {
 		expose.x = dest.x + blit.width;
 	} else //Moving right
 		dest.x += dx; //Move expose area to the right
-	scroll(dest.x, dest.y,
-			blit.x, blit.y, blit.width, blit.height,
-			false);
 	getViewport().setIgnoreScroll(true);
 	getViewport().setHorizontalLocation(hOffset);
+	scroll(dest.x, dest.y,
+			blit.x, blit.y, blit.width, blit.height,
+			true);
 	getViewport().setIgnoreScroll(false);
 	redraw(expose.x, expose.y, expose.width, expose.height, true);
 }
@@ -267,12 +267,12 @@ public void scrollToY(int vOffset) {
 		expose.y = dest.y + blit.height; //Move expose area down
 	} else //Moving down
 		dest.y += dy;
-	scroll(dest.x, dest.y,
-			blit.x, blit.y, blit.width, blit.height,
-			false);
 
 	getViewport().setIgnoreScroll(true);
 	getViewport().setVerticalLocation(vOffset);
+	scroll(dest.x, dest.y,
+			blit.x, blit.y, blit.width, blit.height,
+			true);
 	getViewport().setIgnoreScroll(false);
 	redraw(expose.x, expose.y, expose.width, expose.height, true);
 }
@@ -318,7 +318,7 @@ public void setViewport(Viewport vp) {
 
 private int verifyScrollBarOffset(RangeModel model, int value) {
 	value = Math.max(model.getMinimum(), value);
-	return Math.min(model.getMaximum(), value);
+	return Math.min(model.getMaximum() - model.getExtent(), value);
 }
 
 class InternalLightweightSystem
