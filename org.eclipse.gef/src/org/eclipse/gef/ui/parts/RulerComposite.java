@@ -15,7 +15,6 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.widgets.*;
@@ -73,11 +72,6 @@ private GraphicalViewer createRulerContainer(int orientation) {
 				}
 			};
 		}
-		protected void handleFocusGained(FocusEvent fe) {
-			super.handleFocusGained(fe);
-			if (getFocusEditPart() != null)
-				reveal(getFocusEditPart());
-		}
 		public void reveal(EditPart part) {
 			// there's no need to reveal rulers (that causes undesired scrolling to
 			// the origin of the ruler)
@@ -94,6 +88,11 @@ private GraphicalViewer createRulerContainer(int orientation) {
 	viewer.createControl(this);
 	viewer.setKeyHandler(new GraphicalViewerKeyHandler(viewer) {
 		public boolean keyPressed(KeyEvent event) {
+			/*
+			 * @TODO:Pratik     the correct way to handle this is by having a "Delete
+			 * Guide" action and having the DEL key associated with it.  then, 
+			 * performStroke() will take care of it.  just like in the logic editor.
+			 */
 			if (event.keyCode == SWT.DEL) {
 				if (getFocus() instanceof GuideEditPart) {
 					RulerEditPart parent = (RulerEditPart)getFocus().getParent();
@@ -146,7 +145,7 @@ private GraphicalViewer createRulerContainer(int orientation) {
 
 public void dispose() {
 	if (diagramViewer != null) {
-		diagramViewer.removePropertyListener(propertyListener);
+		diagramViewer.removePropertyChangeListener(propertyListener);
 		editor.getHorizontalBar().removeListener(SWT.Show, layoutListener);
 		editor.getHorizontalBar().removeListener(SWT.Hide, layoutListener);
 		editor.getVerticalBar().removeListener(SWT.Show, layoutListener);
