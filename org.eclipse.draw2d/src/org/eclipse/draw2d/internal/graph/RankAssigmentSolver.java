@@ -46,7 +46,7 @@ int depthFirstCutValue(Edge edge, int count) {
 
 	edge.cut = cutvalue;
 	if (cutvalue < 0)
-		graph.cutEdges.add(edge);
+		graph.spanningTree.add(edge);
 	setTreeMax(n, count);
 	return count + 1;
 }
@@ -97,7 +97,7 @@ int getTreeMin(Node n) {
 
 void initCutValues() {
 	Node root = graph.nodes.getNode(0);
-	graph.cutEdges = new EdgeList();
+	graph.spanningTree = new EdgeList();
 	Edge e;
 	setTreeMin(root, 1);
 	setTreeMax(root, 1);
@@ -121,8 +121,8 @@ Edge leave() {
 	Edge e;
 	int minCut = 0;
 	int weight = -1;
-	for (int i=0; i<graph.cutEdges.size(); i++) {
-		e = graph.cutEdges.getEdge(i);
+	for (int i=0; i<graph.spanningTree.size(); i++) {
+		e = graph.spanningTree.getEdge(i);
 		if (e.cut < minCut) {
 			result = e;
 			minCut = result.cut;
@@ -138,12 +138,8 @@ Edge leave() {
 void networkSimplexLoop() {
 	Edge leave, enter;
 	int count = 0;
-	while ((leave = leave()) != null && count < 88) {
+	while ((leave = leave()) != null && count < 900) {
 
-		if (count == maxcount){
-			System.out.println("failed to find optimal solution");
-			break;
-		}
 		count++;
 		
 		Node leaveTail = getTreeTail(leave);
@@ -157,7 +153,7 @@ void networkSimplexLoop() {
 		getSpanningTreeChildren(leaveHead).remove(leave);
 		setParentEdge(leaveTail, null);
 		leave.tree = false;
-		graph.cutEdges.remove(leave);
+		graph.spanningTree.remove(leave);
 		
 		Node enterTail = enter.source;
 		if (!subtreeContains(leaveTail, enterTail))
@@ -191,7 +187,7 @@ void networkSimplexLoop() {
 }
 
 void repairCutValues(Edge edge) {
-	graph.cutEdges.remove(edge);
+	graph.spanningTree.remove(edge);
 	Node n = getTreeTail(edge);
 	int cutvalue = 0;
 	int multiplier = (edge.target == n) ? 1 : -1;
@@ -217,7 +213,7 @@ void repairCutValues(Edge edge) {
 
 	edge.cut = cutvalue;
 	if (cutvalue < 0)
-		graph.cutEdges.add(edge);
+		graph.spanningTree.add(edge);
 }
 
 void setTreeMax(Node n, int value) {

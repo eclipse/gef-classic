@@ -9,7 +9,7 @@ import org.eclipse.draw2d.graph.Rank;
  */
 public class MinCross extends GraphVisitor {
 
-static final int MAX = 100;
+static final int MAX = 45;
 
 private DirectedGraph g;
 private RankSorter sorter = new RankSorter();

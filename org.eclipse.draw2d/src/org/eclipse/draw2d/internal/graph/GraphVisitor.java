@@ -1,7 +1,5 @@
 package org.eclipse.draw2d.internal.graph;
 
-import java.util.Random;
-
 import org.eclipse.draw2d.graph.DirectedGraph;
 
 /**

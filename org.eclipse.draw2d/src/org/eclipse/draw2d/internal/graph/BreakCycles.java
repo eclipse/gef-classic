@@ -171,7 +171,7 @@ private void invertEdges(DirectedGraph g) {
 		Edge e = g.edges.getEdge(i);
 		if (getOrderIndex(e.source) > getOrderIndex(e.target)) {
 			e.invert();
-			e.isBackward = true;
+			e.isFeedback = true;
 		}	
 	}
 }
