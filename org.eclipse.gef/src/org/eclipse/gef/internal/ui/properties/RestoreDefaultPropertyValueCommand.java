@@ -10,8 +10,9 @@
  *******************************************************************************/
 package org.eclipse.gef.internal.ui.properties;
 
-import org.eclipse.gef.commands.Command;
 import org.eclipse.ui.views.properties.IPropertySource;
+
+import org.eclipse.gef.commands.Command;
 
 public class RestoreDefaultPropertyValueCommand extends Command {
 

@@ -10,9 +10,7 @@
  *******************************************************************************/
 package org.eclipse.gef;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.widgets.Composite;

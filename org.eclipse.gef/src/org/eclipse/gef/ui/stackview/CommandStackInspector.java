@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.gef.ui.stackview;
 
-import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.*;
 
 import org.eclipse.ui.*;
 import org.eclipse.ui.part.*;

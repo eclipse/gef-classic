@@ -10,9 +10,7 @@
  *******************************************************************************/
 package org.eclipse.gef;
 
-import org.eclipse.jface.action.IMenuListener;
-import org.eclipse.jface.action.IMenuManager;
-import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.*;
 
 /**
  * Extends MenuManager to allow building the context menu directly.
