@@ -9,7 +9,9 @@ package org.eclipse.draw2d;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import org.eclipse.draw2d.geometry.*;
+import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -76,6 +78,20 @@ public FigureCanvas(Composite parent, LightweightSystem lws) {
 	this.lws = lws;
 	lws.setControl(this);
 	hook();
+}
+
+/**
+ * @see org.eclipse.swt.widgets.Composite#computeSize(int, int, boolean)
+ */
+public org.eclipse.swt.graphics.Point computeSize(int wHint, int hHint, boolean changed) {
+	//@TODO:Pratik
+	// Need to add the size of the scrollbars.  Scrollbars could be auto, always on, or
+	// never.  Based on these settings, the available space, and the required space,
+	// determine whether scrollbars are shown or not, and add their size to the result.
+	// You can determine the sizes of scrollbars as follows:
+	//		computeTrim(0,0,0,0).width (will return width of vertical scrollbar)
+	Dimension size = getContents().getPreferredSize(wHint, hHint);
+	return new org.eclipse.swt.graphics.Point(size.width, size.height);
 }
 
 /**
