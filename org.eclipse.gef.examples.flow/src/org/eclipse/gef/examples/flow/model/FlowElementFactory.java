@@ -31,13 +31,11 @@ public FlowElementFactory(Object o) {
  * @see org.eclipse.gef.requests.CreationFactory#getNewObject()
  */
 public Object getNewObject() {
-	if (template.equals(Activity.class))
-		return new Activity();
-	else if (template.equals(SequentialActivity.class))	
-		return new SequentialActivity();
-	else if (template.equals(ParallelActivity.class))
-		return new ParallelActivity();
-	return null;
+	try {
+		return ((Class)template).newInstance();
+	} catch (Exception e) {
+		return null;
+	}
 }
 
 /**
