@@ -313,13 +313,14 @@ protected void setFigureUnderCursor(IFigure f){
 
 protected void setFocus(IFigure fig){
 	FocusEvent fe = new FocusEvent(focusOwner, fig);
-	if(focusOwner != null)
-		focusOwner.handleFocusLost(fe);
+	IFigure oldOwner = focusOwner;
 	focusOwner = fig;
-	if(focusOwner != null)
-		focusOwner.handleFocusGained(fe);
+	if(oldOwner != null)
+		oldOwner.handleFocusLost(fe);
 	if(fig != null)
 		getFocusTraverseManager().setCurrentFocusOwner(fig);
+	if(focusOwner != null)
+		focusOwner.handleFocusGained(fe);
 }
 
 protected void setHoverSource(Figure figure,org.eclipse.swt.events.MouseEvent me){
