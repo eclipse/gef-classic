@@ -1,5 +1,7 @@
 package org.eclipse.gef.ui.actions;
 
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.ui.IWorkbenchActionConstants;
 
 /**
@@ -8,114 +10,133 @@ import org.eclipse.ui.IWorkbenchActionConstants;
  * names available from <code>IWorkbenchActionConstants</code>. It also defines the names
  * of the menu groups in a graphical editor's context menu.
  */
-public interface GEFActionConstants extends IWorkbenchActionConstants {
+public final class GEFActionConstants 
+	implements IWorkbenchActionConstants 
+{
 
 /**
  * Align bottom action id.
  * Value: <code>"org.eclipse.gef.align_bottom"</code>
  */
-static final String ALIGN_BOTTOM = "org.eclipse.gef.align_bottom";//$NON-NLS-1$
+public static final String ALIGN_BOTTOM = "org.eclipse.gef.align_bottom";//$NON-NLS-1$
 
 /**
  * Align center (horizontal) action id.
  * Value: <code>"org.eclipse.gef.align_center"</code>
  */
-static final String ALIGN_CENTER = "org.eclipse.gef.align_center";//$NON-NLS-1$
+public static final String ALIGN_CENTER = "org.eclipse.gef.align_center";//$NON-NLS-1$
 
 /**
  * Align left action id.
  * Value: <code>"org.eclipse.gef.align_left"</code>
  */
-static final String ALIGN_LEFT = "org.eclipse.gef.align_left";//$NON-NLS-1$
+public static final String ALIGN_LEFT = "org.eclipse.gef.align_left";//$NON-NLS-1$
 
 /**
  * Align middle (vertical) action id.
  * Value: <code>"org.eclipse.gef.align_middle"</code>
  */
-static final String ALIGN_MIDDLE = "org.eclipse.gef.align_middle";//$NON-NLS-1$
+public static final String ALIGN_MIDDLE = "org.eclipse.gef.align_middle";//$NON-NLS-1$
 
 /**
  * Align right action id.
  * Value: <code>"org.eclipse.gef.align_right"</code>
  */
-static final String ALIGN_RIGHT = "org.eclipse.gef.align_right";//$NON-NLS-1$
+public static final String ALIGN_RIGHT = "org.eclipse.gef.align_right";//$NON-NLS-1$
 
 /**
  * Align top action id.
  * Value: <code>"org.eclipse.gef.align_top"</code>
  */
-static final String ALIGN_TOP = "org.eclipse.gef.align_top";//$NON-NLS-1$
+public static final String ALIGN_TOP = "org.eclipse.gef.align_top";//$NON-NLS-1$
 
 /**
  * Direct edit action id. 
  * Value: <code>"org.eclipse.gef.direct_edit"</code>
  */
-static final String DIRECT_EDIT = "org.eclipse.gef.direct_edit";//$NON-NLS-1$
+public static final String DIRECT_EDIT = "org.eclipse.gef.direct_edit";//$NON-NLS-1$
 
 /** 
  * Context menu group for copy/paste related actions. 
  * Value: <code>"org.eclipse.gef.group.copy"</code>
  */
-static final String GROUP_COPY = "org.eclipse.gef.group.copy"; //$NON-NLS-1$
+public static final String GROUP_COPY = "org.eclipse.gef.group.copy"; //$NON-NLS-1$
 
 /** 
  * Context menu group for EditPart manipulation actions. 
  * Value: <code>"org.eclipse.gef.group.edit"</code>
  */
-static final String GROUP_EDIT = "org.eclipse.gef.group.edit"; //$NON-NLS-1$
+public static final String GROUP_EDIT = "org.eclipse.gef.group.edit"; //$NON-NLS-1$
 
 /** 
  * Context menu group for find/replace related actions. 
  * Value: <code>"org.eclipse.gef.group.find"</code>
  */
-static final String GROUP_FIND = "org.eclipse.gef.group.find"; //$NON-NLS-1$
+public static final String GROUP_FIND = "org.eclipse.gef.group.find"; //$NON-NLS-1$
 
 /** 
  * Context menu group for print related actions. 
  * Value: <code>"org.eclipse.gef.group.print"</code>
  */
-static final String GROUP_PRINT = "org.eclipse.gef.group.print"; //$NON-NLS-1$
+public static final String GROUP_PRINT = "org.eclipse.gef.group.print"; //$NON-NLS-1$
 
 /** 
  * Context menu group for actions which do not fit in one of the other categories. 
  * Value: <code>"org.eclipse.gef.group.rest"</code>
  */
-static final String GROUP_REST = "org.eclipse.gef.group.rest"; //$NON-NLS-1$	
+public static final String GROUP_REST = "org.eclipse.gef.group.rest"; //$NON-NLS-1$	
 
 /** 
  * Context menu group for save related actions. 
  * Value: <code>"org.eclipse.gef.group.save"</code>
  */
-static final String GROUP_SAVE = "org.eclipse.gef.group.save"; //$NON-NLS-1$
+public static final String GROUP_SAVE = "org.eclipse.gef.group.save"; //$NON-NLS-1$
 
 /** 
  * Context menu group for undo/redo related actions. 
  * Value: <code>"org.eclipse.gef.group.undo"</code>
  */
-static final String GROUP_UNDO = "org.eclipse.gef.group.undo"; //$NON-NLS-1$
+public static final String GROUP_UNDO = "org.eclipse.gef.group.undo"; //$NON-NLS-1$
 
 /** 
  * Context menu group for view related actions. 
  * Value: <code>"org.eclipse.gef.group.view"</code>
  */
-static final String GROUP_VIEW = "org.eclipse.gef.group.view"; //$NON-NLS-1$
+public static final String GROUP_VIEW = "org.eclipse.gef.group.view"; //$NON-NLS-1$
 
 /** 
  * Zoom contribution id. 
  * Value: <code>"org.eclipse.gef.zoom"</code>
  */
-static final String ZOOM_TOOLBAR_WIDGET = "org.eclipse.gef.zoom_widget"; //$NON-NLS-1$
+public static final String ZOOM_TOOLBAR_WIDGET = "org.eclipse.gef.zoom_widget"; //$NON-NLS-1$
 
 /** 
  * Zoom in contribution id. 
  * Value: <code>"org.eclipse.gef.zoom_in"</code>
  */
-static final String ZOOM_IN = "org.eclipse.gef.zoom_in"; //$NON-NLS-1$
+public static final String ZOOM_IN = "org.eclipse.gef.zoom_in"; //$NON-NLS-1$
 
 /** 
  * Zoom out contribution id. 
  * Value: <code>"org.eclipse.gef.zoom_out"</code>
  */
-static final String ZOOM_OUT = "org.eclipse.gef.zoom_out"; //$NON-NLS-1$
+public static final String ZOOM_OUT = "org.eclipse.gef.zoom_out"; //$NON-NLS-1$
+
+/**
+ * Adds standard group separators to the given MenuManager.
+ * @param menu the MenuManager
+ */
+public static final void addStandardActionGroups(IMenuManager menu) {
+	menu.add(new Separator(GROUP_UNDO));
+	menu.add(new Separator(GROUP_COPY));
+	menu.add(new Separator(GROUP_PRINT));
+	menu.add(new Separator(GROUP_EDIT));
+	menu.add(new Separator(GROUP_VIEW));
+	menu.add(new Separator(GROUP_FIND));
+	menu.add(new Separator(GROUP_ADD));
+	menu.add(new Separator(GROUP_REST));
+	menu.add(new Separator(MB_ADDITIONS));
+	menu.add(new Separator(GROUP_SAVE));
+}
 
 }
