@@ -13,7 +13,7 @@
 </target>
 
 <target name="copy" depends="init">
-	<copyResources project="${pluginName}" toDir="${pluginName.temp.path}" exclude="reference\,package-list,javadoc.xml,javadocAll.xml"/>
+	<copyResources project="${pluginName}" toDir="${pluginName.temp.path}" exclude="reference\,javadoc.xml,javadocAll.xml"/>
 </target>
 
 <target name="build" depends="copy">
