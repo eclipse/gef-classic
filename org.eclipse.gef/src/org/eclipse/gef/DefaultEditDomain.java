@@ -15,7 +15,7 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.gef.tools.*;
 import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.eclipse.gef.commands.CommandStack;
-import org.eclipse.gef.commands.DefaultCommandStack;
+import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.gef.palette.*;
 
 /**
@@ -44,7 +44,7 @@ private List viewers = new ArrayList();
 private Tool defaultTool;
 private PaletteViewer paletteViewer;
 private PaletteRoot paletteRoot;
-private CommandStack commandStack = new DefaultCommandStack();
+private CommandStack commandStack = new CommandStack();
 private IEditorPart editorPart;
 
 /**
