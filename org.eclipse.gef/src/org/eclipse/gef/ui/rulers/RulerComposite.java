@@ -144,6 +144,7 @@ private GraphicalViewer createRulerContainer(int orientation) {
 		canvas.getViewport().setVerticalRangeModel(
 				editor.getViewport().getVerticalRangeModel());
 	}
+	viewer.setContextMenu(new RulerContextMenuProvider(viewer));
 	
 	if (rulerEditDomain == null) {
 		rulerEditDomain = new EditDomain();
