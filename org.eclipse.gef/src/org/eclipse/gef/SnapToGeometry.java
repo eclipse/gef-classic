@@ -35,6 +35,7 @@ private static class Entry {
 
 private Entry rows[];
 private Entry cols[];
+private boolean cachedCloneBool;
 
 public SnapToGeometry(GraphicalEditPart container) {
 	this.container = container;
@@ -104,23 +105,26 @@ private double getCorrectionFor(Entry entries[], Map extendedData, boolean vert,
 	return result;
 }
 
-private void populateRowsAndCols(List exclude) {
-	List children = new ArrayList(container.getChildren());
-	children.removeAll(exclude);
-	rows = new Entry[children.size() * 3];
-	cols = new Entry[children.size() * 3];
-	for (int i = 0; i < children.size(); i++) {
-		GraphicalEditPart child = (GraphicalEditPart)children.get(i);
-		IFigure figure = child.getFigure();
-		Rectangle bounds = figure.getBounds();
-		if (figure instanceof HandleBounds)
-			bounds = ((HandleBounds)figure).getHandleBounds();
-		cols[i * 3] = new Entry(-1, bounds.x);
-		rows[i * 3] = new Entry(-1, bounds.y);
-		cols[i * 3 + 1] = new Entry(0, bounds.x + bounds.width / 2);
-		rows[i * 3 + 1] = new Entry(0, bounds.y + bounds.height / 2);
-		cols[i * 3 + 2] = new Entry(1, bounds.right());
-		rows[i * 3 + 2] = new Entry(1, bounds.bottom());
+private void populateRowsAndCols(List exclude, boolean isClone) {
+	if (rows == null || cols == null || isClone != cachedCloneBool) {
+		cachedCloneBool = isClone;
+		List children = new ArrayList(container.getChildren());
+		children.removeAll(exclude);
+		rows = new Entry[children.size() * 3];
+		cols = new Entry[children.size() * 3];
+		for (int i = 0; i < children.size(); i++) {
+			GraphicalEditPart child = (GraphicalEditPart)children.get(i);
+			IFigure figure = child.getFigure();
+			Rectangle bounds = figure.getBounds();
+			if (figure instanceof HandleBounds)
+				bounds = ((HandleBounds)figure).getHandleBounds();
+			cols[i * 3] = new Entry(-1, bounds.x);
+			rows[i * 3] = new Entry(-1, bounds.y);
+			cols[i * 3 + 1] = new Entry(0, bounds.x + bounds.width / 2);
+			rows[i * 3 + 1] = new Entry(0, bounds.y + bounds.height / 2);
+			cols[i * 3 + 2] = new Entry(1, bounds.right());
+			rows[i * 3 + 2] = new Entry(1, bounds.bottom());
+		}
 	}
 }
 
@@ -134,20 +138,33 @@ public int snapCreateRequest(CreateRequest request, PrecisionRectangle baseRect,
  */
 public int snapMoveRequest(ChangeBoundsRequest request,	PrecisionRectangle baseRect,
 		PrecisionRectangle selectionRect, int snapOrientation) {
-	populateRowsAndCols(request.getEditParts());
+	if (request.getType().equals(RequestConstants.REQ_CLONE))
+		populateRowsAndCols(Collections.EMPTY_LIST, true);
+	else
+		populateRowsAndCols(request.getEditParts(), false);
 	PrecisionPoint move = new PrecisionPoint(request.getMoveDelta());
 	IFigure fig = container.getContentPane();
+	baseRect.translate(move);
 	selectionRect.translate(move);
+	fig.translateToRelative(baseRect);
 	fig.translateToRelative(selectionRect);
 	fig.translateToRelative(move);
 
 	double xcorrect = THRESHOLD, ycorrect = THRESHOLD;
-	if ((snapOrientation & SNAP_VERTICAL) != 0)
+	if ((snapOrientation & SNAP_VERTICAL) != 0) {
 		xcorrect = getCorrectionFor(cols, request.getExtendedData(), true, 
-				selectionRect.preciseX, selectionRect.preciseRight());
-	if ((snapOrientation & SNAP_HORIZONTAL) != 0)
+				baseRect.preciseX, baseRect.preciseRight());
+		if (xcorrect == THRESHOLD)
+			xcorrect = getCorrectionFor(cols, request.getExtendedData(), true, 
+					selectionRect.preciseX, selectionRect.preciseRight());
+	}
+	if ((snapOrientation & SNAP_HORIZONTAL) != 0) {
 		ycorrect = getCorrectionFor(rows, request.getExtendedData(), false, 
-				selectionRect.preciseY, selectionRect.preciseBottom());
+				baseRect.preciseY, baseRect.preciseBottom());
+		if (ycorrect == THRESHOLD)
+			ycorrect = getCorrectionFor(rows, request.getExtendedData(), false, 
+					selectionRect.preciseY, selectionRect.preciseBottom());
+	}
 
 	//If neither value is being corrected, return false
 	if (xcorrect == THRESHOLD && ycorrect == THRESHOLD)
@@ -185,7 +202,7 @@ public int snapResizeRequest(ChangeBoundsRequest request, PrecisionRectangle bas
 	PrecisionPoint move = new PrecisionPoint(request.getMoveDelta());
 	IFigure fig = container.getContentPane();
 
-	populateRowsAndCols(request.getEditParts());	
+	populateRowsAndCols(request.getEditParts(), false);	
 	
 	baseRect.resize(resize);
 	baseRect.translate(move);
