@@ -11,6 +11,7 @@ import java.beans.PropertyChangeListener;
 import java.util.*;
 
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 
@@ -33,6 +34,7 @@ abstract class PaletteEditPart
 	implements PropertyChangeListener
 {
 
+private static ImageCache globalImageCache;
 private AccessibleEditPart acc;
 private PropertyChangeListener childListener = new PropertyChangeListener() {
 	public void propertyChange(PropertyChangeEvent evt) {
@@ -109,6 +111,32 @@ public DragTracker getDragTracker(Request request) {
 }
 
 /**
+ * Returns the image cache.
+ * The cache is global, and is shared by all action contribution items.
+ * This has the disadvantage that once an image is allocated, it is never freed until the display
+ * is disposed.  However, it has the advantage that the same image in different contribution managers
+ * is only ever created once.
+ */
+protected ImageCache getImageCache() {
+	ImageCache cache = globalImageCache;
+	if (cache == null) {
+		globalImageCache = cache = new ImageCache();
+		Display display = Display.getDefault();
+		if (display != null) {
+			display.disposeExec(new Runnable() {
+				public void run() {
+					if (globalImageCache != null) {
+						globalImageCache.dispose();
+						globalImageCache = null;
+					}
+				}	
+			});
+		}
+	}
+	return cache;
+}
+
+/**
  * @see org.eclipse.gef.editparts.AbstractEditPart#getModelChildren()
  */
 public List getModelChildren() {
@@ -143,6 +171,16 @@ protected PaletteViewerPreferences getPreferenceSource() {
 	return ((PaletteViewerImpl)getViewer()).getPaletteViewerPreferences();
 }
 
+protected String getToolTipText() {
+	PaletteEntry entry = (PaletteEntry)getModel();
+	String desc = entry.getDescription();
+	if (desc == null) { 
+		desc = PaletteMessages.NO_DESCRIPTION_AVAILABLE;
+	}
+	return entry.getLabel() + " " + PaletteMessages.NAME_DESCRIPTION_SEPARATOR //$NON-NLS-1$
+			+ " " + desc; //$NON-NLS-1$
+}
+
 /**
  * @see java.beans.PropertyChangeListener#propertyChange(PropertyChangeEvent)
  */
@@ -165,16 +203,10 @@ public void propertyChange(PropertyChangeEvent evt) {
  * @see org.eclipse.gef.editparts.AbstractEditPart#refreshVisuals()
  */
 protected void refreshVisuals() {
-	PaletteEntry entry = (PaletteEntry)getModel();
-	String desc = entry.getDescription();
-	if (desc == null) { 
-		desc = ""; //$NON-NLS-1$
-	}
 	if (getFigure().getToolTip() == null) {
 		getFigure().setToolTip(new Label());
 	}
-	((Label)getFigure().getToolTip()).setText(entry.getLabel() + " " +  //$NON-NLS-1$
-					PaletteMessages.NAME_DESCRIPTION_SEPARATOR + " " + desc);  //$NON-NLS-1$
+	((Label)getFigure().getToolTip()).setText(getToolTipText());
 }
 
 protected void setImageDescriptor(ImageDescriptor desc) {
@@ -182,13 +214,7 @@ protected void setImageDescriptor(ImageDescriptor desc) {
 		return;
 	}
 	imgDescriptor = desc;
-	if (image != null) {
-		image.dispose();
-		image = null;
-	}
-	if (desc != null)
-		image = desc.createImage();
-	setImageInFigure(image);		
+	setImageInFigure(getImageCache().getImage(imgDescriptor));
 }
 
 protected void setImageInFigure(Image image) { }
@@ -209,6 +235,38 @@ private void traverseChildren(List children, boolean add) {
 		} else {
 			entry.removePropertyChangeListener(childListener);
 		}		
+	}
+}
+
+protected class ImageCache {
+	/** Map from ImageDescriptor to Image */
+	private Map images = new HashMap(11);
+	
+	Image getImage(ImageDescriptor desc) {
+		if (desc == null) {
+			return null;
+		}
+		Image img = null;
+		Object obj = images.get(desc);
+		if (obj != null) {
+			img = (Image)obj;
+		} else {
+			img = desc.createImage();
+			images.put(desc, img);
+		}
+		return img;
+	}
+
+	Image getMissingImage() {
+		return getImage(ImageDescriptor.getMissingImageDescriptor());
+	}
+	
+	void dispose() {
+		for (Iterator i = images.values().iterator(); i.hasNext();) {
+			Image img = (Image) i.next();
+			img.dispose();
+		}
+		images.clear();
 	}
 }
 
