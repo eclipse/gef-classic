@@ -302,10 +302,10 @@ protected void setInput(IEditorInput input) {
 		imports.add(new TextRun("org.eclipse.draw2d", TextRun.TYPE_IMPORT));
 		//for (int i = 0; i < 400; i++) {
 			Container block = new Block(Container.TYPE_COMMENT);
-			block.add(new TextRun("Copyright (c) 2004 IBM Corporation and others. All rights reserved. This program and " +
-					"the accompanying materials are made available under the terms of the Common Public " +
+			block.add(new TextRun("Copyright (c) 2005 IBM Corporation and others. All rights reserved. This program and " +
+					"the accompanying materials are made available under the terms of the Eclipse Public " +
 					"License v1.0 which accompanies this distribution, and is available at " +
-					"http://www.eclipse.org/legal/cpl-v10.html\r\n" + 
+					"http://www.eclipse.org/legal/epl-v10.html\r\n" + 
 					"Contributors: IBM Corporation - initial API and implementation"));
 			doc.add(block);
 			
