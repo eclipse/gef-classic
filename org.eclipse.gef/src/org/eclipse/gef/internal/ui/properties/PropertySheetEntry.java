@@ -133,9 +133,10 @@ public void applyEditorValue() {
 /**
  * Return the sorted intersection of all the <code>IPropertyDescriptor</code>s 
  * for the objects.
+ * Made protected due to Bug 63383.
  * @return List
  */
-private List computeMergedPropertyDescriptors() {
+protected List computeMergedPropertyDescriptors() {
 	if (values.length == 0)
 		return new ArrayList(0);
 		
