@@ -49,6 +49,11 @@ void deactivate();
 Transfer getTransfer();
 
 /**
+ * Called when the mouse hovers during drag and drop.
+ * @param event The current DropTargetEvent */
+void dragHover(DropTargetEvent event);
+
+/**
  * Returns <code>true</code> if this listener can handle the drop
  * based on the given DropTargetEvent.
  * @param event the current DropTargetEvent

@@ -12,6 +12,8 @@ import org.eclipse.jface.util.SafeRunnable;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.swt.dnd.*;
 
+import org.eclipse.draw2d.geometry.Point;
+
 import org.eclipse.gef.GEF;
 
 /**
@@ -37,6 +39,9 @@ public class DelegatingDropAdapter
 private List listeners = new ArrayList();
 private TransferDropTargetListener currentListener;
 private int origDropType;
+private Point prevMouseLoc = new Point();
+private long hoverStart = -1;
+private boolean hovering = false;
 
 /**
  * Adds the given TransferDropTargetListener.
@@ -62,6 +67,8 @@ public void dragEnter(final DropTargetEvent event) {
 				getCurrentListener().dragEnter(event);
 		}
 	});
+	prevMouseLoc.x = event.x;
+	prevMouseLoc.y = event.y;
 }
 
 /**
@@ -80,6 +87,7 @@ public void dragLeave(final DropTargetEvent event) {
 			}
 		});
 	setCurrentListener(null);
+	prevMouseLoc = null;
 }
 
 /**
@@ -114,14 +122,31 @@ public void dragOperationChanged(final DropTargetEvent event) {
  */
 public void dragOver(final DropTargetEvent event) {
 	updateCurrentListener(event);
-	if (getCurrentListener() != null) {
-		Platform.run(new SafeRunnable() {
-			public void run() throws Exception {
-				getCurrentListener().dragOver(event);
-			}
-		});
-	} else
-		event.detail = DND.DROP_NONE;
+	if (isMouseMoving(event)) {
+		hovering = false;
+		hoverStart = -1;
+		if (getCurrentListener() != null) {
+			Platform.run(new SafeRunnable() {
+				public void run() throws Exception {
+					getCurrentListener().dragOver(event);
+				}
+			});
+		} else {
+			event.detail = DND.DROP_NONE;
+		}
+	} else {
+		if (hovering)
+			return;
+		long currentTime = System.currentTimeMillis();
+		if (hoverStart == -1) {
+			hoverStart = currentTime;
+		} else if (currentTime - hoverStart > 400) {
+			getCurrentListener().dragHover(event);
+			hovering = true;
+		}
+	}
+	prevMouseLoc.x = event.x;
+	prevMouseLoc.y = event.y;
 }
 
 /**
@@ -193,6 +218,10 @@ public Transfer[] getTransferTypes() {
  */
 public boolean isEmpty() {
 	return listeners.isEmpty();
+}
+
+private boolean isMouseMoving(DropTargetEvent event) {
+	return prevMouseLoc.x != event.x || prevMouseLoc.y != event.y;
 }
 
 /**

@@ -94,6 +94,13 @@ public void dragEnter(DropTargetEvent event) {
 	setCurrentEvent(event);
 }
 
+public void dragHover(DropTargetEvent event) {
+	if (GEF.DebugDND)
+		GEF.debug("Drag Hover: " + toString()); //$NON-NLS-1$
+	setCurrentEvent(event);
+	handleDragHover();
+}
+
 /**
  * Stores the information about the current DropTargetEvent and then calls
  * <code>unload()</code>. Subclasses should override {@link #unload()} to perform actions
@@ -171,6 +178,10 @@ protected void eraseTargetFeedback() {
 	}
 }
 
+/**
+ * Returns the current command from the target EditPart.
+ * @return The current command from the target EditPart
+ */
 protected Command getCommand() {
 	return getTargetEditPart().getCommand(getTargetRequest());
 }
@@ -196,6 +207,10 @@ protected Point getDropLocation() {
 	return new Point(swt.x, swt.y);
 }
 
+/**
+ * Returns a Collection of {@link EditPart EditParts} that are to be excluded when
+ * searching for the target EditPart.
+ * @return A Collection of EditParts to be excluded */
 protected Collection getExclusionSet() {
 	return Collections.EMPTY_LIST;
 }
@@ -232,6 +247,13 @@ public Transfer getTransfer() {
  */
 protected EditPartViewer getViewer() {
 	return viewer;
+}
+
+/**
+ * Called when the mouse hovers during drag and drop.
+ */
+protected void handleDragHover() {
+	
 }
 
 /**
