@@ -21,7 +21,15 @@
       <import plugin="org.eclipse.jface"/>
    </requires>
 
-
+   <extension
+         point="org.eclipse.ui.contexts">
+      <context
+            name="%Context.GraphicalTextEditing.Name"
+            description="%Context.GraphicalTextEditing.Description"
+            id="org.eclipse.gef.textContext">
+      </context>
+   </extension>
+   
    <extension
          point="org.eclipse.ui.commands">
       <category
@@ -29,6 +37,14 @@
             description="%ViewCategory.Label"
             id="org.eclipse.gef.category.view">
       </category>
+      <command 
+            name="%Palette.Label" 
+            description="" 
+            category="org.eclipse.ui.category.views" 
+            id="org.eclipse.gef.ui.palette_view"> 
+      </command> 
+      
+      
       <command
             name="%ZoomIn.Tooltip"
             description="%ZoomIn.Tooltip"
@@ -41,6 +57,46 @@
             command="org.eclipse.gef.zoom_in"
             configuration="org.eclipse.ui.defaultAcceleratorConfiguration">
       </keyBinding>
+      
+      <command
+			name="%StyleBold.Tooltip"
+			description="%StyleBold.Tooltip"
+			category="org.eclipse.ui.category.edit"
+			id="org.eclipse.gef.text.bold">
+      </command>
+      <keyBinding
+            string="Ctrl+B"
+            scope="org.eclipse.gef.textScope"
+            command="org.eclipse.gef.text.bold"
+            configuration="org.eclipse.ui.defaultAcceleratorConfiguration">
+      </keyBinding>
+      
+      <command
+			name="%StyleItalic.Tooltip"
+			description="%StyleItalic.Tooltip"
+			category="org.eclipse.ui.category.edit"
+			id="org.eclipse.gef.text.italic">
+      </command>
+      <keyBinding
+            string="Ctrl+I"
+            scope="org.eclipse.gef.textScope"
+            command="org.eclipse.gef.text.italic"
+            configuration="org.eclipse.ui.defaultAcceleratorConfiguration">
+      </keyBinding>
+
+      <command
+			name="%StyleUnderline.Tooltip"
+			description="%StyleUnderline.Tooltip"
+			category="org.eclipse.ui.category.edit"
+			id="org.eclipse.gef.text.underline">
+      </command>
+      <keyBinding
+            string="Ctrl+U"
+            scope="org.eclipse.gef.textScope"
+            command="org.eclipse.gef.text.underline"
+            configuration="org.eclipse.ui.defaultAcceleratorConfiguration">
+      </keyBinding>
+
       <command
             name="%ZoomOut.Tooltip"
             description="%ZoomOut.Tooltip"

@@ -25,6 +25,34 @@ public final class GEFActionConstants
 {
 
 /**
+ * The ID for the GEF Text Context.
+ */
+public static final String CONTEXT_TEXT = "org.eclipse.gef.textContext"; //$NON-NLS-1$
+
+/**
+ * Bold action id.
+ */
+public static final String STYLE_BOLD = "org.eclipse.gef.text.bold"; //$NON-NLS-1$
+
+/**
+ * Italic action id.
+ */
+public static final String STYLE_ITALIC = "org.eclipse.gef.text.italic"; //$NON-NLS-1$
+
+/**
+ * Underline action id.
+ */
+public static final String STYLE_UNDERLINE = "org.eclipse.gef.text.underline"; //$NON-NLS-1$
+
+public static final String BLOCK_ALIGN_CENTER="org.eclipse.gef.text.centerAlign"; //$NON-NLS-1$
+public static final String BLOCK_ALIGN_LEFT ="org.eclipse.gef.text.leftAlign"; //$NON-NLS-1$
+public static final String BLOCK_ALIGN_RIGHT ="org.eclipse.gef.text.rightAlign"; //$NON-NLS-1$
+
+public static final String BLOCK_RTL ="org.eclipse.gef.text.rtl"; //$NON-NLS-1$
+public static final String BLOCK_LTR ="org.eclipse.gef.text.ltr"; //$NON-NLS-1$
+
+
+/**
  * Align bottom action id.
  * Value: <code>"org.eclipse.gef.align_bottom"</code>
  */
@@ -115,13 +143,11 @@ public static final String GROUP_UNDO = "org.eclipse.gef.group.undo"; //$NON-NLS
 public static final String GROUP_VIEW = "org.eclipse.gef.group.view"; //$NON-NLS-1$
 
 /**
- * 
  *  Value: <code>"org.eclipse.gef.match.width"</code>
  */
 public static final String MATCH_WIDTH = "org.eclipse.gef.match.width"; //$NON-NLS-1$
 
 /**
- * 
  *  Value: <code>"org.eclipse.gef.match.height"</code>
  */
 public static final String MATCH_HEIGHT = "org.eclipse.gef.match.height"; //$NON-NLS-1$
