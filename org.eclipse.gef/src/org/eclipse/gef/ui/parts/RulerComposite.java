@@ -178,8 +178,7 @@ public void setGraphicalViewer(GraphicalViewer primaryViewer) {
 	
 	diagramViewer = primaryViewer;
 	editor = (FigureCanvas)diagramViewer.getControl();
-	((GraphicalEditPart)diagramViewer.getRootEditPart()).getFigure()
-			.setBorder(new EditorBorder());
+	editor.setBorder(new EditorBorder());
 
 	// layout whenever the scrollbars are shown or hidden, and whenever the RulerComposite
 	// is resized
