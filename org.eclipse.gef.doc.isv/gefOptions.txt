@@ -27,5 +27,4 @@ org.eclipse.gef.ui.actions
 org.eclipse.gef.ui.palette
 org.eclipse.gef.ui.palette.customize
 org.eclipse.gef.ui.parts
-org.eclipse.gef.ui.properties
 org.eclipse.gef.util
