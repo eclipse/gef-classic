@@ -17,6 +17,8 @@ public class ViewportExposeHelper
 {
 
 private GraphicalEditPart owner;
+private int minimumFrameCount = 3;
+private int maximumFrameCount = 8;
 
 public ViewportExposeHelper(GraphicalEditPart owner){
 	this.owner = owner;
@@ -52,8 +54,8 @@ public void exposeDescendant(EditPart part) {
 	int dy = finalLocation.y - startLocation.y;
 
 	int FRAMES = (Math.abs(dx)+Math.abs(dy))/15;
-	FRAMES = Math.max(FRAMES, 3);
-	FRAMES = Math.min(FRAMES, 8);
+	FRAMES = Math.max(FRAMES, getMinimumFrameCount());
+	FRAMES = Math.min(FRAMES, getMaximumFrameCount());
 
 	int stepX = Math.min((dx / FRAMES), (viewportSize.width/3));
 	int stepY = Math.min((dy / FRAMES), (viewportSize.height/3));
@@ -79,6 +81,40 @@ private Viewport findViewport(GraphicalEditPart part) {
 		}
 	} while (figure != part.getFigure() && figure != null);
 	return port;
+}
+
+/**
+ * Returns the maximumFrameCount.
+ * @return int
+ */
+public int getMaximumFrameCount() {
+	return maximumFrameCount;
+}
+
+/**
+ * Returns the minimumFrameCount.
+ * @return int
+ */
+public int getMinimumFrameCount() {
+	return minimumFrameCount;
+}
+
+/**
+ * Sets the maximumFrameCount.
+ * @param maximumFrameCount The maximumFrameCount to set
+ */
+public void setMaximumFrameCount(int maximumFrameCount) {
+	this.maximumFrameCount = maximumFrameCount;
+}
+
+/**
+ * Sets the minimumFrameCount.
+ * @param minimumFrameCount The minimumFrameCount to set
+ */
+public void setMinimumFrameCount(int minimumFrameCount) {
+	this.minimumFrameCount = minimumFrameCount;
+	if (getMaximumFrameCount() < minimumFrameCount)
+		setMaximumFrameCount(minimumFrameCount);
 }
 
 }
