@@ -19,6 +19,7 @@ import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.FocusEvent;
 import org.eclipse.draw2d.FocusListener;
 import org.eclipse.draw2d.IFigure;
+
 import org.eclipse.gef.AccessibleEditPart;
 import org.eclipse.gef.ExposeHelper;
 import org.eclipse.gef.editparts.ViewportExposeHelper;
@@ -163,30 +164,16 @@ protected AccessibleEditPart createAccessible() {
 }
 
 /**
- * Sets the minimum preferred size of certain figures, as
- * not doing so results in the figure's minimum size being
- * its preferred sizes, or the preferred size of the scrollbar's
- * which in-turn doesnt allow for compression.
- * Sometimes the scrollbar's minimum size if far more than
- * the compression desired, hence specific setting is required.
- * 
- * @see #refreshChildren()
- */
-public void refreshChildren() {
-	super.refreshChildren();
-//	Dimension minSize = collapseToggle.getPreferredSize();
-//	minSize.height+=getFigure().getInsets().getHeight();
-//	getFigure().setMinimumSize(new Dimension(0,minSize.height));
-//	scrollpane.setMinimumSize(new Dimension(0,0));
-}
-
-/**
  * @see org.eclipse.gef.editparts.AbstractEditPart#refreshVisuals()
  */
 protected void refreshVisuals() {
 	// Do not call super.refreshVisuals()
-	// That will update the Tooltip for the DrawerFigure.  But DrawerFigure has its
-	// own tooltip that is displayed when the text in the header is truncated.
+	// That will update the Tooltip for the entire DrawerFigure.  But DrawerFigure has its
+	// own tooltip that is displayed only on the toggle and the pop-up that shows up when
+	// the text in  the header is truncated.
+
+	getDrawerFigure().setToolTipText(getToolTipText());
+
 	ImageDescriptor img = getPaletteEntry().getSmallIcon();
 	if (img == null) {
 		img = InternalImages.DESC_FOLDER_OPEN;
