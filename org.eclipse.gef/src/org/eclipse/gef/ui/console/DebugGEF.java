@@ -41,8 +41,8 @@ public DebugGEF() {
  */
 public void createPartControl(Composite parent) {
 	text = new Text(parent, SWT.V_SCROLL | SWT.MULTI | SWT.BORDER);
-	text.setFont(new org.eclipse.swt.graphics.Font(parent.getDisplay(), "Arial", 7, 
-														SWT.NATIVE)); //$NON-NLS-1$
+	text.setFont(new org.eclipse.swt.graphics.Font(parent.getDisplay(), "Arial", 7, //$NON-NLS-1$
+														SWT.NATIVE));
 	text.setText("GEF Debug"); //$NON-NLS-1$
 	GEF.setConsole(text);
 	makeActions();
