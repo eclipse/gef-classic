@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2005 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials
+ * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -12,7 +12,6 @@ package org.eclipse.gef.editpolicies;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
-import org.eclipse.gef.GEF;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.commands.Command;
@@ -32,84 +31,68 @@ private EditPart host;
 
 /**
  * Does nothing by default.
- * @see org.eclipse.gef.EditPolicy#activate()
- */
+ * @see org.eclipse.gef.EditPolicy#activate() */
 public void activate() { }
 
 /**
  * Does nothing by default.
- * @see org.eclipse.gef.EditPolicy#deactivate()
- */
+ * @see org.eclipse.gef.EditPolicy#deactivate() */
 public void deactivate() { }
 
 /**
  * This method will log the message to GEF's trace/debug system if the corrseponding flag
  * for FEEDBACK is set to true.
  * @param message the String to log
- */
+ * @deprecated in 3.1  This method will be removed in future releases. */
 protected final void debugFeedback(String message) {
-	if (!GEF.DebugFeedback)
-		return;
 }
 
 /**
  * Does nothing by default.
- * @see org.eclipse.gef.EditPolicy#eraseSourceFeedback(Request)
- */
+ * @see org.eclipse.gef.EditPolicy#eraseSourceFeedback(Request) */
 public void eraseSourceFeedback(Request request) { }
 
 /**
  * Does nothing by default.
- * @see org.eclipse.gef.EditPolicy#eraseTargetFeedback(Request)
- */
+ * @see org.eclipse.gef.EditPolicy#eraseTargetFeedback(Request) */
 public void eraseTargetFeedback(Request request) { }
 
 /**
  * Returns <code>null</code> by default. <code>null</code> is used to indicate that the
  * EditPolicy does not contribute to the specified <code>Request</code>.
- * @see org.eclipse.gef.EditPolicy#getCommand(Request)
- */
+ * @see org.eclipse.gef.EditPolicy#getCommand(Request) */
 public Command getCommand(Request request) {
 	return null;
 }
 
-/**
- * @see org.eclipse.gef.EditPolicy#getHost()
- */
+/** * @see org.eclipse.gef.EditPolicy#getHost() */
 public EditPart getHost() {
 	return host;
 }
 /**
  * Returns <code>null</code> by default. <code>null</code> indicates that this policy is
  * unable to determine the target for the specified <code>Request</code>.
- * @see org.eclipse.gef.EditPolicy#getTargetEditPart(Request)
- */
+ * @see org.eclipse.gef.EditPolicy#getTargetEditPart(Request) */
 public EditPart getTargetEditPart(Request request) {
 	return null;
 }
 
-/**
- * @see org.eclipse.gef.EditPolicy#setHost(EditPart)
- */
+/** * @see org.eclipse.gef.EditPolicy#setHost(EditPart) */
 public void setHost(EditPart host) {
 	this.host = host;
 }
 
 /**
  * Does nothing by default.
- * @see org.eclipse.gef.EditPolicy#showSourceFeedback(Request)
- */
+ * @see org.eclipse.gef.EditPolicy#showSourceFeedback(Request) */
 public void showSourceFeedback(Request request) { }
 
-/**
- * Does nothing by default.
+/** * Does nothing by default.
  * @see org.eclipse.gef.EditPolicy#showTargetFeedback(Request)
  */
 public void showTargetFeedback(Request request) { }
 
-/**
- * @see java.lang.Object#toString()
- */
+/** * @see java.lang.Object#toString() */
 public String toString() {
 	String c = getClass().getName();
 	c = c.substring(c.lastIndexOf('.') + 1);
@@ -118,8 +101,7 @@ public String toString() {
 
 /**
  * Returns <code>false</code> by default.
- * @see org.eclipse.gef.EditPolicy#understandsRequest(Request)
- */
+ * @see org.eclipse.gef.EditPolicy#understandsRequest(Request) */
 public boolean understandsRequest(Request req) {
 	return false;
 }
