@@ -66,7 +66,6 @@ protected void paintFigure(Graphics graphics) {
 	if (isHorizontal()) {
 		Rectangle clientArea = getClientArea();
 		clientArea.x = clientArea.getTopRight().x - 8;
-//		clientArea.width = 8;
 		
 		graphics.fillRectangle(clientArea.getCropped(new Insets(2, 2, 2, 1)));
 
@@ -110,7 +109,6 @@ protected void paintFigure(Graphics graphics) {
 	} else {
 		Rectangle clientArea = getClientArea();
 		clientArea.y = clientArea.getBottomLeft().y - 8;
-//		clientArea.height = 8;
 		
 		graphics.fillRectangle(clientArea.getCropped(new Insets(2, 2, 1, 2)));
 
