@@ -13,8 +13,8 @@ package org.eclipse.draw2d.text;
 /**
  * A block layout which requires no FlowContext to perform its layout. This class is used
  * by {@link FlowPage}.
- * 
- * <P>WARNING: This class is not intended to be subclassed by clients.
+ * <p>
+ * WARNING: This class is not intended to be subclassed by clients.
  */
 public class PageFlowLayout
 	extends BlockFlowLayout
@@ -34,7 +34,7 @@ public PageFlowLayout(FlowPage page) {
 protected void endBlock() { }
 
 /**
- * $TODO This method is not being called.
+ * TODO: This method is not being called.
  */
 public void postValidate() { }
 

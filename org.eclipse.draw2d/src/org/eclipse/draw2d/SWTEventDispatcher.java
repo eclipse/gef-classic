@@ -51,6 +51,9 @@ protected org.eclipse.swt.widgets.Control control;
 private ToolTipHelper toolTipHelper;
 private FocusTraverseManager focusManager = new FocusTraverseManager();
 
+/**
+ * Implements {@link AccessibilityDispatcher} but does nothing in the implementation.
+ */
 protected class FigureAccessibilityDispatcher
 	extends AccessibilityDispatcher
 {

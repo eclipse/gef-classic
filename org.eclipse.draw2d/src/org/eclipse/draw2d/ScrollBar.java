@@ -145,7 +145,7 @@ protected IFigure createDefaultThumb() {
  * @return the up button
  */
 protected IFigure getButtonUp() {
-	// TODO The set method takes a Clickable while the get method returns an IFigure.  
+	// TODO: The set method takes a Clickable while the get method returns an IFigure.  
 	// Change the get method to return Clickable (since that's what it's typed as).
 	return buttonUp;
 }
@@ -155,7 +155,7 @@ protected IFigure getButtonUp() {
  * @return the down button
  */
 protected IFigure getButtonDown() {
-	// TODO The set method takes a Clickable while the get method returns an IFigure.  
+	// TODO: The set method takes a Clickable while the get method returns an IFigure.  
 	// Change the get method to return Clickable (since that's what it's typed as).
 	return buttonDown;
 }
@@ -192,7 +192,7 @@ public int getMaximum() {
  * @return the page down figure
  */
 protected IFigure getPageDown() {
-	// TODO The set method takes a Clickable while the get method returns an IFigure.  
+	// TODO: The set method takes a Clickable while the get method returns an IFigure.  
 	// Change the get method to return Clickable (since that's what it's typed as).
 	return pageDown;
 }
@@ -211,7 +211,7 @@ public int getPageIncrement() {
  * @return the page up figure
  */
 protected IFigure getPageUp() {
-	// TODO The set method takes a Clickable while the get method returns an IFigure.  
+	// TODO: The set method takes a Clickable while the get method returns an IFigure.  
 	// Change the get method to return Clickable (since that's what it's typed as).
 	return pageUp;
 }

@@ -27,9 +27,13 @@ public class ButtonBorder
 	extends SchemeBorder
 {
 
+/** Default button border.  @see SCHEMES#BUTTON */
 public static final Border BUTTON = new ButtonBorder(SCHEMES.BUTTON);
+/** Inverted hightlight colors from BUTTON.  @see SCHEMES#BUTTON_CONTRAST */
 public static final Border BUTTON_CONTRAST = new ButtonBorder(SCHEMES.BUTTON_CONTRAST);
+/** Used for scrollbar buttons.  @see SCHEMES#BUTTON_SCROLLBAR */
 public static final Border BUTTON_SCROLLBAR = new ButtonBorder(SCHEMES.BUTTON_SCROLLBAR);
+/** Used for toolbar buttons.  @see SCHEMES#TOOLBAR */
 public static final Border TOOLBAR = new ButtonBorder(SCHEMES.TOOLBAR);
 
 /**
@@ -159,22 +163,22 @@ public static interface SCHEMES {
 	 */
 	final ButtonScheme
 		BUTTON_CONTRAST = new ButtonScheme(
-			new Color[]{button, buttonLightest},
+			new Color[] {button, buttonLightest},
 			DARKEST_DARKER
 		),
 		BUTTON = new ButtonScheme(
-			new Color[]{buttonLightest},
+			new Color[] {buttonLightest},
 			DARKEST_DARKER
 		),
 		TOOLBAR = new ButtonScheme(
-			new Color[]{buttonLightest},
-			new Color[]{buttonDarker}
+			new Color[] {buttonLightest},
+			new Color[] {buttonDarker}
 		),
 		BUTTON_SCROLLBAR = new ButtonScheme(
-			new Color[]{button, buttonLightest},
+			new Color[] {button, buttonLightest},
 			DARKEST_DARKER,
-			new Color[]{buttonDarker},
-			new Color[]{buttonDarker}
+			new Color[] {buttonDarker},
+			new Color[] {buttonDarker}
 		);
 }
 

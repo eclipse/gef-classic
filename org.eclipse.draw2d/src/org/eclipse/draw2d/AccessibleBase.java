@@ -10,10 +10,18 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
+/**
+ * The base class for accessible objects.  Provides the id of the object for accessibility
+ * purposes.
+ */
 public class AccessibleBase {
 
+/**
+ * Returns the id of this accessible object using {@link Object#hashCode()}.  
+ * @return the id
+ */
 public final int getAccessibleID() {
-	/*This assumes that the native implementation of hashCode in Object is to
+	/* This assumes that the native implementation of hashCode in Object is to
 	 * return the pointer to the Object, which should be U-unique.
 	 */
 	int value = super.hashCode();

@@ -22,6 +22,11 @@ import org.eclipse.swt.widgets.Control;
  */
 public abstract class EventDispatcher {
 	
+	/**
+	 * Combines {@link AccessibleControlListener} and {@link AccessibleListener}.  
+	 * Implements {@link AccessibleControlListener#getChild(AccessibleControlEvent)} to do
+	 * nothing.
+	 */
 	public abstract static class AccessibilityDispatcher
 		implements AccessibleControlListener, AccessibleListener
 	{

@@ -32,7 +32,9 @@ public void addAncestorListener(AncestorListener listener) {
 }
 
 protected void addAncestors(IFigure rootFigure) {
-	for (IFigure ancestor = rootFigure; ancestor != null; ancestor = ancestor.getParent()) {
+	for (IFigure ancestor = rootFigure; 
+				ancestor != null; 
+				ancestor = ancestor.getParent()) {
 		ancestor.addFigureListener(this);
 		ancestor.addPropertyChangeListener(this);
 	}
@@ -88,7 +90,9 @@ public void removeAncestorListener(AncestorListener listener) {
 }
 
 protected void removeAncestors(IFigure rootFigure) {
-	for (IFigure ancestor = rootFigure; ancestor != null; ancestor = ancestor.getParent()) {
+	for (IFigure ancestor = rootFigure; 
+				ancestor != null; 
+				ancestor = ancestor.getParent()) {
 		ancestor.removeFigureListener(this);
 		ancestor.removePropertyChangeListener(this);
 	}
