@@ -266,14 +266,22 @@ protected boolean handleMove() {
 }
 
 /**
- * @see org.eclipse.gef.Tool#nativeDragStarted(DragSourceEvent, EditPartViewer)
+ * @see org.eclipse.gef.Tool#nativeDragFinished(DragSourceEvent, EditPartViewer)
  */
-public boolean handleNativeDragStarted(DragSourceEvent event, EditPartViewer viewer) {
+public boolean handleNativeDragFinished(DragSourceEvent event) {
 	if (getDragTracker() != null)
-		getDragTracker().nativeDragStarted(event, viewer);
-	debug("Native drag started on " + viewer);//$NON-NLS-1$
+		getDragTracker().nativeDragFinished(event, getCurrentViewer());
 	setDragTracker(null);
 	unlockTargetEditPart();
+	return true;
+}
+
+/**
+ * @see org.eclipse.gef.Tool#nativeDragStarted(DragSourceEvent, EditPartViewer)
+ */
+public boolean handleNativeDragStarted(DragSourceEvent event) {
+	if (getDragTracker() != null)
+		getDragTracker().nativeDragStarted(event, getCurrentViewer());
 	setState(STATE_INITIAL);
 	return true;
 }

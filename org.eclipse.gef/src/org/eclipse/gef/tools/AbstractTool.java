@@ -538,6 +538,10 @@ protected boolean handleKeyUp(KeyEvent e) {
  */
 protected boolean handleMove(){return false;}
 
+protected boolean handleNativeDragFinished(DragSourceEvent event){
+	return false;
+}
+
 protected boolean handleNativeDragStarted(DragSourceEvent event){
 	return false;
 }
@@ -632,6 +636,15 @@ protected boolean movedPastThreshold() {
 		return true;
 	}
 	return false;
+}
+
+/**
+ * @see org.eclipse.gef.Tool#nativeDragStarted(DragSourceEvent, EditPartViewer)
+ */
+public void nativeDragFinished(DragSourceEvent event, EditPartViewer viewer) {
+	debug("Native drag started on " + viewer);//$NON-NLS-1$
+	setViewer(viewer);
+	handleNativeDragFinished(event);
 }
 
 /**
