@@ -442,9 +442,9 @@ protected void repairStartLocation() {
 protected void setCloneActive(boolean cloneActive) {
 	if (this.cloneActive == cloneActive)
 		return;
-	this.cloneActive = cloneActive;
 	eraseSourceFeedback();
 	eraseTargetFeedback();
+	this.cloneActive = cloneActive;
 	doDragInProgress();
 }
 
