@@ -15,14 +15,12 @@ import org.eclipse.swt.graphics.Cursor;
 public class Cursors {
 
 /**
- * Returns the cursor corresponding to the given direction, defined
- * in {@link PositionConstants}.
- *
-public static Cursor checkoutDirectionalCursor(int direction, Object requestor){
-	return getSharedDirectionalCursor(direction).checkout(requestor);
-}*/
-
-public static Cursor getDirectionalCursor(int direction){
+ * Returns the cursor corresponding to the given direction, defined in 
+ * {@link PositionConstants}.
+ * @param direction The relative direction of the desired cursor
+ * @return The appropriate directional cursor
+ */
+public static Cursor getDirectionalCursor(int direction) {
 	switch (direction) {
 		case PositionConstants.NORTH :
 			return SIZEN;
@@ -46,11 +44,86 @@ public static Cursor getDirectionalCursor(int direction){
 	return null;
 }
 
-public static final Cursor
-	ARROW, SIZEN, SIZENE, SIZEE, SIZESE, SIZES,
-	SIZESW, SIZEW, SIZENW, APPSTARTING, CROSS,
-	HAND, HELP, IBEAM, NO, SIZEALL, SIZENESW,
-	SIZENWSE, UPARROW, WAIT;
+/**
+ * @see {@link SWT#CURSOR_ARROW}
+ */
+public static final Cursor ARROW;
+/**
+ * @see {@link SWT#CURSOR_SIZEN}
+ */
+public static final Cursor SIZEN;
+/**
+ * @see {@link SWT#CURSOR_SIZENE}
+ */
+public static final Cursor SIZENE;
+/**
+ * @see {@link SWT#CURSOR_SIZEE}
+ */
+public static final Cursor SIZEE;
+/**
+ * @see {@link SWT#CURSOR_SIZESE}
+ */
+public static final Cursor SIZESE;
+/**
+ * @see {@link SWT#CURSOR_SIZES}
+ */
+public static final Cursor SIZES;
+/**
+ * @see {@link SWT#CURSOR_SIZESW}
+ */
+public static final Cursor SIZESW;
+/**
+ * @see {@link SWT#CURSOR_SIZEW}
+ */
+public static final Cursor SIZEW;
+/**
+ * @see {@link SWT#CURSOR_SIZENW}
+ */
+public static final Cursor SIZENW;
+/**
+ * @see {@link SWT#CURSOR_APPSTARTING}
+ */
+public static final Cursor APPSTARTING;
+/**
+ * @see {@link SWT#CURSOR_CROSS}
+ */
+public static final Cursor CROSS;
+/**
+ * @see {@link SWT#CURSOR_HAND}
+ */
+public static final Cursor HAND;
+/**
+ * @see {@link SWT#CURSOR_HELP}
+ */
+public static final Cursor HELP;
+/**
+ * @see {@link SWT#CURSOR_IBEAM}
+ */
+public static final Cursor IBEAM;
+/**
+ * @see {@link SWT#CURSOR_NO}
+ */
+public static final Cursor NO;
+/**
+ * @see {@link SWT#CURSOR_SIZEALL}
+ */
+public static final Cursor SIZEALL;
+/**
+ * @see {@link SWT#CURSOR_SIZENESW}
+ */
+public static final Cursor SIZENESW;
+/**
+ * @see {@link SWT#CURSOR_SIZENWSE}
+ */
+public static final Cursor SIZENWSE;
+/**
+ * @see {@link SWT#CURSOR_UPARROW}
+ */
+public static final Cursor UPARROW;
+/**
+ * @see {@link SWT#CURSOR_WAIT}
+ */
+public static final Cursor WAIT;
 
 static {
 	ARROW   = new Cursor(null, SWT.CURSOR_ARROW);

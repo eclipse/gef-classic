@@ -9,29 +9,40 @@ package org.eclipse.draw2d;
 import org.eclipse.draw2d.geometry.*;
 
 /**
- * Repositions a {@link Figure Figure} attached to a 
- * {@link Connection Connection} when the Connection is moved. 
- * Provides for alignment at the start, middle, or end of the
+ * Repositions a {@link Figure} attached to a {@link Connection} when the Connection is
+ * moved.  Provides for alignment at the start (source), middle, or end (target) of the
  * Connection.
  */
 public class ConnectionLocator
-	extends AbstractLocator {
+	extends AbstractLocator 
+{
 
-public static final int START      = 2;
-public static final int END        = 3;
+/** @deprecated Use {@link #SOURCE} */
+public static final int START  = 2;
+/** The start (or source) of the Connection */
+public static final int SOURCE = 2;
+
+/** @deprecated Use {@link #TARGET} */
+public static final int END    = 3;
+/** The end (or target) of the Connection */
+public static final int TARGET = 3;
+
 /**
- * @deprecated Use MIDDLE instead, since the location is not
- * the midpoint of a line-segment, but the middle of a polyline.
+ * @deprecated Use {@link #MIDDLE} instead, since the location is not the midpoint of a
+ * line-segment, but the middle of a polyline.
  */
 public static final int MIDPOINT   = 4;
+/** The middle of the Connection */
 public static final int MIDDLE     = 4;
+
 private Connection connection;
 private int alignment;
 
 /**
- * Constructs a ConnectionLocator with the passed connection
- * and MIDDLE alignment.
+ * Constructs a ConnectionLocator with the passed connection and {@link #MIDDLE}
+ * alignment.
  * 
+ * @param connection The Connection
  * @since 2.0
  */
 public ConnectionLocator(Connection connection) {
@@ -39,13 +50,13 @@ public ConnectionLocator(Connection connection) {
 }
 
 /**
- * Constructs a ConnectionLocator with the passed Connection
- * and alignment.
+ * Constructs a ConnectionLocator with the passed Connection and alignment. Valid values 
+ * for the alignment are integer constants {@link #SOURCE}, {@link #MIDDLE}, and 
+ * {@link #TARGET}.
  * 
- * @param connection Connection that ConnectionLocator is
- *                    associated with.
- * @param align Alignment of ConnectionLocator. 
- *               Valid values are integer constants START, MIDDLE, or END
+ * @param connection The Connection
+ * @param align The alignment
+ *               
  * @since 2.0
  */
 public ConnectionLocator(Connection connection, int align) {
@@ -54,8 +65,9 @@ public ConnectionLocator(Connection connection, int align) {
 }
 
 /**
- * Returns alignment of ConnectionLocator.
+ * Returns the alignment of ConnectionLocator.
  * 
+ * @return The alignment
  * @since 2.0
  */
 public int getAlignment() {
@@ -65,15 +77,17 @@ public int getAlignment() {
 /**
  * Returns connection associated with ConnectionLocator.
  * 
+ * @return The Connection
  * @since 2.0
  */
-protected Connection getConnection(){
+protected Connection getConnection() {
 	return connection;
 }
 
 /**
  * Returns ConnectionLocator's reference point.
  * 
+ * @return The reference point
  * @since 2.0
  */
 protected Point getReferencePoint() {
@@ -81,30 +95,31 @@ protected Point getReferencePoint() {
 }
 
 /**
- * Returns a point from the passed PointList
- * dependent on ConnectionLocator's alignment.
- * If START, returns first point in points
- * If END, returns last point in points
- * If MIDDLE, returns middle of line represented by points.
+ * Returns a point from the passed PointList, dependent on ConnectionLocator's alignment.
+ * If the alignment is {@link #SOURCE}, it returns the first point in <i>points</i>. If
+ * {@link #TARGET}, it returns the last point in <i>points</i>. If {@link #MIDDLE}, it
+ * returns the middle of line represented by <i>points</i>.
  * 
+ * @param points The points in the Connection
+ * @return The location 
  * @since 2.0
  */
 protected Point getLocation(PointList points) {
 	switch (getAlignment()) {
-		case START:
+		case SOURCE:
 			return points.getPoint(Point.SINGLETON, 0);
-		case END:
-			return points.getPoint(Point.SINGLETON, points.size()-1);
-		case MIDPOINT: {
-			if (points.size()%2 == 0) {
-				int i = points.size()/2;
+		case TARGET:
+			return points.getPoint(Point.SINGLETON, points.size() - 1);
+		case MIDDLE: {
+			if (points.size() % 2 == 0) {
+				int i = points.size() / 2;
 				int j = i - 1;
 				Point p1 = points.getPoint(j);
 				Point p2 = points.getPoint(i);
 				Dimension d = p2.getDifference(p1);
-				return Point.SINGLETON.setLocation(p1.x + d.width/2, p1.y + d.height/2);
+				return Point.SINGLETON.setLocation(p1.x + d.width / 2, p1.y + d.height / 2);
 			}
-			int i = (points.size()-1)/2;
+			int i = (points.size() - 1) / 2;
 			return points.getPoint(Point.SINGLETON, i);
 		}
 		default:
@@ -113,8 +128,10 @@ protected Point getLocation(PointList points) {
 }
 
 /**
- * Sets alignment to passed value.
+ * Sets the alignment.  Possible values are {@link #SOURCE}, {@link #MIDDLE}, and 
+ * {@link #TARGET}.
  * 
+ * @param align The alignment
  * @since 2.0
  */
 protected void setAlignment(int align) {
@@ -122,12 +139,12 @@ protected void setAlignment(int align) {
 }
 
 /**
- * Sets Connection associated with ConnectionLocator to 
- * passed Connection.
+ * Sets the Connection to be associated with this ConnectionLocator.
  * 
+ * @param connection The Connection
  * @since 2.0
  */
-protected void setConnection(Connection connection){
+protected void setConnection(Connection connection) {
 	this.connection = connection;
 }
 
