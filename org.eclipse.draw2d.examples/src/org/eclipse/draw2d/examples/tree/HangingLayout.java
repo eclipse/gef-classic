@@ -82,6 +82,10 @@ protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHi
 }
 
 public void layout(IFigure f) {
+	Animation.recordInitialState(f);
+	if (Animation.playbackState(f))
+		return;
+
 	Transposer transposer = getTransposer();
 	Rectangle clientArea = new Rectangle();
 	branch.getClientArea(clientArea);

@@ -1,5 +1,7 @@
 package org.eclipse.draw2d.examples.tree;
 
+import java.util.List;
+
 import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -12,24 +14,40 @@ public class TreeBranch extends Figure {
 
 class AnimatingLayer extends Layer {
 
-public Dimension getPreferredSize(int wHint, int hHint) {
-	Dimension size = super.getPreferredSize(wHint, hHint);
-	if (animation >= 0) {
-		size = size.getCopy().scale((double)animation / DURATION);
+/**
+ * @see org.eclipse.draw2d.Figure#setBounds(org.eclipse.draw2d.geometry.Rectangle)
+ */
+public void setBounds(Rectangle rect) {
+
+	int x = bounds.x,
+		y = bounds.y;
+
+	boolean resize = (rect.width != bounds.width) || (rect.height != bounds.height),
+		  translate = (rect.x != x) || (rect.y != y);
+
+	if (isVisible() && (resize || translate))
+		erase();
+	if (translate) {
+		int dx = rect.x - x;
+		int dy = rect.y - y;
+		primTranslate(dx, dy);
 	}
-	return size;
+	bounds.width = rect.width;
+	bounds.height = rect.height;
+//	if (resize)  Layouts dont depend on size.
+//		invalidate();
+	if (resize || translate) {
+		fireMoved();
+		repaint();
+	}
 }
 
 }
-
-private static final int DURATION = 280;
-private static final int JUMP = 70;
 
 public static final int STYLE_HANGING = 1;
 public static final int STYLE_NORMAL = 2;
 
 int aligment = PositionConstants.CENTER;
-long animation = -1;
 
 /*
  * A layer is being used simply because it is the only "transparent" figure in draw2d. See
@@ -39,10 +57,7 @@ long animation = -1;
 AnimatingLayer contents = new AnimatingLayer();
 boolean expanded = true;
 
-int left[];
-
 IFigure node;
-int right[];
 int style;
 
 TreeBranch(IFigure title) {
@@ -54,8 +69,36 @@ TreeBranch(IFigure title, int style) {
 	if (title.getBorder() == null)
 		title.setBorder(new LineBorder(ColorConstants.gray, 2));
 	this.node = title;
-	add(title);
 	add(contents);
+	add(title);
+}
+
+void animationReset(Rectangle bounds) {
+	List subtrees = contents.getChildren();
+//	contents.setBounds(bounds);
+	node.setLocation(bounds.getLocation());
+	revalidate();
+	for (int i=0; i<subtrees.size(); i++){
+		TreeBranch subtree = (TreeBranch)subtrees.get(i);
+		subtree.setBounds(bounds);
+		subtree.animationReset(bounds);
+	}
+}
+
+public void collapse() {
+	if (!expanded)
+		return;
+	setExpanded(false);
+	getRoot().validate();
+	setExpanded(true);
+	animationReset(getNodeBounds());
+	Animation.mark();
+	Animation.captureLayout(getRoot());
+	Animation.swap();
+	while(Animation.step())
+		getUpdateManager().performUpdate();
+	Animation.end();
+	setExpanded(false);
 }
 
 /**
@@ -70,24 +113,13 @@ public void expand() {
 	if (expanded)
 		return;
 	setExpanded(true);
-
-	revalidate();
-	getParent().validate();
-	right = getContourRight();
-	left = getContourLeft();
-
-	long start = System.currentTimeMillis();
-	long current = start;
-	do {
-		animation = current - start + JUMP;
-		revalidate();
+	animationReset(getNodeBounds());
+	
+	Animation.mark();
+	Animation.captureLayout(getRoot());
+	while(Animation.step())
 		getUpdateManager().performUpdate();
-		current = System.currentTimeMillis();
-	} while ((current - start) < (DURATION - JUMP));
-	right = null;
-	left = null;
-	animation = -1;
-	revalidate();
+	Animation.end();
 }
 
 public int getAlignment() {
@@ -103,15 +135,10 @@ public IFigure getContentsPane() {
 }
 
 public int[] getContourLeft() {
-	if (animation != -1) {
-		return scaledContour (left, getBranchLayout().getContourLeft());
-	}
 	return getBranchLayout().getContourLeft();
 }
 
 public int[] getContourRight() {
-	if (animation != -1)
-		return scaledContour(right, getBranchLayout().getContourRight());
 	return getBranchLayout().getContourRight();
 }
 
@@ -124,7 +151,8 @@ final int getDepth() {
  * @see org.eclipse.draw2d.Figure#getMinimumSize(int, int)
  */
 public Dimension getMinimumSize(int wHint, int hHint) {
-	validate();
+	if (!Animation.PLAYBACK)
+		validate();
 	return super.getMinimumSize(wHint, hHint);
 }
 
@@ -144,7 +172,8 @@ public int[] getPreferredRowHeights() {
  * @see org.eclipse.draw2d.Figure#getPreferredSize(int, int)
  */
 public Dimension getPreferredSize(int wHint, int hHint) {
-	validate();
+	if (!Animation.PLAYBACK)
+		validate();
 	return super.getPreferredSize(wHint, hHint);
 }
 
@@ -168,16 +197,10 @@ public boolean isExpanded() {
  */
 protected void paintFigure(Graphics graphics) {
 	super.paintFigure(graphics);
-	if (animation == -1 && isExpanded())
+	if (isExpanded())
 		getBranchLayout().paintLines(graphics);
-}
-
-int[] scaledContour(int [] source, int[] actual) {
-	int result[] = new int[source.length];
-	result[0] = Math.min(source[0], actual[0]);
-	for (int i=1; i<source.length; i++)
-		result[i] = (int)(source[i] + 50 - 50 * animation / DURATION);
-	return result;
+//	if (getDepth() == 2)
+//		graphics.drawRectangle(getBounds().getResized(-1, -1));
 }
 
 public void setAlignment(int value) {
@@ -243,7 +266,16 @@ public void validate() {
 	if (isValid())
 		return;
 	if (style == STYLE_HANGING) {
-		ToolbarLayout layout = new ToolbarLayout(!getRoot().isHorizontal());
+		ToolbarLayout layout = new ToolbarLayout(!getRoot().isHorizontal()) {
+			public void layout(IFigure parent) {
+				Animation.recordInitialState(parent);
+				if (Animation.playbackState(parent))
+					return;
+				
+				super.layout(parent);
+			}
+
+		};
 		layout.setMinorAlignment(ToolbarLayout.ALIGN_TOPLEFT);
 		layout.setStretchMinorAxis(false);
 		contents.setLayoutManager(layout);

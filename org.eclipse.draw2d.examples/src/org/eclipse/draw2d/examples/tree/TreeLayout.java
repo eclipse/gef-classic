@@ -65,6 +65,9 @@ private int calculateOverlap(int leftSubtree[], int rightSubtree[]) {
  * @see org.eclipse.draw2d.LayoutManager#layout(org.eclipse.draw2d.IFigure)
  */
 public void layout(IFigure container) {
+	Animation.recordInitialState(container);
+	if (Animation.playbackState(container))
+		return;
 	TreeRoot root = ((TreeBranch)container.getParent()).getRoot();
 	Transposer transposer = root.getTransposer();
 	int gap = root.getMinorSpacing();
@@ -139,8 +142,7 @@ public void layout(IFigure container) {
 				branch.translate(shift.x, shift.y);
 			}
 		}
-		 
-		 previousSubtreeDepth = subtree.getDepth();
+		previousSubtreeDepth = subtree.getDepth();
 	}
 }
 

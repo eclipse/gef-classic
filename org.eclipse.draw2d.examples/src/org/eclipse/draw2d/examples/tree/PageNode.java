@@ -14,7 +14,8 @@ import org.eclipse.draw2d.geometry.Rectangle;
  */
 public class PageNode extends Figure {
 
-static final Color gradient1 = new Color(null, 232,232,240);
+private boolean selected;
+	static final Color gradient1 = new Color(null, 232,232,240);
 static final Color gradient2 = new Color(null, 176,184,216);
 static final Color corner1 = new Color(null, 200, 208, 223);
 static final Color corner2 = new Color(null, 160, 172, 200);
@@ -94,9 +95,23 @@ public PageNode() {
  */
 protected void paintFigure(Graphics g) {
 	super.paintFigure(g);
-	g.setForegroundColor(gradient1);
-	g.setBackgroundColor(gradient2);
+	if (selected) {
+		g.setForegroundColor(ColorConstants.menuBackgroundSelected);
+		g.setBackgroundColor(ColorConstants.titleGradient);
+	} else {
+		g.setForegroundColor(gradient1);
+		g.setBackgroundColor(gradient2);
+	}
 	g.fillGradient(getBounds().getResized(-3, -3), true);
+}
+
+public void setSelected(boolean value) {
+	this.selected = value;
+	if (selected)
+		label.setForegroundColor(ColorConstants.white);
+	else
+		label.setForegroundColor(null);
+	repaint();
 }
 
 /**

@@ -30,22 +30,29 @@ void calculateDepth() {
 
 protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHint) {
 	Rectangle union = branch.getNodeBounds().getCopy();
-	if (branch.isExpanded())
+//	if (branch.isExpanded())
 		union.union(branch.getContentsPane().getBounds());
+	
 	return union.getSize();
 }
 
 public void layout(IFigure f) {
+	Animation.recordInitialState(f);
+	if (Animation.playbackState(f))
+		return;
+
 	Transposer transposer = getTransposer();
 	IFigure contents = branch.getContentsPane();
 	IFigure node = branch.getNode();
 	contents.validate();
 
-	Point topLeft = transposer.t(branch.getBounds().getTopLeft());
+	Rectangle branchBounds = transposer.t(branch.getBounds());
+	Point topLeft = branchBounds.getTopLeft();
 	Rectangle nodeLocation = new Rectangle(topLeft, transposer.t(node.getPreferredSize()));
 	nodeLocation.height = rowHeight - getMajorSpacing();
 	
 	if (!contents.isVisible() || contents.getChildren().isEmpty()) {
+		nodeLocation.x += (branchBounds.width - nodeLocation.width)/2;
 		node.setBounds(transposer.t(nodeLocation));
 		contents.setBounds(
 			transposer.t(nodeLocation.getTranslated(0, rowHeight).setSize(0, 0)));
@@ -81,7 +88,17 @@ public void layout(IFigure f) {
 		nodeLocation.x += leftInset;
 	else
 		contentsLocation.x -= leftInset;
+	
+	;
+	int adjust =
+		branchBounds.width
+			- Rectangle.SINGLETON.setBounds(contentsLocation).union(nodeLocation).width;
+	adjust /= 2;
+	nodeLocation.x += adjust;
+	contentsLocation.x += adjust;
 	node.setBounds(transposer.t(nodeLocation));
+//	Animation.setBounds(node, transposer.t(nodeLocation));
+//	Animation.setBounds(contents, transposer.t(contentsLocation));
 	contents.setBounds(transposer.t(contentsLocation));
 }
 
@@ -147,7 +164,8 @@ void updateContours() {
 	cachedContourLeft = new int[getDepth()];
 	cachedContourRight = new int[getDepth()];
 
-	Rectangle clientArea = transposer.t(branch.getClientArea(Rectangle.SINGLETON));
+	Rectangle clientArea =
+		transposer.t(branch.getNodeBounds().getUnion(branch.contents.getBounds()));
 	Rectangle nodeBounds = transposer.t(branch.getNodeBounds());
 	Rectangle contentsBounds = transposer.t(branch.getContentsPane().getBounds());
 	
@@ -164,7 +182,7 @@ void updateContours() {
 		subtree = (TreeBranch)subtrees.get(i);
 		if (subtree.getDepth() > currentDepth) {
 			int leftContour[] = subtree.getContourLeft();
-			int leftOffset = transposer.t(subtree.getBounds()).x - contentsBounds.x;
+			int leftOffset = transposer.t(subtree.getBounds()).x - clientArea.x;
 			mergeContour(cachedContourLeft, leftContour, currentDepth, leftOffset);
 			currentDepth = subtree.getDepth();
 		}
@@ -176,7 +194,7 @@ void updateContours() {
 		if (subtree.getDepth() > currentDepth) {
 			int rightContour[] = subtree.getContourRight();
 			int rightOffset =
-				contentsBounds.right() - transposer.t(subtree.getBounds()).right();
+				clientArea.right() - transposer.t(subtree.getBounds()).right();
 			mergeContour(cachedContourRight, rightContour, currentDepth, rightOffset);
 			currentDepth = subtree.getDepth();
 		}
