@@ -23,12 +23,18 @@ import org.eclipse.gef.tools.ToolUtilities;
 
 final public class AlignmentAction extends SelectionAction {
 
-public static final String ID_ALIGN_LEFT   = "eclipse.gef.align_left";//$NON-NLS-1$
-public static final String ID_ALIGN_RIGHT  = "eclipse.gef.align_right";//$NON-NLS-1$
-public static final String ID_ALIGN_TOP    = "eclipse.gef.align_top";//$NON-NLS-1$
-public static final String ID_ALIGN_BOTTOM = "eclipse.gef.align_bottom";//$NON-NLS-1$
-public static final String ID_ALIGN_CENTER = "eclipse.gef.align_center";//$NON-NLS-1$
-public static final String ID_ALIGN_MIDDLE = "eclipse.gef.align_middle";//$NON-NLS-1$
+/** @deprecated */
+public static final String ID_ALIGN_LEFT   = GEFActionConstants.ALIGN_LEFT;
+/** @deprecated */
+public static final String ID_ALIGN_RIGHT  = GEFActionConstants.ALIGN_RIGHT;
+/** @deprecated */
+public static final String ID_ALIGN_TOP    = GEFActionConstants.ALIGN_TOP;
+/** @deprecated */
+public static final String ID_ALIGN_BOTTOM = GEFActionConstants.ALIGN_BOTTOM;
+/** @deprecated */
+public static final String ID_ALIGN_CENTER = GEFActionConstants.ALIGN_CENTER;
+/** @deprecated */
+public static final String ID_ALIGN_MIDDLE = GEFActionConstants.ALIGN_MIDDLE;
 
 private List operationSet;
 private int alignment;
@@ -104,42 +110,42 @@ protected void init() {
 	super.init();
 	switch (alignment) {
 		case PositionConstants.LEFT: {
-			setId(ID_ALIGN_LEFT);
+			setId(GEFActionConstants.ALIGN_LEFT);
 			setText(GEFMessages.AlignLeftAction_ActionLabelText);
 			setToolTipText(GEFMessages.AlignLeftAction_ActionToolTipText);
 			setImageDescriptor(SharedImages.DESC_HORZ_ALIGN_LEFT);
 			break;
 		}
 		case PositionConstants.RIGHT: {
-			setId(ID_ALIGN_RIGHT);
+			setId(GEFActionConstants.ALIGN_RIGHT);
 			setText(GEFMessages.AlignRightAction_ActionLabelText);
 			setToolTipText(GEFMessages.AlignRightAction_ActionToolTipText);
 			setImageDescriptor(SharedImages.DESC_HORZ_ALIGN_RIGHT);
 			break;
 		}
 		case PositionConstants.TOP: {
-			setId(ID_ALIGN_TOP);
+			setId(GEFActionConstants.ALIGN_TOP);
 			setText(GEFMessages.AlignTopAction_ActionLabelText);
 			setToolTipText(GEFMessages.AlignTopAction_ActionToolTipText);
 			setImageDescriptor(SharedImages.DESC_VERT_ALIGN_TOP);
 			break;
 		}
 		case PositionConstants.BOTTOM: {
-			setId(ID_ALIGN_BOTTOM);
+			setId(GEFActionConstants.ALIGN_BOTTOM);
 			setText(GEFMessages.AlignBottomAction_ActionLabelText);
 			setToolTipText(GEFMessages.AlignBottomAction_ActionToolTipText);
 			setImageDescriptor(SharedImages.DESC_VERT_ALIGN_BOTTOM);
 			break;
 		}
 		case PositionConstants.CENTER: {
-			setId(ID_ALIGN_CENTER);
+			setId(GEFActionConstants.ALIGN_CENTER);
 			setText(GEFMessages.AlignCenterAction_ActionLabelText);
 			setToolTipText(GEFMessages.AlignCenterAction_ActionToolTipText);
 			setImageDescriptor(SharedImages.DESC_HORZ_ALIGN_CENTER);
 			break;
 		}
 		case PositionConstants.MIDDLE: {
-			setId(ID_ALIGN_MIDDLE);
+			setId(GEFActionConstants.ALIGN_MIDDLE);
 			setText(GEFMessages.AlignMiddleAction_ActionLabelText);
 			setToolTipText(GEFMessages.AlignMiddleAction_ActionToolTipText);
 			setImageDescriptor(SharedImages.DESC_VERT_ALIGN_MIDDLE);

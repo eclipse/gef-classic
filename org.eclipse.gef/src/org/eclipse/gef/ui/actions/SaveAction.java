@@ -8,7 +8,6 @@ package org.eclipse.gef.ui.actions;
 
 import org.eclipse.gef.internal.GEFMessages;
 import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IWorkbenchActionConstants;
 
 /**
  * An action to save the editor's current state.
@@ -36,10 +35,10 @@ protected boolean calculateEnabled() {
  * Initializes this action's text.
  */
 protected void init(){
-	setText( GEFMessages.SaveAction_ActionLabelText + 
+	setText(GEFMessages.SaveAction_ActionLabelText + 
 			 GEFMessages.SaveAction_ActionShortcutText);
 	setToolTipText(GEFMessages.SaveAction_ActionToolTipText);
-	setId(IWorkbenchActionConstants.SAVE);
+	setId(GEFActionConstants.SAVE);
 }
 
 /**

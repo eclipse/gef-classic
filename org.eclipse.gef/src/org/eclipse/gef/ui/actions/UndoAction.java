@@ -51,7 +51,7 @@ protected void init(){
 			GEFMessages.UndoAction_ActionLabelText, 
 			new Object[] {""}).trim()  //$NON-NLS-1$
 			+ GEFMessages.UndoAction_ActionShortcutText);
-	setId(org.eclipse.ui.IWorkbenchActionConstants.UNDO);
+	setId(GEFActionConstants.UNDO);
 	setHoverImageDescriptor(
 		WorkbenchImages.getImageDescriptor(
 			IWorkbenchGraphicConstants.IMG_CTOOL_UNDO_EDIT_HOVER));

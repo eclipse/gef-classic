@@ -25,7 +25,8 @@ final public class DeleteAction
 	extends SelectionAction
 {
 
-public static final String ID = org.eclipse.ui.IWorkbenchActionConstants.DELETE;
+/** @deprecated */
+public static final String ID = GEFActionConstants.DELETE;
 
 /**
  * Creates a <code>DeleteAction</code> with a default label.
@@ -43,7 +44,7 @@ protected void init(){
 	super.init();
 	setText(GEFMessages.DeleteAction_ActionLabelText);
 	setToolTipText(GEFMessages.DeleteAction_ActionToolTipText);
-	setId(ID);
+	setId(GEFActionConstants.DELETE);
 	setHoverImageDescriptor(
 		WorkbenchImages.getImageDescriptor(
 			IWorkbenchGraphicConstants.IMG_CTOOL_DELETE_EDIT_HOVER));
@@ -53,7 +54,6 @@ protected void init(){
 	setDisabledImageDescriptor(
 		WorkbenchImages.getImageDescriptor(
 			IWorkbenchGraphicConstants.IMG_CTOOL_DELETE_EDIT_DISABLED));
-
 	setEnabled(false);
 }
 

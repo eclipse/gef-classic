@@ -22,42 +22,42 @@ public AlignmentRetargetAction(int align) {
 	super(null, null);
 	switch (align) {
 		case PositionConstants.BOTTOM: {
-			setId(AlignmentAction.ID_ALIGN_BOTTOM);
+			setId(GEFActionConstants.ALIGN_BOTTOM);
 			setText(GEFMessages.AlignBottomAction_ActionLabelText);
 			setToolTipText(GEFMessages.AlignBottomAction_ActionToolTipText);
 			setImageDescriptor(SharedImages.DESC_VERT_ALIGN_BOTTOM);
 			break;
 		}
 		case PositionConstants.CENTER: {
-			setId(AlignmentAction.ID_ALIGN_CENTER);
+			setId(GEFActionConstants.ALIGN_CENTER);
 			setText(GEFMessages.AlignCenterAction_ActionLabelText);
 			setToolTipText(GEFMessages.AlignCenterAction_ActionToolTipText);
 			setImageDescriptor(SharedImages.DESC_HORZ_ALIGN_CENTER);
 			break;
 		}
 		case PositionConstants.LEFT: {
-			setId(AlignmentAction.ID_ALIGN_LEFT);
+			setId(GEFActionConstants.ALIGN_LEFT);
 			setText(GEFMessages.AlignLeftAction_ActionLabelText);
 			setToolTipText(GEFMessages.AlignLeftAction_ActionToolTipText);
 			setImageDescriptor(SharedImages.DESC_HORZ_ALIGN_LEFT);
 			break;
 		}
 		case PositionConstants.MIDDLE: {
-			setId(AlignmentAction.ID_ALIGN_MIDDLE);
+			setId(GEFActionConstants.ALIGN_MIDDLE);
 			setText(GEFMessages.AlignMiddleAction_ActionLabelText);
 			setToolTipText(GEFMessages.AlignMiddleAction_ActionToolTipText);
 			setImageDescriptor(SharedImages.DESC_VERT_ALIGN_MIDDLE);
 			break;
 		}
 		case PositionConstants.RIGHT: {
-			setId(AlignmentAction.ID_ALIGN_RIGHT);
+			setId(GEFActionConstants.ALIGN_RIGHT);
 			setText(GEFMessages.AlignRightAction_ActionLabelText);
 			setToolTipText(GEFMessages.AlignRightAction_ActionToolTipText);
 			setImageDescriptor(SharedImages.DESC_HORZ_ALIGN_RIGHT);
 			break;
 		}
 		case PositionConstants.TOP: {
-			setId(AlignmentAction.ID_ALIGN_TOP);
+			setId(GEFActionConstants.ALIGN_TOP);
 			setText(GEFMessages.AlignTopAction_ActionLabelText);
 			setToolTipText(GEFMessages.AlignTopAction_ActionToolTipText);
 			setImageDescriptor(SharedImages.DESC_VERT_ALIGN_TOP);

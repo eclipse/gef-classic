@@ -51,7 +51,7 @@ protected void init(){
 			GEFMessages.RedoAction_ActionLabelText, 
 			new Object[] {""}).trim()  //$NON-NLS-1$
 			+ GEFMessages.RedoAction_ActionShortcutText);
-	setId(org.eclipse.ui.IWorkbenchActionConstants.REDO);
+	setId(GEFActionConstants.REDO);
 	setHoverImageDescriptor(
 		WorkbenchImages.getImageDescriptor(
 			IWorkbenchGraphicConstants.IMG_CTOOL_REDO_EDIT_HOVER));

@@ -7,7 +7,6 @@ import org.eclipse.gef.palette.PaletteTemplateEntry;
 import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.eclipse.gef.ui.palette.TemplateEditPart;
 import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IWorkbenchActionConstants;
 
 /**
  * Copies the currently selected template in the palatte to the system clipboard.
@@ -16,8 +15,6 @@ import org.eclipse.ui.IWorkbenchActionConstants;
 public class CopyTemplateAction 
 	extends SelectionAction
 {
-
-public static final String defID = "org.eclipse.ui.edit.copy";
 
 private PaletteTemplateEntry selectedEntry;
 
@@ -76,9 +73,8 @@ protected void handleSelectionChanged() {
  * @see org.eclipse.gef.ui.actions.EditorPartAction#init()
  */
 protected void init() {
-	setId(IWorkbenchActionConstants.COPY);
+	setId(GEFActionConstants.COPY);
 	setText(GEFMessages.CopyAction_ActionLabelText);
-	setActionDefinitionId(defID);
 }
 
 /**

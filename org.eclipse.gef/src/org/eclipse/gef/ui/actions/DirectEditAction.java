@@ -12,8 +12,10 @@ public class DirectEditAction
 	extends SelectionAction
 {
 
+/** @deprecated */
+public static final String ID = GEFActionConstants.DIRECT_EDIT;
+
 private Request directEditRequest = new Request(RequestConstants.REQ_DIRECT_EDIT);
-public static final String ID = "$direct edit"; //$NON-NLS-1$
 
 public DirectEditAction(IEditorPart editor){
 	super(editor);
@@ -62,7 +64,7 @@ protected void init() {
 	super.init();
 	setText(GEFMessages.RenameAction_ActionLabelText);
 	setToolTipText(GEFMessages.RenameAction_ActionToolTipText);
-	setId(ID);
+	setId(GEFActionConstants.DIRECT_EDIT);
 }
 
 
