@@ -33,7 +33,7 @@ import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.gef.editparts.LayerManager;
 import org.eclipse.gef.requests.DirectEditRequest;
 
-abstract public class DirectEditManager {
+public abstract class DirectEditManager {
 
 private static final Color BLUE = ColorConstants.menuBackgroundSelected;
 private static final Border BORDER_FRAME = new DirectEditBorder();
@@ -41,7 +41,7 @@ private static final Border BORDER_FRAME = new DirectEditBorder();
 private static class DirectEditBorder
 	extends AbstractBorder
 {
-	private static final Insets insets = new Insets(1,2,2,2);
+	private static final Insets insets = new Insets(1, 2, 2, 2);
 	public Insets getInsets(IFigure figure) {
 		return insets;
 	}
@@ -54,8 +54,8 @@ private static class DirectEditBorder
 		rect.width--;
 		rect.resize(-1, -1);
 		graphics.setForegroundColor(ColorConstants.black);
-		graphics.drawLine(rect.x+2, rect.bottom(), rect.right(), rect.bottom());
-		graphics.drawLine(rect.right(), rect.bottom(), rect.right(), rect.y+2);
+		graphics.drawLine(rect.x + 2, rect.bottom(), rect.right(), rect.bottom());
+		graphics.drawLine(rect.right(), rect.bottom(), rect.right(), rect.y + 2);
 
 		rect.resize(-1, -1);
 		graphics.setForegroundColor(BLUE);
@@ -78,7 +78,9 @@ private CellEditor ce;
 private Class editorType;
 private boolean committing = false;
 
-public DirectEditManager(GraphicalEditPart source, Class editorType, CellEditorLocator locator){
+public DirectEditManager(GraphicalEditPart source, 
+							Class editorType, 
+							CellEditorLocator locator) {
 //	if (!CellEditor.class.isAssignableFrom(editorType))
 //		throw new RuntimeException("Class is not a cell editor");
 	this.source = source;
@@ -86,7 +88,7 @@ public DirectEditManager(GraphicalEditPart source, Class editorType, CellEditorL
 	this.editorType = editorType;
 }
 
-protected void bringDown(){
+protected void bringDown() {
 	eraseFeedback();
 	unhookListeners();
 	if (getCellEditor() != null) {
@@ -98,14 +100,15 @@ protected void bringDown(){
 	dirty = false;
 }
 
-protected void commit(){
+protected void commit() {
 	if (committing)
 		return;
 	committing = true;
 	try {
 		eraseFeedback();
-		if (isDirty()){
-			CommandStack stack = getEditPart().getViewer().getEditDomain().getCommandStack();
+		if (isDirty()) {
+			CommandStack stack = 
+				getEditPart().getViewer().getEditDomain().getCommandStack();
 			Command command = getEditPart().getCommand(getDirectEditRequest());
 			if (command != null && command.canExecute())
 				stack.execute(command);
@@ -116,23 +119,23 @@ protected void commit(){
 	}
 }
 
-protected CellEditor createCellEditorOn(Composite composite){
+protected CellEditor createCellEditorOn(Composite composite) {
 	try {
 		Constructor constructor = editorType.getConstructor(new Class[]{Composite.class});
 		return (CellEditor)constructor.newInstance(new Object[]{composite});
-	} catch (Exception e){
+	} catch (Exception e) {
 		return null;
 	}
 }
 
-protected DirectEditRequest createDirectEditRequest(){
+protected DirectEditRequest createDirectEditRequest() {
 	DirectEditRequest req = new DirectEditRequest();
 	req.setCellEditor(getCellEditor());
 	return req;
 }
 
-protected void eraseFeedback(){
-	if (showingFeedback){
+protected void eraseFeedback() {
+	if (showingFeedback) {
 		LayerManager.Helper.find(getEditPart()).
 			getLayer(LayerConstants.FEEDBACK_LAYER).
 			remove(getCellEditorFrame());
@@ -142,11 +145,11 @@ protected void eraseFeedback(){
 	}
 }
 
-protected CellEditor getCellEditor(){
+protected CellEditor getCellEditor() {
 	return ce;
 }
 
-private IFigure getCellEditorFrame(){
+private IFigure getCellEditorFrame() {
 	if (cellEditorFrame != null)
 		return cellEditorFrame;
 	cellEditorFrame = new Figure();
@@ -154,11 +157,11 @@ private IFigure getCellEditorFrame(){
 	return cellEditorFrame;
 }
 
-private Control getControl(){
+private Control getControl() {
 	return ce.getControl();
 }
 
-protected DirectEditRequest getDirectEditRequest(){
+protected DirectEditRequest getDirectEditRequest() {
 	if (request == null)
 		request = createDirectEditRequest();
 	return request;
@@ -172,7 +175,7 @@ private CellEditorLocator getLocator() {
 	return locator;
 }
 
-private void handleValueChanged(){
+private void handleValueChanged() {
 	setDirty(true);
 	showFeedback();
 	placeCellEditor();
@@ -201,8 +204,9 @@ private void hookListeners() {
 
 	controlListener = new ControlAdapter() {
 		public void controlMoved(ControlEvent e) {
-			//This must be handled async because during scrolling, the CellEditor moves first, but then
-			//afterwards the viewport Scrolls, which would cause the shadow to move twice
+			// This must be handled async because during scrolling, the CellEditor moves 
+			// first, but then afterwards the viewport Scrolls, which would cause the 
+			// shadow to move twice
 			Display.getCurrent().asyncExec(new Runnable() {
 				public void run() {
 					placeBorder();
@@ -238,11 +242,11 @@ private void hookListeners() {
 
 protected abstract void initCellEditor();
 
-protected boolean isDirty(){
+protected boolean isDirty() {
 	return dirty;
 }
 
-private void placeBorder(){
+private void placeBorder() {
 	if (showingFeedback) {
 		IFigure shadow = getCellEditorFrame();
 		Rectangle rect = new Rectangle(getCellEditor().getControl().getBounds());
@@ -252,22 +256,22 @@ private void placeBorder(){
 	}
 }
 
-private void placeCellEditor(){
+private void placeCellEditor() {
 	getLocator().relocate(getCellEditor());
 }
 
-protected void setCellEditor(CellEditor editor){
+protected void setCellEditor(CellEditor editor) {
 	ce = editor;
 	if (ce == null)
 		return;
 	hookListeners();
 }
 
-protected void setDirty(boolean value){
+protected void setDirty(boolean value) {
 	dirty = value;
 }
 
-protected void setEditPart(GraphicalEditPart source){
+protected void setEditPart(GraphicalEditPart source) {
 	this.source = source;
 //	source.addEditPartListener();
 }
@@ -280,7 +284,7 @@ public void setLocator(CellEditorLocator locator) {
 	this.locator = locator;
 }
 
-public void show(){
+public void show() {
 	if (getCellEditor() != null)
 		return;
 	Composite composite = (Composite)source.getViewer().getControl();
@@ -295,14 +299,14 @@ public void show(){
 	showFeedback();
 }
 
-private void showCellEditorFrame(){
+private void showCellEditorFrame() {
 	LayerManager.Helper.find(getEditPart()).
 		getLayer(LayerConstants.FEEDBACK_LAYER).
 		add(getCellEditorFrame());
 	placeBorder();
 }
 
-public void showFeedback(){
+public void showFeedback() {
 	if (showingFeedback == false)
 		showCellEditorFrame();
 	showingFeedback = true;

@@ -20,14 +20,25 @@ public class DragTreeItemsTracker
 	extends SelectEditPartTracker
 {
 
+/**
+ * Constructs a new DragTreeItemsTracker.
+ * @param sourceEditPart the source edit part
+ */
 public DragTreeItemsTracker(EditPart sourceEditPart) {
 	super(sourceEditPart);
 }
 
+/**
+ * @see org.eclipse.gef.tools.AbstractTool#getDebugName()
+ */
 protected String getDebugName() {
 	return "Tree Tracker: " + getCommandName();//$NON-NLS-1$
 }
 
+/**
+ * Does nothing.  The native tree provides selection for free.
+ * @see org.eclipse.gef.tools.SelectEditPartTracker#performSelection()
+ */
 protected void performSelection() { }
 
 }

@@ -14,12 +14,20 @@ import java.util.*;
 
 import org.eclipse.gef.*;
 
+/**
+ * Utilities for {@link org.eclipse.gef.Tool Tools}.
+ */
 public class ToolUtilities {
 
+/**
+ * Returns a list containing the top level selected edit parts.
+ * @param viewer the viewer
+ * @return the selection excluding dependants
+ */
 public static List getSelectionWithoutDependants(EditPartViewer viewer) {
 	List selectedParts = viewer.getSelectedEditParts();
 	List result = new ArrayList();
-	for (int i=0; i<selectedParts.size(); i++) {
+	for (int i = 0; i < selectedParts.size(); i++) {
 		GraphicalEditPart editpart = (GraphicalEditPart)selectedParts.get(i);;
 		if (!isAncestorContainedIn(selectedParts, editpart))
 			result.add(editpart);
@@ -29,7 +37,7 @@ public static List getSelectionWithoutDependants(EditPartViewer viewer) {
 
 public static List getSelectionWithoutDependants(List selectedParts) {
 	List result = new ArrayList();
-	for (int i=0; i<selectedParts.size(); i++) {
+	for (int i = 0; i < selectedParts.size(); i++) {
 		GraphicalEditPart editpart = (GraphicalEditPart)selectedParts.get(i);;
 		if (!isAncestorContainedIn(selectedParts, editpart))
 			result.add(editpart);

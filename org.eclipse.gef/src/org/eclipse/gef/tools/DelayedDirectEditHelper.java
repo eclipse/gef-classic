@@ -88,15 +88,15 @@ void hookControl(Control control) {
  * If this helper has not been aborted, the target editpart will be sent the request.
  */
 public void run() {
-	if (activeHelper == this
-		&& part.isActive()
+	if (activeHelper == this 
+		&& part.isActive() 
 		&& viewer.getControl() != null
-		&& !viewer.getControl().isDisposed())
-	{
-		viewer.getControl().removeFocusListener(focus);
-		viewer.getControl().removeMouseListener(mouse);
-		viewer.getControl().removeKeyListener(key);
-		part.performRequest(req);
+		&& !viewer.getControl().isDisposed()) 
+	{			
+			viewer.getControl().removeFocusListener(focus);
+			viewer.getControl().removeMouseListener(mouse);
+			viewer.getControl().removeKeyListener(key);
+			part.performRequest(req);
 	}
 	activeHelper = null;
 }

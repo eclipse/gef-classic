@@ -12,14 +12,25 @@ package org.eclipse.gef.tools;
 
 import org.eclipse.gef.EditPart;
 
+/**
+ * A DragTracker whose job it is to deselect all {@link EditPart EditParts}.
+ */
 public class DeselectAllTracker
 	extends SelectEditPartTracker
 {
 
+/**
+ * Constructs a new DeselectAllTracker.
+ * @param ep the edit part that returned this tracker
+ */
 public DeselectAllTracker(EditPart ep) {
 	super(ep);
 }
 
+/**
+ * Calls {@link org.eclipse.gef.EditPartViewer#deselectAll()}.
+ * @see org.eclipse.gef.tools.AbstractTool#handleButtonDown(int)
+ */
 protected boolean handleButtonDown(int button) {
 	getCurrentViewer().deselectAll();
 	return true;
