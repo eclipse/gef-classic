@@ -31,7 +31,7 @@ public CircuitFigure() {
 	setLayoutManager(new StackLayout());
 	add(scrollpane);
 	scrollpane.setViewport(new FreeformViewport());
-	scrollpane.setView(pane);
+	scrollpane.setContents(pane);
 
 	createConnectionAnchors();
 	setBackgroundColor(ColorConstants.listBackground);

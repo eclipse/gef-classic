@@ -64,7 +64,7 @@ protected IFigure createFigure() {
 	
 	ScrollPane pane = new ScrollPane();
 	pane.setViewport( new Viewport(true) );
-	pane.setView( innerLayers );
+	pane.setContents( innerLayers );
 
 	return pane;
 }
