@@ -61,7 +61,7 @@ public int nestingTreeMin;
 /**
  * The space required for this subgraph's border.  The default value is undefined.
  */
-public Insets insets = new Insets(15);
+public Insets insets = new Insets(1);
 
 /**
  * The minimum space between this subgraph's border and it's children.
