@@ -1,7 +1,6 @@
 package org.eclipse.gef.editparts;
 
 import java.text.DecimalFormat;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -21,12 +20,18 @@ import org.eclipse.draw2d.geometry.Rectangle;
  */
 public class ZoomManager {
 
+/** Style bit meaning don't animate any zooms */
+public static final int ANIMATE_NEVER = 0;
+/** Style bit meaning animate during {@link #zoomIn()} and {@link #zoomOut()} */
+public static final int ANIMATE_ZOOM_IN_OUT = 1;
+
 private List listeners = new ArrayList();
 
 private double multiplier = 1.0;
 private ScalableFreeformLayeredPane pane;
 private Viewport viewport;
 private double zoom = 1.0;
+private int zoomAnimationStyle = ANIMATE_NEVER;
 private double[] zoomLevels = { .5, .75, 1.0, 1.5, 2.0, 2.5, 3, 4 };
 
 DecimalFormat format = new DecimalFormat("####%"); //$NON-NLS-1$
@@ -233,6 +238,14 @@ public void setZoom(double zoom) {
 }
 
 /**
+ * Sets which zoom methods get animated.
+ * @param style the style bits determining the zoom methods to be animated.
+ */
+public void setZoomAnimationStyle(int style) {
+	zoomAnimationStyle = style;
+}
+
+/**
  * Sets zoom to the passed string. The string must be composed of numeric characters only
  * with the exception of a decimal point and a '%' as the last character.
  * @param zoomString The new zoom level */
@@ -263,23 +276,7 @@ public void zoomIn() {
 	setZoom(getNextZoomLevel());
 }
 
-/**
- * Performs an animated zoom-out from the region defined by rect. The new zoom level will
- * be one level lower than the current zoom level, where the zoom levels are defined in
- * zoomLevels.
- * @param rect The region to zoom-out from */
-public void zoomOutFrom(Rectangle rect) {
-	performAnimatedZoom(rect, false, 10);
-}
-
-/**
- * Performs an animated zoom-in to the region defined by rect. The new zoom level will be
- * one level higher than the current zoom level, where the zoom levels are defined in
- * zoomLevels.
- * @param rect The region to zoom-in to */
-public void zoomInTo(Rectangle rect) {
-	performAnimatedZoom(rect, true, 10);
-}
+public void zoomTo(Rectangle rect) {}
 
 private void performAnimatedZoom(Rectangle rect, boolean zoomIn, int iterationCount) {
 	double finalRatio;
