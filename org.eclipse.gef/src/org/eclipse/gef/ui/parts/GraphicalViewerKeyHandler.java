@@ -42,6 +42,7 @@ private boolean acceptConnection(KeyEvent event){
 	return event.character == '/'
 		|| event.character == '?'
 		|| event.character == '\\'
+		|| event.character == '\u001c'
 		|| event.character == '|';
 }
 
