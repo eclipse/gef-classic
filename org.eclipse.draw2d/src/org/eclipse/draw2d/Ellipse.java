@@ -41,10 +41,11 @@ protected void fillShape(Graphics graphics){
  * @since 2.0
  */
 protected void outlineShape(Graphics graphics){
-	Rectangle r = new Rectangle(getBounds());
+	Rectangle r = Rectangle.SINGLETON;
+	r.setBounds(getBounds());
 	r.width--;
 	r.height--;
-	r.shrink(lineWidth/2,lineWidth/2);
+	r.shrink((lineWidth-1)/2,(lineWidth-1)/2);
 	graphics.drawOval(r);
 }
 

@@ -37,7 +37,11 @@ protected void fillShape(Graphics graphics){
  */
 protected void outlineShape(Graphics graphics){
 	Rectangle r = getBounds();
-	graphics.drawRectangle(r.x, r.y, r.width-1, r.height-1);
+	int x = r.x + lineWidth/2;
+	int y = r.y + lineWidth/2;
+	int w = r.width - lineWidth;
+	int h = r.height - lineWidth;
+	graphics.drawRectangle(x,y,w,h);
 }
 
 }
