@@ -180,15 +180,8 @@ public IFigure getCurrentFocusOwner(){
 }	
 
 private boolean isFocusEligible(IFigure fig){
-	if(fig==null || !fig.isFocusTraversable() || !fig.isVisible())
+	if(fig==null || !fig.isFocusTraversable() || !fig.isShowing())
 		return false;
-	// Check ancestors for visibility
-	IFigure parent = fig.getParent();
-	while(parent != null){
-		if(!parent.isVisible())
-			return false;
-		parent = parent.getParent();
-	}
 	return true;
 }
 
