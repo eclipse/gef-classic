@@ -47,7 +47,8 @@ protected IFigure getHostFigure() {
 
 /**
  * Obtains the specified layer.
- * @param layer the key identifying the layer * @return the requested layer */
+ * @param layer the key identifying the layer
+ * @return the requested layer */
 protected IFigure getLayer(Object layer) {
 	return LayerManager.Helper.find(getHost()).getLayer(layer);
 }

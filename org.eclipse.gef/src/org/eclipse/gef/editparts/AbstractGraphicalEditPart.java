@@ -376,7 +376,8 @@ public Object getAdapter(Class key) {
 }
 
 /**
- * If the children's Figures should be  * @see GraphicalEditPart#getContentPane() */
+ * If the children's Figures should be 
+ * @see GraphicalEditPart#getContentPane() */
 public IFigure getContentPane() {
 	return getFigure();
 }
@@ -628,7 +629,8 @@ protected void registerVisuals() {
 }
 
 /**
- * Adds the child's Figure to the {@link #getContentPane() contentPane}. * @see AbstractEditPart#removeChildVisual(EditPart) */
+ * Adds the child's Figure to the {@link #getContentPane() contentPane}.
+ * @see AbstractEditPart#removeChildVisual(EditPart) */
 protected void removeChildVisual(EditPart childEditPart) {
 	IFigure child = ((GraphicalEditPart)childEditPart).getFigure();
 	getContentPane().remove(child);

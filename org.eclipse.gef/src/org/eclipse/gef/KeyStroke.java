@@ -23,7 +23,9 @@ public class KeyStroke {
 /**
  * Constructs a KeyStroke that will match the given {@link KeyEvent#character} and
  * {@link KeyEvent#stateMask} during a press event.
- * @param character the character to match * @param stateMask the stateMask to match * @return a new KeyStroke */
+ * @param character the character to match
+ * @param stateMask the stateMask to match
+ * @return a new KeyStroke */
 public static KeyStroke getPressed(char character, int stateMask) {
 	return new KeyStroke(character, stateMask, true);
 }

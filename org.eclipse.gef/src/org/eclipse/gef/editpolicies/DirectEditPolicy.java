@@ -55,7 +55,8 @@ public Command getCommand(Request request) {
 
 /**
  * Returns the <code>Command</code> to perform the direct edit.
- * @param request the DirectEditRequest * @return the command to perform the direct edit */
+ * @param request the DirectEditRequest
+ * @return the command to perform the direct edit */
 protected abstract Command getDirectEditCommand(DirectEditRequest request);
 
 /**

@@ -34,7 +34,8 @@ Object ID = new Object();
 
 /**
  * Returns a specified layer.
- * @param key a key identifying the layer * @return the specified layer */
+ * @param key a key identifying the layer
+ * @return the specified layer */
 IFigure getLayer(Object key);
 
 /**
@@ -43,7 +44,8 @@ IFigure getLayer(Object key);
 class Helper {
 	/**
 	 * Finds the LayerManager given any EditPart in the Viewer.
-	 * @param part any EditPart in a GraphicalViewer	 * @return the <code>LayerManager</code>	 */
+	 * @param part any EditPart in a GraphicalViewer
+	 * @return the <code>LayerManager</code>	 */
 	public static LayerManager find(EditPart part) {
 		return (LayerManager)part.getViewer().getEditPartRegistry().get(ID);
 	}

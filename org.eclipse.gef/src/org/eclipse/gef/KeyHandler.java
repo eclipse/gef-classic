@@ -42,7 +42,8 @@ private KeyHandler parent;
 /**
  * Processes a <i>key pressed</i> event. This method is called by the Tool whenever a key
  * is pressed, and the Tool is in the proper state.
- * @param event the KeyEvent * @return <code>true</code> if KeyEvent was handled in some way */
+ * @param event the KeyEvent
+ * @return <code>true</code> if KeyEvent was handled in some way */
 public boolean keyPressed(KeyEvent event) {
 	if (performStroke(new KeyStroke(event, true)))
 		return true;
@@ -76,7 +77,8 @@ private final boolean performStroke(KeyStroke key) {
  * Maps a specified <code>KeyStroke</code> to an <code>IAction</code>. When a KeyEvent
  * occurs matching the given KeyStroke, the Action will be <code>run()</code> iff it is
  * enabled.
- * @param keystroke the KeyStroke * @param action the Action to run */
+ * @param keystroke the KeyStroke
+ * @param action the Action to run */
 public void put(KeyStroke keystroke, IAction action) {
 	if (actions == null)
 		actions = new HashMap();
@@ -95,8 +97,9 @@ public void remove(KeyStroke keystroke) {
 /**
  * Sets a <i>parent</i> <code>KeyHandler</code> to which this KeyHandler will forward
  * un-consumed KeyEvents. This KeyHandler will first attempt to handle KeyEvents. If it
- * does not recognize a given KeyEvent, that event is passed to its <i>parent</i>.
- * @param parent the <i>parent</i> KeyHandler * @return <code>this</code> for convenience */
+ * does not recognize a given KeyEvent, that event is passed to its <i>parent</i>
+ * @param parent the <i>parent</i> KeyHandler
+ * @return <code>this</code> for convenience */
 public KeyHandler setParent(KeyHandler parent) {
 	this.parent = parent;
 	return this;

@@ -36,7 +36,9 @@ public abstract class OrderedLayoutEditPolicy
  * Returns the <code>Command</code> to add the specified child after a reference
  * <code>EditPart</code>. If the reference is <code>null</code>, the child should be added
  * as the first child.
- * @param child the child being added * @param after <code>null</code> or a reference EditPart * @return a Command to add the child */
+ * @param child the child being added
+ * @param after <code>null</code> or a reference EditPart
+ * @return a Command to add the child */
 protected abstract Command createAddCommand(EditPart child, EditPart after);
 
 
@@ -56,7 +58,9 @@ protected EditPolicy createChildEditPolicy(EditPart child) {
  * <P>
  * A move is a change in the order of the children, which indirectly causes a change in
  * location on the screen.
- * @param child the child being moved * @param after <code>null</code> or a reference EditPart * @return a Command to move the child */
+ * @param child the child being moved
+ * @param after <code>null</code> or a reference EditPart
+ * @return a Command to move the child */
 protected abstract Command createMoveChildCommand(EditPart child, EditPart after);
 
 /**
@@ -89,7 +93,8 @@ protected Command getAddCommand(Request req) {
  * <code>Request</code>. The EditPart returned is used to mark the index coming
  * <em>after</em> that EditPart. <code>null</code> is used to indicate the index that
  * comes after <em>no</em> EditPart, that is, it indicates the very first index.
- * @param request the Request * @return <code>null</code> or a reference EditPart */
+ * @param request the Request
+ * @return <code>null</code> or a reference EditPart */
 protected abstract EditPart getInsertionReference(Request request);
 
 /**

@@ -57,7 +57,7 @@ protected void addSelectionHandles() {
 protected abstract List createSelectionHandles();
 
 /**
- *  * @see org.eclipse.core.runtime.IAdaptable#getAdapter(Class) */
+ * @see org.eclipse.core.runtime.IAdaptable#getAdapter(Class) */
 public Object getAdapter(Class key) {
 	if (key == AccessibleHandleProvider.class)
 		return new AccessibleHandleProvider() {

@@ -504,7 +504,8 @@ private List getEditPolicyKeys() {
 
 /**
  * Returns an iterator for the specified type of listener
- * @param clazz the Listener type over which to iterate * @return Iterator */
+ * @param clazz the Listener type over which to iterate
+ * @return Iterator */
 protected final Iterator getEventListeners(Class clazz) {
 	if (eventListeners == null)
 		return Collections.EMPTY_LIST.iterator();

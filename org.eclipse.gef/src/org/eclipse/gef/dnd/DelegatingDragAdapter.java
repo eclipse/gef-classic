@@ -125,7 +125,7 @@ public void dragStart(DragSourceEvent event) {
 }
 
 /**
- * Combines the <code>Transfer<code>s from every TransferDragSourceListener.
+ * Combines the <code>Transfer</code>s from every TransferDragSourceListener.
  * @return the combined <code>Transfer</code>s
  */
 public Transfer[] getTransferTypes() {

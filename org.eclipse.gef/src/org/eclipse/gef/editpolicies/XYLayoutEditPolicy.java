@@ -81,7 +81,8 @@ protected Object getConstraintFor(ChangeBoundsRequest request, GraphicalEditPart
 
 /**
  * Retrieves the child's current constraint from the <code>LayoutManager</code>.
- * @param child the child * @return the current constraint */
+ * @param child the child
+ * @return the current constraint */
 protected Rectangle getCurrentConstraintFor(GraphicalEditPart child) {
 	IFigure fig = child.getFigure();
 	return (Rectangle)fig.getParent().getLayoutManager().getConstraint(fig);
@@ -100,7 +101,8 @@ protected Point getLayoutOrigin() {
  * Determines the <em>minimum</em> size that the specified child can be resized to. Called
  * from {@link #getConstraintFor(ChangeBoundsRequest, GraphicalEditPart)}. By default,
  * a small <code>Dimension</code> is returned.
- * @param child the child * @return the minumum size */
+ * @param child the child
+ * @return the minumum size */
 protected Dimension getMinimumSizeFor(GraphicalEditPart child) {
 	return new Dimension(8, 8);
 }

@@ -39,7 +39,8 @@ protected Connection connectionFeedback;
 
 /**
  * Returns a connection to be used as feeback during creates.
- * @param req the operation being performed * @return a connection to use as feedback */
+ * @param req the operation being performed
+ * @return a connection to use as feedback */
 protected Connection createDummyConnection(Request req) {
 	return new PolylineConnection();
 }
@@ -119,7 +120,8 @@ public Command getCommand(Request request) {
  * Returns the Command that will create the connection. This is second part of creation.
  * {@link CreateConnectionRequest#getStartCommand()} is used here to obtain the
  * contribution from the EditPart from which the User started the <i>creation</i>.
- * @param request the CreateConnectionRequest * @return the complete command to create a connection */
+ * @param request the CreateConnectionRequest
+ * @return the complete command to create a connection */
 protected abstract Command getConnectionCompleteCommand(CreateConnectionRequest request);
 
 /**
@@ -135,7 +137,8 @@ protected abstract Command getConnectionCreateCommand(CreateConnectionRequest re
  * Returns the FeedbackHelper that is ready to use. The feedback helper must be configured
  * with the connection that will be used to display feedback, and that connection must be
  * added to the appropriate layer in the diagram.
- * @param request the CreateConnectionRequest * @return a FeedbackHelper */
+ * @param request the CreateConnectionRequest
+ * @return a FeedbackHelper */
 protected FeedbackHelper getFeedbackHelper(CreateConnectionRequest request) {
 	if (feedbackHelper == null) {
 		feedbackHelper = new FeedbackHelper();
@@ -154,7 +157,8 @@ protected FeedbackHelper getFeedbackHelper(CreateConnectionRequest request) {
 /**
  * Returns the <code>Command</code> to reconnect a connection's <i>target</i> end to the
  * host.
- * @param request the ReconnectRequest * @return a Command */
+ * @param request the ReconnectRequest
+ * @return a Command */
 protected abstract Command getReconnectTargetCommand(ReconnectRequest request);
 
 /**
@@ -168,7 +172,8 @@ protected abstract Command getReconnectSourceCommand(ReconnectRequest request);
 /**
  * Called during the display of creation feedback to snap the feedback to the nearest
  * source ConnectionAnchor.
- * @param request CreateConnectionRequest * @return <code>null</code> or the nearest source ConnectionAnchor */
+ * @param request CreateConnectionRequest
+ * @return <code>null</code> or the nearest source ConnectionAnchor */
 protected ConnectionAnchor getSourceConnectionAnchor(CreateConnectionRequest request) {
 	EditPart source = request.getSourceEditPart();
 	return source instanceof NodeEditPart 

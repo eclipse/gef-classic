@@ -50,7 +50,8 @@ public void activate() {
 
 /**
  * Returns the "satellite" EditPolicy used to decorate the child.
- * @param child the child EditPart * @return an EditPolicy to be installed as the {@link EditPolicy#PRIMARY_DRAG_ROLE} */
+ * @param child the child EditPart
+ * @return an EditPolicy to be installed as the {@link EditPolicy#PRIMARY_DRAG_ROLE} */
 protected abstract EditPolicy createChildEditPolicy(EditPart child);
 
 /**
@@ -131,7 +132,8 @@ public void eraseTargetFeedback(Request request) {
 /**
  * Override to return the <code>Command</code> to perform an {@link
  * RequestConstants#REQ_ADD ADD}. By default, <code>null</code> is returned.
- * @param request the ADD Request * @return A command to perform the ADD. */
+ * @param request the ADD Request
+ * @return A command to perform the ADD. */
 protected Command getAddCommand(Request request) {
 	return null;
 }
@@ -166,7 +168,8 @@ public Command getCommand(Request request) {
 
 /**
  * Returns the <code>Command</code> to perform a create.
- * @param request the CreateRequest * @return a Command to perform a create */
+ * @param request the CreateRequest
+ * @return a Command to perform a create */
 protected abstract Command getCreateCommand(CreateRequest request);
 
 /**
@@ -188,7 +191,8 @@ protected IFigure getLayoutContainer() {
 
 /**
  * Returns the <code>Command</code> to move a group of children.
- * @param request the Request * @return the Command to perform the move */
+ * @param request the Request
+ * @return the Command to perform the move */
 protected abstract Command getMoveChildrenCommand(Request request);
 
 /**
@@ -198,7 +202,8 @@ protected abstract Command getMoveChildrenCommand(Request request);
  * perform an orphan implicitly when the children are added to their new parent. The
  * second part is to perform some adjustments on the remaining children. For example, a
  * Table layout might simplify itself by collapsing any unused columns and rows.
- * @param request the Request * @return <code>null</code> or a Command to perform an orphan */
+ * @param request the Request
+ * @return <code>null</code> or a Command to perform an orphan */
 protected Command getOrphanChildrenCommand(Request request) {
 	return null;
 }

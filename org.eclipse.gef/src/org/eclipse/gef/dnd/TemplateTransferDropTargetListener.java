@@ -12,9 +12,7 @@ package org.eclipse.gef.dnd;
 
 import org.eclipse.swt.dnd.DND;
 
-import org.eclipse.gef.EditPart;
-import org.eclipse.gef.EditPartViewer;
-import org.eclipse.gef.Request;
+import org.eclipse.gef.*;
 import org.eclipse.gef.requests.CreateRequest;
 import org.eclipse.gef.requests.CreationFactory;
 
@@ -41,7 +39,7 @@ public TemplateTransferDropTargetListener(EditPartViewer viewer) {
 }
 
 /**
- *  * @see org.eclipse.gef.dnd.AbstractTransferDropTargetListener#createTargetRequest() */
+ * @see org.eclipse.gef.dnd.AbstractTransferDropTargetListener#createTargetRequest() */
 protected Request createTargetRequest() {
 	//Look at the data on templatetransfer.
 	//Create factory
@@ -60,7 +58,8 @@ protected final CreateRequest getCreateRequest() {
 /**
  * Returns the appropriate Factory object to be used for the specified template. This
  * Factory is used on the CreateRequest that is sent to the target EditPart.
- * @param template the template Object * @return a Factory */
+ * @param template the template Object
+ * @return a Factory */
 protected abstract CreationFactory getFactory(Object template);
 
 /**

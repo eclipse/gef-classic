@@ -56,7 +56,7 @@ protected String[] getTypeNames() {
 }
 
 /**
- * Sets the <i>template</template> Object.
+ * Sets the <i>template</i> Object.
  * @param template the template */
 public void setTemplate(Object template) {
 	setObject(template);

@@ -106,7 +106,8 @@ void refresh() {
 
 /**
  * Computes the width required by control
- * @param control The control to compute width * @return int The width required */
+ * @param control The control to compute width
+ * @return int The width required */
 protected int computeWidth(Control control) {
 	return control.computeSize(SWT.DEFAULT, SWT.DEFAULT, true).x;
 }

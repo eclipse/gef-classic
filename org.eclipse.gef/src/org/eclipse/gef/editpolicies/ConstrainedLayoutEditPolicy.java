@@ -34,7 +34,8 @@ public abstract class ConstrainedLayoutEditPolicy
  * Returns the <code>Command</code> to perform an Add with the specified child and
  * constraint. The constraint has been converted from a draw2d constraint to an object
  * suitable for the model by calling {@link #translateToModelConstraint(Object)}.
- * @param child the EditPart of the child being added * @param constraint the model constraint, after being {@link
+ * @param child the EditPart of the child being added
+ * @param constraint the model constraint, after being {@link 
  * #translateToModelConstraint(Object) translated}
  * @return the Command to add the child */
 protected abstract Command createAddCommand(
@@ -45,8 +46,10 @@ protected abstract Command createAddCommand(
  * Returns the <code>Command</code> to change the specified child's constraint. The
  * constraint has been converted from a draw2d constraint to an object suitable for the
  * model
- * @param child the EditPart of the child being changed * @param constraint the new constraint, after being {@link
- * #translateToModelConstraint(Object) translated} * @return Command */
+ * @param child the EditPart of the child being changed
+ * @param constraint the new constraint, after being {@link
+ * #translateToModelConstraint(Object) translated}
+ * @return Command */
 protected abstract Command createChangeConstraintCommand(
 	EditPart child,
 	Object constraint);
@@ -95,7 +98,8 @@ protected Command getAddCommand(Request generic) {
 /**
  * Returns the command to align a group of children. By default, this is treated the same
  * as a resize, and {@link #getResizeChildrenCommand(ChangeBoundsRequest)} is returned.
- * @param request the AligmentRequest * @return the command to perform aligment */
+ * @param request the AligmentRequest
+ * @return the command to perform aligment */
 protected Command getAlignChildrenCommand(AlignmentRequest request) {
 	return getResizeChildrenCommand(request);
 }
@@ -151,7 +155,8 @@ protected abstract Object getConstraintFor (Rectangle rect);
  * <P>
  * The CreateRequest's location is relative the Viewer. The location is made
  * layout-relative before calling one of the methods mentioned above.
- * @param request the CreateRequest * @return a draw2d constraint */
+ * @param request the CreateRequest
+ * @return a draw2d constraint */
 protected Object getConstraintFor(CreateRequest request) {
 	IFigure figure = getLayoutContainer();
 
@@ -180,7 +185,8 @@ protected Object translateToModelConstraint(Object figureConstraint) {
 
 /**
  * Returns the <code>Command</code> to resize a group of children.
- * @param request the ChangeBoundsRequest * @return the Command */
+ * @param request the ChangeBoundsRequest
+ * @return the Command */
 protected Command getResizeChildrenCommand(ChangeBoundsRequest request) {
 	CompoundCommand resize = new CompoundCommand();
 	Command c;

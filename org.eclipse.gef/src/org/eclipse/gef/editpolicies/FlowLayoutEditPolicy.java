@@ -46,7 +46,8 @@ private Rectangle getAbsoluteBounds(GraphicalEditPart ep) {
 }
 
 /**
- * @param request the Request * @return the index for the insertion reference */
+ * @param request the Request
+ * @return the index for the insertion reference */
 protected int getFeedbackIndexFor(Request request) {
 	List children = getHost().getChildren();
 	if (children.isEmpty())

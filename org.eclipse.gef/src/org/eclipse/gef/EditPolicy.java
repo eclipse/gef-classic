@@ -235,7 +235,8 @@ void showTargetFeedback(Request request);
  * is redeclared here so that EditPart can delegate its implementation to each of its
  * EditPolicies. <code>EditPart</code> returns <code>true</code> if any of its
  * EditPolicies returns <code>true</code>.  In other words, it performs a logical OR.
- * @param request the Request * @return boolean <code>true</code> if the EditPolicy
+ * @param request the Request
+ * @return boolean <code>true</code> if the EditPolicy understands the specified request
  * @see EditPart#understandsRequest(Request)
  */
 boolean understandsRequest(Request request);

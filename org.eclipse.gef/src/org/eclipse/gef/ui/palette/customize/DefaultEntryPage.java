@@ -175,7 +175,7 @@ protected Text createNameText(Composite panel) {
 }
 
 /**
- * Creates a <code>Text<code>.  This method is mainly a result of code-factoring.
+ * Creates a <code>Text</code>.  This method is mainly a result of code-factoring.
  * 
  * @param panel	The Composite in which the Text is to be created
  * @param style	The stylebits for the Text
