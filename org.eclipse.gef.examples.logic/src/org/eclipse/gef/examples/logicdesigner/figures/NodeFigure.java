@@ -58,10 +58,10 @@ public ConnectionAnchor getConnectionAnchor(String terminal) {
 }
 
 public String getConnectionAnchorName(ConnectionAnchor c){
-	Enumeration enum = connectionAnchors.keys();
+	Enumeration keys = connectionAnchors.keys();
 	String key;
-	while (enum.hasMoreElements()){
-		key = (String)enum.nextElement();
+	while (keys.hasMoreElements()){
+		key = (String)keys.nextElement();
 		if (connectionAnchors.get(key).equals(c))
 			return key;
 	}
