@@ -592,7 +592,7 @@ protected void createActions() {
 protected void createGraphicalViewer(Composite parent) {
 	rulerComp = new RulerComposite(parent, SWT.NONE);
 	super.createGraphicalViewer(rulerComp);
-	rulerComp.setGraphicalViewer(getGraphicalViewer());
+	rulerComp.setGraphicalViewer((ScrollingGraphicalViewer)getGraphicalViewer());
 }
 
 protected FigureCanvas getEditor(){
