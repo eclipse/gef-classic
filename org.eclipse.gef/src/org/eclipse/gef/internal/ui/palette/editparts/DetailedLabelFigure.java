@@ -31,11 +31,10 @@ import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
  * @author Pratik Shah
  */
 public class DetailedLabelFigure
-	extends Figure 
+	extends Figure
 {
 
-public static final String SELECTED_PROPERTY = "selected"; //$NON-NLS-1$
-protected static final FontCache FONTCACHE = new FontCache();
+private static final FontCache FONTCACHE = new FontCache();
 private static final Border PAGE_BORDER = new MarginBorder(0, 1, 0, 1);
 
 private SelectableImageFigure image;
@@ -44,7 +43,6 @@ private TextFlow nameText, descText;
 private Font boldFont;
 private boolean selectionState;
 private int layoutMode = -1;
-private List listeners = new ArrayList();
 private Font cachedFont;
 
 /**
@@ -98,6 +96,9 @@ public boolean isSelected() {
 	return selectionState;
 }
 
+/**
+ * @param	s	The description for this entry
+ */
 public void setDescription(String s) {
 	String str = ""; //$NON-NLS-1$
 	if (s != null && !s.trim().equals("")  && !s.trim().equals(nameText.getText().trim())) { //$NON-NLS-1$
@@ -118,6 +119,10 @@ public void setImage(Image icon) {
 	image.setImage(icon);
 }
 
+/**
+ * @param	layoutMode		the palette layout (any of the
+ * 							PaletteViewerPreferences.LAYOUT_XXXX options)
+ */
 public void setLayoutMode(int layoutMode) {
 	updateFont(layoutMode);
 	
@@ -152,6 +157,9 @@ public void setLayoutMode(int layoutMode) {
 	}
 }
 
+/**
+ * @param	str		The new name for this entry
+ */
 public void setName(String str) {
 	if (nameText.getText().equals(str)) {
 		return;
@@ -159,12 +167,15 @@ public void setName(String str) {
 	nameText.setText(str);
 }
 
+/**
+ * @param	state	<code>true</code> if this entry is to be set as selected
+ */
 public void setSelected(boolean state) {
 	selectionState = state;
 	updateColors();
 }
 
-protected void updateColors() {
+private void updateColors() {
 	if (isSelected()) {
 		if (hasFocus()) {
 			image.useShadedImage();
@@ -329,8 +340,8 @@ private class SelectableImageFigure extends ImageFigure {
 private static class FontCache {
 	private Hashtable table = new Hashtable();
 	private class FontInfo {
-		Font boldFont;
-		int refCount;
+		private Font boldFont;
+		private int refCount;
 	}
 	
 	/*
@@ -360,17 +371,18 @@ private static class FontCache {
 	
 	public Font checkOut(Font font) {
 		FontInfo info = null;
-		Object obj = table.get(font);
+		List datas = Arrays.asList(font.getFontData());
+		Object obj = table.get(datas);
 		if (obj != null) {
 			info = (FontInfo)obj;
 		} else {
 			info = new FontInfo();
-			FontData[] datas = font.getFontData();
-			for (int i = 0; i < datas.length; i++) {
-				datas[i].setStyle(SWT.BOLD);
+			FontData[] boldDatas = font.getFontData();
+			for (int i = 0; i < boldDatas.length; i++) {
+				boldDatas[i].setStyle(SWT.BOLD);
 			}
-			info.boldFont = new Font(Display.getCurrent(), datas);
-			table.put(font, info);
+			info.boldFont = new Font(Display.getCurrent(), boldDatas);
+			table.put(datas, info);
 		}
 		info.refCount++;
 		return info.boldFont;
