@@ -59,7 +59,7 @@ public Object getConstraintFor(Point p) {
  * {@link #getMinimumSizeFor(GraphicalEditPart)}.
  */
 protected Object getConstraintFor(ChangeBoundsRequest request, GraphicalEditPart child) {
-	Rectangle rect = child.getFigure().getBounds().getCopy();
+	Rectangle rect = new PrecisionRectangle(child.getFigure().getBounds());
 	child.getFigure().translateToAbsolute(rect);
 	rect = request.getTransformedRectangle(rect);
 	child.getFigure().translateToRelative(rect);

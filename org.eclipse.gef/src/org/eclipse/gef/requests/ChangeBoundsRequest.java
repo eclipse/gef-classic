@@ -81,15 +81,12 @@ public Dimension getSizeDelta(){
 
 /**
  * Returns a Rectangle representing the new bounds.
- *
  * @return A Rectangle representing the new bounds.
  */
 public Rectangle getTransformedRectangle(Rectangle rect){
-	Rectangle changed = new Rectangle(rect);
-	changed.translate(getMoveDelta());
-	changed.width += resizeDelta.width;
-	changed.height+= resizeDelta.height;
-	return changed;
+	return rect.getCopy()
+		.translate(moveDelta)
+		.resize(resizeDelta);
 }
 
 /**
