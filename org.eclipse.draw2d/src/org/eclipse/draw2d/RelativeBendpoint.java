@@ -55,9 +55,15 @@ protected Connection getConnection() {
 public Point getLocation() {
 	Point a1 = getConnection().getSourceAnchor().getReferencePoint();
 	Point a2 = getConnection().getTargetAnchor().getReferencePoint();
+	
 	Point p = new Point();
-	p.x = (int)((a1.x + d1.width) * (1f - weight) + weight * (a2.x + d2.width));
-	p.y = (int)((a1.y + d1.height) * (1f - weight) + weight * (a2.y + d2.height));
+	Dimension dim1 = d1.getCopy(), dim2 = d2.getCopy();
+	
+	getConnection().translateToAbsolute(dim1);
+	getConnection().translateToAbsolute(dim2);
+	
+	p.x = (int)((a1.x + dim1.width) * (1f - weight) + weight * (a2.x + dim2.width));
+	p.y = (int)((a1.y + dim1.height) * (1f - weight) + weight * (a2.y + dim2.height));
 	getConnection().translateToRelative(p);
 	return p;
 }

@@ -54,9 +54,10 @@ protected Point getReferencePoint() {
 	Point p = Point.SINGLETON;
 	Point p1 = conn.getPoints().getPoint(getIndex());
 	Point p2 = conn.getPoints().getPoint(getIndex()+1);
+	conn.translateToAbsolute(p1);
+	conn.translateToAbsolute(p2);
 	p.x = (p2.x-p1.x)/2 + p1.x;
 	p.y = (p2.y-p1.y)/2 + p1.y;
-	conn.translateToAbsolute(p);
 	return p;
 }
 

@@ -7,6 +7,7 @@ package org.eclipse.draw2d;
  */
 
 import org.eclipse.draw2d.geometry.*;
+import org.eclipse.swt.graphics.Color;
 
 /**
  * A triangular graphical figure.
@@ -19,11 +20,7 @@ final public class Triangle
 protected int direction = NORTH;
 protected int orientation = VERTICAL;
 
-{
-	setOutline(false);
-}
-
-protected PointList triangle = new PointList(4);
+protected PointList triangle = new PointList(3);
 
 /**
  * Fill the Triangle with the background color
@@ -41,6 +38,8 @@ protected void fillShape(Graphics g){
  * @since 2.0
  */
 protected void outlineShape(Graphics g){
+	g.setForegroundColor(g.getBackgroundColor());
+	g.drawPolygon(triangle);
 }
 
 public void primTranslate(int dx, int dy){
@@ -83,44 +82,40 @@ public void validate(){
 			break;
 		default: //North or south
 			size = Math.min(r.height, r.width/2);
-			r.y += (r.height-size+1)/2;
+			r.y += (r.height-size)/2;
 			break;
 	}
 
 	size = Math.max(size, 1); //Size cannot be negative
 
-	Point head,p2,p3,p4=null;
+	Point head,p2,p3;
 
 	switch (direction){
 		case NORTH:
 			head = new Point(r.x+r.width/2, r.y);
-			p2   = new Point (head.x-size-1, head.y+size+1);
-			p3   = new Point (head.x+size+1, head.y+size+1);
-			p4   = new Point (head.x, head.y-1);
+			p2   = new Point (head.x-size, head.y+size);
+			p3   = new Point (head.x+size, head.y+size);
 			break;
 		case SOUTH:
 			head = new Point (r.x+r.width/2, r.y+size);
 			p2   = new Point (head.x-size, head.y-size);
-			p3   = new Point (head.x+size+1, head.y-size);
-			p4   = new Point (head.x, head.y+1);
+			p3   = new Point (head.x+size, head.y-size);
 			break;
 		case WEST:
 			head = new Point (r.x, r.y+r.height/2);
-			p2   = new Point (head.x+size+1, head.y-size-1);
-			p3   = new Point (head.x+size+1, head.y+size+1);
+			p2   = new Point (head.x+size, head.y-size);
+			p3   = new Point (head.x+size, head.y+size);
 			break;
 		default:
-			head = new Point(r.x+size+2, r.y+r.height/2);
-			p2   = new Point(head.x-size-1, head.y-size-1);
-			p3   = new Point(head.x-size-1, head.y+size+1);
+			head = new Point(r.x+size, r.y+r.height/2);
+			p2   = new Point(head.x-size, head.y-size);
+			p3   = new Point(head.x-size, head.y+size);
 
 	}
 	triangle.removeAllPoints();
 	triangle.addPoint(head);
 	triangle.addPoint(p2);
 	triangle.addPoint(p3);
-	if (p4 != null)
-		triangle.addPoint(p4);
 }
 
 }
