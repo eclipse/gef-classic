@@ -14,13 +14,14 @@ import java.util.*;
 
 import org.eclipse.draw2d.FreeformLayer;
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
  * @author Pratik Shah
  */
-public class GuideLayer 
-	extends FreeformLayer 
+public class GuideLayer
+	extends FreeformLayer
 {
 	
 private Map constraints;
@@ -71,6 +72,11 @@ public Rectangle getFreeformExtent() {
 		r.expand(0, 5);
 	}
 	return r;
+}
+
+public Dimension getPreferredSize(int wHint, int hHint) {
+	Rectangle extents = getFreeformExtent();
+	return new Dimension(extents.getRight().x, extents.getBottom().y);
 }
 
 public void remove(IFigure child) {
