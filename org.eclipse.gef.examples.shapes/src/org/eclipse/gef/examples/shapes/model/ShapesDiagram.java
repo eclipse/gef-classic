@@ -40,7 +40,7 @@ public boolean addChild(Shape s) {
 	return false;
 }
 
-/** Return a List of Shapes in this diagram. */
+/** Return a List of Shapes in this diagram.  The returned List should not be modified. */
 public List getChildren() {
 	return shapes;
 }
