@@ -106,4 +106,16 @@ static final String GROUP_VIEW = "org.eclipse.gef.group.view"; //$NON-NLS-1$
  */
 static final String ZOOM = "org.eclipse.gef.zoom"; //$NON-NLS-1$
 
+/** 
+ * Zoom in contribution id. 
+ * Value: <code>"org.eclipse.gef.zoom_in"</code>
+ */
+static final String ZOOM_IN = "org.eclipse.gef.zoom_in"; //$NON-NLS-1$
+
+/** 
+ * Zoom out contribution id. 
+ * Value: <code>"org.eclipse.gef.zoom_out"</code>
+ */
+static final String ZOOM_OUT = "org.eclipse.gef.zoom_out"; //$NON-NLS-1$
+
 }
