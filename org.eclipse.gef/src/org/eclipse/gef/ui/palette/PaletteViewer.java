@@ -122,6 +122,7 @@ private void disposeFont() {
  * @param	value	<code>true</code> if a vertical scrollbar should be displayed
  */
 public void enableVerticalScrollbar(boolean value) {
+	// TODO: Why do we use a boolean parameter when we just set the enabled state to true?
 	this.globalScrollbar = true;
 }
 
