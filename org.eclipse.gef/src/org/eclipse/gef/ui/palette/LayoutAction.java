@@ -76,7 +76,7 @@ protected List createActions() {
 				break;
 			case PaletteViewerPreferences.LAYOUT_ICONS:
 				action = new LayoutChangeAction(PaletteViewerPreferences.LAYOUT_ICONS);
-				action.setText(PaletteMessages.SETTINGS_ICONS_VIEW_LABEL);
+				action.setText(PaletteMessages.SETTINGS_ICONS_VIEW_LABEL_CAPS);
 				list.add(action);
 				break;
 			case PaletteViewerPreferences.LAYOUT_DETAILS:
