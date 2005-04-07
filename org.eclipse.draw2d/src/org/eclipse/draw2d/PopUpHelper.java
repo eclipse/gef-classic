@@ -28,8 +28,16 @@ public abstract class PopUpHelper {
 private Shell shell;
 private LightweightSystem lws;
 private boolean tipShowing;
-/** The Control this PopUpHelper's tooltip will belong to. */
+/**
+ * The Control this PopUpHelper's tooltip will belong to.
+ */
 protected Control control;
+
+/**
+ * These style bits should be used when creating the Shell.
+ * @see #createShell()
+ */
+protected final int shellStyle;
 
 /**
  * Constructs a PopUpHelper to assist with popups on Control c.
@@ -38,7 +46,18 @@ protected Control control;
  * @since 2.0
  */
 protected PopUpHelper(Control c) {
+	this (c, SWT.ON_TOP | SWT.NO_TRIM);
+}
+
+/**
+ * Constructs a PopUpHelper to display the given shell style popup.
+ * @param c the control on which the popup is active.
+ * @param shellStyle the SWT style bits for the shell
+ * @since 3.1
+ */
+protected PopUpHelper(Control c, int shellStyle) {
 	control = c;
+	this.shellStyle = shellStyle | SWT.NO_BACKGROUND | SWT.NO_REDRAW_RESIZE;
 }
 
 /**
@@ -58,7 +77,7 @@ protected LightweightSystem createLightweightSystem() {
  * @since 2.0
  */
 protected Shell createShell() {
-	return new Shell(control.getShell(), SWT.TOOL | SWT.ON_TOP);
+	return new Shell(control.getShell(), shellStyle);
 }
 
 /**

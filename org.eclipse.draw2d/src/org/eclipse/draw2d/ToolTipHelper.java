@@ -13,6 +13,7 @@ package org.eclipse.draw2d;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseTrackAdapter;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Display;
@@ -41,7 +42,7 @@ private IFigure currentTipSource;
  * @since 2.0
  */
 public ToolTipHelper(org.eclipse.swt.widgets.Control c) {
-	super(c);
+	super(c, SWT.TOOL | SWT.ON_TOP);
 	getShell().setBackground(ColorConstants.tooltipBackground);
 	getShell().setForeground(ColorConstants.tooltipForeground);
 }

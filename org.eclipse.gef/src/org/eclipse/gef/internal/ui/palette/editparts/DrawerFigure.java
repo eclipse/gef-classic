@@ -26,6 +26,7 @@ import org.eclipse.draw2d.ChangeEvent;
 import org.eclipse.draw2d.ChangeListener;
 import org.eclipse.draw2d.Clickable;
 import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.CompoundBorder;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.FigureUtilities;
 import org.eclipse.draw2d.FlowLayout;
@@ -38,6 +39,7 @@ import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.MouseEvent;
 import org.eclipse.draw2d.MouseListener;
 import org.eclipse.draw2d.MouseMotionListener;
+import org.eclipse.draw2d.SchemeBorder;
 import org.eclipse.draw2d.ScrollPane;
 import org.eclipse.draw2d.Toggle;
 import org.eclipse.draw2d.ToggleButton;
@@ -79,7 +81,9 @@ protected static final Border TITLE_MARGIN_BORDER = new MarginBorder(1, 1, 1, 0)
 /** Toggle button border constant**/
 protected static final Border TOGGLE_BUTTON_BORDER = new RaisedBorder();
 /** Tooltip border constant **/
-protected static final Border TOOLTIP_BORDER = new DrawerToolTipBorder();
+protected static final Border TOOLTIP_BORDER = new CompoundBorder(
+		new SchemeBorder(SchemeBorder.SCHEMES.RAISED),
+		new MarginBorder(1));
 private Toggle collapseToggle;
 private Label drawerLabel, tipLabel;
 
@@ -238,7 +242,7 @@ private void createHoverHelp(final Control control) {
 				drawerLabel.translateToAbsolute(labelLoc);
 				org.eclipse.swt.graphics.Point absolute = control.toDisplay(
 						new org.eclipse.swt.graphics.Point(labelLoc.x, labelLoc.y));
-				tipHelper.displayToolTipAt(tipLabel, absolute.x - 4, absolute.y - 4);
+				tipHelper.displayToolTipAt(tipLabel, absolute.x - 2, absolute.y - 2);
 			}
 		}
 	});

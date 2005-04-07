@@ -41,7 +41,7 @@ private static void setHelper(EditPartTipHelper helper) {
 }
 
 public EditPartTipHelper(Control c) {
-	super(c);	
+	super(c, SWT.ON_TOP | SWT.TOOL | SWT.NO_TRIM);
 }
 
 /**
@@ -60,6 +60,8 @@ public void displayToolTipAt(IFigure tip, int tipPosX, int tipPosY) {
 		int shiftX = 0;
 		int shiftY = 0;
 		Dimension tipSize = tip.getPreferredSize();
+		getShell();
+		tipSize = tipSize.getExpanded(getShellTrimSize());
 		org.eclipse.swt.graphics.Rectangle area = control.getDisplay().getClientArea();
 		org.eclipse.swt.graphics.Point end = new org.eclipse.swt.graphics.Point(
 					tipPosX + tipSize.width, tipPosY + tipSize.height);
