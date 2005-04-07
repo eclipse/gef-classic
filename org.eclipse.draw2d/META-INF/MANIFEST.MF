@@ -6,7 +6,6 @@ Bundle-Version: 3.1.0
 Bundle-Vendor: Eclipse.org
 Bundle-Localization: plugin
 Export-Package: org.eclipse.draw2d,
- org.eclipse.draw2d.doc-files,
  org.eclipse.draw2d.graph,
  org.eclipse.draw2d.geometry,
  org.eclipse.draw2d.images,

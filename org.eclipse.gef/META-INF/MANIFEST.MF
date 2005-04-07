@@ -3,14 +3,12 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Graphical Editing Framework
 Bundle-SymbolicName: org.eclipse.gef; singleton:=true
 Bundle-Version: 3.1.0
-Bundle-ClassPath: .
 Bundle-Activator: org.eclipse.gef.GEFPlugin
 Bundle-Vendor: Eclipse.org
 Bundle-Localization: plugin
 Export-Package: org.eclipse.gef,
  org.eclipse.gef.commands,
  org.eclipse.gef.dnd,
- org.eclipse.gef.doc-files,
  org.eclipse.gef.editparts,
  org.eclipse.gef.editpolicies,
  org.eclipse.gef.handles,
