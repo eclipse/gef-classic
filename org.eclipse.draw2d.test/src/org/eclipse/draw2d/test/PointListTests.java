@@ -30,8 +30,10 @@ public void testIntersects() {
 	assertTrue(points.intersects(new Rectangle(0, 0, 10, 10)));
 	// vertical
 	assertTrue(points.intersects(new Rectangle(0, 3, 10, 10)));
-	// rect is close, but not on the line -- off by a pixel
+	// line is next to the rectangle (left side)
 	assertFalse(points.intersects(new Rectangle(1, 1, 50, 50)));
+	// line is next to the rectangle (right side)
+	assertFalse(points.intersects(new Rectangle(-5, 0, 5, 5)));
 	// empty rect located on the line
 	assertFalse(points.intersects(new Rectangle(0, 1, 0, 0)));
 	
@@ -48,12 +50,12 @@ public void testIntersects() {
 	points.addPoint(10, 10);
 	points.addPoint(8, 12);
 	// line starts on rectangle's bottom-right corner
-	assertTrue(points.intersects(new Rectangle(0, 0, 10, 10)));
+	assertTrue(points.intersects(new Rectangle(0, 0, 11, 11)));
 	// line is tangential to the rectangle's bottom-right corner
-	assertTrue(points.intersects(new Rectangle(0, 0, 9, 11)));
+	assertTrue(points.intersects(new Rectangle(1, 1, 9, 11)));
 	
-	points.addPoint(new PrecisionPoint(1.51, 1.51));
-	assertTrue(points.intersects(new Rectangle(0, 0, 1, 1)));
+	points.addPoint(new PrecisionPoint(1.49, 1.49));
+	assertFalse(points.intersects(new Rectangle(0, 0, 1, 1)));
 }
 
 }
