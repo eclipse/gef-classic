@@ -14,6 +14,8 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PrecisionRectangle;
 
+// TODO Update javadoc here.  indicate what the user needs to do to get grids working.
+
 /**
  * @author Randy Hudson
  * @author Pratik Shah
