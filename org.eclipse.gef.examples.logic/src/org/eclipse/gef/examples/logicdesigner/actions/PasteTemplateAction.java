@@ -54,8 +54,8 @@ public PasteTemplateAction(IWorkbenchPart editor) {
  * @see org.eclipse.gef.ui.actions.WorkbenchPartAction#calculateEnabled()
  */
 protected boolean calculateEnabled() {
-	Command command = createPasteCommand();
-	return command != null && command.canExecute();
+	// TODO Workaround for Bug 82622/39369.  Should be removed when 39369 is fixed.
+	return true;
 }
 
 /**
