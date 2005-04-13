@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -714,21 +716,26 @@ public void setSelection(ISelection newSelection) {
 	if (!(newSelection instanceof IStructuredSelection))
 		return;
 	
-	List editparts = ((IStructuredSelection)newSelection).toList();
+	// Convert to HashSet to optimize performance.  Has the added benefit of removing
+	// multiple copies from the list.
+	Collection editparts = new HashSet(((IStructuredSelection)newSelection).toList());
 	List selection = primGetSelectedEditParts();
 
 	setFocus(null);
-	for (int i = 0; i < selection.size(); i++)
-		((EditPart)selection.get(i)).setSelected(EditPart.SELECTED_NONE);
+	for (int i = 0; i < selection.size(); i++) {
+		EditPart part = (EditPart)selection.get(i);
+		if (!editparts.contains(part))
+			part.setSelected(EditPart.SELECTED_NONE);
+	}
 	selection.clear();
 
-	for (int i = 0; i < editparts.size(); i++) {
-		EditPart part = (EditPart)editparts.get(i);
+	for (Iterator itr = editparts.iterator(); itr.hasNext();) {
+		EditPart part = (EditPart)itr.next();
 		selection.add(part);
-		if (i == editparts.size() - 1)
-			part.setSelected(EditPart.SELECTED_PRIMARY);
-		else
+		if (itr.hasNext())
 			part.setSelected(EditPart.SELECTED);
+		else
+			part.setSelected(EditPart.SELECTED_PRIMARY);
 	}
 	fireSelectionChanged();
 }
