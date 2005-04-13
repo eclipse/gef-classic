@@ -17,10 +17,10 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.geometry.Insets;
-import org.eclipse.draw2d.text.FlowPage;
+import org.eclipse.draw2d.text.BlockFlow;
 
 public class CommentPage
-	extends FlowPage
+	extends BlockFlow
 {
 
 private static final Image BEGIN = new Image(null, CommentPage.class.getResourceAsStream("javadoc_begin.gif"));
