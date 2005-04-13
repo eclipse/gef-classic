@@ -11,10 +11,10 @@
 package org.eclipse.gef.tools;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Set;
 
 import org.eclipse.swt.events.KeyEvent;
@@ -58,24 +58,27 @@ public class MarqueeSelectionTool
  */
 public static final Object PROPERTY_MARQUEE_BEHAVIOR = "marqueeBehavior"; //$NON-NLS-1$
 
+// these constants are declared as Integer.intValue() to prevent them from being inlined
 /**
- * For marquee tools that should select nodes.  This is the default type for this
- * tool.
+ * This behaviour selects nodes completely encompassed by the marquee rectangle.  This 
+ * is the default behaviour for this tool.
+ * @see #setSelectionMode(int)
  * @since 3.1
  */
 public static final int BEHAVIOR_NODES_CONTAINED = new Integer(1).intValue();
 /**
- * For marquee tools that should select connections
+ * This behaviour selects connections that intersect the marquee rectangle.
  * @since 3.1
  */
 public static final int BEHAVIOR_CONNECTIONS_TOUCHED = new Integer(2).intValue();
 /**
- * For marquee tools that should select both nodes and connections.
+ * This behaviour selects nodes completely encompassed by the marquee rectangle, and
+ * all connections between those nodes.
  * @since 3.1
  */
 public static final int BEHAVIOR_NODES_AND_CONNECTIONS = new Integer(3).intValue();
 
-
+static final int DEFAULT_MODE = 0;
 static final int TOGGLE_MODE = 1;
 static final int APPEND_MODE = 2;
 
@@ -83,7 +86,7 @@ private int mode;
 
 private Figure marqueeRectangleFigure;
 private Set allChildren = new HashSet();
-private List selectedEditParts;
+private Collection selectedEditParts;
 private Request targetRequest;
 private int marqueeBehavior = BEHAVIOR_NODES_CONTAINED;
 
@@ -110,32 +113,87 @@ protected void applyProperty(Object key, Object value) {
 	super.applyProperty(key, value);
 }
 
-private List calculateNewSelection() {
-	List newSelections = new ArrayList();
-	// Calculate new selections based on which children fall
-	// inside the marquee selection rectangle.  Do not select
-	// children that are not visible.
+private void calculateNewSelection(Collection newSelections, Collection deselections) {
 	Rectangle marqueeRect = getMarqueeSelectionRectangle();
 	for (Iterator itr = getAllChildren().iterator(); itr.hasNext();) {
-		EditPart child = (EditPart)itr.next();
-		IFigure figure = ((GraphicalEditPart)child).getFigure();
-		if (!child.isSelectable() 
+		GraphicalEditPart child = (GraphicalEditPart)itr.next();
+		IFigure figure = child.getFigure();
+		if (!child.isSelectable()
 				|| child.getTargetEditPart(MARQUEE_REQUEST) != child
 				|| !isFigureVisible(figure)
 				|| !figure.isShowing())
 			continue;
+
 		Rectangle r = figure.getBounds().getCopy();
 		figure.translateToAbsolute(r);
 		boolean included = false;
 		if (child instanceof ConnectionEditPart && marqueeRect.intersects(r)) {
-			figure.translateToRelative(r.setBounds(marqueeRect));
-			included = ((PolylineConnection)figure).getPoints().intersects(r);
+			Rectangle relMarqueeRect = Rectangle.SINGLETON;
+			figure.translateToRelative(relMarqueeRect.setBounds(marqueeRect));
+			included = ((PolylineConnection)figure).getPoints().intersects(relMarqueeRect);
 		} else
 			included = marqueeRect.contains(r);
-		if (included)
-			newSelections.add(child);
+
+		if (included) {
+			if (child.getSelected() == EditPart.SELECTED_NONE 
+					|| getSelectionMode() != TOGGLE_MODE)
+				newSelections.add(child);
+			else
+				deselections.add(child);
+		}
 	}
-	return newSelections;
+	
+	if (marqueeBehavior == BEHAVIOR_NODES_AND_CONNECTIONS) {
+		// determine the currently selected nodes minus the ones that are to be deselected 
+		Collection currentNodes = new HashSet();
+		if (getSelectionMode() != DEFAULT_MODE) { // everything is deselected in default mode
+			Iterator iter = getCurrentViewer().getSelectedEditParts().iterator();		
+			while (iter.hasNext()) {
+				EditPart selected = (EditPart) iter.next();
+				if (!(selected instanceof ConnectionEditPart)
+						&& !deselections.contains(selected))
+					currentNodes.add(selected);
+			}
+		}
+		
+		// add new connections to be selected to newSelections
+		Collection connections = new ArrayList();
+		for (Iterator nodes = newSelections.iterator(); nodes.hasNext();) {
+			GraphicalEditPart node = (GraphicalEditPart) nodes.next();
+			for (Iterator itr = node.getSourceConnections().iterator(); itr.hasNext();) {
+				ConnectionEditPart sourceConn = (ConnectionEditPart) itr.next();
+				if (sourceConn.getSelected() == EditPart.SELECTED_NONE
+						&& (newSelections.contains(sourceConn.getTarget())
+						|| currentNodes.contains(sourceConn.getTarget())))
+					connections.add(sourceConn);
+			}
+			for (Iterator itr = node.getTargetConnections().iterator(); itr.hasNext();) {
+				ConnectionEditPart targetConn = (ConnectionEditPart) itr.next();
+				if (targetConn.getSelected() == EditPart.SELECTED_NONE
+						&& (newSelections.contains(targetConn.getSource())
+						|| currentNodes.contains(targetConn.getSource())))
+					connections.add(targetConn);
+			}
+		}
+		newSelections.addAll(connections);
+		
+		// add currently selected connections that are to be deselected to deselections
+		connections = new HashSet();
+		for (Iterator nodes = deselections.iterator(); nodes.hasNext();) {
+			GraphicalEditPart node = (GraphicalEditPart) nodes.next();
+			for (Iterator itr = node.getSourceConnections().iterator(); itr.hasNext();) {
+				ConnectionEditPart sourceConn = (ConnectionEditPart) itr.next();
+				if (sourceConn.getSelected() != EditPart.SELECTED_NONE)
+					connections.add(sourceConn);
+			}
+			for (Iterator itr = node.getTargetConnections().iterator(); itr.hasNext();) {
+				ConnectionEditPart targetConn = (ConnectionEditPart) itr.next();
+				if (targetConn.getSelected() != EditPart.SELECTED_NONE)
+					connections.add(targetConn);
+			}
+		}
+		deselections.addAll(connections);
+	}
 }
 
 private Request createTargetRequest() {
@@ -165,27 +223,21 @@ private void eraseMarqueeFeedback() {
 private void eraseTargetFeedback() {
 	if (selectedEditParts == null)
 		return;
-	ListIterator oldEditParts = selectedEditParts.listIterator();
+	Iterator oldEditParts = selectedEditParts.iterator();
 	while (oldEditParts.hasNext()) {
 		EditPart editPart = (EditPart)oldEditParts.next();
 		editPart.eraseTargetFeedback(getTargetRequest());
 	}
 }
 
-/**
- * Adds all the children of the given editpart to the given set
- */
 private void getAllChildren(EditPart editPart, Set allChildren) {
 	List children = editPart.getChildren();
 	for (int i = 0; i < children.size(); i++) {
 		GraphicalEditPart child = (GraphicalEditPart) children.get(i);
-		if (marqueeBehavior == BEHAVIOR_NODES_CONTAINED)
+		if (marqueeBehavior == BEHAVIOR_NODES_CONTAINED
+				|| marqueeBehavior == BEHAVIOR_NODES_AND_CONNECTIONS)
 			allChildren.add(child);
-		else if (marqueeBehavior == BEHAVIOR_CONNECTIONS_TOUCHED) {
-			allChildren.addAll(child.getSourceConnections());
-			allChildren.addAll(child.getTargetConnections());
-		} else if (marqueeBehavior == BEHAVIOR_NODES_AND_CONNECTIONS) {
-			allChildren.add(child);
+		if (marqueeBehavior == BEHAVIOR_CONNECTIONS_TOUCHED) {
 			allChildren.addAll(child.getSourceConnections());
 			allChildren.addAll(child.getTargetConnections());
 		}
@@ -193,9 +245,6 @@ private void getAllChildren(EditPart editPart, Set allChildren) {
 	}
 }
 
-/**
- * Return a set including all of the children of the root editpart
- */
 private Set getAllChildren() {
 	if (allChildren.isEmpty())
 		getAllChildren(getCurrentViewer().getRootEditPart(), allChildren);
@@ -253,6 +302,8 @@ protected boolean handleButtonDown(int button) {
 			setSelectionMode(TOGGLE_MODE);
 		else if (getCurrentInput().isShiftKeyDown())
 			setSelectionMode(APPEND_MODE);
+		else
+			setSelectionMode(DEFAULT_MODE);
 	}
 	return true;
 }
@@ -277,7 +328,7 @@ protected boolean handleDragInProgress() {
 	if (isInState(STATE_DRAG | STATE_DRAG_IN_PROGRESS)) {
 		showMarqueeFeedback();
 		eraseTargetFeedback();
-		selectedEditParts = calculateNewSelection();
+		calculateNewSelection(selectedEditParts = new ArrayList(), new ArrayList());
 		showTargetFeedback();
 	}
 	return true;
@@ -344,29 +395,17 @@ protected boolean isViewerImportant(EditPartViewer viewer) {
 
 private void performMarqueeSelect() {
 	EditPartViewer viewer = getCurrentViewer();
-
-	List newSelections = calculateNewSelection();
-
-	// If in multi select mode, add the new selections to the already
-	// selected group; otherwise, clear the selection and select the new group
-	if (getSelectionMode() == APPEND_MODE) {
-		for (int i = 0; i < newSelections.size(); i++) {
-			EditPart editPart = (EditPart)newSelections.get(i);	
-			viewer.appendSelection(editPart); 
-		} 
-	} else if (getSelectionMode() == TOGGLE_MODE) {
-		List selected = new ArrayList(viewer.getSelectedEditParts());
-		for (int i = 0; i < newSelections.size(); i++) {
-			EditPart editPart = (EditPart)newSelections.get(i);	
-			if (editPart.getSelected() != EditPart.SELECTED_NONE)
-				selected.remove(editPart);
-			else
-				selected.add(editPart);
-		}
-		viewer.setSelection(new StructuredSelection(selected));
-	} else {
-		viewer.setSelection(new StructuredSelection(newSelections));
+	Collection newSelections = marqueeBehavior == BEHAVIOR_NODES_AND_CONNECTIONS 
+			? new HashSet() : (Collection)new ArrayList();
+	Collection deselections = new HashSet();
+	calculateNewSelection(newSelections, deselections);
+	if (getSelectionMode() != DEFAULT_MODE) {
+		// We could end up with a list containing the same element twice, but that's
+		// okay because viewer.setSelection() will remove multiple copies.
+		newSelections.addAll(viewer.getSelectedEditParts());
+		newSelections.removeAll(deselections);
 	}
+	viewer.setSelection(new StructuredSelection(newSelections.toArray()));
 }
 
 /**
@@ -387,7 +426,8 @@ private void setSelectionMode(int mode) {
 }
 
 /**
- * Sets the type of parts that this tool will select.
+ * Sets the type of parts that this tool will select.  This method should only be
+ * invoked once: when the tool is being initialized.
  * @param type {@link #BEHAVIOR_CONNECTIONS_TOUCHED} or {@link #BEHAVIOR_NODES_CONTAINED}
  *        or {@link #BEHAVIOR_NODES_AND_CONNECTIONS}
  * @since 3.1
@@ -406,8 +446,8 @@ private void showMarqueeFeedback() {
 }
 
 private void showTargetFeedback() {
-	for (int i = 0; i < selectedEditParts.size(); i++) {
-		EditPart editPart = (EditPart) selectedEditParts.get(i);
+	for (Iterator itr = selectedEditParts.iterator(); itr.hasNext();) {
+		EditPart editPart = (EditPart) itr.next();
 		editPart.showTargetFeedback(getTargetRequest());
 	}
 }
