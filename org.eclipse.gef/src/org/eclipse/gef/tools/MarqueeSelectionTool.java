@@ -58,7 +58,7 @@ public class MarqueeSelectionTool
  */
 public static final Object PROPERTY_MARQUEE_BEHAVIOR = "marqueeBehavior"; //$NON-NLS-1$
 
-// these constants are declared as Integer.intValue() to prevent them from being inlined
+//	 these constants are declared as Integer.intValue() to prevent them from being inlined
 /**
  * This behaviour selects nodes completely encompassed by the marquee rectangle.  This 
  * is the default behaviour for this tool.
@@ -82,15 +82,14 @@ static final int DEFAULT_MODE = 0;
 static final int TOGGLE_MODE = 1;
 static final int APPEND_MODE = 2;
 
-private int mode;
-
 private Figure marqueeRectangleFigure;
 private Set allChildren = new HashSet();
 private Collection selectedEditParts;
 private Request targetRequest;
 private int marqueeBehavior = BEHAVIOR_NODES_CONTAINED;
+private int mode;
 
-private static final Request MARQUEE_REQUEST =
+private static final Request MARQUEE_REQUEST = 
 		new Request(RequestConstants.REQ_SELECTION); 
 
 /**
@@ -111,6 +110,56 @@ protected void applyProperty(Object key, Object value) {
 		return;
 	}
 	super.applyProperty(key, value);
+}
+
+private void calculateConnections(Collection newSelections, Collection deselections) {
+	// determine the currently selected nodes minus the ones that are to be deselected 
+	Collection currentNodes = new HashSet();
+	if (getSelectionMode() != DEFAULT_MODE) { // everything is deselected in default mode
+		Iterator iter = getCurrentViewer().getSelectedEditParts().iterator();		
+		while (iter.hasNext()) {
+			EditPart selected = (EditPart) iter.next();
+			if (!(selected instanceof ConnectionEditPart)
+					&& !deselections.contains(selected))
+				currentNodes.add(selected);
+		}
+	}
+	// add new connections to be selected to newSelections
+	Collection connections = new ArrayList();
+	for (Iterator nodes = newSelections.iterator(); nodes.hasNext();) {
+		GraphicalEditPart node = (GraphicalEditPart) nodes.next();
+		for (Iterator itr = node.getSourceConnections().iterator(); itr.hasNext();) {
+			ConnectionEditPart sourceConn = (ConnectionEditPart) itr.next();
+			if (sourceConn.getSelected() == EditPart.SELECTED_NONE
+					&& (newSelections.contains(sourceConn.getTarget())
+					|| currentNodes.contains(sourceConn.getTarget())))
+				connections.add(sourceConn);
+		}
+		for (Iterator itr = node.getTargetConnections().iterator(); itr.hasNext();) {
+			ConnectionEditPart targetConn = (ConnectionEditPart) itr.next();
+			if (targetConn.getSelected() == EditPart.SELECTED_NONE
+					&& (newSelections.contains(targetConn.getSource())
+					|| currentNodes.contains(targetConn.getSource())))
+				connections.add(targetConn);
+		}
+	}
+	newSelections.addAll(connections);
+	// add currently selected connections that are to be deselected to deselections
+	connections = new HashSet();
+	for (Iterator nodes = deselections.iterator(); nodes.hasNext();) {
+		GraphicalEditPart node = (GraphicalEditPart) nodes.next();
+		for (Iterator itr = node.getSourceConnections().iterator(); itr.hasNext();) {
+			ConnectionEditPart sourceConn = (ConnectionEditPart) itr.next();
+			if (sourceConn.getSelected() != EditPart.SELECTED_NONE)
+				connections.add(sourceConn);
+		}
+		for (Iterator itr = node.getTargetConnections().iterator(); itr.hasNext();) {
+			ConnectionEditPart targetConn = (ConnectionEditPart) itr.next();
+			if (targetConn.getSelected() != EditPart.SELECTED_NONE)
+				connections.add(targetConn);
+		}
+	}
+	deselections.addAll(connections);
 }
 
 private void calculateNewSelection(Collection newSelections, Collection deselections) {
@@ -143,57 +192,8 @@ private void calculateNewSelection(Collection newSelections, Collection deselect
 		}
 	}
 	
-	if (marqueeBehavior == BEHAVIOR_NODES_AND_CONNECTIONS) {
-		// determine the currently selected nodes minus the ones that are to be deselected 
-		Collection currentNodes = new HashSet();
-		if (getSelectionMode() != DEFAULT_MODE) { // everything is deselected in default mode
-			Iterator iter = getCurrentViewer().getSelectedEditParts().iterator();		
-			while (iter.hasNext()) {
-				EditPart selected = (EditPart) iter.next();
-				if (!(selected instanceof ConnectionEditPart)
-						&& !deselections.contains(selected))
-					currentNodes.add(selected);
-			}
-		}
-		
-		// add new connections to be selected to newSelections
-		Collection connections = new ArrayList();
-		for (Iterator nodes = newSelections.iterator(); nodes.hasNext();) {
-			GraphicalEditPart node = (GraphicalEditPart) nodes.next();
-			for (Iterator itr = node.getSourceConnections().iterator(); itr.hasNext();) {
-				ConnectionEditPart sourceConn = (ConnectionEditPart) itr.next();
-				if (sourceConn.getSelected() == EditPart.SELECTED_NONE
-						&& (newSelections.contains(sourceConn.getTarget())
-						|| currentNodes.contains(sourceConn.getTarget())))
-					connections.add(sourceConn);
-			}
-			for (Iterator itr = node.getTargetConnections().iterator(); itr.hasNext();) {
-				ConnectionEditPart targetConn = (ConnectionEditPart) itr.next();
-				if (targetConn.getSelected() == EditPart.SELECTED_NONE
-						&& (newSelections.contains(targetConn.getSource())
-						|| currentNodes.contains(targetConn.getSource())))
-					connections.add(targetConn);
-			}
-		}
-		newSelections.addAll(connections);
-		
-		// add currently selected connections that are to be deselected to deselections
-		connections = new HashSet();
-		for (Iterator nodes = deselections.iterator(); nodes.hasNext();) {
-			GraphicalEditPart node = (GraphicalEditPart) nodes.next();
-			for (Iterator itr = node.getSourceConnections().iterator(); itr.hasNext();) {
-				ConnectionEditPart sourceConn = (ConnectionEditPart) itr.next();
-				if (sourceConn.getSelected() != EditPart.SELECTED_NONE)
-					connections.add(sourceConn);
-			}
-			for (Iterator itr = node.getTargetConnections().iterator(); itr.hasNext();) {
-				ConnectionEditPart targetConn = (ConnectionEditPart) itr.next();
-				if (targetConn.getSelected() != EditPart.SELECTED_NONE)
-					connections.add(targetConn);
-			}
-		}
-		deselections.addAll(connections);
-	}
+	if (marqueeBehavior == BEHAVIOR_NODES_AND_CONNECTIONS)
+		calculateConnections(newSelections, deselections);
 }
 
 private Request createTargetRequest() {
@@ -230,6 +230,12 @@ private void eraseTargetFeedback() {
 	}
 }
 
+private Set getAllChildren() {
+	if (allChildren.isEmpty())
+		getAllChildren(getCurrentViewer().getRootEditPart(), allChildren);
+	return allChildren;
+}
+
 private void getAllChildren(EditPart editPart, Set allChildren) {
 	List children = editPart.getChildren();
 	for (int i = 0; i < children.size(); i++) {
@@ -243,12 +249,6 @@ private void getAllChildren(EditPart editPart, Set allChildren) {
 		}
 		getAllChildren(child, allChildren);
 	}
-}
-
-private Set getAllChildren() {
-	if (allChildren.isEmpty())
-		getAllChildren(getCurrentViewer().getRootEditPart(), allChildren);
-	return allChildren;
 }
 
 /**
@@ -409,23 +409,6 @@ private void performMarqueeSelect() {
 }
 
 /**
- * @see org.eclipse.gef.Tool#setViewer(org.eclipse.gef.EditPartViewer)
- */
-public void setViewer(EditPartViewer viewer) {
-	if (viewer == getCurrentViewer())
-		return;
-	super.setViewer(viewer);
-	if (viewer instanceof GraphicalViewer)
-		setDefaultCursor(SharedCursors.CROSS);
-	else
-		setDefaultCursor(SharedCursors.NO);
-}
-
-private void setSelectionMode(int mode) {
-	this.mode = mode;
-}
-
-/**
  * Sets the type of parts that this tool will select.  This method should only be
  * invoked once: when the tool is being initialized.
  * @param type {@link #BEHAVIOR_CONNECTIONS_TOUCHED} or {@link #BEHAVIOR_NODES_CONTAINED}
@@ -437,6 +420,23 @@ public void setMarqueeBehavior(int type) {
 			&& type != BEHAVIOR_NODES_AND_CONNECTIONS)
 		throw new IllegalArgumentException("Invalid marquee behaviour specified."); //$NON-NLS-1$
 	marqueeBehavior = type;
+}
+
+private void setSelectionMode(int mode) {
+	this.mode = mode;
+}
+
+/**
+ * @see org.eclipse.gef.Tool#setViewer(org.eclipse.gef.EditPartViewer)
+ */
+public void setViewer(EditPartViewer viewer) {
+	if (viewer == getCurrentViewer())
+		return;
+	super.setViewer(viewer);
+	if (viewer instanceof GraphicalViewer)
+		setDefaultCursor(SharedCursors.CROSS);
+	else
+		setDefaultCursor(SharedCursors.NO);
 }
 
 private void showMarqueeFeedback() {
@@ -455,9 +455,9 @@ private void showTargetFeedback() {
 class MarqueeRectangleFigure 
 	extends Figure {
 	
+	private static final int DELAY = 110; //animation delay in millisecond
 	private int offset = 0;
 	private boolean schedulePaint = true;
-	private static final int DELAY = 110; //animation delay in millisecond
 	/**
 	 * @see org.eclipse.draw2d.Figure#paintFigure(org.eclipse.draw2d.Graphics)
 	 */
