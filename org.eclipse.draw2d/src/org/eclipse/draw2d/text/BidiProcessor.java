@@ -20,7 +20,7 @@ import org.eclipse.swt.graphics.TextLayout;
 /**
  * A helper class for a BlockFlow that does Bidi evaluation of all the text in that block.
  * <p>
- * WARNING: This class is not intended to be subclassed by clients. This class is for
+ * WARNING: This class is not intended to be subclassed or used by clients. This class is for
  * INTERNAL use only.
  * @author Pratik Shah
  * @since 3.1
@@ -66,6 +66,7 @@ private BidiProcessor() { }
  * String which will determine the bidi info for all contributors.
  * @param fig the figure that is contributing the given text
  * @param str the text contributed by the given figure
+ * @see #addControlChar(char)
  */
 public void add(FlowFigure fig, String str) {
 	//We are currently tracking empty contributions ("")
@@ -79,6 +80,7 @@ public void add(FlowFigure fig, String str) {
  * String which will determine the bidi info for all contributors.
  * @param fig the figure that is contributing the given text
  * @param c the character being added
+ * @see #addControlChar(char)
  */
 public void add(FlowFigure fig, char c) {
 	list.add(new BidiEntry(fig, bidiText.length(), 1));
@@ -177,17 +179,14 @@ private boolean isPrecedingJoiner(int begin) {
  * Arabic characters that are split in different figures is also handled.  
  * This method will do nothing if the contributed text does not require Bidi 
  * evaluation.  All contributions are discarded at the end of this method.
- * <p>
- * The assigned Bidi levels are in the form on an int array that contains sets of
- * the Bidi level and the offset of the first character that that level applies to. For 
- * instance, {1, 0, 2, 5, 1, 9} would mean that characters at index 0-4 are of level 1, 
- * 5-8 of level 2 and the remaining characters (starting at offset 9) are of level 1.
  */
 public void process() {
+	if (bidiText.length() == 0 || isMacOS)
+		return;
 	char[] chars = new char[bidiText.length()];
 	bidiText.getChars(0, bidiText.length(), chars, 0);
 
-	if (!isMacOS && !Bidi.requiresBidi(chars, 0, chars.length - 1))
+	if (!Bidi.requiresBidi(chars, 0, chars.length - 1))
 		return;
 
 	int[] levels = new int[15];
