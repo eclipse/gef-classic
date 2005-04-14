@@ -9,7 +9,7 @@
  *     IBM Corporation - initial API and implementation
  * </copyright>
  *
- * $Id: NodeImpl.java,v 1.4 2005/03/29 23:58:13 pshah Exp $
+ * $Id: NodeImpl.java,v 1.5 2005/04/14 20:53:18 pshah Exp $
  * /
  *******************************************************************************/
 package org.eclipse.gef.examples.ediagram.model.impl;
@@ -148,10 +148,12 @@ public abstract class NodeImpl extends EObjectImpl implements Node
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	public void setLocation(Point newLocation)
 	{
+		if (location == newLocation || (location != null && location.equals(newLocation)))
+			return;
 		Point oldLocation = location;
 		location = newLocation;
 		if (eNotificationRequired())
@@ -233,10 +235,12 @@ public abstract class NodeImpl extends EObjectImpl implements Node
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	public void setWidth(int newWidth)
 	{
+		if (width == newWidth)
+			return;
 		int oldWidth = width;
 		width = newWidth;
 		if (eNotificationRequired())
