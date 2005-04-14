@@ -23,21 +23,24 @@
          id="org.eclipse.gef.examples.logic"
          download-size="0"
          install-size="0"
-         version="0.0.0">
+         version="0.0.0"
+         unpack="false">
    </plugin>
 
    <plugin
          id="org.eclipse.gef.examples.flow"
          download-size="0"
          install-size="0"
-         version="0.0.0">
+         version="0.0.0"
+         unpack="false">
    </plugin>
    
    <plugin
          id="org.eclipse.gef.examples.shapes"
          download-size="0"
          install-size="0"
-         version="0.0.0">
+         version="0.0.0"
+         unpack="false">
    </plugin>
 
    <plugin
@@ -51,7 +54,8 @@
          id="org.eclipse.gef.examples.text"
          download-size="0"
          install-size="0"
-         version="0.0.0">
+         version="0.0.0"
+         unpack="false">
     </plugin>
 
 </feature>
