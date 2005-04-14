@@ -15,8 +15,6 @@ import java.beans.PropertyChangeEvent;
 import org.eclipse.swt.accessibility.AccessibleControlEvent;
 import org.eclipse.swt.accessibility.AccessibleEvent;
 
-import org.eclipse.jface.viewers.TextCellEditor;
-
 import org.eclipse.draw2d.IFigure;
 
 import org.eclipse.gef.AccessibleEditPart;
@@ -66,8 +64,8 @@ private LogicLabel getLogicLabel(){
 
 private void performDirectEdit(){
 	if(manager == null)
-		manager = new LogicLabelEditManager(this, 
-			TextCellEditor.class, new LabelCellEditorLocator((StickyNoteFigure)getFigure()));
+		manager = new LogicLabelEditManager(
+				this, new LabelCellEditorLocator((StickyNoteFigure)getFigure()));
 	manager.show();
 }
 
