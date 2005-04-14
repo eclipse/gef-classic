@@ -85,10 +85,10 @@ public class EDiagramEditor
 protected static final String PALETTE_DOCK_LOCATION = "Dock location"; //$NON-NLS-1$
 protected static final String PALETTE_SIZE = "Palette Size"; //$NON-NLS-1$
 protected static final String PALETTE_STATE = "Palette state"; //$NON-NLS-1$
+protected static final ResourceSet RESOURCE_SET = new ResourceSetImpl();
 
 private Diagram diagram;
 private PaletteRoot paletteRoot;
-private ResourceSet rsrcSet;
 
 public EDiagramEditor() {
 	setEditDomain(new DefaultEditDomain(this));
@@ -211,7 +211,7 @@ protected PaletteRoot getPaletteRoot() {
 
 public void doSave(IProgressMonitor monitor) {
 	try {
-		for (Iterator iter = rsrcSet.getResources().iterator(); iter.hasNext();)
+		for (Iterator iter = RESOURCE_SET.getResources().iterator(); iter.hasNext();)
 			((Resource)iter.next()).save(Collections.EMPTY_MAP);
 		getCommandStack().markSaveLocation();
 	} catch (IOException ioe) {
@@ -262,9 +262,8 @@ protected void setInput(IEditorInput input) {
 	super.setInput(input);
 
 	IFile file = ((IFileEditorInput)input).getFile();
-	rsrcSet = new ResourceSetImpl();
 	URI uri = URI.createURI(file.getFullPath().toString());
-	Resource resource = rsrcSet.getResource(uri, true);
+	Resource resource = RESOURCE_SET.getResource(uri, true);
 	diagram = (Diagram)resource.getContents().get(0);
 	
 	setPartName(file.getName());
