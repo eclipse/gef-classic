@@ -1128,8 +1128,15 @@ void placeMouseInViewer(Point p) {
  * Calls <code>deactivate()</code> and then <code>activate()</code>.
  */
 protected void reactivate() {
+	// Fix for Bug# 91448
+	EditPartViewer viewer = getCurrentViewer();
 	deactivate();
 	activate();
+	if (viewer != null) {
+		Control c = viewer.getControl();
+		if (c != null && !c.isDisposed() && c.isFocusControl())
+			setViewer(viewer);
+	}
 }
 
 /**
