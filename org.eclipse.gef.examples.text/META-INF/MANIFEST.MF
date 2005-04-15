@@ -1,0 +1,24 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: GEF Text Editor Example
+Bundle-SymbolicName: org.eclipse.gef.examples.text; singleton:=true
+Bundle-Version: 3.1.0
+Bundle-Vendor: Eclipse.org
+Bundle-Localization: plugin
+Export-Package: org.eclipse.gef.examples.text,
+ org.eclipse.gef.examples.text.actions,
+ org.eclipse.gef.examples.text.edit,
+ org.eclipse.gef.examples.text.figures,
+ org.eclipse.gef.examples.text.model,
+ org.eclipse.gef.examples.text.model.commands,
+ org.eclipse.gef.examples.text.requests,
+ org.eclipse.gef.examples.text.tools
+Require-Bundle: org.eclipse.gef,
+ org.eclipse.core.runtime,
+ org.eclipse.ui.workbench,
+ org.eclipse.jface,
+ org.eclipse.ui.ide,
+ org.eclipse.ui.views,
+ org.junit,
+ org.eclipse.core.resources
+Eclipse-AutoStart: true
