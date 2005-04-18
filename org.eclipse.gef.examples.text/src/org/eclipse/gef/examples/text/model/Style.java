@@ -11,10 +11,6 @@
 
 package org.eclipse.gef.examples.text.model;
 
-import org.eclipse.swt.graphics.FontData;
-
-import org.eclipse.jface.resource.JFaceResources;
-
 import org.eclipse.gef.ui.actions.GEFActionConstants;
 
 /**
@@ -23,14 +19,6 @@ import org.eclipse.gef.ui.actions.GEFActionConstants;
 public class Style 
 	extends Notifier
 {
-
-private static final int DEFAULT_FONT_SIZE;
-private static final String DEFAULT_FONT_FAMILY;
-static {
-	FontData fd = JFaceResources.getTextFont().getFontData()[0];
-	DEFAULT_FONT_SIZE = fd.getHeight();
-	DEFAULT_FONT_FAMILY = fd.getName();
-}
 
 private boolean bold;
 private String fontFamily;
@@ -44,7 +32,7 @@ public String getFontFamily() {
 		return fontFamily;
 	if (parentStyle != null)
 		return parentStyle.getFontFamily();
-	return DEFAULT_FONT_FAMILY;
+	return "";
 }
 
 public int getFontHeight() {
@@ -52,7 +40,7 @@ public int getFontHeight() {
 		return fontHeight;
 	if (parentStyle != null)
 		return parentStyle.getFontHeight();
-	return DEFAULT_FONT_SIZE;
+	return -1;
 }
 
 public boolean isBold() {

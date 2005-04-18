@@ -52,40 +52,38 @@ protected void refreshChildren() {
 }
 
 protected void refreshVisuals() {
-	String label;
+	StringBuffer label = new StringBuffer();
 	switch (getContainer().getType()) {
 		case Container.TYPE_BULLETED_LIST:
-			label = "bullet";
+			label.append("<bullet>");
 			break;
 		case Container.TYPE_COMMENT:
-			label = "comment";
+			label.append("<comment>");
 			break;
 		case Container.TYPE_IMPORT_DECLARATIONS:
-			label = "import declarations";
+			label.append("<import declarations>");
 			break;
 
 		case Container.TYPE_INLINE:
 			if (getContainer().getStyle().isSet(GEFActionConstants.STYLE_FONT_SIZE))
-				label = "FONT SIZE";
-			else if (getContainer().getStyle().isSet(GEFActionConstants.STYLE_BOLD))
-				label ="BOLD";
-			else if (getContainer().getStyle().isSet(GEFActionConstants.STYLE_ITALIC))
-				label = "ITALIC";
-			else if (getContainer().getStyle().isSet(GEFActionConstants.STYLE_UNDERLINE))
-				label ="UNDERLINE";
-			else if (getContainer().getStyle().isSet(GEFActionConstants.STYLE_FONT_NAME))
-				label ="FONT";
-			else
-				label = "nested";
+				label.append("<FONT SIZE>");
+			if (getContainer().getStyle().isSet(GEFActionConstants.STYLE_BOLD))
+				label.append("<B>");
+			if (getContainer().getStyle().isSet(GEFActionConstants.STYLE_ITALIC))
+				label.append("<I>");
+			if (getContainer().getStyle().isSet(GEFActionConstants.STYLE_UNDERLINE))
+				label.append("<U>");
+			if (getContainer().getStyle().isSet(GEFActionConstants.STYLE_FONT_NAME))
+				label.append("FONT");
 			break;
 		case Container.TYPE_PARAGRAPH:
-			label = "Paragraph";
+			label.append("Paragraph");
 			break;
 		default:
-			label = "unknown container";
+			label.append("Unknown container");
 			break;
 	}
-	setWidgetText(label);
+	setWidgetText(label.toString());
 }
 
 }

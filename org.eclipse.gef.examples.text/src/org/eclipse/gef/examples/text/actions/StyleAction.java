@@ -37,10 +37,6 @@ public StyleAction(StyleService service, String styleID) {
 	this(service, styleID, IAction.AS_CHECK_BOX);
 }
 
-/**
- * @param part
- * @since 3.1
- */
 public StyleAction(StyleService service, String styleID, int style) {
 	setStyleService(service);
 	setId(styleID);

@@ -45,11 +45,6 @@ import org.eclipse.gef.examples.text.requests.TextRequest;
  */
 public class BlockEditPolicy extends GraphicalEditPolicy {
 
-/**
- * @since 3.1
- * @param location
- * @return
- */
 private Command checkForConversion(TextLocation location) {
 	TextRun run = (TextRun)location.part.getModel();
 	String prefix = run.getText().substring(0, location.offset);
@@ -81,11 +76,6 @@ private Command checkForConversion(TextLocation location) {
 	return null;
 }
 
-/**
- * @since 3.1
- * @param request
- * @return
- */
 private Command getBackspaceCommand(TextRequest request) {
 	TextLocation where = request.getSelectionRange().begin;
 	
@@ -130,11 +120,6 @@ public Command getCommand(Request request) {
 	return null;
 }
 
-/**
- * @param request
- * @return
- * @since 3.1
- */
 private Command getTextStyleApplication(TextRequest request) {
 	SelectionRange range = request.getSelectionRange();
 	if (range.isEmpty())
@@ -148,31 +133,16 @@ private Command getTextStyleApplication(TextRequest request) {
 	return new SingleEditCommand(style, start, end);
 }
 
-/**
- * @since 3.1
- * @param request
- * @return
- */
 private Command getIndentCommand(TextRequest request) {
 	SelectionRange range = request.getSelectionRange();
 	return new NestElementCommand(range.begin.part, range.begin.offset);
 }
 
-/**
- * @since 3.1
- * @param request
- * @return
- */
 private Command getUnindentCommand(TextRequest request) {
 	SelectionRange range = request.getSelectionRange();
 	return new PromoteElementCommand(range.begin.part, range.begin.offset);
 }
 
-/**
- * @since 3.1
- * @param request
- * @return
- */
 private Command getDeleteCommand(TextRequest request) {
 	TextLocation where = request.getSelectionRange().begin;
 	if (where.offset == where.part.getLength())
@@ -189,11 +159,6 @@ private Command getDeleteCommand(TextRequest request) {
 	return command;
 }
 
-/**
- * @since 3.1
- * @param request
- * @return
- */
 private MiniEdit getMergeBackspaceEdit(TextRequest request) {
 	TextualEditPart part = request.getSelectionRange().begin.part;
 	MergeWithPrevious edit = new MergeWithPrevious(part);
@@ -202,11 +167,6 @@ private MiniEdit getMergeBackspaceEdit(TextRequest request) {
 	return null;
 }
 
-/**
- * @since 3.1
- * @param request
- * @return
- */
 private Command getNewlineCommand(TextRequest request) {
 	TextLocation where = request.getSelectionRange().end;
 	TextRun run = (TextRun)where.part.getModel();
@@ -221,11 +181,6 @@ private Command getNewlineCommand(TextRequest request) {
 	return command;
 }
 
-/**
- * @since 3.1
- * @param request
- * @return
- */
 private Command getRangeRemovalCommand(TextRequest request) {
 	return getTextInsertionCommand(request);
 }
@@ -236,11 +191,6 @@ public EditPart getTargetEditPart(Request request) {
 	return null;
 }
 
-/**
- * @since 3.1
- * @param request
- * @return
- */
 private Command getTextInsertionCommand(TextRequest request) {
 	CompoundEditCommand command = null;
 	if (request.getPreviousCommand() instanceof CompoundEditCommand)

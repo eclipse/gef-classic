@@ -224,7 +224,7 @@ protected TextLocation searchLineBelow(CaretSearch search) {
 			CaretInfo caretInfo = location.part.getCaretPlacement(location.offset, false);
 			if (lineBounds == null)
 				lineBounds = new Rectangle(caretInfo.getX(), caretInfo.top(), 0, caretInfo.getHeight());
-			else if (lineBounds.y > caretInfo.getBaseline())
+			else if (lineBounds.bottom() < caretInfo.getBaseline())
 				break;
 			else
 				lineBounds.union(caretInfo.getX(), caretInfo.top(), 0, caretInfo.getHeight());

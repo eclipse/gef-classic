@@ -19,9 +19,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.EventObject;
 
-import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -65,6 +63,7 @@ import org.eclipse.gef.examples.text.edit.TextFlowPart;
 import org.eclipse.gef.examples.text.edit.TextLayoutPart;
 import org.eclipse.gef.examples.text.edit.TextRunTreePart;
 import org.eclipse.gef.examples.text.model.Block;
+import org.eclipse.gef.examples.text.model.CanvasStyle;
 import org.eclipse.gef.examples.text.model.Container;
 import org.eclipse.gef.examples.text.model.TextRun;
 import org.eclipse.gef.examples.text.tools.TextTool;
@@ -107,6 +106,8 @@ public void commandStackChanged(EventObject event) {
  */
 protected void configureGraphicalViewer() {
 	super.configureGraphicalViewer();
+	doc.getStyle().setParentStyle(new CanvasStyle(getGraphicalViewer().getControl()));
+
 	//getGraphicalViewer().getControl().setFont(new Font(Display.getCurrent(), "Tahoma", 11, 0));
 	getEditDomain().setDefaultTool(
 			new TextTool((GraphicalTextViewer)getGraphicalViewer(), styleService));
@@ -145,6 +146,12 @@ protected void createActions() {
 	registry.registerAction(action);
 	
 	action = new StyleAction(styleService, GEFActionConstants.BLOCK_ALIGN_RIGHT);
+	registry.registerAction(action);
+	
+	action = new StyleAction(styleService, GEFActionConstants.BLOCK_LTR);
+	registry.registerAction(action);
+	
+	action = new StyleAction(styleService, GEFActionConstants.BLOCK_RTL);
 	registry.registerAction(action);
 }
 
