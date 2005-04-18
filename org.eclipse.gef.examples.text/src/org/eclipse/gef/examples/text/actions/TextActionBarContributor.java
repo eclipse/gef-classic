@@ -9,7 +9,7 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.gef.examples.text;
+package org.eclipse.gef.examples.text.actions;
 
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
@@ -17,9 +17,6 @@ import org.eclipse.jface.action.Separator;
 import org.eclipse.gef.ui.actions.ActionBarContributor;
 import org.eclipse.gef.ui.actions.GEFActionConstants;
 
-import org.eclipse.gef.examples.text.actions.ChangeFontContributionItem;
-import org.eclipse.gef.examples.text.actions.ResizeFontContributionItem;
-import org.eclipse.gef.examples.text.actions.StyleRetargetAction;
 
 /**
  * @since 3.1

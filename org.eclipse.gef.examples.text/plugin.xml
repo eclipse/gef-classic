@@ -8,7 +8,7 @@
             class="org.eclipse.gef.examples.text.TextEditor"
             icon="text.gif"
             default="true"
-            contributorClass="org.eclipse.gef.examples.text.TextActionBarContributor"
+            contributorClass="org.eclipse.gef.examples.text.actions.TextActionBarContributor"
             name="Document Editor"
             id="org.eclipse.gef.TextEditor"
             extensions="text">
