@@ -33,13 +33,11 @@ import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 import org.eclipse.draw2d.FigureCanvas;
-import org.eclipse.draw2d.text.FlowFigure;
 
 import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartFactory;
 import org.eclipse.gef.EditPartViewer;
-import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.gef.commands.CommandStackEvent;
@@ -60,7 +58,6 @@ import org.eclipse.gef.examples.text.edit.ImportPart;
 import org.eclipse.gef.examples.text.edit.ImportsPart;
 import org.eclipse.gef.examples.text.edit.InlineTextualPart;
 import org.eclipse.gef.examples.text.edit.TextFlowPart;
-import org.eclipse.gef.examples.text.edit.TextLayoutPart;
 import org.eclipse.gef.examples.text.edit.TextRunTreePart;
 import org.eclipse.gef.examples.text.model.Block;
 import org.eclipse.gef.examples.text.model.CanvasStyle;
@@ -175,10 +172,6 @@ public Object getAdapter(Class type) {
 	return super.getAdapter(type);
 }
 
-/**
- * @since 3.1
- * @return
- */
 private IContentOutlinePage createOutlinePage() {
 	return new TextOutlinePage(null);
 }
