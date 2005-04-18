@@ -18,8 +18,8 @@ import java.util.List;
  * @since 3.1
  */
 public class StyleService {
-public static final Object STATE_EDITABLE = new Object();
 
+public static final Object STATE_EDITABLE = new Object();
 public static final Object STATE_READ_ONLY = new Object();
 public static final Object UNDEFINED = new Object();
 
@@ -33,7 +33,6 @@ private StyleListener providerListener = new StyleListener() {
 
 /**
  * Constructs a new StyleService object 
- * @since 3.1
  */
 public StyleService() {
 	super();
@@ -57,7 +56,6 @@ public Object getStyleState(String styleID) {
 
 /**
  * @param styleID
- * @since 3.1
  */
 protected void propogateChange(String styleID) {
 	for (int i = 0; i < listeners.size(); i++) {
@@ -69,15 +67,14 @@ protected void propogateChange(String styleID) {
 /**
  * Removes the first occurrence of the given listener.
  * @param listener the style listener
- * @since 3.1
  */
 public void removeStyleListener(StyleListener listener) {
 	listeners.remove(listener);
 }
 
 public void setStyle(String styleID, Object value) {
-	if (this.provider != null)
-		this.provider.setStyle(styleID, value);
+	if (provider != null)
+		provider.setStyle(styleID, value);
 }
 
 public void setStyleProvider(StyleProvider provider) {
