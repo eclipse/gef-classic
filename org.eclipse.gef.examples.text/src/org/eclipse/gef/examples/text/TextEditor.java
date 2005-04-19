@@ -314,7 +314,7 @@ protected void setInput(IEditorInput input) {
 			doc.add(code);
 			code.add(new TextRun("public void countToANumber(int limit) {\n" +
 					"    for (int i = 0; i < limit; i++)\n" +
-					"        System.out.println(\"Counting:\" + limit); //$NON-NLS-1$\n\n" +
+					"        System.out.println(\"Counting: \" + i); //$NON-NLS-1$\n\n" +
 					"}", TextRun.TYPE_CODE));
 		//}
 	}
