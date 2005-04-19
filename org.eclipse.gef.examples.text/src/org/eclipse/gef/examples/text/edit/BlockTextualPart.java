@@ -11,19 +11,25 @@
 
 package org.eclipse.gef.examples.text.edit;
 
+import java.beans.PropertyChangeEvent;
+
+import org.eclipse.draw2d.text.BlockFlow;
+
 import org.eclipse.gef.examples.text.TextLocation;
+import org.eclipse.gef.examples.text.model.Style;
 
 /**
  * @since 3.1
  */
-public class BlockTextualPart extends CompoundTextualPart {
+public class BlockTextualPart 
+	extends CompoundTextualPart 
+{
 
 public BlockTextualPart(Object model) {
 	super(model);
 }
 
 public TextLocation getNextLocation(CaretSearch search) {
-	
 	TextLocation result;
 	switch (search.type) {
 		case CaretSearch.ROW:
@@ -43,6 +49,18 @@ public TextLocation getNextLocation(CaretSearch search) {
 		default:
 			return super.getNextLocation(search);
 	}
+}
+
+public void propertyChange(PropertyChangeEvent evt) {
+	if (evt.getPropertyName().equals(Style.STYLE_ALIGNMENT))
+		refreshVisuals();
+	else
+		super.propertyChange(evt);
+}
+
+protected void refreshVisuals() {
+	((BlockFlow)getFigure()).setHorizontalAligment(
+			getContainer().getStyle().getAlignment());
 }
 
 }

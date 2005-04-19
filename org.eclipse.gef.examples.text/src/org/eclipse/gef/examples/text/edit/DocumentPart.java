@@ -13,11 +13,9 @@ package org.eclipse.gef.examples.text.edit;
 
 import java.util.Iterator;
 
-import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 
-import org.eclipse.gef.editparts.AbstractEditPart;
 import org.eclipse.gef.ui.actions.GEFActionConstants;
 
 import org.eclipse.gef.examples.text.SelectionRange;
@@ -33,16 +31,10 @@ public class DocumentPart
 	implements TextStyleManager
 {
 
-/**
- * @since 3.1
- */
 public DocumentPart(Object model) {
 	super(model);
 }
 
-/**
- * @see AbstractEditPart#createEditPolicies()
- */
 protected void createEditPolicies() {
 	installEditPolicy("Text Editing", new BlockEditPolicy());
 }
@@ -107,20 +99,15 @@ public Object getStyleValue(String styleID, SelectionRange range) {
 				return Boolean.FALSE;
 		}
 		return Boolean.TRUE;
-	} else {
-		boolean left = GEFActionConstants.BLOCK_ALIGN_LEFT.equals(styleID);
-		boolean center = GEFActionConstants.BLOCK_ALIGN_CENTER.equals(styleID);
-		boolean right = GEFActionConstants.BLOCK_ALIGN_RIGHT.equals(styleID);
-		if (left || center || right) {
-			int alignment = left ? PositionConstants.LEFT 
-					: (right ? PositionConstants.RIGHT : PositionConstants.CENTER);
-			for (Iterator iter = range.getLeafParts().iterator(); iter.hasNext();) {
-				TextRun run = (TextRun)((TextualEditPart)iter.next()).getModel();
-				if (run.getContainer().getStyle().getAlignment() != alignment)
-					return Boolean.FALSE;
-			}
-			return Boolean.TRUE;
+	} else if (GEFActionConstants.BLOCK_ALIGN_LEFT.equals(styleID)
+			|| GEFActionConstants.BLOCK_ALIGN_CENTER.equals(styleID)
+			|| GEFActionConstants.BLOCK_ALIGN_RIGHT.equals(styleID)) {
+		for (Iterator iter = range.getLeafParts().iterator(); iter.hasNext();) {
+			TextRun run = (TextRun)((TextualEditPart)iter.next()).getModel();
+			if (!run.getBlockContainer().getStyle().isSet(styleID))
+				return Boolean.FALSE;
 		}
+		return Boolean.TRUE;
 	}
 	return StyleService.UNDEFINED;
 }

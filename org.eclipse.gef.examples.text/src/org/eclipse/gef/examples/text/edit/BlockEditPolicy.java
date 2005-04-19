@@ -11,6 +11,8 @@
 
 package org.eclipse.gef.examples.text.edit;
 
+import java.util.Iterator;
+
 import org.eclipse.jface.util.Assert;
 
 import org.eclipse.gef.EditPart;
@@ -19,7 +21,6 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.GraphicalEditPolicy;
 import org.eclipse.gef.ui.actions.GEFActionConstants;
 
-import org.eclipse.gef.examples.text.GraphicalTextViewer;
 import org.eclipse.gef.examples.text.SelectionRange;
 import org.eclipse.gef.examples.text.TextLocation;
 import org.eclipse.gef.examples.text.model.Block;
@@ -39,7 +40,6 @@ import org.eclipse.gef.examples.text.model.commands.ProcessMacroCommand;
 import org.eclipse.gef.examples.text.model.commands.PromoteElementCommand;
 import org.eclipse.gef.examples.text.model.commands.RemoveRange;
 import org.eclipse.gef.examples.text.model.commands.RemoveText;
-import org.eclipse.gef.examples.text.model.commands.SingleEditCommand;
 import org.eclipse.gef.examples.text.model.commands.SubdivideElement;
 import org.eclipse.gef.examples.text.requests.TextRequest;
 
@@ -124,24 +124,34 @@ public Command getCommand(Request request) {
 }
 
 private Command getTextStyleApplication(TextRequest request) {
-	MiniEdit edit = null;
 	SelectionRange range = request.getSelectionRange();
 	ModelLocation start = new ModelLocation(
 			(TextRun)range.begin.part.getModel(), range.begin.offset);
 	ModelLocation end = new ModelLocation(
 			(TextRun)range.end.part.getModel(), range.end.offset);
+	CompoundEditCommand command = new CompoundEditCommand("");
+	command.setBeginLocation(start);
+	command.setEndLocation(end);
 	
 	String styleID = request.getStyleKeys()[0];
 	if (GEFActionConstants.BLOCK_ALIGN_LEFT.equals(styleID)
 			|| GEFActionConstants.BLOCK_ALIGN_CENTER.equals(styleID)
-			|| GEFActionConstants.BLOCK_ALIGN_RIGHT.equals(styleID))
-		edit = new ApplyAlignment((Container)getHost().getModel(), styleID, 
-				request.getStyleValues()[0], end);
-	else if (!range.isEmpty())
-		edit = new ApplyStyle(start, end, request.getStyleKeys(), 
-				request.getStyleValues());
+			|| GEFActionConstants.BLOCK_ALIGN_RIGHT.equals(styleID)) {
+		command.setLabel("Set Alignment");
+		for (Iterator iter = range.getLeafParts().iterator(); iter.hasNext();) {
+			// TODO optimize by ensuring that runs in the same container don't cause
+			// that container's style to be set multiple times
+			TextRun run = (TextRun)((TextualEditPart)iter.next()).getModel();
+			command.pendEdit(new ApplyAlignment(run.getBlockContainer(), styleID, 
+					request.getStyleValues()[0], end));
+		}		
+	} else if (!range.isEmpty()) {
+		command.setLabel("Set Style");
+		command.pendEdit(new ApplyStyle(start, end, request.getStyleKeys(), 
+				request.getStyleValues()));
+	}
 
-	return edit == null ? null : new SingleEditCommand(edit, start, end);
+	return command;
 }
 
 private Command getIndentCommand(TextRequest request) {

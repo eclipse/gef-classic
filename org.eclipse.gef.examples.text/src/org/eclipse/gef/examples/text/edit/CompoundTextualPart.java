@@ -22,14 +22,10 @@ import org.eclipse.draw2d.text.BlockFlow;
 import org.eclipse.draw2d.text.CaretInfo;
 import org.eclipse.draw2d.text.FlowPage;
 import org.eclipse.draw2d.text.InlineFlow;
-import org.eclipse.draw2d.text.TextFlow;
-
-import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 
 import org.eclipse.gef.examples.text.TextLocation;
 import org.eclipse.gef.examples.text.figures.CommentPage;
 import org.eclipse.gef.examples.text.model.Container;
-import org.eclipse.gef.examples.text.model.Style;
 
 /**
  * @since 3.1
@@ -47,9 +43,6 @@ public void activate() {
 
 protected void createEditPolicies() {}
 
-/**
- * @see AbstractGraphicalEditPart#createFigure()
- */
 protected IFigure createFigure() {
 	Figure figure = null;
 	switch (getContainer().getType()) {
@@ -130,17 +123,6 @@ public TextLocation getNextLocation(CaretSearch search) {
 public void propertyChange(PropertyChangeEvent evt) {
 	if (evt.getPropertyName().equals("children"))
 		refreshChildren();
-	else if (evt.getPropertyName().equals(Style.STYLE_ALIGNMENT))
-		refreshVisuals();
-}
-
-protected void refreshVisuals() {
-	int alignment = getContainer().getStyle().getAlignment();
-	if (getFigure() instanceof BlockFlow && alignment >= 0) {
-		BlockFlow block = (BlockFlow)getFigure();
-		block.setHorizontalAligment(alignment);
-		block.invalidateTree();
-	}
 }
 
 TextLocation searchBackwards(CaretSearch search) {
