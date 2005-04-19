@@ -15,7 +15,7 @@ import org.eclipse.swt.widgets.Control;
 
 public class CanvasStyle extends Style {
 
-private final Control canvas;
+private transient final Control canvas;
 
 public CanvasStyle (Control canvas) {
 	this.canvas = canvas;
