@@ -11,9 +11,6 @@
 
 package org.eclipse.gef.examples.text.edit;
 
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Display;
-
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.text.BlockFlow;
 import org.eclipse.draw2d.text.TextFlow;
@@ -24,7 +21,9 @@ import org.eclipse.gef.examples.text.figures.TreeItemBorder;
 /**
  * @since 3.1
  */
-public class ImportPart extends TextFlowPart {
+public class ImportPart 
+	extends TextFlowPart 
+{
 
 public ImportPart(Object model) {
 	super(model);
