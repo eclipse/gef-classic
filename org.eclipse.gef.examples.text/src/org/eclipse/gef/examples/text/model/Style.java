@@ -11,6 +11,8 @@
 
 package org.eclipse.gef.examples.text.model;
 
+import org.eclipse.draw2d.PositionConstants;
+
 import org.eclipse.gef.ui.actions.GEFActionConstants;
 
 /**
@@ -19,13 +21,26 @@ import org.eclipse.gef.ui.actions.GEFActionConstants;
 public class Style 
 	extends Notifier
 {
+	
+private static final long serialVersionUID = 1;
+	
+public static final String STYLE_ALIGNMENT = "alignment"; //$NON-NLS-1$
 
+private int alignment = PositionConstants.NONE;
 private boolean bold;
 private String fontFamily;
-private int fontHeight = - 1;
+private int fontHeight = -1;
 private boolean italic;
-private boolean underline;
 private Style parentStyle;
+private boolean underline;
+
+public int getAlignment() {
+	if (alignment != PositionConstants.NONE)
+		return alignment;
+	if (parentStyle != null)
+		return parentStyle.getAlignment();
+	return PositionConstants.NONE;
+}
 
 public String getFontFamily() {
 	if (fontFamily != null)
@@ -41,6 +56,11 @@ public int getFontHeight() {
 	if (parentStyle != null)
 		return parentStyle.getFontHeight();
 	return -1;
+}
+
+public boolean isAlignedLeft() {
+	return alignment == PositionConstants.LEFT 
+			|| (parentStyle != null && parentStyle.isAlignedLeft());
 }
 
 public boolean isBold() {
@@ -62,6 +82,12 @@ public boolean isSet(String styleID) {
 		return underline;
 	if (GEFActionConstants.STYLE_FONT_NAME.equals(styleID))
 		return fontFamily != null;
+	if (GEFActionConstants.BLOCK_ALIGN_LEFT.equals(styleID))
+		return alignment == PositionConstants.LEFT;
+	if (GEFActionConstants.BLOCK_ALIGN_CENTER.equals(styleID))
+		return alignment == PositionConstants.CENTER;
+	if (GEFActionConstants.BLOCK_ALIGN_RIGHT.equals(styleID))
+		return alignment == PositionConstants.RIGHT;
 	return false;
 }
 
@@ -69,11 +95,25 @@ public boolean isUnderline() {
 	return underline ||(parentStyle != null && parentStyle.isUnderline());
 }
 
+public void setAlignment(int value) {
+	if (alignment == value 
+			|| (value != PositionConstants.LEFT 
+			&& value != PositionConstants.CENTER 
+			&& value != PositionConstants.RIGHT
+			&& value != PositionConstants.NONE))
+		return;
+	int oldValue = alignment;
+	alignment = value;
+	if (listeners != null)
+		listeners.firePropertyChange(STYLE_ALIGNMENT, oldValue, alignment);
+}
+
 public void setBold(boolean value) {
 	if (bold == value)
 		return;
 	bold = value;
 	if (listeners != null)
+		// TODO need to define properties for these?
 		listeners.firePropertyChange("bold", !value, value);
 }
 

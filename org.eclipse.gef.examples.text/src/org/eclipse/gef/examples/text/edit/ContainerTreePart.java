@@ -20,6 +20,7 @@ import org.eclipse.swt.widgets.Widget;
 import org.eclipse.gef.ui.actions.GEFActionConstants;
 
 import org.eclipse.gef.examples.text.model.Container;
+import org.eclipse.gef.examples.text.model.Style;
 
 /**
  * @since 3.1
@@ -65,16 +66,21 @@ protected void refreshVisuals() {
 			break;
 
 		case Container.TYPE_INLINE:
-			if (getContainer().getStyle().isSet(GEFActionConstants.STYLE_FONT_SIZE))
+			Style style = getContainer().getStyle();
+			if (style.isSet(GEFActionConstants.STYLE_FONT_SIZE))
 				label.append("<FONT SIZE>");
-			if (getContainer().getStyle().isSet(GEFActionConstants.STYLE_BOLD))
+			if (style.isSet(GEFActionConstants.STYLE_BOLD))
 				label.append("<B>");
-			if (getContainer().getStyle().isSet(GEFActionConstants.STYLE_ITALIC))
+			if (style.isSet(GEFActionConstants.STYLE_ITALIC))
 				label.append("<I>");
-			if (getContainer().getStyle().isSet(GEFActionConstants.STYLE_UNDERLINE))
+			if (style.isSet(GEFActionConstants.STYLE_UNDERLINE))
 				label.append("<U>");
-			if (getContainer().getStyle().isSet(GEFActionConstants.STYLE_FONT_NAME))
-				label.append("FONT");
+			if (style.isSet(GEFActionConstants.STYLE_FONT_NAME))
+				label.append("<FONT>");
+			if (style.isSet(GEFActionConstants.BLOCK_ALIGN_LEFT)
+					|| style.isSet(GEFActionConstants.BLOCK_ALIGN_RIGHT)
+					|| style.isSet(GEFActionConstants.BLOCK_ALIGN_CENTER))
+				label.append("<ALIGN>");
 			break;
 		case Container.TYPE_PARAGRAPH:
 			label.append("Paragraph");

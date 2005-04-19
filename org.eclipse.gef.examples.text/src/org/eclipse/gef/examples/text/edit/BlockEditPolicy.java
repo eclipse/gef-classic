@@ -17,7 +17,9 @@ import org.eclipse.gef.EditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.GraphicalEditPolicy;
+import org.eclipse.gef.ui.actions.GEFActionConstants;
 
+import org.eclipse.gef.examples.text.GraphicalTextViewer;
 import org.eclipse.gef.examples.text.SelectionRange;
 import org.eclipse.gef.examples.text.TextLocation;
 import org.eclipse.gef.examples.text.model.Block;
@@ -25,6 +27,7 @@ import org.eclipse.gef.examples.text.model.Container;
 import org.eclipse.gef.examples.text.model.InlineContainer;
 import org.eclipse.gef.examples.text.model.ModelLocation;
 import org.eclipse.gef.examples.text.model.TextRun;
+import org.eclipse.gef.examples.text.model.commands.ApplyAlignment;
 import org.eclipse.gef.examples.text.model.commands.ApplyStyle;
 import org.eclipse.gef.examples.text.model.commands.CompoundEditCommand;
 import org.eclipse.gef.examples.text.model.commands.ConvertElementCommand;
@@ -121,16 +124,24 @@ public Command getCommand(Request request) {
 }
 
 private Command getTextStyleApplication(TextRequest request) {
+	MiniEdit edit = null;
 	SelectionRange range = request.getSelectionRange();
-	if (range.isEmpty())
-		return null;
+	ModelLocation start = new ModelLocation(
+			(TextRun)range.begin.part.getModel(), range.begin.offset);
+	ModelLocation end = new ModelLocation(
+			(TextRun)range.end.part.getModel(), range.end.offset);
 	
-	ModelLocation start = new ModelLocation((TextRun)range.begin.part.getModel(), range.begin.offset);
-	ModelLocation end = new ModelLocation((TextRun)range.end.part.getModel(), range.end.offset);
-	ApplyStyle style = new ApplyStyle(start, end,
-			request.getStyleKeys(), request.getStyleValues());
-	
-	return new SingleEditCommand(style, start, end);
+	String styleID = request.getStyleKeys()[0];
+	if (GEFActionConstants.BLOCK_ALIGN_LEFT.equals(styleID)
+			|| GEFActionConstants.BLOCK_ALIGN_CENTER.equals(styleID)
+			|| GEFActionConstants.BLOCK_ALIGN_RIGHT.equals(styleID))
+		edit = new ApplyAlignment((Container)getHost().getModel(), styleID, 
+				request.getStyleValues()[0], end);
+	else if (!range.isEmpty())
+		edit = new ApplyStyle(start, end, request.getStyleKeys(), 
+				request.getStyleValues());
+
+	return edit == null ? null : new SingleEditCommand(edit, start, end);
 }
 
 private Command getIndentCommand(TextRequest request) {

@@ -13,6 +13,7 @@ package org.eclipse.gef.examples.text.edit;
 
 import java.util.Iterator;
 
+import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 
@@ -61,11 +62,7 @@ public TextLocation getNextLocation(int movement, TextLocation current, Rectangl
 }
 
 public Object getStyleState(String styleID, SelectionRange range) {
-	if (styleID.equals(GEFActionConstants.STYLE_BOLD) 
-			|| styleID.equals(GEFActionConstants.STYLE_FONT_SIZE)
-			|| styleID.equals(GEFActionConstants.STYLE_FONT_NAME))
-		return StyleService.STATE_EDITABLE;
-	return StyleService.STATE_READ_ONLY;
+	return StyleService.STATE_EDITABLE;
 }
 
 public Object getStyleValue(String styleID, SelectionRange range) {
@@ -96,6 +93,34 @@ public Object getStyleValue(String styleID, SelectionRange range) {
 				return StyleService.UNDEFINED;
 		}
 		return fontName;
+	} else if (styleID.equals(GEFActionConstants.STYLE_ITALIC)) {
+		for (Iterator iter = range.getLeafParts().iterator(); iter.hasNext();) {
+			TextRun run = (TextRun)((TextualEditPart)iter.next()).getModel();
+			if (!run.getContainer().getStyle().isItalic())
+				return Boolean.FALSE;
+		}
+		return Boolean.TRUE;
+	} else if (styleID.equals(GEFActionConstants.STYLE_UNDERLINE)) {
+		for (Iterator iter = range.getLeafParts().iterator(); iter.hasNext();) {
+			TextRun run = (TextRun)((TextualEditPart)iter.next()).getModel();
+			if (!run.getContainer().getStyle().isUnderline())
+				return Boolean.FALSE;
+		}
+		return Boolean.TRUE;
+	} else {
+		boolean left = GEFActionConstants.BLOCK_ALIGN_LEFT.equals(styleID);
+		boolean center = GEFActionConstants.BLOCK_ALIGN_CENTER.equals(styleID);
+		boolean right = GEFActionConstants.BLOCK_ALIGN_RIGHT.equals(styleID);
+		if (left || center || right) {
+			int alignment = left ? PositionConstants.LEFT 
+					: (right ? PositionConstants.RIGHT : PositionConstants.CENTER);
+			for (Iterator iter = range.getLeafParts().iterator(); iter.hasNext();) {
+				TextRun run = (TextRun)((TextualEditPart)iter.next()).getModel();
+				if (run.getContainer().getStyle().getAlignment() != alignment)
+					return Boolean.FALSE;
+			}
+			return Boolean.TRUE;
+		}
 	}
 	return StyleService.UNDEFINED;
 }
