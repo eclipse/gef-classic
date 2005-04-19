@@ -7,7 +7,6 @@
  *
  * Contributors:
  *     IBM Corporation - initial API and implementation
- *     Gunnar Wagenknecht - setGraphicsSource()
  *******************************************************************************/
 package org.eclipse.draw2d;
 
@@ -57,7 +56,6 @@ private IFigure root;
 private EventDispatcher dispatcher;
 private UpdateManager manager = new DeferredUpdateManager();
 private Rectangle oldControlSize = new Rectangle();
-private GraphicsSource graphicsSource;
 
 /**
  * Constructs a LightweightSystem on Canvas <i>c</i>.
@@ -251,31 +249,9 @@ public void setControl(Canvas c) {
 	if (canvas == c)
 		return;
 	canvas = c;
-    if(null == graphicsSource)
-        getUpdateManager().setGraphicsSource(new BufferedGraphicsSource(canvas));
-    else
-        getUpdateManager().setGraphicsSource(graphicsSource);
+	getUpdateManager().setGraphicsSource(new BufferedGraphicsSource(canvas));
 	controlResized();
 	addListeners();
-}
-
-/**
- * Sets the <code>GraphicsSource</code>.
- * <p>
- * Clients may provide a specialized <code>GraphicsSource</code> (eg. an OpenGL or a 
- * GDI+ graphics source). Note, the <code>GraphicsSource</code> must be set prior to 
- * setting the control. If not set (or set to <code>null</code>) a 
- * {@link BufferedGraphicsSource} will be used.
- * </p>
- * 
- * @param gs the <code>GraphicsSource</code>
- * @since 3.1
- */
-public void setGraphicsSource(GraphicsSource gs) {
-	if (canvas != null)
-		throw new IllegalStateException(
-				"The GraphicsSource should be set before the Control is."); //$NON-NLS-1$
-    this.graphicsSource = gs;
 }
 
 /**
