@@ -84,12 +84,13 @@ public void flushPending() {
 
 public SelectionRange getExecuteSelectionRange(GraphicalTextViewer viewer) {
 	ModelLocation loc = ((MiniEdit)edits.get(edits.size() - 1)).getResultingLocation();
+	if (loc == null)
+		return getUndoSelectionRange(viewer);
 	return new SelectionRange(lookupModel(viewer, loc.model), loc.offset);
 }
 
 public SelectionRange getRedoSelectionRange(GraphicalTextViewer viewer) {
-	ModelLocation loc = ((MiniEdit)edits.get(edits.size() - 1)).getResultingLocation();
-	return new SelectionRange(lookupModel(viewer, loc.model), loc.offset);
+	return getExecuteSelectionRange(viewer);
 }
 
 public SelectionRange getUndoSelectionRange(GraphicalTextViewer viewer) {

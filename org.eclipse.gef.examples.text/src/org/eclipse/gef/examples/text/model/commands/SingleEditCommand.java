@@ -42,7 +42,9 @@ public void execute() {
 
 public SelectionRange getExecuteSelectionRange(GraphicalTextViewer viewer) {
 	ModelLocation loc = edit.getResultingLocation();
-	return new SelectionRange(lookupModel(viewer, loc.model), loc.offset);
+	if (loc != null)
+		return new SelectionRange(lookupModel(viewer, loc.model), loc.offset);
+	return getUndoSelectionRange(viewer);
 }
 
 public SelectionRange getRedoSelectionRange(GraphicalTextViewer viewer) {
