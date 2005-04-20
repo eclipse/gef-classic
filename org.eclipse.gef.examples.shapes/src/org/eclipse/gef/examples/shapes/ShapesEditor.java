@@ -63,6 +63,7 @@ import org.eclipse.gef.ui.palette.PaletteViewerProvider;
 import org.eclipse.gef.ui.palette.FlyoutPaletteComposite.FlyoutPreferences;
 import org.eclipse.gef.ui.parts.ContentOutlinePage;
 import org.eclipse.gef.ui.parts.GraphicalEditorWithFlyoutPalette;
+import org.eclipse.gef.ui.parts.GraphicalViewerKeyHandler;
 import org.eclipse.gef.ui.parts.TreeViewer;
 
 import org.eclipse.gef.examples.shapes.model.ShapesDiagram;
@@ -102,6 +103,7 @@ protected void configureGraphicalViewer() {
 	GraphicalViewer viewer = getGraphicalViewer();
 	viewer.setEditPartFactory(new ShapesEditPartFactory());
 	viewer.setRootEditPart(new ScalableFreeformRootEditPart());
+	viewer.setKeyHandler(new GraphicalViewerKeyHandler(viewer));
 
 	// configure the context menu provider
 	ContextMenuProvider cmProvider =
