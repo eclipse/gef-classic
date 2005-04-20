@@ -21,7 +21,7 @@ public class StyleRetargetAction extends RetargetAction {
 	
 public StyleRetargetAction(String styleID) {
 	super(styleID, "", IAction.AS_CHECK_BOX);
-	StyleAction.configureStyleAction(this);
+	BooleanStyleAction.configureStyleAction(this);
 }
 
 }
