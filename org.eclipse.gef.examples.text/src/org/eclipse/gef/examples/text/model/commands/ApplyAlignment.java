@@ -10,34 +10,21 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.text.model.commands;
 
-import org.eclipse.draw2d.PositionConstants;
-
-import org.eclipse.gef.ui.actions.GEFActionConstants;
-
 import org.eclipse.gef.examples.text.model.Container;
 import org.eclipse.gef.examples.text.model.ModelLocation;
 import org.eclipse.gef.examples.text.model.Style;
 
-public class ApplyAlignment 
+public class ApplyAlignment
 	extends MiniEdit
 {
 
 private int alignment = -1;
 private int oldAlignment = -1;
 private Style style;
-private ModelLocation resultingLocation;
 
-public ApplyAlignment(Container c, String styleID, Object value, ModelLocation result) {
+public ApplyAlignment(Container c, String styleID, Object value) {
 	style = c.getStyle();
-	if (Boolean.FALSE.equals(value))
-		alignment = PositionConstants.NONE;
-	else if (GEFActionConstants.BLOCK_ALIGN_LEFT.equals(styleID))
-		alignment = PositionConstants.LEFT;
-	else if (GEFActionConstants.BLOCK_ALIGN_RIGHT.equals(styleID))
-		alignment = PositionConstants.RIGHT;
-	else if (GEFActionConstants.BLOCK_ALIGN_CENTER.equals(styleID))
-		alignment = PositionConstants.CENTER;
-	resultingLocation = result;
+	alignment = ((Integer)value).intValue();
 }
 
 public boolean canApply() {
@@ -50,7 +37,7 @@ public void apply() {
 }
 
 public ModelLocation getResultingLocation() {
-	return resultingLocation;
+	return null;
 }
 
 public void rollback() {
