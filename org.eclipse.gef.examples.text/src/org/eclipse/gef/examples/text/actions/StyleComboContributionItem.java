@@ -43,7 +43,7 @@ protected StyleService styleService;
 protected IPartService partService;
 protected StyleListener styleListener = new StyleListener() {
 	public void styleChanged(String styleID) {
-		if (styleID == null || styleID.equals(getStyleID()))
+		if (styleID == null || styleID.equals(getProperty()))
 			refresh();
 	}
 };
@@ -136,7 +136,7 @@ protected int findIndexOf(String text) {
 
 protected abstract String[] getItems();
 
-protected abstract String getStyleID();
+protected abstract String getProperty();
 
 protected abstract void handleWidgetSelected(SelectionEvent e);
 
@@ -148,11 +148,11 @@ protected void refresh() {
 	if (styleService == null)
 		enablement = false;
 	else {
-		if (!styleService.getStyleState(getStyleID())
+		if (!styleService.getStyleState(getProperty())
 				.equals(StyleService.STATE_EDITABLE))
 			// we want the combo disabled, but still want to update the value
 			enablement = false;
-		Object style = styleService.getStyle(getStyleID());
+		Object style = styleService.getStyle(getProperty());
 		String value = style.toString();
 		if (StyleService.UNDEFINED.equals(style))
 			value = "";

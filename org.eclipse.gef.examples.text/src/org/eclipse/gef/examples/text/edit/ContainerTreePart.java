@@ -65,20 +65,16 @@ protected void refreshVisuals() {
 
 		case Container.TYPE_INLINE:
 			Style style = getContainer().getStyle();
-			if (style.isSet(TextActionConstants.STYLE_FONT_SIZE))
+			if (style.isSet(Style.PROPERTY_FONT_SIZE))
 				label.append("<FONT SIZE>");
-			if (style.isSet(TextActionConstants.STYLE_BOLD))
+			if (style.isSet(Style.PROPERTY_BOLD))
 				label.append("<B>");
-			if (style.isSet(TextActionConstants.STYLE_ITALIC))
+			if (style.isSet(Style.PROPERTY_ITALIC))
 				label.append("<I>");
-			if (style.isSet(TextActionConstants.STYLE_UNDERLINE))
+			if (style.isSet(Style.PROPERTY_UNDERLINE))
 				label.append("<U>");
-			if (style.isSet(TextActionConstants.STYLE_FONT_NAME))
+			if (style.isSet(Style.PROPERTY_FONT))
 				label.append("<FONT>");
-			if (style.isSet(TextActionConstants.BLOCK_ALIGN_LEFT)
-					|| style.isSet(TextActionConstants.BLOCK_ALIGN_RIGHT)
-					|| style.isSet(TextActionConstants.BLOCK_ALIGN_CENTER))
-				label.append("<ALIGN>");
 			break;
 		case Container.TYPE_PARAGRAPH:
 			label.append("Paragraph");

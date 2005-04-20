@@ -14,6 +14,8 @@ import org.eclipse.swt.events.SelectionEvent;
 
 import org.eclipse.ui.IPartService;
 
+import org.eclipse.gef.examples.text.model.Style;
+
 /**
  * @author Pratik Shah
  * @since 3.1
@@ -33,8 +35,8 @@ protected String[] getItems() {
 	return INIT_SIZES;
 }
 
-protected String getStyleID() {
-	return TextActionConstants.STYLE_FONT_SIZE;
+protected String getProperty() {
+	return Style.PROPERTY_FONT_SIZE;
 }
 
 protected void handleWidgetSelected(SelectionEvent e) {
@@ -43,9 +45,9 @@ protected void handleWidgetSelected(SelectionEvent e) {
 		fontSize = new Integer(combo.getText());
 	} catch (NumberFormatException nfe) {
 	}
-	if (fontSize != null && !fontSize.equals(styleService.getStyle(getStyleID())))
+	if (fontSize != null && !fontSize.equals(styleService.getStyle(getProperty())))
 		// No refresh required
-		styleService.setStyle(getStyleID(), fontSize);
+		styleService.setStyle(getProperty(), fontSize);
 	else
 		refresh();
 }

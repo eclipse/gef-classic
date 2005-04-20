@@ -15,6 +15,7 @@ import org.eclipse.gef.examples.text.actions.TextActionConstants;
 import org.eclipse.gef.examples.text.model.Container;
 import org.eclipse.gef.examples.text.model.InlineContainer;
 import org.eclipse.gef.examples.text.model.ModelLocation;
+import org.eclipse.gef.examples.text.model.Style;
 import org.eclipse.gef.examples.text.model.TextRun;
 
 /**
@@ -52,15 +53,15 @@ public void apply() {
 	container = new InlineContainer(Container.TYPE_INLINE);
 	for (int i = 0; i < keys.length; i++) {
 		String key = keys[i];
-		if (key.equals(TextActionConstants.STYLE_BOLD))
+		if (key.equals(Style.PROPERTY_BOLD))
 			container.getStyle().setBold(((Boolean)values[i]).booleanValue());
-		else if (key.equals(TextActionConstants.STYLE_FONT_SIZE))
+		else if (key.equals(Style.PROPERTY_FONT_SIZE))
 			container.getStyle().setFontHeight(((Integer)values[i]).intValue());
-		else if (key.equals(TextActionConstants.STYLE_ITALIC))
+		else if (key.equals(Style.PROPERTY_ITALIC))
 			container.getStyle().setItalic(((Boolean)values[i]).booleanValue());
-		else if (key.equals(TextActionConstants.STYLE_UNDERLINE))
+		else if (key.equals(Style.PROPERTY_UNDERLINE))
 			container.getStyle().setUnderline(((Boolean)values[i]).booleanValue());
-		else if (key.equals(TextActionConstants.STYLE_FONT_NAME))
+		else if (key.equals(Style.PROPERTY_FONT))
 			container.getStyle().setFontFamily((String)values[i]);
 	}
 	container.add(middle);

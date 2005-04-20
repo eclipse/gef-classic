@@ -20,6 +20,8 @@ import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.ui.IPartService;
 
+import org.eclipse.gef.examples.text.model.Style;
+
 /**
  * @author Pratik Shah
  * @since 3.1
@@ -47,14 +49,14 @@ protected String[] getItems() {
 	return FONT_NAMES;
 }
 
-protected String getStyleID() {
-	return TextActionConstants.STYLE_FONT_NAME;
+protected String getProperty() {
+	return Style.PROPERTY_FONT;
 }
 
 protected void handleWidgetSelected(SelectionEvent e) {
 	int index = findIndexOf(combo.getText());
-	if (index >= 0 && !getItems()[index].equals(styleService.getStyle(getStyleID())))
-		styleService.setStyle(getStyleID(), getItems()[index]);
+	if (index >= 0 && !getItems()[index].equals(styleService.getStyle(getProperty())))
+		styleService.setStyle(getProperty(), getItems()[index]);
 	else
 		refresh();
 }
