@@ -10,9 +10,6 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.text.actions;
 
-import org.eclipse.swt.SWT;
-
-import org.eclipse.draw2d.PositionConstants;
 
 public class MultiStyleAction 
 	extends BooleanStyleAction
@@ -22,17 +19,12 @@ private Object value;
 
 public MultiStyleAction(StyleService service, String styleID, String property, 
 		Object value) {
-	this(service, styleID, property, value, SWT.CHECK);
-}
-
-public MultiStyleAction(StyleService service, String styleID, String property, 
-		Object value, int style) {
-	super(service, styleID, property, style);
+	super(service, styleID, property);
 	this.value = value;
 }
 
 public void run() {
-	service.setStyle(property, isChecked() ? value : new Integer(PositionConstants.NONE));
+	service.setStyle(property, isChecked() ? value : new Integer(0));
 }
 
 public void refresh() {
