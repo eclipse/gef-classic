@@ -11,7 +11,6 @@
 
 package org.eclipse.gef.examples.text.model.commands;
 
-import org.eclipse.gef.examples.text.actions.TextActionConstants;
 import org.eclipse.gef.examples.text.model.Container;
 import org.eclipse.gef.examples.text.model.InlineContainer;
 import org.eclipse.gef.examples.text.model.ModelLocation;
@@ -22,7 +21,7 @@ import org.eclipse.gef.examples.text.model.TextRun;
  * Applies a boolean style such as BOLD to a range in the model.
  * @since 3.1
  */
-public class ApplyStyle extends MiniEdit {
+public class ApplyBooleanStyle extends MiniEdit {
 
 private TextRun begin;
 private int beginOffset;
@@ -34,7 +33,7 @@ private Container parent;
 private TextRun right;
 Object[] values;
 
-public ApplyStyle(ModelLocation start, ModelLocation end,
+public ApplyBooleanStyle(ModelLocation start, ModelLocation end,
 		String keys[], Object values[]) {
 	begin = (TextRun)start.model;
 	parent = begin.getContainer();
