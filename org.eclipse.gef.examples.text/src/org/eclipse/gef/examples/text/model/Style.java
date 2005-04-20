@@ -11,6 +11,8 @@
 
 package org.eclipse.gef.examples.text.model;
 
+import org.eclipse.swt.SWT;
+
 import org.eclipse.draw2d.PositionConstants;
 
 /**
@@ -31,6 +33,7 @@ public static final String PROPERTY_UNDERLINE = "underline"; //$NON-NLS-1$
 public static final String PROPERTY_ORIENTATION = "orientation"; //$NON-NLS-1$
 
 private int alignment = PositionConstants.NONE;
+private int orientation = SWT.NONE;
 private boolean bold;
 private String fontFamily;
 private int fontHeight = -1;
@@ -62,6 +65,14 @@ public int getFontHeight() {
 	return -1;
 }
 
+public int getOrientation() {
+	if (orientation != SWT.NONE)
+		return orientation;
+	if (parentStyle != null)
+		return parentStyle.getOrientation();
+	return SWT.NONE;
+}
+
 public boolean isAlignedLeft() {
 	return alignment == PositionConstants.LEFT 
 			|| (parentStyle != null && parentStyle.isAlignedLeft());
@@ -88,20 +99,22 @@ public boolean isSet(String property) {
 		return fontFamily != null;
 	if (PROPERTY_ALIGNMENT.equals(property))
 		return alignment != PositionConstants.NONE;
+	if (PROPERTY_ORIENTATION.equals(property))
+		return orientation != SWT.NONE;
 	return false;
 }
 
 public boolean isUnderline() {
-	return underline ||(parentStyle != null && parentStyle.isUnderline());
+	return underline || (parentStyle != null && parentStyle.isUnderline());
 }
 
 public void setAlignment(int value) {
-	if (alignment == value 
-			|| (value != PositionConstants.LEFT 
-			&& value != PositionConstants.CENTER 
-			&& value != PositionConstants.RIGHT
-			&& value != PositionConstants.NONE))
+	if (alignment == value)
 		return;
+	if (value != PositionConstants.LEFT && value != PositionConstants.CENTER 
+			&& value != PositionConstants.RIGHT && value != PositionConstants.NONE)
+		throw new IllegalArgumentException(
+				"Alignment must be LEFT, CENTER, RIGHT or NONE."); //$NON-NLS-1$
 	int oldValue = alignment;
 	alignment = value;
 	if (listeners != null)
@@ -134,6 +147,17 @@ public void setItalic(boolean value) {
 	italic = value;
 	if (listeners != null)
 		listeners.firePropertyChange(PROPERTY_ITALIC, !value, value);
+}
+
+public void setOrientation(int value) {
+	if (orientation == value)
+		return;
+	if (value != SWT.RIGHT_TO_LEFT && value != SWT.LEFT_TO_RIGHT && value != SWT.NONE)
+		throw new IllegalArgumentException("Orientation must LTR, RTL or NONE.");
+	int oldValue = orientation;
+	orientation = value;
+	if (listeners != null)
+		listeners.firePropertyChange(PROPERTY_ORIENTATION, oldValue, orientation);
 }
 
 public void setParentStyle(Style style) {
