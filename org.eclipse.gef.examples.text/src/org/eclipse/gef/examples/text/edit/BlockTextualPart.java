@@ -52,15 +52,19 @@ public TextLocation getNextLocation(CaretSearch search) {
 }
 
 public void propertyChange(PropertyChangeEvent evt) {
-	if (evt.getPropertyName().equals(Style.PROPERTY_ALIGNMENT))
+	String property = evt.getPropertyName();
+	if (Style.PROPERTY_ALIGNMENT.equals(property) 
+			|| Style.PROPERTY_ORIENTATION.equals(property))
 		refreshVisuals();
 	else
 		super.propertyChange(evt);
 }
 
 protected void refreshVisuals() {
-	((BlockFlow)getFigure()).setHorizontalAligment(
-			getContainer().getStyle().getAlignment());
+	BlockFlow block = (BlockFlow)getFigure();
+	Style style = getContainer().getStyle();
+	block.setHorizontalAligment(style.getAlignment());
+	block.setOrientation(style.getOrientation());
 }
 
 }

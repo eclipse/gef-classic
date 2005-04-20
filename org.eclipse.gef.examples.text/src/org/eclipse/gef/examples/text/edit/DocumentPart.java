@@ -109,6 +109,17 @@ public Object getStyleValue(String styleID, SelectionRange range) {
 				return StyleService.UNDEFINED;
 		}
 		return new Integer(alignment);
+	} else if (Style.PROPERTY_ORIENTATION.equals(styleID)) {
+		int orientation = 0;
+		for (Iterator iter = range.getLeafParts().iterator(); iter.hasNext();) {
+			TextRun run = (TextRun)((TextualEditPart)iter.next()).getModel();
+			Style style = run.getBlockContainer().getStyle();
+			if (orientation == 0)
+				orientation = style.getOrientation();
+			if (!style.isSet(styleID) || style.getOrientation() != orientation)
+				return StyleService.UNDEFINED;
+		}
+		return new Integer(orientation);
 	}
 	return StyleService.UNDEFINED;
 }

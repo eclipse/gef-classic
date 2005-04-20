@@ -13,6 +13,8 @@ package org.eclipse.gef.examples.text.edit;
 
 import java.util.Iterator;
 
+import org.eclipse.swt.SWT;
+
 import org.eclipse.jface.util.Assert;
 
 import org.eclipse.draw2d.PositionConstants;
@@ -30,8 +32,8 @@ import org.eclipse.gef.examples.text.model.InlineContainer;
 import org.eclipse.gef.examples.text.model.ModelLocation;
 import org.eclipse.gef.examples.text.model.Style;
 import org.eclipse.gef.examples.text.model.TextRun;
-import org.eclipse.gef.examples.text.model.commands.ApplyAlignment;
-import org.eclipse.gef.examples.text.model.commands.ApplyStyle;
+import org.eclipse.gef.examples.text.model.commands.ApplyMultiStyle;
+import org.eclipse.gef.examples.text.model.commands.ApplyBooleanStyle;
 import org.eclipse.gef.examples.text.model.commands.CompoundEditCommand;
 import org.eclipse.gef.examples.text.model.commands.ConvertElementCommand;
 import org.eclipse.gef.examples.text.model.commands.InsertString;
@@ -131,25 +133,22 @@ private Command getTextStyleApplication(TextRequest request) {
 			(TextRun)range.begin.part.getModel(), range.begin.offset);
 	ModelLocation end = new ModelLocation(
 			(TextRun)range.end.part.getModel(), range.end.offset);
-	CompoundEditCommand command = new CompoundEditCommand("");
+	CompoundEditCommand command = new CompoundEditCommand("Set Style");
 	command.setBeginLocation(start);
 	command.setEndLocation(end);
 	
 	String styleID = request.getStyleKeys()[0];
-	if (Style.PROPERTY_ALIGNMENT.equals(styleID)) {
-		command.setLabel("Set Alignment");
+	if (Style.PROPERTY_ALIGNMENT.equals(styleID) 
+			|| Style.PROPERTY_ORIENTATION.equals(styleID)) {
 		Object value = request.getStyleValues()[0];
-		if (value == null)
-			value = new Integer(PositionConstants.NONE);
 		for (Iterator iter = range.getLeafParts().iterator(); iter.hasNext();) {
 			// TODO optimize by ensuring that runs in the same container don't cause
 			// that container's style to be set multiple times
 			TextRun run = (TextRun)((TextualEditPart)iter.next()).getModel();
-			command.pendEdit(new ApplyAlignment(run.getBlockContainer(), styleID, value));
+			command.pendEdit(new ApplyMultiStyle(run.getBlockContainer(), styleID, value));
 		}
 	} else if (!range.isEmpty()) {
-		command.setLabel("Set Style");
-		command.pendEdit(new ApplyStyle(start, end, request.getStyleKeys(), 
+		command.pendEdit(new ApplyBooleanStyle(start, end, request.getStyleKeys(), 
 				request.getStyleValues()));
 	}
 
