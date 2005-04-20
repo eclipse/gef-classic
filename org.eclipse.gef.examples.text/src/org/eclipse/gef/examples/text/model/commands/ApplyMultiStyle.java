@@ -14,26 +14,32 @@ import org.eclipse.gef.examples.text.model.Container;
 import org.eclipse.gef.examples.text.model.ModelLocation;
 import org.eclipse.gef.examples.text.model.Style;
 
-public class ApplyAlignment
+public class ApplyMultiStyle
 	extends MiniEdit
 {
 
-private int alignment = -1;
-private int oldAlignment = -1;
+private int oldValue, newValue = -1;
+private String styleID;
 private Style style;
 
-public ApplyAlignment(Container c, String styleID, Object value) {
+public ApplyMultiStyle(Container c, String property, Object value) {
 	style = c.getStyle();
-	alignment = ((Integer)value).intValue();
+	styleID = property;
+	newValue = ((Integer)value).intValue();
 }
 
 public boolean canApply() {
-	return alignment != -1;
+	return newValue != -1;
 }
 
 public void apply() {
-	oldAlignment = style.getAlignment(); 
-	style.setAlignment(alignment);
+	if (Style.PROPERTY_ALIGNMENT.equals(styleID)) {
+		oldValue = style.getAlignment(); 
+		style.setAlignment(newValue);
+	} else if (Style.PROPERTY_ORIENTATION.equals(styleID)) {
+		oldValue = style.getOrientation();
+		style.setOrientation(newValue);
+	}
 }
 
 public ModelLocation getResultingLocation() {
@@ -41,7 +47,7 @@ public ModelLocation getResultingLocation() {
 }
 
 public void rollback() {
-	style.setAlignment(oldAlignment);
+	style.setAlignment(oldValue);
 }
 
 }
