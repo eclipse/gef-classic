@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2005 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials
+ * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -38,15 +38,14 @@ import org.eclipse.draw2d.geometry.Rectangle;
  */
 public class BlockFlow extends FlowFigure {
 
-private int aligment = PositionConstants.LEFT;
+private int aligment = PositionConstants.NONE;
 
 final BlockBox blockBox;
 private int orientation = SWT.NONE;
 private boolean bidiValid;
 
 /**
- * Constructs a new BlockFlow.
- */
+ * Constructs a new BlockFlow. */
 public BlockFlow() {
 	blockBox = createBlockBox();
 }
@@ -147,7 +146,7 @@ int getTopMargin() {
  * @return the horizontal alignment
  */
 public int getHorizontalAligment() {
-	return aligment & PositionConstants.LEFT_CENTER_RIGHT;
+	return aligment;
 }
 
 /**
@@ -216,33 +215,29 @@ protected void revalidateBidi(IFigure origin) {
 public void setOrientation(int orientation) {
 	if (this.orientation == orientation)
 		return;
-	if (orientation == SWT.RIGHT_TO_LEFT || orientation == SWT.LEFT_TO_RIGHT)
-		this.orientation = orientation;
-	else 
-		this.orientation = SWT.NONE;
+	if (orientation != SWT.RIGHT_TO_LEFT && orientation != SWT.LEFT_TO_RIGHT
+			&& orientation != SWT.NONE)
+		throw new IllegalArgumentException(
+				"Orientation must be one of: RTL, LTR or NONE"); //$NON-NLS-1$
+	this.orientation = orientation;
 	revalidate();
 }
 
 /**
  * Sets the horitontal aligment of the block. Valid values are:
  * <UL>
+ *   <LI>{@link org.eclipse.draw2d.PositionConstants#NONE} (default since 3.1)</LI>
  *   <LI>{@link org.eclipse.draw2d.PositionConstants#LEFT}</LI>
  *   <LI>{@link org.eclipse.draw2d.PositionConstants#RIGHT}</LI>
  *   <LI>{@link org.eclipse.draw2d.PositionConstants#CENTER}</LI>
  * </UL>
- * Blocks with a Bidi orientation of SWT.RIGHT_TO_LEFT will be right-aligned if their
- * horizontal alignment is PositionConstants.LEFT, and left-aligned if their alignment
- * is PositionConstants.RIGHT.
- * @param value the aligment
- */
+ * @param value the aligment */
 public void setHorizontalAligment(int value) {
-	if (!(value == PositionConstants.LEFT
-		|| value == PositionConstants.RIGHT
-		|| value == PositionConstants.CENTER))
+	if (value != PositionConstants.LEFT && value != PositionConstants.RIGHT
+			&& value != PositionConstants.CENTER && value != PositionConstants.NONE)
 		throw new IllegalArgumentException(
-			"Horizontal Aligment must be one of: LEFT, CENTER, RIGHT");//$NON-NLS-1$
-	this.aligment &= ~PositionConstants.LEFT_CENTER_RIGHT;
-	this.aligment |= value;
+			"Horizontal Aligment must be one of: NONE, LEFT, CENTER, RIGHT");//$NON-NLS-1$
+	aligment = value;
 	revalidate();
 }
 
