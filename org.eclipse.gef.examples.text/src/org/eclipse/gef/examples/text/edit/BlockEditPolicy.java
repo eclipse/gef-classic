@@ -15,11 +15,12 @@ import java.util.Iterator;
 
 import org.eclipse.jface.util.Assert;
 
+import org.eclipse.draw2d.PositionConstants;
+
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.GraphicalEditPolicy;
-import org.eclipse.gef.ui.actions.GEFActionConstants;
 
 import org.eclipse.gef.examples.text.SelectionRange;
 import org.eclipse.gef.examples.text.TextLocation;
@@ -27,6 +28,7 @@ import org.eclipse.gef.examples.text.model.Block;
 import org.eclipse.gef.examples.text.model.Container;
 import org.eclipse.gef.examples.text.model.InlineContainer;
 import org.eclipse.gef.examples.text.model.ModelLocation;
+import org.eclipse.gef.examples.text.model.Style;
 import org.eclipse.gef.examples.text.model.TextRun;
 import org.eclipse.gef.examples.text.model.commands.ApplyAlignment;
 import org.eclipse.gef.examples.text.model.commands.ApplyStyle;
@@ -134,17 +136,17 @@ private Command getTextStyleApplication(TextRequest request) {
 	command.setEndLocation(end);
 	
 	String styleID = request.getStyleKeys()[0];
-	if (GEFActionConstants.BLOCK_ALIGN_LEFT.equals(styleID)
-			|| GEFActionConstants.BLOCK_ALIGN_CENTER.equals(styleID)
-			|| GEFActionConstants.BLOCK_ALIGN_RIGHT.equals(styleID)) {
+	if (Style.PROPERTY_ALIGNMENT.equals(styleID)) {
 		command.setLabel("Set Alignment");
+		Object value = request.getStyleValues()[0];
+		if (value == null)
+			value = new Integer(PositionConstants.NONE);
 		for (Iterator iter = range.getLeafParts().iterator(); iter.hasNext();) {
 			// TODO optimize by ensuring that runs in the same container don't cause
 			// that container's style to be set multiple times
 			TextRun run = (TextRun)((TextualEditPart)iter.next()).getModel();
-			command.pendEdit(new ApplyAlignment(run.getBlockContainer(), styleID, 
-					request.getStyleValues()[0], end));
-		}		
+			command.pendEdit(new ApplyAlignment(run.getBlockContainer(), styleID, value));
+		}
 	} else if (!range.isEmpty()) {
 		command.setLabel("Set Style");
 		command.pendEdit(new ApplyStyle(start, end, request.getStyleKeys(), 

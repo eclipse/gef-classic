@@ -52,7 +52,7 @@ public TextLocation getNextLocation(CaretSearch search) {
 }
 
 public void propertyChange(PropertyChangeEvent evt) {
-	if (evt.getPropertyName().equals(Style.STYLE_ALIGNMENT))
+	if (evt.getPropertyName().equals(Style.PROPERTY_ALIGNMENT))
 		refreshVisuals();
 	else
 		super.propertyChange(evt);
