@@ -19,6 +19,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.EventObject;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
 import org.eclipse.core.resources.IFile;
@@ -33,6 +34,7 @@ import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 import org.eclipse.draw2d.FigureCanvas;
+import org.eclipse.draw2d.PositionConstants;
 
 import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.gef.EditPart;
@@ -49,8 +51,10 @@ import org.eclipse.gef.ui.parts.ContentOutlinePage;
 import org.eclipse.gef.ui.parts.GraphicalEditor;
 import org.eclipse.gef.ui.parts.TreeViewer;
 
-import org.eclipse.gef.examples.text.actions.StyleAction;
+import org.eclipse.gef.examples.text.actions.BooleanStyleAction;
+import org.eclipse.gef.examples.text.actions.MultiStyleAction;
 import org.eclipse.gef.examples.text.actions.StyleService;
+import org.eclipse.gef.examples.text.actions.TextActionConstants;
 import org.eclipse.gef.examples.text.edit.BlockTextualPart;
 import org.eclipse.gef.examples.text.edit.ContainerTreePart;
 import org.eclipse.gef.examples.text.edit.DocumentPart;
@@ -62,6 +66,7 @@ import org.eclipse.gef.examples.text.edit.TextRunTreePart;
 import org.eclipse.gef.examples.text.model.Block;
 import org.eclipse.gef.examples.text.model.CanvasStyle;
 import org.eclipse.gef.examples.text.model.Container;
+import org.eclipse.gef.examples.text.model.Style;
 import org.eclipse.gef.examples.text.model.TextRun;
 import org.eclipse.gef.examples.text.tools.TextTool;
 
@@ -124,31 +129,39 @@ protected void createActions() {
 	ActionRegistry registry = getActionRegistry();
 	IAction action;
 	
-	action = new StyleAction(styleService, GEFActionConstants.STYLE_BOLD);
+	action = new BooleanStyleAction(styleService, TextActionConstants.STYLE_BOLD, 
+			Style.PROPERTY_BOLD);
 	registry.registerAction(action);
 	service.registerAction(action);
 
-	action = new StyleAction(styleService, GEFActionConstants.STYLE_ITALIC);
+	action = new BooleanStyleAction(styleService, TextActionConstants.STYLE_ITALIC, 
+			Style.PROPERTY_ITALIC);
 	registry.registerAction(action);
 	service.registerAction(action);
 
-	action = new StyleAction(styleService, GEFActionConstants.STYLE_UNDERLINE);
+	action = new BooleanStyleAction(styleService, TextActionConstants.STYLE_UNDERLINE, 
+			Style.PROPERTY_UNDERLINE);
 	registry.registerAction(action);
 	service.registerAction(action);
 	
-	action = new StyleAction(styleService, GEFActionConstants.BLOCK_ALIGN_LEFT);
+	action = new MultiStyleAction(styleService, TextActionConstants.BLOCK_ALIGN_LEFT, 
+			Style.PROPERTY_ALIGNMENT, new Integer(PositionConstants.LEFT));
 	registry.registerAction(action);
 	
-	action = new StyleAction(styleService, GEFActionConstants.BLOCK_ALIGN_CENTER);
+	action = new MultiStyleAction(styleService, TextActionConstants.BLOCK_ALIGN_CENTER,
+			Style.PROPERTY_ALIGNMENT, new Integer(PositionConstants.CENTER));
 	registry.registerAction(action);
 	
-	action = new StyleAction(styleService, GEFActionConstants.BLOCK_ALIGN_RIGHT);
+	action = new MultiStyleAction(styleService, TextActionConstants.BLOCK_ALIGN_RIGHT,
+			Style.PROPERTY_ALIGNMENT, new Integer(PositionConstants.RIGHT));
 	registry.registerAction(action);
 	
-	action = new StyleAction(styleService, GEFActionConstants.BLOCK_LTR);
+	action = new MultiStyleAction(styleService, TextActionConstants.BLOCK_LTR,
+			Style.PROPERTY_ORIENTATION, new Integer(SWT.LEFT_TO_RIGHT));
 	registry.registerAction(action);
 	
-	action = new StyleAction(styleService, GEFActionConstants.BLOCK_RTL);
+	action = new MultiStyleAction(styleService, TextActionConstants.BLOCK_RTL,
+			Style.PROPERTY_ORIENTATION, new Integer(SWT.RIGHT_TO_LEFT));
 	registry.registerAction(action);
 }
 
