@@ -35,10 +35,6 @@ private StyleListener styleListener = new StyleListener() {
 };
 
 public BooleanStyleAction(StyleService service, String styleID, String property) {
-	this(service, styleID, property, IAction.AS_CHECK_BOX);
-}
-
-public BooleanStyleAction(StyleService service, String styleID, String property, int style) {
 	setStyleService(service);
 	setId(styleID);
 	this.property = property;
