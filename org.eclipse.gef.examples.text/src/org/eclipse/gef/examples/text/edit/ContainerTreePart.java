@@ -15,10 +15,8 @@ import java.beans.PropertyChangeEvent;
 import java.util.List;
 
 import org.eclipse.swt.widgets.TreeItem;
-import org.eclipse.swt.widgets.Widget;
 
-import org.eclipse.gef.ui.actions.GEFActionConstants;
-
+import org.eclipse.gef.examples.text.actions.TextActionConstants;
 import org.eclipse.gef.examples.text.model.Container;
 import org.eclipse.gef.examples.text.model.Style;
 
@@ -67,19 +65,19 @@ protected void refreshVisuals() {
 
 		case Container.TYPE_INLINE:
 			Style style = getContainer().getStyle();
-			if (style.isSet(GEFActionConstants.STYLE_FONT_SIZE))
+			if (style.isSet(TextActionConstants.STYLE_FONT_SIZE))
 				label.append("<FONT SIZE>");
-			if (style.isSet(GEFActionConstants.STYLE_BOLD))
+			if (style.isSet(TextActionConstants.STYLE_BOLD))
 				label.append("<B>");
-			if (style.isSet(GEFActionConstants.STYLE_ITALIC))
+			if (style.isSet(TextActionConstants.STYLE_ITALIC))
 				label.append("<I>");
-			if (style.isSet(GEFActionConstants.STYLE_UNDERLINE))
+			if (style.isSet(TextActionConstants.STYLE_UNDERLINE))
 				label.append("<U>");
-			if (style.isSet(GEFActionConstants.STYLE_FONT_NAME))
+			if (style.isSet(TextActionConstants.STYLE_FONT_NAME))
 				label.append("<FONT>");
-			if (style.isSet(GEFActionConstants.BLOCK_ALIGN_LEFT)
-					|| style.isSet(GEFActionConstants.BLOCK_ALIGN_RIGHT)
-					|| style.isSet(GEFActionConstants.BLOCK_ALIGN_CENTER))
+			if (style.isSet(TextActionConstants.BLOCK_ALIGN_LEFT)
+					|| style.isSet(TextActionConstants.BLOCK_ALIGN_RIGHT)
+					|| style.isSet(TextActionConstants.BLOCK_ALIGN_CENTER))
 				label.append("<ALIGN>");
 			break;
 		case Container.TYPE_PARAGRAPH:

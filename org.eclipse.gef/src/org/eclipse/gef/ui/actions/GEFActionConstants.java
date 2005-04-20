@@ -30,38 +30,6 @@ public final class GEFActionConstants
 public static final String CONTEXT_TEXT = "org.eclipse.gef.textContext"; //$NON-NLS-1$
 
 /**
- * Bold action id.
- */
-public static final String STYLE_BOLD = "org.eclipse.gef.text.bold"; //$NON-NLS-1$
-
-/**
- * Italic action id.
- */
-public static final String STYLE_ITALIC = "org.eclipse.gef.text.italic"; //$NON-NLS-1$
-
-/**
- * Underline action id.
- */
-public static final String STYLE_UNDERLINE = "org.eclipse.gef.text.underline"; //$NON-NLS-1$
-
-/**
- * Font size id.
- */
-public static final String STYLE_FONT_SIZE = "org.eclipse.gef.text.fontsize"; //$NON-NLS-1$
-
-/**
- * Font family id.
- */
-public static final String STYLE_FONT_NAME = "org.eclipse.gef.text.fontName"; //$NON-NLS-1$
-
-public static final String BLOCK_ALIGN_CENTER="org.eclipse.gef.text.alignCenter"; //$NON-NLS-1$
-public static final String BLOCK_ALIGN_LEFT ="org.eclipse.gef.text.alignLeft"; //$NON-NLS-1$
-public static final String BLOCK_ALIGN_RIGHT ="org.eclipse.gef.text.alignRight"; //$NON-NLS-1$
-
-public static final String BLOCK_RTL ="org.eclipse.gef.text.rtl"; //$NON-NLS-1$
-public static final String BLOCK_LTR ="org.eclipse.gef.text.ltr"; //$NON-NLS-1$
-
-/**
  * Align bottom action id.
  * Value: <code>"org.eclipse.gef.align_bottom"</code>
  */

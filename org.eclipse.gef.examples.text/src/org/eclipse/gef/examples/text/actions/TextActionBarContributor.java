@@ -15,7 +15,6 @@ import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
 
 import org.eclipse.gef.ui.actions.ActionBarContributor;
-import org.eclipse.gef.ui.actions.GEFActionConstants;
 
 
 /**
@@ -27,30 +26,30 @@ public class TextActionBarContributor extends ActionBarContributor {
  * @see ActionBarContributor#buildActions()
  */
 protected void buildActions() {
-	addRetargetAction(new StyleRetargetAction(GEFActionConstants.STYLE_BOLD));
-	addRetargetAction(new StyleRetargetAction(GEFActionConstants.STYLE_ITALIC));
-	addRetargetAction(new StyleRetargetAction(GEFActionConstants.STYLE_UNDERLINE));
-	addRetargetAction(new StyleRetargetAction(GEFActionConstants.BLOCK_ALIGN_CENTER));
-	addRetargetAction(new StyleRetargetAction(GEFActionConstants.BLOCK_ALIGN_LEFT));
-	addRetargetAction(new StyleRetargetAction(GEFActionConstants.BLOCK_ALIGN_RIGHT));
-	addRetargetAction(new StyleRetargetAction(GEFActionConstants.BLOCK_LTR));
-	addRetargetAction(new StyleRetargetAction(GEFActionConstants.BLOCK_RTL));
+	addRetargetAction(new StyleRetargetAction(TextActionConstants.STYLE_BOLD));
+	addRetargetAction(new StyleRetargetAction(TextActionConstants.STYLE_ITALIC));
+	addRetargetAction(new StyleRetargetAction(TextActionConstants.STYLE_UNDERLINE));
+	addRetargetAction(new StyleRetargetAction(TextActionConstants.BLOCK_ALIGN_CENTER));
+	addRetargetAction(new StyleRetargetAction(TextActionConstants.BLOCK_ALIGN_LEFT));
+	addRetargetAction(new StyleRetargetAction(TextActionConstants.BLOCK_ALIGN_RIGHT));
+	addRetargetAction(new StyleRetargetAction(TextActionConstants.BLOCK_LTR));
+	addRetargetAction(new StyleRetargetAction(TextActionConstants.BLOCK_RTL));
 }
 
 public void contributeToToolBar(IToolBarManager toolbar) {
 	toolbar.add(new ChangeFontContributionItem(getPage()));
 	toolbar.add(new ResizeFontContributionItem(getPage()));
 	toolbar.add(new Separator());
-	toolbar.add(getAction(GEFActionConstants.STYLE_BOLD));
-	toolbar.add(getAction(GEFActionConstants.STYLE_ITALIC));
-	toolbar.add(getAction(GEFActionConstants.STYLE_UNDERLINE));
+	toolbar.add(getAction(TextActionConstants.STYLE_BOLD));
+	toolbar.add(getAction(TextActionConstants.STYLE_ITALIC));
+	toolbar.add(getAction(TextActionConstants.STYLE_UNDERLINE));
 	toolbar.add(new Separator());
-	toolbar.add(getAction(GEFActionConstants.BLOCK_ALIGN_LEFT));
-	toolbar.add(getAction(GEFActionConstants.BLOCK_ALIGN_CENTER));
-	toolbar.add(getAction(GEFActionConstants.BLOCK_ALIGN_RIGHT));
+	toolbar.add(getAction(TextActionConstants.BLOCK_ALIGN_LEFT));
+	toolbar.add(getAction(TextActionConstants.BLOCK_ALIGN_CENTER));
+	toolbar.add(getAction(TextActionConstants.BLOCK_ALIGN_RIGHT));
 	toolbar.add(new Separator());
-	toolbar.add(getAction(GEFActionConstants.BLOCK_LTR));
-	toolbar.add(getAction(GEFActionConstants.BLOCK_RTL));
+	toolbar.add(getAction(TextActionConstants.BLOCK_LTR));
+	toolbar.add(getAction(TextActionConstants.BLOCK_RTL));
 }
 
 /**

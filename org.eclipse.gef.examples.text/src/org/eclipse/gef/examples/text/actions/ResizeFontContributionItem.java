@@ -14,8 +14,6 @@ import org.eclipse.swt.events.SelectionEvent;
 
 import org.eclipse.ui.IPartService;
 
-import org.eclipse.gef.ui.actions.GEFActionConstants;
-
 /**
  * @author Pratik Shah
  * @since 3.1
@@ -36,7 +34,7 @@ protected String[] getItems() {
 }
 
 protected String getStyleID() {
-	return GEFActionConstants.STYLE_FONT_SIZE;
+	return TextActionConstants.STYLE_FONT_SIZE;
 }
 
 protected void handleWidgetSelected(SelectionEvent e) {
