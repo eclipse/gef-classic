@@ -13,8 +13,6 @@ package org.eclipse.gef.examples.text.model;
 
 import org.eclipse.draw2d.PositionConstants;
 
-import org.eclipse.gef.ui.actions.GEFActionConstants;
-
 /**
  * @since 3.1
  */
@@ -24,7 +22,13 @@ public class Style
 	
 private static final long serialVersionUID = 1;
 	
-public static final String STYLE_ALIGNMENT = "alignment"; //$NON-NLS-1$
+public static final String PROPERTY_ALIGNMENT = "alignment"; //$NON-NLS-1$
+public static final String PROPERTY_FONT = "font"; //$NON-NLS-1$
+public static final String PROPERTY_FONT_SIZE = "fontSize"; //$NON-NLS-1$
+public static final String PROPERTY_BOLD = "bold"; //$NON-NLS-1$
+public static final String PROPERTY_ITALIC = "italics"; //$NON-NLS-1$
+public static final String PROPERTY_UNDERLINE = "underline"; //$NON-NLS-1$
+public static final String PROPERTY_ORIENTATION = "orientation"; //$NON-NLS-1$
 
 private int alignment = PositionConstants.NONE;
 private boolean bold;
@@ -71,23 +75,19 @@ public boolean isItalic() {
 	return italic || (parentStyle != null && parentStyle.isItalic());
 }
 
-public boolean isSet(String styleID) {
-	if (GEFActionConstants.STYLE_BOLD.equals(styleID))
+public boolean isSet(String property) {
+	if (PROPERTY_BOLD.equals(property))
 		return bold;
-	if (GEFActionConstants.STYLE_FONT_SIZE.equals(styleID))
+	if (PROPERTY_FONT_SIZE.equals(property))
 		return fontHeight != -1;
-	if (GEFActionConstants.STYLE_ITALIC.equals(styleID))
+	if (PROPERTY_ITALIC.equals(property))
 		return italic;
-	if (GEFActionConstants.STYLE_UNDERLINE.equals(styleID))
+	if (PROPERTY_UNDERLINE.equals(property))
 		return underline;
-	if (GEFActionConstants.STYLE_FONT_NAME.equals(styleID))
+	if (PROPERTY_FONT.equals(property))
 		return fontFamily != null;
-	if (GEFActionConstants.BLOCK_ALIGN_LEFT.equals(styleID))
-		return alignment == PositionConstants.LEFT;
-	if (GEFActionConstants.BLOCK_ALIGN_CENTER.equals(styleID))
-		return alignment == PositionConstants.CENTER;
-	if (GEFActionConstants.BLOCK_ALIGN_RIGHT.equals(styleID))
-		return alignment == PositionConstants.RIGHT;
+	if (PROPERTY_ALIGNMENT.equals(property))
+		return alignment != PositionConstants.NONE;
 	return false;
 }
 
@@ -105,7 +105,7 @@ public void setAlignment(int value) {
 	int oldValue = alignment;
 	alignment = value;
 	if (listeners != null)
-		listeners.firePropertyChange(STYLE_ALIGNMENT, oldValue, alignment);
+		listeners.firePropertyChange(PROPERTY_ALIGNMENT, oldValue, alignment);
 }
 
 public void setBold(boolean value) {
@@ -113,20 +113,19 @@ public void setBold(boolean value) {
 		return;
 	bold = value;
 	if (listeners != null)
-		// TODO need to define properties for these?
-		listeners.firePropertyChange("bold", !value, value);
+		listeners.firePropertyChange(PROPERTY_BOLD, !value, value);
 }
 
 public void setFontFamily(String fontFamily) {
 	String oldName = this.fontFamily;
 	this.fontFamily = fontFamily;
-	firePropertyChange("fontFamily", oldName, fontFamily);
+	firePropertyChange(PROPERTY_FONT, oldName, fontFamily);
 }
 
 public void setFontHeight(int fontHeight) {
 	this.fontHeight = fontHeight;
 	if (listeners != null)
-		listeners.firePropertyChange("fontHeight", fontHeight, fontHeight);
+		listeners.firePropertyChange(PROPERTY_FONT_SIZE, fontHeight, fontHeight);
 }
 
 public void setItalic(boolean value) {
@@ -134,7 +133,7 @@ public void setItalic(boolean value) {
 		return;
 	italic = value;
 	if (listeners != null)
-		listeners.firePropertyChange("italic", !value, value);
+		listeners.firePropertyChange(PROPERTY_ITALIC, !value, value);
 }
 
 public void setParentStyle(Style style) {
@@ -146,7 +145,7 @@ public void setUnderline(boolean value) {
 		return;
 	underline = value;
 	if (listeners != null)
-		listeners.firePropertyChange("underline", !value, value);
+		listeners.firePropertyChange(PROPERTY_UNDERLINE, !value, value);
 }
 
 }
