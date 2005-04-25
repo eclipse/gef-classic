@@ -273,7 +273,7 @@ public static int wrapFragmentInContext(TextFragmentBox frag, String string,
 				result++;
 		} else if (string.charAt(min) == '\n')
 			result++;
-	} else out: if (string.charAt(min) == ' '
+	} else if (string.charAt(min) == ' '
 			|| canBreakAfter(string.charAt(min - 1))
 			|| INTERNAL_LINE_BREAK.isBoundary(min)) {
 		frag.length = min;
@@ -283,7 +283,7 @@ public static int wrapFragmentInContext(TextFragmentBox frag, String string,
 			frag.length--;
 			frag.setWidth(-1);
 		}
-	} else {
+	} else out: {
 		// In the middle of an unbreakable offset
 		result = INTERNAL_LINE_BREAK.preceding(min);
 		if (result == 0) {
