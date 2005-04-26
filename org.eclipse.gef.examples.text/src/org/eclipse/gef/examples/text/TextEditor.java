@@ -110,7 +110,6 @@ protected void configureGraphicalViewer() {
 	super.configureGraphicalViewer();
 	doc.getStyle().setParentStyle(new CanvasStyle(getGraphicalViewer().getControl()));
 
-	//getGraphicalViewer().getControl().setFont(new Font(Display.getCurrent(), "Tahoma", 11, 0));
 	getEditDomain().setDefaultTool(
 			new TextTool((GraphicalTextViewer)getGraphicalViewer(), styleService));
 	getEditDomain().loadDefaultTool();
@@ -145,7 +144,7 @@ protected void createActions() {
 	service.registerAction(action);
 	
 	action = new MultiStyleAction(styleService, TextActionConstants.BLOCK_ALIGN_LEFT, 
-			Style.PROPERTY_ALIGNMENT, new Integer(PositionConstants.LEFT));
+			Style.PROPERTY_ALIGNMENT, new Integer(PositionConstants.ALWAYS_LEFT));
 	registry.registerAction(action);
 	
 	action = new MultiStyleAction(styleService, TextActionConstants.BLOCK_ALIGN_CENTER,
@@ -153,7 +152,7 @@ protected void createActions() {
 	registry.registerAction(action);
 	
 	action = new MultiStyleAction(styleService, TextActionConstants.BLOCK_ALIGN_RIGHT,
-			Style.PROPERTY_ALIGNMENT, new Integer(PositionConstants.RIGHT));
+			Style.PROPERTY_ALIGNMENT, new Integer(PositionConstants.ALWAYS_RIGHT));
 	registry.registerAction(action);
 	
 	action = new MultiStyleAction(styleService, TextActionConstants.BLOCK_LTR,
