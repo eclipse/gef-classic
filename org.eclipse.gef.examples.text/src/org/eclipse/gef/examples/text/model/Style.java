@@ -111,10 +111,11 @@ public boolean isUnderline() {
 public void setAlignment(int value) {
 	if (alignment == value)
 		return;
-	if (value != PositionConstants.LEFT && value != PositionConstants.CENTER 
-			&& value != PositionConstants.RIGHT && value != PositionConstants.NONE)
+	if (value != PositionConstants.ALWAYS_RIGHT && value != PositionConstants.CENTER 
+			&& value != PositionConstants.RIGHT && value != PositionConstants.NONE
+			&& value != PositionConstants.LEFT && value != PositionConstants.ALWAYS_LEFT)
 		throw new IllegalArgumentException(
-				"Alignment must be LEFT, CENTER, RIGHT or NONE."); //$NON-NLS-1$
+				"Alignment must be LEFT, CENTER, RIGHT, ALWAYS_LEFT, ALWAYS_RIGHT or NONE."); //$NON-NLS-1$
 	int oldValue = alignment;
 	alignment = value;
 	if (listeners != null)
