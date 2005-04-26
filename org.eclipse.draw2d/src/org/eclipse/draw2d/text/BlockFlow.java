@@ -36,11 +36,12 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * @author hudsonr
  * @since 2.1
  */
-public class BlockFlow extends FlowFigure {
+public class BlockFlow 
+	extends FlowFigure 
+{
 
-private int aligment = PositionConstants.NONE;
-
-final BlockBox blockBox;
+private final BlockBox blockBox;
+private int alignment = PositionConstants.NONE;
 private int orientation = SWT.NONE;
 private boolean bidiValid;
 
@@ -73,26 +74,6 @@ protected FlowFigureLayout createDefaultFlowLayout() {
 }
 
 /**
- * Returns this block's Bidi orientation.  If none was set on this block, it
- * will inherit the one from its containing block.  If there is no containing block, it
- * will return the default orientation (SWT.LEFT_TO_RIGHT).
- * 
- * @return SWT.RIGHT_TO_LEFT or SWT.LEFT_TO_RIGHT
- * @see #setOrientation(int)
- * @since 3.1
- */
-public int getOrientation() {
-	if (orientation != SWT.NONE)
-		return orientation;
-	IFigure parent = getParent();
-	while (parent != null && !(parent instanceof BlockFlow))
-		parent = parent.getParent();
-	if (parent != null)
-		return ((BlockFlow)parent).getOrientation();
-	return SWT.LEFT_TO_RIGHT;
-}
-
-/**
  * Returns the BlockBox associated with this.
  * @return This BlockFlow's BlockBox
  */
@@ -115,10 +96,70 @@ int getBottomMargin() {
 	return margin;
 }
 
+/**
+ * Returns the horizontal alignment.  This method will never return 
+ * {@link PositionConstants#NONE}.  If the value is none, it will return the inherited
+ * alignment.  If no alignment was inherited, it will return the default alignment
+ * ({@link PositionConstants#LEFT}).
+ * @return {@link PositionConstants#ALWAYS_LEFT} or {@link PositionConstants#ALWAYS_RIGHT}
+ * or {@link PositionConstants#LEFT} or {@link PositionConstants#RIGHT}
+ */
+public int getHorizontalAligment() {
+	if (alignment != PositionConstants.NONE)
+		return alignment;
+	IFigure parent = getParent();
+	while (parent != null && !(parent instanceof BlockFlow))
+		parent = parent.getParent();
+	if (parent != null)
+		return ((BlockFlow)parent).getHorizontalAligment();
+	return PositionConstants.LEFT;
+}
+
 int getLeftMargin() {
 	if (getBorder() instanceof FlowBorder)
 		return ((FlowBorder)getBorder()).getLeftMargin();
 	return 0;
+}
+
+/**
+ * Returns the orientation set on this block.
+ * @return LTR, RTL or NONE
+ * @see #setOrientation(int)
+ * @since 3.1
+ */
+public int getLocalOrientation() {
+	return orientation;
+}
+
+/**
+ * Returns the horizontal alignment set on this block.
+ * @return LEFT, RIGHT, ALWAYS_LEFT, ALWAYS_RIGHT, NONE
+ * @see #setHorizontalAligment(int)
+ * @since 3.1
+ */
+public int getLocalHorizontalAlignment() {
+	return alignment;
+}
+
+/**
+ * Returns this block's Bidi orientation.  If none was set on this block, it
+ * will inherit the one from its containing block.  If there is no containing block, it
+ * will return the default orientation (SWT.RIGHT_TO_LEFT if mirrored; SWT.LEFT_TO_RIGHT
+ * otherwise).
+ * 
+ * @return SWT.RIGHT_TO_LEFT or SWT.LEFT_TO_RIGHT
+ * @see #setOrientation(int)
+ * @since 3.1
+ */
+public int getOrientation() {
+	if (orientation != SWT.NONE)
+		return orientation;
+	IFigure parent = getParent();
+	while (parent != null && !(parent instanceof BlockFlow))
+		parent = parent.getParent();
+	if (parent != null)
+		return ((BlockFlow)parent).getOrientation();
+	return isMirrored() ? SWT.RIGHT_TO_LEFT : SWT.LEFT_TO_RIGHT;
 }
 
 int getRightMargin() {
@@ -139,14 +180,6 @@ int getTopMargin() {
 				((BlockFlow)children.get(0)).getTopMargin());
 	}
 	return margin;
-}
-
-/**
- * Returns the horizontal alignment.
- * @return the horizontal alignment
- */
-public int getHorizontalAligment() {
-	return aligment;
 }
 
 /**
@@ -200,16 +233,44 @@ protected void revalidateBidi(IFigure origin) {
 }
 
 /**
+ * Sets the horitontal aligment of the block. Valid values are:
+ * <UL>
+ *   <LI>{@link org.eclipse.draw2d.PositionConstants#NONE NONE} (default value; 
+ *   		means alignment is inherited)</LI>
+ *   <LI>{@link org.eclipse.draw2d.PositionConstants#LEFT LEFT} (leading)</LI>
+ *   <LI>{@link org.eclipse.draw2d.PositionConstants#RIGHT RIGHT} (trailing)</LI>
+ *   <LI>{@link org.eclipse.draw2d.PositionConstants#CENTER CENTER}</LI>
+ *   <LI>{@link org.eclipse.draw2d.PositionConstants#ALWAYS_LEFT ALWAYS_LEFT} 
+ *   		(left irrespective of orientation)</LI>
+ *   <LI>{@link org.eclipse.draw2d.PositionConstants#ALWAYS_RIGHT ALWAYS_RIGHT} 
+ *   		(right irrespective of orientation)</LI>
+ * </UL>
+ * @param value the aligment
+ * @see #getHorizontalAligment() */
+public void setHorizontalAligment(int value) {
+	if (value == alignment)
+		return;
+	if (value != PositionConstants.LEFT && value != PositionConstants.ALWAYS_RIGHT
+			&& value != PositionConstants.CENTER && value != PositionConstants.NONE
+			&& value != PositionConstants.RIGHT && value != PositionConstants.ALWAYS_LEFT)
+		throw new IllegalArgumentException("Horizontal Aligment must be one" + //$NON-NLS-1$
+				" of: NONE, LEFT, CENTER, RIGHT, ALWAYS_LEFT, ALWAYS_RIGHT");//$NON-NLS-1$
+	alignment = value;
+	revalidate();
+}
+
+/**
  * Sets the orientation for this block.  Orientation can be one of:
  * <UL>
  *   <LI>{@link SWT#LEFT_TO_RIGHT}
  *   <LI>{@link SWT#RIGHT_TO_LEFT}
- *   <LI>{@link SWT#NONE}
+ *   <LI>{@link SWT#NONE} (default)
  * </UL>
  * <code>NONE</code> is used to indicate that orientation should be inherited from the
- * encompassing block, or LEFT_TO_RIGHT if no parent block exists.
+ * encompassing block.
  * 
  * @param orientation LTR, RTL or NONE
+ * @see #getOrientation()
  * @since 3.1
  */
 public void setOrientation(int orientation) {
@@ -220,25 +281,7 @@ public void setOrientation(int orientation) {
 		throw new IllegalArgumentException(
 				"Orientation must be one of: RTL, LTR or NONE"); //$NON-NLS-1$
 	this.orientation = orientation;
-	revalidate();
-}
-
-/**
- * Sets the horitontal aligment of the block. Valid values are:
- * <UL>
- *   <LI>{@link org.eclipse.draw2d.PositionConstants#NONE} (default since 3.1)</LI>
- *   <LI>{@link org.eclipse.draw2d.PositionConstants#LEFT}</LI>
- *   <LI>{@link org.eclipse.draw2d.PositionConstants#RIGHT}</LI>
- *   <LI>{@link org.eclipse.draw2d.PositionConstants#CENTER}</LI>
- * </UL>
- * @param value the aligment */
-public void setHorizontalAligment(int value) {
-	if (value != PositionConstants.LEFT && value != PositionConstants.RIGHT
-			&& value != PositionConstants.CENTER && value != PositionConstants.NONE)
-		throw new IllegalArgumentException(
-			"Horizontal Aligment must be one of: NONE, LEFT, CENTER, RIGHT");//$NON-NLS-1$
-	aligment = value;
-	revalidate();
+	revalidateBidi(this);
 }
 
 /**

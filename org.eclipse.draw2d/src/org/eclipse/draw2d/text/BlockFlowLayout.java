@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2005 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials
+ * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -23,8 +23,7 @@ import org.eclipse.draw2d.geometry.Insets;
  * 
  * <P>WARNING: This class is not intended to be subclassed by clients.
  * @author hudsonr
- * @since 2.1
- */
+ * @since 2.1 */
 public class BlockFlowLayout
 	extends FlowContainerLayout
 {
@@ -50,22 +49,31 @@ private void addBelowPreviousLine(CompositeBox line) {
 				+ Math.max(previousLine.getBottomMargin(), line.getTopMargin()));
 
 	int alignment = getBlockFlow().getHorizontalAligment();
-	if (getBlockFlow().getOrientation() == SWT.RIGHT_TO_LEFT) {
+	if (alignment == PositionConstants.LEFT || alignment == PositionConstants.RIGHT) {
+		int orientation = getBlockFlow().getOrientation();
 		if (alignment == PositionConstants.LEFT)
-			alignment = PositionConstants.RIGHT;
-		else if (alignment == PositionConstants.RIGHT)
-			alignment = PositionConstants.LEFT;
+			alignment = orientation == SWT.LEFT_TO_RIGHT
+					? PositionConstants.ALWAYS_LEFT : PositionConstants.ALWAYS_RIGHT;
+		else
+			alignment = orientation == SWT.LEFT_TO_RIGHT
+					? PositionConstants.ALWAYS_RIGHT : PositionConstants.ALWAYS_LEFT;
+		if (getBlockFlow().isMirrored())
+			alignment = (PositionConstants.ALWAYS_LEFT | PositionConstants.ALWAYS_RIGHT) 
+					& ~alignment;
 	}
 
 	switch (alignment) {
-		case PositionConstants.RIGHT :
+		case PositionConstants.ALWAYS_RIGHT:
 			line.setX(blockBox.getRecommendedWidth() - line.getWidth());
 			break;
-		case PositionConstants.CENTER :
+		case PositionConstants.CENTER:
 			line.setX((blockBox.getRecommendedWidth() - line.getWidth()) / 2);
 			break;
-		case PositionConstants.LEFT:
+		case PositionConstants.ALWAYS_LEFT:
 			line.setX(0);
+			break;
+		default:
+			throw new RuntimeException("Unexpected state"); //$NON-NLS-1$
 	}
 	blockBox.add(line);
 	previousLine = line;
@@ -106,7 +114,7 @@ protected void cleanup() {
  * @see FlowContainerLayout#createNewLine()
  */
 protected void createNewLine() {
-	currentLine = new LineRoot();
+	currentLine = new LineRoot(getBlockFlow().isMirrored());
 	currentLine.setRecommendedWidth(blockBox.getRecommendedWidth());
 }
 

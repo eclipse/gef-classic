@@ -19,11 +19,16 @@ import org.eclipse.draw2d.geometry.Rectangle;
 /**
  * @since 3.1
  */
-public class LineRoot 
+public class LineRoot
 	extends LineBox 
 {
 
 private int baseline;
+private boolean isMirrored;
+
+public LineRoot(boolean isMirrored) {
+	this.isMirrored = isMirrored;
+}
 
 public void add(FlowBox child) {
 	super.add(child);
@@ -39,10 +44,12 @@ private void bidiCommit() {
 	buildBidiTree(this, root, branches);
 	List result = new ArrayList();
 	root.emit(result);
-	for (int i = 0; i < result.size(); i++) {
+	int i = isMirrored ? result.size() - 1 : 0;
+	while (i >= 0 && i < result.size()) {
 		FlowBox box = (FlowBox)result.get(i);
 		box.setX(xLocation);
 		xLocation += box.getWidth();
+		i += isMirrored ? -1 : 1;
 	}
 	// set the bounds of the composite boxes, and break overlapping ones into two
 	layoutNestedLines(branches);
@@ -89,10 +96,12 @@ private void contiguousCommit(FlowBox box, int x) {
 	box.setX(x);
 	if (box instanceof LineBox) {
 		List fragments = ((LineBox)box).getFragments();
-		for (int i = 0; i < fragments.size(); i++) {
+		int i = isMirrored ? fragments.size() - 1 : 0;		
+		while (i >= 0 && i < fragments.size()) {
 			FlowBox child = (FlowBox)fragments.get(i);
 			contiguousCommit(child, x);
 			x += child.getWidth();
+			i += isMirrored ? -1 : 1;
 		}
 	}
 }

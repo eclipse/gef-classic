@@ -144,9 +144,11 @@ private int findNextLineOffset(Point p) {
 	String fragString = getBidiSubstring(box, i);
 	layout.setText(fragString);
 	int trailing[] = new int[1];
-	int layoutOffset = layout.getOffset(p.x - box.getX(), p.y - box.getTextTop(), trailing)
+	int x = p.x - box.getX();
+	if (isMirrored())
+		x = box.getWidth() - x;
+	int layoutOffset = layout.getOffset(x, p.y - box.getTextTop(), trailing)
 			+ trailing[0];
-	layout.setText(""); //$NON-NLS-1$
 	return box.offset + layoutOffset;
 }
 
@@ -176,10 +178,11 @@ private int findPreviousLineOffset(Point p) {
 
 	layout.setText(fragString);
 	int trailing[] = new int[1];
-	p.translate(-box.getX(), -box.getTextTop());
-	int layoutOffset = layout.getOffset(p.x, p.y, trailing) + trailing[0];
+	int x = p.x - box.getX();
+	if (isMirrored())
+		x = box.getWidth() - x;
+	int layoutOffset = layout.getOffset(x, p.y - box.getTextTop(), trailing) + trailing[0];
 	layoutOffset -= getBidiPrefixLength(box, i);
-	layout.setText(""); //$NON-NLS-1$
 	return box.offset + layoutOffset;
 }
 
@@ -225,7 +228,7 @@ int getDescent() {
  * Returns the CaretInfo in absolute coordinates. The offset must be between 0 and the
  * length of the String being displayed.
  * @since 3.1
- * @param offset the location in this figures text
+ * @param offset the location in this figure's text
  * @param trailing true if the caret is being placed after the offset
  * @exception IllegalArgumentException If the offset is not between <code>0</code> and the
  * length of the string inclusively
@@ -259,7 +262,8 @@ public CaretInfo getCaretPlacement(int offset, boolean trailing) {
 
 	layout.setText(fragString);
 	Point where = new Point(layout.getLocation(offset, trailing));
-	layout.setText(""); //$NON-NLS-1$
+	if (isMirrored())
+		where.x = box.width - where.x;
 	FontMetrics metrics = FigureUtilities.getFontMetrics(getFont());
 	where.translate(box.getX(), box.getTextTop());
 	CaretInfo info = new CaretInfo(where.x, where.y,
@@ -371,8 +375,10 @@ public int getOffset(Point p, int trailing[]) {
 		TextLayout layout = FlowUtilities.getTextLayout();
 		layout.setFont(getFont());
 		layout.setText(substring);
-		int result = layout.getOffset(p.x - box.getX(), p.y - box.getTextTop(), trailing);
-		layout.setText(""); //$NON-NLS-1$
+		int x = p.x - box.getX();
+		if (isMirrored())
+			x = box.getWidth() - x;
+		int result = layout.getOffset(x, p.y - box.getTextTop(), trailing);
 		return result + trailing[0] + box.offset + bidiCorrection;
 	}
 	return -1;
@@ -513,6 +519,8 @@ protected void paintSelection(Graphics graphics) {
 			rect.union(layout.getLocation(Math.min(selectionEnd - frag.offset,
 					frag.length) - 1 + prefixCorrection, true).x, 0);
 			rect.width--;
+			if (isMirrored())
+				rect.x = frag.getWidth() - (rect.x + rect.width);
 			rect.translate(frag.getX(), frag.getLineRoot().getVisibleTop());
 			rect.height = frag.getLineRoot().getVisibleBottom() - rect.y;
 			graphics.fillRectangle(rect);
@@ -570,7 +578,7 @@ public void setText(String s) {
 	if (s != null && !s.equals(text)) {
 		text = s;
 		revalidateBidi(this);
-		revalidate();
+//		revalidate();
 		repaint();
 	}
 }
