@@ -80,6 +80,7 @@ private List styleKeys = new ArrayList();
 private final StyleService styleService;
 private List styleValues = new ArrayList();
 private int textInputMode;
+private boolean isMirrored;
 
 private final GraphicalTextViewer textViewer;
 
@@ -89,6 +90,7 @@ private final GraphicalTextViewer textViewer;
 public TextTool(GraphicalTextViewer viewer, StyleService service) {
 	textViewer = viewer;
 	styleService = service;
+	isMirrored = (viewer.getControl().getStyle() & SWT.MIRRORED) != 0;
 }
 
 public void activate() {
@@ -506,21 +508,21 @@ private int lookupAction(int i) {
 	switch (i) {
 		//Left and Right
 		case SWT.ARROW_LEFT:
-			return ST.COLUMN_PREVIOUS;
+			return isMirrored ? ST.COLUMN_NEXT : ST.COLUMN_PREVIOUS;
 		case SWT.ARROW_RIGHT:
-			return ST.COLUMN_NEXT;
+			return isMirrored ? ST.COLUMN_PREVIOUS : ST.COLUMN_NEXT;
 		case SWT.ARROW_RIGHT | SWT.SHIFT:
-			return ST.SELECT_COLUMN_NEXT;
+			return isMirrored ? ST.SELECT_COLUMN_PREVIOUS : ST.SELECT_COLUMN_NEXT;
 		case SWT.ARROW_LEFT | SWT.SHIFT:
-			return ST.SELECT_COLUMN_PREVIOUS;
+			return isMirrored ? ST.SELECT_COLUMN_NEXT : ST.SELECT_COLUMN_PREVIOUS;
 		case SWT.ARROW_RIGHT | SWT.CONTROL:
-			return ST.WORD_NEXT;
+			return isMirrored ? ST.WORD_PREVIOUS : ST.WORD_NEXT;
 		case SWT.ARROW_RIGHT | SWT.CONTROL | SWT.SHIFT:
-			return ST.SELECT_WORD_NEXT;
+			return isMirrored ? ST.SELECT_WORD_PREVIOUS : ST.SELECT_WORD_NEXT;
 		case SWT.ARROW_LEFT| SWT.CONTROL:
-			return ST.WORD_PREVIOUS;
+			return isMirrored ? ST.WORD_NEXT : ST.WORD_PREVIOUS;
 		case SWT.ARROW_LEFT| SWT.CONTROL | SWT.SHIFT:
-			return ST.SELECT_WORD_PREVIOUS;
+			return isMirrored ? ST.SELECT_WORD_NEXT : ST.SELECT_WORD_PREVIOUS;
 		
 		case ST.LINE_END:
 			return ST.LINE_END;
