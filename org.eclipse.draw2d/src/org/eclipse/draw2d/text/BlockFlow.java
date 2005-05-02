@@ -272,7 +272,7 @@ public void setOrientation(int orientation) {
 	if (this.orientation == orientation)
 		return;
 	this.orientation = orientation;
-	revalidate();
+	revalidateBidi(this);
 }
 
 /**
