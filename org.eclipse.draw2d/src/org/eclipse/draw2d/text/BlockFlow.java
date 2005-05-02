@@ -97,12 +97,11 @@ int getBottomMargin() {
 }
 
 /**
- * Returns the horizontal alignment.  This method will never return 
- * {@link PositionConstants#NONE}.  If the value is none, it will return the inherited
- * alignment.  If no alignment was inherited, it will return the default alignment
- * ({@link PositionConstants#LEFT}).
- * @return {@link PositionConstants#ALWAYS_LEFT} or {@link PositionConstants#ALWAYS_RIGHT}
- * or {@link PositionConstants#LEFT} or {@link PositionConstants#RIGHT}
+ * Returns the effective horizontal alignment. This method will never return {@link
+ * PositionConstants#NONE}. If the value is none, it will return the inherited alignment.
+ * If no alignment was inherited, it will return the default alignment ({@link
+ * PositionConstants#LEFT}).
+ * @return the effective alignment
  */
 public int getHorizontalAligment() {
 	if (alignment != PositionConstants.NONE)
@@ -235,26 +234,21 @@ protected void revalidateBidi(IFigure origin) {
 /**
  * Sets the horitontal aligment of the block. Valid values are:
  * <UL>
- *   <LI>{@link org.eclipse.draw2d.PositionConstants#NONE NONE} (default value; 
- *   		means alignment is inherited)</LI>
- *   <LI>{@link org.eclipse.draw2d.PositionConstants#LEFT LEFT} (leading)</LI>
- *   <LI>{@link org.eclipse.draw2d.PositionConstants#RIGHT RIGHT} (trailing)</LI>
- *   <LI>{@link org.eclipse.draw2d.PositionConstants#CENTER CENTER}</LI>
- *   <LI>{@link org.eclipse.draw2d.PositionConstants#ALWAYS_LEFT ALWAYS_LEFT} 
- *   		(left irrespective of orientation)</LI>
- *   <LI>{@link org.eclipse.draw2d.PositionConstants#ALWAYS_RIGHT ALWAYS_RIGHT} 
- *   		(right irrespective of orientation)</LI>
+ *   <LI>{@link PositionConstants#NONE NONE} - (default) Alignment is inherited from
+ *   parent.  If a parent is not found then LEFT is used.</LI>
+ *   <LI>{@link PositionConstants#LEFT} - Alignment is with leading edge</LI>
+ *   <LI>{@link PositionConstants#RIGHT} - Alignment is with trailing edge</LI>
+ *   <LI>{@link PositionConstants#CENTER}</LI>
+ *   <LI>{@link PositionConstants#ALWAYS_LEFT} - Left, irrespective of orientation</LI>
+ *   <LI>{@link PositionConstants#ALWAYS_RIGHT} - Right, irrespective of orientation</LI>
  * </UL>
  * @param value the aligment
  * @see #getHorizontalAligment() */
 public void setHorizontalAligment(int value) {
+	value &= PositionConstants.LEFT | PositionConstants.CENTER | PositionConstants.RIGHT
+		| PositionConstants.ALWAYS_LEFT | PositionConstants.ALWAYS_RIGHT;
 	if (value == alignment)
 		return;
-	if (value != PositionConstants.LEFT && value != PositionConstants.ALWAYS_RIGHT
-			&& value != PositionConstants.CENTER && value != PositionConstants.NONE
-			&& value != PositionConstants.RIGHT && value != PositionConstants.ALWAYS_LEFT)
-		throw new IllegalArgumentException("Horizontal Aligment must be one" + //$NON-NLS-1$
-				" of: NONE, LEFT, CENTER, RIGHT, ALWAYS_LEFT, ALWAYS_RIGHT");//$NON-NLS-1$
 	alignment = value;
 	revalidate();
 }
@@ -274,14 +268,11 @@ public void setHorizontalAligment(int value) {
  * @since 3.1
  */
 public void setOrientation(int orientation) {
+	orientation &= SWT.LEFT_TO_RIGHT | SWT.RIGHT_TO_LEFT;
 	if (this.orientation == orientation)
 		return;
-	if (orientation != SWT.RIGHT_TO_LEFT && orientation != SWT.LEFT_TO_RIGHT
-			&& orientation != SWT.NONE)
-		throw new IllegalArgumentException(
-				"Orientation must be one of: RTL, LTR or NONE"); //$NON-NLS-1$
 	this.orientation = orientation;
-	revalidateBidi(this);
+	revalidate();
 }
 
 /**
