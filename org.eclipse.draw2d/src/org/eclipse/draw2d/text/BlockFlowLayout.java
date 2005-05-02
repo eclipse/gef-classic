@@ -57,10 +57,10 @@ private void addBelowPreviousLine(CompositeBox line) {
 		else
 			alignment = orientation == SWT.LEFT_TO_RIGHT
 					? PositionConstants.ALWAYS_RIGHT : PositionConstants.ALWAYS_LEFT;
-		if (getBlockFlow().isMirrored())
-			alignment = (PositionConstants.ALWAYS_LEFT | PositionConstants.ALWAYS_RIGHT) 
-					& ~alignment;
 	}
+	if (alignment != PositionConstants.CENTER && getBlockFlow().isMirrored())
+		alignment = (PositionConstants.ALWAYS_LEFT | PositionConstants.ALWAYS_RIGHT) 
+				& ~alignment;
 
 	switch (alignment) {
 		case PositionConstants.ALWAYS_RIGHT:
