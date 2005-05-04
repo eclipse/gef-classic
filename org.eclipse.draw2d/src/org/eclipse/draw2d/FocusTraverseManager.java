@@ -41,25 +41,29 @@ private IFigure findDeepestRightmostChildOf(IFigure fig) {
  * Returns the IFigure that will receive focus upon a 'tab' traverse event.
  * 
  * @param root the {@link LightweightSystem LightweightSystem's} root figure
- * @param focusOwner the IFigure who currently owns focus
+ * @param prevFocus the IFigure who currently owns focus
  * @return the next focusable figure
  */
-public IFigure getNextFocusableFigure(IFigure root, IFigure focusOwner) {
+public IFigure getNextFocusableFigure(IFigure root, IFigure prevFocus) {
 	boolean found = false;
-	IFigure nextFocusOwner = focusOwner;
+	IFigure nextFocus = prevFocus;
 	
-	/* If no Figure currently has focus,
-	 * apply focus to root figure's first focusable child
+	/*
+	 * If no Figure currently has focus, apply focus to root's first focusable child.
 	 */
-	if (focusOwner == null) {
+	if (prevFocus == null) {
 		if (root.getChildren().size() != 0) {
-			nextFocusOwner = ((IFigure)root.getChildren().get(0));
-			if (isFocusEligible(nextFocusOwner))
-				return nextFocusOwner;
+			nextFocus = ((IFigure)root.getChildren().get(0));
+			if (isFocusEligible(nextFocus))
+				return nextFocus;
 		} else
 			return null;
 	}
+	
+	int siblingPos = nextFocus.getParent().getChildren().indexOf(nextFocus);
 	while (!found) {
+		IFigure parent = nextFocus.getParent();
+		
 		/*
 		 * Figure traversal is implemented using the pre-order left to right
 		 * tree traversal algorithm.
@@ -68,66 +72,63 @@ public IFigure getNextFocusableFigure(IFigure root, IFigure focusOwner) {
 		 * If the focused sibling has no children, traverse to the sibling
 		 * to its right.
 		 * If there is no sibling to the right, go up the tree until a node
-		 * with untraversed siblings is found.
+		 * with un-traversed siblings is found.
 		 */
+		List siblings = parent.getChildren();
 
-		if (nextFocusOwner.getChildren().size() != 0) {
-			nextFocusOwner = ((IFigure)(nextFocusOwner.getChildren().get(0)));		
-			if (isFocusEligible(nextFocusOwner))				
+		if (nextFocus.getChildren().size() != 0) {
+			nextFocus = (IFigure)nextFocus.getChildren().get(0);
+			siblingPos = 0;
+			if (isFocusEligible(nextFocus))
+				found = true;	
+		} else if (siblingPos < siblings.size() - 1) {
+			nextFocus = ((IFigure)(siblings.get(++siblingPos)));
+			if (isFocusEligible(nextFocus))
 				found = true;
 		} else {
-			IFigure parent = nextFocusOwner.getParent();
-			List siblings = parent.getChildren();
-			int siblingPos = siblings.indexOf(nextFocusOwner);		
-			if (siblingPos < siblings.size() - 1) {
-				nextFocusOwner = ((IFigure)(siblings.get(siblingPos + 1)));
-				if (isFocusEligible(nextFocusOwner))
-					found = true;
-			} else {
-				boolean untraversedSiblingFound = false;			
-				while (!untraversedSiblingFound) {
-					IFigure p = nextFocusOwner.getParent();	
-					IFigure gp = p.getParent();
-					
-					if (gp != null) {
-						int parentSiblingCount = gp.getChildren().size();
-						int parentIndex = gp.getChildren().indexOf(p);
-						if (parentIndex < parentSiblingCount - 1) {
-							nextFocusOwner = ((IFigure)p.getParent()
-														.getChildren()
-														.get(parentIndex + 1));
-							untraversedSiblingFound = true;
-							if (isFocusEligible(nextFocusOwner))		
-								found = true;
-						} else
-							nextFocusOwner = p;
-					} else {
-						nextFocusOwner = null;
+			boolean untraversedSiblingFound = false;			
+			while (!untraversedSiblingFound) {
+				IFigure p = nextFocus.getParent();	
+				IFigure gp = p.getParent();
+				
+				if (gp != null) {
+					int parentSiblingCount = gp.getChildren().size();
+					int parentIndex = gp.getChildren().indexOf(p);
+					if (parentIndex < parentSiblingCount - 1) {
+						nextFocus = ((IFigure)p.getParent()
+								.getChildren().get(parentIndex + 1));
+						siblingPos = parentIndex + 1;
 						untraversedSiblingFound = true;
-						found = true;
-					}
+						if (isFocusEligible(nextFocus))		
+							found = true;
+					} else
+						nextFocus = p;
+				} else {
+					nextFocus = null;
+					untraversedSiblingFound = true;
+					found = true;
 				}
-			}		
-		}
+			}
+		}		
 	}
-	return nextFocusOwner;
+	return nextFocus;
 }
 
 /**
  * Returns the IFigure that will receive focus upon a 'shift-tab' traverse event.
  * 
  * @param root The {@link LightweightSystem LightweightSystem's} root figure
- * @param focusOwner The IFigure who currently owns focus 
+ * @param prevFocus The IFigure who currently owns focus 
  * @return the previous focusable figure
  */
-public IFigure getPreviousFocusableFigure(IFigure root, IFigure focusOwner) {
-	if (focusOwner == null)
+public IFigure getPreviousFocusableFigure(IFigure root, IFigure prevFocus) {
+	if (prevFocus == null)
 		return null;
 	
 	boolean found = false;
-	IFigure nextFocusOwner = focusOwner;
+	IFigure nextFocus = prevFocus;
  	while (!found) {
- 		IFigure parent = nextFocusOwner.getParent();
+ 		IFigure parent = nextFocus.getParent();
 		
 		/* 
 		 * At root, return null to indicate traversal
@@ -137,9 +138,9 @@ public IFigure getPreviousFocusableFigure(IFigure root, IFigure focusOwner) {
 			return null;
 		
 		List siblings = parent.getChildren();
-		int siblingPos = siblings.indexOf(nextFocusOwner);
+		int siblingPos = siblings.indexOf(nextFocus);
 		
-		/*		
+		/*
 		 * Figure traversal is implemented using the post-order right to left 
 		 * tree traversal algorithm.
 		 * 
@@ -153,19 +154,19 @@ public IFigure getPreviousFocusableFigure(IFigure root, IFigure focusOwner) {
 					findDeepestRightmostChildOf((IFigure)siblings.get(siblingPos - 1));
 			if (isFocusEligible(child)) {
 				found = true;
-				nextFocusOwner = child;
-			} else if (child.equals(nextFocusOwner)) {
-				if (isFocusEligible(nextFocusOwner))
+				nextFocus = child;
+			} else if (child.equals(nextFocus)) {
+				if (isFocusEligible(nextFocus))
 					found = true;
 			} else
-				nextFocusOwner = child;			
+				nextFocus = child;			
 		} else {
-			nextFocusOwner = parent;
-				if (isFocusEligible(nextFocusOwner))
+			nextFocus = parent;
+				if (isFocusEligible(nextFocus))
 					found = true;
 		}
 	}
-	return nextFocusOwner;
+	return nextFocus;
 }
 
 /**
