@@ -88,10 +88,10 @@ public void addPoint(int x, int y) {
 }
 
 private void ensureCapacity(int newSize) {
-	if (size < newSize) {
+	newSize *= 2;
+	if (points.length < newSize) {
 		int old[] = points;
-		newSize = Math.max(newSize, size * 3 / 2);
-		points = new int[newSize * 2];
+		points = new int[Math.max(newSize, size * 4)];
 		System.arraycopy(old, 0, points, 0, size * 2);
 	}
 }
