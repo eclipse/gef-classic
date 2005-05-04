@@ -181,22 +181,14 @@ public void propertyChange(PropertyChangeEvent evt) {
 protected void refreshVisuals() {
 	ConnectionLayer cLayer = (ConnectionLayer) getLayer(CONNECTION_LAYER);
 
-	if (cLayer.getConnectionRouter() instanceof ShortestPathConnectionRouter)
-		getContentPane().removeLayoutListener(
-				((ShortestPathConnectionRouter)cLayer.getConnectionRouter())
-						.getLayoutListener());
 	if (getLogicDiagram().getConnectionRouter().equals(LogicDiagram.ROUTER_MANUAL)) {
 		AutomaticRouter router = new FanRouter();
 		router.setNextRouter(new BendpointConnectionRouter());
 		cLayer.setConnectionRouter(router);
 	} else if (getLogicDiagram().getConnectionRouter().equals(LogicDiagram.ROUTER_MANHATTAN))
 		cLayer.setConnectionRouter(new ManhattanConnectionRouter());
-	else {
-		ShortestPathConnectionRouter router =
-			new ShortestPathConnectionRouter(getFigure()); 
-		cLayer.setConnectionRouter(router);
-		getContentPane().addLayoutListener(router.getLayoutListener());
-	}
+	else
+		cLayer.setConnectionRouter(new ShortestPathConnectionRouter(getFigure()));
 }
 
 }

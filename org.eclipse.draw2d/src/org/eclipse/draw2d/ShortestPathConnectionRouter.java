@@ -71,7 +71,10 @@ private boolean ignoreInvalidate;
 
 /**
  * Creates a new shortest path router with the given container. The container
- * should contain all the obstacles the connetions will wrap around.
+ * contains all the figure's which will be treated as obstacles for the connections to
+ * avoid. Any time a child of the container moves, one or more connections will be
+ * revalidated to process the new obstacle locations. The connections being routed must
+ * not be contained within the container.
  * 
  * @param container the container
  */
@@ -81,7 +84,7 @@ public ShortestPathConnectionRouter(IFigure container) {
 	this.container = container;
 }
 
-void queueSomeRouting() {
+/*package*/ void queueSomeRouting() {
 	if (connectionToPaths == null || connectionToPaths.isEmpty())
 		return;
 	try {
@@ -93,7 +96,7 @@ void queueSomeRouting() {
 	}
 }
 
-void addChild(IFigure child) {
+/*package*/ void addChild(IFigure child) {
 	if (connectionToPaths == null)
 		return;
 	if (figuresToBounds.containsKey(child))
@@ -122,9 +125,11 @@ private void hookAll() {
 	figuresToBounds = new HashMap();
 	for (int i = 0; i < container.getChildren().size(); i++)
 		addChild((IFigure)container.getChildren().get(i));
+	container.addLayoutListener(listener);
 }
 
 private void unhookAll() {
+	container.removeLayoutListener(listener);
 	if (figuresToBounds != null) {
 		Iterator figureItr = figuresToBounds.keySet().iterator();
 		while (figureItr.hasNext()) {
@@ -146,10 +151,6 @@ private void unhookAll() {
  */
 public Object getConstraint(Connection connection) {
 	return constraintMap.get(connection);
-}
-
-public LayoutListener getLayoutListener() {
-	return listener;
 }
 
 /**
