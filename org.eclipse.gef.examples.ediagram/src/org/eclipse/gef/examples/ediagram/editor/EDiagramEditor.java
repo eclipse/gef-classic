@@ -27,17 +27,13 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
-import org.eclipse.ui.views.properties.IPropertySheetPage;
-import org.eclipse.ui.views.properties.PropertySheetPage;
 
-import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.Resource.IOWrappedException;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.DanglingHREFException;
-import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 
 import org.eclipse.draw2d.ConnectionLayer;
 import org.eclipse.draw2d.FanRouter;
@@ -73,9 +69,6 @@ import org.eclipse.gef.examples.ediagram.EDiagramPlugin;
 import org.eclipse.gef.examples.ediagram.edit.parts.EDiagramPartFactory;
 import org.eclipse.gef.examples.ediagram.model.Diagram;
 import org.eclipse.gef.examples.ediagram.model.commands.DeleteCommand;
-import org.eclipse.gef.examples.ediagram.model.ecore.provider.EcoreItemProviderAdapterFactory;
-import org.eclipse.gef.examples.ediagram.model.properties.emf.UndoablePropertySheetEntry;
-import org.eclipse.gef.examples.ediagram.model.provider.ModelItemProviderAdapterFactory;
 import org.eclipse.gef.examples.ediagram.outline.EDiagramOutlinePage;
 
 public class EDiagramEditor 
@@ -187,18 +180,7 @@ protected FlyoutPreferences getPalettePreferences() {
 }
 
 public Object getAdapter(Class type) {
-	if (type == IPropertySheetPage.class) {
-		PropertySheetPage page = new PropertySheetPage();
-		UndoablePropertySheetEntry rootEntry = 
-				new UndoablePropertySheetEntry(getCommandStack());
-		AdapterFactory[] factories = new AdapterFactory[2];
-		factories[0] = new ModelItemProviderAdapterFactory(); 
-		factories[1] = new EcoreItemProviderAdapterFactory();
-		ComposedAdapterFactory superFactory = new ComposedAdapterFactory(factories);
-		rootEntry.setPropertySourceProvider(new GEFPropertySourceProvider(superFactory));
-		page.setRootEntry(rootEntry);
-		return page;
-	} else if (type == IContentOutlinePage.class)
+	if (type == IContentOutlinePage.class)
 		return new EDiagramOutlinePage(diagram, getActionRegistry());
 	return super.getAdapter(type);
 }
@@ -251,7 +233,6 @@ protected void initializeGraphicalViewer() {
 			new ShortestPathConnectionRouter(contentEditPart.getFigure()); 
 	router.setNextRouter(spRouter);
 	connLayer.setConnectionRouter(router);
-	contentEditPart.getContentPane().addLayoutListener(spRouter.getLayoutListener());
 }
 
 public boolean isSaveAsAllowed() {

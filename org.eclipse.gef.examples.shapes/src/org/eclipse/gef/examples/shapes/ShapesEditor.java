@@ -275,7 +275,6 @@ protected void initializeGraphicalViewer() {
 	ShortestPathConnectionRouter router = 
 			new ShortestPathConnectionRouter(contentEditPart.getFigure());
 	connLayer.setConnectionRouter(router);
-	contentEditPart.getContentPane().addLayoutListener(router.getLayoutListener());
 
 	// listen for dropped parts
 	viewer.addDropTargetListener(createTransferDropTargetListener());
