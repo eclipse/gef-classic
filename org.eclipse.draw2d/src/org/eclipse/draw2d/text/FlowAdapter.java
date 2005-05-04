@@ -14,15 +14,15 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
- * This is a FlowFigure proxy for regular figures.  It allows regular Figures
- * to be added to FlowFigures, hence allowing Figures to be shown inline with text.  
- * Clients can set the layout manager, border, colors, etc. for this figure just like 
- * they would normal figures.  Other figures can be added to this figure as well.
- *   
+ * Adapts non-flow figures for use within a parent hierarchy requiring flow figures. 
+ * Normal draw2d figures can be added as children.  If a normal LayoutManager is set, the
+ * children will be positioned by that layout manager.  The size of this figure within
+ * the flow will be determined by its preferred size.
+ * 
  * @author Pratik Shah
  * @since 3.1
  */
-public class FlowProxy 
+public class FlowAdapter
 	extends FlowFigure
 {
 
@@ -31,11 +31,11 @@ private FigureBox box = new FigureBox();
 
 /**
  * This FlowFigure contributes an Object Replacement Character.
- * @see org.eclipse.draw2d.text.FlowFigure#contributeBidi(org.eclipse.draw2d.text.BidiProcessor)
+ * @see FlowFigure#contributeBidi(BidiProcessor)
  */
 protected void contributeBidi(BidiProcessor proc) {
 	box.setBidiLevel(-1);
-	// contributes the object replacement character
+	// contributes a single object replacement char
 	proc.add(this, BidiChars.OBJ);
 }
 
@@ -53,17 +53,16 @@ protected FlowFigureLayout createDefaultFlowLayout() {
  * @see org.eclipse.draw2d.Figure#layout()
  */
 protected void layout() {
-	if (getLayoutManager() != null)
-		box.setSize(getLayoutManager().getPreferredSize(this, -1, -1));
+	box.setSize(getPreferredSize());
 	if (context.isCurrentLineOccupied() && context.getRemainingLineWidth() < box.width)
 		context.endLine();
 	context.addToCurrentLine(box);
 }
 
 /**
- * Updates the bounds of this figure to match that of its content box, and then
- * calls validate in case the size of the figure changed.
- * @see org.eclipse.draw2d.text.FlowFigure#postValidate()
+ * Updates the bounds of this figure to match that of its content box.  The calls
+ * <code>validate()</code> in case the size has changed.
+ * @see FlowFigure#postValidate()
  */
 public void postValidate() {
 	setBounds(new Rectangle(box.getX(), box.getBaseline() - box.ascent,
@@ -73,14 +72,14 @@ public void postValidate() {
 
 /**
  * Sets the bidi level of the content box associated with this Figure
- * @see org.eclipse.draw2d.text.FlowFigure#setBidiInfo(org.eclipse.draw2d.text.BidiInfo)
+ * @see FlowFigure#setBidiInfo(BidiInfo)
  */
 public void setBidiInfo(BidiInfo info) {
 	box.setBidiLevel(info.levelInfo[0]);
 }
 
 /**
- * @see org.eclipse.draw2d.text.FlowFigure#setFlowContext(org.eclipse.draw2d.text.FlowContext)
+ * @see FlowFigure#setFlowContext(FlowContext)
  */
 public void setFlowContext(FlowContext flowContext) {
 	context = flowContext;
@@ -89,7 +88,7 @@ public void setFlowContext(FlowContext flowContext) {
 private class FigureBox extends ContentBox {
 	private int ascent;
 	public boolean containsPoint(int x, int y) {
-		return FlowProxy.this.containsPoint(x, y);
+		return FlowAdapter.this.containsPoint(x, y);
 	}
 	public int getAscent() {
 		return ascent;
