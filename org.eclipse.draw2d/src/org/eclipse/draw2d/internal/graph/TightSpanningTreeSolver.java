@@ -10,9 +10,6 @@
  *******************************************************************************/
 package org.eclipse.draw2d.internal.graph;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.draw2d.graph.DirectedGraph;
 import org.eclipse.draw2d.graph.Edge;
 import org.eclipse.draw2d.graph.EdgeList;
@@ -28,7 +25,41 @@ import org.eclipse.draw2d.graph.NodeList;
 public class TightSpanningTreeSolver extends SpanningTreeVisitor {
 
 protected DirectedGraph graph;
-protected EdgeList candidates = new EdgeList();
+protected CandidateList candidates = new CandidateList();
+
+static final class CandidateList {
+	private Edge edges[] = new Edge[10];
+	private int size;
+	
+	public void add(Edge edge) {
+		if (size == edges.length - 1) {
+			Edge newEdges[] = new Edge[edges.length * 2];
+			System.arraycopy(edges, 0, newEdges, 0, edges.length);
+			edges = newEdges;
+		}
+		edges[size++] = edge;
+	}
+	
+	public Edge getEdge(int index) {
+		return edges[index];
+	}
+	
+	public void remove(Edge edge) {
+		for (int i = 0; i < size; i++) {
+			if (edges[i] == edge) {
+				edges[i] = edges[size - 1];
+				size--;
+				return;
+			}
+		}
+		throw new RuntimeException("Edge was not a candidate");
+	}
+	
+	public int size() {
+		return size;
+	}
+}
+
 protected NodeList members = new NodeList();
 
 public void visit(DirectedGraph graph) {
@@ -56,15 +87,33 @@ Node addEdge(Edge edge) {
 	return node;
 }
 
-void addNode(Node node) {
+private boolean isNodeReachable(Node node) {
+	return node.flag;
+}
+
+private void setNodeReachable(Node node) {
 	node.flag = true;
+}
+
+private boolean isCandidate(Edge e) {
+	return e.flag;
+}
+
+private void setCandidate(Edge e) {
+	e.flag = true;
+}
+
+void addNode(Node node) {
+	setNodeReachable(node);
 	EdgeList list = node.incoming;
 	Edge e;
 	for (int i = 0; i < list.size(); i++) {
 		e = list.getEdge(i);
-		if (!e.source.flag) {
-			if (!candidates.contains(e))
+		if (!isNodeReachable(e.source)) {
+			if (!isCandidate(e)) {
+				setCandidate(e);
 				candidates.add(e);
+			}
 		} else
 			candidates.remove(e);
 	}
@@ -72,9 +121,11 @@ void addNode(Node node) {
 	list = node.outgoing;
 	for (int i = 0; i < list.size(); i++) {
 		e = list.getEdge(i);
-		if (!e.target.flag) {
-			if (!candidates.contains(e))
+		if (!isNodeReachable(e.target)) {
+			if (!isCandidate(e)) {
+				setCandidate(e);
 				candidates.add(e);
+			}
 		} else
 			candidates.remove(e);
 	}
@@ -94,7 +145,6 @@ protected void solve() {
 	Node root = graph.nodes.getNode(0);
 	setParentEdge(root, null);
 	addNode(root);
-	List nonMembers = new ArrayList(graph.nodes);
 	while (members.size() < graph.nodes.size()) {
 		if (candidates.size() == 0)
 			throw new RuntimeException("graph is not fully connected");//$NON-NLS-1$
@@ -108,8 +158,7 @@ protected void solve() {
 				minEdge = edge;
 			}
 		}
-		Node added = addEdge(minEdge);
-		nonMembers.remove(added);
+		addEdge(minEdge);
 	}
 	graph.nodes.normalizeRanks();
 }
