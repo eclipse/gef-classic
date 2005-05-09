@@ -12,6 +12,7 @@ package org.eclipse.draw2d.text;
 
 import java.text.BreakIterator;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.TextLayout;
 import org.eclipse.swt.widgets.Display;
@@ -98,9 +99,9 @@ static int getBorderDescentWithMargin(InlineFlow owner) {
 }
 
 /**
- * Provides a TextLayout that can be used by the Draw2d text package for Bidi. 
- * If clients modify the TextLayout's orientation, they should restore it to LTR
- * before returning. This TextLayout should not be disposed by clients.
+ * Provides a TextLayout that can be used by the Draw2d text package for Bidi.  This 
+ * TextLayout should not be disposed by clients.  The provided TextLayout's orientation
+ * will be LTR.
  * 
  * @return an SWT TextLayout that can be used for Bidi
  * @since 3.1
@@ -108,6 +109,7 @@ static int getBorderDescentWithMargin(InlineFlow owner) {
 static TextLayout getTextLayout() {
 	if (layout == null)
 		layout = new TextLayout(Display.getDefault());
+	layout.setOrientation(SWT.LEFT_TO_RIGHT);
 	return layout;
 }
 
