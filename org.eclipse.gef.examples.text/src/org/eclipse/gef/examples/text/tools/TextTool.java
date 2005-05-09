@@ -315,14 +315,14 @@ private void doSelect(int type, boolean isForward, boolean appendSelection) {
 	else
 		otherEnd = range.end;
 
-	Rectangle caretBounds =getTextualViewer().getCaretBounds();
+	Rectangle caretBounds = getTextualViewer().getCaretBounds();
 	CaretSearch search = new CaretSearch();
 	search.isForward = isForward;
 	search.type = type;
 	search.x = caretBounds.x;
 	//$TODO y coord needs to be the baseline location
 	search.baseline = caretBounds.y + caretBounds.height / 2;
-	search.where = getTextualViewer().getCaretLocation();
+	search.where = caretLocation;
 	
 	TextLocation newCaretLocation = caretLocation.part.getNextLocation(search);
 
