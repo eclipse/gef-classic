@@ -217,8 +217,6 @@ public void process() {
 	}
 	assignResults(levels);
 	
-	// reset the orientation of the layout, in case it was set to RTL
-	layout.setOrientation(SWT.LEFT_TO_RIGHT);
 	// will cause the fields to be reset for the next string to be processed
 	bidiText = null;
 	list.clear();
