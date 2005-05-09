@@ -138,10 +138,11 @@ public TextLocation getNextLocation(CaretSearch search) {
 			where.y = search.baseline;
 			getTextFlow().translateToRelative(where);
 
-			offset = getTextFlow().getNextOffset(where, search.isForward, new int[1]);
+			int[] trailing = new int[1];
+			offset = getTextFlow().getNextOffset(where, search.isForward, trailing);
 			if (offset == -1)
 				return null;
-			return new TextLocation(this, offset);
+			return new TextLocation(this, offset + trailing[0]);
 		case CaretSearch.WORD_BOUNDARY:
 			String text = getTextFlow().getText();
 			int length = text.length();
