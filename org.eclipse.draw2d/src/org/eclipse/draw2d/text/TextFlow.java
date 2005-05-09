@@ -12,6 +12,7 @@ package org.eclipse.draw2d.text;
 
 import java.text.BreakIterator;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.TextLayout;
@@ -31,6 +32,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * <P>
  * WARNING: This class is not intended to be subclassed by clients.
  * @author hudsonr
+ * @author Pratik Shah
  * @since 2.1
  */
 public class TextFlow 
@@ -99,7 +101,7 @@ boolean addLeadingWordWidth(String text, int[] width) {
 	if (bidiInfo == null)
 		width[0] += FlowUtilities.getStringExtents(text, getFont()).width;
 	else {
-		org.eclipse.swt.graphics.TextLayout textLayout = FlowUtilities.getTextLayout();
+		TextLayout textLayout = FlowUtilities.getTextLayout();
 		textLayout.setFont(getFont());
 		textLayout.setText(text);
 		width[0] += textLayout.getBounds().width;
@@ -123,67 +125,63 @@ protected FlowFigureLayout createDefaultFlowLayout() {
 	return new ParagraphTextLayout(this);
 }
 
-private int findNextLineOffset(Point p) {
-	if (getBounds().bottom() < p.y)
+private int findNextLineOffset(Point p, int[] trailing) {
+	if (getBounds().bottom() <= p.y)
 		return -1;
 
-	TextFragmentBox box = null;
-
-	int i;
-	for (i = 0; i < fragments.size(); i++) {
-		box = (TextFragmentBox)fragments.get(i);
-		if (box.getTextTop() > p.y)
-			break;
-		box = null;
+	TextFragmentBox closestBox = null;	
+	int index = 0;
+	for (int i = fragments.size() - 1; i >= 0; i--) {
+		TextFragmentBox box = (TextFragmentBox)fragments.get(i);
+		if (box.getBaseline() - box.getLineRoot().contentAscent > p.y 
+				&& (closestBox == null
+				|| box.getBaseline() < closestBox.getBaseline()
+				|| hDistanceBetween(box, p.x) < hDistanceBetween(closestBox, p.x))) {
+			closestBox = box;
+			index = i;
+		}
 	}
-	if (box == null)
-		return -1;
+	if (closestBox != null)
+		return findOffset(p, trailing, closestBox, index);
+	return -1;
+}
+
+private int findOffset(Point p, int[] trailing, TextFragmentBox box, int boxIndex) {
 	TextLayout layout = FlowUtilities.getTextLayout();
 	layout.setFont(getFont());
-	
-	String fragString = getBidiSubstring(box, i);
-	layout.setText(fragString);
-	int trailing[] = new int[1];
+	layout.setText(getBidiSubstring(box, boxIndex));
 	int x = p.x - box.getX();
 	if (isMirrored())
 		x = box.getWidth() - x;
-	int layoutOffset = layout.getOffset(x, p.y - box.getTextTop(), trailing)
-			+ trailing[0];
-	return box.offset + layoutOffset;
+	int layoutOffset = layout.getOffset(x, p.y - box.getTextTop(), trailing);
+	return box.offset + layoutOffset - getBidiPrefixLength(box, boxIndex);
 }
 
-private int findPreviousLineOffset(Point p) {
+private int findPreviousLineOffset(Point p, int[] trailing) {
 	if (getBounds().y > p.y)
 		return -1;
 
-	TextFragmentBox box = null;
-	
-	int i;
-	for (i = fragments.size() - 1; i >= 0; i--) {
-		box = (TextFragmentBox)fragments.get(i);
-		if (box.getBaseline() < p.y)
-			break;
-		box = null;
+	TextFragmentBox closestBox = null;	
+	int index = 0;
+	for (int i = fragments.size() - 1; i >= 0; i--) {
+		TextFragmentBox box = (TextFragmentBox)fragments.get(i);
+		if (box.getBaseline() + box.getLineRoot().contentDescent < p.y
+				&& (closestBox == null
+				|| box.getBaseline() > closestBox.getBaseline()
+//				|| (box.getX() <= p.x && box.getX() + box.getWidth() > p.x)
+				|| hDistanceBetween(box, p.x) < hDistanceBetween(closestBox, p.x))) {
+			closestBox = box;
+			index = i;
+		}
 	}
-	if (box == null)
-		return -1;
-	TextLayout layout = FlowUtilities.getTextLayout();
-	layout.setFont(getFont());
-	
-	String fragString;
-	if (bidiInfo == null)
-		fragString = text.substring(box.offset, box.offset + box.length);
-	else
-		fragString = getBidiSubstring(box, i);
+	if (closestBox != null)
+		return findOffset(p, trailing, closestBox, index);
+	return -1;
+}
 
-	layout.setText(fragString);
-	int trailing[] = new int[1];
-	int x = p.x - box.getX();
-	if (isMirrored())
-		x = box.getWidth() - x;
-	int layoutOffset = layout.getOffset(x, p.y - box.getTextTop(), trailing) + trailing[0];
-	layoutOffset -= getBidiPrefixLength(box, i);
-	return box.offset + layoutOffset;
+int getAscent() {
+	FontMetrics fm = FigureUtilities.getFontMetrics(getFont());
+	return fm.getHeight() - fm.getDescent();
 }
 
 /**
@@ -195,6 +193,14 @@ public BidiInfo getBidiInfo() {
 	return bidiInfo;
 }
 
+private int getBidiPrefixLength(TextFragmentBox box, int index) {
+	if (box.getBidiLevel() < 1)
+		return 0;
+	if (index > 0 || !bidiInfo.leadingJoiner)
+		return 1;
+	return 2;
+}
+
 /**
  * @param box which fragment
  * @param index the fragment index
@@ -203,25 +209,16 @@ public BidiInfo getBidiInfo() {
  */
 private String getBidiSubstring(TextFragmentBox box, int index) {
 	if (bidiInfo == null || box.getBidiLevel() < 1)
-		return text.substring(box.offset, box.offset + box.length);
+		return getText().substring(box.offset, box.offset + box.length);
 	
 	StringBuffer buffer = new StringBuffer(box.length + 3);
 	buffer.append(box.isRightToLeft() ? BidiChars.RLO : BidiChars.LRO);
 	if (index == 0 && bidiInfo.leadingJoiner)
 		buffer.append(BidiChars.ZWJ);
-	buffer.append(text.substring(box.offset, box.offset + box.length));
+	buffer.append(getText().substring(box.offset, box.offset + box.length));
 	if (index == fragments.size() - 1 && bidiInfo.trailingJoiner)
 		buffer.append(BidiChars.ZWJ);
 	return buffer.toString();
-}
-
-int getAscent() {
-	FontMetrics fm = FigureUtilities.getFontMetrics(getFont());
-	return fm.getHeight() - fm.getDescent();
-}
-
-int getDescent() {
-	return FigureUtilities.getFontMetrics(getFont()).getDescent();
 }
 
 /**
@@ -235,7 +232,7 @@ int getDescent() {
  * @return the caret bounds relative to this figure
  */
 public CaretInfo getCaretPlacement(int offset, boolean trailing) {
-	if (offset < 0 || offset > text.length())
+	if (offset < 0 || offset > getText().length())
 		throw new IllegalArgumentException("Offset: " + offset //$NON-NLS-1$
 				+ " is invalid"); //$NON-NLS-1$
 	
@@ -270,6 +267,10 @@ public CaretInfo getCaretPlacement(int offset, boolean trailing) {
 			metrics.getAscent(), metrics.getHeight() - metrics.getAscent());
 	translateToAbsolute(info);
 	return info;
+}
+
+int getDescent() {
+	return FigureUtilities.getFontMetrics(getFont()).getDescent();
 }
 
 /**
@@ -314,16 +315,16 @@ public int getLastOffsetForLine(int baseline) {
 
 /**
  * Returns the offset nearest the given point either up or down one line.  If no offset
- * is found, -1 is returned.
+ * is found, -1 is returned.  <code>trailing[0]</code> will be set to 1 if the reference
+ * point is closer to the trailing edge of the offset than it is to the leading edge.
  * @since 3.1
  * @param p a reference point
  * @param down <code>true</code> if the search is down
+ * @param trailing an int array
  * @return the next offset or <code>-1</code>
  */
-public int getNextOffset(Point p, boolean down, int trailing[]) {
-	if (down)
-		return findNextLineOffset(p);
-	return findPreviousLineOffset(p);
+public int getNextOffset(Point p, boolean down, int[] trailing) {
+	return down ? findNextLineOffset(p, trailing) : findPreviousLineOffset(p, trailing);
 }
 
 /**
@@ -349,8 +350,11 @@ public int getNextVisibleOffset(int offset) {
 
 /**
  * Returns the textual offset nearest the specified point. The point must be relative to
- * this figure. If the point is not inside any fragment, <code>-1</code> is returned. 
- * Otherwise the offset will be between 0 and <code>getText().length()</code> inclusively.
+ * this figure. The offset will be between 0 and <code>getText().length()</code> 
+ * inclusively, if a fragment is found.  If the point in on the same line(s) as this
+ * TextFlow, the index of the closest fragment is returned.  Otherwise, -1 will be 
+ * returned.   <code>trailing[0]</code> will be set to 1 if the reference
+ * point is closer to the trailing edge of the offset than it is to the leading edge.
  * <p>
  * Trailing information for bidi applications is provided by SWT's {@link TextLayout}.
  * 
@@ -360,36 +364,23 @@ public int getNextVisibleOffset(int offset) {
  * @return the offset in the string or <code>-1</code>
  */
 public int getOffset(Point p, int trailing[]) {
-	if (!getBounds().contains(p))
-		return -1;
+	TextFragmentBox closestBox = null;
+	int index = 0;
 	for (int i = fragments.size() - 1; i >= 0; i--) {
 		TextFragmentBox box = (TextFragmentBox)fragments.get(i);
-		if (!box.containsPoint(p.x, p.y))
-			continue;
-		
-		String substring = getBidiSubstring(box, i);
-		int bidiCorrection = 0;
-		if (bidiInfo != null)
-			bidiCorrection = -getBidiPrefixLength(box, i);
-		
-		TextLayout layout = FlowUtilities.getTextLayout();
-		layout.setFont(getFont());
-		layout.setText(substring);
-		int x = p.x - box.getX();
-		if (isMirrored())
-			x = box.getWidth() - x;
-		int result = layout.getOffset(x, p.y - box.getTextTop(), trailing);
-		return result + trailing[0] + box.offset + bidiCorrection;
+		int closestDistance = closestBox == null 
+				? Integer.MAX_VALUE : vDistanceBetween(closestBox, p.y);
+		int vDistance = vDistanceBetween(box, p.y);
+		if (vDistance < closestDistance
+				|| (vDistance == closestDistance 
+				&& hDistanceBetween(box, p.x) < hDistanceBetween(closestBox, p.x))) {
+			closestBox = box;
+			index = i;
+		}
 	}
+	if (closestBox != null)
+		return findOffset(p, trailing, closestBox, index);
 	return -1;
-}
-
-private int getBidiPrefixLength(TextFragmentBox box, int index) {
-	if (box.getBidiLevel() < 1)
-		return 0;
-	if (index > 0 || !bidiInfo.leadingJoiner)
-		return 1;
-	return 2;
 }
 
 /**
@@ -419,6 +410,28 @@ public int getPreviousVisibleOffset(int offset) {
  */
 public String getText() {
 	return text;
+}
+
+int getVisibleAscent() {
+	if (getBorder() instanceof FlowBorder) {
+		FlowBorder border = (FlowBorder)getBorder();
+		return border.getInsets(this).top + getAscent();
+	}
+	return getAscent();
+}
+
+int getVisibleDescent() {
+	if (getBorder() instanceof FlowBorder) {
+		FlowBorder border = (FlowBorder)getBorder();
+		return border.getInsets(this).bottom + getDescent();
+	}
+	return getDescent();
+}
+
+private int hDistanceBetween(TextFragmentBox box, int x) {
+	if (x < box.getX())
+		return box.getX() - x;
+	return Math.max(0, x - (box.getX() + box.getWidth()));
 }
 
 /**
@@ -530,13 +543,14 @@ protected void paintSelection(Graphics graphics) {
 
 private void paintText(Graphics g, String draw, int x, int y, int bidiLevel) {
 	if (bidiLevel < 1) {
-		g.drawString(draw, x, y);
+		g.drawText(draw, x, y);
 	} else {
 		TextLayout tl = FlowUtilities.getTextLayout();
+		if (isMirrored())
+			tl.setOrientation(SWT.RIGHT_TO_LEFT);
 		tl.setFont(g.getFont());
 		tl.setText(draw);
 		g.drawTextLayout(tl, x, y);
-		// tl.setText("");
 	}
 }
 
@@ -578,25 +592,15 @@ public void setText(String s) {
 	if (s != null && !s.equals(text)) {
 		text = s;
 		revalidateBidi(this);
-//		revalidate();
 		repaint();
 	}
 }
 
-int getVisibleAscent() {
-	if (getBorder() instanceof FlowBorder) {
-		FlowBorder border = (FlowBorder)getBorder();
-		return border.getInsets(this).top + getAscent();
-	}
-	return getAscent();
-}
-
-int getVisibleDescent() {
-	if (getBorder() instanceof FlowBorder) {
-		FlowBorder border = (FlowBorder)getBorder();
-		return border.getInsets(this).bottom + getDescent();
-	}
-	return getDescent();
+private int vDistanceBetween(TextFragmentBox box, int y) {
+	int top = box.getBaseline() - box.getLineRoot().contentAscent;
+	if (y < top)
+		return top - y;
+	return Math.max(0, y - (box.getBaseline() + box.getLineRoot().contentDescent));
 }
 
 }
