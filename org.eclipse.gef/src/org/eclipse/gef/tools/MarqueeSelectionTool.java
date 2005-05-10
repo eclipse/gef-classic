@@ -58,7 +58,6 @@ public class MarqueeSelectionTool
  */
 public static final Object PROPERTY_MARQUEE_BEHAVIOR = "marqueeBehavior"; //$NON-NLS-1$
 
-//	 these constants are declared as Integer.intValue() to prevent them from being inlined
 /**
  * This behaviour selects nodes completely encompassed by the marquee rectangle.  This 
  * is the default behaviour for this tool.
@@ -395,13 +394,9 @@ protected boolean isViewerImportant(EditPartViewer viewer) {
 
 private void performMarqueeSelect() {
 	EditPartViewer viewer = getCurrentViewer();
-	Collection newSelections = marqueeBehavior == BEHAVIOR_NODES_AND_CONNECTIONS 
-			? new HashSet() : (Collection)new ArrayList();
-	Collection deselections = new HashSet();
+	Collection newSelections = new HashSet(), deselections = new HashSet();
 	calculateNewSelection(newSelections, deselections);
 	if (getSelectionMode() != DEFAULT_MODE) {
-		// We could end up with a list containing the same element twice, but that's
-		// okay because viewer.setSelection() will remove multiple copies.
 		newSelections.addAll(viewer.getSelectedEditParts());
 		newSelections.removeAll(deselections);
 	}
