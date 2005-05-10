@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.ediagram.edit.parts;
 
+import org.eclipse.ui.views.properties.IPropertySource;
+
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
@@ -30,6 +32,7 @@ import org.eclipse.gef.examples.ediagram.model.Link;
 import org.eclipse.gef.examples.ediagram.model.ModelPackage;
 import org.eclipse.gef.examples.ediagram.model.commands.DeleteCommand;
 import org.eclipse.gef.examples.ediagram.model.commands.DeleteLinkCommand;
+import org.eclipse.gef.examples.ediagram.model.properties.PropertySourceFactory;
 
 /**
  * @author Pratik Shah
@@ -79,6 +82,12 @@ protected IFigure createFigure() {
 public void deactivate() {
 	getLink().eAdapters().remove(modelListener);
 	super.deactivate();
+}
+
+public Object getAdapter(Class adapter) {
+	if (IPropertySource.class == adapter)
+		return PropertySourceFactory.getPropertySource(getModel());
+	return super.getAdapter(adapter);
 }
 
 protected Link getLink() {

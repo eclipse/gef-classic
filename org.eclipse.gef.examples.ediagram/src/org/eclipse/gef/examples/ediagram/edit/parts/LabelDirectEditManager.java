@@ -80,7 +80,6 @@ protected String getInitialText() {
 }
 
 protected void initCellEditor() {
-//	super.initCellEditor();
 	Text text = (Text)getCellEditor().getControl();
 	text.setText(getInitialText());
 	text.setFont(getDirectEditFigure().getFont());

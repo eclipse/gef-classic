@@ -11,6 +11,7 @@
 package org.eclipse.gef.examples.ediagram.edit.parts;
 
 import org.eclipse.jface.viewers.TextCellEditor;
+import org.eclipse.ui.views.properties.IPropertySource;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
@@ -34,6 +35,7 @@ import org.eclipse.gef.tools.DirectEditManager;
 import org.eclipse.gef.examples.ediagram.edit.policies.LabelSelectionEditPolicy;
 import org.eclipse.gef.examples.ediagram.figures.SelectableLabel;
 import org.eclipse.gef.examples.ediagram.model.commands.DeleteCommand;
+import org.eclipse.gef.examples.ediagram.model.properties.PropertySourceFactory;
 
 /**
  * Provides infrastructure for deletion, direct-editing, property source and 
@@ -86,6 +88,12 @@ protected IFigure createFigure() {
 public void deactivate() {
 	((EObject)getModel()).eAdapters().remove(modelListener);
 	super.deactivate();
+}
+
+public Object getAdapter(Class key) {
+	if (IPropertySource.class == key)
+		return PropertySourceFactory.getPropertySource(getModel());
+	return super.getAdapter(key);
 }
 
 IFigure getDirectEditFigure() {

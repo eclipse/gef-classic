@@ -131,7 +131,7 @@ public class NewEDiagramWizard extends Wizard implements INewWizard {
 		IContainer container = (IContainer) resource;
 		final IFile file = container.getFile(new Path(fileName));
 		ResourceSetImpl rsrcSet = new ResourceSetImpl();
-		URI uri = URI.createURI(file.getFullPath().toString());
+		URI uri = URI.createPlatformResourceURI(file.getFullPath().toString());
 		Resource rsrc = null;
 		if (file.exists())
 			throwCoreException("File \"" + file.getFullPath() + "\" already exists");
@@ -139,11 +139,19 @@ public class NewEDiagramWizard extends Wizard implements INewWizard {
 		Diagram diagram = ModelFactory.eINSTANCE.createDiagram();
 		for (int i = 0; i < ecoreFiles.length; i++) {
 			String filePath = ecoreFiles[i];
-			URI ecoreUri = URI.createFileURI(filePath);
+			URI ecoreUri = URI.createPlatformResourceURI(filePath);
 			Resource ecoreResource = null;
 			try {
 				ecoreResource = rsrcSet.getResource(ecoreUri, true);
 			} catch (Exception e) {
+				// Perhaps the file in outside the workspace
+				ecoreUri = URI.createFileURI(filePath);
+				try {
+					ecoreResource = rsrcSet.getResource(ecoreUri, true);
+				} catch (Exception ie) {
+					// Revert to using platform uri because this looks like a new ecore file
+					ecoreUri = URI.createPlatformResourceURI(filePath);
+				}
 			}
 			if (ecoreResource == null) {
 				ecoreResource = rsrcSet.createResource(ecoreUri);
