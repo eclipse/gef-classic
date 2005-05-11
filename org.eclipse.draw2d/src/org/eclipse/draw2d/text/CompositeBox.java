@@ -51,7 +51,7 @@ public void setRecommendedWidth(int w) {
 
 /**
  * Positions the box vertically by setting the y coordinate for the top of the content of
- * the line.
+ * the line. For internal use only.
  * @param top the y coordinate
  * @since 3.1
  */

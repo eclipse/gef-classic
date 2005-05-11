@@ -32,7 +32,8 @@ public InlineFlowLayout(FlowFigure flow) {
 }
 
 /**
- * Ends any current line, and adds
+ * Adds the given box as a line below the current line.
+ * @param box the box to add
  */
 public void addLine(CompositeBox box) {
 	endLine();

@@ -29,15 +29,24 @@ BlockBox(BlockFlow owner) {
 	this.owner = owner;
 }
 
+/**
+ * @see CompositeBox#add(FlowBox)
+ */
 public void add(FlowBox box) {
 	width = Math.max(width, box.getWidth());
 	height = Math.max(height, box.getBaseline() + box.getDescent());
 }
 
+/**
+ * @see FlowBox#containsPoint(int, int)
+ */
 public boolean containsPoint(int x, int y) {
 	return true;
 }
 
+/**
+ * @see FlowBox#getAscent()
+ */
 public int getAscent() {
 	return 0;
 }
@@ -53,6 +62,9 @@ int getBottomMargin() {
 	return owner.getBottomMargin();
 }
 
+/**
+ * @see FlowBox#getDescent()
+ */
 public int getDescent() {
 	return height;
 }
@@ -80,6 +92,9 @@ public void setHeight(int h) {
 	height = h;
 }
 
+/**
+ * @see CompositeBox#setLineTop(int)
+ */
 public void setLineTop(int y) {
 	this.y = y;
 }

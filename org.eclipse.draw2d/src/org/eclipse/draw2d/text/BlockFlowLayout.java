@@ -87,6 +87,9 @@ protected void addCurrentLine() {
 	((LineRoot)currentLine).commit();
 }
 
+/**
+ * @see FlowContext#addLine(CompositeBox)
+ */
 public void addLine(CompositeBox box) {
 	endLine();
 	addBelowPreviousLine(box);
