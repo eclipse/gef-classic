@@ -13,103 +13,66 @@ package org.eclipse.draw2d.text;
 
 import org.eclipse.draw2d.Border;
 import org.eclipse.draw2d.Graphics;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
+ * Experimental API. This is a special type of border for use with {@link
+ * org.eclipse.draw2d.text.FlowFigure}s. This interface should not be implemented by
+ * clients. Clients should extend {@link org.eclipse.draw2d.text.AbstractFlowBorder}.
  * @since 3.1
  */
 public interface FlowBorder extends Border {
 
 /**
- * A stub implementation of FlowBorder.
- * @since 3.1
- */
-class Stub implements FlowBorder {
-	public int getBottomMargin() {
-		return 0;
-	}
-
-	public Insets getInsets(IFigure figure) {
-		return IFigure.NO_INSETS;
-	}
-
-	/**
-	 * @see org.eclipse.draw2d.text.FlowBorder#getLeftMargin()
-	 */
-	public int getLeftMargin() {
-		return 0;
-	}
-
-	public Dimension getPreferredSize(IFigure figure) {
-		return null;
-	}
-
-	/**
-	 * @see org.eclipse.draw2d.text.FlowBorder#getRightMargin()
-	 */
-	public int getRightMargin() {
-		return 0;
-	}
-
-	public int getTopMargin() {
-		return 0;
-	}
-
-	public boolean isOpaque() {
-		return true;
-	}
-
-	public void paint(FlowFigure figure, Graphics g, Rectangle where, boolean left, boolean right) {
-	}
-
-	public final void paint(IFigure figure, Graphics graphics, Insets insets) { }
-	
-}
-
-/**
- * Returns the collapsable bottom margin in pixels.  Margin is space outside of the bounds
- * and content area of a figure.  Vertical margins (top and bottom) may collapse in some
- * situations described by the CSS2 specification.
+ * Returns the collapsable bottom margin in pixels. Margin is the space external to the
+ * border and the flow box on which it is rendered. Vertical margins (top and bottom) may
+ * collapse in some situations, such as adjacent or nested blocks.
  * @return the bottom margin
  * @since 3.1
  */
 int getBottomMargin();
 
-Insets getInsets(IFigure figure);
-
+/**
+ * Returns the left margin in pixels. Margin is the space external to the border and the
+ * flow box on which it is rendered.
+ * @return the left margin
+ * @since 3.1
+ */
 int getLeftMargin();
 
-Dimension getPreferredSize(IFigure figure);
-
+/**
+ * Returns the right margin in pixels. Margin is the space external to the border and the
+ * flow box on which it is rendered.
+ * @return the right margin
+ * @since 3.1
+ */
 int getRightMargin();
 
 /**
- * Returns the collapsable top margin in pixels.
- * @see #getBottomMargin()
+ * Returns the collapsable top margin in pixels. Margin is the space external to the
+ * border and the flow box on which it is rendered. Vertical margins (top and bottom) may
+ * collapse in some situations, such as adjacent or nested blocks.
  * @return the top margin
  * @since 3.1
  */
 int getTopMargin();
 
 /**
- * Returns true if clipping of the GC is not required when painting the figure's client
- * area.
- * @see Border#isOpaque()
- */
-boolean isOpaque();
-
-/**
- * Paints the border around the given fragment.
+ * Paints the border around the given box location. The border is asked to paint each of
+ * the FlowFigure's boxes. The <code>sideInfo</code> parameter is used to indicate whether
+ * the left and right sides should be rendered. This parameter will contain the following
+ * bit flags:
+ * <UL>
+ *   <LI>{@link org.eclipse.swt.SWT#LEAD}
+ *   <LI>{@link org.eclipse.swt.SWT#TRAIL}
+ *   <LI>{@link org.eclipse.swt.SWT#RIGHT_TO_LEFT}
+ * </UL>
  * @param figure the flow figure whose border is being painted
  * @param g the graphics
- * @param box the fragment being rendered
- * @param left <code>true</code> if the left side should be rendered
- * @param right <code>true</code> if the right side should be rendered
+ * @param where the relative location of the box
+ * @param sides bits indicating sides and bidi orientation
  * @since 3.1
  */
-void paint(FlowFigure figure, Graphics g, Rectangle where, boolean left, boolean right);
+void paint(FlowFigure figure, Graphics g, Rectangle where, int sides);
 
 }

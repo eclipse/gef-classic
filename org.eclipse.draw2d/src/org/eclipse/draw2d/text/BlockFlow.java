@@ -189,7 +189,7 @@ public void paintBorder(Graphics graphics) {
 		Rectangle where = getBlockBox().toRectangle();
 		where.crop(new Insets(getTopMargin(), getLeftMargin(),
 				getBottomMargin(), getRightMargin()));
-		((FlowBorder)getBorder()).paint(this, graphics, where, true, true);
+		((FlowBorder)getBorder()).paint(this, graphics, where, SWT.LEAD | SWT.TRAIL);
 	} else
 		super.paintBorder(graphics);
 	if (selectionStart != -1) {

@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.swt.SWT;
+
 import org.eclipse.draw2d.Border;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Graphics;
@@ -90,8 +92,10 @@ protected void paintBorder(Graphics graphics) {
 		FlowBorder fb = (FlowBorder)getBorder();
 		List frags = getFragments();
 		Rectangle where = new Rectangle();
+		int sides;
 		for (int i = 0; i < frags.size(); i++) {
 			FlowBox box = (FlowBox)frags.get(i);
+			
 			where.x = box.getX();
 			where.width = box.getWidth();
 			where.y = -box.getAscentWithBorder();
@@ -103,7 +107,12 @@ protected void paintBorder(Graphics graphics) {
 			}
 			if (i == frags.size() - 1)
 				where.width -= fb.getRightMargin();
-			fb.paint(this, graphics, where, i == 0, i == frags.size() - 1);
+			sides = 0;
+			if (i == 0)
+				sides = SWT.LEAD;
+			if (i == frags.size() - 1)
+				sides |= SWT.TRAIL;
+			fb.paint(this, graphics, where, sides);
 		}
 	}
 	if (selectionStart != -1)
