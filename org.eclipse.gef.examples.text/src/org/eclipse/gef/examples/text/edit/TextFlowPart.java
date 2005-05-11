@@ -81,7 +81,7 @@ public int getLength() {
 public TextLocation getLocation(Point absolute, int trailing[]) {
 	Point pt = absolute.getCopy();
 	getTextFlow().translateToRelative(pt);
-	int offset = getTextFlow().getOffset(pt, trailing);
+	int offset = getTextFlow().getOffset(pt, trailing, null);
 	if (offset == - 1)
 		offset = getTextFlow().getText().length();
 	return new TextLocation(this, offset);
