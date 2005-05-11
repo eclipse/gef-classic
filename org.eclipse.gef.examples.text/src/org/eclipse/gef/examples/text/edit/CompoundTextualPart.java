@@ -12,11 +12,13 @@
 package org.eclipse.gef.examples.text.edit;
 
 import java.beans.PropertyChangeEvent;
+import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.MarginBorder;
+import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.draw2d.text.BlockFlow;
 import org.eclipse.draw2d.text.CaretInfo;
@@ -30,10 +32,21 @@ import org.eclipse.gef.examples.text.model.Container;
 /**
  * @since 3.1
  */
-public abstract class CompoundTextualPart extends AbstractTextualPart {
+public abstract class CompoundTextualPart 
+	extends AbstractTextualPart 
+{
 
 public CompoundTextualPart(Object model) {
 	setModel(model);
+}
+
+public boolean acceptsCaret() {
+	for (Iterator iter = getChildren().iterator(); iter.hasNext();) {
+		Object part = iter.next();
+		if (part instanceof TextualEditPart && ((TextualEditPart)part).acceptsCaret())
+			return true;
+	}
+	return false;
 }
 
 public void activate() {
@@ -84,6 +97,31 @@ protected Container getContainer() {
  */
 public int getLength() {
 	return getChildren().size();
+}
+
+public TextLocation getLocation(Point absolute, int[] trailing) {
+	TextLocation result = null;
+	int dx = Integer.MAX_VALUE, dy = Integer.MAX_VALUE;
+	int[] isAfter = new int[1];
+	for (Iterator iter = getChildren().iterator(); iter.hasNext();) {
+		Object part = iter.next();
+		if (part instanceof TextualEditPart) {
+			TextLocation location = ((TextualEditPart)part).getLocation(absolute, isAfter);
+			if (location != null) {
+				CaretInfo caretInfo = location.part
+						.getCaretPlacement(location.offset, isAfter[0] == 1);
+				int yDistance = vDistanceBetween(caretInfo, absolute.y);
+				int xDistance = Math.abs(caretInfo.getX() - absolute.x);
+				if (yDistance < dy || (yDistance == dy && xDistance < dx) ) {
+					result = location;
+					trailing[0] = isAfter[0];
+					dx = xDistance;
+					dy = yDistance;
+				}
+			}
+		}
+	}
+	return result;
 }
 
 protected List getModelChildren() {
@@ -167,6 +205,48 @@ TextLocation searchForward(CaretSearch search) {
 	return null;
 }
 
+protected TextLocation searchLineAbove(CaretSearch search) {
+	//The bottom of this figure must be above the top of the caret
+	//if (getFigure().getBounds().bottom() > caret.y)
+	//	return null;
+	
+	int childIndex;
+	TextualEditPart part;
+	TextLocation location = search.where;
+	if (location == null)
+		childIndex = getChildren().size() - 1;
+	else {
+		childIndex = getChildren().indexOf(location.part);
+		if (location.offset == 0)
+			childIndex--;
+	}
+	
+	TextLocation result = null;
+	int dx = Integer.MAX_VALUE;
+	Rectangle lineBounds = null;
+	while (childIndex >= 0) {
+		part = (TextualEditPart)getChildren().get(childIndex);
+		location = part.getNextLocation(search.recurseSearch());
+		if (location != null) {
+			CaretInfo caretInfo = location.part.getCaretPlacement(location.offset, false);
+			if (lineBounds == null)
+				lineBounds = new Rectangle(caretInfo.getX(), caretInfo.top(), 0, caretInfo.getHeight());
+			else if (lineBounds.y > caretInfo.getBaseline())
+				break;
+			else
+				lineBounds.union(caretInfo.getX(), caretInfo.top(), 0, caretInfo.getHeight());
+			
+			int distance = Math.abs(caretInfo.getX() - search.x);
+			if (distance < dx) {
+				result = location;
+				dx = distance;
+			}
+		}
+		childIndex--;
+	}
+	return result;
+}
+
 protected TextLocation searchLineBegin(CaretSearch search) {
 	int childIndex = 0;
 	int childCount = getChildren().size();
@@ -178,20 +258,6 @@ protected TextLocation searchLineBegin(CaretSearch search) {
 		if (result != null)
 			return result;
 		childIndex++;
-	}
-	return null;
-}
-
-protected TextLocation searchLineEnd(CaretSearch search) {
-	int childIndex = getChildren().size() - 1;
-	TextualEditPart child;
-	TextLocation result;
-	while (childIndex >= 0) {
-		child = (TextualEditPart)getChildren().get(childIndex);
-		result = child.getNextLocation(search.recurseSearch());
-		if (result != null)
-			return result;
-		childIndex--;
 	}
 	return null;
 }
@@ -242,46 +308,24 @@ protected TextLocation searchLineBelow(CaretSearch search) {
 	return result;
 }
 
-protected TextLocation searchLineAbove(CaretSearch search) {
-	//The bottom of this figure must be above the top of the caret
-	//if (getFigure().getBounds().bottom() > caret.y)
-	//	return null;
-	
-	int childIndex;
-	TextualEditPart part;
-	TextLocation location = search.where;
-	if (location == null)
-		childIndex = getChildren().size() - 1;
-	else {
-		childIndex = getChildren().indexOf(location.part);
-		if (location.offset == 0)
-			childIndex--;
-	}
-	
-	TextLocation result = null;
-	int dx = Integer.MAX_VALUE;
-	Rectangle lineBounds = null;
+protected TextLocation searchLineEnd(CaretSearch search) {
+	int childIndex = getChildren().size() - 1;
+	TextualEditPart child;
+	TextLocation result;
 	while (childIndex >= 0) {
-		part = (TextualEditPart)getChildren().get(childIndex);
-		location = part.getNextLocation(search.recurseSearch());
-		if (location != null) {
-			CaretInfo caretInfo = location.part.getCaretPlacement(location.offset, false);
-			if (lineBounds == null)
-				lineBounds = new Rectangle(caretInfo.getX(), caretInfo.top(), 0, caretInfo.getHeight());
-			else if (lineBounds.y > caretInfo.getBaseline())
-				break;
-			else
-				lineBounds.union(caretInfo.getX(), caretInfo.top(), 0, caretInfo.getHeight());
-			
-			int distance = Math.abs(caretInfo.getX() - search.x);
-			if (distance < dx) {
-				result = location;
-				dx = distance;
-			}
-		}
+		child = (TextualEditPart)getChildren().get(childIndex);
+		result = child.getNextLocation(search.recurseSearch());
+		if (result != null)
+			return result;
 		childIndex--;
 	}
-	return result;
+	return null;
+}
+
+private int vDistanceBetween(CaretInfo info, int y) {
+	if (y < info.lineTop())
+		return info.lineTop() - y;
+	return Math.max(0, y - (info.lineTop() + info.getLineHeight()));
 }
 
 }
