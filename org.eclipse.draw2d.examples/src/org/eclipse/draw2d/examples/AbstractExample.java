@@ -30,7 +30,7 @@ protected static final Font COURIER = new Font(null, "Courier", 9, 0);//$NON-NLS
 protected static final Font BOLD = new Font(null, "Helvetica", 10, SWT.BOLD);//$NON-NLS-1$
 protected static final Font ITALICS = new Font(null, "Helvetica", 10, SWT.ITALIC);//$NON-NLS-1$
 protected static final Font HEADING_1 = new Font(null, "Helvetica", 15, SWT.BOLD);//$NON-NLS-1$
-private FigureCanvas fc;
+protected FigureCanvas fc;
 protected IFigure contents;
 
 protected Shell shell;
@@ -48,11 +48,15 @@ protected void run(){
 	getFigureCanvas().getViewport().setContentsTracksWidth(true);
 	getFigureCanvas().setLayoutData(new GridData(GridData.FILL_BOTH));	
 	hookShell();
-	shell.pack();
+	sizeShell();
 	shell.open();
 	while (!shell.isDisposed())
 		while (!d.readAndDispatch())
 			d.sleep();
+}
+
+protected void sizeShell() {
+	shell.pack();
 }
 
 protected abstract IFigure getContents();
