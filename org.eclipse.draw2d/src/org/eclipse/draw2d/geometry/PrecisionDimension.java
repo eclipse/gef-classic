@@ -32,7 +32,9 @@ public PrecisionDimension() {
 }
 
 /**
- * Constructs a new precision dimension.
+ * Constructs a new precision dimension with the given values.
+ * @param width the width
+ * @param height the height
  */
 public PrecisionDimension(double width, double height) {
 	preciseWidth = width;

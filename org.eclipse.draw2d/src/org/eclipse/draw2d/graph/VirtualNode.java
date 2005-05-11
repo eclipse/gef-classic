@@ -28,6 +28,11 @@ public Node prev;
  */
 public Node next;
 
+/**
+ * Constructor. 
+ * @param o object
+ * @param parent subgraph
+ */
 public VirtualNode(Object o, Subgraph parent) {
 	super(o, parent);
 }
@@ -50,6 +55,7 @@ public VirtualNode(Edge e, int i) {
 
 /**
  * Returns the index of {@link #next}.
+ * @return outgoing
  */
 public double medianOutgoing() {
 	return next.index;
@@ -57,6 +63,7 @@ public double medianOutgoing() {
 
 /**
  * Returns the index of {@link #prev}.
+ * @return median
  */
 public double medianIncoming() {
 	return prev.index;

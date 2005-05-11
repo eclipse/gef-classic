@@ -98,7 +98,9 @@ public Point getReferencePoint() {
 
 
 /**
- * @see java.lang.Object#equals(java.lang.Object)
+ * Returns <code>true</code> if the other anchor has the same owner and box.
+ * @param obj the other anchor
+ * @return <code>true</code> if equal
  */
 public boolean equals(Object obj) {
 	if (obj instanceof ChopboxAnchor) {
@@ -108,6 +110,11 @@ public boolean equals(Object obj) {
 	return false;
 }
 
+/**
+ * The owning figure's hashcode is used since equality is approximately based on the
+ * owner.
+ * @return the hash code.
+ */
 public int hashCode() {
 	if (getOwner() != null)
 		return getOwner().hashCode();

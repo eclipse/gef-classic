@@ -96,6 +96,7 @@ public boolean isCompletelyFlagged() {
 
 /**
  * For internal use only.  Resets all flags.
+ * @param resetTree internal
  */
 public void resetFlags(boolean resetTree) {
 	for (int i = 0; i < size(); i++) {
