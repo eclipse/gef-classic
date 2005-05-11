@@ -14,7 +14,7 @@ package org.eclipse.draw2d.test;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.draw2d.text.FlowBorder;
+import org.eclipse.draw2d.text.AbstractFlowBorder;
 import org.eclipse.draw2d.text.TextFragmentBox;
 
 /**
@@ -22,7 +22,7 @@ import org.eclipse.draw2d.text.TextFragmentBox;
  */
 public class AbstractTextTest extends BaseTestCase {
 
-static class TestBorder extends FlowBorder.Stub {
+static class TestBorder extends AbstractFlowBorder {
 	private Insets insets;
 	
 	TestBorder(Insets insets) {
