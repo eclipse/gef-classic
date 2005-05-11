@@ -403,8 +403,7 @@ protected Control createOutline(Composite container) {
 	composite.setLayout(layout);
 
 	// Create the ToolBar
-	createOutlineToolBar(composite).setLayoutData(new GridData(
-			GridData.HORIZONTAL_ALIGN_FILL | GridData.VERTICAL_ALIGN_FILL));
+	createOutlineToolBar(composite);
 	
 	// Create the actual outline (TreeViewer)			
 	treeviewer = createOutlineTreeViewer(composite);
