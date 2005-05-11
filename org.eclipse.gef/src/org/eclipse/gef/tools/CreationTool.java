@@ -264,6 +264,7 @@ private void selectAddedObject() {
 	EditPartViewer viewer = getCurrentViewer();
 	Object editpart = viewer.getEditPartRegistry().get(model);
 	if (editpart instanceof EditPart) {
+		//Force the new object to get positioned in the viewer. 
 		viewer.flush();
 		viewer.select((EditPart)editpart);
 	}
