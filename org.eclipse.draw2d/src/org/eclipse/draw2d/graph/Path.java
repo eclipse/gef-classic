@@ -190,7 +190,8 @@ private void addAllSegmentsBetween(Obstacle source, Obstacle target) {
  * @param o2 the second obstacle
  * @param checkTopRight1 whether or not to check the diagonal containing top right point
  */
-private void addConnectingSegment(Segment segment, Obstacle o1, Obstacle o2, boolean checkTopRight1, boolean checkTopRight2) {
+private void addConnectingSegment(Segment segment, Obstacle o1, Obstacle o2,
+		boolean checkTopRight1, boolean checkTopRight2) {
 	if (threshold != 0
 			&& (segment.end.getDistance(end) + segment.end.getDistance(start) > threshold
 				|| segment.start.getDistance(end) + segment.start.getDistance(start) > threshold))
@@ -356,7 +357,7 @@ private void addSegmentsFor(Vertex vertex, Obstacle obs) {
 				seg = new Segment(vertex, obs.topRight);
 				seg2 = new Segment(vertex, obs.bottomRight);
 			} else {
-				throw new RuntimeException("Vertex does not meet any expected conditions"); //$NON-NLS-1$
+				throw new RuntimeException("Unexpected vertex conditions"); //$NON-NLS-1$
 			}
 	}
 	
@@ -716,7 +717,10 @@ void refreshExcludedObstacles(List allObstacles) {
 			if (o.containsProper(start))
 				o.exclude = true;
 			else {
-				//Check for corners
+				/*
+				 * $TODO Check for corners.  If the path begins exactly at the corner of
+				 * an obstacle, the exclude should also be true.
+				 */
 			}
 		}
 		
@@ -724,7 +728,7 @@ void refreshExcludedObstacles(List allObstacles) {
 			if (o.containsProper(end))
 				o.exclude = true;
 			else {
-				//check for corners
+				//check for corners.  See above statement.
 			}
 		}
 
