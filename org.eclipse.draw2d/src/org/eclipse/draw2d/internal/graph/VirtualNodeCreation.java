@@ -30,6 +30,9 @@ private final DirectedGraph graph;
 private Node nodes[];
 private Edge[] edges;
 
+private static final int INNER_EDGE_X = 2;
+private static final int LONG_EDGE_X = 8;
+
 /**
  * Breaks a single edge into multiple edges containing virtual nodes.
  * @since 3.1
@@ -65,9 +68,9 @@ public VirtualNodeCreation(Edge edge, DirectedGraph graph) {
 		currentNode.rank = offset + i;
 		graph.ranks.getRank(offset + i).add(currentNode);
 		
-		currentEdge = new Edge(prevNode, currentNode, 1, edge.weight * 8);
+		currentEdge = new Edge(prevNode, currentNode, 1, edge.weight * LONG_EDGE_X);
 		if (i == 0) {
-			currentEdge.weight = edge.weight * 2;
+			currentEdge.weight = edge.weight * INNER_EDGE_X;
 			currentEdge.offsetSource = edge.offsetSource;
 		}
 		graph.edges.add(edges[i] = currentEdge);
@@ -75,7 +78,7 @@ public VirtualNodeCreation(Edge edge, DirectedGraph graph) {
 		prevNode = currentNode;
 	}
 	
-	currentEdge = new Edge(prevNode, edge.target, 1, edge.weight * 2);
+	currentEdge = new Edge(prevNode, edge.target, 1, edge.weight * INNER_EDGE_X);
 	currentEdge.offsetTarget = edge.offsetTarget;
 	graph.edges.add(edges[edges.length - 1] = currentEdge);
 	graph.removeEdge(edge);
