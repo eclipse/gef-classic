@@ -58,7 +58,8 @@ double cosine(Segment otherSegment) {
  * @return the cross product
  */
 long crossProduct(Segment otherSegment) {
-	return (((start.x - end.x) * (otherSegment.end.y - end.y)) - ((start.y - end.y) * (otherSegment.end.x - end.x)));
+	return (((start.x - end.x) * (otherSegment.end.y - end.y))
+			- ((start.y - end.y) * (otherSegment.end.x - end.x)));
 }
 
 private double getLength() {

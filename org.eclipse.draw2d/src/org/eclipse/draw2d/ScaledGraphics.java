@@ -250,7 +250,8 @@ public void drawPolygon(PointList points) {
 
 /** @see Graphics#drawPoint(int, int) */
 public void drawPoint(int x, int y) {
-	graphics.drawPoint((int)Math.floor(x * zoom + fractionalX),(int)Math.floor(y * zoom + fractionalY));
+	graphics.drawPoint((int)Math.floor(x * zoom + fractionalX),
+			(int)Math.floor(y * zoom + fractionalY));
 }
 
 /**
@@ -629,7 +630,7 @@ private int[] zoomPointList(int[] points) {
 	}
 	
 	// Scale the points
-	for (int i = 0; (i + 1) < points.length; i+= 2) {
+	for (int i = 0; (i + 1) < points.length; i += 2) {
 		scaled[i] = (int)(Math.floor((points[i] * zoom + fractionalX)));
 		scaled[i + 1] = (int)(Math.floor((points[i + 1] * zoom + fractionalY)));
 	}
