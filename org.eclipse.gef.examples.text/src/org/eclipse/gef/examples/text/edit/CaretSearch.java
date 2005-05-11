@@ -60,13 +60,6 @@ public static final int DOCUMENT = 6;
  */
 public CaretSearch() { }
 
-private CaretSearch(TextLocation loc, int type, boolean isForward, boolean isSearch) {
-	this.where = loc;
-	this.type = type;
-	this.isForward = isForward;
-	this.isRecursive = isSearch;
-}
-
 /**
  * Clones this search but resets the TextLocation to the given part and offset.
  * @param part
