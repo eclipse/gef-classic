@@ -102,8 +102,9 @@ private void doWordSelect() {
 	nextWord.where = wordEnd;
 	nextWord.isForward = false;
 	TextLocation wordBegin = getSource().getNextLocation(nextWord);
-	GraphicalTextViewer viewer = (GraphicalTextViewer)getCurrentViewer();
-	viewer.setSelectionRange(new SelectionRange(wordBegin, wordEnd));
+	if (wordBegin != null && wordEnd != null)
+		((GraphicalTextViewer)getCurrentViewer()).setSelectionRange(
+				new SelectionRange(wordBegin, wordEnd));
 }
 
 /**
