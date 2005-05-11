@@ -264,10 +264,9 @@ public CaretInfo getCaretPlacement(int offset, boolean trailing) {
 	Point where = new Point(layout.getLocation(offset, trailing));
 	if (isMirrored())
 		where.x = box.width - where.x;
-	FontMetrics metrics = FigureUtilities.getFontMetrics(getFont());
 	where.translate(box.getX(), box.getTextTop());
-	CaretInfo info = new CaretInfo(where.x, where.y,
-			metrics.getAscent(), metrics.getHeight() - metrics.getAscent());
+	CaretInfo info = new CaretInfo(where.x, where.y, box.getAscent(), box.getDescent(), 
+			box.getLineRoot().contentAscent, box.getLineRoot().contentDescent);
 	translateToAbsolute(info);
 	return info;
 }
