@@ -36,7 +36,7 @@ public final class UndoablePropertySheetEntry extends PropertySheetEntry {
 
 private CommandStackListener commandStackListener;
 
-protected CommandStack stack;
+private CommandStack stack;
 
 private UndoablePropertySheetEntry() { }
 
