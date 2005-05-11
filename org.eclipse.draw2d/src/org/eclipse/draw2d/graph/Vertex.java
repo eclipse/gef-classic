@@ -21,7 +21,8 @@ import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
  * A vertex representation for the ShortestPathRouting. Vertices are either one of 
- * four corners on an <code>Obstacle</code>(Rectangle), or one of the two end points of a <code>Path</code>.
+ * four corners on an <code>Obstacle</code>(Rectangle), or one of the two end points of a
+ * <code>Path</code>.
  * 
  * This class is not intended to be subclassed.
  * @author Whitney Sorenson
@@ -34,12 +35,12 @@ class Vertex
 /**
  * The default amount to offset multiple paths on a Vertex.
  */
-public final static int BEND_OFFSET = 4;
+public static final int BEND_OFFSET = 4;
 
 // constants for the vertex type
-final static int NOT_SET = 0;
-final static int INNIE = 1;
-final static int OUTIE = 2;
+static final int NOT_SET = 0;
+static final int INNIE = 1;
+static final int OUTIE = 2;
 
 // for shortest path
 List neighbors;
