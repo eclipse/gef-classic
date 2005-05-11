@@ -20,6 +20,7 @@ import org.eclipse.swt.graphics.TextLayout;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.FigureUtilities;
 import org.eclipse.draw2d.Graphics;
+import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 
@@ -237,10 +238,15 @@ public CaretInfo getCaretPlacement(int offset, boolean trailing) {
 				+ " is invalid"); //$NON-NLS-1$
 	
 	int i = fragments.size();
+	int stop = 0;
+	if (getBorder() instanceof FlowBorder) {
+		i--;
+		stop++;
+	}
 	TextFragmentBox box;
 	do
 		box = (TextFragmentBox)fragments.get(--i);
-	while (offset < box.offset && i > 0);
+	while (offset < box.offset && i > stop);
 	if (trailing && box.offset + box.length <= offset) {
 		box = (TextFragmentBox)fragments.get(++i);
 		offset = box.offset;
@@ -349,38 +355,60 @@ public int getNextVisibleOffset(int offset) {
 }
 
 /**
- * Returns the textual offset nearest the specified point. The point must be relative to
- * this figure. The offset will be between 0 and <code>getText().length()</code> 
- * inclusively, if a fragment is found.  If the point in on the same line(s) as this
- * TextFlow, the index of the closest fragment is returned.  Otherwise, -1 will be 
- * returned.   <code>trailing[0]</code> will be set to 1 if the reference
- * point is closer to the trailing edge of the offset than it is to the leading edge.
- * <p>
- * Trailing information for bidi applications is provided by SWT's {@link TextLayout}.
+ * Returns the offset of the character directly below or nearest the given location. The
+ * point must be relative to this figure. The return value will be between 0 and N-1. If
+ * the proximity argument is not <code>null</code>, the result may also be <code>-1</code>
+ * if no offset was found within the proximity.
+ * <P>
+ * For a typical character, the trailing argument will be filled in to indicate whether
+ * the point is closer to the leading edge (0) or the trailing edge (1).  When the point
+ * is over a cluster composed of multiple characters, the trailing argument will be filled
+ * with the  position of the character in the cluster that is closest to the point.
+ * <P>
+ * If the proximity argument is not <code>null</code>, then the location may be no further
+ * than the proximity given.  Passing <code>null</code> is equivalent to passing <code>new
+ * Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE)</code>. The <code>width</code> field of
+ * the proximity will contain the horizontal distance, <code>height</code> will contain
+ * vertical. Vertical proximity is more important than horizontal. The returned offset is
+ * the lowest index with minimum vertical proximity not exceeding the given limit, with
+ * horizontal proximity not exceeding the given limit.
+ * 
  * 
  * @since 3.1
- * @param p a point relative to this figure
- * @param trailing trailing information
- * @return the offset in the string or <code>-1</code>
+ * @param p the point relative to this figure
+ * @param trailing the trailing buffer
+ * @param proximity restricts and records the distance of the returned offset
+ * @return the nearest offset in this figure's text
  */
-public int getOffset(Point p, int trailing[]) {
+public int getOffset(Point p, int trailing[], Dimension proximity) {
+	if (proximity == null)
+		proximity = new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
 	TextFragmentBox closestBox = null;
 	int index = 0;
-	for (int i = fragments.size() - 1; i >= 0; i--) {
-		TextFragmentBox box = (TextFragmentBox)fragments.get(i);
-		int closestDistance = closestBox == null 
-				? Integer.MAX_VALUE : vDistanceBetween(closestBox, p.y);
-		int vDistance = vDistanceBetween(box, p.y);
-		if (vDistance < closestDistance
-				|| (vDistance == closestDistance 
-				&& hDistanceBetween(box, p.x) < hDistanceBetween(closestBox, p.x))) {
-			closestBox = box;
-			index = i;
-		}
+	int dy;
+	int dx;
+	int i = 0;
+	int size = fragments.size();
+	if (getBorder() instanceof FlowBorder) {
+		i++;
+		size--;
 	}
-	if (closestBox != null)
-		return findOffset(p, trailing, closestBox, index);
-	return -1;
+	for (; i < size; i++) {
+		TextFragmentBox box = (TextFragmentBox)fragments.get(i);
+		dy = vDistanceBetween(box, p.y);
+		if (dy > proximity.height)
+			continue;
+		if (dy == proximity.height) {
+			dx = hDistanceBetween(box, p.x);
+			if (dx >= proximity.width)
+				continue;
+		} else
+			dx = hDistanceBetween(box, p.x);
+		proximity.height = dy;
+		proximity.width = dx;
+		closestBox = box;
+	}
+	return findOffset(p, trailing, closestBox, index);
 }
 
 /**
