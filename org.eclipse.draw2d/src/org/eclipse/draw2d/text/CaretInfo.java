@@ -18,12 +18,11 @@ import org.eclipse.draw2d.geometry.Translatable;
  * currently only offers integer precision. Scaling operations will result in rounding.
  * @since 3.1
  */
-public class CaretInfo implements Translatable {
-private int ascent;
-private int baseline;
-private int descent;
-
-private int x;
+public class CaretInfo 
+	implements Translatable 
+{
+	
+private int ascent, lineAscent, descent, lineDescent, baseline, x;
 
 /**
  * Constructs a new instance.
@@ -31,19 +30,21 @@ private int x;
  * @param y the y location of the top of the caret
  * @param ascent the ascent
  * @param descent the descent
- * @since 3.1
+ * @param lineAscent the ascent of the line on which the caret is placed
+ * @param lineDescent the descent of the line on which the caret is placed 
  */
-public CaretInfo(int x, int y, int ascent, int descent) {
+public CaretInfo(int x, int y, int ascent, int descent, int lineAscent, int lineDescent) {
 	this.x = x;
 	this.baseline = y + ascent;
 	this.ascent = ascent;
 	this.descent = descent;
+	this.lineAscent = lineAscent;
+	this.lineDescent = lineDescent;
 }
 
 /**
  * Returns the y location of the baseline.
  * @return the y coordinate of the baseline
- * @since 3.1
  */
 public int getBaseline() {
 	return baseline;
@@ -52,28 +53,46 @@ public int getBaseline() {
 /**
  * Returns the total height of the caret. The height is the sum of the ascent and descent.
  * @return the height
- * @since 3.1
  */
 public int getHeight() {
 	return ascent + descent;
 }
 
 /**
- * Returns the x location of the caret;
+ * @return the total height of the line on which the caret is placed
+ */
+public int getLineHeight() {
+	return lineAscent + lineDescent;
+}
+
+/**
+ * @return the y location of the line on which the caret is placed
+ */
+public int getLineY() {
+	return baseline - lineAscent;
+}
+
+/**
+ * Returns the x location of the caret.
  * @return the x coordinate
- * @since 3.1
  */
 public int getX() {
 	return x;
 }
 
 /**
- * Returns the y location of the caret;
+ * Returns the y location of the caret.
  * @return the y coordinate
- * @since 3.1
  */
 public int getY() {
 	return baseline - ascent;
+}
+
+/**
+ * @return the y coordinate of the top of the line on which the caret is placed
+ */
+public int lineTop() {
+	return baseline - lineAscent;
 }
 
 /**
@@ -97,7 +116,6 @@ public void performTranslate(int dx, int dy) {
 /**
  * Returns the y coordinate of the top of the caret.
  * @return the top location
- * @since 3.1
  */
 public int top() {
 	return baseline - ascent;
