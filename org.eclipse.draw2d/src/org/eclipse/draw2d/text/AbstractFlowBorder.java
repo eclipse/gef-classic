@@ -53,12 +53,20 @@ public int getTopMargin() {
 }
 
 /**
- * This method is not called on FlowBorders.
+ * This method is not called on FlowBorders. For this reason it is
+ * implemented here and made <code>final</code> so that clients override the correct
+ * method.
+ * @param figure the figure
+ * @param graphics the graphics
+ * @param insets the insets
  * @see FlowBorder#paint(FlowFigure, Graphics, Rectangle, int)
- * @see Border#paint(IFigure, Graphics, Insets)
  */
-public final void paint(IFigure figure, Graphics graphics, Insets insets) {
-	
-}	
+public final void paint(IFigure figure, Graphics graphics, Insets insets) { }
+
+/**
+ * Subclasses should override this method to paint each box's border.
+ * @see FlowBorder#paint(FlowFigure, Graphics, Rectangle, int)
+ */
+public void paint(FlowFigure figure, Graphics g, Rectangle where, int sides) { }
 
 }
