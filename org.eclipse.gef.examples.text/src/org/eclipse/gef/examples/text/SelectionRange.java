@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.eclipse.jface.util.Assert;
+
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.tools.ToolUtilities;
 
@@ -62,6 +64,8 @@ public SelectionRange(TextLocation begin, TextLocation end) {
  * @param forward
  */
 public SelectionRange(TextLocation begin, TextLocation end, boolean forward) {
+	Assert.isNotNull(begin);
+	Assert.isNotNull(end);
 	this.begin = begin;
 	this.end = end;
 	this.isForward = forward;
