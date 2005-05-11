@@ -24,13 +24,9 @@ import org.eclipse.draw2d.text.CaretInfo;
 import org.eclipse.draw2d.text.SimpleTextLayout;
 import org.eclipse.draw2d.text.TextFlow;
 
-import org.eclipse.gef.DragTracker;
-import org.eclipse.gef.Request;
-
 import org.eclipse.gef.examples.text.TextLocation;
 import org.eclipse.gef.examples.text.model.Style;
 import org.eclipse.gef.examples.text.model.TextRun;
-import org.eclipse.gef.examples.text.tools.SelectionRangeDragTracker;
 
 /**
  * @since 3.1
@@ -46,10 +42,6 @@ public TextFlowPart(Object model) {
 }
 
 protected void createEditPolicies() {}
-
-public boolean acceptsCaret() {
-	return true;
-}
 
 protected IFigure createFigure() {
 	TextFlow flow = new TextFlow();
@@ -70,10 +62,6 @@ public CaretInfo getCaretPlacement(int offset, boolean trailing) {
 	return getTextFlow().getCaretPlacement(offset, trailing);
 }
 
-public DragTracker getDragTracker(Request request) {
-	return new SelectionRangeDragTracker(this);
-}
-
 public int getLength() {
 	return getTextFlow().getText().length();
 }
@@ -82,7 +70,7 @@ public TextLocation getLocation(Point absolute, int trailing[]) {
 	Point pt = absolute.getCopy();
 	getTextFlow().translateToRelative(pt);
 	int offset = getTextFlow().getOffset(pt, trailing, null);
-	if (offset == - 1)
+	if (offset == -1)
 		offset = getTextFlow().getText().length();
 	return new TextLocation(this, offset);
 }

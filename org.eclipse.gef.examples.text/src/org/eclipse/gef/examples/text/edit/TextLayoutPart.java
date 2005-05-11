@@ -26,8 +26,6 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.draw2d.text.CaretInfo;
 
-import org.eclipse.gef.DragTracker;
-import org.eclipse.gef.Request;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 
 import org.eclipse.gef.examples.text.TextLocation;
@@ -38,7 +36,6 @@ import org.eclipse.gef.examples.text.figures.TextLayoutFigure;
 import org.eclipse.gef.examples.text.figures.TreeItemBorder;
 import org.eclipse.gef.examples.text.model.Style;
 import org.eclipse.gef.examples.text.model.TextRun;
-import org.eclipse.gef.examples.text.tools.SelectionRangeDragTracker;
 
 /**
  * @since 3.1
@@ -55,10 +52,6 @@ private Font localFont;
  */
 public TextLayoutPart(Object model) {
 	setModel(model);
-}
-
-public boolean acceptsCaret() {
-	return true;
 }
 
 protected void createEditPolicies() {}
@@ -98,14 +91,7 @@ public CaretInfo getCaretPlacement(int offset, boolean trailing) {
 	pt.translate(getFigure().getClientArea().getLocation());
 	Rectangle result = new Rectangle(pt.x, pt.y, 1, 12);
 	getFigure().translateToAbsolute(result);
-	return new CaretInfo(result.x, result.y, 10, 2);
-}
-
-/**
- * @see org.eclipse.gef.EditPart#getDragTracker(org.eclipse.gef.Request)
- */
-public DragTracker getDragTracker(Request request) {
-	return new SelectionRangeDragTracker(this);
+	return new CaretInfo(result.x, result.y, 10, 2, 10, 2);
 }
 
 /**

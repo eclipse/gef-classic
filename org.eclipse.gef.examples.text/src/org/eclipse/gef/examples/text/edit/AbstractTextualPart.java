@@ -16,10 +16,13 @@ import java.beans.PropertyChangeListener;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.text.FlowFigure;
 
+import org.eclipse.gef.DragTracker;
+import org.eclipse.gef.Request;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 
 import org.eclipse.gef.examples.text.TextLocation;
 import org.eclipse.gef.examples.text.model.ModelElement;
+import org.eclipse.gef.examples.text.tools.SelectionRangeDragTracker;
 
 /**
  * @since 3.1
@@ -28,7 +31,7 @@ public abstract class AbstractTextualPart extends AbstractGraphicalEditPart
 		implements TextualEditPart, PropertyChangeListener {
 
 public boolean acceptsCaret() {
-	return false;
+	return true;
 }
 
 /**
@@ -47,6 +50,10 @@ public void deactivate() {
 	ModelElement model = (ModelElement)getModel();
 	model.removePropertyChangeListener(this);
 	super.deactivate();
+}
+
+public DragTracker getDragTracker(Request request) {
+	return new SelectionRangeDragTracker(this);
 }
 
 public TextLocation getLocation(Point absolute, int trailing[]) {
