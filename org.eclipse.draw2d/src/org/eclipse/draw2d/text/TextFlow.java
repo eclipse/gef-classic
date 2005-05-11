@@ -142,12 +142,12 @@ private int findNextLineOffset(Point p, int[] trailing) {
 			index = i;
 		}
 	}
-	if (closestBox != null)
-		return findOffset(p, trailing, closestBox, index);
-	return -1;
+	return findOffset(p, trailing, closestBox, index);
 }
 
 private int findOffset(Point p, int[] trailing, TextFragmentBox box, int boxIndex) {
+	if (box == null)
+		return -1;
 	TextLayout layout = FlowUtilities.getTextLayout();
 	layout.setFont(getFont());
 	layout.setText(getBidiSubstring(box, boxIndex));
@@ -169,15 +169,12 @@ private int findPreviousLineOffset(Point p, int[] trailing) {
 		if (box.getBaseline() + box.getLineRoot().contentDescent < p.y
 				&& (closestBox == null
 				|| box.getBaseline() > closestBox.getBaseline()
-//				|| (box.getX() <= p.x && box.getX() + box.getWidth() > p.x)
 				|| hDistanceBetween(box, p.x) < hDistanceBetween(closestBox, p.x))) {
 			closestBox = box;
 			index = i;
 		}
 	}
-	if (closestBox != null)
-		return findOffset(p, trailing, closestBox, index);
-	return -1;
+	return findOffset(p, trailing, closestBox, index);
 }
 
 int getAscent() {
@@ -398,12 +395,9 @@ public int getOffset(Point p, int trailing[], Dimension proximity) {
 		dy = vDistanceBetween(box, p.y);
 		if (dy > proximity.height)
 			continue;
-		if (dy == proximity.height) {
-			dx = hDistanceBetween(box, p.x);
-			if (dx >= proximity.width)
+		dx = hDistanceBetween(box, p.x);
+		if (dy == proximity.height && dx >= proximity.width)
 				continue;
-		} else
-			dx = hDistanceBetween(box, p.x);
 		proximity.height = dy;
 		proximity.width = dx;
 		closestBox = box;
