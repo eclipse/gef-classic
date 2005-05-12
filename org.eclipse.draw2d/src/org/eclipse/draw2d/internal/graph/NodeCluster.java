@@ -1,0 +1,199 @@
+package org.eclipse.draw2d.internal.graph;
+
+import java.util.Collection;
+
+import org.eclipse.draw2d.graph.Node;
+import org.eclipse.draw2d.graph.NodeList;
+
+/**
+ * A group of nodes which are interlocked and cannot be separately placed.
+ * @since 3.1
+ */
+class NodeCluster extends NodeList {
+	
+	int hashCode = new Object().hashCode();
+
+	boolean isSetMember;
+	boolean isDirty;
+	boolean leftDirty;
+	boolean rightDirty;
+
+	int leftFreedom;
+	int rightFreedom;
+	int leftNonzero;
+	int rightNonzero;
+	int leftCount = 0;
+	int rightCount = 0;
+
+	CollapsedEdges leftLinks[] = new CollapsedEdges[20];
+	CollapsedEdges rightLinks[] = new CollapsedEdges[20];
+	NodeCluster leftNeighbors[] = new NodeCluster[20];
+	NodeCluster rightNeighbors[] = new NodeCluster[20];
+	
+	int effectivePull;
+	int weightedTotal;
+	int weightedDivisor;
+	int unweightedTotal;
+	int unweightedDivisor;
+	
+	void addLeftNeighbor(NodeCluster neighbor, CollapsedEdges link) {
+		leftNeighbors[leftCount] = neighbor;
+		leftLinks[leftCount++] = link;
+	}
+	
+	void addRightNeighbor(NodeCluster neighbor, CollapsedEdges link) {
+		rightNeighbors[rightCount] = neighbor;
+		rightLinks[rightCount++] = link;
+	}
+
+	public void adjustRank(int delta, Collection affected) {
+		adjustRank(delta);
+		NodeCluster neighbor;
+		CollapsedEdges edges;
+		if (HorizontalPlacement.debugCount != - 1) {
+			for (int i = 0; i < size(); i++)
+				HorizontalPlacement.lastAdjusted.add(((Node)get(i)).data);
+		}
+		for (int i = 0; i < leftCount; i++) {
+			neighbor = leftNeighbors[i];
+			if (neighbor.isSetMember)
+				continue;
+			edges = leftLinks[i];
+			
+			neighbor.weightedTotal += delta * edges.collapsedWeight;
+			neighbor.unweightedTotal += delta * edges.collapsedCount;
+
+			weightedTotal -= delta * edges.collapsedWeight;
+			unweightedTotal -= delta * edges.collapsedCount;
+			
+			neighbor.rightDirty = leftDirty = true;
+			if (!neighbor.isDirty) {
+				neighbor.isDirty = true;
+				affected.add(neighbor);
+			}
+		}
+		for (int i = 0; i < rightCount; i++) {
+			neighbor = rightNeighbors[i];
+			if (neighbor.isSetMember)
+				continue;
+			edges = rightLinks[i];
+
+			neighbor.weightedTotal += delta * edges.collapsedWeight;
+			neighbor.unweightedTotal += delta * edges.collapsedCount;
+			
+			weightedTotal -= delta * edges.collapsedWeight;
+			unweightedTotal -= delta * edges.collapsedCount;
+			
+			neighbor.leftDirty = rightDirty = true;
+			if (!neighbor.isDirty) {
+				neighbor.isDirty = true;
+				affected.add(neighbor);
+			}
+		}
+		isDirty = true;
+		affected.add(this);
+	}
+	
+	public boolean equals(Object o) {
+		return o == this;
+	}
+	
+	CollapsedEdges getLeftNeighbor(NodeCluster neighbor) {
+		for (int i = 0; i < leftCount; i++) {
+			if (leftNeighbors[i] == neighbor)
+				return leftLinks[i];
+		}
+		return null;
+	}
+	
+	int getPull() {
+		return effectivePull;
+	}
+
+	CollapsedEdges getRightNeighbor(NodeCluster neighbor) {
+		for (int i = 0; i < rightCount; i++) {
+			if (rightNeighbors[i] == neighbor)
+				return rightLinks[i];
+		}
+		return null;
+	}
+
+	public int hashCode() {
+		return hashCode;
+	}
+	
+	/**
+	 * Initializes pull and freedom values.
+	 */
+	void initValues() {
+		weightedTotal = 0;
+		weightedDivisor = 0;
+		unweightedTotal = 0;
+		int slack;
+		
+		leftNonzero = rightNonzero = leftFreedom = rightFreedom = Integer.MAX_VALUE;
+		for (int i = 0; i < leftCount; i++) {
+			CollapsedEdges edges = leftLinks[i];
+			weightedTotal -= edges.getWeightedPull();
+			unweightedTotal -= edges.tightestEdge.getSlack();
+			unweightedDivisor += edges.collapsedCount;
+			weightedDivisor += edges.collapsedWeight;
+			slack = edges.tightestEdge.getSlack();
+			leftFreedom = Math.min(slack, leftFreedom);
+			if (slack > 0)
+				leftNonzero = Math.min(slack, leftNonzero);
+		}
+		for (int i = 0; i < rightCount; i++) {
+			CollapsedEdges edges = rightLinks[i];
+			weightedTotal += edges.getWeightedPull();
+			unweightedDivisor += edges.collapsedCount;
+			unweightedTotal += edges.tightestEdge.getSlack();
+			weightedDivisor += edges.collapsedWeight;
+			slack = edges.tightestEdge.getSlack();
+			rightFreedom = Math.min(slack, rightFreedom);
+			if (slack > 0)
+				rightNonzero = Math.min(slack, rightNonzero);
+		}
+		updateEffectivePull();
+	}
+	
+	/**
+	 * Refreshes the left and right freedom.
+	 */
+	void refreshValues() {
+		int slack;
+		isDirty = false;
+		if (leftDirty) {
+			leftDirty = false;
+			leftNonzero = leftFreedom = Integer.MAX_VALUE;
+			for (int i = 0; i < leftCount; i++) {
+				CollapsedEdges edges = leftLinks[i];
+				slack = edges.tightestEdge.getSlack();
+				leftFreedom = Math.min(slack, leftFreedom);
+				if (slack > 0)
+					leftNonzero = Math.min(slack, leftNonzero);
+			}
+		}
+		if (rightDirty) {
+			rightDirty = false;
+			rightNonzero = rightFreedom = Integer.MAX_VALUE;
+			for (int i = 0; i < rightCount; i++) {
+				CollapsedEdges edges = rightLinks[i];
+				slack = edges.tightestEdge.getSlack();
+				rightFreedom = Math.min(slack, rightFreedom);
+				if (slack > 0)
+					rightNonzero = Math.min(slack, rightNonzero);
+			}
+		}
+		updateEffectivePull();
+	}
+
+	private void updateEffectivePull() {
+		if (weightedDivisor != 0)
+			effectivePull = weightedTotal / weightedDivisor;
+		else if (unweightedDivisor != 0)
+				effectivePull = unweightedTotal / unweightedDivisor;
+		else
+			effectivePull = 0;
+	}
+}

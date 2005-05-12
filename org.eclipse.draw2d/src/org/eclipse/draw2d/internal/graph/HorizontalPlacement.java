@@ -11,18 +11,17 @@
 package org.eclipse.draw2d.internal.graph;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.eclipse.draw2d.graph.DirectedGraph;
 import org.eclipse.draw2d.graph.Edge;
 import org.eclipse.draw2d.graph.EdgeList;
 import org.eclipse.draw2d.graph.Node;
-import org.eclipse.draw2d.graph.NodeList;
 import org.eclipse.draw2d.graph.Rank;
 import org.eclipse.draw2d.graph.RankList;
 
@@ -33,128 +32,112 @@ import org.eclipse.draw2d.graph.RankList;
  */
 public class HorizontalPlacement extends SpanningTreeVisitor {
 
-class NodeCluster extends NodeList {
+class ClusterSet {
+	int freedom = Integer.MAX_VALUE;
+	boolean isRight;
+	public List members = new ArrayList();
+	int pullWeight = 0;
+	int rawPull = 0;
+	boolean addCluster (NodeCluster seed) {
+		members.add(seed);
+		seed.isSetMember = true;
 
-	final int hash = new Object().hashCode();
-	Set incoming = new HashSet();
-	int leftFreedom;
-	
-	int modified;
-	Set outgoing = new HashSet();
-	int pull;
-	int rightFreedom;
-	
-	void build() {
-		incoming.clear();
-		outgoing.clear();
-		for (int i = 0; i < size(); i++) {
-			Node node = getNode(i);
-			for (int j = 0; j < node.incoming.size(); j++) {
-				Edge e = node.incoming.getEdge(j);
-				if (!contains(e.source))
-					incoming.add(e);
-			}
-			for (int j = 0; j < node.outgoing.size(); j++) {
-				Edge e = node.outgoing.getEdge(j);
-				if (!contains(e.target))
-					outgoing.add(e);
-			}
+		rawPull += seed.weightedTotal;
+		pullWeight += seed.weightedDivisor;
+		if (isRight) {
+			freedom = Math.min(freedom, seed.rightNonzero);
+			if (freedom == 0 || rawPull <= 0)
+				return true;
+			addIncomingClusters(seed);
+			if (addOutgoingClusters(seed))
+				return true;
+		} else {
+			freedom = Math.min(freedom, seed.leftNonzero);
+			if (freedom == 0 || rawPull >= 0)
+				return true;
+			addOutgoingClusters(seed);
+			if (addIncomingClusters(seed))
+				return true;
 		}
-	}
-
-	public boolean equals(Object o) {
-		return o == this;
-	}
-
-	int getPull() {
-		return pull;
+		return false;
 	}
 	
-	/**
-	 * @see java.util.AbstractList#hashCode()
-	 */
-	public int hashCode() {
-		return hash;
+	boolean addIncomingClusters(NodeCluster seed) {
+		for (int i = 0; i < seed.leftCount; i++) {
+			NodeCluster neighbor = seed.leftNeighbors[i];
+			if (neighbor.isSetMember)
+				continue;
+			CollapsedEdges edges = seed.leftLinks[i];
+			if (!edges.isTight())
+				continue;
+			if ((!isRight || neighbor.getPull() > 0) && addCluster (neighbor))
+				return true;
+		}
+		return false;
+	}
+	
+	boolean addOutgoingClusters(NodeCluster seed) {
+		for (int i = 0; i < seed.rightCount; i++) {
+			NodeCluster neighbor = seed.rightNeighbors[i];
+			if (neighbor.isSetMember)
+				continue;
+			CollapsedEdges edges = seed.rightLinks[i];
+			if (!edges.isTight())
+				continue;
+			if ((isRight || neighbor.getPull() < 0) && addCluster (neighbor))
+					return true;
+		}
+		return false;
 	}
 
-	/**
-	 * @see java.util.AbstractCollection#toString()
-	 */
-	public String toString() {
-		updateValues();
-		StringBuffer buffer = new StringBuffer("-----Cluster-------");//$NON-NLS-1$
-		buffer.append("\n pull:" + pull);//$NON-NLS-1$
-		buffer.append("\n left:" + leftFreedom);//$NON-NLS-1$
-		buffer.append("\n right:" + rightFreedom);//$NON-NLS-1$
-		buffer.append("\n modified:" + modified);//$NON-NLS-1$
-		for (int i = 0; i < this.size(); i++) {
-			Node node = (Node)this.get(i);
-			buffer.append("\n\t" + node);//$NON-NLS-1$
-		}
-		return buffer.toString();
-	}
-
-	void union(NodeCluster other) {
-		addAll(other);
-		incoming.addAll(other.incoming);
-		outgoing.addAll(other.outgoing);
-
-		for (Iterator iter = incoming.iterator(); iter.hasNext();) {
-			Object edge = iter.next();
-			if (outgoing.remove(edge))
-				iter.remove();
-		}
-	}
-
-	void updateValues() {
-		pull = 0;
-		int pullCount = 0;
-		int unweighted = 0;
-		leftFreedom = rightFreedom = Integer.MAX_VALUE;
-		for (Iterator iter = incoming.iterator(); iter.hasNext();) {
-			Edge e = (Edge)iter.next();
-			pull -= e.getSlack() * e.weight;
-			unweighted -= e.getSlack();
-			pullCount += e.weight;
-			leftFreedom = Math.min(e.getSlack(), leftFreedom);
-		}
-		for (Iterator iter = outgoing.iterator(); iter.hasNext();) {
-			Edge e = (Edge)iter.next();
-			pull += e.getSlack() * e.weight;
-			unweighted += e.getSlack();
-			pullCount += e.weight;
-			rightFreedom = Math.min(e.getSlack(), rightFreedom);
-		}
-		if (pullCount != 0)
-			pull /= pullCount;
-		else {
-			if (outgoing.size() + incoming.size() == 0)
-				pull = 0;
+	boolean build(NodeCluster seed) {
+		isRight = seed.weightedTotal > 0;
+		if (!addCluster(seed)) {
+			int delta = rawPull / pullWeight;
+			if (delta < 0)
+				delta = Math.max(delta, -freedom);
 			else
-				pull = unweighted / (outgoing.size() + incoming.size());
+				delta = Math.min(delta, freedom);
+			if (delta != 0) {
+				for (int i = 0; i < members.size(); i++) {
+					NodeCluster c = (NodeCluster)members.get(i);
+					c.adjustRank(delta, dirtyClusters);
+				}
+				refreshDirtyClusters();
+				reset();
+				return true;
+			}
 		}
+		reset();
+		return false;
+	}
+	
+	void reset() {
+		rawPull = pullWeight = 0;
+		for (int i = 0; i < members.size(); i++)
+			((NodeCluster)members.get(i)).isSetMember = false;
+		members.clear();
+		freedom = Integer.MAX_VALUE;
 	}
 }
+
+public static int debugCount = -1;
+
+public static List lastAdjusted = new ArrayList();
+static int step;
 
 private List allClusters;
 private Map clusterMap = new HashMap();
-private Map clusterSetCache = new HashMap();
+
+ClusterSet clusterset = new ClusterSet();
+
+Collection dirtyClusters = new HashSet();
+
 public DirectedGraph graph;
 
 Map map = new HashMap();
-public DirectedGraph prime;
 
-/**
- * Adds all of the incoming edges to the graph.
- * @param n the original node
- * @param nPrime its corresponding node in the auxilary graph
- */
-void addEdges(Node n) {
-	for (int i = 0; i < n.incoming.size(); i++) {
-		Edge e = n.incoming.getEdge(i);
-		addEdge(e.source, n, e, 1);
-	}
-}
+public DirectedGraph prime;
 
 /**
  * Inset the corresponding parts for the given 2 nodes along an edge E.  The weight value
@@ -188,7 +171,17 @@ void addEdge(Node u, Node v, Edge e, int weight) {
 	prime.edges.add(eu);
 	prime.edges.add(ev);
 }
-
+/**
+ * Adds all of the incoming edges to the graph.
+ * @param n the original node
+ * @param nPrime its corresponding node in the auxilary graph
+ */
+void addEdges(Node n) {
+	for (int i = 0; i < n.incoming.size(); i++) {
+		Edge e = n.incoming.getEdge(i);
+		addEdge(e.source, n, e, 1);
+	}
+}
 void applyGPrime() {
 	Node node;
 	for (int n = 0; n < prime.nodes.size(); n++) {
@@ -200,123 +193,68 @@ void applyGPrime() {
 
 private void balanceClusters() {
 	findAllClusters();
-	boolean condition;
-	do {
-		condition = false;
-		for (int i = 0; i < allClusters.size(); i++) {
-			NodeCluster c = (NodeCluster)allClusters.get(i);
-			c.updateValues();
-
-			if (c.pull < 0 && c.leftFreedom > 0) {
-				c.adjustRank(Math.max(c.pull, -c.leftFreedom));
-				condition = true;
-				allClusters.remove(c);
-				allClusters.add(0, c);
-				i = 0;
-				c.modified++;
-			} else if (c.pull > 0 && c.rightFreedom > 0) {
-				c.adjustRank(Math.min(c.pull, c.rightFreedom));
-				condition = true;
-				allClusters.remove(c);
-				allClusters.add(0, c);
-				i = 0;
-				c.modified++;
+	
+	step = 0;
+	boolean somethingMoved = false;
+	
+	for (int i = 0; i < allClusters.size();) {
+		
+		if (step == debugCount)
+			return;
+		if (i == 1 && debugCount != - 1)
+			lastAdjusted.clear();
+		NodeCluster c = (NodeCluster)allClusters.get(i);
+		int delta = c.getPull();
+		if (delta < 0) {
+			if (c.leftFreedom > 0) {
+				c.adjustRank(Math.max(delta, -c.leftFreedom), dirtyClusters);
+				refreshDirtyClusters();
+				moveClusterForward(i, c);
+				somethingMoved = true;
+				step++;
+			} else if (clusterset.build(c)) {
+				step++;
+				moveClusterForward(i, c);
+				somethingMoved = true;
+			}
+		} else if (delta > 0) {
+			if (c.rightFreedom > 0) {
+				c.adjustRank(Math.min(delta, c.rightFreedom), dirtyClusters);
+				refreshDirtyClusters();
+				moveClusterForward(i, c);
+				somethingMoved = true;
+				step++;
+			} else if (clusterset.build(c)) {
+				step++;
+				moveClusterForward(i, c);
+				somethingMoved = true;
 			}
 		}
-		if (!condition)
-			condition = balanceClusterSets();
-	} while (condition);
-	
+		i++;
+		if (i == allClusters.size() && somethingMoved) {
+			i = 0;
+			somethingMoved = false;
+		}
+	}
+}
+
+//boolean balanceClusterSets() {
 //	for (int i = 0; i < allClusters.size(); i++) {
 //		NodeCluster c = (NodeCluster)allClusters.get(i);
-//		System.out.println("Cluster:\n\t" + c + "\n pull = :" + c.getPull());
+//		if (c.weightedTotal < 0 && c.leftFreedom == 0) {
+//			if (clusterset.build(c)) {
+//				moveClusterForward(i, c);
+//				return true;
+//			}
+//		} else if (c.weightedTotal > 0 && c.rightFreedom == 0) {
+//			if (clusterset.build(c)) {
+//				moveClusterForward(i, c);
+//				return true;
+//			}
+//		}
 //	}
-}
-
-private boolean balanceClusterSets() {
-	NodeCluster cluster, seed;
-	
-	for (Iterator itr = clusterSetCache.values().iterator(); itr.hasNext();) {
-		seed = (NodeCluster)itr.next();
-		seed.updateValues();
-		if (seed.pull < 0 && seed.leftFreedom > 0) {
-			seed.adjustRank(Math.max(seed.pull, -seed.leftFreedom));
-			return true;
-		} else if (seed.pull > 0 && seed.rightFreedom > 0) {
-			seed.adjustRank(Math.min(seed.pull, seed.rightFreedom));
-			return true;
-		}
-	}
-	
-	for (int i = 0; i < allClusters.size(); i++) {
-		seed = (NodeCluster)allClusters.get(i);
-		if (seed.pull < 0 && seed.leftFreedom == 0) {
-			Set set = new HashSet();
-			set.add(seed);
-			cluster = seed;
-			boolean condition;
-			do {
-				condition = false;
-				for (Iterator iter = cluster.incoming.iterator(); iter.hasNext();) {
-					Edge e = (Edge) iter.next();
-					if (e.getSlack() == 0) {
-						condition = true;
-						set.add(clusterMap.get(e.source));
-					}
-				}
-				cluster = getCachedClusterSet(set);
-				cluster.updateValues();
-			} while (cluster.leftFreedom == 0 && cluster.pull < 0 && condition);
-			if (cluster.pull < 0) {
-				cluster.adjustRank(Math.max(cluster.pull, -cluster.leftFreedom));
-				allClusters.remove(seed);
-				allClusters.add(0, seed);
-				return true;
-			}
-		} else if (seed.pull > 0 && seed.rightFreedom > 0) {
-			Set set = new HashSet();
-			set.add(seed);
-			cluster = seed;
-			boolean condition;
-			do {
-				condition = false;
-				for (Iterator iter = cluster.outgoing.iterator(); iter.hasNext();) {
-					Edge e = (Edge) iter.next();
-					if (e.getSlack() == 0) {
-						condition = true;
-						set.add(clusterMap.get(e.target));
-					}
-				}
-				cluster = getCachedClusterSet(set);
-				cluster.updateValues();
-			} while (cluster.rightFreedom == 0 && cluster.pull > 0 && condition);
-			if (cluster.pull > 0) {
-				cluster.adjustRank(Math.min(cluster.pull, cluster.rightFreedom));
-				allClusters.remove(seed);
-				allClusters.add(0, seed);
-				return true;
-			}
-		}
-	}
-	return false;
-}
-
-private NodeCluster getCachedClusterSet(Set set) {
-	NodeCluster cluster = (NodeCluster)clusterSetCache.get(set);
-	if (cluster != null)
-		return cluster;
-	cluster = new NodeCluster();
-	Iterator iter = set.iterator();
-
-	while (iter.hasNext())
-		cluster.union((NodeCluster)iter.next());
-
-	cluster.updateValues();
-//	System.out.println("built SUPERCLUSTER:" + cluster);
-	
-	clusterSetCache.put(set, cluster);
-	return cluster;
-}
+//	return false;
+//}
 
 void buildGPrime() {
 	RankList ranks = graph.ranks;
@@ -355,35 +293,53 @@ void buildRankSeparators(RankList ranks) {
 	}
 }
 
+private void findAllClusters() {
+	Node root = prime.nodes.getNode(0);
+	NodeCluster cluster = new NodeCluster();
+	allClusters = new ArrayList();
+	allClusters.add(cluster);
+	growCluster(root, cluster);
+	
+	for (int i = 0; i < prime.edges.size(); i++) {
+		Edge e = prime.edges.getEdge(i);
+		NodeCluster sourceCluster = (NodeCluster)clusterMap.get(e.source);
+		NodeCluster targetCluster = (NodeCluster)clusterMap.get(e.target);
+		
+		//Ignore cluster internal edges
+		if (targetCluster == sourceCluster)
+			continue;
+		
+		CollapsedEdges link = sourceCluster.getRightNeighbor(targetCluster);
+		if (link == null) {
+			link = new CollapsedEdges(e);
+			sourceCluster.addRightNeighbor(targetCluster, link);
+			targetCluster.addLeftNeighbor(sourceCluster, link);
+		} else {
+			prime.removeEdge(link.processEdge(e));
+			i--;
+		}
+	}
+	for (int i = 0; i < allClusters.size(); i++)
+		((NodeCluster)allClusters.get(i)).initValues();
+}
+
 Node get(Node key) {
 	return (Node)map.get(key);
 }
 
-void growCluster(Node root, NodeCluster cluster, List allClusters) {
+void growCluster(Node root, NodeCluster cluster) {
 	cluster.add(root);
 	clusterMap.put(root, cluster);
 	EdgeList treeChildren = getSpanningTreeChildren(root);
 	for (int i = 0; i < treeChildren.size(); i++) {
 		Edge e = treeChildren.getEdge(i);
 		if (e.cut != 0)
-			growCluster(getTreeTail(e), cluster, allClusters);
+			growCluster(getTreeTail(e), cluster);
 		else {
 			NodeCluster newCluster = new NodeCluster();
 			allClusters.add(newCluster);
-			growCluster(getTreeTail(e), newCluster, allClusters);
+			growCluster(getTreeTail(e), newCluster);
 		}
-	}
-}
-
-private void findAllClusters() {
-	Node root = prime.nodes.getNode(0);
-	NodeCluster cluster = new NodeCluster();
-	allClusters = new ArrayList();
-	allClusters.add(cluster);
-	growCluster(root, cluster, allClusters);
-	for (int i = 0; i < allClusters.size(); i++) {
-		NodeCluster c = (NodeCluster)allClusters.get(i);
-		c.build();
 	}
 }
 
@@ -391,9 +347,27 @@ void map(Node key, Node value) {
 	map.put(key, value);
 }
 
+private void moveClusterForward(int i, NodeCluster c) {
+	if (i == 0)
+		return;
+	int swapIndex = i / 2;
+	Object temp = allClusters.get(swapIndex);
+	allClusters.set(swapIndex, c);
+	allClusters.set(i, temp);
+}
+
+void refreshDirtyClusters() {
+	for (Iterator iter = dirtyClusters.iterator(); iter.hasNext();)
+		((NodeCluster)iter.next()).refreshValues();
+	dirtyClusters.clear();
+}
+
 void rowSeparation(Edge e) {
 	Node source = (Node)e.source.data;
-	e.delta = source.width + 15;
+	Node target = (Node)e.target.data;
+	e.delta = source.width
+		+ graph.getPadding(source).right
+		+ graph.getPadding(target).left;
 }
 
 public void visit(DirectedGraph g) {

@@ -52,7 +52,7 @@ static final class CandidateList {
 				return;
 			}
 		}
-		throw new RuntimeException("Edge was not a candidate");
+		throw new RuntimeException("Remove called on invalid Edge"); //$NON-NLS-1$
 	}
 	
 	public int size() {
