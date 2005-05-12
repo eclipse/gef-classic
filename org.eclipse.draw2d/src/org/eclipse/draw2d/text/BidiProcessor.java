@@ -186,7 +186,7 @@ public void process() {
 	char[] chars = new char[bidiText.length()];
 	bidiText.getChars(0, bidiText.length(), chars, 0);
 
-	if (!Bidi.requiresBidi(chars, 0, chars.length - 1))
+	if (orientation != SWT.RIGHT_TO_LEFT && !Bidi.requiresBidi(chars, 0, chars.length - 1))
 		return;
 
 	int[] levels = new int[15];
