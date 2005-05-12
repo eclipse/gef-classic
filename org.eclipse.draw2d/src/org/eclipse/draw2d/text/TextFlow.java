@@ -193,7 +193,7 @@ public BidiInfo getBidiInfo() {
 
 private int getBidiPrefixLength(TextFragmentBox box, int index) {
 	if (box.getBidiLevel() < 1)
-		return 0;
+		return isMirrored() ? 1 : 0;
 	if (index > 0 || !bidiInfo.leadingJoiner)
 		return 1;
 	return 2;
@@ -206,8 +206,12 @@ private int getBidiPrefixLength(TextFragmentBox box, int index) {
  * @since 3.1
  */
 private String getBidiSubstring(TextFragmentBox box, int index) {
-	if (bidiInfo == null || box.getBidiLevel() < 1)
-		return getText().substring(box.offset, box.offset + box.length);
+	if ((bidiInfo == null || box.getBidiLevel() < 1)) {
+		String s = getText().substring(box.offset, box.offset + box.length);
+		if (isMirrored())
+			s = BidiChars.LRO + s;
+		return s;
+	}
 	
 	StringBuffer buffer = new StringBuffer(box.length + 3);
 	buffer.append(box.isRightToLeft() ? BidiChars.RLO : BidiChars.LRO);
@@ -257,8 +261,7 @@ public CaretInfo getCaretPlacement(int offset, boolean trailing) {
 	layout.setFont(getFont());
 
 	String fragString = getBidiSubstring(box, i);
-	if (bidiInfo != null)
-		offset += getBidiPrefixLength(box, i);
+	offset += getBidiPrefixLength(box, i);
 
 	layout.setText(fragString);
 	Point where = new Point(layout.getLocation(offset, trailing));
