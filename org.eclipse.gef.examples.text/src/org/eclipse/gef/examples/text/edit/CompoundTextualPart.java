@@ -144,6 +144,7 @@ public TextLocation getNextLocation(CaretSearch search) {
 			return searchLineAbove(search);
 
 		case CaretSearch.WORD_BOUNDARY:
+			return null;
 		case CaretSearch.COLUMN:
 			if (search.isForward)
 				return searchForward(search);
@@ -206,10 +207,6 @@ TextLocation searchForward(CaretSearch search) {
 }
 
 protected TextLocation searchLineAbove(CaretSearch search) {
-	//The bottom of this figure must be above the top of the caret
-	//if (getFigure().getBounds().bottom() > caret.y)
-	//	return null;
-	
 	int childIndex;
 	TextualEditPart part;
 	TextLocation location = search.where;
