@@ -106,10 +106,11 @@ void refreshCaret() {
 	if (getCaretOwner() == null)
 		return;
 	CaretInfo info;
-	if (getSelectionRange().isForward && getCaretLocation().offset > 0) {
-		info = getCaretOwner().getCaretPlacement(getCaretLocation().offset - 1, true);
+	TextLocation location = getCaretLocation();
+	if (getSelectionRange().isForward && location.offset > 0) {
+		info = getCaretOwner().getCaretPlacement(location.offset - 1, true);
 	} else {
-		info = getCaretOwner().getCaretPlacement(getCaretLocation().offset, false);
+		info = getCaretOwner().getCaretPlacement(location.offset, false);
 	}
 	getCaret().setBounds(info.getX(), info.top(), 1, info.getHeight());
 }
@@ -133,13 +134,11 @@ public void setSelectionRange(SelectionRange newRange) {
 		currentSelection = selectionRange.getSelectedParts();
 		for (int i = 0; i < currentSelection.size(); i++)
 			((TextualEditPart)currentSelection.get(i)).setSelection(-1, -1);
-		selectionRange.begin.part.setSelection(-1, -1);
-		selectionRange.end.part.setSelection(-1, -1);
 	}
 	selectionRange = newRange;
 	if (selectionRange != null) {
 		currentSelection = selectionRange.getSelectedParts();
-		for (int i = 1; i < currentSelection.size() - 1; i++) {
+		for (int i = 0; i < currentSelection.size(); i++) {
 			TextualEditPart textpart = (TextualEditPart)currentSelection.get(i);
 			textpart.setSelection(0, textpart.getLength());
 		}

@@ -155,12 +155,11 @@ private List findNodesBetweenInclusive(EditPart left, EditPart right) {
 
 	ArrayList rightSide = new ArrayList();
 	EditPart nextRight = right.getParent();
-	if (nextRight == commonAncestor)
-		rightSide.add(right);
+	rightSide.add(right);
 	while (nextRight != commonAncestor) {
 		children = nextRight.getChildren();
 		int end = children.indexOf(right);
-		for (int i = 0; i <= end; i++)
+		for (int i = 0; i < end; i++)
 			rightSide.add(children.get(i));
 
 		right = nextRight;
@@ -184,6 +183,10 @@ public List getLeafParts() {
 	return leafParts;
 }
 
+/**
+ * @return the list of selected EditParts.  There is no guarantee as to the order of
+ * EditParts.
+ */
 public List getSelectedParts() {
 	if (selectedParts == null) {
 		List list = findNodesBetweenInclusive(begin.part, end.part);
