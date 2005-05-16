@@ -109,7 +109,6 @@ public void blockContentsChanged() {
  */
 protected void cleanup() {
 	super.cleanup();
-	currentLine = null;
 	previousLine = null;
 }
 
@@ -220,10 +219,14 @@ public void setContinueOnSameLine(boolean value) {
  */
 protected void setupBlock() {
 	int recommended = getContextWidth();
+	if (recommended == Integer.MAX_VALUE)
+		recommended = -1;
 	BlockFlow bf = getBlockFlow();
-	int borderCorrection = bf.getInsets().getWidth() + bf.getLeftMargin() + bf.getRightMargin();
-	if (recommended >= 0)
+	if (recommended > 0) {
+		int borderCorrection = bf.getInsets().getWidth() + bf.getLeftMargin() 
+				+ bf.getRightMargin();
 		recommended = Math.max(0, recommended - borderCorrection);
+	}
 	
 	if (recommended != blockBox.recommendedWidth) {
 		blockInvalid = true;
