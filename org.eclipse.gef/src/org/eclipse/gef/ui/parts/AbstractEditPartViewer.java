@@ -729,16 +729,19 @@ public void setSelection(ISelection newSelection) {
 	}
 	selection.clear();
 	
-	Iterator itr = orderedSelection.iterator();
-	while (true) {
-		EditPart part = (EditPart)itr.next();
-		selection.add(part);
-		if (!itr.hasNext()) {
-			part.setSelected(EditPart.SELECTED_PRIMARY);
-			break;
+	if (!orderedSelection.isEmpty()) {
+		Iterator itr = orderedSelection.iterator();
+		while (true) {
+			EditPart part = (EditPart)itr.next();
+			selection.add(part);
+			if (!itr.hasNext()) {
+				part.setSelected(EditPart.SELECTED_PRIMARY);
+				break;
+			}
+			part.setSelected(EditPart.SELECTED);
 		}
-		part.setSelected(EditPart.SELECTED);
 	}
+
 	fireSelectionChanged();
 }
 
