@@ -25,7 +25,11 @@ public class CaretInfo
 private int ascent, lineAscent, descent, lineDescent, baseline, x;
 
 /**
- * Constructs a new instance.
+ * Constructor for use by TextFlow. Constructs a new CaretInfo with the figure's ascent
+ * and descent and line information.
+ * <P>
+ * <EM>WARNING:</EM> This constructor should not be called by clients. It is for use by
+ * {@link TextFlow}, and may change in future releases.
  * @param x the x location
  * @param y the y location of the top of the caret
  * @param ascent the ascent
@@ -33,7 +37,7 @@ private int ascent, lineAscent, descent, lineDescent, baseline, x;
  * @param lineAscent the ascent of the line on which the caret is placed
  * @param lineDescent the descent of the line on which the caret is placed 
  */
-public CaretInfo(int x, int y, int ascent, int descent, int lineAscent, int lineDescent) {
+protected CaretInfo(int x, int y, int ascent, int descent, int lineAscent, int lineDescent) {
 	this.x = x;
 	this.baseline = y + ascent;
 	this.ascent = ascent;
