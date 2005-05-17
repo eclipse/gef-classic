@@ -75,7 +75,7 @@ abstract LineRoot getLineRoot();
  * LineBox.  The linebox's own border must be drawn around the children.
  */
 int getOuterAscent() {
-	return 0;
+	return getAscent();
 }
 
 /**
@@ -84,7 +84,7 @@ int getOuterAscent() {
  * LineBox. The linebox's own border must be drawn around the children.
  */
 int getOuterDescent() {
-	return 0;
+	return getDescent();
 }
 
 int getAscentWithBorder() {
