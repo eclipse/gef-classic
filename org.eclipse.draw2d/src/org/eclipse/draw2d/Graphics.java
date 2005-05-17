@@ -16,6 +16,8 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Path;
+import org.eclipse.swt.graphics.Pattern;
 import org.eclipse.swt.graphics.TextLayout;
 
 import org.eclipse.draw2d.geometry.Point;
@@ -191,11 +193,20 @@ public final void drawOval(Rectangle r) {
 	drawOval(r.x, r.y, r.width, r.height);
 }
 
+/**
+ * Draws the given path.
+ * @param path the path to draw
+ * @since 3.1
+ */
+public void drawPath(Path path) {
+	subclassFunctionMission();
+}
+
 /** 
- * Draws a pixel, using the foreground color, at the specified
- * point (<code>x</code>, <code>y</code>).
+ * Draws a pixel, using the foreground color, at the specified point (<code>x</code>,
+ * <code>y</code>).
  * <p>
- * Note that the receiver's line attributes do not affect this
+ * Note that the current line attributes do not affect this
  * operation.
  * </p>
  *
@@ -269,7 +280,6 @@ public final void drawRectangle(Rectangle r) {
  */
 public abstract void drawRoundRectangle(Rectangle r, int arcWidth, int arcHeight);
 
-
 /**
  * Draws the given string using the current font and foreground color. No tab expansion or 
  * carriage return processing will be performed. The background of the string will be
@@ -287,6 +297,7 @@ public abstract void drawString(String s, int x, int y);
 public final void drawString(String s, Point p) {
 	drawString(s, p.x, p.y);
 }
+
 
 /**
  * Draws the given string using the current font and foreground color. Tab expansion and 
@@ -309,8 +320,7 @@ public abstract void drawText(String s, int x, int y);
  * @since 3.0
  */
 public void drawText(String s, int x, int y, int style) {
-	throw new RuntimeException("Graphics#drawText(String, int, int, int)" + //$NON-NLS-1$
-			"is not implemented properly on " + getClass().getName()); //$NON-NLS-1$
+	subclassFunctionMission();
 }
 
 /**
@@ -355,7 +365,7 @@ public final void drawTextLayout(TextLayout layout, int x, int y) {
  */
 public void drawTextLayout(TextLayout layout, int x, int y, int selectionStart,
 		int selectionEnd, Color selectionForeground, Color selectionBackground) {
-	throw new RuntimeException("The method has not been implemented"); //$NON-NLS-1$
+	subclassFunctionMission();
 }
 
 /**
@@ -416,6 +426,15 @@ public abstract void fillOval(int x, int y, int w, int h);
  */
 public final void fillOval(Rectangle r) {
 	fillOval(r.x, r.y, r.width, r.height);
+}
+
+/**
+ * Fills the given path.
+ * @param path the path to fill
+ * @since 3.1
+ */
+public void fillPath(Path path) {
+	subclassFunctionMission();
 }
 
 /**
@@ -511,6 +530,18 @@ public double getAbsoluteScale() {
 }
 
 /**
+ * Returns the anti-aliasing setting value, which will be one of <code>SWT.DEFAULT</code>,
+ * <code>SWT.OFF</code> or <code>SWT.ON</code>. Note that this controls anti-aliasing for
+ * all <em>non-text</em> drawing operations.
+ * @see #getTextAntialias()
+ * @return the anti-alias setting
+ * @since 3.1
+ */
+public int getAntialias() {
+	return SWT.DEFAULT;
+}
+
+/**
  * Returns the background color used for filling.
  * @return the background color
  */
@@ -522,6 +553,17 @@ public abstract Color getBackgroundColor();
  * @return the clip rectangle
  */
 public abstract Rectangle getClip(Rectangle rect);
+
+/**
+ * Returns the fill rule, which will be one of <code>SWT.FILL_EVEN_ODD</code> or
+ * <code>SWT.FILL_WINDING</code>.
+ * @return the fill rule
+ * @since 3.1
+ */
+public int getFillRule() {
+	subclassFunctionMission();
+	return 0;
+}
 
 /**
  * Returns the font used to draw and fill text.
@@ -542,11 +584,45 @@ public abstract FontMetrics getFontMetrics();
 public abstract Color getForegroundColor();
 
 /**
+ * Returns the interpolation setting, which will be one of <code>SWT.DEFAULT</code>,
+ * <code>SWT.NONE</code>, <code>SWT.LOW</code> or <code>SWT.HIGH</code>.
+ * @return the interpolation setting
+ * @since 3.1
+ */
+public int getInterpolation() {
+	subclassFunctionMission();
+	return 0;
+}
+
+/**
+ * Returns the current line cap style, which will be one of the constants
+ * <code>SWT.CAP_FLAT</code>, <code>SWT.CAP_ROUND</code>, or <code>SWT.CAP_SQUARE</code>.
+ * 
+ * @return the cap style used for drawing lines
+ * @since 3.1
+ */
+public int getLineCap() {
+	return SWT.CAP_FLAT;
+}
+
+
+/** 
+ * Returns the line join style, which will be one of the constants
+ * <code>SWT.JOIN_MITER</code>, <code>SWT.JOIN_ROUND</code>, or
+ * <code>SWT.JOIN_BEVEL</code>.
+ * 
+ * @since 3.1
+ * @return the join style used for drawing lines
+ */
+public int getLineJoin() {
+	return SWT.JOIN_MITER;
+}
+
+/**
  * Returns the line style.
  * @return the line style
  */
 public abstract int getLineStyle();
-
 /**
  * Returns the current line width.
  * @return the line width
@@ -563,6 +639,19 @@ private PointList getPointList(int[] points) {
 	for (int i = 0; (i + 1) < points.length; i += 2)
 		pointList.addPoint(points[i], points[i + 1]);
 	return pointList;
+}
+
+/**
+ * Returns the textual anti-aliasing setting value, which will be one of
+ * <code>SWT.DEFAULT</code>, <code>SWT.OFF</code> or <code>SWT.ON</code>. Note that this
+ * controls anti-aliasing <em>only</em> for text drawing operations.
+ *
+ * @see #getAntialias()
+ * @return the anti-aliasing setting
+ * @since 3.1
+ */
+public int getTextAntialias() {
+	return SWT.DEFAULT;
 }
 
 /**
@@ -588,11 +677,10 @@ public abstract void pushState();
 public abstract void restoreState();
 
 /**
- * Rotates the receiver's coordinates by the given angle. All subsequent
- * painting will be performed in the resulting coordinates. Some functions are
- * illegal when a rotated coordinates system is in use.  To restore access to
- * those functions, it is necessary to call restore or pop to return to a non
- * rotated state.
+ * Rotates the coordinates by the given counter-clockwise angle. All subsequent painting
+ * will be performed in the resulting coordinates. Some functions are illegal when a
+ * rotated coordinates system is in use.  To restore access to those functions, it is
+ * necessary to call restore or pop to return to a non rotated state.
  * @param degrees the degrees to rotate
  * @since 3.1
  */
@@ -614,16 +702,56 @@ public abstract void scale(double amount);
 public void setAlpha(int alpha) { }
 
 /**
+ * Sets the anti-aliasing value to the parameter, which must be one of
+ * <code>SWT.DEFAULT</code>, <code>SWT.OFF</code> or <code>SWT.ON</code>. Note that this
+ * controls anti-aliasing for all <em>non-text drawing</em> operations.
+ * 
+ * @param value the anti-alias value
+ */
+public void setAntialias(int value) { }
+
+/**
  * Sets the background color.
  * @param rgb the new background color
  */
 public abstract void setBackgroundColor(Color rgb);
 
 /**
+ * Sets the pattern used for fill-type graphics operations. The pattern must not be
+ * disposed while it is being used by the graphics.
+ * @param pattern the background pattern
+ * @since 3.1
+ */
+public void setBackgroundPattern(Pattern pattern) {
+	subclassFunctionMission();
+}
+
+/**
+ * Sets the area which can be affected by drawing operations to the specified
+ * <code>Path</code>.
+
+ * @param path the clipping path
+ * @since 3.1
+ */
+public void setClip(Path path) {
+	subclassFunctionMission();
+}
+
+/**
  * Sets the clip rectangle. Painting will <b>not</b> occur outside this area.
  * @param r the new clip rectangle
  */
 public abstract void setClip(Rectangle r);
+
+/**
+ * Sets the fill rule to the given value, which must be one of
+ * <code>SWT.FILL_EVEN_ODD</code> or <code>SWT.FILL_WINDING</code>.
+ * @param rule the fill rule
+ * @since 3.1
+ */
+public void setFillRule(int rule) {
+	subclassFunctionMission();
+}
 
 /**
  * Sets the font.
@@ -638,9 +766,29 @@ public abstract void setFont(Font f);
 public abstract void setForegroundColor(Color rgb);
 
 /**
- * Sets the receiver's line cap style to the argument, which must be one of the
- * constants <code>SWT.CAP_FLAT</code>, <code>SWT.CAP_ROUND</code>, or
- * <code>SWT.CAP_SQUARE</code>.
+ * Sets the foreground pattern for draw and text operations. The pattern must not be
+ * disposed while it is being referenced by the graphics.
+ * @param pattern the foreground pattern
+ * @since 3.1
+ */
+public void setForegroundPattern(Pattern pattern) {
+	subclassFunctionMission();
+}
+
+/**
+ * Sets the interpolation setting to the given value, which must be one of
+ * <code>SWT.DEFAULT</code>, <code>SWT.NONE</code>,  <code>SWT.LOW</code> or
+ * <code>SWT.HIGH</code>. This setting is relevant when working with Images.
+ * @param interpolation the interpolation
+ * @since 3.1
+ */
+public void setInterpolation(int interpolation) {
+	subclassFunctionMission();
+}
+
+/**
+ * Sets the line cap style to the argument, which must be one of the constants
+ * <code>SWT.CAP_FLAT</code>, <code>SWT.CAP_ROUND</code>, or <code>SWT.CAP_SQUARE</code>.
  * @param cap the line cap
  * @since 3.1
  */
@@ -656,8 +804,8 @@ public void setLineCap(int cap) { }
 public void setLineDash(int dash[]) { }
 
 /**
- * Sets the receiver's line join style to the argument, which must be one of the
- * constants <code>SWT.JOIN_MITER</code>, <code>SWT.JOIN_ROUND</code>, or
+ * Sets the line join style to the argument, which must be one of the constants
+ * <code>SWT.JOIN_MITER</code>, <code>SWT.JOIN_ROUND</code>, or
  * <code>SWT.JOIN_BEVEL</code>.
  * @param join the join type
  * @since 3.1
@@ -665,22 +813,40 @@ public void setLineDash(int dash[]) { }
 public void setLineJoin(int join) { }
 
 /**
- * Sets the line style.
+ * Sets the line style to the argument, which must be one of the constants
+ * <code>SWT.LINE_SOLID</code>, <code>SWT.LINE_DASH</code>, <code>SWT.LINE_DOT</code>,
+ * <code>SWT.LINE_DASHDOT</code> or <code>SWT.LINE_DASHDOTDOT</code>.
  * @param style the new style
  */
 public abstract void setLineStyle(int style);
 
 /**
  * Sets the line width.
+ * 
  * @param width the new width
  */
 public abstract void setLineWidth(int width);
+
+/**
+ * Sets the textual anti-aliasing value to the parameter, which must be one of
+ * <code>SWT.DEFAULT</code>, <code>SWT.OFF</code> or <code>SWT.ON</code>. Note that this
+ * controls anti-aliasing only for all <em>text drawing</em> operations.
+ * 
+ * @param value the textual anti-alias setting
+ * @since 3.1
+ */
+public void setTextAntialias(int value) { }
 
 /**
  * Sets the XOR mode.
  * @param b the new XOR mode
  */
 public abstract void setXORMode(boolean b);
+
+private void subclassFunctionMission() {
+	throw new RuntimeException("The class: " + getClass() //$NON-NLS-1$
+			+ " has not implemented this new functionality"); //$NON-NLS-1$
+}
 
 /**
  * Translates the receiver's coordinates by the specified x and y amounts. All

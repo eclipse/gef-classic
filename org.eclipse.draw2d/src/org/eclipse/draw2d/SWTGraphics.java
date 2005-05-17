@@ -18,7 +18,9 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Path;
 import org.eclipse.swt.graphics.TextLayout;
+import org.eclipse.swt.graphics.Transform;
 
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -36,27 +38,114 @@ public class SWTGraphics
 	extends Graphics
 {
 
-/** Contains the state variables of this SWTGraphics object **/
-protected static class State
+/**
+ * An internal type used to represent and update the GC's clipping.
+ * @since 3.1
+ */
+interface Clipping {
+	Rectangle getBoundingBox(Rectangle rect);
+	Clipping getCopy();
+	void intersect(int left, int top, int right, int bottom);
+	void scale(double amount);
+	void setOn(GC gc, int translateX, int translateY);
+	void translate(int dx, int dy);
+}
+
+/**
+ * Any state stored in this class is only applied when it is needed by a
+ * specific graphics call.
+ * @since 3.1
+ */
+static class LazyState {
+	Color bgColor;
+	Color fgColor;
+	Font font;
+	int graphicHints;
+	int lineWidth;
+	Clipping relativeClip;
+}
+class RectangleClipping implements Clipping {
+	private double top, left, bottom, right;
+
+	RectangleClipping() { }
+	
+	RectangleClipping(org.eclipse.swt.graphics.Rectangle rect) {
+		left = rect.x;
+		top = rect.y;
+		right = rect.x + rect.width;
+		bottom = rect.y + rect.height;
+	}
+	
+	RectangleClipping(Rectangle rect) {
+		left = rect.x;
+		top = rect.y;
+		right = rect.right();
+		bottom = rect.bottom();
+	}
+	
+	public Rectangle getBoundingBox(Rectangle rect) {
+		rect.x = (int)left;
+		rect.y = (int)top;
+		rect.width = (int)Math.ceil(right) - rect.x;
+		rect.height = (int)Math.ceil(bottom) - rect.y;
+		return rect;
+	}
+	
+	public Clipping getCopy() {
+		RectangleClipping result = new RectangleClipping();
+		result.left = left;
+		result.right = right;
+		result.top = top;
+		result.bottom = bottom;
+		return result;
+	}
+	
+	public void intersect(int left, int top, int right, int bottom) {
+		this.left = Math.max(this.left, left);
+		this.right = Math.min(this.right, right);
+		this.top = Math.max(this.top, top);
+		this.bottom = Math.min(this.bottom, bottom);
+		if (right < left || bottom < top) {
+			//width and height of -1 to avoid ceiling function from re-adding a pixel.
+			right = left - 1;
+			bottom = top - 1;
+		}
+	}
+	
+	public void scale(double s) {
+		top /= s;
+		left /= s;
+		bottom /= s;
+		right /= s;
+	}
+	
+	public void setOn(GC gc, int translateX, int translateY) {
+		int xInt = (int)Math.floor(left);
+		int yInt = (int)Math.floor(top);
+		gc.setClipping(xInt + translateX, yInt + translateY,
+				(int)Math.ceil(right) - xInt,
+				(int)Math.ceil(bottom) - yInt);
+	}
+	
+	public void translate(int dx, int dy) {
+		left += dx;
+		right += dx;
+		top += dy;
+		bottom += dy;
+	}
+}
+
+/**
+ * Contains the entire state of the Graphics.
+ */
+static class State
+	extends LazyState
 	implements Cloneable
 {
-	/** Background and foreground colors **/
-	public Color
-		bgColor,
-		fgColor;
-	/** Clip values **/
-	public int clipX, clipY, clipW, clipH; //X and Y are absolute here.
-	/** Font value **/
-	public Font font;  //Fonts are immutable, shared references are safe
-	/** Line values**/
-	public int
-		lineWidth,
-		lineStyle,
-		dx, dy;
-	/** XOR value **/
-	public boolean xor;
-
-	/** @see Object#clone() **/
+	float affineMatrix[];
+	int alpha;
+	int dx, dy;
+	int lineDash[];
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
 	}
@@ -68,33 +157,65 @@ protected static class State
 	public void copyFrom(State state) {
 		bgColor = state.bgColor;
 		fgColor = state.fgColor;
-		lineStyle = state.lineStyle;
 		lineWidth = state.lineWidth;
 		dx = state.dx;
 		dy = state.dy;
 		font = state.font;
-		clipX = state.clipX;
-		clipY = state.clipY;
-		clipW = state.clipW;
-		clipH = state.clipH;
-		xor = state.xor;
+		lineDash = state.lineDash;
+		graphicHints = state.graphicHints;
+		affineMatrix = state.affineMatrix;
+		relativeClip = state.relativeClip;
+		alpha = state.alpha;
 	}
 }
 
-/**
- * debug flag.
- */
-public static boolean debug = false;
-private final State appliedState = new State();
+static final int AA_MASK;
+
+static final int AA_SHIFT;
+static final int CAP_MASK;
+static final int CAP_SHIFT;
+static final int FILL_RULE_MASK;
+static final int FILL_RULE_SHIFT;
+static final int INTERPOLATION_MASK;
+static final int INTERPOLATION_SHIFT;
+static final int JOIN_MASK;
+static final int JOIN_SHIFT;
+static final int LINE_STYLE_MASK;
+static final int TEXT_AA_MASK;
+static final int TEXT_AA_SHIFT;
+static final int XOR_MASK;
+static final int XOR_SHIFT;
+
+static {
+	XOR_SHIFT = 3;
+	CAP_SHIFT = 4;
+	JOIN_SHIFT = 6;
+	AA_SHIFT = 8;
+	TEXT_AA_SHIFT = 10;
+	INTERPOLATION_SHIFT = 12;
+	FILL_RULE_SHIFT = 14;
+
+	LINE_STYLE_MASK = 7;
+	AA_MASK = 3 << AA_SHIFT;
+	CAP_MASK = 3 << CAP_SHIFT;
+	FILL_RULE_MASK = 1 << FILL_RULE_SHIFT;
+	INTERPOLATION_MASK = 3 << INTERPOLATION_SHIFT;
+	JOIN_MASK = 3 << JOIN_SHIFT;
+	TEXT_AA_MASK = 3 << TEXT_AA_SHIFT;
+	XOR_MASK = 1 << XOR_SHIFT;	
+}
+
+private final LazyState appliedState = new LazyState();
 private final State currentState = new State();
 
+private boolean elementsNeedUpdate;
 private GC gc;
 
-private final Rectangle relativeClip;
-
+private boolean sharedClipping;
 private List stack = new ArrayList();
-private int stackPointer = 0;
 
+private int stackPointer = 0;
+Transform transform;
 private int translateX = 0;
 private int translateY = 0;
 
@@ -104,8 +225,6 @@ private int translateY = 0;
  */
 public SWTGraphics(GC gc) {
 	this.gc = gc;
-	//No translation necessary because translation is <0,0> at construction.
-	relativeClip = new Rectangle(gc.getClipping());
 	init();
 }
 
@@ -120,19 +239,18 @@ protected final void checkFill() {
 }
 
 /**
- * If the XOR or the clip region has changed, these changes will be pushed to the GC.
+ * If the rendering hints or the clip region has changed, these changes will be pushed to
+ * the GC. Rendering hints include anti-alias, xor, join, cap, line style, fill rule,
+ * interpolation, and other settings.
  */
 protected final void checkGC() {
-	if (appliedState.xor != currentState.xor)
-		gc.setXORMode(appliedState.xor = currentState.xor);
-	if (appliedState.clipX != currentState.clipX 
-		|| appliedState.clipY != currentState.clipY 
-		|| appliedState.clipW != currentState.clipW 
-		|| appliedState.clipH != currentState.clipH) {
-		gc.setClipping(appliedState.clipX = currentState.clipX,
-						appliedState.clipY = currentState.clipY,
-						appliedState.clipW = currentState.clipW,
-						appliedState.clipH = currentState.clipH);
+	if (appliedState.relativeClip != currentState.relativeClip) {
+		appliedState.relativeClip = currentState.relativeClip;
+		appliedState.relativeClip.setOn(gc, translateX, translateY);
+	}
+	if (appliedState.graphicHints != currentState.graphicHints) {
+		reconcileHints(appliedState.graphicHints, currentState.graphicHints);
+		appliedState.graphicHints = currentState.graphicHints;
 	}
 }
 
@@ -144,8 +262,6 @@ protected final void checkPaint() {
 	checkGC();
 	if (!appliedState.fgColor.equals(currentState.fgColor))
 		gc.setForeground(appliedState.fgColor = currentState.fgColor);
-	if (appliedState.lineStyle != currentState.lineStyle)
-		gc.setLineStyle(appliedState.lineStyle = currentState.lineStyle);
 	if (appliedState.lineWidth != currentState.lineWidth)
 		gc.setLineWidth(appliedState.lineWidth = currentState.lineWidth);
 	if (!appliedState.bgColor.equals(currentState.bgColor))
@@ -158,7 +274,6 @@ protected final void checkPaint() {
  */
 protected final void checkText() {
 	checkPaint();
-	checkFill();
 	if (!appliedState.font.equals(currentState.font))
 		gc.setFont(appliedState.font = currentState.font);
 }
@@ -167,20 +282,29 @@ protected final void checkText() {
  * @see Graphics#clipRect(Rectangle)
  */
 public void clipRect(Rectangle rect) {
-	relativeClip.intersect(rect);
-	setClipAbsolute(relativeClip.x + translateX,
-			    relativeClip.y + translateY,
-			    relativeClip.width,
-			    relativeClip.height);
+	if (currentState.relativeClip == null)
+		throw new IllegalStateException("The current clipping area does not " + //$NON-NLS-1$
+		"support intersection."); //$NON-NLS-1$
+	if (sharedClipping) {
+		currentState.relativeClip = currentState.relativeClip.getCopy();
+		sharedClipping = false;
+	} else
+		appliedState.relativeClip = null;
+	currentState.relativeClip.intersect(
+			rect.x,
+			rect.y,
+			rect.right(),
+			rect.bottom());
 }
 
 /**
  * @see Graphics#dispose()
  */
 public void dispose() {
-	while (stackPointer > 0) {
+	while (stackPointer > 0)
 		popState();
-	}
+	if (transform != null)
+		transform.dispose();
 }
 
 /**
@@ -196,7 +320,6 @@ public void drawArc(int x, int y, int width, int height, int offset, int length)
  */
 public void drawFocus(int x, int y, int w, int h) {
 	checkPaint();
-	checkFill();
 	gc.drawFocus(x + translateX, y + translateY, w + 1, h + 1);
 }
 
@@ -234,6 +357,15 @@ public void drawOval(int x, int y, int width, int height) {
 }
 
 /**
+ * @see Graphics#drawPath(Path)
+ */
+public void drawPath(Path path) {
+	checkPaint();
+	initTransform();
+	gc.drawPath(path);
+}
+
+/**
  * @see Graphics#drawPoint(int, int)
  */
 public void drawPoint(int x, int y) {
@@ -262,18 +394,13 @@ public void drawPolygon(PointList points) {
 }
 
 /**
- * @see org.eclipse.draw2d.Graphics#drawPolyline(int[])
+ * @see Graphics#drawPolyline(int[])
  */
 public void drawPolyline(int[] points) {
 	checkPaint();
 	try {
 		translatePointArray(points, translateX, translateY);
 		gc.drawPolyline(points);
-		if (getLineWidth() == 1 && points.length >= 2) {
-			int x = points[points.length - 2];
-			int y = points[points.length - 1];
-			gc.drawLine(x, y, x, y);
-		}
 	} finally {
 		translatePointArray(points, -translateX, -translateY);
 	}	
@@ -342,7 +469,6 @@ public void fillArc(int x, int y, int width, int height, int offset, int length)
  * @see Graphics#fillGradient(int, int, int, int, boolean)
  */
 public void fillGradient(int x, int y, int w, int h, boolean vertical) {
-	checkFill();
 	checkPaint();
 	gc.fillGradientRectangle(x + translateX, y + translateY, w, h, vertical);
 }
@@ -353,6 +479,15 @@ public void fillGradient(int x, int y, int w, int h, boolean vertical) {
 public void fillOval(int x, int y, int width, int height) {
 	checkFill();
 	gc.fillOval(x + translateX, y + translateY, width, height);
+}
+
+/**
+ * @see Graphics#fillPath(Path)
+ */
+public void fillPath(Path path) {
+	checkFill();
+	initTransform();
+	gc.fillPath(path);
 }
 
 /**
@@ -409,6 +544,13 @@ public void fillText(String s, int x, int y) {
 }
 
 /**
+ * @see Graphics#getAntialias()
+ */
+public int getAntialias() {
+	return ((currentState.graphicHints & AA_MASK) >> AA_SHIFT) - 1;
+}
+
+/**
  * @see Graphics#getBackgroundColor()
  */
 public Color getBackgroundColor() {
@@ -419,8 +561,19 @@ public Color getBackgroundColor() {
  * @see Graphics#getClip(Rectangle)
  */
 public Rectangle getClip(Rectangle rect) {
-	rect.setBounds(relativeClip);
-	return rect;
+	if (currentState.relativeClip != null) {
+		currentState.relativeClip.getBoundingBox(rect);
+		return rect;
+	}
+	throw new IllegalStateException(
+			"Clipping can no longer be queried due to transformations"); //$NON-NLS-1$
+}
+
+/**
+ * @see Graphics#getFillRule()
+ */
+public int getFillRule() {
+	return ((currentState.graphicHints & FILL_RULE_MASK) >> FILL_RULE_SHIFT) + 1; 
 }
 
 /**
@@ -446,10 +599,31 @@ public Color getForegroundColor() {
 }
 
 /**
+ * @see Graphics#getInterpolation()
+ */
+public int getInterpolation() {
+	return ((currentState.graphicHints & INTERPOLATION_MASK) >> INTERPOLATION_SHIFT) - 1;
+}
+
+/**
+ * @see Graphics#getLineCap()
+ */
+public int getLineCap() {
+	return (currentState.graphicHints & CAP_MASK) >> CAP_SHIFT;
+}
+
+/**
+ * @see Graphics#getLineJoin()
+ */
+public int getLineJoin() {
+	return (currentState.graphicHints & JOIN_MASK) >> JOIN_SHIFT;
+}
+
+/**
  * @see Graphics#getLineStyle()
  */
 public int getLineStyle() {
-	return currentState.lineStyle;
+	return currentState.graphicHints & LINE_STYLE_MASK;
 }
 
 /**
@@ -460,27 +634,48 @@ public int getLineWidth() {
 }
 
 /**
+ * @see Graphics#getTextAntialias()
+ */
+public int getTextAntialias() {
+	return gc.getTextAntialias();
+}
+
+/**
  * @see Graphics#getXORMode()
  */
 public boolean getXORMode() {
-	return currentState.xor;
+	return (currentState.graphicHints & XOR_MASK) != 0;
 }
 
 /**
  * Called by constructor, initializes all State information for currentState
  */
 protected void init() {
-//Current translation is assumed to be 0,0.
 	currentState.bgColor = appliedState.bgColor = gc.getBackground();
 	currentState.fgColor = appliedState.fgColor = gc.getForeground();
 	currentState.font = appliedState.font = gc.getFont();
 	currentState.lineWidth = appliedState.lineWidth = gc.getLineWidth();
-	currentState.lineStyle = appliedState.lineStyle = gc.getLineStyle();
-	currentState.clipX = appliedState.clipX = relativeClip.x;
-	currentState.clipY = appliedState.clipY = relativeClip.y;
-	currentState.clipW = appliedState.clipW = relativeClip.width;
-	currentState.clipH = appliedState.clipH = relativeClip.height;
-	currentState.xor = appliedState.xor = gc.getXORMode();
+	currentState.graphicHints |= gc.getLineStyle();
+	currentState.graphicHints |= gc.getLineCap() << CAP_SHIFT;
+	currentState.graphicHints |= gc.getLineJoin() << JOIN_SHIFT;
+	if (gc.getXORMode())
+		currentState.graphicHints |= XOR_MASK;
+	
+	appliedState.graphicHints = currentState.graphicHints;
+	
+	currentState.relativeClip = new RectangleClipping(gc.getClipping());
+	currentState.lineDash = gc.getLineDash();
+	currentState.alpha = gc.getAlpha();
+}
+
+private void initTransform() {
+	if (transform == null) {
+		transform = new Transform(null);
+		elementsNeedUpdate = true;
+		transform.translate(currentState.dx, currentState.dy);
+		currentState.dx = 0;
+		currentState.dy = 0;
+	}
 }
 
 /**
@@ -495,17 +690,60 @@ public void popState() {
  * @see Graphics#pushState()
  */
 public void pushState() {
+	if (currentState.relativeClip == null)
+		throw new IllegalStateException("The clipping has been modified in" + //$NON-NLS-1$
+				"a way that cannot be saved and restored."); //$NON-NLS-1$
 	try {
 		State s;
+		currentState.dx = translateX;
+		currentState.dy = translateY;
+		if (elementsNeedUpdate) {
+			elementsNeedUpdate = false;
+			transform.getElements(currentState.affineMatrix = new float[6]);
+		}
 		if (stack.size() > stackPointer) {
 			s = (State)stack.get(stackPointer);
 			s.copyFrom(currentState);
 		} else {
 			stack.add(currentState.clone());
 		}
+		sharedClipping = true;
 		stackPointer++;
 	} catch (CloneNotSupportedException e) {
 		throw new RuntimeException(e.getMessage());
+	}
+}
+
+private void reconcileHints(int applied, int hints) {
+	if (applied != hints) {
+		int changes = hints ^ applied;
+		
+		if ((changes & LINE_STYLE_MASK) != 0)
+			gc.setLineStyle(hints & LINE_STYLE_MASK);
+		
+		if ((changes & XOR_MASK) != 0)
+			gc.setXORMode((hints & XOR_MASK) != 0);
+		
+		//Check to see if there is anything remaining
+		changes &= ~(XOR_MASK | LINE_STYLE_MASK);
+		if (changes == 0)
+			return;
+		
+		if ((changes & JOIN_MASK) != 0)
+			gc.setLineJoin((hints & JOIN_MASK) >> JOIN_SHIFT);
+		if ((changes & CAP_MASK) != 0)
+			gc.setLineCap((hints & CAP_MASK) >> CAP_SHIFT);
+		
+		if ((changes & INTERPOLATION_MASK) != 0)
+			gc.setInterpolation(((hints & INTERPOLATION_MASK) >> INTERPOLATION_SHIFT) - 1);
+		
+		if ((changes & FILL_RULE_MASK) != 0)
+			gc.setFillRule(((hints & FILL_RULE_MASK) >> FILL_RULE_SHIFT) + 1);
+		
+		if ((changes & AA_MASK) != 0)
+			gc.setAntialias(((hints & AA_MASK) >> AA_SHIFT) - 1);
+		if ((changes & TEXT_AA_MASK) != 0)
+			gc.setTextAntialias(((hints & TEXT_AA_MASK) >> TEXT_AA_SHIFT) - 1);
 	}
 }
 
@@ -521,27 +759,75 @@ public void restoreState() {
  * @param s the State
  */
 protected void restoreState(State s) {
+	//Must set the transformation matrix first since it affects clipping.
+	setAffineMatrix(s.affineMatrix);
+	currentState.relativeClip = s.relativeClip;
+	sharedClipping = true;
 	setBackgroundColor(s.bgColor);
 	setForegroundColor(s.fgColor);
-	setLineStyle(s.lineStyle);
+	setGraphicHints(s.graphicHints);
 	setLineWidth(s.lineWidth);
 	setFont(s.font);
-	setXORMode(s.xor);
-	setClipAbsolute(s.clipX, s.clipY, s.clipW, s.clipH);
+	setAlpha(s.alpha);
 
 	translateX = currentState.dx = s.dx;
 	translateY = currentState.dy = s.dy;
+}
 
-	relativeClip.x = s.clipX - translateX;
-	relativeClip.y = s.clipY - translateY;
-	relativeClip.width = s.clipW;
-	relativeClip.height = s.clipH;
+/**
+ * @see Graphics#rotate(float)
+ */
+public void rotate(float degrees) {
+	//Flush clipping changes
+	checkGC();
+	initTransform();
+	transform.rotate(degrees);
+	gc.setTransform(transform);
+	elementsNeedUpdate = true;
+	//Can no longer maintain clipping
+	currentState.relativeClip = null;
 }
 
 /**
  * @see Graphics#scale(double)
  */
-public void scale(double factor) { }
+public void scale(double factor) {
+	//Flush any clipping before scaling
+	checkGC();
+	initTransform();
+	transform.scale((float)factor, (float)factor);
+	gc.setTransform(transform);
+	elementsNeedUpdate = true;
+	if (currentState.relativeClip != null)
+		currentState.relativeClip.scale(factor);
+}
+
+private void setAffineMatrix(float[] m) {
+	if (!elementsNeedUpdate && currentState.affineMatrix == m)
+		return;
+	currentState.affineMatrix = m;
+	if (m == null)
+		transform.setElements(1, 0, 0, 1, 0, 0);
+	else
+		transform.setElements(m[0], m[1], m[2], m[3], m[4], m[5]);
+	gc.setTransform(transform);
+}
+
+/**
+ * @see Graphics#setAlpha(int)
+ */
+public void setAlpha(int alpha) {
+	if (currentState.alpha != alpha)
+		gc.setAlpha(this.currentState.alpha = alpha);
+}
+
+/**
+ * @see Graphics#setAntialias(int)
+ */
+public void setAntialias(int value) {
+	currentState.graphicHints &= ~AA_MASK;
+	currentState.graphicHints |= (value + 1) << AA_SHIFT;
+}
 
 /**
  * @see Graphics#setBackgroundColor(Color)
@@ -551,38 +837,26 @@ public void setBackgroundColor(Color color) {
 }
 
 /**
- * @see Graphics#setClip(Rectangle)
+ * @see Graphics#setClip(Path)
  */
-public void setClip(Rectangle rect) {
-	relativeClip.x = rect.x;
-	relativeClip.y = rect.y;
-	relativeClip.width = rect.width;
-	relativeClip.height = rect.height;
-
-	setClipAbsolute(rect.x + translateX,
-			    rect.y + translateY,
-			    rect.width,
-			    rect.height);
+public void setClip(Path path) {
+	currentState.relativeClip = null;
+	gc.setClipping(path);
 }
 
 /**
- * Sets clip values to the given values.
- * @param x the X value
- * @param y the Y value
- * @param w the width value
- * @param h the height value
+ * @see Graphics#setClip(Rectangle)
  */
-protected void setClipAbsolute(int x, int y, int w, int h) {
-	if (currentState.clipW == w 
-		&& currentState.clipH == h 
-		&& currentState.clipX == x 
-		&& currentState.clipY == y) 
-			return;
+public void setClip(Rectangle rect) {
+	currentState.relativeClip = new RectangleClipping(rect);
+}
 
-	currentState.clipX = x;
-	currentState.clipY = y;
-	currentState.clipW = w;
-	currentState.clipH = h;
+/**
+ * @see Graphics#setFillRule(int)
+ */
+public void setFillRule(int rule) {
+	currentState.graphicHints &= ~FILL_RULE_MASK;
+	currentState.graphicHints |= (rule - 1) << FILL_RULE_SHIFT;
 }
 
 /**
@@ -599,11 +873,48 @@ public void setForegroundColor(Color color) {
 	currentState.fgColor = color;
 }
 
+private void setGraphicHints(int hints) {
+	currentState.graphicHints = hints;
+}
+
+/**
+ * @see Graphics#setInterpolation(int)
+ */
+public void setInterpolation(int interpolation) {
+	//values range [-1, 3]
+	currentState.graphicHints &= ~INTERPOLATION_MASK;
+	currentState.graphicHints |= (interpolation + 1) << INTERPOLATION_SHIFT; 
+}
+
+/**
+ * @see Graphics#setLineCap(int)
+ */
+public void setLineCap(int cap) {
+	currentState.graphicHints &= ~CAP_MASK;
+	currentState.graphicHints |= cap << CAP_SHIFT;
+}
+
+/**
+ * @see Graphics#setLineDash(int[])
+ */
+public void setLineDash(int[] dash) {
+	gc.setLineDash(currentState.lineDash = dash);
+}
+
+/**
+ * @see Graphics#setLineJoin(int)
+ */
+public void setLineJoin(int join) {
+	currentState.graphicHints &= ~JOIN_MASK;
+	currentState.graphicHints |= join << JOIN_SHIFT;
+}
+
 /**
  * @see Graphics#setLineStyle(int)
  */
 public void setLineStyle(int style) {
-	currentState.lineStyle = style;
+	currentState.graphicHints &= ~LINE_STYLE_MASK;
+	currentState.graphicHints |= style;
 }
 
 /**
@@ -614,20 +925,40 @@ public void setLineWidth(int width) {
 }
 
 /**
- * Sets the translation values of this to the given values
- * @param x The x value
- * @param y The y value
+ * @see Graphics#setTextAntialias(int)
  */
-protected void setTranslation(int x, int y) {
-	translateX = currentState.dx = x;
-	translateY = currentState.dy = y;
+public void setTextAntialias(int value) {
+	currentState.graphicHints &= ~TEXT_AA_MASK;
+	currentState.graphicHints |= (value + 1) << TEXT_AA_SHIFT;
 }
 
 /**
  * @see Graphics#setXORMode(boolean)
  */
-public void setXORMode(boolean b) {
-	currentState.xor = b;
+public void setXORMode(boolean xor) {
+	currentState.graphicHints &= ~XOR_MASK;
+	if (xor)
+		currentState.graphicHints |= XOR_MASK;
+}
+
+/**
+ * @see Graphics#translate(int, int)
+ */
+public void translate(int dx, int dy) {
+	if (sharedClipping) {
+		currentState.relativeClip = currentState.relativeClip.getCopy();
+		sharedClipping = false;
+	}
+	if (transform != null) {
+		transform.translate(dx, dy);
+		elementsNeedUpdate = true;
+		gc.setTransform(transform);
+	} else {
+		translateX += dx;
+		translateY += dy;
+	}
+	if (currentState.relativeClip != null)
+		currentState.relativeClip.translate(-dx, -dy);
 }
 
 private void translatePointArray(int[] points, int translateX, int translateY) {
@@ -637,15 +968,6 @@ private void translatePointArray(int[] points, int translateX, int translateY) {
 		points[i] += translateX;
 		points[i + 1] += translateY;
 	}
-}
-
-/**
- * @see Graphics#translate(int, int)
- */
-public void translate(int x, int y) {
-	setTranslation(translateX + x, translateY + y);
-	relativeClip.x -= x;
-	relativeClip.y -= y;
 }
 
 }
