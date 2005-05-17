@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.draw2d.text;
 
+import java.util.Iterator;
+
+import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 
@@ -49,25 +52,31 @@ protected FlowFigureLayout createDefaultFlowLayout() {
 
 /**
  * Sizes the content box to be big enough to display all figures.  Wraps to the next line
- * if there is not enough room on this one.
+ * if there is not enough room on the current one.
  * @see org.eclipse.draw2d.Figure#layout()
  */
 protected void layout() {
-	box.setSize(getPreferredSize());
-	if (context.isCurrentLineOccupied() && context.getRemainingLineWidth() < box.width)
+	int wHint = context.getRemainingLineWidth();
+	if (wHint == Integer.MAX_VALUE)
+		wHint = -1;
+	Dimension prefSize = getPreferredSize(wHint, -1);
+	if (context.isCurrentLineOccupied() 
+			&& prefSize.width > context.getRemainingLineWidth()) {
 		context.endLine();
+		prefSize = getPreferredSize(context.getRemainingLineWidth(), -1);
+	}
+	box.setSize(prefSize);
 	context.addToCurrentLine(box);
 }
 
 /**
- * Updates the bounds of this figure to match that of its content box.  The calls
- * <code>validate()</code> in case the size has changed.
+ * Updates the bounds of this figure to match that of its content box, and lays out this
+ * figure's children.
  * @see FlowFigure#postValidate()
  */
 public void postValidate() {
 	setBounds(new Rectangle(box.getX(), box.getBaseline() - box.ascent,
 			box.width, box.ascent));
-	super.validate();
 }
 
 /**
@@ -76,6 +85,23 @@ public void postValidate() {
  */
 public void setBidiInfo(BidiInfo info) {
 	box.setBidiLevel(info.levelInfo[0]);
+}
+
+/**
+ * @see org.eclipse.draw2d.IFigure#setBounds(org.eclipse.draw2d.geometry.Rectangle)
+ */
+public void setBounds(Rectangle r) {
+	Rectangle old = bounds.getCopy();
+	super.setBounds(r);
+	boolean resize = (bounds.width != old.width) || (bounds.height != old.height),
+			translate = (bounds.x != old.x) || (bounds.y != old.y);
+	if (translate)
+		primTranslate(bounds.x - old.x, bounds.y - old.y);
+	if (resize) {
+		super.layout();
+		for (Iterator itr = getChildren().iterator(); itr.hasNext();)
+			((IFigure)itr.next()).validate();
+	}
 }
 
 /**
