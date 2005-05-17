@@ -134,7 +134,7 @@ private int findNextLineOffset(Point p, int[] trailing) {
 	int index = 0;
 	for (int i = fragments.size() - 1; i >= 0; i--) {
 		TextFragmentBox box = (TextFragmentBox)fragments.get(i);
-		if (box.getBaseline() - box.getLineRoot().contentAscent > p.y 
+		if (box.getBaseline() - box.getLineRoot().getAscent() > p.y 
 				&& (closestBox == null
 				|| box.getBaseline() < closestBox.getBaseline()
 				|| hDistanceBetween(box, p.x) < hDistanceBetween(closestBox, p.x))) {
@@ -166,7 +166,7 @@ private int findPreviousLineOffset(Point p, int[] trailing) {
 	int index = 0;
 	for (int i = fragments.size() - 1; i >= 0; i--) {
 		TextFragmentBox box = (TextFragmentBox)fragments.get(i);
-		if (box.getBaseline() + box.getLineRoot().contentDescent < p.y
+		if (box.getBaseline() + box.getLineRoot().getDescent() < p.y
 				&& (closestBox == null
 				|| box.getBaseline() > closestBox.getBaseline()
 				|| hDistanceBetween(box, p.x) < hDistanceBetween(closestBox, p.x))) {
@@ -266,7 +266,7 @@ public CaretInfo getCaretPlacement(int offset, boolean trailing) {
 		where.x = box.width - where.x;
 	where.translate(box.getX(), box.getTextTop());
 	CaretInfo info = new CaretInfo(where.x, where.y, box.getAscent(), box.getDescent(), 
-			box.getLineRoot().contentAscent, box.getLineRoot().contentDescent);
+			box.getLineRoot().getAscent(), box.getLineRoot().getDescent());
 	translateToAbsolute(info);
 	return info;
 }
@@ -625,10 +625,10 @@ public String toString() {
 }
 
 private int vDistanceBetween(TextFragmentBox box, int y) {
-	int top = box.getBaseline() - box.getLineRoot().contentAscent;
+	int top = box.getBaseline() - box.getLineRoot().getAscent();
 	if (y < top)
 		return top - y;
-	return Math.max(0, y - (box.getBaseline() + box.getLineRoot().contentDescent));
+	return Math.max(0, y - (box.getBaseline() + box.getLineRoot().getDescent()));
 }
 
 }
