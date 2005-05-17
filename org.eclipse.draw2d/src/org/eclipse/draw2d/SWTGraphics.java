@@ -665,7 +665,7 @@ protected void init() {
 	
 	currentState.relativeClip = new RectangleClipping(gc.getClipping());
 	currentState.lineDash = gc.getLineDash();
-	currentState.alpha = gc.getAlpha();
+	currentState.alpha = 255;
 }
 
 private void initTransform() {
