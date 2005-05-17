@@ -395,18 +395,11 @@ protected boolean isViewerImportant(EditPartViewer viewer) {
 
 private void performMarqueeSelect() {
 	EditPartViewer viewer = getCurrentViewer();
-	Collection newSelections = marqueeBehavior == BEHAVIOR_NODES_AND_CONNECTIONS 
-			? new HashSet() : (Collection)new ArrayList();
-	Collection deselections = new HashSet();
+	Collection newSelections = new LinkedHashSet(), deselections = new HashSet();
 	calculateNewSelection(newSelections, deselections);
 	if (getSelectionMode() != DEFAULT_MODE) {
-		List currentSelection = viewer.getSelectedEditParts();
-		Collection result =
-			new LinkedHashSet(2 * (currentSelection.size() + newSelections.size()));
-		result.addAll(currentSelection);
-		result.addAll(newSelections);
-		result.removeAll(deselections);
-		newSelections = result;
+		newSelections.addAll(viewer.getSelectedEditParts());
+		newSelections.removeAll(deselections);
 	}
 	viewer.setSelection(new StructuredSelection(newSelections.toArray()));
 }
