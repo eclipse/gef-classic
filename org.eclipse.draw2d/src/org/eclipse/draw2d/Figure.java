@@ -1386,7 +1386,7 @@ public void setBounds(Rectangle rect) {
 	boolean resize = (rect.width != bounds.width) || (rect.height != bounds.height),
 		  translate = (rect.x != x) || (rect.y != y);
 
-	if (isVisible() && (resize || translate))
+	if ((resize || translate) && isVisible())
 		erase();
 	if (translate) {
 		int dx = rect.x - x;
