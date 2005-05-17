@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -394,11 +395,18 @@ protected boolean isViewerImportant(EditPartViewer viewer) {
 
 private void performMarqueeSelect() {
 	EditPartViewer viewer = getCurrentViewer();
-	Collection newSelections = new HashSet(), deselections = new HashSet();
+	Collection newSelections = marqueeBehavior == BEHAVIOR_NODES_AND_CONNECTIONS 
+			? new HashSet() : (Collection)new ArrayList();
+	Collection deselections = new HashSet();
 	calculateNewSelection(newSelections, deselections);
 	if (getSelectionMode() != DEFAULT_MODE) {
-		newSelections.addAll(viewer.getSelectedEditParts());
-		newSelections.removeAll(deselections);
+		List currentSelection = viewer.getSelectedEditParts();
+		Collection result =
+			new LinkedHashSet(2 * (currentSelection.size() + newSelections.size()));
+		result.addAll(currentSelection);
+		result.addAll(newSelections);
+		result.removeAll(deselections);
+		newSelections = result;
 	}
 	viewer.setSelection(new StructuredSelection(newSelections.toArray()));
 }
