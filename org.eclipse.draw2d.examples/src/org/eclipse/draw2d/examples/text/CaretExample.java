@@ -63,7 +63,6 @@ protected IFigure getContents() {
 			"<Hebrew>דפיםֱ מֱ- ישרֱֹאןץֱֹ" +
 			"</Hebrew>\n" +
 			"<Arabic>نصً ثُ سٍَبُس</Arabic>");
-	text.setText("");
 	
 	text.setBorder(new TestBorder());
 	text.setFont(new Font(null, "Tahoma", 20, 0));
