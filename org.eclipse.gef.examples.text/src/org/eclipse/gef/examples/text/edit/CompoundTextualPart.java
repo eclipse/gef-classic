@@ -227,11 +227,11 @@ protected TextLocation searchLineAbove(CaretSearch search) {
 		if (location != null) {
 			CaretInfo caretInfo = location.part.getCaretPlacement(location.offset, false);
 			if (lineBounds == null)
-				lineBounds = new Rectangle(caretInfo.getX(), caretInfo.top(), 0, caretInfo.getHeight());
+				lineBounds = new Rectangle(caretInfo.getX(), caretInfo.getY(), 0, caretInfo.getHeight());
 			else if (lineBounds.y > caretInfo.getBaseline())
 				break;
 			else
-				lineBounds.union(caretInfo.getX(), caretInfo.top(), 0, caretInfo.getHeight());
+				lineBounds.union(caretInfo.getX(), caretInfo.getY(), 0, caretInfo.getHeight());
 			
 			int distance = Math.abs(caretInfo.getX() - search.x);
 			if (distance < dx) {
@@ -288,11 +288,11 @@ protected TextLocation searchLineBelow(CaretSearch search) {
 			//$TODO need to set trailing on getNextLocation
 			CaretInfo caretInfo = location.part.getCaretPlacement(location.offset, false);
 			if (lineBounds == null)
-				lineBounds = new Rectangle(caretInfo.getX(), caretInfo.top(), 0, caretInfo.getHeight());
+				lineBounds = new Rectangle(caretInfo.getX(), caretInfo.getY(), 0, caretInfo.getHeight());
 			else if (lineBounds.bottom() < caretInfo.getBaseline())
 				break;
 			else
-				lineBounds.union(caretInfo.getX(), caretInfo.top(), 0, caretInfo.getHeight());
+				lineBounds.union(caretInfo.getX(), caretInfo.getY(), 0, caretInfo.getHeight());
 			
 			int distance = Math.abs(caretInfo.getX() - search.x);
 			if (distance < dx) {
@@ -320,9 +320,9 @@ protected TextLocation searchLineEnd(CaretSearch search) {
 }
 
 private int vDistanceBetween(CaretInfo info, int y) {
-	if (y < info.lineTop())
-		return info.lineTop() - y;
-	return Math.max(0, y - (info.lineTop() + info.getLineHeight()));
+	if (y < info.getLineY())
+		return info.getLineY() - y;
+	return Math.max(0, y - (info.getLineY() + info.getLineHeight()));
 }
 
 }

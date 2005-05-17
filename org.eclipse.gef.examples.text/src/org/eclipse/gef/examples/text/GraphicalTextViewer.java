@@ -112,7 +112,7 @@ void refreshCaret() {
 	} else {
 		info = getCaretOwner().getCaretPlacement(location.offset, false);
 	}
-	getCaret().setBounds(info.getX(), info.top(), 1, info.getHeight());
+	getCaret().setBounds(info.getX(), info.getY(), 1, info.getHeight());
 }
 
 public void setCaretVisible(boolean value) {

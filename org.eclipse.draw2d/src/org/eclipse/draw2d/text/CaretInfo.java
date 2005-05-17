@@ -93,13 +93,6 @@ public int getY() {
 }
 
 /**
- * @return the y coordinate of the top of the line on which the caret is placed
- */
-public int lineTop() {
-	return baseline - lineAscent;
-}
-
-/**
  * @see Translatable#performScale(double)
  */
 public void performScale(double factor) {
@@ -117,14 +110,6 @@ public void performScale(double factor) {
 public void performTranslate(int dx, int dy) {
 	x += dx;
 	baseline += dy;
-}
-
-/**
- * Returns the y coordinate of the top of the caret.
- * @return the top location
- */
-public int top() {
-	return baseline - ascent;
 }
 
 }
