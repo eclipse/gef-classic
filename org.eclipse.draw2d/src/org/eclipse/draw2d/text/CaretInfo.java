@@ -107,6 +107,8 @@ public void performScale(double factor) {
 	baseline *= factor;
 	descent *= factor;
 	ascent *= factor;
+	lineAscent *= factor;
+	lineDescent *= factor;
 }
 
 /**
