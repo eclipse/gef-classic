@@ -16,8 +16,8 @@ package org.eclipse.gef.examples.text.model;
  */
 public abstract class ModelElement extends Notifier {
 
+private static final long serialVersionUID = 1;
 private Container container;
-
 protected int type;
 
 public Block getBlockContainer() {

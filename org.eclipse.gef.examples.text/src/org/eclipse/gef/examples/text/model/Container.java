@@ -28,6 +28,8 @@ public static final int TYPE_ROOT = 5;
 public static final int TYPE_INLINE = 6;
 public static final int TYPE_CODE = 7;
 
+private static final long serialVersionUID = 1;
+
 private List children = new ArrayList();
 private Style style = new Style();
 

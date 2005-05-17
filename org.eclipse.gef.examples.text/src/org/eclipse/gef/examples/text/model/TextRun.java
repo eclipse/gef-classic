@@ -16,13 +16,17 @@ import org.eclipse.jface.util.Assert;
 /**
  * @since 3.1
  */
-public class TextRun extends ModelElement {
+public class TextRun 
+	extends ModelElement 
+{
+	
+private static final long serialVersionUID = 1;
 
 public static final int TYPE_IMPORT = 1;
 public static final int TYPE_PACKAGE = 2;
 public static final int TYPE_BULLET = 3;
 public static final int TYPE_UNDERLINE = 4;
-public static final int TYPE_CODE  = 5;;
+public static final int TYPE_CODE  = 5;
 
 private String text;
 
@@ -81,6 +85,10 @@ public void setText(String text) {
  */
 public int size() {
 	return getText().length();
+}
+
+public String toString() {
+	return text;
 }
 
 }

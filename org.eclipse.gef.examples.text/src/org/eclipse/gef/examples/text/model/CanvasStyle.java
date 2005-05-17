@@ -15,6 +15,7 @@ import org.eclipse.swt.widgets.Control;
 
 public class CanvasStyle extends Style {
 
+private static final long serialVersionUID = 1;
 private transient final Control canvas;
 
 public CanvasStyle (Control canvas) {

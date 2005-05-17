@@ -16,6 +16,8 @@ package org.eclipse.gef.examples.text.model;
  */
 public class InlineContainer extends Container {
 
+private static final long serialVersionUID = 1;
+
 /**
  * @param type
  * @since 3.1
