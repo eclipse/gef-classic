@@ -19,6 +19,7 @@ import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Path;
+import org.eclipse.swt.graphics.Pattern;
 import org.eclipse.swt.graphics.TextLayout;
 import org.eclipse.swt.graphics.Transform;
 
@@ -146,6 +147,10 @@ static class State
 	int alpha;
 	int dx, dy;
 	int lineDash[];
+	
+	Pattern bgPattern;
+	Pattern fgPattern;
+	
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
 	}
@@ -160,6 +165,8 @@ static class State
 		lineWidth = state.lineWidth;
 		dx = state.dx;
 		dy = state.dy;
+		bgPattern = state.bgPattern;
+		fgPattern = state.fgPattern;
 		font = state.font;
 		lineDash = state.lineDash;
 		graphicHints = state.graphicHints;
@@ -665,6 +672,7 @@ protected void init() {
 	
 	currentState.relativeClip = new RectangleClipping(gc.getClipping());
 	currentState.lineDash = gc.getLineDash();
+	//$HACK getAlpha() looks for Cairo on Linux
 	currentState.alpha = 255;
 }
 
@@ -675,6 +683,7 @@ private void initTransform() {
 		transform.translate(currentState.dx, currentState.dy);
 		currentState.dx = 0;
 		currentState.dy = 0;
+		gc.setTransform(transform);
 	}
 }
 
@@ -759,14 +768,23 @@ public void restoreState() {
  * @param s the State
  */
 protected void restoreState(State s) {
-	//Must set the transformation matrix first since it affects clipping.
+	/*
+	 * We must set the transformation matrix first since it affects things like clipping
+	 * regions and patterns.
+	 */
 	setAffineMatrix(s.affineMatrix);
 	currentState.relativeClip = s.relativeClip;
 	sharedClipping = true;
+
 	setBackgroundColor(s.bgColor);
+	setBackgroundPattern(s.bgPattern);
+	
 	setForegroundColor(s.fgColor);
+	setForegroundPattern(s.fgPattern);
+
 	setGraphicHints(s.graphicHints);
 	setLineWidth(s.lineWidth);
+
 	setFont(s.font);
 	setAlpha(s.alpha);
 
@@ -837,6 +855,22 @@ public void setBackgroundColor(Color color) {
 }
 
 /**
+ * @see Graphics#setBackgroundPattern(Pattern)
+ */
+public void setBackgroundPattern(Pattern pattern) {
+	if (currentState.fgPattern == pattern)
+		return;
+	currentState.bgPattern = pattern;
+
+	if (pattern != null) {
+		initTransform();
+		gc.setBackgroundPattern(pattern);
+	} else
+		//$HACK workaround for pending SWT bug fix
+		gc.setBackground(appliedState.bgColor);
+}
+
+/**
  * @see Graphics#setClip(Path)
  */
 public void setClip(Path path) {
@@ -871,6 +905,28 @@ public void setFont(Font f) {
  */
 public void setForegroundColor(Color color) {
 	currentState.fgColor = color;
+}
+
+/**
+ * @see Graphics#setForegroundPattern(Pattern)
+ */
+public void setForegroundPattern(Pattern pattern) {
+	if (currentState.fgPattern == pattern)
+		return;
+	currentState.fgPattern = pattern;
+
+	if (pattern != null) {
+		initTransform();
+		gc.setForegroundPattern(pattern);
+	} else {
+		//$HACK
+		//This is a hack for bug 95832
+		gc.setForeground(ColorConstants.orange);
+		
+		//$HACK
+		//The following is a workaround until bug fix 95409 is avaialble 
+		gc.setForeground(appliedState.fgColor);
+	}
 }
 
 private void setGraphicHints(int hints) {
