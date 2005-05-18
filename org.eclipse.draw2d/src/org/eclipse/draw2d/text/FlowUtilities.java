@@ -130,10 +130,12 @@ private static void initBidi(TextFragmentBox frag, String string, Font font) {
 
 private static int measureString(TextFragmentBox frag, String string, int guess, Font font) {
 	if (frag.requiresBidi()) {
-		// The text could have changed if the lookAhead was invoked.  This will happen
-		// at most once.
-		getTextLayout().setText(string);
-		return getTextLayout().getBounds(0, guess - 1).width;
+		// The text and/or could have changed if the lookAhead was invoked.  This will
+		// happen at most once.
+		TextLayout layout = getTextLayout();
+		layout.setText(string);
+		layout.setFont(font);
+		return layout.getBounds(0, guess - 1).width;
 	} else
 		return getStringDimension(string.substring(0, guess), font).x;
 }
