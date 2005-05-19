@@ -564,7 +564,7 @@ protected void paintSelection(Graphics graphics) {
 
 private void paintText(Graphics g, String draw, int x, int y, int bidiLevel) {
 	if (bidiLevel < 1) {
-		g.drawText(draw, x, y);
+		g.drawString(draw, x, y);
 	} else {
 		TextLayout tl = FlowUtilities.getTextLayout();
 		if (isMirrored())
