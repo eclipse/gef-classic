@@ -21,6 +21,8 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * Normal draw2d figures can be added as children.  If a normal LayoutManager is set, the
  * children will be positioned by that layout manager.  The size of this figure within
  * the flow will be determined by its preferred size.
+ * <p>
+ * WARNING: This class is not intended to be subclassed by clients.
  * 
  * @author Pratik Shah
  * @since 3.1
@@ -77,6 +79,9 @@ protected void layout() {
 public void postValidate() {
 	setBounds(new Rectangle(box.getX(), box.getBaseline() - box.ascent,
 			box.width, box.ascent));
+	super.layout();
+	for (Iterator itr = getChildren().iterator(); itr.hasNext();)
+		((IFigure)itr.next()).validate();
 }
 
 /**
@@ -90,17 +95,27 @@ public void setBidiInfo(BidiInfo info) {
 /**
  * @see org.eclipse.draw2d.IFigure#setBounds(org.eclipse.draw2d.geometry.Rectangle)
  */
-public void setBounds(Rectangle r) {
-	Rectangle old = bounds.getCopy();
-	super.setBounds(r);
-	boolean resize = (bounds.width != old.width) || (bounds.height != old.height),
-			translate = (bounds.x != old.x) || (bounds.y != old.y);
-	if (translate)
-		primTranslate(bounds.x - old.x, bounds.y - old.y);
-	if (resize) {
-		super.layout();
-		for (Iterator itr = getChildren().iterator(); itr.hasNext();)
-			((IFigure)itr.next()).validate();
+public void setBounds(Rectangle rect) {
+	int x = bounds.x,
+    y = bounds.y;
+
+	boolean resize = (rect.width != bounds.width) || (rect.height != bounds.height),
+		  translate = (rect.x != x) || (rect.y != y);
+	
+	if ((resize || translate) && isVisible())
+		erase();
+	if (translate) {
+		int dx = rect.x - x;
+		int dy = rect.y - y;
+		primTranslate(dx, dy);
+	}
+	
+	bounds.width = rect.width;
+	bounds.height = rect.height;
+	
+	if (translate || resize) {
+		fireFigureMoved();
+		repaint();
 	}
 }
 
@@ -109,6 +124,17 @@ public void setBounds(Rectangle r) {
  */
 public void setFlowContext(FlowContext flowContext) {
 	context = flowContext;
+}
+
+/**
+ * Do not validate children.
+ * @see org.eclipse.draw2d.IFigure#validate()
+ */
+public void validate() {
+	if (isValid())
+		return;
+	setValid(true);
+	layout();
 }
 
 private class FigureBox extends ContentBox {
