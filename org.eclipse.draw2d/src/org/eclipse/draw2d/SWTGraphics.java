@@ -44,12 +44,18 @@ public class SWTGraphics
  * @since 3.1
  */
 interface Clipping {
+	/**
+	 * Sets the clip's bounding rectangle into the provided argument and returns it for convenince.
+	 * @param rect the rect
+	 * @return the given rect
+	 * @since 3.1
+	 */
 	Rectangle getBoundingBox(Rectangle rect);
 	Clipping getCopy();
 	void intersect(int left, int top, int right, int bottom);
-	void scale(double amount);
+	void scale(float horizontal, float vertical);
 	void setOn(GC gc, int translateX, int translateY);
-	void translate(int dx, int dy);
+	void translate(float dx, float dy);
 }
 
 /**
@@ -65,10 +71,16 @@ static class LazyState {
 	int lineWidth;
 	Clipping relativeClip;
 }
-class RectangleClipping implements Clipping {
-	private double top, left, bottom, right;
 
-	RectangleClipping() { }
+static class RectangleClipping implements Clipping {
+	private float top, left, bottom, right;
+	
+	RectangleClipping(float left, float top, float right, float bottom) {
+		this.left = left;
+		this.right = right;
+		this.bottom = bottom;
+		this.top = top;
+	}
 	
 	RectangleClipping(org.eclipse.swt.graphics.Rectangle rect) {
 		left = rect.x;
@@ -93,12 +105,7 @@ class RectangleClipping implements Clipping {
 	}
 	
 	public Clipping getCopy() {
-		RectangleClipping result = new RectangleClipping();
-		result.left = left;
-		result.right = right;
-		result.top = top;
-		result.bottom = bottom;
-		return result;
+		return new RectangleClipping(left, top, right, bottom);
 	}
 	
 	public void intersect(int left, int top, int right, int bottom) {
@@ -113,11 +120,11 @@ class RectangleClipping implements Clipping {
 		}
 	}
 	
-	public void scale(double s) {
-		top /= s;
-		left /= s;
-		bottom /= s;
-		right /= s;
+	public void scale(float horz, float vert) {
+		left /= horz;
+		right /= horz;
+		top /= vert;
+		bottom /= vert;
 	}
 	
 	public void setOn(GC gc, int translateX, int translateY) {
@@ -128,7 +135,7 @@ class RectangleClipping implements Clipping {
 				(int)Math.ceil(bottom) - yInt);
 	}
 	
-	public void translate(int dx, int dy) {
+	public void translate(float dx, float dy) {
 		left += dx;
 		right += dx;
 		top += dy;
@@ -253,7 +260,7 @@ protected final void checkFill() {
 protected final void checkGC() {
 	if (appliedState.relativeClip != currentState.relativeClip) {
 		appliedState.relativeClip = currentState.relativeClip;
-		appliedState.relativeClip.setOn(gc, translateX, translateY);
+		currentState.relativeClip.setOn(gc, translateX, translateY);
 	}
 	if (appliedState.graphicHints != currentState.graphicHints) {
 		reconcileHints(appliedState.graphicHints, currentState.graphicHints);
@@ -292,16 +299,9 @@ public void clipRect(Rectangle rect) {
 	if (currentState.relativeClip == null)
 		throw new IllegalStateException("The current clipping area does not " + //$NON-NLS-1$
 		"support intersection."); //$NON-NLS-1$
-	if (sharedClipping) {
-		currentState.relativeClip = currentState.relativeClip.getCopy();
-		sharedClipping = false;
-	} else
-		appliedState.relativeClip = null;
-	currentState.relativeClip.intersect(
-			rect.x,
-			rect.y,
-			rect.right(),
-			rect.bottom());
+	checkSharedClipping();
+	currentState.relativeClip.intersect(rect.x, rect.y, rect.right(), rect.bottom());
+	appliedState.relativeClip = null;
 }
 
 /**
@@ -341,8 +341,9 @@ public void drawImage(Image srcImage, int x, int y) {
 /**
  * @see Graphics#drawImage(Image, int, int, int, int, int, int, int, int)
  */
-public void drawImage(Image srcImage, int x1, int y1, int w1, int h1, int x2, int y2, 
-						int w2, int h2) {
+public void drawImage(Image srcImage,
+		int x1, int y1, int w1, int h1,
+		int x2, int y2, int w2, int h2) {
 	checkGC();
 	gc.drawImage(srcImage, x1, y1, w1, h1, x2 + translateX, y2 + translateY, w2, h2);
 }
@@ -796,13 +797,14 @@ protected void restoreState(State s) {
  * @see Graphics#rotate(float)
  */
 public void rotate(float degrees) {
-	//Flush clipping changes
+	//Flush clipping, patter, etc., before applying transform
 	checkGC();
 	initTransform();
 	transform.rotate(degrees);
 	gc.setTransform(transform);
 	elementsNeedUpdate = true;
-	//Can no longer maintain clipping
+
+	//Can no longer operate or maintain clipping
 	currentState.relativeClip = null;
 }
 
@@ -810,14 +812,21 @@ public void rotate(float degrees) {
  * @see Graphics#scale(double)
  */
 public void scale(double factor) {
+	scale((float)factor, (float)factor);
+}
+
+public void scale(float horizontal, float vertical) {
 	//Flush any clipping before scaling
 	checkGC();
+
 	initTransform();
-	transform.scale((float)factor, (float)factor);
+	transform.scale(horizontal, vertical);
 	gc.setTransform(transform);
 	elementsNeedUpdate = true;
+
+	checkSharedClipping();
 	if (currentState.relativeClip != null)
-		currentState.relativeClip.scale(factor);
+		currentState.relativeClip.scale(horizontal, vertical);
 }
 
 private void setAffineMatrix(float[] m) {
@@ -1001,11 +1010,11 @@ public void setXORMode(boolean xor) {
  * @see Graphics#translate(int, int)
  */
 public void translate(int dx, int dy) {
-	if (sharedClipping) {
-		currentState.relativeClip = currentState.relativeClip.getCopy();
-		sharedClipping = false;
-	}
+	if (dx == 0 && dy == 0)
+		return;
 	if (transform != null) {
+		//Flush clipping, pattern, etc. before applying transform
+		checkGC();
 		transform.translate(dx, dy);
 		elementsNeedUpdate = true;
 		gc.setTransform(transform);
@@ -1013,8 +1022,23 @@ public void translate(int dx, int dy) {
 		translateX += dx;
 		translateY += dy;
 	}
+	checkSharedClipping();
 	if (currentState.relativeClip != null)
 		currentState.relativeClip.translate(-dx, -dy);
+}
+
+/**
+ * @since 3.1
+ */
+private void checkSharedClipping() {
+	if (sharedClipping) {
+		sharedClipping = false;
+		
+		boolean previouslyApplied = (appliedState == currentState.relativeClip);
+		currentState.relativeClip = currentState.relativeClip.getCopy();
+		if (previouslyApplied)
+			appliedState.relativeClip = currentState.relativeClip;
+	}
 }
 
 private void translatePointArray(int[] points, int translateX, int translateY) {
