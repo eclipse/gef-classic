@@ -116,7 +116,7 @@ protected void tearDown() throws Exception {
 	imageGC.dispose();
 	image.dispose();
 }
-
+/*
 public void testPatterns() {
 	
 	class SetPattern implements Runnable {
@@ -156,7 +156,7 @@ public void testPatterns() {
 	image.dispose();
 	f.dispose();
 }
-
+*/
 public void testAntialias() {
 	class AntialiasSettings implements Runnable {
 		private final Color color;
@@ -181,8 +181,8 @@ public void testAntialias() {
 	 * Restoring the default text AA setting does not work. therefore, we will turn off
 	 * TAA before running tests.
 	 */
-	g.setTextAntialias(SWT.OFF);
-	g.setAntialias(SWT.OFF);
+	g.setTextAntialias(SWT.ON);
+	g.setAntialias(SWT.ON);
 	g.pushState();
 
 	Runnable tests[] = new Runnable[4];
@@ -213,6 +213,8 @@ public void testFillRules() {
 			//g.setAntialias(aa);
 		}
 	};
+    
+    g.setAntialias(SWT.ON);
 	g.setBackgroundColor(ColorConstants.red);
 	g.pushState();
 
@@ -226,7 +228,7 @@ public void testFillRules() {
 		};
 	}, tests);
 }
-
+/*
 public void testInterpolation() {
 	class InterpolationSettings implements Runnable {
 		private final int level;
@@ -240,11 +242,9 @@ public void testInterpolation() {
 
 	g.setLineWidth(9);
 
-	/*
-	 * $TODO workaround for default text antialias setting.
-	 * Restoring the default text AA setting does not work. therefore, we will turn off
-	 * TAA before running tests.
-	 */
+    // $TODO workaround for default text antialias setting.
+    // Restoring the default text AA setting does not work. therefore, we will turn off
+    // TAA before running tests.
 	g.setTextAntialias(SWT.OFF);
 	g.setAntialias(SWT.OFF);
 	g.pushState();
@@ -260,7 +260,7 @@ public void testInterpolation() {
 		};
 	}, tests);
 }
-
+*/
 public void testLineJoinCap() {
 	
 	class LineSettings implements Runnable {
