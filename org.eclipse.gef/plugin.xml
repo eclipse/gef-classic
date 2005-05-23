@@ -3,26 +3,11 @@
 <plugin>
    
    <extension
-         point="org.eclipse.ui.contexts">
-      <context
-            parentId="org.eclipse.ui.contexts.window"
-            description="%Context.GraphicalTextEditing.Description"
-            name="%Context.GraphicalTextEditing.Name"
-            id="org.eclipse.gef.textContext">
-      </context>
-   </extension>
-   
-   <extension
          point="org.eclipse.ui.commands">
       <category
             name="%ViewCategory.Label"
             description="%ViewCategory.Label"
             id="org.eclipse.gef.category.view">
-      </category>
-      <category
-            name="%FormatCategory.Label"
-            description="%FormatCategory.Label"
-            id="org.eclipse.gef.category.format">
       </category>
       <command
             name="%Palette.Label" 
@@ -44,80 +29,6 @@
             configuration="org.eclipse.ui.defaultAcceleratorConfiguration">
       </keyBinding>
       
-      <command
-            name="%StyleLeftToRight.Tooltip"
-            description="%StyleLeftToRight.Tooltip"
-            category="org.eclipse.gef.category.format"
-            id="org.eclipse.gef.text.ltr">
-      </command>
-      
-      <command
-            name="%StyleRightToLeft.Tooltip"
-            description="%StyleRightToLeft.Tooltip"
-            category="org.eclipse.gef.category.format"
-            id="org.eclipse.gef.text.rtl">
-      </command>
-      
-      <command
-            name="%StyleAlignLeft.Tooltip"
-            description="%StyleAlignLeft.Tooltip"
-            category="org.eclipse.gef.category.format"
-            id="org.eclipse.gef.text.alignLeft">
-      </command>
-
-      <command
-            name="%StyleAlignCenter.Tooltip"
-            description="%StyleAlignCenter.Tooltip"
-            category="org.eclipse.gef.category.format"
-            id="org.eclipse.gef.text.alignCenter">
-      </command>
-      
-      <command
-            name="%StyleAlignRight.Tooltip"
-            description="%StyleAlignRight.Tooltip"
-            category="org.eclipse.gef.category.format"
-            id="org.eclipse.gef.text.alignRight">
-      </command>
-
-      <command
-			name="%StyleBold.Tooltip"
-			description="%StyleBold.Tooltip"
-			category="org.eclipse.ui.category.edit"
-			id="org.eclipse.gef.text.bold">
-      </command>
-      <keyBinding
-            contextId="org.eclipse.gef.textContext"
-            string="Ctrl+B"
-            commandId="org.eclipse.gef.text.bold"
-            keyConfigurationId="org.eclipse.ui.defaultAcceleratorConfiguration">
-      </keyBinding>
-      
-      <command
-			name="%StyleItalic.Tooltip"
-			description="%StyleItalic.Tooltip"
-			category="org.eclipse.ui.category.edit"
-			id="org.eclipse.gef.text.italic">
-      </command>
-      <keyBinding
-            contextId="org.eclipse.gef.textContext"
-            string="Ctrl+I"
-            commandId="org.eclipse.gef.text.italic"
-            keyConfigurationId="org.eclipse.ui.defaultAcceleratorConfiguration">
-      </keyBinding>
-
-      <command
-			name="%StyleUnderline.Tooltip"
-			description="%StyleUnderline.Tooltip"
-			category="org.eclipse.ui.category.edit"
-			id="org.eclipse.gef.text.underline">
-      </command>
-      <keyBinding
-            contextId="org.ecipse.gef.textContext"
-            string="Ctrl+U"
-            commandId="org.eclipse.gef.text.underline"
-            keyConfigurationId="org.eclipse.ui.defaultAcceleratorConfiguration">
-      </keyBinding>
-
       <command
             name="%ZoomOut.Tooltip"
             description="%ZoomOut.Tooltip"
