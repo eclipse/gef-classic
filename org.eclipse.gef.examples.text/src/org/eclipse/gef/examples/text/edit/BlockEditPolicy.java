@@ -13,11 +13,7 @@ package org.eclipse.gef.examples.text.edit;
 
 import java.util.Iterator;
 
-import org.eclipse.swt.SWT;
-
 import org.eclipse.jface.util.Assert;
-
-import org.eclipse.draw2d.PositionConstants;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.Request;
@@ -32,8 +28,8 @@ import org.eclipse.gef.examples.text.model.InlineContainer;
 import org.eclipse.gef.examples.text.model.ModelLocation;
 import org.eclipse.gef.examples.text.model.Style;
 import org.eclipse.gef.examples.text.model.TextRun;
-import org.eclipse.gef.examples.text.model.commands.ApplyMultiStyle;
 import org.eclipse.gef.examples.text.model.commands.ApplyBooleanStyle;
+import org.eclipse.gef.examples.text.model.commands.ApplyMultiStyle;
 import org.eclipse.gef.examples.text.model.commands.CompoundEditCommand;
 import org.eclipse.gef.examples.text.model.commands.ConvertElementCommand;
 import org.eclipse.gef.examples.text.model.commands.InsertString;
