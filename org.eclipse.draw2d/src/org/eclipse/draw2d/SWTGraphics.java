@@ -369,7 +369,7 @@ public void drawOval(int x, int y, int width, int height) {
  */
 public void drawPath(Path path) {
 	checkPaint();
-	initTransform();
+	initTransform(false);
 	gc.drawPath(path);
 }
 
@@ -494,7 +494,7 @@ public void fillOval(int x, int y, int width, int height) {
  */
 public void fillPath(Path path) {
 	checkFill();
-	initTransform();
+	initTransform(false);
 	gc.fillPath(path);
 }
 
@@ -677,7 +677,9 @@ protected void init() {
 	currentState.alpha = 255;
 }
 
-private void initTransform() {
+private void initTransform(boolean force) {
+	if (!force && translateX == 0 && translateY == 0)
+		return;
 	if (transform == null) {
 		transform = new Transform(null);
 		elementsNeedUpdate = true;
@@ -799,7 +801,7 @@ protected void restoreState(State s) {
 public void rotate(float degrees) {
 	//Flush clipping, patter, etc., before applying transform
 	checkGC();
-	initTransform();
+	initTransform(true);
 	transform.rotate(degrees);
 	gc.setTransform(transform);
 	elementsNeedUpdate = true;
@@ -819,7 +821,7 @@ public void scale(float horizontal, float vertical) {
 	//Flush any clipping before scaling
 	checkGC();
 
-	initTransform();
+	initTransform(true);
 	transform.scale(horizontal, vertical);
 	gc.setTransform(transform);
 	elementsNeedUpdate = true;
@@ -872,7 +874,7 @@ public void setBackgroundPattern(Pattern pattern) {
 	currentState.bgPattern = pattern;
 
 	if (pattern != null) {
-		initTransform();
+		initTransform(true);
 		gc.setBackgroundPattern(pattern);
 	} else
 		//$HACK workaround for pending SWT bug fix
@@ -883,8 +885,9 @@ public void setBackgroundPattern(Pattern pattern) {
  * @see Graphics#setClip(Path)
  */
 public void setClip(Path path) {
-	currentState.relativeClip = null;
+	initTransform(false);
 	gc.setClipping(path);
+	currentState.relativeClip = null;
 }
 
 /**
@@ -925,7 +928,7 @@ public void setForegroundPattern(Pattern pattern) {
 	currentState.fgPattern = pattern;
 
 	if (pattern != null) {
-		initTransform();
+		initTransform(true);
 		gc.setForegroundPattern(pattern);
 	} else {
 		//$HACK
