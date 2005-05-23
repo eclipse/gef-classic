@@ -20,6 +20,8 @@ import org.eclipse.jface.dialogs.Dialog;
 
 import org.eclipse.draw2d.PrintFigureOperation;
 
+import org.eclipse.gef.examples.logicdesigner.LogicMessages;
+
 /**
  * @author Eric Bordeau
  */
@@ -37,7 +39,7 @@ protected void cancelPressed() {
 }
 
 protected void configureShell(Shell newShell) {
-	newShell.setText("Select Print Mode");
+	newShell.setText(LogicMessages.PrintDialog_Title);
 	super.configureShell(newShell);
 }
 
@@ -45,17 +47,17 @@ protected Control createDialogArea(Composite parent) {
 	Composite composite = (Composite)super.createDialogArea(parent);
 	
 	tile = new Button(composite, SWT.RADIO);
-	tile.setText("Tile");
+	tile.setText(LogicMessages.PrintDialog_Tile);
 	tile.setSelection(true);
 	
 	fitPage = new Button(composite, SWT.RADIO);
-	fitPage.setText("Fit Page");
+	fitPage.setText(LogicMessages.PrintDialog_Page);
 
 	fitWidth = new Button(composite, SWT.RADIO);
-	fitWidth.setText("Fit Width");
+	fitWidth.setText(LogicMessages.PrintDialog_Width);
 
 	fitHeight = new Button(composite, SWT.RADIO);
-	fitHeight.setText("Fit Height");
+	fitHeight.setText(LogicMessages.PrintDialog_Height);
 
 	return composite;
 }

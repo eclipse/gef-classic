@@ -300,4 +300,15 @@ String XORGate_LabelText = Helper.getString("%XORGate.LabelText"); //$NON-NLS-1$
 String Wire_LabelText = Helper.getString("%Wire.LabelText"); //$NON-NLS-1$
 
 String Marquee_Stack = Helper.getString("%Marquee.Stack"); //$NON-NLS-1$
+
+String PrintDialog_Title = Helper.getString("%PrintDialog.Title"); //$NON-NLS-1$
+
+String PrintDialog_Tile = Helper.getString("%PrintDialog.Tile"); //$NON-NLS-1$
+
+String PrintDialog_Page = Helper.getString("%PrintDialog.Page"); //$NON-NLS-1$
+
+String PrintDialog_Width = Helper.getString("%PrintDialog.Width"); //$NON-NLS-1$
+
+String PrintDialog_Height = Helper.getString("%PrintDialog.Height"); //$NON-NLS-1$
+
 }
