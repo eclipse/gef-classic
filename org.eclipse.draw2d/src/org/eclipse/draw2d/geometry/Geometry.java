@@ -41,19 +41,19 @@ public static boolean linesIntersect(int ux, int uy, int vx, int vy,
 	 * Given the segments: u-------v. s-------t. If s->t is inside the triangle u-v-s, 
 	 * then check whether the line u->u splits the line s->t.
 	 */
-	int us_x = ux - sx;
-	int us_y = uy - sy;
-	int vs_x = vx - sx;
-	int vs_y = vy - sy;
-	int st_x = sx - tx;
-	int st_y = sy - ty;
-	long product = cross(vs_x, vs_y, st_x, st_y) * cross(st_x, st_y, us_x, us_y);
+	int usX = ux - sx;
+	int usY = uy - sy;
+	int vsX = vx - sx;
+	int vsY = vy - sy;
+	int stX = sx - tx;
+	int stY = sy - ty;
+	long product = cross(vsX, vsY, stX, stY) * cross(stX, stY, usX, usY);
 	if (product >= 0) {
-		int vu_x = vx - ux;
-		int vu_y = vy - uy;
-		int ut_x = ux - tx;
-		int ut_y = uy - ty;
-		product = cross(-us_x, -us_y, vu_x, vu_y) * cross(vu_x, vu_y, ut_x, ut_y);
+		int vuX = vx - ux;
+		int vuY = vy - uy;
+		int utX = ux - tx;
+		int utY = uy - ty;
+		product = cross(-usX, -usY, vuX, vuY) * cross(vuX, vuY, utX, utY);
 		boolean intersects = product <= 0;
 		return intersects;
 	}
