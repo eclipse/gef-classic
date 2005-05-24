@@ -12,11 +12,21 @@ package org.eclipse.draw2d;
 
 import org.eclipse.draw2d.geometry.Rectangle;
 
+/**
+ * @deprecated this class is not used
+ */
 public abstract class SubordinateUpdateManager
 	extends UpdateManager
 {
 
+/**
+ * A root figure.
+ */
 protected IFigure root;
+
+/**
+ * A graphics source
+ */
 protected GraphicsSource graphicsSource;
 
 /**
@@ -38,8 +48,16 @@ public void addInvalidFigure(IFigure f) {
 	um.addInvalidFigure(f);
 }
 
+/**
+ * Returns the host figure.
+ * @return the host figure
+ */
 protected abstract IFigure getHost();
 
+/**
+ * Returns the superior update manager.
+ * @return the superior
+ */
 protected UpdateManager getSuperior() {
 	if (getHost().getParent() == null) 
 		return null;
