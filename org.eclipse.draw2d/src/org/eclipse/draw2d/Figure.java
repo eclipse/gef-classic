@@ -1204,7 +1204,7 @@ public void removeAll() {
 public void removeAncestorListener(AncestorListener listener) {
 	if (ancestorHelper != null) {
 		ancestorHelper.removeAncestorListener(listener);
-		if (ancestorHelper.getNumberOfListeners() == 0) {
+		if (ancestorHelper.isEmpty()) {
 			ancestorHelper.dispose();
 			ancestorHelper = null;
 		}

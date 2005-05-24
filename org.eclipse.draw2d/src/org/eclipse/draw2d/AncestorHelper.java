@@ -28,12 +28,7 @@ protected final IFigure base;
 /**
  * The array of ancestor listeners.
  */
-protected AncestorListener[] listeners = null;
-/**
- * The current number of listeners.
- * Maintains invariant: 0 <= size <= listeners.length.
- */
-private int size;
+protected AncestorListener[] listeners;
 
 /**
  * Constructs a new helper on the given base figure and starts listening to figure and
@@ -52,22 +47,16 @@ public AncestorHelper(IFigure baseFigure) {
  * @param listener the listener
  */
 public void addAncestorListener(AncestorListener listener) {
-    if (size == 0)
-        listeners = new AncestorListener[2];
-    else {
-        // check for duplicates using identity
-        for (int i = 0; i < size; ++i)
-            if (listeners[i] == listener)
-                return;
-        
-        // grow array if necessary
-        if (size == listeners.length)
-            System.arraycopy(listeners, 0,
-                    listeners = new AncestorListener[size * 2 + 1], 0, size);
+    if (listeners == null) {
+        listeners = new AncestorListener[1];
+        listeners[0] = listener;
+    } else {
+    	int oldSize = listeners.length;
+    	AncestorListener newListeners[] = new AncestorListener[oldSize + 1];
+    	System.arraycopy(listeners, 0, newListeners, 0, oldSize);
+    	newListeners[oldSize] = listener;
+    	listeners = newListeners;
     }
-
-    listeners[size] = listener;
-    size++;
 }
 
 /**
@@ -103,7 +92,9 @@ public void figureMoved(IFigure ancestor) {
  * @param ancestor the figure which moved
  */
 protected void fireAncestorMoved(IFigure ancestor) {
-	for (int i = 0; i < size; i++)
+	if (listeners == null)
+		return;
+	for (int i = 0; i < listeners.length; i++)
 		listeners[i].ancestorMoved(ancestor);
 }
 
@@ -112,7 +103,9 @@ protected void fireAncestorMoved(IFigure ancestor) {
  * @param ancestor the figure which moved
  */
 protected void fireAncestorAdded(IFigure ancestor) {
-	for (int i = 0; i < size; i++)
+	if (listeners == null)
+		return;
+	for (int i = 0; i < listeners.length; i++)
 		listeners[i].ancestorAdded(ancestor);
 }
 
@@ -121,7 +114,9 @@ protected void fireAncestorAdded(IFigure ancestor) {
  * @param ancestor the figure which moved
  */
 protected void fireAncestorRemoved(IFigure ancestor) {
-	for (int i = 0; i < size; i++)
+	if (listeners == null)
+		return;
+	for (int i = 0; i < listeners.length; i++)
 		listeners[i].ancestorRemoved(ancestor);
 }
 
@@ -129,8 +124,8 @@ protected void fireAncestorRemoved(IFigure ancestor) {
  * Returns the total number of listeners.
  * @return the number of listeners
  */
-public int getNumberOfListeners() {
-	return size;
+public boolean isEmpty() {
+	return listeners == null;
 }
 
 /**
@@ -156,18 +151,20 @@ public void propertyChange(PropertyChangeEvent event) {
  * @param listener the listener to remove
  */
 public void removeAncestorListener(AncestorListener listener) {
-    for (int i = 0; i < size; i++) {
-        if (listeners[i] == listener) {
-            if (size == 1) {
-                listeners = null;
-                size = 0;
-            } else {
-                System.arraycopy(listeners, i + 1, listeners, i, --size - i);
-                listeners[size] = null;
-            }
-            return;
-        }
-    }
+	if (listeners == null)
+		return;
+	for (int index = 0; index < listeners.length; index++)
+		if (listeners[index] == listener) {
+			int newSize = listeners.length - 1;
+			AncestorListener newListeners[] = null;
+			if (newSize != 0) {
+				newListeners = new AncestorListener[newSize];
+				System.arraycopy(listeners, 0, newListeners, 0, index);
+				System.arraycopy(listeners, index + 1, newListeners, index, newSize - index);
+			}
+			listeners = newListeners;
+			return;
+		}
 }
 
 /**

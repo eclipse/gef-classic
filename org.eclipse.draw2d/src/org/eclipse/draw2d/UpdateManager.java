@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -26,7 +24,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
  */
 public abstract class UpdateManager {
 
-private List listeners = new ArrayList();
+private UpdateListener listeners[] = new UpdateListener[0];
 private boolean disposed;
 
 /**
@@ -66,10 +64,21 @@ public abstract void addInvalidFigure(IFigure figure);
 /**
  * Adds the given listener to the list of listeners to be notified of painting and 
  * validation.
- * @param listener the listener
+ * @param listener the listener to add
  */
 public void addUpdateListener(UpdateListener listener) {
-	listeners.add(listener);
+	if (listener == null)
+		throw new IllegalArgumentException();
+    if (listeners == null) {
+        listeners = new UpdateListener[1];
+        listeners[0] = listener;
+    } else {
+    	int oldSize = listeners.length;
+    	UpdateListener newListeners[] = new UpdateListener[oldSize + 1];
+    	System.arraycopy(listeners, 0, newListeners, 0, oldSize);
+    	newListeners[oldSize] = listener;
+    	listeners = newListeners;
+    }
 }
 
 /**
@@ -86,19 +95,18 @@ public void dispose() {
  * @param dirtyRegions map of dirty regions to figures
  */
 protected void firePainting(Rectangle damage, Map dirtyRegions) {
-	for (int i = 0; i < listeners.size(); i++) {
-		UpdateListener listener = (UpdateListener)listeners.get(i);
-		listener.notifyPainting(damage, dirtyRegions);
-	}
+	UpdateListener localListeners[] = listeners;
+	for (int i = 0; i < localListeners.length; i++)
+		localListeners[i].notifyPainting(damage, dirtyRegions);
 }
 
 /**
  * Notifies listeners that validation is about to occur.
  */
 protected void fireValidating() {
-	for (int i = 0; i < listeners.size(); i++) {
-		UpdateListener listener = (UpdateListener)listeners.get(i);
-		listener.notifyValidating();
+	UpdateListener localListeners[] = listeners;
+	for (int i = 0; i < localListeners.length; i++) {
+		localListeners[i].notifyValidating();
 	}
 }
 
@@ -121,11 +129,24 @@ public abstract void performUpdate();
 public abstract void performUpdate(Rectangle exposed);
 
 /**
- * Removes the given UpdateListener.
- * @param listener the listener
+ * Removes one occurence of the given UpdateListener by identity.
+ * @param listener the listener to remove
  */
 public void removeUpdateListener(UpdateListener listener) {
-	listeners.remove(listener);
+	if (listeners == null)
+		throw new IllegalArgumentException();
+	for (int index = 0; index < listeners.length; index++)
+		if (listeners[index] == listener) {
+			int newSize = listeners.length - 1;
+			UpdateListener newListeners[] = null;
+			if (newSize != 0) {
+				newListeners = new UpdateListener[newSize];
+				System.arraycopy(listeners, 0, newListeners, 0, index);
+				System.arraycopy(listeners, index + 1, newListeners, index, newSize - index);
+			}
+			listeners = newListeners;
+			return;
+		}
 }
 
 /**
