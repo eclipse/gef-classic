@@ -205,15 +205,6 @@ public void deactivate() {
 	super.deactivate();
 }
 
-/**
- * @see org.eclipse.draw2d.parts.Thumbnail#getSourceRectangle()
- */
-protected Rectangle getSourceRectangle() {
-	if (getSource() instanceof FreeformFigure)
-		return ((FreeformFigure)getSource()).getFreeformExtent();
-	return super.getSourceRectangle();
-}
-
 private double getViewportScaleX() {
 	return (double)targetSize.width / viewport.getContents().getBounds().width;
 }
