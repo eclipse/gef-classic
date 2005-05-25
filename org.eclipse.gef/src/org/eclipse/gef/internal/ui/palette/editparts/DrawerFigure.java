@@ -15,6 +15,7 @@ import java.util.List;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 
@@ -238,11 +239,13 @@ private void createHoverHelp(final Control control) {
 				tipLabel.setIcon(drawerLabel.getIcon());
 				tipLabel.setFont(drawerLabel.getFont());
 				tipHelper = new EditPartTipHelper(control);
-				Rectangle labelLoc = drawerLabel.getBounds().getCopy();
-				drawerLabel.translateToAbsolute(labelLoc);
-				org.eclipse.swt.graphics.Point absolute = control.toDisplay(
-						new org.eclipse.swt.graphics.Point(labelLoc.x, labelLoc.y));
-				tipHelper.displayToolTipAt(tipLabel, absolute.x - 2, absolute.y - 2);
+				Rectangle bounds = drawerLabel.getBounds().getExpanded(2, 2);
+				drawerLabel.translateToAbsolute(bounds);
+				org.eclipse.swt.graphics.Rectangle loc = 
+						new org.eclipse.swt.graphics.Rectangle(
+								bounds.x, bounds.y, bounds.width, bounds.height);
+				loc = Display.getCurrent().map(control, null, loc);
+				tipHelper.displayToolTipAt(tipLabel, loc.x, loc.y);
 			}
 		}
 	});
