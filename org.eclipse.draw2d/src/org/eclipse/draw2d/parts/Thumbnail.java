@@ -13,6 +13,7 @@ package org.eclipse.draw2d.parts;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
@@ -223,7 +224,8 @@ class ThumbnailUpdater implements Runnable {
 										targetSize.height);
 			thumbnailImageSize = new Dimension(targetSize);
 		}
-		thumbnailGC = new GC(thumbnailImage);
+		thumbnailGC = new GC(thumbnailImage, 
+				sourceFigure.isMirrored() ? SWT.RIGHT_TO_LEFT : SWT.NONE);
 		thumbnailGraphics = new ScaledGraphics(new SWTGraphics(thumbnailGC));
 		thumbnailGraphics.scale(getScaleX());
 		thumbnailGraphics.translate(getSourceRectangle().getLocation().negate());

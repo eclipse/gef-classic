@@ -26,6 +26,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.PlatformUI;
 
 import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.gef.GraphicalViewer;
@@ -61,7 +62,8 @@ public void setActivePart(IAction action, IWorkbenchPart targetPart) {}
  * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
  */
 public void run(IAction action) {
-	Shell shell = new Shell();
+	int style = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell().getStyle();
+	Shell shell = new Shell((style & SWT.MIRRORED) != 0 ? SWT.RIGHT_TO_LEFT : SWT.NONE);
 	GraphicalViewer viewer = new ScrollingGraphicalViewer();
 	viewer.createControl(shell);
 	viewer.setEditDomain(new DefaultEditDomain(null));
