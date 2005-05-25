@@ -23,7 +23,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.FigureListener;
-import org.eclipse.draw2d.FreeformFigure;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.KeyEvent;
