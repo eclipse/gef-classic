@@ -846,19 +846,14 @@ private class TitleDragManager
 	public void handleEvent(Event event) {
 		dragging = true;
 		switchDock = false;
-		if (dock == PositionConstants.EAST)
-			threshold = Integer.MAX_VALUE / 2;
-		else
-			threshold = -1;
+		threshold = dock == PositionConstants.EAST ? Integer.MAX_VALUE / 2 : -1;
 		final Composite flyout = FlyoutPaletteComposite.this;
-		final int switchThreshold = flyout.toDisplay(flyout.getSize().x / 2, 0).x;
+		final Rectangle flyoutBounds = flyout.getBounds();
+		final int switchThreshold = flyoutBounds.x + (flyoutBounds.width / 2);
 		Rectangle bounds = sash.getBounds();
 		if (paletteContainer.getVisible())
 			bounds = bounds.union(paletteContainer.getBounds());
-		Point converted = flyout.toDisplay(bounds.x, bounds.y);
-		bounds.x = converted.x;
-		bounds.y = converted.y;
-		final Rectangle origBounds = bounds;
+		final Rectangle origBounds = Display.getCurrent().map(flyout, null, bounds);
 		final Tracker tracker = new Tracker(Display.getDefault(), SWT.NULL);
 		tracker.setRectangles(new Rectangle[] {origBounds});
 		tracker.setStippled(true);
@@ -867,8 +862,8 @@ private class TitleDragManager
 				Display.getCurrent().syncExec(new Runnable() {
 					public void run() {
 						Control ctrl = Display.getCurrent().getCursorControl();
-						Point pt = new Point(evt.x, evt.y);
-						switchDock = isDescendantOf(graphicalControl, ctrl) 
+						Point pt = flyout.toControl(evt.x, evt.y);
+						switchDock = isDescendantOf(graphicalControl, ctrl)
 								&& ((dock == PositionConstants.WEST && pt.x > threshold - 10)
 								|| (dock == PositionConstants.EAST && pt.x < threshold + 10));
 						boolean invalid = false;
@@ -889,24 +884,28 @@ private class TitleDragManager
 								placeHolder = new Rectangle(0, 0,
 										origBounds.width, origBounds.height);
 							else
-								placeHolder = new Rectangle(flyout.getBounds().width 
+								placeHolder = new Rectangle(flyoutBounds.width 
 										- origBounds.width, 0, origBounds.width, 
 										origBounds.height);
-							Point converted = flyout.toDisplay(
-									placeHolder.x, placeHolder.y);
-							placeHolder.x = converted.x;
-							placeHolder.y = converted.y;
+							placeHolder =
+									Display.getCurrent().map(flyout, null, placeHolder);
 						}
 						// update the cursor
-						Cursor cursor;
+						int cursor;
 						if (invalid)
-							cursor = DragCursors.getCursor(DragCursors.INVALID);
+							cursor = DragCursors.INVALID;
 						else if ((!switchDock && dock == PositionConstants.EAST)
 								|| (switchDock && dock == PositionConstants.WEST))
-							cursor = DragCursors.getCursor(DragCursors.RIGHT);
+							cursor = DragCursors.RIGHT;
 						else
-							cursor = DragCursors.getCursor(DragCursors.LEFT);
-						tracker.setCursor(cursor);
+							cursor = DragCursors.LEFT;
+						if ((getStyle() & SWT.MIRRORED) != 0) {
+							if (cursor == DragCursors.RIGHT)
+								cursor = DragCursors.LEFT;
+							else if (cursor == DragCursors.LEFT)
+								cursor = DragCursors.RIGHT;
+						}
+						tracker.setCursor(DragCursors.getCursor(cursor));
 						// update the rectangle only if it has changed
 						if (!tracker.getRectangles()[0].equals(placeHolder))
 							tracker.setRectangles(new Rectangle[] {placeHolder});
