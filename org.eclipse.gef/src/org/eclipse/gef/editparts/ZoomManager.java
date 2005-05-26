@@ -166,8 +166,8 @@ private double getFitXZoomLevel(int which) {
 		fig = fig.getParent();
 	}
 
-	double scaleX = available.width * zoom / desired.width;
-	double scaleY = available.height * zoom / desired.height;
+	double scaleX = available.width * zoom * multiplier / desired.width;
+	double scaleY = available.height * zoom * multiplier / desired.height;
 	if (which == 0)
 		return scaleX;
 	if (which == 1)
