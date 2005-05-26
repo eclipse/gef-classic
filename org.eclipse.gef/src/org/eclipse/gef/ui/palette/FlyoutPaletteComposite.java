@@ -32,7 +32,6 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.MouseTrackAdapter;
 import org.eclipse.swt.events.MouseTrackListener;
-import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.GC;
@@ -312,6 +311,10 @@ private boolean isInState(int state) {
 	return (paletteState & state) != 0;
 }
 
+private boolean isMirrored() {
+	return (getStyle() & SWT.MIRRORED) != 0;
+}
+
 /**
  * @see	Composite#layout(boolean)
  */
@@ -424,7 +427,9 @@ private boolean restorePaletteState(PaletteViewer newPalette, IMemento state) {
 		try {
 			return newPalette.restoreState(state);
 		} catch (RuntimeException re) {
-			//@TODO:Pratik  You should log this exception
+			/*
+			 * @TODO:Pratik  You should log this exception
+			 */
 		}
 	}
 	return false;
@@ -897,7 +902,7 @@ private class TitleDragManager
 							cursor = DragCursors.RIGHT;
 						else
 							cursor = DragCursors.LEFT;
-						if ((getStyle() & SWT.MIRRORED) != 0) {
+						if (isMirrored()) {
 							if (cursor == DragCursors.RIGHT)
 								cursor = DragCursors.LEFT;
 							else if (cursor == DragCursors.LEFT)
@@ -1158,9 +1163,18 @@ private class ButtonCanvas extends Canvas {
 		return new org.eclipse.swt.graphics.Point(size.width, size.height);
 	}
 	private Image getButtonImage() {
+		Image arrow = null;
 		if (isInState(STATE_EXPANDED | STATE_PINNED_OPEN))
-			return dock == PositionConstants.WEST ? LEFT_ARROW : RIGHT_ARROW;
-		return dock == PositionConstants.WEST ? RIGHT_ARROW : LEFT_ARROW;
+			arrow = dock == PositionConstants.WEST ? LEFT_ARROW : RIGHT_ARROW;
+		else 
+			arrow = dock == PositionConstants.WEST ? RIGHT_ARROW : LEFT_ARROW;
+		if (isMirrored()) {
+			if (arrow == LEFT_ARROW)
+				arrow = RIGHT_ARROW;
+			else
+				arrow = LEFT_ARROW;
+		}
+		return arrow;	
 	}
 	private String getButtonTooltipText() {
 		if (isInState(STATE_COLLAPSED))
