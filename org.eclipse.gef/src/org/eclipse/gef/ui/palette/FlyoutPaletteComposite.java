@@ -424,9 +424,7 @@ private boolean restorePaletteState(PaletteViewer newPalette, IMemento state) {
 		try {
 			return newPalette.restoreState(state);
 		} catch (RuntimeException re) {
-			/*
-			 * @TODO:Pratik  You should log this exception
-			 */
+			//@TODO:Pratik  You should log this exception
 		}
 	}
 	return false;
@@ -1025,7 +1023,7 @@ private class RotatedTitleLabel
 			graphics.drawFocus(0, 0, bounds.width - 1, bounds.height - 1);
 	}
 	public void setFont(Font f) {
-		if (f != font) {
+		if (f != getLocalFont()) {
 			super.setFont(f);
 			updateImage();
 		}
