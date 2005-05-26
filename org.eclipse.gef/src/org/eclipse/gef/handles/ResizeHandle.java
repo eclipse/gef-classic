@@ -41,7 +41,7 @@ private int cursorDirection = 0;
 public ResizeHandle(GraphicalEditPart owner, int direction) {
 	setOwner(owner);
 	setLocator(new RelativeHandleLocator(owner.getFigure(), direction));
-	setCursor(Cursors.getDirectionalCursor(direction));
+	setCursor(Cursors.getDirectionalCursor(direction, owner.getFigure().isMirrored()));
 	cursorDirection = direction;
 }
 

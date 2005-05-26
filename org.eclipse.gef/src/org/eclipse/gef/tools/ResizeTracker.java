@@ -171,7 +171,8 @@ protected String getCommandName() {
  * @see org.eclipse.gef.tools.AbstractTool#getDefaultCursor()
  */
 protected Cursor getDefaultCursor() {
-	return SharedCursors.getDirectionalCursor(direction);
+	return SharedCursors.getDirectionalCursor(
+			direction, getTargetEditPart().getFigure().isMirrored());
 }
 
 /**

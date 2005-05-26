@@ -17,14 +17,29 @@ import org.eclipse.swt.graphics.Cursor;
  * A collection of cursors.
  */
 public class Cursors {
-
+	
 /**
  * Returns the cursor corresponding to the given direction, defined in 
  * {@link PositionConstants}.
  * @param direction The relative direction of the desired cursor
  * @return The appropriate directional cursor
+ * @deprecated Use {@link #getDirectionalCursor(int, boolean)} instead.
  */
 public static Cursor getDirectionalCursor(int direction) {
+	return getDirectionalCursor(direction, false);
+}
+
+/**
+ * Returns the cursor corresponding to the given direction, defined in 
+ * {@link PositionConstants}.
+ * @param direction The relative direction of the desired cursor
+ * @param isMirrored if <code>true</code>, EAST and WEST will be flipped
+ * @return The appropriate directional cursor
+ */
+public static Cursor getDirectionalCursor(int direction, boolean isMirrored) {
+	if (isMirrored && (direction & PositionConstants.EAST_WEST) != 0)
+		direction = (direction & ~PositionConstants.EAST_WEST) 
+				| (~direction & PositionConstants.EAST_WEST);
 	switch (direction) {
 		case PositionConstants.NORTH :
 			return SIZEN;
