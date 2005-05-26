@@ -137,8 +137,8 @@ class GTKToggleButtonTracker extends ToggleButtonTracker {
 		disableTimer();
 		
 		gtkState = 1;
+        getButtonModel().setArmed(false);
 		getButtonModel().setPressed(false);
-		getButtonModel().setArmed(false);
 		return true;
 	}
 	
