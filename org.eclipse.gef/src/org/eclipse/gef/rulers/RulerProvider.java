@@ -98,7 +98,7 @@ public void addRulerChangeListener(RulerChangeListener listener) {
  * 
  * @param	e		AccessibleEvent
  * @param	guide	The guide whose accessibility information is requested
- * @see	org.eclipse.swt.accessibility.AccessibleAdapter#getDescription(org.eclipse.swt.accessibility.AccessibleEvent)
+ * @see	org.eclipse.swt.accessibility.AccessibleAdapter#getDescription(AccessibleEvent)
  */
 public void getAccGuideDescription(AccessibleEvent e, Object guide) {
 	e.result = GEFMessages.Guide_Desc;
@@ -110,7 +110,7 @@ public void getAccGuideDescription(AccessibleEvent e, Object guide) {
  * 
  * @param	e		AccessibleEvent
  * @param	guide	The guide whose accessibility information is requested
- * @see	org.eclipse.swt.accessibility.AccessibleAdapter#getName(org.eclipse.swt.accessibility.AccessibleEvent)
+ * @see	org.eclipse.swt.accessibility.AccessibleAdapter#getName(AccessibleEvent)
  */
 public void getAccGuideName(AccessibleEvent e, Object guide) {
 	e.result = GEFMessages.Guide_Label; 
@@ -121,7 +121,7 @@ public void getAccGuideName(AccessibleEvent e, Object guide) {
  * 
  * @param	e		AccessibleEvent
  * @param	guide	The guide whose accessibility information is requested
- * @see	org.eclipse.swt.accessibility.AccessibleControlAdapter#getValue(org.eclipse.swt.accessibility.AccessibleControlEvent)
+ * @see	org.eclipse.swt.accessibility.AccessibleControlAdapter#getValue(AccessibleControlEvent)
  */
 public void getAccGuideValue(AccessibleControlEvent e, Object guide) {
 	e.result = "" + getGuidePosition(guide); //$NON-NLS-1$
