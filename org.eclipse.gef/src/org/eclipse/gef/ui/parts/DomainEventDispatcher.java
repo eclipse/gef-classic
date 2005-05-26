@@ -372,6 +372,7 @@ public void dispatchMouseReleased(org.eclipse.swt.events.MouseEvent me) {
 	if (okToDispatch()) {
 		setRouteEventsToEditor(false);
 		domain.mouseUp(me, viewer);
+		updateFigureUnderCursor(me);
 	}
 }
 
