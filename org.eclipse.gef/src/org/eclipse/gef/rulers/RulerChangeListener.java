@@ -58,22 +58,22 @@ void notifyPartAttachmentChanged(Object part, Object guide);
  */
 public class Stub implements RulerChangeListener {
 	/**
-	 * @see org.eclipse.gef.rulers.RulerChangeListener#notifyUnitsChanged(int)
+	 * @see RulerChangeListener#notifyUnitsChanged(int)
 	 */
 	public void notifyUnitsChanged(int newUnit) {
 	}
 	/**
-	 * @see org.eclipse.gef.rulers.RulerChangeListener#notifyGuideReparented(java.lang.Object)
+	 * @see RulerChangeListener#notifyGuideReparented(Object)
 	 */
 	public void notifyGuideReparented(Object guide) {
 	}
 	/**
-	 * @see org.eclipse.gef.rulers.RulerChangeListener#notifyGuideMoved(java.lang.Object)
+	 * @see RulerChangeListener#notifyGuideMoved(Object)
 	 */
 	public void notifyGuideMoved(Object guide) {
 	}
 	/**
-	 * @see org.eclipse.gef.rulers.RulerChangeListener#notifyPartAttachmentChanged(java.lang.Object, java.lang.Object)
+	 * @see RulerChangeListener#notifyPartAttachmentChanged(Object, Object)
 	 */
 	public void notifyPartAttachmentChanged(Object part, Object guide) {
 	}
