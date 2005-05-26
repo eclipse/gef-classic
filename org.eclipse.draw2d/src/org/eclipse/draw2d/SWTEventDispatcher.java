@@ -200,8 +200,9 @@ public void dispatchMouseExited(org.eclipse.swt.events.MouseEvent me) {
 		currentEvent = 
 				new MouseEvent(me.x, me.y, this, mouseTarget, me.button, me.stateMask);
 		mouseTarget.handleMouseExited(currentEvent);
+		releaseCapture();
+		mouseTarget = null;
 	}
-	mouseTarget = null;
 }
 
 /**
