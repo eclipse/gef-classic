@@ -14,6 +14,10 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.TreeViewer;
 
+/**
+ * An internal class for the command stack inspector tool.
+ * @deprecated since 3.1
+ */
 public class CommandStackViewerAction 
 	extends Action 
 {
