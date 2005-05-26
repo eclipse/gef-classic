@@ -28,10 +28,10 @@ protected CommandStack stack = null;
 /** Icons associated with a TreeLabelProvider **/
 protected static Image 
 	yesIcon = ImageDescriptor.createFromFile(
-										TreeLabelProvider.class, 
-										"icons/YESGRN.gif").createImage(), //$NON-NLS-1$
+			TreeLabelProvider.class, 
+			"icons/YESGRN.gif").createImage(), //$NON-NLS-1$
 	noIcon  = ImageDescriptor.createFromFile(TreeLabelProvider.class, 
-										"icons/NORED.gif").createImage(); //$NON-NLS-1$
+			"icons/NORED.gif").createImage(); //$NON-NLS-1$
 /** Label style constants **/
 public static byte NORMAL_LABEL_STYLE = 2,
 			  	   DEBUG_LABEL_STYLE = 3;
@@ -48,8 +48,7 @@ public TreeLabelProvider(CommandStack stack) {
 }
 
 /**
- * @see org.eclipse.jface.viewers.IBaseLabelProvider#addListener(
- * 										org.eclipse.jface.viewers.ILabelProviderListener)
+ * @see org.eclipse.jface.viewers.IBaseLabelProvider#addListener(ILabelProviderListener)
  */
 public void addListener(ILabelProviderListener l) { }
 
