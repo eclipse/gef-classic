@@ -34,6 +34,7 @@ private static final int TOLERANCE = 2;
 private static final Rectangle LINEBOUNDS = Rectangle.SINGLETON;
 
 {
+	setFill(false);
 	bounds  = null;
 }
 
