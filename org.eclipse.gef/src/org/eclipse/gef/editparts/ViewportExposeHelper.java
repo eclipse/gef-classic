@@ -97,14 +97,14 @@ public void exposeDescendant(EditPart part) {
 	int dx = finalLocation.x - startLocation.x;
 	int dy = finalLocation.y - startLocation.y;
 
-	int FRAMES = (Math.abs(dx) + Math.abs(dy)) / 15;
-	FRAMES = Math.max(FRAMES, getMinimumFrameCount());
-	FRAMES = Math.min(FRAMES, getMaximumFrameCount());
+	int frames = (Math.abs(dx) + Math.abs(dy)) / 15;
+	frames = Math.max(frames, getMinimumFrameCount());
+	frames = Math.min(frames, getMaximumFrameCount());
 
-	int stepX = Math.min((dx / FRAMES), (viewportSize.width / 3));
-	int stepY = Math.min((dy / FRAMES), (viewportSize.height / 3));
+	int stepX = Math.min((dx / frames), (viewportSize.width / 3));
+	int stepY = Math.min((dy / frames), (viewportSize.height / 3));
 
-	for (int i = 1; i < FRAMES; i++) {
+	for (int i = 1; i < frames; i++) {
 		port.setViewLocation(startLocation.x + stepX * i, startLocation.y + stepY * i);
 		port.getUpdateManager().performUpdate();
 	}
