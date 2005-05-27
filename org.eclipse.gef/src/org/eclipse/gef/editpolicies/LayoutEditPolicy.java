@@ -353,15 +353,17 @@ public void showTargetFeedback(Request request) {
 /**
  * Removes the decoration added in {@link #decorateChild(EditPart)}.
  * @param child the child whose decoration is being removed.
- * @since 3.1
  */
-protected void undecorateChild(EditPart child){
+protected void undecorateChild(EditPart child) {
 	child.removeEditPolicy(EditPolicy.PRIMARY_DRAG_ROLE);
 }
 
-protected void undecorateChildren(){
+/**
+ * Removes all decorations added by {@link #decorateChildren()}.
+ */
+protected void undecorateChildren() {
 	List children = getHost().getChildren();
-	for (int i=0; i<children.size(); i++)
+	for (int i = 0; i < children.size(); i++)
 		undecorateChild((EditPart)children.get(i));
 }
 

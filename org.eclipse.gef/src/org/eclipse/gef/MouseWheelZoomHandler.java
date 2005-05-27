@@ -38,7 +38,7 @@ private MouseWheelZoomHandler() { }
 
 /**
  * Zooms the given viewer.
- * @see org.eclipse.gef.MouseWheelHandler#handleMouseWheel(org.eclipse.swt.widgets.Event, org.eclipse.gef.EditPartViewer)
+ * @see MouseWheelHandler#handleMouseWheel(Event, EditPartViewer)
  */
 public void handleMouseWheel(Event event, EditPartViewer viewer) {
 	ZoomManager zoomMgr = (ZoomManager)viewer.getProperty(ZoomManager.class.toString());
