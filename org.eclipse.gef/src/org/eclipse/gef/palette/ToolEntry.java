@@ -66,17 +66,18 @@ public ToolEntry (String label, String description, ImageDescriptor iconSmall,
  * @return the tool for this entry
  */
 public Tool createTool() {
-	if (toolClass != null) {
-		Tool tool = null;
-		try {
-			tool = (Tool)toolClass.newInstance();
-		} catch (IllegalAccessException iae) {
-		} catch (InstantiationException ie) {}
-		if (tool != null)
-			tool.setProperties(getToolProperties());
-		return tool;
+	if (toolClass == null)
+		return null;
+	Tool tool;
+	try {
+		tool = (Tool)toolClass.newInstance();
+	} catch (IllegalAccessException iae) {
+		return null;
+	} catch (InstantiationException ie) {
+		return null;
 	}
-	return null;
+	tool.setProperties(getToolProperties());
+	return tool;
 }
 
 /**
