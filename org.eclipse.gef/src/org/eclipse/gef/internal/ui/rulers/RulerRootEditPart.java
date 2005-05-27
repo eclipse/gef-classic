@@ -238,7 +238,7 @@ public class RulerViewport extends Viewport {
 	 * 
 	 * @see org.eclipse.draw2d.Viewport#readjustScrollBars()
 	 */
-	protected void readjustScrollBars() {}
+	protected void readjustScrollBars() { }
 	/**
 	 * @see org.eclipse.draw2d.Figure#paintBorder(org.eclipse.draw2d.Graphics)
 	 */

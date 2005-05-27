@@ -121,7 +121,7 @@ public void deactivate() {
 
 protected AccessibleEditPart getAccessibleEditPart() {
 	if (accPart == null)
-		accPart =  new AccessibleGraphicalEditPart(){
+		accPart =  new AccessibleGraphicalEditPart() {
 			public void getDescription(AccessibleEvent e) {
 				if (getRulerProvider() != null)
 					getRulerProvider().getAccGuideDescription(e, getModel());
