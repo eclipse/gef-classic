@@ -22,15 +22,15 @@ import org.eclipse.gef.commands.ForwardUndoCompoundCommand;
 
 /**
  * <p>
- * UndoablePropertySheetEntry provides undo support for changes made to the model via 
- * a PropertySheetEntry by wrapping the changes in a GEF Command and putting it on the
- * CommandStack.
- * </p>
+ * UndoablePropertySheetEntry provides undo support for changes made to IPropertySources
+ * by the {@link org.eclipse.ui.views.properties.PropertySheetViewer}. Clients can
+ * construct a {@link org.eclipse.ui.views.properties.PropertySheetPage} and use this
+ * class as the root entry. All changes made to property sources displayed on that page
+ * will be done using the provided command stack.
  * <p>
  * <b>NOTE:</b> If you intend to use an IPropertySourceProvider for a PropertySheetPage
  * whose root entry is an instance of of UndoablePropertySheetEntry, you should set the 
  * IPropertySourceProvider on that root entry, rather than the PropertySheetPage.
- * </p>
  */
 public final class UndoablePropertySheetEntry extends PropertySheetEntry {
 
@@ -40,33 +40,40 @@ private CommandStack stack;
 
 private UndoablePropertySheetEntry() { }
 
+/**
+ * Constructs the root entry using the given command stack.
+ * @param stack the command stack
+ * @since 3.1
+ */
 public UndoablePropertySheetEntry(CommandStack stack) {
 	setCommandStack(stack);
 }
 
+/**
+ * @see org.eclipse.ui.views.properties.PropertySheetEntry#createChildEntry()
+ */
 protected PropertySheetEntry createChildEntry() {
 	return new UndoablePropertySheetEntry();
 }
 
+/**
+ * @see org.eclipse.ui.views.properties.IPropertySheetEntry#dispose()
+ */
 public void dispose() {
 	if (stack != null)
 		stack.removeCommandStackListener(commandStackListener);
 	super.dispose();
 }
 
-/**
- * Returns the Command stack from the root entry
- * @return the command stack
- */
-protected CommandStack getCommandStack() {
+CommandStack getCommandStack() {
 	//only the root has, and is listening too, the command stack
 	if (getParent() != null)
 		return ((UndoablePropertySheetEntry)getParent()).getCommandStack();
 	return stack;
 }
 
-/* (non-Javadoc)
- * Method declared on IUndoablePropertySheetEntry.
+/**
+ * @see org.eclipse.ui.views.properties.IPropertySheetEntry#resetPropertyValue()
  */
 public void resetPropertyValue() {
 	CompoundCommand cc = new CompoundCommand();
@@ -96,7 +103,7 @@ public void resetPropertyValue() {
 	}
 }
 
-public void setCommandStack(CommandStack stack) {
+void setCommandStack(CommandStack stack) {
 	this.stack = stack;
 	commandStackListener = new CommandStackListener() {
 		public void commandStackChanged(EventObject e) {
@@ -106,12 +113,15 @@ public void setCommandStack(CommandStack stack) {
 	stack.addCommandStackListener(commandStackListener);
 }
 
+/**
+ * @see PropertySheetEntry#valueChanged(PropertySheetEntry)
+ */
 protected void valueChanged(PropertySheetEntry child) {
 	valueChanged((UndoablePropertySheetEntry)child,
 			new ForwardUndoCompoundCommand());
 }
 
-protected void valueChanged(UndoablePropertySheetEntry child, CompoundCommand command) {
+void valueChanged(UndoablePropertySheetEntry child, CompoundCommand command) {
 	CompoundCommand cc = new CompoundCommand();
 	command.add(cc);
 
