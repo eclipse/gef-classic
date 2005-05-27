@@ -25,7 +25,6 @@ import org.eclipse.gef.dnd.TemplateTransfer;
 import org.eclipse.gef.internal.GEFMessages;
 import org.eclipse.gef.palette.CombinedTemplateCreationEntry;
 import org.eclipse.gef.palette.PaletteTemplateEntry;
-import org.eclipse.gef.ui.actions.Clipboard;
 
 /**
  * Copies the currently selected template in the palatte to the system clipboard. 
