@@ -25,12 +25,10 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
- * An inline flow that renders a string of text across one or more lines. A TextFlow must
- * not have any children. It does not provide a {@link FlowContext}.
+ * An inline flow figure that renders a string of text across one or more lines. A
+ * TextFlow can not contain children. All <code>InlineFlow</code> figure's must be
+ * parented by a <code>FlowFigure</code>.
  * <p>
- * The TextFlow's fragments are sized using the text plus any required joiners.  Clients
- * should add the joiners to the text before breaking it up according to fragments.
- * <P>
  * WARNING: This class is not intended to be subclassed by clients.
  * @author hudsonr
  * @author Pratik Shah
