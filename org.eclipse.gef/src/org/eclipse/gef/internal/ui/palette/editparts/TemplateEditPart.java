@@ -52,7 +52,7 @@ public TemplateEditPart(PaletteTemplateEntry entry) {
  * @see org.eclipse.gef.internal.ui.palette.editparts.PaletteEditPart#createAccessible()
  */
 protected AccessibleEditPart createAccessible() {
-	return new AccessibleGraphicalEditPart (){
+	return new AccessibleGraphicalEditPart () {
 		public void getDescription(AccessibleEvent e) {
 			e.result = getTemplateEntry().getDescription();
 		}

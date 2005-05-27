@@ -292,7 +292,7 @@ private class FocusableFlowPage extends FlowPage {
 	}
 }
 
-static private class SelectableImageFigure extends ImageFigure {
+private static class SelectableImageFigure extends ImageFigure {
 	private Image shadedImage;
 	protected void useShadedImage() {
 		disposeShadedImage();

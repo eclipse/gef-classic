@@ -184,9 +184,9 @@ public IFigure createFigure() {
 			// fill the corner arrow
 			int[] points = new int[6];
 			
-			points[0] = rect.width ;
+			points[0] = rect.width;
 			points[1] = rect.height - 5;
-			points[2] = rect.width ;
+			points[2] = rect.width;
 			points[3] = rect.height;
 			points[4] = rect.width - 5;
 			points[5] = rect.height;
@@ -368,7 +368,7 @@ StackMenuListener(Menu menu, Display d) {
 /**
  * @see org.eclipse.swt.events.MenuListener#menuShown(org.eclipse.swt.events.MenuEvent)
  */
-public void menuShown(MenuEvent e) {}
+public void menuShown(MenuEvent e) { }
 
 /**
  * @see org.eclipse.swt.events.MenuListener#menuHidden(org.eclipse.swt.events.MenuEvent)
@@ -451,7 +451,7 @@ class TriangleFigure
  */
 TriangleFigure() {
 	super();
-	setPreferredSize(7, - 1);
+	setPreferredSize(7, -1);
 }
 
 /**

@@ -29,7 +29,7 @@ class OverlayScrollPaneLayout
  * so the preferred size is just the Viewports preferred size.
  * @since 2.0
  */
-protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHint){
+protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHint) {
 	ScrollPane scrollpane = (ScrollPane)container;
 	Insets insets = scrollpane.getInsets();
 
@@ -43,7 +43,7 @@ protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHi
 }
 
 /**{@inheritDoc}*/
-public void layout(IFigure parent){
+public void layout(IFigure parent) {
 	ScrollPane scrollpane = (ScrollPane)parent;
 	Rectangle clientArea = parent.getClientArea();
 

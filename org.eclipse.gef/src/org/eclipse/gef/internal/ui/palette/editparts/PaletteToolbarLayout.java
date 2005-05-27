@@ -231,10 +231,10 @@ private void scaledLayout(IFigure parent) {
 		IFigure child = (IFigure)children.get(i);
 	      
 		child.setBounds(new Rectangle(
-				Math.round(progress * rect2.x + (1-progress) * rect1.x),
-				Math.round(progress * rect2.y + (1-progress) * rect1.y),
-				Math.round(progress * rect2.width + (1-progress) * rect1.width),
-				Math.round(progress * rect2.height + (1-progress) * rect1.height)
+				Math.round(progress * rect2.x + (1 - progress) * rect1.x),
+				Math.round(progress * rect2.y + (1 - progress) * rect1.y),
+				Math.round(progress * rect2.width + (1 - progress) * rect1.width),
+				Math.round(progress * rect2.height + (1 - progress) * rect1.height)
 		));
 	}
 }

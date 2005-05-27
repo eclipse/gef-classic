@@ -162,7 +162,7 @@ public boolean canBePinned() {
 }
 
 protected AccessibleEditPart createAccessible() {
-	return new AccessibleGraphicalEditPart(){
+	return new AccessibleGraphicalEditPart() {
 		public void getDescription(AccessibleEvent e) {
 			e.result = getPaletteEntry().getDescription();
 		}
