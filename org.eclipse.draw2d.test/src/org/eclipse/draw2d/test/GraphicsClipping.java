@@ -56,8 +56,6 @@ public void testTranslatedClip() {
 	assertEquals(gcClipping(), rect);
 	
 	rect.translate(-9, -7);
-	
-	graphics.drawPoint(0, 0);
 	assertEquals(graphicsClip(), rect);
 	
 	Rectangle intersect = new Rectangle(50, 50, 50, 50);
@@ -69,6 +67,18 @@ public void testTranslatedClip() {
 
 	rect.translate(9, 7);
 	assertEquals(gcClipping(), rect);
+}
+
+public void testZoomedClip() {
+	Rectangle rect = new Rectangle(14, 21, 300, 400);
+	graphics.setClip(rect);
+	graphics.scale(2.0);
+	graphics.translate(90, 0);
+	graphics.drawPoint(0, 0);
+	
+	rect.scale(0.5);
+	rect.translate(-90, 0);
+	assertEquals(graphicsClip(), rect);
 }
 
 protected void setUp() throws Exception {
