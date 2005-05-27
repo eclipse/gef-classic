@@ -59,7 +59,7 @@ public abstract class AbstractEditPartViewer
 	implements EditPartViewer
 {
 
-private DisposeListener lDispose;
+private DisposeListener disposeListener;
 	
 /**
  * The raw list of selected editparts.
@@ -174,12 +174,12 @@ public void appendSelection(EditPart editpart) {
 }
 
 /**
- * @see EditPartViewer#createControl(org.eclipse.swt.widgets.Composite)
+ * @see EditPartViewer#createControl(Composite)
  */
 public abstract Control createControl(Composite parent);
 
 /**
- * @see EditPartViewer#deselect(org.eclipse.gef.EditPart)
+ * @see EditPartViewer#deselect(EditPart)
  */
 public void deselect(EditPart editpart) {
 	editpart.setSelected(EditPart.SELECTED_NONE);
@@ -399,7 +399,7 @@ public Map getVisualPartMap() {
  */
 protected void hookControl() {
 	Assert.isTrue(getControl() != null);
-	getControl().addDisposeListener(lDispose = new DisposeListener() {
+	getControl().addDisposeListener(disposeListener = new DisposeListener() {
 		public void widgetDisposed(DisposeEvent e) {
 			handleDispose(e);
 		}
@@ -751,9 +751,9 @@ public void setSelection(ISelection newSelection) {
 protected void unhookControl() {
 	Assert.isTrue(getControl() != null);
 	
-	if (lDispose != null) {
-		getControl().removeDisposeListener(lDispose);
-		lDispose = null;
+	if (disposeListener != null) {
+		getControl().removeDisposeListener(disposeListener);
+		disposeListener = null;
 	}
 	if (getContextMenu() != null)
 		getContextMenu().dispose();
