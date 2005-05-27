@@ -17,7 +17,7 @@ package org.eclipse.gef.dnd;
  * @author Eric Bordeau
  * @since 2.1
  */
-public class TemplateTransfer
+public final class TemplateTransfer
 	extends SimpleObjectTransfer
 {
 
