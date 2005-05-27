@@ -173,7 +173,7 @@ public static final String TOGGLE_SNAP_TO_GEOMETRY
  * Adds standard group separators to the given MenuManager.
  * @param menu the MenuManager
  */
-public static final void addStandardActionGroups(IMenuManager menu) {
+public static void addStandardActionGroups(IMenuManager menu) {
 	menu.add(new Separator(GROUP_UNDO));
 	menu.add(new Separator(GROUP_COPY));
 	menu.add(new Separator(GROUP_PRINT));

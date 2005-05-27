@@ -66,7 +66,7 @@ public boolean keyReleased(KeyEvent event) {
 	return parent != null && parent.keyReleased(event);
 }
 
-private final boolean performStroke(KeyStroke key) {
+private boolean performStroke(KeyStroke key) {
 	if (actions == null)
 		return false;
 	IAction action = (IAction)actions.get(key);
