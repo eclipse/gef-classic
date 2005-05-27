@@ -18,6 +18,10 @@ import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.gef.commands.CommandStackListener;
 import org.eclipse.gef.commands.CompoundCommand;
 
+/**
+ * Internal class used for a stack inspector.
+ * @deprecated this class will be deleted
+ */
 public class TreeContentProvider
 	implements org.eclipse.jface.viewers.ITreeContentProvider,
 		CommandStackListener
@@ -81,12 +85,8 @@ public boolean hasChildren(Object o) {
 	return o instanceof CompoundCommand;
 }
 
-public boolean isDeleted(Object o) { return false; }
-
 /**
- * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(
- * 									org.eclipse.jface.viewers.Viewer, 
- * 									java.lang.Object, java.lang.Object)
+ * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(Viewer, Object, Object)
  */
 public void inputChanged(Viewer v, Object o, Object n) {
 	viewer = v;

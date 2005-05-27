@@ -19,6 +19,10 @@ import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CommandStack;
 
+/**
+ * Internal class used for a debug view.
+ * @deprecated this class will be deleted
+ */
 public class TreeLabelProvider
 	implements org.eclipse.jface.viewers.ILabelProvider
 {

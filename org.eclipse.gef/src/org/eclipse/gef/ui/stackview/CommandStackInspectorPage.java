@@ -20,6 +20,10 @@ import org.eclipse.jface.viewers.TreeViewer;
 
 import org.eclipse.gef.commands.CommandStack;
 
+/**
+ * Internal class used for a debug view.
+ * @deprecated this class will be deleted
+ */
 public class CommandStackInspectorPage
 	extends org.eclipse.ui.part.Page
 {

@@ -23,6 +23,10 @@ import org.eclipse.ui.part.Page;
 import org.eclipse.ui.part.PageBook;
 import org.eclipse.ui.part.PageBookView;
 
+/**
+ * Internal class used for a debug view.
+ * @deprecated this class will be deleted
+ */
 public class CommandStackInspector
 	extends PageBookView
 {
@@ -31,7 +35,7 @@ public class CommandStackInspector
  * @see PageBookView#createDefaultPage(org.eclipse.ui.part.PageBook)
  */
 protected IPage createDefaultPage(PageBook book) {
-	Page page = new Page(){
+	Page page = new Page() {
 		Control control;
 		public void createControl(Composite parent) {
 			control = new Canvas(parent, SWT.NONE);
