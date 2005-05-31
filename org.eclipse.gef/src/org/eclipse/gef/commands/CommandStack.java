@@ -111,13 +111,14 @@ public boolean canUndo() {
 }
 
 /**
- * Executes the specified Command if possible.  Prior to executing the command, a
+ * Executes the specified Command if possible. Prior to executing the command, a
  * CommandStackEvent for {@link #PRE_EXECUTE} will be fired to event listeners. 
- * Similarly, after attempting to execute the command, an event for {@link
- * #POST_EXECUTE} will be fired.  If the execution of the command completely
- * normally,  stack listeners will receive {@link
- * CommandStackListener#commandStackChanged(EventObject) stackChanged} notification.
- * <P> If the command is <code>null</code> or cannot be executed, nothing happens.
+ * Similarly, after attempting to execute the command, an event for {@link #POST_EXECUTE}
+ * will be fired.  If the execution of the command completely normally,  stack listeners
+ * will receive {@link CommandStackListener#commandStackChanged(EventObject) stackChanged}
+ * notification.
+ * <P>
+ * If the command is <code>null</code> or cannot be executed, nothing happens.
  * @param command the Command to execute
  * @see CommandStackEventListener
  */
