@@ -204,7 +204,7 @@ private int getBidiPrefixLength(TextFragmentBox box, int index) {
  * @since 3.1
  */
 private String getBidiSubstring(TextFragmentBox box, int index) {
-	if (bidiInfo == null || box.getBidiLevel() < 1)
+	if (box.getBidiLevel() < 1)
 		return getText().substring(box.offset, box.offset + box.length);
 	
 	StringBuffer buffer = new StringBuffer(box.length + 3);
@@ -242,31 +242,42 @@ public CaretInfo getCaretPlacement(int offset, boolean trailing) {
 	do
 		box = (TextFragmentBox)fragments.get(--i);
 	while (offset < box.offset && i > stop);
+	
+	//Can not be trailing and after the last char, so go to first char in next box
 	if (trailing && box.offset + box.length <= offset) {
 		box = (TextFragmentBox)fragments.get(++i);
 		offset = box.offset;
 		trailing = false;
 	}
 	
-	offset -= box.offset;
-	offset = Math.min(box.length, offset);
-	
-	TextLayout layout = FlowUtilities.getTextLayout();
-	layout.setFont(getFont());
-
-	String fragString = getBidiSubstring(box, i);
-	if (bidiInfo != null)
-		offset += getBidiPrefixLength(box, i);
-
-	layout.setText(fragString);
-	Point where = new Point(layout.getLocation(offset, trailing));
-	if (isMirrored())
-		where.x = box.width - where.x;
-	where.translate(box.getX(), box.getTextTop());
+	Point where = getPointInBox(box, offset, i, trailing);
 	CaretInfo info = new CaretInfo(where.x, where.y, box.getAscent(), box.getDescent(), 
 			box.getLineRoot().getAscent(), box.getLineRoot().getDescent());
 	translateToAbsolute(info);
 	return info;
+}
+
+Point getPointInBox(TextFragmentBox box, int offset, int index, boolean trailing) {
+	offset -= box.offset;
+	offset = Math.min(box.length, offset);
+	Point result = new Point(0, box.getLineRoot().getVisibleTop());
+	if (bidiInfo == null) {
+		if (trailing)
+			offset++; //Hopefully, offset <= box.length
+		String substring = getText().substring(box.offset, box.offset + offset);
+		result.x = FigureUtilities.getStringExtents(substring, getFont()).width;
+	} else {
+		TextLayout layout = FlowUtilities.getTextLayout();
+		layout.setFont(getFont());
+		String fragString = getBidiSubstring(box, index);
+		layout.setText(fragString);
+		offset += getBidiPrefixLength(box, index);
+		result.x = layout.getLocation(offset, trailing).x;
+		if (isMirrored())
+			result.x = box.width - result.x;
+	}
+	result.x += box.getX();
+	return result;
 }
 
 int getDescent() {
@@ -274,12 +285,12 @@ int getDescent() {
 }
 
 /**
- * Returns the first caret position which occupies the line at the given y location. 
- * The y location is relative to this figure.  If no fragment occupies that y coordinate,
- * <code>-1</code> is returned.
+ * Returns the minimum offset whose caret location overlaps the given baseline
+ * y-coordinate. The y location is relative to this figure. If no fragment occupies that y
+ * coordinate, <code>-1</code> is returned.
  * @since 3.1
- * @param y the baseline's y coordinate
- * @return -1 of the first offset at the given baseline
+ * @param y the relative y coordinate
+ * @return -1 of the smallest offset for the line
  */
 public int getFirstOffsetForLine(int y) {
 	TextFragmentBox box;
@@ -293,9 +304,9 @@ public int getFirstOffsetForLine(int y) {
 }
 
 /**
- * Returns the last caret position which occupies the line at the given y location. 
- * The y location is relative to this figure.  If no fragment occupies that y coordinate,
- * <code>-1</code> is returned.
+ * Returns the maximum offset whose caret location overlaps the given baseline
+ * y-coordinate. The y location is relative to this figure. If no fragment occupies that y
+ * coordinate, <code>-1</code> is returned.
  * @since 3.1
  * @param baseline the baseline's y coordinate
  * @return -1 of the last  offset at the given baseline
@@ -476,7 +487,6 @@ protected void paintFigure(Graphics g) {
 		
 	for (int i = 0; i < fragments.size(); i++) {
 		frag = (TextFragmentBox)fragments.get(i);
-		g.setBackgroundColor(ColorConstants.red);
 //		g.drawLine(frag.getX(), frag.getLineRoot().getVisibleTop(),
 //				frag.getWidth() + frag.getX(), frag.getLineRoot().getVisibleTop());
 //		g.drawLine(frag.getX(), frag.getBaseline(), frag.getWidth() + frag.getX(), frag.getBaseline());
@@ -529,7 +539,7 @@ protected void paintSelection(Graphics graphics) {
 	for (int i = 0; i < fragments.size(); i++) {
 		frag = (TextFragmentBox)fragments.get(i);
 		//Loop until first visible fragment
-		if (frag.offset + frag.length <= selectionStart)//The + 1 is for disabled text
+		if (frag.offset + frag.length <= selectionStart)
 			continue;
 		if (frag.offset > selectionEnd)
 			return;
@@ -538,22 +548,11 @@ protected void paintSelection(Graphics graphics) {
 			int height = frag.getLineRoot().getVisibleBottom() - y;
 			graphics.fillRectangle(frag.getX(), y, frag.getWidth(), height);
 		} else if (selectionEnd > frag.offset && selectionStart < frag.offset + frag.length) {
-			int prefixCorrection = getBidiPrefixLength(frag, i);
-			String text = getBidiSubstring(frag, i);
-
-			TextLayout layout = FlowUtilities.getTextLayout();
-			layout.setFont(graphics.getFont());
-			layout.setText(text);
-			Rectangle rect = new Rectangle();
-			rect.x = layout.getLocation(
-					Math.max(selectionStart - frag.offset, 0) + prefixCorrection,
-					false).x;
-			rect.union(layout.getLocation(Math.min(selectionEnd - frag.offset,
-					frag.length) - 1 + prefixCorrection, true).x, 0);
+			Point p1 = getPointInBox(frag, selectionStart, i, false);
+			Point p2 = getPointInBox(frag, selectionEnd - 1, i, true);
+			Rectangle rect = new Rectangle(p1, p2);
 			rect.width--;
-			if (isMirrored())
-				rect.x = frag.getWidth() - (rect.x + rect.width);
-			rect.translate(frag.getX(), frag.getLineRoot().getVisibleTop());
+			rect.y = frag.getLineRoot().getVisibleTop();
 			rect.height = frag.getLineRoot().getVisibleBottom() - rect.y;
 			graphics.fillRectangle(rect);
 		}
@@ -561,7 +560,7 @@ protected void paintSelection(Graphics graphics) {
 }
 
 private void paintText(Graphics g, String draw, int x, int y, int bidiLevel) {
-	if (bidiLevel < 1) {
+	if (bidiLevel == -1) {
 		g.drawString(draw, x, y);
 	} else {
 		TextLayout tl = FlowUtilities.getTextLayout();
