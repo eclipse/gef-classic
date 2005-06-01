@@ -13,7 +13,7 @@ package org.eclipse.draw2d.graph;
 import org.eclipse.draw2d.geometry.Insets;
 
 /**
- * @deprecated As of 3.1, This class is for internal use only
+ * @deprecated As of 3.1, this class is for internal use only.
  * @author Randy Hudson
  * @since 2.1.2
  */
@@ -85,9 +85,10 @@ public int omega() {
  * @see java.lang.Object#toString()
  */
 public String toString() {
-	Edge e = (Edge)data;
-	return "VN[" + (e.vNodes.indexOf(this) + 1) //$NON-NLS-1$
-		+ "](" + data + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+	if (data instanceof Edge)
+		return "VN[" + (((Edge)data).vNodes.indexOf(this) + 1) //$NON-NLS-1$
+				+ "](" + data + ")"; //$NON-NLS-1$ //$NON-NLS-2$ 
+	return super.toString();
 }
 
 }
