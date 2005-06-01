@@ -62,7 +62,9 @@ public static FontMetrics getFontMetrics(Font f) {
 }
 
 /**
- * Returns the GC used for various utilities.
+ * Returns the GC used for various utilities. Advanced graphics must not be switched on by
+ * clients using this GC.
+ * @deprecated do not mess with this GC
  * @return the GC
  */
 protected static GC getGC() {
