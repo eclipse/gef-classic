@@ -166,8 +166,8 @@ private double getFitXZoomLevel(int which) {
 		fig = fig.getParent();
 	}
 
-	double scaleX = available.width * zoom * multiplier / desired.width;
-	double scaleY = available.height * zoom * multiplier / desired.height;
+	double scaleX = available.width * zoom / desired.width;
+	double scaleY = available.height * zoom / desired.height;
 	if (which == 0)
 		return scaleX;
 	if (which == 1)
@@ -419,17 +419,17 @@ public void setZoomAnimationStyle(int style) {
  */
 public void setZoomAsText(String zoomString) {
 	if (zoomString.equalsIgnoreCase(FIT_HEIGHT)) {
-		primSetZoom(getFitHeightZoomLevel() / multiplier);
+		primSetZoom(getFitHeightZoomLevel());
 		viewport.getUpdateManager().performUpdate();
 		viewport.setViewLocation(viewport.getHorizontalRangeModel().getValue(), 
 				viewport.getVerticalRangeModel().getMinimum());
 	} else if (zoomString.equalsIgnoreCase(FIT_ALL)) {
-		primSetZoom(getFitPageZoomLevel() / multiplier);
+		primSetZoom(getFitPageZoomLevel());
 		viewport.getUpdateManager().performUpdate();
 		viewport.setViewLocation(viewport.getHorizontalRangeModel().getMinimum(), 
 				viewport.getVerticalRangeModel().getMinimum());
 	} else if (zoomString.equalsIgnoreCase(FIT_WIDTH)) {
-		primSetZoom(getFitWidthZoomLevel() / multiplier);
+		primSetZoom(getFitWidthZoomLevel());
 		viewport.getUpdateManager().performUpdate();
 		viewport.setViewLocation(viewport.getHorizontalRangeModel().getMinimum(),
 				viewport.getVerticalRangeModel().getValue());
