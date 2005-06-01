@@ -153,8 +153,8 @@ protected void layout() {
 	if (textFlow.getBorder() instanceof FlowBorder)
 		border = (FlowBorder)textFlow.getBorder();
 
-	SegmentLookahead lookahead = new SegmentLookahead(segments, border == null ? 0 : 5);
-	int seg;	
+	SegmentLookahead lookahead = new SegmentLookahead(segments, border == null ? 0 : border.getRightMargin());
+	int seg;
 	
 	if (border != null) {
 		fragment = getFragment(fragIndex++, fragments);
