@@ -106,6 +106,11 @@ abstract class ToggleButtonTracker extends SingleSelectionTracker {
 		}
 		return true;
 	}
+
+	protected boolean handleNativeDragFinished(DragSourceEvent event) {
+		getPaletteViewer().setActiveTool(null);
+		return true;
+	}
 }
 
 class GTKToggleButtonTracker extends ToggleButtonTracker {
@@ -113,19 +118,18 @@ class GTKToggleButtonTracker extends ToggleButtonTracker {
 	
 	public void deactivate() {
 		disableTimer();
-		
-		if (gtkState != 2) {
-			getButtonModel().setArmed(false);
-			getButtonModel().setPressed(false);
-		}
 		super.deactivate();
 	}
 	
 	protected boolean handleButtonUp(int button) {
 		disableTimer();
 		
-		if (gtkState == 0)
-			gtkState = 2;
+		// Workaround for Bug 96351.  It should be removed when Bug 35585 is fixed.
+		if (gtkState == 1) {
+			handleNativeDragFinished(null);
+			return true;
+		}
+		
 		if (button == 1) {
 			getButtonModel().setPressed(false);
 			getButtonModel().setArmed(false);
@@ -135,17 +139,9 @@ class GTKToggleButtonTracker extends ToggleButtonTracker {
 	
 	protected boolean handleNativeDragStarted(DragSourceEvent event) {
 		disableTimer();
-		
 		gtkState = 1;
-        getButtonModel().setArmed(false);
-		getButtonModel().setPressed(false);
 		return true;
-	}
-	
-	protected boolean handleNativeDragFinished(DragSourceEvent event) {
-		getPaletteViewer().setActiveTool(null);
-		return true;
-	}
+	}	
 }
 
 class OtherToggleButtonTracker extends ToggleButtonTracker {
@@ -195,11 +191,6 @@ class OtherToggleButtonTracker extends ToggleButtonTracker {
 
 		getButtonModel().setPressed(false);
 		getButtonModel().setArmed(false);
-		return true;
-	}
-
-	protected boolean handleNativeDragFinished(DragSourceEvent event) {
-		getPaletteViewer().setActiveTool(null);
 		return true;
 	}
 }
