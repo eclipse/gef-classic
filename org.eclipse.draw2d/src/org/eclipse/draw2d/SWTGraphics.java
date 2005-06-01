@@ -200,6 +200,8 @@ static final int TEXT_AA_MASK;
 static final int TEXT_AA_SHIFT;
 static final int XOR_MASK;
 static final int XOR_SHIFT;
+static final int ADVANCED_MASK;
+static final int ADVANCED_SHIFT;
 
 static {
 	XOR_SHIFT = 3;
@@ -209,6 +211,7 @@ static {
 	TEXT_AA_SHIFT = 10;
 	INTERPOLATION_SHIFT = 12;
 	FILL_RULE_SHIFT = 14;
+	ADVANCED_SHIFT = 15;
 
 	LINE_STYLE_MASK = 7;
 	AA_MASK = 3 << AA_SHIFT;
@@ -217,7 +220,8 @@ static {
 	INTERPOLATION_MASK = 3 << INTERPOLATION_SHIFT;
 	JOIN_MASK = 3 << JOIN_SHIFT;
 	TEXT_AA_MASK = 3 << TEXT_AA_SHIFT;
-	XOR_MASK = 1 << XOR_SHIFT;	
+	XOR_MASK = 1 << XOR_SHIFT;
+	ADVANCED_MASK = 1 << ADVANCED_SHIFT;
 }
 
 private final LazyState appliedState = new LazyState();
@@ -708,7 +712,7 @@ public void pushState() {
 	try {
 		State s;
 		currentState.dx = translateX;
-		currentState.dy = translateY;
+		currentState.dy = translateY; 
 		if (elementsNeedUpdate) {
 			elementsNeedUpdate = false;
 			transform.getElements(currentState.affineMatrix = new float[6]);
@@ -840,6 +844,7 @@ private void setAffineMatrix(float[] m) {
 	else if (transform != null) {
 		transform.dispose();
 		transform = null;
+		elementsNeedUpdate = false;
 	}
 	gc.setTransform(transform);
 }
