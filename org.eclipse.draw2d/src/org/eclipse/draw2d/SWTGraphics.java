@@ -22,6 +22,7 @@ import org.eclipse.swt.graphics.Path;
 import org.eclipse.swt.graphics.Pattern;
 import org.eclipse.swt.graphics.TextLayout;
 import org.eclipse.swt.graphics.Transform;
+import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -681,11 +682,11 @@ private void initTransform(boolean force) {
 	if (!force && translateX == 0 && translateY == 0)
 		return;
 	if (transform == null) {
-		transform = new Transform(null);
+		transform = new Transform(Display.getCurrent());
 		elementsNeedUpdate = true;
-		transform.translate(currentState.dx, currentState.dy);
-		currentState.dx = 0;
-		currentState.dy = 0;
+		transform.translate(translateX, translateY);
+		translateX = 0;
+		translateY = 0;
 		gc.setTransform(transform);
 	}
 }
@@ -835,10 +836,12 @@ private void setAffineMatrix(float[] m) {
 	if (!elementsNeedUpdate && currentState.affineMatrix == m)
 		return;
 	currentState.affineMatrix = m;
-	if (m == null)
-		transform.setElements(1, 0, 0, 1, 0, 0);
-	else
+	if (m != null)
 		transform.setElements(m[0], m[1], m[2], m[3], m[4], m[5]);
+	else if (transform != null) {
+		transform.dispose();
+		transform = null;
+	}
 	gc.setTransform(transform);
 }
 
