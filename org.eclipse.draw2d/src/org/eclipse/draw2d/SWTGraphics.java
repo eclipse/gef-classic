@@ -674,8 +674,7 @@ protected void init() {
 	
 	currentState.relativeClip = new RectangleClipping(gc.getClipping());
 	currentState.lineDash = gc.getLineDash();
-	//$HACK getAlpha() looks for Cairo on Linux
-	currentState.alpha = 255;
+	currentState.alpha = gc.getAlpha();
 }
 
 private void initTransform(boolean force) {
