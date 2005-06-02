@@ -15,16 +15,12 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.swt.graphics.Color;
-
 import org.eclipse.draw2d.AncestorListener;
-import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Connection;
 import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Polygon;
-import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
 
 import org.eclipse.gef.ConnectionEditPart;
@@ -53,13 +49,10 @@ private ConnectionAnchor originalAnchor;
 private FeedbackHelper feedbackHelper;
 private ConnectionFocus focus;
 
-static final Color XORFocusColor = new Color(null, 255, 255, 255);
-
 class ConnectionFocus
 	extends Polygon
 	implements PropertyChangeListener
 {
-	PointList second;
 	AncestorListener ancestorListener = new AncestorListener.Stub() {
 		public void ancestorMoved(IFigure ancestor) {
 			revalidate();
@@ -67,11 +60,8 @@ class ConnectionFocus
 	};
 	
 	ConnectionFocus() {
-		setForegroundColor(XORFocusColor);
-		setBackgroundColor(ColorConstants.black);
-		setXOR(true);
-		setLineStyle(Graphics.LINE_DOT);
 		setFill(false);
+		setXOR(true);
 		setOutline(true);
 	}
 	
@@ -80,10 +70,12 @@ class ConnectionFocus
 		getConnection().addPropertyChangeListener(Connection.PROPERTY_POINTS, this);
 		getConnection().addAncestorListener(ancestorListener);
 	}
+	
 	protected void outlineShape(Graphics g) {
+		g.setLineDash(new int[] {1, 1});
 		super.outlineShape(g);
-		g.drawPolygon(second);
 	}
+	
 	public void propertyChange(PropertyChangeEvent evt) {
 		revalidate();
 	}
@@ -102,23 +94,6 @@ class ConnectionFocus
 		points = StrokePointList.strokeList(points, 5);
 		translateToRelative(points);
 		setPoints(points);
-		second = new PointList(points.size() + 2);
-		int minY = Integer.MAX_VALUE;
-		int index = -1;
-		for (int i = 0; i < points.size(); i++) {
-			Point p = points.getPoint(i);
-			if (p.y < minY) {
-				minY = p.y;
-				index = i;
-			}
-			second.addPoint(p);
-		}
-		if (index != -1) {
-			second.insertPoint(points.getPoint(index), index);
-			second.insertPoint(points.getPoint(index).translate(0, -1), index + 1);
-			second.insertPoint(points.getPoint(index).translate(-1, -1), index + 1);
-			second.insertPoint(points.getPoint(index).translate(0, -2), index + 1);
-		}
 	}
 }
 
