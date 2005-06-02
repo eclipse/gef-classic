@@ -250,7 +250,7 @@ public static Shape makeGhostShape(Shape s) {
 public static Color mixColors(Color c1, Color c2, double weight) {
 	return new Color(null,
 			(int)(c1.getRed() * weight + c2.getRed() * (1 - weight)),
-			(int)(c1.getGreen() * weight + c2.getGreen() *(1 - weight)),
+			(int)(c1.getGreen() * weight + c2.getGreen() * (1 - weight)),
 			(int)(c1.getBlue() * weight + c2.getBlue() * (1 - weight)));
 }
 

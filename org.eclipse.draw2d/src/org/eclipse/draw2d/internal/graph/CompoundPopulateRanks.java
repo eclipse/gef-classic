@@ -64,7 +64,7 @@ private void bridgeSubgraph(Subgraph subgraph, CompoundDirectedGraph g) {
 		if (n instanceof Subgraph) {
 			Subgraph s = (Subgraph)n;
 			for (int r = s.head.rank; r <= s.tail.rank; r++)
-				occupied[r -offset] = true;
+				occupied[r - offset] = true;
 		} else
 			occupied[n.rank - offset] = true;
 	}

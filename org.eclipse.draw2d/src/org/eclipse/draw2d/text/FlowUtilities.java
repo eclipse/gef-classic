@@ -62,7 +62,7 @@ private static int findFirstDelimeter(String string) {
 
 private static float getAverageCharWidth(TextFragmentBox fragment, Font font) {
 	if (fragment.getWidth() > 0 && fragment.length != 0)
-		return fragment.getWidth()/ (float)fragment.length;
+		return fragment.getWidth() / (float)fragment.length;
 	return getFontMetrics(font).getAverageCharWidth();
 }
 
