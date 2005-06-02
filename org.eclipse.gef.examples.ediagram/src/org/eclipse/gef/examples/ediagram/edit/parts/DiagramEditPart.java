@@ -16,11 +16,14 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 
+import org.eclipse.draw2d.ConnectionLayer;
+import org.eclipse.draw2d.FanRouter;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.FreeformLayer;
 import org.eclipse.draw2d.FreeformLayout;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.MarginBorder;
+import org.eclipse.draw2d.ShortestPathConnectionRouter;
 
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.LayerConstants;
@@ -60,6 +63,13 @@ protected IFigure createFigure() {
 	Figure f = new FreeformLayer();
 	f.setBorder(new MarginBorder(5));
 	f.setLayoutManager(new FreeformLayout());
+	
+	ConnectionLayer connLayer = (ConnectionLayer)getLayer(LayerConstants.CONNECTION_LAYER);
+	FanRouter router = new FanRouter();
+	router.setSeparation(20);
+	router.setNextRouter(new ShortestPathConnectionRouter(f));
+	connLayer.setConnectionRouter(router);
+	
 	return f;
 }
 

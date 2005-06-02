@@ -42,15 +42,10 @@ import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
-import org.eclipse.draw2d.ConnectionLayer;
-import org.eclipse.draw2d.ShortestPathConnectionRouter;
-
 import org.eclipse.gef.ContextMenuProvider;
 import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.gef.EditPartViewer;
-import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.GraphicalViewer;
-import org.eclipse.gef.LayerConstants;
 import org.eclipse.gef.dnd.TemplateTransferDragSourceListener;
 import org.eclipse.gef.dnd.TemplateTransferDropTargetListener;
 import org.eclipse.gef.editparts.ScalableFreeformRootEditPart;
@@ -266,16 +261,6 @@ protected void initializeGraphicalViewer() {
 	GraphicalViewer viewer = getGraphicalViewer();
 	viewer.setContents(getModel()); // set the contents of this editor
 	
-	// add the ShortestPathConnectionRouter
-	ScalableFreeformRootEditPart root = 
-			(ScalableFreeformRootEditPart)viewer.getRootEditPart();
-	ConnectionLayer connLayer =
-			(ConnectionLayer)root.getLayer(LayerConstants.CONNECTION_LAYER);
-	GraphicalEditPart contentEditPart = (GraphicalEditPart)root.getContents();
-	ShortestPathConnectionRouter router = 
-			new ShortestPathConnectionRouter(contentEditPart.getFigure());
-	connLayer.setConnectionRouter(router);
-
 	// listen for dropped parts
 	viewer.addDropTargetListener(createTransferDropTargetListener());
 }

@@ -35,17 +35,11 @@ import org.eclipse.emf.ecore.resource.Resource.IOWrappedException;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.DanglingHREFException;
 
-import org.eclipse.draw2d.ConnectionLayer;
-import org.eclipse.draw2d.FanRouter;
-import org.eclipse.draw2d.ShortestPathConnectionRouter;
-
 import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.gef.EditPart;
-import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.KeyHandler;
 import org.eclipse.gef.KeyStroke;
-import org.eclipse.gef.LayerConstants;
 import org.eclipse.gef.MouseWheelHandler;
 import org.eclipse.gef.MouseWheelZoomHandler;
 import org.eclipse.gef.RequestConstants;
@@ -220,19 +214,6 @@ protected void initializeGraphicalViewer() {
 	viewer.setContents(diagram);
 	viewer.addDropTargetListener(new DiagramDropTargetListener(viewer));
 	viewer.addDropTargetListener(new EDiagramPaletteDropListener(viewer));
-	
-	// add the router
-	ScalableFreeformRootEditPart root = 
-			(ScalableFreeformRootEditPart)viewer.getRootEditPart();
-	ConnectionLayer connLayer =
-			(ConnectionLayer)root.getLayer(LayerConstants.CONNECTION_LAYER);
-	GraphicalEditPart contentEditPart = (GraphicalEditPart)root.getContents();
-	FanRouter router = new FanRouter();
-	router.setSeparation(20);
-	ShortestPathConnectionRouter spRouter = 
-			new ShortestPathConnectionRouter(contentEditPart.getFigure()); 
-	router.setNextRouter(spRouter);
-	connLayer.setConnectionRouter(router);
 }
 
 public boolean isSaveAsAllowed() {
