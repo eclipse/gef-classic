@@ -76,11 +76,12 @@ private List createHandlesForUserBendpoints() {
 	ConnectionEditPart connEP = (ConnectionEditPart)getHost();
 	PointList points = getConnection().getPoints();
 	List bendPoints = (List)getConnection().getRoutingConstraint();
-	
 	int bendPointIndex = 0;
 	Point currBendPoint = null;
 	
-	if (!bendPoints.isEmpty())
+	if (bendPoints == null)
+		bendPoints = NULL_CONSTRAINT;
+	else if (!bendPoints.isEmpty())
 		currBendPoint = ((Bendpoint)bendPoints.get(0)).getLocation();
 	
 	for (int i = 0; i < points.size() - 1; i++) {
@@ -195,7 +196,6 @@ protected abstract Command getDeleteBendpointCommand(BendpointRequest request);
 protected abstract Command getMoveBendpointCommand(BendpointRequest request);
 
 private boolean isAutomaticallyBending() {
-	//@TODO when is this called? Will it handle null constraint?
 	List constraint = (List)getConnection().getRoutingConstraint();
 	PointList points = getConnection().getPoints();
 	return ((points.size() > 2) && (constraint == null || constraint.isEmpty()));
