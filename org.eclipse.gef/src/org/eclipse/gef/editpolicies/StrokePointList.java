@@ -36,7 +36,7 @@ static PointList strokeList(PointList list, int offset) {
 	BasicStroke stroke = new BasicStroke(
 		offset * 2,
 		BasicStroke.CAP_SQUARE,
-		BasicStroke.JOIN_ROUND, 10.0f);
+		BasicStroke.JOIN_MITER, 10.0f);
 	Shape stroked = stroke.createStrokedShape(path);
 	Area area = new Area(stroked);
 	PathIterator iter = area.getPathIterator(null, 10.0f);
