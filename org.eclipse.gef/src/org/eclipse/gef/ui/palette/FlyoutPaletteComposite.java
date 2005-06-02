@@ -925,8 +925,8 @@ private class TitleDragManager
 		}
 		tracker.dispose();
 	}
-	public void mouseEnter(MouseEvent e) {}
-	public void mouseExit(MouseEvent e) {}
+	public void mouseEnter(MouseEvent e) { }
+	public void mouseExit(MouseEvent e) { }
 	public void mouseHover(MouseEvent e) {
 		/*
 		 * @TODO:Pratik   Mouse hover events are received if the hover occurs just before 

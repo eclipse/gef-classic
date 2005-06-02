@@ -61,11 +61,11 @@ public static final ImageDescriptor DESC_BLOCK_ALIGN_RIGHT;
 
 static {
 	DESC_BOLD = createDescriptor("icons/style_bold.gif"); //$NON-NLS-1$
-	DESC_ITALIC= createDescriptor("icons/style_italic.gif"); //$NON-NLS-1$
+	DESC_ITALIC = createDescriptor("icons/style_italic.gif"); //$NON-NLS-1$
 	DESC_UNDERLINE = createDescriptor("icons/style_underline.gif"); //$NON-NLS-1$
 	
-	DESC_BLOCK_LTR= createDescriptor("icons/style_paragraph_ltr.gif"); //$NON-NLS-1$
-	DESC_BLOCK_RTL= createDescriptor("icons/style_paragraph_rtl.gif"); //$NON-NLS-1$
+	DESC_BLOCK_LTR = createDescriptor("icons/style_paragraph_ltr.gif"); //$NON-NLS-1$
+	DESC_BLOCK_RTL = createDescriptor("icons/style_paragraph_rtl.gif"); //$NON-NLS-1$
 	
 	DESC_BLOCK_ALIGN_LEFT = createDescriptor("icons/style_paragraph_left.gif"); //$NON-NLS-1$
 	DESC_BLOCK_ALIGN_CENTER = createDescriptor("icons/style_paragraph_center.gif"); //$NON-NLS-1$
