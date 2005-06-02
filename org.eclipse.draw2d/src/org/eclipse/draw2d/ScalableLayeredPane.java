@@ -41,8 +41,20 @@ public Rectangle getClientArea(Rectangle rect) {
 /**
  * @see Figure#getPreferredSize(int, int)
  */
+public Dimension getMinimumSize(int wHint, int hHint) {
+	Dimension d = super.getMinimumSize((int) (wHint / getScale()), (int)(hHint / getScale()));
+	int w = getInsets().getWidth();
+	int h = getInsets().getHeight();
+	return d.getExpanded(-w, -h)
+		.scale(scale)
+		.expand(w, h);
+}
+
+/**
+ * @see Figure#getPreferredSize(int, int)
+ */
 public Dimension getPreferredSize(int wHint, int hHint) {
-	Dimension d = super.getPreferredSize(wHint, hHint);
+	Dimension d = super.getPreferredSize((int) (wHint / getScale()), (int)(hHint / getScale()));
 	int w = getInsets().getWidth();
 	int h = getInsets().getHeight();
 	return d.getExpanded(-w, -h)
@@ -74,15 +86,13 @@ protected void paintClientArea(Graphics graphics) {
 	if (scale == 1.0) {
 		super.paintClientArea(graphics);
 	} else {
-		ScaledGraphics g = new ScaledGraphics(graphics);
 		boolean optimizeClip = getBorder() == null || getBorder().isOpaque();
 		if (!optimizeClip)
-			g.clipRect(getBounds().getCropped(getInsets()));
-		g.scale(scale);
-		g.pushState();
-		paintChildren(g);
-		g.dispose();
-		graphics.restoreState();
+			graphics.clipRect(getBounds().getCropped(getInsets()));
+		graphics.scale(scale);
+		graphics.pushState();
+		paintChildren(graphics);
+		graphics.popState();
 	}
 }
 
