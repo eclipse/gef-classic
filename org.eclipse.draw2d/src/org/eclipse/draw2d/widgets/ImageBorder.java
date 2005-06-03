@@ -59,7 +59,7 @@ public void paint(IFigure figure, Graphics graphics, Insets insets) {
 		return;
 	Rectangle rect = getPaintRectangle(figure, insets);
 	int x = rect.x;
-	int y = rect.y + (rect.height - imageSize.height)/2;
+	int y = rect.y + (rect.height - imageSize.height) / 2;
 	graphics.drawImage(getImage(), x, y);
 }
 
