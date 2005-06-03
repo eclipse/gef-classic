@@ -24,7 +24,6 @@ import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.internal.GEFMessages;
 import org.eclipse.gef.ui.actions.AlignmentRetargetAction;
-import org.eclipse.gef.ui.actions.DeleteRetargetAction;
 import org.eclipse.gef.ui.actions.GEFActionConstants;
 import org.eclipse.gef.ui.actions.MatchHeightRetargetAction;
 import org.eclipse.gef.ui.actions.MatchWidthRetargetAction;
@@ -46,7 +45,6 @@ public class LogicActionBarContributor
 protected void buildActions() {
 	addRetargetAction(new UndoRetargetAction());
 	addRetargetAction(new RedoRetargetAction());
-	addRetargetAction(new DeleteRetargetAction());
 	
 	addRetargetAction(new IncrementRetargetAction());
 	addRetargetAction(new DecrementRetargetAction());
@@ -83,6 +81,7 @@ protected void declareGlobalActionKeys() {
 	addGlobalActionKey(ActionFactory.PRINT.getId());
 	addGlobalActionKey(ActionFactory.SELECT_ALL.getId());
 	addGlobalActionKey(ActionFactory.PASTE.getId());
+	addGlobalActionKey(ActionFactory.DELETE.getId());
 }
 
 /**
