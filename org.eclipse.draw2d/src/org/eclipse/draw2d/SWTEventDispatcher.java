@@ -531,7 +531,7 @@ protected void updateHoverSource(org.eclipse.swt.events.MouseEvent me) {
 	/* 
 	 * Derive source from figure under cursor.
 	 * Set the source in setHoverSource();
-	 * If figure.getToolTip() is null, get parents toolTip
+	 * If figure.getToolTip() is null, get parent's toolTip
 	 * Continue parent traversal until a toolTip is found or root is reached.
 	 */
 	if (cursorTarget != null) {
