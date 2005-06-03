@@ -11,7 +11,8 @@
 package org.eclipse.draw2d.geometry;
 
 /**
- * 
+ * A Rectangle implementation using floating point values which are truncated into the inherited
+ * integer fields. The use of floating point prevents rounding errors from accumulating.
  * @author hudsonr
  * Created on Apr 9, 2003
  */
@@ -206,7 +207,7 @@ public PrecisionRectangle union(PrecisionRectangle other) {
  * overridden in this class.
  * @since 3.0
  */
-public final void updateInts() {
+public void updateInts() {
 	x = (int)Math.floor(preciseX + 0.000000001);
 	y = (int)Math.floor(preciseY + 0.000000001);
 	width = (int)Math.floor(preciseWidth + preciseX + 0.000000001) - x;

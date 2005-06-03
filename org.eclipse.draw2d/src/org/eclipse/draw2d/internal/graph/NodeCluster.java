@@ -60,7 +60,7 @@ class NodeCluster extends NodeList {
 		adjustRank(delta);
 		NodeCluster neighbor;
 		CollapsedEdges edges;
-		if (HorizontalPlacement.debugCount != - 1) {
+		if (HorizontalPlacement.debugCount != -1) {
 			for (int i = 0; i < size(); i++)
 				HorizontalPlacement.lastAdjusted.add(((Node)get(i)).data);
 		}

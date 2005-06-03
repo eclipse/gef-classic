@@ -134,7 +134,7 @@ public void revisit(DirectedGraph g) {
 		}
 		if (e.target instanceof SubgraphBoundary) {
 			e.target.incoming.remove(e);
-			e.target= e.target.getParent();
+			e.target = e.target.getParent();
 		}
 	}
 }

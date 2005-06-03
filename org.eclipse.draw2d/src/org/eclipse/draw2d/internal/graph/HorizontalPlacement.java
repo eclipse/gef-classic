@@ -201,7 +201,7 @@ private void balanceClusters() {
 		
 		if (step == debugCount)
 			return;
-		if (i == 1 && debugCount != - 1)
+		if (i == 1 && debugCount != -1)
 			lastAdjusted.clear();
 		NodeCluster c = (NodeCluster)allClusters.get(i);
 		int delta = c.getPull();

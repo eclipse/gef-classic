@@ -157,9 +157,6 @@ public void init(DirectedGraph g) {
 			public int compare(Object left, Object right) {
 				return ((Node)left).rowOrder - ((Node)right).rowOrder;
 			}
-			public boolean equals(Object obj) {
-				return false;
-			}
 		});
 		postSort();
 	}

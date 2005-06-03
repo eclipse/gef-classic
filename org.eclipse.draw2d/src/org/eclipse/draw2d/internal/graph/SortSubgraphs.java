@@ -36,8 +36,8 @@ CompoundDirectedGraph g;
 
 NestingTree nestingTrees[];
 
-Set OGedges = new HashSet();
-Set OGmembers = new HashSet();
+Set orderingGraphEdges = new HashSet();
+Set orderingGraphNodes = new HashSet();
 NodePair pair = new NodePair();
 
 private void breakSubgraphCycles() {
@@ -46,7 +46,7 @@ private void breakSubgraphCycles() {
 
 	int index = 1;
 	//Identify all initial nodes for removal
-	for (Iterator iter = OGmembers.iterator(); iter.hasNext();) {
+	for (Iterator iter = orderingGraphNodes.iterator(); iter.hasNext();) {
 		Node node = (Node)iter.next();
 		if (node.x == 0)
 			sortedInsert(noLefts, node);
@@ -58,7 +58,7 @@ private void breakSubgraphCycles() {
 		while (noLefts.size() > 0) {
 			Node node = (Node)noLefts.remove(noLefts.size() - 1);
 			node.sortValue = index++;
-			OGmembers.remove(node);
+			orderingGraphNodes.remove(node);
 //			System.out.println("removed:" + node);
 			NodeList rightOf = rightOf(node);
 			if (rightOf == null)
@@ -72,7 +72,7 @@ private void breakSubgraphCycles() {
 		}
 		cycleRoot = null;
 		double min = Double.MAX_VALUE;
-		for (Iterator iter = OGmembers.iterator(); iter.hasNext();) {
+		for (Iterator iter = orderingGraphNodes.iterator(); iter.hasNext();) {
 			Node node = (Node)iter.next();
 			if (node.sortValue < min) {
 				cycleRoot = node;
@@ -118,11 +118,11 @@ private void buildSubgraphOrderingGraph(NestingTree entry) {
 			pair.n2 = ((NestingTree)right).subgraph;
 			buildSubgraphOrderingGraph((NestingTree)right);
 		}
-		if (pair.n1 != null && !OGedges.contains(pair)) {
-			OGedges.add(pair);
+		if (pair.n1 != null && !orderingGraphEdges.contains(pair)) {
+			orderingGraphEdges.add(pair);
 			leftToRight(pair.n1, pair.n2);
-			OGmembers.add(pair.n1);
-			OGmembers.add(pair.n2);
+			orderingGraphNodes.add(pair.n1);
+			orderingGraphNodes.add(pair.n2);
 			pair.n2.x++; //Using x field to count predecessors.
 			pair = new NodePair(pair.n2, null);
 		} else {

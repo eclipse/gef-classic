@@ -80,8 +80,7 @@ public class MultiValueMap {
 			if (value.equals(current)) {
 				iter.remove();
 				return value;
-			}
-			else if (current instanceof List) {
+			} else if (current instanceof List) {
 				if (((List)current).remove(value)) {
 					if (((List)current).isEmpty())
 						iter.remove();
