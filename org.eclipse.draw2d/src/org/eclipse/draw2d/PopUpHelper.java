@@ -71,7 +71,7 @@ protected LightweightSystem createLightweightSystem() {
 }
 
 /**
- * Creates a new Shell object with the parameters SWT.NO_TRIM | SWT.NO_FOCUS | SWT.ON_TOP.
+ * Creates a new Shell object with the style specified for this helper.
  * 
  * @return the newly created Shell
  * @since 2.0
