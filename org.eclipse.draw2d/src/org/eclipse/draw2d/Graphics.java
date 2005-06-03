@@ -530,6 +530,16 @@ public double getAbsoluteScale() {
 }
 
 /**
+ * Returns the current alpha value of the graphics.
+ * @return the alpha value
+ * @since 3.1
+ */
+public int getAlpha() {
+	subclassFunctionMission();
+	return 255;
+}
+
+/**
  * Returns the anti-aliasing setting value, which will be one of <code>SWT.DEFAULT</code>,
  * <code>SWT.OFF</code> or <code>SWT.ON</code>. Note that this controls anti-aliasing for
  * all <em>non-text</em> drawing operations.
@@ -538,6 +548,7 @@ public double getAbsoluteScale() {
  * @since 3.1
  */
 public int getAntialias() {
+	subclassFunctionMission();
 	return SWT.DEFAULT;
 }
 
@@ -602,6 +613,7 @@ public int getInterpolation() {
  * @since 3.1
  */
 public int getLineCap() {
+	subclassFunctionMission();
 	return SWT.CAP_FLAT;
 }
 
@@ -615,6 +627,7 @@ public int getLineCap() {
  * @return the join style used for drawing lines
  */
 public int getLineJoin() {
+	subclassFunctionMission();
 	return SWT.JOIN_MITER;
 }
 
@@ -651,6 +664,7 @@ private PointList getPointList(int[] points) {
  * @since 3.1
  */
 public int getTextAntialias() {
+	subclassFunctionMission();
 	return SWT.DEFAULT;
 }
 
@@ -684,7 +698,9 @@ public abstract void restoreState();
  * @param degrees the degrees to rotate
  * @since 3.1
  */
-public void rotate(float degrees) { }
+public void rotate(float degrees) {
+	subclassFunctionMission();
+}
 
 /**
  * Scales this graphics object by the given amount.
@@ -693,13 +709,25 @@ public void rotate(float degrees) { }
 public abstract void scale(double amount);
 
 /**
+ * Scales the graphics by the given horizontal and vertical components.
+ * @param horizontal the horizontal scaling factor
+ * @param vertical the vertical scaling factor
+ * @since 3.1
+ */
+public void scale(float horizontal, float vertical) {
+	subclassFunctionMission();
+}
+
+/**
  * Sets the alpha to the given value.  Values may range from 0 to 255.  A value
  * of 0 is completely transparent.
  * 
  * @param alpha an alpha value (0-255)
  * @since 3.1
  */
-public void setAlpha(int alpha) { }
+public void setAlpha(int alpha) {
+	subclassFunctionMission();
+}
 
 /**
  * Sets the anti-aliasing value to the parameter, which must be one of
@@ -708,7 +736,9 @@ public void setAlpha(int alpha) { }
  * 
  * @param value the anti-alias value
  */
-public void setAntialias(int value) { }
+public void setAntialias(int value) {
+	subclassFunctionMission();
+}
 
 /**
  * Sets the background color.
@@ -792,7 +822,9 @@ public void setInterpolation(int interpolation) {
  * @param cap the line cap
  * @since 3.1
  */
-public void setLineCap(int cap) { }
+public void setLineCap(int cap) {
+	subclassFunctionMission();
+}
 
 /**
  * Sets the dash pattern when the custom line style is in use. Because this
@@ -801,7 +833,9 @@ public void setLineCap(int cap) { }
  * @param dash the pixel pattern
  * @since 3.1
  */
-public void setLineDash(int dash[]) { }
+public void setLineDash(int dash[]) {
+	subclassFunctionMission();
+}
 
 /**
  * Sets the line join style to the argument, which must be one of the constants
@@ -810,7 +844,9 @@ public void setLineDash(int dash[]) { }
  * @param join the join type
  * @since 3.1
  */
-public void setLineJoin(int join) { }
+public void setLineJoin(int join) {
+	subclassFunctionMission();
+}
 
 /**
  * Sets the line style to the argument, which must be one of the constants
@@ -835,7 +871,21 @@ public abstract void setLineWidth(int width);
  * @param value the textual anti-alias setting
  * @since 3.1
  */
-public void setTextAntialias(int value) { }
+public void setTextAntialias(int value) {
+	subclassFunctionMission();
+}
+
+/**
+ * Modifies the current transformation by shearing the graphics in the specified
+ * horizontal and vertical amounts. Shearing can be used to produce effects like Italic
+ * fonts.
+ * @param horz the horizontal shearing amount
+ * @param vert the vertical shearming amount
+ * @since 3.1
+ */
+public void shear(float horz, float vert) {
+	subclassFunctionMission();
+}
 
 /**
  * Sets the XOR mode.
@@ -845,7 +895,7 @@ public abstract void setXORMode(boolean b);
 
 private void subclassFunctionMission() {
 	throw new RuntimeException("The class: " + getClass() //$NON-NLS-1$
-			+ " has not implemented this new functionality"); //$NON-NLS-1$
+			+ " has not implemented this new graphics function"); //$NON-NLS-1$
 }
 
 /**
