@@ -228,7 +228,6 @@ public boolean close() {
 	// Reset variables
 	entriesToPages.clear();
 	widgets.clear();
-	actions.clear();
 	actions = null;
 	activePage = null;
 	tree = null;
