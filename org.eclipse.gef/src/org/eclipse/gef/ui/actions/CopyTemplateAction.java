@@ -10,9 +10,6 @@
  *******************************************************************************/
 package org.eclipse.gef.ui.actions;
 
-import org.eclipse.swt.dnd.Transfer;
-import org.eclipse.swt.widgets.Display;
-
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -21,7 +18,6 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.actions.ActionFactory;
 
 import org.eclipse.gef.EditPart;
-import org.eclipse.gef.dnd.TemplateTransfer;
 import org.eclipse.gef.internal.GEFMessages;
 import org.eclipse.gef.palette.CombinedTemplateCreationEntry;
 import org.eclipse.gef.palette.PaletteTemplateEntry;
@@ -71,21 +67,6 @@ public void dispose() {
  * template.
  */
 public void run() {
-	org.eclipse.swt.dnd.Clipboard cb = 
-			new org.eclipse.swt.dnd.Clipboard(Display.getDefault());
-	cb.setContents(
-			new Object[] {template}, new Transfer[] {TemplateTransfer.getInstance()});
-	cb.dispose();
-	/*
-	 * The template is being added to the System clipboard so that it will clear other
-	 * items on the clipboard, and will be cleared when something else is placed on the
-	 * System clipboard (See Bug# 71395).  TemplateTransfer doesn't write the actual 
-	 * object to the Clipboard, but just refers to it instead.  This could get lost during 
-	 * a drag-and-drop from the palette.  To prevent that, we also set the template on the
-	 * GEF clipboard.  So, pasting is enabled based on the System clipboard, but the
-	 * actual template is retrieved from the GEF clipboard (since DND could have
-	 * over-written it in the TemplateTransfer instance).
-	 */
 	Clipboard.getDefault().setContents(template);
 }
 

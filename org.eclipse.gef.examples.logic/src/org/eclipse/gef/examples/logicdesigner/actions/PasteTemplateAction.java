@@ -12,10 +12,6 @@ package org.eclipse.gef.examples.logicdesigner.actions;
 
 import java.util.List;
 
-import org.eclipse.swt.dnd.Clipboard;
-import org.eclipse.swt.dnd.TransferData;
-import org.eclipse.swt.widgets.Display;
-
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.actions.ActionFactory;
 
@@ -23,9 +19,9 @@ import org.eclipse.draw2d.geometry.Point;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.commands.Command;
-import org.eclipse.gef.dnd.TemplateTransfer;
 import org.eclipse.gef.requests.CreateRequest;
 import org.eclipse.gef.requests.CreationFactory;
+import org.eclipse.gef.ui.actions.Clipboard;
 import org.eclipse.gef.ui.actions.SelectionAction;
 
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
@@ -37,7 +33,7 @@ import org.eclipse.gef.examples.logicdesigner.LogicMessages;
  * @author Eric Bordeau, Pratik Shah
  * @see org.eclipse.gef.ui.actions.CopyTemplateAction
  */
-public abstract class PasteTemplateAction 
+public abstract class PasteTemplateAction
 	extends SelectionAction 
 {
 
@@ -88,17 +84,7 @@ protected Command createPasteCommand() {
  * @return the clipboard's contents
  */
 protected Object getClipboardContents() {
-	Object result = null;
-	Clipboard cb = new Clipboard(Display.getDefault());
-	TransferData[] transferTypes = cb.getAvailableTypes();
-	for (int i = 0; i < transferTypes.length; i++) {
-		if (TemplateTransfer.getInstance().isSupportedType(transferTypes[i])) {
-			result = org.eclipse.gef.ui.actions.Clipboard.getDefault().getContents();
-			break;
-		}
-	}
-	cb.dispose();
-	return result;
+	return Clipboard.getDefault().getContents();
 }
 
 /**
