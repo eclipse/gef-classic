@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.gef.palette;
 
-import java.util.Map;
-
 import org.eclipse.gef.SharedImages;
 import org.eclipse.gef.internal.GEFMessages;
 import org.eclipse.gef.tools.MarqueeSelectionTool;
