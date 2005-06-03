@@ -1107,6 +1107,20 @@ public void translate(int dx, int dy) {
 		currentState.relativeClip.translate(-dx, -dy);
 }
 
+/**
+ * @see Graphics#translate(float, float)
+ */
+public void translate(float dx, float dy) {
+	initTransform(true);
+	checkGC();
+	transform.translate(dx, dy);
+	elementsNeedUpdate = true;
+	gc.setTransform(transform);
+	checkSharedClipping();
+	if (currentState.relativeClip != null)
+		currentState.relativeClip.translate(-dx, -dy);
+}
+
 private void translatePointArray(int[] points, int translateX, int translateY) {
 	if (translateX == 0 && translateY == 0)
 		return;

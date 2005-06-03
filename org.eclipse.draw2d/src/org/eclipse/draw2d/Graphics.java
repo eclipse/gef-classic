@@ -900,11 +900,24 @@ private void subclassFunctionMission() {
 
 /**
  * Translates the receiver's coordinates by the specified x and y amounts. All
- * subsequent painting will be performed in the resulting coordinate system.
+ * subsequent painting will be performed in the resulting coordinate system. Integer
+ * translation used by itself does not require or start the use of the advanced
+ * graphics system in SWT. It is emulated until advanced graphics are triggered.
  * @param dx the horizontal offset
  * @param dy the vertical offset
  */
 public abstract void translate(int dx, int dy);
+
+
+/**
+ * Modifies the current transform by translating the given x and y amounts. All
+ * subsequent painting will be performed in the resulting coordinate system.
+ * @param dx the horizontal offset
+ * @param dy the vertical offset
+ */
+public void translate(float dx, float dy) {
+	subclassFunctionMission();
+}
 
 /**
  * @see #translate(int, int)
