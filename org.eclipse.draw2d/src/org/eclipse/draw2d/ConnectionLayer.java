@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
+import org.eclipse.swt.SWT;
+
 /**
  * Layer designed specifically to handle the presence of connections. This is done due to
  * the necessity of having a router for the connections added.
@@ -17,6 +19,8 @@ package org.eclipse.draw2d;
 public class ConnectionLayer
 	extends FreeformLayer
 {
+
+int antialias = SWT.DEFAULT;
 
 /**
  * The ConnectionRouter used to route all connections on this layer.
@@ -52,6 +56,15 @@ public ConnectionRouter getConnectionRouter() {
 }
 
 /**
+ * @see IFigure#paint(Graphics)
+ */
+public void paint(Graphics graphics) {
+	if (antialias != SWT.DEFAULT)
+		graphics.setAntialias(antialias);
+	super.paint(graphics);
+}
+
+/**
  * Removes the figure from this Layer.  If the figure is a {@link Connection}, that
  * Connection's {@link ConnectionRouter} is set to <code>null</code>.
  * 
@@ -79,6 +92,17 @@ public void setConnectionRouter(ConnectionRouter router) {
 		if (figure instanceof Connection)
 			((Connection)figure).setConnectionRouter(router);
 	}
+}
+
+/**
+ * Sets whether antialiasing should be enabled for the connection layer. If this value is
+ * set to something other than {@link SWT#DEFAULT}, {@link Graphics#setAntialias(int)}
+ * will be called with the given value when painting this layer.
+ * @param antialias the antialias setting
+ * @since 3.1
+ */
+public void setAntialias(int antialias) {
+	this.antialias = antialias;
 }
 
 }
