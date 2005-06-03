@@ -13,6 +13,7 @@ package org.eclipse.draw2d;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontMetrics;
@@ -153,11 +154,11 @@ static class State
 {
 	float affineMatrix[];
 	int alpha;
-	int dx, dy;
-	int lineDash[];
-	
 	Pattern bgPattern;
+	int dx, dy;
+	
 	Pattern fgPattern;
+	int lineDash[];
 	
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
@@ -185,23 +186,27 @@ static class State
 }
 
 static final int AA_MASK;
-
 static final int AA_SHIFT;
+static final int AA_WHOLE_NUMBER = 2;
+static final int ADVANCED_GRAPHICS_MASK;
+static final int ADVANCED_HINTS_DEFAULTS;
+static final int ADVANCED_HINTS_MASK;
+static final int ADVANCED_SHIFT;
 static final int CAP_MASK;
 static final int CAP_SHIFT;
 static final int FILL_RULE_MASK;
 static final int FILL_RULE_SHIFT;
 static final int INTERPOLATION_MASK;
 static final int INTERPOLATION_SHIFT;
+static final int INTERPOLATION_WHOLE_NUMBER = 1;
 static final int JOIN_MASK;
 static final int JOIN_SHIFT;
 static final int LINE_STYLE_MASK;
+
 static final int TEXT_AA_MASK;
 static final int TEXT_AA_SHIFT;
 static final int XOR_MASK;
 static final int XOR_SHIFT;
-static final int ADVANCED_MASK;
-static final int ADVANCED_SHIFT;
 
 static {
 	XOR_SHIFT = 3;
@@ -221,7 +226,12 @@ static {
 	JOIN_MASK = 3 << JOIN_SHIFT;
 	TEXT_AA_MASK = 3 << TEXT_AA_SHIFT;
 	XOR_MASK = 1 << XOR_SHIFT;
-	ADVANCED_MASK = 1 << ADVANCED_SHIFT;
+	ADVANCED_GRAPHICS_MASK = 1 << ADVANCED_SHIFT;
+	
+	ADVANCED_HINTS_MASK = TEXT_AA_MASK | AA_MASK | INTERPOLATION_MASK;
+	ADVANCED_HINTS_DEFAULTS = ((SWT.DEFAULT + AA_WHOLE_NUMBER) << TEXT_AA_SHIFT)
+			| ((SWT.DEFAULT + AA_WHOLE_NUMBER) << AA_SHIFT)
+			| ((SWT.DEFAULT + INTERPOLATION_WHOLE_NUMBER) << INTERPOLATION_SHIFT);
 }
 
 private final LazyState appliedState = new LazyState();
@@ -285,6 +295,20 @@ protected final void checkPaint() {
 		gc.setLineWidth(appliedState.lineWidth = currentState.lineWidth);
 	if (!appliedState.bgColor.equals(currentState.bgColor))
 		gc.setBackground(appliedState.bgColor = currentState.bgColor);
+}
+
+/**
+ * @since 3.1
+ */
+private void checkSharedClipping() {
+	if (sharedClipping) {
+		sharedClipping = false;
+		
+		boolean previouslyApplied = (appliedState == currentState.relativeClip);
+		currentState.relativeClip = currentState.relativeClip.getCopy();
+		if (previouslyApplied)
+			appliedState.relativeClip = currentState.relativeClip;
+	}
 }
 
 /**
@@ -557,10 +581,17 @@ public void fillText(String s, int x, int y) {
 }
 
 /**
+ * @see Graphics#getAlpha()
+ */
+public int getAlpha() {
+	return currentState.alpha;
+}
+
+/**
  * @see Graphics#getAntialias()
  */
 public int getAntialias() {
-	return ((currentState.graphicHints & AA_MASK) >> AA_SHIFT) - 1;
+	return ((currentState.graphicHints & AA_MASK) >> AA_SHIFT) - AA_WHOLE_NUMBER;
 }
 
 /**
@@ -615,7 +646,8 @@ public Color getForegroundColor() {
  * @see Graphics#getInterpolation()
  */
 public int getInterpolation() {
-	return ((currentState.graphicHints & INTERPOLATION_MASK) >> INTERPOLATION_SHIFT) - 1;
+	return ((currentState.graphicHints & INTERPOLATION_MASK) >> INTERPOLATION_SHIFT)
+			- INTERPOLATION_WHOLE_NUMBER;
 }
 
 /**
@@ -650,7 +682,7 @@ public int getLineWidth() {
  * @see Graphics#getTextAntialias()
  */
 public int getTextAntialias() {
-	return gc.getTextAntialias();
+	return ((currentState.graphicHints & TEXT_AA_MASK) >> TEXT_AA_SHIFT) - AA_WHOLE_NUMBER;
 }
 
 /**
@@ -691,6 +723,7 @@ private void initTransform(boolean force) {
 		translateX = 0;
 		translateY = 0;
 		gc.setTransform(transform);
+		currentState.graphicHints |= ADVANCED_GRAPHICS_MASK;
 	}
 }
 
@@ -712,7 +745,8 @@ public void pushState() {
 	try {
 		State s;
 		currentState.dx = translateX;
-		currentState.dy = translateY; 
+		currentState.dy = translateY;
+				
 		if (elementsNeedUpdate) {
 			elementsNeedUpdate = false;
 			transform.getElements(currentState.affineMatrix = new float[6]);
@@ -726,7 +760,7 @@ public void pushState() {
 		sharedClipping = true;
 		stackPointer++;
 	} catch (CloneNotSupportedException e) {
-		throw new RuntimeException(e.getMessage());
+		throw new RuntimeException(e);
 	}
 }
 
@@ -760,6 +794,13 @@ private void reconcileHints(int applied, int hints) {
 			gc.setAntialias(((hints & AA_MASK) >> AA_SHIFT) - 1);
 		if ((changes & TEXT_AA_MASK) != 0)
 			gc.setTextAntialias(((hints & TEXT_AA_MASK) >> TEXT_AA_SHIFT) - 1);
+		
+		// If advanced was flagged, but none of the conditions which trigger advanced
+		// actually got applied, force advanced graphics on.
+		if ((changes & ADVANCED_GRAPHICS_MASK) != 0) {
+			if ((hints & ADVANCED_GRAPHICS_MASK) != 0 && gc.getAdvanced() == false)
+				gc.setAdvanced(true);
+		}
 	}
 }
 
@@ -774,7 +815,7 @@ public void restoreState() {
  * Sets all State information to that of the given State, called by restoreState()
  * @param s the State
  */
-protected void restoreState(State s) {
+protected void restoreState(State s) {	
 	/*
 	 * We must set the transformation matrix first since it affects things like clipping
 	 * regions and patterns.
@@ -782,6 +823,15 @@ protected void restoreState(State s) {
 	setAffineMatrix(s.affineMatrix);
 	currentState.relativeClip = s.relativeClip;
 	sharedClipping = true;
+	
+	//If the GC is currently advanced, but it was not when pushed, revert
+	if (gc.getAdvanced() && (s.graphicHints & ADVANCED_GRAPHICS_MASK) == 0) {
+		//Set applied clip to null to force a re-setting of the clipping.
+		appliedState.relativeClip = null;
+		gc.setAdvanced(false);
+		appliedState.graphicHints &= ~ADVANCED_GRAPHICS_MASK;
+		appliedState.graphicHints &= ADVANCED_HINTS_DEFAULTS;
+	}
 
 	setBackgroundColor(s.bgColor);
 	setBackgroundPattern(s.bgPattern);
@@ -789,11 +839,12 @@ protected void restoreState(State s) {
 	setForegroundColor(s.fgColor);
 	setForegroundPattern(s.fgPattern);
 
-	setGraphicHints(s.graphicHints);
-	setLineWidth(s.lineWidth);
-
-	setFont(s.font);
 	setAlpha(s.alpha);
+	setLineWidth(s.lineWidth);
+	setFont(s.font);
+	
+	//This method must come last because above methods will incorrectly set advanced state
+	setGraphicHints(s.graphicHints);
 
 	translateX = currentState.dx = s.dx;
 	translateY = currentState.dy = s.dy;
@@ -811,7 +862,7 @@ public void rotate(float degrees) {
 	elementsNeedUpdate = true;
 
 	//Can no longer operate or maintain clipping
-	currentState.relativeClip = null;
+	appliedState.relativeClip = currentState.relativeClip = null;
 }
 
 /**
@@ -821,6 +872,9 @@ public void scale(double factor) {
 	scale((float)factor, (float)factor);
 }
 
+/**
+ * @see org.eclipse.draw2d.Graphics#scale(float, float)
+ */
 public void scale(float horizontal, float vertical) {
 	//Flush any clipping before scaling
 	checkGC();
@@ -853,6 +907,7 @@ private void setAffineMatrix(float[] m) {
  * @see Graphics#setAlpha(int)
  */
 public void setAlpha(int alpha) {
+	currentState.graphicHints |= ADVANCED_GRAPHICS_MASK;
 	if (currentState.alpha != alpha)
 		gc.setAlpha(this.currentState.alpha = alpha);
 }
@@ -862,7 +917,7 @@ public void setAlpha(int alpha) {
  */
 public void setAntialias(int value) {
 	currentState.graphicHints &= ~AA_MASK;
-	currentState.graphicHints |= (value + 1) << AA_SHIFT;
+	currentState.graphicHints |= ADVANCED_GRAPHICS_MASK | (value + AA_WHOLE_NUMBER) << AA_SHIFT;
 }
 
 /**
@@ -876,6 +931,7 @@ public void setBackgroundColor(Color color) {
  * @see Graphics#setBackgroundPattern(Pattern)
  */
 public void setBackgroundPattern(Pattern pattern) {
+	currentState.graphicHints |= ADVANCED_GRAPHICS_MASK;
 	if (currentState.fgPattern == pattern)
 		return;
 	currentState.bgPattern = pattern;
@@ -883,9 +939,7 @@ public void setBackgroundPattern(Pattern pattern) {
 	if (pattern != null) {
 		initTransform(true);
 		gc.setBackgroundPattern(pattern);
-	} else
-		//$HACK workaround for pending SWT bug fix
-		gc.setBackground(appliedState.bgColor);
+	}
 }
 
 /**
@@ -894,7 +948,7 @@ public void setBackgroundPattern(Pattern pattern) {
 public void setClip(Path path) {
 	initTransform(false);
 	gc.setClipping(path);
-	currentState.relativeClip = null;
+	appliedState.relativeClip = currentState.relativeClip = null;
 }
 
 /**
@@ -930,6 +984,7 @@ public void setForegroundColor(Color color) {
  * @see Graphics#setForegroundPattern(Pattern)
  */
 public void setForegroundPattern(Pattern pattern) {
+	currentState.graphicHints |= ADVANCED_GRAPHICS_MASK;
 	if (currentState.fgPattern == pattern)
 		return;
 	currentState.fgPattern = pattern;
@@ -937,14 +992,6 @@ public void setForegroundPattern(Pattern pattern) {
 	if (pattern != null) {
 		initTransform(true);
 		gc.setForegroundPattern(pattern);
-	} else {
-		//$HACK
-		//This is a hack for bug 95832
-		gc.setForeground(ColorConstants.orange);
-		
-		//$HACK
-		//The following is a workaround until bug fix 95409 is avaialble 
-		gc.setForeground(appliedState.fgColor);
 	}
 }
 
@@ -958,7 +1005,7 @@ private void setGraphicHints(int hints) {
 public void setInterpolation(int interpolation) {
 	//values range [-1, 3]
 	currentState.graphicHints &= ~INTERPOLATION_MASK;
-	currentState.graphicHints |= (interpolation + 1) << INTERPOLATION_SHIFT; 
+	currentState.graphicHints |= ADVANCED_GRAPHICS_MASK | (interpolation + INTERPOLATION_WHOLE_NUMBER) << INTERPOLATION_SHIFT; 
 }
 
 /**
@@ -1004,7 +1051,7 @@ public void setLineWidth(int width) {
  */
 public void setTextAntialias(int value) {
 	currentState.graphicHints &= ~TEXT_AA_MASK;
-	currentState.graphicHints |= (value + 1) << TEXT_AA_SHIFT;
+	currentState.graphicHints |= ADVANCED_GRAPHICS_MASK | (value + AA_WHOLE_NUMBER) << TEXT_AA_SHIFT;
 }
 
 /**
@@ -1014,6 +1061,29 @@ public void setXORMode(boolean xor) {
 	currentState.graphicHints &= ~XOR_MASK;
 	if (xor)
 		currentState.graphicHints |= XOR_MASK;
+}
+
+/**
+ * @see Graphics#shear(float, float)
+ */
+public void shear(float horz, float vert) {
+	//Flush any clipping changes before shearing
+	checkGC();
+	initTransform(true);
+	float matrix[] = new float[6];
+	transform.getElements(matrix);
+	transform.setElements(
+			matrix[0] + matrix[2] * vert,
+			matrix[1] + matrix[3] * vert,
+			matrix[0] * horz + matrix[2],
+			matrix[1] * horz + matrix[3],
+			matrix[4],
+			matrix[5]);
+	
+	gc.setTransform(transform);
+	elementsNeedUpdate = true;
+	//Can no longer track clipping changes
+	appliedState.relativeClip = currentState.relativeClip = null;
 }
 
 /**
@@ -1035,20 +1105,6 @@ public void translate(int dx, int dy) {
 	checkSharedClipping();
 	if (currentState.relativeClip != null)
 		currentState.relativeClip.translate(-dx, -dy);
-}
-
-/**
- * @since 3.1
- */
-private void checkSharedClipping() {
-	if (sharedClipping) {
-		sharedClipping = false;
-		
-		boolean previouslyApplied = (appliedState == currentState.relativeClip);
-		currentState.relativeClip = currentState.relativeClip.getCopy();
-		if (previouslyApplied)
-			appliedState.relativeClip = currentState.relativeClip;
-	}
 }
 
 private void translatePointArray(int[] points, int translateX, int translateY) {
