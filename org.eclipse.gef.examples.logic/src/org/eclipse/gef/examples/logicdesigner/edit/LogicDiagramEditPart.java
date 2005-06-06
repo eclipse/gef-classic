@@ -14,6 +14,7 @@ import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.accessibility.AccessibleEvent;
 
 import org.eclipse.draw2d.AutomaticRouter;
@@ -180,6 +181,7 @@ public void propertyChange(PropertyChangeEvent evt) {
 
 protected void refreshVisuals() {
 	ConnectionLayer cLayer = (ConnectionLayer) getLayer(CONNECTION_LAYER);
+	cLayer.setAntialias(SWT.ON);
 
 	if (getLogicDiagram().getConnectionRouter().equals(LogicDiagram.ROUTER_MANUAL)) {
 		AutomaticRouter router = new FanRouter();
