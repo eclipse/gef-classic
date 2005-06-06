@@ -187,7 +187,7 @@ static class State
 
 static final int AA_MASK;
 static final int AA_SHIFT;
-static final int AA_WHOLE_NUMBER = 2;
+static final int AA_WHOLE_NUMBER = 1;
 static final int ADVANCED_GRAPHICS_MASK;
 static final int ADVANCED_HINTS_DEFAULTS;
 static final int ADVANCED_HINTS_MASK;
@@ -196,6 +196,7 @@ static final int CAP_MASK;
 static final int CAP_SHIFT;
 static final int FILL_RULE_MASK;
 static final int FILL_RULE_SHIFT;
+static final int FILL_RULE_WHOLE_NUMBER = -1;
 static final int INTERPOLATION_MASK;
 static final int INTERPOLATION_SHIFT;
 static final int INTERPOLATION_WHOLE_NUMBER = 1;
@@ -617,7 +618,7 @@ public Rectangle getClip(Rectangle rect) {
  * @see Graphics#getFillRule()
  */
 public int getFillRule() {
-	return ((currentState.graphicHints & FILL_RULE_MASK) >> FILL_RULE_SHIFT) + 1; 
+	return ((currentState.graphicHints & FILL_RULE_MASK) >> FILL_RULE_SHIFT) - FILL_RULE_WHOLE_NUMBER; 
 }
 
 /**
@@ -703,8 +704,8 @@ protected void init() {
 	currentState.graphicHints |= gc.getLineStyle();
 	currentState.graphicHints |= gc.getLineCap() << CAP_SHIFT;
 	currentState.graphicHints |= gc.getLineJoin() << JOIN_SHIFT;
-	if (gc.getXORMode())
-		currentState.graphicHints |= XOR_MASK;
+	currentState.graphicHints |= gc.getAdvanced() ? ADVANCED_GRAPHICS_MASK : 0;
+	currentState.graphicHints |= gc.getXORMode() ? XOR_MASK : 0;
 	
 	appliedState.graphicHints = currentState.graphicHints;
 	
@@ -785,15 +786,15 @@ private void reconcileHints(int applied, int hints) {
 			gc.setLineCap((hints & CAP_MASK) >> CAP_SHIFT);
 		
 		if ((changes & INTERPOLATION_MASK) != 0)
-			gc.setInterpolation(((hints & INTERPOLATION_MASK) >> INTERPOLATION_SHIFT) - 1);
+			gc.setInterpolation(((hints & INTERPOLATION_MASK) >> INTERPOLATION_SHIFT) - INTERPOLATION_WHOLE_NUMBER);
 		
 		if ((changes & FILL_RULE_MASK) != 0)
-			gc.setFillRule(((hints & FILL_RULE_MASK) >> FILL_RULE_SHIFT) + 1);
+			gc.setFillRule(((hints & FILL_RULE_MASK) >> FILL_RULE_SHIFT) - FILL_RULE_WHOLE_NUMBER);
 		
 		if ((changes & AA_MASK) != 0)
-			gc.setAntialias(((hints & AA_MASK) >> AA_SHIFT) - 1);
+			gc.setAntialias(((hints & AA_MASK) >> AA_SHIFT) - AA_WHOLE_NUMBER);
 		if ((changes & TEXT_AA_MASK) != 0)
-			gc.setTextAntialias(((hints & TEXT_AA_MASK) >> TEXT_AA_SHIFT) - 1);
+			gc.setTextAntialias(((hints & TEXT_AA_MASK) >> TEXT_AA_SHIFT) - AA_WHOLE_NUMBER);
 		
 		// If advanced was flagged, but none of the conditions which trigger advanced
 		// actually got applied, force advanced graphics on.
@@ -842,7 +843,6 @@ protected void restoreState(State s) {
 	setAlpha(s.alpha);
 	setLineWidth(s.lineWidth);
 	setFont(s.font);
-	
 	//This method must come last because above methods will incorrectly set advanced state
 	setGraphicHints(s.graphicHints);
 
@@ -963,7 +963,7 @@ public void setClip(Rectangle rect) {
  */
 public void setFillRule(int rule) {
 	currentState.graphicHints &= ~FILL_RULE_MASK;
-	currentState.graphicHints |= (rule - 1) << FILL_RULE_SHIFT;
+	currentState.graphicHints |= (rule + FILL_RULE_WHOLE_NUMBER) << FILL_RULE_SHIFT;
 }
 
 /**
@@ -1019,8 +1019,22 @@ public void setLineCap(int cap) {
 /**
  * @see Graphics#setLineDash(int[])
  */
-public void setLineDash(int[] dash) {
-	gc.setLineDash(currentState.lineDash = dash);
+public void setLineDash(int[] dashes) {
+	if (dashes != null) {
+		int copy[] = new int[dashes.length];
+		for (int i = 0; i < dashes.length; i++) {
+			int dash = dashes[i];
+			if (dash <= 0)
+				SWT.error(SWT.ERROR_INVALID_ARGUMENT);
+			copy[i] = dash;
+		}
+		currentState.lineDash = copy;
+		setLineStyle(SWT.LINE_CUSTOM);
+		gc.setLineDash(copy);
+	} else {
+		currentState.lineDash = null;
+		setLineStyle(SWT.LINE_SOLID);
+	}
 }
 
 /**
