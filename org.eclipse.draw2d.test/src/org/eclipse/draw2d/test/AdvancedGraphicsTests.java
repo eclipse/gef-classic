@@ -11,6 +11,8 @@
 
 package org.eclipse.draw2d.test;
 
+import java.util.Stack;
+
 import junit.framework.TestCase;
 
 import org.eclipse.swt.SWT;
@@ -22,8 +24,10 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.PaletteData;
+import org.eclipse.swt.graphics.Path;
 import org.eclipse.swt.graphics.Pattern;
 import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.graphics.Resource;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
@@ -39,6 +43,9 @@ private SWTGraphics g;
 
 private Image image;
 private GC imageGC;
+private Path path1;
+private Path path2;
+private Stack resources = new Stack();
 
 private void assertImageEquality(int width, int height) {
 	ImageData data = image.getImageData();
@@ -52,10 +59,10 @@ private void assertImageEquality(int width, int height) {
 			if (src != dst) {
 				RGB rgb1 = palette.getRGB(src);
 				RGB rgb2 = palette.getRGB(dst);
-				//HACK, image operations seem to differ by as much as 2
-				if (Math.abs(rgb1.red - rgb2.red) > 2
-						| Math.abs(rgb1.green - rgb2.green) > 2
-						| Math.abs(rgb1.blue - rgb2.blue) > 2)
+				//HACK, image operations seem to differ by as much as 4
+				if (Math.abs(rgb1.red - rgb2.red) > 4
+						| Math.abs(rgb1.green - rgb2.green) > 4
+						| Math.abs(rgb1.blue - rgb2.blue) > 4)
 				assertEquals("Discrepancy at coordinates <" + x +", " + y + ">",
 						rgb1,
 						rgb2);
@@ -64,7 +71,7 @@ private void assertImageEquality(int width, int height) {
 }
 
 private void displayImage() {
-	final Shell shell = new Shell();
+	final Shell shell = new Shell(SWT.DIALOG_TRIM);
 	shell.addPaintListener(new PaintListener() {
 		public void paintControl(PaintEvent e) {
 			e.gc.drawImage(image, 0, 0);
@@ -106,57 +113,34 @@ private void performTestcase(Runnable painter, Runnable tests[]) {
 }
 
 protected void setUp() throws Exception {
+	path1 = new Path(null);
+	path1.moveTo(20, 5);
+	path1.quadTo(40, 5, 50, 25);
+	path1.quadTo(20, 25, 20, 45);
+	path1.lineTo(0, 25);
+	path1.close();
+	
+	path2 = new Path(null);
+	path2.moveTo(15, 30);
+	path2.cubicTo(50, 0, 50, 30, 20, 60);
+	path2.close();
+
 	image = new Image(Display.getDefault(), 800, 600);
-	imageGC = new GC(image);
+	imageGC = new GC(image, SWT.NONE);
 	g = new SWTGraphics(imageGC);
+	
+	resources.push(path1);
+	resources.push(path2);
+	resources.push(image);
+	resources.push(imageGC);
 }
 
 protected void tearDown() throws Exception {
 	g.dispose();
-	imageGC.dispose();
-	image.dispose();
+	while (!resources.isEmpty())
+		((Resource)resources.pop()).dispose();
 }
-/*
-public void testPatterns() {
-	
-	class SetPattern implements Runnable {
-		private final Pattern bg;
-		private final Pattern fg;
-		SetPattern (Pattern bg, Pattern fg) {
-			this.bg = bg;
-			this.fg = fg;
-		}
-		public void run() {
-			g.setBackgroundPattern(bg);
-			g.setForegroundPattern(fg);
-		}
-	};
 
-	//$Workaround, force GDI + so that normal fillString is consistent
-	g.setAntialias(SWT.OFF);
-	
-	//Initial state
-	Font f = new Font(null, "Arial Black", 24, SWT.BOLD);
-	g.setFont(f);
-	g.setBackgroundColor(ColorConstants.yellow);
-	g.pushState();
-	
-	Pattern gradient = new Pattern(null, 0, 0, 80, 40, ColorConstants.gray, ColorConstants.black);
-	Pattern image = new Pattern(null, TestImages.depth_24);
-	
-	Runnable tests[] = new Runnable[1];
-	tests[0] = new SetPattern(image, gradient);
-	performTestcase(new Runnable() {
-		public void run() {
-			g.fillText("GEF", 0, 0);
-		};
-	}, tests);
-	
-	gradient.dispose();
-	image.dispose();
-	f.dispose();
-}
-*/
 public void testAntialias() {
 	class AntialiasSettings implements Runnable {
 		private final Color color;
@@ -172,17 +156,9 @@ public void testAntialias() {
 			g.setTextAntialias(text);
 			g.setForegroundColor(color);
 		}
-	};
+	}
 
 	g.setLineWidth(9);
-
-	/*
-	 * $TODO workaround for default text antialias setting.
-	 * Restoring the default text AA setting does not work. therefore, we will turn off
-	 * TAA before running tests.
-	 */
-	g.setTextAntialias(SWT.ON);
-	g.setAntialias(SWT.ON);
 	g.pushState();
 
 	Runnable tests[] = new Runnable[4];
@@ -210,11 +186,9 @@ public void testFillRules() {
 		public void run() {
 			g.setFillRule(rule);
 			//$TODO 
-			//g.setAntialias(aa);
+			g.setAntialias(aa);
 		}
-	};
-    
-    g.setAntialias(SWT.ON);
+	}
 	g.setBackgroundColor(ColorConstants.red);
 	g.pushState();
 
@@ -228,7 +202,7 @@ public void testFillRules() {
 		};
 	}, tests);
 }
-/*
+
 public void testInterpolation() {
 	class InterpolationSettings implements Runnable {
 		private final int level;
@@ -240,13 +214,6 @@ public void testInterpolation() {
 		}
 	};
 
-	g.setLineWidth(9);
-
-    // $TODO workaround for default text antialias setting.
-    // Restoring the default text AA setting does not work. therefore, we will turn off
-    // TAA before running tests.
-	g.setTextAntialias(SWT.OFF);
-	g.setAntialias(SWT.OFF);
 	g.pushState();
 
 	Runnable tests[] = new Runnable[4];
@@ -260,7 +227,7 @@ public void testInterpolation() {
 		};
 	}, tests);
 }
-*/
+
 public void testLineJoinCap() {
 	
 	class LineSettings implements Runnable {
@@ -296,6 +263,120 @@ public void testLineJoinCap() {
 public void testLineJoinCapAA() {
 	g.setAntialias(SWT.ON);
 	testLineJoinCap();
+}
+
+public void testPathDraw() {
+	
+	class PathSettings implements Runnable {
+		private final int antialias;
+		private final Color color;
+		private final int style;
+		private final int width;
+		PathSettings(int antialias, int width, int style, Color color) {
+			this.antialias = antialias;
+			this.width = width;
+			this.style = style;
+			this.color = color;
+		}
+		public void run() {
+			g.setAntialias(antialias);
+			g.setLineWidth(width);
+			g.setLineStyle(style);
+			g.setForegroundColor(color);
+		};
+	}
+	
+	g.setBackgroundColor(ColorConstants.darkBlue);
+	
+	Runnable tests[] = new Runnable[5];
+	tests[0] = new PathSettings(SWT.ON, 3, SWT.LINE_SOLID, ColorConstants.darkBlue);
+	tests[1] = new PathSettings(SWT.OFF, 0, SWT.LINE_DOT, ColorConstants.red);
+	tests[2] = new PathSettings(SWT.DEFAULT, 1, SWT.LINE_DOT, ColorConstants.darkBlue);
+	tests[3] = new PathSettings(SWT.DEFAULT, 2, SWT.LINE_DOT, ColorConstants.darkGreen);
+	tests[4] = new PathSettings(SWT.ON, 2, SWT.LINE_DASHDOTDOT, ColorConstants.black);
+	performTestcase(new Runnable() {
+		public void run() {
+			g.drawPath(path1);
+			g.drawPath(path2);
+		};
+	}, tests);
+	
+	path1.dispose();
+}
+
+public void testPathFill() {
+	
+	class PathSettings implements Runnable {
+		private final int antialias;
+		private final int alpha;
+		PathSettings(int antialias, int alpha) {
+			this.antialias = antialias;
+			this.alpha = alpha;
+		}
+		public void run() {
+			g.setAntialias(antialias);
+			g.setAlpha(alpha);
+		};
+	}
+	
+	g.setBackgroundColor(ColorConstants.darkBlue);
+	
+	Runnable tests[] = new Runnable[4];
+	tests[0] = new PathSettings(SWT.ON, 200);
+	tests[1] = new PathSettings(SWT.OFF, 100);
+	tests[2] = new PathSettings(SWT.DEFAULT, 200);
+	tests[3] = new PathSettings(SWT.ON, 150);
+	performTestcase(new Runnable() {
+		public void run() {
+			g.setFillRule(SWT.FILL_EVEN_ODD);
+			g.fillPath(path1);
+			g.fillPath(path2);
+		};
+	}, tests);
+	
+	path1.dispose();
+}
+
+public void testZoom() {
+	
+}
+
+public void testPatterns() {
+	
+	class SetPattern implements Runnable {
+		private final Pattern bg;
+		private final Pattern fg;
+		SetPattern (Pattern bg, Pattern fg) {
+			this.bg = bg;
+			this.fg = fg;
+		}
+		public void run() {
+			g.setBackgroundPattern(bg);
+			g.setForegroundPattern(fg);
+		}
+	};
+	
+	//Initial state
+	Font f = new Font(null, "Helvetica", 50, SWT.BOLD);
+	resources.push(f);
+	g.setFont(f);
+	g.setBackgroundColor(ColorConstants.yellow);
+	g.pushState();
+	
+	Pattern gradient = new Pattern(null, 0, 0, 80, 40, ColorConstants.gray, ColorConstants.black);
+	Pattern image = new Pattern(null, TestImages.depth_24);
+	
+	resources.push(gradient);
+	resources.push(image);
+	
+	Runnable tests[] = new Runnable[1];
+	tests[0] = new SetPattern(image, gradient);
+	performTestcase(new Runnable() {
+		public void run() {
+			g.fillText("W", 0, 0);
+		};
+	}, tests);
+	
 }
 
 
