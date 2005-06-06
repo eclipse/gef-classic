@@ -77,13 +77,13 @@ public DragEditPartsTracker(EditPart sourceEditPart) {
  *  @param e the key event
  *  @return true if the key was control and can be accepted.
  */
-private boolean acceptCTRL(KeyEvent e) {
+private boolean acceptMOD1(KeyEvent e) {
 	int key = e.keyCode;
 	if (!(isInState(STATE_DRAG_IN_PROGRESS
 	  | STATE_ACCESSIBLE_DRAG 
 	  | STATE_ACCESSIBLE_DRAG_IN_PROGRESS)))
 		return false;
-	return (key == SWT.CTRL);
+	return (key == SWT.MOD1);
 }
 
 private boolean acceptSHIFT(KeyEvent e) {
@@ -385,7 +385,7 @@ protected boolean handleKeyDown(KeyEvent e) {
 				break;
 		}
 		return true;
-	} else if (acceptCTRL(e)) {
+	} else if (acceptMOD1(e)) {
 		setCloneActive(true);
 		handleDragInProgress();
 		return true;
@@ -407,7 +407,7 @@ protected boolean handleKeyUp(KeyEvent e) {
 	if (acceptArrowKey(e)) {
 		accStepReset();
 		return true;
-	} else if (acceptCTRL(e)) {
+	} else if (acceptMOD1(e)) {
 		setCloneActive(false);
 		handleDragInProgress();
 		return true;
@@ -532,7 +532,7 @@ protected void setState(int state) {
 	
 	if (isInState(STATE_ACCESSIBLE_DRAG | STATE_DRAG_IN_PROGRESS
 			| STATE_ACCESSIBLE_DRAG_IN_PROGRESS)) {
-		if (getCurrentInput().isControlKeyDown()) {
+		if (getCurrentInput().isModKeyDown(SWT.MOD1)) {
 			setCloneActive(true);
 			handleDragInProgress();
 		}

@@ -1431,6 +1431,10 @@ public static class Input
 		return (modifiers & SWT.CONTROL) > 0;
 	}
 	
+	public boolean isModKeyDown(int mod) {
+		return (modifiers & mod) != 0;
+	}
+	
 	/**
 	 * Returns <code>true</code> if the specified button is down.
 	 * @param which which button
