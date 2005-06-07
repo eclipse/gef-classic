@@ -1412,7 +1412,7 @@ public static class Input
 	 * @return <code>true</code> if the ALT key is pressed
 	 */
 	public boolean isAltKeyDown() {
-		return (modifiers & SWT.ALT) > 0;
+		return (modifiers & SWT.ALT) != 0;
 	}
 	
 	/**
@@ -1428,7 +1428,7 @@ public static class Input
 	 * @return <code>true</code> of CTRL pressed
 	 */
 	public boolean isControlKeyDown() {
-		return (modifiers & SWT.CONTROL) > 0;
+		return (modifiers & SWT.CONTROL) != 0;
 	}
 	
 	public boolean isModKeyDown(int mod) {
@@ -1449,7 +1449,7 @@ public static class Input
 	 * @return <code>true</code> if SHIFT pressed
 	 */
 	public boolean isShiftKeyDown() {
-		return (modifiers & SWT.SHIFT) > 0;
+		return (modifiers & SWT.SHIFT) != 0;
 	}
 	
 	/**
