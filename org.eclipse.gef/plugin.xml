@@ -12,21 +12,21 @@
       <command
             name="%Palette.Label" 
             description="" 
-            category="org.eclipse.ui.category.views" 
+            categoryId="org.eclipse.ui.category.views" 
             id="org.eclipse.gef.ui.palette_view"> 
       </command>
 
       <command
             name="%ZoomIn.Tooltip"
             description="%ZoomIn.Tooltip"
-            category="org.eclipse.gef.category.view"
+            categoryId="org.eclipse.gef.category.view"
             id="org.eclipse.gef.zoom_in">
       </command>
       <keyBinding
-            string="Ctrl+="
-            scope="org.eclipse.ui.globalScope"
-            command="org.eclipse.gef.zoom_in"
-            configuration="org.eclipse.ui.defaultAcceleratorConfiguration">
+            keySequence="M1+="
+            contextId="org.eclipse.ui.globalScope"
+            commandId="org.eclipse.gef.zoom_in"
+            keyConfigurationId="org.eclipse.ui.defaultAcceleratorConfiguration">
       </keyBinding>
       
       <command
@@ -36,8 +36,8 @@
             id="org.eclipse.gef.zoom_out">
       </command>
       <keyBinding
+            keySequence="M1+-"
             contextId="org.eclipse.ui.globalScope"
-            string="Ctrl+-"
             commandId="org.eclipse.gef.zoom_out"
             keyConfigurationId="org.eclipse.ui.defaultAcceleratorConfiguration">
       </keyBinding>
