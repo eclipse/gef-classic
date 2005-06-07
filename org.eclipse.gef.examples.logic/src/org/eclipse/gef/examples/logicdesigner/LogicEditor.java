@@ -733,7 +733,7 @@ protected void loadProperties() {
 	if (manager != null)
 		manager.setZoom(getLogicDiagram().getZoom());
 	// Scroll-wheel Zoom
-	getGraphicalViewer().setProperty(MouseWheelHandler.KeyGenerator.getKey(SWT.CTRL), 
+	getGraphicalViewer().setProperty(MouseWheelHandler.KeyGenerator.getKey(SWT.MOD1), 
 			MouseWheelZoomHandler.SINGLETON);
 
 }
