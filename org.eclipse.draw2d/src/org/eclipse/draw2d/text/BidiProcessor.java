@@ -20,8 +20,7 @@ import org.eclipse.swt.graphics.TextLayout;
 /**
  * A helper class for a BlockFlow that does Bidi evaluation of all the text in that block.
  * <p>
- * WARNING: This class is not intended to be subclassed or used by clients. This class is for
- * INTERNAL use only.
+ * WARNING: This class is for INTERNAL use only.
  * @author Pratik Shah
  * @since 3.1
  */
@@ -175,53 +174,57 @@ private boolean isPrecedingJoiner(int begin) {
 
 /**
  * Processes the contributed text, determines the Bidi levels, and assigns them to
- * the FlowFigures that made thet contributions.  Shaping of visually contiguous 
- * Arabic characters that are split in different figures is also handled.  
- * This method will do nothing if the contributed text does not require Bidi 
- * evaluation.  All contributions are discarded at the end of this method.
+ * the FlowFigures that made thet contributions. This class is for INTERNAL use
+ * only. Shaping of visually contiguous Arabic characters that are split in different
+ * figures is also handled. This method will do nothing if the contributed text does not
+ * require Bidi  evaluation. All contributions are discarded at the end of this method.
  */
 public void process() {
-	if (bidiText.length() == 0 || isMacOS)
-		return;
-	char[] chars = new char[bidiText.length()];
-	bidiText.getChars(0, bidiText.length(), chars, 0);
+	try {
+		if (bidiText.length() == 0 || isMacOS)
+			return;
+		char[] chars = new char[bidiText.length()];
+		bidiText.getChars(0, bidiText.length(), chars, 0);
 
-	if (orientation != SWT.RIGHT_TO_LEFT && !Bidi.requiresBidi(chars, 0, chars.length - 1))
-		return;
+		if (orientation != SWT.RIGHT_TO_LEFT
+				&& !Bidi.requiresBidi(chars, 0, chars.length - 1))
+			return;
 
-	int[] levels = new int[15];
-	TextLayout layout = FlowUtilities.getTextLayout();
-	
-	layout.setOrientation(orientation);
-	layout.setText(bidiText.toString());
-	int j = 0, offset, prevLevel = -1;
-	for (offset = 0; offset < chars.length; offset++) {
-		int newLevel = layout.getLevel(offset);
-		if (newLevel != prevLevel) {
-			if (j + 3 > levels.length) {
-				int temp[] = levels;
-				levels = new int[levels.length * 2 + 1];
-				System.arraycopy(temp, 0, levels, 0, temp.length);
+		int[] levels = new int[15];
+		TextLayout layout = FlowUtilities.getTextLayout();
+
+		layout.setOrientation(orientation);
+		layout.setText(bidiText.toString());
+		int j = 0, offset, prevLevel = -1;
+		for (offset = 0; offset < chars.length; offset++) {
+			int newLevel = layout.getLevel(offset);
+			if (newLevel != prevLevel) {
+				if (j + 3 > levels.length) {
+					int temp[] = levels;
+					levels = new int[levels.length * 2 + 1];
+					System.arraycopy(temp, 0, levels, 0, temp.length);
+				}
+				levels[j++] = offset;
+				levels[j++] = newLevel;
+				prevLevel = newLevel;
 			}
-			levels[j++] = offset;
-			levels[j++] = newLevel;
-			prevLevel = newLevel;
 		}
-	}
-	levels[j++] = offset;
+		levels[j++] = offset;
 
-	if (j != levels.length) {
-		int[] newLevels = new int[j];
-		System.arraycopy(levels, 0, newLevels, 0, j);
-		levels = newLevels;
+		if (j != levels.length) {
+			int[] newLevels = new int[j];
+			System.arraycopy(levels, 0, newLevels, 0, j);
+			levels = newLevels;
+		}
+		assignResults(levels);
+
+		// reset the orientation of the layout, in case it was set to RTL
+		layout.setOrientation(SWT.LEFT_TO_RIGHT);
+	} finally {
+		//will cause the fields to be reset for the next string to be processed
+		bidiText = null;
+		list.clear();
 	}
-	assignResults(levels);
-	
-	// reset the orientation of the layout, in case it was set to RTL
-	layout.setOrientation(SWT.LEFT_TO_RIGHT);
-	// will cause the fields to be reset for the next string to be processed
-	bidiText = null;
-	list.clear();
 }
 
 /**
