@@ -19,6 +19,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
@@ -327,9 +328,19 @@ public void scrollToX(int hOffset) {
 	} else //Moving right
 		dest.x += dx; //Move expose area to the right
 
-	scroll(dest.x, dest.y,
-			blit.x, blit.y, blit.width, blit.height,
-			true);
+	Control[] children = getChildren();
+	boolean[] manualMove = new boolean[children.length];
+	for (int i = 0; i < children.length; i++) {
+		org.eclipse.swt.graphics.Rectangle bounds = children[i].getBounds();
+		manualMove[i] = bounds.x > blit.x + blit.width || bounds.y > blit.y + blit.height
+				|| bounds.x + bounds.width < blit.x || bounds.y + bounds.height < blit.y;
+	}
+	scroll(dest.x, dest.y, blit.x, blit.y, blit.width, blit.height,	true);
+	for (int i = 0; i < children.length; i++) {
+		org.eclipse.swt.graphics.Rectangle bounds = children[i].getBounds();
+		if (manualMove[i])
+			children[i].setBounds(bounds.x + dx, bounds.y, bounds.width, bounds.height);
+	}
 
 	getViewport().setIgnoreScroll(true);
 	getViewport().setHorizontalLocation(hOffset);
@@ -360,10 +371,20 @@ public void scrollToY(int vOffset) {
 	} else //Moving down
 		dest.y += dy;
 
-	scroll(dest.x, dest.y,
-			blit.x, blit.y, blit.width, blit.height,
-			true);
-
+	Control[] children = getChildren();
+	boolean[] manualMove = new boolean[children.length];
+	for (int i = 0; i < children.length; i++) {
+		org.eclipse.swt.graphics.Rectangle bounds = children[i].getBounds();
+		manualMove[i] = bounds.x > blit.x + blit.width || bounds.y > blit.y + blit.height
+				|| bounds.x + bounds.width < blit.x || bounds.y + bounds.height < blit.y;
+	}
+	scroll(dest.x, dest.y, blit.x, blit.y, blit.width, blit.height,	true);
+	for (int i = 0; i < children.length; i++) {
+		org.eclipse.swt.graphics.Rectangle bounds = children[i].getBounds();
+		if (manualMove[i])
+			children[i].setBounds(bounds.x, bounds.y + dy, bounds.width, bounds.height);
+	}
+	
 	getViewport().setIgnoreScroll(true);
 	getViewport().setVerticalLocation(vOffset);
 	getViewport().setIgnoreScroll(false);
