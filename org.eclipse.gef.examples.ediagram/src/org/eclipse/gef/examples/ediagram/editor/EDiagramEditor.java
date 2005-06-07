@@ -95,7 +95,7 @@ protected void configureGraphicalViewer() {
 	
 	KeyHandler keyHandler = new GraphicalViewerKeyHandler(viewer) {
 		public boolean keyPressed(KeyEvent event) {
-			if (event.stateMask == SWT.CTRL && event.keyCode == SWT.DEL) {
+			if (event.stateMask == SWT.SHIFT && event.keyCode == SWT.DEL) {
 				List objects = getGraphicalViewer().getSelectedEditParts();
 				if (objects == null || objects.isEmpty())
 					return true;
@@ -119,7 +119,7 @@ protected void configureGraphicalViewer() {
 			getActionRegistry().getAction(GEFActionConstants.DIRECT_EDIT));
 	viewer.setKeyHandler(keyHandler);
 	// Scroll-wheel Zoom
-	viewer.setProperty(MouseWheelHandler.KeyGenerator.getKey(SWT.CTRL), 
+	viewer.setProperty(MouseWheelHandler.KeyGenerator.getKey(SWT.MOD1), 
 			MouseWheelZoomHandler.SINGLETON);
 }
 
