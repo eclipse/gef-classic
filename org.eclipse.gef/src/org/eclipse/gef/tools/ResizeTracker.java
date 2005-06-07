@@ -12,6 +12,7 @@ package org.eclipse.gef.tools;
 
 import java.util.List;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Cursor;
 
 import org.eclipse.draw2d.IFigure;
@@ -287,7 +288,7 @@ protected void updateSourceRequest() {
 	} else
 		request.setConstrainedResize(false);
 	
-	request.setCenteredResize(getCurrentInput().isControlKeyDown());
+	request.setCenteredResize(getCurrentInput().isModKeyDown(SWT.MOD1));
 	
 	
 	if ((getResizeDirection() & PositionConstants.NORTH) != 0) {
