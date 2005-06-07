@@ -18,6 +18,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.widgets.Display;
 
@@ -298,7 +299,7 @@ protected boolean handleButtonDown(int button) {
 		handleInvalidInput();
 	}
 	if (stateTransition(STATE_INITIAL, STATE_DRAG_IN_PROGRESS)) {
-		if (getCurrentInput().isControlKeyDown())
+		if (getCurrentInput().isModKeyDown(SWT.MOD1))
 			setSelectionMode(TOGGLE_MODE);
 		else if (getCurrentInput().isShiftKeyDown())
 			setSelectionMode(APPEND_MODE);
