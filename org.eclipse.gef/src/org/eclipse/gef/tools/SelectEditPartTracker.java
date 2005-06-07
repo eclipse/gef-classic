@@ -155,8 +155,10 @@ protected void performConditionalSelection() {
 	if (getSourceEditPart().getSelected() == EditPart.SELECTED_NONE)
 		performSelection();
 	else
-		if (getCurrentInput().getModifiers() == 0)
+		if (getCurrentInput().getModifiers() == 0) {
 			setFlag(FLAG_ENABLE_DIRECT_EDIT, true);
+			setFlag(FLAG_SELECTION_PERFORMED, true);
+		}
 }
 
 /**
@@ -180,6 +182,7 @@ protected void performDirectEdit() {
 protected void performOpen() {
 	SelectionRequest request = new SelectionRequest();
 	request.setLocation(getLocation());
+	request.setModifiers(getCurrentInput().getModifiers());
 	request.setType(RequestConstants.REQ_OPEN);
 	getSourceEditPart().performRequest(request);
 }
