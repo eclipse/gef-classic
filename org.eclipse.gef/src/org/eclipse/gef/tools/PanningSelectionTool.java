@@ -52,8 +52,7 @@ protected static final int MAX_STATE = PAN_IN_PROGRESS;
  * @return true if the space bar was the key event.
  */
 protected boolean acceptSpaceBar(KeyEvent e) {
-	return (e.character == ' '
-		&& (e.stateMask & SWT.CTRL) == 0);
+	return (e.character == ' ' && (e.stateMask & SWT.MOD1) == 0);
 }
 
 /**
@@ -91,8 +90,8 @@ protected Cursor getDefaultCursor() {
  */
 protected boolean handleButtonDown(int which) {
 	if (which == 1
-	  && getCurrentViewer().getControl() instanceof FigureCanvas
-	  && stateTransition(PAN, PAN_IN_PROGRESS)) {
+			&& getCurrentViewer().getControl() instanceof FigureCanvas
+			&& stateTransition(PAN, PAN_IN_PROGRESS)) {
 		viewLocation = ((FigureCanvas)
 				getCurrentViewer().getControl()).getViewport().getViewLocation();
 		return true;
@@ -160,7 +159,7 @@ protected boolean handleKeyDown(KeyEvent e) {
 			isSpaceBarDown = false;
 	}
 	
-	return super.handleKeyDown(e);	
+	return super.handleKeyDown(e);
 }
 
 /**
