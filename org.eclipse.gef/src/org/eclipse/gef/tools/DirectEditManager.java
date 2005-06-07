@@ -60,7 +60,6 @@ private AncestorListener ancestorListener;
 private EditPartListener editPartListener;
 private ControlListener controlListener;
 private IFigure cellEditorFrame;
-private FocusListener focusListener;
 private ICellEditorListener cellEditorListener;
 private boolean showingFeedback;
 private boolean dirty;
@@ -221,15 +220,8 @@ private void hookListeners() {
 	};
 	getEditPart().getFigure().addAncestorListener(ancestorListener);
 
-	Control control = getControl();
+	Control control = getControl(); 	
 	
-	focusListener = new FocusAdapter() {
-		public void focusLost(FocusEvent e) {
-			commit();
-		}
-	};
-	control.addFocusListener(focusListener);
-
 	controlListener = new ControlAdapter() {
 		public void controlMoved(ControlEvent e) {
 			// This must be handled async because during scrolling, the CellEditor moves 
@@ -387,9 +379,7 @@ protected void unhookListeners() {
 	Control control = getCellEditor().getControl();
 	if (control == null || control.isDisposed())
 		return;
-	control.removeFocusListener(focusListener);
 	control.removeControlListener(controlListener);
-	focusListener = null;
 	controlListener = null;
 }
 
