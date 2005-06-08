@@ -1,13 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2004 Elias Volanakis.
+ * Copyright (c) 2004, 2005 Elias Volanakis and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *    Elias Volanakis - initial API and implementation
- *    IBM Corporation
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ * Elias Volanakis - initial API and implementation
  *******************************************************************************/
 package org.eclipse.gef.examples.shapes;
 
@@ -165,11 +164,9 @@ public void doSave(IProgressMonitor monitor) {
 			false, // dont keep history
 			monitor); // progress monitor
 		getCommandStack().markSaveLocation();
-	}
-	catch (CoreException ce) { 
+	} catch (CoreException ce) { 
 		ce.printStackTrace();
-	}
-	catch (IOException ioe) {
+	} catch (IOException ioe) {
 		ioe.printStackTrace();
 	}
 }
@@ -201,23 +198,23 @@ public void doSaveAs() {
 									new ByteArrayInputStream(out.toByteArray()), // contents
 									true, // keep saving, even if IFile is out of sync with the Workspace
 									monitor); // progress monitor
-							}
-							catch (CoreException ce) { ce.printStackTrace(); }
-							catch (IOException ioe) { ioe.printStackTrace(); } 
+							} catch (CoreException ce) {
+								ce.printStackTrace();
+							} catch (IOException ioe) {
+								ioe.printStackTrace();
+							} 
 						}
 					});
 			// set input to the new file
 			setInput(new FileEditorInput(file));
 			getCommandStack().markSaveLocation();
-		}
-		catch (InterruptedException ie) {
+		} catch (InterruptedException ie) {
   			// should not happen, since the monitor dialog is not cancelable
 			ie.printStackTrace(); 
-		}
-		catch (InvocationTargetException ite) { 
+		} catch (InvocationTargetException ite) { 
 			ite.printStackTrace(); 
 		}
-	} // if
+	}
 }
 
 public Object getAdapter(Class type) {
@@ -284,14 +281,11 @@ protected void setInput(IEditorInput input) {
 		diagram = (ShapesDiagram) in.readObject();
 		in.close();
 		setPartName(file.getName());
-	}
-	catch (IOException e) { 
+	} catch (IOException e) { 
 		handleLoadException(e); 
-	}
-	catch (CoreException e) { 
+	} catch (CoreException e) { 
 		handleLoadException(e); 
-	}
-	catch (ClassNotFoundException e) { 
+	} catch (ClassNotFoundException e) { 
 		handleLoadException(e); 
 	}
 }

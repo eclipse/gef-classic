@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004 Elias Volanakis.
+ * Copyright (c) 2004, 2005 Elias Volanakis and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,7 +7,6 @@
  *
  * Contributors:
  *    Elias Volanakis - initial API and implementation
- *    IBM Corporation
  *******************************************************************************/
 package org.eclipse.gef.examples.shapes.parts;
 
@@ -104,13 +103,11 @@ public void propertyChange(PropertyChangeEvent evt) {
 		// add a child to this edit part
 		// causes an additional entry to appear in the tree of the outline view
 		addChild(createChild(evt.getNewValue()), -1);
-	}
-	else if (ShapesDiagram.CHILD_REMOVED_PROP.equals(prop)) {
+	} else if (ShapesDiagram.CHILD_REMOVED_PROP.equals(prop)) {
 		// remove a child from this edit part
 		// causes the corresponding edit part to disappear from the tree in the outline view
 		removeChild(getEditPartForChild(evt.getNewValue()));
-	} 
-	else {
+	} else {
 		refreshVisuals();
 	}
 }

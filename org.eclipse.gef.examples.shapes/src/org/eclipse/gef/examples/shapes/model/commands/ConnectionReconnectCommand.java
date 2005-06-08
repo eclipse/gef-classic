@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004 Elias Volanakis.
+ * Copyright (c) 2004, 2005 Elias Volanakis and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,7 +7,6 @@
  *
  * Contributors:
  *    Elias Volanakis - initial API and implementation
- *    IBM Corporation
  *******************************************************************************/
 package org.eclipse.gef.examples.shapes.model.commands;
 
@@ -78,8 +77,7 @@ public ConnectionReconnectCommand(Connection conn) {
 public boolean canExecute() {
 	if (newSource != null) {
 		return checkSourceReconnection();
-	}
-	else if (newTarget != null) {
+	} else if (newTarget != null) {
 		return checkTargetReconnection();
 	}
 	return false;
@@ -132,11 +130,9 @@ private boolean checkTargetReconnection() {
 public void execute() {
 	if (newSource != null) {
 		connection.reconnect(newSource, oldTarget);
-	}
-	else if (newTarget != null) {
+	} else if (newTarget != null) {
 		connection.reconnect(oldSource, newTarget);
-	}
-	else {
+	} else {
 		throw new IllegalStateException("Should not happen");
 	}
 }

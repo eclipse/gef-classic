@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004 Elias Volanakis.
+ * Copyright (c) 2004, 2005 Elias Volanakis and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,7 +7,6 @@
  *
  * Contributors:
  *    Elias Volanakis - initial API and implementation
- *    IBM Corporation
  *******************************************************************************/
 package org.eclipse.gef.examples.shapes.parts;
 
@@ -135,11 +134,9 @@ protected IFigure createFigure() {
 private IFigure createFigureForModel() {
 	if (getModel() instanceof EllipticalShape) {
 		return new Ellipse();
-	} 
-	else if (getModel() instanceof RectangularShape) {
+	} else if (getModel() instanceof RectangularShape) {
 		return new RectangleFigure();
-	} 
-	else {
+	} else {
 		// if Shapes gets extended the conditions above must be updated
 		throw new IllegalArgumentException();
 	}

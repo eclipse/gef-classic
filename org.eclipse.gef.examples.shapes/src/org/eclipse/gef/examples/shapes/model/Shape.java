@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004 Elias Volanakis.
+ * Copyright (c) 2004, 2005 Elias Volanakis and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,7 +7,6 @@
  *
  * Contributors:
  *    Elias Volanakis - initial API and implementation
- *    IBM Corporation
  *******************************************************************************/
 package org.eclipse.gef.examples.shapes.model;
 
@@ -125,8 +124,7 @@ void addConnection(Connection conn) {
 	if (conn.getSource() == this) {
 		sourceConnections.add(conn);
 		firePropertyChange(SOURCE_CONNECTIONS_PROP, null, conn);
-	}
-	else if (conn.getTarget() == this) {
+	} else if (conn.getTarget() == this) {
 		targetConnections.add(conn);
 		firePropertyChange(TARGET_CONNECTIONS_PROP, null, conn);
 	}
@@ -216,8 +214,7 @@ void removeConnection(Connection conn) {
 	if (conn.getSource() == this) {
 		sourceConnections.remove(conn);
 		firePropertyChange(SOURCE_CONNECTIONS_PROP, null, conn);
-	}
-	else if (conn.getTarget() == this) {
+	} else if (conn.getTarget() == this) {
 		targetConnections.remove(conn);
 		firePropertyChange(TARGET_CONNECTIONS_PROP, null, conn);
 	}
@@ -248,20 +245,16 @@ public void setPropertyValue(Object propertyId, Object value) {
 	if (XPOS_PROP.equals(propertyId)) {
 		int x = Integer.parseInt((String) value);
 		setLocation(new Point(x, location.y));
-	}
-	else if (YPOS_PROP.equals(propertyId)) {
+	} else if (YPOS_PROP.equals(propertyId)) {
 		int y = Integer.parseInt((String) value);
 		setLocation(new Point(location.x, y));
-	}
-	else if (HEIGHT_PROP.equals(propertyId)) {
+	} else if (HEIGHT_PROP.equals(propertyId)) {
 		int height = Integer.parseInt((String) value);
 		setSize(new Dimension(size.width, height));
-	}
-	else if (WIDTH_PROP.equals(propertyId)) {
+	} else if (WIDTH_PROP.equals(propertyId)) {
 		int width = Integer.parseInt((String) value);
 		setSize(new Dimension(width, size.height));
-	}
-	else {
+	} else {
 		super.setPropertyValue(propertyId, value);
 	}
 }

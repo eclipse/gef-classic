@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004 Elias Volanakis.
+ * Copyright (c) 2004, 2005 Elias Volanakis and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,7 +7,6 @@
  *
  * Contributors:
  *    Elias Volanakis - initial API and implementation
- *    IBM Corporation
  *******************************************************************************/
 package org.eclipse.gef.examples.shapes;
 
@@ -112,8 +111,7 @@ private class CreationPage extends WizardNewFileCreationPage {
 		if (newFile != null && page != null) {
 			try {
 				IDE.openEditor(page, newFile, true);
-			}
-			catch (PartInitException e) {
+			} catch (PartInitException e) {
 				e.printStackTrace();
 				return false;
 			}
@@ -133,8 +131,7 @@ private class CreationPage extends WizardNewFileCreationPage {
 			oos.flush();
 			oos.close();
 			bais = new ByteArrayInputStream(baos.toByteArray());
-		}
-		catch (IOException ioe) {
+		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		}
 		return bais;
