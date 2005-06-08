@@ -830,8 +830,8 @@ protected void restoreState(State s) {
 		//Set applied clip to null to force a re-setting of the clipping.
 		appliedState.relativeClip = null;
 		gc.setAdvanced(false);
-		appliedState.graphicHints &= ~ADVANCED_GRAPHICS_MASK;
-		appliedState.graphicHints &= ADVANCED_HINTS_DEFAULTS;
+		appliedState.graphicHints &= ~ADVANCED_HINTS_MASK;
+		appliedState.graphicHints |= ADVANCED_HINTS_DEFAULTS;
 	}
 
 	setBackgroundColor(s.bgColor);
