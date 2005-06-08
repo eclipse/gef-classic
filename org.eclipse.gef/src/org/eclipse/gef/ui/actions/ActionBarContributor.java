@@ -88,8 +88,8 @@ protected abstract void declareGlobalActionKeys();
 
 /**
  * Disposes the contributor. Removes all {@link RetargetAction}s that were {@link
- * org.eclipse.ui.IPartListener}s on the {@link org.eclipse.ui.IWorkbenchPage}. Disposes
- * the action registry.
+ * org.eclipse.ui.IPartListener}s on the {@link org.eclipse.ui.IWorkbenchPage} and 
+ * disposes them. Also disposes the action registry.
  * <P>
  * Subclasses may extend this method to perform additional cleanup.
  * @see org.eclipse.ui.part.EditorActionBarContributor#dispose()
@@ -98,6 +98,7 @@ public void dispose() {
 	for (int i = 0; i < retargetActions.size(); i++) {
 		RetargetAction action = (RetargetAction)retargetActions.get(i);
 		getPage().removePartListener(action);
+		action.dispose();
 	}
 	registry.dispose();
 	retargetActions = null;
