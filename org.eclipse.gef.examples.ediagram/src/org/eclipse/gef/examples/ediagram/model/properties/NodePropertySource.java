@@ -7,33 +7,34 @@
  *
  * Contributors:
  *     IBM Corporation - initial API and implementation
+ *     E.D.Willink
  *******************************************************************************/
 package org.eclipse.gef.examples.ediagram.model.properties;
 
 import java.util.List;
 
-import org.eclipse.ui.views.properties.TextPropertyDescriptor;
-
 import org.eclipse.draw2d.geometry.Point;
-
 import org.eclipse.gef.examples.ediagram.model.Node;
 
 public class NodePropertySource 
-	extends BasePropertySource
+	extends ModelPropertySource
 {
 	
-private static final String ID_X_LOC = "X";
-private static final String ID_Y_LOC = "Y";
-private static final String ID_WIDTH = "Width";
+private final PropertyId idX;
+private final PropertyId idY;
+private final PropertyId idWidth;
 
-public NodePropertySource(Object model) {
+public NodePropertySource(String categoryName, Object model) {
 	super(model);
+	idX = new PropertyId(categoryName, "X");
+	idY = new PropertyId(categoryName, "Y");
+	idWidth = new PropertyId(categoryName, "Width");
 }
 
 protected void createPropertyDescriptors(List list) {
-	list.add(new TextPropertyDescriptor(ID_X_LOC, ID_X_LOC));
-	list.add(new TextPropertyDescriptor(ID_Y_LOC, ID_Y_LOC));
-	list.add(new TextPropertyDescriptor(ID_WIDTH, ID_WIDTH));
+	list.add(new IntegerPropertyDescriptor(idX));
+	list.add(new IntegerPropertyDescriptor(idY));
+	list.add(new IntegerPropertyDescriptor(idWidth));
 }
 
 protected Node getNode() {
@@ -41,41 +42,41 @@ protected Node getNode() {
 }
 
 public Object getPropertyValue(Object id) {
-	if (id == ID_X_LOC)
-		return "" + getNode().getLocation().x; //$NON-NLS-1$
-	if (id == ID_Y_LOC)
-		return "" + getNode().getLocation().y; //$NON-NLS-1$
-	if (id == ID_WIDTH)
-		return "" + getNode().getWidth(); //$NON-NLS-1$
+	if (id == idX)
+		return IntegerPropertyDescriptor.fromModel(getNode().getLocation().x);
+	if (id == idY)
+		return IntegerPropertyDescriptor.fromModel(getNode().getLocation().y);
+	if (id == idWidth)
+		return IntegerPropertyDescriptor.fromModel(getNode().getWidth());
 	return null;
 }
 
 public boolean isPropertyResettable(Object id) {
-	return id == ID_WIDTH;
+	return id == idWidth;
 }
 
 public boolean isPropertySet(Object id) {
-	if (id == ID_WIDTH)
+	if (id == idWidth)
 		return getNode().getWidth() != -1;
 	return false;
 }
 
 public void resetPropertyValue(Object id) {
-	if (id == ID_WIDTH)
+	if (id == idWidth)
 		getNode().setWidth(-1);
 }
 
 public void setPropertyValue(Object id, Object value) {
-	if (id == ID_X_LOC) {
+	if (id == idX) {
 		Point newLoc = getNode().getLocation().getCopy();
-		newLoc.x = Integer.parseInt((String)value);
+		newLoc.x = IntegerPropertyDescriptor.toModel(value);
 		getNode().setLocation(newLoc);
-	} else if (id == ID_Y_LOC) {
+	} else if (id == idY) {
 		Point newLoc = getNode().getLocation().getCopy();
-		newLoc.y = Integer.parseInt((String)value);
+		newLoc.y = IntegerPropertyDescriptor.toModel(value);
 		getNode().setLocation(newLoc);
-	} else if (id == ID_WIDTH)
-		getNode().setWidth(Integer.parseInt((String)value));
+	} else if (id == idWidth)
+		getNode().setWidth(IntegerPropertyDescriptor.toModel(value));
 }
 
 }

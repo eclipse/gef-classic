@@ -7,52 +7,92 @@
  *
  * Contributors:
  *     IBM Corporation - initial API and implementation
+ *     E.D.Willink
  *******************************************************************************/
 package org.eclipse.gef.examples.ediagram.model.properties;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.ui.views.properties.IPropertySource;
+
 public class CompoundPropertySource 
-	extends BasePropertySource
+	extends AbstractPropertySource
 {
 	
-private BasePropertySource prop1, prop2;
+private List sources;
 
-public CompoundPropertySource(BasePropertySource ediagramPropSrc, 
-		BasePropertySource ecorePropSrc) {
-	super(null);
-	prop1 = ediagramPropSrc;
-	prop2 = ecorePropSrc;
+public CompoundPropertySource() { }
+
+public CompoundPropertySource(IPropertySource one, IPropertySource two,
+		IPropertySource three) {
+	add(one);
+	add(two);
+	add(three);
+}
+
+public void add(IPropertySource propertySource) {
+	if (propertySource instanceof AbstractPropertySource) {
+		if (sources == null)
+			sources = new ArrayList();
+		sources.add(propertySource);
+	}
 }
 
 protected void createPropertyDescriptors(List list) {
-	prop1.createPropertyDescriptors(list);
-	prop2.createPropertyDescriptors(list);
+	if (sources != null)
+		for (Iterator i = sources.iterator(); i.hasNext(); ) {
+			AbstractPropertySource propertySource = (AbstractPropertySource) i.next();
+			propertySource.createPropertyDescriptors(list);
+		}
 }
 
 public Object getPropertyValue(Object id) {
-	Object result = prop1.getPropertyValue(id);
-	if (result == null)
-		result = prop2.getPropertyValue(id);
-	return result;
+	if (sources != null)
+		for (Iterator i = sources.iterator(); i.hasNext(); ) {
+			AbstractPropertySource propertySource = (AbstractPropertySource) i.next();
+			Object result = propertySource.getPropertyValue(id);
+			if (result != null)
+				return result;
+		}
+	return null;
 }
 
 public boolean isPropertyResettable(Object id) {
-	return prop1.isPropertyResettable(id) || prop2.isPropertyResettable(id);
+	if (sources != null)
+		for (Iterator i = sources.iterator(); i.hasNext(); ) {
+			AbstractPropertySource propertySource = (AbstractPropertySource) i.next();
+			if (propertySource.isPropertyResettable(id))
+				return true;
+		}
+	return false;
 }
 
 public boolean isPropertySet(Object id) {
-	return prop1.isPropertySet(id) || prop2.isPropertySet(id);
+	if (sources != null)
+		for (Iterator i = sources.iterator(); i.hasNext(); ) {
+			AbstractPropertySource propertySource = (AbstractPropertySource) i.next();
+			if (propertySource.isPropertySet(id))
+				return true;
+		}
+	return false;
 }
 
 public void resetPropertyValue(Object id) {
-	prop1.resetPropertyValue(id);
-	prop2.resetPropertyValue(id);
+	if (sources != null)
+		for (Iterator i = sources.iterator(); i.hasNext(); ) {
+			AbstractPropertySource propertySource = (AbstractPropertySource) i.next();
+			propertySource.resetPropertyValue(id);
+		}
 }
 
 public void setPropertyValue(Object id, Object value) {
-	prop1.setPropertyValue(id, value);
-	prop2.setPropertyValue(id, value);
+	if (sources != null)
+		for (Iterator i = sources.iterator(); i.hasNext(); ) {
+			AbstractPropertySource propertySource = (AbstractPropertySource) i.next();
+			propertySource.setPropertyValue(id, value);
+		}
 }
 
 }

@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ *     E.D.Willink - initial API and implementation
  *******************************************************************************/
 package org.eclipse.gef.examples.ediagram.model.properties;
 
@@ -16,25 +16,20 @@ import java.util.List;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertySource2;
 
-public abstract class BasePropertySource 
+public abstract class AbstractPropertySource 
 	implements IPropertySource2
 {
+public static final String READ_ONLY = " (Read-Only)";
 	
-private Object model;
 private IPropertyDescriptor[] descriptors;
 
-public BasePropertySource(Object model) {
-	this.model = model;
+public AbstractPropertySource() {
 }
 
 protected abstract void createPropertyDescriptors(List list);
 
 public Object getEditableValue() {
 	return this;
-}
-
-public Object getModel() {
-	return model;
 }
 
 public IPropertyDescriptor[] getPropertyDescriptors() {

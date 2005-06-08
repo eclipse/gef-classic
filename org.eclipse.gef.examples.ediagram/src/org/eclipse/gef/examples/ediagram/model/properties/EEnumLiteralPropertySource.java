@@ -6,60 +6,59 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     IBM Corporation - initial API and implementation
- *     E.D.Willink
+ *     E.D.Willink - initial API and implementation
  *******************************************************************************/
 package org.eclipse.gef.examples.ediagram.model.properties;
 
 import java.util.List;
 
-import org.eclipse.emf.ecore.EReference;
-import org.eclipse.gef.examples.ediagram.model.ReferenceView;
+import org.eclipse.emf.ecore.EEnumLiteral;
 
-public class ReferencePropertySource extends LinkPropertySource
+public class EEnumLiteralPropertySource 
+	extends ENamedElementPropertySource
 {
-	
-private final PropertyId idOppositeShown;
+private final PropertyId idValue;
 
-public ReferencePropertySource(String categoryName, Object model) {
+public EEnumLiteralPropertySource(String categoryName, EEnumLiteral model) {
 	super(categoryName, model);
-	idOppositeShown = new PropertyId(categoryName, "Opposite Shown");
+	idValue = new PropertyId(categoryName, "Value");
 }
 
 protected void createPropertyDescriptors(List list) {
 	super.createPropertyDescriptors(list);
-	list.add(new BooleanPropertyDescriptor(idOppositeShown));
+	list.add(new IntegerPropertyDescriptor(idValue));
 }
 
-protected EReference getEReference() {
-	return getReference().getEReference();
-}
-
-protected ReferenceView getReference() {
-	return (ReferenceView)getModel();
+protected EEnumLiteral getEEnumLiteral() {
+	return (EEnumLiteral)getENamedElement();
 }
 
 public Object getPropertyValue(Object id) {
-	if (id == idOppositeShown)
-		return BooleanPropertyDescriptor.fromModel(getReference().isOppositeShown());
+	if (id == idValue)
+		return IntegerPropertyDescriptor.fromModel(getEEnumLiteral().getValue());
 	return super.getPropertyValue(id);
 }
 
 public boolean isPropertyResettable(Object id) {
-	return super.isPropertyResettable(id);
+	return super.isPropertyResettable(id) || (id == idValue);
 }
 
 public boolean isPropertySet(Object id) {
+	if (id == idValue)
+		return true;
 	return super.isPropertySet(id);
 }
 
 public void resetPropertyValue(Object id) {
-	super.resetPropertyValue(id);
+	if (id == idValue)
+		getEEnumLiteral().setValue(0);
+	else
+		super.resetPropertyValue(id);
 }
 
 public void setPropertyValue(Object id, Object value) {
-	if (id == idOppositeShown)
-		getReference().setOppositeShown(BooleanPropertyDescriptor.toModel(value));
+	if (id == idValue)
+		getEEnumLiteral().setValue(IntegerPropertyDescriptor.toModel(value));
 	else
 		super.setPropertyValue(id, value);
 }

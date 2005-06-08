@@ -6,60 +6,60 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     IBM Corporation - initial API and implementation
- *     E.D.Willink
+ *     E.D.Willink - initial API and implementation
  *******************************************************************************/
 package org.eclipse.gef.examples.ediagram.model.properties;
 
 import java.util.List;
 
-import org.eclipse.emf.ecore.EReference;
-import org.eclipse.gef.examples.ediagram.model.ReferenceView;
+import org.eclipse.emf.ecore.EDataType;
 
-public class ReferencePropertySource extends LinkPropertySource
+public class EDataTypePropertySource 
+	extends EClassifierPropertySource
 {
 	
-private final PropertyId idOppositeShown;
+private final PropertyId idSerializable;
 
-public ReferencePropertySource(String categoryName, Object model) {
+public EDataTypePropertySource(String categoryName, EDataType model) {
 	super(categoryName, model);
-	idOppositeShown = new PropertyId(categoryName, "Opposite Shown");
+	idSerializable = new PropertyId(categoryName, "Serializable");
 }
 
 protected void createPropertyDescriptors(List list) {
 	super.createPropertyDescriptors(list);
-	list.add(new BooleanPropertyDescriptor(idOppositeShown));
+	list.add(new BooleanPropertyDescriptor(idSerializable));
 }
 
-protected EReference getEReference() {
-	return getReference().getEReference();
-}
-
-protected ReferenceView getReference() {
-	return (ReferenceView)getModel();
+protected EDataType getEDataType() {
+	return (EDataType)getENamedElement();
 }
 
 public Object getPropertyValue(Object id) {
-	if (id == idOppositeShown)
-		return BooleanPropertyDescriptor.fromModel(getReference().isOppositeShown());
+	if (id == idSerializable)
+		return BooleanPropertyDescriptor.fromModel(getEDataType().isSerializable());
 	return super.getPropertyValue(id);
 }
 
 public boolean isPropertyResettable(Object id) {
-	return super.isPropertyResettable(id);
+	return super.isPropertyResettable(id) || (id == idSerializable);
 }
 
 public boolean isPropertySet(Object id) {
+	if (id == idSerializable)
+		return true;
 	return super.isPropertySet(id);
 }
 
 public void resetPropertyValue(Object id) {
-	super.resetPropertyValue(id);
+	if (id == idSerializable)
+		getEDataType().setSerializable(true);
+	else
+		super.resetPropertyValue(id);
 }
 
 public void setPropertyValue(Object id, Object value) {
-	if (id == idOppositeShown)
-		getReference().setOppositeShown(BooleanPropertyDescriptor.toModel(value));
+	if (id == idSerializable)
+		getEDataType().setSerializable(BooleanPropertyDescriptor.toModel(value));
 	else
 		super.setPropertyValue(id, value);
 }

@@ -6,61 +6,61 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     IBM Corporation - initial API and implementation
- *     E.D.Willink
+ *     E.D.Willink - initial API and implementation
  *******************************************************************************/
 package org.eclipse.gef.examples.ediagram.model.properties;
 
 import java.util.List;
 
-import org.eclipse.emf.ecore.EReference;
-import org.eclipse.gef.examples.ediagram.model.ReferenceView;
+import org.eclipse.gef.examples.ediagram.model.StickyNote;
 
-public class ReferencePropertySource extends LinkPropertySource
+public class StickyNotePropertySource 
+	extends NodePropertySource
 {
 	
-private final PropertyId idOppositeShown;
+private final PropertyId idText;
 
-public ReferencePropertySource(String categoryName, Object model) {
+public StickyNotePropertySource(String categoryName, StickyNote model) {
 	super(categoryName, model);
-	idOppositeShown = new PropertyId(categoryName, "Opposite Shown");
+	idText = new PropertyId(categoryName, "Text");
 }
 
 protected void createPropertyDescriptors(List list) {
 	super.createPropertyDescriptors(list);
-	list.add(new BooleanPropertyDescriptor(idOppositeShown));
+	list.add(new StringPropertyDescriptor(idText));
 }
 
-protected EReference getEReference() {
-	return getReference().getEReference();
-}
-
-protected ReferenceView getReference() {
-	return (ReferenceView)getModel();
+protected StickyNote getStickyNote() {
+	return (StickyNote)getNode();
 }
 
 public Object getPropertyValue(Object id) {
-	if (id == idOppositeShown)
-		return BooleanPropertyDescriptor.fromModel(getReference().isOppositeShown());
+	if (id == idText)
+		return StringPropertyDescriptor.fromModel(getStickyNote().getText());
 	return super.getPropertyValue(id);
 }
 
 public boolean isPropertyResettable(Object id) {
-	return super.isPropertyResettable(id);
+	return super.isPropertyResettable(id) || (id == idText);
 }
 
 public boolean isPropertySet(Object id) {
+	if (id == idText)
+		return getStickyNote().getText() != null;
 	return super.isPropertySet(id);
 }
 
 public void resetPropertyValue(Object id) {
-	super.resetPropertyValue(id);
+	if (id == idText)
+		getStickyNote().setText(null);
+	else
+		super.resetPropertyValue(id);
 }
 
 public void setPropertyValue(Object id, Object value) {
-	if (id == idOppositeShown)
-		getReference().setOppositeShown(BooleanPropertyDescriptor.toModel(value));
-	else
+	if (id == idText) {
+		getStickyNote().setText(StringPropertyDescriptor.toModel(value));
+	} else
 		super.setPropertyValue(id, value);
 }
 

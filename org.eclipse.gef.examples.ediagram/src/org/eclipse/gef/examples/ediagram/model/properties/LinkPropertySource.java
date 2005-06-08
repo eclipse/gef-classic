@@ -7,6 +7,7 @@
  *
  * Contributors:
  *     IBM Corporation - initial API and implementation
+ *     E.D.Willink
  *******************************************************************************/
 package org.eclipse.gef.examples.ediagram.model.properties;
 
@@ -14,30 +15,28 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.ui.views.properties.TextPropertyDescriptor;
-
 import org.eclipse.draw2d.AbsoluteBendpoint;
 import org.eclipse.draw2d.Bendpoint;
 import org.eclipse.draw2d.geometry.Point;
-
 import org.eclipse.gef.examples.ediagram.model.Link;
 
 public class LinkPropertySource 
-	extends BasePropertySource
+	extends ModelPropertySource
 {
 	
-private static final String ID_BENDPOINTS = "bendpoints";
+private final PropertyId idBendpoints;
 
-public LinkPropertySource(Object model) {
+public LinkPropertySource(String categoryName, Object model) {
 	super(model);
+	idBendpoints = new PropertyId(categoryName, "Bendpoints");
 }
 
 protected void createPropertyDescriptors(List list) {
-	list.add(new TextPropertyDescriptor(ID_BENDPOINTS, ID_BENDPOINTS));
+	list.add(new StringPropertyDescriptor(idBendpoints));
 }
 
 public boolean isPropertyResettable(Object id) {
-	return id == ID_BENDPOINTS;
+	return id == idBendpoints;
 }
 
 protected Link getLink() {
@@ -45,7 +44,7 @@ protected Link getLink() {
 }
 
 public Object getPropertyValue(Object id) {
-	if (id == ID_BENDPOINTS) {
+	if (id == idBendpoints) {
 		StringBuffer buffer = new StringBuffer();
 		for (Iterator iter = getLink().getBendpoints().iterator(); iter.hasNext();) {
 			Point point = ((Bendpoint)iter.next()).getLocation();
@@ -60,16 +59,16 @@ public Object getPropertyValue(Object id) {
 }
 
 public boolean isPropertySet(Object id) {
-	return id == ID_BENDPOINTS && !getLink().getBendpoints().isEmpty();
+	return id == idBendpoints && !getLink().getBendpoints().isEmpty();
 }
 
 public void resetPropertyValue(Object id) {
-	if (id == ID_BENDPOINTS)
+	if (id == idBendpoints)
 		getLink().getBendpoints().clear();
 }
 
 public void setPropertyValue(Object id, Object value) {
-	if (id == ID_BENDPOINTS) {
+	if (id == idBendpoints) {
 		List points = new ArrayList();
 		try {
 			String[] result = ((String)value).split(" ");
