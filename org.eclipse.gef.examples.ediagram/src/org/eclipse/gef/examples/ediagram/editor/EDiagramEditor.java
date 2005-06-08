@@ -66,7 +66,7 @@ import org.eclipse.gef.examples.ediagram.model.commands.DeleteCommand;
 import org.eclipse.gef.examples.ediagram.outline.EDiagramOutlinePage;
 
 public class EDiagramEditor 
-	extends GraphicalEditorWithFlyoutPalette 
+	extends GraphicalEditorWithFlyoutPalette
 {
 
 protected static final String PALETTE_DOCK_LOCATION = "Dock location"; //$NON-NLS-1$
@@ -229,7 +229,6 @@ protected void setInput(IEditorInput input) {
 	diagram = (Diagram)resource.getContents().get(0);
 	
 	setPartName(file.getName());
-	setContentDescription(file.getFullPath().toString());
 }
 
 }
