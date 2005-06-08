@@ -19,7 +19,7 @@ import org.eclipse.gef.editparts.ZoomManager;
  * Typically, this handler should be registered on a viewer that supports zoom as follows:
  * <br>
  * <code>
- * graphicalViewer.setProperty(MouseWheelHandler.KeyGenerator.getKey(SWT.CTRL), 
+ * graphicalViewer.setProperty(MouseWheelHandler.KeyGenerator.getKey(SWT.MOD1), 
  *         MouseWheelZoomHandler.SINGLETON);
  * </code>
  * @author Pratik Shah
