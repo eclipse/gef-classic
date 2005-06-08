@@ -88,6 +88,9 @@ private static final int FLAG_ACTIVE = 8;
 private static final int FLAG_HOVER = 2;
 private static final int FLAG_PAST_THRESHOLD = 1;
 private static final int FLAG_UNLOAD = 4;
+{
+	setFlag(FLAG_UNLOAD, true);
+}
 
 /**
  * The highest-bit flag being used.
@@ -162,14 +165,12 @@ protected static final int STATE_INVALID = 8;
  * change states until it is activated() again.
  */
 protected static final int STATE_TERMINAL = 1 << 30;
-{
-	setFlag(FLAG_UNLOAD, true);
-}
+
 /**
  * Key modifier for ignoring snap while dragging.  It's CTRL on Mac, and ALT on all
  * other platforms.
  */
-protected static final int MODIFIER_IGNORE_SNAP;
+static final int MODIFIER_IGNORE_SNAP;
 
 private long accessibleBegin;
 

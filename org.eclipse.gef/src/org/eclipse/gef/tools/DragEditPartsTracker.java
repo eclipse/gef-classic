@@ -53,7 +53,7 @@ public class DragEditPartsTracker
 /**
  * Key modifier for cloning.  It's ALT on Mac, and CTRL on all other platforms.
  */
-protected static final int MODIFIER_CLONE;
+static final int MODIFIER_CLONE;
 
 static {
 	if (SWT.getPlatform().equals("carbon")) //$NON-NLS-1$
