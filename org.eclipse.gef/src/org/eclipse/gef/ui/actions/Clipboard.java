@@ -28,7 +28,7 @@ public class Clipboard {
 
 private static Clipboard defaultClipboard = new Clipboard();
 private static final SimpleObjectTransfer TRANSFER = new SimpleObjectTransfer() {
-	private final String TYPE_NAME = "org.eclipse.gef.graphical.obj.transfer"; //$NON-NLS-1$
+	private final String TYPE_NAME = "org.eclipse.gef.clipboard.transfer"; //$NON-NLS-1$
 	private final int TYPE_ID = registerType(TYPE_NAME);
 	protected int[] getTypeIds() {
 		return new int[] {TYPE_ID};
