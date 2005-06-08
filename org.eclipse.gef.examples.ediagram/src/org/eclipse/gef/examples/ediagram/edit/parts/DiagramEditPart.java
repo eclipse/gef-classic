@@ -27,8 +27,11 @@ import org.eclipse.draw2d.ShortestPathConnectionRouter;
 
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.LayerConstants;
+import org.eclipse.gef.SnapToGeometry;
+import org.eclipse.gef.SnapToHelper;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.editpolicies.RootComponentEditPolicy;
+import org.eclipse.gef.editpolicies.SnapFeedbackPolicy;
 
 import org.eclipse.gef.examples.ediagram.edit.policies.DiagramLayoutEditPolicy;
 import org.eclipse.gef.examples.ediagram.model.Diagram;
@@ -76,6 +79,7 @@ protected IFigure createFigure() {
 protected void createEditPolicies() {
 	installEditPolicy(EditPolicy.COMPONENT_ROLE, new RootComponentEditPolicy());
 	installEditPolicy(EditPolicy.LAYOUT_ROLE, new DiagramLayoutEditPolicy());
+	installEditPolicy("Snap Feedback", new SnapFeedbackPolicy()); //$NON-NLS-1$
 }
 
 public void deactivate() {
@@ -88,6 +92,12 @@ protected void handlePropertyChanged(Notification msg) {
 		case ModelPackage.DIAGRAM__CONTENTS:
 			refreshChildren();
 	}
+}
+
+public Object getAdapter(Class key) {
+	if (key == SnapToHelper.class)
+		return new SnapToGeometry(this);
+	return super.getAdapter(key);
 }
 
 protected List getModelChildren() {
