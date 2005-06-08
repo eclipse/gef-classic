@@ -50,6 +50,18 @@ public class DragEditPartsTracker
 	extends SelectEditPartTracker
 {
 
+/**
+ * Key modifier for cloning.  It's ALT on Mac, and CTRL on all other platforms.
+ */
+protected static final int MODIFIER_CLONE;
+
+static {
+	if (SWT.getPlatform().equals("carbon")) //$NON-NLS-1$
+		MODIFIER_CLONE = SWT.ALT;
+	else
+		MODIFIER_CLONE = SWT.CTRL;
+}
+
 private static final int FLAG_SOURCE_FEEDBACK = SelectEditPartTracker.MAX_FLAG << 1;
 /** Max flag */
 protected static final int MAX_FLAG = FLAG_SOURCE_FEEDBACK;
@@ -77,13 +89,13 @@ public DragEditPartsTracker(EditPart sourceEditPart) {
  *  @param e the key event
  *  @return true if the key was control and can be accepted.
  */
-private boolean acceptMOD1(KeyEvent e) {
+private boolean acceptClone(KeyEvent e) {
 	int key = e.keyCode;
 	if (!(isInState(STATE_DRAG_IN_PROGRESS
 	  | STATE_ACCESSIBLE_DRAG 
 	  | STATE_ACCESSIBLE_DRAG_IN_PROGRESS)))
 		return false;
-	return (key == SWT.MOD1);
+	return (key == MODIFIER_CLONE);
 }
 
 private boolean acceptSHIFT(KeyEvent e) {
@@ -385,7 +397,7 @@ protected boolean handleKeyDown(KeyEvent e) {
 				break;
 		}
 		return true;
-	} else if (acceptMOD1(e)) {
+	} else if (acceptClone(e)) {
 		setCloneActive(true);
 		handleDragInProgress();
 		return true;
@@ -407,7 +419,7 @@ protected boolean handleKeyUp(KeyEvent e) {
 	if (acceptArrowKey(e)) {
 		accStepReset();
 		return true;
-	} else if (acceptMOD1(e)) {
+	} else if (acceptClone(e)) {
 		setCloneActive(false);
 		handleDragInProgress();
 		return true;
@@ -532,7 +544,7 @@ protected void setState(int state) {
 	
 	if (isInState(STATE_ACCESSIBLE_DRAG | STATE_DRAG_IN_PROGRESS
 			| STATE_ACCESSIBLE_DRAG_IN_PROGRESS)) {
-		if (getCurrentInput().isModKeyDown(SWT.MOD1)) {
+		if (getCurrentInput().isModKeyDown(MODIFIER_CLONE)) {
 			setCloneActive(true);
 			handleDragInProgress();
 		}
@@ -589,7 +601,7 @@ protected void updateTargetRequest() {
 	request.getExtendedData().clear();
 	request.setMoveDelta(moveDelta);
 	
-	if (snapToHelper != null && !getCurrentInput().isAltKeyDown()) {
+	if (snapToHelper != null && !getCurrentInput().isModKeyDown(MODIFIER_IGNORE_SNAP)) {
 		PrecisionRectangle baseRect = sourceRectangle.getPreciseCopy();
 		PrecisionRectangle jointRect = compoundSrcRect.getPreciseCopy();
 		baseRect.translate(moveDelta);
