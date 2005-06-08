@@ -328,12 +328,14 @@ public void scrollToX(int hOffset) {
 	} else //Moving right
 		dest.x += dx; //Move expose area to the right
 
+	// fix for bug 41111
 	Control[] children = getChildren();
 	boolean[] manualMove = new boolean[children.length];
 	for (int i = 0; i < children.length; i++) {
 		org.eclipse.swt.graphics.Rectangle bounds = children[i].getBounds();
-		manualMove[i] = bounds.x > blit.x + blit.width || bounds.y > blit.y + blit.height
-				|| bounds.x + bounds.width < blit.x || bounds.y + bounds.height < blit.y;
+		manualMove[i] = blit.width <= 0 || bounds.x > blit.x + blit.width 
+				|| bounds.y > blit.y + blit.height || bounds.x + bounds.width < blit.x 
+				|| bounds.y + bounds.height < blit.y;
 	}
 	scroll(dest.x, dest.y, blit.x, blit.y, blit.width, blit.height,	true);
 	for (int i = 0; i < children.length; i++) {
@@ -371,12 +373,14 @@ public void scrollToY(int vOffset) {
 	} else //Moving down
 		dest.y += dy;
 
+	// fix for bug 41111
 	Control[] children = getChildren();
 	boolean[] manualMove = new boolean[children.length];
 	for (int i = 0; i < children.length; i++) {
 		org.eclipse.swt.graphics.Rectangle bounds = children[i].getBounds();
-		manualMove[i] = bounds.x > blit.x + blit.width || bounds.y > blit.y + blit.height
-				|| bounds.x + bounds.width < blit.x || bounds.y + bounds.height < blit.y;
+		manualMove[i] = blit.height <= 0 || bounds.x > blit.x + blit.width 
+				|| bounds.y > blit.y + blit.height || bounds.x + bounds.width < blit.x 
+				|| bounds.y + bounds.height < blit.y;
 	}
 	scroll(dest.x, dest.y, blit.x, blit.y, blit.width, blit.height,	true);
 	for (int i = 0; i < children.length; i++) {
