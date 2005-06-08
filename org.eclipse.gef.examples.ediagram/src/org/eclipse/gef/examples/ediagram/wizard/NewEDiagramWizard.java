@@ -139,22 +139,21 @@ public class NewEDiagramWizard extends Wizard implements INewWizard {
 		Diagram diagram = ModelFactory.eINSTANCE.createDiagram();
 		for (int i = 0; i < ecoreFiles.length; i++) {
 			String filePath = ecoreFiles[i];
-			URI ecoreUri = URI.createPlatformResourceURI(filePath);
+			URI platformURI = URI.createPlatformResourceURI(filePath);
 			Resource ecoreResource = null;
 			try {
-				ecoreResource = rsrcSet.getResource(ecoreUri, true);
+				ecoreResource = rsrcSet.getResource(platformURI, true);
 			} catch (Exception e) {
 				// Perhaps the file in outside the workspace
-				ecoreUri = URI.createFileURI(filePath);
+				URI fileURI = URI.createFileURI(filePath);
 				try {
-					ecoreResource = rsrcSet.getResource(ecoreUri, true);
-				} catch (Exception ie) {
-					// Revert to using platform uri because this looks like a new ecore file
-					ecoreUri = URI.createPlatformResourceURI(filePath);
-				}
+					ecoreResource = rsrcSet.getResource(fileURI, true);
+				} catch (Exception ie) {}
 			}
 			if (ecoreResource == null) {
-				ecoreResource = rsrcSet.createResource(ecoreUri);
+				// The URI didn't match any existing file, 
+				// so create a new one in the workspace
+				ecoreResource = rsrcSet.createResource(platformURI);
 				EPackage pckg = EcoreFactory.eINSTANCE.createEPackage();
 				pckg.setName("changeMe");
 				ecoreResource.getContents().add(pckg);
