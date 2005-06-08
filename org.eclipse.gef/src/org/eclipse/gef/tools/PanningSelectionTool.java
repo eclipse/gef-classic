@@ -46,13 +46,12 @@ protected static final int MAX_STATE = PAN_IN_PROGRESS;
 
 	
 /**
- * Returns true if the space bar can be accepted.
- * 
+ * Returns <code>true</code> if spacebar condition was accepted.
  * @param e the key event
  * @return true if the space bar was the key event.
  */
 protected boolean acceptSpaceBar(KeyEvent e) {
-	return (e.character == ' ' && (e.stateMask & SWT.MOD1) == 0);
+	return (e.character == ' ' && (e.stateMask & SWT.MODIFIER_MASK) == 0);
 }
 
 /**
