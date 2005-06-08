@@ -165,6 +165,12 @@ protected static final int STATE_TERMINAL = 1 << 30;
 {
 	setFlag(FLAG_UNLOAD, true);
 }
+/**
+ * Key modifier for ignoring snap while dragging.  It's CTRL on Mac, and ALT on all
+ * other platforms.
+ */
+protected static final int MODIFIER_IGNORE_SNAP;
+
 private long accessibleBegin;
 
 private int accessibleStep;
@@ -181,6 +187,13 @@ private Cursor defaultCursor, disabledCursor;
 private EditDomain domain;
 private List operationSet;
 private int startX, startY, state;
+
+static {
+	if (SWT.getPlatform().equals("carbon"))//$NON-NLS-1$
+		MODIFIER_IGNORE_SNAP = SWT.CTRL;
+	else
+		MODIFIER_IGNORE_SNAP = SWT.ALT;
+}
 
 boolean acceptAbort(KeyEvent e) {
 	return e.character == SWT.ESC;
@@ -1431,6 +1444,12 @@ public static class Input
 		return (modifiers & SWT.CONTROL) != 0;
 	}
 	
+	/**
+	 * Returns <code>true</code> if any of the given mod keys are pressed.
+	 * @param mod SWT.MOD1, SWT.MOD2, SWT.MOD3, SWT.MOD4 or any combination thereof
+	 * @return <code>true</code> if the given mod key is pressed
+	 * @since 3.1
+	 */
 	public boolean isModKeyDown(int mod) {
 		return (modifiers & mod) != 0;
 	}
