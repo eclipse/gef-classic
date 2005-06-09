@@ -10,8 +10,10 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.shapes.model.commands;
 
+import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2d.geometry.Rectangle;
+
 import org.eclipse.gef.commands.Command;
-import org.eclipse.gef.requests.CreateRequest;
 
 import org.eclipse.gef.examples.shapes.model.Shape;
 import org.eclipse.gef.examples.shapes.model.ShapesDiagram;
@@ -22,52 +24,48 @@ import org.eclipse.gef.examples.shapes.model.ShapesDiagram;
  * The command can be undone or redone.
  * @author Elias Volanakis
  */
-public class ShapeCreateCommand extends Command {
+public class ShapeCreateCommand 
+	extends Command 
+{
+	
 /** The new shape. */ 
 private Shape newShape;
-
 /** ShapeDiagram to add to. */
 private final ShapesDiagram parent;
-/** A request to create a new Shape. */
-private final CreateRequest request;
-/** True, if newShape was added to parent. */
-private boolean shapeAdded;
+/** The bounds of the new Shape. */
+private Rectangle bounds;
 
 /**
  * Create a command that will add a new Shape to a ShapesDiagram.
+ * @param newShape the new Shape that is to be added
  * @param parent the ShapesDiagram that will hold the new element
- * @param req     a request to create a new Shape
+ * @param bounds the bounds of the new shape; the size can be (-1, -1) if not known
  * @throws IllegalArgumentException if any parameter is null, or the request
  * 						  does not provide a new Shape instance
  */
-public ShapeCreateCommand(ShapesDiagram parent, CreateRequest req) {
-	if (parent == null || req == null || !(req.getNewObject() instanceof Shape)) {
-		throw new IllegalArgumentException();
-	}
+public ShapeCreateCommand(Shape newShape, ShapesDiagram parent, Rectangle bounds) {
+	this.newShape = newShape;
 	this.parent = parent;
-	this.request = req;
+	this.bounds = bounds;
 	setLabel("shape creation");
 }
 
-/* (non-Javadoc)
- * @see org.eclipse.gef.commands.Command#canUndo()
+/**
+ * Can execute if all the necessary information has been provided. 
+ * @see org.eclipse.gef.commands.Command#canExecute()
  */
-public boolean canUndo() {
-	return shapeAdded;
+public boolean canExecute() {
+	return newShape != null && parent != null && bounds != null;
 }
 
 /* (non-Javadoc)
  * @see org.eclipse.gef.commands.Command#execute()
  */
 public void execute() {
-	// Obtain the new Shape instance from the request.
-	// This causes the factory stored in the request to create a new instance.
-	// The factory is supplied in the palette-tool-entry, see
-	// ShapesEditorPaletteFactory#createComponentsGroup()
-	newShape = (Shape) request.getNewObject();
-	// Get desired location and size from the request
-	newShape.setSize(request.getSize()); // might be null!
-	newShape.setLocation(request.getLocation());
+	newShape.setLocation(bounds.getLocation());
+	Dimension size = bounds.getSize();
+	if (size.width > 0 && size.height > 0)
+		newShape.setSize(size);
 	redo();
 }
 
@@ -75,7 +73,7 @@ public void execute() {
  * @see org.eclipse.gef.commands.Command#redo()
  */
 public void redo() {
-	shapeAdded = parent.addChild(newShape);
+	parent.addChild(newShape);
 }
 
 /* (non-Javadoc)

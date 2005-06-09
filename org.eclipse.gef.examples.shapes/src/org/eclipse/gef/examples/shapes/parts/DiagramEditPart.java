@@ -134,7 +134,7 @@ public void propertyChange(PropertyChangeEvent evt) {
  * Children of XYLayoutEditPolicy can be used in Figures with XYLayout.
  * @author Elias Volanakis
  */
-private class ShapesXYLayoutEditPolicy extends XYLayoutEditPolicy {
+private static class ShapesXYLayoutEditPolicy extends XYLayoutEditPolicy {
 	
 /* (non-Javadoc)
  * @see org.eclipse.gef.editpolicies.ConstrainedLayoutEditPolicy#createAddCommand(org.eclipse.gef.EditPart, java.lang.Object)
@@ -174,7 +174,8 @@ protected Command getCreateCommand(CreateRequest request) {
 	Object childClass = request.getNewObjectType();
 	if (childClass == EllipticalShape.class || childClass == RectangularShape.class) {
 		// return a command that can add a Shape to a ShapesDiagram 
-		return new ShapeCreateCommand(DiagramEditPart.this.getCastedModel(), request);
+		return new ShapeCreateCommand((Shape)request.getNewObject(), 
+				(ShapesDiagram)getHost().getModel(), (Rectangle)getConstraintFor(request));
 	}
 	return null;
 }
@@ -186,6 +187,7 @@ protected Command getDeleteDependantCommand(Request request) {
 	// not used in this example
 	return null;
 }
+
 }
 
 }
