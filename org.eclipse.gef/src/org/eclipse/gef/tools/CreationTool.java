@@ -158,7 +158,8 @@ protected boolean handleButtonDown(int button) {
 		getCreateRequest().setLocation(getLocation());
 		lockTargetEditPart(getTargetEditPart());
 		// Snap only when size on drop is employed
-		helper = (SnapToHelper)getTargetEditPart().getAdapter(SnapToHelper.class);
+		if (getTargetEditPart() != null)
+			helper = (SnapToHelper)getTargetEditPart().getAdapter(SnapToHelper.class);
 	}
 	return true;
 }
@@ -239,7 +240,6 @@ protected boolean handleMove() {
 	showTargetFeedback();
 	return true;
 }
-
 
 /**
  * Executes the current command and selects the newly created object.  The button that was
