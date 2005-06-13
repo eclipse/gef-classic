@@ -215,6 +215,7 @@ protected ScalableLayeredPane createScaledLayers() {
 	ScalableLayeredPane layers = new ScalableLayeredPane();
 	layers.add(createGridLayer(), GRID_LAYER);
 	layers.add(getPrintableLayers(), PRINTABLE_LAYERS);
+	layers.add(new FeedbackLayer(), SCALED_FEEDBACK_LAYER);
 	return layers;
 }
 
