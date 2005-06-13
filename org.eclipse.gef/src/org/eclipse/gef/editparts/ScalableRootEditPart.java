@@ -24,6 +24,7 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 
+import org.eclipse.gef.AutoexposeHelper;
 import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartViewer;
@@ -223,6 +224,15 @@ protected ScalableLayeredPane createScaledLayers() {
  */
 protected Viewport createViewport() {
 	return new Viewport(true);
+}
+
+/**
+ * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
+ */
+public Object getAdapter(Class key) {
+	if (key == AutoexposeHelper.class)
+		return new ViewportAutoexposeHelper(this);
+	return super.getAdapter(key);
 }
 
 /**
