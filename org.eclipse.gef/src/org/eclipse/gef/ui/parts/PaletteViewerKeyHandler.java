@@ -45,18 +45,22 @@ public PaletteViewerKeyHandler(PaletteViewer viewer) {
 }
 
 private boolean acceptCollapseDrawer(KeyEvent event) {
-	return event.keyCode == SWT.ARROW_LEFT
-		&& isExpandedDrawer(getFocusEditPart());
+	boolean result = isViewerMirrored() ? event.keyCode == SWT.ARROW_RIGHT 
+			: event.keyCode == SWT.ARROW_LEFT;
+	return result && isExpandedDrawer(getFocusEditPart());
 }
 
 private boolean acceptExpandDrawer(KeyEvent event) {
-	return event.keyCode == SWT.ARROW_RIGHT
-		&& isCollapsedDrawer(getFocusEditPart());
+	boolean result = isViewerMirrored() ? event.keyCode == SWT.ARROW_LEFT
+			: event.keyCode == SWT.ARROW_RIGHT;
+	return result && isCollapsedDrawer(getFocusEditPart());
 }
 
 private boolean acceptIntoExpandedDrawer(KeyEvent event) {
-	return (event.keyCode == SWT.ARROW_DOWN || event.keyCode == SWT.ARROW_RIGHT)
-		&& isExpandedDrawer(getFocusEditPart());
+	boolean result = event.keyCode == SWT.ARROW_DOWN;
+	result = result || (isViewerMirrored() ? event.keyCode == SWT.ARROW_LEFT 
+			: event.keyCode == SWT.ARROW_RIGHT); 
+	return result && isExpandedDrawer(getFocusEditPart());
 }
 
 private boolean acceptOpenContextMenu(KeyEvent event) {
@@ -65,15 +69,17 @@ private boolean acceptOpenContextMenu(KeyEvent event) {
 }
 
 private boolean acceptSetFocusOnDrawer(KeyEvent event) {
-	return (event.keyCode == SWT.ARROW_LEFT || event.keyCode == SWT.ARROW_UP)
-				&& ((getFocusEditPart().getParent() instanceof PaletteStackEditPart 
-				&& getFocusEditPart().getParent().getParent() instanceof DrawerEditPart)
-				|| getFocusEditPart().getParent() instanceof DrawerEditPart);
-}		
+	boolean result = isViewerMirrored() ? event.keyCode == SWT.ARROW_RIGHT 
+			: event.keyCode == SWT.ARROW_LEFT;
+	return (result || event.keyCode == SWT.ARROW_UP)
+			&& (getFocusEditPart().getParent() instanceof DrawerEditPart
+			|| (getFocusEditPart().getParent() instanceof PaletteStackEditPart
+			&& getFocusEditPart().getParent().getParent() instanceof DrawerEditPart));
+}
 
 private boolean acceptNextContainer(KeyEvent event) {
 	return event.keyCode == SWT.ARROW_DOWN;
-}		
+}
 
 private void buildNavigationList(EditPart palettePart, EditPart exclusion,
 		ArrayList navList, EditPart stackPart) {

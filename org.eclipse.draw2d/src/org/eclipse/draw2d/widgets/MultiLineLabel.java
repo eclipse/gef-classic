@@ -109,24 +109,24 @@ private void addAccessibility() {
 			Point p = getViewport().getViewLocation();
 			int dy = getFont().getFontData()[0].getHeight();
 			int dx = dy * 3 / 2;
+			boolean mirrored = (e.widget.getStyle() & SWT.MIRRORED) != 0;
 			if (e.keyCode == SWT.ARROW_DOWN) {
 				scrollToY(p.y + dy / 2);
 				scrollToY(p.y + dy);
 				scrollToY(p.y + dy * 3 / 2);
 				scrollToY(p.y + dy * 2);
-			}
-			if (e.keyCode == SWT.ARROW_UP) {
+			} else if (e.keyCode == SWT.ARROW_UP) {
 				scrollToY(p.y - dy / 2);
 				scrollToY(p.y - dy);
 				scrollToY(p.y - dy * 3 / 2);
 				scrollToY(p.y - dy * 2);
-			}
-			if (e.keyCode == SWT.ARROW_RIGHT) {
+			} else if ((!mirrored && e.keyCode == SWT.ARROW_RIGHT) 
+					|| (mirrored && e.keyCode == SWT.ARROW_LEFT)) {
 				scrollToX(p.x + dx);
 				scrollToX(p.x + dx * 2);
 				scrollToX(p.x + dx * 3);
-			}
-			if (e.keyCode == SWT.ARROW_LEFT) {
+			} else if ((!mirrored && e.keyCode == SWT.ARROW_LEFT)
+					|| (mirrored && e.keyCode == SWT.ARROW_RIGHT)) {
 				scrollToX(p.x - dx);
 				scrollToX(p.x - dx * 2);
 				scrollToX(p.x - dx * 3);

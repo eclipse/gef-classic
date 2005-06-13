@@ -110,10 +110,12 @@ protected boolean handleKeyDown(KeyEvent event) {
 				direction = PositionConstants.NORTH;
 				break;
 			case SWT.ARROW_RIGHT:
-				direction = PositionConstants.EAST;
+				direction = isCurrentViewerMirrored() ? PositionConstants.WEST 
+						: PositionConstants.EAST;
 				break;
 			case SWT.ARROW_LEFT:
-				direction = PositionConstants.WEST;
+				direction = isCurrentViewerMirrored() ? PositionConstants.EAST 
+						: PositionConstants.WEST;
 				break;
 		}
 

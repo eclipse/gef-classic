@@ -383,17 +383,23 @@ protected boolean handleKeyDown(KeyEvent e) {
 		if (stateTransition(STATE_INITIAL, STATE_ACCESSIBLE_DRAG_IN_PROGRESS))
 			setStartLocation(getLocation());
 		switch (e.keyCode) {
-			case SWT.ARROW_DOWN :
+			case SWT.ARROW_DOWN:
 				placeMouseInViewer(getLocation().getTranslated(0, accGetStep()));
 				break;
 			case SWT.ARROW_UP:
 				placeMouseInViewer(getLocation().getTranslated(0, -accGetStep()));
 				break;
 			case SWT.ARROW_RIGHT:
-				placeMouseInViewer(getLocation().getTranslated(accGetStep(), 0));
+				int stepping = accGetStep();
+				if (isCurrentViewerMirrored())
+					stepping = -stepping;
+				placeMouseInViewer(getLocation().getTranslated(stepping, 0));
 				break;
 			case SWT.ARROW_LEFT:
-				placeMouseInViewer(getLocation().getTranslated(-accGetStep(), 0));
+				int step = -accGetStep();
+				if (isCurrentViewerMirrored())
+					step = -step;
+				placeMouseInViewer(getLocation().getTranslated(step, 0));
 				break;
 		}
 		return true;

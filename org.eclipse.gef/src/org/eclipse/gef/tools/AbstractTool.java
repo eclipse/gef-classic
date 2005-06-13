@@ -838,6 +838,10 @@ protected boolean isActive() {
 	return getFlag(FLAG_ACTIVE);
 }
 
+boolean isCurrentViewerMirrored() {
+	return (getCurrentViewer().getControl().getStyle() & SWT.MIRRORED) != 0;
+}
+
 /**
  * Returns <code>true</code> if the tool is hovering.
  * @return <code>true</code> if hovering

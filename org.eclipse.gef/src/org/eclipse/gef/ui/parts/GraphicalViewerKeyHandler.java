@@ -243,6 +243,14 @@ protected GraphicalViewer getViewer() {
 }
 
 /**
+ * @return <code>true</code> if the viewer is mirrored
+ * @since 3.1
+ */
+boolean isViewerMirrored() {
+	return (viewer.getControl().getStyle() & SWT.MIRRORED) != 0;
+}
+
+/**
  * Extended to process key events described above.
  * @see org.eclipse.gef.KeyHandler#keyPressed(org.eclipse.swt.events.KeyEvent)
  */
@@ -272,11 +280,13 @@ public boolean keyPressed(KeyEvent event) {
 
 	switch (event.keyCode) {
 		case SWT.ARROW_LEFT:
-			if (navigateNextSibling(event, PositionConstants.WEST))
+			if (navigateNextSibling(event, isViewerMirrored() ? PositionConstants.EAST 
+					: PositionConstants.WEST))
 				return true;
 			break;
 		case SWT.ARROW_RIGHT:
-			if (navigateNextSibling(event, PositionConstants.EAST))
+			if (navigateNextSibling(event, isViewerMirrored() ? PositionConstants.WEST 
+					: PositionConstants.EAST))
 				return true;
 			break;
 		case SWT.ARROW_UP:
@@ -471,10 +481,16 @@ void scrollViewer(KeyEvent event) {
 			figCanvas.scrollToY(loc.y - area.height);
 			break;
 		case SWT.ARROW_LEFT:
-			figCanvas.scrollToX(loc.x - area.width);
+			if (isViewerMirrored())
+				figCanvas.scrollToX(loc.x + area.width);
+			else
+				figCanvas.scrollToX(loc.x - area.width);
 			break;
 		case SWT.ARROW_RIGHT:
-			figCanvas.scrollToX(loc.x + area.width);
+			if (isViewerMirrored())
+				figCanvas.scrollToX(loc.x - area.width);
+			else
+				figCanvas.scrollToX(loc.x + area.width);
 	}
 }
 

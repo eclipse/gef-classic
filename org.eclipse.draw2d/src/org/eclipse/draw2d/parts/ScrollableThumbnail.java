@@ -153,9 +153,11 @@ private KeyListener keyListener = new KeyListener.Stub() {
 	public void keyPressed(KeyEvent ke) {
 		int moveX = viewport.getClientArea().width / 4; 
 		int moveY = viewport.getClientArea().height / 4;
-		if (ke.keycode == SWT.ARROW_LEFT || ke.keycode == SWT.HOME)
+		if (ke.keycode == SWT.HOME || (isMirrored() ? ke.keycode == SWT.ARROW_RIGHT
+				: ke.keycode == SWT.ARROW_LEFT))
 			viewport.setViewLocation(viewport.getViewLocation().translate(-moveX, 0));
-		else if (ke.keycode == SWT.ARROW_RIGHT || ke.keycode == SWT.END)
+		else if (ke.keycode == SWT.END || (isMirrored() ? ke.keycode == SWT.ARROW_LEFT
+				: ke.keycode == SWT.ARROW_RIGHT))
 			viewport.setViewLocation(viewport.getViewLocation().translate(moveX, 0));
 		else if (ke.keycode == SWT.ARROW_UP || ke.keycode == SWT.PAGE_UP)
 			viewport.setViewLocation(viewport.getViewLocation().translate(0, -moveY));
