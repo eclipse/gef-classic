@@ -86,13 +86,15 @@ protected void paintClientArea(Graphics graphics) {
 	if (scale == 1.0) {
 		super.paintClientArea(graphics);
 	} else {
+		ScaledGraphics g = new ScaledGraphics(graphics);
 		boolean optimizeClip = getBorder() == null || getBorder().isOpaque();
 		if (!optimizeClip)
-			graphics.clipRect(getBounds().getCropped(getInsets()));
-		graphics.scale(scale);
-		graphics.pushState();
-		paintChildren(graphics);
-		graphics.popState();
+			g.clipRect(getBounds().getCropped(getInsets()));
+		g.scale(scale);
+		g.pushState();
+		paintChildren(g);
+		g.dispose();
+		graphics.restoreState();
 	}
 }
 
