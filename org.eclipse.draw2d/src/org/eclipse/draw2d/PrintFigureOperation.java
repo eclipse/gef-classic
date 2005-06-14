@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.printing.Printer;
 import org.eclipse.swt.widgets.Display;
@@ -74,6 +75,14 @@ public PrintFigureOperation(Printer p, IFigure srcFigure) {
 }
 
 /**
+ * @return SWT.RIGHT_TO_LEFT if the print source is mirrored; SWT.LEFT_TO_RIGHT otherwise
+ * @see org.eclipse.draw2d.PrintOperation#getGraphicsOrientation()
+ */
+int getGraphicsOrientation() {
+	return getPrintSource().isMirrored() ? SWT.RIGHT_TO_LEFT : SWT.LEFT_TO_RIGHT;
+}
+
+/**
  * Returns the current print mode.  The print mode is one of: {@link #FIT_HEIGHT},
  * {@link #FIT_PAGE}, or {@link #FIT_WIDTH}.
  * @return the print mode
@@ -129,6 +138,31 @@ protected void printPages() {
 }
 
 /**
+ * @see org.eclipse.draw2d.PrintOperation#restorePrintSource()
+ */
+protected void restorePrintSource() {
+	getPrintSource().setBackgroundColor(oldBGColor);
+	oldBGColor = null;
+}
+
+/**
+ * Sets the print mode.  Possible values are {@link #TILE}, {@link #FIT_HEIGHT}, 
+ * {@link #FIT_WIDTH} and {@link #FIT_PAGE}.
+ * @param mode the print mode
+ */
+public void setPrintMode(int mode) {
+	printMode = mode;
+}
+
+/**
+ * Sets the printSource.
+ * @param printSource The printSource to set
+ */
+protected void setPrintSource(IFigure printSource) {
+	this.printSource = printSource;
+}
+
+/**
  * Sets up Graphics object for the given IFigure.
  * @param graphics The Graphics to setup
  * @param figure The IFigure used to setup graphics
@@ -160,31 +194,6 @@ protected void setupPrinterGraphicsFor(Graphics graphics, IFigure figure) {
 	graphics.setForegroundColor(figure.getForegroundColor());
 	graphics.setBackgroundColor(figure.getBackgroundColor());
 	graphics.setFont(figure.getFont());
-}
-
-/**
- * @see org.eclipse.draw2d.PrintOperation#restorePrintSource()
- */
-protected void restorePrintSource() {
-	getPrintSource().setBackgroundColor(oldBGColor);
-	oldBGColor = null;
-}
-
-/**
- * Sets the print mode.  Possible values are {@link #TILE}, {@link #FIT_HEIGHT}, 
- * {@link #FIT_WIDTH} and {@link #FIT_PAGE}.
- * @param mode the print mode
- */
-public void setPrintMode(int mode) {
-	printMode = mode;
-}
-
-/**
- * Sets the printSource.
- * @param printSource The printSource to set
- */
-protected void setPrintSource(IFigure printSource) {
-	this.printSource = printSource;
 }
 
 }
