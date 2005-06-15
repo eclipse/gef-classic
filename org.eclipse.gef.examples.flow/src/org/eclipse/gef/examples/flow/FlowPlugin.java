@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.flow;
 
-import org.eclipse.core.runtime.IPluginDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 /**
@@ -22,8 +21,8 @@ public class FlowPlugin extends AbstractUIPlugin {
  * Creates a new FlowPlugin with the given descriptor
  * @param descriptor the descriptor
  */
-public FlowPlugin(IPluginDescriptor descriptor) {
-	super(descriptor);
+public FlowPlugin() {
+	super();
 }
 
 }

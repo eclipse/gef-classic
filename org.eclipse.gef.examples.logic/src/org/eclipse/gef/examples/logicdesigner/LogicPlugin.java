@@ -13,7 +13,6 @@ package org.eclipse.gef.examples.logicdesigner;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.core.runtime.IPluginDescriptor;
 import org.eclipse.jface.resource.ImageDescriptor;
 
 import org.eclipse.gef.palette.CombinedTemplateCreationEntry;
@@ -369,8 +368,7 @@ public static LogicPlugin getDefault(){
 	return singleton;
 }
 
-public LogicPlugin(IPluginDescriptor desc){
-	super(desc);
+public LogicPlugin(){
 	if( singleton == null ){
 		singleton = this;
 	}
