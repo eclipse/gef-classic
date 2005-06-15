@@ -35,10 +35,10 @@ class NodeCluster extends NodeList {
 	int leftCount = 0;
 	int rightCount = 0;
 
-	CollapsedEdges leftLinks[] = new CollapsedEdges[20];
-	CollapsedEdges rightLinks[] = new CollapsedEdges[20];
-	NodeCluster leftNeighbors[] = new NodeCluster[20];
-	NodeCluster rightNeighbors[] = new NodeCluster[20];
+	CollapsedEdges leftLinks[] = new CollapsedEdges[10];
+	CollapsedEdges rightLinks[] = new CollapsedEdges[10];
+	NodeCluster leftNeighbors[] = new NodeCluster[10];
+	NodeCluster rightNeighbors[] = new NodeCluster[10];
 	
 	int effectivePull;
 	int weightedTotal;
@@ -47,11 +47,36 @@ class NodeCluster extends NodeList {
 	int unweightedDivisor;
 	
 	void addLeftNeighbor(NodeCluster neighbor, CollapsedEdges link) {
+		//Need to grow array in the following case
+		if (leftNeighbors.length == leftCount) {
+			int newSize = leftNeighbors.length * 2;
+			
+			NodeCluster newNeighbors[] = new NodeCluster[newSize];
+			CollapsedEdges newLinks[] = new CollapsedEdges[newSize];
+
+			System.arraycopy(leftNeighbors, 0, newNeighbors, 0, leftNeighbors.length);
+			System.arraycopy(leftLinks, 0, newLinks, 0, leftLinks.length);
+
+			leftNeighbors = newNeighbors;
+			leftLinks = newLinks;
+		}
 		leftNeighbors[leftCount] = neighbor;
 		leftLinks[leftCount++] = link;
 	}
 	
 	void addRightNeighbor(NodeCluster neighbor, CollapsedEdges link) {
+		if (rightNeighbors.length == rightCount) {
+			int newSize = rightNeighbors.length * 2;
+			
+			NodeCluster newNeighbors[] = new NodeCluster[newSize];
+			CollapsedEdges newLinks[] = new CollapsedEdges[newSize];
+
+			System.arraycopy(rightNeighbors, 0, newNeighbors, 0, rightNeighbors.length);
+			System.arraycopy(rightLinks, 0, newLinks, 0, rightLinks.length);
+
+			rightNeighbors = newNeighbors;
+			rightLinks = newLinks;
+		}
 		rightNeighbors[rightCount] = neighbor;
 		rightLinks[rightCount++] = link;
 	}
