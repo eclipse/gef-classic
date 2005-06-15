@@ -169,8 +169,6 @@ protected void runGenericTests() {
 	doTest("", "", new String[] {"", TERMINATE});
 	doTest("a cow\naha", "a cow", new String[] {"a cow", "aha", TERMINATE});
 	// tests with two spaces after a period
-//	doTest(".  a", ". ", new String[] {".", NEWLINE, "a"});
-//	doTest("more.  Fun", "more.", new String[] {"more.", NEWLINE, "Fun", TERMINATE});
 	doTest("a one. two", "a one", new String[] {"a", NEWLINE, "one.", NEWLINE, "two"});
 	doTest("a one-two", "a one", new String[] {"a", NEWLINE, "one-", NEWLINE, "two"});
 	// chinese characters
@@ -191,9 +189,9 @@ protected void runGenericTests() {
 	doTest2("foo\n", " bar6", null, new String[] {"foo", NEWLINE, "", SAMELINE, " bar6", TERMINATE});
 	doTest2("foo7-bar7", "mo", "foo7-ba", new String[] {"foo7-", NEWLINE, "bar7", SAMELINE, "mo", TERMINATE});
 	doTest2("foo-bar", "abc", "foo-barab", new String[] {"foo-", NEWLINE, "bar", SAMELINE, "abc", TERMINATE});
-//	doTest2(" foobar", "abc", " foobarab", new String[] {"", NEWLINE, "foobar"});
+	doTest2(" foobar", "abc", " foobarab", new String[] {"", NEWLINE, "foobar"});
 	doTest2("foo  bar", "abc", "foo  barab", new String[] {"foo ", NEWLINE, "bar", SAMELINE, "abc", TERMINATE});
-//	doTest2("abd", "\u7325", "abd", new String[] {"abd", NEWLINE, "\u7325"});
+	doTest2("abd", "\u7325", "abd", new String[] {"abd", NEWLINE, "\u7325"});
 
 	doTest2("a abc", "-def", "a abc", new String[] {"a", NEWLINE, "abc", SAMELINE, "-", NEWLINE, "def", TERMINATE});
 	
@@ -217,8 +215,8 @@ protected void runSoftWrappingTests() {
 	doTest( "tester ab", "teste", new String[] {"teste", NEWLINE, "r ab", TERMINATE} );
 	doTest("aha \nb \r c ", "", new String[] {"a", "h", "a", "", "b", "", "", "c", TERMINATE});
 	doTest("\u0634abcd", "\u0634abc", new String[] {"\u0634", SAMELINE, "abc", NEWLINE, "d", TERMINATE});
-//	doTest2("foofoo", "foo", "foo", new String[] {"foo", NEWLINE, "foo", NEWLINE, "foo", TERMINATE});
-//	doTest2("foofo", "ofoo", "foo", new String[] {"foo", NEWLINE, "fo", SAMELINE, "o", NEWLINE, "foo", TERMINATE});
+	doTest2("foofoo", "foo", "foo", new String[] {"foo", NEWLINE, "foo", NEWLINE, "foo", TERMINATE});
+	doTest2("foofo", "ofoo", "foo", new String[] {"foo", NEWLINE, "fo", SAMELINE, "o", NEWLINE, "foo", TERMINATE});
 }
 
 protected void runTruncatedWrappingTests() {
@@ -303,7 +301,7 @@ public void testInlineFlow() {
 	textFlow2.setFont(TAHOMA);
 	figure.add(textFlow2);
 	runGenericTests();
-//	runSoftWrappingTests();
+	runSoftWrappingTests();
 	
 	figure = new FlowPage();
 	inline = new InlineFlow();
@@ -340,7 +338,7 @@ public void testNestedInlineFlows() {
 	textFlow2.setFont(TAHOMA);
 	inline2.add(textFlow2);
 	runGenericTests();
-//	runSoftWrappingTests();
+	runSoftWrappingTests();
 	
 	figure = new FlowPage();
 	textFlow = new TextFlow();
