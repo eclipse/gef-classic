@@ -25,7 +25,8 @@ import org.eclipse.swt.dnd.Transfer;
  * unrelated types of Drags. DelegatingDropAdapter then combines the function of each
  * TransferDropTargetListener, while allowing them to be implemented as if they were the
  * only DragSourceListener.
- * @deprecated use org.eclipse.jface.util.TransferDropTargetListener instead
+ * @deprecated Use org.eclipse.jface.util.TransferDropTargetListener instead.  This
+ * interface will be deleted in a future release.
  */
 public interface TransferDropTargetListener 
 	extends org.eclipse.jface.util.TransferDropTargetListener
