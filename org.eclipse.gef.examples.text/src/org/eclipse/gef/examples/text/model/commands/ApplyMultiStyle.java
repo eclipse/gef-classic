@@ -47,7 +47,10 @@ public ModelLocation getResultingLocation() {
 }
 
 public void rollback() {
-	style.setAlignment(oldValue);
+	if (Style.PROPERTY_ALIGNMENT.equals(styleID))
+		style.setAlignment(oldValue);
+	else if (Style.PROPERTY_ORIENTATION.equals(styleID))
+		style.setOrientation(oldValue);
 }
 
 }
