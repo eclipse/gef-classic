@@ -36,76 +36,78 @@
       <command
             name="Left to Right"
             description="Left to Right"
-            category="org.eclipse.gef.category.format"
+            categoryId="org.eclipse.gef.category.format"
             id="org.eclipse.gef.text.ltr">
       </command>
       
       <command
             name="Right to Left"
             description="Right to Left"
-            category="org.eclipse.gef.category.format"
+            categoryId="org.eclipse.gef.category.format"
             id="org.eclipse.gef.text.rtl">
       </command>
       
       <command
             name="Left"
             description="Align left"
-            category="org.eclipse.gef.category.format"
+            categoryId="org.eclipse.gef.category.format"
             id="org.eclipse.gef.text.alignLeft">
       </command>
 
       <command
             name="Center"
             description="Align center"
-            category="org.eclipse.gef.category.format"
+            categoryId="org.eclipse.gef.category.format"
             id="org.eclipse.gef.text.alignCenter">
       </command>
       
       <command
             name="Right"
             description="Align right"
-            category="org.eclipse.gef.category.format"
+            categoryId="org.eclipse.gef.category.format"
             id="org.eclipse.gef.text.alignRight">
       </command>
 
       <command
 			name="Bold"
 			description="Embolden text"
-			category="org.eclipse.ui.category.edit"
+			categoryId="org.eclipse.ui.category.edit"
 			id="org.eclipse.gef.text.bold">
       </command>
-      <keyBinding
-            contextId="org.eclipse.gef.textContext"
-            string="Ctrl+B"
-            commandId="org.eclipse.gef.text.bold"
-            keyConfigurationId="org.eclipse.ui.defaultAcceleratorConfiguration">
-      </keyBinding>
       
       <command
 			name="Italics"
 			description="Italicize text"
-			category="org.eclipse.ui.category.edit"
+			categoryId="org.eclipse.ui.category.edit"
 			id="org.eclipse.gef.text.italic">
       </command>
-      <keyBinding
-            contextId="org.eclipse.gef.textContext"
-            string="Ctrl+I"
-            commandId="org.eclipse.gef.text.italic"
-            keyConfigurationId="org.eclipse.ui.defaultAcceleratorConfiguration">
-      </keyBinding>
 
       <command
 			name="Underline"
 			description="Underline text"
-			category="org.eclipse.ui.category.edit"
+			categoryId="org.eclipse.ui.category.edit"
 			id="org.eclipse.gef.text.underline">
       </command>
-      <keyBinding
-            contextId="org.ecipse.gef.textContext"
-            string="Ctrl+U"
-            commandId="org.eclipse.gef.text.underline"
-            keyConfigurationId="org.eclipse.ui.defaultAcceleratorConfiguration">
-      </keyBinding>
    </extension>
-
+   
+	<extension point="org.eclipse.ui.bindings">
+		<key
+			contextId="org.eclipse.gef.textContext"
+			sequence="M1+B"
+			commandId="org.eclipse.gef.text.bold"
+			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
+		</key>
+		<key
+			contextId="org.eclipse.gef.textContext"
+			sequence="M1+I"
+			commandId="org.eclipse.gef.text.italic"
+			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
+		</key>
+		<key
+			contextId="org.ecipse.gef.textContext"
+			sequence="M1+U"
+			commandId="org.eclipse.gef.text.underline"
+			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
+		</key>
+	</extension>
 </plugin>
