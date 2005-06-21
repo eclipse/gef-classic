@@ -232,6 +232,9 @@ public CaretInfo getCaretPlacement(int offset, boolean trailing) {
 		throw new IllegalArgumentException("Offset: " + offset //$NON-NLS-1$
 				+ " is invalid"); //$NON-NLS-1$
 	
+	if (offset == getText().length())
+		trailing = false;
+	
 	int i = fragments.size();
 	int stop = 0;
 	if (getBorder() instanceof FlowBorder) {
@@ -243,7 +246,7 @@ public CaretInfo getCaretPlacement(int offset, boolean trailing) {
 		box = (TextFragmentBox)fragments.get(--i);
 	while (offset < box.offset && i > stop);
 	
-	//Can not be trailing and after the last char, so go to first char in next box
+	// Cannot be trailing and after the last char, so go to first char in next box
 	if (trailing && box.offset + box.length <= offset) {
 		box = (TextFragmentBox)fragments.get(++i);
 		offset = box.offset;
@@ -262,8 +265,8 @@ Point getPointInBox(TextFragmentBox box, int offset, int index, boolean trailing
 	offset = Math.min(box.length, offset);
 	Point result = new Point(0, box.getLineRoot().getVisibleTop());
 	if (bidiInfo == null) {
-		if (trailing)
-			offset++; //Hopefully, offset <= box.length
+		if (trailing && offset < box.length)
+			offset++;
 		String substring = getText().substring(box.offset, box.offset + offset);
 		result.x = FigureUtilities.getStringExtents(substring, getFont()).width;
 	} else {
