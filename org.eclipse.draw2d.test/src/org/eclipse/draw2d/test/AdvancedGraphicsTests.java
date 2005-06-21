@@ -203,30 +203,30 @@ public void testFillRules() {
 	}, tests);
 }
 
-public void testInterpolation() {
-	class InterpolationSettings implements Runnable {
-		private final int level;
-		InterpolationSettings (int level) {
-			this.level = level;
-		}
-		public void run() {
-			g.setInterpolation(level);
-		}
-	}
-
-	g.pushState();
-
-	Runnable tests[] = new Runnable[4];
-	tests[0] = new InterpolationSettings(SWT.HIGH);
-	tests[1] = new InterpolationSettings(SWT.LOW);
-	tests[2] = new InterpolationSettings(SWT.NONE);
-	tests[3] = new InterpolationSettings(SWT.DEFAULT);
-	performTestcase(new Runnable() {
-		public void run() {
-			g.drawImage(TestImages.depth_24, 0, 0, 400, 400, 0, 0, 75, 75);
-		}
-	}, tests);
-}
+//public void testInterpolation() {
+//	class InterpolationSettings implements Runnable {
+//		private final int level;
+//		InterpolationSettings (int level) {
+//			this.level = level;
+//		}
+//		public void run() {
+//			g.setInterpolation(level);
+//		}
+//	}
+//
+//	g.pushState();
+//
+//	Runnable tests[] = new Runnable[4];
+//	tests[0] = new InterpolationSettings(SWT.HIGH);
+//	tests[1] = new InterpolationSettings(SWT.LOW);
+//	tests[2] = new InterpolationSettings(SWT.NONE);
+//	tests[3] = new InterpolationSettings(SWT.DEFAULT);
+//	performTestcase(new Runnable() {
+//		public void run() {
+//			g.drawImage(TestImages.depth_24, 0, 0, 400, 400, 0, 0, 75, 75);
+//		}
+//	}, tests);
+//}
 
 public void testLineJoinCap() {
 	
@@ -265,44 +265,44 @@ public void testLineJoinCapAA() {
 	testLineJoinCap();
 }
 
-public void testPathDraw() {
-	
-	class PathSettings implements Runnable {
-		private final int antialias;
-		private final Color color;
-		private final int style;
-		private final int width;
-		PathSettings(int antialias, int width, int style, Color color) {
-			this.antialias = antialias;
-			this.width = width;
-			this.style = style;
-			this.color = color;
-		}
-		public void run() {
-			g.setAntialias(antialias);
-			g.setLineWidth(width);
-			g.setLineStyle(style);
-			g.setForegroundColor(color);
-		}
-	}
-	
-	g.setBackgroundColor(ColorConstants.darkBlue);
-	
-	Runnable tests[] = new Runnable[5];
-	tests[0] = new PathSettings(SWT.ON, 3, SWT.LINE_SOLID, ColorConstants.darkBlue);
-	tests[1] = new PathSettings(SWT.OFF, 0, SWT.LINE_DOT, ColorConstants.red);
-	tests[2] = new PathSettings(SWT.DEFAULT, 1, SWT.LINE_DOT, ColorConstants.darkBlue);
-	tests[3] = new PathSettings(SWT.DEFAULT, 2, SWT.LINE_DOT, ColorConstants.darkGreen);
-	tests[4] = new PathSettings(SWT.ON, 2, SWT.LINE_DASHDOTDOT, ColorConstants.black);
-	performTestcase(new Runnable() {
-		public void run() {
-			g.drawPath(path1);
-			g.drawPath(path2);
-		}
-	}, tests);
-	
-	path1.dispose();
-}
+//public void testPathDraw() {
+//	
+//	class PathSettings implements Runnable {
+//		private final int antialias;
+//		private final Color color;
+//		private final int style;
+//		private final int width;
+//		PathSettings(int antialias, int width, int style, Color color) {
+//			this.antialias = antialias;
+//			this.width = width;
+//			this.style = style;
+//			this.color = color;
+//		}
+//		public void run() {
+//			g.setAntialias(antialias);
+//			g.setLineWidth(width);
+//			g.setLineStyle(style);
+//			g.setForegroundColor(color);
+//		}
+//	}
+//	
+//	g.setBackgroundColor(ColorConstants.darkBlue);
+//	
+//	Runnable tests[] = new Runnable[5];
+//	tests[0] = new PathSettings(SWT.ON, 3, SWT.LINE_SOLID, ColorConstants.darkBlue);
+//	tests[1] = new PathSettings(SWT.OFF, 0, SWT.LINE_DOT, ColorConstants.red);
+//	tests[2] = new PathSettings(SWT.DEFAULT, 1, SWT.LINE_DOT, ColorConstants.darkBlue);
+//	tests[3] = new PathSettings(SWT.DEFAULT, 2, SWT.LINE_DOT, ColorConstants.darkGreen);
+//	tests[4] = new PathSettings(SWT.ON, 2, SWT.LINE_DASHDOTDOT, ColorConstants.black);
+//	performTestcase(new Runnable() {
+//		public void run() {
+//			g.drawPath(path1);
+//			g.drawPath(path2);
+//		}
+//	}, tests);
+//	
+//	path1.dispose();
+//}
 
 public void testPathFill() {
 	
