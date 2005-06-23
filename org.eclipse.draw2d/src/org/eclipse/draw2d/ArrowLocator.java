@@ -21,7 +21,7 @@ public class ArrowLocator extends ConnectionLocator {
 
 /**
  * Constructs an ArrowLocator associated with passed connection and tip location (either
- * {@link ConnectionLocator#START} or {@link ConnectionLocator#END}).
+ * {@link ConnectionLocator#SOURCE} or {@link ConnectionLocator#TARGET}).
  * 
  * @param connection The connection associated with the locator
  * @param location Location of the arrow decoration
