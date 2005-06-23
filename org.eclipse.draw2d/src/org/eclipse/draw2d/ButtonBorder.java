@@ -172,27 +172,35 @@ public static class ButtonScheme
 public static interface SCHEMES {
 	
 	/**
-	 * Various button schemes.
+	 * Contrast button scheme
 	 */
-	ButtonScheme
-		BUTTON_CONTRAST = new ButtonScheme(
-			new Color[] {button, buttonLightest},
-			DARKEST_DARKER
-		),
-		BUTTON = new ButtonScheme(
-			new Color[] {buttonLightest},
-			DARKEST_DARKER
-		),
-		TOOLBAR = new ButtonScheme(
-			new Color[] {buttonLightest},
-			new Color[] {buttonDarker}
-		),
-		BUTTON_SCROLLBAR = new ButtonScheme(
-			new Color[] {button, buttonLightest},
-			DARKEST_DARKER,
-			new Color[] {buttonDarker},
-			new Color[] {buttonDarker}
-		);
+	ButtonScheme BUTTON_CONTRAST = new ButtonScheme(
+		new Color[] {button, buttonLightest},
+		DARKEST_DARKER
+	);
+	/**
+	 * Regular button scheme
+	 */
+	ButtonScheme BUTTON = new ButtonScheme(
+		new Color[] {buttonLightest},
+		DARKEST_DARKER
+	);
+	/**
+	 * Toolbar button scheme
+	 */
+	ButtonScheme TOOLBAR = new ButtonScheme(
+		new Color[] {buttonLightest},
+		new Color[] {buttonDarker}
+	);
+	/**
+	 * Scrollbar button scheme
+	 */
+	ButtonScheme BUTTON_SCROLLBAR = new ButtonScheme(
+		new Color[] {button, buttonLightest},
+		DARKEST_DARKER,
+		new Color[] {buttonDarker},
+		new Color[] {buttonDarker}
+	);
 }
 
 /**

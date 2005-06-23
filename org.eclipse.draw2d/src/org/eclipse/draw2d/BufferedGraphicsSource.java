@@ -37,6 +37,9 @@ public BufferedGraphicsSource(Control c) {
 	control = c;
 }
 
+/**
+ * @see org.eclipse.draw2d.GraphicsSource#flushGraphics(org.eclipse.draw2d.geometry.Rectangle)
+ */
 public void flushGraphics(Rectangle region) {
 	if (inUse.isEmpty())
 		return;
@@ -70,6 +73,9 @@ public void flushGraphics(Rectangle region) {
 		canvas.getCaret().setVisible(true);
 }
 
+/**
+ * @see org.eclipse.draw2d.GraphicsSource#getGraphics(org.eclipse.draw2d.geometry.Rectangle)
+ */
 public Graphics getGraphics(Rectangle region) {
 	if (control == null || control.isDisposed())
 		return null;
