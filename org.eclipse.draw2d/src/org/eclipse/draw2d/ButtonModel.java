@@ -39,17 +39,23 @@ public static final String MOUSEOVER_PROPERTY = "mouseover"; //$NON-NLS-1$
  */
 public static final String ARMED_PROPERTY = "armed";  //$NON-NLS-1$
 
-/**
+/*
  * Flags for button states.
  */
-protected static final int 
-					ARMED_FLAG 				= 1,
-					PRESSED_FLAG 			= 2,
-					MOUSEOVER_FLAG 			= 4,
-					SELECTED_FLAG 			= 8,
-					ENABLED_FLAG 			= 16,
-					ROLLOVER_ENABLED_FLAG 	= 32,
-					MAX_FLAG 				= ROLLOVER_ENABLED_FLAG;
+/** Flag for armed button state */
+protected static final int ARMED_FLAG 				= 1;
+/** Flag for pressed button state */
+protected static final int PRESSED_FLAG 			= 2;
+/** Flag for mouseOver state */
+protected static final int MOUSEOVER_FLAG 			= 4;
+/** Flag for selected button state */
+protected static final int SELECTED_FLAG 			= 8;
+/** Flag for enablement button state */
+protected static final int ENABLED_FLAG 			= 16;
+/** Flag for rollover enablement button state */
+protected static final int ROLLOVER_ENABLED_FLAG 	= 32;
+/** Flag that can be used by subclasses to define more states */
+protected static final int MAX_FLAG 				= ROLLOVER_ENABLED_FLAG;
 
 private int state = ENABLED_FLAG;
 private Object data;
