@@ -70,6 +70,7 @@ class NullConnectionRouter
 
 	/**
 	 * Routes the given Connection directly between the source and target anchors.
+	 * @param conn the connection to be routed
 	 */
 	public void route(Connection conn) {
 		PointList points = conn.getPoints();
