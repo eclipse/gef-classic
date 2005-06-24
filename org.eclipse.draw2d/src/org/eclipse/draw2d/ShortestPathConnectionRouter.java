@@ -271,6 +271,9 @@ private void processStaleConnections() {
 	staleConnections.clear();
 }
 
+/**
+ * @see org.eclipse.draw2d.ConnectionRouter#setConstraint(org.eclipse.draw2d.Connection, java.lang.Object)
+ */
 public void setConstraint(Connection connection, Object constraint) {
 	//Connection.setConstraint() already calls revalidate, so we know that a
 	// route() call will follow.

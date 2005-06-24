@@ -572,6 +572,9 @@ public void setForegroundColor(Color rgb) {
 	graphics.setForegroundColor(rgb);
 }
 
+/**
+ * @see org.eclipse.draw2d.Graphics#setInterpolation(int)
+ */
 public void setInterpolation(int interpolation) {
 	graphics.setInterpolation(interpolation);
 }

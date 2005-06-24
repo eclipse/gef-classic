@@ -46,7 +46,9 @@ int CENTER =  2;
 int RIGHT  =  4;
 /** Bit-wise OR of LEFT, CENTER, and RIGHT */
 int LEFT_CENTER_RIGHT = LEFT | CENTER | RIGHT;
+/** Used to signify left alignment regardless of orientation (i.e., LTR or RTL) */
 int ALWAYS_LEFT = 64;
+/** Used to signify right alignment regardless of orientation (i.e., LTR or RTL) */
 int ALWAYS_RIGHT = 128;
 
 /** Top */
