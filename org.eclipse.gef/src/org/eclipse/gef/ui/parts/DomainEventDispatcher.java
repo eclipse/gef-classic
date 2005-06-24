@@ -252,7 +252,7 @@ public void dispatchKeyPressed(org.eclipse.swt.events.KeyEvent e) {
 public void dispatchKeyTraversed(TraverseEvent e) {
 	if (!editorCaptured) {
 		super.dispatchKeyTraversed(e);
-		if (e.doit == false)
+		if (!e.doit)
 			return;
 	}
 	if (okToDispatch())

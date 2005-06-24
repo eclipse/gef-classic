@@ -51,7 +51,7 @@ public void dragStart(DragSourceEvent event) {
 public void dragFinished(DragSourceEvent event) {
 	TreeViewerTransfer.getInstance().setObject(null);
 	TreeViewerTransfer.getInstance().setViewer(null);
-	if (event.doit == true)
+	if (event.doit)
 		revertModelSelection();
 	else
 		modelSelection = null;
