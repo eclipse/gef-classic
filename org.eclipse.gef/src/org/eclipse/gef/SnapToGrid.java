@@ -14,11 +14,23 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PrecisionRectangle;
 
-// TODO Update javadoc here.  indicate what the user needs to do to get grids working.
 
 /**
+ * A helper used to perform snapping to a grid, which is specified on the graphical viewer
+ * via the various properties defined in this class. This helper can be
+ * used in conjunction with the {@link org.eclipse.gef.tools.DragEditPartsTracker
+ * DragEditPartsTracker} when dragging editparts within a graphical viewer. When snapping 
+ * a rectangle, the edges of the rectangle will snap along gridlines.
+ * <P>
+ * This helper does not keep up with changes made to the graphical viewer's properties.  
+ * Clients should instantiate a new helper each time one is requested and not hold on to 
+ * instances of the helper, if the grid properties specified on the viewer are subject
+ * to change.
+ * 
  * @author Randy Hudson
  * @author Pratik Shah
+ * @since 3.0
+ * @see org.eclipse.gef.editparts.GridLayer
  */
 public class SnapToGrid
 	extends SnapToHelper
