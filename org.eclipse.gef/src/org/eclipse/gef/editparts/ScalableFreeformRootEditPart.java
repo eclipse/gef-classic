@@ -18,10 +18,10 @@ import org.eclipse.draw2d.ScalableFreeformLayeredPane;
 import org.eclipse.draw2d.Viewport;
 
 /**
- * Adds Zoom support to the standard FreeformRootEditPart.  This root is just like its
- * superclass, except it inserts a new <code>LayeredPane</code> above the printable
- * layers.  This pane is identified with the {@link
- * org.eclipse.gef.LayerConstants#SCALABLE_LAYERS} ID.  This root also provides a
+ * Adds Zoom support to the standard FreeformGraphicalRootEditPart.  This root is just 
+ * like its superclass, except it inserts a new <code>LayeredPane</code> above the 
+ * printable layers.  This pane is identified with the 
+ * {@link org.eclipse.gef.LayerConstants#SCALABLE_LAYERS} ID.  This root also provides a
  * ZoomManager, for optional use with the {@link
  * org.eclipse.gef.ui.actions.ZoomComboContributionItem}
  * <P>
@@ -29,6 +29,10 @@ import org.eclipse.draw2d.Viewport;
  * <table cellspacing="0" cellpadding="0">
  *   <tr>
  *     <td colspan="4">Root Freeform Layered Pane</td>
+ *   </tr>
+ *   <tr>
+ *     <td>&#9500;</td>
+ *     <td colspan="3">&nbsp;Guide Layer</td>
  *   </tr>
  *   <tr>
  *     <td>&#9500;</td>
@@ -45,19 +49,29 @@ import org.eclipse.draw2d.Viewport;
  *   </tr>
  *   <tr>
  *     <td>&nbsp;</td>
- *     <td>&#9492;</td>
- *     <td colspan="2">Printable Layers</td>
+ *     <td>&#9500;</td>
+ *     <td colspan="2">&nbsp;Scaled Feedback Layer</td>
+ *   </tr>
+ *   <tr>
+ *     <td>&nbsp;</td>
+ *     <td>&#9500;</td>
+ *     <td colspan="2">&nbsp;Printable Layers</td>
  *   </tr>
  *   <tr>
  *     <td>&nbsp;</td>
  *     <td>&nbsp;</td>
- *     <td colspan="2">&#9500; Connection Layer</td>
+ *     <td>&#9500; Connection Layer</td>
  *   </tr>
  *   <tr>
  *     <td>&nbsp;</td>
  *     <td>&nbsp;</td>
  *     <td>&#9492;&nbsp;Primary Layer</td>
  *     <td>&nbsp;</td>
+ *   </tr>
+ *   <tr>
+ *     <td>&nbsp;</td>
+ *     <td>&#9492;</td>
+ *     <td colspan="2">&nbsp;Grid Layer</td>
  *   </tr>
  * </table>
  * 

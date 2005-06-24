@@ -57,6 +57,10 @@ import org.eclipse.gef.tools.MarqueeDragTracker;
  *   </tr>
  *   <tr>
  *     <td>&#9500;</td>
+ *     <td colspan="3">&nbsp;Guide Layer</td>
+ *   </tr>
+ *   <tr>
+ *     <td>&#9500;</td>
  *     <td colspan="3">&nbsp;Feedback Layer</td>
  *   </tr>
  *   <tr>
@@ -65,24 +69,34 @@ import org.eclipse.gef.tools.MarqueeDragTracker;
  *   </tr>
  *   <tr>
  *     <td>&#9492;</td>
- *     <td colspan="2">&nbsp;Scalable Layers</td>
+ *     <td colspan="2">&nbsp;<b>Scalable Layers</b></td>
  *     <td>({@link ScalableLayeredPane})</td>
  *   </tr>
  *   <tr>
  *     <td>&nbsp;</td>
- *     <td>&#9492;</td>
- *     <td colspan="2">Printable Layers</td>
+ *     <td>&#9500;</td>
+ *     <td colspan="2">&nbsp;Scaled Feedback Layer</td>
+ *   </tr>
+ *   <tr>
+ *     <td>&nbsp;</td>
+ *     <td>&#9500;</td>
+ *     <td colspan="2">&nbsp;Printable Layers</td>
  *   </tr>
  *   <tr>
  *     <td>&nbsp;</td>
  *     <td>&nbsp;</td>
- *     <td colspan="2">&#9500; Connection Layer</td>
+ *     <td>&#9500; Connection Layer</td>
  *   </tr>
  *   <tr>
  *     <td>&nbsp;</td>
  *     <td>&nbsp;</td>
  *     <td>&#9492;&nbsp;Primary Layer</td>
  *     <td>&nbsp;</td>
+ *   </tr>
+ *   <tr>
+ *     <td>&nbsp;</td>
+ *     <td>&#9492;</td>
+ *     <td colspan="2">&nbsp;Grid Layer</td>
  *   </tr>
  * </table>
  * @author Eric Bordeau
@@ -92,7 +106,7 @@ public class ScalableRootEditPart
 	extends AbstractGraphicalEditPart
 	implements RootEditPart, LayerConstants, LayerManager
 {
-
+	
 class FeedbackLayer
 	extends Layer
 {
