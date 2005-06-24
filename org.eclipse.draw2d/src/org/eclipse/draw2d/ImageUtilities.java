@@ -25,6 +25,7 @@ import org.eclipse.draw2d.geometry.Dimension;
 
 /**
  * @author Pratik Shah
+ * @since 3.0
  */
 public class ImageUtilities {
 
