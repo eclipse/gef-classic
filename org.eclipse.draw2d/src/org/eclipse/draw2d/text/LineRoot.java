@@ -17,6 +17,13 @@ import java.util.List;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
+ * LineRoot is the top-most container on a line of text displayed in Draw2d.  Hence, a
+ * LineRoot can tell you of things like the highest ascent or descent on a line, which
+ * is required to display selection and such.  All 
+ * {@link org.eclipse.draw2d.text.ContentBox fragments} know of the LineRoot they belong 
+ * to.
+ * @author Randy Hudson
+ * @author Pratik Shah
  * @since 3.1
  */
 public class LineRoot
@@ -26,10 +33,17 @@ public class LineRoot
 private int baseline;
 private boolean isMirrored;
 
+/**
+ * Constructor
+ * @param isMirrored <code>true</code> if the line is to be displayed in a mirrored control
+ */
 public LineRoot(boolean isMirrored) {
 	this.isMirrored = isMirrored;
 }
 
+/**
+ * @see org.eclipse.draw2d.text.CompositeBox#add(org.eclipse.draw2d.text.FlowBox)
+ */
 public void add(FlowBox child) {
 	super.add(child);
 	child.setLineRoot(this);
@@ -84,6 +98,10 @@ public void commit() {
 		contiguousCommit(this, getX());
 }
 
+/**
+ * A LineRoot cannot be targetted.
+ * @see org.eclipse.draw2d.text.FlowBox#containsPoint(int, int)
+ */
 public boolean containsPoint(int x, int y) {
 	return false;
 }
@@ -116,6 +134,9 @@ private Result findParent(NestedLine line, List branches, int afterIndex) {
 	return new Result(this, getFragments().indexOf(line));
 }
 
+/**
+ * @see org.eclipse.draw2d.text.FlowBox#getBaseline()
+ */
 public int getBaseline() {
 	return baseline;
 }
@@ -170,10 +191,17 @@ private void layoutNestedLines(List branches) {
 	}
 }
 
+/**
+ * Positions the line vertically by settings its baseline.
+ * @param baseline the baseline
+ */
 public void setBaseline(int baseline) {
 	this.baseline = baseline;
 }
 
+/**
+ * @see org.eclipse.draw2d.text.CompositeBox#setLineTop(int)
+ */
 public void setLineTop(int top) {
 	this.baseline = top + getAscent();
 }
