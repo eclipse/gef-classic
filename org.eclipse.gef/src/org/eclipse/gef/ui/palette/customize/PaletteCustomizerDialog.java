@@ -1068,7 +1068,7 @@ private class DeleteAction extends PaletteCustomizationAction {
 		setText(PaletteMessages.DELETE_LABEL);
 		ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
 		setImageDescriptor(sharedImages
-				.getImageDescriptor(ISharedImages.IMG_TOOL_DELETE_HOVER));
+				.getImageDescriptor(ISharedImages.IMG_TOOL_DELETE));
 		setDisabledImageDescriptor(sharedImages
 				.getImageDescriptor(ISharedImages.IMG_TOOL_DELETE_DISABLED));
 	}
