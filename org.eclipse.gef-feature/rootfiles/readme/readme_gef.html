@@ -9,7 +9,7 @@
 <h1>GEF Project Release Notes</h1>
 
 <p>Release 3.1<br>
-Last revised June 23, 2005</p>
+Last revised June 24, 2005</p>
 
 <blockquote>
 <p><a href="#Target Operating Environments">1. Target
@@ -161,22 +161,23 @@ support for rich-text, and hence the API contract had to be broken in a few plac
 <h4>SWTGraphics.State</h4>
 <blockquote>
 <p>This protected class had to be updated to support the new advanced graphics
-functionality made available in SWT.  This class has now been marked as package-private.</p>
+functionality made available in SWT.  This class has now been marked as package-protected.</p>
 </blockquote>
 <h2>4. <a name="Known Issues"></a> Known Issues</h2>
 <h4>Printing</h4>
 <blockquote>
-<p>Some fonts scale differently on the printer than they do on the
-screen. This may result in printed text appearing wider than the
-same text on the screen. This is only a problem with certain
-vector fonts.</p>
-<p>Images with transparency masks may print incorrectly. This is a
-limitation in SWT, which GEF uses for printing.</p>
-<p>Printing is not implemented on some SWT platforms.</p>
+<p>Some fonts scale differently on the printer than they do on the screen. This 
+may result in printed text appearing wider than the same text on the screen. 
+Clients can use margins to ensure that extra space is available to the figure 
+when printing.</p>
+<p>Printing may not implemented by SWT on some platforms.</p>
 </blockquote>
-<h4>Mirrored Workbench on Windows</h4>
+<p><b>Mirrored mode (Right to Left)</b></p>
 <blockquote>
-<p>Known SWT and Windows issues prevent GEF plug-ins to appear and print properly in mirrored mode, especially when advanced graphics functionality is enabled.</p>
+<p>Printing figures that are on a mirrored (right-to-left) control may not work 
+with some printer drivers.</p>
+<p dir="ltr">Advanced graphics might not work in mirrored mode. Bug
+<a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=99564">99564</a></p>
 </blockquote>
 
 <hr>
