@@ -103,7 +103,7 @@ void recursiveSort(boolean sortLeaves) {
 		change = false;
 		for (int i = 0; i < contents.size() - 1; i++)
 			change |= swap(i);
-		if (change == false)
+		if (!change)
 			break;
 		change = false;
 		for (int i = contents.size() - 2; i >= 0; i--)
