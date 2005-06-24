@@ -42,6 +42,9 @@ int getDescentWithBorder() {
 	return contentDescent + FlowUtilities.getBorderDescent(owner);
 }
 
+/**
+ * @see org.eclipse.draw2d.text.FlowBox#getBaseline()
+ */
 public int getBaseline() {
 	return root.getBaseline();
 }
@@ -58,10 +61,16 @@ LineRoot getLineRoot() {
 //	return contentDescent + FlowUtilities.getBorderDescent(owner);
 //}
 
+/**
+ * @see org.eclipse.draw2d.text.FlowBox#getOuterAscent()
+ */
 public int getOuterAscent() {
 	return contentAscent + FlowUtilities.getBorderAscentWithMargin(owner);
 }
 
+/**
+ * @see org.eclipse.draw2d.text.FlowBox#getOuterDescent()
+ */
 public int getOuterDescent() {
 	return contentDescent + FlowUtilities.getBorderDescentWithMargin(owner);
 }

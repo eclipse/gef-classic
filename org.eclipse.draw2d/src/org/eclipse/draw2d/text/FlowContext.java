@@ -37,6 +37,12 @@ void addLine(CompositeBox box);
  */
 void endLine();
 
+/**
+ * This method can be used to query the amount of space left on the current line.  It
+ * can help determine where to wrap during layout.
+ * @return the amount of space left on the current line
+ * @since 3.1
+ */
 int getRemainingLineWidth();
 
 /**
