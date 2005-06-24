@@ -799,7 +799,7 @@ private void reconcileHints(int applied, int hints) {
 		// If advanced was flagged, but none of the conditions which trigger advanced
 		// actually got applied, force advanced graphics on.
 		if ((changes & ADVANCED_GRAPHICS_MASK) != 0) {
-			if ((hints & ADVANCED_GRAPHICS_MASK) != 0 && gc.getAdvanced() == false)
+			if ((hints & ADVANCED_GRAPHICS_MASK) != 0 && !gc.getAdvanced())
 				gc.setAdvanced(true);
 		}
 	}

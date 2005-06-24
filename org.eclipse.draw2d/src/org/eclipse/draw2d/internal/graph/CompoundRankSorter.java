@@ -203,7 +203,7 @@ public void init(DirectedGraph g) {
 
 protected void postSort() {
 	super.postSort();
-	if (init == true)
+	if (init)
 		updateRank(rank);
 }
 
