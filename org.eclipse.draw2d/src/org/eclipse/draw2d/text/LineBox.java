@@ -34,6 +34,9 @@ int contentDescent;
 
 List fragments = new ArrayList();
 
+/**
+ * @see org.eclipse.draw2d.text.CompositeBox#add(org.eclipse.draw2d.text.FlowBox)
+ */
 public void add(FlowBox child) {
 	fragments.add(child);
 	width += child.getWidth();
@@ -41,6 +44,9 @@ public void add(FlowBox child) {
 	contentDescent = Math.max(contentDescent, child.getOuterDescent());
 }
 
+/**
+ * @see org.eclipse.draw2d.text.FlowBox#getAscent()
+ */
 public int getAscent() {
 	int ascent = 0;
 	for (int i = 0; i < fragments.size(); i++)
@@ -62,6 +68,9 @@ int getBottomMargin() {
 	return 0;
 }
 
+/**
+ * @see org.eclipse.draw2d.text.FlowBox#getDescent()
+ */
 public int getDescent() {
 	int descent = 0;
 	for (int i = 0; i < fragments.size(); i++)
