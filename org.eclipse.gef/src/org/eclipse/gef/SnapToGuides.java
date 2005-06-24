@@ -31,7 +31,7 @@ import org.eclipse.gef.rulers.RulerProvider;
  * data.
  * <P>
  * This helper does not keep up with changes in guides.  Clients should instantiate a new
- * helper each time one is requested and not hold onto instances of the helper.
+ * helper each time one is requested and not hold on to instances of the helper.
  * 
  * @since 3.0
  * @author Randy Hudson

@@ -38,7 +38,7 @@ import org.eclipse.gef.requests.GroupRequest;
  * locations.
  * <P>
  * This helper does not keep up with changes made to the container editpart.  Clients
- * should instantiate a new helper each time one is requested and not hold onto instances
+ * should instantiate a new helper each time one is requested and not hold on to instances
  * of the helper.
  * 
  * @since 3.0
