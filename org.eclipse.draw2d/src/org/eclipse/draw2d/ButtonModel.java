@@ -35,7 +35,7 @@ public static final String MOUSEOVER_PROPERTY = "mouseover"; //$NON-NLS-1$
 
 /**
  * @deprecated This property will soon disappear since it is simply defined by
- * (isPressed() & isRollover())
+ * (isPressed() && isRollover())
  */
 public static final String ARMED_PROPERTY = "armed";  //$NON-NLS-1$
 

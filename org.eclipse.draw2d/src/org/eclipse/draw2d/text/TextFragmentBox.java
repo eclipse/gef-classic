@@ -106,6 +106,11 @@ public boolean isTruncated() {
 	return truncated;
 }
 
+/**
+ * Marks the fragment as having been truncated.
+ * @param value <code>true</code> if the fragment is truncated
+ * @since 3.1
+ */
 public void setTruncated(boolean value) {
 	this.truncated = value;
 }
