@@ -43,7 +43,7 @@ public class ToolEntryEditPart
 	extends PaletteEditPart
 {
 
-class MenuTimer implements Runnable{
+class MenuTimer implements Runnable {
 	public static final int MENU_TIMER_DELAY = 400;
 	
 	private boolean enabled = true;
@@ -203,7 +203,7 @@ public ToolEntryEditPart(PaletteEntry paletteEntry) {
 }
 
 protected AccessibleEditPart createAccessible() {
-	return new AccessibleGraphicalEditPart (){
+	return new AccessibleGraphicalEditPart () {
 		public void getDescription(AccessibleEvent e) {
 			e.result = getPaletteEntry().getDescription();
 		}
