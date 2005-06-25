@@ -78,10 +78,10 @@ protected Command createChangeConstraintCommand(ChangeBoundsRequest request,
  * @param constraint the new constraint, after being {@link
  * #translateToModelConstraint(Object) translated}
  * @return Command
+ * @see #createChangeConstraintCommand(ChangeBoundsRequest, EditPart, Object)
  */
 protected abstract Command createChangeConstraintCommand(
-	EditPart child,
-	Object constraint);
+		EditPart child, Object constraint);
 
 /**
  * A {@link ResizableEditPolicy} is used by default for children. Subclasses may 
