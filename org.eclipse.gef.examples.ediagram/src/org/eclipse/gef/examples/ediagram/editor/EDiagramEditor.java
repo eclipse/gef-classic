@@ -151,12 +151,10 @@ protected FlyoutPreferences getPalettePreferences() {
 					.getInt(PALETTE_DOCK_LOCATION);
 		}
 		public int getPaletteState() {
-			return EDiagramPlugin.getPlugin().getPluginPreferences()
-					.getInt(PALETTE_STATE);
+			return EDiagramPlugin.getPlugin().getPluginPreferences().getInt(PALETTE_STATE);
 		}
 		public int getPaletteWidth() {
-			return EDiagramPlugin.getPlugin().getPluginPreferences()
-					.getInt(PALETTE_SIZE);
+			return EDiagramPlugin.getPlugin().getPluginPreferences().getInt(PALETTE_SIZE);
 		}
 		public void setDockLocation(int location) {
 			EDiagramPlugin.getPlugin().getPluginPreferences()
