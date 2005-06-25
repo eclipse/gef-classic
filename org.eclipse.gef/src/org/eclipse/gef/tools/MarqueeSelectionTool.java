@@ -44,7 +44,7 @@ import org.eclipse.gef.SharedCursors;
 /**
  * A Tool which selects multiple objects inside a rectangular area of a Graphical Viewer. 
  * If the SHIFT key is pressed at the beginning of the drag, the enclosed items will be
- * appended to the current selection.  If the CONTROL key is pressed at the beginning of
+ * appended to the current selection.  If the MOD1 key is pressed at the beginning of
  * the drag, the enclosed items will have their selection state inverted.
  * <P>
  * By default, only editparts whose figure's are on the primary layer will be considered
