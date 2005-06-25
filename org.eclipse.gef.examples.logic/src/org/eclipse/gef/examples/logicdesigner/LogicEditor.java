@@ -113,7 +113,6 @@ import org.eclipse.gef.ui.parts.GraphicalViewerKeyHandler;
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 import org.eclipse.gef.ui.parts.TreeViewer;
 import org.eclipse.gef.ui.rulers.RulerComposite;
-import org.eclipse.gef.ui.stackview.CommandStackInspectorPage;
 
 import org.eclipse.gef.examples.logicdesigner.actions.IncrementDecrementAction;
 import org.eclipse.gef.examples.logicdesigner.actions.LogicPasteTemplateAction;
@@ -359,7 +358,8 @@ private IPartListener partListener = new IPartListener() {
 			String message = LogicMessages.GraphicalEditor_FILE_DELETED_WITHOUT_SAVE_INFO;
 			String[] buttons = { 	LogicMessages.GraphicalEditor_SAVE_BUTTON_UI, 
 						   			LogicMessages.GraphicalEditor_CLOSE_BUTTON_UI };
-			MessageDialog dialog = new MessageDialog(shell, title, null, message, MessageDialog.QUESTION, buttons, 0);			
+			MessageDialog dialog = new MessageDialog(
+					shell, title, null, message, MessageDialog.QUESTION, buttons, 0);			
 			if (dialog.open() == 0) {
 				if (!performSaveAs())
 					partActivated(part);
@@ -505,7 +505,8 @@ protected PaletteViewerProvider createPaletteViewerProvider() {
 public void dispose() {
 	getSite().getWorkbenchWindow().getPartService().removePartListener(partListener);
 	partListener = null;
-	((IFileEditorInput)getEditorInput()).getFile().getWorkspace().removeResourceChangeListener(resourceListener);
+	((IFileEditorInput)getEditorInput()).getFile().getWorkspace()
+			.removeResourceChangeListener(resourceListener);
 	super.dispose();
 }
 
@@ -533,8 +534,6 @@ public void doSaveAs() {
 }
 
 public Object getAdapter(Class type){
-	if (type == CommandStackInspectorPage.class)
-		return new CommandStackInspectorPage(getCommandStack());
 	if (type == IContentOutlinePage.class) {
 		outlinePage = new OutlinePage(new TreeViewer());
 		return outlinePage;
@@ -622,7 +621,8 @@ protected void initializeGraphicalViewer() {
 	getGraphicalViewer().addDropTargetListener(
 		new LogicTemplateTransferDropTargetListener(getGraphicalViewer()));
 	getGraphicalViewer().addDropTargetListener(
-		new TextTransferDropTargetListener(getGraphicalViewer(), TextTransfer.getInstance()));
+		new TextTransferDropTargetListener(
+				getGraphicalViewer(), TextTransfer.getInstance()));
 }
 
 protected void createActions() {
@@ -766,7 +766,8 @@ protected boolean performSaveAs() {
 			}
 		};
 		try {
-			new ProgressMonitorDialog(getSite().getWorkbenchWindow().getShell()).run(false, true, op);			
+			new ProgressMonitorDialog(getSite().getWorkbenchWindow().getShell())
+					.run(false, true, op);			
 		}
 		catch (Exception e) {
 			e.printStackTrace();
