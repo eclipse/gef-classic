@@ -93,7 +93,9 @@ public Node target;
  */
 public int padding = 10;
 
+/** The starting point */
 public Point start;
+/** The ending point */
 public Point end;
 
 /**
