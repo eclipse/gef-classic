@@ -16,7 +16,6 @@
 org.eclipse.draw2d
 org.eclipse.draw2d.geometry
 org.eclipse.draw2d.graph
-org.eclipse.draw2d.internal
 org.eclipse.draw2d.internal.graph
 org.eclipse.draw2d.parts
 org.eclipse.draw2d.text
