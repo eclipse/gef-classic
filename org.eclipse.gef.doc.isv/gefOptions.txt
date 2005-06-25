@@ -7,8 +7,8 @@
 -splitIndex
 -windowtitle "Eclipse GEF API Specification"
 -doctitle "Eclipse GEF API Specification"
--header "<b>Eclipse GEF</b><br>3.0"
--bottom "Copyright (c) IBM Corp. and others 2000, 2004.  All Rights Reserved."
+-header "<b>Eclipse GEF</b><br>3.1"
+-bottom "Copyright (c) IBM Corp. and others 2000, 2005.  All Rights Reserved."
 -overview ../org.eclipse.gef/src/overview.html
 -link http://java.sun.com/j2se/1.4.2/docs/api
 -linkoffline ./../../../org.eclipse.platform.doc.isv/reference/api ../org.eclipse.platform.doc.isv/reference/api
@@ -29,6 +29,7 @@ org.eclipse.gef.ui.actions
 org.eclipse.gef.ui.palette
 org.eclipse.gef.ui.palette.customize
 org.eclipse.gef.ui.parts
+org.eclipse.gef.ui.properties
 org.eclipse.gef.ui.rulers
 org.eclipse.gef.ui.views.palette
 org.eclipse.gef.util
