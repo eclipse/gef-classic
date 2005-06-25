@@ -23,6 +23,7 @@ import org.eclipse.draw2d.PositionConstants;
 
 import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.internal.GEFMessages;
+import org.eclipse.gef.ui.actions.ActionBarContributor;
 import org.eclipse.gef.ui.actions.AlignmentRetargetAction;
 import org.eclipse.gef.ui.actions.GEFActionConstants;
 import org.eclipse.gef.ui.actions.MatchHeightRetargetAction;
@@ -36,7 +37,7 @@ import org.eclipse.gef.ui.actions.ZoomOutRetargetAction;
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
 
 public class LogicActionBarContributor
-	extends org.eclipse.gef.ui.actions.ActionBarContributor
+	extends ActionBarContributor
 {
 
 /**
