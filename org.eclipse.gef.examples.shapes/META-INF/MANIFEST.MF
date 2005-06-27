@@ -6,7 +6,7 @@ Bundle-Version: 3.1.0
 Bundle-Activator: org.eclipse.gef.examples.shapes.ShapesPlugin
 Bundle-Vendor: Eclipse.org
 Bundle-Localization: plugin
-Require-Bundle: org.eclipse.gef;bundle-version="[3.1.0,4.0.0)",
+Require-Bundle: org.eclipse.gef,
  org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.resources,
