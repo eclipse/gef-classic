@@ -34,7 +34,7 @@ Export-Package: org.eclipse.gef,
  org.eclipse.gef.ui.stackview.icons,
  org.eclipse.gef.ui.views.palette,
  org.eclipse.gef.util
-Require-Bundle: org.eclipse.draw2d;visibility:=reexport;bundle-version="3.1.0",
+Require-Bundle: org.eclipse.draw2d;visibility:=reexport,
  org.eclipse.core.runtime,
  org.eclipse.ui.views,
  org.eclipse.ui.workbench,
