@@ -2,8 +2,6 @@
 <head>
 <meta http-equiv="Content-Language" content="en-us">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
-<meta name="ProgId" content="FrontPage.Editor.Document">
 </head>
 
 
@@ -33,7 +31,7 @@
 </table><table width="80%">
     <tr>
       <td valign="top">
-        <pre><font size="1">01
+        <pre><font size="2">01
 02
 03
 04
@@ -77,52 +75,50 @@
 42
 43
 44
+45
 </font></pre>
       </td>
       <td valign="top">
-        <pre><font size="1" COLOR="#000084">import</font><font size="1"> org.eclipse.swt.widgets.Shell;
-</font><font size="1" COLOR="#000084">import</font><font size="1"> org.eclipse.swt.widgets.Display;
-</font><font size="1" COLOR="#000084">import</font><font size="1"> org.eclipse.draw2d.*;
-</font><font size="1" COLOR="#000084">import</font><font size="1"> org.eclipse.swt.SWT;
-</font><font size="1" COLOR="#000084">import</font><font size="1"> org.eclipse.draw2d.geometry.*;
-</font><font size="1" COLOR="#000084">public</font><font size="1"> </font><font size="1" COLOR="#000084">class</font><font size="1"> Demo3 {
-</font><font size="1" COLOR="#000084">
-static</font><font size="1"> </font><font size="1" COLOR="#000084">int</font><font size="1"> count = 1;
+        <pre><font size="2" COLOR="#000084">import</font><font size="2"> org.eclipse.swt.widgets.Shell;
+</font><font size="2" COLOR="#000084">import</font><font size="2"> org.eclipse.swt.widgets.Display;
+</font><font size="2" COLOR="#000084">import</font><font size="2"> org.eclipse.draw2d.*;
+</font><font size="2" COLOR="#000084">import</font><font size="2"> org.eclipse.swt.SWT;
+</font><font size="2" COLOR="#000084">import</font><font size="2"> org.eclipse.draw2d.geometry.*;
+</font><font size="2" COLOR="#000084">public</font><font size="2"> </font><font size="2" COLOR="#000084">class</font><font size="2"> Demo3 {
+</font><font size="2" COLOR="#000084">
+static</font><font size="2"> </font><font size="2" COLOR="#000084">int</font><font size="2"> count = 1;
 
-</font><font size="1" COLOR="#000084">public</font><font size="1"> </font><font size="1" COLOR="#000084">static</font><font size="1"> </font><font size="1" COLOR="#000084">void</font><font size="1"> main(String args[]){
-	Shell shell = </font><font size="1" COLOR="#000084">new</font><font size="1"> Shell();
+</font><font size="2" COLOR="#000084">public</font><font size="2"> </font><font size="2" COLOR="#000084">static</font><font size="2"> </font><font size="2" COLOR="#000084">void</font><font size="2"> main(String args[]){
+	Shell shell = </font><font size="2" COLOR="#000084">new</font><font size="2"> Shell();
 	shell.setSize(350,350);
 	shell.open();
-	shell.setText(</font><font size="1" COLOR="#008484">&quot;Demo 3&quot;</font><font size="1">);
-	LightweightSystem lws = </font><font size="1" COLOR="#000084">new</font><font size="1"> LightweightSystem(shell);
-	IFigure panel = </font><font size="1" COLOR="#000084">new</font><font size="1"> Figure();
+	shell.setText(</font><font size="2" COLOR="#008484">&quot;Demo 3&quot;</font><font size="2">);
+	LightweightSystem lws = </font><font size="2" COLOR="#000084">new</font><font size="2"> LightweightSystem(shell);
+	IFigure panel = </font><font size="2" COLOR="#000084">new</font><font size="2"> Figure();
 	lws.setContents(panel);
-	ScrollPane scrollpane = </font><font size="1" COLOR="#000084">new</font><font size="1"> ScrollPane();
-	scrollpane.setBounds(</font><font size="1" COLOR="#000084">new</font><font size="1"> Rectangle(30,30,210,200));
-	scrollpane.getViewport().setBorder(</font><font size="1" COLOR="#000084">new</font><font size="1"> GroupBoxBorder(</font><font size="1" COLOR="#008484">&quot;Viewport&quot;</font><font size="1">));
-	scrollpane.setBorder(</font><font size="1" COLOR="#000084">new</font><font size="1"> GroupBoxBorder(</font><font size="1" COLOR="#008484">&quot;ScrollPane&quot;</font><font size="1">));
-	</font><font size="1" COLOR="#000084">final</font><font size="1"> Figure view = </font><font size="1" COLOR="#000084">new</font><font size="1"> Figure();
-<DIV ID="view">	view.setBorder(</font><font size="1" COLOR="#000084">new</font><font size="1"> GroupBoxBorder(</font><font size="1" COLOR="#008484">&quot;The View&quot;</font><font size="1">));
-	view.setLayoutManager(</font><font size="1" COLOR="#000084">new</font><font size="1"> FlowLayout(FlowLayout.VERTICAL));
+	ScrollPane scrollpane = </font><font size="2" COLOR="#000084">new</font><font size="2"> ScrollPane();
+	scrollpane.setBounds(</font><font size="2" COLOR="#000084">new</font><font size="2"> Rectangle(30,30,210,200));
+	scrollpane.getViewport().setBorder(</font><font size="2" COLOR="#000084">new</font><font size="2"> GroupBoxBorder(</font><font size="2" COLOR="#008484">&quot;Viewport&quot;</font><font size="2">));
+	scrollpane.setBorder(</font><font size="2" COLOR="#000084">new</font><font size="2"> GroupBoxBorder(</font><font size="2" COLOR="#008484">&quot;ScrollPane&quot;</font><font size="2">));
+	</font><font size="2" COLOR="#000084">final</font><font size="2"> Figure view = </font><font size="2" COLOR="#000084">new</font><font size="2"> Figure();
+<DIV ID="view">	view.setBorder(</font><font size="2" COLOR="#000084">new</font><font size="2"> GroupBoxBorder(</font><font size="2" COLOR="#008484">&quot;The View&quot;</font><font size="2">));
+	view.setLayoutManager(</font><font size="2" COLOR="#000084">new</font><font size="2"> FlowLayout(FlowLayout.VERTICAL));
 	scrollpane.setView(view);</DIV>
-	Clickable button = </font><font size="1" COLOR="#000084">new</font><font size="1"> Button(</font><font size="1" COLOR="#008484">&quot;Create checkbox&quot;</font><font size="1">);
-	button.setBounds(</font><font size="1" COLOR="#000084">new</font><font size="1"> Rectangle(30,250,140,35));
-<DIV ID="listener">	button.addActionListener(</font><font size="1" COLOR="#000084">new</font><font size="1"> ActionListener(){
-		</font><font size="1" COLOR="#000084">public</font><font size="1"> </font><font size="1" COLOR="#000084">void</font><font size="1"> actionPerformed(ActionEvent e){
-			view.add(</font><font size="1" COLOR="#000084">new</font><font size="1"> CheckBox(</font><font size="1" COLOR="#008484">&quot;Checkbox &quot;</font><font size="1">+count++));
+	Clickable button = </font><font size="2" COLOR="#000084">new</font><font size="2"> Button(</font><font size="2" COLOR="#008484">&quot;Create checkbox&quot;</font><font size="2">);
+	button.setBounds(</font><font size="2" COLOR="#000084">new</font><font size="2"> Rectangle(30,250,140,35));
+<DIV ID="listener">	button.addActionListener(</font><font size="2" COLOR="#000084">new</font><font size="2"> ActionListener(){
+		</font><font size="2" COLOR="#000084">public</font><font size="2"> </font><font size="2" COLOR="#000084">void</font><font size="2"> actionPerformed(ActionEvent e){
+			view.add(</font><font size="2" COLOR="#000084">new</font><font size="2"> CheckBox(</font><font size="2" COLOR="#008484">&quot;Checkbox &quot;</font><font size="2">+count++));
 		}
 	});</DIV>
 	panel.add(button);
 	panel.add(scrollpane);
 
 	Display display = Display.getDefault();
-	</font><font size="1" COLOR="#000084">while</font><font size="1"> (!shell.isDisposed ()) {
-		</font><font size="1" COLOR="#000084">if</font><font size="1"> (!display.readAndDispatch ())
+	</font><font size="2" COLOR="#000084">while</font><font size="2"> (!shell.isDisposed ()) {
+		</font><font size="2" COLOR="#000084">if</font><font size="2"> (!display.readAndDispatch ())
 			display.sleep ();
 	}
 }
 
-}</font></pre></td>
-    </tr>
-  </table>
-</div>
+}</font></pre></td></tr></table></div>
