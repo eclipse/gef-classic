@@ -327,15 +327,17 @@ Color getLocalForegroundColor();
 Dimension getMaximumSize();
 
 /**
- * Returns a hint indicating the smallest desireable size for the IFigure. Returned
- * Dimension is by value.
+ * Returns a hint indicating the smallest desireable size for the IFigure. 
+ * The returned dimension may be by <i>reference</i>, and it must not be modified by the
+ * caller.
  * @return The minimum size
  */
 Dimension getMinimumSize();
 
 /**
- * Returns a hint indicating the smallest desireable size for the IFigure. Returned
- * Dimension is by value.
+ * Returns a hint indicating the smallest desireable size for the IFigure.
+ * The returned dimension may be by <i>reference</i>, and it must not be modified by the
+ * caller.
  * @param wHint the width hint
  * @param hHint the height hint
  * @return The minimum size
