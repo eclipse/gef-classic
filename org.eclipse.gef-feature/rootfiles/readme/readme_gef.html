@@ -163,6 +163,12 @@ support for rich-text, and hence the API contract had to be broken in a few plac
 <p>This protected class had to be updated to support the new advanced graphics
 functionality made available in SWT.  This class has now been marked as package-protected.</p>
 </blockquote>
+<h4>Figure's Default Size</h4>
+<blockquote>
+<p>Previously, Figures used to be initialized with a default size of 64x36.  That has been
+changed, for performance reasons, to now be 0x0.  They will now have to be resized, expicitly
+or via a layout manager, for them to be visible.</p>
+</blockquote>
 <h2>4. <a name="Known Issues"></a> Known Issues</h2>
 <h4>Printing</h4>
 <blockquote>
