@@ -3,28 +3,27 @@
 <head>
 <meta http-equiv="Content-Language" content="en-us">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
-<meta name="ProgId" content="FrontPage.Editor.Document">
 </head>
 
 <div>
-  <table border="1" width="80%">
-    <tr>
-      <td bgcolor="#000080" colspan="2"><b><font color="#FFFFFF">Example
-        2 - Layout Managers</font></b></td>
-    </tr>
-    <tr>
-      <td colspan="2">
-        <p align="center"><img border="0"
-        src="demo2.gif" width="174" height="107"></p>
-        <p>In this example, a panel is created with a FlowLayout for its layout
-        manager.&nbsp; A flow layout positions children left-to-right in rows
-        going from top-to-bottom.&nbsp; The children are sized according to
-        their preferred size.</td>
-    </tr>
-    <tr>
-      <td valign="top">
-        <pre><font size="2">01
+	<table border="1" width="80%">
+		<tr>
+			<td bgcolor="#000080" colspan="2"><b><font color="#FFFFFF">Example 2 
+			- Layout Managers</font></b></td>
+		</tr>
+		<tr>
+			<td colspan="2">
+			<p align="center">
+			<img border="0" src="demo2.gif" width="174" height="107"></p>
+			<p>In this example, a panel is created with a FlowLayout for its layout 
+			manager.&nbsp; A flow layout positions children left-to-right in rows 
+			going from top-to-bottom.&nbsp; The children are sized according to 
+			their preferred size.</p>
+			</td>
+		</tr>
+		<tr>
+			<td valign="top">
+			<pre><font size="2">01
 02
 03
 04
@@ -62,52 +61,34 @@
 36
 37
 </font></pre>
-      </td>
-      <td valign="top">
-        <pre><font size="2" color="#000084">import</font><font size="2"
-color="#000000"> org.eclipse.swt.widgets.Shell;</font><font size="2"
-color="#000084">
-import</font><font size="2" color="#000000"> org.eclipse.swt.widgets.Display;</font><font
-size="2" color="#000084">
-import</font><font size="2" color="#000000"> org.eclipse.draw2d.*;</font><font
-size="2" color="#000084">
-import</font><font size="2" color="#000000"> org.eclipse.swt.SWT;</font><font
-size="2" color="#000084">
+			</td>
+			<td valign="top">
+			<pre><font size="2" color="#000084">import</font><font size="2" color="#000000"> org.eclipse.swt.widgets.Shell;</font><font size="2" color="#000084">
+import</font><font size="2" color="#000000"> org.eclipse.swt.widgets.Display;</font><font size="2" color="#000084">
+import</font><font size="2" color="#000000"> org.eclipse.draw2d.*;</font><font size="2" color="#000084">
+import</font><font size="2" color="#000000"> org.eclipse.swt.SWT;</font><font size="2" color="#000084">
 import</font><font size="2" color="#000000"> org.eclipse.draw2d.geometry.*;
 </font><font size="2" color="#000084">
-public</font><font size="2" color="#000000"> </font><font size="2"
-color="#000084">class</font><font size="2" color="#000000"> Demo2 {</font><font
-size="2" color="#000084">
-	public</font><font size="2" color="#000000"> </font><font size="2"
-color="#000084">static</font><font size="2" color="#000000"> </font><font
-size="2" color="#000084">void</font><font size="2" color="#000000"> main(String args[]){
-		Shell shell = </font><font size="2" color="#000084">new</font><font
-size="2" color="#000000"> Shell();
+public</font><font size="2" color="#000000"> </font><font size="2" color="#000084">class</font><font size="2" color="#000000"> Demo2 {</font><font size="2" color="#000084">
+	public</font><font size="2" color="#000000"> </font><font size="2" color="#000084">static</font><font size="2" color="#000000"> </font><font size="2" color="#000084">void</font><font size="2" color="#000000"> main(String args[]){
+		Shell shell = </font><font size="2" color="#000084">new</font><font size="2" color="#000000"> Shell();
 		shell.open();
-		shell.setText(</font><font size="2" color="#008484">&quot;Draw2d&quot;</font><font
-size="2" color="#000000">);
-		LightweightSystem lws = </font><font size="2" color="#000084">new</font><font
-size="2" color="#000000"> LightweightSystem(shell);
-		IFigure panel = </font><font size="2" color="#000084">new</font><font
-size="2" color="#000000"> Figure();
-		<b>panel.setLayoutManager(</b></font><b><font size="2" color="#000084">new</font></b><font
-size="2" color="#000000"><b> FlowLayout());</b>
+		shell.setText(</font><font size="2" color="#008484">&quot;Draw2d&quot;</font><font size="2" color="#000000">);
+		LightweightSystem lws = </font><font size="2" color="#000084">new</font><font size="2" color="#000000"> LightweightSystem(shell);
+		IFigure panel = </font><font size="2" color="#000084">new</font><font size="2" color="#000000"> Figure();
+		<b>panel.setLayoutManager(</b></font><b><font size="2" color="#000084">new</font></b><font size="2" color="#000000"><b> FlowLayout());</b>
 		lws.setContents(panel);
 
-		Clickable button = </font><font size="2" color="#000084">new</font><font
-size="2" color="#000000"> Button(</font><font size="2" color="#008484">&quot;Click me&quot;</font><font
-size="2" color="#000000">);
-		Clickable checkbox = </font><font size="2" color="#000084">new</font><font
-size="2" color="#000000"> CheckBox(</font><font size="2" color="#008484">&quot;Check box&quot;</font><font
-size="2" color="#000000">);
+		Clickable button = </font><font size="2" color="#000084">new</font><font size="2" color="#000000"> Button(</font><font size="2" color="#008484">&quot;Click me&quot;</font><font size="2" color="#000000">);
+		Clickable checkbox = </font><font size="2" color="#000084">new</font><font size="2" color="#000000"> CheckBox(</font><font size="2" color="#008484">&quot;Check box&quot;</font><font size="2" color="#000000">);
 
-		Shape ellipse = </font><font size="2" color="#000084">new</font><font
-size="2" color="#000000"> Ellipse();
+		Shape ellipse = </font><font size="2" color="#000084">new</font><font size="2" color="#000000"> Ellipse();
 		ellipse.setBackgroundColor(ColorConstants.yellow);
+		ellipset.setSize(64, 36);
 
-		Shape rectangle = </font><font size="2" color="#000084">new</font><font
-size="2" color="#000000"> RectangleFigure();
+		Shape rectangle = </font><font size="2" color="#000084">new</font><font size="2" color="#000000"> RectangleFigure();
 		rectangle.setBackgroundColor(ColorConstants.lightBlue);
+		rectangle.setSize(64, 36);
 
 		<b>panel.add(button);
 		panel.add(checkbox);
@@ -115,15 +96,13 @@ size="2" color="#000000"> RectangleFigure();
 		panel.add(rectangle);</b>
 
 		Display display = Display.getDefault();
-		</font><font size="2" color="#000084">while</font><font size="2"
-color="#000000"> (!shell.isDisposed ()) {
-			</font><font size="2" color="#000084">if</font><font size="2"
-color="#000000"> (!display.readAndDispatch ())
+		</font><font size="2" color="#000084">while</font><font size="2" color="#000000"> (!shell.isDisposed ()) {
+			</font><font size="2" color="#000084">if</font><font size="2" color="#000000"> (!display.readAndDispatch ())
 				display.sleep ();
 		}
 	}
 }</font></pre>
-      </td>
-    </tr>
-  </table>
+			</td>
+		</tr>
+	</table>
 </div>
