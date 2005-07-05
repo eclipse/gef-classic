@@ -11,7 +11,12 @@
 package org.eclipse.draw2d;
 
 /**
- * A listener interface for receiving notification that an anchor has moved.
+ * Classes which implement this interface provide a method to notify that an anchor has
+ * moved.
+ * <P>
+ * Instances of this class can be added as listeners of an Anchor using the
+ * <code>addAnchorListener</code> method and removed using the
+ * <code>removeAnchorListener</code> method.
  */
 public interface AnchorListener {
 

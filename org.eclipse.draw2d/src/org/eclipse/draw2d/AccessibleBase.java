@@ -11,8 +11,8 @@
 package org.eclipse.draw2d;
 
 /**
- * The base class for accessible objects.  Provides the id of the object for accessibility
- * purposes.
+ * The base class for accessible objects which provides accesibilty clients with a unique
+ * ID.
  */
 public class AccessibleBase {
 

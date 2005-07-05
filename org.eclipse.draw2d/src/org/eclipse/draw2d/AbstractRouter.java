@@ -13,7 +13,8 @@ package org.eclipse.draw2d;
 import org.eclipse.draw2d.geometry.Point;
 
 /**
- * Generic support for ConnectionRouters.
+ * Base class for implementing a connection router. This class provides stubs for
+ * constraint usage, and some utility methods.
  */
 public abstract class AbstractRouter
 	implements ConnectionRouter

@@ -11,8 +11,13 @@
 package org.eclipse.draw2d;
 
 /**
- * A listener interface for receiving changes in the ancestor hierarchy of the listening
- * IFigure.
+ * Classes which implement this interface provide methods to respond to changes in the
+ * ancestor properties of a Figure.
+ * <P>
+ * Instances of this class can be added as listeners to a figure using the
+ * <code>addAncestorListener</code> method and removed using the
+ * <code>removeAncestoreListener</code> method.  When the parent chain of the figure being
+ * observed changes or moves, the listener will be notified appropriately.
  */
 public interface AncestorListener {
 

@@ -13,7 +13,8 @@ package org.eclipse.draw2d;
 import org.eclipse.draw2d.geometry.Insets;
 
 /**
- * A Button containing an arrow in it, and providing directional support for the arrow.
+ * A Button which displays a triangle pointing in a specified direction. This class is
+ * used by the {@link ScrollBar} figure.
  */
 public class ArrowButton
 	extends Button

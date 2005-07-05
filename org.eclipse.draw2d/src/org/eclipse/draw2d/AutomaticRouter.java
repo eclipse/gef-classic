@@ -17,13 +17,13 @@ import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.internal.MultiValueMap;
 
 /**
- * The AutomaticRouter provides the facility to prevent {@link Connection Connections}
- * from overlapping. Subclasses implement the abstract method
- * {@link #handleCollision(PointList, int)} to determine how to handle Connection
- * collisions.
+ * An abstract router implementation which detects when multiple connections are
+ * overlapping. Two connections overlap if the combination of source and target
+ * anchors are equal. Subclasses must implement {@link #handleCollision(PointList, int)}
+ * to determine how to avoid the overlap.
  * <p>
- * Also provides access to its 'next' router so that manual routing in subclasses is
- * possible.
+ * This router can delegate to another connection router. The wrappered router will route
+ * the connections first, after which overlapping will be determined.
  */
 public abstract class AutomaticRouter
 	extends AbstractRouter 
