@@ -61,17 +61,12 @@ static class TypeIterator implements Iterator {
 		this.items = items;
 		this.type = type;
 	}
-	/**
-	 * @see java.util.Iterator#next()
-	 */
 	public Object next() {
 		Object result = items[index + 1];
 		index += 2;
 		return result;
 	}
-	/**
-	 * @see java.util.Iterator#hasNext()
-	 */
+
 	public boolean hasNext() {
 		if (items == null)
 			return false;
@@ -79,9 +74,7 @@ static class TypeIterator implements Iterator {
 			index += 2;
 		return index < items.length;
 	}
-	/**
-	 * @see java.util.Iterator#remove()
-	 */
+
 	public void remove() { }
 }
 
