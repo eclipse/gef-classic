@@ -13,9 +13,10 @@ package org.eclipse.draw2d;
 import org.eclipse.draw2d.geometry.PointList;
 
 /**
- * Repositions a {@link RotatableDecoration} attached to a {@link Connection} when the
- * Connection is moved.  The decoration can be placed at the source or target end of the
- * connection figure.
+ * Locator used to place a {@link RotatableDecoration} on a {@link Connection}. The
+ * decoration can be placed at the source or target end of the connection figure. The
+ * default connection implementation uses a {@link DelegatingLayout} which requires
+ * locators.
  */
 public class ArrowLocator extends ConnectionLocator {
 
