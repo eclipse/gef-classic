@@ -37,7 +37,7 @@ NodeList graphNodes = new NodeList();
 
 private boolean allNodesFlagged() {
 	for (int i = 0; i < graphNodes.size(); i++) {
-		if (!graphNodes.getNode(i).flag)
+		if (graphNodes.getNode(i).flag == false)
 			return false;
 	}
 	return true;
@@ -87,7 +87,7 @@ private Node findNodeWithMaxDegree() {
 	
 	for (int i = 0; i < graphNodes.size(); i++) {
 		Node node = graphNodes.getNode(i);
-		if (getDegree(node) >= max && !node.flag) {
+		if (getDegree(node) >= max && node.flag == false) {
 			max = getDegree(node);
 			maxNode = node;
 		}
@@ -126,7 +126,7 @@ private void greedyCycleRemove(DirectedGraph g) {
 			hasSink = false;
 			for (int i = 0; i < graphNodes.size(); i++) {
 				Node node = graphNodes.getNode(i);
-				if (getOutDegree(node) == 0 && !node.flag) {
+				if (getOutDegree(node) == 0 && node.flag == false) {
 					hasSink = true;
 					node.flag = true;
 					updateIncoming(node);
@@ -142,7 +142,7 @@ private void greedyCycleRemove(DirectedGraph g) {
 			hasSource = false;
 			for (int i = 0; i < graphNodes.size(); i++) {	
 				Node node = graphNodes.getNode(i);
-				if (getInDegree(node) == 0 && !node.flag) {
+				if (getInDegree(node) == 0 && node.flag == false) {
 					hasSource = true;
 					node.flag = true;
 					updateOutgoing(node);
@@ -228,7 +228,7 @@ private void sortedInsert(List list, Node node) {
 private void updateIncoming(Node n) {
 	for (int i = 0; i < n.incoming.size(); i++) {
 		Node in = n.incoming.getEdge(i).source;
-		if (!in.flag) {	
+		if (in.flag == false) {	
 			setOutDegree(in, getOutDegree(in) - 1);
 			setDegree(in, getOutDegree(in) - getInDegree(in));
 		}
@@ -241,7 +241,7 @@ private void updateIncoming(Node n) {
 private void updateOutgoing(Node n) {
 	for (int i = 0; i < n.outgoing.size(); i++) {
 		Node out = n.outgoing.getEdge(i).target;
-		if (!out.flag) {
+		if (out.flag == false) {
 			setInDegree(out, getInDegree(out) - 1);
 			setDegree(out, getOutDegree(out) - getInDegree(out));
 		}

@@ -38,7 +38,7 @@ private NodeList sL = new NodeList();
 
 private boolean allFlagged(NodeList nodes) {
 	for (int i = 0; i < nodes.size(); i++) {
-		if (!nodes.getNode(i).flag)
+		if (nodes.getNode(i).flag == false)
 			return false;
 	}
 	return true;
@@ -133,7 +133,7 @@ private Node findNodeWithMaxDegree(NodeList nodes) {
 		if (node.flag)
 			continue;
 		int degree = getNestedOutDegree(node) - getNestedInDegree(node);
-		if (degree >= max && !node.flag) {
+		if (degree >= max && node.flag == false) {
 			max = degree;
 			maxNode = node;
 		}
