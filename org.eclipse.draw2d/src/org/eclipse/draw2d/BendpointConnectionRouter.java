@@ -20,8 +20,7 @@ import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.PrecisionPoint;
 
 /**
- * A Router that routes a {@link Connection} that has manual 
- * {@link org.eclipse.draw2d.Bendpoint Bendpoints}.
+ * Routes {@link Connection}s through a <code>List</code> of {@link Bendpoint Bendpoints}.
  */
 public class BendpointConnectionRouter
 	extends AbstractRouter
@@ -102,5 +101,3 @@ public void setConstraint(Connection connection, Object constraint) {
 }
 
 }
-
-

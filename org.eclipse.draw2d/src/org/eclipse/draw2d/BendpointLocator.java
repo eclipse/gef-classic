@@ -13,8 +13,9 @@ package org.eclipse.draw2d;
 import org.eclipse.draw2d.geometry.Point;
 
 /**
- * Repositions a {@link Bendpoint} attached to a {@link Connection} when the Connection is
- * moved.
+ * Places a figure relative to a specified bend in a {@link Connection}. A bendpoint is
+ * one of the points returned in the connection's {@link Connection#getPoints()} method.
+ * It is not related to the bendpoint class used as routing constraints.
  */
 public class BendpointLocator 
 	extends ConnectionLocator 

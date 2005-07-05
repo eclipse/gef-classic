@@ -22,7 +22,6 @@ import org.eclipse.draw2d.geometry.Dimension;
  * #isSensitiveHorizontally(IFigure)} and {@link #isSensitiveVertically(IFigure)}. At
  * least one of these method should return <code>true</code>.
  * 
- * Created on :Sep 30, 2002
  * @author hudsonr
  * @since 2.0
  */

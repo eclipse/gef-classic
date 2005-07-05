@@ -15,8 +15,11 @@ import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
- * A Border is a graphical decoration that is painted just inside the outer edge of a
- * Figure. 
+ * A decoration on a Figure. A border may paint itself within the bounds of a figure, and
+ * it may provide Insets which can affect how the figures children are posiiton and
+ * painted.
+ * <P>
+ * A border instance may be used with multiple figure instances.
  */
 public interface Border {
 

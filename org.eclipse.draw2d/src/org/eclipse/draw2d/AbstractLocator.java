@@ -15,7 +15,8 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
- * Repositions a Figure attached to a Connection when the Connection is moved.
+ * Places a figure relative to a point determined by the subclass. The figure may be
+ * placed in some location relative to the point with a configurable amount of spacing.
  */
 public abstract class AbstractLocator
 	implements Locator
@@ -30,9 +31,9 @@ private int gap;
 public AbstractLocator() { }
 
 /**
- * Returns the number of pixels the figure's bounding rectangle is from the connection. 
- * Only used if {@link #getRelativePosition()} returns something other than 
- * {@link PositionConstants#CENTER}.
+ * Returns the number of pixels to leave between the figure being located and the
+ * reference point. Only used if {@link #getRelativePosition()} returns something other
+ * than {@link PositionConstants#CENTER}.
  * 
  * @return The gap
  * @since 2.0
@@ -106,9 +107,8 @@ public void relocate(IFigure target) {
 }
 
 /**
- * Sets the number of pixels the figure's bounding rectangle is from the connection.  Only
- * used if getRelativePosition() returns something other than 
- * {@link PositionConstants#CENTER}.
+ * Sets the gap between the reference point and the figure being placed. Only used if
+ * getRelativePosition() returns something other than  {@link PositionConstants#CENTER}.
  * 
  * @param i The gap
  * @since 2.0
@@ -118,8 +118,8 @@ public void setGap(int i) {
 }
 
 /**
- * Sets the position of the figure with respect to the center point. Possible values
- * can be found in {@link PositionConstants} and include CENTER, NORTH, SOUTH, EAST, WEST,
+ * Sets the position of the figure with respect to the center point. Possible values can
+ * be found in {@link PositionConstants} and include CENTER, NORTH, SOUTH, EAST, WEST,
  * NORTH_EAST, NORTH_WEST, SOUTH_EAST, or SOUTH_WEST.
  * 
  * @param pos The relative position
