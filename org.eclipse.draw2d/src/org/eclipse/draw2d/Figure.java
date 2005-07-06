@@ -1772,34 +1772,26 @@ final class LayoutNotifier implements LayoutManager {
 	LayoutNotifier(LayoutManager layout, LayoutListener listener) {
 		realLayout = layout;
 		listeners.add(listener);
-	}	
-	/**
-	 * @see org.eclipse.draw2d.LayoutManager#getConstraint(org.eclipse.draw2d.IFigure)
-	 */
+	}
+		
 	public Object getConstraint(IFigure child) {
 		if (realLayout != null)
 			return realLayout.getConstraint(child);
 		return null;
 	}
-	/**
-	 * @see org.eclipse.draw2d.LayoutManager#getMinimumSize(org.eclipse.draw2d.IFigure, int, int)
-	 */
+
 	public Dimension getMinimumSize(IFigure container, int wHint, int hHint) {
 		if (realLayout != null)
 			return realLayout.getMinimumSize(container, wHint, hHint);
 		return null;
 	}
-	/**
-	 * @see org.eclipse.draw2d.LayoutManager#getPreferredSize(org.eclipse.draw2d.IFigure, int, int)
-	 */
+
 	public Dimension getPreferredSize(IFigure container, int wHint, int hHint) {
 		if (realLayout != null)
 			return realLayout.getPreferredSize(container, wHint, hHint);
 		return null;
 	}
-	/**
-	 * @see org.eclipse.draw2d.LayoutManager#invalidate()
-	 */
+
 	public void invalidate() {
 		for (int i = 0; i < listeners.size(); i++)
 			((LayoutListener)listeners.get(i)).invalidate(Figure.this);
@@ -1807,9 +1799,7 @@ final class LayoutNotifier implements LayoutManager {
 		if (realLayout != null)
 			realLayout.invalidate();
 	}
-	/**
-	 * @see org.eclipse.draw2d.LayoutManager#layout(org.eclipse.draw2d.IFigure)
-	 */
+
 	public void layout(IFigure container) {
 		boolean consumed = false;
 		for (int i = 0; i < listeners.size(); i++)
@@ -1820,18 +1810,14 @@ final class LayoutNotifier implements LayoutManager {
 		for (int i = 0; i < listeners.size(); i++)
 			((LayoutListener)listeners.get(i)).postLayout(container);
 	}
-	/**
-	 * @see org.eclipse.draw2d.LayoutManager#remove(org.eclipse.draw2d.IFigure)
-	 */
+
 	public void remove(IFigure child) {
 		for (int i = 0; i < listeners.size(); i++)
 			((LayoutListener)listeners.get(i)).remove(child);
 		if (realLayout != null)
 			realLayout.remove(child);
 	}
-	/**
-	 * @see org.eclipse.draw2d.LayoutManager#setConstraint(org.eclipse.draw2d.IFigure, java.lang.Object)
-	 */
+
 	public void setConstraint(IFigure child, Object constraint) {
 		for (int i = 0; i < listeners.size(); i++)
 			((LayoutListener)listeners.get(i)).setConstraint(child, constraint);
