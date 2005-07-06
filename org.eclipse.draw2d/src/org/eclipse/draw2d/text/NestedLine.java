@@ -62,14 +62,18 @@ LineRoot getLineRoot() {
 //}
 
 /**
- * @see org.eclipse.draw2d.text.FlowBox#getOuterAscent()
+ * Returns the outer ascent of this box.  The outer ascent is the ascent above the
+ * baseline including the border size and margin.  This is used when adding content into a
+ * LineBox.  The linebox's own border must be drawn around the children.
  */
 public int getOuterAscent() {
 	return contentAscent + FlowUtilities.getBorderAscentWithMargin(owner);
 }
 
 /**
- * @see org.eclipse.draw2d.text.FlowBox#getOuterDescent()
+ * Returns the outer descent of this box. The outer descent is the space below the
+ * baseline including the border size and margin. This is used when adding content into a
+ * LineBox. The linebox's own border must be drawn around the children.
  */
 public int getOuterDescent() {
 	return contentDescent + FlowUtilities.getBorderDescentWithMargin(owner);
