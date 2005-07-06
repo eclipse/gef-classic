@@ -63,7 +63,6 @@ public static final Object PROPERTY_MARQUEE_BEHAVIOR = "marqueeBehavior"; //$NON
 /**
  * This behaviour selects nodes completely encompassed by the marquee rectangle.  This 
  * is the default behaviour for this tool.
- * @see #setSelectionMode(int)
  * @since 3.1
  */
 public static final int BEHAVIOR_NODES_CONTAINED = new Integer(1).intValue();
