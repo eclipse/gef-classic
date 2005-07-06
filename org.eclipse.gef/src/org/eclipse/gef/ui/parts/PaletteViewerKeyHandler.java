@@ -120,7 +120,10 @@ private void expandDrawer() {
 }
 
 /**
- * @see GraphicalViewerKeyHandler#getNavigationPoint(IFigure)
+ * Figures' navigation points are used to determine their direction compared to one 
+ * another, and the distance between them.
+ *  
+ * @return	the top-left of the given figure
  */
 protected Point getNavigationPoint(IFigure figure) {
 	return figure.getBounds().getTopLeft();
