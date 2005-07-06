@@ -1,5 +1,3 @@
-.project
-.cvsignore
 bin
 runtime
 temp.folder
