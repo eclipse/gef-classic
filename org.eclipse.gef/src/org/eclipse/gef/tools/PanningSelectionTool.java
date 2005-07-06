@@ -140,8 +140,7 @@ protected boolean handleFocusLost() {
 }
 
 /**
- * @see
- * org.eclipse.gef.tools.SelectionTool#handleKeyDown(org.eclipse.swt.events.KeyEvent)
+ * @see org.eclipse.gef.tools.SelectionTool#handleKeyDown(org.eclipse.swt.events.KeyEvent)
  */
 protected boolean handleKeyDown(KeyEvent e) {
 	if (acceptSpaceBar(e)) {
