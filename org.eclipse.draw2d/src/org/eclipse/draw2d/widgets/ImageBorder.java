@@ -63,7 +63,7 @@ public void paint(IFigure figure, Graphics graphics, Insets insets) {
 	graphics.drawImage(getImage(), x, y);
 }
 
-public void setImage(Image img/*, int position*/) {
+public void setImage(Image img) {
 	image = img;
 	imageSize = new Dimension(image);
 	imgInsets = new Insets();
