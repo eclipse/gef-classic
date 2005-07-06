@@ -16,7 +16,7 @@
 
    <url>
       <update
-         url="http://update.eclipse.org/updates"
+         url="http://update.eclipse.org/updates/3.0"
          label="%updateSiteName">
       </update>
    </url>
