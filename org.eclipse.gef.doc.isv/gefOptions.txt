@@ -11,10 +11,10 @@
 -bottom "Copyright (c) IBM Corp. and others 2000, 2005.  All Rights Reserved."
 -overview ../org.eclipse.gef/src/overview.html
 -link http://java.sun.com/j2se/1.4.2/docs/api
--linkoffline ./../../../org.eclipse.platform.doc.isv/reference/api ../org.eclipse.platform.doc.isv/reference/api
--linkoffline ./../../../org.eclipse.platform.doc.isv/reference/osgi ../org.eclipse.platform.doc.isv/reference/osgi
--linkoffline ./../../../org.eclipse.draw2d.doc.isv/reference/api ../org.eclipse.draw2d.doc.isv/reference/api
--linkoffline ./../../../org.eclipse.draw2d.doc.isv/reference/osgi ../org.eclipse.draw2d.doc.isv/reference/osgi
+-linkoffline ../../../org.eclipse.platform.doc.isv/reference/api ../org.eclipse.platform.doc.isv/reference/api
+-linkoffline ../../../org.eclipse.platform.doc.isv/reference/osgi ../org.eclipse.platform.doc.isv/reference/osgi
+-linkoffline ../../../org.eclipse.draw2d.doc.isv/reference/api ../org.eclipse.draw2d.doc.isv/reference/api
+-linkoffline ../../../org.eclipse.draw2d.doc.isv/reference/osgi ../org.eclipse.draw2d.doc.isv/reference/osgi
 
 org.eclipse.gef
 org.eclipse.gef.commands
