@@ -170,7 +170,6 @@ public void setFont(Font font) {
 /**
  * @param	image	The <code>Image</code> to be used for this label.  It can be 
  * 					<code>null</code>.
- * @see	ImageBorder#setImage(Image)
  */
 public void setImage(Image image) {
 	this.image = image;
