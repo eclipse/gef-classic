@@ -4,6 +4,7 @@
 <!-- Define topics for the main guide                                              -->
 <!-- ============================================================================= -->
 <toc label="Guide">
+		<topic label="Introduction" href="reference/api/overview-summary.html#Overview_description" />
 		<topic label="Visual Overview" href="reference/api/org/eclipse/draw2d/doc-files/draw2d.gif" />
 		<topic label="LayoutManager Demo" href="reference/api/org/eclipse/draw2d/doc-files/demo2.html" />
 		<topic label="Clicking and Scrolling Demo" href="reference/api/org/eclipse/draw2d/doc-files/demo3.html" />
