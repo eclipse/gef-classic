@@ -1,37 +1,38 @@
 <!doctype HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+
 <head>
 <meta http-equiv="Content-Language" content="en-us">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 </head>
 
 
-<div>
-  <table width="80%">
-    <tr>
-      <td bgcolor="#000080" colspan="2"><b><font color="#FFFFFF">Example
-        3 - Clicking and Scrolling</font></b></td>
-    </tr>
-    <tr>
-      <td>
-        <p align="center">
-        &nbsp;<p>In this example, a Button is used to create CheckBoxes inside a 
-        ScrollPane.<p>The button and scrollpane are placed absolutely inside 
-        the contents figure by simply setting their bounds; no layout manager is 
-        used there.&nbsp; However, the <U onmouseout='view.style.border ="";view.style.background="#FFFFFF"' onmouseover='view.style.border ="1px solid #000080";view.style.background="#BBBBFF"'>view</U> must have a 
-        Layout, or its preferred size will not get calculated, and scrolling 
-        will not work correctly.<p>The button's action listener will get called 
-        each time the user clicks on the button.&nbsp; The <U onmouseout='listener.style.border ="";listener.style.background="#FFFFFF"' onmouseover='listener.style.border ="1px solid #000080";listener.style.background="#BBBBFF"'>listener</U> will click 
-        </td>
-
-      <td>
-        <img border="0"
-        src="demo3.gif" width="263" height="330"></td>
-
-    </tr>
-</table><table width="80%">
-    <tr>
-      <td valign="top">
-        <pre><font size="2">01
+	<table>
+		<tr>
+			<td bgcolor="#000080" colspan="2"><b><font color="#FFFFFF">Example 3 
+			- Clicking and Scrolling</font></b></td>
+		</tr>
+		<tr>
+			<td valign="top">
+			<p>&nbsp;</p>
+			<p>In this example, a Button is used to create CheckBoxes inside a ScrollPane.</p>
+			<p>The button and scrollpane are placed absolutely inside the contents 
+			figure by simply setting their bounds; no layout manager is used there.&nbsp; 
+			However, the
+			<u onmouseout="view.style.border =&quot;&quot;;view.style.background=&quot;#FFFFFF&quot;" onmouseover="view.style.border =&quot;1px solid #000080&quot;;view.style.background=&quot;#BBBBFF&quot;">
+			view</u> must have a Layout, or its preferred size will not get calculated, 
+			and scrolling will not work correctly.</p>
+			<p>The button&#39;s action listener will get called each time the user clicks 
+			on the button.&nbsp; The
+			<u onmouseout="listener.style.border =&quot;&quot;;listener.style.background=&quot;#FFFFFF&quot;" onmouseover="listener.style.border =&quot;1px solid #000080&quot;;listener.style.background=&quot;#BBBBFF&quot;">
+			listener</u> will create a new CheckBox and add it to the view.  A vertical scrollbar will appear when the checkboxes cannot all be displayed at once in the pane.</p>
+			</td>
+			<td><img border="0" src="demo3.gif" width="263" height="330"></td>
+		</tr>
+	</table>
+	<table>
+		<tr>
+			<td valign="top">
+			<pre>01
 02
 03
 04
@@ -76,49 +77,50 @@
 43
 44
 45
-</font></pre>
-      </td>
-      <td valign="top">
-        <pre><font size="2" COLOR="#000084">import</font><font size="2"> org.eclipse.swt.widgets.Shell;
-</font><font size="2" COLOR="#000084">import</font><font size="2"> org.eclipse.swt.widgets.Display;
-</font><font size="2" COLOR="#000084">import</font><font size="2"> org.eclipse.draw2d.*;
-</font><font size="2" COLOR="#000084">import</font><font size="2"> org.eclipse.swt.SWT;
-</font><font size="2" COLOR="#000084">import</font><font size="2"> org.eclipse.draw2d.geometry.*;
-</font><font size="2" COLOR="#000084">public</font><font size="2"> </font><font size="2" COLOR="#000084">class</font><font size="2"> Demo3 {
-</font><font size="2" COLOR="#000084">
-static</font><font size="2"> </font><font size="2" COLOR="#000084">int</font><font size="2"> count = 1;
+46
+47
+</pre></td>
+<td valign="top">
+<pre><font color="#000084">import</font> org.eclipse.swt.widgets.Shell;
+<font color="#000084">import</font> org.eclipse.swt.widgets.Display;
+<font color="#000084">import</font> org.eclipse.draw2d.*;
+<font color="#000084">import</font> org.eclipse.swt.SWT;
+<font color="#000084">import</font> org.eclipse.draw2d.geometry.*;
 
-</font><font size="2" COLOR="#000084">public</font><font size="2"> </font><font size="2" COLOR="#000084">static</font><font size="2"> </font><font size="2" COLOR="#000084">void</font><font size="2"> main(String args[]){
-	Shell shell = </font><font size="2" COLOR="#000084">new</font><font size="2"> Shell();
+<font color="#000084">public</font> <font color="#000084">class</font> Demo3 {
+
+<font color="#000084">static int</font> count = 1;
+
+<font color="#000084">public static void</font> main(String args[]){
+	Shell shell = <font color="#000084">new</font> Shell();
 	shell.setSize(350,350);
 	shell.open();
-	shell.setText(</font><font size="2" COLOR="#008484">&quot;Demo 3&quot;</font><font size="2">);
-	LightweightSystem lws = </font><font size="2" COLOR="#000084">new</font><font size="2"> LightweightSystem(shell);
-	IFigure panel = </font><font size="2" COLOR="#000084">new</font><font size="2"> Figure();
+	shell.setText(<font color="#008484">&quot;Demo 3&quot;</font>);
+	LightweightSystem lws = <font color="#000084">new</font> LightweightSystem(shell);
+	IFigure panel = <font color="#000084">new</font> Figure();
 	lws.setContents(panel);
-	ScrollPane scrollpane = </font><font size="2" COLOR="#000084">new</font><font size="2"> ScrollPane();
-	scrollpane.setBounds(</font><font size="2" COLOR="#000084">new</font><font size="2"> Rectangle(30,30,210,200));
-	scrollpane.getViewport().setBorder(</font><font size="2" COLOR="#000084">new</font><font size="2"> GroupBoxBorder(</font><font size="2" COLOR="#008484">&quot;Viewport&quot;</font><font size="2">));
-	scrollpane.setBorder(</font><font size="2" COLOR="#000084">new</font><font size="2"> GroupBoxBorder(</font><font size="2" COLOR="#008484">&quot;ScrollPane&quot;</font><font size="2">));
-	</font><font size="2" COLOR="#000084">final</font><font size="2"> Figure view = </font><font size="2" COLOR="#000084">new</font><font size="2"> Figure();
-<DIV ID="view">	view.setBorder(</font><font size="2" COLOR="#000084">new</font><font size="2"> GroupBoxBorder(</font><font size="2" COLOR="#008484">&quot;The View&quot;</font><font size="2">));
-	view.setLayoutManager(</font><font size="2" COLOR="#000084">new</font><font size="2"> FlowLayout(FlowLayout.VERTICAL));
-	scrollpane.setView(view);</DIV>
-	Clickable button = </font><font size="2" COLOR="#000084">new</font><font size="2"> Button(</font><font size="2" COLOR="#008484">&quot;Create checkbox&quot;</font><font size="2">);
-	button.setBounds(</font><font size="2" COLOR="#000084">new</font><font size="2"> Rectangle(30,250,140,35));
-<DIV ID="listener">	button.addActionListener(</font><font size="2" COLOR="#000084">new</font><font size="2"> ActionListener(){
-		</font><font size="2" COLOR="#000084">public</font><font size="2"> </font><font size="2" COLOR="#000084">void</font><font size="2"> actionPerformed(ActionEvent e){
-			view.add(</font><font size="2" COLOR="#000084">new</font><font size="2"> CheckBox(</font><font size="2" COLOR="#008484">&quot;Checkbox &quot;</font><font size="2">+count++));
+	ScrollPane scrollpane = <font color="#000084">new</font> ScrollPane();
+	scrollpane.setBounds(<font color="#000084">new</font> Rectangle(30,30,210,200));
+	scrollpane.getViewport().setBorder(<font color="#000084">new</font> GroupBoxBorder(<font color="#008484">&quot;Viewport&quot;</font>));
+	scrollpane.setBorder(<font color="#000084">new</font> GroupBoxBorder(<font color="#008484">&quot;ScrollPane&quot;</font>));
+	<div id="view">	<font color="#000084">final</font> Figure view = <font color="#000084">new</font> Figure();
+	view.setBorder(<font color="#000084">new</font> GroupBoxBorder(<font color="#008484">&quot;The View&quot;</font>));
+	view.setLayoutManager(<font color="#000084">new</font> FlowLayout(FlowLayout.VERTICAL));
+	scrollpane.setView(view);</div>
+	Clickable button = <font color="#000084">new</font> Button(<font color="#008484">&quot;Create checkbox&quot;</font>);
+	button.setBounds(<font color="#000084">new</font> Rectangle(30,250,140,35));
+	<div id="listener">	button.addActionListener(<font color="#000084">new</font> ActionListener(){
+		<font color="#000084">public void</font> actionPerformed(ActionEvent e){
+			view.add(<font color="#000084">new</font> CheckBox(<font color="#008484">&quot;Checkbox &quot;</font>+count++));
 		}
-	});</DIV>
+	});</div>
 	panel.add(button);
 	panel.add(scrollpane);
-
+	
 	Display display = Display.getDefault();
-	</font><font size="2" COLOR="#000084">while</font><font size="2"> (!shell.isDisposed ()) {
-		</font><font size="2" COLOR="#000084">if</font><font size="2"> (!display.readAndDispatch ())
+	<font color="#000084">while</font> (!shell.isDisposed()) {
+		<font color="#000084">if</font> (!display.readAndDispatch())
 			display.sleep ();
+		}
 	}
-}
-
-}</font></pre></td></tr></table></div>
+}</pre></td></tr></table>
