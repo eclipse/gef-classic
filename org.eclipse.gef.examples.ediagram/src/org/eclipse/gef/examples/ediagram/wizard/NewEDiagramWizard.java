@@ -144,7 +144,7 @@ public class NewEDiagramWizard extends Wizard implements INewWizard {
 			try {
 				ecoreResource = rsrcSet.getResource(platformURI, true);
 			} catch (Exception e) {
-				// Perhaps the file in outside the workspace
+				// Perhaps the file is outside the workspace
 				URI fileURI = URI.createFileURI(filePath);
 				try {
 					ecoreResource = rsrcSet.getResource(fileURI, true);
