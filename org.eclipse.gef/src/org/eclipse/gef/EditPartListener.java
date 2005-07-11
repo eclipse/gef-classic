@@ -54,13 +54,13 @@ public class Stub implements EditPartListener {
 void childAdded(EditPart child, int index);
 
 /**
- * This method is currently never called.
+ * Called when the editpart has been activated.
  * @param editpart the EditPart
  */
 void partActivated(EditPart editpart);
 
 /**
- * This method is currently never called.
+ * Called when the editpart has been deactivated.
  * @param editpart the EditPart
  */
 void partDeactivated(EditPart editpart);
@@ -73,7 +73,7 @@ void partDeactivated(EditPart editpart);
 void removingChild(EditPart child, int index);
 
 /**
- * Called when the selected state of an EditPart has changed.  Focus changes also result
+ * Called when the selected state of an EditPart has changed. Focus changes also result
  * in this method being called.
  * @param editpart the part whose selection was changed
  * @see EditPart#getSelected()
