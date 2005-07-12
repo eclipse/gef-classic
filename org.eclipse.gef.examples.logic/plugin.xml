@@ -22,7 +22,6 @@
             id="org.eclipse.gef.examples">
       </category>
       <wizard
-            availableAsShortcut="true"
             name="%Logic_example_wizard_name"
             icon="logic.gif"
             category="org.eclipse.ui.Examples/org.eclipse.gef.examples"
