@@ -22,25 +22,13 @@
             categoryId="org.eclipse.gef.category.view"
             id="org.eclipse.gef.zoom_in">
       </command>
-      <keyBinding
-            keySequence="M1+="
-            contextId="org.eclipse.ui.globalScope"
-            commandId="org.eclipse.gef.zoom_in"
-            keyConfigurationId="org.eclipse.ui.defaultAcceleratorConfiguration">
-      </keyBinding>
       
       <command
             name="%ZoomOut.Tooltip"
             description="%ZoomOut.Tooltip"
-            category="org.eclipse.gef.category.view"
+            categoryId="org.eclipse.gef.category.view"
             id="org.eclipse.gef.zoom_out">
       </command>
-      <keyBinding
-            keySequence="M1+-"
-            contextId="org.eclipse.ui.globalScope"
-            commandId="org.eclipse.gef.zoom_out"
-            keyConfigurationId="org.eclipse.ui.defaultAcceleratorConfiguration">
-      </keyBinding>
    </extension>
    <extension
          point="org.eclipse.ui.views">
@@ -65,5 +53,20 @@
          </view>
       </perspectiveExtension>
    </extension>
+
+	<extension point="org.eclipse.ui.bindings">
+		<key
+			sequence="M1+="
+			contextId="org.eclipse.ui.globalScope"
+			commandId="org.eclipse.gef.zoom_in"
+			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
+		</key>
+		<key
+			sequence="M1+-"
+			contextId="org.eclipse.ui.globalScope"
+			commandId="org.eclipse.gef.zoom_out"
+			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
+		</key>
+	</extension>
 
 </plugin>
