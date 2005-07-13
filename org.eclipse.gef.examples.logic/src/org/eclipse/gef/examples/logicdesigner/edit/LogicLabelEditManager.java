@@ -84,7 +84,6 @@ protected void initCellEditor() {
 	data.setHeight(fontSize.height);
 	scaledFont = new Font(null, data);
 	text.setFont(scaledFont);
-	text.selectAll();
 
 	// Hook the cell editor's copy/paste actions to the actionBars so that they can
 	// be invoked via keyboard shortcuts.

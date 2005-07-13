@@ -83,7 +83,6 @@ protected void initCellEditor() {
 	Text text = (Text)getCellEditor().getControl();
 	text.setText(getInitialText());
 	text.setFont(getDirectEditFigure().getFont());
-	text.selectAll();
 }
 
 }

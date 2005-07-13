@@ -94,7 +94,6 @@ protected void initCellEditor() {
 	scaledFont = new Font(null, data);
 	
 	text.setFont(scaledFont);
-	text.selectAll();
 }
 
 /**
