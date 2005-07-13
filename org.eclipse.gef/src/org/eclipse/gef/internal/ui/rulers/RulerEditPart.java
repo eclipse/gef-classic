@@ -183,6 +183,10 @@ public void handleGuideReparented(Object guide) {
 
 public void handleUnitsChanged(int newUnit) {
 	getRulerFigure().setUnit(newUnit);
+	if (newUnit == RulerProvider.UNIT_PIXELS)
+		getRulerFigure().setInterval(100, 2);
+	else
+		getRulerFigure().setInterval(0, 0);
 }
 
 public boolean isHorizontal() {
