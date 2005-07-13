@@ -269,6 +269,17 @@ private Control createTitle(Composite parent, boolean isHorizontal) {
 	return new TitleCanvas(parent, isHorizontal);
 }
 
+private Control getPaletteViewerControl() {
+	Control result = null;
+	if (pViewer != null)
+		result = pViewer.getControl();
+	// Fix for bug 101703 -- pViewer.getControl().getParent() might be parented 
+	// by paletteContainer
+	if (result != null && !result.isDisposed() && result.getParent() != paletteContainer)
+		result = result.getParent();
+	return result;
+}
+
 /*
  * @TODO:Pratik  handleEditorMaximized and handleEditorMinimized are never invoked
  * because currently there's no mechanism in the platform to detect these actions.
@@ -581,8 +592,9 @@ private void setState(int newState) {
 			}
 			if (provider.getEditDomain().getPaletteViewer() == pViewer)
 				provider.getEditDomain().setPaletteViewer(null);
-			if (pViewer.getControl() != null && !pViewer.getControl().isDisposed())
-				pViewer.getControl().dispose();
+			Control pViewerCtrl = getPaletteViewerControl();
+			if (pViewerCtrl != null && !pViewerCtrl.isDisposed())
+				pViewerCtrl.dispose();
 			pViewer = null;
 	}
 	/*
@@ -974,8 +986,8 @@ private class PaletteComposite extends Composite {
 		button = createFlyoutControlButton(this);
 	}
 	public void layout(boolean changed) {
-		if (pViewer == null || pViewer.getControl() == null 
-				|| pViewer.getControl().isDisposed())
+		Control pCtrl = getPaletteViewerControl();
+		if (pCtrl == null || pCtrl.isDisposed())
 			return;
 		
 		Rectangle area = getClientArea();
@@ -997,7 +1009,7 @@ private class PaletteComposite extends Composite {
 			area.y += height;
 			area.height -= height;
 		}
-		pViewer.getControl().setBounds(area);
+		pCtrl.setBounds(area);
 	}
 	protected void updateState() {
 		title.setVisible(isInState(STATE_PINNED_OPEN));
