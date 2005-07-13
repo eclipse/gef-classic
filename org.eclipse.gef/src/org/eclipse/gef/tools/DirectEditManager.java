@@ -336,7 +336,7 @@ public void show() {
 	getCellEditor().activate();
 	placeCellEditor();
 	getControl().setVisible(true);
-	getControl().setFocus();
+	getCellEditor().setFocus();
 	showFeedback();
 }
 
