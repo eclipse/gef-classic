@@ -1,19 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
-<plugin
-   id="org.eclipse.gef.doc.isv"
-   name="%Plugin.name"
-   version="3.1.0"
-   provider-name="Eclipse.org">
+<plugin>
 
-   <runtime>
-   </runtime>
-   <requires>
-      <import plugin="org.eclipse.gef"/>
-   </requires>
-
-
-   <extension
+     <extension
          point="org.eclipse.help.toc">
       <toc
             file="toc.xml"
@@ -29,27 +18,5 @@
             file="topics_Reference.xml">
       </toc>
    </extension>
-<!--   
-   <extension
-         point="org.eclipse.ui.views">
-      <category
-            name="%GEF_Developer_views_category_name"
-            id="org.eclipse.gef">
-      </category>
-      <view
-            name="%GEF_Debug_view_name"
-            icon="icons/debugGEF.gif"
-            category="org.eclipse.gef"
-            class="org.eclipse.gef.ui.console.DebugGEF"
-            id="GEF Debug console">
-      </view>
-      <view
-            name="%GEF_stackviewer_view_name"
-            icon="icons/debugGEF.gif"
-            category="org.eclipse.gef"
-            class="org.eclipse.gef.ui.stackview.CommandStackInspector"
-            id="GEF CommandStack View">
-      </view>
-   </extension>
--->
+
 </plugin>
