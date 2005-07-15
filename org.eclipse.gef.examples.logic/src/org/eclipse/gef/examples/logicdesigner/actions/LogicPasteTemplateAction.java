@@ -12,8 +12,11 @@ package org.eclipse.gef.examples.logicdesigner.actions;
 
 import org.eclipse.ui.IEditorPart;
 
+import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.Rectangle;
 
+import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.requests.CreationFactory;
 
 import org.eclipse.gef.examples.logicdesigner.model.LogicElementFactory;
@@ -32,7 +35,7 @@ public LogicPasteTemplateAction(IEditorPart editor) {
 }
 
 /**
- * @see org.eclipse.gef.ui.actions.PasteTemplateAction#getFactory(java.lang.Object)
+ * @see org.eclipse.gef.examples.logicdesigner.actions.PasteTemplateAction#getFactory(java.lang.Object)
  */
 protected CreationFactory getFactory(Object template) {
 	if (template instanceof String)
@@ -42,10 +45,14 @@ protected CreationFactory getFactory(Object template) {
 
 /**
  * 
- * @see org.eclipse.gef.examples.logicdesigner.actions.PasteTemplateAction#getPasteLocation()
+ * @see org.eclipse.gef.examples.logicdesigner.actions.PasteTemplateAction#getPasteLocation(GraphicalEditPart)
  */
-protected Point getPasteLocation() {
-	return new Point(10, 10);
+protected Point getPasteLocation(GraphicalEditPart container) {
+	Point result = new Point(10, 10);
+	IFigure fig = container.getContentPane();
+	result.translate(fig.getClientArea(Rectangle.SINGLETON).getLocation());
+	fig.translateToAbsolute(result);
+	return result;
 }
 
 }

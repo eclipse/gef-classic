@@ -17,7 +17,7 @@ import org.eclipse.ui.actions.ActionFactory;
 
 import org.eclipse.draw2d.geometry.Point;
 
-import org.eclipse.gef.EditPart;
+import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.requests.CreateRequest;
 import org.eclipse.gef.requests.CreationFactory;
@@ -60,22 +60,25 @@ protected boolean calculateEnabled() {
  * @return the paste command
  */
 protected Command createPasteCommand() {
+	Command result = null;
 	List selection = getSelectedObjects();
-	if (selection == null || selection.size() != 1)
-		return null;
-	Object template = getClipboardContents();
-	if (template  == null)
-		return null;
-	CreateRequest request = new CreateRequest();
-	CreationFactory factory = getFactory(template);
-	if (factory == null)
-		return null;
-	request.setFactory(factory);
-	request.setLocation(getPasteLocation());
-	Object obj = selection.get(0);
-	if (obj instanceof EditPart)
-		return ((EditPart)obj).getCommand(request);
-	return null;
+	if (selection != null && selection.size() == 1) {
+		Object obj = selection.get(0);
+		if (obj instanceof GraphicalEditPart) {
+			GraphicalEditPart gep = (GraphicalEditPart)obj;
+			Object template = getClipboardContents();
+			if (template != null) {
+				CreationFactory factory = getFactory(template);
+				if (factory != null) {
+					CreateRequest request = new CreateRequest();
+					request.setFactory(factory);
+					request.setLocation(getPasteLocation(gep));
+					result = gep.getCommand(request);
+				}
+			}
+		}
+	}
+	return result;
 }
 
 /**
@@ -98,9 +101,10 @@ protected Object getClipboardContents() {
 protected abstract CreationFactory getFactory(Object template);
 
 /**
+ * @param container the parent of the new part that is being pasted
  * @return the location at which  
  */
-protected abstract Point getPasteLocation();
+protected abstract Point getPasteLocation(GraphicalEditPart container);
 
 /**
  * @see org.eclipse.gef.ui.actions.EditorPartAction#init()
