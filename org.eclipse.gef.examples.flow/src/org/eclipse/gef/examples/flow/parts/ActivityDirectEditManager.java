@@ -73,7 +73,6 @@ protected void initCellEditor() {
 			String leftText = oldText.substring(0, event.start);
 			String rightText = oldText.substring(event.end, oldText.length());
 			GC gc = new GC(text);
-			String s = leftText + event.text + rightText;
 			Point size = gc.textExtent(leftText + event.text + rightText);
 			gc.dispose();
 			if (size.x != 0)
@@ -85,7 +84,7 @@ protected void initCellEditor() {
 	
 	String initialLabelText = activityLabel.getText();
 	getCellEditor().setValue(initialLabelText);
-	IFigure figure = ((GraphicalEditPart)getEditPart()).getFigure();
+	IFigure figure = getEditPart().getFigure();
 	scaledFont = figure.getFont();
 	FontData data = scaledFont.getFontData()[0];
 	Dimension fontSize = new Dimension(0, data.getHeight());
