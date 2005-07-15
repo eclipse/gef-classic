@@ -552,7 +552,7 @@ protected void paintSelection(Graphics graphics) {
 			graphics.fillRectangle(frag.getX(), y, frag.getWidth(), height);
 		} else if (selectionEnd > frag.offset && selectionStart < frag.offset + frag.length) {
 			Point p1 = getPointInBox(frag, Math.max(frag.offset, selectionStart), i, false);
-			Point p2 = getPointInBox(frag, Math.min(frag.offset+frag.length, selectionEnd) - 1, i, true);
+			Point p2 = getPointInBox(frag, Math.min(frag.offset + frag.length, selectionEnd) - 1, i, true);
 			Rectangle rect = new Rectangle(p1, p2);
 			rect.width--;
 			rect.y = frag.getLineRoot().getVisibleTop();
