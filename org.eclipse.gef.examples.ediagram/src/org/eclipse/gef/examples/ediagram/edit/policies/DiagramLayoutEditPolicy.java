@@ -75,7 +75,7 @@ protected Command createChangeConstraintCommand(ChangeBoundsRequest request,
 		if (newWidth < 10)
 			return UnexecutableCommand.INSTANCE;
 	} else
-		newWidth = ((GraphicalEditPart)child).getFigure().getBounds().width;
+		newWidth = node.getWidth();
 	return new ChangeBoundsCommand(node, newLocation, newWidth);
 }
 
