@@ -31,9 +31,8 @@ public class LabelDirectEditManager
 	extends DirectEditManager 
 {
 
-public LabelDirectEditManager(GraphicalEditPart source, Class editorType,
-		CellEditorLocator locator) {
-	super(source, editorType, locator);
+public LabelDirectEditManager(GraphicalEditPart source, CellEditorLocator locator) {
+	super(source, TextCellEditor.class, locator);
 }
 
 /**

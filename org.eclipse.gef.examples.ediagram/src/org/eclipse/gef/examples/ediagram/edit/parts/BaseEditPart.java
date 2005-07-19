@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.ediagram.edit.parts;
 
-import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.ui.views.properties.IPropertySource;
 
 import org.eclipse.emf.common.notify.Adapter;
@@ -114,7 +113,7 @@ protected abstract void handlePropertyChanged(Notification msg);
 
 protected void performDirectEdit() {
 	if(manager == null)
-		manager = new LabelDirectEditManager(this, TextCellEditor.class, 
+		manager = new LabelDirectEditManager(this,
 				new LabelCellEditorLocator(getDirectEditFigure()));
 	manager.show();
 }
