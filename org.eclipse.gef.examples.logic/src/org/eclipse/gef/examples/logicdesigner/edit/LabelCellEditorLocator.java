@@ -32,7 +32,7 @@ public LabelCellEditorLocator(StickyNoteFigure stickyNote) {
 
 public void relocate(CellEditor celleditor) {
 	Text text = (Text)celleditor.getControl();
-	Rectangle rect = stickyNote.getClientArea().getCopy();
+	Rectangle rect = stickyNote.getClientArea();
 	stickyNote.translateToAbsolute(rect);
 	org.eclipse.swt.graphics.Rectangle trim = text.computeTrim(0, 0, 0, 0);
 	rect.translate(trim.x, trim.y);
