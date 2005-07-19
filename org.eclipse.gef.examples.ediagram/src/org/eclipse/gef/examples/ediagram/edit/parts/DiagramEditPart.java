@@ -12,6 +12,8 @@ package org.eclipse.gef.examples.ediagram.edit.parts;
 
 import java.util.List;
 
+import org.eclipse.swt.SWT;
+
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
@@ -72,6 +74,7 @@ protected IFigure createFigure() {
 	router.setSeparation(20);
 	router.setNextRouter(new ShortestPathConnectionRouter(f));
 	connLayer.setConnectionRouter(router);
+	connLayer.setAntialias(SWT.ON);
 	
 	return f;
 }
