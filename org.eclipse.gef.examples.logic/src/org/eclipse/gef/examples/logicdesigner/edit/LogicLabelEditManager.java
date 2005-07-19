@@ -94,6 +94,8 @@ protected void initCellEditor() {
 	ZoomManager zoomMgr = (ZoomManager)getEditPart().getViewer()
 			.getProperty(ZoomManager.class.toString());
 	if (zoomMgr != null) {
+		// this will force the font to be set
+		cachedZoom = -1.0;
 		updateScaledFont(zoomMgr.getZoom());
 		zoomMgr.addZoomListener(zoomListener);
 	} else
