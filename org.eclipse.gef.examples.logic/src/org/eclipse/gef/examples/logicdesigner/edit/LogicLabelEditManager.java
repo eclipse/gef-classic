@@ -24,10 +24,9 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.part.CellEditorActionHandler;
 
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.geometry.Dimension;
-
 import org.eclipse.gef.GraphicalEditPart;
+import org.eclipse.gef.editparts.ZoomListener;
+import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.tools.CellEditorLocator;
 import org.eclipse.gef.tools.DirectEditManager;
 
@@ -40,7 +39,13 @@ public class LogicLabelEditManager
 private IActionBars actionBars;
 private CellEditorActionHandler actionHandler;
 private IAction copy, cut, paste, undo, redo, find, selectAll, delete;
+private double cachedZoom = -1.0;
 private Font scaledFont;
+private ZoomListener zoomListener = new ZoomListener() {
+	public void zoomChanged(double newZoom) {
+		updateScaledFont(newZoom);
+	}
+};
 
 public LogicLabelEditManager(GraphicalEditPart source, CellEditorLocator locator) {
 	super(source, null, locator);
@@ -50,6 +55,11 @@ public LogicLabelEditManager(GraphicalEditPart source, CellEditorLocator locator
  * @see org.eclipse.gef.tools.DirectEditManager#bringDown()
  */
 protected void bringDown() {
+	ZoomManager zoomMgr = (ZoomManager)getEditPart().getViewer()
+			.getProperty(ZoomManager.class.toString());
+	if (zoomMgr != null)
+		zoomMgr.removeZoomListener(zoomListener);
+
 	if (actionHandler != null) {
 		actionHandler.dispose();
 		actionHandler = null;
@@ -59,31 +69,35 @@ protected void bringDown() {
 		actionBars.updateActionBars();
 		actionBars = null;
 	}
-
-	Font disposeFont = scaledFont;
-	scaledFont = null;
+	
 	super.bringDown();
-	if (disposeFont != null)
-		disposeFont.dispose();
+	// dispose any scaled fonts that might have been created
+	disposeScaledFont();
 }
 
 protected CellEditor createCellEditorOn(Composite composite) {
 	return new TextCellEditor(composite, SWT.MULTI | SWT.WRAP);
 }
 
+private void disposeScaledFont() {
+	if (scaledFont != null) {
+		scaledFont.dispose();
+		scaledFont = null;
+	}
+}
+
 protected void initCellEditor() {
-	Text text = (Text)getCellEditor().getControl();
+	// update text
 	StickyNoteFigure stickyNote = (StickyNoteFigure)getEditPart().getFigure();
-	String initialLabelText = stickyNote.getText();
-	getCellEditor().setValue(initialLabelText);
-	IFigure figure = getEditPart().getFigure();
-	scaledFont = figure.getFont();
-	FontData data = scaledFont.getFontData()[0];
-	Dimension fontSize = new Dimension(0, data.getHeight());
-	stickyNote.translateToAbsolute(fontSize);
-	data.setHeight(fontSize.height);
-	scaledFont = new Font(null, data);
-	text.setFont(scaledFont);
+	getCellEditor().setValue(stickyNote.getText());
+	// update font
+	ZoomManager zoomMgr = (ZoomManager)getEditPart().getViewer()
+			.getProperty(ZoomManager.class.toString());
+	if (zoomMgr != null) {
+		updateScaledFont(zoomMgr.getZoom());
+		zoomMgr.addZoomListener(zoomListener);
+	} else
+		getCellEditor().getControl().setFont(stickyNote.getFont());
 
 	// Hook the cell editor's copy/paste actions to the actionBars so that they can
 	// be invoked via keyboard shortcuts.
@@ -115,6 +129,24 @@ private void saveCurrentActions(IActionBars actionBars) {
 	find = actionBars.getGlobalActionHandler(ActionFactory.FIND.getId());
 	undo = actionBars.getGlobalActionHandler(ActionFactory.UNDO.getId());
 	redo = actionBars.getGlobalActionHandler(ActionFactory.REDO.getId());
+}
+
+private void updateScaledFont(double zoom) {
+	if (cachedZoom == zoom)
+		return;
+	
+	Text text = (Text)getCellEditor().getControl();
+	Font font = getEditPart().getFigure().getFont();
+	
+	disposeScaledFont();
+	cachedZoom = zoom;
+	if (zoom == 1.0)
+		text.setFont(font);
+	else {
+		FontData fd = font.getFontData()[0];
+		fd.setHeight((int)(fd.getHeight() * zoom));
+		text.setFont(scaledFont = new Font(null, fd));
+	}
 }
 
 }
