@@ -13,6 +13,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.TransferData;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
@@ -23,6 +25,8 @@ import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.draw2d.IFigure;
 
 import org.eclipse.gef.GraphicalEditPart;
+import org.eclipse.gef.editparts.ZoomListener;
+import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.tools.CellEditorLocator;
 import org.eclipse.gef.tools.DirectEditManager;
 
@@ -31,8 +35,24 @@ public class LabelDirectEditManager
 	extends DirectEditManager 
 {
 
+private double cachedZoom = -1.0;
+private Font scaledFont;
+private ZoomListener zoomListener = new ZoomListener() {
+	public void zoomChanged(double newZoom) {
+		updateScaledFont(newZoom);
+	}
+};
+
 public LabelDirectEditManager(GraphicalEditPart source, CellEditorLocator locator) {
 	super(source, TextCellEditor.class, locator);
+}
+
+protected void bringDown() {
+	ZoomManager zoomMgr = (ZoomManager)getEditPart().getViewer()
+			.getProperty(ZoomManager.class.toString());
+	zoomMgr.removeZoomListener(zoomListener);
+	super.bringDown();
+	disposeScaledFont();
 }
 
 /**
@@ -61,6 +81,13 @@ protected CellEditor createCellEditorOn(Composite composite) {
 	};
 }
 
+private void disposeScaledFont() {
+	if (scaledFont != null) {
+		scaledFont.dispose();
+		scaledFont = null;
+	}
+}
+
 /**
  * Used to determine the initial text of the cell editor and to determine the font size
  * of the text.
@@ -81,7 +108,29 @@ protected String getInitialText() {
 protected void initCellEditor() {
 	Text text = (Text)getCellEditor().getControl();
 	text.setText(getInitialText());
-	text.setFont(getDirectEditFigure().getFont());
+	ZoomManager zoomMgr = (ZoomManager)getEditPart().getViewer()
+			.getProperty(ZoomManager.class.toString());
+	cachedZoom = -1.0;
+	updateScaledFont(zoomMgr.getZoom());
+	zoomMgr.addZoomListener(zoomListener);
+}
+
+private void updateScaledFont(double zoom) {
+	if (cachedZoom == zoom)
+		return;
+	
+	Text text = (Text)getCellEditor().getControl();
+	Font font = getEditPart().getFigure().getFont();
+	
+	disposeScaledFont();
+	cachedZoom = zoom;
+	if (zoom == 1.0)
+		text.setFont(font);
+	else {
+		FontData fd = font.getFontData()[0];
+		fd.setHeight((int)(fd.getHeight() * zoom));
+		text.setFont(scaledFont = new Font(null, fd));
+	}
 }
 
 }
