@@ -14,7 +14,7 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.ui.IWorkbenchActionConstants;
+import org.eclipse.ui.actions.ActionFactory;
 
 import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.ui.actions.ActionRegistry;
@@ -41,17 +41,17 @@ public void buildContextMenu(IMenuManager manager) {
 
 	IAction action;
 
-	action = getActionRegistry().getAction(GEFActionConstants.UNDO);
+	action = getActionRegistry().getAction(ActionFactory.UNDO.getId());
 	manager.appendToGroup(GEFActionConstants.GROUP_UNDO, action);
 
-	action = getActionRegistry().getAction(GEFActionConstants.REDO);
+	action = getActionRegistry().getAction(ActionFactory.REDO.getId());
 	manager.appendToGroup(GEFActionConstants.GROUP_UNDO, action);
 
-	action = getActionRegistry().getAction(IWorkbenchActionConstants.PASTE);
+	action = getActionRegistry().getAction(ActionFactory.PASTE.getId());
 	if (action.isEnabled())
 		manager.appendToGroup(GEFActionConstants.GROUP_EDIT, action);
 
-	action = getActionRegistry().getAction(IWorkbenchActionConstants.DELETE);
+	action = getActionRegistry().getAction(ActionFactory.DELETE.getId());
 	if (action.isEnabled())
 		manager.appendToGroup(GEFActionConstants.GROUP_EDIT, action);
 
@@ -99,7 +99,7 @@ public void buildContextMenu(IMenuManager manager) {
 	if (!submenu.isEmpty())
 		manager.appendToGroup(GEFActionConstants.GROUP_REST, submenu);
 
-	action = getActionRegistry().getAction(IWorkbenchActionConstants.SAVE);
+	action = getActionRegistry().getAction(ActionFactory.SAVE.getId());
 	manager.appendToGroup(GEFActionConstants.GROUP_SAVE, action);
 
 }
