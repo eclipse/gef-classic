@@ -5,12 +5,12 @@
     nsURI="http:///gef.eDiagram" nsPrefix="gef.eDiagram.model">
   <eClassifiers xsi:type="ecore:EClass" name="Diagram">
     <eStructuralFeatures xsi:type="ecore:EReference" name="imports" upperBound="-1"
-        eType="ecore:EClass ../../../../../../../../org.eclipse.emf.ecore/src-ecore/model/Ecore.ecore#//EPackage"/>
+        eType="ecore:EClass platform:/resource/org.eclipse.emf.ecore/model/Ecore.ecore#//EPackage"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="contents" upperBound="-1"
         eType="#//Node" containment="true" eOpposite="#//Node/diagram"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ReferenceView" eSuperTypes="#//Link">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="eReference" eType="ecore:EClass ../../../../../../../../org.eclipse.emf.ecore/src-ecore/model/Ecore.ecore#//EReference"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="eReference" eType="ecore:EClass platform:/resource/org.eclipse.emf.ecore/model/Ecore.ecore#//EReference"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="oppositeShown" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Link">
@@ -22,7 +22,7 @@
         eType="#//AbsoluteBendpoint"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NamedElementView" eSuperTypes="#//Node">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="eNamedElement" eType="ecore:EClass ../../../../../../../../org.eclipse.emf.ecore/src-ecore/model/Ecore.ecore#//ENamedElement"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="eNamedElement" eType="ecore:EClass platform:/resource/org.eclipse.emf.ecore/model/Ecore.ecore#//ENamedElement"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Node" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="location" eType="#//Point"/>
