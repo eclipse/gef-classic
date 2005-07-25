@@ -48,6 +48,10 @@ public PackageFigure() {
 	label.setBorder(new MarginBorder(0, 1, 0, 0));
 }
 
+public boolean containsPoint(int x, int y) {
+	return getHandleBounds().contains(x, y) || label.containsPoint(x, y);
+}
+
 public Rectangle getHandleBounds() {
 	return fPackage.getBounds();
 }
