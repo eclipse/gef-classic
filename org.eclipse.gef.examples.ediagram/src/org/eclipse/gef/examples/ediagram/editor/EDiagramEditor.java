@@ -22,7 +22,9 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.util.TransferDropTargetListener;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IWorkbenchPart;
@@ -52,6 +54,8 @@ import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.requests.GroupRequest;
 import org.eclipse.gef.ui.actions.DirectEditAction;
 import org.eclipse.gef.ui.actions.GEFActionConstants;
+import org.eclipse.gef.ui.actions.ZoomInAction;
+import org.eclipse.gef.ui.actions.ZoomOutAction;
 import org.eclipse.gef.ui.palette.PaletteCustomizer;
 import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.eclipse.gef.ui.palette.PaletteViewerProvider;
@@ -90,7 +94,8 @@ protected void configureGraphicalViewer() {
 	super.configureGraphicalViewer();
 	GraphicalViewer viewer = getGraphicalViewer();
 
-	viewer.setRootEditPart(new ScalableFreeformRootEditPart());
+	ScalableFreeformRootEditPart root = new ScalableFreeformRootEditPart();
+	viewer.setRootEditPart(root);
 	viewer.setEditPartFactory(EDiagramPartFactory.getInstance());
 	
 	KeyHandler keyHandler = new GraphicalViewerKeyHandler(viewer) {
@@ -118,9 +123,17 @@ protected void configureGraphicalViewer() {
 	keyHandler.put(KeyStroke.getPressed(SWT.F2, 0),
 			getActionRegistry().getAction(GEFActionConstants.DIRECT_EDIT));
 	viewer.setKeyHandler(keyHandler);
+	
 	// Scroll-wheel Zoom
 	viewer.setProperty(MouseWheelHandler.KeyGenerator.getKey(SWT.MOD1), 
 			MouseWheelZoomHandler.SINGLETON);
+	// Keyboard zoom
+	IAction zoomIn = new ZoomInAction(root.getZoomManager());
+	IAction zoomOut = new ZoomOutAction(root.getZoomManager());
+	getActionRegistry().registerAction(zoomIn);
+	getActionRegistry().registerAction(zoomOut);
+	getSite().getKeyBindingService().registerAction(zoomIn);
+	getSite().getKeyBindingService().registerAction(zoomOut);
 }
 
 protected void createActions() {
@@ -210,8 +223,10 @@ protected void initializeGraphicalViewer() {
 	super.initializeGraphicalViewer();
 	GraphicalViewer viewer = getGraphicalViewer();
 	viewer.setContents(diagram);
-	viewer.addDropTargetListener(new DiagramDropTargetListener(viewer));
-	viewer.addDropTargetListener(new EDiagramPaletteDropListener(viewer));
+	viewer.addDropTargetListener(
+			(TransferDropTargetListener)new DiagramDropTargetListener(viewer));
+	viewer.addDropTargetListener(
+			(TransferDropTargetListener)new EDiagramPaletteDropListener(viewer));
 }
 
 public boolean isSaveAsAllowed() {

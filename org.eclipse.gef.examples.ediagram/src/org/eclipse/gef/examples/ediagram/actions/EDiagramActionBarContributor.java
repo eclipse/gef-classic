@@ -17,6 +17,8 @@ import org.eclipse.gef.ui.actions.ActionBarContributor;
 import org.eclipse.gef.ui.actions.DeleteRetargetAction;
 import org.eclipse.gef.ui.actions.RedoRetargetAction;
 import org.eclipse.gef.ui.actions.UndoRetargetAction;
+import org.eclipse.gef.ui.actions.ZoomInRetargetAction;
+import org.eclipse.gef.ui.actions.ZoomOutRetargetAction;
 
 /**
  * @author Pratik Shah
@@ -30,6 +32,8 @@ protected void buildActions() {
 	addRetargetAction(new UndoRetargetAction());
 	addRetargetAction(new RedoRetargetAction());
 	addRetargetAction(new DeleteRetargetAction());
+	addRetargetAction(new ZoomInRetargetAction());
+	addRetargetAction(new ZoomOutRetargetAction());
 }
 
 public void contributeToToolBar(IToolBarManager toolBarManager) {
