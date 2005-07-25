@@ -1,30 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
-<plugin
-   id="org.eclipse.gef.examples.ediagram"
-   name="GEF Example EDiagram Plug-in"
-   version="3.1.0"
-   provider-name="Eclipse.org"
-   class="org.eclipse.gef.examples.ediagram.EDiagramPlugin$Implementation">
+<plugin>
 
-   <runtime>
-      <library name="ediagram.jar">
-         <export name="*"/>
-      </library>
-   </runtime>
-
-   <requires>
-      <import plugin="org.eclipse.ui"/>
-      <import plugin="org.eclipse.core.runtime"/>
-      <import plugin="org.eclipse.core.resources"/>
-      <import plugin="org.eclipse.ui.ide"/>
-      <import plugin="org.eclipse.gef"/>
-      <import plugin="org.eclipse.emf.ecore"/>
-      <import plugin="org.eclipse.ui.views"/>
-      <import plugin="org.eclipse.emf.ecore.xmi"/>
-   </requires>
-
-   <extension
+     <extension
          point="org.eclipse.ui.editors">
       <editor
             class="org.eclipse.gef.examples.ediagram.editor.EDiagramEditor"
