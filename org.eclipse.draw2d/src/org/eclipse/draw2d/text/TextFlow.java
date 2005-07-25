@@ -263,7 +263,7 @@ public CaretInfo getCaretPlacement(int offset, boolean trailing) {
 Point getPointInBox(TextFragmentBox box, int offset, int index, boolean trailing) {
 	offset -= box.offset;
 	offset = Math.min(box.length, offset);
-	Point result = new Point(0, box.getLineRoot().getVisibleTop());
+	Point result = new Point(0, box.getTextTop());
 	if (bidiInfo == null) {
 		if (trailing && offset < box.length)
 			offset++;
