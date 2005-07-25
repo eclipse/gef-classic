@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="ASCII"?>
+<gef.eDiagram.model:Diagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:gef.eDiagram.model="http:///gef.eDiagram">
+  <imports href="ediagram.ecore#/"/>
+  <imports href="platform:/resource/org.eclipse.emf.ecore/model/Ecore.ecore#/"/>
+  <contents xsi:type="gef.eDiagram.model:NamedElementView" location="5,585" incomingConnections="//@contents.3/@outgoingConnections.0" width="192">
+    <eNamedElement xsi:type="ecore:EClass" href="platform:/resource/org.eclipse.emf.ecore/model/Ecore.ecore#//EPackage"/>
+  </contents>
+  <contents xsi:type="gef.eDiagram.model:NamedElementView" location="677,581" incomingConnections="//@contents.7/@outgoingConnections.1" width="150">
+    <eNamedElement xsi:type="ecore:EClass" href="platform:/resource/org.eclipse.emf.ecore/model/Ecore.ecore#//EReference"/>
+  </contents>
+  <contents xsi:type="gef.eDiagram.model:NamedElementView" location="290,599" incomingConnections="//@contents.6/@outgoingConnections.1" width="100">
+    <eNamedElement xsi:type="ecore:EClass" href="platform:/resource/org.eclipse.emf.ecore/model/Ecore.ecore#//ENamedElement"/>
+  </contents>
+  <contents xsi:type="gef.eDiagram.model:NamedElementView" location="70,226" width="62">
+    <outgoingConnections xsi:type="gef.eDiagram.model:ReferenceView" target="//@contents.0">
+      <eReference href="ediagram.ecore#//Diagram/imports"/>
+    </outgoingConnections>
+    <outgoingConnections xsi:type="gef.eDiagram.model:ReferenceView" target="//@contents.4" oppositeShown="true">
+      <eReference href="ediagram.ecore#//Diagram/contents"/>
+    </outgoingConnections>
+    <eNamedElement xsi:type="ecore:EClass" href="ediagram.ecore#//Diagram"/>
+  </contents>
+  <contents xsi:type="gef.eDiagram.model:NamedElementView" location="291,212" incomingConnections="//@contents.3/@outgoingConnections.1 //@contents.6/@outgoingConnections.0 //@contents.8/@outgoingConnections.0" width="97">
+    <outgoingConnections xsi:type="gef.eDiagram.model:ReferenceView" target="//@contents.5" oppositeShown="true">
+      <bendpoints>438,292</bendpoints>
+      <bendpoints>543,292</bendpoints>
+      <eReference href="ediagram.ecore#//Node/incomingConnections"/>
+    </outgoingConnections>
+    <outgoingConnections xsi:type="gef.eDiagram.model:ReferenceView" target="//@contents.5" oppositeShown="true">
+      <bendpoints>445,214</bendpoints>
+      <bendpoints>541,214</bendpoints>
+      <eReference href="ediagram.ecore#//Node/outgoingConnections"/>
+    </outgoingConnections>
+    <eNamedElement xsi:type="ecore:EClass" href="ediagram.ecore#//Node"/>
+  </contents>
+  <contents xsi:type="gef.eDiagram.model:NamedElementView" location="589,230" incomingConnections="//@contents.4/@outgoingConnections.0 //@contents.4/@outgoingConnections.1 //@contents.7/@outgoingConnections.0 //@contents.9/@outgoingConnections.0">
+    <eNamedElement xsi:type="ecore:EClass" href="ediagram.ecore#//Link"/>
+  </contents>
+  <contents xsi:type="gef.eDiagram.model:NamedElementView" location="282,405" width="116">
+    <outgoingConnections xsi:type="gef.eDiagram.model:InheritanceView" target="//@contents.4"/>
+    <outgoingConnections xsi:type="gef.eDiagram.model:ReferenceView" target="//@contents.2">
+      <eReference href="ediagram.ecore#//NamedElementView/eNamedElement"/>
+    </outgoingConnections>
+    <eNamedElement xsi:type="ecore:EClass" href="ediagram.ecore#//NamedElementView"/>
+  </contents>
+  <contents xsi:type="gef.eDiagram.model:NamedElementView" location="675,395" width="153">
+    <outgoingConnections xsi:type="gef.eDiagram.model:InheritanceView" target="//@contents.5"/>
+    <outgoingConnections xsi:type="gef.eDiagram.model:ReferenceView" target="//@contents.1">
+      <eReference href="ediagram.ecore#//ReferenceView/eReference"/>
+    </outgoingConnections>
+    <eNamedElement xsi:type="ecore:EClass" href="ediagram.ecore#//ReferenceView"/>
+  </contents>
+  <contents xsi:type="gef.eDiagram.model:NamedElementView" location="156,400" width="90">
+    <outgoingConnections xsi:type="gef.eDiagram.model:InheritanceView" target="//@contents.4"/>
+    <eNamedElement xsi:type="ecore:EClass" href="ediagram.ecore#//StickyNote"/>
+  </contents>
+  <contents xsi:type="gef.eDiagram.model:NamedElementView" location="541,405" width="100">
+    <outgoingConnections xsi:type="gef.eDiagram.model:InheritanceView" target="//@contents.5"/>
+    <eNamedElement xsi:type="ecore:EClass" href="ediagram.ecore#//InheritanceView"/>
+  </contents>
+  <contents xsi:type="gef.eDiagram.model:NamedElementView" location="294,74" width="254">
+    <eNamedElement xsi:type="ecore:EDataType" href="ediagram.ecore#//Point"/>
+  </contents>
+  <contents xsi:type="gef.eDiagram.model:NamedElementView" location="5,74" width="278">
+    <eNamedElement xsi:type="ecore:EDataType" href="ediagram.ecore#//Dimension"/>
+  </contents>
+  <contents xsi:type="gef.eDiagram.model:NamedElementView" location="558,74">
+    <eNamedElement xsi:type="ecore:EDataType" href="ediagram.ecore#//AbsoluteBendpoint"/>
+  </contents>
+</gef.eDiagram.model:Diagram>
