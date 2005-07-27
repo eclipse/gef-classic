@@ -3,7 +3,7 @@
 <property name="install" value="${basedir}/../../" />
 
 <target name="all">
-	<antcall target="generateJavadoc" />	
+	<antcall target="generateJavadoc" />
 </target>
 
 <target name="generateJavadoc">
@@ -18,23 +18,10 @@
 	<delete dir="${install}/plugins/org.eclipse.gef.doc.isv/reference/api"/>
 	<mkdir dir="${install}/plugins/org.eclipse.gef.doc.isv/reference/api"/>
 
-	<exec dir="." executable="c:/jdk1.4.1/bin/javadoc" output="doc.bin.log">
+	<exec dir="." executable="${java.home}/../bin/javadoc" output="doc.bin.log">
 		<arg line="@${basedir}/${optionsFile} -J-Xmx180m" />
 	</exec>
 </target>
 
 </project>
-
-
-
-
-
-
-
-
-
-
-
-
-
 
