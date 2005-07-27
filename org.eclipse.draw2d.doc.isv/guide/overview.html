@@ -16,7 +16,7 @@
 Lightweight means that a figure is simply a java object, with no corresponding 
 resource in the operating system. Figures can be composed via a parent-child 
 relationship. Every figure has a rectangular <b><i>bounds</i></b> inside which it, 
-and its children, paint. Usually, a layout manager determines where to place 
+and its children, paint. A layout manager can be used to place 
 children based on their index and/or constraint.</p>
 <p>
 A <code>LightweightSystem</code> associates a figure composition with an SWT Canvas. 
@@ -27,10 +27,26 @@ the appropriate figure.</p>
 Paint events, however, are forwarded to the <code>UpdateManager</code>, 
 which coordinates painting and layout. Figures can be updated in ways which 
 affect their appearance or size, and the update manager ensures that only one 
-layout pass occurs, followed by a repaint of only the region which was updated.</p>
+layout occurs, followed by a repaint of only the region which was updated.</p>
 <p>
 Any type of diagram, document, or drawing can be easily constructed and 
 efficiently updated by combining the provided figure and layout implementations 
 along with the use of custom figures or layouts when needed.</p>
+<p>
+Additional topics:</p>
+<ul>
+	<li><a href="painting.html">Painting</a> - details of the paint 
+	process and how nesting affects painting</li>
+	<li><a href="layout.html">Layout</a> - preferred size, layout, validating 
+	figures</li>
+	<li>
+	<a href="hittest.html">Hit Testing</a> - finding figures, 
+	correcting coordinates, modifying the space occupied by a figure</li>
+	<li><a href="connections.html">Connections and Routing</a> - connections, 
+	anchors, decorations, and routing </li>
+	<li>
+	<a href="coordinates.html">Coordinate Systems</a> - absolute 
+	and relative coordinates, working with absolute coordinates</li>
+</ul>
 </body>
 </html>

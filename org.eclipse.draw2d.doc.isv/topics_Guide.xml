@@ -3,10 +3,21 @@
 <!-- ============================================================================= -->
 <!-- Define topics for the main guide                                              -->
 <!-- ============================================================================= -->
-<toc label="Guide">
-		<topic label="Introduction" href="reference/api/overview-summary.html#Overview_description" />
-		<topic label="Visual Overview" href="reference/api/org/eclipse/draw2d/doc-files/draw2d.gif" />
-		<topic label="LayoutManager Demo" href="reference/api/org/eclipse/draw2d/doc-files/demo2.html" />
+
+<toc link_to="../org.eclipse.gef.doc.isv/topics_Guide.xml#draw2d" label="none">
+	<topic label="Draw2d" href="guide/guide.html">
+		<topic label="Introduction" href="guide/overview.html"/>
+<!--
+		<topic label="Visual Overview" href="reference/api/org/eclipse/draw2d/doc-files/draw2d.gif"/>
+		<topic label="LayoutManager Demo" href="reference/api/org/eclipse/draw2d/doc-files/demo2.html"/>
 		<topic label="Clicking and Scrolling Demo" href="reference/api/org/eclipse/draw2d/doc-files/demo3.html" />
 		<topic label="Connections and Anchors Demo" href="reference/api/org/eclipse/draw2d/doc-files/demo4.html" />
+
+		<topic label="Introduction" />
+		<topic label="Hit Testing" />
+		<topic label="Layout Managers" />
+		<topic label="Connections and Routers" />
+		<topic label="Examples" />
+-->
+	</topic>
 </toc>

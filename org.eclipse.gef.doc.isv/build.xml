@@ -25,7 +25,7 @@
 		<mkdir dir="${destination.temp.folder}/${full.name}"/>
 		<zip zipfile="${destination.temp.folder}/${full.name}/doc.zip"
 			basedir="${basedir}"
-			includes="reference/**"
+			includes="reference/**, index.html, guide.html, reference.html, book.css, guide/**, examples/**"
 		/>
 		<copy todir="${destination.temp.folder}/${full.name}">
 			<fileset dir="${basedir}" includes="about.html,*.properties,*.xml,*.zip,icons/" excludes="build.properties,build*.xml" />

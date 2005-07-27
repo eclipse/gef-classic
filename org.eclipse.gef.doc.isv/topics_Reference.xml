@@ -3,6 +3,8 @@
 <!-- ============================================================================= -->
 <!-- Define topics for the main guide                                              -->
 <!-- ============================================================================= -->
-<toc label="Reference">
-		<topic label="API Reference" href="reference/api/index.html" />
+<toc label="bogus" href="bogus" >
+	<anchor id="draw2d" />
+	<topic label="GEF API" href="reference/api/index.html" />
+	<topic label="GEF API (no frames)" href="reference/api/overview-summary.html" />
 </toc>

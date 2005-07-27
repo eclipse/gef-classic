@@ -18,24 +18,24 @@ applications, which must interpret dragging one figure on top of another.</p>
 <p>There are four methods available on IFigure which perform hit testing, three 
 of which are actually just convenience methods which call the fourth.</p>
 <ul>
-	<li>findFigureAt(int x, int y) - finds the top-most figure for the given x 
+	<li><code><a href="reference/api/org/eclipse/draw2d/IFigure.html#findFigureAt(int, int)">findFigureAt(int x, int y)</a></code>- finds the top-most figure for the given x 
 	and y coordinate</li>
-	<li>findFigureAt(Point p) - similar to above, except takes a Point instead 
+	<li><code><a href="reference/api/org/eclipse/draw2d/IFigure.html#findFigureAt(org.eclipse.draw2d.geometry.Point)">findFigureAt(Point p)</a></code> - similar to above, except takes a Point instead 
 	of an int</li>
-	<li>findFigureAtExcluding(int x, int y, Collection exclude) - finds the 
+	<li><code><a href="reference/api/org/eclipse/draw2d/IFigure.html#findFigureAt(int, int, java.util.Collection)">findFigureAtExcluding(int x, int y, Collection exclude)</a></code> - finds the 
 	top-most figure for the given coordinates that is not in the exclusion set 
 	or contained by a figure in the exclusion set. This is used for ignoring a 
 	figure being dragged, or for ignoring transparent layers or figures which 
 	are not involved in an interaction.</li>
 	<li>
-	<p>findFigureAt(int x, int y, TreeSearch search) - The above 
-	methods call this method. TreeSearch is a condition that is used to quickly 
-	prune branches which should not be searched, and also to accept the final 
+	<p><code><a href="reference/api/org/eclipse/draw2d/IFigure.html#findFigureAt(int, int, org.eclipse.draw2d.TreeSearch)">findFigureAt(int x, int y, TreeSearch)</a></code> - All of the above 
+	methods call this method. TreeSearch is a helper that is used to quickly 
+	prune branches which should not be searched, and to accept the final 
 	candidate figure.</p></li>
 </ul>
 <p>Hit testing must be done exactly the same way as painting. Clipping and 
 coordinate changes must be duplicated in both. As an optimizations, branches of 
-the figure composition tree are pruned by calling IFigure#containsPoint(). If a 
+the figure composition tree are pruned by calling <code>containsPoint()</code>. If a 
 figure does not contain the location, it returns NULL and does not search its 
 children. By default, all figures are considered to be the rectangular region 
 defined by their bounds, regardless of how or if they paint. This can be 

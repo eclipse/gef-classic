@@ -3,6 +3,8 @@
 <!-- ============================================================================= -->
 <!-- Define topics for the main guide                                              -->
 <!-- ============================================================================= -->
-<toc label="Reference">
-		<topic label="API Reference" href="reference/api/index.html" />
+
+<toc link_to="../org.eclipse.gef.doc.isv/topics_Reference.xml#draw2d" label="none">
+	<topic label="Draw2d API" href="reference/api/index.html" />
+	<topic label="Draw2d API (no frames)" href="reference/api/overview-summary.html" />
 </toc>

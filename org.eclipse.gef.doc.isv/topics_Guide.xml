@@ -3,11 +3,14 @@
 <!-- ============================================================================= -->
 <!-- Define topics for the main guide                                              -->
 <!-- ============================================================================= -->
-<toc label="Guide">
+<toc label="Architectural Overview">
+	<anchor id="draw2d" />
+	<topic label="GEF" href="guide/guide.html">
 		<topic label="Introduction" href="reference/api/overview-summary.html#Introduction" />
 		<topic label="EditPartViewers" href="reference/api/overview-summary.html#EditPartViewer" />
 		<topic label="Model-View-Controller Paradigm" href="reference/api/overview-summary.html#MVC" />
 		<topic label="EditParts" href="reference/api/overview-summary.html#EditParts" />
 		<topic label="EditPolicies" href="reference/api/overview-summary.html#EditPolicies" />
-		<topic label="Terminology" href="reference/api/org/eclipse/gef/doc-files/terminology.html" />	
+		<topic label="Terminology" href="reference/api/org/eclipse/gef/doc-files/terminology.html" />
+	</topic>
 </toc>
