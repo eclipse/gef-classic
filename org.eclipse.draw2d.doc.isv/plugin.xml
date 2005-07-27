@@ -2,21 +2,9 @@
 <?eclipse version="3.0"?>
 <plugin>
 
-    <extension
-         point="org.eclipse.help.toc">
-      <toc
-            file="toc.xml"
-            primary="true">
-      </toc>
-   </extension>
-   <extension
-         point="org.eclipse.help.toc">
-      <toc
-            file="topics_Guide.xml">
-      </toc>
-      <toc
-            file="topics_Reference.xml">
-      </toc>
+   <extension point="org.eclipse.help.toc">
+      <toc file="topics_Guide.xml" />
+      <toc file="topics_Reference.xml" />
    </extension>
 
 </plugin>
