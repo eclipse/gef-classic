@@ -332,7 +332,7 @@ static private PaletteContainer createControlGroup(PaletteRoot root){
 	entries.add(tool);
 	root.setDefaultEntry(tool);
 
-	PaletteStack marqueeStack = new PaletteStack("Marquee Tools", "", null);
+	PaletteStack marqueeStack = new PaletteStack(LogicMessages.Marquee_Stack, "", null); //$NON-NLS-1$
 	marqueeStack.add(new MarqueeToolEntry());
 	MarqueeToolEntry marquee = new MarqueeToolEntry();
 	marquee.setToolProperty(MarqueeSelectionTool.PROPERTY_MARQUEE_BEHAVIOR, 
