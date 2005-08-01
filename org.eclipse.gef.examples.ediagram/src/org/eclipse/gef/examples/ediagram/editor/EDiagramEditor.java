@@ -172,14 +172,17 @@ protected FlyoutPreferences getPalettePreferences() {
 		public void setDockLocation(int location) {
 			EDiagramPlugin.getPlugin().getPluginPreferences()
 					.setValue(PALETTE_DOCK_LOCATION, location);
+			EDiagramPlugin.getPlugin().savePluginPreferences();
 		}
 		public void setPaletteState(int state) {
 			EDiagramPlugin.getPlugin().getPluginPreferences()
 				.setValue(PALETTE_STATE, state);
+			EDiagramPlugin.getPlugin().savePluginPreferences();
 		}
 		public void setPaletteWidth(int width) {
 			EDiagramPlugin.getPlugin().getPluginPreferences()
 				.setValue(PALETTE_SIZE, width);
+			EDiagramPlugin.getPlugin().savePluginPreferences();
 		}
 	};
 }
