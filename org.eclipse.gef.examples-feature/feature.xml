@@ -15,6 +15,13 @@
       %license
    </license>
 
+   <url>
+      <update
+         url="http://update.eclipse.org/updates/3.0"
+         label="%updateSiteName">
+      </update>
+   </url>
+
    <requires>
       <import plugin="org.eclipse.gef" version="3.1.0" match="compatible"/>
    </requires>
