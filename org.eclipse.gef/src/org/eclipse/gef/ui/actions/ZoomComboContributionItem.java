@@ -45,6 +45,7 @@ public class ZoomComboContributionItem
 	implements ZoomListener
 {
 
+private boolean forceSetText;
 private Combo combo;
 private String[] initStrings;
 private ToolItem toolitem;
@@ -99,11 +100,10 @@ void refresh(boolean repopulateCombo) {
 			combo.setEnabled(false);
 			combo.setText(""); //$NON-NLS-1$
 		} else {
-			if (repopulateCombo) {
+			if (repopulateCombo)
 				combo.setItems(getZoomManager().getZoomLevelsAsText());
-			}
 			String zoom = getZoomManager().getZoomAsText();
-			int index = combo.indexOf(zoom);
+			int index = forceSetText ? -1 : combo.indexOf(zoom);
 			if (index != -1)
 				combo.select(index);
 			else
@@ -247,19 +247,12 @@ public void setZoomManager(ZoomManager zm) {
  * @see org.eclipse.swt.events.SelectionListener#widgetDefaultSelected(SelectionEvent)
  */
 private void handleWidgetDefaultSelected(SelectionEvent event) {
-	handleWidgetSelected(event);
-}
-
-/**
- * @see org.eclipse.swt.events.SelectionListener#widgetSelected(SelectionEvent)
- */
-private void handleWidgetSelected(SelectionEvent event) {
-	// TODO: GTK Workaround (fixed in 3.0) - see SWT bug #44345
-	if (zoomManager != null)
+	if (zoomManager != null) {
 		if (combo.getSelectionIndex() >= 0)
 			zoomManager.setZoomAsText(combo.getItem(combo.getSelectionIndex()));
 		else
 			zoomManager.setZoomAsText(combo.getText());
+	}
 	/*
 	 * There are several cases where invoking setZoomAsText (above) will not result in
 	 * zoomChanged being fired (the method below), such as when the user types "asdf" as
@@ -270,6 +263,15 @@ private void handleWidgetSelected(SelectionEvent event) {
 	 * invocation to refresh() is made below.
 	 */
 	refresh(false);
+}
+
+/**
+ * @see org.eclipse.swt.events.SelectionListener#widgetSelected(SelectionEvent)
+ */
+private void handleWidgetSelected(SelectionEvent event) {
+	forceSetText = true;
+	handleWidgetDefaultSelected(event);
+	forceSetText = false;
 }
 
 /**
