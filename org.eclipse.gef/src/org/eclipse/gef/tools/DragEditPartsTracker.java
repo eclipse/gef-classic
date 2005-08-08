@@ -151,11 +151,8 @@ private void captureSourceDimensions() {
 		if (child == getSourceEditPart())
 			sourceRectangle = bounds;
 	}
+	/* @TODO:Pratik  Remove this for 3.2 */
 	if (sourceRectangle == null) {
-		/*
-		 * @TODO:Pratik    Check to see if this ever happens.  I.e., if the operation
-		 * set does not include the source edit part.
-		 */
 		IFigure figure = ((GraphicalEditPart)getSourceEditPart()).getFigure();
 		if (figure instanceof HandleBounds)
 			sourceRectangle = new PrecisionRectangle(
@@ -522,7 +519,7 @@ protected void setTargetEditPart(EditPart editpart) {
 		return;
 	super.setTargetEditPart(editpart);
 	snapToHelper = null;
-	if (getTargetEditPart() != null)
+	if (getTargetEditPart() != null && getOperationSet().size() > 0)
 		snapToHelper = (SnapToHelper)getTargetEditPart().getAdapter(SnapToHelper.class);
 }
 
