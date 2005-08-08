@@ -412,6 +412,7 @@ public int getOffset(Point p, int trailing[], Dimension proximity) {
 		proximity.height = dy;
 		proximity.width = dx;
 		closestBox = box;
+		index = i;
 	}
 	return findOffset(p, trailing, closestBox, index);
 }
