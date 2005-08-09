@@ -20,7 +20,6 @@ import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
@@ -225,13 +224,12 @@ private void doLayout() {
 				+ topTrim.height;
 	}
 
-	Rectangle size = getClientArea();
-	Point editorSize = new Point(size.width - leftWidth, size.height - topHeight);
-	if (!editor.getSize().equals(editorSize))
-		editor.setSize(editorSize);
-	Point editorLocation = new Point(leftWidth, topHeight);
-	if (!editor.getLocation().equals(editorLocation))
-		editor.setLocation(editorLocation);
+	Rectangle editorSize = getClientArea();
+	editorSize.x = leftWidth;
+	editorSize.y = topHeight;
+	editorSize.width -= leftWidth;
+	editorSize.height -= topHeight;
+	editor.setBounds(editorSize);
 
 	/*
 	 * Fix for Bug# 67554
@@ -241,16 +239,12 @@ private void doLayout() {
 	Rectangle trim = calculateEditorTrim(editor);
 	if (left != null) {
 		// The - 1 and + 1 are to compensate for the RulerBorder
-		Rectangle leftBounds = new Rectangle(0, topHeight - trim.x + leftTrim.x - 1, 
-				leftWidth, editorSize.y - trim.height + leftTrim.height + 1);
-		if (!left.getControl().getBounds().equals(leftBounds))
-			left.getControl().setBounds(leftBounds);
+		left.getControl().setBounds(0, topHeight - trim.x + leftTrim.x - 1, 
+				leftWidth, editorSize.height - trim.height + leftTrim.height + 1);
 	}
 	if (top != null) {
-		Rectangle topBounds = new Rectangle(leftWidth - trim.y + topTrim.y - 1, 0, 
-				editorSize.x - trim.width + topTrim.width + 1, topHeight);
-		if (!top.getControl().getBounds().equals(topBounds))
-			top.getControl().setBounds(topBounds);
+		top.getControl().setBounds(leftWidth - trim.y + topTrim.y - 1, 0, 
+				editorSize.width - trim.width + topTrim.width + 1, topHeight);
 	}
 }
 
