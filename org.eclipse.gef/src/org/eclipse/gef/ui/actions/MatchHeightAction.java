@@ -33,7 +33,7 @@ public class MatchHeightAction
 public MatchHeightAction(IWorkbenchPart part) {
 	super(part);
 	setText(GEFMessages.MatchHeightAction_Label);
-	setHoverImageDescriptor(InternalImages.DESC_MATCH_HEIGHT);
+	setImageDescriptor(InternalImages.DESC_MATCH_HEIGHT);
 	setDisabledImageDescriptor(InternalImages.DESC_MATCH_HEIGHT_DIS);
 	setToolTipText(GEFMessages.MatchHeightAction_Tooltip);
 	setId(GEFActionConstants.MATCH_HEIGHT);

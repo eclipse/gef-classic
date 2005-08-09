@@ -33,7 +33,7 @@ public class MatchWidthAction
 public MatchWidthAction(IWorkbenchPart part) {
 	super(part);
 	setText(GEFMessages.MatchWidthAction_Label);
-	setHoverImageDescriptor(InternalImages.DESC_MATCH_WIDTH);
+	setImageDescriptor(InternalImages.DESC_MATCH_WIDTH);
 	setDisabledImageDescriptor(InternalImages.DESC_MATCH_WIDTH_DIS);
 	setToolTipText(GEFMessages.MatchWidthAction_Tooltip);
 	setId(GEFActionConstants.MATCH_WIDTH);
