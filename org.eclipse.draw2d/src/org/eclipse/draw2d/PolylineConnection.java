@@ -99,7 +99,7 @@ public ConnectionRouter getConnectionRouter() {
  */
 public Object getRoutingConstraint() {
 	if (getConnectionRouter() != null)
-		return (List)getConnectionRouter().getConstraint(this);
+		return getConnectionRouter().getConstraint(this);
 	else
 		return null;
 }
