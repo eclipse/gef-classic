@@ -98,7 +98,7 @@ public Rectangle getFreeformExtent() {
  */
 public Dimension getPreferredSize(int wHint, int hHint) {
 	Rectangle extents = getFreeformExtent();
-	return new Dimension(extents.getRight().x, extents.getBottom().y);
+	return new Dimension(extents.right(), extents.bottom());
 }
 
 /**

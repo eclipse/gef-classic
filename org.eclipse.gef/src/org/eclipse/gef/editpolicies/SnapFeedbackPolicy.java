@@ -25,7 +25,6 @@ import org.eclipse.draw2d.geometry.PrecisionPoint;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.GraphicalEditPart;
-import org.eclipse.gef.LayerConstants;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.SnapToGeometry;
 import org.eclipse.gef.SnapToGuides;
@@ -154,8 +153,7 @@ void highlightGuide(Integer pos, Color color, int offset) {
 		fig.translateToRelative(loc);
 		position = offset % 2 == 0 ? (int)Math.round(loc.preciseX) 
 		                           : (int)Math.round(loc.preciseY);
-		Rectangle figBounds = getLayer(LayerConstants.FEEDBACK_LAYER)
-				.getBounds().getCopy();
+		Rectangle figBounds = getFeedbackLayer().getBounds().getCopy();
 		if ((offset % 2) == 1) {
 			figBounds.height = 1;
 			figBounds.y = position;
@@ -169,7 +167,7 @@ void highlightGuide(Integer pos, Color color, int offset) {
 		// line.
 		IFigure fig = guide[offset];
 		Rectangle figBounds = fig.getBounds().getCopy();
-		Rectangle feedbackBounds = getLayer(LayerConstants.FEEDBACK_LAYER).getBounds();
+		Rectangle feedbackBounds = getFeedbackLayer().getBounds();
 		if ((offset % 2) == 1) {
 			figBounds.x = feedbackBounds.x;
 			figBounds.width = feedbackBounds.width;
