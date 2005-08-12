@@ -9,11 +9,26 @@
             icon="text.gif"
             default="true"
             contributorClass="org.eclipse.gef.examples.text.actions.TextActionBarContributor"
-            name="Document Editor"
+            name="GEF WYSIWYG Document Editor"
             id="org.eclipse.gef.TextEditor"
             extensions="text">
       </editor>
    </extension>
+   
+   <extension point="org.eclipse.ui.newWizards">
+      <category name="Examples" id="org.eclipse.ui.Examples/org.eclipse.gef.examples" />
+      <wizard
+            name="GEF WYSIWYG Document Example"
+            icon="text.gif"
+            category="org.eclipse.ui.Examples/org.eclipse.gef.examples"
+            class="org.eclipse.gef.examples.text.wizard.TextEditorWizard"
+            id="org.eclipse.gef.examples.text.wizard.TextEditorWizard">
+         <description>
+            A wizard that creates a sample GEF-based WYSIWYG document
+         </description>
+      </wizard>
+   </extension>
+
 
    <extension
          point="org.eclipse.ui.contexts">
