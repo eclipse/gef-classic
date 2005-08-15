@@ -117,7 +117,7 @@ protected static class State {
 }
 
 private static int[][] intArrayCache = new int[8][];
-private static final Rectangle TEMP = new Rectangle();
+private final Rectangle tempRECT = new Rectangle();
 
 static {
 	for (int i = 0; i < intArrayCache.length; i++)
@@ -652,19 +652,19 @@ public void translate(int dx, int dy) {
 }
 
 private Rectangle zoomClipRect(Rectangle r) {
-	TEMP.x = (int)(Math.floor(r.x * zoom + fractionalX));
-	TEMP.y = (int)(Math.floor(r.y * zoom + fractionalY));
-	TEMP.width = (int)(Math.ceil(((r.x + r.width) * zoom + fractionalX))) - TEMP.x;
-	TEMP.height = (int)(Math.ceil(((r.y + r.height) * zoom + fractionalY))) - TEMP.y;
-	return TEMP;
+	tempRECT.x = (int)(Math.floor(r.x * zoom + fractionalX));
+	tempRECT.y = (int)(Math.floor(r.y * zoom + fractionalY));
+	tempRECT.width = (int)(Math.ceil(((r.x + r.width) * zoom + fractionalX))) - tempRECT.x;
+	tempRECT.height = (int)(Math.ceil(((r.y + r.height) * zoom + fractionalY))) - tempRECT.y;
+	return tempRECT;
 }
 
 private Rectangle zoomFillRect(int x, int y, int w, int h) {
-	TEMP.x = (int)(Math.floor((x * zoom + fractionalX)));
-	TEMP.y = (int)(Math.floor((y * zoom + fractionalY)));
-	TEMP.width = (int)(Math.floor(((x + w - 1) * zoom + fractionalX))) - TEMP.x + 1;
-	TEMP.height = (int)(Math.floor(((y + h - 1) * zoom + fractionalY))) - TEMP.y + 1;
-	return TEMP;
+	tempRECT.x = (int)(Math.floor((x * zoom + fractionalX)));
+	tempRECT.y = (int)(Math.floor((y * zoom + fractionalY)));
+	tempRECT.width = (int)(Math.floor(((x + w - 1) * zoom + fractionalX))) - tempRECT.x + 1;
+	tempRECT.height = (int)(Math.floor(((y + h - 1) * zoom + fractionalY))) - tempRECT.y + 1;
+	return tempRECT;
 }
 
 Font zoomFont(Font f) {
@@ -717,11 +717,11 @@ private int[] zoomPointList(int[] points) {
 }	
 
 private Rectangle zoomRect(int x, int y, int w, int h) {
-	TEMP.x = (int)(Math.floor(x * zoom + fractionalX));
-	TEMP.y = (int)(Math.floor(y * zoom + fractionalY));
-	TEMP.width = (int)(Math.floor(((x + w) * zoom + fractionalX))) - TEMP.x;
-	TEMP.height = (int)(Math.floor(((y + h) * zoom + fractionalY))) - TEMP.y;
-	return TEMP;
+	tempRECT.x = (int)(Math.floor(x * zoom + fractionalX));
+	tempRECT.y = (int)(Math.floor(y * zoom + fractionalY));
+	tempRECT.width = (int)(Math.floor(((x + w) * zoom + fractionalX))) - tempRECT.x;
+	tempRECT.height = (int)(Math.floor(((y + h) * zoom + fractionalY))) - tempRECT.y;
+	return tempRECT;
 }
 
 private TextLayout zoomTextLayout(TextLayout layout) {
