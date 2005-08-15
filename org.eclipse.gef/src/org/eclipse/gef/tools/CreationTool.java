@@ -250,18 +250,18 @@ protected boolean handleMove() {
  * @param button the button that was pressed
  */
 protected void performCreation(int button) {
+	EditPartViewer viewer = getCurrentViewer();
 	executeCurrentCommand();
-	selectAddedObject();
+	selectAddedObject(viewer);
 }
 
 /*
  * Add the newly created object to the viewer's selected objects.
  */
-private void selectAddedObject() {
+private void selectAddedObject(EditPartViewer viewer) {
 	final Object model = getCreateRequest().getNewObject();
-	if (model == null)
+	if (model == null || viewer == null)
 		return;
-	EditPartViewer viewer = getCurrentViewer();
 	Object editpart = viewer.getEditPartRegistry().get(model);
 	if (editpart instanceof EditPart) {
 		//Force the new object to get positioned in the viewer. 
