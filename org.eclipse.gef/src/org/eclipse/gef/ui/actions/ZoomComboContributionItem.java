@@ -103,11 +103,11 @@ void refresh(boolean repopulateCombo) {
 			if (repopulateCombo)
 				combo.setItems(getZoomManager().getZoomLevelsAsText());
 			String zoom = getZoomManager().getZoomAsText();
-			int index = forceSetText ? -1 : combo.indexOf(zoom);
-			if (index != -1)
-				combo.select(index);
-			else
+			int index = combo.indexOf(zoom);
+			if (index == -1 || forceSetText)
 				combo.setText(zoom);
+			else
+				combo.select(index);
 			combo.setEnabled(true);
 		}
 	} catch (SWTException exception) {
