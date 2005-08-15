@@ -338,11 +338,6 @@ protected Command getDeleteDependantCommand(Request request) {
  */
 protected IFigure getFeedbackLayer() {
 	return getLayer(LayerConstants.SCALED_FEEDBACK_LAYER);
-}
-
-protected Command getOrphanChildrenCommand(Request request) {
-	return null;
-}
-	
+}	
 	
 }
