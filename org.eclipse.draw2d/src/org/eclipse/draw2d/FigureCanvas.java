@@ -59,8 +59,8 @@ private PropertyChangeListener horizontalChangeListener = new PropertyChangeList
 			model.getMinimum() + hBarOffset,
 			model.getMaximum() + hBarOffset,
 			model.getExtent(),
-			model.getExtent() / 20,
-			model.getExtent() * 3 / 4);
+			Math.max(1, model.getExtent() / 20),
+			Math.max(1, model.getExtent() * 3 / 4));
 	}
 };
 
@@ -69,13 +69,13 @@ private PropertyChangeListener verticalChangeListener = new PropertyChangeListen
 	public void propertyChange(PropertyChangeEvent event) {
 		RangeModel model = getViewport().getVerticalRangeModel();
 		vBarOffset = Math.max(0, -model.getMinimum());
-			getVerticalBar().setValues(
-				model.getValue() + vBarOffset,
-				model.getMinimum() + vBarOffset,
-				model.getMaximum() + vBarOffset,
-				model.getExtent(),
-				model.getExtent() / 20,
-				model.getExtent() * 3 / 4);
+		getVerticalBar().setValues(
+			model.getValue() + vBarOffset,
+			model.getMinimum() + vBarOffset,
+			model.getMaximum() + vBarOffset,
+			model.getExtent(),
+			Math.max(1, model.getExtent() / 20),
+			Math.max(1, model.getExtent() * 3 / 4));
 	}
 };
 
