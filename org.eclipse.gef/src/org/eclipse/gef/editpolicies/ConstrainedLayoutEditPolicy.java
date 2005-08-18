@@ -49,7 +49,9 @@ public abstract class ConstrainedLayoutEditPolicy
  * #translateToModelConstraint(Object) translated}
  * @return the Command to add the child
  */
-protected abstract Command createAddCommand(EditPart child, Object constraint);
+protected Command createAddCommand(EditPart child, Object constraint) {
+	return null;
+}
 
 /**
  * The request is now made available when creating the change constraint command.  By

@@ -135,15 +135,6 @@ public void propertyChange(PropertyChangeEvent evt) {
  * @author Elias Volanakis
  */
 private static class ShapesXYLayoutEditPolicy extends XYLayoutEditPolicy {
-	
-/* (non-Javadoc)
- * @see org.eclipse.gef.editpolicies.ConstrainedLayoutEditPolicy#createAddCommand(org.eclipse.gef.EditPart, java.lang.Object)
- */
-protected Command createAddCommand(EditPart child, Object constraint) {
-	// not used in this example
-	return null;
-}
-
 
 /* (non-Javadoc)
  * @see org.eclipse.gef.editpolicies.ConstrainedLayoutEditPolicy#createChangeConstraintCommand(org.eclipse.gef.requests.ChangeBoundsRequest, org.eclipse.gef.EditPart, java.lang.Object)
