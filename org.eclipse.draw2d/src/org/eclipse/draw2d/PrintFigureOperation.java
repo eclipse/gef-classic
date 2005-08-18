@@ -168,7 +168,7 @@ protected void setPrintSource(IFigure printSource) {
  * @param figure The IFigure used to setup graphics
  */
 protected void setupPrinterGraphicsFor(Graphics graphics, IFigure figure) {
-	double dpiScale = getPrinter().getDPI().x / Display.getCurrent().getDPI().x;
+	double dpiScale = (double)getPrinter().getDPI().x / Display.getCurrent().getDPI().x;
 	
 	Rectangle printRegion = getPrintRegion();
 	// put the print region in display coordinates
