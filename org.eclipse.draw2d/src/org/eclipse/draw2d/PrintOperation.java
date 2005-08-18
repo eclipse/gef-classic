@@ -102,26 +102,18 @@ public Printer getPrinter() {
  */
 public Rectangle getPrintRegion() {
 	org.eclipse.swt.graphics.Rectangle trim = printer.computeTrim(0, 0, 0, 0);
-	org.eclipse.swt.graphics.Rectangle clientArea = printer.getClientArea();
 	org.eclipse.swt.graphics.Point printerDPI = printer.getDPI();
-	
-	Rectangle printRegion = new Rectangle();
-	printRegion.x =
-		Math.max(
-			(printMargin.left * printerDPI.x) / 72 - trim.width,
-			clientArea.x);
-	printRegion.y =
-		Math.max(
-			(printMargin.top * printerDPI.y) / 72 - trim.height,
-			clientArea.y);
-	printRegion.width =
-		(clientArea.x + clientArea.width)
-			- printRegion.x
-			- Math.max(0, (printMargin.right * printerDPI.x) / 72 - trim.width);
-	printRegion.height =
-		(clientArea.y + clientArea.height)
-			- printRegion.y
-			- Math.max(0, (printMargin.bottom * printerDPI.y) / 72 - trim.height);
+	Insets notAvailable = new Insets(-trim.y, -trim.x,
+			trim.height + trim.y, trim.width + trim.x);
+	Insets userPreferred = new Insets(
+			(printMargin.top * printerDPI.x) / 72,
+			(printMargin.left * printerDPI.x) / 72,
+			(printMargin.bottom * printerDPI.x) / 72,
+			(printMargin.right * printerDPI.x) / 72);
+	Rectangle paperBounds = new Rectangle(printer.getBounds());	
+	Rectangle printRegion = paperBounds.getCropped(notAvailable);
+	printRegion.intersect(paperBounds.getCropped(userPreferred));
+	printRegion.translate(trim.x, trim.y);
 	return printRegion;
 }
 
