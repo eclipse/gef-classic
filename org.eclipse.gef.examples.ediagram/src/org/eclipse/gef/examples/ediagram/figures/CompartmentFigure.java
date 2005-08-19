@@ -20,6 +20,7 @@ import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.ToolbarLayout;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Insets;
+import org.eclipse.draw2d.geometry.Rectangle;
 
 public class CompartmentFigure 
 	extends Figure 
@@ -41,8 +42,8 @@ public static class CompartmentFigureBorder extends AbstractBorder {
 	}
 	public void paint(IFigure figure, Graphics graphics, Insets insets) {
 		graphics.setForegroundColor(ColorConstants.red);
-		graphics.drawLine(getPaintRectangle(figure, insets).getTopLeft(),
-				tempRect.getTopRight());
+		Rectangle rect = getPaintRectangle(figure, insets);
+		graphics.drawLine(rect.x, rect.y, rect.x + rect.width - 1, rect.y);
 	}
 }
 
