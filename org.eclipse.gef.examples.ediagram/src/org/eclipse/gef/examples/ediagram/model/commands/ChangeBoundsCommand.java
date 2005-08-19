@@ -36,8 +36,7 @@ public ChangeBoundsCommand(Node node, Point newLocation, int newWidth) {
 }
 
 public boolean canExecute() {
-	return node != null && newLocation != null 
-			&& (newWidth != oldWidth || !(node.getLocation().equals(newLocation)));
+	return node != null && newLocation != null && (newWidth == -1 || newWidth > 0);
 }
 
 public void execute() {
