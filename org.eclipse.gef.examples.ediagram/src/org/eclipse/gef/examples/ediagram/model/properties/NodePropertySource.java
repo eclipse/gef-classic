@@ -13,6 +13,8 @@ package org.eclipse.gef.examples.ediagram.model.properties;
 
 import java.util.List;
 
+import org.eclipse.jface.viewers.ICellEditorValidator;
+
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.gef.examples.ediagram.model.Node;
 
@@ -34,7 +36,16 @@ public NodePropertySource(String categoryName, Object model) {
 protected void createPropertyDescriptors(List list) {
 	list.add(new IntegerPropertyDescriptor(idX));
 	list.add(new IntegerPropertyDescriptor(idY));
-	list.add(new IntegerPropertyDescriptor(idWidth));
+	IntegerPropertyDescriptor desc = new IntegerPropertyDescriptor(idWidth);
+	desc.setValidator(new ICellEditorValidator() {
+		public String isValid(Object value) {
+			int val = IntegerPropertyDescriptor.toModel(value);
+			if (val == -1 || val > 0)
+				return null;
+			return "The width has to be an integer greater than 0 (or -1 for default)";
+		}
+	});
+	list.add(desc);
 }
 
 protected Node getNode() {
