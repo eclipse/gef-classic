@@ -6,11 +6,13 @@
 <toc label="Architectural Overview">
 	<anchor id="draw2d" />
 	<topic label="GEF" href="guide/guide.html">
-		<topic label="Introduction" href="reference/api/overview-summary.html#Introduction" />
-		<topic label="EditPartViewers" href="reference/api/overview-summary.html#EditPartViewer" />
-		<topic label="Model-View-Controller Paradigm" href="reference/api/overview-summary.html#MVC" />
-		<topic label="EditParts" href="reference/api/overview-summary.html#EditParts" />
-		<topic label="EditPolicies" href="reference/api/overview-summary.html#EditPolicies" />
-		<topic label="Terminology" href="reference/api/org/eclipse/gef/doc-files/terminology.html" />
+		<topic label="Overview" href="guide/guide.html#Overview"/>
+		<topic label="When and Where to Use GEF" href="guide/guide.html#When"/>
+		<topic label="EditParts" href="guide/guide.html#EditParts"/>
+		<topic label="Creating a Graphical View" href="guide/guide.html#GraphicalView"/>
+		<topic label="Ediitng and EditPolicies" href="guide/guide.html#Editing"/>
+		<topic label="The EditPart Lifecycle" href="guide/guide.html#Lifecycle"/>
+		<topic label="Tools and the Palette" href="guide/guide.html#ToolPalette"/>
+		<topic label="Types of Interactions" href="guide/guide.html#Interactions"/>
 	</topic>
 </toc>

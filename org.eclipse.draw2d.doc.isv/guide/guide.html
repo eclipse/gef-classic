@@ -5,54 +5,61 @@
 <meta name="copyright" content="Copyright (c) IBM Corporation and others 2005. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
 
    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-   <LINK REL="STYLESHEET" HREF="book.css" CHARSET="ISO-8859-1" TYPE="text/css">
+   <LINK REL="STYLESHEET" HREF="../book.css" CHARSET="ISO-8859-1" TYPE="text/css">
    <title>Draw2d Guide</title>
 </head>
 <body>
 
-<h2>Draw2d Programmer's Guide</h2>
-<p>
-The Draw2d plug-in provides a lightweight graphical toolkit for SWT. The 
-following </p>
-<p>
-<a href="architecture.html">Overview</a> - an architectural overview<br>
-<a href="painting.html">Painting</a> - details on how figure compositions are 
-rendered<br>
-<a href="hittest.html">Hit Testing</a> - finding figures using location and 
-other information</p>
+<h2>Draw2d Programmer's Guide<br>
+<font face="Courier New" style="font-size: 8pt">org.eclipse.draw2d</font></h2>
+<ul>
+	<li><a href="overview.html">Overview</a> - the big picture</li>
+	<li><a href="painting.html">Painting</a> - details of the paint 
+	process and how nesting affects painting</li>
+	<li><a href="layout.html">Layout</a> - preferred size, layout, validating 
+	figures</li>
+	<li>
+	<a href="hittest.html">Hit Testing</a> - finding figures, 
+	correcting coordinates, modifying the space occupied by a figure</li>
+	<li><a href="connections.html">Connections and Routing</a> - connections, 
+	anchors, decorations, and routing </li>
+	<li>
+	<a href="coordinates.html">Coordinate Systems</a> - absolute 
+	and relative coordinates, working with absolute coordinates</li>
+</ul>
 <p>
 Draw2d includes the following packages:</p>
 <ul >
 	<li >
 	<p>
 	<a href="../reference/api/org/eclipse/draw2d/package-summary.html">
-	org.eclipse.draw2d</a> - The majority of the interfaces and implementation 
-	can be found in this package.</li>
+	org.eclipse.draw2d</a> - the majority of the interfaces and implementation 
+	can be found in this package</li>
 	<li >
 	<p>
 	<a href="../reference/api/org/eclipse/draw2d/geometry/package-summary.html">
 	org.eclipse.draw2d.geometry</a> - provides utility classes for representing 
-	and working with geometric data.</li>
+	and working with geometric data</li>
 	<li >
 	<p>
 	<a href="../reference/api/org/eclipse/draw2d/graph/package-summary.html">
 	org.eclipse.draw2d.graph</a> - stand-alone graph drawing algorithms such as 
-	directed graph layout.</li>
+	directed graph layout</li>
 	<li >
 	<p>
 	<a href="../reference/api/org/eclipse/draw2d/package-summary.html">
 	org.eclipse.draw2d.parts</a> - special purpose figures that are used as-is, 
-	including a figure that generates a thumbnail.</li>
+	including a figure that generates a thumbnail</li>
 	<li >
 	<p>
 	<a href="../reference/api/org/eclipse/draw2d/text/package-summary.html">
 	org.eclipse.draw2d.text</a> - specialized figures and layouts providing rich 
-	text capabilities.</li>
+	text capabilities</li>
 	<li >
 	<p>
 	<a href="../reference/api/org/eclipse/draw2d/widgets/package-summary.html">
 	org.eclipse.draw2d.widgets</a> - custom SWT controls which utilize figures 
-	for painting.</li>
+	for painting</li>
 </ul>
 </body>
 </html>

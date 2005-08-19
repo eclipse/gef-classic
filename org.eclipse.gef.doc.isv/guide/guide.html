@@ -5,13 +5,456 @@
 <meta name="copyright" content="Copyright (c) IBM Corporation and others 2005. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
 
    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-   <LINK REL="STYLESHEET" HREF="book.css" CHARSET="ISO-8859-1" TYPE="text/css">
-   <title>org.eclipse.gef Programmer's Guide</title>
+   <LINK REL="STYLESHEET" HREF="../book.css" CHARSET="ISO-8859-1" TYPE="text/css">
+   <title>GEF Developer's Guide</title>
+<style>
+<!--
+body  { margin-left: 28; margin-right: 19 }
+h1 { margin-left: -22 }
+h2 { margin-left: -22 }
+code {font-weight:bold}
+-->
+</style>
 </head>
-<body>
-
-<h1>GEF Programmer's Guide<br>
-<font face="Courier New" style="font-size: 8pt">org.eclipse.gef</font></h1>
-<p dir="ltr">This plug-in addresses the problem of graphical editing.</p>
+<body><h1>GEF Developer's Guide</h1>
+<h2><a name="Overview">Overview</a><br>
+<font face="Courier New" style="font-size: 8pt">org.eclipse.gef</font></h2>
+<p>Draw2d focuses on efficient painting and 
+layout of figures. The GEF plug-in adds editing on top of Draw2d. The purpose of 
+this framework is to:</p>
+<ol>
+	<li>
+	<p>Facilitate the display of any model graphically using 
+	draw2d figures</p></li>
+	<li>
+	<p>Support interactions from mouse, keyboard, or the Workbench</p></li>
+	<li>
+	<p>Provide common components related to the 
+	above</p></li>
+</ol>
+<p>The diagram below shows a high-level view of GEF.&nbsp; GEF can be 
+loosely defined as the region in the middle. The framework provides the link 
+between an application's model and view. It also provides input handlers, such as 
+tools and actions, that turn events into requests. Requests and Commands are used to encapsulate interactions 
+and their effects on the model.</p>
+<p><img src="images/gefmvc.gif"/></p>
+<p>In MVC (model-view-controller) design, the controller is often the only 
+connection 
+between the view and the model. The controller is responsible for 
+maintaining the view, and for interpreting UI events and turning them into 
+operations on the model. These roles as they apply to GEF are described below:</p>
+<p><b>Model</b></p>
+<blockquote>
+	<p>The model is any data that gets persisted. Any model can be used with 
+	GEF. The model must have some sort of notification mechanism. Although not 
+	technically the model, commands are closely related. A command is how the 
+	model is modified in a way that can be undone and redone by the user. In 
+	general, commands should work only on the model itself.</p>
+</blockquote>
+<p><b>View (Figures/Treeitems)</b></p>
+<blockquote>
+	<p>The view is anything visible to the user. Both Figures and TreeItems can 
+	be used as view elements.</p>
+</blockquote>
+<p><b>Controller (EditPart)</b></p>
+<blockquote>
+	<p>There is usually one controller per visualized model object. 
+	The controller is called an <code>EditPart</code>. Editparts are the link 
+	between the model and the view. They are also responsible for editing. Editparts 
+	contain helpers 
+	called <i>EditPolicies</i>, which handle the much of the editing task.</p>
+</blockquote>
+<p><b>Viewers</b></p>
+<blockquote>
+	<p>An <code>EditPartViewer</code> is where editparts display their view. There 
+	are two types of viewers provided in GEF. A graphical viewer hosts figures 
+	while a tree viewer displays native treeitems. GEF viewers are similar to 
+	JFace viewers in that they manage an SWT Control. Viewers are also a 
+	selection provider, and the unit of selection is the EditPart</p>
+</blockquote>
+<h2><a name="When">When can I use GEF?</a></h2>
+<p>GEF can be used anywhere that you can use an SWT Control inside a 
+Workbench. It could be an 
+editor, a view, a wizard page, etc. Most commonly it is used inside an 
+EditorPart and sometimes in that editor's outline page.</p>
+<p>GEF requires the Eclipse Rich Client Platform (RCP) and the &quot;views&quot; plug-in (<code>org.eclipse.ui.views</code>), 
+which provides property sheet support.</p>
+<h2><a name="EditParts">An Introduction to EditParts</a></h2>
+<p>Editparts associate their view and model, but they also form their 
+own structure. An editpart maintains children. Usually this corresponds to a 
+similar containment found in the model. For example, the model may consist of a 
+diagram containing nodes. There would then be a corresponding diagram editpart 
+which contains multiple node editpart children.</p>
+<p>The parent-child relationship of editparts carries over into their 
+figures. The parent's figure will contain the children's figures. Or, in some 
+cases the parent part's view is a compound view composed of several figures, one 
+of which is designated as the <i>content pane</i>. The figure of each child is 
+added to the content pane. The end result is that you have three separate 
+hierarchical data structures which are approximately parallel to each other.</p>
+<p><img src="images/mvctree.gif"/></p>
+<p>Connections are the exception to this simple tree structure. 
+Connections represent a link or association between two objects. A Draw2d 
+connection figure is used as the view. Connections man be stored in any way in 
+the model, but the editparts are managed by the source and target editpart at 
+each end. A connection editpart's figure containment is also handled specially. 
+The connection figure is added to a special layer in the diagram so that it 
+paints above the primary layer containing non-connection parts.</p>
+<p>There are two types of editpart implementations provided with GEF. Graphical 
+editparts use figures as their view. Graphical editparts also add the ability to 
+support connections, which themselves are graphical editparts. The other type is 
+a tree editpart. Tree editparts use SWT treeitems as their view.</p>
+<p>The responsibilities of each editpart include:</p>
+<p><ul>
+	<li>Create and maintain a view (whether figure or treeitem)</li>
+	<li>Create and maintain children editparts</li>
+	<li>Create and maintain connections editparts</li>
+	<li>Support editing of the model</li>
+</ul></p>
+<p>Note that maintaining the view and other editparts implies that the editpart 
+will be notified of changes in the model. Usually, the editpart hooks a listener 
+directly to the model object(s) with which it is associated. When it receives 
+notification, it updates its view or structure depending on the change.</p>
+<p>As the name implies, editparts must support editing the model. But first we 
+will focus on the initial steps of building an application, which is to display 
+the initial model.</p>
+<h2><a name="GraphicalView">Creating a Graphical View of a Model</a></h2>
+<p>Once you have a model and some figures with which to view it, the 
+next step is to put the pieces together. This means creating the editparts that 
+are going to work with each model and figure combination. GEF's implementations 
+are abstract and must be extended for your application. But first, we need to 
+set up the foundation.</p>
+<p>GEF includes the class <code>ScrollingGraphicalViewer</code>. This is a viewer 
+implementation which uses a Draw2d <code>FigureCanvas</code>. <b>Most applications 
+use this viewer</b> unless, for some reason, scrollbars are not needed. The next step 
+is to decide which <i>root</i> editpart to use. Each editpart viewer requires a 
+special editpart called the root. This editpart does not correspond to anything 
+in the model. Its function is to setup the viewer and provide a uniform context 
+for all of the application's &quot;real&quot; editparts. There are two implementations to 
+consider using:</p>
+<ul>
+	<li>
+	<p><code>ScalableRootEditPart</code> - provides the standard set of layers and 
+	supports zoom should the application decide to expose this to the user.</p>
+	</li>
+	<li>
+	<p><code>ScalableFreeformRootEditPart</code> - similar to above, but all of the 
+	layers conform to the <i>freeform</i> interface, which allows the diagram to 
+	additionally extend into negative coordinates (to the left and up). This is 
+	the most flexible and <b>commonly used</b> root editpart.</p>
+	</li>
+</ul>
+<p>Now we have a viewer and its root editpart, so next we'll actually 
+set some contents into the viewer. <i>Contents</i> refers to the base model 
+object that seeds the viewer with the graphical diagram being displayed. The 
+viewer's <code>EditPartFactory</code> is then responsible for taking the 
+contents and 
+constructing the appropriate editpart, which is then set on the root editpart. 
+Its figure gets added to the root's. At that point the contents editpart will 
+construct its children editparts, reusing the viewer's factory, which in turn 
+then create their children and/or connections, etc., until all of the editparts 
+and their views have been created.</p>
+<p><img src="images/factory.gif"/></p>
+<h3>Implementing the Contents EditPart</h3>
+<p>So the first implementation you will need to write is the 
+contents editpart. You'll also need to implement a factory which recognizes the 
+contents model object and constructs this editpart. This part's figure provides the 
+backdrop for the rest of the diagram. Usually it doesn't even need to paint, but 
+you still need to choose the layout manager and the figure type based on the 
+root editpart. To control which figure gets created, override <code>createFigure()</code>. When using a freeform root, the contents figure must implement 
+the freeform API. The <code>FreeformLayer</code> figure will suffice. The layout 
+manager is often the <code>XYLayout</code> or the <code>FreeformLayout</code>, again depending on whether 
+the root is freeform or not.</p>
+<p>During initialization, the contents editpart will construct its 
+children based on the list returned when calling <code>getModelChildren()</code> 
+on itself. Editparts should override this method to return the list of objects 
+in the model for which child editparts should be created. By default, editparts 
+go back to the viewer's factory to create each child.</p>
+<h3>Implementing the Children EditParts</h3>
+<p>The children of the diagram, sometimes called <i>nodes</i>, usually 
+display some information to the user. Their figures may be one of the default 
+provided figures, a custom figure, or a composition of multiple figures. During 
+the population of the viewer, each editpart will have its <code>refreshVisuals()</code> 
+method called. This method is responsible for reflecting the model's properties 
+in the view. Editparts must override this method based on the model and figure 
+they work with. In complex cases this method can be factored out into several 
+smaller helper methods. Later, when we start listening to model changes, this 
+method or its helpers may be invoked again.</p>
+<p>If a child of the diagram is also a parent with its own children, 
+it needs to override <code>getModelChildren()</code> in the same manner that the 
+diagram editpart did.</p>
+<h3>Adding Connection EditParts</h3>
+<p>Connections are special editparts that connect any two editparts in 
+a diagram. An editpart is called a <i>node</i> if it can be the source or target of a 
+connection. The connections are created and managed in a shared way by both of 
+its <i>source</i> and <i>
+target</i> nodes. Each node in the diagram must override <code>getModelSourceConnections()</code> and <code>getModelTargetConnections()</code> to 
+return the model object representing the connection. GEF then checks to see if 
+the connection editpart has already been created (by the other node at the other 
+end), and if not 
+it asks the factory to create the connection editpart. The source node is 
+responsible for activating and adding the connection figure to the diagram.</p>
+<p>A connection editpart's figure must be a Draw2d <code>Connection</code>. The connection editpart attempts to set its figure's anchors by 
+casting the source and target nodes to a <code>NodeEditPart</code>. The source 
+and target must return the appropriate anchors or default anchors with bogus 
+fixed locations will be used instead.</p>
+<p>In many ways connections are just like other editparts. They 
+typically have 
+properties in their model that must be visualized. They may even themselves 
+have children or be nodes to other connections.</p>
+<h3>Summary</h3>
+<p>So far we have focused on just displaying a model graphically. This 
+requires that you extend <code>AbstractGraphicalEditPart</code> and override 
+behavior based on each part's model. Here is a summary of the methods discussed:</p>
+<ul>
+	<li>
+	<p><code>createFigure()</code> - this method creates the editpart's view, or 
+	figure. This method does <b>not</b> reflect the model's state in the figure. 
+	That is done in refreshVisuals()</p></li>
+	<li>
+	<p><code>refreshVisuals()</code> - this method reflects model attributes in the 
+	view. Complex editparts may further decompose this method into several 
+	helper methods.</p></li>
+	<li>
+	<p><code>getModelChildren()</code> - this method is called to determine if 
+	there are model elements for which children editparts should be created.</p></li>
+	<li>
+	<p><code>getModelSource/TargetConnections()</code> - similar to children, 
+	but model elements returned here indicate connections for which the editpart 
+	is the source or target.</p></li>
+</ul>
+<h2><a name="Editing">Editing and EditPolicies</a></h2>
+<p>Once you have some editparts displayed it's time to start editing. 
+Editing is usually the most complex task an editpart performs. Editing includes not 
+only making changes to the model, but also showing graphical feedback during 
+interactions with the view. To abstract away the source of interaction, GEF uses 
+a request. Tools or other UI interpreters will create requests and then 
+call the various API on EditPart based on the interaction. A subset of the 
+EditPart API is shown below.</p>
+<p><table border="0" id="table1">
+	<tr>
+		<td valign="top"><img src="images/editing1.gif"/></td>
+		<td valign="top">Methods on <code>EditPart</code> which take a <b>Request</b>:<ol>
+			<li><code>EditPart getTargetEditPart(Request)<br>boolean understandsRequest(Request)</code></li>
+			<li><code>void showSourceFeedback(Request)<br>void eraseSourceFeedback(Request)<br>void showTargetFeedback(Request)<br>void eraseTargetFeedback(Request)</code></li>
+			<li><code>Command getCommand(Request)</code></li>
+			<li><code>void performRequest(Request)</code></li>
+		</ol>
+	</td>
+	</tr>
+</table></p>
+<table border="0" id="table2" cellspacing="0" cellpadding="0">
+	<tr>
+		<td valign="top"><font face="Helvetica" style="font-size: 30pt">1&nbsp;</font></td>
+		<td valign="top">
+		<p>The first step of editing is to decide which editparts 
+		are involved. Usually, it is some combination of the viewer's current selection and an 
+editpart calculated based on the current mouse location. The selection can be 
+trimmed by asking if each selected part understands a request. The part under 
+the mouse, called the <i>target</i>, is found with the viewer's help and the 
+<code>getTargetEditPart(Request)</code> method. Not all interactions have 
+		targets.<br>
+&nbsp;</p>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top"><font face="Helvetica" style="font-size: 30pt">2</font></td>
+		<td valign="top">
+		<p>During interactions, especially mouse interactions and 
+		dragging, editparts are asked to show feedback based on their role in 
+		the interaction. An editpart is considered the <i>source</i> if it is 
+		the part being acted on. A <i>target</i> editpart is the part underneath 
+		the mouse. For example, when dragging a node around a diagram, the node 
+		is the source, and the diagram is the target. The node is asked to show 
+		source feedback, which might be a rectangle or some other modified 
+		representation of the node. The diagram is asked to show target 
+		feedback. When reattaching the end of a connection, a node might be 
+		showing target feedback instead. Some interactions only operate on a 
+		source.<br>
+&nbsp;</p>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top"><font face="Helvetica" style="font-size: 30pt">3</font></td>
+		<td valign="top">
+		<p>The command is what eventually changes the model. 
+		Editparts are asked for a command for a given request. Commands also 
+		help determine if the interaction is possible. If there is no command, 
+		or it is not executable, the UI will indicate that the interaction is 
+		not allowed. If an editpart contributes NULL as its command, it does not 
+		prevent the interaction from occurring, unless of course no commands are 
+		provided by any of the editparts. To indicate something is not 
+		allowed, the editpart must return a command that is not executable.<br>
+&nbsp;</td>
+	</tr>
+	<tr>
+		<td valign="top"><font face="Helvetica" style="font-size: 30pt">4</font></td>
+		<td valign="top">
+		<p>Finally, there is a generic API telling an editpart to just 
+		&quot;do something&quot;. This is generally something that does not immediately 
+		result in a model change. For example, opening a dialog or activating 
+		the &quot;direct-edit&quot; mode.</td>
+	</tr>
+</table>
+<h3>
+EditPolicies</h3>
+<p>
+<img src="images/editing2.gif" align="right"/>Editparts 
+don't handle editing directly. Instead, they use EditPolicies. Each editpolicy 
+is then able to focus on a single editing task or group of related tasks. This also allows editing 
+behavior to be selectively reused across different editpart implementations. Also, behavior 
+can change dynamically, such as when the layouts or routing methods change.</p>
+<p>
+When any of the above editing 
+methods are called (except performRequest()), the editpart delegates to its 
+policies to satisfy the request. Depending on the method, the editpart may stop 
+at the first policy that handles a request, or it may allow each policy a chance to 
+contribute. Refer to each method's javadoc for more details.</p>
+<p>
+EditPolicies are installed using <i>roles</i>, which are nothing more than 
+string identifiers that serve as keys. GEF 
+provides several identifiers for commonly used roles. Roles become important 
+when an editpart needs to have its policies removed or swapped out. The rest of 
+the time it is just a good habit. GEF also provides several abstract policies 
+for use with these roles. These policies must be extended to fill in the missing 
+pieces that work with the application's specific model. EditPolicies are 
+discussed in more detail in the section on <a href="#Interactions">interactions</a>.</p>
+<h3>
+Commands</h3>
+<p>
+Commands are passed around throughout editing. They are used to 
+encapsulate and combine changes to the application's model.</p>
+<p dir="ltr">
+An application has 
+a single command stack. Commands must be executed using the command stack rather than 
+directly calling execute.</p>
+<h2><a name="Lifecycle">The EditPart Lifecycle</a></h2>
+<p>With respect to lifecycle, editpart implementations typically only 
+have to worry about extending activation and deactivation, which is when the 
+editpart should add and remove its model listeners. Still, an understanding of 
+the entire lifecycle is important.</p>
+<h3>1) Creation</h3>
+<p>The first thing that happens is creation. Most editparts will be 
+created by the viewer's factory, which is invoked by either the viewer or the 
+managing editpart which is typically the parent. Immediately after being 
+created, the following methods are called:</p>
+<p><code>setModel()</code> - if the constructor does not take the model as an 
+argument, it should be set immediately. Other events that followed may be based 
+on the part's model</p>
+<h3>2) Getting Added to the Diagram</h3>
+<p><code>setParent(...)</code> - the very first step is to tell the part its parent. 
+This gives the part a path back to its viewer, which it might need for things 
+like accessing the editpart registry.</p>
+<p><code>createFigure()</code> - Although this is a protected method, the timing of when it 
+gets is somewhat interesting. Both the parent and the model are known at the time the figure needs to be 
+created.</p>
+<p><code>addNotify()</code> - Signals the completion of the child being added to the parent. 
+At this point, the child will do the following:</p>
+<ol>
+	<li>Register itself with the viewer using both its view and its model.</li>
+<li>Create any editpolicies that it needs.</li>
+	<li>Refresh, meaning update first its own view, and then construct any 
+	structural elements of its own such as children or connections.</li>
+</ol>
+<p><code>activate()</code> - Indicates that the editpart should become active for 
+editing, meaning that the model might change. The parent only activates its 
+child if it is also active. The root is only active if the viewer has created 
+its Control. An editpart should do the 
+following on activation:</p>
+<ol>
+	<li>
+	<p>Start listening to the model. Subclasses should <b>extend</b> this method 
+	to add any necessary listeners.</p></li>
+	<li>
+	<p>Activate all of the editpolicies.</p></li>
+	<li>
+	<p>Activate all children and outgoing connection editparts.</p></li>
+</ol>
+<h3>3) Normal Use</h3>
+<p>At this point the editpart is in its normal editing state. It gets 
+selected, shows feedback, and returns commands, etc., until it is no longer 
+needed, meaning it is either removed from the diagram or the viewer is being 
+disposed.</p>
+<h3>4) Becoming Garbage</h3>
+<p><code>deactivate()</code> - the opposite of activate. Once again, subclasses 
+should <b>extend</b> this method to remove the listeners added during activation.</p>
+<p><img src="images/important.gif" align="left"/>The remaining steps <b>only</b> occur when the editpart gets 
+removed, meaning its model was removed from the diagram. If the viewer is being disposed, then deactivation is the only thing 
+that is guaranteed to occur. For this reason, activate and deactivate are the 
+commonly extended methods while the remaining methods can usually be ignored.</p>
+<p><code>removeNotify()</code> - Signals that the editpart is about to incur removal. The 
+following must happen while the editpart still has access to its surroundings:</p>
+<ol>
+	<li>Make sure the editpart is not longer selected or has focus</li>
+<li>Call removeNotify on children so that they can do the same</li>
+	<li>Un-register the editpart from the viewer's registries</li>
+	<li>
+	<p>Remove self as source or target of any connections. Connections 
+	don't go away unless both source and target get set to null.</li>
+</ol>
+<p><code>setParent(null)</code> - The last step of removal. The parent and 
+viewer are no longer reachable at this point.</p>
+<p><img src="images/important.gif" align="left"/>Editparts do not come 
+back from the grave. When a change in the model is undone, a <b>new</b> editpart 
+is created. For this reason, commands should not reference editparts, and 
+editparts should not contain any important state that must be restored on undo.</p>
+<h2><a name="ToolPalette">Tools and the Palette</a></h2>
+<p>A tool handles most events from a viewer. The 
+<code>EditDomain</code> keeps track of the currently active tool. Applications 
+may use the palette (PaletteViewer) to display multiple tools, allowing the user 
+to change between modes such as selection, creation, etc.</p>
+<h3>How Tools Work</h3>
+<p>Tools are implemented like state machines. SWT events provide the 
+input to the state machine. Based on the event and current state, a tool will 
+perform certain actions. These actions could include:</p>
+<ul>
+	<li>
+	<p>asking editparts to show or hide feedback</p></li>
+	<li>
+	<p>obtaining commands from editparts</p></li>
+	<li>
+	<p>executing a command on the command stack</p></li>
+	<li>
+	<p>updating the mouse cursor</p></li>
+</ul>
+<p>A tool is activated by setting it on the EditDomain. There is only 
+one active tool for all viewers in the domain. If a palette is being used, 
+selecting a tool in the palette will activate that tool.</p>
+<h3>The Selection Tool</h3>
+<p>The Selection Tool is the primary tool used in GEF and is often the default 
+for an application. The selection tool is unique in its ability to delegate. Tt obtains a helper 
+called a <code>DragTracker</code> from an editpart or handle below the mouse when a drag 
+occurs. A drag is defined as a mouse button being pressed, its being released, 
+and any events that occur in between. Events are forwarded to the delegate so that the drag can be handled 
+differently based on where and how the drag originated. For example, clicking on a 
+handle may result in resizing a shape, or moving the end of a connection. 
+Clicking on an editpart typically drags that part to a new location or parent.</p>
+<p><img src="images/selectsequence.gif"/></p>
+<p>Ironically, the Selection Tool doesn't select editparts. All mouse clicks are handled as drags. When the Selection Tool receives a mouse 
+down event over a selectable editpart, it asks for a drag tracker. The editpart 
+returns a tracker derived from SelectEditPartTracker. The tracker also receives 
+the mouse down event, as well as any other events, until the mouse button is 
+released. When the tracker interprets a selection gesture, it modifies the 
+viewer's selection. Trackers even handle events like double-click.</p>
+<p>For more on the selection tool and trackers, see the section on
+<a href="#Interactions/Selection">Selection Interaction</a>.</p>
+<h3>Palette</h3>
+<p>&nbsp;</p>
+<h2><a name="Interactions">Types of Interactions in GEF</a></h2>
+<p>&nbsp;</p>
+<h3><a name="Interactions/Selection">Selection Interaction</a></h3>
+<p>&nbsp;</p>
+<h3>Basic Interactions</h3>
+<p>&nbsp;</p>
+<h3>Creation</h3>
+<p>&nbsp;</p>
+<h3>Moving things around</h3>
+<p>&nbsp;</p>
+<h3>Connection Creation</h3>
+<p>&nbsp;</p>
+<h3>Editing Connections</h3>
+<p>&nbsp;</p>
+<h3>Bending Connections</h3>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 </body>
 </html>
