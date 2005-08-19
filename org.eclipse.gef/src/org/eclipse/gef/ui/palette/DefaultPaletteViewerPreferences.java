@@ -28,7 +28,7 @@ import org.eclipse.gef.GEFPlugin;
  * <p>
  * It is recommended that the default constructor be used (which will use the preference
  * store in the GEF plugin) as that will cause the preferences to be shared across
- * different types of editors.  If the client does not wisht to share one of the existing
+ * different types of editors.  If the client does not wish to share one of the existing
  * preferences for their editor (say the auto-collapse setting), they will have to
  * sub-class this class and override the necessary methods (in this case,  {@link
  * #getAutoCollapseSetting()} and {@link #setAutoCollapseSetting(int)}) and save that
