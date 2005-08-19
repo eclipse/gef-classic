@@ -22,11 +22,16 @@
             id="org.eclipse.gef.examples">
       </category>
       <wizard
-            name="EDiagram"
+            name="EDiagram Example"
             icon="icons/sample.gif"
             category="org.eclipse.ui.Examples/org.eclipse.gef.examples"
             class="org.eclipse.gef.examples.ediagram.wizard.NewEDiagramWizard"
             id="org.eclipse.gef.examples.ediagram.wizard.NewEDiagramWizard">
+         <description>
+            A wizard to create an EDiagram application.  EDiagram is a GEF-based graphical
+            editor for Ecore files.  DISCLAIMER: Still in beta stage; use at your
+            own risk.
+         </description>            
       </wizard>
    </extension>
    <extension point="org.eclipse.ui.perspectiveExtensions">
@@ -58,11 +63,9 @@
          </action>
       </objectContribution>
    </extension>
-   <extension
-         point="org.eclipse.emf.ecore.generated_package">
-      <package
-            uri="http:///gef.eDiagram"
-            class="org.eclipse.gef.examples.ediagram.model.ModelPackage">
-      </package>
-   </extension>
+	<extension point="org.eclipse.emf.ecore.generated_package">
+		<package
+			uri="http:///gef.eDiagram"
+			class="org.eclipse.gef.examples.ediagram.model.ModelPackage" />
+	</extension>
 </plugin>
