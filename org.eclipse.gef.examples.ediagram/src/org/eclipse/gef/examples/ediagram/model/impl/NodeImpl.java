@@ -9,7 +9,7 @@
  *     IBM Corporation - initial API and implementation
  * </copyright>
  *
- * $Id: NodeImpl.java,v 1.5 2005/04/14 20:53:18 pshah Exp $
+ * $Id: NodeImpl.java,v 1.6 2005/08/19 17:34:17 pshah Exp $
  * /
  *******************************************************************************/
 package org.eclipse.gef.examples.ediagram.model.impl;
@@ -239,7 +239,7 @@ public abstract class NodeImpl extends EObjectImpl implements Node
 	 */
 	public void setWidth(int newWidth)
 	{
-		if (width == newWidth)
+		if (width == newWidth || (newWidth < 1 && newWidth != -1))
 			return;
 		int oldWidth = width;
 		width = newWidth;
