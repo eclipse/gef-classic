@@ -55,7 +55,6 @@ protected DirectEditPolicy createDirectEditPolicy() {
 		protected void showCurrentEditValue(DirectEditRequest request) {
 			((StickyNoteFigure)getFigure()).setText(
 					(String)request.getCellEditor().getValue());
-			//hack to prevent async layout from placing the cell editor twice.
 			getFigure().getUpdateManager().performUpdate();
 		}
 	};
