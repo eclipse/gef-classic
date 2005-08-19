@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.ediagram.wizard;
 
-import java.io.File;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -91,11 +89,13 @@ public void createControl(Composite parent) {
 	browseWorkspace.addSelectionListener(new SelectionListener() {
 		public void widgetSelected(SelectionEvent e) {
 			ResourceSelectionDialog dialog = new ResourceSelectionDialog(getShell(), 
-					ResourcesPlugin.getWorkspace().getRoot(), "Select the .ecore files");
+					ResourcesPlugin.getWorkspace().getRoot(), "Select .ecore files");
 			if (dialog.open() == Window.OK) {
 				Object[] result = dialog.getResult();
 				for (int i = 0; i < result.length; i++) {
-					list.add(((IResource)result[i]).getFullPath().toString());
+					String file = ((IResource)result[i]).getFullPath().toString();
+					if (file.toLowerCase().endsWith(".ecore"))
+						list.add(file);
 				}
 				updatePageStatus();
 			}
@@ -185,7 +185,7 @@ private class CreationDialog extends Dialog {
 		String filename = fileChooser.getResource();
 		if (!filename.endsWith(".ecore"))
 			filename = filename.concat(".ecore");
-		list.add(fileChooser.getContainerFullPath().toString() + File.separator
+		list.add(fileChooser.getContainerFullPath().toString() + '/'
 				+ filename);
 		updatePageStatus();
 		super.okPressed();
