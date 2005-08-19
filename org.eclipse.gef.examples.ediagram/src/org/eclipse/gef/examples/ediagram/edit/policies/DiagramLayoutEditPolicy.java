@@ -17,12 +17,14 @@ import java.util.List;
 import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EReference;
 
+import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
-import org.eclipse.gef.GraphicalEditPart;
+import org.eclipse.gef.LayerConstants;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CompoundCommand;
@@ -30,7 +32,6 @@ import org.eclipse.gef.commands.UnexecutableCommand;
 import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
 import org.eclipse.gef.editpolicies.ResizableEditPolicy;
 import org.eclipse.gef.editpolicies.XYLayoutEditPolicy;
-import org.eclipse.gef.requests.ChangeBoundsRequest;
 import org.eclipse.gef.requests.CreateRequest;
 
 import org.eclipse.gef.examples.ediagram.edit.parts.PackageEditPart;
@@ -57,26 +58,10 @@ public class DiagramLayoutEditPolicy
 	extends XYLayoutEditPolicy
 {
 
-protected Command createAddCommand(EditPart child, Object constraint) {
-	return UnexecutableCommand.INSTANCE;
-}
-
 protected Command createChangeConstraintCommand(EditPart child, Object constraint) {
-	return null;
-}
-
-protected Command createChangeConstraintCommand(ChangeBoundsRequest request,
-		EditPart child, Object constraint) {
-	Node node = (Node)child.getModel();
-	Point newLocation = node.getLocation().getTranslated(request.getMoveDelta());
-	int newWidth = request.getSizeDelta().width;
-	if (newWidth != 0) {
-		newWidth += ((GraphicalEditPart)child).getFigure().getBounds().width;
-		if (newWidth < 10)
-			return UnexecutableCommand.INSTANCE;
-	} else
-		newWidth = node.getWidth();
-	return new ChangeBoundsCommand(node, newLocation, newWidth);
+	Rectangle bounds = (Rectangle)constraint;
+	return new ChangeBoundsCommand(
+			(Node)child.getModel(), bounds.getLocation(), bounds.width);
 }
 
 protected EditPolicy createChildEditPolicy(EditPart child) {
@@ -104,13 +89,13 @@ protected EditPolicy createChildEditPolicy(EditPart child) {
 }
 
 protected Command getCreateCommand(CreateRequest request) {
-	if (request.getNewObject() instanceof Node) {
-		Point loc = request.getLocation();
-		getHostFigure().translateToRelative(loc);
-		return new CreateNodeCommand((Node)request.getNewObject(), 
-				(Diagram)getHost().getModel(), loc);
-	} else if (request.getNewObject() instanceof List) {
-		List views = (List)request.getNewObject();
+	Object newObj = request.getNewObject();
+	if (newObj instanceof Node) {
+		Rectangle constraint = (Rectangle)getConstraintFor(request);
+		return new CreateNodeCommand((Node)newObj, (Diagram)getHost().getModel(), 
+				constraint.getLocation(), constraint.width);
+	} else if (newObj instanceof List) {
+		List views = (List)newObj;
 		List businessModels = (List)request.getExtendedData()
 				.get(OutlineToDiagramTransfer.TYPE_NAME);
 		if (!(businessModels.get(businessModels.size() - 1) instanceof ProcessedMarker)) {
@@ -122,7 +107,7 @@ protected Command getCreateCommand(CreateRequest request) {
 		if (views.isEmpty())
 			return UnexecutableCommand.INSTANCE;
 		CompoundCommand command = new CompoundCommand("Drag from Outline");
-		Point loc = request.getLocation();
+		Point loc = request.getLocation().getCopy();
 		getHostFigure().translateToRelative(loc);
 		for (int i = 0; i < views.size(); i++) {
 			Object view = views.get(i);
@@ -143,6 +128,10 @@ protected Command getCreateCommand(CreateRequest request) {
 
 protected Command getDeleteDependantCommand(Request request) {
 	return null;
+}
+
+protected IFigure getFeedbackLayer() {
+	return getLayer(LayerConstants.SCALED_FEEDBACK_LAYER);
 }
 
 private void processSelection(List models, List views) {
