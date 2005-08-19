@@ -21,6 +21,7 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.text.TextFlow;
 
+import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
@@ -30,6 +31,7 @@ import org.eclipse.gef.editpolicies.ComponentEditPolicy;
 import org.eclipse.gef.editpolicies.DirectEditPolicy;
 import org.eclipse.gef.requests.GroupRequest;
 import org.eclipse.gef.tools.DirectEditManager;
+import org.eclipse.gef.tools.SelectEditPartTracker;
 
 import org.eclipse.gef.examples.ediagram.edit.policies.LabelSelectionEditPolicy;
 import org.eclipse.gef.examples.ediagram.figures.SelectableLabel;
@@ -107,6 +109,10 @@ String getDirectEditText() {
 		return ((TextFlow)fig).getText();
 	}
 	return ""; //$NON-NLS-1$
+}
+
+public DragTracker getDragTracker(Request request) {
+	return new SelectEditPartTracker(this);
 }
 
 protected abstract void handlePropertyChanged(Notification msg);

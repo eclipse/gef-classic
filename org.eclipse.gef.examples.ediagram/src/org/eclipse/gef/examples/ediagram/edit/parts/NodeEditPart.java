@@ -19,6 +19,7 @@ import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.ConnectionEditPart;
+import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.GraphicalEditPart;
@@ -26,6 +27,7 @@ import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.LayoutEditPolicy;
 import org.eclipse.gef.requests.CreateRequest;
+import org.eclipse.gef.tools.DragEditPartsTracker;
 
 import org.eclipse.gef.examples.ediagram.model.ModelPackage;
 import org.eclipse.gef.examples.ediagram.model.Node;
@@ -64,6 +66,10 @@ protected void createEditPolicies() {
 			return null;
 		}
 	});
+}
+
+public DragTracker getDragTracker(Request request) {
+	return new DragEditPartsTracker(this);
 }
 
 protected Node getNode() {
