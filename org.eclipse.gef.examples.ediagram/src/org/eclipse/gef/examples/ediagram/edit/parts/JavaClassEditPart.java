@@ -15,7 +15,7 @@ import org.eclipse.draw2d.Label;
 
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 
-import org.eclipse.gef.examples.ediagram.figures.CompartmentFigure.CompartmentFigureBorder;
+import org.eclipse.gef.examples.ediagram.figures.CompartmentFigureBorder;
 
 /**
  * @author Pratik Shah

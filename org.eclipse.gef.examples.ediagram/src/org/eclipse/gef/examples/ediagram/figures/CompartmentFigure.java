@@ -10,17 +10,11 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.ediagram.figures;
 
-import org.eclipse.draw2d.AbstractBorder;
-import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.CompoundBorder;
 import org.eclipse.draw2d.Figure;
-import org.eclipse.draw2d.Graphics;
-import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.ToolbarLayout;
 import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Insets;
-import org.eclipse.draw2d.geometry.Rectangle;
 
 public class CompartmentFigure 
 	extends Figure 
@@ -35,18 +29,6 @@ public CompartmentFigure() {
 	setBorder(new CompoundBorder(new CompartmentFigureBorder(), new MarginBorder(1)));
 }
     
-public static class CompartmentFigureBorder extends AbstractBorder {
-	private static final Insets INSETS = new Insets(2,0,0,1);
-	public Insets getInsets(IFigure figure) {
-		return INSETS;
-	}
-	public void paint(IFigure figure, Graphics graphics, Insets insets) {
-		graphics.setForegroundColor(ColorConstants.red);
-		Rectangle rect = getPaintRectangle(figure, insets);
-		graphics.drawLine(rect.x, rect.y, rect.x + rect.width - 1, rect.y);
-	}
-}
-
 public Dimension getPreferredSize(int wHint, int hHint) {
 	Dimension size = super.getPreferredSize(wHint, hHint);
 	size.height = Math.max(size.height, 10);
