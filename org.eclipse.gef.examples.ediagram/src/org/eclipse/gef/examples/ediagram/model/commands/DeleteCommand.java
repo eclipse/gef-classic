@@ -276,9 +276,7 @@ private static class DeleteClassifierCommand extends DeleteNodeCommand {
 	}
 	public void execute() {
 		super.execute();
-		if (index == -1)
-			return;
-		if (!isHardDelete)
+		if (index == -1 || !isHardDelete)
 			return;
 		classifierIndex = container.getEClassifiers().indexOf(classifier);
 		container.getEClassifiers().remove(classifierIndex);
