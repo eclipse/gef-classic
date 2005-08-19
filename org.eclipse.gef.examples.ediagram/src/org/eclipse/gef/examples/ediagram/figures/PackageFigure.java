@@ -74,8 +74,8 @@ protected static class Box extends Figure {
 	}
 	protected void paintFigure(Graphics graphics) {
 		super.paintFigure(graphics);
-		graphics.drawLine(bounds.getTop(), bounds.getBottom());
-		graphics.drawLine(bounds.getLeft(), bounds.getRight());
+		graphics.drawLine(bounds.getTop(), bounds.getBottom().translate(0, -1));
+		graphics.drawLine(bounds.getLeft(), bounds.getRight().translate(-1, 0));
 	}
 }
 
