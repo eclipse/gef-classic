@@ -142,7 +142,6 @@ protected void controlResized() {
 	Rectangle r = new Rectangle(canvas.getClientArea());
 	r.setLocation(0, 0);
 	root.setBounds(r);
-//	manager.addDirtyRegion(root,r);
 	root.revalidate();
 	manager.performUpdate();
 	oldControlSize = r;
