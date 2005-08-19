@@ -660,7 +660,7 @@ protected void handleCancelPressed() {
 protected void handleChangeFontPressed() {
 	FontDialog dialog = new FontDialog(getShell());
 	FontData data = prefs.getFontData();
-	dialog.setFontData(data);
+	dialog.setFontList(new FontData[] {data});
 	data = dialog.open();
 	if (data != null) {
 		prefs.setFontData(data);
