@@ -31,17 +31,26 @@ public class CreateNodeCommand
 	extends Command
 {
 
+private int width = -1;
 private Point loc;
 private Node node;
 private Diagram diagram;
-private String newName;
 private boolean packageSet, packageAdded;
 
 public CreateNodeCommand(Node newObject, Diagram parent, Point location) {
-	super("Create Node from Outline");
+	super("Create Node");
 	node = newObject;
 	diagram = parent;
 	loc = location;
+}
+
+public CreateNodeCommand(Node newObject, Diagram parent, Point location, int width) {
+	this(newObject, parent, location);
+	this.width = width;
+}
+
+public boolean canExecute() {
+	return node != null && diagram != null && loc != null && (width == -1 || width > 0);
 }
 
 public void execute() {
@@ -49,10 +58,8 @@ public void execute() {
 		NamedElementView view = (NamedElementView)node;
 		if (view.getENamedElement().getName() == null) {
 			// Name the classifier or package if it doesn't have a name; it'll have a 
-			// name it it's being dragged from the outline
-			if (newName == null)
-				newName = "DefaultName" + (int)(Math.random() * 10000000);
-			view.getENamedElement().setName(newName);
+			// name if it's being dragged from the outline
+			view.getENamedElement().setName("DefaultName" + (int)(Math.random() * 10000000));
 		}
 		if (view.getENamedElement() instanceof EClassifier) {
 			// Give the classifier a default package if it doesn't belong to one
@@ -74,12 +81,12 @@ public void execute() {
 	} else if (node instanceof StickyNote)
 		((StickyNote)node).setText("Comment");
 	node.setLocation(loc);
+	node.setWidth(width);
 	node.setDiagram(diagram);
 }
 
 public void undo() {
 	node.setDiagram(null);
-	node.setLocation(null);
 	if (node instanceof NamedElementView) {
 		NamedElementView view = (NamedElementView)node;
 		if (packageSet)
@@ -90,11 +97,7 @@ public void undo() {
 			view.getENamedElement().eResource().getContents()
 					.remove(view.getENamedElement());
 		}
-		if (newName != null)
-			// We set the name for this, so it must've been null earlier
-			view.getENamedElement().setName(null);
-	} else if (node instanceof StickyNote)
-		((StickyNote)node).setText(null);
+	}
 }
 
 }
