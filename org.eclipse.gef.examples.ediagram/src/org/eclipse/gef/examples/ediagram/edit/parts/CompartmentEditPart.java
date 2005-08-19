@@ -23,11 +23,11 @@ import org.eclipse.gef.examples.ediagram.figures.CompartmentFigure;
  * @author Pratik Shah
  * @since 3.1
  */
-public class CompartmentEditPart 
+public class CompartmentEditPart
 	extends AbstractGraphicalEditPart
 {
 	
-public CompartmentEditPart(PlaceHolderModel model) {
+public CompartmentEditPart(Object model) {
 	super();
 	setModel(model);
 }
@@ -40,7 +40,10 @@ protected IFigure createFigure() {
 }
 
 protected List getModelChildren() {
-	return ((PlaceHolderModel)getModel()).getChildren();
+	if (getModel() instanceof PlaceHolderModel)
+		return ((PlaceHolderModel)getModel()).getChildren();
+	else
+		return (List)getModel();
 }
 
 public boolean isSelectable() {

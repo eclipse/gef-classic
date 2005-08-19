@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.ediagram.edit.parts;
 
+import java.util.List;
+
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
@@ -72,8 +74,8 @@ public EditPart createEditPart(EditPart context, Object model) {
 		return new OperationEditPart((EOperation)model);
 	else if (model instanceof EAttribute)
 		return new AttributeEditPart((EAttribute)model);
-	else if (model instanceof PlaceHolderModel)
-		return new CompartmentEditPart((PlaceHolderModel)model);
+	else if (model instanceof PlaceHolderModel || model instanceof List)
+		return new CompartmentEditPart(model);
 	else if (model instanceof EEnumLiteral)
 		return new EnumLiteralEditPart((EEnumLiteral)model);
 	else if (model instanceof InheritanceView)
