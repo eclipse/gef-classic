@@ -25,7 +25,6 @@ public class CreateAttributeCommand
 	
 private EAttribute attribute;
 private EClass parent;
-private String oldName;
 
 public CreateAttributeCommand(EAttribute attrib, EClass parent) {
 	super("Create Attribute");
@@ -38,18 +37,17 @@ public boolean canExecute() {
 }
 
 public void execute() {
-	if (attribute.getName() == null || attribute.getName().trim().equals("")) {
-		oldName =  attribute.getName();
+	if (attribute.getName() == null || attribute.getName().trim().equals(""))
 		attribute.setName("newAttribute");
-	}
+	redo();
+}
+
+public void redo() {
 	parent.getEStructuralFeatures().add(attribute);
 }
 
 public void undo() {
 	parent.getEStructuralFeatures().remove(attribute);
-	if (oldName != null) {
-		attribute.setName(oldName);
-	}
 }
 
 }
