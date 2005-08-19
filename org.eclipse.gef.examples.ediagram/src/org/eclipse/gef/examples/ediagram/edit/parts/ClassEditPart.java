@@ -18,7 +18,6 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EOperation;
@@ -60,6 +59,7 @@ public class ClassEditPart
 {
 	
 private static Font ITALICS;
+private List modelChildren;
 	
 public ClassEditPart(NamedElementView model) {
 	super(model);
@@ -142,22 +142,17 @@ private EClass getEClass() {
 }
 
 protected List getModelChildren() {
-	List list = new ArrayList();
-	EList child = getEClass().getEAttributes();	
-	list.add(child);
-	child = getEClass().getEOperations();
-	list.add(child);
-	return list;
+	if (modelChildren == null) {
+		modelChildren = new ArrayList();
+		modelChildren.add(new PlaceHolderModel(getEClass(), true));
+		modelChildren.add(new PlaceHolderModel(getEClass(), false));
+	}
+	return modelChildren;
 }
 
 protected void handlePropertyChanged(Notification msg) {
 	switch (msg.getFeatureID(EClass.class)) {
 		case EcorePackage.ECLASS__ESTRUCTURAL_FEATURES:
-			// Need to refresh this class' children here because the EAttributes list 
-			// keeps changing
-			refreshChildren();
-			// Need to do this because in the case where the last attribute is removed,
-			// the returned list is the same.
 			((EditPart)getChildren().get(0)).refresh();
 			return;
 		case EcorePackage.ECLASS__EOPERATIONS:
@@ -189,6 +184,22 @@ protected void refreshVisuals() {
 	} else {
 		header.setFont(null);
 		getFigure().setBackgroundColor(UMLClassFigure.CLASS_COLOR);
+	}
+}
+
+// can't use the previous solution of lists for children because two empty lists are
+// considered equal (and hence the same child).
+public static final class PlaceHolderModel {
+	private EClass theClass;
+	private boolean attributes;
+	public PlaceHolderModel(EClass theClass, boolean attributes) {
+		this.theClass = theClass;
+		this.attributes = attributes;
+	}
+	public List getChildren() {
+		if (attributes)
+			return theClass.getEAttributes();
+		return theClass.getEOperations();
 	}
 }
 

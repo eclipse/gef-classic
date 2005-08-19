@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.ediagram.edit.parts;
 
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
@@ -23,6 +22,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartFactory;
 
+import org.eclipse.gef.examples.ediagram.edit.parts.ClassEditPart.PlaceHolderModel;
 import org.eclipse.gef.examples.ediagram.model.Diagram;
 import org.eclipse.gef.examples.ediagram.model.InheritanceView;
 import org.eclipse.gef.examples.ediagram.model.Link;
@@ -72,8 +72,8 @@ public EditPart createEditPart(EditPart context, Object model) {
 		return new OperationEditPart((EOperation)model);
 	else if (model instanceof EAttribute)
 		return new AttributeEditPart((EAttribute)model);
-	else if (model instanceof EList)
-		return new CompartmentEditPart((EList)model);
+	else if (model instanceof PlaceHolderModel)
+		return new CompartmentEditPart((PlaceHolderModel)model);
 	else if (model instanceof EEnumLiteral)
 		return new EnumLiteralEditPart((EEnumLiteral)model);
 	else if (model instanceof InheritanceView)

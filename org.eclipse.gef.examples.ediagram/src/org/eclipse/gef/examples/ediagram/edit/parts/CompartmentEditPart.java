@@ -12,12 +12,11 @@ package org.eclipse.gef.examples.ediagram.edit.parts;
 
 import java.util.List;
 
-import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.draw2d.IFigure;
 
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 
+import org.eclipse.gef.examples.ediagram.edit.parts.ClassEditPart.PlaceHolderModel;
 import org.eclipse.gef.examples.ediagram.figures.CompartmentFigure;
 
 /**
@@ -28,7 +27,7 @@ public class CompartmentEditPart
 	extends AbstractGraphicalEditPart
 {
 	
-public CompartmentEditPart(EList model) {
+public CompartmentEditPart(PlaceHolderModel model) {
 	super();
 	setModel(model);
 }
@@ -41,7 +40,7 @@ protected IFigure createFigure() {
 }
 
 protected List getModelChildren() {
-	return (List)getModel();
+	return ((PlaceHolderModel)getModel()).getChildren();
 }
 
 public boolean isSelectable() {
