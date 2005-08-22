@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="ASCII"?>
 <gef.eDiagram.model:Diagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:gef.eDiagram.model="http:///gef.eDiagram">
   <imports href="ediagram.ecore#/"/>
-  <imports href="platform:/resource/org.eclipse.emf.ecore/model/Ecore.ecore#/"/>
+  <imports href="platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#/"/>
   <contents xsi:type="gef.eDiagram.model:NamedElementView" location="5,585" incomingConnections="//@contents.3/@outgoingConnections.0">
-    <eNamedElement xsi:type="ecore:EClass" href="platform:/resource/org.eclipse.emf.ecore/model/Ecore.ecore#//EPackage"/>
+    <eNamedElement xsi:type="ecore:EClass" href="platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EPackage"/>
   </contents>
   <contents xsi:type="gef.eDiagram.model:NamedElementView" location="677,581" incomingConnections="//@contents.7/@outgoingConnections.1">
-    <eNamedElement xsi:type="ecore:EClass" href="platform:/resource/org.eclipse.emf.ecore/model/Ecore.ecore#//EReference"/>
+    <eNamedElement xsi:type="ecore:EClass" href="platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EReference"/>
   </contents>
   <contents xsi:type="gef.eDiagram.model:NamedElementView" location="290,599" incomingConnections="//@contents.6/@outgoingConnections.1">
-    <eNamedElement xsi:type="ecore:EClass" href="platform:/resource/org.eclipse.emf.ecore/model/Ecore.ecore#//ENamedElement"/>
+    <eNamedElement xsi:type="ecore:EClass" href="platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//ENamedElement"/>
   </contents>
   <contents xsi:type="gef.eDiagram.model:NamedElementView" location="70,226">
     <outgoingConnections xsi:type="gef.eDiagram.model:ReferenceView" target="//@contents.0">

@@ -6,7 +6,7 @@
     editorDirectory="/org.eclipse.gef.examples.ediagram.editor/src" modelPluginID="org.eclipse.gef.examples.ediagram"
     runtimeJar="true" modelName="ediagram" modelPluginClass="org.eclipse.gef.examples.ediagram.EDiagramPlugin"
     editPluginClass="org.eclipse.gef.examples.ediagram.EDiagramPlugin" editorPluginClass="org.eclipse.gef.examples.ediagram.model.presentation.ediagramEditorPlugin"
-    nonNLSMarkers="true" runtimeCompatibility="false" usedGenPackages="platform:/resource/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore">
+    nonNLSMarkers="true" runtimeCompatibility="false" usedGenPackages="platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore">
   <foreignModel>@model</foreignModel>
   <genPackages prefix="Model" basePackage="org.eclipse.gef.examples.ediagram" ecorePackage="ediagram.ecore#/">
     <genDataTypes ecoreDataType="ediagram.ecore#//Point"/>
