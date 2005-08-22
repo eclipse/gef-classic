@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.ediagram.editor;
 
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EventObject;
 import java.util.Iterator;
@@ -33,9 +33,7 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.Resource.IOWrappedException;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecore.xmi.DanglingHREFException;
 
 import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.gef.EditPart;
@@ -49,11 +47,11 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CompoundCommand;
 import org.eclipse.gef.dnd.TemplateTransferDragSourceListener;
 import org.eclipse.gef.editparts.ScalableFreeformRootEditPart;
-import org.eclipse.gef.internal.GEFMessages;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.requests.GroupRequest;
 import org.eclipse.gef.ui.actions.DirectEditAction;
 import org.eclipse.gef.ui.actions.GEFActionConstants;
+import org.eclipse.gef.ui.actions.ToggleSnapToGeometryAction;
 import org.eclipse.gef.ui.actions.ZoomInAction;
 import org.eclipse.gef.ui.actions.ZoomOutAction;
 import org.eclipse.gef.ui.palette.PaletteCustomizer;
@@ -98,6 +96,8 @@ protected void configureGraphicalViewer() {
 	viewer.setRootEditPart(root);
 	viewer.setEditPartFactory(EDiagramPartFactory.getInstance());
 	
+	getActionRegistry().registerAction(new ToggleSnapToGeometryAction(viewer));
+	
 	KeyHandler keyHandler = new GraphicalViewerKeyHandler(viewer) {
 		public boolean keyPressed(KeyEvent event) {
 			if (event.stateMask == SWT.SHIFT && event.keyCode == SWT.DEL) {
@@ -107,8 +107,7 @@ protected void configureGraphicalViewer() {
 				GroupRequest deleteReq = new GroupRequest(RequestConstants.REQ_DELETE);
 				deleteReq.getExtendedData().put(
 						DeleteCommand.KEY_PERM_DELETE, Boolean.TRUE);
-				CompoundCommand compoundCmd = new CompoundCommand(
-						GEFMessages.DeleteAction_ActionDeleteCommandName);
+				CompoundCommand compoundCmd = new CompoundCommand("Delete");
 				for (int i = 0; i < objects.size(); i++) {
 					EditPart object = (EditPart) objects.get(i);
 					Command cmd = object.getCommand(deleteReq);
@@ -200,22 +199,28 @@ protected PaletteRoot getPaletteRoot() {
 }
 
 public void doSave(IProgressMonitor monitor) {
-	try {
-		for (Iterator iter = rsrcSet.getResources().iterator(); iter.hasNext();)
-			((Resource)iter.next()).save(Collections.EMPTY_MAP);
+	ArrayList saveFailed = new ArrayList();
+	for (Iterator iter = rsrcSet.getResources().iterator(); iter.hasNext();) {
+		Resource rsrc = (Resource)iter.next();
+		try {
+			if (!rsrc.getURI().toString().startsWith("platform:/plugin/"))
+				rsrc.save(Collections.EMPTY_MAP);
+		} catch (Exception e) {
+			EDiagramPlugin.INSTANCE.log(e);
+			saveFailed.add(rsrc);
+		}
+	}
+	if (saveFailed.isEmpty())
 		getCommandStack().markSaveLocation();
-	} catch (IOException ioe) {
-		String error = "The resource cannot be saved while there are errors:\n\n"
-				+ ioe.getLocalizedMessage();
-		if (ioe instanceof IOWrappedException && ((IOWrappedException)ioe)
-				.getWrappedException() instanceof DanglingHREFException)
-			error += "\n\nYou most likely either have references to deleted elements " +
-					"or some newly created element hasn't been assigned a container yet.";
-		EDiagramPlugin.INSTANCE.log(ioe);
+	else {
+		String error = "The following resources could not be saved:\n";
+		for (Iterator iter = saveFailed.iterator(); iter.hasNext();)
+			error += '\n' + ((Resource)iter.next()).getURI().toString();
+		error += "\n\nSee the error log for details.";
 		MessageDialog dialog = new MessageDialog(getGraphicalControl().getShell(), 
-				"Errors Detected", null, error, MessageDialog.WARNING, 
+				"Errors Detected", null, error, MessageDialog.ERROR,
 				new String[] {"OK"}, 0);
-		dialog.open();
+		dialog.open();		
 	}
 }
 
