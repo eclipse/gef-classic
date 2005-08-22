@@ -10,15 +10,20 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.ediagram.actions;
 
+import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.ui.actions.ActionFactory;
+import org.eclipse.ui.actions.RetargetAction;
 
 import org.eclipse.gef.ui.actions.ActionBarContributor;
 import org.eclipse.gef.ui.actions.DeleteRetargetAction;
+import org.eclipse.gef.ui.actions.GEFActionConstants;
 import org.eclipse.gef.ui.actions.RedoRetargetAction;
 import org.eclipse.gef.ui.actions.UndoRetargetAction;
 import org.eclipse.gef.ui.actions.ZoomInRetargetAction;
 import org.eclipse.gef.ui.actions.ZoomOutRetargetAction;
+
+import org.eclipse.gef.examples.ediagram.EDiagramImages;
 
 /**
  * @author Pratik Shah
@@ -34,12 +39,22 @@ protected void buildActions() {
 	addRetargetAction(new DeleteRetargetAction());
 	addRetargetAction(new ZoomInRetargetAction());
 	addRetargetAction(new ZoomOutRetargetAction());
+	RetargetAction action = new RetargetAction(
+			GEFActionConstants.TOGGLE_SNAP_TO_GEOMETRY, 
+			null, IAction.AS_CHECK_BOX);
+	action.setImageDescriptor(
+			EDiagramImages.getImageDescriptor(EDiagramImages.SNAP));
+	action.setDisabledImageDescriptor(
+			EDiagramImages.getImageDescriptor(EDiagramImages.SNAP_DISABLED));
+	action.setToolTipText("Enable Snap To Geometry");
+	addRetargetAction(action);
 }
 
 public void contributeToToolBar(IToolBarManager toolBarManager) {
 	super.contributeToToolBar(toolBarManager);
 	toolBarManager.add(getAction(ActionFactory.UNDO.getId()));
 	toolBarManager.add(getAction(ActionFactory.REDO.getId()));
+	toolBarManager.add(getAction(GEFActionConstants.TOGGLE_SNAP_TO_GEOMETRY));
 }
 
 protected void declareGlobalActionKeys() {

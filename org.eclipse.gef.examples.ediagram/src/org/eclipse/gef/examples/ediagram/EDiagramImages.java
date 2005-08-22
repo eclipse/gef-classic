@@ -46,6 +46,8 @@ public static final String TWO_WAY_REFERENCE = "2EReferences.gif"; //$NON-NLS-1$
 public static final String DATATYPE = "EDataType.gif"; //$NON-NLS-1$
 public static final String ENUM = "EEnum.gif"; //$NON-NLS-1$
 public static final String ENUM_LITERAL = "EEnumLiteral.gif"; //$NON-NLS-1$
+public static final String SNAP = "geometry.gif"; //$NON-NLS-1$
+public static final String SNAP_DISABLED = "geom_dis.gif"; //$NON-NLS-1$
 
 private static final Map stringToImage = new HashMap();
 

@@ -98,8 +98,12 @@ protected void handlePropertyChanged(Notification msg) {
 }
 
 public Object getAdapter(Class key) {
-	if (key == SnapToHelper.class)
-		return new SnapToGeometry(this);
+	if (key == SnapToHelper.class) {
+		if (Boolean.TRUE.equals(
+				getViewer().getProperty(SnapToGeometry.PROPERTY_SNAP_ENABLED)))
+			return new SnapToGeometry(this);
+		return null;
+	}
 	return super.getAdapter(key);
 }
 
