@@ -10,13 +10,9 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.ediagram.edit.parts;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.dnd.Clipboard;
-import org.eclipse.swt.dnd.TextTransfer;
-import org.eclipse.swt.dnd.TransferData;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
 
 import org.eclipse.jface.action.IAction;
@@ -73,29 +69,10 @@ protected void bringDown() {
 }
 
 /**
- * Creates the cell editor on the given composite.  The cell editor is created by 
- * instantiating the cell editor type passed into this DirectEditManager's constuctor.
- * @param composite the composite to create the cell editor on
- * @return the newly created cell editor
+ * Creates a multi-lined text celleditor that can wrap.
  */
 protected CellEditor createCellEditorOn(Composite composite) {
-	return new TextCellEditor(composite, SWT.MULTI | SWT.WRAP) {
-		public boolean isPasteEnabled() {
-			boolean result = false;
-			if (text != null && !text.isDisposed()) {
-				Clipboard cb = new Clipboard(Display.getDefault());
-				TransferData[] transferTypes = cb.getAvailableTypes();
-				for (int i = 0; i < transferTypes.length; i++) {
-					if (TextTransfer.getInstance().isSupportedType(transferTypes[i])) {
-						result = true;
-						break;
-					}
-				}
-				cb.dispose();
-			}
-			return result; 
-		}
-	};
+	return new TextCellEditor(composite, SWT.MULTI | SWT.WRAP);
 }
 
 private void disposeScaledFont() {
