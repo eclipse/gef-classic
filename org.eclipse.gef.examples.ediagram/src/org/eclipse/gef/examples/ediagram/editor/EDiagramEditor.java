@@ -100,7 +100,7 @@ protected void configureGraphicalViewer() {
 	
 	KeyHandler keyHandler = new GraphicalViewerKeyHandler(viewer) {
 		public boolean keyPressed(KeyEvent event) {
-			if (event.stateMask == SWT.SHIFT && event.keyCode == SWT.DEL) {
+			if (event.stateMask == SWT.MOD1 && event.keyCode == SWT.DEL) {
 				List objects = getGraphicalViewer().getSelectedEditParts();
 				if (objects == null || objects.isEmpty())
 					return true;
