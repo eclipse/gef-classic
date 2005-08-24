@@ -113,13 +113,4 @@ protected void superFireMoved() {
 	super.fireMoved();
 }
 
-/**
- * @see IFigure#validate()
- */
-public void validate() {
-	if (isValid())
-		return;
-	super.validate();
-}
-
 }
