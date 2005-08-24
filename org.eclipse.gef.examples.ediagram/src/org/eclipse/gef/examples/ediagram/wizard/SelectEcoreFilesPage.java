@@ -29,6 +29,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.IInputValidator;
+import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.ui.dialogs.ResourceSelectionDialog;
@@ -47,7 +49,7 @@ private List list;
 public SelectEcoreFilesPage(String pageName) {
 	super(pageName, "Specify ECore Files", null);
 	setDescription("You can specify existing ecore files, or create new ones.  There" +
-			" must be at least one ecore file specified");
+			" must be at least one ecore file specified.");
 }
 
 public void createControl(Composite parent) {
@@ -97,6 +99,39 @@ public void createControl(Composite parent) {
 					if (file.toLowerCase().endsWith(".ecore"))
 						list.add(file);
 				}
+				updatePageStatus();
+			}
+		}
+		public void widgetDefaultSelected(SelectionEvent e) {
+		}
+	});
+	Button specifyPlugin = new Button(buttonBar, SWT.PUSH);
+	specifyPlugin.setText("&Plugin Format");
+	specifyPlugin.addSelectionListener(new SelectionListener() {
+		public void widgetSelected(SelectionEvent e) {
+			InputDialog dialog = new InputDialog(getShell(), 
+					"Specify .ecore file", 
+					"Here you can specify Ecore files in binary, external plug-ins.  " +
+					"Enter the plugin name and path below.  Use forward slash as path" +
+					" separator.\nNOTE: Changes made to Ecore" +
+					" files loaded in this format cannot be saved." +
+					"\n\nExample: org.eclipse.emf.ecore/model/Ecore.ecore",
+					null,
+					new IInputValidator() {
+						public String isValid(String newText) {
+							if (newText != null 
+									&& newText.trim().length() > 8
+									&& newText.indexOf(":") == -1
+									&& newText.indexOf("\\") == -1
+									&& !newText.startsWith("/")
+									&& newText.indexOf("/") != -1
+									&& newText.toLowerCase().endsWith(".ecore"))
+								return null;
+							return "Invalid input";
+						}
+					});
+			if (dialog.open() == Window.OK) {
+				list.add("platform:/plugin/" + dialog.getValue().trim());
 				updatePageStatus();
 			}
 		}
