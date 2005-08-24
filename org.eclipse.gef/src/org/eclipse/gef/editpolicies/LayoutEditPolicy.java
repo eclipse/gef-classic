@@ -218,11 +218,14 @@ protected Insets getCreationFeedbackOffset(CreateRequest request) {
 }
 
 /**
- * Returns the <code>Command</code> to delete a child.
+ * Returns the <code>Command</code> to delete a child. This method does not get called
+ * unless the child forwards an additional request to the container editpart.
  * @param request the Request
  * @return the Command to delete the child
  */
-protected abstract Command getDeleteDependantCommand(Request request);
+protected Command getDeleteDependantCommand(Request request) {
+	return null;
+}
 
 /**
  * Returns the host's {@link GraphicalEditPart#getContentPane() contentPane}. The
