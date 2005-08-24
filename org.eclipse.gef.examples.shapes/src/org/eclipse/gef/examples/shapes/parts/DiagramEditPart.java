@@ -116,7 +116,7 @@ protected List getModelChildren() {
 }
 
 /* (non-Javadoc)
- * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+ * @see java.beans.PropertyChangeListener#propertyChange(PropertyChangeEvent)
  */
 public void propertyChange(PropertyChangeEvent evt) {
 	String prop = evt.getPropertyName();
@@ -135,50 +135,42 @@ public void propertyChange(PropertyChangeEvent evt) {
  * @author Elias Volanakis
  */
 private static class ShapesXYLayoutEditPolicy extends XYLayoutEditPolicy {
-
-/* (non-Javadoc)
- * @see org.eclipse.gef.editpolicies.ConstrainedLayoutEditPolicy#createChangeConstraintCommand(org.eclipse.gef.requests.ChangeBoundsRequest, org.eclipse.gef.EditPart, java.lang.Object)
- */
-protected Command createChangeConstraintCommand(ChangeBoundsRequest request,
-		EditPart child, Object constraint) {
-	if (child instanceof ShapeEditPart && constraint instanceof Rectangle) {
-		// return a command that can move and/or resize a Shape
-		return new ShapeSetConstraintCommand(
-				(Shape) child.getModel(), request, (Rectangle) constraint);
+	
+	/* (non-Javadoc)
+	 * @see ConstrainedLayoutEditPolicy#createChangeConstraintCommand(ChangeBoundsRequest, EditPart, Object)
+	 */
+	protected Command createChangeConstraintCommand(ChangeBoundsRequest request,
+			EditPart child, Object constraint) {
+		if (child instanceof ShapeEditPart && constraint instanceof Rectangle) {
+			// return a command that can move and/or resize a Shape
+			return new ShapeSetConstraintCommand(
+					(Shape) child.getModel(), request, (Rectangle) constraint);
+		}
+		return super.createChangeConstraintCommand(request, child, constraint);
 	}
-	return super.createChangeConstraintCommand(request, child, constraint);
-}
-
-/* (non-Javadoc)
- * @see org.eclipse.gef.editpolicies.ConstrainedLayoutEditPolicy#createChangeConstraintCommand(org.eclipse.gef.EditPart, java.lang.Object)
- */
-protected Command createChangeConstraintCommand(EditPart child,
-		Object constraint) {
-	// not used in this example
-	return null;
-}
-
-/* (non-Javadoc)
- * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#getCreateCommand(org.eclipse.gef.requests.CreateRequest)
- */
-protected Command getCreateCommand(CreateRequest request) {
-	Object childClass = request.getNewObjectType();
-	if (childClass == EllipticalShape.class || childClass == RectangularShape.class) {
-		// return a command that can add a Shape to a ShapesDiagram 
-		return new ShapeCreateCommand((Shape)request.getNewObject(), 
-				(ShapesDiagram)getHost().getModel(), (Rectangle)getConstraintFor(request));
+	
+	/* (non-Javadoc)
+	 * @see ConstrainedLayoutEditPolicy#createChangeConstraintCommand(EditPart, Object)
+	 */
+	protected Command createChangeConstraintCommand(EditPart child,
+			Object constraint) {
+		// not used in this example
+		return null;
 	}
-	return null;
-}
-
-/* (non-Javadoc)
- * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#getDeleteDependantCommand(org.eclipse.gef.Request)
- */
-protected Command getDeleteDependantCommand(Request request) {
-	// not used in this example
-	return null;
-}
-
+	
+	/* (non-Javadoc)
+	 * @see LayoutEditPolicy#getCreateCommand(CreateRequest)
+	 */
+	protected Command getCreateCommand(CreateRequest request) {
+		Object childClass = request.getNewObjectType();
+		if (childClass == EllipticalShape.class || childClass == RectangularShape.class) {
+			// return a command that can add a Shape to a ShapesDiagram 
+			return new ShapeCreateCommand((Shape)request.getNewObject(), 
+					(ShapesDiagram)getHost().getModel(), (Rectangle)getConstraintFor(request));
+		}
+		return null;
+	}
+	
 }
 
 }

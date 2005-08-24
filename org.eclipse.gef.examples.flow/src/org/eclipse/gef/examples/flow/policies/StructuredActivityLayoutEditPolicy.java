@@ -76,13 +76,6 @@ protected Command getCreateCommand(CreateRequest request) {
 }
 
 /**
- * @see LayoutEditPolicy#getDeleteDependantCommand(org.eclipse.gef.Request)
- */
-protected Command getDeleteDependantCommand(Request request) {
-	return null;
-}
-
-/**
  * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#getMoveChildrenCommand(org.eclipse.gef.Request)
  */
 protected Command getMoveChildrenCommand(Request request) {

@@ -98,12 +98,4 @@ protected Command getCreateCommand(CreateRequest request) {
 	return command;
 }
 
-protected Command getDeleteDependantCommand(Request request) {
-	return null;
-}
-
-protected Command getOrphanChildrenCommand(Request request) {
-	return null;
-}
-
 }
