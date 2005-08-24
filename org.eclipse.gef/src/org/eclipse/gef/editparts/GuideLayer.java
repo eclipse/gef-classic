@@ -110,19 +110,10 @@ public void remove(IFigure child) {
 }
 
 /**
- * The constraint is expected to be a Boolean indicating whether the given guide
- * line figure is horizontal or not.
- * @see org.eclipse.draw2d.IFigure#setConstraint(org.eclipse.draw2d.IFigure, java.lang.Object)
+ * @see org.eclipse.draw2d.IFigure#setBounds(org.eclipse.draw2d.geometry.Rectangle)
  */
-public void setConstraint(IFigure child, Object constraint) {
-	getConstraints().put(child, constraint);
-}
-
-/**
- * @see org.eclipse.draw2d.FreeformFigure#setFreeformBounds(org.eclipse.draw2d.geometry.Rectangle)
- */
-public void setFreeformBounds(Rectangle bounds) {
-	super.setFreeformBounds(bounds);
+public void setBounds(Rectangle rect) {
+	super.setBounds(rect);
 	Iterator children = getChildren().iterator();
 	while (children.hasNext()) {
 		IFigure child = (IFigure)children.next();
@@ -137,7 +128,16 @@ public void setFreeformBounds(Rectangle bounds) {
 			}
 			child.setBounds(Rectangle.SINGLETON);				
 		}
-	}				
+	}
+}
+
+/**
+ * The constraint is expected to be a Boolean indicating whether the given guide
+ * line figure is horizontal or not.
+ * @see org.eclipse.draw2d.IFigure#setConstraint(org.eclipse.draw2d.IFigure, java.lang.Object)
+ */
+public void setConstraint(IFigure child, Object constraint) {
+	getConstraints().put(child, constraint);
 }
 
 }
