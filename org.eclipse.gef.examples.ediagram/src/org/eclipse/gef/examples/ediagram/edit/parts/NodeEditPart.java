@@ -48,6 +48,10 @@ public NodeEditPart(Node model) {
 	super(model);
 }
 
+public boolean canDeleteFromDiagram() {
+	return true;
+}
+
 protected void createEditPolicies() {
 	super.createEditPolicies();
 	installEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE, null);

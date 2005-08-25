@@ -68,14 +68,22 @@ public void activate() {
 
 protected abstract DirectEditPolicy createDirectEditPolicy();
 
+public boolean canDeleteFromDiagram() {
+	return false;
+}
+
 protected void createEditPolicies() {
 	installEditPolicy(EditPolicy.COMPONENT_ROLE, new ComponentEditPolicy() {
 		protected Command createDeleteCommand(GroupRequest deleteRequest) {
 			Boolean bool = (Boolean)deleteRequest.getExtendedData()
 					.get(DeleteCommand.KEY_PERM_DELETE);
 			boolean permDelete = bool == null ? false : bool.booleanValue();
-			DeleteCommand cmd = new DeleteCommand(permDelete);
-			cmd.setPartToBeDeleted(getHost().getModel());
+			DeleteCommand cmd = null;
+			// fix for bug 99501
+			if (permDelete || canDeleteFromDiagram()) {
+				cmd = new DeleteCommand(permDelete);
+				cmd.setPartToBeDeleted(getHost().getModel());
+			}
 			return cmd;
 		}
 	});
