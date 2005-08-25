@@ -3,13 +3,13 @@
   <imports href="ediagram.ecore#/"/>
   <imports href="platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#/"/>
   <contents xsi:type="gef.eDiagram.model:NamedElementView" location="5,585" incomingConnections="//@contents.3/@outgoingConnections.0">
-    <eNamedElement xsi:type="ecore:EClass" href="platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EPackage"/>
+    <eNamedElement xsi:type="ecore:EClass" href="http://www.eclipse.org/emf/2002/Ecore#//EPackage"/>
   </contents>
   <contents xsi:type="gef.eDiagram.model:NamedElementView" location="677,581" incomingConnections="//@contents.7/@outgoingConnections.1">
-    <eNamedElement xsi:type="ecore:EClass" href="platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EReference"/>
+    <eNamedElement xsi:type="ecore:EClass" href="http://www.eclipse.org/emf/2002/Ecore#//EReference"/>
   </contents>
   <contents xsi:type="gef.eDiagram.model:NamedElementView" location="290,599" incomingConnections="//@contents.6/@outgoingConnections.1">
-    <eNamedElement xsi:type="ecore:EClass" href="platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//ENamedElement"/>
+    <eNamedElement xsi:type="ecore:EClass" href="http://www.eclipse.org/emf/2002/Ecore#//ENamedElement"/>
   </contents>
   <contents xsi:type="gef.eDiagram.model:NamedElementView" location="70,226">
     <outgoingConnections xsi:type="gef.eDiagram.model:ReferenceView" target="//@contents.0">
