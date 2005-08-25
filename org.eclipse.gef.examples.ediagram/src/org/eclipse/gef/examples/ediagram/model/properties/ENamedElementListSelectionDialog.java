@@ -52,8 +52,6 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
  * resources are identified as all contents in a ResourceSet that have
  * a required Ecore base class.
  * <p>
- * 
- * @since 2.1
  */
 public class ENamedElementListSelectionDialog extends SelectionDialog {
 	public static final String ELEMENT_SELECTION_TITLE = " Selector";
