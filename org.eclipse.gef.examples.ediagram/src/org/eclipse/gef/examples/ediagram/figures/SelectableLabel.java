@@ -18,7 +18,6 @@ import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
  * @author Dan Lee
- * @since 3.1
  */
 public class SelectableLabel 
 	extends Label
