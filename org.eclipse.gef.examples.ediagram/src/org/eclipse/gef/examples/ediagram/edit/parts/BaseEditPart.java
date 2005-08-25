@@ -76,7 +76,7 @@ protected void createEditPolicies() {
 	installEditPolicy(EditPolicy.COMPONENT_ROLE, new ComponentEditPolicy() {
 		protected Command createDeleteCommand(GroupRequest deleteRequest) {
 			Boolean bool = (Boolean)deleteRequest.getExtendedData()
-					.get(DeleteCommand.KEY_PERM_DELETE);
+					.get(DeleteCommand.KEY_DELETE_FROM_ECORE);
 			boolean permDelete = bool == null ? false : bool.booleanValue();
 			DeleteCommand cmd = null;
 			// fix for bug 99501

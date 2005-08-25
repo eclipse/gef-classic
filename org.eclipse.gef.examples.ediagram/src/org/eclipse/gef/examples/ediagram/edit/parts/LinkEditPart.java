@@ -64,7 +64,7 @@ protected void createEditPolicies() {
 	installEditPolicy(EditPolicy.CONNECTION_ROLE, new ConnectionEditPolicy() {
 		protected Command getDeleteCommand(GroupRequest request) {
 			Boolean bool = (Boolean)request.getExtendedData()
-					.get(DeleteCommand.KEY_PERM_DELETE);
+					.get(DeleteCommand.KEY_DELETE_FROM_ECORE);
 			boolean permDelete = bool == null ? false : bool.booleanValue();
 			return new DeleteLinkCommand((Link)getHost().getModel(), permDelete);
 		}

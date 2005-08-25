@@ -44,7 +44,7 @@ public class DeleteCommand
 private boolean isHardDelete;
 private Command delegate;
 
-public static final String KEY_PERM_DELETE = "gef.ediagram.$perm"; //$NON-NLS-1$
+public static final Object KEY_DELETE_FROM_ECORE = new Object();
 
 public DeleteCommand(boolean hardDelete) {
 	super("Delete");

@@ -106,7 +106,7 @@ protected void configureGraphicalViewer() {
 					return true;
 				GroupRequest deleteReq = new GroupRequest(RequestConstants.REQ_DELETE);
 				deleteReq.getExtendedData().put(
-						DeleteCommand.KEY_PERM_DELETE, Boolean.TRUE);
+						DeleteCommand.KEY_DELETE_FROM_ECORE, Boolean.TRUE);
 				CompoundCommand compoundCmd = new CompoundCommand("Delete");
 				for (int i = 0; i < objects.size(); i++) {
 					EditPart object = (EditPart) objects.get(i);
