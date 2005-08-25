@@ -39,10 +39,12 @@ protected void createPropertyDescriptors(List list) {
 	IntegerPropertyDescriptor desc = new IntegerPropertyDescriptor(idWidth);
 	desc.setValidator(new ICellEditorValidator() {
 		public String isValid(Object value) {
-			int val = IntegerPropertyDescriptor.toModel(value);
-			if (val == -1 || val > 0)
-				return null;
-			return "The width has to be an integer greater than 0 (or -1 for default)";
+			try {
+				int val = Integer.parseInt((String)value);
+				if (val == -1 || val > 0)
+					return null;
+			} catch (NumberFormatException nfe) {}
+			return "The width has to be an integer greater than 0 (or -1 for default).";
 		}
 	});
 	list.add(desc);
