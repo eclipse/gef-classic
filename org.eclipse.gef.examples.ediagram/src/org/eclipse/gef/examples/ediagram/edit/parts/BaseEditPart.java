@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.EObject;
 
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
+import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.text.TextFlow;
 
 import org.eclipse.gef.DragTracker;
@@ -83,7 +84,9 @@ protected void createEditPolicies() {
 }
 
 protected IFigure createFigure() {
-	return new SelectableLabel();
+	IFigure fig = new SelectableLabel();
+	fig.setBorder(new MarginBorder(0, 1, 0, 0));
+	return fig;
 }
 
 public void deactivate() {
