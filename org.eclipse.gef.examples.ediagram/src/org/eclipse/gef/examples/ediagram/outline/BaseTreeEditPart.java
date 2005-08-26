@@ -21,7 +21,9 @@ import org.eclipse.gef.editparts.AbstractTreeEditPart;
 public abstract class BaseTreeEditPart extends AbstractTreeEditPart {
 	protected Adapter modelListener = new AdapterImpl() {
 		public void notifyChanged(Notification msg) {
-			handlePropertyChanged(msg);
+			if (msg.getEventType() != Notification.RESOLVE
+					&& msg.getEventType() != Notification.REMOVING_ADAPTER)
+				handlePropertyChanged(msg);
 		}
 	};
 	public BaseTreeEditPart(EObject model) {

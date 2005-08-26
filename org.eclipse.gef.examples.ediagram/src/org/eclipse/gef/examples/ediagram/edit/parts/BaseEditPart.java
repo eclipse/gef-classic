@@ -52,7 +52,9 @@ public abstract class BaseEditPart
 protected DirectEditManager manager;
 protected Adapter modelListener = new AdapterImpl() {
 	public void notifyChanged(Notification msg) {
-		handlePropertyChanged(msg);
+		if (msg.getEventType() != Notification.RESOLVE
+				&& msg.getEventType() != Notification.REMOVING_ADAPTER)
+			handlePropertyChanged(msg);
 	}
 };
 
