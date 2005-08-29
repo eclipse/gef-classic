@@ -238,7 +238,7 @@ protected void initializeGraphicalViewer() {
 }
 
 protected boolean isReadOnly(Resource resource) {
-	return resource.getURI().toString().startsWith("platform:/plugin/");
+	return resource.getURI().toString().startsWith("platform:/plugin/"); //$NON-NLS-1$
 }
 
 public boolean isSaveAsAllowed() {
