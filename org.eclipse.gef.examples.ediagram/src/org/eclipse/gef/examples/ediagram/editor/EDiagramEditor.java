@@ -203,7 +203,7 @@ public void doSave(IProgressMonitor monitor) {
 	for (Iterator iter = rsrcSet.getResources().iterator(); iter.hasNext();) {
 		Resource rsrc = (Resource)iter.next();
 		try {
-			if (!rsrc.getURI().toString().startsWith("platform:/plugin/"))
+			if (!isReadOnly(rsrc))
 				rsrc.save(Collections.EMPTY_MAP);
 		} catch (Exception e) {
 			EDiagramPlugin.INSTANCE.log(e);
@@ -235,6 +235,10 @@ protected void initializeGraphicalViewer() {
 			(TransferDropTargetListener)new DiagramDropTargetListener(viewer));
 	viewer.addDropTargetListener(
 			(TransferDropTargetListener)new EDiagramPaletteDropListener(viewer));
+}
+
+protected boolean isReadOnly(Resource resource) {
+	return resource.getURI().toString().startsWith("platform:/plugin/");
 }
 
 public boolean isSaveAsAllowed() {
