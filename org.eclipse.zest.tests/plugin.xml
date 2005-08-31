@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            id="org"
+            name="Graphical Views"/>
+      <view
+            allowMultiple="false"
+            category="ca.uvic.cs.zest.sample"
+            class="org.eclipse.mylar.zest.tests.SampleView"
+            icon="icons/zest.gif"
+            id="ca.uvic.cs.zest.sample.springgraphview"
+            name="Spring Graph Viewer"/>
+      <view
+            allowMultiple="false"
+            category="ca.uvic.cs.zest.sample"
+            class="org.eclipse.mylar.zest.tests.SampleNestedView"
+            icon="icons/zest.gif"
+            id="ca.uvic.cs.zest.sample.views.nestedgraphviewer"
+            name="Nested Graph Viewer"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            id="ca.uvic.cs.zest.sample.zestActionSet"
+            label="Zest Action Set"
+            visible="true">
+         <menu
+               id="zestMenu"
+               label="&amp;Zest Views">
+            <separator name="zestGroup"/>
+         </menu>
+         <action
+               class="org.eclipse.mylar.zest.tests.actions.ShowZestViewAction"
+               definitionId="ca.uvic.cs.zest.sample.views.nestedgraphviewer"
+               icon="icons/nest.gif"
+               id="ca.uvic.cs.zest.sample.actions.NestedGraphViewerAction"
+               label="&amp;Nested Graph Viewer"
+               menubarPath="zestMenu/zestGroup"
+               toolbarPath="zestGroup"
+               tooltip="Show the Nested Graph View"/>
+         <action
+               class="org.eclipse.mylar.zest.tests.actions.ShowZestViewAction"
+               definitionId="ca.uvic.cs.zest.sample.springgraphview"
+               icon="icons/zest.gif"
+               id="ca.uvic.cs.zest.sample.actions.SpingGraphViewerAction"
+               label="&amp;Spring Graph Viewer"
+               menubarPath="zestMenu/zestGroup"
+               style="push"
+               toolbarPath="zestGroup"
+               tooltip="Show the Spring Graph View"/>
+      </actionSet>
+   </extension>
+
+</plugin>

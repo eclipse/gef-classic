@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Chisel Layout Package
+Bundle-SymbolicName: org.eclipse.mylar.zest.layouts
+Bundle-Version: 0.3.1
+Bundle-ClassPath: lib/prefusex_force.jar,
+ library.jar
+Bundle-Vendor: Chisel, University of Victoria
+Bundle-Localization: plugin
+Export-Package: org.eclipse.mylar.zest.layouts,
+ org.eclipse.mylar.zest.layouts.algorithms,
+ org.eclipse.mylar.zest.layouts.algorithms.internal,
+ org.eclipse.mylar.zest.layouts.dataStructures,
+ org.eclipse.mylar.zest.layouts.exampleStructures,
+ org.eclipse.mylar.zest.layouts.exampleUses,
+ org.eclipse.mylar.zest.layouts.progress
+Require-Bundle: org.eclipse.swt;visibility:=reexport,
+ org.eclipse.jface,
+ org.eclipse.core.runtime
