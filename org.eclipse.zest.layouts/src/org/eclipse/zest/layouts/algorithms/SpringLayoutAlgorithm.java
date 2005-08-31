@@ -171,6 +171,8 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     private double[] forcesY;
 
     private boolean[] anchors;
+    
+    private DisplayIndependentRectangle bounds = null;
 
     /**
      * Constructor.
@@ -182,7 +184,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     }
 
     public void setLayoutArea(double x, double y, double width, double height) {
-        throw new RuntimeException("Operation not implemented");
+        bounds = new DisplayIndependentRectangle(x,y,width,height);
     }
 
     /**
@@ -365,6 +367,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
         // super.applyLayout(entitiesToLayout, relationshipsToConsider, x, y,
         // width, height);
         //InternalNode[] a_entitiesToLayout = (InternalNode[]) entitiesToLayout.toArray(new InternalNode[entitiesToLayout.size()]);
+    	bounds = new DisplayIndependentRectangle(x,y,width,height);
         tempLocationsX = new double[entitiesToLayout.length];
         tempLocationsY = new double[entitiesToLayout.length];
         forcesX = new double[entitiesToLayout.length];
@@ -530,7 +533,9 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     }
     
     protected void computeOneIteration(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider, double x, double y, double width, double height) {
-        checkPreferredLocation(entitiesToLayout, new DisplayIndependentRectangle(x, y, width, height));
+    	if ( bounds == null )
+    		bounds = new DisplayIndependentRectangle(x,y,width,height);
+        checkPreferredLocation(entitiesToLayout, bounds );
         computeForces(entitiesToLayout);
         largestMovement = Double.MAX_VALUE;
         computePositions(entitiesToLayout);
@@ -538,7 +543,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
             InternalNode layoutEntity = entitiesToLayout[i];
             layoutEntity.setInternalLocation(tempLocationsX[i], tempLocationsY[i]);
         }
-        defaultFitWithinBounds(entitiesToLayout, new DisplayIndependentRectangle(x, y, width, height));
+        defaultFitWithinBounds(entitiesToLayout, bounds );
 
         iteration++;
     }

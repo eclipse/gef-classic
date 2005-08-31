@@ -165,7 +165,7 @@ public class SpringGraphViewerImpl extends ThreadedGraphicalViewer implements IP
 		((SpringLayoutAlgorithm) layoutAlgorithm).setMinimumStabilizeDistance(ForceDirectedAlgorithm.DEFAULT_MIN_STABILIZE_DISTANCE);
 		((SpringLayoutAlgorithm) layoutAlgorithm).setOverlappingNodesAllowed(!noOverlappingNodes);
 		*/
-		layoutThread = layoutAlgorithm.getLayoutThread(model.getNodesArray(), model.getConnectionsArray(),  5D, 5D, (double)d.width,(double) d.height);
+		layoutThread = layoutAlgorithm.getLayoutThread(model.getNodesArray(), model.getConnectionsArray(),  5D, 5D, (double)d.width,(double) d.height, true);
 		
 		this.addThread(layoutThread);		
 		//this.addThread(new FreqUpdater());

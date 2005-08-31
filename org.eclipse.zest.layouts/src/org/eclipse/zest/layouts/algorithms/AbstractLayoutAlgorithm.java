@@ -412,8 +412,10 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	public synchronized Stoppable  getLayoutThread( LayoutEntity[] entitiesToLayout, 
 			                                  LayoutRelationship[] relationshipsToConsider, 
 			                                  double x, double y, 
-			                                  double width, double height  )  {
+			                                  double width, double height,
+			                                  boolean continuous)  {
 		//setupLayout( entitiesToLayout, relationshipsToConsider, x, y, width, height );
+		this.runContinuously = continuous;
 		setupLayout(entitiesToLayout, relationshipsToConsider, x, y, width, height );
 		preLayoutAlgorithm( _internalNodes, _internalRelationships, _x, _y, _width, _height );
 		fireProgressStarted( getTotalNumberOfLayoutSteps() );
@@ -469,7 +471,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 		// when an algorithm starts, reset the progress event
 		lastProgressEventFired = Calendar.getInstance();
 		if (asynchronous) {
-			Thread thread = new Thread(getLayoutThread(entitiesToLayout, relationshipsToConsider, x, y, width, height ));
+			Thread thread = new Thread(getLayoutThread(entitiesToLayout, relationshipsToConsider, x, y, width, height, runContinuously ));
 			thread.setPriority(Thread.MIN_PRIORITY);
 			thread.start();
 		} else {
