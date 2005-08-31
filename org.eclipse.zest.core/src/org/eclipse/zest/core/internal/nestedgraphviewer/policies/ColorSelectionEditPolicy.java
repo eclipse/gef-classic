@@ -16,7 +16,7 @@ import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.gef.editpolicies.ResizableEditPolicy;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelNode;
-import org.eclipse.mylar.zest.core.internal.springgraphviewer.parts.GraphNodeEditPart;
+import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphNodeEditPart;
 
 
 

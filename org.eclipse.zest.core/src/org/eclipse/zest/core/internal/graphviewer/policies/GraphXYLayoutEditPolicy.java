@@ -8,7 +8,7 @@
  * Contributors:
  *     The Chisel Group, University of Victoria
  *******************************************************************************/
-package org.eclipse.mylar.zest.core.internal.springgraphviewer.policies;
+package org.eclipse.mylar.zest.core.internal.graphviewer.policies;
 
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPart;
@@ -19,7 +19,7 @@ import org.eclipse.gef.editpolicies.XYLayoutEditPolicy;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
 import org.eclipse.gef.requests.CreateRequest;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelNode;
-import org.eclipse.mylar.zest.core.internal.springgraphviewer.parts.GraphNodeEditPart;
+import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphNodeEditPart;
 import org.eclipse.mylar.zest.core.internal.viewers.commands.NoResizeNodeConstraintCommand;
 
 

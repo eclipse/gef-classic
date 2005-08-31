@@ -8,7 +8,7 @@
  * Contributors:
  *     The Chisel Group, University of Victoria
  *******************************************************************************/
-package org.eclipse.mylar.zest.core.internal.springgraphviewer;
+package org.eclipse.mylar.zest.core.internal.graphviewer;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -34,15 +34,15 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.mylar.zest.core.DebugPrint;
 import org.eclipse.mylar.zest.core.ZestStyles;
+import org.eclipse.mylar.zest.core.internal.gefx.GraphRootEditPart;
+import org.eclipse.mylar.zest.core.internal.gefx.IPanningListener;
 import org.eclipse.mylar.zest.core.internal.gefx.ThreadedGraphicalViewer;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelConnection;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelNode;
 import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelFactory;
-import org.eclipse.mylar.zest.core.internal.springgraphviewer.parts.GraphEditPartFactory;
-import org.eclipse.mylar.zest.core.internal.springgraphviewer.parts.GraphNodeEditPart;
-import org.eclipse.mylar.zest.core.internal.springgraphviewer.parts.GraphRootEditPart;
-import org.eclipse.mylar.zest.core.internal.viewers.IPanningListener;
+import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphEditPartFactory;
+import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphNodeEditPart;
 import org.eclipse.mylar.zest.core.viewers.SpringGraphViewer;
 import org.eclipse.mylar.zest.layouts.Stoppable;
 import org.eclipse.mylar.zest.layouts.algorithms.AbstractLayoutAlgorithm;
@@ -291,7 +291,7 @@ public class SpringGraphViewerImpl extends ThreadedGraphicalViewer implements IP
     
     /**
      * Indicates that panning has started.  Pauses the layout algorithm if it is running.  
-     * @see org.eclipse.mylar.zest.core.internal.springgraphviewer.IPanningListener#panningStart()
+     * @see org.eclipse.mylar.zest.core.internal.graphviewer.IPanningListener#panningStart()
      */
     public void panningStart() {
     	wasRunningBeforePanning = layoutAlgorithm.isRunning() && !layoutAlgorithm.isPaused();
@@ -305,7 +305,7 @@ public class SpringGraphViewerImpl extends ThreadedGraphicalViewer implements IP
      * to move all the nodes.
      * @param dx	the change in x position
      * @param dy	the change in y position
-     * @see org.eclipse.mylar.zest.core.internal.springgraphviewer.IPanningListener#panning(int, int)
+     * @see org.eclipse.mylar.zest.core.internal.graphviewer.IPanningListener#panning(int, int)
      */
     public void panning(int dx, int dy) {
     	layoutAlgorithm.moveAllEntities(dx, dy);
@@ -314,7 +314,7 @@ public class SpringGraphViewerImpl extends ThreadedGraphicalViewer implements IP
     /**
      * Indicates that panning has ceased.  Resumes the layout algorithm if it was running
      * before panning started.
-     * @see org.eclipse.mylar.zest.core.internal.springgraphviewer.IPanningListener#panningEnd()
+     * @see org.eclipse.mylar.zest.core.internal.graphviewer.IPanningListener#panningEnd()
      */
     public void panningEnd() {
     	if (wasRunningBeforePanning) {

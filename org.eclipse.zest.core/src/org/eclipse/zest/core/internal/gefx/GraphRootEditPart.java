@@ -8,12 +8,11 @@
  * Contributors:
  *     The Chisel Group, University of Victoria
  *******************************************************************************/
-package org.eclipse.mylar.zest.core.internal.springgraphviewer.parts;
+package org.eclipse.mylar.zest.core.internal.gefx;
 
 import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.editparts.ScalableRootEditPart;
-import org.eclipse.mylar.zest.core.internal.viewers.IPanningListener;
 import org.eclipse.mylar.zest.core.internal.viewers.trackers.PanningTracker;
 import org.eclipse.mylar.zest.core.internal.viewers.trackers.SingleSelectionTracker;
 

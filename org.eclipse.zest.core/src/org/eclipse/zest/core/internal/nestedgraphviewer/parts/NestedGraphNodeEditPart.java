@@ -23,9 +23,9 @@ import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.Request;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedGraphModel;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedGraphModelNode;
+import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphNodeEditPart;
 import org.eclipse.mylar.zest.core.internal.nestedgraphviewer.NestedGraphViewerImpl;
 import org.eclipse.mylar.zest.core.internal.nestedgraphviewer.policies.GraphXYLayoutEditPolicy;
-import org.eclipse.mylar.zest.core.internal.springgraphviewer.parts.GraphNodeEditPart;
 import org.eclipse.mylar.zest.core.internal.viewers.figures.NestedFigure;
 import org.eclipse.mylar.zest.core.internal.viewers.figures.PlusMinusFigure;
 
@@ -96,7 +96,7 @@ public class NestedGraphNodeEditPart extends GraphNodeEditPart implements Action
 	
 	/**
 	 * Returns a list of the children GraphModelNode object.
-	 * @see org.eclipse.mylar.zest.core.internal.springgraphviewer.parts.GraphNodeEditPart#getModelChildren()
+	 * @see org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphNodeEditPart#getModelChildren()
 	 */
 	protected List getModelChildren() {
 		return getCastedModel().getChildren();

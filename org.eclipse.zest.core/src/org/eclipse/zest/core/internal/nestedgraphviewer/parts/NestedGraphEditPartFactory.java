@@ -14,7 +14,7 @@ import org.eclipse.gef.EditPart;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelConnection;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedGraphModel;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedGraphModelNode;
-import org.eclipse.mylar.zest.core.internal.springgraphviewer.parts.GraphEditPartFactory;
+import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphEditPartFactory;
 
 
 /**

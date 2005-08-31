@@ -8,7 +8,7 @@
  * Contributors:
  *     The Chisel Group, University of Victoria
  *******************************************************************************/
-package org.eclipse.mylar.zest.core.internal.springgraphviewer.policies;
+package org.eclipse.mylar.zest.core.internal.graphviewer.policies;
 
 import java.beans.PropertyChangeEvent;
 import java.util.Collections;
@@ -19,7 +19,7 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelNode;
-import org.eclipse.mylar.zest.core.internal.springgraphviewer.parts.GraphNodeEditPart;
+import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphNodeEditPart;
 
 
 

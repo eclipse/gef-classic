@@ -25,7 +25,7 @@ import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelEntityFactory;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelFactory;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelNode;
 import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelFactory;
-import org.eclipse.mylar.zest.core.internal.springgraphviewer.SpringGraphViewerImpl;
+import org.eclipse.mylar.zest.core.internal.graphviewer.SpringGraphViewerImpl;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Widget;

@@ -13,7 +13,7 @@ package org.eclipse.mylar.zest.core.internal.nestedgraphviewer.parts;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.PolylineConnection;
-import org.eclipse.mylar.zest.core.internal.springgraphviewer.parts.GraphConnectionEditPart;
+import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphConnectionEditPart;
 
 
 /**

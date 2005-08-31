@@ -16,7 +16,7 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.gef.RootEditPart;
 import org.eclipse.gef.SharedCursors;
 import org.eclipse.gef.commands.Command;
-import org.eclipse.mylar.zest.core.internal.viewers.IPanningListener;
+import org.eclipse.mylar.zest.core.internal.gefx.IPanningListener;
 import org.eclipse.mylar.zest.core.internal.viewers.commands.PanningCommand;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.graphics.Cursor;

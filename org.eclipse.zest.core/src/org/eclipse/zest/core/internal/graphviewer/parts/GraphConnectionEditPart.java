@@ -8,7 +8,7 @@
  * Contributors:
  *     The Chisel Group, University of Victoria
  *******************************************************************************/
-package org.eclipse.mylar.zest.core.internal.springgraphviewer.parts;
+package org.eclipse.mylar.zest.core.internal.graphviewer.parts;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;

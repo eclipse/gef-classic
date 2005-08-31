@@ -17,7 +17,7 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.mylar.zest.core.ZestStyles;
-import org.eclipse.mylar.zest.core.internal.springgraphviewer.parts.GraphRootEditPart;
+import org.eclipse.mylar.zest.core.internal.gefx.GraphRootEditPart;
 import org.eclipse.mylar.zest.core.internal.viewers.figures.NestedFigure;
 import org.eclipse.mylar.zest.core.internal.viewers.figures.NestedFreeformLayer;
 import org.eclipse.mylar.zest.core.internal.viewers.figures.OutlineFigure;
