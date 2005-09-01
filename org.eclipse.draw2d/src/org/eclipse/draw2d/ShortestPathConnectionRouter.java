@@ -167,9 +167,11 @@ public void invalidate(Connection connection) {
  * @see org.eclipse.draw2d.ConnectionRouter#remove(org.eclipse.draw2d.Connection)
  */
 public void remove(Connection connection) {
-	Path path = (Path)connectionToPaths.remove(connection);
 	staleConnections.remove(connection);
 	constraintMap.remove(connection);
+	if (connectionToPaths == null)
+		return;
+	Path path = (Path)connectionToPaths.remove(connection);
 	algorithm.removePath(path);
 	isDirty = true;
 	if (connectionToPaths.isEmpty()) {
