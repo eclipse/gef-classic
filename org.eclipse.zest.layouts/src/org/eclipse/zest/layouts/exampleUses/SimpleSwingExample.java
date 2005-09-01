@@ -52,6 +52,7 @@ import org.eclipse.mylar.zest.layouts.InvalidLayoutConfiguration;
 import org.eclipse.mylar.zest.layouts.LayoutAlgorithm;
 import org.eclipse.mylar.zest.layouts.LayoutEntity;
 import org.eclipse.mylar.zest.layouts.LayoutRelationship;
+import org.eclipse.mylar.zest.layouts.LayoutStyles;
 import org.eclipse.mylar.zest.layouts.algorithms.FadeLayoutAlgorithm;
 import org.eclipse.mylar.zest.layouts.algorithms.GridLayoutAlgorithm;
 import org.eclipse.mylar.zest.layouts.algorithms.HorizontalLayoutAlgorithm;
@@ -99,15 +100,15 @@ public class SimpleSwingExample {
 	
     
 	protected static final LayoutAlgorithm [] algorithms = new LayoutAlgorithm [] {
-        new FadeLayoutAlgorithm (),
-        new SpringLayoutAlgorithm (),
-        new TreeLayoutAlgorithm (),
-        new TreeLayoutAlgorithm (),
-        new HorizontalTreeLayoutAlgorithm (), 
-        new RadialLayoutAlgorithm (),
-        new GridLayoutAlgorithm (),
-        new HorizontalLayoutAlgorithm(),
-        new VerticalLayoutAlgorithm (),
+        new FadeLayoutAlgorithm ( LayoutStyles.NONE ),
+        new SpringLayoutAlgorithm (LayoutStyles.NONE),
+        new TreeLayoutAlgorithm (LayoutStyles.NONE),
+        new TreeLayoutAlgorithm (LayoutStyles.NONE),
+        new HorizontalTreeLayoutAlgorithm (LayoutStyles.NONE), 
+        new RadialLayoutAlgorithm (LayoutStyles.NONE),
+        new GridLayoutAlgorithm (LayoutStyles.NONE),
+        new HorizontalLayoutAlgorithm(LayoutStyles.NONE),
+        new VerticalLayoutAlgorithm (LayoutStyles.NONE),
 	};
 	
 	static {

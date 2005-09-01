@@ -131,8 +131,8 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
    /**
     * Constructor.
     */
-    public FadeLayoutAlgorithm () {
-    	super ();
+    public FadeLayoutAlgorithm ( int styles ) {
+    	super ( styles );
 	}
 
     /**

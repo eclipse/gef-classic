@@ -20,6 +20,7 @@ import org.eclipse.mylar.zest.layouts.InvalidLayoutConfiguration;
 import org.eclipse.mylar.zest.layouts.LayoutAlgorithm;
 import org.eclipse.mylar.zest.layouts.LayoutEntity;
 import org.eclipse.mylar.zest.layouts.LayoutRelationship;
+import org.eclipse.mylar.zest.layouts.LayoutStyles;
 import org.eclipse.mylar.zest.layouts.algorithms.FadeLayoutAlgorithm;
 import org.eclipse.mylar.zest.layouts.algorithms.GridLayoutAlgorithm;
 import org.eclipse.mylar.zest.layouts.algorithms.HorizontalLayoutAlgorithm;
@@ -102,14 +103,14 @@ public class SimpleSWTExample {
 	
 	protected static ArrayList algorithms = new ArrayList();
 	{
-		algorithms.add( new SpringLayoutAlgorithm() );
-		algorithms.add( new FadeLayoutAlgorithm() );
-		algorithms.add( new TreeLayoutAlgorithm () );  
-		algorithms.add( new HorizontalTreeLayoutAlgorithm () );
-		algorithms.add( new RadialLayoutAlgorithm () );
-		algorithms.add( new GridLayoutAlgorithm () );
-		algorithms.add( new HorizontalLayoutAlgorithm() );
-		algorithms.add( new VerticalLayoutAlgorithm () );
+		algorithms.add( new SpringLayoutAlgorithm(LayoutStyles.NONE) );
+		algorithms.add( new FadeLayoutAlgorithm(LayoutStyles.NONE) );
+		algorithms.add( new TreeLayoutAlgorithm (LayoutStyles.NONE) );  
+		algorithms.add( new HorizontalTreeLayoutAlgorithm (LayoutStyles.NONE) );
+		algorithms.add( new RadialLayoutAlgorithm (LayoutStyles.NONE) );
+		algorithms.add( new GridLayoutAlgorithm (LayoutStyles.NONE) );
+		algorithms.add( new HorizontalLayoutAlgorithm(LayoutStyles.NONE) );
+		algorithms.add( new VerticalLayoutAlgorithm (LayoutStyles.NONE) );
 	}
 	
 	protected static ArrayList algorithmNames = new ArrayList();

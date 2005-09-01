@@ -23,6 +23,7 @@ import org.eclipse.mylar.zest.layouts.InvalidLayoutConfiguration;
 import org.eclipse.mylar.zest.layouts.LayoutAlgorithm;
 import org.eclipse.mylar.zest.layouts.LayoutEntity;
 import org.eclipse.mylar.zest.layouts.LayoutRelationship;
+import org.eclipse.mylar.zest.layouts.LayoutStyles;
 import org.eclipse.mylar.zest.layouts.Stoppable;
 
 import org.eclipse.mylar.zest.layouts.dataStructures.DisplayIndependentDimension;
@@ -102,6 +103,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	private boolean isLayoutPaused = false;
 	protected boolean runContinuously = false;
 
+	protected int layout_styles = 0;
 
 	private Object lock = new Object();
 	
@@ -109,7 +111,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	/**
 	 * Initializes the abstract layout algorithm.
 	 */
-	public AbstractLayoutAlgorithm() {
+	public AbstractLayoutAlgorithm(int styles) {
 		progressListeners = new ArrayList();
 		lastProgressEventFired = Calendar.getInstance();
 		widthToHeightRatio = 1.0;
@@ -118,6 +120,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 		relationshipsToRemove = new ArrayList();
 		entitiesToAdd = new ArrayList();
 		relationshipsToAdd = new ArrayList();
+		this.layout_styles = styles;
 	}
 	
 	
@@ -818,7 +821,11 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
             InternalNode node = nodes[i];
 			if ( !node.hasPreferredLocation() ) { 
 				node.setLocation( node.getInternalX(), node.getInternalY() );
-				node.setSize( node.getInternalWidth(), node.getInternalHeight() );
+				
+				if ( (layout_styles & LayoutStyles.NO_LAYOUT_SIZE) != 1 ) {
+					// Only set the size if we are supposed to
+					node.setSize( node.getInternalWidth(), node.getInternalHeight() );
+				}
 			}
 		}
 	}

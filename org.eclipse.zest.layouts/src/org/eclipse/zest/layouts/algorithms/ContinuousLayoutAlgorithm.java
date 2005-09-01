@@ -23,6 +23,10 @@ import org.eclipse.mylar.zest.layouts.dataStructures.InternalRelationship;
  */
 public abstract class ContinuousLayoutAlgorithm extends AbstractLayoutAlgorithm {
 	
+	public ContinuousLayoutAlgorithm(int styles) {
+		super(styles);
+	}
+
 	/**
 	 * The logic to determine if a layout should continue running or not
 	 */

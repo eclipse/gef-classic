@@ -67,8 +67,8 @@ public class TreeLayoutAlgorithm extends AbstractLayoutAlgorithm {
 	/**
 	 * Constructs a new TreeLayoutAlgorithm object.
 	 */
-	public TreeLayoutAlgorithm() {
-		super();
+	public TreeLayoutAlgorithm( int styles ) {
+		super( styles );
 	}
 	
 	/////////////////////////////////////////////////////////////////////////

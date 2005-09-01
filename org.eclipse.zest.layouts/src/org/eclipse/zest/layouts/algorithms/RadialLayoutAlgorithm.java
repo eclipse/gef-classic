@@ -33,8 +33,10 @@ public class RadialLayoutAlgorithm extends TreeLayoutAlgorithm {
 	private TreeLayoutAlgorithm treeLayout;
 	private List roots;
 	
-	public RadialLayoutAlgorithm () {
-		treeLayout = new TreeLayoutAlgorithm();
+	//TODO: This is a really strange pattern.  It extends tree layout and it contains a tree layout ? 
+	public RadialLayoutAlgorithm ( int styles ) {
+		super( styles );
+		treeLayout = new TreeLayoutAlgorithm( styles );
 		startDegree = 0;
 		endDegree = MAX_DEGREES;
 	}

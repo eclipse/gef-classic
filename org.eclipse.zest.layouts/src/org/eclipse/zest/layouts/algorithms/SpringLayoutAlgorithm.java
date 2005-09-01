@@ -177,8 +177,8 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     /**
      * Constructor.
      */
-    public SpringLayoutAlgorithm() {
-        super();
+    public SpringLayoutAlgorithm( int styles ) {
+        super( styles );
         srcDestToNumRelsMap = new HashMap();
         srcDestToRelsAvgWeightMap = new HashMap();
     }

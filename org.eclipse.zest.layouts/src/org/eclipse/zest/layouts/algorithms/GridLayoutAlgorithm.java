@@ -22,6 +22,7 @@ import org.eclipse.mylar.zest.layouts.dataStructures.InternalRelationship;
  * @author Casey Best and Rob Lintern
  */
 public class GridLayoutAlgorithm extends AbstractLayoutAlgorithm {
+	
 	private static final double PADDING_PERCENTAGE = 0.95;
 
 	protected int rowPadding = 0;
@@ -34,6 +35,12 @@ public class GridLayoutAlgorithm extends AbstractLayoutAlgorithm {
     double colWidth, rowHeight, offsetX, offsetY;
     int totalProgress;
     double h, w;
+    
+
+	public GridLayoutAlgorithm(int styles) {
+		super(styles);
+	}
+
     
     protected int getCurrentLayoutStep() {
     	// TODO: This isn't right

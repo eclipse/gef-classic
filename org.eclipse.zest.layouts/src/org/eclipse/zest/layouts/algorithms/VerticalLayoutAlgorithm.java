@@ -16,6 +16,10 @@ package org.eclipse.mylar.zest.layouts.algorithms;
  */
 public class VerticalLayoutAlgorithm extends GridLayoutAlgorithm {
 
+	public VerticalLayoutAlgorithm(int styles) {
+		super(styles);
+	}
+
 	/**
 	 * Calculates and returns an array containing the number of columns, followed by the number of rows
 	 */

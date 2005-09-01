@@ -28,8 +28,8 @@ public class HorizontalTreeLayoutAlgorithm extends TreeLayoutAlgorithm {
     /**
      * 
      */
-    public HorizontalTreeLayoutAlgorithm() {
-        super();
+    public HorizontalTreeLayoutAlgorithm( int styles ) {
+        super( styles );
     }
     
     protected void preLayoutAlgorithm(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider, double x, double y, double width, double height) {
