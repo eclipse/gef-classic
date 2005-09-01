@@ -125,8 +125,11 @@ protected boolean handleButtonUp(int button) {
  */
 protected boolean handleDoubleClick(int button) {
 	setFlag(FLAG_ENABLE_DIRECT_EDIT, false);
-	if (button == 1)
+	if (button == 1) {
+		//Prevent selection from happening later on mouse up
+		setFlag(FLAG_SELECTION_PERFORMED, true);
 		performOpen();
+	}
 	return true;
 }
 
@@ -154,11 +157,8 @@ protected boolean hasSelectionOccurred() {
 protected void performConditionalSelection() {
 	if (getSourceEditPart().getSelected() == EditPart.SELECTED_NONE)
 		performSelection();
-	else
-		if (getCurrentInput().getModifiers() == 0) {
-			setFlag(FLAG_ENABLE_DIRECT_EDIT, true);
-			setFlag(FLAG_SELECTION_PERFORMED, true);
-		}
+	else if (getCurrentInput().getModifiers() == 0)
+		setFlag(FLAG_ENABLE_DIRECT_EDIT, true);
 }
 
 /**
