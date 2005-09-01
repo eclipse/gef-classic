@@ -10,15 +10,41 @@
 <style>
 <!--
 body  { margin-left: 28; margin-right: 19 }
+.InteractionSummary { border:0; width:85%}
+.disabled { filter:alpha(opacity=40); -moz-opacity:0.4; opacity: 0.4; }
+.InteractionSummary THEAD TD { background-color:#800000;color:#FFFFFF;font-weight:BOLD;width:25%}
+.InteractionSummary TBODY TD { background-color:#FFFFD0; vertical-align:top}
+
 h1 { margin-left: -22 }
 h2 { margin-left: -22 }
 code {font-weight:bold}
 -->
 </style>
 </head>
-<body><h1>GEF Developer's Guide</h1>
-<h2><a name="Overview">Overview</a><br>
-<font face="Courier New" style="font-size: 8pt">org.eclipse.gef</font></h2>
+<body><h1>GEF Programmer's Guide<br>
+<font face="Courier New" style="font-size: 8pt">org.eclipse.gef</font></h1>
+<p><ul>
+	<li><a href="#Overview">Overview</a> - Description of the &quot;big picture&quot;</li>
+	<li>
+	<p dir="ltr"><a href="#When">When to Use</a> - How can GEF and the Eclipse 
+	Platform be used</li>
+<li><a href="#EditParts">EditParts</a> - An introduction to primary building 
+block of GEF</li>
+<li><a href="#GraphicalView">Graphical View</a> - How to create a Graphical View 
+of your Model</li>
+<li>
+<p dir="ltr"><a href="#Editing">Editing and Edit Policies</a> - Adding editing 
+support to your Graphical View</li>
+<li>
+<p dir="ltr"><a href="#Lifecycle">Editpart Lifecycle</a> - Interesting events to 
+know about</li>
+	<li>
+<p dir="ltr"><a href="#ToolPalette">Tools and Palette</a></li>
+	<li>
+	<p dir="ltr"><a href="#Interactions">Interactions</a> - the GEF interactions 
+	and the players involved</li>
+</ul>
+<h2><a name="Overview">Overview</a></h2>
 <p>Draw2d focuses on efficient painting and 
 layout of figures. The GEF plug-in adds editing on top of Draw2d. The purpose of 
 this framework is to:</p>
@@ -305,25 +331,27 @@ behavior to be selectively reused across different editpart implementations. Als
 can change dynamically, such as when the layouts or routing methods change.</p>
 <p>
 When any of the above editing 
-methods are called (except performRequest()), the editpart delegates to its 
+methods are called (except <code>performRequest()</code>), the editpart delegates to its 
 policies to satisfy the request. Depending on the method, the editpart may stop 
 at the first policy that handles a request, or it may allow each policy a chance to 
 contribute. Refer to each method's javadoc for more details.</p>
 <p>
+During the editpart's creation, <code>createEditPolicies()</code> is called and the editpart 
+should install the appropriate policies.
 EditPolicies are installed using <i>roles</i>, which are nothing more than 
-string identifiers that serve as keys. GEF 
+identifiers that serve as keys. GEF 
 provides several identifiers for commonly used roles. Roles become important 
 when an editpart needs to have its policies removed or swapped out. The rest of 
-the time it is just a good habit. GEF also provides several abstract policies 
-for use with these roles. These policies must be extended to fill in the missing 
-pieces that work with the application's specific model. EditPolicies are 
+the time it is just a good habit. GEF also provides several policies 
+for use with these roles. Many of these policies must be extended to fill in the missing 
+pieces that work with the application's model. EditPolicies are 
 discussed in more detail in the section on <a href="#Interactions">interactions</a>.</p>
 <h3>
 Commands</h3>
 <p>
 Commands are passed around throughout editing. They are used to 
 encapsulate and combine changes to the application's model.</p>
-<p dir="ltr">
+<p>
 An application has 
 a single command stack. Commands must be executed using the command stack rather than 
 directly calling execute.</p>
@@ -419,7 +447,7 @@ perform certain actions. These actions could include:</p>
 <p>A tool is activated by setting it on the EditDomain. There is only 
 one active tool for all viewers in the domain. If a palette is being used, 
 selecting a tool in the palette will activate that tool.</p>
-<h3>The Selection Tool</h3>
+<h3><a name="Tools/Selection">The Selection Tool</a></h3>
 <p>The Selection Tool is the primary tool used in GEF and is often the default 
 for an application. The selection tool is unique in its ability to delegate. Tt obtains a helper 
 called a <code>DragTracker</code> from an editpart or handle below the mouse when a drag 
@@ -438,22 +466,544 @@ viewer's selection. Trackers even handle events like double-click.</p>
 <p>For more on the selection tool and trackers, see the section on
 <a href="#Interactions/Selection">Selection Interaction</a>.</p>
 <h3>Palette</h3>
-<p>&nbsp;</p>
+<p>GEF's <code>PaletteViewer</code> provides an SWT Control allowing the user to select 
+which Tool is active. It can also be a drag source for dragging object from the 
+palette directly into the diagram. Use of the palette is optional, but common.</p>
+<p>The palette can be placed anywhere, including inside the editor. 
+GEF provides a Workbench View for hosting the Palette. Also, a custom Composite, 
+the <code>FlyoutPaletteComposite</code>, will manage the placement of the 
+PaletteViewer beside a primary Control. This composite is 
+used as the editor's primary control in the Logic Example, shown below:</p>
+<p><img src="images/logiceditor.gif"/></p>
+<p dir="ltr">The PaletteViewer displays a Palette model, which starts with the 
+<code>PaletteRoot</code>. The root organizes the contents using either drawers, 
+which open and close, or groups, which do not. Each grouping element then 
+contains Palette Entries. An Entry defines either a tool or template for the 
+User. Templates are described below in <a href="#Interactions/Creation">Creation</a>.</p>
+<p dir="ltr">The Palette provides several display modes, such as icon-only. You 
+can also provide a customizer to allow the user to modify or create palette 
+content.</p>
 <h2><a name="Interactions">Types of Interactions in GEF</a></h2>
-<p>&nbsp;</p>
-<h3><a name="Interactions/Selection">Selection Interaction</a></h3>
-<p>&nbsp;</p>
-<h3>Basic Interactions</h3>
-<p>&nbsp;</p>
-<h3>Creation</h3>
-<p>&nbsp;</p>
-<h3>Moving things around</h3>
-<p>&nbsp;</p>
+<p>This section discusses the various types of interactions that are 
+included in the framework, and which parts of the framework are involved in 
+supporting the interaction. An interaction can be anything that affects the 
+model or the UI state. Many interactions are graphical but some are not. An 
+interaction may include:</p>
+<ul>
+	<li>Invoking some Action (usually displayed on the toolbar, menubar, or 
+	popup)</li>
+	<li>Clicking on something</li>
+<li>
+<p>Clicking and dragging something</p></li>
+	<li>Hovering over something (pausing the mouse for a certain time)</li>
+	<li>
+	<p>Dropping something dragged from another source (native 
+	Drag-N-Drop)</li>
+	<li>Pressing certain keys</li>
+</ul>
+<p>This section discusses the participants involved in each interaction and what 
+they do. This can include:</p>
+<ul>
+	<li>Tools which process input.</li>
+	<li>Actions which are invoked.</li>
+	<li>The IDs and instances of Requests that are sent to editparts by tools or 
+	actions. ID's are defined on the <code>RequestConstants</code> class.</li>
+	<li>The EditPolicy roles designated to handle specific types of requests. 
+	These are just constants defined on the EditPolicy interface.</li>
+	<li>
+	<p>Any EditPolicy implementations provided in GEF for use with the 
+	interaction.</li>
+</ul>
+<h3><a name="Interactions/Selection">Selection</a></h3>
+<table class="InteractionSummary">
+	<thead>
+	<tr>
+		<td >Tools</td>
+		<td>Requests</td>
+		<td>Edit Policies 
+		and Roles</td>
+		<td>Actions</td>
+	</tr></thead>
+	<tr>
+		<td>SelectionTool<br>
+		MarqueeTool<br>
+		SelectEditPartTracker<br>
+		<br>
+		*GraphicalViewerKeyHandler</td>
+		<td>SelectionRequest<br>
+		DirectEditRequest<br>
+		REQ_SELECTION_HOVER<br>
+		REQ_OPEN<br>
+		REQ_DIRECT_EDIT</td>
+		<td>SelectionEditPolicy<br>
+		DirectEditPolicy<br>
+		SELECTION_FEEDBACK_ROLE</td>
+		<td>SelectAllAction</td>
+	</tr>
+</table>
+<p>No interaction is more basic or universal than selecting items in a viewer. Most of the interactions discussed here operate on what 
+is currently selected. Yet, selection is a complex topic and there are several 
+steps 
+involved. The Selection Tool was <a href="#Tools/Selection">briefly discussed</a> 
+in the above section on tools.</p>
+<p>Let's first define selection. Selection is a List of EditParts 
+maintained by an EditPartViewer. Changes to the selection are made by invoking 
+methods on the viewer, and not by modifying the list directly. The selection is 
+never empty. If the selection is cleared, the viewer's <i>contents</i> editpart 
+becomes the selection. The last editpart in the list is considered the <i>
+primary</i> selection.</p>
+<p>Closely related to selection is <i>focus</i>. Focus is a single 
+editpart maintained by the EditPartViewer. Focus is used when manipulating 
+selection via keyboard. By moving focus, the user can navigate from one editpart 
+to another without changing the current selection. The user can add/remove the 
+focused editpart from the selection. If focus is not explicitly set, it is the 
+same as the primary selected part.</p>
+<table border="0" id="table7" cellspacing="0" cellpadding="0">
+	<tr>
+		<td valign="top"><img src="images/selectionhandles.gif"/><br>
+		<i><span style="font-size: 8pt">Selection Handles</span></i></td>
+		<td valign="top">The editpart is responsible for showing its selected and focused 
+state to the user. The viewer tells editparts when they are selected, focused, 
+or have primary selection. Typically, selection is shown by one or more 
+EditPolicies adding selection handles. The handles shown here on the LED and 
+		circuit parts were added by 
+<code>ResizableEditPolicy</code>. The black handles indicate primary selection.<p>
+		Because selection handles are related to how a part can be dragged or 
+		sized, which in turn is related to the containing figure's layout 
+		manager, it is usually the parent part's editpolicy that installs a 
+		policy on the children for displaying the appropriate handles. For 
+		example, an XYLayoutEditPolicy would install a ResizableEditPolicy on 
+		each child of its host editpart.</p>
+		<p>Connections may&nbsp; <code>WireEditPart</code> in the Logic Example also changes its figure's line width 
+		to help indicate selection. Handles for connections are contribute by 
+		both <code>EndpointEditPolicy</code> and <code>BendpointEditPolicy</code>.</td>
+	</tr>
+	</table>
+<p><b>Selection Targeting and Feedback</b></p>
+<p>For selection to occur, the Selection Tool must first target an 
+editpart using a <code>SelectionRequest</code>. In rare cases, an editpart is 
+not selectable and targeting &quot;falls through&quot;, hitting the editpart below. During 
+this continuous mouse targeting, the Selection Tool invokes showFeedback() on the 
+current target editpart by passing it a <code>SelectionRequest</code> of type REQ_SELECTION. It is recommended 
+that most applications ignore this request since showing and hiding feedback as 
+the mouse moves across a diagram can be very distracting to the user. For this 
+reason, there is an additional feedback request sent with the type 
+REQ_SELECTION_HOVER whenever the user pauses the mouse over an editpart. Often 
+an editpart will display a popup shell similar to a tooltip displaying 
+additional information about the part. The SELECTION_FEEDBACK_ROLE identifier 
+can be used when installing policies which show such feedback.</p>
+<p>A benefit to using these feedback requests is that the Selection Tool is 
+smart about asking parts to erase feedback. For example, if the user starts 
+dragging, you would not want a popup message to stay around. Also, selection 
+feedback will not occur when other tools are active.</p>
+<p><b>Selection via a DragTracker</b></p>
+<p>Once the user actually presses down on the mouse, the selection 
+target will be asked for a <code>DragTracker</code>. To allow selection, return 
+a <code>SelectEditPartTracker</code> or its subclass <code>DragEditPartsTracker</code>, 
+depending on whether dragging is permitted. These trackers will modify selection 
+at the appropriate time, taking into consideration the SHIFT and CTRL modifier 
+keys.</p>
+<p>The contents editpart should <b>never</b> be selected by a tracker. 
+The reason being that it should never be part of a multiple selection. 
+Therefore, it should return either a <code>DeselectAllTracker</code>, 
+or the <code>MarqueeDragTracker</code>. Remember, the selection is never empty 
+so the contents part will be the selection when all other parts are not 
+selected.</p>
+<p><b>Other Selection Requests</b></p>
+<p>Editparts may be asked to perform two additional Requests that are 
+related to selection. These requests are related to selection in that they are 
+interactions associated with clicking the primary mouse button. The first is a 
+double-click, which is called an <i>open </i>(REQ_OPEN). This interaction can be used for editparts that 
+can be opened, expanded, or may display a dialog. The other interaction is 
+called a <i>direct edit </i>(REQ_DIRECT_EDIT). An example of direct editing is when the user 
+wishes to modify the text of a label. The user must first select the part, and 
+then click on it again after it is selected. After a brief delay (used to rule 
+out a double-click), the request is sent.</p>
+<p><b>Selection Actions</b></p>
+<p>GEF provides a <code>SelectAllAction</code>. Given a viewer, this action 
+selects all of the contents part's children when invoked.</p>
+<p><b>Selection using the Keyboard</b></p>
+<p>Keyboard selection is supported in graphical viewers by installing a 
+<code>GraphicalViewerKeyHandler</code>. The key handler only receives key events 
+sent to it by the current tool. The Selection Tool forwards key forwards the 
+events necessary for selection.</p>
+<p><img src="images/important.gif" align="left"/>Drag trackers are not needed 
+inside GEF's TreeViewer. The native tree handles selection already, and dragging 
+of treeitems is processed internally using native DND.</p>
+<h3>Basic Model Operations (Delete)</h3>
+<table class="InteractionSummary">
+	<thead><tr>
+		<td class=disabled>Tools</td>
+		<td>Requests</td>
+		<td>Edit Policies 
+		and Roles</td>
+		<td>Actions</td>
+	</tr></thead>
+	<tr>
+		<td class=disabled>&nbsp;</td>
+		<td>REQ_DELETE</td>
+		<td>COMPONENT_ROLE<br>
+		CONNECTION_ROLE<br>
+		RootComponentEditPolicy</td>
+		<td>DeleteAction</td>
+	</tr>
+</table>
+<p><img src="images/interactdelete.gif"></p>
+<p>The only universal interaction that all GEF applications should 
+support is delete. The workbench places a global delete action on the edit menu. 
+All applications should register a handler such as the included DeleteAction.</p>
+<p>The DeleteAction sends a <code>GroupRequest</code> of type REQ_DELETE to the viewer's 
+current selection. All editparts should have an editpolicy which either supports 
+or prevents delete from occurring.</p>
+<p>Every editpart is either a component or a connection. A component 
+is a basic editpart that is the child of a parent. A connection is slightly 
+different because it is owned by its source and target.</p>
+<p>The COMPONENT_ROLE key is used when installing an editpolicy on 
+a component editpart. Applications can extend the 
+provided 
+<code>ComponentEditPolicy</code> to fill in the commands for deletion. The 
+<code>RootComponentEditPolicy</code> should be used on the contents editpart. 
+This policy prevents the diagram itself from being deleted. Here, &quot;root&quot; refers 
+to the model root and is not related to the viewer's root editpart.</p>
+<p>The CONNECTION_ROLE key is used when installing a policy on a 
+connection editpart. Applications can extend the provided <code>ConnectionEditPolicy</code> 
+to fill in the command for deletion.</p>
+<p>These editpolicies should handle the tasks most closely associated 
+with the model. In the logic example, this role is responsible for the LED's 
+increment and decrement behavior, which adds or subtracts one from the LED's 
+value.</p>
+<p><img src="images/important.gif" align="left"/>Implementing the command that 
+performs delete can be difficult, especially when connections are involved. The 
+command must consider whether the object being deleted has connections, or if 
+children of the object being deleted have connections, and delete the 
+connections as well. But, you don't want to delete the same connection twice in 
+cases where both source and target nodes are being deleted as part of multiple 
+selection. The logic example's delete command addresses all of these concerns.</p>
+<h3><a name="Interactions/Creation">Creation</a></h3>
+<table class="InteractionSummary">
+	<thead>
+	<tr>
+		<td >Tools</td>
+		<td >Requests</td>
+		<td >Edit Policies 
+		and Roles</td>
+		<td >Actions</td>
+	</tr>
+	</thead>
+	<tr>
+		<td >CreationTool<br>
+&nbsp;</td>
+		<td >REQ_CREATE<br>
+		Create</td>
+		<td rowspan="2" >CONTAINER_ROLE<br>
+		LAYOUT_ROLE<br>
+		TREE_CONTAINER_ROLE<br>
+		ContainerEditPolicy<br>
+		LayoutEditPolicy</td>
+		<td rowspan="2" >CopyTemplateAction<br>
+		PasteTemplateAction</td>
+	</tr>
+	<tr>
+		<td colspan="2" >TemplateTransferDropTargetListener<br>
+		TemplateTransferDragSourceListener</td>
+	</tr>
+</table>
+<p><img src="images/interactcreate.gif"/></p>
+<p>A <code>CreateRequest</code> is used to ask an editpart to create a new child. The request 
+is identified by the ID REQ_CREATE. Creation can occur through three different 
+methods: clicking, dragging, or pasting. The request provides the location, 
+object, and object type being created. The object and its type are provided by a 
+<code>CreationFactory</code>. The request hides the factory and provides access 
+to the created object directly, caching it in case multiple editpolicies all 
+need access to the created object. In some cases, the request will contain a 
+size attribute.</p>
+<p><b>Producing CreateRequests</b></p>
+<p>The creation tool provides a &quot;loaded cursor&quot; mode which will attempt 
+to create an object at the mouse location when clicking. If the mouse is pressed 
+and dragged, the tool will track the size of the rectangle defined by the user. 
+The creation tool can be placed on the palette using a <code>CreationToolEntry</code>. 
+When the mouse is released, the tool will either repeat the process or switch 
+back to the default tool.</p>
+<p>Creation can also be performed using native Drag-and-Drop. The drag 
+source can be anything, but it is typically the PaletteViewer. A palette entry 
+taking a <i>template</i> is added to the palette. The <code>TemplateTransfer</code> is used 
+to transfer the template, which is just an Object, from the drag source to the 
+drop target. A TemplateTransferDragSourceListener must be added to the 
+PaletteViewer. Similarly, the viewer must have a 
+TemplateTransferDropTargetListener. Since a template is model-specific, the 
+application must extend the drop target listener to convert the template into a 
+CreationFactory for the request.</p>
+<p>A special palette entry called the <code>CombinedTemplateCreationEntry</code> 
+supports both the creation tool and drag-and-drop style of creation.</p>
+<p><b>Consuming CreateRequests</b></p>
+<p>The target editpart is responsible for showing feedback and 
+returning the command for creation. GEF provides two types of policies for 
+handling creation. One type of policy is specific for the view in which creation 
+occurs, either graphical or tree-based. This edit policy corresponds to either 
+the LAYOUT_ROLE or the TREE_CONTAINER_ROLE.</p>
+<p>The other type of edit 
+policy is specific to only the model, should applications wish to separate out 
+the potion that is shared between graphical and non-graphical creation. In most 
+cases, any kind of shared logic is in the command implementations, making this 
+type of policy unnecessary.</p>
+<p>A <code>LayoutEditPolicy</code> handles the 
+process of creation based on the container's layout manager. For example, if the 
+XYLayout is being used, then the resulting Command will need to associate an (x, 
+y, w ,h) constraint with the created child. Layouts that don't use constraints 
+would require that the index of the drop location be determined. GEF provides 
+abstract policies for the basic layout types.</p>
+<p>The <code>TreeContainerEditPolicy</code> is used for supporting creation in a 
+tree-based viewer. The policy is responsible for determining the index of 
+creation and showing feedback.</p>
+<p>The <code>PasteTemplateAction</code> can be used to create objects 
+without the mouse. This is important for accessibility. The <code>CopyTemplateAction</code> 
+is added to the Palette. When the user invokes this action, an internal 
+mechanism copies the transfer so that it can be pasted in a viewer. When paste 
+occurs, the PasteTemplateAction retrieves the template object, constructs a 
+CreateRequest, and sends it to the selected editpart. Mouse location is not 
+available in this interaction. Paste is only enabled when the selection is 
+exactly one editpart.</p>
+<p><img src="images/important.gif" align="left"/>When a creation command is 
+redone, it must restore the original child that was created the first time it 
+was executed. If it creates a new object, then subsequent commands will fail on 
+redo when they try to modify the originally created child.</p>
+<h3>Moving and Resizing</h3>
+<table class="InteractionSummary">
+	<thead>
+	<tr>
+		<td >Tools</td>
+		<td >Requests</td>
+		<td >Edit Policies 
+		and Roles</td>
+		<td >Actions</td>
+	</tr>
+	</thead>
+	<tr>
+		<td >DragEditPartsTracker<br>
+		ResizeTracker</td>
+		<td >ChangeBoundsRequest<br>
+		AlignmentRequest<table border="0" width="100%" id="table8" cellspacing="0" cellpadding="0">
+			<tr>
+				<td>REQ_MOVE<br>
+		REQ_ADD<br>
+		REQ_ORPHAN</td>
+				<td width="5">&nbsp;</td>
+				<td>REQ_CLONE<br>
+		REQ_ALIGN<br>
+				REQ_RESIZE</td>
+			</tr>
+		</table>
+		</td>
+		<td >LayoutEditPolicy<br>
+		ResizableEditPolicy<br>
+		ContainerEditPolicy</td>
+		<td >AlignmentAction<br>
+		MatchSizeAction</td>
+	</tr>
+</table>
+<p><table cellspacing="0" cellpadding="0" width="80%"><tr><td align="right"><img src="images/interactmove.gif"/><br>
+	<b><i>move interaction</i></b></td><td align="right"> <img src="images/interactresize.gif"/><br>
+	<b><i>resize interaction</i></b></td></tr></table></p>
+<p>The DragEditPartsTracker extends basic selection behavior to allow 
+the selected parts to be dragged within their graphical viewer. Dragging the 
+selected parts can result in three potential interactions: move, reparent, and 
+clone. All three use the <code>ChangeBoundsRequest</code>, which extends GroupRequest to 
+include a size delta, move delta, and mouse location.</p>
+<p>While dragging the selection, if the tracker targets the part's 
+original parent, the request is typed as <code>REQ_MOVE</code>. If the target changes, the 
+interaction becomes a reparent. For a reparent, a request of type <code>REQ_ORPHAN</code> 
+is sent to the old parent, while the new target is sent a request of type <code>REQ_ADD</code>. When the CTRL key is pressed (ALT on 
+the Mac), the operation is always a <code>REQ_CLONE</code>, which is only sent to the target 
+part.</p>
+<p>All of these requests are related in that they require the target 
+to process a rectangle and a mouse location. The LayoutEditPolicy is responsible 
+for handling each of these request types. For layouts which use constraints, 
+each part's original bounds is taken and modified by the size and move deltas to 
+determine a new bounds, for which a corresponding constraint is found. For 
+index-based layouts, the mouse location is used to establish the new index.</p>
+<p>A <code>ContainerEditPolicy</code> can optionally be used to contribute 
+additional commands (not related to the layout) during ADD, ORPHAN, and CLONE 
+requests.</p>
+<p><b>Resizing</b></p>
+<p>Resizing falls under the same category as changing bounds. Note 
+that when resizing either the top or left sides, the location of the part is 
+also changed. Resizing only makes sense for layouts with constraints, such as 
+XYLayout. The <code>ResizableEditPolicy</code> adds up to eight resize handles 
+to its host. When the Selection Tool is clicked on one of these resize handles, 
+a <code>ResizeTracker</code> performs a resize on the selected parts 
+understanding &quot;resize&quot;. SHIFT and 
+CTRL key modifiers can be used to constrain the resize operation.</p>
+<p>The types of handles available on an editpart depend on the layout 
+manager in which its figure is placed. For example, parts inside a table might 
+have handles for adjusting insets, padding, column span, or other attributes. Some 
+layouts don't need any handles, but four corner handles should be added just to 
+indicate selection. Dragging these handles would be the same as dragging the 
+part itself.</p>
+<p>Because of the relationship between handles and layouts, it is 
+recommended that the <code>PRIMARY_DRAG_ROLE</code> editpolicy be installed by the parent's 
+<code>LayoutEditPolicy</code>, which defines abstract methods for this 
+purpose. If a container changes layout managers during editing, typically the 
+layout policy gets swapped with one for the new layout manager. The new 
+policy then replaces the stale <code>PRIMARY_DRAG_ROLE</code> policies on each child.</p>
+<p>The <code>MatchSizeAction</code> matches the size of the selected 
+parts to that of the primary selected part's size. This action is implemented in 
+a way similar to manually resizing the individual parts, and it uses the same 
+request and type.</p>
+<p>The <code>AlignmentAction</code> 
+uses an <code>AlignmentRequest</code>, which extends ChangeBoundsRequest. When using 
+a ChangeBoundsRequest, the part's current placement in the Control (in 
+absolute coordinates) is passed to the request, which then returns a modified 
+version. Using this pattern, alignment is able to adjust each part's rectangle by 
+different amounts. In most cases, alignment can be treated no differently than a 
+move. This action aligns all selected parts with one of the edges of the primary 
+selected part.</p>
 <h3>Connection Creation</h3>
-<p>&nbsp;</p>
+<table class="InteractionSummary" id="table4">
+	<thead>
+	<tr>
+		<td >Tools</td>
+		<td >Requests</td>
+		<td >Edit Policies 
+		and Roles</td>
+		<td class=disabled>Actions</td>
+	</tr>
+	</thead>
+	<tr>
+		<td>ConnectionCreationTool<br>
+		ConnectionDragCreationTool</td>
+		<td>CreateConnectionRequest<br>
+		REQ_CONNECTION_START<br>
+		REQ_CONNECTION_END</td>
+		<td>GraphicalNodeEditPolicy<br>
+		NODE_ROLE</td>
+		<td class="disabled">&nbsp;</td>
+	</tr>
+</table>
+<p><img src="images/interactconnect.gif" align="left"/></p>
+<p>The <code>ConnectionCreationTool</code> is used to create a new connection between nodes. This interaction requires the user to activate the tool (typically 
+using the palette), and then click on two editparts supporting 
+connections. The creation can be aborted by pressing the ESC key. The 
+<code>ConnectionDragCreationTool</code> is similar, but the interaction is a single mouse 
+drag. This tool can be returned as the drag tracker from a handle or even an 
+editpart in some cases.</p>
+<p>The process is separated into two parts. The first part is defining the <i>
+source</i> 
+of the connection. The source is a node, but it may also include a specific 
+&quot;port&quot; on that node. The tool uses a <code>CreateConnectionRequest</code> 
+identified by REQ_CONNECTION_START to determine the target editpart and ask it 
+for a command. However, this is only the first half of creating the connection, 
+so the command is not complete yet. The tool will not attempt to execute this 
+command or even ask if it is executable. This command is only used to pass 
+information to the target editpart.</p>
+<p>The second part is to define the target node for the connection. The tool 
+uses the same request but retypes it as REQ_CONNECTION_END. The command returned 
+by the source node is now stored on the request and passed during the second 
+part of the interaction. The target is asked for the final command that performs 
+the entire creation of the connection. Any command can be returned at this 
+point, including the command provided on the request, updated with the target 
+node information. At this point, enablement will be determined by asking the 
+command if it can be executed. Creation ends by executing the command.</p>
+<p>During the first and second steps, the editpart being targeted as the source 
+or target node is asked to show <b>target</b> feedback. The editpart might 
+visually highlight various attachment points or simply indicate that it is the 
+target.</p>
+<p>The source node editpart is also asked to show <b>source</b> feedback during creation. 
+The provided <code>GraphicalNodeEditPolicy</code> can be used to display creation feedback. 
+This policy will create a connection feedback figure, and set its anchors using 
+the <code>NodeEditPart</code> interface. This mix-in interface for 
+<code>GraphicalEditPart</code> is used both during creation feedback, and when the 
+connection's editpart is created, to provide anchor points.</p>
+<p>The &quot;source&quot; and &quot;target&quot; nodes should not be confused with 
+&quot;source&quot; and &quot;target&quot; feedback. For feedback, &quot;source&quot; simply means show the 
+feedback for the connection, while &quot;target&quot; means highlight the mouse target.</p>
 <h3>Editing Connections</h3>
-<p>&nbsp;</p>
+<table class="InteractionSummary" id="table5">
+	<thead>
+	<tr>
+		<td >Tools</td>
+		<td >Requests</td>
+		<td>Edit Policies and Roles<Actions</td>
+		<td class=disabled>Actions</td>
+	</tr>
+	</thead>
+	<tr>
+		<td>ConnectionEndpointTracker</td>
+		<td>ReconnectRequest<br>
+		REQ_RECONNECT_SOURCE<br>
+		REQ_RECONNECT_TARGET</td>
+		<td>ConnectionEndpointEditPolicy<br>
+		ENDPOINT_ROLE<br>
+		GraphicalNodeEditPolicy<br>
+		NODE_ROLE</td>
+		<td class=disabled>&nbsp;</td>
+	</tr>
+</table>
+<p><img src="images/interactreconnect.gif" align="left"/></p>
+<p>By dragging the endpoints of an existing connection, its source or target can 
+be changed. This includes changing &quot;ports&quot; on the same node editpart. This 
+interaction is called reconnecting.</p>
+<p>A connection adds handles at its endpoints by installing a <code>
+ConnectionEndpointEditPolicy</code> with the ENDPOINT_ROLE. Each of these handles returns a 
+tracker for reconnecting the corresponding end of the connection. This policy is 
+also responsible for showing the connections feedback during the interaction. 
+This policy does not return commands and therefore is not abstract. The 
+reconnect command comes from the new target node.</p>
+<p>As the source or target endpoint is dragged, the tracker sends 
+source feedback requests to the connection, and target feedback requests to the 
+current target if there is one. The tracker uses a <code>ReconnectRequest</code> 
+typed as either a source or target reconnect.</p>
+<p>The target node's GraphicalNodeEditPolicy is responsible for showing target 
+feedback and returning the actual command to perform the reconnect. As with 
+creation, the target editpart should implement the <code>NodeEditPart</code> 
+interface, which allows the ConnectionEndpointEditPolicy to snap the feedback to 
+the nodes anchor(s).</p>
 <h3>Bending Connections</h3>
+<table class="InteractionSummary" id="table6">
+	<thead>
+	<tr>
+		<td >Tools</td>
+		<td >Requests</td>
+		<td >Edit Policies 
+		and Roles</td>
+		<td class=disabled>Actions</td>
+	</tr>
+	</thead>
+	<tr>
+		<td>ConnectionBendpointTracker</td>
+		<td>BendpointRequest<br>
+		REQ_MOVE_BENDPOINT<br>
+		REQ_CREATE_BENDPOINT</td>
+		<td>BendpointEditPolicy<br>
+		CONNECTION_BENDPOINTS_ROLE</td>
+		<td class=disabled>&nbsp;</td>
+	</tr>
+</table>
+<table cellspacing="0" cellpadding="0"><tr><td>
+<p><img src="images/interactbend.gif" align="right"/>Certain connection routers 
+accept routing constraints (typically a list of 
+<code>BendPoint</code>s). Install a <code>BendpointEditPolicy</code> using the 
+<code>CONNECTION_BENDPOINTS_ROLE</code> for editing the connections routing 
+constraints. This editpolicy requires a router that takes a List of BendPoints. 
+During selection, the policy will add normal handles to existing bendpoints on 
+the connection. It adds smaller handles where the user can create new 
+bendpoints.</p>
+<p>Each handle provides a <code>ConnectionBendpointTracker</code>. 
+This tool sends a <code>BendpointRequest</code> back to the connection editpart 
+for showing feedback and obtaining the command to perform the bend. For existing 
+bendpoints, the request is typed as <code>REQ_MOVE_BENDPOINT</code>, otherwise 
+it is <code>REQ_CREATE_BENDPOINT</code>. It is up to the editpolicy to determine 
+when moving a bendpoint back to its natural placement should result in its 
+removal.</p>
+		</td></tr></table>
+<table cellspacing="0" cellpadding="0" id="table9"><tr><td>
+	<p><img src="images/interactbendindex.gif" align="left"/>This 
+	picture shows a selected connection in the Logic Example with 
+a single Bendpoint. The <code>ShortestPathConnectionRouter</code> has inserted 
+additional bends in the connection to avoid figures. The handles for creating and moving 
+bendpoints are labeled with the index that the BendpointRequest will contain. The 
+index is the same as the current (or eventual) index of the bendpoint in the 
+	routing constraint's List.</p>
+		</td></tr></table>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 </body>

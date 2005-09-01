@@ -4,8 +4,8 @@
 <!-- Define the top level topics                                                   -->
 <!-- ============================================================================= -->
 
-<toc label="GEF and Draw2d Developer Guide" href="welcome.html">
-	<topic label="Programmer&apos;s Guide" href="index.html">
+<toc label="GEF and Draw2d Plug-in Developer Guide" topic="index.html">
+	<topic label="Programmer&apos;s Guide" href="guide.html">
 		<link toc="topics_Guide.xml" />
 	</topic>
 	<topic label="API Reference" href="reference.html">
