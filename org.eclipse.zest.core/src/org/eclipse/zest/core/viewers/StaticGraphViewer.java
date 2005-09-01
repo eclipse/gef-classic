@@ -10,9 +10,18 @@
  *******************************************************************************/
 package org.eclipse.mylar.zest.core.viewers;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.StructuredViewer;
+import org.eclipse.mylar.zest.core.ZestStyles;
+import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel;
+import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelEntityFactory;
+import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelFactory;
+import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelFactory;
+import org.eclipse.mylar.zest.core.internal.graphviewer.StaticGraphViewerImpl;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Widget;
 
@@ -24,6 +33,43 @@ import org.eclipse.swt.widgets.Widget;
  */
 public class StaticGraphViewer extends StructuredViewer {
 
+	StaticGraphViewerImpl viewer = null;
+	private IGraphModelFactory modelFactory = null;
+	private GraphModel model;
+	
+	public StaticGraphViewer( Composite composite, int style ) {
+		this.viewer = new StaticGraphViewerImpl(composite, style);
+		hookControl( this.viewer.getControl() );
+	}
+	
+	
+	public void setContentProvider(IContentProvider contentProvider) {
+		if (contentProvider instanceof IGraphContentProvider) {
+			super.setContentProvider(contentProvider);
+		} else if ( contentProvider instanceof IGraphEntityContentProvider ) {
+			super.setContentProvider( contentProvider );
+		} else {
+			throw new IllegalArgumentException("Invalid content provider, only IGraphContentProvider and IGraphEntityContentProvider are supported.");
+		}
+	}
+	
+	protected void inputChanged(Object input, Object oldInput) {
+		boolean highlightAdjacentNodes = ZestStyles.checkStyle(viewer.getStyle(), ZestStyles.HIGHLIGHT_ADJACENT_NODES);
+		if ( getContentProvider() instanceof IGraphContentProvider ) {
+			modelFactory = new GraphModelFactory( this, highlightAdjacentNodes );
+		}
+		else if ( getContentProvider() instanceof IGraphEntityContentProvider ) {
+			modelFactory = new GraphModelEntityFactory( this, highlightAdjacentNodes );
+		}
+		model = modelFactory.createModelFromContentProvider( input );
+
+		// set the model contents (initializes the layout algorithm)
+		model.setDirectedEdges(ZestStyles.checkStyle(viewer.getStyle(), ZestStyles.DIRECTED_GRAPH)); 
+		viewer.setContents(model, modelFactory);	
+	}
+	
+	
+	
 	protected Widget doFindInputItem(Object element) {
 		// TODO Auto-generated method stub
 		return null;
@@ -41,7 +87,7 @@ public class StaticGraphViewer extends StructuredViewer {
 
 	protected List getSelectionFromWidget() {
 		// TODO Auto-generated method stub
-		return null;
+		return new ArrayList(0);
 	}
 
 	protected void internalRefresh(Object element) {
@@ -61,7 +107,7 @@ public class StaticGraphViewer extends StructuredViewer {
 
 	public Control getControl() {
 		// TODO Auto-generated method stub
-		return null;
+		return viewer.getControl();
 	}
 
 }

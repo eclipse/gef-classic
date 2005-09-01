@@ -42,6 +42,7 @@ import org.eclipse.mylar.zest.core.widgets.IBreadCrumbListener;
 import org.eclipse.mylar.zest.layouts.InvalidLayoutConfiguration;
 import org.eclipse.mylar.zest.layouts.LayoutEntity;
 import org.eclipse.mylar.zest.layouts.LayoutRelationship;
+import org.eclipse.mylar.zest.layouts.LayoutStyles;
 import org.eclipse.mylar.zest.layouts.algorithms.GridLayoutAlgorithm;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -224,7 +225,7 @@ public class NestedGraphViewerImpl extends ThreadedGraphicalViewer
 			Arrays.sort(entities, new NodeChildrenComparator());
 
 			//System.out.println("doGridLayout() " + nodeToLayout + ": " + width + "," + height);
-			GridLayoutAlgorithm layout = new GridLayoutAlgorithm();
+			GridLayoutAlgorithm layout = new GridLayoutAlgorithm(LayoutStyles.NONE);
 			try {
 				layout.setEntityAspectRatio(width / height);
 				layout.setRowPadding(20);

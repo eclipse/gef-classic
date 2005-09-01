@@ -19,7 +19,10 @@ import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelFactory;
 import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphEditPartFactory;
 import org.eclipse.mylar.zest.layouts.InvalidLayoutConfiguration;
 import org.eclipse.mylar.zest.layouts.LayoutAlgorithm;
+import org.eclipse.mylar.zest.layouts.LayoutStyles;
 import org.eclipse.mylar.zest.layouts.algorithms.TreeLayoutAlgorithm;
+import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -32,9 +35,20 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 	private IGraphModelFactory modelFactory = null;
 	private boolean allowMarqueeSelection;
 	private boolean allowPanning;
+	private int style = 0;
 	
 	public StaticGraphViewerImpl(Composite composite, int style) {
 		super(composite);
+		this.style = style;
+	}
+	
+	
+	/**
+	 * Gets the style on the SpringGraphViewer
+	 * @return
+	 */
+	public int getStyle( ) {
+		return this.style;
 	}
 	
 	/**
@@ -47,7 +61,7 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 		this.model = model;
 		this.modelFactory = modelFactory;
 		
-		layoutAlgorithm = new TreeLayoutAlgorithm();
+		layoutAlgorithm = new TreeLayoutAlgorithm(LayoutStyles.NO_LAYOUT_SIZE);
 	
 		try {
 			layoutAlgorithm.applyLayout(model.getNodesArray(), model.getConnectionsArray(), 5.0, 5.0, d.width, d.height,false, false );
@@ -55,6 +69,25 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		this.addControlListener(new ControlListener() {
+			public void controlMoved(ControlEvent e) { }
+			public void controlResized(ControlEvent e) {
+				// handle minimized case
+				Dimension d = StaticGraphViewerImpl.this.getCanvasSize();
+				if (d.isEmpty()) {
+					//layoutAlgorithm.applyLayout(StaticGraphViewerImpl.this.model.getNodesArray(), StaticGraphViewerImpl.this.model.getConnectionsArray(), 5.0, 5.0, d.width, d.height,false, false );
+				} else {
+					try {
+						layoutAlgorithm.applyLayout(StaticGraphViewerImpl.this.model.getNodesArray(), StaticGraphViewerImpl.this.model.getConnectionsArray(), 5.0, 5.0, d.width, d.height,false, false );
+					} catch (InvalidLayoutConfiguration e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+			}
+		});	
+		
 	}
 
 	protected void configureGraphicalViewer() {
