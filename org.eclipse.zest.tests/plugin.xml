@@ -4,7 +4,7 @@
    <extension
          point="org.eclipse.ui.views">
       <category
-            id="org"
+            id="ca.uvic.cs.zest.sample"
             name="Graphical Views"/>
       <view
             allowMultiple="false"
@@ -20,6 +20,12 @@
             icon="icons/zest.gif"
             id="ca.uvic.cs.zest.sample.views.nestedgraphviewer"
             name="Nested Graph Viewer"/>
+      <view
+            category="ca.uvic.cs.zest.sample"
+            class="org.eclipse.mylar.zest.tests.StaticZestView"
+            icon="icons/zest.gif"
+            id="org.eclipse.mylar.zest.tests.staticgraphviewer"
+            name="Static Graph Viewer"/>
    </extension>
    <extension
          point="org.eclipse.ui.actionSets">
