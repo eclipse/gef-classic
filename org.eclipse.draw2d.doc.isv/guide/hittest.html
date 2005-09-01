@@ -18,17 +18,18 @@ applications, which must interpret dragging one figure on top of another.</p>
 <p>There are four methods available on IFigure which perform hit testing, three 
 of which are actually just convenience methods which call the fourth.</p>
 <ul>
-	<li><code><a href="reference/api/org/eclipse/draw2d/IFigure.html#findFigureAt(int, int)">findFigureAt(int x, int y)</a></code>- finds the top-most figure for the given x 
+	<li><code>
+	<a href="../reference/api/org/eclipse/draw2d/IFigure.html#findFigureAt(int, int)">findFigureAt(int x, int y)</a></code>- finds the top-most figure for the given x 
 	and y coordinate</li>
-	<li><code><a href="reference/api/org/eclipse/draw2d/IFigure.html#findFigureAt(org.eclipse.draw2d.geometry.Point)">findFigureAt(Point p)</a></code> - similar to above, except takes a Point instead 
+	<li><code><a href="../reference/api/org/eclipse/draw2d/IFigure.html#findFigureAt(org.eclipse.draw2d.geometry.Point)">findFigureAt(Point p)</a></code> - similar to above, except takes a Point instead 
 	of an int</li>
-	<li><code><a href="reference/api/org/eclipse/draw2d/IFigure.html#findFigureAt(int, int, java.util.Collection)">findFigureAtExcluding(int x, int y, Collection exclude)</a></code> - finds the 
+	<li><code><a href="../reference/api/org/eclipse/draw2d/IFigure.html#findFigureAt(int, int, java.util.Collection)">findFigureAtExcluding(int x, int y, Collection exclude)</a></code> - finds the 
 	top-most figure for the given coordinates that is not in the exclusion set 
 	or contained by a figure in the exclusion set. This is used for ignoring a 
 	figure being dragged, or for ignoring transparent layers or figures which 
 	are not involved in an interaction.</li>
 	<li>
-	<p><code><a href="reference/api/org/eclipse/draw2d/IFigure.html#findFigureAt(int, int, org.eclipse.draw2d.TreeSearch)">findFigureAt(int x, int y, TreeSearch)</a></code> - All of the above 
+	<p><code><a href="../reference/api/org/eclipse/draw2d/IFigure.html#findFigureAt(int, int, org.eclipse.draw2d.TreeSearch)">findFigureAt(int x, int y, TreeSearch)</a></code> - All of the above 
 	methods call this method. TreeSearch is a helper that is used to quickly 
 	prune branches which should not be searched, and to accept the final 
 	candidate figure.</p></li>
