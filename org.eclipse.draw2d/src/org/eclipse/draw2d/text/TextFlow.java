@@ -135,7 +135,8 @@ private int findNextLineOffset(Point p, int[] trailing) {
 		if (box.getBaseline() - box.getLineRoot().getAscent() > p.y 
 				&& (closestBox == null
 				|| box.getBaseline() < closestBox.getBaseline()
-				|| hDistanceBetween(box, p.x) < hDistanceBetween(closestBox, p.x))) {
+				|| (box.getBaseline() == closestBox.getBaseline() 
+				&& hDistanceBetween(box, p.x) < hDistanceBetween(closestBox, p.x)))) {
 			closestBox = box;
 			index = i;
 		}
@@ -167,7 +168,8 @@ private int findPreviousLineOffset(Point p, int[] trailing) {
 		if (box.getBaseline() + box.getLineRoot().getDescent() < p.y
 				&& (closestBox == null
 				|| box.getBaseline() > closestBox.getBaseline()
-				|| hDistanceBetween(box, p.x) < hDistanceBetween(closestBox, p.x))) {
+				|| (box.getBaseline() == closestBox.getBaseline()
+				&& hDistanceBetween(box, p.x) < hDistanceBetween(closestBox, p.x)))) {
 			closestBox = box;
 			index = i;
 		}
