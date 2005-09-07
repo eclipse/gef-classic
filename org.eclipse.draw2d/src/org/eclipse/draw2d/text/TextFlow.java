@@ -442,7 +442,7 @@ public int getPreviousVisibleOffset(int offset) {
 }
 
 /**
- * @return the String being displayed
+ * @return the String being displayed; will not be <code>null</code>
  */
 public String getText() {
 	return text;
