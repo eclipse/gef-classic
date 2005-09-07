@@ -36,8 +36,8 @@ protected void outlineShape(Graphics graphics) {
 	Rectangle r = getBounds();
 	int x = r.x + lineWidth / 2;
 	int y = r.y + lineWidth / 2;
-	int w = r.width - lineWidth;
-	int h = r.height - lineWidth;
+	int w = r.width - Math.max(1, lineWidth);
+	int h = r.height - Math.max(1, lineWidth);
 	graphics.drawRectangle(x, y, w, h);
 }
 
