@@ -48,7 +48,7 @@ protected void layout() {
 	int i = 0;
 	int offset = 0;
 	
-	while (offset < text.length()) {
+	do {
 		nextLineBreak(text, offset);
 		fragment = getFragment(i++, fragments);
 		fragment.length = result - offset;
@@ -58,7 +58,7 @@ protected void layout() {
 		getContext().addToCurrentLine(fragment);
 		getContext().endLine();
 		offset = result + delimeterLength;
-	}
+	} while (offset < text.length());
 	//Remove the remaining unused fragments.
 	while (i < fragments.size())
 		fragments.remove(i++);
