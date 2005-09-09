@@ -59,10 +59,6 @@ protected void handleDragOver() {
 	super.handleDragOver();
 }
 
-protected void handleEnteredEditPart() {
-	super.handleEnteredEditPart();
-}
-
 // Over-ridden so that the cursor can be updated to "disallow" when the command is 
 // not executable
 public boolean isEnabled(DropTargetEvent event) {
