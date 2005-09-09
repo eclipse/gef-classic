@@ -86,7 +86,7 @@ public Graphics getGraphics(Rectangle region) {
 	if (inUse.isEmpty())
 		return null;
 	
-	/**
+	/*
 	 * Bugzilla 53632 - Attempts to create large images on some platforms will fail.
 	 * When this happens, do not use double-buffering for painting.
 	 */
