@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.gef"
       label="%featureName"
-      version="3.1.0"
+      version="3.2.0"
       image= "eclipse_update_120.jpg"
       provider-name="%providerName">
 
@@ -22,7 +22,7 @@
    </url>
 
   <requires>
-  	  <import plugin="org.eclipse.platform" version="3.1.0" match="compatible" />
+  	  <import plugin="org.eclipse.platform" version="3.2.0" match="compatible" />
   </requires>
   
    <plugin

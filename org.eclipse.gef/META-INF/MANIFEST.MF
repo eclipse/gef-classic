@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Graphical Editing Framework
 Bundle-SymbolicName: org.eclipse.gef; singleton:=true
-Bundle-Version: 3.1.0
+Bundle-Version: 3.2.0
 Bundle-Activator: org.eclipse.gef.GEFPlugin
 Bundle-Vendor: Eclipse.org
 Bundle-Localization: plugin
