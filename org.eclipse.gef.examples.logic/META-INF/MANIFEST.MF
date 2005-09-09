@@ -2,10 +2,19 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: GEF Logic Editor Example
 Bundle-SymbolicName: org.eclipse.gef.examples.logic; singleton:=true
-Bundle-Version: 3.1.0
+Bundle-Version: 3.2.0
 Bundle-Activator: org.eclipse.gef.examples.logicdesigner.LogicPlugin
 Bundle-Vendor: Eclipse.org
 Bundle-Localization: plugin
+Export-Package: org.eclipse.gef.examples.logicdesigner,
+ org.eclipse.gef.examples.logicdesigner.actions,
+ org.eclipse.gef.examples.logicdesigner.dnd,
+ org.eclipse.gef.examples.logicdesigner.edit,
+ org.eclipse.gef.examples.logicdesigner.figures,
+ org.eclipse.gef.examples.logicdesigner.model,
+ org.eclipse.gef.examples.logicdesigner.model.commands,
+ org.eclipse.gef.examples.logicdesigner.palette,
+ org.eclipse.gef.examples.logicdesigner.rulers
 Require-Bundle: org.eclipse.gef,
  org.eclipse.core.runtime,
  org.eclipse.core.resources,
