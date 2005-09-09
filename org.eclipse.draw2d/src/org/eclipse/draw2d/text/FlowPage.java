@@ -34,6 +34,11 @@ private int recommendedWidth;
 private int pageSizeCacheKeys[] = new int[3];
 private Dimension pageSizeCacheValues[] = new Dimension[3];
 
+public void addNotify() {
+	super.addNotify();
+	setValid(false);
+}
+
 /**
  * @see org.eclipse.draw2d.text.BlockFlow#createDefaultFlowLayout()
  */
@@ -99,6 +104,15 @@ public void postValidate() {
 	List v = getChildren();
 	for (int i = 0; i < v.size(); i++)
 		((FlowFigure)v.get(i)).postValidate();
+}
+
+/**
+ * Overridden to set valid.
+ * @see org.eclipse.draw2d.IFigure#removeNotify()
+ */
+public void removeNotify() {
+	super.removeNotify();
+	setValid(true);
 }
 
 /**
