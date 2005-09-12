@@ -3,7 +3,7 @@
 <head>
 
 <meta name="copyright" content="Copyright (c) IBM Corporation and others 2005. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
-
+   <meta http-equiv="Content-Language" content="en-us">
    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
    <LINK REL="STYLESHEET" HREF="../book.css" CHARSET="ISO-8859-1" TYPE="text/css">
    <title>GEF Developer's Guide</title>
@@ -26,22 +26,22 @@ code {font-weight:bold}
 <p><ul>
 	<li><a href="#Overview">Overview</a> - Description of the &quot;big picture&quot;</li>
 	<li>
-	<p dir="ltr"><a href="#When">When to Use</a> - How can GEF and the Eclipse 
+	<p><a href="#When">When to Use</a> - How can GEF and the Eclipse 
 	Platform be used</li>
 <li><a href="#EditParts">EditParts</a> - An introduction to primary building 
 block of GEF</li>
 <li><a href="#GraphicalView">Graphical View</a> - How to create a Graphical View 
 of your Model</li>
 <li>
-<p dir="ltr"><a href="#Editing">Editing and Edit Policies</a> - Adding editing 
+<p><a href="#Editing">Editing and Edit Policies</a> - Adding editing 
 support to your Graphical View</li>
 <li>
-<p dir="ltr"><a href="#Lifecycle">Editpart Lifecycle</a> - Interesting events to 
+<p><a href="#Lifecycle">Editpart Lifecycle</a> - Interesting events to 
 know about</li>
 	<li>
-<p dir="ltr"><a href="#ToolPalette">Tools and Palette</a></li>
+<p><a href="#ToolPalette">Tools and Palette</a></li>
 	<li>
-	<p dir="ltr"><a href="#Interactions">Interactions</a> - the GEF interactions 
+	<p><a href="#Interactions">Interactions</a> - the GEF interactions 
 	and the players involved</li>
 </ul>
 <h2><a name="Overview">Overview</a></h2>
@@ -475,12 +475,12 @@ the <code>FlyoutPaletteComposite</code>, will manage the placement of the
 PaletteViewer beside a primary Control. This composite is 
 used as the editor's primary control in the Logic Example, shown below:</p>
 <p><img src="images/logiceditor.gif"/></p>
-<p dir="ltr">The PaletteViewer displays a Palette model, which starts with the 
+<p>The PaletteViewer displays a Palette model, which starts with the 
 <code>PaletteRoot</code>. The root organizes the contents using either drawers, 
 which open and close, or groups, which do not. Each grouping element then 
 contains Palette Entries. An Entry defines either a tool or template for the 
 User. Templates are described below in <a href="#Interactions/Creation">Creation</a>.</p>
-<p dir="ltr">The Palette provides several display modes, such as icon-only. You 
+<p>The Palette provides several display modes, such as icon-only. You 
 can also provide a customizer to allow the user to modify or create palette 
 content.</p>
 <h2><a name="Interactions">Types of Interactions in GEF</a></h2>
