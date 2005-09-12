@@ -19,6 +19,7 @@ import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
+import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.PaintEvent;
@@ -241,7 +242,6 @@ public boolean close() {
 	noSelectionPage = null;
 	initialSelection = null;
 	activeEntry = null;
-	title = null;
 	errorMessage = null;
 	isSetup = true;
 		
@@ -656,11 +656,20 @@ protected PageBook createPropertiesPanelTitle(Composite parent) {
 	layout.marginHeight = 0;
 	layout.verticalSpacing = 0;
 	errorPage.setLayout(layout);
-	errorTitle = new MultiLineLabel(errorPage);
+	Composite intermediary = new Composite(errorPage, SWT.NONE) {
+		public Point computeSize(int wHint, int hHint, boolean changed) {
+			Rectangle bounds = title.getBounds();
+			return new Point(bounds.width, bounds.height);
+		}
+	};
+	intermediary.setLayoutData(new GridData(GridData.FILL_HORIZONTAL 
+            | GridData.VERTICAL_ALIGN_FILL));
+	StackLayout stackLayout = new StackLayout();
+	intermediary.setLayout(stackLayout);
+	errorTitle = new MultiLineLabel(intermediary);
+	stackLayout.topControl = errorTitle;
 	errorTitle.setImage(JFaceResources.getImage(DLG_IMG_MESSAGE_ERROR));
 	errorTitle.setFont(errorPage.getFont());
-	errorTitle.setLayoutData(new GridData(GridData.FILL_HORIZONTAL 
-	                            | GridData.VERTICAL_ALIGN_FILL));
 	Label separator = new Label(errorPage, SWT.SEPARATOR | SWT.HORIZONTAL);
 	separator.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 	
