@@ -110,15 +110,15 @@ static class RectangleClipping implements Clipping {
 		return new RectangleClipping(left, top, right, bottom);
 	}
 	
-	public void intersect(int left, int top, int right, int bottom) {
+	public void intersect(int left, int top, final int right, final int bottom) {
 		this.left = Math.max(this.left, left);
 		this.right = Math.min(this.right, right);
 		this.top = Math.max(this.top, top);
 		this.bottom = Math.min(this.bottom, bottom);
 		if (right < left || bottom < top) {
 			//width and height of -1 to avoid ceiling function from re-adding a pixel.
-			right = left - 1;
-			bottom = top - 1;
+			this.right = left - 1;
+			this.bottom = top - 1;
 		}
 	}
 	
