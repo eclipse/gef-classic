@@ -223,9 +223,7 @@ protected Insets getCreationFeedbackOffset(CreateRequest request) {
  * @param request the Request
  * @return the Command to delete the child
  */
-protected Command getDeleteDependantCommand(Request request) {
-	return null;
-}
+protected abstract Command getDeleteDependantCommand(Request request);
 
 /**
  * Returns the host's {@link GraphicalEditPart#getContentPane() contentPane}. The
