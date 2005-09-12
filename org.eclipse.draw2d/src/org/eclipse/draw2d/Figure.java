@@ -38,14 +38,14 @@ public class Figure
 private static final Rectangle PRIVATE_RECT = new Rectangle();
 private static final Point PRIVATE_POINT = new Point();
 private static final int
-	FLAG_VALID = 1,
-	FLAG_OPAQUE = 1 << 1,
-	FLAG_VISIBLE = 1 << 2,
-	FLAG_FOCUSABLE = 1 << 3,
-	FLAG_ENABLED = 1 << 4,
-	FLAG_FOCUS_TRAVERSABLE = 1 << 5;
+	FLAG_VALID = new Integer(1).intValue(),
+	FLAG_OPAQUE = new Integer(1 << 1).intValue(),
+	FLAG_VISIBLE = new Integer(1 << 2).intValue(),
+	FLAG_FOCUSABLE = new Integer(1 << 3).intValue(),
+	FLAG_ENABLED = new Integer(1 << 4).intValue(),
+	FLAG_FOCUS_TRAVERSABLE = new Integer(1 << 5).intValue();
 
-private static final int
+static final int
 	FLAG_REALIZED = 1 << 31;
 
 /**
@@ -55,7 +55,7 @@ private static final int
  * <P>
  * This constant is evaluated at runtime and will not be inlined by the compiler.
  */
-protected static int MAX_FLAG = new Integer(FLAG_FOCUS_TRAVERSABLE).intValue();
+protected static int MAX_FLAG = FLAG_FOCUS_TRAVERSABLE;
 
 /**
  * The rectangular area that this Figure occupies.
