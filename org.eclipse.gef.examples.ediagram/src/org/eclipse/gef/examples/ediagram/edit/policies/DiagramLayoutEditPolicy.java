@@ -58,6 +58,10 @@ public class DiagramLayoutEditPolicy
 	extends XYLayoutEditPolicy
 {
 
+protected Command createAddCommand(EditPart child, Object constraint) {
+	return null;
+}
+
 protected Command createChangeConstraintCommand(EditPart child, Object constraint) {
 	Rectangle bounds = (Rectangle)constraint;
 	return new ChangeBoundsCommand(

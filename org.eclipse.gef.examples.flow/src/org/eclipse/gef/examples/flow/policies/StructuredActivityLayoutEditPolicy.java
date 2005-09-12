@@ -75,6 +75,10 @@ protected Command getCreateCommand(CreateRequest request) {
 	return command;
 }
 
+protected Command getDeleteDependantCommand(Request request) {
+	return null;
+}
+
 /**
  * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#getMoveChildrenCommand(org.eclipse.gef.Request)
  */

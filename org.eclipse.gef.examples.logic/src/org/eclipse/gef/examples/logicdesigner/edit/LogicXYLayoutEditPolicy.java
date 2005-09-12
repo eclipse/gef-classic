@@ -327,6 +327,10 @@ protected Insets getCreationFeedbackOffset(CreateRequest request) {
 	return new Insets();
 }
 
+protected Command getDeleteDependantCommand(Request request) {
+	return null;
+}
+
 /**
  * Returns the layer used for displaying feedback.
  *  

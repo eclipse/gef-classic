@@ -136,6 +136,10 @@ public void propertyChange(PropertyChangeEvent evt) {
  */
 private static class ShapesXYLayoutEditPolicy extends XYLayoutEditPolicy {
 	
+	protected Command createAddCommand(EditPart child, Object constraint) {
+		return null;
+	}
+	
 	/* (non-Javadoc)
 	 * @see ConstrainedLayoutEditPolicy#createChangeConstraintCommand(ChangeBoundsRequest, EditPart, Object)
 	 */
@@ -168,6 +172,10 @@ private static class ShapesXYLayoutEditPolicy extends XYLayoutEditPolicy {
 			return new ShapeCreateCommand((Shape)request.getNewObject(), 
 					(ShapesDiagram)getHost().getModel(), (Rectangle)getConstraintFor(request));
 		}
+		return null;
+	}
+	
+	protected Command getDeleteDependantCommand(Request request) {
 		return null;
 	}
 	

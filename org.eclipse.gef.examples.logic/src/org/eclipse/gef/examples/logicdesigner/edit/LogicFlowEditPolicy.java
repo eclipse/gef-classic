@@ -34,31 +34,6 @@ public class LogicFlowEditPolicy
 	extends org.eclipse.gef.editpolicies.FlowLayoutEditPolicy
 {
 
-/**
- * Override to return the <code>Command</code> to perform an {@link
- * RequestConstants#REQ_CLONE CLONE}. By default, <code>null</code> is
- * returned.
- * @param request the Clone Request
- * @return A command to perform the Clone.
- */
-protected Command getCloneCommand(ChangeBoundsRequest request) {
-	CloneCommand clone = new CloneCommand();
-	clone.setParent((LogicDiagram)getHost().getModel());
-	
-	EditPart after = getInsertionReference(request);
-	int index = getHost().getChildren().indexOf(after);
-	
-	Iterator i = request.getEditParts().iterator();
-	GraphicalEditPart currPart = null;
-	
-	while (i.hasNext()) {
-		currPart = (GraphicalEditPart)i.next();
-		clone.addPart((LogicSubpart)currPart.getModel(), index++);
-	}
-	
-	return clone;
-}
-	
 protected Command createAddCommand(EditPart child, EditPart after) {
 	AddCommand command = new AddCommand();
 	command.setChild((LogicSubpart)child.getModel());
@@ -88,6 +63,31 @@ protected Command createMoveChildCommand(EditPart child, EditPart after) {
 	return command;
 }
 
+/**
+ * Override to return the <code>Command</code> to perform an {@link
+ * RequestConstants#REQ_CLONE CLONE}. By default, <code>null</code> is
+ * returned.
+ * @param request the Clone Request
+ * @return A command to perform the Clone.
+ */
+protected Command getCloneCommand(ChangeBoundsRequest request) {
+	CloneCommand clone = new CloneCommand();
+	clone.setParent((LogicDiagram)getHost().getModel());
+	
+	EditPart after = getInsertionReference(request);
+	int index = getHost().getChildren().indexOf(after);
+	
+	Iterator i = request.getEditParts().iterator();
+	GraphicalEditPart currPart = null;
+	
+	while (i.hasNext()) {
+		currPart = (GraphicalEditPart)i.next();
+		clone.addPart((LogicSubpart)currPart.getModel(), index++);
+	}
+	
+	return clone;
+}
+	
 protected Command getCreateCommand(CreateRequest request) {
 	CreateCommand command = new CreateCommand();
 	EditPart after = getInsertionReference(request);
@@ -96,6 +96,10 @@ protected Command getCreateCommand(CreateRequest request) {
 	int index = getHost().getChildren().indexOf(after);
 	command.setIndex(index);
 	return command;
+}
+
+protected Command getDeleteDependantCommand(Request request) {
+	return null;
 }
 
 }
