@@ -4,6 +4,7 @@
 
 <meta name="copyright" content="Copyright (c) IBM Corporation and others 2005. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
 
+   <meta http-equiv="Content-Language" content="en-us">
    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
    <LINK REL="STYLESHEET" HREF="../book.css" CHARSET="ISO-8859-1" TYPE="text/css">
    <title>Layout</title>
@@ -11,47 +12,47 @@
 <body>
 
 <h1>Layout</h1>
-<p>Layout is the process of determining the locations of figures in a 
-drawing. This two step process includes marking figures as invalid (needing layout), and then validating 
-the &quot;branches&quot; of figures that are invalid. Multiple updates to a drawing can 
-result in multiple figures becoming invalid. To prevent intermediate states from 
-being displayed to the user, Draw2d provides a deferred update strategy which 
-integrates layout with native paint requests as well as figures requesting 
-repaints.&nbsp; The result is that layouts occur all at once, after which the 
-results are painted.</p>
+<p>Layout is the process of determining the locations of figures in a drawing. 
+This two step process includes marking figures as invalid (needing layout), and 
+then validating the &quot;branches&quot; of figures that are invalid. Multiple updates to 
+a drawing can result in multiple figures becoming invalid. To prevent 
+intermediate states from being displayed to the user, Draw2d provides a deferred 
+update strategy which integrates layout with native paint requests as well as 
+figures requesting repaints.&nbsp; The result is that layouts occur all at once, 
+after which the results are painted.</p>
 <p>Figure delegates the task of placing children to their 
 <code>LayoutManager</code>. This allows layouts to be swapped and is also just 
 good separation of concerns. Layouts cannot be shared because they may cache 
 information about their owner.</p>
 <h3>Validation</h3>
-<p dir="ltr">Validation is almost synonymous with layout. A figure that needs to layout 
-is marked as <i>invalid<b>.</b></i> All figures start in the invalid state when constructed.&nbsp; 
-At some point later when <code>validate()</code> is called, they mark themselves as 
-valid and perform their layout. After layout, the figure will then validate its children. 
-Draw2d only uses validate to perform layouts, but in theory it could be extended 
-to perform any sort of potentially expensive calculation that needs to be 
-integrated with the update manager.</p>
+<p>Validation is almost synonymous with layout. A figure that needs to layout is 
+marked as <i>invalid<b>.</b></i> All figures start in the invalid state when 
+constructed.&nbsp; At some point later when <code>validate()</code> 
+is called, they mark themselves as valid and perform their layout. After layout, 
+the figure will then validate its children. Draw2d only uses validate to perform 
+layouts, but in theory it could be extended to perform any sort of potentially 
+expensive calculation that needs to be integrated with the update manager.</p>
 <h3>Preferred Size</h3>
-<p dir="ltr">Most layouts need to query the children for their size constraints. 
-IFigure provides methods for querying the minimum, preferred, and maximum sizes. 
-A figure such as Label will have a preferred size based on its text or icon 
-being displayed. If a figure contains other figures, then its preferred size 
-will be based on how it would like to arrange its children. In this case, the 
-size requests are forwarded to the layout manager.</p>
+<p>Most layouts need to query the children for their size constraints. IFigure 
+provides methods for querying the minimum, preferred, and maximum sizes. A 
+figure such as Label will have a preferred size based on its text or icon being 
+displayed. If a figure contains other figures, then its preferred size will be 
+based on how it would like to arrange its children. In this case, the size 
+requests are forwarded to the layout manager.</p>
 <p>Hints can be used when querying preferred and minimum size. For example, if 
 the amount of available width is known, this width can be passed to a figure 
 which may be wrapping a paragraph of text. The figure would then return the 
 height and width necessary to wrap the paragraph to the given amount of space.</p>
 <h3>Changes that cause Layouts</h3>
-<p dir="ltr">When a figure is changed in a way that affects its preferred size 
-or layout, it calls <code>revalidate()</code>. Revalidation is the process of marking 
+<p>When a figure is changed in a way that affects its preferred size or layout, 
+it calls <code>revalidate()</code>. Revalidation is the process of marking 
 yourself as invalid and requesting revalidate on your parent figure. This 
-process continues up the parent chain until the root 
-figure (or some validation root) adds itself to the update managers list of invalid 
-figures. At a later time, the update manager will go through its collection of 
-invalid figures and call validate() on them. In some situations, invalid figures may 
-be added or re-added during validation. This is fine as long as the dependencies 
-do not result in a never-ending cycle. The following image shows the chain of events:</p>
+process continues up the parent chain until the root figure (or some validation 
+root) adds itself to the update managers list of invalid figures. At a later 
+time, the update manager will go through its collection of invalid figures and 
+call validate() on them. In some situations, invalid figures may be added or 
+re-added during validation. This is fine as long as the dependencies do not 
+result in a never-ending cycle. The following image shows the chain of events:</p>
 <table border="0" id="table1">
 	<tr>
 		<td width="50%"><img src="images/revalidate.gif"/></td>
@@ -71,27 +72,27 @@ do not result in a never-ending cycle. The following image shows the chain of ev
 <p>In the above example, Fig 5 may have its size changed when Fig 2 performs its 
 layout. </p>
 <h3>Top-Down Layout</h3>
-<p dir="ltr">Normally figures layout in a top-down fashion. This means that 
-figure has its bounds set before it lays out its children. Also, after it places 
-its children, it then calls validate() on them in case their size changed, 
-making them invalid. This is the same way that Composites work in SWT.</p>
-<h3 dir="ltr">Special-Purpose Layout Techniques</h3>
-<p dir="ltr">In some cases, the top-down process is modified. A common example 
-is figures whose bounds must wrap around the bounds of their children. 
+<p>Normally figures layout in a top-down fashion. This means that figure has its 
+bounds set before it lays out its children. Also, after it places its children, 
+it then calls validate() on them in case their size changed, making them 
+invalid. This is the same way that Composites work in SWT.</p>
+<h3>Special-Purpose Layout Techniques</h3>
+<p>In some cases, the top-down process is modified. A common example is figures 
+whose bounds must wrap around the bounds of their children. 
 <a href="connections.html">Connections</a and &quot;freeform&quot; figures are examples 
 of this behavior. In these cases, the figures still layout children first, but 
 they determine their own bounds afterwards. Note that the children are not 
 positioned relative to the bounds since it is unknown during layout. This also 
 implies that the figures do not use local coordinates for their children.</p>
-<p dir="ltr">The other special layout case is found in the text package. Text 
-figures must layout in two steps. First, they contribute fragments into 
-paragraphs or blocks. These fragments may get reordered for bidirectional text. 
-Also, their baselines and the overall alignment of each line may also be 
-adjusted. The end of a line or block may only occur after a figure has finished 
-its layout. So, the second layout pass is simply a finalization step in which 
-the figures are told to now update their bounds based on their final fragment 
-locations. Understanding this layout is no necessary for using the text package, 
-but it does help in appreciating some of the problems solved by Draw2d's 
-approach to layouts and coordinate systems.</p>
+<p>The other special layout case is found in the text package. Text figures must 
+layout in two steps. First, they contribute fragments into paragraphs or blocks. 
+These fragments may get reordered for bidirectional text. Also, their baselines 
+and the overall alignment of each line may also be adjusted. The end of a line 
+or block may only occur after a figure has finished its layout. So, the second 
+layout pass is simply a finalization step in which the figures are told to now 
+update their bounds based on their final fragment locations. Understanding this 
+layout is no necessary for using the text package, but it does help in 
+appreciating some of the problems solved by Draw2d's approach to layouts and 
+coordinate systems.</p>
 </body>
 </html>

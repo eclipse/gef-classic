@@ -4,6 +4,7 @@
 
 <meta name="copyright" content="Copyright (c) IBM Corporation and others 2005. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
 
+   <meta http-equiv="Content-Language" content="en-us">
    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
    <LINK REL="STYLESHEET" HREF="../book.css" CHARSET="ISO-8859-1" TYPE="text/css">
    <title>Coordinate Systems</title>
@@ -15,17 +16,17 @@
 coordinate systems are required by certain optimizations and features provided 
 by draw2d. A coordinate system is nothing more than an adjustment made to the 
 Draw2d <code>Graphics</code> when painting children (coordinate systems have <b>
-no affect</b> on the way a figure paints itself). For example, it is possible to translate or 
-zoom a Graphics. Both of these operations affect subsequent paint calls. To 
-match what you see, operations like searching for a figure at a point must 
-respect such coordinate changes.</p>
+no affect</b> on the way a figure paints itself). For example, it is possible to 
+translate or zoom a Graphics. Both of these operations affect subsequent paint 
+calls. To match what you see, operations like searching for a figure at a point 
+must respect such coordinate changes.</p>
 <p>The default coordinate system is very simple, it is the same for every 
 figure. So it doesn't matter if a figure is parented by another figure, you 
-could compare the bounding boxes directly to each other. When the figures 
-paint, they all paint in the same coordinates, and when hit testing is 
-performed, the location is not modified when searching recursively through the 
-children. This coordinate system is called <i>absolute</i>. If a figure uses 
-absolute coordinates, when it moves, it must also translate its children by the same 
+could compare the bounding boxes directly to each other. When the figures paint, 
+they all paint in the same coordinates, and when hit testing is performed, the 
+location is not modified when searching recursively through the children. This 
+coordinate system is called <i>absolute</i>. If a figure uses absolute 
+coordinates, when it moves, it must also translate its children by the same 
 amount. &quot;Absolute&quot; may not be the best choice of words. &quot;Inherited&quot; is probably 
 more accurate, since children are inheriting the parent's coordinate system, 
 which could be anything.</p>
@@ -36,8 +37,9 @@ bounds unless the parent has insets. When a figure with relative coordinates is
 moved, the children come along for free, without any changes to their bounds.</p>
 <h3>Relative vs. Absolute</h3>
 <p>The default coordinate system is absolute and is often left unchanged. A 
-figure can easily change the coordinate system used for its children by overriding useLocalCoordinates(). 
-The following table shows some possible reasons to choose either.</p>
+figure can easily change the coordinate system used for its children by 
+overriding useLocalCoordinates(). The following table shows some possible 
+reasons to choose either.</p>
 <table border="1" id="table1" width="100%">
 	<tr>
 		<td bgcolor="#00FFFF"><b>Task</b></td>
@@ -69,8 +71,8 @@ The following table shows some possible reasons to choose either.</p>
 	<tr>
 		<td>Determine the bounds of a parent based on the bounds of the children</td>
 		<td>
-		<p>Easy - after the children have been position, the parent 
-		can then figure out what its bounds should be.</td>
+		<p>Easy - after the children have been position, the parent can then 
+		figure out what its bounds should be.</td>
 		<td>Extremely hard, since updating the parent's bounds will cause the 
 		children to &quot;move&quot;.</td>
 	</tr>
@@ -84,14 +86,15 @@ virtual</i> scrolling, which is implemented by translating the coordinate
 system's origin.</p>
 <p>Zoom is done by scaling the coordinate system about the origin.</p>
 <h3>Working with Absolute Coordinates</h3>
-<p>The only types of locations which can be passed around and compared in a meaningful way are 
-absolute. Here, &quot;absolute&quot; means the top-most parent (or root) figure's 
-coordinate system. When Draw2d is used with SWT Canvas, an absolute location is 
-the location on that Canvas. To get the location on the Display (i.e. the 
-monitor), you would then have to use the utilities on SWT's Display to convert 
-from a Control to the Display.</p>
+<p>The only types of locations which can be passed around and compared in a 
+meaningful way are absolute. Here, &quot;absolute&quot; means the top-most parent (or 
+root) figure's coordinate system. When Draw2d is used with SWT Canvas, an 
+absolute location is the location on that Canvas. To get the location on the 
+Display (i.e. the monitor), you would then have to use the utilities on SWT's 
+Display to convert from a Control to the Display.</p>
 <p>To convert to and from absolute coordinates, utility methods are defined on 
-IFigure. These methods will convert any object implementing the <code>Translatable</code> 
+IFigure. These methods will convert any object implementing the <code>
+Translatable</code> 
 interface (historical note: zoom was not in the first draw2d release so 
 translation was the only type of converting necessary).</p>
 <ul>
@@ -122,11 +125,10 @@ situations.</p>
 	</blockquote>
 	<h4>Solution:</h4>
 	<blockquote>
-		<p>First, take the figure's location and convert it to 
-		the canvas. Note that the figure's bounds are returned by reference, so 
-		you need to create a copy to avoid modifying the original bounds. 
-		Next, create an SWT Rectangle and convert it to the display's 
-		coordinates:</p>
+		<p>First, take the figure's location and convert it to the canvas. Note 
+		that the figure's bounds are returned by reference, so you need to 
+		create a copy to avoid modifying the original bounds. Next, create an 
+		SWT Rectangle and convert it to the display's coordinates:</p>
 		<pre>public void example1(Shell shell, Figure figure, Canvas canvas) {
     org.eclipse.draw2d.geometry.Rectangle r;
     org.eclipse.swt.graphics.Rectangle swtRect;
@@ -144,8 +146,8 @@ situations.</p>
 	<h4>Solution:</h4>
 	<blockquote>
 		<p>A connection anchor is a helper object that returns a Point in 
-		absolute coordinates. The connection figure can be inside a figure such as 
-		a viewport or layer that has its own coordinate system. The following 
+		absolute coordinates. The connection figure can be inside a figure such 
+		as a viewport or layer that has its own coordinate system. The following 
 		code makes the necessary conversion:</p>
 
 <pre>public void example2(Connection connection,

@@ -4,6 +4,7 @@
 
 <meta name="copyright" content="Copyright (c) IBM Corporation and others 2005. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
 
+   <meta http-equiv="Content-Language" content="en-us">
    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
    <LINK REL="STYLESHEET" HREF="../book.css" CHARSET="ISO-8859-1" TYPE="text/css">
    <title>Painting</title>
@@ -15,17 +16,17 @@
 Figures are painted using a <code>Graphics</code>. The Graphics abstraction 
 allows Draw2d to wrapper an SWT GC for extended functionality as well as 
 performance optimizations. For example, Graphics supports pushing and popping of 
-the current state.&nbsp;A figure paints using the 
-following process:</p>
+the current state.&nbsp;A figure paints using the following process:</p>
 <ul>
 	<li><b><code>Figure#paint()</code></b> - This method is declared on the 
-	interface, and kicks off the painting process. First, properties are set on the Graphics that would be inherited by children, including 
-	Font, background, and foreground Color. Then the Graphics state is pushed so 
-	that just these inherited settings can be restored when painting children. 
-	Next, the following methods are called:<ul>
-		<li><code><b>Figure#paintFigure()</b></code> - The figure paints itself. Figures are not required to paint at all. A 
-	simple form of painting would be to fill in the bounding box with the 
-	figure's background color.</li>
+	interface, and kicks off the painting process. First, properties are set on 
+	the Graphics that would be inherited by children, including Font, 
+	background, and foreground Color. Then the Graphics state is pushed so that 
+	just these inherited settings can be restored when painting children. Next, 
+	the following methods are called:<ul>
+		<li><code><b>Figure#paintFigure()</b></code> - The figure paints itself. 
+		Figures are not required to paint at all. A simple form of painting 
+		would be to fill in the bounding box with the figure's background color.</li>
 		<li><code><b>Figure#paintClientArea()</b></code> - The client area is 
 		where children appear. This method should apply any changes to the 
 		Graphics which affect only children, such as coordinate system 
@@ -55,10 +56,10 @@ perpendicular to the display's x and y axes. Z-order or paint order is also
 manifested in the way hit testing is done.</p>
 <p><img src="images/paintorder.gif" /></p>
 <h3>Clipping</h3>
-<p>When a figure paints its children, it first clips the Graphics to 
-its client area. As each child is painted, the graphics is also clipped to the 
-child's bounds. This prevents the child from painting outside of its bounds or 
-the client area of the parent. Clipping is cumulative based on the entire parent 
+<p>When a figure paints its children, it first clips the Graphics to its client 
+area. As each child is painted, the graphics is also clipped to the child's 
+bounds. This prevents the child from painting outside of its bounds or the 
+client area of the parent. Clipping is cumulative based on the entire parent 
 chain. Below, Figure 3 is parented by Figure 2, which is parented by Figure 1.</p>
 <p><img src="images/paintclip.gif" width="616" height="186" /></p>
 <h3>See Also</h3>

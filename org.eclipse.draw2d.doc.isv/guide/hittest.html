@@ -4,6 +4,7 @@
 
 <meta name="copyright" content="Copyright (c) IBM Corporation and others 2005. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
 
+   <meta http-equiv="Content-Language" content="en-us">
    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
    <LINK REL="STYLESHEET" HREF="../book.css" CHARSET="ISO-8859-1" TYPE="text/css">
    <title>Hit Testing</title>
@@ -19,27 +20,31 @@ applications, which must interpret dragging one figure on top of another.</p>
 of which are actually just convenience methods which call the fourth.</p>
 <ul>
 	<li><code>
-	<a href="../reference/api/org/eclipse/draw2d/IFigure.html#findFigureAt(int, int)">findFigureAt(int x, int y)</a></code>- finds the top-most figure for the given x 
-	and y coordinate</li>
-	<li><code><a href="../reference/api/org/eclipse/draw2d/IFigure.html#findFigureAt(org.eclipse.draw2d.geometry.Point)">findFigureAt(Point p)</a></code> - similar to above, except takes a Point instead 
-	of an int</li>
-	<li><code><a href="../reference/api/org/eclipse/draw2d/IFigure.html#findFigureAt(int, int, java.util.Collection)">findFigureAtExcluding(int x, int y, Collection exclude)</a></code> - finds the 
-	top-most figure for the given coordinates that is not in the exclusion set 
-	or contained by a figure in the exclusion set. This is used for ignoring a 
-	figure being dragged, or for ignoring transparent layers or figures which 
+	<a href="../reference/api/org/eclipse/draw2d/IFigure.html#findFigureAt(int, int)">
+	findFigureAt(int x, int y)</a></code>- finds the top-most figure for the 
+	given x and y coordinate</li>
+	<li><code><a href="../reference/api/org/eclipse/draw2d/IFigure.html#findFigureAt(org.eclipse.draw2d.geometry.Point)">
+	findFigureAt(Point p)</a></code> - similar to above, except takes a Point 
+	instead of an int</li>
+	<li><code><a href="../reference/api/org/eclipse/draw2d/IFigure.html#findFigureAt(int, int, java.util.Collection)">
+	findFigureAtExcluding(int x, int y, Collection exclude)</a></code> - finds 
+	the top-most figure for the given coordinates that is not in the exclusion 
+	set or contained by a figure in the exclusion set. This is used for ignoring 
+	a figure being dragged, or for ignoring transparent layers or figures which 
 	are not involved in an interaction.</li>
 	<li>
-	<p><code><a href="../reference/api/org/eclipse/draw2d/IFigure.html#findFigureAt(int, int, org.eclipse.draw2d.TreeSearch)">findFigureAt(int x, int y, TreeSearch)</a></code> - All of the above 
-	methods call this method. TreeSearch is a helper that is used to quickly 
-	prune branches which should not be searched, and to accept the final 
-	candidate figure.</p></li>
+	<p><code><a href="../reference/api/org/eclipse/draw2d/IFigure.html#findFigureAt(int, int, org.eclipse.draw2d.TreeSearch)">
+	findFigureAt(int x, int y, TreeSearch)</a></code> - All of the above methods 
+	call this method. TreeSearch is a helper that is used to quickly prune 
+	branches which should not be searched, and to accept the final candidate 
+	figure.</p></li>
 </ul>
 <p>Hit testing must be done exactly the same way as painting. Clipping and 
 coordinate changes must be duplicated in both. As an optimizations, branches of 
-the figure composition tree are pruned by calling <code>containsPoint()</code>. If a 
-figure does not contain the location, it returns NULL and does not search its 
-children. By default, all figures are considered to be the rectangular region 
-defined by their bounds, regardless of how or if they paint. This can be 
+the figure composition tree are pruned by calling <code>containsPoint()</code>. 
+If a figure does not contain the location, it returns NULL and does not search 
+its children. By default, all figures are considered to be the rectangular 
+region defined by their bounds, regardless of how or if they paint. This can be 
 overridden as it is in Polyline, Ellipse, and other figures.</p>
 </body>
 </html>
