@@ -53,6 +53,7 @@ import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.util.TransferDropTargetListener;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
@@ -172,7 +173,7 @@ class OutlinePage
 			"org.eclipse.gef.examples.logic.outline.contextmenu", //$NON-NLS-1$
 			provider, getSite().getSelectionProvider());
 		getViewer().setKeyHandler(getCommonKeyHandler());
-		getViewer().addDropTargetListener(
+		getViewer().addDropTargetListener((TransferDropTargetListener)
 			new LogicTemplateTransferDropTargetListener(getViewer()));
 		IToolBarManager tbm = getSite().getActionBars().getToolBarManager();
 		showOutlineAction = new Action() {
@@ -556,8 +557,8 @@ protected KeyHandler getCommonKeyHandler(){
 	if (sharedKeyHandler == null){
 		sharedKeyHandler = new KeyHandler();
 		sharedKeyHandler.put(
-			KeyStroke.getPressed(SWT.F2, 0),
-			getActionRegistry().getAction(GEFActionConstants.DIRECT_EDIT));
+				KeyStroke.getPressed(SWT.F2, 0),
+				getActionRegistry().getAction(GEFActionConstants.DIRECT_EDIT));
 	}
 	return sharedKeyHandler;
 }
@@ -618,9 +619,9 @@ protected void initializeGraphicalViewer() {
 	super.initializeGraphicalViewer();
 	getGraphicalViewer().setContents(getLogicDiagram());
 	
-	getGraphicalViewer().addDropTargetListener(
+	getGraphicalViewer().addDropTargetListener((TransferDropTargetListener)
 		new LogicTemplateTransferDropTargetListener(getGraphicalViewer()));
-	getGraphicalViewer().addDropTargetListener(
+	getGraphicalViewer().addDropTargetListener((TransferDropTargetListener)
 		new TextTransferDropTargetListener(
 				getGraphicalViewer(), TextTransfer.getInstance()));
 }
