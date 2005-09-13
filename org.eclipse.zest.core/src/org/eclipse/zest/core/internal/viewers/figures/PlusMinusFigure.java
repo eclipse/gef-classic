@@ -21,7 +21,7 @@ import org.eclipse.mylar.zest.core.ZestColors;
 
 /**
  * A plus/minus toggle figure.
- * @author ccallendar
+ * @author Chris Callendar
  */
 public class PlusMinusFigure extends Toggle {
 	

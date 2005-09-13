@@ -25,7 +25,7 @@ import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphNodeEditPart;
  * When an edit part is selected the edit part fires of a highlight property change event,
  * and when the selection is hidden the unhighlight property event is fired.
  * 
- * @author ccallendar
+ * @author Chris Callendar
  */
 public class ColorSelectionEditPolicy extends ResizableEditPolicy {
 

@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Display;
  * This is the graph connection model which stores the source and destination nodes and the properties
  * of this connection (color, line width etc).
  * 
- * @author ccallendar
+ * @author Chris Callendar
  */
 public class GraphModelConnection extends GraphItem implements LayoutRelationship {
 

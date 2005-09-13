@@ -33,7 +33,7 @@ import org.eclipse.mylar.zest.core.internal.viewers.figures.PlusMinusFigure;
 /**
  * Extends GraphNodeEditPart to add functionality specific to nested graph nodes.
  * 
- * @author ccallendar
+ * @author Chris Callendar
  */
 public class NestedGraphNodeEditPart extends GraphNodeEditPart implements ActionListener {
 

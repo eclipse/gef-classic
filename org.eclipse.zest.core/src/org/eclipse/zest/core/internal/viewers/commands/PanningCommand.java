@@ -16,7 +16,7 @@ import org.eclipse.gef.commands.Command;
 /**
  * A command for panning.  Does nothing, but canExecute() returns true.
  * 
- * @author ccallendar
+ * @author Chris Callendar
  */
 public class PanningCommand extends Command {
 

@@ -19,7 +19,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 /**
  * A simple Figure that holds other figures.
  * 
- * @author ccallendar
+ * @author Chris Callendar
  */
 public class CompartmentFigure extends Figure {
 

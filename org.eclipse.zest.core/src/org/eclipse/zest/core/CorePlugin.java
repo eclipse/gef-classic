@@ -16,7 +16,7 @@ import org.osgi.framework.BundleContext;
 
 /**
  * The main plugin class to be used in the desktop.
- * @author irbull
+ * @author Ian Bull
  */
 public class CorePlugin extends AbstractUIPlugin {
 

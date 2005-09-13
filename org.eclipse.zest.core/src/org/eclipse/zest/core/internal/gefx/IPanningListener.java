@@ -13,7 +13,7 @@ package org.eclipse.mylar.zest.core.internal.gefx;
 /**
  * An interface used for handling panning events.
  * 
- * @author ccallendar
+ * @author Chris Callendar
  */
 public interface IPanningListener {
 

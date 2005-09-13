@@ -14,7 +14,7 @@ import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 
 /**
- * @author irbull
+ * @author Ian Bull
  */
 public interface ITreeGraphContentProvider extends IStructuredContentProvider, ITreeContentProvider, IGraphEntityContentProvider {
 

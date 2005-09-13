@@ -24,7 +24,7 @@ import org.eclipse.swt.widgets.Widget;
  * Root item from the given data {@link Item}.  All {@link TreeItem} objects
  * are then created under this item.
  * 
- * @author ccallendar
+ * @author Chris Callendar
  */
 public class TreeRootViewer extends TreeViewer {
 

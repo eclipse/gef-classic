@@ -31,7 +31,7 @@ import org.eclipse.swt.widgets.Display;
  * A simple Figure which has a title and a CompartmentFigure which holds
  * other nested figures.
  * 
- * @author ccallendar
+ * @author Chris Callendar
  */
 public class NestedFigure extends Figure {
 

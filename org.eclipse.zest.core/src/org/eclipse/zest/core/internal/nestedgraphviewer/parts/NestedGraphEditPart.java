@@ -35,7 +35,7 @@ import org.eclipse.ui.PlatformUI;
 /**
  * Extends GraphEditPart to allow moving and resizing of nodes.
  * 
- * @author ccallendar
+ * @author Chris Callendar
  */
 public class NestedGraphEditPart extends GraphEditPart implements ActionListener {
 

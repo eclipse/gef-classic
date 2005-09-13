@@ -18,7 +18,7 @@ import org.eclipse.swt.widgets.Item;
  * An item that gets put into a {@link BreadCrumbBar}.
  * It contains text to display as a link and a data Object.
  * 
- * @author ccallendar
+ * @author Chris Callendar
  */
 public class BreadCrumbItem extends Item {
 

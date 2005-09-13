@@ -15,7 +15,7 @@ import org.eclipse.jface.viewers.IStructuredContentProvider;
 /**
  * A graph content provider. 
  * 
- * @author irbull
+ * @author Ian Bull
  */
 public interface IGraphContentProvider extends IStructuredContentProvider {
 

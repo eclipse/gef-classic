@@ -24,8 +24,8 @@ import org.eclipse.mylar.zest.core.viewers.IGraphContentProvider;
 /**
  * This factory helps make models (nodes & connections).
  * 
- * @author irbull
- * @author ccallendar
+ * @author Ian Bull
+ * @author Chris Callendar
  */
 public class GraphModelFactory implements IGraphModelFactory {
 	

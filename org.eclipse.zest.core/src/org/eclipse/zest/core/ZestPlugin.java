@@ -11,7 +11,7 @@
 package org.eclipse.mylar.zest.core;
 
 /**
- * @author irbull
+ * @author Ian Bull
  */
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;

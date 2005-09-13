@@ -19,7 +19,7 @@ import org.eclipse.swt.graphics.Color;
  * An extension of the LineBorder class
  * to allow for setting the color and width of each edge of the bounding rectangle.
  * 
- * @author ccallendar
+ * @author Chris Callendar
  */
 public class EdgeBorder extends LineBorder {
 	

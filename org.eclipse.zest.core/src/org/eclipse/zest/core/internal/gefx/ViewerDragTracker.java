@@ -17,7 +17,7 @@ import org.eclipse.mylar.zest.core.DebugPrint;
 import org.eclipse.swt.events.MouseEvent;
 
 /**
- * @author irbull
+ * @author Ian Bull
  */
 public class ViewerDragTracker extends DragEditPartsTracker {
 

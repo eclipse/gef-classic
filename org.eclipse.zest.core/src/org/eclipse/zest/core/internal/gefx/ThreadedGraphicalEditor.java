@@ -26,7 +26,7 @@ import org.eclipse.mylar.zest.layouts.progress.ProgressListener;
 
 /**
  * 
- * @author irbull
+ * @author Ian Bull
  *
  */
 public abstract class ThreadedGraphicalEditor extends GraphicalEditor implements ProgressListener {	

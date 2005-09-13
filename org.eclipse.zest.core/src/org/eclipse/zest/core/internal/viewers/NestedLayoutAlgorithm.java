@@ -25,7 +25,7 @@ import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedGraphModelNo
  * properly size a list of nodes as well as the children
  * under those nodes.
  * 
- * @author ccallendar
+ * @author Chris Callendar
  */
 public class NestedLayoutAlgorithm {
 

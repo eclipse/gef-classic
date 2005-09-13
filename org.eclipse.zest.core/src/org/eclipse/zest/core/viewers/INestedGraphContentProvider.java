@@ -14,7 +14,7 @@ package org.eclipse.mylar.zest.core.viewers;
  * Extends {@link org.eclipse.mylar.zest.core.viewers.IGraphContentProvider} to provide methods
  * for getting the parent and children nodes.
  * 
- * @author ccallendar
+ * @author Chris Callendar
  */
 public interface INestedGraphContentProvider extends IGraphContentProvider {
 

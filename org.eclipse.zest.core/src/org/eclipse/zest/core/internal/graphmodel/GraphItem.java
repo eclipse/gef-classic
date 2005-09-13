@@ -21,7 +21,7 @@ import org.eclipse.swt.widgets.Widget;
  * Provides support for property changes.  All model elements extend this class.
  * Also extends the Item (Widget) class to be used inside a StructuredViewer.   
  * 
- * @author ccallendar
+ * @author Chris Callendar
  */
 public abstract class GraphItem extends Item  {
 

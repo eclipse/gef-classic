@@ -18,7 +18,7 @@ import java.util.Comparator;
  * Nodes with the most children will be first and nodes with no children will be last.
  * It also sorts nodes with the same number of children alphabetically.
  * 
- * @author ccallendar
+ * @author Chris Callendar
  */
 public class NodeChildrenComparator implements Comparator {
 

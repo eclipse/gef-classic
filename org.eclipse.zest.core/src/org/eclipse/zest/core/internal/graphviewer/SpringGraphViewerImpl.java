@@ -59,8 +59,8 @@ import org.eclipse.swt.widgets.Widget;
 /**
  * Simple GEF viewer used to display graphical layouts.
  * 
- * @author irbull
- * @author ccallendar
+ * @author Ian Bull
+ * @author Chris Callendar
  */
 public class SpringGraphViewerImpl extends ThreadedGraphicalViewer implements IPanningListener, ZoomListener {
 	

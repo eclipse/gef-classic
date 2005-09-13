@@ -16,7 +16,7 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
  * Extends {@link org.eclipse.mylar.zest.core.viewers.IGraphEntityContentProvider} to provide methods
  * for getting the parent and children nodes.
  * 
- * @author ccallendar
+ * @author Chris Callendar
  */
 public interface INestedGraphEntityContentProvider extends IGraphEntityContentProvider, ITreeContentProvider {
 

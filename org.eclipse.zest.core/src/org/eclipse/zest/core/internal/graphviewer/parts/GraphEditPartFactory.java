@@ -19,7 +19,7 @@ import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelNode;
 
 /**
  * Creates the edit parts associated with the different models.
- * @author ccallendar
+ * @author Chris Callendar
  */
 public class GraphEditPartFactory implements EditPartFactory {
 

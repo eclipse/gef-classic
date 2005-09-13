@@ -22,7 +22,7 @@ import org.eclipse.mylar.zest.core.viewers.INestedGraphEntityContentProvider;
 /**
  * A factory for creating nodes and relationships for nested graphs.
  * 
- * @author ccallendar
+ * @author Chris Callendar
  */
 public class NestedGraphModelEntityFactory implements INestedGraphModelFactory {
 

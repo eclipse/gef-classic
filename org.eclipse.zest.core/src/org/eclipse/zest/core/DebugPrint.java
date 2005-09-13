@@ -13,8 +13,8 @@ package org.eclipse.mylar.zest.core;
 /**
  * Utility class for print out debug statements.
  * 
- * @author irbull
- * @author ccallendar
+ * @author Ian Bull
+ * @author Chris Callendar
  */
 public class DebugPrint {
 	

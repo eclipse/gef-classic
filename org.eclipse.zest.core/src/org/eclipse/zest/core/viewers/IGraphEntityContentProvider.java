@@ -13,7 +13,7 @@ package org.eclipse.mylar.zest.core.viewers;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 /**
  * 
- * @author irbull
+ * @author Ian Bull
  *
  */
 public interface IGraphEntityContentProvider extends IStructuredContentProvider {

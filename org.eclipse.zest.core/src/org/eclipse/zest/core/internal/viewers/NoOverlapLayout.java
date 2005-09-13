@@ -27,7 +27,7 @@ import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphNodeEditPart;
  * The NoOverlapLayout class will check all sibling nodes to ensure that the given
  * bounds don't overlap.   
  * 
- * @author ccallendar
+ * @author Chris Callendar
  */
 public class NoOverlapLayout  {
 

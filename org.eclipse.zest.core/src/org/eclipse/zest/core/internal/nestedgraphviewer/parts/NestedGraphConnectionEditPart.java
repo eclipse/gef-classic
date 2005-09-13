@@ -17,7 +17,7 @@ import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphConnectionEdi
 
 
 /**
- * @author ccallendar
+ * @author Chris Callendar
  */
 public class NestedGraphConnectionEditPart extends GraphConnectionEditPart {
 

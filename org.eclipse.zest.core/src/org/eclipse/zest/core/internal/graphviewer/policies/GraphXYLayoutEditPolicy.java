@@ -28,7 +28,7 @@ import org.eclipse.mylar.zest.core.internal.viewers.commands.NoResizeNodeConstra
  * Extends XYLayoutEditPolicy to use a child color selection policy (no resizing or handles), and to get create and delete 
  * commands.
  * 
- * @author ccallendar
+ * @author Chris Callendar
  */
 public class GraphXYLayoutEditPolicy extends XYLayoutEditPolicy {
 	

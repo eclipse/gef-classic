@@ -25,7 +25,7 @@ import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelConnection;
 
 
 /**
- * @author ccallendar
+ * @author Chris Callendar
  */
 public class GraphConnectionEditPart extends AbstractConnectionEditPart implements PropertyChangeListener {
 

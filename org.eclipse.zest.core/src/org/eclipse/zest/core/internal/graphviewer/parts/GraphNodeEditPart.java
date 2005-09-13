@@ -35,7 +35,7 @@ import org.eclipse.mylar.zest.core.internal.viewers.trackers.SingleSelectionTrac
 
 /**
  * The edit part for the LayoutNode model.
- * @author ccallendar
+ * @author Chris Callendar
  */
 public class GraphNodeEditPart extends AbstractGraphicalEditPart implements
 		PropertyChangeListener, NodeEditPart {

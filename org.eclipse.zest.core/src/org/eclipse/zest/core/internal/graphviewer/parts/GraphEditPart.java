@@ -31,7 +31,7 @@ import org.eclipse.mylar.zest.core.internal.graphviewer.policies.GraphXYLayoutEd
 /**
  * Works with the GraphModel.  The view is a FreeformLayer figure.
  *  
- * @author ccallendar
+ * @author Chris Callendar
  */
 public class GraphEditPart extends AbstractGraphicalEditPart implements PropertyChangeListener {
 

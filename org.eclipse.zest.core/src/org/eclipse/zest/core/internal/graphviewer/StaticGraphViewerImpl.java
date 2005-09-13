@@ -26,7 +26,7 @@ import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * @author irbull
+ * @author Ian Bull
  */
 public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements IPanningListener {
 	

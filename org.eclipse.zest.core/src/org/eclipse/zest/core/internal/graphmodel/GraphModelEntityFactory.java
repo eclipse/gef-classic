@@ -20,7 +20,7 @@ import org.eclipse.mylar.zest.core.viewers.IGraphEntityContentProvider;
 
 
 /**
- * @author irbull
+ * @author Ian Bbull
  */
 public class GraphModelEntityFactory implements IGraphModelFactory {
 

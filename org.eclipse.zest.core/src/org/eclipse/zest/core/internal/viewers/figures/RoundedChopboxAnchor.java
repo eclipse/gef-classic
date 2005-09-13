@@ -18,7 +18,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 /**
  * A slight modification to the ChopboxAnchor class to account for the rounded corners.
  * 
- * @author ccallendar
+ * @author Chris Callendar
  */
 public class RoundedChopboxAnchor extends ChopboxAnchor {
 

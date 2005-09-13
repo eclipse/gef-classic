@@ -20,7 +20,7 @@ import org.eclipse.mylar.zest.core.internal.viewers.NoOverlapLayout;
 /**
  * A command to resize and/or move a node. The command can be undone or redone.
  * 
- * @author ccallendar
+ * @author Chris Callendar
  */
 public class ResizeNodeConstraintCommand extends Command {
 

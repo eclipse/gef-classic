@@ -17,7 +17,7 @@ import org.eclipse.draw2d.RectangleFigure;
 /**
  * A rectangular figure which has a dotted outline and no fill.
  * 
- * @author ccallendar
+ * @author Chris Callendar
  */
 public class OutlineFigure extends RectangleFigure {
 

@@ -25,8 +25,8 @@ import org.eclipse.swt.graphics.Image;
 /**
  * Extends GraphModelNode to add methods that deal with nested graphs.
  * 
- * @author ccallendar
- * @author irbull
+ * @author Chris Callendar
+ * @author Ian Bull
  */
 public class NestedGraphModelNode extends GraphModelNode {
 

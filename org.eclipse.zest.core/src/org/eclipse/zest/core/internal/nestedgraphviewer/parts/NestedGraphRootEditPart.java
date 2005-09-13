@@ -29,7 +29,7 @@ import org.eclipse.mylar.zest.core.internal.viewers.figures.OutlineFigure;
  * expanding or collapsing rectangle around the object to give the impression of zooming.  The 
  * third way is to expand or collapse the current rectangle.
  * 
- * @author ccallendar
+ * @author Chris Callendar
  */
 public class NestedGraphRootEditPart extends GraphRootEditPart {
 

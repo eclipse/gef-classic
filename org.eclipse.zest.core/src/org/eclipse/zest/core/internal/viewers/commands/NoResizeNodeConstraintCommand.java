@@ -20,7 +20,7 @@ import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelNode;
 /**
  * Supports moving of GraphModelNode objects (no resizing).
  * 
- * @author ccallendar
+ * @author Chris Callendar
  */
 public class NoResizeNodeConstraintCommand extends Command {
 

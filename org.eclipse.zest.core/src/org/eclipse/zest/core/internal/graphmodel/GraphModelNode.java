@@ -32,7 +32,7 @@ import org.eclipse.swt.widgets.Display;
  * Simple node class which has the following properties: color, size, location, and a label.
  * It also has a list of connections and anchors.
  *  
- * @author ccallendar
+ * @author Chris Callendar
  */
 public class GraphModelNode extends GraphItem implements LayoutEntity {
 

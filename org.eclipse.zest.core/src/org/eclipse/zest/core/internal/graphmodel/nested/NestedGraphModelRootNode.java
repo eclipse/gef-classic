@@ -16,7 +16,7 @@ import org.eclipse.swt.graphics.Image;
 /**
  * The root model node.
  * 
- * @author ccallendar
+ * @author Chris Callendar
  */
 public class NestedGraphModelRootNode extends NestedGraphModelNode {
 

@@ -28,7 +28,7 @@ import org.eclipse.mylar.zest.core.internal.viewers.commands.ResizeNodeConstrain
  * Extends XYLayoutEditPolicy to use a child color selection policy (which allows resizing), and to get create and delete 
  * commands.  Can also choose if overlapping is allowed (not allowed by default).
  * 
- * @author ccallendar
+ * @author Chris Callendar
  */
 public class GraphXYLayoutEditPolicy extends XYLayoutEditPolicy {
 	

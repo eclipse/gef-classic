@@ -15,7 +15,7 @@ package org.eclipse.mylar.zest.core.widgets;
  * A listener for breadcrumb selection events.  When a breadcrumb link is clicked 
  * an event will be fired.  
  * 
- * @author ccallendar
+ * @author Chris Callendar
  */
 public interface IBreadCrumbListener {
 

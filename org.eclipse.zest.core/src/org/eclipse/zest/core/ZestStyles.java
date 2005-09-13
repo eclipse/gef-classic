@@ -13,7 +13,7 @@ package org.eclipse.mylar.zest.core;
 /**
  * Style constants used in Zest.
  * 
- * @author ccallendar
+ * @author Chris Callendar
  */
 public final class ZestStyles {
 

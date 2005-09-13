@@ -18,7 +18,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 /**
  * A special type of FreeformLayer which has a single NestedFigure.
  * 
- * @author ccallendar
+ * @author Chris Callendar
  */
 public class NestedFreeformLayer extends FreeformLayer {
 

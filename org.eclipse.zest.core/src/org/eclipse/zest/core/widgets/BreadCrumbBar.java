@@ -34,7 +34,7 @@ import org.eclipse.ui.PlatformUI;
  * Adding breadcrumb items will put hyperlinks into the Link object separated by the separator
  * character.
  * 
- * @author ccallendar
+ * @author Chris Callendar
  */
 public class BreadCrumbBar extends Composite implements SelectionListener {
 

@@ -27,7 +27,7 @@ import org.eclipse.mylar.zest.core.internal.viewers.Graph;
  * holds the root node, the current node and the previous node.  All other
  * nodes can be retrieved by traversing the children/parent hierarchy.
  * 
- * @author ccallendar
+ * @author Chris Callendar
  */
 public class NestedGraphModel extends GraphModel {
 

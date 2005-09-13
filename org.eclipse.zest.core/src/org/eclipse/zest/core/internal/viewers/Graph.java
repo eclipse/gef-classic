@@ -18,7 +18,7 @@ import org.eclipse.swt.widgets.Composite;
  * The Graph class is a Canvas used for displaying graph items 
  * such as nodes and edges.
  * 
- * @author ccallendar
+ * @author Chris Callendar
  */
 public class Graph extends FigureCanvas {
 

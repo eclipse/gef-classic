@@ -19,7 +19,7 @@ import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphEditPartFacto
 
 /**
  * Creates the edit parts associated with the different models.
- * @author ccallendar
+ * @author Chris Callendar
  */
 public class NestedGraphEditPartFactory extends GraphEditPartFactory {
 

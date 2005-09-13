@@ -17,7 +17,7 @@ import org.eclipse.gef.tools.DragEditPartsTracker;
  * The SingleSelectionTracker is similar to the org.eclipse.gef.internal.ui.palette.editparts.SingleSelectionTracker
  * class.
  * 
- * @author ccallendar
+ * @author Chris Callendar
  */
 public class SingleSelectionTracker extends DragEditPartsTracker {
 

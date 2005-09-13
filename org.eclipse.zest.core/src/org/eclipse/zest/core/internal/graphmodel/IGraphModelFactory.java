@@ -11,7 +11,7 @@
 package org.eclipse.mylar.zest.core.internal.graphmodel;
 
 /**
- * @author irbull
+ * @author Ian Bull
  */
 public interface IGraphModelFactory {
 

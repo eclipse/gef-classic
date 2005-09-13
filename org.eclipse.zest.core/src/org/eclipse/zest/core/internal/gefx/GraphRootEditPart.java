@@ -23,7 +23,7 @@ import org.eclipse.mylar.zest.core.internal.viewers.trackers.SingleSelectionTrac
  * {@link SingleSelectionTracker} instead of a marquee drag tracker.  It will actually
  * use a {@link PanningTracker} if 
  * 
- * @author ccallendar
+ * @author Chris Callendar
  */
 public class GraphRootEditPart extends ScalableRootEditPart {
 

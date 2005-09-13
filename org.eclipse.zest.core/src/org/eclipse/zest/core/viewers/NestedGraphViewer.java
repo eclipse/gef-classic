@@ -45,7 +45,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Widget;
 
 /**
- * @author irbull
+ * @author Ian Bull
  */
 public class NestedGraphViewer extends StructuredViewer 
 	implements IDoubleClickListener, ControlListener, DisposeListener {

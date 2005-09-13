@@ -26,7 +26,7 @@ import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphNodeEditPart;
 /**
  * The ColorSelectionEditPolicy class hides the selection handles at the corners
  * and instead uses a different color for the object to indicate selection.
- * @author ccallendar
+ * @author Chris Callendar
  */
 public class ColorSelectionEditPolicy extends NonResizableEditPolicy {
 

@@ -22,7 +22,7 @@ import org.eclipse.mylar.zest.core.internal.viewers.Graph;
 /**
  * Holds the nodes and connections for the graph.
  * 
- * @author ccallendar
+ * @author Chris Callendar
  */
 public class GraphModel extends GraphItem {
 

@@ -21,7 +21,7 @@ import org.eclipse.swt.graphics.Color;
  * Extends GraphModelConnection.  The only real purpose is to change the colors
  * and the line widths.
  * 
- * @author ccallendar
+ * @author Chris Callendar
  */
 public class NestedGraphModelConnection extends GraphModelConnection {
 

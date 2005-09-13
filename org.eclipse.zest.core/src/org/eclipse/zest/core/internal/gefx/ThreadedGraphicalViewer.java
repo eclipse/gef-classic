@@ -49,7 +49,7 @@ import org.eclipse.swt.widgets.Display;
  * "Stoppable" Objects. The stoppables are started when they are added, and when the view
  * is disposed they are removed.
  * 
- * @author irbull
+ * @author Ian Bull
  *
  */
 public abstract class ThreadedGraphicalViewer extends GraphicalViewerImpl implements ProgressListener  {

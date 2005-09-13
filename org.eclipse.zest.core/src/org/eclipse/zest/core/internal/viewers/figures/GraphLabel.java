@@ -27,7 +27,7 @@ import org.eclipse.swt.widgets.Display;
  * Overrides the Draw2D Label Figure class to ensure that the text is never truncated.
  * Also draws a rounded rectangle border.
  * 
- * @author ccallendar
+ * @author Chris Callendar
  */
 public class GraphLabel extends Label {
 		

@@ -26,7 +26,7 @@ import org.eclipse.swt.graphics.Cursor;
 /**
  * Panning drag tracker (single selection only).
  * 
- * @author ccallendar
+ * @author Chris Callendar
  */
 public class PanningTracker extends SingleSelectionTracker {
 

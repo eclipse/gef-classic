@@ -34,8 +34,8 @@ import org.eclipse.swt.widgets.Widget;
 /**
  * A very springy viewer.
  * 
- * @author irbull
- * @author ccallendar
+ * @author Ian Bull
+ * @author Chris Callendar
  */
 public class SpringGraphViewer extends StructuredViewer {
 	
