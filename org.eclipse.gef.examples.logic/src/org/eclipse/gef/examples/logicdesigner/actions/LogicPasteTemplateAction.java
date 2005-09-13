@@ -10,16 +10,11 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner.actions;
 
-import org.eclipse.ui.IEditorPart;
-
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
-
 import org.eclipse.gef.GraphicalEditPart;
-import org.eclipse.gef.requests.CreationFactory;
-
-import org.eclipse.gef.examples.logicdesigner.model.LogicElementFactory;
+import org.eclipse.ui.IEditorPart;
 
 /**
  * @author Eric Bordeau
@@ -35,17 +30,7 @@ public LogicPasteTemplateAction(IEditorPart editor) {
 }
 
 /**
- * @see org.eclipse.gef.examples.logicdesigner.actions.PasteTemplateAction#getFactory(java.lang.Object)
- */
-protected CreationFactory getFactory(Object template) {
-	if (template instanceof String)
-		return new LogicElementFactory((String)template);
-	return null;
-}
-
-/**
- * 
- * @see org.eclipse.gef.examples.logicdesigner.actions.PasteTemplateAction#getPasteLocation(GraphicalEditPart)
+ * @see PasteTemplateAction#getPasteLocation(GraphicalEditPart)
  */
 protected Point getPasteLocation(GraphicalEditPart container) {
 	Point result = new Point(10, 10);

@@ -98,7 +98,11 @@ protected Object getClipboardContents() {
  * @param template the template Object; it will never be <code>null</code>
  * @return a Factory
  */
-protected abstract CreationFactory getFactory(Object template);
+protected CreationFactory getFactory(Object template) {
+	if (template instanceof CreationFactory)
+		return (CreationFactory)template;
+	return null;
+}
 
 /**
  * @param container the parent of the new part that is being pasted
