@@ -28,7 +28,7 @@ import org.eclipse.gef.requests.CreationFactory;
  * @since 2.1
  * @author Eric Bordeau
  */
-public abstract class TemplateTransferDropTargetListener
+public class TemplateTransferDropTargetListener
 	extends AbstractTransferDropTargetListener 
 {
 
@@ -65,7 +65,12 @@ protected final CreateRequest getCreateRequest() {
  * @param template the template Object
  * @return a Factory
  */
-protected abstract CreationFactory getFactory(Object template);
+protected CreationFactory getFactory(Object template) {
+	if (template instanceof CreationFactory)
+		return ((CreationFactory)template);
+	else
+		return null;
+}
 
 /**
  * The purpose of a template is to be copied. Therefore, the drop operation can't be
