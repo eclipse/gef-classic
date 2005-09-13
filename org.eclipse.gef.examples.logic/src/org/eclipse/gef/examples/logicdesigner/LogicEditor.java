@@ -53,7 +53,6 @@ import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.util.TransferDropTargetListener;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
@@ -89,6 +88,7 @@ import org.eclipse.gef.RootEditPart;
 import org.eclipse.gef.SnapToGeometry;
 import org.eclipse.gef.SnapToGrid;
 import org.eclipse.gef.dnd.TemplateTransferDragSourceListener;
+import org.eclipse.gef.dnd.TemplateTransferDropTargetListener;
 import org.eclipse.gef.editparts.ScalableFreeformRootEditPart;
 import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.palette.PaletteRoot;
@@ -117,7 +117,6 @@ import org.eclipse.gef.ui.rulers.RulerComposite;
 
 import org.eclipse.gef.examples.logicdesigner.actions.IncrementDecrementAction;
 import org.eclipse.gef.examples.logicdesigner.actions.LogicPasteTemplateAction;
-import org.eclipse.gef.examples.logicdesigner.dnd.LogicTemplateTransferDropTargetListener;
 import org.eclipse.gef.examples.logicdesigner.dnd.TextTransferDropTargetListener;
 import org.eclipse.gef.examples.logicdesigner.edit.GraphicalPartFactory;
 import org.eclipse.gef.examples.logicdesigner.edit.TreePartFactory;
@@ -173,8 +172,8 @@ class OutlinePage
 			"org.eclipse.gef.examples.logic.outline.contextmenu", //$NON-NLS-1$
 			provider, getSite().getSelectionProvider());
 		getViewer().setKeyHandler(getCommonKeyHandler());
-		getViewer().addDropTargetListener((TransferDropTargetListener)
-			new LogicTemplateTransferDropTargetListener(getViewer()));
+		getViewer().addDropTargetListener(
+			new TemplateTransferDropTargetListener(getViewer()));
 		IToolBarManager tbm = getSite().getActionBars().getToolBarManager();
 		showOutlineAction = new Action() {
 			public void run() {
@@ -557,8 +556,8 @@ protected KeyHandler getCommonKeyHandler(){
 	if (sharedKeyHandler == null){
 		sharedKeyHandler = new KeyHandler();
 		sharedKeyHandler.put(
-				KeyStroke.getPressed(SWT.F2, 0),
-				getActionRegistry().getAction(GEFActionConstants.DIRECT_EDIT));
+			KeyStroke.getPressed(SWT.F2, 0),
+			getActionRegistry().getAction(GEFActionConstants.DIRECT_EDIT));
 	}
 	return sharedKeyHandler;
 }
@@ -619,9 +618,9 @@ protected void initializeGraphicalViewer() {
 	super.initializeGraphicalViewer();
 	getGraphicalViewer().setContents(getLogicDiagram());
 	
-	getGraphicalViewer().addDropTargetListener((TransferDropTargetListener)
-		new LogicTemplateTransferDropTargetListener(getGraphicalViewer()));
-	getGraphicalViewer().addDropTargetListener((TransferDropTargetListener)
+	getGraphicalViewer().addDropTargetListener(
+		new TemplateTransferDropTargetListener(getGraphicalViewer()));
+	getGraphicalViewer().addDropTargetListener(
 		new TextTransferDropTargetListener(
 				getGraphicalViewer(), TextTransfer.getInstance()));
 }
