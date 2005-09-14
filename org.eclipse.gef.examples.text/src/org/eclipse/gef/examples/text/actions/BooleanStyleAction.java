@@ -15,7 +15,6 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.util.Assert;
 
-import org.eclipse.gef.internal.GEFMessages;
 import org.eclipse.gef.internal.InternalImages;
 
 /**
@@ -49,28 +48,28 @@ static void configureStyleAction(IAction a) {
 	String styleID = a.getId();
 	a.setActionDefinitionId(styleID);
 	if (styleID.equals(TextActionConstants.STYLE_BOLD)) {
-		a.setText(GEFMessages.StyleBold_Tooltip);
+		a.setText("Bold");
 		a.setImageDescriptor(InternalImages.DESC_BOLD);
 	} else if (styleID.equals(TextActionConstants.STYLE_ITALIC)) {
-		a.setText(GEFMessages.StyleItalic_Tooltip);
+		a.setText("Italics");
 		a.setImageDescriptor(InternalImages.DESC_ITALIC);
 	} else if (styleID.equals(TextActionConstants.STYLE_UNDERLINE)) {
-		a.setText(GEFMessages.StyleUnderline_Tooltip);
+		a.setText("Underline");
 		a.setImageDescriptor(InternalImages.DESC_UNDERLINE);
 	} else if (styleID.equals(TextActionConstants.BLOCK_ALIGN_CENTER)){
-		a.setText(GEFMessages.BlockAlignCenter_Tooltip);
+		a.setText("Center");
 		a.setImageDescriptor(InternalImages.DESC_BLOCK_ALIGN_CENTER);
 	} else if (styleID.equals(TextActionConstants.BLOCK_ALIGN_LEFT)){
-		a.setText(GEFMessages.BlockAlignLeft_Tooltip);
+		a.setText("Left");
 		a.setImageDescriptor(InternalImages.DESC_BLOCK_ALIGN_LEFT);
 	} else if (styleID.equals(TextActionConstants.BLOCK_ALIGN_RIGHT)){
-		a.setText(GEFMessages.BlockAlignRight_Tooltip);
+		a.setText("Right");
 		a.setImageDescriptor(InternalImages.DESC_BLOCK_ALIGN_RIGHT);
 	} else if (styleID.equals(TextActionConstants.BLOCK_LTR)){
-		a.setText(GEFMessages.BlockLeftToRight_Tooltip);
+		a.setText("Left to Right");
 		a.setImageDescriptor(InternalImages.DESC_BLOCK_LTR);
 	} else if (styleID.equals(TextActionConstants.BLOCK_RTL)){
-		a.setText(GEFMessages.BlockRightToLeft_Tooltip);
+		a.setText("Right to Left");
 		a.setImageDescriptor(InternalImages.DESC_BLOCK_RTL);
 	} else {
 		throw new RuntimeException("The given style ID was not recognized"); //$NON-NLS-1$

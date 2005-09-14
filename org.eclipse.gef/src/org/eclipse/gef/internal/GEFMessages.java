@@ -91,16 +91,6 @@ public static final String FitAllAction_Label;
 public static final String FitWidthAction_Label;
 public static final String FitHeightAction_Label;
 
-//TextStyle Actions
-public static final String StyleBold_Tooltip;
-public static final String StyleItalic_Tooltip;
-public static final String StyleUnderline_Tooltip;
-public static final String BlockAlignCenter_Tooltip;
-public static final String BlockAlignLeft_Tooltip;
-public static final String BlockAlignRight_Tooltip;
-public static final String BlockLeftToRight_Tooltip;
-public static final String BlockRightToLeft_Tooltip;
-
 // View menu actions
 public static final String ToggleRulerVisibility_Label;
 public static final String ToggleRulerVisibility_Tooltip;
@@ -125,17 +115,6 @@ public static final String Create_Guide_Tooltip;
 static {
 	Bundle bundle = Platform.getBundle("org.eclipse.gef");//$NON-NLS-1$
 	ResourceBundle rb = ResourceBundle.getBundle("org.eclipse.gef.internal.messages"); //$NON-NLS-1$
-	
-	StyleBold_Tooltip = Platform.getResourceString(bundle, "%StyleBold.Tooltip");//$NON-NLS-1$
-	StyleItalic_Tooltip = Platform.getResourceString(bundle, "%StyleBold.Tooltip");//$NON-NLS-1$
-	StyleUnderline_Tooltip = Platform.getResourceString(bundle, "%StyleBold.Tooltip");//$NON-NLS-1$
-	
-	BlockAlignCenter_Tooltip = Platform.getResourceString(bundle, "%ParagraphAlignCenter.Tooltip");//$NON-NLS-1$
-	BlockAlignLeft_Tooltip = Platform.getResourceString(bundle, "%ParagraphAlignLeft.Tooltip");//$NON-NLS-1$
-	BlockAlignRight_Tooltip = Platform.getResourceString(bundle, "%ParagraphAlignRight.Tooltip");//$NON-NLS-1$
-	
-	BlockLeftToRight_Tooltip = Platform.getResourceString(bundle, "%BlockLeftToRight.Tooltip");//$NON-NLS-1$
-	BlockRightToLeft_Tooltip = Platform.getResourceString(bundle, "%BlockRightToLeft.Tooltip");//$NON-NLS-1$
 	
 	AlignBottomAction_Label = rb.getString("AlignBottomAction.Label");//$NON-NLS-1$
 	AlignBottomAction_Tooltip = rb.getString("AlignBottomAction.Tooltip");//$NON-NLS-1$
