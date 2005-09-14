@@ -103,7 +103,7 @@ public class SimpleSWTExample {
 	
 	protected static ArrayList algorithms = new ArrayList();
 	{
-		algorithms.add( new SpringLayoutAlgorithm(LayoutStyles.NONE) );
+		algorithms.add( new SpringLayoutAlgorithm(LayoutStyles.NO_LAYOUT_SIZE) );
 		algorithms.add( new FadeLayoutAlgorithm(LayoutStyles.NONE) );
 		algorithms.add( new TreeLayoutAlgorithm (LayoutStyles.NONE) );  
 		algorithms.add( new HorizontalTreeLayoutAlgorithm (LayoutStyles.NONE) );
@@ -251,7 +251,7 @@ public class SimpleSWTExample {
         SimpleNode.setNodeColors(NODE_NORMAL_COLOR, BORDER_NORMAL_COLOR, NODE_SELECTED_COLOR, NODE_ADJACENT_COLOR, BORDER_SELECTED_COLOR, BORDER_ADJACENT_COLOR);
         SimpleRelationship.setDefaultColor(RELATIONSHIP_COLOR);
         SimpleRelationship.setDefaultHighlightColor(RELATIONSHIP_HIGHLIGHT_COLOR);
-		createTreeGraph(4, 3, false);
+		createTreeGraph(2, 3, false);
 		mainShell.pack();
 		//mainShell.setSize(INITIAL_PANEL_WIDTH + 100, INITIAL_PANEL_HEIGHT + 200);
 	}

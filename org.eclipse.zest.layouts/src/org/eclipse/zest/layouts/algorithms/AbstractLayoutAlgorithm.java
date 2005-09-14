@@ -668,10 +668,12 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 		DisplayIndependentRectangle layoutBounds = getLayoutBounds(entitiesToLayout, includeNodeSize);
         for (int i = 0; i < entitiesToLayout.length; i++) {
             InternalNode layoutEntity = entitiesToLayout[i];
+          
+            
 			
 			double x = (layoutBounds.width == 0) ? 0 : (layoutEntity.getInternalX() - layoutBounds.x) / layoutBounds.width;
 			double y = (layoutBounds.height == 0) ? 0 : (layoutEntity.getInternalY() - layoutBounds.y) / layoutBounds.height;
-			
+						
 			layoutEntity.setInternalLocation( x, y );
 			
 			if (includeNodeSize) {

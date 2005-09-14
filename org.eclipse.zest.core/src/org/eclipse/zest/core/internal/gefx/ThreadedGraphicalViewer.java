@@ -110,6 +110,8 @@ public abstract class ThreadedGraphicalViewer extends GraphicalViewerImpl implem
 		});
 	
 		((Canvas)getControl()).setBackground( ColorConstants.white );
+		
+		//this.addThread( new FreqUpdater() );
 	}
 	
 	private List controlListeners = new LinkedList();
@@ -307,31 +309,31 @@ class MyLightWeightSystem extends LightweightSystem {
 	UpdateManager updateManager = null;
 
 	
-//	public class FreqUpdater implements Stoppable {
-//
-//		//TODO: Why is this here?  It doesn't do anything?
-//		ProgressListener pl = null;
-//
-//		public void addProgressListener(ProgressListener listener) {
-//			pl = listener;
-//		}
-//
-//		boolean keepGoing = true;
-//
-//		public void stop() {
-//			keepGoing = false;
-//		}
-//
-//		public void run() {
-//			while (keepGoing) {
-//				if (pl != null)
-//					pl.progressUpdated(null);
-//				try {
-//					Thread.sleep(50);
-//				} catch (InterruptedException e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		}
-//	}	
+	public class FreqUpdater implements Stoppable {
+
+		//TODO: Why is this here?  It doesn't do anything?
+		ProgressListener pl = null;
+
+		public void addProgressListener(ProgressListener listener) {
+			pl = listener;
+		}
+
+		boolean keepGoing = true;
+
+		public void stop() {
+			keepGoing = false;
+		}
+
+		public void run() {
+			while (keepGoing) {
+				if (pl != null)
+					pl.progressUpdated(null);
+				try {
+					Thread.sleep(50);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}	
 }

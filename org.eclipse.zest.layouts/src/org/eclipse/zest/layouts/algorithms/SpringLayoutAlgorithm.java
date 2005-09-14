@@ -474,8 +474,20 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 
     protected void convertNodePositionsBack(int i, InternalNode entityToConvert, double px, double py, double screenWidth, double screenHeight, DisplayIndependentRectangle layoutBounds) {
 
+    	
+    	// If the node selected is outside the screen, map it to the boarder
+    	if ( px > screenWidth ) px = screenWidth;
+    	if ( py > screenHeight ) py = screenHeight;
+    	
+    	if ( px < 0 ) px = 1;
+    	if ( py < 0 ) py = 1;
+    	
         double x = (px / screenWidth) * layoutBounds.width + layoutBounds.x;
         double y = (py / screenHeight) * layoutBounds.height + layoutBounds.y;
+        
+
+        
+        
         tempLocationsX[i] = x;
         tempLocationsY[i] = y;
         //setTempLocation(entityToConvert, new DisplayIndependentPoint(x, y));
@@ -537,7 +549,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     		bounds = new DisplayIndependentRectangle(x,y,width,height);
         checkPreferredLocation(entitiesToLayout, bounds );
         computeForces(entitiesToLayout);
-        largestMovement = Double.MAX_VALUE;
+        largestMovement = 0; //Double.MAX_VALUE;
         computePositions(entitiesToLayout);
         for (int i = 0; i < entitiesToLayout.length; i++) {
             InternalNode layoutEntity = entitiesToLayout[i];
@@ -593,10 +605,12 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 
         for (int i = 0; i < entitiesToLayout.length - 1; i++) {
             InternalNode sourceEntity = entitiesToLayout[i];
+            
             double srcLocationX = tempLocationsX[i];
             double srcLocationY = tempLocationsY[i];
             double fx = forcesX[i]; // force in x direction
             double fy = forcesY[i]; // force in y direction
+            
 
             for (int j = i + 1; j < entitiesToLayout.length; j++) {
                 InternalNode destinationEntity = entitiesToLayout[j];
@@ -620,8 +634,10 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
                     if (numRels > 0) {
                         // nodes are pulled towards each other
                         double f = sprStrain * Math.log(distance / sprLength) * numRels * avgWeight;
+                        
                         fx = fx - (f * dx / distance);
                         fy = fy - (f * dy / distance);
+                        
                     } else {
                         // nodes are repelled from each other
                         // f = Math.min(100, sprGravitation / (distance*distance));
@@ -660,14 +676,14 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
      */
     protected void computePositions(InternalNode[] entitiesToLayout) {
         for (int i = 0; i < entitiesToLayout.length; i++) {
-            if (!anchors[i]) {
+            if (!anchors[i] || entitiesToLayout[i].hasPreferredLocation() ) {
                 double oldX = tempLocationsX[i];
                 double oldY = tempLocationsY[i];
                 double deltaX = sprMove * forcesX[i];
                 double deltaY = sprMove * forcesY[i];
 
                 // constrain movement, so that nodes don't shoot way off to the edge
-                double maxMovement = 10.0d * sprMove;
+                double maxMovement = 0.2d * sprMove;
                 if (deltaX >= 0) {
                     deltaX = Math.min(deltaX, maxMovement);
                 } else {
@@ -678,6 +694,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
                 } else {
                     deltaY = Math.max(deltaY, -maxMovement);
                 }
+                
 
                 largestMovement = Math.max(largestMovement, Math.abs(deltaX));
                 largestMovement = Math.max(largestMovement, Math.abs(deltaY));
@@ -687,7 +704,9 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
                 tempLocationsX[i] = newX;
                 tempLocationsY[i] = newY;
             }
+            
         }
+
     }
 
     /**
