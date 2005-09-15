@@ -10,7 +10,11 @@
  *******************************************************************************/
 package org.eclipse.gef.ui.views.palette;
 
+import org.eclipse.swt.widgets.Composite;
+
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IPerspectiveDescriptor;
+import org.eclipse.ui.IPerspectiveListener;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.part.IPage;
@@ -37,6 +41,18 @@ public class PaletteView
  */
 public static final String ID = "org.eclipse.gef.ui.palette_view"; //$NON-NLS-1$
 
+private IPerspectiveListener perspectiveListener = new IPerspectiveListener() {
+	public void perspectiveChanged(IWorkbenchPage page,
+			IPerspectiveDescriptor perspective, String changeId) {
+	}
+	// fix for bug 109245 and 69098 - fake a partActivated when the perpsective is switched
+	public void perspectiveActivated(IWorkbenchPage page,
+			IPerspectiveDescriptor perspective) {
+		// getBootstrapPart could return null; but isImportant() can handle null
+		partActivated(getBootstrapPart());
+	}
+}; 
+
 /**
  * Creates a default page saying that a palette is not available.
  * 
@@ -48,6 +64,25 @@ protected IPage createDefaultPage(PageBook book) {
 	page.createControl(book);
 	page.setMessage(GEFMessages.Palette_Not_Available);
 	return page;
+}
+
+/**
+ * Add a perspective listener so the palette view can be updated when the perspective
+ * is switched.
+ * @see org.eclipse.ui.IWorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
+ */
+public void createPartControl(Composite parent) {
+	super.createPartControl(parent);
+	getSite().getPage().getWorkbenchWindow().addPerspectiveListener(perspectiveListener);
+}
+
+/**
+ * Remove the perspective listener.
+ * @see org.eclipse.ui.IWorkbenchPart#dispose()
+ */
+public void dispose() {
+	getSite().getPage().getWorkbenchWindow().removePerspectiveListener(perspectiveListener);
+	super.dispose();
 }
 
 /**
@@ -87,7 +122,7 @@ protected IWorkbenchPart getBootstrapPart() {
 }
 
 /**
- * Only editors are important.
+ * Only editors in the same perspective as the view are important.
  * 
  * @see	PageBookView#isImportant(org.eclipse.ui.IWorkbenchPart)
  */
@@ -97,22 +132,6 @@ protected boolean isImportant(IWorkbenchPart part) {
 	// perspective, i.e., when both this view and the given editor are on the same page.
 	return part.getSite().getPage().findViewReference(ID) != null 
 			&& part instanceof IEditorPart;
-}
-
-/**
- * @see org.eclipse.ui.IPartListener#partActivated(org.eclipse.ui.IWorkbenchPart)
- */
-public void partActivated(IWorkbenchPart part) {
-	if (isImportant(part))
-		super.partActivated(part);
-	/*
-	 * Workaround for Bug# 69098 -- This should be removed when/if Bug# 70510 is fixed
-	 * As a result of the fix in isImportant(), a palette page is not created for an 
-	 * editor if a view is the active part when the perspective changes.  If that is the 
-	 * case, we fake a partActivated for the bootstrap part. 
-	 */
-	else if (getBootstrapPart() != null)
-		super.partActivated(getBootstrapPart());
 }
 
 }
