@@ -47,6 +47,7 @@ import org.eclipse.mylar.zest.core.viewers.SpringGraphViewer;
 import org.eclipse.mylar.zest.layouts.LayoutStyles;
 import org.eclipse.mylar.zest.layouts.Stoppable;
 import org.eclipse.mylar.zest.layouts.algorithms.AbstractLayoutAlgorithm;
+import org.eclipse.mylar.zest.layouts.algorithms.FadeLayoutAlgorithm;
 import org.eclipse.mylar.zest.layouts.algorithms.SpringLayoutAlgorithm;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlEvent;
@@ -158,7 +159,7 @@ public class SpringGraphViewerImpl extends ThreadedGraphicalViewer implements IP
 		
 		Dimension d = this.getCanvasSize();
 		
-		layoutAlgorithm = new SpringLayoutAlgorithm(LayoutStyles.NO_LAYOUT_SIZE);
+		layoutAlgorithm = new FadeLayoutAlgorithm(LayoutStyles.NO_LAYOUT_SIZE);
 		/* irbull, these were the force directed settings
 		((SpringLayoutAlgorithm) layoutAlgorithm).setSpringLengthRange(60, 225);
 		((SpringLayoutAlgorithm) layoutAlgorithm).setStabilize(stabilize);

@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.mylar.zest.layouts.algorithms;
 
-import java.util.Vector;
+import java.util.ArrayList;
 
 import org.eclipse.mylar.zest.layouts.dataStructures.DisplayIndependentPoint;
 import org.eclipse.mylar.zest.layouts.dataStructures.DisplayIndependentRectangle;
@@ -30,7 +30,7 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     private final static double CELL_WIDTH = 20;
     private final static double CELL_HEIGHT = 20;
     
-	private static Vector nodeVector = new Vector();
+	private static ArrayList nodeVector = new ArrayList();
 	
     /**
      * The default value for the spring layout number of iterations.
@@ -252,9 +252,22 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 		return (iteration<=sprIterations && largestMovement >= sprMove);
 	}
 
+	
+	
 	protected void computeOneIteration(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider, double x, double y, double width, double height) {
+		
+		
+		width = width == 0 ? 400 : width;
+		height = height == 0 ? 400 : height;
+		
 		clusterNodes(entitiesToLayout, width, height);
 		
+		for( int i = 0; i < entitiesToLayout.length; i++ ) {
+			InternalNode currentNode = entitiesToLayout[i];
+			currentNode.setInternalLocation( currentNode.getDx(), currentNode.getDy() );
+		}
+		
+		handleSelectedNodes(entitiesToLayout,new DisplayIndependentRectangle (x, y, width, height));
 		computeForces(entitiesToLayout, relationshipsToConsider);
 		largestMovement = Double.MAX_VALUE;
 		computePositions(entitiesToLayout);
@@ -264,17 +277,31 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 		}
 		
 		defaultFitWithinBounds(entitiesToLayout, new DisplayIndependentRectangle (x, y, width, height));
-		
-		
 		//fireProgressEvent (iteration, sprIterations);
-		
 		iteration++;
+		
+		// Yield every now and then
+		try {
+			//Thread.yield();
+			Thread.sleep(50);
+		} catch (Exception e) {
+		}
+	}
+	
+	
+	
+	
+	private void handleSelectedNodes( InternalNode[] entitiesToLayout, DisplayIndependentRectangle realBounds ) {	
+		for ( int i = 0; i < entitiesToLayout.length; i++ ) {
+			InternalNode currentNode = entitiesToLayout[i];
+			if ( currentNode.hasPreferredLocation() ) {
+				DisplayIndependentPoint localPoint = getLocalLocation(entitiesToLayout, currentNode.getPreferredX(), currentNode.getPreferredY(), realBounds);
+				currentNode.setDx( localPoint.x );
+				currentNode.setDy( localPoint.y );
+			}			
+		}
 	}
 
-	public void setLayoutArea(double x, double y, double width, double height) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	boolean isValidConfiguration(boolean asynchronous, boolean continueous) {
 		if ( asynchronous && continueous ) return true;
@@ -383,7 +410,12 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     	//TODO: Fix node with to be something more resonable
     	int node_width = 10;
     	int node_height = 10;
+    	
+		width = width == 0 ? 100 : width;
+		height = height == 0 ? 100 : height;
+		
 		if (sprRandom)  {
+			
 			placeRandomly(entitiesToLayout,width,height,node_width,node_height);  //put vertices in random places
 			placeRandomly(entitiesToLayout);
 		}
@@ -402,13 +434,13 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     {
     	FadeCell rootnode = new FadeCell();
     	/** Empty the vector each time around to start **/
-    	nodeVector.removeAllElements();
+    	nodeVector.clear();
     	/** Put the root node into the nodeVector after
     	 * setting the height and width etc..**/
         rootnode.SetHeight(width);
         rootnode.SetWidth(height);
         rootnode.SetIndexOfParent(-1);
-    	nodeVector.addElement(rootnode);
+    	nodeVector.add(rootnode);
                 
     	/** Cluster nodes(aka entities) one at a time **/
     	for (int i = 0; i < entitiesToLayout.length; i++) {
@@ -451,7 +483,7 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     /** How to add a node into the vector **/
     private void addNodeToCluster(InternalNode layoutEntity_Cluster)
     {
-    	//System.out.println("Starting ad node to cluser");
+    	
     	/** locat stores the average scaled-down x and y location for each cluster. The scaling down is
     	 * done as per the SpringLayoutAlgorithm and is required for computing non-edge forces. Two
     	 * possible ways of computing non-edge forces are available here so this way could potentially
@@ -466,7 +498,7 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     	
     	/** First thing to do is to find which cell to try
     	 * put the entity into. It must have no children **/
-    	FadeCell tempfadenode = (FadeCell)nodeVector.elementAt(indexofInterest);
+    	FadeCell tempfadenode = (FadeCell)nodeVector.get(indexofInterest);
     	
     	while (tempfadenode.HasChildren())
     	{
@@ -490,7 +522,7 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     			}
     		
     			else { 
-    				System.out.println("Bad Location [1]");
+    				//System.out.println("Bad Location [1]");
     				//System.out.println("Cell Spans: " + tempfadenode.GetX() + );
     				//System.exit(0);
     				parentIndex = indexofInterest;
@@ -518,7 +550,7 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     			}
     			
     			else { 
-    				System.out.println("Bad Location [2]");
+    				//System.out.println("Bad Location [2]");
     				parentIndex = indexofInterest;
     				indexofInterest = tempfadenode.getNE();
 
@@ -527,7 +559,7 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     			   			
     		}
     		else {
-    				System.out.println("Bad Location [3]");
+    				//System.out.println("Bad Location [3]");
     				//System.exit(0);
         			if ( layoutEntity_Cluster.getDy() + CELL_HEIGHT >= tempfadenode.GetY() && (layoutEntity_Cluster.getDy() + CELL_HEIGHT < (tempfadenode.GetY() + (tempfadenode.GetHeight()/2))) )
         			{
@@ -542,7 +574,7 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
         			}
         			
         			else { 
-        				System.out.println("Bad Location [3-2]");
+        				//System.out.println("Bad Location [3-2]");
         				parentIndex = indexofInterest;
         				indexofInterest = tempfadenode.getNE();
 
@@ -551,7 +583,7 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 
     		}
     		
-    		tempfadenode = (FadeCell)nodeVector.elementAt(indexofInterest);
+    		tempfadenode = (FadeCell)nodeVector.get(indexofInterest);
     	}/* End While */
     	
     	/** We now know the index in the vector, of the cell we want to try
@@ -628,8 +660,8 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     		nodeVector.add(SWfadenode);  		
     		
     		/** Save tempfadenode back into the vector **/
-    		nodeVector.removeElementAt(indexofInterest);
-    		nodeVector.insertElementAt(tempfadenode,indexofInterest);
+    		nodeVector.remove(indexofInterest);
+    		nodeVector.add(indexofInterest, tempfadenode);
     		
     		
     		/** Now the cell is split, we must put the object residing in the parent cell into
@@ -641,28 +673,28 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     			if(tempfadenode.GetAverageY() < tempfadenode.GetY() + tempfadenode.GetHeight()/2)
     			{
     				/** We must place it in the South West Qudrant **/
-    				FadeCell transfadenode = (FadeCell)nodeVector.elementAt(tempfadenode.getSW());
+    				FadeCell transfadenode = (FadeCell)nodeVector.get(tempfadenode.getSW());
     				transfadenode.SetNode(tempfadenode.GetNode());
     				transfadenode.SetFull();
     				transfadenode.SetNumElements(1);
     				transfadenode.SetLocation(tempfadenode.GetLocation());
     				transfadenode.SetAverageX(tempfadenode.GetAverageX());
     				transfadenode.SetAverageY(tempfadenode.GetAverageY());
-    				nodeVector.removeElementAt(tempfadenode.getSW());
-    				nodeVector.insertElementAt(transfadenode,tempfadenode.getSW());
+    				nodeVector.remove(tempfadenode.getSW());
+    				nodeVector.add(tempfadenode.getSW(),transfadenode);
     			}
     			else
     			{
     				/** We must place it in the North West Quadrant **/
-    				FadeCell transfadenode = (FadeCell)nodeVector.elementAt(tempfadenode.getNW());
+    				FadeCell transfadenode = (FadeCell)nodeVector.get(tempfadenode.getNW());
     				transfadenode.SetNode(tempfadenode.GetNode());
     				transfadenode.SetFull();
     				transfadenode.SetNumElements(1);
     				transfadenode.SetLocation(tempfadenode.GetLocation());
     				transfadenode.SetAverageX(tempfadenode.GetAverageX());
     				transfadenode.SetAverageY(tempfadenode.GetAverageY());
-    				nodeVector.removeElementAt(tempfadenode.getNW());
-    				nodeVector.insertElementAt(transfadenode,tempfadenode.getNW());
+    				nodeVector.remove(tempfadenode.getNW());
+    				nodeVector.add(tempfadenode.getNW(), transfadenode);
     			}
     		}
     		else
@@ -671,28 +703,28 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     			if(tempfadenode.GetAverageY() < tempfadenode.GetY() + tempfadenode.GetHeight()/2)
     			{
     				/** We must place it in the South East Qudrant **/
-    				FadeCell transfadenode = (FadeCell)nodeVector.elementAt(tempfadenode.getSE());
+    				FadeCell transfadenode = (FadeCell)nodeVector.get(tempfadenode.getSE());
     				transfadenode.SetNode(tempfadenode.GetNode());
     				transfadenode.SetFull();
     				transfadenode.SetNumElements(1);
     				transfadenode.SetLocation(tempfadenode.GetLocation());
     				transfadenode.SetAverageX(tempfadenode.GetAverageX());
     				transfadenode.SetAverageY(tempfadenode.GetAverageY());
-    				nodeVector.removeElementAt(tempfadenode.getSE());
-    				nodeVector.insertElementAt(transfadenode,tempfadenode.getSE());
+    				nodeVector.remove(tempfadenode.getSE());
+    				nodeVector.add(tempfadenode.getSE(),transfadenode);
     			}
     			else
     			{
     				/** We must place it in the North East Quadrant **/
-    				FadeCell transfadenode = (FadeCell)nodeVector.elementAt(tempfadenode.getNE());
+    				FadeCell transfadenode = (FadeCell)nodeVector.get(tempfadenode.getNE());
     				transfadenode.SetNode(tempfadenode.GetNode());
     				transfadenode.SetFull();
     				transfadenode.SetNumElements(1);
     				transfadenode.SetLocation(tempfadenode.GetLocation());
     				transfadenode.SetAverageX(tempfadenode.GetAverageX());
     				transfadenode.SetAverageY(tempfadenode.GetAverageY());
-    				nodeVector.removeElementAt(tempfadenode.getNE());
-    				nodeVector.insertElementAt(transfadenode,tempfadenode.getNE());
+    				nodeVector.remove(tempfadenode.getNE());
+    				nodeVector.add(tempfadenode.getNE(), transfadenode);
     			}
     		}
     	    		
@@ -724,8 +756,8 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     	    		
     		/** Now add the FadeNode object into the vector
     		 * at the correct index **/
-    		nodeVector.removeElementAt(indexofInterest);
-    		nodeVector.insertElementAt(tempfadenode,indexofInterest);
+    		nodeVector.remove(indexofInterest);
+    		nodeVector.add(indexofInterest, tempfadenode);
     		
     		/** Now update the average x and y positions and number of elements of
     		 * immediate parent and all other parents **/
@@ -734,7 +766,7 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     		while(parentIndex >= 0)
     		{
     			/** Add one to the count of nodes **/
-    			FadeCell tempparentfadenode = (FadeCell)nodeVector.elementAt(parentIndex);
+    			FadeCell tempparentfadenode = (FadeCell)nodeVector.get(parentIndex);
     			tempparentfadenode.SetNumElements(tempparentfadenode.GetNumElements()+1);
     			
     			/** Next add the DisplayIndependentPoint location to the cells total
@@ -742,22 +774,22 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     			tempparentfadenode.SetLocation(new DisplayIndependentPoint(tempparentfadenode.GetLocation().x + locat.x,tempparentfadenode.GetLocation().y + locat.y));
     			
     			/** Update average x and y value of cell **/
-    			FadeCell updateNWfadenode = (FadeCell)nodeVector.elementAt(tempparentfadenode.getNW());
+    			FadeCell updateNWfadenode = (FadeCell)nodeVector.get(tempparentfadenode.getNW());
     			totalx = totalx + updateNWfadenode.GetAverageX();
     			totaly = totaly + updateNWfadenode.GetAverageY();
     			if (updateNWfadenode.IsFull() || updateNWfadenode.HasChildren())
     				fullcellcount = fullcellcount + 1;
-    			FadeCell updateNEfadenode = (FadeCell)nodeVector.elementAt(tempparentfadenode.getNE());
+    			FadeCell updateNEfadenode = (FadeCell)nodeVector.get(tempparentfadenode.getNE());
     			totalx = totalx + updateNEfadenode.GetAverageX();
     			totaly = totaly + updateNEfadenode.GetAverageY();
     			if (updateNEfadenode.IsFull() || updateNWfadenode.HasChildren())
     				fullcellcount = fullcellcount + 1;
-    			FadeCell updateSEfadenode = (FadeCell)nodeVector.elementAt(tempparentfadenode.getSE());
+    			FadeCell updateSEfadenode = (FadeCell)nodeVector.get(tempparentfadenode.getSE());
     			totalx = totalx + updateSEfadenode.GetAverageX();
     			totaly = totaly + updateSEfadenode.GetAverageY();
     			if (updateSEfadenode.IsFull() || updateNWfadenode.HasChildren())
     				fullcellcount = fullcellcount + 1;
-    			FadeCell updateSWfadenode = (FadeCell)nodeVector.elementAt(tempparentfadenode.getSW());
+    			FadeCell updateSWfadenode = (FadeCell)nodeVector.get(tempparentfadenode.getSW());
     			totalx = totalx + updateSWfadenode.GetAverageX();
     			totaly = totaly + updateSWfadenode.GetAverageY();
     			if (updateSWfadenode.IsFull() || updateNWfadenode.HasChildren())
@@ -771,8 +803,8 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     			tempparentfadenode.SetAverageY(totaly);
     			
     			/** Save the tempparentfadenode back into the vector **/
-    			nodeVector.removeElementAt(parentIndex);
-    			nodeVector.insertElementAt(tempparentfadenode,parentIndex);
+    			nodeVector.remove(parentIndex);
+    			nodeVector.add(parentIndex, tempparentfadenode);
     			
     			/** Reset the x and y & count summation variables **/
     			totalx=0; totaly=0; fullcellcount = 0;
@@ -845,12 +877,14 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     
 	/** Places nodes randomly on the screen **/
 	private void placeRandomly (InternalNode [] entitiesToLayout, int width, int height, int node_width, int node_height) {
+		
         for (int i = 0; i < entitiesToLayout.length; i++) {
             InternalNode node = entitiesToLayout[i];
     		double x = Math.random() * width - node_width;
     		double y = Math.random() * height - node_height;
             node.setDx( x );
             node.setDy( y );
+            System.out.println("Random Setting: " + x + " : " + y );
         }
 	    
         for (int i = 0; i < entitiesToLayout.length; i++) {
@@ -904,7 +938,7 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     		DisplayIndependentPoint returnpoint = new DisplayIndependentPoint(0,0);
     		
     		/** Get Cluster Forces for all daughter cells of fadenode **/
-    		FadeCell NWnode = (FadeCell)nodeVector.elementAt(fadenode.getNW());
+    		FadeCell NWnode = (FadeCell)nodeVector.get(fadenode.getNW());
     		if (NWnode.IsFull() || (NWnode.HasChildren()))
     		{
     			DisplayIndependentPoint NWpoint = getClusterForce(layoutent,NWnode);//new DisplayIndependentPoint(0,0); //
@@ -912,7 +946,7 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     			returnpoint.y = returnpoint.y + NWpoint.y;
     		}
     		
-    		FadeCell NEnode = (FadeCell)nodeVector.elementAt(fadenode.getNE());
+    		FadeCell NEnode = (FadeCell)nodeVector.get(fadenode.getNE());
     		if (NEnode.IsFull() || (NEnode.HasChildren()))
     		{
     			DisplayIndependentPoint NEpoint = getClusterForce(layoutent,NEnode);// new DisplayIndependentPoint(0,0);//
@@ -920,7 +954,7 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     			returnpoint.y = returnpoint.y + NEpoint.y;
     		}
     		
-    		FadeCell SEnode = (FadeCell)nodeVector.elementAt(fadenode.getSE());
+    		FadeCell SEnode = (FadeCell)nodeVector.get(fadenode.getSE());
     		if (SEnode.IsFull() || (SEnode.HasChildren()))
     		{
     			DisplayIndependentPoint SEpoint = getClusterForce(layoutent,SEnode);//new DisplayIndependentPoint(0,0);//
@@ -928,7 +962,7 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     			returnpoint.y = returnpoint.y + SEpoint.y;
     		}
     		
-    		FadeCell SWnode = (FadeCell)nodeVector.elementAt(fadenode.getSW());
+    		FadeCell SWnode = (FadeCell)nodeVector.get(fadenode.getSW());
     		if (SWnode.IsFull() || (SWnode.HasChildren()))
     		{
     			DisplayIndependentPoint SWpoint = getClusterForce(layoutent,SWnode);//new DisplayIndependentPoint(0,0);//
@@ -988,7 +1022,7 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 			 * We do this by calling GetClusterForce with the entity and the root cell
 			 * in the vector of Fade Nodes objects... **/
 			/** This computes non - edge forces **/
-			DisplayIndependentPoint forcepoint = getClusterForce(sourceEntity,(FadeCell)nodeVector.elementAt(0));//.clone();
+			DisplayIndependentPoint forcepoint = getClusterForce(sourceEntity,(FadeCell)nodeVector.get(0));//.clone();
 			
 			fx = fx + forcepoint.x;
 			fy = fy + forcepoint.y;
@@ -1006,7 +1040,8 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     protected void computePositions(InternalNode [] entitiesToLayout) {
 		for (int i = 0; i < entitiesToLayout.length; i++) {
 			InternalNode layoutEntity = entitiesToLayout[i];
-		    if (true)//!isAnchor (layoutEntity)) 
+		    //if (true)//!isAnchor (layoutEntity))
+			if ( !layoutEntity.hasPreferredLocation() )
 		    	{
 		        //DisplayIndependentPoint tempLocation = getTempLocation(layoutEntity);
 		    	DisplayIndependentPoint tempLocation = new DisplayIndependentPoint( layoutEntity.getDx(), layoutEntity.getDy());

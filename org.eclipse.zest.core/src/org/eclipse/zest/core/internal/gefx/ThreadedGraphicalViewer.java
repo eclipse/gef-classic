@@ -110,8 +110,7 @@ public abstract class ThreadedGraphicalViewer extends GraphicalViewerImpl implem
 		});
 	
 		((Canvas)getControl()).setBackground( ColorConstants.white );
-		
-		//this.addThread( new FreqUpdater() );
+
 	}
 	
 	private List controlListeners = new LinkedList();

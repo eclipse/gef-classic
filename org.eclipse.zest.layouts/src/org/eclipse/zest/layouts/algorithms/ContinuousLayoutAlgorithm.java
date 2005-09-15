@@ -11,6 +11,7 @@
 package org.eclipse.mylar.zest.layouts.algorithms;
 
 
+import org.eclipse.mylar.zest.layouts.dataStructures.DisplayIndependentRectangle;
 import org.eclipse.mylar.zest.layouts.dataStructures.InternalNode;
 import org.eclipse.mylar.zest.layouts.dataStructures.InternalRelationship;
 
@@ -22,6 +23,8 @@ import org.eclipse.mylar.zest.layouts.dataStructures.InternalRelationship;
  *
  */
 public abstract class ContinuousLayoutAlgorithm extends AbstractLayoutAlgorithm {
+	
+	double x, y, widht, height;
 	
 	public ContinuousLayoutAlgorithm(int styles) {
 		super(styles);
@@ -48,6 +51,23 @@ public abstract class ContinuousLayoutAlgorithm extends AbstractLayoutAlgorithm 
 		else return false;
 	}
 	
+	public void setLayoutArea(double x, double y, double width, double height) {
+		this.setBounds(x, y, width, height);
+		
+	}
+	
+	
+	public synchronized DisplayIndependentRectangle getBounds() {
+		return new DisplayIndependentRectangle( this.x, this.y, this.widht, this.height );
+	}
+	
+	public synchronized void setBounds( double x, double y, double width, double height ) {
+		this.x = x; 
+		this.y = y;
+		this.widht = width;
+		this.height = height;
+	}
+	
 	/**
 	 * Calculates and applies the positions of the given entities based on a
 	 * spring layout using the given relationships.
@@ -55,12 +75,18 @@ public abstract class ContinuousLayoutAlgorithm extends AbstractLayoutAlgorithm 
 	protected void applyLayoutInternal(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider, 
 			double x, double y, double width, double height) {
 	
+		this.setBounds(x,y,width,height);
 		while (continueRunning() ) {
 			// check for entities and relationships to add or remove 
 			entitiesToLayout = updateEntities(entitiesToLayout);
 			relationshipsToConsider = updateRelationships(relationshipsToConsider);
+			DisplayIndependentRectangle bounds = this.getBounds();
+			double localX= bounds.x;
+			double localY = bounds.y;
+			double localWidth = bounds.width;
+			double localHeight = bounds.height;
+			computeOneIteration(entitiesToLayout, relationshipsToConsider, localX, localY, localWidth, localHeight);
 			
-			computeOneIteration(entitiesToLayout, relationshipsToConsider, x, y, width, height);
 			updateLayoutLocations(entitiesToLayout);
 			
 			if ( runContinuously )

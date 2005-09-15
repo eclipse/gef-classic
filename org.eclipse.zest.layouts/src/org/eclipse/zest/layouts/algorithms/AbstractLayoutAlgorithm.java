@@ -27,6 +27,7 @@ import org.eclipse.mylar.zest.layouts.LayoutStyles;
 import org.eclipse.mylar.zest.layouts.Stoppable;
 
 import org.eclipse.mylar.zest.layouts.dataStructures.DisplayIndependentDimension;
+import org.eclipse.mylar.zest.layouts.dataStructures.DisplayIndependentPoint;
 import org.eclipse.mylar.zest.layouts.dataStructures.DisplayIndependentRectangle;
 import org.eclipse.mylar.zest.layouts.dataStructures.InternalNode;
 import org.eclipse.mylar.zest.layouts.dataStructures.InternalRelationship;
@@ -460,6 +461,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 		
 		if ( !isValidConfiguration( asynchronous, continuous )) throw new InvalidLayoutConfiguration();
 		
+
 		synchronized (lock) {
 			if (layoutStopped == false) {
 				System.out.println("Layout Already Running! ");
@@ -607,6 +609,38 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 		return stillValid;
 	}
 	
+	
+	/**
+	 * Gets the location in the layout bounds for this node
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	protected DisplayIndependentPoint getLocalLocation(InternalNode[] entitiesToLayout,  double x, double y, DisplayIndependentRectangle realBounds ) {
+
+		double screenWidth = realBounds.width;
+		double screenHeight = realBounds.height;
+    	DisplayIndependentRectangle layoutBounds = getLayoutBounds(entitiesToLayout, false );
+        double localX = (x / screenWidth) * layoutBounds.width + layoutBounds.x;
+        double localY = (y / screenHeight) * layoutBounds.height + layoutBounds.y;
+		return new DisplayIndependentPoint( localX, localY );
+	}
+	
+	protected void defaultFitWithinBounds2(InternalNode[] entitiesToLayout, DisplayIndependentRectangle realBounds) {
+		double screenWidth = realBounds.width;
+		double screenHeight = realBounds.height;
+
+		convertNodePositionsToPercentage( entitiesToLayout, false );
+		
+		for ( int i = 0; i < entitiesToLayout.length; i++ ) {
+			double x = entitiesToLayout[i].getInternalX() * screenWidth; 
+			double y = entitiesToLayout[i].getInternalY() * screenHeight;
+			entitiesToLayout[i].setInternalLocation( x, y );
+		}
+	
+	}
+	
+	
 	/**
 	 * Find an appropriate size for the given nodes, then fit them into the given bounds.
 	 * The relative locations of the nodes to each other must be preserved.
@@ -681,9 +715,6 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 				double height = layoutEntity.getInternalHeight() / layoutBounds.height;
 				layoutEntity.setInternalSize( width, height );
 			}
-			if ( layoutEntity.getInternalX() < 0 ) {
-				System.out.println("We have nodes less than 0 here!");
-			}
 
 		}
 	}
@@ -719,6 +750,8 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 		double topSide = Double.MAX_VALUE;
         for (int i = 0; i < entitiesToLayout.length; i++) {
             InternalNode entity = entitiesToLayout[i];
+            if ( entity.hasPreferredLocation() ) continue;
+            
 			if (includeNodeSize) {
 				leftSide = Math.min (entity.getInternalX() - entity.getInternalWidth() / 2, leftSide);
 				topSide = Math.min (entity.getInternalY() - entity.getInternalHeight() / 2, topSide);
