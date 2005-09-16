@@ -884,7 +884,6 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     		double y = Math.random() * height - node_height;
             node.setDx( x );
             node.setDy( y );
-            System.out.println("Random Setting: " + x + " : " + y );
         }
 	    
         for (int i = 0; i < entitiesToLayout.length; i++) {
