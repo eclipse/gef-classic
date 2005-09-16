@@ -10,13 +10,8 @@
  *******************************************************************************/
 package org.eclipse.gef.test;
 
-import org.eclipse.core.runtime.IPluginDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 public class GEFTestPlugin extends AbstractUIPlugin {
-
-public GEFTestPlugin(IPluginDescriptor descriptor) {
-	super(descriptor);
-}
 
 }
