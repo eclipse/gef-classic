@@ -56,14 +56,14 @@ public EditPart createEditPart(EditPart parentEditPart, Object model) {
 		return createMainPaletteEditPart(parentEditPart, model);
 	if (model instanceof PaletteStack)
 		return createStackEditPart(parentEditPart, model);
-	if (model instanceof PaletteContainer)
-		if (PaletteDrawer.PALETTE_TYPE_DRAWER.equals(((PaletteContainer)model).getType()))
+	if (model instanceof PaletteContainer) {
+		Object type = ((PaletteContainer)model).getType();
+		if (PaletteDrawer.PALETTE_TYPE_DRAWER.equals(type))
 			return createDrawerEditPart(parentEditPart, model);
-	if (model instanceof PaletteContainer)
-		if (PaletteGroup.PALETTE_TYPE_GROUP.equals(((PaletteContainer) model).getType())
-				|| PaletteContainer.PALETTE_TYPE_UNKNOWN.equals(
-				((PaletteContainer)model).getType()))
+		if (PaletteGroup.PALETTE_TYPE_GROUP.equals(type)
+				|| PaletteContainer.PALETTE_TYPE_UNKNOWN.equals(type))
 			return createGroupEditPart(parentEditPart, model);
+	}
 	if (model instanceof PaletteTemplateEntry)
 		return createTemplateEditPart(parentEditPart, model);
 	if (model instanceof PaletteSeparator)
