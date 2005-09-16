@@ -34,17 +34,13 @@ TextFlow simpleText;
 
 private int[] width;
 private FlowPage flowpage;
-private TextFlow heading1;
 private BlockFlow paragraph1;
 private TextFlow p1text1;
 private InlineFlow p1inline;
 private InlineFlow p1NestedInline;
 private TextFlow p1text2;
 private BlockFlow paragraph2;
-private TextFlow heading2;
 private TextFlow p2text1;
-private TextFlow p2emptyText;
-private TextFlow p2text2;
 private TextFlow p1text3;
 
 void assertLineBreakFound(boolean b) {
@@ -72,9 +68,9 @@ protected void setUp() throws Exception {
 	flowpage = new FlowPage();
 	flowpage.setFont(TIMES_ROMAN);
 
-	flowpage.add(heading1 = new TextFlow("Heading 1"));
+	flowpage.add(new TextFlow("Heading 1"));
 	flowpage.add(paragraph1 = new BlockFlow());
-	flowpage.add(heading2 = new TextFlow("Heading 2"));	
+	flowpage.add(new TextFlow("Heading 2"));	
 	flowpage.add(paragraph2 = new BlockFlow());
 
 	paragraph1.add(p1text1 = new TextFlow("The quick "));
@@ -84,9 +80,9 @@ protected void setUp() throws Exception {
 	paragraph1.add(p1text3 = new TextFlow("jumped over"));
 	
 	paragraph2.add(p2text1 = new TextFlow("Hel"));
-	paragraph2.add(p2emptyText = new TextFlow(""));
+	paragraph2.add(new TextFlow(""));
 	paragraph2.add(new InlineFlow());
-	paragraph2.add(p2text2 = new TextFlow("lo"));
+	paragraph2.add(new TextFlow("lo"));
 }
 
 public void testContainerLeadingWord() {
