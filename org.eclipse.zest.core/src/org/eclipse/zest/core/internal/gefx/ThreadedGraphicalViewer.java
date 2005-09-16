@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.mylar.zest.core.internal.gefx;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -19,6 +20,7 @@ import java.util.Set;
 
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.DeferredUpdateManager;
+import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.LightweightSystem;
 import org.eclipse.draw2d.UpdateManager;
 import org.eclipse.draw2d.geometry.Dimension;
@@ -55,7 +57,7 @@ import org.eclipse.swt.widgets.Display;
 public abstract class ThreadedGraphicalViewer extends GraphicalViewerImpl implements ProgressListener  {
 
 	/** Holds all the threads added to this viewer */
-	private Map listOfThreads = null;
+	private Map listOfThreads = null; 
 
 	private Graph mainCanvas = null;
 	private EditDomain ed = null;
@@ -66,9 +68,9 @@ public abstract class ThreadedGraphicalViewer extends GraphicalViewerImpl implem
 	 */
 	public ThreadedGraphicalViewer(Composite parent)  {
 		super();
-		
 		listOfThreads = new LinkedHashMap();
 		
+		updateManager = getLightweightSystem().getUpdateManager();
 		// Creates a new graph (a FigureCanvas)
 		mainCanvas = new Graph(parent);
 		mainCanvas.setLayout(new FillLayout());
@@ -110,6 +112,43 @@ public abstract class ThreadedGraphicalViewer extends GraphicalViewerImpl implem
 		});
 	
 		((Canvas)getControl()).setBackground( ColorConstants.white );
+		
+		FreqUpdater updater = new FreqUpdater();
+		updater.addProgressListener( new ProgressListener() {
+
+			public void progressStarted(ProgressEvent e) {
+				// TODO Auto-generated method stub
+				
+				
+			}
+
+			public void progressUpdated(ProgressEvent e) {
+				// TODO Auto-generated method stub
+				IFigure rootFigure = null;
+				try {
+					 rootFigure = ThreadedGraphicalViewer.this.getCanvas().getLightweightSystem().getRootFigure();
+				}
+				catch ( Exception exception ) {
+					System.out.println("Exception");
+				}
+				
+				if (updateManager != null && rootFigure != null )
+					((MyUpdateManager)updateManager)._addInvalidFigure( rootFigure  );
+				else 
+					System.out.println(updateManager + " : " + rootFigure );
+
+				
+			}
+
+			public void progressEnded(ProgressEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
+		
+		addThread( updater );
+		
 
 	}
 	
@@ -241,8 +280,12 @@ public abstract class ThreadedGraphicalViewer extends GraphicalViewerImpl implem
 	}
 	
 	protected LightweightSystem createLightweightSystem() {
+
 		LightweightSystem lws = new MyLightWeightSystem();
-		lws.setUpdateManager( updateManager = new MyUpdateManager() );
+		lws.setUpdateManager( new MyUpdateManager() );
+		
+
+		
 		return  lws;
 	}
 
@@ -303,6 +346,17 @@ class MyLightWeightSystem extends LightweightSystem {
 		public void _queueWork() {
 		   super.queueWork();
 		}
+		
+		public synchronized void _addInvalidFigure( IFigure f ) {
+			//super.addInvalidFigure( f );
+		}
+		
+		public synchronized void addInvalidFigure(IFigure f) {
+			// TODO Auto-generated method stub
+			super.addInvalidFigure(f);
+			// do nothing
+		}
+		
 	}
 	
 	UpdateManager updateManager = null;
@@ -311,10 +365,10 @@ class MyLightWeightSystem extends LightweightSystem {
 	public class FreqUpdater implements Stoppable {
 
 		//TODO: Why is this here?  It doesn't do anything?
-		ProgressListener pl = null;
+		ArrayList listOfProgressListeners = new ArrayList();
 
 		public void addProgressListener(ProgressListener listener) {
-			pl = listener;
+			listOfProgressListeners.add( listener );
 		}
 
 		boolean keepGoing = true;
@@ -325,8 +379,12 @@ class MyLightWeightSystem extends LightweightSystem {
 
 		public void run() {
 			while (keepGoing) {
-				if (pl != null)
-					pl.progressUpdated(null);
+				if (listOfProgressListeners != null) {
+					//TODO: This is not thread safe
+					for ( int i = 0; i < listOfProgressListeners.size(); i++ ) {
+						((ProgressListener) listOfProgressListeners.get(i)).progressUpdated( null );
+					}
+				}
 				try {
 					Thread.sleep(50);
 				} catch (InterruptedException e) {

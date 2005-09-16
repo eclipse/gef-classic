@@ -155,6 +155,7 @@ public class GraphNodeEditPart extends AbstractGraphicalEditPart implements
 	 * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
 	 */
 	public void propertyChange(PropertyChangeEvent evt) {
+		
 		String prop = evt.getPropertyName();
 
 		if (GraphModelNode.LOCATION_PROP.equals(prop) || GraphModelNode.SIZE_PROP.equals(prop)) {
@@ -177,6 +178,7 @@ public class GraphNodeEditPart extends AbstractGraphicalEditPart implements
 		} else if (GraphModelNode.COLOR_FG_PROP.equals(prop)) {
 			refreshColors();
 		} 
+		
 	}
 	
 	/* (non-Javadoc)
@@ -189,7 +191,7 @@ public class GraphNodeEditPart extends AbstractGraphicalEditPart implements
 		Rectangle bounds = new Rectangle(loc, size);
 		
 		((GraphicalEditPart)getParent()).setLayoutConstraint(this, getFigure(), bounds);
-		getFigure().revalidate();
+		//getFigure().revalidate();
 	}
 
 	/**
@@ -207,7 +209,7 @@ public class GraphNodeEditPart extends AbstractGraphicalEditPart implements
 			label.setBorderWidth(model.getBorderWidth());
 		}
 		
-		this.getFigure().revalidate();	
+		//this.getFigure().revalidate();	
 	}
 	
 	/**
