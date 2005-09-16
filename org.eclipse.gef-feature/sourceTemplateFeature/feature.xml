@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<feature primary="false" 
+		provider-name="%providerName" 
+		label="%featureName" 
+		image="eclipse_update_120.jpg" 
+		id="org.eclipse.gef.source" 
+		version="3.2.0">
+	<description>%description</description> 
+	<license url="%licenseURL">%license</license> 
+	<url>
+		<update label="%updateSiteName" url="http://update.eclipse.org/updates" /> 
+	</url>
+	<plugin id="org.eclipse.gef.doc.isv"
+			download-size="0" 
+			install-size="0" 
+			version="0.0.0" 
+			unpack="false" /> 
+	<plugin id="org.eclipse.draw2d.doc.isv"
+			download-size="0" 
+			install-size="0" 
+			version="0.0.0" 
+			unpack="false" /> 
+	<plugin id="org.eclipse.gef.source"
+			download-size="0" 
+			install-size="0" 
+			version="0.0.0"/> 
+</feature>
