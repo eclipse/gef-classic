@@ -42,7 +42,11 @@ public class ShowZestViewAction implements IWorkbenchWindowActionDelegate {
 		}
 		
 		try {
-			activePage.showView(action.getActionDefinitionId());
+			String actionID = action.getId();
+			if ( actionID.equals( "org.eclipse.mylar.zest.tests.actions.NestedGraphViewerAction") ) 
+				activePage.showView("org.eclipse.mylar.zest.tests.nestedgraphviewer");
+			else if ( actionID.equals( "org.eclipse.mylar.zest.tests.actions.SpingGraphViewerAction"))
+				activePage.showView("org.eclipse.mylar.zest.tests.springgraphviewer");
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

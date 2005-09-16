@@ -11,14 +11,14 @@
             category="ca.uvic.cs.zest.sample"
             class="org.eclipse.mylar.zest.tests.SampleView"
             icon="icons/zest.gif"
-            id="ca.uvic.cs.zest.sample.springgraphview"
+            id="org.eclipse.mylar.zest.tests.springgraphviewer"
             name="Spring Graph Viewer"/>
       <view
             allowMultiple="false"
             category="ca.uvic.cs.zest.sample"
             class="org.eclipse.mylar.zest.tests.SampleNestedView"
             icon="icons/zest.gif"
-            id="ca.uvic.cs.zest.sample.views.nestedgraphviewer"
+            id="org.eclipse.mylar.zest.tests.nestedgraphviewer"
             name="Nested Graph Viewer"/>
       <view
             category="ca.uvic.cs.zest.sample"
@@ -40,18 +40,16 @@
          </menu>
          <action
                class="org.eclipse.mylar.zest.tests.actions.ShowZestViewAction"
-               definitionId="ca.uvic.cs.zest.sample.views.nestedgraphviewer"
                icon="icons/nest.gif"
-               id="ca.uvic.cs.zest.sample.actions.NestedGraphViewerAction"
+               id="org.eclipse.mylar.zest.tests.actions.NestedGraphViewerAction"
                label="&amp;Nested Graph Viewer"
                menubarPath="zestMenu/zestGroup"
                toolbarPath="zestGroup"
                tooltip="Show the Nested Graph View"/>
          <action
                class="org.eclipse.mylar.zest.tests.actions.ShowZestViewAction"
-               definitionId="ca.uvic.cs.zest.sample.springgraphview"
                icon="icons/zest.gif"
-               id="ca.uvic.cs.zest.sample.actions.SpingGraphViewerAction"
+               id="org.eclipse.mylar.zest.tests.actions.SpingGraphViewerAction"
                label="&amp;Spring Graph Viewer"
                menubarPath="zestMenu/zestGroup"
                style="push"
