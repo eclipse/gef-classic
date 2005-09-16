@@ -48,7 +48,6 @@ import org.eclipse.mylar.zest.layouts.LayoutStyles;
 import org.eclipse.mylar.zest.layouts.Stoppable;
 import org.eclipse.mylar.zest.layouts.algorithms.AbstractLayoutAlgorithm;
 import org.eclipse.mylar.zest.layouts.algorithms.FadeLayoutAlgorithm;
-import org.eclipse.mylar.zest.layouts.algorithms.SpringLayoutAlgorithm;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
