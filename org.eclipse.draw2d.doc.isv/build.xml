@@ -28,7 +28,7 @@
 			includes="book.css, reference/**, guide/**"
 		/>
 		<copy todir="${destination.temp.folder}/${full.name}">
-			<fileset dir="${basedir}" includes="about.html,*.properties,*.xml,META-INF/**,*.zip," excludes="build.properties,build*.xml" />
+			<fileset dir="${basedir}" includes="about.html,*.properties,*.xml,META-INF/**,book.css,reference/**,guide/**," excludes="build.properties,build*.xml" />
 		</copy>
 	</target>
 
