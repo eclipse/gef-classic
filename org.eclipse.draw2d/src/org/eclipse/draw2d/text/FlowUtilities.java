@@ -315,7 +315,6 @@ public static int wrapFragmentInContext(TextFragmentBox frag, String string,
 					break out;
 
 				default:
-				case ParagraphTextLayout.WORD_WRAP_SOFT :
 					result = min;
 					break;
 			}
