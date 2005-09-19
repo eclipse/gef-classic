@@ -89,8 +89,9 @@ public abstract class ContinuousLayoutAlgorithm extends AbstractLayoutAlgorithm 
 			
 			updateLayoutLocations(entitiesToLayout);
 			
-			if ( runContinuously )
+			if ( runContinuously ) {
 				fireProgressEvent(1,1);
+			}
 			else
 				fireProgressEvent(getCurrentLayoutStep(), getTotalNumberOfLayoutSteps() );
 				

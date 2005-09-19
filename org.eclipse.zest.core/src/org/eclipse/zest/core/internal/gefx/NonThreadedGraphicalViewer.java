@@ -144,7 +144,8 @@ public abstract class NonThreadedGraphicalViewer extends GraphicalViewerImpl {
 	 * @return Dimension in absolute coords
 	 */
 	public Dimension getCanvasSize() {
-		return mainCanvas.getViewport().getSize().getCopy();
+		return new Dimension( mainCanvas.getSize() );
+		//return mainCanvas.getViewport().getSize().getCopy();
 	}
 	
 	/**
@@ -153,7 +154,7 @@ public abstract class NonThreadedGraphicalViewer extends GraphicalViewerImpl {
 	 */
 	public Dimension getTranslatedCanvasSize() {
 		Dimension dim = getCanvasSize();
-		mainCanvas.getViewport().translateToRelative(dim);
+		//mainCanvas.getViewport().translateToRelative(dim);
 		return dim;
 	}
 	

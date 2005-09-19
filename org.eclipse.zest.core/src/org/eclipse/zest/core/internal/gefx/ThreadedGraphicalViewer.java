@@ -126,13 +126,13 @@ public abstract class ThreadedGraphicalViewer extends GraphicalViewerImpl implem
 				// TODO Auto-generated method stub
 				IFigure rootFigure = null;
 				try {
-					 rootFigure = ThreadedGraphicalViewer.this.getCanvas().getLightweightSystem().getRootFigure();
+					 rootFigure = ThreadedGraphicalViewer.this.getLightweightSystem().getRootFigure();
 				}
 				catch ( Exception exception ) {
 					System.out.println("Exception");
 				}
 				
-				if (updateManager != null && rootFigure != null )
+				if (updateManager != null && rootFigure != null ) 
 					((MyUpdateManager)updateManager)._addInvalidFigure( rootFigure  );
 				else 
 					System.out.println(updateManager + " : " + rootFigure );
@@ -206,6 +206,7 @@ public abstract class ThreadedGraphicalViewer extends GraphicalViewerImpl implem
 		Thread thread = new Thread( r );
 		r.addProgressListener( this );
 		listOfThreads.put( r, thread );
+		thread.setPriority( java.lang.Thread.MAX_PRIORITY );
 		thread.start();
 	}
 	
@@ -214,7 +215,7 @@ public abstract class ThreadedGraphicalViewer extends GraphicalViewerImpl implem
 	 * @return Dimension in absolute coords
 	 */
 	public Dimension getCanvasSize() {
-		return mainCanvas.getViewport().getSize().getCopy();
+		return new Dimension( getCanvas().getSize() );
 	}
 	
 	/**
@@ -223,7 +224,8 @@ public abstract class ThreadedGraphicalViewer extends GraphicalViewerImpl implem
 	 */
 	public Dimension getTranslatedCanvasSize() {
 		Dimension dim = getCanvasSize();
-		mainCanvas.getViewport().translateToRelative(dim);
+		//getCanvas().get
+		//mainCanvas.getViewport().translateToRelative(dim);
 		return dim;
 	}
 	
@@ -348,12 +350,12 @@ class MyLightWeightSystem extends LightweightSystem {
 		}
 		
 		public synchronized void _addInvalidFigure( IFigure f ) {
-			//super.addInvalidFigure( f );
+			super.addInvalidFigure( f );
 		}
 		
 		public synchronized void addInvalidFigure(IFigure f) {
 			// TODO Auto-generated method stub
-			super.addInvalidFigure(f);
+			//super.addInvalidFigure(f);
 			// do nothing
 		}
 		
@@ -386,7 +388,7 @@ class MyLightWeightSystem extends LightweightSystem {
 					}
 				}
 				try {
-					Thread.sleep(50);
+					Thread.sleep(15);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
