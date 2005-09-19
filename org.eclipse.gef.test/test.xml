@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<project name="testsuite" default="run" basedir=".">
+<project name="testsuite" default="junits" basedir=".">
   <!-- The property ${eclipse-home} should be passed into this script -->
   <!-- Set a meaningful default value for when it is not. -->
   <property name="eclipse-home" value="${basedir}\..\.."/>
@@ -20,7 +20,7 @@
   </target>
 
   <!-- This target defines the tests that need to be run. -->
-  <target name="suite">
+  <target name="junit-suite">
     <property name="gef-folder" value="${eclipse-home}/gef_folder"/>
     <delete dir="${gef-folder}" quiet="true"/>
     <ant target="core-test" antfile="${library-file}" dir="${eclipse-home}">
@@ -38,11 +38,31 @@
 
   <!-- This target runs the test suite. Any actions that need to happen -->
   <!-- after all the tests have been run should go here. -->
-  <target name="run" depends="init,suite,cleanup">
+  <target name="junits" depends="init,junit-suite,cleanup">
     <ant target="collect" antfile="${library-file}" dir="${eclipse-home}">
       <property name="includes" value="org*.xml"/>
       <property name="output-file" value="${plugin-name}.xml"/>
     </ant>
   </target>
+
+	<!-- This target defines the performance tests that need to be run. -->
+	<target name="performance-suite">
+	  <property name="gef-performance-folder" value="${eclipse-home}/gef_performance_folder"/>
+	  <delete dir="${gef-performance-folder}" quiet="true"/>
+	  <ant target="ui-test" antfile="${library-file}" dir="${eclipse-home}">
+	     <property name="data-dir" value="${gef-performance-folder}"/>
+	     <property name="plugin-name" value="${plugin-name}"/>
+	     <property name="classname" value="org.eclipse.gef.test.performance.GEFPerformanceTestSuite"/>
+	  </ant>
+	</target>
+	                    
+	<!-- This target runs the performance test suite. Any actions that need to happen -->
+	<!-- after all the tests have been run should go here. -->
+	<target name="performance" depends="init,performance-suite,cleanup">
+	  <ant target="collect" antfile="${library-file}" dir="${eclipse-home}">
+	    <property name="includes" value="org*.xml"/>
+	    <property name="output-file" value="${plugin-name}.xml"/>
+	  </ant>
+	</target>
 
 </project>
