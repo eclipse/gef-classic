@@ -83,23 +83,23 @@ protected void tearDown() throws Exception {
 	super.tearDown();
 }
 
-//public void testBidiLayout() {
-//	tagAsGlobalSummary("Laying out Bidi text", new Dimension[] {Dimension.CPU_TIME, Dimension.WORKING_SET});
-//	
-//	text1.setText("This test mainly checks to see how long does ParagraphTextLayout" +
-//			" takes to lay out a text flow.  It will also test the performance of " +
-//			"FlowUtilities.wrapFragmentInContext().  BiDi will be enabled for " +
-//			"this test.  Following is some Arabic text.  \u0637\u0638\u0639");
-//	text2.setText("\u0634 \u0637\u0638\u0639\u0640 \"it is 123, 456, ok.\"  ");
-//	text3.setText("\u0634\u0637 \u0635\u0639\u0633\u0640 \"it is a car!x\" " +
-//			"\u0634\u0637\u0635 \u0639\u0633\u0640.  ");
-//	text4.setText("Since there are multiple TextFlows involved, it should test a " +
-//			"few more code-paths in the above-mentioned methods.  Let's throw in " +
-//			"some Chinese characters too: u7325\u7334\u7329u7325\u7334\u7329u7325" +
-//			"\u7334\u7329u7325\u7334\u7329u7325\u7334\u7329u7325\u7334\u7329.");
-//	
-//	layoutAndPaint();
-//}
+public void testBidiLayout() {
+	tagAsGlobalSummary("Laying out Bidi text", new Dimension[] {Dimension.CPU_TIME, Dimension.WORKING_SET});
+	
+	text1.setText("This test mainly checks to see how long does ParagraphTextLayout" +
+			" takes to lay out a text flow.  It will also test the performance of " +
+			"FlowUtilities.wrapFragmentInContext().  BiDi will be enabled for " +
+			"this test.  Following is some Arabic text.  \u0637\u0638\u0639");
+	text2.setText("\u0634 \u0637\u0638\u0639\u0640 \"it is 123, 456, ok.\"  ");
+	text3.setText("\u0634\u0637 \u0635\u0639\u0633\u0640 \"it is a car!x\" " +
+			"\u0634\u0637\u0635 \u0639\u0633\u0640.  ");
+	text4.setText("Since there are multiple TextFlows involved, it should test a " +
+			"few more code-paths in the above-mentioned methods.  Let's throw in " +
+			"some Chinese characters too: u7325\u7334\u7329u7325\u7334\u7329u7325" +
+			"\u7334\u7329u7325\u7334\u7329u7325\u7334\u7329u7325\u7334\u7329.");
+	
+	layoutAndPaint();
+}
 
 public void testTextLayoutAndPainting() {
 	tagAsGlobalSummary("Text Layout and Painting", Dimension.CPU_TIME);
