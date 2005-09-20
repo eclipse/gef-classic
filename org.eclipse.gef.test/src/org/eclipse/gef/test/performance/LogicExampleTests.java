@@ -257,7 +257,7 @@ public void testEditorOpen() throws PartInitException {
 }
 
 public void testPaletteSwitching() throws PartInitException {
-	tagAsSummary("Palette Slurping", Dimension.CPU_TIME);
+	tagAsSummary("Palette Switching", Dimension.CPU_TIME);
 	IEditorPart editor = openEditor();
 	Display d = editor.getSite().getWorkbenchWindow().getShell().getDisplay();
 	IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
@@ -283,7 +283,7 @@ public void testPaletteSwitching() throws PartInitException {
 }
 
 public void testZoom() throws PartInitException {
-	tagAsSummary("Zooming", Dimension.CPU_TIME);
+	tagAsSummary("Zoom Tests in Editor", Dimension.CPU_TIME);
 	IEditorPart editor = openEditor();
 	Display d = editor.getSite().getWorkbenchWindow().getShell().getDisplay();
 	GraphicalViewer viewer = (GraphicalViewer)editor.getAdapter(GraphicalViewer.class);
