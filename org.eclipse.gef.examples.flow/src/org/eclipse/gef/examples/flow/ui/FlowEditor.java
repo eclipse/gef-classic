@@ -19,8 +19,6 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.EventObject;
 
-import org.eclipse.swt.SWT;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IWorkspace;
@@ -28,8 +26,26 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.gef.ContextMenuProvider;
+import org.eclipse.gef.DefaultEditDomain;
+import org.eclipse.gef.KeyHandler;
+import org.eclipse.gef.KeyStroke;
+import org.eclipse.gef.dnd.TemplateTransferDragSourceListener;
+import org.eclipse.gef.dnd.TemplateTransferDropTargetListener;
+import org.eclipse.gef.editparts.ScalableRootEditPart;
+import org.eclipse.gef.examples.flow.FlowEditorPaletteFactory;
+import org.eclipse.gef.examples.flow.actions.FlowContextMenuProvider;
+import org.eclipse.gef.examples.flow.model.ActivityDiagram;
+import org.eclipse.gef.examples.flow.parts.ActivityPartFactory;
+import org.eclipse.gef.palette.PaletteRoot;
+import org.eclipse.gef.ui.actions.ActionRegistry;
+import org.eclipse.gef.ui.actions.DirectEditAction;
+import org.eclipse.gef.ui.actions.GEFActionConstants;
+import org.eclipse.gef.ui.parts.GraphicalEditorWithPalette;
+import org.eclipse.gef.ui.parts.GraphicalViewerKeyHandler;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
+import org.eclipse.swt.SWT;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
@@ -37,26 +53,6 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
 import org.eclipse.ui.dialogs.SaveAsDialog;
 import org.eclipse.ui.part.FileEditorInput;
-
-import org.eclipse.gef.ContextMenuProvider;
-import org.eclipse.gef.DefaultEditDomain;
-import org.eclipse.gef.KeyHandler;
-import org.eclipse.gef.KeyStroke;
-import org.eclipse.gef.dnd.TemplateTransferDragSourceListener;
-import org.eclipse.gef.editparts.ScalableRootEditPart;
-import org.eclipse.gef.palette.PaletteRoot;
-import org.eclipse.gef.tools.ConnectionCreationTool;
-import org.eclipse.gef.ui.actions.ActionRegistry;
-import org.eclipse.gef.ui.actions.DirectEditAction;
-import org.eclipse.gef.ui.actions.GEFActionConstants;
-import org.eclipse.gef.ui.parts.GraphicalEditorWithPalette;
-import org.eclipse.gef.ui.parts.GraphicalViewerKeyHandler;
-
-import org.eclipse.gef.examples.flow.FlowEditorPaletteFactory;
-import org.eclipse.gef.examples.flow.actions.FlowContextMenuProvider;
-import org.eclipse.gef.examples.flow.dnd.FlowTemplateTransferDropTargetListener;
-import org.eclipse.gef.examples.flow.model.ActivityDiagram;
-import org.eclipse.gef.examples.flow.parts.ActivityPartFactory;
 
 /**
  * 
@@ -72,7 +68,6 @@ private boolean savePreviouslyNeeded = false;
 
 public FlowEditor() {
 	DefaultEditDomain defaultEditDomain = new DefaultEditDomain(this);
-	defaultEditDomain.setActiveTool(new ConnectionCreationTool());
 	setEditDomain(defaultEditDomain);
 }
 
@@ -142,7 +137,7 @@ protected void configureGraphicalViewer() {
 protected void initializeGraphicalViewer() {
 	getGraphicalViewer().setContents(diagram);
 	getGraphicalViewer().addDropTargetListener(
-		new FlowTemplateTransferDropTargetListener(getGraphicalViewer()));
+		new TemplateTransferDropTargetListener(getGraphicalViewer()));
 
 }
 
