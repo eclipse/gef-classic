@@ -41,9 +41,9 @@ import org.eclipse.gef.ui.views.palette.PaletteView;
 import org.eclipse.gef.examples.logicdesigner.model.AndGate;
 import org.eclipse.gef.examples.logicdesigner.model.Circuit;
 import org.eclipse.gef.examples.logicdesigner.model.Gate;
+import org.eclipse.gef.examples.logicdesigner.model.LED;
 import org.eclipse.gef.examples.logicdesigner.model.LogicDiagram;
 import org.eclipse.gef.examples.logicdesigner.model.LogicGuide;
-import org.eclipse.gef.examples.logicdesigner.model.LogicLabel;
 import org.eclipse.gef.examples.logicdesigner.model.LogicRuler;
 import org.eclipse.gef.examples.logicdesigner.model.LogicSubpart;
 import org.eclipse.gef.examples.logicdesigner.model.OrGate;
@@ -148,18 +148,20 @@ private LogicDiagram createLogicDiagram() {
 	int x = -1000, y = -1000;
 	for (int i = 0; i < 100; i++) {
 		Circuit fullAdder = createFullAdder();
-		fullAdder.setLocation(new Point(x,y));
+		fullAdder.setLocation(new Point(x, y));
 		diagram.addChild(fullAdder);
 		x += 20;
 		y += 20;
 	}
 	
-	LogicLabel label = new LogicLabel();
-	label.setLabelContents("Bart Simpson: I don't know why I did it, I don't know why " +
-			"I enjoyed it and I don't know why I'll do it again.");
-	label.setLocation(new Point(0, 0));
-	label.setSize(new org.eclipse.draw2d.geometry.Dimension(-1, -1));
-	diagram.addChild(label);
+	y = -1000;
+	for (int i = 0; i < 100; i++) {
+		LED led = new LED();
+		led.setLocation(new Point(x, y));
+		diagram.addChild(led);
+		x -= 20;
+		y += 20;
+	}
 	
 	return diagram;
 }
@@ -229,7 +231,7 @@ public void testEditorLayout() throws PartInitException {
 }
 
 public void testEditorOpen() throws PartInitException {
-	tagAsGlobalSummary("Open Logic Editor (~2800 editparts)", 
+	tagAsGlobalSummary("Open Logic Editor (~2900 editparts)", 
 			new Dimension[] {Dimension.CPU_TIME, Dimension.USED_JAVA_HEAP});
 	
 	Display d = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell().getDisplay();
