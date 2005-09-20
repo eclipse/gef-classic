@@ -231,14 +231,12 @@ public void testEditorLayout() throws PartInitException {
 }
 
 public void testEditorOpen() throws PartInitException {
-	tagAsGlobalSummary("Open Logic Editor (~2900 editparts)", 
-			new Dimension[] {Dimension.CPU_TIME, Dimension.USED_JAVA_HEAP});
+	tagAsGlobalSummary("Open Logic Editor (~2900 editparts)", Dimension.CPU_TIME);
 	
 	Display d = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell().getDisplay();
 	int warmupRuns = getWarmupRuns();
 	int measuredRuns = getMeasuredRuns();	
 	for (int i = 0; i < warmupRuns + measuredRuns; i++) {
-		System.gc();
 		if (i >= warmupRuns)
 			startMeasuring();
 
@@ -246,13 +244,13 @@ public void testEditorOpen() throws PartInitException {
 		IEditorPart editor = openEditor();
 		while (d.readAndDispatch()) {}
 
-		System.gc();
 		if (i >= warmupRuns)
 			stopMeasuring();
 
 		// close the editor
 		closeEditor(editor);
-		while (d.readAndDispatch()) {}		
+		while (d.readAndDispatch()) {}
+		System.gc();
 	}
 	commitMeasurements();
 	assertPerformance();
