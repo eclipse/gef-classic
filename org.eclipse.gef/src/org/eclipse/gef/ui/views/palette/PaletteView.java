@@ -35,7 +35,7 @@ public class PaletteView
 	extends PageBookView
 {
 	
-private boolean viewInPage = false;
+private boolean viewInPage = true;
 
 /**
  * The ID for this view.  This is the same as the String used to register this view
@@ -75,7 +75,6 @@ protected IPage createDefaultPage(PageBook book) {
  * @see org.eclipse.ui.IWorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
  */
 public void createPartControl(Composite parent) {
-	viewInPage = true;
 	super.createPartControl(parent);
 	getSite().getPage().getWorkbenchWindow().addPerspectiveListener(perspectiveListener);
 }
