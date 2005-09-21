@@ -34,6 +34,8 @@ import org.eclipse.gef.internal.GEFMessages;
 public class PaletteView
 	extends PageBookView
 {
+	
+private boolean viewInPage = false;
 
 /**
  * The ID for this view.  This is the same as the String used to register this view
@@ -48,10 +50,11 @@ private IPerspectiveListener perspectiveListener = new IPerspectiveListener() {
 	// fix for bug 109245 and 69098 - fake a partActivated when the perpsective is switched
 	public void perspectiveActivated(IWorkbenchPage page,
 			IPerspectiveDescriptor perspective) {
+		viewInPage = page.findViewReference(ID) != null;
 		// getBootstrapPart could return null; but isImportant() can handle null
 		partActivated(getBootstrapPart());
 	}
-}; 
+};
 
 /**
  * Creates a default page saying that a palette is not available.
@@ -72,6 +75,7 @@ protected IPage createDefaultPage(PageBook book) {
  * @see org.eclipse.ui.IWorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
  */
 public void createPartControl(Composite parent) {
+	viewInPage = true;
 	super.createPartControl(parent);
 	getSite().getPage().getWorkbenchWindow().addPerspectiveListener(perspectiveListener);
 }
@@ -130,8 +134,7 @@ protected boolean isImportant(IWorkbenchPart part) {
 	// Workaround for Bug# 69098 -- This should be removed when/if Bug# 70510 is fixed
 	// We only want a palette page to be created when this view is visible in the current
 	// perspective, i.e., when both this view and the given editor are on the same page.
-	return part.getSite().getPage().findViewReference(ID) != null 
-			&& part instanceof IEditorPart;
+	return viewInPage && part instanceof IEditorPart;
 }
 
 }
