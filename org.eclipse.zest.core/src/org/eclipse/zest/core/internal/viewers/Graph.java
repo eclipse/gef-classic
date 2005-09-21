@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.mylar.zest.core.internal.viewers;
 
-import org.eclipse.draw2d.FigureCanvas;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
