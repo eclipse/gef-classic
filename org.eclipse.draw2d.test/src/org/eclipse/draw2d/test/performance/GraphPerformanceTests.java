@@ -766,7 +766,7 @@ protected void simpleGraph() {
 }
 
 public void testGraphPerformance() {
-	tagAsGlobalSummary("Graph Layout", Dimension.CPU_TIME);
+	tagAsGlobalSummary("Directed Graph Layout", Dimension.CPU_TIME);
 
 	int warmupRuns = getWarmupRuns();
 	int measuredRuns = getMeasuredRuns();	
