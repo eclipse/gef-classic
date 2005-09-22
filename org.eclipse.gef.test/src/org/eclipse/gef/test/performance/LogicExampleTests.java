@@ -208,7 +208,7 @@ public void testEditorLayout() throws PartInitException {
 	GraphicalViewer viewer = (GraphicalViewer)editor.getAdapter(GraphicalViewer.class);
 	viewer.setProperty(RulerProvider.PROPERTY_RULER_VISIBILITY, Boolean.TRUE);
 	Shell editorWindow = editor.getEditorSite().getPage().getWorkbenchWindow().getShell();
-	int[] delta = new int[] {2, 4, 6, 8, 10, 0};
+	int[] delta = new int[] {3, 6, 0};
 	org.eclipse.swt.graphics.Point origSize = editorWindow.getSize();
 	
 	int warmupRuns = getWarmupRuns();
@@ -293,16 +293,14 @@ public void testZoom() throws PartInitException {
 	int warmupRuns = getWarmupRuns();
 	int measuredRuns = getMeasuredRuns();	
 	for (int i = 0; i < warmupRuns + measuredRuns; i++) {
+		zoomMgr.setZoom(zoomMgr.getMinZoom());
+		while (d.readAndDispatch()) {}
+		
 		if (i >= warmupRuns)
 			startMeasuring();
 		
-		while (zoomMgr.canZoomIn()) {
+		for (int j = 0; j < 3; j++) {
 			zoomMgr.zoomIn();
-			while (d.readAndDispatch()) {}
-		}
-		
-		while (zoomMgr.canZoomOut()) {
-			zoomMgr.zoomOut();
 			while (d.readAndDispatch()) {}
 		}
 		
