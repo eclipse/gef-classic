@@ -259,8 +259,8 @@ public void testEditorOpen() throws PartInitException {
 public void testPaletteSwitching() throws PartInitException {
 	tagAsSummary("Palette Switching", Dimension.CPU_TIME);
 	IEditorPart editor = openEditor();
-	Display d = editor.getSite().getWorkbenchWindow().getShell().getDisplay();
-	IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+	IWorkbenchPage page = editor.getSite().getPage();
+	Display d = page.getWorkbenchWindow().getShell().getDisplay();
 	
 	int warmupRuns = getWarmupRuns();
 	int measuredRuns = getMeasuredRuns();	
