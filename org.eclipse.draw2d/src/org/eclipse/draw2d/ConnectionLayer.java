@@ -59,8 +59,8 @@ public ConnectionRouter getConnectionRouter() {
  * @see IFigure#paint(Graphics)
  */
 public void paint(Graphics graphics) {
-//	if (antialias != SWT.DEFAULT)
-//		graphics.setAntialias(antialias);
+	if (antialias != SWT.DEFAULT)
+		graphics.setAntialias(antialias);
 	super.paint(graphics);
 }
 
