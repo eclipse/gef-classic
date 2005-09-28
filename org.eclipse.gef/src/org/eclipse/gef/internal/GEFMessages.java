@@ -42,11 +42,6 @@ public static String DeleteAction_ActionDeleteCommandName;
 public static String DeleteAction_Label;
 public static String DeleteAction_Tooltip;
 
-public static String GraphicalEditor_CLOSE_BUTTON_UI;
-public static String GraphicalEditor_FILE_DELETED_TITLE_UI;
-public static String GraphicalEditor_FILE_DELETED_WITHOUT_SAVE_INFO;
-public static String GraphicalEditor_SAVE_BUTTON_UI;
-
 public static String PasteAction_Label;
 public static String PasteAction_Tooltip;
 
