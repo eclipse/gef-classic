@@ -10,10 +10,7 @@
  *******************************************************************************/
 package org.eclipse.gef.internal;
 
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.osgi.util.NLS;
-
-import org.osgi.framework.Bundle;
 
 /**
  * Internal Messages
@@ -84,10 +81,10 @@ public static String UndoAction_Label;
 public static String UndoAction_Tooltip;
 
 // Zoom strings
-public static final String ZoomIn_Label;
-public static final String ZoomIn_Tooltip;
-public static final String ZoomOut_Label;
-public static final String ZoomOut_Tooltip;
+public static String ZoomIn_Label;
+public static String ZoomIn_Tooltip;
+public static String ZoomOut_Label;
+public static String ZoomOut_Tooltip;
 public static String FitAllAction_Label;
 public static String FitWidthAction_Label;
 public static String FitHeightAction_Label;
@@ -101,7 +98,7 @@ public static String ToggleGrid_Label;
 public static String ToggleGrid_Tooltip;
 
 // Palette view Strings
-public static final String Palette_Label;
+public static String Palette_Label;
 public static String Palette_Not_Available;
 
 // Rulers and guides
@@ -115,14 +112,6 @@ public static String Create_Guide_Tooltip;
 
 static {
     NLS.initializeMessages("org.eclipse.gef.internal.messages", GEFMessages.class); //$NON-NLS-1$
-    
-    // Strings loaded from the plugin.properties file
-	Bundle bundle = Platform.getBundle("org.eclipse.gef");//$NON-NLS-1$
-	ZoomIn_Label = Platform.getResourceString(bundle, "%ZoomIn.Label");//$NON-NLS-1$
-	ZoomIn_Tooltip = Platform.getResourceString(bundle, "%ZoomIn.Tooltip");//$NON-NLS-1$
-	ZoomOut_Label = Platform.getResourceString(bundle, "%ZoomOut.Label");//$NON-NLS-1$
-	ZoomOut_Tooltip = Platform.getResourceString(bundle, "%ZoomOut.Tooltip");//$NON-NLS-1$
-	Palette_Label = Platform.getResourceString(bundle, "%Palette.Label"); //$NON-NLS-1$
 }
 
 }
