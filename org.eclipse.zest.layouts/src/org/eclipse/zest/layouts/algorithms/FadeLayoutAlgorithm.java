@@ -389,12 +389,17 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 			DisplayIndependentPoint srcForce = getForce(source);//.clone();
 			DisplayIndependentPoint destForce = getForce(destination);//.clone();
 			
+			
+			
 			double dx = srcLocation.x - destLocation.x;
 			double dy = srcLocation.y - destLocation.y;
 			double distance = Math.sqrt(dx*dx + dy*dy);
 			//double distance_sq = distance*distance;
 			
-			double f = sprStrain * Math.log (distance/sprLength);
+			//TODO: Fix the spring tension.  This is a partial fix
+			double edgeWeight = relationship.getWeight();
+			
+			double f = sprStrain * Math.log (distance/sprLength) * edgeWeight;
 			double fx = (f * dx/distance);
 			double fy = (f * dy/distance);
 			
