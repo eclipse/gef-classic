@@ -29,10 +29,10 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.EditDomain;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.GraphicalEditPart;
+import org.eclipse.gef.editparts.SimpleRootEditPart;
 import org.eclipse.gef.internal.ui.palette.PaletteSelectionTool;
 import org.eclipse.gef.internal.ui.palette.editparts.DrawerEditPart;
 import org.eclipse.gef.internal.ui.palette.editparts.PaletteEditPart;
-import org.eclipse.gef.internal.ui.palette.editparts.PaletteRootEditPart;
 import org.eclipse.gef.internal.ui.palette.editparts.PaletteStackEditPart;
 import org.eclipse.gef.internal.ui.palette.editparts.ToolEntryEditPart;
 import org.eclipse.gef.palette.PaletteDrawer;
@@ -125,7 +125,7 @@ public void addPaletteListener(PaletteListener paletteListener) {
  * @see org.eclipse.gef.ui.parts.GraphicalViewerImpl#createDefaultRoot()
  */
 protected void createDefaultRoot() {
-	setRootEditPart(new PaletteRootEditPart());
+	setRootEditPart(new SimpleRootEditPart());
 }
 
 private void disposeFont() {
