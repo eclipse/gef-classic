@@ -23,10 +23,8 @@ import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.AutoexposeHelper;
 import org.eclipse.gef.EditPart;
-import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.GraphicalEditPart;
-import org.eclipse.gef.RootEditPart;
-import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
+import org.eclipse.gef.editparts.SimpleRootEditPart;
 import org.eclipse.gef.editparts.ViewportAutoexposeHelper;
 
 /**
@@ -36,16 +34,13 @@ import org.eclipse.gef.editparts.ViewportAutoexposeHelper;
  * @since 3.0
  */
 public class RulerRootEditPart
-	extends AbstractGraphicalEditPart
-	implements RootEditPart
+	extends SimpleRootEditPart
 {
 	
 private static final Insets VERTICAL_THRESHOLD = new Insets(18, 0, 18, 0);
 private static final Insets HORIZONTAL_THRESHOLD = new Insets(0, 18, 0, 18);
 
 private boolean horizontal;	
-private EditPart contents;
-private EditPartViewer viewer;
 
 /**
  * Constructor
@@ -63,12 +58,6 @@ public RulerRootEditPart(boolean isHorzontal) {
 protected void addChildVisual(EditPart childEditPart, int index) {
 	IFigure child = ((GraphicalEditPart)childEditPart).getFigure();
 	getViewport().setContents(child);
-}
-
-/**
- * @see org.eclipse.gef.editparts.AbstractEditPart#createEditPolicies()
- */
-protected void createEditPolicies() {
 }
 
 /**
@@ -91,27 +80,6 @@ public Object getAdapter(Class adapter) {
 }
 
 /**
- * @see org.eclipse.gef.RootEditPart#getContents()
- */
-public EditPart getContents() {
-	return contents;
-}
-
-/**
- * @see org.eclipse.gef.EditPart#getRoot()
- */
-public RootEditPart getRoot() {
-	return this;
-}
-
-/**
- * @see org.eclipse.gef.EditPart#getViewer()
- */
-public EditPartViewer getViewer() {
-	return viewer;
-}
-
-/**
  * Convenience method to get to the viewport
  * @return	the figure cast as a viewport
  */
@@ -124,32 +92,6 @@ protected Viewport getViewport() {
  */
 protected void removeChildVisual(EditPart childEditPart) {
 	getViewport().setContents(null);
-}
-
-/**
- * @see org.eclipse.gef.RootEditPart#setContents(org.eclipse.gef.EditPart)
- */
-public void setContents(EditPart editpart) {
-	if (contents == editpart)
-		return;
-	if (contents != null)
-		removeChild(contents);
-	contents = editpart;
-	if (contents != null)
-		addChild(contents, 0);
-}
-
-/**
- * @see org.eclipse.gef.RootEditPart#setViewer(org.eclipse.gef.EditPartViewer)
- */
-public void setViewer(EditPartViewer newViewer) {
-	if (viewer == newViewer)
-		return;
-	if (viewer != null)
-		unregister();
-	viewer = newViewer;
-	if (viewer != null)
-		register();
 }
 
 /**
@@ -213,7 +155,7 @@ public class RulerViewport extends Viewport {
 			if (!this.getContents().getBounds().equals(contentBounds)) {
 				this.getContents().setBounds(contentBounds);
 				this.getContents().revalidate();
-			}						
+			}
 		}
 	}
 	/**

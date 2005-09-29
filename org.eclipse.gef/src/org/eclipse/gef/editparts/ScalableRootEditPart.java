@@ -26,14 +26,9 @@ import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.AutoexposeHelper;
 import org.eclipse.gef.DragTracker;
-import org.eclipse.gef.EditPart;
-import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.LayerConstants;
 import org.eclipse.gef.Request;
-import org.eclipse.gef.RootEditPart;
 import org.eclipse.gef.SnapToGrid;
-import org.eclipse.gef.commands.Command;
-import org.eclipse.gef.commands.UnexecutableCommand;
 import org.eclipse.gef.tools.MarqueeDragTracker;
 
 /**
@@ -103,8 +98,8 @@ import org.eclipse.gef.tools.MarqueeDragTracker;
  * @since 2.1.1
  */
 public class ScalableRootEditPart
-	extends AbstractGraphicalEditPart
-	implements RootEditPart, LayerConstants, LayerManager
+	extends SimpleRootEditPart
+	implements LayerConstants, LayerManager
 {
 	
 class FeedbackLayer
@@ -125,11 +120,6 @@ class FeedbackLayer
 
 }
 
-/**
- * The contents editpart.
- * @deprecated call getContents()
- */
-protected EditPart contents;
 private LayeredPane innerLayers;
 private LayeredPane printableLayers;
 private ScalableLayeredPane scaledLayers;
@@ -143,11 +133,6 @@ private PropertyChangeListener gridListener = new PropertyChangeListener() {
 	}
 };
 
-/**
- * The viewer.
- * @deprecated call getViewer() to access
- */
-protected EditPartViewer viewer;
 private ZoomManager zoomManager;
 
 /**
@@ -157,11 +142,6 @@ public ScalableRootEditPart() {
 	zoomManager =
 		new ZoomManager((ScalableLayeredPane)getScaledLayers(), ((Viewport)getFigure()));
 }
-
-/**
- * @see org.eclipse.gef.editparts.AbstractEditPart#createEditPolicies()
- */
-protected void createEditPolicies() { }
 
 /**
  * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
@@ -251,27 +231,11 @@ public Object getAdapter(Class key) {
 }
 
 /**
- * The RootEditPart should never be asked for a command. The implementation returns an
- * unexecutable command.
- * @see org.eclipse.gef.EditPart#getCommand(org.eclipse.gef.Request)
- */
-public Command getCommand(Request req) {
-	return UnexecutableCommand.INSTANCE;
-}
-
-/**
  * The contents' Figure will be added to the PRIMARY_LAYER.
  * @see org.eclipse.gef.GraphicalEditPart#getContentPane()
  */
 public IFigure getContentPane() {
 	return getLayer(PRIMARY_LAYER);
-}
-
-/**
- * @see org.eclipse.gef.RootEditPart#getContents()
- */
-public EditPart getContents() {
-	return contents;
 }
 
 /**
@@ -323,14 +287,6 @@ protected LayeredPane getPrintableLayers() {
 }
 
 /**
- * Returns <code>this</code>.
- * @see org.eclipse.gef.EditPart#getRoot()
- */
-public RootEditPart getRoot() {
-	return this;
-}
-
-/**
  * Returns the scalable layers of this EditPart
  * @return LayeredPane
  */
@@ -341,26 +297,12 @@ protected LayeredPane getScaledLayers() {
 }
 
 /**
- * Returns the viewer that was set.
- * @see org.eclipse.gef.EditPart#getViewer()
- */
-public EditPartViewer getViewer() {
-	return viewer;
-}
-
-/**
  * Returns the zoomManager.
  * @return ZoomManager
  */
 public ZoomManager getZoomManager() {
 	return zoomManager;
 }
-
-/**
- * Overridden to do nothing, child is set using setContents(EditPart)
- * @see org.eclipse.gef.editparts.AbstractEditPart#refreshChildren()
- */
-protected void refreshChildren() { }
 
 /**
  * Updates the {@link GridLayer grid} based on properties set on the {@link #getViewer()
@@ -386,36 +328,11 @@ protected void refreshGridLayer() {
  */
 protected void register() {
 	super.register();
-	viewer.setProperty(ZoomManager.class.toString(), getZoomManager());
+	getViewer().setProperty(ZoomManager.class.toString(), getZoomManager());
 	if (getLayer(GRID_LAYER) != null) {
 		getViewer().addPropertyChangeListener(gridListener);
 		refreshGridLayer();
 	}
-}
-
-/**
- * @see org.eclipse.gef.RootEditPart#setContents(org.eclipse.gef.EditPart)
- */
-public void setContents(EditPart editpart) {
-	if (contents != null)
-		removeChild(contents);
-	contents = editpart;
-	if (contents != null)
-		addChild(contents, 0);
-}
-
-/**
- * Sets the EditPartViewer.
- * @param newViewer the viewer
- */
-public void setViewer(EditPartViewer newViewer) {
-	if (viewer == newViewer)
-		return;
-	if (viewer != null)
-		unregister();
-	viewer = newViewer;
-	if (viewer != null)
-		register();
 }
 
 /**

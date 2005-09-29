@@ -28,10 +28,7 @@ import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.LayerConstants;
 import org.eclipse.gef.Request;
-import org.eclipse.gef.RootEditPart;
 import org.eclipse.gef.SnapToGrid;
-import org.eclipse.gef.commands.Command;
-import org.eclipse.gef.commands.UnexecutableCommand;
 import org.eclipse.gef.tools.MarqueeDragTracker;
 
 /**
@@ -84,19 +81,10 @@ import org.eclipse.gef.tools.MarqueeDragTracker;
  * 
  */
 public class FreeformGraphicalRootEditPart
-	extends AbstractGraphicalEditPart
-	implements RootEditPart, LayerConstants, LayerManager
+	extends SimpleRootEditPart
+	implements LayerConstants, LayerManager
 {
 
-/**
- * @deprecated call getContents()
- */
-protected EditPart contents;
-
-/**
- * @deprecated call getViewer()
- */
-protected EditPartViewer viewer;
 private LayeredPane innerLayers;
 private LayeredPane printableLayers;
 private PropertyChangeListener gridListener = new PropertyChangeListener() {
@@ -108,11 +96,6 @@ private PropertyChangeListener gridListener = new PropertyChangeListener() {
 			refreshGridLayer();
 	}
 };
-
-/**
- * @see org.eclipse.gef.editparts.AbstractEditPart#createEditPolicies()
- */
-protected void createEditPolicies() { }
 
 /**
  * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
@@ -170,27 +153,11 @@ public Object getAdapter(Class adapter) {
 }
 
 /**
- * The RootEditPart should never be asked for a command. The implementation returns an
- * unexecutable command.
- * @see org.eclipse.gef.EditPart#getCommand(org.eclipse.gef.Request)
- */
-public Command getCommand(Request req) {
-	return UnexecutableCommand.INSTANCE;
-}
-
-/**
  * The contents' Figure will be added to the PRIMARY_LAYER.
  * @see org.eclipse.gef.GraphicalEditPart#getContentPane()
  */
 public IFigure getContentPane() {
 	return getLayer(PRIMARY_LAYER);
-}
-
-/**
- * @see org.eclipse.gef.RootEditPart#getContents()
- */
-public EditPart getContents() {
-	return contents;
 }
 
 /**
@@ -241,28 +208,6 @@ protected LayeredPane getPrintableLayers() {
 }
 
 /**
- * Returns <code>this</code>.
- * @see org.eclipse.gef.EditPart#getRoot()
- */
-public RootEditPart getRoot() {
-	return this;
-}
-
-/**
- * Returns the viewer that was set.
- * @see org.eclipse.gef.EditPart#getViewer()
- */
-public EditPartViewer getViewer() {
-	return viewer;
-}
-
-/**
- * Overridden to do nothing, child is set using setContents(EditPart)
- * @see org.eclipse.gef.editparts.AbstractEditPart#refreshChildren()
- */
-protected void refreshChildren() { }
-
-/**
  * Updates the {@link GridLayer grid} based on properties set on the {@link #getViewer()
  * graphical viewer}: {@link SnapToGrid#PROPERTY_GRID_VISIBLE}, {@link
  * SnapToGrid#PROPERTY_GRID_SPACING}, and {@link SnapToGrid#PROPERTY_GRID_ORIGIN}.
@@ -290,31 +235,6 @@ protected void register() {
 		getViewer().addPropertyChangeListener(gridListener);
 		refreshGridLayer();
 	}
-}
-
-/**
- * @see org.eclipse.gef.RootEditPart#setContents(org.eclipse.gef.EditPart)
- */
-public void setContents(EditPart editpart) {
-	if (contents != null)
-		removeChild(contents);
-	contents = editpart;
-	if (contents != null)
-		addChild(contents, 0);
-}
-
-/**
- * Sets the EditPartViewer.
- * @param newViewer EditPartViewer.
- */
-public void setViewer(EditPartViewer newViewer) {
-	if (viewer == newViewer)
-		return;
-	if (viewer != null)
-		unregister();
-	viewer = newViewer;
-	if (viewer != null)
-		register();
 }
 
 /**
