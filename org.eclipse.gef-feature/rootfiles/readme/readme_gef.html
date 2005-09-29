@@ -2,21 +2,21 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>GEF Project Release Notes 3.1</title>
+<title>GEF Project Release Notes 3.2</title>
 </head>
 <body>
 
 <h1>GEF Project Release Notes</h1>
 
-<p>Release 3.1<br>
-Last revised June 29, 2005</p>
+<p>Release 3.2<br>
+Last revised September 29, 2005</p>
 
 <blockquote>
 <p><a href="#Target Operating Environments">1. Target
 Platforms</a><br>
 <a href="#Compatibility with Previous Release"> 2. Compatibility with
 Previous Release</a><br>
-<a href="#BreakingAPI">3. Breaking API Changes</a><br>
+<a href="#BreakingAPI">3. API Changes</a><br>
 <a href="#Known Issues">4. Known Issues</a></p>
 </blockquote>
 
@@ -150,26 +150,17 @@ unsupportable and receive no guarantees about compatibility within a single
 release or across releases. Refer to <i><a href="http://www.eclipse.org/articles/Article-API%20use/eclipse-api-usage-rules.html">How
 to Use the Eclipse API</a></i> for information about how to write compliant
 plug-ins.&nbsp; </p>
-<h2>3. <a name="BreakingAPI"></a> Breaking API Changes</h2>
-<h4>org.eclipse.draw2d.text package</h4>
-<blockquote>
-<p>The Draw2d text package has been greatly enhanced to support rich-text display.  
-While most of the classes in this package were marked as not to be sub-classed, 
-the FlowBoxes (fragments) were not.  Extensive changes were necessary to add
-support for rich-text, and hence the API contract had to be broken in a few places.</p>
-</blockquote>
-<h4>SWTGraphics.State</h4>
-<blockquote>
-<p>This protected class had to be updated to support the new advanced graphics
-functionality made available in SWT.  This class has now been marked as package-protected.</p>
-</blockquote>
-<h4>Figure's Default Size</h4>
-<blockquote>
-<p>Previously, Figures used to be initialized with a default size of 64x36.  That has been
-changed, for performance reasons, to now be 0x0.  They will now have to be resized, expicitly
-or via a layout manager, for them to be visible.</p>
-</blockquote>
-<h2>4. <a name="Known Issues"></a> Known Issues</h2>
+<h2>3. <a name="BreakingAPI"></a>API Changes</h2>
+<h4>Deprecated API that was removed in 3.2</h4>
+<ul>
+	<li>The fields <code>viewer</code> and <code>contents</code> were removed from <code>ScalableRootEditPart</code> and <code>FreeformGraphicalRootEditPart</code>. 
+	(Bug 111102)</li>
+</ul>
+<h4>Breaking API Changes</h4>
+<ul>
+	<li>None</li>
+</ul>
+<h2>4. <a name="Known Issues"></a>Known Issues</h2>
 <h4>Printing</h4>
 <blockquote>
 <p>Some fonts scale differently on the printer than they do on the screen. This 
