@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.shapes;
 
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
 
 import org.eclipse.gef.palette.CombinedTemplateCreationEntry;
@@ -25,7 +24,6 @@ import org.eclipse.gef.palette.PanningSelectionToolEntry;
 import org.eclipse.gef.palette.ToolEntry;
 import org.eclipse.gef.requests.CreationFactory;
 import org.eclipse.gef.requests.SimpleFactory;
-import org.eclipse.gef.ui.palette.FlyoutPaletteComposite.FlyoutPreferences;
 
 import org.eclipse.gef.examples.shapes.model.Connection;
 import org.eclipse.gef.examples.shapes.model.EllipticalShape;
@@ -80,35 +78,6 @@ static PaletteRoot createPalette() {
 	palette.add(createToolsGroup(palette));
 	palette.add(createShapesDrawer());
 	return palette;
-}
-
-/**
- * Return a FlyoutPreferences instance used to save/load the preferences of a flyout palette.
- */
-static FlyoutPreferences createPalettePreferences() {
-	return new FlyoutPreferences() {
-		private IPreferenceStore getPreferenceStore() {
-			return ShapesPlugin.getDefault().getPreferenceStore();
-		}
-		public int getDockLocation() {
-			return getPreferenceStore().getInt(PALETTE_DOCK_LOCATION);
-		}
-		public int getPaletteState() {
-			return getPreferenceStore().getInt(PALETTE_STATE);
-		}
-		public int getPaletteWidth() {
-			return getPreferenceStore().getInt(PALETTE_SIZE);
-		}
-		public void setDockLocation(int location) {
-			getPreferenceStore().setValue(PALETTE_DOCK_LOCATION, location);
-		}
-		public void setPaletteState(int state) {
-			getPreferenceStore().setValue(PALETTE_STATE, state);
-		}
-		public void setPaletteWidth(int width) {
-			getPreferenceStore().setValue(PALETTE_SIZE, width);
-		}
-	};
 }
 
 /** Create the "Tools" group. */

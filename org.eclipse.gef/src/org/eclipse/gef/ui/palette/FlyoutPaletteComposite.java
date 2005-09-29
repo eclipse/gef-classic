@@ -46,6 +46,8 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Tracker;
 
+import org.eclipse.core.runtime.Plugin;
+import org.eclipse.core.runtime.Preferences;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
@@ -255,6 +257,21 @@ private IMemento capturePaletteState(PaletteViewer viewer) {
 
 private Control createFlyoutControlButton(Composite parent) {
 	return new ButtonCanvas(parent);
+}
+
+/**
+ * This is a convenient method to get a default FlyoutPreferences object.  The returned
+ * FlyoutPreferences does not save any changes made to the given 
+ * {@link Preferences Preferences}.  It's upto the owner plugin to 
+ * {@link Plugin#savePluginPreferences() save} the changes before it
+ * {@link Plugin#stop(org.osgi.framework.BundleContext) stops}.
+ * @param prefs {@link Plugin#getPluginPreferences() a plugin's Preferences}
+ * @return a default implementation of FlyoutPreferences that stores the settings in the
+ * given Preferences
+ * @since 3.2
+ */
+public static FlyoutPreferences createFlyoutPreferences(Preferences prefs) {
+	return new DefaultFlyoutPreferences(prefs);
 }
 
 private Composite createPaletteContainer() {
@@ -1439,6 +1456,46 @@ private static class FontManager {
 		if (registrants.isEmpty())
 			dispose();
 	}
+}
+
+/**
+ * Default implementation of FlyoutPreferences that stores the flyout palette settings
+ * in the given Preferences.
+ * @author Pratik Shah
+ * @since 3.2
+ */
+private static class DefaultFlyoutPreferences implements FlyoutPreferences {
+	/*
+	 * There's no need to set the default for these properties since the default-default 
+	 * of 0 for ints will suffice.
+	 */
+	private static final String PALETTE_DOCK_LOCATION = "org.eclipse.gef.pdock"; //$NON-NLS-1$
+	private static final String PALETTE_SIZE = "org.eclipse.gef.psize"; //$NON-NLS-1$
+	private static final String PALETTE_STATE = "org.eclipse.gef.pstate"; //$NON-NLS-1$
+
+	private Preferences prefs;
+
+	private DefaultFlyoutPreferences(Preferences preferences) {
+		prefs = preferences;
+	}
+	public int getDockLocation() {
+		return prefs.getInt(PALETTE_DOCK_LOCATION);
+	}
+	public int getPaletteState() {
+		return prefs.getInt(PALETTE_STATE);
+	}
+	public int getPaletteWidth() {
+		return prefs.getInt(PALETTE_SIZE);
+	}
+	public void setDockLocation(int location) {
+		prefs.setValue(PALETTE_DOCK_LOCATION, location);
+	}
+	public void setPaletteState(int state) {
+		prefs.setValue(PALETTE_STATE, state);
+	}
+	public void setPaletteWidth(int width) {
+		prefs.setValue(PALETTE_SIZE, width);
+	}	
 }
 
 }

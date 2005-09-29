@@ -15,6 +15,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import org.eclipse.gef.DefaultEditDomain;
+import org.eclipse.gef.GEFPlugin;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.ui.palette.FlyoutPaletteComposite;
 import org.eclipse.gef.ui.palette.PaletteViewer;
@@ -103,9 +104,14 @@ protected Control getGraphicalControl() {
 }
 
 /**
+ * By default, this method returns a FlyoutPreferences object that stores the flyout
+ * settings in the GEF plugin.  Sub-classes may override.
  * @return	the FlyoutPreferences object used to save the flyout palette's preferences 
  */
-protected abstract FlyoutPreferences getPalettePreferences();
+protected FlyoutPreferences getPalettePreferences() {
+	return FlyoutPaletteComposite
+			.createFlyoutPreferences(GEFPlugin.getDefault().getPluginPreferences());
+}
 	
 /**
  * Returns the PaletteRoot for the palette viewer.

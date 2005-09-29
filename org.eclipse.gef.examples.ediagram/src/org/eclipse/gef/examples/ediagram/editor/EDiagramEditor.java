@@ -57,7 +57,6 @@ import org.eclipse.gef.ui.actions.ZoomOutAction;
 import org.eclipse.gef.ui.palette.PaletteCustomizer;
 import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.eclipse.gef.ui.palette.PaletteViewerProvider;
-import org.eclipse.gef.ui.palette.FlyoutPaletteComposite.FlyoutPreferences;
 import org.eclipse.gef.ui.parts.GraphicalEditorWithFlyoutPalette;
 import org.eclipse.gef.ui.parts.GraphicalViewerKeyHandler;
 
@@ -152,36 +151,6 @@ protected PaletteViewerProvider createPaletteViewerProvider() {
 				public void save() {}
 			});
 			viewer.addDragSourceListener(new TemplateTransferDragSourceListener(viewer));
-		}
-	};
-}
-
-protected FlyoutPreferences getPalettePreferences() {
-	return new FlyoutPreferences() {
-		public int getDockLocation() {
-			return EDiagramPlugin.getPlugin().getPluginPreferences()
-					.getInt(PALETTE_DOCK_LOCATION);
-		}
-		public int getPaletteState() {
-			return EDiagramPlugin.getPlugin().getPluginPreferences().getInt(PALETTE_STATE);
-		}
-		public int getPaletteWidth() {
-			return EDiagramPlugin.getPlugin().getPluginPreferences().getInt(PALETTE_SIZE);
-		}
-		public void setDockLocation(int location) {
-			EDiagramPlugin.getPlugin().getPluginPreferences()
-					.setValue(PALETTE_DOCK_LOCATION, location);
-			EDiagramPlugin.getPlugin().savePluginPreferences();
-		}
-		public void setPaletteState(int state) {
-			EDiagramPlugin.getPlugin().getPluginPreferences()
-				.setValue(PALETTE_STATE, state);
-			EDiagramPlugin.getPlugin().savePluginPreferences();
-		}
-		public void setPaletteWidth(int width) {
-			EDiagramPlugin.getPlugin().getPluginPreferences()
-				.setValue(PALETTE_SIZE, width);
-			EDiagramPlugin.getPlugin().savePluginPreferences();
 		}
 	};
 }

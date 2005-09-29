@@ -108,7 +108,6 @@ import org.eclipse.gef.ui.actions.ZoomInAction;
 import org.eclipse.gef.ui.actions.ZoomOutAction;
 import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.eclipse.gef.ui.palette.PaletteViewerProvider;
-import org.eclipse.gef.ui.palette.FlyoutPaletteComposite.FlyoutPreferences;
 import org.eclipse.gef.ui.parts.ContentOutlinePage;
 import org.eclipse.gef.ui.parts.GraphicalEditorWithFlyoutPalette;
 import org.eclipse.gef.ui.parts.GraphicalViewerKeyHandler;
@@ -565,33 +564,6 @@ protected KeyHandler getCommonKeyHandler(){
 
 protected LogicDiagram getLogicDiagram() {
 	return logicDiagram;
-}
-
-protected FlyoutPreferences getPalettePreferences() {
-	return new FlyoutPreferences() {
-		public int getDockLocation() {
-			return LogicPlugin.getDefault().getPreferenceStore()
-					.getInt(PALETTE_DOCK_LOCATION);
-		}
-		public int getPaletteState() {
-			return LogicPlugin.getDefault().getPreferenceStore().getInt(PALETTE_STATE);
-		}
-		public int getPaletteWidth() {
-			return LogicPlugin.getDefault().getPreferenceStore().getInt(PALETTE_SIZE);
-		}
-		public void setDockLocation(int location) {
-			LogicPlugin.getDefault().getPreferenceStore()
-					.setValue(PALETTE_DOCK_LOCATION, location);
-		}
-		public void setPaletteState(int state) {
-			LogicPlugin.getDefault().getPreferenceStore()
-					.setValue(PALETTE_STATE, state);
-		}
-		public void setPaletteWidth(int width) {
-			LogicPlugin.getDefault().getPreferenceStore()
-					.setValue(PALETTE_SIZE, width);
-		}
-	};
 }
 
 protected PaletteRoot getPaletteRoot() {

@@ -15,6 +15,8 @@ import org.eclipse.ui.views.properties.IPropertySheetEntry;
 
 import org.eclipse.gef.commands.CommandStack;
 
+import org.osgi.framework.BundleContext;
+
 /**
  * 
  */
@@ -49,6 +51,14 @@ public static GEFPlugin getDefault() {
  */
 public static IPropertySheetEntry createUndoablePropertySheetEntry(CommandStack stack) {
 	return new org.eclipse.gef.ui.properties.UndoablePropertySheetEntry(stack);
+}
+
+/**
+ * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
+ */
+public void stop(BundleContext context) throws Exception {
+	savePluginPreferences();
+	super.stop(context);
 }
 
 }

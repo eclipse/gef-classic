@@ -54,7 +54,6 @@ import org.eclipse.gef.requests.SimpleFactory;
 import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.eclipse.gef.ui.palette.PaletteViewerProvider;
-import org.eclipse.gef.ui.palette.FlyoutPaletteComposite.FlyoutPreferences;
 import org.eclipse.gef.ui.parts.ContentOutlinePage;
 import org.eclipse.gef.ui.parts.GraphicalEditorWithFlyoutPalette;
 import org.eclipse.gef.ui.parts.GraphicalViewerKeyHandler;
@@ -225,13 +224,6 @@ public Object getAdapter(Class type) {
 
 ShapesDiagram getModel() {
 	return diagram;
-}
-
-/* (non-Javadoc)
- * @see org.eclipse.gef.ui.parts.GraphicalEditorWithFlyoutPalette#getPalettePreferences()
- */
-protected FlyoutPreferences getPalettePreferences() {
-	return ShapesEditorPaletteFactory.createPalettePreferences();
 }
 
 /* (non-Javadoc)
