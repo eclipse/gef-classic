@@ -1226,12 +1226,12 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     	if ( oldForce != null ) {
 
     		if ( force.x * oldForce.x < 0 && ( Math.abs( force.x ) > 0.000001 )) {
-    			System.out.println("old: " + oldForce.x + " : " + force.x );
+    			//System.out.println("old: " + oldForce.x + " : " + force.x );
     			//force.x = oldForce.x / 100;
     			force.x = 0;
     		}
     		else if ( force.x * oldForce.x < 0 ) {
-    			System.out.println("newForce: " + force.x );
+    			//System.out.println("newForce: " + force.x );
     		}
     		
     		if ( force.y * oldForce.y < 0 && ( Math.abs( force.y ) > 0.000001 )) {
@@ -1239,7 +1239,7 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     			force.y = 0;
     		}
     		else if ( force.y * oldForce.y < 0 ) {
-    			System.out.println("newForce: " + force.y );
+    			//System.out.println("newForce: " + force.y );
     		}
     	}
     	oldForces.put(layoutEntity, force);
