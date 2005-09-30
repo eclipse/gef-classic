@@ -698,12 +698,19 @@ public void removeNodeListener(NodeListener listener) {
  */
 public void removeNotify() {
 	List conns;
+	ConnectionEditPart cep;
 	conns = getSourceConnections();
-	for (int i = 0; i < conns.size(); i++)
-		((ConnectionEditPart)conns.get(i)).setSource(null);
+	for (int i = 0; i < conns.size(); i++) {
+		cep = (ConnectionEditPart)conns.get(i);
+		if (cep.getSource() == this)
+			cep.setSource(null);
+	}
 	conns = getTargetConnections();
-	for (int i = 0; i < conns.size(); i++)
-		((ConnectionEditPart)conns.get(i)).setTarget(null);
+	for (int i = 0; i < conns.size(); i++) {
+		cep = (ConnectionEditPart)conns.get(i);
+		if (cep.getTarget() == this)
+			cep.setTarget(null);		
+	}
 	super.removeNotify();
 }
 
