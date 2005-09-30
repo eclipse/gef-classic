@@ -61,7 +61,7 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     /**
      * The default value for the spring layout strain-control.
      */
-    public static final double DEFAULT_SPRING_STRAIN = 1.0f;
+    public static final double DEFAULT_SPRING_STRAIN = 0.5f;
 
     /**
      * The default value for the spring layout length-control.
@@ -411,7 +411,7 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 			edgeForces[ i ] = f;
 			maxForce = Math.abs( f ) > maxForce ? Math.abs( f )  : maxForce;
 	 	}
-	 	if ( maxForce < 0.01 ) {
+	 	if ( maxForce < 0.0001 ) {
 	 		System.out.println( " Max Force Small ");
 	 		for (int i = 0; i < edgeForces.length; i++) {
 				System.out.println( edgeForces[ i ] );
@@ -1089,7 +1089,8 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     	{					    
 		
 			InternalNode sourceEntity = entitiesToLayout[i];			
-			setForce(sourceEntity, 0, 0);
+			//setForce(sourceEntity, 0, 0);
+			zeroForce(sourceEntity);
 		
 			DisplayIndependentPoint srcForce = getForce (sourceEntity);//.clone();
 			double fx = srcForce.x; //force in x direction
@@ -1216,19 +1217,26 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     
     HashMap oldForces = new HashMap();
     
+    private void zeroForce( InternalNode layoutEntity ) {
+    	layoutEntity.setAttributeInLayout(ATTR_FORCE, new DisplayIndependentPoint(0,0));
+    }
     private void setForce(InternalNode layoutEntity, DisplayIndependentPoint force) {
     	DisplayIndependentPoint oldForce = (DisplayIndependentPoint)oldForces.get( layoutEntity );
+    	//System.out.println("Force is: " + layoutEntity.hashCode() + " : " + force.x);
     	if ( oldForce != null ) {
 
-    		if ( force.x * oldForce.x < 0 && ( Math.abs( force.x ) > 0.0001 )) {
+    		if ( force.x * oldForce.x < 0 && ( Math.abs( force.x ) > 0.000001 )) {
     			System.out.println("old: " + oldForce.x + " : " + force.x );
-    			force.x = oldForce.x / 4;
+    			//force.x = oldForce.x / 100;
+    			force.x = 0;
     		}
     		else if ( force.x * oldForce.x < 0 ) {
     			System.out.println("newForce: " + force.x );
     		}
-    		if ( force.y * oldForce.y < 0 && ( Math.abs( force.y ) > 0.0001 )) {
-    			force.y = oldForce.y / 4;
+    		
+    		if ( force.y * oldForce.y < 0 && ( Math.abs( force.y ) > 0.000001 )) {
+    			//force.y = oldForce.y / 100;
+    			force.y = 0;
     		}
     		else if ( force.y * oldForce.y < 0 ) {
     			System.out.println("newForce: " + force.y );
