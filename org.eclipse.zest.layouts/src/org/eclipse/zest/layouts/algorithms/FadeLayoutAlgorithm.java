@@ -11,6 +11,7 @@
 package org.eclipse.mylar.zest.layouts.algorithms;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.eclipse.mylar.zest.layouts.dataStructures.DisplayIndependentPoint;
 import org.eclipse.mylar.zest.layouts.dataStructures.DisplayIndependentRectangle;
@@ -60,7 +61,7 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     /**
      * The default value for the spring layout strain-control.
      */
-    public static final double DEFAULT_SPRING_STRAIN = 0.5f;
+    public static final double DEFAULT_SPRING_STRAIN = 1.0f;
 
     /**
      * The default value for the spring layout length-control.
@@ -246,7 +247,8 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 		 sprIterations = DEFAULT_SPRING_ITERATIONS;
     }
     
-    
+  	  
+  
 	protected boolean performAnotherNonContinuousIteration() {
 		// TODO Auto-generated method stub
 		return (iteration<=sprIterations && largestMovement >= sprMove);
@@ -370,19 +372,23 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 //		
 //	}
 
-	 
-	public void setEdgeForces(InternalRelationship [] relationships)
-	 {
+	
+	/**
+	 * Sets the forces for the relationship
+	 * @param relationships the List of relationships to consider
+	 */ 
+	private void setEdgeForces(InternalRelationship [] relationships) {
+	
+		// Create an array to hold the forces
+		double edgeForces[] = new double[ relationships.length ];
+		double maxForce = 0.0;
+		
 	 	for (int i = 0; i < relationships.length; i++) {
 			
 	 		InternalRelationship relationship = relationships[i];
 			InternalNode source = relationship.getSource();
 			InternalNode destination = relationship.getDestination();
 			
-			/*
-			DisplayIndependentPoint srcLocation = (DisplayIndependentPoint)getTempLocation(source);//.clone();
-			DisplayIndependentPoint destLocation = (DisplayIndependentPoint)getTempLocation(destination);//.clone();
-			*/
 			DisplayIndependentPoint srcLocation = new DisplayIndependentPoint( source.getDx(), source.getDy() );
 			DisplayIndependentPoint destLocation = new DisplayIndependentPoint( destination.getDx(), destination.getDy() );
 			
@@ -394,12 +400,47 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 			double dx = srcLocation.x - destLocation.x;
 			double dy = srcLocation.y - destLocation.y;
 			double distance = Math.sqrt(dx*dx + dy*dy);
+			//double distance = 1.0;
 			//double distance_sq = distance*distance;
 			
 			//TODO: Fix the spring tension.  This is a partial fix
-			double edgeWeight = relationship.getWeight();
 			
-			double f = sprStrain * Math.log (distance/sprLength) * edgeWeight;
+
+			double f = sprStrain * Math.log (distance/sprLength);
+			//double f = relationship.getWeight();
+			edgeForces[ i ] = f;
+			maxForce = Math.abs( f ) > maxForce ? Math.abs( f )  : maxForce;
+	 	}
+	 	if ( maxForce < 0.01 ) {
+	 		System.out.println( " Max Force Small ");
+	 		for (int i = 0; i < edgeForces.length; i++) {
+				System.out.println( edgeForces[ i ] );
+			}
+	 		System.out.println( edgeForces );
+	 		System.exit( 0 );
+	 	}
+	 	
+	 	normalizeArray( edgeForces, maxForce );
+	 	applyEdgeWeight(edgeForces, relationships );
+	 	multiplyArray( edgeForces, maxForce );
+	 	
+		for ( int i = 0; i < relationships.length; i++ ) {
+			double f = edgeForces [ i ];
+			
+			InternalRelationship relationship = relationships[i];
+			InternalNode source = relationship.getSource();
+			InternalNode destination = relationship.getDestination();
+			
+			DisplayIndependentPoint srcLocation = new DisplayIndependentPoint( source.getDx(), source.getDy() );
+			DisplayIndependentPoint destLocation = new DisplayIndependentPoint( destination.getDx(), destination.getDy() );
+			
+			DisplayIndependentPoint srcForce = getForce(source);//.clone();
+			DisplayIndependentPoint destForce = getForce(destination);//.clone();
+			
+			double dx = srcLocation.x - destLocation.x;
+			double dy = srcLocation.y - destLocation.y;
+			double distance = Math.sqrt(dx*dx + dy*dy);
+			
 			double fx = (f * dx/distance);
 			double fy = (f * dy/distance);
 			
@@ -415,6 +456,26 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 			//System.out.println("Source Force: " + srcForce);
 			}
 	 }
+	
+	private void normalizeArray( double[] numbers, double maxNumber ) {
+		for (int i = 0; i < numbers.length; i++) {
+			numbers[ i ] /= maxNumber;
+		}
+	}
+	private void applyEdgeWeight( double[] numbers, InternalRelationship [] relationships ) {
+		
+		for ( int i = 0; i < numbers.length; i++ ) {
+			InternalRelationship relationship = relationships[ i ];
+			double edgeWeight = relationship.getWeight();
+			numbers[ i ] *= edgeWeight; 
+		}
+	}
+	
+	private void multiplyArray( double[] numbers, double factor ) {
+		for (int i = 0; i < numbers.length; i++) {
+			numbers[ i ] *= factor;
+		}
+	}
 	
     private void preCompute (InternalNode [] entitiesToLayout, int width, int height) {		
 	
@@ -1053,7 +1114,10 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
      * The computed position will be stored in the data repository.
      * position = position + sprMove * force
      */
+ 
+    
     protected void computePositions(InternalNode [] entitiesToLayout) {
+    	
 		for (int i = 0; i < entitiesToLayout.length; i++) {
 			InternalNode layoutEntity = entitiesToLayout[i];
 		    //if (true)//!isAnchor (layoutEntity))
@@ -1078,6 +1142,7 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 				} else {
 					deltaY = Math.max (deltaY, -maxMovement);
 				}
+
 				
 				largestMovement = Math.max(largestMovement, Math.abs(deltaX));
 				largestMovement = Math.max(largestMovement, Math.abs(deltaY));
@@ -1148,7 +1213,29 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 		setForce (layoutEntity, new DisplayIndependentPoint(x, y));
 	}
 	
+    
+    HashMap oldForces = new HashMap();
+    
     private void setForce(InternalNode layoutEntity, DisplayIndependentPoint force) {
+    	DisplayIndependentPoint oldForce = (DisplayIndependentPoint)oldForces.get( layoutEntity );
+    	if ( oldForce != null ) {
+
+    		if ( force.x * oldForce.x < 0 && ( Math.abs( force.x ) > 0.0001 )) {
+    			System.out.println("old: " + oldForce.x + " : " + force.x );
+    			force.x = oldForce.x / 4;
+    		}
+    		else if ( force.x * oldForce.x < 0 ) {
+    			System.out.println("newForce: " + force.x );
+    		}
+    		if ( force.y * oldForce.y < 0 && ( Math.abs( force.y ) > 0.0001 )) {
+    			force.y = oldForce.y / 4;
+    		}
+    		else if ( force.y * oldForce.y < 0 ) {
+    			System.out.println("newForce: " + force.y );
+    		}
+    	}
+    	oldForces.put(layoutEntity, force);
+    	
 	    layoutEntity.setAttributeInLayout(ATTR_FORCE, force);
 	}
 	
