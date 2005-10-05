@@ -263,7 +263,7 @@ public SWTGraphics(GC gc) {
  * {@link #checkGC()}.
  */
 protected final void checkFill() {
-	if (!appliedState.bgColor.equals(currentState.bgColor))
+	if (!currentState.bgColor.equals(appliedState.bgColor))
 		gc.setBackground(appliedState.bgColor = currentState.bgColor);
 	checkGC();
 }
@@ -290,7 +290,7 @@ protected final void checkGC() {
  */
 protected final void checkPaint() {
 	checkGC();
-	if (!appliedState.fgColor.equals(currentState.fgColor))
+	if (!currentState.fgColor.equals(appliedState.fgColor))
 		gc.setForeground(appliedState.fgColor = currentState.fgColor);
 	if (appliedState.lineWidth != currentState.lineWidth)
 		gc.setLineWidth(appliedState.lineWidth = currentState.lineWidth);
@@ -925,6 +925,11 @@ public void setAntialias(int value) {
  */
 public void setBackgroundColor(Color color) {
 	currentState.bgColor = color;
+	if (currentState.bgPattern != null) {
+		currentState.bgPattern = null;
+		//Force the BG color to be stale
+		appliedState.bgColor = null;
+	}
 }
 
 /**
@@ -932,14 +937,13 @@ public void setBackgroundColor(Color color) {
  */
 public void setBackgroundPattern(Pattern pattern) {
 	currentState.graphicHints |= ADVANCED_GRAPHICS_MASK;
-	if (currentState.fgPattern == pattern)
+	if (currentState.bgPattern == pattern)
 		return;
 	currentState.bgPattern = pattern;
 
-	if (pattern != null) {
+	if (pattern != null)
 		initTransform(true);
-		gc.setBackgroundPattern(pattern);
-	}
+	gc.setBackgroundPattern(pattern);
 }
 
 /**
@@ -978,6 +982,11 @@ public void setFont(Font f) {
  */
 public void setForegroundColor(Color color) {
 	currentState.fgColor = color;
+	if (currentState.fgPattern != null) {
+		currentState.fgPattern = null;
+		//Force fgColor to be stale
+		appliedState.fgColor = null;
+	}
 }
 
 /**
@@ -989,10 +998,9 @@ public void setForegroundPattern(Pattern pattern) {
 		return;
 	currentState.fgPattern = pattern;
 
-	if (pattern != null) {
+	if (pattern != null)
 		initTransform(true);
-		gc.setForegroundPattern(pattern);
-	}
+	gc.setForegroundPattern(pattern);
 }
 
 private void setGraphicHints(int hints) {
