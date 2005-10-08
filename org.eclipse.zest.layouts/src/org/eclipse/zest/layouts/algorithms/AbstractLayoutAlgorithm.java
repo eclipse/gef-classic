@@ -626,19 +626,19 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 		return new DisplayIndependentPoint( localX, localY );
 	}
 	
-	protected void defaultFitWithinBounds2(InternalNode[] entitiesToLayout, DisplayIndependentRectangle realBounds) {
-		double screenWidth = realBounds.width;
-		double screenHeight = realBounds.height;
-
-		convertNodePositionsToPercentage( entitiesToLayout, false );
-		
-		for ( int i = 0; i < entitiesToLayout.length; i++ ) {
-			double x = entitiesToLayout[i].getInternalX() * screenWidth; 
-			double y = entitiesToLayout[i].getInternalY() * screenHeight;
-			entitiesToLayout[i].setInternalLocation( x, y );
-		}
-	
-	}
+//	protected void defaultFitWithinBounds2(InternalNode[] entitiesToLayout, DisplayIndependentRectangle realBounds) {
+//		double screenWidth = realBounds.width;
+//		double screenHeight = realBounds.height;
+//
+//		convertNodePositionsToPercentage( entitiesToLayout, false );
+//		
+//		for ( int i = 0; i < entitiesToLayout.length; i++ ) {
+//			double x = entitiesToLayout[i].getInternalX() * screenWidth; 
+//			double y = entitiesToLayout[i].getInternalY() * screenHeight;
+//			entitiesToLayout[i].setInternalLocation( x, y );
+//		}
+//	
+//	}
 	
 	
 	/**

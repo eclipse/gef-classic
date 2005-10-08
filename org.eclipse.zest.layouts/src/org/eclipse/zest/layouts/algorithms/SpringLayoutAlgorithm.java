@@ -47,7 +47,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     /**
      * the default value for the time algorithm runs.
      */
-    public static final long MAX_SPRING_TIME = 2000;
+    public static final long MAX_SPRING_TIME = 10000;
 
     /**
      * The default value for positioning nodes randomly.
@@ -67,12 +67,12 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     /**
      * The default value for the spring layout move-control.
      */
-    public static final double DEFAULT_SPRING_MOVE = 0.1f;
+    public static final double DEFAULT_SPRING_MOVE = 1.0f;
 
     /**
      * The default value for the spring layout strain-control.
      */
-    public static final double DEFAULT_SPRING_STRAIN = 2.0f;
+    public static final double DEFAULT_SPRING_STRAIN = 1.0f;
 
     /**
      * The default value for the spring layout length-control.
@@ -196,6 +196,20 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     public void setSpringMove(double move) {
         sprMove = move;
     }
+    
+    //	protected void defaultFitWithinBounds2(InternalNode[] entitiesToLayout, DisplayIndependentRectangle realBounds) {
+//	double screenWidth = realBounds.width;
+//	double screenHeight = realBounds.height;
+//
+//	convertNodePositionsToPercentage( entitiesToLayout, false );
+//	
+//	for ( int i = 0; i < entitiesToLayout.length; i++ ) {
+//		double x = entitiesToLayout[i].getInternalX() * screenWidth; 
+//		double y = entitiesToLayout[i].getInternalY() * screenHeight;
+//		entitiesToLayout[i].setInternalLocation( x, y );
+//	}
+//
+//}
 
     /**
      * Returns the move-control value of this ShrimpSpringLayoutAlgorithm in
@@ -549,7 +563,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     		bounds = new DisplayIndependentRectangle(x,y,width,height);
         checkPreferredLocation(entitiesToLayout, bounds );
         computeForces(entitiesToLayout);
-        largestMovement = 0; //Double.MAX_VALUE;
+        largestMovement = Double.MAX_VALUE;
         computePositions(entitiesToLayout);
         for (int i = 0; i < entitiesToLayout.length; i++) {
             InternalNode layoutEntity = entitiesToLayout[i];
@@ -640,7 +654,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
                         
                     } else {
                         // nodes are repelled from each other
-                        // f = Math.min(100, sprGravitation / (distance*distance));
+                        //double f = Math.min(100, sprGravitation / (distance*distance));
                         double f = sprGravitation / (distance_sq);
                         fx = fx + (f * dx / distance);
                         fy = fy + (f * dy / distance);
