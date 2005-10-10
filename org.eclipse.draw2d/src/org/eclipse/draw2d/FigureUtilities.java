@@ -374,11 +374,13 @@ protected static void setFont(Font f) {
 }
 
 /**
- * Returns the figure which contains both of the given figures or null
- * if no such figure exists.
+ * Returns the figure which is the ancestor of both figures, or <code>null</code>. A
+ * figure is an ancestor if it is the parent of another figure, or if it is the ancestor
+ * of that figure's parent. If one figure contains the other, <code>null</code> is
+ * returned.
  * @since 3.1
- * @param l one figure
- * @param r the other figure
+ * @param l left
+ * @param r right
  * @return the common ancestor
  */
 public static IFigure findCommonAncestor(IFigure l, IFigure r) {
