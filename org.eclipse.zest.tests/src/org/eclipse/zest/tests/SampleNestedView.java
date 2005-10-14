@@ -94,7 +94,7 @@ public class SampleNestedView extends ViewPart {
 	 */
 	public void createPartControl(Composite parent) {
 		nestedViewer = new NestedGraphViewer(parent, 
-				ZestStyles.HIGHLIGHT_ADJACENT_NODES | ZestStyles.NO_OVERLAPPING_NODES | 
+				ZestStyles.HIGHLIGHT_ADJACENT_NODES | /* ZestStyles.NO_OVERLAPPING_NODES | */ 
 				ZestStyles.DIRECTED_GRAPH | ZestStyles.ZOOM_FAKE | ZestStyles.ENFORCE_BOUNDS);
 		
 		//NestedGraphEntityContentProvider contentProvider = new NestedGraphEntityContentProvider();
