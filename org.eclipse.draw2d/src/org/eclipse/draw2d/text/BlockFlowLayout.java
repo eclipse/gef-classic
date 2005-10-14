@@ -230,12 +230,13 @@ protected void setupBlock() {
 	
 	if (recommended != blockBox.recommendedWidth) {
 		blockInvalid = true;
-		blockBox.setWidth(Math.max(0, recommended));
 		blockBox.setRecommendedWidth(recommended);
 	}
 	
-	if (blockInvalid)
+	if (blockInvalid) {
 		blockBox.height = 0;
+		blockBox.setWidth(Math.max(0, recommended));
+	}
 }
 
 }
