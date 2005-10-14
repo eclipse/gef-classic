@@ -89,11 +89,9 @@ public class GraphEditPart extends AbstractGraphicalEditPart implements Property
 		// to update the diagram's contents.
 		if (GraphModel.NODE_ADDED_PROP.equals(prop) || GraphModel.NODE_REMOVED_PROP.equals(prop)) {
 			refreshChildren();
-		}
-		else if ( GraphModelNode.HIGHLIGHT_PROP.equals( prop ) ) {
+		} else if ( GraphModelNode.HIGHLIGHT_PROP.equals( prop ) ) {
 			setSelected( 1 );
-		}
-		else if ( GraphModelNode.UNHIGHLIGHT_PROP.equals( prop ) ) {
+		} else if ( GraphModelNode.UNHIGHLIGHT_PROP.equals( prop ) ) {
 			setSelected( 0 );
 		}
 	}

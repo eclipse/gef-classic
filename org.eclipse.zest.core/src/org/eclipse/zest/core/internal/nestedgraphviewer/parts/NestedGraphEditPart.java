@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.mylar.zest.core.internal.nestedgraphviewer.parts;
 
+import java.beans.PropertyChangeEvent;
+
 import org.eclipse.draw2d.ActionEvent;
 import org.eclipse.draw2d.ActionListener;
 import org.eclipse.draw2d.Clickable;
@@ -18,9 +20,13 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.gef.EditPart;
+import org.eclipse.gef.EditPartListener;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.editpolicies.RootComponentEditPolicy;
 import org.eclipse.mylar.zest.core.ZestColors;
+import org.eclipse.mylar.zest.core.internal.graphmodel.GraphItem;
+import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelNode;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedGraphModel;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedGraphModelNode;
 import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphEditPart;
@@ -37,7 +43,8 @@ import org.eclipse.ui.PlatformUI;
  * 
  * @author Chris Callendar
  */
-public class NestedGraphEditPart extends GraphEditPart implements ActionListener {
+public class NestedGraphEditPart extends GraphEditPart implements 
+	ActionListener, EditPartListener {
 
 	private boolean allowOverlap;
 	private boolean enforceBounds;
@@ -52,6 +59,28 @@ public class NestedGraphEditPart extends GraphEditPart implements ActionListener
 		super();
 		this.allowOverlap = allowOverlap;
 		this.enforceBounds = enforceBounds;
+		
+		//this.addEditPartListener(this);
+	}	
+	
+	/**
+	 * Upon activation, attach to the model element as a property change listener.
+	 */
+	public void activate() {
+		if (!isActive()) {
+			super.activate();
+			((GraphItem)getCastedModel().getRootNode()).addPropertyChangeListener(this);
+		}
+	}	
+	
+	/**
+	 * Upon deactivation, detach from the model element as a property change listener.
+	 */
+	public void deactivate() {
+		if (isActive()) {
+			super.deactivate();
+			((GraphItem)getCastedModel().getRootNode()).removePropertyChangeListener(this);
+		}
 	}	
 
 	/* (non-Javadoc)
@@ -73,13 +102,15 @@ public class NestedGraphEditPart extends GraphEditPart implements ActionListener
 	}	
 		
 	/**
-	 * Creates a FreeformLayer which contains the root NestedFigure.
+	 * Creates a NestedFreeformLayer which contains the root NestedFigure.
 	 * This NestedFigure will have an up button in the top left if the
 	 * current node isn't the root node.
 	 */
 	protected IFigure createFigure() {		
 		NestedGraphModel model = getCastedModel();
 		NestedGraphModelNode current = model.getCurrentNode();
+		//current.setBackgroundColor(ZestColors.DARK_BLUE);
+		//current.setForegroundColor(ColorConstants.white);
 		
 		Label label;
 		if (current == null) {
@@ -116,6 +147,30 @@ public class NestedGraphEditPart extends GraphEditPart implements ActionListener
 		return layer;
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphEditPart#propertyChange(java.beans.PropertyChangeEvent)
+	 */
+	public void propertyChange(PropertyChangeEvent evt) {
+		String prop = evt.getPropertyName();
+		if (GraphModelNode.COLOR_BG_PROP.equals(prop)) {
+			refreshColors();
+		} else if (GraphModelNode.COLOR_FG_PROP.equals(prop)) {
+			refreshColors();
+		} else {
+			super.propertyChange(evt);
+		}
+	}
+	
+	/**
+	 * Refreshes the figures colors from the model.  This includes the border color and width.
+	 */
+	protected void refreshColors() {
+		IFigure figure = (IFigure)getFigure().getChildren().get(0);
+		NestedGraphModelNode model = getCastedModel().getRootNode();
+		figure.setForegroundColor(model.getForegroundColor());
+		figure.setBackgroundColor(model.getBackgroundColor());
+	}	
+		
 	/**
 	 * Handle the up button being clicked.
 	 * @see org.eclipse.draw2d.ActionListener#actionPerformed(org.eclipse.draw2d.ActionEvent)
@@ -127,5 +182,31 @@ public class NestedGraphEditPart extends GraphEditPart implements ActionListener
 			((NestedGraphViewerImpl)getViewer()).fireModelUpdate();
 		}		
 	}
+		
+	/* (non-Javadoc)
+	 * @see org.eclipse.gef.EditPartListener#selectedStateChanged(org.eclipse.gef.EditPart)
+	 */
+	public void selectedStateChanged(EditPart editpart) {
+		boolean notSelected = (editpart.getSelected() ==  EditPart.SELECTED_NONE);
+		NestedGraphModelNode root = getCastedModel().getRootNode();
+		if (notSelected) {
+			root.setForegroundColor(ColorConstants.white);
+			root.unhighlight();
+		} else {
+			root.setForegroundColor(ColorConstants.black);
+			root.highlight();			
+		}
+	}
 	
+	public void childAdded(EditPart child, int index) {
+	}
+	
+	public void partActivated(EditPart editpart) {
+	}
+	
+	public void partDeactivated(EditPart editpart) {
+	}
+	
+	public void removingChild(EditPart child, int index) {
+	}
 }

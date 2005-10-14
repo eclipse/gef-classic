@@ -80,6 +80,7 @@ public class TreeRootViewer extends TreeViewer {
 			rootTreeItem.setText(rootItem.getText());
 			rootTreeItem.setImage(rootItem.getImage());
 			rootTreeItem.setData(rootItem);	// can't be null
+			mapElement(dataItem, rootTreeItem);			
 		}
 		return rootTreeItem;
 	}

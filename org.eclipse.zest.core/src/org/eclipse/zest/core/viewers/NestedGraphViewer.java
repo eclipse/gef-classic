@@ -30,6 +30,7 @@ import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedGraphModel;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedGraphModelEntityFactory;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedGraphModelNode;
 import org.eclipse.mylar.zest.core.internal.nestedgraphviewer.NestedGraphViewerImpl;
+import org.eclipse.mylar.zest.core.internal.nestedgraphviewer.parts.NestedGraphEditPart;
 import org.eclipse.mylar.zest.core.internal.nestedgraphviewer.parts.NestedGraphNodeEditPart;
 import org.eclipse.mylar.zest.core.widgets.BreadCrumbBar;
 import org.eclipse.swt.SWT;
@@ -77,7 +78,7 @@ public class NestedGraphViewer extends StructuredViewer
 	public NestedGraphViewer(Composite parent, int style) {
 		this.parent = parent;
 		this.parent.addDisposeListener(this);
-		
+				
 		GridLayout layout = new GridLayout(1, true);
 		layout.marginHeight = 2;
 		layout.marginWidth = 2;
@@ -275,13 +276,18 @@ public class NestedGraphViewer extends StructuredViewer
 			ArrayList treeList = new ArrayList(list.size());
 			for (int i = 0; i < list.size(); i++) {
 				Object obj = list.get(i);
+				Object data = null;
 				if (obj instanceof NestedGraphNodeEditPart) {
 					NestedGraphNodeEditPart editPart = (NestedGraphNodeEditPart)obj;
 					NestedGraphModelNode node = editPart.getCastedModel();
-					Object data = node.getData();
-					if (data != null) {
-						treeList.add(data);
-					}
+					data = node.getData();
+				} else if (obj instanceof NestedGraphEditPart) {
+					NestedGraphEditPart editPart = (NestedGraphEditPart)obj;
+					NestedGraphModelNode node = editPart.getCastedModel().getCurrentNode();
+					data = node.getData();
+				}
+				if (data != null) {
+					treeList.add(data);
 				}
 			}
 			settingTreeSelection = true;

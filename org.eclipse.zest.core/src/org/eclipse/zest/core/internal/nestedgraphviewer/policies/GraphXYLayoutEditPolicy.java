@@ -46,7 +46,7 @@ public class GraphXYLayoutEditPolicy extends XYLayoutEditPolicy {
 	protected Command createAddCommand(EditPart child, Object constraint) {
 		return null;
 	}
-		
+
 	/* (non-Javadoc)
 	 * @see org.eclipse.gef.editpolicies.ConstrainedLayoutEditPolicy#createChildEditPolicy(org.eclipse.gef.EditPart)
 	 */
