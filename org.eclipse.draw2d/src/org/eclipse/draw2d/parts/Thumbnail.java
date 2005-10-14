@@ -158,7 +158,6 @@ class ThumbnailUpdater implements Runnable {
 		thumbnailGraphics.fillRectangle(rect);
 		sourceFigure.paint(thumbnailGraphics);
 		thumbnailGraphics.popState();
-		repaint();
 		
 		if (getCurrentHTile() < (hTiles - 1))
 			setCurrentHTile(getCurrentHTile() + 1);
@@ -175,8 +174,11 @@ class ThumbnailUpdater implements Runnable {
 		else if (isDirty()) {
 			setDirty(false);
 			Display.getCurrent().asyncExec(this);
-		} else
+			repaint();
+		} else {
 			stop();
+			repaint();
+		}
 	}
 	
 	/**
