@@ -263,7 +263,7 @@ public SWTGraphics(GC gc) {
  * {@link #checkGC()}.
  */
 protected final void checkFill() {
-	if (!currentState.bgColor.equals(appliedState.bgColor))
+	if (!currentState.bgColor.equals(appliedState.bgColor) && currentState.bgPattern == null)
 		gc.setBackground(appliedState.bgColor = currentState.bgColor);
 	checkGC();
 }
@@ -290,11 +290,11 @@ protected final void checkGC() {
  */
 protected final void checkPaint() {
 	checkGC();
-	if (!currentState.fgColor.equals(appliedState.fgColor))
+	if (!currentState.fgColor.equals(appliedState.fgColor) && currentState.fgPattern == null)
 		gc.setForeground(appliedState.fgColor = currentState.fgColor);
 	if (appliedState.lineWidth != currentState.lineWidth)
 		gc.setLineWidth(appliedState.lineWidth = currentState.lineWidth);
-	if (!appliedState.bgColor.equals(currentState.bgColor))
+	if (!currentState.bgColor.equals(currentState.bgColor) && currentState.bgPattern == null)
 		gc.setBackground(appliedState.bgColor = currentState.bgColor);
 }
 
