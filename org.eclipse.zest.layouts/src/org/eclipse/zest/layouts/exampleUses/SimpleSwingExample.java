@@ -46,7 +46,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
-import javax.swing.UIManager;
 
 import org.eclipse.mylar.zest.layouts.InvalidLayoutConfiguration;
 import org.eclipse.mylar.zest.layouts.LayoutAlgorithm;
@@ -83,6 +82,19 @@ public class SimpleSwingExample {
     private static final Stroke BORDER_SELECTED_STROKE = new BasicStroke (2.0f);
     private static final Color RELATIONSHIP_NORMAL_COLOR = Color.BLUE;
     //private static final Color RELATIONSHIP_HIGHLIGHT_COLOR = new Color (255, 200, 125); 
+    
+    public static final FadeLayoutAlgorithm FADE = new FadeLayoutAlgorithm ( LayoutStyles.NONE );
+    public static final SpringLayoutAlgorithm SPRING = new SpringLayoutAlgorithm ( LayoutStyles.NONE );
+    public static final TreeLayoutAlgorithm TREE_VERT = new TreeLayoutAlgorithm ( LayoutStyles.NONE );
+    public static final HorizontalTreeLayoutAlgorithm TREE_HORIZ = new HorizontalTreeLayoutAlgorithm ( LayoutStyles.NONE );
+    public static final RadialLayoutAlgorithm RADIAL = new RadialLayoutAlgorithm ( LayoutStyles.NONE );
+    public static final GridLayoutAlgorithm GRID = new GridLayoutAlgorithm ( LayoutStyles.NONE );
+    public static final HorizontalLayoutAlgorithm HORIZ = new HorizontalLayoutAlgorithm ( LayoutStyles.NONE );
+    public static final VerticalLayoutAlgorithm VERT = new VerticalLayoutAlgorithm ( LayoutStyles.NONE );       
+    
+    private List algorithms = new ArrayList();
+    private List algorithmNames = new ArrayList();
+    
 	
     private static final int INITIAL_PANEL_WIDTH = 700;
 	private static final int INITIAL_PANEL_HEIGHT = 500;
@@ -98,60 +110,7 @@ public class SimpleSwingExample {
     private static final Color ARROW_HEAD_FILL_COLOR = new Color (125, 255, 125);
     private static final Color ARROW_HEAD_BORDER_COLOR = Color.BLACK;
 	
-    
-	protected static final LayoutAlgorithm [] algorithms = new LayoutAlgorithm [] {
-        new FadeLayoutAlgorithm ( LayoutStyles.NONE ),
-        new SpringLayoutAlgorithm (LayoutStyles.NONE),
-        new TreeLayoutAlgorithm (LayoutStyles.NONE),
-        new TreeLayoutAlgorithm (LayoutStyles.NONE),
-        new HorizontalTreeLayoutAlgorithm (LayoutStyles.NONE), 
-        new RadialLayoutAlgorithm (LayoutStyles.NONE),
-        new GridLayoutAlgorithm (LayoutStyles.NONE),
-        new HorizontalLayoutAlgorithm(LayoutStyles.NONE),
-        new VerticalLayoutAlgorithm (LayoutStyles.NONE),
-	};
-	
-	static {
-	    // initialize layouts
-        ((TreeLayoutAlgorithm)algorithms[4]).setComparator(new Comparator () {        
-            public int compare(Object o1, Object o2) {
-                if (o1 instanceof Comparable && o2 instanceof Comparable) {
-                    return ((Comparable)o1).compareTo(o2);
-                }
-                return 0;
-            }
-        
-        });
-        ((GridLayoutAlgorithm)algorithms[7]).setRowPadding(20);
-        ((SpringLayoutAlgorithm)algorithms[2]).setIterations(50000);
-	}
-	
-	private static final String [] algorithmNames = new String [] {
-            "FADE",
-            "Spring",
-            "Tree - V",
-            "Tree - V (by name)",
-	        "Tree - H",
-	        "Radial",
-	        "Grid",
-	        "Horizontal",
-	        "Vertical",
-	};
-	private static final boolean [] algorithmAnimates = new boolean [] {
-            false,
-            false,
-	        false,
-	        false,
-	        false,
-	        false,
-	        false,
-	        false,
-	        false,
-	};
-
-	
 	private long updateGUICount = 0;
-	private boolean animate = false;
 	
 	private JFrame mainFrame;
 	private JPanel mainPanel;
@@ -161,6 +120,7 @@ public class SimpleSwingExample {
 	private JLabel lblProgress;
     private JToggleButton btnContinuous;
     private JToggleButton btnAsynchronous;
+    private JButton btnStop;
 	
 	private LayoutAlgorithm currentLayoutAlgorithm;
     private String currentLayoutAlgorithmName;
@@ -169,83 +129,144 @@ public class SimpleSwingExample {
     protected Point selectedEntityPositionAtMouseDown;
     private long idCount;
 	
+    
 	public SimpleSwingExample () {
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		mainFrame = new JFrame ("Simple Swing Layout Example");
-		toolBar = new JToolBar ();
-		mainFrame.getContentPane().setLayout(new BorderLayout());
-		mainFrame.getContentPane().add(toolBar, BorderLayout.NORTH);
-		lblProgress = new JLabel ("Progress: ");
-		mainFrame.getContentPane().add(lblProgress, BorderLayout.SOUTH);
-		
-		for (int i = 0; i < algorithms.length; i++) {
-            final LayoutAlgorithm algorithm = algorithms[i];
-            final String algorithmName = algorithmNames[i];
-            final boolean algorithmAnimate = algorithmAnimates[i];
+        SPRING.setIterations(1000);
+        // initialize layouts
+        TREE_VERT.setComparator(new Comparator () {        
+            public int compare(Object o1, Object o2) {
+                if (o1 instanceof Comparable && o2 instanceof Comparable) {
+                    return ((Comparable)o1).compareTo(o2);
+                }
+                return 0;
+            }
+        
+        });
+        GRID.setRowPadding(20);
+        addAlgorithm (FADE, "FADE", false);
+        addAlgorithm (SPRING, "Spring", false);
+        addAlgorithm (TREE_VERT, "Tree-V", false);
+        addAlgorithm (TREE_HORIZ, "Tree-H", false);
+        addAlgorithm (RADIAL, "Radial", false);
+        addAlgorithm (GRID, "Grid", false);
+        addAlgorithm (HORIZ, "Horiz", false);
+        addAlgorithm (VERT, "Vert", false);
+	}
+    
+    protected void addAlgorithm (LayoutAlgorithm algorithm, String name, boolean animate) {
+        algorithms.add(algorithm);
+        algorithmNames.add(name);
+        //algorithmAnimates.add(Boolean.valueOf(animate));
+    }
+    
+    public void start() {
+        //try {
+           // UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        //} catch (Exception e) {
+            //e.printStackTrace();
+        //}
+        mainFrame = new JFrame ("Simple Swing Layout Example");
+        toolBar = new JToolBar ();
+        mainFrame.getContentPane().setLayout(new BorderLayout());
+        mainFrame.getContentPane().add(toolBar, BorderLayout.NORTH);
+        lblProgress = new JLabel ("Progress: ");
+        mainFrame.getContentPane().add(lblProgress, BorderLayout.SOUTH);
+        
+        
+        for (int i = 0; i < algorithms.size(); i++) {
+            final LayoutAlgorithm algorithm = (LayoutAlgorithm) algorithms.get(i);
+            final String algorithmName = (String) algorithmNames.get(i);
+            //final boolean algorithmAnimate = ((Boolean)algorithmAnimates.get(i)).booleanValue();
             JButton algorithmButton = new JButton (algorithmName);
             algorithmButton.addActionListener(new ActionListener () {
-    			public void actionPerformed(ActionEvent e) {
-    			    currentLayoutAlgorithm = algorithm; 
+                public void actionPerformed(ActionEvent e) {
+                    currentLayoutAlgorithm = algorithm; 
                     currentLayoutAlgorithmName = algorithmName;
-    			    algorithm.setEntityAspectRatio((double)mainPanel.getWidth()/(double)mainPanel.getHeight());
-     			    animate = algorithmAnimate;
-    			    performLayout();
-    			}
-    		});
-    		toolBar.add(algorithmButton);
+                    algorithm.setEntityAspectRatio((double)mainPanel.getWidth()/(double)mainPanel.getHeight());
+                    //animate = algorithmAnimate;
+                    performLayout();
+                }
+            });
+            toolBar.add(algorithmButton);
         }
-		createMainPanel();
-		mainFrame.addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
-				System.exit(0);
-			}
-		});
+        createMainPanel();
+        mainFrame.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                stop();
+                System.exit(0);
+            }
+        });
+        
+        
+        btnContinuous = new JToggleButton ("continuous", false);
+        btnAsynchronous = new JToggleButton ("asynchronous", false);
+        
+        toolBar.add(btnContinuous);
+        toolBar.add(btnAsynchronous);
+        
+        btnStop = new JButton("Stop");
+        btnStop.addActionListener(new ActionListener() {        
+            public void actionPerformed(ActionEvent e) {
+                stop();
+            }        
+        });
+        toolBar.add(btnStop);
         
         JButton btnCreateGraph = new JButton ("New graph");
         btnCreateGraph.addActionListener(new ActionListener () {
             public void actionPerformed(ActionEvent e) {
-                createGraph();
+                stop();
+                createGraph(true);
             }
         });
         toolBar.add(btnCreateGraph);
+        JButton btnCreateTree = new JButton ("New tree");
+        btnCreateTree.addActionListener(new ActionListener () {
+            public void actionPerformed(ActionEvent e) {
+                stop();
+                createGraph(false);
+            }
+        });
+        toolBar.add(btnCreateTree);
         
-        btnContinuous = new JToggleButton ("continuous", false);
-        btnAsynchronous = new JToggleButton ("asynchronous", false);
-		
-        toolBar.add(btnContinuous);
-        toolBar.add(btnAsynchronous);
-        
-        createGraph();
+        createGraph(false);
 
-		
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		mainFrame.setLocation((int) (screenSize.getWidth() - INITIAL_PANEL_WIDTH)/2, (int) (screenSize.getHeight() - INITIAL_PANEL_HEIGHT)/2);
-		mainFrame.pack();
-		mainFrame.setVisible(true);
-		mainFrame.repaint();
-		
-	}
+        
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        mainFrame.setLocation((int) (screenSize.getWidth() - INITIAL_PANEL_WIDTH)/2, (int) (screenSize.getHeight() - INITIAL_PANEL_HEIGHT)/2);
+        mainFrame.pack();
+        mainFrame.setVisible(true);
+        mainFrame.repaint();
+        
+    }
+    
+    private void stop() {
+        if (currentLayoutAlgorithm != null && currentLayoutAlgorithm.isRunning()) {
+            currentLayoutAlgorithm.stop();
+        }
+    }
 	
 
     private void performLayout () {
-	    Cursor cursor = mainFrame.getCursor();
-	    mainFrame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        stop();
+	    final Cursor cursor = mainFrame.getCursor();
 	    updateGUICount = 0;
 	    placeRandomly();
+        final boolean continuous = btnContinuous.isSelected();
+        final boolean asynchronous = btnAsynchronous.isSelected();
 	    ProgressListener progressListener = new ProgressListener () {
             public void progressUpdated(final ProgressEvent e) {
-                if (animate) {
+                //if (asynchronous) {
                     updateGUI();
-                }
+                //}
                 lblProgress.setText("Progress: " + e.getStepsCompleted() + " of " + e.getTotalNumberOfSteps() + " completed ...");
                 lblProgress.paintImmediately(0,0,lblProgress.getWidth(), lblProgress.getHeight());
             }
 
 			public void progressStarted(ProgressEvent e) {
+                if (!asynchronous) {
+                    mainFrame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+                }
                 lblProgress.setText("Layout started ...");
                 lblProgress.paintImmediately(0,0,lblProgress.getWidth(), lblProgress.getHeight());
 			}
@@ -253,6 +274,10 @@ public class SimpleSwingExample {
 			public void progressEnded(ProgressEvent e) {
                 lblProgress.setText("Layout completed ...");
                 lblProgress.paintImmediately(0,0,lblProgress.getWidth(), lblProgress.getHeight());
+                currentLayoutAlgorithm.removeProgressListener(this);
+                if (!asynchronous) {
+                    mainFrame.setCursor(cursor);
+                }
 			}
         };
 		currentLayoutAlgorithm.addProgressListener(progressListener);
@@ -261,18 +286,15 @@ public class SimpleSwingExample {
             entities.toArray(layoutEntities);
             LayoutRelationship [] layoutRelationships = new LayoutRelationship [relationships.size()];
             relationships.toArray(layoutRelationships);
-			currentLayoutAlgorithm.applyLayout(layoutEntities, layoutRelationships, 0, 0, mainPanel.getWidth(), mainPanel.getHeight(), btnAsynchronous.isSelected(), btnContinuous.isSelected());
-            if (!animate) {
+			currentLayoutAlgorithm.applyLayout(layoutEntities, layoutRelationships, 0, 0, mainPanel.getWidth(), mainPanel.getHeight(), asynchronous, continuous);
+            //if (!animate) {
                 updateGUI();
-            }
+            //}
 		} catch (InvalidLayoutConfiguration e) {
-            JOptionPane.showMessageDialog(mainFrame, "Not a valid layout configuration:\nlayout='" + currentLayoutAlgorithmName + "', continuous='" + btnContinuous.isSelected() + "', asynchronous='" + btnAsynchronous.isSelected() +"'");
-			e.printStackTrace();
+            JOptionPane.showMessageDialog(mainFrame, "Not a valid layout configuration:\nlayout='" + currentLayoutAlgorithmName + "', continuous='" + continuous + "', asynchronous='" + asynchronous +"'");
         } catch (StackOverflowError e) {
             e.printStackTrace();
 		} finally {
-            mainFrame.setCursor(cursor);
-            currentLayoutAlgorithm.removeProgressListener(progressListener);
         }
 	}
 	
@@ -403,12 +425,12 @@ public class SimpleSwingExample {
 	}
 	
 	
-    private void createGraph() {
+    private void createGraph(boolean addNonTreeRels) {
         entities = new ArrayList();
         relationships = new ArrayList();
         selectedEntity = null;
         
-        createTreeGraph(2, 4, 2, 5, true, true, false);
+        createTreeGraph(2, 4, 2, 5, true, true, addNonTreeRels);
         //createCustomGraph();
         
         placeRandomly();
@@ -444,7 +466,7 @@ public class SimpleSwingExample {
         for (int i = 0; i < numChildren; i++) {
             LayoutEntity newNode = createSimpleNode(getNextID()); 
             entities.add(newNode);
-            if (addNonTreeRels && entities.size() % 10 == 0) {
+            if (addNonTreeRels && entities.size() % 5 == 0) {
                 int index = (int) (Math.random() * entities.size());
                 LayoutRelationship rel = new SimpleRelationship ((LayoutEntity) entities.get(index), newNode, false);
                 relationships.add(rel);
@@ -525,10 +547,6 @@ public class SimpleSwingExample {
 		}
 	}
 	
-	public static void main(String[] args) {
-		new SimpleSwingExample ();
-	}
-    
     private static Point2D.Double getEllipseIntersectionPoint (double theta, double ellipseWidth, double ellipseHeight) {
         double nhalfw = ellipseWidth/2.0; // half elllipse width
         double nhalfh = ellipseHeight/2.0; // half ellipse height
@@ -544,4 +562,10 @@ public class SimpleSwingExample {
         Point2D.Double p = new Point2D.Double(x, y);
         return p;
     }
+    
+    public static void main(String[] args) {
+        (new SimpleSwingExample ()).start();
+    }
+    
+
 }
