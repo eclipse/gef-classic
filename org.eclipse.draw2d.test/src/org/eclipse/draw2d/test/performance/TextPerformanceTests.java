@@ -10,13 +10,21 @@
  *******************************************************************************/
 package org.eclipse.draw2d.test.performance;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 
 import org.eclipse.test.performance.Dimension;
 
+import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.Graphics;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.SWTGraphics;
+import org.eclipse.draw2d.text.BlockFlow;
+import org.eclipse.draw2d.text.FlowFigure;
 import org.eclipse.draw2d.text.FlowPage;
 import org.eclipse.draw2d.text.InlineFlow;
 import org.eclipse.draw2d.text.TextFlow;
@@ -27,13 +35,13 @@ public class TextPerformanceTests
 {
 	
 private FlowPage page;
-private TextFlow text1, text2, text3, text4, text5;
+private Font[] fonts;
 
 private void layoutAndPaint() {
-	Image img = new Image(null, 750, 1500);
+	Image img = new Image(null, 600, 1500);
 	GC gc = new GC(img);
 	Graphics graphics = new SWTGraphics(gc);
-	int[] widths = new int[] {100, 200, 250, 300, 400, 500, 600, 700, 750, 800, 900, 1000, 800, 900, 1000};
+	int[] widths = new int[] {300, 400, 500, 600, 400, 500, 600};
 	
 	int warmupRuns = getWarmupRuns();
 	int measuredRuns = getMeasuredRuns();	
@@ -61,81 +69,100 @@ protected void setUp() throws Exception {
 	super.setUp();
 	page = new FlowPage();
 	page.setFont(TAHOMA);
-	text1 = new TextFlow();
-	InlineFlow flow = new InlineFlow();
-	text2 = new TextFlow();
-	text3 = new TextFlow();
-	InlineFlow flow2 = new InlineFlow();
-	text4 = new TextFlow();
-	text5 = new TextFlow();
-	page.add(text1);
-	page.add(flow);
-	flow.add(text2);
-	flow.add(text3);
-	flow.add(flow2);
-	flow2.add(text4);
-	flow.add(text5);
 }
 
 protected void tearDown() throws Exception {
-	text1 = text2 = text3 = text4 = null;
 	page = null;
 	super.tearDown();
 }
 
+protected void populatePage(boolean addBidi, int numOfBlocks){
+	for (int i = 0; i < numOfBlocks; i++){
+		BlockFlow bf = new BlockFlow();
+		page.add(bf);
+		
+		FlowFigure ff = new InlineFlow();
+		ff.add(new TextFlow("This is the first small sentence."));
+		bf.add(ff);
+		
+		FlowFigure inline = new InlineFlow();
+		addSentences(inline, 3, addBidi);
+		ff.add(inline);
+		
+		if (!addBidi) {
+			BlockFlow block = new BlockFlow();
+			block.setHorizontalAligment(PositionConstants.CENTER);
+			addFontSizes(block);
+			page.add(block);
+		}
+	}
+}
+
+protected void addFontSizes(Figure parent){
+	for (int i = 0; i < fonts.length; i++){
+		TextFlow tf = new TextFlow(" " + Integer.toString(i) + " pt Font.");
+		tf.setForegroundColor(ColorConstants.red);
+		tf.setFont(fonts[i]);
+		parent.add(tf);
+	}
+}
+
+protected void addSentences(IFigure parent, int count, boolean addBidi){
+	for (int i = 0; i < count; i++) {
+		if (addBidi) {
+			parent.add(new TextFlow("-10% \u0634\u0635\u0636. "));
+			parent.add(new TextFlow("\u0634\u0635\u0636\u0637 ~~~23%%% \u0637\u0638\u0639\u0640 abc. "));
+			parent.add(new TextFlow("\u0634 \u0637\u0638\u0639\u0640 \"it is 123, 456, ok.\" "));
+			parent.add(new TextFlow("\u0634\u0637\u0638 1*5 1-5 1/5 1+5 "));
+			parent.add(new TextFlow("\u0634 \u0637 \u2029 abcd. "));
+			parent.add(new TextFlow("\u0634\u0637\u0635 \u0639\u0633\u0640 \u0632\u0638\u0635 'he said \"car \u0640\u0637\u0633\u0639\u0635 \u0635\u0632\u0636\"'? \u0634\u0637\u0635"));
+			parent.add(new TextFlow("\u0639\u0633\u0640\u0632\u0638\u0635\u0634\u0637\u0635\u0639\u0633\u0640\u0632\u0638\u0635\u0634\u0637\u0635\u0639\u0633\u0640\u0632\u0638\u0635. "));
+			parent.add(new TextFlow("car is \u0634\u0637\u0635 \u0639\u0633\u0640 in arabic. "));
+			parent.add(new TextFlow("\u0634\u0637\u0635 \u0635\u0639 the car \u0633\u0640 \u0638\u0635\u0634\u0637\u0635\u0639\u0633. "));
+			parent.add(new TextFlow("he said \"\u0634\u0637 \u0635\u0639 (123,456), \u0632\u0638.\" "));
+			parent.add(new TextFlow("<\u0634123>shalom</\u0634123>. "));
+			parent.add(new TextFlow("<h123>\u0637\u0635\u0639\u0633\u0640\u0632</h123>. "));
+			parent.add(new TextFlow("\u0634\u0637 \u0635\u0639\u0633\u0640 \"it is a car!\" \u0634\u0637\u0635 \u0639\u0633\u0640. "));
+			parent.add(new TextFlow("\u202d\u0634\u0637\u0635\u0639\u0633. "));
+			parent.add(new TextFlow("\u202efirst character is RLO. "));
+			parent.add(new TextFlow("\u200ffirst character is RLM. "));
+		} else {
+			parent.add(new TextFlow(" One two three four five six seven -- eight nine ten -- eleven twelve thirteen, \"fourteen fifteen sixteen.\" Seventeen eighteen nineteen twenty twenty-one twenty-two twenty-three twenty-four twenty-five twenty-six twenty-seven twenty-eight twenty-nine thirty thirty-one thirty-two thirty-three thirty-four thirty-five thirty-six thirty-seven thirty-eight thirty-nine forty forty-one forty-two forty-three forty-four forty-five forty-six forty-seven forty-eight forty-nine fifty."));
+			parent.add(new TextFlow(" Chinese characters: \u7334\u7329u7325\u7334\u7329\u7325\u7334\u7329u7325\u7334\u7329u7325\u7334\u7329u7325\u7334\u7329\u7325\u7334\u7329u7325\u7334\u7329u7325\u7334\u7329u7325\u7334\u7329\u7325\u7334\u7329u7325\u7334\u7329u7325\u7334\u7329u7325\u7334\u7329\u7325\u7334\u7329u7325\u7334\u7329u7325\u7334\u7329u7325\u7334\u7329\u7325\u7334\u7329u7325\u7334\u7329u7325"));
+			parent.add(new TextFlow(" This text has been cut mid-sen"));
+			parent.add(new TextFlow("tence: supercalifraglistic"));
+			parent.add(new TextFlow("expialidocious."));
+		}
+	}
+}
+
+protected IFigure block(IFigure child){
+	FlowFigure block = new BlockFlow();
+	block.add(child);
+	return block;
+}
+
 public void testBidiLayout() {
-	tagAsGlobalSummary("Laying out Bidi text", new Dimension[] {Dimension.CPU_TIME, Dimension.WORKING_SET});
-	
-	text1.setText("This test mainly checks to see how long does ParagraphTextLayout" +
-			" takes to lay out a text flow.  It will also test the performance of " +
-			"FlowUtilities.wrapFragmentInContext().  BiDi will be enabled for " +
-			"this test.  Following is some Arabic text.  \u0637\u0638\u0639");
-	text2.setText("\u0634 \u0637\u0638\u0639\u0640 \"it is 123, 456, ok.\"  ");
-	text3.setText("\u0634\u0637 \u0635\u0639\u0633\u0640 \"it is a car!x\" " +
-			"\u0634\u0637\u0635 \u0639\u0633\u0640.  ");
-	text4.setText("Since there are multiple TextFlows involved, it should test a " +
-			"few more code-paths in the above-mentioned methods.  Let's throw in " +
-			"some Chinese characters too: u7325\u7334\u7329u7325\u7334\u7329u7325" +
-			"\u7334\u7329u7325\u7334\u7329u7325\u7334\u7329u7325\u7334\u7329.");
-	
+	tagAsGlobalSummary("Bidi", Dimension.CPU_TIME);
+	populatePage(true, 1);	
 	layoutAndPaint();
 }
 
 public void testTextLayoutAndPainting() {
 	tagAsGlobalSummary("Text Layout and Painting", Dimension.CPU_TIME);
 	
-	text1.setText("Following are some extracts from Douglas Adams' \"The Hitchhiker's Guide to " +
-			"the Galaxy\" series of books.\n\nIn the beginning the Universe was created." +
-			"  This has made a lot of people very angry and been widely regarded as a bad " +
-			"move.\n\nThe knack of flying is learning how to throw yourself at the " +
-			"ground and miss.\n\nMy doctor says that I have a malformed public-duty " +
-			"gland and a natural deficiency in moral fibre and that I am therefore " +
-			"excused from saving uni");
-	text2.setText("verses.  \n\nHe hoped and prayed that there wasn't an after-life.  Then he " +
-			"realized there was a contradiction involved here and merely hoped that " +
-			"there wasn't an afterlife.\n\nAnyone who is capable of getting themselves " +
-			"made President should on no account be allowed to do the job." +
-			"\n\nThere is a theory which states that if ever anybody " +
-			"discovers exactly what the Universe is for and why it is here, it will " +
-			"instantly disappear and be replaced by something even more bizarre and " +
-			"inexplicable. There is another theory which states that this has already " +
-			"happened.  Far o");
-	text3.setText("ut in the un-charted backwaters of the un-fashionable end of the" +
-			" Western Spiral arm of the Galaxy lies a small unregarded yellow sun.\n\n" +
-			"In those days spirits were brave, the stakes were high, men were real men, " +
-			"women were real women and small furry creatures from Alpha Centauri were " +
-			"real small furry creatures from Alpha Centauri.");
-	text4.setText("The ships hung in the sky in much the same way that bricks don't.\n" +
-			"\nLet's throw in some Chinese characters too: u7325\u7334\u7329u7325" +
-			"\u7334\u7329u7325\u7334\u7329\u7325\u7334\u7329u7325\u7334\u7329u7325" +
-			"\u7334\u7329u7325\u7334\u7329\u7325\u7334\u7329u7325\u7334\u7329u7325");
-	text5.setText("\u7334\u7329. \n\nFor thousands more years, the mighty ships tore " +
-			"across the empty wastes of space and finally dived screaming onto the " +
-			"first planet they came across -- which happened to be the Earth -- where " +
-			"due to a terrible miscalculation of scale the entire battle fleet was " +
-			"accidentally swallowed by a small dog.");
-
+	fonts = new Font[20];
+	for (int i = 0; i < 20; i++) {
+		fonts[i] = new Font(null, "Tahoma", i * 2 + 6, SWT.NORMAL);
+	}
+	
+	populatePage(false, 20);
 	layoutAndPaint();
+	
+	for (int i = 0; i < fonts.length; i++) {
+		fonts[i].dispose();
+	}
+	fonts = null;
 }
 
 }
