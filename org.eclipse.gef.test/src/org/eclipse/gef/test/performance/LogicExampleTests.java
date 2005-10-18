@@ -19,13 +19,15 @@ import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.test.performance.Dimension;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IPerspectiveDescriptor;
 import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
@@ -58,7 +60,7 @@ public class LogicExampleTests
 private IFile file;
 private String fileName = "perfTest.logic";
 private String prjName = "org.eclipse.gef.test.performance.logic";
-	
+
 private void closeEditor(IEditorPart editor) {
 	editor.getEditorSite().getPage().closeEditor(editor, false);
 }
@@ -171,13 +173,36 @@ private IEditorPart openEditor() throws PartInitException {
 			.getActivePage(), file);
 }
 
+private void runOpenEditorTest() throws PartInitException {
+	Display display = Display.getCurrent();
+	int warmupRuns = getWarmupRuns();
+	int measuredRuns = getMeasuredRuns();	
+	for (int i = 0; i < warmupRuns + measuredRuns; i++) {
+		if (i >= warmupRuns)
+			startMeasuring();
+
+		// open the editor
+		IEditorPart editor = openEditor();
+		while (display.readAndDispatch()) {}
+
+		if (i >= warmupRuns)
+			stopMeasuring();
+
+		// close the editor
+		closeEditor(editor);
+	}
+	commitMeasurements();
+	assertPerformance();
+}
+
 protected void setUp() throws Exception {	
+	super.setUp();
+	
+	// Create the logic file if it doesn't exist
 	IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 	IProject project = root.getProject(prjName);
 	if (!project.exists())
 		project.create(null);
-	else
-		project.refreshLocal(IResource.DEPTH_INFINITE, null);
 	if (!project.isOpen())
 		project.open(null);
 	file = project.getFile(fileName);
@@ -189,22 +214,32 @@ protected void setUp() throws Exception {
 		oos.close();
 		file.create(new ByteArrayInputStream(out.toByteArray()), false, null);
 		out.close();
-	} else
-		file.refreshLocal(IResource.DEPTH_ZERO, null);
+	}
 	
-	super.setUp();
-}
-
-protected void tearDown() throws Exception {
-	super.tearDown();
-	ResourcesPlugin.getWorkspace().getRoot().getProject(prjName).delete(true, false, null);
-	file = null;
+	// Close all perspectives but Resource, and all views
+	IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+	IWorkbenchPage page = window.getActivePage();
+	boolean foundPerspective = false;
+	IPerspectiveDescriptor[] perspectives = page.getOpenPerspectives();
+	for (int i = 0; i < perspectives.length; i++) {
+		IPerspectiveDescriptor perspective = perspectives[i];
+		if (perspective.getId().equals(RESOURCE_PERSPECTIVE_ID))
+			foundPerspective = true;
+		else
+			page.closePerspective(perspective, false, false);
+	}
+	if (!foundPerspective)
+		PlatformUI.getWorkbench().showPerspective(RESOURCE_PERSPECTIVE_ID, window);
+	IViewReference[] views = page.getViewReferences();
+	for (int i = 0; i < views.length; i++)
+		page.hideView(views[i]);
+	window.getShell().setSize(1000, 800);
 }
 
 public void testEditorLayout() throws PartInitException {
 	tagAsGlobalSummary("Editor Layout", Dimension.CPU_TIME);
 	IEditorPart editor = openEditor();
-	Display d = editor.getSite().getWorkbenchWindow().getShell().getDisplay();
+	Display display = Display.getCurrent();
 	GraphicalViewer viewer = (GraphicalViewer)editor.getAdapter(GraphicalViewer.class);
 	viewer.setProperty(RulerProvider.PROPERTY_RULER_VISIBILITY, Boolean.TRUE);
 	Shell editorWindow = editor.getEditorSite().getPage().getWorkbenchWindow().getShell();
@@ -219,7 +254,7 @@ public void testEditorLayout() throws PartInitException {
 		
 		for (int j = 0; j < delta.length; j++) {
 			editorWindow.setSize(origSize.x + delta[j], origSize.y + delta[j]);
-			while (d.readAndDispatch()) {}
+			while (display.readAndDispatch()) {}
 		}
 		
 		if (i >= warmupRuns)
@@ -232,35 +267,23 @@ public void testEditorLayout() throws PartInitException {
 
 public void testEditorOpen() throws PartInitException {
 	tagAsGlobalSummary("Open Logic Editor (~2900 editparts)", Dimension.CPU_TIME);
-	
-	Display d = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell().getDisplay();
-	int warmupRuns = getWarmupRuns();
-	int measuredRuns = getMeasuredRuns();	
-	for (int i = 0; i < warmupRuns + measuredRuns; i++) {
-		if (i >= warmupRuns)
-			startMeasuring();
+	runOpenEditorTest();
+}
 
-		// open the editor
-		IEditorPart editor = openEditor();
-		while (d.readAndDispatch()) {}
-
-		if (i >= warmupRuns)
-			stopMeasuring();
-
-		// close the editor
-		closeEditor(editor);
-		while (d.readAndDispatch()) {}
-		System.gc();
-	}
-	commitMeasurements();
-	assertPerformance();
+public void testEditorOpenWithOutline() throws PartInitException {
+	tagAsGlobalSummary("Open Logic Editor With Outline", Dimension.CPU_TIME);
+	IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+	.getActivePage();
+	page.showView(OUTLINE_VIEW_ID);
+	runOpenEditorTest();
+	page.hideView(page.findViewReference(OUTLINE_VIEW_ID));
 }
 
 public void testPaletteSwitching() throws PartInitException {
 	tagAsSummary("Palette Switching", Dimension.CPU_TIME);
 	IEditorPart editor = openEditor();
 	IWorkbenchPage page = editor.getSite().getPage();
-	Display d = page.getWorkbenchWindow().getShell().getDisplay();
+	Display display = Display.getCurrent();
 	
 	int warmupRuns = getWarmupRuns();
 	int measuredRuns = getMeasuredRuns();	
@@ -269,10 +292,10 @@ public void testPaletteSwitching() throws PartInitException {
 			startMeasuring();
 		
 		IViewPart view = page.showView(PaletteView.ID);
-		while (d.readAndDispatch()) {}
+		while (display.readAndDispatch()) {}
 
 		page.hideView(view);
-		while (d.readAndDispatch()) {}
+		while (display.readAndDispatch()) {}
 		
 		if (i >= warmupRuns)
 			stopMeasuring();
@@ -285,7 +308,7 @@ public void testPaletteSwitching() throws PartInitException {
 public void testZoom() throws PartInitException {
 	tagAsSummary("Zoom Tests in Editor", Dimension.CPU_TIME);
 	IEditorPart editor = openEditor();
-	Display d = editor.getSite().getWorkbenchWindow().getShell().getDisplay();
+	Display display = Display.getCurrent();
 	GraphicalViewer viewer = (GraphicalViewer)editor.getAdapter(GraphicalViewer.class);
 	ZoomManager zoomMgr = (ZoomManager)viewer.getProperty(ZoomManager.class.toString());
 	zoomMgr.setZoom(0.1);
@@ -294,14 +317,13 @@ public void testZoom() throws PartInitException {
 	int measuredRuns = getMeasuredRuns();	
 	for (int i = 0; i < warmupRuns + measuredRuns; i++) {
 		zoomMgr.setZoom(zoomMgr.getMinZoom());
-		while (d.readAndDispatch()) {}
 		
 		if (i >= warmupRuns)
 			startMeasuring();
 		
 		for (int j = 0; j < 3; j++) {
 			zoomMgr.zoomIn();
-			while (d.readAndDispatch()) {}
+			while (display.readAndDispatch()) {}
 		}
 		
 		if (i >= warmupRuns)

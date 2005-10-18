@@ -10,17 +10,30 @@
  *******************************************************************************/
 package org.eclipse.gef.test.performance;
 
+import org.eclipse.swt.widgets.Display;
+
 import org.eclipse.test.performance.PerformanceTestCase;
 
-public class BasePerformanceTestCase extends PerformanceTestCase
+public class BasePerformanceTestCase 
+	extends PerformanceTestCase
 {
 	
+public static final String OUTLINE_VIEW_ID = "org.eclipse.ui.views.ContentOutline"; //$NON-NLS-1$
+public static final String RESOURCE_PERSPECTIVE_ID= "org.eclipse.ui.resourcePerspective"; //$NON-NLS-1$
+
 protected int getWarmupRuns() {
 	return 3;
 }
 
 protected int getMeasuredRuns() {
 	return 3;
+}
+
+protected void startMeasuring() {
+	Display display = Display.getCurrent();
+	while (display.readAndDispatch()) {}
+	System.gc();
+	super.startMeasuring();
 }
 
 }
