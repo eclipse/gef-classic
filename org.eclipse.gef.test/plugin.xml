@@ -11,16 +11,16 @@
       <library name="geftests.jar"/>
    </runtime>
    <requires>
+      <import plugin="org.eclipse.core.runtime" />
       <import plugin="org.eclipse.core.resources"/>
       <import plugin="org.eclipse.draw2d"/>
       <import plugin="org.eclipse.gef"/>
       <import plugin="org.junit"/>
       <import plugin="org.eclipse.ui"/>
       <import plugin="org.eclipse.ui.ide"/>
-      <import plugin="org.eclipse.test.performance"/>
-      <import plugin="org.eclipse.gef.examples.logic"/>
-      <import plugin="org.eclipse.core.runtime"/>
-      <import plugin="org.eclipse.ui.views"/>
+      <import plugin="org.eclipse.test.performance" optional="true"/>
+      <import plugin="org.eclipse.gef.examples.logic" optional="true"/>
+      <import plugin="org.eclipse.ui.views" optional="true"/>
    </requires>
 
 </plugin>
