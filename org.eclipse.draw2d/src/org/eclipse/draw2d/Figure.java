@@ -625,11 +625,9 @@ public Insets getInsets() {
  * @see IFigure#getLayoutManager()
  */
 public LayoutManager getLayoutManager() {
-	LayoutManager manager = layoutManager;
-	while (manager instanceof LayoutNotifier)
-		manager = ((LayoutNotifier)manager).realLayout;
-	
-	return manager;
+	if (layoutManager instanceof LayoutNotifier)
+		return ((LayoutNotifier)layoutManager).realLayout;
+	return layoutManager;
 }
 
 /**
@@ -1531,7 +1529,10 @@ public void setForegroundColor(Color fg) {
  * @see IFigure#setLayoutManager(LayoutManager)
  */
 public void setLayoutManager(LayoutManager manager) {
-	layoutManager = manager;
+	if (layoutManager instanceof LayoutNotifier)
+		((LayoutNotifier)layoutManager).realLayout = manager;
+	else
+		layoutManager = manager;
 	revalidate();
 }
 
