@@ -211,13 +211,10 @@ public void layout(IFigure container) {
 		area.width -= rect.width + hGap;
 	}
 	if (center != null && center.isVisible()) {
-		childSize = center.getPreferredSize(
-				Math.max(0, area.width),
-				Math.max(0, area.height));
-		if (childSize.height < area.height) {
-			area.y += (area.height - childSize.height) / 2;
-			area.height = childSize.height;
-		}
+		if (area.width < 0)
+			area.width = 0;
+		if (area.height < 0)
+			area.height = 0;
 		center.setBounds(area);
 	}
 }
