@@ -20,6 +20,7 @@ public class Draw2dPerformanceTestSuite
 public Draw2dPerformanceTestSuite() {
 	addTest(new TestSuite(TextPerformanceTests.class));
 	addTest(new TestSuite(GraphPerformanceTests.class));
+	addTest(new TestSuite(ConnectionRouterTests.class));
 }
 
 public static Test suite() {
