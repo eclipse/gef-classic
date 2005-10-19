@@ -413,11 +413,11 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 	 	}
 	 	if ( maxForce < 0.0001 ) {
 	 		System.out.println( " Max Force Small ");
-	 		for (int i = 0; i < edgeForces.length; i++) {
-				System.out.println( edgeForces[ i ] );
-			}
+	 		//for (int i = 0; i < edgeForces.length; i++) {
+				//System.out.println( edgeForces[ i ] );
+			//}
 	 		System.out.println( edgeForces );
-	 		System.exit( 0 );
+	 		//System.exit( 0 );
 	 	}
 	 	
 	 	normalizeArray( edgeForces, maxForce );
