@@ -173,7 +173,7 @@ private IEditorPart openEditor() throws PartInitException {
 			.getActivePage(), file);
 }
 
-private void runOpenEditorTest() throws PartInitException {
+private void runOpenEditorTest(boolean garbageCollect) throws PartInitException {
 	Display display = Display.getCurrent();
 	int warmupRuns = getWarmupRuns();
 	int measuredRuns = getMeasuredRuns();	
@@ -183,7 +183,9 @@ private void runOpenEditorTest() throws PartInitException {
 
 		// open the editor
 		IEditorPart editor = openEditor();
-		while (display.readAndDispatch()) {}
+		while (display.readAndDispatch()) {}		
+		if (garbageCollect)
+			System.gc();
 
 		if (i >= warmupRuns)
 			stopMeasuring();
@@ -247,7 +249,7 @@ public void testEditorLayout() throws PartInitException {
 	org.eclipse.swt.graphics.Point origSize = editorWindow.getSize();
 	
 	int warmupRuns = getWarmupRuns();
-	int measuredRuns = getMeasuredRuns();	
+	int measuredRuns = getMeasuredRuns();
 	for (int i = 0; i < warmupRuns + measuredRuns; i++) {
 		if (i >= warmupRuns)
 			startMeasuring();
@@ -266,21 +268,26 @@ public void testEditorLayout() throws PartInitException {
 }
 
 public void testEditorOpen() throws PartInitException {
-	tagAsGlobalSummary("Open Logic Editor (~2900 editparts)", Dimension.CPU_TIME);
-	runOpenEditorTest();
+	tagAsGlobalSummary("Open Logic Editor (~2900 editparts)", Dimension.ELAPSED_PROCESS);
+	runOpenEditorTest(false);
 }
 
 public void testEditorOpenWithOutline() throws PartInitException {
-	tagAsGlobalSummary("Open Logic Editor With Outline", Dimension.CPU_TIME);
+	tagAsGlobalSummary("Open Logic Editor With Outline", Dimension.ELAPSED_PROCESS);
 	IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 	.getActivePage();
 	page.showView(OUTLINE_VIEW_ID);
-	runOpenEditorTest();
+	runOpenEditorTest(false);
 	page.hideView(page.findViewReference(OUTLINE_VIEW_ID));
 }
 
+public void testMemoryConsumption() throws PartInitException {
+	tagAsGlobalSummary("Memory Consumption in Logic Editor", Dimension.USED_JAVA_HEAP);
+	runOpenEditorTest(true);
+}
+
 public void testPaletteSwitching() throws PartInitException {
-	tagAsSummary("Palette Switching", Dimension.CPU_TIME);
+	tagAsGlobalSummary("Palette Switching", Dimension.CPU_TIME);
 	IEditorPart editor = openEditor();
 	IWorkbenchPage page = editor.getSite().getPage();
 	Display display = Display.getCurrent();
@@ -306,7 +313,7 @@ public void testPaletteSwitching() throws PartInitException {
 }
 
 public void testZoom() throws PartInitException {
-	tagAsSummary("Zoom Tests in Editor", Dimension.CPU_TIME);
+	tagAsGlobalSummary("Zooming in Logic Editor", Dimension.CPU_TIME);
 	IEditorPart editor = openEditor();
 	Display display = Display.getCurrent();
 	GraphicalViewer viewer = (GraphicalViewer)editor.getAdapter(GraphicalViewer.class);
