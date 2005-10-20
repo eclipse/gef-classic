@@ -453,7 +453,6 @@ protected boolean handleFocusGained() {
 		CaretSearch caretSearch = new CaretSearch();
 		caretSearch.isForward = true;
 		caretSearch.isInto = true;
-		caretSearch.isRecursive = false;
 		caretSearch.type = CaretSearch.COLUMN;
 		TextLocation loc = textPart.getNextLocation(caretSearch);
 		if (loc != null) {
