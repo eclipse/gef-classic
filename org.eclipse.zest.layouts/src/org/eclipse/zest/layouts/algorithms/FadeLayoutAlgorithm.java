@@ -392,8 +392,8 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 			DisplayIndependentPoint srcLocation = new DisplayIndependentPoint( source.getDx(), source.getDy() );
 			DisplayIndependentPoint destLocation = new DisplayIndependentPoint( destination.getDx(), destination.getDy() );
 			
-			DisplayIndependentPoint srcForce = getForce(source);//.clone();
-			DisplayIndependentPoint destForce = getForce(destination);//.clone();
+//			DisplayIndependentPoint srcForce = getForce(source);//.clone();
+//			DisplayIndependentPoint destForce = getForce(destination);//.clone();
 			
 			
 			
