@@ -26,6 +26,8 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 
 import org.eclipse.draw2d.Cursors;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.DragTracker;
@@ -445,6 +447,47 @@ GraphicalTextViewer getTextualViewer() {
 protected boolean handleCommandStackChanged() {
 	setTextInputMode(0);
 	return super.handleCommandStackChanged();
+}
+
+protected boolean handleFocusGained() {
+	if (getTextualViewer().getSelectionRange() == null) {
+		TextualEditPart textPart = (TextualEditPart)getCurrentViewer()
+				.findObjectAtExcluding(
+						new Point(0,0),
+						getExclusionSet(),
+						new EditPartViewer.Conditional() {
+							public boolean evaluate(EditPart editpart) {
+								return editpart.isSelectable() 
+										&& editpart instanceof TextualEditPart;
+							}
+						});
+		if (textPart != null) {
+			CaretSearch caretSearch = new CaretSearch();
+			caretSearch.isForward = true;
+			caretSearch.baseline = 0;
+			caretSearch.isInto = true;
+			caretSearch.x = 0;
+			caretSearch.isRecursive = false;
+			caretSearch.type = CaretSearch.ROW;
+			TextLocation loc = textPart.getNextLocation(caretSearch);
+			if (loc != null) {
+				caretSearch.type = CaretSearch.LINE_BOUNDARY;
+				caretSearch.isForward = false;
+				caretSearch.isRecursive = true;
+				IFigure fig = loc.part.getFigure();
+				Point pos = fig.getBounds().getLocation();
+				fig.translateToAbsolute(pos);
+				caretSearch.baseline = pos.y + 1;
+				TextLocation oldLoc = loc;
+				loc = loc.part.getNextLocation(caretSearch);
+				if (loc == null)
+					loc = oldLoc;
+				getTextualViewer().setSelectionRange(new SelectionRange(loc, loc, true));
+				return true;
+			}
+		}
+	}
+	return super.handleFocusGained();
 }
 
 protected boolean handleKeyDown(KeyEvent e) {
