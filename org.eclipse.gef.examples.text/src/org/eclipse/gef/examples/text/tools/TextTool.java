@@ -26,8 +26,6 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 
 import org.eclipse.draw2d.Cursors;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.DragTracker;
@@ -144,55 +142,55 @@ private void doAction(int action, KeyEvent event) {
 		case ST.DELETE_NEXT:
 			doDelete();
 			break;
-//HOME
+		//HOME
 		case ST.SELECT_LINE_START:
 			append = true;
 		case ST.LINE_START:
 			doSelect(CaretSearch.LINE_BOUNDARY, false, append);
 			break;
-//	WORD_PREV
+		//	WORD_PREV
 		case ST.SELECT_WORD_NEXT:
 			append = true;
 		case ST.WORD_NEXT:
 			doSelect(CaretSearch.WORD_BOUNDARY, true, append);
 			break;
-//	WORD_NEXT
+		//	WORD_NEXT
 		case ST.SELECT_WORD_PREVIOUS:
 			append = true;
 		case ST.WORD_PREVIOUS:
 			doSelect(CaretSearch.WORD_BOUNDARY, false, append);
 			break;
-//END
+		//END
 		case ST.SELECT_LINE_END:
 			append = true;
 		case ST.LINE_END:
 			doSelect(CaretSearch.LINE_BOUNDARY, true, append);
 			break;
-//LEFT
+		//LEFT
 		case ST.SELECT_COLUMN_PREVIOUS:
 			append = true;
 		case ST.COLUMN_PREVIOUS:
 			doSelect(CaretSearch.COLUMN, false, append);
 			break;
-//RIGHT
+		//RIGHT
 		case ST.SELECT_COLUMN_NEXT:
 			append = true;
 		case ST.COLUMN_NEXT:
 			doSelect(CaretSearch.COLUMN, true, append);
 			break;
-//UP
+		//UP
 		case ST.SELECT_LINE_UP:
 			append = true;
 		case ST.LINE_UP:
 			doSelect(CaretSearch.ROW, false, append);
 			break;
-//DOWN
+		//DOWN
 		case ST.SELECT_LINE_DOWN:
 			append = true;
 		case ST.LINE_DOWN:
 			doSelect(CaretSearch.ROW, true, append);
 			break;
-//TAB
+		//TAB
 		case SWT.TAB | SWT.SHIFT:
 			doUnindent();
 			break;
@@ -200,7 +198,7 @@ private void doAction(int action, KeyEvent event) {
 			if (!doIndent())
 				doTyping(event);
 			break;
-//ENTER
+		//ENTER
 		case SWT.CR:
 			if (!doNewline())
 				doTyping(event);
@@ -451,40 +449,16 @@ protected boolean handleCommandStackChanged() {
 
 protected boolean handleFocusGained() {
 	if (getTextualViewer().getSelectionRange() == null) {
-		TextualEditPart textPart = (TextualEditPart)getCurrentViewer()
-				.findObjectAtExcluding(
-						new Point(0,0),
-						getExclusionSet(),
-						new EditPartViewer.Conditional() {
-							public boolean evaluate(EditPart editpart) {
-								return editpart.isSelectable() 
-										&& editpart instanceof TextualEditPart;
-							}
-						});
-		if (textPart != null) {
-			CaretSearch caretSearch = new CaretSearch();
-			caretSearch.isForward = true;
-			caretSearch.baseline = 0;
-			caretSearch.isInto = true;
-			caretSearch.x = 0;
-			caretSearch.isRecursive = false;
-			caretSearch.type = CaretSearch.ROW;
-			TextLocation loc = textPart.getNextLocation(caretSearch);
-			if (loc != null) {
-				caretSearch.type = CaretSearch.LINE_BOUNDARY;
-				caretSearch.isForward = false;
-				caretSearch.isRecursive = true;
-				IFigure fig = loc.part.getFigure();
-				Point pos = fig.getBounds().getLocation();
-				fig.translateToAbsolute(pos);
-				caretSearch.baseline = pos.y + 1;
-				TextLocation oldLoc = loc;
-				loc = loc.part.getNextLocation(caretSearch);
-				if (loc == null)
-					loc = oldLoc;
-				getTextualViewer().setSelectionRange(new SelectionRange(loc, loc, true));
-				return true;
-			}
+		TextualEditPart textPart = (TextualEditPart)getTextualViewer().getContents();
+		CaretSearch caretSearch = new CaretSearch();
+		caretSearch.isForward = true;
+		caretSearch.isInto = true;
+		caretSearch.isRecursive = false;
+		caretSearch.type = CaretSearch.COLUMN;
+		TextLocation loc = textPart.getNextLocation(caretSearch);
+		if (loc != null) {
+			getTextualViewer().setSelectionRange(new SelectionRange(loc, loc, true));
+			return true;
 		}
 	}
 	return super.handleFocusGained();
