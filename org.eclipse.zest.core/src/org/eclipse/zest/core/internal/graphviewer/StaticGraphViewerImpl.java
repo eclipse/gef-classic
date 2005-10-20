@@ -32,7 +32,7 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 	
 	private LayoutAlgorithm layoutAlgorithm = null;
 	private GraphModel model = null;
-	private IGraphModelFactory modelFactory = null;
+//	private IGraphModelFactory modelFactory = null;
 	private boolean allowMarqueeSelection;
 	private boolean allowPanning;
 	private int style = 0;
@@ -59,7 +59,7 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 		super.setContents( model );
 		Dimension d = this.getCanvasSize();
 		this.model = model;
-		this.modelFactory = modelFactory;
+//		this.modelFactory = modelFactory;
 		
 		layoutAlgorithm = new TreeLayoutAlgorithm(LayoutStyles.NO_LAYOUT_SIZE);
 	

@@ -242,7 +242,7 @@ public abstract class ThreadedGraphicalViewer extends GraphicalViewerImpl implem
 		r.stop();
 		
 		try {
-			t.join( 100 );
+			t.join( 1000 );
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -250,7 +250,13 @@ public abstract class ThreadedGraphicalViewer extends GraphicalViewerImpl implem
 		if ( t.isAlive() ) {
 			DebugPrint.println("Thread Still Alive!");
 			//TODO: Remove thread stop and make sure this is done properly
-			t.stop();
+			StackTraceElement[] elements = t.getStackTrace();
+			String stackTrace = "";
+			for (int i = 0; i < elements.length; i++) {
+				stackTrace += elements[i].toString() + "\n";
+			}
+			throw new RuntimeException("Thread didn't stop, stack was: " + stackTrace);
+//			t.stop();
 		}
 		listOfThreads.remove( r );
 	}
