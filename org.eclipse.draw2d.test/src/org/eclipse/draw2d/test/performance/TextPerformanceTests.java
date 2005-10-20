@@ -34,14 +34,52 @@ public class TextPerformanceTests
 	extends BasePerformanceTestCase
 {
 	
-private FlowPage page;
 private Font[] fonts;
+private FlowPage page;
+
+private void addFontSizes(Figure parent){
+	for (int i = 0; i < fonts.length; i++){
+		TextFlow tf = new TextFlow(" " + Integer.toString(i) + " pt Font.");
+		tf.setForegroundColor(ColorConstants.red);
+		tf.setFont(fonts[i]);
+		parent.add(tf);
+	}
+}
+
+private void addSentences(IFigure parent, int count, boolean addBidi){
+	for (int i = 0; i < count; i++) {
+		if (addBidi) {
+			parent.add(new TextFlow("-10% \u0634\u0635\u0636. "));
+			parent.add(new TextFlow("\u0634\u0635\u0636\u0637 ~~~23%%% \u0637\u0638\u0639\u0640 abc. "));
+			parent.add(new TextFlow("\u0634 \u0637\u0638\u0639\u0640 \"it is 123, 456, ok.\" "));
+			parent.add(new TextFlow("\u0634\u0637\u0638 1*5 1-5 1/5 1+5 "));
+			parent.add(new TextFlow("\u0634 \u0637 \u2029 abcd. "));
+			parent.add(new TextFlow("\u0634\u0637\u0635 \u0639\u0633\u0640 \u0632\u0638\u0635 'he said \"car \u0640\u0637\u0633\u0639\u0635 \u0635\u0632\u0636\"'? \u0634\u0637\u0635"));
+			parent.add(new TextFlow("\u0639\u0633\u0640. "));
+			parent.add(new TextFlow("car is \u0634\u0637\u0635 \u0639\u0633\u0640 in arabic. "));
+			parent.add(new TextFlow("\u0634\u0637\u0635 \u0635\u0639 the car \u0633\u0640 \u0638\u0635\u0634\u0637\u0635\u0639\u0633. "));
+			parent.add(new TextFlow("he said \"\u0634\u0637 \u0635\u0639 (123,456), \u0632\u0638.\" "));
+			parent.add(new TextFlow("<\u0634123>shalom</\u0634123>. "));
+			parent.add(new TextFlow("<h123>\u0637\u0635\u0639\u0633\u0640\u0632</h123>. "));
+			parent.add(new TextFlow("\u0634\u0637 \u0635\u0639\u0633\u0640 \"it is a car!\" \u0634\u0637\u0635 \u0639\u0633\u0640. "));
+			parent.add(new TextFlow("\u202d\u0634\u0637\u0635\u0639\u0633. "));
+			parent.add(new TextFlow("\u202efirst character is RLO. "));
+			parent.add(new TextFlow("\u200ffirst character is RLM. "));
+		} else {
+			parent.add(new TextFlow(" One two three four five six seven -- eight nine ten -- eleven twelve thirteen, \"fourteen fifteen sixteen.\" Seventeen eighteen nineteen twenty twenty-one twenty-two twenty-three twenty-four twenty-five twenty-six twenty-seven twenty-eight twenty-nine thirty thirty-one thirty-two thirty-three thirty-four thirty-five thirty-six thirty-seven thirty-eight thirty-nine forty forty-one forty-two forty-three forty-four forty-five forty-six forty-seven forty-eight forty-nine fifty."));
+			parent.add(new TextFlow(" Chinese characters: \u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325"));
+			parent.add(new TextFlow(" This text has been cut mid-sen"));
+			parent.add(new TextFlow("tence: supercalifraglistic"));
+			parent.add(new TextFlow("expialidocious."));
+		}
+	}
+}
 
 private void layoutAndPaint() {
-	Image img = new Image(null, 600, 1500);
+	Image img = new Image(null, 500, 2500);
 	GC gc = new GC(img);
 	Graphics graphics = new SWTGraphics(gc);
-	int[] widths = new int[] {300, 400, 500, 600, 400, 500, 600};
+	int[] widths = new int[] {400, 450, 500, 400, 450, 500};
 	
 	int warmupRuns = getWarmupRuns();
 	int measuredRuns = getMeasuredRuns();	
@@ -65,18 +103,7 @@ private void layoutAndPaint() {
 	assertPerformance();
 }
 
-protected void setUp() throws Exception {
-	super.setUp();
-	page = new FlowPage();
-	page.setFont(TAHOMA);
-}
-
-protected void tearDown() throws Exception {
-	page = null;
-	super.tearDown();
-}
-
-protected void populatePage(boolean addBidi, int numOfBlocks){
+private void populatePage(boolean addBidi, int numOfBlocks){
 	for (int i = 0; i < numOfBlocks; i++){
 		BlockFlow bf = new BlockFlow();
 		page.add(bf);
@@ -98,48 +125,15 @@ protected void populatePage(boolean addBidi, int numOfBlocks){
 	}
 }
 
-protected void addFontSizes(Figure parent){
-	for (int i = 0; i < fonts.length; i++){
-		TextFlow tf = new TextFlow(" " + Integer.toString(i) + " pt Font.");
-		tf.setForegroundColor(ColorConstants.red);
-		tf.setFont(fonts[i]);
-		parent.add(tf);
-	}
+protected void setUp() throws Exception {
+	super.setUp();
+	page = new FlowPage();
+	page.setFont(TAHOMA);
 }
 
-protected void addSentences(IFigure parent, int count, boolean addBidi){
-	for (int i = 0; i < count; i++) {
-		if (addBidi) {
-			parent.add(new TextFlow("-10% \u0634\u0635\u0636. "));
-			parent.add(new TextFlow("\u0634\u0635\u0636\u0637 ~~~23%%% \u0637\u0638\u0639\u0640 abc. "));
-			parent.add(new TextFlow("\u0634 \u0637\u0638\u0639\u0640 \"it is 123, 456, ok.\" "));
-			parent.add(new TextFlow("\u0634\u0637\u0638 1*5 1-5 1/5 1+5 "));
-			parent.add(new TextFlow("\u0634 \u0637 \u2029 abcd. "));
-			parent.add(new TextFlow("\u0634\u0637\u0635 \u0639\u0633\u0640 \u0632\u0638\u0635 'he said \"car \u0640\u0637\u0633\u0639\u0635 \u0635\u0632\u0636\"'? \u0634\u0637\u0635"));
-			parent.add(new TextFlow("\u0639\u0633\u0640\u0632\u0638\u0635\u0634\u0637\u0635\u0639\u0633\u0640\u0632\u0638\u0635\u0634\u0637\u0635\u0639\u0633\u0640\u0632\u0638\u0635. "));
-			parent.add(new TextFlow("car is \u0634\u0637\u0635 \u0639\u0633\u0640 in arabic. "));
-			parent.add(new TextFlow("\u0634\u0637\u0635 \u0635\u0639 the car \u0633\u0640 \u0638\u0635\u0634\u0637\u0635\u0639\u0633. "));
-			parent.add(new TextFlow("he said \"\u0634\u0637 \u0635\u0639 (123,456), \u0632\u0638.\" "));
-			parent.add(new TextFlow("<\u0634123>shalom</\u0634123>. "));
-			parent.add(new TextFlow("<h123>\u0637\u0635\u0639\u0633\u0640\u0632</h123>. "));
-			parent.add(new TextFlow("\u0634\u0637 \u0635\u0639\u0633\u0640 \"it is a car!\" \u0634\u0637\u0635 \u0639\u0633\u0640. "));
-			parent.add(new TextFlow("\u202d\u0634\u0637\u0635\u0639\u0633. "));
-			parent.add(new TextFlow("\u202efirst character is RLO. "));
-			parent.add(new TextFlow("\u200ffirst character is RLM. "));
-		} else {
-			parent.add(new TextFlow(" One two three four five six seven -- eight nine ten -- eleven twelve thirteen, \"fourteen fifteen sixteen.\" Seventeen eighteen nineteen twenty twenty-one twenty-two twenty-three twenty-four twenty-five twenty-six twenty-seven twenty-eight twenty-nine thirty thirty-one thirty-two thirty-three thirty-four thirty-five thirty-six thirty-seven thirty-eight thirty-nine forty forty-one forty-two forty-three forty-four forty-five forty-six forty-seven forty-eight forty-nine fifty."));
-			parent.add(new TextFlow(" Chinese characters: \u7334\u7329u7325\u7334\u7329\u7325\u7334\u7329u7325\u7334\u7329u7325\u7334\u7329u7325\u7334\u7329\u7325\u7334\u7329u7325\u7334\u7329u7325\u7334\u7329u7325\u7334\u7329\u7325\u7334\u7329u7325\u7334\u7329u7325\u7334\u7329u7325\u7334\u7329\u7325\u7334\u7329u7325\u7334\u7329u7325\u7334\u7329u7325\u7334\u7329\u7325\u7334\u7329u7325\u7334\u7329u7325"));
-			parent.add(new TextFlow(" This text has been cut mid-sen"));
-			parent.add(new TextFlow("tence: supercalifraglistic"));
-			parent.add(new TextFlow("expialidocious."));
-		}
-	}
-}
-
-protected IFigure block(IFigure child){
-	FlowFigure block = new BlockFlow();
-	block.add(child);
-	return block;
+protected void tearDown() throws Exception {
+	page = null;
+	super.tearDown();
 }
 
 public void testBidiLayout() {
