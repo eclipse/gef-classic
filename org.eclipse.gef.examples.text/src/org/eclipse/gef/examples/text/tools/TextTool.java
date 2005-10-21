@@ -347,24 +347,22 @@ private void doSelect(int type, boolean isForward, boolean appendSelection) {
 		isForward = range.isForward;
 	}
 
-	doSelect2(newCaretLocation, isForward, appendSelection);
+	performSelection(newCaretLocation, isForward, appendSelection);
 }
 
-private void doSelect2(TextLocation newCaretLocation, boolean isForward, boolean appendSelection) {
-	if (newCaretLocation == null)
-		return;
-	if (appendSelection) {
-		GraphicalTextViewer viewer = getTextualViewer();
-		SelectionRange range = viewer.getSelectionRange();
-		TextLocation otherEnd = isForward ? range.begin : range.end;
-		if (TextUtilities.isForward(otherEnd, newCaretLocation))
-			range = new SelectionRange(otherEnd, newCaretLocation, true);
-		else
-			range = new SelectionRange(newCaretLocation, otherEnd, false);
-		viewer.setSelectionRange(range);
-	} else
-		getTextualViewer().setSelectionRange(
-				new SelectionRange(newCaretLocation, newCaretLocation, isForward));
+private void doTraversePage(boolean isForward, boolean appendSelection) {
+	GraphicalTextViewer viewer = getTextualViewer();
+	Point loc = viewer.getCaretBounds().getCenter();
+	int viewerHeight = viewer.getControl().getBounds().height - 20;
+	if (isForward)
+		loc.y += viewerHeight;
+	else
+		loc.y -= viewerHeight;
+	TextLocation newCaretLocation = ((TextualEditPart)getTextualViewer().getContents())
+			.getLocation(loc, new int[1]);
+	if (appendSelection)
+		isForward = viewer.getSelectionRange().isForward;
+	performSelection(newCaretLocation, isForward, appendSelection);
 }
 
 /**
@@ -422,21 +420,6 @@ private void flushStyles() {
 
 protected String getDebugName() {
 	return "TextTool";
-}
-
-private void doTraversePage(boolean isForward, boolean appendSelection) {
-	GraphicalTextViewer viewer = getTextualViewer();
-	Point loc = viewer.getCaretBounds().getCenter();
-	int viewerHeight = viewer.getControl().getBounds().height - 20;
-	if (isForward)
-		loc.y += viewerHeight;
-	else
-		loc.y -= viewerHeight;
-	TextLocation newCaretLocation = ((TextualEditPart)getTextualViewer().getContents())
-			.getLocation(loc, new int[1]);
-	if (appendSelection)
-		isForward = viewer.getSelectionRange().isForward;
-	doSelect2(newCaretLocation, isForward, appendSelection);
 }
 
 private Object getSelectionStyle(String styleID, boolean isState) {
@@ -599,6 +582,24 @@ private int lookupAction(int i) {
 			break;
 	}
 	return 0;
+}
+
+private void performSelection(TextLocation caretLoc, boolean isForward, 
+		boolean appendSelection) {
+	if (caretLoc == null)
+		return;
+	if (appendSelection) {
+		GraphicalTextViewer viewer = getTextualViewer();
+		SelectionRange range = viewer.getSelectionRange();
+		TextLocation otherEnd = isForward ? range.begin : range.end;
+		if (TextUtilities.isForward(otherEnd, caretLoc))
+			range = new SelectionRange(otherEnd, caretLoc, true);
+		else
+			range = new SelectionRange(caretLoc, otherEnd, false);
+		viewer.setSelectionRange(range);
+	} else
+		getTextualViewer().setSelectionRange(
+				new SelectionRange(caretLoc, caretLoc, isForward));
 }
 
 public void removeStyleListener(StyleListener listener) {
