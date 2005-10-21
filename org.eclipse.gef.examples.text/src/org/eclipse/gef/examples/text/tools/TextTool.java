@@ -26,6 +26,7 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 
 import org.eclipse.draw2d.Cursors;
+import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.DragTracker;
@@ -136,6 +137,26 @@ public void deactivate() {
 private void doAction(int action, KeyEvent event) {
 	boolean append = false;
 	switch (action) {
+		case ST.SELECT_TEXT_START:
+			append = true;
+		case ST.TEXT_START:
+			doSelect(CaretSearch.DOCUMENT, false, append);
+			break;
+		case ST.SELECT_TEXT_END:
+			append = true;
+		case ST.TEXT_END:
+			doSelect(CaretSearch.DOCUMENT, true, append);
+			break;
+		case ST.SELECT_PAGE_DOWN:
+			append = true;
+		case ST.PAGE_DOWN:
+			doTraversePage(true, append);
+			break;
+		case ST.SELECT_PAGE_UP:
+			append = true;
+		case ST.PAGE_UP:
+			doTraversePage(false, append);
+			break;
 		case ST.DELETE_PREVIOUS:
 			doBackspace();
 			break;
@@ -306,40 +327,44 @@ private boolean doNewline() {
 }
 
 private void doSelect(int type, boolean isForward, boolean appendSelection) {
-	TextLocation caretLocation = getTextualViewer().getCaretLocation();
-	SelectionRange range = getTextualViewer().getSelectionRange();
-
-	TextLocation otherEnd;
-	if (range.isForward)
-		otherEnd = range.begin;
-	else
-		otherEnd = range.end;
-
-	Rectangle caretBounds = getTextualViewer().getCaretBounds();
+	GraphicalTextViewer viewer = getTextualViewer();
 	CaretSearch search = new CaretSearch();
 	search.isForward = isForward;
 	search.type = type;
-	search.x = caretBounds.x;
-	//$TODO y coord needs to be the baseline location
-	search.baseline = caretBounds.y + caretBounds.height / 2;
-	search.where = caretLocation;
-	
-	TextLocation newCaretLocation = caretLocation.part.getNextLocation(search);
 
+	TextLocation newCaretLocation;
+	SelectionRange range = viewer.getSelectionRange();
+	if (range == null)
+		newCaretLocation = ((TextualEditPart)viewer.getContents()).getNextLocation(search);
+	else {
+		TextLocation caretLocation = viewer.getCaretLocation();
+		Rectangle caretBounds = viewer.getCaretBounds();
+		search.x = caretBounds.x;
+		//$TODO y coord needs to be the baseline location
+		search.baseline = caretBounds.y + caretBounds.height / 2;
+		search.where = caretLocation;
+		newCaretLocation = caretLocation.part.getNextLocation(search);
+		isForward = range.isForward;
+	}
+
+	doSelect2(newCaretLocation, isForward, appendSelection);
+}
+
+private void doSelect2(TextLocation newCaretLocation, boolean isForward, boolean appendSelection) {
 	if (newCaretLocation == null)
 		return;
 	if (appendSelection) {
+		GraphicalTextViewer viewer = getTextualViewer();
+		SelectionRange range = viewer.getSelectionRange();
+		TextLocation otherEnd = isForward ? range.begin : range.end;
 		if (TextUtilities.isForward(otherEnd, newCaretLocation))
 			range = new SelectionRange(otherEnd, newCaretLocation, true);
 		else
 			range = new SelectionRange(newCaretLocation, otherEnd, false);
-		getTextualViewer().setSelectionRange(range);
-	} else {
-		if (search.isForward)
-			getTextualViewer().setSelectionRange(new SelectionRange(newCaretLocation, newCaretLocation, true));
-		else
-			getTextualViewer().setSelectionRange(new SelectionRange(newCaretLocation, newCaretLocation, false));
-	}
+		viewer.setSelectionRange(range);
+	} else
+		getTextualViewer().setSelectionRange(
+				new SelectionRange(newCaretLocation, newCaretLocation, isForward));
 }
 
 /**
@@ -399,6 +424,21 @@ protected String getDebugName() {
 	return "TextTool";
 }
 
+private void doTraversePage(boolean isForward, boolean appendSelection) {
+	GraphicalTextViewer viewer = getTextualViewer();
+	Point loc = viewer.getCaretBounds().getCenter();
+	int viewerHeight = viewer.getControl().getBounds().height - 20;
+	if (isForward)
+		loc.y += viewerHeight;
+	else
+		loc.y -= viewerHeight;
+	TextLocation newCaretLocation = ((TextualEditPart)getTextualViewer().getContents())
+			.getLocation(loc, new int[1]);
+	if (appendSelection)
+		isForward = viewer.getSelectionRange().isForward;
+	doSelect2(newCaretLocation, isForward, appendSelection);
+}
+
 private Object getSelectionStyle(String styleID, boolean isState) {
 	GraphicalTextViewer viewer = getTextualViewer();
 	TextRequest req = new TextRequest(TextRequest.REQ_STYLE, viewer.getSelectionRange());
@@ -448,18 +488,8 @@ protected boolean handleCommandStackChanged() {
 }
 
 protected boolean handleFocusGained() {
-	if (getTextualViewer().getSelectionRange() == null) {
-		TextualEditPart textPart = (TextualEditPart)getTextualViewer().getContents();
-		CaretSearch caretSearch = new CaretSearch();
-		caretSearch.isForward = true;
-		caretSearch.isInto = true;
-		caretSearch.type = CaretSearch.COLUMN;
-		TextLocation loc = textPart.getNextLocation(caretSearch);
-		if (loc != null) {
-			getTextualViewer().setSelectionRange(new SelectionRange(loc, loc, true));
-			return true;
-		}
-	}
+	if (getTextualViewer().getSelectionRange() == null)
+		doSelect(CaretSearch.DOCUMENT, false, false);
 	return super.handleFocusGained();
 }
 
@@ -541,35 +571,26 @@ private int lookupAction(int i) {
 			return isMirrored ? ST.SELECT_WORD_NEXT : ST.SELECT_WORD_PREVIOUS;
 		
 		case ST.LINE_END:
-			return ST.LINE_END;
 		case ST.SELECT_LINE_END:
-			return ST.SELECT_LINE_END;
 		case ST.LINE_START:
-			return ST.LINE_START;
 		case ST.SELECT_LINE_START:
-			return ST.SELECT_LINE_START;
-
-		//Up and Down keys
-		case SWT.ARROW_UP:
-			return ST.LINE_UP;
-		case SWT.ARROW_DOWN:
-			return ST.LINE_DOWN;
 		case ST.PAGE_UP:
-			return ST.PAGE_UP;
+		case ST.PAGE_DOWN:
+		case ST.SELECT_PAGE_UP:
+		case ST.SELECT_PAGE_DOWN:
+		case ST.LINE_UP:
+		case ST.LINE_DOWN:
 		case ST.SELECT_LINE_UP:
-			return ST.SELECT_LINE_UP;
 		case ST.SELECT_LINE_DOWN:
-			return ST.SELECT_LINE_DOWN;
-
-		case SWT.DEL:
-			return ST.DELETE_NEXT;
-		case SWT.BS:
-			return ST.DELETE_PREVIOUS;
-
+		case ST.TEXT_END:
+		case ST.SELECT_TEXT_END:
+		case ST.TEXT_START:
+		case ST.SELECT_TEXT_START:
+		case ST.DELETE_PREVIOUS:
+		case ST.DELETE_NEXT:
 		case SWT.TAB | SWT.SHIFT:
-			return SWT.TAB | SWT.SHIFT;
 		case SWT.TAB:
-			return SWT.TAB;
+			return i;
 
 		case SWT.LF:
 		case SWT.CR:
