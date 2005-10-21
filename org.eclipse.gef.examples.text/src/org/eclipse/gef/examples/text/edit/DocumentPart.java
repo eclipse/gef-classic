@@ -48,6 +48,18 @@ public TextLocation getLocation(Point absolute) {
 	return null;
 }
 
+public TextLocation getNextLocation(CaretSearch search) {
+	if (search.type == CaretSearch.DOCUMENT) {
+		CaretSearch cs = new CaretSearch();
+		cs.isInto = true;
+		cs.isForward = !search.isForward;
+		cs.isRecursive = true;
+		cs.type = CaretSearch.COLUMN;
+		return super.getNextLocation(cs);
+	}
+	return super.getNextLocation(search);
+}
+
 public TextLocation getNextLocation(int movement, TextLocation current, Rectangle caret) {
 	return null;
 }
