@@ -294,7 +294,7 @@ protected final void checkPaint() {
 		gc.setForeground(appliedState.fgColor = currentState.fgColor);
 	if (appliedState.lineWidth != currentState.lineWidth)
 		gc.setLineWidth(appliedState.lineWidth = currentState.lineWidth);
-	if (!currentState.bgColor.equals(currentState.bgColor) && currentState.bgPattern == null)
+	if (!currentState.bgColor.equals(appliedState.bgColor) && currentState.bgPattern == null)
 		gc.setBackground(appliedState.bgColor = currentState.bgColor);
 }
 
