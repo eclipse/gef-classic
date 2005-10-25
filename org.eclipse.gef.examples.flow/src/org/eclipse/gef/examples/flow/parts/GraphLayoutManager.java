@@ -30,8 +30,6 @@ GraphLayoutManager(ActivityDiagramPart diagram) {
 }
 
 protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHint) {
-//	if (state == PLAYBACK)
-//		return container.getSize();
 	container.validate();
 	List children = container.getChildren();
 	Rectangle result =
