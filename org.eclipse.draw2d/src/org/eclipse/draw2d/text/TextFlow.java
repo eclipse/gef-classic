@@ -290,40 +290,38 @@ int getDescent() {
 }
 
 /**
- * Returns the minimum offset whose caret location overlaps the given baseline
+ * Returns the minimum offset which is on the given baseline
  * y-coordinate. The y location is relative to this figure. If no fragment occupies that y
  * coordinate, <code>-1</code> is returned.
  * @since 3.1
  * @param y the relative y coordinate
- * @return -1 of the smallest offset for the line
+ * @return -1 or the lowest offset for the line
  */
 public int getFirstOffsetForLine(int y) {
 	TextFragmentBox box;
 	for (int i = 0; i < fragments.size(); i++) {
 		box = (TextFragmentBox)fragments.get(i);
-		if (y >= box.getBaseline() - box.getAscentWithBorder()
-				&& y < box.getBaseline() + box.getDescentWithBorder())
+		if (y >= box.getBaseline() - box.getLineRoot().getAscent()
+				&& y < box.getBaseline() + box.getLineRoot().getDescent())
 			return box.offset;
 	}
 	return -1;
 }
 
 /**
- * Returns the maximum offset whose caret location overlaps the given baseline
+ * Returns the maximum offset which is on the given baseline
  * y-coordinate. The y location is relative to this figure. If no fragment occupies that y
  * coordinate, <code>-1</code> is returned.
  * @since 3.1
- * @param baseline the baseline's y coordinate
- * @return -1 of the last  offset at the given baseline
+ * @param y the relative y coordinate
+ * @return -1 or the highest offset at the given baseline
  */
-public int getLastOffsetForLine(int baseline) {
+public int getLastOffsetForLine(int y) {
 	TextFragmentBox box;
-	//LineRoot root;
 	for (int i = fragments.size() - 1; i >= 0; i--) {
 		box = (TextFragmentBox)fragments.get(i);
-		//root = box.getLineRoot();
-		if (baseline >= box.getBaseline() - box.getAscentWithBorder()
-				&& baseline < box.getBaseline() + box.getDescentWithBorder())
+		if (y >= box.getBaseline() - box.getLineRoot().getAscent()
+				&& y < box.getBaseline() + box.getLineRoot().getDescent())
 			return box.offset + box.length;
 	}
 	return -1;
