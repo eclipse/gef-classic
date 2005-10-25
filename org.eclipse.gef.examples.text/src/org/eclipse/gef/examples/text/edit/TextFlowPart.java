@@ -85,7 +85,7 @@ public TextLocation getNextLocation(CaretSearch search) {
 			where.y = search.baseline;
 			getTextFlow().translateToRelative(where);
 			if (search.isForward)
-				offset = getTextFlow().getLastOffsetForLine(where.y);
+				offset = getTextFlow().getLastOffsetForLine(where.y) + 1;
 			else
 				offset = getTextFlow().getFirstOffsetForLine(where.y);
 			if (offset == -1)

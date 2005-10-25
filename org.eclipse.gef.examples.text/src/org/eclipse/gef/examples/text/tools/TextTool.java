@@ -329,8 +329,8 @@ private boolean doNewline() {
 private void doSelect(int type, boolean isForward, boolean appendSelection) {
 	GraphicalTextViewer viewer = getTextualViewer();
 	CaretSearch search = new CaretSearch();
-	search.isForward = isForward;
 	search.type = type;
+	search.isForward = isForward;
 
 	TextLocation newCaretLocation;
 	SelectionRange range = viewer.getSelectionRange();
@@ -340,8 +340,7 @@ private void doSelect(int type, boolean isForward, boolean appendSelection) {
 		TextLocation caretLocation = viewer.getCaretLocation();
 		Rectangle caretBounds = viewer.getCaretBounds();
 		search.x = caretBounds.x;
-		//$TODO y coord needs to be the baseline location
-		search.baseline = caretBounds.y + caretBounds.height / 2;
+		search.baseline = viewer.getCaretInfo().getBaseline();
 		search.where = caretLocation;
 		newCaretLocation = caretLocation.part.getNextLocation(search);
 		isForward = range.isForward;
@@ -353,6 +352,7 @@ private void doSelect(int type, boolean isForward, boolean appendSelection) {
 private void doTraversePage(boolean isForward, boolean appendSelection) {
 	GraphicalTextViewer viewer = getTextualViewer();
 	Point loc = viewer.getCaretBounds().getCenter();
+	// @TODO:Pratik the value 20 shouldn't be hard-coded
 	int viewerHeight = viewer.getControl().getBounds().height - 20;
 	if (isForward)
 		loc.y += viewerHeight;

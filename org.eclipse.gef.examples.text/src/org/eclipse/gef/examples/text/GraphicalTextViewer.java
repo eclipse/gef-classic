@@ -21,6 +21,7 @@ import org.eclipse.jface.util.Assert;
 
 import org.eclipse.draw2d.UpdateListener;
 import org.eclipse.draw2d.UpdateManager;
+import org.eclipse.draw2d.Viewport;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.draw2d.text.CaretInfo;
 
@@ -34,14 +35,23 @@ import org.eclipse.gef.examples.text.edit.TextualEditPart;
 public class GraphicalTextViewer extends ScrollingGraphicalViewer {
 
 class CaretRefresh implements Runnable {
+	private boolean reveal;
+	public CaretRefresh(boolean reveal) {
+		setReveal(reveal);
+	}
 	public void run() {
 		refreshCaret();
 		caretRefresh = null;
+		if (reveal)
+			revealCaret();
+	}
+	public void setReveal(boolean newVal) {
+		reveal |= newVal;
 	}
 }
 
 private Caret caret;
-private Runnable caretRefresh;
+private CaretRefresh caretRefresh;
 private SelectionRange selectionRange;
 
 private Caret getCaret() {
@@ -52,6 +62,14 @@ private Caret getCaret() {
 
 public Rectangle getCaretBounds() {
 	return new Rectangle(getCaret().getBounds());
+}
+
+public CaretInfo getCaretInfo() {
+	TextLocation location = getCaretLocation();
+	if (getSelectionRange().isForward && location.offset > 0)
+		return getCaretOwner().getCaretPlacement(location.offset - 1, true);
+	else
+		return getCaretOwner().getCaretPlacement(location.offset, false);
 }
 
 public TextLocation getCaretLocation() {
@@ -85,9 +103,10 @@ private UpdateManager getUpdateManager() {
 protected void hookControl() {
 	super.hookControl();
 	getUpdateManager().addUpdateListener(new UpdateListener() {
-		public void notifyPainting(Rectangle damage, Map dirtyRegions) { }
+		public void notifyPainting(Rectangle damage, Map dirtyRegions) {
+			queueCaretRefresh(false);
+		}
 		public void notifyValidating() {
-			queueCaretRefresh();
 		}
 	});
 }
@@ -95,24 +114,39 @@ protected void hookControl() {
 /**
  * @since 3.1
  */
-void queueCaretRefresh() {
+void queueCaretRefresh(boolean revealAfterwards) {
 	if (caretRefresh == null) {
-		caretRefresh = new CaretRefresh();
+		caretRefresh = new CaretRefresh(revealAfterwards);
 		getUpdateManager().runWithUpdate(caretRefresh);
-	}
+	} else
+		caretRefresh.setReveal(revealAfterwards);
 }
 
 void refreshCaret() {
 	if (getCaretOwner() == null)
 		return;
-	CaretInfo info;
-	TextLocation location = getCaretLocation();
-	if (getSelectionRange().isForward && location.offset > 0) {
-		info = getCaretOwner().getCaretPlacement(location.offset - 1, true);
-	} else {
-		info = getCaretOwner().getCaretPlacement(location.offset, false);
-	}
+	CaretInfo info = getCaretInfo();
 	getCaret().setBounds(info.getX(), info.getY(), 1, info.getHeight());
+}
+
+public void revealCaret() {
+	// @TODO:Pratik  you should expose the text location first (it might not be visible)
+	Viewport port = getFigureCanvas().getViewport();
+	Rectangle view = new Rectangle(port.getViewLocation(), port.getClientArea().getSize());
+	Rectangle exposeRegion = new Rectangle(getCaretBounds());
+	port.getContents().translateToRelative(exposeRegion);
+	if (!view.contains(exposeRegion)) {
+		int x = view.x, y = view.y;
+		if (exposeRegion.x < view.x)
+			x = exposeRegion.x;
+		else if (exposeRegion.right() > view.right())
+			x = view.x + exposeRegion.right() - view.right();
+		if (exposeRegion.y < view.y)
+			y = exposeRegion.y;
+		else if (exposeRegion.bottom() > view.bottom())
+			y = view.y + exposeRegion.bottom() - view.bottom();
+		getFigureCanvas().scrollTo(x, y);		
+	}
 }
 
 public void setCaretVisible(boolean value) {
@@ -153,7 +187,7 @@ public void setSelectionRange(SelectionRange newRange) {
 		}
 	}
 
-	queueCaretRefresh();
+	queueCaretRefresh(true);
 	fireSelectionChanged();
 }
 
