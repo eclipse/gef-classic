@@ -290,39 +290,37 @@ int getDescent() {
 }
 
 /**
- * Returns the minimum offset which is on the given baseline
- * y-coordinate. The y location is relative to this figure. If no fragment occupies that y
- * coordinate, <code>-1</code> is returned.
+ * Returns the minimum offset which is on the given baseline y-coordinate. The y 
+ * location should be relative to this figure. The return value will be between
+ * 0 and N-1.  If no fragment is located on the baseline, <code>-1</code> is returned.
  * @since 3.1
- * @param y the relative y coordinate
+ * @param baseline the relative baseline coordinate
  * @return -1 or the lowest offset for the line
  */
-public int getFirstOffsetForLine(int y) {
+public int getFirstOffsetForLine(int baseline) {
 	TextFragmentBox box;
 	for (int i = 0; i < fragments.size(); i++) {
 		box = (TextFragmentBox)fragments.get(i);
-		if (y >= box.getBaseline() - box.getLineRoot().getAscent()
-				&& y < box.getBaseline() + box.getLineRoot().getDescent())
+		if (baseline == box.getBaseline())
 			return box.offset;
 	}
 	return -1;
 }
 
 /**
- * Returns the maximum offset which is on the given baseline
- * y-coordinate. The y location is relative to this figure. If no fragment occupies that y
- * coordinate, <code>-1</code> is returned.
+ * Returns the maximum offset which is on the given baseline y-coordinate. The y 
+ * location should be relative to this figure.  The return value will be between 
+ * 0 and N-1.  If no fragment is located on the baseline, <code>-1</code> is returned.
  * @since 3.1
- * @param y the relative y coordinate
+ * @param baseline the relative baseline coordinate
  * @return -1 or the highest offset at the given baseline
  */
-public int getLastOffsetForLine(int y) {
+public int getLastOffsetForLine(int baseline) {
 	TextFragmentBox box;
 	for (int i = fragments.size() - 1; i >= 0; i--) {
 		box = (TextFragmentBox)fragments.get(i);
-		if (y >= box.getBaseline() - box.getLineRoot().getAscent()
-				&& y < box.getBaseline() + box.getLineRoot().getDescent())
-			return box.offset + box.length;
+		if (baseline == box.getBaseline())
+			return box.offset + box.length - 1;
 	}
 	return -1;
 }
