@@ -89,7 +89,8 @@ public void rollback() {
 	if (begin.getContainer() == null)
 		parent.add(begin, index);
 	begin.insertText(middle.getText(), begin.size());
-	begin.insertText(right.getText(), begin.size());
+	if (right != null)
+		begin.insertText(right.getText(), begin.size());
 }
 
 }
