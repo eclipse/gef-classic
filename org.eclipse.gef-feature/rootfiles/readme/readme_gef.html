@@ -156,6 +156,11 @@ plug-ins.&nbsp; </p>
 	<li>The fields <code>viewer</code> and <code>contents</code> were removed from <code>ScalableRootEditPart</code> and <code>FreeformGraphicalRootEditPart</code>. 
 	(Bug 111102)</li>
 </ul>
+<h4>API Behavior Changes</h4>
+<ul>
+	<li><code>BorderLayout</code> has been changed to vertically stretch the central figure (it used to center it before). (Bug 113008)</li>
+	<li><code>TextFlow#getFirstOffsetForLine(int)</code> and <code>TextFlow#getLastOffsetForLine(int)</code> now expect the given int argument to be the exact baseline value. (Bug 113700)</li>
+</ul>
 <h4>Breaking API Changes</h4>
 <ul>
 	<li>None</li>
