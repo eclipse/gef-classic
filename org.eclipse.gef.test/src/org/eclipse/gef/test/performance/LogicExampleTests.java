@@ -268,12 +268,12 @@ public void testEditorLayout() throws PartInitException {
 }
 
 public void testEditorOpen() throws PartInitException {
-	tagAsGlobalSummary("Open Logic Editor (~2900 editparts)", Dimension.ELAPSED_PROCESS);
+	tagAsGlobalSummary("Open Logic Editor (~2900 editparts)", Dimension.CPU_TIME);
 	runOpenEditorTest(false);
 }
 
 public void testEditorOpenWithOutline() throws PartInitException {
-	tagAsGlobalSummary("Open Logic Editor With Outline", Dimension.ELAPSED_PROCESS);
+	tagAsGlobalSummary("Open Logic Editor With Outline", Dimension.CPU_TIME);
 	IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 	.getActivePage();
 	page.showView(OUTLINE_VIEW_ID);
