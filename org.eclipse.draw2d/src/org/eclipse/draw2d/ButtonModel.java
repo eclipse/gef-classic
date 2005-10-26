@@ -33,15 +33,10 @@ public static final String ROLLOVER_ENABLED_PROPERTY = "rollover enabled"; //$NO
 /** Mouseover property */
 public static final String MOUSEOVER_PROPERTY = "mouseover"; //$NON-NLS-1$
 
-/**
- * @deprecated This property will soon disappear since it is simply defined by
- * (isPressed() && isRollover())
- */
+/** Armed property */
 public static final String ARMED_PROPERTY = "armed";  //$NON-NLS-1$
 
-/*
- * Flags for button states.
- */
+
 /** Flag for armed button state */
 protected static final int ARMED_FLAG 				= 1;
 /** Flag for pressed button state */
@@ -362,9 +357,9 @@ public void setEnabled(boolean value) {
 	if (isEnabled() == value)
 		return;
 	if (!value) {
-		setMouseOver(value);
-		setArmed(value);
-		setPressed(value);
+		setMouseOver(false);
+		setArmed(false);
+		setPressed(false);
 	}
 	setFlag(ENABLED_FLAG, value);
 	fireStateChanged(ENABLED_PROPERTY);
