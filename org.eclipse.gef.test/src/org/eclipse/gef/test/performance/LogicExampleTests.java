@@ -247,7 +247,7 @@ protected void setUp() throws Exception {
 		page.hideView(views[i]);
 	window.getShell().setSize(1000, 800);
 }
-/*
+
 public void testEditorLayout() throws PartInitException {
 	tagAsGlobalSummary("Editor Layout", Dimension.CPU_TIME);
 	IEditorPart editor = openEditor();
@@ -292,7 +292,7 @@ public void testEditorOpenWithOutline() throws PartInitException {
 	runOpenEditorTest(false);
 	page.hideView(page.findViewReference(OUTLINE_VIEW_ID));
 }
-*/
+
 public void testMemoryConsumption() throws PartInitException {
 	tagAsGlobalSummary("Memory Consumption in Logic Editor", Dimension.USED_JAVA_HEAP);
 	IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
@@ -301,7 +301,7 @@ public void testMemoryConsumption() throws PartInitException {
 	runOpenEditorTest(true);
 	page.hideView(page.findViewReference(OUTLINE_VIEW_ID));
 }
-/*
+
 public void testPaletteSwitching() throws PartInitException {
 	tagAsGlobalSummary("Palette Switching", Dimension.CPU_TIME);
 	IEditorPart editor = openEditor();
@@ -360,5 +360,5 @@ public void testZoom() throws PartInitException {
 	commitMeasurements();
 	assertPerformance();
 }
-*/
+
 }
