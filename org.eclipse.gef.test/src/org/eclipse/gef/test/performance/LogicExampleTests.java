@@ -147,6 +147,14 @@ private LogicDiagram createLogicDiagram() {
 	createGuides(diagram.getRuler(PositionConstants.NORTH));
 	createGuides(diagram.getRuler(PositionConstants.WEST));
 	
+	// Add one child at 200,50.  When the outline is open, this will be the child
+	// that will be selected.  Since it will already be visible when the editor opens,
+	// the editor won't have to scroll to it (causing unnecessary paints and improper
+	// performance results).
+	LED selection = new LED();
+	selection.setLocation(new Point(200, 50));
+	diagram.addChild(selection);
+	
 	int x = -1000, y = -1000;
 	for (int i = 0; i < 100; i++) {
 		Circuit fullAdder = createFullAdder();
@@ -239,7 +247,7 @@ protected void setUp() throws Exception {
 		page.hideView(views[i]);
 	window.getShell().setSize(1000, 800);
 }
-
+/*
 public void testEditorLayout() throws PartInitException {
 	tagAsGlobalSummary("Editor Layout", Dimension.CPU_TIME);
 	IEditorPart editor = openEditor();
@@ -284,7 +292,7 @@ public void testEditorOpenWithOutline() throws PartInitException {
 	runOpenEditorTest(false);
 	page.hideView(page.findViewReference(OUTLINE_VIEW_ID));
 }
-
+*/
 public void testMemoryConsumption() throws PartInitException {
 	tagAsGlobalSummary("Memory Consumption in Logic Editor", Dimension.USED_JAVA_HEAP);
 	IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
@@ -293,7 +301,7 @@ public void testMemoryConsumption() throws PartInitException {
 	runOpenEditorTest(true);
 	page.hideView(page.findViewReference(OUTLINE_VIEW_ID));
 }
-
+/*
 public void testPaletteSwitching() throws PartInitException {
 	tagAsGlobalSummary("Palette Switching", Dimension.CPU_TIME);
 	IEditorPart editor = openEditor();
@@ -352,5 +360,5 @@ public void testZoom() throws PartInitException {
 	commitMeasurements();
 	assertPerformance();
 }
-
+*/
 }
