@@ -21,11 +21,11 @@ public class BasePerformanceTestCase
 protected static final Font TAHOMA = new Font(null, "Tahoma", 8, 0);//$NON-NLS-1$
 
 protected int getWarmupRuns() {
-	return 5;
+	return 3;
 }
 
 protected int getMeasuredRuns() {
-	return 10;
+	return 3;
 }
 
 }

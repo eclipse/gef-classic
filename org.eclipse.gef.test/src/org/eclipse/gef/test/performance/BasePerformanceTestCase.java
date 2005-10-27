@@ -20,11 +20,11 @@ public static final String OUTLINE_VIEW_ID = "org.eclipse.ui.views.ContentOutlin
 public static final String RESOURCE_PERSPECTIVE_ID= "org.eclipse.ui.resourcePerspective"; //$NON-NLS-1$
 
 protected int getWarmupRuns() {
-	return 4;
+	return 3;
 }
 
 protected int getMeasuredRuns() {
-	return 4;
+	return 3;
 }
 
 }
