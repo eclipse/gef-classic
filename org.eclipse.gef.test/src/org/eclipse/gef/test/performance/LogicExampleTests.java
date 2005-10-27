@@ -204,7 +204,8 @@ private void runOpenEditorTest(boolean garbageCollect) throws PartInitException 
 		closeEditor(editor);
 	}
 	commitMeasurements();
-	assertPerformance();
+	assertPerformanceInRelativeBand(
+			garbageCollect ? Dimension.USED_JAVA_HEAP : Dimension.CPU_TIME, -100, 10);
 }
 
 protected void setUp() throws Exception {	
@@ -276,7 +277,7 @@ public void testEditorLayout() throws PartInitException {
 	}
 	closeEditor(editor);
 	commitMeasurements();
-	assertPerformance();
+	assertPerformanceInRelativeBand(Dimension.CPU_TIME, -100, 10);
 }
 
 public void testEditorOpen() throws PartInitException {
@@ -327,7 +328,7 @@ public void testPaletteSwitching() throws PartInitException {
 	}
 	closeEditor(editor);
 	commitMeasurements();
-	assertPerformance();
+	assertPerformanceInRelativeBand(Dimension.CPU_TIME, -100, 10);
 }
 
 public void testZoom() throws PartInitException {
@@ -358,7 +359,7 @@ public void testZoom() throws PartInitException {
 	}
 	closeEditor(editor);
 	commitMeasurements();
-	assertPerformance();
+	assertPerformanceInRelativeBand(Dimension.CPU_TIME, -100, 10);
 }
 
 }

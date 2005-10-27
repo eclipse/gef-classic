@@ -100,7 +100,7 @@ private void layoutAndPaint() {
 	graphics.dispose();
 	gc.dispose();
 	img.dispose();
-	assertPerformance();
+	assertPerformanceInRelativeBand(Dimension.CPU_TIME, -100, 10);
 }
 
 private void populatePage(boolean addBidi, int numOfBlocks){

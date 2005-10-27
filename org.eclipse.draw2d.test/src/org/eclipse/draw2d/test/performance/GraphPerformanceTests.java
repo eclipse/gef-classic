@@ -294,7 +294,7 @@ public void testGraphPerformance() {
 			stopMeasuring();
 	}
 	commitMeasurements();
-	assertPerformance();
+	assertPerformanceInRelativeBand(Dimension.CPU_TIME, -100, 10);
 }
 
 }
