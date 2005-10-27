@@ -55,7 +55,7 @@ private void addNodes(NodeList nodes, Node[] row) {
 			nodes.add(row[i]);
 }
 
-protected void bug90228() {
+protected DirectedGraph bug90228() {
 	Node s11, s10, s9, s8, s7, s6, s5, s4, s3, s2, s1;
 	Node h11, h10, h9, h8, h7, h6, h5, h4, h3, h2, h1;
 	NodeList nodes = new NodeList();
@@ -111,7 +111,7 @@ protected void bug90228() {
 	graph.nodes = nodes;
 	graph.edges = edges;
 
-	new DirectedGraphLayout().visit(graph);
+	return graph;
 }
 
 private void connectNonConnectedSubgraphs(List nodes, List edges) {
@@ -151,7 +151,7 @@ private Node createNode(String name) {
 	return node;
 }
 
-protected void graph1() {
+protected DirectedGraph graph1() {
 	NodeList nodes = new NodeList();
 	EdgeList edges = new EdgeList();
 
@@ -213,7 +213,7 @@ protected void graph1() {
 	graph.nodes = nodes;
 	graph.edges = edges;
 
-	new DirectedGraphLayout().visit(graph);
+	return graph;
 }
 
 private Node[] joinRows(NodeList nodes, EdgeList edges, Node[] firstRow, int[] conns) {
@@ -237,17 +237,25 @@ private Node[] joinRows(NodeList nodes, EdgeList edges, Node[] firstRow, int[] c
 public void testGraphPerformance() {
 	tagAsGlobalSummary("Directed Graph Layout", Dimension.CPU_TIME);
 
+	DirectedGraph graph1 = graph1();
+	DirectedGraph graph2 = bug90228();
+	int repeats = 3;
 	int warmupRuns = getWarmupRuns();
 	int measuredRuns = getMeasuredRuns();
 	for (int i = 0; i < warmupRuns + measuredRuns; i++) {
+		System.gc();
+		DirectedGraphLayout[] layouts = new DirectedGraphLayout[repeats * 2];
+		for (int j = 0; j < layouts.length; j++)
+			layouts[j] = new DirectedGraphLayout();
+		
 		if (i >= warmupRuns)
 			startMeasuring();
 
-		graph1();
-		bug90228();
-		graph1();
-		bug90228();
-
+		for (int j = 0; j < repeats; j++) {
+			layouts[j * 2].visit(graph1);
+			layouts[j * 2 + 1].visit(graph2);
+		}
+		
 		if (i >= warmupRuns)
 			stopMeasuring();
 	}
