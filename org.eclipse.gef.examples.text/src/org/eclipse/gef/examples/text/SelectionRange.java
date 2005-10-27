@@ -87,6 +87,14 @@ private void depthFirstTraversal(EditPart part, ArrayList result) {
 			depthFirstTraversal((EditPart)part.getChildren().get(i), result);
 }
 
+public boolean equals(Object obj) {
+	if (obj instanceof SelectionRange) {
+		SelectionRange other = (SelectionRange)obj;
+		return other.begin == begin && other.end == end && other.isForward == isForward;
+	}
+	return false;
+}
+
 private List findLeavesBetweenInclusive(EditPart left, EditPart right) {
 	if (left == right)
 		return Collections.singletonList(left);
