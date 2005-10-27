@@ -178,6 +178,8 @@ private void runOpenEditorTest(boolean garbageCollect) throws PartInitException 
 	int warmupRuns = getWarmupRuns();
 	int measuredRuns = getMeasuredRuns();	
 	for (int i = 0; i < warmupRuns + measuredRuns; i++) {
+		while (display.readAndDispatch()) {}
+		System.gc();
 		if (i >= warmupRuns)
 			startMeasuring();
 
@@ -251,6 +253,8 @@ public void testEditorLayout() throws PartInitException {
 	int warmupRuns = getWarmupRuns();
 	int measuredRuns = getMeasuredRuns();
 	for (int i = 0; i < warmupRuns + measuredRuns; i++) {
+		while (display.readAndDispatch()) {}
+		System.gc();
 		if (i >= warmupRuns)
 			startMeasuring();
 		
@@ -275,7 +279,7 @@ public void testEditorOpen() throws PartInitException {
 public void testEditorOpenWithOutline() throws PartInitException {
 	tagAsGlobalSummary("Open Logic Editor With Outline", Dimension.CPU_TIME);
 	IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-	.getActivePage();
+			.getActivePage();
 	page.showView(OUTLINE_VIEW_ID);
 	runOpenEditorTest(false);
 	page.hideView(page.findViewReference(OUTLINE_VIEW_ID));
@@ -283,7 +287,11 @@ public void testEditorOpenWithOutline() throws PartInitException {
 
 public void testMemoryConsumption() throws PartInitException {
 	tagAsGlobalSummary("Memory Consumption in Logic Editor", Dimension.USED_JAVA_HEAP);
+	IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+			.getActivePage();
+	page.showView(OUTLINE_VIEW_ID);
 	runOpenEditorTest(true);
+	page.hideView(page.findViewReference(OUTLINE_VIEW_ID));
 }
 
 public void testPaletteSwitching() throws PartInitException {
@@ -295,6 +303,8 @@ public void testPaletteSwitching() throws PartInitException {
 	int warmupRuns = getWarmupRuns();
 	int measuredRuns = getMeasuredRuns();	
 	for (int i = 0; i < warmupRuns + measuredRuns; i++) {
+		while (display.readAndDispatch()) {}
+		System.gc();
 		if (i >= warmupRuns)
 			startMeasuring();
 		
@@ -325,6 +335,8 @@ public void testZoom() throws PartInitException {
 	for (int i = 0; i < warmupRuns + measuredRuns; i++) {
 		zoomMgr.setZoom(zoomMgr.getMinZoom());
 		
+		while (display.readAndDispatch()) {}
+		System.gc();
 		if (i >= warmupRuns)
 			startMeasuring();
 		
