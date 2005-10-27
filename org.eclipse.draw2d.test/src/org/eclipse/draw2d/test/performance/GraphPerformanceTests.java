@@ -56,11 +56,22 @@ private void addNodes(NodeList nodes, Node[] row) {
 }
 
 protected DirectedGraph bug90228() {
-	Node s11, s10, s9, s8, s7, s6, s5, s4, s3, s2, s1;
-	Node h11, h10, h9, h8, h7, h6, h5, h4, h3, h2, h1;
+	Node s20, s19, s18, s17, s16, s15, s14, s13, s12, s11, s10, s9, s8, s7, 
+			s6, s5, s4, s3, s2, s1;
+	Node h20, h19, h18, h17, h16, h15, h14, h13, h12, h11, h10, h9, h8, h7, 
+			h6, h5, h4, h3, h2, h1;
 	NodeList nodes = new NodeList();
 	EdgeList edges = new EdgeList();
 
+	nodes.add(s20 = createNode("S20.cpp"));
+	nodes.add(s19 = createNode("S19.cpp"));
+	nodes.add(s18 = createNode("S18.cpp"));
+	nodes.add(s17 = createNode("S17.cpp"));
+	nodes.add(s16 = createNode("S16.cpp"));
+	nodes.add(s15 = createNode("S15.cpp"));
+	nodes.add(s14 = createNode("S14.cpp"));
+	nodes.add(s13 = createNode("S13.cpp"));
+	nodes.add(s12 = createNode("S12.cpp"));
 	nodes.add(s11 = createNode("S11.cpp"));
 	nodes.add(s10 = createNode("S10.cpp"));
 	nodes.add(s9 = createNode("S9.cpp"));
@@ -72,6 +83,15 @@ protected DirectedGraph bug90228() {
 	nodes.add(s3 = createNode("S3.cpp"));
 	nodes.add(s2 = createNode("S2.cpp"));
 	nodes.add(s1 = createNode("S1.cpp"));
+	nodes.add(h20 = createNode("H20.h"));
+	nodes.add(h19 = createNode("H19.h"));
+	nodes.add(h18 = createNode("H18.h"));
+	nodes.add(h17 = createNode("H17.h"));
+	nodes.add(h16 = createNode("H16.h"));
+	nodes.add(h15 = createNode("H15.h"));
+	nodes.add(h14 = createNode("H14.h"));
+	nodes.add(h13 = createNode("H13.h"));
+	nodes.add(h12 = createNode("H12.h"));
 	nodes.add(h11 = createNode("H11.h"));
 	nodes.add(h10 = createNode("H10.h"));
 	nodes.add(h9 = createNode("H9.h"));
@@ -84,6 +104,24 @@ protected DirectedGraph bug90228() {
 	nodes.add(h2 = createNode("H2.h"));
 	nodes.add(h1 = createNode("H1.h"));
 
+	edges.add(createEdge(s20, h20));
+	edges.add(createEdge(h20, h19));
+	edges.add(createEdge(s19, h19));
+	edges.add(createEdge(h19, h18));
+	edges.add(createEdge(s18, h18));
+	edges.add(createEdge(h18, h17));
+	edges.add(createEdge(s17, h17));
+	edges.add(createEdge(h17, h16));
+	edges.add(createEdge(s16, h16));
+	edges.add(createEdge(h16, h15));
+	edges.add(createEdge(s15, h15));
+	edges.add(createEdge(h15, h14));
+	edges.add(createEdge(s14, h14));
+	edges.add(createEdge(h14, h13));
+	edges.add(createEdge(s13, h13));
+	edges.add(createEdge(h13, h12));
+	edges.add(createEdge(s12, h12));
+	edges.add(createEdge(h12, h11));
 	edges.add(createEdge(s11, h11));
 	edges.add(createEdge(h11, h10));
 	edges.add(createEdge(s10, h10));
@@ -239,22 +277,18 @@ public void testGraphPerformance() {
 
 	DirectedGraph graph1 = graph1();
 	DirectedGraph graph2 = bug90228();
-	int repeats = 3;
 	int warmupRuns = getWarmupRuns();
 	int measuredRuns = getMeasuredRuns();
 	for (int i = 0; i < warmupRuns + measuredRuns; i++) {
 		System.gc();
-		DirectedGraphLayout[] layouts = new DirectedGraphLayout[repeats * 2];
-		for (int j = 0; j < layouts.length; j++)
-			layouts[j] = new DirectedGraphLayout();
+		DirectedGraphLayout layout1 = new DirectedGraphLayout();
+		DirectedGraphLayout layout2 = new DirectedGraphLayout();
 		
 		if (i >= warmupRuns)
 			startMeasuring();
 
-		for (int j = 0; j < repeats; j++) {
-			layouts[j * 2].visit(graph1);
-			layouts[j * 2 + 1].visit(graph2);
-		}
+		layout1.visit(graph1);
+		layout2.visit(graph2);
 		
 		if (i >= warmupRuns)
 			stopMeasuring();
