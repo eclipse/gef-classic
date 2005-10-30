@@ -36,7 +36,7 @@ private PaletteViewer paletteViewer;
 public CustomizeAction(PaletteViewer palette) {
 	super();
 	setText(PaletteMessages.MENU_OPEN_CUSTOMIZE_DIALOG);
-	this.paletteViewer = palette;
+	paletteViewer = palette;
 }
 
 /**
