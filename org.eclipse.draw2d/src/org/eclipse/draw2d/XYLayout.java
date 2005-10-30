@@ -71,7 +71,7 @@ protected Dimension calculatePreferredSize(IFigure f, int wHint, int hHint) {
  * @see LayoutManager#getConstraint(IFigure)
  */
 public Object getConstraint(IFigure figure) {
-	return (Rectangle) constraints.get(figure);
+	return constraints.get(figure);
 }
 
 /**
