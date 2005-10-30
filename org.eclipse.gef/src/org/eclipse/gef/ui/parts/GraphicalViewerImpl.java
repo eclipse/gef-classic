@@ -74,7 +74,7 @@ private FocusListener lFocus;
 public GraphicalViewerImpl() {
 	createDefaultRoot();
 	setProperty(MouseWheelHandler.KeyGenerator.getKey(SWT.NONE), 
-			MouseWheelDelegateHandler.SINGLETON); //$NON-NLS-1$
+			MouseWheelDelegateHandler.SINGLETON);
 }
 
 /**
