@@ -34,6 +34,9 @@ private int recommendedWidth;
 private int pageSizeCacheKeys[] = new int[3];
 private Dimension pageSizeCacheValues[] = new Dimension[3];
 
+/**
+ * @see org.eclipse.draw2d.Figure#addNotify()
+ */
 public void addNotify() {
 	super.addNotify();
 	setValid(false);

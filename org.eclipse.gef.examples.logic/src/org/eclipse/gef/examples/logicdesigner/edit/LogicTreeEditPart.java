@@ -99,11 +99,7 @@ public void propertyChange(PropertyChangeEvent change){
 }
 
 /**
- * Refreshes the Widget of this based on the property
- * given to update. All major properties are updated
- * irrespective of the property input.
- *
- * @param property  Property to be refreshed.
+ * Refreshes the visual properties of the TreeItem for this part.
  */
 protected void refreshVisuals(){
 	if (getWidget() instanceof Tree)

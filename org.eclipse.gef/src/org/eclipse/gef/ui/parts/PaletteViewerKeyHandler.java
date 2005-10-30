@@ -122,7 +122,8 @@ private void expandDrawer() {
 /**
  * Figures' navigation points are used to determine their direction compared to one 
  * another, and the distance between them.
- *  
+ * 
+ * @param figure the figure whose navigation point is to be returned
  * @return	the top-left of the given figure
  */
 protected Point getNavigationPoint(IFigure figure) {

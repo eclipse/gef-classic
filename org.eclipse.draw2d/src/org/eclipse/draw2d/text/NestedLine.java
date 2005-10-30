@@ -65,6 +65,7 @@ LineRoot getLineRoot() {
  * Returns the outer ascent of this box.  The outer ascent is the ascent above the
  * baseline including the border size and margin.  This is used when adding content into a
  * LineBox.  The linebox's own border must be drawn around the children.
+ * @return the outer ascent of this box
  */
 public int getOuterAscent() {
 	return contentAscent + FlowUtilities.getBorderAscentWithMargin(owner);
@@ -74,6 +75,7 @@ public int getOuterAscent() {
  * Returns the outer descent of this box. The outer descent is the space below the
  * baseline including the border size and margin. This is used when adding content into a
  * LineBox. The linebox's own border must be drawn around the children.
+ * @return the outer descent of this box
  */
 public int getOuterDescent() {
 	return contentDescent + FlowUtilities.getBorderDescentWithMargin(owner);
