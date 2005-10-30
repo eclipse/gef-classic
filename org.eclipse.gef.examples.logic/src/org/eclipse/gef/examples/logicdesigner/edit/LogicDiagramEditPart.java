@@ -119,7 +119,7 @@ public Object getAdapter(Class adapter) {
 		if (snapStrategies.size() == 0)
 			return null;
 		if (snapStrategies.size() == 1)
-			return (SnapToHelper)snapStrategies.get(0);
+			return snapStrategies.get(0);
 
 		SnapToHelper ss[] = new SnapToHelper[snapStrategies.size()];
 		for (int i = 0; i < snapStrategies.size(); i++)
