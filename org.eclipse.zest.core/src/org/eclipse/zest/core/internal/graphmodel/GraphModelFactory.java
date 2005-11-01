@@ -16,7 +16,6 @@ import org.eclipse.jface.viewers.IColorProvider;
 import org.eclipse.jface.viewers.IFontProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.StructuredViewer;
-import org.eclipse.mylar.zest.core.DebugPrint;
 import org.eclipse.mylar.zest.core.internal.viewers.Graph;
 import org.eclipse.mylar.zest.core.viewers.IGraphContentProvider;
 
@@ -92,7 +91,7 @@ public class GraphModelFactory implements IGraphModelFactory {
 			connection = (GraphModelConnection) iterator.next();
 			if ( connection.getSource().getExternalNode().equals( dest ) ) {
 				// We already have a node that goes from source to dest!
-				DebugPrint.println("Connection already exists: " + connection);
+				// @tag bug(114452)
 				return null;
 			}
 		}

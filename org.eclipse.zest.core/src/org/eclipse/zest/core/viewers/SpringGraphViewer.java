@@ -17,7 +17,6 @@ import java.util.List;
 import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.StructuredViewer;
-import org.eclipse.mylar.zest.core.DebugPrint;
 import org.eclipse.mylar.zest.core.ZestStyles;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphItem;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel;
@@ -118,7 +117,7 @@ public class SpringGraphViewer extends StructuredViewer {
 	 */
 	public void setCenterSelection( Object itemToCenter, int x, int y ) {
 		if( model.getInternalNode( itemToCenter ) == null ) {
-			DebugPrint.println("setCenterSelection(): internal item is null :" + itemToCenter , true);
+			// noop
 		} else {
 			viewer.setCenterSelection(  model.getInternalNode(itemToCenter), x, y );
 		}

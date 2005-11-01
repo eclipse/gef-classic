@@ -14,7 +14,6 @@ import java.util.Iterator;
 
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.StructuredViewer;
-import org.eclipse.mylar.zest.core.DebugPrint;
 import org.eclipse.mylar.zest.core.internal.viewers.Graph;
 import org.eclipse.mylar.zest.core.viewers.IGraphEntityContentProvider;
 
@@ -97,11 +96,10 @@ public class GraphModelEntityFactory implements IGraphModelFactory {
 			connection = (GraphModelConnection) iterator.next();
 			if ((dest != null) && dest.equals(connection.getSource().getExternalNode())) {
 				// We already have a node that goes from source to dest!
-				DebugPrint.println("Connection already exists: " + connection);
+				//@tag bug(114452)
 				return null;
 			}
 		}
-		DebugPrint.println("Connecting: " + sourceNode + " : " + destNode);
 		// Create the connection
 		double weight = getContentProvider().getWeight( source, dest );
 		connection = new GraphModelConnection(model, data, sourceNode, destNode, false, weight);

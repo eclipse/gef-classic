@@ -15,7 +15,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.mylar.zest.core.DebugPrint;
 import org.eclipse.mylar.zest.core.internal.viewers.Graph;
 
 
@@ -193,7 +192,6 @@ public class GraphModel extends GraphItem {
 	public boolean removeNode(GraphModelNode node) {
 		boolean removed = false;
 		if (node != null) {
-			DebugPrint.println("Deleting node '" + node.getText() + "'");
 			external2InternalNodeMap.remove( node.getExternalNode() );
 			removed = removeNodeFromList(node);
 

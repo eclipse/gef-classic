@@ -22,7 +22,6 @@ import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.editparts.LayerManager;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.mylar.zest.core.DebugPrint;
 import org.eclipse.mylar.zest.core.ZestStyles;
 import org.eclipse.mylar.zest.core.internal.gefx.ThreadedGraphicalViewer;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelConnection;
@@ -244,7 +243,7 @@ public class NestedGraphViewerImpl extends ThreadedGraphicalViewer
 				}
 				
 			} catch (InvalidLayoutConfiguration ilc) {
-				DebugPrint.println(ilc, false);
+				throw new RuntimeException(ilc.getMessage());
 			}
 		}
 	}

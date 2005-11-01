@@ -14,7 +14,6 @@ import java.util.Iterator;
 
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.StructuredViewer;
-import org.eclipse.mylar.zest.core.DebugPrint;
 import org.eclipse.mylar.zest.core.internal.viewers.Graph;
 import org.eclipse.mylar.zest.core.viewers.INestedGraphEntityContentProvider;
 
@@ -144,7 +143,7 @@ public class NestedGraphModelEntityFactory implements INestedGraphModelFactory {
 			connection = (NestedGraphModelConnection) iterator.next();
 			if ((dest != null) && dest.equals(connection.getSource().getExternalNode())) {
 				// We already have a node that goes from source to dest!
-				DebugPrint.println("Connection already exists: " + connection);
+				// @tag bug(114452)
 				return null;
 			}
 		}

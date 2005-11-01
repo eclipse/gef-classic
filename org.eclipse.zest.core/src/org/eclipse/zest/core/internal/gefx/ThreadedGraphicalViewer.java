@@ -28,7 +28,6 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.gef.EditDomain;
 import org.eclipse.gef.ui.parts.GraphicalViewerImpl;
-import org.eclipse.mylar.zest.core.DebugPrint;
 import org.eclipse.mylar.zest.core.internal.viewers.Graph;
 import org.eclipse.mylar.zest.layouts.Stoppable;
 import org.eclipse.mylar.zest.layouts.progress.ProgressEvent;
@@ -129,15 +128,11 @@ public abstract class ThreadedGraphicalViewer extends GraphicalViewerImpl implem
 					 rootFigure = ThreadedGraphicalViewer.this.getLightweightSystem().getRootFigure();
 				}
 				catch ( Exception exception ) {
-					System.out.println("Exception");
+					exception.printStackTrace();
 				}
 				
 				if (updateManager != null && rootFigure != null ) 
 					((MyUpdateManager)updateManager)._addInvalidFigure( rootFigure  );
-				else 
-					System.out.println(updateManager + " : " + rootFigure );
-
-				
 			}
 
 			public void progressEnded(ProgressEvent e) {
@@ -248,15 +243,12 @@ public abstract class ThreadedGraphicalViewer extends GraphicalViewerImpl implem
 		}
 		
 		if ( t.isAlive() ) {
-			DebugPrint.println("Thread Still Alive!");
-			//TODO: Remove thread stop and make sure this is done properly
 			StackTraceElement[] elements = t.getStackTrace();
 			String stackTrace = "";
 			for (int i = 0; i < elements.length; i++) {
 				stackTrace += elements[i].toString() + "\n";
 			}
 			throw new RuntimeException("Thread didn't stop, stack was: " + stackTrace);
-//			t.stop();
 		}
 		listOfThreads.remove( r );
 	}
@@ -317,8 +309,6 @@ class MyLightWeightSystem extends LightweightSystem {
 			//DebugPrint.println("My LWS Paint!");
 			if ( getControl().isVisible() )
 				Display.getDefault().syncExec(new DisplaySynchronize( gc ) );
-			else 
-				DebugPrint.println("Not Visible Now");
 		}
 		
 		private void _paint( GC gc ) {

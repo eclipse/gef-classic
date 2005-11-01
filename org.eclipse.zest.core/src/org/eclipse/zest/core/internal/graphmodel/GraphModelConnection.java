@@ -13,7 +13,6 @@ package org.eclipse.mylar.zest.core.internal.graphmodel;
 import java.util.HashMap;
 
 import org.eclipse.draw2d.Graphics;
-import org.eclipse.mylar.zest.core.DebugPrint;
 import org.eclipse.mylar.zest.layouts.LayoutEntity;
 import org.eclipse.mylar.zest.layouts.LayoutRelationship;
 import org.eclipse.swt.graphics.Color;
@@ -116,7 +115,6 @@ public class GraphModelConnection extends GraphItem implements LayoutRelationshi
 	 */
 	public void disconnect() {
 		if (isConnected) {
-			DebugPrint.println("Disconnecting: " + this.toString());
 			sourceNode.removeConnection(this);
 			destinationNode.removeConnection(this);
 			isConnected = false;
@@ -148,9 +146,7 @@ public class GraphModelConnection extends GraphItem implements LayoutRelationshi
 			throw new IllegalArgumentException("Invalid source and/or destination nodes");
 		}
 		else if ( newSource == newDestination ) {
-			//throw new IllegalArgumentException("Invalid: source == destination");
-			DebugPrint.println("Invalid: source == destination");
-			//return;
+			throw new IllegalArgumentException("Invalid: source == destination");
 		}
 		disconnect();
 		this.sourceNode = newSource;

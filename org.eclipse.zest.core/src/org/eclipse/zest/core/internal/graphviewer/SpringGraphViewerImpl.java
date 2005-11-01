@@ -32,7 +32,6 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.mylar.zest.core.DebugPrint;
 import org.eclipse.mylar.zest.core.ZestStyles;
 import org.eclipse.mylar.zest.core.internal.gefx.GraphRootEditPart;
 import org.eclipse.mylar.zest.core.internal.gefx.IPanningListener;
@@ -181,14 +180,12 @@ public class SpringGraphViewerImpl extends ThreadedGraphicalViewer implements IP
 					wasRunning = layoutAlgorithm.isRunning() && !layoutAlgorithm.isPaused();
 					layoutAlgorithm.pause();
 					minimized = true;
-					DebugPrint.println("Viewer minimized - pausing layout algorithm");
 				} else {
 					layoutAlgorithm.setLayoutArea(5, 5, Math.max(10, d.width - 60), Math.max(10, d.height - 30));
 					if (minimized) {
 						minimized = false;
 						if (wasRunning) {
 							layoutAlgorithm.resume();
-							DebugPrint.println("Viewer restored - resuming layout algorithm");
 						}
 					}
 				}
@@ -284,7 +281,6 @@ public class SpringGraphViewerImpl extends ThreadedGraphicalViewer implements IP
     	int cy = (dim.height / 2);
 		int dx = cx - (int)nodeToCenter.getXInLayout();
 		int dy = cy - (int)nodeToCenter.getYInLayout();
-		System.out.println(cx + "," + cy + "   " + nodeToCenter.getXInLayout() + "," + nodeToCenter.getYInLayout());
 		panningStart();
 		panning(dx, dy);
 		panningEnd();    	

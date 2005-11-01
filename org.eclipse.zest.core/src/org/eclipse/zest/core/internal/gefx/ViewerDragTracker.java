@@ -13,7 +13,6 @@ package org.eclipse.mylar.zest.core.internal.gefx;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.tools.DragEditPartsTracker;
-import org.eclipse.mylar.zest.core.DebugPrint;
 import org.eclipse.swt.events.MouseEvent;
 
 /**
@@ -23,19 +22,14 @@ public class ViewerDragTracker extends DragEditPartsTracker {
 
 	public ViewerDragTracker(EditPart owner) {
 		super(owner);
-		// TODO Auto-generated constructor stub
 	}
 	
 	protected void performSelection() {
-		// TODO Auto-generated method stub
-		DebugPrint.println("Perform selection called");
 		super.performSelection();
 	}
 	
 	public void mouseUp(MouseEvent me, EditPartViewer viewer) {
-		// TODO Auto-generated method stub
 		super.mouseUp(me, viewer);
-		//viewer.deselect( getSourceEditPart() );
 	}
 
 }
