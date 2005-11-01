@@ -24,7 +24,6 @@ import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
-import org.eclipse.mylar.zest.core.DebugPrint;
 import org.eclipse.mylar.zest.core.ZestStyles;
 import org.eclipse.mylar.zest.core.viewers.SpringGraphViewer;
 
@@ -193,8 +192,7 @@ public class SampleView extends ViewPart {
 			/** Create a new node and add a connection from it to a random node. */
 			public void run() {
 				if (currentNamesIndex >= GraphContentProvider.NEWNAMES.length) {
-					DebugPrint.println("Error - out of new names :(");
-					return;
+					throw new RuntimeException("Error - out of new names :(");
 				}
 				String newNode = GraphContentProvider.NEWNAMES[currentNamesIndex++];
 				String randomNode = GraphContentProvider.NAMES[(int)(Math.random()* GraphContentProvider.NAMES.length)];

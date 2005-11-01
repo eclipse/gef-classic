@@ -434,8 +434,6 @@ public class SimpleSwingExample {
         //createCustomGraph();
         
         placeRandomly();
-        System.out.println("num entities: " + entities.size());
-        System.out.println("num relationships: " + relationships.size());
         mainPanel.repaint();
     }
     

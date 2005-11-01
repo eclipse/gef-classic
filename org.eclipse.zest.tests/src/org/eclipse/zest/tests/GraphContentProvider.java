@@ -13,7 +13,6 @@ package org.eclipse.mylar.zest.tests;
 import java.util.Random;
 
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.mylar.zest.core.DebugPrint;
 import org.eclipse.mylar.zest.core.viewers.IGraphContentProvider;
 
 /**
@@ -103,9 +102,7 @@ public class GraphContentProvider implements IGraphContentProvider {
 	public void dispose() {
 	}
 
-	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-		// TODO Auto-generated method stub
-		DebugPrint.println("Input Changed Called!", true);	
+	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {	
 	}
 	
 	/**

@@ -73,10 +73,8 @@ public class SampleNestedView extends ViewPart {
 			
 		}
 		public void resourceChanged(IResourceChangeEvent event) {
-			//TODO: Why do I need to to async this? [irbull]
 			Display.getDefault().asyncExec(new Runnable() {
 				public void run() {
-					System.out.println("Runnable called");
 					if (_viewer.getContentProvider() != null) {
 						// must have a content provider
 						_viewer.setInput(ResourcesPlugin.getWorkspace().getRoot().getProjects() );

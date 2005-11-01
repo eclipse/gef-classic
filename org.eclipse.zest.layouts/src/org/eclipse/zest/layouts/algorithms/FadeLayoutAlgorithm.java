@@ -412,12 +412,8 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 			maxForce = Math.abs( f ) > maxForce ? Math.abs( f )  : maxForce;
 	 	}
 	 	if ( maxForce < 0.0001 ) {
-	 		System.out.println( " Max Force Small ");
-	 		//for (int i = 0; i < edgeForces.length; i++) {
-				//System.out.println( edgeForces[ i ] );
-			//}
-	 		System.out.println( edgeForces );
-	 		//System.exit( 0 );
+	 		// @tag bug(113031)
+	 		maxForce = 0.0001;
 	 	}
 	 	
 	 	normalizeArray( edgeForces, maxForce );
@@ -528,29 +524,7 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     	
     }
      
-    public void printcell(FadeCell fadecell,int i)
-    {
-    	System.out.println("Index in Vector: " + i);
-    	if (fadecell.HasChildren())
-    		System.out.println("Index of Children: " + fadecell.getNW() + fadecell.getNE() + fadecell.getSE() + fadecell.getSW());
-    	else
-    		System.out.println("Cell has no children ");
-    	if (fadecell.IsFull())
-    		System.out.println("Cell is Filled");
-    	else
-    		System.out.println("Cell is empty");
-    	System.out.println("Height is: " + fadecell.GetHeight());
-    	System.out.println("Width is: " + fadecell.GetWidth());
-    	System.out.println("Number of elements is: " + fadecell.GetNumElements());
-    	System.out.println("Average x value is: " + fadecell.GetAverageX());
-    	System.out.println("Average y value is: " + fadecell.GetAverageY());
-    	System.out.println("Bottom left x value is: " + fadecell.GetX());
-    	System.out.println("Bottom left y value is: " + fadecell.GetY());
-    	System.out.println("Index of Parent is: " + fadecell.GetIndexOfParent());
-    	System.out.println("Average scaled location is: " + fadecell.GetLocation());
-    	
-    	System.out.println("");
-    }
+
         
     /** How to add a node into the vector **/
     private void addNodeToCluster(InternalNode layoutEntity_Cluster)
@@ -965,9 +939,7 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
                 InternalNode n2 = entitiesToLayout[j];
 	    		DisplayIndependentPoint p2 = new DisplayIndependentPoint(n1.getDx(), n2.getDy());
 	    		if ( n1 != n2 && p1.equals(p2)) {
-	    			System.out.println("Nodes with the same location");
-	    			System.out.println("P1: " + p1 + " and p2 " + p2 + " -- ");
-	    			System.exit(0);
+	    			throw new RuntimeException("Nodes with the same location: " +  "P1: " + p1 + " and p2 " + p2 + " -- ");
 	    		}
 	    	}
             try {
@@ -1196,7 +1168,6 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 				layoutEntity.setInternalLocation(x,y);
 		    }
 		} else {
-			System.out.println("(maxSpan > EPSILON): " + (maxSpan > EPSILON));
 		    placeRandomly(entitiesToLayout,width,height,node_width, node_height);
 		    placeRandomly(entitiesToLayout);
 		}

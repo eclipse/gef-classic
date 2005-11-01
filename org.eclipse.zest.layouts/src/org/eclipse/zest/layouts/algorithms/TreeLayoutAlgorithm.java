@@ -542,8 +542,7 @@ public class TreeLayoutAlgorithm extends AbstractLayoutAlgorithm {
                 return i;
             }
         }
-        System.err.println("Couldn't find index of internal node: " + nodeToFind);
-        return -1;
+        throw new RuntimeException("Couldn't find index of internal node: " + nodeToFind);
     }
 
 

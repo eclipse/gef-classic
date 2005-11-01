@@ -464,8 +464,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 
 		synchronized (lock) {
 			if (layoutStopped == false) {
-				System.out.println("Layout Already Running! ");
-				return;
+				throw new RuntimeException("Layout already running");
 			}
 			layoutStopped = false;
 		}
@@ -538,7 +537,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 				InternalRelationship internalRelationship = new InternalRelationship(relation, src, dest);
 				listOfInternalRelationships.add( internalRelationship );
 			} else {
-				System.out.println("Error creating internal relationship, one of the nodes is null: src=" + src + ", dest=" + dest);
+				throw new RuntimeException("Error creating internal relationship, one of the nodes is null: src=" + src + ", dest=" + dest );
 			}
 		}
         InternalRelationship [] internalRelationships = new InternalRelationship [listOfInternalRelationships.size()];
@@ -889,16 +888,10 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	 * has been completed in the algorithm.
 	 * @param currentStep The current step completed.
 	 * @param totalNumberOfSteps The total number of steps in the algorithm.
-	 */
-	
-	private long timerValues2[] = new long[25];
-	private int timerCounter2 = 0;
+	 */	
 	protected void fireProgressEvent (int currentStep, int totalNumberOfSteps) {
 		
 		// Update the layout locations to the external nodes
-		
-		long startTime = System.currentTimeMillis();
-		
 		Calendar now = Calendar.getInstance();
 		now.add(Calendar.MILLISECOND, -MIN_TIME_DELAY_BETWEEN_PROGRESS_EVENTS);
 		
@@ -913,16 +906,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 			}
 			lastProgressEventFired = Calendar.getInstance();
 		}
-		long endTime = System.currentTimeMillis();
-		timerValues2[timerCounter2++] = endTime - startTime;
-		if ( timerCounter2 >= timerValues2.length ) {
-			timerCounter2 = 0;
-			long sum = 0;
-			for ( int i = 0; i < timerValues2.length; i++ ) {
-				sum+=timerValues2[i];
-			}
-			//System.out.println("Average Time in Prgoress: " + (sum / timerValues2.length) );
-		}
+
 	}
 	
 	public int getNumberOfProgressListeners() {

@@ -533,6 +533,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     private void setSprIterationsBasedOnTime() {
         if (maxTimeMS <= 0)
             return;
+
         long currentTime = System.currentTimeMillis();
         double fractionComplete = (double) ((double) (currentTime - startTime) / ((double) maxTimeMS));
         int currentIteration = (int) (fractionComplete * sprIterations);
@@ -754,7 +755,6 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
                 tempLocationsY[i] = y;
             }
         } else {
-            System.out.println("(maxSpan > EPSILON): " + (maxSpan > EPSILON));
             placeRandomly(entitiesToLayout);
         }
     }

@@ -33,12 +33,12 @@ public class InternalRelationship {
 	}
 	
 	public InternalNode getSource() {
-		if ( this.source == null ) System.out.println("Source Null");
+		if ( this.source == null ) throw new RuntimeException("Source is null");
 		return this.source;
 	}
 	
 	public InternalNode getDestination() {
-		if ( this.destination == null ) System.out.println("Dest Null");
+		if ( this.destination == null ) throw new RuntimeException("Dest is null");
 		return this.destination;
 	}
 	

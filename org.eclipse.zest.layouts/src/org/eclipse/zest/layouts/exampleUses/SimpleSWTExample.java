@@ -282,8 +282,7 @@ public class SimpleSWTExample {
 		
 		
 		if ( currentLayoutAlgorithm.isRunning() ) {
-			System.out.println("Layouts already running");
-			return;
+			throw new RuntimeException("Layout is already running");
 		}
 	    if (placeRandomly) {
 	        placeRandomly();
