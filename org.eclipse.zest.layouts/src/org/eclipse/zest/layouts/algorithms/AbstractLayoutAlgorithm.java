@@ -100,6 +100,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	private List relationshipsToAdd;
 	
 	//protected boolean cancelled = false;
+	private boolean started = false;
 	protected boolean layoutStopped = true;
 	private boolean isLayoutPaused = false;
 	protected boolean runContinuously = false;
@@ -419,6 +420,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 			                                  double width, double height,
 			                                  boolean continuous)  {
 		//setupLayout( entitiesToLayout, relationshipsToConsider, x, y, width, height );
+		this.layoutStopped = false;
 		this.runContinuously = continuous;
 		setupLayout(entitiesToLayout, relationshipsToConsider, x, y, width, height );
 		preLayoutAlgorithm( _internalNodes, _internalRelationships, _x, _y, _width, _height );
@@ -495,7 +497,11 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	}
 
 	public void run() {
-		layoutStopped = false;
+		
+		if ( started == true ) 
+			throw new RuntimeException("Layout has already run!");
+		started = true;
+		//layoutStopped = false;
 		isLayoutPaused = false;
 		applyLayoutInternal(_internalNodes, _internalRelationships, _x,
 				_y, _width, _height);

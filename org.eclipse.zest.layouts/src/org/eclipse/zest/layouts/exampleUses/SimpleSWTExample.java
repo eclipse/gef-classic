@@ -11,6 +11,7 @@
 package org.eclipse.mylar.zest.layouts.exampleUses;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -422,7 +423,8 @@ public class SimpleSWTExample {
 			long lastPaint;
 				
 	        public void paintControl(PaintEvent e) {
-				long currentTime = System.currentTimeMillis();
+	        	Date date = new Date();
+				long currentTime = date.getTime();
 				if ( currentTime - lastPaint < 40 ) 
 					return;
 				else
@@ -430,7 +432,7 @@ public class SimpleSWTExample {
 	            if (Display.getDefault() == null || e.width == 0 || e.height == 0) {
 	                return;
 	            }
-				long startTime = System.currentTimeMillis();
+				long startTime = date.getTime();
 				
 	            // do a bit of our own double-buffering to stop flickering
 	            Image imageBuffer;
@@ -504,7 +506,7 @@ public class SimpleSWTExample {
 				imageBuffer.dispose();	
 				gcBuffer.dispose();
 				
-				long time = System.currentTimeMillis() - startTime;
+				long time = date.getTime() - startTime;
 				if (time > 200) {
 				}
 			} 

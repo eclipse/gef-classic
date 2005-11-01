@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.mylar.zest.layouts.algorithms;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -173,6 +174,8 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     private boolean[] anchors;
     
     private DisplayIndependentRectangle bounds = null;
+    
+    Date date = null;
 
     /**
      * Constructor.
@@ -181,6 +184,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
         super( styles );
         srcDestToNumRelsMap = new HashMap();
         srcDestToRelsAvgWeightMap = new HashMap();
+        date = new Date();
     }
 
     public void setLayoutArea(double x, double y, double width, double height) {
@@ -398,7 +402,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 
         // do the calculations
         preCompute(entitiesToLayout);
-        startTime = System.currentTimeMillis();
+        startTime = date.getTime();
     }
 
     protected void postLayoutAlgorithm(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider) {
@@ -534,7 +538,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
         if (maxTimeMS <= 0)
             return;
 
-        long currentTime = System.currentTimeMillis();
+        long currentTime = date.getTime();
         double fractionComplete = (double) ((double) (currentTime - startTime) / ((double) maxTimeMS));
         int currentIteration = (int) (fractionComplete * sprIterations);
         if (currentIteration > iteration) {

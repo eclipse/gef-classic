@@ -193,7 +193,8 @@ public class SimpleSwingExample {
         mainFrame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 stop();
-                System.exit(0);
+                mainFrame.dispose();
+                
             }
         });
         

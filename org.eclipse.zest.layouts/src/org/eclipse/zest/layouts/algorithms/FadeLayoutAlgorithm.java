@@ -553,7 +553,6 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     		{
     			/** if point is in SW quadrant **/
     			
-    			//if (((layoutEntity_Cluster.getInternalY() + CELL_HEIGHT) >= tempfadenode.GetY())&& ((layoutEntity_Cluster.getInternalY() + CELL_HEIGHT) <  (tempfadenode.GetY() + (tempfadenode.GetHeight()/2))))
     			if ( layoutEntity_Cluster.getDy() + CELL_HEIGHT>= tempfadenode.GetY() && (layoutEntity_Cluster.getDy() + CELL_HEIGHT < (tempfadenode.GetY() + (tempfadenode.GetHeight()/2))) ) 
     			{
     				parentIndex = indexofInterest;
@@ -568,9 +567,6 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     			}
     		
     			else { 
-    				//System.out.println("Bad Location [1]");
-    				//System.out.println("Cell Spans: " + tempfadenode.GetX() + );
-    				//System.exit(0);
     				parentIndex = indexofInterest;
     				indexofInterest = tempfadenode.getNW();
     						
@@ -599,8 +595,6 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     				//System.out.println("Bad Location [2]");
     				parentIndex = indexofInterest;
     				indexofInterest = tempfadenode.getNE();
-
-    				//System.exit(0);
     			} 
     			   			
     		}
@@ -623,8 +617,6 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
         				//System.out.println("Bad Location [3-2]");
         				parentIndex = indexofInterest;
         				indexofInterest = tempfadenode.getNE();
-
-        				//System.exit(0);
         			} 
 
     		}

@@ -85,9 +85,11 @@ public abstract class ContinuousLayoutAlgorithm extends AbstractLayoutAlgorithm 
 			double localY = bounds.y;
 			double localWidth = bounds.width;
 			double localHeight = bounds.height;
+
 			computeOneIteration(entitiesToLayout, relationshipsToConsider, localX, localY, localWidth, localHeight);
 			
 			updateLayoutLocations(entitiesToLayout);
+			
 			
 			if ( runContinuously ) {
 				fireProgressEvent(1,1);
