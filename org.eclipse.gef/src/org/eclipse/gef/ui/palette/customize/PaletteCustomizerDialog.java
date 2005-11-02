@@ -567,7 +567,6 @@ protected TreeViewer createOutlineTreeViewer(Composite composite) {
 	viewer.setContentProvider(new PaletteTreeProvider(viewer));
 	treeViewerLabelProvider = new PaletteLabelProvider(viewer);
 	viewer.setLabelProvider(treeViewerLabelProvider);
-	viewer.setAutoExpandLevel(TreeViewer.ALL_LEVELS);
 	viewer.setInput(getPaletteRoot());
 	viewer.addSelectionChangedListener(new ISelectionChangedListener() {
 		public void selectionChanged(SelectionChangedEvent event) {
