@@ -6,6 +6,7 @@
       <editor
             class="org.eclipse.mylar.zest.core.internal.timelineview.TimeLineEditor"
             default="false"
+            extensions="time"
             icon="src/icons/home.gif"
             id="org.eclipse.mylar.zest.core.editor1"
             name="org.eclipse.mylar.zest.core.editor1"/>
