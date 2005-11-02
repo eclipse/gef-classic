@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Core Plug-in
-Bundle-SymbolicName: org.eclipse.mylar.zest.core
+Bundle-SymbolicName: org.eclipse.mylar.zest.core; singleton:=true
 Bundle-Version: 0.3.1
 Bundle-Activator: org.eclipse.mylar.zest.core.CorePlugin
 Bundle-Localization: plugin

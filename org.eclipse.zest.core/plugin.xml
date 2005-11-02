@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
 <plugin>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="org.eclipse.mylar.zest.core.internal.timelineview.TimeLineEditor"
+            default="false"
+            icon="src/icons/home.gif"
+            id="org.eclipse.mylar.zest.core.editor1"
+            name="org.eclipse.mylar.zest.core.editor1"/>
+   </extension>
 
 </plugin>
