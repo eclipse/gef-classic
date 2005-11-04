@@ -46,7 +46,7 @@ import org.eclipse.mylar.zest.layouts.progress.ProgressListener;
  * @version 1.0
  * @author Casey Best
  * @author irbull
- * @author ccallendar
+ * @author Chris Callendar
  * @author Rob Lintern
  */
 public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppable {
@@ -112,6 +112,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 
 	/**
 	 * Initializes the abstract layout algorithm.
+	 * @see LayoutStyles
 	 */
 	public AbstractLayoutAlgorithm(int styles) {
 		progressListeners = new ArrayList();

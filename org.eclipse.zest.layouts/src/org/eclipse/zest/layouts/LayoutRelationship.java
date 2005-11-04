@@ -16,7 +16,7 @@ package org.eclipse.mylar.zest.layouts;
  * a common interface to run on.
  * 
  * @author Casey Best
- * @author ccallendar
+ * @author Chris Callendar
  */
 public interface LayoutRelationship {
 	/**

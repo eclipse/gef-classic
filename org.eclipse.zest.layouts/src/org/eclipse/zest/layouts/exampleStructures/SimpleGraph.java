@@ -25,7 +25,7 @@ import org.eclipse.mylar.zest.layouts.LayoutRelationship;
  * Create a very simple graph that can be used in the layout algorithms
  * 
  * @author Casey Best
- * @author ccallendar
+ * @author Chris Callendar
  */
 public class SimpleGraph implements LayoutGraph {
 	
