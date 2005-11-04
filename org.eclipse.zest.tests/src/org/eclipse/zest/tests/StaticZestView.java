@@ -49,7 +49,7 @@ import org.eclipse.ui.part.ViewPart;
  * presented in the same way everywhere.
  * <p>
  * 
- * @author irbull
+ * @author Ian Bull
  * @author Chris Callendar
  */
 public class StaticZestView extends ViewPart {

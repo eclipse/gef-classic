@@ -33,7 +33,7 @@ import org.eclipse.mylar.zest.layouts.dataStructures.InternalRelationship;
  * 6. Query the computed results(node size and node position).
  * 
  * @version 2.0
- * @author irbull
+ * @author Ian Bull
  * @author Casey Best (version 1.0 by Jingwei Wu/Rob Lintern)
  */
 public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {

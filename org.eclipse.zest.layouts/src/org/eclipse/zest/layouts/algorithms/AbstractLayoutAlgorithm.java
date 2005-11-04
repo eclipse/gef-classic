@@ -45,7 +45,7 @@ import org.eclipse.mylar.zest.layouts.progress.ProgressListener;
  * 
  * @version 1.0
  * @author Casey Best
- * @author irbull
+ * @author Ian Bull
  * @author Chris Callendar
  * @author Rob Lintern
  */

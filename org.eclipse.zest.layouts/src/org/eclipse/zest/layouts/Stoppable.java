@@ -13,7 +13,7 @@ package org.eclipse.mylar.zest.layouts;
 import org.eclipse.mylar.zest.layouts.progress.ProgressListener;
 
 /**
- * @author irbull
+ * @author Ian Bull
  */
 public interface Stoppable extends Runnable {
 	

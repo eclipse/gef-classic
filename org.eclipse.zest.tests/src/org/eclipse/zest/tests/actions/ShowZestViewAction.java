@@ -20,7 +20,7 @@ import org.eclipse.ui.PlatformUI;
 /**
  * Shows the View which is defined in the action definition id of the IAction.
  * 
- * @author irbull
+ * @author Ian Bull
  * @see IWorkbenchWindowActionDelegate
  */
 public class ShowZestViewAction implements IWorkbenchWindowActionDelegate {

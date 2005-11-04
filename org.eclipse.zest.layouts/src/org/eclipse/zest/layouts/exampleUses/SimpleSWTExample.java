@@ -65,7 +65,7 @@ import org.eclipse.swt.widgets.ToolItem;
 
 /**
  * @author Rob Lintern
- * @author irbull
+ * @author Ian Bull
  * A simple example of using layout algorithms with a SWT application.
  */
 public class SimpleSWTExample {	

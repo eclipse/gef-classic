@@ -17,7 +17,7 @@ import org.eclipse.mylar.zest.layouts.dataStructures.InternalRelationship;
 
 /**
  * 
- * @author irbull
+ * @author Ian Bull
  * 
  * Used to represent algorithms that can continuously run.  
  *

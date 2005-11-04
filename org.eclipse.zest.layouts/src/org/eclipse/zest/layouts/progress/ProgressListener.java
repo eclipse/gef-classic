@@ -14,7 +14,7 @@ package org.eclipse.mylar.zest.layouts.progress;
 /**
  * Listens for ProgressEvents which are thrown by layout algorithms at frequent intervals.
  * 
- * @author irbull
+ * @author Ian Bull
  * @author Casey Best
  */
 public interface ProgressListener {

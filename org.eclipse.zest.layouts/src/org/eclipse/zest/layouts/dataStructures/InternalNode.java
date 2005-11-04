@@ -15,7 +15,7 @@ import java.util.HashMap;
 import org.eclipse.mylar.zest.layouts.LayoutEntity;
 
 /**
- * @author irbull
+ * @author Ian Bull
  */
 public class InternalNode implements Comparable {
 	

@@ -20,7 +20,7 @@ import org.eclipse.mylar.zest.core.viewers.IGraphContentProvider;
  * objects in adapters or simply return objects as-is. These objects may be sensitive to the current 
  * input of the view, or ignore it and always show the same content (like Task List, for example).
  * 
- * @author irbull
+ * @author Ian Bull
  * @author Chris Callendar
  */	
 public class GraphContentProvider implements IGraphContentProvider {

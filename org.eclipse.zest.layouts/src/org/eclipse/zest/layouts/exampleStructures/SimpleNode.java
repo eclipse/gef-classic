@@ -23,7 +23,7 @@ import org.eclipse.mylar.zest.layouts.LayoutEntity;
 /**
  * Rerpresents a simple node that can be used in the layout algorithms.
  * 
- * @author irbull
+ * @author Ian Bull
  * @author Casey Best (Version 1 by Rob Lintern)
  * @version 2
  */

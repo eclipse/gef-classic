@@ -21,7 +21,7 @@ import org.eclipse.mylar.zest.core.viewers.IGraphEntityContentProvider;;
 /**
  * 
  * 
- * @author irbull
+ * @author Ian Bull
  */
 public class GraphEntityContentProvider implements IGraphEntityContentProvider {
 

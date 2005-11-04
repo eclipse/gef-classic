@@ -23,7 +23,7 @@ import org.eclipse.draw2d.geometry.Translatable;
 /**
  * A freeform layer figure which can be scaled.
  * 
- * @author irbull
+ * @author Ian Bull
  * @author Chris Callendar
  */
 public class ScaledFigure extends Figure {

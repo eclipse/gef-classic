@@ -18,7 +18,7 @@ import org.eclipse.mylar.zest.layouts.dataStructures.InternalRelationship;
 
 /**
  * @version 2.0
- * @author irbull
+ * @author Ian Bull
  * @author Casey Best and Rob Lintern
  */
 public class GridLayoutAlgorithm extends AbstractLayoutAlgorithm {

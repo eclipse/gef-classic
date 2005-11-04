@@ -12,7 +12,7 @@ package org.eclipse.mylar.zest.layouts;
 
 /**
  * 
- * @author irbull
+ * @author Ian Bull
  *
  */
 public class InvalidLayoutConfiguration extends Exception {

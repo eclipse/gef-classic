@@ -13,7 +13,7 @@ package org.eclipse.mylar.zest.layouts.dataStructures;
 import org.eclipse.mylar.zest.layouts.LayoutRelationship;
 
 /**
- * @author irbull
+ * @author Ian Bull
  */
 public class InternalRelationship {
 	
