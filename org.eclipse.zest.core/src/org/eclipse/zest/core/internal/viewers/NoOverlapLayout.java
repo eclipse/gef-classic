@@ -149,7 +149,7 @@ public class NoOverlapLayout  {
 	/**
 	 * A class for comparing {@link Point} objects to a reference Point.
 	 * 
-	 * @author ccallendar
+	 * @author Chris Callendar
 	 */
 	class PointComparator implements Comparator {
 

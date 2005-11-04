@@ -30,14 +30,13 @@ public class NoResizeNodeConstraintCommand extends Command {
 	/** A request to move/resize an edit part. */
 	private final ChangeBoundsRequest request;
 	
-	
 	/**
 	 * GraphSetConstraintCommand constructor.
 	 */
 	public NoResizeNodeConstraintCommand(GraphModelNode node, ChangeBoundsRequest request, Rectangle newBounds) {
 		if (node == null || request == null || newBounds == null) {
 			throw new IllegalArgumentException("Couldn't create a GraphSetConstraint with those parameters");
-		}		
+		}
 		this.request = request;
 		this.setLabel("Move");
 	}

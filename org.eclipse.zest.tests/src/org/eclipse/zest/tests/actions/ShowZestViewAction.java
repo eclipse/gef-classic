@@ -25,6 +25,14 @@ import org.eclipse.ui.PlatformUI;
  */
 public class ShowZestViewAction implements IWorkbenchWindowActionDelegate {
 
+	private static final String ACTION_NESTED = "org.eclipse.mylar.zest.tests.actions.NestedGraphViewerAction";
+	private static final String ACTION_SPRING = "org.eclipse.mylar.zest.tests.actions.SpingGraphViewerAction";
+	private static final String ACTION_STATIC = "org.eclipse.mylar.zest.tests.actions.StaticGraphViewerAction";
+	
+	private static final String ID_NESTED = "org.eclipse.mylar.zest.tests.nestedgraphviewer";
+	private static final String ID_SPRING = "org.eclipse.mylar.zest.tests.springgraphviewer";
+	private static final String ID_STATIC = "org.eclipse.mylar.zest.tests.staticgraphviewer";
+
 	/**
 	 * Shows the view whose unique ID is set in the action definition id.
 	 * @param action the action
@@ -43,10 +51,13 @@ public class ShowZestViewAction implements IWorkbenchWindowActionDelegate {
 		
 		try {
 			String actionID = action.getId();
-			if ( actionID.equals( "org.eclipse.mylar.zest.tests.actions.NestedGraphViewerAction") ) 
-				activePage.showView("org.eclipse.mylar.zest.tests.nestedgraphviewer");
-			else if ( actionID.equals( "org.eclipse.mylar.zest.tests.actions.SpingGraphViewerAction"))
-				activePage.showView("org.eclipse.mylar.zest.tests.springgraphviewer");
+			if (ACTION_NESTED.equals(actionID)) 
+				activePage.showView(ID_NESTED);
+			else if (ACTION_SPRING.equals(actionID))
+				activePage.showView(ID_SPRING);
+			else if (ACTION_STATIC.equals(actionID)) {
+				activePage.showView(ID_STATIC);
+			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

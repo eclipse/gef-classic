@@ -32,7 +32,7 @@ import org.eclipse.mylar.zest.core.viewers.INestedGraphEntityContentProvider;
 /**
  * 
  * 
- * @author ccallendar
+ * @author Chris Callendar
  */
 public class JavaHierarchyContentProvider extends StandardJavaElementContentProvider 
 	implements INestedGraphEntityContentProvider {

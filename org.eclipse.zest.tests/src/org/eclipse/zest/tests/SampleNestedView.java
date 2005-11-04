@@ -49,7 +49,7 @@ import org.eclipse.ui.part.ViewPart;
  * <p>
  * 
  * @author irbull
- * @author ccallendar
+ * @author Chris Callendar
  */
 public class SampleNestedView extends ViewPart {
 	

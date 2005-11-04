@@ -21,7 +21,7 @@ import org.eclipse.mylar.zest.core.viewers.IGraphContentProvider;
  * input of the view, or ignore it and always show the same content (like Task List, for example).
  * 
  * @author irbull
- * @author ccallendar
+ * @author Chris Callendar
  */	
 public class GraphContentProvider implements IGraphContentProvider {
 	

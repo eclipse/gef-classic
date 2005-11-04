@@ -57,19 +57,10 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 	 */
 	public void setContents(GraphModel model, IGraphModelFactory modelFactory) { 
 		super.setContents( model );
-		Dimension d = this.getCanvasSize();
 		this.model = model;
 //		this.modelFactory = modelFactory;
 		
-		layoutAlgorithm = new TreeLayoutAlgorithm(LayoutStyles.NO_LAYOUT_SIZE);
-	
-		try {
-			layoutAlgorithm.applyLayout(model.getNodesArray(), model.getConnectionsArray(), 5.0, 5.0, d.width, d.height,false, false );
-		} catch (InvalidLayoutConfiguration e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+		applyLayout();
 		this.addControlListener(new ControlListener() {
 			public void controlMoved(ControlEvent e) { }
 			public void controlResized(ControlEvent e) {
@@ -81,13 +72,26 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 					try {
 						layoutAlgorithm.applyLayout(StaticGraphViewerImpl.this.model.getNodesArray(), StaticGraphViewerImpl.this.model.getConnectionsArray(), 5.0, 5.0, d.width, d.height,false, false );
 					} catch (InvalidLayoutConfiguration e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 				}
 			}
 		});	
+	}
+	
+	protected void applyLayout() {
+		if (model == null) 
+			return;
 		
+		if (layoutAlgorithm == null) {
+			layoutAlgorithm = new TreeLayoutAlgorithm(LayoutStyles.NO_LAYOUT_SIZE);
+		}
+		Dimension d = this.getCanvasSize();
+		try {
+			layoutAlgorithm.applyLayout(model.getNodesArray(), model.getConnectionsArray(), 5.0, 5.0, d.width, d.height, false, false);
+		} catch (InvalidLayoutConfiguration e) {
+			e.printStackTrace();
+		}
 	}
 
 	protected void configureGraphicalViewer() {
@@ -109,6 +113,15 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 	public void panningEnd() {
 		// TODO Auto-generated method stub
 		
+	}
+
+
+	/**
+	 * @param algorithm
+	 */
+	public void setLayoutAlgorithm(LayoutAlgorithm algorithm) {
+		this.layoutAlgorithm = algorithm;
+		applyLayout();
 	}
 
 }

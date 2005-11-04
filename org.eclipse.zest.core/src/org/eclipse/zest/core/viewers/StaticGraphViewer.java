@@ -21,6 +21,7 @@ import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelEntityFactory;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelFactory;
 import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelFactory;
 import org.eclipse.mylar.zest.core.internal.graphviewer.StaticGraphViewerImpl;
+import org.eclipse.mylar.zest.layouts.LayoutAlgorithm;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Widget;
@@ -42,6 +43,13 @@ public class StaticGraphViewer extends StructuredViewer {
 		hookControl( this.viewer.getControl() );
 	}
 	
+	/**
+	 * Sets the layout algorithm to use for this viewer.
+	 * @param algorithm the algorithm to layout the nodes
+	 */
+	public void setLayoutAlgorithm(LayoutAlgorithm algorithm) {
+		viewer.setLayoutAlgorithm(algorithm);
+	}
 	
 	public void setContentProvider(IContentProvider contentProvider) {
 		if (contentProvider instanceof IGraphContentProvider) {

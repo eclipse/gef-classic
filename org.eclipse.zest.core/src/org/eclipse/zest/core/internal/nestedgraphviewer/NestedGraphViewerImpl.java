@@ -51,7 +51,7 @@ import org.eclipse.swt.widgets.Widget;
 /**
  * The GEF GraphicalViewerImpl extension for nested graphs.
  * 
- * @author Chris Callendar
+ * @author Chris Callendar 
  */
 public class NestedGraphViewerImpl extends ThreadedGraphicalViewer 
 	implements IBreadCrumbListener {

@@ -19,7 +19,7 @@ import org.eclipse.mylar.zest.core.viewers.INestedGraphEntityContentProvider;
  * the primary way of generating the content.  The entities are represented in 
  * a binary tree in this example.
  * 
- * @author ccallendar
+ * @author Chris Callendar
  */
 public class NestedGraphEntityContentProvider implements INestedGraphEntityContentProvider {
 

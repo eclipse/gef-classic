@@ -59,9 +59,7 @@ public class GraphXYLayoutEditPolicy extends XYLayoutEditPolicy {
 		if ((child instanceof GraphNodeEditPart) && (constraint instanceof Rectangle)) {
 			// return a command that allows nodes to move
 			GraphNodeEditPart editPart = (GraphNodeEditPart) child;
-			NoResizeNodeConstraintCommand cmd = 
-				new NoResizeNodeConstraintCommand((GraphModelNode)editPart.getModel(), 
-						request, (Rectangle)constraint);
+			NoResizeNodeConstraintCommand cmd = new NoResizeNodeConstraintCommand((GraphModelNode)editPart.getModel(), request, (Rectangle)constraint);
 			return cmd;
 		}
 		return super.createChangeConstraintCommand(request, child, constraint);

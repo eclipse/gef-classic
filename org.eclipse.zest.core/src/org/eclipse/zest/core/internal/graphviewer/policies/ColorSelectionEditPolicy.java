@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
@@ -60,6 +61,11 @@ public class ColorSelectionEditPolicy extends NonResizableEditPolicy {
 	protected void showSelection() {
 		PropertyChangeEvent evt = new PropertyChangeEvent(GraphModelNode.HIGHLIGHT_PROP, GraphModelNode.HIGHLIGHT_PROP, null, ColorConstants.red);
 		editPart.propertyChange(evt);
+		
+		// move the current editpart's figure to last in the list to put it on top of the other nodes
+		IFigure fig = editPart.getFigure();
+		fig.getParent().getChildren().remove(fig);
+		fig.getParent().getChildren().add(fig);
 	}
 	
 	/* (non-Javadoc)

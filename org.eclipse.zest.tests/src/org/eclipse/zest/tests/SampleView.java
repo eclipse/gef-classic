@@ -46,7 +46,7 @@ import org.eclipse.mylar.zest.core.viewers.SpringGraphViewer;
  * <p>
  * 
  * @author irbull
- * @author ccallendar
+ * @author Chris Callendar
  */
 public class SampleView extends ViewPart {
 	

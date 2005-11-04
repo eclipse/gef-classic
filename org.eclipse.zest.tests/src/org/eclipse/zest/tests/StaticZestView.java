@@ -10,10 +10,24 @@
  *******************************************************************************/
 package org.eclipse.mylar.zest.tests;
 
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.viewers.DecoratingLabelProvider;
 import org.eclipse.mylar.zest.core.ZestStyles;
 import org.eclipse.mylar.zest.core.viewers.StaticGraphViewer;
+import org.eclipse.mylar.zest.layouts.LayoutAlgorithm;
+import org.eclipse.mylar.zest.layouts.LayoutStyles;
+import org.eclipse.mylar.zest.layouts.algorithms.FadeLayoutAlgorithm;
+import org.eclipse.mylar.zest.layouts.algorithms.GridLayoutAlgorithm;
+import org.eclipse.mylar.zest.layouts.algorithms.HorizontalLayoutAlgorithm;
+import org.eclipse.mylar.zest.layouts.algorithms.HorizontalTreeLayoutAlgorithm;
+import org.eclipse.mylar.zest.layouts.algorithms.RadialLayoutAlgorithm;
+import org.eclipse.mylar.zest.layouts.algorithms.SpringLayoutAlgorithm;
+import org.eclipse.mylar.zest.layouts.algorithms.TreeLayoutAlgorithm;
+import org.eclipse.mylar.zest.layouts.algorithms.VerticalLayoutAlgorithm;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
@@ -36,16 +50,20 @@ import org.eclipse.ui.part.ViewPart;
  * <p>
  * 
  * @author irbull
- * @author ccallendar
+ * @author Chris Callendar
  */
 public class StaticZestView extends ViewPart {
 	
 	private StaticGraphViewer viewer;
 	
+	private Action action;
+	private ZestImages images;
+	
 	/**
 	 * The constructor.
 	 */
 	public StaticZestView() {
+		this.images = new ZestImages();
 	}
 	
 	/**
@@ -64,7 +82,7 @@ public class StaticZestView extends ViewPart {
 		viewer.setInput(getViewSite());
 		
 		//makeActions();
-		//contributeToActionBars();
+		contributeToActionBars();
 		//hookContextMenu();
 	}
 	
@@ -76,5 +94,53 @@ public class StaticZestView extends ViewPart {
 		viewer.getControl().setFocus();
 	}
 	
+	private void contributeToActionBars() {
+		IActionBars bars = getViewSite().getActionBars();
+		fillLocalPullDown(bars.getMenuManager());
+		fillLocalToolBar(bars.getToolBarManager());
+	}
+	
+	private void fillLocalToolBar(IToolBarManager manager) {
+	}
+	
+	private void fillLocalPullDown(IMenuManager manager) {
+		action = new LayoutAction("Horizontal Layout", new HorizontalLayoutAlgorithm(LayoutStyles.NONE));
+		action.setImageDescriptor(images.getImageDescriptor(ZestImages.IMG_ZEST_LAYOUT_HORIZONTAL));
+		manager.add(action);
+		action = new LayoutAction("Vertical Layout", new VerticalLayoutAlgorithm(LayoutStyles.NONE));
+		action.setImageDescriptor(images.getImageDescriptor(ZestImages.IMG_ZEST_LAYOUT_VERTICAL));
+		manager.add(action);
+		action = new LayoutAction("Grid Layout", new GridLayoutAlgorithm(LayoutStyles.NONE));
+		action.setImageDescriptor(images.getImageDescriptor(ZestImages.IMG_ZEST_LAYOUT_GRID));
+		manager.add(action);
+		action = new LayoutAction("Vertical Tree Layout", new TreeLayoutAlgorithm(LayoutStyles.NONE));
+		action.setImageDescriptor(images.getImageDescriptor(ZestImages.IMG_ZEST_LAYOUT_TREE));
+		manager.add(action);
+		action = new LayoutAction("Horizontal Tree Layout", new HorizontalTreeLayoutAlgorithm(LayoutStyles.NONE));
+		action.setImageDescriptor(images.getImageDescriptor(ZestImages.IMG_ZEST_LAYOUT_TREE_HORIZ));
+		manager.add(action);
+		action = new LayoutAction("Radial Layout", new RadialLayoutAlgorithm(LayoutStyles.NONE));
+		action.setImageDescriptor(images.getImageDescriptor(ZestImages.IMG_ZEST_LAYOUT_RADIAL));
+		manager.add(action);
+		action = new LayoutAction("Spring Layout", new SpringLayoutAlgorithm(LayoutStyles.NONE));
+		action.setImageDescriptor(images.getImageDescriptor(ZestImages.IMG_ZEST_LAYOUT_SPRING));
+		manager.add(action);
+		action = new LayoutAction("Fade Layout", new FadeLayoutAlgorithm(LayoutStyles.NONE));
+		//action.setImageDescriptor(images.getImageDescriptor(ZestImages.IMG_ZEST_LAYOUT_SPRING));
+		manager.add(action);
+	}
+	
+	class LayoutAction extends Action {
+
+		private LayoutAlgorithm algorithm;
+		public LayoutAction(String name, LayoutAlgorithm algorithm) {
+			this.algorithm = algorithm;
+			setText(name);
+		}
+		
+		public void run() {
+			viewer.setLayoutAlgorithm(algorithm);
+		}
+	}
 	
 }

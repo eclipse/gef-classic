@@ -18,51 +18,37 @@ import org.eclipse.swt.graphics.Image;
 /**
  * This class stores the images used in the Zest plugin.
  * 
- * @author ccallendar
+ * @author Chris Callendar
  */
 public class ZestImages {
 
-	public static final String IMG_ZEST_ADD_NODE 			= "IMG_ZEST_ADD_NODE";
-	public static final String IMG_ZEST_ADD_NODE_DISABLED	= "IMG_ZEST_ADD_NODE_DISABLED";
-	public static final String IMG_ZEST_DELETE				= "IMG_ZEST_DELETE";
-	public static final String IMG_ZEST_DELETE_DISABLED 	= "IMG_ZEST_DELETE_DISABLED";
-	public static final String IMG_ZEST_PAUSE				= "IMG_ZEST_PAUSE";
-	public static final String IMG_ZEST_PAUSE_DISABLED 		= "IMG_ZEST_PAUSE_DISABLED";
-	public static final String IMG_ZEST_RESUME				= "IMG_ZEST_RESUME";
-	public static final String IMG_ZEST_RESUME_DISABLED 	= "IMG_ZEST_RESUME_DISABLED";
-	public static final String IMG_ZEST_PLAY				= "IMG_ZEST_PLAY";
-	public static final String IMG_ZEST_PLAY_DISABLED		= "IMG_ZEST_PLAY_DISABLED";
-	public static final String IMG_ZEST_STOP				= "IMG_ZEST_STOP";
-	public static final String IMG_ZEST_STOP_DISABLED		= "IMG_ZEST_STOP_DISABLED";
-	public static final String IMG_ZEST_ZOOM_IN				= "IMG_ZEST_ZOOM_IN";
-	public static final String IMG_ZEST_ZOOM_IN_DISABLED	= "IMG_ZEST_ZOOM_IN_DISABLED";
-	public static final String IMG_ZEST_ZOOM_OUT			= "IMG_ZEST_ZOOM_OUT";
-	public static final String IMG_ZEST_ZOOM_OUT_DISABLED	= "IMG_ZEST_ZOOM_OUT_DISABLED";
-	public static final String IMG_ZEST_PLUS				= "IMG_ZEST_PLUS";
-	public static final String IMG_ZEST_MINUS				= "IMG_ZEST_MINUS";
-	public static final String IMG_ZEST_DOT					= "IMG_ZEST_DOT";
-	public static final String IMG_ZEST_DIRECTED_GRAPH		= "IMG_ZEST_DIRECTED_GRAPH";
-
-	private static final String ADD_NODE 					= "/icons/addnode.gif";
-	private static final String ADD_NODE_DISABLED			= "/icons/addnode_disabled.gif";
-	private static final String DELETE						= "/icons/delete.gif";
-	private static final String DELETE_DISABLED 			= "/icons/delete_disabled.gif";
-	private static final String PAUSE						= "/icons/pause.gif";
-	private static final String PAUSE_DISABLED 				= "/icons/pause_disabled.gif";
-	private static final String RESUME						= "/icons/resume.gif";
-	private static final String RESUME_DISABLED 			= "/icons/resume_disabled.gif";
-	private static final String PLAY						= "/icons/play.gif";
-	private static final String PLAY_DISABLED				= "/icons/play_disabled.gif";
-	private static final String STOP						= "/icons/stop.gif";
-	private static final String STOP_DISABLED				= "/icons/stop_disabled.gif";
-	private static final String ZOOM_IN						= "/icons/zoom_in.gif";
-	private static final String ZOOM_IN_DISABLED			= "/icons/zoom_in_disabled.gif";
-	private static final String ZOOM_OUT					= "/icons/zoom_out.gif";
-	private static final String ZOOM_OUT_DISABLED			= "/icons/zoom_out_disabled.gif";
-	private static final String PLUS						= "/icons/plus.gif";
-	private static final String MINUS						= "/icons/minus.gif";
-	private static final String DOT							= "/icons/green_dot.gif";
-	private static final String DIRECTED_GRAPH				="/icons/e_forward.gif";
+	public static final String IMG_ZEST_ADD_NODE 				= "/icons/addnode.gif";
+	public static final String IMG_ZEST_ADD_NODE_DISABLED		= "/icons/addnode_disabled.gif";
+	public static final String IMG_ZEST_DELETE					= "/icons/delete.gif";
+	public static final String IMG_ZEST_DELETE_DISABLED 		= "/icons/delete_disabled.gif";
+	public static final String IMG_ZEST_PAUSE					= "/icons/pause.gif";
+	public static final String IMG_ZEST_PAUSE_DISABLED 			= "/icons/pause_disabled.gif";
+	public static final String IMG_ZEST_RESUME					= "/icons/resume.gif";
+	public static final String IMG_ZEST_RESUME_DISABLED 		= "/icons/resume_disabled.gif";
+	public static final String IMG_ZEST_PLAY					= "/icons/play.gif";
+	public static final String IMG_ZEST_PLAY_DISABLED			= "/icons/play_disabled.gif";
+	public static final String IMG_ZEST_STOP					= "/icons/stop.gif";
+	public static final String IMG_ZEST_STOP_DISABLED			= "/icons/stop_disabled.gif";
+	public static final String IMG_ZEST_ZOOM_IN					= "/icons/zoom_in.gif";
+	public static final String IMG_ZEST_ZOOM_IN_DISABLED		= "/icons/zoom_in_disabled.gif";
+	public static final String IMG_ZEST_ZOOM_OUT				= "/icons/zoom_out.gif";
+	public static final String IMG_ZEST_ZOOM_OUT_DISABLED		= "/icons/zoom_out_disabled.gif";
+	public static final String IMG_ZEST_PLUS					= "/icons/plus.gif";
+	public static final String IMG_ZEST_MINUS					= "/icons/minus.gif";
+	public static final String IMG_ZEST_DOT						= "/icons/green_dot.gif";
+	public static final String IMG_ZEST_DIRECTED_GRAPH			= "/icons/e_forward.gif";
+	public static final String IMG_ZEST_LAYOUT_GRID				= "/icons/icon_grid_layout.gif";
+	public static final String IMG_ZEST_LAYOUT_RADIAL			= "/icons/icon_radial_layout.gif";
+	public static final String IMG_ZEST_LAYOUT_SPRING			= "/icons/icon_spring_layout.gif";
+	public static final String IMG_ZEST_LAYOUT_TREE				= "/icons/icon_tree_layout.gif";
+	public static final String IMG_ZEST_LAYOUT_TREE_HORIZ		= "/icons/icon_tree_layout_horizontal.gif";
+	public static final String IMG_ZEST_LAYOUT_HORIZONTAL		= "/icons/icon_horizontal_layout.gif";
+	public static final String IMG_ZEST_LAYOUT_VERTICAL			= "/icons/icon_vertical_layout.gif";
 	
 	/** The image registry. */
 	private ImageRegistry imageRegistry = null;
@@ -78,26 +64,34 @@ public class ZestImages {
      * @return the image, or <code>null</code> if not found
      */
     private void loadImages() {
-		imageRegistry.put(IMG_ZEST_ADD_NODE, createImageDescriptor(ADD_NODE));
-		imageRegistry.put(IMG_ZEST_ADD_NODE_DISABLED, createImageDescriptor(ADD_NODE_DISABLED));
-		imageRegistry.put(IMG_ZEST_DELETE, createImageDescriptor(DELETE));
-		imageRegistry.put(IMG_ZEST_DELETE_DISABLED, createImageDescriptor(DELETE_DISABLED));
-		imageRegistry.put(IMG_ZEST_PAUSE, createImageDescriptor(PAUSE));
-		imageRegistry.put(IMG_ZEST_PAUSE_DISABLED, createImageDescriptor(PAUSE_DISABLED));
-		imageRegistry.put(IMG_ZEST_RESUME, createImageDescriptor(RESUME));
-		imageRegistry.put(IMG_ZEST_RESUME_DISABLED, createImageDescriptor(RESUME_DISABLED));
-		imageRegistry.put(IMG_ZEST_PLAY, createImageDescriptor(PLAY));
-		imageRegistry.put(IMG_ZEST_PLAY_DISABLED, createImageDescriptor(PLAY_DISABLED));
-		imageRegistry.put(IMG_ZEST_STOP, createImageDescriptor(STOP));
-		imageRegistry.put(IMG_ZEST_STOP_DISABLED, createImageDescriptor(STOP_DISABLED));
-		imageRegistry.put(IMG_ZEST_ZOOM_IN, createImageDescriptor(ZOOM_IN));
-		imageRegistry.put(IMG_ZEST_ZOOM_IN_DISABLED, createImageDescriptor(ZOOM_IN_DISABLED));
-		imageRegistry.put(IMG_ZEST_ZOOM_OUT, createImageDescriptor(ZOOM_OUT));
-		imageRegistry.put(IMG_ZEST_ZOOM_OUT_DISABLED, createImageDescriptor(ZOOM_OUT_DISABLED));
-		imageRegistry.put(IMG_ZEST_PLUS, createImageDescriptor(PLUS));
-		imageRegistry.put(IMG_ZEST_MINUS, createImageDescriptor(MINUS));
-		imageRegistry.put(IMG_ZEST_DOT, createImageDescriptor(DOT));
-		imageRegistry.put(IMG_ZEST_DIRECTED_GRAPH, createImageDescriptor(DIRECTED_GRAPH));
+		imageRegistry.put(IMG_ZEST_ADD_NODE, createImageDescriptor(IMG_ZEST_ADD_NODE));
+		imageRegistry.put(IMG_ZEST_ADD_NODE_DISABLED, createImageDescriptor(IMG_ZEST_ADD_NODE_DISABLED));
+		imageRegistry.put(IMG_ZEST_DELETE, createImageDescriptor(IMG_ZEST_DELETE));
+		imageRegistry.put(IMG_ZEST_DELETE_DISABLED, createImageDescriptor(IMG_ZEST_DELETE_DISABLED));
+		imageRegistry.put(IMG_ZEST_PAUSE, createImageDescriptor(IMG_ZEST_PAUSE));
+		imageRegistry.put(IMG_ZEST_PAUSE_DISABLED, createImageDescriptor(IMG_ZEST_PAUSE_DISABLED));
+		imageRegistry.put(IMG_ZEST_RESUME, createImageDescriptor(IMG_ZEST_RESUME));
+		imageRegistry.put(IMG_ZEST_RESUME_DISABLED, createImageDescriptor(IMG_ZEST_RESUME_DISABLED));
+		imageRegistry.put(IMG_ZEST_PLAY, createImageDescriptor(IMG_ZEST_PLAY));
+		imageRegistry.put(IMG_ZEST_PLAY_DISABLED, createImageDescriptor(IMG_ZEST_PLAY_DISABLED));
+		imageRegistry.put(IMG_ZEST_STOP, createImageDescriptor(IMG_ZEST_STOP));
+		imageRegistry.put(IMG_ZEST_STOP_DISABLED, createImageDescriptor(IMG_ZEST_STOP_DISABLED));
+		imageRegistry.put(IMG_ZEST_ZOOM_IN, createImageDescriptor(IMG_ZEST_ZOOM_IN));
+		imageRegistry.put(IMG_ZEST_ZOOM_IN_DISABLED, createImageDescriptor(IMG_ZEST_ZOOM_IN_DISABLED));
+		imageRegistry.put(IMG_ZEST_ZOOM_OUT, createImageDescriptor(IMG_ZEST_ZOOM_OUT));
+		imageRegistry.put(IMG_ZEST_ZOOM_OUT_DISABLED, createImageDescriptor(IMG_ZEST_ZOOM_OUT_DISABLED));
+		imageRegistry.put(IMG_ZEST_PLUS, createImageDescriptor(IMG_ZEST_PLUS));
+		imageRegistry.put(IMG_ZEST_MINUS, createImageDescriptor(IMG_ZEST_MINUS));
+		imageRegistry.put(IMG_ZEST_DOT, createImageDescriptor(IMG_ZEST_DOT));
+		imageRegistry.put(IMG_ZEST_DIRECTED_GRAPH, createImageDescriptor(IMG_ZEST_DIRECTED_GRAPH));
+		// layout icons
+		imageRegistry.put(IMG_ZEST_LAYOUT_GRID, createImageDescriptor(IMG_ZEST_LAYOUT_GRID));
+		imageRegistry.put(IMG_ZEST_LAYOUT_RADIAL, createImageDescriptor(IMG_ZEST_LAYOUT_RADIAL));
+		imageRegistry.put(IMG_ZEST_LAYOUT_SPRING, createImageDescriptor(IMG_ZEST_LAYOUT_SPRING));
+		imageRegistry.put(IMG_ZEST_LAYOUT_TREE, createImageDescriptor(IMG_ZEST_LAYOUT_TREE));
+		imageRegistry.put(IMG_ZEST_LAYOUT_TREE_HORIZ, createImageDescriptor(IMG_ZEST_LAYOUT_TREE_HORIZ));
+		imageRegistry.put(IMG_ZEST_LAYOUT_HORIZONTAL, createImageDescriptor(IMG_ZEST_LAYOUT_HORIZONTAL));
+		imageRegistry.put(IMG_ZEST_LAYOUT_VERTICAL, createImageDescriptor(IMG_ZEST_LAYOUT_VERTICAL));
     }
     
     

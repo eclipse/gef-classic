@@ -29,7 +29,7 @@ import org.eclipse.swt.widgets.Display;
  * {@link org.eclipse.jface.viewers.IColorProvider} interfaces to give support for setting the  
  * graph node colorings and font.
  * 
- * @author ccallendar
+ * @author Chris Callendar
  */
 public class GraphLabelProvider extends LabelProvider implements IFontProvider, IColorProvider {
 	

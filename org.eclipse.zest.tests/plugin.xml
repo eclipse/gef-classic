@@ -23,9 +23,15 @@
       <view
             category="ca.uvic.cs.zest.sample"
             class="org.eclipse.mylar.zest.tests.StaticZestView"
-            icon="icons/zest.gif"
+            icon="icons/static.gif"
             id="org.eclipse.mylar.zest.tests.staticgraphviewer"
             name="Static Graph Viewer"/>
+      <view
+            category="ca.uvic.cs.zest.sample"
+            class="org.eclipse.mylar.zest.tests.SampleTimeLineView"
+            icon="icons/timeline.gif"
+            id="org.eclipse.mylar.zest.tests.SampleTimeLineView"
+            name="TimeLine Viewer"/>
    </extension>
    <extension
          point="org.eclipse.ui.actionSets">
@@ -44,6 +50,7 @@
                id="org.eclipse.mylar.zest.tests.actions.NestedGraphViewerAction"
                label="&amp;Nested Graph Viewer"
                menubarPath="zestMenu/zestGroup"
+               style="push"
                toolbarPath="zestGroup"
                tooltip="Show the Nested Graph View"/>
          <action
@@ -55,6 +62,15 @@
                style="push"
                toolbarPath="zestGroup"
                tooltip="Show the Spring Graph View"/>
+         <action
+               class="org.eclipse.mylar.zest.tests.actions.ShowZestViewAction"
+               icon="icons/static.gif"
+               id="org.eclipse.mylar.zest.tests.actions.StaticGraphViewerAction"
+               label="&amp;Static Graph Viewer"
+               menubarPath="zestMenu/zestGroup"
+               style="push"
+               toolbarPath="zestGroup"
+               tooltip="Show the Static Graph View"/>
       </actionSet>
    </extension>
 

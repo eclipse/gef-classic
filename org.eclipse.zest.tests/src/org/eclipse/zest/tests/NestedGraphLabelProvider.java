@@ -17,7 +17,7 @@ import org.eclipse.swt.graphics.Image;
 /**
  * 
  * 
- * @author ccallendar
+ * @author Chris Callendar
  */
 public class NestedGraphLabelProvider extends GraphLabelProvider {
 
