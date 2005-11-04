@@ -104,7 +104,7 @@ public class SimpleSWTExample {
 	
 	protected static ArrayList algorithms = new ArrayList();
 	{
-		algorithms.add( new SpringLayoutAlgorithm(LayoutStyles.NO_LAYOUT_SIZE) );
+		algorithms.add( new SpringLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING) );
 		algorithms.add( new FadeLayoutAlgorithm(LayoutStyles.NONE) );
 		algorithms.add( new TreeLayoutAlgorithm (LayoutStyles.NONE) );  
 		algorithms.add( new HorizontalTreeLayoutAlgorithm (LayoutStyles.NONE) );

@@ -15,7 +15,13 @@ package org.eclipse.mylar.zest.layouts;
  */
 public interface LayoutStyles {
 
+	/** Default layout style constant. */
 	public final static int NONE           = 0x00;
-	public final static int NO_LAYOUT_SIZE = 0x01;
+	
+	/** 
+	 * Layout constant indicating that the layout algorithm 
+	 * should NOT resize any of the nodes.
+	 */
+	public final static int NO_LAYOUT_NODE_RESIZING = 0x01;
 	
 }

@@ -157,7 +157,7 @@ public class SpringGraphViewerImpl extends ThreadedGraphicalViewer implements IP
 		
 		Dimension d = this.getCanvasSize();
 		
-		layoutAlgorithm = new FadeLayoutAlgorithm(LayoutStyles.NO_LAYOUT_SIZE);
+		layoutAlgorithm = new FadeLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING);
 		/* irbull, these were the force directed settings
 		((SpringLayoutAlgorithm) layoutAlgorithm).setSpringLengthRange(60, 225);
 		((SpringLayoutAlgorithm) layoutAlgorithm).setStabilize(stabilize);

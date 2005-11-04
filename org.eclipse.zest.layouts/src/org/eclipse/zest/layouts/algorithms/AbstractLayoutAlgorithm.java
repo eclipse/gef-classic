@@ -863,7 +863,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 			if ( !node.hasPreferredLocation() ) { 
 				node.setLocation( node.getInternalX(), node.getInternalY() );
 				
-				if ( (layout_styles & LayoutStyles.NO_LAYOUT_SIZE) != 1 ) {
+				if ( (layout_styles & LayoutStyles.NO_LAYOUT_NODE_RESIZING) != 1 ) {
 					// Only set the size if we are supposed to
 					node.setSize( node.getInternalWidth(), node.getInternalHeight() );
 				}

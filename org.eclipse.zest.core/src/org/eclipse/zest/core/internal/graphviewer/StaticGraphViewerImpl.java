@@ -84,7 +84,7 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 			return;
 		
 		if (layoutAlgorithm == null) {
-			layoutAlgorithm = new TreeLayoutAlgorithm(LayoutStyles.NO_LAYOUT_SIZE);
+			layoutAlgorithm = new TreeLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING);
 		}
 		Dimension d = this.getCanvasSize();
 		try {
