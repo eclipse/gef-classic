@@ -15,10 +15,7 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.mylar.zest.core.ZestStyles;
-import org.eclipse.mylar.zest.core.viewers.TimeLineViewer;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.part.ViewPart;
@@ -31,7 +28,7 @@ import org.eclipse.ui.part.ViewPart;
  */
 public class SampleTimeLineView extends ViewPart {
 	
-	private TimeLineViewer viewer;
+	//private TimeLineViewer viewer;
 	//private Action addNodeAction;
 	
 	
@@ -47,13 +44,13 @@ public class SampleTimeLineView extends ViewPart {
 	 * to create the viewer and initialize it.
 	 */
 	public void createPartControl(Composite parent) {
-		viewer = new TimeLineViewer(parent, ZestStyles.NONE );
+		//viewer = new TimeLineViewer(parent, ZestStyles.NONE );
 		
 //		viewer.setContentProvider(new GraphContentProvider() );
 //		viewer.setLabelProvider(new DecoratingLabelProvider(new GraphLabelProvider(), 
 //					PlatformUI.getWorkbench().getDecoratorManager().getLabelDecorator()));
 		
-		viewer.setInput(getViewSite());
+		//viewer.setInput(getViewSite());
 		
 //		makeActions();
 //		contributeToActionBars();
@@ -69,9 +66,9 @@ public class SampleTimeLineView extends ViewPart {
 				
 			}
 		});
-		Menu menu = menuMgr.createContextMenu(viewer.getControl());
-		viewer.getControl().setMenu(menu);
-		getSite().registerContextMenu(menuMgr, viewer);
+		//Menu menu = menuMgr.createContextMenu(viewer.getControl());
+		//viewer.getControl().setMenu(menu);
+		//getSite().registerContextMenu(menuMgr, viewer);
 	}
 	
 	protected void contributeToActionBars() {
@@ -99,7 +96,7 @@ public class SampleTimeLineView extends ViewPart {
 	 * Passing the focus request to the viewer's control.
 	 */
 	public void setFocus() {
-		viewer.getControl().setFocus();
+		//viewer.getControl().setFocus();
 	}
 	
 	
