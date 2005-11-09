@@ -26,4 +26,4 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.gef,
  org.eclipse.emf.ecore,
  org.eclipse.ui.views
-Eclipse-AutoStart: true
+Eclipse-LazyStart: true
