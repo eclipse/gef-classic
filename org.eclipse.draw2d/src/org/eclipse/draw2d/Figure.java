@@ -913,8 +913,6 @@ public boolean intersects(Rectangle rect) {
  * @see IFigure#invalidate()
  */
 public void invalidate() {
-	if (!isValid()) 
-		return;
 	if (layoutManager != null)
 		layoutManager.invalidate();
 	setValid(false);
