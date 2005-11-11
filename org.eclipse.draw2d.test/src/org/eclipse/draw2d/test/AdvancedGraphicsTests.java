@@ -304,42 +304,38 @@ public void testLineJoinCapAA() {
 //	path1.dispose();
 //}
 
-public void testPathFill() {
-	
-	class PathSettings implements Runnable {
-		private final int antialias;
-		private final int alpha;
-		PathSettings(int antialias, int alpha) {
-			this.antialias = antialias;
-			this.alpha = alpha;
-		}
-		public void run() {
-			g.setAntialias(antialias);
-			g.setAlpha(alpha);
-		}
-	}
-	
-	g.setBackgroundColor(ColorConstants.darkBlue);
-	
-	Runnable tests[] = new Runnable[4];
-	tests[0] = new PathSettings(SWT.ON, 200);
-	tests[1] = new PathSettings(SWT.OFF, 100);
-	tests[2] = new PathSettings(SWT.DEFAULT, 200);
-	tests[3] = new PathSettings(SWT.ON, 150);
-	performTestcase(new Runnable() {
-		public void run() {
-			g.setFillRule(SWT.FILL_EVEN_ODD);
-			g.fillPath(path1);
-			g.fillPath(path2);
-		}
-	}, tests);
-	
-	path1.dispose();
-}
-
-public void testZoom() {
-	
-}
+//public void testPathFill() {
+//	
+//	class PathSettings implements Runnable {
+//		private final int antialias;
+//		private final int alpha;
+//		PathSettings(int antialias, int alpha) {
+//			this.antialias = antialias;
+//			this.alpha = alpha;
+//		}
+//		public void run() {
+//			g.setAntialias(antialias);
+//			g.setAlpha(alpha);
+//		}
+//	}
+//	
+//	g.setBackgroundColor(ColorConstants.darkBlue);
+//	
+//	Runnable tests[] = new Runnable[4];
+//	tests[0] = new PathSettings(SWT.ON, 200);
+//	tests[1] = new PathSettings(SWT.OFF, 100);
+//	tests[2] = new PathSettings(SWT.DEFAULT, 200);
+//	tests[3] = new PathSettings(SWT.ON, 150);
+//	performTestcase(new Runnable() {
+//		public void run() {
+//			g.setFillRule(SWT.FILL_EVEN_ODD);
+//			g.fillPath(path1);
+//			g.fillPath(path2);
+//		}
+//	}, tests);
+//	
+//	path1.dispose();
+//}
 
 public void testPatterns() {
 	
@@ -378,6 +374,5 @@ public void testPatterns() {
 	}, tests);
 	
 }
-
 
 }
