@@ -33,6 +33,7 @@
             id="org.eclipse.mylar.zest.tests.SampleTimeLineView"
             name="TimeLine Viewer"/>
    </extension>
+   
    <extension
          point="org.eclipse.ui.actionSets">
       <actionSet
