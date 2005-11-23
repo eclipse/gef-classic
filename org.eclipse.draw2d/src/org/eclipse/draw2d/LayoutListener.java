@@ -66,7 +66,7 @@ void invalidate(IFigure container);
 
 /**
  * Called prior to layout occurring.  A listener may intercept a layout by
- * returning <code>true</code>.  If the layout is intercepted, the container
+ * returning <code>true</code>.  If the layout is intercepted, the container's
  * <code>LayoutManager</code> will not receive a layout call.
  * @param container the figure incurring a layout
  * @return <code>true</code> if the layout has been intercepted by the listener
@@ -89,7 +89,7 @@ void postLayout(IFigure container);
 void remove(IFigure child);
 
 /**
- * Called when a child's constraint has been changed
+ * Called when a child's constraint is initialized or updated.
  * @param child the child being updated
  * @param constraint the child's new constraint
  * @since 3.1
