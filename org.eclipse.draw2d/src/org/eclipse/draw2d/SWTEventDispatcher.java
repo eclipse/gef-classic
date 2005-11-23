@@ -393,6 +393,8 @@ protected void setCapture(IFigure figure) {
  * @see EventDispatcher#setControl(Control)
  */
 public void setControl(Control c) {
+	if (c == control)
+		return;
 	if (control != null && !control.isDisposed())
 		throw new RuntimeException(
 				"Can not set control again once it has been set"); //$NON-NLS-1$
