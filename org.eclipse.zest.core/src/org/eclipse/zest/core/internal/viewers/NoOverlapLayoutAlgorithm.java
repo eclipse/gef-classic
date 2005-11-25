@@ -16,24 +16,24 @@ import java.util.List;
 
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedGraphModelNode;
-
+import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelNode;
+import org.eclipse.mylar.zest.layouts.NestedLayoutEntity;
 
 
 /**
- * A simple layout algorithm that attempts to 
- * properly size a list of nodes as well as the children
- * under those nodes.
+ * A simple layout algorithm that attempts to properly size a 
+ * list of nodes as well as any children under those nodes.
  * 
  * @author Chris Callendar
  */
-public class NestedLayoutAlgorithm {
+public class NoOverlapLayoutAlgorithm {
 
-	//TODO no longer used.  Can delete...  ***
-	
 	private NoOverlapLayout noOverlapLayout;
 	
-	public NestedLayoutAlgorithm() {
+	/**
+	 * Initializes this algorithm.
+	 */
+	public NoOverlapLayoutAlgorithm() {
 		this.noOverlapLayout = new NoOverlapLayout();
 	}
 	
@@ -49,21 +49,39 @@ public class NestedLayoutAlgorithm {
 
 			ArrayList boundsList = new ArrayList(rootNodes.size());
 			for (Iterator iter = rootNodes.iterator(); iter.hasNext(); ) {
-				NestedGraphModelNode node = (NestedGraphModelNode)iter.next();
+				GraphModelNode node = (GraphModelNode)iter.next();
 				Dimension dim = node.calculateMinimumLabelSize();
 				node.setSizeInLayout(dim.width, dim.height);
 				
-				// layout the children
-				layout(node.getChildren());
+				if (node instanceof NestedLayoutEntity) {
+					// layout the children
+					layout(((NestedLayoutEntity)node).getChildren());
+				}
 				
 				Dimension childSize = node.calculateMinimumSize();
-				Rectangle bounds = new Rectangle(node.getLocation(), childSize);
+				Rectangle rect = new Rectangle(node.getLocation(), childSize);
 				
-				noOverlapLayout.addRectangle(boundsList, bounds);
+				noOverlapLayout.addRectangle(boundsList, rect);
 
-				node.setLocationInLayout(bounds.x, bounds.y);
-				// initially hide the children
-				node.setSizeInLayout(bounds.width, bounds.height);
+				// ensure that the new position is inside the bounds
+				// TODO causes overlapping, so not very useful
+//				if (enforeBounds && (bounds != null) && !bounds.isEmpty()) {
+//					if (rect.right() > bounds.right()) {
+//						rect.x = bounds.right() - rect.width;
+//					}
+//					if (rect.bottom() > bounds.bottom()) {
+//						rect.y = bounds.bottom() - rect.height;
+//					}
+//					if (rect.x < bounds.x) {
+//						rect.x = bounds.x;
+//					}
+//					if (rect.y < bounds.y) {
+//						rect.y = bounds.y;
+//					}
+//				}
+				
+				node.setLocationInLayout(rect.x, rect.y);
+				node.setSizeInLayout(rect.width, rect.height);
 			}
 
 		}

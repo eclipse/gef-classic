@@ -33,6 +33,7 @@ import org.eclipse.mylar.zest.core.internal.nestedgraphviewer.NestedGraphViewerI
 import org.eclipse.mylar.zest.core.internal.nestedgraphviewer.parts.NestedGraphEditPart;
 import org.eclipse.mylar.zest.core.internal.nestedgraphviewer.parts.NestedGraphNodeEditPart;
 import org.eclipse.mylar.zest.core.widgets.BreadCrumbBar;
+import org.eclipse.mylar.zest.layouts.LayoutAlgorithm;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.ControlEvent;
@@ -248,7 +249,7 @@ public class NestedGraphViewer extends StructuredViewer
 			if (editPart != null) {
 				// ensure that all the parents are showing their children
 				if (reveal && (node.getParent() != null)) {
-					for (NestedGraphModelNode parentNode = node.getParent(); parentNode != null; parentNode = parentNode.getParent()) {
+					for (NestedGraphModelNode parentNode = node.getCastedParent(); parentNode != null; parentNode = parentNode.getCastedParent()) {
 						parentNode.setChildrenVisible(true);
 					}
 				}
@@ -347,4 +348,12 @@ public class NestedGraphViewer extends StructuredViewer
 	public void widgetDisposed(DisposeEvent e) {
 		breadCrumbBar.dispose();
 	}
+
+	/**
+	 * @param algorithm
+	 */
+	public void setLayoutAlgorithm(LayoutAlgorithm algorithm) {
+		viewer.setLayoutAlgorithm(algorithm);
+	}
+	
 }

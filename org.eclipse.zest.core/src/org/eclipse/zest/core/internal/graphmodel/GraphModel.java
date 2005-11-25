@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.mylar.zest.core.internal.viewers.Graph;
+import org.eclipse.draw2d.FigureCanvas;
 
 
 /**
@@ -46,7 +46,7 @@ public class GraphModel extends GraphItem {
 	 * Initializes this diagram.
 	 * @param canvas	The parent widget.
 	 */
-	public GraphModel(Graph canvas) {
+	public GraphModel(FigureCanvas canvas) {
 		super(canvas);
 		this.nodes = new ArrayList();
 		this.connections  = new ArrayList();
@@ -61,6 +61,25 @@ public class GraphModel extends GraphItem {
 	 */
 	public List getNodes() {
 		return nodes;		
+	}
+	
+	/**
+	 * Converts the list of GraphModelNode objects into an array an returns it.
+	 * @return GraphModelNode[]
+	 */
+	public GraphModelNode[] getNodesArray() {
+		GraphModelNode[] nodesArray = new GraphModelNode[nodes.size()];
+		nodesArray = (GraphModelNode[])nodes.toArray(nodesArray);
+		return nodesArray;
+	}
+	
+	/**
+	 * Returns the nodes map.  The key is the node data and the value
+	 * is the GraphModelNode.
+	 * @return HashMap
+	 */
+	public HashMap getNodesMap() {
+		return external2InternalNodeMap;
 	}
 	
 	/**
@@ -80,16 +99,7 @@ public class GraphModel extends GraphItem {
 	public boolean getDirectedEdges( ) {
 		return this.directedEdges;
 	}
-	
-	/**
-	 * Converts the list of GraphModelNode objects into an array an returns it.
-	 * @return GraphModelNode[]
-	 */
-	public GraphModelNode[] getNodesArray() {
-		GraphModelNode[] nodesArray = new GraphModelNode[nodes.size()];
-		nodesArray = (GraphModelNode[])nodes.toArray(nodesArray);
-		return nodesArray;
-	}
+
 	
 	/**
 	 * Gets the list of GraphModelConnection objects.
@@ -238,6 +248,7 @@ public class GraphModel extends GraphItem {
 		return "GraphModel {" + nodes.size() + " nodes, " +
 			connections.size() + " connections}";
 	}
+
 	
 	
 	/**

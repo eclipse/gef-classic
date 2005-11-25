@@ -29,7 +29,7 @@ import org.eclipse.mylar.zest.core.internal.graphviewer.policies.GraphXYLayoutEd
 
 
 /**
- * Works with the GraphModel.  The view is a FreeformLayer figure.
+ * The EditPart associated with the GraphModel.  The view creates a FreeformLayer figure.
  *  
  * @author Chris Callendar
  */
@@ -95,7 +95,7 @@ public class GraphEditPart extends AbstractGraphicalEditPart implements Property
 			setSelected( 0 );
 		}
 	}
-	
+		
 	private GraphModel getCastedModel() {
 		return (GraphModel)getModel();
 	}

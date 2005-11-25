@@ -107,7 +107,8 @@ public class GraphModelConnection extends GraphItem implements LayoutRelationshi
 		String arrow = (isBidirectionalInLayout() ? " <--> " : " --> ");
 		String src = (sourceNode != null ? sourceNode.getText() : "null");
 		String dest = (destinationNode != null ? destinationNode.getText() : "null");
-		return ("GraphModelConnection: " + src + arrow + dest);
+		String weight = "  (weight=" + getWeightInLayout() + ")";
+		return ("GraphModelConnection: " + src + arrow + dest + weight);
 	}
 
 	/** 

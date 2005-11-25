@@ -14,10 +14,10 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.eclipse.draw2d.FigureCanvas;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelNode;
-import org.eclipse.mylar.zest.core.internal.viewers.Graph;
 
 
 
@@ -46,7 +46,7 @@ public class NestedGraphModel extends GraphModel {
 	 * Initializes the model with the given canvas.
 	 * @param canvas
 	 */
-	public NestedGraphModel(Graph canvas) {
+	public NestedGraphModel(FigureCanvas canvas) {
 		super(canvas);
 		this.backStack = new LinkedList();
 		this.forwardStack = new LinkedList();
@@ -207,7 +207,7 @@ public class NestedGraphModel extends GraphModel {
 	public void goUp() {
 		if (hasParentNode()) {
 			addToBackStack(currentNode);
-			setCurrent(currentNode.getParent());
+			setCurrent(currentNode.getCastedParent());
 		}
 	}
 	

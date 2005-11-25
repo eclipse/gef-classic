@@ -39,6 +39,7 @@ import org.eclipse.mylar.zest.core.widgets.BreadCrumbBar;
 import org.eclipse.mylar.zest.core.widgets.BreadCrumbItem;
 import org.eclipse.mylar.zest.core.widgets.IBreadCrumbListener;
 import org.eclipse.mylar.zest.layouts.InvalidLayoutConfiguration;
+import org.eclipse.mylar.zest.layouts.LayoutAlgorithm;
 import org.eclipse.mylar.zest.layouts.LayoutEntity;
 import org.eclipse.mylar.zest.layouts.LayoutRelationship;
 import org.eclipse.mylar.zest.layouts.LayoutStyles;
@@ -60,6 +61,7 @@ public class NestedGraphViewerImpl extends ThreadedGraphicalViewer
 	private NestedGraphEditPartFactory editPartFactory = null;
 	private BreadCrumbBar breadCrumbBar;
 	private TreeRootViewer treeViewer;
+	private LayoutAlgorithm layoutAlgorithm;
 	
 	// styles
 	private int style = ZestStyles.NONE;
@@ -194,7 +196,7 @@ public class NestedGraphViewerImpl extends ThreadedGraphicalViewer
 		// layout the children in a grid layout
 		// only happens the first time a node is the current node
 		Rectangle rect = model.getMainArea();
-		doGridLayout(nodeToMoveTo, rect.width, rect.height);
+		doLayout(nodeToMoveTo, rect.width, rect.height);
 
 		updateBreadCrumb(nodeToMoveTo);
 		updateTreeViewer(nodeToSelect);		// also selects the given node
@@ -213,26 +215,27 @@ public class NestedGraphViewerImpl extends ThreadedGraphicalViewer
 	 * @param width		the total available width
 	 * @param height	the total available height
 	 */
-	public void doGridLayout(NestedGraphModelNode nodeToLayout, double width, double height) {
-		// apply the grid layout on any node that hasn't aleady been layed out
-		if ((width > 0) && (height > 0) && !("true".equals(nodeToLayout.getData("GridLayout")))) {
+	public void doLayout(NestedGraphModelNode nodeToLayout, double width, double height) {
+		// apply the current layout on any node that hasn't aleady been layed out
+		if ((width > 0) && (height > 0) && !("true".equals(nodeToLayout.getData("LayoutCompleted")))) {
 			List children = nodeToLayout.getChildren();
 			LayoutEntity[] entities = new LayoutEntity[children.size()];
 			entities = (LayoutEntity[])children.toArray(entities);
 
 			// put the nodes who have no children last
 			Arrays.sort(entities, new NodeChildrenComparator());
-
-			//System.out.println("doGridLayout() " + nodeToLayout + ": " + width + "," + height);
-			GridLayoutAlgorithm layout = new GridLayoutAlgorithm(LayoutStyles.NONE);
+			
+			if (layoutAlgorithm == null) {
+				layoutAlgorithm = new GridLayoutAlgorithm(LayoutStyles.NONE);
+				((GridLayoutAlgorithm)layoutAlgorithm).setRowPadding(20);
+			}
+			layoutAlgorithm.setEntityAspectRatio(width / height);
 			try {
-				layout.setEntityAspectRatio(width / height);
-				layout.setRowPadding(20);
-				layout.applyLayout(entities, new LayoutRelationship[0], 0, 0, width - 20, height - 40, false, false);
+				layoutAlgorithm.applyLayout(entities, new LayoutRelationship[0], 0, 0, width - 20, height - 40, false, false);
 
 				// set this attribute to signal the a grid layout has occured
 				// this way the grid layout is only done once.
-				nodeToLayout.setData("GridLayout", "true");
+				nodeToLayout.setData("LayoutCompleted", "true");
 				
 				// now resize any node that has no children
 				for (Iterator iter = children.iterator(); iter.hasNext(); ) {
@@ -344,7 +347,7 @@ public class NestedGraphViewerImpl extends ThreadedGraphicalViewer
 		breadCrumbBar.clearItems();
 		while (currentNode != null) {
 			new BreadCrumbItem(breadCrumbBar, 0, currentNode.getText(), currentNode.getData());
-			currentNode = currentNode.getParent();
+			currentNode = currentNode.getCastedParent();
 		}
 		//new BreadCrumbItem(breadCrumbBar, 0, "Root", null);
 
@@ -425,11 +428,11 @@ public class NestedGraphViewerImpl extends ThreadedGraphicalViewer
 			NestedGraphEditPart editPart = (NestedGraphEditPart)getEditPartRegistry().get(model);
 			NestedFreeformLayer layer = (NestedFreeformLayer)editPart.getFigure();
 			Rectangle mainArea = layer.resize(widthHint, heightHint);
-			getCanvas().layout(true, true);
+			getFigureCanvas().layout(true, true);
 			Rectangle oldArea = model.getMainArea();
 			model.setMainArea(mainArea);
 			if (oldArea.isEmpty()) {
-				doGridLayout(model.getCurrentNode(), mainArea.width, mainArea.height);
+				doLayout(model.getCurrentNode(), mainArea.width, mainArea.height);
 			}
 			
 		}
@@ -441,6 +444,19 @@ public class NestedGraphViewerImpl extends ThreadedGraphicalViewer
 	 */
 	public void expandTreeItem(Object data, boolean expand) {
 		treeViewer.setExpandedState(data, expand);
+	}
+
+	/**
+	 * Sets the layout algorithm to use and re-runs the layout.
+	 * @param algorithm
+	 */
+	public void setLayoutAlgorithm(LayoutAlgorithm algorithm) {
+		this.layoutAlgorithm = algorithm;
+		NestedGraphModelNode node = model.getCurrentNode();
+		if (node != null) {
+			node.setData("LayoutCompleted", "false");
+			doLayout(node, model.getMainArea().width, model.getMainArea().height);
+		}
 	}
         
 }

@@ -11,7 +11,10 @@
 package org.eclipse.mylar.zest.core.viewers;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.StructuredViewer;
@@ -19,9 +22,11 @@ import org.eclipse.mylar.zest.core.ZestStyles;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelEntityFactory;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelFactory;
+import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelNode;
 import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelFactory;
 import org.eclipse.mylar.zest.core.internal.graphviewer.StaticGraphViewerImpl;
 import org.eclipse.mylar.zest.layouts.LayoutAlgorithm;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Widget;
@@ -31,6 +36,7 @@ import org.eclipse.swt.widgets.Widget;
  * but do not continually update their layout locations.
  * 
  * @author Ian Bull
+ * @author Chris Callendar
  */
 public class StaticGraphViewer extends StructuredViewer {
 
@@ -38,18 +44,50 @@ public class StaticGraphViewer extends StructuredViewer {
 	private IGraphModelFactory modelFactory = null;
 	private GraphModel model;
 	
+	/**
+	 * Initializes the viewer.
+	 * @param composite
+	 * @param style	the style for the viewer and for the layout algorithm
+	 * @see ZestStyles#LAYOUT_GRID
+	 * @see ZestStyles#LAYOUT_TREE
+	 * @see ZestStyles#LAYOUT_RADIAL
+	 * @see ZestStyles#LAYOUT_SPRING
+	 * @see ZestStyles#NO_OVERLAPPING_NODES
+	 * @see ZestStyles#HIGHLIGHT_ADJACENT_NODES
+	 * @see SWT#V_SCROLL
+	 * @see SWT#H_SCROLL
+	 */
 	public StaticGraphViewer( Composite composite, int style ) {
 		this.viewer = new StaticGraphViewerImpl(composite, style);
 		hookControl( this.viewer.getControl() );
 	}
 	
 	/**
+	 * Gets the styles for this structuredViewer
+	 * @return
+	 */
+	public int getStyle() {
+		return this.viewer.getStyle();
+	}
+	
+	/**
+	 * Sets the style on this structuredViewer
+	 * @param style
+	 * @return
+	 */
+	public void setStyle(int style) {
+		this.viewer.setStyle(style);
+	}	
+	
+	/**
 	 * Sets the layout algorithm to use for this viewer.
 	 * @param algorithm the algorithm to layout the nodes
+	 * @param runLayout if the layout should be run
 	 */
-	public void setLayoutAlgorithm(LayoutAlgorithm algorithm) {
-		viewer.setLayoutAlgorithm(algorithm);
+	public void setLayoutAlgorithm(LayoutAlgorithm algorithm, boolean runLayout) {
+		viewer.setLayoutAlgorithm(algorithm, runLayout);
 	}
+	
 	
 	public void setContentProvider(IContentProvider contentProvider) {
 		if (contentProvider instanceof IGraphContentProvider) {
@@ -63,59 +101,100 @@ public class StaticGraphViewer extends StructuredViewer {
 	
 	protected void inputChanged(Object input, Object oldInput) {
 		boolean highlightAdjacentNodes = ZestStyles.checkStyle(viewer.getStyle(), ZestStyles.HIGHLIGHT_ADJACENT_NODES);
-		if ( getContentProvider() instanceof IGraphContentProvider ) {
-			modelFactory = new GraphModelFactory( this, highlightAdjacentNodes );
+		boolean directedGraph = ZestStyles.checkStyle(viewer.getStyle(), ZestStyles.DIRECTED_GRAPH);
+		
+		if (modelFactory == null) {
+			if (getContentProvider() instanceof IGraphContentProvider) {
+				modelFactory = new GraphModelFactory(this, highlightAdjacentNodes);
+			}
+			else if ( getContentProvider() instanceof IGraphEntityContentProvider ) {
+				modelFactory = new GraphModelEntityFactory(this, highlightAdjacentNodes);
+			}
 		}
-		else if ( getContentProvider() instanceof IGraphEntityContentProvider ) {
-			modelFactory = new GraphModelEntityFactory( this, highlightAdjacentNodes );
-		}
-		model = modelFactory.createModelFromContentProvider( input );
+		
+		GraphModel newModel = modelFactory.createModelFromContentProvider(input);
+		// only update if the number of nodes has changed
+		if ((model == null) || (newModel.getNodes().size() != model.getNodes().size())) {
+			// get current list of nodes before they are re-created from the factory & content provider
+			Map oldNodesMap = (model != null ? model.getNodesMap() : Collections.EMPTY_MAP);
 
-		// set the model contents (initializes the layout algorithm)
-		model.setDirectedEdges(ZestStyles.checkStyle(viewer.getStyle(), ZestStyles.DIRECTED_GRAPH)); 
-		viewer.setContents(model, modelFactory);	
+			model = newModel;
+			model.setDirectedEdges(directedGraph); 
+
+			// check if any of the pre-existing nodes are still present
+			// in this case we want them to keep the same location & size
+			for (Iterator iter = oldNodesMap.keySet().iterator(); iter.hasNext(); ) {
+				Object data = iter.next();
+				GraphModelNode newNode = model.getInternalNode(data);
+				if (newNode != null) {
+					GraphModelNode oldNode = (GraphModelNode)oldNodesMap.get(data);
+					newNode.setPreferredLocation(oldNode.getXInLayout(), oldNode.getYInLayout());
+				}
+			}
+
+			// set the model contents (initializes the layout algorithm)
+			viewer.setContents(model, modelFactory);
+		} else {
+			//viewer.applyLayout();
+		}
+		
 	}
 	
-	
-	
 	protected Widget doFindInputItem(Object element) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	protected Widget doFindItem(Object element) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	protected void doUpdateItem(Widget item, Object element, boolean fullMap) {
-		// TODO Auto-generated method stub
 
 	}
 
 	protected List getSelectionFromWidget() {
-		// TODO Auto-generated method stub
 		return new ArrayList(0);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.eclipse.jface.viewers.StructuredViewer#refresh()
+	 */
+	public void refresh() {
+		if (viewer.hasLayoutRun()) {
+			viewer.applyLayout();
+		}
+	}
+	
 	protected void internalRefresh(Object element) {
-		// TODO Auto-generated method stub
-
+		
 	}
 
 	public void reveal(Object element) {
-		// TODO Auto-generated method stub
 
 	}
 
 	protected void setSelectionToWidget(List l, boolean reveal) {
-		// TODO Auto-generated method stub
 
 	}
 
 	public Control getControl() {
-		// TODO Auto-generated method stub
 		return viewer.getControl();
+	}
+	
+	/**
+	 * Adds a new node to the graph
+	 * @param o The new node to add
+	 */
+	public void addNode(Object o) {
+		viewer.addNode(o);
+	}
+
+	/**
+	 * Removes a node from the graph.
+	 * @param o the node to remove
+	 */
+	public void removeNode(Object o) {
+		viewer.removeNode(o);
 	}
 
 }

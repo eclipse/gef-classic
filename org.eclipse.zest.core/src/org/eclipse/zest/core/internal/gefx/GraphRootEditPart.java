@@ -12,20 +12,21 @@ package org.eclipse.mylar.zest.core.internal.gefx;
 
 import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.Request;
-import org.eclipse.gef.editparts.ScalableRootEditPart;
+import org.eclipse.gef.editparts.ScalableFreeformRootEditPart;
 import org.eclipse.mylar.zest.core.internal.viewers.trackers.PanningTracker;
 import org.eclipse.mylar.zest.core.internal.viewers.trackers.SingleSelectionTracker;
 
 
 
 /**
- * Extends {@link org.eclipse.gef.editparts.ScalableRootEditPart} to give the option of using a 
- * {@link SingleSelectionTracker} instead of a marquee drag tracker.  It will actually
- * use a {@link PanningTracker} if 
+ * Extends {@link org.eclipse.gef.editparts.ScalableFreeformRootEditPart ScalableFreeformRootEditPart} 
+ * to give the option of using a {@link SingleSelectionTracker SingleSelectionTracker} 
+ * instead of a marquee drag tracker.  A PanningDragTracker will be used if the background is 
+ * dragged and marquee selection is not 
  * 
  * @author Chris Callendar
  */
-public class GraphRootEditPart extends ScalableRootEditPart {
+public class GraphRootEditPart extends ScalableFreeformRootEditPart {
 
 	private IPanningListener panningListener;
 	private boolean allowMarqueeSelection;
@@ -35,6 +36,12 @@ public class GraphRootEditPart extends ScalableRootEditPart {
 		this(null, false, false);
 	}
 	
+	/**
+	 * Initializes this root edit part.
+	 * @param panningListener the listener to be notified of panning events (dragging the canvas)
+	 * @param allowMarqueeSelection if marquee selection is allowed - multiple node selection
+	 * @param allowPanning if panning is allowed.  Only one of panning OR marquee selection is allowed.
+	 */
 	public GraphRootEditPart(IPanningListener panningListener, boolean allowMarqueeSelection, boolean allowPanning) {
 		super();
 		this.panningListener = panningListener;
@@ -56,5 +63,5 @@ public class GraphRootEditPart extends ScalableRootEditPart {
 		}
 		return super.getDragTracker(req);
 	}
-
+	
 }

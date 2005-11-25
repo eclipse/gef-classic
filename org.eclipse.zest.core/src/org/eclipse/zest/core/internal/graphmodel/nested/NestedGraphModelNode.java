@@ -18,6 +18,7 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelNode;
+import org.eclipse.mylar.zest.layouts.NestedLayoutEntity;
 import org.eclipse.swt.graphics.Image;
 
 
@@ -28,7 +29,7 @@ import org.eclipse.swt.graphics.Image;
  * @author Chris Callendar
  * @author Ian Bull
  */
-public class NestedGraphModelNode extends GraphModelNode {
+public class NestedGraphModelNode extends GraphModelNode implements NestedLayoutEntity {
 
 	/*
 	 * Tree Constants
@@ -110,7 +111,7 @@ public class NestedGraphModelNode extends GraphModelNode {
 	}
 	
 	private boolean isAncestorOf( NestedGraphModelNode that ) {
-		NestedGraphModelNode parent = that.getParent();
+		NestedLayoutEntity parent = that.getParent();
 		while ( parent != null && parent != this ) {
 			parent = parent.getParent();
 		}
@@ -128,8 +129,19 @@ public class NestedGraphModelNode extends GraphModelNode {
 	 * Returns the parent (or null if it is a root node).
 	 * @return NestedGraphModelNode
 	 */
-	public NestedGraphModelNode getParent() {
+	public NestedLayoutEntity getParent() {
 		return parent;
+	}
+	
+	/**
+	 * Gets the parent casted to a NestedGraphModelNode.
+	 * @return NestedGraphModelNode
+	 */
+	public NestedGraphModelNode getCastedParent() {
+		if (parent instanceof NestedGraphModelNode) {
+			return (NestedGraphModelNode) parent;
+		}
+		return null;
 	}
 	
 	/**
@@ -141,7 +153,7 @@ public class NestedGraphModelNode extends GraphModelNode {
 	public void setParent(NestedGraphModelNode parent) {
 		this.parent = parent;
 		this.depth = 0;	
-		for (NestedGraphModelNode node = parent; node != null; node = node.getParent()) {
+		for (NestedLayoutEntity node = parent; node != null; node = node.getParent()) {
 			this.depth++;
 		}
 	}
@@ -183,7 +195,7 @@ public class NestedGraphModelNode extends GraphModelNode {
 	public void addChild(NestedGraphModelNode child) {
 		if (child != null) {
 			boolean add = true;
-			for (NestedGraphModelNode node = this; node != null; node = node.getParent()) {
+			for (NestedLayoutEntity node = this; node != null; node = node.getParent()) {
 				if (node.equals(child)) {
 					add = false;
 					break;

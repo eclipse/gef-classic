@@ -129,6 +129,17 @@ public class GraphNodeEditPart extends AbstractGraphicalEditPart implements
 	public void performRequest(Request req) {
 		if (REQ_OPEN.equals(req.getType())) {
 			// TODO handle double-click
+//			GraphModelNode node = getCastedModel();
+//			System.out.println("\n" + node + "\nSource Connections:");
+//			for (Iterator iter = node.getSourceConnections().iterator(); iter.hasNext(); ) {
+//				GraphModelConnection conn = (GraphModelConnection)iter.next();
+//				System.out.println(conn.toString());
+//			}
+//			System.out.println("Target Connections:");
+//			for (Iterator iter = node.getTargetConnections().iterator(); iter.hasNext(); ) {
+//				GraphModelConnection conn = (GraphModelConnection)iter.next();
+//				System.out.println(conn.toString());
+//			}
 		}
 		super.performRequest(req);
 	}

@@ -12,11 +12,11 @@ package org.eclipse.mylar.zest.core.internal.graphmodel;
 
 import java.util.Iterator;
 
+import org.eclipse.draw2d.FigureCanvas;
 import org.eclipse.jface.viewers.IColorProvider;
 import org.eclipse.jface.viewers.IFontProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.StructuredViewer;
-import org.eclipse.mylar.zest.core.internal.viewers.Graph;
 import org.eclipse.mylar.zest.core.viewers.IGraphContentProvider;
 
 
@@ -40,7 +40,7 @@ public class GraphModelFactory implements IGraphModelFactory {
 	 * @see ca.uvic.cs.zest.internal.graphmodel.IGraphModelFactory#createModel()
 	 */
 	public GraphModel createModel() {
-		return new GraphModel((Graph)viewer.getControl());
+		return new GraphModel((FigureCanvas)viewer.getControl());
 	}
 	
 	private IGraphContentProvider getContentProvider() {

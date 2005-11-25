@@ -20,6 +20,7 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPart;
+import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.mylar.zest.core.ZestColors;
 import org.eclipse.mylar.zest.layouts.LayoutEntity;
 import org.eclipse.swt.graphics.Color;
@@ -115,6 +116,10 @@ public class GraphModelNode extends GraphItem implements LayoutEntity {
 		this.size = new Dimension(20, 20);
 		this.font = Display.getDefault().getSystemFont();
 		this.graphModel = graphModel;
+		
+		if (font == null) {
+			font = JFaceResources.getDefaultFont();
+		}
 	}
 	
 	public void setEditPart( EditPart editPart ) {
@@ -149,16 +154,16 @@ public class GraphModelNode extends GraphItem implements LayoutEntity {
 	}
 	
 	/**
-	 * Returns a new list of the source connections.
-	 * @return List a new list
+	 * Returns a new list of the source connections (GraphModelConnection objects).
+	 * @return List a new list of GraphModelConnect objects
 	 */
 	public List getSourceConnections() {
 	  	return new ArrayList(sourceConnections);
 	}
 
 	/**
-	 * Returns a new list of the target connections.
-	 * @return List a new list
+	 * Returns a new list of the target connections (GraphModelConnection objects).
+	 * @return List a new list of GraphModelConnect objects
 	 */
 	public List getTargetConnections() {
 	  	return new ArrayList(targetConnections);
@@ -495,7 +500,10 @@ public class GraphModelNode extends GraphItem implements LayoutEntity {
 		Dimension dim = new Dimension(0, 0);
 		String text = getText();
 		if (text != null) {
-			dim.setSize(FigureUtilities.getTextExtents(text + "  ", getFont()));
+			if (font == null) {
+				font = JFaceResources.getDefaultFont();
+			}
+			dim.setSize(FigureUtilities.getTextExtents(text + "  ", font));
 		}
 		return dim;
 	}

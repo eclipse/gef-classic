@@ -18,29 +18,24 @@ import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.gef.EditDomain;
-import org.eclipse.gef.ui.parts.GraphicalViewerImpl;
-import org.eclipse.mylar.zest.core.internal.viewers.Graph;
+import org.eclipse.gef.MouseWheelHandler;
+import org.eclipse.gef.MouseWheelZoomHandler;
+import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 import org.eclipse.mylar.zest.layouts.progress.ProgressEvent;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.FocusListener;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 
 /**
  * 
  * @author Ian Bull
- *
+ * @author Chris Callendar
  */
-public abstract class NonThreadedGraphicalViewer extends GraphicalViewerImpl {
-
-	
-	private Graph mainCanvas = null;
-	private EditDomain ed = null;
+public abstract class NonThreadedGraphicalViewer extends ScrollingGraphicalViewer {
 
 	/**
 	 * ThreadedGraphicalViewer constructor.
@@ -49,13 +44,10 @@ public abstract class NonThreadedGraphicalViewer extends GraphicalViewerImpl {
 	public NonThreadedGraphicalViewer(Composite parent)  {
 		super();
 		
+		// create the FigureCanvas
+		createControl(parent);
 		
-		// Creates a new graph (a FigureCanvas)
-		mainCanvas = new Graph(parent);
-		mainCanvas.setLayout(new FillLayout());
-		setControl(mainCanvas);
-		
-		ed = new DefaultEditDomain( null );
+		EditDomain ed = new DefaultEditDomain( null );
 		ed.addViewer( this );
 		//ed.setDefaultTool(new ZoomableSelectionTool());
 		setEditDomain( ed );
@@ -74,23 +66,14 @@ public abstract class NonThreadedGraphicalViewer extends GraphicalViewerImpl {
 		});
 		
 		getControl().addDisposeListener(new DisposeListener() {
-
 			public void widgetDisposed(DisposeEvent e) {
-		
-			}
-			
-		});
-		
-		// TODO is this needed?  A focus listener is added inside hookControl() above...
-		getControl().addFocusListener(new FocusListener() {
-			public void focusGained(FocusEvent e) {
-				//handleFocusGained(e);
-			}
-			public void focusLost(FocusEvent e) {
 			}
 		});
 	
 		((Canvas)getControl()).setBackground( ColorConstants.white );
+		
+		// Scroll-wheel Zoom
+		setProperty(MouseWheelHandler.KeyGenerator.getKey(SWT.MOD1), MouseWheelZoomHandler.SINGLETON);		
 	}
 	
 	private List controlListeners = new LinkedList();
@@ -114,12 +97,12 @@ public abstract class NonThreadedGraphicalViewer extends GraphicalViewerImpl {
 			((ControlListener)iterator.next()).controlResized( e );
 		}
 	}
-	
+		
 	/**
 	 * Does some initializing of the viewer.
 	 */
 	protected abstract void configureGraphicalViewer();
-	
+		
 	/**
 	 * Sets the contents of the viewer and configures the graphical viewer.
 	 * @param model
@@ -127,7 +110,6 @@ public abstract class NonThreadedGraphicalViewer extends GraphicalViewerImpl {
 	public void setContents(Object model) {
 		this.configureGraphicalViewer();
 		super.setContents(model);
-		
 	}
 	
 	/**
@@ -144,10 +126,11 @@ public abstract class NonThreadedGraphicalViewer extends GraphicalViewerImpl {
 	 * @return Dimension in absolute coords
 	 */
 	public Dimension getCanvasSize() {
-		return new Dimension( mainCanvas.getSize() );
-		//return mainCanvas.getViewport().getSize().getCopy();
+		Dimension dim = new Dimension(getFigureCanvas().getSize());
+		dim.shrink(getFigureCanvas().getBorderWidth(), getFigureCanvas().getBorderWidth());
+		return dim;
 	}
-	
+		
 	/**
 	 * Gets the translated size of the canvas.
 	 * @return Dimension relative
@@ -157,13 +140,7 @@ public abstract class NonThreadedGraphicalViewer extends GraphicalViewerImpl {
 		//mainCanvas.getViewport().translateToRelative(dim);
 		return dim;
 	}
-	
-	public Graph getCanvas() {
-		return mainCanvas;
-	}
-	
-	
-	
+		
 	/**
 	 *  
 	 */
@@ -177,10 +154,6 @@ public abstract class NonThreadedGraphicalViewer extends GraphicalViewerImpl {
 	
 	public void progressStarted(ProgressEvent e) {
 		// TODO Auto-generated method stub
-	}
-	
+	}	
 
-	
-
-	
 }

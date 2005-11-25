@@ -20,6 +20,7 @@ import java.util.Set;
 
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.DeferredUpdateManager;
+import org.eclipse.draw2d.FigureCanvas;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.LightweightSystem;
 import org.eclipse.draw2d.UpdateManager;
@@ -28,7 +29,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.gef.EditDomain;
 import org.eclipse.gef.ui.parts.GraphicalViewerImpl;
-import org.eclipse.mylar.zest.core.internal.viewers.Graph;
+import org.eclipse.mylar.zest.core.internal.viewers.figures.Graph;
 import org.eclipse.mylar.zest.layouts.Stoppable;
 import org.eclipse.mylar.zest.layouts.progress.ProgressEvent;
 import org.eclipse.mylar.zest.layouts.progress.ProgressListener;
@@ -58,9 +59,6 @@ public abstract class ThreadedGraphicalViewer extends GraphicalViewerImpl implem
 	/** Holds all the threads added to this viewer */
 	private Map listOfThreads = null; 
 
-	private Graph mainCanvas = null;
-	private EditDomain ed = null;
-
 	/**
 	 * ThreadedGraphicalViewer constructor.
 	 * @param parent The composite that this viewer will be added to.
@@ -70,12 +68,13 @@ public abstract class ThreadedGraphicalViewer extends GraphicalViewerImpl implem
 		listOfThreads = new LinkedHashMap();
 		
 		updateManager = getLightweightSystem().getUpdateManager();
-		// Creates a new graph (a FigureCanvas)
-		mainCanvas = new Graph(parent);
-		mainCanvas.setLayout(new FillLayout());
-		setControl(mainCanvas);
 		
-		ed = new DefaultEditDomain( null );
+		// Creates a new graph (a FigureCanvas)
+		FigureCanvas canvas = new Graph(parent);
+		canvas.setLayout(new FillLayout());
+		setControl(canvas);
+		
+		EditDomain ed = new DefaultEditDomain( null );
 		ed.addViewer( this );
 		//ed.setDefaultTool(new ZoomableSelectionTool());
 		setEditDomain( ed );
@@ -210,7 +209,7 @@ public abstract class ThreadedGraphicalViewer extends GraphicalViewerImpl implem
 	 * @return Dimension in absolute coords
 	 */
 	public Dimension getCanvasSize() {
-		return new Dimension( getCanvas().getSize() );
+		return new Dimension( getFigureCanvas().getSize() );
 	}
 	
 	/**
@@ -224,8 +223,8 @@ public abstract class ThreadedGraphicalViewer extends GraphicalViewerImpl implem
 		return dim;
 	}
 	
-	public Graph getCanvas() {
-		return mainCanvas;
+	public FigureCanvas getFigureCanvas() {
+		return (FigureCanvas)getControl();
 	}
 	
 	/**

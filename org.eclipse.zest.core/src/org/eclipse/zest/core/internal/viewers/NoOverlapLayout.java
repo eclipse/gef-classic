@@ -22,7 +22,6 @@ import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelNode;
 import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphNodeEditPart;
 
 
-
 /**
  * The NoOverlapLayout class will check all sibling nodes to ensure that the given
  * bounds don't overlap.   
@@ -31,7 +30,7 @@ import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphNodeEditPart;
  */
 public class NoOverlapLayout  {
 
-	public static final int DEFAULT_SPACING = 20;
+	public static final int DEFAULT_SPACING = 30;
 	
 	private int spacing;
 	

@@ -8,23 +8,29 @@
  * Contributors:
  *     The Chisel Group, University of Victoria
  *******************************************************************************/
-package org.eclipse.mylar.zest.core.internal.timelineview.model;
+package org.eclipse.mylar.zest.core.internal.viewers.figures;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.eclipse.draw2d.FigureCanvas;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Composite;
+
 
 /**
+ * The Graph class is a FigureCanvas used for displaying graph items 
+ * such as nodes and edges.  Scrollbars are not shown by default.
  * 
- * @author Ian Bull
- *
+ * @author Chris Callendar
  */
-public class TimeLineDiagram {
-	
-	public List getEndPoints() {
-		ArrayList al = new ArrayList();
-		al.add( new TimeTaskPoint() );
-		
-		return al;
+public class Graph extends FigureCanvas {
+
+	/**
+	 * @param parent
+	 */
+	public Graph(Composite parent) {
+		super(parent, SWT.V_SCROLL | SWT.H_SCROLL);
+		setScrollBarVisibility(FigureCanvas.NEVER);
 	}
+
+	
 
 }
