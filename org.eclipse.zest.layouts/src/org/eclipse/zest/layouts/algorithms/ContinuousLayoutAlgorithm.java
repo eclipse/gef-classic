@@ -76,6 +76,7 @@ public abstract class ContinuousLayoutAlgorithm extends AbstractLayoutAlgorithm 
 			double x, double y, double width, double height) {
 	
 		this.setBounds(x,y,width,height);
+
 		while (continueRunning() ) {
 			// check for entities and relationships to add or remove 
 			entitiesToLayout = updateEntities(entitiesToLayout);
@@ -85,6 +86,7 @@ public abstract class ContinuousLayoutAlgorithm extends AbstractLayoutAlgorithm 
 			double localY = bounds.y;
 			double localWidth = bounds.width;
 			double localHeight = bounds.height;
+
 
 			computeOneIteration(entitiesToLayout, relationshipsToConsider, localX, localY, localWidth, localHeight);
 			

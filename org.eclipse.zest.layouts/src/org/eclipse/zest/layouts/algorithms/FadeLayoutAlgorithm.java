@@ -267,12 +267,14 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 		for( int i = 0; i < entitiesToLayout.length; i++ ) {
 			InternalNode currentNode = entitiesToLayout[i];
 			currentNode.setInternalLocation( currentNode.getDx(), currentNode.getDy() );
+			/*
             try {
 				Thread.sleep(1);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			*/
 		}
 		
 		handleSelectedNodes(entitiesToLayout,new DisplayIndependentRectangle (x, y, width, height));
