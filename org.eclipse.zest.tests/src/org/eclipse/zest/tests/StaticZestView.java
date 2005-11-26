@@ -139,7 +139,7 @@ public class StaticZestView extends ViewPart {
 		}
 		
 		public void run() {
-			viewer.setLayoutAlgorithm(algorithm);
+			viewer.setLayoutAlgorithm(algorithm, true);
 		}
 	}
 	

@@ -14,6 +14,7 @@ package org.eclipse.mylar.zest.layouts.algorithms;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
@@ -50,6 +51,13 @@ import org.eclipse.mylar.zest.layouts.progress.ProgressListener;
  * @author Rob Lintern
  */
 public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppable {
+	
+
+	public void removeRelationships( Collection collection) {
+		
+	}
+	
+
 	
 	public final static int MIN_ENTITY_SIZE = 5;
 	private final static int MIN_TIME_DELAY_BETWEEN_PROGRESS_EVENTS = 1;
