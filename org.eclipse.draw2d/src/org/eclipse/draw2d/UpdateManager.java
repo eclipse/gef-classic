@@ -12,6 +12,8 @@ package org.eclipse.draw2d;
 
 import java.util.Map;
 
+import org.eclipse.swt.graphics.GC;
+
 import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
@@ -105,9 +107,8 @@ protected void firePainting(Rectangle damage, Map dirtyRegions) {
  */
 protected void fireValidating() {
 	UpdateListener localListeners[] = listeners;
-	for (int i = 0; i < localListeners.length; i++) {
+	for (int i = 0; i < localListeners.length; i++)
 		localListeners[i].notifyValidating();
-	}
 }
 
 /**
@@ -118,9 +119,14 @@ protected boolean isDisposed() {
 }
 
 /**
- * Performs the update.
+ * Forces an update to occur. Update managers will perform updates automatically, but may
+ * do so asynchronously. Calling this method forces a synchronous update.
  */
 public abstract void performUpdate();
+
+void paint(GC gc) {
+	performUpdate(new Rectangle(gc.getClipping()));
+}
 
 /**
  * Performs an update on the given exposed rectangle.
@@ -160,4 +166,16 @@ public abstract void setGraphicsSource(GraphicsSource gs);
  * @param figure the new root figure
  */
 public abstract void setRoot(IFigure figure);
+
+/**
+ * Validates all invalid figures without repainting. Some update managers may not support
+ * independant validation of figures. In those cases, this method is equivalent to calling
+ * {@link #performUpdate()}.
+ * 
+ * @since 3.2
+ */
+public void performValidation() {
+	performUpdate();
+}
+
 }
