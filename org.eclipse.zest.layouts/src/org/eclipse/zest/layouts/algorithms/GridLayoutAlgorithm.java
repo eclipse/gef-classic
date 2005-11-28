@@ -12,6 +12,7 @@ package org.eclipse.mylar.zest.layouts.algorithms;
 
 import java.util.Arrays;
 
+import org.eclipse.mylar.zest.layouts.LayoutStyles;
 import org.eclipse.mylar.zest.layouts.dataStructures.InternalNode;
 import org.eclipse.mylar.zest.layouts.dataStructures.InternalRelationship;
 
@@ -36,7 +37,11 @@ public class GridLayoutAlgorithm extends AbstractLayoutAlgorithm {
     int totalProgress;
     double h, w;
     
-
+    /**
+     * Initializes the grid layout.
+     * @param styles
+     * @see LayoutStyles
+     */
 	public GridLayoutAlgorithm(int styles) {
 		super(styles);
 	}

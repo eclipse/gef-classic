@@ -19,7 +19,7 @@ import org.eclipse.mylar.zest.layouts.dataStructures.InternalNode;
 import org.eclipse.mylar.zest.layouts.dataStructures.InternalRelationship;
 
 /**
- * The ShrimpSpringLayoutAlgorithm has its own data repository and relation
+ * The SpringLayoutAlgorithm has its own data repository and relation
  * repository. A user can populate the repository, specify the layout
  * conditions, do the computation and query the computed results.
  * <p>
@@ -200,23 +200,9 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     public void setSpringMove(double move) {
         sprMove = move;
     }
-    
-    //	protected void defaultFitWithinBounds2(InternalNode[] entitiesToLayout, DisplayIndependentRectangle realBounds) {
-//	double screenWidth = realBounds.width;
-//	double screenHeight = realBounds.height;
-//
-//	convertNodePositionsToPercentage( entitiesToLayout, false );
-//	
-//	for ( int i = 0; i < entitiesToLayout.length; i++ ) {
-//		double x = entitiesToLayout[i].getInternalX() * screenWidth; 
-//		double y = entitiesToLayout[i].getInternalY() * screenHeight;
-//		entitiesToLayout[i].setInternalLocation( x, y );
-//	}
-//
-//}
 
     /**
-     * Returns the move-control value of this ShrimpSpringLayoutAlgorithm in
+     * Returns the move-control value of this SpringLayoutAlgorithm in
      * double presion.
      * 
      * @return The move-control value.
@@ -236,7 +222,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     }
 
     /**
-     * Returns the strain-control value of this ShrimpSpringLayoutAlgorithm in
+     * Returns the strain-control value of this SpringLayoutAlgorithm in
      * double presion.
      * 
      * @return The strain-control value.
@@ -274,7 +260,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     }
 
     /**
-     * Returns the length-control value of this ShrimpSpringLayoutAlgorithm in
+     * Returns the length-control value of this SpringLayoutAlgorithm in
      * double presion.
      * 
      * @return The length-control value.
@@ -294,7 +280,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     }
 
     /**
-     * Returns the gravitation-control value of this ShrimpSpringLayoutAlgorithm
+     * Returns the gravitation-control value of this SpringLayoutAlgorithm
      * in double presion.
      * 
      * @return The gravitation-control value.
@@ -323,7 +309,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     }
 
     /**
-     * Sets whether or not this ShrimpSpringLayoutAlgorithm will layout the
+     * Sets whether or not this SpringLayoutAlgorithm will layout the
      * nodes randomly before beginning iterations.
      * 
      * @param random
@@ -334,7 +320,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     }
 
     /**
-     * Returns whether or not this ShrimpSpringLayoutAlgorithm will layout the
+     * Returns whether or not this SpringLayoutAlgorithm will layout the
      * nodes randomly before beginning iterations.
      */
     public boolean getRandom() {
@@ -346,7 +332,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     }
 
     public double getWeight(String relType) {
-        java.lang.Double weight = (Double) relTypeToWeightMap.get(relType);
+        Double weight = (Double) relTypeToWeightMap.get(relType);
         return (weight == null) ? 1 : weight.doubleValue();
     }
 
@@ -423,7 +409,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
             throw new IllegalArgumentException("The arguments can not be null!");
         } else {
             double weight = layoutRelationship.getWeight();
-            // System.out.println("sr.getWeight: " + weight);
+            weight = (weight <= 0 ? 0.1 : weight);
             String key1 = layoutRelationship.getSource().toString() + layoutRelationship.getDestination().toString();
             String key2 = layoutRelationship.getDestination().toString() + layoutRelationship.getSource().toString();
             String[] keys = { key1, key2 };
@@ -491,7 +477,6 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     }
 
     protected void convertNodePositionsBack(int i, InternalNode entityToConvert, double px, double py, double screenWidth, double screenHeight, DisplayIndependentRectangle layoutBounds) {
-
     	
     	// If the node selected is outside the screen, map it to the boarder
     	if ( px > screenWidth ) px = screenWidth;
@@ -502,9 +487,6 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     	
         double x = (px / screenWidth) * layoutBounds.width + layoutBounds.x;
         double y = (py / screenHeight) * layoutBounds.height + layoutBounds.y;
-        
-
-        
         
         tempLocationsX[i] = x;
         tempLocationsY[i] = y;
@@ -570,15 +552,17 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
         computeForces(entitiesToLayout);
         largestMovement = Double.MAX_VALUE;
         computePositions(entitiesToLayout);
+        
         for (int i = 0; i < entitiesToLayout.length; i++) {
             InternalNode layoutEntity = entitiesToLayout[i];
             layoutEntity.setInternalLocation(tempLocationsX[i], tempLocationsY[i]);
-        }
-        defaultFitWithinBounds(entitiesToLayout, bounds );
+        }        
+        
+        defaultFitWithinBounds(entitiesToLayout, bounds);
 
         iteration++;
     }
-    
+        
     /**
      * Puts vertices in random places, all between (0,0) and (1,1).
      */
@@ -609,7 +593,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     // /////////////////////////////////////////////////////////////////
 
     /**
-     * Computes the force for each node in this ShrimpSpringLayoutAlgorithm. The
+     * Computes the force for each node in this SpringLayoutAlgorithm. The
      * computed force will be stored in the data repository
      */
     protected void computeForces(InternalNode[] entitiesToLayout) {
@@ -689,7 +673,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     }
 
     /**
-     * Computes the position for each node in this ShrimpSpringLayoutAlgorithm.
+     * Computes the position for each node in this SpringLayoutAlgorithm.
      * The computed position will be stored in the data repository. position =
      * position + sprMove * force
      */
@@ -729,7 +713,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     }
 
     /**
-     * Converts the position for each node in this ShrimpSpringLayoutAlgorithm
+     * Converts the position for each node in this SpringLayoutAlgorithm
      * to unit coordinates in double precision. The computed positions will be
      * still stored in the data repository.
      */
@@ -766,7 +750,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     /**
      * Examines the number of specified relation between the <code>src</code>
      * and the <code>dest</code> that exist in this
-     * ShrimpSpringLayoutAlgorithm's relation repository.
+     * SpringLayoutAlgorithm's relation repository.
      * 
      * @param src
      *            The source part of the relaton to be examined.

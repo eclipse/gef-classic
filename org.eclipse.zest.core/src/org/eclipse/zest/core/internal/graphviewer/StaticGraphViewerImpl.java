@@ -151,12 +151,16 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 		applyLayout();
 		
 		this.addControlListener(new ControlListener() {
+			private boolean isMinimized = true;
 			public void controlMoved(ControlEvent e) { }
 			public void controlResized(ControlEvent e) {
 				// handle minimized case
 				Dimension d = StaticGraphViewerImpl.this.getCanvasSize();
-				if (!d.isEmpty()) {
-					//applyLayout();
+				if (d.isEmpty()) {
+					isMinimized = true;
+				} else if (isMinimized) {
+					isMinimized = false;
+					applyLayout();
 				}
 			}
 		});	
@@ -175,6 +179,9 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 		Dimension nodeSize = findBiggestNode();
 		d.width = Math.max(0, d.width - nodeSize.width);
 		d.height = Math.max(0, d.height - nodeSize.width);
+		
+		if (d.isEmpty())
+			return;
 		
 		// For the spring layout, I think it works a little nicer 
 		// if a radial layout is run first first

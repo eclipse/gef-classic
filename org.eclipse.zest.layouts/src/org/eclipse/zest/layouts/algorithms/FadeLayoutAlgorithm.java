@@ -220,7 +220,7 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     }
 
     /**
-     * Sets whether or not this ShrimpSpringLayoutAlgorithm will
+     * Sets whether or not this Layout Algorithm will
      * layout the nodes randomly before beginning iterations.
      * @param random The random placement value.
      */
@@ -229,7 +229,7 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     }
 
     /**
-     * Returns whether or not this ShrimpSpringLayoutAlgorithm will
+     * Returns whether or not this Layout Algorithm will
      * layout the nodes randomly before beginning iterations.
      */
     public boolean getRandom() {

@@ -13,6 +13,7 @@ package org.eclipse.mylar.zest.tests;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
@@ -21,6 +22,16 @@ import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.DecoratingLabelProvider;
 import org.eclipse.mylar.zest.core.ZestStyles;
 import org.eclipse.mylar.zest.core.viewers.NestedGraphViewer;
+import org.eclipse.mylar.zest.layouts.LayoutAlgorithm;
+import org.eclipse.mylar.zest.layouts.LayoutStyles;
+import org.eclipse.mylar.zest.layouts.algorithms.FadeLayoutAlgorithm;
+import org.eclipse.mylar.zest.layouts.algorithms.GridLayoutAlgorithm;
+import org.eclipse.mylar.zest.layouts.algorithms.HorizontalLayoutAlgorithm;
+import org.eclipse.mylar.zest.layouts.algorithms.HorizontalTreeLayoutAlgorithm;
+import org.eclipse.mylar.zest.layouts.algorithms.RadialLayoutAlgorithm;
+import org.eclipse.mylar.zest.layouts.algorithms.SpringLayoutAlgorithm;
+import org.eclipse.mylar.zest.layouts.algorithms.TreeLayoutAlgorithm;
+import org.eclipse.mylar.zest.layouts.algorithms.VerticalLayoutAlgorithm;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
@@ -54,14 +65,14 @@ import org.eclipse.ui.part.ViewPart;
 public class SampleNestedView extends ViewPart {
 	
 	private NestedGraphViewer nestedViewer;
-	//private Action deleteNodeAction;
-	//private ZestImages images;
+	private Action action;
+	private ZestImages images;
 	
 	/**
 	 * The constructor.
 	 */
 	public SampleNestedView() {
-		//this.images = new ZestImages();
+		this.images = new ZestImages();
 	}
 	
 	
@@ -110,8 +121,8 @@ public class SampleNestedView extends ViewPart {
 		nestedViewer.setInput(ResourcesPlugin.getWorkspace().getRoot().getProjects());
 		
 		
-		makeActions();
-		//contributeToActionBars();
+		//makeActions();
+		contributeToActionBars();
 		//hookContextMenu();
 	}
 	
@@ -144,9 +155,6 @@ public class SampleNestedView extends ViewPart {
 		fillLocalToolBar(bars.getToolBarManager());
 	}
 	
-	protected void fillLocalPullDown(IMenuManager manager) {
-	}
-	
 	protected void fillLocalToolBar(IToolBarManager manager) {
 		manager.add(new Separator());	
 	}
@@ -158,12 +166,44 @@ public class SampleNestedView extends ViewPart {
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 	}
 
+	private void fillLocalPullDown(IMenuManager manager) {
+		action = new LayoutAction("Horizontal Layout", new HorizontalLayoutAlgorithm(LayoutStyles.NONE));
+		action.setImageDescriptor(images.getImageDescriptor(ZestImages.IMG_ZEST_LAYOUT_HORIZONTAL));
+		manager.add(action);
+		action = new LayoutAction("Vertical Layout", new VerticalLayoutAlgorithm(LayoutStyles.NONE));
+		action.setImageDescriptor(images.getImageDescriptor(ZestImages.IMG_ZEST_LAYOUT_VERTICAL));
+		manager.add(action);
+		action = new LayoutAction("Grid Layout", new GridLayoutAlgorithm(LayoutStyles.NONE));
+		action.setImageDescriptor(images.getImageDescriptor(ZestImages.IMG_ZEST_LAYOUT_GRID));
+		manager.add(action);
+		action = new LayoutAction("Vertical Tree Layout", new TreeLayoutAlgorithm(LayoutStyles.NONE));
+		action.setImageDescriptor(images.getImageDescriptor(ZestImages.IMG_ZEST_LAYOUT_TREE));
+		manager.add(action);
+		action = new LayoutAction("Horizontal Tree Layout", new HorizontalTreeLayoutAlgorithm(LayoutStyles.NONE));
+		action.setImageDescriptor(images.getImageDescriptor(ZestImages.IMG_ZEST_LAYOUT_TREE_HORIZ));
+		manager.add(action);
+		action = new LayoutAction("Radial Layout", new RadialLayoutAlgorithm(LayoutStyles.NONE));
+		action.setImageDescriptor(images.getImageDescriptor(ZestImages.IMG_ZEST_LAYOUT_RADIAL));
+		manager.add(action);
+		action = new LayoutAction("Spring Layout", new SpringLayoutAlgorithm(LayoutStyles.NONE));
+		action.setImageDescriptor(images.getImageDescriptor(ZestImages.IMG_ZEST_LAYOUT_SPRING));
+		manager.add(action);
+		action = new LayoutAction("Fade Layout", new FadeLayoutAlgorithm(LayoutStyles.NONE));
+		//action.setImageDescriptor(images.getImageDescriptor(ZestImages.IMG_ZEST_LAYOUT_SPRING));
+		manager.add(action);
+	}
 	
-	/**
-	 * Creates the menu and toolbar actions.
-	 */
-	protected void makeActions() {
+	class LayoutAction extends Action {
 
+		private LayoutAlgorithm algorithm;
+		public LayoutAction(String name, LayoutAlgorithm algorithm) {
+			this.algorithm = algorithm;
+			setText(name);
+		}
+		
+		public void run() {
+			nestedViewer.setLayoutAlgorithm(algorithm);
+		}
 	}
 	
 }

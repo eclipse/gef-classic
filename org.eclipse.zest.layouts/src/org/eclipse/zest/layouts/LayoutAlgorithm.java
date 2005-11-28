@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.mylar.zest.layouts;
 
-import java.util.Collection;
 import java.util.Comparator;
+import java.util.List;
 
 import org.eclipse.mylar.zest.layouts.progress.ProgressListener;
 
@@ -25,15 +25,6 @@ import org.eclipse.mylar.zest.layouts.progress.ProgressListener;
  * @author Ian Bull
  */
 public interface LayoutAlgorithm {
-	
-	public void addRelationship( LayoutRelationship relationship );
-	
-	public void removeRelationship( LayoutRelationship relationship);
-	public void removeRelationships( Collection collection);
-	
-	public void addEntity( LayoutEntity entity);
-	
-	public void removeEntity( LayoutEntity entity);
 	
 	/**
 	 * Apply the layout to the given entities.  The entities will be moved and resized based
@@ -97,6 +88,14 @@ public interface LayoutAlgorithm {
 	 */
 	public void stop();
 	
-
+	public void addEntity(LayoutEntity entity);
+	
+	public void addRelationship(LayoutRelationship relationship);
+	
+	public void removeEntity(LayoutEntity entity);
+	
+	public void removeRelationship(LayoutRelationship relationship);
+	
+	public void removeRelationships(List relationships);
 	
 }

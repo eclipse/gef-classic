@@ -104,28 +104,28 @@ public class StaticZestView extends ViewPart {
 	}
 	
 	private void fillLocalPullDown(IMenuManager manager) {
-		action = new LayoutAction("Horizontal Layout", new HorizontalLayoutAlgorithm(LayoutStyles.NONE));
+		action = new LayoutAction("Horizontal Layout", new HorizontalLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING));
 		action.setImageDescriptor(images.getImageDescriptor(ZestImages.IMG_ZEST_LAYOUT_HORIZONTAL));
 		manager.add(action);
-		action = new LayoutAction("Vertical Layout", new VerticalLayoutAlgorithm(LayoutStyles.NONE));
+		action = new LayoutAction("Vertical Layout", new VerticalLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING));
 		action.setImageDescriptor(images.getImageDescriptor(ZestImages.IMG_ZEST_LAYOUT_VERTICAL));
 		manager.add(action);
-		action = new LayoutAction("Grid Layout", new GridLayoutAlgorithm(LayoutStyles.NONE));
+		action = new LayoutAction("Grid Layout", new GridLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING));
 		action.setImageDescriptor(images.getImageDescriptor(ZestImages.IMG_ZEST_LAYOUT_GRID));
 		manager.add(action);
-		action = new LayoutAction("Vertical Tree Layout", new TreeLayoutAlgorithm(LayoutStyles.NONE));
+		action = new LayoutAction("Vertical Tree Layout", new TreeLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING));
 		action.setImageDescriptor(images.getImageDescriptor(ZestImages.IMG_ZEST_LAYOUT_TREE));
 		manager.add(action);
-		action = new LayoutAction("Horizontal Tree Layout", new HorizontalTreeLayoutAlgorithm(LayoutStyles.NONE));
+		action = new LayoutAction("Horizontal Tree Layout", new HorizontalTreeLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING));
 		action.setImageDescriptor(images.getImageDescriptor(ZestImages.IMG_ZEST_LAYOUT_TREE_HORIZ));
 		manager.add(action);
-		action = new LayoutAction("Radial Layout", new RadialLayoutAlgorithm(LayoutStyles.NONE));
+		action = new LayoutAction("Radial Layout", new RadialLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING));
 		action.setImageDescriptor(images.getImageDescriptor(ZestImages.IMG_ZEST_LAYOUT_RADIAL));
 		manager.add(action);
-		action = new LayoutAction("Spring Layout", new SpringLayoutAlgorithm(LayoutStyles.NONE));
+		action = new LayoutAction("Spring Layout", new SpringLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING));
 		action.setImageDescriptor(images.getImageDescriptor(ZestImages.IMG_ZEST_LAYOUT_SPRING));
 		manager.add(action);
-		action = new LayoutAction("Fade Layout", new FadeLayoutAlgorithm(LayoutStyles.NONE));
+		action = new LayoutAction("Fade Layout", new FadeLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING));
 		//action.setImageDescriptor(images.getImageDescriptor(ZestImages.IMG_ZEST_LAYOUT_SPRING));
 		manager.add(action);
 	}

@@ -43,7 +43,7 @@ public class JavaHierarchyContentProvider extends StandardJavaElementContentProv
 	 * 
 	 */
 	public JavaHierarchyContentProvider() {
-		super(true);
+		super(false);
 	}
 	
 	/* (non-Javadoc)
