@@ -16,6 +16,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -129,6 +130,12 @@ protected Graphics getGraphics(Rectangle region) {
 	return graphicsSource.getGraphics(region);
 }
 
+void paint(GC gc) {
+	SWTGraphics graphics = new SWTGraphics(gc);
+	root.paint(graphics);
+	graphics.dispose();
+}
+
 /**
  * Performs the update.  Validates the invalid figures and then repaints the dirty
  * regions.
@@ -140,7 +147,7 @@ public synchronized void performUpdate() {
 		return;
 	updating = true;
 	try {
-		validateFigures();
+		performValidation();
 		updateQueued = false;
 		repairDamage();
 		if (afterUpdate != null) {
@@ -152,6 +159,25 @@ public synchronized void performUpdate() {
 		}
 	} finally {
 		updating = false;
+	}
+}
+
+/**
+ * @see UpdateManager#performValidation()
+ */
+public void performValidation() {
+	if (invalidFigures.isEmpty())
+		return;
+	try {
+		IFigure fig;
+		fireValidating();
+		for (int i = 0; i < invalidFigures.size(); i++) {
+			fig = (IFigure) invalidFigures.get(i);
+			invalidFigures.set(i, null);
+			fig.validate();
+		}
+	} finally {
+		invalidFigures.clear();
 	}
 }
 
@@ -209,7 +235,6 @@ protected void repairDamage() {
 			damage = new Rectangle(contribution);
 		else
 			damage.union(contribution);
-//		keys.remove();
 	}
 
 	if (!dirtyRegions.isEmpty()) {
@@ -256,23 +281,11 @@ public void setRoot(IFigure figure) {
 }
 
 /**
- * Validates the invalid figures on the update queue and calls 
+ * Validates all invalid figures on the update queue and calls 
  * {@link UpdateManager#fireValidating()} unless there are no invalid figures.
  */
 protected void validateFigures() {
-	if (invalidFigures.isEmpty())
-		return;
-	try {
-		IFigure fig;
-		fireValidating();
-		for (int i = 0; i < invalidFigures.size(); i++) {
-			fig = (IFigure) invalidFigures.get(i);
-			invalidFigures.set(i, null);
-			fig.validate();
-		}
-	} finally {
-		invalidFigures.clear();
-	}
+	performValidation();
 }
 
 }
