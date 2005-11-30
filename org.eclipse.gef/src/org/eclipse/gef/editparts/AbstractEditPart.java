@@ -74,8 +74,8 @@ private	int flags;
 private   	EditPart parent;
 private	int selected;
 
-private 	List editPolicies = new ArrayList(2);
-private   	List editPolicyKeys = new ArrayList(2);
+private 	Object policies[];
+
 /**
  * The List of children EditParts
  */
@@ -89,17 +89,25 @@ EventListenerList eventListeners = new EventListenerList();
 /**
  * Iterates over a <code>List</code> of EditPolcies, skipping any <code>null</code> values
  * encountered.
+ * @deprecated access to this type is unnecessary; see getEditPolicyIterator()
  */
 protected static class EditPolicyIterator {
-	private Iterator iter;
-	private Object next;
+	private Object list[];
+	private int offset = 0;
+	private final int length;
 
+	EditPolicyIterator(Object list[]) {
+		this.list = list;
+		length = (list == null) ? 0 : list.length;
+	}
+	
 	/**
 	 * Constructs an Iterator for the given <code>List</code>.
+	 * @deprecated this constructor should not be used
 	 * @param list the list of policies.
 	 */
 	public EditPolicyIterator(List list) {
-		iter = list.iterator();
+		this(list.toArray());
 	}
 
 	/**
@@ -107,26 +115,22 @@ protected static class EditPolicyIterator {
 	 * @return the next non-<code>null</code> EditPolicy.
 	 */
 	public EditPolicy next() {
-		Object temp = next;
-		next = null;
-		return (EditPolicy)temp;
+		if (offset < length)
+			return (EditPolicy)list[offset++];
+		return null;
 	}
 	
 	/**
-	 * Availabilty of further <code>EditPolicies</code>
-	 * is returned
-	 *
-	 * @return  <code>boolean</code> representing availability
-	 *          of the next <code>EditPolicy</code>
+	 * Returns <code>true</code> if there is a next edit policy.
+	 * @return <code>true</code> if there is a next policy
 	 */
 	public boolean hasNext() {
-		if (next != null)
-			return true;
-		if (iter.hasNext())
-			do {
-				next = iter.next();
-			} while ((next == null) && iter.hasNext());
-		return next != null;
+		if (list == null)
+			return false;
+		
+		while (offset < list.length && !(list[offset] instanceof EditPolicy))
+			offset++;
+		return offset < list.length;
 	}
 }
 
@@ -204,8 +208,8 @@ protected void addChild(EditPart child, int index) {
  * to this EditPart's Visual. The provided subclasses {@link AbstractGraphicalEditPart}
  * and {@link AbstractTreeEditPart} already implement this method correctly, so it is
  * unlikely that this method should be overridden.
- * @param child  The EditPart being added.
- * @param index  The child's position.
+ * @param child The EditPart being added
+ * @param index The child's position
  * @see #addChild(EditPart, int)
  * @see AbstractGraphicalEditPart#removeChildVisual(EditPart)
  */
@@ -487,14 +491,6 @@ public Command getCommand(Request request) {
 	return command;
 }
 
-private List getEditPolicies() {
-	return editPolicies;
-}
-
-private List getEditPolicyKeys() {
-	return editPolicyKeys;
-}
-
 /**
  * Returns an iterator for the specified type of listener
  * @param clazz the Listener type over which to iterate
@@ -510,10 +506,12 @@ protected final Iterator getEventListeners(Class clazz) {
  * @see org.eclipse.gef.EditPart#getEditPolicy(Object)
  */
 public EditPolicy getEditPolicy(Object key) {
-	int index = getEditPolicyKeys().indexOf(key);
-	if (index == -1)
-		return null;
-	return (EditPolicy)getEditPolicies().get(index);
+	if (policies != null)
+		for (int i = 0; i < policies.length; i += 2) {
+			if (key.equals(policies[i]))
+				return (EditPolicy) policies[i + 1];
+		}
+	return null;
 }
 
 /**
@@ -522,7 +520,7 @@ public EditPolicy getEditPolicy(Object key) {
  * @return an EditPolicyIterator
  */
 protected final EditPolicyIterator getEditPolicyIterator() {
-	return new EditPolicyIterator(editPolicies);
+	return new EditPolicyIterator(policies);
 }
 
 /**
@@ -628,20 +626,33 @@ public boolean hasFocus() {
 }
 
 /**
- * @see org.eclipse.gef.EditPart#installEditPolicy(Object, EditPolicy)
+ * @see EditPart#installEditPolicy(Object, EditPolicy)
  */
 public void installEditPolicy(Object key, EditPolicy editPolicy) {
 	Assert.isNotNull(key, "Edit Policies must be installed with keys");//$NON-NLS-1$
-	int index = editPolicyKeys.indexOf(key);
-	if (index > -1) {
-		EditPolicy old = (EditPolicy)editPolicies.get(index);
-		if (old != null && isActive())
-			old.deactivate();
-		editPolicies.set(index, editPolicy);
+	if (policies == null) {
+		policies = new Object[2];
+		policies[0] = key;
+		policies[1] = editPolicy;
 	} else {
-		editPolicyKeys.add(key);
-		editPolicies.add(editPolicy);
+		int index = 0;
+		while (index < policies.length && !key.equals(policies[index]))
+			index += 2;
+		if (index < policies.length) {
+			index++;
+			EditPolicy old = (EditPolicy)policies[index];
+			if (old != null && isActive())
+				old.deactivate();
+			policies[index] = editPolicy;
+		} else {
+			Object newPolicies[] = new Object[policies.length + 2];
+			System.arraycopy(policies, 0, newPolicies, 0, policies.length);
+			policies = newPolicies;
+			policies[index] = key;
+			policies[index + 1] = editPolicy;
+		}
 	}
+	
 	if (editPolicy != null) {
 		editPolicy.setHost(this);
 		if (isActive())
@@ -667,7 +678,7 @@ public boolean isSelectable() {
 /**
  * Subclasses should extend this method to handle Requests. For now, the default
  * implementation does not handle any requests.
- * @see org.eclipse.gef.EditPart#performRequest(Request)
+ * @see EditPart#performRequest(Request)
  */
 public void performRequest(Request req) {
 }
@@ -830,7 +841,7 @@ protected abstract void removeChildVisual(EditPart child);
 
 /**
  * No reason to override
- * @see org.eclipse.gef.EditPart#removeEditPartListener(EditPartListener)
+ * @see EditPart#removeEditPartListener(EditPartListener)
  */
 public void removeEditPartListener(EditPartListener listener) {
 	eventListeners.removeListener(EditPartListener.class, listener);
@@ -841,13 +852,17 @@ public void removeEditPartListener(EditPartListener listener) {
  * @see EditPart#removeEditPolicy(Object)
  */
 public void removeEditPolicy(Object key) {
-	int i = editPolicyKeys.indexOf(key);
-	if (i == -1)
+	if (policies == null)
 		return;
-	EditPolicy policy = (EditPolicy)editPolicies.get(i);
-	if (isActive() && policy != null)
-		policy.deactivate();
-	editPolicies.set(i, null);
+	for (int i = 0; i < policies.length; i += 2) {
+		if (key.equals(policies[i])) {
+			i++;
+			EditPolicy policy = (EditPolicy) policies[i];
+			policies[i] = null;
+			if (isActive() && policy != null)
+				policy.deactivate();
+		}
+	}
 }
 
 /**
@@ -862,7 +877,7 @@ public void removeEditPolicy(Object key) {
  * In addition, <code>removeNotify()</code> is called recursively on all children
  * EditParts. Subclasses should <em>extend</em> this method to perform any additional
  * cleanup.
- * @see org.eclipse.gef.EditPart#removeNotify()
+ * @see EditPart#removeNotify()
  */
 public void removeNotify() {
 	if (getSelected() != SELECTED_NONE)
@@ -904,7 +919,7 @@ protected final void setFlag(int flag, boolean value) {
 }
 
 /**
- * @see org.eclipse.gef.EditPart#setFocus(boolean)
+ * @see EditPart#setFocus(boolean)
  */
 public void setFocus(boolean value) {
 	if (hasFocus() == value)
