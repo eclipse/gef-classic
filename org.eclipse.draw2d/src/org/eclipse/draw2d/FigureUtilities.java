@@ -410,4 +410,21 @@ public static IFigure findCommonAncestor(IFigure l, IFigure r) {
 	return null;
 }
 
+/**
+ *  Returns <code>true</code> if the ancestor contains the descendant, or is the ancestor
+ *  of the descendant's parent.
+ * @param ancestor the ancestor
+ * @param descendant the descendant
+ * @return <code>true</code> if ancestor
+ * @since 3.2
+ */
+public static boolean isAncestor(final IFigure ancestor, IFigure descendant) {
+	while (descendant != null) {
+		descendant = descendant.getParent();
+		if (descendant == ancestor)
+			return true;
+	}
+	return false;
+}
+
 }
