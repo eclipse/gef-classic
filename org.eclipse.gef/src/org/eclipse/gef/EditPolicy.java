@@ -89,7 +89,7 @@ String DIRECT_EDIT_ROLE = "DirectEditPolicy"; //$NON-NLS-1$
 /**
  * The key used to install a <i>graphical node</i> EditPolicy.
  */
-String GRAPHICAL_NODE_ROLE = "GraphicalNodeEditPolciy"; //$NON-NLS-1$
+String GRAPHICAL_NODE_ROLE = "GraphicalNodeEditPolicy"; //$NON-NLS-1$
 
 /**
  * The key used to install a <i>layout</i> EditPolicy.
