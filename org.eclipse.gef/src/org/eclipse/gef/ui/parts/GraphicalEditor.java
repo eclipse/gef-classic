@@ -63,13 +63,29 @@ public abstract class GraphicalEditor
 	implements CommandStackListener, ISelectionListener
 {
 
+private static class ActionIDList extends ArrayList {
+	public boolean add(Object o) {
+		if (o instanceof IAction) {
+			try {
+				IAction action = (IAction) o;
+				o = action.getId();
+				throw new IllegalArgumentException(
+						"Action IDs should be added to lists, not the action: " + action); //$NON-NLS-1$
+			} catch (IllegalArgumentException exc) {
+				exc.printStackTrace();
+			}
+		}
+		return super.add(o);
+	}
+}
+
 private DefaultEditDomain editDomain;
 private GraphicalViewer graphicalViewer;
 private ActionRegistry actionRegistry;
 private SelectionSynchronizer synchronizer;
-private List selectionActions = new ArrayList();
-private List stackActions = new ArrayList();
-private List propertyActions = new ArrayList();
+private List selectionActions = new ActionIDList();
+private List stackActions = new ActionIDList();
+private List propertyActions = new ActionIDList();
 
 /**
  * Constructs the editor part
@@ -121,8 +137,7 @@ protected void createActions() {
 	registry.registerAction(action);
 	getPropertyActions().add(action.getId());
 	
-	action = new PrintAction(this);
-	registry.registerAction(action);
+	registry.registerAction(new PrintAction(this));
 }
 
 /**
@@ -157,6 +172,15 @@ public void dispose() {
 	getEditDomain().setActiveTool(null);
 	getActionRegistry().dispose();
 	super.dispose();
+}
+
+/**
+ * Does nothing be default. This method should be overridden if {@link #isSaveAsAllowed()}
+ * has been overridden to return <code>true</code>.
+ * @see org.eclipse.ui.ISaveablePart#doSaveAs()
+ */
+public void doSaveAs() {
+	throw new RuntimeException("doSaveAs must be overridden"); //$NON-NLS-1$
 }
 
 /**
@@ -239,11 +263,12 @@ protected List getPropertyActions() {
 }
 
 /**
- * Returns the list of {@link IAction IActions} dependant on changes in the workbench's
- * {@link ISelectionService}. These actions should implement the {@link UpdateAction}
- * interface so that they can be updated in response to selection changes.  An example is
- * the Delete action.
- * @return the list of selection-dependant actions
+ * Returns the list of <em>IDs</em> of Actions that are dependant on changes in the
+ * workbench's {@link ISelectionService}. The associated Actions can be found in the
+ * action registry. Such actions should implement the {@link UpdateAction} interface so
+ * that they can be updated in response to selection changes.
+ * @see #updateActions(List)
+ * @return the list of selection-dependant action IDs
  */
 protected List getSelectionActions() {
 	return selectionActions;
@@ -261,10 +286,11 @@ protected SelectionSynchronizer getSelectionSynchronizer() {
 }
 
 /**
- * Returns the list of {@link IAction IActions} dependant on the CommmandStack's state. 
- * These actions should implement the {@link UpdateAction} interface so that they can be
- * updated in response to command stack changes.  An example is the "undo" action.
- * @return the list of stack-dependant actions
+ * Returns the list of <em>IDs</em> of Actions that are dependant on the CommmandStack's
+ * state. The associated Actions can be found in the action registry. These actions should
+ * implement the {@link UpdateAction} interface so that they can be updated in response to
+ * command stack changes.  An example is the "undo" action.
+ * @return the list of stack-dependant action IDs
  */
 protected List getStackActions() {
 	return stackActions;
@@ -306,7 +332,7 @@ protected void initializeActionRegistry() {
 	createActions();
 	updateActions(propertyActions);
 	updateActions(stackActions);
-} 
+}
 
 /** 
  * Override to set the contents of the GraphicalViewer after it has been created.
@@ -320,6 +346,15 @@ protected abstract void initializeGraphicalViewer();
  */
 public boolean isDirty() {
 	return getCommandStack().isDirty();
+}
+
+/**
+ * Returns <code>false</code> by default. Subclasses must return <code>true</code> to
+ * allow {@link #doSaveAs()} to be called.
+ * @see org.eclipse.ui.ISaveablePart#isSaveAsAllowed()
+ */
+public boolean isSaveAsAllowed() {
+	return false;
 }
 
 /**
