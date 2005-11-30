@@ -29,35 +29,6 @@ public class PaletteToolbarLayout
 	extends ToolbarLayout 
 {
 
-private Rectangle[] sourceSizes;
-private Rectangle[] destinationSizes;
-private DrawerAnimationController controller;
-
-/**
- * Constructor
- * 
- * @param	controller	Can be <code>null</code> if no animation is desired
- */
-public PaletteToolbarLayout(DrawerAnimationController controller) {
-	this.controller = controller;
-}
-
-private void captureDestinationSizes(IFigure parent) {
-	List children = parent.getChildren();
-	destinationSizes = new Rectangle[children.size()];
-	for (int i = 0; i < children.size(); i++) {
-		destinationSizes[i] = ((IFigure)children.get(i)).getBounds().getCopy();
-	}
-}
-
-private void captureSourceSizes(IFigure parent) {
-	List children = parent.getChildren();
-	sourceSizes = new Rectangle[children.size()];
-	for (int i = 0; i < children.size(); i++) {
-		sourceSizes[i] = ((IFigure)children.get(i)).getBounds().getCopy();
-	}
-}
-
 /**
  * A figure is growing if it's an expanded drawer.
  * 
@@ -68,21 +39,7 @@ protected boolean isChildGrowing(IFigure child) {
 	return child instanceof DrawerFigure && ((DrawerFigure)child).isExpanded();
 }
 
-/**
- * @see org.eclipse.draw2d.ToolbarLayout#layout(org.eclipse.draw2d.IFigure)
- */
 public void layout(IFigure parent) {
-	if (controller != null && controller.isRecording()) {
-			captureSourceSizes(parent);
-			normalLayout(parent);
-			captureDestinationSizes(parent);
-	} else if (controller != null && controller.isAnimationInProgress())
-		scaledLayout(parent);
-	else
-		normalLayout(parent);
-}
-
-private void normalLayout(IFigure parent) {
 	List children = parent.getChildren();
 	List childrenGrabbingVertical = new ArrayList();
 	int numChildren = children.size();
@@ -218,24 +175,6 @@ private void normalLayout(IFigure parent) {
 		newBounds.x += adjust;
 		child.setBounds(newBounds);
 		y += newBounds.height + getSpacing();
-	}
-}
-
-private void scaledLayout(IFigure parent) {
-	List children = parent.getChildren();
-	float progress = controller.getAnimationProgress();
-	   
-	for (int i = 0; i < children.size(); i++) {
-		Rectangle rect1 = sourceSizes[i];
-		Rectangle rect2 = destinationSizes[i];
-		IFigure child = (IFigure)children.get(i);
-	      
-		child.setBounds(new Rectangle(
-				Math.round(progress * rect2.x + (1 - progress) * rect1.x),
-				Math.round(progress * rect2.y + (1 - progress) * rect1.y),
-				Math.round(progress * rect2.width + (1 - progress) * rect1.width),
-				Math.round(progress * rect2.height + (1 - progress) * rect1.height)
-		));
 	}
 }
 

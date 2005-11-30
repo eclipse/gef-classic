@@ -22,7 +22,7 @@ public class SliderPaletteEditPart
 	extends PaletteEditPart
 {
 
-private DrawerAnimationController controller;
+private PaletteAnimator controller;
 
 public SliderPaletteEditPart(PaletteRoot paletteRoot) {
 	super(paletteRoot);
@@ -49,11 +49,12 @@ protected void refreshVisuals() {
  */
 protected void registerVisuals() {
 	super.registerVisuals();
-	controller = new DrawerAnimationController(
+	controller = new PaletteAnimator(
 		((PaletteViewer)getViewer()).getPaletteViewerPreferences());
-	getViewer().getEditPartRegistry().put(DrawerAnimationController.class, controller);
-	ToolbarLayout layout = new PaletteToolbarLayout(controller);
+	getViewer().getEditPartRegistry().put(PaletteAnimator.class, controller);
+	ToolbarLayout layout = new PaletteToolbarLayout();
 	getFigure().setLayoutManager(layout);
+	getFigure().addLayoutListener(controller);
 }
 
 }

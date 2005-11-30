@@ -19,9 +19,6 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IMemento;
 
-import org.eclipse.draw2d.ButtonModel;
-import org.eclipse.draw2d.ChangeEvent;
-import org.eclipse.draw2d.ChangeListener;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.FocusEvent;
 import org.eclipse.draw2d.FocusListener;
@@ -71,15 +68,13 @@ public IFigure createFigure() {
 	};
 	fig.setExpanded(getDrawer().isInitiallyOpen());
 	fig.setPinned(getDrawer().isInitiallyPinned());
-	fig.getCollapseToggle().addChangeListener(new ToggleListener());	
-	fig.getCollapseToggle().setRequestFocusEnabled(true);
-	fig.getCollapseToggle().addFocusListener(new FocusListener() {
+
+	fig.getCollapseToggle().addFocusListener(new FocusListener.Stub() {
 		public void focusGained(FocusEvent fe) {
 			getViewer().select(DrawerEditPart.this);
 		}
-		public void focusLost(FocusEvent fe) {
-		}
 	});
+	
 	return fig;
 }
 
@@ -99,10 +94,10 @@ public Object getAdapter(Class key) {
 	return super.getAdapter(key);
 }
 
-private DrawerAnimationController getAnimationController() {
-	return (DrawerAnimationController)getViewer()
+private PaletteAnimator getPaletteAnimator() {
+	return (PaletteAnimator)getViewer()
 			.getEditPartRegistry()
-			.get(DrawerAnimationController.class);
+			.get(PaletteAnimator.class);
 }
 
 /**
@@ -211,7 +206,8 @@ protected void refreshVisuals() {
  */
 protected void register() {
 	super.register();
-	getAnimationController().addDrawer(this);
+	getPaletteAnimator().addDrawer(this);
+	getFigure().addLayoutListener(getPaletteAnimator());
 }
 
 public void restoreState(IMemento memento) {
@@ -274,18 +270,8 @@ public void setSelected(int value) {
  * @see org.eclipse.gef.editparts.AbstractEditPart#unregister()
  */
 protected void unregister() {
-	getAnimationController().removeDrawer(this);
+	getPaletteAnimator().removeDrawer(this);
 	super.unregister();
-}
-
-private class ToggleListener implements ChangeListener {
-	public boolean internalChange = false;
-	public void handleStateChanged(ChangeEvent event) {
-		if (event.getPropertyName().equals(ButtonModel.SELECTED_PROPERTY) 
-			&& !getAnimationController().isAnimationInProgress()) {
-				getAnimationController().animate(DrawerEditPart.this);
-		}
-	}
 }
 
 }

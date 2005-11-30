@@ -19,6 +19,7 @@ import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 
+import org.eclipse.draw2d.Animation;
 import org.eclipse.draw2d.Border;
 import org.eclipse.draw2d.BorderLayout;
 import org.eclipse.draw2d.ButtonBorder;
@@ -109,7 +110,7 @@ public DrawerFigure(final Control control) {
 	 * ScrollPane can be stretched to take up vertical space.  This affects selection
 	 * and appearance (background color).  
 	 */
-	setLayoutManager(new PaletteToolbarLayout(null) {
+	setLayoutManager(new PaletteToolbarLayout() {
 		protected boolean isChildGrowing(IFigure child) {
 			int wHint = child.getBounds().width;
 			return child.getPreferredSize(wHint, -1).height 
@@ -125,17 +126,6 @@ public DrawerFigure(final Control control) {
 	
 	drawerLabel = new Label();
 	drawerLabel.setLabelAlignment(Label.LEFT);
-//	drawerLabel.addMouseListener(new MouseListener.Stub() {
-//		public void mousePressed(MouseEvent me) {
-//			if (me.button == 1) {
-////				collapseToggle.internalGetEventDispatcher().requestRemoveFocus(
-//																		collapseToggle);
-//				if (tipHelper != null) {
-//					tipHelper.hide();
-//				}
-//			}
-//		}
-//	});
 
 	pinFigure = new ToggleButton(new ImageFigure(PIN));
 	pinFigure.setBorder(BUTTON_BORDER);
@@ -169,7 +159,9 @@ public DrawerFigure(final Control control) {
 	collapseToggle.addChangeListener(new ChangeListener() {
 		public void handleStateChanged(ChangeEvent e) {
 			if (e.getPropertyName().equals(ButtonModel.SELECTED_PROPERTY)) {
+				Animation.markBegin(DrawerFigure.this);
 				handleExpandStateChanged();
+				Animation.run(150);
 			}
 		}
 	});
@@ -342,13 +334,8 @@ protected void handleExpandStateChanged() {
 			remove(scrollpane);
 	}
 	
-	if (pinFigure == null)
-		return;
-	
-	if (isExpanded() && showPin)
-		pinFigure.setVisible(true);
-	else
-		pinFigure.setVisible(false);
+	if (pinFigure != null)
+		pinFigure.setVisible(isExpanded() && showPin);
 }
 
 /**
@@ -391,7 +378,6 @@ public void setAnimating(boolean isAnimating) {
 
 public void setExpanded(boolean value) {
 	collapseToggle.setSelected(value);
-	handleExpandStateChanged();
 }
 
 public void setLayoutMode(int layoutMode) {
