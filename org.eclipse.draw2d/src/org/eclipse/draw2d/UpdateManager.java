@@ -139,7 +139,7 @@ public abstract void performUpdate(Rectangle exposed);
  * @param listener the listener to remove
  */
 public void removeUpdateListener(UpdateListener listener) {
-	if (listeners == null)
+	if (listener == null)
 		throw new IllegalArgumentException();
 	for (int index = 0; index < listeners.length; index++)
 		if (listeners[index] == listener) {
@@ -168,9 +168,10 @@ public abstract void setGraphicsSource(GraphicsSource gs);
 public abstract void setRoot(IFigure figure);
 
 /**
- * Validates all invalid figures without repainting. Some update managers may not support
- * independant validation of figures. In those cases, this method is equivalent to calling
- * {@link #performUpdate()}.
+ * Performs a partial update if supported (validation only). Fires notification to
+ * listeners that validation has been performed. By default this method calls {@link
+ * #performUpdate()}. Subclasses should override this method to support validation
+ * without repainting.
  * 
  * @since 3.2
  */
