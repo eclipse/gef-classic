@@ -61,7 +61,7 @@ public AbstractTreeEditPart() { }
 /**
  * Implemented to assign the child its {@link TreeEditPart#setWidget(Widget) widget}.
  * Subclasses should not call or override this method.
- * @see org.eclipse.gef.editparts.AbstractEditPart#addChildVisual(EditPart, int)
+ * @see AbstractEditPart#addChildVisual(EditPart, int)
  */
 protected void addChildVisual(EditPart childEditPart, int index) {
 	Widget widget = getWidget();
@@ -85,12 +85,12 @@ protected final boolean checkTreeItem() {
 /**
  * Override this method to install the EditPolicies
  * for your EditPart.
- * @see org.eclipse.gef.editparts.AbstractEditPart#createEditPolicies()
+ * @see AbstractEditPart#createEditPolicies()
  */
 protected void createEditPolicies() { }
 
 /**
- * @see org.eclipse.gef.EditPart#getDragTracker(Request)
+ * @see EditPart#getDragTracker(Request)
  */
 public DragTracker getDragTracker(Request req) {
 	return null;
@@ -117,7 +117,7 @@ protected String getText() {
 }
 
 /**
- * @see org.eclipse.gef.TreeEditPart#getWidget()
+ * @see TreeEditPart#getWidget()
  */
 public Widget getWidget() {
 	return widget;
@@ -131,7 +131,7 @@ public Widget getWidget() {
  * <P>
  * Subclasses might extend this method if they also want to change the TreeItem's
  * foreground or background color.
- * @see org.eclipse.gef.editparts.AbstractEditPart#refreshVisuals()
+ * @see AbstractEditPart#refreshVisuals()
  */
 protected void refreshVisuals() {
 	setWidgetImage(getImage());
@@ -140,7 +140,7 @@ protected void refreshVisuals() {
 
 /**
  * Disposes the child's <code>widget</code> and sets it to <code>null</code>.
- * @see org.eclipse.gef.editparts.AbstractEditPart#removeChildVisual(EditPart)
+ * @see AbstractEditPart#removeChildVisual(EditPart)
  */
 protected void removeChildVisual(EditPart childEditPart) {
 	TreeEditPart treeEditPart = (TreeEditPart)childEditPart;
@@ -149,7 +149,7 @@ protected void removeChildVisual(EditPart childEditPart) {
 }
 
 /**
- * @see org.eclipse.gef.editparts.AbstractEditPart#reorderChild(EditPart, int)
+ * @see AbstractEditPart#reorderChild(EditPart, int)
  */
 protected void reorderChild(EditPart editpart, int index) {
 	super.reorderChild(editpart, index);
