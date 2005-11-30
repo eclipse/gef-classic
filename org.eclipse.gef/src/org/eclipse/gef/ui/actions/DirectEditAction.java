@@ -46,7 +46,7 @@ public static final String ID = GEFActionConstants.DIRECT_EDIT;
 private Request directEditRequest = new Request(RequestConstants.REQ_DIRECT_EDIT);
 
 /**
- * @deprecated use DirectEditAction(IWorkbenchPart part)
+ * Same as {@link #DirectEditAction(IWorkbenchPart)}.
  * @param editor the editor
  */
 public DirectEditAction(IEditorPart editor) {
