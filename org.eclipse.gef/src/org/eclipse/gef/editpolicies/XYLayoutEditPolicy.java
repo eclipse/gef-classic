@@ -46,8 +46,8 @@ private XYLayout xyLayout;
  */
 protected Object getConstraintFor(ChangeBoundsRequest request, GraphicalEditPart child) {
 	Rectangle rect = new PrecisionRectangle(child.getFigure().getBounds());
-	child.getFigure().translateToAbsolute(rect);
 	Rectangle original = rect.getCopy();
+	child.getFigure().translateToAbsolute(rect);
 	rect = request.getTransformedRectangle(rect);
 	child.getFigure().translateToRelative(rect);
 	rect.translate(getLayoutOrigin().getNegated());

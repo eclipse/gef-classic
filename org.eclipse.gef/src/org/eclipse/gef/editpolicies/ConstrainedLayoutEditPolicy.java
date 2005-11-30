@@ -163,8 +163,10 @@ public Command getCommand(Request request) {
  * @return the draw2d constraint
  */
 protected Object getConstraintFor (ChangeBoundsRequest request, GraphicalEditPart child) {
-	Rectangle rect = child.getFigure().getBounds();
+	Rectangle rect = new PrecisionRectangle(child.getFigure().getBounds());
+	child.getFigure().translateToAbsolute(rect);
 	rect = request.getTransformedRectangle(rect);
+	child.getFigure().translateToRelative(rect);
 	rect.translate(getLayoutOrigin().getNegated());
 	return getConstraintFor(rect);
 }
