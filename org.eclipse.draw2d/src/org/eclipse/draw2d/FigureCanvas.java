@@ -87,7 +87,7 @@ private final LightweightSystem lws;
  * @param parent the parent
  */
 public FigureCanvas(Composite parent) {
-	this(parent, SWT.NONE, new LightweightSystem());
+	this(parent, SWT.DOUBLE_BUFFERED, new LightweightSystem());
 }
 
 /**
@@ -106,7 +106,7 @@ public FigureCanvas(Composite parent, int style) {
  * @param lws the LightweightSystem
  */
 public FigureCanvas(Composite parent, LightweightSystem lws) {
-	this(parent, SWT.NONE, lws);
+	this(parent, SWT.DOUBLE_BUFFERED, lws);
 }
 
 /**
@@ -126,7 +126,7 @@ public FigureCanvas(Composite parent, int style, LightweightSystem lws) {
 
 private static int checkStyle(int style) {
 	int validStyles = SWT.RIGHT_TO_LEFT | SWT.LEFT_TO_RIGHT | SWT.V_SCROLL | SWT.H_SCROLL
-			| SWT.NO_BACKGROUND | SWT.NO_REDRAW_RESIZE;
+			| SWT.NO_BACKGROUND | SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED;
 	if ((style & ~validStyles) != 0)
 		throw new IllegalArgumentException("Invalid style being set on FigureCanvas"); //$NON-NLS-1$
 	return style;
