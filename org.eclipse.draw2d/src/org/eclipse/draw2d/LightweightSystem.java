@@ -17,6 +17,8 @@ import org.eclipse.swt.accessibility.AccessibleEvent;
 import org.eclipse.swt.accessibility.AccessibleListener;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.KeyEvent;
@@ -55,7 +57,6 @@ IFigure contents;
 private IFigure root;
 private EventDispatcher dispatcher;
 private UpdateManager manager = new DeferredUpdateManager();
-private Rectangle oldControlSize = new Rectangle();
 
 /**
  * Constructs a LightweightSystem on Canvas <i>c</i>.
@@ -77,8 +78,9 @@ public LightweightSystem() {
 
 /**
  * Adds SWT listeners to the LightWeightSystem's Canvas. This allows for SWT events to be 
- * dispatched and handled by its {@link EventDispatcher}. 
- * 
+ * dispatched and handled by its {@link EventDispatcher}.
+ * <P>
+ * <EM>WARNING:</EM> This method should not be overridden.
  * @since 2.0
  */
 protected void addListeners() {
@@ -91,48 +93,19 @@ protected void addListeners() {
 	canvas.addKeyListener(handler);
 	canvas.addTraverseListener(handler);
 	canvas.addFocusListener(handler);
+	canvas.addDisposeListener(handler);
 	canvas.addListener(SWT.MouseWheel, handler);
-	
-	if (SWT.getPlatform().equals("gtk")) { //$NON-NLS-1$
-		canvas.addControlListener(new ControlAdapter() {
-			public void controlResized(ControlEvent e) {
-				LightweightSystem.this.controlResized();
-				((Canvas)e.widget).redraw();
-			}
-		});
 
-		canvas.addListener(SWT.Paint, new Listener() {
-			private boolean redrawFlag = false;
-			
-			public void handleEvent(Event e) {
-				Canvas c = (Canvas)e.widget;
-				Rectangle client = new Rectangle(c.getClientArea());
-				Rectangle clip = new Rectangle(e.gc.getClipping());
-				if (!clip.equals(client) && redrawFlag) {
-					redrawFlag = false;
-					c.redraw();
-				} else {
-					redrawFlag = true;		
-					LightweightSystem.this.paint(e.gc);
-				}
-			}
-		});
-	} else {
-		canvas.addControlListener(new ControlAdapter() {
-			public void controlResized(ControlEvent e) {
-				LightweightSystem.this.controlResized();
-			}
-		});
-		canvas.addListener(SWT.Paint, new Listener() {
-			public void handleEvent(Event e) {
-				LightweightSystem.this.paint(e.gc);
-			}
-		});
-	}
-
-	root.setBounds(oldControlSize);
-	getUpdateManager().performUpdate();
-	setEventDispatcher(getEventDispatcher());
+	canvas.addControlListener(new ControlAdapter() {
+		public void controlResized(ControlEvent e) {
+			LightweightSystem.this.controlResized();
+		}
+	});
+	canvas.addListener(SWT.Paint, new Listener() {
+		public void handleEvent(Event e) {
+			LightweightSystem.this.paint(e.gc);
+		}
+	});
 }
 
 /**
@@ -144,7 +117,6 @@ protected void controlResized() {
 	root.setBounds(r);
 	root.revalidate();
 	manager.performUpdate();
-	oldControlSize = r;
 }
 
 /**
@@ -155,7 +127,7 @@ protected void controlResized() {
  */
 protected EventDispatcher getEventDispatcher() {
 	if (dispatcher == null)
-		dispatcher = new SWTEventDispatcher();
+		setEventDispatcher(new SWTEventDispatcher());
 	return dispatcher;
 }
 
@@ -221,7 +193,7 @@ EventHandler internalCreateEventHandler() {
  * @since 2.0
  */
 public void paint(GC gc) {
-	manager.performUpdate(new Rectangle(gc.getClipping()));
+	manager.paint(gc);
 }
 
 /**
@@ -248,9 +220,18 @@ public void setControl(Canvas c) {
 	if (canvas == c)
 		return;
 	canvas = c;
-	getUpdateManager().setGraphicsSource(new BufferedGraphicsSource(canvas));
-	controlResized();
+	if ((c.getStyle() & SWT.DOUBLE_BUFFERED) != 0)
+		getUpdateManager().setGraphicsSource(new NativeGraphicsSource(canvas));
+	else
+		getUpdateManager().setGraphicsSource(new BufferedGraphicsSource(canvas));
+	getEventDispatcher().setControl(c);
 	addListeners();
+	
+	//Size the root figure and contents to the current control's size
+	Rectangle r = new Rectangle(canvas.getClientArea());
+	r.setLocation(0, 0);
+	root.setBounds(r);
+	root.revalidate();
 }
 
 /**
@@ -327,17 +308,17 @@ protected class RootFigure
 	
 	/** @see IFigure#internalGetEventDispatcher() */
 	public EventDispatcher internalGetEventDispatcher() {
-		return dispatcher;
+		return getEventDispatcher();
 	}
 	
 	/**
-	 * @see org.eclipse.draw2d.IFigure#isMirrored()
+	 * @see IFigure#isMirrored()
 	 */
 	public boolean isMirrored() {
 		return (LightweightSystem.this.canvas.getStyle() & SWT.MIRRORED) != 0;
 	}
 	
-	/** @see org.eclipse.draw2d.Figure#isShowing() */
+	/** @see Figure#isShowing() */
 	public boolean isShowing() {
 		return true;
 	}
@@ -350,7 +331,7 @@ protected class RootFigure
 protected class EventHandler 
 	implements MouseMoveListener, MouseListener, AccessibleControlListener, KeyListener,
 				TraverseListener, FocusListener, AccessibleListener, MouseTrackListener,
-				Listener
+				Listener, DisposeListener
 {
 	/** @see FocusListener#focusGained(FocusEvent) */
 	public void focusGained(FocusEvent e) {
@@ -512,39 +493,44 @@ protected class EventHandler
 		getEventDispatcher().dispatchKeyTraversed(e);
 	}
 	
-	/** @see org.eclipse.swt.events.MouseListener#mouseDoubleClick(MouseEvent) */
+	/** @see MouseListener#mouseDoubleClick(MouseEvent) */
 	public void mouseDoubleClick(MouseEvent e) {
 		getEventDispatcher().dispatchMouseDoubleClicked(e);
 	}
-		
-	/** @see org.eclipse.swt.events.MouseListener#mouseDown(MouseEvent) */
+	
+	/**@see MouseListener#mouseDown(MouseEvent)*/
 	public void mouseDown(MouseEvent e) {
 		getEventDispatcher().dispatchMousePressed(e);
 	}
 	
-	/** @see MouseTrackListener#mouseEnter(MouseEvent) */
+	/**@see MouseTrackListener#mouseEnter(MouseEvent)*/
 	public void mouseEnter(MouseEvent e) {
 		getEventDispatcher().dispatchMouseEntered(e);
 	}
 
-	/** @see MouseTrackListener#mouseExit(MouseEvent) */
+	/**@see MouseTrackListener#mouseExit(MouseEvent)*/
 	public void mouseExit(MouseEvent e) {
 		getEventDispatcher().dispatchMouseExited(e);
 	}
-
-	/** @see MouseTrackListener#mouseHover(MouseEvent) */
+	
+	/**@see MouseTrackListener#mouseHover(MouseEvent)*/
 	public void mouseHover(MouseEvent e) {
 		getEventDispatcher().dispatchMouseHover(e);
 	}
-
-	/** @see MouseMoveListener#mouseMove(MouseEvent) */
+	
+	/**@see MouseMoveListener#mouseMove(MouseEvent)*/
 	public void mouseMove(MouseEvent e) {
 		getEventDispatcher().dispatchMouseMoved(e);
 	}
 	
-	/** @see org.eclipse.swt.events.MouseListener#mouseUp(MouseEvent) */
+	/**@see MouseListener#mouseUp(MouseEvent)*/
 	public void mouseUp(MouseEvent e) {
 		getEventDispatcher().dispatchMouseReleased(e);
+	}
+	
+	/**@see DisposeListener#widgetDisposed(DisposeEvent)*/
+	public void widgetDisposed(DisposeEvent e) {
+		getUpdateManager().dispose();
 	}
 }
 
