@@ -216,7 +216,7 @@ public void addKeyListener(KeyListener listener) {
 }	
 
 /**
- * Prepends the given layout listener to the list of layout listeners.
+ * Appends the given layout listener to the list of layout listeners.
  * @since 3.1
  * @param listener the listener being added
  */
@@ -1236,7 +1236,7 @@ public void removeKeyListener(KeyListener listener) {
 }
 
 /**
- * Removes the most recently added occurence of the given listener.
+ * Removes the first occurence of the given listener.
  * @since 3.1
  * @param listener the listener being removed
  */
