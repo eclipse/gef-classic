@@ -17,6 +17,7 @@ import java.util.List;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.accessibility.AccessibleEvent;
 
+import org.eclipse.draw2d.Animation;
 import org.eclipse.draw2d.AutomaticRouter;
 import org.eclipse.draw2d.BendpointConnectionRouter;
 import org.eclipse.draw2d.ConnectionAnchor;
@@ -180,6 +181,7 @@ public void propertyChange(PropertyChangeEvent evt) {
 }
 
 protected void refreshVisuals() {
+	Animation.markBegin(getFigure());
 	ConnectionLayer cLayer = (ConnectionLayer) getLayer(CONNECTION_LAYER);
 	cLayer.setAntialias(SWT.ON);
 
@@ -191,6 +193,7 @@ protected void refreshVisuals() {
 		cLayer.setConnectionRouter(new ManhattanConnectionRouter());
 	else
 		cLayer.setConnectionRouter(new ShortestPathConnectionRouter(getFigure()));
+	Animation.run(400);
 }
 
 }

@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner.figures;
 
+import org.eclipse.draw2d.RoutingAnimator;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.PolygonDecoration;
 import org.eclipse.draw2d.PolylineConnection;
@@ -21,6 +22,7 @@ public class FigureFactory {
 
 public static PolylineConnection createNewBendableWire(Wire wire){
 	PolylineConnection conn = new PolylineConnection();
+	conn.addRoutingListener(RoutingAnimator.getDefault());
 //	conn.setSourceDecoration(new PolygonDecoration());
 //	conn.setTargetDecoration(new PolylineDecoration());
 	return conn;
@@ -29,6 +31,7 @@ public static PolylineConnection createNewBendableWire(Wire wire){
 public static PolylineConnection createNewWire(Wire wire){
 
 	PolylineConnection conn = new PolylineConnection();
+	conn.addRoutingListener(RoutingAnimator.getDefault());
 	PolygonDecoration arrow;
 	
 	if (wire == null || wire.getSource() instanceof SimpleOutput)
