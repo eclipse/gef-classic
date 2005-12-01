@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 
@@ -56,6 +59,19 @@ public void addNotify() {
 }
 
 /**
+ * Appends the given routing listener to the list of listeners.
+ * @param listener the routing listener
+ * @since 3.2
+ */
+public void addRoutingListener(RoutingListener listener) {
+	if (connectionRouter instanceof RoutingNotifier) {
+		RoutingNotifier notifier = (RoutingNotifier)connectionRouter;
+		notifier.listeners.add(listener);
+	} else
+		connectionRouter = new RoutingNotifier(connectionRouter, listener);
+}
+
+/**
  * Called by the anchors of this connection when they have moved, revalidating this 
  * polyline connection.
  * @param anchor the anchor that moved
@@ -87,6 +103,8 @@ public Rectangle getBounds() {
  * @return this connection's router
  */
 public ConnectionRouter getConnectionRouter() {
+	if (connectionRouter instanceof RoutingNotifier)
+		return ((RoutingNotifier)connectionRouter).realRouter;
 	return connectionRouter;
 }
 
@@ -148,7 +166,7 @@ private void hookTargetAnchor() {
  */
 public void layout() {
 	if (getSourceAnchor() != null && getTargetAnchor() != null)
-		getConnectionRouter().route(this);
+		connectionRouter.route(this);
 
 	Rectangle oldBounds = bounds;
 	super.layout();
@@ -160,7 +178,7 @@ public void layout() {
 	}
 	
 	repaint();
-	fireMoved();
+	fireFigureMoved();
 }
 
 /**
@@ -172,16 +190,30 @@ public void layout() {
 public void removeNotify() {
 	unhookSourceAnchor();
 	unhookTargetAnchor();
-	getConnectionRouter().remove(this);
+	connectionRouter.remove(this);
 	super.removeNotify();
 }
 
 /**
- * @see org.eclipse.draw2d.IFigure#revalidate()
+ * Removes the first occurence of the given listener.
+ * @param listener the listener being removed
+ * @since 3.2
+ */
+public void removeRoutingListener(RoutingListener listener) {
+	if (connectionRouter instanceof RoutingNotifier) {
+		RoutingNotifier notifier = (RoutingNotifier) connectionRouter;
+		notifier.listeners.remove(listener);
+		if (notifier.listeners.isEmpty())
+			connectionRouter = notifier.realRouter;
+	}
+}
+
+/**
+ * @see IFigure#revalidate()
  */
 public void revalidate() {
 	super.revalidate();
-	getConnectionRouter().invalidate(this);
+	connectionRouter.invalidate(this);
 }
 
 /**
@@ -192,11 +224,14 @@ public void revalidate() {
 public void setConnectionRouter(ConnectionRouter cr) {
 	if (cr == null)
 		cr = ConnectionRouter.NULL;
-	if (connectionRouter != cr) {
+	ConnectionRouter oldRouter = getConnectionRouter();
+	if (oldRouter != cr) {
 		connectionRouter.remove(this);
-		Object old = connectionRouter;
-		connectionRouter = cr;
-		firePropertyChange(Connection.PROPERTY_CONNECTION_ROUTER, old, cr);
+		if (connectionRouter instanceof RoutingNotifier)
+			((RoutingNotifier)connectionRouter).realRouter = cr;
+		else
+			connectionRouter = cr;
+		firePropertyChange(Connection.PROPERTY_CONNECTION_ROUTER, oldRouter, cr);
 		revalidate();
 	}
 }
@@ -206,8 +241,8 @@ public void setConnectionRouter(ConnectionRouter cr) {
  * @param cons the constraint
  */
 public void setRoutingConstraint(Object cons) {
-	if (getConnectionRouter() != null)
-		getConnectionRouter().setConstraint(this, cons);
+	if (connectionRouter != null)
+		connectionRouter.setConstraint(this, cons);
 	revalidate();
 }
 
@@ -283,5 +318,51 @@ private void unhookTargetAnchor() {
 		getTargetAnchor().removeAnchorListener(this);
 }
 
+final class RoutingNotifier implements ConnectionRouter {
+	
+	ConnectionRouter realRouter;
+	List listeners = new ArrayList(1);
+	
+	RoutingNotifier(ConnectionRouter router, RoutingListener listener) {
+		realRouter = router;
+		listeners.add(listener);
+	}
+	
+	public Object getConstraint(Connection connection) {
+		return realRouter.getConstraint(connection);
+	}
+	
+	public void invalidate(Connection connection) {
+		for (int i = 0; i < listeners.size(); i++)
+			((RoutingListener)listeners.get(i)).invalidate(connection);
+		
+		realRouter.invalidate(connection);
+	}
+	
+	public void route(Connection connection) {
+		boolean consumed = false;
+		for (int i = 0; i < listeners.size(); i++)
+			consumed |= ((RoutingListener)listeners.get(i)).route(connection);
+	
+		if (!consumed)
+			realRouter.route(connection);
+		
+		for (int i = 0; i < listeners.size(); i++)
+			((RoutingListener)listeners.get(i)).postRoute(connection);
+	}
+	
+	public void remove(Connection connection) {
+		for (int i = 0; i < listeners.size(); i++)
+			((RoutingListener)listeners.get(i)).remove(connection);
+		realRouter.remove(connection);
+	}
+	
+	public void setConstraint(Connection connection, Object constraint) {
+		for (int i = 0; i < listeners.size(); i++)
+			((RoutingListener)listeners.get(i)).setConstraint(connection, constraint);
+		realRouter.setConstraint(connection, constraint);
+	}
+	
+}
 
 }
