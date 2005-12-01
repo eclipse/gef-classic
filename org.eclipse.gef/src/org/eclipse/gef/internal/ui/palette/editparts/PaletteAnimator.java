@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.draw2d.Animator;
+import org.eclipse.draw2d.LayoutAnimator;
 import org.eclipse.draw2d.IFigure;
 
 import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
@@ -22,7 +22,7 @@ import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
 /**
  * @author Randy Hudson, Pratik Shah
  */
-public class PaletteAnimator extends Animator {
+public class PaletteAnimator extends LayoutAnimator {
 
 private List drawers = new ArrayList();
 private PaletteViewerPreferences prefs;
