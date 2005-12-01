@@ -43,9 +43,6 @@ protected AccessibleEditPart createAccessible() {
 	};
 }
 
-private DirectEditManager manager;
-
-
 protected void createEditPolicies(){
 	super.createEditPolicies();
 	installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE, null);		
@@ -63,10 +60,8 @@ private LogicLabel getLogicLabel(){
 }
 
 private void performDirectEdit(){
-	if(manager == null)
-		manager = new LogicLabelEditManager(
-				this, new LabelCellEditorLocator((StickyNoteFigure)getFigure()));
-	manager.show();
+	new LogicLabelEditManager(this,
+			new LabelCellEditorLocator((StickyNoteFigure)getFigure())).show();
 }
 
 public void performRequest(Request request){
