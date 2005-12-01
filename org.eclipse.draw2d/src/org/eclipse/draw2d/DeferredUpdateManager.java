@@ -132,6 +132,16 @@ protected Graphics getGraphics(Rectangle region) {
 
 void paint(GC gc) {
 	SWTGraphics graphics = new SWTGraphics(gc);
+	if (!updating) {
+		/**
+		 * If a paint occurs not as part of an update, we should notify that the region
+		 * is being painted. Otherwise, notification already occurs in repairDamage().
+		 */
+		HashMap map = new HashMap();
+		Rectangle rect = graphics.getClip(new Rectangle());
+		map.put(root, rect);
+		firePainting(rect, map);
+	}
 	root.paint(graphics);
 	graphics.dispose();
 }
