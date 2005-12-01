@@ -35,33 +35,40 @@ import java.util.Set;
  * force a validation pass to capture the final states, and then commence the animation.
  * The animation is synchronous and the method does not return until the animation has
  * completed.
- * @see Animator
+ * @see LayoutAnimator
  * @since 3.2
  */
 public class Animation {
 
 private static final int DEFAULT_DELAY = 250;
-private static Map figureAnimators;
-private static Map finalStates;
-private static Set toCapture;
-private static Map initialStates;
-private static final int PLAYBACK = 3;
-
-private static float progress;
 private static final int RECORD_INITIAL = 1;
 private static final int RECORD_FINAL = 2;
+private static final int PLAYBACK = 3;
+
+private static Set figureAnimators;
+private static Map finalStates;
+private static Map initialStates;
+private static float progress;
+
 private static long startTime;
 private static int state;
+private static Set toCapture;
 private static UpdateManager updateManager;
 
+private static void capture() {
+	Iterator keys = toCapture.iterator();
+	while (keys.hasNext()) {
+		AnimPair pair = (AnimPair) keys.next();
+		pair.animator.capture(pair.figure);
+	}
+}
+
 static void cleanup() {
-	
 	if (figureAnimators != null) {
-		Iterator keys = figureAnimators.keySet().iterator();
+		Iterator keys = figureAnimators.iterator();
 		while (keys.hasNext()) {
-			IFigure figure = (IFigure) keys.next();
-			Animator animator = (Animator) figureAnimators.get(figure);
-			animator.tearDown(figure);
+			AnimPair pair = (AnimPair) keys.next();
+			pair.animator.tearDown(pair.figure);
 		}
 	}
 	
@@ -74,22 +81,25 @@ static void cleanup() {
 
 /**
  * Returns the final animation state for the given figure.
- * @param figure key used for state lookup
+ * @param animator the animator for the figure
+ * @param figure the figure being animated
  * @return the final state
  * @since 3.2
  */
-public static Object getFinalState(IFigure figure) {
-	return finalStates.get(figure);
+public static Object getFinalState(Animator animator, IFigure figure) {
+	return finalStates.get(new AnimPair(animator, figure));
 }
 
 /**
- * Returns the initial animation state for the given figure.
- * @param figure key used for state lookup
+ * Returns the initial animation state for the given animator and figure. If no state was
+ * recorded, <code>null</code> is returned.
+ * @param animator the animator for the figure
+ * @param figure the figure being animated
  * @return the initial state
  * @since 3.2
  */
-public static Object getInitialState(IFigure figure) {
-	return initialStates.get(figure);
+public static Object getInitialState(Animator animator, IFigure figure) {
+	return initialStates.get(new AnimPair(animator, figure));
 }
 
 /**
@@ -101,23 +111,16 @@ public static float getProgress() {
 	return progress;
 }
 
-private static void capture() {
-	Iterator keys = toCapture.iterator();
-	while (keys.hasNext()) {
-		IFigure figure = (IFigure) keys.next();
-		Animator animator = (Animator) figureAnimators.get(figure);
-		animator.capture(figure);
-	}
-}
-
 static void hookAnimator(IFigure figure, Animator animator) {
-	if (figureAnimators.put(figure, animator) == null)
+	AnimPair pair = new AnimPair(animator, figure);
+	if (figureAnimators.add(pair))
 		animator.init(figure);
 }
 
-static void hookPostLayout(IFigure figure, Animator animator) {
-	if (figureAnimators.get(figure) == animator)
-		toCapture.add(figure);
+static void hookNeedsCapture(IFigure figure, Animator animator) {
+	AnimPair pair = new AnimPair(animator, figure);
+	if (figureAnimators.contains(pair))
+		toCapture.add(pair);
 }
 
 /**
@@ -129,12 +132,12 @@ public static boolean isAnimating() {
 	return state == PLAYBACK;
 }
 
-static boolean isInitialRecording() {
-	return state == RECORD_INITIAL;
-}
-
 static boolean isFinalRecording() {
 	return state == RECORD_FINAL;
+}
+
+static boolean isInitialRecording() {
+	return state == RECORD_INITIAL;
 }
 
 /**
@@ -149,17 +152,25 @@ public static void markBegin(IFigure figure) {
 		updateManager = figure.getUpdateManager();
 		initialStates = new HashMap();
 		finalStates = new HashMap();
-		figureAnimators = new HashMap();
+		figureAnimators = new HashSet();
 		toCapture = new HashSet();
 	}
 }
 
-static void putFinalState(IFigure key, Object state) {
-	finalStates.put(key, state);
+private static void notifyPlaybackStarting() {
+	Iterator keys = figureAnimators.iterator();
+	while (keys.hasNext()) {
+		AnimPair pair = (AnimPair) keys.next();
+		pair.animator.playbackStarting(pair.figure);
+	}
 }
 
-static void putInitialState(IFigure key, Object state) {
-	initialStates.put(key, state);
+static void putFinalState(Animator animator, IFigure key, Object state) {
+	finalStates.put(new AnimPair(animator, key), state);
+}
+
+static void putInitialState(Animator animator, IFigure key, Object state) {
+	initialStates.put(new AnimPair(animator, key), state);
 }
 
 /**
@@ -199,7 +210,7 @@ public static void run(int duration) {
 				if (delta >= duration)
 					progress = 1f;
 				else
-					progress = 0.1f + 0.9f * delta / duration; 
+					progress = 0.1f + 0.9f * delta / duration;
 			}
 		}
 	} finally {
@@ -207,20 +218,31 @@ public static void run(int duration) {
 	}
 }
 
-private static void notifyPlaybackStarting() {
-	Iterator keys = figureAnimators.keySet().iterator();
-	while (keys.hasNext()) {
-		IFigure figure = (IFigure) keys.next();
-		Animator animator = (Animator) figureAnimators.get(figure);
-		animator.playbackStarting(figure);
-	}	
-}
-
 private static void step() {
 	Iterator iter = initialStates.keySet().iterator();
 	while (iter.hasNext())
-		((IFigure)iter.next()).revalidate();
+		((AnimPair)iter.next()).figure.revalidate();
 	//viewport.validate();
+}
+
+static class AnimPair {
+
+	final Animator animator;
+	final IFigure figure;
+
+	AnimPair(Animator animator, IFigure figure) {
+		this.animator = animator;
+		this.figure = figure;	
+	}
+
+	public boolean equals(Object obj) {
+		AnimPair pair = (AnimPair)obj;
+		return pair.animator == animator && pair.figure == figure;
+	}
+
+	public int hashCode() {
+		return animator.hashCode() ^ figure.hashCode();
+	}
 }
 
 }
