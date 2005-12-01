@@ -17,12 +17,24 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
- * Update managers handle the job of repainting and laying out figures.  A desirable 
- * implementation is one that batches work to be done and collapses any redundant work.
- * Update managers may contain 0 or more nested update managers. Some optimizations can 
- * only be performed after all requests have been batched.  For this reason, an 
- * UpdateManager should call performUpdate() on its nested UpdateManagers prior to doing 
- * its own update.  During the nested updates, new requests may be added.
+ * Update managers handle the job of laying out and repainting figures. A desirable 
+ * implementation is to batches work to be done and collapses any redundant work. For
+ * example, clients may be making multiple changes to figures, which require laying out
+ * the same container or repainting the same region.
+ * <P>
+ * The update manager receives requests to validate certain figures, and repaint certain
+ * areas of figures. An update manager could process every request synchronously, or it
+ * could batch these requests and process them asynchronously.
+ * <P>
+ * The update process occurs in two phases. The first phase is laying out invalid figures.
+ * This phase comes first because it usually introduces additional damage regions. In some
+ * cases, while validating figures, new invalid figures may be appended to the update
+ * manager. Of course, damage regions will be reported too as figures are layed out.
+ * <P>
+ * The second phase is to repaint all damaged areas. The update manager will typically
+ * batch, clip, and union, all rectangles and perform a single paint of the overall
+ * damaged area.
+ * 
  */
 public abstract class UpdateManager {
 
