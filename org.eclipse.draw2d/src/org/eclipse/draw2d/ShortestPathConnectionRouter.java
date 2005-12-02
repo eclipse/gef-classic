@@ -84,19 +84,7 @@ public ShortestPathConnectionRouter(IFigure container) {
 	this.container = container;
 }
 
-/*package*/ void queueSomeRouting() {
-	if (connectionToPaths == null || connectionToPaths.isEmpty())
-		return;
-	try {
-		ignoreInvalidate = true;
-		((Connection)connectionToPaths.keySet().iterator().next())
-			.revalidate();
-	} finally {
-		ignoreInvalidate = false;
-	}
-}
-
-/*package*/ void addChild(IFigure child) {
+void addChild(IFigure child) {
 	if (connectionToPaths == null)
 		return;
 	if (figuresToBounds.containsKey(child))
@@ -106,19 +94,6 @@ public ShortestPathConnectionRouter(IFigure container) {
 	figuresToBounds.put(child, bounds);
 	child.addFigureListener(figureListener);
 	isDirty = true;
-}
-
-void removeChild(IFigure child) {
-	if (connectionToPaths == null)
-		return;
-	Rectangle bounds = child.getBounds().getCopy();
-	boolean change = algorithm.removeObstacle(bounds);
-	figuresToBounds.remove(child);
-	child.removeFigureListener(figureListener);
-	if (change) {
-		isDirty = true;
-		queueSomeRouting();
-	}
 }
 
 private void hookAll() {
@@ -154,7 +129,17 @@ public Object getConstraint(Connection connection) {
 }
 
 /**
- * @see org.eclipse.draw2d.ConnectionRouter#invalidate(org.eclipse.draw2d.Connection)
+ * Returns the default spacing maintained on either side of a connection. The default
+ * value is 4.
+ * @return the connection spacing
+ * @since 3.2
+ */
+public int getSpacing() {
+	return algorithm.getSpacing();
+}
+
+/**
+ * @see ConnectionRouter#invalidate(Connection)
  */
 public void invalidate(Connection connection) {
 	if (ignoreInvalidate)
@@ -163,71 +148,12 @@ public void invalidate(Connection connection) {
 	isDirty = true;
 }
 
-/**
- * @see org.eclipse.draw2d.ConnectionRouter#remove(org.eclipse.draw2d.Connection)
- */
-public void remove(Connection connection) {
-	staleConnections.remove(connection);
-	constraintMap.remove(connection);
-	if (connectionToPaths == null)
-		return;
-	Path path = (Path)connectionToPaths.remove(connection);
-	algorithm.removePath(path);
-	isDirty = true;
-	if (connectionToPaths.isEmpty()) {
-		unhookAll();
-		connectionToPaths = null;
-	} else {
-		//Make sure one of the remaining is revalidated so that we can re-route again.
-		queueSomeRouting();
-	}
-}
-
 private void processLayout() {
 	if (staleConnections.isEmpty())
 		return;
 	((Connection)staleConnections.iterator().next()).revalidate();
 }
 
-/**
- * @see ConnectionRouter#route(Connection)
- */
-public void route(Connection conn) {
-	if (isDirty) {
-		ignoreInvalidate = true;
-		processStaleConnections();
-		isDirty = false;
-		List updated = algorithm.solve();
-		Connection current;
-		for (int i = 0; i < updated.size(); i++) {
-			Path path = (Path) updated.get(i);
-			current = (Connection)path.data;
-			current.revalidate();
-			
-			PointList points = path.getPoints().getCopy();
-			Point ref1, ref2, start, end;
-			ref1 = new PrecisionPoint(points.getPoint(1));
-			ref2 = new PrecisionPoint(points.getPoint(points.size() - 2));
-			current.translateToAbsolute(ref1);
-			current.translateToAbsolute(ref2);
-			
-			start = current.getSourceAnchor().getLocation(ref1).getCopy();
-			end = current.getTargetAnchor().getLocation(ref2).getCopy();
-			
-			current.translateToRelative(start);
-			current.translateToRelative(end);
-			points.setPoint(start, 0);
-			points.setPoint(end, points.size() - 1);
-
-			current.setPoints(points);
-		}
-		ignoreInvalidate = false;
-	}
-}
-
-/**
- * @since 3.0
- */
 private void processStaleConnections() {
 	Iterator iter = staleConnections.iterator();
 	if (iter.hasNext() && connectionToPaths == null) {
@@ -273,8 +199,89 @@ private void processStaleConnections() {
 	staleConnections.clear();
 }
 
+void queueSomeRouting() {
+	if (connectionToPaths == null || connectionToPaths.isEmpty())
+		return;
+	try {
+		ignoreInvalidate = true;
+		((Connection)connectionToPaths.keySet().iterator().next())
+			.revalidate();
+	} finally {
+		ignoreInvalidate = false;
+	}
+}
+
 /**
- * @see org.eclipse.draw2d.ConnectionRouter#setConstraint(org.eclipse.draw2d.Connection, java.lang.Object)
+ * @see ConnectionRouter#remove(Connection)
+ */
+public void remove(Connection connection) {
+	staleConnections.remove(connection);
+	constraintMap.remove(connection);
+	if (connectionToPaths == null)
+		return;
+	Path path = (Path)connectionToPaths.remove(connection);
+	algorithm.removePath(path);
+	isDirty = true;
+	if (connectionToPaths.isEmpty()) {
+		unhookAll();
+		connectionToPaths = null;
+	} else {
+		//Make sure one of the remaining is revalidated so that we can re-route again.
+		queueSomeRouting();
+	}
+}
+
+void removeChild(IFigure child) {
+	if (connectionToPaths == null)
+		return;
+	Rectangle bounds = child.getBounds().getCopy();
+	boolean change = algorithm.removeObstacle(bounds);
+	figuresToBounds.remove(child);
+	child.removeFigureListener(figureListener);
+	if (change) {
+		isDirty = true;
+		queueSomeRouting();
+	}
+}
+
+/**
+ * @see ConnectionRouter#route(Connection)
+ */
+public void route(Connection conn) {
+	if (isDirty) {
+		ignoreInvalidate = true;
+		processStaleConnections();
+		isDirty = false;
+		List updated = algorithm.solve();
+		Connection current;
+		for (int i = 0; i < updated.size(); i++) {
+			Path path = (Path) updated.get(i);
+			current = (Connection)path.data;
+			current.revalidate();
+			
+			PointList points = path.getPoints().getCopy();
+			Point ref1, ref2, start, end;
+			ref1 = new PrecisionPoint(points.getPoint(1));
+			ref2 = new PrecisionPoint(points.getPoint(points.size() - 2));
+			current.translateToAbsolute(ref1);
+			current.translateToAbsolute(ref2);
+			
+			start = current.getSourceAnchor().getLocation(ref1).getCopy();
+			end = current.getTargetAnchor().getLocation(ref2).getCopy();
+			
+			current.translateToRelative(start);
+			current.translateToRelative(end);
+			points.setPoint(start, 0);
+			points.setPoint(end, points.size() - 1);
+
+			current.setPoints(points);
+		}
+		ignoreInvalidate = false;
+	}
+}
+
+/**
+ * @see ConnectionRouter#setConstraint(Connection, Object)
  */
 public void setConstraint(Connection connection, Object constraint) {
 	//Connection.setConstraint() already calls revalidate, so we know that a
@@ -282,6 +289,18 @@ public void setConstraint(Connection connection, Object constraint) {
 	staleConnections.add(connection);
 	constraintMap.put(connection, constraint);
 	isDirty = true;
+}
+
+/**
+ * Sets the default space that should be maintained on either side of a connection. This
+ * causes the connections to be separated from each other and from the obstacles. The
+ * default value is 4.
+ * 
+ * @param spacing the connection spacing
+ * @since 3.2
+ */
+public void setSpacing(int spacing) {
+	algorithm.setSpacing(spacing);
 }
 
 }
