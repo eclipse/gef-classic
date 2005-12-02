@@ -62,6 +62,7 @@ static class PathStack extends ArrayList {
  */
 private static final int NUM_GROW_PASSES = 2;
 
+private int spacing = 4;
 private boolean growPassChangedObstacles;
 private List orderedPaths;
 private Map pathsToChildPaths;
@@ -90,7 +91,7 @@ public ShortestPathRouter() {
  * @return <code>true</code> if the added obstacle has dirtied one or more paths
  */
 public boolean addObstacle(Rectangle rect) {
-	return internalAddObstacle(new Obstacle(rect));
+	return internalAddObstacle(new Obstacle(rect, this));
 }
 
 /**
@@ -137,7 +138,7 @@ private void checkVertexForIntersections(Vertex vertex) {
 		return;
 	int sideLength, x, y;
 	
-	sideLength = 2 * (vertex.totalCount * Vertex.BEND_OFFSET) + 1;
+	sideLength = 2 * (vertex.totalCount * getSpacing()) + 1;
 	
 	if ((vertex.positionOnObstacle & PositionConstants.NORTH) > 0) 
 		y = vertex.y - sideLength;
@@ -278,6 +279,16 @@ private Vertex getNearestVertex(Vertex v1, Vertex v2, Segment segment) {
 		return v2;
 	else 
 		return v1;
+}
+
+/**
+ * Returns the spacing maintained between paths.
+ * @return the default path spacing
+ * @see #setSpacing(int)
+ * @since 3.2
+ */
+public int getSpacing() {
+	return spacing;
 }
 
 /**
@@ -623,6 +634,17 @@ private void resetVertices() {
 }
 
 /**
+ * Sets the default spacing between paths. The spacing is the minimum distance that path
+ * should be offset from other paths or obstacles. The default value is 4. When this value
+ * can not be satisfied, paths will be squeezed together uniformly.
+ * @param spacing the path spacing
+ * @since 3.2
+ */
+public void setSpacing(int spacing) {
+	this.spacing = spacing;
+}
+
+/**
  * Updates the points in the paths in order to represent the current solution 
  * with the given paths and obstacles.
  *
@@ -788,39 +810,40 @@ private int testOffsetSegmentForIntersections(Segment segment, int index, Path p
 			continue;
 		Vertex vertex = null;
 
+		int offset = getSpacing();
 		if (segment.getSlope() < 0) {
-			if (segment.intersects(obs.topLeft.x - Vertex.BEND_OFFSET,
-					obs.topLeft.y - Vertex.BEND_OFFSET,
-					obs.bottomRight.x + Vertex.BEND_OFFSET,
-					obs.bottomRight.y + Vertex.BEND_OFFSET))
+			if (segment.intersects(obs.topLeft.x - offset,
+					obs.topLeft.y - offset,
+					obs.bottomRight.x + offset,
+					obs.bottomRight.y + offset))
 				vertex = getNearestVertex(obs.topLeft, obs.bottomRight, segment);
-			else if (segment.intersects(obs.bottomLeft.x - Vertex.BEND_OFFSET,
-					obs.bottomLeft.y + Vertex.BEND_OFFSET,
-					obs.topRight.x + Vertex.BEND_OFFSET,
-					obs.topRight.y - Vertex.BEND_OFFSET))
+			else if (segment.intersects(obs.bottomLeft.x - offset,
+					obs.bottomLeft.y + offset,
+					obs.topRight.x + offset,
+					obs.topRight.y - offset))
 				vertex = getNearestVertex(obs.bottomLeft, obs.topRight, segment);
 		} else {
-			if (segment.intersects(obs.bottomLeft.x - Vertex.BEND_OFFSET,
-					obs.bottomLeft.y + Vertex.BEND_OFFSET,
-					obs.topRight.x + Vertex.BEND_OFFSET,
-					obs.topRight.y - Vertex.BEND_OFFSET))
+			if (segment.intersects(obs.bottomLeft.x - offset,
+					obs.bottomLeft.y + offset,
+					obs.topRight.x + offset,
+					obs.topRight.y - offset))
 				vertex = getNearestVertex(obs.bottomLeft, obs.topRight, segment);
-			else if (segment.intersects(obs.topLeft.x - Vertex.BEND_OFFSET,
-					obs.topLeft.y - Vertex.BEND_OFFSET,
-					obs.bottomRight.x + Vertex.BEND_OFFSET,
-					obs.bottomRight.y + Vertex.BEND_OFFSET))
+			else if (segment.intersects(obs.topLeft.x - offset,
+					obs.topLeft.y - offset,
+					obs.bottomRight.x + offset,
+					obs.bottomRight.y + offset))
 				vertex = getNearestVertex(obs.topLeft, obs.bottomRight, segment);
 		}
 
 		if (vertex != null) {
-			Rectangle vRect = vertex.getDeformedRectangle(Vertex.BEND_OFFSET);
+			Rectangle vRect = vertex.getDeformedRectangle(offset);
 			if (segment.end.obs != null) {
-				Rectangle endRect = segment.end.getDeformedRectangle(Vertex.BEND_OFFSET);
+				Rectangle endRect = segment.end.getDeformedRectangle(offset);
 				if (vRect.intersects(endRect))
 					continue;
 			}
 			if (segment.start.obs != null) {
-				Rectangle startRect = segment.start.getDeformedRectangle(Vertex.BEND_OFFSET);
+				Rectangle startRect = segment.start.getDeformedRectangle(offset);
 				if (vRect.intersects(startRect))
 					continue;
 			}

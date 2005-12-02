@@ -32,11 +32,6 @@ class Vertex
 	extends Point 
 {
 
-/**
- * The default amount to offset multiple paths on a Vertex.
- */
-public static final int BEND_OFFSET = 4;
-
 // constants for the vertex type
 static final int NOT_SET = 0;
 static final int INNIE = 1;
@@ -49,7 +44,7 @@ Vertex label;
 double cost = 0;
 
 // for routing
-double nearestObstacle = 0;
+int nearestObstacle = 0;
 double offset = 0;
 int type = NOT_SET;
 int count = 0;
@@ -131,7 +126,7 @@ void fullReset() {
 	type = NOT_SET;
 	count = 0;
 	cost = 0;
-	offset = BEND_OFFSET;
+	offset = getSpacing();
 	nearestObstacle = 0;
 	label = null;
 	nearestObstacleChecked = false;
@@ -172,6 +167,12 @@ Rectangle getDeformedRectangle(int extraOffset) {
 	return rect;
 }
 
+private int getSpacing() {
+	if (obs == null)
+		return 0;
+	return obs.getSpacing();
+}
+
 /**
  * Grows this vertex by its offset to its maximum size.
  */
@@ -179,7 +180,7 @@ void grow() {
 	int modifier;
 	
 	if (nearestObstacle == 0)
-		modifier = totalCount * BEND_OFFSET;
+		modifier = totalCount * getSpacing();
 	else
 		modifier = (int)(nearestObstacle / 2) - 1;
 	

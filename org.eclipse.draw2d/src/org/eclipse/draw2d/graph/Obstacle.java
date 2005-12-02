@@ -27,13 +27,15 @@ class Obstacle
 
 boolean exclude;
 Vertex topLeft, topRight, bottomLeft, bottomRight, center;
+private ShortestPathRouter router;
 
 /**
  * Creates a new obstacle from the given rectangle bounds.
  * @param rect the bounds
  */
-Obstacle(Rectangle rect) {
+Obstacle(Rectangle rect, ShortestPathRouter router) {
 	init(rect);
+	this.router = router;
 }
 
 /**
@@ -47,6 +49,10 @@ public boolean containsProper(Point p) {
 		&& p.x < this.x + this.width - 1
 		&& p.y > this.y
 		&& p.y < this.y + this.height - 1;
+}
+
+public int getSpacing() {
+	return router.getSpacing();
 }
 
 private void growVertex(Vertex vertex) {
