@@ -54,37 +54,35 @@ void push(Object obj) {
 private static final Point CURRENT = new Point();
 private static final double EPSILON = 1.04;
 private static final Point NEXT = new Point();
-
 private static final double OVAL_CONSTANT = 1.13;
 
+/**
+ * The bendpoint constraints.  The path must go through these bendpoints.
+ */
+PointList bendpoints;
 /**
  * An arbitrary data field which can be used to map a Path back to some client object.
  */
 public Object data;
-
-List grownSegments;
-List segments;
 List excludedObstacles;
-
+List grownSegments;
 /**
  * this field is for internal use only.  It is true whenever a property has been changed
  * which requires the solver to resolve this path.
  */
 public boolean isDirty = true;
+
 boolean isInverted = false;
 boolean isMarked = false;
-
 PointList points;
-/**
- * The bendpoint constraints.  The path must go through these bendpoints.
- */
-PointList bendpoints;
 
 /**
  * The previous cost ratio of the path.  The cost ratio is the actual path length divided
  * by the length from the start to the end. 
  */
 private double prevCostRatio;
+List segments;
+
 private SegmentStack stack;
 Vertex start, end;
 private Path subPath;
@@ -602,6 +600,23 @@ Path getSubPath(Segment currentSegment) {
 }
 
 /**
+ * Resets the vertices that this path has traveled prior to this segment. This is called
+ * when the path has become inverted and needs to rectify any labeling mistakes it made
+ * before it knew it was inverted.
+ * @param currentSegment the segment at which the path found it was inverted
+ */
+void invertPriorVertices(Segment currentSegment) {
+	int stop = grownSegments.indexOf(currentSegment);
+	for (int i = 0; i < stop; i++) {
+		Vertex vertex = ((Segment)grownSegments.get(i)).end;
+		if (vertex.type == Vertex.INNIE)
+			vertex.type = Vertex.OUTIE;
+		else
+			vertex.type = Vertex.INNIE;
+	}
+}
+
+/**
  * Returns true if this obstacle is in the visibility graph
  * @param obs the obstacle 
  * @return true if obstacle is in the visibility graph
@@ -701,6 +716,7 @@ void reconnectSubPaths() {
 	}
 }
 
+
 /**
  * Refreshes the exclude field on the obstacles in the list. Excludes all obstacles
  * that contain the start or end point for this path.
@@ -720,6 +736,9 @@ void refreshExcludedObstacles(List allObstacles) {
 				/*
 				 * $TODO Check for corners.  If the path begins exactly at the corner of
 				 * an obstacle, the exclude should also be true.
+				 * 
+				 * Or, change segment intersection so that two segments that share an
+				 * endpoint do not intersect.
 				 */
 			}
 		}
@@ -747,24 +766,6 @@ void resetPartial() {
 	isDirty = false;
 	grownSegments.clear();
 	points.removeAllPoints();
-}
-
-
-/**
- * Resets the vertices that this path has traveled prior to this segment. This is called
- * when the path has become inverted and needs to rectify any labeling mistakes it made
- * before it knew it was inverted.
- * @param currentSegment the segment at which the path found it was inverted
- */
-void invertPriorVertices(Segment currentSegment) {
-	int stop = grownSegments.indexOf(currentSegment);
-	for (int i = 0; i < stop; i++) {
-		Vertex vertex = ((Segment)grownSegments.get(i)).end;
-		if (vertex.type == Vertex.INNIE)
-			vertex.type = Vertex.OUTIE;
-		else
-			vertex.type = Vertex.INNIE;
-	}
 }
 
 /**
