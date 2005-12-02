@@ -381,9 +381,7 @@ public void visit(DirectedGraph g) {
 		.visit(prime);
 
 	RankAssigmentSolver solver = new RankAssigmentSolver();
-//	solver.maxcount = 3;
 	solver.visit(prime);
-	
 	balanceClusters();
 	
 	prime.nodes.normalizeRanks();
