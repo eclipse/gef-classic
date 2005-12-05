@@ -91,23 +91,29 @@ public static final String KEY_EAST_ANCHOR = "SnapToGeometry.EastAnchor"; //$NON
  */
 protected static class Entry {
 	/**
-	 * The side from which this entry was created.  -1 is used to indicate left or top, 0
-	 * indicates the middle or center, and 1 indicates right or bottom.
+	 * The side from which this entry was created. The following values are valid:
+	 * <UL>
+	 * <LI>-1 indicates left/top
+	 * <LI>0 indicates middle/center
+	 * <LI>1 indicates right/bottom
+	 * </UL>
+	 * It is possible for new values to be added in the future.
 	 */
-	int side;
+	public int type;
+	
 	/**
 	 * The location of the entry, in the container's coordinates.
 	 */
-	int offset;
+	public int location;
 	
 	/**
-	 * Constructs a new entry with the given side and offset.
-	 * @param side an integer indicating T/L, B/R, or C/M
-	 * @param offset the location
+	 * Constructs a new entry of the given type and location.
+	 * @param type an integer indicating T/L, B/R, or C/M
+	 * @param location the location
 	 */
-	Entry(int side, int offset) {
-		this.side = side;
-		this.offset = offset;
+	Entry(int type, int location) {
+		this.type = type;
+		this.location = location;
 	}
 }
 
@@ -222,26 +228,26 @@ protected double getCorrectionFor(Entry entries[], Map extendedData, boolean ver
 		Entry entry = entries[i];
 		double magnitude;
 		
-		if (entry.side == -1 && side != 0) {
-			magnitude = Math.abs(value - entry.offset);
+		if (entry.type == -1 && side != 0) {
+			magnitude = Math.abs(value - entry.location);
 			if (magnitude < resultMag) {
 				resultMag = magnitude;
-				result = entry.offset - value;
-				extendedData.put(property, new Integer(entry.offset));
+				result = entry.location - value;
+				extendedData.put(property, new Integer(entry.location));
 			}
-		} else if (entry.side == 0 && side == 0) {
-			magnitude = Math.abs(value - entry.offset);
+		} else if (entry.type == 0 && side == 0) {
+			magnitude = Math.abs(value - entry.location);
 			if (magnitude < resultMag) {
 				resultMag = magnitude;
-				result = entry.offset - value;
-				extendedData.put(property, new Integer(entry.offset));
+				result = entry.location - value;
+				extendedData.put(property, new Integer(entry.location));
 			}
-		} else if (entry.side == 1 && side != 0) {
-			magnitude = Math.abs(value - entry.offset);
+		} else if (entry.type == 1 && side != 0) {
+			magnitude = Math.abs(value - entry.location);
 			if (magnitude < resultMag) {
 				resultMag = magnitude;
-				result = entry.offset - value;
-				extendedData.put(property, new Integer(entry.offset));
+				result = entry.location - value;
+				extendedData.put(property, new Integer(entry.location));
 			}
 		}
 	}
