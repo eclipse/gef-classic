@@ -90,30 +90,42 @@ public static final String KEY_EAST_ANCHOR = "SnapToGeometry.EastAnchor"; //$NON
  * since 3.0
  */
 protected static class Entry {
-	/**
-	 * The side from which this entry was created. The following values are valid:
-	 * <UL>
-	 * <LI>-1 indicates left/top
-	 * <LI>0 indicates middle/center
-	 * <LI>1 indicates right/bottom
-	 * </UL>
-	 * It is possible for new values to be added in the future.
-	 */
-	public int type;
-	
-	/**
-	 * The location of the entry, in the container's coordinates.
-	 */
-	public int location;
+	final int type;
+	final int location;
 	
 	/**
 	 * Constructs a new entry of the given type and location.
-	 * @param type an integer indicating T/L, B/R, or C/M
+	 * @param type an integer between -1 and 1 inclusively
 	 * @param location the location
 	 */
-	Entry(int type, int location) {
+	protected Entry(int type, int location) {
+		if (type < -1 || type > 1)
+			throw new IllegalArgumentException("Unrecognized snap type"); //$NON-NLS-1$
 		this.type = type;
 		this.location = location;
+	}
+	
+	/**
+	 * Returns the location of the snap entry.
+	 * @return the location
+	 * @since 3.2
+	 */
+	public int getLocation() {
+		return location;
+	}
+	
+	/**
+	 * Returns the snap type. The following values may be returned.
+	 * <UL>
+	 *   <LI>-1 indicates left/top
+	 *   <LI>0 indicates middle/center
+	 *   <LI>1 indicates right/bottom
+	 * </UL>
+	 * @return the snap type
+	 * @since 3.2
+	 */
+	public int getType() {
+		return type;
 	}
 }
 
