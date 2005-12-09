@@ -55,6 +55,7 @@ protected boolean handleButtonUp(int button) {
 	if (isInState(STATE_CONNECTION_STARTED))
 		handleCreateConnection();
 	setState(STATE_TERMINAL);
+	handleFinished();
 	return true;
 }
 
@@ -67,12 +68,13 @@ protected boolean handleDragStarted() {
 }
 
 /**
- * Since this is a drag tracker, it's automatically unloaded by the SelectionTool when the
- * interation is complete.  There's no need to try and unload or reload a drag tracker.
+ * Overridden so that nothing happens when this tool is used as a tracker. If it is the
+ * primary tool, then this method behaves normally.
  * @see AbstractTool#handleFinished()
  */
 protected void handleFinished() {
-	//Don't handle finish because this is a DragTracker.
+	if (getDomain().getActiveTool() == this)
+		super.handleFinished();
 }
 
 }
