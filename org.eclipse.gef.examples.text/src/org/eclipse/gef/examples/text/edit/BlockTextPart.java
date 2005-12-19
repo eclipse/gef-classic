@@ -15,40 +15,17 @@ import java.beans.PropertyChangeEvent;
 
 import org.eclipse.draw2d.text.BlockFlow;
 
-import org.eclipse.gef.examples.text.TextLocation;
 import org.eclipse.gef.examples.text.model.Style;
 
 /**
  * @since 3.1
  */
-public class BlockTextualPart 
-	extends CompoundTextualPart 
+public class BlockTextPart 
+	extends CompoundTextPart 
 {
 
-public BlockTextualPart(Object model) {
+public BlockTextPart(Object model) {
 	super(model);
-}
-
-public TextLocation getNextLocation(CaretSearch search) {
-	TextLocation result;
-	switch (search.type) {
-		case CaretSearch.ROW:
-			if (search.isForward)
-				result = searchLineBelow(search);
-			else
-				result = searchLineAbove(search);
-			if (result == null && getParent() instanceof TextualEditPart)
-				return getTextParent().getNextLocation(
-						search.continueSearch(this, search.isForward ? getLength() : 0));
-			return result;
-		case CaretSearch.LINE_BOUNDARY:
-			if (search.isForward)
-				return searchLineEnd(search);
-			return searchLineBegin(search);
-
-		default:
-			return super.getNextLocation(search);
-	}
 }
 
 public void propertyChange(PropertyChangeEvent evt) {

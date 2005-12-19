@@ -11,29 +11,25 @@
 
 package org.eclipse.gef.examples.text.edit;
 
-import org.eclipse.gef.examples.text.TextLocation;
+import org.eclipse.gef.examples.text.requests.CaretRequest;
+import org.eclipse.gef.examples.text.requests.SearchResult;
 
 /**
  * @since 3.1
  */
-public class InlineTextualPart extends CompoundTextualPart {
+public class InlineTextPart extends CompoundTextPart {
 
-public InlineTextualPart(Object model) {
+public InlineTextPart(Object model) {
 	super(model);
 }
 
-public TextLocation getNextLocation(CaretSearch search) {
-	switch (search.type) {
-		case CaretSearch.LINE_BOUNDARY:
-		case CaretSearch.ROW:
-			if (search.isRecursive)
-				break;
-			return getTextParent().getNextLocation(
-					search.continueSearch(this, search.isForward ? 0 : getLength()));		
-		default:
-			break;
-	}
-	return super.getNextLocation(search);
+public void getTextLocation(CaretRequest search, SearchResult result) {
+	if (!search.isRecursive && (search.getType() == CaretRequest.LINE_BOUNDARY 
+			|| search.getType() == CaretRequest.ROW)) {
+		search.setReferenceTextLocation(this, search.isForward ? 0 : getLength());
+		getTextParent().getTextLocation(search, result);		
+	} else
+		super.getTextLocation(search, result);
 }
 
 }

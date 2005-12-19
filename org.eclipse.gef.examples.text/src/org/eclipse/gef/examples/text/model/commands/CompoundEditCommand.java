@@ -19,7 +19,7 @@ import org.eclipse.jface.util.Assert;
 import org.eclipse.gef.examples.text.AppendableCommand;
 import org.eclipse.gef.examples.text.GraphicalTextViewer;
 import org.eclipse.gef.examples.text.SelectionRange;
-import org.eclipse.gef.examples.text.edit.TextualEditPart;
+import org.eclipse.gef.examples.text.edit.TextEditPart;
 import org.eclipse.gef.examples.text.model.ModelLocation;
 
 /**
@@ -94,10 +94,10 @@ public SelectionRange getRedoSelectionRange(GraphicalTextViewer viewer) {
 }
 
 public SelectionRange getUndoSelectionRange(GraphicalTextViewer viewer) {
-	TextualEditPart begin = lookupModel(viewer, beginLocation.model);
+	TextEditPart begin = lookupModel(viewer, beginLocation.model);
 	if (endLocation == null)
 		return new SelectionRange(begin, beginLocation.offset);
-	TextualEditPart end = lookupModel(viewer, endLocation.model);
+	TextEditPart end = lookupModel(viewer, endLocation.model);
 	return new SelectionRange(begin, beginLocation.offset, end, endLocation.offset);
 }
 

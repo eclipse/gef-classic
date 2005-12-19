@@ -21,12 +21,14 @@ import org.eclipse.gef.examples.text.TextLocation;
 import org.eclipse.gef.examples.text.actions.StyleService;
 import org.eclipse.gef.examples.text.model.Style;
 import org.eclipse.gef.examples.text.model.TextRun;
+import org.eclipse.gef.examples.text.requests.CaretRequest;
+import org.eclipse.gef.examples.text.requests.SearchResult;
 
 /**
  * @since 3.1
  */
 public class DocumentPart
-	extends BlockTextualPart
+	extends BlockTextPart
 	implements TextStyleManager
 {
 
@@ -48,16 +50,14 @@ public TextLocation getLocation(Point absolute) {
 	return null;
 }
 
-public TextLocation getNextLocation(CaretSearch search) {
-	if (search.type == CaretSearch.DOCUMENT) {
-		CaretSearch cs = new CaretSearch();
-		cs.isInto = true;
-		cs.isForward = !search.isForward;
-		cs.isRecursive = true;
-		cs.type = CaretSearch.COLUMN;
-		return super.getNextLocation(cs);
+public void getTextLocation(CaretRequest search, SearchResult result) {
+	if (search.getType() == CaretRequest.DOCUMENT) {
+		search.isInto = true;
+		search.isForward = !search.isForward;
+		search.isRecursive = true;
+		search.setType(CaretRequest.COLUMN);
 	}
-	return super.getNextLocation(search);
+	super.getTextLocation(search, result);
 }
 
 public TextLocation getNextLocation(int movement, TextLocation current, Rectangle caret) {
@@ -71,7 +71,7 @@ public Object getStyleState(String styleID, SelectionRange range) {
 public Object getStyleValue(String styleID, SelectionRange range) {
 	if (styleID.equals(Style.PROPERTY_BOLD)) {
 		for (Iterator iter = range.getLeafParts().iterator(); iter.hasNext();) {
-			TextRun run = (TextRun)((TextualEditPart)iter.next()).getModel();
+			TextRun run = (TextRun)((TextEditPart)iter.next()).getModel();
 			if (!run.getContainer().getStyle().isBold())
 				return Boolean.FALSE;
 		}
@@ -79,7 +79,7 @@ public Object getStyleValue(String styleID, SelectionRange range) {
 	} else if (styleID.equals(Style.PROPERTY_FONT_SIZE)) {
 		int fontHeight = -1;
 		for (Iterator iter = range.getLeafParts().iterator(); iter.hasNext();) {
-			TextRun run = (TextRun)((TextualEditPart)iter.next()).getModel();
+			TextRun run = (TextRun)((TextEditPart)iter.next()).getModel();
 			if (fontHeight == -1)
 				fontHeight = run.getContainer().getStyle().getFontHeight();
 			else if (fontHeight != run.getContainer().getStyle().getFontHeight())
@@ -89,7 +89,7 @@ public Object getStyleValue(String styleID, SelectionRange range) {
 	} else if (styleID.equals(Style.PROPERTY_FONT)) {
 		String fontName = null;
 		for (Iterator iter = range.getLeafParts().iterator(); iter.hasNext();) {
-			TextRun run = (TextRun)((TextualEditPart)iter.next()).getModel();
+			TextRun run = (TextRun)((TextEditPart)iter.next()).getModel();
 			if (fontName == null)
 				fontName = run.getContainer().getStyle().getFontFamily();
 			else if (!fontName.equals(run.getContainer().getStyle().getFontFamily()))
@@ -98,14 +98,14 @@ public Object getStyleValue(String styleID, SelectionRange range) {
 		return fontName;
 	} else if (styleID.equals(Style.PROPERTY_ITALIC)) {
 		for (Iterator iter = range.getLeafParts().iterator(); iter.hasNext();) {
-			TextRun run = (TextRun)((TextualEditPart)iter.next()).getModel();
+			TextRun run = (TextRun)((TextEditPart)iter.next()).getModel();
 			if (!run.getContainer().getStyle().isItalic())
 				return Boolean.FALSE;
 		}
 		return Boolean.TRUE;
 	} else if (styleID.equals(Style.PROPERTY_UNDERLINE)) {
 		for (Iterator iter = range.getLeafParts().iterator(); iter.hasNext();) {
-			TextRun run = (TextRun)((TextualEditPart)iter.next()).getModel();
+			TextRun run = (TextRun)((TextEditPart)iter.next()).getModel();
 			if (!run.getContainer().getStyle().isUnderline())
 				return Boolean.FALSE;
 		}
@@ -113,7 +113,7 @@ public Object getStyleValue(String styleID, SelectionRange range) {
 	} else if (Style.PROPERTY_ALIGNMENT.equals(styleID)) {
 		int alignment = 0;
 		for (Iterator iter = range.getLeafParts().iterator(); iter.hasNext();) {
-			TextRun run = (TextRun)((TextualEditPart)iter.next()).getModel();
+			TextRun run = (TextRun)((TextEditPart)iter.next()).getModel();
 			Style style = run.getBlockContainer().getStyle();
 			if (alignment == 0)
 				alignment = style.getAlignment();
@@ -124,7 +124,7 @@ public Object getStyleValue(String styleID, SelectionRange range) {
 	} else if (Style.PROPERTY_ORIENTATION.equals(styleID)) {
 		int orientation = 0;
 		for (Iterator iter = range.getLeafParts().iterator(); iter.hasNext();) {
-			TextRun run = (TextRun)((TextualEditPart)iter.next()).getModel();
+			TextRun run = (TextRun)((TextEditPart)iter.next()).getModel();
 			Style style = run.getBlockContainer().getStyle();
 			if (orientation == 0)
 				orientation = style.getOrientation();

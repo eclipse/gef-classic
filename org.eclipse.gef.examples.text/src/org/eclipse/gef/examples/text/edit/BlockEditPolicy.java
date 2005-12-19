@@ -30,9 +30,9 @@ import org.eclipse.gef.examples.text.model.Style;
 import org.eclipse.gef.examples.text.model.TextRun;
 import org.eclipse.gef.examples.text.model.commands.ApplyBooleanStyle;
 import org.eclipse.gef.examples.text.model.commands.ApplyMultiStyle;
+import org.eclipse.gef.examples.text.model.commands.ChangeString;
 import org.eclipse.gef.examples.text.model.commands.CompoundEditCommand;
 import org.eclipse.gef.examples.text.model.commands.ConvertElementCommand;
-import org.eclipse.gef.examples.text.model.commands.InsertString;
 import org.eclipse.gef.examples.text.model.commands.MergeWithPrevious;
 import org.eclipse.gef.examples.text.model.commands.MiniEdit;
 import org.eclipse.gef.examples.text.model.commands.NestElementCommand;
@@ -106,14 +106,14 @@ private Command getBackspaceCommand(TextRequest request) {
 public Command getCommand(Request request) {
 	if (TextRequest.REQ_STYLE == request.getType())
 		return getTextStyleApplication((TextRequest)request);
-	if (TextRequest.REQ_INSERT == request.getType())
-		return getTextInsertionCommand((TextRequest)request);
+	if (TextRequest.REQ_INSERT == request.getType()
+			|| TextRequest.REQ_OVERWRITE == request.getType()
+			|| TextRequest.REQ_REMOVE_RANGE == request.getType())
+		return getChangeTextCommand((TextRequest)request);
 	if (TextRequest.REQ_BACKSPACE == request.getType())
 		return getBackspaceCommand((TextRequest)request);
 	if (TextRequest.REQ_DELETE == request.getType())
 		return getDeleteCommand((TextRequest)request);
-	if (TextRequest.REQ_REMOVE_RANGE == request.getType())
-		return getRangeRemovalCommand((TextRequest)request);
 	if (TextRequest.REQ_NEWLINE == request.getType())
 		return getNewlineCommand((TextRequest)request);
 	if (TextRequest.REQ_UNINDENT == request.getType())
@@ -140,7 +140,7 @@ private Command getTextStyleApplication(TextRequest request) {
 		for (Iterator iter = range.getLeafParts().iterator(); iter.hasNext();) {
 			// TODO optimize by ensuring that runs in the same container don't cause
 			// that container's style to be set multiple times
-			TextRun run = (TextRun)((TextualEditPart)iter.next()).getModel();
+			TextRun run = (TextRun)((TextEditPart)iter.next()).getModel();
 			command.pendEdit(new ApplyMultiStyle(run.getBlockContainer(), styleID, value));
 		}
 	} else if (!range.isEmpty()) {
@@ -178,7 +178,7 @@ private Command getDeleteCommand(TextRequest request) {
 }
 
 private MiniEdit getMergeBackspaceEdit(TextRequest request) {
-	TextualEditPart part = request.getSelectionRange().begin.part;
+	TextEditPart part = request.getSelectionRange().begin.part;
 	MergeWithPrevious edit = new MergeWithPrevious(part);
 	if (edit.canApply())
 		return edit;
@@ -199,17 +199,13 @@ private Command getNewlineCommand(TextRequest request) {
 	return command;
 }
 
-private Command getRangeRemovalCommand(TextRequest request) {
-	return getTextInsertionCommand(request);
-}
-
 public EditPart getTargetEditPart(Request request) {
 	if (request instanceof TextRequest)
 		return getHost();
 	return null;
 }
 
-private Command getTextInsertionCommand(TextRequest request) {
+private Command getChangeTextCommand(TextRequest request) {
 	CompoundEditCommand command = null;
 	if (request.getPreviousCommand() instanceof CompoundEditCommand)
 		command = (CompoundEditCommand)request.getPreviousCommand();
@@ -240,7 +236,8 @@ private Command getTextInsertionCommand(TextRequest request) {
 	}
 	
 	if (request.getText() != null) {
-		InsertString insert = new InsertString(rangeBegin, request.getText(), range.begin.offset);
+		ChangeString insert = new ChangeString(rangeBegin, request.getText(), 
+				range.begin.offset, request.getType() == TextRequest.REQ_OVERWRITE);
 		command.pendEdit(insert);
 	}
 	return command;

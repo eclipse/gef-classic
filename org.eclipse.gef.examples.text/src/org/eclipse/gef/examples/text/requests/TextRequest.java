@@ -21,35 +21,37 @@ import org.eclipse.gef.examples.text.SelectionRange;
  */
 public class TextRequest extends Request {
 
-public static final String REQ_BACKSPACE = "TextRequest.backspace";
+public static final Object REQ_BACKSPACE = new Object();
 
 /**
  * The Request type for a break in the current line.  A line break is a newline within the
  * current paragraph or block, such as a bulleted or numbered list.  This request indicates
  * that SHIFT+ENTER was received
  */
-public static final String REQ_BREAK = "TextRequest.breakLine";
+public static final Object REQ_BREAK = new Object();
 
-public static final String REQ_DELETE = "TextRequest.delete";
+public static final Object REQ_DELETE = new Object();
 
-public static final String REQ_INDENT = "TextRequest.indentText";
+public static final Object REQ_INDENT = new Object();
 
-public static final String REQ_INSERT = "TextRequest.input";
+public static final Object REQ_INSERT = new Object();
 
-public static final String REQ_STYLE = "TextRequest.style";
+public static final Object REQ_OVERWRITE = new Object();
+
+public static final Object REQ_STYLE = new Object();
 
 /**
  * The Request type for a new page.  A "Page" may be interpreted to mean anything based
  * on the context of the current selection range.  This request indicates that CTRL+ENTER
  * was received.
  */
-public static final String REQ_NEW_PAGE = "TextRequest.newPage";
+public static final Object REQ_NEW_PAGE = new Object();
 
-public static final String REQ_NEWLINE= "TextRequest.newline";
+public static final Object REQ_NEWLINE= new Object();
 
-public static final String REQ_REMOVE_RANGE = "TextRequest.removeRange";
+public static final Object REQ_REMOVE_RANGE = new Object();
 
-public static final String REQ_UNINDENT = "TextRequest.unindentText";
+public static final Object REQ_UNINDENT = new Object();
 
 private AppendableCommand previous;
 
@@ -62,19 +64,22 @@ private Object[] styleValues;
  * @param type
  * @since 3.1
  */
-public TextRequest(SelectionRange range, String text, AppendableCommand prevoius) {
-	super(REQ_INSERT);
+public TextRequest(SelectionRange range, String text, AppendableCommand previous) {
+	this (REQ_INSERT, range, text, previous);
+}
+
+public TextRequest(Object type, SelectionRange range) {
+	this(type, range, null, null);
+}
+
+public TextRequest(Object type, SelectionRange range, AppendableCommand previous) {
+	this(type, range, null, previous);
+}
+
+public TextRequest(Object type, SelectionRange range, String text, 
+		AppendableCommand previous) {
+	super(type == null ? REQ_INSERT : type);
 	this.text = text;
-	this.range = range;
-	this.previous = prevoius;
-}
-
-public TextRequest(String type, SelectionRange range) {
-	this(type, range, null);
-}
-
-public TextRequest(String type, SelectionRange range, AppendableCommand previous) {
-	super(type);
 	this.range = range;
 	this.previous = previous;
 }

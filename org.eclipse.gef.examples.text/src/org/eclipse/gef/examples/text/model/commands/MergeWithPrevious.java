@@ -11,7 +11,7 @@
 
 package org.eclipse.gef.examples.text.model.commands;
 
-import org.eclipse.gef.examples.text.edit.TextualEditPart;
+import org.eclipse.gef.examples.text.edit.TextEditPart;
 import org.eclipse.gef.examples.text.model.Container;
 import org.eclipse.gef.examples.text.model.ModelElement;
 import org.eclipse.gef.examples.text.model.ModelLocation;
@@ -27,7 +27,7 @@ private int index;
 private Container container;
 private TextRun run;
 
-public MergeWithPrevious(TextualEditPart part) {
+public MergeWithPrevious(TextEditPart part) {
 	run = (TextRun)part.getModel();
 	container = run.getContainer();
 	index = container.getChildren().indexOf(run);

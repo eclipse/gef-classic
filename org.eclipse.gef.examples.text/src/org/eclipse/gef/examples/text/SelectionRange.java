@@ -20,7 +20,7 @@ import org.eclipse.jface.util.Assert;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.tools.ToolUtilities;
 
-import org.eclipse.gef.examples.text.edit.TextualEditPart;
+import org.eclipse.gef.examples.text.edit.TextEditPart;
 
 public class SelectionRange {
 
@@ -29,6 +29,7 @@ public final TextLocation begin;
 public final TextLocation end;
 
 public final boolean isForward;
+public final boolean trailing;
 
 private List selectedParts;
 private List leafParts;
@@ -64,18 +65,23 @@ public SelectionRange(TextLocation begin, TextLocation end) {
  * @param forward
  */
 public SelectionRange(TextLocation begin, TextLocation end, boolean forward) {
+	this(begin, end, forward, true);
+}
+
+public SelectionRange(TextLocation begin, TextLocation end, boolean forward, boolean trailing) {
 	Assert.isNotNull(begin);
 	Assert.isNotNull(end);
 	this.begin = begin;
 	this.end = end;
 	this.isForward = forward;
+	this.trailing = trailing;
 }
 
-public SelectionRange(TextualEditPart part, int offset) {
+public SelectionRange(TextEditPart part, int offset) {
 	this(new TextLocation(part, offset));
 }
 
-public SelectionRange(TextualEditPart begin, int bo, TextualEditPart end, int eo) {
+public SelectionRange(TextEditPart begin, int bo, TextEditPart end, int eo) {
 	this(new TextLocation(begin, bo), new TextLocation(end, eo));
 }
 

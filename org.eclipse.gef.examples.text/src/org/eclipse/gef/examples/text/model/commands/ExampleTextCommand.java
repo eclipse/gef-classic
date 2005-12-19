@@ -15,7 +15,7 @@ import org.eclipse.gef.commands.Command;
 
 import org.eclipse.gef.examples.text.GraphicalTextViewer;
 import org.eclipse.gef.examples.text.TextCommand;
-import org.eclipse.gef.examples.text.edit.TextualEditPart;
+import org.eclipse.gef.examples.text.edit.TextEditPart;
 import org.eclipse.gef.examples.text.model.ModelElement;
 
 /**
@@ -36,9 +36,9 @@ public boolean canExecutePending() {
 
 public void executePending() {}
 
-protected static TextualEditPart lookupModel(GraphicalTextViewer viewer,
+protected static TextEditPart lookupModel(GraphicalTextViewer viewer,
 		ModelElement model) {
-	return (TextualEditPart)viewer.getEditPartRegistry().get(model);
+	return (TextEditPart)viewer.getEditPartRegistry().get(model);
 }
 
 }

@@ -41,6 +41,8 @@ import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartFactory;
 import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.GraphicalViewer;
+import org.eclipse.gef.MouseWheelHandler;
+import org.eclipse.gef.MouseWheelZoomHandler;
 import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.gef.commands.CommandStackEvent;
 import org.eclipse.gef.commands.CommandStackEventListener;
@@ -55,12 +57,12 @@ import org.eclipse.gef.examples.text.actions.BooleanStyleAction;
 import org.eclipse.gef.examples.text.actions.MultiStyleAction;
 import org.eclipse.gef.examples.text.actions.StyleService;
 import org.eclipse.gef.examples.text.actions.TextActionConstants;
-import org.eclipse.gef.examples.text.edit.BlockTextualPart;
+import org.eclipse.gef.examples.text.edit.BlockTextPart;
 import org.eclipse.gef.examples.text.edit.ContainerTreePart;
 import org.eclipse.gef.examples.text.edit.DocumentPart;
 import org.eclipse.gef.examples.text.edit.ImportPart;
 import org.eclipse.gef.examples.text.edit.ImportsPart;
-import org.eclipse.gef.examples.text.edit.InlineTextualPart;
+import org.eclipse.gef.examples.text.edit.InlineTextPart;
 import org.eclipse.gef.examples.text.edit.TextFlowPart;
 import org.eclipse.gef.examples.text.edit.TextRunTreePart;
 import org.eclipse.gef.examples.text.model.Block;
@@ -110,13 +112,16 @@ protected void configureGraphicalViewer() {
 	super.configureGraphicalViewer();
 	doc.getStyle().setParentStyle(new CanvasStyle(getGraphicalViewer().getControl()));
 
-	getEditDomain().setDefaultTool(
-			new TextTool((GraphicalTextViewer)getGraphicalViewer(), styleService));
+	getEditDomain().setDefaultTool(new TextTool(styleService));
 	getEditDomain().loadDefaultTool();
 
 	getGraphicalViewer().setRootEditPart(new ScalableRootEditPart());
 	((FigureCanvas)getGraphicalViewer().getControl()).getViewport()
 			.setContentsTracksWidth(true);
+
+	// Scroll-wheel Zoom
+	getGraphicalViewer().setProperty(MouseWheelHandler.KeyGenerator.getKey(SWT.MOD1), 
+			MouseWheelZoomHandler.SINGLETON);
 }
 
 /**
@@ -203,9 +208,9 @@ protected void initializeGraphicalViewer() {
 					
 					case Container.TYPE_COMMENT:
 					case Container.TYPE_PARAGRAPH:
-						return new BlockTextualPart(model);
+						return new BlockTextPart(model);
 					case Container.TYPE_INLINE:
-						return new InlineTextualPart(model);
+						return new InlineTextPart(model);
 					default:
 						throw new RuntimeException("unknown model type");
 				}
@@ -269,7 +274,7 @@ public void init(IEditorSite site, IEditorInput input) throws PartInitException 
 								.getUndoSelectionRange(textViewer));
 			}
 		}
-	}); 
+	});
 	
 	super.init(site, input);
 
@@ -306,19 +311,21 @@ protected void setInput(IEditorInput input) {
 	if (doc == null) {
 		doc = new Block(Container.TYPE_ROOT);
 		Container preface = new Block(Container.TYPE_PARAGRAPH);
-		preface.add(new TextRun("package foo.bar;"));
+		preface.add(new TextRun("package org.eclipse.gef.examples.text"));
 		doc.add(preface);
 		Container imports = new Block(Container.TYPE_IMPORT_DECLARATIONS);
 		doc.add(imports);
-		imports.add(new TextRun("org.eclipse.gef", TextRun.TYPE_IMPORT));
 		imports.add(new TextRun("org.eclipse.draw2d", TextRun.TYPE_IMPORT));
+		imports.add(new TextRun("org.eclipse.gef", TextRun.TYPE_IMPORT));
 		//for (int i = 0; i < 400; i++) {
 			Container block = new Block(Container.TYPE_COMMENT);
 			block.add(new TextRun("Copyright (c) 2005 IBM Corporation and others. All rights reserved. This program and " +
 					"the accompanying materials are made available under the terms of the Eclipse Public " +
 					"License v1.0 which accompanies this distribution, and is available at " +
-					"http://www.eclipse.org/legal/epl-v10.html\r\n" + 
-					"Contributors: IBM Corporation - initial API and implementation"));
+					"http://www.eclipse.org/legal/epl-v10.html (\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329)\r\n" + 
+					"Contributors:\n    IBM Corporation - initial API and implementation\n" +
+					"\u0630\u0628\u063a \u0634\u0635\u062c\u062d (Saeed Anwar) - \u0634\u0635\u062c\u062d " +
+					"\u0638\u0635\u0634\u0637\u0635\u0639\u0633 \u0635\u0639\u0633\u0640 \u0630\u0628\u063a (Bug 113700)"));
 			doc.add(block);
 			
 			Container code = new Block(Container.TYPE_PARAGRAPH);

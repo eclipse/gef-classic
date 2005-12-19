@@ -22,8 +22,9 @@ import org.eclipse.gef.tools.ToolUtilities;
 import org.eclipse.gef.examples.text.GraphicalTextViewer;
 import org.eclipse.gef.examples.text.SelectionRange;
 import org.eclipse.gef.examples.text.TextLocation;
-import org.eclipse.gef.examples.text.edit.CaretSearch;
-import org.eclipse.gef.examples.text.edit.TextualEditPart;
+import org.eclipse.gef.examples.text.edit.TextEditPart;
+import org.eclipse.gef.examples.text.requests.CaretRequest;
+import org.eclipse.gef.examples.text.requests.SearchResult;
 
 /**
  * @since 3.1
@@ -43,12 +44,12 @@ private TextLocation endDrag;
  */
 private boolean isWordSelection;
 
-private final TextualEditPart textSource;
+private final TextEditPart textSource;
 
 /**
  * @since 3.1
  */
-public SelectionRangeDragTracker(TextualEditPart part) {
+public SelectionRangeDragTracker(TextEditPart part) {
 	this.textSource = part;
 }
 
@@ -61,7 +62,8 @@ protected Cursor calculateCursor() {
  * @since 3.1
  */
 private void doNormalSwipe() {
-	endDrag = getCurrentTextLocation();
+	SearchResult result = getCurrentTextLocation();
+	endDrag = result.location;
 	if (endDrag != null) {
 		
 		//Previous 
@@ -80,9 +82,9 @@ private void doNormalSwipe() {
 		}
 		GraphicalTextViewer viewer = (GraphicalTextViewer)getCurrentViewer();
 		if (!inverted)
-			viewer.setSelectionRange(new SelectionRange(beginDrag, endDrag));
+			viewer.setSelectionRange(new SelectionRange(beginDrag, endDrag, true, result.trailing));
 		else
-			viewer.setSelectionRange(new SelectionRange(endDrag, beginDrag, false));
+			viewer.setSelectionRange(new SelectionRange(endDrag, beginDrag, false, result.trailing));
 	}
 }
 
@@ -91,20 +93,30 @@ private void doNormalSwipe() {
  * @since 3.1
  */
 private void doWordSelect() {
-	int trailing[] = new int[1];
-	TextLocation exact = getSource().getLocation(getLocation(), trailing);
+	SearchResult result = new SearchResult();
+	CaretRequest locationRequest = new CaretRequest();
+	locationRequest.setType(CaretRequest.LOCATION);
+	locationRequest.setLocation(getLocation());
+	locationRequest.isForward = true;
+	getSource().getTextLocation(locationRequest, result);
+	TextLocation exact = result.location;
 	
-	CaretSearch nextWord = new CaretSearch();
-	nextWord.type = CaretSearch.WORD_BOUNDARY;
+	CaretRequest nextWord = new CaretRequest();
+	result = new SearchResult();
+	nextWord.setType(CaretRequest.WORD_BOUNDARY);
 	nextWord.isForward = true;
 	nextWord.where = exact;
-	TextLocation wordEnd = getSource().getNextLocation(nextWord);
+	getSource().getTextLocation(nextWord, result);
+	TextLocation wordEnd = result.location;
+	boolean isAfter = result.trailing;
+	result = new SearchResult();
 	nextWord.where = wordEnd;
 	nextWord.isForward = false;
-	TextLocation wordBegin = getSource().getNextLocation(nextWord);
+	getSource().getTextLocation(nextWord, result);
+	TextLocation wordBegin = result.location;
 	if (wordBegin != null && wordEnd != null)
 		((GraphicalTextViewer)getCurrentViewer()).setSelectionRange(
-				new SelectionRange(wordBegin, wordEnd));
+				new SelectionRange(wordBegin, wordEnd, true, isAfter));
 }
 
 /**
@@ -117,31 +129,36 @@ protected String getCommandName() {
 	return "Drop Text Request";
 }
 
-private TextLocation getCurrentTextLocation() {
+private SearchResult getCurrentTextLocation() {
+	SearchResult result = new SearchResult();
 	EditPart part = getCurrentViewer().findObjectAt(getLocation());
-	if (part instanceof TextualEditPart) {
-		TextualEditPart textPart = (TextualEditPart)part;
-		int trailing[] = new int[1];
-		if (textPart.acceptsCaret())
-			return textPart.getLocation(getLocation(), trailing);
+	if (part instanceof TextEditPart) {
+		TextEditPart textPart = (TextEditPart)part;
+		if (textPart.acceptsCaret()) {
+			CaretRequest request = new CaretRequest();
+			request.setType(CaretRequest.LOCATION);
+			request.setLocation(getLocation());
+			textPart.getTextLocation(request, result);
+		}
 	}
-	return null;
+	return result;
 }
 
 /**
  * 
  * @since 3.1
  */
-private TextualEditPart getSource() {
+private TextEditPart getSource() {
 	return textSource;
 }
 
 protected boolean handleButtonDown(int button) {
 	if (button == 1) {
-		beginDrag = getCurrentTextLocation();
-		((GraphicalTextViewer)getCurrentViewer()).setSelectionRange(new SelectionRange(
-				beginDrag));
-		stateTransition(STATE_INITIAL, STATE_START);
+		SearchResult result = getCurrentTextLocation();
+		beginDrag = result.location;
+		((GraphicalTextViewer)getCurrentViewer()).setSelectionRange(
+				new SelectionRange(beginDrag, beginDrag, true, result.trailing));
+		return stateTransition(STATE_INITIAL, STATE_START);
 	}
 	return super.handleButtonDown(button);
 }

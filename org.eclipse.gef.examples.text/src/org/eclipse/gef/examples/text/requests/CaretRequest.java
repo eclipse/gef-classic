@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2005 IBM Corporation and others.
+ * Copyright (c) 2005 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,21 +9,33 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.gef.examples.text.edit;
+package org.eclipse.gef.examples.text.requests;
+
+import org.eclipse.gef.requests.SelectionRequest;
 
 import org.eclipse.gef.examples.text.TextLocation;
+import org.eclipse.gef.examples.text.edit.TextEditPart;
 
-/**
- * @since 3.1
- */
-public class CaretSearch implements Cloneable {
+
+public class CaretRequest 
+	extends SelectionRequest
+{
+
+public static final Object LOCATION = new Object();
+public static final Object COLUMN = new Object();
+public static final Object WORD_BOUNDARY = new Object();
+public static final Object LINE_BOUNDARY = new Object();
+public static final Object ROW = new Object();
+public static final Object PARAGRAPH = new Object();
+//public static final Object PAGE = new Object();
+public static final Object DOCUMENT = new Object();
 
 /**
  * Indicates whether the search is forward in direction.  If the value is
  * <code>true</code>, the search should be performed in a forwards direction relative to
  * the document structure.  Otherwise the search is backwards.
  */
-public boolean isForward;
+public boolean isForward = true;
 
 /**
  * Indicates that a search is being done by a parent element.  If a search is recursive,
@@ -40,54 +52,19 @@ public boolean isRecursive;
  * paragraph.
  */
 public boolean isInto;
-public int type;
+
 public TextLocation where;
-/**
- * The absolute x location of the caret.
- */
-public int x;
-public int baseline;
 
-public static final int COLUMN = 1;
-public static final int ROW = 2;
-public static final int WORD_BOUNDARY = 3;
-public static final int LINE_BOUNDARY = 4;
-public static final int PARAGRAPH = 5;
-public static final int DOCUMENT = 6;
-
-/**
- * @since 3.1
- */
-public CaretSearch() { }
-
-/**
- * Clones this search but resets the TextLocation to the given part and offset.
- * @param part
- * @param offset
- * @return
- * @since 3.1
- */
-public CaretSearch continueSearch(TextualEditPart part, int offset) {
-	try {
-		CaretSearch result = (CaretSearch)clone();
-		result.where = new TextLocation(part, offset);
-		return result;
-	} catch (CloneNotSupportedException exc) {
-		throw new RuntimeException(exc);
-	}
+public CaretRequest() {
+	
 }
 
-public CaretSearch recurseSearch() {
-	if (isRecursive)
-		return this;
-	try {
-		CaretSearch result = (CaretSearch)clone();
-		result.isRecursive = true;
-		result.where = null;
-		return result;
-	} catch (CloneNotSupportedException exc) {
-		throw new RuntimeException(exc);
-	}
+public void setReferenceTextLocation(TextEditPart part, int offset) {
+	where = new TextLocation(part, offset);
+}
+
+public void setRecursive(boolean recursive) {
+	isRecursive = recursive;
 }
 
 }

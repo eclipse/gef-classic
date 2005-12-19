@@ -13,7 +13,7 @@ package org.eclipse.gef.examples.text;
 
 import org.eclipse.jface.util.Assert;
 
-import org.eclipse.gef.examples.text.edit.TextualEditPart;
+import org.eclipse.gef.examples.text.edit.TextEditPart;
 
 /**
  * @since 3.1
@@ -22,12 +22,12 @@ public class TextLocation {
 
 public final int offset;
 
-public final TextualEditPart part;
+public final TextEditPart part;
 
 /**
  * @since 3.1
  */
-public TextLocation(TextualEditPart part, int offset) {
+public TextLocation(TextEditPart part, int offset) {
 	Assert.isNotNull(part);
 	this.offset = offset;
 	this.part = part;

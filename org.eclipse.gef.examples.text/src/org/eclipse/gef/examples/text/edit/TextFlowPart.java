@@ -20,6 +20,7 @@ import org.eclipse.jface.util.Assert;
 
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.draw2d.text.CaretInfo;
 import org.eclipse.draw2d.text.SimpleTextLayout;
 import org.eclipse.draw2d.text.TextFlow;
@@ -27,14 +28,17 @@ import org.eclipse.draw2d.text.TextFlow;
 import org.eclipse.gef.examples.text.TextLocation;
 import org.eclipse.gef.examples.text.model.Style;
 import org.eclipse.gef.examples.text.model.TextRun;
+import org.eclipse.gef.examples.text.requests.CaretRequest;
+import org.eclipse.gef.examples.text.requests.SearchResult;
 
 /**
  * @since 3.1
  */
 public class TextFlowPart 
-	extends AbstractTextualPart 
+	extends AbstractTextPart 
 {
-	
+
+private static BreakIterator wordIterator = null;
 private Font localFont;
 
 public TextFlowPart(Object model) {
@@ -58,7 +62,14 @@ public void deactivate() {
 
 public CaretInfo getCaretPlacement(int offset, boolean trailing) {
 	Assert.isTrue(offset <= getLength());
-
+	if (trailing)
+		if (offset > 0)
+			offset--;
+		else {
+			// @TODO:Pratik this should never happen
+			trailing = false;
+			new RuntimeException("unexpected condition").printStackTrace();
+		}
 	return getTextFlow().getCaretPlacement(offset, trailing);
 }
 
@@ -66,102 +77,23 @@ public int getLength() {
 	return getTextFlow().getText().length();
 }
 
-public TextLocation getLocation(Point absolute, int trailing[]) {
-	Point pt = absolute.getCopy();
-	getTextFlow().translateToRelative(pt);
-	int offset = getTextFlow().getOffset(pt, trailing, null);
-	if (offset == -1)
-		offset = getTextFlow().getText().length();
-	return new TextLocation(this, offset);
-}
-
-public TextLocation getNextLocation(CaretSearch search) {
-	Point where = new Point();
-	int offset;
-	switch (search.type) {
-		case CaretSearch.LINE_BOUNDARY:
-			if (!search.isRecursive)
-				break;
-			where.y = search.baseline;
-			getTextFlow().translateToRelative(where);
-			if (search.isForward)
-				offset = getTextFlow().getLastOffsetForLine(where.y) + 1;
-			else
-				offset = getTextFlow().getFirstOffsetForLine(where.y);
-			if (offset == -1)
-				return null;
-			return new TextLocation(this, offset);
-
-		case CaretSearch.COLUMN:
-			TextFlow flow = getTextFlow();
-			if (search.isRecursive) {
-				if (search.isInto) {
-					if (search.isForward)
-						return new TextLocation(this, flow.getNextVisibleOffset(-1));
-					else
-						return new TextLocation(this, flow.getPreviousVisibleOffset(-1));
-				} else {
-					if (getLength() > 0)
-						if (search.isForward)
-							return new TextLocation(this, flow.getNextVisibleOffset(0));
-						else
-							return new TextLocation(this, flow
-									.getPreviousVisibleOffset(flow
-											.getPreviousVisibleOffset(-1)));
-					//In the rare case that this is an empty element, skip it.
-					return null;
-				}
-			}
-
-			if (search.isForward && search.where.offset < getLength())
-				return new TextLocation(this, flow.getNextVisibleOffset(search.where.offset));
-			if (!search.isForward && search.where.offset > 0)
-				return new TextLocation(this, flow.getPreviousVisibleOffset(search.where.offset));
-			break;
-
-		case CaretSearch.ROW:
-			if (!search.isRecursive)
-				break;
-			where.x = search.x;
-			where.y = search.baseline;
-			getTextFlow().translateToRelative(where);
-
-			int[] trailing = new int[1];
-			offset = getTextFlow().getNextOffset(where, search.isForward, trailing);
-			if (offset == -1)
-				return null;
-			return new TextLocation(this, offset + trailing[0]);
-		case CaretSearch.WORD_BOUNDARY:
-			String text = getTextFlow().getText();
-			int length = text.length();
-			int referenceOffset = (search.where == null) ? 0 : search.where.offset; 
-			if (referenceOffset <= length) {
-				BreakIterator iter = BreakIterator.getWordInstance();
-				iter.setText(text);
-				if (search.isForward) {
-					if (referenceOffset < length)
-						offset = iter.following(referenceOffset);
-					else
-						offset = BreakIterator.DONE;
-				} else {
-					if (referenceOffset == text.length()) {
-						iter.last();
-						offset = iter.previous();
-					} else
-						offset = iter.preceding(referenceOffset);
-				}
-				if (offset != BreakIterator.DONE)
-					return new TextLocation(this, offset);
-			}
-			if (search.isRecursive)
-				return null;
-			return getTextParent().getNextLocation(search);
-	}
-	return ((TextualEditPart)getParent()).getNextLocation(search);
-}
-
 TextFlow getTextFlow() {
 	return (TextFlow)getFigure();
+}
+
+public void getTextLocation(CaretRequest search, SearchResult result) {
+	if (search.getType() == CaretRequest.LINE_BOUNDARY)
+		searchLineBoundary(search, result);
+	else if (search.getType() == CaretRequest.COLUMN)
+		searchColumn(search, result);
+	else if (search.getType() == CaretRequest.ROW)
+		searchRow(search, result);
+	else if (search.getType() == CaretRequest.WORD_BOUNDARY)
+		searchWordBoundary(search, result);
+	else if (search.getType() == CaretRequest.LOCATION)
+		searchLocation(search, result);		
+	else if (getParent() instanceof TextEditPart)
+		getTextParent().getTextLocation(search, result);
 }
 
 public void propertyChange(PropertyChangeEvent evt) {
@@ -184,11 +116,162 @@ protected void refreshVisuals() {
 	getTextFlow().setText(textRun.getText());
 }
 
+protected void searchColumn(CaretRequest search, SearchResult result) {
+	TextFlow flow = getTextFlow();
+	result.trailing = search.isForward;
+	if (search.isRecursive || !(getParent() instanceof TextEditPart)) {
+		if (search.isInto) {
+			result.trailing = !search.isForward;
+			if (search.isForward)
+				result.location = 
+						new TextLocation(this, flow.getNextVisibleOffset(-1));
+			else
+				result.location = 
+						new TextLocation(this, flow.getPreviousVisibleOffset(-1));
+		} else {
+			if (getLength() > 0) {
+				if (search.isForward)
+					result.location = 
+							new TextLocation(this, flow.getNextVisibleOffset(0));
+				else
+					result.location = new TextLocation(this, flow
+							.getPreviousVisibleOffset(flow
+									.getPreviousVisibleOffset(-1)));
+			}
+		}
+	} else if (search.isForward && search.where.offset < getLength())
+		result.location = new TextLocation(this, 
+				flow.getNextVisibleOffset(search.where.offset));
+	else if (!search.isForward && search.where.offset > 0)
+		result.location = new TextLocation(this, 
+				flow.getPreviousVisibleOffset(search.where.offset));
+	else
+		getTextParent().getTextLocation(search, result);
+}
+
+protected void searchLineBoundary(CaretRequest search, SearchResult result) {
+	if (search.isRecursive || !(getParent() instanceof TextEditPart)) {
+		Point where = search.getLocation().getCopy();
+		TextFlow flow = getTextFlow();
+		flow.translateToRelative(where);
+		int offset;
+		result.trailing = search.isForward;
+		if (search.isForward) {
+			offset = flow.getLastOffsetForLine(where.y);
+			if (offset != -1)
+				offset++;
+		} else
+			offset = flow.getFirstOffsetForLine(where.y);
+		if (offset != -1)
+			result.location = new TextLocation(this, offset);
+	} else
+		getTextParent().getTextLocation(search, result);
+}
+
+// also used for PGUP and PGDN
+protected void searchLocation(CaretRequest search, SearchResult result) {
+	Point pt = search.getLocation().getCopy();
+	getTextFlow().translateToRelative(pt);
+	
+	// This detects the case where you've gone past page up or down
+	if (result.location != null && vDistanceBetween(getTextFlow().getBounds(), pt.y) 
+				> result.proximity.height) {
+		result.bestMatchFound = true;
+		return;
+	}
+	
+	int[] trailing = new int[1];
+	int offset = getTextFlow().getOffset(pt, trailing, result.proximity) + trailing[0];
+	if (offset != -1) {
+		result.trailing = trailing[0] == 1;
+		result.location = new TextLocation(this, offset);
+		result.bestMatchFound = result.proximity.width == 0 
+				&& result.proximity.height == 0;
+		if (result.bestMatchFound)
+			return;
+	}
+	if (!search.isRecursive && getParent() instanceof TextEditPart) {
+		search.setReferenceTextLocation(this, search.isForward ? getLength() : 0);
+		getTextParent().getTextLocation(search, result);
+	}
+}
+
+protected void searchRow(CaretRequest search, SearchResult result) {
+	if (search.isRecursive || !(getParent() instanceof TextEditPart)) {
+		Point where = search.getLocation().getCopy();
+		TextFlow flow = getTextFlow();
+		flow.translateToRelative(where);
+		int[] trailing = new int[1];
+		int offset = flow.getNextOffset(where, search.isForward, trailing) 
+				+ trailing[0];
+		if (offset != -1) {
+			CaretInfo info = getCaretPlacement(offset, trailing[0] == 1);
+			int vDistance = Math.abs(info.getBaseline() - search.getLocation().y);
+			if (vDistance > result.proximity.height)
+				result.bestMatchFound = true;
+			else {
+				int hDistance = Math.abs(info.getX() - search.getLocation().x);
+				if (vDistance < result.proximity.height 
+						|| (vDistance == result.proximity.height 
+						&& hDistance < result.proximity.width)) {
+					result.trailing = trailing[0] == 1;
+					result.location = new TextLocation(this, offset);
+					result.proximity.width = hDistance;
+					result.proximity.height = vDistance;
+				}
+			}
+		} else {
+			// @TODO:Pratik should go to the end of the current line if offset == -1 (as is 
+			// the case when on the last line and going down, or the first line and going up)
+		}
+	} else
+		getTextParent().getTextLocation(search, result);
+}
+
+protected void searchWordBoundary(CaretRequest search, SearchResult result) {
+	String text = getTextFlow().getText();
+	int length = text.length();
+	int offset = BreakIterator.DONE;
+	if (wordIterator == null)
+		wordIterator = BreakIterator.getWordInstance();
+	wordIterator.setText(text);
+
+	if (search.isRecursive)
+		offset = search.isForward ? 0 : length;
+	else {
+		if (search.isForward)
+			offset = search.where.offset == length ? BreakIterator.DONE
+					: wordIterator.following(search.where.offset);
+		else
+			offset = wordIterator.preceding(Math.min(search.where.offset, length - 1));
+	}
+	if (offset != BreakIterator.DONE 
+			&& Character.isWhitespace(text.charAt(Math.min(offset, length - 1))))
+		offset = search.isForward ? wordIterator.next() : wordIterator.previous();
+	if (offset != BreakIterator.DONE) {
+		result.location = new TextLocation(this, offset);
+		result.trailing = offset == length;
+		// this is the case where you're at the beginning or the end of the text flow
+		result.bestMatchFound = !Character.isWhitespace(
+				text.charAt(Math.min(offset, length - 1)));
+	}
+	
+	if (!result.bestMatchFound && !search.isRecursive 
+			&& getParent() instanceof TextEditPart)
+		getTextParent().getTextLocation(search, result);
+}
+
 public void setSelection(int start, int end) {
 	if (start == end)
 		getTextFlow().setSelection(-1, -1);
 	else
 		getTextFlow().setSelection(start, end);
+}
+
+private int vDistanceBetween(Rectangle rect, int y) {
+	if (y < rect.y)
+		return rect.y - y;
+	return Math.max(0, y - rect.bottom());
 }
 
 }

@@ -61,9 +61,18 @@ public String getText() {
 }
 
 public void insertText(String someText, int offset) {
-	this.text = text.substring(0, offset) + someText
+	text = text.substring(0, offset) + someText
 			+ text.substring(offset, text.length());
 	firePropertyChange("text", null, text);
+}
+
+public String overwriteText(String someText, int offset) {
+	String result = text.substring(offset,
+			Math.min(offset + someText.length(), text.length()));
+	text = text.substring(0, offset) + someText 
+			+ text.substring(offset + result.length());
+	firePropertyChange("text", null, text);
+	return result;
 }
 
 public String removeRange(int offset, int length) {

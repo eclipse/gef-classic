@@ -11,129 +11,60 @@
 
 package org.eclipse.gef.examples.text;
   
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
-import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Caret;
 
 import org.eclipse.jface.util.Assert;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 
-import org.eclipse.draw2d.UpdateListener;
-import org.eclipse.draw2d.UpdateManager;
+import org.eclipse.draw2d.LightweightSystem;
 import org.eclipse.draw2d.Viewport;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.draw2d.text.CaretInfo;
 
+import org.eclipse.gef.EditDomain;
+import org.eclipse.gef.EditPart;
+import org.eclipse.gef.commands.CommandStack;
+import org.eclipse.gef.commands.CommandStackEvent;
+import org.eclipse.gef.commands.CommandStackEventListener;
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
-
-import org.eclipse.gef.examples.text.edit.TextualEditPart;
 
 /**
  * @since 3.1
  */
-public class GraphicalTextViewer extends ScrollingGraphicalViewer {
+public class GraphicalTextViewer 
+	extends ScrollingGraphicalViewer 
+{
 
-class CaretRefresh implements Runnable {
-	private boolean reveal;
-	public CaretRefresh(boolean reveal) {
-		setReveal(reveal);
-	}
-	public void run() {
-		refreshCaret();
-		caretRefresh = null;
-		if (reveal)
-			revealCaret();
-	}
-	public void setReveal(boolean newVal) {
-		reveal |= newVal;
-	}
-}
-
-private Caret caret;
-private CaretRefresh caretRefresh;
-private SelectionRange selectionRange;
-
-private Caret getCaret() {
-	if (caret == null && getControl() != null)
-			caret = new Caret((Canvas)getControl(), 0);
-	return caret;
-}
-
-public Rectangle getCaretBounds() {
-	return new Rectangle(getCaret().getBounds());
-}
-
-public CaretInfo getCaretInfo() {
-	TextLocation location = getCaretLocation();
-	if (getSelectionRange().isForward && location.offset > 0)
-		return getCaretOwner().getCaretPlacement(location.offset - 1, true);
-	else
-		return getCaretOwner().getCaretPlacement(location.offset, false);
-}
-
-public TextLocation getCaretLocation() {
-	if (selectionRange.isForward) return selectionRange.end;
-	return selectionRange.begin;
-}
-
-public TextualEditPart getCaretOwner() {
-	if (selectionRange == null) return null;
-	if (selectionRange.isForward) return selectionRange.end.part;
-	return selectionRange.begin.part;
-}
+private SelectionModel selectionModel;
 
 /**
  * Returns the viewers selection range by <em>reference</em>.  The range should not be
  * modified directly.
  * @since 3.1
  * @return the current selection by reference
+ * @deprecated in 3.2. @TODO:Pratik  remove this method and all references to it.  Use
+ * getSelectionModel() instead.
  */
 public SelectionRange getSelectionRange() {
-	return selectionRange;
-}
-
-private UpdateManager getUpdateManager() {
-	return getLightweightSystem().getUpdateManager();
-}
-
-/**
- * @see org.eclipse.gef.ui.parts.GraphicalViewerImpl#hookControl()
- */
-protected void hookControl() {
-	super.hookControl();
-	getUpdateManager().addUpdateListener(new UpdateListener() {
-		public void notifyPainting(Rectangle damage, Map dirtyRegions) {
-			queueCaretRefresh(false);
-		}
-		public void notifyValidating() {
-		}
-	});
-}
-
-/**
- * @since 3.1
- */
-void queueCaretRefresh(boolean revealAfterwards) {
-	if (caretRefresh == null) {
-		caretRefresh = new CaretRefresh(revealAfterwards);
-		getUpdateManager().runWithUpdate(caretRefresh);
-	} else
-		caretRefresh.setReveal(revealAfterwards);
-}
-
-void refreshCaret() {
-	if (getCaretOwner() == null)
-		return;
-	CaretInfo info = getCaretInfo();
-	getCaret().setBounds(info.getX(), info.getY(), 1, info.getHeight());
+	if (selectionModel != null)
+		return selectionModel.getSelectionRange();
+	return null;
 }
 
 public void revealCaret() {
+	Assert.isNotNull(getControl(), "The control has not been created yet.");
+	Caret caret = getFigureCanvas().getCaret();
+	if (caret == null || !caret.isVisible())
+		return;
 	// @TODO:Pratik  you should expose the text location first (it might not be visible)
 	Viewport port = getFigureCanvas().getViewport();
 	Rectangle view = new Rectangle(port.getViewLocation(), port.getClientArea().getSize());
-	Rectangle exposeRegion = new Rectangle(getCaretBounds());
+	Rectangle exposeRegion = new Rectangle(caret.getBounds());
 	port.getContents().translateToRelative(exposeRegion);
 	if (!view.contains(exposeRegion)) {
 		int x = view.x, y = view.y;
@@ -149,11 +80,6 @@ public void revealCaret() {
 	}
 }
 
-public void setCaretVisible(boolean value) {
-	Assert.isNotNull(getControl(), "The control has not been created");
-	getCaret().setVisible(value);
-}
-
 /**
  * Sets the selection range to the given value.  Updates any editparts which had or will
  * have textual selection.  Fires selection changed.  Place the caret in the appropriate
@@ -161,34 +87,133 @@ public void setCaretVisible(boolean value) {
  * 
  * @since 3.1
  * @param newRange the new selection range
+ * @deprecated in 3.2. @TODO:Pratik  remove this method and all references to it.  Use
+ * setSelectionModel() instead.
  */
 public void setSelectionRange(SelectionRange newRange) {
-	List currentSelection;
-	if (selectionRange != null) {
-		currentSelection = selectionRange.getSelectedParts();
-		for (int i = 0; i < currentSelection.size(); i++)
-			((TextualEditPart)currentSelection.get(i)).setSelection(-1, -1);
-	}
-	selectionRange = newRange;
-	if (selectionRange != null) {
-		currentSelection = selectionRange.getSelectedParts();
-		for (int i = 0; i < currentSelection.size(); i++) {
-			TextualEditPart textpart = (TextualEditPart)currentSelection.get(i);
-			textpart.setSelection(0, textpart.getLength());
-		}
+	// @TODO:Pratik  change all these setSelection() methods so that they don't affect
+	// any other selection.  So, setting selectionRange to null would not clear the
+	// selected editparts.
+	SelectionModel newModel = null;
+	if (newRange != null)
+		newModel = createSelectionModel(null, newRange, 
+				selectionModel == null ? null : selectionModel.getSelectedEditParts(), 
+				null);
+	setSelectionModel(newModel);
+}
 
-		if (selectionRange.begin.part == selectionRange.end.part)
-			selectionRange.begin.part.setSelection(selectionRange.begin.offset,
-					selectionRange.end.offset);
-		else {
-			selectionRange.begin.part.setSelection(selectionRange.begin.offset,
-					selectionRange.begin.part.getLength());
-			selectionRange.end.part.setSelection(0, selectionRange.end.offset);
-		}
-	}
+public SelectionModel getSelectionModel() {
+	return selectionModel;
+}
 
-	queueCaretRefresh(true);
+public void setSelectionModel(SelectionModel selection) {
+	if (selection != null) {
+//		setFocus(selection.getFocusPart());
+		selection.applySelection(selectionModel);
+	} else if (selectionModel != null) {
+		setFocus(null);
+		selectionModel.deselect();
+	}
+	
+	selectionModel = selection;
+	
 	fireSelectionChanged();
+}
+
+public void appendSelection(EditPart editpart) {
+	if (focusPart != editpart)
+		setFocus(null);
+	if (selectionModel != null)
+		setSelectionModel(selectionModel.getAppendedSelection(editpart));
+	else
+		select(editpart);
+}
+
+public void deselect(EditPart editpart) {
+	if (selectionModel != null)
+		setSelectionModel(selectionModel.getExcludedSelection(editpart));
+}
+
+public void deselectAll() {
+	setSelectionModel(null);
+}
+
+public void select(EditPart editpart) {
+	if (focusPart != editpart)
+		setFocus(null);
+	ArrayList list = new ArrayList();
+	list.add(editpart);
+	setSelectionModel(createSelectionModel(null, null, list, null));
+}
+
+// @TODO:Pratik  Hack.  This shouldn't be here.  CommandStack should be doing this automatically.
+// You can make that change once you remove the GraphicalTextViewer class.
+public void setEditDomain(EditDomain domain) {
+	super.setEditDomain(domain);
+	getEditDomain().getCommandStack().addCommandStackEventListener(new CommandStackEventListener() {
+		public void stackChanged(CommandStackEvent event) {
+			if (!(event.getCommand() instanceof TextCommand) || getSelectionRange() == null)
+				return;
+			TextCommand command = (TextCommand)event.getCommand();
+			if (command != null) {
+				if (event.getDetail() == CommandStack.POST_EXECUTE)
+					setSelectionRange(
+							command.getExecuteSelectionRange(GraphicalTextViewer.this));
+				else if (event.getDetail() == CommandStack.POST_REDO)
+					setSelectionRange(
+							command.getRedoSelectionRange(GraphicalTextViewer.this));
+				else if (event.getDetail() == CommandStack.POST_UNDO)
+						setSelectionRange(
+								command.getUndoSelectionRange(GraphicalTextViewer.this));
+			}
+		}
+	});
+}
+
+public void setSelection(ISelection newSelection) {
+	if (newSelection != null)
+		setSelectionModel(createSelectionModel(newSelection, null, null, null));
+	else
+		setSelectionModel(null);
+}
+
+public ISelection getSelection() {
+	if (selectionModel != null)
+		return selectionModel.getSelection();
+	return new StructuredSelection(getContents());
+}
+
+protected SelectionModel createSelectionModel(ISelection selection, SelectionRange range, 
+		List parts, EditPart container) {
+	if (selection instanceof IStructuredSelection)
+		return new SelectionModel(selection);
+	return new SelectionModel(range, parts, container); 
+}
+
+/**
+ * @see org.eclipse.gef.ui.parts.AbstractEditPartViewer#getSelectedEditParts()
+ */
+public List getSelectedEditParts() {
+	return primGetSelectedEditParts();
+}
+
+/**
+ * The method returns the same list as getSelectedEditParts().  The list is unmodifiable.
+ * @deprecated
+ * @see org.eclipse.gef.ui.parts.AbstractEditPartViewer#primGetSelectedEditParts()
+ */
+protected List primGetSelectedEditParts() {
+	if (selectionModel != null)
+		return selectionModel.getSelectedEditParts();
+	return Collections.EMPTY_LIST;
+}
+
+public boolean isTextSelected() {
+	return selectionModel != null && selectionModel.isTextSelected();
+}
+
+protected LightweightSystem getLightweightSystem() {
+	return super.getLightweightSystem();
 }
 
 }

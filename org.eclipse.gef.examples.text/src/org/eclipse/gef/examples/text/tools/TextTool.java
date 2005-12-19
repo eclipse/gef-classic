@@ -14,24 +14,31 @@ package org.eclipse.gef.examples.text.tools;
 import java.util.ArrayList;
 import java.util.EventObject;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ST;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.TraverseEvent;
 import org.eclipse.swt.graphics.Cursor;
+import org.eclipse.swt.widgets.Canvas;
+import org.eclipse.swt.widgets.Caret;
 
 import org.eclipse.jface.util.Assert;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 
 import org.eclipse.draw2d.Cursors;
+import org.eclipse.draw2d.UpdateListener;
+import org.eclipse.draw2d.UpdateManager;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2d.text.CaretInfo;
 
 import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartViewer;
+import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CommandStackListener;
@@ -47,9 +54,10 @@ import org.eclipse.gef.examples.text.TextUtilities;
 import org.eclipse.gef.examples.text.actions.StyleListener;
 import org.eclipse.gef.examples.text.actions.StyleProvider;
 import org.eclipse.gef.examples.text.actions.StyleService;
-import org.eclipse.gef.examples.text.edit.CaretSearch;
+import org.eclipse.gef.examples.text.edit.TextEditPart;
 import org.eclipse.gef.examples.text.edit.TextStyleManager;
-import org.eclipse.gef.examples.text.edit.TextualEditPart;
+import org.eclipse.gef.examples.text.requests.CaretRequest;
+import org.eclipse.gef.examples.text.requests.SearchResult;
 import org.eclipse.gef.examples.text.requests.TextRequest;
 
 /**
@@ -64,10 +72,12 @@ static final boolean IS_CARBON = "carbon".equals(SWT.getPlatform()); //$NON-NLS-
 
 private static final int MODE_BS = 2;
 private static final int MODE_DEL = 3;
-private static final int MODE_TYPING = 1;
+private static final int MODE_TYPE = 1;
+private static final String KEY_OVERWRITE = "gef.texttool.overwrite"; //$NON-NLS-1$
 private CommandStackListener commandListener = new CommandStackListener() {
 	public void commandStackChanged(EventObject event) {
 		fireStyleChanges();
+		discardCaretLocation();
 	}
 };
 private StyleListener listener;
@@ -75,30 +85,34 @@ private AppendableCommand pendingCommand;
 private ISelectionChangedListener selectionListener = new ISelectionChangedListener() {
 	public void selectionChanged(SelectionChangedEvent event) {
 		fireStyleChanges();
+		getCaret().setVisible(getSelectionRange() != null);
+		queueCaretRefresh(true);
 	}
-}; 
+};
+private UpdateListener updateListener = new UpdateListener() {
+	public void notifyPainting(Rectangle damage, Map dirtyRegions) {
+		queueCaretRefresh(false);
+	}
+	public void notifyValidating() {
+	}
+};
 private List styleKeys = new ArrayList();
+// @TODO:Pratik StyleService cannot be final
 private final StyleService styleService;
 private List styleValues = new ArrayList();
-private int textInputMode;
-private boolean isMirrored;
+private CaretRefresh caretRefresh;
+private int textInputMode, caretXLoc;
+private boolean isMirrored, xCaptured, overwrite;
 
-private final GraphicalTextViewer textViewer;
+public TextTool() {
+	this(null);
+}
 
 /**
  * @since 3.1
  */
-public TextTool(GraphicalTextViewer viewer, StyleService service) {
-	textViewer = viewer;
+public TextTool(StyleService service) {
 	styleService = service;
-	isMirrored = (viewer.getControl().getStyle() & SWT.MIRRORED) != 0;
-}
-
-public void activate() {
-	super.activate();
-	styleService.setStyleProvider(this);
-	textViewer.getEditDomain().getCommandStack().addCommandStackListener(commandListener);
-	textViewer.addSelectionChangedListener(selectionListener);
 }
 
 public void addStyleListener(StyleListener listener) {
@@ -108,25 +122,23 @@ public void addStyleListener(StyleListener listener) {
 
 protected Cursor calculateCursor() {
 	EditPart target = getTargetEditPart();
-	if (target instanceof TextualEditPart) {
-		TextualEditPart textTarget = (TextualEditPart)target;
+	if (target instanceof TextEditPart) {
+		TextEditPart textTarget = (TextEditPart)target;
 		if (textTarget.acceptsCaret())
 			return Cursors.IBEAM;
 	}
 	return super.calculateCursor();
 }
 
-/**
- * Extended to set unfinished command to <code>null</code>.
- * @see org.eclipse.gef.tools.TargetingTool#deactivate()
- */
-public void deactivate() {
-	setTextInputMode(0);
-	styleService.setStyleProvider(null);
-	textViewer.getEditDomain().getCommandStack()
-			.removeCommandStackListener(commandListener);
-	textViewer.removeSelectionChangedListener(selectionListener);
-	super.deactivate();
+private void recordCaretLocation() {
+	if (!xCaptured) {
+		caretXLoc = getCaretBounds().x;
+		xCaptured = true;
+	}
+}
+
+private void discardCaretLocation() {
+	xCaptured = false;
 }
 
 /**
@@ -136,16 +148,27 @@ public void deactivate() {
  */
 private void doAction(int action, KeyEvent event) {
 	boolean append = false;
+	getUpdateManager().performUpdate();
+	setTextInputMode(0);
+	event.doit = false;
+	
+	if (action == ST.PAGE_DOWN || action == ST.SELECT_PAGE_DOWN || action == ST.PAGE_UP
+			|| action == ST.SELECT_PAGE_UP || action == ST.SELECT_LINE_DOWN 
+			|| action == ST.LINE_DOWN || action == ST.SELECT_LINE_UP || action == ST.LINE_UP)
+		recordCaretLocation();
+	else
+		discardCaretLocation();
+	
 	switch (action) {
 		case ST.SELECT_TEXT_START:
 			append = true;
 		case ST.TEXT_START:
-			doSelect(CaretSearch.DOCUMENT, false, append);
+			doSelect(CaretRequest.DOCUMENT, false, append, null);
 			break;
 		case ST.SELECT_TEXT_END:
 			append = true;
 		case ST.TEXT_END:
-			doSelect(CaretSearch.DOCUMENT, true, append);
+			doSelect(CaretRequest.DOCUMENT, true, append, null);
 			break;
 		case ST.SELECT_PAGE_DOWN:
 			append = true;
@@ -167,49 +190,52 @@ private void doAction(int action, KeyEvent event) {
 		case ST.SELECT_LINE_START:
 			append = true;
 		case ST.LINE_START:
-			doSelect(CaretSearch.LINE_BOUNDARY, false, append);
+			doSelect(CaretRequest.LINE_BOUNDARY, false, append, null);
 			break;
 		//	WORD_PREV
 		case ST.SELECT_WORD_NEXT:
 			append = true;
 		case ST.WORD_NEXT:
-			doSelect(CaretSearch.WORD_BOUNDARY, true, append);
+			doSelect(CaretRequest.WORD_BOUNDARY, true, append, null);
 			break;
 		//	WORD_NEXT
 		case ST.SELECT_WORD_PREVIOUS:
 			append = true;
 		case ST.WORD_PREVIOUS:
-			doSelect(CaretSearch.WORD_BOUNDARY, false, append);
+			doSelect(CaretRequest.WORD_BOUNDARY, false, append, null);
 			break;
 		//END
 		case ST.SELECT_LINE_END:
 			append = true;
 		case ST.LINE_END:
-			doSelect(CaretSearch.LINE_BOUNDARY, true, append);
+			doSelect(CaretRequest.LINE_BOUNDARY, true, append, null);
 			break;
 		//LEFT
 		case ST.SELECT_COLUMN_PREVIOUS:
 			append = true;
 		case ST.COLUMN_PREVIOUS:
-			doSelect(CaretSearch.COLUMN, false, append);
+			doSelect(CaretRequest.COLUMN, false, append, null);
 			break;
 		//RIGHT
 		case ST.SELECT_COLUMN_NEXT:
 			append = true;
 		case ST.COLUMN_NEXT:
-			doSelect(CaretSearch.COLUMN, true, append);
+			doSelect(CaretRequest.COLUMN, true, append, null);
 			break;
 		//UP
 		case ST.SELECT_LINE_UP:
 			append = true;
 		case ST.LINE_UP:
-			doSelect(CaretSearch.ROW, false, append);
+			doSelect(CaretRequest.ROW, false, append, null);
 			break;
 		//DOWN
 		case ST.SELECT_LINE_DOWN:
 			append = true;
 		case ST.LINE_DOWN:
-			doSelect(CaretSearch.ROW, true, append);
+			doSelect(CaretRequest.ROW, true, append, null);
+			break;
+		case ST.TOGGLE_OVERWRITE:
+			toggleOverwrite();
 			break;
 		//TAB
 		case SWT.TAB | SWT.SHIFT:
@@ -225,6 +251,7 @@ private void doAction(int action, KeyEvent event) {
 				doTyping(event);
 			break;
 		default:
+			event.doit = true;
 			break;
 	}
 }
@@ -235,11 +262,11 @@ private void doAction(int action, KeyEvent event) {
  */
 private boolean doBackspace() {
 	setTextInputMode(MODE_BS);
-	SelectionRange range = getTextualViewer().getSelectionRange();
+	SelectionRange range = getSelectionRange();
 	if (range.isEmpty()) {
 		if (handleTextEdit(new TextRequest(TextRequest.REQ_BACKSPACE, range, pendingCommand)))
 			return true;
-		doSelect(CaretSearch.COLUMN, false, false);
+		doSelect(CaretRequest.COLUMN, false, false, null);
 		return false;
 	} else
 		return handleTextEdit(new TextRequest(TextRequest.REQ_REMOVE_RANGE, range));
@@ -247,12 +274,12 @@ private boolean doBackspace() {
 
 private boolean doDelete() {
 	setTextInputMode(MODE_DEL);
-	SelectionRange range = getTextualViewer().getSelectionRange();
+	SelectionRange range = getSelectionRange();
 
 	if (range.isEmpty()) {
 		if (handleTextEdit(new TextRequest(TextRequest.REQ_DELETE, range, pendingCommand)))
 			return true;
-		doSelect(CaretSearch.COLUMN, true, false);
+		doSelect(CaretRequest.COLUMN, true, false, null);
 		return false;
 	} else
 		return handleTextEdit(new TextRequest(TextRequest.REQ_REMOVE_RANGE, range));
@@ -263,7 +290,7 @@ private boolean doDelete() {
  */
 private boolean doIndent() {
 	setTextInputMode(0);
-	SelectionRange range = getTextualViewer().getSelectionRange();
+	SelectionRange range = getSelectionRange();
 	TextRequest edit;
 	if (range.isEmpty())
 		edit = new TextRequest(TextRequest.REQ_INDENT, range);
@@ -277,9 +304,10 @@ private boolean doIndent() {
  * @param e
  */
 private boolean doInsertContent(char c) {
-	setTextInputMode(MODE_TYPING);
-	TextRequest edit = new TextRequest(getTextualViewer().getSelectionRange(), Character
-			.toString(c), pendingCommand);
+	setTextInputMode(MODE_TYPE);
+	TextRequest edit = new TextRequest(
+			overwrite ? TextRequest.REQ_OVERWRITE : TextRequest.REQ_INSERT, 
+			getSelectionRange(), Character.toString(c), pendingCommand);
 	String keys[] = new String[styleKeys.size()];
 	styleKeys.toArray(keys);
 	edit.setStyles(keys, styleValues.toArray());
@@ -319,50 +347,63 @@ private void doKeyDown(KeyEvent event) {
  */
 private boolean doNewline() {
 	setTextInputMode(MODE_BS);
-	SelectionRange range = getTextualViewer().getSelectionRange();
+	SelectionRange range = getSelectionRange();
 	TextRequest edit;
 	Assert.isTrue(range.isEmpty());
 	edit = new TextRequest(TextRequest.REQ_NEWLINE, range, pendingCommand);
 	return handleTextEdit(edit);
 }
 
-private void doSelect(int type, boolean isForward, boolean appendSelection) {
+private void doSelect(Object type, boolean isForward, boolean append, Point loc) {
 	GraphicalTextViewer viewer = getTextualViewer();
-	CaretSearch search = new CaretSearch();
-	search.type = type;
+	SearchResult result = new SearchResult();
+	CaretRequest search = new CaretRequest();
+	search.setType(type);
 	search.isForward = isForward;
+	search.setLocation(loc);
 
-	TextLocation newCaretLocation;
-	SelectionRange range = viewer.getSelectionRange();
-	if (range == null)
-		newCaretLocation = ((TextualEditPart)viewer.getContents()).getNextLocation(search);
-	else {
-		TextLocation caretLocation = viewer.getCaretLocation();
-		Rectangle caretBounds = viewer.getCaretBounds();
-		search.x = caretBounds.x;
-		search.baseline = viewer.getCaretInfo().getBaseline();
+	SelectionRange range = getSelectionRange();
+	if (range == null) {
+		if (viewer.getContents() instanceof TextEditPart) {
+			TextEditPart tep = (TextEditPart)viewer.getContents();
+			if (tep.acceptsCaret())
+				tep.getTextLocation(search, result);
+		}
+	} else {
+		TextLocation caretLocation = getCaretLocation();
+		if (loc == null)
+			search.setLocation(new Point(xCaptured ? caretXLoc : getCaretBounds().x, 
+					getCaretInfo().getBaseline()));
 		search.where = caretLocation;
-		newCaretLocation = caretLocation.part.getNextLocation(search);
-		isForward = range.isForward;
+		caretLocation.part.getTextLocation(search, result);
+//		isForward = range.isForward;
 	}
 
-	performSelection(newCaretLocation, isForward, appendSelection);
+	if (result.location == null)
+		return;
+	if (append) {
+		TextLocation otherEnd = isForward ? range.begin : range.end;
+		if (TextUtilities.isForward(otherEnd, result.location))
+			range = new SelectionRange(otherEnd, result.location, true, result.trailing);
+		else
+			range = new SelectionRange(result.location, otherEnd, false, result.trailing);
+		viewer.setSelectionRange(range);
+	} else
+		viewer.setSelectionRange(new SelectionRange(
+				result.location, result.location, isForward, result.trailing));
 }
 
 private void doTraversePage(boolean isForward, boolean appendSelection) {
-	GraphicalTextViewer viewer = getTextualViewer();
-	Point loc = viewer.getCaretBounds().getCenter();
-	// @TODO:Pratik the value 20 shouldn't be hard-coded
-	int viewerHeight = viewer.getControl().getBounds().height - 20;
+	Rectangle caretBounds = getCaretBounds();
+	Point loc = caretBounds.getCenter();
+	loc.x = caretXLoc;
+	int viewerHeight = getTextualViewer().getControl().getBounds().height 
+			- caretBounds.height;
 	if (isForward)
 		loc.y += viewerHeight;
 	else
 		loc.y -= viewerHeight;
-	TextLocation newCaretLocation = ((TextualEditPart)getTextualViewer().getContents())
-			.getLocation(loc, new int[1]);
-	if (appendSelection)
-		isForward = viewer.getSelectionRange().isForward;
-	performSelection(newCaretLocation, isForward, appendSelection);
+	doSelect(CaretRequest.LOCATION, isForward, appendSelection, loc);
 }
 
 /**
@@ -371,6 +412,8 @@ private void doTraversePage(boolean isForward, boolean appendSelection) {
  */
 private void doTyping(KeyEvent event) {
 	boolean ignore = false;
+	
+	discardCaretLocation();
 
 	if (IS_CARBON) {
 		// Ignore accelerator key combinations (we do not want to
@@ -394,12 +437,13 @@ private void doTyping(KeyEvent event) {
 			|| event.character == SWT.CR || event.character == SWT.LF
 			|| event.character == '\t') {
 		doInsertContent(event.character);
+		event.doit = false;
 	}
 }
 
 private boolean doUnindent() {
 	setTextInputMode(0);
-	SelectionRange range = getTextualViewer().getSelectionRange();
+	SelectionRange range = getSelectionRange();
 	TextRequest edit;
 	if (range.isEmpty())
 		edit = new TextRequest(TextRequest.REQ_UNINDENT, range);
@@ -418,22 +462,68 @@ private void flushStyles() {
 	styleValues.clear();
 }
 
+private Caret getCaret() {
+	Caret caret = null;
+	if (getCurrentViewer() != null) {
+		Canvas canvas = (Canvas)getCurrentViewer().getControl();
+		caret = canvas.getCaret();
+		if (caret == null)
+			caret = new Caret(canvas, 0);			
+	}
+	return caret;
+}
+
+public Rectangle getCaretBounds() {
+	return new Rectangle(getCaret().getBounds());
+}
+
+public CaretInfo getCaretInfo() {
+	TextLocation location = getCaretLocation();
+	return location.part.getCaretPlacement(location.offset, getSelectionRange().trailing);
+}
+
+public TextLocation getCaretLocation() {
+	if (getSelectionRange().isForward) return getSelectionRange().end;
+	return getSelectionRange().begin;
+}
+
+public TextEditPart getCaretOwner() {
+	if (getSelectionRange() != null) 
+		return getCaretLocation().part;
+	return null;
+}
+
 protected String getDebugName() {
 	return "TextTool";
 }
 
+private SelectionRange getSelectionRange() {
+	if (getCurrentViewer() instanceof GraphicalTextViewer)
+		return getTextualViewer().getSelectionRange();
+	return null;
+}
+
+private UpdateManager getUpdateManager() {
+	EditPartViewer viewer = getCurrentViewer();
+	if (viewer != null) {
+		EditPart root = viewer.getRootEditPart();
+		if (root instanceof GraphicalEditPart)
+			return ((GraphicalEditPart)root).getFigure().getUpdateManager();
+	}
+	return null;
+}
+
 private Object getSelectionStyle(String styleID, boolean isState) {
-	GraphicalTextViewer viewer = getTextualViewer();
-	TextRequest req = new TextRequest(TextRequest.REQ_STYLE, viewer.getSelectionRange());
+	TextRequest req = new TextRequest(TextRequest.REQ_STYLE, getSelectionRange());
 	req.setStyles(new String[] {styleID}, new Object[] {null});
-	EditPart target = getTextTarget(viewer, req);
+	EditPart target = getTextTarget(req);
 	if (target == null)
 		return StyleService.UNDEFINED;
 	TextStyleManager manager = (TextStyleManager)target
 			.getAdapter(TextStyleManager.class);
 	if (isState)
-		return manager.getStyleState(styleID, viewer.getSelectionRange());
-	return manager.getStyleValue(styleID, viewer.getSelectionRange());	
+		return manager.getStyleState(styleID, getSelectionRange());
+	return manager.getStyleValue(styleID, getSelectionRange());	
 }
 
 public Object getStyle(String styleID) {
@@ -447,8 +537,8 @@ public Object getStyleState(String styleID) {
 	return getSelectionStyle(styleID, true);
 }
 
-private TextualEditPart getTextTarget(GraphicalTextViewer viewer, Request request) {
-	SelectionRange range = viewer.getSelectionRange();
+private TextEditPart getTextTarget(Request request) {
+	SelectionRange range = getSelectionRange();
 	if (range == null)
 		return null;
 	EditPart target, candidate = ToolUtilities.findCommonAncestor(range.begin.part,
@@ -458,29 +548,37 @@ private TextualEditPart getTextTarget(GraphicalTextViewer viewer, Request reques
 		target = candidate.getTargetEditPart(request);
 		candidate = candidate.getParent();
 	} while (target == null && candidate != null);
-	return (TextualEditPart)target;
+	return (TextEditPart)target;
 }
 
 GraphicalTextViewer getTextualViewer() {
-	return textViewer;
+	return (GraphicalTextViewer)getCurrentViewer();
+}
+
+protected boolean handleButtonDown(int button) {
+	discardCaretLocation();
+	return super.handleButtonDown(button);
 }
 
 protected boolean handleCommandStackChanged() {
 	setTextInputMode(0);
+	discardCaretLocation();
 	return super.handleCommandStackChanged();
 }
 
 protected boolean handleFocusGained() {
-	if (getTextualViewer().getSelectionRange() == null)
-		doSelect(CaretSearch.DOCUMENT, false, false);
+	if (getSelectionRange() == null)
+		doSelect(CaretRequest.DOCUMENT, false, false, null);
 	return super.handleFocusGained();
 }
 
 protected boolean handleKeyDown(KeyEvent e) {
-	if (isInState(STATE_INITIAL))
+	if (isInState(STATE_INITIAL) && getTextualViewer().isTextSelected())
 		doKeyDown(e);
 
-	return super.handleKeyDown(e);
+	if (e.doit)
+		return super.handleKeyDown(e);
+	return true;
 }
 
 protected void handleKeyTraversed(TraverseEvent event) {
@@ -497,7 +595,7 @@ protected boolean handleMove() {
 
 private boolean handleTextEdit(TextRequest edit) {
 	GraphicalTextViewer viewer = getTextualViewer();
-	EditPart target = getTextTarget(viewer, edit);
+	EditPart target = getTextTarget(edit);
 	
 	Command insert = null;
 	if (target != null)
@@ -522,10 +620,6 @@ private boolean handleTextEdit(TextRequest edit) {
 	}
 
 	return true;
-}
-
-protected boolean isViewerImportant(EditPartViewer viewer) {
-	return viewer instanceof GraphicalTextViewer;
 }
 
 /**
@@ -554,6 +648,7 @@ private int lookupAction(int i) {
 			return isMirrored ? ST.SELECT_WORD_NEXT : ST.SELECT_WORD_PREVIOUS;
 		
 		case ST.LINE_END:
+		case ST.TOGGLE_OVERWRITE:
 		case ST.SELECT_LINE_END:
 		case ST.LINE_START:
 		case ST.SELECT_LINE_START:
@@ -584,22 +679,14 @@ private int lookupAction(int i) {
 	return 0;
 }
 
-private void performSelection(TextLocation caretLoc, boolean isForward, 
-		boolean appendSelection) {
-	if (caretLoc == null)
+void queueCaretRefresh(boolean revealAfterwards) {
+	if (!getCaret().isVisible())
 		return;
-	if (appendSelection) {
-		GraphicalTextViewer viewer = getTextualViewer();
-		SelectionRange range = viewer.getSelectionRange();
-		TextLocation otherEnd = isForward ? range.begin : range.end;
-		if (TextUtilities.isForward(otherEnd, caretLoc))
-			range = new SelectionRange(otherEnd, caretLoc, true);
-		else
-			range = new SelectionRange(caretLoc, otherEnd, false);
-		viewer.setSelectionRange(range);
+	if (caretRefresh == null) {
+		caretRefresh = new CaretRefresh(revealAfterwards);
+		getUpdateManager().runWithUpdate(caretRefresh);
 	} else
-		getTextualViewer().setSelectionRange(
-				new SelectionRange(caretLoc, caretLoc, isForward));
+		caretRefresh.enableReveal(revealAfterwards);
 }
 
 public void removeStyleListener(StyleListener listener) {
@@ -627,11 +714,10 @@ public void setStyle(String styleID, Object newValue) {
 	}
 
 	//Try to apply immediately, pend otherwise.
-	GraphicalTextViewer viewer = getTextualViewer();
-	TextRequest req = new TextRequest(TextRequest.REQ_STYLE, viewer.getSelectionRange());
+	TextRequest req = new TextRequest(TextRequest.REQ_STYLE, getSelectionRange());
 	//$TODO should this be all pending styles or just the recently set?
 	req.setStyles(new String[] {styleID}, new Object[] {newValue});
-	EditPart target = getTextTarget(viewer, req);
+	EditPart target = getTextTarget(req);
 	Command c = target.getCommand(req);
 	if (c == null) {
 		int prev = styleKeys.indexOf(styleID);
@@ -647,6 +733,41 @@ public void setStyle(String styleID, Object newValue) {
 	}
 }
 
+public void setViewer(EditPartViewer viewer) {
+	EditPartViewer currentViewer = getCurrentViewer();
+	if (viewer == currentViewer || viewer == null)
+		return;
+
+	if (currentViewer != null) {
+		if (caretRefresh != null)
+			getUpdateManager().performUpdate();
+		currentViewer.getEditDomain().getCommandStack()
+				.removeCommandStackListener(commandListener);
+		currentViewer.removeSelectionChangedListener(selectionListener);
+		UpdateManager manager = getUpdateManager();
+		if (manager != null)
+			manager.removeUpdateListener(updateListener);
+		currentViewer.setProperty(KEY_OVERWRITE, overwrite ? Boolean.TRUE : Boolean.FALSE);
+		if (styleService != null)
+			styleService.setStyleProvider(null);
+		setTextInputMode(0);
+		setTargetRequest(null);
+	}
+	super.setViewer(viewer);
+	if (viewer != null) {
+		isMirrored = (viewer.getControl().getStyle() & SWT.MIRRORED) != 0;
+		viewer.getEditDomain().getCommandStack().addCommandStackListener(commandListener);
+		viewer.addSelectionChangedListener(selectionListener);
+		UpdateManager manager = getUpdateManager();
+		if (manager != null)
+			manager.addUpdateListener(updateListener);
+		Boolean bool = (Boolean)viewer.getProperty(KEY_OVERWRITE);
+		overwrite = bool != null && bool.booleanValue();
+		if (styleService != null)
+			styleService.setStyleProvider(this);
+	}
+}
+
 /**
  * @since 3.1
  * @param mode the new input mode
@@ -654,9 +775,39 @@ public void setStyle(String styleID, Object newValue) {
 private void setTextInputMode(int mode) {
 	if (textInputMode != mode)
 		pendingCommand = null;
-	if (textInputMode != MODE_TYPING)
+	if (textInputMode != MODE_TYPE)
 		flushStyles();
 	textInputMode = mode;
+}
+
+private void toggleOverwrite() {
+	overwrite = !overwrite;
+	queueCaretRefresh(false);
+}
+
+class CaretRefresh implements Runnable {
+	private boolean reveal;
+	public CaretRefresh(boolean reveal) {
+		enableReveal(reveal);
+	}
+	public void run() {
+		refreshCaret();
+		caretRefresh = null;
+		if (reveal)
+			getTextualViewer().revealCaret();
+	}
+	
+	public void refreshCaret() {
+		if (getCaretOwner() == null)
+			return;
+		CaretInfo info = getCaretInfo();
+		getCaret().setBounds(info.getX(), info.getY(), 
+				overwrite ? info.getHeight() / 2 : 1, info.getHeight());
+	}
+
+	public void enableReveal(boolean newVal) {
+		reveal |= newVal;
+	}
 }
 
 }

@@ -13,7 +13,7 @@ package org.eclipse.gef.examples.text.model.commands;
 
 import org.eclipse.gef.examples.text.GraphicalTextViewer;
 import org.eclipse.gef.examples.text.SelectionRange;
-import org.eclipse.gef.examples.text.edit.TextualEditPart;
+import org.eclipse.gef.examples.text.edit.TextEditPart;
 import org.eclipse.gef.examples.text.model.Container;
 import org.eclipse.gef.examples.text.model.TextRun;
 
@@ -27,7 +27,7 @@ private Container newParent;
 int index;
 private int caretOffset;
 
-public NestElementCommand(TextualEditPart part, int caretOffset) {
+public NestElementCommand(TextEditPart part, int caretOffset) {
 	super("indent");
 	this.caretOffset = caretOffset;
 	run = (TextRun)part.getModel();

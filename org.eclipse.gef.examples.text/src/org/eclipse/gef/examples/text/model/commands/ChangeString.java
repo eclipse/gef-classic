@@ -19,7 +19,7 @@ import org.eclipse.gef.examples.text.model.TextRun;
 /**
  * @since 3.1
  */
-public class InsertString extends MiniEdit {
+public class ChangeString extends MiniEdit {
 
 private String pending;
 
@@ -28,11 +28,14 @@ private char insertedChars[];
 private final int offset;
 
 private final TextRun run;
+private final boolean overwrite;
+private String overwrittenText;
 
-public InsertString(TextRun run, String c, int offset) {
+public ChangeString(TextRun run, String c, int offset, boolean overwrite) {
 	this.run = run;
 	this.pending = c;
 	this.offset = offset;
+	this.overwrite = overwrite;
 }
 
 /**
@@ -48,7 +51,10 @@ public void appendText(String append) {
  * @see org.eclipse.gef.commands.Command#execute()
  */
 public void apply() {
-	run.insertText(pending, offset);
+	if (overwrite)
+		overwrittenText = run.overwriteText(pending, offset);
+	else
+		run.insertText(pending, offset);
 	insertedChars = pending.toCharArray();
 	pending = null;
 }
@@ -61,7 +67,10 @@ public boolean canApply() {
  * re-executes the command for the additional character added above.
  */
 public void commitPending() {
-	run.insertText(pending, offset + insertedChars.length);
+	if (overwrite)
+		overwrittenText += run.overwriteText(pending, offset + insertedChars.length);
+	else
+		run.insertText(pending, offset + insertedChars.length);
 	char old[] = insertedChars;
 	insertedChars = new char[old.length + 1];
 	System.arraycopy(old, 0, insertedChars, 0, old.length);
@@ -74,11 +83,18 @@ public ModelLocation getResultingLocation() {
 }
 
 public void reapply() {
-	run.insertText(new String(insertedChars), offset);
+	if (overwrite)
+		overwrittenText = run.overwriteText(new String(insertedChars), offset);
+	else
+		run.insertText(new String(insertedChars), offset);
 }
 
 public void rollback() {
-	run.removeRange(offset, insertedChars.length);
+	if (overwrite) {
+		run.overwriteText(overwrittenText, offset);
+		overwrittenText = null;
+	} else
+		run.removeRange(offset, insertedChars.length);
 }
 
 }

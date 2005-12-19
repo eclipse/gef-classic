@@ -24,7 +24,7 @@ import org.eclipse.gef.examples.text.figures.TreeBorder;
  * @since 3.1
  */
 public class ImportsPart 
-	extends BlockTextualPart 
+	extends BlockTextPart 
 {
 
 IFigure pane;
