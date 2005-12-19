@@ -18,7 +18,6 @@ import java.util.List;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.MarginBorder;
-import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.text.BlockFlow;
 import org.eclipse.draw2d.text.CaretInfo;
 import org.eclipse.draw2d.text.FlowPage;
@@ -195,7 +194,7 @@ protected void searchLineAbove(CaretRequest search, SearchResult result) {
 			return;
 	}
 	search.setRecursive(wasRecursive);
-	if (result.location == null && !search.isRecursive 
+	if (!result.bestMatchFound && !search.isRecursive 
 			&& getParent() instanceof TextEditPart) {
 		search.setReferenceTextLocation(this, 0);
 		getTextParent().getTextLocation(search, result);
@@ -238,7 +237,7 @@ protected void searchLineBelow(CaretRequest search, SearchResult result) {
 			return;
 	}
 	search.setRecursive(wasRecursive);
-	if (result.location == null && !search.isRecursive 
+	if (!result.bestMatchFound && !search.isRecursive 
 			&& getParent() instanceof TextEditPart) {
 		search.setReferenceTextLocation(this, getLength());
 		getTextParent().getTextLocation(search, result);
