@@ -194,8 +194,7 @@ protected void searchLineAbove(CaretRequest search, SearchResult result) {
 			return;
 	}
 	search.setRecursive(wasRecursive);
-	if (!result.bestMatchFound && !search.isRecursive 
-			&& getParent() instanceof TextEditPart) {
+	if (!search.isRecursive && getParent() instanceof TextEditPart) {
 		search.setReferenceTextLocation(this, 0);
 		getTextParent().getTextLocation(search, result);
 	}
@@ -237,8 +236,7 @@ protected void searchLineBelow(CaretRequest search, SearchResult result) {
 			return;
 	}
 	search.setRecursive(wasRecursive);
-	if (!result.bestMatchFound && !search.isRecursive 
-			&& getParent() instanceof TextEditPart) {
+	if (!search.isRecursive	&& getParent() instanceof TextEditPart) {
 		search.setReferenceTextLocation(this, getLength());
 		getTextParent().getTextLocation(search, result);
 	}
