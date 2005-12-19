@@ -230,30 +230,34 @@ protected void searchRow(CaretRequest search, SearchResult result) {
 
 protected void searchWordBoundary(CaretRequest search, SearchResult result) {
 	String text = getTextFlow().getText();
-	int length = text.length();
-	int offset = BreakIterator.DONE;
-	if (wordIterator == null)
-		wordIterator = BreakIterator.getWordInstance();
-	wordIterator.setText(text);
+	if (text.trim().length() > 0) {
+		int length = text.length();
+		int offset = BreakIterator.DONE;
+		if (wordIterator == null)
+			wordIterator = BreakIterator.getWordInstance();
+		wordIterator.setText(text);
 
-	if (search.isRecursive)
-		offset = search.isForward ? 0 : length;
-	else {
-		if (search.isForward)
-			offset = search.where.offset == length ? BreakIterator.DONE
-					: wordIterator.following(search.where.offset);
-		else
-			offset = wordIterator.preceding(Math.min(search.where.offset, length - 1));
-	}
-	if (offset != BreakIterator.DONE 
-			&& Character.isWhitespace(text.charAt(Math.min(offset, length - 1))))
-		offset = search.isForward ? wordIterator.next() : wordIterator.previous();
-	if (offset != BreakIterator.DONE) {
-		result.location = new TextLocation(this, offset);
-		result.trailing = offset == length;
-		// this is the case where you're at the beginning or the end of the text flow
-		result.bestMatchFound = !Character.isWhitespace(
-				text.charAt(Math.min(offset, length - 1)));
+		if (search.isRecursive)
+			offset = search.isForward ? 0 : length;
+		else {
+			if (search.isForward)
+				offset = search.where.offset == length ? BreakIterator.DONE
+						: wordIterator.following(search.where.offset);
+			else
+				offset = wordIterator.preceding(Math.min(search.where.offset, length - 1));
+		}
+		int index = Math.min(offset, length - 1);
+		if (offset != BreakIterator.DONE 
+				&& Character.isWhitespace(text.charAt(index)))
+			offset = search.isForward ? wordIterator.following(index) 
+					: wordIterator.preceding(index);
+		if (offset != BreakIterator.DONE) {
+			result.location = new TextLocation(this, offset);
+			result.trailing = offset == length;
+			// this is the case where you're at the beginning or the end of the text flow
+			result.bestMatchFound = !Character.isWhitespace(
+					text.charAt(Math.min(offset, length - 1)));
+		}
 	}
 	
 	if (!result.bestMatchFound && !search.isRecursive 
