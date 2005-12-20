@@ -159,7 +159,7 @@ public DrawerFigure(final Control control) {
 	collapseToggle.addChangeListener(new ChangeListener() {
 		public void handleStateChanged(ChangeEvent e) {
 			if (e.getPropertyName().equals(ButtonModel.SELECTED_PROPERTY)) {
-				Animation.markBegin(DrawerFigure.this);
+				Animation.markBegin();
 				handleExpandStateChanged();
 				Animation.run(150);
 			}

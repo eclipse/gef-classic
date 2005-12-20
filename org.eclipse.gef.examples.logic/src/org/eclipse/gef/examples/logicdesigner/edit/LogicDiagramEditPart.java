@@ -181,7 +181,7 @@ public void propertyChange(PropertyChangeEvent evt) {
 }
 
 protected void refreshVisuals() {
-	Animation.markBegin(getFigure());
+	Animation.markBegin();
 	ConnectionLayer cLayer = (ConnectionLayer) getLayer(CONNECTION_LAYER);
 	cLayer.setAntialias(SWT.ON);
 
