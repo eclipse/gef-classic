@@ -123,7 +123,7 @@ protected ActionRegistry getActionRegistry() {
 }
 
 /**
- * @see org.eclipse.ui.part.EditorActionBarContributor#init(IActionBars)
+ * @see EditorActionBarContributor#init(IActionBars)
  */
 public void init(IActionBars bars) {
 	buildActions();
@@ -141,7 +141,6 @@ public void setActiveEditor(IEditorPart editor) {
 		String id = (String)globalActionKeys.get(i);
 		bars.setGlobalActionHandler(id, registry.getAction(id));
 	}
-	getActionBars().updateActionBars();
 }
 
 }
