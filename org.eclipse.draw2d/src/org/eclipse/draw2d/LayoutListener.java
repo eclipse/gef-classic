@@ -12,7 +12,13 @@
 package org.eclipse.draw2d;
 
 /**
- * Experimental API.
+ * Classes which implement this interface provide callback hooks for various layout
+ * related events.
+ * <P>
+ * Instances can be hooked to figures by calling {@link
+ * IFigure#addLayoutListener(LayoutListener)}. Listeners will be made aware of various
+ * steps of the layout mechanism, and even have the opportunity to prevent normal layout
+ * from occurring.
  * @since 3.1
  */
 public interface LayoutListener {
