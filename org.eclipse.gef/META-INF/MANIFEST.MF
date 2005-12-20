@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Graphical Editing Framework
 Bundle-SymbolicName: org.eclipse.gef; singleton:=true
 Bundle-Version: 3.2.0
-Bundle-Activator: org.eclipse.gef.GEFPlugin
+Bundle-Activator: org.eclipse.gef.internal.GEFPlugin
 Bundle-Vendor: Eclipse.org
 Bundle-Localization: plugin
 Export-Package: org.eclipse.gef,
@@ -36,7 +36,7 @@ Export-Package: org.eclipse.gef,
  org.eclipse.gef.util
 Require-Bundle: org.eclipse.draw2d;visibility:=reexport,
  org.eclipse.core.runtime,
- org.eclipse.ui.views,
  org.eclipse.ui.workbench,
- org.eclipse.jface
+ org.eclipse.jface,
+ org.eclipse.ui.views;resolution:=optional
 Eclipse-LazyStart: true

@@ -15,50 +15,30 @@ import org.eclipse.ui.views.properties.IPropertySheetEntry;
 
 import org.eclipse.gef.commands.CommandStack;
 
-import org.osgi.framework.BundleContext;
-
 /**
- * 
+ * As of 3.2, this class is not a plugin anymore.
  */
 public final class GEFPlugin
 	extends AbstractUIPlugin
 {
 
-private static GEFPlugin singleton;
-
 /**
- Creates the singleton instance of the GEF plugin.
-*/
-public GEFPlugin() {
-	singleton = this;
-}
-
-/**
- * Gets the plugin singleton.
+ * Gets the singleton.
  *
  * @return the default GEFPlugin singleton
  */
-public static GEFPlugin getDefault() {
-	return singleton;
+public static AbstractUIPlugin getDefault() {
+	return org.eclipse.gef.internal.GEFPlugin.getDefault();
 }
 
 /**
- * This method will be deleted to remove the hard dependency on the
- * org.eclipse.ui.views plug-in.
+ * Creates an UndoablePropertySheetEntry.
  * @deprecated use org.eclipse.gef.ui.properties.UndoablePropertySheetEntry
  * @param stack a command stack
  * @return the implementation for the entry
  */
 public static IPropertySheetEntry createUndoablePropertySheetEntry(CommandStack stack) {
 	return new org.eclipse.gef.ui.properties.UndoablePropertySheetEntry(stack);
-}
-
-/**
- * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
- */
-public void stop(BundleContext context) throws Exception {
-	savePluginPreferences();
-	super.stop(context);
 }
 
 }
