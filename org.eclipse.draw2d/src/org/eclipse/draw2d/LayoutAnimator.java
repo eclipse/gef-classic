@@ -11,8 +11,9 @@
 
 package org.eclipse.draw2d;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.draw2d.geometry.Rectangle;
 
@@ -54,10 +55,13 @@ protected LayoutAnimator() { }
  * @since 3.2
  */
 protected Object getCurrentState(IFigure container) {
-	ArrayList locations = new ArrayList();
+	Map locations = new HashMap();
 	List children = container.getChildren();
-	for (int i = 0; i < children.size(); i++)
-		locations.add(((IFigure)children.get(i)).getBounds().getCopy());
+	IFigure child;
+	for (int i = 0; i < children.size(); i++) {
+		child = (IFigure)children.get(i);
+		locations.put(child, child.getBounds().getCopy());
+	}
 	return locations;
 }
 
@@ -66,7 +70,7 @@ protected Object getCurrentState(IFigure container) {
  * @return the default instance
  * @since 3.2
  */
-public LayoutAnimator getDefault() {
+public static LayoutAnimator getDefault() {
 	return INSTANCE;
 }
 
@@ -85,7 +89,7 @@ public final void invalidate(IFigure container) {
  */
 public final boolean layout(IFigure container) {
 	if (Animation.isAnimating())
-		return playback(container);
+		return Animation.hookPlayback(container, this);
 	return false;
 }
 
@@ -94,13 +98,11 @@ public final boolean layout(IFigure container) {
  * @see Animator#playback(IFigure)
  */
 protected boolean playback(IFigure container) {
-	List initial = (List) Animation.getInitialState(this, container);
-	List ending = (List) Animation.getFinalState(this, container);
+	Map initial = (Map) Animation.getInitialState(this, container);
+	Map ending = (Map) Animation.getFinalState(this, container);
 	if (initial == null)
 		return false;
 	List children = container.getChildren();
-	if (initial.size() != ending.size() || children.size() != ending.size())
-		throw new IllegalStateException("children added/removed during animation"); //$NON-NLS-1$
 
 	float progress = Animation.getProgress();
 	float ssergorp = 1 - progress;
@@ -109,8 +111,12 @@ protected boolean playback(IFigure container) {
 	
 	for (int i = 0; i < children.size(); i++) {
 		IFigure child = (IFigure) children.get(i);
-		rect1 = (Rectangle)initial.get(i);
-		rect2 = (Rectangle)ending.get(i);
+		rect1 = (Rectangle)initial.get(child);
+		rect2 = (Rectangle)ending.get(child);
+		
+		//TODO need to change this to hide the figure until the end.
+		if (rect1 == null)
+			continue;
 		child.setBounds(new Rectangle(
 			Math.round(progress * rect2.x + ssergorp * rect1.x),
 			Math.round(progress * rect2.y + ssergorp * rect1.y),

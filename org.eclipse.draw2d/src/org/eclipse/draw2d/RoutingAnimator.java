@@ -193,9 +193,7 @@ public final void remove(Connection connection) { }
  * @see RoutingListener#route(Connection)
  */
 public final boolean route(Connection conn) {
-	if (Animation.isAnimating())
-		return playback(conn);
-	return false;
+	return Animation.isAnimating() && Animation.hookPlayback(conn, this);
 }
 
 /**
