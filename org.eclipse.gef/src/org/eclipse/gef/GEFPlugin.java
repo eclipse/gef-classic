@@ -16,7 +16,7 @@ import org.eclipse.ui.views.properties.IPropertySheetEntry;
 import org.eclipse.gef.commands.CommandStack;
 
 /**
- * As of 3.2, this class is not a plugin anymore.
+ * @deprecated in 3.2.
  */
 public final class GEFPlugin
 	extends AbstractUIPlugin
