@@ -29,37 +29,60 @@ import java.util.Set;
  * connections. These hooks are used to capture the states, and to intercept the typical
  * layout process to insert the interpolated state.
  * <P>
- * To indicate that animation is desired, clients must call {@link #markBegin(IFigure)}
- * prior to invalidating any figures that are to be included in the animation. After this
- * method is called, changes are made, and {@link #run()} is invoked. The run method will
- * force a validation pass to capture the final states, and then commence the animation.
- * The animation is synchronous and the method does not return until the animation has
+ * To indicate that animation is desired, clients must call {@link #markBegin()} prior to
+ * invalidating any figures that are to be included in the animation. After this method is
+ * called, changes are made, and {@link #run()} is invoked. The run method will force a
+ * validation pass to capture the final states, and then commence the animation. The
+ * animation is synchronous and the method does not return until the animation has
  * completed.
  * @see LayoutAnimator
  * @since 3.2
  */
 public class Animation {
 
-private static final int DEFAULT_DELAY = 250;
-private static final int RECORD_INITIAL = 1;
-private static final int RECORD_FINAL = 2;
-private static final int PLAYBACK = 3;
+static class AnimPair {
 
+	final Animator animator;
+	final IFigure figure;
+
+	AnimPair(Animator animator, IFigure figure) {
+		this.animator = animator;
+		this.figure = figure;	
+	}
+
+	public boolean equals(Object obj) {
+		AnimPair pair = (AnimPair)obj;
+		return pair.animator == animator && pair.figure == figure;
+	}
+
+	public int hashCode() {
+		return animator.hashCode() ^ figure.hashCode();
+	}
+}
+private static final int DEFAULT_DELAY = 250;
 private static Set figureAnimators;
 private static Map finalStates;
-private static Map initialStates;
-private static float progress;
 
+private static Map initialStates;
+private static final int PLAYBACK = 3;
+private static float progress;
+private static final int RECORD_FINAL = 2;
+
+private static final int RECORD_INITIAL = 1;
 private static long startTime;
 private static int state;
 private static Set toCapture;
+
 private static UpdateManager updateManager;
 
 private static void capture() {
-	Iterator keys = toCapture.iterator();
+	Iterator keys = figureAnimators.iterator();
 	while (keys.hasNext()) {
 		AnimPair pair = (AnimPair) keys.next();
-		pair.animator.capture(pair.figure);
+		if (toCapture.contains(pair))
+			pair.animator.capture(pair.figure);
+		else
+			keys.remove();
 	}
 }
 
@@ -77,6 +100,40 @@ static void cleanup() {
 	figureAnimators = null;
 	updateManager = null;
 	state = 0;
+}
+
+private static void doRun(int duration) {
+	state = RECORD_FINAL;
+	findUpdateManager();
+	updateManager.performValidation();
+	capture();
+	state = PLAYBACK;
+	progress = 0.1f;
+	startTime = System.currentTimeMillis();
+		
+	notifyPlaybackStarting();
+	
+	while (progress != 0) {
+		step();
+		updateManager.performUpdate();
+		if (progress == 1.0)
+			progress = 0;
+		else {
+			int delta = (int)(System.currentTimeMillis() - startTime);
+			if (delta >= duration)
+				progress = 1f;
+			else
+				progress = 0.1f + 0.9f * delta / duration;
+		}
+	}
+	state = 0;
+	step();
+	updateManager.performUpdate();
+}
+
+private static void findUpdateManager() {
+	AnimPair pair = (AnimPair) figureAnimators.iterator().next();
+	updateManager = pair.figure.getUpdateManager();
 }
 
 /**
@@ -123,6 +180,12 @@ static void hookNeedsCapture(IFigure figure, Animator animator) {
 		toCapture.add(pair);
 }
 
+static boolean hookPlayback(IFigure figure, Animator animator) {
+	if (toCapture.contains(new AnimPair(animator, figure)))
+		return animator.playback(figure);
+	return false;
+}
+
 /**
  * Returns <code>true</code> if animation is in progress.
  * @return <code>true</code> when animating
@@ -143,18 +206,19 @@ static boolean isInitialRecording() {
 /**
  * Marks the beginning of the animation process. If the beginning has already been marked,
  * this has no effect.
- * @param figure the first figure being animated.
+ * @return returns <code>true</code> if beginning was not previously marked
  * @since 3.2
  */
-public static void markBegin(IFigure figure) {
+public static boolean markBegin() {
 	if (state == 0) {
 		state = RECORD_INITIAL;
-		updateManager = figure.getUpdateManager();
 		initialStates = new HashMap();
 		finalStates = new HashMap();
 		figureAnimators = new HashSet();
 		toCapture = new HashSet();
+		return true;
 	}
+	return false;
 }
 
 private static void notifyPlaybackStarting() {
@@ -191,28 +255,8 @@ public static void run(int duration) {
 	if (state == 0)
 		return;
 	try {
-		state = RECORD_FINAL;
-		updateManager.performValidation();
-		capture();
-		state = PLAYBACK;
-		progress = 0.1f;
-		startTime = System.currentTimeMillis();
-		
-		notifyPlaybackStarting();
-		
-		while (progress != 0) {
-			step();
-			updateManager.performUpdate();
-			if (progress == 1.0)
-				progress = 0;
-			else {
-				int delta = (int)(System.currentTimeMillis() - startTime);
-				if (delta >= duration)
-					progress = 1f;
-				else
-					progress = 0.1f + 0.9f * delta / duration;
-			}
-		}
+		if (!figureAnimators.isEmpty())
+			doRun(duration);
 	} finally {
 		cleanup();
 	}
@@ -222,27 +266,6 @@ private static void step() {
 	Iterator iter = initialStates.keySet().iterator();
 	while (iter.hasNext())
 		((AnimPair)iter.next()).figure.revalidate();
-	//viewport.validate();
-}
-
-static class AnimPair {
-
-	final Animator animator;
-	final IFigure figure;
-
-	AnimPair(Animator animator, IFigure figure) {
-		this.animator = animator;
-		this.figure = figure;	
-	}
-
-	public boolean equals(Object obj) {
-		AnimPair pair = (AnimPair)obj;
-		return pair.animator == animator && pair.figure == figure;
-	}
-
-	public int hashCode() {
-		return animator.hashCode() ^ figure.hashCode();
-	}
 }
 
 }
