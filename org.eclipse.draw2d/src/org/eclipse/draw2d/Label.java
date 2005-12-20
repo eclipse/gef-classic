@@ -522,10 +522,16 @@ public void setIcon(Image image) {
 }
 
 /**
- * This method sets the alignment of the icon within the icon dimension.  The dimension
- * should be the same size as the Image itself, so calling this method should have no
- * affect.
- * @deprecated The icons should be displayed at 1:1 
+ * This method sets the alignment of the icon within the bounds of the label. If the label
+ * is larger than the icon, then the icon will be aligned according to this alignment.
+ * Valid values are:
+ * <UL>
+ *   <LI><EM>{@link PositionConstants#CENTER}</EM>
+ *   <LI>{@link PositionConstants#TOP}
+ *   <LI>{@link PositionConstants#BOTTOM}
+ *   <LI>{@link PositionConstants#LEFT}
+ *   <LI>{@link PositionConstants#RIGHT}
+ * </UL>
  * @param align the icon alignment 
  * @since 2.0
  */
