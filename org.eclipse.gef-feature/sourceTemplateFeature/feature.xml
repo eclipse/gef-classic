@@ -8,7 +8,7 @@
 	<description>%description</description> 
 	<license url="%licenseURL">%license</license> 
 	<url>
-		<update label="%updateSiteName" url="http://update.eclipse.org/updates" /> 
+		<update label="%updateSiteName" url="http://update.eclipse.org/updates/3.0" /> 
 	</url>
 	<plugin id="org.eclipse.gef.doc.isv"
 			download-size="0" 
