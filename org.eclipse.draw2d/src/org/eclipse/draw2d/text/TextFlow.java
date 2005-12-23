@@ -377,7 +377,9 @@ public int getNextVisibleOffset(int offset) {
  * the proximity will contain the horizontal distance, <code>height</code> will contain
  * vertical. Vertical proximity is more important than horizontal. The returned offset is
  * the lowest index with minimum vertical proximity not exceeding the given limit, with
- * horizontal proximity not exceeding the given limit.
+ * horizontal proximity not exceeding the given limit.  If an offset that is within the 
+ * proximity is found, then the given <code>Dimension</code> will be updated to reflect
+ * the new proximity.
  * 
  * 
  * @since 3.1
@@ -390,10 +392,7 @@ public int getOffset(Point p, int trailing[], Dimension proximity) {
 	if (proximity == null)
 		proximity = new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
 	TextFragmentBox closestBox = null;
-	int index = 0;
-	int dy;
-	int dx;
-	int i = 0;
+	int index = 0, i = 0, dx, dy;
 	int size = fragments.size();
 	if (getBorder() instanceof FlowBorder) {
 		i++;
