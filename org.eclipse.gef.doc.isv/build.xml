@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="org.eclipse.gef.doc.isv" default="build.jars" basedir=".">
 
+	<path id="path_bootclasspath">
+		<fileset dir="${java.home}/lib">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+	<property name="bootclasspath" refid="path_bootclasspath"/>
+
 	<target name="init">
 		<property name="plugin" value="org.eclipse.gef.doc.isv"/>
-		<property name="version.suffix" value="_3.2.0"/>
-		<property name="full.name" value="${plugin}${version.suffix}"/>
+		<property name="version.suffix" value="3.2.0"/>
+		<property name="full.name" value="${plugin}_${version.suffix}"/>
 		<property name="temp.folder" value="${basedir}/temp.folder"/>
 		<property name="plugin.destination" value="${basedir}"/>
 		<property name="build.result.folder" value="${basedir}"/>
@@ -22,6 +29,7 @@
 	</target>
 
 	<target name="gather.bin.parts" depends="init" if="destination.temp.folder">
+		<ant antfile="buildDoc.xml" />
 		<mkdir dir="${destination.temp.folder}/${full.name}"/>
 		<copy todir="${destination.temp.folder}/${full.name}">
 			<fileset dir="${basedir}" includes="about.html,*.properties,*.xml,META-INF/**,index.html,guide.html,reference.html,book.css,guide/**,examples/**,reference/**" excludes="build.properties,build*.xml" />
@@ -30,7 +38,6 @@
 	</target>
 
 	<target name="build.jars" depends="init">
-		<ant antfile="buildDoc.xml" />
 	</target>
 	
 	<target name="gather.sources" depends="init" if="destination.temp.folder">
