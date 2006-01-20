@@ -206,12 +206,14 @@ private void hook() {
 			scrollToX(getHorizontalBar().getSelection() - hBarOffset);
 		}
 	});
+	getHorizontalBar().setVisible(false);
 
 	getVerticalBar().addSelectionListener(new SelectionAdapter() {
 		public void widgetSelected(SelectionEvent event) {
 			scrollToY(getVerticalBar().getSelection() - vBarOffset);
 		}
 	});
+	getVerticalBar().setVisible(false);
 }
 
 private void hookViewport() {
