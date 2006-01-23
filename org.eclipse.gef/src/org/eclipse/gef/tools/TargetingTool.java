@@ -372,10 +372,9 @@ protected void updateTargetRequest() { }
  */
 protected boolean updateTargetUnderMouse() {
 	if (!isTargetLocked()) {
-		Collection exclude = getExclusionSet();
 		EditPart editPart = getCurrentViewer().findObjectAtExcluding(
 			getLocation(),
-			exclude,
+			getExclusionSet(),
 			getTargetingConditional());
 		if (editPart != null)
 			editPart = editPart.getTargetEditPart(getTargetRequest());

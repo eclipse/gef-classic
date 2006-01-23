@@ -364,9 +364,8 @@ protected boolean handleInvalidInput() {
 protected boolean handleKeyDown(KeyEvent e) {
 	if (super.handleKeyDown(e))
 		return true;
-	if (getCurrentViewer().getKeyHandler() != null
-		&& getCurrentViewer().getKeyHandler().keyPressed(e))
-		return true;
+	if (getCurrentViewer().getKeyHandler() != null)
+		return getCurrentViewer().getKeyHandler().keyPressed(e);
 	return false;		
 }
 
