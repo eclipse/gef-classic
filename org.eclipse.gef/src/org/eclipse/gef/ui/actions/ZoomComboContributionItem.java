@@ -29,8 +29,6 @@ import org.eclipse.ui.IPartListener;
 import org.eclipse.ui.IPartService;
 import org.eclipse.ui.IWorkbenchPart;
 
-import org.eclipse.draw2d.FigureUtilities;
-
 import org.eclipse.gef.editparts.ZoomListener;
 import org.eclipse.gef.editparts.ZoomManager;
 
@@ -91,7 +89,7 @@ public ZoomComboContributionItem(IPartService partService, String[] initStrings)
 	});
 }
 
-void refresh(boolean repopulateCombo) {
+private void refresh(boolean repopulateCombo) {
 	if (combo == null || combo.isDisposed())
 		return;
 	//$TODO GTK workaround
@@ -122,12 +120,7 @@ void refresh(boolean repopulateCombo) {
  * @return int The width required
  */
 protected int computeWidth(Control control) {
-	int width = control.computeSize(SWT.DEFAULT, SWT.DEFAULT, true).x;
-	// $TODO: Windows workaround - Fixed in Eclipse 3.0 
-	// Combo is not wide enough to show all text - add enough space for another character
-	if (SWT.getPlatform().equals("win32")) //$NON-NLS-1$
-		width += FigureUtilities.getTextWidth("8", control.getFont()); //$NON-NLS-1$
-	return width;
+	return control.computeSize(SWT.DEFAULT, SWT.DEFAULT, true).x;
 }
 
 /**
