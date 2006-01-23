@@ -217,6 +217,7 @@ protected void queueWork() {
  * @param graphics the graphics object
  */
 protected void releaseGraphics(Graphics graphics) {
+	graphics.dispose();
 	graphicsSource.flushGraphics(damage);
 }
 
