@@ -127,7 +127,7 @@ void addPropertyChangeListener(PropertyChangeListener listener);
 
 /**
  * Appends the specified <code>EditPart</code> to the viewer's <i>selection</i>. The
- * EditPart becomes the new primary selection. Fires selection changed to all{@link
+ * EditPart becomes the new primary selection. Fires selection changed to all {@link
  * org.eclipse.jface.viewers.ISelectionChangedListener}s.
  * @param editpart the EditPart to append
  */
