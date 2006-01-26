@@ -151,16 +151,6 @@ private void captureSourceDimensions() {
 		if (child == getSourceEditPart())
 			sourceRectangle = bounds;
 	}
-	/* @TODO:Pratik  Remove this for 3.2 */
-	if (sourceRectangle == null) {
-		IFigure figure = ((GraphicalEditPart)getSourceEditPart()).getFigure();
-		if (figure instanceof HandleBounds)
-			sourceRectangle = new PrecisionRectangle(
-					((HandleBounds)figure).getHandleBounds());
-		else
-			sourceRectangle = new PrecisionRectangle(figure.getBounds());
-		figure.translateToAbsolute(sourceRectangle);
-	}	
 }
 
 /**
