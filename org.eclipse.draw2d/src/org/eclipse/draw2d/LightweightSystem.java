@@ -116,7 +116,7 @@ protected void controlResized() {
 	r.setLocation(0, 0);
 	root.setBounds(r);
 	root.revalidate();
-	manager.performUpdate();
+	getUpdateManager().performUpdate();
 }
 
 /**
@@ -193,7 +193,7 @@ EventHandler internalCreateEventHandler() {
  * @since 2.0
  */
 public void paint(GC gc) {
-	manager.paint(gc);
+	getUpdateManager().paint(gc);
 }
 
 /**
