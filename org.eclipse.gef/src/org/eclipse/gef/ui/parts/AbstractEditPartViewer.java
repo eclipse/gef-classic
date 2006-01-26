@@ -197,14 +197,8 @@ public void deselect(EditPart editpart) {
  * @see EditPartViewer#deselectAll()
  */
 public void deselectAll() {
-	EditPart part;
-	List list = primGetSelectedEditParts();
 	setFocus(null);
-	for (int i = 0; i < list.size(); i++) {
-		part = (EditPart)list.get(i);
-		part.setSelected(EditPart.SELECTED_NONE);
-	}
-	list.clear();
+	primDeselectAll();
 	fireSelectionChanged();
 }
 
