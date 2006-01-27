@@ -27,6 +27,7 @@ public static final Object WORD_BOUNDARY = new Object();
 public static final Object LINE_BOUNDARY = new Object();
 public static final Object ROW = new Object();
 public static final Object PARAGRAPH = new Object();
+public static final Object WINDOW = new Object();
 //public static final Object PAGE = new Object();
 public static final Object DOCUMENT = new Object();
 

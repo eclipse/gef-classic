@@ -115,6 +115,13 @@ public TextTool(StyleService service) {
 	styleService = service;
 }
 
+/* uncomment this when this class moves to the same package as AbstractTool
+ * Need to override acceptAbort
+boolean acceptAbort(KeyEvent e) {
+	return !isInState(STATE_INITIAL) && e.character == SWT.ESC;
+}
+*/
+
 public void addStyleListener(StyleListener listener) {
 	Assert.isTrue(this.listener == null);
 	this.listener = listener;
@@ -233,6 +240,18 @@ private void doAction(int action, KeyEvent event) {
 			append = true;
 		case ST.LINE_DOWN:
 			doSelect(CaretRequest.ROW, true, append, null);
+			break;
+		// WINDOW END
+		case ST.SELECT_WINDOW_END:
+			append = true;
+		case ST.WINDOW_END:
+			doSelect(CaretRequest.WINDOW, true, append, null);
+			break;
+		// WINDOW START
+		case ST.SELECT_WINDOW_START:
+			append = true;
+		case ST.WINDOW_START:
+			doSelect(CaretRequest.WINDOW, false, append, null);
 			break;
 		case ST.TOGGLE_OVERWRITE:
 			toggleOverwrite();
@@ -493,10 +512,6 @@ public TextEditPart getCaretOwner() {
 	return null;
 }
 
-protected String getDebugName() {
-	return "TextTool";
-}
-
 private SelectionRange getSelectionRange() {
 	if (getCurrentViewer() instanceof GraphicalTextViewer)
 		return getTextualViewer().getSelectionRange();
@@ -666,6 +681,10 @@ private int lookupAction(int i) {
 		case ST.SELECT_TEXT_START:
 		case ST.DELETE_PREVIOUS:
 		case ST.DELETE_NEXT:
+		case ST.WINDOW_START:
+		case ST.WINDOW_END:
+		case ST.SELECT_WINDOW_START:
+		case ST.SELECT_WINDOW_END:
 		case SWT.TAB | SWT.SHIFT:
 		case SWT.TAB:
 			return i;
