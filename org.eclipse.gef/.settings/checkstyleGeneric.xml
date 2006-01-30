@@ -106,7 +106,7 @@
 <module name="RequiredRegexp">
 <metadata name="com.atlassw.tools.eclipse.checkstyle.comment" value="Copyright requirement"/>
 <property name="severity" value="error"/>
-<property name="format" value="^.*Copyright.*2005.*$"/>
+<property name="format" value="^.*Copyright.*200?.*$"/>
 </module>
 <module name="GenericIllegalRegexp">
 <metadata name="com.atlassw.tools.eclipse.checkstyle.comment" value="Don't allow printlines"/>
