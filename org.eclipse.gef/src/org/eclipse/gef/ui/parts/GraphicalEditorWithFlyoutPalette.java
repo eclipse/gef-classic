@@ -15,7 +15,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import org.eclipse.gef.DefaultEditDomain;
-import org.eclipse.gef.GEFPlugin;
+import org.eclipse.gef.internal.InternalGEFPlugin;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.ui.palette.FlyoutPaletteComposite;
 import org.eclipse.gef.ui.palette.PaletteViewer;
@@ -110,9 +110,9 @@ protected Control getGraphicalControl() {
  */
 protected FlyoutPreferences getPalettePreferences() {
 	return FlyoutPaletteComposite
-			.createFlyoutPreferences(GEFPlugin.getDefault().getPluginPreferences());
+			.createFlyoutPreferences(InternalGEFPlugin.getDefault().getPluginPreferences());
 }
-	
+
 /**
  * Returns the PaletteRoot for the palette viewer.
  * @return the palette root

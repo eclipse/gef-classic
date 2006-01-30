@@ -18,8 +18,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.util.Assert;
-import org.eclipse.ui.views.properties.IPropertySource;
 
 import org.eclipse.draw2d.EventListenerList;
 
@@ -89,7 +89,6 @@ EventListenerList eventListeners = new EventListenerList();
 /**
  * Iterates over a <code>List</code> of EditPolcies, skipping any <code>null</code> values
  * encountered.
- * @deprecated access to this type is unnecessary; see getEditPolicyIterator()
  */
 protected static class EditPolicyIterator {
 	private Object list[];
@@ -423,32 +422,17 @@ protected AccessibleEditPart getAccessibleEditPart() {
 }
 
 /**
- * Returns the specified adapter if recognized, for
- * example: {@link IPropertySource}. Otherwise returns <code>null</code>.
- * <P>
- * By default, the following adapter types are handled:
- * <UL>
- *   <LI>{@link IPropertySource} - If getModel() is an <code>IPropertySource</code> it
- *   will be returned. If getModel() is IAdaptable, it will be asked for its
- *   <code>IPropertySource</code> adapter, and the result is returned.
- *   <LI>{@link AccessibleEditPart} - If the adapter key is
- *   <code>AccessibleEditPart</code>, then {@link #getAccessibleEditPart()} is returned.
- * </UL>
+ * Returns the specified adapter if recognized. Delegates to the workbench adapter
+ * mechanism.
  * <P>
  * Additional adapter types may be added in the future. Subclasses should extend this
- * method.
+ * method as needed.
  * @see IAdaptable#getAdapter(java.lang.Class)
  */
 public Object getAdapter(Class key) {
-	if (IPropertySource.class == key) {
-		if (getModel() instanceof IPropertySource)
-			return getModel();
-		if (getModel() instanceof IAdaptable)
-			return ((IAdaptable)getModel()).getAdapter(key);
-	}
 	if (AccessibleEditPart.class == key)
 		return getAccessibleEditPart();
-	return null;
+	return Platform.getAdapterManager().getAdapter(this, key);
 }
 
 /**
@@ -497,8 +481,6 @@ public Command getCommand(Request request) {
  * @return Iterator
  */
 protected final Iterator getEventListeners(Class clazz) {
-	if (eventListeners == null)
-		return Collections.EMPTY_LIST.iterator();
 	return eventListeners.getListeners(clazz);
 }
 

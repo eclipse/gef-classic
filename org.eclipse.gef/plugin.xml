@@ -1,72 +1,79 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
 <plugin>
-   
-   <extension
-         point="org.eclipse.ui.commands">
-      <category
-            name="%ViewCategory.Label"
-            description="%ViewCategory.Label"
-            id="org.eclipse.gef.category.view">
-      </category>
-      <command
-            name="%Palette.Label" 
-            description="" 
-            categoryId="org.eclipse.ui.category.views" 
-            id="org.eclipse.gef.ui.palette_view"> 
-      </command>
+	<extension
+			point="org.eclipse.ui.commands">
+		<category
+				name="%ViewCategory.Label"
+				description="%ViewCategory.Label"
+				id="org.eclipse.gef.category.view">
+		</category>
 
-      <command
-            name="%ZoomIn.Tooltip"
-            description="%ZoomIn.Tooltip"
-            categoryId="org.eclipse.gef.category.view"
-            id="org.eclipse.gef.zoom_in">
-      </command>
-      
-      <command
-            name="%ZoomOut.Tooltip"
-            description="%ZoomOut.Tooltip"
-            categoryId="org.eclipse.gef.category.view"
-            id="org.eclipse.gef.zoom_out">
-      </command>
-   </extension>
-   <extension
-         point="org.eclipse.ui.views">
-      <view
-            name="%Palette.Label"
-            icon="icons/palette_view.gif"
-            category="org.eclipse.ui"
-            class="org.eclipse.gef.ui.views.palette.PaletteView"
-            id="org.eclipse.gef.ui.palette_view">
-      </view>
-   </extension>
-   <extension
-         point="org.eclipse.ui.perspectiveExtensions">
-      <perspectiveExtension
-            targetID="org.eclipse.ui.resourcePerspective">
-         <view
-               ratio="0.16"
-               relative="org.eclipse.ui.editorss"
-               visible="false"
-               relationship="left"
-               id="org.eclipse.gef.ui.palette_view">
-         </view>
-      </perspectiveExtension>
-   </extension>
+		<command
+				name="%Palette.Label" 
+				description="" 
+				categoryId="org.eclipse.ui.category.views" 
+				id="org.eclipse.gef.ui.palette_view"> 
+		</command>
+
+		<command
+				name="%ZoomIn.Tooltip"
+				description="%ZoomIn.Tooltip"
+				categoryId="org.eclipse.gef.category.view"
+				id="org.eclipse.gef.zoom_in">
+		</command>
+		
+		<command
+				name="%ZoomOut.Tooltip"
+				description="%ZoomOut.Tooltip"
+				categoryId="org.eclipse.gef.category.view"
+				id="org.eclipse.gef.zoom_out">
+		</command>
+			
+	</extension>
+	<extension
+			point="org.eclipse.ui.views">
+		<view
+				name="%Palette.Label"
+				icon="icons/palette_view.gif"
+				category="org.eclipse.ui"
+				class="org.eclipse.gef.ui.views.palette.PaletteView"
+				id="org.eclipse.gef.ui.palette_view">
+		</view>
+	</extension>
+	<extension
+			point="org.eclipse.ui.perspectiveExtensions">
+		<perspectiveExtension
+				targetID="org.eclipse.ui.resourcePerspective">
+			<view
+					ratio="0.16"
+					relative="org.eclipse.ui.editorss"
+					visible="false"
+					relationship="left"
+					id="org.eclipse.gef.ui.palette_view">
+			</view>
+		</perspectiveExtension>
+	</extension>
 
 	<extension point="org.eclipse.ui.bindings">
 		<key
 			sequence="M1+="
 			contextId="org.eclipse.ui.globalScope"
 			commandId="org.eclipse.gef.zoom_in"
-			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
-		</key>
+			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
 		<key
 			sequence="M1+-"
 			contextId="org.eclipse.ui.globalScope"
 			commandId="org.eclipse.gef.zoom_out"
-			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
-		</key>
+			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
+
+	</extension>
+	<extension point="org.eclipse.core.runtime.adapters">
+		<factory
+				class="org.eclipse.gef.internal.PropertySourceAdapterFactory"
+				adaptableType="org.eclipse.gef.editparts.AbstractEditPart">
+			<adapter type="org.eclipse.ui.views.properties.IPropertySource"/>
+		</factory>
 	</extension>
 
 </plugin>

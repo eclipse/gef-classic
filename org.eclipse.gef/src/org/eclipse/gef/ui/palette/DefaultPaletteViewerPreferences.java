@@ -20,7 +20,7 @@ import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 
-import org.eclipse.gef.GEFPlugin;
+import org.eclipse.gef.internal.InternalGEFPlugin;
 
 /**
  * This is the default implementation for PaletteViewerPreferences.  It uses
@@ -59,7 +59,7 @@ private int[] supportedModes =
  * </p>
  */
 public DefaultPaletteViewerPreferences() {
-	this(GEFPlugin.getDefault().getPreferenceStore());
+	this(InternalGEFPlugin.getDefault().getPreferenceStore());
 }
 
 /**
