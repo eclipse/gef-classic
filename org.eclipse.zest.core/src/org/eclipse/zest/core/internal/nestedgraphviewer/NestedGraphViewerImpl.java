@@ -45,7 +45,6 @@ import org.eclipse.mylar.zest.layouts.LayoutRelationship;
 import org.eclipse.mylar.zest.layouts.LayoutStyles;
 import org.eclipse.mylar.zest.layouts.algorithms.GridLayoutAlgorithm;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Widget;
 
 
@@ -161,6 +160,7 @@ public class NestedGraphViewerImpl extends ThreadedGraphicalViewer
 		NestedGraphModelNode previousNode = model.getPreviousRootNode();
 		NestedGraphModelNode nodeToMoveTo = model.getCurrentNode();
 		NestedGraphModelNode nodeToSelect = nodeToMoveTo;	// node to select in the TreeViewer
+		
 
 		if (this.getRootEditPart() instanceof NestedGraphRootEditPart) {
 			NestedGraphRootEditPart rootEditPart = (NestedGraphRootEditPart)getRootEditPart();
@@ -174,16 +174,22 @@ public class NestedGraphViewerImpl extends ThreadedGraphicalViewer
 			}
 			else if ( nodeToMoveTo.getRelationshipBetweenNodes( previousNode ) == NestedGraphModelNode.ANCESTOR) {
 				checkScaling(previousNode);
-				super.setContents(model);
-				this.flush();
-				Display.getCurrent().update();
+				
+				super.updateContents(model);
+				//this.flush();
+				//Display.getCurrent().update();
 				nodeToSelect = previousNode;  // select the previous node
+				
+				
 				if (getEditPartRegistry().containsKey(nodeToSelect)) {
+					//nodeToSelect.setSelected(true);
 					setSelection(new StructuredSelection(getEditPartRegistry().get(nodeToSelect)));
+					//this.setFocus(this.getRootEditPart());
 				}
+				
 				// now do the zoom (sizes and locations should be set)
 				rootEditPart = (NestedGraphRootEditPart)getRootEditPart();
-				rootEditPart.zoomOutOnNode((NestedGraphNodeEditPart)previousNode.getEditPart());
+				//rootEditPart.zoomOutOnNode((NestedGraphNodeEditPart)previousNode.getEditPart());
 			}
 			else {
 				super.setContents(model);
@@ -201,8 +207,9 @@ public class NestedGraphViewerImpl extends ThreadedGraphicalViewer
 		updateBreadCrumb(nodeToMoveTo);
 		updateTreeViewer(nodeToSelect);		// also selects the given node
 		hideConnections();
-		this.flush();
-		Display.getCurrent().update();
+
+		//this.flush();
+		//Display.getCurrent().update();
 
 	}
 

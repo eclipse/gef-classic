@@ -248,9 +248,9 @@ public class NestedFigure extends Figure {
 			//element.setVisible(visible);
 		}
 		*/
+		scaledFigure.setVisible(visible);
 		//scaledFigure.setVisible(visible);
-		//scaledFigure.setVisible(visible);
-		scaledFigure.setFlag(Figure.FLAG_VISIBLE, visible);
+		//scaledFigure.setFlag(Figure.FLAG_VISIBLE, visible);
 		/*
 		scaledFigure.erase();
 		scaledFigure.repaint();

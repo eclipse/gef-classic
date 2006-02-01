@@ -140,7 +140,7 @@ public abstract class ThreadedGraphicalViewer extends GraphicalViewerImpl implem
 			
 		});
 		
-		addThread( updater );
+		//addThread( updater );
 		
 
 	}
@@ -278,13 +278,15 @@ public abstract class ThreadedGraphicalViewer extends GraphicalViewerImpl implem
 	}
 	
 	protected LightweightSystem createLightweightSystem() {
-
+		return new LightweightSystem();
+		/*
 		LightweightSystem lws = new MyLightWeightSystem();
 		lws.setUpdateManager( new MyUpdateManager() );
 		
 
 		
 		return  lws;
+		*/
 	}
 
 	
@@ -349,7 +351,7 @@ class MyLightWeightSystem extends LightweightSystem {
 		
 		public synchronized void addInvalidFigure(IFigure f) {
 			// TODO Auto-generated method stub
-			//super.addInvalidFigure(f);
+			super.addInvalidFigure(f);
 			// do nothing
 		}
 		

@@ -111,7 +111,7 @@ public class NestedGraphRootEditPart extends GraphRootEditPart {
 		if (editPart == null)
 			return;
 		
-		Rectangle maxBounds = getMaxBounds();
+		//Rectangle maxBounds = getMaxBounds();
 		Rectangle startBounds = editPart.getScreenBounds();
 		getRootNestedFigure().translateToRelative(startBounds);
 		NestedFigure nestedFig = (NestedFigure)editPart.getFigure();
@@ -124,7 +124,7 @@ public class NestedGraphRootEditPart extends GraphRootEditPart {
 				//doRealZoomOut(editPart, maxBounds, startBounds, 10);
 				//break;
 			case ZestStyles.ZOOM_FAKE :
-				doFakeZoom(maxBounds, startBounds, 8);
+				//doFakeZoom(maxBounds, startBounds, 8);
 				//break;
 			case ZestStyles.ZOOM_EXPAND :
 			default :
