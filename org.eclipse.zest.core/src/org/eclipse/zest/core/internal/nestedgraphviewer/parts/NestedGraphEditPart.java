@@ -152,6 +152,7 @@ public class NestedGraphEditPart extends GraphEditPart implements
 	 */
 	public void propertyChange(PropertyChangeEvent evt) {
 		String prop = evt.getPropertyName();
+
 		if (GraphModelNode.COLOR_BG_PROP.equals(prop)) {
 			refreshColors();
 		} else if (GraphModelNode.COLOR_FG_PROP.equals(prop)) {

@@ -120,11 +120,16 @@ public class NestedFigure extends Figure {
 		return minSize;
 	}
 	
+	public boolean isVisible() {
+		return true;
+	}
+	
 	/* (non-Javadoc)
 	 * @see org.eclipse.draw2d.Figure#setBounds(org.eclipse.draw2d.geometry.Rectangle)
 	 */
 	public void setBounds(Rectangle bounds) {
 		// resize the label & nested figures
+		
 		int width = bounds.width - 2;
 		int height = bounds.height - 3;
 		Dimension labelSize = label.getSize();
@@ -237,7 +242,26 @@ public class NestedFigure extends Figure {
 		if ((button != null) && (button.isSelected() != visible)) {
 			button.setSelected(visible);
 		}
-		scaledFigure.setVisible(visible);
+		/*
+		for (Iterator iter = children.iterator(); iter.hasNext();) {
+			IFigure element = (IFigure) iter.next();
+			//element.setVisible(visible);
+		}
+		*/
+		//scaledFigure.setVisible(visible);
+		//scaledFigure.setVisible(visible);
+		scaledFigure.setFlag(Figure.FLAG_VISIBLE, visible);
+		/*
+		scaledFigure.erase();
+		scaledFigure.repaint();
+		scaledFigure.revalidate();
+		
+		scaledFigure.repaint();
+		revalidate();
+		*/
+		
+		//scaledFigure.revalidate();
+		//scaledFigure.setVisible(visible);
 	}
 		
 	/* (non-Javadoc)

@@ -12,10 +12,10 @@ package org.eclipse.mylar.zest.core.internal.graphmodel.nested;
 
 import java.util.Iterator;
 
-import org.eclipse.draw2d.FigureCanvas;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.mylar.zest.core.viewers.INestedGraphEntityContentProvider;
+import org.eclipse.swt.widgets.Canvas;
 
 
 /**
@@ -38,7 +38,7 @@ public class NestedGraphModelEntityFactory implements INestedGraphModelFactory {
 	 * @return NestedGraphModel
 	 */
 	public NestedGraphModel createModel() {
-		return new NestedGraphModel((FigureCanvas)viewer.getControl());
+		return new NestedGraphModel((Canvas)viewer.getControl());
 	}
 	
 	private INestedGraphEntityContentProvider getContentProvider() {

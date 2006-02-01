@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.mylar.zest.core.internal.viewers.figures;
 
-import org.eclipse.draw2d.FigureCanvas;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 
 
@@ -21,14 +21,14 @@ import org.eclipse.swt.widgets.Composite;
  * 
  * @author Chris Callendar
  */
-public class Graph extends FigureCanvas {
+public class Graph extends Canvas {
 
 	/**
 	 * @param parent
 	 */
 	public Graph(Composite parent) {
 		super(parent, SWT.V_SCROLL | SWT.H_SCROLL);
-		setScrollBarVisibility(FigureCanvas.NEVER);
+		//setScrollBarVisibility(FigureCanvas.NEVER);
 	}
 
 	

@@ -20,7 +20,6 @@ import java.util.Set;
 
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.DeferredUpdateManager;
-import org.eclipse.draw2d.FigureCanvas;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.LightweightSystem;
 import org.eclipse.draw2d.UpdateManager;
@@ -70,7 +69,7 @@ public abstract class ThreadedGraphicalViewer extends GraphicalViewerImpl implem
 		updateManager = getLightweightSystem().getUpdateManager();
 		
 		// Creates a new graph (a FigureCanvas)
-		FigureCanvas canvas = new Graph(parent);
+		Canvas canvas = new Graph(parent);
 		canvas.setLayout(new FillLayout());
 		setControl(canvas);
 		
@@ -223,8 +222,8 @@ public abstract class ThreadedGraphicalViewer extends GraphicalViewerImpl implem
 		return dim;
 	}
 	
-	public FigureCanvas getFigureCanvas() {
-		return (FigureCanvas)getControl();
+	public Canvas getFigureCanvas() {
+		return (Canvas)getControl();
 	}
 	
 	/**

@@ -168,8 +168,17 @@ public class GraphNodeEditPart extends AbstractGraphicalEditPart implements
 	public void propertyChange(PropertyChangeEvent evt) {
 		
 		String prop = evt.getPropertyName();
-
-		if (GraphModelNode.LOCATION_PROP.equals(prop) || GraphModelNode.SIZE_PROP.equals(prop)) {
+		
+		if ( GraphModelNode.FORCE_REDRAW.equals(prop)) {
+			refreshVisuals();
+			refreshChildren();
+			refreshColors();
+			getCastedModel().highlight();
+			getCastedModel().unhighlight();
+			
+			
+		}
+		else if (GraphModelNode.LOCATION_PROP.equals(prop) || GraphModelNode.SIZE_PROP.equals(prop)) {
 			refreshVisuals();
 		} else if (GraphModelNode.SOURCE_CONNECTIONS_PROP.equals(prop)) {
 			refreshSourceConnections();
@@ -200,7 +209,7 @@ public class GraphNodeEditPart extends AbstractGraphicalEditPart implements
 		Point loc = node.getLocation();
 		Dimension size = node.getSize();
 		Rectangle bounds = new Rectangle(loc, size);
-		
+		figure.repaint();
 		((GraphicalEditPart)getParent()).setLayoutConstraint(this, getFigure(), bounds);
 		//getFigure().revalidate();
 	}

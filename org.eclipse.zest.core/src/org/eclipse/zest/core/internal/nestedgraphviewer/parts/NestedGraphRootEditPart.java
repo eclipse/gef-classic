@@ -89,11 +89,11 @@ public class NestedGraphRootEditPart extends GraphRootEditPart {
 		
 		switch (zoomStyle) {
 			case ZestStyles.ZOOM_REAL :
-				doRealZoomIn(editPart, startBounds, maxBounds, 10);				
-				break;
+				//doRealZoomIn(editPart, startBounds, maxBounds, 10);				
+				//break;
 			case ZestStyles.ZOOM_FAKE :
-				doFakeZoom(startBounds, maxBounds, 8);
-				break;
+				//doFakeZoom(startBounds, maxBounds, 8);
+				//break;
 			case ZestStyles.ZOOM_EXPAND :
 			default:
 				doExpandZoom(startBounds, maxBounds, 5, (NestedFigure)editPart.getFigure());
@@ -121,14 +121,14 @@ public class NestedGraphRootEditPart extends GraphRootEditPart {
 		switch (zoomStyle) {
 			case ZestStyles.ZOOM_REAL :
 				// TODO: it is not very smooth zooming out
-				doRealZoomOut(editPart, maxBounds, startBounds, 10);
-				break;
+				//doRealZoomOut(editPart, maxBounds, startBounds, 10);
+				//break;
 			case ZestStyles.ZOOM_FAKE :
 				doFakeZoom(maxBounds, startBounds, 8);
-				break;
+				//break;
 			case ZestStyles.ZOOM_EXPAND :
 			default :
-				doCollapseZoom(maxBounds, startBounds, 5, (NestedFigure)editPart.getFigure());
+				//doCollapseZoom(maxBounds, startBounds, 5, (NestedFigure)editPart.getFigure());
 				break;
 		}		
 	}

@@ -151,6 +151,7 @@ public class NestedGraphNodeEditPart extends GraphNodeEditPart implements Action
 				}
 			}
 		}
+		
 	}
 
 	/* (non-Javadoc)

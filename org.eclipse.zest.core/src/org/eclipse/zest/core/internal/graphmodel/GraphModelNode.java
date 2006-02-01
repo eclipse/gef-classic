@@ -39,6 +39,7 @@ public class GraphModelNode extends GraphItem implements LayoutEntity {
 
 	public static final String LOCATION_PROP = "GraphModelNode.Location";
 	public static final String SIZE_PROP = "GraphModelNode.Size";
+	public static final String FORCE_REDRAW = "GraphModelNode.Redraw";
 	public static final String COLOR_BG_PROP = "GraphModelNode.BGColor";
 	public static final String COLOR_FG_PROP = "GraphModelNode.FGColor";
 	public static final String HIGHLIGHT_PROP = "GraphModeNode.Highlight";

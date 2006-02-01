@@ -250,8 +250,9 @@ public class NestedGraphModelNode extends GraphModelNode implements NestedLayout
 	 */
 	public void hideChildren() {
 		childrenVisible = false;
-		Dimension size = getMinimizedSize();
+		Dimension size = getFullSize();
 		super.setSizeInLayout(size.width, size.height);
+		this.firePropertyChange(FORCE_REDRAW, null, null);
 	}
 
 	/**
@@ -261,6 +262,7 @@ public class NestedGraphModelNode extends GraphModelNode implements NestedLayout
 		childrenVisible = true;
 		Dimension size = getFullSize();
 		super.setSizeInLayout(size.width, size.height);
+		this.firePropertyChange(FORCE_REDRAW, null, null);
 	}
 	
 	/**

@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.draw2d.FigureCanvas;
+import org.eclipse.swt.widgets.Canvas;
 
 
 /**
@@ -46,7 +46,7 @@ public class GraphModel extends GraphItem {
 	 * Initializes this diagram.
 	 * @param canvas	The parent widget.
 	 */
-	public GraphModel(FigureCanvas canvas) {
+	public GraphModel(Canvas canvas) {
 		super(canvas);
 		this.nodes = new ArrayList();
 		this.connections  = new ArrayList();

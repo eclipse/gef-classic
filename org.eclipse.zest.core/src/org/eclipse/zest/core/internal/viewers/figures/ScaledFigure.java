@@ -29,6 +29,10 @@ import org.eclipse.draw2d.geometry.Translatable;
 public class ScaledFigure extends Figure {
 
 	private double scale = 1D;
+
+	
+
+	
 	
 	public ScaledFigure() {
 		scale = 1D;
