@@ -53,6 +53,7 @@ public class PlusMinusFigure extends Toggle {
 	 */
 	protected void paintFigure(Graphics g) {
 		super.paintFigure(g);
+		
 		Rectangle r = Rectangle.SINGLETON;
 		r.setBounds(getBounds());
 		g.fillRectangle(r);
@@ -89,6 +90,7 @@ public class PlusMinusFigure extends Toggle {
 		if (!isSelected()) {
 			g.drawLine(xMid, r.y + 2, xMid, r.bottom() - 2);
 		}
+		
 			
 	}
 	

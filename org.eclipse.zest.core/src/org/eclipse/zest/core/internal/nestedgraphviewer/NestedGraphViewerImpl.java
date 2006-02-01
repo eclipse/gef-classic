@@ -175,7 +175,7 @@ public class NestedGraphViewerImpl extends ThreadedGraphicalViewer
 			else if ( nodeToMoveTo.getRelationshipBetweenNodes( previousNode ) == NestedGraphModelNode.ANCESTOR) {
 				checkScaling(previousNode);
 				
-				super.updateContents(model);
+				super.setContents(model);
 				//this.flush();
 				//Display.getCurrent().update();
 				nodeToSelect = previousNode;  // select the previous node

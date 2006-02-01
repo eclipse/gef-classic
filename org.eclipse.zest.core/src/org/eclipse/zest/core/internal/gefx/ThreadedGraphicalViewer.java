@@ -57,13 +57,16 @@ public abstract class ThreadedGraphicalViewer extends GraphicalViewerImpl implem
 
 	/** Holds all the threads added to this viewer */
 	private Map listOfThreads = null; 
+	Composite parent = null;
 
+	
 	/**
 	 * ThreadedGraphicalViewer constructor.
 	 * @param parent The composite that this viewer will be added to.
 	 */
 	public ThreadedGraphicalViewer(Composite parent)  {
 		super();
+		this.parent = parent;
 		listOfThreads = new LinkedHashMap();
 		
 		updateManager = getLightweightSystem().getUpdateManager();
@@ -140,7 +143,7 @@ public abstract class ThreadedGraphicalViewer extends GraphicalViewerImpl implem
 			
 		});
 		
-		//addThread( updater );
+		addThread( updater );
 		
 
 	}
@@ -278,15 +281,15 @@ public abstract class ThreadedGraphicalViewer extends GraphicalViewerImpl implem
 	}
 	
 	protected LightweightSystem createLightweightSystem() {
-		return new LightweightSystem();
-		/*
+		//return new LightweightSystem();
+		
 		LightweightSystem lws = new MyLightWeightSystem();
 		lws.setUpdateManager( new MyUpdateManager() );
 		
 
 		
 		return  lws;
-		*/
+		
 	}
 
 	
