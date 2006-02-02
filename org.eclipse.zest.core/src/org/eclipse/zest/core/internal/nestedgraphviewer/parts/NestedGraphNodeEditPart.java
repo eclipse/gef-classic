@@ -78,6 +78,7 @@ public class NestedGraphNodeEditPart extends GraphNodeEditPart implements Action
 			label.setForegroundColor(node.getForegroundColor());
 			PlusMinusFigure plusMinus = null;
 			if (node.hasChildren()) {
+				
 				plusMinus = new PlusMinusFigure(NestedGraphModelNode.PLUS_SIZE);
 				plusMinus.setBorder(new MarginBorder(2));
 				plusMinus.addActionListener(this);

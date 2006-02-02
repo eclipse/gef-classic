@@ -37,7 +37,7 @@ public class NestedFigure extends Figure {
 
 	private Label label = null;
 	
-	private Clickable button = null;
+	//private Clickable button = null;[irbull]
 	
 	/** Container figure for other figures */
 	private ScaledFigure scaledFigure = null;
@@ -73,7 +73,7 @@ public class NestedFigure extends Figure {
 		this.label = label;
 		this.label.setOpaque(true);
 		this.label.setLabelAlignment(PositionConstants.CENTER);
-		this.button = button;
+		//this.button = button; [irbull]
 		this.scaledFigure = new ScaledFigure();
 		this.scaledFigure.setVisible(false);
 		//this.scaledFigure.setBorder(new EdgeBorder(ColorConstants.black, 1, 0, 0, 0));
@@ -101,9 +101,11 @@ public class NestedFigure extends Figure {
 	protected Dimension calculateLabelSize() {
 		String text = label.getText();
 		Dimension minSize = new Dimension(0, 0);
+		/*[irbull]
 		if (button != null) {
 			minSize.expand(button.getPreferredSize());
 		}
+		*/
 		
 		if ((text != null) && (text.length() > 0)) {
 			Font font = label.getFont();
@@ -139,10 +141,12 @@ public class NestedFigure extends Figure {
 		int labelHeight = Math.min(height, labelSize.height);
 		labelSize.setSize(new Dimension(width, labelHeight));
 		Point labelLoc = new Point(0, 0);
+		/*[irbull]
 		if (button != null) {
 			Dimension prefSize = button.getPreferredSize(16, 16);
 			getLayoutManager().setConstraint(button, new Rectangle(new Point(0, 0), prefSize));
 		}
+		*/
 		getLayoutManager().setConstraint(label, new Rectangle(labelLoc, labelSize));
 		
 		boolean vis = scaledFigure.isVisible();
@@ -188,9 +192,11 @@ public class NestedFigure extends Figure {
 	 */
 	public void setBackgroundColor(Color bg) {
 		label.setBackgroundColor(bg);
+		/*[irbull]
 		if (button != null) {
 			button.setBackgroundColor(bg);
 		}
+		*/
 	}
 	
 	/**
@@ -198,9 +204,11 @@ public class NestedFigure extends Figure {
 	 */
 	public void setForegroundColor(Color fg) {
 		label.setForegroundColor(fg);
+		/*[irbull]
 		if (button != null) {
 			button.setForegroundColor(fg);
 		}
+		*/
 	}
 	
 	/**
@@ -239,9 +247,11 @@ public class NestedFigure extends Figure {
 	 * @param visible
 	 */
 	public void setNestedFiguresVisible(boolean visible) {
+		/*[irbull]
 		if ((button != null) && (button.isSelected() != visible)) {
 			button.setSelected(visible);
 		}
+		*/
 		/*
 		for (Iterator iter = children.iterator(); iter.hasNext();) {
 			IFigure element = (IFigure) iter.next();

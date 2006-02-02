@@ -19,6 +19,9 @@ import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.MarginBorder;
+import org.eclipse.draw2d.MouseEvent;
+import org.eclipse.draw2d.MouseListener;
+import org.eclipse.draw2d.MouseMotionListener;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartListener;
@@ -124,14 +127,17 @@ public class NestedGraphEditPart extends GraphEditPart implements
 		
 		// add an up button in the top left corner of the figure
 		Clickable upButton = null;
+		ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
+		Label upLabel = new Label(sharedImages.getImage(ISharedImages.IMG_TOOL_UP));
+		upLabel.setBorder(new MarginBorder(1));
+		upButton = new Clickable(upLabel);
 		if (current != model.getRootNode()) {
-			ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
-			Label upLabel = new Label(sharedImages.getImage(ISharedImages.IMG_TOOL_UP));
-			upLabel.setBorder(new MarginBorder(1));
-			upButton = new Clickable(upLabel);
 			upButton.addActionListener(this);
-			upButton.setToolTip(new Label(" Up "));
+		} else {
+			upButton.setVisible(false);
 		}
+		upButton.setRolloverEnabled(false);
+		upButton.setToolTip(new Label(" Up "));
 		
 		NestedFigure figure = new NestedFigure(label, upButton, !enforceBounds);
 		figure.getScaledFigure().setVisible(true);
@@ -144,6 +150,52 @@ public class NestedGraphEditPart extends GraphEditPart implements
 			Dimension dim = viewer.getCanvasSize();
 			layer.resize(dim.width, dim.height);
 		}
+		layer.addMouseListener(new MouseListener() {
+
+			public void mousePressed(MouseEvent me) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			public void mouseReleased(MouseEvent me) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			public void mouseDoubleClicked(MouseEvent me) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
+		layer.addMouseMotionListener(new MouseMotionListener() {
+
+			public void mouseDragged(MouseEvent me) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			public void mouseEntered(MouseEvent me) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			public void mouseExited(MouseEvent me) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			public void mouseHover(MouseEvent me) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			public void mouseMoved(MouseEvent me) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
 		return layer;
 	}
 	
@@ -177,11 +229,13 @@ public class NestedGraphEditPart extends GraphEditPart implements
 	 * @see org.eclipse.draw2d.ActionListener#actionPerformed(org.eclipse.draw2d.ActionEvent)
 	 */
 	public void actionPerformed(ActionEvent event) {
+		
 		NestedGraphModel model = getCastedModel();
 		model.goUp();
 		if (getViewer() instanceof NestedGraphViewerImpl) {
 			((NestedGraphViewerImpl)getViewer()).fireModelUpdate();
-		}		
+		}
+		
 	}
 		
 	/* (non-Javadoc)

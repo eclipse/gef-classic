@@ -144,6 +144,10 @@ public class NestedGraphViewerImpl extends ThreadedGraphicalViewer
 	 * Sets the model.
 	 */
 	public void setContents(NestedGraphModel model) {
+		if ((this.model != null) && (this.model != model)) {
+			// release the old model
+			this.model.dispose();
+		}
 		this.model = model;
 		fireModelUpdate();
 	}
@@ -183,7 +187,7 @@ public class NestedGraphViewerImpl extends ThreadedGraphicalViewer
 				
 				if (getEditPartRegistry().containsKey(nodeToSelect)) {
 					//nodeToSelect.setSelected(true);
-					setSelection(new StructuredSelection(getEditPartRegistry().get(nodeToSelect)));
+					//setSelection(new StructuredSelection(getEditPartRegistry().get(nodeToSelect)));
 					//this.setFocus(this.getRootEditPart());
 				}
 				
@@ -204,9 +208,11 @@ public class NestedGraphViewerImpl extends ThreadedGraphicalViewer
 		Rectangle rect = model.getMainArea();
 		doLayout(nodeToMoveTo, rect.width, rect.height);
 
+		
 		updateBreadCrumb(nodeToMoveTo);
 		updateTreeViewer(nodeToSelect);		// also selects the given node
 		hideConnections();
+		
 
 		//this.flush();
 		//Display.getCurrent().update();
