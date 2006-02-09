@@ -74,13 +74,11 @@ protected Request createTargetRequest() {
 public void deactivate() {
 	if (isHoverActive())
 		resetHover();
-	if (isTargetLocked())
-		unlockTargetEditPart();
 	eraseTargetFeedback();
 	targetEditPart = null;
 	targetRequest = null;
-	super.deactivate();
 	setAutoexposeHelper(null);
+	super.deactivate();
 }
 
 /**
@@ -271,6 +269,16 @@ protected void lockTargetEditPart(EditPart editpart) {
 	}
 	setFlag(FLAG_LOCK_TARGET, true);
 	setTargetEditPart(editpart);
+}
+
+/**
+ * Extended to reset the target lock flag.
+ * @see org.eclipse.gef.tools.AbstractTool#resetFlags()
+ * @see #lockTargetEditPart(EditPart)
+ */
+protected void resetFlags() {
+	setFlag(FLAG_LOCK_TARGET, false);
+	super.resetFlags();
 }
 
 void resetHover() {
