@@ -18,8 +18,6 @@ import java.util.List;
 public class MultiValueMap {
 	private HashMap map = new HashMap();
 	
-	public MultiValueMap() { super(); }
-	
 	public ArrayList get(Object key) {
 		Object value = map.get(key);
 		if (value == null) return null;
