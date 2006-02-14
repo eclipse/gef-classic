@@ -119,6 +119,8 @@ public FigureCanvas(Composite parent, LightweightSystem lws) {
 public FigureCanvas(Composite parent, int style, LightweightSystem lws) {
 	super(parent, checkStyle(style | SWT.NO_REDRAW_RESIZE | SWT.NO_BACKGROUND
 			| SWT.V_SCROLL | SWT.H_SCROLL));
+	getHorizontalBar().setVisible(false);
+	getVerticalBar().setVisible(false);
 	this.lws = lws;
 	lws.setControl(this);
 	hook();
@@ -206,14 +208,12 @@ private void hook() {
 			scrollToX(getHorizontalBar().getSelection() - hBarOffset);
 		}
 	});
-	getHorizontalBar().setVisible(false);
 
 	getVerticalBar().addSelectionListener(new SelectionAdapter() {
 		public void widgetSelected(SelectionEvent event) {
 			scrollToY(getVerticalBar().getSelection() - vBarOffset);
 		}
 	});
-	getVerticalBar().setVisible(false);
 }
 
 private void hookViewport() {
