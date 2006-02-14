@@ -11,32 +11,25 @@
 package org.eclipse.draw2d.graph;
 
 /**
+ * For Internal Use only.
  * @author hudsonr
  * @since 2.1.2
  */
 public class Rank extends NodeList {
 
+int bottomPadding;
+int height;
+int location;
+
 final int hash = new Object().hashCode();
+int topPadding;
+int total;
 
-/**
- * For internal use only.  The total "size" of this rank, where size may be weighted per
- * node.
- */
-public int total;
-
-/**
- * Adds a node to this rank.
- * @param n the node
- */
-public void add(Node n) {
+void add(Node n) {
 	super.add(n);
 }
 
-/**
- * $TODO move this to RankSorter
- * @deprecated
- */
-public void assignIndices() {
+void assignIndices() {
 	total = 0;
 	Node node;
 
@@ -70,10 +63,20 @@ public boolean equals(Object o) {
 
 /**
  * @see Object#hashCode()
- * Overridden for speed based on absolute equality.
+ * Overridden for speed based on equality.
  */
 public int hashCode() {
 	return hash;
+}
+
+void setDimensions(int location, int rowHeight) {
+	this.height = rowHeight;
+	this.location = location;
+	for (int i = 0; i < size(); i++) {
+		Node n = getNode(i);
+		n.y = location;
+		n.height = rowHeight;
+	}
 }
 
 /**

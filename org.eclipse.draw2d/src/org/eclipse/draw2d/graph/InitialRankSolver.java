@@ -8,12 +8,11 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.draw2d.internal.graph;
+package org.eclipse.draw2d.graph;
 
-import org.eclipse.draw2d.graph.DirectedGraph;
-import org.eclipse.draw2d.graph.EdgeList;
-import org.eclipse.draw2d.graph.Node;
-import org.eclipse.draw2d.graph.NodeList;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
 
 /**
  * Assigns a valid rank assignment to all nodes based on their edges.  The assignment is
@@ -21,7 +20,7 @@ import org.eclipse.draw2d.graph.NodeList;
  * @author Randy Hudson
  * @since 2.1.2
  */
-public class InitialRankSolver extends GraphVisitor {
+class InitialRankSolver extends GraphVisitor {
 
 protected DirectedGraph graph;
 protected EdgeList candidates = new EdgeList();
@@ -35,11 +34,13 @@ public void visit(DirectedGraph graph) {
 }
 
 protected void solve() {
+	if (graph.nodes.size() == 0)
+		return;
 	NodeList unranked = new NodeList(graph.nodes);
 	NodeList rankMe = new NodeList();
 	Node node;
 	int i;
-	do {
+	while (!unranked.isEmpty()) {
 		rankMe.clear();
 		for (i = 0; i < unranked.size();) {
 			node = unranked.getNode(i);
@@ -53,11 +54,62 @@ protected void solve() {
 			throw new RuntimeException("Cycle detected in graph"); //$NON-NLS-1$
 		for (i = 0; i < rankMe.size(); i++) {
 			node = rankMe.getNode(i);
-			node.rank = node.incoming.calculateRank();
+			assignMinimumRank(node);
 			node.outgoing.setFlags(true);
 		}
-	} while (!unranked.isEmpty());
+	}
+	
+	connectForest();
+}
 
+private void connectForest() {
+	List forest = new ArrayList();
+	Stack stack = new Stack();
+	NodeList tree;
+	graph.nodes.resetFlags();
+	for (int i = 0; i < graph.nodes.size(); i++) {
+		Node neighbor, n = graph.nodes.getNode(i);
+		if (n.flag)
+			continue;
+		tree = new NodeList();
+		stack.push(n);
+		while (!stack.isEmpty()) {
+			n = (Node) stack.pop();
+			n.flag = true;
+			tree.add(n);
+			for (int s = 0; s < n.incoming.size(); s++) {
+				neighbor = n.incoming.getEdge(s).source;
+				if (!neighbor.flag)
+					stack.push(neighbor);
+			}
+			for (int s = 0; s < n.outgoing.size(); s++) {
+				neighbor = n.outgoing.getEdge(s).target;
+				if (!neighbor.flag)
+					stack.push(neighbor);
+			}
+		}
+		forest.add(tree);
+	}
+	
+	if (forest.size() > 1) {
+		//connect the forest
+		graph.forestRoot = new Node("the forest root"); //$NON-NLS-1$
+		graph.nodes.add(graph.forestRoot);
+		for (int i = 0; i < forest.size(); i++) {
+			tree = (NodeList) forest.get(i);
+			graph.edges.add(new Edge(graph.forestRoot, tree.getNode(0), 0, 0));
+		}
+	}
+}
+
+private void assignMinimumRank(Node node) {
+	int rank = 0;
+	Edge e;
+	for (int i1 = 0; i1 < node.incoming.size(); i1++) {
+		e = node.incoming.getEdge(i1);
+		rank = Math.max(rank, e.delta + e.source.rank);
+	}
+	node.rank = rank;
 }
 
 }

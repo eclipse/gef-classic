@@ -8,16 +8,9 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.draw2d.internal.graph;
+package org.eclipse.draw2d.graph;
 
 import java.util.Iterator;
-
-import org.eclipse.draw2d.graph.CompoundDirectedGraph;
-import org.eclipse.draw2d.graph.DirectedGraph;
-import org.eclipse.draw2d.graph.Edge;
-import org.eclipse.draw2d.graph.Node;
-import org.eclipse.draw2d.graph.NodeList;
-import org.eclipse.draw2d.graph.Subgraph;
 
 /**
  * Places nodes into ranks for a compound directed graph.  If a subgraph spans a rank
@@ -26,7 +19,7 @@ import org.eclipse.draw2d.graph.Subgraph;
  * @author Randy Hudson
  * @since 2.1.2
  */
-public class CompoundPopulateRanks extends PopulateRanks {
+class CompoundPopulateRanks extends PopulateRanks {
 
 public void visit(DirectedGraph g) {
 	CompoundDirectedGraph graph = (CompoundDirectedGraph)g;

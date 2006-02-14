@@ -10,7 +10,6 @@ Export-Package: org.eclipse.draw2d,
  org.eclipse.draw2d.geometry,
  org.eclipse.draw2d.images,
  org.eclipse.draw2d.internal;x-internal:=true,
- org.eclipse.draw2d.internal.graph;x-internal:=true,
  org.eclipse.draw2d.parts,
  org.eclipse.draw2d.text,
  org.eclipse.draw2d.widgets

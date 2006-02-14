@@ -8,11 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.draw2d.internal.graph;
-
-import org.eclipse.draw2d.graph.CompoundDirectedGraph;
-import org.eclipse.draw2d.graph.DirectedGraph;
-import org.eclipse.draw2d.graph.Subgraph;
+package org.eclipse.draw2d.graph;
 
 /**
  * calculates the height and y-coordinates for nodes and subgraphs in a compound directed
@@ -20,13 +16,13 @@ import org.eclipse.draw2d.graph.Subgraph;
  * @author Randy Hudson
  * @since 2.1.2
  */
-public class CompoundVerticalPlacement extends VerticalPlacement {
+class CompoundVerticalPlacement extends VerticalPlacement {
 
 /**
  * @see GraphVisitor#visit(DirectedGraph)
  * Extended to set subgraph values.
  */
-public void visit(DirectedGraph dg) {
+void visit(DirectedGraph dg) {
 	CompoundDirectedGraph g = (CompoundDirectedGraph)dg;
 	super.visit(g);
 	for (int i = 0; i < g.subgraphs.size(); i++) {

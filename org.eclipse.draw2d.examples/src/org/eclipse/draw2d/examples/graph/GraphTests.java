@@ -18,7 +18,6 @@ import org.eclipse.draw2d.graph.Edge;
 import org.eclipse.draw2d.graph.EdgeList;
 import org.eclipse.draw2d.graph.Node;
 import org.eclipse.draw2d.graph.NodeList;
-import org.eclipse.draw2d.internal.graph.InitialRankSolver;
 
 /**
  * @author hudsonr
@@ -44,11 +43,11 @@ public static DirectedGraph offsetTest() {
 	nodes.add(b4 = new Node("node b4"));
 
 	Edge e = new Edge(head, a1);
-	e.offsetSource = 10;
+	e.setSourceOffset(10);
 	edges.add(e);
 	
 	e = new Edge(head, b1);
-	e.offsetSource = 90;
+	e.setSourceOffset(90);
 	edges.add(e);
 	
 	a1.incomingOffset = 40;
@@ -65,8 +64,8 @@ public static DirectedGraph offsetTest() {
 
 	edges.add(new Edge(a1, a2));
 	edges.add(e = new Edge(a2, a3));
-	e.offsetSource = 10;
-	e.offsetTarget = 40;
+	e.setSourceOffset(10);
+	e.setTargetOffset(40);
 	edges.add(new Edge(a3, a4));
 	
 	DirectedGraph graph = new DirectedGraph();
@@ -555,12 +554,6 @@ public static DirectedGraph simpleGraph() {
 	graph.nodes = nodes;
 	graph.edges = edges;
 	
-	new InitialRankSolver()
-		.visit(graph);
-//	f.rank++;
-//	g.rank++;
-//	h.rank++;
-
 	new DirectedGraphLayout()
 		.visit(graph);
 	return graph;

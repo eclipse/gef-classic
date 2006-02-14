@@ -69,20 +69,6 @@ public int getWeight() {
 }
 
 /**
- * For internal use only.
- * @return a rank
- */
-public int calculateRank() {
-	int rank = 0;
-	Edge e;
-	for (int i = 0; i < size(); i++) {
-		e = getEdge(i);
-		rank = Math.max(rank, e.delta + e.source.rank);
-	}
-	return rank;
-}
-
-/**
  * For internal use only
  * @return <code>true</code> if completely flagged
  */

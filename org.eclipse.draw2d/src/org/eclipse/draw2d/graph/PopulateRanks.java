@@ -8,14 +8,9 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.draw2d.internal.graph;
+package org.eclipse.draw2d.graph;
 
 import java.util.Stack;
-
-import org.eclipse.draw2d.graph.DirectedGraph;
-import org.eclipse.draw2d.graph.Edge;
-import org.eclipse.draw2d.graph.Node;
-import org.eclipse.draw2d.graph.RankList;
 
 /**
  * This class takes a DirectedGraph with an optimal rank assignment and a spanning tree,
@@ -27,14 +22,19 @@ import org.eclipse.draw2d.graph.RankList;
  * @author Randy Hudson
  * @since 2.1.2
  */
-public class PopulateRanks extends GraphVisitor {
+class PopulateRanks extends GraphVisitor {
 
 private Stack changes = new Stack();
 
 /**
- * @see GraphVisitor#visit(org.eclipse.draw2d.graph.DirectedGraph)
+ * @see GraphVisitor#visit(DirectedGraph)
  */
 public void visit(DirectedGraph g) {
+	if (g.forestRoot != null) {
+		for (int i = g.forestRoot.outgoing.size() - 1; i >= 0; i--)
+			g.removeEdge(g.forestRoot.outgoing.getEdge(i));
+		g.removeNode(g.forestRoot);
+	}
 	g.ranks = new RankList();
 	for (int i = 0; i < g.nodes.size(); i++) {
 		Node node = g.nodes.getNode(i);
@@ -56,6 +56,18 @@ public void visit(DirectedGraph g) {
  * @see GraphVisitor#revisit(DirectedGraph)
  */
 public void revisit(DirectedGraph g) {
+	for (int r = 0; r < g.ranks.size(); r++) {
+		Rank rank = g.ranks.getRank(r);
+		Node prev = null, cur;
+		for (int n = 0; n < rank.size(); n++) {
+			cur = rank.getNode(n);
+			if (cur instanceof VirtualNode)
+				((VirtualNode)cur).left = prev;
+			if (prev instanceof VirtualNode)
+				((VirtualNode)prev).right = cur;
+			prev = cur;
+		}
+	}
 	for (int i = 0; i < changes.size(); i++) {
 		RevertableChange change = (RevertableChange)changes.get(i);
 		change.revert();

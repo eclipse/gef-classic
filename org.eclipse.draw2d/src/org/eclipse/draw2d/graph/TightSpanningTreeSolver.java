@@ -8,13 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.draw2d.internal.graph;
-
-import org.eclipse.draw2d.graph.DirectedGraph;
-import org.eclipse.draw2d.graph.Edge;
-import org.eclipse.draw2d.graph.EdgeList;
-import org.eclipse.draw2d.graph.Node;
-import org.eclipse.draw2d.graph.NodeList;
+package org.eclipse.draw2d.graph;
 
 /**
  * Finds a tight spanning tree from the graphs edges which induce a valid rank assignment.
@@ -22,7 +16,7 @@ import org.eclipse.draw2d.graph.NodeList;
  * @author Randy Hudson
  * @since 2.1.2
  */
-public class TightSpanningTreeSolver extends SpanningTreeVisitor {
+class TightSpanningTreeSolver extends SpanningTreeVisitor {
 
 protected DirectedGraph graph;
 protected CandidateList candidates = new CandidateList();

@@ -10,7 +10,10 @@
  *******************************************************************************/
 package org.eclipse.draw2d.graph;
 
+import org.eclipse.draw2d.PositionConstants;
+import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Insets;
+import org.eclipse.draw2d.geometry.Point;
 
 /**
  * A graph consisting of nodes and directed edges.  A DirectedGraph serves as the input to
@@ -22,10 +25,7 @@ import org.eclipse.draw2d.geometry.Insets;
  */
 public class DirectedGraph {
 
-/**
- * For internal use only.
- */
-public EdgeList spanningTree;
+private int direction = PositionConstants.SOUTH;
 
 /**
  * The default padding to be used for nodes which don't specify any padding.  Padding is
@@ -34,15 +34,9 @@ public EdgeList spanningTree;
 private Insets defaultPadding = new Insets(16);
 
 /**
- * All of the edges in the graph. This list should be initialized with all edges that are
- * reachable from the graph's {@link #nodes}.
+ * All of the edges in the graph.
  */
 public EdgeList edges = new EdgeList();
-
-/**
- * For internal use only.
- */
-public DirectedGraph gPrime;
 
 /**
  * All of the nodes in the graph.
@@ -50,9 +44,46 @@ public DirectedGraph gPrime;
 public NodeList nodes = new NodeList();
 
 /**
- * For internal use only.  The list of rows which makeup the final graph layout.
+ * For internal use only. The list of rows which makeup the final graph layout.
+ * @deprecated
  */
-public RankList ranks;
+public RankList ranks = new RankList();
+
+Node forestRoot;
+Insets margin = new Insets();
+int[] rankLocations;
+int[][] cellLocations;
+int tensorStrength;
+int tensorSize;
+Dimension size = new Dimension();
+
+/**
+ * Returns the default padding for nodes.
+ * @return the default padding
+ * @since 3.2
+ */
+public Insets getDefaultPadding() {
+	return defaultPadding;
+}
+
+/**
+ * Returns the direction in which the graph will be layed out.
+ * @return the layout direction
+ * @since 3.2
+ */
+public int getDirection() {
+	return direction;
+}
+
+/**
+ * Sets the outer margin for the entire graph. The margin is the space in which nodes
+ * should not be placed.
+ * @return the graph's margin
+ * @since 3.2
+ */
+public Insets getMargin() {
+	return margin;
+}
 
 /**
  * Returns the effective padding for the given node.  If the node has a specified padding,
@@ -66,6 +97,34 @@ public Insets getPadding(Node node) {
 	if (pad == null)
 		return defaultPadding;
 	return pad;
+}
+
+int[] getCellLocations(int rank) {
+	return cellLocations[rank];
+}
+
+int[] getRankLocations() {
+	return rankLocations;
+}
+//
+//public Cell getCell(Point pt) {
+//	int rank = 0;
+//	while (rank < rankLocations.length - 1 && rankLocations[rank] < pt.y)
+//		rank++;
+//	int cells[] = cellLocations[rank];
+//	int cell = 0;
+//	while (cell < cells.length - 1 && cells[cell] < pt.x)
+//		cell++;
+//	return new Cell(rank, cell, ranks.getRank(rank).getNode(index));
+//}
+
+public Node getNode(int rank, int index) {
+	if (ranks.size() <= rank)
+		return null;
+	Rank r = ranks.getRank(rank);
+	if (r.size() <= index)
+		return null;
+	return r.getNode(index);
 }
 
 /**
@@ -82,7 +141,7 @@ public void removeEdge(Edge edge) {
 }
 
 /**
- * Removes the given node from the graph.  Does not remove the node's edges.
+ * Removes the given node from the graph. Does not remove the node's edges.
  * @param node the node to remove
  */
 public void removeNode(Node node) {
@@ -100,6 +159,39 @@ public void removeNode(Node node) {
  */
 public void setDefaultPadding(Insets insets) {
 	defaultPadding = insets;
+}
+
+/**
+ * Sets the layout direction for the graph. Edges will be layed out in the specified
+ * direction (unless the graph contains cycles). Supported values are:
+ * <UL>
+ * <LI>{@link org.eclipse.draw2d.PositionConstants#EAST}
+ * <LI>{@link org.eclipse.draw2d.PositionConstants#SOUTH}
+ * </UL>
+ * <P>The default direction is south.
+ * @param direction the layout direction
+ * @since 3.2
+ */
+public void setDirection(int direction) {
+	this.direction = direction;
+}
+
+//public void setGraphTensor(int length, int strength) {
+//	tensorStrength = strength;
+//	tensorSize = length;
+//}
+
+/**
+ * Sets the graphs margin.
+ * @param insets the graph's margin
+ * @since 3.2
+ */
+public void setMargin(Insets insets) {
+	this.margin = insets;
+}
+
+public Dimension getLayoutSize() {
+	return size;
 }
 
 }

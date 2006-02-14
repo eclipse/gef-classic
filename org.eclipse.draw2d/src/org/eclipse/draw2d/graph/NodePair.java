@@ -8,15 +8,14 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.draw2d.internal.graph;
+package org.eclipse.draw2d.graph;
 
-import org.eclipse.draw2d.graph.Node;
 
 /**
  * @author hudsonr
  * @since 2.1
  */
-public class NodePair {
+class NodePair {
 
 public Node n1;
 public Node n2;

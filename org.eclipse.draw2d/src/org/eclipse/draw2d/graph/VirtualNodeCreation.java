@@ -9,21 +9,15 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.draw2d.internal.graph;
+package org.eclipse.draw2d.graph;
 
 import org.eclipse.draw2d.geometry.Insets;
-import org.eclipse.draw2d.graph.DirectedGraph;
-import org.eclipse.draw2d.graph.Edge;
-import org.eclipse.draw2d.graph.Node;
-import org.eclipse.draw2d.graph.NodeList;
-import org.eclipse.draw2d.graph.Subgraph;
-import org.eclipse.draw2d.graph.VirtualNode;
 
 /**
  * Encapsulates the conversion of a long edge to multiple short edges and back.
  * @since 3.1
  */
-public class VirtualNodeCreation extends RevertableChange {
+class VirtualNodeCreation extends RevertableChange {
 
 private final Edge edge;
 private final DirectedGraph graph;
@@ -84,10 +78,7 @@ public VirtualNodeCreation(Edge edge, DirectedGraph graph) {
 	graph.removeEdge(edge);
 }
 
-/**
- * @see org.eclipse.draw2d.internal.graph.RevertableChange#revert()
- */
-public void revert() {
+void revert() {
 	edge.start = edges[0].start;
 	edge.end = edges[edges.length - 1].end;
 	edge.vNodes = new NodeList();

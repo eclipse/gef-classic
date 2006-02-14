@@ -8,29 +8,26 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.draw2d.internal.graph;
-
-import org.eclipse.draw2d.graph.DirectedGraph;
-import org.eclipse.draw2d.graph.Edge;
+package org.eclipse.draw2d.graph;
 
 /**
- * Inverts any edges which are marked as backwards or "feedback" edges.
- * 
- * @author Daniel Lee
+ * Performs some action on a Graph.
+ * @author Randy Hudson
  * @since 2.1.2
  */
-public class InvertEdges extends GraphVisitor {
+abstract class GraphVisitor {
 
 /**
- * 
- * @see GraphVisitor#visit(org.eclipse.draw2d.graph.DirectedGraph)
+ * Act on the given directed graph.
+ * @param g the graph
  */
-public void visit(DirectedGraph g) {
-	for (int i = 0; i < g.edges.size(); i++) {
-		Edge e = g.edges.getEdge(i);
-		if (e.isFeedback)
-			e.invert();
-	}
-}
+void visit(DirectedGraph g) { }
+
+/**
+ * Called in reverse order of visit.
+ * @since 3.1
+ * @param g the graph to act upon
+ */
+void revisit(DirectedGraph g) { }
 
 }

@@ -8,9 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.draw2d.internal.graph;
-
-import org.eclipse.draw2d.graph.Edge;
+package org.eclipse.draw2d.graph;
 
 /**
  * Contains the information from all edges going from a given cluster to some other

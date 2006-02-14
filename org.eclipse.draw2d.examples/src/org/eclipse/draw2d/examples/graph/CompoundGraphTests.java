@@ -29,7 +29,7 @@ public class CompoundGraphTests {
 
 public static CompoundDirectedGraph aaaapull() {
 	Subgraph s1, s2;
-	Node a,b,c,d,e,f,g,h,i,j,k,x,l,m,n,y;
+	Node a,b,e,j,m,n,y;
 	Node r,t;
 	NodeList nodes = new NodeList();
 	EdgeList edges = new EdgeList();
@@ -42,45 +42,21 @@ public static CompoundDirectedGraph aaaapull() {
 
 	nodes.add(a = new Node("a", s1));
 	nodes.add(b = new Node("b", s1));
-	nodes.add(c = new Node("c", s1));
-	nodes.add(d = new Node("d", s1));
 	nodes.add(e = new Node("e", s1));
-	nodes.add(f = new Node("f", s1));
-	nodes.add(g = new Node("g", s1));
-	nodes.add(h = new Node("h", s1));
-	nodes.add(i = new Node("i", s1));
 	nodes.add(j = new Node("j", s1));
-	nodes.add(k = new Node("k", s1));
-	nodes.add(l = new Node("l", s1));
 	nodes.add(m = new Node("m", s1));
-	nodes.add(x = new Node("x", s1));
 
 
 	edges.add(new Edge(a, b));
-	edges.add(new Edge(a, c));
-	edges.add(new Edge(a, d));
 
 	edges.add(new Edge(b, e));
-	edges.add(new Edge(b, f));
-	edges.add(new Edge(b, g));
-	edges.add(new Edge(a, x));//Test long internal edge
 
 
-	edges.add(new Edge(c, g));
 
-	edges.add(new Edge(d, g));
-	edges.add(new Edge(d, h));
-	edges.add(new Edge(d, i));
 
-	edges.add(new Edge(e, x));
 	edges.add(new Edge(e, j));
 
-	edges.add(new Edge(f, k));
-	edges.add(new Edge(g, k));
-	edges.add(new Edge(h, k));
 
-	edges.add(new Edge(i, m));
-	edges.add(new Edge(i, l));
 
 	edges.add(new Edge(m, t));
 	edges.add(new Edge(j, r));

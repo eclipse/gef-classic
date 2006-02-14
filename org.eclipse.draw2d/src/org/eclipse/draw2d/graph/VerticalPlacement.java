@@ -8,12 +8,9 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.draw2d.internal.graph;
+package org.eclipse.draw2d.graph;
 
 import org.eclipse.draw2d.geometry.Insets;
-import org.eclipse.draw2d.graph.DirectedGraph;
-import org.eclipse.draw2d.graph.Node;
-import org.eclipse.draw2d.graph.Rank;
 
 /**
  * Assigns the Y and Height values to the nodes in the graph. All nodes in the same row
@@ -21,29 +18,31 @@ import org.eclipse.draw2d.graph.Rank;
  * @author Randy Hudson
  * @since 2.1.2
  */
-public class VerticalPlacement extends GraphVisitor {
+class VerticalPlacement extends GraphVisitor {
 
-public void visit(DirectedGraph g) {
+void visit(DirectedGraph g) {
 	Insets pad;
-	int currentY = 0;
-	for (int row = 0; row < g.ranks.size(); row++) {
-		int rowHeight = 0, rowAscent = 0, rowDescent = 0;
+	int currentY = g.getMargin().top;
+	int row, rowHeight;
+	g.rankLocations = new int[g.ranks.size() + 1];
+	for (row = 0; row < g.ranks.size(); row++) {
+		g.rankLocations[row] = currentY;
 		Rank rank = g.ranks.getRank(row);
+		rowHeight = 0;
+		rank.topPadding = rank.bottomPadding = 0;
 		for (int n = 0; n < rank.size(); n++) {
 			Node node = rank.getNode(n);
 			pad = g.getPadding(node);
 			rowHeight = Math.max(node.height, rowHeight);
-			rowAscent = Math.max(pad.top, rowAscent);
-			rowDescent = Math.max(pad.bottom, rowDescent);
+			rank.topPadding = Math.max(pad.top, rank.topPadding);
+			rank.bottomPadding = Math.max(pad.bottom, rank.bottomPadding);
 		}
-		currentY += rowAscent;
-		for (int n = 0; n < rank.size(); n++) {
-			Node node = rank.getNode(n);
-			node.y = currentY;
-			node.height = rowHeight;
-		}
-		currentY += rowHeight + rowDescent;
+		currentY += rank.topPadding;
+		rank.setDimensions(currentY, rowHeight);
+		currentY += rank.height + rank.bottomPadding;
 	}
+	g.rankLocations[row] = currentY;
+	g.size.height = currentY;
 }
 
 }

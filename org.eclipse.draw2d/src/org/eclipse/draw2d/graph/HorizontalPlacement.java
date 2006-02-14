@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.draw2d.internal.graph;
+package org.eclipse.draw2d.graph;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,19 +18,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.draw2d.graph.DirectedGraph;
-import org.eclipse.draw2d.graph.Edge;
-import org.eclipse.draw2d.graph.EdgeList;
-import org.eclipse.draw2d.graph.Node;
-import org.eclipse.draw2d.graph.Rank;
-import org.eclipse.draw2d.graph.RankList;
-
 /**
  * Assigns the X and width values for nodes in a directed graph.
  * @author Randy Hudson
  * @since 2.1.2
  */
-public class HorizontalPlacement extends SpanningTreeVisitor {
+class HorizontalPlacement extends SpanningTreeVisitor {
 
 class ClusterSet {
 	int freedom = Integer.MAX_VALUE;
@@ -121,23 +114,16 @@ class ClusterSet {
 	}
 }
 
-public static int debugCount = -1;
-
-public static List lastAdjusted = new ArrayList();
 static int step;
-
 private List allClusters;
 private Map clusterMap = new HashMap();
-
 ClusterSet clusterset = new ClusterSet();
-
 Collection dirtyClusters = new HashSet();
-
-public DirectedGraph graph;
-
+DirectedGraph graph;
 Map map = new HashMap();
-
-public DirectedGraph prime;
+DirectedGraph prime;
+Node graphRight;
+Node graphLeft;
 
 /**
  * Inset the corresponding parts for the given 2 nodes along an edge E.  The weight value
@@ -171,6 +157,7 @@ void addEdge(Node u, Node v, Edge e, int weight) {
 	prime.edges.add(eu);
 	prime.edges.add(ev);
 }
+
 /**
  * Adds all of the incoming edges to the graph.
  * @param n the original node
@@ -182,6 +169,7 @@ void addEdges(Node n) {
 		addEdge(e.source, n, e, 1);
 	}
 }
+
 void applyGPrime() {
 	Node node;
 	for (int n = 0; n < prime.nodes.size(); n++) {
@@ -199,10 +187,6 @@ private void balanceClusters() {
 	
 	for (int i = 0; i < allClusters.size();) {
 		
-		if (step == debugCount)
-			return;
-		if (i == 1 && debugCount != -1)
-			lastAdjusted.clear();
 		NodeCluster c = (NodeCluster)allClusters.get(i);
 		int delta = c.getPull();
 		if (delta < 0) {
@@ -274,14 +258,19 @@ void buildGPrime() {
 void buildRankSeparators(RankList ranks) {
 	Rank rank;
 	Node n, nPrime, prevNPrime;
+	Edge e;
 	for (int r = 0; r < ranks.size(); r++) {
 		rank = ranks.getRank(r);
 		prevNPrime = null;
 		for (int i = 0; i < rank.count(); i++) {
 			n = rank.getNode(i);
 			nPrime = new Node(n);
-			if (prevNPrime != null) {
-				Edge e = new Edge(prevNPrime, nPrime);
+			if (i == 0) {
+				e = new Edge(graphLeft, nPrime, 0, 0);
+				prime.edges.add(e);
+				e.delta = graph.getPadding(n).left + graph.getMargin().left;
+			} else {
+				e = new Edge(prevNPrime, nPrime);
 				e.weight = 0;
 				prime.edges.add(e);
 				rowSeparation(e);
@@ -289,7 +278,27 @@ void buildRankSeparators(RankList ranks) {
 			prevNPrime = nPrime;
 			prime.nodes.add(nPrime);
 			map(n, nPrime);
+			if (i == rank.count() - 1) {
+				e = new Edge(nPrime, graphRight, 0, 0);
+				e.delta = n.width + graph.getPadding(n).right + graph.getMargin().right;
+				prime.edges.add(e);
+			}
 		}
+	}
+}
+
+private void calculateCellLocations() {
+	graph.cellLocations = new int[graph.ranks.size() + 1][];
+	for (int row = 0; row < graph.ranks.size(); row++) {
+		Rank rank = graph.ranks.getRank(row);
+		int locations[] = graph.cellLocations[row] = new int[rank.size() + 1];
+		int cell;
+		Node node = null;
+		for (cell = 0; cell < rank.size(); cell++) {
+			node = rank.getNode(cell);
+			locations[cell] = node.x - graph.getPadding(node).left;
+		}
+		locations[cell] = node.x + node.width + graph.getPadding(node).right;
 	}
 }
 
@@ -373,7 +382,10 @@ void rowSeparation(Edge e) {
 public void visit(DirectedGraph g) {
 	graph = g;
 	prime = new DirectedGraph();
-	g.gPrime = prime;
+	prime.nodes.add(graphLeft = new Node(null));
+	prime.nodes.add(graphRight = new Node(null));
+	if (g.tensorStrength != 0)
+		prime.edges.add(new Edge(graphLeft, graphRight, g.tensorSize, g.tensorStrength));
 	buildGPrime();
 	new InitialRankSolver()
 		.visit(prime);
@@ -382,10 +394,12 @@ public void visit(DirectedGraph g) {
 
 	RankAssigmentSolver solver = new RankAssigmentSolver();
 	solver.visit(prime);
+	graph.size.width = graphRight.rank;
 	balanceClusters();
 	
-	prime.nodes.normalizeRanks();
+	prime.nodes.adjustRank(-graphLeft.rank);
 	applyGPrime();
+	calculateCellLocations();
 }
 
 }

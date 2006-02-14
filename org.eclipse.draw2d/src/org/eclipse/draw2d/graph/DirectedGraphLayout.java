@@ -13,19 +13,6 @@ package org.eclipse.draw2d.graph;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.draw2d.internal.graph.BreakCycles;
-import org.eclipse.draw2d.internal.graph.GraphVisitor;
-import org.eclipse.draw2d.internal.graph.HorizontalPlacement;
-import org.eclipse.draw2d.internal.graph.InitialRankSolver;
-import org.eclipse.draw2d.internal.graph.InvertEdges;
-import org.eclipse.draw2d.internal.graph.LocalOptimizer;
-import org.eclipse.draw2d.internal.graph.MinCross;
-import org.eclipse.draw2d.internal.graph.PlaceEndpoints;
-import org.eclipse.draw2d.internal.graph.PopulateRanks;
-import org.eclipse.draw2d.internal.graph.RankAssigmentSolver;
-import org.eclipse.draw2d.internal.graph.TightSpanningTreeSolver;
-import org.eclipse.draw2d.internal.graph.VerticalPlacement;
-
 /**
  * Performs a graph layout of a <code>DirectedGraph</code>.  The directed graph must meet
  * the following conditions:
@@ -82,6 +69,8 @@ List steps = new ArrayList();
  * @since 3.1
  */
 public DirectedGraphLayout() {
+	steps.add(new TransposeMetrics());
+	steps.add(new RouteEdges());
 	steps.add(new BreakCycles());
 	steps.add(new InitialRankSolver());
 	steps.add(new TightSpanningTreeSolver());
@@ -91,14 +80,16 @@ public DirectedGraphLayout() {
 	steps.add(new MinCross());
 	steps.add(new LocalOptimizer());
 	steps.add(new HorizontalPlacement());
-	steps.add(new PlaceEndpoints());
 	steps.add(new InvertEdges());
 }
-	
+
 /**
- * @see org.eclipse.draw2d.internal.graph.GraphVisitor#visit(org.eclipse.draw2d.graph.DirectedGraph)
+ * Lays out the given graph
+ * @param graph the graph to layout
  */
 public void visit(DirectedGraph graph) {
+	if (graph.nodes.isEmpty())
+		return;
 	for (int i = 0; i < steps.size(); i++) {
 		GraphVisitor visitor = (GraphVisitor)steps.get(i);
 		visitor.visit(graph);

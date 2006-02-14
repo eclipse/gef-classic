@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.draw2d.graph;
 
+import java.util.Iterator;
+
+import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Insets;
 
 /**
@@ -67,17 +70,14 @@ public Object data;
 public boolean flag;
 
 /**
- * The height of this node.  This value should be set prior to laying out the directed
+ * The height of this node. This value should be set prior to laying out the directed
  * graph.  Depending on the layout rules, a node's height may be expanded to match the
  * height of other nodes around it.
  */
 public int height = 40;
 
 /**
- * A constraint used to control the ordering of nodes from left to right. By default, a
- * node's constraint is <code>-1</code>. If two nodes have different values both >= 0, the
- * node with the smaller constraint will be placed to the left of the other node. 
- * Otherwise, no placement order is guaranteed.
+ * @deprecated use {@link #setRowConstraint(int)} and {@link #getRowConstraint()}
  */
 public int rowOrder = -1;
 
@@ -92,42 +92,33 @@ public EdgeList incoming = new EdgeList();
  */
 public int incomingOffset = -1;
 
-/**
- * For internal use only. A non-decresing number given to consecutive nodes in a Rank.
- */
-public int index;
+// A non-decreasing number given to consecutive nodes in a Rank.
+int index;
 
-/**
- * For internal use only.
- */
-public int nestingIndex = -1;
+//Used in Compound graphs to quickly determine whether a node is inside a subgraph.
+int nestingIndex = -1;
 
 /**
  * The edges for which this node is the source.
  */
 public EdgeList outgoing = new EdgeList();
 
-/**
- * For INTERNAL use only.
- */
-public int outgoingOffset = -1;
-
 Insets padding;
-
 private Subgraph parent;
+int rank;
 
 /**
- * For INTERNAL use only. The horizontal row to which this node belongs.
- */
-public int rank;
-
-/**
- * A value used to sort the node within its rank.
+ * @deprecated for internal use only
  */
 public double sortValue;
 
 /**
- * The node's width.
+ * The node's outgoing offset attachment point.
+ */
+public int outgoingOffset = -1;
+
+/**
+ * The node's width. The default value is 50.
  */
 public int width = 50;
 
@@ -208,7 +199,8 @@ public Insets getPadding() {
 }
 
 /**
- * Returns the parent Subgraph or <code>null</code>
+ * Returns the parent Subgraph or <code>null</code> if there is no parent. Subgraphs are
+ * only for use in {@link CompoundDirectedGraphLayout}.
  * @return the parent or <code>null</code>
  */
 public Subgraph getParent() {
@@ -226,8 +218,8 @@ public boolean isNested(Node node) {
 }
 
 /**
- * Sets the padding.
- * @param padding the padding
+ * Sets the padding. <code>null</code> indicates that the default padding should be used.
+ * @param padding an insets or <code>null</code>
  */
 public void setPadding(Insets padding) {
 	this.padding = padding;
@@ -243,10 +235,75 @@ public void setParent(Subgraph parent) {
 }
 
 /**
+ * Sets the row sorting constraint for this node. By default, a node's constraint is
+ * <code>-1</code>. If two nodes have different values both >= 0, the node with the
+ * smaller constraint will be placed to the left of the other node. In all other cases no
+ * relative placement is guaranteed.
+ * @param value the row constraint
+ * @since 3.2
+ */
+public void setRowConstraint(int value) {
+    this.rowOrder = value;
+}
+
+/**
+ * Returns the row constraint for this node.
+ * @return the row constraint
+ * @since 3.2
+ */
+public int getRowConstraint() {
+	return rowOrder;
+}
+
+/**
+ * Sets the size of this node to the given dimension.
+ * @param size the new size
+ * @since 3.2
+ */
+public void setSize(Dimension size) {
+	width = size.width;
+	height = size.height;
+}
+
+/**
  * @see java.lang.Object#toString()
  */
 public String toString() {
 	return "N(" + data + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+}
+
+Iterator iteratorNeighbors() {
+	return new Iterator() {
+		int offset;
+		EdgeList list = outgoing;
+		public Object next() {
+			Edge edge = list.getEdge(offset++);
+			if (offset < list.size())
+				return edge.opposite(Node.this);
+			if (list == outgoing) {
+				list = incoming;
+				offset = 0;
+			} else
+				list = null;
+			return edge.opposite(Node.this);
+		}
+	
+		public boolean hasNext() {
+			if (list == null)
+				return false;
+			if (offset < list.size())
+				return true;
+			if (list == outgoing) {
+				list = incoming;
+				offset = 0;
+			}
+			return offset < list.size();
+		}
+	
+		public void remove() {
+			throw new RuntimeException("Remove not supported"); //$NON-NLS-1$
+		}
+	};
 }
 
 }

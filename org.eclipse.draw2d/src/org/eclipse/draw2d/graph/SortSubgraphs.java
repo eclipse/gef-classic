@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.draw2d.internal.graph;
+package org.eclipse.draw2d.graph;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -16,21 +16,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.eclipse.draw2d.graph.CompoundDirectedGraph;
-import org.eclipse.draw2d.graph.DirectedGraph;
-import org.eclipse.draw2d.graph.Node;
-import org.eclipse.draw2d.graph.NodeList;
-import org.eclipse.draw2d.graph.Rank;
-import org.eclipse.draw2d.graph.RankList;
-import org.eclipse.draw2d.graph.Subgraph;
-
 /**
  * Performs a topological sort from left to right of the subgraphs in a compound directed
  * graph.  This ensures that subgraphs do not intertwine.
  * @author Randy Hudson
  * @since 2.1.2
  */
-public class SortSubgraphs extends GraphVisitor {
+class SortSubgraphs extends GraphVisitor {
 
 CompoundDirectedGraph g;
 

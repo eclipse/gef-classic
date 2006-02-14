@@ -8,15 +8,10 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.draw2d.internal.graph;
+package org.eclipse.draw2d.graph;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.eclipse.draw2d.graph.DirectedGraph;
-import org.eclipse.draw2d.graph.Edge;
-import org.eclipse.draw2d.graph.Node;
-import org.eclipse.draw2d.graph.NodeList;
 
 /**
  * This visitor eliminates cycles in the graph using a "greedy" heuristic.  Nodes which
@@ -29,7 +24,7 @@ import org.eclipse.draw2d.graph.NodeList;
  * @author Daniel Lee
  * @since 2.1.2
  */
-public class BreakCycles extends GraphVisitor {
+class BreakCycles extends GraphVisitor {
 
 // Used in identifying cycles and in cycle removal.
 // Flag field indicates "presence". If true, the node has been removed from the list. 
@@ -101,7 +96,7 @@ private int getDegree(Node n) {
 
 private int getIncomingCount(Node n) {
 	return n.workingInts[0];
-}	
+}
 
 private int getInDegree(Node n) {
 	return n.workingInts[1];
@@ -133,14 +128,14 @@ private void greedyCycleRemove(DirectedGraph g) {
 					sR.add(node);
 					break;
 				}
-			}	
+			}
 		} while (hasSink);
 		
 		// Add all sources to sL
 		boolean hasSource;
 		do {
 			hasSource = false;
-			for (int i = 0; i < graphNodes.size(); i++) {	
+			for (int i = 0; i < graphNodes.size(); i++) {
 				Node node = graphNodes.getNode(i);
 				if (getInDegree(node) == 0 && node.flag == false) {
 					hasSource = true;
@@ -149,7 +144,7 @@ private void greedyCycleRemove(DirectedGraph g) {
 					sL.add(node);
 					break;
 				}
-			}	
+			}
 		} while (hasSource);
 		
 		// When all sinks and sources are removed, choose a node with the 
@@ -160,8 +155,7 @@ private void greedyCycleRemove(DirectedGraph g) {
 			max.flag = true;
 			updateIncoming(max);
 			updateOutgoing(max);
-		}	
-		
+		}
 	} while (!allNodesFlagged());
 	
 	// Assign order indexes

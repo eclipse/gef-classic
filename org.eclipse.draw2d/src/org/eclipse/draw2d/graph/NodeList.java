@@ -13,6 +13,7 @@ package org.eclipse.draw2d.graph;
 import java.util.ArrayList;
 
 /**
+ * A list containing nodes.
  * @author hudsonr
  * @since 2.1.2
  */
@@ -31,39 +32,24 @@ public NodeList(NodeList list) {
 	super(list);
 }
 
-/**
- * For internal use only.  Adjusts the rank value of all nodes in this list by the
- * specified amount.
- * @param delta the amount to adjust ranks.
- */
-public void adjustRank (int delta) {
+void adjustRank (int delta) {
 	if (delta == 0)
 		return;
 	for (int i = 0; i < size(); i++)
 		getNode(i).rank += delta;
 }
 
-/**
- * For internal use only.
- */
-public void resetSortValues() {
+void resetSortValues() {
 	for (int i = 0; i < size(); i++)
 		getNode(i).sortValue = 0.0;
 }
 
-/**
- * For internal use only
- */
-public void resetIndices() {
+void resetIndices() {
 	for (int i = 0; i < size(); i++)
 		getNode(i).index = 0;
 }
 
-/**
- * For internal use only.  Adjusts all nodes ranks' equally such that the minimum rank is
- * zero.
- */
-public void normalizeRanks() {
+void normalizeRanks() {
 	int minRank = Integer.MAX_VALUE;
 	for (int i = 0; i < size(); i++)
 		minRank = Math.min(minRank, getNode(i).rank);
@@ -79,10 +65,7 @@ public Node getNode(int index) {
 	return (Node)super.get(index);
 }
 
-/**
- * For internal use only. Resets all nodes' flags.
- */
-public void resetFlags() {
+void resetFlags() {
 	for (int i = 0; i < size(); i++) {
 		getNode(i).flag = false;
 	}

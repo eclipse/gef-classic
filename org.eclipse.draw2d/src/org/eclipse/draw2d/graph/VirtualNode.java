@@ -13,29 +13,23 @@ package org.eclipse.draw2d.graph;
 import org.eclipse.draw2d.geometry.Insets;
 
 /**
- * @deprecated As of 3.1, this class is for internal use only.
+ * @deprecated virtual nodes of an edge should be cast to Node.
  * @author Randy Hudson
  * @since 2.1.2
  */
 public class VirtualNode extends Node {
 
-/**
- * The previous node.
- */
-public Node prev;
+Node left, right;
+
 /**
  * The next node.
  */
 public Node next;
 
 /**
- * Constructor. 
- * @param o object
- * @param parent subgraph
+ * The previous node.
  */
-public VirtualNode(Object o, Subgraph parent) {
-	super(o, parent);
-}
+public Node prev;
 
 /**
  * Constructs a virtual node.
@@ -50,15 +44,16 @@ public VirtualNode(Edge e, int i) {
 	width = e.width;
 	height = 0;
 	rank = i;
-	padding = new Insets(0, e.padding, 0, e.padding);
+	setPadding(new Insets(0, e.padding, 0, e.padding));
 }
 
 /**
- * Returns the index of {@link #next}.
- * @return outgoing
+ * Constructor. 
+ * @param o object
+ * @param parent subgraph
  */
-public double medianOutgoing() {
-	return next.index;
+public VirtualNode(Object o, Subgraph parent) {
+	super(o, parent);
 }
 
 /**
@@ -67,6 +62,14 @@ public double medianOutgoing() {
  */
 public double medianIncoming() {
 	return prev.index;
+}
+
+/**
+ * Returns the index of {@link #next}.
+ * @return outgoing
+ */
+public double medianOutgoing() {
+	return next.index;
 }
 
 /**

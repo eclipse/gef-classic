@@ -8,13 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.draw2d.internal.graph;
-
-import org.eclipse.draw2d.graph.DirectedGraph;
-import org.eclipse.draw2d.graph.Edge;
-import org.eclipse.draw2d.graph.EdgeList;
-import org.eclipse.draw2d.graph.Node;
-import org.eclipse.draw2d.graph.Rank;
+package org.eclipse.draw2d.graph;
 
 /**
  * This graph visitor examines all adjacent pairs of nodes and determines if 
@@ -22,7 +16,7 @@ import org.eclipse.draw2d.graph.Rank;
  * @author Daniel Lee
  * @since 2.1.2
  */
-public class LocalOptimizer extends GraphVisitor {
+class LocalOptimizer extends GraphVisitor {
 
 boolean shouldSwap(Node current, Node next) {
 	if (GraphUtilities.isConstrained(current, next))

@@ -17,7 +17,7 @@ import java.util.ArrayList;
  * @author hudsonr
  * @since 2.1.2
  */
-public class RankList {
+public final class RankList {
 
 ArrayList ranks = new ArrayList();
 

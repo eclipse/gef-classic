@@ -8,23 +8,16 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.draw2d.internal.graph;
+package org.eclipse.draw2d.graph;
 
 import org.eclipse.draw2d.geometry.Insets;
-import org.eclipse.draw2d.graph.CompoundDirectedGraph;
-import org.eclipse.draw2d.graph.DirectedGraph;
-import org.eclipse.draw2d.graph.Edge;
-import org.eclipse.draw2d.graph.Node;
-import org.eclipse.draw2d.graph.NodeList;
-import org.eclipse.draw2d.graph.Subgraph;
-import org.eclipse.draw2d.graph.SubgraphBoundary;
 
 /**
  * Converts a compound directed graph into a simple directed graph.
  * @author Randy Hudson
  * @since 2.1.2
  */
-public class ConvertCompoundGraph extends GraphVisitor {
+class ConvertCompoundGraph extends GraphVisitor {
 
 private void addContainmentEdges(CompoundDirectedGraph graph) {
 	//For all nested nodes, connect to head and/or tail of containing subgraph if present
@@ -125,7 +118,7 @@ private void replaceSubgraphsWithBoundaries(CompoundDirectedGraph graph) {
 	}
 }
 
-public void revisit(DirectedGraph g) {
+void revisit(DirectedGraph g) {
 	for (int i = 0; i < g.edges.size(); i++) {
 		Edge e = g.edges.getEdge(i);
 		if (e.source instanceof SubgraphBoundary) {

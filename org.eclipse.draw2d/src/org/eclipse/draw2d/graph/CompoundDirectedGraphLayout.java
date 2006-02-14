@@ -13,20 +13,6 @@ package org.eclipse.draw2d.graph;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.draw2d.internal.graph.CompoundBreakCycles;
-import org.eclipse.draw2d.internal.graph.CompoundHorizontalPlacement;
-import org.eclipse.draw2d.internal.graph.CompoundPopulateRanks;
-import org.eclipse.draw2d.internal.graph.CompoundRankSorter;
-import org.eclipse.draw2d.internal.graph.CompoundVerticalPlacement;
-import org.eclipse.draw2d.internal.graph.ConvertCompoundGraph;
-import org.eclipse.draw2d.internal.graph.GraphVisitor;
-import org.eclipse.draw2d.internal.graph.InitialRankSolver;
-import org.eclipse.draw2d.internal.graph.MinCross;
-import org.eclipse.draw2d.internal.graph.PlaceEndpoints;
-import org.eclipse.draw2d.internal.graph.RankAssigmentSolver;
-import org.eclipse.draw2d.internal.graph.SortSubgraphs;
-import org.eclipse.draw2d.internal.graph.TightSpanningTreeSolver;
-
 /**
  * Performs a graph layout on a <code>CompoundDirectedGraph</code>.  The input format is
  * the same as for {@link DirectedGraphLayout}.  All nodes, including subgraphs and their
@@ -58,6 +44,8 @@ public final class CompoundDirectedGraphLayout extends GraphVisitor {
  * @since 3.1
  */
 public CompoundDirectedGraphLayout() {
+	steps.add(new TransposeMetrics());
+	steps.add(new RouteEdges());	
 	steps.add(new CompoundBreakCycles());
 	steps.add(new ConvertCompoundGraph());
 	steps.add(new InitialRankSolver());
@@ -68,7 +56,7 @@ public CompoundDirectedGraphLayout() {
 	steps.add(new MinCross(new CompoundRankSorter()));
 	steps.add(new SortSubgraphs());
 	steps.add(new CompoundHorizontalPlacement());
-	steps.add(new PlaceEndpoints());
+	steps.add(new InvertEdges());
 }
 
 List steps = new ArrayList();

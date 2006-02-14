@@ -8,13 +8,10 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.draw2d.internal.graph;
+package org.eclipse.draw2d.graph;
 
-import org.eclipse.draw2d.graph.DirectedGraph;
-import org.eclipse.draw2d.graph.Edge;
-import org.eclipse.draw2d.graph.EdgeList;
-import org.eclipse.draw2d.graph.Node;
-
+import java.util.Iterator;
+import java.util.Stack;
 
 /**
  * Assigns the final rank assignment for a DirectedGraph with an initial feasible
@@ -22,10 +19,10 @@ import org.eclipse.draw2d.graph.Node;
  * @author Randy Hudson
  * @since 2.1.2
  */
-public class RankAssigmentSolver extends SpanningTreeVisitor {
-protected DirectedGraph graph;
-int maxcount = 200;
+class RankAssigmentSolver extends SpanningTreeVisitor {
 
+DirectedGraph graph;
+EdgeList spanningTree;
 boolean searchDirection;
 
 int depthFirstCutValue(Edge edge, int count) {
@@ -59,7 +56,7 @@ int depthFirstCutValue(Edge edge, int count) {
 
 	edge.cut = cutvalue;
 	if (cutvalue < 0)
-		graph.spanningTree.add(edge);
+		spanningTree.add(edge);
 	setTreeMax(n, count);
 	return count + 1;
 }
@@ -110,7 +107,7 @@ int getTreeMin(Node n) {
 
 void initCutValues() {
 	Node root = graph.nodes.getNode(0);
-	graph.spanningTree = new EdgeList();
+	spanningTree = new EdgeList();
 	Edge e;
 	setTreeMin(root, 1);
 	setTreeMax(root, 1);
@@ -134,8 +131,8 @@ Edge leave() {
 	Edge e;
 	int minCut = 0;
 	int weight = -1;
-	for (int i = 0; i < graph.spanningTree.size(); i++) {
-		e = graph.spanningTree.getEdge(i);
+	for (int i = 0; i < spanningTree.size(); i++) {
+		e = spanningTree.getEdge(i);
 		if (e.cut < minCut) {
 			result = e;
 			minCut = result.cut;
@@ -166,7 +163,7 @@ void networkSimplexLoop() {
 		getSpanningTreeChildren(leaveHead).remove(leave);
 		setParentEdge(leaveTail, null);
 		leave.tree = false;
-		graph.spanningTree.remove(leave);
+		spanningTree.remove(leave);
 		
 		Node enterTail = enter.source;
 		if (!subtreeContains(leaveTail, enterTail))
@@ -200,7 +197,7 @@ void networkSimplexLoop() {
 }
 
 void repairCutValues(Edge edge) {
-	graph.spanningTree.remove(edge);
+	spanningTree.remove(edge);
 	Node n = getTreeTail(edge);
 	int cutvalue = 0;
 	int multiplier = (edge.target == n) ? 1 : -1;
@@ -226,7 +223,7 @@ void repairCutValues(Edge edge) {
 
 	edge.cut = cutvalue;
 	if (cutvalue < 0)
-		graph.spanningTree.add(edge);
+		spanningTree.add(edge);
 }
 
 void setTreeMax(Node n, int value) {
@@ -281,7 +278,37 @@ public void visit(DirectedGraph graph) {
 	this.graph = graph;
 	initCutValues();
 	networkSimplexLoop();
-	graph.nodes.normalizeRanks();
+	if (graph.forestRoot == null)
+		graph.nodes.normalizeRanks();
+	else
+		normalizeForest();
+}
+
+private void normalizeForest() {
+	NodeList tree = new NodeList();
+	graph.nodes.resetFlags();
+	graph.forestRoot.flag = true;
+	EdgeList rootEdges = graph.forestRoot.outgoing;
+	Stack stack = new Stack();
+	for (int i = 0; i < rootEdges.size(); i++) {
+		Node node = rootEdges.getEdge(i).target;
+		node.flag = true;
+		stack.push(node);
+		while (!stack.isEmpty()) {
+			node = (Node) stack.pop();
+			tree.add(node);
+			Iterator neighbors = node.iteratorNeighbors();
+			while (neighbors.hasNext()) {
+				Node neighbor = (Node) neighbors.next();
+				if (!neighbor.flag) {
+					neighbor.flag = true;
+					stack.push(neighbor);
+				}
+			}
+		}
+		tree.normalizeRanks();
+		tree.clear();
+	}
 }
 
 }

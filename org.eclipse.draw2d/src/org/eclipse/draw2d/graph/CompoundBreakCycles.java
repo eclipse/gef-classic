@@ -8,13 +8,8 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.draw2d.internal.graph;
+package org.eclipse.draw2d.graph;
 
-import org.eclipse.draw2d.graph.DirectedGraph;
-import org.eclipse.draw2d.graph.Edge;
-import org.eclipse.draw2d.graph.Node;
-import org.eclipse.draw2d.graph.NodeList;
-import org.eclipse.draw2d.graph.Subgraph;
 
 /**
  * This visitor eliminates cycles in the graph via a modified implementation of the 
@@ -27,7 +22,7 @@ import org.eclipse.draw2d.graph.Subgraph;
  * @author Randy Hudson
  * @since 2.1.2
  */
-public class CompoundBreakCycles extends GraphVisitor {
+class CompoundBreakCycles extends GraphVisitor {
 
 /*
  * Caches all nodes in the graph. Used in identifying cycles and in cycle removal.

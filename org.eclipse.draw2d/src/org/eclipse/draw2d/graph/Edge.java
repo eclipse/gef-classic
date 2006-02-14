@@ -11,6 +11,7 @@
 package org.eclipse.draw2d.graph;
 
 import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.PointList;
 
 /**
  * A directed Edge joining a source and target Node.  Edges indicate the dependencies
@@ -39,10 +40,7 @@ import org.eclipse.draw2d.geometry.Point;
  */
 public class Edge {
 
-/**
- * For internal use only. Represents the edge's cut value in the network simplex loop.
- */
-public int cut;
+int cut;
 
 /**
  * An arbitrary data field for use by clients.
@@ -50,17 +48,23 @@ public int cut;
 public Object data;
 
 /**
- * The minimum rank separation between the source and target nodes.
+ * The minimum rank separation between the source and target nodes. The default value is
+ * 1.
+ * @deprecated use accessors instead
  */
 public int delta = 1;
 
 /**
- * For internal use only. Used during layout.
+ * The ending point.
+ * @deprecated use {@link #getPoints()}
  */
-public boolean flag;
+public Point end;
+
+boolean flag;
 
 /**
- * Internal field, used to determine if edge source and target should be swapped.
+ * @deprecated INTERNAL field, use accessor method
+ * Indicates an edge was inverted during the layout
  */
 public boolean isFeedback = false;
 
@@ -68,6 +72,7 @@ public boolean isFeedback = false;
  * The edge's attachment point at the <em>source</em> node. The default value is -1, which
  * indicates that the edge should use the node's default {@link Node#getOffsetOutgoing()
  * outgoing} attachment point.
+ * @deprecated use accessors instead
  */
 public int offsetSource = -1;
 
@@ -75,51 +80,50 @@ public int offsetSource = -1;
  * The edge's attachment point at the <em>target</em> node. The default value is -1, which
  * indicates that the edge should use the node's default {@link Node#getOffsetIncoming()
  * incoming} attachment point.
+ * @deprecated use accessors instead
  */
 public int offsetTarget = -1;
+
+/**
+ * The minimum amount of space to leave on both the left and right sides of the edge.
+ * @deprecated use accessors instead
+ */
+public int padding = 10;
+
+private PointList points;
 
 /**
  * The source Node.
  */
 public Node source;
+/**
+ * The starting point.
+ * @deprecated use {@link #getPoints()}
+ */
+public Point start;
 
 /**
  * The target Node.
  */
 public Node target;
 
-/**
- * The minimum amount of space to leave on both the left and right sides of the edge.
- */
-public int padding = 10;
-
-/** The starting point */
-public Point start;
-/** The ending point */
-public Point end;
-
-/**
- * For internal use only. Field used during layout.
- */
-public boolean tree;
+boolean tree;
 
 /**
  * The virtual nodes used to bend edges which go across one or more ranks.  Each virtual
  * node is just a regular node which occupies some small amount of space on a row. It's
- * width is equivalent to the edge's width.  Clients should use each virtual node's
- * location (x, y, width, and height) as the way to position an edge which spans 1 or more
- * rows.
+ * width is equivalent to the edge's width.  Clients can use each virtual node's location
+ * (x, y, width, and height) as the way to position an edge which spans multiple rows.
  */
 public NodeList vNodes;
-
 /**
  * A hint indicating how straight and short the edge should be relative to
- * other edges in the graph.  The default value is <code>1</code>.
+ * other edges in the graph. The default value is <code>1</code>.
  */
 public int weight = 1;
 
 /**
- * The width occupied by the edge itself.  The default value is <code>1</code>.
+ * @deprecated use accessors instead
  */
 public int width = 1;
 
@@ -161,13 +165,23 @@ public Edge(Object data, Node source, Node target) {
 }
 
 /**
+ * Returns the delta value. The delta is the minimum rank separation for the edge's source
+ * and target nodes.
+ * @return the delta.
+ * @since 3.2
+ */
+public int getDelta() {
+	return delta;
+}
+
+/**
  * For internal use only. Returns the index of the {@link Node} (or {@link VirtualNode})
  * on this edge at the given rank.  If this edge doesn't have a node at the given rank, -1
  * is returned.
  * @param rank the rank
  * @return the edges index at the given rank
  */
-public int getIndexForRank(int rank) {
+int getIndexForRank(int rank) {
 	if (source.rank == rank)
 		return source.index;
 	if (target.rank == rank)
@@ -185,11 +199,20 @@ public int getLength() {
 	return (target.rank - source.rank);
 }
 
+public int getPadding() {
+	return padding;
+}
+
 /**
- * For internal use only. Returns the amount of slack in the edge.
- * @return the edge's slack
+ * Returns the path connecting the edge's source and target.
+ * @return a point list
+ * @since 3.2
  */
-public int getSlack() {
+public PointList getPoints() {
+	return points;
+}
+
+int getSlack() {
 	return (target.rank - source.rank) - delta;
 }
 
@@ -217,19 +240,14 @@ public int getTargetOffset() {
 	return target.getOffsetIncoming();
 }
 
-/**
- * For internal use only.  Returns the node opposite the given node on this edge.
- * @param end one end
- * @return the other end
- */
-public Node opposite(Node end) {
-	if (source == end)
-		return target;
-	return source;
+public int getWidth() {
+	return width;
 }
 
 /**
- * Inverts this edge. (Source becomes target, target becomes source).
+ * Swaps the source and target nodes. If any positional data has been calculated, it is
+ * inverted as well to reflect the new direction.
+ * @since 2.1.2
  */
 public void invert() {
 	source.outgoing.remove(this);
@@ -246,12 +264,6 @@ public void invert() {
 	target.incoming.add(this);
 	source.outgoing.add(this);
 	
-	if (start != null) {
-		Point pt = start;
-		start = end;
-		end = pt;
-	}
-	
 	if (vNodes != null) {
 		NodeList newVNodes = new NodeList();
 		for (int j = vNodes.size() - 1; j >= 0; j--) {
@@ -259,13 +271,107 @@ public void invert() {
 		}
 		vNodes = newVNodes;
 	}
+
+	if (start != null) {
+		Point pt = start;
+		start = end;
+		end = pt;
+	}
 }
 
 /**
- * @see java.lang.Object#toString()
+ * Returns <code>true</code> if the edge was a feedback edge. The layout algorithm may
+ * invert one or more edges to remove all cycles from the input. The set of edges that are
+ * inverted are referred to as the "feedback" set.
+ * @return <code>true</code> if the edge is feedback
+ * @since 3.2
  */
-public String toString() {
-	return "{" + source + "} -> {" + target + "}"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+public boolean isFeedback() {
+	return isFeedback;
+}
+
+/**
+ * For internal use only.  Returns the node opposite the given node on this edge.
+ * @param end one end
+ * @return the other end
+ */
+public Node opposite(Node end) {
+	if (source == end)
+		return target;
+	return source;
+}
+
+/**
+ * Sets the delta value.
+ * @param delta the new delta value
+ * @since 3.2
+ */
+public void setDelta(int delta) {
+	this.delta = delta;
+}
+
+/**
+ * Sets the padding for this edge.
+ * @param padding the padding
+ * @since 3.2
+ */
+public void setPadding(int padding) {
+	this.padding = padding;
+}
+
+void setPoints(PointList points) {
+	this.points = points;
+	start = points.getFirstPoint();
+	end = points.getLastPoint();
+}
+
+/**
+ * Sets the source node and adds this edge to the new source's outgoing edges. If the
+ * source node is previously set, removes this edge from the old source's outgoing edges.
+ * @param node the new source
+ * @since 3.2
+ */
+public void setSource(Node node) {
+	if (source == node)
+		return;
+	if (source != null)
+		source.outgoing.remove(this);
+	source = node;
+	if (source != null)
+		source.outgoing.add(this);
+}
+
+public void setSourceOffset(int offset) {
+	this.offsetSource = offset;
+}
+
+/**
+ * Sets the target node and adds this edge to the new target's incoming edges. If the
+ * target node is previously set, removes this edge from the old target's incoming edges.
+ * @param node the new target
+ * @since 3.2
+ */
+public void setTarget(Node node) {
+	if (target == node)
+		return;
+	if (target != null)
+		target.incoming.remove(this);
+	target = node;
+	if (target != null)
+		target.incoming.add(this);
+}
+
+public void setTargetOffset(int offset) {
+	this.offsetTarget = offset;
+}
+
+/**
+ * Sets the width of the edge.
+ * @param width the new width
+ * @since 3.2
+ */
+public void setWidth(int width) {
+	this.width = width;
 }
 
 }

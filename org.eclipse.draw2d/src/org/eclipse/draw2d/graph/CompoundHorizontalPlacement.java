@@ -8,27 +8,17 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.draw2d.internal.graph;
+package org.eclipse.draw2d.graph;
 
 import java.util.HashSet;
 import java.util.Set;
-
-import org.eclipse.draw2d.graph.CompoundDirectedGraph;
-import org.eclipse.draw2d.graph.DirectedGraph;
-import org.eclipse.draw2d.graph.Edge;
-import org.eclipse.draw2d.graph.Node;
-import org.eclipse.draw2d.graph.NodeList;
-import org.eclipse.draw2d.graph.Rank;
-import org.eclipse.draw2d.graph.RankList;
-import org.eclipse.draw2d.graph.Subgraph;
-import org.eclipse.draw2d.graph.SubgraphBoundary;
 
 /**
  * Calculates the X-coordinates for nodes in a compound directed graph. 
  * @author Randy Hudson
  * @since 2.1.2
  */
-public class CompoundHorizontalPlacement extends HorizontalPlacement {
+class CompoundHorizontalPlacement extends HorizontalPlacement {
 
 class LeftRight {
 	//$TODO Delete and use NodePair class, equivalent
@@ -36,9 +26,6 @@ class LeftRight {
 	LeftRight(Object l, Object r) {
 		left = l; right = r;
 	}
-	/**
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
 	public boolean equals(Object obj) {
 		LeftRight entry = (LeftRight)obj;
 		return entry.left.equals(left) && entry.right.equals(right);
@@ -76,7 +63,13 @@ void buildRankSeparators(RankList ranks) {
 		for (int j = 0; j < rank.size(); j++) {
 			n = rank.getNode(j);
 			if (prev == null) {
-				addSeparatorsLeft(n, null);
+				Node left = addSeparatorsLeft(n, null);
+				if (left != null) {
+					Edge e = new Edge(graphLeft, getPrime(left), 0, 0);
+					prime.edges.add(e);
+					e.delta = graph.getPadding(n).left + graph.getMargin().left;
+				}
+					
 			} else {
 				Subgraph s = GraphUtilities.getCommonAncestor(prev, n);
 				Node left = addSeparatorsRight(prev, s);

@@ -182,7 +182,7 @@ void grow() {
 	if (nearestObstacle == 0)
 		modifier = totalCount * getSpacing();
 	else
-		modifier = (int)(nearestObstacle / 2) - 1;
+		modifier = (nearestObstacle / 2) - 1;
 	
 	if ((positionOnObstacle & PositionConstants.NORTH) > 0)
 		y -= modifier;

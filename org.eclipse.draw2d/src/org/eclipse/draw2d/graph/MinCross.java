@@ -8,17 +8,14 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.draw2d.internal.graph;
-
-import org.eclipse.draw2d.graph.DirectedGraph;
-import org.eclipse.draw2d.graph.Rank;
+package org.eclipse.draw2d.graph;
 
 /**
  * Sweeps up and down the ranks rearranging them so as to reduce edge crossings.
  * @author Randy Hudson
  * @since 2.1.2
  */
-public class MinCross extends GraphVisitor {
+class MinCross extends GraphVisitor {
 
 static final int MAX = 45;
 

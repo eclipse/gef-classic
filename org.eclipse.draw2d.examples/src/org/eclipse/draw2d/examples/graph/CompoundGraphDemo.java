@@ -12,25 +12,18 @@ package org.eclipse.draw2d.examples.graph;
 
 import java.lang.reflect.Method;
 
-import org.eclipse.swt.graphics.Font;
-
 import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.LineBorder;
 import org.eclipse.draw2d.Panel;
-import org.eclipse.draw2d.PolylineConnection;
-import org.eclipse.draw2d.XYAnchor;
 import org.eclipse.draw2d.XYLayout;
-import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.draw2d.graph.CompoundDirectedGraph;
-import org.eclipse.draw2d.graph.DirectedGraph;
 import org.eclipse.draw2d.graph.Edge;
 import org.eclipse.draw2d.graph.Node;
 import org.eclipse.draw2d.graph.Subgraph;
-import org.eclipse.draw2d.internal.graph.NodePair;
+import org.eclipse.swt.graphics.Font;
 
 /**
  * @author hudsonr
@@ -65,56 +58,56 @@ public static Figure buildGraph(CompoundDirectedGraph graph) {
 		Edge edge = graph.edges.getEdge(i);
 		buildEdgeFigure(contents, edge);
 	}
-	if (buildPrime)
-		buildPrimeGraph(graph.gPrime, contents);
+//	if (buildPrime)
+//		buildPrimeGraph(graph.gPrime, contents);
 	return contents;
 }
 
-/**
- * Builds the prime graph, creates Draw2d figures for all prime graph components.
- * @param graph the graph to build the prime graph on top of
- * @param panel the Figure containing the Draw2d graph representation
- */
-public static void buildPrimeGraph(DirectedGraph graph, Figure panel) {
-	for (int i = 0; i < graph.edges.size(); i++) {
-		Edge e = graph.edges.getEdge(i);
-		PolylineConnection line = buildPrimeEdge(e);
-		panel.add(line);
-		Node n1;
-		Node n2 = (Node)e.target.data;
-		boolean rankSeparator = false;
-		if (e.source.data instanceof NodePair) {
-			//edge connects Ne's to nodes.
-			NodePair pair = (NodePair)e.source.data;
-			n1 = pair.n1;
-			if (n1 == n2)
-				n1 = pair.n2;
-		} else {
-//			panel.remove(line);
-			n1 = (Node)e.source.data;
-			rankSeparator = true;
-		}
-		ConnectionAnchor sa, ta;
-		sa = new XYAnchor(new Point(n1.x, n1.y + n1.height / 2));
-		ta = new XYAnchor(new Point(n2.x, n2.y + n2.height / 2));
-		if (rankSeparator) {
-			if (n1.data instanceof Figure)
-				sa = new LeftOrRightAnchor((Figure)n1.data);
-			if (n2.data instanceof Figure)
-				ta = new LeftOrRightAnchor((Figure)n2.data);
-		} else {
-			sa =
-				new XYAnchor(
-					new Point(
-						(n1.x + n2.x) / 2 - 15,
-						(n1.y + n1.height / 2 + n2.height / 2 + n2.y) / 2));
-			if (n2.data instanceof Figure)
-				ta = new TopOrBottomAnchor((Figure)n2.data);
-		}
-		line.setSourceAnchor(sa);
-		line.setTargetAnchor(ta);
-	}
-}
+///**
+// * Builds the prime graph, creates Draw2d figures for all prime graph components.
+// * @param graph the graph to build the prime graph on top of
+// * @param panel the Figure containing the Draw2d graph representation
+// */
+//public static void buildPrimeGraph(DirectedGraph graph, Figure panel) {
+//	for (int i = 0; i < graph.edges.size(); i++) {
+//		Edge e = graph.edges.getEdge(i);
+//		PolylineConnection line = buildPrimeEdge(e);
+//		panel.add(line);
+//		Node n1;
+//		Node n2 = (Node)e.target.data;
+//		boolean rankSeparator = false;
+//		if (e.source.data instanceof NodePair) {
+//			//edge connects Ne's to nodes.
+//			NodePair pair = (NodePair)e.source.data;
+//			n1 = pair.n1;
+//			if (n1 == n2)
+//				n1 = pair.n2;
+//		} else {
+////			panel.remove(line);
+//			n1 = (Node)e.source.data;
+//			rankSeparator = true;
+//		}
+//		ConnectionAnchor sa, ta;
+//		sa = new XYAnchor(new Point(n1.x, n1.y + n1.height / 2));
+//		ta = new XYAnchor(new Point(n2.x, n2.y + n2.height / 2));
+//		if (rankSeparator) {
+//			if (n1.data instanceof Figure)
+//				sa = new LeftOrRightAnchor((Figure)n1.data);
+//			if (n2.data instanceof Figure)
+//				ta = new LeftOrRightAnchor((Figure)n2.data);
+//		} else {
+//			sa =
+//				new XYAnchor(
+//					new Point(
+//						(n1.x + n2.x) / 2 - 15,
+//						(n1.y + n1.height / 2 + n2.height / 2 + n2.y) / 2));
+//			if (n2.data instanceof Figure)
+//				ta = new TopOrBottomAnchor((Figure)n2.data);
+//		}
+//		line.setSourceAnchor(sa);
+//		line.setTargetAnchor(ta);
+//	}
+//}
 
 private static void buildSubgraphFigure(Figure contents, Subgraph s) {
 	Figure figure = new Figure();	

@@ -13,11 +13,11 @@ package org.eclipse.draw2d.graph;
 import org.eclipse.draw2d.geometry.Insets;
 
 /**
- * 
+ * For INTERNAL use only.
  * @author hudsonr
  * @since 2.1.2
  */
-public class SubgraphBoundary extends Node {
+class SubgraphBoundary extends Node {
 
 /**
  * constant indicating TOP.

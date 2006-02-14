@@ -8,11 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.draw2d.internal.graph;
-
-import org.eclipse.draw2d.graph.Edge;
-import org.eclipse.draw2d.graph.EdgeList;
-import org.eclipse.draw2d.graph.Node;
+package org.eclipse.draw2d.graph;
 
 /**
  * A base class for visitors which operate on the graphs spanning tree used to induce rank

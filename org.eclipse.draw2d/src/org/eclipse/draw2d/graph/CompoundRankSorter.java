@@ -8,25 +8,18 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.draw2d.internal.graph;
+package org.eclipse.draw2d.graph;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
-import org.eclipse.draw2d.graph.CompoundDirectedGraph;
-import org.eclipse.draw2d.graph.DirectedGraph;
-import org.eclipse.draw2d.graph.Edge;
-import org.eclipse.draw2d.graph.Node;
-import org.eclipse.draw2d.graph.Rank;
-import org.eclipse.draw2d.graph.Subgraph;
 
 /**
  * Sorts nodes in a compound directed graph.
  * @author Randy Hudson
  * @since 2.1.2
  */
-public class CompoundRankSorter extends RankSorter {
+class CompoundRankSorter extends RankSorter {
 
 static class RowEntry {
 	double contribution;
