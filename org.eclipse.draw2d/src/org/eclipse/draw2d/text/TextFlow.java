@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.draw2d.text;
 
-import java.text.BreakIterator;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.FontMetrics;
@@ -82,10 +80,9 @@ boolean addLeadingWordWidth(String text, int[] width) {
 	if (Character.isWhitespace(text.charAt(0)))
 		return true;
 
-	BreakIterator lineBreaker = FlowUtilities.LINE_BREAK;
 	text = 'a' + text + 'a';
-	lineBreaker.setText(text);
-	int index = lineBreaker.next() - 1;
+	FlowUtilities.LINE_BREAK.setText(text);
+	int index = FlowUtilities.LINE_BREAK.next() - 1;
 	if (index == 0)
 		return true;
 	while (Character.isWhitespace(text.charAt(index)))
@@ -290,7 +287,7 @@ int getDescent() {
 }
 
 /**
- * Returns the minimum offset which is on the given baseline y-coordinate. The y 
+ * Returns the minimum character offset which is on the given baseline y-coordinate. The y 
  * location should be relative to this figure. The return value will be between
  * 0 and N-1.  If no fragment is located on the baseline, <code>-1</code> is returned.
  * @since 3.1
@@ -308,8 +305,8 @@ public int getFirstOffsetForLine(int baseline) {
 }
 
 /**
- * Returns the maximum offset which is on the given baseline y-coordinate. The y 
- * location should be relative to this figure.  The return value will be between 
+ * Returns the maximum offset for a character which is on the given baseline y-coordinate.
+ * The y location should be relative to this figure. The return value will be between 
  * 0 and N-1.  If no fragment is located on the baseline, <code>-1</code> is returned.
  * @since 3.1
  * @param baseline the relative baseline coordinate
@@ -392,7 +389,10 @@ public int getOffset(Point p, int trailing[], Dimension proximity) {
 	if (proximity == null)
 		proximity = new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
 	TextFragmentBox closestBox = null;
-	int index = 0, i = 0, dx, dy;
+	int index = 0;
+	int dy;
+	int dx;
+	int i = 0;
 	int size = fragments.size();
 	if (getBorder() instanceof FlowBorder) {
 		i++;
