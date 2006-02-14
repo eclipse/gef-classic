@@ -18,14 +18,14 @@ import java.util.Iterator;
  */
 public final class EventListenerList {
 
-private Object array[];
+private volatile Object array[];
 
 /**
  * Adds a listener of type <i>c</i> to the list.
  * @param c the class
  * @param listener the listener
  */
-public void addListener(Class c, Object listener) {
+public synchronized void addListener(Class c, Object listener) {
 	if (listener == null || c == null)
 		throw new IllegalArgumentException();
 
@@ -44,7 +44,7 @@ public void addListener(Class c, Object listener) {
  * @param c the type
  * @return whether this list contains a listener of type <i>c</i>
  */
-public boolean containsListener(Class c) {
+public synchronized boolean containsListener(Class c) {
 	if (array == null)
 		return false;
 	for (int i = 0; i < array.length; i += 2)
@@ -75,7 +75,9 @@ static class TypeIterator implements Iterator {
 		return index < items.length;
 	}
 
-	public void remove() { }
+	public void remove() {
+		throw new UnsupportedOperationException("Iterator removal not supported"); //$NON-NLS-1$
+	}
 }
 
 /**
@@ -83,7 +85,7 @@ static class TypeIterator implements Iterator {
  * @param listenerType the type
  * @return an Iterator of all the listeners of type <i>c</i>
  */
-public Iterator getListeners(final Class listenerType) {
+public synchronized Iterator getListeners(final Class listenerType) {
 	return new TypeIterator(array, listenerType);
 }
 
@@ -92,7 +94,7 @@ public Iterator getListeners(final Class listenerType) {
  * @param c the type
  * @param listener the listener
  */
-public void removeListener(Class c, Object listener) {
+public synchronized void removeListener(Class c, Object listener) {
 	if (array == null || array.length == 0)
 		return;
 	if (listener == null || c == null)
@@ -105,7 +107,7 @@ public void removeListener(Class c, Object listener) {
 		index += 2;
 	}
 	if (index == array.length)
-		return;
+		return; //listener was not found
 	
 	Object newArray[] = new Object[array.length - 2];
 	System.arraycopy(array, 0, newArray, 0, index);
