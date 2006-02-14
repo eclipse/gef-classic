@@ -96,10 +96,6 @@ protected Command chainGuideDetachmentCommand(Request request, LogicSubpart part
 	return result;
 }
 
-protected Command createAddCommand(EditPart child, Object constraint) {
-	return null;
-}
-
 protected Command createAddCommand(Request request, EditPart childEditPart, 
 		Object constraint) {
 	LogicSubpart part = (LogicSubpart)childEditPart.getModel();

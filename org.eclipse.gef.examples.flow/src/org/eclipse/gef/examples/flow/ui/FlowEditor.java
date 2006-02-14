@@ -50,6 +50,7 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
 import org.eclipse.ui.dialogs.SaveAsDialog;
 import org.eclipse.ui.part.FileEditorInput;
@@ -64,7 +65,6 @@ public class FlowEditor extends GraphicalEditorWithPalette {
 ActivityDiagram diagram;
 private PaletteRoot root;
 private KeyHandler sharedKeyHandler;
-private boolean savePreviouslyNeeded = false;
 
 public FlowEditor() {
 	DefaultEditDomain defaultEditDomain = new DefaultEditDomain(this);
@@ -75,15 +75,7 @@ public FlowEditor() {
  * @see org.eclipse.gef.commands.CommandStackListener#commandStackChanged(java.util.EventObject)
  */
 public void commandStackChanged(EventObject event) {
-	if (isDirty()) {
-		if (!savePreviouslyNeeded()) {
-			setSavePreviouslyNeeded(true);
-			firePropertyChange(IEditorPart.PROP_DIRTY);
-		}
-	} else {
-		setSavePreviouslyNeeded(false);
-		firePropertyChange(IEditorPart.PROP_DIRTY);
-	}
+	firePropertyChange(IEditorPart.PROP_DIRTY);
 	super.commandStackChanged(event);
 }
 
@@ -162,7 +154,7 @@ public void doSave(IProgressMonitor monitor) {
 						true, false, monitor);
 		out.close();
 		getCommandStack().markSaveLocation();
-	} 
+	}
 	catch (Exception e) {
 		e.printStackTrace();
 	}
@@ -212,7 +204,7 @@ protected KeyHandler getCommonKeyHandler() {
 		sharedKeyHandler = new KeyHandler();
 		sharedKeyHandler.put(
 			KeyStroke.getPressed(SWT.DEL, 127, 0),
-			getActionRegistry().getAction(GEFActionConstants.DELETE));
+			getActionRegistry().getAction(ActionFactory.DELETE.getId()));
 		sharedKeyHandler.put(
 			KeyStroke.getPressed(SWT.F2, 0),
 			getActionRegistry().getAction(GEFActionConstants.DIRECT_EDIT));
@@ -238,10 +230,6 @@ public boolean isSaveAsAllowed() {
 	return true;
 }
 
-private boolean savePreviouslyNeeded() {
-	return savePreviouslyNeeded;
-}
-
 /**
  * @see org.eclipse.ui.part.EditorPart#setInput(org.eclipse.ui.IEditorInput)
  */
@@ -259,10 +247,6 @@ protected void setInput(IEditorInput input) {
 		e.printStackTrace();
 		diagram = new ActivityDiagram();
 	}
-}
-
-private void setSavePreviouslyNeeded(boolean value) {
-	savePreviouslyNeeded = value;
 }
 
 }

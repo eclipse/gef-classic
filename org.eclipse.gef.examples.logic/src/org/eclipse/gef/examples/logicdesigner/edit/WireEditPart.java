@@ -79,8 +79,6 @@ protected void createEditPolicies() {
  * @return  The created Figure.
  */
 protected IFigure createFigure() {
-	if (getWire() == null)
-		return null;
 	Connection connx = FigureFactory.createNewBendableWire(getWire());
 	return connx;
 }
