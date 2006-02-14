@@ -45,6 +45,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuListener;
@@ -53,6 +54,7 @@ import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.util.SafeRunnable;
 import org.eclipse.jface.util.TransferDropTargetListener;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorInput;
@@ -376,7 +378,6 @@ private IPartListener partListener = new IPartListener() {
 };
 
 private LogicDiagram logicDiagram = new LogicDiagram();
-private boolean savePreviouslyNeeded = false;
 private ResourceTracker resourceListener = new ResourceTracker();
 private RulerComposite rulerComp;
 
@@ -399,15 +400,7 @@ protected void closeEditor(boolean save) {
 }
 
 public void commandStackChanged(EventObject event) {
-	if (isDirty()){
-		if (!savePreviouslyNeeded()) {
-			setSavePreviouslyNeeded(true);
-			firePropertyChange(IEditorPart.PROP_DIRTY);
-		}
-	} else {
-		setSavePreviouslyNeeded(false);
-		firePropertyChange(IEditorPart.PROP_DIRTY);
-	}
+	firePropertyChange(IEditorPart.PROP_DIRTY);
 	super.commandStackChanged(event);
 }
 
@@ -461,7 +454,7 @@ protected void configureGraphicalViewer() {
 	getGraphicalControl().addListener(SWT.Deactivate, listener);
 }
 
-protected void createOutputStream(OutputStream os)throws IOException {
+protected void writeToOutputStream(OutputStream os)throws IOException {
 	ObjectOutputStream out = new ObjectOutputStream(os);
 	out.writeObject(getLogicDiagram());
 	out.close();	
@@ -510,23 +503,20 @@ public void dispose() {
 	super.dispose();
 }
 
-public void doSave(IProgressMonitor progressMonitor) {
-	try {
-		editorSaving = true;
-		saveProperties();
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		createOutputStream(out);
-		IFile file = ((IFileEditorInput)getEditorInput()).getFile();
-		file.setContents(new ByteArrayInputStream(out.toByteArray()), 
-						true, false, progressMonitor);
-		out.close();
-		getCommandStack().markSaveLocation();
-	} 
-	catch (Exception e) {
-		e.printStackTrace();
-	} finally {
-		editorSaving = false;
-	}
+public void doSave(final IProgressMonitor progressMonitor) {
+	editorSaving = true;
+	Platform.run(new SafeRunnable() {
+		public void run() throws Exception {
+			saveProperties();
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+			writeToOutputStream(out);
+			IFile file = ((IFileEditorInput)getEditorInput()).getFile();
+			file.setContents(new ByteArrayInputStream(out.toByteArray()), 
+							true, false, progressMonitor);
+			getCommandStack().markSaveLocation();
+		}
+	});
+	editorSaving = false;
 }
 
 public void doSaveAs() {
@@ -729,7 +719,7 @@ protected boolean performSaveAs() {
 				saveProperties();
 				try {
 					ByteArrayOutputStream out = new ByteArrayOutputStream();
-					createOutputStream(out);
+					writeToOutputStream(out);
 					file.create(new ByteArrayInputStream(out.toByteArray()), true, monitor);
 					out.close();
 				} 
@@ -757,10 +747,6 @@ protected boolean performSaveAs() {
 	return true;
 }
 
-private boolean savePreviouslyNeeded() {
-	return savePreviouslyNeeded;
-}
-
 protected void saveProperties() {
 	getLogicDiagram().setRulerVisibility(((Boolean)getGraphicalViewer()
 			.getProperty(RulerProvider.PROPERTY_RULER_VISIBILITY)).booleanValue());
@@ -774,7 +760,7 @@ protected void saveProperties() {
 		getLogicDiagram().setZoom(manager.getZoom());
 }
 
-public void setInput(IEditorInput input) {
+protected void setInput(IEditorInput input) {
 	superSetInput(input);
 
 	IFile file = ((IFileEditorInput)input).getFile();
@@ -802,10 +788,6 @@ public void setInput(IEditorInput input) {
 
 public void setLogicDiagram(LogicDiagram diagram) {
 	logicDiagram = diagram;
-}
-
-private void setSavePreviouslyNeeded(boolean value) {
-	savePreviouslyNeeded = value;
 }
 
 protected void superSetInput(IEditorInput input) {
