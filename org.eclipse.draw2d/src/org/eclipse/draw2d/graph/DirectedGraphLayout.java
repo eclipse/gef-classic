@@ -61,7 +61,7 @@ import java.util.List;
  * @author Randy Hudson
  * @since 2.1.2
  */
-public class DirectedGraphLayout extends GraphVisitor {
+public class DirectedGraphLayout {
 
 List steps = new ArrayList();
 
@@ -69,6 +69,10 @@ List steps = new ArrayList();
  * @since 3.1
  */
 public DirectedGraphLayout() {
+	init();
+}
+
+void init() {
 	steps.add(new TransposeMetrics());
 	steps.add(new RouteEdges());
 	steps.add(new BreakCycles());

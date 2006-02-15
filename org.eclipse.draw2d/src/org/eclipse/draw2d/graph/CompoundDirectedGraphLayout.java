@@ -10,9 +10,6 @@
  *******************************************************************************/
 package org.eclipse.draw2d.graph;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Performs a graph layout on a <code>CompoundDirectedGraph</code>.  The input format is
  * the same as for {@link DirectedGraphLayout}.  All nodes, including subgraphs and their
@@ -38,12 +35,9 @@ import java.util.List;
  * @author Randy Hudson
  * @since 2.1.2
  */
-public final class CompoundDirectedGraphLayout extends GraphVisitor {
+public final class CompoundDirectedGraphLayout extends DirectedGraphLayout {
 
-/**
- * @since 3.1
- */
-public CompoundDirectedGraphLayout() {
+void init() {
 	steps.add(new TransposeMetrics());
 	steps.add(new RouteEdges());	
 	steps.add(new CompoundBreakCycles());
@@ -57,23 +51,6 @@ public CompoundDirectedGraphLayout() {
 	steps.add(new SortSubgraphs());
 	steps.add(new CompoundHorizontalPlacement());
 	steps.add(new InvertEdges());
-}
-
-List steps = new ArrayList();
-
-/**
- * Lays out the given compound directed graph.
- * @param graph the graph to layout
- */
-public void visit(DirectedGraph graph) {
-	for (int i = 0; i < steps.size(); i++) {
-		GraphVisitor visitor = (GraphVisitor)steps.get(i);
-		visitor.visit(graph);
-	}
-	for (int i = steps.size() - 1; i >= 0; i--) {
-		GraphVisitor visitor = (GraphVisitor)steps.get(i);
-		visitor.revisit(graph);
-	}
 }
 
 }
