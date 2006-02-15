@@ -47,27 +47,16 @@ import org.eclipse.draw2d.geometry.Insets;
  */
 public class Node {
 
-/**
- * For internal use only.  workingData store various temporary data during
- * the layout of a directed graph.
- */
-public Object workingData[] = new Object[3];
-
-/**
- * For internal use only.  This filed stores various temporary data during the layout of a
- * directed graph.
- */
-public int workingInts[] = new int[4];
+Object workingData[] = new Object[3];
+int workingInts[] = new int[4];
 
 /**
  * Clients may use this field to mark the Node with an arbitrary data object.
  */
 public Object data;
 
-/**
- * For internal use only.  A flag for use during layout.
- */
-public boolean flag;
+//used by various graph visitors
+boolean flag;
 
 /**
  * The height of this node. This value should be set prior to laying out the directed
@@ -213,7 +202,7 @@ public Subgraph getParent() {
  * @param node the node in question
  * @return <code>true</code> if nested
  */
-public boolean isNested(Node node) {
+boolean isNested(Node node) {
 	return node == this;
 }
 
@@ -266,7 +255,7 @@ public void setSize(Dimension size) {
 }
 
 /**
- * @see java.lang.Object#toString()
+ * @see Object#toString()
  */
 public String toString() {
 	return "N(" + data + ")"; //$NON-NLS-1$ //$NON-NLS-2$

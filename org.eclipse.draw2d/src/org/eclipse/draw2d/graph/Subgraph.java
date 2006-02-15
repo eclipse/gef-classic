@@ -43,30 +43,11 @@ public class Subgraph extends Node {
  */
 public NodeList members = new NodeList();
 
-/**
- * For internal use only.
- */
-public Node head;
-
-/**
- * For internal use only.
- */
-public Node tail;
-
-/**
- * For internal use only.
- */
-public Node left;
-
-/**
- * For internal use only.
- */
-public Node right;
-
-/**
- * For internal use only.
- */
-public int nestingTreeMin;
+Node head;
+Node tail;
+Node left;
+Node right;
+int nestingTreeMin;
 
 /**
  * The space required for this subgraph's border.  The default value is undefined.
@@ -108,12 +89,12 @@ public void addMember(Node n) {
 }
 
 /**
- * For internal use only. Returns <code>true</code> if the given node is contained inside
- * the branch represented by this subgraph.
+ * Returns <code>true</code> if the given node is contained inside the branch represented
+ * by this subgraph.
  * @param n the node in question
  * @return <code>true</code> if nested
  */
-public boolean isNested(Node n) {
+boolean isNested(Node n) {
 	return n.nestingIndex >= nestingTreeMin
 		&& n.nestingIndex <= nestingIndex;
 }
