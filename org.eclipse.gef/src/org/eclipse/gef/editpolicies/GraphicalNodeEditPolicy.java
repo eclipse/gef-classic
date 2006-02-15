@@ -13,6 +13,7 @@ package org.eclipse.gef.editpolicies;
 import org.eclipse.draw2d.Connection;
 import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.ConnectionLayer;
+import org.eclipse.draw2d.ConnectionRouter;
 import org.eclipse.draw2d.PolylineConnection;
 import org.eclipse.draw2d.geometry.Point;
 
@@ -144,6 +145,17 @@ protected abstract Command getConnectionCompleteCommand(CreateConnectionRequest 
 protected abstract Command getConnectionCreateCommand(CreateConnectionRequest request);
 
 /**
+ * Returns the ConnectionRouter for the creation feedback's connection.
+ * @param request the create request
+ * @return a connection router
+ * @since 3.2
+ */
+protected ConnectionRouter getDummyConnectionRouter(CreateConnectionRequest request) {
+	return ((ConnectionLayer) getLayer(LayerConstants.CONNECTION_LAYER))
+			.getConnectionRouter();
+}
+
+/**
  * Returns the FeedbackHelper that is ready to use. The feedback helper must be configured
  * with the connection that will be used to display feedback, and that connection must be
  * added to the appropriate layer in the diagram.
@@ -155,8 +167,7 @@ protected FeedbackHelper getFeedbackHelper(CreateConnectionRequest request) {
 		feedbackHelper = new FeedbackHelper();
 		Point p = request.getLocation();
 		connectionFeedback = createDummyConnection(request);
-		ConnectionLayer layer = (ConnectionLayer)getLayer(LayerConstants.CONNECTION_LAYER);
-		connectionFeedback.setConnectionRouter(layer.getConnectionRouter());
+		connectionFeedback.setConnectionRouter(getDummyConnectionRouter(request));
 		connectionFeedback.setSourceAnchor(getSourceConnectionAnchor(request));
 		feedbackHelper.setConnection(connectionFeedback);
 		addFeedback(connectionFeedback);
