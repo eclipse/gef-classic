@@ -34,7 +34,6 @@ import org.eclipse.swt.dnd.TransferData;
  * drag data. The chosen listener is the first listener in the subset of active listeners
  * whose Transfer supports ({@link Transfer#isSupportedType(TransferData)}) the dataType
  * on the <code>DragSourceEvent</code>.
- * @deprecated use org.eclipse.jface.util.DelegatingDragAdapter instead
  */
 public class DelegatingDragAdapter 
 	extends org.eclipse.jface.util.DelegatingDragAdapter 

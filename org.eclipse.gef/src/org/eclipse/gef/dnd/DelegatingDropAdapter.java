@@ -28,7 +28,6 @@ import org.eclipse.swt.dnd.Transfer;
  * the <code>Tranfer</code> from each listener. {@link #getTransferTypes()} provides the
  * merged transfers. This set of Transfers should be set on the SWT {@link
  * org.eclipse.swt.dnd.DropTarget}.
- * @deprecated use org.eclipse.jface.util.DelegatingDropAdapter instead
  */
 public class DelegatingDropAdapter 
 	extends org.eclipse.jface.util.DelegatingDropAdapter
