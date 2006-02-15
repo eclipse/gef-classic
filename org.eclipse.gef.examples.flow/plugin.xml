@@ -15,16 +15,6 @@
       </editor>
    </extension>
    <extension
-         point="org.eclipse.ui.views">
-      <view
-            name="Plugin Dependencies (GEF Example)"
-            icon="view.gif"
-            category="org.eclipse.ui"
-            class="org.eclipse.gef.examples.pde.PluginDependenciesView"
-            id="plugindependencies">
-      </view>
-   </extension>
-   <extension
          point="org.eclipse.ui.newWizards">
       <category
             name="GEF (Graphical Editing Framework)"
