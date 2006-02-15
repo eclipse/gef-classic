@@ -1187,11 +1187,12 @@ protected void removeFeedback(IFigure figure) {
 }
 
 /**
- * Resets all flags to their initial values.  Subclasses should extend this method to
- * reset their own custom flags.
+ * Resets all stateful flags to their initial values. Subclasses should extend this method
+ * to reset their own custom flags.
  */
 protected void resetFlags() {
 	setFlag(FLAG_PAST_THRESHOLD, false);
+	setFlag(FLAG_HOVER, false);
 }
 
 /**
