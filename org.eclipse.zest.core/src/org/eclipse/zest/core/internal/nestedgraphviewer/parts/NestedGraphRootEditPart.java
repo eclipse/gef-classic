@@ -127,7 +127,7 @@ public class NestedGraphRootEditPart extends GraphRootEditPart {
 				//break;
 			case ZestStyles.ZOOM_EXPAND :
 			default:
-				doExpandZoom(startBounds, maxBounds, 30, (NestedFigure)editPart.getFigure());
+				doExpandZoom(startBounds, maxBounds, 25, (NestedFigure)editPart.getFigure());
 				break;
 		}
 		
@@ -148,8 +148,11 @@ public class NestedGraphRootEditPart extends GraphRootEditPart {
 		Rectangle startBounds = editPart.getScreenBounds();
 		getRootNestedFigure().translateToRelative(startBounds);
 		NestedFigure nestedFig = (NestedFigure)editPart.getFigure();
-		double scale = nestedFig.calculateTotalScale();
-		startBounds.setSize(startBounds.getSize().scale(scale / nestedFig.getScale()));
+		double wScale = nestedFig.calculateTotalWidthScale();
+		double hScale = nestedFig.calculateTotalHeightScale();
+		startBounds.setSize(startBounds.getSize().scale(wScale / nestedFig.getWidthScale(), 
+														hScale / nestedFig.getHeightScale() ) );
+		
 		
 		switch (zoomStyle) {
 			case ZestStyles.ZOOM_REAL :
@@ -161,7 +164,7 @@ public class NestedGraphRootEditPart extends GraphRootEditPart {
 				//break;
 			case ZestStyles.ZOOM_EXPAND :
 			default :
-				doCollapseZoom(maxBounds, startBounds, 30, (NestedFigure)editPart.getFigure());
+				doCollapseZoom(maxBounds, startBounds, 25, (NestedFigure)editPart.getFigure());
 				break;
 		}		
 	}
@@ -183,8 +186,11 @@ public class NestedGraphRootEditPart extends GraphRootEditPart {
 				xRightScale = xright / (double)STEPS;
 			double yTopScale = ytop / (double)STEPS, 
 				yBottomScale = ybottom / (double)STEPS;
-			double scaleScale = (1 - fig.getScaledFigure().getScale()) / (double)STEPS;
-			double initialScale = fig.getScaledFigure().getScale();
+			double xScaleScale = (1 - fig.getScaledFigure().getWidthScale()) / (double)STEPS;
+			double yScaleScale = ( 1- fig.getScaledFigure().getHeightScale()) / (double) STEPS;
+			double initialXScale = fig.getScaledFigure().getWidthScale();
+			double initialYScale = fig.getScaledFigure().getHeightScale();
+			
 			
 			IFigure parent = fig.getParent();
 			parent.remove(fig);
@@ -195,13 +201,13 @@ public class NestedGraphRootEditPart extends GraphRootEditPart {
 				int y = (int)(startBounds.y - (i * yTopScale));
 				int w = (int)(startBounds.width + (i * xLeftScale) + (i * xRightScale));
 				int h = (int)(startBounds.height + (i * yTopScale) + (i * yBottomScale));
-				fig.setScale(initialScale + (i * scaleScale));
+				fig.setScale(initialXScale + (i * xScaleScale), initialYScale + ( i*yScaleScale));
 				fig.setBounds(new Rectangle(x, y, w, h));				
 				getViewer().flush();
 				//sleep(SLEEP);
 			}
 			
-			fig.setScale(1);
+			fig.setScale(1.0, 1.0);
 			fig.setBounds(endBounds);
 			getViewer().flush();
 			sleep(SLEEP);
@@ -229,8 +235,11 @@ public class NestedGraphRootEditPart extends GraphRootEditPart {
 				xRightScale = xright / (double)STEPS;
 			double yTopScale = ytop / (double)STEPS, 
 				yBottomScale = ybottom / (double)STEPS;
-			double scaleScale = (1 - fig.getScaledFigure().getScale()) / (double)STEPS;
-			double finalScale = fig.getScaledFigure().getScale();
+			double xScaleScale = (1 - fig.getScaledFigure().getWidthScale()) / (double)STEPS;
+			double yScaleScale = (1 - fig.getScaledFigure().getHeightScale()) / (double)STEPS;
+			double finalXScale = fig.getScaledFigure().getWidthScale();
+			double finalYScale = fig.getScaledFigure().getHeightScale();
+			
 			IFigure parent = fig.getParent();
 			parent.remove(fig);
 			getFigure().add(fig);
@@ -240,13 +249,13 @@ public class NestedGraphRootEditPart extends GraphRootEditPart {
 				int y = (int)(startBounds.y - (i * yTopScale));
 				int w = (int)(startBounds.width + (i * xLeftScale) + (i * xRightScale));
 				int h = (int)(startBounds.height + (i * yTopScale) + (i * yBottomScale));
-				fig.setScale(1 - (i * scaleScale));
+				fig.setScale(1 - (i * xScaleScale), 1- (i*yScaleScale));
 				fig.setBounds(new Rectangle(x, y, w, h));		
 				getViewer().flush();
 				//sleep(SLEEP);
 			}
 			
-			fig.setScale(finalScale);
+			fig.setScale(finalXScale, finalYScale);
 			fig.setBounds(endBounds);
 			getViewer().flush();
 			sleep(SLEEP);

@@ -180,7 +180,8 @@ public class NestedGraphViewerImpl extends NonThreadedGraphicalViewer
 				checkScaling(previousNode);
 				
 				super.setContents(model);
-				this.flush();
+				getLightweightSystem().getUpdateManager().performValidation();
+				//this.flush();
 				//Display.getCurrent().update();
 				nodeToSelect = previousNode;  // select the previous node
 				
@@ -281,15 +282,18 @@ public class NestedGraphViewerImpl extends NonThreadedGraphicalViewer
 			double minHeight = minSize.height;
 			
 			double scale = 1;
-			if ((minWidth > width) || (minHeight > height)) {
-				double xscale = width / minWidth; 
-				double yscale = height / minHeight;
+			double xscale = 1.0;
+			double yscale = 1.0;
+			//if ((minWidth > width) || (minHeight > height)) {
+				xscale = width / minWidth; 
+				yscale = height / minHeight;
 				scale = Math.min(xscale, yscale);
-			}
-			if (scale < 1) {
+			//}
+			//if (scale < 1) {
 				scale = (double)((int)(100 * scale)) / 100D;	// chop to 2 decimal places
-				rootNode.setScale(scale);
-			}
+//				rootNode.setScale(scale)
+				rootNode.setScale(xscale, yscale);
+			//}
 		}
 	}
 	

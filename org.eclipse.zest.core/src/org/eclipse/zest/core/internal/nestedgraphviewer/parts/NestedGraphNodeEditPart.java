@@ -87,7 +87,7 @@ public class NestedGraphNodeEditPart extends GraphNodeEditPart implements Action
 			NestedFigure nestedFigure = new NestedFigure(label, plusMinus);
 			nestedFigure.setBackgroundColor(node.getBackgroundColor());
 			nestedFigure.setNestedFiguresVisible(node.getChildrenVisible());
-			nestedFigure.setScale(node.getScale());
+			nestedFigure.setScale(node.getWidthScale(), node.getHeightScale());
 			figure = nestedFigure;
 		} else {
 			figure = super.createFigureForModel();
@@ -108,6 +108,7 @@ public class NestedGraphNodeEditPart extends GraphNodeEditPart implements Action
 	 * @see ca.uvic.cs.zest.internal.springgraphviewer.parts.GraphNodeEditPart#performRequest(org.eclipse.gef.Request)
 	 */
 	public void performRequest(Request req) {
+		
 		if (REQ_OPEN.equals(req.getType())) {
 			//DebugPrint.println("performRequest() Bounds: " + getFigure().getBounds() + "\t " + getCastedModel().getLocation() + ", " + getCastedModel().getSize());
 			//DebugPrint.println("performRequest() Scale: " + getCastedModel().getScale() + ", " + ((NestedFigure)getFigure()).getScale());
@@ -148,13 +149,14 @@ public class NestedGraphNodeEditPart extends GraphNodeEditPart implements Action
 				Rectangle bounds = getGraphModel().getMainArea();
 				viewer.doLayout(node, bounds.width, bounds.height);
 				viewer.checkScaling(node);
-				if (node.getScale() != fig.getScale()) {
-					fig.setScale(node.getScale());
-				}
+				//if (node.getScale() != fig.getScale()) {
+					fig.setScale(node.getWidthScale(), node.getHeightScale());
+				//}
 			}
 		}
 		
 	}
+
 
 	/* (non-Javadoc)
 	 * @see ca.uvic.cs.zest.internal.springgraphviewer.parts.GraphNodeEditPart#refreshVisuals()

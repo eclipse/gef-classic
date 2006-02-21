@@ -40,7 +40,8 @@ public class NestedFigure extends Figure {
 	//private Clickable button = null;[irbull]
 	
 	/** Container figure for other figures */
-	private ScaledFigure scaledFigure = null;
+	private AspectRatioScaledFigure scaledFigure = null;
+	
 	
 	private ScrollPane scrollPane = null;
 	
@@ -74,7 +75,8 @@ public class NestedFigure extends Figure {
 		this.label.setOpaque(true);
 		this.label.setLabelAlignment(PositionConstants.CENTER);
 		//this.button = button; [irbull]
-		this.scaledFigure = new ScaledFigure();
+		//this.scaledFigure = new ScaledFigure();
+		this.scaledFigure = new AspectRatioScaledFigure();
 		this.scaledFigure.setVisible(false);
 		//this.scaledFigure.setBorder(new EdgeBorder(ColorConstants.black, 1, 0, 0, 0));
 		
@@ -165,7 +167,7 @@ public class NestedFigure extends Figure {
 		return label;
 	}
 	
-	public ScaledFigure getScaledFigure() {
+	public AspectRatioScaledFigure getScaledFigure() {
 		return scaledFigure;
 	}
 	
@@ -215,23 +217,56 @@ public class NestedFigure extends Figure {
 	 * Sets the scale of the ScaledFigure.
 	 * @param scale the scale
 	 */
-	public void setScale(double scale) {
-		scaledFigure.setScale(scale);
+	public void setScale(double wScale, double hScale) {
+		scaledFigure.setScale(wScale, hScale);
 	}
 	
 	/**
 	 * Gets the scale of the ScaledFigure.
 	 * @return double the scale
 	 */
+	/*
 	public double getScale() {
 		return scaledFigure.getScale();
 	}
+	*/
+	public double getWidthScale() {
+		return scaledFigure.getWidthScale();
+	}
+	
+	public double getHeightScale() {
+		return scaledFigure.getHeightScale();
+	}
 
+	
+	public double calculateTotalWidthScale() {
+		double scale = getWidthScale();
+		NestedFigure fig = this;
+		while ( ( fig.getParent() instanceof AspectRatioScaledFigure ) && ( fig.getParent().getParent() instanceof NestedFigure ) ) {
+			fig = (NestedFigure)fig.getParent().getParent();
+			scale *= fig.getWidthScale();
+		}
+		return scale;
+	}
+	
+	
+	public double calculateTotalHeightScale() {
+		double scale = getHeightScale();
+		NestedFigure fig = this;
+		while ( ( fig.getParent() instanceof AspectRatioScaledFigure ) && ( fig.getParent().getParent() instanceof NestedFigure ) ) {
+			fig = (NestedFigure)fig.getParent().getParent();
+			scale *= fig.getHeightScale();
+		}
+		return scale;
+	}
+
+	
 	/**
 	 * Calculates the total scale for this figure.  It traverses up the
 	 * parent hierarchy multiplying the scales of each NestedFigure.
 	 * @return double
 	 */
+	/*
 	public double calculateTotalScale() {
 		double scale = getScale();
 		NestedFigure fig = this;
@@ -241,6 +276,7 @@ public class NestedFigure extends Figure {
 		}
 		return scale;
 	}
+	*/
 	
 	/**
 	 * Sets the visibility of the nested figures.

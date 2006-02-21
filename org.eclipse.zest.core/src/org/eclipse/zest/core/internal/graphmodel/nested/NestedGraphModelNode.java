@@ -44,7 +44,8 @@ public class NestedGraphModelNode extends GraphModelNode implements NestedLayout
 	private NestedGraphModelNode parent;
 	private List children;
 	private int depth;		// the depth of this node.  Root nodes (null parent) are at a depth 0
-	private double scale;
+	private double widthScale;
+	private double heightScale;
 	private boolean isCurrent;
 	private boolean childrenVisible;
 	private Rectangle childrenBounds;
@@ -75,7 +76,8 @@ public class NestedGraphModelNode extends GraphModelNode implements NestedLayout
 		this.parent = null;
 		this.children = new ArrayList();
 		this.depth = 0;
-		this.scale = 1;
+		this.widthScale = 1.0;
+		this.heightScale = 1.0;
 		this.isCurrent = false;
 		this.childrenVisible = false;
 	}
@@ -304,21 +306,35 @@ public class NestedGraphModelNode extends GraphModelNode implements NestedLayout
 	 * Currently this always returns 1
 	 * @return
 	 */
-	public double getScale() {
-		return (isCurrent() ? 1 : scale);
+	//public double getScale() {
+	//	return (isCurrent() ? 1 : scale);
+	//}
+	
+	
+	public double getWidthScale() {
+		return widthScale;
+	}
+	public double getHeightScale() {
+		return heightScale;
+	}
+	
+	public void setScale( double w, double h ) {
+		this.widthScale = w;
+		this.heightScale = h;
+		
 	}
 	
 	/**
 	 * The scale from (0-1].  The scale defaults to 1.
 	 * @param scale
 	 */
-	public void setScale(double scale) {
-		if ((scale > 0) && (scale <= 1)) {
-			this.scale = scale;
-		} else {
-			this.scale = 1 ;
-		}
-	}
+	//public void setScale(double scale) {
+	//	if ((scale > 0) && (scale <= 1)) {
+	//		this.scale = scale;
+	//	} else {
+	//		this.scale = 1 ;
+	//	}
+	//}
 
 	/* (non-Javadoc)
 	 * @see ca.uvic.cs.zest.internal.graphmodel.GraphModelNode#calculateMinimumLabelSize()
