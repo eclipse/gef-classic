@@ -27,7 +27,8 @@ public class Graph extends Canvas {
 	 * @param parent
 	 */
 	public Graph(Composite parent) {
-		super(parent, SWT.V_SCROLL | SWT.H_SCROLL);
+		super(parent, SWT.NONE);
+		
 		//setScrollBarVisibility(FigureCanvas.NEVER);
 	}
 

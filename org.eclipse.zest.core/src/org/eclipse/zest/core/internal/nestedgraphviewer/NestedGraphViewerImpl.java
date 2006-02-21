@@ -23,7 +23,7 @@ import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.editparts.LayerManager;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.mylar.zest.core.ZestStyles;
-import org.eclipse.mylar.zest.core.internal.gefx.ThreadedGraphicalViewer;
+import org.eclipse.mylar.zest.core.internal.gefx.NonThreadedGraphicalViewer;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelConnection;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedGraphModel;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedGraphModelNode;
@@ -53,7 +53,7 @@ import org.eclipse.swt.widgets.Widget;
  * 
  * @author Chris Callendar 
  */
-public class NestedGraphViewerImpl extends ThreadedGraphicalViewer 
+public class NestedGraphViewerImpl extends NonThreadedGraphicalViewer 
 	implements IBreadCrumbListener {
 	
 	private NestedGraphModel model = null;
@@ -180,7 +180,7 @@ public class NestedGraphViewerImpl extends ThreadedGraphicalViewer
 				checkScaling(previousNode);
 				
 				super.setContents(model);
-				//this.flush();
+				this.flush();
 				//Display.getCurrent().update();
 				nodeToSelect = previousNode;  // select the previous node
 				
@@ -193,7 +193,7 @@ public class NestedGraphViewerImpl extends ThreadedGraphicalViewer
 				
 				// now do the zoom (sizes and locations should be set)
 				rootEditPart = (NestedGraphRootEditPart)getRootEditPart();
-				//rootEditPart.zoomOutOnNode((NestedGraphNodeEditPart)previousNode.getEditPart());
+				rootEditPart.zoomOutOnNode((NestedGraphNodeEditPart)previousNode.getEditPart());
 			}
 			else {
 				super.setContents(model);

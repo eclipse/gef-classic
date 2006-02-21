@@ -16,6 +16,7 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.GraphicalEditPart;
+import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.mylar.zest.core.ZestStyles;
 import org.eclipse.mylar.zest.core.internal.gefx.GraphRootEditPart;
 import org.eclipse.mylar.zest.core.internal.viewers.figures.NestedFigure;
@@ -34,6 +35,16 @@ import org.eclipse.mylar.zest.core.internal.viewers.figures.OutlineFigure;
 public class NestedGraphRootEditPart extends GraphRootEditPart {
 
 	private int zoomStyle = ZestStyles.ZOOM_EXPAND;
+	
+	private ZoomManager zoomManager;
+
+	
+	public ZoomManager getZoomManager() {
+		// TODO Auto-generated method stub
+		return this.zoomManager;
+	}
+	
+
 	
 	/**
 	 * Initializes the root edit part with the given zoom style.
@@ -57,11 +68,13 @@ public class NestedGraphRootEditPart extends GraphRootEditPart {
 		Rectangle maxBounds = getRootNestedFigure().getBounds().getCopy();
 		return maxBounds;
 	}
+	
 
 	/**
 	 * Gets the root NestedFigure.
 	 * @return IFigure
 	 */
+	
 	protected IFigure getRootNestedFigure() {
 		IFigure fig = getFigure();
 		if (getChildren().size() > 0) {
@@ -73,6 +86,7 @@ public class NestedGraphRootEditPart extends GraphRootEditPart {
 		}
 		return fig;
 	}
+	
 		
 	/**
 	 * Zooms in on the given node.
@@ -82,6 +96,23 @@ public class NestedGraphRootEditPart extends GraphRootEditPart {
 	public void zoomInOnNode(NestedGraphNodeEditPart editPart) {
 		if (editPart == null)
 			return;
+		
+		//System.out.println(getFigure().getBounds());
+		//this.zoomManager = new AnimatableZoomManager((ScalableFreeformLayeredPane)getScaledLayers(), (Viewport)getFigure());
+		/*
+		AnimatableZoomManager azm = (AnimatableZoomManager)getZoomManager();
+		azm.setZoomAnimationStyle(AnimatableZoomManager.ANIMATE_ZOOM_IN_OUT);
+		NestedFigure nestedFig = (NestedFigure)editPart.getFigure();
+		
+		System.out.println(nestedFig.getSize());
+		Point p = editPart.getFigure().getBounds().getCenter();
+		//p.x += 80;
+		p.y += 50;
+		
+		
+		azm.zoomTo(10.0, p);
+		*/
+		
 		
 		Rectangle maxBounds = getMaxBounds();
 		Rectangle startBounds = editPart.getScreenBounds();
@@ -96,9 +127,10 @@ public class NestedGraphRootEditPart extends GraphRootEditPart {
 				//break;
 			case ZestStyles.ZOOM_EXPAND :
 			default:
-				doExpandZoom(startBounds, maxBounds, 5, (NestedFigure)editPart.getFigure());
+				doExpandZoom(startBounds, maxBounds, 30, (NestedFigure)editPart.getFigure());
 				break;
 		}
+		
 		
 	}
 	
@@ -107,11 +139,12 @@ public class NestedGraphRootEditPart extends GraphRootEditPart {
 	 * The type of zooming (real, fake, collapse) depends on the zoomStyle.
 	 * @param editPart
 	 */
+	
 	public void zoomOutOnNode( NestedGraphNodeEditPart editPart) {
 		if (editPart == null)
 			return;
 		
-		//Rectangle maxBounds = getMaxBounds();
+		Rectangle maxBounds = getMaxBounds();
 		Rectangle startBounds = editPart.getScreenBounds();
 		getRootNestedFigure().translateToRelative(startBounds);
 		NestedFigure nestedFig = (NestedFigure)editPart.getFigure();
@@ -128,17 +161,19 @@ public class NestedGraphRootEditPart extends GraphRootEditPart {
 				//break;
 			case ZestStyles.ZOOM_EXPAND :
 			default :
-				//doCollapseZoom(maxBounds, startBounds, 5, (NestedFigure)editPart.getFigure());
+				doCollapseZoom(maxBounds, startBounds, 30, (NestedFigure)editPart.getFigure());
 				break;
 		}		
 	}
+	
 
 	/**
 	 * Draws an expanding dotted rectangle figure around the node to give the impression
 	 * of zooming in.  The dotted rectangle starts at the center of the node.
 	 */
 	protected void doExpandZoom(Rectangle startBounds, Rectangle endBounds, final int STEPS, NestedFigure fig) {
-		final int SLEEP = 35;
+		final int SLEEP = 1;
+		
 		if (STEPS > 0) {
 			double xleft = startBounds.x - endBounds.x;
 			double ytop = startBounds.y - endBounds.y;
@@ -163,7 +198,7 @@ public class NestedGraphRootEditPart extends GraphRootEditPart {
 				fig.setScale(initialScale + (i * scaleScale));
 				fig.setBounds(new Rectangle(x, y, w, h));				
 				getViewer().flush();
-				sleep(SLEEP);
+				//sleep(SLEEP);
 			}
 			
 			fig.setScale(1);
@@ -173,15 +208,19 @@ public class NestedGraphRootEditPart extends GraphRootEditPart {
 			
 			getFigure().remove(fig);
 		}
+		
 	}
 	
 	/**
 	 * Draws an expanding dotted rectangle figure around the node to give the impression
 	 * of zooming in.  The dotted rectangle starts at the center of the node.
 	 */
+	
 	protected void doCollapseZoom(Rectangle startBounds, Rectangle endBounds, final int STEPS, NestedFigure fig) {
-		final int SLEEP = 35;
+		final int SLEEP = 1;
+		
 		if (STEPS > 0) {
+			
 			double xleft = startBounds.x - endBounds.x;
 			double ytop = startBounds.y - endBounds.y;
 			double xright = endBounds.right() - startBounds.right();
@@ -204,7 +243,7 @@ public class NestedGraphRootEditPart extends GraphRootEditPart {
 				fig.setScale(1 - (i * scaleScale));
 				fig.setBounds(new Rectangle(x, y, w, h));		
 				getViewer().flush();
-				sleep(SLEEP);
+				//sleep(SLEEP);
 			}
 			
 			fig.setScale(finalScale);
@@ -219,7 +258,9 @@ public class NestedGraphRootEditPart extends GraphRootEditPart {
 			fig.translateToRelative(endBounds);
 			fig.setBounds(endBounds);
 		}
+		
 	}
+	
 	
 	/**
 	 * Draws an expanding dotted rectangle figure around the node to give the impression
