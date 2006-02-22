@@ -285,27 +285,27 @@ public class NestedGraphViewerImpl extends NonThreadedGraphicalViewer
 			double scale = 1;
 			double xscale = 1.0;
 			double yscale = 1.0;
-			//if ((minWidth > width) || (minHeight > height)) {
-				xscale = width / minWidth; 
-				yscale = height / minHeight;
-				scale = Math.min(xscale, yscale);
-			//}
-			//if (scale < 1) {
-				scale = (double)((int)(100 * scale)) / 100D;	// chop to 2 decimal places
-//				rootNode.setScale(scale)
-				if ( rootNode.getCastedParent() != null ) {
-					xscale *= rootNode.getCastedParent().getWidthScale();
-					yscale *= rootNode.getCastedParent().getHeightScale();
-				}
-				
-				rootNode.setScale(xscale, yscale);
-			//}
+
+			xscale = width / minWidth;
+			yscale = height / minHeight;
+			scale = Math.min(xscale, yscale);
+
+			scale = (double) ((int) (100 * scale)) / 100D; // chop to 2 decimal
+															// places
+
+			if (rootNode.getCastedParent() != null) {
+				xscale *= rootNode.getCastedParent().getWidthScale();
+				yscale *= rootNode.getCastedParent().getHeightScale();
+			}
+
+			rootNode.setScale(xscale, yscale);
+
 		}
 	}
 	
 	/**
-	 * Removes all the connections from the EditPart registry. 
-	 * They will be recreated when setContents(model) is called.
+	 * Removes all the connections from the EditPart registry. They will be
+	 * recreated when setContents(model) is called.
 	 */
 	private void removeConnections() {
 		ArrayList list = new ArrayList();
