@@ -127,6 +127,7 @@ public class NestedGraphModelNode extends GraphModelNode implements NestedLayout
 		return that.isAncestorOf( this );
 	}	
 	
+	
 	/**
 	 * Returns the parent (or null if it is a root node).
 	 * @return NestedGraphModelNode

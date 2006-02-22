@@ -281,6 +281,7 @@ public class NestedGraphViewerImpl extends NonThreadedGraphicalViewer
 			double minWidth = minSize.width;
 			double minHeight = minSize.height;
 			
+			
 			double scale = 1;
 			double xscale = 1.0;
 			double yscale = 1.0;
@@ -292,6 +293,11 @@ public class NestedGraphViewerImpl extends NonThreadedGraphicalViewer
 			//if (scale < 1) {
 				scale = (double)((int)(100 * scale)) / 100D;	// chop to 2 decimal places
 //				rootNode.setScale(scale)
+				if ( rootNode.getCastedParent() != null ) {
+					xscale *= rootNode.getCastedParent().getWidthScale();
+					yscale *= rootNode.getCastedParent().getHeightScale();
+				}
+				
 				rootNode.setScale(xscale, yscale);
 			//}
 		}
