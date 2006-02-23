@@ -2,43 +2,38 @@
 <feature
       id="org.eclipse.gef"
       label="%featureName"
-      version="3.2.0"
-      image= "eclipse_update_120.jpg"
-      provider-name="%providerName">
+      version="3.2.0.qualifier"
+      provider-name="%providerName"
+      image="eclipse_update_120.jpg">
 
    <description>
       %description
    </description>
 
    <license url="%licenseURL">
-     %license
+      %license
    </license>
 
    <url>
-      <update
-         url="http://update.eclipse.org/updates/3.0"
-         label="%updateSiteName">
-      </update>
+      <update label="%updateSiteName" url="http://update.eclipse.org/updates/3.0"/>
    </url>
 
-  <requires>
-  	  <import plugin="org.eclipse.platform" version="3.2.0" match="compatible" />
-  </requires>
-  
+   <requires>
+      <import plugin="org.eclipse.platform" version="3.2.0" match="compatible"/>
+   </requires>
+
    <plugin
          id="org.eclipse.draw2d"
          download-size="0"
          install-size="0"
          version="0.0.0"
-         unpack="false">
-   </plugin>
+         unpack="false"/>
 
    <plugin
          id="org.eclipse.gef"
          download-size="0"
          install-size="0"
          version="0.0.0"
-         unpack="false">
-   </plugin>
+         unpack="false"/>
 
 </feature>

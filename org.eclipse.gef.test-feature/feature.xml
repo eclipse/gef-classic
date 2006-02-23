@@ -2,31 +2,64 @@
 <feature
       id="org.eclipse.gef.test"
       label="%featureName"
-      version="3.2.0"
-      image= "eclipse_update_120.jpg"
-      provider-name="%providerName">
+      version="3.2.0.qualifier"
+      provider-name="%providerName"
+      image="eclipse_update_120.jpg">
 
    <description>
       %description
    </description>
-   
+
    <license url="%licenseURL">
-     %license
+      %license
    </license>
 
    <url>
-      <update
-         url="http://update.eclipse.org/updates/3.0"
-         label="%updateSiteName">
-      </update>
+      <update label="%updateSiteName" url="http://update.eclipse.org/updates/3.0"/>
    </url>
-   
-   <plugin id="org.eclipse.gef.test" version="0.0.0"/>
-   <plugin id="org.eclipse.draw2d.test" version="0.0.0"/>
-   <plugin id="org.eclipse.test" version="0.0.0" />
-   <plugin id="org.eclipse.ant.optional.junit" version="0.0.0" fragment="true"/>
-   <plugin id="org.eclipse.test.performance" version="0.0.0" />
-   <plugin id="org.eclipse.gef.test.source" version="0.0.0"/>
-    <plugin id="org.eclipse.test.performance.win32" version="0.0.0" fragment="true"/>
-  
+
+   <plugin
+         id="org.eclipse.gef.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.eclipse.draw2d.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.eclipse.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.eclipse.ant.optional.junit"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"/>
+
+   <plugin
+         id="org.eclipse.test.performance"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.eclipse.gef.test.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.eclipse.test.performance.win32"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"/>
+
 </feature>
