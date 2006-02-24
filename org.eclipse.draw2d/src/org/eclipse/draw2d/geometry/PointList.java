@@ -314,6 +314,22 @@ public Point removePoint(int index) {
 	return pt;
 }
 
+/**
+ * Reverses the order of the points in the list.
+ * @since 3.2
+ */
+public void reverse() {
+	int temp;
+	for (int i = 0, j = size * 2 - 2; i < size; i += 2 , j -= 2) {
+		temp = points[i];
+		points[i] = points[j];
+		points[j] = temp;
+		temp = points[i + 1];
+		points[i + 1] = points[j + 1];
+		points[j + 1] = temp;
+	}
+}
+
 /** 
  * Overwrites a point at a given index in the list with the specified Point.
  * @param pt  Point which is to be stored at the index.
