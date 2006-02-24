@@ -314,6 +314,17 @@ private boolean removeEdge(Edge e) {
 	return true;
 }
 
+/**
+ * Removes all edges between a parent and any of its children or descendants.
+ */
+private void removeParentChildEdges(DirectedGraph g) {
+	for (int i = 0; i < g.edges.size(); i++) {
+		Edge e = g.edges.getEdge(i);
+		if (e.source.isNested(e.target) || e.target.isNested(e.source))
+			removeEdge(e);
+	}
+}
+
 private void removeSink(Node sink, NodeList allSinks) {
 	for (int i = 0; i < sink.incoming.size(); i++) {
 		Edge e = sink.incoming.getEdge(i);
@@ -364,35 +375,6 @@ private boolean restoreEdge(Edge e) {
  * @param node the node to restore
  * @param sr current sinks
  */
-private void restoreSources(Node node) {
-	if (node.flag && sL.contains(node)) {
-		node.flag = false;
-		if (node.getParent() != null)
-			setChildCount(node.getParent(), getChildCount(node.getParent()) + 1);
-		sL.remove(node);
-		for (int i = 0; i < node.incoming.size(); i++) {
-			Edge e = node.incoming.getEdge(i);
-			restoreEdge(e);
-		}
-		for (int i = 0; i < node.outgoing.size(); i++) {
-			Edge e = node.outgoing.getEdge(i);
-			restoreEdge(e);
-		}
-	}
-	if (node instanceof Subgraph) {
-		Subgraph s = (Subgraph)node;
-		for (int i = 0; i < s.members.size(); i++) {
-			Node member = s.members.getNode(i);
-			restoreSources(member);
-		}
-	}
-}
-
-/**
- * Brings back all nodes nested in the given node.
- * @param node the node to restore
- * @param sr current sinks
- */
 private void restoreSinks(Node node, NodeList sR) {
 	if (node.flag && sR.contains(node)) {
 		node.flag = false;
@@ -413,6 +395,35 @@ private void restoreSinks(Node node, NodeList sR) {
 		for (int i = 0; i < s.members.size(); i++) {
 			Node member = s.members.getNode(i);
 			restoreSinks(member, sR);
+		}
+	}
+}
+
+/**
+ * Brings back all nodes nested in the given node.
+ * @param node the node to restore
+ * @param sr current sinks
+ */
+private void restoreSources(Node node) {
+	if (node.flag && sL.contains(node)) {
+		node.flag = false;
+		if (node.getParent() != null)
+			setChildCount(node.getParent(), getChildCount(node.getParent()) + 1);
+		sL.remove(node);
+		for (int i = 0; i < node.incoming.size(); i++) {
+			Edge e = node.incoming.getEdge(i);
+			restoreEdge(e);
+		}
+		for (int i = 0; i < node.outgoing.size(); i++) {
+			Edge e = node.outgoing.getEdge(i);
+			restoreEdge(e);
+		}
+	}
+	if (node instanceof Subgraph) {
+		Subgraph s = (Subgraph)node;
+		for (int i = 0; i < s.members.size(); i++) {
+			Node member = s.members.getNode(i);
+			restoreSources(member);
 		}
 	}
 }
@@ -457,17 +468,6 @@ public void visit(DirectedGraph g) {
 	removeParentChildEdges(g);
 	cycleRemove(roots);
 	invertEdges(g);
-}
-
-/**
- * Removes all edges between a parent and any of its children or descendants.
- */
-private void removeParentChildEdges(DirectedGraph g) {
-	for (int i = 0; i < g.edges.size(); i++) {
-		Edge e = g.edges.getEdge(i);
-		if (e.source.isNested(e.target) || e.target.isNested(e.source))
-			removeEdge(e);
-	}
 }
 
 }

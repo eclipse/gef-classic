@@ -39,8 +39,8 @@ public final class CompoundDirectedGraphLayout extends DirectedGraphLayout {
 
 void init() {
 	steps.add(new TransposeMetrics());
-	steps.add(new RouteEdges());	
 	steps.add(new CompoundBreakCycles());
+	steps.add(new RouteEdges());	
 	steps.add(new ConvertCompoundGraph());
 	steps.add(new InitialRankSolver());
 	steps.add(new TightSpanningTreeSolver());

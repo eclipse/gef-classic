@@ -74,8 +74,8 @@ public DirectedGraphLayout() {
 
 void init() {
 	steps.add(new TransposeMetrics());
-	steps.add(new RouteEdges());
 	steps.add(new BreakCycles());
+	steps.add(new RouteEdges());
 	steps.add(new InitialRankSolver());
 	steps.add(new TightSpanningTreeSolver());
 	steps.add(new RankAssigmentSolver());

@@ -264,6 +264,9 @@ public void invert() {
 	target.incoming.add(this);
 	source.outgoing.add(this);
 	
+	if (points != null)
+		points.reverse();
+	
 	if (vNodes != null) {
 		NodeList newVNodes = new NodeList();
 		for (int j = vNodes.size() - 1; j >= 0; j--) {
