@@ -28,6 +28,7 @@ private Object template;
  * Constructs an entry with the given creation factory and template. The creation factory
  * is used by the creation tool when the entry is selected. The template is used with the
  * {@link org.eclipse.gef.dnd.TemplateTransferDragSourceListener}.
+ * @since 3.2
  * @param label the label
  * @param shortDesc the descriptoin
  * @param template the template object
