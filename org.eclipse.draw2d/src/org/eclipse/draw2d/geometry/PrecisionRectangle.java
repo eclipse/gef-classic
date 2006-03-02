@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2005 IBM Corporation and others.
+ * Copyright (c) 2003, 2005-2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -74,6 +74,36 @@ public PrecisionRectangle getPreciseCopy() {
 	result.preciseHeight = preciseHeight;
 	result.updateInts();
 	return result;
+}
+
+/**
+ * @see org.eclipse.draw2d.geometry.Rectangle#crop(org.eclipse.draw2d.geometry.Insets)
+ */
+public Rectangle crop(Insets insets) {
+    if (insets == null) 
+        return this;
+    setX(preciseX + insets.left);
+    setY(preciseY + insets.top);
+    setWidth(preciseWidth - (insets.getWidth()));
+    setHeight(preciseHeight - (insets.getHeight()));
+    
+    return this;
+}
+
+/**
+ * @see org.eclipse.draw2d.geometry.Rectangle#equals(java.lang.Object)
+ */
+public boolean equals(Object o) {
+    if (o instanceof PrecisionRectangle) {
+        PrecisionRectangle pr = (PrecisionRectangle)o;
+        return pr.preciseX == preciseX &&
+               pr.preciseY == preciseY &&
+               pr.preciseX == preciseY &&
+               pr.preciseY == preciseY &&
+               super.equals(o);
+    }
+    
+    return super.equals(o);
 }
 
 /**
