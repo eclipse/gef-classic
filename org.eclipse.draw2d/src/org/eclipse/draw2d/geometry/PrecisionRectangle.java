@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2005-2006 IBM Corporation and others.
+ * Copyright (c) 2003, 2005 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -91,16 +91,16 @@ public Rectangle crop(Insets insets) {
 }
 
 /**
- * @see org.eclipse.draw2d.geometry.Rectangle#equals(java.lang.Object)
+ * @see Rectangle#equals(Object)
  */
 public boolean equals(Object o) {
     if (o instanceof PrecisionRectangle) {
         PrecisionRectangle pr = (PrecisionRectangle)o;
-        return pr.preciseX == preciseX &&
-               pr.preciseY == preciseY &&
-               pr.preciseX == preciseY &&
-               pr.preciseY == preciseY &&
-               super.equals(o);
+        return super.equals(o)
+        	&& Math.abs(pr.preciseX - preciseX) < 0.000000001
+        	&& Math.abs(pr.preciseY - preciseY) < 0.000000001
+        	&& Math.abs(pr.preciseWidth - preciseWidth) < 0.000000001
+        	&& Math.abs(pr.preciseHeight - preciseHeight) < 0.00000001;
     }
     
     return super.equals(o);
