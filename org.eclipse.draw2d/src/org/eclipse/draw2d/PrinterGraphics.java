@@ -11,6 +11,7 @@
 package org.eclipse.draw2d;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.swt.graphics.Font;
@@ -52,6 +53,23 @@ private Image printerImage(Image image) {
 	imageCache.put(image, result);
 	return result;
 }
+
+/**
+ * @see org.eclipse.draw2d.ScaledGraphics#dispose()
+ */
+public void dispose() {
+    super.dispose();
+    
+    //Dispose printer images
+    Iterator iter = imageCache.values().iterator();
+    while (iter.hasNext()) {
+        Image printerImage = ((Image)iter.next());
+        printerImage.dispose();
+    }
+    
+    imageCache.clear();
+}
+
 /**
  * @see org.eclipse.draw2d.Graphics#drawImage(Image, int, int)
  */
