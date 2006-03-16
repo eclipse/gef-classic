@@ -253,11 +253,14 @@ protected void notifyListeners() {
 }
 
 /**
- * @since 3.1
- * @param command
- * @param post_execute2
+ * Notifies command stack event listeners that the command stack has changed to the
+ * specified state.
+ * 
+ * @param command the command
+ * @param state the current stack state
+ * @since 3.2
  */
-private void notifyListeners(Command command, int state) {
+protected void notifyListeners(Command command, int state) {
 	CommandStackEvent event = new CommandStackEvent(this, command, state);
 	for (int i = 0; i < eventListeners.size(); i++)
 		((CommandStackEventListener)eventListeners.get(i)).stackChanged(event);
