@@ -50,7 +50,6 @@ void init() {
 	steps.add(new MinCross(new CompoundRankSorter()));
 	steps.add(new SortSubgraphs());
 	steps.add(new CompoundHorizontalPlacement());
-	steps.add(new InvertEdges());
 }
 
 }

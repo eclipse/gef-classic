@@ -84,7 +84,6 @@ void init() {
 	steps.add(new MinCross());
 	steps.add(new LocalOptimizer());
 	steps.add(new HorizontalPlacement());
-	steps.add(new InvertEdges());
 }
 
 /**

@@ -431,7 +431,7 @@ private void restoreSources(Node node) {
 public void revisit(DirectedGraph g) {
 	for (int i = 0; i < g.edges.size(); i++) {
 		Edge e = g.edges.getEdge(i);
-		if (e.isFeedback)
+		if (e.isFeedback())
 			e.invert();
 	}
 }
