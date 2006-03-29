@@ -21,7 +21,7 @@ import org.eclipse.draw2d.geometry.Translatable;
 public class CaretInfo 
 	implements Translatable 
 {
-	
+
 private int ascent, lineAscent, descent, lineDescent, baseline, x;
 
 /**
@@ -44,6 +44,20 @@ protected CaretInfo(int x, int y, int ascent, int descent, int lineAscent, int l
 	this.descent = descent;
 	this.lineAscent = lineAscent;
 	this.lineDescent = lineDescent;
+}
+
+/**
+ * Constructs a CaretInfo object by copying the values from another instance.
+ * @param info the reference
+ * @since 3.2
+ */
+protected CaretInfo(CaretInfo info) {
+	this.ascent = info.ascent;
+	this.baseline = info.baseline;
+	this.descent = info.descent;
+	this.lineAscent = info.lineAscent;
+	this.lineDescent = info.lineDescent;
+	this.x = info.x;
 }
 
 /**
