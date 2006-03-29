@@ -207,7 +207,8 @@ public synchronized void performUpdate(Rectangle exposed) {
  */
 protected void queueWork() {
 	if (!updateQueued) {
-		Display.getCurrent().asyncExec(new UpdateRequest());
+        Display display = Display.getCurrent() == null ? Display.getDefault() : Display.getCurrent();
+        display.asyncExec(new UpdateRequest());
 		updateQueued = true;
 	}
 }
