@@ -111,13 +111,14 @@ public static EditPart findCommonAncestor(EditPart ll, EditPart rr) {
 
 	int il = leftAncestors.size() - 1;
 	int ir = rightAncestors.size() - 1;
-	while (leftAncestors.get(il) == rightAncestors.get(ir)) {
-		il--;
-		ir--;
-	}
-	il++;
+    do {
+        if (leftAncestors.get(il) != rightAncestors.get(ir))
+                break;
+        il--;
+        ir--;           
+    } while (il >= 0 && ir >= 0);
 
-	return (EditPart)leftAncestors.get(il);
+    return (EditPart) leftAncestors.get(il + 1);
 }
 
 }
