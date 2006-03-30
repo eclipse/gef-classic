@@ -94,7 +94,12 @@ static void cleanup() {
 			pair.animator.tearDown(pair.figure);
 		}
 	}
-	
+
+	state = 0;
+	step();
+	//Allow layout to occur normally
+	//updateManager.performUpdate();
+
 	initialStates = null;
 	finalStates = null;
 	figureAnimators = null;
@@ -110,7 +115,7 @@ private static void doRun(int duration) {
 	state = PLAYBACK;
 	progress = 0.1f;
 	startTime = System.currentTimeMillis();
-		
+	
 	notifyPlaybackStarting();
 	
 	while (progress != 0) {
@@ -126,9 +131,6 @@ private static void doRun(int duration) {
 				progress = 0.1f + 0.9f * delta / duration;
 		}
 	}
-	state = 0;
-	step();
-	updateManager.performUpdate();
 }
 
 private static void findUpdateManager() {
