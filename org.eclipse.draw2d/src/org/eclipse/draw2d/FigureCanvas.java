@@ -49,8 +49,8 @@ private Viewport viewport;
 private Font font;
 private int hBarOffset;
 private int vBarOffset;
-private PropertyChangeListener horizontalChangeListener = new PropertyChangeListener()
-{
+
+private PropertyChangeListener horizontalChangeListener = new PropertyChangeListener() {
 	public void propertyChange(PropertyChangeEvent event) {
 		RangeModel model = getViewport().getHorizontalRangeModel();
 		hBarOffset = Math.max(0, -model.getMinimum());
@@ -64,8 +64,7 @@ private PropertyChangeListener horizontalChangeListener = new PropertyChangeList
 	}
 };
 
-private PropertyChangeListener verticalChangeListener = new PropertyChangeListener()
-{
+private PropertyChangeListener verticalChangeListener = new PropertyChangeListener() {
 	public void propertyChange(PropertyChangeEvent event) {
 		RangeModel model = getViewport().getVerticalRangeModel();
 		vBarOffset = Math.max(0, -model.getMinimum());
@@ -217,21 +216,21 @@ private void hook() {
 }
 
 private void hookViewport() {
-	getViewport().
-		getHorizontalRangeModel().
-		addPropertyChangeListener(horizontalChangeListener);
-	getViewport().
-		getVerticalRangeModel().
-		addPropertyChangeListener(verticalChangeListener);
+	getViewport()
+		.getHorizontalRangeModel()
+		.addPropertyChangeListener(horizontalChangeListener);
+	getViewport()
+		.getVerticalRangeModel()
+		.addPropertyChangeListener(verticalChangeListener);
 }
 
 private void unhookViewport() {
-	getViewport().
-		getHorizontalRangeModel().
-		removePropertyChangeListener(horizontalChangeListener);
-	getViewport().
-		getVerticalRangeModel().
-		removePropertyChangeListener(verticalChangeListener);
+	getViewport()
+		.getHorizontalRangeModel()
+		.removePropertyChangeListener(horizontalChangeListener);
+	getViewport()
+		.getVerticalRangeModel()
+		.removePropertyChangeListener(verticalChangeListener);
 }
 
 private void layoutViewport() {
@@ -242,10 +241,18 @@ private void layoutViewport() {
 		getVerticalScrollBarVisibility(),
 		computeTrim(0, 0, 0, 0).width,
 		computeTrim(0, 0, 0, 0).height);
-	if (getHorizontalBar().getVisible() != result.showH)
-		getHorizontalBar().setVisible(result.showH);
-	if (getVerticalBar().getVisible() != result.showV)
-		getVerticalBar().setVisible(result.showV);
+	getLightweightSystem().setIgnoreResize(true);
+	try {
+		if (getHorizontalBar().getVisible() != result.showH)
+			getHorizontalBar().setVisible(result.showH);
+		if (getVerticalBar().getVisible() != result.showV)
+			getVerticalBar().setVisible(result.showV);
+		Rectangle r = new Rectangle(getClientArea());
+		r.setLocation(0, 0);
+		getLightweightSystem().getRootFigure().setBounds(r);
+	} finally {
+		getLightweightSystem().setIgnoreResize(false);
+	}
 }
 
 /**

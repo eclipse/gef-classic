@@ -57,6 +57,7 @@ IFigure contents;
 private IFigure root;
 private EventDispatcher dispatcher;
 private UpdateManager manager = new DeferredUpdateManager();
+private int ignoreResize;
 
 /**
  * Constructs a LightweightSystem on Canvas <i>c</i>.
@@ -112,6 +113,8 @@ protected void addListeners() {
  * Resizes and revalidates the root figure when the control is resized.
  */
 protected void controlResized() {
+	if (ignoreResize > 0)
+		return;
 	Rectangle r = new Rectangle(canvas.getClientArea());
 	r.setLocation(0, 0);
 	root.setBounds(r);
@@ -244,6 +247,13 @@ public void setEventDispatcher(EventDispatcher dispatcher) {
 	this.dispatcher = dispatcher;
 	dispatcher.setRoot(root);
 	dispatcher.setControl(canvas);
+}
+
+void setIgnoreResize(boolean value) {
+	if (value)
+		ignoreResize++;
+	else
+		ignoreResize--;
 }
 
 /**
