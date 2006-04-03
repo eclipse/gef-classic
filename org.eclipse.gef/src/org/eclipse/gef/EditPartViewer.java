@@ -90,7 +90,7 @@ interface Conditional {
 /**
  * Provided for compatibility with existing code.
  * @param listener a drag source listener
- * @deprecated @see #addDragSourceListener(TransferDragSourceListener)
+ * @see #addDragSourceListener(TransferDragSourceListener)
  */
 void addDragSourceListener(org.eclipse.gef.dnd.TransferDragSourceListener listener);
 
@@ -106,7 +106,7 @@ void addDragSourceListener(TransferDragSourceListener listener);
 /**
  * Provided for compatibility with existing code.
  * @param listener the listener
- * @deprecated @see #addDropTargetListener(TransferDropTargetListener)
+ * @see #addDropTargetListener(TransferDropTargetListener)
  */
 void addDropTargetListener(org.eclipse.gef.dnd.TransferDropTargetListener listener);
 
@@ -144,9 +144,9 @@ void appendSelection(EditPart editpart);
 Control createControl(Composite composite);
 
 /**
- * Removes the specified <code>EditPart</code> from the current selection.  If the
+ * Removes the specified <code>EditPart</code> from the current selection. If the
  * selection becomes empty, the viewer's {@link #getContents() contents} becomes the
- * current selected part.  The last EditPart in the new selection is made {@link
+ * current selected part. The last EditPart in the new selection is made {@link
  * EditPart#SELECTED_PRIMARY primary}.
  * <P>Fires selection changed to
  * {@link org.eclipse.jface.viewers.ISelectionChangedListener}s.
@@ -213,15 +213,15 @@ void flush();
 EditPart getContents();
 
 /**
- * Returns <code>null</code> or the <code>MenuManager</code> for this viewer. The menu
- * manager is set using {@link #setContextMenu(MenuManager)}.
+ * Returns <code>null</code> or the MenuManager for this viewer. The menu manager is set
+ * using {@link #setContextMenu(MenuManager)}.
  * @return <code>null</code> or a MenuManager
  */
 MenuManager getContextMenu();
 
 /**
- * Returns the SWT <code>Control</code> for this viewer. This method may return null if
- * the control has not yet been provided or created.
+ * Returns <code>null</code> or the SWT <code>Control</code> for this viewer. The control
+ * is either set explicitly or can be created by the viewer.
  * @see #setControl(Control)
  * @see #createControl(Composite)
  * @return the SWT <code>Control</code>
@@ -326,6 +326,15 @@ List getSelectedEditParts();
 ISelection getSelection();
 
 /**
+ * Returns the viewer's selection manager. The selection manager has complete control over
+ * the viewer's representation of selection. It provides the {@link ISelection} for the
+ * viewer, and manages all changes to the current selection.
+ * @return the selection manager
+ * @since 3.2
+ */
+SelectionManager getSelectionManager();
+
+/**
  * Returns the {@link Map} for associating <i>visual parts</i> with their
  * <code>EditParts</code>. This map is used for hit-testing.  Hit testing is performed by
  * first determining which visual part is hit, and then mapping that part to an
@@ -406,7 +415,7 @@ void setContents(EditPart editpart);
 /**
  * Creates an <code>EditPart</code> for the provided model object using the
  * <code>EditPartFactory</code>.  That EditPart is then added to the {@link
- * #getRootEditPart() RootEditPart}, and becomes the viewer's contents.
+ * #getRootEditPart() RootEditPart}, and becomes the viewer's contents editpart.
  * @param contents the contents model object
  */
 void setContents(Object contents);
@@ -420,7 +429,7 @@ void setContents(Object contents);
 void setContextMenu(MenuManager contextMenu);
 
 /**
- * Optionally sets the <code>Control</code> for this viewer.  The viewer's control is also
+ * Sets the <code>Control</code> for this viewer.  The viewer's control is also
  * set automatically if {@link #createControl(Composite)} is called.
  * @param control the Control
  */
@@ -464,10 +473,9 @@ void setFocus(EditPart focus);
 void setKeyHandler(KeyHandler keyHandler);
 
 /**
- * Sets a property on this viewer.  A viewer property is an arbitrary key-value pair that
- * can be queried and observed via {@link
- * #addPropertyChangeListener(PropertyChangeListener)}.  A <code>null</code> value will
- * remove the property from the viewer.
+ * Sets a property on this viewer. A viewer property is an arbitrary key-value pair that
+ * can be observed via {@link #addPropertyChangeListener(PropertyChangeListener)}. A
+ * <code>null</code> value will remove the property from the viewer.
  * @param propertyName a unique string identifying the property 
  * @param value the properties new value or <code>null</code> to remove
  * @since 3.0
@@ -490,6 +498,13 @@ void setRootEditPart(RootEditPart root);
  * @param value true if the viewer should route events to the EditDomain
  */
 void setRouteEventsToEditDomain(boolean value);
+
+/**
+ * Sets the selection manager for this viewer.
+ * @param manager the new selection manager
+ * @since 3.2
+ */
+void setSelectionManager(SelectionManager manager);
 
 /**
  * Used for accessibility purposes.
