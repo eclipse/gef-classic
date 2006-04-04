@@ -13,6 +13,7 @@ package org.eclipse.mylar.zest.layouts.algorithms;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.mylar.zest.layouts.LayoutStyles;
 import org.eclipse.mylar.zest.layouts.dataStructures.DisplayIndependentPoint;
 import org.eclipse.mylar.zest.layouts.dataStructures.DisplayIndependentRectangle;
 import org.eclipse.mylar.zest.layouts.dataStructures.InternalNode;
@@ -33,6 +34,14 @@ public class RadialLayoutAlgorithm extends TreeLayoutAlgorithm {
 	private TreeLayoutAlgorithm treeLayout;
 	private List roots;
 	
+	
+	/**
+	 * Creates a radial layout with no style.
+	 */
+	public RadialLayoutAlgorithm() {
+		this ( LayoutStyles.NONE );
+	}
+	
 	//TODO: This is a really strange pattern.  It extends tree layout and it contains a tree layout ? 
 	public RadialLayoutAlgorithm ( int styles ) {
 		super( styles );
@@ -46,7 +55,7 @@ public class RadialLayoutAlgorithm extends TreeLayoutAlgorithm {
 	}
 	
 	
-	boolean isValidConfiguration(boolean asynchronous, boolean continueous) {		
+	protected boolean isValidConfiguration(boolean asynchronous, boolean continueous) {		
 		if ( asynchronous && continueous ) return false;
 		else if ( asynchronous && !continueous ) return true;
 		else if ( !asynchronous && continueous ) return false;

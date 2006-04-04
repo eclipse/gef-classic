@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.mylar.zest.layouts.LayoutStyles;
 import org.eclipse.mylar.zest.layouts.dataStructures.DisplayIndependentRectangle;
 import org.eclipse.mylar.zest.layouts.dataStructures.InternalNode;
 import org.eclipse.mylar.zest.layouts.dataStructures.InternalRelationship;
@@ -187,6 +188,15 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
         date = new Date();
     }
 
+    
+    /**
+     * Creates a sprint layout algoirthm with no style
+     *
+     */
+    public SpringLayoutAlgorithm() {
+    	this( LayoutStyles.NONE );
+	}
+    
     public void setLayoutArea(double x, double y, double width, double height) {
         bounds = new DisplayIndependentRectangle(x,y,width,height);
     }
@@ -780,7 +790,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     }
 
 
-    boolean isValidConfiguration(boolean asynchronous, boolean continueous) {
+    protected boolean isValidConfiguration(boolean asynchronous, boolean continueous) {
         if (asynchronous && continueous)
             return true;
         else if (asynchronous && !continueous)

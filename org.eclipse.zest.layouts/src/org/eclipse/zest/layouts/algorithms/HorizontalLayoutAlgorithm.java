@@ -11,6 +11,8 @@
  *******************************************************************************/
 package org.eclipse.mylar.zest.layouts.algorithms;
 
+import org.eclipse.mylar.zest.layouts.LayoutStyles;
+
 /**
  * @version 2.0
  * @author Casey Best and Rob Lintern
@@ -23,6 +25,12 @@ public class HorizontalLayoutAlgorithm extends GridLayoutAlgorithm {
 	}
 
 	/**
+	 * Horizontal Layout Algorithm constructor.  Sets the Style to none.
+	 */
+	public HorizontalLayoutAlgorithm() {
+		this( LayoutStyles.NONE );
+	}
+	/**
 	 * Calculates and returns an array containing the number of columns, followed by the number of rows
 	 */
 	protected int[] calculateNumberOfRowsAndCols (int numChildren, double boundX, double boundY, double boundWidth, double boundHeight) {
@@ -32,7 +40,7 @@ public class HorizontalLayoutAlgorithm extends GridLayoutAlgorithm {
 		return result;
 	}
 	
-	boolean isValidConfiguration(boolean asynchronous, boolean continueous) {
+	protected boolean isValidConfiguration(boolean asynchronous, boolean continueous) {
 		if ( asynchronous && continueous ) return false;
 		else if ( asynchronous && !continueous ) return true;
 		else if ( !asynchronous && continueous ) return false;

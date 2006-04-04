@@ -20,6 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.mylar.zest.layouts.LayoutStyles;
 import org.eclipse.mylar.zest.layouts.dataStructures.DisplayIndependentRectangle;
 import org.eclipse.mylar.zest.layouts.dataStructures.InternalNode;
 import org.eclipse.mylar.zest.layouts.dataStructures.InternalRelationship;
@@ -69,6 +70,14 @@ public class TreeLayoutAlgorithm extends AbstractLayoutAlgorithm {
 	 */
 	public TreeLayoutAlgorithm( int styles ) {
 		super( styles );
+	}
+	
+	/**
+	 * Tree layout algorithm Constructor with NO Style
+	 *
+	 */
+	public TreeLayoutAlgorithm() {
+		this( LayoutStyles.NONE );
 	}
 	
 	/////////////////////////////////////////////////////////////////////////
@@ -546,7 +555,7 @@ public class TreeLayoutAlgorithm extends AbstractLayoutAlgorithm {
     }
 
 
-	boolean isValidConfiguration(boolean asynchronous, boolean continueous) {
+	protected boolean isValidConfiguration(boolean asynchronous, boolean continueous) {
 		if ( asynchronous && continueous ) return false;
 		else if ( asynchronous && !continueous ) return true;
 		else if ( !asynchronous && continueous ) return false;

@@ -13,6 +13,7 @@ package org.eclipse.mylar.zest.layouts.algorithms;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.eclipse.mylar.zest.layouts.LayoutStyles;
 import org.eclipse.mylar.zest.layouts.dataStructures.DisplayIndependentPoint;
 import org.eclipse.mylar.zest.layouts.dataStructures.DisplayIndependentRectangle;
 import org.eclipse.mylar.zest.layouts.dataStructures.FadeCell;
@@ -136,6 +137,14 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
     	super ( styles );
 	}
 
+    
+    /**
+     * Creates a Fad Layout algorithm with no style.
+     */
+    public FadeLayoutAlgorithm() {
+    	this( LayoutStyles.NONE );
+	}
+    
     /**
      * Sets the spring layout move-control.
      * @param move The move-control value.
@@ -313,7 +322,7 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 	}
 
 
-	boolean isValidConfiguration(boolean asynchronous, boolean continueous) {
+	protected boolean isValidConfiguration(boolean asynchronous, boolean continueous) {
 		if ( asynchronous && continueous ) return true;
 		else if ( asynchronous && !continueous ) return true;
 		else if ( !asynchronous && continueous ) return false;

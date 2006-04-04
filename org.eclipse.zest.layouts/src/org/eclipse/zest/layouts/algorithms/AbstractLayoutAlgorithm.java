@@ -108,7 +108,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	private List relationshipsToAdd;
 	
 	//protected boolean cancelled = false;
-	private boolean started = false;
+	protected boolean started = false;
 	protected boolean layoutStopped = true;
 	private boolean isLayoutPaused = false;
 	protected boolean runContinuously = false;
@@ -142,7 +142,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	 * @param asynchronous
 	 * @param continuous
 	 */
-	abstract boolean isValidConfiguration( boolean asynchronous, boolean continuous );
+	protected abstract boolean isValidConfiguration( boolean asynchronous, boolean continuous );
 	
 	/**
 	 * Apply the layout to the given entities.  The entities will be moved and resized based
@@ -409,6 +409,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 
 		// Check that the input is valid
 		if (!verifyInput(entitiesToLayout, relationshipsToConsider)) {
+			layoutStopped = true;
 			throw new RuntimeException(
 					"The relationships in relationshipsToConsider don't contain the entities in entitiesToLayout");
 		}

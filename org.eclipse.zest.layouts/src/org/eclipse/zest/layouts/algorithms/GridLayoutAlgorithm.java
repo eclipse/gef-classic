@@ -45,6 +45,13 @@ public class GridLayoutAlgorithm extends AbstractLayoutAlgorithm {
 	public GridLayoutAlgorithm(int styles) {
 		super(styles);
 	}
+	
+	/**
+	 * Inititalizes the grid layout with no style.
+	 */
+	public GridLayoutAlgorithm() {
+		this(LayoutStyles.NONE);
+	}
 
     
     protected int getCurrentLayoutStep() {
@@ -214,7 +221,7 @@ public class GridLayoutAlgorithm extends AbstractLayoutAlgorithm {
         this.rowPadding = rowPadding;
     }
 
-	boolean isValidConfiguration(boolean asynchronous, boolean continueous) {
+	protected boolean isValidConfiguration(boolean asynchronous, boolean continueous) {
 		if ( asynchronous && continueous ) return false;
 		else if ( asynchronous && !continueous ) return true;
 		else if ( !asynchronous && continueous ) return false;

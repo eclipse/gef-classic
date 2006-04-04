@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.mylar.zest.layouts.algorithms;
 
+import org.eclipse.mylar.zest.layouts.LayoutStyles;
 import org.eclipse.mylar.zest.layouts.dataStructures.InternalNode;
 import org.eclipse.mylar.zest.layouts.dataStructures.InternalRelationship;
 
@@ -25,6 +26,14 @@ import org.eclipse.mylar.zest.layouts.dataStructures.InternalRelationship;
  */
 public class HorizontalTreeLayoutAlgorithm extends TreeLayoutAlgorithm {
 
+	
+	/**
+	 * Creates a horizontal tree layout with no style
+	 */
+	public HorizontalTreeLayoutAlgorithm() {
+		this( LayoutStyles.NONE );
+	}
+	
     /**
      * 
      */
@@ -47,7 +56,7 @@ public class HorizontalTreeLayoutAlgorithm extends TreeLayoutAlgorithm {
     	super.postLayoutAlgorithm(entitiesToLayout, relationshipsToConsider);
     }
     
-    boolean isValidConfiguration(boolean asynchronous, boolean continueous) {
+    protected boolean isValidConfiguration(boolean asynchronous, boolean continueous) {
 		if ( asynchronous && continueous ) return false;
 		else if ( asynchronous && !continueous ) return true;
 		else if ( !asynchronous && continueous ) return false;

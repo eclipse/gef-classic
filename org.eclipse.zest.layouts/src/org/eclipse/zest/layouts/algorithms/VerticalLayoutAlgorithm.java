@@ -10,12 +10,23 @@
  *******************************************************************************/
 package org.eclipse.mylar.zest.layouts.algorithms;
 
+import org.eclipse.mylar.zest.layouts.LayoutStyles;
+
 /**
  * @version  2.0
  * @author   Casey Best and Rob Lintern (version 1.0 by Rob Lintern)
  */
 public class VerticalLayoutAlgorithm extends GridLayoutAlgorithm {
 
+	
+	/**
+	 * Veertical Layout Algorithm constructor with no styles.
+	 *
+	 */
+	public VerticalLayoutAlgorithm() {
+		this(LayoutStyles.NONE );
+	}
+	
 	public VerticalLayoutAlgorithm(int styles) {
 		super(styles);
 	}
@@ -30,7 +41,7 @@ public class VerticalLayoutAlgorithm extends GridLayoutAlgorithm {
 		return result;
 	}
 	
-	boolean isValidConfiguration(boolean asynchronous, boolean continueous) {
+	protected boolean isValidConfiguration(boolean asynchronous, boolean continueous) {
 		if ( asynchronous && continueous ) return false;
 		else if ( asynchronous && !continueous ) return true;
 		else if ( !asynchronous && continueous ) return false;
