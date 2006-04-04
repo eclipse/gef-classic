@@ -5,6 +5,7 @@ Bundle-SymbolicName: org.eclipse.gef.examples.text; singleton:=true
 Bundle-Version: 3.2.0.qualifier
 Bundle-Vendor: Eclipse.org
 Bundle-Localization: plugin
+Import-Package: com.ibm.icu.text
 Export-Package: org.eclipse.gef.examples.text,
  org.eclipse.gef.examples.text.actions,
  org.eclipse.gef.examples.text.edit,
@@ -20,6 +21,5 @@ Require-Bundle: org.eclipse.gef,
  org.eclipse.ui.ide,
  org.eclipse.ui.views,
  org.junit,
- org.eclipse.core.resources,
- com.ibm.icu
+ org.eclipse.core.resources
 Eclipse-LazyStart: true

@@ -5,6 +5,7 @@ Bundle-SymbolicName: org.eclipse.draw2d
 Bundle-Version: 3.2.0.qualifier
 Bundle-Vendor: Eclipse.org
 Bundle-Localization: plugin
+Import-Package: com.ibm.icu.text
 Export-Package: org.eclipse.draw2d,
  org.eclipse.draw2d.graph,
  org.eclipse.draw2d.geometry,
@@ -13,6 +14,5 @@ Export-Package: org.eclipse.draw2d,
  org.eclipse.draw2d.parts,
  org.eclipse.draw2d.text,
  org.eclipse.draw2d.widgets
-Require-Bundle: org.eclipse.swt;visibility:=reexport,
- com.ibm.icu
+Require-Bundle: org.eclipse.swt;visibility:=reexport
 Eclipse-LazyStart: true

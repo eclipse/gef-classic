@@ -6,6 +6,7 @@ Bundle-Version: 3.2.0.qualifier
 Bundle-Activator: org.eclipse.gef.examples.ediagram.EDiagramPlugin$Implementation
 Bundle-Vendor: Eclipse.org
 Bundle-Localization: plugin
+Import-Package: com.ibm.icu.text, com.ibm.icu.util
 Export-Package: org.eclipse.gef.examples.ediagram,
  org.eclipse.gef.examples.ediagram.actions,
  org.eclipse.gef.examples.ediagram.edit.parts,
@@ -25,6 +26,5 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.ide,
  org.eclipse.gef,
  org.eclipse.emf.ecore,
- org.eclipse.ui.views,
- com.ibm.icu
+ org.eclipse.ui.views
 Eclipse-LazyStart: true

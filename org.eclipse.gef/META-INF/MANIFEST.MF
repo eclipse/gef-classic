@@ -6,6 +6,7 @@ Bundle-Version: 3.2.0.qualifier
 Bundle-Activator: org.eclipse.gef.internal.InternalGEFPlugin
 Bundle-Vendor: Eclipse.org
 Bundle-Localization: plugin
+Import-Package: com.ibm.icu.text
 Export-Package: org.eclipse.gef,
  org.eclipse.gef.commands,
  org.eclipse.gef.dnd,
@@ -38,6 +39,5 @@ Require-Bundle: org.eclipse.draw2d;visibility:=reexport,
  org.eclipse.core.runtime,
  org.eclipse.ui.views;resolution:=optional,
  org.eclipse.ui.workbench,
- org.eclipse.jface,
- com.ibm.icu
+ org.eclipse.jface
 Eclipse-LazyStart: true
