@@ -12,7 +12,7 @@
 package org.eclipse.gef.examples.text.edit;
 
 import java.beans.PropertyChangeEvent;
-import java.text.BreakIterator;
+import com.ibm.icu.text.BreakIterator;
 
 import org.eclipse.swt.graphics.Font;
 

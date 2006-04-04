@@ -13,5 +13,6 @@ Export-Package: org.eclipse.draw2d,
  org.eclipse.draw2d.parts,
  org.eclipse.draw2d.text,
  org.eclipse.draw2d.widgets
-Require-Bundle: org.eclipse.swt;visibility:=reexport
+Require-Bundle: org.eclipse.swt;visibility:=reexport,
+ com.ibm.icu
 Eclipse-LazyStart: true

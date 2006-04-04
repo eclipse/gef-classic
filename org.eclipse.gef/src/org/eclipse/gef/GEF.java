@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.gef;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
+import com.ibm.icu.text.DecimalFormat;
+import com.ibm.icu.text.NumberFormat;
 
 import org.eclipse.swt.widgets.Text;
 

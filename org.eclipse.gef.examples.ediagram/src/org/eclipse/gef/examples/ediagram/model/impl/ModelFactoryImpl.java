@@ -9,12 +9,12 @@
  *     IBM Corporation - initial API and implementation
  * </copyright>
  *
- * $Id: ModelFactoryImpl.java,v 1.4 2005/03/29 23:58:13 pshah Exp $
+ * $Id: ModelFactoryImpl.java,v 1.5 2006/04/04 12:43:13 sshaw Exp $
  * /
  *******************************************************************************/
 package org.eclipse.gef.examples.ediagram.model.impl;
 
-import java.util.StringTokenizer;
+import com.ibm.icu.util.StringTokenizer;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
@@ -34,6 +34,7 @@ import org.eclipse.gef.examples.ediagram.model.ModelPackage;
 import org.eclipse.gef.examples.ediagram.model.NamedElementView;
 import org.eclipse.gef.examples.ediagram.model.ReferenceView;
 import org.eclipse.gef.examples.ediagram.model.StickyNote;
+
 
 /**
  * <!-- begin-user-doc -->

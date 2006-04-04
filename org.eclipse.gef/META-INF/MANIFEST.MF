@@ -38,5 +38,6 @@ Require-Bundle: org.eclipse.draw2d;visibility:=reexport,
  org.eclipse.core.runtime,
  org.eclipse.ui.views;resolution:=optional,
  org.eclipse.ui.workbench,
- org.eclipse.jface
+ org.eclipse.jface,
+ com.ibm.icu
 Eclipse-LazyStart: true

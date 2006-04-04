@@ -25,5 +25,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.ide,
  org.eclipse.gef,
  org.eclipse.emf.ecore,
- org.eclipse.ui.views
+ org.eclipse.ui.views,
+ com.ibm.icu
 Eclipse-LazyStart: true
