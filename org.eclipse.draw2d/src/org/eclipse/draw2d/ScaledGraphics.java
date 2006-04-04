@@ -759,6 +759,10 @@ private TextLayout zoomTextLayout(TextLayout layout) {
 			if (lastStyle != null) {
 				TextStyle zoomedStyle = new TextStyle(zoomFont(lastStyle.font),
 						lastStyle.foreground, lastStyle.background);
+                zoomedStyle.metrics = lastStyle.metrics;
+                zoomedStyle.rise = lastStyle.rise;
+                zoomedStyle.strikeout = lastStyle.strikeout;
+                zoomedStyle.underline = lastStyle.underline;
 				zoomed.setStyle(zoomedStyle, start, end);
 			}
 			lastStyle = style;
