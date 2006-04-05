@@ -11,6 +11,7 @@
 
 package org.eclipse.draw2d.examples.text;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
@@ -82,6 +83,10 @@ protected IFigure getContents() {
 	});
 	return page;
 }
+
+//protected int getShellStyle() {
+//	return super.getShellStyle() | SWT.RIGHT_TO_LEFT;
+//}
 
 protected void hookShell() {
 	getFigureCanvas().addKeyListener(new KeyAdapter() {});
