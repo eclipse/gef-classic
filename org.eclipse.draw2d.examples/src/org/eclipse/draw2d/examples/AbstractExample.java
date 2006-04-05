@@ -37,7 +37,7 @@ protected Shell shell;
 
 protected void run(){
 	Display d = Display.getDefault();
-	shell = new Shell(d);
+	shell = new Shell(d, getShellStyle());
 	String appName = getClass().getName();
 	appName = appName.substring(appName.lastIndexOf('.')+1);
 	shell.setText(appName);
@@ -53,6 +53,10 @@ protected void run(){
 	while (!shell.isDisposed())
 		while (!d.readAndDispatch())
 			d.sleep();
+}
+
+protected int getShellStyle() {
+	return SWT.SHELL_TRIM;
 }
 
 protected void sizeShell() {
