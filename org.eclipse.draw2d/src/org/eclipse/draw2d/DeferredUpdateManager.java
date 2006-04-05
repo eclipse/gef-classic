@@ -34,7 +34,12 @@ public class DeferredUpdateManager
 protected class UpdateRequest
 	implements Runnable
 {
-	/**
+    
+	public UpdateRequest() {
+        super();
+    }
+
+    /**
 	 * Calls {@link DeferredUpdateManager#performUpdate()}.
 	 */
 	public void run() {
@@ -207,9 +212,17 @@ public synchronized void performUpdate(Rectangle exposed) {
  */
 protected void queueWork() {
 	if (!updateQueued) {
-		Display.getCurrent().asyncExec(new UpdateRequest());
+		sendUpdateRequest();
 		updateQueued = true;
 	}
+}
+
+/**
+ * Fires the <code>UpdateRequest</code> to the current display asynchronously.
+ * @since 3.2
+ */
+protected void sendUpdateRequest() {
+    Display.getCurrent().asyncExec(new UpdateRequest());
 }
 
 /**
