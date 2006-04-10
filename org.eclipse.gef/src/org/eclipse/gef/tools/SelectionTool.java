@@ -582,7 +582,7 @@ public void setDragTracker(DragTracker newDragTracker) {
 	if (dragTracker != null)
 		dragTracker.deactivate();
 	dragTracker = newDragTracker;
-	refreshCursor();
+	
 //	if (!getCurrentInput().isMouseButtonDown(3))
 //		setMouseCapture(dragTracker != null);
 	if (newDragTracker != null) {
@@ -590,6 +590,8 @@ public void setDragTracker(DragTracker newDragTracker) {
 		newDragTracker.activate();
 		newDragTracker.setViewer(getCurrentViewer());
 	}
+    
+    refreshCursor();
 }
 
 private void setLastHandleProvider(EditPart part) {
