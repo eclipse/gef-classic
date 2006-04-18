@@ -4,4 +4,4 @@ Bundle-Name: Examples
 Bundle-SymbolicName: org.eclipse.draw2d.examples
 Bundle-Version: 3.2.0.qualifier
 Bundle-Localization: plugin
-Require-Bundle: org.eclipse.draw2d
+Require-Bundle: org.eclipse.draw2d;bundle-version="[3.2.0,4.0.0)"
