@@ -162,11 +162,16 @@ private void captureSourceDimensions() {
  * @see org.eclipse.gef.tools.AbstractTool#createOperationSet()
  */
 protected List createOperationSet() {
-	List list = ToolUtilities.getSelectionWithoutDependants(
-		getCurrentViewer());
-	ToolUtilities.filterEditPartsUnderstanding(list, getTargetRequest());
-	return list;
+    if (getCurrentViewer() != null) {
+       List list = ToolUtilities.getSelectionWithoutDependants(
+               getCurrentViewer());
+       ToolUtilities.filterEditPartsUnderstanding(list, getTargetRequest());
+       return list;
+    }
+
+    return new ArrayList();
 }
+
 
 /**
  * Creates a {@link ChangeBoundsRequest}.  By default, the type is

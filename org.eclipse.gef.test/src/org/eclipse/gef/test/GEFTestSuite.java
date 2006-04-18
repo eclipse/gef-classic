@@ -29,6 +29,7 @@ public static Test suite() {
 public GEFTestSuite() {
 	addTest(new TestSuite(PaletteCustomizerTest.class));
     addTest(new TestSuite(ToolUtilitiesTest.class));
+    addTest(new TestSuite(DragEditPartsTrackerTest.class));
 }
 
 }
