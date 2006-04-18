@@ -211,7 +211,7 @@ class ThumbnailUpdater implements Runnable {
 	 * not active or is already running, this method just returns.
 	 */
 	public void start() {
-		if (!isActive() || isRunning() || targetSize.isEmpty())
+		if (!isActive() || isRunning())
 			return;
 		
 		isRunning = true;
@@ -219,13 +219,12 @@ class ThumbnailUpdater implements Runnable {
 		resetTileValues();
 		
 		if (!targetSize.equals(thumbnailImageSize)) {
-			if (thumbnailImage != null)
-				thumbnailImage.dispose();
-			thumbnailImage = new Image(Display.getDefault(), 
-										targetSize.width, 
-										targetSize.height);
-			thumbnailImageSize = new Dimension(targetSize);
+			resetThumbnailImage();
 		}
+		
+		if (targetSize.isEmpty())
+			return;
+		
 		thumbnailGC = new GC(thumbnailImage, 
 				sourceFigure.isMirrored() ? SWT.RIGHT_TO_LEFT : SWT.NONE);
 		thumbnailGraphics = new ScaledGraphics(new SWTGraphics(thumbnailGC));
@@ -244,6 +243,26 @@ class ThumbnailUpdater implements Runnable {
 			     targetSize.height / (float)getSourceRectangle().height);
 
 		Display.getCurrent().asyncExec(this);
+	}
+
+	/**
+	 * 
+	 * @since 3.2
+	 */
+	private void resetThumbnailImage() {
+		if (thumbnailImage != null)
+			thumbnailImage.dispose();
+		
+		if (!targetSize.isEmpty()) {
+			thumbnailImage = new Image(Display.getDefault(), 
+					targetSize.width, 
+					targetSize.height);
+			thumbnailImageSize = new Dimension(targetSize);
+		}
+		else {
+			thumbnailImage = null;
+			thumbnailImageSize = new Dimension(0, 0);
+		}
 	}
 	
 	/**
