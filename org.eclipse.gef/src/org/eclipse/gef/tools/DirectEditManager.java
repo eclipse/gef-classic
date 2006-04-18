@@ -66,6 +66,7 @@ private GraphicalEditPart source;
 private CellEditor ce;
 private Class editorType;
 private boolean committing = false;
+private Object feature;
 
 /**
  * Constructs a new DirectEditManager for the given source edit part. The cell editor 
@@ -81,6 +82,24 @@ public DirectEditManager(GraphicalEditPart source, Class editorType,
 	this.source = source;
 	this.locator = locator;
 	this.editorType = editorType;
+}
+
+/**
+ * Constructs a new DirectEditManager for the given source edit part. The cell editor 
+ * will be created by instantiating the type <i>editorType</i>. The cell editor will be 
+ * placed using the given CellEditorLocator.
+ * 
+ * @param source the source edit part
+ * @param editorType the cell editor type
+ * @param locator the locator
+ * @param feature If the EditPart supports direct editing of multiple features, this parameter can be
+ * used to discriminate among them.
+ * @since 3.2
+ */
+public DirectEditManager(GraphicalEditPart source, Class editorType, 
+		CellEditorLocator locator, Object feature) {
+	this(source, editorType, locator );
+	this.feature = feature;
 }
 
 /**
@@ -144,6 +163,7 @@ protected CellEditor createCellEditorOn(Composite composite) {
 protected DirectEditRequest createDirectEditRequest() {
 	DirectEditRequest req = new DirectEditRequest();
 	req.setCellEditor(getCellEditor());
+	req.setDirectEditFeature(getDirectEditFeature());
 	return req;
 }
 
@@ -179,6 +199,15 @@ private IFigure getCellEditorFrame() {
 
 private Control getControl() {
 	return ce.getControl();
+}
+
+/**
+ * @return <code>Object</code> that can be used if the EditPart supports direct editing of multiple 
+ * features, this parameter can be used to discriminate among them.
+ * @since 3.2
+ */
+protected Object getDirectEditFeature() {
+	return feature;
 }
 
 /**
