@@ -163,8 +163,8 @@ public class NestedFigure extends Figure {
 	 * @see org.eclipse.draw2d.Figure#setBounds(org.eclipse.draw2d.geometry.Rectangle)
 	 */
 	
-	public static final int XSIZE = 1200;
-	public static final int YSIZE = 1200;
+	public static final int XSIZE = 500;
+	public static final int YSIZE = 500;
 	
 	
 	public void setBounds(Rectangle bounds) {

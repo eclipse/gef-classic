@@ -293,7 +293,7 @@ public class NestedGraphNodeEditPart extends GraphNodeEditPart implements Action
 				// do a grid layout on the children using the full area and then
 				// scale
 				//Rectangle bounds = getGraphModel().getMainArea();
-				viewer.doLayout(node, 1200, 1200);
+				viewer.doLayout(node, 500, 500);
 				viewer.checkScaling(node);
 				// if (node.getScale() != fig.getScale()) {
 				fig.setScale(node.getWidthScale(), node.getHeightScale());
