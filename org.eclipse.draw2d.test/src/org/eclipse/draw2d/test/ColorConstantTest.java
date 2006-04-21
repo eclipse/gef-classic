@@ -42,7 +42,7 @@ public class ColorConstantTest extends TestCase {
 		testThread.start();
 		
 		while (!result[1].booleanValue()) {
-            Display.getCurrent().readAndDispatch();
+            Display.getDefault().readAndDispatch();
 		}
 
 		testThread.stop();
