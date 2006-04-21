@@ -16,7 +16,7 @@ import org.eclipse.draw2d.FreeformLayeredPane;
 import org.eclipse.draw2d.LayeredPane;
 import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.Request;
-import org.eclipse.gef.editparts.ScalableFreeformRootEditPart;
+import org.eclipse.gef.editparts.FreeformGraphicalRootEditPart;
 import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphEditPart;
 import org.eclipse.mylar.zest.core.internal.viewers.trackers.PanningTracker;
 import org.eclipse.mylar.zest.core.internal.viewers.trackers.SingleSelectionTracker;
@@ -31,16 +31,16 @@ import org.eclipse.mylar.zest.core.internal.viewers.trackers.SingleSelectionTrac
  * 
  * @author Chris Callendar
  */
-public class GraphRootEditPart extends ScalableFreeformRootEditPart implements ZestRootEditPart {
+public class StaticGraphRootEditPart extends FreeformGraphicalRootEditPart implements ZestRootEditPart {
 
 	public static final String CONNECTION_FEEDBACK_LAYER = "Connection Feedback Layer"; //$NON-NLS-1$
 	
 	private IPanningListener panningListener;
 	private boolean allowMarqueeSelection;
 	private boolean allowPanning;
-	protected GraphEditPart graphEditPart = null;
+	private GraphEditPart modelGraphEditPart = null;
 	
-	public GraphRootEditPart() {
+	public StaticGraphRootEditPart() {
 		this(null, false, false);
 	}
 	
@@ -50,7 +50,7 @@ public class GraphRootEditPart extends ScalableFreeformRootEditPart implements Z
 	 * @param allowMarqueeSelection if marquee selection is allowed - multiple node selection
 	 * @param allowPanning if panning is allowed.  Only one of panning OR marquee selection is allowed.
 	 */
-	public GraphRootEditPart(IPanningListener panningListener, boolean allowMarqueeSelection, boolean allowPanning) {
+	public StaticGraphRootEditPart(IPanningListener panningListener, boolean allowMarqueeSelection, boolean allowPanning) {
 		super();
 		this.panningListener = panningListener;
 		this.allowMarqueeSelection = allowMarqueeSelection;
@@ -81,13 +81,42 @@ public class GraphRootEditPart extends ScalableFreeformRootEditPart implements Z
 		}
 		return super.getDragTracker(req);
 	}
-
+	
+	
 	/**
-	 * Sets the main edit part for the model. You should be able to 
-	 * fire changes off here and see the effect
+	 * Sets the scale for the Static Graph Viewer
+	 * @param x
+	 * @param y
+	 */
+	public void setScale( double x, double y ) {
+		this.modelGraphEditPart.setScale(x, y);
+
+	}
+	
+	/**
+	 * Gets the scale in the X Direction
+	 * @return
+	 */
+	public double getXScale() {
+		return this.modelGraphEditPart.getXScale();
+	}
+
+	
+	/**
+	 * Gets the scale in the Y Direction
+	 * @return
+	 */
+	public double getYScale() {
+		return this.modelGraphEditPart.getYScale();
+	}
+
+	
+	/**
+	 * Sets the model root edit part.  You should be able to set 
+	 * changes here and see the effect.
 	 */
 	public void setModelRootEditPart(Object modelRootEditPart) {
-		this.graphEditPart = (GraphEditPart) modelRootEditPart;
+		this.modelGraphEditPart = (GraphEditPart) modelRootEditPart;
 	}
 	
 }

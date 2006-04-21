@@ -19,6 +19,7 @@ import org.eclipse.draw2d.MidpointLocator;
 import org.eclipse.draw2d.PolygonDecoration;
 import org.eclipse.draw2d.PolylineConnection;
 import org.eclipse.gef.editparts.AbstractConnectionEditPart;
+import org.eclipse.mylar.zest.core.internal.gefx.GraphRootEditPart;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphItem;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelConnection;
@@ -73,7 +74,34 @@ public class GraphConnectionEditPart extends AbstractConnectionEditPart implemen
 		connection.setForegroundColor(getCastedModel().getLineColor());
 		connection.setLineWidth(getCastedModel().getLineWidth());
 		connection.setLineStyle(getCastedModel().getLineStyle());
+		
+	  	MidpointLocator m1 = new MidpointLocator(connection,0);
+	  	if ( getCastedModel().getText() != null ||
+	  		getCastedModel().getImage() != null ) {
+	  		Label l = new Label(getCastedModel().getText(), getCastedModel().getImage());
+	  		l.setFont(getCastedModel().getFont());
+	  		connection.add(l,m1);
+	  	}
+		
 		return connection;
+	}
+	
+	public void highlightEdge() {
+		IFigure thisEdge = getFigure(); 
+		IFigure layer = getLayer(CONNECTION_LAYER);
+		IFigure feedbackLayer = getLayer(GraphRootEditPart.CONNECTION_FEEDBACK_LAYER );
+		layer.remove(thisEdge);
+		feedbackLayer.add(thisEdge);
+	}
+	
+	public void unHighlightEdge() {
+		IFigure thisEdge = getFigure(); 
+		IFigure layer = getLayer(CONNECTION_LAYER);
+		IFigure feedbackLayer = getLayer(GraphRootEditPart.CONNECTION_FEEDBACK_LAYER );
+		if ( feedbackLayer.getChildren().contains(thisEdge))
+			feedbackLayer.remove(thisEdge);
+		layer.add(thisEdge);
+
 	}
 	
 	/**
@@ -127,21 +155,9 @@ public class GraphConnectionEditPart extends AbstractConnectionEditPart implemen
 	  	}
 
 	}
+	
+	
 
-	/*
-	 *  (non-Javadoc)
-	 * @see org.eclipse.gef.GraphicalEditPart#getFigure()
-	 */
-	public IFigure getFigure() {
-	  	PolylineConnection connectionFigure =  (PolylineConnection)super.getFigure();
-	  	MidpointLocator m1 = new MidpointLocator(connectionFigure,0);
-	  	if ( getCastedModel().getText() != null ||
-	  		getCastedModel().getImage() != null ) {
-	  		Label l = new Label(getCastedModel().getText(), getCastedModel().getImage());
-	  		l.setFont(getCastedModel().getFont());
-	  		connectionFigure.add(l,m1);
-	  	}
-	  	return connectionFigure;
-	}	
+	
 
 }

@@ -207,12 +207,14 @@ public class SpringGraphViewerImpl extends ThreadedGraphicalViewer implements IP
 		zoomLevels.add(ZoomManager.FIT_ALL);
 		zoomLevels.add(ZoomManager.FIT_WIDTH);
 		zoomLevels.add(ZoomManager.FIT_HEIGHT);
+	
 		ZoomManager zoomMgr = root.getZoomManager();
 		zoomMgr.setZoomLevelContributions(zoomLevels);
 
 		zoomMgr.addZoomListener(this);
 		IAction zoomIn = new ZoomInAction(zoomMgr);
 		IAction zoomOut = new ZoomOutAction(zoomMgr);
+		
 		
 		KeyHandler handler = getKeyHandler();
 		if (handler == null) {
@@ -221,6 +223,7 @@ public class SpringGraphViewerImpl extends ThreadedGraphicalViewer implements IP
 		}
 		
 		// so many zoom choices, so little time!
+	
 		getKeyHandler().put(KeyStroke.getPressed('+', 43, SWT.CTRL), zoomIn);
 		getKeyHandler().put(KeyStroke.getPressed('+', SWT.KEYPAD_ADD, SWT.CTRL), zoomIn);
 		getKeyHandler().put(KeyStroke.getPressed('=', 61, SWT.CTRL), zoomIn);
@@ -229,7 +232,8 @@ public class SpringGraphViewerImpl extends ThreadedGraphicalViewer implements IP
 		this.setProperty(MouseWheelHandler.KeyGenerator.getKey(SWT.CTRL), MouseWheelZoomHandler.SINGLETON);
 		
 		this.setRootEditPart(root);
-		this.setEditPartFactory(new GraphEditPartFactory());
+		this.setEditPartFactory(new GraphEditPartFactory(root));
+	
 	}
 
 	/**
@@ -482,6 +486,7 @@ public class SpringGraphViewerImpl extends ThreadedGraphicalViewer implements IP
 	public void zoomOut() {
 		((GraphRootEditPart)this.getRootEditPart()).getZoomManager().zoomOut();		
 	}
+	
 	
 	/**
 	 * Ensures that the selected node is visible (centered).

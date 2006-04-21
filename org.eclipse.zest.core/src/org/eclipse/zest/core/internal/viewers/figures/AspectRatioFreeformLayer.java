@@ -1,20 +1,9 @@
-/*******************************************************************************
- * Copyright 2005, CHISEL Group, University of Victoria, Victoria, BC, Canada.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *     The Chisel Group, University of Victoria
- *******************************************************************************/
 package org.eclipse.mylar.zest.core.internal.viewers.figures;
 
-
-
-import org.eclipse.draw2d.Figure;
+import org.eclipse.draw2d.FreeformLayer;
 import org.eclipse.draw2d.FreeformLayout;
 import org.eclipse.draw2d.Graphics;
+import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
@@ -26,36 +15,33 @@ import org.eclipse.draw2d.geometry.Translatable;
 import org.eclipse.draw2d.text.CaretInfo;
 import org.eclipse.mylar.zest.core.internal.gefx.XYScaledGraphics;
 
-
-/**
- * 
- * @author irbull
- *
- */
-public class AspectRatioScaledFigure extends Figure {// extends ScaledFigure {
+public class AspectRatioFreeformLayer extends FreeformLayer {
 	
+	
+
+
+
 	private double widthScale = 1.0;
 	private double heigthScale = 1.0;
+
 	
-	public AspectRatioScaledFigure(String debugLabel ) {
+	public AspectRatioFreeformLayer(String debugLabel ) {
 		widthScale = 1D;
 		heigthScale = 1D;
 		setLayoutManager(new FreeformLayout());
-		setOpaque(true);
-	}
-	
-	public void setSize(int w, int h) {
-		// TODO Auto-generated method stub
-		super.setSize(w, h);
+		setBorder(new MarginBorder(5));
 		
+		
+		//setOpaque(false);
 	}
 	
+
 	
 	public void setScale( double wScale, double hScale ) {
 		this.widthScale = wScale;
 		this.heigthScale = hScale;
 	}
-	
+		
 	public double getWidthScale() {
 		return this.widthScale;
 	}
@@ -94,7 +80,7 @@ public class AspectRatioScaledFigure extends Figure {// extends ScaledFigure {
 	/**
 	 * @see org.eclipse.draw2d.Figure#getClientArea()
 	 */
-	/*
+
 	public Rectangle getClientArea(Rectangle rect) {
 		//return super.getClientArea(rect);
 		
@@ -102,7 +88,7 @@ public class AspectRatioScaledFigure extends Figure {// extends ScaledFigure {
 		rect.height /= heigthScale;
 		return rect;
 	}
-	*/
+
 	
 
 	public Dimension getPreferredSize(int wHint, int hHint) {
@@ -111,10 +97,8 @@ public class AspectRatioScaledFigure extends Figure {// extends ScaledFigure {
 		int h = getInsets().getHeight();
 		return d.getExpanded(-w, -h).scale(widthScale, heigthScale).expand(w,h);
 	}
-	
-	/* (non-Javadoc)
-	 * @see org.eclipse.draw2d.Figure#translateFromParent(org.eclipse.draw2d.geometry.Translatable)
-	 */
+
+
 	public void translateFromParent(Translatable t) {
 		super.translateFromParent(t);
 		//t.performScale(1/widthScale);
@@ -167,9 +151,7 @@ public class AspectRatioScaledFigure extends Figure {// extends ScaledFigure {
 		//t.performScale(1/widthScale);		
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.eclipse.draw2d.Figure#translateToParent(org.eclipse.draw2d.geometry.Translatable)
-	 */
+
 	public void translateToParent(Translatable t) {
 		//t.performScale(widthScale);
 		
@@ -221,11 +203,14 @@ public class AspectRatioScaledFigure extends Figure {// extends ScaledFigure {
 		super.translateToParent(t);
 	}
 
-	protected boolean useLocalCoordinates() {
-		return true;
-	}
+
+	//protected boolean useLocalCoordinates() {
+	//	return true;
+	//}
+
 	
 	protected void paintClientArea(Graphics graphics) {
+		
 		if (getChildren().isEmpty())
 			return;
 
@@ -238,14 +223,13 @@ public class AspectRatioScaledFigure extends Figure {// extends ScaledFigure {
 			disposeGraphics = true;
 		}
 
-		
 		boolean optimizeClip = getBorder() == null || getBorder().isOpaque();
 		if (!optimizeClip) {
 			g.clipRect(getBounds().getCropped(getInsets()));
 		}
 		
-		g.translate((int)(getBounds().x + getInsets().left) , 
-				(int)(getBounds().y  +  getInsets().top) );
+		//g.translate((int)(getBounds().x + getInsets().left) , 
+		//		(int)(getBounds().y  +  getInsets().top) );
 		
 		g.scale(widthScale, heigthScale	);
 		//g.scale(widthScale);
@@ -258,6 +242,7 @@ public class AspectRatioScaledFigure extends Figure {// extends ScaledFigure {
 			g.dispose();
 			graphics.restoreState();
 		}
+		
 	}
 
 }

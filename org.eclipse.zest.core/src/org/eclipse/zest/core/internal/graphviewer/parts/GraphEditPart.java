@@ -14,11 +14,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 
-import org.eclipse.draw2d.Figure;
-import org.eclipse.draw2d.FreeformLayer;
-import org.eclipse.draw2d.FreeformLayout;
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.editpolicies.RootComponentEditPolicy;
@@ -26,6 +22,7 @@ import org.eclipse.mylar.zest.core.internal.graphmodel.GraphItem;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelNode;
 import org.eclipse.mylar.zest.core.internal.graphviewer.policies.GraphXYLayoutEditPolicy;
+import org.eclipse.mylar.zest.core.internal.viewers.figures.AspectRatioFreeformLayer;
 
 
 /**
@@ -59,14 +56,44 @@ public class GraphEditPart extends AbstractGraphicalEditPart implements Property
 		}
 	}
 	
+	/**
+	 * Sets the scale for the graph
+	 * @param x
+	 * @param y
+	 */
+	public void setScale( double x, double y ) {
+		AspectRatioFreeformLayer aspectRatioFreeformLayer = (AspectRatioFreeformLayer) getFigure();
+		aspectRatioFreeformLayer.setScale( x, y );
+		//aspectRatioFreeformLayer.repaint();
+		getCastedModel().fireAllPropertyChange(GraphModelNode.FORCE_REDRAW, null, null);	
+	}
+
+	/**
+	 * Gets the scale in the X Direction
+	 * @return
+	 */
+	public double getXScale() {
+		AspectRatioFreeformLayer aspectRatioFreeformLayer = (AspectRatioFreeformLayer) getFigure();
+		return aspectRatioFreeformLayer.getWidthScale();
+	}
+	
+	/**
+	 * Getes the scale in the Y Direction
+	 * @return
+	 */
+	public double getYScale() {
+		AspectRatioFreeformLayer aspectRatioFreeformLayer = (AspectRatioFreeformLayer) getFigure();
+		return aspectRatioFreeformLayer.getHeightScale();
+	}
+	
 	/* (non-Javadoc)
 	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
 	 */
 	protected IFigure createFigure() {
-		Figure f = new FreeformLayer();
-		f.setBorder(new MarginBorder(3));
-		f.setLayoutManager(new FreeformLayout());
-		return f;
+		
+		AspectRatioFreeformLayer aspectRatioScaledFigure = new AspectRatioFreeformLayer("root");
+		aspectRatioScaledFigure.setScale(1.0, 1.0);
+		return aspectRatioScaledFigure;
 	}
 	
 	/* (non-Javadoc)

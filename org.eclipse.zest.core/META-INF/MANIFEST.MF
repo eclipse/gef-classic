@@ -7,8 +7,8 @@ Bundle-Activator: org.eclipse.mylar.zest.core.CorePlugin
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.eclipse.gef,
- org.eclipse.mylar.zest.layouts
+ org.eclipse.mylar.zest.layouts,
+ org.eclipse.gef;visibility:=reexport
 Eclipse-LazyStart: true
 Export-Package: org.eclipse.mylar.zest.core,
  org.eclipse.mylar.zest.core.internal.gefx,
@@ -26,3 +26,4 @@ Export-Package: org.eclipse.mylar.zest.core,
  org.eclipse.mylar.zest.core.internal.viewers.trackers,
  org.eclipse.mylar.zest.core.viewers,
  org.eclipse.mylar.zest.core.widgets
+Import-Package: com.ibm.icu.text

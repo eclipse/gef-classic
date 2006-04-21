@@ -538,7 +538,7 @@ public class XYScaledGraphics extends ScaledGraphics {
 	}
 
 	public void scale( double xAmount, double yAmount ) {
-		setScale(xAmount, yAmount);
+		setScale(xZoom * xAmount, yZoom* yAmount);
 		
 	}
 	
@@ -639,7 +639,7 @@ public class XYScaledGraphics extends ScaledGraphics {
 
 	
 	public void setScale( double xValue, double yValue ) {
-		if ( xValue == xZoom || yValue == yZoom ) {
+		if ( xValue == xZoom && yValue == yZoom ) {
 			return;
 		}
 		this.xZoom = xValue;
@@ -650,6 +650,7 @@ public class XYScaledGraphics extends ScaledGraphics {
 	
 	void setScale(double value) {
 		throw new RuntimeException("Operation not supported, use setScale(x,y)");
+		
 		/*
 		if (zoom == value)
 			return;

@@ -46,9 +46,11 @@ public class GraphXYLayoutEditPolicy extends XYLayoutEditPolicy {
 	 * @see org.eclipse.gef.editpolicies.ConstrainedLayoutEditPolicy#createChildEditPolicy(org.eclipse.gef.EditPart)
 	 */
 	protected EditPolicy createChildEditPolicy(EditPart child) {
+		
 		if (child instanceof GraphNodeEditPart) {
 			return new ColorSelectionEditPolicy((GraphNodeEditPart)child);
 		}
+		
 		return super.createChildEditPolicy(child);
 	}
 	
@@ -64,6 +66,7 @@ public class GraphXYLayoutEditPolicy extends XYLayoutEditPolicy {
 		}
 		return super.createChangeConstraintCommand(request, child, constraint);
 	}
+	
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.gef.editpolicies.ConstrainedLayoutEditPolicy#createChangeConstraintCommand(org.eclipse.gef.EditPart, java.lang.Object)

@@ -30,13 +30,11 @@ import org.eclipse.mylar.zest.core.internal.viewers.commands.ResizeNodeConstrain
  * 
  * @author Chris Callendar
  */
-public class GraphXYLayoutEditPolicy extends XYLayoutEditPolicy {
+public class NestedGraphXYLayoutEditPolicy extends XYLayoutEditPolicy {
 	
-	private boolean allowOverlap = false;
 	private boolean enforceBounds = false;
 	
-	public GraphXYLayoutEditPolicy(boolean allowOverlap, boolean enforceBounds) {
-		this.allowOverlap = allowOverlap;
+	public NestedGraphXYLayoutEditPolicy(boolean enforceBounds) {
 		this.enforceBounds = enforceBounds;
 	}
 	
@@ -65,7 +63,6 @@ public class GraphXYLayoutEditPolicy extends XYLayoutEditPolicy {
 			NestedGraphNodeEditPart editPart = (NestedGraphNodeEditPart)child;
 			//System.out.println("req: " + request.getLocation() + "\t" + request.getSizeDelta() + "\t" + constraint);
 			ResizeNodeConstraintCommand cmd = new ResizeNodeConstraintCommand(editPart, (NestedGraphModelNode)editPart.getModel(), request, (Rectangle)constraint);
-			cmd.setAllowOverlap(allowOverlap);
 			cmd.setEnforceBounds(enforceBounds);
 			return cmd;
 		}

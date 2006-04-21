@@ -16,12 +16,15 @@ import java.util.List;
 
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.FigureUtilities;
+import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPart;
+import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.mylar.zest.core.ZestColors;
+import org.eclipse.mylar.zest.core.internal.gefx.AnimateableNode;
 import org.eclipse.mylar.zest.layouts.LayoutEntity;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
@@ -35,7 +38,7 @@ import org.eclipse.swt.widgets.Display;
  *  
  * @author Chris Callendar
  */
-public class GraphModelNode extends GraphItem implements LayoutEntity {
+public class GraphModelNode extends GraphItem implements LayoutEntity, AnimateableNode {
 
 	public static final String LOCATION_PROP = "GraphModelNode.Location";
 	public static final String SIZE_PROP = "GraphModelNode.Size";
@@ -46,6 +49,7 @@ public class GraphModelNode extends GraphItem implements LayoutEntity {
 	public static final String UNHIGHLIGHT_PROP = "GraphModeNode.Unhighlight";
 	public static final String SOURCE_CONNECTIONS_PROP = "GraphModelNode.SourceConn";
 	public static final String TARGET_CONNECTIONS_PROP = "GraphModelNode.TargetConn";
+	public static final String BRING_TO_FRONT = "GraphModelNode.BrintToFront";
 
 	private List sourceConnections;
 	private List targetConnections;
@@ -62,7 +66,8 @@ public class GraphModelNode extends GraphItem implements LayoutEntity {
 	private Color borderHighlightColor;
 	private Color borderUnhighlightColor;
 	private int borderWidth;
-	private Point location;
+	private Point currentLocation;
+	private Point newLayoutLocation;
 	private Dimension size;
 	private Font font;
 	private EditPart editPart;
@@ -93,7 +98,12 @@ public class GraphModelNode extends GraphItem implements LayoutEntity {
 	
 	public GraphModelNode(GraphModel graphModel, String label, Image i, Object externalNode) {
 		super(graphModel);
-		setText(label);
+		if ( label == null ) {
+			setText(this.toString());
+		}
+		else {
+			setText(label);
+		}
 		setImage(i);
 		initModel(graphModel, externalNode);
 	}
@@ -113,7 +123,8 @@ public class GraphModelNode extends GraphItem implements LayoutEntity {
 		this.borderHighlightColor = ColorConstants.blue;
 		this.borderUnhighlightColor = ColorConstants.black;
 		this.borderWidth = 1;
-		this.location = new Point(10, 10);
+		this.currentLocation = new Point(10, 10);
+		this.newLayoutLocation = currentLocation.getCopy();
 		this.size = new Dimension(20, 20);
 		this.font = Display.getDefault().getSystemFont();
 		this.graphModel = graphModel;
@@ -220,11 +231,11 @@ public class GraphModelNode extends GraphItem implements LayoutEntity {
 	}
 
 	public double getXInLayout() {
-		return location.x;
+		return currentLocation.x;
 	}
 
 	public double getYInLayout() {
-		return location.y;
+		return currentLocation.y;
 	}
 	
 	/**
@@ -241,7 +252,7 @@ public class GraphModelNode extends GraphItem implements LayoutEntity {
 	 * @return Point
 	 */
 	public Point getLocation() {
-		return location.getCopy();
+		return currentLocation.getCopy();
 	}
 
 	public double getWidthInLayout() {
@@ -261,27 +272,27 @@ public class GraphModelNode extends GraphItem implements LayoutEntity {
 	}
 	
 	public void setPreferredLocation( double x, double y ) {
-		location.setLocation((int)x, (int)y);
-		//DebugPrint.println("Called Set Location: " + x + " : " + y);
-		firePropertyChange(LOCATION_PROP, null, location);
+		currentLocation.setLocation((int)x, (int)y);
+		firePropertyChange(LOCATION_PROP, null, currentLocation);
+	}
+	
+	
+	public void setLocation( double x, double y ) {
+		currentLocation.setLocation((int)x, (int)y);
+		firePropertyChange(LOCATION_PROP, null, currentLocation);
 	}
 	
 	public void setLocationInLayout(double x, double y) {
 		if (!preferredLocation) {
-			if ((x != location.x) || (y != location.y)) {
-				location.setLocation((int)x, (int)y);
-				//DebugPrint.println("Called Set Location: " + x + " : " + y);
-				firePropertyChange(LOCATION_PROP, null, location);
-			}
+			newLayoutLocation.setLocation((int)x, (int)y);
+//			if ((x != currentLocation.x) || (y != currentLocation.y)) {
+//				currentLocation.setLocation((int)x, (int)y);
+//				//DebugPrint.println("Called Set Location: " + x + " : " + y);
+//				firePropertyChange(LOCATION_PROP, null, currentLocation);
+//			}
 		}
 	}
-	
-	/**
-	 * Updates the location <b>WITHOUT</b> firing a property change.
-	 */
-	public void updateLocationInLayout(double x, double y) {
-		location.setLocation((int)x, (int)y);
-	}
+
 	
 	/**
 	 * Returns a copy of the node's size.
@@ -516,6 +527,46 @@ public class GraphModelNode extends GraphItem implements LayoutEntity {
 			dim.setSize(new Dimension(image.getBounds().width + 4, image.getBounds().height));
 		}
 		return dim;
+	}
+
+	//** Animation Methods
+	
+	Point animationStartLocation = null;
+	public void endAnimation() {
+		
+		
+	}
+
+	public Point getCurrentLocation() {
+		return currentLocation;
+	}
+
+	public Point getEndLocation() {
+		return newLayoutLocation;
+	}
+
+	public Point getStartLocation() {
+		return animationStartLocation;
+	}
+
+	public void startAnimation() {
+		animationStartLocation = currentLocation.getCopy();
+		
+	}
+
+	public void updateLocation(Point p) {
+		int x = p.x;
+		int y = p.y;
+		if ((x != currentLocation.x) || (y != currentLocation.y)) {
+			currentLocation.setLocation((int)x, (int)y);
+			firePropertyChange(LOCATION_PROP, null, currentLocation);
+		}
+		
+	}
+
+	public IFigure getFigure() {
+		// TODO Auto-generated method stub
+		return ((AbstractGraphicalEditPart)getEditPart()).getFigure();
 	}
 	
 	

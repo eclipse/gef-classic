@@ -47,6 +47,8 @@ public class ColorSelectionEditPolicy extends NonResizableEditPolicy {
 		return Collections.EMPTY_LIST;
 	}
 
+	
+	
 	/* (non-Javadoc)
 	 * @see org.eclipse.gef.editpolicies.SelectionEditPolicy#hideSelection()
 	 */
@@ -63,27 +65,39 @@ public class ColorSelectionEditPolicy extends NonResizableEditPolicy {
 		editPart.propertyChange(evt);
 		
 		// move the current editpart's figure to last in the list to put it on top of the other nodes
+		
 		IFigure fig = editPart.getFigure();
 		fig.getParent().getChildren().remove(fig);
 		fig.getParent().getChildren().add(fig);
+		
 	}
 	
 	/* (non-Javadoc)
 	 * @see org.eclipse.gef.editpolicies.NonResizableEditPolicy#showChangeBoundsFeedback(org.eclipse.gef.requests.ChangeBoundsRequest)
 	 */
+	
 	protected void showChangeBoundsFeedback(ChangeBoundsRequest request) {
 		Point p = request.getLocation().getCopy();
-		// this translation is needed for different zooming levels 
+		// this translation is needed for different zooming levels
+		
 		getHostFigure().translateToRelative(p);
 		((GraphModelNode)editPart.getModel()).setHasPreferredLocation(true);
 		((GraphModelNode)editPart.getModel()).setPreferredLocation(p.x, p.y);
+		
+		
 	}
+	
+	
+
+	
 	
 	/* (non-Javadoc)
 	 * @see org.eclipse.gef.editpolicies.NonResizableEditPolicy#eraseChangeBoundsFeedback(org.eclipse.gef.requests.ChangeBoundsRequest)
 	 */
+	
 	protected void eraseChangeBoundsFeedback(ChangeBoundsRequest request) {
 		((GraphModelNode)editPart.getModel()).setHasPreferredLocation(false);
 	}
+	
 
 }

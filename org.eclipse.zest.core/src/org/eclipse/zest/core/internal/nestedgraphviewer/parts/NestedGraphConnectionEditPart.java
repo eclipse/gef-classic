@@ -32,6 +32,7 @@ public class NestedGraphConnectionEditPart extends GraphConnectionEditPart {
 	 * @see org.eclipse.mylar.zest.core.internal.springgraphviewer.parts.GraphConnectionEditPart#createFigure()
 	 */
 	protected IFigure createFigure() {
+		
 		PolylineConnection connection = (PolylineConnection) super.createFigure();
 		// Now only directed edges have arrow endpoints - see ZestStyles.DIRECTED_GRAPH
 		//connection.setTargetDecoration(new PolygonDecoration()); // arrow at target endpoint

@@ -19,8 +19,8 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.LineBorder;
 import org.eclipse.draw2d.PositionConstants;
-import org.eclipse.draw2d.ScrollPane;
 import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.graphics.Color;
@@ -43,8 +43,6 @@ public class NestedFigure extends Figure {
 	private AspectRatioScaledFigure scaledFigure = null;
 	
 	
-	private ScrollPane scrollPane = null;
-	
 	/**
 	 * Initializes this nested figure without a Clickable figure and no ScrollPane.
 	 * @param label	The label to display at the top of the nested figure
@@ -63,6 +61,13 @@ public class NestedFigure extends Figure {
 		this(label, button, false);
 	}
 	
+	
+
+	public Insets getInsets() {
+		// TODO Auto-generated method stub
+		return new Insets(0,0,0,0);
+	}
+	
 	/**
 	 * Creates a nested figure possibly with a plus/minus figure.
 	 * @param label	The label to display at the top of the nested figure
@@ -76,28 +81,26 @@ public class NestedFigure extends Figure {
 		this.label.setLabelAlignment(PositionConstants.CENTER);
 		//this.button = button; [irbull]
 		//this.scaledFigure = new ScaledFigure();
-		this.scaledFigure = new AspectRatioScaledFigure();
+		this.scaledFigure = new AspectRatioScaledFigure(label.getText());
 		this.scaledFigure.setVisible(false);
+		
+		this.scaledFigure.setOpaque(false);
 		//this.scaledFigure.setBorder(new EdgeBorder(ColorConstants.black, 1, 0, 0, 0));
+		
 		
 		FreeformLayout layout = new FreeformLayout();
 		setLayoutManager(layout);
 		setBorder(new LineBorder(ColorConstants.black, 1));
-		setOpaque(true);
+		setOpaque(false);
+		scaledFigure.setBackgroundColor(ColorConstants.white);
 		
 		add(label, new Rectangle(0, 0, -1, -1), 0);
 		if (button != null) {
 			add(button, new Rectangle(0, 0, -1, -1));
 		}
-		if (addScrollPane) {
-			scrollPane = new ScrollPane();
-			scrollPane.setScrollBarVisibility(ScrollPane.AUTOMATIC);
-			scrollPane.add(scaledFigure, new Rectangle(0, 0, -1, -1), 0);
-			scrollPane.setContents(scaledFigure);
-			add(scrollPane, new Rectangle(0, 18, -1, -1));
-		} else {
-			add(scaledFigure, new Rectangle(0, 18, -1, -1));
-		}
+		
+		add(scaledFigure, new Rectangle(0, 18, -1, -1));
+		
 	}
 	
 	protected Dimension calculateLabelSize() {
@@ -128,14 +131,53 @@ public class NestedFigure extends Figure {
 		return true;
 	}
 	
+	
+	public Rectangle getRectangle( Rectangle rect ) {
+		rect.x = 0;
+		rect.y = 0;
+		rect.width = 50;
+		rect.height = 50;
+		return rect;
+	}
+	
+	public boolean isCoordinateSystem() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+	
+//	public Rectangle getClientArea(Rectangle rect) {
+//		// TODO Auto-generated method stub
+//		rect.x = 0;
+//		rect.y= 0;
+//		rect.width = XSIZE;
+//		rect.height = YSIZE;
+//		return rect;
+//	}
+//	
+	
+	
+	
+	
+	
 	/* (non-Javadoc)
 	 * @see org.eclipse.draw2d.Figure#setBounds(org.eclipse.draw2d.geometry.Rectangle)
 	 */
+	
+	public static final int XSIZE = 1200;
+	public static final int YSIZE = 1200;
+	
+	
 	public void setBounds(Rectangle bounds) {
 		// resize the label & nested figures
+		//int XSIZE = clienRectangle.width;
+		//int YSIZE = clienRectangle.height;
+		if ( XSIZE == 0 || YSIZE == 0 ) {
+			super.setBounds(bounds);
+			return;
+		}
 		
-		int width = bounds.width - 2;
-		int height = bounds.height - 3;
+		int width = bounds.width;
+		int height = bounds.height;
 		Dimension labelSize = label.getSize();
 		if ((labelSize.width == 0) || (labelSize.height == 0)) {
 			labelSize = calculateLabelSize();
@@ -154,12 +196,15 @@ public class NestedFigure extends Figure {
 		boolean vis = scaledFigure.isVisible();
 		Point loc = new Point(0, labelSize.height);
 		Dimension dim = new Dimension(width, height - labelHeight);
+		//Dimension dim = new Dimension(XSIZE, YSIZE);
+		double xScale = (double)width / (double) XSIZE;
+		double yScale = (double)(height - labelHeight) / (double)YSIZE;
+		
 		Dimension scaledDim = (vis ? dim : new Dimension(0, 0));
+		scaledDim.scale(xScale * width, yScale * height );
 		Rectangle rect = new Rectangle(loc, scaledDim);
 		getLayoutManager().setConstraint(scaledFigure, rect);
-		if (scrollPane != null) {
-			getLayoutManager().setConstraint(scrollPane, new Rectangle(loc, dim));
-		}
+		scaledFigure.setScale(xScale, yScale);
 		super.setBounds(bounds);
 	}
 	

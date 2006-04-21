@@ -37,6 +37,8 @@ import org.eclipse.swt.widgets.Composite;
  */
 public abstract class NonThreadedGraphicalViewer extends ScrollingGraphicalViewer {
 
+	
+	
 	/**
 	 * ThreadedGraphicalViewer constructor.
 	 * @param parent The composite that this viewer will be added to.
@@ -49,11 +51,8 @@ public abstract class NonThreadedGraphicalViewer extends ScrollingGraphicalViewe
 		
 		EditDomain ed = new DefaultEditDomain( null );
 		ed.addViewer( this );
-		//ed.setDefaultTool(new ZoomableSelectionTool());
 		setEditDomain( ed );
-		
 		hookControl();
-	
 		getControl().addControlListener(new ControlListener() {
 
 			public void controlMoved(ControlEvent e) {
@@ -70,6 +69,7 @@ public abstract class NonThreadedGraphicalViewer extends ScrollingGraphicalViewe
 			}
 		});
 	
+		
 		((Canvas)getControl()).setBackground( ColorConstants.white );
 		
 		// Scroll-wheel Zoom
@@ -97,7 +97,10 @@ public abstract class NonThreadedGraphicalViewer extends ScrollingGraphicalViewe
 			((ControlListener)iterator.next()).controlResized( e );
 		}
 	}
-		
+	
+	
+	
+	
 	/**
 	 * Does some initializing of the viewer.
 	 */

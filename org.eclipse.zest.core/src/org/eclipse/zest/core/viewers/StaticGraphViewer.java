@@ -71,6 +71,31 @@ public class StaticGraphViewer extends StructuredViewer {
 	}
 	
 	/**
+	 * Sets the horizontal scale
+	 * @param scale
+	 */
+	public void setHorizontalScale( double scale ) {
+		this.viewer.setScale(scale, this.viewer.getHeightScale());
+	}
+	
+	/**
+	 * Sets the horizontal scale
+	 * @param scale
+	 */
+	public void setVerticalScale( double scale ) {
+		this.viewer.setScale(this.viewer.getWidthScale(), scale);
+	}
+	
+	/**
+	 * Sets the scale in both the X and Y
+	 * @param scale
+	 */
+	public void setScale( double scale ) {
+		this.viewer.setScale(scale, scale);
+	}
+
+	
+	/**
 	 * Sets the style on this structuredViewer
 	 * @param style
 	 * @return
@@ -137,7 +162,13 @@ public class StaticGraphViewer extends StructuredViewer {
 		} else {
 			//viewer.applyLayout();
 		}
-		
+	}
+	
+	/**
+	 * Applys the current layout to the viewer
+	 */
+	public void applyLayout() {
+		viewer.applyLayout();
 	}
 	
 	protected Widget doFindInputItem(Object element) {

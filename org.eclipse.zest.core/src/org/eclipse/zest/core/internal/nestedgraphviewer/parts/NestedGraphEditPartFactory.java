@@ -11,6 +11,7 @@
 package org.eclipse.mylar.zest.core.internal.nestedgraphviewer.parts;
 
 import org.eclipse.gef.EditPart;
+import org.eclipse.mylar.zest.core.internal.gefx.ZestRootEditPart;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelConnection;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedGraphModel;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedGraphModelNode;
@@ -23,11 +24,10 @@ import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphEditPartFacto
  */
 public class NestedGraphEditPartFactory extends GraphEditPartFactory {
 
-	private boolean allowOverlap = false;
 	private boolean enforceBounds = false;
 	
-	public NestedGraphEditPartFactory(boolean allowOverlap, boolean enforceBounds) {
-		this.allowOverlap = allowOverlap;
+	public NestedGraphEditPartFactory(ZestRootEditPart graphRootEditPart, boolean allowOverlap, boolean enforceBounds) {
+		super( graphRootEditPart );
 		this.enforceBounds = enforceBounds;
 	}
 	
@@ -37,12 +37,14 @@ public class NestedGraphEditPartFactory extends GraphEditPartFactory {
 	public EditPart createEditPart(EditPart context, Object model) {
 		EditPart editPart = null;
 		if (model instanceof NestedGraphModelNode) {
-			editPart = new NestedGraphNodeEditPart(allowOverlap, enforceBounds);
+			editPart = new NestedGraphNodeEditPart(enforceBounds);
 			((NestedGraphModelNode)model).setEditPart(editPart);
 		} else if (model instanceof NestedGraphModel) {
-			editPart = new NestedGraphEditPart(allowOverlap, enforceBounds);
+			editPart = new NestedGraphEditPart();
+			graphRootEditPart.setModelRootEditPart(editPart);
 		} else if (model instanceof GraphModelConnection) {
 			editPart = new NestedGraphConnectionEditPart();
+			
 		} else {
 			editPart = super.createEditPart(context, model);
 		}

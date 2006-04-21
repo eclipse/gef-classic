@@ -55,6 +55,8 @@ public class ColorSelectionEditPolicy extends ResizableEditPolicy {
 		//System.out.println(editPart.getFigure().getBounds());
 		PropertyChangeEvent evt = new PropertyChangeEvent(GraphModelNode.HIGHLIGHT_PROP, GraphModelNode.HIGHLIGHT_PROP, null, ColorConstants.red);
 		editPart.propertyChange(evt);
+		evt = new PropertyChangeEvent(GraphModelNode.BRING_TO_FRONT, GraphModelNode.BRING_TO_FRONT, null,null);
+		editPart.propertyChange(evt);
 	}
 	
 	/* (non-Javadoc)

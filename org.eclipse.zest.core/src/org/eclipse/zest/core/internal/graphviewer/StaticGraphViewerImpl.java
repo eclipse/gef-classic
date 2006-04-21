@@ -12,13 +12,13 @@ package org.eclipse.mylar.zest.core.internal.graphviewer;
 
 import java.util.Iterator;
 
-import org.eclipse.draw2d.FigureCanvas;
 import org.eclipse.draw2d.LineBorder;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.mylar.zest.core.ZestStyles;
-import org.eclipse.mylar.zest.core.internal.gefx.GraphRootEditPart;
 import org.eclipse.mylar.zest.core.internal.gefx.IPanningListener;
+import org.eclipse.mylar.zest.core.internal.gefx.LayoutAnimator;
 import org.eclipse.mylar.zest.core.internal.gefx.NonThreadedGraphicalViewer;
+import org.eclipse.mylar.zest.core.internal.gefx.StaticGraphRootEditPart;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelConnection;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelNode;
@@ -53,9 +53,6 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 	private boolean allowPanning = false;
 	private boolean noOverlappingNodes = false;
 	private boolean directedGraph = false;
-	//private boolean enforeBounds = false;
-	private boolean vScroll = false;
-	private boolean hScroll = false;
 	private int style = 0;
 
 	private boolean hasLayoutRun = false;
@@ -90,6 +87,34 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 	public int getStyle() {
 		return this.style;
 	}
+	
+	/**
+	 * Sets the scale for the main canvas
+	 * @param x The scale in the X direction
+	 * @param y The scale in the y direction
+	 */
+	public void setScale( double x, double y ) {
+		StaticGraphRootEditPart root = (StaticGraphRootEditPart)getRootEditPart();
+		root.setScale(x, y);
+		
+	}
+	
+	/**
+	 * Gets the scale in the y Direction
+	 */
+	public double getHeightScale() {
+		StaticGraphRootEditPart root = (StaticGraphRootEditPart)getRootEditPart();
+		return root.getYScale();
+	}
+	
+	/**
+	 * Gets the scale in the X Direction
+	 */
+	public double getWidthScale() {
+		StaticGraphRootEditPart root = (StaticGraphRootEditPart)getRootEditPart();
+		return root.getXScale();
+	}
+
 
 	/**
 	 * Sets the style for the viewer.
@@ -101,16 +126,14 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 		this.allowPanning = ZestStyles.checkStyle(style, ZestStyles.PANNING);
 		this.allowMarqueeSelection = !allowPanning && ZestStyles.checkStyle(style, ZestStyles.MARQUEE_SELECTION);
 		this.directedGraph = ZestStyles.checkStyle(style, ZestStyles.DIRECTED_GRAPH);
-		//this.enforeBounds = ZestStyles.checkStyle(style, ZestStyles.ENFORCE_BOUNDS);
-		this.hScroll = ZestStyles.checkStyle(style, SWT.H_SCROLL);
-		this.vScroll = ZestStyles.checkStyle(style, SWT.V_SCROLL);
 		
 		// set the scrollbar visibility
 		// TODO this doesn't work...  scrollbars never show up unless set to ALWAYS
-		if (hScroll || vScroll) {
-			getFigureCanvas().setHorizontalScrollBarVisibility((hScroll ? FigureCanvas.AUTOMATIC : FigureCanvas.NEVER));
-			getFigureCanvas().setVerticalScrollBarVisibility((vScroll ? FigureCanvas.AUTOMATIC : FigureCanvas.NEVER));
-		}
+		//(getFigureCanvas()).setScrollBarVisibility(FigureCanvas.ALWAYS);
+//		if (hScroll || vScroll) {
+//			getFigureCanvas().setHorizontalScrollBarVisibility((hScroll ? FigureCanvas.AUTOMATIC : FigureCanvas.NEVER));
+//			getFigureCanvas().setVerticalScrollBarVisibility((vScroll ? FigureCanvas.AUTOMATIC : FigureCanvas.NEVER));
+//		}
 		getFigureCanvas().setBorder(new LineBorder(2));
 		
 		if (model != null) {
@@ -162,6 +185,7 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 					isMinimized = false;
 					applyLayout();
 				}
+				
 			}
 		});	
 	}
@@ -186,20 +210,29 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 		// For the spring layout, I think it works a little nicer 
 		// if a radial layout is run first first
 		if (layoutAlgorithm instanceof SpringLayoutAlgorithm) {
+			
 			try {
 				RadialLayoutAlgorithm radial = new RadialLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING);
 				radial.applyLayout(model.getNodesArray(), model.getConnectionsArray(), 0, 0, d.width, d.height, false, false);
 			} catch (InvalidLayoutConfiguration e) {
 				e.printStackTrace();
 			}
+			
 		}
+		LayoutAnimator animator = new LayoutAnimator();
+		GraphModelNode[] animateableNodes = model.getNodesArray();
 
+		animator.animateNodes(animateableNodes);
+
+		/*
 		try {
-			layoutAlgorithm.applyLayout(model.getNodesArray(), model.getConnectionsArray(), 
+			SpringLayoutAlgorithm grid = new SpringLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING);
+			grid.applyLayout(model.getNodesArray(), model.getConnectionsArray(), 
 								0, 0, d.width, d.height, false, false);
 		} catch (InvalidLayoutConfiguration e) {
 			e.printStackTrace();
 		}
+		*/
 		// enforce no overlapping nodes
 		if (noOverlappingNodes) {
 			noOverlapAlgorithm.layout(model.getNodes());
@@ -221,9 +254,10 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 	}
 
 	protected void configureGraphicalViewer() {
-		GraphRootEditPart root = new GraphRootEditPart(this, allowMarqueeSelection, allowPanning);
+		StaticGraphRootEditPart root = new StaticGraphRootEditPart(this, allowMarqueeSelection, allowPanning);
+		
 		this.setRootEditPart(root);
-		this.setEditPartFactory(new GraphEditPartFactory());
+		this.setEditPartFactory(new GraphEditPartFactory(root));
 	}
 
 	public void panningStart() {

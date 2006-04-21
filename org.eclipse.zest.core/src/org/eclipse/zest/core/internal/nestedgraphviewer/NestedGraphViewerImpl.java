@@ -10,30 +10,25 @@
  *******************************************************************************/
 package org.eclipse.mylar.zest.core.internal.nestedgraphviewer;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.editparts.LayerManager;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.mylar.zest.core.ZestStyles;
+import org.eclipse.mylar.zest.core.internal.gefx.AnimateableNode;
+import org.eclipse.mylar.zest.core.internal.gefx.LayoutAnimator;
 import org.eclipse.mylar.zest.core.internal.gefx.NonThreadedGraphicalViewer;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelConnection;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedGraphModel;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedGraphModelNode;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NodeChildrenComparator;
-import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphConnectionEditPart;
-import org.eclipse.mylar.zest.core.internal.nestedgraphviewer.parts.NestedGraphEditPart;
 import org.eclipse.mylar.zest.core.internal.nestedgraphviewer.parts.NestedGraphEditPartFactory;
 import org.eclipse.mylar.zest.core.internal.nestedgraphviewer.parts.NestedGraphNodeEditPart;
 import org.eclipse.mylar.zest.core.internal.nestedgraphviewer.parts.NestedGraphRootEditPart;
-import org.eclipse.mylar.zest.core.internal.viewers.figures.NestedFreeformLayer;
 import org.eclipse.mylar.zest.core.viewers.TreeRootViewer;
 import org.eclipse.mylar.zest.core.widgets.BreadCrumbBar;
 import org.eclipse.mylar.zest.core.widgets.BreadCrumbItem;
@@ -44,6 +39,8 @@ import org.eclipse.mylar.zest.layouts.LayoutEntity;
 import org.eclipse.mylar.zest.layouts.LayoutRelationship;
 import org.eclipse.mylar.zest.layouts.LayoutStyles;
 import org.eclipse.mylar.zest.layouts.algorithms.GridLayoutAlgorithm;
+import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Widget;
 
@@ -67,7 +64,6 @@ public class NestedGraphViewerImpl extends NonThreadedGraphicalViewer
 	private boolean allowOverlap = false;
 	private boolean enforceBounds = false;
 	private boolean directedGraph = false;
-	private int zoomStyle = ZestStyles.ZOOM_EXPAND;
 	
 	/**
 	 * Initializes the viewer with the given styles (NO_SCROLLBARS, ZOOM_REAL, ZOOM_FAKE, ZOOM_EXPAND).  
@@ -90,6 +86,20 @@ public class NestedGraphViewerImpl extends NonThreadedGraphicalViewer
 		this.treeViewer = treeViewer;
 		setStyle(style);
 		breadCrumbBar.addBreadCrumbListener(this);
+		this.getFigureCanvas().addControlListener(new ControlListener() {
+
+			public void controlMoved(ControlEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			public void controlResized(ControlEvent e) {
+				resize(getFigureCanvas().getSize().x, getFigureCanvas().getSize().y);
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
 	}
 	
 	/**
@@ -107,9 +117,6 @@ public class NestedGraphViewerImpl extends NonThreadedGraphicalViewer
 		this.style = style;
 		this.allowOverlap = !ZestStyles.checkStyle(style, ZestStyles.NO_OVERLAPPING_NODES);
 		this.enforceBounds = ZestStyles.checkStyle(style, ZestStyles.ENFORCE_BOUNDS);
-		boolean realZoom = ZestStyles.checkStyle(style, ZestStyles.ZOOM_REAL);
-		boolean fakeZoom = ZestStyles.checkStyle(style, ZestStyles.ZOOM_FAKE);
-		this.zoomStyle = (realZoom ? ZestStyles.ZOOM_REAL : (fakeZoom ? ZestStyles.ZOOM_FAKE : ZestStyles.ZOOM_EXPAND)); 
 		this.directedGraph = ZestStyles.checkStyle(style, ZestStyles.DIRECTED_GRAPH);
 
 		if ( model != null ) {
@@ -131,15 +138,16 @@ public class NestedGraphViewerImpl extends NonThreadedGraphicalViewer
 	 * @see ca.uvic.cs.zest.internal.gefx.ThreadedGraphicalViewer#configureGraphicalViewer()
 	 */
 	protected void configureGraphicalViewer() {
-		NestedGraphRootEditPart root = new NestedGraphRootEditPart(zoomStyle);
+		NestedGraphRootEditPart root = new NestedGraphRootEditPart();
 		if (editPartFactory == null) {
-			editPartFactory = new NestedGraphEditPartFactory(allowOverlap, enforceBounds);
+			editPartFactory = new NestedGraphEditPartFactory(root, allowOverlap, enforceBounds);
 		}
 		
 		this.setRootEditPart(root);
 		this.setEditPartFactory(editPartFactory);
 	}
 	
+
 	/**
 	 * Sets the model.
 	 */
@@ -159,7 +167,7 @@ public class NestedGraphViewerImpl extends NonThreadedGraphicalViewer
 	 */
 	public void fireModelUpdate() {
 		// remove all the connections (they will be recreated)
-		removeConnections();
+		
 		
 		NestedGraphModelNode previousNode = model.getPreviousRootNode();
 		NestedGraphModelNode nodeToMoveTo = model.getCurrentNode();
@@ -170,19 +178,21 @@ public class NestedGraphViewerImpl extends NonThreadedGraphicalViewer
 			NestedGraphRootEditPart rootEditPart = (NestedGraphRootEditPart)getRootEditPart();
 			if ( previousNode == null ) {
 				rootEditPart.zoomInOnNode( (NestedGraphNodeEditPart) nodeToMoveTo.getEditPart() );
+				//removeConnections();
 				super.setContents(model);
 			}
 			else if ( nodeToMoveTo.getRelationshipBetweenNodes( previousNode ) == NestedGraphModelNode.DESCENDANT ) {
+				//removeConnections();
+				
 				rootEditPart.zoomInOnNode( (NestedGraphNodeEditPart) nodeToMoveTo.getEditPart() );
+				
 				super.setContents(model);
+				
 			}
 			else if ( nodeToMoveTo.getRelationshipBetweenNodes( previousNode ) == NestedGraphModelNode.ANCESTOR) {
 				checkScaling(previousNode);
-				
 				super.setContents(model);
 				getLightweightSystem().getUpdateManager().performValidation();
-				//this.flush();
-				//Display.getCurrent().update();
 				nodeToSelect = previousNode;  // select the previous node
 				
 				
@@ -206,18 +216,9 @@ public class NestedGraphViewerImpl extends NonThreadedGraphicalViewer
 		
 		// layout the children in a grid layout
 		// only happens the first time a node is the current node
-		Rectangle rect = model.getMainArea();
-		doLayout(nodeToMoveTo, rect.width, rect.height);
-
-		
+		doLayout(nodeToMoveTo,1200, 1200);		
 		updateBreadCrumb(nodeToMoveTo);
 		updateTreeViewer(nodeToSelect);		// also selects the given node
-		hideConnections();
-		
-
-		//this.flush();
-		//Display.getCurrent().update();
-
 	}
 
 	/**
@@ -247,6 +248,12 @@ public class NestedGraphViewerImpl extends NonThreadedGraphicalViewer
 			try {
 				layoutAlgorithm.applyLayout(entities, new LayoutRelationship[0], 0, 0, width - 20, height - 40, false, false);
 
+				LayoutAnimator animator = new LayoutAnimator();
+				AnimateableNode[] animateableNodes = new AnimateableNode[entities.length];
+				for (int i = 0; i < entities.length; i++) {
+					animateableNodes[i] = (AnimateableNode)entities[i];
+				}
+				animator.animateNodes(animateableNodes);
 				// set this attribute to signal the a grid layout has occured
 				// this way the grid layout is only done once.
 				nodeToLayout.setData("LayoutCompleted", "true");
@@ -303,63 +310,9 @@ public class NestedGraphViewerImpl extends NonThreadedGraphicalViewer
 		}
 	}
 	
-	/**
-	 * Removes all the connections from the EditPart registry. They will be
-	 * recreated when setContents(model) is called.
-	 */
-	private void removeConnections() {
-		ArrayList list = new ArrayList();
-		for (Iterator iter = getEditPartRegistry().keySet().iterator(); iter.hasNext(); ) {
-			Object obj = iter.next();
-			//System.out.println("fireModelUpdate: " + obj.toString());
-			if (obj instanceof GraphModelConnection) {
-				list.add((GraphModelConnection)obj);
-			}
-		}
-		for (Iterator iter = list.iterator(); iter.hasNext(); ) {
-			getEditPartRegistry().remove(iter.next());
-		}		
-	}
 	
-	/**
-	 * Hides any connections whose endpoints are not valid. 
-	 */
-	public void hideConnections() {
-		// hide any connections whose endpoints are not visible
-		for (Iterator iter = getEditPartRegistry().keySet().iterator(); iter.hasNext(); ) {
-			Object obj = iter.next();
-			if (obj instanceof GraphModelConnection) {
-				GraphModelConnection conn = (GraphModelConnection)obj;
-				GraphConnectionEditPart connEditPart = (GraphConnectionEditPart)getEditPartRegistry().get(conn);
-				if ((connEditPart.getSource() == null) || (connEditPart.getTarget() == null)) {
-					connEditPart.getFigure().setVisible(false);
-				} else {
-					GraphicalEditPart src = (GraphicalEditPart)connEditPart.getSource();
-					GraphicalEditPart dest = (GraphicalEditPart)connEditPart.getTarget();
-					
-					// check to make sure that the figures (and their parents) are visible
-					boolean vis = isFigureVisible(src.getFigure()) && isFigureVisible(dest.getFigure());
-					connEditPart.getFigure().setVisible(vis);
-				}
-			}
-		}
-	}
+
 	
-	/**
-	 * Traverses up the parent hierarchy checking to make sure that
-	 * every figure is visible.
-	 * @param figure
-	 * @return boolean if every figure in the parent hierarchy is visible
-	 */
-	private boolean isFigureVisible(IFigure figure) {
-		boolean visible = true;
-		IFigure parent = figure;
-		while (parent != null) {
-			visible = visible && parent.isVisible();
-			parent = parent.getParent();
-		}
-		return visible;
-	}
 	
 	/**
 	 * Updates the breadcrumb for the given node.  Also enables or disables
@@ -448,15 +401,21 @@ public class NestedGraphViewerImpl extends NonThreadedGraphicalViewer
      */
     public void resize(int widthHint, int heightHint) {
 		if (getEditPartRegistry().containsKey(model)) {
-			NestedGraphEditPart editPart = (NestedGraphEditPart)getEditPartRegistry().get(model);
-			NestedFreeformLayer layer = (NestedFreeformLayer)editPart.getFigure();
+			((NestedGraphRootEditPart)getRootEditPart()).resize(widthHint, heightHint);
+			//NestedGraphEditPart editPart = (NestedGraphEditPart)getEditPartRegistry().get(model);
+			//NestedFreeformLayer layer = (NestedFreeformLayer)editPart.getFigure();
+			
+			/*
 			Rectangle mainArea = layer.resize(widthHint, heightHint);
 			getFigureCanvas().layout(true, true);
 			Rectangle oldArea = model.getMainArea();
+			
 			model.setMainArea(mainArea);
 			if (oldArea.isEmpty()) {
 				doLayout(model.getCurrentNode(), mainArea.width, mainArea.height);
 			}
+			*/
+			
 			
 		}
     }

@@ -36,6 +36,8 @@ public abstract class GraphItem extends Item  {
 		super(parent, SWT.NO_BACKGROUND);
 	}
 	
+	
+	
 	/** 
 	 * Attach a non-null PropertyChangeListener to this object.
 	 * @param l a non-null PropertyChangeListener instance

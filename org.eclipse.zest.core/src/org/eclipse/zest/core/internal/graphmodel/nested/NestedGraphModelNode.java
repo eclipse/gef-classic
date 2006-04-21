@@ -54,18 +54,22 @@ public class NestedGraphModelNode extends GraphModelNode implements NestedLayout
 	
 	public NestedGraphModelNode(NestedGraphModel graphModel, Object externalNode) {
 		super(graphModel, externalNode);
+		
 	}
 
 	public NestedGraphModelNode(NestedGraphModel graphModel, String label, Object externalNode) {
 		super(graphModel, label, externalNode);
+		
 	}
 
 	public NestedGraphModelNode(NestedGraphModel graphModel, Image img, Object externalNode) {
 		super(graphModel, img, externalNode);
+		
 	}
 
 	public NestedGraphModelNode(NestedGraphModel graphModel, String label, Image img, Object externalNode) {
 		super(graphModel, label, img, externalNode);
+		
 	}
 
 	/* (non-Javadoc)

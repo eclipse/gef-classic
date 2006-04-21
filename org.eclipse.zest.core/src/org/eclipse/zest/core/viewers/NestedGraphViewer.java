@@ -108,6 +108,7 @@ public class NestedGraphViewer extends StructuredViewer
 		});
 		
 		this.viewer = new NestedGraphViewerImpl(sashForm, style, breadCrumbBar, treeViewer);
+		
 		this.viewer.addSelectionChangedListener(new ISelectionChangedListener() {
 			public void selectionChanged(SelectionChangedEvent event) {
 				setSelectionToTreeViewer(event.getSelection(), true);
@@ -304,6 +305,8 @@ public class NestedGraphViewer extends StructuredViewer
 	// Control Listener methods
 	public void controlMoved(ControlEvent e) {}
 	
+	
+	
 	public void controlResized(ControlEvent e) {
 		int width = parent.getSize().x - 4;
 		int height = parent.getSize().y - 4;
@@ -320,9 +323,8 @@ public class NestedGraphViewer extends StructuredViewer
 		sashData.minimumHeight = height - bcHeight - 18;
 		sashForm.layout(true, true);
 
-		int[] weights = sashForm.getWeights();
-		int viewerWidth = width * weights[1] / 1000;
-		viewer.resize(viewerWidth - 8, height - bcHeight);
+		
+		
 	}
 
 	

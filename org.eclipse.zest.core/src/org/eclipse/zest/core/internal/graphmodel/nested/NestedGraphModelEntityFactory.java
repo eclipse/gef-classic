@@ -55,10 +55,15 @@ public class NestedGraphModelEntityFactory implements INestedGraphModelFactory {
 
 		// add the root element
 		// TODO this maybe should be optional...
-		NestedGraphModelNode rootNode = new NestedGraphModelRootNode(model);
+		NestedGraphModelNode rootNode = new NestedGraphModelNode(model, null);
 		rootNode.setData(rootNode);
+		rootNode.setHighlightAdjacentNodes(true);
+		rootNode.setText("Top Level Node");
 		model.addNode(rootNode.getData(), rootNode);
-		rootNode.setSizeInLayout(200, 200);
+		
+		rootNode.setSizeInLayout(-1, -1);
+		
+		model.setRootNode(rootNode);
 		
 		Object entities[] = getContentProvider().getElements( inputElement );
 		// add all root the entities and recursively add their children

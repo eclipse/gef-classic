@@ -12,6 +12,7 @@ package org.eclipse.mylar.zest.core.internal.graphviewer.parts;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.draw2d.ChopboxAnchor;
@@ -168,7 +169,6 @@ public class GraphNodeEditPart extends AbstractGraphicalEditPart implements
 	public void propertyChange(PropertyChangeEvent evt) {
 		
 		String prop = evt.getPropertyName();
-		
 		if ( GraphModelNode.FORCE_REDRAW.equals(prop)) {
 			refreshVisuals();
 			refreshChildren();
@@ -186,32 +186,53 @@ public class GraphNodeEditPart extends AbstractGraphicalEditPart implements
 			refreshTargetConnections();
 		} else if (GraphModelNode.HIGHLIGHT_PROP.equals(prop)) {
 			getCastedModel().highlight();
+			List listOfSourceConnections = getSourceConnections();
+			for (Iterator iter = listOfSourceConnections.iterator(); iter.hasNext();) {
+				GraphConnectionEditPart element = (GraphConnectionEditPart) iter.next();
+				element.highlightEdge();
+			}
 			// TODO pin highlighted node?  
 			//getCastedModel().setHasPreferredLocation( true );
 			refreshColors();
 		} else if (GraphModelNode.UNHIGHLIGHT_PROP.equals(prop)) {
 			getCastedModel().unhighlight();
 			//getCastedModel().setHasPreferredLocation( false );
+			List listOfSourceConnections = getSourceConnections();
+			for (Iterator iter = listOfSourceConnections.iterator(); iter.hasNext();) {
+				GraphConnectionEditPart element = (GraphConnectionEditPart) iter.next();
+				element.unHighlightEdge();
+			}
 			refreshColors();
 		} else if (GraphModelNode.COLOR_BG_PROP.equals(prop)) {
 			refreshColors();
 		} else if (GraphModelNode.COLOR_FG_PROP.equals(prop)) {
 			refreshColors();
 		} 
-		
+		else if ( GraphModelNode.BRING_TO_FRONT.equals(prop) ) {
+			IFigure figure = getFigure();
+			IFigure parent = figure.getParent();
+			parent.remove(figure);
+			parent.add(figure);
+			
+		}
 	}
 	
 	/* (non-Javadoc)
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#refreshVisuals()
 	 */
 	protected void refreshVisuals() {
+		
 		GraphModelNode node = getCastedModel();
 		Point loc = node.getLocation();
 		Dimension size = node.getSize();
+
 		Rectangle bounds = new Rectangle(loc, size);
-		figure.repaint();
 		((GraphicalEditPart)getParent()).setLayoutConstraint(this, getFigure(), bounds);
+
+		figure.repaint();
 		//getFigure().revalidate();
+		 
+		 
 	}
 
 	/**

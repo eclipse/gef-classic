@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.mylar.zest.core.internal.graphmodel.nested;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -63,14 +63,7 @@ public class NestedGraphModel extends GraphModel {
 			connections.size() + " connections}";
 	}
 	
-	/* (non-Javadoc)
-	 * @see ca.uvic.cs.zest.internal.graphmodel.GraphModel#addNodeToList(ca.uvic.cs.zest.internal.graphmodel.GraphModelNode)
-	 */
-	protected void addNodeToList(GraphModelNode node) {
-		if (node instanceof NestedGraphModelRootNode) {
-			setRootNode((NestedGraphModelRootNode)node);
-		}
-	}
+
 	
 	/* (non-Javadoc)
 	 * @see ca.uvic.cs.zest.internal.graphmodel.GraphModel#removeNodeFromList(ca.uvic.cs.zest.internal.graphmodel.GraphModelNode)
@@ -84,10 +77,17 @@ public class NestedGraphModel extends GraphModel {
 	 * @return List of NestedGraphModelNode objects which are the children of the current node
 	 */
 	public List getNodes() {
-		if ((currentNode != null) && (currentNode.getChildren() != null)) {
-			return currentNode.getChildren();
+		if ( currentNode != null ) {
+			ArrayList al = new ArrayList(  );
+			al.add( currentNode );
+			return al;
 		}
-		return Collections.EMPTY_LIST;
+		else { 
+			ArrayList al = new ArrayList();
+			al.add( rootNode );
+			return al;
+		}
+		
 	}
 	
 	/**
@@ -103,7 +103,7 @@ public class NestedGraphModel extends GraphModel {
 	 * Sets the root node for this model.
 	 * @param rootNode
 	 */
-	private void setRootNode(NestedGraphModelNode rootNode) {
+	public void setRootNode(NestedGraphModelNode rootNode) {
 		this.rootNode = rootNode;
 		if (currentNode == null) {
 			setCurrentNode(rootNode);
