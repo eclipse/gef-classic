@@ -94,7 +94,7 @@ public class GraphLabel extends Label {
 		if ((text != null) && (text.length() > 0)) {
 			Font font = getFont();
 			if (font != null) {
-				Dimension minSize = FigureUtilities.getStringExtents(text, font);
+				Dimension minSize = FigureUtilities.getTextExtents(text, font);
 				if (getIcon() != null) {
 					org.eclipse.swt.graphics.Rectangle imageRect = getIcon().getBounds();
 					int expandHeight = Math.max(imageRect.height - minSize.height, 0);
