@@ -243,6 +243,10 @@ protected void setUp() throws Exception {
 	}
 	if (!foundPerspective)
 		PlatformUI.getWorkbench().showPerspective(RESOURCE_PERSPECTIVE_ID, window);
+	
+	page.hideActionSet("org.eclipse.ui.edit.text.actionSet.annotationNavigation");
+	page.hideActionSet("org.eclipse.ui.externaltools.ExternalToolsSet");
+	
 	IViewReference[] views = page.getViewReferences();
 	for (int i = 0; i < views.length; i++)
 		page.hideView(views[i]);
