@@ -398,16 +398,17 @@ public static IFigure findCommonAncestor(IFigure l, IFigure r) {
 	}
 	if (left.isEmpty() || right.isEmpty())
 		return null;
-	int il = left.size() - 1;
-	int ir = right.size() - 1;
-	while (left.get(il) == right.get(ir)) {
-		il--;
-		ir--;
-	}
-	++il;
-	if (il < left.size())
-		return (IFigure)left.get(il);
-	return null;
+    
+    int il = left.size() - 1;
+    int ir = right.size() - 1;
+    do {
+        if (left.get(il) != right.get(ir))
+                break;
+        il--;
+        ir--;           
+    } while (il >= 0 && ir >= 0);
+
+    return (IFigure) left.get(il + 1);
 }
 
 /**
