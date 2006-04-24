@@ -276,7 +276,7 @@ public void setPoints(PointList points) {
 	erase();
 	this.points = points;
 	bounds = null;
-	firePropertyChange(Connection.PROPERTY_POINTS, null, points); //$NON-NLS-1$
+	firePropertyChange(Connection.PROPERTY_POINTS, null, points);
 	repaint();
 }
 
