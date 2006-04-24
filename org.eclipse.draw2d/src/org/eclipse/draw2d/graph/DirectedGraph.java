@@ -13,7 +13,6 @@ package org.eclipse.draw2d.graph;
 import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Insets;
-import org.eclipse.draw2d.geometry.Point;
 
 /**
  * A graph consisting of nodes and directed edges.  A DirectedGraph serves as the input to
