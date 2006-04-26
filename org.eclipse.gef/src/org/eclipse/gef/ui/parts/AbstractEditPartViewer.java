@@ -230,9 +230,10 @@ public final EditPart findObjectAtExcluding(Point pt, Collection exclude) {
  * Fires selection changed to the registered listeners at the time called.
  */
 protected void fireSelectionChanged() {
+    Object listeners[] = selectionListeners.toArray();
 	SelectionChangedEvent event = new SelectionChangedEvent(this, getSelection());
-	for (int i = 0; i < selectionListeners.size(); i++)
-		((ISelectionChangedListener)selectionListeners.get(i))
+	for (int i = 0; i < listeners.length; i++)
+		((ISelectionChangedListener)listeners[i])
 			.selectionChanged(event);
 }
 
