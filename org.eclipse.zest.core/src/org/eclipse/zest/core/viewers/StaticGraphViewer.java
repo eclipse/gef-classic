@@ -139,7 +139,7 @@ public class StaticGraphViewer extends StructuredViewer {
 		
 		GraphModel newModel = modelFactory.createModelFromContentProvider(input);
 		// only update if the number of nodes has changed
-		if ((model == null) || (newModel.getNodes().size() != model.getNodes().size())) {
+		if ((model == null) ) {
 			// get current list of nodes before they are re-created from the factory & content provider
 			Map oldNodesMap = (model != null ? model.getNodesMap() : Collections.EMPTY_MAP);
 

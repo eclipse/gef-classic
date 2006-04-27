@@ -24,10 +24,12 @@ public class LayoutAnimator {
 	public static final int NUMBER_OF_STEPS = 10;
 	public void animateNodes( AnimateableNode[] nodes ) {
 		UpdateManager updateManager = null;
+		
 		for (int i = 0; i < nodes.length; i++) {
 			nodes[i].startAnimation();
 			updateManager = nodes[i].getFigure().getUpdateManager();
 		}
+		
 		
 		for ( int step = 0; step < NUMBER_OF_STEPS; step++ ) {
 			for (int i = 0; i < nodes.length; i++) {
@@ -37,18 +39,25 @@ public class LayoutAnimator {
 				int newX = ((end.x - start.x)/NUMBER_OF_STEPS)*step + start.x;
 				int newY = ((end.y - start.y)/NUMBER_OF_STEPS)*step + start.y;
 				node.updateLocation(new Point(newX, newY));
-
-				node.getFigure().revalidate();
+				
+				
 				
 			}
-			try {
-				Thread.sleep(10);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+//			try {
+//				//Thread.sleep(1);
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+			
+			
 			updateManager.performUpdate();
+
+			
 		}
+		
+
+		
 		
 		for (int i = 0; i < nodes.length; i++) {
 			nodes[i].endAnimation();
