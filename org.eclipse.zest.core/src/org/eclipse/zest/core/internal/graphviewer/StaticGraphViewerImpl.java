@@ -150,7 +150,7 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 		boolean radial = ZestStyles.checkStyle(ZestStyles.LAYOUT_RADIAL, style);
 		boolean tree = ZestStyles.checkStyle(ZestStyles.LAYOUT_TREE, style);
 		if (grid) {
-			setLayoutAlgorithm(new GridLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING), false);
+			setLayoutAlgorithm(new GridLayoutAlgorithm(LayoutStyles.NONE), false);
 		} else if (radial) {
 			setLayoutAlgorithm(new RadialLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING), false);
 		} else if (tree) {
@@ -219,6 +219,15 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 			}
 			
 		}
+
+
+		try {
+			layoutAlgorithm.applyLayout(model.getNodesArray(), model.getConnectionsArray(), 0, 0, d.width, d.height, false, false);
+		} catch (InvalidLayoutConfiguration e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		LayoutAnimator animator = new LayoutAnimator();
 		GraphModelNode[] animateableNodes = model.getNodesArray();
 

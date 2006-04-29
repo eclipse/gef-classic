@@ -32,8 +32,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Widget;
 
 /**
- * This view is used to represent a static graph.  Static graphs can be layed out, 
- * but do not continually update their layout locations.
+ * This view is used to represent a static graph. Static graphs can be layed
+ * out, but do not continually update their layout locations.
  * 
  * @author Ian Bull
  * @author Chris Callendar
@@ -41,13 +41,17 @@ import org.eclipse.swt.widgets.Widget;
 public class StaticGraphViewer extends StructuredViewer {
 
 	StaticGraphViewerImpl viewer = null;
+
 	private IGraphModelFactory modelFactory = null;
+
 	private GraphModel model;
-	
+
 	/**
 	 * Initializes the viewer.
+	 * 
 	 * @param composite
-	 * @param style	the style for the viewer and for the layout algorithm
+	 * @param style
+	 *            the style for the viewer and for the layout algorithm
 	 * @see ZestStyles#LAYOUT_GRID
 	 * @see ZestStyles#LAYOUT_TREE
 	 * @see ZestStyles#LAYOUT_RADIAL
@@ -57,102 +61,109 @@ public class StaticGraphViewer extends StructuredViewer {
 	 * @see SWT#V_SCROLL
 	 * @see SWT#H_SCROLL
 	 */
-	public StaticGraphViewer( Composite composite, int style ) {
+	public StaticGraphViewer(Composite composite, int style) {
 		this.viewer = new StaticGraphViewerImpl(composite, style);
-		hookControl( this.viewer.getControl() );
+		hookControl(this.viewer.getControl());
 	}
-	
+
 	/**
 	 * Gets the styles for this structuredViewer
+	 * 
 	 * @return
 	 */
 	public int getStyle() {
 		return this.viewer.getStyle();
 	}
-	
+
 	/**
 	 * Sets the horizontal scale
+	 * 
 	 * @param scale
 	 */
-	public void setHorizontalScale( double scale ) {
+	public void setHorizontalScale(double scale) {
 		this.viewer.setScale(scale, this.viewer.getHeightScale());
 	}
-	
+
 	/**
 	 * Sets the horizontal scale
+	 * 
 	 * @param scale
 	 */
-	public void setVerticalScale( double scale ) {
+	public void setVerticalScale(double scale) {
 		this.viewer.setScale(this.viewer.getWidthScale(), scale);
 	}
-	
+
 	/**
 	 * Sets the scale in both the X and Y
+	 * 
 	 * @param scale
 	 */
-	public void setScale( double scale ) {
+	public void setScale(double scale) {
 		this.viewer.setScale(scale, scale);
 	}
 
-	
 	/**
 	 * Sets the style on this structuredViewer
+	 * 
 	 * @param style
 	 * @return
 	 */
 	public void setStyle(int style) {
 		this.viewer.setStyle(style);
-	}	
-	
+	}
+
 	/**
 	 * Sets the layout algorithm to use for this viewer.
-	 * @param algorithm the algorithm to layout the nodes
-	 * @param runLayout if the layout should be run
+	 * 
+	 * @param algorithm
+	 *            the algorithm to layout the nodes
+	 * @param runLayout
+	 *            if the layout should be run
 	 */
 	public void setLayoutAlgorithm(LayoutAlgorithm algorithm, boolean runLayout) {
 		viewer.setLayoutAlgorithm(algorithm, runLayout);
 	}
-	
-	
+
 	public void setContentProvider(IContentProvider contentProvider) {
 		if (contentProvider instanceof IGraphContentProvider) {
 			super.setContentProvider(contentProvider);
-		} else if ( contentProvider instanceof IGraphEntityContentProvider ) {
-			super.setContentProvider( contentProvider );
+		} else if (contentProvider instanceof IGraphEntityContentProvider) {
+			super.setContentProvider(contentProvider);
 		} else {
-			throw new IllegalArgumentException("Invalid content provider, only IGraphContentProvider and IGraphEntityContentProvider are supported.");
+			throw new IllegalArgumentException(
+					"Invalid content provider, only IGraphContentProvider and IGraphEntityContentProvider are supported.");
 		}
 	}
-	
+
 	protected void inputChanged(Object input, Object oldInput) {
 		boolean highlightAdjacentNodes = ZestStyles.checkStyle(viewer.getStyle(), ZestStyles.HIGHLIGHT_ADJACENT_NODES);
 		boolean directedGraph = ZestStyles.checkStyle(viewer.getStyle(), ZestStyles.DIRECTED_GRAPH);
-		
+
 		if (modelFactory == null) {
 			if (getContentProvider() instanceof IGraphContentProvider) {
 				modelFactory = new GraphModelFactory(this, highlightAdjacentNodes);
-			}
-			else if ( getContentProvider() instanceof IGraphEntityContentProvider ) {
+			} else if (getContentProvider() instanceof IGraphEntityContentProvider) {
 				modelFactory = new GraphModelEntityFactory(this, highlightAdjacentNodes);
 			}
 		}
-		
+
 		GraphModel newModel = modelFactory.createModelFromContentProvider(input);
 		// only update if the number of nodes has changed
-		if ((model == null) ) {
-			// get current list of nodes before they are re-created from the factory & content provider
+		if ((model == null)) {
+			// get current list of nodes before they are re-created from the
+			// factory & content provider
 			Map oldNodesMap = (model != null ? model.getNodesMap() : Collections.EMPTY_MAP);
 
 			model = newModel;
-			model.setDirectedEdges(directedGraph); 
+			model.setDirectedEdges(directedGraph);
 
 			// check if any of the pre-existing nodes are still present
 			// in this case we want them to keep the same location & size
-			for (Iterator iter = oldNodesMap.keySet().iterator(); iter.hasNext(); ) {
+			for (Iterator iter = oldNodesMap.keySet().iterator(); iter.hasNext();) {
 				Object data = iter.next();
 				GraphModelNode newNode = model.getInternalNode(data);
 				if (newNode != null) {
-					GraphModelNode oldNode = (GraphModelNode)oldNodesMap.get(data);
+					GraphModelNode oldNode = (GraphModelNode) oldNodesMap.get(data);
 					newNode.setPreferredLocation(oldNode.getXInLayout(), oldNode.getYInLayout());
 				}
 			}
@@ -160,17 +171,17 @@ public class StaticGraphViewer extends StructuredViewer {
 			// set the model contents (initializes the layout algorithm)
 			viewer.setContents(model, modelFactory);
 		} else {
-			//viewer.applyLayout();
+			// viewer.applyLayout();
 		}
 	}
-	
+
 	/**
 	 * Applys the current layout to the viewer
 	 */
 	public void applyLayout() {
 		viewer.applyLayout();
 	}
-	
+
 	protected Widget doFindInputItem(Object element) {
 		return null;
 	}
@@ -187,7 +198,9 @@ public class StaticGraphViewer extends StructuredViewer {
 		return new ArrayList(0);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.jface.viewers.StructuredViewer#refresh()
 	 */
 	public void refresh() {
@@ -195,9 +208,9 @@ public class StaticGraphViewer extends StructuredViewer {
 			viewer.applyLayout();
 		}
 	}
-	
+
 	protected void internalRefresh(Object element) {
-		
+
 	}
 
 	public void reveal(Object element) {
@@ -211,10 +224,12 @@ public class StaticGraphViewer extends StructuredViewer {
 	public Control getControl() {
 		return viewer.getControl();
 	}
-	
+
 	/**
 	 * Adds a new node to the graph
-	 * @param o The new node to add
+	 * 
+	 * @param o
+	 *            The new node to add
 	 */
 	public void addNode(Object o) {
 		viewer.addNode(o);
@@ -222,7 +237,9 @@ public class StaticGraphViewer extends StructuredViewer {
 
 	/**
 	 * Removes a node from the graph.
-	 * @param o the node to remove
+	 * 
+	 * @param o
+	 *            the node to remove
 	 */
 	public void removeNode(Object o) {
 		viewer.removeNode(o);
