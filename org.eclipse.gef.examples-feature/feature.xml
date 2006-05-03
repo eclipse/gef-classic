@@ -16,7 +16,9 @@
    </license>
 
    <url>
-      <update label="%updateSiteName" url="http://update.eclipse.org/updates/3.0"/>
+      <update label="%updateSiteName" url="http://download.eclipse.org/tools/gef/milestones/update-site/site.xml"/>
+      <discovery label="%updateSiteName" url="http://download.eclipse.org/tools/gef/milestones/update-site/site.xml"/>
+      <discovery label="%updateSiteName" url="http://download.eclipse.org/tools/gef/updates/site-interim.xml"/>
    </url>
 
    <requires>
