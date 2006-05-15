@@ -45,6 +45,7 @@ public Draw2dTestSuite() {
     addTest(new TestSuite(PrecisionRectangleTest.class));
     addTest(new TestSuite(ThumbnailTest.class));
     addTest(new TestSuite(FigureUtilitiesTest.class));
+    addTest(new TestSuite(RectangleTest.class));
 //    addTest(new TestSuite(ColorConstantTest.class));
 }
 

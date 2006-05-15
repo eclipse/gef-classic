@@ -95,8 +95,10 @@ public Rectangle(int x, int y, int width, int height) {
  * @since 2.0
  */
 public Rectangle(Point p1, Point p2) {
-	setLocation(p1);
-	union(p2);
+	this.x = Math.min(p1.x, p2.x);
+	this.y = Math.min(p1.y, p2.y);
+	this.width = Math.abs(p2.x - p1.x) + 1;
+	this.height = Math.abs(p2.y - p1.y) + 1;
 }
 
 /**
