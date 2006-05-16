@@ -4,7 +4,26 @@
 <!-- Define topics for the main guide                                              -->
 <!-- ============================================================================= -->
 <toc label="bogus" href="bogus" >
+	<topic label="GEF Framework" href="reference/api/overview-summary.html">
+		<topic label="org.eclipse.gef" href="reference/api/org/eclipse/gef/package-summary.html" />
+		<topic label="org.eclipse.gef.commands" href="reference/api/org/eclipse/gef/commands/package-summary.html" />
+		<topic label="org.eclipse.gef.dnd" href="reference/api/org/eclipse/gef/dnd/package-summary.html" />
+		<topic label="org.eclipse.gef.editparts" href="reference/api/org/eclipse/gef/editparts/package-summary.html" />
+		<topic label="org.eclipse.gef.editpolicies" href="reference/api/org/eclipse/gef/editpolicies/package-summary.html" />
+		<topic label="org.eclipse.gef.handles" href="reference/api/org/eclipse/gef/handles/package-summary.html" />
+		<topic label="org.eclipse.gef.palette" href="reference/api/org/eclipse/gef/palette/package-summary.html" />
+		<topic label="org.eclipse.gef.print" href="reference/api/org/eclipse/gef/print/package-summary.html" />
+		<topic label="org.eclipse.gef.requests" href="reference/api/org/eclipse/gef/requests/package-summary.html" />
+		<topic label="org.eclipse.gef.rulers" href="reference/api/org/eclipse/gef/rulers/package-summary.html" />
+		<topic label="org.eclipse.gef.tools" href="reference/api/org/eclipse/gef/tools/package-summary.html" />
+		<topic label="org.eclipse.gef.ui.actions" href="reference/api/org/eclipse/gef/ui/actions/package-summary.html" />
+		<topic label="org.eclipse.gef.ui.palette" href="reference/api/org/eclipse/gef/ui/palette/package-summary.html" />
+		<topic label="org.eclipse.gef.ui.palette.customize" href="reference/api/org/eclipse/gef/ui/palette/customize/package-summary.html" />
+		<topic label="org.eclipse.gef.ui.parts" href="reference/api/org/eclipse/gef/ui/parts/package-summary.html" />
+		<topic label="org.eclipse.gef.ui.properties" href="reference/api/org/eclipse/gef/ui/properties/package-summary.html" />
+		<topic label="org.eclipse.gef.ui.rulers" href="reference/api/org/eclipse/gef/ui/rulers/package-summary.html" />
+		<topic label="org.eclipse.gef.ui.views.palette" href="reference/api/org/eclipse/gef/ui/views/palette/package-summary.html" />
+		<topic label="org.eclipse.gef.util" href="reference/api/org/eclipse/gef/util/package-summary.html" />
+	</topic>
 	<anchor id="draw2d" />
-	<topic label="GEF API" href="reference/api/index.html" />
-	<topic label="GEF API (no frames)" href="reference/api/overview-summary.html" />
 </toc>

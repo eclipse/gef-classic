@@ -5,6 +5,12 @@
 <!-- ============================================================================= -->
 
 <toc link_to="../org.eclipse.gef.doc.isv/topics_Reference.xml#draw2d" label="none">
-	<topic label="Draw2d API" href="reference/api/index.html" />
-	<topic label="Draw2d API (no frames)" href="reference/api/overview-summary.html" />
+	<topic label="Draw2d Toolkit" href="reference/api/overview-summary.html">
+		<topic label="org.eclipse.draw2d" href="reference/api/org/eclipse/draw2d/package-summary.html" />
+		<topic label="org.eclipse.draw2d.geometry" href="reference/api/org/eclipse/draw2d/geometry/package-summary.html" />
+		<topic label="org.eclipse.draw2d.graph" href="reference/api/org/eclipse/draw2d/graph/package-summary.html" />
+		<topic label="org.eclipse.draw2d.parts" href="reference/api/org/eclipse/draw2d/parts/package-summary.html" />
+		<topic label="org.eclipse.draw2d.text" href="reference/api/org/eclipse/draw2d/text/package-summary.html" />
+		<topic label="org.eclipse.draw2d.widgets" href="reference/api/org/eclipse/draw2d/widgets/package-summary.html" />
+	</topic>
 </toc>
