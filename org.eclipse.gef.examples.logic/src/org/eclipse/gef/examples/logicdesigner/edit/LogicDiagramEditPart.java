@@ -183,7 +183,8 @@ public void propertyChange(PropertyChangeEvent evt) {
 protected void refreshVisuals() {
 	Animation.markBegin();
 	ConnectionLayer cLayer = (ConnectionLayer) getLayer(CONNECTION_LAYER);
-	cLayer.setAntialias(SWT.ON);
+    if ((getViewer().getControl().getStyle() & SWT.MIRRORED ) == 0)
+        cLayer.setAntialias(SWT.ON);
 
 	if (getLogicDiagram().getConnectionRouter().equals(LogicDiagram.ROUTER_MANUAL)) {
 		AutomaticRouter router = new FanRouter();
