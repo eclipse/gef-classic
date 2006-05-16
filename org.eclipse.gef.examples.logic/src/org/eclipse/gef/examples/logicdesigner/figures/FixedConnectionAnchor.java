@@ -62,7 +62,8 @@ public Point getReferencePoint(){
 }
 	
 /**
- * @param offsetH The offsetH to set.
+ * @param offsetH
+ *            The offsetH to set.
  */
 public void setOffsetH(int offsetH) {
 	this.offsetH = offsetH;
@@ -70,11 +71,46 @@ public void setOffsetH(int offsetH) {
 }
 
 /**
- * @param offsetV The offsetV to set.
+ * @param offsetV
+ *            The offsetV to set.
  */
 public void setOffsetV(int offsetV) {
 	this.offsetV = offsetV;
 	fireAnchorMoved();
 }
+
+/*
+ * (non-Javadoc)
+ * 
+ * @see java.lang.Object#equals(java.lang.Object)
+ */
+public boolean equals(Object o) {
+	if (o instanceof FixedConnectionAnchor) {
+		FixedConnectionAnchor fa = (FixedConnectionAnchor)o;
+		
+		if (fa.leftToRight == this.leftToRight &&
+			fa.topDown == this.topDown &&
+			fa.offsetH == this.offsetH &&
+			fa.offsetV == this.offsetV &&
+			fa.getOwner() == this.getOwner()) {
+			return true;
+		}
+	}
+	
+	return false;
+}
+
+/*
+ * (non-Javadoc)
+ * 
+ * @see java.lang.Object#hashCode()
+ */
+public int hashCode() {
+	return ((this.leftToRight ? 31 : 0) + (this.topDown ? 37 : 0) +  
+	        this.offsetH * 43 + this.offsetV * 47) ^ 
+	        this.getOwner().hashCode();
+}
+
+
 
 }
