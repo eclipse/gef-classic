@@ -48,7 +48,6 @@ import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.KeyHandler;
 import org.eclipse.gef.RootEditPart;
 import org.eclipse.gef.SelectionManager;
-import org.eclipse.gef.internal.Internal;
 
 /**
  * The base implementation for EditPartViewer.
@@ -657,6 +656,7 @@ public void setEditPartFactory(EditPartFactory factory) {
  */
 public void setFocus(EditPart part) {
 	getSelectionManager().setFocus(part);
+    focusPart = part;
 }
 
 /**
