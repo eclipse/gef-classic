@@ -13,6 +13,7 @@ package org.eclipse.mylar.zest.core.internal.graphmodel;
 import java.util.HashMap;
 
 import org.eclipse.draw2d.Graphics;
+import org.eclipse.mylar.zest.layouts.LayoutBendPoint;
 import org.eclipse.mylar.zest.layouts.LayoutEntity;
 import org.eclipse.mylar.zest.layouts.LayoutRelationship;
 import org.eclipse.swt.graphics.Color;
@@ -371,6 +372,12 @@ public class GraphModelConnection extends GraphItem implements LayoutRelationshi
 	 */
 	public GraphModel getGraphModel() {
 		return this.graphModel;
+	}
+
+
+	public void setBendPoints(LayoutBendPoint[] bendPoints) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

@@ -157,8 +157,9 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 			setLayoutAlgorithm(new TreeLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING), false);
 		} else {
 			// default to Spring layout
-			SpringLayoutAlgorithm layout = new SpringLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING);
-			setLayoutAlgorithm(layout, false);
+			//SpringLayoutAlgorithm layout = new SpringLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING);
+			setLayoutAlgorithm(new RadialLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING), false);
+			//setLayoutAlgorithm(layout, false);
 		}
 	}
 	
