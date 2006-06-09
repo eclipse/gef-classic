@@ -551,7 +551,7 @@ public class SimpleSwingExample {
 			double theta;
 			
 			// Add bend points if required
-			if (rel.getBendPoints() != null && rel.getBendPoints().length > 0) {
+			if (((SimpleRelationship)rel).getBendPoints() != null && ((SimpleRelationship)rel).getBendPoints().length > 0) {
 				src = drawBendPoints(rel, g); // change source to last bendpoint
 			}
 			
@@ -632,7 +632,7 @@ public class SimpleSwingExample {
          */
         private LayoutEntity drawBendPoints(LayoutRelationship rel, Graphics g) {
     		final String DUMMY_TITLE = "dummy";
-    		LayoutBendPoint[] bendPoints = rel.getBendPoints();
+    		LayoutBendPoint[] bendPoints = ((SimpleRelationship)rel).getBendPoints();
 			LayoutBendPoint bp;
 			LayoutEntity destEntity = null;
 			LayoutEntity startEntity = rel.getSourceInLayout();

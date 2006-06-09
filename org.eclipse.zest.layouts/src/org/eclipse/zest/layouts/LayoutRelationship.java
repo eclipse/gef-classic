@@ -68,13 +68,12 @@ public interface LayoutRelationship {
 	
 	/**
 	 * Specify a set of bend points. The layout algorithm using this will pass
-	 * in an empty array of bendPoints if there are no bend points associated with
-	 * this edge.  
+	 * in an empty array of bendPoints, or not even call this method,
+	 * if there are no bend points associated with this edge.
+	 * 
+	 * If you are updating an existing application you can just implement this method to do nothing.
 	 */
 	public void setBendPoints(LayoutBendPoint[] bendPoints); 
 	
-	/**
-	 * Return the current set of bend points. Should return an empty array of none exist.
-	 */
-	public LayoutBendPoint[] getBendPoints(); 
+
 }
