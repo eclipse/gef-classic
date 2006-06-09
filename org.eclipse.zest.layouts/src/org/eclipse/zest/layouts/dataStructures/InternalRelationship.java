@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.mylar.zest.layouts.dataStructures;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import org.eclipse.mylar.zest.layouts.LayoutRelationship;
 
 /**
@@ -20,6 +23,7 @@ public class InternalRelationship {
 	private LayoutRelationship externalRelationship;
 	private InternalNode source;
 	private InternalNode destination;
+	private List bendPoints = new LinkedList();
 	
 	public InternalRelationship( LayoutRelationship externalRelationship, InternalNode source, InternalNode destination) {
 		this.externalRelationship = externalRelationship;
@@ -48,6 +52,19 @@ public class InternalRelationship {
 	
 	public boolean isBidirectional() {
 		return externalRelationship.isBidirectionalInLayout();
+	}
+	
+	/**
+	 * Ensure this is called in order of source to target node position.
+	 * @param x
+	 * @param y
+	 */
+	public void addBendPoint(double x, double y) {
+		bendPoints.add(new BendPoint(x, y));
+	}
+	
+	public List getBendPoints() {
+		return this.bendPoints;
 	}
 
 }

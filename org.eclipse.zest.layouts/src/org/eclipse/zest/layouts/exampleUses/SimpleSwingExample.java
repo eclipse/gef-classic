@@ -49,6 +49,7 @@ import javax.swing.JToolBar;
 
 import org.eclipse.mylar.zest.layouts.InvalidLayoutConfiguration;
 import org.eclipse.mylar.zest.layouts.LayoutAlgorithm;
+import org.eclipse.mylar.zest.layouts.LayoutBendPoint;
 import org.eclipse.mylar.zest.layouts.LayoutEntity;
 import org.eclipse.mylar.zest.layouts.LayoutRelationship;
 import org.eclipse.mylar.zest.layouts.LayoutStyles;
@@ -298,87 +299,15 @@ public class SimpleSwingExample {
 		} finally {
         }
 	}
-	
-	private void createMainPanel () {
-		mainPanel = new JPanel() {
-			private static final long serialVersionUID = 1;
-		    // instead of letting Swing paint all the JPanels for us, we will just do our own painting here
-            protected void paintChildren(Graphics g) {
-                if (g instanceof Graphics2D && RENDER_HIGH_QUALITY) {
-					((Graphics2D)g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-					((Graphics2D)g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-					((Graphics2D)g).setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-					((Graphics2D)g).setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON); 	
-                }
-                
-                // paint the nodes
-				for (Iterator iter = entities.iterator(); iter.hasNext();) {
-                    LayoutEntity entity = (SimpleNode) iter.next();
-                    boolean isSelected = selectedEntity != null && selectedEntity.equals(entity);
-                    g.setColor(isSelected ? NODE_SELECTED_COLOR : NODE_NORMAL_COLOR);
-                    g.fillOval((int)entity.getXInLayout(), (int)entity.getYInLayout(), (int)entity.getWidthInLayout(), (int)entity.getHeightInLayout());
-                    g.setColor( isSelected ? BORDER_SELECTED_COLOR : BORDER_NORMAL_COLOR);
-                    String name = entity.toString();
-                    Rectangle2D nameBounds = g.getFontMetrics().getStringBounds(name, g);
-       				g.drawString(name, (int) (entity.getXInLayout() + entity.getWidthInLayout()/2.0 - nameBounds.getWidth()/2.0), (int)(entity.getYInLayout() - nameBounds.getHeight() - nameBounds.getY()));
-                    if (g instanceof Graphics2D) {
-                        ((Graphics2D)g).setStroke(isSelected ? BORDER_SELECTED_STROKE : BORDER_NORMAL_STROKE);
-                    }
-                    g.drawOval((int)entity.getXInLayout(), (int)entity.getYInLayout(), (int)entity.getWidthInLayout(), (int)entity.getHeightInLayout());
-                 }				
-				
-				// paint the relationships 
-				for (Iterator iter = relationships.iterator(); iter.hasNext();) {
-					LayoutRelationship rel = (LayoutRelationship) iter.next();
-					LayoutEntity src = rel.getSourceInLayout();
-					LayoutEntity dest = rel.getDestinationInLayout();
-                    double srcX = src.getXInLayout() + src.getWidthInLayout()/2.0 ;
-                    double srcY = src.getYInLayout() + src.getHeightInLayout()/2.0;
-                    double destX = dest.getXInLayout() + dest.getWidthInLayout()/2.0;
-                    double destY = dest.getYInLayout() + dest.getHeightInLayout()/2.0;
-                    
-                    // draw an arrow in the middle of the line
-                    double dx = destX - srcX;
-                    double dy = destY - srcY;
-                    // make sure dx is not zero or too small
-                    if (dx < 0.01 && dx > -0.01) {
-                        if (dx > 0) {
-                            dx = 0.01;
-                        } else if (dx < 0) {
-                            dx = -0.01;
-                        }
-                    }
-                    double theta = Math.atan2(dy, dx);
-                    
-                    double reverseTheta = theta > 0.0d ? theta - Math.PI : theta + Math.PI;
-                    Point2D.Double srcIntersectionP = getEllipseIntersectionPoint(theta, src.getWidthInLayout(), src.getHeightInLayout());
-                    Point2D.Double destIntersectionP = getEllipseIntersectionPoint(reverseTheta, dest.getWidthInLayout(), dest.getHeightInLayout());
-                    g.setColor(RELATIONSHIP_NORMAL_COLOR);
-                    g.drawLine((int)(srcX + srcIntersectionP.getX()), (int)(srcY + srcIntersectionP.getY()), (int)(destX + destIntersectionP.getX()), (int)(destY + destIntersectionP.getY())); 
-                    
-                    AffineTransform tx = new AffineTransform();
-                    double arrX = srcX + (dx)/2.0;
-                    double arrY = srcY + (dy)/2.0;
-                    tx.translate(arrX, arrY);
-                    tx.rotate(theta);
-                    Shape arrowTx = tx.createTransformedShape(ARROW_SHAPE);
-                    if (g instanceof Graphics2D) {
-                        g.setColor(ARROW_HEAD_FILL_COLOR);
-                        ((Graphics2D)g).fill(arrowTx);
-                        ((Graphics2D)g).setStroke(ARROW_BORDER_STROKE);
-                        g.setColor(ARROW_HEAD_BORDER_COLOR);
-                        ((Graphics2D)g).draw(arrowTx);
-                    }
-				}
-				
-				
-				
-            }          
-		};
+
+    private void createMainPanel () {
+
+        mainPanel = new MainPanel(); // see below for class definition
 		mainPanel.setPreferredSize(new Dimension(INITIAL_PANEL_WIDTH, INITIAL_PANEL_HEIGHT));
 		mainPanel.setBackground(Color.WHITE);
 		mainPanel.setLayout(null);
 		mainFrame.getContentPane().add(new JScrollPane(mainPanel), BorderLayout.CENTER);
+
 		mainPanel.addMouseListener(new MouseAdapter () {
             public void mousePressed(MouseEvent e) {
                 selectedEntity = null;
@@ -424,7 +353,7 @@ public class SimpleSwingExample {
             }
         });
 	}
-	
+    
 	
     private void createGraph(boolean addNonTreeRels) {
         entities = new ArrayList();
@@ -566,5 +495,161 @@ public class SimpleSwingExample {
         (new SimpleSwingExample ()).start();
     }
     
+    /**
+     * A JPanel that provides entity and relationship rendering
+	 * Instead of letting Swing paint all the JPanels for us, we will just do our own painting here
+     * @author Chris Bennett
+     */
+    private class MainPanel extends JPanel {
+
+    	private static final long serialVersionUID = 1;
+
+    	protected void paintChildren(Graphics g) {
+            if (g instanceof Graphics2D && RENDER_HIGH_QUALITY) {
+				((Graphics2D)g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+				((Graphics2D)g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+				((Graphics2D)g).setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+				((Graphics2D)g).setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON); 	
+            }
+            
+            // paint the nodes
+			for (Iterator iter = entities.iterator(); iter.hasNext();) {
+                paintEntity((LayoutEntity) iter.next(), g);
+             }				
+			
+			// paint the relationships 
+			for (Iterator iter = relationships.iterator(); iter.hasNext();) {
+				paintRelationship((LayoutRelationship) iter.next(), g);
+	        }
+        }
+    	
+    	private void paintEntity(LayoutEntity entity, Graphics g) {
+            boolean isSelected = selectedEntity != null && selectedEntity.equals(entity);
+            g.setColor(isSelected ? NODE_SELECTED_COLOR : NODE_NORMAL_COLOR);
+            g.fillOval((int)entity.getXInLayout(), (int)entity.getYInLayout(), (int)entity.getWidthInLayout(), (int)entity.getHeightInLayout());
+            g.setColor( isSelected ? BORDER_SELECTED_COLOR : BORDER_NORMAL_COLOR);
+            String name = entity.toString();
+            Rectangle2D nameBounds = g.getFontMetrics().getStringBounds(name, g);
+				g.drawString(name, (int) (entity.getXInLayout() + entity.getWidthInLayout()/2.0 - nameBounds.getWidth()/2.0), (int)(entity.getYInLayout() - nameBounds.getHeight() - nameBounds.getY()));
+            if (g instanceof Graphics2D) {
+                ((Graphics2D)g).setStroke(isSelected ? BORDER_SELECTED_STROKE : BORDER_NORMAL_STROKE);
+            }
+            g.drawOval((int)entity.getXInLayout(), (int)entity.getYInLayout(), (int)entity.getWidthInLayout(), (int)entity.getHeightInLayout());
+    	}
+
+    	private void paintRelationship(LayoutRelationship rel, Graphics g) {
+
+    		LayoutEntity src = rel.getSourceInLayout();
+			LayoutEntity dest = rel.getDestinationInLayout();
+
+			double srcX;
+			double srcY; 
+			double destX;
+			double destY;
+			double dx;
+			double dy;
+			double theta;
+			
+			// Add bend points if required
+			if (rel.getBendPoints() != null && rel.getBendPoints().length > 0) {
+				src = drawBendPoints(rel, g); // change source to last bendpoint
+			}
+			
+			srcX = src.getXInLayout() + src.getWidthInLayout() / 2.0;
+			srcY = src.getYInLayout() + src.getHeightInLayout() / 2.0;
+			destX = dest.getXInLayout() + dest.getWidthInLayout() / 2.0;
+			destY = dest.getYInLayout() + dest.getHeightInLayout() / 2.0;
+			dx = getLength(srcX, destX);
+			dy = getLength(srcY, destY);
+			theta = Math.atan2(dy, dx);
+
+			drawLine(src, dest, theta, srcX, srcY, destX, destY, g);
+			
+			// draw an arrow in the middle of the line
+	    	drawArrow(theta, srcX, srcY, dx, dy, g);
+		}
+    	
+    	/**
+    	 * Draw a line from the edge of the src node to the edge of the destination node 
+    	 */
+    	private void drawLine(LayoutEntity src, LayoutEntity dest, double theta,
+    			double srcX, double srcY, double destX, double destY, Graphics g) {
+
+    		double reverseTheta = theta > 0.0d ? theta - Math.PI : theta + Math.PI;
+
+    		Point2D.Double srcIntersectionP = getEllipseIntersectionPoint(theta, src.getWidthInLayout(), src
+					.getHeightInLayout());
+
+    		Point2D.Double destIntersectionP = getEllipseIntersectionPoint(reverseTheta, dest.getWidthInLayout(), dest
+					.getHeightInLayout());
+
+    		g.setColor(RELATIONSHIP_NORMAL_COLOR);
+			g.drawLine((int) (srcX + srcIntersectionP.getX()), (int) (srcY + srcIntersectionP.getY()),
+					(int) (destX + destIntersectionP.getX()), (int) (destY + destIntersectionP.getY()));
+    	}
+		
+    	private void drawArrow(double theta, double srcX, double srcY, double dx, double dy, Graphics g) {
+			AffineTransform tx = new AffineTransform();
+			double arrX = srcX + (dx) / 2.0;
+			double arrY = srcY + (dy) / 2.0;
+			tx.translate(arrX, arrY);
+			tx.rotate(theta);
+			Shape arrowTx = tx.createTransformedShape(ARROW_SHAPE);
+			if (g instanceof Graphics2D) {
+				g.setColor(ARROW_HEAD_FILL_COLOR);
+				((Graphics2D) g).fill(arrowTx);
+				((Graphics2D) g).setStroke(ARROW_BORDER_STROKE);
+				g.setColor(ARROW_HEAD_BORDER_COLOR);
+				((Graphics2D) g).draw(arrowTx);
+			}
+    	}
+
+    	/**
+    	 * Get the length of a line ensuring it is not too small to render
+    	 * @param start
+    	 * @param end
+    	 * @return
+    	 */
+    	private double getLength(double start, double end) {
+			double length = end - start;
+			// make sure dx is not zero or too small
+			if (length < 0.01 && length > -0.01) {
+				if (length > 0) {
+					length = 0.01;
+				} else if (length < 0) {
+					length = -0.01;
+				}
+			}
+			return length;
+    	}
+    	
+        /**
+         * Draws a set of lines between bendpoints
+         * @param relationship
+         * @param bendNodes
+         * @param bendEdges
+         * @return the last bendpoint entity or null if there are no bendpoints
+         */
+        private LayoutEntity drawBendPoints(LayoutRelationship rel, Graphics g) {
+    		final String DUMMY_TITLE = "dummy";
+    		LayoutBendPoint[] bendPoints = rel.getBendPoints();
+			LayoutBendPoint bp;
+			LayoutEntity destEntity = null;
+			LayoutEntity startEntity = rel.getSourceInLayout();
+			double srcX = startEntity.getXInLayout() + startEntity.getWidthInLayout() / 2.0;
+			double srcY = startEntity.getYInLayout() + startEntity.getHeightInLayout() / 2.0;
+    		for (int i = 0; i < bendPoints.length; i++) {
+    			bp = bendPoints[i];
+    			destEntity = new SimpleNode(DUMMY_TITLE, bp.getX(), bp.getY(), 0.01, 0.01);
+    			double theta = Math.atan2(getLength(srcY, bp.getY()), getLength(srcX, bp.getX()));
+    			drawLine(startEntity, destEntity, theta, srcX, srcY, bp.getX(), bp.getY(), g);
+    			startEntity = destEntity;
+    			srcX = startEntity.getXInLayout();
+    			srcY = startEntity.getYInLayout();
+    		}
+			return destEntity;
+    	}
+
+	}
 
 }

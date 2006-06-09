@@ -19,6 +19,8 @@ package org.eclipse.mylar.zest.layouts;
  * @author Chris Callendar
  */
 public interface LayoutRelationship {
+	
+	
 	/**
 	 * Gets the sourceEntity of this SimpleRelation whether the relation is
 	 * exchangeable or not.
@@ -64,4 +66,15 @@ public interface LayoutRelationship {
 	 */
 	public Object getLayoutInformation();
 	
+	/**
+	 * Specify a set of bend points. The layout algorithm using this will pass
+	 * in an empty array of bendPoints if there are no bend points associated with
+	 * this edge.  
+	 */
+	public void setBendPoints(LayoutBendPoint[] bendPoints); 
+	
+	/**
+	 * Return the current set of bend points. Should return an empty array of none exist.
+	 */
+	public LayoutBendPoint[] getBendPoints(); 
 }

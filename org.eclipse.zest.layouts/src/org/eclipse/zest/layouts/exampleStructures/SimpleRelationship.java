@@ -13,6 +13,7 @@ package org.eclipse.mylar.zest.layouts.exampleStructures;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.mylar.zest.layouts.LayoutBendPoint;
 import org.eclipse.mylar.zest.layouts.LayoutEntity;
 import org.eclipse.mylar.zest.layouts.LayoutRelationship;
 
@@ -68,6 +69,8 @@ public class SimpleRelationship implements LayoutRelationship {
 	private double weight;
 	
 	private Object internalRelationship;
+	
+	private LayoutBendPoint[] bendPoints;
 
 	/**
 	 * Constructor.
@@ -210,6 +213,19 @@ public class SimpleRelationship implements LayoutRelationship {
 	 */
 	public void setLayoutInformation(Object layoutInformation) {
 		this.internalRelationship = layoutInformation;
+	}
+
+
+	public void setBendPoints(LayoutBendPoint[] bendPoints) {
+		this.bendPoints = bendPoints;
+	}
+	
+	public LayoutBendPoint[] getBendPoints() {
+		return this.bendPoints;
+	}
+	
+	public void setDestinationInLayout(LayoutEntity destination) {
+		this.destinationEntity = destination;
 	}
 	
 }
