@@ -39,7 +39,7 @@
       <actionSet
             id="ca.uvic.cs.zest.sample.zestActionSet"
             label="Zest Action Set"
-            visible="true">
+            visible="false">
          <menu
                id="zestMenu"
                label="&amp;Zest Views">
