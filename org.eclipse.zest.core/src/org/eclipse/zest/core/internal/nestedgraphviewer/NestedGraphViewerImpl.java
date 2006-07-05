@@ -216,9 +216,8 @@ public class NestedGraphViewerImpl extends NonThreadedGraphicalViewer
 		
 		// layout the children in a grid layout
 		// only happens the first time a node is the current node
-		if ( model.getNodes().size() > 1 ) {
-			doLayout(nodeToMoveTo,500, 500);
-		}
+		doLayout(nodeToMoveTo,500, 500);
+		
 		updateBreadCrumb(nodeToMoveTo);
 		updateTreeViewer(nodeToSelect);		// also selects the given node
 	}
@@ -234,7 +233,14 @@ public class NestedGraphViewerImpl extends NonThreadedGraphicalViewer
 	 */
 	public void doLayout(NestedGraphModelNode nodeToLayout, double width, double height) {
 		// apply the current layout on any node that hasn't aleady been layed out
-		if ((width > 0) && (height > 0) && !("true".equals(nodeToLayout.getData("LayoutCompleted")))) {
+		
+		// Check that we have a width, height, and the total number of nodes to layout is not 0.
+		// Also make sure that the layout is not currently running
+		if ((width > 0) && 
+			(height > 0) && 
+			(nodeToLayout.getChildren().size() > 0 ) &&
+			!("true".equals(nodeToLayout.getData("LayoutCompleted")))) {
+			
 			List children = nodeToLayout.getChildren();
 			LayoutEntity[] entities = new LayoutEntity[children.size()];
 			entities = (LayoutEntity[])children.toArray(entities);
