@@ -216,7 +216,9 @@ public class NestedGraphViewerImpl extends NonThreadedGraphicalViewer
 		
 		// layout the children in a grid layout
 		// only happens the first time a node is the current node
-		doLayout(nodeToMoveTo,500, 500);		
+		if ( model.getNodes().size() > 1 ) {
+			doLayout(nodeToMoveTo,500, 500);
+		}
 		updateBreadCrumb(nodeToMoveTo);
 		updateTreeViewer(nodeToSelect);		// also selects the given node
 	}

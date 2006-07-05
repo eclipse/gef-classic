@@ -148,31 +148,27 @@ public class StaticGraphViewer extends StructuredViewer {
 		}
 
 		GraphModel newModel = modelFactory.createModelFromContentProvider(input);
-		// only update if the number of nodes has changed
-		if ((model == null)) {
-			// get current list of nodes before they are re-created from the
-			// factory & content provider
-			Map oldNodesMap = (model != null ? model.getNodesMap() : Collections.EMPTY_MAP);
+		// get current list of nodes before they are re-created from the
+		// factory & content provider
+		Map oldNodesMap = (model != null ? model.getNodesMap() : Collections.EMPTY_MAP);
 
-			model = newModel;
-			model.setDirectedEdges(directedGraph);
+		model = newModel;
+		model.setDirectedEdges(directedGraph);
 
-			// check if any of the pre-existing nodes are still present
-			// in this case we want them to keep the same location & size
-			for (Iterator iter = oldNodesMap.keySet().iterator(); iter.hasNext();) {
-				Object data = iter.next();
-				GraphModelNode newNode = model.getInternalNode(data);
-				if (newNode != null) {
-					GraphModelNode oldNode = (GraphModelNode) oldNodesMap.get(data);
-					newNode.setPreferredLocation(oldNode.getXInLayout(), oldNode.getYInLayout());
-				}
+		// check if any of the pre-existing nodes are still present
+		// in this case we want them to keep the same location & size
+		for (Iterator iter = oldNodesMap.keySet().iterator(); iter.hasNext();) {
+			Object data = iter.next();
+			GraphModelNode newNode = model.getInternalNode(data);
+			if (newNode != null) {
+				GraphModelNode oldNode = (GraphModelNode) oldNodesMap.get(data);
+				newNode.setPreferredLocation(oldNode.getXInLayout(), oldNode.getYInLayout());
 			}
-
-			// set the model contents (initializes the layout algorithm)
-			viewer.setContents(model, modelFactory);
-		} else {
-			// viewer.applyLayout();
 		}
+
+		// set the model contents (initializes the layout algorithm)
+		viewer.setContents(model, modelFactory);
+
 	}
 
 	/**
