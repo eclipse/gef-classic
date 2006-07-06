@@ -17,87 +17,116 @@ import java.util.List;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.PrecisionRectangle;
 import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelNode;
 import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphNodeEditPart;
 
-
-
 /**
  * The ColorSelectionEditPolicy class hides the selection handles at the corners
  * and instead uses a different color for the object to indicate selection.
+ * 
  * @author Chris Callendar
  */
 public class ColorSelectionEditPolicy extends NonResizableEditPolicy {
 
 	private GraphNodeEditPart editPart;
-	
+
 	/**
 	 * ColorSelectionEditPolicy constructor.
 	 */
 	public ColorSelectionEditPolicy(GraphNodeEditPart editPart) {
 		this.editPart = editPart;
- 	}
-	
-	/* (non-Javadoc)
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.gef.editpolicies.NonResizableEditPolicy#createSelectionHandles()
 	 */
 	protected List createSelectionHandles() {
 		return Collections.EMPTY_LIST;
 	}
 
-	
-	
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.gef.editpolicies.SelectionEditPolicy#hideSelection()
 	 */
 	protected void hideSelection() {
-		PropertyChangeEvent evt = new PropertyChangeEvent(GraphModelNode.UNHIGHLIGHT_PROP, GraphModelNode.UNHIGHLIGHT_PROP, null, ColorConstants.white);
+		PropertyChangeEvent evt = new PropertyChangeEvent(GraphModelNode.UNHIGHLIGHT_PROP,
+				GraphModelNode.UNHIGHLIGHT_PROP, null, ColorConstants.white);
 		editPart.propertyChange(evt);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.gef.editpolicies.SelectionEditPolicy#showSelection()
 	 */
 	protected void showSelection() {
-		PropertyChangeEvent evt = new PropertyChangeEvent(GraphModelNode.HIGHLIGHT_PROP, GraphModelNode.HIGHLIGHT_PROP, null, ColorConstants.red);
+		PropertyChangeEvent evt = new PropertyChangeEvent(GraphModelNode.HIGHLIGHT_PROP, GraphModelNode.HIGHLIGHT_PROP,
+				null, ColorConstants.red);
 		editPart.propertyChange(evt);
-		
-		// move the current editpart's figure to last in the list to put it on top of the other nodes
-		
+
+		// move the current editpart's figure to last in the list to put it on
+		// top of the other nodes
 		IFigure fig = editPart.getFigure();
 		fig.getParent().getChildren().remove(fig);
 		fig.getParent().getChildren().add(fig);
-		
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
 	 * @see org.eclipse.gef.editpolicies.NonResizableEditPolicy#showChangeBoundsFeedback(org.eclipse.gef.requests.ChangeBoundsRequest)
 	 */
-	
 	protected void showChangeBoundsFeedback(ChangeBoundsRequest request) {
-		Point p = request.getLocation().getCopy();
-		// this translation is needed for different zooming levels
-		
-		getHostFigure().translateToRelative(p);
-		((GraphModelNode)editPart.getModel()).setHasPreferredLocation(true);
-		((GraphModelNode)editPart.getModel()).setPreferredLocation(p.x, p.y);
-		
-		
+		IFigure feedback = getDragSourceFeedbackFigure();
+		PrecisionRectangle rect = new PrecisionRectangle(((GraphModelNode) editPart.getModel()).getBounds().getCopy());
+		getCurrentLocation(request, rect, feedback);
+		feedback.getParent().setConstraint(feedback, rect);
 	}
-	
-	
 
 	
-	
-	/* (non-Javadoc)
-	 * @see org.eclipse.gef.editpolicies.NonResizableEditPolicy#eraseChangeBoundsFeedback(org.eclipse.gef.requests.ChangeBoundsRequest)
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.gef.editpolicies.NonResizableEditPolicy#getDragSourceFeedbackFigure()
 	 */
-	
-	protected void eraseChangeBoundsFeedback(ChangeBoundsRequest request) {
-		((GraphModelNode)editPart.getModel()).setHasPreferredLocation(false);
+	protected IFigure getDragSourceFeedbackFigure() {
+		return editPart.getFigure();
 	}
 	
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.gef.editpolicies.NonResizableEditPolicy#eraseChangeBoundsFeedback(org.eclipse.gef.requests.ChangeBoundsRequest)
+	 */
+	protected void eraseChangeBoundsFeedback(ChangeBoundsRequest request) {
+		IFigure feedback = getDragSourceFeedbackFigure();
+		PrecisionRectangle rect = new PrecisionRectangle(((GraphModelNode) editPart.getModel()).getBounds().getCopy());
+		getCurrentLocation(request, rect, feedback);
+		((GraphModelNode) editPart.getModel()).setHasPreferredLocation(false);
+		((GraphModelNode) editPart.getModel()).setPreferredLocation(rect.x, rect.y);
+	}
+	
+	
+	/**
+	 * Gets the current location based on the original location of the node, 
+	 * and the current request.
+	 * @param request The current request
+	 * @param startingBounds The starting location of the node
+	 * @param feedback The feedback figure being moved
+	 * @return The current position of the node
+	 */
+	private Point getCurrentLocation(ChangeBoundsRequest request, PrecisionRectangle startingBounds, IFigure feedback) {
+		getHostFigure().translateToAbsolute(startingBounds);
+		startingBounds.translate(request.getMoveDelta());
+		startingBounds.resize(request.getSizeDelta());
+		feedback.translateToRelative(startingBounds);
+		return new Point(startingBounds.x, startingBounds.y);
+	}
+
 
 }
