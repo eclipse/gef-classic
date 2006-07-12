@@ -74,6 +74,7 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 		super(composite);
 		this.setStyle(style);
 		this.noOverlapAlgorithm = new NoOverlapLayoutAlgorithm();
+		this.setSelectionManager(new ZestSelectionManager());
 	}
 	
 	public boolean hasLayoutRun() {

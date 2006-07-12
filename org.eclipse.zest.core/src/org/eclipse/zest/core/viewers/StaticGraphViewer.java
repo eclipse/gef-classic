@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.jface.viewers.IContentProvider;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.mylar.zest.core.ZestStyles;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel;
@@ -239,6 +240,14 @@ public class StaticGraphViewer extends StructuredViewer {
 	 */
 	public void removeNode(Object o) {
 		viewer.removeNode(o);
+	}
+	
+	
+	public void addSelectionChangedListener(ISelectionChangedListener listener) {
+		viewer.addSelectionChangedListener(listener);
+	}
+	public void removeSelectionChangedListener(ISelectionChangedListener listener) {
+		viewer.removeSelectionChangedListener(listener);
 	}
 
 }
