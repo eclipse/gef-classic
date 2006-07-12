@@ -13,6 +13,7 @@ package org.eclipse.gef.ui.actions;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
 
+import org.eclipse.gef.EditPart;
 import org.eclipse.gef.palette.ToolEntry;
 import org.eclipse.gef.ui.palette.PaletteViewer;
 
@@ -48,8 +49,17 @@ public SetActivePaletteToolAction(PaletteViewer viewer, String label, ImageDescr
  * @see org.eclipse.jface.action.IAction#run()
  */
 public void run() {
-	if (viewer != null)
-		viewer.setActiveTool(entry);
+	if (viewer != null) {
+        viewer.setActiveTool(entry);
+
+        // The PaletteViewerKeyHandler will not pick up key events when the
+        // context menu is open for palette stacks so we need to indicate
+        // that the focus needs to change to the tool entry that the user
+        // has just selected. See GraphicalViewerKeyHandler.procesSelect().
+        EditPart part = (EditPart) viewer.getEditPartRegistry().get(entry);
+        viewer.appendSelection(part);
+        viewer.setFocus(part);
+    }
 }
 
 }
