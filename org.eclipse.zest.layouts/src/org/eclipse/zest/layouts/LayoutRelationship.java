@@ -11,6 +11,7 @@
 package org.eclipse.mylar.zest.layouts;
 
 
+
 /**
  * This represents a single relationship, providing the layout algorithms with 
  * a common interface to run on.
@@ -71,9 +72,23 @@ public interface LayoutRelationship {
 	 * in an empty array of bendPoints, or not even call this method,
 	 * if there are no bend points associated with this edge.
 	 * 
-	 * If you are updating an existing application you can just implement this method to do nothing.
+	 * If you are updating an existing application you can just implement this 
+	 * method to do nothing.
+	 * 
+	 * @param bendPoints A list of bend points. All bendpoint locations are expressed 
+	 * as percentages of the bounds (0,0 to 1,1).The first bendpoint in the list must be the 
+	 * source point of this relationship and the last bendpoint the destination point 
+	 * for this relationship. This allows the correct positioning of bendpoints 
+	 * relative to the source and destination points when drawing the graph.
 	 */
-	public void setBendPoints(LayoutBendPoint[] bendPoints); 
+	public void setBendPoints(LayoutBendPoint[] bendPoints);
+
+	/**
+	 * Clear bend points and related bounds
+	 * If you are updating an existing application you can just implement this 
+	 * method to do nothing.
+	 */
+	public void clearBendPoints(); 
 	
 
 }

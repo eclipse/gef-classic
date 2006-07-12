@@ -310,11 +310,14 @@ public class FadeLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 	
 	
 	
-	private void handleSelectedNodes( InternalNode[] entitiesToLayout, DisplayIndependentRectangle realBounds ) {	
+	private void handleSelectedNodes( InternalNode[] entitiesToLayout, DisplayIndependentRectangle realBounds ) {
+    	DisplayIndependentRectangle layoutBounds = getLayoutBounds(entitiesToLayout, false );
 		for ( int i = 0; i < entitiesToLayout.length; i++ ) {
 			InternalNode currentNode = entitiesToLayout[i];
 			if ( currentNode.hasPreferredLocation() ) {
-				DisplayIndependentPoint localPoint = getLocalLocation(entitiesToLayout, currentNode.getPreferredX(), currentNode.getPreferredY(), realBounds);
+				DisplayIndependentPoint currentPoint =
+			    	new DisplayIndependentPoint(currentNode.getPreferredX(), currentNode.getPreferredY());
+				DisplayIndependentPoint localPoint = currentPoint.convert(realBounds, layoutBounds);
 				currentNode.setDx( localPoint.x );
 				currentNode.setDy( localPoint.y );
 			}			

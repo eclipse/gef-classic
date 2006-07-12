@@ -376,7 +376,10 @@ public class GraphModelConnection extends GraphItem implements LayoutRelationshi
 
 
 	public void setBendPoints(LayoutBendPoint[] bendPoints) {
-		// TODO Auto-generated method stub
+		
+	}
+
+	public void clearBendPoints() {
 		
 	}
 	

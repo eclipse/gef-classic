@@ -43,6 +43,7 @@ public class ZestSelectionManager extends SelectionManager {
 		while (elements.hasNext()) {
 			AbstractEditPart editPart = (AbstractEditPart) elements.next();
 			GraphItem item = (GraphItem) editPart.getModel();
+			
 			if (!(item instanceof GraphModel)) {
 				selections.add(item.getData());
 			}

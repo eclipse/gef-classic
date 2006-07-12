@@ -16,6 +16,7 @@ import java.util.Map;
 import org.eclipse.mylar.zest.layouts.LayoutBendPoint;
 import org.eclipse.mylar.zest.layouts.LayoutEntity;
 import org.eclipse.mylar.zest.layouts.LayoutRelationship;
+import org.eclipse.mylar.zest.layouts.dataStructures.BendPoint;
 
 
 /**
@@ -27,6 +28,7 @@ import org.eclipse.mylar.zest.layouts.LayoutRelationship;
  *
  * @version  2.0
  * @author   Casey Best (version 1.0 by Jingwei Wu)
+ * @author Chris Bennett
  */
 public class SimpleRelationship implements LayoutRelationship {
 	
@@ -71,7 +73,7 @@ public class SimpleRelationship implements LayoutRelationship {
 	private Object internalRelationship;
 	
 	private LayoutBendPoint[] bendPoints;
-
+	
 	/**
 	 * Constructor.
 	 * @param sourceEntity The sourceEntity of this SimpleRelation.
@@ -223,6 +225,11 @@ public class SimpleRelationship implements LayoutRelationship {
 	public LayoutBendPoint[] getBendPoints() {
 		return this.bendPoints;
 	}
+	
+	public void clearBendPoints() {
+		this.bendPoints = new BendPoint[0];
+	}
+	
 	
 	public void setDestinationInLayout(LayoutEntity destination) {
 		this.destinationEntity = destination;

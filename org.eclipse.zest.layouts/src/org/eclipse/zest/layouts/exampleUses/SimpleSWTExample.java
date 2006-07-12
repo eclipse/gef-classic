@@ -19,6 +19,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.mylar.zest.layouts.InvalidLayoutConfiguration;
 import org.eclipse.mylar.zest.layouts.LayoutAlgorithm;
+import org.eclipse.mylar.zest.layouts.LayoutBendPoint;
 import org.eclipse.mylar.zest.layouts.LayoutEntity;
 import org.eclipse.mylar.zest.layouts.LayoutRelationship;
 import org.eclipse.mylar.zest.layouts.LayoutStyles;
@@ -418,99 +419,7 @@ public class SimpleSWTExample {
 		mainGridData.widthHint = INITIAL_PANEL_WIDTH;
 		mainGridData.heightHint = INITIAL_PANEL_HEIGHT;
 		mainComposite.setLayoutData(mainGridData);
-		mainComposite.addPaintListener(new PaintListener () {
-
-			long lastPaint;
-				
-	        public void paintControl(PaintEvent e) {
-	        	Date date = new Date();
-				long currentTime = date.getTime();
-				if ( currentTime - lastPaint < 40 ) 
-					return;
-				else
-					lastPaint = currentTime;
-	            if (Display.getDefault() == null || e.width == 0 || e.height == 0) {
-	                return;
-	            }
-				long startTime = date.getTime();
-				
-	            // do a bit of our own double-buffering to stop flickering
-	            Image imageBuffer;
-	            
-	        	try {
-	        		imageBuffer = new Image(Display.getDefault(), e.width, e.height);
-	        	} catch (SWTError noMoreHandles) {
-	        		imageBuffer = null;
-	        		noMoreHandles.printStackTrace();
-	        		return;
-	        	} catch (IllegalArgumentException tooBig) {
-	        		imageBuffer = null;
-	        		tooBig.printStackTrace();
-	        		return;
-	        	}
-	        	
-	    		GC gcBuffer = new GC(imageBuffer);
-				
-				// paint the relationships 
-				for (Iterator iter = relationships.iterator(); iter.hasNext();) {
-					SimpleRelationship rel = (SimpleRelationship) iter.next();
-					SimpleNode src = (SimpleNode) rel.getSourceInLayout();
-					SimpleNode dest = (SimpleNode) rel.getDestinationInLayout();
-					
-					// highlight the adjacent nodes if one of the nodes is selected
-					if (src.equals(selectedEntity)) {
-						dest.setAdjacent();
-						rel.setSelected();
-					} else if (dest.equals(selectedEntity)) {
-						src.setAdjacent();
-						rel.setSelected();
-					} else {
-						rel.setUnSelected();
-					}
-					
-					double srcX = src.getXInLayout() + src.getWidthInLayout()/2.0 ;
-					double srcY = src.getYInLayout() + src.getHeightInLayout()/2.0;
-					double destX = dest.getXInLayout() + dest.getWidthInLayout()/2.0;
-					double destY = dest.getYInLayout() + dest.getHeightInLayout()/2.0;
-					gcBuffer.setForeground((Color)rel.getColor());
-					gcBuffer.setLineWidth(rel.getLineWidth());
-					gcBuffer.drawLine((int)srcX, (int)srcY, (int)destX, (int)destY);	
-				
-				}
-				
-				// paint the nodes
-				for (Iterator iter = entities.iterator(); iter.hasNext();) {
-                    SimpleNode entity = (SimpleNode) iter.next();
-
-                    String name = entity.toString();
-					Point textSize = gcBuffer.stringExtent(name);
-					int entityX = (int)entity.getXInLayout();
-					int entityY = (int)entity.getYInLayout();
-					//TODO: What about resize from the layout algorithm
-					int entityWidth = Math.max((int)entity.getWidthInLayout(), textSize.x + 8); 
-					int entityHeight = Math.max((int)entity.getHeightInLayout(), textSize.y + 2);
-					
-					gcBuffer.setBackground((Color)entity.getColor());
-					gcBuffer.fillRoundRectangle(entityX, entityY, entityWidth, entityHeight, 8, 8);
-
-					// position the text in the middle of the node
-					int x = (int)(entityX + (entityWidth / 2.0)) - (textSize.x / 2);
-                    gcBuffer.setForeground(BLACK);
-       				gcBuffer.drawString(name, x, entityY);
-                    gcBuffer.setForeground((Color)entity.getBorderColor());
-                    gcBuffer.setLineWidth(entity.getBorderWidth());
-					gcBuffer.drawRoundRectangle(entityX, entityY, entityWidth, entityHeight, 8, 8);
-                }
-								
-				e.gc.drawImage(imageBuffer, 0, 0);				
-				imageBuffer.dispose();	
-				gcBuffer.dispose();
-				
-				long time = date.getTime() - startTime;
-				if (time > 200) {
-				}
-			} 
-        });
+		mainComposite.addPaintListener(new GraphPaintListener());
 		
 		mainComposite.setBackground(new Color (Display.getCurrent(), 255, 255, 255));
 		mainComposite.setLayout(null);
@@ -738,4 +647,150 @@ public class SimpleSWTExample {
         }
         display.dispose();
 	}
+
+	/**
+	 * Implements a paint listener to display nodes and edges  
+	 */
+	private class GraphPaintListener implements PaintListener {
+
+		long lastPaint;
+			
+        public void paintControl(PaintEvent e) {
+        	Date date = new Date();
+			long currentTime = date.getTime();
+			if ( currentTime - lastPaint < 40 ) 
+				return;
+			else
+				lastPaint = currentTime;
+            if (Display.getDefault() == null || e.width == 0 || e.height == 0) {
+                return;
+            }
+			long startTime = date.getTime();
+			
+            // do a bit of our own double-buffering to stop flickering
+            Image imageBuffer;
+            
+        	try {
+        		imageBuffer = new Image(Display.getDefault(), e.width, e.height);
+        	} catch (SWTError noMoreHandles) {
+        		imageBuffer = null;
+        		noMoreHandles.printStackTrace();
+        		return;
+        	} catch (IllegalArgumentException tooBig) {
+        		imageBuffer = null;
+        		tooBig.printStackTrace();
+        		return;
+        	}
+        	
+    		GC gcBuffer = new GC(imageBuffer);
+			
+			// paint the relationships 
+			for (Iterator iter = relationships.iterator(); iter.hasNext();) {
+				SimpleRelationship rel = (SimpleRelationship) iter.next();
+				SimpleNode src = (SimpleNode) rel.getSourceInLayout();
+				SimpleNode dest = (SimpleNode) rel.getDestinationInLayout();
+				
+				// highlight the adjacent nodes if one of the nodes is selected
+				if (src.equals(selectedEntity)) {
+					dest.setAdjacent();
+					rel.setSelected();
+				} else if (dest.equals(selectedEntity)) {
+					src.setAdjacent();
+					rel.setSelected();
+				} else {
+					rel.setUnSelected();
+				}
+				
+				// Add bend points if required
+				if (((SimpleRelationship)rel).getBendPoints() != null && ((SimpleRelationship)rel).getBendPoints().length > 0) {
+					src = drawBendPoints(rel, gcBuffer); // change source to last bendpoint
+				}
+				
+				double srcX = src.getXInLayout() + src.getWidthInLayout()/2.0 ;
+				double srcY = src.getYInLayout() + src.getHeightInLayout()/2.0;
+				double destX = dest.getXInLayout() + dest.getWidthInLayout()/2.0;
+				double destY = dest.getYInLayout() + dest.getHeightInLayout()/2.0;
+				drawEdge(srcX, srcY, destX, destY, rel, gcBuffer);	
+			
+			}
+			
+			// paint the nodes
+			for (Iterator iter = entities.iterator(); iter.hasNext();) {
+                SimpleNode entity = (SimpleNode) iter.next();
+
+                String name = entity.toString();
+				Point textSize = gcBuffer.stringExtent(name);
+				int entityX = (int)entity.getXInLayout();
+				int entityY = (int)entity.getYInLayout();
+				//TODO: What about resize from the layout algorithm
+				int entityWidth = Math.max((int)entity.getWidthInLayout(), textSize.x + 8); 
+				int entityHeight = Math.max((int)entity.getHeightInLayout(), textSize.y + 2);
+				
+				gcBuffer.setBackground((Color)entity.getColor());
+				gcBuffer.fillRoundRectangle(entityX, entityY, entityWidth, entityHeight, 8, 8);
+
+				// position the text in the middle of the node
+				int x = (int)(entityX + (entityWidth / 2.0)) - (textSize.x / 2);
+                gcBuffer.setForeground(BLACK);
+   				gcBuffer.drawString(name, x, entityY);
+                gcBuffer.setForeground((Color)entity.getBorderColor());
+                gcBuffer.setLineWidth(entity.getBorderWidth());
+				gcBuffer.drawRoundRectangle(entityX, entityY, entityWidth, entityHeight, 8, 8);
+            }
+							
+			e.gc.drawImage(imageBuffer, 0, 0);				
+			imageBuffer.dispose();	
+			gcBuffer.dispose();
+			
+			long time = date.getTime() - startTime;
+			if (time > 200) {
+			}
+		}
+
+        /**
+         * Draw an edge
+         * @param gcBuffer
+         * @param srcX
+         * @param srcY
+         * @param destX
+         * @param destY
+         * @param rel
+         */
+        private void drawEdge(double srcX, double srcY, double destX, double destY,
+        		SimpleRelationship rel, GC gcBuffer) {
+	    	gcBuffer.setForeground((Color)rel.getColor());
+	    	gcBuffer.setLineWidth(rel.getLineWidth());
+	    	gcBuffer.drawLine((int)srcX, (int)srcY, (int)destX, (int)destY);
+        }
+
+        /**
+		 * Draws a set of lines between bendpoints
+		 * TODO - This does not always draw outside the node.
+		 * @param relationship
+		 * @param bendNodes
+		 * @param bendEdges
+		 * @return the last bendpoint entity or null if there are no bendpoints
+		 */
+		private SimpleNode drawBendPoints(SimpleRelationship rel, GC gcBuffer) {
+			final String DUMMY_TITLE = "dummy";
+			LayoutBendPoint[] bendPoints = ((SimpleRelationship) rel).getBendPoints();
+			LayoutBendPoint bp;
+			SimpleNode startEntity = (SimpleNode)rel.getSourceInLayout();
+			SimpleNode destEntity = null;
+			
+			double srcX = startEntity.getXInLayout() + startEntity.getWidthInLayout() / 2.0;
+			double srcY = startEntity.getYInLayout() + startEntity.getHeightInLayout() / 2.0;
+				for (int i = 0; i < bendPoints.length; i++) {
+					bp = bendPoints[i];
+					destEntity = new SimpleNode(DUMMY_TITLE, bp.getX(), bp.getY(), 0.01, 0.01);
+					drawEdge(srcX, srcY, bp.getX(), bp.getY(), rel, gcBuffer);
+					startEntity = destEntity;
+					srcX = startEntity.getXInLayout();
+					srcY = startEntity.getYInLayout();
+				}
+			return destEntity;
+		}
+
+    }
+
 }

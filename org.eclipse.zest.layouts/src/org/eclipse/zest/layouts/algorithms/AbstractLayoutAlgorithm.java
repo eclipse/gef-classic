@@ -26,7 +26,7 @@ import org.eclipse.mylar.zest.layouts.LayoutEntity;
 import org.eclipse.mylar.zest.layouts.LayoutRelationship;
 import org.eclipse.mylar.zest.layouts.LayoutStyles;
 import org.eclipse.mylar.zest.layouts.Stoppable;
-
+import org.eclipse.mylar.zest.layouts.dataStructures.BendPoint;
 import org.eclipse.mylar.zest.layouts.dataStructures.DisplayIndependentDimension;
 import org.eclipse.mylar.zest.layouts.dataStructures.DisplayIndependentPoint;
 import org.eclipse.mylar.zest.layouts.dataStructures.DisplayIndependentRectangle;
@@ -34,7 +34,6 @@ import org.eclipse.mylar.zest.layouts.dataStructures.InternalNode;
 import org.eclipse.mylar.zest.layouts.dataStructures.InternalRelationship;
 import org.eclipse.mylar.zest.layouts.progress.ProgressEvent;
 import org.eclipse.mylar.zest.layouts.progress.ProgressListener;
-
 
 
 /**
@@ -49,6 +48,7 @@ import org.eclipse.mylar.zest.layouts.progress.ProgressListener;
  * @author Ian Bull
  * @author Chris Callendar
  * @author Rob Lintern
+ * @author Chris Bennett
  */
 public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppable {
 	
@@ -56,8 +56,6 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	public void removeRelationships( Collection collection) {
 		
 	}
-	
-
 	
 	public final static int MIN_ENTITY_SIZE = 5;
 	private final static int MIN_TIME_DELAY_BETWEEN_PROGRESS_EVENTS = 1;
@@ -67,7 +65,6 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	private List progressListeners;
 	private Calendar lastProgressEventFired;
 	private double widthToHeightRatio;
-	
 	
 	class InternalComparator implements Comparator {
 		Comparator externalComparator = null;
@@ -117,7 +114,9 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 
 	private Object lock = new Object();
 	
-
+	// Child classes can set to false to retain node shapes and sizes
+	protected boolean resizeEntitiesAfterLayout = true;
+		
 	/**
 	 * Initializes the abstract layout algorithm.
 	 * @see LayoutStyles
@@ -161,7 +160,6 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 			                                     double boundsY, 
 			                                     double boundsWidth, 
 			                                     double boundsHeight );
-	
 	
 	/**
 	 * Updates the given array of entities checking if any need to be removed or added.
@@ -417,11 +415,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 		// Create the internal nodes and relationship
 		_internalNodes = createInternalNodes(entitiesToLayout);
 		_internalRelationships = createInternalRelationships(relationshipsToConsider);
-        
-        
-		
 	}
-	
 	
 	
 	public synchronized Stoppable  getLayoutThread( LayoutEntity[] entitiesToLayout, 
@@ -473,6 +467,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 		
 		if ( !isValidConfiguration( asynchronous, continuous )) throw new InvalidLayoutConfiguration();
 		
+		clearBendPoints(relationshipsToConsider);
 
 		synchronized (lock) {
 			if (layoutStopped == false) {
@@ -504,6 +499,16 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 		}
 		
 
+	}
+	
+	/**
+	 * Clear out all old bend points before doing a layout
+	 */
+	private void clearBendPoints(LayoutRelationship[] relationships) {
+		for (int i=0; i<relationships.length; i++) {
+			LayoutRelationship rel = relationships[i];
+			rel.clearBendPoints();
+        }
 	}
 
 	public void run() {
@@ -641,103 +646,178 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 		return new DisplayIndependentPoint( localX, localY );
 	}
 	
-//	protected void defaultFitWithinBounds2(InternalNode[] entitiesToLayout, DisplayIndependentRectangle realBounds) {
-//		double screenWidth = realBounds.width;
-//		double screenHeight = realBounds.height;
-//
-//		convertNodePositionsToPercentage( entitiesToLayout, false );
-//		
-//		for ( int i = 0; i < entitiesToLayout.length; i++ ) {
-//			double x = entitiesToLayout[i].getInternalX() * screenWidth; 
-//			double y = entitiesToLayout[i].getInternalY() * screenHeight;
-//			entitiesToLayout[i].setInternalLocation( x, y );
-//		}
-//	
-//	}
-	
-	
 	/**
 	 * Find an appropriate size for the given nodes, then fit them into the given bounds.
 	 * The relative locations of the nodes to each other must be preserved.
+	 * Child classes should set flag reresizeEntitiesAfterLayout to false if they 
+	 * want to preserve node sizes.
 	 */
-	protected void defaultFitWithinBounds(InternalNode[] entitiesToLayout, DisplayIndependentRectangle realBounds) {
+	protected void defaultFitWithinBounds(InternalNode[] entitiesToLayout, 
+			DisplayIndependentRectangle realBounds) {
+		defaultFitWithinBounds(entitiesToLayout, new InternalRelationship[0], realBounds);
+	}
+
+	/**
+	 * Find an appropriate size for the given nodes, then fit them into the given bounds.
+	 * The relative locations of the nodes to each other must be preserved.
+	 * Child classes should set flag reresizeEntitiesAfterLayout to false if they 
+	 * want to preserve node sizes.
+	 */
+	protected void defaultFitWithinBounds(InternalNode[] entitiesToLayout, 
+			InternalRelationship[] relationships, DisplayIndependentRectangle realBounds) {
+
 		// Set the layout bounds.
 		double borderWidth = Math.min(realBounds.width, realBounds.height)/10.0; // use 10% for the border - 5% on each side
-		DisplayIndependentRectangle screenBounds = new DisplayIndependentRectangle (realBounds.x + borderWidth/2.0, realBounds.y + borderWidth/2.0, realBounds.width - borderWidth, realBounds.height - borderWidth);
+		DisplayIndependentRectangle screenBounds = new DisplayIndependentRectangle (
+				realBounds.x + borderWidth/2.0, realBounds.y + borderWidth/2.0, 
+				realBounds.width - borderWidth, realBounds.height - borderWidth);
+		DisplayIndependentRectangle layoutBounds; 
 
-		// find and set the node size - shift the nodes to the right and down to make room for the width and height
-		convertNodePositionsToPercentage (entitiesToLayout, false);
-		
-		
-		double nodeSize = getNodeSize(entitiesToLayout);
-        for (int i = 0; i < entitiesToLayout.length; i++) {
-            InternalNode node = entitiesToLayout[i];
-			
-			node.setInternalSize( nodeSize, nodeSize );
-			node.setInternalLocation( node.getInternalX() + nodeSize / 2, node.getInternalY() + nodeSize / 2 );
+		if (resizeEntitiesAfterLayout) { 
+			layoutBounds = getLayoutBounds(entitiesToLayout, false);
+
+			// Convert node x,y to be in percent rather than absolute coords
+			convertPositionsToPercentage (entitiesToLayout, relationships, layoutBounds, false /*do not update size*/);
+
+			// Resize and shift nodes
+			resizeAndShiftNodes(entitiesToLayout);
 		}
-		
-		// convert all positions and sizes to percent
-		convertNodePositionsToPercentage (entitiesToLayout, true); // for the nodes within 100% of the screen bounds
-		
-		// Convert the bounds to the area to use
-		// NOTE: ALL OF THE POSITIONS OF NODES UNTIL NOW WERE FOR THE CENTER OF THE NODE - Convert it to the left top corner.
-        for (int i = 0; i < entitiesToLayout.length; i++) {
-            InternalNode node = entitiesToLayout[i];
- 			double width = node.getInternalWidth() * screenBounds.width;
-			double height = node.getInternalHeight() * screenBounds.height;
-			double x = screenBounds.x + node.getInternalX() * screenBounds.width - width / 2;
-			double y = screenBounds.y + node.getInternalY() * screenBounds.height - height / 2;
-			
-			node.setInternalLocation( x , y );
 
-//			node.setSizeInLayout(Math.max(width, MIN_ENTITY_SIZE), Math.max(height, MIN_ENTITY_SIZE));
-			double widthUsingHeight = height * widthToHeightRatio;
-			if (widthToHeightRatio <= 1.0 && widthUsingHeight <= width) {
-				double widthToUse = height * widthToHeightRatio;
-				double leftOut = width - widthToUse;
-				node.setInternalSize( Math.max( height * widthToHeightRatio, MIN_ENTITY_SIZE ), Math.max(height, MIN_ENTITY_SIZE) );
-				node.setInternalLocation( node.getInternalX() + leftOut / 2, node.getInternalY() );
-				
-			} else {
-				double heightToUse = height / widthToHeightRatio;
-				double leftOut = height - heightToUse;
-				
-				node.setInternalSize( Math.max(width, MIN_ENTITY_SIZE), Math.max(width / widthToHeightRatio, MIN_ENTITY_SIZE) );
-				node.setInternalLocation( node.getInternalX(), node.getInternalY() + leftOut / 2 );
-			}
+		// Recalculate layout, allowing for the node width, which we now know
+		layoutBounds = getLayoutBounds(entitiesToLayout, true );
+
+    	// adjust node positions again, to the new coordinate system (still as a percentage)
+		convertPositionsToPercentage (entitiesToLayout, relationships, layoutBounds, true /*update node size*/); 
+		
+		// Now convert to real screen coordinates
+		convertPositionsToCoords(entitiesToLayout, relationships, screenBounds);
+	}
+	
+
+	/**
+	 * Find and set the node size - shift the nodes to the right and down to make 
+	 * room for the width and height. 
+	 * @param entitiesToLayout
+	 * @param relationships
+	 */
+	private void resizeAndShiftNodes(InternalNode[] entitiesToLayout) {
+		// get maximum node size as percent of screen dimmensions
+		double nodeSize = getNodeSize(entitiesToLayout); 
+		double halfNodeSize = nodeSize/2; 
+
+		// Resize and shift nodes
+		for (int i = 0; i < entitiesToLayout.length; i++) {
+			InternalNode node = entitiesToLayout[i];
+			node.setInternalSize( nodeSize, nodeSize );
+			node.setInternalLocation( node.getInternalX() + halfNodeSize, 
+					node.getInternalY() + halfNodeSize);
 		}
 	}
 
 	/**
-	 * Convert all node positions into a percentage of the screen
+	 * Convert all node positions into a percentage of the screen. If includeNodeSize
+	 * is true then this also updates the node's internal size. 
 	 * @param entitiesToLayout
 	 */
-	private void convertNodePositionsToPercentage (InternalNode[] entitiesToLayout, boolean includeNodeSize) {
-		DisplayIndependentRectangle layoutBounds = getLayoutBounds(entitiesToLayout, includeNodeSize);
-        for (int i = 0; i < entitiesToLayout.length; i++) {
-            InternalNode layoutEntity = entitiesToLayout[i];
-          
-            
-			
-			double x = (layoutBounds.width == 0) ? 0 : (layoutEntity.getInternalX() - layoutBounds.x) / layoutBounds.width;
-			double y = (layoutBounds.height == 0) ? 0 : (layoutEntity.getInternalY() - layoutBounds.y) / layoutBounds.height;
-						
-			layoutEntity.setInternalLocation( x, y );
-			
-			if (includeNodeSize) {
-				double width = layoutEntity.getInternalWidth() / layoutBounds.width;
-				double height = layoutEntity.getInternalHeight() / layoutBounds.height;
-				layoutEntity.setInternalSize( width, height );
-			}
+	private void convertPositionsToPercentage(InternalNode[] entitiesToLayout,
+			InternalRelationship[] relationships,
+			DisplayIndependentRectangle layoutBounds, boolean includeNodeSize) {
 
+		// Adjust node positions and sizes
+		for (int i = 0; i < entitiesToLayout.length; i++) {
+			InternalNode node = entitiesToLayout[i];
+			DisplayIndependentPoint location = 
+				node.getInternalLocation().convertToPercent(layoutBounds);
+			node.setInternalLocation(location.x, location.y);
+			if (includeNodeSize) { // adjust node sizes
+				double width = node.getInternalWidth() / layoutBounds.width;
+				double height = node.getInternalHeight() / layoutBounds.height;
+				node.setInternalSize(width, height);
+			}
 		}
+
+		// Adjust bendpoint positions
+		for (int i = 0; i < relationships.length; i++) {
+			InternalRelationship rel = relationships[i];
+			for (int j=0; j<rel.getBendPoints().size(); j++) {
+				BendPoint bp = (BendPoint)rel.getBendPoints().get(j);
+				DisplayIndependentPoint toPercent = bp.convertToPercent(layoutBounds);
+				bp.setX(toPercent.x);  
+				bp.setY(toPercent.y);
+			}
+		}	
 	}
 	
+	/**
+	 * Convert the positions from a percentage of bounds area to fixed
+	 * coordinates. NOTE: ALL OF THE POSITIONS OF NODES UNTIL NOW WERE FOR THE
+	 * CENTER OF THE NODE - Convert it to the left top corner.
+	 * 
+	 * @param entitiesToLayout
+	 * @param relationships
+	 * @param realBounds
+	 */
+	private void convertPositionsToCoords(InternalNode[] entitiesToLayout, 
+			InternalRelationship[] relationships,
+			DisplayIndependentRectangle screenBounds) {
+
+		// Adjust node positions and sizes
+		for (int i = 0; i < entitiesToLayout.length; i++) {
+			InternalNode node = entitiesToLayout[i];
+			double width = node.getInternalWidth() * screenBounds.width;
+			double height = node.getInternalHeight() * screenBounds.height;
+			DisplayIndependentPoint location = 
+				node.getInternalLocation().convertFromPercent(screenBounds);
+			node.setInternalLocation(location.x-width/2, location.y-height/2);
+			if (resizeEntitiesAfterLayout) {
+				adjustNodeSizeAndPos(node, height, width);
+			} else {
+				node.setInternalSize(width, height);
+			}
+		}
+
+		// Adjust bendpoint positions and shift based on source node size
+		for (int i = 0; i < relationships.length; i++) {
+			InternalRelationship rel = relationships[i];
+			InternalNode srcNode = rel.getSource();
+			for (int j=0; j<rel.getBendPoints().size(); j++) {
+				BendPoint bp = (BendPoint)rel.getBendPoints().get(j);
+				DisplayIndependentPoint fromPercent = bp.convertFromPercent(screenBounds);
+				bp.setX(fromPercent.x-srcNode.getInternalWidth()/2);  
+				bp.setY(fromPercent.y-srcNode.getInternalHeight()/2);
+			}
+		}	
+	}
+
+	/**
+	 * Adjust node size to take advantage of space. Reset position to top left corner of node. 
+	 * @param node
+	 * @param height
+	 * @param width
+	 */
+	private void adjustNodeSizeAndPos(InternalNode node, double height, double width) {
+		double widthUsingHeight = height * widthToHeightRatio;
+		if (widthToHeightRatio <= 1.0 && widthUsingHeight <= width) {
+			double widthToUse = height * widthToHeightRatio;
+			double leftOut = width - widthToUse;
+			node.setInternalSize(Math.max(height * widthToHeightRatio, MIN_ENTITY_SIZE), Math.max(height,
+					MIN_ENTITY_SIZE));
+			node.setInternalLocation(node.getInternalX() + leftOut / 2, node.getInternalY());
+
+		} else {
+			double heightToUse = height / widthToHeightRatio;
+			double leftOut = height - heightToUse;
+
+			node.setInternalSize(Math.max(width, MIN_ENTITY_SIZE), Math.max(width / widthToHeightRatio,
+					MIN_ENTITY_SIZE));
+			node.setInternalLocation(node.getInternalX(), node.getInternalY() + leftOut / 2);
+		}
+		
+	}
 
 	
 	/**
-	 * Returns the node size in the current coord system.
+	 * Returns the maximum possible node size as a percentage of the width or height in current coord system.
 	 */
 	private double getNodeSize (InternalNode[] entitiesToLayout) {
 		double width, height;
@@ -751,7 +831,8 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 		}
 		return Math.max (width, height);
 	}
-		
+
+	
 	/**
 	 * Find the bounds in which the nodes are located.  Using the bounds against the real bounds
 	 * of the screen, the nodes can proportionally be placed within the real bounds.
@@ -928,6 +1009,5 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	public int getNumberOfProgressListeners() {
 		return progressListeners.size();
 	}
-
 	
 }

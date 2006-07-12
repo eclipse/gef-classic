@@ -14,17 +14,14 @@ import org.eclipse.mylar.zest.layouts.LayoutBendPoint;
 
 /**
  * Implements a single bend point in a graph relationship.
+ * 
  * @author Ian Bull
  * @author Chris Bennett
  */
-public class BendPoint implements LayoutBendPoint {
-	
-	private double x;
-	private double y;
+public class BendPoint extends DisplayIndependentPoint implements LayoutBendPoint {
 	
 	public BendPoint(double x, double y) {
-		this.x = x;
-		this.y = y;
+		super(x, y);
 	}
 
 	public double getX() {
@@ -41,16 +38,6 @@ public class BendPoint implements LayoutBendPoint {
 
 	public void setY(double y) {
 		this.y = y;
-	}
-	
-	public boolean equals(Object obj) {
-		if (obj instanceof BendPoint) {
-			BendPoint bendPoint = (BendPoint)obj;
-			return bendPoint.getX() == this.x && bendPoint.getY() == this.y;
-		}
-		else {
-			return false;
-		}
 	}
 
 }
