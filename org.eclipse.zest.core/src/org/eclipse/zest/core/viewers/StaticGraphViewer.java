@@ -215,7 +215,7 @@ public class StaticGraphViewer extends StructuredViewer {
 	}
 
 	protected void setSelectionToWidget(List l, boolean reveal) {
-
+		viewer.setSelection(l);
 	}
 
 	public Control getControl() {

@@ -10,10 +10,14 @@
  *******************************************************************************/
 package org.eclipse.mylar.zest.core.internal.graphviewer;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 import org.eclipse.draw2d.LineBorder;
 import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.mylar.zest.core.ZestStyles;
 import org.eclipse.mylar.zest.core.internal.gefx.IPanningListener;
 import org.eclipse.mylar.zest.core.internal.gefx.LayoutAnimator;
@@ -391,6 +395,29 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 			model.removeNode(node);
 			applyLayout();
 		}
+	}
+
+	
+	public void setSelection(List selection) {
+		Iterator iterator = selection.iterator();
+		HashMap nodeMap = model.getNodesMap();
+		HashMap connectionMap = model.getConnectionMap();
+		List editPartList = new ArrayList(1);
+		while (iterator.hasNext()) {
+			Object current = iterator.next();
+			Object currentNode = nodeMap.get(current);
+			if ( current != null ) {
+				editPartList.add( ((GraphModelNode)currentNode).getEditPart() );
+			}
+			else {
+				Object currentConnection = connectionMap.get(current);
+				if ( currentConnection != null ) {
+					// Currenly we cannot select edges
+				}
+			}
+		}
+		setSelection(new StructuredSelection(editPartList));
+
 	}
 	
 

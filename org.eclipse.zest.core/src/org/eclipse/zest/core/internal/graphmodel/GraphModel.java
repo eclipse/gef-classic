@@ -83,6 +83,15 @@ public class GraphModel extends GraphItem {
 	}
 	
 	/**
+	 * Returns the connection map. They key is the connection data and the value
+	 * is te GraphModelConnection
+	 * @return
+	 */
+	public HashMap getConnectionMap() {
+		return external2InternalConnectionMap;
+	}
+	
+	/**
 	 * Sets whether or not the edges should be directed or not
 	 * @param directedEdges
 	 */
