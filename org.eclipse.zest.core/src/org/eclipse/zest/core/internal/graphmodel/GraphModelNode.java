@@ -23,6 +23,7 @@ import org.eclipse.gef.EditPart;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.mylar.zest.core.ZestColors;
 import org.eclipse.mylar.zest.layouts.LayoutEntity;
+import org.eclipse.mylar.zest.layouts.constraints.LayoutConstraint;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
@@ -529,7 +530,11 @@ public class GraphModelNode extends GraphItem implements LayoutEntity {
 		return dim;
 	}
 
-	//** Animation Methods
+	public LayoutConstraint getLayoutConstraint(String constraintID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 
 

@@ -18,6 +18,8 @@ import java.util.Map;
 import java.util.TreeSet;
 
 import org.eclipse.mylar.zest.layouts.LayoutEntity;
+import org.eclipse.mylar.zest.layouts.constraints.LayoutConstraint;
+import org.eclipse.mylar.zest.layouts.constraints.TextLayoutConstraint;
 
 
 /**
@@ -268,6 +270,20 @@ public class SimpleNode implements LayoutEntity {
 	 */
 	public void setLayoutInformation(Object internalEntity) {
 		this.internalNode = internalEntity;
+	}
+
+	/**
+	 * Get a layout constraint for the specified ID
+	 * @param ID
+	 */	
+	public LayoutConstraint getLayoutConstraint(String ID ) {
+		if ( new TextLayoutConstraint().getConstraintID().equals(ID) ) {
+			TextLayoutConstraint constraint = new TextLayoutConstraint();
+			constraint.setPtSize(8); // TODO - set this correctly
+			constraint.setText(realObject.toString());
+			return constraint;
+		}
+		return null;
 	}
 	
 }

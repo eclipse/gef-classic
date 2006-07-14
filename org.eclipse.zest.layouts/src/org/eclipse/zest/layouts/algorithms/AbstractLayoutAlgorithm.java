@@ -779,12 +779,11 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 		// Adjust bendpoint positions and shift based on source node size
 		for (int i = 0; i < relationships.length; i++) {
 			InternalRelationship rel = relationships[i];
-			InternalNode srcNode = rel.getSource();
 			for (int j=0; j<rel.getBendPoints().size(); j++) {
 				BendPoint bp = (BendPoint)rel.getBendPoints().get(j);
 				DisplayIndependentPoint fromPercent = bp.convertFromPercent(screenBounds);
-				bp.setX(fromPercent.x-srcNode.getInternalWidth()/2);  
-				bp.setY(fromPercent.y-srcNode.getInternalHeight()/2);
+				bp.setX(fromPercent.x);  
+				bp.setY(fromPercent.y);
 			}
 		}	
 	}

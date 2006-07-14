@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.mylar.zest.layouts;
 
+import org.eclipse.mylar.zest.layouts.constraints.LayoutConstraint;
+
 /**
  * This represents a single entity, providing the layout algorithms with 
  * a common interface to run on.
@@ -34,6 +36,8 @@ public interface LayoutEntity extends Comparable {
 	
 	public Object getLayoutInformation();
 	public void setLayoutInformation(Object internalEntity);
+	
+	public LayoutConstraint getLayoutConstraint( String constraintID );
 	
 	
 }

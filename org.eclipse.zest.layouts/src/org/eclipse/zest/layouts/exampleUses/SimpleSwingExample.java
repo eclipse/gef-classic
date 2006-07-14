@@ -408,27 +408,21 @@ public class SimpleSwingExample {
 	 * Call this from createGraph in place of createTreeGraph 
 	 * this for debugging and testing.
 	 */
-/*    private void createCustomGraph() {
-        LayoutEntity A = createSimpleNode("11362219");
-        LayoutEntity B = createSimpleNode("6549662");
-        LayoutEntity _1 = createSimpleNode("21648869");
-        LayoutEntity _2 = createSimpleNode("21846043");
-        LayoutEntity _3 = createSimpleNode("13856755");
-        LayoutEntity _4 = createSimpleNode("22736969");
+	/*
+    private void createCustomGraph() {
+        LayoutEntity A = createSimpleNode("1");
+        LayoutEntity B = createSimpleNode("10");
+        LayoutEntity _1 = createSimpleNode("100");
         entities.add(A);
         entities.add(B);
         entities.add(_1);
-        entities.add(_2);
-        entities.add(_3);
-        entities.add(_4);
-        relationships.add(new SimpleRelationship (B, A, false));
-        relationships.add(new SimpleRelationship (B, _1, false));
-        relationships.add(new SimpleRelationship (_2, _1, false));
-        relationships.add(new SimpleRelationship (_3, B, false));
-        relationships.add(new SimpleRelationship (_4, A, false));
+        relationships.add(new SimpleRelationship (A, B, false));
+        relationships.add(new SimpleRelationship (A, _1, false));
+        relationships.add(new SimpleRelationship (_1, A, false));
     }
-*/
-	private String getNextID () {
+    */
+
+    private String getNextID () {
 	    String id = "" + idCount;
 	    idCount++;
 	    return id;
@@ -650,14 +644,7 @@ public class SimpleSwingExample {
 			for (int i = 2; i < bendPoints.length-1; i++) { // ignore first and last bendpoints (src and dest)
 				bp = bendPoints[i];
 				destEntity = new SimpleNode(DUMMY_TITLE, bp.getX(), bp.getY(), 0.01, 0.01);
-				if (i == 1) {
-					double dx = getLength(srcX, bp.getX());
-					double dy = getLength(srcY, bp.getY());
-					double theta = Math.atan2(dy, dx);
-					drawRelationship(startEntity, destEntity, theta, srcX, srcY, bp.getX(), bp.getY(), g);
-				} else {
-					drawRelationship(srcX, srcY, bp.getX(), bp.getY(), g);
-				}
+				drawRelationship(srcX, srcY, bp.getX(), bp.getY(), g);
 				startEntity = destEntity;
 				if (i == bendPoints.length - 2) { // last point
 					// draw an arrow in the middle of the line
