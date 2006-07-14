@@ -15,13 +15,14 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.draw2d.Animation;
 import org.eclipse.draw2d.LineBorder;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.mylar.zest.core.ZestStyles;
 import org.eclipse.mylar.zest.core.internal.gefx.IPanningListener;
-import org.eclipse.mylar.zest.core.internal.gefx.LayoutAnimator;
 import org.eclipse.mylar.zest.core.internal.gefx.NonThreadedGraphicalViewer;
+import org.eclipse.mylar.zest.core.internal.gefx.RevealListener;
 import org.eclipse.mylar.zest.core.internal.gefx.StaticGraphRootEditPart;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelConnection;
@@ -38,9 +39,9 @@ import org.eclipse.mylar.zest.layouts.algorithms.RadialLayoutAlgorithm;
 import org.eclipse.mylar.zest.layouts.algorithms.SpringLayoutAlgorithm;
 import org.eclipse.mylar.zest.layouts.algorithms.TreeLayoutAlgorithm;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ControlEvent;
-import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 
 /**
  * 
@@ -61,6 +62,8 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 
 	private boolean hasLayoutRun = false;
 
+	
+	
 	/**
 	 * Initializes the viewer impl. 
 	 * @see ZestStyles#PANNING
@@ -177,26 +180,32 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 		this.model = model;
 		this.modelFactory = modelFactory;
 		
-		applyLayout();
 		
-		this.addControlListener(new ControlListener() {
-			private boolean isMinimized = true;
-			public void controlMoved(ControlEvent e) { }
-			public void controlResized(ControlEvent e) {
-				// handle minimized case
-				Dimension d = StaticGraphViewerImpl.this.getCanvasSize();
-				if (d.isEmpty()) {
-					isMinimized = true;
-				} else if (isMinimized) {
-					isMinimized = false;
-					applyLayout();
-				}
-				
-			}
-		});	
+		applyLayout();
 	}
 	
+
+	/**
+	 * Runs the layout on this graph.
+	 * It uses the reveal listner to run the layout only if the view
+	 * is visible.  Otherwise it will be deferred until after the view
+	 * is available.
+	 */
 	public void applyLayout() {
+		this.addRevealListener(new RevealListener() {
+			public void revealed(Control c) {
+				Display.getCurrent().asyncExec(new Runnable() {
+
+					public void run() {
+						applyLayoutInternal();
+					}
+				});
+			}
+		});
+	}
+	
+	private void applyLayoutInternal() {		
+		
 		if ((model == null) || (model.getNodes().size() == 0)) 
 			return;
 		
@@ -226,18 +235,17 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 			
 		}
 
-
 		try {
+			Animation.markBegin();
 			layoutAlgorithm.applyLayout(model.getNodesArray(), model.getConnectionsArray(), 0, 0, d.width, d.height, false, false);
+			Animation.run();
 		} catch (InvalidLayoutConfiguration e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		LayoutAnimator animator = new LayoutAnimator();
-		GraphModelNode[] animateableNodes = model.getNodesArray();
 
-		animator.animateNodes(animateableNodes);
+		//animator.animateNodes(animateableNodes);
 
 		/*
 		try {

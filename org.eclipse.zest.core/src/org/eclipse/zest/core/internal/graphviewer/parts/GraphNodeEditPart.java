@@ -90,6 +90,7 @@ public class GraphNodeEditPart extends AbstractGraphicalEditPart implements
 	 */
 	protected IFigure createFigure() {
 		IFigure f = createFigureForModel();
+
 		//f.setOpaque(true); // non-transparent figure
 		return f;
 	}
@@ -168,6 +169,7 @@ public class GraphNodeEditPart extends AbstractGraphicalEditPart implements
 	 */
 	public void propertyChange(PropertyChangeEvent evt) {
 		
+		
 		String prop = evt.getPropertyName();
 		if ( GraphModelNode.FORCE_REDRAW.equals(prop)) {
 			refreshVisuals();
@@ -215,13 +217,13 @@ public class GraphNodeEditPart extends AbstractGraphicalEditPart implements
 			parent.add(figure);
 			
 		}
+		
 	}
 	
 	/* (non-Javadoc)
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#refreshVisuals()
 	 */
 	protected void refreshVisuals() {
-		
 		GraphModelNode node = getCastedModel();
 		Point loc = node.getLocation();
 		Dimension size = node.getSize();
@@ -229,10 +231,8 @@ public class GraphNodeEditPart extends AbstractGraphicalEditPart implements
 		Rectangle bounds = new Rectangle(loc, size);
 		((GraphicalEditPart)getParent()).setLayoutConstraint(this, getFigure(), bounds);
 
-		figure.repaint();
-		//getFigure().revalidate();
-		 
-		 
+		//figure.repaint();
+		//getFigure().revalidate();		 
 	}
 
 	/**

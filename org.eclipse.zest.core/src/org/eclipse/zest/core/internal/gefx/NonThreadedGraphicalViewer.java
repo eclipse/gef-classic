@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.mylar.zest.core.internal.gefx;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -27,6 +28,8 @@ import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 
@@ -37,6 +40,7 @@ import org.eclipse.swt.widgets.Composite;
  */
 public abstract class NonThreadedGraphicalViewer extends ScrollingGraphicalViewer {
 
+	private List revealListeners = null;
 	
 	
 	/**
@@ -46,6 +50,8 @@ public abstract class NonThreadedGraphicalViewer extends ScrollingGraphicalViewe
 	public NonThreadedGraphicalViewer(Composite parent)  {
 		super();
 		
+		revealListeners = new ArrayList(1);
+		
 		// create the FigureCanvas
 		createControl(parent);
 		
@@ -53,6 +59,22 @@ public abstract class NonThreadedGraphicalViewer extends ScrollingGraphicalViewe
 		ed.addViewer( this );
 		setEditDomain( ed );
 		hookControl();
+
+		getControl().addPaintListener(new PaintListener() {
+			public void paintControl(PaintEvent e) {
+				if (!revealListeners.isEmpty()) {
+					// Go through the reveal list and let everyone know that the view
+					// is now available.  Remove the listeners so they are only called once!
+					Iterator iterator = revealListeners.iterator();
+					while (iterator.hasNext() ) {
+						RevealListener reveallisetner =  (RevealListener) iterator.next();
+						reveallisetner.revealed(getControl());
+						iterator.remove();
+					}
+				}
+			}
+			
+		});
 		getControl().addControlListener(new ControlListener() {
 
 			public void controlMoved(ControlEvent e) {
@@ -80,6 +102,20 @@ public abstract class NonThreadedGraphicalViewer extends ScrollingGraphicalViewe
 	
 	public void addControlListener( ControlListener controlListener ) {
 		controlListeners.add( controlListener );
+	}
+	
+	
+	/**
+	 * Adds a reveal listener to the view.  Note:  A reveal listener will
+	 * only every be called ONCE!!! even if a view comes and goes. There 
+	 * is no remove reveal listener.
+	 * @param revealListener
+	 */
+	public void addRevealListener( RevealListener revealListener ) {
+		if ( getControl().isVisible() ) revealListener.revealed( (Composite)getControl() );
+		else {
+			revealListeners.add(revealListener);
+		}
 	}
 	
 	public boolean removeControlListener( ControlListener controlListener ) {

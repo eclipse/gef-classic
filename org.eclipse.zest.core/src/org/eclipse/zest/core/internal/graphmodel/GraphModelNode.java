@@ -16,15 +16,12 @@ import java.util.List;
 
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.FigureUtilities;
-import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPart;
-import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.mylar.zest.core.ZestColors;
-import org.eclipse.mylar.zest.core.internal.gefx.AnimateableNode;
 import org.eclipse.mylar.zest.layouts.LayoutEntity;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
@@ -38,7 +35,7 @@ import org.eclipse.swt.widgets.Display;
  *  
  * @author Chris Callendar
  */
-public class GraphModelNode extends GraphItem implements LayoutEntity, AnimateableNode {
+public class GraphModelNode extends GraphItem implements LayoutEntity {
 
 	public static final String LOCATION_PROP = "GraphModelNode.Location";
 	public static final String SIZE_PROP = "GraphModelNode.Size";
@@ -67,7 +64,6 @@ public class GraphModelNode extends GraphItem implements LayoutEntity, Animateab
 	private Color borderUnhighlightColor;
 	private int borderWidth;
 	private Point currentLocation;
-	private Point newLayoutLocation;
 	private Dimension size;
 	private Font font;
 	private EditPart editPart;
@@ -124,7 +120,6 @@ public class GraphModelNode extends GraphItem implements LayoutEntity, Animateab
 		this.borderUnhighlightColor = ColorConstants.black;
 		this.borderWidth = 1;
 		this.currentLocation = new Point(10, 10);
-		this.newLayoutLocation = currentLocation.getCopy();
 		this.size = new Dimension(20, 20);
 		this.font = Display.getDefault().getSystemFont();
 		this.graphModel = graphModel;
@@ -278,11 +273,15 @@ public class GraphModelNode extends GraphItem implements LayoutEntity, Animateab
 	
 	
 	public void setLocation( double x, double y ) {
+		
 		currentLocation.setLocation((int)x, (int)y);
 		firePropertyChange(LOCATION_PROP, null, currentLocation);
 	}
 	
 	public void setLocationInLayout(double x, double y) {
+
+		this.setLocation(x, y);
+		/*
 		if (!preferredLocation) {
 			newLayoutLocation.setLocation((int)x, (int)y);
 //			if ((x != currentLocation.x) || (y != currentLocation.y)) {
@@ -291,6 +290,7 @@ public class GraphModelNode extends GraphItem implements LayoutEntity, Animateab
 //				firePropertyChange(LOCATION_PROP, null, currentLocation);
 //			}
 		}
+		*/
 	}
 
 	
@@ -531,43 +531,8 @@ public class GraphModelNode extends GraphItem implements LayoutEntity, Animateab
 
 	//** Animation Methods
 	
-	Point animationStartLocation = null;
-	public void endAnimation() {
-		
-		
-	}
 
-	public Point getCurrentLocation() {
-		return currentLocation;
-	}
 
-	public Point getEndLocation() {
-		return newLayoutLocation;
-	}
-
-	public Point getStartLocation() {
-		return animationStartLocation;
-	}
-
-	public void startAnimation() {
-		animationStartLocation = currentLocation.getCopy();
-		
-	}
-
-	public void updateLocation(Point p) {
-		int x = p.x;
-		int y = p.y;
-		if ((x != currentLocation.x) || (y != currentLocation.y)) {
-			currentLocation.setLocation((int)x, (int)y);
-			firePropertyChange(LOCATION_PROP, null, currentLocation);
-		}
-		
-	}
-
-	public IFigure getFigure() {
-		// TODO Auto-generated method stub
-		return ((AbstractGraphicalEditPart)getEditPart()).getFigure();
-	}
 	
 	
 	

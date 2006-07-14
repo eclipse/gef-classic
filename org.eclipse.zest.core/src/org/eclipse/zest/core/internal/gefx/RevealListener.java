@@ -10,33 +10,16 @@
  *******************************************************************************/
 package org.eclipse.mylar.zest.core.internal.gefx;
 
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.swt.widgets.Control;
 
 /**
- * This allows a node to be animated
+ * 
+ * A Listener to indicate when a view has become visible.
  * @author Ian Bull
  *
  */
-public interface AnimateableNode {
+public interface RevealListener {
 	
-	public Point getStartLocation();
-	
-	public Point getEndLocation();
-	
-	public Point getCurrentLocation();
-	
-	public void updateLocation( Point p );
-	
-	public void startAnimation();
-	
-	/**
-	 * This should be implemented by nodes that
-	 * wish to be animated.  This should
-	 * end the animation, that is, remove an temp locations
-	 */
-	public void endAnimation();
-	
-	public IFigure getFigure();
+	public void revealed( Control c );
 
 }

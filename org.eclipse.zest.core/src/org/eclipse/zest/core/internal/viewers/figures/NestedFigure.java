@@ -82,6 +82,7 @@ public class NestedFigure extends Figure {
 		//this.button = button; [irbull]
 		//this.scaledFigure = new ScaledFigure();
 		this.scaledFigure = new AspectRatioScaledFigure(label.getText());
+		
 		this.scaledFigure.setVisible(false);
 		
 		this.scaledFigure.setOpaque(false);
@@ -89,10 +90,12 @@ public class NestedFigure extends Figure {
 		
 		
 		FreeformLayout layout = new FreeformLayout();
+		
 		setLayoutManager(layout);
 		setBorder(new LineBorder(ColorConstants.black, 1));
 		setOpaque(false);
 		scaledFigure.setBackgroundColor(ColorConstants.white);
+		
 		
 		add(label, new Rectangle(0, 0, -1, -1), 0);
 		if (button != null) {

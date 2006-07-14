@@ -136,6 +136,7 @@ public class NestedGraphNodeEditPart extends GraphNodeEditPart implements Action
 			figure.getScaledFigure().setVisible(true);
 
 			NestedFreeformLayer layer = new NestedFreeformLayer(figure);
+			
 			layer.setBorder(new MarginBorder(2, 2, 2, 2));
 
 			if (getViewer() instanceof NestedGraphViewerImpl) {

@@ -15,6 +15,7 @@ import java.beans.PropertyChangeListener;
 import java.util.List;
 
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.LayoutAnimator;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.editpolicies.RootComponentEditPolicy;
@@ -93,6 +94,7 @@ public class GraphEditPart extends AbstractGraphicalEditPart implements Property
 		
 		AspectRatioFreeformLayer aspectRatioScaledFigure = new AspectRatioFreeformLayer("root");
 		aspectRatioScaledFigure.setScale(1.0, 1.0);
+		aspectRatioScaledFigure.addLayoutListener(LayoutAnimator.getDefault());
 		return aspectRatioScaledFigure;
 	}
 	
@@ -133,5 +135,6 @@ public class GraphEditPart extends AbstractGraphicalEditPart implements Property
 	protected List getModelChildren() {
 		return getCastedModel().getNodes();
 	}	
+	
 
 }

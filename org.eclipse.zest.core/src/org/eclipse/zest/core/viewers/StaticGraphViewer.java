@@ -249,5 +249,7 @@ public class StaticGraphViewer extends StructuredViewer {
 	public void removeSelectionChangedListener(ISelectionChangedListener listener) {
 		viewer.removeSelectionChangedListener(listener);
 	}
+	
+	
 
 }

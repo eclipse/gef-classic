@@ -13,6 +13,7 @@ package org.eclipse.mylar.zest.core.internal.nestedgraphviewer.parts;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.FreeformLayer;
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.LayoutAnimator;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphItem;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedGraphModel;
 import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphEditPart;
@@ -88,6 +89,7 @@ public class NestedGraphEditPart extends GraphEditPart  {
 	 */
 	protected IFigure createFigure() {	
 		Figure figure = new FreeformLayer();
+		figure.addLayoutListener(LayoutAnimator.getDefault());
 		figure.setOpaque(false);
 		return figure;
 	}		

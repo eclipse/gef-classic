@@ -14,13 +14,12 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.draw2d.Animation;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.editparts.LayerManager;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.mylar.zest.core.ZestStyles;
-import org.eclipse.mylar.zest.core.internal.gefx.AnimateableNode;
-import org.eclipse.mylar.zest.core.internal.gefx.LayoutAnimator;
 import org.eclipse.mylar.zest.core.internal.gefx.NonThreadedGraphicalViewer;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelConnection;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedGraphModel;
@@ -222,6 +221,8 @@ public class NestedGraphViewerImpl extends NonThreadedGraphicalViewer
 		updateTreeViewer(nodeToSelect);		// also selects the given node
 	}
 
+
+	
 	/**
 	 * Applies a grid layout to the children of the given node ONLY if it hasn't 
 	 * been already been done.  To force the layout to run again you must call 
@@ -254,14 +255,11 @@ public class NestedGraphViewerImpl extends NonThreadedGraphicalViewer
 			}
 			layoutAlgorithm.setEntityAspectRatio(width / height);
 			try {
+				Animation.markBegin();
 				layoutAlgorithm.applyLayout(entities, new LayoutRelationship[0], 0, 0, width - 20, height - 40, false, false);
-
-				LayoutAnimator animator = new LayoutAnimator();
-				AnimateableNode[] animateableNodes = new AnimateableNode[entities.length];
-				for (int i = 0; i < entities.length; i++) {
-					animateableNodes[i] = (AnimateableNode)entities[i];
-				}
-				animator.animateNodes(animateableNodes);
+				Animation.run(1000);
+				
+				//animator.animateNodes(animateableNodes);
 				// set this attribute to signal the a grid layout has occured
 				// this way the grid layout is only done once.
 				nodeToLayout.setData("LayoutCompleted", "true");
