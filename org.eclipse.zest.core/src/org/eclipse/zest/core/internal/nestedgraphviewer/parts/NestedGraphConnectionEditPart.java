@@ -11,8 +11,9 @@
 package org.eclipse.mylar.zest.core.internal.nestedgraphviewer.parts;
 
 import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.Connection;
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.PolylineConnection;
+import org.eclipse.draw2d.Shape;
 import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphConnectionEditPart;
 
 
@@ -33,13 +34,15 @@ public class NestedGraphConnectionEditPart extends GraphConnectionEditPart {
 	 */
 	protected IFigure createFigure() {
 		
-		PolylineConnection connection = (PolylineConnection) super.createFigure();
+		Connection connection = (Connection)super.createFigure();
 		// Now only directed edges have arrow endpoints - see ZestStyles.DIRECTED_GRAPH
 		//connection.setTargetDecoration(new PolygonDecoration()); // arrow at target endpoint
 		getCastedModel().setLineColor(ColorConstants.darkBlue);
 		connection.setForegroundColor(getCastedModel().getLineColor());
-		connection.setLineWidth(getCastedModel().getLineWidth());
-		connection.setLineStyle(getCastedModel().getLineStyle());
+		if (connection instanceof Shape) {
+			((Shape)connection).setLineWidth(getCastedModel().getLineWidth());
+			((Shape)connection).setLineStyle(getCastedModel().getLineStyle());
+		}
 		return connection;
 	}
 
