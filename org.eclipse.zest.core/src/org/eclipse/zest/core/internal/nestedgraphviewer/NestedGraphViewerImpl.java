@@ -21,7 +21,6 @@ import org.eclipse.gef.editparts.LayerManager;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.mylar.zest.core.ZestStyles;
 import org.eclipse.mylar.zest.core.internal.gefx.NonThreadedGraphicalViewer;
-import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelConnection;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedGraphModel;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedGraphModelNode;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NodeChildrenComparator;
@@ -62,7 +61,7 @@ public class NestedGraphViewerImpl extends NonThreadedGraphicalViewer
 	private int style = ZestStyles.NONE;
 	private boolean allowOverlap = false;
 	private boolean enforceBounds = false;
-	private boolean directedGraph = false;
+	//private boolean directedGraph = false;
 	
 	/**
 	 * Initializes the viewer with the given styles (NO_SCROLLBARS, ZOOM_REAL, ZOOM_FAKE, ZOOM_EXPAND).  
@@ -72,7 +71,7 @@ public class NestedGraphViewerImpl extends NonThreadedGraphicalViewer
 	 * @param breadCrumbBar
 	 * @param treeViewer
 	 * @see ZestStyles#NO_OVERLAPPING_NODES
-	 * @see ZestStyles#HIGHLIGHT_ADJACENT_NODES
+	 * @see ZestStyles#NODES_HIGHLIGHT_ADJACENT
 	 * @see ZestStyles#ENFORCE_BOUNDS
 	 * @see ZestStyles#ZOOM_EXPAND
 	 * @see ZestStyles#ZOOM_FAKE
@@ -105,7 +104,7 @@ public class NestedGraphViewerImpl extends NonThreadedGraphicalViewer
 	 * Sets the style on the NestedGraphViewer
 	 * @param style the style
 	 * @see ZestStyles#NO_OVERLAPPING_NODES
-	 * @see ZestStyles#HIGHLIGHT_ADJACENT_NODES
+	 * @see ZestStyles#NODES_HIGHLIGHT_ADJACENT
 	 * @see ZestStyles#ENFORCE_BOUNDS
 	 * @see ZestStyles#ZOOM_EXPAND
 	 * @see ZestStyles#ZOOM_FAKE
@@ -116,13 +115,7 @@ public class NestedGraphViewerImpl extends NonThreadedGraphicalViewer
 		this.style = style;
 		this.allowOverlap = !ZestStyles.checkStyle(style, ZestStyles.NO_OVERLAPPING_NODES);
 		this.enforceBounds = ZestStyles.checkStyle(style, ZestStyles.ENFORCE_BOUNDS);
-		this.directedGraph = ZestStyles.checkStyle(style, ZestStyles.DIRECTED_GRAPH);
-
-		if ( model != null ) {
-			// Set the styles that must be set on the model
-			model.setDirectedEdges( this.directedGraph );
-			model.fireAllPropertyChange(GraphModelConnection.DIRECTED_EDGE_PROP, null, null);
-		}
+		//this.directedGraph = ZestStyles.checkStyle(style, ZestStyles.DIRECTED_GRAPH);
 	}
 	
 	/**

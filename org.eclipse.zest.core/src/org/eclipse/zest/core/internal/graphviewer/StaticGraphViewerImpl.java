@@ -28,6 +28,7 @@ import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelConnection;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelNode;
 import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelFactory;
+import org.eclipse.mylar.zest.core.internal.graphmodel.IZestGraphDefaults;
 import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphEditPartFactory;
 import org.eclipse.mylar.zest.core.internal.viewers.NoOverlapLayoutAlgorithm;
 import org.eclipse.mylar.zest.layouts.InvalidLayoutConfiguration;
@@ -57,8 +58,9 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 	private boolean allowMarqueeSelection = false;
 	private boolean allowPanning = false;
 	private boolean noOverlappingNodes = false;
-	private boolean directedGraph = false;
 	private int style = 0;
+	private int nodeStyle;
+	private int connectionStyle;
 
 	private boolean hasLayoutRun = false;
 
@@ -68,7 +70,7 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 	 * Initializes the viewer impl. 
 	 * @see ZestStyles#PANNING
 	 * @see ZestStyles#NO_OVERLAPPING_NODES
-	 * @see ZestStyles#HIGHLIGHT_ADJACENT_NODES
+	 * @see ZestStyles#NODES_HIGHLIGHT_ADJACENT
 	 * @see ZestStyles#DIRECTED_GRAPH
 	 * @see ZestStyles#LAYOUT_GRID
 	 * @see ZestStyles#LAYOUT_TREE
@@ -80,6 +82,8 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 	public StaticGraphViewerImpl(Composite composite, int style) {
 		super(composite);
 		this.setStyle(style);
+		setConnectionStyle(IZestGraphDefaults.CONNECTION_STYLE);
+		setNodeStyle(IZestGraphDefaults.NODE_STYLE);
 		this.noOverlapAlgorithm = new NoOverlapLayoutAlgorithm();
 		this.setSelectionManager(new ZestSelectionManager());
 	}
@@ -133,8 +137,7 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 		this.noOverlappingNodes = ZestStyles.checkStyle(style, ZestStyles.NO_OVERLAPPING_NODES);
 		this.allowPanning = ZestStyles.checkStyle(style, ZestStyles.PANNING);
 		this.allowMarqueeSelection = !allowPanning && ZestStyles.checkStyle(style, ZestStyles.MARQUEE_SELECTION);
-		this.directedGraph = ZestStyles.checkStyle(style, ZestStyles.DIRECTED_GRAPH);
-		
+				
 		// set the scrollbar visibility
 		// TODO this doesn't work...  scrollbars never show up unless set to ALWAYS
 		//(getFigureCanvas()).setScrollBarVisibility(FigureCanvas.ALWAYS);
@@ -143,16 +146,52 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 //			getFigureCanvas().setVerticalScrollBarVisibility((vScroll ? FigureCanvas.AUTOMATIC : FigureCanvas.NEVER));
 //		}
 		getFigureCanvas().setBorder(new LineBorder(2));
-		
-		if (model != null) {
-			// Set the styles that must be set on the model
-			model.setDirectedEdges(this.directedGraph);
-			model.fireAllPropertyChange(GraphModelConnection.DIRECTED_EDGE_PROP, null, null);
-		}
-		
-		setLayoutFromStyle(style);
+		setLayoutAlgorithm(new GridLayoutAlgorithm(LayoutStyles.NONE), false);
 	}
 	
+	/**
+	 * Sets the default connection style.
+	 * @param connection style the connection style to set
+	 * @see org.eclipse.mylar.zest.core.ZestStyles
+	 */
+	public void setConnectionStyle(int connectionStyle) {
+		this.connectionStyle = connectionStyle;
+		if (model != null) {
+			model.setConnectionStyle(connectionStyle);
+		}
+	}
+	
+	/**
+	 * Gets the default connection style.
+	 * @return the connection style
+	 * @see org.eclipse.mylar.zest.core.ZestStyles
+	 */
+	public int getConnectionStyle() {
+		return connectionStyle;
+	}
+	
+	/**
+	 * Sets the default node style.
+	 * @param nodeStyle the node style to set
+	 * @see org.eclipse.mylar.zest.core.ZestStyles
+	 */
+	public void setNodeStyle(int nodeStyle) {
+		this.nodeStyle = nodeStyle;
+		if (model != null) {
+			model.setNodeStyle(nodeStyle);
+		}
+	}
+	
+	/**
+	 * Gets the default node style.
+	 * @return the node style
+	 * @see org.eclipse.mylar.zest.core.ZestStyles
+	 */
+	public int getNodeStyle() {
+		return nodeStyle;
+	}
+	
+	/*
 	private void setLayoutFromStyle(int style) {
 		boolean grid = ZestStyles.checkStyle(ZestStyles.LAYOUT_GRID, style);
 		boolean radial = ZestStyles.checkStyle(ZestStyles.LAYOUT_RADIAL, style);
@@ -170,7 +209,7 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 			//setLayoutAlgorithm(layout, false);
 		}
 	}
-	
+	*/
 	/**
 	 * Sets the model and initializes the layout algorithm.
 	 * @see org.eclipse.mylar.zest.core.internal.gefx.ThreadedGraphicalViewer#setContents(java.lang.Object)

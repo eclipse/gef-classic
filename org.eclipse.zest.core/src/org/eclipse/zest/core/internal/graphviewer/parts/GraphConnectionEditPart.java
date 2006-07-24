@@ -13,6 +13,7 @@ package org.eclipse.mylar.zest.core.internal.graphviewer.parts;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import org.eclipse.draw2d.Connection;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.MidpointLocator;
@@ -20,10 +21,10 @@ import org.eclipse.draw2d.PolygonDecoration;
 import org.eclipse.draw2d.PolylineConnection;
 import org.eclipse.draw2d.Shape;
 import org.eclipse.gef.editparts.AbstractConnectionEditPart;
+import org.eclipse.mylar.zest.core.ZestStyles;
 import org.eclipse.mylar.zest.core.internal.gefx.ArcConnection;
 import org.eclipse.mylar.zest.core.internal.gefx.GraphRootEditPart;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphItem;
-import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelConnection;
 
 
@@ -71,12 +72,27 @@ public class GraphConnectionEditPart extends AbstractConnectionEditPart implemen
 	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
 	 */
 	protected IFigure createFigure() {
-		PolylineConnection connection = (PolylineConnection) super.createFigure();
-		//connection.setTargetDecoration(new PolygonDecoration()); // arrow at target endpoint
-		//ArcConnection connection = new ArcConnection();
+		Connection connection;
+		int graphConnectionStyle= getCastedModel().getGraphModel().getConnectionStyle();
+		int connectionStyle = getCastedModel().getConnectionStyle();
+		if (ZestStyles.checkStyle(connectionStyle, ZestStyles.CONNECTIONS_CURVED)) {
+			connection = new ArcConnection();
+			((ArcConnection)connection).setDepth(10);
+		} else if (ZestStyles.checkStyle(connectionStyle, ZestStyles.CONNECTIONS_STRAIGHT)) {
+			connection = (PolylineConnection) super.createFigure();
+		} else {
+			if (ZestStyles.checkStyle(graphConnectionStyle, ZestStyles.CONNECTIONS_CURVED)) {
+				connection = new ArcConnection();
+				((ArcConnection)connection).setDepth(10);
+			} else {
+				connection = (PolylineConnection) super.createFigure();
+			}
+		}
 		connection.setForegroundColor(getCastedModel().getLineColor());
-		connection.setLineWidth(getCastedModel().getLineWidth());
-		connection.setLineStyle(getCastedModel().getLineStyle());
+		if (connection instanceof Shape) {
+			((Shape)connection).setLineWidth(getCastedModel().getLineWidth());
+			((Shape)connection).setLineStyle(getCastedModel().getLineStyle());
+		}
 		
 	  	MidpointLocator m1 = new MidpointLocator(connection,0);
 	  	if ( getCastedModel().getText() != null ||
@@ -130,16 +146,16 @@ public class GraphConnectionEditPart extends AbstractConnectionEditPart implemen
 			if (figure instanceof Shape)
 				((Shape)figure).setLineStyle(getCastedModel().getLineStyle());
 		} else if ( GraphModelConnection.DIRECTED_EDGE_PROP.equals( property )) {
-		  	GraphModel graphModel = this.getCastedModel().getGraphModel();
+		  	boolean directed = isDirected();
 		  	if (figure instanceof PolylineConnection) {
-		  		if ( graphModel.getDirectedEdges() == true ) {
+		  		if (directed) {
 		  			((PolylineConnection)figure).setTargetDecoration(new PolygonDecoration());
 		  		}
 		  		else {
 		  			((PolylineConnection)figure).setTargetDecoration( null );
 		  		}
 		  	} else if (figure instanceof ArcConnection) {
-				if ( graphModel.getDirectedEdges() == true ) {
+				if (directed) {
 					((ArcConnection)getFigure()).setTargetDecoration(new PolygonDecoration());
 				}
 				else {
@@ -150,6 +166,21 @@ public class GraphConnectionEditPart extends AbstractConnectionEditPart implemen
 	}
 	
 	
+	/**
+	 * @return
+	 */
+	private boolean isDirected() {
+		int graphConnectionStyle= getCastedModel().getGraphModel().getConnectionStyle();
+		int connectionStyle = getCastedModel().getConnectionStyle();
+		if (ZestStyles.checkStyle(connectionStyle, ZestStyles.CONNECTIONS_DIRECTED)) {
+			return true;
+		} else if (ZestStyles.checkStyle(graphConnectionStyle, ZestStyles.CONNECTIONS_DIRECTED)) {
+			return true;
+		}
+		return false;
+	}
+
+
 	protected void refreshVisuals() {
 		super.refreshVisuals();
 		IFigure figure = getFigure();
@@ -159,16 +190,16 @@ public class GraphConnectionEditPart extends AbstractConnectionEditPart implemen
 
 			((Shape)figure).setLineStyle(getCastedModel().getLineStyle());
 		}
-		GraphModel graphModel = this.getCastedModel().getGraphModel();
-		if (figure instanceof PolylineConnection) {
-			if ( graphModel.getDirectedEdges() == true ) {
+		boolean directed = isDirected();
+		if (figure instanceof PolylineConnection) { 	
+			if (directed) {
 				((PolylineConnection)getFigure()).setTargetDecoration(new PolygonDecoration());
 			}
 			else {
 				((PolylineConnection)getFigure()).setTargetDecoration( null );
 			}
 		} else if (figure instanceof ArcConnection) {
-			if ( graphModel.getDirectedEdges() == true ) {
+			if (directed) {
 				((ArcConnection)getFigure()).setTargetDecoration(new PolygonDecoration());
 			}
 			else {

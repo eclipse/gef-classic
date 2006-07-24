@@ -37,7 +37,7 @@ public class NestedGraphConnectionEditPart extends GraphConnectionEditPart {
 		Connection connection = (Connection)super.createFigure();
 		// Now only directed edges have arrow endpoints - see ZestStyles.DIRECTED_GRAPH
 		//connection.setTargetDecoration(new PolygonDecoration()); // arrow at target endpoint
-		getCastedModel().setLineColor(ColorConstants.darkBlue);
+		getCastedModel().changeLineColor(ColorConstants.darkBlue);
 		connection.setForegroundColor(getCastedModel().getLineColor());
 		if (connection instanceof Shape) {
 			((Shape)connection).setLineWidth(getCastedModel().getLineWidth());

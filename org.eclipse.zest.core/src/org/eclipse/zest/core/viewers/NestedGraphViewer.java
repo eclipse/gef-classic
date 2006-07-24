@@ -23,7 +23,6 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.mylar.zest.core.ZestStyles;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.INestedGraphModelFactory;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedGraphModel;
@@ -49,7 +48,7 @@ import org.eclipse.swt.widgets.Widget;
 /**
  * @author Ian Bull
  */
-public class NestedGraphViewer extends StructuredViewer 
+public class NestedGraphViewer extends AbstractStructuredGraphViewer 
 	implements IDoubleClickListener, ControlListener, DisposeListener {
 
 	private Composite parent = null;
@@ -70,13 +69,14 @@ public class NestedGraphViewer extends StructuredViewer
 	 * @param parent
 	 * @param style the styles (which also get passed to the viewer impl
 	 * @see ZestStyles#NO_OVERLAPPING_NODES
-	 * @see ZestStyles#HIGHLIGHT_ADJACENT_NODES
+	 * @see ZestStyles#NODES_HIGHLIGHT_ADJACENT
 	 * @see ZestStyles#NO_SCROLLBARS
 	 * @see ZestStyles#ZOOM_EXPAND
 	 * @see ZestStyles#ZOOM_FAKE
 	 * @see ZestStyles#ZOOM_REAL
 	 */
 	public NestedGraphViewer(Composite parent, int style) {
+		super(style);
 		this.parent = parent;
 		this.parent.addDisposeListener(this);
 				
@@ -157,7 +157,7 @@ public class NestedGraphViewer extends StructuredViewer
 	 * @see org.eclipse.jface.viewers.Viewer#inputChanged(java.lang.Object, java.lang.Object)
 	 */
 	protected void inputChanged(Object input, Object oldInput) {
-		boolean highlightAdjacentNodes = ZestStyles.checkStyle(viewer.getStyle(), ZestStyles.HIGHLIGHT_ADJACENT_NODES);
+		boolean highlightAdjacentNodes = ZestStyles.checkStyle(viewer.getStyle(), ZestStyles.NODES_HIGHLIGHT_ADJACENT);
 
 //		// TODO - NestedGraphContentProvider		
 //		if (getContentProvider() instanceof INestedGraphContentProvider) {
@@ -169,8 +169,8 @@ public class NestedGraphViewer extends StructuredViewer
 		}
 		//DebugPrint.println("Input Is: " + input);
 		model = modelFactory.createModelFromContentProvider(input);
-		model.setDirectedEdges(ZestStyles.checkStyle(viewer.getStyle(), ZestStyles.DIRECTED_GRAPH)); 
-		
+		model.setNodeStyle(getNodeStyle());
+		model.setConnectionStyle(getConnectionStyle());
 		treeViewer.setRootDataItem(model.getRootNode());
 		treeViewer.setInput(getInput());
 		
@@ -180,7 +180,7 @@ public class NestedGraphViewer extends StructuredViewer
 		treeViewer.expandToLevel(2);
 	}
 	
-	public NestedGraphViewerImpl getViewer() {
+	protected NestedGraphViewerImpl getViewer() {
 		return viewer;
 	}
 	

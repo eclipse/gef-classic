@@ -75,8 +75,8 @@ public class SpringGraphViewerImpl extends ThreadedGraphicalViewer implements IP
 	private boolean noOverlappingNodes = false;
 	private boolean stabilize = false;
 	private boolean enforceBounds = false;
-	*/
 	private boolean directedGraph = false;
+	*/
 	private int style = ZestStyles.NONE;
 	
 	/** 
@@ -127,14 +127,6 @@ public class SpringGraphViewerImpl extends ThreadedGraphicalViewer implements IP
 		*/
 		this.allowPanning = ZestStyles.checkStyle(style, ZestStyles.PANNING);
 		this.allowMarqueeSelection = !allowPanning && ZestStyles.checkStyle(style, ZestStyles.MARQUEE_SELECTION);
-		
-		this.directedGraph = ZestStyles.checkStyle(style, ZestStyles.DIRECTED_GRAPH);
-		
-		if ( model != null ) {
-			// Set the styles that must be set on the model
-			model.setDirectedEdges( this.directedGraph );
-			model.fireAllPropertyChange(GraphModelConnection.DIRECTED_EDGE_PROP, null, null);
-		}
 	}
 	
 	

@@ -18,7 +18,6 @@ import java.util.Map;
 
 import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.mylar.zest.core.ZestStyles;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelEntityFactory;
@@ -39,7 +38,7 @@ import org.eclipse.swt.widgets.Widget;
  * @author Ian Bull
  * @author Chris Callendar
  */
-public class StaticGraphViewer extends StructuredViewer {
+public class StaticGraphViewer extends AbstractStructuredGraphViewer {
 
 	StaticGraphViewerImpl viewer = null;
 
@@ -58,11 +57,12 @@ public class StaticGraphViewer extends StructuredViewer {
 	 * @see ZestStyles#LAYOUT_RADIAL
 	 * @see ZestStyles#LAYOUT_SPRING
 	 * @see ZestStyles#NO_OVERLAPPING_NODES
-	 * @see ZestStyles#HIGHLIGHT_ADJACENT_NODES
+	 * @see ZestStyles#NODES_HIGHLIGHT_ADJACENT
 	 * @see SWT#V_SCROLL
 	 * @see SWT#H_SCROLL
 	 */
 	public StaticGraphViewer(Composite composite, int style) {
+		super(style);
 		this.viewer = new StaticGraphViewerImpl(composite, style);
 		hookControl(this.viewer.getControl());
 	}
@@ -137,9 +137,8 @@ public class StaticGraphViewer extends StructuredViewer {
 	}
 
 	protected void inputChanged(Object input, Object oldInput) {
-		boolean highlightAdjacentNodes = ZestStyles.checkStyle(viewer.getStyle(), ZestStyles.HIGHLIGHT_ADJACENT_NODES);
-		boolean directedGraph = ZestStyles.checkStyle(viewer.getStyle(), ZestStyles.DIRECTED_GRAPH);
-
+		boolean highlightAdjacentNodes = ZestStyles.checkStyle(viewer.getNodeStyle(), ZestStyles.NODES_HIGHLIGHT_ADJACENT);
+		
 		if (modelFactory == null) {
 			if (getContentProvider() instanceof IGraphContentProvider) {
 				modelFactory = new GraphModelFactory(this, highlightAdjacentNodes);
@@ -154,7 +153,8 @@ public class StaticGraphViewer extends StructuredViewer {
 		Map oldNodesMap = (model != null ? model.getNodesMap() : Collections.EMPTY_MAP);
 
 		model = newModel;
-		model.setDirectedEdges(directedGraph);
+		model.setNodeStyle(getNodeStyle());
+		model.setConnectionStyle(getConnectionStyle());
 
 		// check if any of the pre-existing nodes are still present
 		// in this case we want them to keep the same location & size

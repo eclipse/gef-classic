@@ -17,6 +17,7 @@ import org.eclipse.swt.graphics.Color;
  * Color constants used in Zest.
  * 
  * @author Chris Callendar
+ * @deprecated
  */
 public final class ZestColors {
 

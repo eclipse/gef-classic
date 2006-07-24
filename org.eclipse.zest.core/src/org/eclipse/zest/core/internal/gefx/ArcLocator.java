@@ -18,7 +18,8 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
- * 
+ * A locator for arcs, so that child figures can properly position themselves on arcs.
+ * @tag bug(114452)
  * @author Del Myers
  */
 class ArcLocator extends ConnectionLocator {

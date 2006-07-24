@@ -16,7 +16,6 @@ import java.util.List;
 
 import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.mylar.zest.core.ZestStyles;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphItem;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel;
@@ -36,7 +35,7 @@ import org.eclipse.swt.widgets.Widget;
  * @author Ian Bull
  * @author Chris Callendar
  */
-public class SpringGraphViewer extends StructuredViewer {
+public class SpringGraphViewer extends AbstractStructuredGraphViewer {
 	
 	
 	private SpringGraphViewerImpl viewer = null;
@@ -47,7 +46,7 @@ public class SpringGraphViewer extends StructuredViewer {
 	 * Initializes the viewer.  
 	 * @param composite	
 	 * @param style	The styles for this viewer (also passed on to the viewer impl) 
-	 * @see ZestStyles#HIGHLIGHT_ADJACENT_NODES
+	 * @see ZestStyles#NODES_HIGHLIGHT_ADJACENT
 	 * @see ZestStyles#PANNING
 	 * @see ZestStyles#MARQUEE_SELECTION
 	 * @see ZestStyles#NO_OVERLAPPING_NODES
@@ -56,6 +55,7 @@ public class SpringGraphViewer extends StructuredViewer {
 	 * @see ZestStyles#DIRECTED_GRAPH
 	 */
 	public SpringGraphViewer(Composite composite, int style) {
+		super(style);
 		this.viewer = new SpringGraphViewerImpl(composite, style);
 		hookControl( this.viewer.getControl() );
 	}
@@ -95,7 +95,7 @@ public class SpringGraphViewer extends StructuredViewer {
 	protected void inputChanged(Object input, Object oldInput) {
 		viewer.stopLayoutAlgorithm();
 		
-		boolean highlightAdjacentNodes = ZestStyles.checkStyle(viewer.getStyle(), ZestStyles.HIGHLIGHT_ADJACENT_NODES);
+		boolean highlightAdjacentNodes = ZestStyles.checkStyle(viewer.getStyle(), ZestStyles.NODES_HIGHLIGHT_ADJACENT);
 		if ( getContentProvider() instanceof IGraphContentProvider ) {
 			modelFactory = new GraphModelFactory( this, highlightAdjacentNodes );
 		}
@@ -105,7 +105,8 @@ public class SpringGraphViewer extends StructuredViewer {
 		model = modelFactory.createModelFromContentProvider( input );
 
 		// set the model contents (initializes the layout algorithm)
-		model.setDirectedEdges(ZestStyles.checkStyle(viewer.getStyle(), ZestStyles.DIRECTED_GRAPH)); 
+		model.setNodeStyle(getNodeStyle());
+		model.setConnectionStyle(getConnectionStyle());
 		viewer.setContents(model, modelFactory);
 		
 	}
@@ -138,6 +139,7 @@ public class SpringGraphViewer extends StructuredViewer {
 		return node;
 	}
 	
+	// @tag TODO : Reduce the visibility of getViewer
 	public SpringGraphViewerImpl getViewer() {
 		return viewer;
 	}

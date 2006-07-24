@@ -57,6 +57,7 @@ public class GraphModelEntityFactory implements IGraphModelFactory {
 			Object data = entities[ i ];
 			GraphModelNode node = new GraphModelNode(model, getLabelProvider().getText(data), getLabelProvider().getImage(data), data);
 			node.setHighlightAdjacentNodes(highlightAdjacentNodes);
+			GraphItemStyler.styleItem(node, getLabelProvider());
 			model.addNode( data, node );
 		}
 		
@@ -73,9 +74,10 @@ public class GraphModelEntityFactory implements IGraphModelFactory {
 
 	
 	public GraphModelNode createNode(GraphModel model, Object data) {
-		// TODO Auto-generated method stub
 		GraphModelNode node = new GraphModelNode(model, getLabelProvider().getText( data ), getLabelProvider().getImage(data), data);
 		node.setHighlightAdjacentNodes(highlightAdjacentNodes);
+		ILabelProvider labelProvider = getLabelProvider();
+		GraphItemStyler.styleItem(node, labelProvider);
 		Object[] related = getContentProvider().getConnectedTo( data );
 		for ( int i = 0; i < related.length; i++ ) {
 			createRelationship(model, null, data, related);
@@ -94,7 +96,7 @@ public class GraphModelEntityFactory implements IGraphModelFactory {
 		for (Iterator iterator =  sourceNode.getTargetConnections().iterator(); iterator.hasNext(); ) {
 			//TODO: get connections won't work for directed graphs!
 			connection = (GraphModelConnection) iterator.next();
-			if ((dest != null) && dest.equals(connection.getSource().getExternalNode())) {
+			if ((dest != null) && dest.equals(connection.getDestination().getExternalNode())) {
 				// We already have a node that goes from source to dest!
 				//@tag bug(114452)
 				return null;
@@ -103,6 +105,7 @@ public class GraphModelEntityFactory implements IGraphModelFactory {
 		// Create the connection
 		double weight = getContentProvider().getWeight( source, dest );
 		connection = new GraphModelConnection(model, data, sourceNode, destNode, false, weight);
+		GraphItemStyler.styleItem(connection, getLabelProvider());
 		model.addConnection(connection.getExternalConnection(), connection);
 		return connection;
 	}

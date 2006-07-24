@@ -33,14 +33,15 @@ public class GraphModel extends GraphItem {
 	private List nodes;
 	protected List connections;
 	
-	private boolean directedEdges = false;
 	
 
 	/** Maps user nodes to internal nodes */
 	private HashMap external2InternalNodeMap; 
 
 	/** Maps user connections to internal connections */
-	private HashMap external2InternalConnectionMap; 
+	private HashMap external2InternalConnectionMap;
+	private int connectionStyle;
+	private int nodeStyle;
 	
 	/**
 	 * Initializes this diagram.
@@ -91,23 +92,44 @@ public class GraphModel extends GraphItem {
 		return external2InternalConnectionMap;
 	}
 	
+
+	
 	/**
-	 * Sets whether or not the edges should be directed or not
-	 * @param directedEdges
+	 * Sets the default connection style.
+	 * @param connection style the connection style to set
+	 * @see org.eclipse.mylar.zest.core.ZestStyles
 	 */
-	public void setDirectedEdges( boolean directedEdges ) {
-		this.directedEdges = directedEdges;
+	public void setConnectionStyle(int connectionStyle) {
+		this.connectionStyle = connectionStyle;
 	}
 	
 	/**
-	 * Gets whether or not the edges should be directed
-	 * Note: Individual edges may have their own property in the future, but
-	 * for now this is a global property.  
-	 * @return
+	 * Gets the default connection style.
+	 * @return the connection style
+	 * @see org.eclipse.mylar.zest.core.ZestStyles
 	 */
-	public boolean getDirectedEdges( ) {
-		return this.directedEdges;
+	public int getConnectionStyle() {
+		return connectionStyle;
 	}
+	
+	/**
+	 * Sets the default node style.
+	 * @param nodeStyle the node style to set
+	 * @see org.eclipse.mylar.zest.core.ZestStyles
+	 */
+	public void setNodeStyle(int nodeStyle) {
+		this.nodeStyle = nodeStyle;
+	}
+	
+	/**
+	 * Gets the default node style.
+	 * @return the node style
+	 * @see org.eclipse.mylar.zest.core.ZestStyles
+	 */
+	public int getNodeStyle() {
+		return nodeStyle;
+	}
+	
 
 	
 	/**

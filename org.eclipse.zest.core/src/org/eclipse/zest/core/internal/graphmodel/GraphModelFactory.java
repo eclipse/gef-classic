@@ -12,8 +12,6 @@ package org.eclipse.mylar.zest.core.internal.graphmodel;
 
 import java.util.Iterator;
 
-import org.eclipse.jface.viewers.IColorProvider;
-import org.eclipse.jface.viewers.IFontProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.mylar.zest.core.viewers.IGraphContentProvider;
@@ -111,15 +109,7 @@ public class GraphModelFactory implements IGraphModelFactory {
 			ILabelProvider labelProvider = getLabelProvider();
 			GraphModelNode node = new GraphModelNode(model, getLabelProvider().getText(data), labelProvider.getImage(data), data);
 			node.setHighlightAdjacentNodes(highlightAdjacentNodes);
-			if (labelProvider instanceof IColorProvider) {
-				IColorProvider colorProvider = (IColorProvider) labelProvider;
-				node.setForegroundColor(colorProvider.getForeground(data));
-				node.setBackgroundColor(colorProvider.getBackground(data));
-			}
-			if (labelProvider instanceof IFontProvider) {
-				IFontProvider fontProvider = (IFontProvider) labelProvider;
-				node.setFont(fontProvider.getFont(data));
-			}
+			GraphItemStyler.styleItem(node,labelProvider);
 			model.addNode(data, node);
 			return node;
 		} else {

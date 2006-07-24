@@ -35,6 +35,8 @@ import org.eclipse.swt.graphics.Color;
  * defined as the circular arc with the chord (ax, ay) - (bx, by) (where a and b
  * are the anchors) and a depth d defined as the maximum distance from any point on
  * the chord (i.e. a vector normal to the chord with magnitude d).
+ * 
+ * @tag bug(114452)
  */
 public class ArcConnection extends Arc implements Connection, AnchorListener {
 

@@ -15,7 +15,8 @@ import org.eclipse.draw2d.Shape;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
- * 
+ * A shape representation of an arc, so that arcs can be used in editparts.
+ * @tag bug(114452)
  * @author Del Myers
  */
 public class Arc extends Shape {

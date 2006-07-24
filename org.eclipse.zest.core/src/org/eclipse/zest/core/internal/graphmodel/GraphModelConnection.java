@@ -10,9 +10,14 @@
  *******************************************************************************/
 package org.eclipse.mylar.zest.core.internal.graphmodel;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import org.eclipse.draw2d.Graphics;
+import org.eclipse.mylar.zest.core.IZestColorConstants;
+import org.eclipse.mylar.zest.core.ZestPlugin;
+import org.eclipse.mylar.zest.core.ZestStyles;
 import org.eclipse.mylar.zest.layouts.LayoutBendPoint;
 import org.eclipse.mylar.zest.layouts.LayoutEntity;
 import org.eclipse.mylar.zest.layouts.LayoutRelationship;
@@ -30,14 +35,8 @@ import org.eclipse.swt.widgets.Display;
 public class GraphModelConnection extends GraphItem implements LayoutRelationship {
 
 	private Font font;
-	private static final Color CONNECTION_COLOR = new Color(null, 64, 64, 128); //new Color (null, 128, 128, 192);
-	private static final Color CONNECTION_HIGHLIGHT = new Color(null, 192, 32, 32); //new Color(null, 96, 96, 128);
-	private static final Color[] CONNECTION_COLORS = new Color[] {
-		new Color(null, 192, 192, 255),
-		new Color(null, 64, 128, 225),
-		new Color(null, 32, 32, 128),
-		new Color(null, 0, 0, 128),
-	};
+
+	private ArrayList weightColors;
 	public static final String LINECOLOR_PROP = "LineColor";
 	public static final String LINEWIDTH_PROP = "LineWidth";
 	public static final String LINESTYLE_PROP = "LineStyle";
@@ -45,9 +44,10 @@ public class GraphModelConnection extends GraphItem implements LayoutRelationshi
 	
 	private GraphModelNode sourceNode;
 	private GraphModelNode destinationNode;
-	private boolean bidirectional;
 	private  double weight;
 	private Color color;
+	private Color highlightColor;
+	private Color foreground;
 	private int lineWidth;
 	private int lineStyle;
 	private HashMap attributes;
@@ -55,6 +55,7 @@ public class GraphModelConnection extends GraphItem implements LayoutRelationshi
 	private GraphModel graphModel;
 	
 	private Object internalConnection;
+	private int connectionStyle;
 	
 	/**
 	 * LayoutConnection constructor, initializes the nodes and the connection properties.
@@ -79,9 +80,17 @@ public class GraphModelConnection extends GraphItem implements LayoutRelationshi
 	 */
 	public GraphModelConnection(GraphModel graphModel, Object data, GraphModelNode source, GraphModelNode destination, boolean bidirection, double weight) {
 		super(graphModel);
+		ZestPlugin plugin = ZestPlugin.getDefault();
 		this.setData(data);
-		this.bidirectional = bidirection;
-		this.color = CONNECTION_COLOR;
+		this.connectionStyle = IZestGraphDefaults.CONNECTION_STYLE;
+		this.color = plugin.getColor(IZestColorConstants.EDGE_DEFAULT);
+		this.foreground = plugin.getColor(IZestColorConstants.EDGE_DEFAULT);
+		this.highlightColor = plugin.getColor(IZestColorConstants.EDGE_HIGHLIGHT);
+		this.weightColors = new ArrayList();
+		weightColors.add(plugin.getColor(IZestColorConstants.EDGE_WEIGHT_0));
+		weightColors.add(plugin.getColor(IZestColorConstants.EDGE_WEIGHT_01));
+		weightColors.add(plugin.getColor(IZestColorConstants.EDGE_WEIGHT_02));
+		weightColors.add(plugin.getColor(IZestColorConstants.EDGE_WEIGHT_03));
 		this.lineWidth = 1;
 		this.lineStyle = Graphics.LINE_SOLID;
 		setWeightInLayout(weight);
@@ -174,9 +183,28 @@ public class GraphModelConnection extends GraphItem implements LayoutRelationshi
 	 * @see org.eclipse.mylar.zest.layouts.LayoutRelationship#isBidirectionalInLayout()
 	 */
 	public boolean isBidirectionalInLayout() {
-		return bidirectional;
+		return !ZestStyles.checkStyle(connectionStyle, ZestStyles.CONNECTIONS_DIRECTED);
 	}
 
+	/**
+	 * Returns the style of this connection. Valid styles are those that begin with
+	 * CONNECTION in ZestStyles.
+	 * @return the style of this connection.
+	 * @see #ZestStyles
+	 */
+	public int getConnectionStyle() {
+		return connectionStyle;
+	}
+	/**
+	 * Returns the style of this connection. Valid styles are those that begin with
+	 * CONNECTION in ZestStyles.
+	 * @return the style of this connection.
+	 * @see #ZestStyles
+	 */
+	public void setConnectionStyle(int style) {
+		this.connectionStyle = style;
+	}
+	
 	/**
 	 * Gets the weight of this connection. The weight must be in {-1, [0-1]}.
 	 * A weight of -1 means that there is no force/tension between the nodes.
@@ -213,7 +241,8 @@ public class GraphModelConnection extends GraphItem implements LayoutRelationshi
 			this.weight = weight;
 		}
 		setLineWidth(getLineWidthFromWeight());
-		setLineColor(getColorFromWeight());
+		foreground = getColorFromWeight();
+		changeLineColor(foreground);
 	}
 
 	/* (non-Javadoc)
@@ -239,10 +268,36 @@ public class GraphModelConnection extends GraphItem implements LayoutRelationshi
 	}
 
 	/**
+	 * Sets the highlight color.
+	 * @param color the color to use for highlighting.
+	 */
+	public void setHighlightColor(Color color) {
+		this.highlightColor = color;
+	}
+	
+	/**
+	 * @return the highlight color
+	 */
+	public Color getHighlightColor() {
+		return highlightColor;
+	}
+	/**
+	 * Perminently sets the color of this line to the given color. This will become the
+	 * color of the line when it is not highlighted. If you would like to temporarily change
+	 * the color of the line, use changeLineColor.
+	 * @param color the color to be set.
+	 * @see changeLineColor(Color color)
+	 */
+	public void setLineColor(Color color) {
+		this.foreground = color;
+		changeLineColor(foreground);
+	}
+	
+	/**
 	 * Sets the connection color.
 	 * @param color
 	 */
-	public void setLineColor(Color color) {
+	public void changeLineColor(Color color) {
 		Color old = this.color;
 		if (this.color != color) {
 			this.color = color;
@@ -251,14 +306,24 @@ public class GraphModelConnection extends GraphItem implements LayoutRelationshi
 	}
 	
 	/**
+	 * Allows the user to set a list of colors that will be used for a visual
+	 * determination of the weight of this edge.
+	 *
+	 */
+	public void setWeightColors(Color[] colors) {
+		this.weightColors.clear();
+		this.weightColors.addAll(Arrays.asList(colors));
+	}
+	
+	/**
 	 * Gets the line color depending on the weight.
 	 * @return the line color
 	 */
 	protected Color getColorFromWeight() {
-		Color c = CONNECTION_COLORS[0];
+		Color c = (Color) weightColors.get(0);
 		int index = (int)(weight * 3);
-		if ((index >= 0) && (index < CONNECTION_COLORS.length)) {
-			c = CONNECTION_COLORS[index];
+		if ((index >= 0) && (index < weightColors.size())) {
+			c = (Color) weightColors.get(index);
 		}
 		return c;
 	}
@@ -352,8 +417,8 @@ public class GraphModelConnection extends GraphItem implements LayoutRelationshi
 	 * Highlights this node.  Uses the default highlight color.
 	 */
 	public void highlight() {
-		if (this.color != CONNECTION_HIGHLIGHT) {
-			setLineColor(CONNECTION_HIGHLIGHT);
+		if (this.color != highlightColor) {
+			changeLineColor(highlightColor);
 		}
 	}
 	
@@ -361,8 +426,8 @@ public class GraphModelConnection extends GraphItem implements LayoutRelationshi
 	 * Unhighlights this node.  Uses the default color.
 	 */
 	public void unhighlight() {
-		if (this.color != CONNECTION_COLOR) {
-			setLineColor(getColorFromWeight());
+		if (this.color != foreground) {
+			changeLineColor(foreground);
 		}
 	}
 	

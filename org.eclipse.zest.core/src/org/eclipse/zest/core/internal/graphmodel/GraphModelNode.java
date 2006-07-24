@@ -14,14 +14,15 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.FigureUtilities;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPart;
 import org.eclipse.jface.resource.JFaceResources;
-import org.eclipse.mylar.zest.core.ZestColors;
+import org.eclipse.mylar.zest.core.IZestColorConstants;
+import org.eclipse.mylar.zest.core.ZestPlugin;
+import org.eclipse.mylar.zest.core.ZestStyles;
 import org.eclipse.mylar.zest.layouts.LayoutEntity;
 import org.eclipse.mylar.zest.layouts.constraints.LayoutConstraint;
 import org.eclipse.swt.graphics.Color;
@@ -43,23 +44,25 @@ public class GraphModelNode extends GraphItem implements LayoutEntity {
 	public static final String FORCE_REDRAW = "GraphModelNode.Redraw";
 	public static final String COLOR_BG_PROP = "GraphModelNode.BGColor";
 	public static final String COLOR_FG_PROP = "GraphModelNode.FGColor";
-	public static final String HIGHLIGHT_PROP = "GraphModeNode.Highlight";
+	public static final String COLOR_BD_PROP = "GraphModelNode.BDColor";
+	public static final String HIGHLIGHT_PROP = "GraphModelNode.Highlight";
 	public static final String UNHIGHLIGHT_PROP = "GraphModeNode.Unhighlight";
 	public static final String SOURCE_CONNECTIONS_PROP = "GraphModelNode.SourceConn";
 	public static final String TARGET_CONNECTIONS_PROP = "GraphModelNode.TargetConn";
 	public static final String BRING_TO_FRONT = "GraphModelNode.BrintToFront";
 
+
+	private int nodeStyle;
+	
 	private List sourceConnections;
 	private List targetConnections;
 	
 	private boolean preferredLocation;
-
 	private Color foreColor;
 	private Color backColor;
 	private Color highlightColor;
 	private Color highlightAdjacentColor;
 	private Color unhighlightColor;
-	private boolean highlightAdjacentNodes;
 	private Color borderColor;
 	private Color borderHighlightColor;
 	private Color borderUnhighlightColor;
@@ -107,18 +110,19 @@ public class GraphModelNode extends GraphItem implements LayoutEntity {
 	
 	protected void initModel(GraphModel graphModel, Object externalNode) {		
 		this.setData(externalNode);
+		ZestPlugin plugin = ZestPlugin.getDefault();
 		this.sourceConnections = new ArrayList();
 		this.targetConnections = new ArrayList();
 		this.preferredLocation = false;		
-		this.foreColor = ColorConstants.black;
-		this.backColor = ZestColors.LIGHT_BLUE;
-		this.highlightColor = ColorConstants.yellow;
+		this.foreColor = plugin.getColor(IZestColorConstants.BLACK);
+		this.backColor = plugin.getColor(IZestColorConstants.LIGHT_BLUE);
+		this.highlightColor = plugin.getColor(IZestColorConstants.YELLOW);
 		this.unhighlightColor = this.backColor;
-		this.highlightAdjacentColor = ColorConstants.orange;
-		this.highlightAdjacentNodes = true;
-		this.borderColor = ColorConstants.black;
-		this.borderHighlightColor = ColorConstants.blue;
-		this.borderUnhighlightColor = ColorConstants.black;
+		this.highlightAdjacentColor = plugin.getColor(IZestColorConstants.ORANGE);
+		this.nodeStyle = IZestGraphDefaults.NODE_STYLE;
+		this.borderColor = plugin.getColor(IZestColorConstants.BLACK);
+		this.borderHighlightColor = plugin.getColor(IZestColorConstants.BLUE);
+		this.borderUnhighlightColor = plugin.getColor(IZestColorConstants.BLACK);
 		this.borderWidth = 1;
 		this.currentLocation = new Point(10, 10);
 		this.size = new Dimension(20, 20);
@@ -335,6 +339,27 @@ public class GraphModelNode extends GraphItem implements LayoutEntity {
 		changeBackgroundColor(c);
 	}
 	
+	
+	/**
+	 * Sets the border color.
+	 * @param c the border color.
+	 */
+	public void setBorderColor(Color c) {
+		Color old = borderColor;
+		borderColor = c;
+		borderUnhighlightColor = c;
+		firePropertyChange(COLOR_BD_PROP, old, c);
+	}
+	
+	/**
+	 * Sets the highlighted border color.
+	 * @param c the highlighted border color.
+	 */
+	public void setBorderHighlightColor(Color c) {
+		this.borderHighlightColor =c;
+	}
+	
+		 
 	/**
 	 * Changes the background color and fires a property change event.
 	 * @param c
@@ -412,7 +437,7 @@ public class GraphModelNode extends GraphItem implements LayoutEntity {
 	 * @see #setHighlightAdjacentNodes(boolean)
 	 */
 	public void highlightAdjacent() {
-		if (highlightAdjacentNodes && (backColor != highlightAdjacentColor) && (backColor != highlightColor)) {
+		if (isHighlightAdjacentNodes() && (backColor != highlightAdjacentColor) && (backColor != highlightColor)) {
 			borderColor = borderHighlightColor;
 			changeBackgroundColor(highlightAdjacentColor);
 		}
@@ -424,7 +449,7 @@ public class GraphModelNode extends GraphItem implements LayoutEntity {
 	 * @return GraphModelNode
 	 */
 	public boolean isHighlightAdjacentNodes() {
-		return highlightAdjacentNodes;
+		return ZestStyles.checkStyle(ZestStyles.NODES_HIGHLIGHT_ADJACENT, nodeStyle);
 	}
 
 	/**
@@ -433,7 +458,12 @@ public class GraphModelNode extends GraphItem implements LayoutEntity {
 	 * @param highlightAdjacentNodes The highlightAdjacentNodes to set.
 	 */
 	public void setHighlightAdjacentNodes(boolean highlightAdjacentNodes) {
-		this.highlightAdjacentNodes = highlightAdjacentNodes;
+		if (!highlightAdjacentNodes) {
+			this.nodeStyle |= ZestStyles.NODES_HIGHLIGHT_ADJACENT;
+			this.nodeStyle ^= ZestStyles.NODES_HIGHLIGHT_ADJACENT;
+			return;
+		}
+		this.nodeStyle |= ZestStyles.NODES_HIGHLIGHT_ADJACENT;
 	}
 	
 	public Color getBorderColor() {
@@ -442,6 +472,10 @@ public class GraphModelNode extends GraphItem implements LayoutEntity {
 	
 	public int getBorderWidth() {
 		return borderWidth;
+	}
+	
+	public void setBorderWidth(int width) {
+		this.borderWidth = width;
 	}
 
 	public Object getLayoutInformation() {
