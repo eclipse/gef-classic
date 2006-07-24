@@ -102,9 +102,10 @@ public class SampleNestedView extends ViewPart {
 	 * to create the viewer and initialize it.
 	 */
 	public void createPartControl(Composite parent) {
-		nestedViewer = new NestedGraphViewer(parent, 
-				ZestStyles.HIGHLIGHT_ADJACENT_NODES | /* ZestStyles.NO_OVERLAPPING_NODES | */ 
-				ZestStyles.DIRECTED_GRAPH | ZestStyles.ZOOM_FAKE | ZestStyles.ENFORCE_BOUNDS);
+		nestedViewer = new NestedGraphViewer(parent, ZestStyles.ZOOM_FAKE | ZestStyles.ENFORCE_BOUNDS);
+		
+		nestedViewer.setNodeStyle(ZestStyles.NODES_HIGHLIGHT_ADJACENT);
+		nestedViewer.setConnectionStyle(ZestStyles.CONNECTIONS_DIRECTED);
 		
 		//NestedGraphEntityContentProvider contentProvider = new NestedGraphEntityContentProvider();
 		JavaHierarchyContentProvider contentProvider = new JavaHierarchyContentProvider();

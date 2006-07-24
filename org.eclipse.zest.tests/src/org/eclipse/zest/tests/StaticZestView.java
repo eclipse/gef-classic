@@ -71,10 +71,10 @@ public class StaticZestView extends ViewPart {
 	 * to create the viewer and initialize it.
 	 */
 	public void createPartControl(Composite parent) {
-		viewer = new StaticGraphViewer(parent, ZestStyles.DIRECTED_GRAPH | 
-				ZestStyles.HIGHLIGHT_ADJACENT_NODES | ZestStyles.PANNING | 
-				ZestStyles.NO_OVERLAPPING_NODES | ZestStyles.STABILIZE | ZestStyles.ENFORCE_BOUNDS);
-		
+		viewer = new StaticGraphViewer(parent,  ZestStyles.PANNING | 
+				ZestStyles.NO_OVERLAPPING_NODES | ZestStyles.ENFORCE_BOUNDS);
+		viewer.setNodeStyle(ZestStyles.NODES_HIGHLIGHT_ADJACENT);
+		viewer.setConnectionStyle(ZestStyles.CONNECTIONS_DIRECTED);
 		viewer.setContentProvider(new GraphContentProvider() );
 		viewer.setLabelProvider(new DecoratingLabelProvider(new GraphLabelProvider(), 
 					PlatformUI.getWorkbench().getDecoratorManager().getLabelDecorator()));

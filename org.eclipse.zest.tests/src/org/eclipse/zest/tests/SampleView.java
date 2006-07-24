@@ -80,9 +80,11 @@ public class SampleView extends ViewPart {
 	 * to create the viewer and initialize it.
 	 */
 	public void createPartControl(Composite parent) {
-		viewer = new SpringGraphViewer(parent, ZestStyles.DIRECTED_GRAPH | 
-				ZestStyles.HIGHLIGHT_ADJACENT_NODES | ZestStyles.PANNING | 
-				ZestStyles.NO_OVERLAPPING_NODES | ZestStyles.STABILIZE | ZestStyles.ENFORCE_BOUNDS);
+		viewer = new SpringGraphViewer(parent,  ZestStyles.PANNING | 
+				ZestStyles.NO_OVERLAPPING_NODES | ZestStyles.ENFORCE_BOUNDS);
+		
+		viewer.setNodeStyle(ZestStyles.NODES_HIGHLIGHT_ADJACENT);
+		viewer.setConnectionStyle(ZestStyles.CONNECTIONS_DIRECTED);
 		
 		viewer.setContentProvider(new GraphContentProvider() );
 		viewer.setLabelProvider(new DecoratingLabelProvider(new GraphLabelProvider(), 
@@ -174,9 +176,10 @@ public class SampleView extends ViewPart {
 		// Create an action that adds directed graph edges to the graph
 		directedGraphToggle = new Action( ) {
 			public void run() {
-				int currentStyle = viewer.getStyle();
-				int newStyle = currentStyle ^ ZestStyles.DIRECTED_GRAPH;
-				viewer.setStyle( newStyle );
+				int currentStyle = viewer.getNodeStyle();
+				int newStyle = currentStyle ^ ZestStyles.NODES_HIGHLIGHT_ADJACENT;
+				
+				viewer.setNodeStyle( newStyle );
 			}
 		
 		};
