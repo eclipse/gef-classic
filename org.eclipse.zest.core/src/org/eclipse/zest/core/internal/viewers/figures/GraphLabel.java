@@ -13,11 +13,11 @@ package org.eclipse.mylar.zest.core.internal.viewers.figures;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.FigureUtilities;
 import org.eclipse.draw2d.Graphics;
-import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.StackLayout;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.mylar.zest.core.internal.gefx.CachedLabel;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
@@ -29,7 +29,7 @@ import org.eclipse.swt.widgets.Display;
  * 
  * @author Chris Callendar
  */
-public class GraphLabel extends Label {
+public class GraphLabel extends CachedLabel {
 		
 	private Color borderColor;
 	private int borderWidth;
@@ -109,7 +109,8 @@ public class GraphLabel extends Label {
 	/* (non-Javadoc)
 	 * @see org.eclipse.draw2d.Label#paintFigure(org.eclipse.draw2d.Graphics)
 	 */
-	protected void paintFigure(Graphics graphics) {
+	               
+	protected void paintCachedLabel(Graphics graphics) {
 		
 		graphics.setForegroundColor(getForegroundColor());
 		graphics.setBackgroundColor(getBackgroundColor());
@@ -118,11 +119,7 @@ public class GraphLabel extends Label {
 		Rectangle bounds = getBounds().getCopy();
 		graphics.fillRoundRectangle(bounds, arcWidth, arcWidth);
 		
-		// draw the text
-		this.painting = true;
-		super.paintFigure(graphics);
-		this.painting = false;
-
+		
 		// paint the border
 		graphics.setForegroundColor(getBorderColor());
 		graphics.setLineWidth(getBorderWidth());

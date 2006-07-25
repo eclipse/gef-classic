@@ -10,12 +10,14 @@
  *******************************************************************************/
 package org.eclipse.mylar.zest.core;
 
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.RGB;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.plugin.*;
 import org.eclipse.jface.resource.ColorRegistry;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ImageRegistry;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -29,6 +31,8 @@ public class ZestPlugin extends AbstractUIPlugin {
 	
 	//colors used by Zest.
 	private ColorRegistry colors;
+	private ImageRegistry images;
+	
 	/**
 	 * The constructor.
 	 */
@@ -67,6 +71,29 @@ public class ZestPlugin extends AbstractUIPlugin {
 	 */
 	public static ImageDescriptor getImageDescriptor(String path) {
 		return AbstractUIPlugin.imageDescriptorFromPlugin("org.eclipse.mylar.zest.core", path);
+	}
+	
+	
+	public void addImage( String key, Image image )  {
+		createRegistry();
+		images.put(key, image);
+	}
+	
+	public void removeImage( String key ) {
+		createRegistry();
+		images.remove(key);
+	}
+	
+	public Image getImage( String key ) {
+		createRegistry();
+		return images.get(key);
+	}
+	
+	private void createRegistry() {
+		if ( images == null ) {
+			Display display = getWorkbench().getDisplay();
+			images = new ImageRegistry(display);
+		}
 	}
 	
 	/**

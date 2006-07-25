@@ -277,7 +277,9 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 		try {
 			Animation.markBegin();
 			layoutAlgorithm.applyLayout(model.getNodesArray(), model.getConnectionsArray(), 0, 0, d.width, d.height, false, false);
-			Animation.run();
+			Animation.run(2000);
+			getLightweightSystem().getUpdateManager().performUpdate();
+			
 		} catch (InvalidLayoutConfiguration e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

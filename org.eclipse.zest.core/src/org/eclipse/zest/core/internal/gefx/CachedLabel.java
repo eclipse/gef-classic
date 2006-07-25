@@ -1,0 +1,185 @@
+/*******************************************************************************
+ * Copyright 2005-2006, CHISEL Group, University of Victoria, Victoria, BC, Canada.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     The Chisel Group, University of Victoria
+ *******************************************************************************/
+package org.eclipse.mylar.zest.core.internal.gefx;
+
+import org.eclipse.draw2d.Animation;
+import org.eclipse.draw2d.Graphics;
+import org.eclipse.draw2d.Label;
+import org.eclipse.draw2d.SWTGraphics;
+import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.mylar.zest.core.ZestPlugin;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Display;
+
+/**
+ * A cached label to improve performance of text drawing under linux
+ * @author Ian Bull
+ *
+ */
+public abstract class CachedLabel extends Label {
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.draw2d.Label#paintFigure(org.eclipse.draw2d.Graphics)
+	 */
+	Image cachedImage = null;
+	boolean invalidationRequired = false;
+	
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.draw2d.Label#setIcon(org.eclipse.swt.graphics.Image)
+	 */
+	public void setIcon(Image image) {
+		updateInvalidation();
+		super.setIcon(image);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.draw2d.Figure#setForegroundColor(org.eclipse.swt.graphics.Color)
+	 */
+	public void setForegroundColor(Color fg) {
+		updateInvalidation();
+		super.setForegroundColor(fg);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.draw2d.Figure#setBackgroundColor(org.eclipse.swt.graphics.Color)
+	 */
+	public void setBackgroundColor(Color bg) {
+		updateInvalidation();
+		super.setBackgroundColor(bg);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.draw2d.Figure#setFont(org.eclipse.swt.graphics.Font)
+	 */
+	public void setFont(Font f) {
+		updateInvalidation();
+		super.setFont(f);
+	}
+	
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.draw2d.Label#setText(java.lang.String)
+	 */
+	public void setText(String s) {
+		updateInvalidation();
+		super.setText(s);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.draw2d.Figure#setSize(int, int)
+	 */
+	public void setSize(int w, int h) {
+		updateInvalidation();
+		
+		if ( cachedImage != null && shouldInvalidateCache() ) {
+			cleanImage();
+		}
+		super.setSize(w, h);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.draw2d.Figure#setBounds(org.eclipse.draw2d.geometry.Rectangle)
+	 */
+	public void setBounds(Rectangle rect) {
+		boolean resize = (rect.width != bounds.width) || (rect.height != bounds.height);
+	
+		if ( resize && Animation.isAnimating() ) {
+			updateInvalidation();
+		}
+		if ( resize && shouldInvalidateCache() && cachedImage != null) {
+			cleanImage();
+		}
+			
+		super.setBounds(rect);
+	}
+	
+	/**
+	 * Override this method to draw on the cahced image
+	 * @param graphics
+	 */
+	abstract protected void paintCachedLabel ( Graphics graphics );
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.draw2d.Label#paintFigure(org.eclipse.draw2d.Graphics)
+	 */
+	protected void paintFigure(Graphics graphics) {
+
+		int width = this.getBounds().width;
+		int height = this.getBounds().height;
+		
+		if (cachedImage == null || shouldInvalidateCache()) {
+			invalidationRequired = false;	
+			cleanImage();
+			cachedImage = new Image(Display.getCurrent(), width, height);
+			ZestPlugin.getDefault().addImage(cachedImage.toString(), cachedImage);
+			
+			GC gc = new GC(cachedImage);
+			
+			Point currentLocation = getLocation();
+			setLocation(new Point(0,0));
+			Graphics graphics2 = new SWTGraphics(gc);
+			// draw the text
+			this.paintCachedLabel(graphics2);
+			super.paintFigure(graphics2);
+			setLocation(currentLocation);
+			gc.dispose();
+			
+		}
+		Rectangle oldBounds = new Rectangle(0, 0, cachedImage.getBounds().width, cachedImage.getBounds().height);
+		graphics.drawImage(cachedImage, oldBounds, this.getBounds());
+	}
+	
+	/**
+	 * Determine if the image should be remade or not
+	 * @return
+	 */
+	private boolean shouldInvalidateCache() {
+		if ( invalidationRequired && !Animation.isAnimating())
+			return true;
+		else
+			return false;
+	}
+	
+	/**
+	 * Notifies the cache that the image will need updating.
+	 */
+	private void updateInvalidation() {
+		invalidationRequired = true;
+	}	
+	
+	
+	private void cleanImage() {
+		if ( cachedImage != null ) {
+			
+			ZestPlugin.getDefault().removeImage(cachedImage.toString());
+			cachedImage.dispose();
+			cachedImage = null;
+		}
+	}
+	
+	
+
+}
