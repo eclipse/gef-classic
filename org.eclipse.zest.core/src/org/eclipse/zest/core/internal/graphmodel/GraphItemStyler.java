@@ -16,6 +16,7 @@ import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.mylar.zest.core.ZestException;
 import org.eclipse.mylar.zest.core.ZestPlugin;
 import org.eclipse.mylar.zest.core.ZestStyles;
+import org.eclipse.mylar.zest.core.viewers.IConnectionStyleProvider;
 import org.eclipse.mylar.zest.core.viewers.IEntityConnectionStyleProvider;
 import org.eclipse.mylar.zest.core.viewers.IEntityStyleProvider;
 import org.eclipse.swt.events.DisposeEvent;
@@ -59,10 +60,30 @@ class GraphItemStyler {
 			GraphModelConnection conn = (GraphModelConnection) item;
 			if (labelProvider instanceof IEntityConnectionStyleProvider) {
 				styleEntityConnection(conn, (IEntityConnectionStyleProvider)labelProvider);
+			} else if (labelProvider instanceof IConnectionStyleProvider) {
+				styleConnection(conn, (IConnectionStyleProvider)labelProvider);
 			}
 		}
 	}
 	
+	/**
+	 * @param conn
+	 * @param provider
+	 */
+	private static void styleConnection(GraphModelConnection conn, IConnectionStyleProvider provider) {
+		Object rel = conn.getData();
+		Color c;
+		int style = provider.getConnectionStyle(rel);
+		if (!ZestStyles.validateConnectionStyle(style)) ZestPlugin.error(ZestException.ERROR_INVALID_STYLE);
+		if (style > ZestStyles.NONE) {
+			conn.setConnectionStyle(style);
+		}
+		if ((c = provider.getHighlightColor(rel)) != null) conn.setHighlightColor(c);
+		if ((c = provider.getColor(rel)) != null) conn.setLineColor(c);
+		int w = -1;
+		if ((w = provider.getLineWidth(rel)) >= 0) conn.setLineWidth(w);
+	}
+
 	/**
 	 * @param conn
 	 * @param provider
