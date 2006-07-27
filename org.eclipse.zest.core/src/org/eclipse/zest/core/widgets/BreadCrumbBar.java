@@ -89,6 +89,7 @@ public class BreadCrumbBar extends Composite implements SelectionListener {
 	 */
 	public void dispose() {
 		super.dispose();
+		listeners.clear();
 	}
 
 	
@@ -220,7 +221,15 @@ public class BreadCrumbBar extends Composite implements SelectionListener {
 	 * @param listener
 	 */
 	public void addBreadCrumbListener(IBreadCrumbListener listener) {
-		this.listeners.add(listener);
+		if (!this.listeners.contains(listener)) this.listeners.add(listener);
+	}
+	
+	/**
+	 * Removes the given listener from the list.
+	 * @param listener the listener to remove.
+	 */
+	public void removeBreadCrumbListener(IBreadCrumbListener listener) {
+		this.listeners.remove(listener);
 	}
 
 	/**
@@ -335,6 +344,13 @@ public class BreadCrumbBar extends Composite implements SelectionListener {
 	 */
 	public Group getGroup() {
 		return group;
+	}
+	/* (non-Javadoc)
+	 * @see org.eclipse.swt.widgets.Composite#layout()
+	 */
+	public void layout() {
+		super.layout();
+		group.layout();
 	}
 	
 	/**

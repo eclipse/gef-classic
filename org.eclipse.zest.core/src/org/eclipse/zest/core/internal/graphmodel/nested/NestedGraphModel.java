@@ -50,7 +50,7 @@ public class NestedGraphModel extends GraphModel {
 		super(canvas);
 		this.backStack = new LinkedList();
 		this.forwardStack = new LinkedList();
-		this.mainArea = new Rectangle();
+		this.mainArea = new Rectangle();	
 	}
 
 	/* (non-Javadoc)
@@ -71,6 +71,7 @@ public class NestedGraphModel extends GraphModel {
 	protected boolean removeNodeFromList(GraphModelNode node) {
 		return true;
 	}
+	
 	
 	/**
 	 * Returns the children nodes under the current node.
@@ -135,6 +136,7 @@ public class NestedGraphModel extends GraphModel {
 	 * @param node
 	 */
 	private void setCurrent(NestedGraphModelNode node) {
+		NestedGraphModelNode old = currentNode;
 		if (currentNode != null) {
 			previousNode = currentNode;
 			previousNode.setCurrent(false);
@@ -142,6 +144,7 @@ public class NestedGraphModel extends GraphModel {
 		currentNode = node;
 		currentNode.setCurrent(true);
 		currentNode.setChildrenVisible(true);
+		firePropertyChange(NODE_FOCUS_PROP, old, currentNode);
 	}
 
 	/**

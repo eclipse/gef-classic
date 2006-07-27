@@ -29,6 +29,8 @@ public class GraphModel extends GraphItem {
 	public static final String NODE_ADDED_PROP = "LayoutDiagram.NodeAdded";
 	/** Property ID to use when a child is removed from this diagram. */
 	public static final String NODE_REMOVED_PROP = "LayoutDiagram.NodeRemoved";
+	/** Property ID to use when the focus (current) node has changed in the model */
+	public static final String NODE_FOCUS_PROP = "LayoutDiagram.NodeFocus";
 	
 	private List nodes;
 	protected List connections;

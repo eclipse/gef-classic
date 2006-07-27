@@ -14,6 +14,7 @@ import java.util.Iterator;
 
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.StructuredViewer;
+import org.eclipse.mylar.zest.core.messages.ZestUIMessages;
 import org.eclipse.mylar.zest.core.viewers.INestedGraphEntityContentProvider;
 import org.eclipse.swt.widgets.Canvas;
 
@@ -58,7 +59,7 @@ public class NestedGraphModelEntityFactory implements INestedGraphModelFactory {
 		NestedGraphModelNode rootNode = new NestedGraphModelNode(model, null);
 		rootNode.setData(rootNode);
 		rootNode.setHighlightAdjacentNodes(true);
-		rootNode.setText("Top Level Node");
+		rootNode.setText(ZestUIMessages.VIEW_NESTED_TOP_NODE);
 		model.addNode(rootNode.getData(), rootNode);
 		
 		rootNode.setSizeInLayout(-1, -1);

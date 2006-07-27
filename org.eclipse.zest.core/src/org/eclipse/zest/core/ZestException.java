@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.mylar.zest.core;
 
-import org.eclipse.mylar.zest.core.internal.messages.ZestErrorMessages;
+import org.eclipse.mylar.zest.core.messages.ZestErrorMessages;
 
 /**
  * Exceptions for Zest-specific code.

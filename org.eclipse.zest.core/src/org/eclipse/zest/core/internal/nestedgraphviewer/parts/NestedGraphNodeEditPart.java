@@ -288,8 +288,6 @@ public class NestedGraphNodeEditPart extends GraphNodeEditPart implements Action
 			node.setChildrenVisible(vis);
 			
 			NestedGraphViewerImpl viewer = (NestedGraphViewerImpl) getViewer();
-			//viewer.hideConnections();
-			viewer.expandTreeItem(getCastedModel().getData(), vis);
 			if (vis) {
 				// do a grid layout on the children using the full area and then
 				// scale

@@ -8,7 +8,7 @@
  * Contributors:
  *     The Chisel Group, University of Victoria
  *******************************************************************************/
-package org.eclipse.mylar.zest.core.internal.messages;
+package org.eclipse.mylar.zest.core.messages;
 
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -22,18 +22,13 @@ import java.util.ResourceBundle;
  * @see org.eclipse.mylar.zest.ZestException
  *
  */
-public class ZestErrorMessages {
+public class ZestUIMessages {
 	private static final String BUNDLE_NAME =
-		"org.eclipse.mylar.zest.core.internal.messages.ZestError"; //$NON-NLS-1$
+		"org.eclipse.mylar.zest.core.messages.ZestUI"; //$NON-NLS-1$
 	private static final ResourceBundle BUNDLE =
 		ResourceBundle.getBundle(BUNDLE_NAME);
-	public static final String ERROR_INVALID_INPUT =
-		getString("error.invalid.input"); //$NON-NLS-1$
-	public static final String ERROR_CANNOT_SET_STYLE =
-		getString("error.cannot.set.style"); //$NON-NLS-1$
-	public static final String ERROR_INVALID_STYLE =
-		getString("error.invalid.style"); //$NON-NLS-1$
-		
+	public static final String VIEW_NESTED_TOP_NODE =
+		getString("view.nested.top.node"); //$NON-NLS-1$
 	
 	
 	public static String getString(String key) {

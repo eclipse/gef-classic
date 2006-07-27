@@ -24,6 +24,7 @@ Export-Package: org.eclipse.mylar.zest.core,
  org.eclipse.mylar.zest.core.internal.viewers.commands,
  org.eclipse.mylar.zest.core.internal.viewers.figures,
  org.eclipse.mylar.zest.core.internal.viewers.trackers,
+ org.eclipse.mylar.zest.core.messages,
  org.eclipse.mylar.zest.core.viewers,
  org.eclipse.mylar.zest.core.widgets
 Import-Package: com.ibm.icu.text

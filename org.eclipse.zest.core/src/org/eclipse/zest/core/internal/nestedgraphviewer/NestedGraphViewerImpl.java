@@ -18,7 +18,6 @@ import org.eclipse.draw2d.Animation;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.editparts.LayerManager;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.mylar.zest.core.ZestStyles;
 import org.eclipse.mylar.zest.core.internal.gefx.NonThreadedGraphicalViewer;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedGraphModel;
@@ -27,10 +26,6 @@ import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NodeChildrenCompar
 import org.eclipse.mylar.zest.core.internal.nestedgraphviewer.parts.NestedGraphEditPartFactory;
 import org.eclipse.mylar.zest.core.internal.nestedgraphviewer.parts.NestedGraphNodeEditPart;
 import org.eclipse.mylar.zest.core.internal.nestedgraphviewer.parts.NestedGraphRootEditPart;
-import org.eclipse.mylar.zest.core.viewers.TreeRootViewer;
-import org.eclipse.mylar.zest.core.widgets.BreadCrumbBar;
-import org.eclipse.mylar.zest.core.widgets.BreadCrumbItem;
-import org.eclipse.mylar.zest.core.widgets.IBreadCrumbListener;
 import org.eclipse.mylar.zest.layouts.InvalidLayoutConfiguration;
 import org.eclipse.mylar.zest.layouts.LayoutAlgorithm;
 import org.eclipse.mylar.zest.layouts.LayoutEntity;
@@ -48,13 +43,10 @@ import org.eclipse.swt.widgets.Widget;
  * 
  * @author Chris Callendar 
  */
-public class NestedGraphViewerImpl extends NonThreadedGraphicalViewer 
-	implements IBreadCrumbListener {
+public class NestedGraphViewerImpl extends NonThreadedGraphicalViewer  {
 	
 	private NestedGraphModel model = null;
 	private NestedGraphEditPartFactory editPartFactory = null;
-	private BreadCrumbBar breadCrumbBar;
-	private TreeRootViewer treeViewer;
 	private LayoutAlgorithm layoutAlgorithm;
 	
 	// styles
@@ -68,8 +60,6 @@ public class NestedGraphViewerImpl extends NonThreadedGraphicalViewer
 	 * @see ZestStyles
 	 * @param parent
 	 * @param style the styles for the viewer
-	 * @param breadCrumbBar
-	 * @param treeViewer
 	 * @see ZestStyles#NO_OVERLAPPING_NODES
 	 * @see ZestStyles#NODES_HIGHLIGHT_ADJACENT
 	 * @see ZestStyles#ENFORCE_BOUNDS
@@ -78,12 +68,9 @@ public class NestedGraphViewerImpl extends NonThreadedGraphicalViewer
 	 * @see ZestStyles#ZOOM_REAL
 	 * @see ZestStyles#DIRECTED_GRAPH
 	 */
-	public NestedGraphViewerImpl(Composite parent, int style, BreadCrumbBar breadCrumbBar, TreeRootViewer treeViewer) {
+	public NestedGraphViewerImpl(Composite parent, int style) {
 		super(parent);
-		this.breadCrumbBar = breadCrumbBar;
-		this.treeViewer = treeViewer;
 		setStyle(style);
-		breadCrumbBar.addBreadCrumbListener(this);
 		this.getFigureCanvas().addControlListener(new ControlListener() {
 
 			public void controlMoved(ControlEvent e) {
@@ -209,9 +196,6 @@ public class NestedGraphViewerImpl extends NonThreadedGraphicalViewer
 		// layout the children in a grid layout
 		// only happens the first time a node is the current node
 		doLayout(nodeToMoveTo,500, 500);
-		
-		updateBreadCrumb(nodeToMoveTo);
-		updateTreeViewer(nodeToSelect);		// also selects the given node
 	}
 
 
@@ -313,62 +297,28 @@ public class NestedGraphViewerImpl extends NonThreadedGraphicalViewer
 
 	
 	
-	/**
-	 * Updates the breadcrumb for the given node.  Also enables or disables
-	 * the back, forward, and up buttons.
-	 * @param currentNode	The current node.
-	 */
-	private void updateBreadCrumb(NestedGraphModelNode currentNode) {
-		breadCrumbBar.clearItems();
-		while (currentNode != null) {
-			new BreadCrumbItem(breadCrumbBar, 0, currentNode.getText(), currentNode.getData());
-			currentNode = currentNode.getCastedParent();
-		}
-		//new BreadCrumbItem(breadCrumbBar, 0, "Root", null);
-
-		breadCrumbBar.setBackEnabled(model.hasBackNode());
-		breadCrumbBar.setForwardEnabled(model.hasForwardNode());
-		breadCrumbBar.setUpEnabled(model.hasParentNode());		
-	}
 	
-	private void updateTreeViewer(NestedGraphModelNode currentNode) {
-		boolean clearSelection = true;
-		if (currentNode != null) {
-			Object data = currentNode.getData();
-			if (data != null) {
-				clearSelection = false;
-				treeViewer.setSelection(new StructuredSelection(data), true);
-				expandTreeItem(data, true);
-			}
-		}
-		if (clearSelection) {
-			treeViewer.setSelection(new StructuredSelection(), true);
-		}
-	}
 	
-	// IBreadCrumbListener methods
-	public void breadCrumbSelected(BreadCrumbItem selectedItem) {
-		Object data = selectedItem.getData();
-		NestedGraphModelNode node = (NestedGraphModelNode)model.getInternalNode(data);
-		// check if different from the current model root node
+	
+	public void setCurrentNode(NestedGraphModelNode modelNode) {
 		NestedGraphModelNode lastNode = model.getCurrentNode(); 
-		if ((node != null) && !node.equals(lastNode)) {
-			model.setCurrentNode(node);
+		if ((modelNode != null) && !modelNode.equals(lastNode)) {
+			model.setCurrentNode(modelNode);
 			fireModelUpdate();	
 		}
 	}
 	
-	public void handleBackButtonSelected() {
+	public void goBack() {
 		model.goBack();
 		fireModelUpdate();
 	}
 	
-	public void handleForwardButtonSelected() {
+	public void goForward() {
 		model.goForward();
 		fireModelUpdate();
 	}
 	
-	public void handleUpButtonSelected() {
+	public void goUp() {
 		model.goUp();
 		fireModelUpdate();
 	}
@@ -418,14 +368,6 @@ public class NestedGraphViewerImpl extends NonThreadedGraphicalViewer
 			
 		}
     }
-
-	/**
-	 * @param data
-	 * @param expand
-	 */
-	public void expandTreeItem(Object data, boolean expand) {
-		treeViewer.setExpandedState(data, expand);
-	}
 
 	/**
 	 * Sets the layout algorithm to use and re-runs the layout.
