@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.mylar.zest.core.ZestStyles;
 import org.eclipse.swt.widgets.Canvas;
 
 
@@ -52,6 +53,8 @@ public class GraphModel extends GraphItem {
 	public GraphModel(Canvas canvas) {
 		super(canvas);
 		this.nodes = new ArrayList();
+		this.connectionStyle = ZestStyles.NONE;
+		this.nodeStyle = ZestStyles.NONE;
 		this.connections  = new ArrayList();
 		this.external2InternalNodeMap = new HashMap();
 		this.external2InternalConnectionMap = new HashMap();

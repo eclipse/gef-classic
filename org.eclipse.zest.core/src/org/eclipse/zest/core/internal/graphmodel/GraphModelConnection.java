@@ -56,6 +56,8 @@ public class GraphModelConnection extends GraphItem implements LayoutRelationshi
 	
 	private Object internalConnection;
 	private int connectionStyle;
+
+	private int curveDepth;
 	
 	/**
 	 * LayoutConnection constructor, initializes the nodes and the connection properties.
@@ -138,8 +140,8 @@ public class GraphModelConnection extends GraphItem implements LayoutRelationshi
 	 */  
 	public void reconnect() {
 		if (!isConnected) {
-			sourceNode.addConnection(this);
-			destinationNode.addConnection(this);
+			sourceNode.addConnection(this, true);
+			destinationNode.addConnection(this, false);
 			isConnected = true;
 		}
 	}
@@ -150,15 +152,16 @@ public class GraphModelConnection extends GraphItem implements LayoutRelationshi
 	 * the new source and destination. 
 	 * @param newSource 		a new source endpoint for this connection (non null)
 	 * @param newDestination	a new destination endpoint for this connection (non null)
-	 * @throws IllegalArgumentException if any of the paramers are null or newSource == newDestination
+	 * @throws IllegalArgumentException if any of the paramers are null
 	 */
 	public void reconnect(GraphModelNode newSource, GraphModelNode newDestination) {
 		if (newSource == null || newDestination == null ) {
 			throw new IllegalArgumentException("Invalid source and/or destination nodes");
 		}
-		else if ( newSource == newDestination ) {
+		//@tag bug(152180-SelfLoops) : commented out to allow a fix.
+		/*else if ( newSource == newDestination ) {
 			throw new IllegalArgumentException("Invalid: source == destination");
-		}
+		}*/
 		disconnect();
 		this.sourceNode = newSource;
 		this.destinationNode = newDestination;
@@ -446,6 +449,19 @@ public class GraphModelConnection extends GraphItem implements LayoutRelationshi
 
 	public void clearBendPoints() {
 		
+	}
+
+	/**
+	 * Returns the curve depth for this connection. The return value is only meaningful
+	 * if the connection style has the ZestStyles.CONNECTIONS_CURVED style set.
+	 * @return the curve depth.
+	 */
+	public int getCurveDepth() {
+		return curveDepth;
+	}
+	
+	public void setCurveDepth(int curveDepth) {
+		this.curveDepth = curveDepth;
 	}
 	
 }

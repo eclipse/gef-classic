@@ -49,8 +49,11 @@ public class GraphModelEntityFactory implements IGraphModelFactory {
 	}
 	
 	
-	public GraphModel createModelFromContentProvider( Object inputElement ) {
+	public GraphModel createModelFromContentProvider( Object inputElement, int nodeStyle, int connectionStyle ) {
 		GraphModel model = createModel();
+		model.setNodeStyle(nodeStyle);
+		model.setConnectionStyle(connectionStyle);
+		
 		Object entities[] = getContentProvider().getElements( inputElement );
 		if ( entities == null ) return model;
 		for ( int i = 0; i < entities.length; i++ ) {

@@ -24,6 +24,7 @@ import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelFactory;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelNode;
 import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelFactory;
 import org.eclipse.mylar.zest.core.internal.graphviewer.SpringGraphViewerImpl;
+import org.eclipse.mylar.zest.layouts.LayoutAlgorithm;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Widget;
@@ -102,7 +103,7 @@ public class SpringGraphViewer extends AbstractStructuredGraphViewer {
 		else if ( getContentProvider() instanceof IGraphEntityContentProvider ) {
 			modelFactory = new GraphModelEntityFactory( this, highlightAdjacentNodes );
 		}
-		model = modelFactory.createModelFromContentProvider( input );
+		model = modelFactory.createModelFromContentProvider( input, getNodeStyle(), getConnectionStyle() );
 
 		// set the model contents (initializes the layout algorithm)
 		model.setNodeStyle(getNodeStyle());
@@ -301,6 +302,13 @@ public class SpringGraphViewer extends AbstractStructuredGraphViewer {
 				viewer.centerNodeInCanvas(nodeToCenter);
 			}
 		}
+	}
+
+	/** 
+	 * SpringGraphViewer is designed for spring graph layouts only. This method is ignored.
+	 */
+	public void setLayoutAlgorithm(LayoutAlgorithm algorithm, boolean run) {
+				
 	}
 
 }

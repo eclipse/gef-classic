@@ -43,6 +43,12 @@ class GraphItemStyler {
 	
 		if (item instanceof GraphModelNode) {
 			GraphModelNode node = (GraphModelNode)item;
+			//set defaults.
+			if (node.getGraphModel().getNodeStyle() != ZestStyles.NONE) {
+				node.setNodeStyle(node.getGraphModel().getNodeStyle());
+			} else {
+				node.setNodeStyle(IZestGraphDefaults.NODE_STYLE);
+			}
 			Object entity= node.getData();
 			if (labelProvider instanceof IEntityStyleProvider) {
 				styleNode(node, (IEntityStyleProvider)labelProvider);
@@ -58,6 +64,12 @@ class GraphItemStyler {
 			}	
 		} else if (item instanceof GraphModelConnection) {
 			GraphModelConnection conn = (GraphModelConnection) item;
+			//set defaults
+			if (conn.getGraphModel().getConnectionStyle() != ZestStyles.NONE) {
+				conn.setConnectionStyle(conn.getGraphModel().getConnectionStyle());
+			} else {
+				conn.setConnectionStyle(IZestGraphDefaults.CONNECTION_STYLE);
+			}
 			if (labelProvider instanceof IEntityConnectionStyleProvider) {
 				styleEntityConnection(conn, (IEntityConnectionStyleProvider)labelProvider);
 			} else if (labelProvider instanceof IConnectionStyleProvider) {

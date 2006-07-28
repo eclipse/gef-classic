@@ -20,30 +20,35 @@ import org.eclipse.jface.viewers.IStructuredContentProvider;
 public interface IGraphContentProvider extends IStructuredContentProvider {
 
 	
-	/**
-	 * Returns all the connections to be displayed
-	 * @return
-	 */
-	public Object[] getRelationships();
 	
 	/**
-	 * Gets the source object
-	 * @param rel
-	 * @return
+	 * Gets the source Object for the given relationship. Note, at least one of the source
+	 * or destination must not be null. If both are null, then nothing can be displayed in
+	 * the graph (a relationship cannot exist without nodes to be connected to). However,
+	 * if one of getSource() or getDestination() returns null, then the resulting graph will
+	 * contain an unconnected node for the non-null object returned from the other method.
+	 * @param rel the relationship.
+	 * @return the source, or null for an unconnected destination.
 	 */
 	public Object getSource( Object rel );
 	
 	/**
-	 * Gets the target Object
-	 * @param rel
-	 * @return
+	 * Gets the target Object for the given relationship. Note, at least one of the source
+	 * or destination must not be null. If both are null, then nothing can be displayed in
+	 * the graph (a relationship cannot exist without nodes to be connected to). However,
+	 * if one of getSource() or getDestination() returns null, then the resulting graph will
+	 * contain an unconnected node for the non-null object returned from the other method.
+	 * @param rel the relationship.
+	 * @return the destination, or null for an unconnected source.
 	 */
 	public Object getDestination( Object rel );
 	
 	/**
-	 * Gets the elements
+	 * Returns all the relationships in the graph for the given input.
+	 * @input the input model object.
+	 * @return all the relationships in the graph for the given input.
 	 */
-	public Object[] getElements( Object o );
+	public Object[] getElements(Object input);
 
 	/**
 	 * Gets the weight of an edge given the connection object.  The weight will be either -1 or 

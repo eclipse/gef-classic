@@ -341,9 +341,11 @@ public class NestedGraphViewer extends AbstractStructuredGraphViewer implements 
 	}
 
 	/**
+	 * This implementation ignores the run boolean.
 	 * @param algorithm
+	 * @param run ignored by this implementation.
 	 */
-	public void setLayoutAlgorithm(LayoutAlgorithm algorithm) {
+	public void setLayoutAlgorithm(LayoutAlgorithm algorithm, boolean run) {
 		viewer.setLayoutAlgorithm(algorithm);
 	}
 

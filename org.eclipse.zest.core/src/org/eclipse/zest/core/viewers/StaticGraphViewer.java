@@ -147,7 +147,7 @@ public class StaticGraphViewer extends AbstractStructuredGraphViewer {
 			}
 		}
 
-		GraphModel newModel = modelFactory.createModelFromContentProvider(input);
+		GraphModel newModel = modelFactory.createModelFromContentProvider(input, getNodeStyle(), getConnectionStyle());
 		// get current list of nodes before they are re-created from the
 		// factory & content provider
 		Map oldNodesMap = (model != null ? model.getNodesMap() : Collections.EMPTY_MAP);

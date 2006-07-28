@@ -22,7 +22,7 @@ public interface IGraphModelFactory {
 	public abstract GraphModel createModel();
 
 	public abstract GraphModel createModelFromContentProvider(
-			Object inputElement);
+			Object inputElement, int nodeStyle, int connectionStyle);
 
 	/**
 	 * Creates a new relationship using the content provider to get the source and destination.

@@ -245,7 +245,10 @@ public class ArcConnection extends Arc implements Connection, AnchorListener {
 		
 		double arcStart = angle360(cartArcX1, cartArcY1);
 		double arcEnd = angle360(cartArcX2, cartArcY2);
-		double  arcLength = findAngleDegrees(arcStart, arcEnd);
+		if (arcEnd < arcStart) {
+			arcEnd = arcEnd + 360;
+		}
+		double  arcLength = arcEnd-arcStart;//findAngleDegrees(arcStart, arcEnd);
 		int padding = (chordLength > 100) ? 4 : 0;
 		if (depth < 0) padding = -padding; 
 		setOffset((int)(Math.round(arcStart - padding)));
@@ -277,7 +280,24 @@ public class ArcConnection extends Arc implements Connection, AnchorListener {
 		}
 		int b3x = Math.min(b2.x, b.x);
 		int b3y = Math.min(b.y, b2.y);
-		Rectangle b3 = new Rectangle(b3x-5, (b3y-5), b.width+b2.width+10, b.height+ b2.height+10);
+		arcEnd = arcEnd % 360;
+		int boundsTop = b3y;
+		int boundsLeft = b3x;
+		int boundsBottom = boundsTop + (b.height+b2.height);
+		int boundsRight = boundsLeft + (b.width+b2.width);
+		if (arcEnd >= 90 && (arcEnd-arcLength) <= 90) {
+			boundsTop = -(int)topy;
+		}
+		if (arcEnd >= 180 && (arcEnd - arcLength) <= 180) {
+			boundsLeft = (int)topx;
+		}
+		if ((arcEnd >= 270 && (arcEnd -arcLength) <= 270) || (arcEnd-arcLength+360 <= 270)) {
+			boundsBottom = (int)(width-topy);
+		}
+		if (arcEnd >=0 && (arcEnd-arcLength) <= 0){
+			boundsRight = (int)(topx + width);
+		}
+		Rectangle b3 = new Rectangle(boundsLeft-5, boundsTop-5, boundsRight-boundsLeft+10, boundsBottom-boundsTop+10);
 		setBounds(b3);
 		setArcBounds(new Rectangle((int)topx, -(int)topy, (int)width, (int)width));
 		
@@ -466,7 +486,7 @@ public class ArcConnection extends Arc implements Connection, AnchorListener {
 			graphics.drawLine(source, target);
 			return;
 		}
-		graphics.setClip(bounds);
+		graphics.setClip(new Rectangle(bounds.x-1, bounds.y-1, bounds.width+2, bounds.height+2));
 		super.outlineShape(graphics);
 	}
 	

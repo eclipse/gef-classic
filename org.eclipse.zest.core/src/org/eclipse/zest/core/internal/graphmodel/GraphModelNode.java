@@ -185,15 +185,20 @@ public class GraphModelNode extends GraphItem implements LayoutEntity {
 	/**
 	 * Adds the given connection to the list of connections.
 	 * @param connection
+	 * @param source true if the given connection should be added as a source.
 	 */
-	public void addConnection(GraphModelConnection connection) {
+	public void addConnection(GraphModelConnection connection, boolean source) {
 		if (connection != null) {
-			if (connection.getSource() == this) {
-				sourceConnections.add(connection);
-				firePropertyChange(SOURCE_CONNECTIONS_PROP, null, connection);
-			} else if (connection.getDestination() == this) {
-				targetConnections.add(connection);
-				firePropertyChange(TARGET_CONNECTIONS_PROP, null, connection);
+			if (source) {
+				if (connection.getSource() == this) {
+					sourceConnections.add(connection);
+					firePropertyChange(SOURCE_CONNECTIONS_PROP, null, connection);
+				}
+			} else {
+				if (connection.getDestination() == this) {
+					targetConnections.add(connection);
+					firePropertyChange(TARGET_CONNECTIONS_PROP, null, connection);
+				}
 			}
 		}
 	}
@@ -567,6 +572,20 @@ public class GraphModelNode extends GraphItem implements LayoutEntity {
 	public LayoutConstraint getLayoutConstraint(String constraintID) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	/**
+	 * @return the nodeStyle
+	 */
+	public int getNodeStyle() {
+		return nodeStyle;
+	}
+
+	/**
+	 * @param nodeStyle the nodeStyle to set
+	 */
+	public void setNodeStyle(int nodeStyle) {
+		this.nodeStyle = nodeStyle;
 	}
 
 	

@@ -15,6 +15,7 @@ import org.eclipse.mylar.zest.core.ZestException;
 import org.eclipse.mylar.zest.core.ZestPlugin;
 import org.eclipse.mylar.zest.core.ZestStyles;
 import org.eclipse.mylar.zest.core.internal.graphmodel.IZestGraphDefaults;
+import org.eclipse.mylar.zest.layouts.LayoutAlgorithm;
 
 /**
  * Abstraction of graph viewers to implement functionality used by all of them.
@@ -94,6 +95,23 @@ public abstract class AbstractStructuredGraphViewer extends StructuredViewer {
 	public int getConnectionStyle() {
 		return connectionStyle;
 	}
+	
+	/**
+	 * Sets the layout algorithm for this viewer. Subclasses may place restrictions on the
+	 * algorithms that it accepts.
+	 * @param algorithm the layout algorithm
+	 * @param run true if the layout algorithm should be run immediately. This is a hint.
+	 */
+	public abstract void setLayoutAlgorithm(LayoutAlgorithm algorithm, boolean run);
+	
+	/**
+	 * Equivalent to setLayoutAlgorithm(algorithm, false).
+	 * @param algorithm
+	 */
+	public void setLayoutAlgorithm(LayoutAlgorithm algorithm) {
+		setLayoutAlgorithm(algorithm, false);
+	}
+	
 	
 
 }

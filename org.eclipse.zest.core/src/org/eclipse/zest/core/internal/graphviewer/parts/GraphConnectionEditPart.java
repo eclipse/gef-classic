@@ -13,9 +13,11 @@ package org.eclipse.mylar.zest.core.internal.graphviewer.parts;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import org.eclipse.draw2d.BendpointLocator;
 import org.eclipse.draw2d.Connection;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
+import org.eclipse.draw2d.Locator;
 import org.eclipse.draw2d.MidpointLocator;
 import org.eclipse.draw2d.PolygonDecoration;
 import org.eclipse.draw2d.PolylineConnection;
@@ -73,28 +75,38 @@ public class GraphConnectionEditPart extends AbstractConnectionEditPart implemen
 	 */
 	protected IFigure createFigure() {
 		Connection connection;
-		int graphConnectionStyle= getCastedModel().getGraphModel().getConnectionStyle();
-		int connectionStyle = getCastedModel().getConnectionStyle();
-		if (ZestStyles.checkStyle(connectionStyle, ZestStyles.CONNECTIONS_CURVED)) {
+		GraphModelConnection model = getCastedModel();
+		int connectionStyle = model.getConnectionStyle();
+		
+		//styles should have been set by the GraphItemStyler by this point.
+		if (model.getSource() == model.getDestination()) {
+			//@tag bug(152180-SelfLoops) : create an arc connection, despite the styles that have been set.
+			//allow for a self-loop.
 			connection = new ArcConnection();
-			((ArcConnection)connection).setDepth(10);
-		} else if (ZestStyles.checkStyle(connectionStyle, ZestStyles.CONNECTIONS_STRAIGHT)) {
-			connection = (PolylineConnection) super.createFigure();
-		} else {
-			if (ZestStyles.checkStyle(graphConnectionStyle, ZestStyles.CONNECTIONS_CURVED)) {
-				connection = new ArcConnection();
+			if (model.getCurveDepth() <= 0) {
+				//it has to have a curve.
 				((ArcConnection)connection).setDepth(10);
 			} else {
-				connection = (PolylineConnection) super.createFigure();
+				((ArcConnection)connection).setDepth(model.getCurveDepth());
 			}
-		}
+		} else 	if (ZestStyles.checkStyle(connectionStyle, ZestStyles.CONNECTIONS_CURVED)) {
+			connection = new ArcConnection();
+			((ArcConnection)connection).setDepth(getCastedModel().getCurveDepth());
+		} else  {
+			connection = (PolylineConnection) super.createFigure();
+		} 
 		connection.setForegroundColor(getCastedModel().getLineColor());
 		if (connection instanceof Shape) {
 			((Shape)connection).setLineWidth(getCastedModel().getLineWidth());
 			((Shape)connection).setLineStyle(getCastedModel().getLineStyle());
 		}
 		
-	  	MidpointLocator m1 = new MidpointLocator(connection,0);
+	  	Locator m1 = new MidpointLocator(connection,0);
+	  	if (connection instanceof PolylineConnection) {
+	  		m1 = new MidpointLocator(connection, 0);
+	  	} else {
+	  		m1 = new BendpointLocator(connection, connection.getPoints().size()/2);
+	  	}
 	  	if ( getCastedModel().getText() != null ||
 	  		getCastedModel().getImage() != null ) {
 	  		Label l = new Label(getCastedModel().getText(), getCastedModel().getImage());
@@ -170,14 +182,9 @@ public class GraphConnectionEditPart extends AbstractConnectionEditPart implemen
 	 * @return
 	 */
 	private boolean isDirected() {
-		int graphConnectionStyle= getCastedModel().getGraphModel().getConnectionStyle();
 		int connectionStyle = getCastedModel().getConnectionStyle();
-		if (ZestStyles.checkStyle(connectionStyle, ZestStyles.CONNECTIONS_DIRECTED)) {
-			return true;
-		} else if (ZestStyles.checkStyle(graphConnectionStyle, ZestStyles.CONNECTIONS_DIRECTED)) {
-			return true;
-		}
-		return false;
+		return ZestStyles.checkStyle(connectionStyle, ZestStyles.CONNECTIONS_DIRECTED);
+		
 	}
 
 

@@ -42,6 +42,30 @@ public class GraphNodeEditPart extends AbstractGraphicalEditPart implements
 		PropertyChangeListener, NodeEditPart {
 
 	protected ConnectionAnchor anchor;
+//	@tag bug(152180-SelfLoops) : New anchor required so that the loops aren't hidden by the node.
+	protected ConnectionAnchor loopAnchor;
+	private class LoopAnchor extends ChopboxAnchor {
+		public LoopAnchor(IFigure owner) {
+			super(owner);
+		}
+		
+		/* (non-Javadoc)
+		 * @see org.eclipse.draw2d.ChopboxAnchor#getReferencePoint()
+		 */
+		public Point getReferencePoint() {
+			//modification to getReferencePoint. Returns
+			//a point on the outside of the owners box, rather than the
+			//center. Only usefull for self-loops.
+			if (getOwner() == null)
+				return null;
+			else {
+				Point ref = getOwner().getBounds().getCenter();
+				ref.y = getOwner().getBounds().y;
+				getOwner().translateToAbsolute(ref);
+				return ref;
+			}
+		}
+	}
 
 	/**
 	 * GraphNodeEditPart constructor.
@@ -146,7 +170,16 @@ public class GraphNodeEditPart extends AbstractGraphicalEditPart implements
 		super.performRequest(req);
 	}
 
-	protected ConnectionAnchor getConnectionAnchor() {
+//	@tag bug(152180-SelfLoops) : New anchor required so that the loops aren't hidden by the node.
+	protected ConnectionAnchor getLoopAnchor() {
+		if (loopAnchor == null) {
+			loopAnchor = new LoopAnchor(getFigure());
+		}
+		return loopAnchor;
+	}
+	
+//	@tag bug(152180-SelfLoops) : New anchor required so that the loops aren't hidden by the node.
+	protected ConnectionAnchor getDefaultConnectionAnchor() {
 		if (anchor == null) {
 			if (getModel() instanceof GraphModelNode) {
 				IFigure figure = getFigure();
@@ -164,6 +197,7 @@ public class GraphNodeEditPart extends AbstractGraphicalEditPart implements
 		return anchor;
 	}
 	
+		
 	/* (non-Javadoc)
 	 * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
 	 */
@@ -286,28 +320,36 @@ public class GraphNodeEditPart extends AbstractGraphicalEditPart implements
 	 * @see org.eclipse.gef.NodeEditPart#getSourceConnectionAnchor(org.eclipse.gef.ConnectionEditPart)
 	 */
 	public ConnectionAnchor getSourceConnectionAnchor(ConnectionEditPart connection) {
-		return getConnectionAnchor();
+//		@tag bug(152180-SelfLoops) : New anchor required so that the loops aren't hidden by the node.
+		if (connection.getSource() == connection.getTarget()) {
+			return getLoopAnchor();
+		}
+		return getDefaultConnectionAnchor();
 	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.gef.NodeEditPart#getTargetConnectionAnchor(org.eclipse.gef.ConnectionEditPart)
 	 */
 	public ConnectionAnchor getTargetConnectionAnchor(ConnectionEditPart connection) {
-		return getConnectionAnchor();
+//		@tag bug(152180-SelfLoops) : New anchor required so that the loops aren't hidden by the node.
+		if (connection.getSource() == connection.getTarget()) {
+			return getLoopAnchor();
+		}
+		return getDefaultConnectionAnchor();
 	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.gef.NodeEditPart#getSourceConnectionAnchor(org.eclipse.gef.Request)
 	 */
 	public ConnectionAnchor getSourceConnectionAnchor(Request request) {
-		return getConnectionAnchor();
+		return getDefaultConnectionAnchor();
 	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.gef.NodeEditPart#getTargetConnectionAnchor(org.eclipse.gef.Request)
 	 */
 	public ConnectionAnchor getTargetConnectionAnchor(Request request) {
-		return getConnectionAnchor();
+		return getDefaultConnectionAnchor();
 	}
 
 	

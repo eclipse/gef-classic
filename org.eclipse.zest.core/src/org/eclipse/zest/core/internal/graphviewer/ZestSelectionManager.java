@@ -51,7 +51,7 @@ public class ZestSelectionManager extends SelectionManager {
 
 		// If nothing is selected just return null.  what should happen on an
 		// unselection?
-		if ( selections.size() == 0 ) return null;
+		if ( selections.size() == 0 ) return StructuredSelection.EMPTY;
 		return new StructuredSelection( selections );
 
 	}
