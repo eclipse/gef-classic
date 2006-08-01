@@ -79,21 +79,19 @@ public class NestedFigure extends Figure {
 		this.label = label;
 		this.label.setOpaque(true);
 		this.label.setLabelAlignment(PositionConstants.CENTER);
-		//this.button = button; [irbull]
-		//this.scaledFigure = new ScaledFigure();
+
 		this.scaledFigure = new AspectRatioScaledFigure(label.getText());
 		
 		this.scaledFigure.setVisible(false);
 		
-		this.scaledFigure.setOpaque(false);
-		//this.scaledFigure.setBorder(new EdgeBorder(ColorConstants.black, 1, 0, 0, 0));
+		this.scaledFigure.setOpaque(true);
 		
 		
 		FreeformLayout layout = new FreeformLayout();
 		
 		setLayoutManager(layout);
 		setBorder(new LineBorder(ColorConstants.black, 1));
-		setOpaque(false);
+		setOpaque(true);
 		scaledFigure.setBackgroundColor(ColorConstants.white);
 		
 		
@@ -134,30 +132,14 @@ public class NestedFigure extends Figure {
 		return true;
 	}
 	
-	
-	public Rectangle getRectangle( Rectangle rect ) {
-		rect.x = 0;
-		rect.y = 0;
-		rect.width = 50;
-		rect.height = 50;
-		return rect;
-	}
+
 	
 	public boolean isCoordinateSystem() {
 		// TODO Auto-generated method stub
 		return true;
 	}
 	
-//	public Rectangle getClientArea(Rectangle rect) {
-//		// TODO Auto-generated method stub
-//		rect.x = 0;
-//		rect.y= 0;
-//		rect.width = XSIZE;
-//		rect.height = YSIZE;
-//		return rect;
-//	}
-//	
-	
+
 	
 	
 	
@@ -177,8 +159,7 @@ public class NestedFigure extends Figure {
 		if ( XSIZE == 0 || YSIZE == 0 ) {
 			super.setBounds(bounds);
 			return;
-		}
-		
+		}		
 		int width = bounds.width;
 		int height = bounds.height;
 		Dimension labelSize = label.getSize();
@@ -188,29 +169,17 @@ public class NestedFigure extends Figure {
 		int labelHeight = Math.min(height, labelSize.height);
 		labelSize.setSize(new Dimension(width, labelHeight));
 		Point labelLoc = new Point(0, 0);
-		/*[irbull]
-		if (button != null) {
-			Dimension prefSize = button.getPreferredSize(16, 16);
-			getLayoutManager().setConstraint(button, new Rectangle(new Point(0, 0), prefSize));
-		}
-		*/
-		getLayoutManager().setConstraint(label, new Rectangle(labelLoc, labelSize));
+		getLayoutManager().setConstraint(label, new Rectangle(labelLoc, labelSize));		
 		
-		boolean vis = scaledFigure.isVisible();
-		Point loc = new Point(0, labelSize.height);
-		Dimension dim = new Dimension(width, height - labelHeight);
-		//Dimension dim = new Dimension(XSIZE, YSIZE);
+		Point location = new Point(0, labelSize.height);
 		double xScale = (double)width / (double) XSIZE;
-		double yScale = (double)(height - labelHeight) / (double)YSIZE;
-		
-		Dimension scaledDim = (vis ? dim : new Dimension(0, 0));
-		scaledDim.scale(xScale * width, yScale * height );
-		Rectangle rect = new Rectangle(loc, scaledDim);
-		getLayoutManager().setConstraint(scaledFigure, rect);
+		double yScale = (double)(height-labelHeight) / (double)YSIZE;		
+		getLayoutManager().setConstraint(scaledFigure, new Rectangle(location.x, location.y ,width, height));
 		scaledFigure.setScale(xScale, yScale);
 		super.setBounds(bounds);
 	}
 	
+
 	public Label getLabel() {
 		return label;
 	}

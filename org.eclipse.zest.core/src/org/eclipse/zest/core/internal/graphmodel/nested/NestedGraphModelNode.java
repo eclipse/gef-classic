@@ -21,8 +21,6 @@ import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelNode;
 import org.eclipse.mylar.zest.layouts.NestedLayoutEntity;
 import org.eclipse.swt.graphics.Image;
 
-
-
 /**
  * Extends GraphModelNode to add methods that deal with nested graphs.
  * 
@@ -38,12 +36,11 @@ public class NestedGraphModelNode extends GraphModelNode implements NestedLayout
 	public static final int DESCENDANT = 1;
 	public static final int ANCESTOR = 2;
 	public static final int NO_RELATION = 3;
-
 	public static final int PLUS_SIZE = 16;
-	
 	private NestedGraphModelNode parent;
 	private List children;
-	private int depth;		// the depth of this node.  Root nodes (null parent) are at a depth 0
+	private int depth; // the depth of this node. Root nodes (null parent) are
+						// at a depth 0
 	private double widthScale;
 	private double heightScale;
 	private boolean isCurrent;
@@ -54,25 +51,23 @@ public class NestedGraphModelNode extends GraphModelNode implements NestedLayout
 	
 	public NestedGraphModelNode(NestedGraphModel graphModel, Object externalNode) {
 		super(graphModel, externalNode);
-		
 	}
 
 	public NestedGraphModelNode(NestedGraphModel graphModel, String label, Object externalNode) {
 		super(graphModel, label, externalNode);
-		
 	}
 
 	public NestedGraphModelNode(NestedGraphModel graphModel, Image img, Object externalNode) {
 		super(graphModel, img, externalNode);
-		
 	}
 
 	public NestedGraphModelNode(NestedGraphModel graphModel, String label, Image img, Object externalNode) {
 		super(graphModel, label, img, externalNode);
-		
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see ca.uvic.cs.zest.internal.graphmodel.GraphModelNode#initModel(java.lang.Object)
 	 */
 	protected void initModel(GraphModel graphModel, Object externalNode) {
@@ -85,13 +80,12 @@ public class NestedGraphModelNode extends GraphModelNode implements NestedLayout
 		this.isCurrent = false;
 		this.childrenVisible = false;
 	}
-	
+
 	public String toString() {
-		//" {Parent: " + getParent().getText() + "}"
-		return "NestedGraphModelNode: " + getText() + 
-			("  {" + getChildren().size() + " children}");
+		// " {Parent: " + getParent().getText() + "}"
+		return "NestedGraphModelNode: " + getText() + ("  {" + getChildren().size() + " children}");
 	}
-	
+
 	/**
 	 * Gets the relationship between two given nodes 
 	 *  0 - Same
@@ -105,43 +99,44 @@ public class NestedGraphModelNode extends GraphModelNode implements NestedLayout
 	 * @see #DESCENDANT
 	 * @see #NO_RELATION
 	 */
-	public int getRelationshipBetweenNodes( NestedGraphModelNode that ) {
-		if ( that == this ) 
+	public int getRelationshipBetweenNodes(NestedGraphModelNode that) {
+		if (that == this)
 			return SAME_NODE;
-		if ( this.isAncestorOf( that )) 
+		if (this.isAncestorOf(that))
 			return ANCESTOR;
-		else if ( this.isDescendantOf( that )) 
+		else if (this.isDescendantOf(that))
 			return DESCENDANT;
-		else 
+		else
 			return NO_RELATION;
 	}
-	
-	private boolean isAncestorOf( NestedGraphModelNode that ) {
+
+	private boolean isAncestorOf(NestedGraphModelNode that) {
 		NestedLayoutEntity parent = that.getParent();
-		while ( parent != null && parent != this ) {
+		while (parent != null && parent != this) {
 			parent = parent.getParent();
 		}
-		if ( parent == this ) 
+		if (parent == this)
 			return true;
-		else 
+		else
 			return false;
 	}
-	
-	private boolean isDescendantOf( NestedGraphModelNode that ) {
-		return that.isAncestorOf( this );
-	}	
-	
-	
+
+	private boolean isDescendantOf(NestedGraphModelNode that) {
+		return that.isAncestorOf(this);
+	}
+
 	/**
 	 * Returns the parent (or null if it is a root node).
+	 * 
 	 * @return NestedGraphModelNode
 	 */
 	public NestedLayoutEntity getParent() {
 		return parent;
 	}
-	
+
 	/**
 	 * Gets the parent casted to a NestedGraphModelNode.
+	 * 
 	 * @return NestedGraphModelNode
 	 */
 	public NestedGraphModelNode getCastedParent() {
@@ -150,53 +145,57 @@ public class NestedGraphModelNode extends GraphModelNode implements NestedLayout
 		}
 		return null;
 	}
-	
+
 	/**
-	 * Sets the parent for this node.  This also sets the depth of nesting 
-	 * of the node by traversing up the parent hierarchy counting
-	 * the levels.
-	 * @param parent the parent to set
+	 * Sets the parent for this node. This also sets the depth of nesting of the
+	 * node by traversing up the parent hierarchy counting the levels.
+	 * 
+	 * @param parent
+	 *            the parent to set
 	 */
 	public void setParent(NestedGraphModelNode parent) {
 		this.parent = parent;
-		this.depth = 0;	
+		this.depth = 0;
 		for (NestedLayoutEntity node = parent; node != null; node = node.getParent()) {
 			this.depth++;
 		}
 	}
-	
+
 	public boolean isCurrent() {
 		return isCurrent;
 	}
-	
+
 	public void setCurrent(boolean isCurrent) {
 		this.isCurrent = isCurrent;
 	}
-	
+
 	/**
-	 * Returns the nested height of this node.  Root nodes whose parent
-	 * is null will be at a depth of 0.  
+	 * Returns the nested height of this node. Root nodes whose parent is null
+	 * will be at a depth of 0.
+	 * 
 	 * @return int the nested height
 	 */
 	public int getNestedDepth() {
 		return depth;
 	}
-		
+
 	/**
 	 * Returns the list of the NestedGraphModelNode children nodes.
+	 * 
 	 * @return List of NestedGraphModelNode objects
 	 */
 	public List getChildren() {
 		return children;
 	}
-	
+
 	public boolean hasChildren() {
 		return (children.size() > 0);
 	}
-		
+
 	/**
-	 * Adds the child node if it isn't in the parent hierarchy 
-	 * of this node and if it doesn't already exist in the list.
+	 * Adds the child node if it isn't in the parent hierarchy of this node and
+	 * if it doesn't already exist in the list.
+	 * 
 	 * @param child
 	 */
 	public void addChild(NestedGraphModelNode child) {
@@ -211,13 +210,13 @@ public class NestedGraphModelNode extends GraphModelNode implements NestedLayout
 			if (add && !children.contains(child)) {
 				children.add(child);
 			}
-			childrenBounds = null; 	// reset the size - will be calculated again
+			childrenBounds = null; // reset the size - will be calculated again
 		}
 	}
 
-	
 	/**
 	 * Removes the given node from the list of children.
+	 * 
 	 * @param nodeToRemove
 	 * @return boolean if it was removed
 	 */
@@ -227,21 +226,23 @@ public class NestedGraphModelNode extends GraphModelNode implements NestedLayout
 			removed = children.remove(nodeToRemove);
 		}
 		if (removed) {
-			childrenBounds = null;	// reset the size - will be calculated again
+			childrenBounds = null; // reset the size - will be calculated again
 		}
 		return removed;
 	}
-	
+
 	/**
 	 * Returns true if the children are visible.
+	 * 
 	 * @return boolean
 	 */
 	public boolean getChildrenVisible() {
 		return childrenVisible;
 	}
-	
+
 	/**
 	 * Sets if the children are visible and adjusts the size appropriately.
+	 * 
 	 * @param visible
 	 */
 	public void setChildrenVisible(boolean visible) {
@@ -271,9 +272,10 @@ public class NestedGraphModelNode extends GraphModelNode implements NestedLayout
 		super.setSizeInLayout(size.width, size.height);
 		this.firePropertyChange(FORCE_REDRAW, null, null);
 	}
-	
+
 	/**
 	 * Gets the full size of the node without scaling and with children shown.
+	 * 
 	 * @return Dimension
 	 */
 	public Dimension getFullSize() {
@@ -282,9 +284,10 @@ public class NestedGraphModelNode extends GraphModelNode implements NestedLayout
 		}
 		return fullSize.getCopy();
 	}
-	
+
 	/**
 	 * Gets the size of just the plus/minus and icon and text.
+	 * 
 	 * @return Dimension
 	 */
 	public Dimension getMinimizedSize() {
@@ -294,54 +297,58 @@ public class NestedGraphModelNode extends GraphModelNode implements NestedLayout
 		}
 		return minimizedSize.getCopy();
 	}
-	
+
 	/**
-	 * Sets the size of the node. 
-	 * Do not use this method if you want to minize the node (label only).
-	 * Call hideChildren() instead.  You can also call showChildren() to show the full size.
-	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelNode#setSizeInLayout(double, double)
+	 * Sets the size of the node. Do not use this method if you want to minize
+	 * the node (label only). Call hideChildren() instead. You can also call
+	 * showChildren() to show the full size.
+	 * 
+	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelNode#setSizeInLayout(double,
+	 *      double)
 	 */
 	public void setSizeInLayout(double width, double height) {
-		fullSize = new Dimension((int)width, (int)height);
+		fullSize = new Dimension((int) width, (int) height);
 		super.setSizeInLayout(width, height);
 	}
 
-	
 	/**
 	 * Currently this always returns 1
+	 * 
 	 * @return
 	 */
-	//public double getScale() {
-	//	return (isCurrent() ? 1 : scale);
-	//}
-	
-	
+	// public double getScale() {
+	// return (isCurrent() ? 1 : scale);
+	// }
+
 	public double getWidthScale() {
 		return widthScale;
 	}
+
 	public double getHeightScale() {
 		return heightScale;
 	}
-	
-	public void setScale( double w, double h ) {
+
+	public void setScale(double w, double h) {
 		this.widthScale = w;
 		this.heightScale = h;
-		
+
 	}
-	
+
 	/**
-	 * The scale from (0-1].  The scale defaults to 1.
+	 * The scale from (0-1]. The scale defaults to 1.
+	 * 
 	 * @param scale
 	 */
-	//public void setScale(double scale) {
-	//	if ((scale > 0) && (scale <= 1)) {
-	//		this.scale = scale;
-	//	} else {
-	//		this.scale = 1 ;
-	//	}
-	//}
-
-	/* (non-Javadoc)
+	// public void setScale(double scale) {
+	// if ((scale > 0) && (scale <= 1)) {
+	// this.scale = scale;
+	// } else {
+	// this.scale = 1 ;
+	// }
+	// }
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see ca.uvic.cs.zest.internal.graphmodel.GraphModelNode#calculateMinimumLabelSize()
 	 */
 	public Dimension calculateMinimumLabelSize() {
@@ -353,10 +360,11 @@ public class NestedGraphModelNode extends GraphModelNode implements NestedLayout
 		}
 		return labelSize;
 	}
-	
+
 	/**
-	 * Calculates the minimum size of this node without taking scaling
-	 * into account.  This is the full size of the label and the children.
+	 * Calculates the minimum size of this node without taking scaling into
+	 * account. This is the full size of the label and the children.
+	 * 
 	 * @see ca.uvic.cs.zest.internal.graphmodel.GraphModelNode#calculateMinimumSize()
 	 */
 	public Dimension calculateMinimumSize() {
@@ -370,30 +378,31 @@ public class NestedGraphModelNode extends GraphModelNode implements NestedLayout
 	}
 
 	/**
-	 * Gets the minimum size for the children.  
+	 * Gets the minimum size for the children.
+	 * 
 	 * @return Dimension
 	 */
 	public Rectangle calculateMinimumChildrenBounds() {
 		if (childrenBounds == null) {
 			childrenBounds = new Rectangle();
-			for (Iterator iter = getChildren().iterator(); iter.hasNext(); ) {
-				GraphModelNode node = (GraphModelNode)iter.next();
+			for (Iterator iter = getChildren().iterator(); iter.hasNext();) {
+				GraphModelNode node = (GraphModelNode) iter.next();
 				double x = node.getXInLayout();
 				double y = node.getYInLayout();
 				Dimension labelSize = node.calculateMinimumLabelSize();
 				double width = x + Math.max(node.getWidthInLayout(), labelSize.width);
 				double height = y + Math.max(node.getHeightInLayout(), labelSize.height);
-				childrenBounds.x = (int)Math.min(childrenBounds.x, x);
-				childrenBounds.y = (int)Math.min(childrenBounds.y, y);
-				childrenBounds.width = (int)Math.max(childrenBounds.width, width);
-				childrenBounds.height = (int)Math.max(childrenBounds.height, height);			
+				childrenBounds.x = (int) Math.min(childrenBounds.x, x);
+				childrenBounds.y = (int) Math.min(childrenBounds.y, y);
+				childrenBounds.width = (int) Math.max(childrenBounds.width, width);
+				childrenBounds.height = (int) Math.max(childrenBounds.height, height);
 			}
 		}
 		return childrenBounds;
 	}
-	
+
 	public NestedGraphModel getNestedGraphModel() {
 		return (NestedGraphModel) this.getGraphModel();
 	}
-	
+
 }

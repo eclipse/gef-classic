@@ -16,13 +16,12 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.ui.parts.GraphicalEditor;
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
+import org.eclipse.mylar.zest.layouts.progress.ProgressEvent;
+import org.eclipse.mylar.zest.layouts.progress.ProgressListener;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-
-import org.eclipse.mylar.zest.layouts.progress.ProgressEvent;
-import org.eclipse.mylar.zest.layouts.progress.ProgressListener;
 
 /**
  * 

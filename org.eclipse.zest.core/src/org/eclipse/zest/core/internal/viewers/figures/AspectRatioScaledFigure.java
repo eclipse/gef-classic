@@ -15,6 +15,8 @@ package org.eclipse.mylar.zest.core.internal.viewers.figures;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.FreeformLayout;
 import org.eclipse.draw2d.Graphics;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.TreeSearch;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
@@ -94,17 +96,15 @@ public class AspectRatioScaledFigure extends Figure {// extends ScaledFigure {
 	/**
 	 * @see org.eclipse.draw2d.Figure#getClientArea()
 	 */
-	/*
+	
 	public Rectangle getClientArea(Rectangle rect) {
-		//return super.getClientArea(rect);
+		super.getClientArea(rect);
 		
 		rect.width /= widthScale;
 		rect.height /= heigthScale;
 		return rect;
 	}
-	*/
 	
-
 	public Dimension getPreferredSize(int wHint, int hHint) {
 		Dimension d = super.getPreferredSize(wHint, hHint);
 		int w = getInsets().getWidth();
@@ -163,14 +163,22 @@ public class AspectRatioScaledFigure extends Figure {// extends ScaledFigure {
 			throw new RuntimeException( t.toString() + " not supported in AspectRatioScale");
 		}
 		
-		
 		//t.performScale(1/widthScale);		
 	}
-	
+	/* (non-Javadoc)
+	 * @see org.eclipse.draw2d.Figure#findFigureAt(int, int, org.eclipse.draw2d.TreeSearch)
+	 */
+	public IFigure findFigureAt(int x, int y, TreeSearch search) {
+		// TODO Auto-generated method stub\
+		IFigure f = super.findFigureAt(x, y, search);
+		//System.out.println("Figure: " + f + " at " + x + " : " + y);
+		return f;
+	}
 	/* (non-Javadoc)
 	 * @see org.eclipse.draw2d.Figure#translateToParent(org.eclipse.draw2d.geometry.Translatable)
 	 */
 	public void translateToParent(Translatable t) {
+
 		//t.performScale(widthScale);
 		
 		if ( t instanceof PrecisionRectangle ) {
@@ -219,6 +227,7 @@ public class AspectRatioScaledFigure extends Figure {// extends ScaledFigure {
 		
 		
 		super.translateToParent(t);
+		
 	}
 
 	protected boolean useLocalCoordinates() {

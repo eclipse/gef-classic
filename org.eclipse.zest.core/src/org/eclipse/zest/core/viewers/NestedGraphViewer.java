@@ -96,7 +96,7 @@ public class NestedGraphViewer extends AbstractStructuredGraphViewer implements 
 		parent.setLayout(layout);
 		parent.addControlListener(this);
 
-		this.viewer = new NestedGraphViewerImpl(parent, style);
+		this.viewer = new NestedGraphViewerImpl(parent, style  );
 		data = new GridData(SWT.FILL, SWT.FILL, true, true);
 		this.viewer.getControl().setLayoutData(data);
 
@@ -337,7 +337,8 @@ public class NestedGraphViewer extends AbstractStructuredGraphViewer implements 
 	 * @see org.eclipse.swt.events.DisposeListener#widgetDisposed(org.eclipse.swt.events.DisposeEvent)
 	 */
 	public void widgetDisposed(DisposeEvent e) {
-		focusListeners.clear();
+		if ( focusListeners != null)
+			focusListeners.clear();
 	}
 
 	/**

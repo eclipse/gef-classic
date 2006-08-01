@@ -12,8 +12,11 @@ package org.eclipse.mylar.zest.core.internal.nestedgraphviewer.parts;
 
 import java.util.List;
 
+import org.eclipse.draw2d.ConnectionLayer;
 import org.eclipse.draw2d.FreeformLayer;
+import org.eclipse.draw2d.FreeformLayeredPane;
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.LayeredPane;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.editparts.ZoomManager;
@@ -21,7 +24,6 @@ import org.eclipse.mylar.zest.core.ZestStyles;
 import org.eclipse.mylar.zest.core.internal.gefx.GraphRootEditPart;
 import org.eclipse.mylar.zest.core.internal.nestedgraphviewer.NestedGraphViewerImpl;
 import org.eclipse.mylar.zest.core.internal.viewers.figures.NestedFigure;
-import org.eclipse.mylar.zest.core.internal.viewers.figures.NestedFreeformLayer;
 
 /**
  * Extends GraphRootEditPart to add zooming support.
@@ -36,7 +38,6 @@ public class NestedGraphRootEditPart extends GraphRootEditPart {
 	
 	private ZoomManager zoomManager;
 
-	
 	/**
 	 * Initializes the root edit part with the given zoom style.
 	 * This can be real zooming, fake zooming, or expand/collapse zooming.
@@ -75,10 +76,6 @@ public class NestedGraphRootEditPart extends GraphRootEditPart {
 			if ( fig instanceof FreeformLayer ) {
 				
 				fig = (IFigure)fig.getChildren().get(0);
-			}
-			else if (fig instanceof NestedFreeformLayer) {
-				NestedFreeformLayer layer = (NestedFreeformLayer)fig;
-				fig = layer.getNestedFigure();
 			}
 		}
 		return fig;
@@ -229,6 +226,19 @@ public class NestedGraphRootEditPart extends GraphRootEditPart {
 		try {
 			Thread.sleep(millis);
 		} catch (InterruptedException ignore) {}
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.mylar.zest.core.internal.gefx.GraphRootEditPart#createPrintableLayers()
+	 */
+	protected LayeredPane createPrintableLayers() {
+		FreeformLayeredPane layeredPane = new FreeformLayeredPane();
+		//override to put the connection layers on the top
+		layeredPane.add(new FreeformLayer(), PRIMARY_LAYER);
+		layeredPane.add(new ConnectionLayer(), CONNECTION_LAYER);
+		layeredPane.add(new ConnectionLayer(), CONNECTION_FEEDBACK_LAYER);
+		
+		return layeredPane;
 	}
 
 }

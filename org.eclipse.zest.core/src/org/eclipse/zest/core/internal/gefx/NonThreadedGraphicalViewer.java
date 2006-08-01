@@ -16,6 +16,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.FigureCanvas;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.gef.EditDomain;
@@ -59,6 +60,7 @@ public abstract class NonThreadedGraphicalViewer extends ScrollingGraphicalViewe
 		ed.addViewer( this );
 		setEditDomain( ed );
 		hookControl();
+		getFigureCanvas().setScrollBarVisibility(FigureCanvas.NEVER);
 
 		getControl().addPaintListener(new PaintListener() {
 			public void paintControl(PaintEvent e) {
@@ -159,7 +161,7 @@ public abstract class NonThreadedGraphicalViewer extends ScrollingGraphicalViewe
 	public void updateContents(Object model) {
 		super.setContents(model);
 	}
-	
+
 	/**
 	 * Gets the absolute size of the canvas.
 	 * @return Dimension in absolute coords

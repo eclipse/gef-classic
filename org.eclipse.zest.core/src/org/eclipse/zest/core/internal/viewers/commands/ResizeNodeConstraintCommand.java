@@ -71,6 +71,21 @@ public class ResizeNodeConstraintCommand extends Command {
 	 */
 	public boolean canExecute() {
 		Object type = request.getType();
+		if ( RequestConstants.REQ_RESIZE_CHILDREN.equals(type) || RequestConstants.REQ_MOVE_CHILDREN.equals(type)) {
+			IFigure parentFigure = editPart.getFigure().getParent();
+			
+			Rectangle  parentBounds = parentFigure.getBounds().getCopy();
+			// @tag bug (152289) : Enforce bounds for resize in Nested Viewer
+			// If the new bounds are outside the parent return false
+			
+			Rectangle myBounds = newBounds.getCopy();
+			parentFigure.translateToParent(myBounds);
+			if ( myBounds.x < parentBounds.x ||
+				myBounds.y < parentBounds.y ||
+				myBounds.width > ( parentBounds.width - myBounds.x) ||
+				myBounds.height > ( parentBounds.height - myBounds.y )) return false;
+			return true;
+		}
 		// make sure the Request is of a type we support:
 		return (RequestConstants.REQ_MOVE.equals(type) || RequestConstants.REQ_MOVE_CHILDREN.equals(type)
 				|| RequestConstants.REQ_RESIZE.equals(type) || RequestConstants.REQ_RESIZE_CHILDREN.equals(type));

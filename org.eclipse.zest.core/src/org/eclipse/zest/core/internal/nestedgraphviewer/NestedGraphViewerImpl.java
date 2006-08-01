@@ -350,6 +350,7 @@ public class NestedGraphViewerImpl extends NonThreadedGraphicalViewer  {
      */
     public void resize(int widthHint, int heightHint) {
 		if (getEditPartRegistry().containsKey(model)) {
+			//System.out.println(getRootEditPart());
 			((NestedGraphRootEditPart)getRootEditPart()).resize(widthHint, heightHint);
 			//NestedGraphEditPart editPart = (NestedGraphEditPart)getEditPartRegistry().get(model);
 			//NestedFreeformLayer layer = (NestedFreeformLayer)editPart.getFigure();

@@ -17,7 +17,6 @@ import org.eclipse.draw2d.LayoutAnimator;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphItem;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedGraphModel;
 import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphEditPart;
-import org.eclipse.mylar.zest.core.internal.viewers.figures.NestedFreeformLayer;
 
 
 /**
@@ -78,8 +77,9 @@ public class NestedGraphEditPart extends GraphEditPart  {
 	 */
 	public void resize( int width, int height ) {
 		getFigure().setSize(width, height);
-		NestedFreeformLayer freeformLayer = (NestedFreeformLayer)((NestedGraphNodeEditPart)getCastedModel().getRootNode().getEditPart()).getFigure();
-		freeformLayer.resize(width, height);	
+		IFigure freeformLayer = (IFigure)((NestedGraphNodeEditPart)getCastedModel().getRootNode().getEditPart()).getFigure();
+		freeformLayer = (IFigure)((NestedGraphNodeEditPart)getCastedModel().getCurrentNode().getEditPart()).getFigure();
+		freeformLayer.setSize(width, height);	
 	}
 	
 	/**
@@ -90,7 +90,7 @@ public class NestedGraphEditPart extends GraphEditPart  {
 	protected IFigure createFigure() {	
 		Figure figure = new FreeformLayer();
 		figure.addLayoutListener(LayoutAnimator.getDefault());
-		figure.setOpaque(false);
+		figure.setOpaque(true);
 		return figure;
 	}		
 }

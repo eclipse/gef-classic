@@ -19,9 +19,6 @@ import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.MarginBorder;
-import org.eclipse.draw2d.MouseEvent;
-import org.eclipse.draw2d.MouseListener;
-import org.eclipse.draw2d.MouseMotionListener;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPolicy;
@@ -33,8 +30,8 @@ import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphNodeEditPart;
 import org.eclipse.mylar.zest.core.internal.nestedgraphviewer.NestedGraphViewerImpl;
 import org.eclipse.mylar.zest.core.internal.nestedgraphviewer.policies.NestedGraphXYLayoutEditPolicy;
 import org.eclipse.mylar.zest.core.internal.viewers.figures.NestedFigure;
-import org.eclipse.mylar.zest.core.internal.viewers.figures.NestedFreeformLayer;
 import org.eclipse.mylar.zest.core.internal.viewers.figures.PlusMinusFigure;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 
@@ -48,12 +45,11 @@ public class NestedGraphNodeEditPart extends GraphNodeEditPart implements Action
 
 	private boolean enforceBounds;
 	private Clickable upButton = null;
-	private boolean currentEditPart = false;
+
 
 	public NestedGraphNodeEditPart(boolean enforceBounds) {
 		super();
 		this.enforceBounds = enforceBounds;
-		currentEditPart = false;
 	}
 
 	/**
@@ -88,25 +84,17 @@ public class NestedGraphNodeEditPart extends GraphNodeEditPart implements Action
 	 * @return
 	 */
 	public Rectangle getBounds() {
-		if ( currentEditPart ) {
-			NestedFreeformLayer nestedFreeformLayer = (NestedFreeformLayer)getFigure();
-			return nestedFreeformLayer.getClientArea();
-		}
-		else {
-			NestedFigure nestedFigure = (NestedFigure)getFigure();
-			return nestedFigure.getClientArea();
-		}	
+		NestedFigure nestedFigure = (NestedFigure)getFigure();
+		return nestedFigure.getClientArea();
+	
 	}
 
 	
 	protected IFigure createFigureForModel() {
 
 		if (((NestedGraphModel) getCastedModel().getGraphModel()).getCurrentNode() == getCastedModel()) {
-			currentEditPart = true;
 			NestedGraphModel model = (NestedGraphModel) getCastedModel().getGraphModel();
 			NestedGraphModelNode current = model.getCurrentNode();
-			// current.setBackgroundColor(ZestColors.DARK_BLUE);
-			// current.setForegroundColor(ColorConstants.white);
 
 			Label label;
 			if (current == null) {
@@ -135,67 +123,15 @@ public class NestedGraphNodeEditPart extends GraphNodeEditPart implements Action
 			NestedFigure figure = new NestedFigure(label, upButton, !enforceBounds);
 			figure.getScaledFigure().setVisible(true);
 
-			NestedFreeformLayer layer = new NestedFreeformLayer(figure);
-			
-			layer.setBorder(new MarginBorder(2, 2, 2, 2));
-
 			if (getViewer() instanceof NestedGraphViewerImpl) {
 				NestedGraphViewerImpl viewer = (NestedGraphViewerImpl) getViewer();
 				Dimension dim = viewer.getCanvasSize();
-				layer.resize(dim.width, dim.height);
+				figure.setSize(dim);
 			}
-			layer.addMouseListener(new MouseListener() {
-
-				public void mousePressed(MouseEvent me) {
-					// TODO Auto-generated method stub
-
-				}
-
-				public void mouseReleased(MouseEvent me) {
-					// TODO Auto-generated method stub
-
-				}
-
-				public void mouseDoubleClicked(MouseEvent me) {
-					// TODO Auto-generated method stub
-
-				}
-
-			});
-			layer.addMouseMotionListener(new MouseMotionListener() {
-
-				public void mouseDragged(MouseEvent me) {
-					// TODO Auto-generated method stub
-
-				}
-
-				public void mouseEntered(MouseEvent me) {
-					// TODO Auto-generated method stub
-
-				}
-
-				public void mouseExited(MouseEvent me) {
-					// TODO Auto-generated method stub
-
-				}
-
-				public void mouseHover(MouseEvent me) {
-					// TODO Auto-generated method stub
-
-				}
-
-				public void mouseMoved(MouseEvent me) {
-					// TODO Auto-generated method stub
-
-				}
-
-			});
-			
-			return layer;
+			return figure;
 		}
 
 		else {
-			currentEditPart = true;
 			if (getCastedModel() != null) {
 				NestedGraphModelNode node = getCastedModel();
 				Label label = new Label(node.getText(), node.getImage());
@@ -268,17 +204,30 @@ public class NestedGraphNodeEditPart extends GraphNodeEditPart implements Action
 	 * @see org.eclipse.draw2d.ActionListener#actionPerformed(org.eclipse.draw2d.ActionEvent)
 	 */
 	public void actionPerformed(ActionEvent event) {
-
-
 		if ( event.getSource() == upButton ) {
 			NestedGraphModel model = (NestedGraphModel)getCastedModel().getGraphModel();
 			model.goUp();
 			if (getViewer() instanceof NestedGraphViewerImpl) {
-				((NestedGraphViewerImpl)getViewer()).fireModelUpdate();
+				upButton.removeActionListener(this);
+				Display.getCurrent().asyncExec(new Runnable() {
+
+					public void run() {
+						// TODO Auto-generated method stub
+						((NestedGraphViewerImpl)getViewer()).fireModelUpdate();
+						openNode();
+					}
+					
+				});
 			}
 			
 		}
-		
+		else {
+			openNode();
+		}
+
+	}
+
+	private void openNode() {
 		// check connections
 		if (getViewer() instanceof NestedGraphViewerImpl) {
 			NestedFigure fig = (NestedFigure) getFigure();
@@ -286,12 +235,13 @@ public class NestedGraphNodeEditPart extends GraphNodeEditPart implements Action
 			fig.setNestedFiguresVisible(vis);
 			NestedGraphModelNode node = getCastedModel();
 			node.setChildrenVisible(vis);
-			
+
 			NestedGraphViewerImpl viewer = (NestedGraphViewerImpl) getViewer();
 			if (vis) {
-				// do a grid layout on the children using the full area and then
+				// do a grid layout on the children using the full area and
+				// then
 				// scale
-				//Rectangle bounds = getGraphModel().getMainArea();
+				// Rectangle bounds = getGraphModel().getMainArea();
 				viewer.doLayout(node, 500, 500);
 				viewer.checkScaling(node);
 				// if (node.getScale() != fig.getScale()) {
@@ -299,7 +249,6 @@ public class NestedGraphNodeEditPart extends GraphNodeEditPart implements Action
 				// }
 			}
 		}
-
 	}
 
 	/*
