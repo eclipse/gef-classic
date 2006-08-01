@@ -93,7 +93,12 @@ public class NestedGraphEditPart extends GraphEditPart  {
 	 * current node isn't the root node.
 	 */
 	protected IFigure createFigure() {	
-		Figure figure = new FreeformLayer();
+		Figure figure = new FreeformLayer() {
+			protected boolean isValid() {
+				// @tag bug (152414) : No matter what, we always let the children determine if they need updating
+				return false;
+			}
+		};
 		figure.addLayoutListener(LayoutAnimator.getDefault());
 		figure.setOpaque(true);
 		return figure;
