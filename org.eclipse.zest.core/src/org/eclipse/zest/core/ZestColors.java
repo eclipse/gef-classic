@@ -12,7 +12,6 @@ package org.eclipse.mylar.zest.core;
 
 import org.eclipse.swt.graphics.Color;
 
-
 /**
  * Color constants used in Zest.
  * 
