@@ -13,15 +13,23 @@ package org.eclipse.mylar.zest.core.internal.nestedgraphviewer.parts;
 import java.util.List;
 
 import org.eclipse.draw2d.ConnectionLayer;
+import org.eclipse.draw2d.FreeformFigure;
 import org.eclipse.draw2d.FreeformLayer;
 import org.eclipse.draw2d.FreeformLayeredPane;
+import org.eclipse.draw2d.FreeformViewport;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.LayeredPane;
+import org.eclipse.draw2d.Viewport;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.GraphicalEditPart;
+import org.eclipse.gef.LayerConstants;
+import org.eclipse.gef.editparts.GuideLayer;
+import org.eclipse.gef.editparts.LayerManager;
+import org.eclipse.gef.editparts.SimpleRootEditPart;
 import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.mylar.zest.core.ZestStyles;
-import org.eclipse.mylar.zest.core.internal.gefx.GraphRootEditPart;
+import org.eclipse.mylar.zest.core.internal.gefx.ZestRootEditPart;
+import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphEditPart;
 import org.eclipse.mylar.zest.core.internal.nestedgraphviewer.NestedGraphViewerImpl;
 import org.eclipse.mylar.zest.core.internal.viewers.figures.NestedFigure;
 
@@ -34,9 +42,13 @@ import org.eclipse.mylar.zest.core.internal.viewers.figures.NestedFigure;
  * 
  * @author Chris Callendar
  */
-public class NestedGraphRootEditPart extends GraphRootEditPart {
+public class NestedGraphRootEditPart extends SimpleRootEditPart
+		implements LayerConstants, ZestRootEditPart, LayerManager {
 	
 	private ZoomManager zoomManager;
+	protected GraphEditPart graphEditPart = null;
+	private LayeredPane innerLayers;
+	private LayeredPane printableLayers;
 
 	/**
 	 * Initializes the root edit part with the given zoom style.
@@ -48,6 +60,7 @@ public class NestedGraphRootEditPart extends GraphRootEditPart {
 	 */
 	public NestedGraphRootEditPart( ) {
 		super();
+		
 	}
 	
 	/**
@@ -111,8 +124,76 @@ public class NestedGraphRootEditPart extends GraphRootEditPart {
 		
 		Rectangle maxBounds = getMaxBounds();
 		Rectangle startBounds = editPart.getScreenBounds();
-		
 		doCollapseZoom(maxBounds, startBounds, 10, (NestedFigure)editPart.getFigure());
+	}
+	
+	/**
+	 * The contents' Figure will be added to the PRIMARY_LAYER.
+	 * @see org.eclipse.gef.GraphicalEditPart#getContentPane()
+	 */
+	public IFigure getContentPane() {
+		return getLayer(PRIMARY_LAYER);
+	}
+
+	/**
+	 * The root editpart does not have a real model.  The LayerManager ID is returned so that
+	 * this editpart gets registered using that key.
+	 * @see org.eclipse.gef.EditPart#getModel()
+	 */
+	public Object getModel() {
+		return LayerManager.ID;
+	}
+	
+	/**
+	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
+	 */
+	protected IFigure createFigure() {
+		Viewport viewport = new FreeformViewport() {
+			/**
+			 * Readjusts the scrollbars.  In doing so, it gets the freeform extent of the contents and
+			 * unions this rectangle with this viewport's client area, then sets the contents freeform
+			 * bounds to be this unioned rectangle.  Then proceeds to set the scrollbar values based
+			 * on this new information.
+			 * @see Viewport#readjustScrollBars()
+			 */
+			protected void readjustScrollBars() {
+				if (getContents() == null)
+					return;
+				if (!(getContents() instanceof FreeformFigure))
+					return;
+				FreeformFigure ff = (FreeformFigure)getContents();
+				Rectangle clientArea = getClientArea();
+				Rectangle bounds = ff.getFreeformExtent().getCopy();
+				bounds.union(0, 0, clientArea.width, clientArea.height);
+				ff.setFreeformBounds(bounds);
+			}
+		};
+		innerLayers = new FreeformLayeredPane();
+		createLayers(innerLayers);
+		viewport.setContents(innerLayers);
+		return viewport;
+	}
+	
+	/**
+	 * Creates the top-most set of layers on the given layered pane.
+	 * @param layeredPane the parent for the created layers
+	 */
+	protected void createLayers(LayeredPane layeredPane) {
+		layeredPane.add(getPrintableLayers(), PRINTABLE_LAYERS);
+		layeredPane.add(new FreeformLayer(), HANDLE_LAYER);
+		layeredPane.add(new FeedbackLayer(), FEEDBACK_LAYER);
+		layeredPane.add(new GuideLayer(), GUIDE_LAYER);
+	}
+	
+	/**
+	 * Returns the LayeredPane that should be used during printing. This layer will be
+	 * identified using {@link LayerConstants#PRINTABLE_LAYERS}.
+	 * @return the layered pane containing all printable content
+	 */
+	protected LayeredPane getPrintableLayers() {
+		if (printableLayers == null)
+			printableLayers = createPrintableLayers();
+		return printableLayers;
 	}
 	
 
@@ -241,4 +322,36 @@ public class NestedGraphRootEditPart extends GraphRootEditPart {
 		return layeredPane;
 	}
 
+	/**
+	 * Sets the main edit part for the model. You should be able to 
+	 * fire changes off here and see the effect
+	 */
+	public void setModelRootEditPart(Object modelRootEditPart) {
+		this.graphEditPart = (GraphEditPart) modelRootEditPart;
+	}
+
+	/**
+	 * Returns the layer indicated by the key. Searches all layered panes.
+	 * @see LayerManager#getLayer(Object)
+	 */
+	public IFigure getLayer(Object key) {
+		if (innerLayers == null)
+			return null;
+		IFigure layer = innerLayers.getLayer(key);
+		if (layer != null)
+			return layer;
+		if (printableLayers == null)
+			return null;
+		return printableLayers.getLayer(key);
+	}
+	
+	class FeedbackLayer
+	extends FreeformLayer
+{
+	FeedbackLayer() {
+		setEnabled(false);
+	}
+}
+
+	
 }

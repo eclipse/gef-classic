@@ -33,7 +33,7 @@ import org.eclipse.mylar.zest.core.internal.viewers.trackers.SingleSelectionTrac
  */
 public class GraphRootEditPart extends ScalableFreeformRootEditPart implements ZestRootEditPart {
 
-	public static final String CONNECTION_FEEDBACK_LAYER = "Connection Feedback Layer"; //$NON-NLS-1$
+
 	
 	private IPanningListener panningListener;
 	private boolean allowMarqueeSelection;

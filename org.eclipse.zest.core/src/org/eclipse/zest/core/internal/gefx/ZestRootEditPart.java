@@ -19,6 +19,7 @@ package org.eclipse.mylar.zest.core.internal.gefx;
  * @author Ian Bull
  */
 public interface ZestRootEditPart {
+	public static final String CONNECTION_FEEDBACK_LAYER = "Connection Feedback Layer"; //$NON-NLS-1$
 	
 	public void setModelRootEditPart( Object modelRootEditPart );
 
