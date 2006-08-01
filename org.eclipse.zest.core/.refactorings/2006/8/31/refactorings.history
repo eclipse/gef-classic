@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<session version="1.0">
+<refactoring comment="Convert local variable 'org.eclipse.mylar.zest.core.internal.nestedgraphviewer.parts.NestedGraphNodeEditPart.createFigureForModel().label' in 'org.eclipse.mylar.zest.core.internal.nestedgraphviewer.parts.NestedGraphNodeEditPart.createFigureForModel()' to field&#13;&#10;- Original element: 'org.eclipse.mylar.zest.core.internal.nestedgraphviewer.parts.NestedGraphNodeEditPart.createFigureForModel().label'&#13;&#10;- Field name: 'label'&#13;&#10;- Initialize field in method&#13;&#10;- Declared visibility: 'private'" description="Convert local variable 'label' to field" final="false" flags="2" id="org.eclipse.jdt.ui.promote.temp" initialize="1" input="/src&lt;org.eclipse.mylar.zest.core.internal.nestedgraphviewer.parts{NestedGraphNodeEditPart.java" name="label" selection="3638 0" stamp="1154453403140" static="false" version="1.0" visibility="2"/>
+</session>

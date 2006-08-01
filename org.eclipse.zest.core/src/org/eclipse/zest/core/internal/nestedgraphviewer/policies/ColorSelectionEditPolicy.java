@@ -11,12 +11,15 @@
 package org.eclipse.mylar.zest.core.internal.nestedgraphviewer.policies;
 
 import java.beans.PropertyChangeEvent;
+import java.util.Collections;
+import java.util.List;
 
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.gef.editpolicies.ResizableEditPolicy;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelNode;
 import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphNodeEditPart;
+import org.eclipse.mylar.zest.core.internal.nestedgraphviewer.parts.NestedGraphEditPart;
 
 
 
@@ -71,6 +74,17 @@ public class ColorSelectionEditPolicy extends ResizableEditPolicy {
 	 */
 	protected void eraseChangeBoundsFeedback(ChangeBoundsRequest request) {
 		super.eraseChangeBoundsFeedback(request);
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.gef.editpolicies.ResizableEditPolicy#createSelectionHandles()
+	 */
+	protected List createSelectionHandles() {
+		//@tag bug(152393-TopSelection(fix)) : no handles on the top-level nodes.
+		if (editPart.getParent() instanceof NestedGraphEditPart) {
+			return Collections.EMPTY_LIST;
+		}
+		return super.createSelectionHandles();
 	}
 
 }

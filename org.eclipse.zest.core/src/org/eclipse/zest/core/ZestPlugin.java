@@ -139,7 +139,7 @@ public class ZestPlugin extends AbstractUIPlugin {
 		colors.put(IZestColorConstants.CYAN, new RGB(0,255,255));
 		colors.put(IZestColorConstants.BLUE, new RGB(0,0,255));
 		colors.put(IZestColorConstants.DARK_BLUE, new RGB(0,0,127));
-		
+		colors.put(IZestColorConstants.WHITE, new RGB(255,255,255));
 		colors.put(IZestColorConstants.EDGE_WEIGHT_0, new RGB(192, 192, 255));
 		colors.put(IZestColorConstants.EDGE_WEIGHT_01, new RGB(64, 128, 225));
 		colors.put(IZestColorConstants.EDGE_WEIGHT_02, new RGB(32, 32, 128));

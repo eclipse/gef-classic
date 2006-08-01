@@ -18,6 +18,8 @@ import org.eclipse.draw2d.Animation;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.editparts.LayerManager;
+import org.eclipse.mylar.zest.core.IZestColorConstants;
+import org.eclipse.mylar.zest.core.ZestPlugin;
 import org.eclipse.mylar.zest.core.ZestStyles;
 import org.eclipse.mylar.zest.core.internal.gefx.NonThreadedGraphicalViewer;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedGraphModel;
@@ -152,6 +154,19 @@ public class NestedGraphViewerImpl extends NonThreadedGraphicalViewer  {
 		NestedGraphModelNode nodeToMoveTo = model.getCurrentNode();
 		NestedGraphModelNode nodeToSelect = nodeToMoveTo;	// node to select in the TreeViewer
 		
+		
+		//@tag bug(152393-TopSelection(fix)) : set-up the colors for selected nodes.
+		//@tag bug(151327-Styles(todo)) : this set-up should be done by the GraphItemStyler, not hard-coded.
+		if (previousNode != null) {
+			//reset the color
+			previousNode.setBackgroundColor(ZestPlugin.getDefault().getColor(IZestColorConstants.LIGHT_BLUE));
+			previousNode.setForegroundColor(ZestPlugin.getDefault().getColor(IZestColorConstants.BLACK));
+		}
+		if (nodeToMoveTo != null) {
+			//set the color to dark-blue
+			nodeToMoveTo.setBackgroundColor(ZestPlugin.getDefault().getColor(IZestColorConstants.BLUE));
+			nodeToMoveTo.setForegroundColor(ZestPlugin.getDefault().getColor(IZestColorConstants.GRAY));
+		}
 
 		if (this.getRootEditPart() instanceof NestedGraphRootEditPart) {
 			NestedGraphRootEditPart rootEditPart = (NestedGraphRootEditPart)getRootEditPart();
@@ -192,6 +207,9 @@ public class NestedGraphViewerImpl extends NonThreadedGraphicalViewer  {
 		else {
 			super.setContents(model);
 		}
+		
+		
+		
 		
 		// layout the children in a grid layout
 		// only happens the first time a node is the current node

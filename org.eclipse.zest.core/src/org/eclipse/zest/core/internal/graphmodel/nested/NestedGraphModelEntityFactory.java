@@ -24,6 +24,7 @@ import org.eclipse.swt.widgets.Canvas;
  * 
  * @author Chris Callendar
  */
+//@tag bug(151327-Styles(todo)) : Use GraphItemStyler to style the graphs that are created.
 public class NestedGraphModelEntityFactory implements INestedGraphModelFactory {
 
 	private StructuredViewer viewer = null;

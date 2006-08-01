@@ -30,6 +30,7 @@ import org.eclipse.ui.services.IDisposable;
  *
  */
 //@tag bug(151327-Styles) : created to help resolve this bug
+//@tag bug(151327-Styles(todo)) : Doesn't handle nested graphs.
 class GraphItemStyler {
 	public static void styleItem(GraphItem item, final ILabelProvider labelProvider) {
 		//provided for label providers that must be disposed.

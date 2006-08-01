@@ -14,9 +14,11 @@ import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.FreeformLayer;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.LayoutAnimator;
+import org.eclipse.gef.EditPolicy;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphItem;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedGraphModel;
 import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphEditPart;
+import org.eclipse.mylar.zest.core.internal.nestedgraphviewer.policies.NestedGraphRootLayoutEditPolicy;
 
 
 /**
@@ -34,6 +36,7 @@ public class NestedGraphEditPart extends GraphEditPart  {
 	 */
 	public NestedGraphEditPart( ) {
 		super();
+		
 	}	
 	
 	/**
@@ -57,10 +60,12 @@ public class NestedGraphEditPart extends GraphEditPart  {
 	}	
 
 	/* (non-Javadoc)
-	 * @see ca.uvic.cs.zest.internal.viewers.parts.GraphEditPart#createEditPolicies()
+	 * @see org.eclipse.gef.editparts.SimpleRootEditPart#createEditPolicies()
 	 */
-	protected void createEditPolicies() {	
-		// This edit part is just a free form layer, that holds 1 full size node
+	protected void createEditPolicies() {
+		//@tag bug(152393-TopSelection(fix)) : add an edit policy to the EditPart which will create policies that don't allow the nodes to move.
+		super.createEditPolicies();
+		installEditPolicy(EditPolicy.LAYOUT_ROLE, new NestedGraphRootLayoutEditPolicy());
 	}
 	
 	//TODO: should we change this to getNestedGraphModel?

@@ -15,7 +15,6 @@ import java.util.List;
 import org.eclipse.draw2d.ActionEvent;
 import org.eclipse.draw2d.ActionListener;
 import org.eclipse.draw2d.Clickable;
-import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.MarginBorder;
@@ -23,7 +22,8 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.Request;
-import org.eclipse.mylar.zest.core.ZestColors;
+import org.eclipse.mylar.zest.core.IZestColorConstants;
+import org.eclipse.mylar.zest.core.ZestPlugin;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedGraphModel;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedGraphModelNode;
 import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphNodeEditPart;
@@ -45,6 +45,7 @@ public class NestedGraphNodeEditPart extends GraphNodeEditPart implements Action
 
 	private boolean enforceBounds;
 	private Clickable upButton = null;
+	private Label label;
 
 
 	public NestedGraphNodeEditPart(boolean enforceBounds) {
@@ -96,15 +97,15 @@ public class NestedGraphNodeEditPart extends GraphNodeEditPart implements Action
 			NestedGraphModel model = (NestedGraphModel) getCastedModel().getGraphModel();
 			NestedGraphModelNode current = model.getCurrentNode();
 
-			Label label;
 			if (current == null) {
 				label = new Label("Root"); // shouldn't get here
 			} else {
 				label = new Label(current.getText(), current.getImage());
 				label.setFont(current.getFont());
 			}
-			label.setBackgroundColor(ZestColors.DARK_BLUE);
-			label.setForegroundColor(ColorConstants.white);
+			//@tag bug(151332-Colors(fix))
+			label.setBackgroundColor(ZestPlugin.getDefault().getColor(IZestColorConstants.DARK_BLUE));
+			label.setForegroundColor(ZestPlugin.getDefault().getColor(IZestColorConstants.WHITE));
 
 			// add an up button in the top left corner of the figure
 			upButton = null;
@@ -134,7 +135,7 @@ public class NestedGraphNodeEditPart extends GraphNodeEditPart implements Action
 		else {
 			if (getCastedModel() != null) {
 				NestedGraphModelNode node = getCastedModel();
-				Label label = new Label(node.getText(), node.getImage());
+				label = new Label(node.getText(), node.getImage());
 				label.setFont(node.getFont());
 				label.setForegroundColor(node.getForegroundColor());
 				PlusMinusFigure plusMinus = null;
@@ -258,6 +259,17 @@ public class NestedGraphNodeEditPart extends GraphNodeEditPart implements Action
 	 */
 	protected void refreshVisuals() {
 		super.refreshVisuals();
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphNodeEditPart#refreshColors()
+	 */
+	protected void refreshColors() {
+		//@tag bug(152393(fix)) : Set the label color when the foreground changes.
+		if (label != null) {
+			label.setForegroundColor(getCastedModel().getForegroundColor());
+		}
+		super.refreshColors();
 	}
 
 	/**
