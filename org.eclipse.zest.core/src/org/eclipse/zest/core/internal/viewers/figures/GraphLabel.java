@@ -127,6 +127,10 @@ public class GraphLabel extends CachedLabel {
 		graphics.drawRoundRectangle(bounds, arcWidth, arcWidth);
 	}
 	
+	protected Color getBackgroundTextColor() {
+		return getBackgroundColor();
+	}
+	
 	/**
 	 * This method is overridden to ensure that it doesn't get called while
 	 * the super.paintFigure() is being called.  Otherwise NullPointerExceptions
@@ -180,4 +184,6 @@ public class GraphLabel extends CachedLabel {
 	public void setArcWidth(int arcWidth) {
 		this.arcWidth = arcWidth;
 	}
+
+
 }

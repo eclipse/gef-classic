@@ -121,35 +121,53 @@ public abstract class CachedLabel extends Label {
 	 */
 	abstract protected void paintCachedLabel ( Graphics graphics );
 	
+	/**
+	 * Override this method to return the background colour for the text
+	 * Note: Text must have a background color since it is being stored in 
+	 * an image (You can set it to white if you want)
+	 * @return
+	 */
+	protected abstract Color getBackgroundTextColor();	
+	
+	
 	/*
 	 * (non-Javadoc)
 	 * @see org.eclipse.draw2d.Label#paintFigure(org.eclipse.draw2d.Graphics)
 	 */
-	protected void paintFigure(Graphics graphics) {
+	protected void paintFigure(Graphics graphics) {		
+		this.paintCachedLabel(graphics);
+	
+		if (isOpaque())
+			super.paintFigure(graphics);
+		Rectangle bounds = getBounds();
+		graphics.translate(bounds.x, bounds.y);
+		
+		Image icon = getIcon();
+		
+		if (icon != null)
+			graphics.drawImage(icon, getIconLocation());	
 
-		int width = this.getBounds().width;
-		int height = this.getBounds().height;
+		int width = getSubStringTextSize().width;
+		int height = getSubStringTextSize().height;
 		
 		if (cachedImage == null || shouldInvalidateCache()) {
 			invalidationRequired = false;	
 			cleanImage();
 			cachedImage = new Image(Display.getCurrent(), width, height);
+			
 			ZestPlugin.getDefault().addImage(cachedImage.toString(), cachedImage);
 			
 			GC gc = new GC(cachedImage);
 			
-			Point currentLocation = getLocation();
-			setLocation(new Point(0,0));
 			Graphics graphics2 = new SWTGraphics(gc);
-			// draw the text
-			this.paintCachedLabel(graphics2);
-			super.paintFigure(graphics2);
-			setLocation(currentLocation);
+			graphics2.setBackgroundColor(getBackgroundTextColor());
+			graphics2.fillRectangle(0,0,width,height);
+			graphics2.drawText(getSubStringText(),new Point(0,0));
 			gc.dispose();
 			
 		}
-		Rectangle oldBounds = new Rectangle(0, 0, cachedImage.getBounds().width, cachedImage.getBounds().height);
-		graphics.drawImage(cachedImage, oldBounds, this.getBounds());
+		graphics.drawImage(cachedImage, getTextLocation());
+		graphics.translate(-bounds.x, -bounds.y);		
 	}
 	
 	/**
