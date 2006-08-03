@@ -14,13 +14,10 @@ import org.eclipse.draw2d.ConnectionLayer;
 import org.eclipse.draw2d.FreeformLayer;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.LayeredPane;
-import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.LayerConstants;
 import org.eclipse.gef.editparts.GuideLayer;
 import org.eclipse.gef.editparts.LayerManager;
 import org.eclipse.gef.editparts.SimpleRootEditPart;
-import org.eclipse.gef.editparts.ZoomManager;
-import org.eclipse.mylar.zest.core.ZestStyles;
 import org.eclipse.mylar.zest.core.internal.gefx.ZestRootEditPart;
 import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphEditPart;
 
@@ -36,7 +33,6 @@ import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphEditPart;
 public class NestedGraphRootEditPart extends SimpleRootEditPart
 		implements LayerConstants, ZestRootEditPart, LayerManager {
 	
-	private ZoomManager zoomManager;
 	protected GraphEditPart graphEditPart = null;
 	private LayeredPane innerLayers;
 	private LayeredPane printableLayers;
@@ -44,10 +40,6 @@ public class NestedGraphRootEditPart extends SimpleRootEditPart
 	/**
 	 * Initializes the root edit part with the given zoom style.
 	 * This can be real zooming, fake zooming, or expand/collapse zooming.
-	 * @param zoomStyle
-	 * @see ZestStyles#ZOOM_REAL
-	 * @see ZestStyles#ZOOM_FAKE
-	 * @see ZestStyles#ZOOM_EXPAND
 	 */
 	public NestedGraphRootEditPart( ) {
 		super();
@@ -55,27 +47,11 @@ public class NestedGraphRootEditPart extends SimpleRootEditPart
 	}
 	
 	/**
-	 * Gets the root NestedFigure.
-	 * @return IFigure
+	 * Gets the nested edit part
+	 * @deprecated
+	 * TODO: Remove this once the zoom in on node is moved to the NestedGraphEditPart or panes below that
+	 * @return
 	 */
-	
-	protected IFigure getRootNestedFigure() {
-		// The structure is really Figure -> FreeFormLayer -> NestedFreeformLayer
-		IFigure fig = getFigure();
-		if (getChildren().size() > 0) {
-			fig = ((GraphicalEditPart)this.getChildren().get(0)).getFigure();
-			if ( fig instanceof FreeformLayer ) {
-				
-				fig = (IFigure)fig.getChildren().get(0);
-			}
-		}
-		return fig;
-	}
-	
-	
-	
-
-	
 	public NestedGraphEditPart getNestedEditPart() {
 		return (NestedGraphEditPart) getChildren().get(0);
 	}
@@ -111,43 +87,15 @@ public class NestedGraphRootEditPart extends SimpleRootEditPart
 	 * @param layeredPane the parent for the created layers
 	 */
 	protected void createLayers(LayeredPane layeredPane) {
-		layeredPane.add(getPrintableLayers(), PRINTABLE_LAYERS);
+		layeredPane.add(new LayeredPane(), PRIMARY_LAYER);
+		layeredPane.add(new ConnectionLayer(), CONNECTION_LAYER);
+		layeredPane.add(new ConnectionLayer(), CONNECTION_FEEDBACK_LAYER);
 		layeredPane.add(new FreeformLayer(), HANDLE_LAYER);
 		layeredPane.add(new FeedbackLayer(), FEEDBACK_LAYER);
 		layeredPane.add(new GuideLayer(), GUIDE_LAYER);
 	}
 	
-	/**
-	 * Returns the LayeredPane that should be used during printing. This layer will be
-	 * identified using {@link LayerConstants#PRINTABLE_LAYERS}.
-	 * @return the layered pane containing all printable content
-	 */
-	protected LayeredPane getPrintableLayers() {
-		if (printableLayers == null)
-			printableLayers = createPrintableLayers();
-		return printableLayers;
-	}
 	
-	
-	/**
-	 * Gets the zoom manager for the root edit part
-	 */
-	public ZoomManager getZoomManager() {
-		return this.zoomManager;
-	}
-	
-
-	
-	/* (non-Javadoc)
-	 * @see org.eclipse.mylar.zest.core.internal.gefx.GraphRootEditPart#createPrintableLayers()
-	 */
-	protected LayeredPane createPrintableLayers() {
-		LayeredPane layeredPane = new LayeredPane();
-		layeredPane.add(new LayeredPane(), PRIMARY_LAYER);
-		layeredPane.add(new ConnectionLayer(), CONNECTION_LAYER);
-		layeredPane.add(new ConnectionLayer(), CONNECTION_FEEDBACK_LAYER);
-		return layeredPane;
-	}
 
 	/**
 	 * Sets the main edit part for the model. You should be able to 
@@ -172,13 +120,11 @@ public class NestedGraphRootEditPart extends SimpleRootEditPart
 		return printableLayers.getLayer(key);
 	}
 	
-	class FeedbackLayer
-	extends FreeformLayer
-{
-	FeedbackLayer() {
-		setEnabled(false);
+	class FeedbackLayer extends FreeformLayer {
+		FeedbackLayer() {
+			setEnabled(false);
+		}
 	}
-}
 
 	
 }
