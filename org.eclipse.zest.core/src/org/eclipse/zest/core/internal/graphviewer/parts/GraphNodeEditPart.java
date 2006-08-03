@@ -18,6 +18,7 @@ import java.util.List;
 import org.eclipse.draw2d.ChopboxAnchor;
 import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.LayoutAnimator;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -114,7 +115,7 @@ public class GraphNodeEditPart extends AbstractGraphicalEditPart implements
 	 */
 	protected IFigure createFigure() {
 		IFigure f = createFigureForModel();
-
+		f.addLayoutListener(LayoutAnimator.getDefault());
 		//f.setOpaque(true); // non-transparent figure
 		return f;
 	}

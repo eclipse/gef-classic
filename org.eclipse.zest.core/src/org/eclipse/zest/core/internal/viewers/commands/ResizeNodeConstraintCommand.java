@@ -110,7 +110,7 @@ public class ResizeNodeConstraintCommand extends Command {
 
 		node.setSizeInLayout(newBounds.getSize().width, newBounds.getSize().height);
 		if (enforceBounds && false) {
-			Rectangle rect = ((NestedGraphNodeEditPart)editPart.getParent()).getScreenBounds();
+			Rectangle rect = ((NestedGraphNodeEditPart)editPart.getParent()).getAbsoluteBounds();
 			if ((newBounds.right() > rect.width)) {
 				newBounds.x = rect.width - newBounds.width;
 			}

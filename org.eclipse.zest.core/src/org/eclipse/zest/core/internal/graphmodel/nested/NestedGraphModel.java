@@ -143,8 +143,9 @@ public class NestedGraphModel extends GraphModel {
 		}
 		currentNode = node;
 		currentNode.setCurrent(true);
-		currentNode.setChildrenVisible(true);
 		firePropertyChange(NODE_FOCUS_PROP, old, currentNode);
+		currentNode.setChildrenVisible(true);
+		
 	}
 
 	/**

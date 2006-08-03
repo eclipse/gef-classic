@@ -15,6 +15,7 @@ import org.eclipse.mylar.zest.core.internal.gefx.ZestRootEditPart;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelConnection;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedGraphModel;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedGraphModelNode;
+import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedPane;
 import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphEditPartFactory;
 
 
@@ -44,7 +45,9 @@ public class NestedGraphEditPartFactory extends GraphEditPartFactory {
 			graphRootEditPart.setModelRootEditPart(editPart);
 		} else if (model instanceof GraphModelConnection) {
 			editPart = new NestedGraphConnectionEditPart();
-			
+		} else if ( model instanceof NestedPane ) {
+			editPart = new NestedPaneArea(((NestedPane)model).getPaneType());
+		
 		} else {
 			editPart = super.createEditPart(context, model);
 		}

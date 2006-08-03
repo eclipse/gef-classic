@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.mylar.zest.core.internal.nestedgraphviewer.parts;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.draw2d.ActionEvent;
@@ -29,6 +30,7 @@ import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedGraphModelNo
 import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphNodeEditPart;
 import org.eclipse.mylar.zest.core.internal.nestedgraphviewer.NestedGraphViewerImpl;
 import org.eclipse.mylar.zest.core.internal.nestedgraphviewer.policies.NestedGraphXYLayoutEditPolicy;
+import org.eclipse.mylar.zest.core.internal.viewers.figures.AspectRatioScaledFigure;
 import org.eclipse.mylar.zest.core.internal.viewers.figures.NestedFigure;
 import org.eclipse.mylar.zest.core.internal.viewers.figures.PlusMinusFigure;
 import org.eclipse.swt.widgets.Display;
@@ -58,13 +60,9 @@ public class NestedGraphNodeEditPart extends GraphNodeEditPart implements Action
 	 * 
 	 * @return Rectangle in absolute coordinates
 	 */
-	public Rectangle getScreenBounds() {
+	public Rectangle getAbsoluteBounds() {
 		Rectangle bounds = getFigure().getBounds().getCopy();
-		
-		//Point p = bounds.getLocation();
-		//getFigure().translateToParent(bounds);
 		getFigure().translateToAbsolute(bounds);
-		//bounds.setLocation(p);
 		return bounds;
 	}
 
@@ -166,6 +164,18 @@ public class NestedGraphNodeEditPart extends GraphNodeEditPart implements Action
 	 */
 	protected List getModelChildren() {
 		return getCastedModel().getChildren();
+	}
+	
+	/**
+	 * The scaled figure that child NestedFigures will be placed on.
+	 * @return scaled figure that child NestedFigures will be placed on.
+	 */
+	public AspectRatioScaledFigure getScaledFigure() {
+		for (Iterator i = getFigure().getChildren().iterator(); i.hasNext();) {
+			Object next = i.next();
+			if (next instanceof AspectRatioScaledFigure) return (AspectRatioScaledFigure) next;
+		}
+		return null;
 	}
 
 	/*

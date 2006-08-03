@@ -21,7 +21,7 @@ import org.eclipse.gef.editparts.LayerManager;
 import org.eclipse.mylar.zest.core.IZestColorConstants;
 import org.eclipse.mylar.zest.core.ZestPlugin;
 import org.eclipse.mylar.zest.core.ZestStyles;
-import org.eclipse.mylar.zest.core.internal.gefx.NonThreadedGraphicalViewer;
+import org.eclipse.mylar.zest.core.internal.gefx.NestedNonThreadedGraphicalViewer;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedGraphModel;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedGraphModelNode;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NodeChildrenComparator;
@@ -34,8 +34,6 @@ import org.eclipse.mylar.zest.layouts.LayoutEntity;
 import org.eclipse.mylar.zest.layouts.LayoutRelationship;
 import org.eclipse.mylar.zest.layouts.LayoutStyles;
 import org.eclipse.mylar.zest.layouts.algorithms.GridLayoutAlgorithm;
-import org.eclipse.swt.events.ControlEvent;
-import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Widget;
 
@@ -45,7 +43,7 @@ import org.eclipse.swt.widgets.Widget;
  * 
  * @author Chris Callendar 
  */
-public class NestedGraphViewerImpl extends NonThreadedGraphicalViewer  {
+public class NestedGraphViewerImpl extends NestedNonThreadedGraphicalViewer  {
 	
 	private NestedGraphModel model = null;
 	private NestedGraphEditPartFactory editPartFactory = null;
@@ -73,20 +71,6 @@ public class NestedGraphViewerImpl extends NonThreadedGraphicalViewer  {
 	public NestedGraphViewerImpl(Composite parent, int style) {
 		super(parent);
 		setStyle(style);
-		this.getFigureCanvas().addControlListener(new ControlListener() {
-
-			public void controlMoved(ControlEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			public void controlResized(ControlEvent e) {
-				resize(getFigureCanvas().getSize().x, getFigureCanvas().getSize().y);
-				// TODO Auto-generated method stub
-				
-			}
-			
-		});
 	}
 	
 	/**
@@ -139,6 +123,7 @@ public class NestedGraphViewerImpl extends NonThreadedGraphicalViewer  {
 		}
 		this.model = model;
 		fireModelUpdate();
+		//super.setContents(model);
 	}
 	
 	/**
@@ -171,14 +156,14 @@ public class NestedGraphViewerImpl extends NonThreadedGraphicalViewer  {
 		if (this.getRootEditPart() instanceof NestedGraphRootEditPart) {
 			NestedGraphRootEditPart rootEditPart = (NestedGraphRootEditPart)getRootEditPart();
 			if ( previousNode == null ) {
-				rootEditPart.zoomInOnNode( (NestedGraphNodeEditPart) nodeToMoveTo.getEditPart() );
+				rootEditPart.getNestedEditPart().zoomInOnNode( (NestedGraphNodeEditPart) nodeToMoveTo.getEditPart() );
 				//removeConnections();
 				super.setContents(model);
 			}
 			else if ( nodeToMoveTo.getRelationshipBetweenNodes( previousNode ) == NestedGraphModelNode.DESCENDANT ) {
 				//removeConnections();
 				
-				rootEditPart.zoomInOnNode( (NestedGraphNodeEditPart) nodeToMoveTo.getEditPart() );
+				rootEditPart.getNestedEditPart().zoomInOnNode( (NestedGraphNodeEditPart) nodeToMoveTo.getEditPart() );
 				
 				super.setContents(model);
 				
@@ -198,7 +183,8 @@ public class NestedGraphViewerImpl extends NonThreadedGraphicalViewer  {
 				
 				// now do the zoom (sizes and locations should be set)
 				rootEditPart = (NestedGraphRootEditPart)getRootEditPart();
-				rootEditPart.zoomOutOnNode((NestedGraphNodeEditPart)previousNode.getEditPart());
+				rootEditPart.getNestedEditPart().zoomOutOnNode((NestedGraphNodeEditPart)previousNode.getEditPart());
+				super.setContents(model);
 			}
 			else {
 				super.setContents(model);
@@ -250,6 +236,8 @@ public class NestedGraphViewerImpl extends NonThreadedGraphicalViewer  {
 			}
 			layoutAlgorithm.setEntityAspectRatio(width / height);
 			try {
+				//perform an update so that the state of all the figures are saved
+				getLightweightSystem().getUpdateManager().performUpdate();
 				Animation.markBegin();
 				layoutAlgorithm.applyLayout(entities, new LayoutRelationship[0], 0, 0, width - 20, height - 40, false, false);
 				Animation.run(1000);
@@ -366,27 +354,27 @@ public class NestedGraphViewerImpl extends NonThreadedGraphicalViewer  {
      * @param widthHint
      * @param heightHint
      */
-    public void resize(int widthHint, int heightHint) {
-		if (getEditPartRegistry().containsKey(model)) {
-			//System.out.println(getRootEditPart());
-			((NestedGraphRootEditPart)getRootEditPart()).resize(widthHint, heightHint);
-			//NestedGraphEditPart editPart = (NestedGraphEditPart)getEditPartRegistry().get(model);
-			//NestedFreeformLayer layer = (NestedFreeformLayer)editPart.getFigure();
-			
-			/*
-			Rectangle mainArea = layer.resize(widthHint, heightHint);
-			getFigureCanvas().layout(true, true);
-			Rectangle oldArea = model.getMainArea();
-			
-			model.setMainArea(mainArea);
-			if (oldArea.isEmpty()) {
-				doLayout(model.getCurrentNode(), mainArea.width, mainArea.height);
-			}
-			*/
-			
-			
-		}
-    }
+//    public void resize(int widthHint, int heightHint) {
+//		if (getEditPartRegistry().containsKey(model)) {
+//			//System.out.println(getRootEditPart());
+//			((NestedGraphRootEditPart)getRootEditPart()).resize(widthHint, heightHint);
+//			//NestedGraphEditPart editPart = (NestedGraphEditPart)getEditPartRegistry().get(model);
+//			//NestedFreeformLayer layer = (NestedFreeformLayer)editPart.getFigure();
+//			
+//			/*
+//			Rectangle mainArea = layer.resize(widthHint, heightHint);
+//			getFigureCanvas().layout(true, true);
+//			Rectangle oldArea = model.getMainArea();
+//			
+//			model.setMainArea(mainArea);
+//			if (oldArea.isEmpty()) {
+//				doLayout(model.getCurrentNode(), mainArea.width, mainArea.height);
+//			}
+//			*/
+//			
+//			
+//		}
+//    }
 
 	/**
 	 * Sets the layout algorithm to use and re-runs the layout.

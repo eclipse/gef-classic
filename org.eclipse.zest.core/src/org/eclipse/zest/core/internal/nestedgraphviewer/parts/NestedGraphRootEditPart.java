@@ -10,17 +10,10 @@
  *******************************************************************************/
 package org.eclipse.mylar.zest.core.internal.nestedgraphviewer.parts;
 
-import java.util.List;
-
 import org.eclipse.draw2d.ConnectionLayer;
-import org.eclipse.draw2d.FreeformFigure;
 import org.eclipse.draw2d.FreeformLayer;
-import org.eclipse.draw2d.FreeformLayeredPane;
-import org.eclipse.draw2d.FreeformViewport;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.LayeredPane;
-import org.eclipse.draw2d.Viewport;
-import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.LayerConstants;
 import org.eclipse.gef.editparts.GuideLayer;
@@ -30,8 +23,6 @@ import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.mylar.zest.core.ZestStyles;
 import org.eclipse.mylar.zest.core.internal.gefx.ZestRootEditPart;
 import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphEditPart;
-import org.eclipse.mylar.zest.core.internal.nestedgraphviewer.NestedGraphViewerImpl;
-import org.eclipse.mylar.zest.core.internal.viewers.figures.NestedFigure;
 
 /**
  * Extends GraphRootEditPart to add zooming support.
@@ -64,19 +55,6 @@ public class NestedGraphRootEditPart extends SimpleRootEditPart
 	}
 	
 	/**
-	 * Gets the maximum bounds for zooming.  This will be the size
-	 * of the root NestedFigure.
-	 * @return Rectangle
-	 */
-	protected Rectangle getMaxBounds() {
-		Rectangle bounds = getRootNestedFigure().getBounds();
-		Rectangle maxBounds = getFigure().getBounds().getCopy();
-		getFigure().translateToParent(maxBounds);
-		return bounds;
-	}
-	
-
-	/**
 	 * Gets the root NestedFigure.
 	 * @return IFigure
 	 */
@@ -96,35 +74,10 @@ public class NestedGraphRootEditPart extends SimpleRootEditPart
 	
 	
 	
-	/**
-	 * Zooms in on the given node.
-	 * The type of zooming (real, fake, expand) depends on the zoomStyle.
-	 * @param editPart
-	 */
-	public void zoomInOnNode(NestedGraphNodeEditPart editPart) {
-		if (editPart == null)
-			return;
-		
-		Rectangle maxBounds = getMaxBounds();
-		Rectangle startBounds = editPart.getScreenBounds();
-		getRootNestedFigure().translateToRelative(startBounds);
 
-		doExpandZoom(startBounds, maxBounds, 10, (NestedFigure)editPart.getFigure());
-	}
 	
-	/**
-	 * Zooms out on the given node.  
-	 * The type of zooming (real, fake, collapse) depends on the zoomStyle.
-	 * @param editPart
-	 */
-	
-	public void zoomOutOnNode( NestedGraphNodeEditPart editPart) {
-		if (editPart == null)
-			return;
-		
-		Rectangle maxBounds = getMaxBounds();
-		Rectangle startBounds = editPart.getScreenBounds();
-		doCollapseZoom(maxBounds, startBounds, 10, (NestedFigure)editPart.getFigure());
+	public NestedGraphEditPart getNestedEditPart() {
+		return (NestedGraphEditPart) getChildren().get(0);
 	}
 	
 	/**
@@ -148,30 +101,9 @@ public class NestedGraphRootEditPart extends SimpleRootEditPart
 	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
 	 */
 	protected IFigure createFigure() {
-		Viewport viewport = new FreeformViewport() {
-			/**
-			 * Readjusts the scrollbars.  In doing so, it gets the freeform extent of the contents and
-			 * unions this rectangle with this viewport's client area, then sets the contents freeform
-			 * bounds to be this unioned rectangle.  Then proceeds to set the scrollbar values based
-			 * on this new information.
-			 * @see Viewport#readjustScrollBars()
-			 */
-			protected void readjustScrollBars() {
-				if (getContents() == null)
-					return;
-				if (!(getContents() instanceof FreeformFigure))
-					return;
-				FreeformFigure ff = (FreeformFigure)getContents();
-				Rectangle clientArea = getClientArea();
-				Rectangle bounds = ff.getFreeformExtent().getCopy();
-				bounds.union(0, 0, clientArea.width, clientArea.height);
-				ff.setFreeformBounds(bounds);
-			}
-		};
-		innerLayers = new FreeformLayeredPane();
+		innerLayers = new LayeredPane();
 		createLayers(innerLayers);
-		viewport.setContents(innerLayers);
-		return viewport;
+		return innerLayers;
 	}
 	
 	/**
@@ -196,100 +128,6 @@ public class NestedGraphRootEditPart extends SimpleRootEditPart
 		return printableLayers;
 	}
 	
-
-	/**
-	 * Draws an expanding dotted rectangle figure around the node to give the impression
-	 * of zooming in.  The dotted rectangle starts at the center of the node.
-	 */
-	private void doExpandZoom(Rectangle startBounds, Rectangle endBounds, final int STEPS, NestedFigure fig) {
-		if (STEPS > 0) {
-			double xleft = startBounds.x - endBounds.x;
-			double ytop = startBounds.y - endBounds.y;
-			double xright = endBounds.right() - startBounds.right();
-			double ybottom = endBounds.bottom() - startBounds.bottom();
-			double xLeftScale = xleft / (double)STEPS, 
-				xRightScale = xright / (double)STEPS;
-			double yTopScale = ytop / (double)STEPS, 
-				yBottomScale = ybottom / (double)STEPS;			
-			
-			IFigure parent = fig.getParent();
-			parent.remove(fig);
-			getFigure().add(fig);
-			fig.setOpaque(true);
-			for (int i = 0; i <= STEPS; i++) {
-				int x = (int)(startBounds.x - (i * xLeftScale));
-				int y = (int)(startBounds.y - (i * yTopScale));
-				int w = (int)(startBounds.width + (i * xLeftScale) + (i * xRightScale));
-				int h = (int)(startBounds.height + (i * yTopScale) + (i * yBottomScale));
-				fig.setBounds(new Rectangle(x, y, w, h));		
-				getViewer().flush();
-				this.sleep(25);
-			}
-			fig.setOpaque(false);
-			
-			fig.setBounds(endBounds);
-			getViewer().flush();
-			
-			getFigure().remove(fig);
-		}
-		
-	}
-	
-	
-	public void resize(int width, int height) {
-		getFigure().setSize(width, height);
-		List l = getChildren();
-		((NestedGraphEditPart)l.get(0)).resize(width, height);
-	}
-	
-	
-	/**
-	 * Draws an expanding dotted rectangle figure around the node to give the impression
-	 * of zooming in.  The dotted rectangle starts at the center of the node.
-	 */
-	private void doCollapseZoom(Rectangle startBounds, Rectangle endBounds, final int STEPS, NestedFigure fig) {
-		
-		if (STEPS > 0) {
-			double xleft = startBounds.x - endBounds.x;
-			double ytop = startBounds.y - endBounds.y;
-			double xright = endBounds.right() - startBounds.right();
-			double ybottom = endBounds.bottom() - startBounds.bottom();
-			double xLeftScale = xleft / (double)STEPS, 
-				xRightScale = xright / (double)STEPS;
-			double yTopScale = ytop / (double)STEPS, 
-				yBottomScale = ybottom / (double)STEPS;
-
-			
-			IFigure parent = fig.getParent();
-			parent.remove(fig);
-			getFigure().add(fig);
-			fig.setOpaque(true);
-			for (int i = 0; i <= STEPS; i++) {
-				int x = (int)(startBounds.x - (i * xLeftScale));
-				int y = (int)(startBounds.y - (i * yTopScale));
-				int w = (int)(startBounds.width + (i * xLeftScale) + (i * xRightScale));
-				int h = (int)(startBounds.height + (i * yTopScale) + (i * yBottomScale));
-				fig.setBounds(new Rectangle(x, y, w, h));		
-				((NestedGraphViewerImpl)getViewer()).flush();
-				this.sleep(25);
-			}
-			fig.setOpaque(false);
-			
-			fig.setBounds(endBounds);
-			getViewer().flush();
-
-			getFigure().remove(fig);
-			parent.add(fig);
-			
-			getRootNestedFigure().translateToAbsolute(endBounds);
-			fig.translateToRelative(endBounds);
-			fig.setBounds(endBounds);
-			
-		}
-		
-	}
-	
-
 	
 	/**
 	 * Gets the zoom manager for the root edit part
@@ -298,27 +136,16 @@ public class NestedGraphRootEditPart extends SimpleRootEditPart
 		return this.zoomManager;
 	}
 	
-	/**
-	 * Convenience method for calling Thread.sleep
-	 * and catching the InterruptedException.
-	 * @param millis the number of milliseconds to sleep
-	 */
-	protected void sleep(long millis) {
-		try {
-			Thread.sleep(millis);
-		} catch (InterruptedException ignore) {}
-	}
+
 	
 	/* (non-Javadoc)
 	 * @see org.eclipse.mylar.zest.core.internal.gefx.GraphRootEditPart#createPrintableLayers()
 	 */
 	protected LayeredPane createPrintableLayers() {
-		FreeformLayeredPane layeredPane = new FreeformLayeredPane();
-		//override to put the connection layers on the top
-		layeredPane.add(new FreeformLayer(), PRIMARY_LAYER);
+		LayeredPane layeredPane = new LayeredPane();
+		layeredPane.add(new LayeredPane(), PRIMARY_LAYER);
 		layeredPane.add(new ConnectionLayer(), CONNECTION_LAYER);
 		layeredPane.add(new ConnectionLayer(), CONNECTION_FEEDBACK_LAYER);
-		
 		return layeredPane;
 	}
 

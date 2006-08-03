@@ -16,13 +16,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.FigureCanvas;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.gef.EditDomain;
 import org.eclipse.gef.MouseWheelHandler;
 import org.eclipse.gef.MouseWheelZoomHandler;
-import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
+import org.eclipse.gef.ui.parts.GraphicalViewerImpl;
 import org.eclipse.mylar.zest.layouts.progress.ProgressEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlEvent;
@@ -33,22 +32,31 @@ import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 
 /**
  * 
  * @author Ian Bull
  * @author Chris Callendar
  */
-public abstract class NonThreadedGraphicalViewer extends ScrollingGraphicalViewer {
+public abstract class NestedNonThreadedGraphicalViewer extends GraphicalViewerImpl {
 
 	private List revealListeners = null;
 	
 	
 	/**
+	 * @see org.eclipse.gef.EditPartViewer#createControl(org.eclipse.swt.widgets.Composite)
+	 */
+	public Control createControl(Composite composite) {
+		setControl(new Canvas(composite, SWT.DOUBLE_BUFFERED));
+		return getControl();
+	}
+	
+	/**
 	 * ThreadedGraphicalViewer constructor.
 	 * @param parent The composite that this viewer will be added to.
 	 */
-	public NonThreadedGraphicalViewer(Composite parent)  {
+	public NestedNonThreadedGraphicalViewer(Composite parent)  {
 		super();
 		
 		revealListeners = new ArrayList(1);
@@ -60,7 +68,7 @@ public abstract class NonThreadedGraphicalViewer extends ScrollingGraphicalViewe
 		ed.addViewer( this );
 		setEditDomain( ed );
 		hookControl();
-		getFigureCanvas().setScrollBarVisibility(FigureCanvas.NEVER);
+
 		
 
 		getControl().addPaintListener(new PaintListener() {
@@ -168,8 +176,8 @@ public abstract class NonThreadedGraphicalViewer extends ScrollingGraphicalViewe
 	 * @return Dimension in absolute coords
 	 */
 	public Dimension getCanvasSize() {
-		Dimension dim = new Dimension(getFigureCanvas().getSize());
-		dim.shrink(getFigureCanvas().getBorderWidth(), getFigureCanvas().getBorderWidth());
+		Dimension dim = new Dimension(this.getControl().getSize());
+		//dim.shrink(getRootFigure().getBorderWidth(), getRootFigure().getBorderWidth());
 		return dim;
 	}
 		
