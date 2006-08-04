@@ -69,8 +69,6 @@ public abstract class NestedNonThreadedGraphicalViewer extends GraphicalViewerIm
 		setEditDomain( ed );
 		hookControl();
 
-		
-
 		getControl().addPaintListener(new PaintListener() {
 			public void paintControl(PaintEvent e) {
 				if (!revealListeners.isEmpty()) {

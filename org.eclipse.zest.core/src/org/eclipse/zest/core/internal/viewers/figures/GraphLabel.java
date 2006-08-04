@@ -66,16 +66,12 @@ public class GraphLabel extends CachedLabel {
 		this.borderColor = ColorConstants.black;
 		this.borderWidth = 1;
 		this.arcWidth = 8;
-		super.setOpaque(false);
 		this.setLayoutManager(new StackLayout());
 		this.setBorder(new MarginBorder(1));
 	}
-
-	/* (non-Javadoc)
-	 * @see org.eclipse.draw2d.Figure#setOpaque(boolean)
-	 */
+	
 	public void setOpaque(boolean opaque) {
-		// do nothing, we are forcing non-opaqueness
+		// TODO Auto-generated method stub
 	}
 	
 	/* (non-Javadoc)
@@ -108,9 +104,8 @@ public class GraphLabel extends CachedLabel {
 	
 	/* (non-Javadoc)
 	 * @see org.eclipse.draw2d.Label#paintFigure(org.eclipse.draw2d.Graphics)
-	 */
-	               
-	protected void paintCachedLabel(Graphics graphics) {
+	 */           
+	public void paint(Graphics graphics) {
 		
 		graphics.setForegroundColor(getForegroundColor());
 		graphics.setBackgroundColor(getBackgroundColor());
@@ -119,7 +114,7 @@ public class GraphLabel extends CachedLabel {
 		Rectangle bounds = getBounds().getCopy();
 		graphics.fillRoundRectangle(bounds, arcWidth, arcWidth);
 		
-		
+		super.paint(graphics);
 		// paint the border
 		graphics.setForegroundColor(getBorderColor());
 		graphics.setLineWidth(getBorderWidth());

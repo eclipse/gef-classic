@@ -115,12 +115,7 @@ public abstract class CachedLabel extends Label {
 		super.setBounds(rect);
 	}
 	
-	/**
-	 * Override this method to draw on the cahced image
-	 * @param graphics
-	 */
-	abstract protected void paintCachedLabel ( Graphics graphics );
-	
+
 	/**
 	 * Override this method to return the background colour for the text
 	 * Note: Text must have a background color since it is being stored in 
@@ -134,11 +129,10 @@ public abstract class CachedLabel extends Label {
 	 * (non-Javadoc)
 	 * @see org.eclipse.draw2d.Label#paintFigure(org.eclipse.draw2d.Graphics)
 	 */
-	protected void paintFigure(Graphics graphics) {		
-		this.paintCachedLabel(graphics);
-	
+	protected void paintFigure(Graphics graphics) {
+		
 		if (isOpaque())
-			super.paintFigure(graphics);
+			graphics.fillRectangle(getBounds());
 		Rectangle bounds = getBounds();
 		graphics.translate(bounds.x, bounds.y);
 		
@@ -149,7 +143,7 @@ public abstract class CachedLabel extends Label {
 
 		int width = getSubStringTextSize().width;
 		int height = getSubStringTextSize().height;
-		
+
 		if (cachedImage == null || shouldInvalidateCache()) {
 			invalidationRequired = false;	
 			cleanImage();
@@ -167,7 +161,9 @@ public abstract class CachedLabel extends Label {
 			
 		}
 		graphics.drawImage(cachedImage, getTextLocation());
-		graphics.translate(-bounds.x, -bounds.y);		
+		graphics.translate(-bounds.x, -bounds.y);
+		this.paintBorder(graphics);
+		
 	}
 	
 	/**
@@ -188,7 +184,6 @@ public abstract class CachedLabel extends Label {
 		invalidationRequired = true;
 	}	
 	
-	
 	private void cleanImage() {
 		if ( cachedImage != null ) {
 			
@@ -197,7 +192,4 @@ public abstract class CachedLabel extends Label {
 			cachedImage = null;
 		}
 	}
-	
-	
-
 }

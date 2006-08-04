@@ -16,6 +16,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.draw2d.Animation;
+import org.eclipse.draw2d.FigureCanvas;
 import org.eclipse.draw2d.LineBorder;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -136,15 +137,8 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 		this.style = style;
 		this.noOverlappingNodes = ZestStyles.checkStyle(style, ZestStyles.NO_OVERLAPPING_NODES);
 		this.allowPanning = ZestStyles.checkStyle(style, ZestStyles.PANNING);
-		this.allowMarqueeSelection = !allowPanning && ZestStyles.checkStyle(style, ZestStyles.MARQUEE_SELECTION);
-				
-		// set the scrollbar visibility
-		// TODO this doesn't work...  scrollbars never show up unless set to ALWAYS
-		//(getFigureCanvas()).setScrollBarVisibility(FigureCanvas.ALWAYS);
-//		if (hScroll || vScroll) {
-//			getFigureCanvas().setHorizontalScrollBarVisibility((hScroll ? FigureCanvas.AUTOMATIC : FigureCanvas.NEVER));
-//			getFigureCanvas().setVerticalScrollBarVisibility((vScroll ? FigureCanvas.AUTOMATIC : FigureCanvas.NEVER));
-//		}
+		this.allowMarqueeSelection = !allowPanning && ZestStyles.checkStyle(style, ZestStyles.MARQUEE_SELECTION);				
+		(getFigureCanvas()).setScrollBarVisibility(FigureCanvas.AUTOMATIC);
 		getFigureCanvas().setBorder(new LineBorder(2));
 		setLayoutAlgorithm(new GridLayoutAlgorithm(LayoutStyles.NONE), false);
 	}
