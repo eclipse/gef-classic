@@ -85,8 +85,13 @@ public class GraphModelFactory implements IGraphModelFactory {
 		model.setNodeStyle(nodeStyle);
 		//make the model have the same styles as the viewer
 		Object rels[] = getContentProvider().getElements(inputElement);
-		for ( int i = 0; i < rels.length; i++ ) {
-			createRelationship(model, rels[i], getContentProvider().getSource(rels[i]), getContentProvider().getDestination(rels[i]));
+		
+		if ( rels != null ) {
+			// If rels returns null then just continue
+			// @tag bug (134928) : An empty graph causes an NPE
+			for ( int i = 0; i < rels.length; i++ ) {
+				createRelationship(model, rels[i], getContentProvider().getSource(rels[i]), getContentProvider().getDestination(rels[i]));
+			}
 		}
 		//@tag bug(114452-MultipleArcs) : count the number of arcs between nodes, and set the curve accordingly
 		Iterator ci = model.getConnections().iterator();
