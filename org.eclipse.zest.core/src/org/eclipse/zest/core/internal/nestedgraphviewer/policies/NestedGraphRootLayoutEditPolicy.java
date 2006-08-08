@@ -66,7 +66,6 @@ public class NestedGraphRootLayoutEditPolicy extends ConstrainedLayoutEditPolicy
 	 * @see org.eclipse.gef.editpolicies.ConstrainedLayoutEditPolicy#createChangeConstraintCommand(org.eclipse.gef.EditPart, java.lang.Object)
 	 */
 	protected Command createChangeConstraintCommand(EditPart child, Object constraint) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -74,7 +73,6 @@ public class NestedGraphRootLayoutEditPolicy extends ConstrainedLayoutEditPolicy
 	 * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#getCreateCommand(org.eclipse.gef.requests.CreateRequest)
 	 */
 	protected Command getCreateCommand(CreateRequest request) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -82,7 +80,6 @@ public class NestedGraphRootLayoutEditPolicy extends ConstrainedLayoutEditPolicy
 	 * @see org.eclipse.gef.editpolicies.ConstrainedLayoutEditPolicy#getConstraintFor(org.eclipse.draw2d.geometry.Point)
 	 */
 	protected Object getConstraintFor(Point point) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -90,7 +87,6 @@ public class NestedGraphRootLayoutEditPolicy extends ConstrainedLayoutEditPolicy
 	 * @see org.eclipse.gef.editpolicies.ConstrainedLayoutEditPolicy#getConstraintFor(org.eclipse.draw2d.geometry.Rectangle)
 	 */
 	protected Object getConstraintFor(Rectangle rect) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	

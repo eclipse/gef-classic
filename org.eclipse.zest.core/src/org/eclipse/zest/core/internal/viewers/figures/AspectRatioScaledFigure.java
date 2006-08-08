@@ -230,6 +230,7 @@ public class AspectRatioScaledFigure extends Figure {// extends ScaledFigure {
 		
 	}
 
+	
 	protected boolean useLocalCoordinates() {
 		return true;
 	}

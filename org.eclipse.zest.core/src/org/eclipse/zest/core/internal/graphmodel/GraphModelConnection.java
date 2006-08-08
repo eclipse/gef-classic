@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 import org.eclipse.draw2d.Graphics;
+import org.eclipse.gef.EditPart;
 import org.eclipse.mylar.zest.core.IZestColorConstants;
 import org.eclipse.mylar.zest.core.ZestPlugin;
 import org.eclipse.mylar.zest.core.ZestStyles;
@@ -44,6 +45,7 @@ public class GraphModelConnection extends GraphItem implements LayoutRelationshi
 	
 	private GraphModelNode sourceNode;
 	private GraphModelNode destinationNode;
+	private EditPart editPart;
 	private  double weight;
 	private Color color;
 	private Color highlightColor;
@@ -462,6 +464,20 @@ public class GraphModelConnection extends GraphItem implements LayoutRelationshi
 	
 	public void setCurveDepth(int curveDepth) {
 		this.curveDepth = curveDepth;
+	}
+
+	/**
+	 * @return the editPart
+	 */
+	public EditPart getEditPart() {
+		return editPart;
+	}
+
+	/**
+	 * @param editPart the editPart to set
+	 */
+	public void setEditPart(EditPart editPart) {
+		this.editPart = editPart;
 	}
 	
 }

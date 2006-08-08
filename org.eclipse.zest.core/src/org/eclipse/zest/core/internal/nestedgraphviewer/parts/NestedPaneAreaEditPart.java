@@ -10,67 +10,65 @@
  *******************************************************************************/
 package org.eclipse.mylar.zest.core.internal.nestedgraphviewer.parts;
 
-import java.util.Collections;
 import java.util.List;
 
-import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.FreeformLayout;
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.RectangleFigure;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPolicy;
-import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedPane;
 import org.eclipse.mylar.zest.core.internal.nestedgraphviewer.policies.NestedGraphRootLayoutEditPolicy;
 
 /**
+ * A nested pane area part will create one of three kinds of pane figures,
+ * depending on context. The types are NestedPane.SUPPLIER_PANE, NestedPane.CLIENT_PANE,
+ * or NestedPain.MAIN_PANE. The main pane contains the nested graph element that
+ * the user is currently focussed on. The supplier pane contains all nodes that
+ * have arcs running "from" that node "to" the focus node, or any of its children.
+ * The client pane contains all nodes that have arcs running "to" that node "from"
+ * the focus node or any of its children.
+ * 
  * @author Ian bull
  * @author Del Myers
  */
-public class NestedPaneArea extends AbstractGraphicalEditPart {
 
-	public static final int SUPPLIER_PANE = 0;
-	public static final int MAIN_PANE = 1;
-	public static final int CLIENT_PANE = 2;
+//@tag bug(152613-Client-Supplier(fix)) : creates the figures that will hold all the nodes.
+public class NestedPaneAreaEditPart extends AbstractGraphicalEditPart {
 	
 	private int paneType = 0;
 	
-	public NestedPaneArea(int paneType) {
+	/**
+	 * 
+	 * @param paneType one of three types: NestedPane.MAIN_PANE, NestedPane.CLIENT_PANE,
+	 * NestedPane.SUPPLIER_PANE.
+	 */
+	public NestedPaneAreaEditPart(int paneType) {
 		this.paneType = paneType;
 	}
 	
 	protected IFigure createFigure() {
-		Figure f = new RectangleFigure();
-
-		
-		if ( paneType == 0 ) {
-			f.setBackgroundColor(ColorConstants.black);
-			f.setBounds(new Rectangle(0,0,100,100));
-		}
-		else if ( paneType == 1 ) {
-			f.setBackgroundColor(ColorConstants.green);
-			f.setBounds(new Rectangle(100,300,100,100));
-			f.setLayoutManager(new FreeformLayout() {
-
+		PaneFigure f = new PaneFigure(paneType);
+		switch (paneType) {
+		case NestedPane.MAIN_PANE:
+			f.getClientPanel().setLayoutManager(new FreeformLayout() {
 				protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHint) {
 					return null;
 				}
 				public void layout(IFigure container) {
-					((GraphicalEditPart)getCastedModel().getModel().getCurrentNode().getEditPart()).getFigure().setBounds(container.getBounds());
-				}});
-			
-		}
-		else if ( paneType == 2 ) {
-			f.setBackgroundColor(ColorConstants.red);
-			f.setBounds(new Rectangle(100,0,100,100));
+					if (container.getChildren().size() != 1) return;
+					IFigure figure = (IFigure) container.getChildren().get(0);
+					Rectangle bounds = container.getBounds().getCopy();
+					figure.translateToAbsolute(bounds);
+					figure.setBounds(bounds);
+				}
+			});
+		break;
 		}
 		return f;
 	}
 
-	
 	/* (non-Javadoc)
 	 * @see org.eclipse.gef.editparts.SimpleRootEditPart#createEditPolicies()
 	 */
@@ -80,18 +78,10 @@ public class NestedPaneArea extends AbstractGraphicalEditPart {
 	}
 	
 	protected List getModelChildren() {
-		if ( paneType == MAIN_PANE )
-			return getCastedModel().getModel().getNodes();
-		else
-			return Collections.EMPTY_LIST;
+		return getCastedModel().getChildren();
 	}
 	
-	
 	protected NestedPane getCastedModel() {
-		
 		return (NestedPane) getModel();
 	}	
-
-
-	
 }

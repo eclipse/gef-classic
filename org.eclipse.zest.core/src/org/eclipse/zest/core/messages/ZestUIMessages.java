@@ -29,6 +29,10 @@ public class ZestUIMessages {
 		ResourceBundle.getBundle(BUNDLE_NAME);
 	public static final String VIEW_NESTED_TOP_NODE =
 		getString("view.nested.top.node"); //$NON-NLS-1$
+	public static final String VIEW_NESTED_CLIENT_PANE =
+		getString("view.nested.client.pane"); //$NON-NLS-1$
+	public static final String VIEW_NESTED_SUPPLIER_PANE =
+		getString("view.nested.supplier.pane"); //$NON-NLS-1$
 	
 	
 	public static String getString(String key) {

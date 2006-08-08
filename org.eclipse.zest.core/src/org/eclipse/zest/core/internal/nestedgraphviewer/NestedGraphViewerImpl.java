@@ -153,19 +153,20 @@ public class NestedGraphViewerImpl extends NestedNonThreadedGraphicalViewer  {
 			nodeToMoveTo.setForegroundColor(ZestPlugin.getDefault().getColor(IZestColorConstants.GRAY));
 		}
 
+
 		if (this.getRootEditPart() instanceof NestedGraphRootEditPart) {
 			NestedGraphRootEditPart rootEditPart = (NestedGraphRootEditPart)getRootEditPart();
 			if ( previousNode == null ) {
 				rootEditPart.getNestedEditPart().zoomInOnNode( (NestedGraphNodeEditPart) nodeToMoveTo.getEditPart() );
 				//removeConnections();
-				super.setContents(model);
+				doSetContents(model);
 			}
 			else if ( nodeToMoveTo.getRelationshipBetweenNodes( previousNode ) == NestedGraphModelNode.DESCENDANT ) {
 				//removeConnections();
 				
 				rootEditPart.getNestedEditPart().zoomInOnNode( (NestedGraphNodeEditPart) nodeToMoveTo.getEditPart() );
 				
-				super.setContents(model);
+				doSetContents(model);
 				
 			}
 			else if ( nodeToMoveTo.getRelationshipBetweenNodes( previousNode ) == NestedGraphModelNode.ANCESTOR) {
@@ -184,26 +185,30 @@ public class NestedGraphViewerImpl extends NestedNonThreadedGraphicalViewer  {
 				// now do the zoom (sizes and locations should be set)
 				rootEditPart = (NestedGraphRootEditPart)getRootEditPart();
 				rootEditPart.getNestedEditPart().zoomOutOnNode((NestedGraphNodeEditPart)previousNode.getEditPart());
-				super.setContents(model);
+				doSetContents(model);
 			}
 			else {
-				super.setContents(model);
+				doSetContents(model);
 			}
 		}
 		else {
-			super.setContents(model);
+			doSetContents(model);
 		}
-		
-		
-		
-		
-		// layout the children in a grid layout
+//		 layout the children in a grid layout
 		// only happens the first time a node is the current node
 		doLayout(nodeToMoveTo,500, 500);
+			
 	}
 
 
 	
+	/**
+	 * @param model2
+	 */
+	private void doSetContents(NestedGraphModel model) {
+		super.setContents(model);	
+	}
+
 	/**
 	 * Applies a grid layout to the children of the given node ONLY if it hasn't 
 	 * been already been done.  To force the layout to run again you must call 

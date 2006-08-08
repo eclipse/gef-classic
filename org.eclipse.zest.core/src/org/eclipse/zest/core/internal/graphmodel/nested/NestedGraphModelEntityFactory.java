@@ -79,10 +79,32 @@ public class NestedGraphModelEntityFactory implements INestedGraphModelFactory {
 				node.setHighlightAdjacentNodes(highlightAdjacentNodes);
 				addChildNodes(model, data);
 			}
+			NestedGraphModelNode node = model.getRootNode();
+			//relationships have to be created only after all nodes have been
+			//otherwise, we can't connect nested nodes.
+			recursiveCreateRelationships(node);
 		}
 		return model;
 	}
 	
+	/**
+	 * @param node
+	 */
+	private void recursiveCreateRelationships(NestedGraphModelNode node) {
+		//add the sibling, children and parent relationships
+		Object data = node.getData();
+		NestedGraphModel model = node.getNestedGraphModel();
+		Object[] related = getContentProvider().getConnectedTo(data);
+		if ( related != null ) {
+			for ( int i = 0; i < related.length; i++ ) {
+				createRelationship(model, null, data, related[i]);
+			}
+		}
+		for (Iterator it = node.getChildren().iterator(); it.hasNext();) {
+			recursiveCreateRelationships((NestedGraphModelNode) it.next());
+		}
+	}
+
 	/**
 	 * Recusively adds the children nodes for the given data object.  The children
 	 * are gotten from the content provider.
@@ -125,13 +147,7 @@ public class NestedGraphModelEntityFactory implements INestedGraphModelFactory {
 			// add it to the model (must be done after adding the parent!)
 			model.addNode(data, node);
 			
-			// add the sibling, children and parent relationships 
-			Object[] related = getContentProvider().getConnectedTo(data);
-			if ( related != null ) {
-				for ( int i = 0; i < related.length; i++ ) {
-					createRelationship(model, null, data, related[i]);
-				}
-			}
+			
 		}
 		return node;
 	}

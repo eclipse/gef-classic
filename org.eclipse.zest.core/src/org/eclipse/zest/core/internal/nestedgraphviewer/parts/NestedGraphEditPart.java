@@ -11,19 +11,28 @@
 package org.eclipse.mylar.zest.core.internal.nestedgraphviewer.parts;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.draw2d.AbstractLayout;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.Layer;
+import org.eclipse.draw2d.XYLayout;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.gef.EditPolicy;
+import org.eclipse.gef.GraphicalEditPart;
+import org.eclipse.gef.LayerConstants;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphItem;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedGraphModel;
+import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedGraphModelNode;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedPane;
 import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphEditPart;
 import org.eclipse.mylar.zest.core.internal.nestedgraphviewer.NestedGraphViewerImpl;
+import org.eclipse.mylar.zest.core.internal.nestedgraphviewer.policies.NullLayoutEditPolicy;
 import org.eclipse.mylar.zest.core.internal.viewers.figures.NestedFigure;
+import org.eclipse.swt.widgets.Display;
 
 
 /**
@@ -37,6 +46,104 @@ public class NestedGraphEditPart extends GraphEditPart  {
 	NestedPane clientPane = null;
 	NestedPane mainNestedPane = null;
 	
+	/**
+	 * A class that takes a series of figures, and animates them to a final 
+	 * position.
+	 * @author Del Myers
+	 *
+	 */
+	//@tag bug(152613-Client-Supplier(fix))
+	//@tag bug(150585-TopArcs(fix))
+	private class FigureKeyFrameAnimator {
+		private ArrayList figures;
+		private ArrayList startBounds;
+		private ArrayList endBounds;
+		private ArrayList figureParents;
+		
+		FigureKeyFrameAnimator() {
+			figures = new ArrayList();
+			endBounds = new ArrayList();
+			figureParents = new ArrayList();
+			startBounds = new ArrayList();
+		}
+		
+		public void addFigures(IFigure[] parts, Rectangle[] endBounds) {
+			if (parts.length != endBounds.length) {
+				throw new IllegalArgumentException("Arrays of unequal length");
+			}
+			this.endBounds.addAll(Arrays.asList(endBounds));
+			for (int i = 0; i < parts.length; i++) {
+				IFigure figure = parts[i];
+				figures.add(figure);
+				figureParents.add(figure.getParent());
+				startBounds.add(figure.getBounds());
+			}
+		}
+		
+		/**
+		 * Starts the animation, using the given number of steps. The current thread
+		 * will suspend until the animation is complete.
+		 * @param steps the number of steps to take.
+		 */
+		public void start(final int steps) {
+			Display.getCurrent().syncExec(new Runnable() {
+				public void run() {
+					Layer feedBack = (Layer) getLayer(LayerConstants.FEEDBACK_LAYER);
+					feedBack.setLayoutManager(new XYLayout());
+					//startBounds.clear();
+					for (int i = 0; i < figures.size(); i++) {
+						IFigure figure = (IFigure) figures.get(i);
+						Rectangle figureBounds = figure.getBounds();
+						figure.translateToAbsolute(figureBounds);
+						feedBack.translateToRelative(figureBounds);
+						//startBounds.add(figureBounds);
+						//figure.getParent().remove(figure);
+						feedBack.add(figure);
+						figure.setBounds(figureBounds);
+					}
+					
+					for (int step = 0; step < steps; step++) {
+						for (int i = 0; i < figures.size(); i++) {
+							IFigure figure = (IFigure) figures.get(i);
+							Rectangle bounds = (Rectangle)endBounds.get(i);
+							Rectangle cBounds = (Rectangle) startBounds.get(i);
+							int newX = (int)(((double)(step+1)*(bounds.x - cBounds.x))/((double)steps)) + cBounds.x;
+							int newY = (int)(((double)(step+1)*(bounds.y - cBounds.y))/((double)steps)) + cBounds.y;
+							int newHeight = (int)(((double)(step+1)*(bounds.height - cBounds.height))/((double)steps)) + cBounds.height;
+							int newWidth = (int)(((double)(step+1)*(bounds.width - cBounds.width))/((double)steps)) + cBounds.width;
+							Rectangle newBounds = new Rectangle(newX, newY, newWidth, newHeight);
+							figure.setBounds(newBounds);
+							figure.setOpaque(true);
+							figure.invalidate();
+							figure.revalidate();
+						}
+						getViewer().flush();
+						sleep(25);
+					}
+					
+				}
+			});
+
+		}
+		/**
+		 * Clears all data from this animator. Normally should be called after
+		 * start().
+		 */
+		public void clear() {
+			for (int i = 0; i < figures.size(); i++) {
+				Layer feedBack = (Layer) getLayer(LayerConstants.FEEDBACK_LAYER);
+				IFigure figure = (IFigure) figures.get(i);
+				if (figure.getParent() == feedBack) {
+					feedBack.remove(figure);
+					((IFigure) figureParents.get(i)).add(figure);
+				}
+			}
+			figures.clear();
+			endBounds.clear();
+			figureParents.clear();
+			startBounds.clear();
+		}
+	}
 	
 	/**
 	 * Initializes the edit part.
@@ -46,13 +153,18 @@ public class NestedGraphEditPart extends GraphEditPart  {
 	 */
 	public NestedGraphEditPart( ) {
 		super();
-		supplierPane = new NestedPane(NestedPaneArea.SUPPLIER_PANE);
-		clientPane = new NestedPane(NestedPaneArea.CLIENT_PANE);
-		mainNestedPane = new NestedPane(NestedPaneArea.MAIN_PANE);
-		
-		
-		
+		supplierPane = new NestedPane(NestedPane.SUPPLIER_PANE);
+		clientPane = new NestedPane(NestedPane.CLIENT_PANE);
+		mainNestedPane = new NestedPane(NestedPane.MAIN_PANE);
+	
 	}	
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphEditPart#createEditPolicies()
+	 */
+	protected void createEditPolicies() {
+		installEditPolicy(EditPolicy.LAYOUT_ROLE, new NullLayoutEditPolicy());
+	}
 	
 	/**
 	 * Upon activation, attach to the model element as a property change listener.
@@ -93,12 +205,23 @@ public class NestedGraphEditPart extends GraphEditPart  {
 
 	
 	public Rectangle getMainArea() {
-		return getMainFigure().getClientArea();
+		return getMainFigure().getClientArea().getCopy();
 	}
 	
+	public Rectangle getClientPaneArea() {
+		return getClientFigure().getClientArea().getCopy();
+	}
+	
+	public Rectangle getSupplierPaneArea() {
+		return getSupplierFigure().getClientArea().getCopy();
+	}
+	
+	public NestedPaneAreaEditPart getClientPane() {
+		return (NestedPaneAreaEditPart)getChildren().get(0);
+	}
 	
 	protected IFigure getClientFigure() {
-		return (IFigure)getFigure().getChildren().get(0);
+		return (IFigure)getFigure().getChildren().get(2);
 	}
 	
 	protected IFigure getMainFigure() {
@@ -106,7 +229,7 @@ public class NestedGraphEditPart extends GraphEditPart  {
 	}
 	
 	protected IFigure getSupplierFigure() {
-		return (IFigure)getFigure().getChildren().get(2);
+		return (IFigure)getFigure().getChildren().get(0);
 	}
 	
 	/**
@@ -161,11 +284,11 @@ public class NestedGraphEditPart extends GraphEditPart  {
 		if (editPart == null)
 			return;
 		
-		Rectangle maxBounds = getMainArea();
+		//Rectangle maxBounds = getMainArea();
 		Rectangle startBounds = editPart.getAbsoluteBounds();
-		getMainFigure().translateToRelative(startBounds);
+		getLayer(LayerConstants.FEEDBACK_LAYER).translateToRelative(startBounds);
 
-		doExpandZoom(startBounds, maxBounds, 10, editPart);
+		doExpandZoom(startBounds, 10, editPart);
 	}
 	
 	
@@ -188,6 +311,7 @@ public class NestedGraphEditPart extends GraphEditPart  {
 	 * Draws an expanding dotted rectangle figure around the node to give the impression
 	 * of zooming in.  The dotted rectangle starts at the center of the node.
 	 */
+	//@tag bug(152613-Client-Supplier) : change this to use the FigureKeyFrameAnimator
 	private void doCollapseZoom(Rectangle startBounds, Rectangle endBounds, final int STEPS, NestedGraphNodeEditPart node) {
 		NestedFigure fig = (NestedFigure) node.getFigure();
 		if (STEPS > 0) {
@@ -230,11 +354,24 @@ public class NestedGraphEditPart extends GraphEditPart  {
 	 * Draws an expanding dotted rectangle figure around the node to give the impression
 	 * of zooming in.  The dotted rectangle starts at the center of the node.
 	 */
-	private void doExpandZoom(Rectangle startBounds, Rectangle endBounds, final int STEPS, NestedGraphNodeEditPart node) {
+	private void doExpandZoom(Rectangle startBounds, final int STEPS, NestedGraphNodeEditPart node) {
 		NestedFigure fig = (NestedFigure)node.getFigure();
+		FigureKeyFrameAnimator animator = new FigureKeyFrameAnimator();
+		addChildrenToAnimator(node, animator);
+		animator.start(STEPS);
 		
+		FigureKeyFrameAnimator focusAnimator = new FigureKeyFrameAnimator();
+		Rectangle endBounds = getMainArea();
+		fig.setOpaque(true);
 		
-		if (STEPS > 0) {
+		//fig.translateToRelative(bounds);
+		//getLayer(LayerConstants.FEEDBACK_LAYER).add(fig);
+		//fig.setBounds(startBounds);
+		focusAnimator.addFigures(new IFigure[]{fig}, new Rectangle[]{endBounds});
+		focusAnimator.start(STEPS);
+		animator.clear();
+		focusAnimator.clear();
+		/*if (STEPS > 0) {
 			double xleft = startBounds.x - endBounds.x;
 			double ytop = startBounds.y - endBounds.y;
 			double xright = endBounds.right() - startBounds.right();
@@ -262,10 +399,42 @@ public class NestedGraphEditPart extends GraphEditPart  {
 			((NestedGraphViewerImpl)getViewer()).flush();
 			//getMainFigure().remove(fig);
 			//parent.add(fig);
-		}
+		}*/
 		
 	}
 	
+	/**
+	 * Animates the children of the given node to place them into the correct panes.
+	 * @param node the node to get the children of.
+	 */
+	private void addChildrenToAnimator(final NestedGraphNodeEditPart node, FigureKeyFrameAnimator animator) {
+		List connectedTo = node.getCastedModel().getNodesConnectedTo();
+		GraphicalEditPart[] editPartArray = new GraphicalEditPart[connectedTo.size()];
+		IFigure[] figureArray = new IFigure[editPartArray.length];
+		for (int i = 0; i < connectedTo.size(); i++) {
+			NestedGraphModelNode to = (NestedGraphModelNode)connectedTo.get(i);
+			editPartArray[i] = ((GraphicalEditPart)to.getEditPart());
+			figureArray[i] = editPartArray[i].getFigure();
+		}
+				
+		Arrays.sort(figureArray, FigureGridLayout.SimpleComparator);
+		Rectangle[] boundss = FigureGridLayout.layoutInBounds(getClientPaneArea(), figureArray);
+		animator.addFigures(figureArray, boundss);
+		
+		List connectedFrom = node.getCastedModel().getNodesConnectedFrom();
+		editPartArray = new GraphicalEditPart[connectedFrom.size()];
+		figureArray = new IFigure[editPartArray.length];
+		for (int i = 0; i < connectedFrom.size(); i++) {
+			NestedGraphModelNode From = (NestedGraphModelNode)connectedFrom.get(i);
+			editPartArray[i] = ((GraphicalEditPart)From.getEditPart());
+			figureArray[i] = editPartArray[i].getFigure();
+		}
+				
+		Arrays.sort(figureArray, FigureGridLayout.SimpleComparator);
+		boundss = FigureGridLayout.layoutInBounds(getSupplierPaneArea(), figureArray);
+		animator.addFigures(figureArray, boundss);
+	}
+
 	/**
 	 * Convenience method for calling Thread.sleep
 	 * and catching the InterruptedException.

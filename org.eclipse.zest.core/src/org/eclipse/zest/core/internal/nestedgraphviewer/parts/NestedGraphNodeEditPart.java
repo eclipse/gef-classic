@@ -149,6 +149,8 @@ public class NestedGraphNodeEditPart extends GraphNodeEditPart implements Action
 				nestedFigure.setNestedFiguresVisible(node.getChildrenVisible());
 				nestedFigure.setScale(node.getWidthScale(), node.getHeightScale());
 				figure = nestedFigure;
+				((NestedFigure)figure).getScaledFigure().setVisible(true);
+				figure.setBounds(new Rectangle(1,0,100,100));
 			} else {
 				figure = super.createFigureForModel();
 			}

@@ -48,7 +48,6 @@ public class NestedGraphRootEditPart extends SimpleRootEditPart
 	
 	/**
 	 * Gets the nested edit part
-	 * @deprecated
 	 * TODO: Remove this once the zoom in on node is moved to the NestedGraphEditPart or panes below that
 	 * @return
 	 */
@@ -87,7 +86,7 @@ public class NestedGraphRootEditPart extends SimpleRootEditPart
 	 * @param layeredPane the parent for the created layers
 	 */
 	protected void createLayers(LayeredPane layeredPane) {
-		layeredPane.add(new LayeredPane(), PRIMARY_LAYER);
+		layeredPane.add(new LayeredPane(), PRIMARY_LAYER);	
 		layeredPane.add(new ConnectionLayer(), CONNECTION_LAYER);
 		layeredPane.add(new ConnectionLayer(), CONNECTION_FEEDBACK_LAYER);
 		layeredPane.add(new FreeformLayer(), HANDLE_LAYER);

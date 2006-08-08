@@ -10,16 +10,27 @@
  *******************************************************************************/
 package org.eclipse.mylar.zest.core.internal.graphmodel.nested;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 
 /**
  * @author Ian bull
  */
+//@tag bug(152613-Client-Supplier(fix))
 public class NestedPane {
 
+	public static final int SUPPLIER_PANE = 0;
+	public static final int MAIN_PANE = 1;
+	public static final int CLIENT_PANE = 2;
+	
 	NestedGraphModel nestedGraphModel = null;
 	private int paneType = 0;
+	List children = null;
 	public NestedPane( int paneType ) {
 		this.paneType = paneType;
+		children = new ArrayList();
 	}
 	
 	public void setModel( NestedGraphModel model ) {
@@ -34,4 +45,20 @@ public class NestedPane {
 		return this.paneType;
 	}
 	
+	public void addNode(NestedGraphModelNode node) {
+		children.add(node);
+	}
+	
+	public List getChildren() {
+		switch (getPaneType()) {
+		case MAIN_PANE:
+			return nestedGraphModel.getNodes();
+		case CLIENT_PANE:
+			return nestedGraphModel.getCurrentNode().getNodesConnectedTo();
+		case SUPPLIER_PANE:
+			return nestedGraphModel.getCurrentNode().getNodesConnectedFrom();
+		}
+		return Collections.EMPTY_LIST;
+	}
+
 }

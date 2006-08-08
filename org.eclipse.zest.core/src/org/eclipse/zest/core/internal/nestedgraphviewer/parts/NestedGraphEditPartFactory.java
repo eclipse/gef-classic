@@ -45,8 +45,9 @@ public class NestedGraphEditPartFactory extends GraphEditPartFactory {
 			graphRootEditPart.setModelRootEditPart(editPart);
 		} else if (model instanceof GraphModelConnection) {
 			editPart = new NestedGraphConnectionEditPart();
+			((GraphModelConnection)model).setEditPart(editPart);
 		} else if ( model instanceof NestedPane ) {
-			editPart = new NestedPaneArea(((NestedPane)model).getPaneType());
+			editPart = new NestedPaneAreaEditPart(((NestedPane)model).getPaneType());
 		
 		} else {
 			editPart = super.createEditPart(context, model);

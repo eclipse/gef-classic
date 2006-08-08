@@ -17,6 +17,7 @@ import java.util.List;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel;
+import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelConnection;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelNode;
 import org.eclipse.mylar.zest.layouts.NestedLayoutEntity;
 import org.eclipse.swt.graphics.Image;
@@ -403,6 +404,87 @@ public class NestedGraphModelNode extends GraphModelNode implements NestedLayout
 
 	public NestedGraphModel getNestedGraphModel() {
 		return (NestedGraphModel) this.getGraphModel();
+	}
+	
+	/**
+	 * Finds all the nodes that are connected to this node or its children.
+	 * @return a list containing NestedGraphModelNodes.
+	 */
+//	@tag bug(150585-TopArcs(fix))
+	public List getNodesConnectedTo() {
+		List connections = getConnectionsTo();
+		ArrayList targets = new ArrayList();
+		for (Iterator i = connections.iterator(); i.hasNext();) {
+			targets.add(((GraphModelConnection)i.next()).getDestination());
+		}
+		return targets;
+	}
+	
+	public List getConnectionsTo() {
+		return recursiveGetConnectionsTo(this, this);
+	}
+	/**
+	 * Recursively finds the nodes that are connected to the currentNode and its children.
+	 * @param currentNode the current node to check.
+	 * @param topNode the top node that all nodes are guaranteed to be children of.
+	 * @return the list of nodes.
+	 */
+	private List recursiveGetConnectionsTo(NestedGraphModelNode currentNode, NestedGraphModelNode topNode) {
+		List connectedTo = new ArrayList();
+		List sourceConnections = currentNode.getSourceConnections();
+		for (Iterator i = sourceConnections.iterator(); i.hasNext();) {
+			GraphModelConnection c = (GraphModelConnection) i.next();
+			NestedGraphModelNode target = (NestedGraphModelNode) c.getDestination();
+			if (topNode.getRelationshipBetweenNodes(target) == NestedGraphModelNode.ANCESTOR)
+				continue;
+			connectedTo.add(c);
+		}
+		for (Iterator i = currentNode.getChildren().iterator(); i.hasNext();) {
+			connectedTo.addAll(recursiveGetConnectionsTo((NestedGraphModelNode) i.next(), topNode));
+		}
+		return connectedTo;
+	}
+	
+	
+	/**
+	 * Finds all the nodes that are connected from this node or its children.
+	 * @return a list containing NestedGraphModelNodes.
+	 */
+	//@tag bug(150585-TopArcs(fix))
+	public List getNodesConnectedFrom() {
+		List connections = getConnectionsFrom();
+		ArrayList sources = new ArrayList();
+		for (Iterator i = connections.iterator(); i.hasNext();) {
+			sources.add(((GraphModelConnection)i.next()).getSource());
+		}
+		return sources;
+	}
+	
+	public List getConnectionsFrom() {
+		return recursiveGetConnectionsFrom(this, this);
+	}
+	
+	
+	/**
+	 * Recursively finds all nodes that are connected "from" the currentNode and its children.
+	 * @param currentNode the current node to check.
+	 * @param topNode the top node that all nodes are guaranteed to be children of.
+	 * @return the list of nodes.
+	 */
+	private List recursiveGetConnectionsFrom(NestedGraphModelNode currentNode, NestedGraphModelNode topNode) {
+		List connectedFrom = new ArrayList();
+		List targetConnections = currentNode.getTargetConnections();
+		for (Iterator i = targetConnections.iterator(); i.hasNext();) {
+			GraphModelConnection c = (GraphModelConnection) i.next();
+			NestedGraphModelNode source = (NestedGraphModelNode) c.getSource();
+			if (topNode.getRelationshipBetweenNodes(source) == NestedGraphModelNode.ANCESTOR)
+				continue;
+			connectedFrom.add(c);
+		}
+		for (Iterator i = currentNode.getChildren().iterator(); i.hasNext();) {
+			connectedFrom.addAll(recursiveGetConnectionsFrom((NestedGraphModelNode) i.next(), topNode));
+		}
+		return connectedFrom;
 	}
 
 }
