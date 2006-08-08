@@ -33,6 +33,7 @@ import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphEditPart;
 public class NestedGraphRootEditPart extends SimpleRootEditPart
 		implements LayerConstants, ZestRootEditPart, LayerManager {
 	
+	protected static final Object ANIMATION_LAYER = "nested.graph.animation.layer";
 	protected GraphEditPart graphEditPart = null;
 	private LayeredPane innerLayers;
 	private LayeredPane printableLayers;
@@ -86,7 +87,9 @@ public class NestedGraphRootEditPart extends SimpleRootEditPart
 	 * @param layeredPane the parent for the created layers
 	 */
 	protected void createLayers(LayeredPane layeredPane) {
-		layeredPane.add(new LayeredPane(), PRIMARY_LAYER);	
+		layeredPane.add(new LayeredPane(), PRIMARY_LAYER);
+		//@tag bug(153169-OccludedArcs(fix)) : put an animation layer under the connection layers
+		layeredPane.add(new FeedbackLayer(), ANIMATION_LAYER);
 		layeredPane.add(new ConnectionLayer(), CONNECTION_LAYER);
 		layeredPane.add(new ConnectionLayer(), CONNECTION_FEEDBACK_LAYER);
 		layeredPane.add(new FreeformLayer(), HANDLE_LAYER);

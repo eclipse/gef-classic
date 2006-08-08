@@ -158,12 +158,9 @@ public class NestedGraphViewerImpl extends NestedNonThreadedGraphicalViewer  {
 			NestedGraphRootEditPart rootEditPart = (NestedGraphRootEditPart)getRootEditPart();
 			if ( previousNode == null ) {
 				rootEditPart.getNestedEditPart().zoomInOnNode( (NestedGraphNodeEditPart) nodeToMoveTo.getEditPart() );
-				//removeConnections();
 				doSetContents(model);
 			}
 			else if ( nodeToMoveTo.getRelationshipBetweenNodes( previousNode ) == NestedGraphModelNode.DESCENDANT ) {
-				//removeConnections();
-				
 				rootEditPart.getNestedEditPart().zoomInOnNode( (NestedGraphNodeEditPart) nodeToMoveTo.getEditPart() );
 				
 				doSetContents(model);
@@ -171,7 +168,7 @@ public class NestedGraphViewerImpl extends NestedNonThreadedGraphicalViewer  {
 			}
 			else if ( nodeToMoveTo.getRelationshipBetweenNodes( previousNode ) == NestedGraphModelNode.ANCESTOR) {
 				checkScaling(previousNode);
-				super.setContents(model);
+				doSetContents(model);
 				getLightweightSystem().getUpdateManager().performValidation();
 				nodeToSelect = previousNode;  // select the previous node
 				
@@ -185,7 +182,7 @@ public class NestedGraphViewerImpl extends NestedNonThreadedGraphicalViewer  {
 				// now do the zoom (sizes and locations should be set)
 				rootEditPart = (NestedGraphRootEditPart)getRootEditPart();
 				rootEditPart.getNestedEditPart().zoomOutOnNode((NestedGraphNodeEditPart)previousNode.getEditPart());
-				doSetContents(model);
+				//doSetContents(model);
 			}
 			else {
 				doSetContents(model);
@@ -206,7 +203,8 @@ public class NestedGraphViewerImpl extends NestedNonThreadedGraphicalViewer  {
 	 * @param model2
 	 */
 	private void doSetContents(NestedGraphModel model) {
-		super.setContents(model);	
+		super.setContents(model);
+		((NestedGraphRootEditPart)getRootEditPart()).getNestedEditPart().filterConnections(model.getCurrentNode(), true);
 	}
 
 	/**

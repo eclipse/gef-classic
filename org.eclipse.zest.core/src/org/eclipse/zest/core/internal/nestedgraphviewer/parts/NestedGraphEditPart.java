@@ -12,6 +12,7 @@ package org.eclipse.mylar.zest.core.internal.nestedgraphviewer.parts;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.draw2d.AbstractLayout;
@@ -25,11 +26,11 @@ import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.LayerConstants;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphItem;
+import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelConnection;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedGraphModel;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedGraphModelNode;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedPane;
 import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphEditPart;
-import org.eclipse.mylar.zest.core.internal.nestedgraphviewer.NestedGraphViewerImpl;
 import org.eclipse.mylar.zest.core.internal.nestedgraphviewer.policies.NullLayoutEditPolicy;
 import org.eclipse.mylar.zest.core.internal.viewers.figures.NestedFigure;
 import org.eclipse.swt.widgets.Display;
@@ -67,13 +68,21 @@ public class NestedGraphEditPart extends GraphEditPart  {
 			startBounds = new ArrayList();
 		}
 		
-		public void addFigures(IFigure[] parts, Rectangle[] endBounds) {
-			if (parts.length != endBounds.length) {
+		/**
+		 * Adds figures to be animated. The figures should be added in the
+		 * state that the animation should start at. The endBounds is where the
+		 * figures should end up, in absolute coordinates.
+		 * @param figures the figures to move.
+		 * @param endBounds where the figures should end up, in absolute coordinates.
+		 */
+		public void addFigures(IFigure[] figuresArray, Rectangle[] endBounds) {
+			if (figuresArray.length != endBounds.length) {
 				throw new IllegalArgumentException("Arrays of unequal length");
 			}
-			this.endBounds.addAll(Arrays.asList(endBounds));
-			for (int i = 0; i < parts.length; i++) {
-				IFigure figure = parts[i];
+
+			for (int i = 0; i < figuresArray.length; i++) {
+				IFigure figure = figuresArray[i];
+				this.endBounds.add(endBounds[i]);
 				figures.add(figure);
 				figureParents.add(figure.getParent());
 				startBounds.add(figure.getBounds());
@@ -88,7 +97,8 @@ public class NestedGraphEditPart extends GraphEditPart  {
 		public void start(final int steps) {
 			Display.getCurrent().syncExec(new Runnable() {
 				public void run() {
-					Layer feedBack = (Layer) getLayer(LayerConstants.FEEDBACK_LAYER);
+					//@tag bug(153169-OccludedArcs(fix)) : use the animation layer
+					Layer feedBack = (Layer) getLayer(NestedGraphRootEditPart.ANIMATION_LAYER);
 					feedBack.setLayoutManager(new XYLayout());
 					//startBounds.clear();
 					for (int i = 0; i < figures.size(); i++) {
@@ -97,7 +107,7 @@ public class NestedGraphEditPart extends GraphEditPart  {
 						figure.translateToAbsolute(figureBounds);
 						feedBack.translateToRelative(figureBounds);
 						//startBounds.add(figureBounds);
-						//figure.getParent().remove(figure);
+						figure.getParent().remove(figure);
 						feedBack.add(figure);
 						figure.setBounds(figureBounds);
 					}
@@ -106,6 +116,7 @@ public class NestedGraphEditPart extends GraphEditPart  {
 						for (int i = 0; i < figures.size(); i++) {
 							IFigure figure = (IFigure) figures.get(i);
 							Rectangle bounds = (Rectangle)endBounds.get(i);
+							feedBack.translateToRelative(bounds);
 							Rectangle cBounds = (Rectangle) startBounds.get(i);
 							int newX = (int)(((double)(step+1)*(bounds.x - cBounds.x))/((double)steps)) + cBounds.x;
 							int newY = (int)(((double)(step+1)*(bounds.y - cBounds.y))/((double)steps)) + cBounds.y;
@@ -131,11 +142,18 @@ public class NestedGraphEditPart extends GraphEditPart  {
 		 */
 		public void clear() {
 			for (int i = 0; i < figures.size(); i++) {
-				Layer feedBack = (Layer) getLayer(LayerConstants.FEEDBACK_LAYER);
+				Layer feedBack = (Layer) getLayer(NestedGraphRootEditPart.ANIMATION_LAYER);
 				IFigure figure = (IFigure) figures.get(i);
 				if (figure.getParent() == feedBack) {
 					feedBack.remove(figure);
-					((IFigure) figureParents.get(i)).add(figure);
+					Rectangle bounds = figure.getBounds();
+					IFigure parent = (IFigure) figureParents.get(i);
+					if (parent != null) {
+						parent.add(figure);
+						figure.translateToRelative(bounds);
+						figure.setBounds(bounds);
+						figure.invalidateTree();
+					}
 				}
 			}
 			figures.clear();
@@ -287,11 +305,46 @@ public class NestedGraphEditPart extends GraphEditPart  {
 		//Rectangle maxBounds = getMainArea();
 		Rectangle startBounds = editPart.getAbsoluteBounds();
 		getLayer(LayerConstants.FEEDBACK_LAYER).translateToRelative(startBounds);
-
+		//@tag bug(153170-FilterArcs(fix))
+		//@tag bug(153169-OccludedArcs(fix)) : filter the arcs before animating.
+		filterConnections(editPart.getCastedModel(), true);
 		doExpandZoom(startBounds, 10, editPart);
 	}
 	
 	
+	/**
+	 * If <code>filter</code> is true filters out the connections that don't have 
+	 * an end in a node that has <code>node</code> as an ancestor. Otherwise, 
+	 * displays all nodes. 
+	 * @param node the node to filter against
+	 * @param filter whether or not the connections should be filtered.
+	 */
+	//@tag bug(153170-FilterArcs(fix)) : make sure that the arcs are filtered out if they should be inivisible.
+	public void filterConnections(NestedGraphModelNode node, boolean filter) {
+		List connections = node.getGraphModel().getConnections();
+		for (Iterator i = connections.iterator(); i.hasNext();) {
+			GraphModelConnection conn = (GraphModelConnection) i.next();
+			GraphicalEditPart part = (GraphicalEditPart) conn.getEditPart();
+			if (part != null) {
+				if (!filter) {
+					part.getFigure().setVisible(true);
+					continue;
+				}
+				NestedGraphModelNode source = (NestedGraphModelNode) conn.getSource();
+				NestedGraphModelNode dest = (NestedGraphModelNode) conn.getDestination();
+				int sourceRel = node.getRelationshipBetweenNodes(source);
+				int destRel = node.getRelationshipBetweenNodes(dest);
+				boolean visible = (
+					(sourceRel == NestedGraphModelNode.ANCESTOR) ||
+					(sourceRel == NestedGraphModelNode.SAME_NODE) ||
+					(destRel == NestedGraphModelNode.ANCESTOR) ||
+					(destRel == NestedGraphModelNode.SAME_NODE)
+				);
+				part.getFigure().setVisible(visible);
+			}
+		}
+	}
+
 	/**
 	 * Zooms out on the given node.  
 	 * The type of zooming (real, fake, collapse) depends on the zoomStyle.
@@ -302,7 +355,8 @@ public class NestedGraphEditPart extends GraphEditPart  {
 		if (editPart == null)
 			return;
 		
-		Rectangle maxBounds = getMainArea();
+		//@tag bug(153169-OccludedArcs(fix)) : using the animation layer requires start bounds to be relative.
+		Rectangle maxBounds = new Rectangle(0,0,500,500);
 		Rectangle startBounds = editPart.getAbsoluteBounds();
 		doCollapseZoom(maxBounds, startBounds, 10, editPart);
 	}
@@ -311,10 +365,16 @@ public class NestedGraphEditPart extends GraphEditPart  {
 	 * Draws an expanding dotted rectangle figure around the node to give the impression
 	 * of zooming in.  The dotted rectangle starts at the center of the node.
 	 */
-	//@tag bug(152613-Client-Supplier) : change this to use the FigureKeyFrameAnimator
+	//@tag bug(152613-Client-Supplier(fix)) : change this to use the FigureKeyFrameAnimator
+	//@tag bug(153169-OccludedArcs(fix)) : using FigureKeyFrameAnimator forces animation onto the animation layer
 	private void doCollapseZoom(Rectangle startBounds, Rectangle endBounds, final int STEPS, NestedGraphNodeEditPart node) {
 		NestedFigure fig = (NestedFigure) node.getFigure();
-		if (STEPS > 0) {
+		FigureKeyFrameAnimator animator = new FigureKeyFrameAnimator();
+		fig.setBounds(startBounds);
+		animator.addFigures(new IFigure[] {fig}, new Rectangle[] {endBounds});
+		animator.start(STEPS);
+		animator.clear();
+		/*if (STEPS > 0) {
 			double xleft = startBounds.x - endBounds.x;
 			double ytop = startBounds.y - endBounds.y;
 			double xright = endBounds.right() - startBounds.right();
@@ -347,7 +407,7 @@ public class NestedGraphEditPart extends GraphEditPart  {
 			getViewer().flush();
 			
 		}
-		
+		*/
 	}
 	
 	/**

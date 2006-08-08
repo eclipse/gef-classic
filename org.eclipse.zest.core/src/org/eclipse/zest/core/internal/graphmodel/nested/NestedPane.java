@@ -11,6 +11,7 @@
 package org.eclipse.mylar.zest.core.internal.graphmodel.nested;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -52,7 +53,7 @@ public class NestedPane {
 	public List getChildren() {
 		switch (getPaneType()) {
 		case MAIN_PANE:
-			return nestedGraphModel.getNodes();
+			return Arrays.asList(new Object[] {nestedGraphModel.getCurrentNode()});
 		case CLIENT_PANE:
 			return nestedGraphModel.getCurrentNode().getNodesConnectedTo();
 		case SUPPLIER_PANE:
