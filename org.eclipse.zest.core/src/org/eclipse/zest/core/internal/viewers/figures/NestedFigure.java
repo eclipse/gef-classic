@@ -62,6 +62,14 @@ public class NestedFigure extends Figure {
 	}
 	
 	
+	/**
+	 * Returns true if the given point is in the label, false otherwise
+	 * @param p The point to test
+	 * @return True if the given point is in the label, false otherwise
+	 */
+	public boolean isPointInLabel( Point p ) {
+		return label.containsPoint(p);
+	}
 
 	public Insets getInsets() {
 		// TODO Auto-generated method stub

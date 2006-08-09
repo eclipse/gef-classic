@@ -24,6 +24,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.Request;
+import org.eclipse.gef.requests.LocationRequest;
 import org.eclipse.gef.tools.MarqueeDragTracker;
 import org.eclipse.mylar.zest.core.IZestColorConstants;
 import org.eclipse.mylar.zest.core.ZestPlugin;
@@ -35,6 +36,7 @@ import org.eclipse.mylar.zest.core.internal.nestedgraphviewer.policies.NestedGra
 import org.eclipse.mylar.zest.core.internal.viewers.figures.AspectRatioScaledFigure;
 import org.eclipse.mylar.zest.core.internal.viewers.figures.NestedFigure;
 import org.eclipse.mylar.zest.core.internal.viewers.figures.PlusMinusFigure;
+import org.eclipse.mylar.zest.core.internal.viewers.trackers.SingleSelectionTracker;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
@@ -68,9 +70,12 @@ public class NestedGraphNodeEditPart extends GraphNodeEditPart implements Action
 		return bounds;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphNodeEditPart#createEditPolicies()
+	 */
 	protected void createEditPolicies() {
 		super.createEditPolicies();
-
 		installEditPolicy(EditPolicy.LAYOUT_ROLE, new NestedGraphXYLayoutEditPolicy(true));
 	}
 	
@@ -81,7 +86,12 @@ public class NestedGraphNodeEditPart extends GraphNodeEditPart implements Action
 	 * is used, otherwise the default tracker is used.
 	 */
 	public DragTracker getDragTracker(Request request) {
-		if ( this.getCastedModel().isCurrent() ) {
+		if ( ((NestedFigure)getFigure()).isPointInLabel(((LocationRequest)request).getLocation()) ) {
+			// If the location where this selection happens is in the label
+			// The use a single selection tracker
+			return new SingleSelectionTracker(this);
+		}
+		else if ( this.getCastedModel().isCurrent() ) {
 			return new MarqueeDragTracker();
 		}
 		return super.getDragTracker(request);
