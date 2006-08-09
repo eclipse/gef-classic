@@ -8,8 +8,10 @@
  * Contributors:
  *     The Chisel Group, University of Victoria
  *******************************************************************************/
-package org.eclipse.mylar.zest.core.internal.nestedgraphviewer.parts;
+package org.eclipse.mylar.zest.core.internal.viewers.figures;
 
+import org.eclipse.draw2d.ActionEvent;
+import org.eclipse.draw2d.ActionListener;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.FreeformLayout;
 import org.eclipse.draw2d.IFigure;
@@ -18,6 +20,7 @@ import org.eclipse.draw2d.Panel;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedPane;
+import org.eclipse.mylar.zest.core.internal.nestedgraphviewer.parts.FigureGridLayout;
 import org.eclipse.mylar.zest.core.messages.ZestUIMessages;
 
 /**
@@ -33,38 +36,84 @@ import org.eclipse.mylar.zest.core.messages.ZestUIMessages;
  */
 
 //@tag bug(152613-Client-Supplier(fix)) : the basic panes that will contain the nested graphs.
-class PaneFigure extends Panel {
+public class PaneFigure extends Panel {
+	private static final int ICON_SIZE = 16;
 	private Label label;
+	private MinMaxFigure minMax;
 	private Panel clientArea;
 	private int type;
-	private boolean closed;
 	public PaneFigure(int type) {
 		super();
 		this.type = type;
 		clientArea = new Panel();
-		if (type != NestedPane.MAIN_PANE) {
-			label = new Label();
-			label.setBackgroundColor(ColorConstants.darkBlue);
-			label.setText(getTextForType(type));
-			label.setOpaque(true);
-			label.setForegroundColor(ColorConstants.lightGray);
-			super.add(label, null, -1);
-		}
-		clientArea.setBackgroundColor(ColorConstants.white);
-		clientArea.setLayoutManager(new FigureGridLayout());
-		clientArea.setOpaque(false);
-		super.add(clientArea, null, -1);
+		
 		setLayoutManager(new FreeformLayout(){
 			/* (non-Javadoc)
 			 * @see org.eclipse.draw2d.XYLayout#layout(org.eclipse.draw2d.IFigure)
 			 */
 			public void layout(IFigure parent) {
 				Rectangle textbounds = (label != null) ? label.getTextBounds() : new Rectangle(0,0,0,0);
+				
 				Rectangle parentBounds = parent.getBounds();
 				if (label != null) label.setSize(parent.getSize().width, textbounds.height);
 				clientArea.setBounds(new Rectangle(parentBounds.x, parentBounds.y+textbounds.height, parent.getSize().width, parent.getSize().height-textbounds.height));
+				//@tag bug(152613-Client-Supplier(fix)) : allow the icon to have a say in the size of the figure.
+				if (minMax != null) {
+					Object constraint = getConstraint(minMax);
+					if (constraint instanceof Dimension) {
+						Dimension d = (Dimension)constraint;
+						minMax.setBounds(new Rectangle(parentBounds.x+parentBounds.width-d.width, parentBounds.y, d.width, d.height));
+						label.setSize(label.getSize().width, d.height);
+					}
+				}
+			}
+			
+			/* (non-Javadoc)
+			 * @see org.eclipse.draw2d.AbstractLayout#getPreferredSize(org.eclipse.draw2d.IFigure, int, int)
+			 */
+			//@tag bug(152613-Client-Supplier(fix)) : preferred size should be set by the layout manager, as it is what is doing the layout.
+			public Dimension getPreferredSize(IFigure container, int wHint, int hHint) {
+				int labelHeight = 0;
+				int labelWidth = wHint;
+				int clientHeight = 0;
+				if (label != null) {
+					labelHeight = label.getTextBounds().height;
+					labelWidth = label.getTextBounds().width;
+					if (minMax != null && minMax.getSize().height > labelHeight) {
+						labelHeight = minMax.getSize().height;
+					}
+				}
+				if (!isClosed()) {
+					if (hHint >= labelHeight) {
+						clientHeight = hHint-labelHeight;
+					}
+				}
+				return new Dimension(labelWidth, labelHeight+clientHeight);
 			}
 		});
+		clientArea.setBackgroundColor(ColorConstants.white);
+		clientArea.setLayoutManager(new FigureGridLayout());
+		clientArea.setOpaque(false);
+		super.add(clientArea, null, -1);
+		if (type != NestedPane.MAIN_PANE) {
+			label = new Label();
+			label.setBackgroundColor(ColorConstants.darkBlue);
+			label.setText(getTextForType(type));
+			label.setOpaque(true);
+			label.setForegroundColor(ColorConstants.lightGray);
+			minMax = new MinMaxFigure();
+			super.add(label, null, -1);
+			super.add(minMax, new Dimension(ICON_SIZE, ICON_SIZE), -1);
+			minMax.setVisible(true);
+			minMax.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent event) {
+					invalidateTree();
+					revalidate();
+				}});
+		}
+		
+		invalidate();
+		
 	}
 	/**
 	 * @param paneType2
@@ -111,11 +160,17 @@ class PaneFigure extends Panel {
 	}
 	
 	/**
-	 * Allows the pane to be open or to be closed.
+	 * Allows the pane to be open or to be closed. This is only valid in
+	 * SUPPLIER_PANE and CLIENT_PANE types.
 	 * @param closed whether or not the content pane should be closed.
 	 */
 	public void setClosed(boolean closed) {
-		this.closed = closed;
+		if (closed != isClosed()) {
+			if (minMax != null) {
+				minMax.setMax(closed);
+				invalidate();
+			}
+		}
 	}
 	
 	/**
@@ -123,39 +178,20 @@ class PaneFigure extends Panel {
 	 * @return whether or not the content pane is closed.
 	 */
 	public boolean isClosed() {
-		return closed;
+		return (minMax != null && minMax.isMax());
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.eclipse.draw2d.Figure#getPreferredSize(int, int)
-	 */
-	public Dimension getPreferredSize(int wHint, int hHint) {
-		//returns the size of the label, if one exists, plus the size of the
-		//client pane if it is not closed.
-		int labelHeight = 0;
-		int labelWidth = wHint;
-		int clientHeight = 0;
-		if (label != null) {
-			labelHeight = label.getTextBounds().height;
-			labelWidth = label.getTextBounds().width;
-		}
-		if (!isClosed()) {
-			if (hHint >= labelHeight) {
-				clientHeight = hHint-labelHeight;
-			}
-		}
-		return super.getPreferredSize(labelWidth, labelHeight+clientHeight);
-	}
+	
 	
 	/* (non-Javadoc)
 	 * @see org.eclipse.draw2d.Figure#getClientArea(org.eclipse.draw2d.geometry.Rectangle)
 	 */
-	public Rectangle getClientArea(Rectangle rect) {
+/*	public Rectangle getClientArea(Rectangle rect) {
 		Rectangle client = getClientPanel().getClientArea();
 		rect.x = client.x;
 		rect.y = client.y;
 		rect.width = client.width;
 		rect.height = client.height;
 		return rect;
-	}
+	}*/
 }

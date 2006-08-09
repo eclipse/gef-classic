@@ -388,7 +388,7 @@ public class NestedGraphViewerImpl extends NestedNonThreadedGraphicalViewer  {
 		NestedGraphModelNode node = model.getCurrentNode();
 		if (node != null) {
 			node.setData("LayoutCompleted", "false");
-			doLayout(node, model.getMainArea().width, model.getMainArea().height);
+			doLayout(node, ((NestedGraphRootEditPart)getRootEditPart()).getNestedEditPart().getMainArea().width, model.getMainArea().height);
 		}
 	}
         

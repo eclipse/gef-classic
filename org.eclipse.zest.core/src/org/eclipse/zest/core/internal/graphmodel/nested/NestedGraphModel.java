@@ -41,6 +41,11 @@ public class NestedGraphModel extends GraphModel {
 	private LinkedList forwardStack;
 	
 	private Rectangle mainArea;
+	
+//	@tag bug(152613-Client-Supplier(fix)) : allow the model to tell the view if clients/suppliers should be closed.
+	private boolean clientClosed;
+	private boolean supplierClosed;
+	
 
 	/**
 	 * Initializes the model with the given canvas.
@@ -63,7 +68,33 @@ public class NestedGraphModel extends GraphModel {
 			connections.size() + " connections}";
 	}
 	
-
+	/**
+	 * @return the clientClosed
+	 */
+	public boolean isClientClosed() {
+		return clientClosed;
+	}
+	
+	/**
+	 * @param clientClosed the clientClosed to set
+	 */
+	public void setClientClosed(boolean clientClosed) {
+		this.clientClosed = clientClosed;
+	}
+	
+	/**
+	 * @return the supplierClosed
+	 */
+	public boolean isSupplierClosed() {
+		return supplierClosed;
+	}
+	
+	/**
+	 * @param supplierClosed the supplierClosed to set
+	 */
+	public void setSupplierClosed(boolean supplierClosed) {
+		this.supplierClosed = supplierClosed;
+	}
 	
 	/* (non-Javadoc)
 	 * @see ca.uvic.cs.zest.internal.graphmodel.GraphModel#removeNodeFromList(ca.uvic.cs.zest.internal.graphmodel.GraphModelNode)

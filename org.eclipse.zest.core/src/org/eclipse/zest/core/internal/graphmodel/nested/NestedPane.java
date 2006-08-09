@@ -25,6 +25,7 @@ public class NestedPane {
 	public static final int SUPPLIER_PANE = 0;
 	public static final int MAIN_PANE = 1;
 	public static final int CLIENT_PANE = 2;
+	private boolean closedState = false;
 	
 	NestedGraphModel nestedGraphModel = null;
 	private int paneType = 0;
@@ -32,10 +33,22 @@ public class NestedPane {
 	public NestedPane( int paneType ) {
 		this.paneType = paneType;
 		children = new ArrayList();
+		
 	}
 	
 	public void setModel( NestedGraphModel model ) {
+//		@tag bug(152613-Client-Supplier(fix)) : set the initial closed state based on the model.
 		this.nestedGraphModel = model;
+		switch(paneType) {
+		case CLIENT_PANE:
+			closedState = model.isClientClosed();
+			break;
+		case SUPPLIER_PANE:
+			closedState = model.isSupplierClosed();
+			break;
+		default:
+			closedState = false;
+		}
 	}
 	
 	public NestedGraphModel getModel() {
@@ -62,4 +75,7 @@ public class NestedPane {
 		return Collections.EMPTY_LIST;
 	}
 
+	public boolean isClosed() {
+		return closedState;
+	}
 }

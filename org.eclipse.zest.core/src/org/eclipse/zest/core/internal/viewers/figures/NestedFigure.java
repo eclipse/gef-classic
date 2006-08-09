@@ -171,9 +171,10 @@ public class NestedFigure extends Figure {
 		int width = bounds.width;
 		int height = bounds.height;
 		Dimension labelSize = label.getSize();
-		if ((labelSize.width == 0) || (labelSize.height == 0)) {
-			labelSize = calculateLabelSize();
-		}
+		
+		//@tag bug(unreported(Clipped-Labels(fix))) : always calculate the size of the label, otherwise they get clipped when the bounds are too small.
+		labelSize = calculateLabelSize();
+		
 		int labelHeight = Math.min(height, labelSize.height);
 		labelSize.setSize(new Dimension(width, labelHeight));
 		Point labelLoc = new Point(0, 0);

@@ -20,6 +20,7 @@ import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedPane;
 import org.eclipse.mylar.zest.core.internal.nestedgraphviewer.policies.NestedGraphRootLayoutEditPolicy;
+import org.eclipse.mylar.zest.core.internal.viewers.figures.PaneFigure;
 
 /**
  * A nested pane area part will create one of three kinds of pane figures,
@@ -38,14 +39,17 @@ import org.eclipse.mylar.zest.core.internal.nestedgraphviewer.policies.NestedGra
 public class NestedPaneAreaEditPart extends AbstractGraphicalEditPart {
 	
 	private int paneType = 0;
+	private boolean initialClostedState;
 	
 	/**
 	 * 
 	 * @param paneType one of three types: NestedPane.MAIN_PANE, NestedPane.CLIENT_PANE,
 	 * NestedPane.SUPPLIER_PANE.
 	 */
-	public NestedPaneAreaEditPart(int paneType) {
+	public NestedPaneAreaEditPart(int paneType, boolean initialClosedState) {
 		this.paneType = paneType;
+		//@tag bug(152613-Client-Supplier(fix)) : add an initial closed state so that the states can be carried accross new contents in the viewer.
+		this.initialClostedState = initialClosedState;
 	}
 	
 	protected IFigure createFigure() {
@@ -66,6 +70,7 @@ public class NestedPaneAreaEditPart extends AbstractGraphicalEditPart {
 			});
 		break;
 		}
+		f.setClosed(initialClostedState);
 		return f;
 	}
 

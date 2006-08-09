@@ -33,6 +33,7 @@ import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedPane;
 import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphEditPart;
 import org.eclipse.mylar.zest.core.internal.nestedgraphviewer.policies.NullLayoutEditPolicy;
 import org.eclipse.mylar.zest.core.internal.viewers.figures.NestedFigure;
+import org.eclipse.mylar.zest.core.internal.viewers.figures.PaneFigure;
 import org.eclipse.swt.widgets.Display;
 
 
@@ -223,31 +224,34 @@ public class NestedGraphEditPart extends GraphEditPart  {
 
 	
 	public Rectangle getMainArea() {
-		return getMainFigure().getClientArea().getCopy();
+//		@tag bug(152613-Client-Supplier(fix)) : the drawable area is in the client panel, not the whole pane.
+		return getMainFigure().getClientPanel().getClientArea().getCopy();
 	}
 	
 	public Rectangle getClientPaneArea() {
-		return getClientFigure().getClientArea().getCopy();
+//		@tag bug(152613-Client-Supplier(fix)) : the drawable area is in the client panel, not the whole pane.
+		return getClientFigure().getClientPanel().getClientArea().getCopy();
 	}
 	
 	public Rectangle getSupplierPaneArea() {
-		return getSupplierFigure().getClientArea().getCopy();
+//		@tag bug(152613-Client-Supplier(fix)) : the drawable area is in the client panel, not the whole pane.
+		return getSupplierFigure().getClientPanel().getClientArea().getCopy();
 	}
 	
 	public NestedPaneAreaEditPart getClientPane() {
 		return (NestedPaneAreaEditPart)getChildren().get(0);
 	}
 	
-	protected IFigure getClientFigure() {
-		return (IFigure)getFigure().getChildren().get(2);
+	protected PaneFigure getClientFigure() {
+		return (PaneFigure) getFigure().getChildren().get(2);
 	}
 	
-	protected IFigure getMainFigure() {
-		return (IFigure)getFigure().getChildren().get(1);
+	protected PaneFigure getMainFigure() {
+		return (PaneFigure)getFigure().getChildren().get(1);
 	}
 	
-	protected IFigure getSupplierFigure() {
-		return (IFigure)getFigure().getChildren().get(0);
+	protected PaneFigure getSupplierFigure() {
+		return (PaneFigure)getFigure().getChildren().get(0);
 	}
 	
 	/**
@@ -266,15 +270,37 @@ public class NestedGraphEditPart extends GraphEditPart  {
 			}
 
 			public void layout(IFigure container) {
-				List l = container.getChildren();
-				IFigure f1 = (IFigure) l.get(0);
-				IFigure f2 = (IFigure) l.get(1);
-				IFigure f3 = (IFigure) l.get(2);
+//				@tag bug(152613-Client-Supplier(fix)) : layout the panes according to thier closed/openned state.
+				PaneFigure supply = (PaneFigure) getSupplierFigure();
+				PaneFigure main = (PaneFigure) getMainFigure();
+				PaneFigure client = (PaneFigure) getClientFigure();
 				Rectangle parentBounds = container.getBounds();
 				
-				f1.setBounds(new Rectangle(0,0, parentBounds.width,parentBounds.height/4));
-				f2.setBounds(new Rectangle(0,parentBounds.height/4, parentBounds.width,parentBounds.height/2));
-				f3.setBounds(new Rectangle(0,3*parentBounds.height/4, parentBounds.width,parentBounds.height/4));
+				Dimension preferedSize = client.getPreferredSize();
+		
+				Dimension clientSize = new Dimension(
+						parentBounds.width, 
+						(client.isClosed()) ? preferedSize.height : parentBounds.height/4
+				);
+				
+				
+				preferedSize = supply.getPreferredSize();
+				Dimension supplySize = new Dimension(
+						parentBounds.width, 
+						(supply.isClosed()) ? preferedSize.height : parentBounds.height/4
+				);
+				
+				Rectangle mainBounds = new Rectangle(
+						parentBounds.x, 
+						parentBounds.y + supplySize.height,
+						parentBounds.width,
+						parentBounds.height - supplySize.height - clientSize.height
+				);
+				getCastedModel().setClientClosed(client.isClosed());
+				getCastedModel().setSupplierClosed(supply.isClosed());
+				supply.setBounds(new Rectangle(parentBounds.x, parentBounds.y, supplySize.width, supplySize.height));
+				main.setBounds(mainBounds);
+				client.setBounds(new Rectangle(parentBounds.x, mainBounds.y + mainBounds.height, clientSize.width, clientSize.height));
 			}
 			
 		} );
@@ -355,10 +381,11 @@ public class NestedGraphEditPart extends GraphEditPart  {
 		if (editPart == null)
 			return;
 		
-		//@tag bug(153169-OccludedArcs(fix)) : using the animation layer requires start bounds to be relative.
-		Rectangle maxBounds = new Rectangle(0,0,500,500);
-		Rectangle startBounds = editPart.getAbsoluteBounds();
-		doCollapseZoom(maxBounds, startBounds, 10, editPart);
+//		@tag bug(153169-OccludedArcs(fix)) : using the animation layer requires start bounds to be relative.
+		Rectangle maxBounds = getMainArea().getCopy();
+		editPart.getFigure().translateToRelative(maxBounds);
+		Rectangle endBounds = editPart.getAbsoluteBounds();
+		doCollapseZoom(maxBounds, endBounds, 10, editPart);
 	}
 	
 	/**
