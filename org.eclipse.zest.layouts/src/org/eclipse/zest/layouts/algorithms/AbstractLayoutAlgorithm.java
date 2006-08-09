@@ -26,6 +26,7 @@ import org.eclipse.mylar.zest.layouts.LayoutEntity;
 import org.eclipse.mylar.zest.layouts.LayoutRelationship;
 import org.eclipse.mylar.zest.layouts.LayoutStyles;
 import org.eclipse.mylar.zest.layouts.Stoppable;
+import org.eclipse.mylar.zest.layouts.constraints.BasicEntityConstraint;
 import org.eclipse.mylar.zest.layouts.dataStructures.BendPoint;
 import org.eclipse.mylar.zest.layouts.dataStructures.DisplayIndependentDimension;
 import org.eclipse.mylar.zest.layouts.dataStructures.DisplayIndependentPoint;
@@ -319,6 +320,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	 * @param dx	the amount to shift the entities in the x-direction 
 	 * @param dy	the amount to shift the entities in the y-direction
 	 */
+	/*
 	public void moveAllEntities(double dx, double dy) {
 		if ((dx != 0) || (dy != 0)) {
 			synchronized (_internalNodes) {
@@ -330,6 +332,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 			}
 		}
 	}
+	*/
 	
 	/**
 	 * Returns true if the layout algorithm is running
@@ -511,6 +514,35 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
         }
 	}
 
+	/**
+	 * Update external bend points from the internal bendpoints list. Save the 
+	 * source and destination points for later use in scaling and translating
+	 * @param relationshipsToConsider
+	 */
+	protected void updateBendPoints(InternalRelationship[] relationshipsToConsider) {
+		for (int i = 0; i < relationshipsToConsider.length; i++) {
+			InternalRelationship relationship = relationshipsToConsider[i];
+			List bendPoints = relationship.getBendPoints();
+			if (bendPoints.size() > 0) {
+				// We will assume that source/dest coordinates are for center of node
+				BendPoint[] externalBendPoints = new BendPoint[bendPoints.size()+2];
+				InternalNode sourceNode = relationship.getSource();
+				externalBendPoints[0] = new BendPoint(sourceNode.getInternalX(), sourceNode.getInternalY());
+				InternalNode destNode = relationship.getDestination();
+				externalBendPoints[externalBendPoints.length-1]= 
+					new BendPoint(destNode.getInternalX(), destNode.getInternalY());
+				
+				for (int j = 0; j < bendPoints.size(); j++) {
+					BendPoint bp = (BendPoint) bendPoints.get(j);
+					externalBendPoints[j+1] = new BendPoint(bp.x, bp.y);
+				}
+				relationship.getLayoutRelationship().setBendPoints(
+						externalBendPoints);
+			}
+		}
+	}
+
+	
 	public void run() {
 		
 		if ( started == true ) 
@@ -533,16 +565,20 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	 */
 	private InternalNode[] createInternalNodes( LayoutEntity[] nodes ) {
         InternalNode [] internalNodes = new InternalNode [nodes.length];
+        BasicEntityConstraint basicEntityConstraint = new BasicEntityConstraint();
 	    for (int i = 0; i < nodes.length; i++) {
+	    	basicEntityConstraint.clear();
             LayoutEntity externalNode = nodes[i];
 			InternalNode internalNode = new InternalNode( externalNode );
+			externalNode.populateLayoutConstraint(basicEntityConstraint);
 			internalNode.setInternalLocation(externalNode.getXInLayout(), externalNode.getYInLayout());
-			internalNode.setInternalSize(externalNode.getWidthInLayout(), externalNode.getHeightInLayout());
             internalNodes[i] = internalNode;
 		} // end of for
 		return internalNodes;
 	}
 	
+
+
 	/**
 	 * Creates a list of InternalRelationship objects from the given list of LayoutRelationship objects.
 	 * @param rels

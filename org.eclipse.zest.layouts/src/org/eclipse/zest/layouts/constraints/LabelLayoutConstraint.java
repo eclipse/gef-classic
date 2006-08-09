@@ -11,36 +11,23 @@
 package org.eclipse.mylar.zest.layouts.constraints;
 
 /**
- * A simple text layout constraint
- * 
  * @author Ian Bull
- * 
- * This is not yet final, please don't use!
- *
+ * @author Chris Bennett
  */
-public class TextLayoutConstraint implements LayoutConstraint {
+public class LabelLayoutConstraint implements LayoutConstraint {
 	
-	public static final String ID = "TextLayoutConstraint";
+	// These should be accessed directly
+	public String label;
+	public int pointSize;
 	
-	private String text;
-	private int ptSize;
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.mylar.zest.layouts.constraints.LayoutConstraint#clear()
+	 */
+	public void clear() {
+		label = null;
+		pointSize = 1;
+	}
 	
-	public int getPtSize() {
-		return ptSize;
-	}
-	public void setPtSize(int ptSize) {
-		this.ptSize = ptSize;
-	}
-	public String getText() {
-		return text;
-	}
-	public void setText(String text) {
-		this.text = text;
-	}
-
-	// Unique constraint identifier
-	public String getConstraintID() {
-		return ID;
-	}
-
 }
+

@@ -16,6 +16,9 @@ import java.util.Map;
 import org.eclipse.mylar.zest.layouts.LayoutBendPoint;
 import org.eclipse.mylar.zest.layouts.LayoutEntity;
 import org.eclipse.mylar.zest.layouts.LayoutRelationship;
+import org.eclipse.mylar.zest.layouts.constraints.BasicEdgeConstraints;
+import org.eclipse.mylar.zest.layouts.constraints.LabelLayoutConstraint;
+import org.eclipse.mylar.zest.layouts.constraints.LayoutConstraint;
 import org.eclipse.mylar.zest.layouts.dataStructures.BendPoint;
 
 
@@ -73,6 +76,8 @@ public class SimpleRelationship implements LayoutRelationship {
 	private Object internalRelationship;
 	
 	private LayoutBendPoint[] bendPoints;
+	
+	private String label;
 	
 	/**
 	 * Constructor.
@@ -234,5 +239,28 @@ public class SimpleRelationship implements LayoutRelationship {
 	public void setDestinationInLayout(LayoutEntity destination) {
 		this.destinationEntity = destination;
 	}
+	
+	/**
+	 * Set the label for this edge (available in the label layout constraint). 
+	 */	
+	public void setLabel(String label) {
+		this.label = label;
+	}
+
+	/**
+	 * Populate the specified layout constraint
+	 */	
+	public void populateLayoutConstraint(LayoutConstraint constraint) {
+		if ( constraint instanceof LabelLayoutConstraint ) {
+			LabelLayoutConstraint labelConstraint = (LabelLayoutConstraint) constraint;
+			labelConstraint.label = this.label;
+			labelConstraint.pointSize = 18;
+		}			
+		else if ( constraint instanceof BasicEdgeConstraints ) {
+			// noop
+			
+		}
+	}
+
 	
 }

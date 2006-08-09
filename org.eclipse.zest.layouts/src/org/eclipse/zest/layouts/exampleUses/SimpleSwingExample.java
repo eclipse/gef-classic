@@ -127,7 +127,7 @@ public class SimpleSwingExample {
 	
 	private LayoutAlgorithm currentLayoutAlgorithm;
     protected String currentLayoutAlgorithmName;
-    protected LayoutEntity selectedEntity;
+    protected SimpleNode selectedEntity;
     protected Point mouseDownPoint;
     protected Point selectedEntityPositionAtMouseDown;
     private long idCount;
@@ -311,11 +311,11 @@ public class SimpleSwingExample {
             public void mousePressed(MouseEvent e) {
                 selectedEntity = null;
                 for (Iterator iter = entities.iterator(); iter.hasNext() && selectedEntity == null;) {
-                    LayoutEntity entity = (LayoutEntity) iter.next();
-                    double x = entity.getXInLayout();
-                    double y = entity.getYInLayout();
-                    double w = entity.getWidthInLayout();
-                    double h = entity.getHeightInLayout();
+                    SimpleNode entity = (SimpleNode) iter.next();
+                    double x = entity.getX();
+                    double y = entity.getY();
+                    double w = entity.getWidth();
+                    double h = entity.getHeight();
                     Rectangle2D.Double rect = new Rectangle2D.Double (x, y, w, h);
                     if (rect.contains(e.getX(), e.getY())) {
                         selectedEntity = entity;
@@ -323,7 +323,7 @@ public class SimpleSwingExample {
                 }
                 if (selectedEntity != null) {
                     mouseDownPoint = e.getPoint();
-                    selectedEntityPositionAtMouseDown = new Point ((int)selectedEntity.getXInLayout(), (int)selectedEntity.getYInLayout());
+                    selectedEntityPositionAtMouseDown = new Point ((int)selectedEntity.getX(), (int)selectedEntity.getY());
                 } else {
                     mouseDownPoint = null;
                     selectedEntityPositionAtMouseDown = null;
@@ -408,8 +408,7 @@ public class SimpleSwingExample {
 	 * Call this from createGraph in place of createTreeGraph 
 	 * this for debugging and testing.
 	 */
-	/*
-    private void createCustomGraph() {
+/*    private void createCustomGraph() {
         LayoutEntity A = createSimpleNode("1");
         LayoutEntity B = createSimpleNode("10");
         LayoutEntity _1 = createSimpleNode("100");
@@ -420,8 +419,7 @@ public class SimpleSwingExample {
         relationships.add(new SimpleRelationship (A, _1, false));
         relationships.add(new SimpleRelationship (_1, A, false));
     }
-    */
-
+*/
     private String getNextID () {
 	    String id = "" + idCount;
 	    idCount++;
@@ -496,7 +494,7 @@ public class SimpleSwingExample {
             
             // paint the nodes
 			for (Iterator iter = entities.iterator(); iter.hasNext();) {
-                paintEntity((LayoutEntity) iter.next(), g);
+                paintEntity((SimpleNode) iter.next(), g);
              }
 			
 			// paint the relationships 
@@ -505,45 +503,45 @@ public class SimpleSwingExample {
 	        }
         }
     	
-    	private void paintEntity(LayoutEntity entity, Graphics g) {
+    	private void paintEntity(SimpleNode entity, Graphics g) {
             boolean isSelected = selectedEntity != null && selectedEntity.equals(entity);
             g.setColor(isSelected ? NODE_SELECTED_COLOR : NODE_NORMAL_COLOR);
             if (currentNodeShape.equals("rectangle")) {
-                g.fillRect((int)entity.getXInLayout(), (int)entity.getYInLayout(), (int)entity.getWidthInLayout(), (int)entity.getHeightInLayout());
+                g.fillRect((int)entity.getX(), (int)entity.getY(), (int)entity.getWidth(), (int)entity.getHeight());
     		}		
             else { // default 
-           		g.fillOval((int)entity.getXInLayout(), (int)entity.getYInLayout(), (int)entity.getWidthInLayout(), (int)entity.getHeightInLayout());
+           		g.fillOval((int)entity.getX(), (int)entity.getY(), (int)entity.getWidth(), (int)entity.getHeight());
             }	
             g.setColor( isSelected ? BORDER_SELECTED_COLOR : BORDER_NORMAL_COLOR);
             String name = entity.toString();
             Rectangle2D nameBounds = g.getFontMetrics().getStringBounds(name, g);
-				g.drawString(name, (int) (entity.getXInLayout() + entity.getWidthInLayout()/2.0 - nameBounds.getWidth()/2.0), 
-						(int)(entity.getYInLayout() + entity.getHeightInLayout()/2.0 + nameBounds.getHeight()/2.0));//- nameBounds.getHeight() - nameBounds.getY()));
+				g.drawString(name, (int) (entity.getX() + entity.getWidth()/2.0 - nameBounds.getWidth()/2.0), 
+						(int)(entity.getY() + entity.getHeight()/2.0 + nameBounds.getHeight()/2.0));//- nameBounds.getHeight() - nameBounds.getY()));
             if (g instanceof Graphics2D) {
                 ((Graphics2D)g).setStroke(isSelected ? BORDER_SELECTED_STROKE : BORDER_NORMAL_STROKE);
             }
             if (currentNodeShape.equals("rectangle")) {
-            	g.drawRect((int)entity.getXInLayout(), (int)entity.getYInLayout(), (int)entity.getWidthInLayout(), (int)entity.getHeightInLayout());
+            	g.drawRect((int)entity.getX(), (int)entity.getY(), (int)entity.getWidth(), (int)entity.getHeight());
             }
             else { // default
-                g.drawOval((int)entity.getXInLayout(), (int)entity.getYInLayout(), (int)entity.getWidthInLayout(), (int)entity.getHeightInLayout());
+                g.drawOval((int)entity.getX(), (int)entity.getY(), (int)entity.getWidth(), (int)entity.getHeight());
             }
     	}
 
     	private void paintRelationship(LayoutRelationship rel, Graphics g) {
 
-			LayoutEntity src = rel.getSourceInLayout();
-			LayoutEntity dest = rel.getDestinationInLayout();
+			SimpleNode src = (SimpleNode) rel.getSourceInLayout();
+			SimpleNode dest = (SimpleNode) rel.getDestinationInLayout();
 
 			// Add bend points if required
 			if (((SimpleRelationship) rel).getBendPoints() != null
 					&& ((SimpleRelationship) rel).getBendPoints().length > 0) {
 				drawBendPoints(rel, g);
 			} else {
-				double srcX = src.getXInLayout() + src.getWidthInLayout() / 2.0;
-				double srcY = src.getYInLayout() + src.getHeightInLayout() / 2.0;
-				double destX = dest.getXInLayout() + dest.getWidthInLayout() / 2.0;
-				double destY = dest.getYInLayout() + dest.getHeightInLayout() / 2.0;
+				double srcX = src.getX() + src.getWidth() / 2.0;
+				double srcY = src.getY() + src.getHeight() / 2.0;
+				double destX = dest.getX() + dest.getWidth() / 2.0;
+				double destY = dest.getY() + dest.getHeight() / 2.0;
 				double dx = getLength(srcX, destX);
 				double dy = getLength(srcY, destY);
 				double theta = Math.atan2(dy, dx);
@@ -557,18 +555,18 @@ public class SimpleSwingExample {
     	/**
     	 * Draw a line from the edge of the src node to the edge of the destination node 
     	 */
-    	private void drawRelationship(LayoutEntity src, LayoutEntity dest, double theta,
+    	private void drawRelationship(SimpleNode src, SimpleNode dest, double theta,
     			double srcX, double srcY, double destX, double destY, Graphics g) {
 
     		double reverseTheta = theta > 0.0d ? theta - Math.PI : theta + Math.PI;
 
     		Point2D.Double srcIntersectionP = 
-    			getEllipseIntersectionPoint(theta, src.getWidthInLayout(), 
-    					src.getHeightInLayout());
+    			getEllipseIntersectionPoint(theta, src.getWidth(), 
+    					src.getHeight());
 
     		Point2D.Double destIntersectionP = 
-    			getEllipseIntersectionPoint(reverseTheta, dest.getWidthInLayout(), 
-    					dest.getHeightInLayout());
+    			getEllipseIntersectionPoint(reverseTheta, dest.getWidth(), 
+    					dest.getHeight());
 
     		drawRelationship(srcX + srcIntersectionP.getX(), srcY + srcIntersectionP.getY(),
 					destX + destIntersectionP.getX(), destY + destIntersectionP.getY(), g);
@@ -631,10 +629,10 @@ public class SimpleSwingExample {
 			final String DUMMY_TITLE = "dummy";
 			LayoutBendPoint bp;
 
-			LayoutEntity startEntity = rel.getSourceInLayout();
-			LayoutEntity destEntity = rel.getDestinationInLayout();
-			double srcX = startEntity.getXInLayout();
-			double srcY = startEntity.getYInLayout();
+			SimpleNode startEntity = (SimpleNode) rel.getSourceInLayout();
+			SimpleNode destEntity = (SimpleNode) rel.getDestinationInLayout();
+			double srcX = startEntity.getX();
+			double srcY = startEntity.getY();
 
 			// Transform the bendpoints to this coordinate system
 			LayoutBendPoint[] bendPoints = ((SimpleRelationship)rel).getBendPoints(); 
@@ -645,17 +643,17 @@ public class SimpleSwingExample {
 				bp = bendPoints[i];
 				destEntity = new SimpleNode(DUMMY_TITLE, bp.getX(), bp.getY(), 0.01, 0.01);
 				drawRelationship(srcX, srcY, bp.getX(), bp.getY(), g);
-				startEntity = destEntity;
+				startEntity = (SimpleNode) destEntity;
 				if (i == bendPoints.length - 2) { // last point
 					// draw an arrow in the middle of the line
-					double dx = getLength(srcX, destEntity.getXInLayout());
-					double dy = getLength(srcY, destEntity.getYInLayout());
+					double dx = getLength(srcX, destEntity.getX());
+					double dy = getLength(srcY, destEntity.getY());
 					double theta = Math.atan2(dy, dx);
 					drawArrow(theta, srcX, srcY, dx, dy, g);
 				}
 				else {
-					srcX = startEntity.getXInLayout();
-					srcY = startEntity.getYInLayout();
+					srcX = startEntity.getX();
+					srcY = startEntity.getY();
 				}	
 			}
 

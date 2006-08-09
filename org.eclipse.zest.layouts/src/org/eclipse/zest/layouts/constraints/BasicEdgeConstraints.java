@@ -14,13 +14,19 @@ package org.eclipse.mylar.zest.layouts.constraints;
  * @author Ian Bull
  * @author Chris Bennett
  */
-public interface LayoutConstraint {
+public class BasicEdgeConstraints implements LayoutConstraint {
 
-	// Empty interface
+	// These should all be accessed directly.  
+	public boolean isBiDirectional = false;
+	public int weight = 1;
 	
-	/**
-	 * This method clears all the fields of the layout constraints.
-	 * This should not be called outside the layout package
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.mylar.zest.layouts.constraints.LayoutConstraint#clear()
 	 */
-	public void clear();
+	public void clear() {
+		this.isBiDirectional = false;
+		this.weight = 1;
+	}
+	
 }

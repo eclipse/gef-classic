@@ -17,27 +17,28 @@ import org.eclipse.mylar.zest.layouts.constraints.LayoutConstraint;
  * a common interface to run on.
  * 
  * @author Casey Best
+ * @author Ian Bull
+ * @author Chris Bennett
  */
 public interface LayoutEntity extends Comparable {
 	
 	public final static String ATTR_PREFERRED_WIDTH = "tree-preferred-width";
     public final static String ATTR_PREFERRED_HEIGHT = "tree-preferred-height";
 	
-	public boolean hasPreferredLocation();
-
-    public double getXInLayout();
+	public void setLocationInLayout (double x, double y);
+	public void setSizeInLayout (double width, double height);
+	
+	public double getXInLayout();
 	public double getYInLayout();
 	public double getWidthInLayout();
 	public double getHeightInLayout();
-
-	public void setLocationInLayout (double x, double y);
-	public void setSizeInLayout (double width, double height);
-
 	
 	public Object getLayoutInformation();
 	public void setLayoutInformation(Object internalEntity);
 	
-	public LayoutConstraint getLayoutConstraint( String constraintID );
-	
-	
+	/**
+	 * Classes should update the specified layout constraint if recognized
+	 * @return
+	 */
+	public void populateLayoutConstraint(LayoutConstraint constraint);
 }

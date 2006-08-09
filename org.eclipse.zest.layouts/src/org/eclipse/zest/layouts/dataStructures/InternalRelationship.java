@@ -14,6 +14,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.mylar.zest.layouts.LayoutRelationship;
+import org.eclipse.mylar.zest.layouts.constraints.BasicEdgeConstraints;
 
 /**
  * @author Ian Bull
@@ -24,12 +25,14 @@ public class InternalRelationship {
 	private InternalNode source;
 	private InternalNode destination;
 	private List bendPoints = new LinkedList();
+	BasicEdgeConstraints basicEdgeConstraints = new BasicEdgeConstraints();
 	
 	public InternalRelationship( LayoutRelationship externalRelationship, InternalNode source, InternalNode destination) {
 		this.externalRelationship = externalRelationship;
 		this.externalRelationship.setLayoutInformation(this);
 		this.source = source;
 		this.destination = destination;
+		this.externalRelationship.populateLayoutConstraint(basicEdgeConstraints);
 	}
 	
 	public LayoutRelationship getLayoutRelationship() {
@@ -47,11 +50,11 @@ public class InternalRelationship {
 	}
 	
 	public double getWeight() {
-		return this.externalRelationship.getWeightInLayout();
+		return this.basicEdgeConstraints.weight;
 	}
 	
 	public boolean isBidirectional() {
-		return externalRelationship.isBidirectionalInLayout();
+		return this.basicEdgeConstraints.isBiDirectional;
 	}
 	
 	/**

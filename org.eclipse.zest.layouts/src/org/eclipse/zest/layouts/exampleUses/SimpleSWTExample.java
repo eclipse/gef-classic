@@ -435,10 +435,10 @@ public class SimpleSWTExample {
 					
 					for (Iterator iter = entities.iterator(); iter.hasNext() && selectedEntity == null;) {
 						SimpleNode entity = (SimpleNode) iter.next();
-	                    double x = entity.getXInLayout();
-	                    double y = entity.getYInLayout();
-	                    double w = entity.getWidthInLayout();
-	                    double h = entity.getHeightInLayout();
+	                    double x = entity.getX();
+	                    double y = entity.getY();
+	                    double w = entity.getWidth();
+	                    double h = entity.getHeight();
 	                    Rectangle rect = new Rectangle ((int)x, (int)y, (int)w, (int)h);
 	                    if (rect.contains(e.x, e.y)) {
 	                        hoverEntity = entity;
@@ -467,10 +467,10 @@ public class SimpleSWTExample {
                 hoverEntity = null;
                 for (Iterator iter = entities.iterator(); iter.hasNext() && selectedEntity == null;) {
                     SimpleNode entity = (SimpleNode) iter.next();
-                    double x = entity.getXInLayout();
-                    double y = entity.getYInLayout();
-                    double w = entity.getWidthInLayout();
-                    double h = entity.getHeightInLayout();
+                    double x = entity.getX();
+                    double y = entity.getY();
+                    double w = entity.getWidth();
+                    double h = entity.getHeight();
                     Rectangle rect = new Rectangle ((int)x, (int)y, (int)w, (int)h);
                     if (rect.contains(e.x, e.y)) {
                         selectedEntity = entity;
@@ -478,7 +478,7 @@ public class SimpleSWTExample {
                 }
                 if (selectedEntity != null) {
                     mouseDownPoint = new Point (e.x, e.y);
-                    selectedEntityPositionAtMouseDown = new Point ((int)selectedEntity.getXInLayout(), (int)selectedEntity.getYInLayout());
+                    selectedEntityPositionAtMouseDown = new Point ((int)selectedEntity.getX(), (int)selectedEntity.getY());
 					selectedEntity.ignoreInLayout( true );
 					selectedEntity.setSelected();
                 } else {
@@ -706,10 +706,10 @@ public class SimpleSWTExample {
 					src = drawBendPoints(rel, gcBuffer); // change source to last bendpoint
 				}
 				
-				double srcX = src.getXInLayout() + src.getWidthInLayout()/2.0 ;
-				double srcY = src.getYInLayout() + src.getHeightInLayout()/2.0;
-				double destX = dest.getXInLayout() + dest.getWidthInLayout()/2.0;
-				double destY = dest.getYInLayout() + dest.getHeightInLayout()/2.0;
+				double srcX = src.getX() + src.getWidth()/2.0 ;
+				double srcY = src.getY() + src.getHeight()/2.0;
+				double destX = dest.getX() + dest.getWidth()/2.0;
+				double destY = dest.getY() + dest.getHeight()/2.0;
 				drawEdge(srcX, srcY, destX, destY, rel, gcBuffer);	
 			
 			}
@@ -720,11 +720,11 @@ public class SimpleSWTExample {
 
                 String name = entity.toString();
 				Point textSize = gcBuffer.stringExtent(name);
-				int entityX = (int)entity.getXInLayout();
-				int entityY = (int)entity.getYInLayout();
+				int entityX = (int)entity.getX();
+				int entityY = (int)entity.getY();
 				//TODO: What about resize from the layout algorithm
-				int entityWidth = Math.max((int)entity.getWidthInLayout(), textSize.x + 8); 
-				int entityHeight = Math.max((int)entity.getHeightInLayout(), textSize.y + 2);
+				int entityWidth = Math.max((int)entity.getWidth(), textSize.x + 8); 
+				int entityHeight = Math.max((int)entity.getHeight(), textSize.y + 2);
 				
 				gcBuffer.setBackground((Color)entity.getColor());
 				gcBuffer.fillRoundRectangle(entityX, entityY, entityWidth, entityHeight, 8, 8);
@@ -778,15 +778,15 @@ public class SimpleSWTExample {
 			SimpleNode startEntity = (SimpleNode)rel.getSourceInLayout();
 			SimpleNode destEntity = null;
 			
-			double srcX = startEntity.getXInLayout() + startEntity.getWidthInLayout() / 2.0;
-			double srcY = startEntity.getYInLayout() + startEntity.getHeightInLayout() / 2.0;
-				for (int i = 0; i < bendPoints.length; i++) {
+			double srcX = startEntity.getX() + startEntity.getWidth() / 2.0;
+			double srcY = startEntity.getY() + startEntity.getHeight() / 2.0;
+				for (int i = 1; i < bendPoints.length-1; i++) {
 					bp = bendPoints[i];
 					destEntity = new SimpleNode(DUMMY_TITLE, bp.getX(), bp.getY(), 0.01, 0.01);
 					drawEdge(srcX, srcY, bp.getX(), bp.getY(), rel, gcBuffer);
 					startEntity = destEntity;
-					srcX = startEntity.getXInLayout();
-					srcY = startEntity.getYInLayout();
+					srcX = startEntity.getX();
+					srcY = startEntity.getY();
 				}
 			return destEntity;
 		}

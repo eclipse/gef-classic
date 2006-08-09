@@ -18,9 +18,9 @@ import java.util.Map;
 import java.util.TreeSet;
 
 import org.eclipse.mylar.zest.layouts.LayoutEntity;
+import org.eclipse.mylar.zest.layouts.constraints.BasicEntityConstraint;
+import org.eclipse.mylar.zest.layouts.constraints.LabelLayoutConstraint;
 import org.eclipse.mylar.zest.layouts.constraints.LayoutConstraint;
-import org.eclipse.mylar.zest.layouts.constraints.TextLayoutConstraint;
-
 
 /**
  * Rerpresents a simple node that can be used in the layout algorithms.
@@ -148,28 +148,28 @@ public class SimpleNode implements LayoutEntity {
 	/**
 	 * Gets the x position of this SimpleNode.
 	 */
-	public double getXInLayout() {
+	public double getX() {
 		return x;
 	}
 	
 	/**
 	 * Gets the y position of this SimpleNode.
 	 */
-	public double getYInLayout() {
+	public double getY() {
 		return y;
 	}
 
 	/**
 	 * Get the size of this node
 	 */
-	public double getWidthInLayout() {
+	public double getWidth() {
 		return width;
 	}
 
 	/**
 	 * Get the size of this node
 	 */
-	public double getHeightInLayout() {
+	public double getHeight() {
 		return height;
 	}
 		
@@ -273,17 +273,33 @@ public class SimpleNode implements LayoutEntity {
 	}
 
 	/**
-	 * Get a layout constraint for the specified ID
-	 * @param ID
+	 * Populate the specified layout constraint
 	 */	
-	public LayoutConstraint getLayoutConstraint(String ID ) {
-		if ( new TextLayoutConstraint().getConstraintID().equals(ID) ) {
-			TextLayoutConstraint constraint = new TextLayoutConstraint();
-			constraint.setPtSize(8); // TODO - set this correctly
-			constraint.setText(realObject.toString());
-			return constraint;
+	public void populateLayoutConstraint(LayoutConstraint constraint) {
+		if ( constraint instanceof LabelLayoutConstraint ) {
+			LabelLayoutConstraint labelConstraint = (LabelLayoutConstraint) constraint;
+			labelConstraint.label = realObject.toString();
+			labelConstraint.pointSize = 18;
+		}		
+		else if ( constraint instanceof BasicEntityConstraint ) {
+			// noop
 		}
-		return null;
+	}
+
+	public double getHeightInLayout() {
+		return this.height;
+	}
+
+	public double getWidthInLayout() {
+		return this.width;
+	}
+
+	public double getXInLayout() {
+		return this.x;
+	}
+
+	public double getYInLayout() {
+		return this.y;
 	}
 	
 }

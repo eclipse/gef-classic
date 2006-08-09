@@ -11,16 +11,36 @@
 package org.eclipse.mylar.zest.layouts.constraints;
 
 /**
- * @author Ian Bull
+ * 
  * @author Chris Bennett
+ *
  */
-public interface LayoutConstraint {
-
-	// Empty interface
+public class BasicEntityConstraint implements LayoutConstraint {
 	
-	/**
-	 * This method clears all the fields of the layout constraints.
-	 * This should not be called outside the layout package
+	
+	public boolean hasPreferredLocation = false;
+	
+	public double preferredX;
+	public double preferredY;
+	
+	public boolean hasPreferredSize = false;
+	public double preferredWidth;
+	public double preferredHeight;
+	
+	public BasicEntityConstraint() {
+		clear();
+	} 
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.mylar.zest.layouts.constraints.LayoutConstraint#clear()
 	 */
-	public void clear();
+	public void clear() {
+		this.hasPreferredLocation = false;
+		this.hasPreferredSize = false;
+		this.preferredX = 0.0;
+		this.preferredY = 0.0;
+		this.preferredWidth = 0.0;
+		this.preferredHeight = 0.0;
+	}
 }

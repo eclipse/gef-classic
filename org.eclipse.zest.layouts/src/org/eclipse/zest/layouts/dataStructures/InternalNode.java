@@ -13,6 +13,7 @@ package org.eclipse.mylar.zest.layouts.dataStructures;
 import java.util.HashMap;
 
 import org.eclipse.mylar.zest.layouts.LayoutEntity;
+import org.eclipse.mylar.zest.layouts.constraints.BasicEntityConstraint;
 
 /**
  * @author Ian Bull
@@ -21,10 +22,12 @@ public class InternalNode implements Comparable {
 	
 	private LayoutEntity entity = null;
 	private HashMap attributeMap = new HashMap();
+	BasicEntityConstraint basicEntityConstraint = new BasicEntityConstraint();
 	
 	public InternalNode( LayoutEntity entity ) {
 		this.entity = entity;
 		this.entity.setLayoutInformation(this);
+		entity.populateLayoutConstraint(basicEntityConstraint);
 	}
 	
 	public LayoutEntity getLayoutEntity() {
@@ -32,15 +35,16 @@ public class InternalNode implements Comparable {
 	}
 	
 	public double getPreferredX() {
-		return entity.getXInLayout();
+		return basicEntityConstraint.preferredX;
+
 	}
 	
 	public double getPreferredY() {
-		return entity.getYInLayout();
+		return basicEntityConstraint.preferredY;
 	}
 	
 	public boolean hasPreferredLocation() {
-		return entity.hasPreferredLocation();
+		return basicEntityConstraint.hasPreferredLocation;
 	}
 	
 	double dx, dy;
@@ -57,10 +61,10 @@ public class InternalNode implements Comparable {
 		return this.dy;
 	}	
 	
-	public double getX() {
+	public double getCurrentX() {
 		return entity.getXInLayout();
 	}
-	public double getY() {
+	public double getCurrentY() {
 		return entity.getYInLayout();
 	}
 		

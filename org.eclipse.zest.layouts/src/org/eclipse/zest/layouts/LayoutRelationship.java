@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.mylar.zest.layouts;
 
+import org.eclipse.mylar.zest.layouts.constraints.LayoutConstraint;
+
 
 
 /**
@@ -36,24 +38,6 @@ public interface LayoutRelationship {
 	 */
 	public LayoutEntity getDestinationInLayout();
 
-	/**
-	 * If bidirectional, the direction of the relationship doesn't matter.  Switching the source and destination should make no difference.
-	 * If not bidirectional, layout algorithms need to take into account the direction of the relationship.  The direction is based on the
-	 * source and destination entities.
-	 */
-	public boolean isBidirectionalInLayout();
-
-	/**
-	 * Some layout algorithms place entities based on the 'weight' of their relationships.
-	 * The weight can represent anything.  It could be based on the size of the source and destination
-	 * entities.  It could also be based on the type of relationship.
-	 */
-	public void setWeightInLayout(double weight);
-
-	/**
-	 * Returns the weight of the relationship
-	 */
-	public double getWeightInLayout();
 
 	/**
 	 * Sets the internal relationship object.
@@ -88,7 +72,11 @@ public interface LayoutRelationship {
 	 * If you are updating an existing application you can just implement this 
 	 * method to do nothing.
 	 */
-	public void clearBendPoints(); 
-	
+	public void clearBendPoints();
 
+	/**
+	 * Classes should update the specirfied layout constraint if recognized
+	 * @return
+	 */
+	public void populateLayoutConstraint(LayoutConstraint constraint);
 }
