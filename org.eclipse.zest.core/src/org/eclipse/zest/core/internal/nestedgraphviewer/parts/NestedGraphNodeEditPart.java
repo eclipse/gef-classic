@@ -21,8 +21,10 @@ import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.Request;
+import org.eclipse.gef.tools.MarqueeDragTracker;
 import org.eclipse.mylar.zest.core.IZestColorConstants;
 import org.eclipse.mylar.zest.core.ZestPlugin;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedGraphModel;
@@ -70,6 +72,19 @@ public class NestedGraphNodeEditPart extends GraphNodeEditPart implements Action
 		super.createEditPolicies();
 
 		installEditPolicy(EditPolicy.LAYOUT_ROLE, new NestedGraphXYLayoutEditPolicy(true));
+	}
+	
+	
+	/**
+	 * Gets the drag tracker for this edit part.
+	 * If the selection occurs on the root node then a marquee tracker
+	 * is used, otherwise the default tracker is used.
+	 */
+	public DragTracker getDragTracker(Request request) {
+		if ( this.getCastedModel().isCurrent() ) {
+			return new MarqueeDragTracker();
+		}
+		return super.getDragTracker(request);
 	}
 
 	// TODO rename to getNestedGraphModel() ?
