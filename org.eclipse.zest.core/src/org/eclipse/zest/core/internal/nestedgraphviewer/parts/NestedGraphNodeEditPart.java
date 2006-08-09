@@ -90,9 +90,14 @@ public class NestedGraphNodeEditPart extends GraphNodeEditPart implements Action
 			// If the location where this selection happens is in the label
 			// The use a single selection tracker
 			return new SingleSelectionTracker(this);
-		}
+		}		
 		else if ( this.getCastedModel().isCurrent() ) {
-			return new MarqueeDragTracker();
+			//@tag bug(153221-Marquee-Selection(fix)) : make sure that the location is inside the scaled figure.
+			AspectRatioScaledFigure sfig = ((NestedFigure)getFigure()).getScaledFigure();
+			Rectangle scaledBounds = ((NestedFigure)getFigure()).getScaledFigure().getBounds().getCopy();
+			sfig.translateToAbsolute(scaledBounds);
+			if (scaledBounds.contains(((LocationRequest)request).getLocation()))
+					return new MarqueeDragTracker();
 		}
 		return super.getDragTracker(request);
 	}
