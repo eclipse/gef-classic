@@ -22,6 +22,7 @@ import org.eclipse.mylar.zest.core.ZestStyles;
 import org.eclipse.mylar.zest.layouts.LayoutBendPoint;
 import org.eclipse.mylar.zest.layouts.LayoutEntity;
 import org.eclipse.mylar.zest.layouts.LayoutRelationship;
+import org.eclipse.mylar.zest.layouts.constraints.LayoutConstraint;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.widgets.Display;
@@ -478,6 +479,11 @@ public class GraphModelConnection extends GraphItem implements LayoutRelationshi
 	 */
 	public void setEditPart(EditPart editPart) {
 		this.editPart = editPart;
+	}
+
+	public void populateLayoutConstraint(LayoutConstraint constraint) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

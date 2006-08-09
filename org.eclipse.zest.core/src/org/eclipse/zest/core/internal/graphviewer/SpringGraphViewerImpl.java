@@ -303,7 +303,8 @@ public class SpringGraphViewerImpl extends ThreadedGraphicalViewer implements IP
      * @see org.eclipse.mylar.zest.core.internal.graphviewer.IPanningListener#panning(int, int)
      */
     public void panning(int dx, int dy) {
-    	layoutAlgorithm.moveAllEntities(dx, dy);
+    	// @tag bug (153356) : Revist panning support for static graph
+    	//layoutAlgorithm.moveAllEntities(dx, dy);
     }
     
     /**

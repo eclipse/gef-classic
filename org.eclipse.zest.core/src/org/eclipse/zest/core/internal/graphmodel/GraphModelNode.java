@@ -569,10 +569,6 @@ public class GraphModelNode extends GraphItem implements LayoutEntity {
 		return dim;
 	}
 
-	public LayoutConstraint getLayoutConstraint(String constraintID) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	/**
 	 * @return the nodeStyle
@@ -586,6 +582,11 @@ public class GraphModelNode extends GraphItem implements LayoutEntity {
 	 */
 	public void setNodeStyle(int nodeStyle) {
 		this.nodeStyle = nodeStyle;
+	}
+
+	public void populateLayoutConstraint(LayoutConstraint constraint) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	

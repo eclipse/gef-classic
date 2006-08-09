@@ -35,7 +35,6 @@ import org.eclipse.mylar.zest.core.internal.viewers.NoOverlapLayoutAlgorithm;
 import org.eclipse.mylar.zest.layouts.InvalidLayoutConfiguration;
 import org.eclipse.mylar.zest.layouts.LayoutAlgorithm;
 import org.eclipse.mylar.zest.layouts.LayoutStyles;
-import org.eclipse.mylar.zest.layouts.algorithms.AbstractLayoutAlgorithm;
 import org.eclipse.mylar.zest.layouts.algorithms.GridLayoutAlgorithm;
 import org.eclipse.mylar.zest.layouts.algorithms.RadialLayoutAlgorithm;
 import org.eclipse.mylar.zest.layouts.algorithms.SpringLayoutAlgorithm;
@@ -322,7 +321,8 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 	}
 
 	public void panning(int dx, int dy) {
-	   	((AbstractLayoutAlgorithm)layoutAlgorithm).moveAllEntities(dx, dy);
+			// @tag bug (153356) : Revist panning support for static graph
+	   	//((AbstractLayoutAlgorithm)layoutAlgorithm).moveAllEntities(dx, dy);
 	}
 
 	public void panningEnd() {
