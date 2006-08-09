@@ -11,6 +11,7 @@
 package org.eclipse.mylar.zest.core.internal.nestedgraphviewer;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -34,6 +35,7 @@ import org.eclipse.mylar.zest.layouts.LayoutEntity;
 import org.eclipse.mylar.zest.layouts.LayoutRelationship;
 import org.eclipse.mylar.zest.layouts.LayoutStyles;
 import org.eclipse.mylar.zest.layouts.algorithms.GridLayoutAlgorithm;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Widget;
 
@@ -48,6 +50,7 @@ public class NestedGraphViewerImpl extends NestedNonThreadedGraphicalViewer  {
 	private NestedGraphModel model = null;
 	private NestedGraphEditPartFactory editPartFactory = null;
 	private LayoutAlgorithm layoutAlgorithm;
+	private HashMap nodeColorMap = new HashMap();
 	
 	// styles
 	private int style = ZestStyles.NONE;
@@ -143,12 +146,20 @@ public class NestedGraphViewerImpl extends NestedNonThreadedGraphicalViewer  {
 		//@tag bug(152393-TopSelection(fix)) : set-up the colors for selected nodes.
 		//@tag bug(151327-Styles(todo)) : this set-up should be done by the GraphItemStyler, not hard-coded.
 		if (previousNode != null) {
-			//reset the color
-			previousNode.setBackgroundColor(ZestPlugin.getDefault().getColor(IZestColorConstants.LIGHT_BLUE));
-			previousNode.setForegroundColor(ZestPlugin.getDefault().getColor(IZestColorConstants.BLACK));
+			Color[] colors = (Color[]) nodeColorMap.get(previousNode);
+			if (colors != null) {
+				previousNode.setBackgroundColor(colors[0]);
+				previousNode.setForegroundColor(colors[1]);
+			}
+			nodeColorMap.remove(previousNode);
 		}
 		if (nodeToMoveTo != null) {
 			//set the color to dark-blue
+	
+			nodeColorMap.put(nodeToMoveTo, new Color[] {
+				nodeToMoveTo.getBackgroundColor(),
+				nodeToMoveTo.getForegroundColor()
+			});
 			nodeToMoveTo.setBackgroundColor(ZestPlugin.getDefault().getColor(IZestColorConstants.BLUE));
 			nodeToMoveTo.setForegroundColor(ZestPlugin.getDefault().getColor(IZestColorConstants.GRAY));
 		}

@@ -21,7 +21,15 @@ public interface INestedGraphModelFactory {
 	 */
 	public abstract NestedGraphModel createModel();
 
-	public abstract NestedGraphModel createModelFromContentProvider(Object inputElement);
+	/**
+	 * Creates the model using the content provider. Uses the default given node style and connection style.
+	 * @param inputElement
+	 * @param nodeStyle
+	 * @param connectionStyle
+	 * @return
+	 */
+	//@tag bug(153348-NestedStyle(fix)) : add node style and connection style
+	public abstract NestedGraphModel createModelFromContentProvider(Object inputElement, int nodeStyle, int connectionStyle);
 
 	/**
 	 * Creates a new relationship using the content provider to get the source and destination.

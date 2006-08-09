@@ -14,6 +14,7 @@ import java.util.Iterator;
 
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.StructuredViewer;
+import org.eclipse.mylar.zest.core.internal.graphmodel.GraphItemStyler;
 import org.eclipse.mylar.zest.core.messages.ZestUIMessages;
 import org.eclipse.mylar.zest.core.viewers.INestedGraphEntityContentProvider;
 import org.eclipse.swt.widgets.Canvas;
@@ -51,10 +52,13 @@ public class NestedGraphModelEntityFactory implements INestedGraphModelFactory {
 		return (ILabelProvider)viewer.getLabelProvider();
 	}
 	
-	
-	public NestedGraphModel createModelFromContentProvider( Object inputElement ) {
+	//@tag bug(153348-NestedStyle(fix)) : add nodestyle and connectionstyle so that the model can be updated.
+	public NestedGraphModel createModelFromContentProvider( Object inputElement, int nodeStyle, int connectionStyle ) {
 		NestedGraphModel model = createModel();
-
+		model.setConnectionStyle(connectionStyle);
+		model.setNodeStyle(nodeStyle);
+		
+		
 		// add the root element
 		// TODO this maybe should be optional...
 		NestedGraphModelNode rootNode = new NestedGraphModelNode(model, null);
@@ -77,6 +81,8 @@ public class NestedGraphModelEntityFactory implements INestedGraphModelFactory {
 				rootNode.addChild(node);
 				node.setSizeInLayout(100, 100);
 				node.setHighlightAdjacentNodes(highlightAdjacentNodes);
+//				@tag bug(153348-NestedStyle(fix))
+				GraphItemStyler.styleItem(node, getLabelProvider());
 				addChildNodes(model, data);
 			}
 			NestedGraphModelNode node = model.getRootNode();
@@ -119,7 +125,8 @@ public class NestedGraphModelEntityFactory implements INestedGraphModelFactory {
 				NestedGraphModelNode node = createNode(model, childData);
 				node.setSizeInLayout(100, 100);
 				node.setHighlightAdjacentNodes(highlightAdjacentNodes);
-				
+//				@tag bug(153348-NestedStyle(fix))
+				GraphItemStyler.styleItem(node, getLabelProvider());
 				addChildNodes(model, childData);
 			}
 		}
@@ -133,7 +140,7 @@ public class NestedGraphModelEntityFactory implements INestedGraphModelFactory {
 		if (node == null) {
 			node = new NestedGraphModelNode(model, getLabelProvider().getText( data ), getLabelProvider().getImage(data), data);
 			node.setHighlightAdjacentNodes(highlightAdjacentNodes);
-
+			
 			// add the parent
 			Object parent = getContentProvider().getParent(data);
 			if (parent != null) {
@@ -174,6 +181,8 @@ public class NestedGraphModelEntityFactory implements INestedGraphModelFactory {
 		// Create the connection
 		double weight = getContentProvider().getWeight( source, dest );
 		connection = new NestedGraphModelConnection(model, data, sourceNode, destNode, false, weight);
+		//@tag bug(153348-NestedStyle(fix))
+		GraphItemStyler.styleItem(connection, getLabelProvider());
 		model.addConnection(connection.getExternalConnection(), connection);
 		return connection;
 	}

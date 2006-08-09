@@ -168,7 +168,8 @@ public class NestedGraphViewer extends AbstractStructuredGraphViewer implements 
 			modelFactory = new NestedGraphModelEntityFactory(this, highlightAdjacentNodes);
 		}
 		// DebugPrint.println("Input Is: " + input);
-		model = modelFactory.createModelFromContentProvider(input);
+		//@tag bug(153348-NestedStyle(fix)) : add connection style and node style.
+		model = modelFactory.createModelFromContentProvider(input, getNodeStyle(), getConnectionStyle());
 		model.setNodeStyle(getNodeStyle());
 		model.setConnectionStyle(getConnectionStyle());
 		model.addPropertyChangeListener(this);
