@@ -19,6 +19,7 @@ import java.util.TreeSet;
 
 import org.eclipse.mylar.zest.layouts.LayoutEntity;
 import org.eclipse.mylar.zest.layouts.constraints.BasicEntityConstraint;
+import org.eclipse.mylar.zest.layouts.constraints.EntityPriorityConstraint;
 import org.eclipse.mylar.zest.layouts.constraints.LabelLayoutConstraint;
 import org.eclipse.mylar.zest.layouts.constraints.LayoutConstraint;
 
@@ -283,6 +284,10 @@ public class SimpleNode implements LayoutEntity {
 		}		
 		else if ( constraint instanceof BasicEntityConstraint ) {
 			// noop
+		}
+		else if ( constraint instanceof EntityPriorityConstraint ) {
+			EntityPriorityConstraint priorityConstraint = (EntityPriorityConstraint) constraint;
+			priorityConstraint.priority = Math.random() * 10 + 1;
 		}
 	}
 
