@@ -25,7 +25,6 @@ import org.eclipse.draw2d.Shape;
 import org.eclipse.gef.editparts.AbstractConnectionEditPart;
 import org.eclipse.mylar.zest.core.ZestStyles;
 import org.eclipse.mylar.zest.core.internal.gefx.ArcConnection;
-import org.eclipse.mylar.zest.core.internal.gefx.GraphRootEditPart;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphItem;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelConnection;
 
@@ -49,7 +48,7 @@ public class GraphConnectionEditPart extends AbstractConnectionEditPart implemen
 	public void activate() {
 		if (!isActive()) {
 			super.activate();
-			((GraphItem) getModel()).addPropertyChangeListener(this);
+			((GraphItem)getModel()).addPropertyChangeListener(this);
 		}
 	}
 
@@ -117,21 +116,29 @@ public class GraphConnectionEditPart extends AbstractConnectionEditPart implemen
 		return connection;
 	}
 	
+	/**
+     * @deprecated by Del Myers. Connections should be left on the connection layer, otherwise GEF gets confused.
+     */
 	public void highlightEdge() {
-		IFigure thisEdge = getFigure(); 
+		/*IFigure thisEdge = getFigure(); 
 		IFigure layer = getLayer(CONNECTION_LAYER);
 		IFigure feedbackLayer = getLayer(GraphRootEditPart.CONNECTION_FEEDBACK_LAYER );
 		layer.remove(thisEdge);
 		feedbackLayer.add(thisEdge);
+*/
 	}
 	
+	/**
+     * @deprecated by Del Myers. Connections should be left on the connection layer, otherwise GEF gets confused.
+     */
 	public void unHighlightEdge() {
+		/*
 		IFigure thisEdge = getFigure(); 
 		IFigure layer = getLayer(CONNECTION_LAYER);
 		IFigure feedbackLayer = getLayer(GraphRootEditPart.CONNECTION_FEEDBACK_LAYER );
-		if ( feedbackLayer.getChildren().contains(thisEdge))
-			feedbackLayer.remove(thisEdge);
+		feedbackLayer.remove(thisEdge);
 		layer.add(thisEdge);
+*/
 
 	}
 	
@@ -149,7 +156,13 @@ public class GraphConnectionEditPart extends AbstractConnectionEditPart implemen
 	public void propertyChange(PropertyChangeEvent event) {
 		String property = event.getPropertyName();
 		IFigure figure = getFigure();
-		if (GraphModelConnection.LINECOLOR_PROP.equals(property)) {
+		if (GraphModelConnection.HIGHLIGHT_PROP.equals(property)) {
+			//@tag unreported(EdgeHighlight) : respond to model highlight changes.
+			highlightEdge();
+		} else	if (GraphModelConnection.HIGHLIGHT_PROP.equals(property)) { 
+//			@tag unreported(EdgeHighlight) : respond to model highlight changes.
+			unHighlightEdge();
+		} else if (GraphModelConnection.LINECOLOR_PROP.equals(property)) {
 			figure.setForegroundColor(getCastedModel().getLineColor());
 		} else if (GraphModelConnection.LINEWIDTH_PROP.equals(property)) {
 			if (figure instanceof Shape)
@@ -215,9 +228,5 @@ public class GraphConnectionEditPart extends AbstractConnectionEditPart implemen
 		}
 
 	}
-	
-	
-
-	
 
 }

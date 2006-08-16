@@ -136,10 +136,10 @@ public class NestedFigure extends Figure {
 		return minSize;
 	}
 	
-	public boolean isVisible() {
+	/*public boolean isVisible() {
 		return true;
 	}
-	
+	*/
 
 	
 	public boolean isCoordinateSystem() {

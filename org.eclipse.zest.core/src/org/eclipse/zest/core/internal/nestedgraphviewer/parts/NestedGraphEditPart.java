@@ -12,7 +12,9 @@ package org.eclipse.mylar.zest.core.internal.nestedgraphviewer.parts;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.draw2d.AbstractLayout;
@@ -26,7 +28,9 @@ import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.LayerConstants;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphItem;
+import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelConnection;
+import org.eclipse.mylar.zest.core.internal.graphmodel.NonNestedProxyNode;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedGraphModel;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedGraphModelNode;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedPane;
@@ -222,6 +226,17 @@ public class NestedGraphEditPart extends GraphEditPart  {
 		
 	}
 
+	protected NestedPaneAreaEditPart getMainEditPart() {
+		return (NestedPaneAreaEditPart) getViewer().getEditPartRegistry().get(mainNestedPane);
+	}
+	
+	protected NestedPaneAreaEditPart getClientEditPart() {
+		return (NestedPaneAreaEditPart) getViewer().getEditPartRegistry().get(clientPane);
+	}
+	
+	protected NestedPaneAreaEditPart getSupplierEditPart() {
+		return (NestedPaneAreaEditPart) getViewer().getEditPartRegistry().get(supplierPane);
+	}
 	
 	public Rectangle getMainArea() {
 //		@tag bug(152613-Client-Supplier(fix)) : the drawable area is in the client panel, not the whole pane.
@@ -238,20 +253,17 @@ public class NestedGraphEditPart extends GraphEditPart  {
 		return getSupplierFigure().getClientPanel().getClientArea().getCopy();
 	}
 	
-	public NestedPaneAreaEditPart getClientPane() {
-		return (NestedPaneAreaEditPart)getChildren().get(0);
-	}
-	
+		
 	protected PaneFigure getClientFigure() {
-		return (PaneFigure) getFigure().getChildren().get(2);
+		return (PaneFigure) getClientEditPart().getFigure();
 	}
 	
 	protected PaneFigure getMainFigure() {
-		return (PaneFigure)getFigure().getChildren().get(1);
+		return (PaneFigure)getMainEditPart().getFigure();
 	}
 	
 	protected PaneFigure getSupplierFigure() {
-		return (PaneFigure)getFigure().getChildren().get(0);
+		return (PaneFigure)getSupplierEditPart().getFigure();
 	}
 	
 	/**
@@ -271,9 +283,18 @@ public class NestedGraphEditPart extends GraphEditPart  {
 
 			public void layout(IFigure container) {
 //				@tag bug(152613-Client-Supplier(fix)) : layout the panes according to thier closed/openned state.
-				PaneFigure supply = (PaneFigure) getSupplierFigure();
-				PaneFigure main = (PaneFigure) getMainFigure();
-				PaneFigure client = (PaneFigure) getClientFigure();
+				PaneFigure supply;
+				PaneFigure main;
+				PaneFigure client;
+				try {
+					supply = (PaneFigure) getSupplierFigure();
+					main = (PaneFigure) getMainFigure();
+					client = (PaneFigure) getClientFigure();
+				} catch (Exception e) {
+					//there may be times when the figure is asked to layout before
+					//all the children are added. This will throw an exception.
+					return;
+				}
 				Rectangle parentBounds = container.getBounds();
 				
 				Dimension preferedSize = client.getPreferredSize();
@@ -334,10 +355,37 @@ public class NestedGraphEditPart extends GraphEditPart  {
 		//@tag bug(153170-FilterArcs(fix))
 		//@tag bug(153169-OccludedArcs(fix)) : filter the arcs before animating.
 		filterConnections(editPart.getCastedModel(), true);
+
+		//hide the proxies before starting
+		hideProxies();
 		doExpandZoom(startBounds, 10, editPart);
 	}
 	
 	
+	/**
+	 * Hides all the proxies in the client/supplier panes
+	 */
+	private void hideProxies() {
+		List proxies = new LinkedList();
+		proxies.addAll(supplierPane.getChildren());
+		proxies.addAll(clientPane.getChildren());
+		for (Iterator i =proxies.iterator(); i.hasNext();) {
+			GraphicalEditPart part = 
+				(GraphicalEditPart) getViewer().getEditPartRegistry().get(i.next());
+			List connections = new LinkedList();
+			connections.addAll(part.getSourceConnections());
+			connections.addAll(part.getTargetConnections());
+			for (Iterator j = connections.iterator(); j.hasNext();) {
+				GraphicalEditPart conPart = (GraphicalEditPart) j.next();
+				conPart.getFigure().setVisible(false);
+			}
+			part.getFigure().setVisible(false);
+			
+		}
+		
+		
+	}
+
 	/**
 	 * If <code>filter</code> is true filters out the connections that don't have 
 	 * an end in a node that has <code>node</code> as an ancestor. Otherwise, 
@@ -361,10 +409,10 @@ public class NestedGraphEditPart extends GraphEditPart  {
 				int sourceRel = node.getRelationshipBetweenNodes(source);
 				int destRel = node.getRelationshipBetweenNodes(dest);
 				boolean visible = (
-					(sourceRel == NestedGraphModelNode.ANCESTOR) ||
-					(sourceRel == NestedGraphModelNode.SAME_NODE) ||
-					(destRel == NestedGraphModelNode.ANCESTOR) ||
-					(destRel == NestedGraphModelNode.SAME_NODE)
+					((sourceRel == NestedGraphModelNode.ANCESTOR) ||
+					(sourceRel == NestedGraphModelNode.SAME_NODE)) &&
+					((destRel == NestedGraphModelNode.ANCESTOR) ||
+					(destRel == NestedGraphModelNode.SAME_NODE))
 				);
 				part.getFigure().setVisible(visible);
 			}
@@ -401,40 +449,6 @@ public class NestedGraphEditPart extends GraphEditPart  {
 		animator.addFigures(new IFigure[] {fig}, new Rectangle[] {endBounds});
 		animator.start(STEPS);
 		animator.clear();
-		/*if (STEPS > 0) {
-			double xleft = startBounds.x - endBounds.x;
-			double ytop = startBounds.y - endBounds.y;
-			double xright = endBounds.right() - startBounds.right();
-			double ybottom = endBounds.bottom() - startBounds.bottom();
-			double xLeftScale = xleft / (double)STEPS, 
-				xRightScale = xright / (double)STEPS;
-			double yTopScale = ytop / (double)STEPS, 
-				yBottomScale = ybottom / (double)STEPS;
-
-			
-			IFigure parent = fig.getParent();
-			parent.remove(fig);
-			getMainFigure().add(fig);
-			fig.setOpaque(true);
-			for (int i = 0; i <= STEPS; i++) {
-				int x = (int)(startBounds.x - (i * xLeftScale));
-				int y = (int)(startBounds.y - (i * yTopScale));
-				int w = (int)(startBounds.width + (i * xLeftScale) + (i * xRightScale));
-				int h = (int)(startBounds.height + (i * yTopScale) + (i * yBottomScale));
-				fig.setBounds(new Rectangle(x, y, w, h));		
-				((NestedGraphViewerImpl)getViewer()).flush();
-				this.sleep(25);
-			}
-			fig.setOpaque(false);
-			
-			getMainFigure().remove(fig);
-			getMainFigure().translateToAbsolute(endBounds);
-			fig.translateToRelative(endBounds);
-			fig.setBounds(endBounds);
-			getViewer().flush();
-			
-		}
-		*/
 	}
 	
 	/**
@@ -442,52 +456,23 @@ public class NestedGraphEditPart extends GraphEditPart  {
 	 * of zooming in.  The dotted rectangle starts at the center of the node.
 	 */
 	private void doExpandZoom(Rectangle startBounds, final int STEPS, NestedGraphNodeEditPart node) {
+		
 		NestedFigure fig = (NestedFigure)node.getFigure();
 		FigureKeyFrameAnimator animator = new FigureKeyFrameAnimator();
 		addChildrenToAnimator(node, animator);
+		
+		getViewer().flush();
 		animator.start(STEPS);
 		
 		FigureKeyFrameAnimator focusAnimator = new FigureKeyFrameAnimator();
 		Rectangle endBounds = getMainArea();
 		fig.setOpaque(true);
 		
-		//fig.translateToRelative(bounds);
-		//getLayer(LayerConstants.FEEDBACK_LAYER).add(fig);
-		//fig.setBounds(startBounds);
 		focusAnimator.addFigures(new IFigure[]{fig}, new Rectangle[]{endBounds});
 		focusAnimator.start(STEPS);
 		animator.clear();
 		focusAnimator.clear();
-		/*if (STEPS > 0) {
-			double xleft = startBounds.x - endBounds.x;
-			double ytop = startBounds.y - endBounds.y;
-			double xright = endBounds.right() - startBounds.right();
-			double ybottom = endBounds.bottom() - startBounds.bottom();
-			double xLeftScale = xleft / (double)STEPS, 
-				xRightScale = xright / (double)STEPS;
-			double yTopScale = ytop / (double)STEPS, 
-				yBottomScale = ybottom / (double)STEPS;			
-			
-			IFigure parent = fig.getParent();
-			parent.remove(fig);
-			getMainFigure().add(fig);
-			fig.setOpaque(true);
-			for (int i = 0; i <= STEPS; i++) {
-				int x = (int)(startBounds.x - (i * xLeftScale));
-				int y = (int)(startBounds.y - (i * yTopScale));
-				int w = (int)(startBounds.width + (i * xLeftScale) + (i * xRightScale));
-				int h = (int)(startBounds.height + (i * yTopScale) + (i * yBottomScale));
-				fig.setBounds(new Rectangle(x, y, w, h));		
-				((NestedGraphViewerImpl)getViewer()).flush();
-				this.sleep(25);
-			}
-			
-			fig.setBounds(endBounds);
-			((NestedGraphViewerImpl)getViewer()).flush();
-			//getMainFigure().remove(fig);
-			//parent.add(fig);
-		}*/
-		
+		deleteProxies();
 	}
 	
 	/**
@@ -495,7 +480,8 @@ public class NestedGraphEditPart extends GraphEditPart  {
 	 * @param node the node to get the children of.
 	 */
 	private void addChildrenToAnimator(final NestedGraphNodeEditPart node, FigureKeyFrameAnimator animator) {
-		List connectedTo = node.getCastedModel().getNodesConnectedTo();
+		createProxies(node.getCastedModel(), animator);
+		/*List connectedTo = node.getCastedModel().getNodesConnectedTo();
 		GraphicalEditPart[] editPartArray = new GraphicalEditPart[connectedTo.size()];
 		IFigure[] figureArray = new IFigure[editPartArray.length];
 		for (int i = 0; i < connectedTo.size(); i++) {
@@ -520,6 +506,154 @@ public class NestedGraphEditPart extends GraphEditPart  {
 		Arrays.sort(figureArray, FigureGridLayout.SimpleComparator);
 		boundss = FigureGridLayout.layoutInBounds(getSupplierPaneArea(), figureArray);
 		animator.addFigures(figureArray, boundss);
+		*/
+	}
+	
+		
+	private void createProxies(NestedGraphModelNode node, FigureKeyFrameAnimator animator) {
+		List connections = node.getConnectionsTo();
+		HashMap nodeProxyMap = new HashMap();
+		GraphModel graph = node.getGraphModel();
+		HashMap nodeEditParts = new HashMap();
+		ArrayList figureList = new ArrayList();
+		
+		for (Iterator i = connections.iterator(); i.hasNext();) {
+			GraphModelConnection conn = (GraphModelConnection) i.next();
+			NestedGraphModelNode pn = (NestedGraphModelNode) conn.getDestination();
+			GraphicalEditPart part = findCurrentProxy(pn, true);
+			NonNestedProxyNode proxy = (NonNestedProxyNode) nodeProxyMap.get(pn);
+			if (proxy == null) {
+				proxy = graph.createProxyNode(pn);
+				nodeProxyMap.put(pn, proxy);
+				nodeEditParts.put(proxy, createProxyNodeEditPart(proxy, part));
+			}
+			graph.createProxyConnection(conn.getSource(), proxy, conn);
+			part = (GraphicalEditPart) nodeEditParts.get(proxy);
+			GraphicalEditPart destPart = (GraphicalEditPart) getViewer().getEditPartRegistry().get(conn.getDestination());
+			
+			//conn.getDestination().getEditPart().refresh();
+			if (destPart != null) {
+				destPart.refresh();
+			}
+			part.refresh();
+		}
+		//get the figures
+		for (Iterator i=nodeEditParts.values().iterator(); i.hasNext();) {
+			figureList.add(((GraphicalEditPart)i.next()).getFigure());
+		}
+		IFigure[] figureArray = (IFigure[])figureList.toArray(new IFigure[figureList.size()]);
+		Arrays.sort(figureArray, FigureGridLayout.SimpleComparator);
+		Rectangle[] boundss = FigureGridLayout.layoutInBounds(getClientPaneArea(), figureArray);
+		animator.addFigures(figureArray, boundss);
+		
+						
+		nodeProxyMap.clear();
+		nodeEditParts.clear();
+		connections = node.getConnectionsFrom();
+		for (Iterator i = connections.iterator(); i.hasNext();) {
+			GraphModelConnection conn = (GraphModelConnection) i.next();
+			NestedGraphModelNode pn = (NestedGraphModelNode) conn.getSource();
+			GraphicalEditPart part = findCurrentProxy(pn, false);
+			NonNestedProxyNode proxy = (NonNestedProxyNode) nodeProxyMap.get(pn);
+			if (proxy == null) {
+				proxy = graph.createProxyNode(pn);
+				nodeProxyMap.put(pn, proxy);
+				nodeEditParts.put(proxy, createProxyNodeEditPart(proxy, part));
+			}
+			graph.createProxyConnection(proxy, conn.getDestination(), conn);
+			part = (GraphicalEditPart) nodeEditParts.get(proxy);
+			GraphicalEditPart destPart = (GraphicalEditPart) getViewer().getEditPartRegistry().get(conn.getDestination());
+			
+			//conn.getDestination().getEditPart().refresh();
+			if (destPart != null) {
+				destPart.refresh();
+			}
+			part.refresh();
+		}
+		
+//		get the figures
+		figureList.clear();
+		for (Iterator i=nodeEditParts.values().iterator(); i.hasNext();) {
+			figureList.add(((GraphicalEditPart)i.next()).getFigure());
+		}
+		figureArray = (IFigure[])figureList.toArray(new IFigure[figureList.size()]);
+		Arrays.sort(figureArray, FigureGridLayout.SimpleComparator);
+		boundss = FigureGridLayout.layoutInBounds(getSupplierPaneArea(), figureArray);
+		animator.addFigures(figureArray, boundss);
+		
+	}
+
+	/**
+	 * Deletes proxies that were created on this edit part for animations.
+	 *
+	 */
+	private void deleteProxies() {
+		List children = getChildren();
+		for (Iterator i = children.iterator(); i.hasNext();) {
+			Object child = i.next();
+			if (child instanceof NonNestedGraphProxyNodeEditPart) {
+				NonNestedGraphProxyNodeEditPart part = (NonNestedGraphProxyNodeEditPart)child;
+				getCastedModel().removeProxyNode(part.getCastedModel());
+				part.removeNotify();
+			}
+		}
+	}
+	
+	/**
+	 * @param pn
+	 * @param b
+	 * @return
+	 */
+	private GraphicalEditPart findCurrentProxy(NestedGraphModelNode pn, boolean to) {
+		List nodes;
+		if (to) {
+			nodes = clientPane.getChildren();
+		} else {
+			nodes = supplierPane.getChildren();
+		}
+		for (Iterator i = nodes.iterator(); i.hasNext();) {
+			NonNestedProxyNode node = (NonNestedProxyNode) i.next();
+			if (node.getProxy() == pn) {
+				GraphicalEditPart part = (GraphicalEditPart) getViewer().getEditPartRegistry().get(node);
+				return part;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Creates a proxy for the given node, and bases the location on the given edit part. The edit
+	 * part that the proxy edit part is being based on will be hidden from view, unless its model
+	 * is the current focus node.
+	 * 
+	 * @param proxy
+	 * @return
+	 */
+	private GraphicalEditPart createProxyNodeEditPart(NonNestedProxyNode proxy, GraphicalEditPart baseEditPart) {
+		NonNestedGraphProxyNodeEditPart part = new NonNestedGraphProxyNodeEditPart();
+		part.setModel(proxy);
+		part.setParent(this);
+		this.addChild(part, -1);
+		part.activate();
+		getViewer().getEditPartRegistry().put(proxy, part);
+		if (baseEditPart == null)
+			baseEditPart = (GraphicalEditPart) getViewer().getEditPartRegistry().get(proxy.getProxy());//(GraphicalEditPart)proxy.getProxy().getEditPart();
+		IFigure figure = part.getFigure();
+		figure.setParent(getLayer(LayerConstants.FEEDBACK_LAYER));
+		getViewer().getVisualPartMap().put(figure, part);
+		if (baseEditPart != null) {
+			IFigure proxyFigure = baseEditPart.getFigure();
+			baseEditPart.deactivate();
+			if (proxyFigure != null) {
+				if (baseEditPart.getModel() != getCastedModel().getCurrentNode())
+					proxyFigure.setVisible(false);
+				Rectangle proxyBounds = proxyFigure.getBounds().getCopy();
+				proxyFigure.translateToAbsolute(proxyBounds);
+				figure.getParent().translateToRelative(proxyBounds);
+				figure.setBounds(proxyBounds);
+			}
+		}
+		return part;
 	}
 
 	/**

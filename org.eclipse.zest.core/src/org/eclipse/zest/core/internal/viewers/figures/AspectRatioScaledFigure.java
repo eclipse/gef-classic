@@ -12,6 +12,8 @@ package org.eclipse.mylar.zest.core.internal.viewers.figures;
 
 
 
+import java.util.List;
+
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.FreeformLayout;
 import org.eclipse.draw2d.Graphics;
@@ -267,6 +269,23 @@ public class AspectRatioScaledFigure extends Figure {// extends ScaledFigure {
 		if (disposeGraphics) {
 			g.dispose();
 			graphics.restoreState();
+		}
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.draw2d.Figure#paintChildren(org.eclipse.draw2d.Graphics)
+	 */
+	protected void paintChildren(Graphics graphics) {
+		IFigure child;
+		List children = getChildren();
+		Rectangle clip = Rectangle.SINGLETON;
+		for (int i = 0; i < children.size(); i++) {
+			child = (IFigure)children.get(i);
+			if (child.isVisible() && child.intersects(graphics.getClip(clip))) {
+				graphics.clipRect(child.getBounds());
+				child.paint(graphics);
+				graphics.restoreState();
+			}
 		}
 	}
 

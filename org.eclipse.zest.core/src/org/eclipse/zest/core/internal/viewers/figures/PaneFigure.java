@@ -93,7 +93,7 @@ public class PaneFigure extends Panel {
 		});
 		clientArea.setBackgroundColor(ColorConstants.white);
 		clientArea.setLayoutManager(new FigureGridLayout());
-		clientArea.setOpaque(false);
+		clientArea.setOpaque(true);
 		super.add(clientArea, null, -1);
 		if (type != NestedPane.MAIN_PANE) {
 			label = new Label();
@@ -142,15 +142,19 @@ public class PaneFigure extends Panel {
 	 * @see org.eclipse.draw2d.Figure#remove(org.eclipse.draw2d.IFigure)
 	 */
 	public void remove(IFigure figure) {
-		clientArea.remove(figure);
+		if (clientArea.getChildren().contains(figure)){
+			clientArea.remove(figure);
+			return;
+		}
+		super.remove(figure);
 	}
 	
 	/* (non-Javadoc)
 	 * @see org.eclipse.draw2d.Figure#removeAll()
-	 */
+	 *
 	public void removeAll() {
 		clientArea.removeAll();
-	}
+	}*/
 	
 	/**
 	 * @return the type

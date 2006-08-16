@@ -10,17 +10,15 @@
  *******************************************************************************/
 package org.eclipse.mylar.zest.core.internal.graphmodel.nested;
 
-import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelConnection;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelNode;
-import org.eclipse.swt.graphics.Color;
 
 
 /**
  * Extends GraphModelConnection.  The only real purpose is to change the colors
  * and the line widths.
- * 
+ * @deprecated by Del Myers. This connection is no longer needed. Use regular GraphModelConnections.
  * @author Chris Callendar
  */
 public class NestedGraphModelConnection extends GraphModelConnection {
@@ -52,16 +50,16 @@ public class NestedGraphModelConnection extends GraphModelConnection {
 	
 	/* (non-Javadoc)
 	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelConnection#getColorFromWeight()
-	 */
+	 *
 	protected Color getColorFromWeight() {
 		return ColorConstants.darkBlue;
-	}
+	}*/
 	
 	/* (non-Javadoc)
 	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelConnection#getLineWidthFromWeight()
-	 */
+	 *
 	protected int getLineWidthFromWeight() {
 		return 1;
-	}
+	}*/
 
 }

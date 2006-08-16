@@ -36,7 +36,7 @@ public class GraphEditPartFactory implements EditPartFactory {
 		EditPart editPart = null;
 		if (model instanceof GraphModelNode) {
 			editPart = new GraphNodeEditPart();
-			((GraphModelNode)model).setEditPart( editPart );
+			((GraphModelNode)model).setEditPart((GraphNodeEditPart)editPart );
 		} else if (model instanceof GraphModelConnection) {
 			editPart = new GraphConnectionEditPart();
 			((GraphModelConnection)model).setEditPart(editPart);

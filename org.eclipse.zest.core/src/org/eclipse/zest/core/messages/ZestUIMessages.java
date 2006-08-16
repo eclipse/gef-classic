@@ -17,7 +17,7 @@ import java.util.ResourceBundle;
 
 
 /**
- * Messages for internationalized strings pertaining to errors.
+ * Messages for internationalized strings pertaining to ui elements.
  * @author Del Myers
  * @see org.eclipse.mylar.zest.ZestException
  *
@@ -33,6 +33,10 @@ public class ZestUIMessages {
 		getString("view.nested.client.pane"); //$NON-NLS-1$
 	public static final String VIEW_NESTED_SUPPLIER_PANE =
 		getString("view.nested.supplier.pane"); //$NON-NLS-1$
+	public static final String TIP_MINIMIZE = 
+		getString("tip.minimize");
+	public static final String TIP_MAXIMIZE = 
+		getString("tip.maximize");
 	
 	
 	public static String getString(String key) {

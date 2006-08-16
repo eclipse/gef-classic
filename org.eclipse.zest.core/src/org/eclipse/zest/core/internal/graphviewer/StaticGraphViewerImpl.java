@@ -19,6 +19,7 @@ import org.eclipse.draw2d.Animation;
 import org.eclipse.draw2d.FigureCanvas;
 import org.eclipse.draw2d.LineBorder;
 import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.gef.EditPart;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.mylar.zest.core.ZestStyles;
 import org.eclipse.mylar.zest.core.internal.gefx.IPanningListener;
@@ -450,7 +451,10 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 			Object current = iterator.next();
 			Object currentNode = nodeMap.get(current);
 			if ( current != null ) {
-				editPartList.add( ((GraphModelNode)currentNode).getEditPart() );
+				//@tag bug(153466-NoNestedClientSupply(fix)) : use the edit part registry to avoid having back-links in the model.
+				EditPart part = (EditPart) getEditPartRegistry().get(currentNode);
+				if (part != null)
+					editPartList.add(part);//((GraphModelNode)currentNode).getEditPart() );
 			}
 			else {
 				Object currentConnection = connectionMap.get(current);

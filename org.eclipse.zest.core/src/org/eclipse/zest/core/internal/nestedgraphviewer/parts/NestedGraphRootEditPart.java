@@ -10,10 +10,14 @@
  *******************************************************************************/
 package org.eclipse.mylar.zest.core.internal.nestedgraphviewer.parts;
 
+import java.util.Iterator;
+import java.util.List;
+
 import org.eclipse.draw2d.ConnectionLayer;
 import org.eclipse.draw2d.FreeformLayer;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.LayeredPane;
+import org.eclipse.gef.EditPart;
 import org.eclipse.gef.LayerConstants;
 import org.eclipse.gef.editparts.GuideLayer;
 import org.eclipse.gef.editparts.LayerManager;
@@ -82,6 +86,8 @@ public class NestedGraphRootEditPart extends SimpleRootEditPart
 		return innerLayers;
 	}
 	
+
+	
 	/**
 	 * Creates the top-most set of layers on the given layered pane.
 	 * @param layeredPane the parent for the created layers
@@ -127,6 +133,33 @@ public class NestedGraphRootEditPart extends SimpleRootEditPart
 			setEnabled(false);
 		}
 	}
-
 	
+	/* (non-Javadoc)
+	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#unregisterVisuals()
+	 */
+	 //@tag bug(153466-NoNestedClientSupply(fix)) : make sure that all the visuals are deregistered before recreating the parts.
+	protected void unregisterVisuals() {
+		List children = getFigure().getChildren();
+		//remove all the child figures for the root, which
+		//don't necessarilly have edit parts.
+		for (int i = 0; i < children.size(); i++) {
+			IFigure child = (IFigure) children.get(i);
+			getViewer().getVisualPartMap().remove(child);
+		}
+		getViewer().getVisualPartMap().remove(figure);
+	}
+	
+
+	/* (non-Javadoc)
+	 * @see org.eclipse.gef.editparts.AbstractEditPart#unregisterModel()
+	 */
+	 //@tag bug(153466-NoNestedClientSupply(fix)) : make sure that all edit parts are removed before creating new ones.
+	protected void unregisterModel() {
+		//force revmoval of the edit parts.
+		for (Iterator i = getChildren().iterator(); i.hasNext();) {
+			EditPart child = (EditPart) i.next();
+			child.removeNotify();
+		}
+		super.unregisterModel();
+	}
 }

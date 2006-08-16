@@ -11,6 +11,8 @@
 package org.eclipse.mylar.zest.core.internal.graphmodel.nested;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
@@ -89,10 +91,10 @@ public class NestedGraphModelNode extends GraphModelNode implements NestedLayout
 
 	/**
 	 * Gets the relationship between two given nodes 
-	 *  0 - Same
-	 *  1 - node is a child of this
-	 *  2 - node is a parent of this
-	 *  3 - node is not directly related
+	 *  SAME_NODE - Same
+	 *  DESCENDANT - node is a child of this
+	 *  ANCESTOR - node is a parent of this
+	 *  NO_RELATION - node is not directly related
 	 * @param that	the node to compare with this
 	 * @return int
 	 * @see #SAME_NODE
@@ -335,18 +337,6 @@ public class NestedGraphModelNode extends GraphModelNode implements NestedLayout
 
 	}
 
-	/**
-	 * The scale from (0-1]. The scale defaults to 1.
-	 * 
-	 * @param scale
-	 */
-	// public void setScale(double scale) {
-	// if ((scale > 0) && (scale <= 1)) {
-	// this.scale = scale;
-	// } else {
-	// this.scale = 1 ;
-	// }
-	// }
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -413,11 +403,12 @@ public class NestedGraphModelNode extends GraphModelNode implements NestedLayout
 //	@tag bug(150585-TopArcs(fix))
 	public List getNodesConnectedTo() {
 		List connections = getConnectionsTo();
-		ArrayList targets = new ArrayList();
+		//@tag bug(unreported(fix)) : there should be only one copy of each node.
+		HashSet targets = new HashSet();
 		for (Iterator i = connections.iterator(); i.hasNext();) {
 			targets.add(((GraphModelConnection)i.next()).getDestination());
 		}
-		return targets;
+		return Arrays.asList(targets.toArray());
 	}
 	
 	public List getConnectionsTo() {
@@ -434,10 +425,11 @@ public class NestedGraphModelNode extends GraphModelNode implements NestedLayout
 		List sourceConnections = currentNode.getSourceConnections();
 		for (Iterator i = sourceConnections.iterator(); i.hasNext();) {
 			GraphModelConnection c = (GraphModelConnection) i.next();
+			//@tag bug(unreported(fix)) : it is possible for a nested node to be connected to a non nested node.
+			if (!(c.getDestination() instanceof NestedGraphModelNode)) continue;
 			NestedGraphModelNode target = (NestedGraphModelNode) c.getDestination();
-			if (topNode.getRelationshipBetweenNodes(target) == NestedGraphModelNode.ANCESTOR)
-				continue;
-			connectedTo.add(c);
+			if (topNode.getRelationshipBetweenNodes(target) != NestedGraphModelNode.ANCESTOR)
+				connectedTo.add(c);
 		}
 		for (Iterator i = currentNode.getChildren().iterator(); i.hasNext();) {
 			connectedTo.addAll(recursiveGetConnectionsTo((NestedGraphModelNode) i.next(), topNode));
@@ -453,11 +445,12 @@ public class NestedGraphModelNode extends GraphModelNode implements NestedLayout
 	//@tag bug(150585-TopArcs(fix))
 	public List getNodesConnectedFrom() {
 		List connections = getConnectionsFrom();
-		ArrayList sources = new ArrayList();
+		//@tag bug(unreported(fix)) : there should only be one copy of each node in the list.
+		HashSet sources = new HashSet();
 		for (Iterator i = connections.iterator(); i.hasNext();) {
 			sources.add(((GraphModelConnection)i.next()).getSource());
 		}
-		return sources;
+		return Arrays.asList(sources.toArray());
 	}
 	
 	public List getConnectionsFrom() {
@@ -476,10 +469,11 @@ public class NestedGraphModelNode extends GraphModelNode implements NestedLayout
 		List targetConnections = currentNode.getTargetConnections();
 		for (Iterator i = targetConnections.iterator(); i.hasNext();) {
 			GraphModelConnection c = (GraphModelConnection) i.next();
+			//@tag bug(unreported(fix)) : it is possible for nested nodes to be connected to non nested nodes.
+			if (!(c.getSource() instanceof NestedGraphModelNode)) continue;
 			NestedGraphModelNode source = (NestedGraphModelNode) c.getSource();
-			if (topNode.getRelationshipBetweenNodes(source) == NestedGraphModelNode.ANCESTOR)
-				continue;
-			connectedFrom.add(c);
+			if (topNode.getRelationshipBetweenNodes(source) != NestedGraphModelNode.ANCESTOR)
+				connectedFrom.add(c);
 		}
 		for (Iterator i = currentNode.getChildren().iterator(); i.hasNext();) {
 			connectedFrom.addAll(recursiveGetConnectionsFrom((NestedGraphModelNode) i.next(), topNode));

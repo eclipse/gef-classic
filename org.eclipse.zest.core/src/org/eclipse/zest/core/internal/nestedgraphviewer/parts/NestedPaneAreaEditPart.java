@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.mylar.zest.core.internal.nestedgraphviewer.parts;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.draw2d.FreeformLayout;
@@ -18,6 +21,8 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
+import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel;
+import org.eclipse.mylar.zest.core.internal.graphmodel.NonNestedProxyNode;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedPane;
 import org.eclipse.mylar.zest.core.internal.nestedgraphviewer.policies.NestedGraphRootLayoutEditPolicy;
 import org.eclipse.mylar.zest.core.internal.viewers.figures.PaneFigure;
@@ -36,7 +41,7 @@ import org.eclipse.mylar.zest.core.internal.viewers.figures.PaneFigure;
  */
 
 //@tag bug(152613-Client-Supplier(fix)) : creates the figures that will hold all the nodes.
-public class NestedPaneAreaEditPart extends AbstractGraphicalEditPart {
+public class NestedPaneAreaEditPart extends AbstractGraphicalEditPart implements PropertyChangeListener {
 	
 	private int paneType = 0;
 	private boolean initialClostedState;
@@ -83,10 +88,38 @@ public class NestedPaneAreaEditPart extends AbstractGraphicalEditPart {
 	}
 	
 	protected List getModelChildren() {
+		if (getCastedModel() == null) return Collections.EMPTY_LIST;
 		return getCastedModel().getChildren();
 	}
 	
 	protected NestedPane getCastedModel() {
 		return (NestedPane) getModel();
-	}	
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#activate()
+	 */
+	public void activate() {
+		getCastedModel().getModel().addPropertyChangeListener(this);
+		super.activate();
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#deactivate()
+	 */
+	public void deactivate() {
+		getCastedModel().getModel().removePropertyChangeListener(this);
+		super.deactivate();
+	}
+
+	/* (non-Javadoc)
+	 * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+	 */
+	public void propertyChange(PropertyChangeEvent evt) {
+		if (GraphModel.NODE_PROXY_REMOVED_PROP.equals(evt.getPropertyName())) {
+			getCastedModel().removeProxy((NonNestedProxyNode) evt.getOldValue());
+			refreshChildren();
+		}
+		
+	}
 }

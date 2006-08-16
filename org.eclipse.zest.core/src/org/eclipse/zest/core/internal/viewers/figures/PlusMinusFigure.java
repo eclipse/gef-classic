@@ -86,13 +86,15 @@ public class PlusMinusFigure extends Toggle {
 //		@tag bug(151332-Colors(fix))
 		g.setForegroundColor(ZestPlugin.getDefault().getColor(IZestColorConstants.LIGHT_BLUE_CYAN));
 		g.drawLine(r.x + 3, yMid+1, r.right() - 2, yMid+1);
-		if (!isSelected()) {
+		//@tag bug(153368(fix)) : draw plus when selected.
+		if (isSelected()) {
 			g.drawLine(xMid+1, r.y + 3, xMid+1, r.bottom() - 2);
 		}
 //		@tag bug(151332-Colors(fix))
 		g.setForegroundColor(ZestPlugin.getDefault().getColor(IZestColorConstants.DARK_BLUE));
+		//@tag bug(153368(fix)) : draw plus when selected
 		g.drawLine(r.x + 2, yMid, r.right() - 2, yMid);
-		if (!isSelected()) {
+		if (isSelected()) {
 			g.drawLine(xMid, r.y + 2, xMid, r.bottom() - 2);
 		}
 		

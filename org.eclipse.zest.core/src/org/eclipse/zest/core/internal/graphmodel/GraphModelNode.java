@@ -18,7 +18,7 @@ import org.eclipse.draw2d.FigureUtilities;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.gef.EditPart;
+import org.eclipse.gef.NodeEditPart;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.mylar.zest.core.IZestColorConstants;
 import org.eclipse.mylar.zest.core.ZestPlugin;
@@ -70,7 +70,7 @@ public class GraphModelNode extends GraphItem implements LayoutEntity {
 	private Point currentLocation;
 	private Dimension size;
 	private Font font;
-	private EditPart editPart;
+	private NodeEditPart editPart;
 	protected Dimension labelSize;
 	
 	protected GraphModel graphModel;
@@ -134,11 +134,17 @@ public class GraphModelNode extends GraphItem implements LayoutEntity {
 		}
 	}
 	
-	public void setEditPart( EditPart editPart ) {
+	/** 
+     * @deprecated use viewer cache supplied by GEF instead. 
+	 **/
+	public void setEditPart( NodeEditPart editPart ) {
 		this.editPart = editPart;
 	}
 	
-	public EditPart getEditPart() {
+	/** 
+     * @deprecated use viewer cache supplied by GEF instead. 
+	 **/
+	public NodeEditPart getEditPart() {
 		return this.editPart;
 	}
 	
@@ -400,7 +406,7 @@ public class GraphModelNode extends GraphItem implements LayoutEntity {
 		if (backColor != highlightColor) {
 			borderColor = borderHighlightColor;
 			changeBackgroundColor(highlightColor);
-			// highlight the adjacent edges & nodes
+			// highlight the adjacent nodes
 			for (Iterator iter = sourceConnections.iterator(); iter.hasNext();) {
 				GraphModelConnection conn = (GraphModelConnection)iter.next();
 				conn.highlight();

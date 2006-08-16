@@ -58,15 +58,20 @@ public abstract class NestedNonThreadedGraphicalViewer extends GraphicalViewerIm
 	 */
 	public NestedNonThreadedGraphicalViewer(Composite parent)  {
 		super();
-		
-		revealListeners = new ArrayList(1);
-		
-		// create the FigureCanvas
-		createControl(parent);
-		
+		init(parent);
 		EditDomain ed = new DefaultEditDomain( null );
 		ed.addViewer( this );
 		setEditDomain( ed );
+	
+	}
+	
+	protected void init(Composite parent) {
+		// create the FigureCanvas
+		revealListeners = new ArrayList(1);
+		Control oldControl = getControl();
+		if ( oldControl != null ) oldControl.dispose();
+		
+		createControl(parent);
 		hookControl();
 
 		getControl().addPaintListener(new PaintListener() {

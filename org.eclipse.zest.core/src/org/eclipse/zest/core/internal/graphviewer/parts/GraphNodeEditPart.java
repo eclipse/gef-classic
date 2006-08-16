@@ -12,7 +12,7 @@ package org.eclipse.mylar.zest.core.internal.graphviewer.parts;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.Iterator;
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.draw2d.ChopboxAnchor;
@@ -222,23 +222,12 @@ public class GraphNodeEditPart extends AbstractGraphicalEditPart implements
 		} else if (GraphModelNode.TARGET_CONNECTIONS_PROP.equals(prop)) {
 			refreshTargetConnections();
 		} else if (GraphModelNode.HIGHLIGHT_PROP.equals(prop)) {
+//			@tag unreported(EdgeHighlight) :the model will take care of all highlighting, and sending events.
 			getCastedModel().highlight();
-			List listOfSourceConnections = getSourceConnections();
-			for (Iterator iter = listOfSourceConnections.iterator(); iter.hasNext();) {
-				GraphConnectionEditPart element = (GraphConnectionEditPart) iter.next();
-				element.highlightEdge();
-			}
 			// TODO pin highlighted node?  
-			//getCastedModel().setHasPreferredLocation( true );
 			refreshColors();
 		} else if (GraphModelNode.UNHIGHLIGHT_PROP.equals(prop)) {
 			getCastedModel().unhighlight();
-			//getCastedModel().setHasPreferredLocation( false );
-			List listOfSourceConnections = getSourceConnections();
-			for (Iterator iter = listOfSourceConnections.iterator(); iter.hasNext();) {
-				GraphConnectionEditPart element = (GraphConnectionEditPart) iter.next();
-				element.unHighlightEdge();
-			}
 			refreshColors();
 		} else if (GraphModelNode.COLOR_BG_PROP.equals(prop)) {
 			refreshColors();
@@ -296,17 +285,12 @@ public class GraphNodeEditPart extends AbstractGraphicalEditPart implements
 		return (GraphModelNode)getModel();
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.gef.editparts.AbstractEditPart#getModelChildren()
-	 */
-	protected List getModelChildren() {
-		return super.getModelChildren();
-	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#getModelSourceConnections()
 	 */
 	protected List getModelSourceConnections() {
+		if (getCastedModel() == null) return Collections.EMPTY_LIST;
 		return getCastedModel().getSourceConnections();
 	}
 	
@@ -314,6 +298,7 @@ public class GraphNodeEditPart extends AbstractGraphicalEditPart implements
 	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#getModelTargetConnections()
 	 */
 	protected List getModelTargetConnections() {
+		if (getCastedModel() == null) return Collections.EMPTY_LIST;
 		return getCastedModel().getTargetConnections();
 	}
 		

@@ -13,6 +13,7 @@ package org.eclipse.mylar.zest.core.internal.graphmodel;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.mylar.zest.core.ZestStyles;
@@ -32,11 +33,16 @@ public class GraphModel extends GraphItem {
 	public static final String NODE_REMOVED_PROP = "LayoutDiagram.NodeRemoved";
 	/** Property ID to use when the focus (current) node has changed in the model */
 	public static final String NODE_FOCUS_PROP = "LayoutDiagram.NodeFocus";
+	/** Property ID to use when a proxy node is removed **/
+	public static final String NODE_PROXY_REMOVED_PROP = "Proxy.NodeRemoved";
+	
 	
 	private List nodes;
 	protected List connections;
 	
-	
+	//@tag bug(153466-NoNestedClientSupply(fix)) : keep proxy connections and nodes inside the model for easy access.
+	protected List proxyConnections;
+	protected List proxyNodes;
 
 	/** Maps user nodes to internal nodes */
 	private HashMap external2InternalNodeMap; 
@@ -53,6 +59,8 @@ public class GraphModel extends GraphItem {
 	public GraphModel(Canvas canvas) {
 		super(canvas);
 		this.nodes = new ArrayList();
+		this.proxyNodes = new LinkedList();
+		this.proxyConnections = new LinkedList();
 		this.connectionStyle = ZestStyles.NONE;
 		this.nodeStyle = ZestStyles.NONE;
 		this.connections  = new ArrayList();
@@ -77,6 +85,112 @@ public class GraphModel extends GraphItem {
 		GraphModelNode[] nodesArray = new GraphModelNode[nodes.size()];
 		nodesArray = (GraphModelNode[])nodes.toArray(nodesArray);
 		return nodesArray;
+	}
+	
+	/**
+	 * @return the proxyConnections
+	 */
+	 //@tag bug(153466-NoNestedClientSupply(fix)) : make proxies available from the model
+	public List getProxyConnections() {
+		return proxyConnections;
+	}
+	
+	/**
+	 * @return the proxyNodes
+	 */
+	  //@tag bug(153466-NoNestedClientSupply(fix)) : make proxies available from the model
+	public List getProxyNodes() {
+		return proxyNodes;
+	}
+	
+	/**
+	 * Creates and reaturns a proxy node based on the given node, and adds it
+	 * to the list of proxies in the model.
+	 * @return the proxy node.
+	 * 
+	 */
+	//@tag bug(153466-NoNestedClientSupply(fix)) : proxies can only be made on the model. This ensures that they are properly monitored here.
+	public NonNestedProxyNode createProxyNode(GraphModelNode node) {
+		NonNestedProxyNode proxy = new NonNestedProxyNode(node);
+		proxyNodes.add(proxy);
+		return proxy;
+	}
+	/**
+	 * Creates and returns a proxy connection based on the given connection, and
+	 * the source and target endpoints. The created proxy is also added to the
+	 * list of proxies in the model. Note, only the visual elements of the
+	 * proxy connection are used for display: the given source and target nodes will
+	 * be the actual source and target nodes for the returned proxy. The reason
+	 * for this is that the source and target nodes may themselves be proxies
+	 * for the actual source and target nodes of the original connection. Some
+	 * example usages are:
+	 * <pre>
+	 * &#47;&#47;to make a proxy connection based exactly on the given connection
+	 * graphModel.createProxyConnection(conn.getSource(), conn.getDestination(), conn);
+	 * &#47;&#47;to make a proxy using a proxy node as the source, and the original node as the target:
+	 * graphModel.createProxyConnection(graphModel.createProxyNode(conn.getSource()), conn.getDestination(), conn); 
+	 * </pre>
+	 * In general, either the original source and destination nodes, or a proxy to them, should be used.
+	 * @param source the source node that this connection will be linked to. May be a proxy.
+	 * @param target the target node that this connection will be linked to. May be a proxy.
+	 * @param conn the connection to base this proxy on.
+	 * @return the proxy connection
+	 */
+	 //@tag bug(153466-NoNestedClientSupply(fix)) : proxies can only be made on the model. This ensures that they are properly monitored here.
+	public ProxyConnection createProxyConnection(GraphModelNode source, GraphModelNode target, GraphModelConnection conn) {
+		ProxyConnection connection = new ProxyConnection(source, target, conn);
+		proxyConnections.add(connection);
+		connection.reconnect();
+		return connection;
+	}
+	
+	/**
+	 * Removes the given proxy node from the model, if it exists. All connections
+	 * on the node will be removed as well.
+	 * @param node
+	 */
+	 //@tag bug(153466-NoNestedClientSupply(fix)) : proxies can only be made on the model. This ensures that they are properly monitored here.
+	public void removeProxyNode(NonNestedProxyNode node) {
+		if (proxyNodes.contains(node)) {
+			proxyNodes.remove(node);
+			List connections = node.getSourceConnections();
+			connections.addAll(node.getTargetConnections());
+			for (Iterator i = connections.iterator(); i.hasNext();) {
+				GraphModelConnection conn = (GraphModelConnection) i.next();
+				if (conn instanceof ProxyConnection) {
+					removeProxyConnection((ProxyConnection) conn);
+				} else {
+					removeConnection(conn);
+				}
+			}
+			firePropertyChange(NODE_PROXY_REMOVED_PROP, null, node);
+		}
+	}
+	
+	/**
+	 * Disconnects the given connection if it exists in the model.
+	 * @param connection the connection to disconnect.
+	 */
+	 //@tag bug(153466-NoNestedClientSupply(fix)) : proxies can only be made on the model. This ensures that they are properly monitored here.
+	public void removeProxyConnection(ProxyConnection connection) {
+		if (proxyConnections.contains(connection)) {
+			proxyConnections.remove(connection);
+			connection.disconnect();
+		}
+	}
+	
+	/**
+	 * Removes all proxie nodes and connections from the model.
+	 *
+	 */
+	 //@tag bug(153466-NoNestedClientSupply(fix)) : proxies can only be made on the model. This ensures that they are properly monitored here.
+	public void clearProxies() {
+		while (proxyNodes.size() > 0) {
+			removeProxyNode((NonNestedProxyNode)proxyNodes.get(0));
+		}
+		while (proxyConnections.size() > 0) {
+			removeProxyConnection((ProxyConnection) proxyConnections.get(0));
+		}
 	}
 	
 	/**
@@ -162,6 +276,7 @@ public class GraphModel extends GraphItem {
 	public boolean addConnection( Object externalConnection, GraphModelConnection connection ) {
 		if ((connection != null) && connections.add(connection)) {
 			external2InternalConnectionMap.put(externalConnection, connection);
+			connection.reconnect();
 			return true;
 		}
 		return false;
@@ -192,6 +307,7 @@ public class GraphModel extends GraphItem {
 			connection.disconnect();
 			external2InternalConnectionMap.remove(connection.getExternalConnection());
 			removed = connections.remove(connection);
+			connection.setEditPart(null);
 		}
 		return removed;
 	}
@@ -240,7 +356,7 @@ public class GraphModel extends GraphItem {
 		if (node != null) {
 			external2InternalNodeMap.remove( node.getExternalNode() );
 			removed = removeNodeFromList(node);
-
+			node.setEditPart(null);
 			if (removed) {
 				// remove the source and target connections & notify the graph listeners
 				for (Iterator iter = node.getSourceConnections().iterator(); iter.hasNext();) {

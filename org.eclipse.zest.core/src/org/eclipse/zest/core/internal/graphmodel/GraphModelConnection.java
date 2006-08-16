@@ -40,6 +40,9 @@ public class GraphModelConnection extends GraphItem implements LayoutRelationshi
 
 	private ArrayList weightColors;
 	public static final String LINECOLOR_PROP = "LineColor";
+	//@tag unreported(EdgeHighlight) : fire property change when the edge highlight state changes.
+	public static final String HIGHLIGHT_PROP = "UnHighlight";
+	public static final String UNHIGHLIGHT_PROP = "Highlight";
 	public static final String LINEWIDTH_PROP = "LineWidth";
 	public static final String LINESTYLE_PROP = "LineStyle";
 	public static final String DIRECTED_EDGE_PROP = "DirectedEdgeStyle";
@@ -102,7 +105,10 @@ public class GraphModelConnection extends GraphItem implements LayoutRelationshi
 		this.attributes = new HashMap();
 		this.isConnected = false;
 		this.graphModel = graphModel;
-		reconnect(source, destination);
+		this.sourceNode = source;
+		this.destinationNode = destination;
+		//@tag removed : can cause the edit parts to be created before the model is finished. Wait until the model is fully constructed to reconnect.
+		//reconnect(source, destination);
 		this.font = Display.getDefault().getSystemFont();
 	}
 	
@@ -425,6 +431,7 @@ public class GraphModelConnection extends GraphItem implements LayoutRelationshi
 	public void highlight() {
 		if (this.color != highlightColor) {
 			changeLineColor(highlightColor);
+			firePropertyChange(HIGHLIGHT_PROP, null, null);
 		}
 	}
 	
@@ -434,6 +441,7 @@ public class GraphModelConnection extends GraphItem implements LayoutRelationshi
 	public void unhighlight() {
 		if (this.color != foreground) {
 			changeLineColor(foreground);
+			firePropertyChange(UNHIGHLIGHT_PROP, null, null);
 		}
 	}
 	
@@ -469,6 +477,8 @@ public class GraphModelConnection extends GraphItem implements LayoutRelationshi
 
 	/**
 	 * @return the editPart
+	 * @deprecated by Del Myers. The model shouldn't reference the edit part. 
+	 * If an edit part is needed for the model, use getViewer().getEditPartRegistry().get(model) instead.
 	 */
 	public EditPart getEditPart() {
 		return editPart;
@@ -476,6 +486,7 @@ public class GraphModelConnection extends GraphItem implements LayoutRelationshi
 
 	/**
 	 * @param editPart the editPart to set
+	 * @deprecated by Del Myers. 
 	 */
 	public void setEditPart(EditPart editPart) {
 		this.editPart = editPart;

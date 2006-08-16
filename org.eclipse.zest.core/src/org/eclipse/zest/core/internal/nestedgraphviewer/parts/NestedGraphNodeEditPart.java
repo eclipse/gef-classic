@@ -53,7 +53,6 @@ public class NestedGraphNodeEditPart extends GraphNodeEditPart implements Action
 	private Clickable upButton = null;
 	private Label label;
 
-
 	public NestedGraphNodeEditPart(boolean enforceBounds) {
 		super();
 		this.enforceBounds = enforceBounds;
@@ -184,9 +183,15 @@ public class NestedGraphNodeEditPart extends GraphNodeEditPart implements Action
 			} else {
 				figure = super.createFigureForModel();
 			}
-
 			return figure;
 		}
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#getContentPane()
+	 */
+	public IFigure getContentPane() {
+		return ((NestedFigure)getFigure()).getScaledFigure();
 	}
 
 	/**
@@ -257,7 +262,7 @@ public class NestedGraphNodeEditPart extends GraphNodeEditPart implements Action
 					public void run() {
 						// TODO Auto-generated method stub
 						((NestedGraphViewerImpl)getViewer()).fireModelUpdate();
-						openNode();
+						//openNode();
 					}
 					
 				});

@@ -51,6 +51,7 @@ public class NestedGraphViewerImpl extends NestedNonThreadedGraphicalViewer  {
 	private NestedGraphEditPartFactory editPartFactory = null;
 	private LayoutAlgorithm layoutAlgorithm;
 	private HashMap nodeColorMap = new HashMap();
+	Composite parent = null;
 	
 	// styles
 	private int style = ZestStyles.NONE;
@@ -74,6 +75,7 @@ public class NestedGraphViewerImpl extends NestedNonThreadedGraphicalViewer  {
 	public NestedGraphViewerImpl(Composite parent, int style) {
 		super(parent);
 		setStyle(style);
+		this.parent = parent;
 	}
 	
 	/**
@@ -110,11 +112,9 @@ public class NestedGraphViewerImpl extends NestedNonThreadedGraphicalViewer  {
 		if (editPartFactory == null) {
 			editPartFactory = new NestedGraphEditPartFactory(root, allowOverlap, enforceBounds);
 		}
-		
 		this.setRootEditPart(root);
 		this.setEditPartFactory(editPartFactory);
 	}
-	
 
 	/**
 	 * Sets the model.
@@ -126,7 +126,6 @@ public class NestedGraphViewerImpl extends NestedNonThreadedGraphicalViewer  {
 		}
 		this.model = model;
 		fireModelUpdate();
-		//super.setContents(model);
 	}
 	
 	/**
@@ -135,9 +134,6 @@ public class NestedGraphViewerImpl extends NestedNonThreadedGraphicalViewer  {
 	 * Some form of zooming might be performed.
 	 */
 	public void fireModelUpdate() {
-		// remove all the connections (they will be recreated)
-		
-		
 		NestedGraphModelNode previousNode = model.getPreviousRootNode();
 		NestedGraphModelNode nodeToMoveTo = model.getCurrentNode();
 		NestedGraphModelNode nodeToSelect = nodeToMoveTo;	// node to select in the TreeViewer
@@ -168,11 +164,13 @@ public class NestedGraphViewerImpl extends NestedNonThreadedGraphicalViewer  {
 		if (this.getRootEditPart() instanceof NestedGraphRootEditPart) {
 			NestedGraphRootEditPart rootEditPart = (NestedGraphRootEditPart)getRootEditPart();
 			if ( previousNode == null ) {
-				rootEditPart.getNestedEditPart().zoomInOnNode( (NestedGraphNodeEditPart) nodeToMoveTo.getEditPart() );
+				NestedGraphNodeEditPart zoomPart = (NestedGraphNodeEditPart) getEditPartRegistry().get(nodeToMoveTo);
+				rootEditPart.getNestedEditPart().zoomInOnNode( zoomPart);
 				doSetContents(model);
 			}
 			else if ( nodeToMoveTo.getRelationshipBetweenNodes( previousNode ) == NestedGraphModelNode.DESCENDANT ) {
-				rootEditPart.getNestedEditPart().zoomInOnNode( (NestedGraphNodeEditPart) nodeToMoveTo.getEditPart() );
+				NestedGraphNodeEditPart zoomPart = (NestedGraphNodeEditPart) getEditPartRegistry().get(nodeToMoveTo);
+				rootEditPart.getNestedEditPart().zoomInOnNode( zoomPart);
 				
 				doSetContents(model);
 				
@@ -182,7 +180,7 @@ public class NestedGraphViewerImpl extends NestedNonThreadedGraphicalViewer  {
 				doSetContents(model);
 				getLightweightSystem().getUpdateManager().performValidation();
 				nodeToSelect = previousNode;  // select the previous node
-				
+				flush();
 				
 				if (getEditPartRegistry().containsKey(nodeToSelect)) {
 					//nodeToSelect.setSelected(true);
@@ -192,7 +190,8 @@ public class NestedGraphViewerImpl extends NestedNonThreadedGraphicalViewer  {
 				
 				// now do the zoom (sizes and locations should be set)
 				rootEditPart = (NestedGraphRootEditPart)getRootEditPart();
-				rootEditPart.getNestedEditPart().zoomOutOnNode((NestedGraphNodeEditPart)previousNode.getEditPart());
+				NestedGraphNodeEditPart zoomPart = (NestedGraphNodeEditPart) getEditPartRegistry().get(previousNode);
+				rootEditPart.getNestedEditPart().zoomOutOnNode( zoomPart);//(NestedGraphNodeEditPart)previousNode.getEditPart());
 				//doSetContents(model);
 			}
 			else {
@@ -214,6 +213,8 @@ public class NestedGraphViewerImpl extends NestedNonThreadedGraphicalViewer  {
 	 * @param model2
 	 */
 	private void doSetContents(NestedGraphModel model) {
+		//@tag bug(153466-NoNestedClientSupply(fix)) : clear proxies before resetting the model.
+		model.clearProxies();
 		super.setContents(model);
 		((NestedGraphRootEditPart)getRootEditPart()).getNestedEditPart().filterConnections(model.getCurrentNode(), true);
 	}

@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.mylar.zest.core.internal.nestedgraphviewer.parts;
 
-import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Connection;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Shape;
@@ -37,7 +36,6 @@ public class NestedGraphConnectionEditPart extends GraphConnectionEditPart {
 		Connection connection = (Connection)super.createFigure();
 		// Now only directed edges have arrow endpoints - see ZestStyles.DIRECTED_GRAPH
 		//connection.setTargetDecoration(new PolygonDecoration()); // arrow at target endpoint
-		getCastedModel().changeLineColor(ColorConstants.darkBlue);
 		connection.setForegroundColor(getCastedModel().getLineColor());
 		if (connection instanceof Shape) {
 			((Shape)connection).setLineWidth(getCastedModel().getLineWidth());
