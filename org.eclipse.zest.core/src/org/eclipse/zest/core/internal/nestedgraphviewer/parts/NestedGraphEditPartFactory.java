@@ -19,6 +19,7 @@ import org.eclipse.mylar.zest.core.internal.graphmodel.ProxyConnection;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedGraphModel;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedGraphModelNode;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedPane;
+import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphConnectionEditPart;
 import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphEditPartFactory;
 import org.eclipse.mylar.zest.core.internal.graphviewer.parts.ProxyConnectionEditPart;
 
@@ -54,7 +55,7 @@ public class NestedGraphEditPartFactory extends GraphEditPartFactory {
 			graphRootEditPart.setModelRootEditPart(editPart);
 			
 		} else if (model instanceof GraphModelConnection) {
-			editPart = new NestedGraphConnectionEditPart();
+			editPart = new GraphConnectionEditPart();
 			((GraphModelConnection)model).setEditPart(editPart);
 		} else if ( model instanceof NestedPane ) {
 			editPart = new NestedPaneAreaEditPart(((NestedPane)model).getPaneType(), ((NestedPane)model).isClosed());

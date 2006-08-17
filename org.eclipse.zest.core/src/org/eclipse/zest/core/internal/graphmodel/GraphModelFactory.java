@@ -10,14 +10,11 @@
  *******************************************************************************/
 package org.eclipse.mylar.zest.core.internal.graphmodel;
 
-import java.util.Iterator;
-
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.mylar.zest.core.viewers.IGraphContentProvider;
 import org.eclipse.swt.widgets.Canvas;
 
-import com.sun.org.apache.xalan.internal.xsltc.runtime.Hashtable;
 
 
 /**
@@ -26,34 +23,12 @@ import com.sun.org.apache.xalan.internal.xsltc.runtime.Hashtable;
  * @author Ian Bull
  * @author Chris Callendar
  */
-public class GraphModelFactory implements IGraphModelFactory {
-	/**
-	 * 
-	 * Class to keep track of the number of connections there are between two nodes.
-	 * @author Del Myers
-	 *
-	 */
-	//@tag bug(114452-MultipleArcs) : resolution
-	class ConnectionCounter {
-		Object source;
-		Object dest;
-		public ConnectionCounter(Object source, Object dest) {
-			this.source = source;
-			this.dest = dest;
-		}
-		public boolean equals(Object that) {
-			return (
-				this.source.equals(((ConnectionCounter)that).source) &&
-				this.dest.equals(((ConnectionCounter)that).dest)
-			);
-		}
-		public int hashCode() {
-			return 0;
-		}
-	}
+public class GraphModelFactory extends AbstractStylingModelFactory implements IGraphModelFactory {
+
 
 	private StructuredViewer viewer = null;
 	private boolean highlightAdjacentNodes = false;
+	
 		
 	public GraphModelFactory(StructuredViewer viewer, boolean highlightAdjacentNodes) {
 		this.viewer = viewer;
@@ -71,7 +46,7 @@ public class GraphModelFactory implements IGraphModelFactory {
 		return (IGraphContentProvider)viewer.getContentProvider();
 	}
 	
-	private ILabelProvider getLabelProvider() {
+	protected ILabelProvider getLabelProvider() {
 		return (ILabelProvider)viewer.getLabelProvider();
 	}
 	
@@ -88,39 +63,13 @@ public class GraphModelFactory implements IGraphModelFactory {
 		
 		if ( rels != null ) {
 			// If rels returns null then just continue
-			// @tag bug (134928) : An empty graph causes an NPE
+			// @tag bug (134928(fix)) : An empty graph causes an NPE
 			for ( int i = 0; i < rels.length; i++ ) {
 				createRelationship(model, rels[i], getContentProvider().getSource(rels[i]), getContentProvider().getDestination(rels[i]));
 			}
 		}
-		//@tag bug(114452-MultipleArcs) : count the number of arcs between nodes, and set the curve accordingly
-		Iterator ci = model.getConnections().iterator();
-		Hashtable counters = new Hashtable();
-		while (ci.hasNext()) {
-			GraphModelConnection conn = (GraphModelConnection) ci.next();
-			ConnectionCounter key = new ConnectionCounter(
-				conn.getSource().getExternalNode(),
-				conn.getDestination().getExternalNode()
-			);
-			Integer count = (Integer) counters.get(key);
-			if (count == null) {
-				count = new Integer(1);
-				counters.put(key, count);
-			} else {
-				count = new Integer(count.intValue() + 1);
-				counters.put(key, count);
-			}
-			int scale = 3;
-			if (conn.getSource() == conn.getDestination()) {
-				scale = 5;
-			}
-			//even if the connection isn't curved in the style, the edit part
-			//may decide that it should be curved if source and dest are equal.
-			//@tag drawing(arcs) : check here if arcs are too close when being drawn. Adjust the constant.
-			conn.setCurveDepth(count.intValue()*(scale+conn.getLineWidth()));
-				
-			
-		}
+		
+		
 		return model;
 	}
 	
@@ -180,9 +129,10 @@ public class GraphModelFactory implements IGraphModelFactory {
 		connection.setText(getLabelProvider().getText(data));
 		connection.setImage(getLabelProvider().getImage(data));
 		model.addConnection(connection.getExternalConnection(), connection);
-		GraphItemStyler.styleItem(connection, getLabelProvider());
+		styleItem(connection);
 		return connection;
 	}
+	
 	
 	/* (non-Javadoc)
 	 * @see ca.uvic.cs.zest.internal.graphmodel.IGraphModelFactory#createNode(ca.uvic.cs.zest.internal.graphmodel.GraphModel, java.lang.Object)
@@ -192,7 +142,7 @@ public class GraphModelFactory implements IGraphModelFactory {
 			ILabelProvider labelProvider = getLabelProvider();
 			GraphModelNode node = new GraphModelNode(model, getLabelProvider().getText(data), labelProvider.getImage(data), data);
 			node.setHighlightAdjacentNodes(highlightAdjacentNodes);
-			GraphItemStyler.styleItem(node,labelProvider);
+			styleItem(node);
 			model.addNode(data, node);
 			return node;
 		} else {

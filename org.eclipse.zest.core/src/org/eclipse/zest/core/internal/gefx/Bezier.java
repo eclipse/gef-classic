@@ -37,13 +37,13 @@ public class Bezier extends Polyline {
 	//	the number of line segments between the start and end points.
 	public static int SEGMENTS;
 	//@tag performance(optimization) : pre-compute the weights for faster updates of bezier curves. Greatly reduces the number of multiplications.
-	private static double[] WEIGHTS1;
-	private static double[] WEIGHTS2;
+	private static float[] WEIGHTS1;
+	private static float[] WEIGHTS2;
 	
 	//allow users to change the number of segments
 	static {
 		synchronized (lock) {
-			SEGMENTS = 24;
+			SEGMENTS = 58;
 			WEIGHTS1 = COMPUTE_WEIGHTS_1();
 			WEIGHTS2 = COMPUTE_WEIGHTS_2();
 		}
@@ -82,8 +82,6 @@ public class Bezier extends Polyline {
 	 */
 	protected void outlineShape(Graphics graphics) {
 		reCompute();
-		graphics.drawRectangle(getStartControl().x-2, getStartControl().y-2, 4, 4);
-		graphics.drawRectangle(getEndControl().x-2, getEndControl().y-2, 4, 4);
 		graphics.setClip(new Rectangle(0,0,3000,3000));
 		graphics.drawPolyline(getPoints().toIntArray());
 	}
@@ -150,8 +148,22 @@ public class Bezier extends Polyline {
 		PointList points = getPoints();
 		points.removeAllPoints();
 		points.addPoint(start);
+		float lengthSquared = (float)(end.x - start.x)*(end.x-start.x)+(start.y-end.y)*(start.y-end.y);
+		float segmentsSquared = SEGMENTS*SEGMENTS*64;
+		int step = 1;
+		//optimize the number of line segments to use. If it isn't going to look
+		//bad, use less.
+		if (lengthSquared < .0001 && lengthSquared > -.0001) {
+			//may as well be 0
+			step = SEGMENTS;
+		} else if (lengthSquared < segmentsSquared) {
+			step = (int)Math.round(((float)segmentsSquared)/lengthSquared);
+		}
+		//always have at least 8 line segments
+		if (step > SEGMENTS/8) step = SEGMENTS/8;
+		if (step <= 0) step = 1;
 		synchronized(lock) {
-			for (int i = 1; i < SEGMENTS; i++) {
+			for (int i = step; i < SEGMENTS; i+=step) {
 				Point p = new Point(
 						Math.round(t0(i)*start.x + t1(i)*startControl.x + t2(i)*endControl.x+t3(i)*end.x),
 						Math.round(t0(i)*start.y + t1(i)*startControl.y + t2(i)*endControl.y+t3(i)*end.y)
@@ -164,45 +176,45 @@ public class Bezier extends Polyline {
 		isValid = true;
 	}
 	
-	private static final double[] COMPUTE_WEIGHTS_1() {
-		double[] weights = new double[SEGMENTS+1];
-		double t = 0.0;
+	private static final float[] COMPUTE_WEIGHTS_1() {
+		float[] weights = new float[SEGMENTS+1];
+		float t = 0;
 		weights[0] = 1;
 		weights[SEGMENTS] = 0;
 		for (int i = 1; i < SEGMENTS; i++) {
-			t = ((double)i)/((double)SEGMENTS);
-			double oneMinusT = (1-t);
+			t = ((float)i)/((float)SEGMENTS);
+			float oneMinusT = (1-t);
 			weights[i] = oneMinusT*oneMinusT*oneMinusT;
 		}
 		return weights;
 	}
 	
-	private static final double[] COMPUTE_WEIGHTS_2() {
-		double[] weights = new double[SEGMENTS+1];
-		double t = 0.0;
+	private static final float[] COMPUTE_WEIGHTS_2() {
+		float[] weights = new float[SEGMENTS+1];
+		float t = 0;
 		weights[0] = 1;
 		weights[SEGMENTS] = 0;
 		for (int i = 1; i < SEGMENTS; i++) {
-			t = ((double)i)/((double)SEGMENTS);
-			double oneMinusT = (1-t);
+			t = ((float)i)/((float)SEGMENTS);
+			float oneMinusT = (1-t);
 			weights[i] = t*oneMinusT*oneMinusT*3;
 		}
 		return weights;
 	}
 	
-	private static final double t0(int s) {
+	private static final float t0(int s) {
 		return WEIGHTS1[s];
 	}
 	
-	private static final double t1(int s) {
+	private static final float t1(int s) {
 		return WEIGHTS2[s];
 	}
 	
-	private static final double t2(int s) {
+	private static final float t2(int s) {
 		return WEIGHTS2[SEGMENTS-s];
 	}
 	
-	private static final double t3(int s) {
+	private static final float t3(int s) {
 		return WEIGHTS1[SEGMENTS-s];
 	}
 

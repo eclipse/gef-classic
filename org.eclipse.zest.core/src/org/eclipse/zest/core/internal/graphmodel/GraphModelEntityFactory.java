@@ -22,7 +22,7 @@ import org.eclipse.mylar.zest.core.viewers.IGraphEntityContentProvider;
  * 
  * @author Ian Bull
  */
-public class GraphModelEntityFactory implements IGraphModelFactory {
+public class GraphModelEntityFactory extends AbstractStylingModelFactory implements IGraphModelFactory {
 
 	private StructuredViewer viewer = null;
 	private boolean highlightAdjacentNodes = false;
@@ -44,7 +44,7 @@ public class GraphModelEntityFactory implements IGraphModelFactory {
 		return (IGraphEntityContentProvider)viewer.getContentProvider();
 	}
 	
-	private ILabelProvider getLabelProvider() {
+	protected ILabelProvider getLabelProvider() {
 		return (ILabelProvider)viewer.getLabelProvider();
 	}
 	
@@ -60,7 +60,7 @@ public class GraphModelEntityFactory implements IGraphModelFactory {
 			Object data = entities[ i ];
 			GraphModelNode node = new GraphModelNode(model, getLabelProvider().getText(data), getLabelProvider().getImage(data), data);
 			node.setHighlightAdjacentNodes(highlightAdjacentNodes);
-			GraphItemStyler.styleItem(node, getLabelProvider());
+			styleItem(node);
 			model.addNode( data, node );
 		}
 		
@@ -79,8 +79,7 @@ public class GraphModelEntityFactory implements IGraphModelFactory {
 	public GraphModelNode createNode(GraphModel model, Object data) {
 		GraphModelNode node = new GraphModelNode(model, getLabelProvider().getText( data ), getLabelProvider().getImage(data), data);
 		node.setHighlightAdjacentNodes(highlightAdjacentNodes);
-		ILabelProvider labelProvider = getLabelProvider();
-		GraphItemStyler.styleItem(node, labelProvider);
+		styleItem(node);
 		Object[] related = getContentProvider().getConnectedTo( data );
 		for ( int i = 0; i < related.length; i++ ) {
 			createRelationship(model, null, data, related);
@@ -108,7 +107,7 @@ public class GraphModelEntityFactory implements IGraphModelFactory {
 		// Create the connection
 		double weight = getContentProvider().getWeight( source, dest );
 		connection = new GraphModelConnection(model, data, sourceNode, destNode, false, weight);
-		GraphItemStyler.styleItem(connection, getLabelProvider());
+		styleItem(connection);
 		model.addConnection(connection.getExternalConnection(), connection);
 		return connection;
 	}

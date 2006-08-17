@@ -16,7 +16,9 @@ import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.mylar.zest.core.ZestException;
 import org.eclipse.mylar.zest.core.ZestPlugin;
 import org.eclipse.mylar.zest.core.ZestStyles;
+import org.eclipse.mylar.zest.core.viewers.IConnectionStyleBezierExtension;
 import org.eclipse.mylar.zest.core.viewers.IConnectionStyleProvider;
+import org.eclipse.mylar.zest.core.viewers.IEntityConnectionStyleBezierExtension;
 import org.eclipse.mylar.zest.core.viewers.IEntityConnectionStyleProvider;
 import org.eclipse.mylar.zest.core.viewers.IEntityStyleProvider;
 import org.eclipse.swt.events.DisposeEvent;
@@ -87,8 +89,18 @@ public class GraphItemStyler {
 		Color c;
 		int style = provider.getConnectionStyle(rel);
 		if (!ZestStyles.validateConnectionStyle(style)) ZestPlugin.error(ZestException.ERROR_INVALID_STYLE);
-		if (style > ZestStyles.NONE) {
+		if (style != ZestStyles.NONE) {
 			conn.setConnectionStyle(style);
+		}
+//		@tag bug(152530-Bezier(fix));
+		if (ZestStyles.checkStyle(conn.getStyle(), ZestStyles.CONNECTIONS_BEZIER) &&
+			provider instanceof IConnectionStyleBezierExtension) {
+			IConnectionStyleBezierExtension bezier = (IConnectionStyleBezierExtension)provider;
+			double d;
+			if (!Double.isNaN((d = bezier.getStartAngle(rel)))) conn.setStartAngle(d);
+			if (!Double.isNaN((d = bezier.getEndAngle(rel)))) conn.setEndAngle(d);
+			if (!Double.isNaN((d = bezier.getStartDistance(rel)))) conn.setStartLength(d);
+			if (!Double.isNaN((d = bezier.getEndDistance(rel)))) conn.setEndLength(d);
 		}
 		if ((c = provider.getHighlightColor(rel)) != null) conn.setHighlightColor(c);
 		if ((c = provider.getColor(rel)) != null) conn.setLineColor(c);
@@ -106,9 +118,20 @@ public class GraphItemStyler {
 		Color c;
 		int style = provider.getConnectionStyle(src, dest);
 		if (!ZestStyles.validateConnectionStyle(style)) ZestPlugin.error(ZestException.ERROR_INVALID_STYLE);
-		if (style > ZestStyles.NONE) {
+		if (style != ZestStyles.NONE) {
 			conn.setConnectionStyle(style);
 		}
+		//@tag bug(152530-Bezier(fix));
+		if (ZestStyles.checkStyle(conn.getStyle(), ZestStyles.CONNECTIONS_BEZIER) &&
+				provider instanceof IEntityConnectionStyleBezierExtension) {
+				IEntityConnectionStyleBezierExtension bezier = 
+					(IEntityConnectionStyleBezierExtension)provider;
+				double d;
+				if (!Double.isNaN((d = bezier.getStartAngle(src, dest)))) conn.setStartAngle(d);
+				if (!Double.isNaN((d = bezier.getEndAngle(src, dest)))) conn.setEndAngle(d);
+				if (!Double.isNaN((d = bezier.getStartDistance(src, dest)))) conn.setStartLength(d);
+				if (!Double.isNaN((d = bezier.getEndDistance(src, dest)))) conn.setEndLength(d);
+			}
 		if ((c = provider.getColor(src, dest))!=null) conn.setLineColor(c);
 		if ((c = provider.getHighlightColor(src, dest)) != null) conn.setHighlightColor(c);
 		int w = -1;

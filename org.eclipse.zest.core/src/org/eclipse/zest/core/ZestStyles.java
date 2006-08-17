@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.mylar.zest.core;
 
+import org.eclipse.mylar.zest.core.viewers.IConnectionStyleBezierExtension;
+
 /**
  * Style constants used in Zest.
  * 
@@ -99,19 +101,39 @@ public final class ZestStyles {
 		
 	/**
 	 * Style constant to indicate that connections between nodes should be curved
-	 * by default. A connection cannot by styled with both CONNECTIONS_CURVED and
-	 * CONNECTIONS_STRAIGHT.
+	 * by default. A connection cannot by styled with any of CONNECTIONS_CURVED,
+	 * CONNECTIONS_STRAIGHT, or CONNECTIONS_BEZIER at the same time.
 	 */
 	//@tag style(arcs)
 	public static final int CONNECTIONS_CURVED = 1 << 1;
 	
 	/**
 	 * Style constant to indicate that connections between nodes should be straight by
-	 * default.  A connection cannot by styled with both CONNECTIONS_CURVED and
-	 * CONNECTIONS_STRAIGHT.
+	 * default.  A connection cannot by styled with any of CONNECTIONS_CURVED,
+	 * CONNECTIONS_STRAIGHT, or CONNECTIONS_BEZIER at the same time.
 	 */
 	//@tag style(arcs)
 	public static final int CONNECTIONS_STRAIGHT = 1 << 0;
+	
+	/**
+	 * Style constant to indicate that connections between nodes should be bezier-S
+	 * shaped. A connection cannot by styled with any of CONNECTIONS_CURVED,
+	 * CONNECTIONS_STRAIGHT, or CONNECTIONS_BEZIER at the same time.
+	 * 
+	 * Bezier curves are defined by a set of four points: two point in the layout
+	 * (start and end), and two related control points (also start and end). The
+	 * control points are defined relative to their corresponding layout point.
+	 * This definition includes an angle between the layout point and the line
+	 * between the two layout points, as well as a ratio distance from the corresponding
+	 * layout point. The ratio distance is defined as a fraction between 0 and 1
+	 * of the distance between the two layout points. Using this definition
+	 * allows bezier curves to have a consistant look regardless of the actual
+	 * positions of the nodes in the layouts.
+	 * 
+	 * @see IConnectionStyleBezierExtension
+	 * @see IConnectionEntityStyleBezierExtension
+	 */
+	public static final int CONNECTIONS_BEZIER = 1 << 2;
 	/**
 	 * Bitwise ANDs the styleToCheck integer with the given style.  
 	 * @param style
@@ -122,8 +144,14 @@ public final class ZestStyles {
 		return ((style & styleToCheck) == styleToCheck);
 	}
 	
+	/**
+	 * Validates the given style for connections to see if it is legal. Returns
+	 * false if not.
+	 * @param style the style to check.
+	 * @return true iff the given style is legal.
+	 */
 	public static boolean validateConnectionStyle(int style) {
-		int illegal = CONNECTIONS_CURVED | CONNECTIONS_STRAIGHT;
+		int illegal = CONNECTIONS_CURVED | CONNECTIONS_STRAIGHT | CONNECTIONS_BEZIER;
 		style &= illegal;
 		int rightBit = style & (-style);
 		return (style == rightBit);

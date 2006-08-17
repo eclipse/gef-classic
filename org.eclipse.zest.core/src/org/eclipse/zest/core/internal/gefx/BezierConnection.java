@@ -12,9 +12,13 @@ package org.eclipse.mylar.zest.core.internal.gefx;
 
 import org.eclipse.draw2d.AbstractRouter;
 import org.eclipse.draw2d.AnchorListener;
+import org.eclipse.draw2d.ArrowLocator;
 import org.eclipse.draw2d.Connection;
 import org.eclipse.draw2d.ConnectionAnchor;
+import org.eclipse.draw2d.ConnectionLocator;
 import org.eclipse.draw2d.ConnectionRouter;
+import org.eclipse.draw2d.DelegatingLayout;
+import org.eclipse.draw2d.RotatableDecoration;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -23,16 +27,27 @@ import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
  * A connection that uses Bezier curves.
+ * 
+ * Bezier curves are defined by a set of four points: two point in the layout
+ * (start and end), and two related control points (also start and end). The
+ * control points are defined relative to their corresponding layout point.
+ * This definition includes an angle between the layout point and the line
+ * between the two layout points, as well as a ratio distance from the corresponding
+ * layout point. The ratio distance is defined as a fraction between 0 and 1
+ * of the distance between the two layout points. Using this definition
+ * allows bezier curves to have a consistant look regardless of the actual
+ * positions of the nodes in the layouts. 
  * @author Del Myers
  *
  */
 //@tag bug(152530-Bezier(fix))
 public class BezierConnection extends Bezier implements Connection, AnchorListener {
 
-	private int startAngle;
+	private double startAngle;
 	private double startLength;
-	private int endAngle;
+	private double endAngle;
 	private double endLength;
+	private RotatableDecoration startArrow, endArrow;
 
 
 	/**
@@ -41,13 +56,14 @@ public class BezierConnection extends Bezier implements Connection, AnchorListen
 	 * @param endAngle the angle from the line that the second control point is on.
 	 * @param endLength the distance from the endpoint that the last control point is as a percentage of the distance between the endpoints.
 	 */
-	public BezierConnection(int startAngle, double startLength, int endAngle, double endLength) {
+	public BezierConnection(double startAngle, double startLength, double endAngle, double endLength) {
 		super(new Point(0,0), new Point(0,0), new Point(0,0), new Point(0,0));
 		this.startAngle = startAngle;
 		this.startLength = startLength;
 		this.endAngle = endAngle;
 		this.endLength = endLength;
 		setConnectionRouter(null);
+		setLayoutManager(new DelegatingLayout());
 		resetControls();
 	}
 
@@ -128,6 +144,10 @@ public class BezierConnection extends Bezier implements Connection, AnchorListen
 		if (getParent()!=null) hookSourceAnchor();
 		revalidate();
 	}
+	
+
+	
+	
 
 	public void setTargetAnchor(ConnectionAnchor anchor) {
 		if (anchor == this.dest) return;
@@ -137,6 +157,51 @@ public class BezierConnection extends Bezier implements Connection, AnchorListen
 		revalidate();
 	}
 	
+	
+	/**
+	 * Sets the decoration to be used at the start of the {@link Connection}.
+	 * @param dec the new source decoration
+	 * @since 2.0
+	 */
+	public void setSourceDecoration(RotatableDecoration dec) {
+		if (startArrow == dec)
+			return;
+		if (startArrow != null)
+			remove(startArrow);
+		startArrow = dec;
+		if (startArrow != null)
+			add(startArrow, new ArrowLocator(this, ConnectionLocator.SOURCE));
+	}
+	
+	/**
+	 * @return the source decoration (may be null)
+	 */
+	protected RotatableDecoration getSourceDecoration() {
+		return startArrow;
+	}
+	
+	/**
+	 * Sets the decoration to be used at the end of the {@link Connection}.
+	 * @param dec the new target decoration
+	 */
+	public void setTargetDecoration(RotatableDecoration dec) {
+		if (endArrow == dec)
+			return;
+		if (endArrow != null)
+			remove(endArrow);
+		endArrow = dec;
+		if (endArrow != null)
+			add(endArrow, new ArrowLocator(this, ConnectionLocator.TARGET));
+	}
+	
+	/**
+	 * @return the target decoration (may be null)
+	 * 
+	 * @since 2.0
+	 */
+	protected RotatableDecoration getTargetDecoration() {
+		return endArrow;
+	}
 
 	
 
@@ -168,6 +233,8 @@ public class BezierConnection extends Bezier implements Connection, AnchorListen
 	public ConnectionAnchor getTargetAnchor() {
 		return dest;
 	}
+	
+	
 
 	public void setConnectionRouter(ConnectionRouter router) {
 		if (router == null) router = NullConnectionRouter;
@@ -255,14 +322,14 @@ public class BezierConnection extends Bezier implements Connection, AnchorListen
 	/**
 	 * @return the startAngle
 	 */
-	public int getStartAngle() {
+	public double getStartAngle() {
 		return startAngle;
 	}
 	
 	/**
 	 * @return the endAngle
 	 */
-	public int getEndAngle() {
+	public double getEndAngle() {
 		return endAngle;
 	}
 	

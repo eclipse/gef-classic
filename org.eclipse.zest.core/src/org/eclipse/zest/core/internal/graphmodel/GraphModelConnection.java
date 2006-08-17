@@ -66,6 +66,35 @@ public class GraphModelConnection extends GraphItem implements LayoutRelationshi
 	private int curveDepth;
 	
 	/**
+	 * For bezier curves: angle between the start point, and the line.
+	 * This may be a hint only. Future implementations of graph viewers may
+	 * adjust the actual visual representation based on the look of the graph.
+	 */
+//	@tag bug(152530-Bezier(fix))
+	private double startAngle;
+	/**
+	 * For bezier curves: angle between the end point and the line. This may
+	 * be a hint only. Future implementations of graph viewers may adjust the
+	 * actual visual representation based on the look of the graph.
+	 */
+//	@tag bug(152530-Bezier(fix))
+	private double endAngle;
+	
+	/**
+	 * For bezier curves: this is a value from 0-1 as a ratio of the length of the
+	 * line between the start point, and the control point/the length of the connection.
+	 */
+//	@tag bug(152530-Bezier(fix))
+	private double startLength;
+	
+	/**
+	 * For bezier curves: this is a value from 0-1 as a ratio of the length of the
+	 * line between the end point, and the control point/the length of the connection.
+	 */
+//	@tag bug(152530-Bezier(fix))
+	private double endLength;
+	
+	/**
 	 * LayoutConnection constructor, initializes the nodes and the connection properties.
 	 * Defaults to bidirectional and a weighting of 0.5.
 	 * @param graphModel	The graph model.
@@ -495,6 +524,102 @@ public class GraphModelConnection extends GraphItem implements LayoutRelationshi
 	public void populateLayoutConstraint(LayoutConstraint constraint) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	/**
+	 * Gets the end angle for bezier arcs.
+	 * 
+	 * For bezier curves: angle between the start point, and the line.
+	 * This may be a hint only. Future implementations of graph viewers may
+	 * adjust the actual visual representation based on the look of the graph.
+	 */
+//	@tag bug(152530-Bezier(fix))
+	public double getEndAngle() {
+		return endAngle;
+	}
+	
+	/**
+	 * Sets the end angle for bezier arcs.
+	 * 
+	 * For bezier curves: angle between the start point, and the line.
+	 * This may be a hint only. Future implementations of graph viewers may
+	 * adjust the actual visual representation based on the look of the graph.
+	 * 
+	 * @param endAngle the angle to set.
+	 */
+//	@tag bug(152530-Bezier(fix))
+	public void setEndAngle(double endAngle) {
+		this.endAngle = endAngle;
+	}
+
+	/**
+	 * For bezier curves: this is a value from 0-1 as a ratio of the length of the
+	 * line between the end point, and the control point/the length of the connection.
+	 */
+//	@tag bug(152530-Bezier(fix))
+	public double getEndLength() {
+		return endLength;
+	}
+
+	/**
+	 * For bezier curves: this is a value from 0-1 as a ratio of the length of the
+	 * line between the end point, and the control point/the length of the connection.
+	 * 
+	 * @param endLength the length to set.
+	 */
+//	@tag bug(152530-Bezier(fix))
+	public void setEndLength(double endLength) {
+		this.endLength = endLength;
+	}
+
+	/**
+	 * Gets the start angle for bezier arcs.
+	 * 
+	 * For bezier curves: angle between the end point and the line. This may
+	 * be a hint only. Future implementations of graph viewers may adjust the
+	 * actual visual representation based on the look of the graph.
+	 */
+//	@tag bug(152530-Bezier(fix))
+	public double getStartAngle() {
+		return startAngle;
+	}
+
+	/**
+	 * Sets the start angle for bezier arcs.
+	 * 
+	 * For bezier curves: angle between the end point and the line. This may
+	 * be a hint only. Future implementations of graph viewers may adjust the
+	 * actual visual representation based on the look of the graph.
+	 */
+//	@tag bug(152530-Bezier(fix))
+	public void setStartAngle(double startAngle) {
+		this.startAngle = startAngle;
+	}
+
+	/**
+	 * For bezier curves: this is a value from 0-1 as a ratio of the length of the
+	 * line between the start point, and the control point/the length of the connection.
+	 */
+//	@tag bug(152530-Bezier(fix))
+	public double getStartLength() {
+		return startLength;
+	}
+
+	/**
+	 * For bezier curves: this is a value from 0-1 as a ratio of the length of the
+	 * line between the start point, and the control point/the length of the connection.
+	 * @param startLength the length to set.
+	 */
+	//@tag bug(152530-Bezier(fix))
+	public void setStartLength(double startLength) {
+		this.startLength = startLength;
 	}
 	
 }

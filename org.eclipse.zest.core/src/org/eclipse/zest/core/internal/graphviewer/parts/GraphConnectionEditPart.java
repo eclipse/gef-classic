@@ -25,6 +25,7 @@ import org.eclipse.draw2d.Shape;
 import org.eclipse.gef.editparts.AbstractConnectionEditPart;
 import org.eclipse.mylar.zest.core.ZestStyles;
 import org.eclipse.mylar.zest.core.internal.gefx.ArcConnection;
+import org.eclipse.mylar.zest.core.internal.gefx.BezierConnection;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphItem;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelConnection;
 
@@ -91,7 +92,9 @@ public class GraphConnectionEditPart extends AbstractConnectionEditPart implemen
 		} else 	if (ZestStyles.checkStyle(connectionStyle, ZestStyles.CONNECTIONS_CURVED)) {
 			connection = new ArcConnection();
 			((ArcConnection)connection).setDepth(getCastedModel().getCurveDepth());
-		} else  {
+		} else if (ZestStyles.checkStyle(connectionStyle, ZestStyles.CONNECTIONS_BEZIER)) {
+			connection = new BezierConnection(model.getStartAngle(), model.getStartLength(), model.getEndAngle(), model.getEndLength());
+		} else {
 			connection = (PolylineConnection) super.createFigure();
 		} 
 		connection.setForegroundColor(getCastedModel().getLineColor());
@@ -186,6 +189,13 @@ public class GraphConnectionEditPart extends AbstractConnectionEditPart implemen
 				else {
 					((ArcConnection)getFigure()).setTargetDecoration( null );
 				}
+			} else if (figure instanceof BezierConnection) {
+				if (directed) {
+		  			((BezierConnection)figure).setTargetDecoration(new PolygonDecoration());
+		  		}
+		  		else {
+		  			((BezierConnection)figure).setTargetDecoration( null );
+		  		}
 			}
 		}
 	}
@@ -225,6 +235,13 @@ public class GraphConnectionEditPart extends AbstractConnectionEditPart implemen
 			else {
 				((ArcConnection)getFigure()).setTargetDecoration( null );
 			}
+		} else if (figure instanceof BezierConnection) {
+			if (directed) {
+	  			((BezierConnection)figure).setTargetDecoration(new PolygonDecoration());
+	  		}
+	  		else {
+	  			((BezierConnection)figure).setTargetDecoration( null );
+	  		}
 		}
 
 	}
