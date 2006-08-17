@@ -42,6 +42,9 @@ public class ZestSelectionManager extends SelectionManager {
 		// Loop through all selected elements and get the user data for these
 		while (elements.hasNext()) {
 			AbstractEditPart editPart = (AbstractEditPart) elements.next();
+			if (editPart.getModel() == null) {
+				return StructuredSelection.EMPTY;
+			}
 			GraphItem item = (GraphItem) editPart.getModel();
 			
 			if (!(item instanceof GraphModel)) {
