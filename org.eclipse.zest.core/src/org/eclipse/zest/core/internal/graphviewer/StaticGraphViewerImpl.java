@@ -43,7 +43,7 @@ import org.eclipse.mylar.zest.layouts.algorithms.TreeLayoutAlgorithm;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * 
@@ -227,7 +227,7 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 	public void applyLayout() {
 		this.addRevealListener(new RevealListener() {
 			public void revealed(Control c) {
-				Display.getCurrent().asyncExec(new Runnable() {
+				PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
 
 					public void run() {
 						applyLayoutInternal();

@@ -33,6 +33,7 @@ import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * 
@@ -107,6 +108,16 @@ public abstract class NonThreadedGraphicalViewer extends ScrollingGraphicalViewe
 		controlListeners.add( controlListener );
 	}
 	
+	private class MyRunnable implements Runnable{
+
+		boolean isVisible;
+		/* (non-Javadoc)
+		 * @see java.lang.Runnable#run()
+		 */
+		public void run() {
+			 isVisible = getControl().isVisible();
+		}
+	}
 	
 	/**
 	 * Adds a reveal listener to the view.  Note:  A reveal listener will
@@ -114,9 +125,14 @@ public abstract class NonThreadedGraphicalViewer extends ScrollingGraphicalViewe
 	 * is no remove reveal listener.
 	 * @param revealListener
 	 */
-	public void addRevealListener( RevealListener revealListener ) {
-		if ( getControl().isVisible() ) revealListener.revealed( (Composite)getControl() );
-		else {
+	public void addRevealListener( final RevealListener revealListener ) {
+		
+		MyRunnable myRunnable = new MyRunnable();
+		PlatformUI.getWorkbench().getDisplay().syncExec( myRunnable);
+		
+		if ( myRunnable.isVisible ) {
+			revealListener.revealed( (Composite)getControl() );
+		} else {
 			revealListeners.add(revealListener);
 		}
 	}
