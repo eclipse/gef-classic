@@ -53,7 +53,8 @@ public class GraphModelFactory extends AbstractStylingModelFactory implements IG
 	/* (non-Javadoc)
 	 * @see ca.uvic.cs.zest.internal.graphmodel.IGraphModelFactory#createModelFromContentProvider(java.lang.Object)
 	 */
-	public GraphModel createModelFromContentProvider( Object inputElement, int nodeStyle, int connectionStyle) {
+	//	@tag bug(154412-ClearStatic(fix)) : renamed to allow the parent to do some processing before the model is created.
+	public GraphModel doCreateModelFromContentProvider( Object inputElement, int nodeStyle, int connectionStyle) {
 		//@tag bug(152045-UnconnectedNodes) : This does not take care of non-connected nodes. FIXED
 		GraphModel model = createModel();
 		model.setConnectionStyle(connectionStyle);

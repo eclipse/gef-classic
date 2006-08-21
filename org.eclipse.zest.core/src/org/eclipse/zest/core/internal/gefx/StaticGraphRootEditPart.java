@@ -10,11 +10,16 @@
  *******************************************************************************/
 package org.eclipse.mylar.zest.core.internal.gefx;
 
+import java.util.Iterator;
+import java.util.List;
+
 import org.eclipse.draw2d.ConnectionLayer;
 import org.eclipse.draw2d.FreeformLayer;
 import org.eclipse.draw2d.FreeformLayeredPane;
+import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.LayeredPane;
 import org.eclipse.gef.DragTracker;
+import org.eclipse.gef.EditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.editparts.FreeformGraphicalRootEditPart;
 import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphEditPart;
@@ -117,6 +122,35 @@ public class StaticGraphRootEditPart extends FreeformGraphicalRootEditPart imple
 	 */
 	public void setModelRootEditPart(Object modelRootEditPart) {
 		this.modelGraphEditPart = (GraphEditPart) modelRootEditPart;
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#unregisterVisuals()
+	 */
+	 //@tag bug(154412-ClearStatic(fix)) : make sure that all the visuals are deregistered before recreating the parts.
+	protected void unregisterVisuals() {
+		List children = getFigure().getChildren();
+		//remove all the child figures for the root, which
+		//don't necessarilly have edit parts.
+		for (int i = 0; i < children.size(); i++) {
+			IFigure child = (IFigure) children.get(i);
+			getViewer().getVisualPartMap().remove(child);
+		}
+		getViewer().getVisualPartMap().remove(figure);
+	}
+	
+
+	/* (non-Javadoc)
+	 * @see org.eclipse.gef.editparts.AbstractEditPart#unregisterModel()
+	 */
+	 //@tag bug(154412-ClearStatic(fix)) : make sure that all edit parts are removed before creating new ones.
+	protected void unregisterModel() {
+		//force revmoval of the edit parts.
+		for (Iterator i = getChildren().iterator(); i.hasNext();) {
+			EditPart child = (EditPart) i.next();
+			child.removeNotify();
+		}
+		super.unregisterModel();
 	}
 	
 }

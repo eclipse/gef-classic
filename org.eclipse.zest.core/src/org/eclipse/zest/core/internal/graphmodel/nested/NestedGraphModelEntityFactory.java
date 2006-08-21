@@ -15,6 +15,7 @@ import java.util.Iterator;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.mylar.zest.core.internal.graphmodel.AbstractStylingModelFactory;
+import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel;
 import org.eclipse.mylar.zest.core.messages.ZestUIMessages;
 import org.eclipse.mylar.zest.core.viewers.INestedGraphEntityContentProvider;
 import org.eclipse.swt.widgets.Canvas;
@@ -53,7 +54,8 @@ public class NestedGraphModelEntityFactory extends AbstractStylingModelFactory i
 	}
 	
 	//@tag bug(153348-NestedStyle(fix)) : add nodestyle and connectionstyle so that the model can be updated.
-	public NestedGraphModel createModelFromContentProvider( Object inputElement, int nodeStyle, int connectionStyle ) {
+//	@tag bug(154412-ClearStatic(fix)) : renamed to allow the parent to do some processing before the model is created.
+	public GraphModel doCreateModelFromContentProvider( Object inputElement, int nodeStyle, int connectionStyle ) {
 		NestedGraphModel model = createModel();
 		model.setConnectionStyle(connectionStyle);
 		model.setNodeStyle(nodeStyle);

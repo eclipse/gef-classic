@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.mylar.zest.core.internal.graphmodel.nested;
 
+import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel;
+
 /**
  * @author Ian Bull
  */
@@ -29,7 +31,8 @@ public interface INestedGraphModelFactory {
 	 * @return
 	 */
 	//@tag bug(153348-NestedStyle(fix)) : add node style and connection style
-	public abstract NestedGraphModel createModelFromContentProvider(Object inputElement, int nodeStyle, int connectionStyle);
+	//	@tag bug(154412-ClearStatic(fix)) : made more generic so that AbstractStylingModelFactory can do some processing in this method.
+	public abstract GraphModel createModelFromContentProvider(Object inputElement, int nodeStyle, int connectionStyle);
 
 	/**
 	 * Creates a new relationship using the content provider to get the source and destination.

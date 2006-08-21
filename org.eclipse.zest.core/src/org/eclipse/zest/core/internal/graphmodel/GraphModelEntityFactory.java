@@ -49,7 +49,8 @@ public class GraphModelEntityFactory extends AbstractStylingModelFactory impleme
 	}
 	
 	
-	public GraphModel createModelFromContentProvider( Object inputElement, int nodeStyle, int connectionStyle ) {
+	//	@tag bug(154412-ClearStatic(fix)) : renamed to allow the parent to do some processing before the model is created.
+	public GraphModel doCreateModelFromContentProvider( Object inputElement, int nodeStyle, int connectionStyle ) {
 		GraphModel model = createModel();
 		model.setNodeStyle(nodeStyle);
 		model.setConnectionStyle(connectionStyle);

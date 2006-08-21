@@ -49,6 +49,7 @@ public abstract class AbstractStylingModelFactory {
 	
 	/** Counts the number of connections between two nodes **/
 	private HashMap counters;
+	private Object input;
 	
 	/**
 	 * 
@@ -57,6 +58,27 @@ public abstract class AbstractStylingModelFactory {
 		this.counters = new HashMap();
 	}
 	
+//	@tag bug(154412-ClearStatic(fix)) : the styling factory needs to clear the counters if the input is new.
+	public final GraphModel createModelFromContentProvider(Object input, int nodeStyle, int connectionStyle) {
+		if (input != getInput()) {
+			counters.clear();
+//			@tag bug(154412-ClearStatic(fix)) : save the input so that it can be checked to see whether or not it is new.
+			this.input = input;
+		}
+		return doCreateModelFromContentProvider(input, nodeStyle, connectionStyle);
+	}
+	
+	
+	/**
+	 * 
+	 * @return the input for this factory.
+	 */
+	public final Object getInput() {
+		return this.input;
+	}
+
+	protected abstract GraphModel doCreateModelFromContentProvider(Object input, int nodeStyle, int connectionStyle);
+
 	public void styleConnection(GraphModelConnection conn) {
 		ConnectionCounter key = new ConnectionCounter(
 				conn.getSource().getExternalNode(),
