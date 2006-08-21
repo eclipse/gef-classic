@@ -10,11 +10,9 @@
  *******************************************************************************/
 package org.eclipse.mylar.zest.core.internal.nestedgraphviewer.policies;
 
-import java.beans.PropertyChangeEvent;
 import java.util.Collections;
 import java.util.List;
 
-import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.gef.editpolicies.ResizableEditPolicy;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelNode;
@@ -37,6 +35,7 @@ public class ColorSelectionEditPolicy extends ResizableEditPolicy {
 	/**
 	 * ColorSelectionEditPolicy constructor.
 	 */
+	//@tag bug(154256-ClientSupplySelect(fix)) : let it take a regular node edit part.
 	public ColorSelectionEditPolicy(GraphNodeEditPart editPart) {
 		this.editPart = editPart;
  	}
@@ -46,8 +45,9 @@ public class ColorSelectionEditPolicy extends ResizableEditPolicy {
 	 */
 	protected void hideSelection() {
 		super.hideSelection();
-		PropertyChangeEvent evt = new PropertyChangeEvent(GraphModelNode.UNHIGHLIGHT_PROP, GraphModelNode.UNHIGHLIGHT_PROP, null, ColorConstants.white);
-		editPart.propertyChange(evt);
+		//@tag bug(154256-ClientSupplySelect(fix)) : let the model take care of it.
+		((GraphModelNode)editPart.getModel()).unhighlight();
+		
 	}
 
 	/* (non-Javadoc)
@@ -55,11 +55,8 @@ public class ColorSelectionEditPolicy extends ResizableEditPolicy {
 	 */
 	protected void showSelection() {
 		super.showSelection();
-		//System.out.println(editPart.getFigure().getBounds());
-		PropertyChangeEvent evt = new PropertyChangeEvent(GraphModelNode.HIGHLIGHT_PROP, GraphModelNode.HIGHLIGHT_PROP, null, ColorConstants.red);
-		editPart.propertyChange(evt);
-		evt = new PropertyChangeEvent(GraphModelNode.BRING_TO_FRONT, GraphModelNode.BRING_TO_FRONT, null,null);
-		editPart.propertyChange(evt);
+		//@tag bug(154256-ClientSupplySelect(fix)) : let the model take care of it.
+		((GraphModelNode)editPart.getModel()).highlight();
 	}
 	
 	/* (non-Javadoc)

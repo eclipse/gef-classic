@@ -18,6 +18,7 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.ConstrainedLayoutEditPolicy;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
 import org.eclipse.gef.requests.CreateRequest;
+import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphNodeEditPart;
 import org.eclipse.mylar.zest.core.internal.nestedgraphviewer.parts.NestedGraphNodeEditPart;
 
 /**
@@ -56,8 +57,8 @@ public class NestedGraphRootLayoutEditPolicy extends ConstrainedLayoutEditPolicy
 	 * @see org.eclipse.gef.editpolicies.ConstrainedLayoutEditPolicy#createChildEditPolicy(org.eclipse.gef.EditPart)
 	 */
 	protected EditPolicy createChildEditPolicy(EditPart child) {
-		if (child instanceof NestedGraphNodeEditPart) {
-			return new ColorSelectionEditPolicy((NestedGraphNodeEditPart)child);
+		if (child instanceof GraphNodeEditPart) {
+			return new ColorSelectionEditPolicy((GraphNodeEditPart)child);
 		}
 		return super.createChildEditPolicy(child);
 	}

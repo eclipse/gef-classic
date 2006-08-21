@@ -92,7 +92,7 @@ public class GraphItemStyler {
 		if (style != ZestStyles.NONE) {
 			conn.setConnectionStyle(style);
 		}
-//		@tag bug(152530-Bezier(fix));
+//		@tag bug(152530-Bezier(fix))
 		if (ZestStyles.checkStyle(conn.getStyle(), ZestStyles.CONNECTIONS_BEZIER) &&
 			provider instanceof IConnectionStyleBezierExtension) {
 			IConnectionStyleBezierExtension bezier = (IConnectionStyleBezierExtension)provider;
@@ -121,7 +121,7 @@ public class GraphItemStyler {
 		if (style != ZestStyles.NONE) {
 			conn.setConnectionStyle(style);
 		}
-		//@tag bug(152530-Bezier(fix));
+		//@tag bug(152530-Bezier(fix))
 		if (ZestStyles.checkStyle(conn.getStyle(), ZestStyles.CONNECTIONS_BEZIER) &&
 				provider instanceof IEntityConnectionStyleBezierExtension) {
 				IEntityConnectionStyleBezierExtension bezier = 

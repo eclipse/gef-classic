@@ -157,7 +157,7 @@ public class NestedGraphViewerImpl extends NestedNonThreadedGraphicalViewer  {
 				nodeToMoveTo.getForegroundColor()
 			});
 			nodeToMoveTo.setBackgroundColor(ZestPlugin.getDefault().getColor(IZestColorConstants.BLUE));
-			nodeToMoveTo.setForegroundColor(ZestPlugin.getDefault().getColor(IZestColorConstants.GRAY));
+			nodeToMoveTo.setForegroundColor(ZestPlugin.getDefault().getColor(IZestColorConstants.LIGHT_GRAY));
 		}
 
 

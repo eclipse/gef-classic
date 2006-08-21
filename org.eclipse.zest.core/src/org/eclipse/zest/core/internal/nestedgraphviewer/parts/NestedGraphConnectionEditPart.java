@@ -18,6 +18,7 @@ import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphConnectionEdi
 
 /**
  * @author Chris Callendar
+ * @deprecated by Del Myers. There is no need for NestedGraphConnectionEditParts. Use general GraphConnectionEditParts instead.
  */
 public class NestedGraphConnectionEditPart extends GraphConnectionEditPart {
 

@@ -68,6 +68,23 @@ public class NonNestedProxyNode extends GraphModelNode {
 	}
 	
 	/* (non-Javadoc)
+	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelNode#setBackgroundColor(org.eclipse.swt.graphics.Color)
+	 */
+	public void setBackgroundColor(Color c) {
+		proxy.setBackgroundColor(c);
+		super.setBackgroundColor(c);
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelNode#changeBackgroundColor(org.eclipse.swt.graphics.Color)
+	 */
+	protected void changeBackgroundColor(Color c) {
+		proxy.changeBackgroundColor(c);
+		super.changeBackgroundColor(c);
+	}
+	
+	
+	/* (non-Javadoc)
 	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelNode#getBorderWidth()
 	 */
 	public int getBorderWidth() {
@@ -103,6 +120,15 @@ public class NonNestedProxyNode extends GraphModelNode {
 	}
 	
 	/* (non-Javadoc)
+	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelNode#setForegroundColor(org.eclipse.swt.graphics.Color)
+	 */
+	public void setForegroundColor(Color c) {
+		proxy.setForegroundColor(c);
+		super.setForegroundColor(c);
+	}
+	
+	
+	/* (non-Javadoc)
 	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelNode#getHighlightColor()
 	 */
 	public Color getHighlightColor() {
@@ -119,6 +145,7 @@ public class NonNestedProxyNode extends GraphModelNode {
 	/* (non-Javadoc)
 	 * @see org.eclipse.swt.widgets.Item#getImage()
 	 */
+//	@tag bug(154256-ClientSupplySelect(fix))
 	public Image getImage() {
 		return proxy.getImage();
 	}
@@ -126,8 +153,36 @@ public class NonNestedProxyNode extends GraphModelNode {
 	/* (non-Javadoc)
 	 * @see org.eclipse.swt.widgets.Item#getText()
 	 */
+//	@tag bug(154256-ClientSupplySelect(fix))
 	public String getText() {
 		return proxy.getText();
 	}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelNode#highlight()
+	 */
+//	@tag bug(154256-ClientSupplySelect(fix))
+	public void highlight() {
+		proxy.highlight();
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelNode#unhighlight()
+	 */
+	//@tag bug(154256-ClientSupplySelect(fix))
+	public void unhighlight() {
+		proxy.unhighlight();
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelNode#highlightAdjacent()
+	 */
+//	@tag bug(154256-ClientSupplySelect(fix))
+	public void highlightAdjacent() {
+		proxy.highlightAdjacent();
+	}
+	
+	
+	
 	
 }

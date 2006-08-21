@@ -26,8 +26,6 @@ import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.requests.LocationRequest;
 import org.eclipse.gef.tools.MarqueeDragTracker;
-import org.eclipse.mylar.zest.core.IZestColorConstants;
-import org.eclipse.mylar.zest.core.ZestPlugin;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedGraphModel;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedGraphModelNode;
 import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphNodeEditPart;
@@ -131,8 +129,9 @@ public class NestedGraphNodeEditPart extends GraphNodeEditPart implements Action
 				label.setFont(current.getFont());
 			}
 			//@tag bug(151332-Colors(fix))
-			label.setBackgroundColor(ZestPlugin.getDefault().getColor(IZestColorConstants.DARK_BLUE));
-			label.setForegroundColor(ZestPlugin.getDefault().getColor(IZestColorConstants.WHITE));
+			//@tag bug(154256-ClientSupplySelect(fix)) : get the colors from the model
+			label.setBackgroundColor(current.getBackgroundColor());
+			label.setForegroundColor(current.getForegroundColor());
 
 			// add an up button in the top left corner of the figure
 			upButton = null;
@@ -315,6 +314,7 @@ public class NestedGraphNodeEditPart extends GraphNodeEditPart implements Action
 		//@tag bug(152393(fix)) : Set the label color when the foreground changes.
 		if (label != null) {
 			label.setForegroundColor(getCastedModel().getForegroundColor());
+			label.setBackgroundColor(getCastedModel().getBackgroundColor());
 		}
 		super.refreshColors();
 	}

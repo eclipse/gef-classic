@@ -10,10 +10,8 @@
  *******************************************************************************/
 package org.eclipse.mylar.zest.core.internal.nestedgraphviewer.parts;
 
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.draw2d.ChopboxAnchor;
@@ -23,11 +21,9 @@ import org.eclipse.draw2d.Label;
 import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;
-import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelNode;
 import org.eclipse.mylar.zest.core.internal.graphmodel.NonNestedProxyNode;
-import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphConnectionEditPart;
-import org.eclipse.mylar.zest.core.internal.viewers.figures.GraphLabel;
+import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphNodeEditPart;
 import org.eclipse.mylar.zest.core.internal.viewers.figures.SimpleLabelBox;
 
 /**
@@ -37,9 +33,11 @@ import org.eclipse.mylar.zest.core.internal.viewers.figures.SimpleLabelBox;
  *
  */
 //@tag bug(153466-NoNestedClientSupply(fix)) : create an edit part for proxy nodes.
-public class NonNestedGraphProxyNodeEditPart extends AbstractGraphicalEditPart
+//@tag bug(154256-ClientSupplySelect(fix)) : make NonNestedGraphNodeEditPart extend GraphNodeEditPart so that colors will change.
+public class NonNestedGraphProxyNodeEditPart extends GraphNodeEditPart
 	implements NodeEditPart, PropertyChangeListener {
 	ConnectionAnchor anchor;
+	private Label label;
 	
 
 	public NonNestedProxyNode getCastedModel() {
@@ -52,7 +50,7 @@ public class NonNestedGraphProxyNodeEditPart extends AbstractGraphicalEditPart
 	protected IFigure createFigureForModel() {
 		GraphModelNode node = getCastedModel().getProxy();
 		SimpleLabelBox box = new SimpleLabelBox();
-		Label label = box.getLabel();
+		label = box.getLabel();
 		label.setFont(node.getFont());
 		label.setText(node.getText());
 		label.setIcon(node.getImage());
@@ -68,12 +66,7 @@ public class NonNestedGraphProxyNodeEditPart extends AbstractGraphicalEditPart
 		return createFigureForModel();
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.gef.editparts.AbstractEditPart#createEditPolicies()
-	 */
-	protected void createEditPolicies() {
-		
-	}
+
 	
 	/* (non-Javadoc)
 	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#getSourceConnections()
@@ -127,60 +120,7 @@ public class NonNestedGraphProxyNodeEditPart extends AbstractGraphicalEditPart
 	}
 
 
-	/* (non-Javadoc)
-	 * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
-	 */
-	public void propertyChange(PropertyChangeEvent evt) {
-				
-		String prop = evt.getPropertyName();
-		if ( GraphModelNode.FORCE_REDRAW.equals(prop)) {
-			refreshVisuals();
-			refreshChildren();
-			refreshColors();
-			getCastedModel().highlight();
-			getCastedModel().unhighlight();
-			
-			
-		}
-		else if (GraphModelNode.LOCATION_PROP.equals(prop) || GraphModelNode.SIZE_PROP.equals(prop)) {
-			refreshVisuals();
-		} else if (GraphModelNode.SOURCE_CONNECTIONS_PROP.equals(prop)) {
-			refreshSourceConnections();
-		} else if (GraphModelNode.TARGET_CONNECTIONS_PROP.equals(prop)) {
-			refreshTargetConnections();
-		} else if (GraphModelNode.HIGHLIGHT_PROP.equals(prop)) {
-			getCastedModel().highlight();
-			List listOfSourceConnections = getSourceConnections();
-			for (Iterator iter = listOfSourceConnections.iterator(); iter.hasNext();) {
-				GraphConnectionEditPart element = (GraphConnectionEditPart) iter.next();
-				element.highlightEdge();
-			}
-			// TODO pin highlighted node?  
-			//getCastedModel().setHasPreferredLocation( true );
-			refreshColors();
-		} else if (GraphModelNode.UNHIGHLIGHT_PROP.equals(prop)) {
-			getCastedModel().unhighlight();
-			//getCastedModel().setHasPreferredLocation( false );
-			List listOfSourceConnections = getSourceConnections();
-			for (Iterator iter = listOfSourceConnections.iterator(); iter.hasNext();) {
-				GraphConnectionEditPart element = (GraphConnectionEditPart) iter.next();
-				element.unHighlightEdge();
-			}
-			refreshColors();
-		} else if (GraphModelNode.COLOR_BG_PROP.equals(prop)) {
-			refreshColors();
-		} else if (GraphModelNode.COLOR_FG_PROP.equals(prop)) {
-			refreshColors();
-		} 
-		else if ( GraphModelNode.BRING_TO_FRONT.equals(prop) ) {
-			IFigure figure = getFigure();
-			IFigure parent = figure.getParent();
-			parent.remove(figure);
-			parent.add(figure);
-			
-		}
-		
-	}
+
 	/**
 	 * Refreshes the figures colors from the model.  This includes the border color and width.
 	 */
@@ -190,10 +130,9 @@ public class NonNestedGraphProxyNodeEditPart extends AbstractGraphicalEditPart
 		figure.setForegroundColor(model.getForegroundColor());
 		figure.setBackgroundColor(model.getBackgroundColor());
 		
-		if (figure instanceof GraphLabel) {
-			GraphLabel label = (GraphLabel) figure;
-			label.setBorderColor(model.getBorderColor());
-			label.setBorderWidth(model.getBorderWidth());
+		if (label != null) {
+			label.setForegroundColor(model.getForegroundColor());
+			label.setBackgroundColor(model.getBackgroundColor());
 		}
 		
 		//this.getFigure().revalidate();	
@@ -208,10 +147,8 @@ public class NonNestedGraphProxyNodeEditPart extends AbstractGraphicalEditPart
 			refreshSourceConnections();
 			refreshTargetConnections();
 			super.activate();
-			getCastedModel().setEditPart(this);
-			getCastedModel().addPropertyChangeListener(this);
+			//we need to listen to the proxy.
 			getCastedModel().getProxy().addPropertyChangeListener(this);
-			
 		}
 	}
 	
@@ -221,9 +158,7 @@ public class NonNestedGraphProxyNodeEditPart extends AbstractGraphicalEditPart
 	public void deactivate() {
 		super.deactivate();
 		if (!isActive()) {
-			getCastedModel().removePropertyChangeListener(this);
 			getCastedModel().getProxy().removePropertyChangeListener(this);
-			getCastedModel().setEditPart(null);
 		}
 	}
 		
