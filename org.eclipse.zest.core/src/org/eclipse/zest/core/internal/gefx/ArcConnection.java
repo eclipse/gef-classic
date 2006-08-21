@@ -20,6 +20,7 @@ import org.eclipse.draw2d.ConnectionRouter;
 import org.eclipse.draw2d.DelegatingLayout;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.Graphics;
+import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.RotatableDecoration;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
@@ -127,6 +128,24 @@ public class ArcConnection extends Arc implements Connection, AnchorListener {
 	 */
 	public final PointList getPoints() {
 		return pointList.getCopy();
+	}
+	
+	/**
+	 * Returns the bounds which holds all the points in this. Returns any 
+	 * previously existing bounds, else calculates by unioning all the children's
+	 * dimensions.
+	 * @return the bounds
+	 */
+	//@tag bug(154176-ConnectionClip(fix)) : add children to the bounds.
+	public Rectangle getBounds() {
+		if (bounds == null) {
+			super.getBounds();
+			for (int i = 0; i < getChildren().size(); i++) {
+				IFigure child = (IFigure)getChildren().get(i);
+				bounds.union(child.getBounds());
+			}
+		}
+		return bounds;
 	}
 
 	public Object getRoutingConstraint() {
