@@ -433,7 +433,7 @@ public class NestedGraphEditPart extends GraphEditPart  {
 		Rectangle maxBounds = getMainArea().getCopy();
 		editPart.getFigure().translateToRelative(maxBounds);
 		Rectangle endBounds = editPart.getAbsoluteBounds();
-		doCollapseZoom(maxBounds, endBounds, 10, editPart);
+		doCollapseZoom(maxBounds, endBounds, 15, editPart);
 	}
 	
 	/**

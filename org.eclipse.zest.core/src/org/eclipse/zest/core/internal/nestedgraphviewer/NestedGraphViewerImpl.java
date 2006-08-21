@@ -195,6 +195,35 @@ public class NestedGraphViewerImpl extends NestedNonThreadedGraphicalViewer  {
 				//doSetContents(model);
 			}
 			else {
+				NestedGraphModelNode commonParent = previousNode.findCommonParent(nodeToMoveTo);
+				/*LinkedList parentStack = new LinkedList();
+				NestedGraphModelNode node = previousNode.getCastedParent();
+				while (node != commonParent) {
+					parentStack.addLast(node);
+					node = node.getCastedParent();
+				}
+				parentStack.addLast(node);
+				while (parentStack.size() > 0) {*/
+					NestedGraphModelNode node = commonParent;//(NestedGraphModelNode) parentStack.removeFirst();
+					model.setCurrentNode(node);
+					doSetContents(model);
+					getLightweightSystem().getUpdateManager().performValidation();
+					flush();
+					
+					if (getEditPartRegistry().containsKey(nodeToSelect)) {
+						//nodeToSelect.setSelected(true);
+						//setSelection(new StructuredSelection(getEditPartRegistry().get(nodeToSelect)));
+						//this.setFocus(this.getRootEditPart());
+					}
+					
+					// now do the zoom (sizes and locations should be set)
+					rootEditPart = (NestedGraphRootEditPart)getRootEditPart();
+					NestedGraphNodeEditPart zoomPart = (NestedGraphNodeEditPart) getEditPartRegistry().get(previousNode);
+					rootEditPart.getNestedEditPart().zoomOutOnNode( zoomPart);
+				//}
+				model.setCurrentNode(nodeToMoveTo);
+				zoomPart = (NestedGraphNodeEditPart) getEditPartRegistry().get(nodeToMoveTo);
+				rootEditPart.getNestedEditPart().zoomInOnNode( zoomPart);
 				doSetContents(model);
 			}
 		}

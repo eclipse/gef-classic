@@ -41,8 +41,8 @@ public class GraphModelConnection extends GraphItem implements LayoutRelationshi
 	private ArrayList weightColors;
 	public static final String LINECOLOR_PROP = "LineColor";
 	//@tag unreported(EdgeHighlight) : fire property change when the edge highlight state changes.
-	public static final String HIGHLIGHT_PROP = "UnHighlight";
-	public static final String UNHIGHLIGHT_PROP = "Highlight";
+	public static final String HIGHLIGHT_PROP = "Highlight";
+	public static final String UNHIGHLIGHT_PROP = "UnHighlight";
 	public static final String LINEWIDTH_PROP = "LineWidth";
 	public static final String LINESTYLE_PROP = "LineStyle";
 	public static final String DIRECTED_EDGE_PROP = "DirectedEdgeStyle";

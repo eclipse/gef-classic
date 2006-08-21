@@ -13,19 +13,19 @@ package org.eclipse.mylar.zest.core.internal.graphviewer.parts;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import org.eclipse.draw2d.BendpointLocator;
 import org.eclipse.draw2d.Connection;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.Locator;
-import org.eclipse.draw2d.MidpointLocator;
 import org.eclipse.draw2d.PolygonDecoration;
 import org.eclipse.draw2d.PolylineConnection;
 import org.eclipse.draw2d.Shape;
 import org.eclipse.gef.editparts.AbstractConnectionEditPart;
 import org.eclipse.mylar.zest.core.ZestStyles;
-import org.eclipse.mylar.zest.core.internal.gefx.ArcConnection;
 import org.eclipse.mylar.zest.core.internal.gefx.BezierConnection;
+import org.eclipse.mylar.zest.core.internal.gefx.GraphRootEditPart;
+import org.eclipse.mylar.zest.core.internal.gefx.MidBendpointLocator;
+import org.eclipse.mylar.zest.core.internal.gefx.PolylineArcConnection;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphItem;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelConnection;
 
@@ -65,6 +65,21 @@ public class GraphConnectionEditPart extends AbstractConnectionEditPart implemen
 	}
 	
 	/* (non-Javadoc)
+	 * @see org.eclipse.gef.editparts.AbstractConnectionEditPart#removeNotify()
+	 */
+	public void removeNotify() {
+		IFigure edge = getFigure();
+		IFigure layer = getLayer(CONNECTION_LAYER);
+		if (layer != null) {
+			if (edge.getParent() != layer) {
+				edge.getParent().remove(edge);
+				layer.add(edge);
+			}
+		}
+		super.removeNotify();
+	}
+	
+	/* (non-Javadoc)
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#createEditPolicies()
 	 */
 	protected void createEditPolicies() {
@@ -82,16 +97,17 @@ public class GraphConnectionEditPart extends AbstractConnectionEditPart implemen
 		if (model.getSource() == model.getDestination()) {
 			//@tag bug(152180-SelfLoops) : create an arc connection, despite the styles that have been set.
 			//allow for a self-loop.
-			connection = new ArcConnection();
+			//@tag bug(154391-ArcEnds(fix)) :use a polyline arc connection
+			connection = new PolylineArcConnection();
 			if (model.getCurveDepth() <= 0) {
 				//it has to have a curve.
-				((ArcConnection)connection).setDepth(10);
+				((PolylineArcConnection)connection).setDepth(10);
 			} else {
-				((ArcConnection)connection).setDepth(model.getCurveDepth());
+				((PolylineArcConnection)connection).setDepth(model.getCurveDepth());
 			}
 		} else 	if (ZestStyles.checkStyle(connectionStyle, ZestStyles.CONNECTIONS_CURVED)) {
-			connection = new ArcConnection();
-			((ArcConnection)connection).setDepth(getCastedModel().getCurveDepth());
+			connection = new PolylineArcConnection();
+			((PolylineArcConnection)connection).setDepth(getCastedModel().getCurveDepth());
 		} else if (ZestStyles.checkStyle(connectionStyle, ZestStyles.CONNECTIONS_BEZIER)) {
 			connection = new BezierConnection(model.getStartAngle(), model.getStartLength(), model.getEndAngle(), model.getEndLength());
 		} else {
@@ -103,12 +119,7 @@ public class GraphConnectionEditPart extends AbstractConnectionEditPart implemen
 			((Shape)connection).setLineStyle(getCastedModel().getLineStyle());
 		}
 		
-	  	Locator m1 = new MidpointLocator(connection,0);
-	  	if (connection instanceof PolylineConnection) {
-	  		m1 = new MidpointLocator(connection, 0);
-	  	} else {
-	  		m1 = new BendpointLocator(connection, connection.getPoints().size()/2);
-	  	}
+	  	Locator m1 = new MidBendpointLocator(connection);
 	  	if ( getCastedModel().getText() != null ||
 	  		getCastedModel().getImage() != null ) {
 	  		Label l = new Label(getCastedModel().getText(), getCastedModel().getImage());
@@ -120,28 +131,30 @@ public class GraphConnectionEditPart extends AbstractConnectionEditPart implemen
 	}
 	
 	/**
-     * @deprecated by Del Myers. Connections should be left on the connection layer, otherwise GEF gets confused.
+     * 
      */
 	public void highlightEdge() {
-		/*IFigure thisEdge = getFigure(); 
-		IFigure layer = getLayer(CONNECTION_LAYER);
-		IFigure feedbackLayer = getLayer(GraphRootEditPart.CONNECTION_FEEDBACK_LAYER );
-		layer.remove(thisEdge);
-		feedbackLayer.add(thisEdge);
-*/
-	}
-	
-	/**
-     * @deprecated by Del Myers. Connections should be left on the connection layer, otherwise GEF gets confused.
-     */
-	public void unHighlightEdge() {
-		/*
 		IFigure thisEdge = getFigure(); 
 		IFigure layer = getLayer(CONNECTION_LAYER);
 		IFigure feedbackLayer = getLayer(GraphRootEditPart.CONNECTION_FEEDBACK_LAYER );
-		feedbackLayer.remove(thisEdge);
-		layer.add(thisEdge);
-*/
+		if (thisEdge.getParent() == layer) {
+			layer.remove(thisEdge);
+			feedbackLayer.add(thisEdge);
+		}
+
+	}
+	
+	/**
+     * 
+     */
+	public void unHighlightEdge() {
+		IFigure thisEdge = getFigure(); 
+		IFigure layer = getLayer(CONNECTION_LAYER);
+		IFigure feedbackLayer = getLayer(GraphRootEditPart.CONNECTION_FEEDBACK_LAYER );
+		if (thisEdge.getParent() == feedbackLayer) {
+			feedbackLayer.remove(thisEdge);
+			layer.add(thisEdge);
+		}
 
 	}
 	
@@ -162,7 +175,7 @@ public class GraphConnectionEditPart extends AbstractConnectionEditPart implemen
 		if (GraphModelConnection.HIGHLIGHT_PROP.equals(property)) {
 			//@tag unreported(EdgeHighlight) : respond to model highlight changes.
 			highlightEdge();
-		} else	if (GraphModelConnection.HIGHLIGHT_PROP.equals(property)) { 
+		} else	if (GraphModelConnection.UNHIGHLIGHT_PROP.equals(property)) { 
 //			@tag unreported(EdgeHighlight) : respond to model highlight changes.
 			unHighlightEdge();
 		} else if (GraphModelConnection.LINECOLOR_PROP.equals(property)) {
@@ -182,12 +195,12 @@ public class GraphConnectionEditPart extends AbstractConnectionEditPart implemen
 		  		else {
 		  			((PolylineConnection)figure).setTargetDecoration( null );
 		  		}
-		  	} else if (figure instanceof ArcConnection) {
+		  	} else if (figure instanceof PolylineArcConnection) {
 				if (directed) {
-					((ArcConnection)getFigure()).setTargetDecoration(new PolygonDecoration());
+					((PolylineArcConnection)getFigure()).setTargetDecoration(new PolygonDecoration());
 				}
 				else {
-					((ArcConnection)getFigure()).setTargetDecoration( null );
+					((PolylineArcConnection)getFigure()).setTargetDecoration( null );
 				}
 			} else if (figure instanceof BezierConnection) {
 				if (directed) {
@@ -228,12 +241,12 @@ public class GraphConnectionEditPart extends AbstractConnectionEditPart implemen
 			else {
 				((PolylineConnection)getFigure()).setTargetDecoration( null );
 			}
-		} else if (figure instanceof ArcConnection) {
+		} else if (figure instanceof PolylineArcConnection) {
 			if (directed) {
-				((ArcConnection)getFigure()).setTargetDecoration(new PolygonDecoration());
+				((PolylineArcConnection)getFigure()).setTargetDecoration(new PolygonDecoration());
 			}
 			else {
-				((ArcConnection)getFigure()).setTargetDecoration( null );
+				((PolylineArcConnection)getFigure()).setTargetDecoration( null );
 			}
 		} else if (figure instanceof BezierConnection) {
 			if (directed) {

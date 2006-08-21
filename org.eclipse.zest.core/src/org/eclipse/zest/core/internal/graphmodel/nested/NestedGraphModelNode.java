@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.draw2d.geometry.Dimension;
@@ -479,6 +480,35 @@ public class NestedGraphModelNode extends GraphModelNode implements NestedLayout
 			connectedFrom.addAll(recursiveGetConnectionsFrom((NestedGraphModelNode) i.next(), topNode));
 		}
 		return connectedFrom;
+	}
+	
+	/**
+	 * Finds the highest common parent between this node and that node.
+	 * @param that the node to check against.
+	 * @return the highest common parent between the nodes, or null if none.
+	 */
+	public NestedGraphModelNode findCommonParent(NestedGraphModelNode that) {
+		if (this == that) return this.getCastedParent();
+		
+		LinkedList thisParentQueue = new LinkedList();
+		LinkedList thatParentQueue = new LinkedList();
+		NestedGraphModelNode node = this;
+		while (node != null) {
+			thisParentQueue.addFirst(node);
+			node = node.getCastedParent();
+		}
+		node = that;
+		while (node != null) {
+			thatParentQueue.addFirst(node);
+			node = node.getCastedParent();
+		}
+		int limit = Math.min(thisParentQueue.size(), thatParentQueue.size());
+		int i;
+		for (i = 0; i < limit; i++) {
+			if (thisParentQueue.get(i) != thatParentQueue.get(i)) break;
+		}
+		if (i >= limit) return null; //shouldn't happen.
+		return (NestedGraphModelNode) thisParentQueue.get(i-1);
 	}
 
 }
