@@ -616,7 +616,12 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
                     unfilteredObjsList.add(object);
 				}
 			}
-            Object [] unfilteredObjs = new Object [unfilteredObjsList.size()];
+            //@tag bug.156266-ClassCast.fix : use reflection to create the array.
+            Object[] unfilteredObjs = 
+            	(Object[])java.lang.reflect.Array.newInstance(
+            		objects.getClass().getComponentType(), 
+            		unfilteredObjsList.size()
+            	);
             unfilteredObjsList.toArray(unfilteredObjs);
             return unfilteredObjs;
 		}
