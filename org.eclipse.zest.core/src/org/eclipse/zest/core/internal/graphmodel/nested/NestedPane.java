@@ -18,7 +18,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelConnection;
+import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelConnection;
 import org.eclipse.mylar.zest.core.internal.graphmodel.NonNestedProxyNode;
 import org.eclipse.mylar.zest.core.internal.graphmodel.ProxyConnection;
 
@@ -99,7 +99,7 @@ public class NestedPane {
 		Iterator i = proxies.iterator();
 		while (i.hasNext()) {
 			ProxyConnection conn = (ProxyConnection) i.next();
-			GraphModelConnection referenced = conn.getProxy();
+			IGraphModelConnection referenced = conn.getProxy();
 			Object end = (to) ? conn.getDestination() : conn.getSource();
 			if (end instanceof NonNestedProxyNode) {
 				if (connections.contains(referenced) && ! this.children.contains(end)) {
@@ -123,7 +123,7 @@ public class NestedPane {
 		LinkedList proxies = new LinkedList();
 		HashMap modelNodes = new HashMap();
 		for (Iterator i = connections.iterator(); i.hasNext();) {
-			GraphModelConnection conn = (GraphModelConnection) i.next();
+			IGraphModelConnection conn = (IGraphModelConnection) i.next();
 			NestedGraphModelNode node =	null;
 			if (to) {
 				node = (NestedGraphModelNode) conn.getDestination();

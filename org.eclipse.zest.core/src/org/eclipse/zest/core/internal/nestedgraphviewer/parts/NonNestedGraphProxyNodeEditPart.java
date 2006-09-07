@@ -21,7 +21,7 @@ import org.eclipse.draw2d.Label;
 import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;
-import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelNode;
+import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelNode;
 import org.eclipse.mylar.zest.core.internal.graphmodel.NonNestedProxyNode;
 import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphNodeEditPart;
 import org.eclipse.mylar.zest.core.internal.viewers.figures.SimpleLabelBox;
@@ -48,7 +48,7 @@ public class NonNestedGraphProxyNodeEditPart extends GraphNodeEditPart
 	 * @see org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphNodeEditPart#createFigureForModel()
 	 */
 	protected IFigure createFigureForModel() {
-		GraphModelNode node = getCastedModel().getProxy();
+		IGraphModelNode node = getCastedModel().getProxy();
 		SimpleLabelBox box = new SimpleLabelBox();
 		label = box.getLabel();
 		label.setFont(node.getFont());
@@ -126,7 +126,7 @@ public class NonNestedGraphProxyNodeEditPart extends GraphNodeEditPart
 	 */
 	protected void refreshColors() {
 		IFigure figure = getFigure();
-		GraphModelNode model = getCastedModel();
+		IGraphModelNode model = getCastedModel();
 		figure.setForegroundColor(model.getForegroundColor());
 		figure.setBackgroundColor(model.getBackgroundColor());
 		

@@ -12,7 +12,7 @@ package org.eclipse.mylar.zest.core.internal.graphmodel.nested;
 
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelConnection;
-import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelNode;
+import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelNode;
 
 
 /**
@@ -29,8 +29,8 @@ public class NestedGraphModelConnection extends GraphModelConnection {
 	 * @param source
 	 * @param destination
 	 */
-	public NestedGraphModelConnection(GraphModel graphModel, Object data, GraphModelNode source,
-			GraphModelNode destination) {
+	public NestedGraphModelConnection(GraphModel graphModel, Object data, IGraphModelNode source,
+			IGraphModelNode destination) {
 		super(graphModel, data, source, destination);
 	}
 
@@ -42,8 +42,8 @@ public class NestedGraphModelConnection extends GraphModelConnection {
 	 * @param bidirection
 	 * @param weight
 	 */
-	public NestedGraphModelConnection(GraphModel graphModel, Object data, GraphModelNode source,
-			GraphModelNode destination, boolean bidirection, double weight) {
+	public NestedGraphModelConnection(GraphModel graphModel, Object data, IGraphModelNode source,
+			IGraphModelNode destination, boolean bidirection, double weight) {
 		super(graphModel, data, source, destination, bidirection, weight);
 		// TODO Auto-generated constructor stub
 	}

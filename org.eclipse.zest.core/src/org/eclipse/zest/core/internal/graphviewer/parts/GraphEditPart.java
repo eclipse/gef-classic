@@ -21,7 +21,7 @@ import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.editpolicies.RootComponentEditPolicy;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphItem;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel;
-import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelNode;
+import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelNode;
 import org.eclipse.mylar.zest.core.internal.graphviewer.policies.GraphXYLayoutEditPolicy;
 import org.eclipse.mylar.zest.core.internal.viewers.figures.AspectRatioFreeformLayer;
 
@@ -66,7 +66,7 @@ public class GraphEditPart extends AbstractGraphicalEditPart implements Property
 		AspectRatioFreeformLayer aspectRatioFreeformLayer = (AspectRatioFreeformLayer) getFigure();
 		aspectRatioFreeformLayer.setScale( x, y );
 		//aspectRatioFreeformLayer.repaint();
-		getCastedModel().fireAllPropertyChange(GraphModelNode.FORCE_REDRAW, null, null);	
+		getCastedModel().fireAllPropertyChange(IGraphModelNode.FORCE_REDRAW, null, null);	
 	}
 
 	/**
@@ -118,10 +118,12 @@ public class GraphEditPart extends AbstractGraphicalEditPart implements Property
 		// to update the diagram's contents.
 		if (GraphModel.NODE_ADDED_PROP.equals(prop) || GraphModel.NODE_REMOVED_PROP.equals(prop)) {
 			refreshChildren();
-		} else if ( GraphModelNode.HIGHLIGHT_PROP.equals( prop ) ) {
-			setSelected( 1 );
-		} else if ( GraphModelNode.UNHIGHLIGHT_PROP.equals( prop ) ) {
-			setSelected( 0 );
+		} else if ( IGraphModelNode.HIGHLIGHT_PROP.equals( prop ) ) {
+			if (((Boolean)evt.getNewValue()).booleanValue()) {
+				setSelected(1);
+			} else {
+				setSelected(0);
+			}
 		}
 	}
 		

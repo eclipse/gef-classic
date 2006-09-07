@@ -27,9 +27,9 @@ import org.eclipse.mylar.zest.core.internal.gefx.NonThreadedGraphicalViewer;
 import org.eclipse.mylar.zest.core.internal.gefx.RevealListener;
 import org.eclipse.mylar.zest.core.internal.gefx.StaticGraphRootEditPart;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel;
-import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelConnection;
-import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelNode;
+import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelConnection;
 import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelFactory;
+import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelNode;
 import org.eclipse.mylar.zest.core.internal.graphmodel.IZestGraphDefaults;
 import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphEditPartFactory;
 import org.eclipse.mylar.zest.core.internal.viewers.NoOverlapLayoutAlgorithm;
@@ -303,7 +303,7 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 		Dimension dim = new Dimension();
 		if (model != null) {
 			for (Iterator iter = model.getNodes().iterator(); iter.hasNext(); ) {
-				GraphModelNode node = (GraphModelNode)iter.next();
+				IGraphModelNode node = (IGraphModelNode)iter.next();
 				dim.width = Math.max(dim.width, (int)node.getWidthInLayout());
 				dim.height = Math.max(dim.height, (int)node.getHeightInLayout());
 			}
@@ -349,7 +349,7 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 	 */
 	public void addRelationship(Object connection, Object srcNode, Object destNode) {
 		// create the new relationship
-		GraphModelConnection newConnection = modelFactory.createRelationship(model, connection, srcNode, destNode);
+		IGraphModelConnection newConnection = modelFactory.createRelationship(model, connection, srcNode, destNode);
 
 		// add it to the layout algorithm
 		layoutAlgorithm.addRelationship(newConnection);
@@ -364,7 +364,7 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 	public void addRelationship (Object connection) {
 		if (model.getInternalConnection(connection) == null) {
 			// create the new relationship
-			GraphModelConnection newConnection = modelFactory.createRelationship(model, connection);
+			IGraphModelConnection newConnection = modelFactory.createRelationship(model, connection);
 			
 			// add it to the layout algorithm
 			layoutAlgorithm.addRelationship(newConnection);
@@ -382,7 +382,7 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 	 * @param weight		The new weight for the connection.
 	 */
 	public void updateRelationshipWeight(Object connection, double weight) {
-		GraphModelConnection relationship = model.getInternalConnection(connection);
+		IGraphModelConnection relationship = model.getInternalConnection(connection);
 		if (relationship != null) {
 			relationship.setWeightInLayout(weight);
 			applyLayout();
@@ -394,7 +394,7 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 	 * @param connection
 	 */
 	public void removeRelationship(Object connection) {
-		GraphModelConnection relation = model.getInternalConnection(connection);
+		IGraphModelConnection relation = model.getInternalConnection(connection);
 		
 		if (relation != null) {
 			// remove the relationship from the layout algorithm
@@ -414,7 +414,7 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 	public void addNode(Object element) {
 		if (model.getInternalNode(element) == null ) {
 			// create the new node
-			GraphModelNode newNode = modelFactory.createNode(model, element);
+			IGraphModelNode newNode = modelFactory.createNode(model, element);
 			
 			// add it to the layout algorithm
 			layoutAlgorithm.addEntity(newNode);
@@ -427,7 +427,7 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 	 * @param element	The node element to remove.
 	 */
 	public void removeNode(Object element) {
-		GraphModelNode node = model.getInternalNode(element);
+		IGraphModelNode node = model.getInternalNode(element);
 		
 		if (node != null) {
 			// remove the node from the layout algorithm and all the connections

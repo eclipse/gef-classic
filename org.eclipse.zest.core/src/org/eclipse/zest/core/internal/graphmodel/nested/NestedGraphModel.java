@@ -16,7 +16,7 @@ import java.util.List;
 
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel;
-import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelNode;
+import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelNode;
 import org.eclipse.swt.widgets.Canvas;
 
 
@@ -99,7 +99,7 @@ public class NestedGraphModel extends GraphModel {
 	/* (non-Javadoc)
 	 * @see ca.uvic.cs.zest.internal.graphmodel.GraphModel#removeNodeFromList(ca.uvic.cs.zest.internal.graphmodel.GraphModelNode)
 	 */
-	protected boolean removeNodeFromList(GraphModelNode node) {
+	protected boolean removeNodeFromList(IGraphModelNode node) {
 		return true;
 	}
 	

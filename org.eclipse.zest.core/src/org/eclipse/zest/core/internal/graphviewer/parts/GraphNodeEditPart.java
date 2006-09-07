@@ -28,8 +28,8 @@ import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
-import org.eclipse.mylar.zest.core.internal.graphmodel.GraphItem;
-import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelNode;
+import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphItem;
+import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelNode;
 import org.eclipse.mylar.zest.core.internal.viewers.figures.GraphLabel;
 import org.eclipse.mylar.zest.core.internal.viewers.figures.RoundedChopboxAnchor;
 import org.eclipse.mylar.zest.core.internal.viewers.trackers.SingleSelectionTracker;
@@ -82,7 +82,7 @@ public class GraphNodeEditPart extends AbstractGraphicalEditPart implements
 	public void activate() {
 		if (!isActive()) {
 			super.activate();
-			((GraphItem) getModel()).addPropertyChangeListener(this);
+			((IGraphItem) getModel()).addPropertyChangeListener(this);
 		}
 	}
 
@@ -93,7 +93,7 @@ public class GraphNodeEditPart extends AbstractGraphicalEditPart implements
 	public void deactivate() {
 		if (isActive()) {
 			super.deactivate();
-			((GraphItem) getModel()).removePropertyChangeListener(this);
+			((IGraphItem) getModel()).removePropertyChangeListener(this);
 		}
 	}
 	
@@ -126,8 +126,8 @@ public class GraphNodeEditPart extends AbstractGraphicalEditPart implements
 	 */
 	protected IFigure createFigureForModel() {
 		IFigure figure;
-		if (getModel() instanceof GraphModelNode) {
-			GraphModelNode node = getCastedModel();
+		if (getModel() instanceof IGraphModelNode) {
+			IGraphModelNode node = getCastedModel();
 			GraphLabel label = new GraphLabel(node.getText(), node.getImage());
 			label.setForegroundColor(node.getForegroundColor());
 			label.setBackgroundColor(node.getBackgroundColor());
@@ -182,7 +182,7 @@ public class GraphNodeEditPart extends AbstractGraphicalEditPart implements
 //	@tag bug(152180-SelfLoops) : New anchor required so that the loops aren't hidden by the node.
 	protected ConnectionAnchor getDefaultConnectionAnchor() {
 		if (anchor == null) {
-			if (getModel() instanceof GraphModelNode) {
+			if (getModel() instanceof IGraphModelNode) {
 				IFigure figure = getFigure();
 				// use a rounded chopbox anchor for graph label figures (rounded corners)
 				if (figure instanceof GraphLabel) {
@@ -206,7 +206,7 @@ public class GraphNodeEditPart extends AbstractGraphicalEditPart implements
 		
 		
 		String prop = evt.getPropertyName();
-		if ( GraphModelNode.FORCE_REDRAW.equals(prop)) {
+		if ( IGraphModelNode.FORCE_REDRAW.equals(prop)) {
 			refreshVisuals();
 			refreshChildren();
 			refreshColors();
@@ -215,26 +215,27 @@ public class GraphNodeEditPart extends AbstractGraphicalEditPart implements
 			
 			
 		}
-		else if (GraphModelNode.LOCATION_PROP.equals(prop) || GraphModelNode.SIZE_PROP.equals(prop)) {
+		else if (IGraphModelNode.LOCATION_PROP.equals(prop) || IGraphModelNode.SIZE_PROP.equals(prop)) {
 			refreshVisuals();
-		} else if (GraphModelNode.SOURCE_CONNECTIONS_PROP.equals(prop)) {
+		} else if (IGraphModelNode.SOURCE_CONNECTIONS_PROP.equals(prop)) {
 			refreshSourceConnections();
-		} else if (GraphModelNode.TARGET_CONNECTIONS_PROP.equals(prop)) {
+		} else if (IGraphModelNode.TARGET_CONNECTIONS_PROP.equals(prop)) {
 			refreshTargetConnections();
-		} else if (GraphModelNode.HIGHLIGHT_PROP.equals(prop)) {
+		} else if (IGraphModelNode.HIGHLIGHT_PROP.equals(prop)) {
 //			@tag unreported(EdgeHighlight) :the model will take care of all highlighting, and sending events.
-			getCastedModel().highlight();
-			// TODO pin highlighted node?  
+			/*if (highlight) {
+				getCastedModel().highlight();
+			} else {
+				getCastedModel().unhighlight();
+			}
+			// TODO pin highlighted node?  */
 			refreshColors();
-		} else if (GraphModelNode.UNHIGHLIGHT_PROP.equals(prop)) {
-			getCastedModel().unhighlight();
+		} else if (IGraphModelNode.COLOR_BG_PROP.equals(prop)) {
 			refreshColors();
-		} else if (GraphModelNode.COLOR_BG_PROP.equals(prop)) {
-			refreshColors();
-		} else if (GraphModelNode.COLOR_FG_PROP.equals(prop)) {
+		} else if (IGraphModelNode.COLOR_FG_PROP.equals(prop)) {
 			refreshColors();
 		} 
-		else if ( GraphModelNode.BRING_TO_FRONT.equals(prop) ) {
+		else if ( IGraphModelNode.BRING_TO_FRONT.equals(prop) ) {
 			IFigure figure = getFigure();
 			IFigure parent = figure.getParent();
 			parent.remove(figure);
@@ -248,7 +249,7 @@ public class GraphNodeEditPart extends AbstractGraphicalEditPart implements
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#refreshVisuals()
 	 */
 	protected void refreshVisuals() {
-		GraphModelNode node = getCastedModel();
+		IGraphModelNode node = getCastedModel();
 		Point loc = node.getLocation();
 		Dimension size = node.getSize();
 
@@ -264,7 +265,7 @@ public class GraphNodeEditPart extends AbstractGraphicalEditPart implements
 	 */
 	protected void refreshColors() {
 		IFigure figure = getFigure();
-		GraphModelNode model = getCastedModel();
+		IGraphModelNode model = getCastedModel();
 		figure.setForegroundColor(model.getForegroundColor());
 		figure.setBackgroundColor(model.getBackgroundColor());
 		
@@ -281,8 +282,8 @@ public class GraphNodeEditPart extends AbstractGraphicalEditPart implements
 	 * Returns the model casted into a GraphModelNode.
 	 * @return the casted GraphModelNode model
 	 */
-	private GraphModelNode getCastedModel() {
-		return (GraphModelNode)getModel();
+	private IGraphModelNode getCastedModel() {
+		return (IGraphModelNode)getModel();
 	}
 
 

@@ -27,9 +27,9 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.LayerConstants;
-import org.eclipse.mylar.zest.core.internal.graphmodel.GraphItem;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel;
-import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelConnection;
+import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphItem;
+import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelConnection;
 import org.eclipse.mylar.zest.core.internal.graphmodel.NonNestedProxyNode;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedGraphModel;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedGraphModelNode;
@@ -195,7 +195,7 @@ public class NestedGraphEditPart extends GraphEditPart  {
 	public void activate() {
 		if (!isActive()) {
 			super.activate();
-			((GraphItem)getCastedModel().getRootNode()).addPropertyChangeListener(this);
+			((IGraphItem)getCastedModel().getRootNode()).addPropertyChangeListener(this);
 		}
 	}	
 	
@@ -205,7 +205,7 @@ public class NestedGraphEditPart extends GraphEditPart  {
 	public void deactivate() {
 		if (isActive()) {
 			super.deactivate();
-			((GraphItem)getCastedModel().getRootNode()).removePropertyChangeListener(this);
+			((IGraphItem)getCastedModel().getRootNode()).removePropertyChangeListener(this);
 		}
 	}	
 
@@ -397,8 +397,8 @@ public class NestedGraphEditPart extends GraphEditPart  {
 	public void filterConnections(NestedGraphModelNode node, boolean filter) {
 		List connections = node.getGraphModel().getConnections();
 		for (Iterator i = connections.iterator(); i.hasNext();) {
-			GraphModelConnection conn = (GraphModelConnection) i.next();
-			GraphicalEditPart part = (GraphicalEditPart) conn.getEditPart();
+			IGraphModelConnection conn = (IGraphModelConnection) i.next();
+			GraphicalEditPart part = (GraphicalEditPart) getViewer().getEditPartRegistry().get(conn);
 			if (part != null) {
 				if (!filter) {
 					part.getFigure().setVisible(true);
@@ -518,7 +518,7 @@ public class NestedGraphEditPart extends GraphEditPart  {
 		ArrayList figureList = new ArrayList();
 		
 		for (Iterator i = connections.iterator(); i.hasNext();) {
-			GraphModelConnection conn = (GraphModelConnection) i.next();
+			IGraphModelConnection conn = (IGraphModelConnection) i.next();
 			NestedGraphModelNode pn = (NestedGraphModelNode) conn.getDestination();
 			GraphicalEditPart part = findCurrentProxy(pn, true);
 			NonNestedProxyNode proxy = (NonNestedProxyNode) nodeProxyMap.get(pn);
@@ -551,7 +551,7 @@ public class NestedGraphEditPart extends GraphEditPart  {
 		nodeEditParts.clear();
 		connections = node.getConnectionsFrom();
 		for (Iterator i = connections.iterator(); i.hasNext();) {
-			GraphModelConnection conn = (GraphModelConnection) i.next();
+			IGraphModelConnection conn = (IGraphModelConnection) i.next();
 			NestedGraphModelNode pn = (NestedGraphModelNode) conn.getSource();
 			GraphicalEditPart part = findCurrentProxy(pn, false);
 			NonNestedProxyNode proxy = (NonNestedProxyNode) nodeProxyMap.get(pn);

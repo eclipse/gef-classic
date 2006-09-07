@@ -18,7 +18,7 @@ import java.util.Iterator;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPart;
-import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelNode;
+import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelNode;
 import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphNodeEditPart;
 
 
@@ -66,7 +66,8 @@ public class NoOverlapLayout  {
 			if (part instanceof GraphNodeEditPart) {
 				GraphNodeEditPart graphEditPart = (GraphNodeEditPart)part;
 				if (graphEditPart != editPart) {
-					Rectangle rect = ((GraphModelNode)graphEditPart.getModel()).getBounds();
+					IGraphModelNode node = (IGraphModelNode)editPart.getModel();
+					Rectangle rect = new Rectangle(node.getLocation(), node.getSize());
 					rectangles.add(rect);
 				}
 			}

@@ -23,7 +23,7 @@ import org.eclipse.swt.widgets.Widget;
  * 
  * @author Chris Callendar
  */
-public abstract class GraphItem extends Item  {
+public abstract class GraphItem extends Item implements IGraphItem  {
 
 	/** Delegate used to implemenent property-change-support. */
 	private transient PropertyChangeSupport pcsDelegate = new PropertyChangeSupport(this);
@@ -66,7 +66,7 @@ public abstract class GraphItem extends Item  {
 	 * @param oldValue the old value of this property
 	 * @param newValue the new value of this property
 	 */
-	protected void firePropertyChange(String property, Object oldValue, Object newValue) {
+	public void firePropertyChange(String property, Object oldValue, Object newValue) {
 		if (pcsDelegate.hasListeners(property)) {
 			pcsDelegate.firePropertyChange(property, oldValue, newValue);
 		}

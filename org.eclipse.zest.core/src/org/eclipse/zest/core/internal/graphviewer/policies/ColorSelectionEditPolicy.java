@@ -10,17 +10,16 @@
  *******************************************************************************/
 package org.eclipse.mylar.zest.core.internal.graphviewer.policies;
 
-import java.beans.PropertyChangeEvent;
 import java.util.Collections;
 import java.util.List;
 
-import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PrecisionRectangle;
+import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
-import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelNode;
+import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelNode;
 import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphNodeEditPart;
 
 /**
@@ -55,9 +54,8 @@ public class ColorSelectionEditPolicy extends NonResizableEditPolicy {
 	 * @see org.eclipse.gef.editpolicies.SelectionEditPolicy#hideSelection()
 	 */
 	protected void hideSelection() {
-		PropertyChangeEvent evt = new PropertyChangeEvent(GraphModelNode.UNHIGHLIGHT_PROP,
-				GraphModelNode.UNHIGHLIGHT_PROP, null, ColorConstants.white);
-		editPart.propertyChange(evt);
+		//@tag bug(unreported(fix)) : let the model take care of highlighting, otherwise it gets unsynchronized with the view.
+		((IGraphModelNode)editPart.getModel()).unhighlight();
 	}
 
 	/*
@@ -66,9 +64,8 @@ public class ColorSelectionEditPolicy extends NonResizableEditPolicy {
 	 * @see org.eclipse.gef.editpolicies.SelectionEditPolicy#showSelection()
 	 */
 	protected void showSelection() {
-		PropertyChangeEvent evt = new PropertyChangeEvent(GraphModelNode.HIGHLIGHT_PROP, GraphModelNode.HIGHLIGHT_PROP,
-				null, ColorConstants.red);
-		editPart.propertyChange(evt);
+//		@tag bug(unreported(fix)) : let the model take care of highlighting, otherwise it gets unsynchronized with the view.
+		((IGraphModelNode)editPart.getModel()).highlight();
 
 		// move the current editpart's figure to last in the list to put it on
 		// top of the other nodes
@@ -83,7 +80,8 @@ public class ColorSelectionEditPolicy extends NonResizableEditPolicy {
 	 */
 	protected void showChangeBoundsFeedback(ChangeBoundsRequest request) {
 		IFigure feedback = getDragSourceFeedbackFigure();
-		PrecisionRectangle rect = new PrecisionRectangle(((GraphModelNode) editPart.getModel()).getBounds().getCopy());
+		IGraphModelNode node = (IGraphModelNode)editPart.getModel();
+		PrecisionRectangle rect = new PrecisionRectangle(new Rectangle(node.getLocation(), node.getSize()));
 		getCurrentLocation(request, rect, feedback);
 		feedback.getParent().setConstraint(feedback, rect);
 	}
@@ -105,10 +103,11 @@ public class ColorSelectionEditPolicy extends NonResizableEditPolicy {
 	 */
 	protected void eraseChangeBoundsFeedback(ChangeBoundsRequest request) {
 		IFigure feedback = getDragSourceFeedbackFigure();
-		PrecisionRectangle rect = new PrecisionRectangle(((GraphModelNode) editPart.getModel()).getBounds().getCopy());
+		IGraphModelNode node = (IGraphModelNode)editPart.getModel();
+		PrecisionRectangle rect = new PrecisionRectangle(new Rectangle(node.getLocation(), node.getSize()));
 		getCurrentLocation(request, rect, feedback);
-		((GraphModelNode) editPart.getModel()).setHasPreferredLocation(false);
-		((GraphModelNode) editPart.getModel()).setPreferredLocation(rect.x, rect.y);
+		((IGraphModelNode) editPart.getModel()).setHasPreferredLocation(false);
+		((IGraphModelNode) editPart.getModel()).setPreferredLocation(rect.x, rect.y);
 	}
 	
 	

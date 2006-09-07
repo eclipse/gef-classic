@@ -31,7 +31,7 @@ public interface IGraphModelFactory {
 	 * @param contentProvider	The content provider which will get the source and destination nodes.
 	 * @return GraphModelConnection
 	 */
-	public abstract GraphModelConnection createRelationship(GraphModel model,
+	public abstract IGraphModelConnection createRelationship(GraphModel model,
 			Object data);
 
 	/**
@@ -41,7 +41,7 @@ public interface IGraphModelFactory {
 	 * @param dest
 	 * @return GraphModelConnection
 	 */
-	public abstract GraphModelConnection createRelationship(GraphModel model,
+	public abstract IGraphModelConnection createRelationship(GraphModel model,
 			Object data, Object source, Object dest);
 
 	/**
@@ -50,6 +50,6 @@ public interface IGraphModelFactory {
 	 * @param data	The new node's data object
 	 * @return GraphModelNode	the new or existing node
 	 */
-	public abstract GraphModelNode createNode(GraphModel model, Object data);
+	public abstract IGraphModelNode createNode(GraphModel model, Object data);
 
 }

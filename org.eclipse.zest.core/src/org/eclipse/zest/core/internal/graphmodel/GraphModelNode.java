@@ -18,12 +18,10 @@ import org.eclipse.draw2d.FigureUtilities;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.gef.NodeEditPart;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.mylar.zest.core.IZestColorConstants;
 import org.eclipse.mylar.zest.core.ZestPlugin;
 import org.eclipse.mylar.zest.core.ZestStyles;
-import org.eclipse.mylar.zest.layouts.LayoutEntity;
 import org.eclipse.mylar.zest.layouts.constraints.LayoutConstraint;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
@@ -37,21 +35,7 @@ import org.eclipse.swt.widgets.Display;
  *  
  * @author Chris Callendar
  */
-public class GraphModelNode extends GraphItem implements LayoutEntity {
-
-	public static final String LOCATION_PROP = "GraphModelNode.Location";
-	public static final String SIZE_PROP = "GraphModelNode.Size";
-	public static final String FORCE_REDRAW = "GraphModelNode.Redraw";
-	public static final String COLOR_BG_PROP = "GraphModelNode.BGColor";
-	public static final String COLOR_FG_PROP = "GraphModelNode.FGColor";
-	public static final String COLOR_BD_PROP = "GraphModelNode.BDColor";
-	public static final String HIGHLIGHT_PROP = "GraphModelNode.Highlight";
-	public static final String UNHIGHLIGHT_PROP = "GraphModeNode.Unhighlight";
-	public static final String SOURCE_CONNECTIONS_PROP = "GraphModelNode.SourceConn";
-	public static final String TARGET_CONNECTIONS_PROP = "GraphModelNode.TargetConn";
-	public static final String BRING_TO_FRONT = "GraphModelNode.BrintToFront";
-
-
+public class GraphModelNode extends GraphItem implements IGraphModelNode {
 	private int nodeStyle;
 	
 	private List sourceConnections;
@@ -70,13 +54,17 @@ public class GraphModelNode extends GraphItem implements LayoutEntity {
 	private Point currentLocation;
 	private Dimension size;
 	private Font font;
-	private NodeEditPart editPart;
+
 	protected Dimension labelSize;
 	
 	protected GraphModel graphModel;
 	
 	/** The internal node. */
 	protected Object internalNode;
+
+	private boolean selected;
+
+	private boolean highlighted;
 	
 	
 	public GraphModelNode(GraphModel graphModel, Object externalNode) {
@@ -134,19 +122,6 @@ public class GraphModelNode extends GraphItem implements LayoutEntity {
 		}
 	}
 	
-	/** 
-     * @deprecated use viewer cache supplied by GEF instead. 
-	 **/
-	public void setEditPart( NodeEditPart editPart ) {
-		this.editPart = editPart;
-	}
-	
-	/** 
-     * @deprecated use viewer cache supplied by GEF instead. 
-	 **/
-	public NodeEditPart getEditPart() {
-		return this.editPart;
-	}
 	
 	public String toString() {
 		return "GraphModelNode: " + getText();
@@ -154,8 +129,8 @@ public class GraphModelNode extends GraphItem implements LayoutEntity {
 
 	public int compareTo(Object otherNode) {
 		int rv = 0;
-		if (otherNode instanceof GraphModelNode) {
-			GraphModelNode node = (GraphModelNode)otherNode;
+		if (otherNode instanceof IGraphModelNode) {
+			IGraphModelNode node = (IGraphModelNode)otherNode;
 			if (this.getText() != null) {
 				rv = this.getText().compareTo(node.getText());
 			}
@@ -193,7 +168,7 @@ public class GraphModelNode extends GraphItem implements LayoutEntity {
 	 * @param connection
 	 * @param source true if the given connection should be added as a source.
 	 */
-	public void addConnection(GraphModelConnection connection, boolean source) {
+	public void addConnection(IGraphModelConnection connection, boolean source) {
 		if (connection != null) {
 			if (source) {
 				if (connection.getSource() == this) {
@@ -214,7 +189,7 @@ public class GraphModelNode extends GraphItem implements LayoutEntity {
 	 * @param connection
 	 * @return boolean if the connection was removed
 	 */
-	public boolean removeConnection(GraphModelConnection connection) {
+	public boolean removeConnection(IGraphModelConnection connection) {
 		boolean removed = false;
 		if (connection != null) {
 			if (connection.getSource() == this) {
@@ -275,23 +250,31 @@ public class GraphModelNode extends GraphItem implements LayoutEntity {
 	}
 	
 	public void setSelected( boolean selected ) {
+		if (selected = isSelected()) return;
 		if (selected) {
-			firePropertyChange( HIGHLIGHT_PROP, null, null );
+			highlight();
 		} else {
-			firePropertyChange( UNHIGHLIGHT_PROP, null, null );
+			unhighlight();
 		}
+		this.selected = selected;
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelNode#isSelected()
+	 */
+	public boolean isSelected() {
+		return selected;
 	}
 	
 	public void setPreferredLocation( double x, double y ) {
-		currentLocation.setLocation((int)x, (int)y);
-		firePropertyChange(LOCATION_PROP, null, currentLocation);
+		setLocation(x,y);
 	}
 	
 	
 	public void setLocation( double x, double y ) {
-		
+		Point oldPoint = getLocation();
 		currentLocation.setLocation((int)x, (int)y);
-		firePropertyChange(LOCATION_PROP, null, currentLocation);
+		firePropertyChange(LOCATION_PROP, oldPoint, currentLocation);
 	}
 	
 	public void setLocationInLayout(double x, double y) {
@@ -319,11 +302,7 @@ public class GraphModelNode extends GraphItem implements LayoutEntity {
 	}
 	
 	public void setSizeInLayout(double width, double height) {
-		if ((width != size.width) || (height != size.height)) {
-			size.width = (int)width;
-			size.height = (int)height;
-			firePropertyChange(SIZE_PROP, null, size);
-		}
+		setSize(width, height);
 	}
 	
 	public Color getForegroundColor() {
@@ -375,7 +354,7 @@ public class GraphModelNode extends GraphItem implements LayoutEntity {
 	 * Changes the background color and fires a property change event.
 	 * @param c
 	 */
-	protected void changeBackgroundColor(Color c) {
+	public void changeBackgroundColor(Color c) {
 		Color old = backColor;
 		backColor = c;
 		firePropertyChange(COLOR_BG_PROP, old, c);
@@ -403,41 +382,51 @@ public class GraphModelNode extends GraphItem implements LayoutEntity {
 	 * and the adjacent nodes are highlighted too in a different color.
 	 */
 	public void highlight() {
+		if (isHighlighted()) return;
 		if (backColor != highlightColor) {
 			borderColor = borderHighlightColor;
 			changeBackgroundColor(highlightColor);
 			// highlight the adjacent nodes
 			for (Iterator iter = sourceConnections.iterator(); iter.hasNext();) {
-				GraphModelConnection conn = (GraphModelConnection)iter.next();
+				IGraphModelConnection conn = (IGraphModelConnection)iter.next();
 				conn.highlight();
 				conn.getDestination().highlightAdjacent();
 			}
 			for (Iterator iter = targetConnections.iterator(); iter.hasNext();) {
-				GraphModelConnection conn = (GraphModelConnection)iter.next();
+				IGraphModelConnection conn = (IGraphModelConnection)iter.next();
 				conn.highlight();
 				conn.getSource().highlightAdjacent();
 			}
+			highlighted = true;
+			firePropertyChange(HIGHLIGHT_PROP, Boolean.FALSE, Boolean.TRUE);
 		}
+	}
+	
+	public boolean isHighlighted() {
+		return highlighted;
 	}
 	
 	/**
 	 * Restores the nodes original background color and border width.
 	 */
 	public void unhighlight() {
+		if (!isHighlighted()) return;
 		if (unhighlightColor != backColor) {
 			changeBackgroundColor(unhighlightColor);
 			borderColor = borderUnhighlightColor;
 			// unhighlight the adjacent edges
 			for (Iterator iter = sourceConnections.iterator(); iter.hasNext();) {
-				GraphModelConnection conn = (GraphModelConnection)iter.next();
+				IGraphModelConnection conn = (IGraphModelConnection)iter.next();
 				conn.unhighlight();
 				conn.getDestination().unhighlight();
 			}
 			for (Iterator iter = targetConnections.iterator(); iter.hasNext();) {
-				GraphModelConnection conn = (GraphModelConnection)iter.next();
+				IGraphModelConnection conn = (IGraphModelConnection)iter.next();
 				conn.unhighlight();
 				conn.getSource().unhighlight();
 			}
+			highlighted = false;
+			firePropertyChange(HIGHLIGHT_PROP, Boolean.TRUE, Boolean.FALSE);
 		}
 	}
 	
@@ -451,6 +440,7 @@ public class GraphModelNode extends GraphItem implements LayoutEntity {
 		if (isHighlightAdjacentNodes() && (backColor != highlightAdjacentColor) && (backColor != highlightColor)) {
 			borderColor = borderHighlightColor;
 			changeBackgroundColor(highlightAdjacentColor);
+			highlighted = true;
 		}
 	}
 	
@@ -593,6 +583,18 @@ public class GraphModelNode extends GraphItem implements LayoutEntity {
 	public void populateLayoutConstraint(LayoutConstraint constraint) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	/* (non-Javadoc)
+	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelNode#setSize(double, double)
+	 */
+	public void setSize(double width, double height) {
+		if ((width != size.width) || (height != size.height)) {
+			Object old = getSize();
+			size.width = (int)width;
+			size.height = (int)height;
+			firePropertyChange(SIZE_PROP, old, size);
+		}
 	}
 
 	

@@ -30,8 +30,8 @@ import org.eclipse.draw2d.geometry.PointList;
 public class PolylineArcConnection extends PolylineConnection {
 	private int depth;
 	private static final float PI = (float)3.14;
-	private static final float DEG = PI/180;
 	private RectangleFigure center;
+	
 
 	{
 		this.depth=0;
@@ -106,7 +106,7 @@ public class PolylineArcConnection extends PolylineConnection {
 			if (Math.abs(depth) >= chordLength/2) {
 				depth = (chordLength/3)*(depth/Math.abs(depth));
 			}
-			r = (((chordLength/2)*(chordLength/2)) + ((float)depth*depth))/((float)2*depth);
+			r = ((((chordLength/2)*(chordLength/2)) + ((float)depth*depth))/((float)2*depth));
 
 			//Find a vector normal to the chord. This will be used for translating the
 			//circle back to screen coordinates.
@@ -148,15 +148,17 @@ public class PolylineArcConnection extends PolylineConnection {
 			//calculate the length of the arc
 			arcStart = angleRadians(cartArcX1, cartArcY1);
 			float arcEnd = angleRadians(cartArcX2, cartArcY2);
-			float pad = DEG;
+			
 			if (arcEnd < arcStart) {
 				arcEnd = arcEnd + PI + PI;
 			}
 						
 			//make sure that we are between the two nodes.
+			arcLength = arcEnd-arcStart;
+			float pad = PI/(float)Math.abs(r);
 			arcStart += pad;
 			arcEnd -= pad;
-			arcLength = arcEnd-arcStart;
+			arcLength = (arcEnd)-(arcStart);
 		}
 		//calculate the points
 		r = Math.abs(r);
@@ -167,12 +169,15 @@ public class PolylineArcConnection extends PolylineConnection {
 		
 		int steps = (int)length/16;
 		if (steps < 10 && length > 10) steps = 10;
+		if (arcLength < PI/4 && steps > 6) steps = 6;
+		if (steps < 4 && length > 4) 
+			steps = 4;
 		float stepSize = arcLength/steps;
-		float step = stepSize;
+		float step = stepSize+arcStart;
 		for (int i = 1; i < steps; i++, step+= stepSize) {
-			x = (r)*(float)Math.cos(arcStart +  step) + cartCenterX;
-			y = (r)*(float)Math.sin(arcStart + step) + cartCenterY;
-			p = new Point((int)x, -(int)y);
+			x = (r)*(float)Math.cos(step) + cartCenterX;
+			y = (r)*(float)Math.sin(step) + cartCenterY;
+			p = new Point((int)Math.round(x), (int)Math.round(-y));
 			points.addPoint(p);
 		}
 		points.addPoint(end);
@@ -181,6 +186,7 @@ public class PolylineArcConnection extends PolylineConnection {
 		super.setPoints(points);
 	}
 	
+
 	/*
 	 * Gets an angle in radians for the x, y coordinates. The angle will be between 0 and 2PI. 
 	 */

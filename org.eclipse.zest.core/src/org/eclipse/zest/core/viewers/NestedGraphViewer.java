@@ -29,7 +29,7 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.mylar.zest.core.ZestStyles;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel;
-import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelNode;
+import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelNode;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.INestedGraphModelFactory;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedGraphModel;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedGraphModelEntityFactory;
@@ -362,12 +362,12 @@ public class NestedGraphViewer extends AbstractStructuredGraphViewer implements 
 	public void propertyChange(PropertyChangeEvent evt) {
 		if (evt.getSource() == model) {
 			if (evt.getPropertyName().equals(GraphModel.NODE_FOCUS_PROP)) {
-				GraphModelNode old = (GraphModelNode) evt.getOldValue();
-				GraphModelNode current = (GraphModelNode) evt.getNewValue();
-				Object externOld = (old != null) ? old.getData() : null;
+				IGraphModelNode old = (IGraphModelNode) evt.getOldValue();
+				IGraphModelNode current = (IGraphModelNode) evt.getNewValue();
+				Object externOld = (old != null) ? old.getExternalNode() : null;
 				Object externCurrent = null;
 				if (current != model.getRootNode()) {
-					externCurrent = (current != null) ? current.getData() : null;
+					externCurrent = (current != null) ? current.getExternalNode() : null;
 				}
 				fireFocusChanged(externOld, externCurrent);
 			}
@@ -463,11 +463,11 @@ public class NestedGraphViewer extends AbstractStructuredGraphViewer implements 
 	 * @return the current node of focus.
 	 */
 	public Object getFocus() {
-		GraphModelNode node = model.getCurrentNode();
+		IGraphModelNode node = model.getCurrentNode();
 		if (node == model.getRootNode()) {
 			return null;
 		} else if (node != null) {
-			return node.getData();
+			return node.getExternalNode();
 		}
 		return null;
 	}

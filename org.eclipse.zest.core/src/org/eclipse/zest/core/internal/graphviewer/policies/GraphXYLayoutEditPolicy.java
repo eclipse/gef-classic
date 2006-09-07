@@ -18,7 +18,7 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.XYLayoutEditPolicy;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
 import org.eclipse.gef.requests.CreateRequest;
-import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelNode;
+import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelNode;
 import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphNodeEditPart;
 import org.eclipse.mylar.zest.core.internal.viewers.commands.NoResizeNodeConstraintCommand;
 
@@ -61,7 +61,7 @@ public class GraphXYLayoutEditPolicy extends XYLayoutEditPolicy {
 		if ((child instanceof GraphNodeEditPart) && (constraint instanceof Rectangle)) {
 			// return a command that allows nodes to move
 			GraphNodeEditPart editPart = (GraphNodeEditPart) child;
-			NoResizeNodeConstraintCommand cmd = new NoResizeNodeConstraintCommand((GraphModelNode)editPart.getModel(), request, (Rectangle)constraint);
+			NoResizeNodeConstraintCommand cmd = new NoResizeNodeConstraintCommand((IGraphModelNode)editPart.getModel(), request, (Rectangle)constraint);
 			return cmd;
 		}
 		return super.createChangeConstraintCommand(request, child, constraint);

@@ -77,22 +77,22 @@ public class GraphModelFactory extends AbstractStylingModelFactory implements IG
 	/* (non-Javadoc)
 	 * @see ca.uvic.cs.zest.internal.graphmodel.IGraphModelFactory#createRelationship(ca.uvic.cs.zest.internal.graphmodel.GraphModel, java.lang.Object)
 	 */
-	public GraphModelConnection createRelationship(GraphModel model, Object data) {
+	public IGraphModelConnection createRelationship(GraphModel model, Object data) {
 		return createRelationship(model, data, getContentProvider().getSource(data), getContentProvider().getDestination(data));
 	}	
 	
 	/* (non-Javadoc)
 	 * @see ca.uvic.cs.zest.internal.graphmodel.IGraphModelFactory#createRelationship(ca.uvic.cs.zest.internal.graphmodel.GraphModel, java.lang.Object, java.lang.Object, java.lang.Object)
 	 */
-	public GraphModelConnection createRelationship( GraphModel model, Object data, Object source, Object dest  ) {
+	public IGraphModelConnection createRelationship( GraphModel model, Object data, Object source, Object dest  ) {
 		//@tag bug(152045-UnconnectedNodes) : FIX
 		if (source == null && dest == null) {
 			//no information to create on.
 			return null;
 		}
 		
-		GraphModelNode sourceNode = null;
-		GraphModelNode destNode = null;
+		IGraphModelNode sourceNode = null;
+		IGraphModelNode destNode = null;
 		if (source != null) {
 			sourceNode = model.getInternalNode( source );
 			if ( sourceNode == null ) {
@@ -112,7 +112,7 @@ public class GraphModelFactory extends AbstractStylingModelFactory implements IG
 		}
 			
 		
-		GraphModelConnection connection;
+		IGraphModelConnection connection;
 		/*
 		 * Allow potentially infinite number of connections between two nodes.
 		for (Iterator iterator =  sourceNode.getTargetConnections().iterator(); iterator.hasNext(); ) {
@@ -138,10 +138,10 @@ public class GraphModelFactory extends AbstractStylingModelFactory implements IG
 	/* (non-Javadoc)
 	 * @see ca.uvic.cs.zest.internal.graphmodel.IGraphModelFactory#createNode(ca.uvic.cs.zest.internal.graphmodel.GraphModel, java.lang.Object)
 	 */
-	public GraphModelNode createNode( GraphModel model, Object data ) {
+	public IGraphModelNode createNode( GraphModel model, Object data ) {
 		if ( model.getInternalNode( data ) == null ) {
 			ILabelProvider labelProvider = getLabelProvider();
-			GraphModelNode node = new GraphModelNode(model, getLabelProvider().getText(data), labelProvider.getImage(data), data);
+			IGraphModelNode node = new GraphModelNode(model, getLabelProvider().getText(data), labelProvider.getImage(data), data);
 			node.setHighlightAdjacentNodes(highlightAdjacentNodes);
 			styleItem(node);
 			model.addNode(data, node);

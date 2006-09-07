@@ -12,7 +12,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
-import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelNode;
+import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelNode;
 import org.eclipse.mylar.zest.core.internal.nestedgraphviewer.parts.NestedGraphNodeEditPart;
 
 /**
@@ -32,7 +32,7 @@ public class ResizeNodeConstraintCommand extends Command {
 	private final ChangeBoundsRequest request;
 
 	/** Node to manipulate. */
-	private final GraphModelNode node;
+	private final IGraphModelNode node;
 
 	/** The Edit part of the node */
 	private final NestedGraphNodeEditPart editPart;
@@ -51,7 +51,7 @@ public class ResizeNodeConstraintCommand extends Command {
 	 * @throws IllegalArgumentException
 	 *             if any of the parameters is null
 	 */
-	public ResizeNodeConstraintCommand(NestedGraphNodeEditPart editPart, GraphModelNode node, ChangeBoundsRequest req,
+	public ResizeNodeConstraintCommand(NestedGraphNodeEditPart editPart, IGraphModelNode node, ChangeBoundsRequest req,
 			Rectangle newBounds) {
 		if (node == null || req == null || newBounds == null) {
 			throw new IllegalArgumentException();

@@ -14,7 +14,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
-import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelNode;
+import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelNode;
 
 
 /**
@@ -33,7 +33,7 @@ public class NoResizeNodeConstraintCommand extends Command {
 	/**
 	 * GraphSetConstraintCommand constructor.
 	 */
-	public NoResizeNodeConstraintCommand(GraphModelNode node, ChangeBoundsRequest request, Rectangle newBounds) {
+	public NoResizeNodeConstraintCommand(IGraphModelNode node, ChangeBoundsRequest request, Rectangle newBounds) {
 		if (node == null || request == null || newBounds == null) {
 			throw new IllegalArgumentException("Couldn't create a GraphSetConstraint with those parameters");
 		}

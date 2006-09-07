@@ -14,8 +14,8 @@ import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartFactory;
 import org.eclipse.mylar.zest.core.internal.gefx.ZestRootEditPart;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel;
-import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelConnection;
-import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelNode;
+import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelConnection;
+import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelNode;
 
 
 /**
@@ -34,12 +34,10 @@ public class GraphEditPartFactory implements EditPartFactory {
 	 */
 	public EditPart createEditPart(EditPart context, Object model) {
 		EditPart editPart = null;
-		if (model instanceof GraphModelNode) {
+		if (model instanceof IGraphModelNode) {
 			editPart = new GraphNodeEditPart();
-			((GraphModelNode)model).setEditPart((GraphNodeEditPart)editPart );
-		} else if (model instanceof GraphModelConnection) {
+		} else if (model instanceof IGraphModelConnection) {
 			editPart = new GraphConnectionEditPart();
-			((GraphModelConnection)model).setEditPart(editPart);
 		} else if (model instanceof GraphModel) {
 			editPart = new GraphEditPart();
 			graphRootEditPart.setModelRootEditPart( editPart );

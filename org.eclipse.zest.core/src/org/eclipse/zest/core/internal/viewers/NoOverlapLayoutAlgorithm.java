@@ -16,7 +16,7 @@ import java.util.List;
 
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelNode;
+import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelNode;
 import org.eclipse.mylar.zest.layouts.NestedLayoutEntity;
 
 
@@ -49,7 +49,7 @@ public class NoOverlapLayoutAlgorithm {
 
 			ArrayList boundsList = new ArrayList(rootNodes.size());
 			for (Iterator iter = rootNodes.iterator(); iter.hasNext(); ) {
-				GraphModelNode node = (GraphModelNode)iter.next();
+				IGraphModelNode node = (IGraphModelNode)iter.next();
 				Dimension dim = node.calculateMinimumLabelSize();
 				node.setSizeInLayout(dim.width, dim.height);
 				

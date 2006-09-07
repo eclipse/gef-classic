@@ -79,7 +79,7 @@ public abstract class AbstractStylingModelFactory {
 
 	protected abstract GraphModel doCreateModelFromContentProvider(Object input, int nodeStyle, int connectionStyle);
 
-	public void styleConnection(GraphModelConnection conn) {
+	public void styleConnection(IGraphModelConnection conn) {
 		ConnectionCounter key = new ConnectionCounter(
 				conn.getSource().getExternalNode(),
 				conn.getDestination().getExternalNode()
@@ -112,8 +112,8 @@ public abstract class AbstractStylingModelFactory {
 		GraphItemStyler.styleItem(conn, getLabelProvider());
 	}
 	
-	public void styleItem(GraphItem item) {
-		if (item instanceof GraphModelConnection) styleConnection((GraphModelConnection) item);
+	public void styleItem(IGraphItem item) {
+		if (item instanceof IGraphModelConnection) styleConnection((IGraphModelConnection) item);
 		GraphItemStyler.styleItem(item, getLabelProvider());
 	}
 

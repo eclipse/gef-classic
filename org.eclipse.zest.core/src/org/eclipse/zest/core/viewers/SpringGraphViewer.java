@@ -21,8 +21,8 @@ import org.eclipse.mylar.zest.core.internal.graphmodel.GraphItem;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelEntityFactory;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelFactory;
-import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelNode;
 import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelFactory;
+import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelNode;
 import org.eclipse.mylar.zest.core.internal.graphviewer.SpringGraphViewerImpl;
 import org.eclipse.mylar.zest.layouts.LayoutAlgorithm;
 import org.eclipse.swt.widgets.Composite;
@@ -242,7 +242,9 @@ public class SpringGraphViewer extends AbstractStructuredGraphViewer {
 	 */
 	protected Widget doFindItem(Object element) {
 		if (model != null) {
-			return model.getInternalNode( element );
+			Object o = model.getInternalNode( element );
+			if (o instanceof Widget)
+				return (Widget)o;
 		}
 		return null;
 	}
@@ -286,8 +288,11 @@ public class SpringGraphViewer extends AbstractStructuredGraphViewer {
 		if (model != null) {
 			List nodes = model.getNodes();
 			for (Iterator iter = nodes.iterator(); iter.hasNext(); ) {
-				GraphModelNode node = (GraphModelNode)iter.next();
-				updateItem(node, node.getData());
+				IGraphModelNode node = (IGraphModelNode)iter.next();
+				Object o = node.getExternalNode();
+				if (node instanceof Widget) {
+					updateItem((Widget)node, o);
+				}
 			}
 		}
 	}
@@ -297,7 +302,7 @@ public class SpringGraphViewer extends AbstractStructuredGraphViewer {
 	 */
 	public void reveal(Object element) {
 		if ((model != null) && (element != null)) {
-			GraphModelNode nodeToCenter = model.getInternalNode(element);
+			IGraphModelNode nodeToCenter = model.getInternalNode(element);
 			if (nodeToCenter != null) {
 				viewer.centerNodeInCanvas(nodeToCenter);
 			}

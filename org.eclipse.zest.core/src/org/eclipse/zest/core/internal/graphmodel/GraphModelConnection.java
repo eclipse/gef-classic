@@ -15,7 +15,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 import org.eclipse.draw2d.Graphics;
-import org.eclipse.gef.EditPart;
 import org.eclipse.mylar.zest.core.IZestColorConstants;
 import org.eclipse.mylar.zest.core.ZestPlugin;
 import org.eclipse.mylar.zest.core.ZestStyles;
@@ -34,22 +33,16 @@ import org.eclipse.swt.widgets.Display;
  * 
  * @author Chris Callendar
  */
-public class GraphModelConnection extends GraphItem implements LayoutRelationship {
+public class GraphModelConnection extends GraphItem implements IGraphModelConnection, LayoutRelationship {
 
 	private Font font;
 
 	private ArrayList weightColors;
-	public static final String LINECOLOR_PROP = "LineColor";
-	//@tag unreported(EdgeHighlight) : fire property change when the edge highlight state changes.
-	public static final String HIGHLIGHT_PROP = "Highlight";
-	public static final String UNHIGHLIGHT_PROP = "UnHighlight";
-	public static final String LINEWIDTH_PROP = "LineWidth";
-	public static final String LINESTYLE_PROP = "LineStyle";
-	public static final String DIRECTED_EDGE_PROP = "DirectedEdgeStyle";
 	
-	private GraphModelNode sourceNode;
-	private GraphModelNode destinationNode;
-	private EditPart editPart;
+	
+	private IGraphModelNode sourceNode;
+	private IGraphModelNode destinationNode;
+
 	private  double weight;
 	private Color color;
 	private Color highlightColor;
@@ -102,7 +95,7 @@ public class GraphModelConnection extends GraphItem implements LayoutRelationshi
 	 * @param source		The source node.
 	 * @param destination 	The destination node.
 	 */
-	public GraphModelConnection(GraphModel graphModel, Object data, GraphModelNode source, GraphModelNode destination) {
+	public GraphModelConnection(GraphModel graphModel, Object data, IGraphModelNode source, IGraphModelNode destination) {
 		this(graphModel, data, source, destination, true, 0.5D);
 	}
 	
@@ -115,7 +108,7 @@ public class GraphModelConnection extends GraphItem implements LayoutRelationshi
 	 * @param bidirection	If the connection is bidirectional.
 	 * @param weight		The connection weight.
 	 */
-	public GraphModelConnection(GraphModel graphModel, Object data, GraphModelNode source, GraphModelNode destination, boolean bidirection, double weight) {
+	public GraphModelConnection(GraphModel graphModel, Object data, IGraphModelNode source, IGraphModelNode destination, boolean bidirection, double weight) {
 		super(graphModel);
 		ZestPlugin plugin = ZestPlugin.getDefault();
 		this.setData(data);
@@ -192,7 +185,7 @@ public class GraphModelConnection extends GraphItem implements LayoutRelationshi
 	 * @param newDestination	a new destination endpoint for this connection (non null)
 	 * @throws IllegalArgumentException if any of the paramers are null
 	 */
-	public void reconnect(GraphModelNode newSource, GraphModelNode newDestination) {
+	public void reconnect(IGraphModelNode newSource, IGraphModelNode newDestination) {
 		if (newSource == null || newDestination == null ) {
 			throw new IllegalArgumentException("Invalid source and/or destination nodes");
 		}
@@ -264,6 +257,13 @@ public class GraphModelConnection extends GraphItem implements LayoutRelationshi
 	 */
 	public Font getFont() {
 		return this.font;
+	}
+	/**
+	 * Sets the font for the label on this connection.
+	 *
+	 */
+	public void setFont(Font f) {
+		this.font = f;
 	}
 	
 	/**
@@ -426,7 +426,7 @@ public class GraphModelConnection extends GraphItem implements LayoutRelationshi
 	 * Gets the source node for this relationship
 	 * @return GraphModelNode
 	 */
-	public GraphModelNode getSource() {
+	public IGraphModelNode getSource() {
 		return this.sourceNode;
 	}
 	
@@ -434,7 +434,7 @@ public class GraphModelConnection extends GraphItem implements LayoutRelationshi
 	 * Gets the target node for this relationship
 	 * @return GraphModelNode
 	 */
-	public GraphModelNode getDestination() {
+	public IGraphModelNode getDestination() {
 		return this.destinationNode;
 	}
 	
@@ -504,35 +504,12 @@ public class GraphModelConnection extends GraphItem implements LayoutRelationshi
 		this.curveDepth = curveDepth;
 	}
 
-	/**
-	 * @return the editPart
-	 * @deprecated by Del Myers. The model shouldn't reference the edit part. 
-	 * If an edit part is needed for the model, use getViewer().getEditPartRegistry().get(model) instead.
-	 */
-	public EditPart getEditPart() {
-		return editPart;
-	}
-
-	/**
-	 * @param editPart the editPart to set
-	 * @deprecated by Del Myers. 
-	 */
-	public void setEditPart(EditPart editPart) {
-		this.editPart = editPart;
-	}
 
 	public void populateLayoutConstraint(LayoutConstraint constraint) {
-		// TODO Auto-generated method stub
-		
+	
 	}
 
-	
-	
-	
-	
-	
-	
-	
+
 	/**
 	 * Gets the end angle for bezier arcs.
 	 * 

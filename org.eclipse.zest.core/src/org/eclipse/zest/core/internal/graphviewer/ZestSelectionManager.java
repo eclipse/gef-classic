@@ -19,8 +19,8 @@ import org.eclipse.gef.editparts.AbstractEditPart;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.mylar.zest.core.internal.graphmodel.GraphItem;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel;
+import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphItem;
 
 /**
  * This Selection Manager converts edit parts to the user data type and returns
@@ -45,7 +45,7 @@ public class ZestSelectionManager extends SelectionManager {
 			if (editPart.getModel() == null) {
 				return StructuredSelection.EMPTY;
 			}
-			GraphItem item = (GraphItem) editPart.getModel();
+			IGraphItem item = (IGraphItem) editPart.getModel();
 			
 			if (!(item instanceof GraphModel)) {
 				selections.add(item.getData());

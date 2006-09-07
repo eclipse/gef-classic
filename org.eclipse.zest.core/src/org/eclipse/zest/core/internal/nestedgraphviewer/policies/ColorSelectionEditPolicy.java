@@ -15,7 +15,7 @@ import java.util.List;
 
 import org.eclipse.gef.editpolicies.ResizableEditPolicy;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
-import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelNode;
+import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelNode;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedGraphModel;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedGraphModelNode;
 import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphNodeEditPart;
@@ -46,7 +46,7 @@ public class ColorSelectionEditPolicy extends ResizableEditPolicy {
 	protected void hideSelection() {
 		super.hideSelection();
 		//@tag bug(154256-ClientSupplySelect(fix)) : let the model take care of it.
-		((GraphModelNode)editPart.getModel()).unhighlight();
+		((IGraphModelNode)editPart.getModel()).unhighlight();
 		
 	}
 
@@ -56,7 +56,7 @@ public class ColorSelectionEditPolicy extends ResizableEditPolicy {
 	protected void showSelection() {
 		super.showSelection();
 		//@tag bug(154256-ClientSupplySelect(fix)) : let the model take care of it.
-		((GraphModelNode)editPart.getModel()).highlight();
+		((IGraphModelNode)editPart.getModel()).highlight();
 	}
 	
 	/* (non-Javadoc)

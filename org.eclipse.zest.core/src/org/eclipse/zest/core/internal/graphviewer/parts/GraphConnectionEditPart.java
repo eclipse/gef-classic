@@ -26,8 +26,8 @@ import org.eclipse.mylar.zest.core.internal.gefx.BezierConnection;
 import org.eclipse.mylar.zest.core.internal.gefx.GraphRootEditPart;
 import org.eclipse.mylar.zest.core.internal.gefx.MidBendpointLocator;
 import org.eclipse.mylar.zest.core.internal.gefx.PolylineArcConnection;
-import org.eclipse.mylar.zest.core.internal.graphmodel.GraphItem;
-import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelConnection;
+import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphItem;
+import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelConnection;
 
 
 /**
@@ -49,7 +49,7 @@ public class GraphConnectionEditPart extends AbstractConnectionEditPart implemen
 	public void activate() {
 		if (!isActive()) {
 			super.activate();
-			((GraphItem)getModel()).addPropertyChangeListener(this);
+			((IGraphItem)getModel()).addPropertyChangeListener(this);
 		}
 	}
 
@@ -60,7 +60,7 @@ public class GraphConnectionEditPart extends AbstractConnectionEditPart implemen
 	public void deactivate() {
 		if (isActive()) {
 			super.deactivate();
-			((GraphItem) getModel()).removePropertyChangeListener(this);
+			((IGraphItem) getModel()).removePropertyChangeListener(this);
 		}
 	}
 	
@@ -90,7 +90,7 @@ public class GraphConnectionEditPart extends AbstractConnectionEditPart implemen
 	 */
 	protected IFigure createFigure() {
 		Connection connection;
-		GraphModelConnection model = getCastedModel();
+		IGraphModelConnection model = getCastedModel();
 		int connectionStyle = model.getConnectionStyle();
 		
 		//styles should have been set by the GraphItemStyler by this point.
@@ -162,8 +162,8 @@ public class GraphConnectionEditPart extends AbstractConnectionEditPart implemen
 	 * Gets the model casted into a GraphModelConnection
 	 * @return the model casted into a GraphModelConnection
 	 */
-	protected GraphModelConnection getCastedModel() {
-		return (GraphModelConnection)getModel();
+	protected IGraphModelConnection getCastedModel() {
+		return (IGraphModelConnection)getModel();
 	}
 
 	/* (non-Javadoc)
@@ -172,21 +172,21 @@ public class GraphConnectionEditPart extends AbstractConnectionEditPart implemen
 	public void propertyChange(PropertyChangeEvent event) {
 		String property = event.getPropertyName();
 		IFigure figure = getFigure();
-		if (GraphModelConnection.HIGHLIGHT_PROP.equals(property)) {
+		if (IGraphModelConnection.HIGHLIGHT_PROP.equals(property)) {
 			//@tag unreported(EdgeHighlight) : respond to model highlight changes.
 			highlightEdge();
-		} else	if (GraphModelConnection.UNHIGHLIGHT_PROP.equals(property)) { 
+		} else	if (IGraphModelConnection.UNHIGHLIGHT_PROP.equals(property)) { 
 //			@tag unreported(EdgeHighlight) : respond to model highlight changes.
 			unHighlightEdge();
-		} else if (GraphModelConnection.LINECOLOR_PROP.equals(property)) {
+		} else if (IGraphModelConnection.LINECOLOR_PROP.equals(property)) {
 			figure.setForegroundColor(getCastedModel().getLineColor());
-		} else if (GraphModelConnection.LINEWIDTH_PROP.equals(property)) {
+		} else if (IGraphModelConnection.LINEWIDTH_PROP.equals(property)) {
 			if (figure instanceof Shape)
 				((Shape)figure).setLineWidth(getCastedModel().getLineWidth());
-		} else if (GraphModelConnection.LINESTYLE_PROP.equals(property)) {
+		} else if (IGraphModelConnection.LINESTYLE_PROP.equals(property)) {
 			if (figure instanceof Shape)
 				((Shape)figure).setLineStyle(getCastedModel().getLineStyle());
-		} else if ( GraphModelConnection.DIRECTED_EDGE_PROP.equals( property )) {
+		} else if (IGraphModelConnection.DIRECTED_EDGE_PROP.equals( property )) {
 		  	boolean directed = isDirected();
 		  	if (figure instanceof PolylineConnection) {
 		  		if (directed) {
@@ -233,24 +233,27 @@ public class GraphConnectionEditPart extends AbstractConnectionEditPart implemen
 
 			((Shape)figure).setLineStyle(getCastedModel().getLineStyle());
 		}
+		//@tag bug(154595(fix)) : change the arrow size based on the line width.
 		boolean directed = isDirected();
+		PolygonDecoration dec = new PolygonDecoration();
+		dec.setScale((getCastedModel().getLineWidth()+2), (getCastedModel().getLineWidth()+2));
 		if (figure instanceof PolylineConnection) { 	
 			if (directed) {
-				((PolylineConnection)getFigure()).setTargetDecoration(new PolygonDecoration());
+				((PolylineConnection)getFigure()).setTargetDecoration(dec);
 			}
 			else {
 				((PolylineConnection)getFigure()).setTargetDecoration( null );
 			}
 		} else if (figure instanceof PolylineArcConnection) {
 			if (directed) {
-				((PolylineArcConnection)getFigure()).setTargetDecoration(new PolygonDecoration());
+				((PolylineArcConnection)getFigure()).setTargetDecoration(dec);
 			}
 			else {
 				((PolylineArcConnection)getFigure()).setTargetDecoration( null );
 			}
 		} else if (figure instanceof BezierConnection) {
 			if (directed) {
-	  			((BezierConnection)figure).setTargetDecoration(new PolygonDecoration());
+	  			((BezierConnection)figure).setTargetDecoration(dec);
 	  		}
 	  		else {
 	  			((BezierConnection)figure).setTargetDecoration( null );

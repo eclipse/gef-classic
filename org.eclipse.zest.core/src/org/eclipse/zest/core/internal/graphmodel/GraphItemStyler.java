@@ -24,6 +24,7 @@ import org.eclipse.mylar.zest.core.viewers.IEntityStyleProvider;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.widgets.Widget;
 import org.eclipse.ui.services.IDisposable;
 
 /**
@@ -33,25 +34,25 @@ import org.eclipse.ui.services.IDisposable;
  */
 //@tag bug(151327-Styles) : created to help resolve this bug
 public class GraphItemStyler {
-	public static void styleItem(GraphItem item, final ILabelProvider labelProvider) {
+	public static void styleItem(IGraphItem item, final ILabelProvider labelProvider) {
 		//provided for label providers that must be disposed.
-		if (labelProvider instanceof IDisposable) {
-			item.addDisposeListener(new DisposeListener(){
+		if (labelProvider instanceof IDisposable && item instanceof Widget) {
+			((Widget)item).addDisposeListener(new DisposeListener(){
 				public void widgetDisposed(DisposeEvent e) {
 					((IDisposable)labelProvider).dispose();						
 				}
 			});
 		}
 	
-		if (item instanceof GraphModelNode) {
-			GraphModelNode node = (GraphModelNode)item;
+		if (item instanceof IGraphModelNode) {
+			IGraphModelNode node = (IGraphModelNode)item;
 			//set defaults.
 			if (node.getGraphModel().getNodeStyle() != ZestStyles.NONE) {
 				node.setNodeStyle(node.getGraphModel().getNodeStyle());
 			} else {
 				node.setNodeStyle(IZestGraphDefaults.NODE_STYLE);
 			}
-			Object entity= node.getData();
+			Object entity= node.getExternalNode();
 			if (labelProvider instanceof IEntityStyleProvider) {
 				styleNode(node, (IEntityStyleProvider)labelProvider);
 			}
@@ -64,8 +65,8 @@ public class GraphItemStyler {
 				IFontProvider fontProvider = (IFontProvider) labelProvider;
 				node.setFont(fontProvider.getFont(entity));
 			}	
-		} else if (item instanceof GraphModelConnection) {
-			GraphModelConnection conn = (GraphModelConnection) item;
+		} else if (item instanceof IGraphModelConnection) {
+			IGraphModelConnection conn = (IGraphModelConnection) item;
 			//set defaults
 			if (conn.getGraphModel().getConnectionStyle() != ZestStyles.NONE) {
 				conn.setConnectionStyle(conn.getGraphModel().getConnectionStyle());
@@ -84,8 +85,8 @@ public class GraphItemStyler {
 	 * @param conn
 	 * @param provider
 	 */
-	private static void styleConnection(GraphModelConnection conn, IConnectionStyleProvider provider) {
-		Object rel = conn.getData();
+	private static void styleConnection(IGraphModelConnection conn, IConnectionStyleProvider provider) {
+		Object rel = conn.getExternalConnection();
 		Color c;
 		int style = provider.getConnectionStyle(rel);
 		if (!ZestStyles.validateConnectionStyle(style)) ZestPlugin.error(ZestException.ERROR_INVALID_STYLE);
@@ -93,7 +94,7 @@ public class GraphItemStyler {
 			conn.setConnectionStyle(style);
 		}
 //		@tag bug(152530-Bezier(fix))
-		if (ZestStyles.checkStyle(conn.getStyle(), ZestStyles.CONNECTIONS_BEZIER) &&
+		if (ZestStyles.checkStyle(conn.getConnectionStyle(), ZestStyles.CONNECTIONS_BEZIER) &&
 			provider instanceof IConnectionStyleBezierExtension) {
 			IConnectionStyleBezierExtension bezier = (IConnectionStyleBezierExtension)provider;
 			double d;
@@ -112,9 +113,9 @@ public class GraphItemStyler {
 	 * @param conn
 	 * @param provider
 	 */
-	private static void styleEntityConnection(GraphModelConnection conn, IEntityConnectionStyleProvider provider) {
-		Object src = conn.getSource().getData();
-		Object dest = conn.getDestination().getData();
+	private static void styleEntityConnection(IGraphModelConnection conn, IEntityConnectionStyleProvider provider) {
+		Object src = conn.getSource().getExternalNode();
+		Object dest = conn.getDestination().getExternalNode();
 		Color c;
 		int style = provider.getConnectionStyle(src, dest);
 		if (!ZestStyles.validateConnectionStyle(style)) ZestPlugin.error(ZestException.ERROR_INVALID_STYLE);
@@ -122,7 +123,7 @@ public class GraphItemStyler {
 			conn.setConnectionStyle(style);
 		}
 		//@tag bug(152530-Bezier(fix))
-		if (ZestStyles.checkStyle(conn.getStyle(), ZestStyles.CONNECTIONS_BEZIER) &&
+		if (ZestStyles.checkStyle(conn.getConnectionStyle(), ZestStyles.CONNECTIONS_BEZIER) &&
 				provider instanceof IEntityConnectionStyleBezierExtension) {
 				IEntityConnectionStyleBezierExtension bezier = 
 					(IEntityConnectionStyleBezierExtension)provider;
@@ -145,8 +146,8 @@ public class GraphItemStyler {
 	 * @param provider the style provier.
 	 */
 	//@tag bug(151327-Styles) : resolution
-	private static void styleNode(GraphModelNode node, IEntityStyleProvider provider) {
-		Object entity = node.getData();
+	private static void styleNode(IGraphModelNode node, IEntityStyleProvider provider) {
+		Object entity = node.getExternalNode();
 		node.setHighlightAdjacentNodes(provider.highlightAdjacentEntities(entity));
 		if (provider.highlightAdjacentEntities(entity)) {
 			Color c = provider.getAdjacentEntityHighlightColor(entity);

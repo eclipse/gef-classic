@@ -22,8 +22,8 @@ import org.eclipse.mylar.zest.core.ZestStyles;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelEntityFactory;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelFactory;
-import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelNode;
 import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelFactory;
+import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelNode;
 import org.eclipse.mylar.zest.core.internal.graphviewer.StaticGraphViewerImpl;
 import org.eclipse.mylar.zest.layouts.LayoutAlgorithm;
 import org.eclipse.swt.SWT;
@@ -160,9 +160,9 @@ public class StaticGraphViewer extends AbstractStructuredGraphViewer {
 		// in this case we want them to keep the same location & size
 		for (Iterator iter = oldNodesMap.keySet().iterator(); iter.hasNext();) {
 			Object data = iter.next();
-			GraphModelNode newNode = model.getInternalNode(data);
+			IGraphModelNode newNode = model.getInternalNode(data);
 			if (newNode != null) {
-				GraphModelNode oldNode = (GraphModelNode) oldNodesMap.get(data);
+				IGraphModelNode oldNode = (IGraphModelNode) oldNodesMap.get(data);
 				newNode.setPreferredLocation(oldNode.getXInLayout(), oldNode.getYInLayout());
 			}
 		}

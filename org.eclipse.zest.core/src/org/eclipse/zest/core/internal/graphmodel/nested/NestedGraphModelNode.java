@@ -20,8 +20,9 @@ import java.util.List;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel;
-import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelConnection;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelNode;
+import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelConnection;
+import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelNode;
 import org.eclipse.mylar.zest.layouts.NestedLayoutEntity;
 import org.eclipse.swt.graphics.Image;
 
@@ -224,7 +225,7 @@ public class NestedGraphModelNode extends GraphModelNode implements NestedLayout
 	 * @param nodeToRemove
 	 * @return boolean if it was removed
 	 */
-	public boolean removeChild(GraphModelNode nodeToRemove) {
+	public boolean removeChild(IGraphModelNode nodeToRemove) {
 		boolean removed = false;
 		if (nodeToRemove != null) {
 			removed = children.remove(nodeToRemove);
@@ -307,7 +308,7 @@ public class NestedGraphModelNode extends GraphModelNode implements NestedLayout
 	 * the node (label only). Call hideChildren() instead. You can also call
 	 * showChildren() to show the full size.
 	 * 
-	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelNode#setSizeInLayout(double,
+	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelNode#setSizeInLayout(double,
 	 *      double)
 	 */
 	public void setSizeInLayout(double width, double height) {
@@ -357,7 +358,7 @@ public class NestedGraphModelNode extends GraphModelNode implements NestedLayout
 	 * Calculates the minimum size of this node without taking scaling into
 	 * account. This is the full size of the label and the children.
 	 * 
-	 * @see ca.uvic.cs.zest.internal.graphmodel.GraphModelNode#calculateMinimumSize()
+	 * @see ca.uvic.cs.zest.internal.graphmodel.IGraphModelNode#calculateMinimumSize()
 	 */
 	public Dimension calculateMinimumSize() {
 		Dimension labelSize = calculateMinimumLabelSize();
@@ -378,10 +379,12 @@ public class NestedGraphModelNode extends GraphModelNode implements NestedLayout
 		if (childrenBounds == null) {
 			childrenBounds = new Rectangle();
 			for (Iterator iter = getChildren().iterator(); iter.hasNext();) {
-				GraphModelNode node = (GraphModelNode) iter.next();
+				IGraphModelNode node = (IGraphModelNode) iter.next();
 				double x = node.getXInLayout();
 				double y = node.getYInLayout();
-				Dimension labelSize = node.calculateMinimumLabelSize();
+				if (node instanceof GraphModelNode) {
+					((GraphModelNode)node).calculateMinimumLabelSize();
+				}
 				double width = x + Math.max(node.getWidthInLayout(), labelSize.width);
 				double height = y + Math.max(node.getHeightInLayout(), labelSize.height);
 				childrenBounds.x = (int) Math.min(childrenBounds.x, x);
@@ -407,7 +410,7 @@ public class NestedGraphModelNode extends GraphModelNode implements NestedLayout
 		//@tag bug(unreported(fix)) : there should be only one copy of each node.
 		HashSet targets = new HashSet();
 		for (Iterator i = connections.iterator(); i.hasNext();) {
-			targets.add(((GraphModelConnection)i.next()).getDestination());
+			targets.add(((IGraphModelConnection)i.next()).getDestination());
 		}
 		return Arrays.asList(targets.toArray());
 	}
@@ -425,7 +428,7 @@ public class NestedGraphModelNode extends GraphModelNode implements NestedLayout
 		List connectedTo = new ArrayList();
 		List sourceConnections = currentNode.getSourceConnections();
 		for (Iterator i = sourceConnections.iterator(); i.hasNext();) {
-			GraphModelConnection c = (GraphModelConnection) i.next();
+			IGraphModelConnection c = (IGraphModelConnection) i.next();
 			//@tag bug(unreported(fix)) : it is possible for a nested node to be connected to a non nested node.
 			if (!(c.getDestination() instanceof NestedGraphModelNode)) continue;
 			NestedGraphModelNode target = (NestedGraphModelNode) c.getDestination();
@@ -449,7 +452,7 @@ public class NestedGraphModelNode extends GraphModelNode implements NestedLayout
 		//@tag bug(unreported(fix)) : there should only be one copy of each node in the list.
 		HashSet sources = new HashSet();
 		for (Iterator i = connections.iterator(); i.hasNext();) {
-			sources.add(((GraphModelConnection)i.next()).getSource());
+			sources.add(((IGraphModelConnection)i.next()).getSource());
 		}
 		return Arrays.asList(sources.toArray());
 	}
@@ -469,7 +472,7 @@ public class NestedGraphModelNode extends GraphModelNode implements NestedLayout
 		List connectedFrom = new ArrayList();
 		List targetConnections = currentNode.getTargetConnections();
 		for (Iterator i = targetConnections.iterator(); i.hasNext();) {
-			GraphModelConnection c = (GraphModelConnection) i.next();
+			IGraphModelConnection c = (IGraphModelConnection) i.next();
 			//@tag bug(unreported(fix)) : it is possible for nested nodes to be connected to non nested nodes.
 			if (!(c.getSource() instanceof NestedGraphModelNode)) continue;
 			NestedGraphModelNode source = (NestedGraphModelNode) c.getSource();

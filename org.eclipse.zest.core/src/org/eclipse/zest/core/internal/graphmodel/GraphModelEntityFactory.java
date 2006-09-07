@@ -59,7 +59,7 @@ public class GraphModelEntityFactory extends AbstractStylingModelFactory impleme
 		if ( entities == null ) return model;
 		for ( int i = 0; i < entities.length; i++ ) {
 			Object data = entities[ i ];
-			GraphModelNode node = new GraphModelNode(model, getLabelProvider().getText(data), getLabelProvider().getImage(data), data);
+			IGraphModelNode node = new GraphModelNode(model, getLabelProvider().getText(data), getLabelProvider().getImage(data), data);
 			node.setHighlightAdjacentNodes(highlightAdjacentNodes);
 			styleItem(node);
 			model.addNode( data, node );
@@ -77,8 +77,8 @@ public class GraphModelEntityFactory extends AbstractStylingModelFactory impleme
 	}
 
 	
-	public GraphModelNode createNode(GraphModel model, Object data) {
-		GraphModelNode node = new GraphModelNode(model, getLabelProvider().getText( data ), getLabelProvider().getImage(data), data);
+	public IGraphModelNode createNode(GraphModel model, Object data) {
+		IGraphModelNode node = new GraphModelNode(model, getLabelProvider().getText( data ), getLabelProvider().getImage(data), data);
 		node.setHighlightAdjacentNodes(highlightAdjacentNodes);
 		styleItem(node);
 		Object[] related = getContentProvider().getConnectedTo( data );
@@ -88,17 +88,17 @@ public class GraphModelEntityFactory extends AbstractStylingModelFactory impleme
 		return node;
 	}
 
-	public GraphModelConnection createRelationship(GraphModel model, Object data, Object source, Object dest) {
-		GraphModelNode sourceNode = getNode(model, source );
-		GraphModelNode destNode = getNode( model, dest );
+	public IGraphModelConnection createRelationship(GraphModel model, Object data, Object source, Object dest) {
+		IGraphModelNode sourceNode = getNode(model, source );
+		IGraphModelNode destNode = getNode( model, dest );
 
 		if ( sourceNode == null || destNode == null ) return null;
 		
 		// Check if connection already exists
-		GraphModelConnection connection;
+		IGraphModelConnection connection;
 		for (Iterator iterator =  sourceNode.getTargetConnections().iterator(); iterator.hasNext(); ) {
 			//TODO: get connections won't work for directed graphs!
-			connection = (GraphModelConnection) iterator.next();
+			connection = (IGraphModelConnection) iterator.next();
 			if ((dest != null) && dest.equals(connection.getDestination().getExternalNode())) {
 				// We already have a node that goes from source to dest!
 				//@tag bug(114452)
@@ -113,12 +113,12 @@ public class GraphModelEntityFactory extends AbstractStylingModelFactory impleme
 		return connection;
 	}
 
-	public GraphModelConnection createRelationship(GraphModel model, Object data) {
+	public IGraphModelConnection createRelationship(GraphModel model, Object data) {
 		throw new UnsupportedOperationException("Use createRelationship(model, object, object, object)");
 	}
 	
-	private GraphModelNode getNode( GraphModel model, Object data ) {
-		GraphModelNode node = model.getInternalNode( data );
+	private IGraphModelNode getNode( GraphModel model, Object data ) {
+		IGraphModelNode node = model.getInternalNode( data );
 		return node;
 	}
 		

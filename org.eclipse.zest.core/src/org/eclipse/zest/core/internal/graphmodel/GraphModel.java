@@ -81,9 +81,9 @@ public class GraphModel extends GraphItem {
 	 * Converts the list of GraphModelNode objects into an array an returns it.
 	 * @return GraphModelNode[]
 	 */
-	public GraphModelNode[] getNodesArray() {
-		GraphModelNode[] nodesArray = new GraphModelNode[nodes.size()];
-		nodesArray = (GraphModelNode[])nodes.toArray(nodesArray);
+	public IGraphModelNode[] getNodesArray() {
+		IGraphModelNode[] nodesArray = new IGraphModelNode[nodes.size()];
+		nodesArray = (IGraphModelNode[])nodes.toArray(nodesArray);
 		return nodesArray;
 	}
 	
@@ -110,9 +110,10 @@ public class GraphModel extends GraphItem {
 	 * 
 	 */
 	//@tag bug(153466-NoNestedClientSupply(fix)) : proxies can only be made on the model. This ensures that they are properly monitored here.
-	public NonNestedProxyNode createProxyNode(GraphModelNode node) {
+	public NonNestedProxyNode createProxyNode(IGraphModelNode node) {
 		NonNestedProxyNode proxy = new NonNestedProxyNode(node);
 		proxyNodes.add(proxy);
+		proxy.activate();
 		return proxy;
 	}
 	/**
@@ -137,7 +138,7 @@ public class GraphModel extends GraphItem {
 	 * @return the proxy connection
 	 */
 	 //@tag bug(153466-NoNestedClientSupply(fix)) : proxies can only be made on the model. This ensures that they are properly monitored here.
-	public ProxyConnection createProxyConnection(GraphModelNode source, GraphModelNode target, GraphModelConnection conn) {
+	public ProxyConnection createProxyConnection(IGraphModelNode source, IGraphModelNode target, IGraphModelConnection conn) {
 		ProxyConnection connection = new ProxyConnection(source, target, conn);
 		proxyConnections.add(connection);
 		connection.reconnect();
@@ -155,14 +156,17 @@ public class GraphModel extends GraphItem {
 			proxyNodes.remove(node);
 			List connections = node.getSourceConnections();
 			connections.addAll(node.getTargetConnections());
-			for (Iterator i = connections.iterator(); i.hasNext();) {
-				GraphModelConnection conn = (GraphModelConnection) i.next();
+			IGraphModelConnection[] connectionsArray = 
+				(IGraphModelConnection[])connections.toArray(new IGraphModelConnection[connections.size()]);
+			for (int i = 0; i < connectionsArray.length; i++) {
+				IGraphModelConnection conn = connectionsArray[i];
 				if (conn instanceof ProxyConnection) {
 					removeProxyConnection((ProxyConnection) conn);
 				} else {
 					removeConnection(conn);
 				}
 			}
+			node.deactivate();
 			firePropertyChange(NODE_PROXY_REMOVED_PROP, null, node);
 		}
 	}
@@ -263,9 +267,9 @@ public class GraphModel extends GraphItem {
 	 * Converts the list of GraphModelConnection objects into an array and returns it.
 	 * @return GraphModelConnection[]
 	 */
-	public GraphModelConnection[] getConnectionsArray() {
-		GraphModelConnection[] connsArray = new GraphModelConnection[connections.size()];
-		connsArray = (GraphModelConnection[])connections.toArray(connsArray);
+	public IGraphModelConnection[] getConnectionsArray() {
+		IGraphModelConnection[] connsArray = new IGraphModelConnection[connections.size()];
+		connsArray = (IGraphModelConnection[])connections.toArray(connsArray);
 		return connsArray;
 	}
 	
@@ -273,7 +277,7 @@ public class GraphModel extends GraphItem {
 	 * Adds a connection to this model
 	 * @param connection
 	 */
-	public boolean addConnection( Object externalConnection, GraphModelConnection connection ) {
+	public boolean addConnection( Object externalConnection, IGraphModelConnection connection ) {
 		if ((connection != null) && connections.add(connection)) {
 			external2InternalConnectionMap.put(externalConnection, connection);
 			connection.reconnect();
@@ -288,9 +292,9 @@ public class GraphModel extends GraphItem {
 	 * @param externalConnection
 	 * @return GraphModelConnection
 	 */
-	public GraphModelConnection getInternalConnection(Object externalConnection) {
+	public IGraphModelConnection getInternalConnection(Object externalConnection) {
 		if (external2InternalConnectionMap.containsKey(externalConnection)) {
-			return (GraphModelConnection)external2InternalConnectionMap.get(externalConnection);
+			return (IGraphModelConnection)external2InternalConnectionMap.get(externalConnection);
 		}
 		return null;
 	}
@@ -301,13 +305,12 @@ public class GraphModel extends GraphItem {
 	 * @param connection
 	 * @return boolean if removed
 	 */
-	public boolean removeConnection(GraphModelConnection connection) {
+	public boolean removeConnection(IGraphModelConnection connection) {
 		boolean removed = false;
 		if (connection != null) {
 			connection.disconnect();
 			external2InternalConnectionMap.remove(connection.getExternalConnection());
 			removed = connections.remove(connection);
-			connection.setEditPart(null);
 		}
 		return removed;
 	}
@@ -318,7 +321,7 @@ public class GraphModel extends GraphItem {
 	 * @return boolean
 	 */
 	public boolean removeConnection(Object externalConnection) {
-		GraphModelConnection connection = (GraphModelConnection)external2InternalConnectionMap.get(externalConnection);
+		IGraphModelConnection connection = (IGraphModelConnection)external2InternalConnectionMap.get(externalConnection);
 		return this.removeConnection(connection);
 	}
 	
@@ -327,7 +330,7 @@ public class GraphModel extends GraphItem {
 	 * @param node The node to add
 	 * @return boolean if successful.
 	 */
-	public boolean addNode(Object externalNode, GraphModelNode node) {
+	public boolean addNode(Object externalNode, IGraphModelNode node) {
 		boolean added = false;
 		if (node != null) {
 			addNodeToList(node);
@@ -338,11 +341,11 @@ public class GraphModel extends GraphItem {
 		return added;
 	}
 	
-	protected void addNodeToList(GraphModelNode node) {
+	protected void addNodeToList(IGraphModelNode node) {
 		nodes.add(node);
 	}
 	
-	protected boolean removeNodeFromList(GraphModelNode node) {
+	protected boolean removeNodeFromList(IGraphModelNode node) {
 		return nodes.remove(node);
 	}
 	
@@ -351,19 +354,18 @@ public class GraphModel extends GraphItem {
 	 * @param node a non-null LayoutNode instance.
 	 * @return boolean If the node was removed.
 	 */
-	public boolean removeNode(GraphModelNode node) {
+	public boolean removeNode(IGraphModelNode node) {
 		boolean removed = false;
 		if (node != null) {
 			external2InternalNodeMap.remove( node.getExternalNode() );
 			removed = removeNodeFromList(node);
-			node.setEditPart(null);
 			if (removed) {
 				// remove the source and target connections & notify the graph listeners
 				for (Iterator iter = node.getSourceConnections().iterator(); iter.hasNext();) {
-					removeConnection((GraphModelConnection)iter.next());
+					removeConnection((IGraphModelConnection)iter.next());
 				}
 				for (Iterator iter = node.getTargetConnections().iterator(); iter.hasNext();) {
-					removeConnection((GraphModelConnection)iter.next());
+					removeConnection((IGraphModelConnection)iter.next());
 				}
 				firePropertyChange(NODE_REMOVED_PROP, null, node);
 			}
@@ -377,7 +379,7 @@ public class GraphModel extends GraphItem {
 	 * @return true if successful
 	 */
 	public boolean removeNode( Object externalNode ) {
-		GraphModelNode node = (GraphModelNode) external2InternalNodeMap.get( externalNode );
+		IGraphModelNode node = (IGraphModelNode) external2InternalNodeMap.get( externalNode );
 		return this.removeNode(node);
 	}
 	
@@ -386,9 +388,9 @@ public class GraphModel extends GraphItem {
 	 * @param o The user data.
 	 * @return The internal node or null if none
 	 */
-	public GraphModelNode getInternalNode( Object o ) {
+	public IGraphModelNode getInternalNode( Object o ) {
 		if ( external2InternalNodeMap.containsKey( o ) ) {
-			return (GraphModelNode) external2InternalNodeMap.get( o );
+			return (IGraphModelNode) external2InternalNodeMap.get( o );
 		}
 		return null;
 	}
@@ -411,11 +413,11 @@ public class GraphModel extends GraphItem {
 	 */
 	public void fireAllPropertyChange(String property, Object oldValue, Object newValue) {
 		for ( Iterator iter = this.connections.iterator(); iter.hasNext(); ) {
-			((GraphModelConnection) iter.next() ).firePropertyChange(property, oldValue, newValue ); 
+			((IGraphModelConnection) iter.next() ).firePropertyChange(property, oldValue, newValue ); 
 		}
 		
 		for ( Iterator iter = this.nodes.iterator(); iter.hasNext(); ) {
-			((GraphModelNode) iter.next() ).firePropertyChange(property, oldValue, newValue );
+			((IGraphModelNode) iter.next() ).firePropertyChange(property, oldValue, newValue );
 		}
 	}
 	

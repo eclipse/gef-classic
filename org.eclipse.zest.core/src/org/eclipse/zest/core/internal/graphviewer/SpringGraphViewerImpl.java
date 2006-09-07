@@ -37,9 +37,9 @@ import org.eclipse.mylar.zest.core.internal.gefx.GraphRootEditPart;
 import org.eclipse.mylar.zest.core.internal.gefx.IPanningListener;
 import org.eclipse.mylar.zest.core.internal.gefx.ThreadedGraphicalViewer;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel;
-import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelConnection;
-import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelNode;
+import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelConnection;
 import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelFactory;
+import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelNode;
 import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphEditPartFactory;
 import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphNodeEditPart;
 import org.eclipse.mylar.zest.core.viewers.SpringGraphViewer;
@@ -259,9 +259,9 @@ public class SpringGraphViewerImpl extends ThreadedGraphicalViewer implements IP
     }
     
     /**
-     * @see SpringGraphViewerImpl#centerNode(GraphModelNode)
+     * @see SpringGraphViewerImpl#centerNode(IGraphModelNode)
      */
-    public void setCenterSelection( GraphModelNode nodeToCenter, int x, int y ) {
+    public void setCenterSelection( IGraphModelNode nodeToCenter, int x, int y ) {
     	//TODO: Really make this the center, note this is harder when we are in a SASHForm
     	nodeToCenter.setLocationInLayout(x,y);
     	StructuredSelection selection = new StructuredSelection( new Object[]{nodeToCenter} );
@@ -273,7 +273,7 @@ public class SpringGraphViewerImpl extends ThreadedGraphicalViewer implements IP
      * pans the canvas to make the given node be at the center of the viewer.
      * @param nodeToCenter	The node to center (assumed not null).
      */
-    public void centerNodeInCanvas(GraphModelNode nodeToCenter) {
+    public void centerNodeInCanvas(IGraphModelNode nodeToCenter) {
     	Dimension dim = getTranslatedCanvasSize();
     	int cx = (dim.width / 2);
     	int cy = (dim.height / 2);
@@ -327,7 +327,7 @@ public class SpringGraphViewerImpl extends ThreadedGraphicalViewer implements IP
 	 */
 	public void addRelationship(Object connection, Object srcNode, Object destNode) {
 		// create the new relationship
-		GraphModelConnection newConnection = modelFactory.createRelationship(model, connection, srcNode, destNode);
+		IGraphModelConnection newConnection = modelFactory.createRelationship(model, connection, srcNode, destNode);
 
 		// add it to the layout algorithm
 		layoutAlgorithm.addRelationship(newConnection);
@@ -341,7 +341,7 @@ public class SpringGraphViewerImpl extends ThreadedGraphicalViewer implements IP
 	public void addRelationship (Object connection) {
 		if (model.getInternalConnection(connection) == null) {
 			// create the new relationship
-			GraphModelConnection newConnection = modelFactory.createRelationship(model, connection);
+			IGraphModelConnection newConnection = modelFactory.createRelationship(model, connection);
 			
 			// add it to the layout algorithm
 			layoutAlgorithm.addRelationship(newConnection);
@@ -358,7 +358,7 @@ public class SpringGraphViewerImpl extends ThreadedGraphicalViewer implements IP
 	 * @param weight		The new weight for the connection.
 	 */
 	public void updateRelationshipWeight(Object connection, double weight) {
-		GraphModelConnection relationship = model.getInternalConnection(connection);
+		IGraphModelConnection relationship = model.getInternalConnection(connection);
 		if (relationship != null) {
 			relationship.setWeightInLayout(weight);
 		}
@@ -369,7 +369,7 @@ public class SpringGraphViewerImpl extends ThreadedGraphicalViewer implements IP
 	 * @param connection
 	 */
 	public void removeRelationship(Object connection) {
-		GraphModelConnection relation = model.getInternalConnection(connection);
+		IGraphModelConnection relation = model.getInternalConnection(connection);
 		
 		if (relation != null) {
 			// remove the relationship from the layout algorithm
@@ -388,7 +388,7 @@ public class SpringGraphViewerImpl extends ThreadedGraphicalViewer implements IP
 	public void addNode(Object element) {
 		if (model.getInternalNode(element) == null ) {
 			// create the new node
-			GraphModelNode newNode = modelFactory.createNode(model, element);
+			IGraphModelNode newNode = modelFactory.createNode(model, element);
 			
 			// add it to the layout algorithm
 			layoutAlgorithm.addEntity(newNode);
@@ -400,7 +400,7 @@ public class SpringGraphViewerImpl extends ThreadedGraphicalViewer implements IP
 	 * @param element	The node element to remove.
 	 */
 	public void removeNode(Object element) {
-		GraphModelNode node = model.getInternalNode(element);
+		IGraphModelNode node = model.getInternalNode(element);
 		
 		if (node != null) {
 			// remove the node from the layout algorithm and all the connections
