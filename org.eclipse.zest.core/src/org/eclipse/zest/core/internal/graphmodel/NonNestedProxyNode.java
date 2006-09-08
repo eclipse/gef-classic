@@ -289,7 +289,7 @@ public class NonNestedProxyNode extends GraphItem implements IGraphModelNode {
 	 */
 	public void unhighlight() {
 		if (!isHighlighted()) return;
-		changeBackgroundColor(getBackgroundColor());
+		changeBackgroundColor(getUnhiglightColor());
 		// unhighlight the adjacent edges
 		for (Iterator iter = sourceConnections.iterator(); iter.hasNext();) {
 			IGraphModelConnection conn = (IGraphModelConnection)iter.next();
@@ -624,6 +624,13 @@ public class NonNestedProxyNode extends GraphItem implements IGraphModelNode {
 	 */
 	public Dimension calculateMinimumSize() {
 		return calculateMinimumLabelSize();
+	}
+
+	/* (non-Javadoc)
+	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelNode#getUnhiglightColor()
+	 */
+	public Color getUnhiglightColor() {
+		return proxy.getUnhiglightColor();
 	}
 
 	

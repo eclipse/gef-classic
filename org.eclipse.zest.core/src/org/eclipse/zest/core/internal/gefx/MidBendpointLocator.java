@@ -12,6 +12,8 @@ package org.eclipse.mylar.zest.core.internal.gefx;
 
 import org.eclipse.draw2d.Connection;
 import org.eclipse.draw2d.ConnectionLocator;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
 
@@ -36,6 +38,17 @@ public class MidBendpointLocator extends ConnectionLocator {
 	protected Point getReferencePoint() {
 		PointList points = getConnection().getPoints();
 		return points.getMidpoint().getCopy();
+	}
+	/**
+	 * Recalculates the position of the figure and returns the updated bounds.
+	 * @param target The figure to relocate
+	 */
+	public void relocate(IFigure target) {
+		Dimension prefSize = target.getPreferredSize();
+		Point center = getReferencePoint();
+		//@tag bug(GEFProblem) : there seems to be a bug in GEF that if the following is done, then labels get printed in the wrong location
+		//target.translateToRelative(center);
+		target.setBounds(getNewBounds(prefSize, center));
 	}
 
 }

@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.mylar.zest.core.viewers;
 
-import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.mylar.zest.core.ZestException;
 import org.eclipse.mylar.zest.core.ZestPlugin;
 import org.eclipse.mylar.zest.core.ZestStyles;
@@ -24,7 +23,7 @@ import org.eclipse.mylar.zest.layouts.LayoutAlgorithm;
  * @author Del Myers
  *
  */
-public abstract class AbstractStructuredGraphViewer extends StructuredViewer {
+public abstract class AbstractStructuredGraphViewer extends AbstractZoomableViewer {
 	/**
 	 * Contains top-level styles for the entire graph. Set in the constructor.	 * 
 	 */

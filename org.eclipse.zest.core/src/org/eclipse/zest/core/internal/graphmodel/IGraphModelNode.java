@@ -49,6 +49,12 @@ public interface IGraphModelNode extends IGraphItem, LayoutEntity {
 	 * @return the background color.
 	 */
 	Color getBackgroundColor();
+	
+	/**
+	 * Returns the color that the background will return to after unhighlighting. 
+	 * @return the color that the background will return to after unhighlighting.
+	 */
+	Color getUnhiglightColor();
 	/**
 	 * The border color.
 	 * @return the border color.

@@ -18,6 +18,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.gef.EditPart;
+import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.IContentProvider;
@@ -485,6 +486,14 @@ public class NestedGraphViewer extends AbstractStructuredGraphViewer implements 
 	 */
 	public boolean focusHasParent() {
 		return model.hasParentNode();
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.mylar.zest.core.viewers.AbstractZoomableViewer#getZoomManager()
+	 */
+	protected ZoomManager getZoomManager() {
+		//@tag.bug.156286-Zooming.todo : ? Add zooming here ?
+		return null;
 	}
 
 }

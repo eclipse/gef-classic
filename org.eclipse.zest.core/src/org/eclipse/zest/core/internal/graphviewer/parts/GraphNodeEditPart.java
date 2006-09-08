@@ -338,6 +338,4 @@ public class GraphNodeEditPart extends AbstractGraphicalEditPart implements
 	public ConnectionAnchor getTargetConnectionAnchor(Request request) {
 		return getDefaultConnectionAnchor();
 	}
-
-	
 }

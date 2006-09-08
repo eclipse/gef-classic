@@ -105,14 +105,22 @@ public class NestedGraphViewerImpl extends NestedNonThreadedGraphicalViewer  {
 	}
     
 	/* (non-Javadoc)
+	 * @see org.eclipse.gef.ui.parts.GraphicalViewerImpl#createDefaultRoot()
+	 */
+	protected void createDefaultRoot() {
+		setRootEditPart(new NestedGraphRootEditPart());
+	}
+	
+	/* (non-Javadoc)
 	 * @see ca.uvic.cs.zest.internal.gefx.ThreadedGraphicalViewer#configureGraphicalViewer()
 	 */
 	protected void configureGraphicalViewer() {
-		NestedGraphRootEditPart root = new NestedGraphRootEditPart();
+		NestedGraphRootEditPart root = (NestedGraphRootEditPart) getRootEditPart();
+		root.clear();
 		if (editPartFactory == null) {
 			editPartFactory = new NestedGraphEditPartFactory(root, allowOverlap, enforceBounds);
 		}
-		this.setRootEditPart(root);
+		//this.setRootEditPart(root);
 		this.setEditPartFactory(editPartFactory);
 	}
 
@@ -137,7 +145,11 @@ public class NestedGraphViewerImpl extends NestedNonThreadedGraphicalViewer  {
 		NestedGraphModelNode previousNode = model.getPreviousRootNode();
 		NestedGraphModelNode nodeToMoveTo = model.getCurrentNode();
 		NestedGraphModelNode nodeToSelect = nodeToMoveTo;	// node to select in the TreeViewer
-		
+		if (getContents() == null) {
+			doSetContents(model);
+			doLayout(nodeToMoveTo,500, 500);
+			return;
+		}
 		
 		//@tag bug(152393-TopSelection(fix)) : set-up the colors for selected nodes.
 		//@tag bug(151327-Styles(todo)) : this set-up should be done by the GraphItemStyler, not hard-coded.
@@ -163,6 +175,7 @@ public class NestedGraphViewerImpl extends NestedNonThreadedGraphicalViewer  {
 
 		if (this.getRootEditPart() instanceof NestedGraphRootEditPart) {
 			NestedGraphRootEditPart rootEditPart = (NestedGraphRootEditPart)getRootEditPart();
+			if (rootEditPart.getNestedEditPart() == null) return;
 			if ( previousNode == null ) {
 				NestedGraphNodeEditPart zoomPart = (NestedGraphNodeEditPart) getEditPartRegistry().get(nodeToMoveTo);
 				rootEditPart.getNestedEditPart().zoomInOnNode( zoomPart);
@@ -245,7 +258,10 @@ public class NestedGraphViewerImpl extends NestedNonThreadedGraphicalViewer  {
 		//@tag bug(153466-NoNestedClientSupply(fix)) : clear proxies before resetting the model.
 		model.clearProxies();
 		super.setContents(model);
-		((NestedGraphRootEditPart)getRootEditPart()).getNestedEditPart().filterConnections(model.getCurrentNode(), true);
+		//filter out connections that aren't within the current node, or to proxies.
+		if (((NestedGraphRootEditPart)getRootEditPart()).getNestedEditPart() != null)
+			((NestedGraphRootEditPart)getRootEditPart()).getNestedEditPart().filterConnections(model.getCurrentNode(), true);
+		
 	}
 
 	/**

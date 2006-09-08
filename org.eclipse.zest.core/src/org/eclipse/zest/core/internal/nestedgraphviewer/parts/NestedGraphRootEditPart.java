@@ -10,18 +10,15 @@
  *******************************************************************************/
 package org.eclipse.mylar.zest.core.internal.nestedgraphviewer.parts;
 
-import java.util.Iterator;
-import java.util.List;
-
 import org.eclipse.draw2d.ConnectionLayer;
 import org.eclipse.draw2d.FreeformLayer;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.LayeredPane;
-import org.eclipse.gef.EditPart;
+import org.eclipse.draw2d.Viewport;
 import org.eclipse.gef.LayerConstants;
 import org.eclipse.gef.editparts.GuideLayer;
 import org.eclipse.gef.editparts.LayerManager;
-import org.eclipse.gef.editparts.SimpleRootEditPart;
+import org.eclipse.mylar.zest.core.internal.gefx.GraphRootEditPart;
 import org.eclipse.mylar.zest.core.internal.gefx.ZestRootEditPart;
 import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphEditPart;
 
@@ -34,7 +31,7 @@ import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphEditPart;
  * 
  * @author Chris Callendar
  */
-public class NestedGraphRootEditPart extends SimpleRootEditPart
+public class NestedGraphRootEditPart extends GraphRootEditPart
 		implements LayerConstants, ZestRootEditPart, LayerManager {
 	
 	protected static final Object ANIMATION_LAYER = "nested.graph.animation.layer";
@@ -57,16 +54,16 @@ public class NestedGraphRootEditPart extends SimpleRootEditPart
 	 * @return
 	 */
 	public NestedGraphEditPart getNestedEditPart() {
-		return (NestedGraphEditPart) getChildren().get(0);
+		return (NestedGraphEditPart)graphEditPart;
 	}
 	
-	/**
+	/*
 	 * The contents' Figure will be added to the PRIMARY_LAYER.
 	 * @see org.eclipse.gef.GraphicalEditPart#getContentPane()
-	 */
+	 *
 	public IFigure getContentPane() {
 		return getLayer(PRIMARY_LAYER);
-	}
+	}*/
 
 	/**
 	 * The root editpart does not have a real model.  The LayerManager ID is returned so that
@@ -81,9 +78,11 @@ public class NestedGraphRootEditPart extends SimpleRootEditPart
 	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
 	 */
 	protected IFigure createFigure() {
+		Viewport viewport = new Viewport();
 		innerLayers = new LayeredPane();
 		createLayers(innerLayers);
-		return innerLayers;
+		viewport.setContents(innerLayers);
+		return viewport;
 	}
 	
 
@@ -93,6 +92,7 @@ public class NestedGraphRootEditPart extends SimpleRootEditPart
 	 * @param layeredPane the parent for the created layers
 	 */
 	protected void createLayers(LayeredPane layeredPane) {
+		layeredPane.add(getScaledLayers(), SCALABLE_LAYERS);
 		layeredPane.add(new LayeredPane(), PRIMARY_LAYER);
 		//@tag bug(153169-OccludedArcs(fix)) : put an animation layer under the connection layers
 		layeredPane.add(new FeedbackLayer(), ANIMATION_LAYER);
@@ -138,7 +138,7 @@ public class NestedGraphRootEditPart extends SimpleRootEditPart
 	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#unregisterVisuals()
 	 */
 	 //@tag bug(153466-NoNestedClientSupply(fix)) : make sure that all the visuals are deregistered before recreating the parts.
-	protected void unregisterVisuals() {
+	/*protected void unregisterVisuals() {
 		List children = getFigure().getChildren();
 		//remove all the child figures for the root, which
 		//don't necessarilly have edit parts.
@@ -154,12 +154,12 @@ public class NestedGraphRootEditPart extends SimpleRootEditPart
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#unregisterModel()
 	 */
 	 //@tag bug(153466-NoNestedClientSupply(fix)) : make sure that all edit parts are removed before creating new ones.
-	protected void unregisterModel() {
+	/*protected void unregisterModel() {
 		//force revmoval of the edit parts.
 		for (Iterator i = getChildren().iterator(); i.hasNext();) {
 			EditPart child = (EditPart) i.next();
 			child.removeNotify();
 		}
 		super.unregisterModel();
-	}
+	}*/
 }

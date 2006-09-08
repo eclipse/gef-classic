@@ -16,8 +16,11 @@ import java.util.List;
 
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.LayoutAnimator;
+import org.eclipse.draw2d.Viewport;
 import org.eclipse.gef.EditPolicy;
+import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
+import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.editpolicies.RootComponentEditPolicy;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphItem;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel;
@@ -33,6 +36,9 @@ import org.eclipse.mylar.zest.core.internal.viewers.figures.AspectRatioFreeformL
  */
 public class GraphEditPart extends AbstractGraphicalEditPart implements PropertyChangeListener {
 
+	//@tag bug.156286-Zooming.fix : add a zoom manager to the edit part.
+	ZoomManager zoomer;
+	
 	public GraphEditPart() {
 		super();
 	}
@@ -95,6 +101,7 @@ public class GraphEditPart extends AbstractGraphicalEditPart implements Property
 		AspectRatioFreeformLayer aspectRatioScaledFigure = new AspectRatioFreeformLayer("root");
 		aspectRatioScaledFigure.setScale(1.0, 1.0);
 		aspectRatioScaledFigure.addLayoutListener(LayoutAnimator.getDefault());
+		zoomer = new ZoomManager(aspectRatioScaledFigure, (Viewport)((GraphicalEditPart)getRoot()).getFigure());
 		return aspectRatioScaledFigure;
 	}
 	
@@ -138,5 +145,27 @@ public class GraphEditPart extends AbstractGraphicalEditPart implements Property
 		return getCastedModel().getNodes();
 	}	
 	
+	/* (non-Javadoc)
+	 * @see org.eclipse.gef.editparts.AbstractEditPart#register()
+	 */
+	protected void register() {
+		super.register();
+		//@tag bug.156286-Scaling.fix : set a property so that this can be zoomed on.
+		getViewer().setProperty(ZoomManager.class.toString(), getZoomManager());
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.gef.editparts.AbstractEditPart#unregister()
+	 */
+	protected void unregister() {
+		super.unregister();
+//		@tag bug.156286-Scaling.fix : set a property so that this can be zoomed on.
+		getViewer().setProperty(ZoomManager.class.toString(), null);
+	}
+	
+	//@tag bug.156286-Scaling.fix : get the zoom manager
+	public ZoomManager getZoomManager() {
+		return zoomer;
+	}
 
 }

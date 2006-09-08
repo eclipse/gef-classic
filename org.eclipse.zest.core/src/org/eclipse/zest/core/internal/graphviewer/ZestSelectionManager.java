@@ -45,10 +45,12 @@ public class ZestSelectionManager extends SelectionManager {
 			if (editPart.getModel() == null) {
 				return StructuredSelection.EMPTY;
 			}
-			IGraphItem item = (IGraphItem) editPart.getModel();
-			
-			if (!(item instanceof GraphModel)) {
-				selections.add(item.getData());
+			if (editPart.getModel() instanceof IGraphItem) {
+				IGraphItem item = (IGraphItem) editPart.getModel();
+
+				if (!(item instanceof GraphModel)) {
+					selections.add(item.getData());
+				}
 			}
 		}
 

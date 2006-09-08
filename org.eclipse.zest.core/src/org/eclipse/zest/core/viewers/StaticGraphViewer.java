@@ -16,11 +16,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.mylar.zest.core.ZestStyles;
+import org.eclipse.mylar.zest.core.internal.gefx.StaticGraphRootEditPart;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelEntityFactory;
+import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelEntityRelationshipFactory;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelFactory;
 import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelFactory;
 import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelNode;
@@ -130,9 +133,11 @@ public class StaticGraphViewer extends AbstractStructuredGraphViewer {
 			super.setContentProvider(contentProvider);
 		} else if (contentProvider instanceof IGraphEntityContentProvider) {
 			super.setContentProvider(contentProvider);
+		} else if (contentProvider instanceof IGraphEntityRelationshipContentProvider){
+			super.setContentProvider(contentProvider);
 		} else {
 			throw new IllegalArgumentException(
-					"Invalid content provider, only IGraphContentProvider and IGraphEntityContentProvider are supported.");
+					"Invalid content provider, only IGraphContentProvider, IGraphEntityContentProvider, or IGraphEntityRelationshipContentProvider are supported.");
 		}
 	}
 
@@ -144,6 +149,9 @@ public class StaticGraphViewer extends AbstractStructuredGraphViewer {
 				modelFactory = new GraphModelFactory(this, highlightAdjacentNodes);
 			} else if (getContentProvider() instanceof IGraphEntityContentProvider) {
 				modelFactory = new GraphModelEntityFactory(this, highlightAdjacentNodes);
+			} else if (getContentProvider() instanceof IGraphEntityRelationshipContentProvider) {
+//				@tag bug.154580-Content.fix : add new factory here.
+				modelFactory = new GraphModelEntityRelationshipFactory(this, highlightAdjacentNodes);
 			}
 		}
 
@@ -248,6 +256,11 @@ public class StaticGraphViewer extends AbstractStructuredGraphViewer {
 	}
 	public void removeSelectionChangedListener(ISelectionChangedListener listener) {
 		viewer.removeSelectionChangedListener(listener);
+	}
+	
+	//@tag bug.156286-Zooming.fix.experimental : expose the zoom manager for new actions.
+	protected ZoomManager getZoomManager() {
+		return ((StaticGraphRootEditPart)viewer.getRootEditPart()).getZoomManager();
 	}
 	
 	

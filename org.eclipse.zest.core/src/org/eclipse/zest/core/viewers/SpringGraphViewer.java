@@ -14,12 +14,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.mylar.zest.core.ZestStyles;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphItem;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelEntityFactory;
+import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelEntityRelationshipFactory;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelFactory;
 import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelFactory;
 import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelNode;
@@ -88,8 +90,11 @@ public class SpringGraphViewer extends AbstractStructuredGraphViewer {
 			super.setContentProvider(contentProvider);
 		} else if ( contentProvider instanceof IGraphEntityContentProvider ) {
 			super.setContentProvider( contentProvider );
+		} else if (contentProvider instanceof IGraphEntityRelationshipContentProvider){
+			super.setContentProvider(contentProvider);
 		} else {
-			throw new IllegalArgumentException("Invalid content provider, only IGraphContentProvider and IGraphEntityContentProvider are supported.");
+			throw new IllegalArgumentException(
+					"Invalid content provider, only IGraphContentProvider, IGraphEntityContentProvider, or IGraphEntityRelationshipContentProvider are supported.");
 		}
 	}
 
@@ -103,6 +108,11 @@ public class SpringGraphViewer extends AbstractStructuredGraphViewer {
 		else if ( getContentProvider() instanceof IGraphEntityContentProvider ) {
 			modelFactory = new GraphModelEntityFactory( this, highlightAdjacentNodes );
 		}
+		else if (getContentProvider() instanceof IGraphEntityRelationshipContentProvider) {
+//		@tag bug.154580-Content.fix : add new factory here.
+			modelFactory = new GraphModelEntityRelationshipFactory(this, highlightAdjacentNodes);
+		}
+		
 		model = modelFactory.createModelFromContentProvider( input, getNodeStyle(), getConnectionStyle() );
 
 		// set the model contents (initializes the layout algorithm)
@@ -314,6 +324,14 @@ public class SpringGraphViewer extends AbstractStructuredGraphViewer {
 	 */
 	public void setLayoutAlgorithm(LayoutAlgorithm algorithm, boolean run) {
 				
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.mylar.zest.core.viewers.AbstractZoomableViewer#getZoomManager()
+	 */
+	protected ZoomManager getZoomManager() {
+		//@tag bug.156286-Zooming.todo : add zooming capabilities on the SpringGraphViewer
+		return null;
 	}
 
 }

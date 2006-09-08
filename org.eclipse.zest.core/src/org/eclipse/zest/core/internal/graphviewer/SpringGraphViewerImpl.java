@@ -189,10 +189,26 @@ public class SpringGraphViewerImpl extends ThreadedGraphicalViewer implements IP
 	}
 	
 	/* (non-Javadoc)
+	 * @see org.eclipse.gef.ui.parts.GraphicalViewerImpl#createDefaultRoot()
+	 */
+	//@tag bug.156617ClearViewer.fix : create the correct default root.
+	protected void createDefaultRoot() {
+		GraphRootEditPart root = new GraphRootEditPart(this, allowMarqueeSelection, allowPanning);
+		this.setRootEditPart(root);
+	}
+	
+	private GraphRootEditPart getCastedRoot() {
+		return (GraphRootEditPart)getRootEditPart();
+	}
+	
+		
+	/* (non-Javadoc)
 	 * @see org.eclipse.gef.ui.parts.GraphicalEditor#configureGraphicalViewer()
 	 */
 	protected void configureGraphicalViewer() {
-		GraphRootEditPart root = new GraphRootEditPart(this, allowMarqueeSelection, allowPanning);
+		GraphRootEditPart root = getCastedRoot();
+		//@tag bug.156617ClearViewer.fix : just clear the children.
+		getCastedRoot().clear();
 		//setProperty(MouseWheelHandler.KeyGenerator.getKey(SWT.NONE), this);
 		
 		List zoomLevels = new ArrayList(3);
@@ -222,8 +238,6 @@ public class SpringGraphViewerImpl extends ThreadedGraphicalViewer implements IP
 		getKeyHandler().put(KeyStroke.getPressed('-', 45, SWT.CTRL), zoomOut);
 		getKeyHandler().put(KeyStroke.getPressed('-', SWT.KEYPAD_SUBTRACT, SWT.CTRL), zoomOut);
 		this.setProperty(MouseWheelHandler.KeyGenerator.getKey(SWT.CTRL), MouseWheelZoomHandler.SINGLETON);
-		
-		this.setRootEditPart(root);
 		this.setEditPartFactory(new GraphEditPartFactory(root));
 	
 	}

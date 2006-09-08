@@ -588,13 +588,15 @@ public class NestedGraphEditPart extends GraphEditPart  {
 	 *
 	 */
 	private void deleteProxies() {
-		List children = getChildren();
-		for (Iterator i = children.iterator(); i.hasNext();) {
-			Object child = i.next();
+		Object[] children = getChildren().toArray();
+		for (int i = 0; i < children.length; i++) {
+			Object child = children[i];
 			if (child instanceof NonNestedGraphProxyNodeEditPart) {
 				NonNestedGraphProxyNodeEditPart part = (NonNestedGraphProxyNodeEditPart)child;
 				getCastedModel().removeProxyNode(part.getCastedModel());
-				part.removeNotify();
+				//make sure that it is a child of this part.
+				getContentPane().add(part.getFigure());
+				removeChild(part);
 			}
 		}
 	}

@@ -311,11 +311,25 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 		return dim;
 	}
 
-	protected void configureGraphicalViewer() {
-		StaticGraphRootEditPart root = new StaticGraphRootEditPart(this, allowMarqueeSelection, allowPanning);
-		
+	/* (non-Javadoc)
+	 * @see org.eclipse.gef.ui.parts.GraphicalViewerImpl#createDefaultRoot()
+	 */
+	//@tag bug.156617ClearViewer.fix : create the correct default root.
+	protected void createDefaultRoot() {
+		StaticGraphRootEditPart root = new StaticGraphRootEditPart();
 		this.setRootEditPart(root);
-		this.setEditPartFactory(new GraphEditPartFactory(root));
+	}
+	
+//	@tag bug.156617ClearViewer.fix : convenience.
+	private StaticGraphRootEditPart getCastedRoot() {
+		return (StaticGraphRootEditPart)getRootEditPart();
+	}
+	
+	protected void configureGraphicalViewer() {
+		//@tag bug.156617ClearViewer.fix : just clear the children, don't create a new root.
+		getCastedRoot().clear();
+		getCastedRoot().configure(this, allowMarqueeSelection, allowPanning);
+		this.setEditPartFactory(new GraphEditPartFactory(getCastedRoot()));
 	}
 
 	public void panningStart() {

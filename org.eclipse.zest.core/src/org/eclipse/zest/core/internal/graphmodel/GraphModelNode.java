@@ -198,7 +198,8 @@ public class GraphModelNode extends GraphItem implements IGraphModelNode {
 					firePropertyChange(SOURCE_CONNECTIONS_PROP, null, connection);
 				}
 			}
-			else if (connection.getDestination() == this) {
+			//@tag bug.unreported.fix : if the connection is a self-loop we have to remove from both source and target
+			if (connection.getDestination() == this) {
 				removed = targetConnections.remove(connection);
 				if (removed) {
 					firePropertyChange(TARGET_CONNECTIONS_PROP, null, connection);
@@ -595,6 +596,13 @@ public class GraphModelNode extends GraphItem implements IGraphModelNode {
 			size.height = (int)height;
 			firePropertyChange(SIZE_PROP, old, size);
 		}
+	}
+
+	/* (non-Javadoc)
+	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelNode#getUnhiglightColor()
+	 */
+	public Color getUnhiglightColor() {
+		return unhighlightColor;
 	}
 
 	

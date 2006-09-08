@@ -68,6 +68,8 @@ public class GraphConnectionEditPart extends AbstractConnectionEditPart implemen
 	 * @see org.eclipse.gef.editparts.AbstractConnectionEditPart#removeNotify()
 	 */
 	public void removeNotify() {
+		//disconnect
+
 		IFigure edge = getFigure();
 		IFigure layer = getLayer(CONNECTION_LAYER);
 		if (layer != null) {
@@ -170,6 +172,7 @@ public class GraphConnectionEditPart extends AbstractConnectionEditPart implemen
 	 * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
 	 */
 	public void propertyChange(PropertyChangeEvent event) {
+	
 		String property = event.getPropertyName();
 		IFigure figure = getFigure();
 		if (IGraphModelConnection.HIGHLIGHT_PROP.equals(property)) {
