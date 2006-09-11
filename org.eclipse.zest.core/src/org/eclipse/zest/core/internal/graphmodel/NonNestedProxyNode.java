@@ -62,7 +62,8 @@ public class NonNestedProxyNode extends GraphItem implements IGraphModelNode {
 				SIZE_PROP.equals(property) || 
 				SOURCE_CONNECTIONS_PROP.equals(property) ||
 				TARGET_CONNECTIONS_PROP.equals(property) ||
-				HIGHLIGHT_PROP.equals(property)
+				HIGHLIGHT_PROP.equals(property) ||
+				VISIBLE_PROP.equals(property)
 			) return;
 			firePropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());			
 		}
@@ -332,7 +333,7 @@ public class NonNestedProxyNode extends GraphItem implements IGraphModelNode {
 					firePropertyChange(SOURCE_CONNECTIONS_PROP, null, connection);
 				}
 			}
-			else if (connection.getDestination() == this) {
+			if (connection.getDestination() == this) {
 				removed = targetConnections.remove(connection);
 				if (removed) {
 					firePropertyChange(TARGET_CONNECTIONS_PROP, null, connection);

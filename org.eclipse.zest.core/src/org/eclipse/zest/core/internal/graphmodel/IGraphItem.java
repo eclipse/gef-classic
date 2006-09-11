@@ -20,6 +20,10 @@ import java.beans.PropertyChangeListener;
  */
 //@tag bug(154259-Abstraction(fix))
 public interface IGraphItem {
+	/**
+	 * The visibility of this item has changed.
+	 */
+	public static final String VISIBLE_PROP = "GraphItem.Visible";
 	/** 
 	 * Attach a non-null PropertyChangeListener to this object.
 	 * @param l a non-null PropertyChangeListener instance
@@ -45,4 +49,16 @@ public interface IGraphItem {
 	 * @return
 	 */
 	public Object getData();
+	
+	/**
+	 * Set the visibility of this item.
+	 * @param visible whether or not this item is visible.
+	 */
+	public void setVisible(boolean visible);
+	
+	/**
+	 * Get the visibility of this item.
+	 * @return the visibility of this item.
+	 */
+	public boolean isVisible();
 }

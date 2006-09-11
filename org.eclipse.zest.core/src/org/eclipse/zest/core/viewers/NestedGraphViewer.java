@@ -38,6 +38,7 @@ import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedGraphModelNo
 import org.eclipse.mylar.zest.core.internal.nestedgraphviewer.NestedGraphViewerImpl;
 import org.eclipse.mylar.zest.core.internal.nestedgraphviewer.parts.NestedGraphEditPart;
 import org.eclipse.mylar.zest.core.internal.nestedgraphviewer.parts.NestedGraphNodeEditPart;
+import org.eclipse.mylar.zest.core.internal.nestedgraphviewer.parts.NestedGraphRootEditPart;
 import org.eclipse.mylar.zest.layouts.LayoutAlgorithm;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlEvent;
@@ -492,8 +493,22 @@ public class NestedGraphViewer extends AbstractStructuredGraphViewer implements 
 	 * @see org.eclipse.mylar.zest.core.viewers.AbstractZoomableViewer#getZoomManager()
 	 */
 	protected ZoomManager getZoomManager() {
-		//@tag.bug.156286-Zooming.todo : ? Add zooming here ?
-		return null;
+		return ((NestedGraphRootEditPart)viewer.getRootEditPart()).getZoomManager();
+	}
+
+	/* (non-Javadoc)
+	 * @see org.eclipse.mylar.zest.core.viewers.AbstractStructuredGraphViewer#applyLayout()
+	 */
+	public void applyLayout() {
+		//do nothing. Nested viewers have internal layouts.
+		//@tag zest.check : should we actually layout the current node?
+	}
+
+	/* (non-Javadoc)
+	 * @see org.eclipse.mylar.zest.core.viewers.AbstractStructuredGraphViewer#getModel()
+	 */
+	protected GraphModel getModel() {
+		return model;
 	}
 
 }

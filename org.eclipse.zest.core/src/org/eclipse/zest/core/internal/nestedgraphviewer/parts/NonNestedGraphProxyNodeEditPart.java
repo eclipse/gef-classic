@@ -148,7 +148,7 @@ public class NonNestedGraphProxyNodeEditPart extends GraphNodeEditPart
 			refreshTargetConnections();
 			super.activate();
 			//we need to listen to the proxy.
-			getCastedModel().getProxy().addPropertyChangeListener(this);
+			//getCastedModel().getProxy().addPropertyChangeListener(this);
 		}
 	}
 	
@@ -158,7 +158,7 @@ public class NonNestedGraphProxyNodeEditPart extends GraphNodeEditPart
 	public void deactivate() {
 		super.deactivate();
 		if (!isActive()) {
-			getCastedModel().getProxy().removePropertyChangeListener(this);
+			//getCastedModel().getProxy().removePropertyChangeListener(this);
 		}
 	}
 		

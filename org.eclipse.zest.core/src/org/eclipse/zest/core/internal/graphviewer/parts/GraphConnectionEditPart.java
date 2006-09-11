@@ -213,6 +213,8 @@ public class GraphConnectionEditPart extends AbstractConnectionEditPart implemen
 		  			((BezierConnection)figure).setTargetDecoration( null );
 		  		}
 			}
+		} else if (IGraphItem.VISIBLE_PROP.equals(property)) {
+			getFigure().setVisible(((Boolean)event.getNewValue()).booleanValue());
 		}
 	}
 	

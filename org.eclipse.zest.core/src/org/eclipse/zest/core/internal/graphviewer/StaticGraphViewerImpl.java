@@ -13,6 +13,7 @@ package org.eclipse.mylar.zest.core.internal.graphviewer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.draw2d.Animation;
@@ -27,6 +28,7 @@ import org.eclipse.mylar.zest.core.internal.gefx.NonThreadedGraphicalViewer;
 import org.eclipse.mylar.zest.core.internal.gefx.RevealListener;
 import org.eclipse.mylar.zest.core.internal.gefx.StaticGraphRootEditPart;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel;
+import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphItem;
 import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelConnection;
 import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelFactory;
 import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelNode;
@@ -254,14 +256,15 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 		
 		if (d.isEmpty())
 			return;
-		
+		IGraphModelConnection[] connectionsToLayout = getConnectionsToLayout();
+		IGraphModelNode[] nodesToLayout = getNodesToLayout();
 		// For the spring layout, I think it works a little nicer 
 		// if a radial layout is run first first
 		if (layoutAlgorithm instanceof SpringLayoutAlgorithm) {
 			
 			try {
 				RadialLayoutAlgorithm radial = new RadialLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING);
-				radial.applyLayout(model.getNodesArray(), model.getConnectionsArray(), 0, 0, d.width, d.height, false, false);
+				radial.applyLayout(nodesToLayout, connectionsToLayout, 0, 0, d.width, d.height, false, false);
 			} catch (InvalidLayoutConfiguration e) {
 				e.printStackTrace();
 			}
@@ -270,7 +273,7 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 
 		try {
 			Animation.markBegin();
-			layoutAlgorithm.applyLayout(model.getNodesArray(), model.getConnectionsArray(), 0, 0, d.width, d.height, false, false);
+			layoutAlgorithm.applyLayout(nodesToLayout, connectionsToLayout, 0, 0, d.width, d.height, false, false);
 			Animation.run(2000);
 			getLightweightSystem().getUpdateManager().performUpdate();
 			
@@ -297,6 +300,40 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 		}
 		
 		hasLayoutRun = true;
+	}
+	
+	IGraphModelConnection[] getConnectionsToLayout() {
+//		@tag bug.156528-Filters.follows : make sure not to layout filtered connections, if the style says so.
+		IGraphModelConnection[] entities;
+		if (ZestStyles.checkStyle(style, ZestStyles.IGNORE_INVISIBLE_LAYOUT)) {
+			LinkedList nodeList = new LinkedList();
+			for (Iterator i = model.getConnections().iterator(); i.hasNext();) {
+				IGraphItem next = (IGraphItem) i.next();
+				if (next.isVisible())
+					nodeList.add(next);
+			}
+			entities = (IGraphModelConnection[]) nodeList.toArray(new IGraphModelConnection[]{});
+		} else {
+			entities = model.getConnectionsArray();
+		}
+		return entities;
+	}
+	
+	IGraphModelNode[] getNodesToLayout(){
+//		@tag bug.156528-Filters.follows : make sure not to layout filtered nodes, if the style says so.
+		IGraphModelNode[] entities;
+		if (ZestStyles.checkStyle(style, ZestStyles.IGNORE_INVISIBLE_LAYOUT)) {
+			LinkedList nodeList = new LinkedList();
+			for (Iterator i = model.getNodes().iterator(); i.hasNext();) {
+				IGraphItem next = (IGraphItem) i.next();
+				if (next.isVisible())
+					nodeList.add(next);
+			}
+			entities = (IGraphModelNode[]) nodeList.toArray(new IGraphModelNode[]{});
+		} else {
+			entities = model.getNodesArray();
+		}
+		return entities;
 	}
 	
 	private Dimension findBiggestNode() {
@@ -457,6 +494,7 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 
 	
 	public void setSelection(List selection) {
+		if (model == null) return;
 		Iterator iterator = selection.iterator();
 		HashMap nodeMap = model.getNodesMap();
 		HashMap connectionMap = model.getConnectionMap();

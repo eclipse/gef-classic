@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.mylar.zest.core.internal.graphmodel;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -58,6 +60,8 @@ public class GraphModelConnection extends GraphItem implements IGraphModelConnec
 
 	private int curveDepth;
 	
+
+	
 	/**
 	 * For bezier curves: angle between the start point, and the line.
 	 * This may be a hint only. Future implementations of graph viewers may
@@ -87,6 +91,37 @@ public class GraphModelConnection extends GraphItem implements IGraphModelConnec
 //	@tag bug(152530-Bezier(fix))
 	private double endLength;
 	
+	
+	/**
+	 * Visibility based on the internal visibility of the connection, and
+	 * of the nodes.
+	 */
+	private boolean trueVisibility;
+	
+	/**
+	 * The state of visibility set by the user.
+	 */
+	private boolean visible;
+	/**
+	 * Listens for when the source and target nodes change visibility. If 
+	 * a connection's node is invisible, so should the connection.
+	 * @author Del Myers
+	 *
+	 */
+	//@tag bug.156528-Filters.follows : we need this support for filters.
+	private class NodeVisibilityListener implements PropertyChangeListener {
+		/* (non-Javadoc)
+		 * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+		 */
+		public void propertyChange(PropertyChangeEvent evt) {
+			if (VISIBLE_PROP.equals(evt.getPropertyName())) {
+				resetVisibility();
+			}
+		}
+	}
+	
+	private NodeVisibilityListener nodeListener;
+	
 	/**
 	 * LayoutConnection constructor, initializes the nodes and the connection properties.
 	 * Defaults to bidirectional and a weighting of 0.5.
@@ -110,6 +145,8 @@ public class GraphModelConnection extends GraphItem implements IGraphModelConnec
 	 */
 	public GraphModelConnection(GraphModel graphModel, Object data, IGraphModelNode source, IGraphModelNode destination, boolean bidirection, double weight) {
 		super(graphModel);
+		this.trueVisibility = super.isVisible();
+		this.visible = this.trueVisibility;
 		ZestPlugin plugin = ZestPlugin.getDefault();
 		this.setData(data);
 		this.connectionStyle = IZestGraphDefaults.CONNECTION_STYLE;
@@ -132,6 +169,7 @@ public class GraphModelConnection extends GraphItem implements IGraphModelConnec
 		//@tag removed : can cause the edit parts to be created before the model is finished. Wait until the model is fully constructed to reconnect.
 		//reconnect(source, destination);
 		this.font = Display.getDefault().getSystemFont();
+		nodeListener = new NodeVisibilityListener();
 	}
 	
 	/**
@@ -159,6 +197,8 @@ public class GraphModelConnection extends GraphItem implements IGraphModelConnec
 	 */
 	public void disconnect() {
 		if (isConnected) {
+			sourceNode.removePropertyChangeListener(nodeListener);
+			destinationNode.removePropertyChangeListener(nodeListener);
 			sourceNode.removeConnection(this);
 			destinationNode.removeConnection(this);
 			isConnected = false;
@@ -173,6 +213,8 @@ public class GraphModelConnection extends GraphItem implements IGraphModelConnec
 		if (!isConnected) {
 			sourceNode.addConnection(this, true);
 			destinationNode.addConnection(this, false);
+			sourceNode.addPropertyChangeListener(nodeListener);
+			destinationNode.addPropertyChangeListener(nodeListener);
 			isConnected = true;
 		}
 	}
@@ -597,6 +639,50 @@ public class GraphModelConnection extends GraphItem implements IGraphModelConnec
 	//@tag bug(152530-Bezier(fix))
 	public void setStartLength(double startLength) {
 		this.startLength = startLength;
+	}
+	
+	private boolean checkVisibilityByNodes() {
+		if (!isConnected) return false;
+		boolean visible = true;
+		if (sourceNode != null) {
+			visible &= sourceNode.isVisible();
+		} else {
+			return false;
+		}
+		if (visible && destinationNode != null) {
+			visible &= destinationNode.isVisible();
+		} else {
+			return false;
+		}
+		return visible;
+	}
+	
+	private void resetVisibility() {
+		boolean parent = this.visible;
+		boolean old = isVisible();
+		boolean nodes = checkVisibilityByNodes();
+		boolean visible = parent && nodes;
+		if (visible != old) {
+			trueVisibility = visible;
+			firePropertyChange(VISIBLE_PROP, new Boolean(old), new Boolean(nodes));
+		}
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.GraphItem#setVisible(boolean)
+	 */
+	public void setVisible(boolean visible) {
+		boolean nodeVisibility = checkVisibilityByNodes();
+		boolean old = isVisible();
+		trueVisibility = visible && nodeVisibility;
+		this.visible = visible;
+		if (old != trueVisibility) {
+			firePropertyChange(VISIBLE_PROP, new Boolean(old), new Boolean(trueVisibility));
+		}
+	}
+	
+	public boolean isVisible() {
+		return trueVisibility;
 	}
 	
 }

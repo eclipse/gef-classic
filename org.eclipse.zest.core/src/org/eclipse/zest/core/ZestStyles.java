@@ -79,7 +79,11 @@ public final class ZestStyles {
 	//@tag style(graph)
 	public static final int ENFORCE_BOUNDS = 1 << 11;
 	
-
+	/**
+	 * Style constant indicating that invisible nodes should be ignored for layouts.
+	 */
+	//@tag style.graph
+	public static final int IGNORE_INVISIBLE_LAYOUT = 1 << 12;
 	
 	/** 
 	 * Style constant indicating if the selected node's neighbors 

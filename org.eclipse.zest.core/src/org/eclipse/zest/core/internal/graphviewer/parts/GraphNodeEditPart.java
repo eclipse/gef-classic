@@ -241,6 +241,8 @@ public class GraphNodeEditPart extends AbstractGraphicalEditPart implements
 			parent.remove(figure);
 			parent.add(figure);
 			
+		} else if (IGraphItem.VISIBLE_PROP.equals(prop)) {
+			getFigure().setVisible(((Boolean)evt.getNewValue()).booleanValue());
 		}
 		
 	}

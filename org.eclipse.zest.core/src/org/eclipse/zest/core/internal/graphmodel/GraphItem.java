@@ -24,16 +24,17 @@ import org.eclipse.swt.widgets.Widget;
  * @author Chris Callendar
  */
 public abstract class GraphItem extends Item implements IGraphItem  {
-
+	 
 	/** Delegate used to implemenent property-change-support. */
 	private transient PropertyChangeSupport pcsDelegate = new PropertyChangeSupport(this);
-
+	private boolean isVisible;
 	/**
 	 * @param parent
 	 * @param style
 	 */
 	public GraphItem(Widget parent) {
 		super(parent, SWT.NO_BACKGROUND);
+		isVisible = true;
 	}
 	
 	
@@ -70,6 +71,23 @@ public abstract class GraphItem extends Item implements IGraphItem  {
 		if (pcsDelegate.hasListeners(property)) {
 			pcsDelegate.firePropertyChange(property, oldValue, newValue);
 		}
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.IGraphItem#isVisible()
+	 */
+	public boolean isVisible() {
+		return isVisible;
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.IGraphItem#setVisible(boolean)
+	 */
+	public void setVisible(boolean visible) {
+		boolean old = isVisible();
+		this.isVisible = visible;
+		if (old ^ visible)
+			firePropertyChange(VISIBLE_PROP, new Boolean(old), new Boolean(visible));
 	}
 
 }

@@ -174,9 +174,9 @@ public class StaticGraphViewer extends AbstractStructuredGraphViewer {
 				newNode.setPreferredLocation(oldNode.getXInLayout(), oldNode.getYInLayout());
 			}
 		}
-
-		// set the model contents (initializes the layout algorithm)
+	// set the model contents (initializes the layout algorithm)
 		viewer.setContents(model, modelFactory);
+		refresh();
 
 	}
 
@@ -184,7 +184,9 @@ public class StaticGraphViewer extends AbstractStructuredGraphViewer {
 	 * Applys the current layout to the viewer
 	 */
 	public void applyLayout() {
-		viewer.applyLayout();
+		if (viewer.hasLayoutRun()) {
+			viewer.applyLayout();
+		}
 	}
 
 	protected Widget doFindInputItem(Object element) {
@@ -203,20 +205,6 @@ public class StaticGraphViewer extends AbstractStructuredGraphViewer {
 		return new ArrayList(0);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jface.viewers.StructuredViewer#refresh()
-	 */
-	public void refresh() {
-		if (viewer.hasLayoutRun()) {
-			viewer.applyLayout();
-		}
-	}
-
-	protected void internalRefresh(Object element) {
-
-	}
 
 	public void reveal(Object element) {
 
@@ -261,6 +249,13 @@ public class StaticGraphViewer extends AbstractStructuredGraphViewer {
 	//@tag bug.156286-Zooming.fix.experimental : expose the zoom manager for new actions.
 	protected ZoomManager getZoomManager() {
 		return ((StaticGraphRootEditPart)viewer.getRootEditPart()).getZoomManager();
+	}
+
+	/* (non-Javadoc)
+	 * @see org.eclipse.mylar.zest.core.viewers.AbstractStructuredGraphViewer#getModel()
+	 */
+	protected GraphModel getModel() {
+		return model;
 	}
 	
 	

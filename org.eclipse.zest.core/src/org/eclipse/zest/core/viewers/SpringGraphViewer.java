@@ -334,5 +334,20 @@ public class SpringGraphViewer extends AbstractStructuredGraphViewer {
 		return null;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.eclipse.mylar.zest.core.viewers.AbstractStructuredGraphViewer#applyLayout()
+	 */
+	public void applyLayout() {
+		//do nothing spring viewers always are layed out?
+		//@tag zest.check : how does the spring graph viewer layout actually work?
+	}
+
+	/* (non-Javadoc)
+	 * @see org.eclipse.mylar.zest.core.viewers.AbstractStructuredGraphViewer#getModel()
+	 */
+	protected GraphModel getModel() {
+		return model;
+	}
+
 }
 	

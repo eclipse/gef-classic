@@ -154,7 +154,8 @@ public class GraphModel extends GraphItem {
 	public void removeProxyNode(NonNestedProxyNode node) {
 		if (proxyNodes.contains(node)) {
 			proxyNodes.remove(node);
-			List connections = node.getSourceConnections();
+			List connections = new LinkedList();
+			connections.addAll(node.getSourceConnections());
 			connections.addAll(node.getTargetConnections());
 			IGraphModelConnection[] connectionsArray = 
 				(IGraphModelConnection[])connections.toArray(new IGraphModelConnection[connections.size()]);
