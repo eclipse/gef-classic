@@ -78,11 +78,8 @@ public class GraphContentProvider implements IGraphContentProvider {
 		return dest;
 	}
 
-	public Object[] getElements( Object o ) {
-		return null;
-	}
 
-	public Object[] getRelationships() {
+	public Object[] getElements( Object o )  {
 		Object[] rels = new String[ NAMES.length -1];
 		for ( int i = 1; i <= rels.length; i++ ) {
 			rels[i-1] = "" + i;
